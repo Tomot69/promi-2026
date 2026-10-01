@@ -1,0 +1,390 @@
+{
+ "encre": {
+  "page": {
+   "arrivee": {
+    "duree": 796,
+    "images": 40,
+    "mediane": 19.2,
+    "pire": 28
+   },
+   "depart": {
+    "duree": 334,
+    "images": 14,
+    "mediane": 21.5,
+    "pire": 43
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 797,
+    "images": 45,
+    "mediane": 17.6,
+    "pire": 25
+   },
+   "depart": {
+    "duree": 345,
+    "images": 16,
+    "mediane": 22.1,
+    "pire": 26
+   }
+  }
+ },
+ "touffe": {
+  "page": {
+   "arrivee": {
+    "duree": 795,
+    "images": 46,
+    "mediane": 17,
+    "pire": 21
+   },
+   "depart": {
+    "duree": 243,
+    "images": 13,
+    "mediane": 19.6,
+    "pire": 23
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 790,
+    "images": 48,
+    "mediane": 16.6,
+    "pire": 22
+   },
+   "depart": {
+    "duree": 252,
+    "images": 16,
+    "mediane": 16.6,
+    "pire": 20
+   }
+  }
+ },
+ "mosaique": {
+  "page": {
+   "arrivee": {
+    "duree": 786,
+    "images": 48,
+    "mediane": 16.6,
+    "pire": 19
+   },
+   "depart": {
+    "duree": 263,
+    "images": 16,
+    "mediane": 16.4,
+    "pire": 20
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 791,
+    "images": 48,
+    "mediane": 16.6,
+    "pire": 23
+   },
+   "depart": {
+    "duree": 261,
+    "images": 16,
+    "mediane": 16.7,
+    "pire": 18
+   }
+  }
+ },
+ "braille": {
+  "page": {
+   "arrivee": {
+    "duree": 783,
+    "images": 41,
+    "mediane": 18.5,
+    "pire": 30
+   },
+   "depart": {
+    "duree": 313,
+    "images": 16,
+    "mediane": 19.6,
+    "pire": 24
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 797,
+    "images": 45,
+    "mediane": 17.7,
+    "pire": 22
+   },
+   "depart": {
+    "duree": 278,
+    "images": 16,
+    "mediane": 17.5,
+    "pire": 19
+   }
+  }
+ },
+ "pixel": {
+  "page": {
+   "arrivee": {
+    "duree": 842,
+    "images": 40,
+    "mediane": 18.6,
+    "pire": 45
+   },
+   "depart": {
+    "duree": 299,
+    "images": 16,
+    "mediane": 18.5,
+    "pire": 32
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 785,
+    "images": 48,
+    "mediane": 16.4,
+    "pire": 25
+   },
+   "depart": {
+    "duree": 286,
+    "images": 16,
+    "mediane": 16.2,
+    "pire": 32
+   }
+  }
+ },
+ "halin": {
+  "page": {
+   "arrivee": {
+    "duree": 2498,
+    "images": 148,
+    "mediane": 16.7,
+    "pire": 40
+   },
+   "depart": {
+    "duree": 2847,
+    "images": 167,
+    "mediane": 16.7,
+    "pire": 62
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 2432,
+    "images": 145,
+    "mediane": 16.7,
+    "pire": 42
+   },
+   "depart": {
+    "duree": 2873,
+    "images": 170,
+    "mediane": 16.7,
+    "pire": 40
+   }
+  }
+ },
+ "esquille": {
+  "page": {
+   "arrivee": {
+    "duree": 1302,
+    "images": 79,
+    "mediane": 16.6,
+    "pire": 18
+   },
+   "depart": {
+    "duree": 1281,
+    "images": 77,
+    "mediane": 16.7,
+    "pire": 19
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 1409,
+    "images": 82,
+    "mediane": 16.7,
+    "pire": 38
+   },
+   "depart": {
+    "duree": 1338,
+    "images": 80,
+    "mediane": 16.7,
+    "pire": 30
+   }
+  }
+ },
+ "madrure": {
+  "page": {
+   "arrivee": {
+    "duree": 2469,
+    "images": 133,
+    "mediane": 16.8,
+    "pire": 84
+   },
+   "depart": {
+    "duree": 2409,
+    "images": 136
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 2369,
+    "images": 133,
+    "mediane": 16.9,
+    "pire": 41
+   },
+   "depart": {
+    "duree": 2307,
+    "images": 133,
+    "mediane": 16.7,
+    "pire": 39
+   }
+  }
+ },
+ "ritournelle": {
+  "page": {
+   "arrivee": {
+    "duree": 1926,
+    "images": 113,
+    "mediane": 16.6,
+    "pire": 36
+   },
+   "depart": {
+    "duree": 1999,
+    "images": 119,
+    "mediane": 16.6,
+    "pire": 26
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 2074,
+    "images": 119,
+    "mediane": 16.7,
+    "pire": 58
+   },
+   "depart": {
+    "duree": 1922,
+    "images": 115,
+    "mediane": 16.7,
+    "pire": 25
+   }
+  }
+ },
+ "bobinette": {
+  "page": {
+   "arrivee": {
+    "duree": 2104,
+    "images": 117,
+    "mediane": 17.4,
+    "pire": 27
+   },
+   "depart": {
+    "duree": 2109,
+    "images": 101,
+    "mediane": 19,
+    "pire": 63
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 2131,
+    "images": 117,
+    "mediane": 17.4,
+    "pire": 26
+   },
+   "depart": {
+    "duree": 2132,
+    "images": 125,
+    "mediane": 16.8,
+    "pire": 24
+   }
+  }
+ },
+ "terrazzo": {
+  "page": {
+   "arrivee": {
+    "duree": 796,
+    "images": 48,
+    "mediane": 16.7,
+    "pire": 19
+   },
+   "depart": {
+    "duree": 328,
+    "images": 20,
+    "mediane": 16.7,
+    "pire": 17
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 787,
+    "images": 48,
+    "mediane": 16.7,
+    "pire": 19
+   },
+   "depart": {
+    "duree": 326,
+    "images": 20,
+    "mediane": 16.3,
+    "pire": 18
+   }
+  }
+ },
+ "gravure": {
+  "page": {
+   "arrivee": {
+    "duree": 803,
+    "images": 40,
+    "mediane": 20,
+    "pire": 23
+   },
+   "depart": {
+    "duree": 345,
+    "images": 17,
+    "mediane": 20.8,
+    "pire": 24
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 894,
+    "images": 38,
+    "mediane": 22,
+    "pire": 48
+   },
+   "depart": {
+    "duree": 322,
+    "images": 17,
+    "mediane": 18.9,
+    "pire": 24
+   }
+  }
+ },
+ "sillons": {
+  "page": {
+   "arrivee": {
+    "duree": 982,
+    "images": 34,
+    "mediane": 29,
+    "pire": 48
+   },
+   "depart": {
+    "duree": 482,
+    "images": 17,
+    "mediane": 29.7,
+    "pire": 35
+   }
+  },
+  "app": {
+   "arrivee": {
+    "duree": 958,
+    "images": 34,
+    "mediane": 28.3,
+    "pire": 38
+   },
+   "depart": {
+    "duree": 472,
+    "images": 17,
+    "mediane": 28.2,
+    "pire": 37
+   }
+  }
+ }
+}

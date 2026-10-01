@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Célébration — moodboard</title>
+<style>
+:root{--fond:#F7F0DE;--encre:#201908;--doux:#6E6350;--trait:#E4D7BB;--amande:#8FE08F}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--fond:#100D0B;--encre:#F7F0DE;--doux:#A2947C;--trait:#3A2E22}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre);font:15px/1.45 Atkinson,system-ui,sans-serif}
+.page{max-width:1180px;margin:0 auto;padding:24px 16px 48px}
+h1{font:600 28px/1.1 PromiLate,system-ui,sans-serif;margin:0 0 10px}
+.regarde{border:2px solid var(--encre);border-radius:22px;padding:14px 18px;margin:0 0 16px;max-width:860px}
+.regarde b{font-weight:700}
+.regarde p{margin:4px 0}
+.barre{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px}
+.barre button{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--encre);background:transparent;color:var(--encre);border-radius:18px;height:36px;padding:0 14px;cursor:pointer}
+.barre button.on{background:var(--encre);color:var(--fond)}
+.temps{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.piste{position:relative;flex:1;max-width:620px;height:10px;border-radius:5px;background:var(--trait);overflow:hidden}
+.piste i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--encre);border-radius:5px}
+.piste b{position:absolute;top:0;bottom:0;background:#8FE08F}
+.phase{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;min-width:280px}
+.grille{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tel{display:flex;flex-direction:column;gap:8px}
+.tel canvas{width:100%;aspect-ratio:390/844;border-radius:22px;display:block;background:#150D00}
+.lab{font:700 12px/1.2 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+.lab small{display:block;font:400 13px/1.3 Atkinson,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:var(--doux);margin-top:3px}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>La célébration — l'amande qui part de la dalle</h1>
+  <div class="regarde">
+    <p><b>Ce qu'il faut regarder :</b> quand une dalle <b>arrive</b>, du vert amande <b>#8FE08F</b> part de <b>son contour</b> : pur à la source, il se diffuse dans les jours autour d'elle, retombe à <b>20 %</b> en s'éloignant, puis s'efface. Vite, en douceur.</p>
+    <p>Quand elle <b>repart</b> : elle rétrécit, ses voisines prennent sa place <b>jusqu'au bout</b>, sans saut, et se rejoignent avec un <b>tout petit rebond</b>.</p>
+    <p>Partout : le monde <b>Halin</b> tel qu'il est dans l'app, avec ses <b>bulles</b> dans les angles et dans les jours. Elles se retirent quand la Toile bouge et reviennent quand elle se pose.</p>
+    <p>Le panneau <b>« repère »</b> joue la même chose <b>trois fois plus lentement</b>, pour voir d'où part le vert et où il va.</p>
+  </div>
+  <div class="barre">
+    <button data-v="sombre" class="on">Sombre</button><button data-v="clair">Clair</button>
+    <span style="width:14px"></span>
+    <button id="pause">Pause</button><button id="lent">Ralenti ×3</button>
+  </div>
+  <div class="temps"><div class="piste"><b id="zone"></b><i id="curseur"></i></div><div class="phase" id="phase"></div></div>
+  <div class="grille" id="grille"></div>
+</div>
+<script>
+/* Le moteur de ce moodboard : la même Toile à cellules pondérées que l'app, et le monde Cabochon avec LE CODE DE L'APP
+   (bloc lot-V32-MONDES, v49) — la frontière qui cède au retrait, l'impact, les bulles taillées dans l'espace libre.
+   Chaque panneau a sa propre horloge (le repère tourne trois fois plus lentement) ; la Toile est la même. */
+var W=390,H=844,theme='sombre',pause=false,lent=1;
+var PANNEAUX=[
+  {nom:'Sans célébration',note:'la référence',cel:0,vit:1},
+  {nom:'La célébration',note:'amande pur au contour, 20 % dans les jours',cel:1,vit:1},
+  {nom:'Repère',note:'la même, trois fois plus lente',cel:1,vit:1/3}
+];
+var TONS=[[130,174,248],[255,184,210],[201,168,245],[239,227,199]];
+function lcg(s){return function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;};}
+function clip(p,px,py,nx,ny){var o=[],n=p.length;for(var i=0,j=n-1;i<n;j=i++){var A=p[j],B=p[i],da=(A[0]-px)*nx+(A[1]-py)*ny,db=(B[0]-px)*nx+(B[1]-py)*ny;
+  if(db<=0){if(da>0){var t=da/(da-db);o.push([A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t]);}o.push(B);}else if(da<=0){var t2=da/(da-db);o.push([A[0]+(B[0]-A[0])*t2,A[1]+(B[1]-A[1])*t2]);}}return o;}
+var _clip=clip;
+function _fnv(t){var h=0x811c9dc5;for(var i=0;i<t.length;i++){h^=t.charCodeAt(i);h=(h*16777619)>>>0;}return h>>>0;}
+function _cent(p){var x=0,y=0;for(var i=0;i<p.length;i++){x+=p[i][0];y+=p[i][1];}return [x/p.length,y/p.length];}
+function _traceArrondi(T,p,r){var n=p.length;T.beginPath();for(var i=0;i<n;i++){var a=p[(i-1+n)%n],b=p[i],c=p[(i+1)%n];
+  var l1=Math.hypot(b[0]-a[0],b[1]-a[1])||1,l2=Math.hypot(c[0]-b[0],c[1]-b[1])||1,rr=Math.min(r,l1/2,l2/2);
+  var p1x=b[0]+(a[0]-b[0])/l1*rr,p1y=b[1]+(a[1]-b[1])/l1*rr,p2x=b[0]+(c[0]-b[0])/l2*rr,p2y=b[1]+(c[1]-b[1])/l2*rr;
+  if(i===0)T.moveTo(p1x,p1y);else T.lineTo(p1x,p1y);T.quadraticCurveTo(b[0],b[1],p2x,p2y);}T.closePath();}
+/* ——— le code de l'app, recopié tel quel ——— */
+  var CAB_RET = 520;
+  function _cabPart(s, now) { if (s.part == null) return 0; var a = Math.min(1, Math.max(0, (now - s.part) / CAB_RET)); return a * a * (3 - 2 * a); }
+  function _cabFront(p, q, d, now) {
+    var t = 0.5 * d + (p.w - q.w) * 0.5;
+    if (t < d * 0.06) t = d * 0.06; if (t > d * 0.94) t = d * 0.94;
+    var fp = _cabPart(p.s, now), fq = _cabPart(q.s, now);
+    if (fp > 0) t *= (1 - fp);                                     // celle qui part cède sa place…
+    if (fq > 0) t = d - (d - t) * (1 - fq) + fq * fq * fq * fq * d; // …et ses voisines la prennent, jusqu'au bout
+    return t;
+  }
+  function _cabCellule(p, vois, M, jour, now) {
+    var poly = [[p.x - M, p.y - M], [p.x + M, p.y - M], [p.x + M, p.y + M], [p.x - M, p.y + M]];
+    for (var v = 0; v < vois.length && poly.length > 2; v++) {
+      var q = vois[v].p, d = vois[v].d; if (d <= 0) continue;
+      var nx = (q.x - p.x) / d, ny = (q.y - p.y) / d, t = _cabFront(p, q, d, now) - jour / 2;
+      poly = _clip(poly, p.x + nx * t, p.y + ny * t, nx, ny);
+    }
+    return poly;
+  }
+  // le contour arrondi, aplati — EXACTEMENT la géométrie de _traceArrondi
+  function _cabContour(p, r) {
+    var n = p.length, o = [];
+    for (var i = 0; i < n; i++) {
+      var a = p[(i - 1 + n) % n], b = p[i], c = p[(i + 1) % n];
+      var l1 = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, l2 = Math.hypot(c[0] - b[0], c[1] - b[1]) || 1, rr = Math.min(r, l1 / 2, l2 / 2);
+      var p1x = b[0] + (a[0] - b[0]) / l1 * rr, p1y = b[1] + (a[1] - b[1]) / l1 * rr, p2x = b[0] + (c[0] - b[0]) / l2 * rr, p2y = b[1] + (c[1] - b[1]) / l2 * rr;
+      for (var k = 0; k <= 4; k++) { var t = k / 4, u1 = 1 - t; o.push(u1 * u1 * p1x + 2 * u1 * t * b[0] + t * t * p2x, u1 * u1 * p1y + 2 * u1 * t * b[1] + t * t * p2y); }
+    }
+    o.push(o[0], o[1]);
+    return o;
+  }
+  function _cabRayon(ox, oy, dx, dy, C, lim) {
+    var best = lim;
+    for (var c = 0; c < C.length; c++) {
+      var o = C[c].o;
+      for (var i = 0; i + 3 < o.length; i += 2) {
+        var ax = o[i], ay = o[i + 1], ex = o[i + 2] - ax, ey = o[i + 3] - ay, den = dx * ey - dy * ex;
+        if (den > -1e-9 && den < 1e-9) continue;
+        var wx = ax - ox, wy = ay - oy, s = (wx * ey - wy * ex) / den; if (s <= 0 || s >= best) continue;
+        var uu = (wx * dy - wy * dx) / den; if (uu >= 0 && uu <= 1) best = s;
+      }
+    }
+    return best;
+  }
+  function _cabDedans(x, y, o) {   // pair-impair sur le contour aplati
+    var ins = false;
+    for (var i = 0, j = o.length - 4; i + 1 < o.length - 2; j = i, i += 2) {
+      var xi = o[i], yi = o[i + 1], xj = o[j], yj = o[j + 1];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) ins = !ins;
+    }
+    return ins;
+  }
+  var CAB_N = 20, _cabDX = [], _cabDY = [];
+  for (var _ci = 0; _ci < CAB_N; _ci++) { _cabDX.push(Math.cos(_ci / CAB_N * 6.283185307179586)); _cabDY.push(Math.sin(_ci / CAB_N * 6.283185307179586)); }
+  // une bulle : la forme de l'espace libre autour de (ox, oy), à 60 %, plafonnée par lmax (un côté plus plein que l'autre)
+  function _cabBulle(ox, oy, lmax, a0, asym, cellsAll, plancher, ech) {
+    var lim = lmax / 0.6 * 1.3, C = [];
+    for (var c = 0; c < cellsAll.length; c++) { var b = cellsAll[c].bb; if (b[0] > ox + lim || b[2] < ox - lim || b[1] > oy + lim || b[3] < oy - lim) continue; C.push(cellsAll[c]); }
+    for (var c2 = 0; c2 < C.length; c2++) if (_cabDedans(ox, oy, C[c2].o)) return null;
+    var r = new Array(CAB_N), i;
+    for (i = 0; i < CAB_N; i++) {
+      var cap = lmax * (1 + asym * Math.cos(i / CAB_N * 6.283185307179586 - a0));
+      r[i] = Math.min(_cabRayon(ox, oy, _cabDX[i], _cabDY[i], C, lim) * 0.6, cap);
+    }
+    for (var pass = 0; pass < 2; pass++) { var r2 = r.slice(); for (i = 0; i < CAB_N; i++) r[i] = Math.min(r2[i], 0.25 * r2[(i + CAB_N - 1) % CAB_N] + 0.5 * r2[i] + 0.25 * r2[(i + 1) % CAB_N]); }
+    var mn = 1e9; for (i = 0; i < CAB_N; i++) if (r[i] < mn) mn = r[i];
+    if (mn < plancher) return null;
+    var P = []; for (i = 0; i < CAB_N; i++) P.push(ox + _cabDX[i] * r[i] * ech, oy + _cabDY[i] * r[i] * ech);
+    return P;
+  }
+  function _cabTraceBulle(T, P) {
+    var n = P.length / 2; T.beginPath();
+    T.moveTo((P[2 * n - 2] + P[0]) / 2, (P[2 * n - 1] + P[1]) / 2);
+    for (var i = 0; i < n; i++) { var j = (i + 1) % n; T.quadraticCurveTo(P[2 * i], P[2 * i + 1], (P[2 * i] + P[2 * j]) / 2, (P[2 * i + 1] + P[2 * j + 1]) / 2); }
+    T.closePath();
+  }
+
+function _cabCalme(p,u){var s=p.s;if(s.part!=null)return 0;var m=Math.hypot(s.tx-p.x,s.ty-p.y)+0.5*Math.abs(s.wt-s.w);
+  var a=Math.min(1,Math.max(0,(m-u*0.01)/(u*0.05)));return 1-a*a*(3-2*a);}
+
+/* ——— une Toile par panneau (même graine, même semis) ——— */
+function Toile(vit){ this.vit=vit; this.R=lcg(20260924); this.seeds=[]; this.h=0; this.nouvelle=null; this.nid=0;
+  for(var i=0;i<22;i++) this.seeds.push({k:'s'+i,x:30+this.R()*330,y:40+this.R()*764,w:0,wt:0,vx:0,vy:0,vw:0,c:TONS[i%3===2?3:i%3]});
+  for(var k=0;k<40;k++){ this.relax(); this.seeds.forEach(function(s){s.x=s.tx;s.y=s.ty;}); } }
+Toile.prototype.relax=function(){ var S=this.seeds, ac=Math.sqrt(W*H/S.length);
+  for(var i=0;i<S.length;i++){var s=S[i],fx=0,fy=0; for(var j=0;j<S.length;j++){ if(i===j)continue; var o=S[j],dx=s.x-o.x,dy=s.y-o.y,d=Math.sqrt(dx*dx+dy*dy),w=ac*(0.92+s.wt*0.026+o.wt*0.026);
+    if(d<w&&d>0.01){var f=(w-d)/d*0.16;fx+=dx*f;fy+=dy*f;} } s.tx=Math.max(8,Math.min(W-8,s.x+fx)); s.ty=Math.max(8,Math.min(H-8,s.y+fy)); } };
+Toile.prototype.arrive=function(){ var x=60+this.R()*270,y=120+this.R()*600; this.nouvelle={k:'n'+(this.nid++),x:x,y:y,tx:x,ty:y,w:-22,wt:12,vx:0,vy:0,vw:0,c:TONS[(this.R()*3)|0],nee:this.h}; this.seeds.push(this.nouvelle); this.relax(); };
+Toile.prototype.part=function(){ var n=this.nouvelle; if(!n)return; n.wt=n.w-30; n.part=this.h; this.relax(); };
+Toile.prototype.pas=function(dt){ var grow=false,O=9,OW=8,self=this;
+  this.seeds.forEach(function(s){ if(s===self.nouvelle&&s.part==null&&self.h-s.nee>380&&s.wt===12){ s.wt=3.4; }
+    s.vw+=(OW*OW*(s.wt-s.w)-2*OW*s.vw)*dt; s.w+=s.vw*dt; if(Math.abs(s.wt-s.w)>0.02||Math.abs(s.vw)>0.05)grow=true;
+    s.vx+=(O*O*(s.tx-s.x)-2*O*s.vx)*dt; s.vy+=(O*O*(s.ty-s.y)-2*O*s.vy)*dt; s.x+=s.vx*dt; s.y+=s.vy*dt; });
+  if(grow){this.relax();this.relax();this.relax();}
+  var n=this.nouvelle; if(n&&n.part!=null&&this.h-n.part>620){ this.seeds.splice(this.seeds.indexOf(n),1); this.nouvelle=null; this.relax(); } };
+Toile.prototype.avance=function(dt){ var CY=4000, h0=this.h%CY; this.h+=dt*1000*this.vit; var h1=this.h%CY;
+  if(h1<h0) this.arrive(); if(h0<2000&&h1>=2000) this.part(); this.pas(dt*this.vit); };
+
+/* ——— Cabochon, comme dans l'app (Rcab), plus la célébration SOUS les dalles ——— */
+function peint(T,g,cel){ var now=T.h, S=T.seeds, u=Math.sqrt(W*H/22), jour=u*0.09, rayon=u*0.17, M=Math.max(W,H,u*3);
+  var P=S.map(function(s){return {s:s,x:s.x,y:s.y,w:s.w,k:s.k};});
+  var cells=[];
+  P.forEach(function(p){ var vois=P.filter(function(q){return q!==p;}).map(function(q){return {p:q,d:Math.hypot(q.x-p.x,q.y-p.y)};}).sort(function(a,b){return a.d-b.d;}).slice(0,12);
+    var poly=_cabCellule(p,vois,M,jour,now); if(poly.length<3) return;
+    var f=1; if(p.s.part==null&&p.s.nee!=null&&now-p.s.nee<600){ var fa=Math.max(0,(now-p.s.nee)/600); f=fa*fa*(3-2*fa); }
+    var imp=0; if(p.s.part==null) vois.forEach(function(v){ var qs=v.p.s; if(qs.part==null)return; var e=(now-qs.part-380)/220; if(e>0&&e<1) imp=Math.max(imp,Math.sin(Math.PI*e)); });
+    var sc=f*(1-0.02*imp); if(sc<1){ var cc=_cent(poly); poly=poly.map(function(q){return [cc[0]+(q[0]-cc[0])*sc,cc[1]+(q[1]-cc[1])*sc];}); }
+    cells.push({p:p,poly:poly,f:f,vois:vois,r:rayon*Math.min(1,f+0.2),part:p.s.part!=null}); });
+  // la célébration : l'amande part du contour de la dalle neuve, sous toutes les dalles — elle ne se voit que dans les jours
+  if(cel){ var n=T.nouvelle; var C=null; for(var i=0;i<cells.length;i++) if(cells[i].p.s===n) C=cells[i];
+    if(C&&n.part==null){ var tau=now-n.nee;
+      if(tau<900){ var mont=Math.min(1,tau/90), desc=1-Math.max(0,Math.min(1,(tau-220)/680)); desc=desc*desc*(3-2*desc);
+        var env_=mont*desc, R=u*(0.25+1.35*(1-Math.pow(1-Math.min(1,tau/700),3)));
+        g.lineJoin='round';
+        // des anneaux concentriques : pur au contour, 20 % au loin
+        // chaque anneau n'apporte que ce qui manque : la superposition rend EXACTEMENT la courbe voulue (pas de cibles)
+        var NN=40, prev=0; _traceArrondi(g,C.poly,C.r);
+        for(var j=NN-1;j>=0;j--){ var x=(j+0.5)/NN, A=(0.20*(1-Math.pow(x,3))+0.80*Math.pow(1-x,2.2))*env_, al=prev>=0.999?0:Math.max(0,1-(1-A)/(1-prev)); prev=Math.max(prev,A);
+          if(al<0.002)continue; g.strokeStyle='rgba(143,224,143,'+al.toFixed(4)+')'; g.lineWidth=2*R*(j+1)/NN; g.stroke(); } } } }
+  cells.sort(function(a,b){return (b.part?1:0)-(a.part?1:0);});
+  cells.forEach(function(D){ if(D.f<=0.01)return; var c=D.p.s.c; g.fillStyle='rgb('+c[0]+','+c[1]+','+c[2]+')'; _traceArrondi(g,D.poly,D.r); g.fill(); });
+  // les bulles
+  cells.forEach(function(E){ var o=_cabContour(E.poly,E.r),a=1e9,b=1e9,c=-1e9,d=-1e9; for(var k=0;k<o.length;k+=2){a=Math.min(a,o[k]);c=Math.max(c,o[k]);b=Math.min(b,o[k+1]);d=Math.max(d,o[k+1]);} E.o=o;E.bb=[a,b,c,d]; });
+  var pris=[],vus={}; function libre(x,y){for(var z=0;z<pris.length;z+=2)if(Math.abs(pris[z]-x)<jour*3&&Math.abs(pris[z+1]-y)<jour*3)return false;return true;}
+  function owner(x,y){var b=null,bd=1e18;P.forEach(function(q){var dd=Math.hypot(x-q.x,y-q.y)-q.w;if(dd<bd){bd=dd;b=q;}});return b;}
+  cells.forEach(function(C0){ var p0=C0.p; if(C0.part||C0.f<1)return; var calme0=_cabCalme(p0,u); if(calme0<=0.01)return;
+    var brut=_cabCellule(p0,C0.vois,M,0,now);
+    brut.forEach(function(J){ if(J[0]<0||J[1]<0||J[0]>W||J[1]>H)return;
+      var tri=[[Math.hypot(J[0]-p0.x,J[1]-p0.y)-p0.w,p0]]; C0.vois.forEach(function(v){tri.push([Math.hypot(J[0]-v.p.x,J[1]-v.p.y)-v.p.w,v.p]);});
+      tri.sort(function(a,b){return a[0]-b[0];}); var cle=[tri[0][1].k,tri[1][1].k,tri[2][1].k].sort().join('|'); if(vus[cle])return; vus[cle]=1;
+      var h=_fnv('a'+cle); if(h%2!==0||!libre(J[0],J[1]))return;
+      var calme=Math.min(calme0,_cabCalme(tri[1][1],u),_cabCalme(tri[2][1],u)); if(calme<=0.01)return;
+      var B=_cabBulle(J[0],J[1],jour*(1.7+((h>>>7)%16)/16*0.7),((h>>>11)%64)/64*6.283,0.3,cells,jour*0.16,calme*(0.85+((h>>>3)%8)/8*0.3)); if(!B)return;
+      pris.push(J[0],J[1]); var c=tri[(h>>>22)%3][1].s.c; g.fillStyle='rgb('+c[0]+','+c[1]+','+c[2]+')'; _cabTraceBulle(g,B); g.fill(); });
+    C0.vois.slice(0,6).forEach(function(v){ var q=v.p,d=v.d; if(d<=0)return; var cle2=[p0.k,q.k].sort().join(':'); if(vus[cle2])return; vus[cle2]=1;
+      var h2=_fnv('j'+cle2); if(h2%6!==0)return; var calme2=Math.min(calme0,_cabCalme(q,u)); if(calme2<=0.01)return;
+      var nx=(q.x-p0.x)/d,ny=(q.y-p0.y)/d,t=_cabFront(p0,q,d,now),gl=(((h2>>>4)%100)/100-0.5)*u*0.35, mx=p0.x+nx*t-ny*gl, my=p0.y+ny*t+nx*gl;
+      if(owner(mx+nx*jour,my+ny*jour)!==q||owner(mx-nx*jour,my-ny*jour)!==p0||!libre(mx,my))return;
+      var B2=_cabBulle(mx,my,jour*(1.0+((h2>>>12)%10)/10*0.5),Math.atan2(nx,-ny)+((h2>>>20)%2)*Math.PI,0.35,cells,jour*0.14,calme2*(0.9+((h2>>>9)%4)/4*0.2)); if(!B2)return;
+      pris.push(mx,my); var c=((h2>>>24)%2?p0:q).s.c; g.fillStyle='rgb('+c[0]+','+c[1]+','+c[2]+')'; _cabTraceBulle(g,B2); g.fill(); }); });
+}
+var toiles=[], grille=document.getElementById('grille');
+PANNEAUX.forEach(function(P){ var d=document.createElement('div'); d.className='tel';
+  d.innerHTML='<canvas></canvas><div class="lab">'+P.nom+'<small>'+P.note+'</small></div>'; grille.appendChild(d); toiles.push({P:P,cv:d.querySelector('canvas'),T:new Toile(P.vit)}); });
+function taille(){ toiles.forEach(function(X){ var r=X.cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1); X.cv.width=Math.round(r.width*dpr); X.cv.height=Math.round(r.width*844/390*dpr); X.k=X.cv.width/W; }); }
+window.addEventListener('resize',taille); taille();
+var phase=document.getElementById('phase'), curseur=document.getElementById('curseur'), zone=document.getElementById('zone');
+zone.style.left='0%'; zone.style.width=(900/4000*100)+'%';
+var tPrev=null;
+function boucle(t){ if(tPrev==null)tPrev=t; var dt=Math.min(0.05,(t-tPrev)/1000); tPrev=t;
+  toiles.forEach(function(X){ if(!pause) X.T.avance(dt/lent);
+    var g=X.cv.getContext('2d'); g.setTransform(X.k,0,0,X.k,0,0);
+    var bg=g.createLinearGradient(0,0,W*0.55,H); if(theme==='clair'){bg.addColorStop(0,'#E6D1AE');bg.addColorStop(1,'#D8C29A');}else{bg.addColorStop(0,'#221702');bg.addColorStop(1,'#150D00');}
+    g.fillStyle=bg; g.fillRect(0,0,W,H); peint(X.T,g,X.P.cel); });
+  var h=toiles[0].T.h%4000; curseur.style.width=(h/4000*100)+'%';
+  phase.textContent = h<900 ? 'une dalle arrive — l\'amande part d\'elle' : (h<2000 ? 'la Toile se pose — les bulles reviennent' : (h<2700 ? 'elle repart — jusqu\'au bout, puis l\'impact' : 'repos'));
+  requestAnimationFrame(boucle); }
+[].forEach.call(document.querySelectorAll('[data-v]'),function(b){ b.onclick=function(){ theme=b.getAttribute('data-v'); [].forEach.call(document.querySelectorAll('[data-v]'),function(x){x.classList.toggle('on',x===b);}); }; });
+document.getElementById('pause').onclick=function(){ pause=!pause; this.classList.toggle('on',pause); this.textContent=pause?'Reprendre':'Pause'; };
+document.getElementById('lent').onclick=function(){ lent=lent===1?3:1; this.classList.toggle('on',lent===3); };
+toiles.forEach(function(X){ X.T.h=3999; });
+requestAnimationFrame(boucle);
+</script>
+</body>
+</html>

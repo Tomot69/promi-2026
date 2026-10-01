@@ -1,0 +1,35 @@
+dark gratuit fiche_promi ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 9.4, 9.4, 5.8), ('COMMENTAIRES', 9.4, 9.4, 5.8)]
+dark gratuit fiche_chiche ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 9.4, 9.4, 5.8), ('COMMENTAIRES', 7.1, 7.1, 5.8)]
+dark gratuit pageplus bandeau masqué : 2 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+dark gratuit garde bandeau masqué : 1 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+dark abonne fiche_promi ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 9.4, 9.4, 5.8), ('COMMENTAIRES', 9.4, 9.4, 5.8)]
+dark abonne pageplus bandeau masqué : 2 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+dark abonne garde bandeau masqué : 1 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+dark note3 avant {'lignes': 3, 'premiere': 3, 'derniere': 2.5, 'air_min': 5.8, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 84.6]}
+dark note3 T {'lignes': 3, 'premiere': 9.4, 'derniere': 9.4, 'air_min': 5.8, 'h': 118, 'rayon': 59, 'ys': [25.7, 47.5, 75.3]}
+dark note3 P {'lignes': 3, 'premiere': 14.1, 'derniere': 13.5, 'air_min': 5.8, 'h': 118, 'rayon': 30, 'ys': [17, 38.8, 84.6]}
+dark note4 avant {'lignes': 4, 'premiere': 3, 'derniere': 2.5, 'air_min': 0.5, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 61.3, 84.6]}
+dark note4 T {'lignes': 4, 'premiere': 3, 'derniere': 2.5, 'air_min': 0.5, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 61.3, 84.6], 'sans_effet': True}
+dark note4 P {'lignes': 4, 'premiere': 14.1, 'derniere': 13.5, 'air_min': 0.5, 'h': 118, 'rayon': 30, 'ys': [17, 38.8, 61.3, 84.6]}
+dark Nuée avant {'npDesc': {'lignes': 3, 'premiere': 7.4, 'derniere': 5.8, 'air_min': 5, 'h': 104, 'rayon': 52, 'ys': [19, 43, 70]}, 'npComm': {'lignes': 3, 'premiere': 7.4, 'derniere': 5.8, 'air_min': 5, 'h': 104, 'rayon': 52, 'ys': [19, 43, 70]}, 'npFich': {'lignes': 2, 'premiere': 6.3, 'derniere': 6.3, 'air_min': 23.5, 'h': 92, 'rayon': 46, 'ys': [14.8, 60.3]}}
+dark Nuée T {'npDesc': {'lignes': 3, 'premiere': 7.9, 'derniere': 7.9, 'air_min': 5.8, 'h': 104, 'rayon': 52, 'ys': [19.7, 39.5, 67.3]}, 'npComm': {'lignes': 3, 'premiere': 7.9, 'derniere': 7.9, 'air_min': 5.8, 'h': 104, 'rayon': 52, 'ys': [19.7, 39.5, 67.3]}, 'npFich': {'lignes': 2, 'premiere': 12.9, 'derniere': 13.7, 'air_min': 5.8, 'h': 92, 'rayon': 46, 'ys': [23, 50.8]}}
+dark Nuée P {'npDesc': {'lignes': 3, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 5, 'h': 104, 'rayon': 30, 'ys': [19, 43, 70]}, 'npComm': {'lignes': 3, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 5, 'h': 104, 'rayon': 30, 'ys': [19, 43, 70]}, 'npFich': {'lignes': 2, 'premiere': 12.9, 'derniere': 13.7, 'air_min': 5.8, 'h': 92, 'rayon': 46, 'ys': [23, 50.8]}}
+dark note5 (déborde ?) {'lignes': 4, 'premiere': 3, 'derniere': -0.8, 'air_min': 0.5, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 61.3, 83.8], 'textarea_h': 56, 'max_height': '44px', 'scrollH': 68}
+light gratuit fiche_promi ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 9.4, 9.4, 5.8), ('COMMENTAIRES', 9.4, 9.4, 5.8)]
+light gratuit fiche_chiche ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 9.4, 9.4, 5.8), ('COMMENTAIRES', 7.1, 7.1, 5.8)]
+light gratuit pageplus bandeau masqué : 2 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+light gratuit garde bandeau masqué : 1 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+light abonne fiche_promi ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 9.4, 9.4, 5.8), ('COMMENTAIRES', 9.4, 9.4, 5.8)]
+light abonne pageplus bandeau masqué : 2 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+light abonne garde bandeau masqué : 1 ['RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE', "C'EST IMPORTANT ?"] [('NOTE', 10.1, 10.1, 5.8)]
+light note3 avant {'lignes': 3, 'premiere': 3, 'derniere': 2.5, 'air_min': 5.8, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 84.6]}
+light note3 T {'lignes': 3, 'premiere': 9.4, 'derniere': 9.4, 'air_min': 5.8, 'h': 118, 'rayon': 59, 'ys': [25.7, 47.5, 75.3]}
+light note3 P {'lignes': 3, 'premiere': 14.1, 'derniere': 13.5, 'air_min': 5.8, 'h': 118, 'rayon': 30, 'ys': [17, 38.8, 84.6]}
+light note4 avant {'lignes': 4, 'premiere': 3, 'derniere': 2.5, 'air_min': 0.5, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 61.3, 84.6]}
+light note4 T {'lignes': 4, 'premiere': 3, 'derniere': 2.5, 'air_min': 0.5, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 61.3, 84.6], 'sans_effet': True}
+light note4 P {'lignes': 4, 'premiere': 14.1, 'derniere': 13.5, 'air_min': 0.5, 'h': 118, 'rayon': 30, 'ys': [17, 38.8, 61.3, 84.6]}
+light Nuée avant {'npDesc': {'lignes': 3, 'premiere': 7.4, 'derniere': 5.8, 'air_min': 5, 'h': 104, 'rayon': 52, 'ys': [19, 43, 70]}, 'npComm': {'lignes': 3, 'premiere': 7.4, 'derniere': 5.8, 'air_min': 5, 'h': 104, 'rayon': 52, 'ys': [19, 43, 70]}, 'npFich': {'lignes': 2, 'premiere': 6.3, 'derniere': 6.3, 'air_min': 23.5, 'h': 92, 'rayon': 46, 'ys': [14.8, 60.3]}}
+light Nuée T {'npDesc': {'lignes': 3, 'premiere': 7.9, 'derniere': 7.9, 'air_min': 5.8, 'h': 104, 'rayon': 52, 'ys': [19.7, 39.5, 67.3]}, 'npComm': {'lignes': 3, 'premiere': 7.9, 'derniere': 7.9, 'air_min': 5.8, 'h': 104, 'rayon': 52, 'ys': [19.7, 39.5, 67.3]}, 'npFich': {'lignes': 2, 'premiere': 12.9, 'derniere': 13.7, 'air_min': 5.8, 'h': 92, 'rayon': 46, 'ys': [23, 50.8]}}
+light Nuée P {'npDesc': {'lignes': 3, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 5, 'h': 104, 'rayon': 30, 'ys': [19, 43, 70]}, 'npComm': {'lignes': 3, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 5, 'h': 104, 'rayon': 30, 'ys': [19, 43, 70]}, 'npFich': {'lignes': 2, 'premiere': 12.9, 'derniere': 13.7, 'air_min': 5.8, 'h': 92, 'rayon': 46, 'ys': [23, 50.8]}}
+light note5 (déborde ?) {'lignes': 4, 'premiere': 3, 'derniere': -0.8, 'air_min': 0.5, 'h': 118, 'rayon': 59, 'ys': [17, 38.8, 61.3, 83.8], 'textarea_h': 56, 'max_height': '44px', 'scrollH': 68}
+écrit /Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/sauvegardes/audit-cercle/planche3

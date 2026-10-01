@@ -1,0 +1,31 @@
+=== redteam_ecrans 18:10:33
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+150/150
+=== redteam_vide 18:12:01
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_gens 18:15:52
+[sombre] Fiche · Peaufiner · À QUI · la croix de « Marion » la retire OK  
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK  
+
+38/38
+=== redteam_tuiles 18:19:10
+[sombre · souris · clic] nuee après nuee→chiche            OK  
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+=== redteam_accueil 18:23:37
+[sombre] 7 · toute dalle atteignable, dix zooms              OK  18 dalles · inatteignables {}
+[sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False
+
+22/22
+=== redteam_geste 18:26:24
+Mon Folio : rien ne disparaît, rien ne se superpose OK  
+aucune erreur JS                             OK  
+
+13/13
+FIN

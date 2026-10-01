@@ -1,0 +1,48 @@
+{
+ "dark": {
+  "ouvert": true,
+  "sans": false,
+  "noms": [
+   "Sillons",
+   "Gravure",
+   "Terrazzo"
+  ],
+  "dal": [
+   {
+    "w": 98,
+    "h": 98
+   },
+   {
+    "w": 98,
+    "h": 98
+   },
+   {
+    "w": 98,
+    "h": 98
+   }
+  ]
+ },
+ "light": {
+  "ouvert": true,
+  "sans": false,
+  "noms": [
+   "Sillons",
+   "Gravure",
+   "Terrazzo"
+  ],
+  "dal": [
+   {
+    "w": 98,
+    "h": 98
+   },
+   {
+    "w": 98,
+    "h": 98
+   },
+   {
+    "w": 98,
+    "h": 98
+   }
+  ]
+ }
+}

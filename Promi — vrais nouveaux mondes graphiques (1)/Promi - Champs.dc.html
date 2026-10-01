@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #14120F; }
+  a { color: #E9A93A; }
+  a:hover { color: #EDE6D7; }
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="min-height:100vh;background:#14120F;color:#EDE6D7;font-family:'IBM Plex Mono',monospace;padding:56px 40px 120px;box-sizing:border-box">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:72px">
+
+    <header style="display:flex;flex-direction:column;gap:22px">
+      <p style="margin:0;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.5">Promi · la lignée Madrure</p>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,6.4vw,96px);line-height:.95;letter-spacing:-.01em;max-width:15ch">La Toile est un champ</h1>
+      <div style="display:flex;gap:48px;flex-wrap:wrap">
+        <p style="margin:0;max-width:52ch;font-size:13px;line-height:1.8;opacity:.66;text-wrap:pretty">Madrure a posé la règle : aucune forme n'est dessinée. Un champ continu traverse la Toile, chaque promesse y crée une singularité, et la dalle est ce que le champ referme autour d'elle. Voici trois autres champs, chacun avec sa physique, son geste et son parti pris.</p>
+        <p style="margin:0;max-width:44ch;font-size:11.5px;line-height:1.8;opacity:.45;text-wrap:pretty">Le marché : les applications d'habitudes vivent de dégradés, de blobs en verre dépoli et de mascottes en 3D. Promi prend le contre-pied : des aplats francs, un trait d'imprimeur, une matière née de la physique. On ne reconnaît pas une illustration, on reconnaît une loi.</p>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px">
+        <button onClick="{{ p0 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1F1A17;box-shadow:0 0 0 1px #EDE6D733"></span><span style="width:12px;height:12px;background:#D2462C"></span><span style="width:12px;height:12px;background:#E9A93A"></span><span style="width:12px;height:12px;background:#2E6A5E"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Chafouin</span>
+        </button>
+        <button onClick="{{ p1 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1C2541"></span><span style="width:12px;height:12px;background:#3A7CA5"></span><span style="width:12px;height:12px;background:#E26D5C"></span><span style="width:12px;height:12px;background:#F3C969"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Primesautier</span>
+        </button>
+        <button onClick="{{ p2 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#2B1D3A"></span><span style="width:12px;height:12px;background:#8C3F8E"></span><span style="width:12px;height:12px;background:#E0506F"></span><span style="width:12px;height:12px;background:#F2B544"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Rogue</span>
+        </button>
+        <button onClick="{{ mode }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:10px 14px;font:inherit;color:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#EDE6D7">Clair / sombre</button>
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:#EDE6D7;color:#14120F;border:none;padding:11px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Nouvelle Toile</button>
+      </div>
+    </header>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">I · la signature</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:60px;line-height:1">Paraphe</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">La Toile est une empreinte digitale. Des crêtes parallèles la traversent ; chaque promesse y enroule un tourbillon de crêtes, et deux promesses proches les tordent l'une vers l'autre. Nul n'a la même Toile, puisque nul n'a tenu les mêmes promesses.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : les crêtes fermées autour de la promesse, à sa couleur. Le reste est à l'encre. Une Toile vide est une empreinte sans tourbillon.</p>
+      </div>
+      <canvas data-t="paraphe|18|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="paraphe|3|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">3 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="paraphe|10|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">10</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="paraphe|32|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">32</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="paraphe|0|104" style="display:block"></canvas><canvas data-d="paraphe|1|104" style="display:block"></canvas><canvas data-d="paraphe|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="paraphe|0|40" style="display:block"></canvas><canvas data-d="paraphe|1|40" style="display:block"></canvas><canvas data-d="paraphe|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">II · le courant</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:60px;line-height:1">Mascaret</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">La Toile est un fleuve tracé à l'encre, ligne de courant après ligne de courant. Chaque promesse est un tourbillon ; une sur deux tourne à contre-sens, et le courant se referme autour d'elles en yeux de chat, comme derrière les piles d'un pont.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : l'œil du tourbillon, en couleur. Le monde reste à l'encre, et seules les promesses sont en couleur.</p>
+      </div>
+      <canvas data-t="mascaret|18|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="mascaret|3|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">3 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="mascaret|10|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">10</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="mascaret|32|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">32</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="mascaret|0|104" style="display:block"></canvas><canvas data-d="mascaret|1|104" style="display:block"></canvas><canvas data-d="mascaret|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="mascaret|0|40" style="display:block"></canvas><canvas data-d="mascaret|1|40" style="display:block"></canvas><canvas data-d="mascaret|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">III · l'interférence</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:60px;line-height:1">Clapot</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">Chaque promesse est une pierre jetée dans l'eau et émet ses ondes. Là où les ondes se croisent, elles se renforcent ou s'annulent : la Toile devient un moiré noir et blanc, à la manière de l'op art.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : les premiers cercles autour de la pierre, en couleur, avant que l'interférence ne les brise. Chaque promesse plantée redessine toutes les franges.</p>
+      </div>
+      <canvas data-t="clapot|18|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="clapot|3|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">3 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="clapot|10|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">10</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="clapot|32|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">32</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="clapot|0|104" style="display:block"></canvas><canvas data-d="clapot|1|104" style="display:block"></canvas><canvas data-d="clapot|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="clapot|0|40" style="display:block"></canvas><canvas data-d="clapot|1|40" style="display:block"></canvas><canvas data-d="clapot|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { pal: 0, sombre: false, seed: (Math.random() * 100000) | 0 };
+
+  PALS = [
+    ['#1F1A17', '#D2462C', '#E9A93A', '#2E6A5E'],
+    ['#1C2541', '#3A7CA5', '#E26D5C', '#F3C969'],
+    ['#2B1D3A', '#8C3F8E', '#E0506F', '#F2B544']
+  ];
+  W = 300; H = 650;
+
+  rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  fnv(t) { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+  lum(h) { const r = parseInt(h.slice(1, 3), 16), g = parseInt(h.slice(3, 5), 16), b = parseInt(h.slice(5, 7), 16); return 0.3 * r + 0.59 * g + 0.11 * b; }
+
+  theme() {
+    const P = this.PALS[this.state.pal];
+    const order = [0, 1, 2, 3].sort((a, b) => this.lum(P[a]) - this.lum(P[b]));
+    const dark = order[0], cols = order.slice(1).map(i => P[i]);
+    return this.state.sombre
+      ? { bg: '#15120E', ink: '#E6DDCB', cols: [P[order[1]], P[order[2]], P[order[3]]] }
+      : { bg: '#EFE9DE', ink: P[dark], cols };
+  }
+
+  /* ---- le semis : que des promesses ; il grandit, il ne se retire jamais ---- */
+  semis(n) {
+    this._s = this._s || {};
+    const key = n + '|' + this.state.seed;
+    if (this._s[key]) return this._s[key];
+    const W = this.W, H = this.H, R = this.rng(this.fnv('semis' + this.state.seed)), pts = [];
+    for (let i = 0; i < n; i++) {
+      let best = null, bd = -1;
+      for (let c = 0; c < 18; c++) {
+        const x = 18 + R() * (W - 36), y = 18 + R() * (H - 36);
+        let d = 1e18; for (const p of pts) { const dx = p.x - x, dy = p.y - y; d = Math.min(d, dx * dx + dy * dy); }
+        if (d > bd) { bd = d; best = [x, y]; }
+      }
+      const h = this.fnv('p' + this.state.seed + '|' + i);
+      pts.push({ x: best[0], y: best[1], i, h });
+    }
+    const u = Math.sqrt(W * H / Math.max(n, 6));
+    pts.forEach(p => {
+      const used = {};
+      pts.forEach(o => { if (o !== p && o.ci !== undefined && Math.hypot(o.x - p.x, o.y - p.y) < u * 1.6) used[o.ci] = 1; });
+      const r = this.rng(p.h), cand = [0, 1, 2];
+      for (let i = 2; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const t = cand[i]; cand[i] = cand[j]; cand[j] = t; }
+      p.ci = cand.find(k => !used[k]); if (p.ci === undefined) p.ci = cand[0];
+      p.ci2 = cand.find(k => k !== p.ci);
+    });
+    return (this._s[key] = { n, u, pts, g: this.fnv('toile' + this.state.seed) });
+  }
+
+  /* ---- les trois champs ---- */
+  champ(world, S, pas) {
+    const W = this.W, H = this.H, pts = S.pts, n = pts.length, u = S.u;
+    const R = this.rng(S.g), th0 = R() * Math.PI, dx0 = Math.cos(th0), dy0 = Math.sin(th0);
+    const wa = [R() * 6.28, R() * 6.28, R() * 6.28, R() * 6.28];
+    const gx0 = -2 * pas, gy0 = -2 * pas, nx = Math.ceil((W + 4 * pas) / pas), ny = Math.ceil((H + 4 * pas) / pas), rw = nx + 1;
+    const V = new Float64Array(rw * (ny + 1));
+    let f, levels, ink;
+    if (world === 'paraphe') {
+      // empreinte : distance au cœur de chaque promesse, mêlée au sillon de fond — les crêtes s'enroulent
+      const lam = W / 33, R2 = (u * 0.5) ** 2, ph = pts.map(p => (p.h % 1000) / 1000);
+      f = (x, y) => {
+        const wx = x + 6 * Math.sin(y / 71 + wa[0]) + 4 * Math.sin(y / 29 + wa[1]), wy = y + 6 * Math.sin(x / 67 + wa[2]) + 4 * Math.sin(x / 31 + wa[3]);
+        let num = 0.32 * (wx * dx0 + wy * dy0), den = 0.32;
+        for (let i = 0; i < n; i++) {
+          const ddx = wx - pts[i].x, ddy = wy - pts[i].y, d2 = ddx * ddx + ddy * ddy;
+          if (d2 > 9 * R2) continue;
+          const w = Math.exp(-d2 / R2);
+          num += w * (Math.sqrt(d2) + ph[i] * lam); den += w;
+        }
+        return Math.sin(2 * Math.PI * (num / den) / lam);
+      };
+      levels = [0];
+    } else if (world === 'clapot') {
+      // interférence : chaque pierre émet ses ondes ; le fond garde une houle lointaine
+      const lam = W / 30, ph = pts.map(p => (p.h % 1000) / 1000 * 6.28), L2 = (u * 0.9) ** 2;
+      // près de sa pierre, l'onde propre l'emporte (poids plat jusqu'à r0) : deux à trois anneaux s'y ferment
+      // toujours ; au-delà, les ondes de toutes les pierres et la houle interfèrent en moiré
+      const r0 = Math.min(u * 0.36, lam * 3.2), r04 = r0 ** 4;
+      f = (x, y) => {
+        let v = 0.55 * Math.cos(2 * Math.PI * (x * dx0 + y * dy0) / lam + wa[0]) + 0.35 * Math.cos(2 * Math.PI * (x * dy0 - y * dx0) / (lam * 1.13) + wa[1]);
+        let w = 0, own = 0;
+        for (let i = 0; i < n; i++) {
+          const ddx = x - pts[i].x, ddy = y - pts[i].y, d2 = ddx * ddx + ddy * ddy, d = Math.sqrt(d2);
+          const c = Math.cos(2 * Math.PI * d / lam);
+          v += 2.2 / (1 + d2 / L2) * Math.cos(2 * Math.PI * d / lam + ph[i]);
+          const wi = Math.exp(-(d2 * d2) / r04);
+          if (wi > w) { w = wi; own = c; }
+        }
+        return (1 - w) * v + w * 1.6 * own;
+      };
+      levels = [0];
+    } else {
+      // mascaret : fonction de courant d'un fleuve et de ses tourbillons alternés
+      const U = 1, G = U * u * 0.62, a2 = (u * 0.05) ** 2;
+      f = (x, y) => {
+        let v = U * (-x * dy0 + y * dx0);
+        for (let i = 0; i < n; i++) { const ddx = x - pts[i].x, ddy = y - pts[i].y; v += (pts[i].h & 1 ? G : -G) * 0.5 * Math.log(ddx * ddx + ddy * ddy + a2); }
+        return v;
+      };
+      ink = true;
+    }
+    let vmin = 1e18, vmax = -1e18;
+    for (let j = 1; j < ny; j++) for (let a = 1; a < nx; a++) {
+      const v = f(gx0 + a * pas, gy0 + j * pas); V[j * rw + a] = v;
+      if (v < vmin) vmin = v; if (v > vmax) vmax = v;
+    }
+    if (ink) {
+      const D = W / 38; levels = [];
+      for (let k = Math.floor(vmin / D) - 1; k <= Math.floor(vmax / D) + 1; k++) { levels.push(k * D, k * D + 0.2 * D); }
+    }
+    const low = levels[0] - 1e3;
+    for (let a = 0; a <= nx; a++) { V[a] = low; V[ny * rw + a] = low; }
+    for (let j = 0; j <= ny; j++) { V[j * rw] = low; V[j * rw + nx] = low; }
+    return { V, nx, ny, rw, gx0, gy0, pas, levels, f };
+  }
+
+  /* ---- marching squares → boucles fermées ---- */
+  boucles(F) {
+    const { V, nx, ny, rw, gx0, gy0, pas, levels } = F, NL = levels.length, E = 2 * rw * (ny + 1);
+    const PX = new Map(), NB = new Map();
+    const first = v => { let lo = 0, hi = NL; while (lo < hi) { const m = (lo + hi) >> 1; if (levels[m] <= v) lo = m + 1; else hi = m; } return lo; };
+    const pt = (k, L, i, j, e) => {
+      let id, x0, y0, va, vb, hor;
+      if (e === 0) { id = (j * rw + i) * 2; va = V[j * rw + i]; vb = V[j * rw + i + 1]; x0 = i; y0 = j; hor = 1; }
+      else if (e === 1) { id = (j * rw + i + 1) * 2 + 1; va = V[j * rw + i + 1]; vb = V[(j + 1) * rw + i + 1]; x0 = i + 1; y0 = j; hor = 0; }
+      else if (e === 2) { id = ((j + 1) * rw + i) * 2; va = V[(j + 1) * rw + i]; vb = V[(j + 1) * rw + i + 1]; x0 = i; y0 = j + 1; hor = 1; }
+      else { id = (j * rw + i) * 2 + 1; va = V[j * rw + i]; vb = V[(j + 1) * rw + i]; x0 = i; y0 = j; hor = 0; }
+      const key = k * E + id;
+      if (!PX.has(key)) { const t = (L - va) / (vb - va); PX.set(key, hor ? [gx0 + (x0 + t) * pas, gy0 + y0 * pas] : [gx0 + x0 * pas, gy0 + (y0 + t) * pas]); }
+      return key;
+    };
+    const link = (a, b) => { const la = NB.get(a); la ? la.push(b) : NB.set(a, [b]); const lb = NB.get(b); lb ? lb.push(a) : NB.set(b, [a]); };
+    const PAIRS = [null, [3, 2], [2, 1], [3, 1], [0, 1], null, [0, 2], [3, 0], [3, 0], [0, 2], null, [0, 1], [3, 1], [2, 1], [3, 2], null];
+    const lvOf = new Map();
+    for (let j = 0; j < ny; j++) for (let i = 0; i < nx; i++) {
+      const o = j * rw + i, v00 = V[o], v10 = V[o + 1], v01 = V[o + rw], v11 = V[o + rw + 1];
+      const lo = Math.min(v00, v10, v01, v11), hi = Math.max(v00, v10, v01, v11);
+      for (let k = first(lo); k < NL && levels[k] <= hi; k++) {
+        const L = levels[k], cas = (v00 >= L ? 8 : 0) | (v10 >= L ? 4 : 0) | (v11 >= L ? 2 : 0) | (v01 >= L ? 1 : 0);
+        if (cas === 0 || cas === 15) continue;
+        if (cas === 5 || cas === 10) {
+          const c = (v00 + v10 + v11 + v01) / 4 >= L;
+          if ((cas === 5) === c) { link(pt(k, L, i, j, 3), pt(k, L, i, j, 0)); link(pt(k, L, i, j, 1), pt(k, L, i, j, 2)); }
+          else { link(pt(k, L, i, j, 0), pt(k, L, i, j, 1)); link(pt(k, L, i, j, 2), pt(k, L, i, j, 3)); }
+          continue;
+        }
+        const pr = PAIRS[cas]; link(pt(k, L, i, j, pr[0]), pt(k, L, i, j, pr[1]));
+      }
+    }
+    const seen = new Set(), loops = [];
+    for (const start of NB.keys()) {
+      if (seen.has(start)) continue;
+      const P = []; let prev = -1, cur = start, guard = 0;
+      while (!seen.has(cur) && guard++ < 1e6) {
+        seen.add(cur); const q = PX.get(cur); P.push(q[0], q[1]);
+        const nb = NB.get(cur); const nxt = nb[0] !== prev ? nb[0] : nb[1];
+        prev = cur; cur = nxt; if (cur === undefined) break;
+      }
+      if (P.length < 8) continue;
+      let a = 0, x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      for (let z = 0; z < P.length; z += 2) {
+        const zn = (z + 2) % P.length; a += P[z] * P[zn + 1] - P[zn] * P[z + 1];
+        x0 = Math.min(x0, P[z]); x1 = Math.max(x1, P[z]); y0 = Math.min(y0, P[z + 1]); y1 = Math.max(y1, P[z + 1]);
+      }
+      loops.push({ p: Float64Array.from(P), k: Math.floor(start / E), area: Math.abs(a) / 2, bb: [x0, y0, x1, y1] });
+    }
+    return loops;
+  }
+
+  pip(x, y, p) {
+    let ins = false;
+    for (let i = 0, j = p.length - 2; i < p.length; j = i, i += 2) {
+      const xi = p[i], yi = p[i + 1], xj = p[j], yj = p[j + 1];
+      if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) ins = !ins;
+    }
+    return ins;
+  }
+
+  // courbe lisse fermée passant par chaque point (Catmull-Rom → Bézier)
+  lisse(path, p) {
+    const n = p.length / 2, X = i => p[((i % n + n) % n) * 2], Y = i => p[((i % n + n) % n) * 2 + 1];
+    path.moveTo(X(0), Y(0));
+    for (let i = 0; i < n; i++) path.bezierCurveTo(X(i) + (X(i + 1) - X(i - 1)) / 6, Y(i) + (Y(i + 1) - Y(i - 1)) / 6, X(i + 1) - (X(i + 2) - X(i)) / 6, Y(i + 1) - (Y(i + 2) - Y(i)) / 6, X(i + 1), Y(i + 1));
+    path.closePath();
+  }
+
+  // une Toile calculée : boucles, et pour chaque promesse les boucles qui n'entourent qu'elle
+  calcul(world, n, pas) {
+    this._c = this._c || {};
+    const key = world + '|' + n + '|' + pas + '|' + this.state.seed;
+    if (this._c[key]) return this._c[key];
+    const S = this.semis(n), F = this.champ(world, S, pas), loops = this.boucles(F), u = S.u;
+    const own = S.pts.map(() => []);
+    for (const L of loops) {
+      const bw = L.bb[2] - L.bb[0], bh = L.bb[3] - L.bb[1];
+      if (Math.max(bw, bh) > u * 1.5) continue;
+      let who = -1, cnt = 0;
+      S.pts.forEach((p, i) => { if (p.x >= L.bb[0] && p.x <= L.bb[2] && p.y >= L.bb[1] && p.y <= L.bb[3] && this.pip(p.x, p.y, L.p)) { who = i; cnt++; } });
+      if (cnt === 1 && world === 'clapot') {
+        // Clapot : seuls les anneaux propres à la pierre — quasi ronds autour d'elle et contenus dans sa zone
+        const p = S.pts[who], lam = this.W / 30, r0 = Math.min(u * 0.36, lam * 3.2);
+        let rmin = 1e9, rmax = 0;
+        for (let z = 0; z < L.p.length; z += 2) { const r = Math.hypot(L.p[z] - p.x, L.p[z + 1] - p.y); if (r < rmin) rmin = r; if (r > rmax) rmax = r; }
+        if (rmax - rmin > lam * 0.3 || rmax > r0 * 1.05) cnt = 0;
+      }
+      if (cnt === 1) { own[who].push(L); L.own = who; }
+    }
+    own.forEach((ls, i) => {
+      ls.sort((a, b) => b.area - a.area);
+      if (!ls.length || world === 'mascaret') return;
+      // parité : la couleur prend les CRÊTES (f > 0) — si le bord extérieur est un creux, on le laisse à l'encre
+      const L = ls[0], p = S.pts[i], dx = p.x - L.p[0], dy = p.y - L.p[1], d = Math.hypot(dx, dy) || 1;
+      if (F.f(L.p[0] + dx / d * pas * 0.7, L.p[1] + dy / d * pas * 0.7) < 0) ls.shift();
+    });
+    return (this._c[key] = { S, F, loops, own });
+  }
+
+  peindre(g, world, K, T, only) {
+    const { S, loops, own } = K;
+    if (world === 'mascaret') {
+      const idx = only === undefined ? S.pts.map((_, i) => i) : [only];
+      for (const i of idx) {
+        const ls = own[i]; if (!ls.length) continue;
+        const p = S.pts[i], A = new Path2D(); this.lisse(A, ls[0].p); g.fillStyle = T.cols[p.ci]; g.fill(A);
+        const mid = ls[Math.floor(ls.length * 0.55)];
+        if (mid && mid !== ls[0]) { const B = new Path2D(); this.lisse(B, mid.p); g.fillStyle = T.cols[p.ci2]; g.fill(B); }
+      }
+      const I = new Path2D();
+      if (only === undefined) for (const L of loops) this.lisse(I, L.p);
+      else {
+        // l'encre d'une dalle seule : ses propres lignes de courant, à la même parité que sur la Toile
+        const ls = own[only].slice(), par = ls.length ? ls[0].k : 0;
+        const keep = ls.filter((L, z) => z > 0 || (par % 2 === 0));
+        for (const L of keep) this.lisse(I, L.p);
+      }
+      g.fillStyle = T.ink; g.fill(I, 'evenodd');
+      return;
+    }
+    if (only === undefined) {
+      const I = new Path2D(); for (const L of loops) this.lisse(I, L.p);
+      g.fillStyle = T.ink; g.fill(I, 'evenodd');
+    }
+    const idx = only === undefined ? S.pts.map((_, i) => i) : [only];
+    for (const i of idx) {
+      const ls = own[i]; if (!ls.length) continue;
+      const C = new Path2D(); for (const L of ls) this.lisse(C, L.p);
+      g.fillStyle = T.cols[S.pts[i].ci]; g.fill(C, 'evenodd');
+    }
+  }
+
+  toile(cv, world, n, disp) {
+    const W = this.W, H = this.H, D = 2, k = disp / W, pas = disp >= 200 ? 1.25 : 2.6;
+    cv.style.width = disp + 'px'; cv.style.height = Math.round(H * k) + 'px';
+    cv.width = Math.round(disp * D); cv.height = Math.round(H * k * D);
+    const g = cv.getContext('2d'), T = this.theme();
+    g.setTransform(D * k, 0, 0, D * k, 0, 0);
+    g.fillStyle = T.bg; g.fillRect(0, 0, W, H);
+    this.peindre(g, world, this.calcul(world, n, pas), T);
+  }
+
+  dalle(cv, world, rang, size) {
+    const K = this.calcul(world, 18, 1.25), T = this.theme(), D = 2;
+    cv.style.width = size + 'px'; cv.style.height = size + 'px'; cv.width = size * D; cv.height = size * D;
+    const g = cv.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
+    const W = this.W, H = this.H;
+    const cand = K.S.pts.map((p, i) => i).filter(i => K.own[i].length && K.S.pts[i].x > 30 && K.S.pts[i].x < W - 30 && K.S.pts[i].y > 30 && K.S.pts[i].y < H - 30)
+      .sort((a, b) => K.own[b][0].area - K.own[a][0].area).slice(0, 6).sort((a, b) => a - b);
+    const i = cand[rang % Math.max(1, cand.length)]; if (i === undefined) return;
+    const bb = K.own[i][0].bb, sc = size * 0.94 / Math.max(bb[2] - bb[0], bb[3] - bb[1]);
+    g.setTransform(D * sc, 0, 0, D * sc, D * (size / 2 - (bb[0] + bb[2]) / 2 * sc), D * (size / 2 - (bb[1] + bb[3]) / 2 * sc));
+    this.peindre(g, world, K, T, i);
+  }
+
+  lance() {
+    const root = this.root; if (!root) return;
+    const T = this.theme();
+    root.querySelectorAll('[data-fond]').forEach(el => { el.style.background = T.bg; });
+    const id = (this._job = (this._job || 0) + 1), jobs = [];
+    root.querySelectorAll('canvas[data-t]').forEach(cv => jobs.push(() => { const [w, n, d] = cv.dataset.t.split('|'); this.toile(cv, w, +n, +d); }));
+    root.querySelectorAll('canvas[data-d]').forEach(cv => jobs.push(() => { const [w, r, s] = cv.dataset.d.split('|'); this.dalle(cv, w, +r, +s); }));
+    const next = () => { if (this._job !== id) return; const j = jobs.shift(); if (!j) return; try { j(); } catch (e) { console.error(e); } setTimeout(next, 0); };
+    setTimeout(next, 30);
+  }
+
+  componentDidMount() { this.lance(); }
+  componentDidUpdate(pp, ps) { if (ps.pal !== this.state.pal || ps.sombre !== this.state.sombre || ps.seed !== this.state.seed) this.lance(); }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      p0: () => this.setState({ pal: 0 }),
+      p1: () => this.setState({ pal: 1 }),
+      p2: () => this.setState({ pal: 2 }),
+      mode: () => this.setState(s => ({ sombre: !s.sombre })),
+      reroll: () => this.setState({ seed: (Math.random() * 100000) | 0 })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+la phrase est rendue (#csPhrase)                 OK  
+sens : la bascule atteint la forme « demander »  OK  demander actif=True apres cycle
+qui : la phrase alimente #fWho                   OK  attache=True choix='Maman' recu='Maman'
+quand : l'echeance a quitte la phrase et aucune pastille n'est adressable par son texte OK  phrase sans creneau=True · pastilles sans prise=True
+titre : la phrase alimente #fTitle               OK  fTitle='RENDRE-LE-LIVRE-56'
+aucune erreur JS                                 OK  []
+
+6/6

@@ -1,0 +1,12 @@
+la barre est en bas, sous Peaufiner, dans le cadre OK  
+rangee Le Noyau presente                     OK  
+rangee Le texte presente                     OK  
+bouton QR present                            OK  
+le Noyau se pose et change de taille         OK  
+le Noyau se masque                           OK  
+Sans texte reagit                            OK  
+Visibles reagit                              OK  
+le QR bascule                                OK  
+aucune erreur JS                             OK  
+
+10/10

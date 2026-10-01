@@ -1,0 +1,20 @@
+════ dark
+   ✓ dark page + · au repos : le plateau et le rond photo sont là, comme avant  {'peauf': False, 'show': True, 'enh': True, 'photo': True, 'tete': False, 'fermer': False, 'marque': True, 'inter': []}
+   ✓ dark page + · Peaufiner : ni le plateau de la page +, ni le rond photo ; son en-tête, lui, est là  {'peauf': True, 'enh': False, 'photo': False, 'tete': True, 'fermer': True}
+   ✓ dark page + · Peaufiner : aucun texte n’en recouvre un autre  []
+   ✓ dark page + · son « ✕ FERMER » fonctionne : il referme la feuille, comme avant le lot  {'show': False, 'peauf': False}
+   ✓ dark gardé de côté · au repos : le plateau et le rond photo sont là, comme avant  {'peauf': False, 'show': True, 'enh': True, 'photo': False, 'tete': False, 'fermer': False, 'marque': True, 'inter': []}
+   ✓ dark gardé de côté · Peaufiner : ni le plateau de la page +, ni le rond photo ; son en-tête, lui, est là  {'peauf': True, 'enh': False, 'photo': False, 'tete': True, 'fermer': True}
+   ✓ dark gardé de côté · Peaufiner : aucun texte n’en recouvre un autre  []
+   ✓ dark gardé de côté · son « ✕ FERMER » fonctionne : il referme la feuille, comme avant le lot  {'show': False, 'peauf': False}
+════ light
+   ✓ light page + · au repos : le plateau et le rond photo sont là, comme avant  {'peauf': False, 'show': True, 'enh': True, 'photo': True, 'tete': False, 'fermer': False, 'marque': True, 'inter': []}
+   ✓ light page + · Peaufiner : ni le plateau de la page +, ni le rond photo ; son en-tête, lui, est là  {'peauf': True, 'enh': False, 'photo': False, 'tete': True, 'fermer': True}
+   ✓ light page + · Peaufiner : aucun texte n’en recouvre un autre  []
+   ✓ light page + · son « ✕ FERMER » fonctionne : il referme la feuille, comme avant le lot  {'show': False, 'peauf': False}
+   ✓ light gardé de côté · au repos : le plateau et le rond photo sont là, comme avant  {'peauf': False, 'show': True, 'enh': True, 'photo': False, 'tete': False, 'fermer': False, 'marque': True, 'inter': []}
+   ✓ light gardé de côté · Peaufiner : ni le plateau de la page +, ni le rond photo ; son en-tête, lui, est là  {'peauf': True, 'enh': False, 'photo': False, 'tete': True, 'fermer': True}
+   ✓ light gardé de côté · Peaufiner : aucun texte n’en recouvre un autre  []
+   ✓ light gardé de côté · son « ✕ FERMER » fonctionne : il referme la feuille, comme avant le lot  {'show': False, 'peauf': False}
+══ 0 raté(s)
+fin rc=0

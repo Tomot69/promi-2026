@@ -1,0 +1,8 @@
+❌  4 ÉCARTS avec la référence :
+
+    clair/nuee · nuee · ligne · height : 83px -> 88px
+    clair/nuee · nuee · ligne · _px : [319, 77] -> [319, 82]
+    sombre/nuee · nuee · ligne · height : 83px -> 88px
+    sombre/nuee · nuee · ligne · _px : [319, 77] -> [319, 82]
+
+Si le lot ne demandait pas ces changements, c'est une régression.

@@ -1,0 +1,18 @@
+[clair] 1 · dézoom relâché à 0.72, Toile entière, encarts effacés OK  échelle 0.720 · entière True · encarts [[0, 'hidden', 'none'], [0, 'hidden', 'none']]
+[clair] 3 · le rond « recadrer » est là                        OK  
+[clair] 2 · le zoom persiste (fiche, Index)                    OK  0.720 → 0.720
+[clair] 4 · zoom avant : l'élastique revient à 5               OK  échelle 5.000
+[clair] 5 · double toucher sur une dalle → défaut, pas de fiche OK  échelle 1.000 (défaut 1.0 pour 20) · fiche False
+[clair] 6 · un toucher simple ouvre la fiche                   OK  dalle 126 · fiche True
+[clair] 7 · planter ramène le défaut                           OK  échelle 1.000 (défaut 1.0 pour 21)
+[clair] 8 · supprimer ramène le défaut                         OK  échelle 1.000 (défaut 1.0 pour 20)
+[sombre] 1 · dézoom relâché à 0.72, Toile entière, encarts effacés OK  échelle 0.720 · entière True · encarts [[0, 'hidden', 'none'], [0, 'hidden', 'none']]
+[sombre] 3 · le rond « recadrer » est là                       OK  
+[sombre] 2 · le zoom persiste (fiche, Index)                   OK  0.720 → 0.720
+[sombre] 4 · zoom avant : l'élastique revient à 5              OK  échelle 5.000
+[sombre] 5 · double toucher sur une dalle → défaut, pas de fiche OK  échelle 1.000 (défaut 1.0 pour 20) · fiche False
+[sombre] 6 · un toucher simple ouvre la fiche                  OK  dalle 125 · fiche True
+[sombre] 7 · planter ramène le défaut                          OK  échelle 1.000 (défaut 1.0 pour 21)
+[sombre] 8 · supprimer ramène le défaut                        OK  échelle 1.000 (défaut 1.0 pour 20)
+
+16/16

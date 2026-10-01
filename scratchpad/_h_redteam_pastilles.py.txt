@@ -1,0 +1,24 @@
+
+── la page + · Promi ──
+page + Promi · des pastilles à toucher                   OK  
+page + Promi · toutes ont un effet                       OK  
+
+── la page + · Promi, choix ouvert ──
+page + choix ouvert · des pastilles à toucher            OK  
+page + choix ouvert · toutes ont un effet                OK  
+
+── la page + · Chiche ──
+page + Chiche · des pastilles à toucher                  OK  
+page + Chiche · toutes ont un effet                      OK  
+
+── la page + · Peaufiner ──
+page + Peaufiner · des réglages qui se déplient          OK  
+page + Peaufiner · leurs pastilles ont un effet          OK  
+
+── une fiche · Peaufiner ──
+fiche Peaufiner · des réglages qui se déplient           OK  
+fiche Peaufiner · leurs pastilles ont un effet           OK  
+l'échéance · le réglage s'ouvre et propose ses dates     OK  
+l'échéance · choisir une date la POSE                    OK  
+
+12/12

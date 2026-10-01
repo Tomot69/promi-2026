@@ -1,0 +1,98 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>la dalle du moteur, contre la meme dalle SUR la Toile</title>
+<style>
+ html,body{margin:0;background:#16171B;color:#F4EEE1;font:13px/1.4 system-ui,sans-serif}
+ #hote{position:absolute;left:-9999px;top:0;width:390px;height:620px}
+ #pl{padding:22px 26px 60px}
+ .r{margin:0 0 20px}
+ .b{display:flex;gap:14px;align-items:flex-start}
+ .w{display:flex;flex-direction:column;gap:5px}
+ .w i{font-style:normal;font-size:10px;letter-spacing:.09em;text-transform:uppercase;color:#6E6960}
+ canvas.p{display:block;background:#0B0C12;image-rendering:pixelated}
+ h3{margin:0 0 8px;font-size:13px;letter-spacing:.08em}
+ .d{font-size:11px;color:#A9A399;margin:6px 0 0}
+</style></head><body>
+<div id="pl"></div>
+<div id="hote"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<script>function cc(){return 0;}function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js?v=1788909929"></script>
+<script src="/scratchpad/_f_dalle.js?v=1788907058"></script>
+<script>
+var MONDES=['encre','mosaique','touffe','braille','pixel','terrazzo','gravure','sillons'];
+var Z=4, DPR=Math.min(2,window.devicePixelRatio||1);
+function box(sc,z,boite){
+  var c=document.createElement('canvas');
+  c.width=boite*DPR; c.height=boite*DPR;
+  c.style.width=boite+'px'; c.style.height=boite+'px';
+  var g=c.getContext('2d'); g.imageSmoothingEnabled=false;
+  var w=sc.width/DPR*z, h=sc.height/DPR*z;
+  var e=Math.min(1,boite/Math.max(w,h)); w*=e; h*=e;
+  g.drawImage(sc,(boite-w)/2*DPR,(boite-h)/2*DPR,w*DPR,h*DPR);
+  return c;
+}
+function attends(ms){return new Promise(function(r){setTimeout(r,ms);});}
+
+async function marche(){
+  Toile_resize();
+  Toile.sync([1,2,3,4,5,6,7,8,9,10,11,12]);
+  await attends(2500);
+  var pl=document.getElementById('pl'), hote=document.getElementById('toileCv');
+
+  for(var mi=0;mi<MONDES.length;mi++){
+    var monde=MONDES[mi];
+    Toile.setTheme(monde);
+    await attends(1800);                    /* le moteur repeint TOUTE la Toile */
+    var v=Toile.vue();
+
+    var r=document.createElement('div'); r.className='r';
+    var h=document.createElement('h3'); h.textContent=monde.toUpperCase(); r.appendChild(h);
+    var b=document.createElement('div'); b.className='b'; r.appendChild(b);
+    var notes=[];
+
+    for(var n=0;n<3;n++){
+      var pid=[2,5,9][n];
+      var D=null; try{ D=Toile.dalleAbs(pid); }catch(e){}
+      if(!D||!D.w) continue;
+
+      /* A · LA VERITE : la meme dalle, prelevee SUR la Toile peinte */
+      var sx=(D.minx*v.s+v.ox)*v.dpr, sy=(D.miny*v.s+v.oy)*v.dpr;
+      var sw=D.w*v.s*v.dpr, sh=D.h*v.s*v.dpr;
+      var A=document.createElement('canvas'); A.width=Math.round(sw); A.height=Math.round(sh);
+      A.getContext('2d').drawImage(hote,Math.round(sx),Math.round(sy),Math.round(sw),Math.round(sh),
+                                   0,0,Math.round(sw),Math.round(sh));
+
+      /* B · CE QUE JE SORS : dalleTrame, dans le meme monde */
+      var B=document.createElement('canvas');
+      try{ Toile.dalleTrame(B,pid,1,{m:monde,p:Toile.getPalette(),h:0}); }catch(e){}
+
+      /* C · CE QUE JE SORS MAINTENANT : la dalle prelevee PAR SA COULEUR */
+      var Cc=null; try{ Cc=window.DalleReelle(pid,monde); }catch(e){}
+      if(!Cc){ Cc=document.createElement('canvas'); Cc.width=Cc.height=8; }
+
+      /* D · LA DALLE GENEREE : le moteur la peint DANS SA CELLULE.
+             rien n'est preleve, rien n'est decoupe, rien n'est redimensionne. */
+      var Dg=document.createElement('canvas');
+      try{
+        Toile.dalleGeneree(Dg,{monde:monde, palette:Toile.getPalette(),
+          poly:D.poly, ci:(pid*3)%4, lit:(pid*2)%5,
+          ang:((pid*37)%180)*Math.PI/180, pad:24});
+      }catch(e){}
+      if(!Dg.width){ Dg.width=Dg.height=8; }
+
+      [[A,'sur la Toile'],[B,'dalleTrame'],[Cc,'prelevee'],[Dg,'GENEREE']].forEach(function(p){
+        var w2=document.createElement('div'); w2.className='w';
+        var c=box(p[0],Z,104); c.className='p'; w2.appendChild(c);
+        var i=document.createElement('i'); i.textContent=p[1]; w2.appendChild(i);
+        b.appendChild(w2);
+      });
+      notes.push(pid+' : trame '+B.width+'×'+B.height+' · vraie '+Cc.width+'×'+Cc.height);
+    }
+    var d=document.createElement('p'); d.className='d'; d.textContent=notes.join('   |   ');
+    r.appendChild(d);
+    pl.appendChild(r);
+  }
+  window.__pret=true;
+}
+window.addEventListener('load',function(){ marche(); });
+</script></body></html>

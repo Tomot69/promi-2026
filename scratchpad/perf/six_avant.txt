@@ -1,0 +1,27 @@
+chromium ×1 {"bobinette": {"calcul": 4.7, "dessin": 12.9, "ecran": 18.3}, "sillons": {"calcul": 7.4, "dessin": 24, "ecran": 26.6}, "braille": {"calcul": 5.8, "dessin": 13.9, "ecran": 16.7}, "pixel": {"calcul": 13, "dessin": 19.6, "ecran": 24.7}, "encre": {"calcul": 3.5, "dessin": 13.9, "ecran": 22.8}, "terrazzo": {"calcul": 3.9, "dessin": 7.5, "ecran": 16.9}}
+chromium ×4 {"bobinette": {"calcul": 21.3, "dessin": 58.3, "ecran": 67.7}, "sillons": {"calcul": 31.5, "dessin": 108.9, "ecran": 119.9}, "braille": {"calcul": 25.8, "dessin": 59.5, "ecran": 68.8}, "pixel": {"calcul": 59.1, "dessin": 85, "ecran": 87.6}, "encre": {"calcul": 15.3, "dessin": 61.5, "ecran": 76.9}, "terrazzo": {"calcul": 16.4, "dessin": 33.3, "ecran": 43.8}}
+webkit {"bobinette": {"calcul": 3.1, "dessin": 13, "ecran": 16.6}, "sillons": {"calcul": 6.9, "dessin": 11.2, "ecran": 20.2}, "braille": {"calcul": 4.1, "dessin": 5, "ecran": 16.9}, "pixel": {"calcul": 11, "dessin": 12.3, "ecran": 23}, "encre": {"calcul": 0.6, "dessin": 8, "ecran": 18.3}, "terrazzo": {"calcul": 1.7, "dessin": 5.1, "ecran": 16.7}}
+chromium×1 bobinette ancien {'images': 120, 'med': 16.7, 'p90': 16.8, 'max': 33.4}
+chromium×1 bobinette nouveau {'images': 121, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×1 sillons ancien {'images': 96, 'med': 16.7, 'p90': 33.3, 'max': 33.4}
+chromium×1 sillons nouveau {'images': 100, 'med': 16.7, 'p90': 33.3, 'max': 33.4}
+chromium×1 braille ancien {'images': 112, 'med': 16.7, 'p90': 16.8, 'max': 33.4}
+chromium×1 braille nouveau {'images': 121, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×1 pixel ancien {'images': 111, 'med': 16.7, 'p90': 16.8, 'max': 33.4}
+chromium×1 pixel nouveau {'images': 113, 'med': 16.7, 'p90': 16.8, 'max': 33.4}
+chromium×1 encre ancien {'images': 111, 'med': 16.7, 'p90': 16.8, 'max': 33.4}
+chromium×1 encre nouveau {'images': 121, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×1 terrazzo ancien {'images': 121, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×1 terrazzo nouveau {'images': 121, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+webkit bobinette ancien {'images': 119, 'med': 16, 'p90': 18, 'max': 93}
+webkit bobinette nouveau {'images': 122, 'med': 16, 'p90': 18, 'max': 45}
+webkit sillons ancien {'images': 48, 'med': 53, 'p90': 57, 'max': 66}
+webkit sillons nouveau {'images': 121, 'med': 16, 'p90': 18, 'max': 20}
+webkit braille ancien {'images': 14, 'med': 180, 'p90': 196, 'max': 202}
+webkit braille nouveau {'images': 121, 'med': 17, 'p90': 18, 'max': 19}
+webkit pixel ancien {'images': 55, 'med': 18, 'p90': 64, 'max': 74}
+webkit pixel nouveau {'images': 120, 'med': 17, 'p90': 18, 'max': 22}
+webkit encre ancien {'images': 65, 'med': 18, 'p90': 57, 'max': 69}
+webkit encre nouveau {'images': 121, 'med': 17, 'p90': 18, 'max': 18}
+webkit terrazzo ancien {'images': 87, 'med': 18, 'p90': 36, 'max': 51}
+webkit terrazzo nouveau {'images': 121, 'med': 17, 'p90': 18, 'max': 19}

@@ -1,0 +1,40 @@
+encre       app-v60-valide.html  arrivée vue   849 boucle   852 im  32 · départ vue   411 boucle   414 im  13
+encre       app-v60-valide.html  arrivée vue   889 boucle   892 im  35 · départ vue   355 boucle   358 im  14
+touffe      app-v60-valide.html  arrivée vue   811 boucle   816 im  48 · départ vue   305 boucle   318 im  19
+touffe      app-v60-valide.html  arrivée vue   806 boucle   809 im  49 · départ vue   315 boucle   325 im  19
+mosaique    app-v60-valide.html  arrivée vue   783 boucle   788 im  47 · départ vue   321 boucle   324 im  20
+mosaique    app-v60-valide.html  arrivée vue   795 boucle   797 im  48 · départ vue   306 boucle   309 im  19
+braille     app-v60-valide.html  arrivée vue   882 boucle   890 im  45 · départ vue   344 boucle   347 im  20
+braille     app-v60-valide.html  arrivée vue   834 boucle   840 im  43 · départ vue   353 boucle   356 im  19
+pixel       app-v60-valide.html  arrivée vue   842 boucle   845 im  46 · départ vue   299 boucle   301 im  18
+pixel       app-v60-valide.html  arrivée vue   784 boucle   790 im  47 · départ vue   323 boucle   325 im  20
+halin       app-v60-valide.html  arrivée vue  2494 boucle  2516 im 145 · départ vue  2898 boucle  2900 im 171
+halin       app-v60-valide.html  arrivée vue  2425 boucle  2427 im 143 · départ vue  2932 boucle  2939 im 170
+esquille    app-v60-valide.html  arrivée vue  1366 boucle  1437 im  82 · départ vue  1189 boucle  1424 im  72
+esquille    app-v60-valide.html  arrivée vue  1383 boucle  1438 im  83 · départ vue  1243 boucle  1429 im  75
+madrure     app-v60-valide.html  arrivée vue  2079 boucle  2436 im 122 · départ vue  2129 boucle  2431 im 125
+madrure     app-v60-valide.html  arrivée vue  2426 boucle  2428 im 142 · départ vue  2429 boucle  2431 im 142
+ritournelle app-v60-valide.html  arrivée vue  2300 boucle  2322 im 106 · départ vue  2038 boucle  2047 im 113
+ritournelle app-v60-valide.html  arrivée vue  2060 boucle  2066 im 115 · départ vue  2096 boucle  2098 im 120
+bobinette   app-v60-valide.html  arrivée vue  2160 boucle  2463 im  57 · départ vue  2109 boucle  2463 im  69
+bobinette   app-v60-valide.html  arrivée vue  2153 boucle  2461 im  58 · départ vue  2140 boucle  2463 im  72
+terrazzo    app-v60-valide.html  arrivée vue   790 boucle   792 im  46 · départ vue   354 boucle   357 im  20
+terrazzo    app-v60-valide.html  arrivée vue   803 boucle   806 im  44 · départ vue   372 boucle   374 im  20
+gravure     app-v60-valide.html  arrivée vue   788 boucle   790 im  48 · départ vue   342 boucle   344 im  21
+gravure     app-v60-valide.html  arrivée vue   795 boucle   797 im  48 · départ vue   321 boucle   371 im  20
+sillons     app-v60-valide.html  arrivée vue  1279 boucle  1281 im  38 · départ vue   754 boucle   757 im  21
+sillons     app-v60-valide.html  arrivée vue  1344 boucle  1346 im  35 · départ vue   598 boucle   600 im  20
+— médianes
+encre     app-v60-valide.html  [869, 872, 383, 386, 33, 13]
+touffe    app-v60-valide.html  [808, 812, 310, 321, 48, 19]
+mosaique  app-v60-valide.html  [789, 792, 313, 316, 47, 19]
+braille   app-v60-valide.html  [858, 865, 348, 351, 44, 19]
+pixel     app-v60-valide.html  [813, 817, 311, 313, 46, 19]
+halin     app-v60-valide.html  [2459, 2471, 2915, 2919, 144, 170]
+esquille  app-v60-valide.html  [1374, 1437, 1216, 1426, 82, 73]
+madrure   app-v60-valide.html  [2252, 2432, 2279, 2431, 132, 133]
+ritournelle app-v60-valide.html  [2180, 2194, 2067, 2072, 110, 116]
+bobinette app-v60-valide.html  [2156, 2462, 2124, 2463, 57, 70]
+terrazzo  app-v60-valide.html  [796, 799, 363, 365, 45, 20]
+gravure   app-v60-valide.html  [791, 793, 331, 357, 48, 20]
+sillons   app-v60-valide.html  [1311, 1313, 676, 678, 36, 20]

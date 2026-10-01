@@ -1,0 +1,34 @@
+=== redteam_air.py
+  ✅  L'AIR EST INTACT — 708 paires de textes, 68 écrans, deux thèmes.
+=== redteam_nuee.py
+  ✅  24 écran(s) · 0 écart(s)
+=== redteam_nuee_entree.py
+24/24
+=== releve-S1-fiches.py
+  ❌  22 écarts restants.
+=== releve-S2-peaufiner.py
+✅ SECTION 2 AU CRITÈRE  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+=== releve-S3-page-plus.py
+❌  position 0 · style 28 · collisions 0 · hors cadre 0 · peinture 0
+=== redteam_vide.py
+61/61
+=== redteam_ecrans.py
+152/152
+=== releve-design.py
+❌  4 ÉCARTS avec la référence :
+=== redteam_gens.py
+38/38
+=== redteam_tuiles.py
+64/64
+=== redteam_verbe.py
+6/6
+=== redteam_reperage.py
+16/16
+=== redteam_decoupe.py
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_accueil.py
+22/22
+=== redteam_champ.py
+32/32
+fini

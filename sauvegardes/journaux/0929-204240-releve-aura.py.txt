@@ -1,0 +1,39 @@
+
+═══ L'AURA — la Pelote dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+données                      0
+les huit acquis              0
+densité                      0
+air de la colonne            0
+la matière                   1
+    [clair] les dalles se noient : médiane 57.1 et plus faible 32.6, contre 65.0 et 34.1 en sombre
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 5 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi
+   air [sombre]         phrase → disques : 2 l. 35.4 · 1 l. 34.7 · 2 l. 35.4 · 1 l. 34.7 · 1 l. 34.7 · à l'encre 2 l. 35.5 · 1 l. 36.5 · légende à l'encre (30, 31) · libellés → bouton -350.0 · la colonne défile de 360 pt
+   matière [sombre]     boule ↔ page 143.2 (plancher 42) · contour 127.4 · dalles : 5 de face, |Δlum| la plus faible 34.1, médiane 65.0 · ΔE 38 31 19 36 16
+   air [clair]          phrase → disques : 2 l. 35.4 · 1 l. 34.7 · 2 l. 35.4 · 1 l. 34.7 · 1 l. 34.7 · à l'encre 2 l. 35.5 · 1 l. 36.5 · légende à l'encre (30, 31) · libellés → bouton -350.0 · la colonne défile de 360 pt
+   matière [clair]      boule ↔ page 106.2 (plancher 42) · contour 114.0 · dalles : 5 de face, |Δlum| la plus faible 32.6, médiane 57.1 · ΔE 35 24 16 33 18
+   1 · rotation lente   0.0639 rad/s sur 2 s (décidé 0.0628, un tour en 100 s)
+   2 · prise, droite    Δlac +0.812 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.005 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.602 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 3.90 rad/s · éteint à 5.7 s · puis 0.0641 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 1017 ms (dont peintre 20.3 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 16.1 → 12.9 → 7.5 → 6.0 → 5.4 → 5.1 → lisse · DERNIER PAS 0.36 niveau (médiane des 10 d'avant 3.95) · 16 images · empreinte retirée à 0.39 s
+   4 · toucher          p 0.756 à 250 ms, 0.948 à 950 ms · sous le doigt 93.2 % des pixels changent, hors de portée 0.00 %, bruit 0.00 % · revenu ≈ 0.4 s après le lâcher, écart au repos 46.76 %
+   5 · trace            en attente au lâcher : 6 · 1 → 7 caresse(s), gardée(s) : 0 · au repos, 13.3 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 0.67 s lâché sur place, 0.33 s lancé (49 %)
+   8 · personne         toucher sur « Adrien » → ouvre « Adrien », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.14 rad, personne d'ouvert
+   8 bis · dalle        glissement de 30 pt sur « rapporter le livre » → rien d'ouvert · toucher → fiche affichée (Promi 139, attendu 139) · ✕ → Aura
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.904
+   6 bis · monde        Studio encre → pixel · 5 dalles, 5 jugées · distance à la plantation / au courant : rapporter le livre 0.004/0.155 · arroser tous les s 0.007/0.156 · monter la serre av 0.003/0.037 · le grand plongeoir 0.007/0.202 · planter un arbre 0.003/0.184
+
+palier 110000 · médiane 17.4 ms · 2091 images · plus longue image pendant l'élan : 1017 ms (dont peintre 20.3 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 28 décision(s) · à la réouverture : palier 75000
+
+❌  1 ÉCARTS

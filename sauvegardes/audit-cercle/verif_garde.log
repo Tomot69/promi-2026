@@ -1,0 +1,10 @@
+
+== dark · gardé de côté 140
+  rouvert : {'classes': 'sheet trame show pp pp-garde pp-promi', 'garde': True}
+  barre : {'x': 215, 'y': 802, 'vis': True, 'w': 390, 'h': 84, 'recoit': 'soi', 'texte': 'Peaufiner▾'}
+  après le toucher : {'peaufiner': True, 'classes': 'sheet trame show pp pp-garde pp-promi pp-peauf s2-ouv', 'bloc': False, 'lignes': ['appeler Mamie✕ FERMER', 'À QUI', 'AVANT', 'DANS UNE NUÉE', 'NOTE', 'PIÈCES JOINTES']}
+
+== light · gardé de côté 140
+  rouvert : {'classes': 'sheet trame show pp pp-garde pp-promi', 'garde': True}
+  barre : {'x': 215, 'y': 802, 'vis': True, 'w': 390, 'h': 84, 'recoit': 'soi', 'texte': 'Peaufiner▾'}
+  après le toucher : {'peaufiner': True, 'classes': 'sheet trame show pp pp-garde pp-promi pp-peauf s2-ouv', 'bloc': False, 'lignes': ['appeler Mamie✕ FERMER', 'À QUI', 'AVANT', 'DANS UNE NUÉE', 'NOTE', 'PIÈCES JOINTES']}

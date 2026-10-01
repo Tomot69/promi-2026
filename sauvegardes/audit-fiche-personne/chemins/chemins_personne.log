@@ -1,0 +1,36 @@
+
+=== Aura — 4 nom(s)/visage(s) visibles
+   visage ?         «  » [au-nb]  →  NE MÈNE NULLE PART
+   visage ?         «  » [au-vis]  →  NE MÈNE NULLE PART
+   nom    Marion    « Marion » [au-lb]  →  FICHE DE Marion
+   nom    Rachel    « Rachel » [au-lb]  →  FICHE DE Rachel
+
+=== Index — 2 nom(s)/visage(s) visibles
+   nom    Rachel    « à Rachel » [s4-eb]  →  ouvre autre chose : detailPoster
+   nom    Marion    « à Marion » [s4-eb]  →  ouvre autre chose : detailPoster
+
+=== Fil — 0 nom(s)/visage(s) visibles
+
+=== fiche Promi à Rachel — 2 nom(s)/visage(s) visibles
+   nom    Rachel    « À Rachel » [dpt-qui]  →  NE MÈNE NULLE PART
+   nom    Rachel    « Rachel » [kr-n]  →  FICHE DE Rachel
+
+=== fiche Chiche à Marion, avec Rachel — 3 nom(s)/visage(s) visibles
+   nom    Marion    « À Marion · avec Rachel » [dpt-qui]  →  NE MÈNE NULLE PART
+   nom    Marion    « Marion » [kr-n]  →  FICHE DE Marion
+   nom    Rachel    « Rachel » [kr-n]  →  FICHE DE Rachel
+
+=== fiche Chiche de Marion, avec Adrien (Nuée) — 2 nom(s)/visage(s) visibles
+   nom    Adrien    « À le groupe · avec Adrien » [dpt-qui]  →  NE MÈNE NULLE PART
+   nom    Adrien    « Adrien » [kr-n]  →  FICHE DE Adrien
+
+=== fiche Promi de Rachel → le groupe — 0 nom(s)/visage(s) visibles
+
+=== fiche de Nuée (le potager) — 1 nom(s)/visage(s) visibles
+   nom    Rachel    « Avec Rachel, Adrien, +3 » [dpt-qui]  →  NE MÈNE NULLE PART
+
+=== fiche de la personne (Rachel) — 4 nom(s)/visage(s) visibles
+   nom    Rachel    « Rachel » [enh-t]  →  FICHE DE Rachel
+   visage ?         «  » [ps-vis]  →  FICHE DE Rachel
+   nom    Rachel    « à Rachel » [s4-eb]  →  ouvre autre chose : feedView,detailPoster
+   nom    Marion    « à Marion » [s4-eb]  →  ouvre autre chose : feedView,detailPoster

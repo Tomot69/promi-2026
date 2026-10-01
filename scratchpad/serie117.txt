@@ -1,0 +1,116 @@
+=== redteam_tokens.py (1 s)
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_volume.py (1 s)
+liste blanche (la Pelote) : 2 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE
+dette de naissance : 305 · retrouvée : 305 · soldée depuis : 0
+✅ AUCUN VOLUME HORS DE LA PELOTE
+=== redteam_partage_fiche.py (298 s)
+[doigt · Cercle] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Cercle] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt] aucune erreur JS                                           OK  
+
+48/48
+✅ le rond Partager d'une fiche partage son Folio
+=== redteam_photo_menu.py (74 s)
+[chromium] E · le partage suit l'option                          OK  planche avec ↔ sans 4.97 niveaux
+[chromium] F · page + : le bouton ouvre le sélecteur, sans menu  OK  
+[chromium] aucune erreur JS                                      OK  
+
+17/18
+KO : [webkit] F · page + : le bouton ouvre le sélecteur, sans menu
+=== redteam_decoupe.py (142 s)
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_photo.py (34 s)
+
+25/27
+
+CE QUI NE MARCHE PAS :
+   · Promi · le même bouton revient à la dalle
+   · Chiche · le même bouton revient à la dalle
+=== redteam_dalle_figee.py (106 s)
+A · même couleur à chaque ouverture (3 × 2 thèmes)         OK  18 dalles · 0 écarts 
+C · après sync, la Toile rend la même couleur              OK  plantée rgb(130,174,248) → rgb(130,174,248)
+B · une dalle plantée garde sa couleur, sauvée puis rechargée OK  rgb(130,174,248) → rgb(130,174,248) · dalle sauvée {'ci': 2, 'lit': 0}
+D · les peintres des cartes suivent le Studio (v34)        OK  68 appels · 6 pour le Promi planté en « pixel · terre », peint dans le Studio (encre) : True · 0 hors du Studio
+
+4/4
+=== redteam_reperage.py (42 s)
+[sombre] 5 · l'Index ne compte plus (Q347)                     OK  {'vu': False}
+[sombre] 2 · Index 3 par ligne : dalle peinte, rien devant elle OK  fautives : []
+[sombre] 1 · Fil : chaque ligne lit sa nature, à gauche        OK  7 lignes · fautives : []
+[sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : []
+
+16/16
+=== releve-S1-fiches.py (28 s)
+  ✗ STY  dark  chiche_releve   à qui            couleur  attendu #DD4D23   mesuré rgb(247, 240, 222)
+  ✗ STY  dark  chiche_releve   état             couleur  attendu #DD4D23   mesuré rgb(247, 240, 222)
+  ✗ STY  dark  chiche_releve   mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+  ✗ STY  dark  chiche_duo      mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+
+  ❌  12 écarts restants.
+=== redteam_gens.py (213 s)
+[sombre] Nuée · avec · la liste vit au-dessus de Peaufiner       OK  
+[sombre] Fiche · Peaufiner · À QUI · toucher « Marion » l'ajoute OK  
+[sombre] Fiche · Peaufiner · À QUI · la croix de « Marion » la retire OK  
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+
+38/38
+=== redteam_verbe.py (29 s)
+light : la bascule mène à un vrai bouton             OK  bouton={'f': 1, 'h': 60, 'vis': True}
+dark : la phrase montre son verbe (Je promets)       OK  h=56.0 txt='je me promets'
+dark : la phrase montre son verbe (Promets-moi)      OK  h=53.2 txt='je promets'
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 60, 'vis': True}
+
+6/6
+=== redteam_tuiles.py (278 s)
+[sombre · souris · clic] nuee après rien                   OK  
+[sombre · souris · clic] chiche après nuee                 OK  
+[sombre · souris · clic] nuee après nuee→chiche            OK  
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+=== redteam_champ.py (128 s)
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_tonsurton.py (59 s)
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_filets.py (183 s)
+fiche tenue    [light]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [light]  filet non    OK
+page+ chiche   [light]  filet non    OK
+page+ cercle   [light]  filet non    OK
+
+filet du trait : 14/14
+=== redteam_pelote_partage.py (66 s)
+✅ clair · export pelote : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 0.6763759086188993, 'px': 8294400}
+✅ clair · export pelote : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ clair · export toile : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 1.398961578400831, 'px': 8294400}
+✅ clair · export toile : sous le plafond iPhone (16,7 Mpx) 8294400
+
+42/42
+=== redteam_geste.py (46 s)
+Mon Folio : la Pelote centrée sur la hauteur de son bloc OK  
+Mes Promi : la reorganisation est animee     OK  
+Mon Folio : rien ne disparaît, rien ne se superpose OK  
+aucune erreur JS                             OK  
+
+12/12

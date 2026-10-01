@@ -1,0 +1,15 @@
+1 présence       28/28
+2 composition    20/20
+3 cotes          40/40
+4 polices        24/24
+5 infractions    104/104
+6 lisibilité     4/4
+7 libellés       16/16
+7 vide           2/2
+8 portes         12/14
+9 gestes         6/6
+   ❌ 8 portes · [dark] « Tenu ensemble » : toucher « rapporter le livre » ouvre SA fiche, au doigt  fiche False · Promi 126, attendu 139
+   ❌ 8 portes · [light] « Tenu ensemble » : toucher « rapporter le livre » ouvre SA fiche, au doigt  fiche False · Promi 126, attendu 139
+
+❌  2 ÉCART(S) sur 258 contrôles
+exit 1

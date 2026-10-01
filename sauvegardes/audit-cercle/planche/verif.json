@@ -1,0 +1,159 @@
+{
+ "vend_A_dk_haut_chemin": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [],
+  "contraste_min": 10.39,
+  "air": [
+   "RÉCURRENCEchaque semaine → RAPPELla veille à 19:00 : 16.0",
+   "RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0"
+  ]
+ },
+ "vend_A_lt_haut_chemin": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [],
+  "contraste_min": 8.14,
+  "air": [
+   "RÉCURRENCEchaque semaine → RAPPELla veille à 19:00 : 16.0",
+   "RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0"
+  ]
+ },
+ "vend_A_dk_haut": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [],
+  "contraste_min": 10.39,
+  "air": [
+   "RÉCURRENCEchaque semaine → RAPPELla veille à 19:00 : 16.0",
+   "RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0"
+  ]
+ },
+ "vend_A_lt_haut": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [],
+  "contraste_min": 8.14,
+  "air": [
+   "RÉCURRENCEchaque semaine → RAPPELla veille à 19:00 : 16.0",
+   "RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0"
+  ]
+ },
+ "vend_B_dk_haut": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [
+   {
+    "t": "✦ Le Cercle",
+    "k": 2.42
+   }
+  ],
+  "contraste_min": 2.42,
+  "air": [
+   "RÉCURRENCEchaque semaine → RAPPELla veille à 19:00 : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0"
+  ]
+ },
+ "vend_B_lt_haut": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [],
+  "contraste_min": 8.14,
+  "air": [
+   "RÉCURRENCEchaque semaine → RAPPELla veille à 19:00 : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0"
+  ]
+ },
+ "vend_A_dk_bas": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [],
+  "contraste_min": 7.2,
+  "air": [
+   "RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0",
+   "Essayer 14 jours, puis 3,99  → Sans engagement · annulable  : 22.0",
+   "Sans engagement · annulable  → ou un design à l’unité — 1 € : 7.8"
+  ]
+ },
+ "vend_A_lt_bas": {
+  "hors": [],
+  "petits": [],
+  "faces": [],
+  "recouvrements": [],
+  "contraste_faible": [],
+  "contraste_min": 4.95,
+  "air": [
+   "RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0",
+   "LA MÉMOIREréveille tes « en  → C'EST IMPORTANT ?· ·· ··· : 16.0",
+   "C'EST IMPORTANT ?· ·· ··· → dal : 32.0",
+   "dal → Sillons : 8.0",
+   "Terrazzo → 29 € : 22.0",
+   "29 € → soit 2,42 €/mois · −39 % : 10.0",
+   "soit 2,42 €/mois · −39 % → Prendre l’année : 26.7",
+   "Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0",
+   "Essayer 14 jours, puis 3,99  → Sans engagement · annulable  : 22.0",
+   "Sans engagement · annulable  → ou un design à l’unité — 1 € : 7.8"
+  ]
+ }
+}

@@ -1,0 +1,16 @@
+[clair] 1 · promi « réparer enfin … » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 3 lignes · verbe 36 (court 36)
+[clair] 1 · promi « anticonstituti… » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 3 lignes · verbe 36 (court 36)
+[clair] 1 · chiche « réparer enfin … » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 2 lignes · verbe 34 (court 34)
+[clair] 1 · chiche « anticonstituti… » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 2 lignes · verbe 34 (court 34)
+[clair] 2 · fiche « réparer enfin … » : ≤ 3 lignes, au-dessus de son état OK  {'lignes': 3, 'bas': 687, 'etat': 719, 'droite': 366}
+[clair] 2 · fiche « anticonstituti… » : ≤ 3 lignes, au-dessus de son état OK  {'lignes': 2, 'bas': 666, 'etat': 700, 'droite': 366}
+[clair] 3 · l'élision suit la frappe                             OK  « a » → d’ · « b » → de
+[sombre] 1 · promi « réparer enfin … » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 3 lignes · verbe 36 (court 36)
+[sombre] 1 · promi « anticonstituti… » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 3 lignes · verbe 36 (court 36)
+[sombre] 1 · chiche « réparer enfin … » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 2 lignes · verbe 34 (court 34)
+[sombre] 1 · chiche « anticonstituti… » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 2 lignes · verbe 34 (court 34)
+[sombre] 2 · fiche « réparer enfin … » : ≤ 3 lignes, au-dessus de son état OK  {'lignes': 3, 'bas': 687, 'etat': 719, 'droite': 366}
+[sombre] 2 · fiche « anticonstituti… » : ≤ 3 lignes, au-dessus de son état OK  {'lignes': 2, 'bas': 666, 'etat': 700, 'droite': 366}
+[sombre] 3 · l'élision suit la frappe                            OK  « a » → d’ · « b » → de
+
+14/14

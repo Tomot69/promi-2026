@@ -1,0 +1,30 @@
+app.html e10da6dc1bfb81aef2081b34e0c39b6b
+
+═══ L'AURA — l'Orbite dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+données                      0
+les huit acquis              0
+densité                      0
+
+LES VALEURS MESURÉES — acquis joués en thème clair
+   1 · rotation lente   0.0528 rad/s sur 2 s (décidé 0.0524, un tour en 2 min)
+   2 · prise, droite    Δlac +0.809 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.003 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.604 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 9.66 rad/s · éteint à 5.2 s · puis 0.0518 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 50 ms (dont peintre 13.1 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 40.4 → 36.7 → 30.1 → 21.3 → 9.9 → 0.6 → lisse · DERNIER PAS 0.56 niveau (médiane des 10 d'avant 0.83) · 132 images · empreinte retirée à 3.27 s
+   4 · toucher          p 1.000 à 250 ms, 1.000 à 950 ms · sous le doigt 98.0 % des pixels changent, hors de portée 1.84 %, bruit 0.00 % · revenu ≈ 3.3 s après le lâcher, écart au repos 0.00 %
+   5 · trace            en attente au lâcher : 1 · 0 → 1 caresse(s), gardée(s) : 1 · au repos, 10.7 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 3.58 s lâché sur place, 0.39 s lancé (11 %)
+   8 · personne         toucher sur « Marion » → ouvre « Marion », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.11 rad, personne d'ouvert
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.939
+
+palier 110000 · médiane 13.4 ms · 1898 images · plus longue image pendant l'élan : 50 ms (dont peintre 13.1 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 1 décision(s) · à la réouverture : palier 75000
+
+✅  L'AURA AU VERT

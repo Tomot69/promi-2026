@@ -1,0 +1,49 @@
+
+=== Aura — 9 nom(s)/visage(s) visibles
+   visage toi      «  » [au-nb]  →  NE MÈNE NULLE PART
+   visage toi      «  » [au-vis]  →  NE MÈNE NULLE PART
+   nom    toi      « toi » [au-lb]  →  NE MÈNE NULLE PART
+   visage Marion   «  » [au-nb]  →  FICHE DE Marion
+   visage Marion   «  » [au-vis]  →  FICHE DE Marion
+   nom    Marion   « Marion » [au-lb]  →  FICHE DE Marion
+   visage Rachel   «  » [au-nb]  →  FICHE DE Rachel
+   visage Rachel   «  » [au-vis]  →  FICHE DE Rachel
+   nom    Rachel   « Rachel » [au-lb]  →  FICHE DE Rachel
+
+=== Fil — 8 nom(s)/visage(s) visibles
+   visage ?        «  » [s4-vis]  →  ouvre autre chose : detailPoster
+   nom    Marion   « Marion te lance un chiche » [s4-nom]  →  ouvre autre chose : detailPoster
+   nom    moi      « à moi » [s4-nom]  →  ouvre autre chose : detailPoster
+   visage ?        «  » [s4-vis]  →  ouvre autre chose : detailPoster
+   nom    Adrien   « Adrien a planté » [s4-nom]  →  ouvre autre chose : detailPoster
+   nom    Rachel   « à Rachel » [s4-nom]  →  ouvre autre chose : detailPoster
+   visage ?        «  » [s4-vis]  →  ouvre autre chose : detailPoster
+   nom    Marion   « Marion a relevé » [s4-nom]  →  ouvre autre chose : detailPoster
+
+=== Peaufiner · Promi à Rachel — 3 nom(s)/visage(s) visibles
+   nom    Rachel   « Rachel » [s2-val]  →  NE MÈNE NULLE PART
+   nom    Rachel   « visible par Rachel » [s2-vis]  →  NE MÈNE NULLE PART
+   nom    Rachel   « visibles par Rachel » [s2-vis]  →  rien d'ouvert, mais l'écran change (+29 car.)
+
+=== Peaufiner · Chiche à Marion avec Rachel — 5 nom(s)/visage(s) visibles
+   nom    Marion   « Marion » [s2-val]  →  NE MÈNE NULLE PART
+   nom    Rachel   « Rachel » [s2-val]  →  NE MÈNE NULLE PART
+   nom    Marion   « visible par Marion » [s2-vis]  →  NE MÈNE NULLE PART
+   nom    Marion   « visibles par Marion » [s2-vis]  →  rien d'ouvert, mais l'écran change (+29 car.)
+   nom    Marion   « visible par Marion · vous pouvez rép » [s2-vis]  →  NE MÈNE NULLE PART
+
+=== fiche · Promi DE Rachel au groupe — 1 nom(s)/visage(s) visibles
+   nom    toi      « toi » [kr-n]  →  NE MÈNE NULLE PART
+
+=== fiche · Promi à Rachel (disques) — 3 nom(s)/visage(s) visibles
+   nom    Rachel   « À Rachel » [dpt-qui]  →  NE MÈNE NULLE PART
+   nom    toi      « toi » [kr-n]  →  NE MÈNE NULLE PART
+   nom    Rachel   « Rachel » [kr-n]  →  FICHE DE Rachel
+
+=== Nuée potager — 1 nom(s)/visage(s) visibles
+   nom    Rachel   « Avec Rachel, Adrien, +3 » [dpt-qui]  →  NE MÈNE NULLE PART
+
+=== Peaufiner · Nuée potager — 1 nom(s)/visage(s) visibles
+   nom    Rachel   « Rachel · Adrien · +3 » [np-val]  →  NE MÈNE NULLE PART
+
+=== Partage · Promi à Rachel — 0 nom(s)/visage(s) visibles

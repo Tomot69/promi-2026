@@ -1,0 +1,16 @@
+══ FACES EMBARQUÉES (lues dans app.html) ══
+   atkinson   400  normal
+   atkinson   500  normal
+   atkinson   700  normal
+   gilbert    700  normal
+   promilate  400  normal
+
+══ COUPLES DEMANDÉS ET EMBARQUÉS ══
+   gilbert    700  normal   198 élément(s)
+   atkinson   500  normal   179 élément(s)
+   promilate  400  normal   132 élément(s)
+
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)

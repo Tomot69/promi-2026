@@ -1,0 +1,22 @@
+❌  18 ÉCARTS avec la référence :
+
+    clair/atenir · fiche · fermer · width : 74.4531px -> 79.9531px
+    clair/atenir · fiche · fermer · _px : [69, 11] -> [75, 11]
+    clair/atenir · fiche · nom lien · width : 22.7812px -> 24.5938px
+    clair/tenue · fiche · fermer · width : 74.4531px -> 79.9531px
+    clair/tenue · fiche · fermer · _px : [69, 11] -> [75, 11]
+    clair/tenue · fiche · nom lien · width : 22.7812px -> 24.5938px
+    clair/nuee · fiche · fermer · width : 74.4531px -> 79.9531px
+    clair/nuee · fiche · fermer · _px : [69, 11] -> [75, 11]
+    clair/nuee · fiche · nom lien · width : 22.7812px -> 24.5938px
+    sombre/atenir · fiche · fermer · width : 74.4531px -> 79.9531px
+    sombre/atenir · fiche · fermer · _px : [69, 11] -> [75, 11]
+    sombre/atenir · fiche · nom lien · width : 22.7812px -> 24.5938px
+    sombre/tenue · fiche · fermer · width : 74.4531px -> 79.9531px
+    sombre/tenue · fiche · fermer · _px : [69, 11] -> [75, 11]
+    sombre/tenue · fiche · nom lien · width : 22.7812px -> 24.5938px
+    sombre/nuee · fiche · fermer · width : 74.4531px -> 79.9531px
+    sombre/nuee · fiche · fermer · _px : [69, 11] -> [75, 11]
+    sombre/nuee · fiche · nom lien · width : 22.7812px -> 24.5938px
+
+Si le lot ne demandait pas ces changements, c'est une régression.

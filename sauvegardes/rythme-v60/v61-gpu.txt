@@ -1,0 +1,40 @@
+encre       app.html             arrivée vue   870 boucle   872 im  37 · départ vue   399 boucle   402 im  15
+encre       app.html             arrivée vue   914 boucle   920 im  35 · départ vue   357 boucle   359 im  13
+touffe      app.html             arrivée vue   809 boucle   811 im  49 · départ vue   322 boucle   325 im  20
+touffe      app.html             arrivée vue   807 boucle   813 im  48 · départ vue   322 boucle   325 im  19
+mosaique    app.html             arrivée vue   789 boucle   791 im  48 · départ vue   326 boucle   329 im  20
+mosaique    app.html             arrivée vue   801 boucle   804 im  48 · départ vue   296 boucle   299 im  18
+braille     app.html             arrivée vue   814 boucle   820 im  43 · départ vue   358 boucle   364 im  19
+braille     app.html             arrivée vue   816 boucle   818 im  43 · départ vue   343 boucle   349 im  18
+pixel       app.html             arrivée vue   781 boucle   787 im  46 · départ vue   339 boucle   344 im  20
+pixel       app.html             arrivée vue   797 boucle   799 im  48 · départ vue   356 boucle   359 im  20
+halin       app.html             arrivée vue  2477 boucle  2485 im 145 · départ vue  2771 boucle  2773 im 163
+halin       app.html             arrivée vue  2311 boucle  2344 im 139 · départ vue  2777 boucle  2793 im 163
+esquille    app.html             arrivée vue  1380 boucle  1433 im  83 · départ vue  1146 boucle  1432 im  69
+esquille    app.html             arrivée vue  1323 boucle  1426 im  80 · départ vue  1090 boucle  1425 im  66
+madrure     app.html             arrivée vue  1698 boucle  2437 im  95 · départ vue  1982 boucle  2439 im 113
+madrure     app.html             arrivée vue  2424 boucle  2429 im 141 · départ vue  1987 boucle  2438 im 117
+ritournelle app.html             arrivée vue  1933 boucle  1951 im 108 · départ vue  2014 boucle  2016 im 116
+ritournelle app.html             arrivée vue  1929 boucle  1931 im 111 · départ vue  2109 boucle  2115 im 117
+bobinette   app.html             arrivée vue  2151 boucle  2472 im  60 · départ vue  2157 boucle  2488 im  67
+bobinette   app.html             arrivée vue  2150 boucle  2459 im  54 · départ vue  2118 boucle  2477 im  63
+terrazzo    app.html             arrivée vue   811 boucle   814 im  47 · départ vue   345 boucle   347 im  19
+terrazzo    app.html             arrivée vue   795 boucle   808 im  49 · départ vue   333 boucle   336 im  19
+gravure     app.html             arrivée vue   806 boucle   808 im  48 · départ vue   320 boucle   322 im  19
+gravure     app.html             arrivée vue   785 boucle   792 im  47 · départ vue   337 boucle   339 im  20
+sillons     app.html             arrivée vue  1163 boucle  1168 im  37 · départ vue   644 boucle   647 im  20
+sillons     app.html             arrivée vue  1141 boucle  1143 im  36 · départ vue   648 boucle   651 im  20
+— médianes
+encre     app.html             [892, 896, 378, 380, 36, 14]
+touffe    app.html             [808, 812, 322, 325, 48, 19]
+mosaique  app.html             [795, 797, 311, 314, 48, 19]
+braille   app.html             [815, 819, 350, 356, 43, 18]
+pixel     app.html             [789, 793, 347, 351, 47, 20]
+halin     app.html             [2394, 2414, 2774, 2783, 142, 163]
+esquille  app.html             [1351, 1429, 1118, 1428, 81, 67]
+madrure   app.html             [2061, 2433, 1984, 2438, 118, 115]
+ritournelle app.html             [1931, 1941, 2061, 2065, 109, 116]
+bobinette app.html             [2150, 2465, 2137, 2482, 57, 65]
+terrazzo  app.html             [803, 811, 339, 341, 48, 19]
+gravure   app.html             [795, 800, 328, 330, 47, 19]
+sillons   app.html             [1152, 1155, 646, 649, 36, 20]

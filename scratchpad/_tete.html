@@ -1,0 +1,77 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Promi — l'Aura · le rejeu ou l'image</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+@@CSS@@
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.vivant{border:2px solid #2BE88C;border-radius:18px;padding:16px 20px;margin:0 0 26px;max-width:1020px;
+  font-size:15px;line-height:1.6;color:#C8C3B6}
+.vivant b{color:#2BE88C;font-weight:400;font-family:ApfelMid}
+.corr{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.corr h3{font-family:Bricolage;font-weight:700;font-size:16px;margin:0 0 10px}
+.corr p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.corr p:last-child{margin:0}
+.corr b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+h3.dir{font-family:Bricolage;font-weight:700;font-size:23px;margin:40px 0 4px;letter-spacing:-.02em}
+h3.dir span{color:#8FA0FF}
+</style></head><body>
+
+<canvas id="toileCv" style="position:fixed;left:0;top:0;width:390px;height:620px;opacity:.01;pointer-events:none;z-index:-1"></canvas>
+
+<div class="page">
+<h1>L'Aura — le rejeu, ou l'image</h1>
+<div class="vivant"><b>Les deux premiers cadres sont vivants.</b> Le rejeu met <b>28 secondes</b>
+à traverser huit semaines, puis recommence. L'image, elle, ne bouge que par sa lune —
+regarde-la trente secondes pour vérifier qu'elle ne s'agite jamais.</div>
+
+<div class="corr">
+<h3>Le diagnostic, et je le reprends à mon compte</h3>
+<p><b>Six anneaux qui tournent en boucle, à vitesse constante, sans qu'aucun événement ne se
+produise : ça bouge sans rien raconter.</b> J'ai passé neuf lots à affiner la finition d'un
+mouvement qui n'avait pas de sujet. C'était le mauvais problème.</p>
+</div>
+
+<h3 class="dir"><span>1 ·</span> LE REJEU — le mouvement dit le temps</h3>
+<p class="pr">L'orbite <b>ne boucle pas</b> : elle <b>rejoue les huit dernières semaines</b>.
+Chaque personne s'éloigne du centre <b>parce que les jours passent</b> — et <b>se rapproche
+d'un coup quand une parole est tenue avec elle</b>. C'est ça, l'événement : <b>un retour vers le
+centre</b>, en une seconde, puis la lente dérive vers le bord recommence.
+<br>Les angles ne bougent jamais : chacun garde sa place, seule la <b>distance</b> respire.
+La lune apparaît et disparaît selon ce qui était en chemin <i>ce jour-là</i>.
+<br><b>Ce qu'on y gagne :</b> une raison de regarder — on voit son temps passer, et chaque
+rapprochement est une parole tenue.
+<br><i>Son risque :</i> vingt-huit secondes, c'est long ; et si rien n'a été tenu depuis
+longtemps, la scène ne fait que s'écarter.</p>
+<div class="row" id="rowRejeu"></div>
+
+<h3 class="dir"><span>2 ·</span> L'IMAGE — une constellation fixe</h3>
+<p class="pr">Elle <b>ne bouge plus du tout</b>. On la lit d'un coup d'œil.
+<b>Tous les anneaux ont la même taille</b> — c'est la seule façon d'être sûr qu'aucune
+dimension ne dise une valeur ; ce sont les <b>places</b> qui font l'image, comme des étoiles.
+<br><b>Tout le travail est passé dans la composition</b> : une grappe serrée en haut à gauche
+(Maman, Adrien, Marion — deux Nuées, trois distances), <b>un grand vide</b> sur tout le quart
+bas-gauche, et <b>Nico seul, tout au bord</b> : cent cinquante jours. Le déséquilibre est voulu.
+<br><b>Seule bouge la lune</b> — ce qui est en chemin.
+<br><b>Les rayons s'ouvrent</b> : 77 → 149 px au lieu de 80 → 122. Une image fixe n'a pas à
+dégager un tour entier, donc la date peut enfin s'étaler.</p>
+<div class="row" id="rowFixe"></div>
+
+<h2>Laquelle tient</h2>
+<div id="verdict"></div>
+
+<h2>Les relevés</h2>
+<div id="mesure"></div>
+
+</div>
+
+<script>
+var state={structure:'encre'};
+function cc(){return [200,180,255];}
+function render(){}
+</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+@@BRIQUES@@
+</script>

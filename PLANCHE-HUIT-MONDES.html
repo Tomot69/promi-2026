@@ -1,0 +1,90 @@
+<!doctype html><meta charset="utf-8">
+<title>Les huit mondes — vrai moteur</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Hanken+Grotesk:wght@400;500&display=swap">
+<style>
+body{margin:0;background:#0E0F16;color:#F4EEE1;font-family:'Hanken Grotesk',system-ui,sans-serif;padding:24px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:28px;margin:0 0 6px;letter-spacing:-.03em}
+p.c{color:#A9A5BE;font-size:14px;max-width:76ch;margin:0 0 8px;line-height:1.55}
+p.c b{color:#F4EEE1}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0 20px;align-items:center}
+button{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:13px;
+ background:transparent;color:#F4EEE1;border:2px solid #F4EEE1;border-radius:20px;
+ padding:7px 14px;cursor:pointer}
+button.on{background:#F4EEE1;color:#12142A}
+.g{display:flex;flex-wrap:wrap;gap:16px}
+figure{margin:0}
+canvas{display:block;background:#0E0F12;border-radius:14px}
+figcaption{margin-top:7px;font-size:13px}
+figcaption b{font-family:'Bricolage Grotesque',sans-serif;font-weight:700;font-size:15px;display:block}
+figcaption span{color:#77738C;font-size:12px}
+#st{color:#CBAAFF;font-size:13px;margin-left:6px}
+iframe{position:absolute;left:-9999px;top:0;width:430px;height:932px;border:0}
+</style>
+<h1>Les huit mondes — le vrai moteur</h1>
+<p class="c"><b>Cette planche ne peint plus rien elle-même.</b> Elle charge
+<code>app.html</code> et appelle <b>Toile.preview()</b> — le moteur de la Toile, celui qui
+peint les dalles dans l'app. Les formes, l'agencement, les couleurs et le semis sont donc
+ceux de l'app, au pixel. Le §4 l'exige : « toujours la vraie dalle du moteur, jamais une
+approximation ».</p>
+<p class="c"><b>Le semis se remélange à chaque rendu</b> — c'est le moteur qui sème, pas
+moi. Touche « Remélanger » ou recharge la page.</p>
+<div class="bar" id="bar"></div>
+<div class="bar"><button id="mel">Remélanger</button><span id="st">chargement du moteur…</span></div>
+<div class="g" id="g"></div>
+<iframe id="app" src="app.html"></iframe>
+<script>
+var ORDRE=[['encre','Encre'],['touffe','Touffe'],['mosaique','Mosaïque'],['braille','Braille'],
+           ['pixel','Pixel'],['terrazzo','Terrazzo'],['gravure','Gravure'],['sillons','Sillons']];
+var W=360,H=224,T=null,W2=null,palCur=null;
+function pret(cb){
+  var f=document.getElementById('app');
+  (function att(n){
+    try{
+      var w=f.contentWindow;
+      if(w&&w.Toile&&w.Toile.preview){
+        try{var o=w.document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';}}catch(e){}
+        T=w.Toile; W2=w; cb(); return;
+      }
+    }catch(e){}
+    if(n>140){document.getElementById('st').textContent='moteur introuvable';return;}
+    setTimeout(function(){att(n+1);},100);
+  })(0);
+}
+function barre(){
+  var p=T.palettes(),b=document.getElementById('bar'),h='<span style="color:#77738C;font-size:12px;margin-right:4px">PALETTE DU MOTEUR</span>';
+  Object.keys(p).forEach(function(k){h+='<button data-p="'+k+'">'+p[k].name+'</button>';});
+  b.innerHTML=h;
+  [].forEach.call(b.querySelectorAll('button'),function(x){
+    x.onclick=function(){T.setPalette(x.getAttribute('data-p'));dessine();};});
+}
+function dessine(){
+  palCur=T.getPalette();
+  [].forEach.call(document.querySelectorAll('#bar button'),function(x){
+    x.classList.toggle('on',x.getAttribute('data-p')===palCur);});
+  var g=document.getElementById('g');g.innerHTML='';
+  ORDRE.forEach(function(o){
+    var fig=document.createElement('figure');
+    var cv=document.createElement('canvas');
+    cv.width=W*2;cv.height=H*2;cv.style.width=W+'px';cv.style.height=H+'px';
+    fig.appendChild(cv);
+    var cap=document.createElement('figcaption');
+    cap.innerHTML='<b>'+o[1]+'</b><span>Toile.preview(canvas, «&nbsp;'+o[0]+'&nbsp;», '+W+', '+H+')</span>';
+    fig.appendChild(cap); g.appendChild(fig);
+      /* ⚠ LE MOTEUR NE COLORE QUE ~12 GRAINES PAR DÉFAUT. `Toile.preview` bâtit bien une
+         grille complète (base = pw/5,5, soit 6 x 12 graines en 390 x 844) mais n'en teinte
+         que `nc = 11 + rand(2)`, groupées autour d'un centre tiré au sort — d'où les
+         « quelques dalles dans un coin » relevées par Tom. Ce n'est pas un bug : c'est
+         l'aperçu d'une Toile qui n'a que quinze Promi.
+         Le moteur porte son propre drapeau pour la remplir — `window._shAllColored` — et
+         c'est exactement ce que fait déjà `shareRender()` dans l'app. On le pose, on rend,
+         on le retire. Il change aussi le sol clair en #DBD0BA : le moteur sait qu'une
+         Toile pleine demande un fond plus sourd. */
+    try{ W2._shAllColored=true; T.preview(cv,o[0],W,H); W2._shAllColored=false; }catch(e){ cap.innerHTML+='<span style="color:#FA2258">'+e.message+'</span>'; }
+  });
+  var pp=T.palettes()[palCur];
+  document.getElementById('st').textContent='palette « '+pp.name+' » — '+
+    pp.cols.map(function(c){return 'rgb('+c.join(',')+')';}).join('  ');
+}
+document.getElementById('mel').onclick=function(){ if(T) dessine(); };
+pret(function(){ barre(); dessine(); });
+</script>

@@ -1,0 +1,41 @@
+══ http://127.0.0.1:8752/sauvegardes/app-avant-lot-dalle-figee.html · 10 chargements par thème · plancher ΔE 15 ══
+    1 dark   5 île(s) · la plus faible ΔE  12.4 · sous le plancher : rapporter le livre 12.4                · cèdent 1
+    1 light  5 île(s) · la plus faible ΔE  22.8 · sous le plancher : —                                      · cèdent 0
+    2 dark   5 île(s) · la plus faible ΔE  37.2 · sous le plancher : —                                      · cèdent 0
+    2 light  5 île(s) · la plus faible ΔE  21.4 · sous le plancher : —                                      · cèdent 0
+    3 dark   5 île(s) · la plus faible ΔE  22.3 · sous le plancher : —                                      · cèdent 2
+    3 light  5 île(s) · la plus faible ΔE  28.8 · sous le plancher : —                                      · cèdent 0
+    4 dark   5 île(s) · la plus faible ΔE  12.1 · sous le plancher : rapporter le livre 12.1                · cèdent 1
+    4 light  5 île(s) · la plus faible ΔE  18.7 · sous le plancher : —                                      · cèdent 0
+    5 dark   5 île(s) · la plus faible ΔE  28.3 · sous le plancher : —                                      · cèdent 0
+    5 light  5 île(s) · la plus faible ΔE  29.1 · sous le plancher : —                                      · cèdent 0
+    6 dark   5 île(s) · la plus faible ΔE  20.9 · sous le plancher : —                                      · cèdent 2
+    6 light  5 île(s) · la plus faible ΔE  19.6 · sous le plancher : —                                      · cèdent 0
+    7 dark   5 île(s) · la plus faible ΔE  38.2 · sous le plancher : —                                      · cèdent 1
+    7 light  5 île(s) · la plus faible ΔE  21.8 · sous le plancher : —                                      · cèdent 0
+    8 dark   5 île(s) · la plus faible ΔE  21.8 · sous le plancher : —                                      · cèdent 0
+    8 light  5 île(s) · la plus faible ΔE    30 · sous le plancher : —                                      · cèdent 0
+    9 dark   5 île(s) · la plus faible ΔE  15.9 · sous le plancher : —                                      · cèdent 2
+    9 light  5 île(s) · la plus faible ΔE  23.2 · sous le plancher : —                                      · cèdent 0
+   10 dark   5 île(s) · la plus faible ΔE  32.9 · sous le plancher : —                                      · cèdent 2
+   10 light  5 île(s) · la plus faible ΔE  19.8 · sous le plancher : —                                      · cèdent 0
+
+   dark   2 dalle(s) sous le plancher · 2 chargement(s) fautif(s) sur 10 · la plus faible médiane 22.3, pire 12.1
+   light  0 dalle(s) sous le plancher · 0 chargement(s) fautif(s) sur 10 · la plus faible médiane 22.8, pire 18.7
+   11 dalle(s) ont CÉDÉ leur teinte (total sur toutes les passes)
+
+   ══ le masque (ce que l’app mesure) contre l’écran (ce que le juge mesure) ══
+   dark   50 couple(s) · rapport écran/masque : médiane 0.91, min 0.30, max 1.49
+      rapporter le livre         masque   40.5 → écran  12.1  (×0.30) · rang 1
+      rapporter le livre         masque   38.1 → écran  12.4  (×0.33) · rang 1
+      rapporter le livre         masque   36.2 → écran  15.9  (×0.44) · rang 1
+      rapporter le livre         masque   42.8 → écran  20.9  (×0.49) · rang 0
+      rapporter le livre         masque   46.2 → écran  21.8  (×0.47) · rang 0
+   light  50 couple(s) · rapport écran/masque : médiane 1.20, min 0.34, max 1.97
+      monter la serre avant les  masque   54.8 → écran  18.7  (×0.34) · rang 0
+      arroser tous les soirs     masque   47.7 → écran  19.6  (×0.41) · rang 0
+      arroser tous les soirs     masque   47.4 → écran  19.8  (×0.42) · rang 0
+      arroser tous les soirs     masque   48.1 → écran  21.4  (×0.44) · rang 0
+      planter un arbre           masque   55.6 → écran  21.8  (×0.39) · rang 0
+
+   ══ le couple « hors lumière → à l’écran » (c’est lui qui dit si le garde-fou peut prédire) ══

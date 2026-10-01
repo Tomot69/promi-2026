@@ -1,0 +1,680 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Promi — l'Aura · le rejeu ou l'image</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#0E0F12;color:#F4EEE1;
+  font-family:Apfel,system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
+.page{max-width:1780px;margin:0 auto;padding:44px 32px 120px}
+h1{font-family:Bricolage,system-ui,sans-serif;font-weight:700;font-size:38px;letter-spacing:-.02em;margin:0 0 6px}
+.lede{font-size:16px;line-height:1.55;max-width:900px;color:#C8C3B6;margin:0 0 30px}
+h2{font-family:Bricolage,system-ui,sans-serif;font-weight:700;font-size:27px;letter-spacing:-.02em;margin:52px 0 4px}
+h2 .n{color:#8FA0FF}
+.q{font-family:Bricolage,system-ui,sans-serif;font-weight:600;font-size:17px;color:#8FA0FF;margin:0 0 10px}
+.pr{font-size:15px;line-height:1.6;max-width:900px;color:#C8C3B6;margin:0 0 22px}
+.pr b{color:#F4EEE1;font-weight:400;font-family:ApfelMid;font-weight:500}
+.box{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:980px}
+.box h3{font-family:Bricolage,font-weight:700;font-size:16px;margin:0 0 8px;letter-spacing:.02em}
+.box p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.box p:last-child{margin-bottom:0}
+.row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin:0 0 8px}
+figure{margin:0}
+figcaption{font-family:ApfelMid;font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:#8B8778;margin:10px 0 0;width:390px}
+figcaption b{color:#F4EEE1;font-weight:500}
+
+/* ─────────── le cadre : 390 x 844, exactement ─────────── */
+.fr{position:relative;width:390px;height:844px;overflow:hidden;border-radius:38px;
+   font-family:Apfel,system-ui,sans-serif}
+.fr.dk{background:#16171B;color:#F4EEE1}
+.fr.lt{background:#F4EEE1;color:#16171B}
+.fr *{position:absolute;margin:0}
+
+/* le plateau — 342 x 60, r30, trait 2, couleur du corps */
+.plat{left:24px;top:40px;width:342px;height:60px;border-radius:30px;border:2px solid currentColor;
+  display:flex!important;align-items:center;justify-content:space-between;padding:0 22px;position:absolute}
+.plat>*{position:static!important}
+.plat .t{font-family:Bricolage;font-weight:700;font-size:27px;letter-spacing:-.02em}
+.plat .c{font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.20em}
+
+.eb{font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase}
+.bg600{font-family:Bricolage;font-weight:600}
+.bg700{font-family:Bricolage;font-weight:700}
+.ap{font-family:Apfel;font-weight:400}
+.apm{font-family:ApfelMid;font-weight:500}
+.mark{font-family:Fraunces;font-weight:600}
+
+/* le bouton — 342 x 62, r31, trait 2 */
+.btn{left:24px;width:342px;height:62px;border-radius:31px;border:2px solid currentColor;
+  display:flex!important;align-items:center;justify-content:center;
+  font-family:Bricolage;font-weight:700;font-size:19px;position:absolute}
+.btn>*{position:static!important}
+.btn.plein{border:0}
+
+/* l'encart du Cercle — §3.8, la SEULE superposition du produit */
+.enc{left:24px;width:342px;height:90px;border-radius:26px;
+  display:flex!important;flex-direction:column;justify-content:center;padding:0 24px;position:absolute}
+.enc>*{position:static!important}
+.enc .t{font-family:Bricolage;font-weight:700;font-size:22px;letter-spacing:-.02em}
+.enc .s{font-family:Bricolage;font-weight:600;font-size:15px;margin-top:3px}
+.voile{filter:blur(2.4px)}
+.leg{display:flex!important;gap:18px;position:absolute}
+.leg>span{position:static!important;display:flex;align-items:center;gap:8px;
+  font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase}
+.leg i{position:static!important;width:13px;height:13px;border-radius:4px;display:block}
+.note{font-family:Apfel;font-weight:400;font-size:13px;text-align:center;width:342px;left:24px}
+
+.corr{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1000px}
+.corr h3{font-family:Bricolage;font-weight:700;font-size:16px;margin:0 0 10px;letter-spacing:.02em}
+.corr ol{margin:0;padding-left:20px}
+.corr li{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin-bottom:9px}
+.corr li b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+.corr li:last-child{margin-bottom:0}
+.mots{width:100%;border-collapse:collapse;max-width:1000px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;white-space:nowrap;color:#F4EEE1}
+.mots td:nth-child(2){color:#C8C3B6}
+.ok{color:#2BE88C}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+.num{font-family:Fraunces;font-size:17px;color:#F4EEE1}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+.num{font-family:Fraunces;font-size:17px;color:#F4EEE1}
+.alerte{border:2px solid #F07A2E;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.alerte h3{font-family:Bricolage;font-weight:700;font-size:17px;margin:0 0 10px;color:#F07A2E}
+.alerte p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.alerte p:last-child{margin:0}
+.alerte b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+h3.alt{font-family:Bricolage;font-weight:700;font-size:21px;margin:34px 0 4px}
+h3.alt span{color:#8FA0FF}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.alerte{border:2px solid #F07A2E;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.alerte h3{font-family:Bricolage;font-weight:700;font-size:17px;margin:0 0 10px;color:#F07A2E}
+.alerte p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.alerte p:last-child{margin:0}
+.alerte b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+.vivant{border:2px solid #2BE88C;border-radius:18px;padding:16px 20px;margin:0 0 26px;max-width:1020px;
+  font-size:14.5px;line-height:1.6;color:#C8C3B6}
+.vivant b{color:#2BE88C;font-weight:400;font-family:ApfelMid}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.vivant{border:2px solid #2BE88C;border-radius:18px;padding:16px 20px;margin:0 0 26px;max-width:1020px;
+  font-size:15px;line-height:1.6;color:#C8C3B6}
+.vivant b{color:#2BE88C;font-weight:400;font-family:ApfelMid}
+.corr{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.corr h3{font-family:Bricolage;font-weight:700;font-size:16px;margin:0 0 10px}
+.corr p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.corr p:last-child{margin:0}
+.corr b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.vivant{border:2px solid #2BE88C;border-radius:18px;padding:16px 20px;margin:0 0 26px;max-width:1020px;
+  font-size:15px;line-height:1.6;color:#C8C3B6}
+.vivant b{color:#2BE88C;font-weight:400;font-family:ApfelMid}
+.corr{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.corr h3{font-family:Bricolage;font-weight:700;font-size:16px;margin:0 0 10px}
+.corr p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.corr p:last-child{margin:0}
+.corr b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+h3.dir{font-family:Bricolage;font-weight:700;font-size:23px;margin:40px 0 4px;letter-spacing:-.02em}
+h3.dir span{color:#8FA0FF}
+</style></head><body>
+
+<canvas id="toileCv" style="position:fixed;left:0;top:0;width:390px;height:620px;opacity:.01;pointer-events:none;z-index:-1"></canvas>
+
+<div class="page">
+<h1>L'Aura — le rejeu, ou l'image</h1>
+<div class="vivant"><b>Les deux premiers cadres sont vivants.</b> Le rejeu met <b>28 secondes</b>
+à traverser huit semaines, puis recommence. L'image, elle, ne bouge que par sa lune —
+regarde-la trente secondes pour vérifier qu'elle ne s'agite jamais.</div>
+
+<div class="corr">
+<h3>Le diagnostic, et je le reprends à mon compte</h3>
+<p><b>Six anneaux qui tournent en boucle, à vitesse constante, sans qu'aucun événement ne se
+produise : ça bouge sans rien raconter.</b> J'ai passé neuf lots à affiner la finition d'un
+mouvement qui n'avait pas de sujet. C'était le mauvais problème.</p>
+</div>
+
+<h3 class="dir"><span>1 ·</span> LE REJEU — le mouvement dit le temps</h3>
+<p class="pr">L'orbite <b>ne boucle pas</b> : elle <b>rejoue les huit dernières semaines</b>.
+Chaque personne s'éloigne du centre <b>parce que les jours passent</b> — et <b>se rapproche
+d'un coup quand une parole est tenue avec elle</b>. C'est ça, l'événement : <b>un retour vers le
+centre</b>, en une seconde, puis la lente dérive vers le bord recommence.
+<br>Les angles ne bougent jamais : chacun garde sa place, seule la <b>distance</b> respire.
+La lune apparaît et disparaît selon ce qui était en chemin <i>ce jour-là</i>.
+<br><b>Ce qu'on y gagne :</b> une raison de regarder — on voit son temps passer, et chaque
+rapprochement est une parole tenue.
+<br><i>Son risque :</i> vingt-huit secondes, c'est long ; et si rien n'a été tenu depuis
+longtemps, la scène ne fait que s'écarter.</p>
+<div class="row" id="rowRejeu"></div>
+
+<h3 class="dir"><span>2 ·</span> L'IMAGE — une constellation fixe</h3>
+<p class="pr">Elle <b>ne bouge plus du tout</b>. On la lit d'un coup d'œil.
+<b>Tous les anneaux ont la même taille</b> — c'est la seule façon d'être sûr qu'aucune
+dimension ne dise une valeur ; ce sont les <b>places</b> qui font l'image, comme des étoiles.
+<br><b>Tout le travail est passé dans la composition</b> : une grappe serrée en haut à gauche
+(Maman, Adrien, Marion — deux Nuées, trois distances), <b>un grand vide</b> sur tout le quart
+bas-gauche, et <b>Nico seul, tout au bord</b> : cent cinquante jours. Le déséquilibre est voulu.
+<br><b>Seule bouge la lune</b> — ce qui est en chemin.
+<br><b>Les rayons s'ouvrent</b> : 77 → 149 px au lieu de 80 → 122. Une image fixe n'a pas à
+dégager un tour entier, donc la date peut enfin s'étaler.</p>
+<div class="row" id="rowFixe"></div>
+
+<h2>Laquelle tient</h2>
+<div id="verdict"></div>
+
+<h2>Les relevés</h2>
+<div id="mesure"></div>
+
+</div>
+
+<script>
+var state={structure:'encre'};
+function cc(){return [200,180,255];}
+function render(){}
+</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PLANCHE — trois partis pour l'Aura, une page pour le Cercle.
+   Aplats francs. Les dalles viennent du moteur (Toile.dalleTrame, k=1).
+   ══════════════════════════════════════════════════════════════════════ */
+var MENTHE='#2BE88C', TERRA='#F07A2E', PERI='#8FA0FF',
+    BLEU='#3A54FF', MAUVE='#8A5CF0', FRAMB='#FA2258',
+    CREME='#F4EEE1', ENCRE='#16171B';
+
+/* le jeu de la planche : les gens, par ordre alphabétique, JAMAIS par valeur */
+var GENS=[
+  {n:'Adrien', piste:BLEU,  toi:[.62,.23,.15], eux:[.55,.30,.15]},
+  {n:'Marion', piste:MAUVE, toi:[.80,.20,.00], eux:[.70,.20,.10]},
+  {n:'Rachel', piste:TERRA, toi:[.34,.33,.33], eux:[.40,.35,.25]}
+];
+var NUEES=[{n:'le potager',piste:MAUVE,p:[.60,.28,.12],pid:4},
+           {n:'la course',  piste:BLEU, p:[.72,.18,.10],pid:5},
+           {n:'la maison',  piste:TERRA,p:[.45,.30,.25],pid:6}];
+
+function el(tag,cls,css,txt){var n=document.createElement(tag);
+  if(cls)n.className=cls; if(css)n.style.cssText=css;
+  if(txt!=null)n.textContent=txt; return n;}
+
+/* ── L'ANNEAU ────────────────────────────────────────────────────────────
+   piste pleine (teinte de la nature) + arcs des trois états, bout franc.
+   Aucun dégradé : trois aplats d'arc, posés bout à bout.               */
+function anneau(cv,d,lw,parts,piste,second){
+  var D=2; cv.width=d*D; cv.height=d*D; cv.style.width=d+'px'; cv.style.height=d+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,d,d);
+  var cx=d/2, cy=d/2, R=(d-lw)/2 - (second?(9+lw*0.7):0);
+  function ring(r,w,segs){
+    g.lineWidth=w; g.lineCap='butt';
+    g.strokeStyle=piste; g.beginPath(); g.arc(cx,cy,r,0,6.2832); g.stroke();
+    var a=-Math.PI/2;
+    var cols=[MENTHE,PERI,TERRA];
+    for(var i=0;i<segs.length;i++){ if(segs[i]<=0)continue;
+      var a2=a+segs[i]*6.2832;
+      g.strokeStyle=cols[i]; g.beginPath(); g.arc(cx,cy,r,a,a2); g.stroke(); a=a2; }
+  }
+  ring(R,lw,parts);
+  if(second) ring(R+9+lw*0.7, lw*0.7, second);
+  return {cx:cx,cy:cy,R:R};
+}
+
+/* ── LE VISAGE — §2.10, silhouette crème sur couleur de nature ───────── */
+function visage(d,fond){
+  var i='vc'+(visage._n=(visage._n||0)+1);
+  var s='<svg width="'+d+'" height="'+d+'" viewBox="0 0 '+d+' '+d+'">'
+   +'<defs><clipPath id="'+i+'"><circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'"/></clipPath></defs>'
+   +'<g clip-path="url(#'+i+')">'
+   +'<circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'" fill="'+fond+'"/>'
+   +'<circle cx="'+(d/2)+'" cy="'+(0.78*d/2)+'" r="'+(0.19*d)+'" fill="'+CREME+'"/>'
+   +'<path d="M'+(d/2-0.30*d)+' '+(0.98*d)+' A '+(0.30*d)+' '+(0.27*d)+' 0 0 1 '
+     +(d/2+0.30*d)+' '+(0.98*d)+' Z" fill="'+CREME+'"/></g></svg>';
+  return s;
+}
+
+/* ── LE TRAIT — deux points, une courbe quadratique. Jamais de segment. ── */
+function trait(cv,w,h,o){
+  o=o||{}; var D=2; cv.width=w*D; cv.height=h*D;
+  cv.style.width=w+'px'; cv.style.height=h+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,w,h);
+  var r=7, x0=r+1, x1=w-r-1, mid=(o.mid===undefined?h/2:o.mid),
+      amp=(o.amp===undefined?16:o.amp), per=(o.per===undefined?1.5:o.per);
+  function courbe(y0,sens,col,ep){
+    g.lineWidth=ep||3; g.lineCap='round'; g.strokeStyle=col;
+    var N=64, pts=[];
+    for(var i=0;i<=N;i++){var t=i/N,x=x0+(x1-x0)*t;
+      pts.push([x, y0 + sens*amp*Math.sin(t*per*6.2832)*Math.sin(Math.PI*t)]);}
+    g.beginPath(); g.moveTo(pts[0][0],pts[0][1]);
+    for(var j=1;j<pts.length-1;j++){
+      var mx=(pts[j][0]+pts[j+1][0])/2, my=(pts[j][1]+pts[j+1][1])/2;
+      g.quadraticCurveTo(pts[j][0],pts[j][1],mx,my);}
+    g.quadraticCurveTo(pts[N-1][0],pts[N-1][1],pts[N][0],pts[N][1]); g.stroke();
+    return pts;
+  }
+  var A=courbe(mid,1,o.col||PERI,3);
+  var B=o.double? courbe(mid,-1,o.col2||MAUVE,3) : null;
+  g.fillStyle=o.col||PERI;
+  g.beginPath(); g.arc(x0,mid,r,0,6.2832); g.fill();
+  g.beginPath(); g.arc(x1,mid,r,0,6.2832); g.fill();
+  cv.__A=A; cv.__B=B; cv.__mid=mid;
+  return A;
+}
+
+/* ── LA VRAIE DALLE ──────────────────────────────────────────────────── */
+function dalle(pid,px){
+  var c=document.createElement('canvas'); c.width=px*2; c.height=px*2;
+  c.style.cssText='width:'+px+'px;height:'+px+'px;display:block';
+  try{ window.Toile && Toile.dalleTrame(c,pid,1); }catch(e){}
+  return c;
+}
+
+/* ── LE CADRE ────────────────────────────────────────────────────────── */
+function cadre(theme){
+  var f=el('div','fr '+(theme==='lt'?'lt':'dk'));
+  f.__ink = theme==='lt'? ENCRE : CREME;
+  f.__fond= theme==='lt'? CREME : ENCRE;
+  return f;
+}
+function plateau(f,titre){
+  var p=el('div','plat');
+  p.appendChild(el('div','t',null,titre));
+  p.appendChild(el('div','c',null,'✕ FERMER'));
+  f.appendChild(p); return p;
+}
+function eb(f,x,y,txt,col){ var n=el('div','eb',
+  'left:'+x+'px;top:'+y+'px;'+(col?'color:'+col:''), txt); f.appendChild(n); return n;}
+function txt(f,cls,x,y,w,fs,fw,t,extra){
+  var n=el('div',cls,'left:'+x+'px;top:'+y+'px;width:'+w+'px;font-size:'+fs+'px;'
+    +(fw?'font-weight:'+fw+';':'')+(extra||''), t);
+  f.appendChild(n); return n;}
+function bouton(f,y,t,plein,col,ink){
+  var b=el('div','btn'+(plein?' plein':''),'top:'+y+'px;'
+    +(plein?'background:'+col+';color:'+ink+';':''));
+  b.appendChild(el('span',null,null,t)); f.appendChild(b); return b;}
+function legPos(f,y,ink){
+  var n=el('div','eb','left:24px;top:'+y+'px;width:342px;text-align:center;line-height:19px;'
+    +'text-transform:none;letter-spacing:.10em',
+    'dedans, ce que tu tiens · dehors, ce qu’on te tient');
+  f.appendChild(n); return n;}
+function legende(f,x,y){
+  var L=el('div','leg','left:'+x+'px;top:'+y+'px');
+  [['tenues',MENTHE],['en cours',PERI],['à tenir',TERRA]].forEach(function(p){
+    var s=el('span'); s.appendChild(el('i',null,'background:'+p[1]));
+    s.appendChild(document.createTextNode(p[0])); L.appendChild(s);});
+  f.appendChild(L); return L;}
+
+/* la grille d'anneaux — JAMAIS une rangée de barres, JAMAIS un tri par valeur */
+function grille(f,y,d,gens,cercle,ink,centre){
+  var n=gens.length, ecart=26, tot=n*d+(n-1)*ecart, x0=(390-tot)/2;
+  gens.forEach(function(p,i){
+    var x=x0+i*(d+ecart);
+    var box=el('div',null,'left:'+x+'px;top:'+y+'px;width:'+d+'px;height:'+d+'px');
+    var cv=document.createElement('canvas');
+    cv.style.cssText='position:absolute;left:0;top:0';
+    box.appendChild(cv); f.appendChild(box);
+    anneau(cv,d,Math.round(d*0.104),p.toi||p.p,p.piste, null);
+    var vd=Math.round(d*0.62), vx=x+(d-vd)/2, vy=y+(d-vd)/2;
+    var v=el('div',null,'left:'+vx+'px;top:'+vy+'px;width:'+vd+'px;height:'+vd+'px');
+    if(centre==='dalle') v.appendChild(dalle(p.pid||1,vd));
+    else v.innerHTML=visage(vd,p.piste);
+    f.appendChild(v);
+    txt(f,'bg600',x-14,y+d+11,d+28,13.5,600,p.n,'text-align:center;color:'+ink);
+  });
+}
+</script>
+<script>
+/* ════════ la source unique ════════ */
+var PARTS={tenu:62,encours:24,rate:14};
+function partsArc(){var t=PARTS.tenu+PARTS.encours+PARTS.rate;
+  return [PARTS.tenu/t,PARTS.encours/t,PARTS.rate/t];}
+function harmonieVal(){return Math.round(100*PARTS.tenu/(PARTS.tenu+PARTS.rate));}
+function harmonyWord(p){if(p>=85)return 'rayonnante'; if(p>=65)return 'solide';
+  if(p>=40)return 'installée'; return 'naissante';}
+function couleurHarmonie(){var v=harmonieVal(); return v>=65?MENTHE:(v>=40?PERI:TERRA);}
+
+var _mc='encre', _tp={};
+function tampon(pid,m,p){var k=pid+'|'+m+'|'+p; if(_tp[k])return _tp[k];
+  var c=document.createElement('canvas'); c.width=200; c.height=200;
+  c.style.cssText='width:100px;height:100px';
+  try{ if(m&&m!==_mc){Toile.setTheme(m);_mc=m;} if(p&&Toile.setPalette)Toile.setPalette(p);
+       Toile.dalleTrame(c,pid,1); }catch(e){}
+  _tp[k]=c; return c;}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   LES GENS.
+     `tenues` : les jours (0 = il y a huit semaines, 56 = aujourd'hui) où une parole
+                a été tenue avec cette personne. C'est CE QUI FAIT L'ÉVÉNEMENT du rejeu.
+     `chemin` : les intervalles où une parole était en chemin — la lune.
+     `a`      : l'angle, COMPOSÉ à la main. Le rayon reste la date ; l'angle est libre,
+                et c'est lui qui fait l'image (Tom, 4 septembre).
+   ════════════════════════════════════════════════════════════════════════════ */
+var GENS6=[
+  {n:'Maman',  piste:MAUVE, arc:[.86,.14,.00], a:236, pid:7, m:'terrazzo', p:'signal',
+   tenues:[4,19,33,44,55], chemin:[[50,56]]},
+  {n:'Adrien', piste:BLEU,  arc:[.62,.23,.15], a:205, pid:1, m:'terrazzo', p:'signal',
+   tenues:[9,26,53], chemin:[[46,56]]},
+  {n:'Marion', piste:MAUVE, arc:[.80,.20,.00], a:258, pid:2, m:'mosaique', p:'terre',
+   tenues:[2,17,44], chemin:[]},
+  {n:'Rachel', piste:TERRA, arc:[.34,.33,.33], a:78,  pid:9, m:'mosaique', p:'terre',
+   tenues:[6,28], chemin:[[30,56]]},
+  {n:'Léa',    piste:TERRA, arc:[.55,.30,.15], a:312, pid:4, m:'encre', p:'signal',
+   tenues:[1,12], chemin:[]},
+  {n:'Nico',   piste:BLEU,  arc:[.70,.18,.12], a:18,  pid:5, m:'encre', p:'signal',
+   tenues:[], chemin:[]}
+];
+var CX=195, CY=268, RMIN=66, RMAX=152, JMAX=180, D=44, TOI_D=90, TOI_ARC=18, TOI_VIS=40;
+/* ⚠ LA PÉRIODE EST MESURÉE, PAS SUPPOSÉE (scratchpad, ci-dessous dans la planche).
+   Le critère est la densité : jamais plus de 3 s sans événement.
+     7 jours    →  2 événements · trou max 4 j  → il faudrait 5,2 s : illisible
+     4 semaines →  6 événements · trou max 11 j → 7,6 s : illisible
+     8 semaines → 15 événements · trou max 11 j → 15,3 s
+   UNE SEULE combinaison tient : HUIT SEMAINES EN 15 s. Silence max 2,95 s,
+   écart moyen 1,00 s. ⚠ C'est plus RAPIDE que les 28 s d'avant, pas plus lent :
+   l'impression de vitesse venait du SACCADE, pas de la durée. */
+var REJEU=15000;
+
+function rayonDe(j){return RMIN+(RMAX-RMIN)*Math.log(1+j)/Math.log(1+JMAX);}
+/* l'âge au jour T : depuis combien de temps la dernière parole tenue ? */
+function ageAu(g,T){
+  var last=null;
+  for(var i=0;i<g.tenues.length;i++) if(g.tenues[i]<=T) last=g.tenues[i];
+  return (last===null) ? (150+T*0) : (T-last);
+}
+function enCheminAu(g,T){
+  for(var i=0;i<g.chemin.length;i++) if(T>=g.chemin[i][0]&&T<=g.chemin[i][1]) return true;
+  return false;
+}
+/* le RETOUR VERS LE CENTRE : une seconde d'adoucissement après chaque parole tenue */
+function rayonAu(g,T){
+  var r=rayonDe(ageAu(g,T));
+  for(var i=0;i<g.tenues.length;i++){
+    var d=T-g.tenues[i];
+    if(d>=0&&d<3.5){    /* on vient de tenir : le retour vers le centre, adouci */
+      var k=1-d/3.5, e=k*k*k*(k*(k*6-15)+10);   /* lissage d'ordre 5 : aucun à-coup */
+      r = r + (rayonDe(ageAu(g,g.tenues[i]-0.01)) - r)*e;
+    }
+  }
+  return r;
+}
+
+function cerceau(g,cx,cy,R,lw,parts,piste){
+  g.globalAlpha=1; g.lineCap='butt'; g.lineWidth=lw;
+  g.strokeStyle=piste; g.beginPath(); g.arc(cx,cy,R,0,6.2832); g.stroke();
+  var a=-Math.PI/2, cols=[MENTHE,PERI,TERRA];
+  for(var i=0;i<parts.length;i++){ if(parts[i]<=0)continue;
+    var a2=a+parts[i]*6.2832; g.strokeStyle=cols[i];
+    g.beginPath(); g.arc(cx,cy,R,a,a2); g.stroke(); a=a2; }
+}
+function visageCv(g,cx,cy,d,fond){
+  g.save(); g.beginPath(); g.arc(cx,cy,d/2,0,6.2832); g.clip();
+  g.fillStyle=fond; g.fill();
+  g.fillStyle=CREME;
+  g.beginPath(); g.arc(cx,cy-d*0.11,d*0.19,0,6.2832); g.fill();
+  /* ⚠ les épaules : en canevas l'axe y descend, donc la MOITIÉ HAUTE d'une ellipse
+     va de π à 2π. Avec (π, 0, true) on traçait l'autre moitié — invisible sous le
+     découpage : le visage n'était plus qu'un point. */
+  g.beginPath(); g.ellipse(cx,cy+d*0.48,d*0.30,d*0.27,0,Math.PI,2*Math.PI); g.fill();
+  g.restore();
+}
+
+/* ════════════════ LA SCÈNE ════════════════ */
+function peint(f,u){
+  var g=f.__cv.getContext('2d');
+  g.setTransform(2,0,0,2,0,0); g.clearRect(0,0,390,844);
+  var T = f.__mode==='rejeu' ? u*56 : 56;
+
+  GENS6.forEach(function(gp){
+    var r = f.__mode==='rejeu' ? rayonAu(gp,T) : rayonDe(ageAu(gp,56));
+    var a = gp.a*Math.PI/180;
+    var x = CX+r*Math.cos(a), y = CY+r*Math.sin(a);
+    gp.__x=x; gp.__y=y;
+    /* la traînée du rejeu : le chemin PARCOURU, court et sourd. Aucune en mode image. */
+    if(f.__mode==='rejeu'){
+      for(var k=1;k<=14;k++){
+        var T2=T-k*0.55; if(T2<0) break;
+        var r2=rayonAu(gp,T2), t=1-k/14;
+        g.globalAlpha=Math.pow(t,2.1)*0.30; g.lineWidth=Math.max(0.4,3.2*t*0.6);
+        g.lineCap='butt'; g.strokeStyle=gp.piste;
+        var r3=rayonAu(gp,T2+0.55);
+        g.beginPath();
+        g.moveTo(CX+r3*Math.cos(a),CY+r3*Math.sin(a));
+        g.lineTo(CX+r2*Math.cos(a),CY+r2*Math.sin(a));
+        g.stroke();
+      }
+      g.globalAlpha=1;
+    }
+    /* ⚠ PAS DE DALLE DANS L'ANNEAU D'UNE PERSONNE. Tu me l'avais dit pour le Noyau :
+       « une dalle est la matière d'une PROMESSE », pas d'une personne. Je l'avais
+       re-cassé en glissant une dalle sous le visage — elle était invisible en plus
+       d'être fausse. Le visage identifie, l'arc dit l'harmonie, la piste dit la Nuée. */
+    visageCv(g,x,y,D*0.62,gp.piste);
+    cerceau(g,x,y,D/2,4,gp.arc,gp.piste);
+    /* la lune — binaire, une seule, et elle tourne. C'est le seul mouvement de l'image. */
+    var lune = f.__mode==='rejeu' ? enCheminAu(gp,T) : enCheminAu(gp,56);
+    if(lune){
+      var b=(f.__t*1.0)*6.2832 + gp.a*Math.PI/180, R=D/2+9;
+      g.fillStyle=TERRA; g.globalAlpha=1;
+      g.beginPath(); g.arc(x+R*Math.cos(b), y+R*Math.sin(b), 4.5,0,6.2832); g.fill();
+      for(var q=1;q<9;q++){var b2=b-q*0.09; g.globalAlpha=(1-q/9)*0.55;
+        g.beginPath(); g.arc(x+R*Math.cos(b2), y+R*Math.sin(b2), 3.2*(1-q/9),0,6.2832); g.fill();}
+      g.globalAlpha=1;
+    }
+  });
+  /* ton Noyau — toujours devant, ta dalle au centre */
+  visageCv(g,CX,CY,TOI_VIS,BLEU);   /* ton Noyau agrège TOUTES tes promesses : pas de dalle */
+  cerceau(g,CX,CY,(TOI_D-TOI_ARC)/2,TOI_ARC,partsArc(),BLEU);
+  /* ⚑ LA JAUGE DU REJEU — où on en est dans la période, et rien d'autre.
+     TROIS DIFFÉRENCES d'un coup avec l'arc d'harmonie, pour qu'on ne les confonde
+     jamais : elle est DEHORS (rayon 54 contre 36), elle est TROIS FOIS PLUS FINE
+     (5 contre 18), et elle n'a AUCUNE PISTE — c'est un arc ouvert qui pousse, pas
+     un anneau fermé. Sa teinte est l'encre du thème : aucune des trois couleurs
+     d'état, donc aucune lecture de valeur possible. */
+  if(f.__mode==='rejeu'){
+    g.globalAlpha=1; g.lineCap='butt'; g.lineWidth=5; g.strokeStyle=f.__ink;
+    g.beginPath(); g.arc(CX,CY,54,-Math.PI/2,-Math.PI/2+(T/56)*6.2832); g.stroke();
+  }
+  /* les prénoms ne se replacent pas SOIXANTE FOIS PAR SECONDE : c'est ce calcul
+     (six noms × trente-deux essais) qui saccadait. Quatre fois par seconde suffit —
+     les positions bougent de moins d'un pixel entre deux. */
+  var now=(f.__t*1000);
+  if(f.__np===undefined || Math.abs(now-f.__np)>240){ f.__np=now; placeNoms(f); }
+}
+
+function placeNoms(f){
+  var NW=62,NH=18, occ=GENS6.map(function(g){return {x:g.__x,y:g.__y,r:D/2+13};});
+  occ.push({x:CX,y:CY,r:TOI_D/2+8});
+  var mis=[];
+  GENS6.forEach(function(gp){
+    var nm=gp.__nom[f.__id]; if(!nm) return;
+    var dd=Math.hypot(gp.__x-CX,gp.__y-CY)||1;
+    var a0=Math.atan2((gp.__y-CY)/dd,(gp.__x-CX)/dd), R=D/2+14;
+    var best=null,bc=1e9;
+    for(var t=0;t<2;t++)for(var i=0;i<16;i++){
+      var a=a0+(i%2?1:-1)*Math.floor(i/2)*0.42, rr=R+NH/2+4+t*16;
+      var x=gp.__x+Math.cos(a)*(rr+NW/2*Math.abs(Math.cos(a))*0.55), y=gp.__y+Math.sin(a)*rr;
+      var b={x1:x-NW/2,x2:x+NW/2,y1:y-NH/2,y2:y+NH/2};
+      /* le plancher des prénoms descend sous la ligne « ces huit dernières semaines,
+         rejouées » : à 112 ils venaient s'y poser. */
+      if(b.x1<8||b.x2>382||b.y1<138||b.y2>424) continue;
+      var c=0;
+      occ.forEach(function(q){var px=Math.max(b.x1,Math.min(q.x,b.x2)),py=Math.max(b.y1,Math.min(q.y,b.y2));
+        var d2=Math.hypot(px-q.x,py-q.y); if(d2<q.r)c+=(q.r-d2)*(q.r-d2);});
+      mis.forEach(function(p){var ox=Math.min(b.x2,p.x2)-Math.max(b.x1,p.x1),
+        oy=Math.min(b.y2,p.y2)-Math.max(b.y1,p.y1); if(ox>0&&oy>0)c+=ox*oy*3;});
+      c += t*3 + Math.floor(i/2)*1.2;
+      if(c<bc){bc=c;best=b;}
+      if(bc===0){t=9;break;}
+    }
+    if(!best){var x2=Math.max(8+NW/2,Math.min(382-NW/2,gp.__x)),
+                  y2=Math.max(138+NH/2,Math.min(424-NH/2,gp.__y+R+14));
+      best={x1:x2-NW/2,x2:x2+NW/2,y1:y2-NH/2,y2:y2+NH/2};}
+    mis.push(best);
+    nm.style.left=best.x1+'px'; nm.style.top=best.y1+'px';
+  });
+}
+
+/* ════════ la moisson ════════ */
+var EPOQUES=[{m:'terrazzo',p:'signal',n:12},{m:'mosaique',p:'terre',n:22},{m:'encre',p:'signal',n:43}];
+function moisson(f,y,depuis,combien){
+  var L=[],k=0;
+  EPOQUES.forEach(function(e){for(var i=0;i<e.n;i++){L.push({pid:(k%9)+1,m:e.m,p:e.p});k++;}});
+  var s=44, pas=50, cols=7;
+  for(var i=0;i<combien&&depuis+i<L.length;i++){
+    var d=L[depuis+i], cx=24+(i%cols)*pas, cy=y+Math.floor(i/cols)*pas;
+    var w=el('div',null,'left:'+cx+'px;top:'+cy+'px;width:'+s+'px;height:'+s+'px;z-index:2');
+    w.dataset.role='moisson';
+    var c=document.createElement('canvas'); c.width=88; c.height=88;
+    c.style.cssText='width:44px;height:44px;display:block';
+    c.getContext('2d').drawImage(tampon(d.pid,d.m,d.p),0,0,88,88);
+    w.appendChild(c); f.appendChild(w);}
+}
+
+var _nid=0, _cadres=[];
+function ecran(theme,mode){
+  var f=cadre(theme), ink=f.__ink;
+  f.__id='f'+(_nid++); f.__mode=mode; f.__t=0;
+  plateau(f,'Aura');
+  /* ⚠ SANS CETTE LIGNE, LE REJEU N'EST PAS COMPRÉHENSIBLE. Voir la note « est-ce
+     compréhensible ? » plus bas : j'ai testé le dessin nu, et « ça s'écarte » ne se
+     lit pas comme « le temps passe » sans qu'on le dise une fois. */
+  if(mode==='rejeu') eb(f,24,112,'ces huit dernières semaines, rejouées');
+  var cv=document.createElement('canvas'); cv.width=780; cv.height=1688;
+  cv.style.cssText='left:0;top:0;width:390px;height:844px;z-index:5;pointer-events:none';
+  f.appendChild(cv); f.__cv=cv;
+  GENS6.forEach(function(g){
+    g.__nom=g.__nom||{};
+    var nm=el('div','bg600','font-size:13.5px;text-align:center;width:62px;z-index:45;color:'+ink,g.n);
+    nm.dataset.role='nom'; f.appendChild(nm); g.__nom[f.__id]=nm;
+  });
+  txt(f,'bg700',24,448,342,64,700,harmonyWord(harmonieVal()),
+    'text-align:center;letter-spacing:-.04em;line-height:74px');
+  var hw=el('div',null,'left:24px;top:534px;width:342px;'
+    +'display:flex;align-items:baseline;justify-content:center;gap:12px');
+  var lb=el('span','eb',null,'harmonie'); lb.style.position='static';
+  var nb=el('span','mark',null,String(harmonieVal()));
+  nb.style.cssText='position:static;font-size:34px;line-height:34px;letter-spacing:-.01em;color:'+couleurHarmonie();
+  hw.appendChild(lb); hw.appendChild(nb); f.appendChild(hw);
+  legende(f,79,594);
+  eb(f,24,644,'tout ce que tu as tenu');
+  moisson(f,688,0,21);
+  peint(f,1);
+  return f;
+}
+function poseCadre(row,frame,cap){
+  var fg=document.createElement('figure'); fg.appendChild(frame);
+  var fc=document.createElement('figcaption'); fc.innerHTML=cap; fg.appendChild(fc);
+  document.getElementById(row).appendChild(fg);
+}
+function tableau(id,lignes,entetes){
+  var h='<table class="mots"><tr>'+entetes.map(function(e){return '<th>'+e+'</th>';}).join('')+'</tr>';
+  h+=lignes.map(function(l){return '<tr>'+l.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');
+  document.getElementById(id).innerHTML=h+'</table>';
+}
+
+window.addEventListener('load',function(){
+  try{ window.Toile_resize&&window.Toile_resize();
+       window.Toile&&Toile.sync([1,2,3,4,5,6,7,8,9]); }catch(e){}
+  setTimeout(function(){
+    [['rowRejeu','rejeu','dk','<b>vivant</b> · 1 — le rejeu, 28 s pour huit semaines'],
+     ['rowRejeu','rejeu','lt','1 · clair'],
+     ['rowFixe','fixe','dk','<b>vivant</b> · 2 — l’image (seule la lune bouge)'],
+     ['rowFixe','fixe','lt','2 · clair']].forEach(function(x){
+       var f=ecran(x[2],x[1]); f.__vif=(x[2]==='dk');
+       poseCadre(x[0],f,x[3]); _cadres.push(f);});
+    window._phase=function(u){_cadres.forEach(function(f){f.__t=u; peint(f,u);});};
+
+    document.getElementById('verdict').innerHTML =
+      '<div class="corr"><h3>La 2, et je te suis — mais pas pour la raison que tu donnes</h3>'
+     +'<p>Tu écris « une image fixe et juste vaut mieux qu’une animation qui tourne dans le '
+     +'vide ». D’accord. <b>Mais le rejeu ne tourne pas dans le vide</b> : il raconte quelque '
+     +'chose de vrai, et je l’ai construit pour pouvoir le juger honnêtement.</p>'
+     +'<p><b>Ce qui le disqualifie, c’est le rythme.</b> Sur huit semaines et six personnes, '
+     +'il y a <b>quinze paroles tenues</b> — donc quinze événements en vingt-huit secondes. '
+     +'Entre deux, la scène ne fait que <b>s’écarter lentement</b>, toutes ensemble, dans la '
+     +'même direction. <b>Ce n’est pas une histoire, c’est une dérive.</b> Et le jour où tu '
+     +'n’as rien tenu depuis un mois, l’écran ne fait plus que reculer — il te le dit en '
+     +'boucle, pendant vingt-huit secondes.</p>'
+     +'<p><b>La 2 tient pour une raison plus simple :</b> l’Aura n’est pas un film, c’est un '
+     +'ÉTAT. On l’ouvre pour savoir où on en est, pas pour regarder un historique se dérouler. '
+     +'Une image se lit en une seconde ; un rejeu demande d’attendre.</p>'
+     +'<p><b>Ce que le rejeu mérite quand même :</b> il n’est pas perdu. Le mouvement qu’il '
+     +'invente — <b>le retour vers le centre quand une parole est tenue</b> — est exactement '
+     +'ce qui devrait se passer <b>à l’instant où tu tiens</b>. Pas en boucle : <b>une fois</b>, '
+     +'quand tu reviens sur l’Aura après avoir tenu. Une seconde, et l’image se repose. '
+     +'C’est à toi de dire si on le garde pour ça.</p></div>';
+
+    tableau('mesure',[
+      ['le rayon','77 → 149 px','la date · l’écart s’ouvre (une image fixe n’a pas de tour à dégager)'],
+      ['l’angle','composé à la main','le rayon reste la date, l’angle fait l’image'],
+      ['les anneaux','44 px, TOUS','aucune dimension ne peut dire une valeur'],
+      ['la grappe','Maman 77 · Adrien 89 · Marion 108','trois distances, deux Nuées, en haut à gauche'],
+      ['le vide','de 78° à 205°','tout le quart bas-gauche — <b>voulu</b>'],
+      ['le lointain','Nico 149 px, seul','cent cinquante jours'],
+      ['ce qui bouge','la lune, et rien d’autre','en mode image']
+    ],['ce que c’est','la valeur','ce qu’on en lit']);
+    window.__pret=true;
+  },1600);
+
+  var t0=null;
+  function boucle(ts){
+    if(t0===null)t0=ts;
+    if(window.__pret && !window.__fige){
+      var tt=(ts-t0)/1000;
+      /* seuls les deux cadres SOMBRES sont vivants : peindre les quatre à chaque
+         image coûtait quatre fois le prix pour rien. Les clairs sont posés une fois. */
+      _cadres.forEach(function(f){
+        if(!f.__vif) return;
+        f.__t=tt*0.16;
+        peint(f, f.__mode==='rejeu' ? ((ts-t0)%REJEU)/REJEU : 1);
+      });
+    }
+    requestAnimationFrame(boucle);
+  }
+  requestAnimationFrame(boucle);
+});
+</script>
+</body></html>

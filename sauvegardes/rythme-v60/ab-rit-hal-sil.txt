@@ -1,0 +1,31 @@
+ritournelle app-v60-valide.html  arrivée vue  1933 boucle  1937 im 114 · départ vue  2056 boucle  2071 im 113
+ritournelle app-v60-valide.html  arrivée vue  1924 boucle  1947 im 112 · départ vue  1995 boucle  1998 im 116
+ritournelle app-v60-valide.html  arrivée vue  2074 boucle  2077 im 117 · départ vue  2062 boucle  2065 im 120
+ritournelle app-v60-valide.html  arrivée vue  1923 boucle  1943 im 108 · départ vue  2012 boucle  2015 im 117
+ritournelle app.html             arrivée vue  1930 boucle  1933 im 111 · départ vue  2081 boucle  2084 im 122
+ritournelle app.html             arrivée vue  1926 boucle  1928 im 111 · départ vue  1982 boucle  1991 im 114
+ritournelle app.html             arrivée vue  2057 boucle  2075 im 123 · départ vue  1975 boucle  1984 im  99
+ritournelle app.html             arrivée vue  1926 boucle  1930 im 106 · départ vue  2072 boucle  2075 im 119
+halin       app-v60-valide.html  arrivée vue  2500 boucle  2524 im 147 · départ vue  3309 boucle  3314 im 184
+halin       app-v60-valide.html  arrivée vue  2382 boucle  2386 im 143 · départ vue  2855 boucle  2860 im 167
+halin       app-v60-valide.html  arrivée vue  2560 boucle  2573 im 148 · départ vue  3026 boucle  3029 im 170
+halin       app-v60-valide.html  arrivée vue  2432 boucle  2443 im 147 · départ vue  2958 boucle  2961 im 170
+halin       app.html             arrivée vue  2328 boucle  2332 im 140 · départ vue  2800 boucle  2804 im 164
+halin       app.html             arrivée vue  2386 boucle  2400 im 136 · départ vue  2943 boucle  2946 im 164
+halin       app.html             arrivée vue  2350 boucle  2357 im 141 · départ vue  2879 boucle  2881 im 170
+halin       app.html             arrivée vue  2481 boucle  2485 im 145 · départ vue  2814 boucle  2816 im 163
+sillons     app-v60-valide.html  arrivée vue  1186 boucle  1188 im  35 · départ vue   609 boucle   611 im  20
+sillons     app-v60-valide.html  arrivée vue  1165 boucle  1167 im  37 · départ vue   599 boucle   601 im  20
+sillons     app-v60-valide.html  arrivée vue  1134 boucle  1140 im  36 · départ vue   672 boucle   675 im  20
+sillons     app-v60-valide.html  arrivée vue  1231 boucle  1234 im  38 · départ vue   649 boucle   652 im  21
+sillons     app.html             arrivée vue  1170 boucle  1172 im  37 · départ vue   595 boucle   598 im  19
+sillons     app.html             arrivée vue  1191 boucle  1193 im  37 · départ vue   618 boucle   621 im  20
+sillons     app.html             arrivée vue  1121 boucle  1126 im  36 · départ vue   632 boucle   638 im  20
+sillons     app.html             arrivée vue  1135 boucle  1141 im  36 · départ vue   680 boucle   683 im  21
+— médianes
+ritournelle app-v60-valide.html  [1928, 1945, 2034, 2040, 113, 116]
+ritournelle app.html             [1928, 1931, 2027, 2033, 111, 116]
+halin     app-v60-valide.html  [2466, 2483, 2992, 2995, 147, 170]
+halin     app.html             [2368, 2378, 2846, 2848, 140, 164]
+sillons   app-v60-valide.html  [1175, 1177, 629, 631, 36, 20]
+sillons   app.html             [1152, 1156, 625, 629, 36, 20]

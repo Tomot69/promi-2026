@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,900;1,6..96,400;1,6..96,900&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #14120F; }
+  a { color: #E9A93A; }
+  a:hover { color: #EDE6D7; }
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="min-height:100vh;background:#14120F;color:#EDE6D7;font-family:'IBM Plex Mono',monospace;padding:56px 40px 120px;box-sizing:border-box">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:72px">
+
+    <header style="display:flex;flex-direction:column;gap:22px">
+      <p style="margin:0;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.5">Promi · Capitale</p>
+      <h1 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:900;font-style:italic;font-size:clamp(44px,6.4vw,100px);line-height:.95;letter-spacing:-.02em;max-width:14ch">Une promesse est une parole</h1>
+      <p style="margin:0;max-width:62ch;font-size:13px;line-height:1.8;opacity:.66;text-wrap:pretty">La Toile ne se dessine plus : elle se compose, comme un typographe compose une page. Chaque promesse devient la capitale de son premier mot. Deux manières de composer : la page de livre, où le texte coule autour des lettrines, et l'affiche de bois, où chaque lettre s'étire jusqu'à remplir sa place.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px">
+        <button onClick="{{ p0 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1F1A17;box-shadow:0 0 0 1px #EDE6D733"></span><span style="width:12px;height:12px;background:#D2462C"></span><span style="width:12px;height:12px;background:#E9A93A"></span><span style="width:12px;height:12px;background:#2E6A5E"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Chafouin</span>
+        </button>
+        <button onClick="{{ p1 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1C2541"></span><span style="width:12px;height:12px;background:#3A7CA5"></span><span style="width:12px;height:12px;background:#E26D5C"></span><span style="width:12px;height:12px;background:#F3C969"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Primesautier</span>
+        </button>
+        <button onClick="{{ p2 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#2B1D3A"></span><span style="width:12px;height:12px;background:#8C3F8E"></span><span style="width:12px;height:12px;background:#E0506F"></span><span style="width:12px;height:12px;background:#F2B544"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Rogue</span>
+        </button>
+        <button onClick="{{ mode }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:10px 14px;font:inherit;color:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#EDE6D7">Clair / sombre</button>
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:#EDE6D7;color:#14120F;border:none;padding:11px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Nouvelle Toile</button>
+      </div>
+    </header>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">I · la page</span>
+        <h2 style="margin:0;font-family:'Bodoni Moda',serif;font-weight:900;font-size:56px;line-height:1;letter-spacing:-.02em">Lettrine</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">La Toile est une page de livre. Chaque promesse en est une lettrine, et le texte qui coule autour d'elles, justifié ligne à ligne, est fait des titres de toutes les promesses. On lit la Toile autant qu'on la regarde.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : la lettrine. La matière : le texte, dans le ton du papier. Quand une promesse est plantée, sa lettre prend sa place et le texte se recompose autour d'elle.</p>
+      </div>
+      <canvas data-t="lettrine|16|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="lettrine|4|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">4 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="lettrine|10|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">10</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="lettrine|30|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">30</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="lettrine|0|104" style="display:block"></canvas><canvas data-d="lettrine|1|104" style="display:block"></canvas><canvas data-d="lettrine|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="lettrine|0|40" style="display:block"></canvas><canvas data-d="lettrine|1|40" style="display:block"></canvas><canvas data-d="lettrine|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">II · l'affiche</span>
+        <h2 style="margin:0;font-family:'Anton',sans-serif;font-weight:400;font-size:60px;line-height:1;letter-spacing:.01em">RÉCLAME</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">L'affiche de foire en caractères de bois. Chaque capitale est étirée ou condensée jusqu'à remplir sa place au plus juste, en didone noire ou en grotesque serrée. Entre les lettres, il ne reste qu'un joint de la largeur d'un filet.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : sa lettre, à la forme de sa place. La matière est faite de fleurons, d'étoiles, d'esperluettes et de numéros, comme on bouchait les trous d'une forme d'imprimerie.</p>
+      </div>
+      <canvas data-t="reclame|16|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="reclame|4|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">4 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="reclame|10|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">10</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="reclame|30|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">30</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="reclame|0|104" style="display:block"></canvas><canvas data-d="reclame|1|104" style="display:block"></canvas><canvas data-d="reclame|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="reclame|0|40" style="display:block"></canvas><canvas data-d="reclame|1|40" style="display:block"></canvas><canvas data-d="reclame|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { pal: 0, sombre: false, seed: (Math.random() * 100000) | 0 };
+
+  PALS = [
+    ['#1F1A17', '#D2462C', '#E9A93A', '#2E6A5E'],
+    ['#1C2541', '#3A7CA5', '#E26D5C', '#F3C969'],
+    ['#2B1D3A', '#8C3F8E', '#E0506F', '#F2B544']
+  ];
+  TITRES = ['Appeler maman le dimanche', 'Rendre le livre de Jeanne', 'Nager chaque mardi', 'Écrire à Paul', 'Finir le mémoire', 'Ne plus fumer', 'Visiter Lisbonne', 'Offrir des fleurs à Hélène', 'Dormir avant minuit', 'Kilimandjaro avant quarante ans', 'Méditer le matin', 'Garder le jardin', 'Bricoler la cabane', 'Un livre par mois', 'Réparer le vélo', 'Tenir le budget', 'Ouvrir l’atelier', 'Faire du yoga', 'Voir grand-père', 'Quitter les écrans le soir', 'Soutenir Inès', 'Jouer du piano', 'Courir un marathon', 'Semer des tomates', 'Épargner pour Noël', 'Aimer mieux', 'Rire plus', 'Laisser tomber le sucre', 'Marcher en forêt', 'Nettoyer la cave', 'Organiser la fête', 'Peindre la chambre', 'Sortir le chien', 'Trier les photos', 'Un café avec Léa', 'Venir à l’heure', 'Honorer ma parole', 'Zéro retard', 'Déménager en mai', 'Garder le cap'];
+  W = 300; H = 650;
+
+  rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  fnv(t) { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+
+  theme() {
+    const P = this.PALS[this.state.pal];
+    return this.state.sombre
+      ? { P, bg: '#15120E', txt: '#4A4034', orn: '#3A3229' }
+      : { P, bg: '#EFE9DE', txt: '#BDB09A', orn: '#D5C9B3' };
+  }
+
+  /* ---------- le semis, qui grandit avec les promesses ---------- */
+  clip(poly, mx, my, nx, ny) {
+    const out = [];
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const A = poly[j], B = poly[i], da = (A[0] - mx) * nx + (A[1] - my) * ny, db = (B[0] - mx) * nx + (B[1] - my) * ny;
+      if (db <= 0) { if (da > 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); } out.push(B); }
+      else if (da <= 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); }
+    }
+    return out;
+  }
+  centroid(p) {
+    let a = 0, x = 0, y = 0;
+    for (let i = 0, j = p.length - 1; i < p.length; j = i++) { const f = p[j][0] * p[i][1] - p[i][0] * p[j][1]; a += f; x += (p[j][0] + p[i][0]) * f; y += (p[j][1] + p[i][1]) * f; }
+    return Math.abs(a) < 1e-9 ? null : [x / (3 * a), y / (3 * a), Math.abs(a) / 2];
+  }
+  cellPoly(p, pts, u, pad) {
+    const W = this.W, H = this.H;
+    let poly = [[-pad, -pad], [W + pad, -pad], [W + pad, H + pad], [-pad, H + pad]];
+    for (const q of pts) {
+      if (q === p) continue;
+      const dx = q.x - p.x, dy = q.y - p.y, d2 = dx * dx + dy * dy;
+      if (d2 > 24 * u * u || d2 < 1e-9) continue;
+      const t = Math.min(0.85, Math.max(0.15, 0.5 + (p.w - q.w) / (2 * d2)));
+      poly = this.clip(poly, p.x + dx * t, p.y + dy * t, dx, dy);
+      if (poly.length < 3) break;
+    }
+    return poly;
+  }
+  orient(p) { let a = 0; for (let i = 0, j = p.length - 1; i < p.length; j = i++) a += p[j][0] * p[i][1] - p[i][0] * p[j][1]; return a < 0 ? p.slice().reverse() : p; }
+  inset(poly, d) {
+    let out = poly;
+    for (let i = 0; i < poly.length; i++) {
+      const A = poly[i], B = poly[(i + 1) % poly.length], ex = B[0] - A[0], ey = B[1] - A[1], l = Math.hypot(ex, ey) || 1, nx = -ey / l, ny = ex / l;
+      out = this.clip(out, A[0] + nx * d, A[1] + ny * d, -nx, -ny);
+      if (out.length < 3) return null;
+    }
+    return out;
+  }
+  inside(poly, x, y) {
+    for (let i = 0; i < poly.length; i++) { const A = poly[i], B = poly[(i + 1) % poly.length]; if ((B[0] - A[0]) * (y - A[1]) - (B[1] - A[1]) * (x - A[0]) < -1e-9) return false; }
+    return true;
+  }
+
+  semis(n, matiere, pad) {
+    this._s = this._s || {};
+    const key = n + '|' + matiere + '|' + this.state.seed;
+    if (this._s[key]) return this._s[key];
+    const W = this.W, H = this.H, m = matiere ? Math.max(3, Math.round(3 + n * 0.35)) : 0, N = n + m;
+    const R = this.rng(this.fnv('semis' + this.state.seed)), pts = [];
+    for (let i = 0; i < N; i++) {
+      let best = null, bd = -1;
+      for (let c = 0; c < 16; c++) {
+        const x = 14 + R() * (W - 28), y = 14 + R() * (H - 28);
+        let d = 1e18; for (const p of pts) { const dx = p.x - x, dy = p.y - y; d = Math.min(d, dx * dx + dy * dy); }
+        if (d > bd) { bd = d; best = [x, y]; }
+      }
+      pts.push({ x: best[0], y: best[1], i, h: this.fnv('h' + this.state.seed + '|' + i) });
+    }
+    pts.slice().sort((a, b) => (a.h % 1009) - (b.h % 1009)).forEach((p, k) => { p.promi = k >= m; });
+    const u = Math.sqrt(W * H / N);
+    pts.forEach(p => { p.w = p.promi ? 0.3 * u * u : 0; });
+    for (let it = 0; it < 3; it++) {
+      const polys = pts.map(p => this.cellPoly(p, pts, u, pad));
+      pts.forEach((p, k) => { const c = this.centroid(polys[k]); if (c) { p.x = Math.min(W - 3, Math.max(3, c[0])); p.y = Math.min(H - 3, Math.max(3, c[1])); } });
+    }
+    let t = 0;
+    pts.forEach(p => {
+      if (!p.promi) return;
+      p.titre = this.TITRES[(t++ * 7 + (this.state.seed % 11)) % this.TITRES.length];
+      const used = {};
+      pts.forEach(o => { if (o !== p && o.promi && o.ci !== undefined && Math.hypot(o.x - p.x, o.y - p.y) < u * 1.7) used[o.ci] = 1; });
+      const r = this.rng(p.h), cand = [0, 1, 2, 3];
+      for (let i = 3; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const tt = cand[i]; cand[i] = cand[j]; cand[j] = tt; }
+      p.ci = cand.find(k => !used[k]); if (p.ci === undefined) p.ci = cand[0];
+    });
+    const cells = pts.map(p => { const poly = this.orient(this.cellPoly(p, pts, u, pad)), c = this.centroid(poly) || [p.x, p.y, 0]; return Object.assign({}, p, { poly, cx: c[0], cy: c[1], area: c[2] }); });
+    return (this._s[key] = { n, u, cells });
+  }
+
+  initiale(c) { return (c.titre || 'P').normalize('NFD').replace(/[\u0300-\u036f]/g, '').charAt(0).toUpperCase(); }
+
+  /* ---------- I · LETTRINE — la page ---------- */
+  // la lettrine : la plus grande capitale droite qui tient dans sa place
+  lettrineFit(g, c, u) {
+    const zone = this.inset(c.poly, u * 0.06); if (!zone) return null;
+    const ch = this.initiale(c), ital = (c.h >> 3) % 3 === 0;
+    const font = (ital ? 'italic ' : '') + '900 100px "Bodoni Moda", serif';
+    g.font = font;
+    const m = g.measureText(ch), l = -m.actualBoundingBoxLeft, tp = -m.actualBoundingBoxAscent, bw = m.actualBoundingBoxRight - l, bh = m.actualBoundingBoxDescent - tp;
+    if (!(bw > 0 && bh > 0)) return null;
+    const fits = s => { for (const [px, py] of [[0, 0], [0.5, 0], [1, 0], [1, 0.5], [1, 1], [0.5, 1], [0, 1], [0, 0.5]]) if (!this.inside(zone, c.cx + (px - 0.5) * bw * s, c.cy + (py - 0.5) * bh * s)) return false; return true; };
+    let lo = 0, hi = 10; for (let k = 0; k < 24; k++) { const md = (lo + hi) / 2; if (fits(md)) lo = md; else hi = md; }
+    if (lo <= 0) return null;
+    return { ch, font, s: lo, l, tp, bw, bh, box: [c.cx - bw * lo / 2, c.cy - bh * lo / 2, c.cx + bw * lo / 2, c.cy + bh * lo / 2] };
+  }
+  lettrineCell(g, c, u, T, F) {
+    F = F || this.lettrineFit(g, c, u); if (!F) return;
+    g.save(); g.font = F.font; g.translate(c.cx, c.cy); g.scale(F.s, F.s); g.translate(-(F.l + F.bw / 2), -(F.tp + F.bh / 2));
+    g.fillStyle = T.P[c.ci]; g.fillText(F.ch, 0, 0); g.restore();
+  }
+  lettrine(g, S, T) {
+    const W = this.W, H = this.H, u = S.u, fs = 7.2, lead = fs * 1.24, mg = 12, pad = fs * 0.55;
+    const boxes = [];
+    for (const c of S.cells) { const F = this.lettrineFit(g, c, u); if (F) { this.lettrineCell(g, c, u, T, F); boxes.push(F.box); } }
+    // le texte : les titres de toutes les promesses, justifiés, qui coulent autour des lettrines
+    const src = S.cells.filter(c => c.promi).map(c => c.titre);
+    const mots = (src.length ? src : this.TITRES.slice(0, 6)).join(' · ').split(' ');
+    let w = 0;
+    g.font = fs + 'px "Instrument Serif", serif'; g.fillStyle = T.txt; g.textBaseline = 'alphabetic';
+    const esp = g.measureText(' ').width, larg = {};
+    const lw = t => larg[t] !== undefined ? larg[t] : (larg[t] = g.measureText(t).width);
+    for (let y = mg + fs; y < H - mg; y += lead) {
+      const y0 = y - fs * 0.78, y1 = y + fs * 0.26;
+      let iv = [[mg, W - mg]];
+      for (const b of boxes) {
+        if (b[3] + pad < y0 || b[1] - pad > y1) continue;
+        const a = b[0] - pad, z = b[2] + pad, nxt = [];
+        for (const [p, q] of iv) { if (z <= p || a >= q) nxt.push([p, q]); else { if (a > p) nxt.push([p, a]); if (z < q) nxt.push([z, q]); } }
+        iv = nxt;
+      }
+      for (const [p, q] of iv) {
+        const L = q - p; if (L < fs * 3.2) continue;
+        const ligne = []; let tot = 0;
+        while (true) { const m = mots[w % mots.length], mw = lw(m); if (ligne.length && tot + esp + mw > L) break; if (!ligne.length && mw > L) { w++; break; } ligne.push(m); tot += (ligne.length > 1 ? esp : 0) + mw; w++; }
+        if (!ligne.length) continue;
+        const sw = ligne.reduce((s, m) => s + lw(m), 0), gap = ligne.length > 1 ? (L - sw) / (ligne.length - 1) : 0;
+        let x = p;
+        for (const m of ligne) { g.fillText(m, x, y); x += lw(m) + (gap > esp * 3 ? esp : gap); }
+      }
+    }
+  }
+
+  /* ---------- II · RÉCLAME — l'affiche en caractères de bois ---------- */
+  reclameFit(g, c, u) {
+    const zone = this.inset(c.poly, u * 0.022); if (!zone) return null;
+    const ORN = ['★', '&', '№', '§', '✦', '¶', '❦', '✚', '◆', '%'];
+    const ch = c.promi ? this.initiale(c) : ORN[c.h % ORN.length];
+    const k = (c.h >> 4) % 4, font = c.promi ? (k === 0 ? 'italic 900 100px "Bodoni Moda", serif' : k === 1 ? '900 100px "Bodoni Moda", serif' : '100px "Anton", sans-serif') : '900 100px "Bodoni Moda", serif';
+    g.font = font;
+    const m = g.measureText(ch), l = -m.actualBoundingBoxLeft, tp = -m.actualBoundingBoxAscent, bw = m.actualBoundingBoxRight - l, bh = m.actualBoundingBoxDescent - tp;
+    if (!(bw > 0 && bh > 0)) return null;
+    // le plus grand rectangle droit centré dans la place, parmi plusieurs proportions — la lettre s'y étire
+    let best = null;
+    for (const asp of [0.45, 0.6, 0.8, 1, 1.25, 1.6, 2.1, 2.8, 3.6]) {
+      const fits = s => { const rw = s, rh = s * asp; for (const [px, py] of [[0, 0], [0.5, 0], [1, 0], [1, 0.5], [1, 1], [0.5, 1], [0, 1], [0, 0.5]]) if (!this.inside(zone, c.cx + (px - 0.5) * rw, c.cy + (py - 0.5) * rh)) return false; return true; };
+      let lo = 0, hi = u * 4; for (let q = 0; q < 22; q++) { const md = (lo + hi) / 2; if (fits(md)) lo = md; else hi = md; }
+      // on ne déforme pas la lettre au-delà de 2,4× de sa proportion d'origine
+      const d = (lo * asp / lo) / (bh / bw); if (d > 2.4 || d < 1 / 2.4) continue;
+      const a = lo * lo * asp; if (!best || a > best.a) best = { a, rw: lo, rh: lo * asp };
+    }
+    if (!best) return null;
+    return { ch, font, l, tp, bw, bh, rw: best.rw, rh: best.rh, box: [c.cx - best.rw / 2, c.cy - best.rh / 2, c.cx + best.rw / 2, c.cy + best.rh / 2] };
+  }
+  reclameCell(g, c, u, T) {
+    const F = this.reclameFit(g, c, u); if (!F) return;
+    g.save(); g.font = F.font; g.translate(F.box[0], F.box[1]); g.scale(F.rw / F.bw, F.rh / F.bh); g.translate(-F.l, -F.tp);
+    g.fillStyle = c.promi ? T.P[c.ci] : T.orn; g.fillText(F.ch, 0, 0); g.restore();
+  }
+  reclame(g, S, T) { for (const c of S.cells) this.reclameCell(g, c, S.u, T); }
+
+  /* ---------- rendu ---------- */
+  S(world, n) { return world === 'lettrine' ? this.semis(n, false, -10) : this.semis(n, true, this.W * 0.02); }
+
+  toile(cv, world, n, disp) {
+    const W = this.W, H = this.H, D = 2, k = disp / W, S = this.S(world, n);
+    cv.style.width = disp + 'px'; cv.style.height = Math.round(H * k) + 'px';
+    cv.width = Math.round(disp * D); cv.height = Math.round(H * k * D);
+    const g = cv.getContext('2d'), T = this.theme();
+    g.setTransform(D * k, 0, 0, D * k, 0, 0);
+    g.fillStyle = T.bg; g.fillRect(0, 0, W, H);
+    this[world](g, S, T);
+  }
+
+  dalle(cv, world, rang, size) {
+    const S = this.S(world, 16), T = this.theme(), D = 2, W = this.W, H = this.H;
+    cv.style.width = size + 'px'; cv.style.height = size + 'px'; cv.width = size * D; cv.height = size * D;
+    const g = cv.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
+    const cand = S.cells.filter(c => c.promi && c.cx > W * 0.12 && c.cx < W * 0.88 && c.cy > H * 0.08 && c.cy < H * 0.92).sort((a, b) => b.area - a.area).slice(0, 6).sort((a, b) => a.i - b.i);
+    const c = cand[rang % Math.max(1, cand.length)]; if (!c) return;
+    const F = world === 'lettrine' ? this.lettrineFit(g, c, S.u) : this.reclameFit(g, c, S.u); if (!F) return;
+    const bb = F.box, sc = size * 0.94 / Math.max(bb[2] - bb[0], bb[3] - bb[1]);
+    g.setTransform(D * sc, 0, 0, D * sc, D * (size / 2 - (bb[0] + bb[2]) / 2 * sc), D * (size / 2 - (bb[1] + bb[3]) / 2 * sc));
+    if (world === 'lettrine') this.lettrineCell(g, c, S.u, T, F); else this.reclameCell(g, c, S.u, T);
+  }
+
+  lance() {
+    const root = this.root; if (!root) return;
+    const T = this.theme();
+    root.querySelectorAll('[data-fond]').forEach(el => { el.style.background = T.bg; });
+    const id = (this._job = (this._job || 0) + 1), jobs = [];
+    root.querySelectorAll('canvas[data-t]').forEach(cv => jobs.push(() => { const [w, n, d] = cv.dataset.t.split('|'); this.toile(cv, w, +n, +d); }));
+    root.querySelectorAll('canvas[data-d]').forEach(cv => jobs.push(() => { const [w, r, s] = cv.dataset.d.split('|'); this.dalle(cv, w, +r, +s); }));
+    const next = () => { if (this._job !== id) return; const j = jobs.shift(); if (!j) return; try { j(); } catch (e) { console.error(e); } setTimeout(next, 0); };
+    const go = () => setTimeout(next, 20);
+    const F = document.fonts;
+    if (F && F.load) Promise.all(['900 100px "Bodoni Moda"', 'italic 900 100px "Bodoni Moda"', '100px "Anton"', '20px "Instrument Serif"'].map(s => F.load(s))).then(go, go);
+    else go();
+  }
+
+  componentDidMount() { this.lance(); }
+  componentDidUpdate(pp, ps) { if (ps.pal !== this.state.pal || ps.sombre !== this.state.sombre || ps.seed !== this.state.seed) this.lance(); }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      p0: () => this.setState({ pal: 0 }),
+      p1: () => this.setState({ pal: 1 }),
+      p2: () => this.setState({ pal: 2 }),
+      mode: () => this.setState(s => ({ sombre: !s.sombre })),
+      reroll: () => this.setState({ seed: (Math.random() * 100000) | 0 })
+    };
+  }
+}
+</script>
+</body>
+</html>

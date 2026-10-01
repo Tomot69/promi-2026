@@ -1,0 +1,150 @@
+<style id="lot-CERCLE-MUR-css">
+/* ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════
+   ⚑ LE MUR DU CERCLE ET LES CHAMPS À TROIS LIGNES — lot du 11 septembre 2026 (Tom, planche 3 et ses révisions).
+   Bloc neuf, en fin de fichier : il vient APRÈS la grammaire des contours et gagne par l'ordre, à poids égal.
+   ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
+/* ⚑ P (chantier 65, décision Tom) : un champ de TROIS LIGNES ET PLUS — libellé, texte, ligne de visibilité — prend le
+   rayon 30 du grand panneau de la grammaire. Rayon = hauteur ÷ 2 collait le début de la 1re et de la dernière ligne à la
+   courbe (3,0 / 2,5 px, contre 12,9 / 13,7 pour le champ à deux lignes) ; à 30, l'écart reste 14 quel que soit le
+   nombre de lignes, sans toucher à l'interligne. Mesuré : planche 3, § 5. Les champs d'une et deux lignes gardent h ÷ 2. */
+#device #detailPoster .s2-reg.s2-zone,.frame #detailPoster .s2-reg.s2-zone,
+#device #createSheet.pp-peauf .s2-reg.s2-zone,.frame #createSheet.pp-peauf .s2-reg.s2-zone,
+#device #detailPoster .s2-reg.s2-zone.s2-z104,.frame #detailPoster .s2-reg.s2-zone.s2-z104,
+#device #createSheet.pp-peauf .s2-reg.s2-zone.s2-z104,
+.frame #createSheet.pp-peauf .s2-reg.s2-zone.s2-z104{border-radius:30px!important}
+/* ⚑ LE CHEMIN : l'encart du mur ouvre la page du Cercle PAR-DESSUS le Peaufiner (fiche ou page +) — sans rien fermer :
+   passer par closeAll depuis la page + perdait la phrase en cours (mesuré : rouverte sur le choix des natures). La page
+   du Cercle est à z 70, les feuilles à 80 : ouverte par-dessus, elle monte. */
+#plusScreen.cercle-dessus,.frame #plusScreen.cercle-dessus{z-index:95!important}
+/* ⚑ Q201 : l'encart des Réglages nomme l'offre — « ✦ Le Cercle », seul. */
+#settingsScreen #openPlusTop .sc-s,.frame #settingsScreen #openPlusTop .sc-s{display:none!important}
+</style>
+<script id="lot-CERCLE-MUR">
+/* ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════
+   ⚑ LE MUR DU CERCLE — POSÉ LÀ OÙ IL MANQUAIT (Tom, 11 sept. 2026) : « il ne s'agit pas de corriger un mur, il s'agit
+   d'en poser un là où il n'y en a pas. Les quatre réglages doivent exister, visibles et verrouillés, dans le Peaufiner
+   d'une fiche et de la page +. C'est là qu'on les découvre, c'est là qu'on veut les obtenir. »
+   Mesuré avant : sur une fiche le mur existait (même plantée à neuf) ; sur la page + — et donc sur un gardé de côté,
+   qui la rouvre — il manquait (`peaufBati` n'appelle pas `cercle()`).
+   ═══════════════════════════════════════════════════════════════════════════════════════════════════════════════ */
+(function(){
+  /* comparer avant d'agir (CLAUDE §8) : on n'écrit une propriété que si elle diffère */
+  function P(e, k, v){ if(!e) return; if(e.style.getPropertyValue(k) === v && e.style.getPropertyPriority(k) === 'important') return;
+    e.style.setProperty(k, v, 'important'); }
+
+  /* ── 1 · LE MUR DE LA PAGE + — la brique MÊME de l'app, en fin de liste (après les pièces jointes : la page + n'a ni
+     commentaires, ni relance, ni suppression). ⚠ LA LISTE EST REBÂTIE DERRIÈRE : `peaufBati` repasse après les clics
+     (les écouteurs du pinceau, 90 / 280 / 650 ms) — un bloc posé une fois disparaît en moins d'une seconde (mesuré à la
+     planche 2). On le remet donc chaque fois que la liste est refaite SANS lui : un observateur, qui compare. ── */
+  function murPagePlus(){
+    var cs = document.getElementById('createSheet'); if(!cs || !cs.classList.contains('pp-peauf')) return;
+    var l = cs.querySelector(':scope > .dpd-corps .s2-liste') || cs.querySelector('.s2-liste'); if(!l) return;
+    if(l.querySelector('.s2-cercle')) return;
+    if(!window._s2Briques || !window._s2Briques.cercle) return;
+    l.appendChild(window._s2Briques.cercle());
+    try{ if(window._cerclePaye) window._cerclePaye(); }catch(_){}
+  }
+
+  /* ── 2 · LES CHAMPS À TROIS LIGNES — le texte du milieu centré, et le champ qui grandit avec son texte ──
+     Tom : « descends un peu « ajoute un mot, un contexte… » — elle n'est pas centrée entre le haut et le bas du
+     contour. Mesure les deux écarts, ils doivent être égaux. » Et le chantier 68 : une note de trois lignes était
+     PEINTE sur 56 px pour une max-height de 44, sa 3ᵉ ligne passait sous « visible par Rachel ».
+     ⚑ LA COTE SE CALCULE (CLAUDE §8), jamais sur elle-même : le dessin d'une ligne de Bricolage 600 / 18 fait 22 dans sa
+     ligne de 22,5 et commence en haut de sa boîte (mesuré). Pour des écarts égaux, son haut tombe à
+     bord + (hauteur de base − 2 × bord − 22) / 2 — 48 dans une boîte de 118 — ET CE HAUT NE BOUGE PAS AVEC LE NOMBRE DE
+     LIGNES : la boîte grandit d'une ligne (22,5) par ligne de texte en plus, par le bas, et la ligne de visibilité, clouée
+     au bas, descend avec elle. La marge sous le libellé se calcule sur la position du LIBELLÉ, qui ne dépend pas d'elle. */
+  var GLYPHE = 22, LH = 22.5;
+  function nbLignes(t){
+    if(!t || t.tagName !== 'TEXTAREA' || !t.value) return 1;
+    var h = t.style.getPropertyValue('height'), pr = t.style.getPropertyPriority('height');
+    t.style.setProperty('height', '0px', 'important');
+    var lh = parseFloat(getComputedStyle(t).lineHeight) || LH;
+    var n = Math.max(1, Math.round(t.scrollHeight / lh));
+    if(h) t.style.setProperty('height', h, pr); else t.style.removeProperty('height');
+    return n;
+  }
+  function caleZone(z){
+    if(!z || !z.isConnected) return;
+    var lab = z.querySelector('.s2-lab'), mid = z.querySelector('.s2-txt'); if(!lab || !mid) return;
+    var bw = parseFloat(getComputedStyle(z).borderTopWidth) || 2;
+    var H0 = z.classList.contains('s2-z104') ? 104 : 118;
+    var lh = parseFloat(getComputedStyle(mid).lineHeight) || LH;
+    var n = nbLignes(mid);
+    var haut = bw + ((H0 - 2 * bw) - GLYPHE) / 2;
+    /* ⚠ le bas du libellé se lit en FRACTION : offsetTop / offsetHeight arrondissent à l'entier (30,5 lu 31 sur la page +,
+       le texte sortait centré à 45,5 / 46,5). Le rectangle, ramené à l'échelle du champ LUI-MÊME (largeur rendue ÷
+       largeur de mise en page), ne dépend ni du cadre ni de la marge qu'on pose ensuite. */
+    var zr = z.getBoundingClientRect(), lr = lab.getBoundingClientRect(), ech = (zr.width / (z.offsetWidth || zr.width)) || 1;
+    var basLibelle = (lr.bottom - zr.top) / ech;
+    var marge = Math.round((haut - basLibelle) * 10) / 10;
+    P(mid, 'margin-top', marge + 'px');
+    if(mid.tagName === 'TEXTAREA'){ P(mid, 'height', (n * lh) + 'px'); P(mid, 'max-height', 'none'); P(mid, 'overflow', 'hidden'); }
+    P(z, 'height', (H0 + (n - 1) * lh) + 'px');
+    if(z.getAttribute('data-cercle-lignes') !== String(n)) z.setAttribute('data-cercle-lignes', String(n));
+  }
+  function caleTout(){
+    document.querySelectorAll('#detailPoster .s2-zone, #createSheet.pp-peauf .s2-zone').forEach(caleZone);
+  }
+  window._cercleCaleZones = caleTout;
+
+  var rafId = null;
+  function passe(){ if(rafId) return; rafId = requestAnimationFrame(function(){ rafId = null;
+    try{ murPagePlus(); }catch(_){ } try{ caleTout(); }catch(_){ } }); }
+  window._cercleMurPasse = passe;
+  ['detailPoster', 'createSheet'].forEach(function(id){
+    var h = document.getElementById(id);
+    /* childList seulement : nos propres écritures sont des STYLES — l'observateur ne se réveille pas lui-même (§8) */
+    if(h) new MutationObserver(passe).observe(h, {childList:true, subtree:true});
+  });
+  document.addEventListener('input', function(ev){ var z = ev.target && ev.target.closest && ev.target.closest('.s2-zone'); if(z) caleZone(z); }, true);
+  document.addEventListener('click', function(){ [80, 300, 700].forEach(function(d){ setTimeout(passe, d); }); }, true);
+  [0, 200, 800].forEach(function(d){ setTimeout(passe, d); });
+
+  /* ── 3 · LE CHEMIN — l'encart du mur ouvre la page du Cercle PAR-DESSUS, et l'achat ramène au même Peaufiner ──
+     (planche 2 et 3 : « après l'achat, même place, nets » — c'est là qu'on les a découverts, c'est là qu'on les voulait).
+     Aujourd'hui l'encart passait par ouvreCercle → closeAll : depuis la page + la phrase en cours était perdue, et l'achat
+     menait à l'Aura. ⚠ Le « par-dessus » ne vaut QUE pour les encarts du mur ; les autres portes gardent leur chemin. */
+  function ps(){ return document.getElementById('plusScreen'); }
+  function ouvreDessus(){
+    var p = ps(); if(!p) return;
+    p.classList.add('cercle-dessus'); p.classList.add('show'); try{ p.scrollTop = 0; }catch(_){}
+    var trace = function(){ try{ if(typeof drawCercleHero === 'function') drawCercleHero(); }catch(_){ } };
+    try{ requestAnimationFrame(function(){ trace(); setTimeout(trace, 320); }); }catch(_){ trace(); }
+  }
+  function fermeDessus(){ var p = ps(); if(p){ p.classList.remove('show'); p.classList.remove('cercle-dessus'); } }
+  window._cercleDessus = ouvreDessus;
+  /* à la fenêtre, en capture : on passe AVANT l'écouteur de l'encart (qui clique #openPlusTop → ouvreCercle → closeAll) */
+  window.addEventListener('click', function(ev){
+    var t = ev.target; if(!t || !t.closest) return;
+    if(t.closest('#detailPoster .s2-encart, #createSheet .s2-encart')){
+      ev.preventDefault(); ev.stopImmediatePropagation(); ouvreDessus(); return; }
+    var p = ps(); if(!p || !p.classList.contains('cercle-dessus')) return;
+    if(t.closest('#buyYear, #buyMonth')){
+      ev.preventDefault(); ev.stopImmediatePropagation();
+      try{ setPremium(true); }catch(_){ }
+      fermeDessus();
+      try{ if(typeof toast === 'function') toast('Bienvenue dans le Cercle ✓ · tout Promi débloqué'); }catch(_){ }
+      try{ if(window._cerclePaye) window._cerclePaye(); }catch(_){ }
+      passe(); return; }
+    if(t.closest('#plusScreen [data-close], #plusScreen .closeb')){
+      ev.preventDefault(); ev.stopImmediatePropagation(); fermeDessus(); return; }
+  }, true);
+  /* rien ne survit à closeAll (CLAUDE §8) : le « par-dessus » est rendu avec le reste */
+  (window._rangeurs = window._rangeurs || []).push(fermeDessus);
+
+  /* ── 4 · L'ENCART DES RÉGLAGES — « ✦ Le Cercle », toujours (Q201). setPremium(true) le réécrivait en « Membre du
+     Cercle ✓ », que setPremium(false) ne rendait jamais : un utilisateur gratuit le voyait après une fin d'abonnement
+     (audit, P4). On repasse DERRIÈRE setPremium, on ne l'écoute pas (§8 « repeindre derrière le moteur »). ── */
+  function encartReglages(){
+    var op = document.getElementById('openPlusTop'); if(!op) return;
+    var t = op.querySelector('.sc-t'); if(t && t.textContent !== '✦ Le Cercle') t.textContent = '✦ Le Cercle';
+  }
+  var _sp = window.setPremium;
+  if(typeof _sp === 'function'){
+    window.setPremium = function(){ var r = _sp.apply(this, arguments);
+      try{ encartReglages(); }catch(_){ } try{ if(window._cerclePaye) window._cerclePaye(); }catch(_){ } passe(); return r; };
+  }
+  encartReglages();
+})();
+</script>

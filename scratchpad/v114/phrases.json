@@ -1,0 +1,2772 @@
+{
+ "soi": {
+  "me coucher le jour même": {
+   "430": {
+    "lignes": 2,
+    "droite": 97.91009521484375,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 97.91007126405644,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "finir ce livre avant d’en ouvrir trois": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.23626708984375,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.2362294622618,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "arroser mes plantes avant qu’elles m’en veuillent": {
+   "430": {
+    "lignes": 3,
+    "droite": 27.26324462890625,
+    "gauche": 24,
+    "fs": 33,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 27.263193379801276,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "prendre des nouvelles avant d’avoir une raison": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.6156005859375,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.615552584159637,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "me garder une soirée pour moi": {
+   "430": {
+    "lignes": 2,
+    "droite": 48.04864501953125,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 48.048637250494984,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "retourner voir cet endroit que j’ai adoré": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.55126953125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.551222888385066,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "commencer sans attendre le bon moment": {
+   "430": {
+    "lignes": 2,
+    "droite": 29.692840576171875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 29.692790188166736,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "m’engager pour cette cause": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.87200927734375,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.871973674007325,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "apprendre à jouer d’un instrument": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.65228271484375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.65224545051107,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "planter quelque chose que je pourrai manger": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.517974853515625,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.517933072287885,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "réparer plutôt que racheter": {
+   "430": {
+    "lignes": 2,
+    "droite": 67.39361572265625,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 67.39360762099115,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "laisser mon téléphone à la maison un dimanche": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.95703125,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.95700481552327,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "apprendre un truc par jour": {
+   "430": {
+    "lignes": 2,
+    "droite": 72.24932861328125,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 72.24929025967529,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "apprendre à reconnaître les oiseaux": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.9033203125,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.903280380855186,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "apprendre à repriser": {
+   "430": {
+    "lignes": 2,
+    "droite": 118.24005126953125,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 118.24001061784416,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "m’offrir des fleurs": {
+   "430": {
+    "lignes": 2,
+    "droite": 166.83425903320312,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 166.83424089012706,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "ranger": {
+   "430": {
+    "lignes": 1,
+    "droite": 172.625,
+    "gauche": 24,
+    "fs": 36,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 172.62498076736966,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "finir un stylo": {
+   "430": {
+    "lignes": 1,
+    "droite": 94.609375,
+    "gauche": 24,
+    "fs": 36,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 94.60934295094431,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "apprendre à faire mon pain": {
+   "430": {
+    "lignes": 2,
+    "droite": 87.86178588867188,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 87.86177178663156,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  },
+  "voir ce tableau en vrai": {
+   "430": {
+    "lignes": 2,
+    "droite": 48.87811279296875,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 48.878065916566804,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 0,
+    "droite": Infinity,
+    "gauche": -61.073541679254525,
+    "fs": 36,
+    "n": 0
+   }
+  }
+ },
+ "faire": {
+  "t’emmener voir la mer / vous emmener voir la mer": {
+   "430": {
+    "lignes": 2,
+    "droite": 122.59136199951172,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 122.59134923960522,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 122.59135159013869,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "te ramener quelque chose de là-bas / vous ramener quelque chose de là-bas": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.196060180664062,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.196040221363482,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 25.19604913023588,
+    "gauche": 24.000002466191596,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "m’y mettre": {
+   "430": {
+    "lignes": 1,
+    "droite": 111.78125,
+    "gauche": 24,
+    "fs": 36,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 111.78121739787831,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 111.78126545223172,
+    "gauche": 24.000002466191596,
+    "fs": 36,
+    "n": 1
+   }
+  },
+  "t’écrire une vraie lettre / vous écrire une vraie lettre": {
+   "430": {
+    "lignes": 2,
+    "droite": 116.85482025146484,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 116.85481008595963,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 116.85480805630809,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "te faire découvrir cet endroit / vous faire découvrir cet endroit": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.077903747558594,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.07787637285686,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 32.07787354479282,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "te fabriquer quelque chose / vous fabriquer quelque chose": {
+   "430": {
+    "lignes": 2,
+    "droite": 110.11473846435547,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 110.11472967310462,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 110.1147511242751,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "te planter un arbre / vous planter un arbre": {
+   "430": {
+    "lignes": 2,
+    "droite": 139.8714828491211,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 139.87146554382207,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 139.87147519566147,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "venir te chercher à la gare / venir vous chercher à la gare": {
+   "430": {
+    "lignes": 2,
+    "droite": 36.61754608154297,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 36.61753108985383,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 36.61751880779366,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "venir te chercher après ton premier jour": {
+   "430": {
+    "lignes": 2,
+    "droite": 31.6422119140625,
+    "gauche": 24,
+    "fs": 32,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 31.642200902419567,
+    "gauche": 23.99999861893346,
+    "fs": 32,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 31.642221570051557,
+    "gauche": 24.000002466191596,
+    "fs": 32,
+    "n": 2
+   }
+  },
+  "te ramener vivant de cette idée": {
+   "430": {
+    "lignes": 2,
+    "droite": 46.826171875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 46.82614362028077,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 46.82615013927817,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "te donner un double des clefs, un jour / vous donner un double des clefs, un jour": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.782455444335938,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.78242450118434,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 28.782465870991054,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "m’acquitter des 23 centimes": {
+   "430": {
+    "lignes": 2,
+    "droite": 57.235191345214844,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 57.23519110482663,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 57.235179575741064,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "régulariser la situation du Tupperware": {
+   "430": {
+    "lignes": 2,
+    "droite": 29.31597900390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 29.315918612828124,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 29.31595243702888,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "honorer ma dette de trois frites": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.89543914794922,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.895414158325877,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 28.895429006359077,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "mettre un terme au dossier des cintres": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.260772705078125,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.26073150081831,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 32.26074858779704,
+    "gauche": 24.000002466191596,
+    "fs": 33,
+    "n": 2
+   }
+  },
+  "rendre le tournevis avant 2030": {
+   "430": {
+    "lignes": 2,
+    "droite": 30.604156494140625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 30.604128376170607,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 30.604142955262052,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  }
+ },
+ "demander": {
+  "m’écrire quand tu es chez toi / m’écrire quand vous êtes chez vous": {
+   "430": {
+    "lignes": 2,
+    "droite": 61.736778259277344,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 61.736743730520566,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 61.73675300597928,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me prévenir si j’ai du persil entre les dents": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.15765380859375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.15763641817222,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 32.1576340344305,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "ne jamais parler comme sur Linkédine": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.137115478515625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.137067836146993,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 28.13708819224457,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me dire si je commence à dire « ça fait sens »": {
+   "430": {
+    "lignes": 3,
+    "droite": 114.38156127929688,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 114.38155047532219,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 114.38157162991837,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "me dire si je commence à dire « disruptif »": {
+   "430": {
+    "lignes": 3,
+    "droite": 111.95513916015625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 111.95514546518106,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 111.95515353892328,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "me dire si je commence à parler de « synergies »": {
+   "430": {
+    "lignes": 3,
+    "droite": 85.94155883789062,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 85.94155106457724,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 85.94155187572368,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "me donner ta recette, la vraie / me donner votre recette, la vraie": {
+   "430": {
+    "lignes": 2,
+    "droite": 83.99178314208984,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 83.99175633710054,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 83.9917831120132,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me rappeler cette histoire quand on sera vieux": {
+   "430": {
+    "lignes": 3,
+    "droite": 58.60002136230469,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 58.60000402555321,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 58.60004476137747,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "m’envoyer une carte postale de là-bas": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.21624755859375,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.21618453463275,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 28.216237528777373,
+    "gauche": 24.000002466191596,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "prendre cette sabbatique avec moi": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.0494384765625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.04942484205203,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 33.049436660184696,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me garder une chaise à ton procès / me garder une chaise à votre procès": {
+   "430": {
+    "lignes": 2,
+    "droite": 54.4884033203125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 54.48837443762459,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 54.4884070498553,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "aller voter": {
+   "430": {
+    "lignes": 1,
+    "droite": 118.546875,
+    "gauche": 24,
+    "fs": 36,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 118.54687209400582,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 118.5468705878291,
+    "gauche": 24.000002466191596,
+    "fs": 36,
+    "n": 1
+   }
+  },
+  "faire pipi assis": {
+   "430": {
+    "lignes": 1,
+    "droite": 62.015625,
+    "gauche": 24,
+    "fs": 36,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 62.015577228524776,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 62.01560914315873,
+    "gauche": 24.000002466191596,
+    "fs": 36,
+    "n": 1
+   }
+  },
+  "me montrer ton coin à champignons / me montrer votre coin à champignons": {
+   "430": {
+    "lignes": 2,
+    "droite": 47.451873779296875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 47.45185576468427,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 47.4518506918284,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me donner une bouture de celle-là": {
+   "430": {
+    "lignes": 2,
+    "droite": 59.99321746826172,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 59.99318405299858,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 59.99322336790523,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  }
+ },
+ "chiche": {
+  "dire oui pour une fois": {
+   "430": {
+    "lignes": 2,
+    "droite": 123.00640869140625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 123.00640270120248,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 123.00640469957472,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "te baigner en janvier": {
+   "430": {
+    "lignes": 2,
+    "droite": 151.4200439453125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 151.42000993037993,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 151.42002464341954,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "te lever pour voir le soleil se lever": {
+   "430": {
+    "lignes": 2,
+    "droite": 63.229644775390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 63.22962755499867,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 63.22961970092495,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "dormir à la belle étoile": {
+   "430": {
+    "lignes": 2,
+    "droite": 142.3408203125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 142.34078029134162,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 142.34080424974135,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "choisir une ville au hasard": {
+   "430": {
+    "lignes": 2,
+    "droite": 146.63763427734375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 146.63762394560683,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 146.63763137094358,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "partir dans une heure": {
+   "430": {
+    "lignes": 2,
+    "droite": 145.23040771484375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 145.23039501878966,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 145.23037620519702,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "faire cette chose qu’on n’a jamais faite": {
+   "430": {
+    "lignes": 2,
+    "droite": 62.721649169921875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 62.721617957302335,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 62.72166130064479,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "nous faire confiance et voir où ça mène": {
+   "430": {
+    "lignes": 2,
+    "droite": 35.42802429199219,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 35.428027686598966,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 35.42804454435261,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "dire oui sans demander pourquoi": {
+   "430": {
+    "lignes": 2,
+    "droite": 83.387939453125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 83.38791299771847,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 83.38793378768804,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "faire le Mont Blanc": {
+   "430": {
+    "lignes": 1,
+    "droite": 44.203125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 44.20307895485795,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 44.203101050967554,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "te mettre à la salsa": {
+   "430": {
+    "lignes": 1,
+    "droite": 40.140625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 40.14059807239939,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 40.14059604151587,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "monter un groupe": {
+   "430": {
+    "lignes": 1,
+    "droite": 56.0625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 56.06248453972735,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 56.062476956522275,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "prendre un cours de trapèze": {
+   "430": {
+    "lignes": 2,
+    "droite": 71.17361450195312,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 71.17357446311806,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 71.17360817394542,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "courir notre premier marathon": {
+   "430": {
+    "lignes": 2,
+    "droite": 105.94082641601562,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 105.94080017358472,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 105.9408058527659,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "apprendre une nouvelle langue": {
+   "430": {
+    "lignes": 2,
+    "droite": 98.07513427734375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 98.07512712973248,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 98.07512512839611,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "apprendre à jouer d’un instrument": {
+   "430": {
+    "lignes": 2,
+    "droite": 55.00474548339844,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 55.004722608182014,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 55.004741253343234,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "faire un trek de plusieurs jours": {
+   "430": {
+    "lignes": 2,
+    "droite": 92.7784423828125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 92.77841777140054,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 92.77845152762073,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "apprendre à naviguer": {
+   "430": {
+    "lignes": 2,
+    "droite": 152.199951171875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 152.19992582649672,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 152.19993615646507,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "y aller en stop": {
+   "430": {
+    "lignes": 1,
+    "droite": 73.34375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 73.34372794769216,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 73.34372267922123,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 1
+   }
+  },
+  "bivouaquer": {
+   "430": {
+    "lignes": 1,
+    "droite": 114.9375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 114.93748691823083,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 114.9374805016727,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 1
+   }
+  },
+  "monter notre festival": {
+   "430": {
+    "lignes": 1,
+    "droite": 24.375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 24.37499002563055,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 24.374969943289926,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "traverser un pays à pied": {
+   "430": {
+    "lignes": 2,
+    "droite": 128.994384765625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 128.99437575997024,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 128.9943826320923,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "monter un refuge": {
+   "430": {
+    "lignes": 1,
+    "droite": 31.03125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 31.03121591451055,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 31.031208729825014,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 1
+   }
+  },
+  "aller courir maintenant": {
+   "430": {
+    "lignes": 2,
+    "droite": 148.04562377929688,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 148.04560095013287,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 148.04560789773197,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "adopter un animal à la SPA": {
+   "430": {
+    "lignes": 2,
+    "droite": 132.99603271484375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 132.99601797596208,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 132.99601278473725,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "planter dix arbres": {
+   "430": {
+    "lignes": 1,
+    "droite": 25.15625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 25.156232512884326,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 25.156203951578796,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 1
+   }
+  },
+  "retaper cette baraque": {
+   "430": {
+    "lignes": 2,
+    "droite": 120.95681762695312,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 120.95678947144435,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 120.95681760170267,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "restaurer ce vieux bateau": {
+   "430": {
+    "lignes": 2,
+    "droite": 132.65679931640625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 132.65678468374702,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 132.65677271701563,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "racheter le bar du village": {
+   "430": {
+    "lignes": 2,
+    "droite": 147.51522827148438,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 147.51520388020361,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 147.5152071539286,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  }
+ },
+ "nuee": {
+  "Week-end à Marseille": {
+   "430": {
+    "lignes": 2,
+    "droite": 59.794281005859375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 59.79425522866677,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 59.79424794720377,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "La coloc": {
+   "430": {
+    "lignes": 1,
+    "droite": 77.078125,
+    "gauche": 24,
+    "fs": 36,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 77.07808199831939,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 1
+   },
+   "iphone": {
+    "lignes": 1,
+    "droite": 77.07809858477596,
+    "gauche": 24.000002466191596,
+    "fs": 36,
+    "n": 1
+   }
+  },
+  "Le club de lecture": {
+   "430": {
+    "lignes": 2,
+    "droite": 106.755126953125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 106.75510270838402,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 106.75513229884817,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le club de running": {
+   "430": {
+    "lignes": 2,
+    "droite": 60.53955078125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 60.539540114049494,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 60.539534130242046,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "L’apéro qu’on repousse depuis mars": {
+   "430": {
+    "lignes": 2,
+    "droite": 29.4185791015625,
+    "gauche": 24,
+    "fs": 32,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 29.41854988729474,
+    "gauche": 23.99999861893346,
+    "fs": 32,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 29.418576064130846,
+    "gauche": 24.000002466191596,
+    "fs": 32,
+    "n": 2
+   }
+  },
+  "La maison qu’on veut construire": {
+   "430": {
+    "lignes": 2,
+    "droite": 35.203643798828125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 35.20360936113499,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 35.20362110912035,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Notre tour du monde": {
+   "430": {
+    "lignes": 2,
+    "droite": 66.82275390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 66.82271461109065,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 66.82274910693037,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "La maison de campagne": {
+   "430": {
+    "lignes": 2,
+    "droite": 62.0709228515625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 62.07088510713086,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 62.07090347079475,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le projet qu’on mijote depuis deux ans": {
+   "430": {
+    "lignes": 2,
+    "droite": 24.87518310546875,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 24.875144807384185,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 24.875163693467183,
+    "gauche": 24.000002466191596,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le road trip des parkings de supermarché": {
+   "430": {
+    "lignes": 2,
+    "droite": 30.29461669921875,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 30.294563845887705,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 30.29459891709527,
+    "gauche": 24.000002466191596,
+    "fs": 28,
+    "n": 2
+   }
+  },
+  "Le road trip en Meuse": {
+   "430": {
+    "lignes": 2,
+    "droite": 42.8160400390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 42.81600324151662,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 42.81601393768181,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le road trip des plus beaux ronds-points": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.415069580078125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.41504034146512,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 33.415036462642746,
+    "gauche": 24.000002466191596,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le road trip des zones pavillonnaires": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.415069580078125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.41504034146512,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 33.415036462642746,
+    "gauche": 24.000002466191596,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le road trip des sous-préfectures": {
+   "430": {
+    "lignes": 2,
+    "droite": 34.983367919921875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 34.98333538617792,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 34.98336553768526,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le road trip des ZAC": {
+   "430": {
+    "lignes": 2,
+    "droite": 42.8160400390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 42.81600324151662,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 42.81601393768181,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le road trip des zones commerciales": {
+   "430": {
+    "lignes": 2,
+    "droite": 24.249542236328125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 24.249497496382116,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 24.249553311047183,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "Le road trip des aires de repos": {
+   "430": {
+    "lignes": 2,
+    "droite": 42.8160400390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 42.81600324151662,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 42.81601393768181,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le mariage de Philippine et Pascal": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.378387451171875,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.378356733374567,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 25.378363114652014,
+    "gauche": 24.000002466191596,
+    "fs": 33,
+    "n": 2
+   }
+  },
+  "Le mariage de Huguette et Jean-Roch": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.730224609375,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.730178037891147,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 26.730223763728983,
+    "gauche": 24.000002466191596,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le mariage de Blandine et Bruno-Stanislas": {
+   "430": {
+    "lignes": 3,
+    "droite": 77.29254150390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 77.29253094151704,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 77.29254319226307,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Nadine et Bernard-Guy": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.730224609375,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.730178037891147,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 26.730223763728983,
+    "gauche": 24.000002466191596,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le mariage de Monique et Didier-Régis": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.8497314453125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.84968845184896,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 33.84970658485487,
+    "gauche": 24.000002466191596,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Chantal et Jean-Guy": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.730224609375,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.730178037891147,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 26.730223763728983,
+    "gauche": 24.000002466191596,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le mariage de Fabienne et Thierry-Alain": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.358551025390625,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.358487789428068,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 25.35852568600202,
+    "gauche": 24.000002466191596,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Corinne et Michel-Régis": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.476043701171875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.475996910093794,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 28.47604773067215,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "Le mariage de Raymonde et Gérard-Yves": {
+   "430": {
+    "lignes": 3,
+    "droite": 36.514129638671875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 36.5141168273853,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 36.51412372513308,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Gisèle et Rodolphe": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.757537841796875,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.75747361600253,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 28.757538839434897,
+    "gauche": 24.000002466191596,
+    "fs": 33,
+    "n": 2
+   }
+  },
+  "Le mariage de Huguette et Mireille": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.43426513671875,
+    "gauche": 24,
+    "fs": 32,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.43421320230047,
+    "gauche": 23.99999861893346,
+    "fs": 32,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 25.434268595392908,
+    "gauche": 24.000002466191596,
+    "fs": 32,
+    "n": 2
+   }
+  },
+  "Le mariage de Ginette et Gisèle": {
+   "430": {
+    "lignes": 2,
+    "droite": 43.593963623046875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 43.5939242637432,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 43.59396174566906,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le mariage de Jean-Roch et Jean-Guy": {
+   "430": {
+    "lignes": 2,
+    "droite": 30.90966796875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 30.90962336371748,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 30.9096794320854,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "Le mariage de Didier-Régis et Rodolphe": {
+   "430": {
+    "lignes": 2,
+    "droite": 27.21685791015625,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 27.21683251059278,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 27.216831880952,
+    "gauche": 24.000002466191596,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Bruno-Stanislas et Pascal": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.00811767578125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.008058625558487,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 26.00811130415911,
+    "gauche": 24.000002466191596,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Thierry-Alain et Bernard-Guy": {
+   "430": {
+    "lignes": 3,
+    "droite": 77.29254150390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 77.29253094151704,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 77.29254319226307,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Michel-Régis et Gérard-Yves": {
+   "430": {
+    "lignes": 3,
+    "droite": 77.29254150390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 77.29253094151704,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   },
+   "iphone": {
+    "lignes": 3,
+    "droite": 77.29254319226307,
+    "gauche": 24.000002466191596,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Jean-Noël et Alain-Gilbert": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.574005126953125,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.57396445073347,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 26.57397896585188,
+    "gauche": 24.000002466191596,
+    "fs": 28,
+    "n": 2
+   }
+  },
+  "Le mariage de Guy": {
+   "430": {
+    "lignes": 2,
+    "droite": 43.593963623046875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 43.5939242637432,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 43.59396174566906,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "L’UTMB du dimanche": {
+   "430": {
+    "lignes": 2,
+    "droite": 49.047576904296875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 49.04755040227911,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 49.04757144865328,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le voyage aux 42 onglets ouverts": {
+   "430": {
+    "lignes": 2,
+    "droite": 24.653411865234375,
+    "gauche": 24,
+    "fs": 32,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 24.653379664194183,
+    "gauche": 23.99999861893346,
+    "fs": 32,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 24.653395267624948,
+    "gauche": 24.000002466191596,
+    "fs": 32,
+    "n": 2
+   }
+  },
+  "Le dîner des inconnus connus": {
+   "430": {
+    "lignes": 2,
+    "droite": 27.736328125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 27.736312633157834,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 27.73632203899789,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "La traversée des Pyrénées": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.898681640625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.898665086658344,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   },
+   "iphone": {
+    "lignes": 2,
+    "droite": 26.89866156699348,
+    "gauche": 24.000002466191596,
+    "fs": 34,
+    "n": 2
+   }
+  }
+ }
+}

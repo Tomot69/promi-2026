@@ -1,0 +1,12 @@
+
+── ÉCARTS DE POSITION (> 3 px) : 0
+
+── ÉCARTS DE STYLE : 0
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+✅ SECTION 2 AU CRITÈRE  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0

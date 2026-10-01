@@ -1,0 +1,447 @@
+md5 app.html a543d1e196b42378d16a462cdcabd769  19:07:57
+=== redteam_ecrans.py  rc=1  155s
+Traceback (most recent call last):
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_ecrans.py", line 456, in <module>
+    batterie(th)
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_ecrans.py", line 54, in batterie
+    pg.goto(_url()); pg.wait_for_timeout(5200)
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/sync_api/_generated.py", line 9612, in goto
+    self._sync(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_page.py", line 557, in goto
+    return await self._main_frame.goto(**locals_to_params(locals()))
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_frame.py", line 156, in goto
+    await self._channel.send(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.goto: Timeout 30000ms exceeded.
+Call log:
+  - navigating to "file:///Users/macbookpro/Documents/IA%20projetcs/Promi/Promi%20App/Promi%202026/app.html", waiting until "load"
+=== redteam.py  rc=0  103s
+titres et blocs alignes a gauche           OK  
+la barre Peaufiner ouvre et referme        OK  
+rien ne traine hors du tiroir              OK  
+un tap ailleurs referme                    OK  
+les deux modes basculent et restent accordes OK  
+Sombre / Clair de l epreuve                OK  
+le QR s active depuis le tiroir            OK  
+les formats changent et le pied suit       OK  
+Visibles / Tous reagit                     OK  
+Inviter present dans le tiroir             OK  
+le bouton rond relaie Partager             OK  
+le mot-marque alterne                      OK  
+aucun recouvrement                         OK  
+le ✕ ferme                                 OK  
+aucune erreur JS                           OK  
+
+15/15
+=== redteam2.py  rc=0  29s
+la barre est en bas, sous Peaufiner, dans le cadre OK  
+rangee Le Noyau presente                     OK  
+rangee Le texte presente                     OK  
+bouton QR present                            OK  
+le Noyau se pose et change de taille         OK  
+le Noyau se masque                           OK  
+Sans texte reagit                            OK  
+Visibles reagit                              OK  
+le QR bascule                                OK  
+aucune erreur JS                             OK  
+
+10/10
+=== redteam3.py  rc=0  56s
+Sombre -> Clair change l'image                 OK  
+Clair -> Sombre change l'image                 OK  
+QR active change l'image                       OK  
+QR desactive change l'image                    OK  
+format Carre change l'image                    OK  
+format Story change l'image                    OK  
+Noyau pose change l'image                      OK  
+Noyau Grand change l'image                     OK  
+Avec le chiffre change l'image                 OK  
+Noyau masque change l'image                    OK  
+mode Mes Promi change l'image                  OK  
+Sans texte change l'image                      OK  
+Avec texte change l'image                      OK  
+masquer un Promi bascule son encart            OK  
+mode Ma Toile change l'image                   OK  
+le logo bascule en signature                   OK  
+le Noyau ne pose aucun fond (centre intact)    OK  
+aucune erreur JS                               OK  
+
+18/18
+=== redteam_demande.py  rc=0  25s
+l'API du cycle existe                        OK  
+une demande ne pose PAS de dalle             OK  
+elle n'entre pas dans les compteurs          OK  
+elle est listee en attente                   OK  
+accepter fait apparaitre la dalle            OK  
+accepter la sort de l'attente                OK  
+accepter la compte comme un Promi            OK  
+accepter n'agit qu'une fois                  OK  
+l'acceptation nourrit le Fil                 OK  
+une demande expire apres un mois             OK  
+l'expiration ne notifie rien                 OK  
+une demande expiree quitte l'attente         OK  
+il n'existe pas d'etat « refusee »           OK  
+une demande allume la pastille du Fil        OK  
+sa vignette est dans la brume                OK  
+un seul geste la rend reelle                 OK  
+aucun bouton refuser dans la fiche           OK  
+accepter dissipe la brume                    OK  
+aucune erreur JS                             OK  
+
+19/19
+=== redteam_toile.py  rc=0  91s
+Toile.renderTo existe                      OK  
+renderTo rend une image                    OK  {'ok': True, 'w': 780, 'h': 1688, 'teintes': 250, 'ech': 82290}
+les dalles sont aux bonnes positions       OK  10/10 concordent · ecarts [1, 1, 56, 13, 1, 1, 1, 0]
+renderTo utilise les vrais germes          OK  
+planter des Promi change l'apercu          OK  hash 235659245 -> 234773739
+Mes Promi : poser le Noyau recompose la planche OK  
+Mes Promi : la planche ECRIT des intitules OK  18 -> 18 intitules
+Mes Promi : les intitules restent          OK  les memes mots
+Mes Promi : retirer le Noyau recompose     OK  
+Ma Toile : le Noyau se pose                OK  
+le % s'affiche                             OK  chiffre composé : 33%
+le % porte la double encre terracotta      OK  encres : #F07A2E #3A54FF #F3EFE6
+le % porte la double encre bleue           OK  décalages : [[-0.116, 0.074], [0.095, -0.047], [0, 0]]
+petit : le chiffre tient dans le trou      OK  trou 49 · texte jusqu a 37
+moyen : le chiffre tient dans le trou      OK  trou 69 · texte jusqu a 52
+grand : le chiffre tient dans le trou      OK  trou 91 · texte jusqu a 78
+aucune erreur JS                           OK  []
+
+17/17
+=== redteam_geste.py  rc=0  72s
+Ma Toile : le Noyau se deplace au doigt      OK  
+l'anneau est peint a sa nouvelle place       OK  
+l'aimant de la ligne du QR attire            OK  
+Mes Promi : le bloc change de case           OK  
+le bloc reste dans la grille                 OK  
+un tap simple ne deplace rien                OK  
+Mes Promi : l'anneau est peint               OK  
+Mes Promi : le % est peint                   OK  
+le cadrage ne suit pas le Noyau              OK  
+Mes Promi : le Noyau centre sur la hauteur du bloc OK  
+Mes Promi : la reorganisation est animee     OK  
+la reorganisation est progressive            OK  
+aucune erreur JS                             OK  
+
+13/13
+=== redteam_verbe.py  rc=0  44s
+light : la phrase montre son verbe (Je promets)      OK  h=41.1 txt='je me promets'
+light : la phrase montre son verbe (Promets-moi)     OK  h=43.9 txt='je promets'
+light : la bascule mène à un vrai bouton             OK  bouton={'f': 1, 'h': 58, 'vis': True}
+dark : la phrase montre son verbe (Je promets)       OK  h=43.9 txt='je me promets'
+dark : la phrase montre son verbe (Promets-moi)      OK  h=43.9 txt='je promets'
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 58, 'vis': True}
+
+6/6
+=== redteam_filets.py  rc=0  204s
+page+ promi [light]    OK
+page+ nuee [light]     OK
+page+ draft [light]    OK
+fiche a-tenir [light]  OK
+fiche tenue [light]    OK
+fiche nuee [light]     OK
+page+ promi [dark]     OK
+page+ nuee [dark]      OK
+page+ draft [dark]     OK
+fiche a-tenir [dark]   OK
+fiche tenue [dark]     OK
+fiche nuee [dark]      OK
+
+OK — 0 filet(s) parasite(s)
+=== redteam_vide.py  rc=0  289s
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+
+══ tour 2 · thème dark ══
+fiche tenue [dark]                             OK  
+fiche à tenir [dark]                           OK  
+fiche en cours [dark]                          OK  
+fiche chiche [dark]                            OK  
+gardé repris [dark]                            OK  
+page + [dark]                                  OK  
+Peaufiner [dark]                               OK  
+Index [dark]                                   OK  
+Fil [dark]                                     OK  
+Nuée [dark]                                    OK  
+Nuée vide [dark]                               OK  
+Peaufiner Nuée [dark]                          OK  
+l'instant arrive [dark]                        OK  
+l'instant referme [dark]                       OK  
+l'instant après [dark]                         OK  
+
+══ tour 2 · thème light ══
+fiche tenue [light]                            OK  
+fiche à tenir [light]                          OK  
+fiche en cours [light]                         OK  
+fiche chiche [light]                           OK  
+gardé repris [light]                           OK  
+page + [light]                                 OK  
+Peaufiner [light]                              OK  
+Index [light]                                  OK  
+Fil [light]                                    OK  
+Nuée [light]                                   OK  
+Nuée vide [light]                              OK  
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_air.py  rc=0  207s
+
+
+  ✅  L'AIR EST INTACT — 436 paires de textes, 38 écrans, deux thèmes.
+=== redteam_champ.py  rc=0  154s
+
+  fiche tenue [dark]             OK
+  fiche à tenir [dark]           OK
+  fiche en cours [dark]          OK
+  fiche chiche [dark]            OK
+  chiche lancé [dark]            OK
+  gardé de côté [dark]           OK
+  page + [dark]                  OK
+  page + Nuée [dark]             OK
+  Index 2 [dark]                 OK
+  Index 3 [dark]                 OK
+  Fil [dark]                     OK
+  Nuée [dark]                    OK
+  Nuée vide [dark]               OK
+  l'instant arrive [dark]        OK
+  l'instant referme [dark]       OK
+  l'instant après [dark]         OK
+  fiche tenue [light]            OK
+  fiche à tenir [light]          OK
+  fiche en cours [light]         OK
+  fiche chiche [light]           OK
+  chiche lancé [light]           OK
+  gardé de côté [light]          OK
+  page + [light]                 OK
+  page + Nuée [light]            OK
+  Index 2 [light]                OK
+  Index 3 [light]                OK
+  Fil [light]                    OK
+  Nuée [light]                   OK
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== releve-design.py  rc=0  53s
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_fonctions.py  rc=0  116s
+
+── planter ──
+le + ouvre la page de création                             OK  
+on plante un Promi au geste                                OK  
+la bascule mène à un vrai bouton « planter »               OK  
+
+── tenir sa parole ──
+le geste est à l'écran sur une fiche à tenir               OK  
+on tient sa parole au geste, depuis la fiche               OK  
+
+── tenir depuis le FIL, sans ouvrir de fiche ──
+le Fil au repos est celui du cadre 76 — aucune rangée      OK  
+le Fil sait quel bandeau porte « TENIR »                   OK  
+l'appui maintenu fait paraître le geste « TENIR »          OK  
+l'appui maintenu fait paraître « REPORTER »                OK  
+« TENIR » depuis le Fil tient vraiment la parole           OK  
+
+── chercher, trier ──
+on cherche dans l'Index                                    OK  
+le tri de l'Index s'ouvre                                  OK  
+le menu de tri ne couvre pas tout l'écran                  OK  
+
+── ouvrir ──
+une carte d'Index ouvre sa fiche                           OK  
+un bandeau du Fil porte l'ouverture de sa fiche            OK  
+un bandeau du Fil ouvre sa fiche                           OK  
+
+── peaufiner ──
+Peaufiner s'ouvre sur une fiche                            OK  
+Peaufiner se referme                                       OK  
+
+── les écrans du dock ──
+Studio s'ouvre                                             OK  
+Aura s'ouvre                                               OK  
+Partager s'ouvre                                           OK  
+Réglages s'ouvre                                           OK  
+
+22/22
+=== redteam_polices.py  rc=0  77s
+══ FACES EMBARQUÉES (lues dans app.html) ══
+   apfel      400  normal
+   apfelmid   500  normal
+   bricolage  600  normal
+   bricolage  700  normal
+   fraunces   600  italic
+   fraunces   600  normal
+
+══ COUPLES DEMANDÉS ET EMBARQUÉS ══
+   apfelmid   500  normal   270 élément(s)
+   bricolage  700  normal   237 élément(s)
+   bricolage  600  normal   51 élément(s)
+   apfel      400  normal   26 élément(s)
+   fraunces   600  normal   7 élément(s)
+
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)
+=== redteam_superpo.py  rc=0  414s
+
+recouvrements de texte : 0
+=== releve-aura.py  rc=1  144s
+
+écarts de position > 3 px    0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+données                      0
+les huit acquis              0
+densité                      0
+air de la colonne            0
+la matière                   4
+    [sombre] la dalle « monter la serre avant les gelées » est illisible : ΔE 14.6 (plancher 15)
+    [sombre] la dalle « arroser tous les soirs » est illisible : ΔE 6.0 (plancher 15)
+    [clair] la dalle « monter la serre avant les gelées » est illisible : ΔE 14.8 (plancher 15)
+    [clair] la dalle « arroser tous les soirs » est illisible : ΔE 5.8 (plancher 15)
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 5 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi
+   air [sombre]         phrase → disques : 2 l. 27.1 · 1 l. 27.7 · 2 l. 27.1 · 1 l. 27.7 · 1 l. 27.7 · à l'encre 2 l. 29.0 · 1 l. 28.0 · libellés → bouton 28.5 · la colonne défile de 129 pt
+   matière [sombre]     boule ↔ page 71.5 (décidé 76) · contour 59.5 · dalles : 5 de face, |Δlum| la plus faible 10.8, médiane 16.3 · ΔE 50 20 15 6 28
+   air [clair]          phrase → disques : 2 l. 27.1 · 1 l. 27.7 · 2 l. 27.1 · 1 l. 27.7 · 1 l. 27.7 · à l'encre 2 l. 29.0 · 1 l. 28.0 · libellés → bouton 28.5 · la colonne défile de 129 pt
+   matière [clair]      boule ↔ page 85.5 (décidé 85) · contour 94.7 · dalles : 5 de face, |Δlum| la plus faible 19.3, médiane 29.7 · ΔE 44 20 15 6 25
+   1 · rotation lente   0.0532 rad/s sur 2 s (décidé 0.0524, un tour en 2 min)
+   2 · prise, droite    Δlac +0.810 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.003 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.604 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 10.05 rad/s · éteint à 5.2 s · puis 0.0527 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 50 ms (dont peintre 14.5 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 39.8 → 35.7 → 30.1 → 21.5 → 9.4 → 0.6 → lisse · DERNIER PAS 0.55 niveau (médiane des 10 d'avant 0.94) · 126 images · empreinte retirée à 3.27 s
+   4 · toucher          p 1.000 à 250 ms, 1.000 à 950 ms · sous le doigt 98.4 % des pixels changent, hors de portée 1.60 %, bruit 0.00 % · revenu ≈ 3.3 s après le lâcher, écart au repos 0.00 %
+   5 · trace            en attente au lâcher : 1 · 0 → 1 caresse(s), gardée(s) : 1 · au repos, 11.4 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 3.49 s lâché sur place, 0.40 s lancé (11 %)
+   8 · personne         toucher sur « Marion » → ouvre « Marion », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.14 rad, personne d'ouvert
+   8 bis · dalle        glissement de 30 pt sur « rapporter le livre » → rien d'ouvert · toucher → fiche affichée (Promi 139, attendu 139) · ✕ → Aura
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.934
+   6 bis · monde        Studio encre → pixel · 5 dalles, 5 jugées · distance à la plantation / au courant : rapporter le livre 0.001/0.126 · arroser tous les s 0.000/0.171 · monter la serre av 0.000/0.073 · le grand plongeoir 0.001/0.111 · planter un arbre 0.000/0.191
+
+palier 110000 · médiane 14.2 ms · 2193 images · plus longue image pendant l'élan : 50 ms (dont peintre 14.5 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 1 décision(s) · à la réouverture : palier 75000
+
+❌  4 ÉCARTS
+=== releve-fiche-personne.py  rc=0  107s
+1 présence       28/28
+2 composition    20/20
+3 cotes          40/40
+4 polices        24/24
+5 infractions    104/104
+6 lisibilité     4/4
+7 libellés       16/16
+7 vide           2/2
+8 portes         14/14
+9 gestes         6/6
+
+✅  LA FICHE DE LA PERSONNE AU VERT — 258 contrôles
+=== redteam_nuee.py  rc=0  260s
+══ 20 écrans lus dans le §12 ══
+
+==============================================================================
+  LA FICHE DE NUÉE — les cinq lignes du critère, sur 24 écrans
+==============================================================================
+  écarts de position > 3 px .........  0
+  écarts de style ...................  0
+  ÉLÉMENTS DÉCLARÉS MAIS PAS PEINTS .  0
+  collisions de blocs ...............  0
+  débordements ......................  0
+==============================================================================
+
+  ✅  24 écran(s) · 0 écart(s)
+=== releve-S1-fiches.py  rc=0  41s
+
+==============================================================================
+  SECTION 1 — LES FICHES · les cinq lignes du critère
+==============================================================================
+  le corps descend pour dégager le plateau : 18 · 20 px
+      dark  promi_atenir     +20  (les autres : +16)
+      dark  promi_encours    +20  (les autres : +16)
+      dark  promi_tenue      +18  (les autres : +16)
+      dark  chiche_lance     +20  (les autres : +16)
+      dark  chiche_releve    +20  (les autres : +16)
+      dark  chiche_duo       +20  (les autres : +16)
+      light promi_atenir     +20  (les autres : +16)
+      light promi_encours    +20  (les autres : +16)
+      light promi_tenue      +18  (les autres : +16)
+      light chiche_lance     +20  (les autres : +16)
+      light chiche_releve    +20  (les autres : +16)
+      light chiche_duo       +20  (les autres : +16)
+  écarts de position > 3 px ............ 0
+  écarts de style ...................... 0
+  ÉLÉMENTS DÉCLARÉS MAIS PAS PEINTS .... 0
+  collisions de blocs .................. 0
+  éléments au-delà de y = 844 .......... 0
+==============================================================================
+
+  ✅  SECTION 1 AU VERT.
+=== releve-S2-peaufiner.py  rc=0  32s
+
+── ÉCARTS DE POSITION (> 3 px) : 0
+
+── ÉCARTS DE STYLE : 0
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+✅ SECTION 2 AU CRITÈRE  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+=== releve-S3-page-plus.py  rc=0  148s
+
+── ÉCARTS DE POSITION (> 3 px) : 0
+
+── ÉCARTS DE STYLE : 0
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+✅  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+   écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire
+=== releve-S4-index-fil.py  rc=0  24s
+
+═══ SECTION 4 · INDEX ET FIL — 6 écrans mesurés ═══
+    les 8 cartes isolées du §5, par la loi du §3.9 bis  : 8/8
+    la borne du §2.5 mord où il faut, et nulle part ailleurs : oui
+
+écarts de position > 3 px    0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+
+✅  SECTION 4 AU VERT
+=== releve-S5-instant.py  rc=0  43s
+
+═══ SECTION 5 · L'INSTANT — 6 écrans mesurés ═══
+
+écarts de position > 3 px    0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+
+✅  SECTION 5 AU VERT
+FIN 19:56:05

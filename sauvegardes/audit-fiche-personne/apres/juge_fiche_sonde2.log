@@ -1,0 +1,34 @@
+1 présence       28/28
+2 composition    20/20
+3 cotes          40/40
+4 polices        16/16
+5 infractions    84/104
+6 lisibilité     3/5
+7 libellés       16/16
+7 vide           2/2
+8 portes         10/10
+9 gestes         6/6
+   ❌ 5 infractions · [dark · Rachel · Aura] « harmonie » n'est pas à l'écran  
+   ❌ 5 infractions · [dark · Rachel · Aura] « rayonnante » n'est pas à l'écran  
+   ❌ 5 infractions · [dark · Rachel · Aura] « votre » n'est pas à l'écran  
+   ❌ 5 infractions · [dark · Rachel · Aura] l'ancien #psSub ne se voit pas  {'boite': True, 'touche': True, 'txt': 'votre harmonie : rayonnante · ta parole '}
+   ❌ 5 infractions · [dark · Rachel · Aura] l'ancien .ps-head ne se voit pas  {'boite': True, 'touche': True, 'txt': '·votre harmonie : rayonnante · ta parole'}
+   ❌ 5 infractions · [dark · Nico · vide] « harmonie » n'est pas à l'écran  
+   ❌ 5 infractions · [dark · Nico · vide] « rayonnante » n'est pas à l'écran  
+   ❌ 5 infractions · [dark · Nico · vide] « votre » n'est pas à l'écran  
+   ❌ 5 infractions · [dark · Nico · vide] l'ancien #psSub ne se voit pas  {'boite': True, 'touche': True, 'txt': 'votre harmonie : rayonnante · ta parole '}
+   ❌ 5 infractions · [dark · Nico · vide] l'ancien .ps-head ne se voit pas  {'boite': True, 'touche': True, 'txt': '·votre harmonie : rayonnante · ta parole'}
+   ❌ 5 infractions · [light · Rachel · Aura] « harmonie » n'est pas à l'écran  
+   ❌ 5 infractions · [light · Rachel · Aura] « rayonnante » n'est pas à l'écran  
+   ❌ 5 infractions · [light · Rachel · Aura] « votre » n'est pas à l'écran  
+   ❌ 5 infractions · [light · Rachel · Aura] l'ancien #psSub ne se voit pas  {'boite': True, 'touche': True, 'txt': 'votre harmonie : rayonnante · ta parole '}
+   ❌ 5 infractions · [light · Rachel · Aura] l'ancien .ps-head ne se voit pas  {'boite': True, 'touche': True, 'txt': '·votre harmonie : rayonnante · ta parole'}
+   ❌ 6 lisibilité · [light · Rachel · Aura] « votre harmonie : rayonna » : 11.0 px, sous 12 (§6)  
+   ❌ 6 lisibilité · [light · Rachel · Aura] 18 textes à l'écran, tous ≥ 12 px, ≥ 72 %, fill = color  
+   ❌ 5 infractions · [light · Nico · vide] « harmonie » n'est pas à l'écran  
+   ❌ 5 infractions · [light · Nico · vide] « rayonnante » n'est pas à l'écran  
+   ❌ 5 infractions · [light · Nico · vide] « votre » n'est pas à l'écran  
+   ❌ 5 infractions · [light · Nico · vide] l'ancien #psSub ne se voit pas  {'boite': True, 'touche': True, 'txt': 'votre harmonie : rayonnante · ta parole '}
+   ❌ 5 infractions · [light · Nico · vide] l'ancien .ps-head ne se voit pas  {'boite': True, 'touche': True, 'txt': '·votre harmonie : rayonnante · ta parole'}
+
+❌  22 ÉCART(S) sur 247 contrôles

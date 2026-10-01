@@ -1,0 +1,125 @@
+{
+ "OrbiteMoteur": [
+  "atlasAlpha",
+  "GRAIN_POIL",
+  "ORI",
+  "NIVA",
+  "NVAR",
+  "semisPavage",
+  "batIles",
+  "peint",
+  "m_gestes",
+  "retoucheTraces"
+ ],
+ "_aura": [
+  "etat",
+  "relisse",
+  "K",
+  "G",
+  "PALIERS",
+  "MOTS",
+  "mot",
+  "palier",
+  "verifie",
+  "fige",
+  "reglePeau",
+  "reglePeauC",
+  "regleSol",
+  "sansIles",
+  "vue"
+ ],
+ "a_opts": false,
+ "K": {
+  "bo": {
+   "x": 47,
+   "y": 89.4,
+   "d": 296
+  },
+  "R": 0.392,
+  "nx": {
+   "y": 454,
+   "h": 107
+  },
+  "mo": {
+   "y": 633
+  },
+  "lgH": 16,
+  "bt": {
+   "y": 762,
+   "h": 60
+  },
+  "motY": 403.7,
+  "motL": 23.625,
+  "marge": 22,
+  "toi": {
+   "d": 78,
+   "arc": 8,
+   "ph": 48
+  },
+  "pers": {
+   "d": 58,
+   "arc": 6,
+   "ph": 36
+  },
+  "lgY": 589,
+  "Rpt": 116.03200000000001,
+  "AIR_MOT": 26.67500000000001,
+  "AIR": 28,
+  "PLI": 844,
+  "MOISSON": 6,
+  "RANG2": 5,
+  "PEAU_T": 1,
+  "PEAU_CREME": 0.6
+ },
+ "G": {
+  "AUTO": 0.05235987755833334,
+  "TANG": 0.32,
+  "TANGMAX": 1.15,
+  "TAU": 0.55,
+  "VMAX": 11,
+  "TAP": 6,
+  "SENS": 0.013461803640375067,
+  "MONTE": 0.09,
+  "IMP_TAU": 1.35,
+  "COMBLE": 0.42,
+  "DOUBLE": 350,
+  "TRACES": 9,
+  "W": 0.27,
+  "TOUR_TAU": 1.1,
+  "BUDGET": 16.7
+ },
+ "PALIERS": [
+  110000,
+  90000,
+  75000
+ ],
+ "toileCount": 15,
+ "monde": {
+  "m": "encre",
+  "p": "signal",
+  "h": 0
+ },
+ "plusScreen": {
+  "show": true,
+  "clientW": 422,
+  "clientH": 876,
+  "scrollH": 876,
+  "overflowY": "auto"
+ },
+ "hero_avant": {
+  "display": "none",
+  "w": 688,
+  "h": 344,
+  "parent": "plusScreen"
+ },
+ "hero_apres": {
+  "rect": [
+   390,
+   195
+  ],
+  "parentClient": [
+   422,
+   876
+  ]
+ }
+}

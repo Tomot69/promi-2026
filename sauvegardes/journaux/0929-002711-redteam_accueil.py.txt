@@ -1,0 +1,24 @@
+[clair] 1 · plateau, barre, + à leurs cotes                  OK  plateau {'x': 24, 'y': 40, 'w': 342, 'h': 60} · barre {'x': 24, 'y': 736, 'w': 342, 'h': 88} · + {'x': 161, 'y': 746, 'w': 68, 'h': 68}
+[clair] 1 · entrées centrées 70·124|266·320, + sur leur ligne OK  centres [70.0, 124.0, 266.0, 320.0] · écart de ligne [0.0, 0.0, 0.0, 0.0]
+[clair] 1 · libellés 12, aucune paire sous 8                 OK  airs [11.9, 23.0, 19.4, 33.5, 16.5]
+[clair] 4 · ce qui part : barre d'état, Toile/Index, Cercle, libellé vertical, voiles, flous OK  statusbar False · viewSwitch False · cercle False · sidelabel False · voiles False · flous 0
+[clair] 6 · la ligne « N paroles · N Nuées » est retirée (Q347) OK  
+[clair] 2 · les six portes ouvrent leur écran, au doigt      OK  mortes : []
+[clair] 3 · le + ouvre les natures sur place, reste un +     OK  {'ouvert': True, 'sheet': False, 'tr': 'none'}
+[clair] 3 · chaque nature ouvre SA phrase, trois ordres, au doigt OK  ratées : []
+[clair] 5 · l'appui long sur la Toile n'ouvre pas le Studio  OK  Studio ouvert : False
+[clair] 7 · toute dalle atteignable, dix zooms               OK  18 dalles · inatteignables {}
+[clair] 5 · un mode signature enregistré ne se rallume pas   OK  sigmode False
+[sombre] 1 · plateau, barre, + à leurs cotes                 OK  plateau {'x': 24, 'y': 40, 'w': 342, 'h': 60} · barre {'x': 24, 'y': 736, 'w': 342, 'h': 88} · + {'x': 161, 'y': 746, 'w': 68, 'h': 68}
+[sombre] 1 · entrées centrées 70·124|266·320, + sur leur ligne OK  centres [70.0, 124.0, 266.0, 320.0] · écart de ligne [0.0, 0.0, 0.0, 0.0]
+[sombre] 1 · libellés 12, aucune paire sous 8                OK  airs [11.9, 23.0, 19.4, 33.5, 16.5]
+[sombre] 4 · ce qui part : barre d'état, Toile/Index, Cercle, libellé vertical, voiles, flous OK  statusbar False · viewSwitch False · cercle False · sidelabel False · voiles False · flous 0
+[sombre] 6 · la ligne « N paroles · N Nuées » est retirée (Q347) OK  
+[sombre] 2 · les six portes ouvrent leur écran, au doigt     OK  mortes : []
+[sombre] 3 · le + ouvre les natures sur place, reste un +    OK  {'ouvert': True, 'sheet': False, 'tr': 'none'}
+[sombre] 3 · chaque nature ouvre SA phrase, trois ordres, au doigt OK  ratées : []
+[sombre] 5 · l'appui long sur la Toile n'ouvre pas le Studio OK  Studio ouvert : False
+[sombre] 7 · toute dalle atteignable, dix zooms              OK  18 dalles · inatteignables {}
+[sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False
+
+22/22

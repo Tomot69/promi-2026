@@ -1,0 +1,68 @@
+=== redteam_tokens.py
+46/46
+=== redteam_ecrans.py
+150/150
+=== redteam.py
+15/15
+=== redteam2.py
+10/10
+=== redteam3.py
+18/18
+=== redteam_demande.py
+19/19
+=== redteam_toile.py
+18/18
+=== redteam_geste.py
+Mes Promi : le % est peint                   KO  
+12/13
+=== redteam_verbe.py
+6/6
+=== redteam_filets.py
+=== redteam_vide.py
+61/61
+=== redteam_air.py
+  ✅  L'AIR EST INTACT — 512 paires de textes, 38 écrans, deux thèmes.
+=== redteam_champ.py
+32/32
+=== redteam_gens.py
+38/38
+=== redteam_tuiles.py
+64/64
+=== redteam_dalle_figee.py
+4/4
+=== redteam_reperage.py
+16/16
+=== redteam_nuee_entree.py
+24/24
+=== redteam_accueil.py
+22/22
+=== redteam_zoom.py
+16/16
+=== redteam_studio_geste.py
+13/13
+=== redteam_apercus.py
+  ✅ A le fond du Studio porte de la matière colorée [dark]  (44.8 %)
+  ✅ B les graines de l'aperçu se déclarent [dark]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [dark]
+  ✅ D la deuxième ouverture vaut la première [dark]  (72/72, 46.3 %)
+  ✅ E le fond d'un aperçu est celui de la vraie Toile [dark]  (sombre #201908 · clair #F1ECD9)
+  ✅ A le fond du Studio porte de la matière colorée [light]  (44.2 %)
+  ✅ B les graines de l'aperçu se déclarent [light]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [light]
+  ✅ D la deuxième ouverture vaut la première [light]  (72/72, 45.3 %)
+  ✅ E le fond d'un aperçu est celui de la vraie Toile [light]  (sombre #201908 · clair #F1ECD9)
+✅  10/10
+=== redteam_nuee_dalle.py
+[sombre] 10 · au doigt, sa dalle ouvre SA fiche                    KO  None · False
+37/38
+=== redteam_decoupe.py
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_polices.py
+=== redteam_nuee.py
+  ✅  24 écran(s) · 0 écart(s)
+=== redteam_aveugle.py
+26/26
+=== releve-aura.py
+❌  1 ÉCARTS
+fini

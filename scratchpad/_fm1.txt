@@ -1,0 +1,62 @@
+
+══ thème dark ══
+Fil · carte 1 « TENU À DEUX » [dark] · la courbe est celle du cadre 76 OK  écart maximal 0.69 px sur 62 relevés · 0 ordonnée(s) sans trait
+Fil · carte 1 « TENU À DEUX » [dark] · épaisseur 7     OK  mesurée 7
+Fil · carte 1 « TENU À DEUX » [dark] · le trait va jusqu'en bas OK  dernier point à 124 sur 128
+Fil · carte 2 « TENUE » [dark] · la courbe est celle du cadre 76 OK  écart maximal 0.69 px sur 62 relevés · 0 ordonnée(s) sans trait
+Fil · carte 2 « TENUE » [dark] · épaisseur 7           OK  mesurée 7
+Fil · carte 2 « TENUE » [dark] · le trait va jusqu'en bas OK  dernier point à 124 sur 128
+Fil · carte 3 « À TENIR » [dark] · la courbe est celle du cadre 76 OK  écart maximal 1.02 px sur 45 relevés · 17 ordonnée(s) sans trait
+Fil · carte 3 « À TENIR » [dark] · épaisseur 7         OK  mesurée 7
+Fil · carte 3 « À TENIR » [dark] · le plein s'arrête à la moitié OK  plein jusqu'à 66, moitié 64
+Fil · carte 4 « À TENIR » [dark] · la courbe est celle du cadre 76 OK  écart maximal 1.02 px sur 45 relevés · 17 ordonnée(s) sans trait
+Fil · carte 4 « À TENIR » [dark] · épaisseur 7         OK  mesurée 7
+Fil · carte 4 « À TENIR » [dark] · le plein s'arrête à la moitié OK  plein jusqu'à 66, moitié 64
+Fil · carte 5 « À TENIR » [dark] · la courbe est celle du cadre 76 KO  écart maximal 86.37 px sur 15 relevés · 47 ordonnée(s) sans trait
+Fil · carte 5 « À TENIR » [dark] · épaisseur 7         OK  mesurée 7
+Fil · carte 5 « À TENIR » [dark] · le plein s'arrête à la moitié KO  plein jusqu'à 22, moitié 64
+Index · carte 2 « À TENIR » [dark] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 2 « À TENIR » [dark] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 3 « À TENIR » [dark] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 3 « À TENIR » [dark] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 4 « À TENIR » [dark] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 4 « À TENIR » [dark] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 5 « À TENIR » [dark] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 5 « À TENIR » [dark] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 6 « À TENIR » [dark] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 6 « À TENIR » [dark] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+
+══ thème light ══
+Fil · carte 1 « TENU À DEUX » [light] · la courbe est celle du cadre 76 OK  écart maximal 0.69 px sur 62 relevés · 0 ordonnée(s) sans trait
+Fil · carte 1 « TENU À DEUX » [light] · épaisseur 7    OK  mesurée 7
+Fil · carte 1 « TENU À DEUX » [light] · le trait va jusqu'en bas OK  dernier point à 124 sur 128
+Fil · carte 2 « TENUE » [light] · la courbe est celle du cadre 76 OK  écart maximal 0.69 px sur 62 relevés · 0 ordonnée(s) sans trait
+Fil · carte 2 « TENUE » [light] · épaisseur 7          OK  mesurée 7
+Fil · carte 2 « TENUE » [light] · le trait va jusqu'en bas OK  dernier point à 124 sur 128
+Fil · carte 3 « À TENIR » [light] · la courbe est celle du cadre 76 OK  écart maximal 1.02 px sur 45 relevés · 17 ordonnée(s) sans trait
+Fil · carte 3 « À TENIR » [light] · épaisseur 7        OK  mesurée 7
+Fil · carte 3 « À TENIR » [light] · le plein s'arrête à la moitié OK  plein jusqu'à 66, moitié 64
+Fil · carte 4 « À TENIR » [light] · la courbe est celle du cadre 76 OK  écart maximal 1.02 px sur 45 relevés · 17 ordonnée(s) sans trait
+Fil · carte 4 « À TENIR » [light] · épaisseur 7        OK  mesurée 7
+Fil · carte 4 « À TENIR » [light] · le plein s'arrête à la moitié OK  plein jusqu'à 66, moitié 64
+Fil · carte 5 « À TENIR » [light] · la courbe est celle du cadre 76 KO  écart maximal 86.37 px sur 15 relevés · 47 ordonnée(s) sans trait
+Fil · carte 5 « À TENIR » [light] · épaisseur 7        OK  mesurée 7
+Fil · carte 5 « À TENIR » [light] · le plein s'arrête à la moitié KO  plein jusqu'à 22, moitié 64
+Index · carte 2 « À TENIR » [light] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 2 « À TENIR » [light] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 3 « À TENIR » [light] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 3 « À TENIR » [light] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 4 « À TENIR » [light] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 4 « À TENIR » [light] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 5 « À TENIR » [light] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 5 « À TENIR » [light] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+Index · carte 6 « À TENIR » [light] · épaisseur 5,5 × l/173 OK  mesurée 5 pour 5.2 attendue · 22 abscisse(s) sans trait
+Index · carte 6 « À TENIR » [light] · le plein s'arrête à la moitié OK  plein jusqu'à 84, moitié 82
+
+46/50
+
+COURBES QUI NE SONT PAS CELLES DU CADRE :
+   · Fil · carte 5 « À TENIR » [dark] · la courbe est celle du cadre 76
+   · Fil · carte 5 « À TENIR » [dark] · le plein s'arrête à la moitié
+   · Fil · carte 5 « À TENIR » [light] · la courbe est celle du cadre 76
+   · Fil · carte 5 « À TENIR » [light] · le plein s'arrête à la moitié

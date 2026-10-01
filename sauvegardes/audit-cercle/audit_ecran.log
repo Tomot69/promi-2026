@@ -1,0 +1,108 @@
+
+════ dark_gratuit
+  reglages        couches=settingsScreen  nœuds visibles=65  ✦ Le Cercle
+  peauf_promi     couches=detailPoster  nœuds visibles=45  ✦ Le Cercle
+  peauf_chiche    couches=detailPoster  nœuds visibles=48  ✦ Le Cercle
+  peauf_nuee      couches=detailPoster  nœuds visibles=57  
+  pageplus_peauf  couches=createSheet  nœuds visibles=47  
+  aura            couches=auraScreen  nœuds visibles=32  
+  aura_aide       couches=auraHelp,auraScreen  nœuds visibles=82  Avec le Cercle | En activant ton Cercle, ton Noyau s’entoure d’une où chaque proche prend sa place. Ta parole se lit alors — l’
+  studio          couches=studioScreen  nœuds visibles=47  
+  personne        couches=personSheet  nœuds visibles=34  
+  accueil         couches=  nœuds visibles=29  
+  studio terrazzo  data-w · classes=screen s-studio st-plat stp-inv show world-locked stp-verrou · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio gravure   data-w · classes=screen s-studio st-plat stp-inv world-locked stp-verrou show · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio sillons   data-w · classes=screen s-studio st-plat stp-inv world-locked stp-verrou show · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio eclats    aucun [data-w] pour eclats — portes vues : encre,touffe,mosaique,braille,pixel,terrazzo,gravure,sillons · classes=screen s-studio st-plat stp-inv world-locked stp-verrou show · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio encre     data-w · classes=screen s-studio st-plat stp-inv stp-verrou show · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  porte #cercleTopBtn                      doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 0}
+  porte #openPlusTop                       doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-encart           doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-cercle .s2-reg   doigt→div.s2-cercle                Cercle ouvert=False  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #ahCercleCta                       doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #stLockCta                         doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #karmaCercle                       doigt→invisible (0×0)              Cercle ouvert=False  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  pinceaux : 12 dans le rail, 8 en pointillé · choisir « Doublé » → Doublé · prix à l’écran [] · Peaufiner « LE TRAITPleinPleinCouléPeignéSecTresséFrangéDoubléFenduCrantéVrilléSeméPerlé »
+
+════ dark_cercle
+  reglages        couches=settingsScreen  nœuds visibles=60  
+  peauf_promi     couches=detailPoster  nœuds visibles=42  
+  peauf_chiche    couches=detailPoster  nœuds visibles=45  
+  peauf_nuee      couches=detailPoster  nœuds visibles=57  
+  pageplus_peauf  couches=createSheet  nœuds visibles=47  
+  aura            couches=auraScreen  nœuds visibles=32  
+  aura_aide       couches=auraHelp,auraScreen  nœuds visibles=77  Avec le Cercle | En activant ton Cercle, ton Noyau s’entoure d’une où chaque proche prend sa place. Ta parole se lit alors — l’
+  studio          couches=studioScreen  nœuds visibles=61  Adopte ce design — 1 € | avec Le Cercle
+  personne        couches=personSheet  nœuds visibles=34  
+  accueil         couches=  nœuds visibles=29  
+  studio terrazzo  data-w · classes=screen s-studio st-plat show · 
+  studio gravure   data-w · classes=screen s-studio st-plat show · 
+  studio sillons   data-w · classes=screen s-studio st-plat show · 
+  studio eclats    aucun [data-w] pour eclats — portes vues : encre,touffe,mosaique,braille,pixel,terrazzo,gravure,sillons · classes=screen s-studio st-plat show · #stpNom « Sillons ✦ »
+  studio encre     data-w · classes=screen s-studio st-plat show · 
+  porte #cercleTopBtn                      doigt→soi                          Cercle ouvert=True  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #openPlusTop                       doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-encart           doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-cercle .s2-reg   doigt→soi                          Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #ahCercleCta                       doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #stLockCta                         doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #karmaCercle                       doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  pinceaux : 12 dans le rail, 8 en pointillé · choisir « Doublé » → Doublé · prix à l’écran [] · Peaufiner « LE TRAITPleinPleinCouléPeignéSecTresséFrangéDoubléFenduCrantéVrilléSeméPerlé »
+
+════ light_gratuit
+  reglages        couches=settingsScreen  nœuds visibles=63  ✦ Membre du Cercle ✓
+  peauf_promi     couches=detailPoster  nœuds visibles=45  ✦ Le Cercle
+  peauf_chiche    couches=detailPoster  nœuds visibles=48  ✦ Le Cercle
+  peauf_nuee      couches=detailPoster  nœuds visibles=57  
+  pageplus_peauf  couches=createSheet  nœuds visibles=47  
+  aura            couches=auraScreen  nœuds visibles=32  
+  aura_aide       couches=auraHelp,auraScreen  nœuds visibles=82  Avec le Cercle | En activant ton Cercle, ton Noyau s’entoure d’une où chaque proche prend sa place. Ta parole se lit alors — l’
+  studio          couches=studioScreen  nœuds visibles=54  Terrazzo ✦ | ✦
+  personne        couches=personSheet  nœuds visibles=34  
+  accueil         couches=  nœuds visibles=29  
+  studio terrazzo  data-w · classes=screen s-studio st-plat stp-clair show world-locked stp-verrou · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio gravure   data-w · classes=screen s-studio st-plat stp-clair world-locked stp-verrou show · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio sillons   data-w · classes=screen s-studio st-plat stp-clair world-locked stp-verrou show · #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio eclats    aucun [data-w] pour eclats — portes vues : encre,touffe,mosaique,braille,pixel,terrazzo,gravure,sillons · classes=screen s-studio st-plat stp-clair world-locked stp-verrou show · #stpNom « Terrazzo ✦ » | #stBuyTx « Adopte ce design — 1 € » | div.sc-s « avec Le Cercle »
+  studio encre     data-w · classes=screen s-studio st-plat stp-clair show · 
+  porte #cercleTopBtn                      doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #openPlusTop                       doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-encart           doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-cercle .s2-reg   doigt→div.s2-cercle                Cercle ouvert=False  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #ahCercleCta                       doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #stLockCta                         doigt→soi                          Cercle ouvert=True  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #karmaCercle                       doigt→invisible (0×0)              Cercle ouvert=False  premium False→False  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  pinceaux : 12 dans le rail, 8 en pointillé · choisir « Doublé » → Doublé · prix à l’écran [] · Peaufiner « LE TRAITPleinPleinCouléPeignéSecTresséFrangéDoubléFenduCrantéVrilléSeméPerlé »
+
+════ light_cercle
+  reglages        couches=settingsScreen  nœuds visibles=60  
+  peauf_promi     couches=detailPoster  nœuds visibles=42  
+  peauf_chiche    couches=detailPoster  nœuds visibles=45  
+  peauf_nuee      couches=detailPoster  nœuds visibles=57  
+  pageplus_peauf  couches=createSheet  nœuds visibles=47  
+  aura            couches=auraScreen  nœuds visibles=32  
+  aura_aide       couches=auraHelp,auraScreen  nœuds visibles=77  Avec le Cercle | En activant ton Cercle, ton Noyau s’entoure d’une où chaque proche prend sa place. Ta parole se lit alors — l’
+  studio          couches=studioScreen  nœuds visibles=61  Adopte ce design — 1 € | avec Le Cercle
+  personne        couches=personSheet  nœuds visibles=34  
+  accueil         couches=  nœuds visibles=29  
+  studio terrazzo  data-w · classes=screen s-studio st-plat stp-clair show · 
+  studio gravure   data-w · classes=screen s-studio st-plat stp-clair show · 
+  studio sillons   data-w · classes=screen s-studio st-plat stp-clair show · 
+  studio eclats    aucun [data-w] pour eclats — portes vues : encre,touffe,mosaique,braille,pixel,terrazzo,gravure,sillons · classes=screen s-studio st-plat stp-clair show · #stpNom « Sillons ✦ »
+  studio encre     data-w · classes=screen s-studio st-plat stp-clair show · 
+  porte #cercleTopBtn                      doigt→soi                          Cercle ouvert=True  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #openPlusTop                       doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-encart           doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #detailPoster .s2-cercle .s2-reg   doigt→soi                          Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #ahCercleCta                       doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #stLockCta                         doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  porte #karmaCercle                       doigt→invisible (0×0)              Cercle ouvert=False  premium True→True  héros={'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+  pinceaux : 12 dans le rail, 8 en pointillé · choisir « Doublé » → Doublé · prix à l’écran [] · Peaufiner « LE TRAITPleinPleinCouléPeignéSecTresséFrangéDoubléFenduCrantéVrilléSeméPerlé »
+
+  achat #buyYear  doigt→soi  → premium=True couches=auraScreen toast=«  » · après rechargement premium=False
+
+  achat #buyMonth  doigt→soi  → premium=True couches=auraScreen toast=«  » · après rechargement premium=False
+  adoption 1 €  doigt→soi  owned []→['gravure'] monde encre→gravure · après rechargement owned=[] monde=encre
+  #resetApp  doigt→soi  → premium=True toast=«  »
+
+écrit : /Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/sauvegardes/audit-cercle/ecran/audit.json + 83 captures

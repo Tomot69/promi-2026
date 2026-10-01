@@ -1,0 +1,20 @@
+Toile.renderTo existe                      OK  
+renderTo rend une image                    OK  {'ok': True, 'w': 780, 'h': 1688, 'teintes': 180, 'ech': 82290}
+les dalles sont aux bonnes positions       OK  18 Promi · 0 hors de leur cellule [] · monde encre
+chaque dalle porte sa couleur dans l aperçu OK  écart min par cellule, max 6 · fautives []
+renderTo utilise les vrais germes          OK  
+planter des Promi change l'apercu          OK  hash 179457996 -> 195160148
+Mon Folio : poser la Pelote recompose la planche OK  
+Mes Promi : la planche ECRIT des intitules OK  21 -> 21 intitules
+Mon Folio : aucun intitule ne disparait    OK  les memes 21 cases, aucune sans mot
+Mon Folio : retirer la Pelote recompose    OK  
+Ma Toile : le Noyau se pose                OK  
+le % s'affiche                             OK  chiffre composé : 33%
+le % porte la double encre terracotta      OK  encres : #DD4D23 #82AEF8 #F3E7D1
+le % porte la double encre de nature       OK  attendu #82AEF8 · encres écrites : #DD4D23 #82AEF8 #F3E7D1
+petit : le chiffre tient dans le trou      OK  trou 42 · texte jusqu a 41
+moyen : le chiffre tient dans le trou      OK  trou 58 · texte jusqu a 56
+grand : le chiffre tient dans le trou      OK  trou 77 · texte jusqu a 75
+aucune erreur JS                           OK  []
+
+18/18

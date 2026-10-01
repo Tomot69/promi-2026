@@ -1,0 +1,29 @@
+══ 20 écrans lus dans le §12 ══
+
+==============================================================================
+  LA FICHE DE NUÉE — les cinq lignes du critère, sur 24 écrans
+==============================================================================
+  écarts de position > 3 px .........  74
+       Deux — thème sombre · ligne de fil 1 y · 502.0 · 588.0
+       Deux — thème sombre · ligne de fil 2 y · 588.0 · 674.0
+       Deux — thème clair · ligne de fil 1 y · 502.0 · 588.0
+       Deux — thème clair · ligne de fil 2 y · 588.0 · 674.0
+       Trois — thème sombre · ligne de fil 1 y · 476.0 · 588.0
+       Trois — thème sombre · ligne de fil 2 y · 562.0 · 674.0
+       Trois — thème sombre · ligne de fil 3 y · 648.0 · 760.0
+       Trois — thème clair · ligne de fil 1 y · 476.0 · 588.0
+  écarts de style ...................  0
+  ÉLÉMENTS DÉCLARÉS MAIS PAS PEINTS .  20
+       Nuée vide — thème sombre · TRAIT · aucune ligne peinte sur l'onde
+       Nuée vide — thème clair · TRAIT · aucune ligne peinte sur l'onde
+       Un Promi — thème sombre · TRAIT · aucune ligne peinte sur l'onde
+       Un Promi — thème clair · TRAIT · aucune ligne peinte sur l'onde
+       Deux — thème sombre · TRAIT · aucune ligne peinte sur l'onde
+       Deux — thème clair · TRAIT · aucune ligne peinte sur l'onde
+       Trois — thème sombre · TRAIT · aucune ligne peinte sur l'onde
+       Trois — thème clair · TRAIT · aucune ligne peinte sur l'onde
+  collisions de blocs ...............  0
+  débordements ......................  0
+==============================================================================
+
+  ❌  24 écran(s) · 94 écart(s)

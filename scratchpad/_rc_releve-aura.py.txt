@@ -1,0 +1,62 @@
+
+═══ L'AURA — l'Orbite dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    2
+    [sombre] 8 dalles tenues au lieu de 5 (5 tenues ; seconde rangée dès 5)
+    [clair] 8 dalles tenues au lieu de 5 (5 tenues ; seconde rangée dès 5)
+écarts de style              20
+    [sombre] Noyau moi : trait 0 au lieu de 8
+    [sombre] Noyau moi : piste  au lieu de #2A2C34 (NEUTRE)
+    [sombre] Noyau Adrien : trait 0 au lieu de 6
+    [sombre] Noyau Adrien : piste  au lieu de #2A2C34 (NEUTRE)
+    [sombre] Noyau Marion : trait 0 au lieu de 6
+    [sombre] Noyau Marion : piste  au lieu de #2A2C34 (NEUTRE)
+    [sombre] Noyau Nico : trait 0 au lieu de 6
+    [sombre] Noyau Nico : piste  au lieu de #2A2C34 (NEUTRE)
+    [sombre] Noyau Rachel : trait 0 au lieu de 6
+    [sombre] Noyau Rachel : piste  au lieu de #2A2C34 (NEUTRE)
+    [clair] Noyau moi : trait 0 au lieu de 8
+    [clair] Noyau moi : piste  au lieu de #DED7C6 (NEUTRE)
+    [clair] Noyau Adrien : trait 0 au lieu de 6
+    [clair] Noyau Adrien : piste  au lieu de #DED7C6 (NEUTRE)
+    [clair] Noyau Marion : trait 0 au lieu de 6
+    [clair] Noyau Marion : piste  au lieu de #DED7C6 (NEUTRE)
+    [clair] Noyau Nico : trait 0 au lieu de 6
+    [clair] Noyau Nico : piste  au lieu de #DED7C6 (NEUTRE)
+    [clair] Noyau Rachel : trait 0 au lieu de 6
+    [clair] Noyau Rachel : piste  au lieu de #DED7C6 (NEUTRE)
+collisions                   0
+débordements                 0
+présence peinte              0
+données                      2
+    [sombre] « Ce que tu as tenu » porte [141, 132], qui ne sont pas mes paroles tenues
+    [clair] « Ce que tu as tenu » porte [141, 132], qui ne sont pas mes paroles tenues
+les huit acquis              0
+densité                      0
+air de la colonne            0
+la matière                   0
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 8 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi, 141 ?, 132 ?, 129 chiche
+   air [sombre]         phrase → disques : 2 l. 27.1 · 1 l. 27.7 · 2 l. 27.1 · 1 l. 27.7 · 1 l. 27.7 · à l'encre 2 l. 29.0 · 1 l. 28.0 · libellés → bouton 28.0 · la colonne défile de 282 pt
+   matière [sombre]     boule ↔ page 71.8 (décidé 76) · contour 59.5 · dalles : 5 de face, |Δlum| la plus faible 11.1, médiane 30.5 · ΔE 33 53 29 31 31
+   air [clair]          phrase → disques : 2 l. 27.1 · 1 l. 27.7 · 2 l. 27.1 · 1 l. 27.7 · 1 l. 27.7 · à l'encre 2 l. 29.0 · 1 l. 28.0 · libellés → bouton 28.0 · la colonne défile de 282 pt
+   matière [clair]      boule ↔ page 118.8 (décidé 116) · contour 142.2 · dalles : 5 de face, |Δlum| la plus faible 49.2, médiane 61.6 · ΔE 22 30 23 30 43
+   1 · rotation lente   0.0639 rad/s sur 2 s (décidé 0.0628, un tour en 100 s)
+   2 · prise, droite    Δlac +0.811 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.005 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.604 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 6.99 rad/s · éteint à 5.0 s · puis 0.0627 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 100 ms (dont peintre 13.8 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 40.1 → 36.1 → 31.2 → 23.0 → 11.2 → 0.3 → lisse · DERNIER PAS 0.35 niveau (médiane des 10 d'avant 1.01) · 124 images · empreinte retirée à 3.13 s
+   4 · toucher          p 1.000 à 250 ms, 1.000 à 950 ms · sous le doigt 98.3 % des pixels changent, hors de portée 1.18 %, bruit 0.00 % · revenu ≈ 3.1 s après le lâcher, écart au repos 0.00 %
+   5 · trace            en attente au lâcher : 1 · 0 → 1 caresse(s), gardée(s) : 1 · au repos, 11.1 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 3.33 s lâché sur place, 0.55 s lancé (17 %)
+   8 · personne         toucher sur « Adrien » → ouvre « Adrien », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.10 rad, personne d'ouvert
+   8 bis · dalle        glissement de 30 pt sur « rapporter le livre » → rien d'ouvert · toucher → fiche affichée (Promi 139, attendu 139) · ✕ → Aura
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.880
+   6 bis · monde        Studio encre → pixel · 8 dalles, 8 jugées · distance à la plantation / au courant : rapporter le livre 0.000/0.162 · arroser tous les s 0.001/0.844 · monter la serre av 0.000/0.242 · le grand plongeoir 0.000/0.272 · planter un arbre 0.000/0.155 · rapporter la perce 0.000/0.157 · récupérer les plan 0.000/0.547 · le grand plongeoir 0.000/0.272
+
+palier 110000 · médiane 13.9 ms · 2331 images · plus longue image pendant l'élan : 100 ms (dont peintre 13.8 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 1 décision(s) · à la réouverture : palier 75000
+
+❌  24 ÉCARTS

@@ -1,0 +1,130 @@
+{
+ "P1_dark": {
+  "terrazzo_gratuit": {
+   "classes": "screen s-studio st-plat stp-inv show world-locked stp-verrou",
+   "visible": [
+    "Terrazzo",
+    "Adopte ce design — 1 €",
+    "Ou débloque-les tous",
+    "avec Le Cercle"
+   ],
+   "monde": "encre",
+   "encart": "✦ Le Cercle"
+  },
+  "doigt_cta": "soi",
+  "doigt_annee": "soi",
+  "apres_achat": {
+   "couches": "auraScreen",
+   "premium": true,
+   "isPremium": true,
+   "toast": "",
+   "studio": "screen s-studio st-plat world-locked stp-verrou",
+   "owned": [],
+   "monde": "encre",
+   "pinceau": "Plein",
+   "ls": "promi_orbite_ordre,promi_orbite_vus,promi_sigdemo,promi_state,promi_studio_glisse,promi_theme"
+  },
+  "studio_rouvert": {
+   "classes": "screen s-studio st-plat world-locked stp-verrou show",
+   "visible": [
+    "Encre",
+    "Adopte ce design — 1 €",
+    "Ou débloque-les tous",
+    "avec Le Cercle"
+   ],
+   "monde": "encre",
+   "encart": "✦ Membre du Cercle ✓"
+  }
+ },
+ "P2_dark": {
+  "classes": "screen s-studio st-plat stp-inv show",
+  "visible": [
+   "Encre"
+  ],
+  "monde": "encre",
+  "encart": "✦ Le Cercle"
+ },
+ "P3_dark": {
+  "monde_toile": "terrazzo",
+  "studio": {
+   "classes": "screen s-studio st-plat stp-inv show",
+   "visible": [
+    "Terrazzo ✦"
+   ],
+   "monde": "terrazzo",
+   "encart": "✦ Membre du Cercle ✓"
+  }
+ },
+ "P4_dark": {
+  "texte": "✦ Membre du Cercle ✓tout Promi débloqué · merci›",
+  "vis": true
+ },
+ "P5_dark": {
+  "avant": "mosaique",
+  "apres": "encre"
+ },
+ "P1_light": {
+  "terrazzo_gratuit": {
+   "classes": "screen s-studio st-plat stp-clair stp-inv show world-locked stp-verrou",
+   "visible": [
+    "Terrazzo",
+    "Adopte ce design — 1 €",
+    "Ou débloque-les tous",
+    "avec Le Cercle"
+   ],
+   "monde": "encre",
+   "encart": "✦ Le Cercle"
+  },
+  "doigt_cta": "soi",
+  "doigt_annee": "soi",
+  "apres_achat": {
+   "couches": "auraScreen",
+   "premium": true,
+   "isPremium": true,
+   "toast": "",
+   "studio": "screen s-studio st-plat stp-clair world-locked stp-verrou",
+   "owned": [],
+   "monde": "encre",
+   "pinceau": "Plein",
+   "ls": "promi_orbite_ordre,promi_orbite_vus,promi_sigdemo,promi_state,promi_studio_glisse,promi_theme"
+  },
+  "studio_rouvert": {
+   "classes": "screen s-studio st-plat stp-clair world-locked stp-verrou show",
+   "visible": [
+    "Encre",
+    "Adopte ce design — 1 €",
+    "Ou débloque-les tous",
+    "avec Le Cercle"
+   ],
+   "monde": "encre",
+   "encart": "✦ Membre du Cercle ✓"
+  }
+ },
+ "P2_light": {
+  "classes": "screen s-studio st-plat stp-clair stp-inv show",
+  "visible": [
+   "Encre"
+  ],
+  "monde": "encre",
+  "encart": "✦ Le Cercle"
+ },
+ "P3_light": {
+  "monde_toile": "terrazzo",
+  "studio": {
+   "classes": "screen s-studio st-plat stp-clair stp-inv show",
+   "visible": [
+    "Terrazzo ✦"
+   ],
+   "monde": "terrazzo",
+   "encart": "✦ Membre du Cercle ✓"
+  }
+ },
+ "P4_light": {
+  "texte": "✦ Membre du Cercle ✓tout Promi débloqué · merci›",
+  "vis": true
+ },
+ "P5_light": {
+  "avant": "mosaique",
+  "apres": "encre"
+ }
+}

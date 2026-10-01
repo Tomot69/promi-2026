@@ -1,0 +1,169 @@
+# -*- coding: utf-8 -*-
+"""L'AIR ENTRE LES TEXTES — deux blocs ne se rapprochent jamais.
+
+   POURQUOI CE CONTRÔLE EXISTE (décision Tom, 29 août 2026, au soir)
+   ─────────────────────────────────────────────────────────────────
+   « Tu as grossi les textes sans reprendre les écarts. » Monter une taille — 21→23,
+   38→42, 12,5→13,5 — ne déplace AUCUN `top` : c'est la HAUTEUR des blocs qui grandit,
+   vers le bas. L'air se mange donc en silence, partout où la cote suivante avait été
+   calculée pour l'ancienne taille. Mesuré à la livraison : `à qui → titre` était tombé
+   de 6,9 à 4,7 px sur les CINQ états de fiche, et le mot d'un gardé de côté n'avait plus
+   que 9 px sous sa pastille là où le cadre 26 en donne 23.
+
+   Aucun relevé de POSITIONS ne pouvait le voir : les tops n'avaient pas bougé.
+   On mesure donc L'ESPACE RÉEL — bas du bloc A → haut du bloc B — entre deux textes qui
+   se recouvrent horizontalement, sur chaque écran, dans les deux thèmes.
+
+   LA RÈGLE : deux blocs de texte ne sont jamais à moins de leur écart d'origine.
+   La référence est `air-reference.json`, figée après le lot qui l'a corrigée — comme
+   `releve-design.py` fige la sienne. `--figer` la réécrit, et RIEN D'AUTRE ne la réécrit.
+
+   ⚠ CE QU'ON NE MESURE PAS, ET POURQUOI
+   · Les nœuds des AUTRES écrans. Le DOM les garde ; ils ne sont pas « à côté » de ce qu'on
+     regarde. On se scope donc à LA FEUILLE DU DESSUS — celle qui couvre au moins 55 % de
+     l'appareil — exactement comme le balayage de collisions.
+   · La barre Peaufiner (`#dpdTog`), qui est COLLANTE : un fil défile dessous, c'est le
+     dessin. Un écart négatif avec elle ne dit rien.
+   · Les conteneurs : on ne garde que la feuille du dessus qui porte des mots, sinon on
+     mesurerait un bloc contre son propre enfant.
+"""
+import sys, json, os
+from playwright.sync_api import sync_playwright
+
+APP = os.environ.get('APP_AIR', "http://127.0.0.1:8752/app.html")
+REF = 'air-reference.json'
+TOL = 0.6          # le bruit de rendu : en dessous, ce n'est pas un resserrement
+
+ECRANS = [
+ ('fiche tenue',   "()=>{closeAll(); const p=promises.filter(q=>q.title==='planter un arbre')[0]; if(p)openDetail(p.id);}"),
+ ('fiche à tenir', "()=>{closeAll(); const p=promises.filter(q=>q.title==='faire les crêpes')[0]; if(p)openDetail(p.id);}"),
+ ('fiche en cours',"()=>{closeAll(); const p=promises.filter(q=>q.title==='nager le mardi')[0]; if(p)openDetail(p.id);}"),
+ ('fiche chiche',  "()=>{closeAll(); const p=promises.filter(q=>q.title==='le grand plongeoir')[0]; if(p)openDetail(p.id);}"),
+ ('chiche lancé',  "()=>{closeAll(); const p=promises.filter(q=>q.title==='courir dimanche')[0]; if(p)openDetail(p.id);}"),
+ ('gardé de côté', "()=>{closeAll(); const p=promises.filter(q=>q.draft)[0]; if(p)openDetail(p.id);}"),
+ ('page +',        "()=>{closeAll(); document.getElementById('createBtn').click(); setTimeout(()=>{const x=[...document.querySelectorAll('#createSheet .tile')][0]; if(x)x.click();},300);}"),
+ ('Peaufiner',     "()=>{closeAll(); const p=promises.filter(q=>!q.draft)[0]; openDetail(p.id); setTimeout(()=>{const x=document.querySelector('#dpDetails .dpd-tog'); if(x)x.click();},900);}"),
+ ('Index 2',       "()=>{closeAll(); setView('toile'); ouvrirIndex(); window._s4Trois=false; if(window._s4Index)_s4Index();}"),
+ ('Index 3',       "()=>{closeAll(); setView('toile'); ouvrirIndex(); window._s4Trois=true; if(window._s4Index)_s4Index();}"),
+ ('Fil',           "()=>{closeAll(); setView('fil');}"),
+ ('Nuée',          "()=>{closeAll(); openEssaim('potager');}"),
+ ('Nuée vide',     "()=>{closeAll(); openEssaim('atelier');}"),
+ ('Peaufiner Nuée',"()=>{closeAll(); openEssaim('potager'); setTimeout(()=>{const x=document.querySelector('#dpDetails .dpd-tog'); if(x)x.click();},900);}"),
+ ("l'instant arrive",  "()=>{closeAll(); const p=promises.filter(q=>q.title==='faire les crêpes')[0]; if(p){openDetail(p.id); setTimeout(()=>{try{window._instantJoue('arrive');}catch(e){}},900);}}"),
+ ("l'instant referme", "()=>{closeAll(); const p=promises.filter(q=>q.title==='faire les crêpes')[0]; if(p){openDetail(p.id); setTimeout(()=>{try{window._instantJoue('referme');}catch(e){}},900);}}"),
+ ("l'instant après",   "()=>{closeAll(); const p=promises.filter(q=>q.title==='faire les crêpes')[0]; if(p){openDetail(p.id); setTimeout(()=>{try{window._instantJoue('apres');}catch(e){}},900);}}"),
+ ('Réglages',      "()=>{closeAll(); document.getElementById('settingsBtn').click();}"),
+]
+
+MESURE = r"""()=>{
+  const dev=document.getElementById('device').getBoundingClientRect(), sc=dev.width/390;
+  const EN_LIGNE=['B','I','EM','STRONG','SPAN','SMALL','BR','U','A','CODE','SUP','SUB'];
+  /* LA FEUILLE DU DESSUS : celle qui couvre au moins 55 % de l'appareil, la dernière dans
+     l'ordre du document. Sans ce cadrage, on compare le titre d'une fiche au bouton de
+     l'Aura, qui vit sur un autre écran — le DOM les garde tous. */
+  let hote=document.getElementById('device'), best=-1;
+  document.querySelectorAll('#device .sheet, #device .poster, #device .scr, #device [id]')
+    .forEach(e=>{ const c=getComputedStyle(e);
+      if(c.display==='none'||c.visibility==='hidden'||+c.opacity<0.5) return;
+      const r=e.getBoundingClientRect();
+      const part=(r.width*r.height)/(dev.width*dev.height);
+      if(part>=0.55 && part<=1.02){ const z=+c.zIndex||0;
+        const rang=z*1000 + [...document.querySelectorAll('*')].indexOf(e)/1e6;
+        if(rang>=best){ best=rang; hote=e; } } });
+  const COLLANT=['dpdTog','dpDetails'];      /* la barre Peaufiner : un fil défile dessous */
+  const bl=[];
+  hote.querySelectorAll('*').forEach(e=>{
+    const c=getComputedStyle(e);
+    if(c.display==='none'||c.visibility==='hidden'||+c.opacity<0.05) return;
+    for(let n=e; n && n!==hote; n=n.parentNode)
+      if(n.id && COLLANT.includes(n.id)) return;
+    const t=(e.textContent||'').trim(); if(!t) return;
+    for(const k of e.children){ if(!EN_LIGNE.includes(k.tagName) && (k.textContent||'').trim()) return; }
+    const r=e.getBoundingClientRect();
+    const x=(r.x-dev.x)/sc, y=(r.y-dev.y)/sc, w=r.width/sc, h=r.height/sc;
+    if(w<12||h<6||y<-40||y>884) return;
+    bl.push({cle:(e.id? '#'+e.id : '.'+(''+e.className).split(' ').filter(Boolean).slice(0,2).join('.')),
+             mot:t.slice(0,20), x, y, w, h});
+  });
+  bl.sort((a,b)=>a.y-b.y);
+  const paires=[];
+  for(let i=0;i<bl.length;i++){
+    let best=null;
+    for(let j=0;j<bl.length;j++){
+      if(i===j) continue;
+      const a=bl[i], b=bl[j];
+      if(b.y < a.y+a.h-0.5) continue;
+      const rec=Math.min(a.x+a.w,b.x+b.w)-Math.max(a.x,b.x);
+      if(rec < Math.min(a.w,b.w)*0.34) continue;
+      const g=b.y-(a.y+a.h);
+      if(!best || g<best.g) best={g:g, b:b};
+    }
+    if(best && best.g<200)
+      paires.push([bl[i].cle+'«'+bl[i].mot+'»', best.b.cle+'«'+best.b.mot+'»',
+                   Math.round(best.g*10)/10]);
+  }
+  return paires;
+}"""
+
+def releve(pg, js):
+    pg.evaluate("()=>{if(window.closeAll)closeAll();}"); pg.wait_for_timeout(400)
+    try: pg.evaluate(js)
+    except Exception: pass
+    pg.wait_for_timeout(2000)
+    prec, stable = None, 0
+    for _ in range(20):
+        pg.wait_for_timeout(250)
+        n = pg.evaluate("()=>[...document.querySelectorAll('#device *')]"
+                        ".filter(e=>{const r=e.getBoundingClientRect();return r.width>4&&r.height>4;}).length")
+        stable = stable + 1 if n == prec else 0
+        prec = n
+        if stable >= 2: break
+    pg.wait_for_timeout(250)
+    return pg.evaluate(MESURE)
+
+def passe():
+    out = {}
+    with sync_playwright() as p:
+        b = p.chromium.launch()
+        pg = b.new_page(viewport={'width':430,'height':932}, device_scale_factor=2)
+        pg.goto(APP); pg.wait_for_timeout(6800)
+        pg.evaluate('()=>{var o=document.getElementById("promiOnb");'
+                    'if(o){o.classList.add("gone");o.style.display="none";}}')
+        for th in ('dark','light'):
+            pg.evaluate("(t)=>setTheme(t)", th); pg.wait_for_timeout(500)
+            for nom, js in ECRANS:
+                out['%s [%s]' % (nom, th)] = releve(pg, js)
+        b.close()
+    return out
+
+if __name__ == '__main__':
+    r = passe()
+    if '--figer' in sys.argv:
+        json.dump(r, open(REF,'w'), ensure_ascii=False)
+        print('Référence figée : %d écrans, %d paires de textes.'
+              % (len(r), sum(len(v) for v in r.values())))
+        sys.exit(0)
+    if not os.path.exists(REF):
+        print('Aucune référence. Lance : python3 redteam_air.py --figer'); sys.exit(1)
+    ref = json.load(open(REF))
+    perdu = []
+    for ecr in sorted(r):
+        R = {(a,b): g for a,b,g in ref.get(ecr, [])}
+        for a,b,g in r[ecr]:
+            if (a,b) in R and g < R[(a,b)] - TOL:
+                perdu.append((round(R[(a,b)]-g,1), ecr, a, b, R[(a,b)], g))
+    perdu.sort(reverse=True)
+    n = sum(len(v) for v in r.values())
+    print()
+    if perdu:
+        print("  ❌  %d PAIRE(S) DE TEXTES SE SONT RAPPROCHÉES" % len(perdu))
+        print("      « deux blocs de texte ne doivent jamais être à moins de leur écart"
+              " d'origine »\n")
+        for d, e, a, b, av, ap in perdu[:40]:
+            print('   −%-5s %-24s %-34s → %-30s  (%s → %s)'
+                  % (d, e, a[:34], b[:30], av, ap))
+        if len(perdu) > 40: print('   … et %d autres.' % (len(perdu)-40))
+        print("\n  Si le lot demandait ce resserrement, refige : python3 redteam_air.py --figer")
+        sys.exit(1)
+    print("  ✅  L'AIR EST INTACT — %d paires de textes, %d écrans, deux thèmes."
+          % (n, len(r)))

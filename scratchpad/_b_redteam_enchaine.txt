@@ -1,0 +1,35 @@
+pp_peauf → pp_chiche · mêmes classes                     KO  createSheet : « pp-choix pp-promi sheet show trame » au lieu de « pp pp-promi sheet show trame » | device : « device light » au lieu de « device light
+pp_peauf → pp_chiche · rien en trop                      KO  en trop : Qu’est-ce que tu promets ? · Un Promi · à quelqu'un, ou à toi · CHOISIR → · Un Chiche · un défi lancé
+pp_peauf → pp_chiche · rien de perdu                     KO  perdu : Peaufiner▾ · trace pour planter
+pp_peauf → pp_promi · mêmes classes                      OK  
+pp_peauf → pp_promi · rien en trop                       OK  
+pp_peauf → pp_promi · rien de perdu                      OK  
+fiche_peauf → fiche2 · mêmes classes                     KO  detailPoster : « dp-promi f-atenir mgmt poster s2-ouv show trame tuto-fond » au lieu de « dp-promi f-atenir mgmt poster show trame tuto-fond »
+fiche_peauf → fiche2 · rien en trop                      KO  en trop : ✕ FERMER · À QUI · AVANT · résolue · DANS UNE NUÉE · aucune
+fiche_peauf → fiche2 · rien de perdu                     KO  perdu : trace pour tenir · à Rachel · à · À TENIR · toi
+fiche_peauf → pp_promi · mêmes classes                   OK  
+fiche_peauf → pp_promi · rien en trop                    OK  
+fiche_peauf → pp_promi · rien de perdu                   OK  
+index → fiche · mêmes classes                            OK  
+index → fiche · rien en trop                             OK  
+index → fiche · rien de perdu                            OK  
+fil → fiche · mêmes classes                              OK  
+fil → fiche · rien en trop                               OK  
+fil → fiche · rien de perdu                              OK  
+fiche → index · mêmes classes                            OK  
+fiche → index · rien en trop                             OK  
+fiche → index · rien de perdu                            OK  
+pp_chiche → fiche · mêmes classes                        OK  
+pp_chiche → fiche · rien en trop                         OK  
+pp_chiche → fiche · rien de perdu                        KO  perdu : Qu’est-ce que tu promets ? · Un Promi · à quelqu'un, ou à toi · CHOISIR → · Un Chiche · un défi lancé
+
+17/24
+
+CE QUI NE MARCHE PAS :
+   · pp_peauf → pp_chiche · mêmes classes
+   · pp_peauf → pp_chiche · rien en trop
+   · pp_peauf → pp_chiche · rien de perdu
+   · fiche_peauf → fiche2 · mêmes classes
+   · fiche_peauf → fiche2 · rien en trop
+   · fiche_peauf → fiche2 · rien de perdu
+   · pp_chiche → fiche · rien de perdu

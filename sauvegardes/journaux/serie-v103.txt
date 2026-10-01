@@ -1,0 +1,55 @@
+=== redteam_tuiles.py
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+=== redteam_gens.py
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK  
+
+38/38
+=== redteam_verbe.py
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 60, 'vis': True}
+
+6/6
+=== redteam_accueil.py
+[sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False
+
+22/22
+=== redteam_zoom.py
+[sombre] 8 · supprimer ramène le défaut                        OK  échelle 1.000 (défaut 1.0 pour 20)
+
+16/16
+=== redteam_vide.py
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_champ.py
+  l'instant après [light]        OK
+
+32/32
+=== redteam_nuee_dalle.py
+[clair] aucune erreur JS                                           OK  []
+
+38/38
+=== redteam_nuee_entree.py
+[sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True}
+
+24/24
+=== releve-S3-page-plus.py
+
+✅  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+   écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire
+=== redteam_decoupe.py
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_ecrans.py
+aucune erreur JS [clair]                       OK  
+
+152/152
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_air.py
+
+
+  ✅  L'AIR EST INTACT — 708 paires de textes, 68 écrans, deux thèmes.
+fini

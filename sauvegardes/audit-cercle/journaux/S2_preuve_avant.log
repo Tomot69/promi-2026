@@ -1,0 +1,28 @@
+
+── ÉCARTS DE POSITION (> 3 px) : 4
+     promi                  [dark] Cercle : ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE'] au lieu de ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+     chiche                 [dark] Cercle : ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE'] au lieu de ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+     promi                  [light] Cercle : ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE'] au lieu de ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+     chiche                 [light] Cercle : ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE'] au lieu de ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+
+── ÉCARTS DE STYLE : 12
+     promi                  [dark] NOTE : rayon 59 au lieu de 30 (champ de trois lignes : 30, Q202)
+     promi                  [dark] COMMENTAIRES : rayon 59 au lieu de 30 (champ de trois lignes : 30, Q202)
+     chiche                 [dark] NOTE : rayon 59 au lieu de 30 (champ de trois lignes : 30, Q202)
+     chiche                 [dark] COMMENTAIRES : rayon 52 au lieu de 30 (champ de trois lignes : 30, Q202)
+     nuee                   [dark] DESCRIPTION : rayon 52 au lieu de 30 (champ de trois lignes : 30, Q202)
+     nuee                   [dark] COMMENTAIRES : rayon 52 au lieu de 30 (champ de trois lignes : 30, Q202)
+     promi                  [light] NOTE : rayon 59 au lieu de 30 (champ de trois lignes : 30, Q202)
+     promi                  [light] COMMENTAIRES : rayon 59 au lieu de 30 (champ de trois lignes : 30, Q202)
+     chiche                 [light] NOTE : rayon 59 au lieu de 30 (champ de trois lignes : 30, Q202)
+     chiche                 [light] COMMENTAIRES : rayon 52 au lieu de 30 (champ de trois lignes : 30, Q202)
+     nuee                   [light] DESCRIPTION : rayon 52 au lieu de 30 (champ de trois lignes : 30, Q202)
+     nuee                   [light] COMMENTAIRES : rayon 52 au lieu de 30 (champ de trois lignes : 30, Q202)
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+❌  position 4 · style 12 · collisions 0 · hors cadre 0 · peinture 0

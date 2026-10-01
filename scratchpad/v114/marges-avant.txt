@@ -1,0 +1,125 @@
+✗ soi      375     marge droite 5.9 < gauche 24.0  « finir ce livre avant d’en ouvrir trois »
+✗ soi      iphone  marge droite 5.9 < gauche 24.0  « finir ce livre avant d’en ouvrir trois »
+✗ soi      la mise en page change avec l'écran  « finir ce livre avant d’en ouvrir trois » : [(2, 33), (2, 36), (2, 36)]
+✗ soi      375     marge droite 0.8 < gauche 24.0  « apprendre enfin le nom de mes voisins »
+✗ soi      iphone  marge droite 0.8 < gauche 24.0  « apprendre enfin le nom de mes voisins »
+✗ soi      la mise en page change avec l'écran  « apprendre enfin le nom de mes voisins » : [(2, 33), (2, 36), (2, 36)]
+✗ soi      375     marge droite -60.2 < gauche 24.0  « arroser mes plantes avant qu’elles m’en veuillent »
+✗ soi      iphone  marge droite -60.2 < gauche 24.0  « arroser mes plantes avant qu’elles m’en veuillent »
+✗ soi      la mise en page change avec l'écran  « arroser mes plantes avant qu’elles m’en veuillent » : [(3, 33), (2, 33), (2, 33)]
+✗ soi      375     marge droite 5.5 < gauche 24.0  « prendre des nouvelles avant d’avoir une raison »
+✗ soi      iphone  marge droite 5.5 < gauche 24.0  « prendre des nouvelles avant d’avoir une raison »
+✗ soi      la mise en page change avec l'écran  « prendre des nouvelles avant d’avoir une raison » : [(2, 28), (2, 30), (2, 30)]
+✗ soi      375     marge droite 8.7 < gauche 24.0  « retourner voir cet endroit que j’ai adoré »
+✗ soi      iphone  marge droite 8.7 < gauche 24.0  « retourner voir cet endroit que j’ai adoré »
+✗ soi      la mise en page change avec l'écran  « retourner voir cet endroit que j’ai adoré » : [(2, 34), (2, 36), (2, 36)]
+✗ soi      375     marge droite -30.4 < gauche 24.0  « commencer sans attendre le bon moment »
+✗ soi      iphone  marge droite -30.4 < gauche 24.0  « commencer sans attendre le bon moment »
+✗ soi      la mise en page change avec l'écran  « commencer sans attendre le bon moment » : [(2, 30), (2, 36), (2, 36)]
+✗ soi      430     marge droite 23.9 < gauche 24.0  « apprendre à jouer d’un instrument »
+✗ soi      375     marge droite 1.6 < gauche 24.0  « apprendre à jouer d’un instrument »
+✗ soi      iphone  marge droite 1.6 < gauche 24.0  « apprendre à jouer d’un instrument »
+✗ soi      la mise en page change avec l'écran  « apprendre à jouer d’un instrument » : [(2, 35), (2, 36), (2, 36)]
+✗ demander 375     marge droite -79.1 < gauche 24.0  « me prévenir si j’ai quelque chose entre les dents »
+✗ demander iphone  marge droite -79.1 < gauche 24.0  « me prévenir si j’ai quelque chose entre les dents »
+✗ demander la mise en page change avec l'écran  « me prévenir si j’ai quelque chose entre les dents » : [(3, 30), (2, 33), (2, 33)]
+✗ demander 375     marge droite 7.3 < gauche 24.0  « me dire si je commence à dire « ça fait sens » »
+✗ demander iphone  marge droite -82.0 < gauche 24.0  « me dire si je commence à dire « ça fait sens » »
+✗ demander la mise en page change avec l'écran  « me dire si je commence à dire « ça fait sens » » : [(3, 30), (2, 28), (2, 29)]
+✗ demander 375     marge droite -78.5 < gauche 24.0  « me dire si je commence à dire « disruptif » »
+✗ demander iphone  marge droite -78.5 < gauche 24.0  « me dire si je commence à dire « disruptif » »
+✗ demander la mise en page change avec l'écran  « me dire si je commence à dire « disruptif » » : [(3, 30), (2, 32), (2, 32)]
+✗ demander 375     marge droite 7.3 < gauche 24.0  « me dire si je commence à parler de « synergies » »
+✗ demander iphone  marge droite 7.3 < gauche 24.0  « me dire si je commence à parler de « synergies » »
+✗ demander la mise en page change avec l'écran  « me dire si je commence à parler de « synergies » » : [(3, 30), (2, 28), (2, 28)]
+✗ demander 430     marge droite 23.8 < gauche 24.0  « me prévenir quand tu auras changé d’avis »
+✗ demander 375     marge droite 5.1 < gauche 24.0  « me prévenir quand tu auras changé d’avis »
+✗ demander iphone  marge droite 5.1 < gauche 24.0  « me prévenir quand tu auras changé d’avis »
+✗ demander la mise en page change avec l'écran  « me prévenir quand tu auras changé d’avis » : [(2, 32), (2, 34), (2, 34)]
+✗ demander 375     marge droite -77.1 < gauche 24.0  « me dire si je deviens comme mes parents »
+✗ demander iphone  marge droite -77.1 < gauche 24.0  « me dire si je deviens comme mes parents »
+✗ demander la mise en page change avec l'écran  « me dire si je deviens comme mes parents » : [(2, 29), (2, 34), (2, 34)]
+✗ demander 375     marge droite -68.9 < gauche 24.0  « me rappeler cette histoire quand on sera vieux »
+✗ demander iphone  marge droite -68.9 < gauche 24.0  « me rappeler cette histoire quand on sera vieux »
+✗ demander la mise en page change avec l'écran  « me rappeler cette histoire quand on sera vieux » : [(3, 30), (2, 34), (2, 34)]
+✗ demander 375     marge droite -9.4 < gauche 24.0  « me rappeler de ne pas devenir raisonnable »
+✗ demander iphone  marge droite -9.4 < gauche 24.0  « me rappeler de ne pas devenir raisonnable »
+✗ demander la mise en page change avec l'écran  « me rappeler de ne pas devenir raisonnable » : [(2, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite 10.6 < gauche 24.0  « L’apéro qu’on repousse depuis mars »
+✗ nuee     iphone  marge droite 10.6 < gauche 24.0  « L’apéro qu’on repousse depuis mars »
+✗ nuee     la mise en page change avec l'écran  « L’apéro qu’on repousse depuis mars » : [(2, 32), (2, 34), (2, 34)]
+✗ nuee     375     marge droite 12.9 < gauche 24.0  « Notre premier festival »
+✗ nuee     iphone  marge droite 12.9 < gauche 24.0  « Notre premier festival »
+✗ nuee     375     marge droite 15.9 < gauche 24.0  « La maison de campagne »
+✗ nuee     iphone  marge droite 15.9 < gauche 24.0  « La maison de campagne »
+✗ nuee     375     marge droite 5.2 < gauche 24.0  « Le projet qu’on mijote depuis deux ans »
+✗ nuee     iphone  marge droite -83.7 < gauche 24.0  « Le projet qu’on mijote depuis deux ans »
+✗ nuee     la mise en page change avec l'écran  « Le projet qu’on mijote depuis deux ans » : [(2, 31), (2, 33), (2, 34)]
+✗ nuee     375     marge droite -12.5 < gauche 24.0  « Le road trip des parkings de supermarché »
+✗ nuee     iphone  marge droite -82.0 < gauche 24.0  « Le road trip des parkings de supermarché »
+✗ nuee     la mise en page change avec l'écran  « Le road trip des parkings de supermarché » : [(2, 28), (2, 32), (2, 33)]
+✗ nuee     375     marge droite -68.6 < gauche 24.0  « Le road trip des plus beaux ronds-points »
+✗ nuee     iphone  marge droite -68.6 < gauche 24.0  « Le road trip des plus beaux ronds-points »
+✗ nuee     la mise en page change avec l'écran  « Le road trip des plus beaux ronds-points » : [(2, 29), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -17.8 < gauche 24.0  « Le road trip des zones pavillonnaires »
+✗ nuee     iphone  marge droite -17.8 < gauche 24.0  « Le road trip des zones pavillonnaires »
+✗ nuee     la mise en page change avec l'écran  « Le road trip des zones pavillonnaires » : [(2, 29), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -16.5 < gauche 24.0  « Le road trip des zones commerciales »
+✗ nuee     iphone  marge droite -16.5 < gauche 24.0  « Le road trip des zones commerciales »
+✗ nuee     la mise en page change avec l'écran  « Le road trip des zones commerciales » : [(2, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -2.6 < gauche 24.0  « Le mariage de Philippine et Pascal »
+✗ nuee     iphone  marge droite -2.6 < gauche 24.0  « Le mariage de Philippine et Pascal »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Philippine et Pascal » : [(2, 33), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -2.6 < gauche 24.0  « Le mariage de Huguette et Jean-Roch »
+✗ nuee     iphone  marge droite -2.6 < gauche 24.0  « Le mariage de Huguette et Jean-Roch »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Huguette et Jean-Roch » : [(2, 31), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -61.5 < gauche 24.0  « Le mariage de Blandine et Bruno-Stanislas »
+✗ nuee     iphone  marge droite -61.5 < gauche 24.0  « Le mariage de Blandine et Bruno-Stanislas »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Blandine et Bruno-Stanislas » : [(3, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -2.6 < gauche 24.0  « Le mariage de Nadine et Bernard-Guy »
+✗ nuee     iphone  marge droite -2.6 < gauche 24.0  « Le mariage de Nadine et Bernard-Guy »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Nadine et Bernard-Guy » : [(2, 31), (2, 34), (2, 34)]
+✗ nuee     430     marge droite 23.6 < gauche 24.0  « Le mariage de Monique et Didier-Régis »
+✗ nuee     375     marge droite -17.2 < gauche 24.0  « Le mariage de Monique et Didier-Régis »
+✗ nuee     iphone  marge droite -17.2 < gauche 24.0  « Le mariage de Monique et Didier-Régis »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Monique et Didier-Régis » : [(2, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -2.6 < gauche 24.0  « Le mariage de Chantal et Jean-Guy »
+✗ nuee     iphone  marge droite -2.6 < gauche 24.0  « Le mariage de Chantal et Jean-Guy »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Chantal et Jean-Guy » : [(2, 31), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -27.2 < gauche 24.0  « Le mariage de Fabienne et Thierry-Alain »
+✗ nuee     iphone  marge droite -27.2 < gauche 24.0  « Le mariage de Fabienne et Thierry-Alain »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Fabienne et Thierry-Alain » : [(2, 29), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -11.7 < gauche 24.0  « Le mariage de Corinne et Michel-Régis »
+✗ nuee     iphone  marge droite -11.7 < gauche 24.0  « Le mariage de Corinne et Michel-Régis »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Corinne et Michel-Régis » : [(2, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -47.3 < gauche 24.0  « Le mariage de Raymonde et Gérard-Yves »
+✗ nuee     iphone  marge droite -47.3 < gauche 24.0  « Le mariage de Raymonde et Gérard-Yves »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Raymonde et Gérard-Yves » : [(3, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -2.6 < gauche 24.0  « Le mariage de Gisèle et Rodolphe »
+✗ nuee     iphone  marge droite -2.6 < gauche 24.0  « Le mariage de Gisèle et Rodolphe »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Gisèle et Rodolphe » : [(2, 33), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -2.6 < gauche 24.0  « Le mariage de Huguette et Mireille »
+✗ nuee     iphone  marge droite -2.6 < gauche 24.0  « Le mariage de Huguette et Mireille »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Huguette et Mireille » : [(2, 32), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -2.6 < gauche 24.0  « Le mariage de Ginette et Gisèle »
+✗ nuee     iphone  marge droite -2.6 < gauche 24.0  « Le mariage de Ginette et Gisèle »
+✗ nuee     375     marge droite -9.0 < gauche 24.0  « Le mariage de Jean-Roch et Jean-Guy »
+✗ nuee     iphone  marge droite -9.0 < gauche 24.0  « Le mariage de Jean-Roch et Jean-Guy »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Jean-Roch et Jean-Guy » : [(2, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -25.0 < gauche 24.0  « Le mariage de Didier-Régis et Rodolphe »
+✗ nuee     iphone  marge droite -25.0 < gauche 24.0  « Le mariage de Didier-Régis et Rodolphe »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Didier-Régis et Rodolphe » : [(2, 29), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -26.4 < gauche 24.0  « Le mariage de Bruno-Stanislas et Pascal »
+✗ nuee     iphone  marge droite -26.4 < gauche 24.0  « Le mariage de Bruno-Stanislas et Pascal »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Bruno-Stanislas et Pascal » : [(2, 29), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -79.2 < gauche 24.0  « Le mariage de Thierry-Alain et Bernard-Guy »
+✗ nuee     iphone  marge droite -79.2 < gauche 24.0  « Le mariage de Thierry-Alain et Bernard-Guy »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Thierry-Alain et Bernard-Guy » : [(3, 30), (2, 34), (2, 34)]
+✗ nuee     375     marge droite -70.3 < gauche 24.0  « Le mariage de Michel-Régis et Gérard-Yves »
+✗ nuee     iphone  marge droite -82.5 < gauche 24.0  « Le mariage de Michel-Régis et Gérard-Yves »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Michel-Régis et Gérard-Yves » : [(3, 30), (2, 33), (2, 34)]
+✗ nuee     375     marge droite -38.4 < gauche 24.0  « Le mariage de Jean-Noël et Alain-Gilbert »
+✗ nuee     iphone  marge droite -38.4 < gauche 24.0  « Le mariage de Jean-Noël et Alain-Gilbert »
+✗ nuee     la mise en page change avec l'écran  « Le mariage de Jean-Noël et Alain-Gilbert » : [(2, 28), (2, 34), (2, 34)]
+passent à la ligne : 71 / 80
+❌ 123 défaut(s)

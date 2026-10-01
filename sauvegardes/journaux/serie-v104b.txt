@@ -1,0 +1,46 @@
+=== redteam_rythme.py (seul)
+97 / 99
+  ✗ sillons · moteur · depart 19 images (attendu 29 ± 8) · cadence 76 % · [vu 818 ms, 19 images]
+  ✗ chantourne · moteur · depart fin du mouvement 2410 ms (attendu 1849 ± 147) · cadence 81 % · [vu 2410 ms, 38 images]
+=== redteam_murs.py
+
+22/22
+=== redteam_arranger.py
+
+10/10
+=== redteam_cercle_couleur.py
+
+30/34
+=== redteam_ecrans.py
+
+152/152
+=== releve-S2-peaufiner.py
+
+❌  position 8 · style 20 · collisions 0 · hors cadre 0 · peinture 0
+=== releve-S3-page-plus.py
+✅  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+   écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire
+=== redteam_nuee.py
+
+  ✅  24 écran(s) · 0 écart(s)
+=== redteam_vide.py
+
+61/61
+=== redteam_air.py
+
+  ✅  L'AIR EST INTACT — 708 paires de textes, 68 écrans, deux thèmes.
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== releve-aura.py
+
+✅  L'AURA AU VERT
+=== redteam_studio_geste.py
+
+13/13
+=== redteam_gens.py
+
+38/38
+=== redteam_tokens.py
+
+46/46
+fini

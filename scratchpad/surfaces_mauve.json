@@ -1,0 +1,20 @@
+{
+ "button#nfAdd.nf-add": {
+  "sel": "button#nfAdd.nf-add",
+  "w": 342,
+  "h": 62,
+  "aire": 21204,
+  "enfants": 3,
+  "txt": "Planter dans la Nuée",
+  "ou": "fiche Nuée · light"
+ },
+ "div.s2-bouton": {
+  "sel": "div.s2-bouton",
+  "w": 342,
+  "h": 62,
+  "aire": 21204,
+  "enfants": 0,
+  "txt": "Planter un Promi dans la Nué",
+  "ou": "fiche Nuée · Peaufiner · light"
+ }
+}

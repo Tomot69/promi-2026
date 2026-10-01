@@ -1,0 +1,46 @@
+=== redteam_nuee.py
+  ✅  24 écran(s) · 0 écart(s)
+=== redteam_vide.py
+61/61
+=== redteam_air.py
+  ✅  L'AIR EST INTACT — 500 paires de textes, 38 écrans, deux thèmes.
+=== redteam_nuee_dalle.py
+38/38
+=== redteam_reperage.py
+16/16
+=== redteam_toile.py
+18/18
+=== releve-S1-fiches.py
+  ✅  SECTION 1 AU VERT.
+=== releve-S3-page-plus.py
+✅  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+=== redteam_gens.py
+38/38
+=== redteam_tuiles.py
+64/64
+=== redteam_verbe.py
+6/6
+=== redteam_apercus.py
+  ✅ A le fond du Studio porte de la matière colorée [dark]  (49.7 %)
+  ✅ B les graines de l'aperçu se déclarent [dark]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [dark]
+  ✅ D la deuxième ouverture vaut la première [dark]  (72/72, 40.2 %)
+  ✅ E le fond d'un aperçu est celui de la vraie Toile [dark]  (sombre #201908 · clair #F1ECD9)
+  ✅ A le fond du Studio porte de la matière colorée [light]  (44.3 %)
+  ✅ B les graines de l'aperçu se déclarent [light]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [light]
+  ✅ D la deuxième ouverture vaut la première [light]  (72/72, 48.4 %)
+  ✅ E le fond d'un aperçu est celui de la vraie Toile [light]  (sombre #201908 · clair #F1ECD9)
+✅  10/10
+=== redteam_dalle_figee.py
+4/4
+=== redteam_accueil.py
+22/22
+=== redteam_ecrans.py
+152/152
+=== releve-aura.py
+❌  3 ÉCARTS
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_rythme.py
+fini

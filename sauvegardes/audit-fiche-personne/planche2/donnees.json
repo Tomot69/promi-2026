@@ -1,0 +1,77 @@
+{
+ "personnes": {
+  "Rachel": 4,
+  "Marion": 3,
+  "Adrien": 3
+ },
+ "membresNuee": [],
+ "Rachel": [
+  {
+   "id": 126,
+   "t": "faire les crêpes",
+   "rel": "à Rachel",
+   "st": "à tenir",
+   "jour": "dans 2 jours",
+   "nuee": "",
+   "chiche": false,
+   "nuee_nat": false,
+   "avec": "",
+   "monde": {
+    "m": "encre",
+    "p": "signal",
+    "h": 0
+   }
+  },
+  {
+   "id": 127,
+   "t": "courir dimanche",
+   "rel": "à Marion",
+   "st": "en cours",
+   "jour": "pas encore relevé",
+   "nuee": "",
+   "chiche": true,
+   "nuee_nat": false,
+   "avec": "Rachel",
+   "monde": {
+    "m": "encre",
+    "p": "signal",
+    "h": 0
+   }
+  },
+  {
+   "id": 131,
+   "t": "reprendre l'arrosage automatique",
+   "rel": "de Rachel → le groupe",
+   "st": "à tenir",
+   "jour": "",
+   "nuee": "le potager",
+   "chiche": false,
+   "nuee_nat": true,
+   "avec": "",
+   "monde": {
+    "m": "encre",
+    "p": "signal",
+    "h": 0
+   }
+  },
+  {
+   "id": 139,
+   "t": "rapporter le livre",
+   "rel": "à Rachel",
+   "st": "tenue",
+   "jour": "",
+   "nuee": "",
+   "chiche": false,
+   "nuee_nat": false,
+   "avec": "",
+   "monde": {
+    "m": "encre",
+    "p": "signal",
+    "h": 0
+   }
+  }
+ ],
+ "ava": {
+  "Rachel": "radial-gradient(circle at 88% 30%,#D0B0FF 0%,transparent 55%),radial-gradient(circle at 72% 70%,#b98cff 0%,transparent 49%),radial-gradient(circle at 60% 71%,#3A54FF 0%,transparent 47%),radial-gradient(circle at 48% 71%,#b98cff 0%,transparent 45%),radial-gradient(circle at 50% 50%,#5f78ff 0%,#5f78ff 100%)"
+ }
+}

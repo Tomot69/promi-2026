@@ -1,0 +1,341 @@
+<style id="lot-S3-page-plus">
+/* ═══════════════════════════════════════════════════════════════════════════════════════
+   SECTION 3 · LA PAGE + (PROMI-SPECIFICATIONS.md §5 « Page + », §2.1 à §2.8, §3.1, §3.2).
+   Bloc NEUF en fin de fichier ; aucune règle existante n'est touchée.
+
+   ⚠ LA LEÇON DU PREMIER JET, MESURÉE AVANT D'ÊTRE CORRIGÉE.
+   La fiche est un CADRE FIXE : #detailPoster fait 390 × 844 et ne défile pas — la section 1
+   a pu y poser chaque bloc en absolu. La page + est une FEUILLE QUI DÉFILE : #createSheet
+   (absolu, 390 × 844, overflow hidden) empile .cs-top (233 px) puis #csMid, ET C'EST #csMid
+   QUI DÉFILE (position:relative · overflow-y:auto · 655 visibles pour 1824). Tant que
+   #csMid est positionné, tout absolu qu'on pose dedans se repère sur LUI, donc sur une
+   surface qui glisse : les cotes tombaient à côté et les tuiles remontaient sous la phrase.
+
+   L'ORDRE OBLIGATOIRE, dans cet ordre :
+     1 · sortir #csQuest et .tiles du flux dès qu'une nature est choisie ;
+     2 · DÉPOSITIONNER la pile — #csMid et #promiForm passent en position:static et cessent
+         de défiler : #createSheet redevient le seul repère, comme le poster de la fiche ;
+     3 · seulement ensuite poser l'onde, la dalle, l'entête, le mot de trace, la phrase.
+
+   ⚠ ET C'EST AUSSI LA PARADE DU PIÈGE #tenirCv (CLAUDE.md §8). Le geste de la page + est
+   #planterZone, avec le même canevas dimensionné en dur. En dépositionnant #csMid et
+   #promiForm, on garantit qu'AUCUN ancêtre positionné ne s'intercale entre le geste et
+   #createSheet : son left:0 se lit donc sur le cadre, jamais sur un conteneur de réglages.
+   La parade est appliquée d'emblée, pas découverte en batterie.
+   ═══════════════════════════════════════════════════════════════════════════════════════ */
+
+/* ── 1 · CE QUI SORT DU FLUX ── */
+#device #createSheet.pp #csQuest,
+#device #createSheet.pp .tiles,
+#device #createSheet.pp .tiles-track,
+#device #createSheet.pp .pdots,
+#device #createSheet.pp .ix-hair,
+#device #createSheet.pp .grip,
+#device #createSheet.pp .cs-grappe-wrap,
+#device #createSheet.pp #csGrappe{display:none!important}
+
+/* ── 2 · LA PILE EST DÉPOSITIONNÉE : #createSheet redevient le seul repère ── */
+#device #createSheet.pp{overflow:hidden!important;display:block!important;
+  padding:0!important;background:transparent!important}
+#device #createSheet.pp .cs-top{position:static!important;height:0!important;padding:0!important;
+  margin:0!important;background:transparent!important;overflow:visible!important}
+#device #createSheet.pp #csMid{position:static!important;overflow:visible!important;
+  height:0!important;min-height:0!important;padding:0!important;margin:0!important;
+  display:block!important;background:transparent!important;flex:none!important}
+#device #createSheet.pp #promiForm,
+#device #createSheet.pp #nueeForm,
+#device #createSheet.pp #draftForm{position:static!important;overflow:visible!important;
+  padding:0!important;margin:0!important;display:block!important;background:transparent!important}
+
+/* ── 3 · LES COTES ── */
+/* la trame porte l'onde : plein cadre, opacité 1, aucun voile (§2.7) */
+#device #createSheet.pp #csTrameCv{position:absolute!important;left:0!important;top:0!important;
+  opacity:1!important;filter:none!important;mix-blend-mode:normal!important;
+  -webkit-mask:none!important;mask:none!important;background:transparent!important;z-index:0!important}
+
+/* ENTÊTE (§3.1) : mot-marque Fraunces 600/27 à 24/38 ; ✕ FERMER en face */
+#device #createSheet.pp .cs-mark{position:absolute!important;left:24px!important;top:38px!important;
+  height:34px!important;width:auto!important;max-width:none!important;margin:0!important;padding:0!important;
+  display:flex!important;align-items:center!important;font-family:Fraunces,Georgia,serif!important;
+  font-weight:600!important;font-size:27px!important;letter-spacing:-.01em!important;line-height:1!important;
+  opacity:1!important;text-shadow:none!important;filter:none!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important;z-index:4!important}
+#device #createSheet.pp .closeb{position:absolute!important;left:auto!important;right:24px!important;
+  top:38px!important;height:34px!important;width:auto!important;max-width:none!important;
+  display:flex!important;align-items:center!important;gap:9px!important;opacity:1!important;z-index:4!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important;text-align:left!important}
+#device #createSheet.pp .closeb svg{width:15px!important;height:15px!important}
+#device #createSheet.pp .closeb .cb-mot{font-family:Apfel,system-ui,sans-serif!important;
+  font-weight:500!important;font-size:12.5px!important;letter-spacing:.20em!important;line-height:1!important}
+
+/* LE MOT DE TRACE (§5) : Bricolage 700 / 18.5, crème, posé sur le champ */
+#device #createSheet.pp .pp-trace{position:absolute!important;left:82px!important;
+  margin:0!important;padding:0!important;max-width:none!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;font-size:18.5px!important;
+  letter-spacing:-.01em!important;line-height:1!important;white-space:nowrap!important;z-index:4!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+
+/* LA PHRASE (§2.8) : une ligne par élément, Bricolage 700, pastilles rayon 18 */
+#device #createSheet.pp #csPhrase{position:absolute!important;left:24px!important;
+  width:342px!important;max-width:342px!important;margin:0!important;padding:0!important;
+  background:transparent!important;z-index:4!important}
+#device #createSheet.pp #csPhrase .ph-txt{margin:0!important;padding:0!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;
+  letter-spacing:-.03em!important;text-align:left!important;white-space:normal!important;
+  max-width:342px!important}
+/* les liaisons (« de », « à », « avant ») : teinte claire de la nature, PLEINE encre —
+   l'app les servait à 42 % d'opacité, le §6 ne descend jamais sous 72 %. */
+#device #createSheet.pp #csPhrase .ph-txt em{font-style:normal!important;font-weight:700!important;
+  opacity:1!important;font-size:inherit!important;letter-spacing:-.03em!important}
+/* la pastille du VERBE : couleur de la NATURE, jamais celle d'un état (§1.1).
+   L'app la peignait en MENTHE — le vert est la couleur de la parole tenue. C'était un bug. */
+#device #createSheet.pp #csPhrase .ph-b{display:inline-flex!important;align-items:center!important;
+  gap:10px!important;border-radius:18px!important;padding:2px 17px 6px!important;margin:0!important;
+  font-weight:700!important;font-size:inherit!important;letter-spacing:-.03em!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important;box-shadow:none!important;
+  vertical-align:baseline!important}
+#device #createSheet.pp.pp-promi #csPhrase .ph-b{background:#3A54FF!important}
+#device #createSheet.pp.pp-chiche #csPhrase .ph-b{background:#FA2258!important}
+#device #createSheet.pp.pp-nuee #csPhrase .ph-b{background:#8A5CF0!important}
+#device #createSheet.pp #csPhrase .ph-b svg{width:.60em!important;height:.60em!important;opacity:1!important}
+#device #createSheet.pp #csPhrase .ph-b svg path{stroke:#F4EEE1!important;fill:#F4EEE1!important}
+/* le ✦ vert posé à côté du verbe : absent des 17 inventaires. Le ✦ appartient au Cercle,
+   il ne se promène pas ailleurs (décision Tom). RETIRÉ. */
+#device #createSheet.pp #csPhrase .ph-e{display:none!important}
+/* la pastille d'un MOT : remplie = crème / encre ; vide = 3 px pointillé dans la teinte */
+#device #createSheet.pp #csPhrase .ph-m{display:inline-flex!important;align-items:center!important;
+  border-radius:18px!important;padding:2px 17px 6px!important;margin:0!important;
+  font-weight:700!important;font-size:inherit!important;letter-spacing:-.03em!important;
+  background:#F4EEE1!important;color:#16171B!important;-webkit-text-fill-color:#16171B!important;
+  border:0!important;box-shadow:none!important;opacity:1!important;vertical-align:baseline!important}
+#device #createSheet.pp #csPhrase .ph-m.ph-vide{background:transparent!important;
+  border-radius:16px!important;border:3px dashed currentColor!important;opacity:1!important}
+/* les teintes claires de nature portent liaisons et pastilles vides (§1.2) */
+#device #createSheet.pp.pp-promi #csPhrase .ph-txt em,
+#device #createSheet.pp.pp-promi #csPhrase .ph-m.ph-vide{color:#CBAAFF!important;-webkit-text-fill-color:#CBAAFF!important}
+#device #createSheet.pp.pp-chiche #csPhrase .ph-txt em,
+#device #createSheet.pp.pp-chiche #csPhrase .ph-m.ph-vide{color:#FFC0A8!important;-webkit-text-fill-color:#FFC0A8!important}
+#device #createSheet.pp.pp-nuee #csPhrase .ph-txt em,
+#device #createSheet.pp.pp-nuee #csPhrase .ph-m.ph-vide{color:#D0B0FF!important;-webkit-text-fill-color:#D0B0FF!important}
+/* la ligne d'aide (§5) : Bricolage 600 / 17.5, interligne 1.4, dans la teinte, à 24 / 574 */
+#device #createSheet.pp .ph-hint{position:absolute!important;left:24px!important;top:574px!important;
+  width:342px!important;margin:0!important;padding:0!important;text-align:left!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:600!important;
+  font-size:17.5px!important;line-height:1.4!important;letter-spacing:0!important;opacity:1!important;
+  z-index:4!important}
+#device #createSheet.pp .ph-hint b{font-weight:600!important;color:inherit!important;
+  -webkit-text-fill-color:currentColor!important}
+#device #createSheet.pp.pp-promi .ph-hint{color:#CBAAFF!important;-webkit-text-fill-color:#CBAAFF!important}
+#device #createSheet.pp.pp-chiche .ph-hint{color:#FFC0A8!important;-webkit-text-fill-color:#FFC0A8!important}
+#device #createSheet.pp.pp-nuee .ph-hint{color:#D0B0FF!important;-webkit-text-fill-color:#D0B0FF!important}
+
+/* LA BARRE PEAUFINER (§3.2) : 390 × 84 à 760, fond = couleur de NATURE.
+   « Peaufiner » Bricolage 700/21 crème, ▾ 15 px. PAS D'ICÔNE PARTAGER SUR LA PAGE +. */
+#device #createSheet.pp #csBotBar{position:absolute!important;left:0!important;top:760px!important;
+  width:390px!important;height:84px!important;box-sizing:border-box!important;padding:0 24px!important;
+  margin:0!important;display:flex!important;align-items:center!important;
+  justify-content:space-between!important;box-shadow:none!important;z-index:6!important;
+  bottom:auto!important;max-width:none!important}
+#device #createSheet.pp.pp-promi #csBotBar{background:#3A54FF!important}
+#device #createSheet.pp.pp-chiche #csBotBar{background:#FA2258!important}
+#device #createSheet.pp.pp-nuee #csBotBar{background:#8A5CF0!important}
+#device #createSheet.pp #csBotBar,#device #createSheet.pp #csBotBar *{
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+#device #createSheet.pp #csBotBar .cbb-lab{font-family:Bricolage,system-ui,sans-serif!important;
+  font-weight:700!important;font-size:21px!important;letter-spacing:-.01em!important;margin:0!important}
+#device #createSheet.pp #csBotBar .cbb-chev{font-family:Bricolage,system-ui,sans-serif!important;
+  font-weight:400!important;font-size:15px!important;margin:0!important;opacity:1!important}
+
+/* « garder de côté » (§5) : Bricolage 600 / 16, souligné, dans la teinte, à 24 / 708 */
+#device #createSheet.pp .pp-garder{position:absolute!important;left:24px!important;top:708px!important;
+  margin:0!important;padding:0!important;max-width:none!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:600!important;font-size:16px!important;
+  line-height:1!important;text-decoration:underline!important;cursor:pointer!important;
+  z-index:5!important;opacity:1!important}
+#device #createSheet.pp.pp-promi .pp-garder{color:#CBAAFF!important;-webkit-text-fill-color:#CBAAFF!important}
+#device #createSheet.pp.pp-chiche .pp-garder{color:#FFC0A8!important;-webkit-text-fill-color:#FFC0A8!important}
+#device #createSheet.pp.pp-nuee .pp-garder{color:#D0B0FF!important;-webkit-text-fill-color:#D0B0FF!important}
+
+/* LE GESTE : les 17 inventaires ne posent AUCUN panneau. Comme sur la fiche, c'est L'ONDE
+   qui est la surface où l'on trace. Le composant reste ENTIER et sa fonction intacte ;
+   seul son dessin s'efface. Aucun ancêtre positionné entre lui et #createSheet — c'est la
+   parade du piège #tenirCv, appliquée d'emblée. */
+#device #createSheet.pp #planterZone{position:absolute!important;left:0!important;
+  width:390px!important;height:118px!important;margin:0!important;padding:0!important;
+  background:transparent!important;box-shadow:none!important;border-radius:0!important;
+  z-index:5!important;max-width:none!important}
+#device #createSheet.pp #planterZone canvas{width:390px!important;height:118px!important;
+  max-width:none!important;opacity:0!important;filter:none!important}
+#device #createSheet.pp #planterZone .tenir-lab,
+#device #createSheet.pp #planterZone .tenir-alt{display:none!important}
+#device #createSheet.pp #planterZone.atteint{background:rgba(240,122,46,.16)!important}
+
+/* les réglages de la page + : ils vivent dans la page de Peaufiner (le MÊME bloc que la
+   section 2), pas sous la phrase. Hors flux tant qu'on ne l'a pas ouverte. */
+#device #createSheet.pp #promiExtra{display:none!important}
+</style>
+<script>
+/* ═══════════════════════════════════════════════════════════════════════════════════════
+   SECTION 3 · LA PAGE + — le moteur. Même onde que la fiche (§2.1, primitives exposées par
+   la section 1), même formule de hauteur (§2.5), mêmes cotes de dalle (§2.7).
+   `base = max(196, 344 − 32 × (n − 1))`, n = nombre de lignes de la phrase, verbe compris ;
+   `amp = 46` sur la page +, `22` dès qu'un panneau de choix occupe le corps (§2.4 bis) ;
+   boîte SVG = `base + amp + 60`. L'interligne du §2.8 : `int(taille × 1,2) + 24`.
+   ═══════════════════════════════════════════════════════════════════════════════════════ */
+(function(){
+  var W = 390;
+  function $(s,r){ return (r||document).querySelector(s); }
+  function pose(el,css){ if(!el) return; for(var k in css) el.style.setProperty(k,css[k],'important'); }
+
+  /* quelle nature écrit-on ? on lit l'app, on ne devine pas. */
+  function natureCourante(){
+    try{ var f=document.getElementById('nueeForm');
+      if(f && getComputedStyle(f).display!=='none' && f.getBoundingClientRect().height>2) return 'nuee'; }catch(e){}
+    try{ var b=$('#csPhrase .ph-b');
+      if(b && /chiche/i.test((b.textContent||''))) return 'chiche'; }catch(e){}
+    try{ if(typeof kind!=='undefined' && kind==='chiche') return 'chiche';
+         if(typeof kind!=='undefined' && kind==='nuee') return 'nuee'; }catch(e){}
+    return 'promi';
+  }
+  /* le nombre de lignes de la phrase : les <br> du bloc, verbe compris (§2.5). */
+  function lignes(){
+    var t = $('#csPhrase .ph-txt'); if(!t) return 2;
+    return Math.max(1, t.querySelectorAll('br').length + 1);
+  }
+  /* un panneau de choix occupe-t-il le corps ? (§2.4 bis : amp = 22, base = 196) */
+  function choixOuvert(){
+    var s = ['#csKeyboard','#csPersonnes','#csDates','#csChoixPanel'];
+    for(var i=0;i<s.length;i++){ var e=$(s[i]);
+      if(e && getComputedStyle(e).display!=='none' && e.getBoundingClientRect().height>40) return true; }
+    return false;
+  }
+
+  function ecran(){
+    var cs = document.getElementById('createSheet');
+    var n = natureCourante(), ouvert = choixOuvert(), nl = lignes();
+    var base = ouvert ? 196 : Math.max(196, 344 - 32*(nl-1));
+    var amp  = ouvert ? 22 : 46;
+    var boite = base + amp + 60;
+    var dh = Math.min(300, (base-amp) - 88 - 12);
+    var dw = Math.min(320, Math.floor(1.2*dh));
+    return {cs:cs, nat:n, base:base, amp:amp, boite:boite, nl:nl, ouvert:ouvert,
+            dalle:{x:Math.floor((W-dw)/2), y:88, w:dw, h:dh}};
+  }
+  window._ppEcran = ecran;
+
+  /* ═══ LE TRAIT (§2.6) — sur la page +, rien n'est tracé : amorce effilée, chevron, points. ═══ */
+  function trait(){
+    try{
+      var O = window._onde; if(!O) return;
+      var e = ecran(), cs = e.cs;
+      if(!cs || !cs.classList.contains('pp')) return;
+      var cv = document.getElementById('csTrameCv'); if(!cv) return;
+      var y = O.onde(e.base, e.amp), H = e.boite;
+      var largeur = cs.clientWidth || W, sc = largeur/W;
+      var dpr = Math.max(2, Math.min(3, window.devicePixelRatio||2));
+      cv.width = Math.round(largeur*dpr); cv.height = Math.round(H*sc*dpr);
+      cv.style.setProperty('width', largeur+'px', 'important');
+      cv.style.setProperty('height', (H*sc)+'px', 'important');
+      var g = cv.getContext('2d'); if(!g) return;
+      g.setTransform(dpr*sc,0,0,dpr*sc,0,0); g.clearRect(0,0,W,H);
+      g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high';
+      /* 1 · l'aplat de nature, borné en bas par l'onde */
+      g.beginPath(); O.chemin(g,y,0,W); g.lineTo(W,0); g.lineTo(0,0); g.closePath();
+      g.fillStyle = O.NATCOL[e.nat]; g.fill();
+      /* 2 · la dalle — la vraie, celle du moteur, jamais teintée par la nature (CLAUDE.md §4) */
+      var src = document.createElement('canvas'), id = null;
+      try{ id = (window._ppDalleId!=null) ? window._ppDalleId
+                : (promises && promises.length ? promises[promises.length-1].id : null); }catch(_){}
+      if(id!=null && window.Toile && Toile.dalleTrame && Toile.dalleTrame(src,id,1) && src.width){
+        var bw=e.dalle.w, bh=e.dalle.h, r=src.height/src.width, dw=bw, dh=bw*r;
+        if(dh>bh){ dh=bh; dw=bh/r; }
+        g.drawImage(src, e.dalle.x+(bw-dw)/2, e.dalle.y+(bh-dh)/2, dw, dh);
+      }
+      /* 3 · la ligne : rien n'est tracé — amorce, chevron, puis des points Ø9 tous les 18 */
+      var col = O.NATCLAIR[e.nat], ep = 10, rr = 4.5, esp = 18, cx = W*0.11;
+      g.strokeStyle = col; g.fillStyle = col; g.lineWidth = ep;
+      g.lineCap = 'round'; g.lineJoin = 'round';
+      O.ruban(g, y, -W*0.03, cx+ep*0.6, ep*2.2, ep*0.15); g.fill();
+      O.chevron(g, y, cx, col, ep);
+      for(var x=cx+esp*1.3; x<W-rr; x+=esp){ g.beginPath(); g.arc(x,y(x),rr,0,6.2832); g.fill(); }
+    }catch(err){}
+  }
+  window._ppTrait = trait;
+
+  /* ═══ LES COTES (§5) ═══ */
+  function cotes(){
+    try{
+      var e = ecran(), cs = e.cs;
+      if(!cs || !cs.classList.contains('pp')) return;
+      cs.classList.remove('pp-promi','pp-chiche','pp-nuee');
+      cs.classList.add('pp-'+e.nat);
+      /* le mot-marque dit la nature qu'on écrit (§5) */
+      var mark = cs.querySelector('.cs-mark');
+      if(mark) mark.textContent = (e.nat==='chiche') ? 'Chiche' : (e.nat==='nuee' ? 'Nuée' : 'Promi');
+      /* LE MOT DE TRACE — les mots sont ceux de l'inventaire, un par nature */
+      var tr = cs.querySelector('.pp-trace');
+      if(!tr){ tr = document.createElement('div'); tr.className = 'pp-trace'; cs.appendChild(tr); }
+      tr.textContent = e.ouvert ? 'trace pour planter'
+                     : (e.nat==='promi' ? 'trace ta moitié' : 'trace pour lancer');
+      pose(tr, {top:(e.boite - 60)+'px'});
+      /* LA PHRASE — §2.8 : 36 si ≤ 3 lignes, 34 à 4, 30 au-delà ; elle rétrécit tant qu'une
+         ligne dépasse 342. L'interligne suit : int(taille × 1,2) + 24. */
+      var ph = document.getElementById('csPhrase');
+      var txt = ph ? ph.querySelector('.ph-txt') : null;
+      if(ph && txt){
+        var taille = (e.nl<=3) ? 36 : (e.nl===4 ? 34 : 30);
+        for(var k=0; k<22; k++){
+          txt.style.setProperty('font-size', taille+'px', 'important');
+          txt.style.setProperty('line-height', (Math.floor(taille*1.2)+24)+'px', 'important');
+          if(txt.scrollWidth <= 343) break;
+          taille -= 1; if(taille<=16) break;
+        }
+        pose(ph, {top:(e.boite + 6)+'px'});
+      }
+      /* la ligne d'aide passe sur le cadre : sa cote est absolue (24 / 574), pas relative
+         à la phrase — et elle ne doit pas pousser les lignes. */
+      var hint = cs.querySelector('.ph-hint');
+      if(hint && hint.parentNode !== cs) cs.appendChild(hint);
+      /* « garder de côté » — le lien de l'app, à sa cote. On ne crée pas une fonction :
+         on rebranche celle qui existe. */
+      var g = cs.querySelector('.pp-garder');
+      if(!g){
+        g = document.createElement('div'); g.className = 'pp-garder';
+        g.textContent = 'garder de côté';
+        g.addEventListener('click', function(ev){ ev.stopPropagation();
+          var b = document.querySelector('#addDraft,#csDraft,#csGarder,[data-garder],.cs-draft');
+          if(b) b.click(); }, true);
+        cs.appendChild(g);
+      }
+      /* le geste : posé en absolu sur le CADRE. Aucun ancêtre positionné ne s'intercale —
+         c'est la parade du piège #tenirCv, appliquée d'emblée (CLAUDE.md §8). */
+      var pz = document.getElementById('planterZone');
+      if(pz) pose(pz, {top:(e.base - 59)+'px'});
+    }catch(err){}
+  }
+  window._ppCotes = cotes;
+
+  function tout(){ try{ cotes(); trait(); }catch(e){} }
+  window._ppTout = tout;
+
+  /* la page + s'arme quand une nature est choisie — l'écran « Choix des trois natures »
+     est le seul des 17 qui montre la question et les tuiles. */
+  function arme(){
+    var cs = document.getElementById('createSheet'); if(!cs) return;
+    var ouvert = cs.classList.contains('show');
+    var forme = false;
+    try{ var f=document.getElementById('promiForm'), n=document.getElementById('nueeForm');
+      forme = !!(f && f.getBoundingClientRect().height>2) || !!(n && n.getBoundingClientRect().height>2); }catch(e){}
+    var doit = ouvert && forme;
+    if(cs.classList.contains('pp') !== doit) cs.classList.toggle('pp', doit);
+    if(doit) tout();
+  }
+  window._ppArme = arme;
+  document.addEventListener('click', function(){ setTimeout(arme,60); setTimeout(arme,340); }, true);
+  document.addEventListener('input', function(ev){
+    if(ev.target && ev.target.closest && ev.target.closest('#createSheet')) setTimeout(tout,40);
+  }, true);
+  ['resize','orientationchange'].forEach(function(ev){ window.addEventListener(ev, tout); });
+  setInterval(arme, 500);
+})();
+</script>

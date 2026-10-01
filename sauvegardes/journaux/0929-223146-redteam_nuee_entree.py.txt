@@ -1,0 +1,26 @@
+[clair · vide] 1 · « Planter dans la Nuée » est là, au repos OK  {'y0': 686, 'y1': 748, 'txt': 'Planter dans la Nuée'}
+[clair · vide] 2 · 16 sous l'état                            OK  air 15
+[clair · vide] 6 · « ENCORE AUCUNE PAROLE »                  OK  encore aucune parole
+[clair · vide] 3 · la règle du trait : base 374              OK  base 374
+[clair · vide] 4 · trait→Noyaux→Avec→titre→état : [11, 18, 5, 22] OK  mesuré [11, 19, 5, 22]
+[clair · vide] 5 · au doigt, la page + s'ouvre dans « atelier » OK  au doigt True · {'ouvert': True, 'nuee': 'atelier', 'cs': True}
+[clair · pleine] 1 · « Planter dans la Nuée » est là, au repos OK  {'y0': 1318, 'y1': 1380, 'txt': 'Planter dans la Nuée'}
+[clair · pleine] 2 · 12 sous la dernière carte               OK  air 12
+[clair · pleine] 4 · état→carte 16, entre cartes 12          OK  état→carte 15 · pas [12]
+[clair · pleine] 3 · la règle du trait : base 176            OK  base 176
+[clair · pleine] 4 · trait→Noyaux→Avec→titre→état : [11, 18, 5, 22] OK  mesuré [11, 19, 5, 22]
+[clair · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True}
+[sombre · vide] 1 · « Planter dans la Nuée » est là, au repos OK  {'y0': 686, 'y1': 748, 'txt': 'Planter dans la Nuée'}
+[sombre · vide] 2 · 16 sous l'état                           OK  air 15
+[sombre · vide] 6 · « ENCORE AUCUNE PAROLE »                 OK  encore aucune parole
+[sombre · vide] 3 · la règle du trait : base 374             OK  base 374
+[sombre · vide] 4 · trait→Noyaux→Avec→titre→état : [11, 18, 5, 22] OK  mesuré [11, 19, 5, 22]
+[sombre · vide] 5 · au doigt, la page + s'ouvre dans « atelier » OK  au doigt True · {'ouvert': True, 'nuee': 'atelier', 'cs': True}
+[sombre · pleine] 1 · « Planter dans la Nuée » est là, au repos OK  {'y0': 1318, 'y1': 1380, 'txt': 'Planter dans la Nuée'}
+[sombre · pleine] 2 · 12 sous la dernière carte              OK  air 12
+[sombre · pleine] 4 · état→carte 16, entre cartes 12         OK  état→carte 15 · pas [12]
+[sombre · pleine] 3 · la règle du trait : base 176           OK  base 176
+[sombre · pleine] 4 · trait→Noyaux→Avec→titre→état : [11, 18, 5, 22] OK  mesuré [11, 19, 5, 22]
+[sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True}
+
+24/24

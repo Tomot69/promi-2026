@@ -1,0 +1,39 @@
+
+== accueil — 10 éléments touchables
+
+== Index — 8 éléments touchables
+
+== Fil — 7 éléments touchables
+
+== Aura — 5 éléments touchables
+   ÉCART  div.au-n « Marion »
+          doigt  : auraScreen · personne None · Promi None
+          souris : auraScreen,personSheet · personne Marion · Promi None
+   (clic issu du toucher tombé sur une couche ouverte pendant le geste : ['scrim'] — div.au-n « Marion »)
+   ÉCART  div.au-n « Rachel »
+          doigt  : auraScreen · personne None · Promi None
+          souris : auraScreen,personSheet · personne Rachel · Promi None
+   (clic issu du toucher tombé sur une couche ouverte pendant le geste : ['scrim'] — div.au-n « Rachel »)
+
+== fiche Promi 126 — 4 éléments touchables
+
+== fiche Chiche 127 — 5 éléments touchables
+
+== Peaufiner Promi 126 — 8 éléments touchables
+
+== fiche Nuée potager — 6 éléments touchables
+
+== Peaufiner Nuée — 6 éléments touchables
+
+== fiche de Rachel — 5 éléments touchables
+
+== Studio — 9 éléments touchables
+
+== Réglages — 6 éléments touchables
+
+═══ sans garde (1cf70b18) — 79 éléments touchés au doigt ET à la souris · 2 écart(s) doigt ≠ souris · 2 clic(s) fantôme(s) consigné(s)
+   ÉCART  [Aura] div.au-n « Marion »
+   ÉCART  [Aura] div.au-n « Rachel »
+   FANTÔME [Aura] div.au-n « Marion » → ['scrim']
+   FANTÔME [Aura] div.au-n « Rachel » → ['scrim']
+exit 0

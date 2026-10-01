@@ -1,0 +1,57 @@
+# .gitignore — Promi (1er oct. 2026)
+# Tout ce qui est exclu ici est dans l'archive ~/Documents/Promi-archives/promi-2026-2026-10-01.zip.
+
+# ── 1 · Fichiers de plus de 10 Mo ─────────────────────────────────────────────
+# Git ne sait pas filtrer par taille : ils sont nommés un par un (relevé du 1er oct.).
+# Avant chaque commit : find . -type f -size +10M -not -path './.git/*'
+/sauvegardes/transitions-v43/film_halin_arrivee.npy
+/sauvegardes/transitions-v43/film_halin_repos.npy
+/sauvegardes/audit-cercle/ecran/audit.json
+/sauvegardes/ORBITE-FOURRURE-DEPOSEE/images/_planche.png
+/scratchpad/pav/sexy/_planche.png
+/scratchpad/pav/four/_planche.png
+/scratchpad/pav/vel/_planche.png
+/planche-sombre/serie3/planche-serie3.png
+/planche-sombre/serie3/planche-serie3-noyer.png
+/planche-sombre/serie3/planche-serie3-graphite.png
+/planche-sombre/serie3/planche-serie3-ardoise.png
+*.npy
+
+# ── 2 · Dossiers de planches ──────────────────────────────────────────────────
+/planche-76/
+/planche-79/
+/planche-accueil/
+/planche-corps/
+/planche-grammaire/
+/planche-identite/
+/planche-onboarding/
+/planche-palette/
+/planche-pelote/
+/planche-reperage/
+/planche-sombre/
+/planche-v16/
+/planche-volume/
+
+# ── 3 · Dossiers de captures et de preuves en image ───────────────────────────
+/preuves-v114/
+/preuves-v115/
+/preuves-v116/
+/cap/
+# les captures posées à la racine
+/*.png
+# les captures mêlées aux outils et aux sauvegardes : on garde les scripts,
+# les .html, les .js, les .json et les .md ; on exclut les images et les films
+/scratchpad/**/*.png
+/sauvegardes/**/*.png
+*.webm
+
+# ⚠ banc-rendu/ N'EST PAS exclu : ce sont les 280 images de RÉFÉRENCE du banc de rendu.
+
+# ── 4 · Système et caches ─────────────────────────────────────────────────────
+.DS_Store
+.thumbnail
+__pycache__/
+*.pyc
+.cache/
+node_modules/
+/.claude/

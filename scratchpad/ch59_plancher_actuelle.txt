@@ -1,0 +1,41 @@
+══ http://127.0.0.1:8752/app.html · 10 chargements par thème · plancher ΔE 15 ══
+    1 dark   5 île(s) · la plus faible ΔE  21.7 · sous le plancher : —                                      · cèdent 2
+    1 light  5 île(s) · la plus faible ΔE  19.6 · sous le plancher : —                                      · cèdent 0
+    2 dark   5 île(s) · la plus faible ΔE  28.2 · sous le plancher : —                                      · cèdent 2
+    2 light  5 île(s) · la plus faible ΔE  23.9 · sous le plancher : —                                      · cèdent 0
+    3 dark   5 île(s) · la plus faible ΔE  28.2 · sous le plancher : —                                      · cèdent 2
+    3 light  5 île(s) · la plus faible ΔE  23.1 · sous le plancher : —                                      · cèdent 0
+    4 dark   5 île(s) · la plus faible ΔE  28.4 · sous le plancher : —                                      · cèdent 2
+    4 light  5 île(s) · la plus faible ΔE  23.5 · sous le plancher : —                                      · cèdent 0
+    5 dark   5 île(s) · la plus faible ΔE  28.4 · sous le plancher : —                                      · cèdent 2
+    5 light  5 île(s) · la plus faible ΔE    16 · sous le plancher : —                                      · cèdent 0
+    6 dark   5 île(s) · la plus faible ΔE  21.3 · sous le plancher : —                                      · cèdent 2
+    6 light  5 île(s) · la plus faible ΔE  23.6 · sous le plancher : —                                      · cèdent 0
+    7 dark   5 île(s) · la plus faible ΔE  23.1 · sous le plancher : —                                      · cèdent 2
+    7 light  5 île(s) · la plus faible ΔE  23.9 · sous le plancher : —                                      · cèdent 0
+    8 dark   5 île(s) · la plus faible ΔE  22.7 · sous le plancher : —                                      · cèdent 2
+    8 light  5 île(s) · la plus faible ΔE  23.9 · sous le plancher : —                                      · cèdent 0
+    9 dark   5 île(s) · la plus faible ΔE  28.5 · sous le plancher : —                                      · cèdent 2
+    9 light  5 île(s) · la plus faible ΔE  23.7 · sous le plancher : —                                      · cèdent 0
+   10 dark   5 île(s) · la plus faible ΔE  27.7 · sous le plancher : —                                      · cèdent 2
+   10 light  5 île(s) · la plus faible ΔE  22.5 · sous le plancher : —                                      · cèdent 0
+
+   dark   0 dalle(s) sous le plancher · 0 chargement(s) fautif(s) sur 10 · la plus faible médiane 28.2, pire 21.3
+   light  0 dalle(s) sous le plancher · 0 chargement(s) fautif(s) sur 10 · la plus faible médiane 23.6, pire 16.0
+   20 dalle(s) ont CÉDÉ leur teinte (total sur toutes les passes)
+
+   ══ le masque (ce que l’app mesure) contre l’écran (ce que le juge mesure) ══
+   dark   50 couple(s) · rapport écran/masque : médiane 0.87, min 0.45, max 1.49
+      rapporter le livre         masque   45.9 → écran  21.3  (×0.46) · rang 0
+      rapporter le livre         masque   46.2 → écran  21.7  (×0.47) · rang 0
+      rapporter le livre         masque   50.2 → écran  22.7  (×0.45) · rang 0
+      rapporter le livre         masque   49.2 → écran  23.1  (×0.47) · rang 0
+      rapporter le livre         masque   42.7 → écran  27.7  (×0.65) · rang 0
+   light  50 couple(s) · rapport écran/masque : médiane 1.16, min 0.39, max 1.77
+      rapporter le livre         masque   24.1 → écran  16.0  (×0.66) · rang 0
+      planter un arbre           masque   50.9 → écran  19.6  (×0.39) · rang 0
+      planter un arbre           masque   52.7 → écran  22.4  (×0.43) · rang 0
+      planter un arbre           masque   48.3 → écran  22.5  (×0.47) · rang 0
+      planter un arbre           masque   44.2 → écran  23.1  (×0.52) · rang 0
+
+   ══ le couple « hors lumière → à l’écran » (c’est lui qui dit si le garde-fou peut prédire) ══

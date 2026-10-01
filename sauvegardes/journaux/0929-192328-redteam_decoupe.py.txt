@@ -1,0 +1,21 @@
+moteur de la Toile (l. 13677–15354, relevé, non jugé) : {'C·getImageData': 980, 'A·découpe': 561, 'ok·pose': 1186, 'C·putImageData': 419}
+poses 1 : 1, à leur taille (autorisées) : 1795
+
+A·découpe        OK  aucune prise
+B·redimension    OK  aucune prise
+C·getImageData   KO  609 appels, 1 lignes
+   l. 15391  ×609  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Ma Toile, Partager · Mon    {"m": "DALLE", "cible": "?"}
+C·putImageData   KO  148 appels, 1 lignes
+   l. 15409  ×148  Aura · la Pelote, Fil, Index, Partager · Mon Folio, chargement, fiche chiche, fiche en cours, fiche personne,    {"m": "DALLE", "cible": "?"}
+D·fragment       OK  aucune prise
+E·motif          OK  aucune prise
+E·image          OK  aucune prise
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+  ✗ NOUVELLE  C·getImageData  l. 15391  ×609  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Ma Toile, Parta
+  ✗ NOUVELLE  C·putImageData  l. 15409  ×148  Aura · la Pelote, Fil, Index, Partager · Mon Folio, chargement, fiche chiche, fiche en cours, fiche 
+
+❌  2 LIGNE(S) NOUVELLE(S) découpent, redimensionnent ou relisent une dalle — régression.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.

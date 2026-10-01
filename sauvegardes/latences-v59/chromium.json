@@ -1,0 +1,938 @@
+{
+ "+ (les natures)": {
+  "pret": 12,
+  "img": 133,
+  "lentes": 1,
+  "bloque": 117,
+  "top": [
+   [
+    "(idle)",
+    1374
+   ],
+   [
+    "(program)",
+    312
+   ],
+   [
+    "querySelectorAll",
+    4
+   ],
+   [
+    "_labels l.10375",
+    2
+   ],
+   [
+    "frame l.10449",
+    1
+   ],
+   [
+    "ellipse",
+    1
+   ],
+   [
+    "Renc l.10286",
+    1
+   ]
+  ]
+ },
+ "Un Promi → page +": {
+  "pret": 1,
+  "img": 683,
+  "lentes": 3,
+  "bloque": 800,
+  "top": [
+   [
+    "(program)",
+    815
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    439
+   ],
+   [
+    "getImageData",
+    57
+   ],
+   [
+    "window._rendDalle l.11409",
+    41
+   ],
+   [
+    "querySelectorAll",
+    40
+   ],
+   [
+    "setTransform",
+    38
+   ],
+   [
+    "mesure l.20964",
+    37
+   ]
+  ]
+ },
+ "planter → dalle": {
+  "pret": 1288,
+  "img": 550,
+  "lentes": 2,
+  "bloque": 583,
+  "top": [
+   [
+    "(program)",
+    844
+   ],
+   [
+    "(idle)",
+    475
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    343
+   ],
+   [
+    "(anon) l.27063",
+    215
+   ],
+   [
+    "passe l.24418",
+    212
+   ],
+   [
+    "querySelectorAll",
+    137
+   ],
+   [
+    "getBoundingClientRect",
+    124
+   ]
+  ]
+ },
+ "fiche (toucher la dalle)": {
+  "pret": 283,
+  "img": 317,
+  "lentes": 5,
+  "bloque": 550,
+  "top": [
+   [
+    "(program)",
+    844
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    168
+   ],
+   [
+    "(anon) l.27063",
+    114
+   ],
+   [
+    "(idle)",
+    54
+   ],
+   [
+    "(anon) l.36733",
+    52
+   ],
+   [
+    "querySelectorAll",
+    36
+   ],
+   [
+    "passe l.24418",
+    30
+   ]
+  ]
+ },
+ "disque de fiche": {
+  "pret": 255,
+  "img": 83,
+  "lentes": 4,
+  "bloque": 200,
+  "top": [
+   [
+    "(program)",
+    951
+   ],
+   [
+    "(idle)",
+    219
+   ],
+   [
+    "(anon) l.27063",
+    90
+   ],
+   [
+    "passe l.24418",
+    47
+   ],
+   [
+    "querySelectorAll",
+    39
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    33
+   ],
+   [
+    "(anon) l.36733",
+    30
+   ]
+  ]
+ },
+ "retour à la Toile": {
+  "pret": -3,
+  "img": 50,
+  "lentes": 0,
+  "bloque": 0,
+  "top": [
+   [
+    "(program)",
+    978
+   ],
+   [
+    "(idle)",
+    404
+   ],
+   [
+    "(anon) l.27063",
+    63
+   ],
+   [
+    "_labels l.10375",
+    27
+   ],
+   [
+    "passe l.24418",
+    23
+   ],
+   [
+    "fill",
+    16
+   ],
+   [
+    "(anon) l.36733",
+    13
+   ]
+  ]
+ },
+ "Index": {
+  "pret": 494,
+  "img": 350,
+  "lentes": 7,
+  "bloque": 666,
+  "top": [
+   [
+    "(program)",
+    977
+   ],
+   [
+    "(idle)",
+    237
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    167
+   ],
+   [
+    "(anon) l.27063",
+    112
+   ],
+   [
+    "(anon) l.36733",
+    32
+   ],
+   [
+    "(anon) l.22653",
+    31
+   ],
+   [
+    "querySelectorAll",
+    31
+   ]
+  ]
+ },
+ "Fil": {
+  "pret": 231,
+  "img": 217,
+  "lentes": 2,
+  "bloque": 250,
+  "top": [
+   [
+    "(idle)",
+    842
+   ],
+   [
+    "(program)",
+    314
+   ],
+   [
+    "armer l.22962",
+    148
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    88
+   ],
+   [
+    "(anon) l.27063",
+    72
+   ],
+   [
+    "querySelectorAll",
+    53
+   ],
+   [
+    "passe l.24418",
+    29
+   ]
+  ]
+ },
+ "Studio": {
+  "pret": 288,
+  "img": 67,
+  "lentes": 3,
+  "bloque": 133,
+  "top": [
+   [
+    "(program)",
+    879
+   ],
+   [
+    "(idle)",
+    380
+   ],
+   [
+    "(anon) l.27063",
+    91
+   ],
+   [
+    "passe l.24418",
+    40
+   ],
+   [
+    "(anon) l.27910",
+    37
+   ],
+   [
+    "querySelectorAll",
+    32
+   ],
+   [
+    "cale l.25317",
+    22
+   ]
+  ]
+ },
+ "Aura": {
+  "pret": 790,
+  "img": 450,
+  "lentes": 8,
+  "bloque": 1316,
+  "top": [
+   [
+    "(program)",
+    371
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    223
+   ],
+   [
+    "semisPavage l.30381",
+    201
+   ],
+   [
+    "verse l.31963",
+    197
+   ],
+   [
+    "peint l.30661",
+    197
+   ],
+   [
+    "phi l.29869",
+    134
+   ],
+   [
+    "(anon) l.27063",
+    90
+   ]
+  ]
+ },
+ "Partager": {
+  "pret": 388,
+  "img": 100,
+  "lentes": 6,
+  "bloque": 350,
+  "top": [
+   [
+    "(program)",
+    896
+   ],
+   [
+    "(idle)",
+    195
+   ],
+   [
+    "(anon) l.27063",
+    148
+   ],
+   [
+    "(anon) l.27910",
+    101
+   ],
+   [
+    "querySelectorAll",
+    59
+   ],
+   [
+    "passe l.24418",
+    30
+   ],
+   [
+    "drawImage",
+    21
+   ]
+  ]
+ },
+ "Réglages": {
+  "pret": 865,
+  "img": 100,
+  "lentes": 3,
+  "bloque": 216,
+  "top": [
+   [
+    "(program)",
+    754
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    412
+   ],
+   [
+    "(anon) l.27910",
+    79
+   ],
+   [
+    "(anon) l.27063",
+    75
+   ],
+   [
+    "getImageData",
+    56
+   ],
+   [
+    "window._rendDalle l.11409",
+    43
+   ],
+   [
+    "setTransform",
+    29
+   ]
+  ]
+ },
+ "Cercle": {
+  "pret": 277,
+  "img": 83,
+  "lentes": 6,
+  "bloque": 300,
+  "top": [
+   [
+    "(program)",
+    804
+   ],
+   [
+    "(idle)",
+    284
+   ],
+   [
+    "(anon) l.27063",
+    116
+   ],
+   [
+    "(anon) l.27910",
+    110
+   ],
+   [
+    "_labels l.10375",
+    54
+   ],
+   [
+    "querySelectorAll",
+    38
+   ],
+   [
+    "passe l.24418",
+    29
+   ]
+  ]
+ },
+ "2e · + (les natures)": {
+  "pret": 7,
+  "img": 34,
+  "lentes": 0,
+  "bloque": 0,
+  "top": [
+   [
+    "(idle)",
+    1236
+   ],
+   [
+    "(program)",
+    355
+   ],
+   [
+    "passe l.24418",
+    20
+   ],
+   [
+    "_labels l.10375",
+    6
+   ],
+   [
+    "querySelectorAll",
+    5
+   ],
+   [
+    "fill",
+    4
+   ],
+   [
+    "measureText",
+    3
+   ]
+  ]
+ },
+ "2e · Un Promi → page +": {
+  "pret": 9,
+  "img": 117,
+  "lentes": 6,
+  "bloque": 450,
+  "top": [
+   [
+    "(program)",
+    739
+   ],
+   [
+    "(idle)",
+    220
+   ],
+   [
+    "(anon) l.27910",
+    121
+   ],
+   [
+    "(anon) l.27063",
+    103
+   ],
+   [
+    "_labels l.10375",
+    96
+   ],
+   [
+    "querySelectorAll",
+    60
+   ],
+   [
+    "passe l.24418",
+    51
+   ]
+  ]
+ },
+ "2e · planter → dalle": {
+  "pret": 1187,
+  "img": 433,
+  "lentes": 5,
+  "bloque": 700,
+  "top": [
+   [
+    "(program)",
+    839
+   ],
+   [
+    "(idle)",
+    395
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    315
+   ],
+   [
+    "passe l.24418",
+    259
+   ],
+   [
+    "(anon) l.27063",
+    225
+   ],
+   [
+    "querySelectorAll",
+    162
+   ],
+   [
+    "getBoundingClientRect",
+    139
+   ]
+  ]
+ },
+ "2e · fiche (toucher la dalle)": {
+  "pret": 292,
+  "img": 283,
+  "lentes": 7,
+  "bloque": 683,
+  "top": [
+   [
+    "(program)",
+    769
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    158
+   ],
+   [
+    "(anon) l.27060",
+    146
+   ],
+   [
+    "(anon) l.27910",
+    114
+   ],
+   [
+    "(anon) l.36733",
+    54
+   ],
+   [
+    "querySelectorAll",
+    38
+   ],
+   [
+    "getBoundingClientRect",
+    28
+   ]
+  ]
+ },
+ "2e · disque de fiche": {
+  "pret": 258,
+  "img": 100,
+  "lentes": 5,
+  "bloque": 283,
+  "top": [
+   [
+    "(program)",
+    889
+   ],
+   [
+    "(anon) l.27063",
+    128
+   ],
+   [
+    "(anon) l.27910",
+    121
+   ],
+   [
+    "(idle)",
+    92
+   ],
+   [
+    "passe l.24418",
+    53
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    51
+   ],
+   [
+    "querySelectorAll",
+    39
+   ]
+  ]
+ },
+ "2e · retour à la Toile": {
+  "pret": -11,
+  "img": 67,
+  "lentes": 2,
+  "bloque": 83,
+  "top": [
+   [
+    "(program)",
+    903
+   ],
+   [
+    "(idle)",
+    398
+   ],
+   [
+    "(anon) l.27063",
+    64
+   ],
+   [
+    "(anon) l.27910",
+    60
+   ],
+   [
+    "_labels l.10375",
+    29
+   ],
+   [
+    "passe l.24418",
+    25
+   ],
+   [
+    "measureText",
+    18
+   ]
+  ]
+ },
+ "2e · Index": {
+  "pret": 498,
+  "img": 100,
+  "lentes": 5,
+  "bloque": 367,
+  "top": [
+   [
+    "(program)",
+    895
+   ],
+   [
+    "(idle)",
+    237
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    181
+   ],
+   [
+    "(anon) l.27063",
+    112
+   ],
+   [
+    "(anon) l.27910",
+    61
+   ],
+   [
+    "passe l.24418",
+    41
+   ],
+   [
+    "(anon) l.22653",
+    38
+   ]
+  ]
+ },
+ "2e · Fil": {
+  "pret": 349,
+  "img": 350,
+  "lentes": 4,
+  "bloque": 533,
+  "top": [
+   [
+    "(idle)",
+    707
+   ],
+   [
+    "(program)",
+    242
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    182
+   ],
+   [
+    "armer l.22962",
+    152
+   ],
+   [
+    "(anon) l.27063",
+    107
+   ],
+   [
+    "querySelectorAll",
+    57
+   ],
+   [
+    "(anon) l.27910",
+    52
+   ]
+  ]
+ },
+ "2e · Studio": {
+  "pret": 277,
+  "img": 50,
+  "lentes": 1,
+  "bloque": 33,
+  "top": [
+   [
+    "(program)",
+    850
+   ],
+   [
+    "(idle)",
+    364
+   ],
+   [
+    "(anon) l.27910",
+    104
+   ],
+   [
+    "(anon) l.27063",
+    100
+   ],
+   [
+    "querySelectorAll",
+    36
+   ],
+   [
+    "passe l.24418",
+    33
+   ],
+   [
+    "closest",
+    18
+   ]
+  ]
+ },
+ "2e · Aura": {
+  "pret": 375,
+  "img": 400,
+  "lentes": 12,
+  "bloque": 1149,
+  "top": [
+   [
+    "(program)",
+    413
+   ],
+   [
+    "verse l.31963",
+    212
+   ],
+   [
+    "peint l.30661",
+    172
+   ],
+   [
+    "phi l.29869",
+    127
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    102
+   ],
+   [
+    "(anon) l.27910",
+    93
+   ],
+   [
+    "(anon) l.27063",
+    87
+   ]
+  ]
+ },
+ "2e · Partager": {
+  "pret": 338,
+  "img": 67,
+  "lentes": 3,
+  "bloque": 150,
+  "top": [
+   [
+    "(program)",
+    990
+   ],
+   [
+    "(idle)",
+    225
+   ],
+   [
+    "(anon) l.27910",
+    92
+   ],
+   [
+    "(anon) l.27063",
+    87
+   ],
+   [
+    "querySelectorAll",
+    59
+   ],
+   [
+    "passe l.24418",
+    49
+   ],
+   [
+    "measureText",
+    18
+   ]
+  ]
+ },
+ "2e · Réglages": {
+  "pret": 795,
+  "img": 83,
+  "lentes": 4,
+  "bloque": 233,
+  "top": [
+   [
+    "(program)",
+    697
+   ],
+   [
+    "window.Toile.dalleTrame l.11045",
+    369
+   ],
+   [
+    "_labels l.10375",
+    111
+   ],
+   [
+    "(anon) l.27910",
+    94
+   ],
+   [
+    "(anon) l.27063",
+    73
+   ],
+   [
+    "getImageData",
+    51
+   ],
+   [
+    "window._rendDalle l.11409",
+    42
+   ]
+  ]
+ },
+ "2e · Cercle": {
+  "pret": 273,
+  "img": 83,
+  "lentes": 5,
+  "bloque": 267,
+  "top": [
+   [
+    "(program)",
+    860
+   ],
+   [
+    "(idle)",
+    276
+   ],
+   [
+    "(anon) l.27910",
+    98
+   ],
+   [
+    "(anon) l.27063",
+    97
+   ],
+   [
+    "_labels l.10375",
+    64
+   ],
+   [
+    "querySelectorAll",
+    43
+   ],
+   [
+    "passe l.24418",
+    28
+   ]
+  ]
+ }
+}

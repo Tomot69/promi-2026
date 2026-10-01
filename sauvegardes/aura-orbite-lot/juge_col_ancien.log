@@ -1,0 +1,60 @@
+
+═══ L'AURA — l'Orbite dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    8
+    [sombre] la rangée des Noyaux (24, 454, 107) au lieu de y 477.6 (phrase de 2 ligne(s) + 26.675)
+    [sombre] la légende (589, 16) au lieu de y 612.6
+    [sombre] « Ce que tu as tenu » à 633 au lieu de 656.6
+    [sombre] le bouton (24, 762, 342, 60) au lieu de (24, 787.2, 342, 60)
+    [clair] la rangée des Noyaux (24, 454, 107) au lieu de y 477.6 (phrase de 2 ligne(s) + 26.675)
+    [clair] la légende (589, 16) au lieu de y 612.6
+    [clair] « Ce que tu as tenu » à 633 au lieu de 656.6
+    [clair] le bouton (24, 762, 342, 60) au lieu de (24, 787.2, 342, 60)
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+données                      0
+les huit acquis              0
+densité                      0
+air de la colonne            20
+    [sombre] « Rien de ce qui est ici n’a é » (2 ligne(s)) : 3.7 pt entre la phrase et les disques (air décidé 26.7)
+    [sombre] « Rien de ce qui est ici n’a é » : 2.8 pt entre les libellés des dalles et le bouton
+    [sombre] à l'encre, « Rien de ce qui est ici n’a é » : 6.0 pt entre la phrase et les disques
+    [sombre] « Tout ça, tu l’as dit. Et tu  » : 2.8 pt entre les libellés des dalles et le bouton
+    [sombre] « On ne dirait pas comme ça, m » (2 ligne(s)) : 3.7 pt entre la phrase et les disques (air décidé 26.7)
+    [sombre] « On ne dirait pas comme ça, m » : 2.8 pt entre les libellés des dalles et le bouton
+    [sombre] « Il y en a, des paroles tenue » : 2.8 pt entre les libellés des dalles et le bouton
+    [sombre] « Et dire que tout ça, c’est t » : 2.8 pt entre les libellés des dalles et le bouton
+    [sombre] l'air sous la phrase dépend du nombre de lignes : 2 l. 3.7, 1 l. 27.3, 2 l. 3.7, 1 l. 27.3, 1 l. 27.3
+    [sombre] défilé jusqu'en bas, le cadre se voit au-dessus du plateau : [[8, 20, 'au-cadre'], [195, 20, 'au-cadre'], [382, 20, 'au-cadre'], [8, 70, 'au-cadre'], [382, 70, 'au-cadre']]
+    [clair] « Rien de ce qui est ici n’a é » (2 ligne(s)) : 3.7 pt entre la phrase et les disques (air décidé 26.7)
+    [clair] « Rien de ce qui est ici n’a é » : 2.8 pt entre les libellés des dalles et le bouton
+    [clair] à l'encre, « Rien de ce qui est ici n’a é » : 6.0 pt entre la phrase et les disques
+    [clair] « Tout ça, tu l’as dit. Et tu  » : 2.8 pt entre les libellés des dalles et le bouton
+    [clair] « On ne dirait pas comme ça, m » (2 ligne(s)) : 3.7 pt entre la phrase et les disques (air décidé 26.7)
+    [clair] « On ne dirait pas comme ça, m » : 2.8 pt entre les libellés des dalles et le bouton
+    [clair] « Il y en a, des paroles tenue » : 2.8 pt entre les libellés des dalles et le bouton
+    [clair] « Et dire que tout ça, c’est t » : 2.8 pt entre les libellés des dalles et le bouton
+    [clair] l'air sous la phrase dépend du nombre de lignes : 2 l. 3.7, 1 l. 27.3, 2 l. 3.7, 1 l. 27.3, 1 l. 27.3
+    [clair] défilé jusqu'en bas, le cadre se voit au-dessus du plateau : [[8, 20, 'au-cadre'], [195, 20, 'au-cadre'], [382, 20, 'au-cadre'], [8, 70, 'au-cadre'], [382, 70, 'au-cadre']]
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   air [sombre]         phrase → disques : 2 l. 3.7 · 1 l. 27.3 · 2 l. 3.7 · 1 l. 27.3 · 1 l. 27.3 · à l'encre 2 l. 6.0 · 1 l. 28.0 · libellés → bouton 2.8 · la colonne défile de 0 pt
+   air [clair]          phrase → disques : 2 l. 3.7 · 1 l. 27.3 · 2 l. 3.7 · 1 l. 27.3 · 1 l. 27.3 · à l'encre 2 l. 6.0 · 1 l. 28.0 · libellés → bouton 2.8 · la colonne défile de 0 pt
+   1 · rotation lente   0.0528 rad/s sur 2 s (décidé 0.0524, un tour en 2 min)
+   2 · prise, droite    Δlac +0.809 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.003 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.603 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 9.16 rad/s · éteint à 5.2 s · puis 0.0523 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 50 ms (dont peintre 13.9 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 40.5 → 36.0 → 30.4 → 21.1 → 10.1 → 0.3 → lisse · DERNIER PAS 0.26 niveau (médiane des 10 d'avant 0.97) · 129 images · empreinte retirée à 3.28 s
+   4 · toucher          p 1.000 à 250 ms, 1.000 à 950 ms · sous le doigt 98.2 % des pixels changent, hors de portée 1.60 %, bruit 0.00 % · revenu ≈ 3.3 s après le lâcher, écart au repos 0.00 %
+   5 · trace            en attente au lâcher : 1 · 0 → 1 caresse(s), gardée(s) : 1 · au repos, 10.5 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 3.55 s lâché sur place, 0.29 s lancé (8 %)
+   8 · personne         toucher sur « Marion » → ouvre « Marion », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.14 rad, personne d'ouvert
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.933
+
+palier 110000 · médiane 13.6 ms · 2059 images · plus longue image pendant l'élan : 50 ms (dont peintre 13.9 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 1 décision(s) · à la réouverture : palier 75000
+
+❌  28 ÉCARTS

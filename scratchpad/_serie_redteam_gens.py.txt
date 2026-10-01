@@ -1,0 +1,44 @@
+
+── thème light ──
+[clair] Promi · à qui · toucher « Rachel » l'ajoute              OK  
+[clair] Promi · à qui · la croix de « Rachel » la retire         OK  
+[clair] Promi · à qui · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[clair] Promi · à qui · la liste vit au-dessus de Peaufiner      OK  
+[clair] Chiche · qui tu défies · toucher « Rachel » l'ajoute     OK  
+[clair] Chiche · qui tu défies · la croix de « Rachel » la retire OK  
+[clair] Chiche · qui tu défies · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[clair] Chiche · qui tu défies · la liste vit au-dessus de Peaufiner OK  
+[clair] Chiche · avec qui · toucher « Rachel » l'ajoute          OK  
+[clair] Chiche · avec qui · la croix de « Rachel » la retire     OK  
+[clair] Chiche · avec qui · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[clair] Chiche · avec qui · la liste vit au-dessus de Peaufiner  OK  
+[clair] Nuée · avec · toucher « Rachel » l'ajoute                OK  
+[clair] Nuée · avec · la croix de « Rachel » la retire           OK  
+[clair] Nuée · avec · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[clair] Nuée · avec · la liste vit au-dessus de Peaufiner        OK  
+[clair] Fiche · Peaufiner · À QUI · toucher « Adrien » l'ajoute  OK  
+[clair] Fiche · Peaufiner · À QUI · la croix de « Adrien » la retire OK  
+[clair] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK  
+
+── thème dark ──
+[sombre] Promi · à qui · toucher « Rachel » l'ajoute             OK  
+[sombre] Promi · à qui · la croix de « Rachel » la retire        OK  
+[sombre] Promi · à qui · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[sombre] Promi · à qui · la liste vit au-dessus de Peaufiner     OK  
+[sombre] Chiche · qui tu défies · toucher « Rachel » l'ajoute    OK  
+[sombre] Chiche · qui tu défies · la croix de « Rachel » la retire OK  
+[sombre] Chiche · qui tu défies · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[sombre] Chiche · qui tu défies · la liste vit au-dessus de Peaufiner OK  
+[sombre] Chiche · avec qui · toucher « Rachel » l'ajoute         OK  
+[sombre] Chiche · avec qui · la croix de « Rachel » la retire    OK  
+[sombre] Chiche · avec qui · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[sombre] Chiche · avec qui · la liste vit au-dessus de Peaufiner OK  
+[sombre] Nuée · avec · toucher « Rachel » l'ajoute               OK  
+[sombre] Nuée · avec · la croix de « Rachel » la retire          OK  
+[sombre] Nuée · avec · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[sombre] Nuée · avec · la liste vit au-dessus de Peaufiner       OK  
+[sombre] Fiche · Peaufiner · À QUI · toucher « Adrien » l'ajoute OK  
+[sombre] Fiche · Peaufiner · À QUI · la croix de « Adrien » la retire OK  
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK  
+
+38/38

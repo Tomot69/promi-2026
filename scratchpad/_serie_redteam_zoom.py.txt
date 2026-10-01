@@ -1,0 +1,18 @@
+[clair] 3 · pas de rond « recadrer » au repos              OK  
+[clair] 3 · pas de rond après un simple toucher            OK  case vide True
+[clair] 3 · le rond apparaît après un pincement            OK  échelle 0.40
+[clair] 1 · le dézoom tient à 0,40 (relâché, fiche ouverte et fermée) OK  0.40 → 0.40
+[clair] 2 · planter ne reprend pas la vue posée            OK  0.40 → 0.40
+[clair] 4 · recadrer ramène au cadrage et le rond disparaît OK  échelle 1.00 · rond False
+[clair] 5 · le double toucher sur une case vide recadre    OK  échelle 1.00
+[clair] 6 · un toucher sur une dalle ouvre sa fiche        OK  dalle 125 · fiche True
+[sombre] 3 · pas de rond « recadrer » au repos             OK  
+[sombre] 3 · pas de rond après un simple toucher           OK  case vide True
+[sombre] 3 · le rond apparaît après un pincement           OK  échelle 0.40
+[sombre] 1 · le dézoom tient à 0,40 (relâché, fiche ouverte et fermée) OK  0.40 → 0.40
+[sombre] 2 · planter ne reprend pas la vue posée           OK  0.40 → 0.40
+[sombre] 4 · recadrer ramène au cadrage et le rond disparaît OK  échelle 1.00 · rond False
+[sombre] 5 · le double toucher sur une case vide recadre   OK  échelle 1.00
+[sombre] 6 · un toucher sur une dalle ouvre sa fiche       OK  dalle 125 · fiche True
+
+16/16

@@ -1,0 +1,360 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Promi — dix orbites</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0C0D10;color:#F4EEE1;font-family:Apfel,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:54px 24px 120px}
+h1{font-family:Bricolage;font-weight:700;font-size:34px;letter-spacing:-.02em;margin:0 0 10px}
+.chapo{font-size:15px;line-height:1.6;color:#8B8778;max-width:640px;margin:0 0 54px}
+.grille{display:grid;grid-template-columns:repeat(2,1fr);gap:54px 40px}
+figure{margin:0}
+.cadre{background:#16171B;border-radius:26px;overflow:hidden;position:relative;
+  width:100%;aspect-ratio:1/1}
+.cadre canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+figcaption{margin:16px 2px 0;font-size:14.5px;line-height:1.5;color:#C8C3B6}
+figcaption b{font-family:Bricolage;font-weight:700;color:#F4EEE1;display:block;
+  font-size:16px;margin-bottom:3px;letter-spacing:-.01em}
+figcaption i{font-style:normal;color:#6E6A5E}
+</style></head><body>
+<canvas id="toileCv" style="position:fixed;left:0;top:0;width:390px;height:620px;opacity:.01;pointer-events:none;z-index:-1"></canvas>
+<div class="page">
+<h1>Dix orbites</h1>
+<p class="chapo">Fixes, plein cadre. Ce qui varie : le <b>relief</b> (la surface n'est plus une
+boule), la <b>matière</b> (le grain) et la <b>teinte</b> (des reflets francs, jamais un dégradé).
+Toutes sont peintes par la même technique que la version animée — tampons pré-rendus versés dans
+un tampon de pixels — donc toutes sont tenables. Le <b>relief</b> et les <b>normales</b> se calculent une seule fois au
+montage : par image il ne reste que la rotation et le versement — le coût d’aujourd’hui.</p>
+<div class="grille" id="g"></div>
+</div>
+<script>
+var CREME='#F4EEE1', ENCRE='#16171B';
+function cc(){return [200,180,255];}
+function render(){}
+var state={structure:'encre'};
+</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════════════════════
+   LE MOTEUR DES PLANCHES — le même que la version animée :
+   des tampons pré-rendus, versés dans un tampon de pixels, un putImageData.
+   Rien n'est dessiné avec drawImage : mesuré hors budget d'un facteur trois.
+   Tout ce qui suit est donc TENABLE à 60 images par seconde.
+   ════════════════════════════════════════════════════════════════════════════ */
+var D=2;                         /* pixels d'appareil par pixel CSS */
+
+/* ── L'ATLAS : un grain, N teintes, 3 tailles, 8 niveaux de profondeur ────── */
+function atlasRond(teintes, tailles, NIV, a0, a1){
+  var cv=document.createElement('canvas'); cv.width=40; cv.height=40;
+  var g=cv.getContext('2d'), A=[];
+  for(var t=0;t<teintes.length;t++){
+    var rgb=teintes[t];
+    for(var s=0;s<tailles.length;s++){
+      var ep=tailles[s];
+      g.clearRect(0,0,40,40);
+      g.fillStyle='#fff'; g.beginPath(); g.arc(20,20,ep/2,0,6.2832); g.fill();
+      var d=g.getImageData(0,0,40,40).data;
+      var x1=40,y1=40,x2=-1,y2=-1;
+      for(var y=0;y<40;y++)for(var x=0;x<40;x++) if(d[(y*40+x)*4+3]>3){
+        if(x<x1)x1=x; if(x>x2)x2=x; if(y<y1)y1=y; if(y>y2)y2=y; }
+      if(x2<0){x1=y1=20;x2=y2=20;}
+      var w=x2-x1+1, h=y2-y1+1, ox=20-x1, oy=20-y1;
+      for(var n=0;n<NIV;n++){
+        var q=(n+0.5)/NIV, mul=a0+(a1-a0)*q*q;
+        A.push(fabTampon(d,40,x1,y1,w,h,ox,oy,mul,rgb));
+      }
+    }
+  }
+  return A;
+}
+function fabTampon(dat,src,x1,y1,w,h,ox,oy,mul,rgb){
+  var Wd=0; /* rempli plus tard par lieTampons */
+  var offs=[], vals=[];
+  for(var y=0;y<h;y++)for(var x=0;x<w;x++){
+    var al=(dat[((y1+y)*src+(x1+x))*4+3]*mul)|0;
+    if(al>3){ offs.push([y-oy,x-ox]); vals.push(al); }
+  }
+  return {rel:offs, al:vals, rgb:rgb};
+}
+/* on lie les tampons à la largeur du tampon de destination */
+function lieTampons(A,W){
+  for(var i=0;i<A.length;i++){
+    var t=A[i]; if(t.off && t.W===W) continue;
+    var n=t.rel.length, off=new Int32Array(n), val=new Uint32Array(n);
+    for(var j=0;j<n;j++){
+      off[j]=t.rel[j][0]*W+t.rel[j][1];
+      val[j]=(((t.al[j]&255)<<24)|((t.rgb[2]&255)<<16)|((t.rgb[1]&255)<<8)|(t.rgb[0]&255))>>>0;
+    }
+    t.off=off; t.val=val; t.n=n; t.W=W;
+  }
+  return A;
+}
+/* ── LA TEINTE : une rampe FRANCHE, jamais un dégradé ─────────────────────── */
+function rampe(cles, n){
+  /* cles = [[r,g,b], ...] ; on rend n teintes réparties, chacune un APLAT.
+     ⚠ n=1 ou une seule clé : i/(n-1) vaut 0/0. On sort avant. */
+  if(n<=1 || cles.length===1) return [cles[0].slice()];
+  var out=[];
+  for(var i=0;i<n;i++){
+    var t=i/(n-1)*(cles.length-1), k=Math.min(cles.length-2,t|0), f=t-k;
+    out.push([Math.round(cles[k][0]+(cles[k+1][0]-cles[k][0])*f),
+              Math.round(cles[k][1]+(cles[k+1][1]-cles[k][1])*f),
+              Math.round(cles[k][2]+(cles[k+1][2]-cles[k][2])*f)]);
+  }
+  return out;
+}
+var CL_CREME=[[244,238,225]];
+var CL_ESSENCE=[[58,84,255],[138,92,240],[143,160,255],[43,232,140],[58,84,255]];
+var CL_NUIT   =[[58,84,255],[138,92,240],[244,238,225]];
+
+/* ── LE RELIEF : le rayon n'est plus constant ─────────────────────────────── */
+function relief(x,y,z,R){
+  var s=0;
+  for(var i=0;i<R.length;i++){
+    var h=R[i];
+    s+=h[0]*Math.sin(h[1]*x+h[4])*Math.sin(h[2]*y+h[5])*Math.cos(h[3]*z+h[6]);
+  }
+  return 1+s;
+}
+/* ── LA SEMENCE : où sont les points ──────────────────────────────────────── */
+function semis(mode,N,par){
+  var P=[], i, fr=function(v){return v-Math.floor(v);};
+  if(mode==='fibo'){
+    for(i=0;i<N;i++){
+      var y=1-2*(i+0.5)/N, rr=Math.sqrt(Math.max(0,1-y*y)), ph=i*2.399963229728653;
+      P.push([Math.cos(ph)*rr, y, Math.sin(ph)*rr]);
+    }
+  } else if(mode==='fils'){
+    var F=par.fils||30, M=Math.round(N/F), T=par.tours||[9,11,8,12,10,7,13];
+    for(var k=0;k<F;k++){
+      var d1=(par.dev||0.34)*(2*fr(k*0.618033988)-1), d2=fr(k*0.754877666)*6.2832;
+      var ax=Math.sin(d1)*Math.cos(d2), ay=Math.cos(d1), az=Math.sin(d1)*Math.sin(d2);
+      var p1x=-az, p1z=ax, pn=Math.hypot(p1x,p1z)||1; p1x/=pn; p1z/=pn;
+      var p2x=ay*p1z, p2y=az*p1x-ax*p1z, p2z=-ay*p1x;
+      var Nn=T[k%T.length], ph2=fr(k*0.414213562)*6.2832;
+      for(i=0;i<M;i++){
+        var s=i/M, yy=1-2*s, r2=Math.sqrt(Math.max(0,1-yy*yy));
+        var th=s*Nn*6.2832+ph2, c=Math.cos(th)*r2, s3=Math.sin(th)*r2;
+        P.push([ax*yy+p1x*c+p2x*s3, ay*yy+p1z*0+p2y*s3, az*yy+p1z*c+p2z*s3]);
+      }
+    }
+  } else if(mode==='latitudes'){
+    var L=par.lignes||46;
+    for(var l=0;l<L;l++){
+      var yy2=-1+2*(l+0.5)/L, r3=Math.sqrt(Math.max(0,1-yy2*yy2));
+      var nb=Math.max(6,Math.round(N/L*r3*1.5));
+      for(i=0;i<nb;i++){
+        var a=i/nb*6.2832+l*0.7;
+        P.push([Math.cos(a)*r3, yy2, Math.sin(a)*r3]);
+      }
+    }
+  } else if(mode==='volume'){
+    for(i=0;i<N;i++){
+      var y3=1-2*(i+0.5)/N, r4=Math.sqrt(Math.max(0,1-y3*y3)), p3=i*2.399963229728653;
+      /* ⚠ LA PROFONDEUR NE DOIT PAS SUIVRE L'INDICE. Corrélée à la spirale de
+         Fibonacci, elle dessinait une ÉTOILE de rayons au centre — un artefact, pas
+         une matière. Deux irrationnels différents, et l'étoile disparaît. */
+      var prof=0.55+0.45*fr(i*0.7548776662+fr(i*0.2360679775)*0.5);
+      var tw=fr(i*0.3819660113)*6.2832;           /* et on tord l'azimut */
+      var ca=Math.cos(p3+tw*0.18), sa=Math.sin(p3+tw*0.18);
+      P.push([ca*r4*prof, y3*prof, sa*r4*prof]);
+    }
+  }
+  return P;
+}
+
+/* ── LE PEINTRE : une orbite dans un cadre ────────────────────────────────── */
+function peint(cv, o){
+  var CSS=o.css||480, W=CSS*D;
+  cv.width=W; cv.height=W;
+  var g=cv.getContext('2d');
+  var im=g.createImageData(W,W), B=new Uint32Array(im.data.buffer);
+  var NIV=o.niv||8, TAI=o.tailles||[2.0,2.8,3.8], TN=o.teintes.length;
+  var A=lieTampons(o.atlas,W);
+  var R=CSS*(o.R||0.335)*D, FOC=o.foc||(R*4.6);   /* le relief gonfle jusqu'à 1,25 : la boule
+                                                     doit tenir dans le cadre avec son relief */
+  var CX=W/2, CY=W/2;
+  var P=semis(o.mode, o.n, o);
+  var lac=o.lac||0, tan=o.tan||0.34;
+  var cl=Math.cos(lac), sl=Math.sin(lac), ct=Math.cos(tan), st=Math.sin(tan);
+  var pts=[], i, t0=performance.now();
+  for(i=0;i<P.length;i++){
+    var x=P[i][0], y=P[i][1], z=P[i][2];
+    /* LE RELIEF : le rayon suit une surface, pas une boule */
+    var rr=o.relief?relief(x,y,z,o.relief):1;
+    /* LE CREUX : une main a appuyé là, et la SURFACE s'est enfoncée */
+    if(o.creux){
+      var cx0=o.creux[0], cy0=o.creux[1], cz0=o.creux[2];
+      var dd=Math.hypot(x-cx0,y-cy0,z-cz0);
+      if(dd<o.creux[3]){ var u=1-dd/o.creux[3]; rr-=o.creux[4]*u*u*(3-2*u); }
+    }
+    /* la NORMALE de la surface déformée, par différences finies */
+    var nx=x, ny=y, nz=z;
+    if(o.relief){
+      var e=0.02;
+      var gx=(relief(x+e,y,z,o.relief)-relief(x-e,y,z,o.relief))/(2*e);
+      var gy=(relief(x,y+e,z,o.relief)-relief(x,y-e,z,o.relief))/(2*e);
+      var gz=(relief(x,y,z+e,o.relief)-relief(x,y,z-e,o.relief))/(2*e);
+      nx=x*rr+gx*0.42; ny=y*rr+gy*0.42; nz=z*rr+gz*0.42;
+      var nn=Math.hypot(nx,ny,nz)||1; nx/=nn; ny/=nn; nz/=nn;
+    }
+    var X=x*rr, Y=y*rr, Z=z*rr;
+    /* la vue */
+    var X2=X*cl+Z*sl, Z2=-X*sl+Z*cl, Y2=Y*ct-Z2*st; Z2=Y*st+Z2*ct;
+    var NX=nx*cl+nz*sl, NZ2=-nx*sl+nz*cl, NY=ny*ct-NZ2*st; NZ2=ny*st+NZ2*ct;
+    if(o.dosCache && NZ2<-0.05) continue;          /* on ne voit pas le dos */
+    var k=FOC/(FOC-Z2*R);
+    var px=(CX+X2*R*k)|0, py=(CY+Y2*R*k)|0;
+    if(px<8||py<8||px>W-8||py>W-8) continue;
+    /* LE NIVEAU : la profondeur */
+    var zz=(Z2+1)*0.5, niv=(zz*NIV)|0; if(niv>=NIV)niv=NIV-1; if(niv<0)niv=0;
+    /* LA TAILLE : plus près, plus gros */
+    var tai=(zz*TAI.length)|0; if(tai>=TAI.length)tai=TAI.length-1; if(tai<0)tai=0;
+    if(o.taiFixe!==undefined) tai=o.taiFixe;
+    /* ⚑ LA TEINTE — LA FLAQUE D'ESSENCE.
+       Elle ne vient pas de la position mais de l'ORIENTATION : l'angle entre la
+       normale de la surface et le regard. Comme un film d'huile, la teinte tourne
+       quand la surface se penche — bleu de face, mauve de trois quarts, menthe au
+       ras du bord. Chaque point porte UN aplat de teinte : la variation naît du
+       VOISINAGE, jamais d'un dégradé. */
+    var ti=0;
+    if(TN>1){
+      var f=Math.abs(NZ2);
+      /* deux termes : l'INCLINAISON (le bord vire) et l'ORIENTATION dans le plan
+         (la face n'est pas d'un seul bleu — elle a des plaques). C'est ce qui fait
+         la flaque : une teinte qui tourne avec la pente, pas avec la position. */
+      var v=(o.iriPhase||0) + (o.iriK||3.1)*Math.pow(1-f,o.iriP||1.7)
+            + (o.iriM||0)*(NX*0.74+NY*0.52);
+      ti=((v*TN)|0)%TN; if(ti<0)ti+=TN;
+    }
+    var sp=A[(ti*TAI.length+tai)*NIV+niv];
+    if(!sp) continue;
+    pts.push(py*W+px, sp.n, ti*TAI.length*NIV+tai*NIV+niv);
+  }
+  /* le versement */
+  for(i=0;i<pts.length;i+=3){
+    var sp2=A[pts[i+2]], bas=pts[i], of=sp2.off, va=sp2.val;
+    for(var j=0;j<sp2.n;j++){
+      var oo=bas+of[j], vv=va[j];
+      if((vv>>>24) > (B[oo]>>>24)) B[oo]=vv;
+    }
+  }
+  g.putImageData(im,0,0);
+  return {n:pts.length/3, ms:+(performance.now()-t0).toFixed(1)};
+}
+
+/* ── LES DIX ──────────────────────────────────────────────────────────────── */
+var A_CREME  = atlasRond(rampe(CL_CREME,1),    [2.0,2.8,3.8], 8, 0.05, 0.95);
+var A_CREME2 = atlasRond(rampe(CL_CREME,1),    [1.6,2.2,3.0], 8, 0.06, 1.00);
+var A_ESSENCE= atlasRond(rampe(CL_ESSENCE,14), [2.0,2.8,3.8], 8, 0.08, 1.00);
+var A_ESS_FIN= atlasRond(rampe(CL_ESSENCE,18), [1.5,2.1,2.9], 8, 0.08, 1.00);
+var A_NUIT   = atlasRond(rampe(CL_NUIT,10),    [2.2,3.0,4.2], 8, 0.06, 1.00);
+
+/* les reliefs : [amplitude, fx, fy, fz, px, py, pz] */
+var R_ONDE  = [[0.14,2.1,1.7,1.3,0.4,1.1,2.2],[0.09,3.7,2.9,2.3,1.9,0.3,1.4]];
+var R_GOUTTE= [[0.26,1.0,1.0,1.0,0.9,2.1,0.2],[0.10,2.6,2.2,1.8,1.4,0.7,2.6]];
+var R_PLIS  = [[0.11,6.3,0.6,0.5,0.2,1.4,0.9],[0.07,1.4,1.2,5.9,2.4,0.6,1.1]];
+var R_DOUX  = [[0.08,1.6,1.3,1.1,1.2,0.5,2.0]];
+var R_FORT  = [[0.20,1.9,2.3,1.5,0.7,2.4,1.0],[0.13,4.3,1.1,3.1,2.7,1.8,0.4],
+               [0.07,7.9,5.3,6.1,0.9,1.3,2.8]];
+
+var DIX=[
+ {t:'Le relief',
+  s:'La surface n’est plus une boule : trois ondes la gonflent et la creusent. Le contour lui-même ondule.',
+  o:{mode:'fibo', n:52000, relief:R_ONDE, atlas:A_CREME, teintes:[0], lac:0.5, tan:0.30}},
+
+ {t:'La flaque d’essence',
+  s:'Même relief, mais la teinte suit l’<i>orientation</i> de la surface : bleu de face, mauve de trois quarts, menthe au ras du bord. Quatorze aplats francs, aucun dégradé.',
+  o:{mode:'fibo', n:52000, relief:R_ONDE, atlas:A_ESSENCE, teintes:new Array(14),
+     lac:0.5, tan:0.30, iriK:3.0, iriP:1.6, iriM:2.2}},
+
+ {t:'La goutte',
+  s:'Un relief franc — une masse qui pend et se creuse. On voit une chose souple, pas une planète.',
+  o:{mode:'fibo', n:52000, relief:R_GOUTTE, atlas:A_ESSENCE, teintes:new Array(14),
+     lac:1.9, tan:0.22, iriK:2.2, iriP:1.9, iriM:3.1, R:0.30}},
+
+ {t:'La membrane',
+  s:'Des lignes de latitude, serrées : c’est la <i>densité</i> qui dessine le pli, pas l’ombre. La matière se lit comme un tissu tendu.',
+  o:{mode:'latitudes', n:56000, lignes:70, relief:R_PLIS, atlas:A_CREME2, teintes:[0],
+     lac:0.8, tan:0.36, tailles:[1.6,2.2,3.0], dosCache:true}},
+
+ {t:'Le drapé',
+  s:'Des plis serrés qui font le tour, en lignes. La <i>densité</i> se resserre dans les creux — c’est elle qui dit le relief, pas une ombre.',
+  o:{mode:'latitudes', n:56000, lignes:96, relief:R_PLIS, atlas:A_ESS_FIN, teintes:new Array(18),
+     lac:2.4, tan:0.30, iriK:2.8, iriP:1.5, iriM:3.2, tailles:[1.5,2.1,2.9], dosCache:true}},
+
+ {t:'Le creux du doigt',
+  s:'Une main a appuyé : la <b>surface</b> s’enfonce et se plisse autour, elle ne se contente pas d’écarter des points.',
+  o:{mode:'fibo', n:52000, relief:R_DOUX, creux:[0.55,0.35,0.76,0.95,0.34],
+     atlas:A_ESSENCE, teintes:new Array(14), lac:0.15, tan:0.26, iriK:2.6, iriP:1.6, iriM:2.4, dosCache:true}},
+
+ {t:'La matière du monde',
+  s:'Le grain n’est plus un point mais une <b>vraie dalle du moteur</b>, sur surface déformée. L’Aura change d’aspect avec le Studio.',
+  o:{mode:'fibo', n:34000, relief:R_ONDE, atlas:null, dalle:true, teintes:[0],
+     lac:0.5, tan:0.30}},
+
+ {t:'La nuée',
+  s:'Pas de surface : un <i>volume</i>. Les points occupent l’épaisseur, le contour se dissout. Elle n’a plus de bord.',
+  o:{mode:'volume', n:58000, relief:R_DOUX, atlas:A_NUIT, teintes:new Array(10),
+     lac:1.1, tan:0.30, iriK:1.8, iriP:1.2, iriM:1.6, tailles:[2.2,3.0,4.2], R:0.30}},
+
+ {t:'Le relief fort',
+  s:'Trois échelles d’onde superposées : de grandes bosses, des rides, un grain. C’est le plus <i>organique</i> des dix.',
+  o:{mode:'fibo', n:56000, relief:R_FORT, atlas:A_ESS_FIN, teintes:new Array(18),
+     lac:2.9, tan:0.34, iriK:3.4, iriP:1.4, iriM:3.6, tailles:[1.5,2.1,2.9], R:0.30}},
+
+ {t:'La face seule',
+  s:'On ne peint que la <b>moitié tournée vers toi</b> : plus de dos qui transparaît, une peau franche. La plus <i>tactile</i>.',
+  o:{mode:'fibo', n:54000, relief:R_ONDE, atlas:A_ESSENCE, teintes:new Array(14),
+     lac:0.5, tan:0.30, iriK:3.0, iriP:1.6, iriM:2.8, dosCache:true}}
+];
+
+/* ── LA DALLE : un atlas fait des vraies dalles du moteur ─────────────────── */
+function atlasDalle(NIV,a0,a1){
+  var gros=document.createElement('canvas'); gros.width=56; gros.height=56;
+  var pt=document.createElement('canvas');
+  var A=[], PX=[3,4,6];
+  for(var d=0;d<8;d++){
+    try{ window.Toile && Toile.dalleTrame(gros, d+1, 1); }catch(e){}
+    for(var s=0;s<PX.length;s++){
+      var px=PX[s]; pt.width=px; pt.height=px;
+      var gp=pt.getContext('2d'); gp.clearRect(0,0,px,px); gp.drawImage(gros,0,0,px,px);
+      var dat=gp.getImageData(0,0,px,px).data;
+      for(var n=0;n<NIV;n++){
+        var q=(n+0.5)/NIV, mul=a0+(a1-a0)*q*q;
+        var offs=[], vals=[], ox=px>>1, oy=px>>1;
+        for(var y=0;y<px;y++)for(var x=0;x<px;x++){
+          var al=(dat[(y*px+x)*4+3]*mul)|0;
+          if(al>3){ offs.push([y-oy,x-ox]); vals.push(al); }
+        }
+        A.push({rel:offs, al:vals, rgb:[244,238,225]});
+      }
+    }
+  }
+  return A;
+}
+
+window.addEventListener('load',function(){
+  try{ window.Toile_resize&&window.Toile_resize(); window.Toile&&Toile.sync([1,2,3,4,5,6,7,8,9]); }catch(e){}
+  setTimeout(function(){
+    var A_DALLE=atlasDalle(8,0.05,0.95);
+    var G=document.getElementById('g'), infos=[];
+    DIX.forEach(function(p,i){
+      var fg=document.createElement('figure');
+      var box=document.createElement('div'); box.className='cadre';
+      var cv=document.createElement('canvas'); box.appendChild(cv); fg.appendChild(box);
+      var fc=document.createElement('figcaption');
+      fg.appendChild(fc); G.appendChild(fg);
+      var o=p.o;
+      if(o.dalle){ o.atlas=A_DALLE; o.teintes=[0]; o.tailles=[3,4,6]; }
+      var r=peint(cv,o);
+      infos.push(r);
+      fc.innerHTML='<b>'+(i+1)+' · '+p.t+'</b>'+p.s
+        +' <i>— '+r.n.toLocaleString('fr')+' points, peints en '+r.ms+' ms.</i>';
+    });
+    window.__infos=infos; window.__pret=true;
+  },900);
+});
+
+</script></body></html>

@@ -1,0 +1,15 @@
+  le lot est posé                                              OK   
+  Toile.getHue existe                                          OK   
+  les constantes sont celles décidées (480 · 390 · 48)         OK   {'MAINTIEN': 480, 'COURSE': 390, 'PAS_PAL': 48, 'arme': None, 'mot': 'reste appuyé pour changer de couleur'}
+  l'appui maintenu arme le geste                               OK   
+  l'horizontale fait varier la teinte                          OK   0.0 → 110.8
+  la teinte suit le doigt, sans accélération (Q125)            OK   attendu 110.8, lu 110.8
+  on revient exactement d'où l'on vient (Q125)                 OK   0.000 vs 0.000
+  la verticale change de palette                               OK   signal → alangui
+  la palette revient d'où elle vient                           OK   signal
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+
+13/13

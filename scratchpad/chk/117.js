@@ -1,0 +1,1 @@
+/* v92 : le chemin de Madrure affiché, seulement avec ?chemin (diag-chemin.js) */ if(location.search.indexOf('chemin')>=0){ var _dc=document.createElement('script'); _dc.src='diag-chemin.js'; document.head.appendChild(_dc); }

@@ -1,0 +1,15 @@
+✓ dark  rien (témoin)                          → rouges : aucun 
+✓ dark  une dalle ÉTIRÉE dans sa boîte         → rouges : ['chaque dalle peinte (≥ 5 % de pixels), à sa cote'] (sillons)
+✓ dark  une dalle VIDE                         → rouges : ['chaque dalle peinte (≥ 5 % de pixels), à sa cote'] (gravure)
+✓ dark  « 29 € » rapetissé à 40                → rouges : ['« 29 € » en grand (Bricolage 700 / 56, à 24 / 27'] (40)
+✓ dark  l’essai poussé HORS de l’écran         → rouges : ['« Prendre l’année » en premier (386), l’essai de'] (900)
+✓ dark  une note ILLISIBLE (teinte du fond)    → rouges : ['chaque texte se lit (rapport ≥ 4,5, remplissage '] (rgb(18, 20, 42))
+✓ light rien (témoin)                          → rouges : aucun 
+✓ light une dalle ÉTIRÉE dans sa boîte         → rouges : ['chaque dalle peinte (≥ 5 % de pixels), à sa cote'] (terrazzo)
+✓ light une dalle VIDE                         → rouges : ['chaque dalle peinte (≥ 5 % de pixels), à sa cote'] (gravure)
+✓ light « 29 € » rapetissé à 40                → rouges : ['« 29 € » en grand (Bricolage 700 / 56, à 24 / 27'] (40)
+✓ light l’essai poussé HORS de l’écran         → rouges : ['« Prendre l’année » en premier (386), l’essai de'] (900)
+✓ light une note ILLISIBLE (teinte du fond)    → rouges : ['chaque texte se lit (rapport ≥ 4,5, remplissage '] (rgb(244, 238, 225))
+
+══ chaque contrat visé est PRIS, le témoin est vert
+fin rc=0

@@ -1,0 +1,72 @@
+
+════ dark
+   ✓ fiche · ordre  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ fiche · encart « ✦ Le Cercle » seul  ('✦ Le Cercle', False)
+   ✓ fiche · floutés et intouchables  (['blur(2.4px)'], ['none', 'none', 'none', 'none'])
+   ✓ fiche · NOTE · rayon 30  30
+   ✓ fiche · NOTE · texte du milieu centré (écarts égaux)  (46, 46)
+   ✓ fiche · NOTE · début des lignes extrêmes ≥ 12,9  (14.1, 13.5)
+   ✓ fiche · COMMENTAIRES · rayon 30  30
+   ✓ fiche · COMMENTAIRES · texte du milieu centré (écarts égaux)  (46, 46)
+   ✓ fiche · COMMENTAIRES · début des lignes extrêmes ≥ 12,9  (14.1, 13.5)
+   ✓ NOTE deux lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)  (4, 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'dans le paragraphe', 0.5)
+   ✓ NOTE deux lignes · écart constant (≥ 12,9)  (14.1, 13.5)
+   ✓ NOTE deux lignes · centré  (46, 46)
+   ✓ NOTE trois lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)  (5, 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'dans le paragraphe', 0.5)
+   ✓ NOTE trois lignes · écart constant (≥ 12,9)  (14.1, 13.5)
+   ✓ NOTE trois lignes · centré  (46, 46)
+   ✓ page + · le mur est posé  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ page + · ordre, encart, floutés, intouchables  {'ordre': ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'], 'encart': '✦ Le Cercle', 'encart_vis': True, 'sous_titre': False, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'doigt': ['none', 'none', 'none', 'none']}
+   ✓ page + · NOTE rayon 30, centrée  {'lignes': 3, 'h': 118, 'rayon': 30, 'premiere': 14.1, 'derniere': 13.5, 'air_min': 14.6, 'air_haut': 17, 'air_bas': 14.6, 'milieu_haut': 46, 'milieu_bas': 46}
+   ✓ page + · le mur tient après les rebâtisseurs  
+   ✓ page + · l’encart ouvre le Cercle PAR-DESSUS  ('soi', 'createSheet,plusScreen')
+   ✓ page + · ✕ ramène au même Peaufiner, phrase intacte  {'couches': 'createSheet', 'dessus': False, 'ps_show': False, 'premium': False, 'fiche_peauf': False, 'pp_peauf': True, 'titre': 'aller voir la mer', 'phrase': 'aller voir la mer'}
+   ✓ page + · l’achat ramène au même Peaufiner (pas l’Aura), phrase intacte  {'couches': 'createSheet', 'dessus': False, 'ps_show': False, 'premium': True, 'fiche_peauf': False, 'pp_peauf': True, 'titre': 'aller voir la mer', 'phrase': 'aller voir la mer'}
+   ✓ page + · abonné : nets et touchables, encart effacé  {'ordre': ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'], 'encart': '✦ Le Cercle', 'encart_vis': False, 'sous_titre': False, 'flous': ['none', 'none', 'none', 'none'], 'doigt': ['auto', 'auto', 'auto', 'auto']}
+   ✓ gardé de côté · le mur est posé  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ fiche · au doigt, l’encart ouvre le Cercle par-dessus, et il RESTE ouvert  ('soi', 'detailPoster,plusScreen')
+   ✓ fiche · l’achat ramène au même Peaufiner, réglages nets et touchables  ('detailPoster', ['none'])
+   ✓ Réglages · après fin d’abonnement : « ✦ Le Cercle », sans sous-titre, visible  {'t': '✦ Le Cercle', 'sous_titre_visible': False, 'vis': True, 'ordre': ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']}
+   ✓ Réglages · ordre  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ Nuée · npDesc · rayon 30, centré, écart ≥ 12,9  {'lignes': 3, 'h': 104, 'rayon': 30, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 7, 'air_haut': 8, 'air_bas': 7, 'milieu_haut': 39, 'milieu_bas': 39}
+   ✓ Nuée · npComm · rayon 30, centré, écart ≥ 12,9  {'lignes': 3, 'h': 104, 'rayon': 30, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 7, 'air_haut': 8, 'air_bas': 7, 'milieu_haut': 39, 'milieu_bas': 39}
+   ✓ Nuée · PIÈCES JOINTES aux places de la fiche (23 / 50,8)  {'lab': 23, 'bas': 50.8}
+   ✓ accueil · la porte du haut ouvre le Cercle sans « par-dessus »  plusScreen
+
+════ light
+   ✓ fiche · ordre  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ fiche · encart « ✦ Le Cercle » seul  ('✦ Le Cercle', False)
+   ✓ fiche · floutés et intouchables  (['blur(2.4px)'], ['none', 'none', 'none', 'none'])
+   ✓ fiche · NOTE · rayon 30  30
+   ✓ fiche · NOTE · texte du milieu centré (écarts égaux)  (46, 46)
+   ✓ fiche · NOTE · début des lignes extrêmes ≥ 12,9  (14.1, 13.5)
+   ✓ fiche · COMMENTAIRES · rayon 30  30
+   ✓ fiche · COMMENTAIRES · texte du milieu centré (écarts égaux)  (46, 46)
+   ✓ fiche · COMMENTAIRES · début des lignes extrêmes ≥ 12,9  (14.1, 13.5)
+   ✓ NOTE deux lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)  (4, 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'dans le paragraphe', 0.5)
+   ✓ NOTE deux lignes · écart constant (≥ 12,9)  (14.1, 13.5)
+   ✓ NOTE deux lignes · centré  (46, 46)
+   ✓ NOTE trois lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)  (5, 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'dans le paragraphe', 0.5)
+   ✓ NOTE trois lignes · écart constant (≥ 12,9)  (14.1, 13.5)
+   ✓ NOTE trois lignes · centré  (46, 46)
+   ✓ page + · le mur est posé  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ page + · ordre, encart, floutés, intouchables  {'ordre': ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'], 'encart': '✦ Le Cercle', 'encart_vis': True, 'sous_titre': False, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'doigt': ['none', 'none', 'none', 'none']}
+   ✓ page + · NOTE rayon 30, centrée  {'lignes': 3, 'h': 118, 'rayon': 30, 'premiere': 14.1, 'derniere': 13.5, 'air_min': 14.6, 'air_haut': 17, 'air_bas': 14.6, 'milieu_haut': 46, 'milieu_bas': 46}
+   ✓ page + · le mur tient après les rebâtisseurs  
+   ✗ page + · l’encart ouvre le Cercle PAR-DESSUS  ('soi', 'createSheet')
+   ✓ page + · ✕ ramène au même Peaufiner, phrase intacte  {'couches': 'createSheet', 'dessus': False, 'ps_show': False, 'premium': False, 'fiche_peauf': False, 'pp_peauf': True, 'titre': 'aller voir la mer', 'phrase': 'aller voir la mer'}
+   ✓ page + · l’achat ramène au même Peaufiner (pas l’Aura), phrase intacte  {'couches': 'createSheet', 'dessus': False, 'ps_show': False, 'premium': True, 'fiche_peauf': False, 'pp_peauf': True, 'titre': 'aller voir la mer', 'phrase': 'aller voir la mer'}
+   ✓ page + · abonné : nets et touchables, encart effacé  {'ordre': ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'], 'encart': '✦ Le Cercle', 'encart_vis': False, 'sous_titre': False, 'flous': ['none', 'none', 'none', 'none'], 'doigt': ['auto', 'auto', 'auto', 'auto']}
+   ✓ gardé de côté · le mur est posé  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ fiche · au doigt, l’encart ouvre le Cercle par-dessus, et il RESTE ouvert  ('soi', 'detailPoster,plusScreen')
+   ✓ fiche · l’achat ramène au même Peaufiner, réglages nets et touchables  ('detailPoster', ['none'])
+   ✓ Réglages · après fin d’abonnement : « ✦ Le Cercle », sans sous-titre, visible  {'t': '✦ Le Cercle', 'sous_titre_visible': False, 'vis': True, 'ordre': ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']}
+   ✓ Réglages · ordre  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE']
+   ✓ Nuée · npDesc · rayon 30, centré, écart ≥ 12,9  {'lignes': 3, 'h': 104, 'rayon': 30, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 7, 'air_haut': 8, 'air_bas': 7, 'milieu_haut': 39, 'milieu_bas': 39}
+   ✓ Nuée · npComm · rayon 30, centré, écart ≥ 12,9  {'lignes': 3, 'h': 104, 'rayon': 30, 'premiere': 15.9, 'derniere': 14.1, 'air_min': 7, 'air_haut': 8, 'air_bas': 7, 'milieu_haut': 39, 'milieu_bas': 39}
+   ✓ Nuée · PIÈCES JOINTES aux places de la fiche (23 / 50,8)  {'lab': 23, 'bas': 50.8}
+   ✓ accueil · la porte du haut ouvre le Cercle sans « par-dessus »  plusScreen
+
+══ 1 contrat(s) raté(s)
+   ✗ light · page + · l’encart ouvre le Cercle PAR-DESSUS · ('soi', 'createSheet')
+fin rc=0

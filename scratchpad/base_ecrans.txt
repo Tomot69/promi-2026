@@ -1,0 +1,147 @@
+Toile : canvas présent [sombre]                OK  
+Toile : remplit l'écran [sombre]               OK  
+Toile : des dalles colorées [sombre]           OK  
+Toile : API vue() lisible [sombre]             OK  
+Toile : hit() ignore les cellules grises [sombre] OK  
+Toile : planter garde la densité [sombre]      OK  
+Créer : s'ouvre [sombre]                       OK  
+Créer : trois tuiles (promi, chiche, nuée) [sombre] OK  
+Créer : sélecteur de sens [sombre]             OK  
+Créer : rien ne déborde [sombre]               OK  
+Créer : une seule forme visible [sombre]       OK  
+Créer : « garder de côté » présent [sombre]    OK  
+Créer : champ vide refusé [sombre]             OK  
+Créer : le refus se voit [sombre]              OK  
+Index : s'ouvre [sombre]                       OK  
+Index : des lignes [sombre]                    OK  
+Index : miniatures de dalle [sombre]           OK  
+Index : rien ne déborde [sombre]               OK  
+Index : ✕ ferme [sombre]                       OK  
+Fil : s'ouvre [sombre]                         OK  
+Fil : rien ne déborde [sombre]                 OK  
+Aura : s'ouvre [sombre]                        OK  
+Aura : anneau peint [sombre]                   OK  
+Aura : « Partager mon Noyau » retiré [sombre]  OK  
+Aura : rien ne déborde [sombre]                OK  
+Studio : s'ouvre [sombre]                      OK  
+Studio : les deux bascules groupées [sombre]   OK  
+Studio : groupe centré [sombre]                OK  
+Studio : aperçus de monde [sombre]             OK  
+Réglages : s'ouvre [sombre]                    OK  
+Réglages : ligne Inviter [sombre]              OK  
+Réglages : encart Cercle [sombre]              OK  
+Réglages : rien ne déborde [sombre]            OK  
+Fiche : s'ouvre [sombre]                       OK  
+Fiche : vignette de dalle [sombre]             OK  
+Fiche : le + commun [sombre]                   OK  
+Fiche : rien ne déborde [sombre]               OK  
+Aura : le Noyau ne porte que la serie [sombre] OK  
+Aura : le mot d harmonie est sous le Noyau [sombre] OK  
+Aura : le % est sous le Noyau [sombre]         OK  
+Aura : le % est en signature [sombre]          OK  
+Aura : anneau puis % puis legende [sombre]     OK  
+Aura : HARMONIE en trois teintes [sombre]      OK  
+Aura : les teintes suivent le Studio [sombre]  OK  
+Aura : la legende est centree entre % et compteurs [sombre] OK  
+Aura : le decalage suit le corps (0.116 em) [sombre] OK  
+le selecteur dit Toile / Index [sombre]        OK  
+un seul Fil dans l app [sombre]                OK  
+le selecteur ouvre l Index [sombre]            OK  
+les libelles tiennent dans le selecteur [sombre] OK  
+le selecteur fait la largeur des deux boutons [sombre] OK  
+Index : les Promi sont des blocs [sombre]      OK  
+Index : seuls les urgents ont un aplat [sombre] OK  
+Index : le mot du temps est peint [sombre]     OK  
+Index : la vraie dalle est peinte [sombre]     OK  
+Index : « a rattraper » a disparu [sombre]     OK  
+Index : la recherche est conservee [sombre]    OK  
+Index : le ✕ Fermer est conserve [sombre]      OK  
+Index : toucher un bloc ouvre la fiche [sombre] OK  
+le Fil a son bouton dans le dock [sombre]      OK  
+le Fil a sa pastille [sombre]                  OK  
+la pastille s allume sur du non-lu [sombre]    OK  
+le bouton ouvre le Fil [sombre]                OK  
+le Fil affiche ses evenements [sombre]         OK  
+la pastille s eteint apres lecture [sombre]    OK  
+l anneau du + porte des proportions [sombre]   OK  
+elles correspondent aux Promi tenus [sombre]   OK  
+Aura : les petits traits sont lisibles [sombre] OK  
+Aura : les traits suivent la palette [sombre]  OK  
+bouton + : rotation lente [sombre]             OK  
+la signature est identique Aura / app [sombre] OK  
+aucune erreur JS [sombre]                      OK  
+Toile : canvas présent [clair]                 OK  
+Toile : remplit l'écran [clair]                OK  
+Toile : des dalles colorées [clair]            OK  
+Toile : API vue() lisible [clair]              OK  
+Toile : hit() ignore les cellules grises [clair] KO  
+Toile : planter garde la densité [clair]       OK  
+Créer : s'ouvre [clair]                        OK  
+Créer : trois tuiles (promi, chiche, nuée) [clair] OK  
+Créer : sélecteur de sens [clair]              OK  
+Créer : rien ne déborde [clair]                OK  
+Créer : une seule forme visible [clair]        OK  
+Créer : « garder de côté » présent [clair]     OK  
+Créer : champ vide refusé [clair]              OK  
+Créer : le refus se voit [clair]               OK  
+Index : s'ouvre [clair]                        OK  
+Index : des lignes [clair]                     OK  
+Index : miniatures de dalle [clair]            OK  
+Index : rien ne déborde [clair]                OK  
+Index : ✕ ferme [clair]                        OK  
+Fil : s'ouvre [clair]                          OK  
+Fil : rien ne déborde [clair]                  OK  
+Aura : s'ouvre [clair]                         OK  
+Aura : anneau peint [clair]                    OK  
+Aura : « Partager mon Noyau » retiré [clair]   OK  
+Aura : rien ne déborde [clair]                 OK  
+Studio : s'ouvre [clair]                       OK  
+Studio : les deux bascules groupées [clair]    OK  
+Studio : groupe centré [clair]                 OK  
+Studio : aperçus de monde [clair]              OK  
+Réglages : s'ouvre [clair]                     OK  
+Réglages : ligne Inviter [clair]               OK  
+Réglages : encart Cercle [clair]               OK  
+Réglages : rien ne déborde [clair]             OK  
+Fiche : s'ouvre [clair]                        OK  
+Fiche : vignette de dalle [clair]              OK  
+Fiche : le + commun [clair]                    OK  
+Fiche : rien ne déborde [clair]                OK  
+Aura : le Noyau ne porte que la serie [clair]  OK  
+Aura : le mot d harmonie est sous le Noyau [clair] OK  
+Aura : le % est sous le Noyau [clair]          OK  
+Aura : le % est en signature [clair]           OK  
+Aura : anneau puis % puis legende [clair]      OK  
+Aura : HARMONIE en trois teintes [clair]       OK  
+Aura : les teintes suivent le Studio [clair]   OK  
+Aura : la legende est centree entre % et compteurs [clair] OK  
+Aura : le decalage suit le corps (0.116 em) [clair] OK  
+le selecteur dit Toile / Index [clair]         OK  
+un seul Fil dans l app [clair]                 OK  
+le selecteur ouvre l Index [clair]             OK  
+les libelles tiennent dans le selecteur [clair] OK  
+le selecteur fait la largeur des deux boutons [clair] OK  
+Index : les Promi sont des blocs [clair]       OK  
+Index : seuls les urgents ont un aplat [clair] OK  
+Index : le mot du temps est peint [clair]      OK  
+Index : la vraie dalle est peinte [clair]      OK  
+Index : « a rattraper » a disparu [clair]      OK  
+Index : la recherche est conservee [clair]     OK  
+Index : le ✕ Fermer est conserve [clair]       OK  
+Index : toucher un bloc ouvre la fiche [clair] OK  
+le Fil a son bouton dans le dock [clair]       OK  
+le Fil a sa pastille [clair]                   OK  
+la pastille s allume sur du non-lu [clair]     OK  
+le bouton ouvre le Fil [clair]                 OK  
+le Fil affiche ses evenements [clair]          OK  
+la pastille s eteint apres lecture [clair]     OK  
+l anneau du + porte des proportions [clair]    OK  
+elles correspondent aux Promi tenus [clair]    OK  
+Aura : les petits traits sont lisibles [clair] OK  
+Aura : les traits suivent la palette [clair]   OK  
+bouton + : rotation lente [clair]              OK  
+la signature est identique Aura / app [clair]  OK  
+aucune erreur JS [clair]                       OK  
+
+143/144
+EXIT=1

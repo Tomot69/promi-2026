@@ -1,0 +1,141 @@
+=== redteam (21 s)
+le mot-marque alterne                      KO  PromiLate -> PromiLate
+  → 14/15
+=== redteam2 (17 s)
+Visibles reagit                              KO  [] -> []
+  → 9/10
+=== redteam3 (33 s)
+le logo bascule en signature                   KO  PromiLate -> PromiLate
+  → 17/18
+=== redteam_accueil (169 s)
+
+  → 22/22
+=== redteam_air (189 s)
+
+  →   ✅  L'AIR EST INTACT — 512 paires de textes, 38 écrans, deux thèmes.
+=== redteam_apercus (59 s)
+
+  → ✅  10/10
+=== redteam_aveugle (64 s)
+
+  → 26/26
+=== redteam_cercle_couleur (88 s)
+[sombre] 1 · Réglages : cinq réglages, LA COULEUR en dernier     KO  []
+[sombre] 1 · Réglages : bloc de 384, tout dedans, rien ne se superpose KO  h 90.0 · sup 0
+[sombre] 1 · Réglages : encart centré à 147                      KO  encart 0
+[clair] 1 · Réglages : cinq réglages, LA COULEUR en dernier      KO  []
+[clair] 1 · Réglages : bloc de 384, tout dedans, rien ne se superpose KO  h 90.0 · sup 0
+[clair] 1 · Réglages : encart centré à 147                       KO  encart 0
+  → 28/34
+=== redteam_champ (129 s)
+
+  → 32/32
+=== redteam_champs (41 s)
+
+  → 22/22
+=== redteam_dalle_figee (92 s)
+
+  → 4/4
+=== redteam_decoupe (135 s)
+
+  → ✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_demande (15 s)
+
+  → 19/19
+=== redteam_ecrans (93 s)
+
+  → 150/150
+=== redteam_enchaine (84 s)
+pp_peauf → pp_chiche · rien en trop                      KO  en trop : à qui ose ?Chiche ✦de te lever · te lever pour voirle soleil se · te lever pour voir · le soleil se lever
+pp_peauf → pp_chiche · rien de perdu                     KO  perdu : à qui ose ?Chiche ✦de dire oui · dire oui pour une fois
+pp_peauf → pp_promi · rien en trop                       KO  en trop : Je me promets ✦de apprendre à  · apprendre à jouerd’un instrume · apprendre à jouer · d’un instrument
+pp_peauf → pp_promi · rien de perdu                      KO  perdu : Je me promets ✦de me coucherle · me coucherle jour même · me coucher · le jour même
+fiche_peauf → pp_promi · rien en trop                    KO  en trop : Je me promets ✦de prendre des  · prendre des nouvellesavant d’a · prendre des nouvelles · avant d’avoir une raison
+fiche_peauf → pp_promi · rien de perdu                   KO  perdu : Je me promets ✦de me coucherle · me coucherle jour même · me coucher · le jour même
+  →    · fiche_peauf → pp_promi · rien de perdu
+=== redteam_filets (139 s)
+
+  → OK — 0 filet(s) parasite(s)
+=== redteam_fonctions (68 s)
+
+  → 22/22
+=== redteam_formes (14 s)
+Fil · carte 2 « TENUE » [dark] · le trait est peint    KO  aucun pixel de la couleur #8FE08F
+Fil · carte 5 « RELEVÉ » [dark] · le trait est peint   KO  aucun pixel de la couleur #8FE08F
+Index · carte 1 « TENUE » [dark] · le trait est peint  KO  aucun pixel de la couleur #8FE08F
+Index · carte 6 « TENU À DEUX » [dark] · le trait est peint KO  aucun pixel de la couleur #8FE08F
+Fil · carte 2 « TENUE » [light] · le trait est peint   KO  aucun pixel de la couleur #8FE08F
+Fil · carte 5 « RELEVÉ » [light] · le trait est peint  KO  aucun pixel de la couleur #8FE08F
+Index · carte 1 « TENUE » [light] · le trait est peint KO  aucun pixel de la couleur #8FE08F
+Index · carte 6 « TENU À DEUX » [light] · le trait est peint KO  aucun pixel de la couleur #8FE08F
+  →    · Index · carte 6 « TENU À DEUX » [light] · le trait est peint
+=== redteam_gens (198 s)
+
+  → 38/38
+=== redteam_geste (49 s)
+
+  → 13/13
+=== redteam_nuee (216 s)
+
+  →   ✅  24 écran(s) · 0 écart(s)
+=== redteam_nuee_dalle (92 s)
+
+  → 38/38
+=== redteam_nuee_entree (43 s)
+
+  → 24/24
+=== redteam_onboarding (114 s)
+
+  →   ✅  44 / 44 contrats tenus
+=== redteam_pastilles (50 s)
+
+  → 12/12
+=== redteam_pelote_partage (62 s)
+
+  → 42/42
+=== redteam_photo (32 s)
+
+  → 27/27
+=== redteam_phrase (15 s)
+
+  → 6/6
+=== redteam_polices (42 s)
+
+  → 0 couple(s) absent(s) · 0 élément(s)
+=== redteam_reperage (37 s)
+
+  → 16/16
+=== redteam_studio_geste (25 s)
+
+  → 13/13
+=== redteam_superpo (316 s)
+
+  → recouvrements de texte : 0
+=== redteam_toile (67 s)
+
+  → 17/17
+=== redteam_tokens (0 s)
+
+  → 46/46
+=== redteam_tonsurton (58 s)
+
+  → 26/26
+=== redteam_tuiles (268 s)
+
+  → 64/64
+=== redteam_verbe (25 s)
+
+  → 6/6
+=== redteam_vide (231 s)
+
+  → 61/61
+=== redteam_zoom (56 s)
+
+  → 16/16
+=== releve-design (34 s)
+✅  AUCUN ÉCART. Le design est intact.
+  → ✅  AUCUN ÉCART. Le design est intact.
+=== releve-aura (148 s)
+❌  1 ÉCARTS
+  → ❌  1 ÉCARTS
+FIN SÉRIE

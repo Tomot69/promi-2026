@@ -1,0 +1,40 @@
+{
+ "light": {
+  "avant Peaufiner": null,
+  "après Peaufiner": {
+   "x": 24,
+   "y": 806,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "sans encart": {
+   "x": 24,
+   "y": 806,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "rangées": 0,
+  "tog": true
+ },
+ "dark": {
+  "avant Peaufiner": null,
+  "après Peaufiner": {
+   "x": 24,
+   "y": 806,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "sans encart": {
+   "x": 24,
+   "y": 806,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "rangées": 0,
+  "tog": true
+ }
+}

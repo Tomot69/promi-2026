@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/releve-S1-fiches.py", line 189, in <module>
+    'promi_atenir':  _f('promi',  TERRA,  TERRA,  262, 44, True, trait_dark=TERRA, trait_light=TERRA),
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/releve-S1-fiches.py", line 183, in _f
+    yn, ytr, yq, yt = cotes29(base, amp, avec_trace, kw.get('quifs', 23))
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/releve-S1-fiches.py", line 178, in cotes29
+    ytitre = round(yqui + quifs * 1.10 + 11.9 + quifs * ECH * 0.62 + (titrefs or 42) * ECH * 0.8, 1)   # 20 d'encre dans le bloc de la promesse (+ l'encre agrandie, v102)
+NameError: name 'titrefs' is not defined

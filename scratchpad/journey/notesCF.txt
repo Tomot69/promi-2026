@@ -1,0 +1,6 @@
+après tuile Chiche: kind=chiche sens=chiche
+défié: Adrien
+avec: Adrien
+CHICHE planté: {'id': 122, 'title': 'garder les clés', 'who': 'moi', 'avec': None, 'chiche': False, 'phraseSens': None, 'surToile': True}
+dans Index: True
+fiche Chiche: {'cls': 'trame dp-promi show f-encours gs4', 'dpType': 'Promi'}

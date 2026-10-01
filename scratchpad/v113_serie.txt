@@ -1,0 +1,39 @@
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_filets.py
+page+ draft [dark]     OK
+fiche a-tenir [dark]   OK
+fiche tenue [dark]     OK
+fiche nuee [dark]      OK
+
+OK — 0 filet(s) parasite(s)
+=== redteam_champ.py
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_tonsurton.py
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_air.py
+✅  L'AIR EST INTACT — 696 paires de textes, 68 écrans, deux thèmes.
+=== redteam_nuee.py
+  ÉLÉMENTS DÉCLARÉS MAIS PAS PEINTS .  0
+  collisions de blocs ...............  0
+  débordements ......................  0
+==============================================================================
+
+  ✅  24 écran(s) · 0 écart(s)
+=== redteam_vide.py
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61

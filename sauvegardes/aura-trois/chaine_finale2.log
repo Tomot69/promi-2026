@@ -1,0 +1,26 @@
+03:21 2 restauration + trois blocs
+faff6e93a90857bc3b7895e4495aae63
+lot-DALLE-PORTE → app.html f59e6870ae4d0c92b1a1cea3784cad19
+lot-CHEMINS-PERSONNE → app.html 1cf70b1803cb6962785b8758fa63a3ab
+lot-CLIC-FANTOME → app.html 48b1a56b6b4b58f425dbd7a84e0b9f1f
+03:21 3 juges et preuves sur la finale 48b1a56b6b4b58f425dbd7a84e0b9f1f
+03:27 4 série apres14
+03:55 fin 48b1a56b6b4b58f425dbd7a84e0b9f1f
+=== redteam_ecrans.py  rc=0  87s
+=== redteam.py  rc=0  20s
+=== redteam2.py  rc=0  17s
+=== redteam3.py  rc=0  34s
+=== redteam_demande.py  rc=0  13s
+=== redteam_toile.py  rc=0  66s
+=== redteam_geste.py  rc=0  46s
+=== redteam_verbe.py  rc=0  23s
+=== redteam_filets.py  rc=0  124s
+=== redteam_vide.py  rc=0  228s
+=== redteam_air.py  rc=0  174s
+=== redteam_champ.py  rc=0  126s
+=== releve-design.py  rc=0  32s
+=== redteam_fonctions.py  rc=0  68s
+=== redteam_polices.py  rc=0  39s
+=== redteam_superpo.py  rc=0  297s
+=== releve-aura.py  rc=1  140s
+=== releve-fiche-personne.py  rc=0  94s

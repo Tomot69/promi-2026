@@ -1,0 +1,24 @@
+1 présence       0/4
+3 cotes          0/2
+4 polices        2/2
+7 vide           0/2
+8 portes         4/10
+9 gestes         0/2
+   ❌ 8 portes · [dark · Rachel · Aura] la fiche s'ouvre, la NOUVELLE fiche  montre True · cadre de None
+   ❌ 1 présence · [dark · Rachel · Aura] pas de cadre : la fiche refaite n'est pas à l'écran  
+   ❌ 3 cotes · [dark] défilée jusqu'au bout : les gestes finissent à 844 − 22  []
+   ❌ 8 portes · [dark · Nico · vide] la fiche s'ouvre, la NOUVELLE fiche  montre True · cadre de None
+   ❌ 1 présence · [dark · Nico · vide] pas de cadre : la fiche refaite n'est pas à l'écran  
+   ❌ 7 vide · [dark] l'état vide : l'anneau sans arc, aucune section, les deux gestes entiers  
+   ❌ 8 portes · [dark] le disque de Rachel sur une fiche ouvre SA nouvelle fiche, au doigt  [191, 471.25]
+   ❌ 8 portes · [light · Rachel · Aura] la fiche s'ouvre, la NOUVELLE fiche  montre True · cadre de None
+   ❌ 1 présence · [light · Rachel · Aura] pas de cadre : la fiche refaite n'est pas à l'écran  
+   ❌ 3 cotes · [light] défilée jusqu'au bout : les gestes finissent à 844 − 22  []
+   ❌ 8 portes · [light · Nico · vide] la fiche s'ouvre, la NOUVELLE fiche  montre True · cadre de None
+   ❌ 1 présence · [light · Nico · vide] pas de cadre : la fiche refaite n'est pas à l'écran  
+   ❌ 7 vide · [light] l'état vide : l'anneau sans arc, aucune section, les deux gestes entiers  
+   ❌ 8 portes · [light] le disque de Rachel sur une fiche ouvre SA nouvelle fiche, au doigt  [191, 471.25]
+   ❌ 9 gestes · [promi] le geste est absent  
+   ❌ 9 gestes · [chiche] le geste est absent  
+
+❌  16 ÉCART(S) sur 22 contrôles

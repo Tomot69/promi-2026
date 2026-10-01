@@ -1,0 +1,6 @@
+avant plant: {'n': 23, 'drafts': 0}
+après plant: {'n': 24, 'drafts': 0}
+onboarding relancé ? {'onb': 'none', 'tuto': False}
+dans Index: {'id': 123, 'inIndex': True}
+statut fiche ouverte: encours
+après tenir (geste): {'status': 'tenu', 'trace': 9}

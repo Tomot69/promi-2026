@@ -1,0 +1,13 @@
+releve-design (36s) :: ✅  AUCUN ÉCART. Le design est intact.
+redteam_tokens (1s) ::   ✓ l'extension Swift porte le niveau « libelle » |  | 46/46
+redteam_air (315s) ::    Peaufiner Nuée [light]     .np-ph«écris un mot…»              → .np-bas«visibles par les mem» |  |   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+releve-S2-peaufiner (21s) :: ── PRÉSENCE PEINTE : 0 |  | ✅ SECTION 2 AU CRITÈRE  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+redteam_nuee (201s) :: ============================================================================== |  |   ✅  24 écran(s) · 0 écart(s)
+redteam_filets (127s) :: fiche nuee [dark]      OK |  | OK — 0 filet(s) parasite(s)
+redteam_vide (229s) :: aucune erreur JS                               OK   |  | 61/61
+redteam_gens (198s) :: [sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK   |  | 38/38
+redteam_nuee_dalle (91s) :: [clair] aucune erreur JS                                           OK  [] |  | 38/38
+redteam_nuee_entree (43s) :: [sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True} |  | 24/24
+redteam_champ (126s) ::   l'instant après [light]        OK |  | 32/32
+redteam_accueil (167s) :: [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False |  | 22/22
+FIN

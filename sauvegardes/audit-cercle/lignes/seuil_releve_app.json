@@ -1,0 +1,1218 @@
+{
+ "fiche · invite": [
+  {
+   "champ": "LE TRAIT",
+   "id": "dpTraitReg",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "À QUI",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "AVANT",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "NOTE",
+   "id": "",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 17,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 48,
+     "b": 70
+    },
+    {
+     "l": 25,
+     "t": 84.61,
+     "b": 101.61
+    }
+   ],
+   "nav_premiere": 14.07,
+   "nav_derniere": 13.5
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "id": "",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "w": 342,
+   "bw": 2,
+   "rayon": 46,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 23,
+     "b": 45
+    },
+    {
+     "l": 25,
+     "t": 50.8,
+     "b": 67.8
+    }
+   ],
+   "nav_premiere": 12.86,
+   "nav_derniere": 13.73
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "id": "",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 17,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 48,
+     "b": 70
+    },
+    {
+     "l": 25,
+     "t": 84.61,
+     "b": 101.61
+    }
+   ],
+   "nav_premiere": 14.07,
+   "nav_derniere": 13.5
+  },
+  {
+   "champ": "RÉCURRENCE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "RAPPEL",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "C'EST IMPORTANT ?",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "LA MÉMOIRE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "SUPPRIMER CE PROMI",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  }
+ ],
+ "fiche · long": [
+  {
+   "champ": "LE TRAIT",
+   "id": "dpTraitReg",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "À QUI",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "AVANT",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "NOTE",
+   "id": "",
+   "cls": "s2-reg.s2-zone",
+   "h": 163,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 17,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 48,
+     "b": 70
+    },
+    {
+     "l": 25,
+     "t": 70.5,
+     "b": 92.5
+    },
+    {
+     "l": 25,
+     "t": 93,
+     "b": 115
+    },
+    {
+     "l": 25,
+     "t": 129.61,
+     "b": 146.61
+    }
+   ],
+   "nav_premiere": 14.07,
+   "nav_derniere": 13.5
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "id": "",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "w": 342,
+   "bw": 2,
+   "rayon": 46,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 23,
+     "b": 45
+    },
+    {
+     "l": 25,
+     "t": 50.8,
+     "b": 67.8
+    }
+   ],
+   "nav_premiere": 12.86,
+   "nav_derniere": 13.73
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "id": "",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 17,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 48,
+     "b": 70
+    },
+    {
+     "l": 25,
+     "t": 84.61,
+     "b": 101.61
+    }
+   ],
+   "nav_premiere": 14.07,
+   "nav_derniere": 13.5
+  },
+  {
+   "champ": "RÉCURRENCE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "RAPPEL",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "C'EST IMPORTANT ?",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "LA MÉMOIRE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "SUPPRIMER CE PROMI",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  }
+ ],
+ "page+ · invite": [
+  {
+   "champ": "PromiFERMER",
+   "id": "",
+   "cls": "enh",
+   "h": 60,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 42.16,
+     "t": 21.75,
+     "b": 37.75
+    }
+   ],
+   "nav_premiere": 40.16,
+   "nav_derniere": 40.16
+  },
+  {
+   "champ": "À QUI",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "AVANT",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "NOTE",
+   "id": "",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 17,
+     "b": 31
+    },
+    {
+     "l": 25,
+     "t": 48,
+     "b": 70
+    },
+    {
+     "l": 25,
+     "t": 84.61,
+     "b": 101.61
+    }
+   ],
+   "nav_premiere": 14.07,
+   "nav_derniere": 13.5
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "id": "",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "w": 342,
+   "bw": 2,
+   "rayon": 46,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 23,
+     "b": 45
+    },
+    {
+     "l": 25,
+     "t": 50.8,
+     "b": 67.8
+    }
+   ],
+   "nav_premiere": 12.86,
+   "nav_derniere": 13.73
+  },
+  {
+   "champ": "RÉCURRENCE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "RAPPEL",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "C'EST IMPORTANT ?",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "LA MÉMOIRE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  }
+ ],
+ "page+ · long": [
+  {
+   "champ": "PromiFERMER",
+   "id": "",
+   "cls": "enh",
+   "h": 60,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 42.16,
+     "t": 21.75,
+     "b": 37.75
+    }
+   ],
+   "nav_premiere": 40.16,
+   "nav_derniere": 40.16
+  },
+  {
+   "champ": "À QUI",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "AVANT",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "NOTE",
+   "id": "",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 17,
+     "b": 31
+    },
+    {
+     "l": 25,
+     "t": 48,
+     "b": 70
+    },
+    {
+     "l": 25,
+     "t": 70.5,
+     "b": 92.5
+    },
+    {
+     "l": 25,
+     "t": 84.61,
+     "b": 101.61
+    },
+    {
+     "l": 25,
+     "t": 93,
+     "b": 115
+    }
+   ],
+   "nav_premiere": 14.07,
+   "nav_derniere": 0.54
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "id": "",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "w": 342,
+   "bw": 2,
+   "rayon": 46,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 23,
+     "b": 45
+    },
+    {
+     "l": 25,
+     "t": 50.8,
+     "b": 67.8
+    }
+   ],
+   "nav_premiere": 12.86,
+   "nav_derniere": 13.73
+  },
+  {
+   "champ": "RÉCURRENCE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "RAPPEL",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "C'EST IMPORTANT ?",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  },
+  {
+   "champ": "LA MÉMOIRE",
+   "id": "",
+   "cls": "s2-reg",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 20.09,
+     "b": 42.09
+    }
+   ],
+   "nav_premiere": 21.95,
+   "nav_derniere": 21.95
+  }
+ ],
+ "Nuée · invite": [
+  {
+   "champ": "LE TRAIT",
+   "id": "npTrait",
+   "cls": "np-carte",
+   "h": 118,
+   "w": 342,
+   "bw": 2,
+   "rayon": 59,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 21,
+     "b": 43
+    },
+    {
+     "l": 48.84,
+     "t": 80.84,
+     "b": 94.84
+    }
+   ],
+   "nav_premiere": 5.34,
+   "nav_derniere": 19.75
+  },
+  {
+   "champ": "DESCRIPTION",
+   "id": "npDesc",
+   "cls": "np-carte",
+   "h": 104,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 19,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 41,
+     "b": 63
+    },
+    {
+     "l": 25,
+     "t": 70,
+     "b": 87
+    }
+   ],
+   "nav_premiere": 15.92,
+   "nav_derniere": 14.07
+  },
+  {
+   "champ": "MEMBRES",
+   "id": "npMemb",
+   "cls": "np-carte",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 21,
+     "b": 43
+    }
+   ],
+   "nav_premiere": 23,
+   "nav_derniere": 23
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "id": "npFich",
+   "cls": "np-carte",
+   "h": 92,
+   "w": 342,
+   "bw": 2,
+   "rayon": 46,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 19.5,
+     "b": 41.5
+    },
+    {
+     "l": 25,
+     "t": 50.8,
+     "b": 67.8
+    }
+   ],
+   "nav_premiere": 10.19,
+   "nav_derniere": 13.73
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "id": "npComm",
+   "cls": "np-carte",
+   "h": 104,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 19,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 41,
+     "b": 63
+    },
+    {
+     "l": 25,
+     "t": 70,
+     "b": 87
+    }
+   ],
+   "nav_premiere": 15.92,
+   "nav_derniere": 14.07
+  },
+  {
+   "champ": "DISSOUDRE LA NUÉE",
+   "id": "npDiss",
+   "cls": "np-carte",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 21,
+     "b": 43
+    }
+   ],
+   "nav_premiere": 23,
+   "nav_derniere": 23
+  },
+  {
+   "champ": "Planter un Promi dans ",
+   "id": "nfAdd",
+   "cls": "nf-add",
+   "h": 68,
+   "w": 348,
+   "bw": 3,
+   "rayon": 31,
+   "lignes": [
+    {
+     "l": 44.61,
+     "t": 23,
+     "b": 44
+    }
+   ],
+   "nav_premiere": 41.61,
+   "nav_derniere": 41.61
+  }
+ ],
+ "Nuée · long": [
+  {
+   "champ": "LE TRAIT",
+   "id": "npTrait",
+   "cls": "np-carte",
+   "h": 118,
+   "w": 342,
+   "bw": 2,
+   "rayon": 59,
+   "lignes": [
+    {
+     "l": 24,
+     "t": 21,
+     "b": 43
+    },
+    {
+     "l": 48.84,
+     "t": 80.84,
+     "b": 94.84
+    }
+   ],
+   "nav_premiere": 5.34,
+   "nav_derniere": 19.75
+  },
+  {
+   "champ": "DESCRIPTION",
+   "id": "npDesc",
+   "cls": "np-carte",
+   "h": 104,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 19,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 41,
+     "b": 63
+    },
+    {
+     "l": 25,
+     "t": 70,
+     "b": 87
+    }
+   ],
+   "nav_premiere": 15.92,
+   "nav_derniere": 14.07
+  },
+  {
+   "champ": "MEMBRES",
+   "id": "npMemb",
+   "cls": "np-carte",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 21,
+     "b": 43
+    }
+   ],
+   "nav_premiere": 23,
+   "nav_derniere": 23
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "id": "npFich",
+   "cls": "np-carte",
+   "h": 92,
+   "w": 342,
+   "bw": 2,
+   "rayon": 46,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 19.5,
+     "b": 41.5
+    },
+    {
+     "l": 25,
+     "t": 50.8,
+     "b": 67.8
+    }
+   ],
+   "nav_premiere": 10.19,
+   "nav_derniere": 13.73
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "id": "npComm",
+   "cls": "np-carte",
+   "h": 104,
+   "w": 342,
+   "bw": 2,
+   "rayon": 30,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 19,
+     "b": 33
+    },
+    {
+     "l": 25,
+     "t": 41,
+     "b": 63
+    },
+    {
+     "l": 25,
+     "t": 70,
+     "b": 87
+    }
+   ],
+   "nav_premiere": 15.92,
+   "nav_derniere": 14.07
+  },
+  {
+   "champ": "DISSOUDRE LA NUÉE",
+   "id": "npDiss",
+   "cls": "np-carte",
+   "h": 64,
+   "w": 342,
+   "bw": 2,
+   "rayon": 32,
+   "lignes": [
+    {
+     "l": 25,
+     "t": 21,
+     "b": 43
+    }
+   ],
+   "nav_premiere": 23,
+   "nav_derniere": 23
+  },
+  {
+   "champ": "Planter un Promi dans ",
+   "id": "nfAdd",
+   "cls": "nf-add",
+   "h": 68,
+   "w": 348,
+   "bw": 3,
+   "rayon": 31,
+   "lignes": [
+    {
+     "l": 44.61,
+     "t": 23,
+     "b": 44
+    }
+   ],
+   "nav_premiere": 41.61,
+   "nav_derniere": 41.61
+  }
+ ]
+}

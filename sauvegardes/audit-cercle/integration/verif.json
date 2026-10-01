@@ -1,0 +1,714 @@
+{
+ "dark": [
+  [
+   "fiche · ordre",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "fiche · encart « ✦ Le Cercle » seul",
+   true,
+   [
+    "✦ Le Cercle",
+    false
+   ]
+  ],
+  [
+   "fiche · floutés et intouchables",
+   true,
+   [
+    [
+     "blur(2.4px)"
+    ],
+    [
+     "none",
+     "none",
+     "none",
+     "none"
+    ]
+   ]
+  ],
+  [
+   "fiche · NOTE · rayon 30",
+   true,
+   30
+  ],
+  [
+   "fiche · NOTE · texte du milieu centré (écarts égaux)",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "fiche · NOTE · début des lignes extrêmes ≥ 12,9",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "fiche · COMMENTAIRES · rayon 30",
+   true,
+   30
+  ],
+  [
+   "fiche · COMMENTAIRES · texte du milieu centré (écarts égaux)",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "fiche · COMMENTAIRES · début des lignes extrêmes ≥ 12,9",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "NOTE deux lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)",
+   true,
+   [
+    4,
+    140.5,
+    "libellé→texte",
+    15,
+    "texte→visibilité",
+    14.6,
+    "dans le paragraphe",
+    0.5
+   ]
+  ],
+  [
+   "NOTE deux lignes · écart constant (≥ 12,9)",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "NOTE deux lignes · centré",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "NOTE trois lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)",
+   true,
+   [
+    5,
+    163,
+    "libellé→texte",
+    15,
+    "texte→visibilité",
+    14.6,
+    "dans le paragraphe",
+    0.5
+   ]
+  ],
+  [
+   "NOTE trois lignes · écart constant (≥ 12,9)",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "NOTE trois lignes · centré",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "page + · le mur est posé",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "page + · ordre, encart, floutés, intouchables",
+   true,
+   {
+    "ordre": [
+     "RÉCURRENCE",
+     "RAPPEL",
+     "C'EST IMPORTANT ?",
+     "LA MÉMOIRE"
+    ],
+    "encart": "✦ Le Cercle",
+    "encart_vis": true,
+    "sous_titre": false,
+    "flous": [
+     "blur(2.4px)",
+     "blur(2.4px)",
+     "blur(2.4px)",
+     "blur(2.4px)"
+    ],
+    "doigt": [
+     "none",
+     "none",
+     "none",
+     "none"
+    ]
+   }
+  ],
+  [
+   "page + · NOTE rayon 30, centrée",
+   true,
+   {
+    "lignes": 3,
+    "h": 118,
+    "rayon": 30,
+    "premiere": 14.1,
+    "derniere": 13.5,
+    "air_min": 14.6,
+    "air_haut": 15,
+    "air_bas": 14.6,
+    "milieu_haut": 46,
+    "milieu_bas": 46
+   }
+  ],
+  [
+   "page + · le mur tient après les rebâtisseurs",
+   true,
+   ""
+  ],
+  [
+   "page + · l’encart ouvre le Cercle PAR-DESSUS",
+   true,
+   [
+    "soi",
+    "createSheet,plusScreen"
+   ]
+  ],
+  [
+   "page + · ✕ ramène au même Peaufiner, phrase intacte",
+   true,
+   {
+    "couches": "createSheet",
+    "dessus": false,
+    "ps_show": false,
+    "premium": false,
+    "fiche_peauf": false,
+    "pp_peauf": true,
+    "titre": "aller voir la mer",
+    "phrase": "aller voir la mer"
+   }
+  ],
+  [
+   "page + · l’achat ramène au même Peaufiner (pas l’Aura), phrase intacte",
+   true,
+   {
+    "couches": "createSheet",
+    "dessus": false,
+    "ps_show": false,
+    "premium": true,
+    "fiche_peauf": false,
+    "pp_peauf": true,
+    "titre": "aller voir la mer",
+    "phrase": "aller voir la mer"
+   }
+  ],
+  [
+   "page + · abonné : nets et touchables, encart effacé",
+   true,
+   {
+    "ordre": [
+     "RÉCURRENCE",
+     "RAPPEL",
+     "C'EST IMPORTANT ?",
+     "LA MÉMOIRE"
+    ],
+    "encart": "✦ Le Cercle",
+    "encart_vis": false,
+    "sous_titre": false,
+    "flous": [
+     "none",
+     "none",
+     "none",
+     "none"
+    ],
+    "doigt": [
+     "auto",
+     "auto",
+     "auto",
+     "auto"
+    ]
+   }
+  ],
+  [
+   "gardé de côté · le mur est posé",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "fiche · au doigt, l’encart ouvre le Cercle par-dessus, et il RESTE ouvert",
+   true,
+   [
+    "soi",
+    "detailPoster,plusScreen"
+   ]
+  ],
+  [
+   "fiche · l’achat ramène au même Peaufiner, réglages nets et touchables",
+   true,
+   [
+    "detailPoster",
+    [
+     "none"
+    ]
+   ]
+  ],
+  [
+   "Réglages · après fin d’abonnement : « ✦ Le Cercle », sans sous-titre, visible",
+   true,
+   {
+    "t": "✦ Le Cercle",
+    "sous_titre_visible": false,
+    "vis": true,
+    "ordre": [
+     "RÉCURRENCE",
+     "RAPPEL",
+     "C'EST IMPORTANT ?",
+     "LA MÉMOIRE"
+    ]
+   }
+  ],
+  [
+   "Réglages · ordre",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "Nuée · npDesc · rayon 30, centré, écart ≥ 12,9",
+   true,
+   {
+    "lignes": 3,
+    "h": 104,
+    "rayon": 30,
+    "premiere": 15.9,
+    "derniere": 14.1,
+    "air_min": 7,
+    "air_haut": 8,
+    "air_bas": 7,
+    "milieu_haut": 39,
+    "milieu_bas": 39
+   }
+  ],
+  [
+   "Nuée · npComm · rayon 30, centré, écart ≥ 12,9",
+   true,
+   {
+    "lignes": 3,
+    "h": 104,
+    "rayon": 30,
+    "premiere": 15.9,
+    "derniere": 14.1,
+    "air_min": 7,
+    "air_haut": 8,
+    "air_bas": 7,
+    "milieu_haut": 39,
+    "milieu_bas": 39
+   }
+  ],
+  [
+   "Nuée · PIÈCES JOINTES aux places de la fiche (23 / 50,8)",
+   true,
+   {
+    "lab": 23,
+    "bas": 50.8
+   }
+  ],
+  [
+   "accueil · la porte du haut ouvre le Cercle sans « par-dessus »",
+   true,
+   "plusScreen"
+  ]
+ ],
+ "light": [
+  [
+   "fiche · ordre",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "fiche · encart « ✦ Le Cercle » seul",
+   true,
+   [
+    "✦ Le Cercle",
+    false
+   ]
+  ],
+  [
+   "fiche · floutés et intouchables",
+   true,
+   [
+    [
+     "blur(2.4px)"
+    ],
+    [
+     "none",
+     "none",
+     "none",
+     "none"
+    ]
+   ]
+  ],
+  [
+   "fiche · NOTE · rayon 30",
+   true,
+   30
+  ],
+  [
+   "fiche · NOTE · texte du milieu centré (écarts égaux)",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "fiche · NOTE · début des lignes extrêmes ≥ 12,9",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "fiche · COMMENTAIRES · rayon 30",
+   true,
+   30
+  ],
+  [
+   "fiche · COMMENTAIRES · texte du milieu centré (écarts égaux)",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "fiche · COMMENTAIRES · début des lignes extrêmes ≥ 12,9",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "NOTE deux lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)",
+   true,
+   [
+    4,
+    140.5,
+    "libellé→texte",
+    15,
+    "texte→visibilité",
+    14.6,
+    "dans le paragraphe",
+    0.5
+   ]
+  ],
+  [
+   "NOTE deux lignes · écart constant (≥ 12,9)",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "NOTE deux lignes · centré",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "NOTE trois lignes · le texte ne touche ni le libellé ni la visibilité (air ≥ 10)",
+   true,
+   [
+    5,
+    163,
+    "libellé→texte",
+    15,
+    "texte→visibilité",
+    14.6,
+    "dans le paragraphe",
+    0.5
+   ]
+  ],
+  [
+   "NOTE trois lignes · écart constant (≥ 12,9)",
+   true,
+   [
+    14.1,
+    13.5
+   ]
+  ],
+  [
+   "NOTE trois lignes · centré",
+   true,
+   [
+    46,
+    46
+   ]
+  ],
+  [
+   "page + · le mur est posé",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "page + · ordre, encart, floutés, intouchables",
+   true,
+   {
+    "ordre": [
+     "RÉCURRENCE",
+     "RAPPEL",
+     "C'EST IMPORTANT ?",
+     "LA MÉMOIRE"
+    ],
+    "encart": "✦ Le Cercle",
+    "encart_vis": true,
+    "sous_titre": false,
+    "flous": [
+     "blur(2.4px)",
+     "blur(2.4px)",
+     "blur(2.4px)",
+     "blur(2.4px)"
+    ],
+    "doigt": [
+     "none",
+     "none",
+     "none",
+     "none"
+    ]
+   }
+  ],
+  [
+   "page + · NOTE rayon 30, centrée",
+   true,
+   {
+    "lignes": 3,
+    "h": 118,
+    "rayon": 30,
+    "premiere": 14.1,
+    "derniere": 13.5,
+    "air_min": 14.6,
+    "air_haut": 15,
+    "air_bas": 14.6,
+    "milieu_haut": 46,
+    "milieu_bas": 46
+   }
+  ],
+  [
+   "page + · le mur tient après les rebâtisseurs",
+   true,
+   ""
+  ],
+  [
+   "page + · l’encart ouvre le Cercle PAR-DESSUS",
+   true,
+   [
+    "soi",
+    "createSheet,plusScreen"
+   ]
+  ],
+  [
+   "page + · ✕ ramène au même Peaufiner, phrase intacte",
+   true,
+   {
+    "couches": "createSheet",
+    "dessus": false,
+    "ps_show": false,
+    "premium": false,
+    "fiche_peauf": false,
+    "pp_peauf": true,
+    "titre": "aller voir la mer",
+    "phrase": "aller voir la mer"
+   }
+  ],
+  [
+   "page + · l’achat ramène au même Peaufiner (pas l’Aura), phrase intacte",
+   true,
+   {
+    "couches": "createSheet",
+    "dessus": false,
+    "ps_show": false,
+    "premium": true,
+    "fiche_peauf": false,
+    "pp_peauf": true,
+    "titre": "aller voir la mer",
+    "phrase": "aller voir la mer"
+   }
+  ],
+  [
+   "page + · abonné : nets et touchables, encart effacé",
+   true,
+   {
+    "ordre": [
+     "RÉCURRENCE",
+     "RAPPEL",
+     "C'EST IMPORTANT ?",
+     "LA MÉMOIRE"
+    ],
+    "encart": "✦ Le Cercle",
+    "encart_vis": false,
+    "sous_titre": false,
+    "flous": [
+     "none",
+     "none",
+     "none",
+     "none"
+    ],
+    "doigt": [
+     "auto",
+     "auto",
+     "auto",
+     "auto"
+    ]
+   }
+  ],
+  [
+   "gardé de côté · le mur est posé",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "fiche · au doigt, l’encart ouvre le Cercle par-dessus, et il RESTE ouvert",
+   true,
+   [
+    "soi",
+    "detailPoster,plusScreen"
+   ]
+  ],
+  [
+   "fiche · l’achat ramène au même Peaufiner, réglages nets et touchables",
+   true,
+   [
+    "detailPoster",
+    [
+     "none"
+    ]
+   ]
+  ],
+  [
+   "Réglages · après fin d’abonnement : « ✦ Le Cercle », sans sous-titre, visible",
+   true,
+   {
+    "t": "✦ Le Cercle",
+    "sous_titre_visible": false,
+    "vis": true,
+    "ordre": [
+     "RÉCURRENCE",
+     "RAPPEL",
+     "C'EST IMPORTANT ?",
+     "LA MÉMOIRE"
+    ]
+   }
+  ],
+  [
+   "Réglages · ordre",
+   true,
+   [
+    "RÉCURRENCE",
+    "RAPPEL",
+    "C'EST IMPORTANT ?",
+    "LA MÉMOIRE"
+   ]
+  ],
+  [
+   "Nuée · npDesc · rayon 30, centré, écart ≥ 12,9",
+   true,
+   {
+    "lignes": 3,
+    "h": 104,
+    "rayon": 30,
+    "premiere": 15.9,
+    "derniere": 14.1,
+    "air_min": 7,
+    "air_haut": 8,
+    "air_bas": 7,
+    "milieu_haut": 39,
+    "milieu_bas": 39
+   }
+  ],
+  [
+   "Nuée · npComm · rayon 30, centré, écart ≥ 12,9",
+   true,
+   {
+    "lignes": 3,
+    "h": 104,
+    "rayon": 30,
+    "premiere": 15.9,
+    "derniere": 14.1,
+    "air_min": 7,
+    "air_haut": 8,
+    "air_bas": 7,
+    "milieu_haut": 39,
+    "milieu_bas": 39
+   }
+  ],
+  [
+   "Nuée · PIÈCES JOINTES aux places de la fiche (23 / 50,8)",
+   true,
+   {
+    "lab": 23,
+    "bas": 50.8
+   }
+  ],
+  [
+   "accueil · la porte du haut ouvre le Cercle sans « par-dessus »",
+   true,
+   "plusScreen"
+  ]
+ ]
+}

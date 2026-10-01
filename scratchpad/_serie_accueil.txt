@@ -1,0 +1,94 @@
+== releve-design.py (code 0)
+✅  AUCUN ÉCART. Le design est intact.
+== redteam_ecrans.py (code 1)
+aucune erreur JS [clair]                       OK  
+
+144/150
+== redteam.py (code 0)
+aucune erreur JS                           OK  
+
+15/15
+== redteam2.py (code 0)
+aucune erreur JS                             OK  
+
+10/10
+== redteam3.py (code 0)
+aucune erreur JS                               OK  
+
+18/18
+== redteam_demande.py (code 0)
+aucune erreur JS                             OK  
+
+19/19
+== redteam_toile.py (code 0)
+aucune erreur JS                           OK  []
+
+17/17
+== redteam_geste.py (code 0)
+aucune erreur JS                             OK  
+
+13/13
+== redteam_verbe.py (code 0)
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 57, 'vis': True}
+
+6/6
+== redteam_filets.py (code 0)
+fiche nuee [dark]      OK
+
+OK — 0 filet(s) parasite(s)
+== redteam_vide.py (code 1)
+   · page + [light]
+   · page + [dark]
+   · page + [light]
+== redteam_air.py (code 0)
+
+
+  ✅  L'AIR EST INTACT — 473 paires de textes, 38 écrans, deux thèmes.
+== redteam_champ.py (code 0)
+  l'instant après [light]        OK
+
+32/32
+== redteam_pastilles.py (code 1)
+   · page + choix ouvert · des pastilles à toucher
+   · page + Chiche · des pastilles à toucher
+   · page + Peaufiner · des réglages qui se déplient
+== redteam_phrase.py (code 0)
+aucune erreur JS                                 OK  []
+
+6/6
+== redteam_gens.py (code 1)
+
+6/38
+KO : [clair] Promi · à qui · toucher « Rachel » l'ajoute · [clair] Promi · à qui · la croix de « Rachel » la retire · [clair] Promi · à qui · « + ajouter quelqu'un » visible et vivant (déborde : False) · [clair] Promi · à qui · la liste vit au-dessus de Peaufiner · [clair] Chiche · qui tu défies · toucher « Rachel » l'ajoute · [clair] Chiche · qui tu défies · la croix de « Rachel » la retire · [clair] Chiche · qui tu défies · « + ajouter quelqu'un » visible et vivant (déborde : False) · [clair] Chiche · qui tu défies · la liste vit au-dessus de Peaufiner · [clair] Chiche · avec qui · toucher « Rachel » l'ajoute · [clair] Chiche · avec qui · la croix de « Rachel » la retire · [clair] Chiche · avec qui · « + ajouter quelqu'un » visible et vivant (déborde : False) · [clair] Chiche · avec qui · la liste vit au-dessus de Peaufiner
+== redteam_tuiles.py (code 1)
+[sombre · souris · clic] promi après nuee→chiche→nuee      KO  data-kind promi ·  · verbe « Je me promets »
+
+0/64
+== redteam_dalle_figee.py (code 0)
+D · les peintres des cartes reçoivent le monde du Promi    OK  39 appels · 0 sans monde · 3 pour le Promi en « pixel · terre » (juste : True) · 0 faux
+
+4/4
+== releve-S4-index-fil.py (code 0)
+présence peinte              0
+
+✅  SECTION 4 AU VERT
+== redteam_nuee.py (code 0)
+==============================================================================
+
+  ✅  24 écran(s) · 0 écart(s)
+== redteam_aveugle.py (code 1)
+    at eval (eval at evaluate (:302:30), <anonymous>:1:42)
+    at UtilityScript.evaluate (<anonymous>:309:18)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)
+== redteam_reperage.py (code 0)
+[sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : []
+
+16/16
+== redteam_nuee_entree.py (code 0)
+[sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True}
+
+24/24
+== redteam_accueil.py (code 0)
+[sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False
+
+22/22

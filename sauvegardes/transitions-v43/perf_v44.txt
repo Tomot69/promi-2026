@@ -1,0 +1,18 @@
+chromium×1 esquille arrivée {'images': 133, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×1 esquille départ {'images': 133, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×4 esquille arrivée {'images': 54, 'med': 49.9, 'p90': 50, 'max': 66.7}
+chromium×4 esquille départ {'images': 51, 'med': 49.9, 'p90': 50.1, 'max': 66.8}
+webkit esquille arrivée {'images': 133, 'med': 17, 'p90': 17, 'max': 19}
+webkit esquille départ {'images': 133, 'med': 17, 'p90': 17, 'max': 19}
+esquille arrivée webkit | images 208 | max 2.71 | fin du mouvement 2033 ms | sauts []
+esquille départ webkit | images 210 | max 2.58 | fin du mouvement 1241 ms | sauts []
+esquille webkit {'sans_avec': 1, 'temoin_sans_sans': 0, 'px': 1316640}
+chromium×1 ritournelle arrivée {'images': 133, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×1 ritournelle départ {'images': 133, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×4 ritournelle arrivée {'images': 34, 'med': 50, 'p90': 166.6, 'max': 200}
+chromium×4 ritournelle départ {'images': 53, 'med': 50, 'p90': 66.6, 'max': 83.3}
+webkit ritournelle arrivée {'images': 133, 'med': 17, 'p90': 17, 'max': 18}
+webkit ritournelle départ {'images': 133, 'med': 17, 'p90': 17, 'max': 29}
+ritournelle arrivée webkit | images 194 | max 4.91 | fin du mouvement 2214 ms | sauts []
+ritournelle départ webkit | images 196 | max 5.51 | fin du mouvement 1374 ms | sauts []
+ritournelle webkit {'sans_avec': 1, 'temoin_sans_sans': 1, 'px': 1316640}

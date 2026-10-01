@@ -1,0 +1,29 @@
+RÉFÉRENCE · PIÈCES JOINTES de la fiche (2 lignes) : {'lignes': 2, 'premiere': 12.86, 'derniere': 13.73, 'ys': [23, 50.8], 'yb': [45, 67.8], 'h': 92, 'rayon': 46}  → cible 12.9
+
+NOTE (fiche) avant {'lignes': 3, 'premiere': 2.96, 'derniere': 2.49, 'ys': [17, 41, 84.6], 'yb': [33, 63, 101.6], 'h': 118, 'rayon': 59}
+   après {'lignes': 3, 'premiere': 12.95, 'derniere': 13.04, 'ys': [31, 47.1, 69.9], 'yb': [47, 69.1, 86.9], 'h': 118, 'rayon': 59}
+   réglage {'padding_top': 31, 'bas': 29.75, 'bas_avant': 15, 'milieu_marge': 3.1, 'interligne': 1.04, 'lignes_milieu': 1, 'tient': True}
+
+COMMENTAIRES (fiche) avant {'lignes': 3, 'premiere': 2.96, 'derniere': 2.49, 'ys': [17, 41, 84.6], 'yb': [33, 63, 101.6], 'h': 118, 'rayon': 59}
+   après {'lignes': 3, 'premiere': 12.95, 'derniere': 13.04, 'ys': [31, 47.1, 69.9], 'yb': [47, 69.1, 86.9], 'h': 118, 'rayon': 59}
+   réglage {'padding_top': 31, 'bas': 29.75, 'bas_avant': 15, 'milieu_marge': 3.1, 'interligne': 1.04, 'lignes_milieu': 1, 'tient': True}
+
+NOTE longue (a · dans la boîte de 118) avant {'lignes': 4, 'premiere': 2.96, 'derniere': 2.49, 'ys': [17, 33.1, 51.8, 84.6], 'yb': [33, 55.1, 73.8, 101.6], 'h': 118, 'rayon': 59}
+   après {'lignes': 5, 'premiere': 12.95, 'derniere': 0.6, 'ys': [31, 39.9, 46, 64, 82], 'yb': [47, 56.9, 68, 86, 104], 'h': 118, 'rayon': 59}
+   réglage {'padding_top': 31, 'bas': 60, 'bas_avant': 15, 'milieu_marge': 2, 'interligne': 1, 'lignes_milieu': 2, 'tient': False}
+
+NOTE longue (b · la boîte s’allonge d’une ligne, rayon 59) {'lignes': 4, 'premiere': 12.95, 'derniere': 13.04, 'ys': [31, 49.1, 71.6, 87.9], 'yb': [47, 71.1, 93.6, 104.9], 'h': 136, 'rayon': 59}
+
+NOTE (page +) avant {'lignes': 3, 'premiere': 2.96, 'derniere': 2.49, 'ys': [17, 39.5, 84.6], 'yb': [31, 61.5, 101.6], 'h': 118, 'rayon': 59}
+   après {'lignes': 3, 'premiere': 12.95, 'derniere': 13.04, 'ys': [31, 46.5, 69.9], 'yb': [45, 68.5, 86.9], 'h': 118, 'rayon': 59}
+   réglage {'padding_top': 31, 'bas': 29.75, 'bas_avant': 15, 'milieu_marge': 3, 'interligne': 1.13, 'lignes_milieu': 1, 'tient': True}
+
+npDesc (Nuée) avant {'lignes': 3, 'premiere': 7.36, 'derniere': 5.8, 'ys': [19, 43, 70], 'yb': [33, 65, 87], 'h': 104, 'rayon': 52}
+   après {'lignes': 3, 'premiere': 13.03, 'derniere': 13.03, 'ys': [26.8, 41.8, 60.3], 'yb': [40.8, 63.8, 77.3], 'h': 104, 'rayon': 52}
+   réglage {'padding_top': 24.75, 'bas': 24.75, 'bas_avant': 15, 'milieu_marge': 2, 'interligne': 1, 'lignes_milieu': 1, 'tient': False}
+
+npComm (Nuée) avant {'lignes': 3, 'premiere': 7.36, 'derniere': 5.8, 'ys': [19, 43, 70], 'yb': [33, 65, 87], 'h': 104, 'rayon': 52}
+   après {'lignes': 3, 'premiere': 13.03, 'derniere': 13.03, 'ys': [26.8, 41.8, 60.3], 'yb': [40.8, 63.8, 77.3], 'h': 104, 'rayon': 52}
+   réglage {'padding_top': 24.75, 'bas': 24.75, 'bas_avant': 15, 'milieu_marge': 2, 'interligne': 1, 'lignes_milieu': 1, 'tient': False}
+
+PIÈCES JOINTES (Nuée, 2 lignes) {'lignes': 2, 'premiere': 6.35, 'derniere': 6.35, 'ys': [14.8, 60.3], 'yb': [36.8, 77.3], 'h': 92, 'rayon': 46}   · la même sur la fiche : {'lignes': 2, 'premiere': 12.86, 'derniere': 13.73, 'ys': [23, 50.8], 'yb': [45, 67.8], 'h': 92, 'rayon': 46}

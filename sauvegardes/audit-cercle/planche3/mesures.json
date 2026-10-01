@@ -1,0 +1,464 @@
+{
+ "note3 · avant · dark": {
+  "lignes": 3,
+  "premiere": 3,
+  "derniere": 2.5,
+  "air_min": 5.8,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   84.6
+  ]
+ },
+ "note3 · T · dark": {
+  "lignes": 3,
+  "premiere": 9.4,
+  "derniere": 9.4,
+  "air_min": 5.8,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   25.7,
+   47.5,
+   75.3
+  ]
+ },
+ "note3 · P · dark": {
+  "lignes": 3,
+  "premiere": 14.1,
+  "derniere": 13.5,
+  "air_min": 5.8,
+  "h": 118,
+  "rayon": 30,
+  "ys": [
+   17,
+   38.8,
+   84.6
+  ]
+ },
+ "note4 · avant · dark": {
+  "lignes": 4,
+  "premiere": 3,
+  "derniere": 2.5,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   84.6
+  ]
+ },
+ "note4 · T · dark": {
+  "lignes": 4,
+  "premiere": 3,
+  "derniere": 2.5,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   84.6
+  ],
+  "sans_effet": true
+ },
+ "note4 · P · dark": {
+  "lignes": 4,
+  "premiere": 14.1,
+  "derniere": 13.5,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 30,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   84.6
+  ]
+ },
+ "nuee · avant · dark": {
+  "npDesc": {
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npComm": {
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npFich": {
+   "lignes": 2,
+   "premiere": 6.3,
+   "derniere": 6.3,
+   "air_min": 23.5,
+   "h": 92,
+   "rayon": 46,
+   "ys": [
+    14.8,
+    60.3
+   ]
+  }
+ },
+ "nuee · T · dark": {
+  "npDesc": {
+   "lignes": 3,
+   "premiere": 7.9,
+   "derniere": 7.9,
+   "air_min": 5.8,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19.7,
+    39.5,
+    67.3
+   ]
+  },
+  "npComm": {
+   "lignes": 3,
+   "premiere": 7.9,
+   "derniere": 7.9,
+   "air_min": 5.8,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19.7,
+    39.5,
+    67.3
+   ]
+  },
+  "npFich": {
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "air_min": 5.8,
+   "h": 92,
+   "rayon": 46,
+   "ys": [
+    23,
+    50.8
+   ]
+  }
+ },
+ "nuee · P · dark": {
+  "npDesc": {
+   "lignes": 3,
+   "premiere": 15.9,
+   "derniere": 14.1,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 30,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npComm": {
+   "lignes": 3,
+   "premiere": 15.9,
+   "derniere": 14.1,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 30,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npFich": {
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "air_min": 5.8,
+   "h": 92,
+   "rayon": 46,
+   "ys": [
+    23,
+    50.8
+   ]
+  }
+ },
+ "note5 · avant · dark": {
+  "lignes": 4,
+  "premiere": 3,
+  "derniere": -0.8,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   83.8
+  ],
+  "textarea_h": 56,
+  "max_height": "44px",
+  "scrollH": 68
+ },
+ "reference · dark": {
+  "lignes": 2,
+  "premiere": 12.9,
+  "derniere": 13.7,
+  "air_min": 5.8,
+  "h": 92,
+  "rayon": 46,
+  "ys": [
+   23,
+   50.8
+  ]
+ },
+ "note3 · avant · light": {
+  "lignes": 3,
+  "premiere": 3,
+  "derniere": 2.5,
+  "air_min": 5.8,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   84.6
+  ]
+ },
+ "note3 · T · light": {
+  "lignes": 3,
+  "premiere": 9.4,
+  "derniere": 9.4,
+  "air_min": 5.8,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   25.7,
+   47.5,
+   75.3
+  ]
+ },
+ "note3 · P · light": {
+  "lignes": 3,
+  "premiere": 14.1,
+  "derniere": 13.5,
+  "air_min": 5.8,
+  "h": 118,
+  "rayon": 30,
+  "ys": [
+   17,
+   38.8,
+   84.6
+  ]
+ },
+ "note4 · avant · light": {
+  "lignes": 4,
+  "premiere": 3,
+  "derniere": 2.5,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   84.6
+  ]
+ },
+ "note4 · T · light": {
+  "lignes": 4,
+  "premiere": 3,
+  "derniere": 2.5,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   84.6
+  ],
+  "sans_effet": true
+ },
+ "note4 · P · light": {
+  "lignes": 4,
+  "premiere": 14.1,
+  "derniere": 13.5,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 30,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   84.6
+  ]
+ },
+ "nuee · avant · light": {
+  "npDesc": {
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npComm": {
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npFich": {
+   "lignes": 2,
+   "premiere": 6.3,
+   "derniere": 6.3,
+   "air_min": 23.5,
+   "h": 92,
+   "rayon": 46,
+   "ys": [
+    14.8,
+    60.3
+   ]
+  }
+ },
+ "nuee · T · light": {
+  "npDesc": {
+   "lignes": 3,
+   "premiere": 7.9,
+   "derniere": 7.9,
+   "air_min": 5.8,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19.7,
+    39.5,
+    67.3
+   ]
+  },
+  "npComm": {
+   "lignes": 3,
+   "premiere": 7.9,
+   "derniere": 7.9,
+   "air_min": 5.8,
+   "h": 104,
+   "rayon": 52,
+   "ys": [
+    19.7,
+    39.5,
+    67.3
+   ]
+  },
+  "npFich": {
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "air_min": 5.8,
+   "h": 92,
+   "rayon": 46,
+   "ys": [
+    23,
+    50.8
+   ]
+  }
+ },
+ "nuee · P · light": {
+  "npDesc": {
+   "lignes": 3,
+   "premiere": 15.9,
+   "derniere": 14.1,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 30,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npComm": {
+   "lignes": 3,
+   "premiere": 15.9,
+   "derniere": 14.1,
+   "air_min": 5,
+   "h": 104,
+   "rayon": 30,
+   "ys": [
+    19,
+    43,
+    70
+   ]
+  },
+  "npFich": {
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "air_min": 5.8,
+   "h": 92,
+   "rayon": 46,
+   "ys": [
+    23,
+    50.8
+   ]
+  }
+ },
+ "note5 · avant · light": {
+  "lignes": 4,
+  "premiere": 3,
+  "derniere": -0.8,
+  "air_min": 0.5,
+  "h": 118,
+  "rayon": 59,
+  "ys": [
+   17,
+   38.8,
+   61.3,
+   83.8
+  ],
+  "textarea_h": 56,
+  "max_height": "44px",
+  "scrollH": 68
+ },
+ "reference · light": {
+  "lignes": 2,
+  "premiere": 12.9,
+  "derniere": 13.7,
+  "air_min": 5.8,
+  "h": 92,
+  "rayon": 46,
+  "ys": [
+   23,
+   50.8
+  ]
+ }
+}

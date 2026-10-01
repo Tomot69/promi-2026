@@ -1,0 +1,74 @@
+=== redteam_kaki.py
+  terrazzo     toile-clair   kaki  86.1 %  ✗ #EFE2C5 (h 87°, C 0.041, L 0.92) ×224376; #FBF4E6 (h 85°, C 0.020, L 0.97) ×2215; #FFF9EB (h 88°, C 0.019, L 0.98) ×1995
+  terrazzo     toile-sombre  kaki  86.0 %  ✗ #201908 (h 87°, C 0.031, L 0.22) ×223093; #FBF4E6 (h 85°, C 0.020, L 0.97) ×2198; #FFF9EB (h 88°, C 0.019, L 0.98) ×1976
+  gravure      toile-clair   kaki  88.8 %  ✗ #EFE2C5 (h 87°, C 0.041, L 0.92) ×229050; #EFE1C4 (h 85°, C 0.041, L 0.91) ×1015; #F0E2C5 (h 85°, C 0.041, L 0.92) ×973
+  gravure      toile-sombre  kaki  87.9 %  ✗ #201908 (h 87°, C 0.031, L 0.22) ×226335; #211A09 (h 87°, C 0.031, L 0.22) ×452; #221B0A (h 87°, C 0.031, L 0.23) ×306
+  sillons      toile-clair   kaki  88.1 %  ✗ #EFE2C5 (h 87°, C 0.041, L 0.92) ×216769; #F0E2C5 (h 85°, C 0.041, L 0.92) ×1023; #F0E3C6 (h 87°, C 0.041, L 0.92) ×839
+  sillons      toile-sombre  kaki  87.1 %  ✗ #201908 (h 87°, C 0.031, L 0.22) ×213639; #211A09 (h 87°, C 0.031, L 0.22) ×1372; #221B0A (h 87°, C 0.031, L 0.23) ×454
+
+❌ DU KAKI — 74 coupable(s)
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_air.py
+   Aura [dark]                .«1»                               → .au-c«monter la serre avan»
+   Aura [dark]                #auPartage«Partager ma Pelote»     → .au-c«arroser tous les soi»
+   Aura [dark]                .«Ce que tu as tenu»               → .au-c«rapporter le livre»
+   Aura [light]               .«1»                               → .au-c«monter la serre avan»
+   Aura [light]               #auPartage«Partager ma Pelote»     → .au-c«arroser tous les soi»
+   Aura [light]               .«Ce que tu as tenu»               → .au-c«rapporter le livre»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+=== redteam_vide.py
+Nuée vide [light]                              OK  
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_flash.py
+  ✅ C2 · planter chiche : la page + coupe et ne se remontre pas (fermée à 1835 ms)
+  ✅ B1 · + → nuee : aucun flash au premier plan (155 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (85 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1666 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1887 ms)
+
+32/32
+=== redteam_tokens.py
+  ✓ l'extension Swift porte le niveau « sous-titre »
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+45/46
+=== redteam_decoupe.py
+E·image          OK  aucune prise
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_champ.py
+  Fil [light]                    OK
+  Nuée [light]                   OK
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_tonsurton.py
+carte d'Index · mesurable [light]                    OK  Δ42   
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26

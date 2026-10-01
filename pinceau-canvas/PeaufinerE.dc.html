@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Fraunces:opsz,wght@9..144,600&display=swap">
+  <style>
+    body { margin: 0; }
+    a { color: #3A54FF; } a:hover { color: #16171B; }
+    * { box-sizing: border-box; }
+    .b { font-family: 'Bricolage Grotesque', 'Helvetica Neue', sans-serif; }
+    .f { font-family: Fraunces, Georgia, serif; }
+    .a { font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .lab { font-size: 11.5px; font-weight: 500; letter-spacing: .18em; }
+    .cadre { position: relative; width: 390px; height: 844px; overflow: hidden; }
+  </style>
+</helmet>
+<div class="cadre" style="background:{{corps}}">
+  <div style="position:absolute;left:24px;top:40px;width:342px;height:60px;
+              border:2px solid {{encre}};border-radius:30px;background:{{corps}};
+              display:flex;align-items:center;justify-content:space-between;padding:0 26px">
+    <span class="b" style="font-size:27px;font-weight:700;letter-spacing:-.03em;color:{{encre}}">aller voir la mer</span>
+    <span class="a lab" style="color:{{encre}}">&#10005;&nbsp; FERMER</span>
+  </div>
+  <div style="position:absolute;left:24px;top:126px;width:342px;height:118px;
+              border:2px solid {{encre}};border-radius:59px;
+              display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 26px">
+    <span class="a lab" style="color:{{sec}}">LE TRAIT</span>
+    <span class="b" style="font-size:18px;font-weight:700;color:{{encre}}">{{nom}}{{prix}}</span>
+    <div style="color:{{sec}};width:290px;margin-top:2px"><svg width="290" height="56.5" viewBox="0 518 390 76" fill="none" style="display:block"><path d="M3.0 570.6L8.9 567.5L12.4 565.4L15.9 563.4L19.3 561.5L22.7 559.6L26.0 557.8L29.3 556.1L32.6 554.5L35.9 553.0L39.1 551.6L42.4 550.4L45.5 549.2L48.7 548.2L51.8 547.4L55.0 546.7L58.1 546.1L61.2 545.7L64.3 545.4L67.4 545.2L70.5 545.2L73.6 545.4L76.7 545.7L79.9 546.1L83.1 546.6L86.3 547.3L89.6 548.2L92.9 549.1L96.2 550.2L99.5 551.4L102.9 552.7L106.3 554.1L109.8 555.6L113.3 557.2L116.8 558.8L120.3 560.5L123.8 562.2L127.4 564.0L131.0 565.7L134.6 567.4L138.3 569.1L141.9 570.8L145.6 572.4L149.3 574.0L153.1 575.5L156.8 576.9L160.6 578.2L164.4 579.3L168.2 580.4L172.0 581.3L175.9 582.0L179.7 582.6L183.6 583.0L187.5 583.3L191.3 583.3L195.2 583.2L199.1 583.0L202.9 582.5L206.8 581.9L210.6 581.1L214.4 580.1L218.2 579.0L221.9 577.7L225.6 576.3L229.3 574.8L233.0 573.2L236.6 571.4L240.3 569.6L243.9 567.7L247.5 565.7L251.0 563.7L254.6 561.7L258.1 559.6L261.7 557.5L265.2 555.4L268.7 553.4L272.1 551.3L275.6 549.3L279.1 547.4L282.5 545.5L285.9 543.7L289.3 542.1L292.7 540.5L296.1 539.0L299.5 537.6L302.9 536.4L306.2 535.3L309.6 534.4L312.9 533.6L316.2 532.9L319.6 532.4L322.9 532.0L326.3 531.8L329.6 531.8L333.0 531.9L336.3 532.1L339.7 532.6L343.1 533.1L346.5 533.8L349.9 534.6L353.4 535.6L356.8 536.7L360.3 537.9L363.8 539.3L367.3 540.7L370.8 542.2L374.4 543.7L377.9 545.4L381.5 547.1L385.0 548.8L389.2 550.7L390.8 544.8L387.9 543.1L384.4 541.3L380.8 539.5L377.3 537.7L373.7 535.9L370.1 534.2L366.6 532.6L363.0 531.1L359.3 529.7L355.7 528.4L352.1 527.2L348.4 526.2L344.7 525.2L341.0 524.5L337.3 523.9L333.6 523.4L329.9 523.2L326.1 523.1L322.4 523.2L318.6 523.4L314.8 523.8L311.1 524.4L307.3 525.2L303.6 526.1L299.9 527.1L296.1 528.3L292.4 529.6L288.7 531.1L285.0 532.7L281.3 534.3L277.7 536.1L274.0 537.9L270.4 539.7L266.8 541.7L263.2 543.6L259.6 545.6L256.0 547.5L252.4 549.5L248.9 551.4L245.3 553.3L241.8 555.1L238.3 556.9L234.8 558.5L231.4 560.1L227.9 561.6L224.5 563.0L221.1 564.2L217.7 565.3L214.4 566.3L211.1 567.2L207.8 567.9L204.5 568.4L201.2 568.8L198.0 569.1L194.8 569.2L191.6 569.1L188.3 568.9L185.1 568.6L181.9 568.1L178.7 567.5L175.4 566.7L172.2 565.8L168.9 564.8L165.6 563.6L162.3 562.3L158.9 561.0L155.6 559.5L152.2 557.9L148.8 556.3L145.4 554.5L141.9 552.8L138.4 550.9L135.0 549.1L131.4 547.2L127.9 545.4L124.3 543.5L120.7 541.7L117.1 539.9L113.5 538.1L109.8 536.5L106.1 534.9L102.4 533.4L98.6 532.0L94.8 530.7L91.0 529.5L87.1 528.5L83.2 527.7L79.3 527.0L75.3 526.5L71.3 526.1L67.4 526.0L63.4 526.0L59.4 526.2L55.4 526.6L51.4 527.2L47.4 527.9L43.5 528.8L39.5 529.9L35.6 531.1L31.8 532.4L27.9 533.9L24.1 535.5L20.3 537.1L16.5 538.9L12.8 540.7L9.1 542.6L5.4 544.6L1.8 546.5L-1.9 548.5L-3.0 549.4Z" fill="currentColor"/></svg></div>
+  </div>
+  <div style="position:absolute;left:24px;top:260px;width:342px;
+              display:flex;flex-direction:column;gap:16px">
+    <div style="height:64px;border:2px solid {{encre}};border-radius:32px;
+                display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 20px">
+      <span class="a lab" style="color:{{sec}}">À QUI</span>
+      <span class="b" style="font-size:18px;font-weight:700;color:{{encre}}">Rachel</span></div>
+    <div style="height:64px;border:2px solid {{encre}};border-radius:32px;
+                display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 20px">
+      <span class="a lab" style="color:{{sec}}">AVANT</span>
+      <span class="b" style="font-size:18px;font-weight:700;color:{{encre}}">dimanche</span></div>
+    <div style="height:64px;border:2px solid {{encre}};border-radius:32px;
+                display:flex;flex-direction:column;justify-content:center;gap:4px;padding:0 20px">
+      <span class="a lab" style="color:{{sec}}">DANS UNE NUÉE</span>
+      <span class="b" style="font-size:18px;font-weight:700;color:{{encre}}">le potager</span></div>
+    <div style="height:118px;border:2px solid {{encre}};border-radius:59px;
+                display:flex;flex-direction:column;justify-content:center;gap:6px;padding:0 24px">
+      <span class="a lab" style="color:{{sec}}">NOTE</span>
+      <span class="b" style="font-size:18px;font-weight:600;color:{{sec}};line-height:1.25">ajoute un mot, un contexte&#8230;</span></div>
+  </div>
+  <div style="position:absolute;left:0;top:760px;width:390px;height:84px;background:#3A54FF;
+              display:flex;align-items:flex-start;padding:28px 24px 0">
+    <span class="b" style="font-size:21px;font-weight:700;letter-spacing:-.01em;color:#F4EEE1">Peaufiner</span>
+    <span class="b" style="font-size:15px;color:#F4EEE1;margin-left:auto">&#9652;</span>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"theme":{"editor":"enum","options":["sombre","clair"],"default":"sombre","section":"Vue"}}'>
+class Component extends DCLogic {
+  constructor(p){ super(p); this.state = { choisi: 0 }; }
+  renderVals(){
+    var sombre = (this.props.theme ?? 'sombre') === 'sombre';
+    /* §1.3 — les deux corps ; §2.1 bis — la teinte claire vaut dans les deux themes */
+    var corps = sombre ? '#12142A' : '#F4EEE1';
+    var encre = sombre ? '#F4EEE1' : '#16171B';
+    var sec   = sombre ? '#CBAAFF' : '#3A54FF';
+    var NOMS  = ["Plein"];
+    var LIB   = 4;
+    var v = { corps: corps, encre: encre, sec: sec,
+              nom: NOMS[this.state.choisi],
+              prix: this.state.choisi < LIB ? '' : ' \u2014 0,50 \u20AC' };
+    for (var i = 0; i < NOMS.length; i++) {
+      var on = (i === this.state.choisi);
+      /* selectionne : le champ porte la nature, l'echantillon prend la teinte claire */
+      v['bg' + i] = on ? '#3A54FF' : 'transparent';
+      v['bd' + i] = on ? '#3A54FF' : encre;
+      v['fg' + i] = on ? '#CBAAFF' : encre;
+      /* ce qui n'est pas a toi n'a pas de matiere — sauf le temps de l'essayer (Q128) */
+      v['op' + i] = (i < LIB || on) ? '1' : '0';
+      v['pick' + i] = (function (k, self) { return function () { self.setState({ choisi: k }); }; })(i, this);
+    }
+    return v;
+  }
+}
+</script>
+</body>
+</html>

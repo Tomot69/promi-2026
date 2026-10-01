@@ -1,0 +1,29 @@
+moteur de la Toile (l. 13596–14789, relevé, non jugé) : {}
+poses 1 : 1, à leur taille (autorisées) : 2600
+
+A·découpe        KO  690 appels, 1 lignes
+   l. 15192  ×690  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Partager · exp   {"m": "DALLE", "src": [586, 478], "coupe": [384, 277], "rendu": [384, 277], "cible": "?"}
+B·redimension    OK  aucune prise
+C·getImageData   KO  1951 appels, 3 lignes
+   l. 15154  ×523  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Partager · exp   {"m": "DALLE", "cible": "?"}
+   l. 15185  ×690  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Partager · exp   {"m": "DALLE", "cible": "?"}
+   l. 15242  ×738  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Partager · exp   {"m": "DALLE", "cible": "?"}
+C·putImageData   KO  677 appels, 2 lignes
+   l. 15180  ×523  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Partager · exp   {"m": "DALLE", "cible": "?"}
+   l. 15260  ×154  Aura · la Pelote, Fil, Index, Partager · Mon Folio, chargement, fiche chiche, fiche en cours, fiche personne,    {"m": "DALLE", "cible": "?"}
+D·fragment       OK  aucune prise
+E·motif          OK  aucune prise
+E·image          OK  aucune prise
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+  ✗ NOUVELLE  C·getImageData  l. 15154  ×523  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Part
+  ✗ NOUVELLE  C·putImageData  l. 15180  ×523  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Part
+  ✗ NOUVELLE  C·getImageData  l. 15185  ×690  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Part
+  ✗ NOUVELLE  A·découpe       l. 15192  ×690  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Part
+  ✗ NOUVELLE  C·getImageData  l. 15242  ×738  Aura · la Pelote, Fil, Index, Le Cercle, Nuée, Partager · Folio + Pelote, Partager · Mon Folio, Part
+  ✗ NOUVELLE  C·putImageData  l. 15260  ×154  Aura · la Pelote, Fil, Index, Partager · Mon Folio, chargement, fiche chiche, fiche en cours, fiche 
+
+❌  6 LIGNE(S) NOUVELLE(S) découpent, redimensionnent ou relisent une dalle — régression.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.

@@ -1,0 +1,18 @@
+[clair] 1 · Index : chaque carte lit sa nature                 OK  12 cartes · fautives : []
+[clair] 2 · Index : rien devant une dalle, libellé au doigt    OK  fautives : []
+[clair] 3 · une Nuée pleine est une petite Toile (tous ses ids) OK  1 Nuée(s) pleine(s) · appels [9, 9]
+[clair] 4 · une Nuée vide est une Nuée                         OK  [{'et': 'AUCUNE PAROLE', 'eb': 'perso', 'etat': 'nuee', 'outline': ''}]
+[clair] 5 · l'Index ne compte plus (Q347)                      KO  {'vu': True}
+[clair] 2 · Index 3 par ligne : dalle peinte, rien devant elle OK  fautives : []
+[clair] 1 · Fil : chaque ligne lit sa nature, à gauche         OK  7 lignes · fautives : []
+[clair] 2 · Fil : rien devant une dalle, libellé au doigt      OK  fautives : []
+[sombre] 1 · Index : chaque carte lit sa nature                OK  12 cartes · fautives : []
+[sombre] 2 · Index : rien devant une dalle, libellé au doigt   OK  fautives : []
+[sombre] 3 · une Nuée pleine est une petite Toile (tous ses ids) OK  1 Nuée(s) pleine(s) · appels [9, 9]
+[sombre] 4 · une Nuée vide est une Nuée                        OK  [{'et': 'AUCUNE PAROLE', 'eb': 'perso', 'etat': 'nuee', 'outline': ''}]
+[sombre] 5 · l'Index ne compte plus (Q347)                     KO  {'vu': True}
+[sombre] 2 · Index 3 par ligne : dalle peinte, rien devant elle OK  fautives : []
+[sombre] 1 · Fil : chaque ligne lit sa nature, à gauche        OK  7 lignes · fautives : []
+[sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : []
+
+14/16

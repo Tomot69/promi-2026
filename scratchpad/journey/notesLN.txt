@@ -1,0 +1,4 @@
+Promi dans famille avant: 3
+après +Planter: {'qui': 'Moi', 'selNuee': 'famille'}
+titre confirmé: réserver la salle
+après geste: famille a 4 Promi | nouveau: {'nuee': 'famille', 'who': 'tout le monde', 'status': 'encours'}

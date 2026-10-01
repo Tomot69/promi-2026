@@ -1,0 +1,1 @@
+window._liveAmp=0.07;

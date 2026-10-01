@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #14120F; }
+  a { color: #E9A93A; }
+  a:hover { color: #EDE6D7; }
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="min-height:100vh;background:#14120F;color:#EDE6D7;font-family:'IBM Plex Mono',monospace;padding:56px 40px 120px;box-sizing:border-box">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:72px">
+
+    <header style="display:flex;flex-direction:column;gap:22px">
+      <p style="margin:0;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.5">Promi · mondes, saison 2</p>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,6.4vw,96px);line-height:.95;letter-spacing:-.01em;max-width:14ch">Six matières d'atelier</h1>
+      <p style="margin:0;max-width:60ch;font-size:13px;line-height:1.8;opacity:.62;text-wrap:pretty">Chacune naît du semis de Voronoï de la Toile, et chacune emprunte un vrai geste d'atelier : le marbrier, le jardinier, le graveur, le ferronnier, l'herbier, le mosaïste. Tout est tracé en vecteurs, en aplats francs, et rien n'est encadré : c'est la matière qui dessine les dalles.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:8px">
+        <button onClick="{{ p0 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1F1A17;box-shadow:0 0 0 1px #EDE6D733"></span><span style="width:12px;height:12px;background:#D2462C"></span><span style="width:12px;height:12px;background:#E9A93A"></span><span style="width:12px;height:12px;background:#2E6A5E"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Chafouin</span>
+        </button>
+        <button onClick="{{ p1 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1C2541"></span><span style="width:12px;height:12px;background:#3A7CA5"></span><span style="width:12px;height:12px;background:#E26D5C"></span><span style="width:12px;height:12px;background:#F3C969"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Primesautier</span>
+        </button>
+        <button onClick="{{ p2 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#2B1D3A"></span><span style="width:12px;height:12px;background:#8C3F8E"></span><span style="width:12px;height:12px;background:#E0506F"></span><span style="width:12px;height:12px;background:#F2B544"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Rogue</span>
+        </button>
+        <button onClick="{{ mode }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:10px 14px;font:inherit;color:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#EDE6D7">Clair / sombre</button>
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:#EDE6D7;color:#14120F;border:none;padding:11px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Nouvelle Toile</button>
+      </div>
+    </header>
+
+    <section id="ebru" style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">01</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Ébru</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.72;text-wrap:pretty">Chaque promesse est une goutte posée sur l'eau de la cuve. Elle repousse toutes les autres, puis un peigne traverse la cuve et les étire en plumes.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.45">La dalle : la goutte et ses anneaux. Planter une promesse, c'est poser une goutte : toute la Toile se déplace pour lui faire place.</p>
+      </div>
+      <canvas data-t="ebru|24|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="ebru|6|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">6 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="ebru|18|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">18</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="ebru|42|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">42</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;background:#EFE9DE;padding:14px 16px;border-radius:14px">
+          <canvas data-d="ebru|0|104" style="display:block"></canvas><canvas data-d="ebru|1|104" style="display:block"></canvas><canvas data-d="ebru|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="ebru|0|40" style="display:block"></canvas><canvas data-d="ebru|1|40" style="display:block"></canvas><canvas data-d="ebru|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section id="capitule" style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">02</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Capitule</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.72;text-wrap:pretty">Chaque promesse pousse comme un cœur de tournesol. Ses graines se placent selon l'angle d'or, du centre jusqu'au bord de sa place, et leurs spirales se croisent.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.45">La dalle : le capitule entier, un cœur sombre et vingt et une spirales. Entre les dalles, la matière est une mousse de graines plus fines.</p>
+      </div>
+      <canvas data-t="capitule|24|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="capitule|6|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">6 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="capitule|18|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">18</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="capitule|42|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">42</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;background:#EFE9DE;padding:14px 16px;border-radius:14px">
+          <canvas data-d="capitule|0|104" style="display:block"></canvas><canvas data-d="capitule|1|104" style="display:block"></canvas><canvas data-d="capitule|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="capitule|0|40" style="display:block"></canvas><canvas data-d="capitule|1|40" style="display:block"></canvas><canvas data-d="capitule|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section id="guilloche" style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">03</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Guilloche</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.72;text-wrap:pretty">Des rosaces gravées comme sur un cadran d'horloger, qui épousent la place de chaque promesse. Deux faisceaux de traits tournent en sens contraire et se croisent en moiré.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.45">La dalle : un médaillon plein, et la Toile paraît dans chaque trait gravé.</p>
+      </div>
+      <canvas data-t="guilloche|24|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="guilloche|6|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">6 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="guilloche|18|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">18</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="guilloche|42|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">42</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;background:#EFE9DE;padding:14px 16px;border-radius:14px">
+          <canvas data-d="guilloche|0|104" style="display:block"></canvas><canvas data-d="guilloche|1|104" style="display:block"></canvas><canvas data-d="guilloche|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="guilloche|0|40" style="display:block"></canvas><canvas data-d="guilloche|1|40" style="display:block"></canvas><canvas data-d="guilloche|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section id="volute" style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">04</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Volute</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.72;text-wrap:pretty">Un ruban double s'enroule depuis le bord de chaque promesse jusqu'à son cœur, comme une ferronnerie ou l'arbre de vie de Klimt. Une volute sur deux tourne dans l'autre sens.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.45">La dalle : la spirale à deux tons. La matière s'enroule elle aussi, en un ruban simple et plus lâche.</p>
+      </div>
+      <canvas data-t="volute|24|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="volute|6|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">6 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="volute|18|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">18</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="volute|42|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">42</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;background:#EFE9DE;padding:14px 16px;border-radius:14px">
+          <canvas data-d="volute|0|104" style="display:block"></canvas><canvas data-d="volute|1|104" style="display:block"></canvas><canvas data-d="volute|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="volute|0|40" style="display:block"></canvas><canvas data-d="volute|1|40" style="display:block"></canvas><canvas data-d="volute|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section id="nervure" style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">05</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Nervure</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.72;text-wrap:pretty">Un herbier. Chaque promesse est une feuille qui prend sa place dans la Toile ; sa nervure centrale suit le grand axe de sa place, et ses nervures laissent voir la Toile.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.45">La dalle : la feuille pleine. Les nervures sont découpées, elles ne sont pas tracées.</p>
+      </div>
+      <canvas data-t="nervure|24|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="nervure|6|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">6 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="nervure|18|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">18</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="nervure|42|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">42</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;background:#EFE9DE;padding:14px 16px;border-radius:14px">
+          <canvas data-d="nervure|0|104" style="display:block"></canvas><canvas data-d="nervure|1|104" style="display:block"></canvas><canvas data-d="nervure|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="nervure|0|40" style="display:block"></canvas><canvas data-d="nervure|1|40" style="display:block"></canvas><canvas data-d="nervure|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section id="andamento" style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:300px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">06</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:56px;line-height:1">Andamento</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.72;text-wrap:pretty">La mosaïque romaine, où les tesselles suivent la forme. Rang après rang, elles épousent le contour de chaque promesse jusqu'à son cœur, posées à la main, un peu de travers.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.45">La dalle : les tesselles de la promesse, avec quelques tesselles d'un autre ton. Le joint est la Toile.</p>
+      </div>
+      <canvas data-t="andamento|24|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="andamento|6|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">6 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="andamento|18|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">18</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="andamento|42|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">42</span></div>
+        </div>
+        <div style="display:flex;gap:16px;align-items:center;background:#EFE9DE;padding:14px 16px;border-radius:14px">
+          <canvas data-d="andamento|0|104" style="display:block"></canvas><canvas data-d="andamento|1|104" style="display:block"></canvas><canvas data-d="andamento|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="andamento|0|40" style="display:block"></canvas><canvas data-d="andamento|1|40" style="display:block"></canvas><canvas data-d="andamento|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { pal: 0, sombre: false, seed: (Math.random() * 100000) | 0 };
+
+  PALS = [
+    ['#1F1A17', '#D2462C', '#E9A93A', '#2E6A5E'],
+    ['#1C2541', '#3A7CA5', '#E26D5C', '#F3C969'],
+    ['#2B1D3A', '#8C3F8E', '#E0506F', '#F2B544']
+  ];
+  W = 300; H = 650; NA = 256;
+  COS = null; SIN = null;
+
+  rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  fnv(t) { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+
+  theme() {
+    const P = this.PALS[this.state.pal];
+    return this.state.sombre
+      ? { P, bg: '#16130F', mat: ['#241F18', '#2B251D', '#1F1B15', '#322A21'] }
+      : { P, bg: '#EFE9DE', mat: ['#E2D8C5', '#DAD0BA', '#E8DFCE', '#D3C7B0'] };
+  }
+
+  /* ---------------- le semis : il grandit avec les promesses ---------------- */
+  tables() {
+    if (this.COS) return;
+    this.COS = new Float64Array(this.NA); this.SIN = new Float64Array(this.NA);
+    for (let a = 0; a < this.NA; a++) { this.COS[a] = Math.cos(a / this.NA * 2 * Math.PI); this.SIN[a] = Math.sin(a / this.NA * 2 * Math.PI); }
+  }
+
+  centroid(p) {
+    let a = 0, x = 0, y = 0;
+    for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
+      const f = p[j][0] * p[i][1] - p[i][0] * p[j][1];
+      a += f; x += (p[j][0] + p[i][0]) * f; y += (p[j][1] + p[i][1]) * f;
+    }
+    if (Math.abs(a) < 1e-9) return null;
+    return [x / (3 * a), y / (3 * a)];
+  }
+
+  clip(poly, mx, my, nx, ny) {
+    const out = [];
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const A = poly[j], B = poly[i];
+      const da = (A[0] - mx) * nx + (A[1] - my) * ny, db = (B[0] - mx) * nx + (B[1] - my) * ny;
+      if (db <= 0) { if (da > 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); } out.push(B); }
+      else if (da <= 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); }
+    }
+    return out;
+  }
+
+  cellPoly(p, pts, u) {
+    const pad = u * 0.8, W = this.W, H = this.H;
+    let poly = [[-pad, -pad], [W + pad, -pad], [W + pad, H + pad], [-pad, H + pad]];
+    for (const q of pts) {
+      if (q === p) continue;
+      const dx = q.x - p.x, dy = q.y - p.y, d2 = dx * dx + dy * dy;
+      if (d2 > 20 * u * u || d2 < 1e-9) continue;
+      let t = 0.5 + (p.w - q.w) / (2 * d2);
+      t = Math.min(0.88, Math.max(0.12, t));
+      poly = this.clip(poly, p.x + dx * t, p.y + dy * t, dx, dy);
+      if (poly.length < 3) break;
+    }
+    return poly;
+  }
+
+  cell(p, poly, u) {
+    const NA = this.NA, C = this.COS, S = this.SIN;
+    const ce = this.centroid(poly) || [p.x, p.y], cx = ce[0], cy = ce[1];
+    const Ro = new Float64Array(NA);
+    for (let a = 0; a < NA; a++) {
+      const dx = C[a], dy = S[a]; let tmin = 1e9;
+      for (let i = 0; i < poly.length; i++) {
+        const A = poly[i], B = poly[(i + 1) % poly.length], ex = B[0] - A[0], ey = B[1] - A[1];
+        const den = dx * ey - dy * ex; if (Math.abs(den) < 1e-12) continue;
+        const qx = A[0] - cx, qy = A[1] - cy;
+        const t = (qx * ey - qy * ex) / den, s = (qx * dy - qy * dx) / den;
+        if (t > 0 && s >= -1e-9 && s <= 1 + 1e-9 && t < tmin) tmin = t;
+      }
+      Ro[a] = tmin < 1e8 ? tmin : 0;
+    }
+    // coins arrondis : lissage circulaire, jamais au-delà de la cellule
+    let Rs = Float64Array.from(Ro);
+    const w = 9;
+    for (let pass = 0; pass < 3; pass++) {
+      const t = new Float64Array(NA);
+      for (let a = 0; a < NA; a++) { let s = 0; for (let k = -w; k <= w; k++) s += Rs[(a + k + NA) % NA]; t[a] = s / (2 * w + 1); }
+      Rs = t;
+    }
+    const gap = u * 0.026, R = new Float64Array(NA);
+    let Rmax = 0, Rmin = 1e9, sum = 0, area = 0, bx0 = 1e9, by0 = 1e9, bx1 = -1e9, by1 = -1e9, sxx = 0, syy = 0, sxy = 0;
+    for (let a = 0; a < NA; a++) {
+      const r = Math.max(0, Math.min(Rs[a], Ro[a]) - gap);
+      R[a] = r; Rmax = Math.max(Rmax, r); Rmin = Math.min(Rmin, r); sum += r;
+      area += 0.5 * r * r * (2 * Math.PI / NA);
+      const x = C[a] * r, y = S[a] * r;
+      bx0 = Math.min(bx0, cx + x); bx1 = Math.max(bx1, cx + x); by0 = Math.min(by0, cy + y); by1 = Math.max(by1, cy + y);
+      sxx += x * x; syy += y * y; sxy += x * y;
+    }
+    return {
+      i: p.i, h: p.h, promi: p.promi, ci: p.ci, ci2: p.ci2, ci3: p.ci3,
+      cx, cy, R, Rmax, Rmin, Rmean: sum / NA, area, bbox: [bx0, by0, bx1, by1],
+      axis: 0.5 * Math.atan2(2 * sxy, sxx - syy), rot: (p.h % 3600) / 3600 * 2 * Math.PI
+    };
+  }
+
+  semis(n) {
+    this.tables();
+    const key = n + '|' + this.state.seed;
+    this._cache = this._cache || {};
+    if (this._cache[key]) return this._cache[key];
+    const W = this.W, H = this.H, m = Math.max(3, Math.round(2 + n * 0.18)), N = n + m;
+    const R = this.rng(this.fnv('semis' + this.state.seed));
+    const pts = [];
+    // échantillonnage « meilleur candidat » : chaque nouvelle graine dépend des précédentes seulement,
+    // donc la Toile de n+1 promesses contient celle de n — elle grandit, elle ne se retire jamais
+    for (let i = 0; i < N; i++) {
+      let best = null, bd = -1;
+      for (let c = 0; c < 14; c++) {
+        const x = 10 + R() * (W - 20), y = 10 + R() * (H - 20);
+        let d = 1e18;
+        for (const p of pts) { const dx = p.x - x, dy = p.y - y, dd = dx * dx + dy * dy; if (dd < d) d = dd; }
+        if (d > bd) { bd = d; best = [x, y]; }
+      }
+      pts.push({ x: best[0], y: best[1], i, h: this.fnv('h' + this.state.seed + '|' + i) });
+    }
+    pts.slice().sort((a, b) => (a.h % 1009) - (b.h % 1009)).forEach((p, k) => { p.promi = k >= m; });
+    const u = Math.sqrt(W * H / N);
+    pts.forEach(p => { p.w = p.promi ? 0.3 * u * u : 0; });
+    // les voisines s'écartent et se reproportionnent : deux passes de Lloyd
+    for (let it = 0; it < 2; it++) {
+      const polys = pts.map(p => this.cellPoly(p, pts, u));
+      pts.forEach((p, k) => { const c = this.centroid(polys[k]); if (c) { p.x = Math.min(W - 4, Math.max(4, c[0])); p.y = Math.min(H - 4, Math.max(4, c[1])); } });
+    }
+    // tons : une promesse ne partage jamais sa couleur avec une voisine
+    pts.forEach(p => {
+      if (!p.promi) return;
+      const used = {};
+      pts.forEach(o => { if (o !== p && o.promi && o.ci !== undefined && Math.hypot(o.x - p.x, o.y - p.y) < u * 1.7) used[o.ci] = 1; });
+      const r = this.rng(p.h), cand = [0, 1, 2, 3];
+      for (let i = 3; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const t = cand[i]; cand[i] = cand[j]; cand[j] = t; }
+      p.ci = cand.find(k => !used[k]); if (p.ci === undefined) p.ci = cand[0];
+      const rest = cand.filter(k => k !== p.ci);
+      p.ci2 = rest[0]; p.ci3 = rest[1];
+    });
+    const cells = pts.map(p => this.cell(p, this.cellPoly(p, pts, u), u));
+    return (this._cache[key] = { n, u, cells });
+  }
+
+  Rat(c, th) {
+    const NA = this.NA;
+    let f = (th / (2 * Math.PI)) % 1; if (f < 0) f += 1;
+    f *= NA; const i0 = Math.floor(f), t = f - i0;
+    return c.R[i0 % NA] * (1 - t) + c.R[(i0 + 1) % NA] * t;
+  }
+
+  cut(ctx, path, stroke, lw) {
+    const g = ctx.g;
+    if (ctx.iso) { g.globalCompositeOperation = 'destination-out'; g.fillStyle = g.strokeStyle = '#000'; }
+    else { g.fillStyle = g.strokeStyle = ctx.T.bg; }
+    if (stroke) { g.lineWidth = lw; g.stroke(path); } else g.fill(path);
+    g.globalCompositeOperation = 'source-over';
+  }
+
+  cols(ctx, c) {
+    const T = ctx.T;
+    return c.promi ? [T.P[c.ci], T.P[c.ci2], T.P[c.ci3]] : [T.mat[c.h % 4], T.mat[(c.h + 1) % 4], T.mat[(c.h + 2) % 4]];
+  }
+
+  /* ---------------- 01 · ÉBRU — la goutte sur la cuve ---------------- */
+  ebruBuild(S) {
+    if (S.eb) return S.eb;
+    const u = S.u, drops = [];
+    const push = (cx, cy, r) => {
+      const r2 = r * r;
+      for (const d of drops) {
+        const p = d.p;
+        for (let i = 0; i < p.length; i += 2) {
+          const dx = p[i] - cx, dy = p[i + 1] - cy, dd = dx * dx + dy * dy;
+          const f = Math.sqrt(1 + r2 / (dd || 1e-9));
+          p[i] = cx + dx * f; p[i + 1] = cy + dy * f;
+        }
+      }
+    };
+    const circle = (cx, cy, r) => {
+      const n = Math.max(48, Math.ceil(2 * Math.PI * r / 1.3)), p = new Float64Array(2 * n);
+      for (let i = 0; i < n; i++) { const a = i / n * 2 * Math.PI; p[2 * i] = cx + Math.cos(a) * r; p[2 * i + 1] = cy + Math.sin(a) * r; }
+      return p;
+    };
+    const subdiv = (p, L) => {
+      const n = p.length / 2, out = [];
+      for (let i = 0; i < n; i++) {
+        const ax = p[2 * i], ay = p[2 * i + 1], j = (i + 1) % n, bx = p[2 * j], by = p[2 * j + 1];
+        out.push(ax, ay);
+        const k = Math.ceil(Math.hypot(bx - ax, by - ay) / L) - 1;
+        for (let q = 1; q <= k; q++) out.push(ax + (bx - ax) * q / (k + 1), ay + (by - ay) * q / (k + 1));
+      }
+      return Float64Array.from(out);
+    };
+    const order = S.cells.slice().sort((a, b) => a.i - b.i);
+    let cnt = 0;
+    for (const c of order) {
+      const A = c.area * (c.promi ? 0.64 : 0.46), fr = c.promi ? [0.36, 0.26, 0.21, 0.17] : [0.6, 0.4];
+      fr.forEach((f, k) => {
+        const r = Math.sqrt(f * A / Math.PI);
+        push(c.cx, c.cy, r);
+        drops.push({ p: circle(c.cx, c.cy, r), c, k });
+        if (++cnt % 5 === 0) drops.forEach(d => { d.p = subdiv(d.p, 2.4); });
+      });
+    }
+    drops.forEach(d => { d.p = subdiv(d.p, 0.9); });
+    // le peigne : des dents parallèles tirées en sens alternés à travers toute la cuve
+    const R = this.rng(this.fnv('peigne' + this.state.seed)), psi = R() * Math.PI;
+    const Mx = Math.cos(psi), My = Math.sin(psi), Nx = -My, Ny = Mx, sp = u * 1.45, z = u * 0.36, lam = u * 0.11, off = R();
+    for (const d of drops) {
+      const p = d.p;
+      for (let i = 0; i < p.length; i += 2) {
+        const pr = p[i] * Nx + p[i + 1] * Ny, j0 = Math.round(pr / sp - off);
+        let disp = 0;
+        for (let j = j0 - 1; j <= j0 + 1; j++) disp += z * Math.exp(-Math.abs(pr - (j + off) * sp) / lam) * ((j & 1) ? 1 : -1);
+        p[i] += Mx * disp; p[i + 1] += My * disp;
+      }
+    }
+    return (S.eb = drops);
+  }
+
+  ebruCol(ctx, d) {
+    const [a, b, c] = this.cols(ctx, d.c);
+    return d.c.promi ? [a, b, a, c][d.k] : [a, b][d.k];
+  }
+
+  polyPath(p) {
+    const P = new Path2D(); P.moveTo(p[0], p[1]);
+    for (let i = 2; i < p.length; i += 2) P.lineTo(p[i], p[i + 1]);
+    P.closePath(); return P;
+  }
+
+  ebru(ctx, S, only) {
+    const g = ctx.g;
+    for (const d of this.ebruBuild(S)) {
+      if (only && d.c !== only) continue;
+      g.fillStyle = this.ebruCol(ctx, d); g.fill(this.polyPath(d.p));
+    }
+  }
+
+  /* ---------------- 02 · CAPITULE — l'angle d'or ---------------- */
+  capitule(ctx, c) {
+    const g = ctx.g, u = ctx.u, P = c.promi, [col, col2] = this.cols(ctx, c);
+    const cs = P ? u * 0.046 : u * 0.033, GA = 2.399963229728653;
+    const n = Math.ceil((c.Rmax / cs) ** 2) + 2;
+    const pA = new Path2D(), pB = new Path2D();
+    for (let i = 0; i < n; i++) {
+      const r = cs * Math.sqrt(i + 0.6), th = i * GA + c.rot, Rb = this.Rat(c, th);
+      if (r >= Rb) continue;
+      const t = r / Rb;
+      let rd = cs * (P ? 0.4 + 0.3 * t : 0.42);
+      if (r + rd > Rb) { rd = Rb - r; if (rd < cs * 0.28) continue; }
+      const x = c.cx + Math.cos(th) * r, y = c.cy + Math.sin(th) * r;
+      const tg = P && (t < 0.2 || (i % 21) % 3 === 0) ? pB : pA;
+      tg.moveTo(x + rd, y); tg.arc(x, y, rd, 0, 2 * Math.PI);
+    }
+    g.fillStyle = col; g.fill(pA);
+    g.fillStyle = col2; g.fill(pB);
+  }
+
+  /* ---------------- 03 · GUILLOCHE — le tour à guillocher ---------------- */
+  guilloche(ctx, c) {
+    const g = ctx.g, u = ctx.u, NA = this.NA, P = c.promi, [col, col2] = this.cols(ctx, c);
+    const body = new Path2D();
+    for (let a = 0; a < NA; a++) { const x = c.cx + this.COS[a] * c.R[a], y = c.cy + this.SIN[a] * c.R[a]; a ? body.lineTo(x, y) : body.moveTo(x, y); }
+    body.closePath();
+    g.fillStyle = col; g.fill(body);
+    const K = P ? 24 : 6, N = 5 + (c.h % 6), A = new Path2D(), B = new Path2D();
+    for (let k = 0; k < K; k++) {
+      const rho = 0.1 + 0.84 * k / (K - 1), amp = 0.055 * (0.45 + 0.55 * rho);
+      for (const fam of P ? [0, 1] : [0]) {
+        const ph = fam ? -k * 0.38 + 1.3 : k * 0.38, T = fam ? B : A;
+        for (let a = 0; a <= NA; a++) {
+          const aa = a % NA, th = aa / NA * 2 * Math.PI;
+          const r = c.R[aa] * Math.min(0.97, rho + amp * Math.sin(N * th + ph));
+          const x = c.cx + this.COS[aa] * r, y = c.cy + this.SIN[aa] * r;
+          a ? T.lineTo(x, y) : T.moveTo(x, y);
+        }
+      }
+    }
+    this.cut(ctx, A, true, u * (P ? 0.011 : 0.013));
+    if (P) { g.strokeStyle = col2; g.lineWidth = u * 0.0085; g.stroke(B); }
+  }
+
+  /* ---------------- 04 · VOLUTE — le ruban enroulé ---------------- */
+  volute(ctx, c) {
+    const g = ctx.g, P = c.promi, [col, col2] = this.cols(ctx, c);
+    const T = P ? 3.3 : 1.7, w = P ? 0.4 : 0.52, dir = (c.h & 1) ? 1 : -1, th0 = c.rot;
+    const ribbon = (off, colr) => {
+      const steps = Math.ceil(T * 220), o = [], inr = [];
+      for (let s = 0; s <= steps; s++) {
+        const tau = s / steps * (T - off), tt = tau + off, th = th0 + dir * 2 * Math.PI * tt, Rb = this.Rat(c, th);
+        const so = 1 - tt / T; if (so <= 0) break;
+        let si = 1 - (tt + w) / T;
+        si = so - (so - si) * Math.min(1, tau / 0.3);
+        si = Math.max(0, si);
+        const cs = Math.cos(th), sn = Math.sin(th);
+        o.push([c.cx + cs * Rb * so, c.cy + sn * Rb * so]); inr.push([c.cx + cs * Rb * si, c.cy + sn * Rb * si]);
+      }
+      const p = new Path2D(); p.moveTo(o[0][0], o[0][1]);
+      for (let i = 1; i < o.length; i++) p.lineTo(o[i][0], o[i][1]);
+      for (let i = inr.length - 1; i >= 0; i--) p.lineTo(inr[i][0], inr[i][1]);
+      p.closePath(); g.fillStyle = colr; g.fill(p);
+    };
+    ribbon(0, col);
+    if (P) ribbon(0.5, col2);
+  }
+
+  /* ---------------- 05 · NERVURE — l'herbier ---------------- */
+  taper(path, P0, P1, P2, w0, w1) {
+    const n = 22, L = [], R = [];
+    for (let i = 0; i <= n; i++) {
+      const t = i / n, a = (1 - t) * (1 - t), b = 2 * (1 - t) * t, d = t * t;
+      const x = a * P0[0] + b * P1[0] + d * P2[0], y = a * P0[1] + b * P1[1] + d * P2[1];
+      let tx = 2 * (1 - t) * (P1[0] - P0[0]) + 2 * t * (P2[0] - P1[0]), ty = 2 * (1 - t) * (P1[1] - P0[1]) + 2 * t * (P2[1] - P1[1]);
+      const l = Math.hypot(tx, ty) || 1; tx /= l; ty /= l;
+      const w = (w0 + (w1 - w0) * Math.pow(t, 0.8)) / 2;
+      L.push([x - ty * w, y + tx * w]); R.push([x + ty * w, y - tx * w]);
+    }
+    path.moveTo(L[0][0], L[0][1]);
+    for (let i = 1; i < L.length; i++) path.lineTo(L[i][0], L[i][1]);
+    for (let i = R.length - 1; i >= 0; i--) path.lineTo(R[i][0], R[i][1]);
+    path.closePath();
+  }
+
+  nervure(ctx, c) {
+    const g = ctx.g, u = ctx.u, NA = this.NA, P = c.promi, [col] = this.cols(ctx, c);
+    const phi = c.axis, L = th => this.Rat(c, th) * (0.84 + 0.16 * Math.cos(th - phi) ** 2);
+    const leaf = new Path2D();
+    for (let a = 0; a < NA; a++) { const th = a / NA * 2 * Math.PI, r = L(th); const x = c.cx + Math.cos(th) * r, y = c.cy + Math.sin(th) * r; a ? leaf.lineTo(x, y) : leaf.moveTo(x, y); }
+    leaf.closePath();
+    g.fillStyle = col; g.fill(leaf);
+    const ax = Math.cos(phi), ay = Math.sin(phi), nx = -ay, ny = ax, side0 = (c.h & 2) ? 1 : -1;
+    const LA = L(phi) * 0.9, LB = L(phi + Math.PI) * 0.86;
+    const A = [c.cx + ax * LA, c.cy + ay * LA], B = [c.cx - ax * LB, c.cy - ay * LB];
+    const wm = u * (P ? 0.05 : 0.036), veins = new Path2D();
+    const bend = u * 0.05 * side0;
+    const mid = t => { const a = (1 - t) * (1 - t), b = 2 * (1 - t) * t, d = t * t, cx2 = (A[0] + B[0]) / 2 + nx * bend, cy2 = (A[1] + B[1]) / 2 + ny * bend; return [a * B[0] + b * cx2 + d * A[0], a * B[1] + b * cy2 + d * A[1]]; };
+    this.taper(veins, B, [(A[0] + B[0]) / 2 + nx * bend, (A[1] + B[1]) / 2 + ny * bend], A, wm, wm * 0.06);
+    const inside = (x, y) => { const dx = x - c.cx, dy = y - c.cy; return Math.hypot(dx, dy) < L(Math.atan2(dy, dx)) * 0.9; };
+    const nV = P ? 6 : 4;
+    for (let j = 0; j < nV; j++) {
+      const t = 0.14 + 0.72 * j / (nV - 1), M = mid(t);
+      for (const side of [-1, 1]) {
+        let dx = ax * 0.6 + nx * side * 0.8, dy = ay * 0.6 + ny * side * 0.8; const l = Math.hypot(dx, dy); dx /= l; dy /= l;
+        let lo = 0, hi = c.Rmax * 2;
+        for (let k = 0; k < 16; k++) { const md = (lo + hi) / 2; if (inside(M[0] + dx * md, M[1] + dy * md)) lo = md; else hi = md; }
+        if (lo < u * 0.05) continue;
+        const E = [M[0] + dx * lo, M[1] + dy * lo], C1 = [M[0] + dx * lo * 0.42 + ax * lo * 0.24, M[1] + dy * lo * 0.42 + ay * lo * 0.24];
+        this.taper(veins, M, C1, E, wm * 0.56 * (1 - 0.4 * t), wm * 0.04);
+      }
+    }
+    this.cut(ctx, veins, false);
+  }
+
+  /* ---------------- 06 · ANDAMENTO — la mosaïque qui suit la forme ---------------- */
+  andamento(ctx, c) {
+    // rangs en rayon RELATIF ρ = r / R(θ) : chaque rang fait le tour entier de la dalle, du bord au cœur,
+    // sa largeur suit la forme (plus large dans le grand axe) ; le dernier se referme en une tesselle centrale
+    const g = ctx.g, u = ctx.u, NA = this.NA, P = c.promi, [colA, colB] = this.cols(ctx, c);
+    const s = u * (P ? 0.07 : 0.086), gg = u * 0.012, rnd = this.rng(c.h ^ 0x51ed27);
+    const K = Math.max(2, Math.round(c.Rmean / (s + gg)));
+    const pA = new Path2D(), pB = new Path2D();
+    const Rf = f2 => { const i0 = Math.floor(f2), t = f2 - i0, a0 = ((i0 % NA) + NA) % NA; return c.R[a0] * (1 - t) + c.R[(a0 + 1) % NA] * t; };
+    const pt = (f2, rho, dd) => { const r = Math.max(0, Rf(f2) * rho - dd), th = f2 / NA * 2 * Math.PI; return [c.cx + Math.cos(th) * r, c.cy + Math.sin(th) * r]; };
+    for (let j = 0; j < K; j++) {
+      const ro = 1 - j / K, ri = 1 - (j + 1) / K;
+      const T0 = () => (rnd() < (P ? 0.13 : 0.22) ? pB : pA);
+      if (j === K - 1) {
+        // la tesselle centrale
+        const T = T0();
+        for (let q = 0; q < 24; q++) { const p = pt(q * NA / 24, ro, gg * 0.5); q ? T.lineTo(p[0], p[1]) : T.moveTo(p[0], p[1]); }
+        T.closePath(); break;
+      }
+      // longueur du rang au milieu de sa largeur → nombre de tesselles
+      const rm = (ro + ri) / 2, cum = new Float64Array(NA + 1);
+      let prev = pt(0, rm, 0);
+      for (let q = 1; q <= NA; q++) { const p = pt(q, rm, 0); cum[q] = cum[q - 1] + Math.hypot(p[0] - prev[0], p[1] - prev[1]); prev = p; }
+      const per = cum[NA], m = Math.max(3, Math.round(per / (s * 1.1)));
+      const at = len => { let lo = 0, hi = NA; while (hi - lo > 1) { const md = (lo + hi) >> 1; if (cum[md] <= len) lo = md; else hi = md; } return lo + (len - cum[lo]) / Math.max(1e-9, cum[lo + 1] - cum[lo]); };
+      const off = rnd() * per / m;
+      for (let q = 0; q < m; q++) {
+        const la = off + q * per / m, lb = off + (q + 1) * per / m;
+        const fa = at(la % per) + (la >= per ? NA : 0), fb0 = at(lb % per) + (lb >= per ? NA : 0), fb = fb0 < fa ? fb0 + NA : fb0, fm = (fa + fb) / 2;
+        // joint : on retire gg/2 en longueur de chaque côté, et gg/2 en largeur
+        const rMid = Rf(fm) * rm || 1, dA = (gg * 0.5) / rMid * NA / (2 * Math.PI);
+        const a1 = fa + dA, a2 = fb - dA; if (a2 <= a1) continue;
+        const jit = () => (rnd() - 0.5) * s * 0.1;
+        const o1 = pt(a1, ro, gg * 0.5), o2 = pt((a1 + a2) / 2, ro, gg * 0.5), o3 = pt(a2, ro, gg * 0.5);
+        const i3 = pt(a2, ri, -gg * 0.5), i2 = pt((a1 + a2) / 2, ri, -gg * 0.5), i1 = pt(a1, ri, -gg * 0.5);
+        const T = T0();
+        T.moveTo(o1[0] + jit(), o1[1] + jit()); T.lineTo(o2[0], o2[1]); T.lineTo(o3[0] + jit(), o3[1] + jit());
+        T.lineTo(i3[0] + jit(), i3[1] + jit()); T.lineTo(i2[0], i2[1]); T.lineTo(i1[0] + jit(), i1[1] + jit()); T.closePath();
+      }
+    }
+    g.fillStyle = colA; g.fill(pA);
+    g.fillStyle = colB; g.fill(pB);
+  }
+
+  /* ---------------- rendu ---------------- */
+  toile(cv, world, n, disp) {
+    const S = this.semis(n), W = this.W, H = this.H, D = 2, k = disp / W;
+    cv.style.width = disp + 'px'; cv.style.height = Math.round(H * k) + 'px';
+    cv.width = Math.round(disp * D); cv.height = Math.round(H * k * D);
+    const g = cv.getContext('2d'), T = this.theme();
+    g.setTransform(D * k, 0, 0, D * k, 0, 0);
+    g.fillStyle = T.bg; g.fillRect(0, 0, W, H);
+    const ctx = { g, u: S.u, T, iso: false };
+    if (world === 'ebru') this.ebru(ctx, S); else for (const c of S.cells) this[world](ctx, c);
+  }
+
+  choix(S, rang) {
+    const W = this.W, H = this.H;
+    const cand = S.cells.filter(c => c.promi && c.cx > W * 0.15 && c.cx < W * 0.85 && c.cy > H * 0.1 && c.cy < H * 0.9)
+      .sort((a, b) => b.area - a.area).slice(0, 6).sort((a, b) => a.i - b.i);
+    return cand[rang % cand.length];
+  }
+
+  dalle(cv, world, rang, size) {
+    const S = this.semis(24), c = this.choix(S, rang), D = 2, T = this.theme();
+    cv.style.width = size + 'px'; cv.style.height = size + 'px';
+    cv.width = size * D; cv.height = size * D;
+    const g = cv.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
+    if (!c) return;
+    let bb = c.bbox;
+    if (world === 'ebru') {
+      const d0 = this.ebruBuild(S).find(d => d.c === c && d.k === 0);
+      let a = 1e9, b = 1e9, e = -1e9, f = -1e9;
+      for (let i = 0; i < d0.p.length; i += 2) { a = Math.min(a, d0.p[i]); e = Math.max(e, d0.p[i]); b = Math.min(b, d0.p[i + 1]); f = Math.max(f, d0.p[i + 1]); }
+      bb = [a, b, e, f];
+    }
+    const sc = size * 0.94 / Math.max(bb[2] - bb[0], bb[3] - bb[1]), mx = (bb[0] + bb[2]) / 2, my = (bb[1] + bb[3]) / 2;
+    g.setTransform(D * sc, 0, 0, D * sc, D * (size / 2 - mx * sc), D * (size / 2 - my * sc));
+    const ctx = { g, u: S.u, T, iso: true };
+    if (world === 'ebru') this.ebru(ctx, S, c); else this[world](ctx, c);
+  }
+
+  lance() {
+    const root = this.root; if (!root) return;
+    const id = (this._job = (this._job || 0) + 1), jobs = [];
+    root.querySelectorAll('canvas[data-t]').forEach(cv => jobs.push(() => { const [w, n, d] = cv.dataset.t.split('|'); this.toile(cv, w, +n, +d); }));
+    root.querySelectorAll('canvas[data-d]').forEach(cv => jobs.push(() => { const [w, r, s] = cv.dataset.d.split('|'); this.dalle(cv, w, +r, +s); }));
+    const next = () => {
+      if (this._job !== id) return;
+      const j = jobs.shift(); if (!j) return;
+      try { j(); } catch (e) { console.error(e); }
+      setTimeout(next, 0);
+    };
+    setTimeout(next, 30);
+  }
+
+  // les dalles seules sont posées sur le fond de la Toile (clair ou sombre), jamais sur la page
+  syncFond() {
+    const root = this.root; if (!root) return null;
+    const bg = this.theme().bg;
+    root.querySelectorAll('canvas[data-d]').forEach(cv => { const p = cv.parentElement; const box = p.dataset && p.style.padding ? p : p.parentElement; if (box) box.style.background = bg; });
+    return null;
+  }
+
+  componentDidMount() { this.syncFond(); this.lance(); }
+  componentDidUpdate(pp, ps) {
+    if (ps.pal !== this.state.pal || ps.sombre !== this.state.sombre || ps.seed !== this.state.seed) { this.syncFond(); this.lance(); }
+  }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      p0: () => this.setState({ pal: 0 }),
+      p1: () => this.setState({ pal: 1 }),
+      p2: () => this.setState({ pal: 2 }),
+      mode: () => this.setState(s => ({ sombre: !s.sombre })),
+      reroll: () => this.setState({ seed: (Math.random() * 100000) | 0 }),
+      _fond: this.syncFond()
+    };
+  }
+}
+</script>
+</body>
+</html>

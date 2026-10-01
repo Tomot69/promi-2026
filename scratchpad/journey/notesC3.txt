@@ -1,0 +1,3 @@
+[light] Nuée créée, Promi dedans: 1
+[light] après lancer Promi depuis Nuée: 1 Promi, le nouveau a nuee=? (attendu n1786756377262)
+[dark] Nuée créée, Promi dedans: 1

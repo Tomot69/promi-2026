@@ -1,0 +1,17 @@
+dark gratuit fiche_promi {'encart': {'x': 24, 'y': 336, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+dark gratuit fiche_chiche {'encart': {'x': 24, 'y': 336, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+dark gratuit page + 4 réglages {'encart': {'x': 24, 'y': 422, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+dark gratuit gardé de côté 4 réglages {'encart': {'x': 24, 'y': 422, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+dark abonne fiche_promi {'encart': {'x': -20, 'y': -44, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+dark abonne fiche_chiche {'encart': {'x': -20, 'y': -44, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+dark abonne page + 4 réglages {'encart': {'x': -20, 'y': 0, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+dark abonne gardé de côté 4 réglages {'encart': {'x': -20, 'y': 0, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+light gratuit fiche_promi {'encart': {'x': 24, 'y': 336, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+light gratuit fiche_chiche {'encart': {'x': 24, 'y': 336, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+light gratuit page + 4 réglages {'encart': {'x': 24, 'y': 422, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+light gratuit gardé de côté 4 réglages {'encart': {'x': 24, 'y': 422, 'w': 342, 'h': 90, 'vis': True}, 'flous': ['blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)', 'blur(2.4px)'], 'touchable': ['none', 'none', 'none', 'none']}
+light abonne fiche_promi {'encart': {'x': -20, 'y': -44, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+light abonne fiche_chiche {'encart': {'x': -20, 'y': -44, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+light abonne page + 4 réglages {'encart': {'x': -20, 'y': 0, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+light abonne gardé de côté 4 réglages {'encart': {'x': -20, 'y': 0, 'w': 0, 'h': 0, 'vis': False}, 'flous': ['none', 'none', 'none', 'none'], 'touchable': ['auto', 'auto', 'auto', 'auto']}
+écrit /Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/sauvegardes/audit-cercle/planche2

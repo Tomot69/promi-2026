@@ -1,0 +1,423 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Promi — dix orbites</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0C0D10;color:#F4EEE1;font-family:Apfel,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.page{max-width:1180px;margin:0 auto;padding:54px 24px 120px}
+h1{font-family:Bricolage;font-weight:700;font-size:34px;letter-spacing:-.02em;margin:0 0 10px}
+.chapo{font-size:15px;line-height:1.6;color:#8B8778;max-width:640px;margin:0 0 54px}
+.grille{display:block}
+figure.bande{margin:0 0 38px}
+.vues{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:900px}
+.vue{background:#16171B;border-radius:16px;overflow:hidden;position:relative;aspect-ratio:1/1}
+.vue canvas{position:absolute;left:0;top:0;width:100%;height:100%}
+figure{margin:0}
+.cadre{background:#16171B;border-radius:26px;overflow:hidden;position:relative;
+  width:100%;aspect-ratio:1/1}
+.cadre canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+figcaption{margin:16px 2px 0;font-size:14.5px;line-height:1.5;color:#C8C3B6}
+figcaption b{font-family:Bricolage;font-weight:700;color:#F4EEE1;display:block;
+  font-size:16px;margin-bottom:3px;letter-spacing:-.01em}
+figcaption i{font-style:normal;color:#6E6A5E}
+</style></head><body>
+<canvas id="toileCv" style="position:fixed;left:0;top:0;width:390px;height:620px;opacity:.01;pointer-events:none;z-index:-1"></canvas>
+<div class="page">
+<h1>Les cinq retenues, inscrites dans le cercle</h1>
+<p class="chapo">Mes reliefs <b>gonflaient</b> autant qu’ils creusaient — d’où un contour qui
+partait dans tous les sens. Ici le relief ne fait que <b>creuser</b> : le rayon vaut 1 au repos et
+descend, il ne monte jamais. La silhouette est donc <b>le cercle</b>, mordu par des creux doux.
+Le filet crème rappelle cette borne sur chaque vue. Quatre vues d’un tour chacune.</p>
+<div class="grille" id="g"></div>
+</div>
+<script>
+var CREME='#F4EEE1', ENCRE='#16171B';
+function cc(){return [200,180,255];}
+function render(){}
+var state={structure:'encre'};
+</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+/* ════════════════════════════════════════════════════════════════════════════
+   LE MOTEUR DES PLANCHES — le même que la version animée :
+   des tampons pré-rendus, versés dans un tampon de pixels, un putImageData.
+   Rien n'est dessiné avec drawImage : mesuré hors budget d'un facteur trois.
+   Tout ce qui suit est donc TENABLE à 60 images par seconde.
+   ════════════════════════════════════════════════════════════════════════════ */
+var D=2;                         /* pixels d'appareil par pixel CSS */
+
+/* ── L'ATLAS : un grain, N teintes, 3 tailles, 8 niveaux de profondeur ────── */
+function atlasRond(teintes, tailles, NIV, a0, a1){
+  var cv=document.createElement('canvas'); cv.width=40; cv.height=40;
+  var g=cv.getContext('2d'), A=[];
+  for(var t=0;t<teintes.length;t++){
+    var rgb=teintes[t];
+    for(var s=0;s<tailles.length;s++){
+      var ep=tailles[s];
+      g.clearRect(0,0,40,40);
+      g.fillStyle='#fff'; g.beginPath(); g.arc(20,20,ep/2,0,6.2832); g.fill();
+      var d=g.getImageData(0,0,40,40).data;
+      var x1=40,y1=40,x2=-1,y2=-1;
+      for(var y=0;y<40;y++)for(var x=0;x<40;x++) if(d[(y*40+x)*4+3]>3){
+        if(x<x1)x1=x; if(x>x2)x2=x; if(y<y1)y1=y; if(y>y2)y2=y; }
+      if(x2<0){x1=y1=20;x2=y2=20;}
+      var w=x2-x1+1, h=y2-y1+1, ox=20-x1, oy=20-y1;
+      for(var n=0;n<NIV;n++){
+        var q=(n+0.5)/NIV, mul=a0+(a1-a0)*q*q;
+        A.push(fabTampon(d,40,x1,y1,w,h,ox,oy,mul,rgb));
+      }
+    }
+  }
+  return A;
+}
+function fabTampon(dat,src,x1,y1,w,h,ox,oy,mul,rgb){
+  var Wd=0; /* rempli plus tard par lieTampons */
+  var offs=[], vals=[];
+  for(var y=0;y<h;y++)for(var x=0;x<w;x++){
+    var al=(dat[((y1+y)*src+(x1+x))*4+3]*mul)|0;
+    if(al>3){ offs.push([y-oy,x-ox]); vals.push(al); }
+  }
+  return {rel:offs, al:vals, rgb:rgb};
+}
+/* on lie les tampons à la largeur du tampon de destination */
+function lieTampons(A,W){
+  for(var i=0;i<A.length;i++){
+    var t=A[i]; if(t.off && t.W===W) continue;
+    var n=t.rel.length, off=new Int32Array(n), val=new Uint32Array(n);
+    for(var j=0;j<n;j++){
+      off[j]=t.rel[j][0]*W+t.rel[j][1];
+      val[j]=(((t.al[j]&255)<<24)|((t.rgb[2]&255)<<16)|((t.rgb[1]&255)<<8)|(t.rgb[0]&255))>>>0;
+    }
+    t.off=off; t.val=val; t.n=n; t.W=W;
+  }
+  return A;
+}
+/* ── LA TEINTE : une rampe FRANCHE, jamais un dégradé ─────────────────────── */
+function rampe(cles, n){
+  /* cles = [[r,g,b], ...] ; on rend n teintes réparties, chacune un APLAT.
+     ⚠ n=1 ou une seule clé : i/(n-1) vaut 0/0. On sort avant. */
+  if(n<=1 || cles.length===1) return [cles[0].slice()];
+  var out=[];
+  for(var i=0;i<n;i++){
+    var t=i/(n-1)*(cles.length-1), k=Math.min(cles.length-2,t|0), f=t-k;
+    out.push([Math.round(cles[k][0]+(cles[k+1][0]-cles[k][0])*f),
+              Math.round(cles[k][1]+(cles[k+1][1]-cles[k][1])*f),
+              Math.round(cles[k][2]+(cles[k+1][2]-cles[k][2])*f)]);
+  }
+  return out;
+}
+var CL_CREME=[[244,238,225]];
+var CL_ESSENCE=[[58,84,255],[138,92,240],[143,160,255],[43,232,140],[58,84,255]];
+var CL_NUIT   =[[58,84,255],[138,92,240],[244,238,225]];
+
+/* ── LE RELIEF : le rayon n'est plus constant ─────────────────────────────── */
+function relief(x,y,z,R){
+  var s=0;
+  for(var i=0;i<R.length;i++){
+    var h=R[i];
+    s+=h[0]*Math.sin(h[1]*x+h[4])*Math.sin(h[2]*y+h[5])*Math.cos(h[3]*z+h[6]);
+  }
+  return 1+s;
+}
+/* ── LA SEMENCE : où sont les points ──────────────────────────────────────── */
+function semis(mode,N,par){
+  var P=[], i, fr=function(v){return v-Math.floor(v);};
+  if(mode==='fibo'){
+    for(i=0;i<N;i++){
+      var y=1-2*(i+0.5)/N, rr=Math.sqrt(Math.max(0,1-y*y)), ph=i*2.399963229728653;
+      P.push([Math.cos(ph)*rr, y, Math.sin(ph)*rr]);
+    }
+  } else if(mode==='fils'){
+    var F=par.fils||30, M=Math.round(N/F), T=par.tours||[9,11,8,12,10,7,13];
+    for(var k=0;k<F;k++){
+      var d1=(par.dev||0.34)*(2*fr(k*0.618033988)-1), d2=fr(k*0.754877666)*6.2832;
+      var ax=Math.sin(d1)*Math.cos(d2), ay=Math.cos(d1), az=Math.sin(d1)*Math.sin(d2);
+      var p1x=-az, p1z=ax, pn=Math.hypot(p1x,p1z)||1; p1x/=pn; p1z/=pn;
+      var p2x=ay*p1z, p2y=az*p1x-ax*p1z, p2z=-ay*p1x;
+      var Nn=T[k%T.length], ph2=fr(k*0.414213562)*6.2832;
+      for(i=0;i<M;i++){
+        var s=i/M, yy=1-2*s, r2=Math.sqrt(Math.max(0,1-yy*yy));
+        var th=s*Nn*6.2832+ph2, c=Math.cos(th)*r2, s3=Math.sin(th)*r2;
+        P.push([ax*yy+p1x*c+p2x*s3, ay*yy+p1z*0+p2y*s3, az*yy+p1z*c+p2z*s3]);
+      }
+    }
+  } else if(mode==='latitudes'){
+    var L=par.lignes||46;
+    for(var l=0;l<L;l++){
+      var yy2=-1+2*(l+0.5)/L, r3=Math.sqrt(Math.max(0,1-yy2*yy2));
+      var nb=Math.max(6,Math.round(N/L*r3*1.5));
+      for(i=0;i<nb;i++){
+        var a=i/nb*6.2832+l*0.7;
+        P.push([Math.cos(a)*r3, yy2, Math.sin(a)*r3]);
+      }
+    }
+  } else if(mode==='volume'){
+    for(i=0;i<N;i++){
+      var y3=1-2*(i+0.5)/N, r4=Math.sqrt(Math.max(0,1-y3*y3)), p3=i*2.399963229728653;
+      /* ⚠ LA PROFONDEUR NE DOIT PAS SUIVRE L'INDICE. Corrélée à la spirale de
+         Fibonacci, elle dessinait une ÉTOILE de rayons au centre — un artefact, pas
+         une matière. Deux irrationnels différents, et l'étoile disparaît. */
+      var prof=0.55+0.45*fr(i*0.7548776662+fr(i*0.2360679775)*0.5);
+      var tw=fr(i*0.3819660113)*6.2832;           /* et on tord l'azimut */
+      var ca=Math.cos(p3+tw*0.18), sa=Math.sin(p3+tw*0.18);
+      P.push([ca*r4*prof, y3*prof, sa*r4*prof]);
+    }
+  }
+  return P;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   LA FORME D'ABORD. La silhouette se COMPOSE — elle ne se subit pas.
+   Trois familles, toutes à symétrie assumée :
+     · LA RÉVOLUTION   un profil dessiné, tourné autour d'un axe. La silhouette EST
+                       la courbe. Rien ne peut être bancal.
+     · LE LOBE         une harmonique PURE d'ordre n : n bosses régulières.
+     · LA DALLE        le contour d'une vraie dalle du moteur, donné en volume.
+   Aucune somme d'ondes tirée au hasard : c'était ça, l'ovale irrégulier.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* ── LE PROFIL DE RÉVOLUTION : r en fonction de la latitude seule ─────────── */
+function profGalet(y){ var t=Math.abs(y); return Math.pow(1-Math.pow(t,2.6),0.42); }
+function profLentille(y){ var t=Math.abs(y); return Math.pow(1-t*t,0.30); }
+function profGoutte(y){ var s=(y+1)/2; return Math.pow(1-s,0.62)*Math.pow(s,0.30)*2.05; }
+function profTore(y){ var t=Math.abs(y)*1.35; if(t>1)return 0; return 0.60+0.40*Math.sqrt(1-t*t); }
+/* ⚑ L'ONDE DE PROMI, DONNÉE EN VOLUME.
+   C'est la courbe du geste — deux bosses, jamais un segment — tournée autour de son
+   axe. La silhouette de l'Aura devient littéralement le trait qu'on trace pour tenir
+   sa parole. Ça n'appartient qu'à ce produit. */
+function profOnde(y){
+  var t=(y+1)/2;                       /* 0 → 1 le long de l'axe */
+  var env=Math.sin(Math.PI*t);         /* elle se ferme aux deux bouts, comme le trait */
+  return 0.30+0.70*env*(0.72+0.28*Math.sin(t*1.5*6.2832));
+}
+
+/* ── LE CONTOUR D'UNE VRAIE DALLE, relevé au pixel ────────────────────────── */
+function contourDalle(pid, N){
+  var S=128, cv=document.createElement('canvas'); cv.width=S; cv.height=S;
+  try{ window.Toile && Toile.dalleTrame(cv, pid, 1); }catch(e){}
+  var d=cv.getContext('2d').getImageData(0,0,S,S).data, R=new Float32Array(N);
+  for(var i=0;i<N;i++){
+    var a=i/N*6.2832, cx=S/2, cy=S/2, best=0;
+    for(var r=S/2-1;r>2;r-=0.5){
+      var x=(cx+Math.cos(a)*r)|0, y=(cy+Math.sin(a)*r)|0;
+      if(x<0||y<0||x>=S||y>=S) continue;
+      if(d[(y*S+x)*4+3]>90){ best=r/(S/2); break; }
+    }
+    R[i]=best||0.55;
+  }
+  /* on lisse à peine : le contour d'une dalle est franc, on ne l'arrondit pas */
+  var L=new Float32Array(N);
+  for(i=0;i<N;i++) L[i]=(R[(i-1+N)%N]+R[i]*2+R[(i+1)%N])/4;
+  return L;
+}
+
+/* ── LA FORME : elle rend le point déformé ET sa normale ──────────────────── */
+function forme(kind, par){
+  var prof=null, C=null;
+  if(kind==='galet') prof=profGalet;
+  if(kind==='lentille') prof=profLentille;
+  if(kind==='goutte') prof=profGoutte;
+  if(kind==='tore') prof=profTore;
+  if(kind==='onde') prof=profOnde;
+  if(kind==='dalle') C=par.contour;
+  var lob=par.lobes||0, lamp=par.lampl||0, ep=par.ep||1;
+  return function(x,y,z){
+    var rr=1, X,Y,Z;
+    if(prof){ rr=prof(y); }
+    if(lob){ rr*= 1 + lamp*Math.cos(lob*Math.atan2(z,x)) * (1-y*y); }
+    if(C){
+      /* ⚠ LA DALLE VIT DANS LE PLAN DE L'ÉCRAN, pas à plat. Posée dans le plan XZ,
+         elle était HORIZONTALE : de face on n'en voyait que la tranche — une lentille
+         écrasée, jamais une dalle. Son contour est ici la section Z = 0, et
+         l'épaisseur part vers le regard. De face, la silhouette EST la dalle. */
+      var a=Math.atan2(y,x); if(a<0)a+=6.2832;
+      var rad=C[((a/6.2832*C.length)|0)%C.length];
+      return [x*rad, y*rad, z*ep];
+    }
+    var hh=Math.sqrt(Math.max(0,1-y*y))||1e-6;
+    return [x/hh*rr*hh, y*ep, z/hh*rr*hh];
+  };
+}
+
+/* ── LE PEINTRE, version « forme composée » ───────────────────────────────── */
+function peint2(cv, o){
+  var CSS=o.css||480, W=CSS*D;
+  cv.width=W; cv.height=W;
+  var g=cv.getContext('2d');
+  var im=g.createImageData(W,W), B=new Uint32Array(im.data.buffer);
+  var NIV=o.niv||8, TAI=o.tailles||[2.0,2.8,3.8], TN=o.teintes.length;
+  var A=lieTampons(o.atlas,W);
+  var R=CSS*(o.R||0.355)*D, FOC=o.foc||(R*5.0), CX=W/2, CY=W/2;
+  var P=(o.mode==='donne')?o.pts:semis(o.mode, o.n, o), F=o.forme;
+  var lac=o.lac||0, tan=o.tan||0.30;
+  var cl=Math.cos(lac), sl=Math.sin(lac), ct=Math.cos(tan), st=Math.sin(tan);
+  var pts=[], i, t0=performance.now(), e=0.014;
+  for(i=0;i<P.length;i++){
+    var x=P[i][0], y=P[i][1], z=P[i][2], prof=P[i].length>3?P[i][3]:1;
+    var hn=Math.hypot(x,y,z)||1;
+    var p=F(x/hn,y/hn,z/hn);
+    if(prof<0.999){ p=[p[0]*prof,p[1]*prof,p[2]*prof]; }
+    else if(hn<0.999){ p=[p[0]*hn,p[1]*hn,p[2]*hn]; }   /* le semis en volume */
+    /* le CREUX : la surface s'enfonce, elle ne pousse pas des points */
+    if(o.creux){
+      var dd=Math.hypot(p[0]-o.creux[0],p[1]-o.creux[1],p[2]-o.creux[2]);
+      if(dd<o.creux[3]){ var u=1-dd/o.creux[3], f2=u*u*(3-2*u);
+        var nn0=Math.hypot(p[0],p[1],p[2])||1;
+        p=[p[0]*(1-o.creux[4]*f2/nn0), p[1]*(1-o.creux[4]*f2/nn0), p[2]*(1-o.creux[4]*f2/nn0)];
+      }
+    }
+    /* LA NORMALE, par deux tangentes de la surface — exacte pour la forme composée */
+    var hh=Math.sqrt(Math.max(1e-6,1-y*y));
+    var a0=Math.atan2(z,x);
+    var pa=F(Math.cos(a0+e)*hh, y, Math.sin(a0+e)*hh);
+    var y2=Math.max(-0.999,Math.min(0.999,y+e)), h2=Math.sqrt(Math.max(1e-6,1-y2*y2));
+    var pb=F(Math.cos(a0)*h2, y2, Math.sin(a0)*h2);
+    var ux=pa[0]-p[0], uy=pa[1]-p[1], uz=pa[2]-p[2];
+    var vx=pb[0]-p[0], vy=pb[1]-p[1], vz=pb[2]-p[2];
+    var nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
+    var nl=Math.hypot(nx,ny,nz)||1; nx/=nl; ny/=nl; nz/=nl;
+    if(nx*p[0]+ny*p[1]+nz*p[2]<0){ nx=-nx; ny=-ny; nz=-nz; }
+    var X=p[0], Y=p[1], Z=p[2];
+    var X2=X*cl+Z*sl, Z2=-X*sl+Z*cl, Y2=Y*ct-Z2*st; Z2=Y*st+Z2*ct;
+    var NX=nx*cl+nz*sl, NZ2=-nx*sl+nz*cl, NY=ny*ct-NZ2*st; NZ2=ny*st+NZ2*ct;
+    if(o.dosCache && NZ2<-0.03) continue;
+    var k=FOC/(FOC-Z2*R);
+    var px=(CX+X2*R*k)|0, py=(CY+Y2*R*k)|0;
+    if(px<8||py<8||px>W-8||py>W-8) continue;
+    var zz=(Z2+1)*0.5, niv=(zz*NIV)|0; if(niv>=NIV)niv=NIV-1; if(niv<0)niv=0;
+    var tai=(zz*TAI.length)|0; if(tai>=TAI.length)tai=TAI.length-1; if(tai<0)tai=0;
+    if(o.taiFixe!==undefined) tai=o.taiFixe;
+    var ti=0;
+    if(TN>1){
+      if(o.rampe){
+        /* ⚑ UNE RAMPE DIRECTIONNELLE, PAS DES FRANGES. La référence n'a pas
+           d'interférences : elle a UN passage du bleu clair au violet, en diagonale.
+           Mes franges d'iridescence hachaient la forme et la rendaient illisible. */
+        var t=0.5+0.5*(X2*o.rampe[0]+Y2*o.rampe[1]);
+        if(o.rampeBord) t=t*0.72+0.28*(1-Math.abs(NZ2));
+        ti=(t*TN)|0; if(ti<0)ti=0; if(ti>=TN)ti=TN-1;
+      } else {
+        var f=Math.abs(NZ2);
+        var v=(o.iriPhase||0)+(o.iriK||3.0)*Math.pow(1-f,o.iriP||1.6)+(o.iriM||0)*(NX*0.74+NY*0.52);
+        ti=((v*TN)|0)%TN; if(ti<0)ti+=TN;
+      }
+    }
+    var sp=A[(ti*TAI.length+tai)*NIV+niv];
+    if(!sp) continue;
+    pts.push(py*W+px, 0, ti*TAI.length*NIV+tai*NIV+niv);
+  }
+  for(i=0;i<pts.length;i+=3){
+    var sp2=A[pts[i+2]], bas=pts[i], of=sp2.off, va=sp2.val;
+    for(var j=0;j<sp2.n;j++){
+      var oo=bas+of[j], vv=va[j];
+      if((vv>>>24) > (B[oo]>>>24)) B[oo]=vv;
+    }
+  }
+  g.putImageData(im,0,0);
+  return {n:pts.length/3, ms:+(performance.now()-t0).toFixed(1)};
+}
+
+function atlasDalle(NIV,a0,a1){
+  var gros=document.createElement('canvas'); gros.width=56; gros.height=56;
+  var pt=document.createElement('canvas');
+  var A=[], PX=[3,4,6];
+  for(var d=0;d<8;d++){
+    try{ window.Toile && Toile.dalleTrame(gros, d+1, 1); }catch(e){}
+    for(var s=0;s<PX.length;s++){
+      var px=PX[s]; pt.width=px; pt.height=px;
+      var gp=pt.getContext('2d'); gp.clearRect(0,0,px,px); gp.drawImage(gros,0,0,px,px);
+      var dat=gp.getImageData(0,0,px,px).data;
+      for(var n=0;n<NIV;n++){
+        var q=(n+0.5)/NIV, mul=a0+(a1-a0)*q*q;
+        var offs=[], vals=[], ox=px>>1, oy=px>>1;
+        for(var y=0;y<px;y++)for(var x=0;x<px;x++){
+          var al=(dat[(y*px+x)*4+3]*mul)|0;
+          if(al>3){ offs.push([y-oy,x-ox]); vals.push(al); }
+        }
+        A.push({rel:offs, al:vals, rgb:[244,238,225]});
+      }
+    }
+  }
+  return A;
+}
+
+
+/* ⚑ LA RÈGLE : ON DOIT POUVOIR TRACER UN CERCLE PARFAIT AUTOUR.
+   Mes reliefs GONFLAIENT autant qu'ils creusaient : le contour partait dans tous les
+   sens. Ici le relief ne fait QUE CREUSER — le rayon vaut 1 au repos et descend, il
+   ne monte jamais. La silhouette est donc le cercle de rayon R, mordu par des creux
+   doux. Contour mou, mais logique : il a une borne, et elle est ronde.
+   Un filet crème rappelle ce cercle sur chaque vue.                                */
+function reliefCreux(ondes, amp){
+  return function(x,y,z){
+    var s=0, tot=0;
+    for(var i=0;i<ondes.length;i++){
+      var h=ondes[i];
+      s+=h[0]*Math.sin(h[1]*x+h[4])*Math.sin(h[2]*y+h[5])*Math.cos(h[3]*z+h[6]);
+      tot+=h[0];
+    }
+    var u=0.5+0.5*(s/(tot||1));            /* 0 → 1 */
+    return 1-amp*u;                        /* jamais au-dessus de 1 */
+  };
+}
+function formeCreux(f, ep){
+  return function(x,y,z){
+    var rr=f(x,y,z), h=Math.sqrt(Math.max(1e-9,1-y*y));
+    return [x/h*rr*h, y*rr*ep, z/h*rr*h];
+  };
+}
+var O_DRAPE=[[1.0,6.3,0.6,0.5,0.2,1.4,0.9],[0.6,1.4,1.2,5.9,2.4,0.6,1.1]];
+var O_DOUX =[[1.0,1.6,1.3,1.1,1.2,0.5,2.0],[0.5,3.1,2.4,2.0,0.4,1.9,0.7]];
+var O_FORT =[[1.0,1.9,2.3,1.5,0.7,2.4,1.0],[0.7,4.3,1.1,3.1,2.7,1.8,0.4],
+             [0.4,7.9,5.3,6.1,0.9,1.3,2.8]];
+window.addEventListener('load',function(){
+  try{ window.Toile_resize&&window.Toile_resize(); window.Toile&&Toile.sync([1,2,3,4,5,6,7,8,9]); }catch(e){}
+  setTimeout(function(){
+    var A_ESS=atlasRond(rampe(CL_ESSENCE,14),[2.0,2.7,3.6],8,0.08,1.00);
+    var A_FIN=atlasRond(rampe(CL_CREME,1),   [1.6,2.2,3.0],8,0.06,1.00);
+    var A_NUI=atlasRond(rampe(CL_NUIT,10),   [2.2,3.0,4.2],8,0.06,1.00);
+    var A_DAL=atlasDalle(8,0.05,0.95);
+    var L=[
+     {t:'5 · Le drapé', s:'Des plis parallèles qui font le tour, en trame de lignes. Le relief ne fait que creuser : le contour reste le cercle.',
+      o:{mode:'latitudes', n:56000, lignes:96, forme:formeCreux(reliefCreux(O_DRAPE,0.13),1.0),
+         atlas:A_FIN, teintes:[0], tailles:[1.6,2.2,3.0], tan:0.28, dosCache:true}},
+     {t:'6 · Le creux du doigt', s:'La surface s’enfonce sous le doigt et se plisse autour. Le creux est <b>dans</b> le cercle, par construction.',
+      o:{mode:'fibo', n:48000, forme:formeCreux(reliefCreux(O_DOUX,0.10),1.0),
+         creux:[0.58,0.30,0.74,0.92,0.30], atlas:A_ESS, teintes:new Array(14),
+         tan:0.24, iriK:2.8, iriP:1.6, iriM:2.4, dosCache:true}},
+     {t:'7 · La matière du monde', s:'Le grain est une <b>vraie dalle du moteur</b>. L’Aura change entièrement avec le Studio.',
+      o:{mode:'fibo', n:34000, forme:formeCreux(reliefCreux(O_DOUX,0.12),1.0),
+         atlas:A_DAL, teintes:[0], tailles:[3,4,6], tan:0.26}},
+     {t:'8 · La nuée', s:'Pas une coquille : un <i>volume</i>. Les points occupent l’épaisseur, la densité décroît vers le bord — et le bord reste rond.',
+      o:{mode:'volume', n:58000, forme:formeCreux(reliefCreux(O_DOUX,0.08),1.0),
+         atlas:A_NUI, teintes:new Array(10), tan:0.28, iriK:1.8, iriP:1.2, iriM:1.6,
+         tailles:[2.2,3.0,4.2]}},
+     {t:'9 · Le relief fort', s:'Trois échelles de creux : de larges vallées, des rides, un grain. Le plus organique — et toujours inscrit dans le cercle.',
+      o:{mode:'fibo', n:52000, forme:formeCreux(reliefCreux(O_FORT,0.17),1.0),
+         atlas:A_ESS, teintes:new Array(14), tan:0.30, iriK:3.2, iriP:1.5, iriM:2.8}}
+    ];
+    var G=document.getElementById('g');
+    L.forEach(function(F){
+      var fg=document.createElement('figure'); fg.className='bande';
+      var row=document.createElement('div'); row.className='vues';
+      for(var v=0;v<4;v++){
+        var box=document.createElement('div'); box.className='vue';
+        var cv=document.createElement('canvas'); box.appendChild(cv); row.appendChild(box);
+        var o={}; for(var k in F.o) o[k]=F.o[k];
+        o.css=250; o.lac=v*1.57; o.R=0.37;
+        peint2(cv,o);
+        /* le cercle de repère : la borne, tracée */
+        var g=cv.getContext('2d'), W=cv.width;
+        g.strokeStyle='rgba(244,238,225,.22)'; g.lineWidth=2;
+        g.beginPath(); g.arc(W/2,W/2,250*0.37*D,0,6.2832); g.stroke();
+      }
+      fg.appendChild(row);
+      var fc=document.createElement('figcaption');
+      fc.innerHTML='<b>'+F.t+'</b>'+F.s; fg.appendChild(fc); G.appendChild(fg);
+    });
+    window.__pret=true;
+  },900);
+});
+
+</script></body></html>

@@ -1,0 +1,92 @@
+statique               le lot existe                                  OK   47513 caractères
+statique               aucune découpe d’image (drawImage à 9 arguments) OK   0 sur 7 appels
+statique               aucun choix de pixels (getImageData)           KO   1
+statique               aucun report de pixels (putImageData)          OK   0
+statique               le moteur peint à la taille finale (dalleTrame avec k) OK   2 appel(s) avec échelle
+statique               l’ancien lot est retiré, pas neutralisé        OK   lot-CERCLE-VEND 0 · plCadre 0
+light · avec Promi     le titre est celui décidé                      OK   « Rejoins le Cercle ! » (décidé « Rejoins le Cercle ! »)
+light · avec Promi     « Cercle » est en mauve                        OK   [138, 92, 240] (décidé [138, 92, 240])
+light · avec Promi     « Rejoins le » et « ! » sont en encre          OK   le « ! » [26, 22, 19]
+light · avec Promi     le prix est celui décidé                       OK   « 39 € » · « soit 3,25 €/mois »
+light · avec Promi     l’option porte le prix                         OK   « ou l’année — 39 € » (décidé « ou l’année — 39 € »)
+light · avec Promi     le légal est celui décidé                      OK   « Sans engagement · résiliable à tout moment »
+light · avec Promi     le CTA est en framboise                        OK   [250, 34, 88] (décidé [250, 34, 88])
+light · avec Promi     le ✕ FERMER est celui du produit               OK   « ✕ Fermer » à [265.5, 62.5]
+light · avec Promi     aucun bloc n’en chevauche un autre             OK   0 chevauchement(s) []
+light · avec Promi     rien ne descend sous le pli                    OK   le plus bas 830 (pli 844)
+light · avec Promi     l’écran ne défile pas                          OK   défile=False
+light · avec Promi     l’essai est visible sans défiler               OK   bas de l’essai 738
+light · avec Promi     les libellés sont en Bricolage 600             OK   Bricolage 600 · Bricolage 600 · Bricolage 600
+light · avec Promi     le titre et le prix sont en Fraunces 600       OK   titre Fraunces 600 · prix Fraunces
+light · avec Promi     la Toile est faite de vraies dalles            OK   collection 24 · 140 poses
+light · avec Promi     le fond ne paraît pas                          OK   vide 0.04 % (plancher 8.0)
+light · avec Promi     les huit mondes sont présents                  OK   8 monde(s) : ['braille', 'encre', 'gravure', 'mosaique', 'pixel', 'sillons', 'terrazzo', 'touffe']
+light · avec Promi     la Touffe domine sans tout manger              OK   Touffe 28.6 % (fenêtre [18.0, 42.0])
+light · avec Promi     les dalles ne sont pas du confetti             OK   cotes ['69×56', '78×76', '49×76', '77×75'] (plancher 40)
+light · avec Promi     les pastilles suivent les données (3 attendue(s)) OK   3 pastille(s) · [('sillons', '130', '0.211'), ('gravure', '133', '0.211'), ('terrazzo', '126', '0.188')]
+light · avec Promi     aucune pastille n’est redimensionnée           OK   0 écart(s) canevas/affichage []
+light · avec Promi     la collection se bâtit en fond                 OK   fond 24/24
+light · sans Promi     le titre est celui décidé                      OK   « Rejoins le Cercle ! » (décidé « Rejoins le Cercle ! »)
+light · sans Promi     « Cercle » est en mauve                        OK   [138, 92, 240] (décidé [138, 92, 240])
+light · sans Promi     « Rejoins le » et « ! » sont en encre          OK   le « ! » [26, 22, 19]
+light · sans Promi     le prix est celui décidé                       OK   « 39 € » · « soit 3,25 €/mois »
+light · sans Promi     l’option porte le prix                         OK   « ou l’année — 39 € » (décidé « ou l’année — 39 € »)
+light · sans Promi     le légal est celui décidé                      OK   « Sans engagement · résiliable à tout moment »
+light · sans Promi     le CTA est en framboise                        OK   [250, 34, 88] (décidé [250, 34, 88])
+light · sans Promi     le ✕ FERMER est celui du produit               OK   « ✕ Fermer » à [265.5, 62.5]
+light · sans Promi     aucun bloc n’en chevauche un autre             OK   0 chevauchement(s) []
+light · sans Promi     rien ne descend sous le pli                    OK   le plus bas 592 (pli 844)
+light · sans Promi     l’écran ne défile pas                          OK   défile=False
+light · sans Promi     l’essai est visible sans défiler               OK   bas de l’essai 500
+light · sans Promi     les libellés sont en Bricolage 600             OK   Bricolage 600 · Bricolage 600 · Bricolage 600
+light · sans Promi     le titre et le prix sont en Fraunces 600       OK   titre Fraunces 600 · prix Fraunces
+light · sans Promi     sans Promi · le cadre porte pc-sans            OK   pc-sans=True (0 Promi)
+light · sans Promi     sans Promi · la collection est vide            OK   collection 0
+light · sans Promi     sans Promi · la Toile est cachée               OK   Toile visible=False
+light · sans Promi     sans Promi · les pastilles sont cachées        OK   0 pastille(s) visible(s)
+light · sans Promi     sans Promi · tout est remonté                  OK   titre à y=98
+dark · avec Promi      le titre est celui décidé                      OK   « Rejoins le Cercle ! » (décidé « Rejoins le Cercle ! »)
+dark · avec Promi      « Cercle » est en mauve                        OK   [138, 92, 240] (décidé [138, 92, 240])
+dark · avec Promi      « Rejoins le » et « ! » sont en encre          OK   le « ! » [244, 238, 225]
+dark · avec Promi      le prix est celui décidé                       OK   « 39 € » · « soit 3,25 €/mois »
+dark · avec Promi      l’option porte le prix                         OK   « ou l’année — 39 € » (décidé « ou l’année — 39 € »)
+dark · avec Promi      le légal est celui décidé                      OK   « Sans engagement · résiliable à tout moment »
+dark · avec Promi      le CTA est en framboise                        OK   [250, 34, 88] (décidé [250, 34, 88])
+dark · avec Promi      le ✕ FERMER est celui du produit               OK   « ✕ Fermer » à [265.5, 62.5]
+dark · avec Promi      aucun bloc n’en chevauche un autre             OK   0 chevauchement(s) []
+dark · avec Promi      rien ne descend sous le pli                    OK   le plus bas 830 (pli 844)
+dark · avec Promi      l’écran ne défile pas                          OK   défile=False
+dark · avec Promi      l’essai est visible sans défiler               OK   bas de l’essai 738
+dark · avec Promi      les libellés sont en Bricolage 600             OK   Bricolage 600 · Bricolage 600 · Bricolage 600
+dark · avec Promi      le titre et le prix sont en Fraunces 600       OK   titre Fraunces 600 · prix Fraunces
+dark · avec Promi      la Toile est faite de vraies dalles            OK   collection 24 · 140 poses
+dark · avec Promi      le fond ne paraît pas                          OK   vide 0.8 % (plancher 8.0)
+dark · avec Promi      les huit mondes sont présents                  OK   8 monde(s) : ['braille', 'encre', 'gravure', 'mosaique', 'pixel', 'sillons', 'terrazzo', 'touffe']
+dark · avec Promi      la Touffe domine sans tout manger              OK   Touffe 28.6 % (fenêtre [18.0, 42.0])
+dark · avec Promi      les dalles ne sont pas du confetti             OK   cotes ['52×50', '45×80', '55×58', '44×80'] (plancher 40)
+dark · avec Promi      les pastilles suivent les données (3 attendue(s)) OK   3 pastille(s) · [('sillons', '133', '0.193'), ('gravure', '135', '0.162'), ('terrazzo', '131', '0.160')]
+dark · avec Promi      aucune pastille n’est redimensionnée           OK   0 écart(s) canevas/affichage []
+dark · avec Promi      la collection se bâtit en fond                 OK   fond 24/24
+dark · sans Promi      le titre est celui décidé                      OK   « Rejoins le Cercle ! » (décidé « Rejoins le Cercle ! »)
+dark · sans Promi      « Cercle » est en mauve                        OK   [138, 92, 240] (décidé [138, 92, 240])
+dark · sans Promi      « Rejoins le » et « ! » sont en encre          OK   le « ! » [244, 238, 225]
+dark · sans Promi      le prix est celui décidé                       OK   « 39 € » · « soit 3,25 €/mois »
+dark · sans Promi      l’option porte le prix                         OK   « ou l’année — 39 € » (décidé « ou l’année — 39 € »)
+dark · sans Promi      le légal est celui décidé                      OK   « Sans engagement · résiliable à tout moment »
+dark · sans Promi      le CTA est en framboise                        OK   [250, 34, 88] (décidé [250, 34, 88])
+dark · sans Promi      le ✕ FERMER est celui du produit               OK   « ✕ Fermer » à [265.5, 62.5]
+dark · sans Promi      aucun bloc n’en chevauche un autre             OK   0 chevauchement(s) []
+dark · sans Promi      rien ne descend sous le pli                    OK   le plus bas 592 (pli 844)
+dark · sans Promi      l’écran ne défile pas                          OK   défile=False
+dark · sans Promi      l’essai est visible sans défiler               OK   bas de l’essai 500
+dark · sans Promi      les libellés sont en Bricolage 600             OK   Bricolage 600 · Bricolage 600 · Bricolage 600
+dark · sans Promi      le titre et le prix sont en Fraunces 600       OK   titre Fraunces 600 · prix Fraunces
+dark · sans Promi      sans Promi · le cadre porte pc-sans            OK   pc-sans=True (0 Promi)
+dark · sans Promi      sans Promi · la collection est vide            OK   collection 0
+dark · sans Promi      sans Promi · la Toile est cachée               OK   Toile visible=False
+dark · sans Promi      sans Promi · les pastilles sont cachées        OK   0 pastille(s) visible(s)
+dark · sans Promi      sans Promi · tout est remonté                  OK   titre à y=98
+dark                   la Toile change à chaque ouverture             OK   3 signature(s) distincte(s) sur 3
+
+❌  1 ÉCART(S)
+   · statique · aucun choix de pixels (getImageData) — 1

@@ -1,0 +1,17 @@
+=== ROUGE 8e579374 · passe 1
+      [12] légende : tel quel [28, 28] / [[28, 28]] · sondé [37, 19] / [[37, 19]]
+redteam_ecrans · la légende est centrée (≤ 1 px)           passe      PRIS
+redteam_air · un bloc annoncé centré a des écarts égaux    passe      PRIS
+✅  les 18 contrats mordent
+=== ROUGE 8e579374 · passe 2
+      [12] légende : tel quel [28, 28] / [[28, 28]] · sondé [37, 19] / [[37, 19]]
+redteam_ecrans · la légende est centrée (≤ 1 px)           passe      PRIS
+redteam_air · un bloc annoncé centré a des écarts égaux    passe      PRIS
+❌  1 contrat(s) à reprendre
+=== VERTE 31a0ed37
+      [12] légende : tel quel [28, 28] / [[28, 28]] · sondé [37, 19] / [[37, 19]]
+redteam_ecrans · la légende est centrée (≤ 1 px)           passe      PRIS
+redteam_air · un bloc annoncé centré a des écarts égaux    passe      PRIS
+✅  les 18 contrats mordent
+
+[exited with code 0]

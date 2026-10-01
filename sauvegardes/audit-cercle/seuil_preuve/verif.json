@@ -1,0 +1,477 @@
+{
+ "R": {
+  "dark": [
+   [
+    "l’app déclare la bascule 94,5",
+    true,
+    94.5
+   ],
+   [
+    "fiche · rayon = règle de hauteur (12 champs)",
+    true,
+    [
+     [
+      64,
+      32
+     ],
+     [
+      92,
+      46
+     ],
+     [
+      118,
+      30
+     ]
+    ]
+   ],
+   [
+    "fiche · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.19",
+     []
+    ]
+   ],
+   [
+    "fiche · note 4 rangées · rayon = règle de hauteur (1 champs)",
+    true,
+    [
+     [
+      140.5,
+      30
+     ]
+    ]
+   ],
+   [
+    "fiche · note 4 rangées · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.67",
+     []
+    ]
+   ],
+   [
+    "fiche · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées",
+    true,
+    [
+     "rangées",
+     4,
+     "h",
+     140.5,
+     "libellé→texte",
+     15,
+     "texte→visibilité",
+     14.6,
+     "tout montré",
+     true
+    ]
+   ],
+   [
+    "fiche · note 5 rangées · rayon = règle de hauteur (1 champs)",
+    true,
+    [
+     [
+      163,
+      30
+     ]
+    ]
+   ],
+   [
+    "fiche · note 5 rangées · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.19",
+     []
+    ]
+   ],
+   [
+    "fiche · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées",
+    true,
+    [
+     "rangées",
+     5,
+     "h",
+     163,
+     "libellé→texte",
+     15,
+     "texte→visibilité",
+     14.6,
+     "tout montré",
+     true
+    ]
+   ],
+   [
+    "page + · rayon = règle de hauteur (9 champs)",
+    true,
+    [
+     [
+      64,
+      32
+     ],
+     [
+      92,
+      46
+     ],
+     [
+      118,
+      30
+     ]
+    ]
+   ],
+   [
+    "page + · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.19",
+     [
+      [
+       "C'EST IMPORTANT ?",
+       "non confirmé : recouvert par cbb-lab,csBotBar"
+      ],
+      [
+       "LA MÉMOIRE",
+       "non confirmé : nœud rebâti pendant la mesure"
+      ]
+     ]
+    ]
+   ],
+   [
+    "page + · note 4 rangées · rayon = règle de hauteur (1 champs)",
+    true,
+    [
+     [
+      140.5,
+      30
+     ]
+    ]
+   ],
+   [
+    "page + · note 4 rangées · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.67",
+     []
+    ]
+   ],
+   [
+    "page + · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées",
+    true,
+    [
+     "rangées",
+     4,
+     "h",
+     140.5,
+     "libellé→texte",
+     17,
+     "texte→visibilité",
+     14.6,
+     "tout montré",
+     true
+    ]
+   ],
+   [
+    "page + · note 5 rangées · rayon = règle de hauteur (1 champs)",
+    true,
+    [
+     [
+      163,
+      30
+     ]
+    ]
+   ],
+   [
+    "page + · note 5 rangées · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.19",
+     []
+    ]
+   ],
+   [
+    "page + · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées",
+    true,
+    [
+     "rangées",
+     5,
+     "h",
+     163,
+     "libellé→texte",
+     17,
+     "texte→visibilité",
+     14.6,
+     "tout montré",
+     true
+    ]
+   ],
+   [
+    "page + · la zone rebâtie est recalée avant toute image (16 rebâtissages vus)",
+    true,
+    "toutes à 163, trois lignes, tout montré"
+   ],
+   [
+    "Nuée · rayon = règle de hauteur (6 champs)",
+    true,
+    [
+     [
+      64,
+      32
+     ],
+     [
+      92,
+      46
+     ],
+     [
+      104,
+      30
+     ],
+     [
+      118,
+      30
+     ]
+    ]
+   ],
+   [
+    "Nuée · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 16.06",
+     []
+    ]
+   ],
+   [
+    "côte à côte · capturés (pilule 64 / rayon 32 · champ ouvert 140 / rayon 30)",
+    true,
+    "seuil/dark_cote_a_cote.png"
+   ],
+   [
+    "écran qui vend · le bas de la planche est là (cadre, trois dalles, « 29 € »)",
+    false,
+    "ABSENT — l’écran montre : \"Le Cercle\\n✕ FERMER\\nEssaie tout,\\nsans t'engager.\\nTout Promi pour 3,99\\xa0€/mois, arrête quand tu veux. Ou prends l'année : 29\\xa0€ · soit 2,42\\xa0€/mois · −39\\xa0%.\\n⟷\\nLa par\""
+   ],
+   [
+    "gardé de côté · l’encart mène à l’écran qui vend, par-dessus",
+    true,
+    [
+     "soi",
+     "createSheet,plusScreen"
+    ]
+   ],
+   [
+    "Réglages · l’encart mène à l’écran qui vend",
+    true,
+    [
+     "soi",
+     "plusScreen"
+    ]
+   ]
+  ],
+  "light": [
+   [
+    "l’app déclare la bascule 94,5",
+    true,
+    94.5
+   ],
+   [
+    "fiche · rayon = règle de hauteur (12 champs)",
+    true,
+    [
+     [
+      64,
+      32
+     ],
+     [
+      92,
+      46
+     ],
+     [
+      118,
+      30
+     ]
+    ]
+   ],
+   [
+    "fiche · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.19",
+     []
+    ]
+   ],
+   [
+    "fiche · note 4 rangées · rayon = règle de hauteur (1 champs)",
+    true,
+    [
+     [
+      140.5,
+      30
+     ]
+    ]
+   ],
+   [
+    "fiche · note 4 rangées · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.67",
+     []
+    ]
+   ],
+   [
+    "fiche · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées",
+    true,
+    [
+     "rangées",
+     4,
+     "h",
+     140.5,
+     "libellé→texte",
+     15,
+     "texte→visibilité",
+     14.6,
+     "tout montré",
+     true
+    ]
+   ],
+   [
+    "fiche · note 5 rangées · rayon = règle de hauteur (1 champs)",
+    true,
+    [
+     [
+      163,
+      30
+     ]
+    ]
+   ],
+   [
+    "fiche · note 5 rangées · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.19",
+     []
+    ]
+   ],
+   [
+    "fiche · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées",
+    true,
+    [
+     "rangées",
+     5,
+     "h",
+     163,
+     "libellé→texte",
+     15,
+     "texte→visibilité",
+     14.6,
+     "tout montré",
+     true
+    ]
+   ],
+   [
+    "page + · rayon = règle de hauteur (9 champs)",
+    true,
+    [
+     [
+      64,
+      32
+     ],
+     [
+      92,
+      46
+     ],
+     [
+      118,
+      30
+     ]
+    ]
+   ],
+   [
+    "page + · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 15.19",
+     [
+      [
+       "C'EST IMPORTANT ?",
+       "non confirmé : recouvert par cbb-lab,csBotBar"
+      ],
+      [
+       "LA MÉMOIRE",
+       "non confirmé : hors cadre"
+      ]
+     ]
+    ]
+   ],
+   [
+    "page + · note 4 rangées · la note s’ouvre (sinon rien n’est mesuré)",
+    false,
+    "le Peaufiner ne s’est pas ouvert : pas de zone de note"
+   ],
+   [
+    "page + · note 5 rangées · la note s’ouvre (sinon rien n’est mesuré)",
+    false,
+    "le Peaufiner ne s’est pas ouvert : pas de zone de note"
+   ],
+   [
+    "Nuée · rayon = règle de hauteur (6 champs)",
+    true,
+    [
+     [
+      64,
+      32
+     ],
+     [
+      92,
+      46
+     ],
+     [
+      104,
+      30
+     ],
+     [
+      118,
+      30
+     ]
+    ]
+   ],
+   [
+    "Nuée · air de l’encre ≥ 14.69",
+    true,
+    [
+     "min 16.06",
+     []
+    ]
+   ],
+   [
+    "côte à côte · capturés (pilule 64 / rayon 32 · champ ouvert 140 / rayon 30)",
+    true,
+    "seuil/light_cote_a_cote.png"
+   ],
+   [
+    "écran qui vend · le bas de la planche est là (cadre, trois dalles, « 29 € »)",
+    false,
+    "ABSENT — l’écran montre : \"Le Cercle\\n✕ FERMER\\nEssaie tout,\\nsans t'engager.\\nTout Promi pour 3,99\\xa0€/mois, arrête quand tu veux. Ou prends l'année : 29\\xa0€ · soit 2,42\\xa0€/mois · −39\\xa0%.\\n⟷\\nLa par\""
+   ],
+   [
+    "gardé de côté · l’encart mène à l’écran qui vend, par-dessus",
+    true,
+    [
+     "soi",
+     "createSheet,plusScreen"
+    ]
+   ],
+   [
+    "Réglages · l’encart mène à l’écran qui vend",
+    true,
+    [
+     "soi",
+     "plusScreen"
+    ]
+   ]
+  ]
+ },
+ "connus": [
+  "dark · page + · AVANT : le rond photo de la page + posé sur la rangée (chantier 64) — exclu de la mesure",
+  "dark · Nuée · LE TRAIT (Nuée) : encre à 11.14 du contour — chantier 67, la rangée de pinceaux à 14,25 du bord droit",
+  "light · page + · AVANT : le rond photo de la page + posé sur la rangée (chantier 64) — exclu de la mesure",
+  "light · Nuée · LE TRAIT (Nuée) : encre à 11.14 du contour — chantier 67, la rangée de pinceaux à 14,25 du bord droit"
+ ]
+}

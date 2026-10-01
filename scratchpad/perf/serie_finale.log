@@ -1,0 +1,127 @@
+=== redteam (21 s)
+
+  → 15/15
+=== redteam2 (18 s)
+
+  → 10/10
+=== redteam3 (34 s)
+
+  → 18/18
+=== redteam_accueil (169 s)
+
+  → 22/22
+=== redteam_air (187 s)
+
+  →   ✅  L'AIR EST INTACT — 512 paires de textes, 38 écrans, deux thèmes.
+=== redteam_apercus (51 s)
+
+  → ✅  10/10
+=== redteam_aveugle (63 s)
+
+  → 26/26
+=== redteam_cercle_couleur (82 s)
+
+  → 34/34
+=== redteam_champ (127 s)
+
+  → 32/32
+=== redteam_champs (40 s)
+
+  → 22/22
+=== redteam_dalle_figee (91 s)
+
+  → 4/4
+=== redteam_decoupe (134 s)
+
+  → ✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_demande (14 s)
+
+  → 19/19
+=== redteam_ecrans (89 s)
+
+  → 150/150
+=== redteam_enchaine (84 s)
+
+  → 24/24
+=== redteam_filets (133 s)
+
+  → OK — 0 filet(s) parasite(s)
+=== redteam_fonctions (67 s)
+
+  → 22/22
+=== redteam_formes (14 s)
+
+  → 38/38
+=== redteam_gens (199 s)
+
+  → 38/38
+=== redteam_geste (50 s)
+
+  → 13/13
+=== redteam_nuee (216 s)
+
+  →   ✅  24 écran(s) · 0 écart(s)
+=== redteam_nuee_dalle (93 s)
+
+  → 38/38
+=== redteam_nuee_entree (43 s)
+
+  → 24/24
+=== redteam_onboarding (114 s)
+
+  →   ✅  44 / 44 contrats tenus
+=== redteam_pastilles (52 s)
+
+  → 12/12
+=== redteam_pelote_partage (62 s)
+
+  → 42/42
+=== redteam_photo (32 s)
+
+  → 27/27
+=== redteam_phrase (15 s)
+
+  → 6/6
+=== redteam_polices (42 s)
+
+  → 0 couple(s) absent(s) · 0 élément(s)
+=== redteam_reperage (38 s)
+
+  → 16/16
+=== redteam_studio_geste (25 s)
+
+  → 13/13
+=== redteam_superpo (317 s)
+
+  → recouvrements de texte : 0
+=== redteam_toile (67 s)
+les dalles sont aux bonnes positions       KO  5/10 concordent · ecarts [502, 1, 234, 502, 0, 502, 1, 1]
+  → 16/17
+=== redteam_tokens (0 s)
+
+  → 46/46
+=== redteam_tonsurton (58 s)
+
+  → 26/26
+=== redteam_tuiles (269 s)
+
+  → 64/64
+=== redteam_verbe (25 s)
+
+  → 6/6
+=== redteam_vide (231 s)
+
+  → 61/61
+=== redteam_zoom (57 s)
+
+  → 16/16
+=== releve-design (34 s)
+✅  AUCUN ÉCART. Le design est intact.
+  → ✅  AUCUN ÉCART. Le design est intact.
+=== releve-aura (150 s)
+❌  1 ÉCARTS
+  → ❌  1 ÉCARTS
+=== releve-S4-index-fil (21 s)
+
+  → ✅  SECTION 4 AU VERT
+FIN SÉRIE

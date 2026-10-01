@@ -1,0 +1,486 @@
+{
+ "gratuit_fiche_promi_dark": {
+  "bloc": {
+   "x": 24,
+   "y": 228,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 336,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ]
+ },
+ "gratuit_fiche_chiche_dark": {
+  "bloc": {
+   "x": 24,
+   "y": 228,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 336,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ]
+ },
+ "gratuit_pageplus_dark": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 378,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "bandeau_masques": 2
+ },
+ "gratuit_garde_dark": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 378,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "bandeau_masques": 1
+ },
+ "abonne_fiche_promi_dark": {
+  "bloc": {
+   "x": 24,
+   "y": 228,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": -20,
+   "y": -44,
+   "w": 0,
+   "h": 0,
+   "vis": false
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "touchable": [
+   "auto",
+   "auto",
+   "auto",
+   "auto"
+  ]
+ },
+ "abonne_pageplus_dark": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": -20,
+   "y": -44,
+   "w": 0,
+   "h": 0,
+   "vis": false
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "touchable": [
+   "auto",
+   "auto",
+   "auto",
+   "auto"
+  ],
+  "bandeau_masques": 2
+ },
+ "abonne_garde_dark": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": -20,
+   "y": -44,
+   "w": 0,
+   "h": 0,
+   "vis": false
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "touchable": [
+   "auto",
+   "auto",
+   "auto",
+   "auto"
+  ],
+  "bandeau_masques": 1
+ },
+ "gratuit_fiche_promi_light": {
+  "bloc": {
+   "x": 24,
+   "y": 228,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 336,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ]
+ },
+ "gratuit_fiche_chiche_light": {
+  "bloc": {
+   "x": 24,
+   "y": 228,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 336,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ]
+ },
+ "gratuit_pageplus_light": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 378,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "bandeau_masques": 2
+ },
+ "gratuit_garde_light": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": 24,
+   "y": 378,
+   "w": 342,
+   "h": 90,
+   "vis": true
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)",
+   "blur(2.4px)"
+  ],
+  "touchable": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "bandeau_masques": 1
+ },
+ "abonne_fiche_promi_light": {
+  "bloc": {
+   "x": 24,
+   "y": 228,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": -20,
+   "y": -44,
+   "w": 0,
+   "h": 0,
+   "vis": false
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "touchable": [
+   "auto",
+   "auto",
+   "auto",
+   "auto"
+  ]
+ },
+ "abonne_pageplus_light": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": -20,
+   "y": -44,
+   "w": 0,
+   "h": 0,
+   "vis": false
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "touchable": [
+   "auto",
+   "auto",
+   "auto",
+   "auto"
+  ],
+  "bandeau_masques": 2
+ },
+ "abonne_garde_light": {
+  "bloc": {
+   "x": 24,
+   "y": 270,
+   "w": 342,
+   "h": 304,
+   "vis": true
+  },
+  "encart": {
+   "x": -20,
+   "y": -44,
+   "w": 0,
+   "h": 0,
+   "vis": false
+  },
+  "ordre": [
+   "RÉCURRENCE",
+   "RAPPEL",
+   "LA MÉMOIRE",
+   "C'EST IMPORTANT ?"
+  ],
+  "flous": [
+   "none",
+   "none",
+   "none",
+   "none"
+  ],
+  "touchable": [
+   "auto",
+   "auto",
+   "auto",
+   "auto"
+  ],
+  "bandeau_masques": 1
+ }
+}

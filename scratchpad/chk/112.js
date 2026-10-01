@@ -1,0 +1,386 @@
+
+/* ⚑ v20 · L'ONBOARDING REFAIT — voir redteam_onboarding.py (le juge écrit AVANT, rouge 7/38).
+   Décisions de Tom (21-22 sept. 2026) : une promesse à soi d'abord ; prénom → premier trait →
+   la Toile ; le compte APRÈS le trait ; jamais de notification au lancement ; pas de tutoriel. */
+(function(){
+  var dev=document.getElementById('device'), ov=document.getElementById('promiOnb');
+  if(!dev||!ov) return;
+  var LS={g:function(k){try{return localStorage.getItem(k);}catch(e){return null;}},
+          s:function(k,v){try{localStorage.setItem(k,v);}catch(e){}}};
+
+  /* ── L'ÉLISION (Tom, 22 sept.) : « de » devient « d’ » selon le PREMIER MOT tapé ──
+     normalisé : minuscules, accents retirés. Promi et Chiche, jamais la Nuée. */
+  var H_ASPIRE={hurler:1,hair:1,hausser:1,heurter:1,hisser:1,hater:1,harceler:1,hacher:1,hanter:1,heler:1};
+  function norme(s){ return (''+(s||'')).toLowerCase().replace(/æ/g,'ae').replace(/œ/g,'oe')
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
+  window._promiElide=function(txt){
+    var m=(''+(txt||'')).trim().match(/^[^\s’'"“«(]+/); if(!m) return 'de';
+    var w=norme(m[0]).replace(/[^a-z0-9]/g,''); if(!w) return 'de';
+    var c=w.charAt(0);
+    if(/[0-9]/.test(c)) return 'de';
+    if(w==='onze'||w==='onzieme'||w==='oui') return 'de';
+    if(w==='y'||w==='en') return 'd’';
+    if(c==='y') return 'de';
+    if(c==='h') return H_ASPIRE[w] ? 'de' : 'd’';
+    return /[aeiou]/.test(c) ? 'd’' : 'de';
+  };
+
+  var reserveDonnees=null, parNous=false;
+  var O=null, etape=null, rejeu=false, prenom='', parole='', fini=false, prog=0, actif=false, minuteurs=[];
+  var W=390, BASE=70, AMP=36, ZONE_Y=590, EP=10, RR=4.5, ESP=18, MID=195, CX=W*0.11;
+  var PH_PRENOM='ton prénom', PH_PAROLE='ne plus dire “je commence lundi”';
+  function T(f,ms){ minuteurs.push(setTimeout(f,ms)); }
+  function esc(s){ return (''+s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function clair(){ return dev.classList.contains('light'); }
+  function k(){ var r=dev.getBoundingClientRect(); return (r.width||390)/390; }
+
+  /* le prénom est gardé (il donne le visage — `_grainePropre`) */
+  try{ var _pn=LS.g('promi_prenom'); if(_pn && window.USER) USER.name=_pn; }catch(_){}
+
+  function batir(){
+    var v=document.getElementById('onbV'); if(v) v.remove();
+    v=document.createElement('div'); v.id='onbV';
+    v.innerHTML=
+      '<canvas class="onbv-a onbv-fond" style="display:none"></canvas>'+
+      '<div class="onbv-f" id="onbHaut">'+
+        '<div class="onbv-a onbv-mm">Prom<i>i</i></div>'+
+        '<div class="onbv-a onbv-dit" id="onbDit"></div>'+
+        '<div class="onbv-a onbv-ph" id="onbPh"></div>'+
+        '<div class="onbv-a onbv-sous" id="onbSous" style="display:none">Petite ou grande promesse, elle compte.</div>'+
+        '<div class="onbv-a onbv-suite" id="onbSuite" data-onb="suite" role="button" aria-label="Suite">→</div>'+
+        '<div class="onbv-a onbv-trace" id="onbTrace" style="display:none;top:'+(ZONE_Y-34)+'px">trace pour planter</div>'+
+        '<canvas class="onbv-a onbv-trait" id="onbTrait" data-onb="trait" style="display:none;top:'+ZONE_Y+'px" aria-label="Trace pour planter"></canvas>'+
+      '</div>'+
+      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier Promi, ta première dalle sur ta Toile.</span><span>Le reste se découvre à ton rythme.</span></div>'+
+      '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">';
+    ov.appendChild(v);
+    var inp=v.querySelector('#onbIn');
+    inp.addEventListener('input', function(){ if(etape==='prenom') prenom=inp.value; else parole=inp.value; peindrePhrase(); });
+    inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); suite(); } });
+    inp.addEventListener('focus', peindrePhrase); inp.addEventListener('blur', peindrePhrase);
+    v.querySelector('#onbSuite').addEventListener('click', function(e){ e.stopPropagation(); suite(); });
+    v.addEventListener('click', function(e){ var pm=e.target.closest&&e.target.closest('.onbv-pm,#onbPh,#onbDit'); if(pm && !fini){ focus(); } });
+    var cv=v.querySelector('#onbTrait'); armerTrait(cv);
+    return v;
+  }
+  function focus(){ var i=document.getElementById('onbIn'); if(!i) return;
+    i.value = etape==='prenom' ? prenom : parole;
+    i.maxLength = etape==='prenom' ? 24 : 80;
+    i.setAttribute('autocapitalize', etape==='prenom' ? 'words' : 'none');
+    try{ i.focus({preventScroll:true}); }catch(_){ i.focus(); } }
+  function aFocus(){ return document.activeElement===document.getElementById('onbIn'); }
+
+  function pastille(val, ph, role){
+    var f=aFocus();
+    /* le curseur est SOUDÉ au premier groupe de mots : seul, il ouvrait une coupure et laissait
+       un morceau de pastille vide en fin de ligne (« de [ ] ») */
+    var i0=ph.indexOf(' '), tete=i0<0?ph:ph.slice(0,i0), reste=i0<0?'':ph.slice(i0);
+    if(!val) return '<span class="onbv-pm vide" data-onb="'+role+'"><span style="white-space:nowrap">'+(f?'<span class="onbv-car"></span>':'')+esc(tete)+'</span>'+esc(reste)+'</span>';
+    return '<span class="onbv-pm" data-onb="'+role+'">'+esc(val)+(f?'<span class="onbv-car"></span>':'')+'</span>';
+  }
+  function peindrePhrase(){
+    var ph=document.getElementById('onbPh'); if(!ph) return;
+    if(etape==='prenom'){
+      ph.innerHTML='Toi, c’est <span style="white-space:nowrap">'+pastille(prenom.trim()?prenom:'', PH_PRENOM, 'prenom')+' ?</span>';
+    } else {
+      var de=window._promiElide(parole);
+      ph.innerHTML='<span class="onbv-pb">Je me promets</span> '+(de==='d’'?'d’':'de ')+pastille(parole.trim()?parole:'', PH_PAROLE, 'parole');
+    }
+    placer();
+  }
+  /* les cotes sous la phrase se DÉRIVENT de son bas réel (§8 : un texte qui passe à la ligne) */
+  function placer(){
+    var ph=document.getElementById('onbPh'); if(!ph) return;
+    var bas=228+ph.offsetHeight;
+    var su=document.getElementById('onbSuite'), so=document.getElementById('onbSous');
+    var sv = so && so.style.display!=='none';
+    if(so){ so.style.top=(bas+20)+'px'; }
+    if(su){ su.style.top=(sv ? bas+20+so.offsetHeight+16 : bas+14)+'px';
+      var plein = etape==='prenom' ? !!prenom.trim() : (!!parole.trim() && aFocus());
+      su.style.display = (etape==='trait'||!plein) ? 'none' : 'block'; }
+    var tr=document.getElementById('onbTrait'), tt=document.getElementById('onbTrace');
+    var voir = etape!=='prenom' && !!parole.trim() && !fini;
+    if(tr) tr.style.display = voir ? 'block' : 'none';
+    if(tt) tt.style.display = voir ? 'block' : 'none';
+    if(voir) peindreTrait();
+  }
+  function suite(){
+    if(etape==='prenom'){
+      var v=prenom.trim(); if(!v){ focus(); return; }
+      prenom=v; try{ USER.name=v; LS.s('promi_prenom', v); if(typeof _refreshAvatars==='function') _refreshAvatars(); }catch(_){}
+      allerParole(true);
+    } else if(etape==='parole'){
+      if(!parole.trim()){ focus(); return; }
+      var i=document.getElementById('onbIn'); if(i) i.blur(); peindrePhrase();
+    }
+  }
+  function allerParole(garderClavier){
+    etape='parole';
+    var d=document.getElementById('onbDit'); if(d) d.textContent=(prenom||(window.USER&&USER.name)||'')+', donc.';
+    var so=document.getElementById('onbSous'); if(so) so.style.display='block';
+    peindrePhrase(); if(garderClavier) focus();
+  }
+
+  /* ── LE TRAIT : celui d'une fiche par défaut — même onde, même chevron, même épaisseur ──
+     Au repos : l'amorce effilée, le chevron, puis les points (le mode « points » de la
+     fiche). Le doigt trace sa moitié ; arrivé au milieu, c'est EXACTEMENT le trait d'une
+     fiche par défaut : plein 0 → 195, chevron, points. */
+  function yOnde(){ O=O||window._onde; return O.onde(BASE, AMP); }
+  function peindreTrait(){
+    var cv=document.getElementById('onbTrait'); if(!cv||!window._onde) return;
+    O=window._onde; var dpr=2;
+    if(cv.width!==W*dpr){ cv.width=W*dpr; cv.height=118*dpr; }
+    var g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,118);
+    var y=yOnde(), col=clair()?O.ENCRE:O.CREME;
+    g.strokeStyle=col; g.fillStyle=col; g.lineWidth=EP; g.lineCap='round'; g.lineJoin='round';
+    function plein(a,b){ g.beginPath(); O.chemin(g,y,a,b); g.stroke(); }
+    function points(x0){ g.fillStyle=col; for(var x=x0;x<W-RR;x+=ESP){ g.beginPath(); g.arc(x,y(x),RR,0,6.2832); g.fill(); } }
+    var x=Math.max(CX, Math.min(MID, prog));
+    if(x<=CX+0.5){ O.ruban(g,y,-W*0.03, CX-EP*0.15, EP*2.2, EP*0.15); g.fill(); O.chevron(g,y,CX,col,EP); points(CX+ESP*1.3); }
+    else { plein(0,x); O.chevron(g,y,x,col,EP); points(x+ESP); }
+    cv.setAttribute('data-depart', Math.round(CX)+','+Math.round(y(CX)));
+    cv.setAttribute('data-arrivee', MID+','+Math.round(y(MID)));
+  }
+  function armerTrait(cv){
+    function loc(e){ var r=cv.getBoundingClientRect(), s=r.width/W; return {x:(e.clientX-r.left)/s, y:(e.clientY-r.top)/s}; }
+    cv.addEventListener('pointerdown', function(e){
+      if(fini||etape==='prenom') return;
+      var i=document.getElementById('onbIn'); if(i&&aFocus()) i.blur();
+      var p=loc(e), y=yOnde();
+      if(p.x>W*0.3 || Math.abs(p.y-y(p.x))>48) return;
+      actif=true; prog=Math.max(CX,p.x); try{ cv.setPointerCapture(e.pointerId); }catch(_){}
+      peindreTrait(); e.preventDefault();
+    });
+    cv.addEventListener('pointermove', function(e){
+      if(!actif) return; var p=loc(e), y=yOnde();
+      if(Math.abs(p.y-y(Math.min(W,Math.max(0,p.x))))<52 && p.x>prog-24 && p.x<prog+90) prog=Math.max(prog,Math.min(MID,p.x));
+      peindreTrait();
+      if(prog>=MID-2){ actif=false; prog=MID; peindreTrait(); planter(); }
+    });
+    function lache(){ if(!actif) return; actif=false;
+      /* un trait lâché avant le milieu se retire : rien n'est planté */
+      var p0=prog, t0=performance.now();
+      (function r(){ var u=Math.min(1,(performance.now()-t0)/300); prog=p0+(CX-p0)*u; peindreTrait(); if(u<1) requestAnimationFrame(r); })(); }
+    cv.addEventListener('pointerup', lache); cv.addEventListener('pointercancel', lache);
+  }
+
+  /* ── LA DALLE NAÎT SOUS LE DOIGT, PUIS SE POSE ── */
+  function planter(){
+    if(fini) return; fini=true;
+    var v=document.getElementById('onbV'), titre=parole.trim(), np=null;
+    /* la Toile d'avant, figée le temps du vol : sans elle la dalle paraîtrait deux fois */
+    var fond=v.querySelector('.onbv-fond'), tc=document.getElementById('toileCv');
+    try{ var r=tc.getBoundingClientRect(), s=k(); fond.width=Math.round(r.width*2); fond.height=Math.round(r.height*2);
+      fond.style.cssText='display:block;left:'+((r.left-dev.getBoundingClientRect().left)/s)+'px;top:'+((r.top-dev.getBoundingClientRect().top)/s)+'px;width:'+(r.width/s)+'px;height:'+(r.height/s)+'px';
+      fond.getContext('2d').drawImage(tc,0,0,fond.width,fond.height); }catch(_){}
+    try{
+      np=P(titre,'Moi',7,2,'encours',undefined,'moi');
+      computeBox(); np.x=box.x+box.w/2; np.y=box.y+box.h/2; np.tx=np.x; np.ty=np.y;
+      promises.push(np);
+      var ids=promises.filter(function(p){return !p.draft;}).map(function(p){return p.id;});
+      if(window.Toile&&Toile.sync) Toile.sync(ids);
+      if(typeof render==='function') render();
+      if(typeof caption==='function') caption();
+      if(typeof saveState==='function') saveState();
+    }catch(e){}
+    var D=dev.getBoundingClientRect(), s=k(), cible=null;
+    try{ var a=Toile.dalleAbs(np.id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
+      cible={x:(R.left-D.left+a.minx*sx)/s, y:(R.top-D.top+a.miny*sx)/s, w:a.w*sx/s, h:a.h*sx/s}; }catch(_){}
+    var dc=document.createElement('canvas'); dc.className='onbv-a onbv-dalle';
+    var ok=false; try{ ok=Toile.dalleTrame(dc, np.id, 1, np.monde); }catch(_){}
+    var y=yOnde(), bx=MID, by=ZONE_Y+y(MID), w=cible?cible.w:90, h=w*(dc.height/(dc.width||1));
+    if(ok){
+      dc.style.cssText='left:'+(bx-w/2)+'px;top:'+(by-h/2)+'px;width:'+w+'px;height:'+h+'px;transform:scale(.08);opacity:0;transition:transform .5s cubic-bezier(.2,1.3,.4,1),opacity .2s';
+      v.appendChild(dc);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ dc.style.transform='scale(.85)'; dc.style.opacity='1'; }); });
+    }
+    T(function(){ var hh=document.getElementById('onbHaut'); if(hh) hh.style.opacity='0'; }, 650);
+    T(function(){ if(!ok||!cible) return;
+      dc.style.transition='left .9s cubic-bezier(.45,0,.2,1),top .9s cubic-bezier(.45,0,.2,1),transform .9s cubic-bezier(.45,0,.2,1)';
+      dc.style.left=(cible.x+cible.w/2-w/2)+'px'; dc.style.top=(cible.y+cible.h/2-h/2)+'px'; dc.style.transform='scale(1)'; }, 950);
+    T(function(){ fond.style.display='none'; if(dc.parentNode) dc.remove();
+      var hh=document.getElementById('onbHaut'); if(hh) hh.style.display='none';
+      var fin=document.getElementById('onbFin');
+      if(fin){ var haut=!cible || (cible.y+cible.h/2)>422;
+        fin.style.top=(haut?150:620)+'px'; fin.style.display='block';
+        requestAnimationFrame(function(){ fin.style.opacity='1'; }); } }, 1900);
+    /* ⚑ v21 (Tom) : le message RESTE — au moins quatre secondes, puis jusqu'au toucher. */
+    T(function(){
+      var v2=document.getElementById('onbV'); if(!v2) return;
+      var parti=false;
+      function suiteFin(e){ if(parti) return; parti=true; if(e){ e.preventDefault(); e.stopPropagation(); }
+        v2.removeEventListener('click', suiteFin, true);
+        if(rejeu && window._onbCompteFait()){ terminer(); return; } compte(v2, terminer); }
+      v2.setAttribute('data-onb-fin','1');
+      v2.addEventListener('click', suiteFin, true);
+    }, 1900 + 4000);
+  }
+
+  /* ── LE COMPTE, APRÈS LE TRAIT — « Garder ta Toile » (mots validés par Tom) ──
+     Apple et Google appellent `window.promiConnexion` quand il sera branché (Firebase),
+     comme « Se déconnecter » appelle `window.promiDeconnexion`. */
+  function compte(hote, apres, o){
+    o=o||{};
+    var fin=document.getElementById('onbFin'); if(fin) fin.style.opacity='0';
+    var p=document.createElement('div'); p.className='onbv-compte';
+    p.innerHTML='<div class="lab">'+(o.lab||'Garder ta Toile')+'</div><div class="tx">'+(o.tx||'Pour la retrouver sur un autre téléphone.')+'</div>'+
+      '<div class="pil pleine" data-k="apple"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.36 12.9c-.02-2.2 1.8-3.26 1.88-3.31-1.02-1.5-2.62-1.7-3.19-1.72-1.36-.14-2.65.8-3.34.8-.68 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.4 6.62 1.1 8.79.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.7.71 2.87.69 1.18-.02 1.93-1.08 2.66-2.14.84-1.23 1.18-2.42 1.2-2.48-.03-.01-2.3-.88-2.32-3.49zM14.2 6.4c.6-.73 1.01-1.75.9-2.76-.87.03-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.07 1.96-.49 2.56-1.21z"/></svg>Continuer avec Apple</div>'+
+      '<div class="pil" data-k="google">Continuer avec Google</div>'+
+      '<div class="tard" data-onb="plus-tard" role="button">'+(o.tard||'Plus tard')+'</div>'+
+      '<div class="legal">En continuant, tu acceptes les <u>Conditions</u> et la <u>Politique de confidentialité</u>.</div>';
+    p.style.transform='translateY(420px)'; p.style.opacity='0';
+    hote.appendChild(p);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ p.style.transform='none'; p.style.opacity='1'; }); });
+    var clos=false;
+    function ferme(k){ if(clos) return; clos=true;
+      if(k){ LS.s('promi_compte','demande-'+k); try{ if(window.promiConnexion) window.promiConnexion(k); }catch(_){} }
+      else LS.s('promi_compte', LS.g('promi_compte')||'plus-tard');
+      p.style.transform='translateY(420px)'; p.style.opacity='0';
+      setTimeout(function(){ if(p.parentNode) p.remove(); apres&&apres(k); }, 380); }
+    p.querySelector('.tard').addEventListener('click', function(e){ e.stopPropagation(); ferme(null); });
+    [].forEach.call(p.querySelectorAll('.pil'), function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); ferme(b.getAttribute('data-k')); }); });
+    return p;
+  }
+
+  window._onbTerminer=function(){ if(dev.classList.contains('onb-actif')) terminer(); };   /* v89 : le Studio ouvert referme l'onboarding */
+  function terminer(){
+    minuteurs.forEach(clearTimeout); minuteurs=[];
+    var v=document.getElementById('onbV'); if(v) v.remove();
+    parNous=true; ov.classList.add('gone'); dev.classList.remove('onb-actif'); parNous=false;
+    reserveDonnees=null; etape=null;
+    LS.s('promi_onb','1'); if(!LS.g('promi_debut')) LS.s('promi_debut', ''+Date.now());
+    try{ if(window.Toile&&Toile.reserve) Toile.reserve([]); }catch(_){}
+    try{ if(typeof saveState==='function') saveState(); }catch(_){}
+    try{ if(typeof render==='function') render(); if(typeof caption==='function') caption(); }catch(_){}
+    try{ if(window.Toile&&Toile.redraw) setTimeout(Toile.redraw,60); }catch(_){}
+    rejeu=false;
+  }
+
+  function demarrer(estRejeu){
+    minuteurs.forEach(clearTimeout); minuteurs=[];
+    rejeu=!!estRejeu; fini=false; prog=0; actif=false; parole='';
+    window._tutoSeen=true;
+    ov.classList.add('onb-v20'); ov.classList.remove('gone'); ov.style.display='';
+    dev.classList.add('onb-actif');
+    if(!rejeu){
+      /* la Toile commence VIDE : aucune dalle, aucune donnée de démonstration.
+         ⚠ On GARDE une copie : si l'onboarding est fermé par un autre que lui (un banc qui le
+         masque, §8 « rien ne survit »), on rend ce qui était là. */
+      try{ if(!reserveDonnees) reserveDonnees={p:promises.slice(), N:Object.assign({},NUE), M:Object.assign({},NUEEMEM),
+            F:(Array.isArray(FEED)?FEED.slice():null), G:(Array.isArray(PEOPLE)?PEOPLE.slice():null)}; }catch(_){}
+      try{ if(typeof obResetData==='function') obResetData(); }catch(_){}
+      try{ if(window.Toile&&Toile.sync) Toile.sync([]); if(typeof render==='function') render(); }catch(_){}
+    }
+    /* ⚑ v22 (Tom) — « la Toile doit être vide avant le premier trait » : au REJEU aussi, la Toile existante se tait.
+       Une dalle n'a pas de place fixe (chaque chargement la replace) : on vide, et on rend TOUTES les dalles au trait
+       (`planter`) ou si la présentation est fermée par un autre (l'observateur). */
+    if(rejeu){ try{ if(window.Toile&&Toile.sync){
+      /* `sync` plante aussi une dalle par Nuée nommée : on les retire DE LA TOILE le temps de l'appel, les données restent */
+      var _nu=Object.assign({},NUE); Object.keys(NUE).forEach(function(k){ delete NUE[k]; });
+      try{ Toile.sync([]); } finally { Object.assign(NUE,_nu); } } }catch(_){} }
+    try{ if(window.Toile&&Toile.reserve) Toile.reserve([]); }catch(_){}
+    batir();
+    var nom=LS.g('promi_prenom');
+    if(rejeu && nom){ prenom=nom; allerParole(false); }
+    else { prenom=''; etape='prenom'; peindrePhrase(); }
+  }
+
+  /* l'ancien parcours ne peint plus rien sur la Toile */
+  window.obFill=function(){};
+  window.obReplay=function(){ try{ if(typeof closeAll==='function') closeAll(); document.querySelectorAll('.screen.show').forEach(function(e){e.classList.remove('show');}); }catch(_){}
+    demarrer(true); };
+  window.obFinish=terminer;
+  /* ⚑ v23 (Tom, 22 sept.) — « Le panneau doit apparaître à la fin de l'onboarding, et TANT QU'AUCUN
+     COMPTE N'EXISTE — pas seulement à la première ouverture. Quelqu'un qui a fait “Plus tard” doit
+     pouvoir le retrouver. » D'où trois portes : la fin de l'onboarding, le bandeau de rappel, et la
+     rangée « Garder ta Toile » des Réglages. La lecture de l'état est UNE seule fonction. */
+  window._onbCompteFait=function(){ try{ return (LS.g('promi_compte')||'').indexOf('fait')===0; }catch(_){ return false; } };
+  window._onbCompte=function(hote, apres, o){
+    if(window._onbCompteFait()) return false;
+    var h=hote||document.getElementById('accRappelCompte');
+    if(!h){ h=document.createElement('div'); h.id='accRappelCompte'; dev.appendChild(h); }
+    h.classList.add('vu'); compte(h, function(k){ h.classList.remove('vu'); if(apres) apres(k); }, o);
+    return true;
+  };
+  window._onbV20={demarrer:demarrer, terminer:terminer, etape:function(){return etape;}, geste:function(){return {prog:prog,actif:actif,fini:fini};}};
+
+  /* pas de tutoriel : l'app se découvre à l'usage */
+  window._tutoSeen=true;
+
+  var deja=LS.g('promi_onb')==='1';
+  /* ⚑ v94 — onboarding déjà fait, mais aucune sauvegarde relue (un arrêt avant l'écriture) : le jeu de démonstration ne s'installe pas chez un vrai utilisateur */
+  if(deja && !window._etatRelu && !navigator.webdriver){ var videDemo=function(){ try{ if(window._etatRelu) return; obResetData(); Toile.sync([]); if(typeof render==='function') render(); if(typeof window.buildFeed==='function') window.buildFeed(); }catch(_){} }; setTimeout(videDemo,700); setTimeout(videDemo,1600); }
+  if(!deja){
+    /* le thème du premier lancement suit celui du téléphone (Q301) */
+    var th=LS.g('promi_theme');
+    if(!th){ try{ th=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'; }catch(_){ th='light'; } }
+    setTimeout(function(){ try{ if(typeof setTheme==='function') setTheme(th); }catch(_){} }, 260);
+    demarrer(false);
+    /* le jeu de démonstration s'installe APRÈS nous (DOMContentLoaded / 400 ms) : on reprend sa copie, puis on vide */
+    function revider(){ if(etape && !fini && dev.classList.contains('onb-actif')){ try{
+      if(promises.length) reserveDonnees={p:promises.slice(), N:Object.assign({},NUE), M:Object.assign({},NUEEMEM),
+            F:(Array.isArray(FEED)?FEED.slice():null), G:(Array.isArray(PEOPLE)?PEOPLE.slice():null)};
+      obResetData(); Toile.sync([]); render(); }catch(_){} } }
+    setTimeout(revider, 700); setTimeout(revider, 1600);
+  }
+  /* fermé par un autre que lui : l'accueil revient tel qu'il était, données comprises */
+  try{ new MutationObserver(function(){
+    if(parNous || !ov.classList.contains('gone') || !dev.classList.contains('onb-actif')) return;
+    minuteurs.forEach(clearTimeout); minuteurs=[];
+    dev.classList.remove('onb-actif'); var v=document.getElementById('onbV'); if(v) v.remove();
+    if(reserveDonnees && !fini && navigator.webdriver){ try{   /* ⚑ v94 : la réserve n'est rendue qu'à un BANC (navigateur piloté) — sur un vrai téléphone, fermer l'onboarding ne ramène jamais le jeu de démonstration */
+      var R=reserveDonnees; promises.length=0; R.p.forEach(function(p){promises.push(p);});
+      Object.keys(NUE).forEach(function(k){delete NUE[k];}); Object.assign(NUE,R.N);
+      Object.keys(NUEEMEM).forEach(function(k){delete NUEEMEM[k];}); Object.assign(NUEEMEM,R.M);
+      if(R.F&&Array.isArray(FEED)){FEED.length=0;R.F.forEach(function(x){FEED.push(x);});}
+      if(R.G&&Array.isArray(PEOPLE)){PEOPLE.length=0;R.G.forEach(function(x){PEOPLE.push(x);});}
+      Toile.sync(promises.filter(function(p){return !p.draft;}).map(function(p){return p.id;}));
+      if(typeof render==='function') render(); if(typeof caption==='function') caption();
+      /* le Fil a été BÂTI pendant qu'il était vide : on le rebâtit (v21) */
+      if(typeof window.buildFeed==='function') window.buildFeed();
+    }catch(_){} }
+    if(rejeu){ try{ Toile.sync(promises.filter(function(p){return !p.draft;}).map(function(p){return p.id;})); }catch(_){} rejeu=false; }
+    reserveDonnees=null; etape=null;
+  }).observe(ov,{attributes:true,attributeFilter:['class','style']}); }catch(_){}
+  var _st=window.setTheme;
+  if(typeof _st==='function') window.setTheme=function(){ var r=_st.apply(this,arguments); try{ if(document.getElementById('onbV')) peindrePhrase(); }catch(_){} return r; };
+
+  /* ── LE RAPPEL DU COMPTE, PLUS TARD, DANS L'APP — un bandeau, jamais une notification ──
+     Après le troisième Promi, ou deux jours d'usage.
+     ⚑ v52 (Tom) : « il faut qu'il revienne quand même, intelligemment — on veut qu'ils créent leur compte ». Plus « une fois » :
+     après chaque « Plus tard », il revient plus loin — 5, puis 10, puis 20 nouvelles paroles, OU 3, puis 7, puis 14 jours
+     (le premier des deux). Jamais pendant l'onboarding, jamais par-dessus un écran ouvert, jamais une fois le compte fait. */
+  var ECART_P=[5,10,20], ECART_J=[3,7,14];
+  function nParoles(){ return ((typeof promises!=='undefined'&&promises)||[]).filter(function(p){return !p.draft;}).length; }
+  function rappel(){
+    try{
+      if(LS.g('promi_onb')!=='1') return;
+      if(window._onbCompteFait()) return;
+      var n=nParoles(), d0=+(LS.g('promi_debut')||0), fois=+(LS.g('promi_rappel_n')||0);
+      if(LS.g('promi_rappel_vu')==='1' && !fois){ fois=1; LS.s('promi_rappel_n','1'); LS.s('promi_rappel_p',''+n); LS.s('promi_rappel_t',''+Date.now()); }   /* l'ancien « vu » compte pour un refus */
+      if(!fois){ if(!(n>=3 || (d0 && Date.now()-d0 >= 2*864e5))) return; }
+      else { var i=Math.min(fois,3)-1, p0=+(LS.g('promi_rappel_p')||0), t0=+(LS.g('promi_rappel_t')||0);
+        if(!(n-p0>=ECART_P[i] || (t0 && Date.now()-t0 >= ECART_J[i]*864e5))) return; }
+      if(document.querySelector('.screen.show,.sheet.show,.poster.show') || !ov.classList.contains('gone')) return;
+      var b=document.getElementById('accRappel');
+      if(!b){ b=document.createElement('div'); b.id='accRappel';
+        b.innerHTML='<span data-r="oui">Garder ta Toile</span><span data-r="non">Plus tard</span>';
+        dev.appendChild(b);
+        b.addEventListener('click', function(e){ var r=e.target.closest&&e.target.closest('[data-r]'); if(!r) return;
+          b.classList.remove('vu');
+          LS.s('promi_rappel_n',''+((+(LS.g('promi_rappel_n')||0))+1)); LS.s('promi_rappel_p',''+nParoles()); LS.s('promi_rappel_t',''+Date.now());
+          if(r.getAttribute('data-r')==='oui') window._onbCompte();
+          });
+      }
+      b.classList.add('vu');
+    }catch(_){}
+  }
+  setInterval(rappel, 3000);
+  /* v105 — un écran ouvert (vraiment à l'écran : Studio, Aura et Partager gardent `.show` fermés, §8) cache le bandeau */
+  function ouvert(){ var D=dev.getBoundingClientRect();
+    if(document.querySelector('#device .sheet.show, #device .poster.show, #feedView.in')) return true;
+    var L=document.querySelectorAll('.screen.show'); for(var i=0;i<L.length;i++){ var e=L[i], r=e.getBoundingClientRect(), s=getComputedStyle(e);
+      if(s.visibility!=='hidden' && parseFloat(s.opacity)>0.1 && Math.min(r.bottom,D.bottom)-Math.max(r.top,D.top) > D.height*0.5) return true; }
+    return false; }
+  setInterval(function(){ var b=document.getElementById('accRappel'); if(!b||!b.classList.contains('vu')) return; var c=ouvert(); if(b.classList.contains('rap-cache')!==c) b.classList.toggle('rap-cache', c); }, 250);
+})();

@@ -1,0 +1,54 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>diag empreinte</title>
+<style>body{margin:0;background:#0A0B0E}canvas{width:430px;height:430px;display:inline-block;margin:4px}</style>
+</head><body>
+<div style="position:absolute;left:0;top:0;width:390px;height:620px;opacity:.012;pointer-events:none;z-index:-1"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<div id="g"></div>
+<script>function cc(){return[200,180,255];}function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script src="/scratchpad/_p_moteur.js"></script>
+<script src="/scratchpad/_p_semis.js"></script>
+<script src="/scratchpad/_p_peint.js"></script>
+<script>
+var KDENS=[4.7,5.3,4.1,0.6,1.9,1.1,  6.7,5.9,7.3,2.4,0.7,1.5];
+var EMP={ c:[-0.36,-0.22,0.91], ax:[0.62,-0.72,0.00], a:0.46, el:0.62,
+          dmax:0.215, biais:0.14, rho:0.085, ub:0.15, B:0.55, U:0.50, p:1.0 };
+/* CARTE DES ZONES : bleu = le plateau (s<=1) · rouge = la paroi (1<s<1.35)
+   vert = le bourrelet (1,35<s<2,25) · gris = intact. Rien d'autre. */
+function carte(cv,S,css){
+  var W=css*D; cv.width=W;cv.height=W;
+  var g=cv.getContext('2d'); g.fillStyle='#131319'; g.fillRect(0,0,W,W);
+  var R=css*0.425*D, FOC=R*5.4, CX=W/2,CY=W/2;
+  var cl=Math.cos(2.9),sl=Math.sin(2.9),ct=Math.cos(0.32),st=Math.sin(0.32);
+  var E=prepEmp(EMP,cl,sl,ct,st);
+  var im=g.createImageData(W,W), B=new Uint32Array(im.data.buffer);
+  var Z=[0,0,0,0];
+  for(var i=0;i<S.n;i++){
+    var x=S.P[i*3],y=S.P[i*3+1],z=S.P[i*3+2];
+    var X2=x*cl+z*sl, Zt=-x*sl+z*cl, Y2=y*ct-Zt*st, Z2=y*st+Zt*ct;
+    if(Z2<0) continue;
+    var k=FOC/(FOC-Z2*R), px=(CX+X2*R*k)|0, py=(CY+Y2*R*k)|0;
+    if(px<3||py<3||px>W-3||py>W-3) continue;
+    var c1=contact(E,x,y,z), col=pack([64,66,74]), zi=3;
+    if(c1){ if(c1.s<=1){col=pack([70,120,255]);zi=0;}
+      else if(c1.s<1.15){col=pack([250,60,90]);zi=1;}
+      else {col=pack([60,220,140]);zi=2;} }
+    Z[zi]++;
+    var o=py*W+px;
+    for(var dy=-1;dy<=1;dy++)for(var dx=-1;dx<=1;dx++){
+      var oo=o+dy*W+dx; if(oo>=0&&oo<B.length) B[oo]=(0xFF000000|col)>>>0;}
+  }
+  g.putImageData(im,0,0);
+  return Z;
+}
+window.addEventListener('load',function(){
+  try{Toile_resize();Toile.sync([1,2,3,4,5]);}catch(e){}
+  setTimeout(function(){
+    var SEM=semisPavage(90000,240,0.0400,KDENS,4);
+    var G=document.getElementById('g');
+    var c=document.createElement('canvas'); c.setAttribute('data-cad','zones');
+    G.appendChild(c);
+    window.__Z=carte(c,SEM,430);
+    window.__pret=true;
+  },700);
+});
+</script></body></html>

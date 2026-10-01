@@ -1,0 +1,28 @@
+
+══ dark
+  ✅ 1a · Peaufiner : plus d'encart « Le Cercle », les réglages restent floutés  — {'encart': False, 'flou': 'blur(4.8px)'}
+  ✅ 2 · première fois : la phrase 1 monte, puis l'offre s'ouvre seule  — phrase 'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.' · offre True
+  ✅ 3a · deuxième toucher : la phrase 2, qui RESTE, sans ouvrir l'offre  — 'Toujours pas. Avec Ma Parole\xa0!, si.' · offre False
+  ✅ 3b · toucher ailleurs : l'offre s'ouvre, la fiche est toujours là dessous  — offre True · fiche True
+  ✅ 7 · phrase à l'accent, « Ma Parole ! » d'une autre couleur, les deux lisibles (Δlum ≥ 42)  — texte rgb(130, 174, 248) · Ma Parole rgb(240, 122, 46) · fond rgb(32, 25, 8) · Δ 145 / 116
+  ✅ 1b · Aura : plus d'encart, « Ce qu'on t'a tenu » flouté  — {'flou': 'blur(4.8px)', 'encart': False}
+  ✅ 4 · compteur global : l'Aura fait monter la phrase 4  — 'Tiens tiens, on dirait que ça commence à t’intéresser…'
+  ✅ 5a · la 21e touche fait monter la 21e phrase  — 'On se dit directement à la prochaine\xa0?'
+  ✅ 5b · au-delà : au hasard, jamais deux fois la même de suite  — 24 tirages, 16 distinctes, 0 répétitions, 0 hors liste
+  ✅ 6 · après une longue absence le compteur repart à la phrase 1 (sans rouvrir l'offre seule)  — 'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.'
+  ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none
+
+══ light
+  ✅ 1a · Peaufiner : plus d'encart « Le Cercle », les réglages restent floutés  — {'encart': False, 'flou': 'blur(4.8px)'}
+  ✅ 2 · première fois : la phrase 1 monte, puis l'offre s'ouvre seule  — phrase 'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.' · offre True
+  ✅ 3a · deuxième toucher : la phrase 2, qui RESTE, sans ouvrir l'offre  — 'Toujours pas. Avec Ma Parole\xa0!, si.' · offre False
+  ✅ 3b · toucher ailleurs : l'offre s'ouvre, la fiche est toujours là dessous  — offre True · fiche True
+  ✅ 7 · phrase à l'accent, « Ma Parole ! » d'une autre couleur, les deux lisibles (Δlum ≥ 42)  — texte rgb(2, 33, 64) · Ma Parole rgb(240, 122, 46) · fond rgb(247, 240, 222) · Δ 212 / 99
+  ✅ 1b · Aura : plus d'encart, « Ce qu'on t'a tenu » flouté  — {'flou': 'blur(4.8px)', 'encart': False}
+  ✅ 4 · compteur global : l'Aura fait monter la phrase 4  — 'Tiens tiens, on dirait que ça commence à t’intéresser…'
+  ✅ 5a · la 21e touche fait monter la 21e phrase  — 'On se dit directement à la prochaine\xa0?'
+  ✅ 5b · au-delà : au hasard, jamais deux fois la même de suite  — 24 tirages, 15 distinctes, 0 répétitions, 0 hors liste
+  ✅ 6 · après une longue absence le compteur repart à la phrase 1 (sans rouvrir l'offre seule)  — 'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.'
+  ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none
+
+22/22

@@ -1,0 +1,513 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Promi — l'Aura et le Cercle · trois partis</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#0E0F12;color:#F4EEE1;
+  font-family:Apfel,system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
+.page{max-width:1780px;margin:0 auto;padding:44px 32px 120px}
+h1{font-family:Bricolage,system-ui,sans-serif;font-weight:700;font-size:38px;letter-spacing:-.02em;margin:0 0 6px}
+.lede{font-size:16px;line-height:1.55;max-width:900px;color:#C8C3B6;margin:0 0 30px}
+h2{font-family:Bricolage,system-ui,sans-serif;font-weight:700;font-size:27px;letter-spacing:-.02em;margin:52px 0 4px}
+h2 .n{color:#8FA0FF}
+.q{font-family:Bricolage,system-ui,sans-serif;font-weight:600;font-size:17px;color:#8FA0FF;margin:0 0 10px}
+.pr{font-size:15px;line-height:1.6;max-width:900px;color:#C8C3B6;margin:0 0 22px}
+.pr b{color:#F4EEE1;font-weight:400;font-family:ApfelMid;font-weight:500}
+.box{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:980px}
+.box h3{font-family:Bricolage,font-weight:700;font-size:16px;margin:0 0 8px;letter-spacing:.02em}
+.box p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.box p:last-child{margin-bottom:0}
+.row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin:0 0 8px}
+figure{margin:0}
+figcaption{font-family:ApfelMid;font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:#8B8778;margin:10px 0 0;width:390px}
+figcaption b{color:#F4EEE1;font-weight:500}
+
+/* ─────────── le cadre : 390 x 844, exactement ─────────── */
+.fr{position:relative;width:390px;height:844px;overflow:hidden;border-radius:38px;
+   font-family:Apfel,system-ui,sans-serif}
+.fr.dk{background:#16171B;color:#F4EEE1}
+.fr.lt{background:#F4EEE1;color:#16171B}
+.fr *{position:absolute;margin:0}
+
+/* le plateau — 342 x 60, r30, trait 2, couleur du corps */
+.plat{left:24px;top:40px;width:342px;height:60px;border-radius:30px;border:2px solid currentColor;
+  display:flex!important;align-items:center;justify-content:space-between;padding:0 22px;position:absolute}
+.plat>*{position:static!important}
+.plat .t{font-family:Bricolage;font-weight:700;font-size:27px;letter-spacing:-.02em}
+.plat .c{font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.20em}
+
+.eb{font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase}
+.bg600{font-family:Bricolage;font-weight:600}
+.bg700{font-family:Bricolage;font-weight:700}
+.ap{font-family:Apfel;font-weight:400}
+.apm{font-family:ApfelMid;font-weight:500}
+.mark{font-family:Fraunces;font-weight:600}
+
+/* le bouton — 342 x 62, r31, trait 2 */
+.btn{left:24px;width:342px;height:62px;border-radius:31px;border:2px solid currentColor;
+  display:flex!important;align-items:center;justify-content:center;
+  font-family:Bricolage;font-weight:700;font-size:19px;position:absolute}
+.btn>*{position:static!important}
+.btn.plein{border:0}
+
+/* l'encart du Cercle — §3.8, la SEULE superposition du produit */
+.enc{left:24px;width:342px;height:90px;border-radius:26px;
+  display:flex!important;flex-direction:column;justify-content:center;padding:0 24px;position:absolute}
+.enc>*{position:static!important}
+.enc .t{font-family:Bricolage;font-weight:700;font-size:22px;letter-spacing:-.02em}
+.enc .s{font-family:Bricolage;font-weight:600;font-size:15px;margin-top:3px}
+.voile{filter:blur(2.4px)}
+.leg{display:flex!important;gap:18px;position:absolute}
+.leg>span{position:static!important;display:flex;align-items:center;gap:8px;
+  font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase}
+.leg i{position:static!important;width:13px;height:13px;border-radius:4px;display:block}
+.note{font-family:Apfel;font-weight:400;font-size:13px;text-align:center;width:342px;left:24px}
+</style></head><body>
+
+<canvas id="toileCv" style="position:fixed;left:0;top:0;width:390px;height:620px;opacity:.01;pointer-events:none;z-index:-1"></canvas>
+
+<div class="page">
+<h1>L'Aura et le Cercle — trois partis</h1>
+<p class="lede">Chaque cadre fait <b>390 × 844</b>, à l'échelle 1. Aplats francs, aucun dégradé, aucun filet,
+aucune ombre, aucun ton sur ton. Cinq faces : Bricolage 600/700, Apfel 400, ApfelMid 500, Fraunces
+au seul mot-marque. <b>Les dalles sont peintes par le vrai moteur</b> (<code>Toile.dalleTrame</code>,
+échelle 1) — aucune forme reconstruite. Tout est atteignable sans déplier.</p>
+
+<div class="box">
+<h3>L'exercice, fait avant de dessiner — et il a échoué au premier tour</h3>
+<p><b>Première idée</b> (la piste de Tom) : le trait comme graphe, le Noyau au-dessus, les disques en
+dessous. <b>Son principe, en une phrase :</b> « l'Aura est une <i>durée</i> — le trait du produit
+allongé sur des semaines, et tout ce qu'on lit se lit sur lui. »</p>
+<p><b>Premier essai, raté.</b> J'ai opposé « la constellation » (aucun temps) et « la page de mots »
+(aucune forme). Elles <b>peuvent coexister</b> avec un trait déroulé : un trait en tête, une
+constellation dessous, une phrase en bas — c'est <i>exactement</i> l'Aura d'aujourd'hui, un empilement
+de blocs. C'étaient des dérivés, pas des concurrents. Le fork n'est pas la FORME.</p>
+<p><b>Second essai.</b> Le fork est <b>le sujet</b> : la seule question à laquelle l'écran répond.
+« D'où je viens » (une durée) · « Où j'en suis » (un instant) · « Avec qui » (une compagnie).
+Un écran n'a qu'un sujet : celui qui prend l'axe premier chasse les deux autres.
+<b>Ils ne peuvent pas coexister.</b></p>
+</div>
+
+<h2><span class="n">A ·</span> LE TRAIT DÉROULÉ</h2>
+<p class="q">La question : « d'où je viens ». L'Aura est une DURÉE.</p>
+<p class="pr">Le trait du produit — celui qu'on trace au doigt pour tenir — est <b>allongé sur huit
+semaines</b>. Il ne monte pas, il ne descend pas : c'est le trait, à sa hauteur. Ce qui varie, c'est
+ce qui est <b>planté dessus</b> : chaque parole tenue est une vraie dalle posée sur la ligne, chaque
+parole encore ouverte un point sous la ligne. On remonte le temps au doigt.
+<br>Le Noyau au-dessus, les disques en dessous — la piste de Tom, prise au mot.
+<br><b>Objection, et sa réponse :</b> ce n'est pas un graphe déguisé. Une courbe code une valeur par
+sa hauteur ; ici <b>la ligne ne code rien</b> — c'est une frise, elle porte des événements.
+Rien n'est comparable, il n'y a qu'à remonter.</p>
+<div class="row" id="rowA"></div>
+
+<h2><span class="n">B ·</span> LA PIERRE</h2>
+<p class="q">La question : « où j'en suis ». L'Aura est un INSTANT.</p>
+<p class="pr">Aucune histoire, aucune liste, aucun graphe. Le Noyau prend <b>presque tout l'écran</b>
+— sa matière est la vraie dalle du moteur, découpée en disque, l'arc autour dit les proportions.
+Dessous : <b>un mot</b>. Sous le mot : <b>une phrase</b>. C'est tout. On descend, on trouve les gens,
+sans un chiffre.
+<br>Le plus radical et le plus chaleureux : on comprend en une seconde, il n'y a rien à lire.
+<br><b>Son risque, dit franchement :</b> peut-être trop peu. Tout repose sur le mot et la phrase —
+s'ils sonnent creux, l'écran est vide. Le temps ne disparaît pas, il <b>passe au Cercle</b>, et il y
+revient <b>en mots</b>, jamais en courbe : « il y a huit semaines, le mot était <i>naissante</i> ».</p>
+<div class="row" id="rowB"></div>
+
+<h2><span class="n">C ·</span> LA TABLÉE</h2>
+<p class="q">La question : « avec qui ». L'Aura est une COMPAGNIE.</p>
+<p class="pr">L'écran n'est pas une mesure de toi : c'est une <b>compagnie</b>. Toi en haut, les tiens
+en dessous, chacun un anneau <b>du même diamètre</b>, dans l'ordre alphabétique, avec son prénom et
+rien d'autre. La couleur de chaque piste est celle de <b>sa Nuée</b>, jamais de sa performance.
+<br>C'est le parti que la spécification anticipait déjà sans le savoir : <b>§2.9 — « Le Cercle ajoute
+un second anneau à +9 px, épaisseur 0,7 × »</b>. Toute la mécanique du Cercle y est écrite, et elle
+est <b>structurellement symétrique</b> : à diamètre et épaisseur égaux, deux anneaux concentriques ne
+peuvent pas se lire comme un classement.
+<br><b>Son risque :</b> l'écran parle moins de toi. Le chiffre global existe, une fois, en haut.</p>
+<div class="row" id="rowC"></div>
+
+<h2>Ce que je recommande</h2>
+<div class="box">
+<p><b>A · le trait déroulé</b>, avec <b>le haut de B greffé dessus</b> : le mot, gros, sous le Noyau.
+A est le seul des trois qui tienne la promesse déjà écrite en tête d'écran — « ta parole dans le
+temps » — sans rien mesurer, et il donne au Cercle une réciprocité <b>évidente</b> : le trait a deux
+moitiés, c'est le geste du produit depuis le premier jour. B est plus beau mais laisse le temps
+sans forme ; C est le plus sûr côté notation mais parle le moins de toi.</p>
+<p><b>Ce qui vaut dans les trois, et qui ne se rediscute pas :</b> aucun chiffre attaché à une
+personne · un seul chiffre, le tien · grille d'anneaux, jamais de rangées · ordre alphabétique ·
+aucun superlatif · les graphes, les commentaires sur la hausse et la réciprocité passent au Cercle.</p>
+</div>
+
+<h2>La page du Cercle — une seule, pour les trois</h2>
+<p class="pr">Ce n'est pas un parti : c'est une décision. <b>On voit quoi, jamais combien.</b>
+La page ne dit pas ce qu'on aurait, elle le <b>montre voilé</b> — la mécanique du §3.8, la seule
+superposition autorisée du produit : le voile à <b>2,4 px</b>, l'encart <b>net</b> posé dessus.
+<br>Le prix s'écrit <b>29 € · soit 2,42 €/mois · −39 %</b>, et l'année est le choix primaire.
+<br><b>Rien n'apparaît sur ce que les autres voient</b> — aucun ✦, aucune marque, aucun voile sur un
+partage. Personne ne doit pouvoir savoir que quelqu'un ne paie pas. C'est une règle de code, pas une
+ligne de vente : l'écrire sur la page ferait penser à ce qu'elle protège.</p>
+<div class="row" id="rowP"></div>
+
+</div>
+
+<script>
+var state={structure:'encre'};
+function cc(){return [200,180,255];}
+function render(){}
+</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PLANCHE — trois partis pour l'Aura, une page pour le Cercle.
+   Aplats francs. Les dalles viennent du moteur (Toile.dalleTrame, k=1).
+   ══════════════════════════════════════════════════════════════════════ */
+var MENTHE='#2BE88C', TERRA='#F07A2E', PERI='#8FA0FF',
+    BLEU='#3A54FF', MAUVE='#8A5CF0', FRAMB='#FA2258',
+    CREME='#F4EEE1', ENCRE='#16171B';
+
+/* le jeu de la planche : les gens, par ordre alphabétique, JAMAIS par valeur */
+var GENS=[
+  {n:'Adrien', piste:BLEU,  toi:[.62,.23,.15], eux:[.55,.30,.15]},
+  {n:'Marion', piste:MAUVE, toi:[.80,.20,.00], eux:[.70,.20,.10]},
+  {n:'Rachel', piste:TERRA, toi:[.34,.33,.33], eux:[.40,.35,.25]}
+];
+var NUEES=[{n:'le potager',piste:MAUVE,p:[.60,.28,.12],pid:4},
+           {n:'la course',  piste:BLEU, p:[.72,.18,.10],pid:5},
+           {n:'la maison',  piste:TERRA,p:[.45,.30,.25],pid:6}];
+
+function el(tag,cls,css,txt){var n=document.createElement(tag);
+  if(cls)n.className=cls; if(css)n.style.cssText=css;
+  if(txt!=null)n.textContent=txt; return n;}
+
+/* ── L'ANNEAU ────────────────────────────────────────────────────────────
+   piste pleine (teinte de la nature) + arcs des trois états, bout franc.
+   Aucun dégradé : trois aplats d'arc, posés bout à bout.               */
+function anneau(cv,d,lw,parts,piste,second){
+  var D=2; cv.width=d*D; cv.height=d*D; cv.style.width=d+'px'; cv.style.height=d+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,d,d);
+  var cx=d/2, cy=d/2, R=(d-lw)/2 - (second?(9+lw*0.7):0);
+  function ring(r,w,segs){
+    g.lineWidth=w; g.lineCap='butt';
+    g.strokeStyle=piste; g.beginPath(); g.arc(cx,cy,r,0,6.2832); g.stroke();
+    var a=-Math.PI/2;
+    var cols=[MENTHE,PERI,TERRA];
+    for(var i=0;i<segs.length;i++){ if(segs[i]<=0)continue;
+      var a2=a+segs[i]*6.2832;
+      g.strokeStyle=cols[i]; g.beginPath(); g.arc(cx,cy,r,a,a2); g.stroke(); a=a2; }
+  }
+  ring(R,lw,parts);
+  if(second) ring(R+9+lw*0.7, lw*0.7, second);
+  return {cx:cx,cy:cy,R:R};
+}
+
+/* ── LE VISAGE — §2.10, silhouette crème sur couleur de nature ───────── */
+function visage(d,fond){
+  var i='vc'+(visage._n=(visage._n||0)+1);
+  var s='<svg width="'+d+'" height="'+d+'" viewBox="0 0 '+d+' '+d+'">'
+   +'<defs><clipPath id="'+i+'"><circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'"/></clipPath></defs>'
+   +'<g clip-path="url(#'+i+')">'
+   +'<circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'" fill="'+fond+'"/>'
+   +'<circle cx="'+(d/2)+'" cy="'+(0.78*d/2)+'" r="'+(0.19*d)+'" fill="'+CREME+'"/>'
+   +'<path d="M'+(d/2-0.30*d)+' '+(0.98*d)+' A '+(0.30*d)+' '+(0.27*d)+' 0 0 1 '
+     +(d/2+0.30*d)+' '+(0.98*d)+' Z" fill="'+CREME+'"/></g></svg>';
+  return s;
+}
+
+/* ── LE TRAIT — deux points, une courbe quadratique. Jamais de segment. ── */
+function trait(cv,w,h,o){
+  o=o||{}; var D=2; cv.width=w*D; cv.height=h*D;
+  cv.style.width=w+'px'; cv.style.height=h+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,w,h);
+  var r=7, x0=r+1, x1=w-r-1, mid=o.mid||h/2, amp=o.amp||16, per=o.per||1.5;
+  function courbe(y0,sens,col,ep){
+    g.lineWidth=ep||3; g.lineCap='round'; g.strokeStyle=col;
+    var N=64, pts=[];
+    for(var i=0;i<=N;i++){var t=i/N,x=x0+(x1-x0)*t;
+      pts.push([x, y0 + sens*amp*Math.sin(t*per*6.2832)*Math.sin(Math.PI*t)]);}
+    g.beginPath(); g.moveTo(pts[0][0],pts[0][1]);
+    for(var j=1;j<pts.length-1;j++){
+      var mx=(pts[j][0]+pts[j+1][0])/2, my=(pts[j][1]+pts[j+1][1])/2;
+      g.quadraticCurveTo(pts[j][0],pts[j][1],mx,my);}
+    g.quadraticCurveTo(pts[N-1][0],pts[N-1][1],pts[N][0],pts[N][1]); g.stroke();
+    return pts;
+  }
+  var A=courbe(mid,1,o.col||PERI,3);
+  var B=o.double? courbe(mid,-1,o.col2||MAUVE,3) : null;
+  g.fillStyle=o.col||PERI;
+  g.beginPath(); g.arc(x0,mid,r,0,6.2832); g.fill();
+  g.beginPath(); g.arc(x1,mid,r,0,6.2832); g.fill();
+  cv.__A=A; cv.__B=B; cv.__mid=mid;
+  return A;
+}
+
+/* ── LA VRAIE DALLE ──────────────────────────────────────────────────── */
+function dalle(pid,px){
+  var c=document.createElement('canvas'); c.width=px*2; c.height=px*2;
+  c.style.cssText='width:'+px+'px;height:'+px+'px;display:block';
+  try{ window.Toile && Toile.dalleTrame(c,pid,1); }catch(e){}
+  return c;
+}
+
+/* ── LE CADRE ────────────────────────────────────────────────────────── */
+function cadre(theme){
+  var f=el('div','fr '+(theme==='lt'?'lt':'dk'));
+  f.__ink = theme==='lt'? ENCRE : CREME;
+  f.__fond= theme==='lt'? CREME : ENCRE;
+  return f;
+}
+function plateau(f,titre){
+  var p=el('div','plat');
+  p.appendChild(el('div','t',null,titre));
+  p.appendChild(el('div','c',null,'✕ FERMER'));
+  f.appendChild(p); return p;
+}
+function eb(f,x,y,txt,col){ var n=el('div','eb',
+  'left:'+x+'px;top:'+y+'px;'+(col?'color:'+col:''), txt); f.appendChild(n); return n;}
+function txt(f,cls,x,y,w,fs,fw,t,extra){
+  var n=el('div',cls,'left:'+x+'px;top:'+y+'px;width:'+w+'px;font-size:'+fs+'px;'
+    +(fw?'font-weight:'+fw+';':'')+(extra||''), t);
+  f.appendChild(n); return n;}
+function bouton(f,y,t,plein,col,ink){
+  var b=el('div','btn'+(plein?' plein':''),'top:'+y+'px;'
+    +(plein?'background:'+col+';color:'+ink+';':''));
+  b.appendChild(el('span',null,null,t)); f.appendChild(b); return b;}
+function legPos(f,y,ink){
+  var n=el('div','eb','left:24px;top:'+y+'px;width:342px;text-align:center;line-height:19px;'
+    +'text-transform:none;letter-spacing:.10em',
+    'dedans, ce que tu tiens · dehors, ce qu’on te tient');
+  f.appendChild(n); return n;}
+function legende(f,x,y){
+  var L=el('div','leg','left:'+x+'px;top:'+y+'px');
+  [['tenues',MENTHE],['en cours',PERI],['à tenir',TERRA]].forEach(function(p){
+    var s=el('span'); s.appendChild(el('i',null,'background:'+p[1]));
+    s.appendChild(document.createTextNode(p[0])); L.appendChild(s);});
+  f.appendChild(L); return L;}
+
+/* la grille d'anneaux — JAMAIS une rangée de barres, JAMAIS un tri par valeur */
+function grille(f,y,d,gens,cercle,ink,centre){
+  var n=gens.length, ecart=26, tot=n*d+(n-1)*ecart, x0=(390-tot)/2;
+  gens.forEach(function(p,i){
+    var x=x0+i*(d+ecart);
+    var box=el('div',null,'left:'+x+'px;top:'+y+'px;width:'+d+'px;height:'+d+'px');
+    var cv=document.createElement('canvas');
+    cv.style.cssText='position:absolute;left:0;top:0';
+    box.appendChild(cv); f.appendChild(box);
+    anneau(cv,d,Math.round(d*0.104),p.toi||p.p,p.piste, cercle?(p.eux||p.p):null);
+    var vd=Math.round(d*0.62), vx=x+(d-vd)/2, vy=y+(d-vd)/2;
+    var v=el('div',null,'left:'+vx+'px;top:'+vy+'px;width:'+vd+'px;height:'+vd+'px');
+    if(centre==='dalle') v.appendChild(dalle(p.pid||1,vd));
+    else v.innerHTML=visage(vd,p.piste);
+    f.appendChild(v);
+    txt(f,'bg600',x-14,y+d+11,d+28,13.5,600,p.n,'text-align:center;color:'+ink);
+  });
+}
+</script>
+<script>
+/* ══════════ PARTI A — LE TRAIT DÉROULÉ ══════════ */
+function partiA(theme,cercle){
+  var f=cadre(theme), ink=f.__ink, fond=f.__fond;
+  plateau(f,'Aura');
+  eb(f,24,118,'ta parole dans le temps');
+
+  /* le Noyau — le visage au centre, l'arc autour */
+  var d=128, nx=(390-d)/2;
+  var box=el('div',null,'left:'+nx+'px;top:150px;width:'+d+'px;height:'+d+'px');
+  var cv=document.createElement('canvas'); cv.style.cssText='position:absolute;left:0;top:0';
+  box.appendChild(cv); f.appendChild(box);
+  anneau(cv,d,13,[.62,.24,.14],BLEU, cercle?[.55,.30,.15]:null);
+  var vd=76, v=el('div',null,'left:'+(nx+(d-vd)/2)+'px;top:'+(150+(d-vd)/2)+'px;width:'+vd+'px;height:'+vd+'px');
+  v.innerHTML=visage(vd,BLEU); f.appendChild(v);
+
+  txt(f,'bg700',24,290,342,34,700,'solide','text-align:center;letter-spacing:-.02em;line-height:42px');
+  eb(f,24,342,'harmonie 67').style.cssText+='width:342px;text-align:center';
+  legende(f,79,378);
+
+  eb(f,24,420, cercle?'vos huit dernières semaines':'tes huit dernières semaines');
+
+  /* LE TRAIT DÉROULÉ — la frise. La ligne ne code aucune valeur. */
+  var tw=342, th=118, tc=document.createElement('canvas');
+  var TY=440; tc.style.cssText='left:24px;top:'+TY+'px';
+  f.appendChild(tc);
+  var pts=trait(tc,tw,th,{mid:59,amp:17,per:1.5,double:cercle,col:PERI,col2:MAUVE});
+
+  /* les paroles tenues : de VRAIES dalles, posées sur la ligne */
+  var poses=[[0.16,3,26],[0.30,1,22],[0.44,5,30],[0.58,2,24],[0.72,4,28],[0.88,6,26]];
+  poses.forEach(function(p){
+    var i=Math.round(p[0]*(pts.length-1)), P=pts[i], s=p[2];
+    var w=el('div',null,'left:'+(24+P[0]-s/2)+'px;top:'+(TY+P[1]-s+5)+'px;width:'+s+'px;height:'+s+'px');
+    w.appendChild(dalle(p[1],s)); f.appendChild(w);
+  });
+  /* ce qui reste ouvert : des points SOUS la ligne, jamais un compte */
+  [0.23,0.37,0.51,0.80].forEach(function(t){
+    var i=Math.round(t*(pts.length-1)), P=pts[i];
+    f.appendChild(el('div',null,'left:'+(24+P[0]-4)+'px;top:'+(TY+P[1]+12)+'px;'
+      +'width:8px;height:8px;border-radius:50%;background:'+TERRA));
+  });
+  /* avec le Cercle : leur moitié porte AUSSI ses dalles — la réciprocité se VOIT */
+  if(cercle && tc.__B){
+    [[0.22,7,22],[0.40,8,26],[0.63,9,24],[0.82,2,22]].forEach(function(p){
+      var i=Math.round(p[0]*(tc.__B.length-1)), P=tc.__B[i], s=p[2];
+      var w=el('div',null,'left:'+(24+P[0]-s/2)+'px;top:'+(TY+P[1]-5)+'px;width:'+s+'px;height:'+s+'px');
+      w.appendChild(dalle(p[1],s)); f.appendChild(w);
+    });
+  }
+  eb(f,24,566,'il y a 8 semaines');
+  var r=eb(f,24,566,'aujourd’hui'); r.style.cssText='left:24px;top:566px;width:342px;text-align:right';
+
+  eb(f,24,600,'avec qui');
+  grille(f,626,58,GENS,cercle,ink);
+  if(cercle) legPos(f,728,ink);
+  bouton(f,764,'Partager mon Noyau');
+  return f;
+}
+
+/* ══════════ PARTI B — LA PIERRE ══════════ */
+function partiB(theme,cercle){
+  var f=cadre(theme), ink=f.__ink;
+  plateau(f,'Aura');
+  eb(f,24,118,'où en est ta parole');
+
+  var d=260, nx=(390-d)/2, ny=152;
+  var box=el('div',null,'left:'+nx+'px;top:'+ny+'px;width:'+d+'px;height:'+d+'px');
+  var cv=document.createElement('canvas'); cv.style.cssText='position:absolute;left:0;top:0';
+  box.appendChild(cv); f.appendChild(box);
+  anneau(cv,d,26,[.62,.24,.14],BLEU, cercle?[.55,.30,.15]:null);
+  /* au centre : TA matière — la vraie dalle du moteur, à l'échelle 1 */
+  var s=cercle?128:150, w=el('div',null,'left:'+(nx+(d-s)/2)+'px;top:'+(ny+(d-s)/2)+'px;'
+    +'width:'+s+'px;height:'+s+'px'); w.appendChild(dalle(3,s)); f.appendChild(w);
+
+  txt(f,'bg700',24,430,342,52,700,'solide','text-align:center;letter-spacing:-.03em;line-height:62px');
+  eb(f,24,504,'harmonie 67').style.cssText+='width:342px;text-align:center';
+  txt(f,'ap',24,cercle?534:540,342,17,400,
+    cercle? 'Il y a huit semaines, le mot était naissante. Vous avez tenu quinze paroles depuis.'
+          : 'Tu tiens parole. Six sont en chemin, trois attendent que tu les reprennes.',
+    'text-align:center;line-height:27px;opacity:.82');
+
+  var yq = cercle?604:616;
+  eb(f,24,yq,'avec qui');
+  grille(f,yq+28,58,GENS,cercle,ink);
+  if(cercle) legPos(f,730,ink);
+  bouton(f,764,'Partager mon Noyau');
+  return f;
+}
+
+/* ══════════ PARTI C — LA TABLÉE ══════════ */
+function partiC(theme,cercle){
+  var f=cadre(theme), ink=f.__ink;
+  plateau(f,'Aura');
+  eb(f,24,118,'avec qui ta parole vit');
+
+  var d=96, nx=(390-d)/2;
+  var box=el('div',null,'left:'+nx+'px;top:152px;width:'+d+'px;height:'+d+'px');
+  var cv=document.createElement('canvas'); cv.style.cssText='position:absolute;left:0;top:0';
+  box.appendChild(cv); f.appendChild(box);
+  anneau(cv,d,10,[.62,.24,.14],BLEU, cercle?[.55,.30,.15]:null);
+  var vd=58, v=el('div',null,'left:'+(nx+(d-vd)/2)+'px;top:'+(152+(d-vd)/2)+'px;width:'+vd+'px;height:'+vd+'px');
+  v.innerHTML=visage(vd,BLEU); f.appendChild(v);
+  txt(f,'bg700',24,259,342,16,700,'toi','text-align:center');
+  eb(f,24,290,'harmonie 67').style.cssText+='width:342px;text-align:center';
+
+  eb(f,24,338,'les tiens');
+  grille(f,370,78,GENS,cercle,ink);
+  if(cercle) legPos(f,490,ink);
+  eb(f,24,cercle?534:506,'les nuées');
+  grille(f,cercle?562:538,58,NUEES,cercle,ink,'dalle');
+  txt(f,'ap',24,cercle?702:680,342,16,400,
+    'Ta parole vit ici, avec eux.',
+    'text-align:center;line-height:25px;opacity:.82');
+  bouton(f,762,'Partager mon Noyau');
+  return f;
+}
+</script>
+<script>
+/* ══════════ LA PAGE DU CERCLE — on voit QUOI, jamais COMBIEN ══════════ */
+function pageCercle(theme){
+  var f=cadre(theme), ink=f.__ink, fond=f.__fond;
+  plateau(f,'Le Cercle');
+
+  txt(f,'bg700',24,124,342,34,700,'Ta parole,\nvue des deux côtés.',
+    'letter-spacing:-.02em;line-height:36px;white-space:pre-line');
+
+  /* ── LA DÉMONSTRATION : ce qu'on n'a pas, VOILÉ à 2,4 px.
+       Par-dessus, l'encart NET. C'est la SEULE superposition du produit (§3.8). */
+  var SY=200, SH=230;
+  var sc=el('div','voile','left:24px;top:'+SY+'px;width:342px;height:'+SH+'px;overflow:hidden');
+  var tc=document.createElement('canvas'); tc.style.cssText='position:absolute;left:0;top:0';
+  sc.appendChild(tc);
+  trait(tc,342,130,{mid:65,amp:22,per:1.5,double:true,col:PERI,col2:MAUVE});
+  /* et, sous le trait, les anneaux doublés : la même chose, vue de près */
+  [[36,MAUVE],[142,BLEU],[248,TERRA]].forEach(function(p){
+    var c=document.createElement('canvas'); c.style.cssText='position:absolute;left:'+p[0]+'px;top:152px';
+    sc.appendChild(c); anneau(c,58,6,[.62,.24,.14],p[1],[.55,.30,.15]);
+  });
+  f.appendChild(sc);
+
+  var enc=el('div','enc','top:'+(SY+(SH-90)/2)+'px;background:'+(theme==='lt'?ENCRE:CREME)+';color:'+MAUVE);
+  enc.appendChild(el('div','t',null,'✦ Le Cercle'));
+  enc.appendChild(el('div','s',null,'ce que tes proches tiennent envers toi'));
+  f.appendChild(enc);
+
+  /* ── TROIS CHOSES, MONTRÉES — jamais énumérées en texte ── */
+  eb(f,24,456,'ce qu’il ouvre');
+  var vign=[
+    {t:'réciproquement', dessin:'trait'},
+    {t:'le temps',       dessin:'frise'},
+    {t:'Nuée par Nuée',  dessin:'anneaux'}
+  ];
+  vign.forEach(function(v,i){
+    var x=24+i*(106+12);
+    var w=el('div','voile','left:'+x+'px;top:484px;width:106px;height:88px;overflow:hidden');
+    var c=document.createElement('canvas'); c.style.cssText='position:absolute;left:0;top:0';
+    w.appendChild(c); f.appendChild(w);
+    if(v.dessin==='trait')  trait(c,106,88,{mid:44,amp:16,per:1,double:true,col:PERI,col2:MAUVE});
+    else if(v.dessin==='frise'){
+      trait(c,106,88,{mid:62,amp:10,per:1.5,col:PERI});
+      var g=c.getContext('2d');
+      [18,40,62,86].forEach(function(px,k){ g.fillStyle=[MENTHE,TERRA,MENTHE,MAUVE][k];
+        g.beginPath(); g.arc(px,40-k*5,9,0,6.2832); g.fill(); });
+    } else {
+      c.width=212; c.height=176; c.style.width='106px'; c.style.height='88px';
+      var g2=c.getContext('2d'); g2.setTransform(2,0,0,2,0,0);
+      [[28,30,MAUVE],[76,30,BLEU],[28,66,TERRA],[76,66,MAUVE]].forEach(function(p){
+        g2.lineWidth=5; g2.strokeStyle=p[2];
+        g2.beginPath(); g2.arc(p[0],p[1],14,0,6.2832); g2.stroke();
+        g2.lineWidth=3.5; g2.strokeStyle=MENTHE;
+        g2.beginPath(); g2.arc(p[0],p[1],14,-1.57,0.9); g2.stroke(); });
+    }
+    txt(f,'bg600',x,580,106,13.5,600,v.t,'text-align:center;line-height:18px');
+  });
+
+  /* ── LE PRIX — 29 € · soit 2,42 €/mois · −39 % ── */
+  txt(f,'bg700',24,640,342,46,700,'29 €','text-align:center;letter-spacing:-.02em;line-height:54px');
+  eb(f,24,700,'soit 2,42 €/mois · −39 %').style.cssText+='width:342px;text-align:center';
+  bouton(f,732,'Prendre l’année',true,MAUVE,CREME);
+  txt(f,'ap',24,806,342,13,400,'ou 3,99 €/mois · 14 jours d’essai · annulable à tout moment',
+    'text-align:center;line-height:19px;opacity:.80');
+  return f;
+}
+
+/* ══════════ MONTAGE ══════════ */
+function pose(row,frame,cap){
+  var fg=document.createElement('figure'); fg.appendChild(frame);
+  var fc=document.createElement('figcaption'); fc.innerHTML=cap; fg.appendChild(fc);
+  document.getElementById(row).appendChild(fg);
+}
+window.addEventListener('load',function(){
+  try{ window.Toile_resize && window.Toile_resize();
+       window.Toile && Toile.sync([1,2,3,4,5,6,7,8,9]); }catch(e){}
+  setTimeout(function(){
+    pose('rowA',partiA('dk',false),'A · <b>gratuit</b> · sombre');
+    pose('rowA',partiA('lt',false),'A · <b>gratuit</b> · clair');
+    pose('rowA',partiA('dk',true), 'A · <b>avec le Cercle</b> — le trait a deux moitiés');
+    pose('rowB',partiB('dk',false),'B · <b>gratuit</b> · sombre');
+    pose('rowB',partiB('lt',false),'B · <b>gratuit</b> · clair');
+    pose('rowB',partiB('dk',true), 'B · <b>avec le Cercle</b> — la pierre se dédouble');
+    pose('rowC',partiC('dk',false),'C · <b>gratuit</b> · sombre');
+    pose('rowC',partiC('lt',false),'C · <b>gratuit</b> · clair');
+    pose('rowC',partiC('dk',true), 'C · <b>avec le Cercle</b> — §2.9, le second anneau');
+    pose('rowP',pageCercle('dk'),'la page du Cercle · sombre');
+    pose('rowP',pageCercle('lt'),'la page du Cercle · clair');
+    window.__pret=true;
+  },700);
+});
+</script>
+</body></html>

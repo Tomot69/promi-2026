@@ -1,0 +1,13 @@
+SONDE : porte naïve posée
+OK    Aura · Ce que tu as tenu : un glissement vertical sur « rapporter le livre » fait défiler la colonne  scrollTop 0 → 145 (course possible 150)
+RATÉ  Aura · Ce que tu as tenu : … et n'ouvre AUCUNE fiche  {'fiche': True, 'cur': 139}
+RATÉ  Aura · Ce que tu as tenu : un toucher qui tremble de 4 pt ouvre la fiche de « rapporter le livre »  {'fiche': False, 'cur': 139}
+RATÉ  Aura · Ce que tu as tenu : un toucher net ouvre SA fiche (Promi 139)  {'fiche': False, 'cur': 139}
+RATÉ  fiche de Rachel · Tenu ensemble : un glissement vertical sur « rapporter le livre » fait défiler la colonne  scrollTop 0 → None (course possible 84)
+RATÉ  fiche de Rachel · Tenu ensemble : … et n'ouvre AUCUNE fiche  {'fiche': True, 'cur': 139}
+OK    fiche de Rachel · Tenu ensemble : un toucher qui tremble de 4 pt ouvre la fiche de « rapporter le livre »  {'fiche': True, 'cur': 139}
+OK    fiche de Rachel · Tenu ensemble : un toucher net ouvre SA fiche (Promi 139)  {'fiche': True, 'cur': 139}
+OK    un seul chemin : l'appel nu openPerson EST window.openPerson, la fiche refaite  {'win': 'function', 'nue': True, 'refaite': True}
+
+❌  5 RATÉ(S) sur 9
+exit 1

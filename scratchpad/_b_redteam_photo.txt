@@ -1,0 +1,37 @@
+
+── la fiche · Promi ──
+Promi · le bouton est là                                 OK  
+Promi · il est petit                                     OK  
+Promi · il est discret                                   OK  
+Promi · il est en bas à droite                           OK  
+Promi · l'écart au trait ne bouge pas                    OK  
+Promi · la photo claire occupe la boîte de la dalle      OK  
+Promi · entête lisible sur photo claire                  OK  
+Promi · la photo claire ne passe pas sous l'onde         OK  
+Promi · la photo sombre occupe la boîte de la dalle      OK  
+Promi · entête lisible sur photo sombre                  OK  
+Promi · la photo sombre ne passe pas sous l'onde         OK  
+Promi · le même bouton revient à la dalle                OK  
+
+── la fiche · Chiche ──
+Chiche · le bouton est là                                OK  
+Chiche · il est petit                                    OK  
+Chiche · il est discret                                  OK  
+Chiche · il est en bas à droite                          OK  
+Chiche · l'écart au trait ne bouge pas                   OK  
+Chiche · la photo claire occupe la boîte de la dalle     OK  
+Chiche · entête lisible sur photo claire                 OK  
+Chiche · la photo claire ne passe pas sous l'onde        OK  
+Chiche · la photo sombre occupe la boîte de la dalle     OK  
+Chiche · entête lisible sur photo sombre                 OK  
+Chiche · la photo sombre ne passe pas sous l'onde        OK  
+Chiche · le même bouton revient à la dalle               OK  
+
+── la photo dans les listes (Q53) ──
+Q53 · une carte d'Index montre la photo                  OK  
+Q53 · un bandeau du Fil montre la photo                  OK  
+
+── la page + ──
+la page + porte le bouton                                OK  
+
+27/27

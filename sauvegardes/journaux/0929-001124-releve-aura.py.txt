@@ -1,0 +1,50 @@
+
+═══ L'AURA — la Pelote dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    6
+    [sombre] la légende : 22.0 au-dessus, 68.0 en dessous (attendu 22.0 et 28.0)
+    [sombre] « Ce que tu as tenu » à 763 au lieu de 723.3
+    [sombre] le bouton (24, 675, 342, 60) au lieu de (24, 635.3, 342, 60)
+    [clair] la légende : 22.0 au-dessus, 68.0 en dessous (attendu 22.0 et 28.0)
+    [clair] « Ce que tu as tenu » à 763 au lieu de 723.3
+    [clair] le bouton (24, 675, 342, 60) au lieu de (24, 635.3, 342, 60)
+écarts de style              6
+    [sombre] « 5 » : un chiffre sur l'Aura (l'Aura sans chiffre, 10 sept.)
+    [sombre] « 5 » : un chiffre sur l'Aura (l'Aura sans chiffre, 10 sept.)
+    [sombre] « 1 » : un chiffre sur l'Aura (l'Aura sans chiffre, 10 sept.)
+    [clair] « 5 » : un chiffre sur l'Aura (l'Aura sans chiffre, 10 sept.)
+    [clair] « 5 » : un chiffre sur l'Aura (l'Aura sans chiffre, 10 sept.)
+    [clair] « 1 » : un chiffre sur l'Aura (l'Aura sans chiffre, 10 sept.)
+collisions                   0
+débordements                 0
+présence peinte              0
+données                      0
+les huit acquis              1
+    8 bis · aucune dalle tenue touchable dans « Ce que tu as tenu »
+densité                      0
+air de la colonne            0
+la matière                   0
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 5 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi
+   air [sombre]         phrase → disques : 1 l. 36.7 · 1 l. 36.7 · 2 l. 37.4 · 1 l. 36.7 · 1 l. 36.7 · à l'encre 1 l. 38.0 · légende à l'encre (30.5, 31) · libellés → bouton -333.8 · la colonne défile de 341 pt
+   matière [sombre]     boule ↔ page 129.7 (plancher 42) · contour 117.5 · dalles : 5 de face, |Δlum| la plus faible 43.3, médiane 60.4 · ΔE 26 36 20 30 21
+   air [clair]          phrase → disques : 1 l. 36.7 · 1 l. 36.7 · 2 l. 37.4 · 1 l. 36.7 · 1 l. 36.7 · à l'encre 1 l. 38.0 · légende à l'encre (30.5, 31) · libellés → bouton -333.8 · la colonne défile de 341 pt
+   matière [clair]      boule ↔ page 113.6 (plancher 42) · contour 122.8 · dalles : 5 de face, |Δlum| la plus faible 65.3, médiane 73.4 · ΔE 28 39 25 29 33
+   1 · rotation lente   0.0628 rad/s sur 2 s (décidé 0.0628, un tour en 100 s)
+   2 · prise, droite    Δlac +0.813 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.005 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.603 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 3.66 rad/s · éteint à 5.4 s · puis 0.0627 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 817 ms (dont peintre 20.2 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 15.6 → 10.4 → 7.1 → 6.1 → 5.4 → 5.3 → lisse · DERNIER PAS 0.19 niveau (médiane des 10 d'avant 4.75) · 17 images · empreinte retirée à 0.41 s
+   4 · toucher          p 0.762 à 250 ms, 0.948 à 950 ms · sous le doigt 92.6 % des pixels changent, hors de portée 0.00 %, bruit 0.00 % · revenu ≈ 0.4 s après le lâcher, écart au repos 45.97 %
+   5 · trace            en attente au lâcher : 6 · 1 → 7 caresse(s), gardée(s) : 0 · au repos, 13.2 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 0.70 s lâché sur place, 0.38 s lancé (54 %)
+   8 · personne         toucher sur « Adrien » → ouvre « Adrien », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.12 rad, personne d'ouvert
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.902
+   6 bis · monde        Studio encre → pixel · 5 dalles, 3 jugées · distance à la plantation / au courant : rapporter le livre 0.006/0.209 · arroser tous les s non jugée (A↔B 0.013) · monter la serre av 0.003/0.057 · le grand plongeoir 0.004/0.095 · planter un arbre non jugée (A↔B 0.007)
+
+palier 110000 · médiane 18.5 ms · 2121 images · plus longue image pendant l'élan : 817 ms (dont peintre 20.2 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 10 décision(s) · à la réouverture : palier 75000
+
+❌  13 ÉCARTS

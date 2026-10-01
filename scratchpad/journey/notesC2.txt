@@ -1,0 +1,5 @@
+Nuées init: 4
+pastilles Nuée: ['qui:Moi', 'titre:rendre le livr', 'quand:un jour', 'nuee:aucune Nuée', '?:le nom', '?:tout le monde']
+input nom présent: True
+Nuées après lancer: 5
+dernière Nuée: {'key': 'n1786756326480', 'nom': 'Anniv de Sam'}

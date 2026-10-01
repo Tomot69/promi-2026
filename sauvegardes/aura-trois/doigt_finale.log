@@ -1,0 +1,16 @@
+OK    Aura · Ce que tu as tenu : un glissement vertical sur « rapporter le livre » fait défiler la colonne  scrollTop 0 → 145 (course possible 150)
+OK    Aura · Ce que tu as tenu : … et n'ouvre AUCUNE fiche  {'fiche': False, 'cur': None}
+OK    Aura · Ce que tu as tenu : un toucher qui tremble de 4 pt ouvre la fiche de « rapporter le livre »  {'fiche': True, 'cur': 139}
+OK    Aura · Ce que tu as tenu : un toucher net ouvre SA fiche (Promi 139)  {'fiche': True, 'cur': 139}
+OK    fiche de Rachel · Tenu ensemble : un glissement vertical sur « rapporter le livre » fait défiler la colonne  scrollTop 0 → 84 (course possible 84)
+OK    fiche de Rachel · Tenu ensemble : … et n'ouvre AUCUNE fiche  {'fiche': False, 'cur': 139}
+OK    fiche de Rachel · Tenu ensemble : un toucher qui tremble de 4 pt ouvre la fiche de « rapporter le livre »  {'fiche': True, 'cur': 139}
+OK    fiche de Rachel · Tenu ensemble : un toucher net ouvre SA fiche (Promi 139)  {'fiche': True, 'cur': 139}
+OK    Aura · toucher le Noyau de Marion au vrai doigt ouvre SA fiche, et elle RESTE  fiche : Marion
+OK    Nuée · toucher « Rachel » dans « Avec Rachel, Adrien, +3 » au vrai doigt ouvre SA fiche, et elle RESTE  fiche : Rachel
+OK    toucher ✕ FERMER referme la fiche, au vrai doigt  
+OK    toucher la carte d'Index « planter un arbre » ouvre son Promi, au vrai doigt  {'fiche': True, 'cur': 125}
+OK    un seul chemin : l'appel nu openPerson EST window.openPerson, la fiche refaite  {'win': 'function', 'nue': True, 'refaite': True}
+
+✅  13 / 13
+exit 0

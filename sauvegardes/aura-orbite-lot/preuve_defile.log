@@ -1,0 +1,9 @@
+=== PREUVE DEFILE
+telle quelle                                                   —        —        ✅ passe
+le cadre ne se déclare plus (data-defile retiré)               PRIS     —        ✅ défaut pris
+le cadre ne rogne plus (overflow visible)                      PRIS     —        ✅ défaut pris
+un bloc sort par le CÔTÉ, dans la colonne                      PRIS     —        ✅ défaut pris
+le cadre défile SANS rogner sous le plateau (clip-path retiré) —        PRIS     ✅ défaut pris
+✅  les deux contrôles réécrits mordent
+
+[exited with code 0]

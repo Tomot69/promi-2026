@@ -1,0 +1,48 @@
+
+
+  ❌  90 PAIRE(S) DE TEXTES SE SONT RAPPROCHÉES
+      « deux blocs de texte ne doivent jamais être à moins de leur écart d'origine »
+
+   −14    page + [light]           .ph-hint«Je me promets se ret»     → .pc-t.on«Plein»                 (32 → 18)
+   −14    page + [light]           .pc-t«Sec»                         → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14    page + [light]           .pc-t«Peigné»                      → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14    page + [light]           .pc-t«Coulé»                       → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14    page + [light]           .pc-t.on«Plein»                    → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14.0  page + [light]           .pc-n«Sec»                         → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −14.0  page + [light]           .pc-n«Plein»                       → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −14.0  page + [light]           .pc-n«Peigné»                      → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −14.0  page + [light]           .pc-n«Coulé»                       → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −14    page + [dark]            .ph-hint«Je me promets se ret»     → .pc-t.on«Plein»                 (32 → 18)
+   −14    page + [dark]            .pc-t«Sec»                         → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14    page + [dark]            .pc-t«Peigné»                      → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14    page + [dark]            .pc-t«Coulé»                       → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14    page + [dark]            .pc-t.on«Plein»                    → #csBotBar«Peaufiner▾»           (39 → 25)
+   −14.0  page + [dark]            .pc-n«Sec»                         → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −14.0  page + [dark]            .pc-n«Plein»                       → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −14.0  page + [dark]            .pc-n«Peigné»                      → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −14.0  page + [dark]            .pc-n«Coulé»                       → #csBotBar«Peaufiner▾»           (46.7 → 32.7)
+   −5     page + [light]           .«me coucher»                      → .«le jour même»                 (24 → 19)
+   −5     page + [light]           .ph-li«de»                         → .«le jour même»                 (24 → 19)
+   −5     page + [light]           .ph-b«Je me promets»               → .ph-m.ph-vide«me coucherle jou  (13 → 8)
+   −5     page + [dark]            .«me coucher»                      → .«le jour même»                 (24 → 19)
+   −5     page + [dark]            .ph-li«de»                         → .«le jour même»                 (24 → 19)
+   −5     page + [dark]            .ph-b«Je me promets»               → .ph-m.ph-vide«me coucherle jou  (13 → 8)
+   −5     gardé de côté [light]    .ph-b«Je me promets»               → .ph-li.ph-elide«d’»             (16 → 11)
+   −5     gardé de côté [dark]     .ph-b«Je me promets»               → .ph-li.ph-elide«d’»             (16 → 11)
+   −4.0   Peaufiner Nuée [light]   .np-bas«visibles par la Nuée»      → .np-lab«COMMENTAIRES»           (59.2 → 55.2)
+   −4.0   Peaufiner Nuée [dark]    .np-bas«visibles par la Nuée»      → .np-lab«COMMENTAIRES»           (59.2 → 55.2)
+   −3.5   Fil [dark]               .ti-x«l»                           → [le grand plongeoir·?].s4-natl  (128.4 → 124.9)
+   −2.2   Peaufiner Nuée [light]   .np-ph«écris un mot…»              → .np-bas«visibles par les mem»   (6.5 → 4.3)
+   −2.2   Peaufiner Nuée [light]   .np-ph«présente la Nuée, so»       → .np-bas«visible par tous les»   (6.5 → 4.3)
+   −2.2   Peaufiner Nuée [dark]    .np-ph«écris un mot…»              → .np-bas«visibles par les mem»   (6.5 → 4.3)
+   −2.2   Peaufiner Nuée [dark]    .np-ph«présente la Nuée, so»       → .np-bas«visible par tous les»   (6.5 → 4.3)
+   −2     page + [light]           .«le jour même»                    → .ph-hint«Je me promets se ret»  (46 → 44)
+   −2     page + [light]           .ph-m.ph-vide«me coucherle jour mê → .ph-hint«Je me promets se ret»  (40 → 38)
+   −2     page + [dark]            .«le jour même»                    → .ph-hint«Je me promets se ret»  (46 → 44)
+   −2     page + [dark]            .ph-m.ph-vide«me coucherle jour mê → .ph-hint«Je me promets se ret»  (40 → 38)
+   −2     Peaufiner Nuée [light]   .np-val«Plein»                     → .pc-t«Sec»                      (7 → 5)
+   −2     Peaufiner Nuée [light]   .np-lab«LE TRAIT»                  → .pc-t.on«Plein»                 (11 → 9)
+   −2.0   Peaufiner Nuée [light]   #npNom«le potager»                 → .np-lab«LE TRAIT»               (62.5 → 60.5)
+   … et 50 autres.
+
+  Si le lot demandait ce resserrement, refige : python3 redteam_air.py --figer

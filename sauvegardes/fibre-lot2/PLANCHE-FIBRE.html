@@ -1,0 +1,44 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>L'Orbite — la fibre est le trait du monde</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+  html,body{margin:0;background:#16171B;color:#F4EEE1}
+  body{font-family:Apfel,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  .tete{padding:38px 40px 6px}
+  .tete h1{font-family:Bricolage,system-ui,sans-serif;font-weight:700;font-size:23px;margin:0 0 10px;letter-spacing:.01em}
+  .tete p{margin:0;font-size:14px;line-height:1.5;color:#A9A399;max-width:760px}
+  #pl{padding:24px 40px 60px}
+  .row{margin:0 0 30px}
+  .band{display:flex;align-items:flex-start;gap:16px}
+  .w{display:flex;flex-direction:column;gap:7px}
+  .w i{font-style:normal;font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:#6E6960}
+  .p{display:block;background:#0B0C12;border-radius:3px}
+  .p1{display:block}
+  .trio{align-items:center;min-height:120px}
+  .trio{display:flex;gap:9px;align-items:flex-start}
+  .row p{margin:11px 0 0;font-size:13px;line-height:1.45;color:#A9A399;max-width:820px}
+  .row p b{font-family:Bricolage,system-ui,sans-serif;font-weight:700;color:#F4EEE1;letter-spacing:.06em;font-size:12px}
+  /* l'hote du moteur : il doit etre DANS LE FLUX et son PARENT doit avoir une
+     taille — Toile_resize lit le parent, pas le canevas. */
+  #hote{position:absolute;left:-9999px;top:0;width:390px;height:620px}
+</style></head><body>
+
+<div class="tete">
+  <h1>La vraie dalle, en velours</h1>
+  <p>Le moteur peint lui-même chaque dalle — vraie trame, vrai pas, vraie couleur, vraies strates : aucune approximation n’est possible, c’est lui. La matière n’est plus un poil dessiné mais un traitement de surface : le bord s’effiloche sous l’échelle de l’œil, le grain se couche dans le sens du peignage, le lustre suit ce peignage, et le duvet s’allume là où la matière s’arrête. Aucun brin n’est jamais tracé — on ne peut donc plus en distinguer un.</p>
+</div>
+<div id="pl"></div>
+
+<div id="hote"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<script>function cc(){return 0;}function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js?v=1788574251"></script>
+<script src="/scratchpad/_f_velours.js?v=1788901324"></script>
+<script src="/scratchpad/_f_planche.js?v=1788900949"></script>
+<script>
+window.addEventListener('load',function(){
+  try{ Toile_resize(); Toile.sync([1,2,3,4,5,6,7,8,9,10,11,12,13,14]); }catch(e){}
+  setTimeout(function(){ window.batirPlanche(); },900);
+});
+</script></body></html>

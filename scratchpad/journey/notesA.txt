@@ -1,0 +1,11 @@
+init: {'n': 23, 'drafts': 0}
+chooser titre input présent: True
+titre après saisie: arroser les plantes
+quand après choix: un jour
+état après phrase: {'n': 23, 'drafts': 0}
+gcPromi display: flex
+après garde-cote: {'n': 24, 'drafts': 1}
+reprise: clicked 123
+titre repris (pastille): "arroser les plantes"
+geste planter effectué: True
+après plant: {'n': 24, 'drafts': 0}

@@ -1,0 +1,17 @@
+moteur de la Toile (l. 13605–15365, relevé, non jugé) : {'C·getImageData': 1893, 'A·découpe': 674, 'ok·pose': 674, 'C·putImageData': 660}
+poses 1 : 1, à leur taille (autorisées) : 1973
+
+A·découpe        OK  aucune prise
+B·redimension    OK  aucune prise
+C·getImageData   OK  aucune prise
+C·putImageData   OK  aucune prise
+D·fragment       OK  aucune prise
+E·motif          OK  aucune prise
+E·image          OK  aucune prise
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.

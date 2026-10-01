@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>Planche — repérage, Nuée, couleur</title>
+<link rel="stylesheet" href="planche-polices.css">
+<style>
+:root{--cr:#F4EEE1;--en:#16171B;--bleu:#3A54FF;--fra:#FA2258;--mau:#8A5CF0;--ter:#F07A2E;--men:#2BE88C}
+*{box-sizing:border-box}
+body{margin:0;background:#D9D4C8;color:#16171B;font-family:Apfel,system-ui,sans-serif;padding:40px 40px 120px}
+h1{font-family:Bricolage;font-weight:700;font-size:44px;margin:0 0 6px}
+h2{font-family:Bricolage;font-weight:700;font-size:30px;margin:64px 0 6px}
+h3{font-family:Bricolage;font-weight:700;font-size:20px;margin:26px 0 8px}
+.lede{font-size:16px;max-width:1040px;line-height:1.45;margin:0 0 8px}
+.mes{font-family:ApfelMid;font-size:13px;letter-spacing:.02em;max-width:1100px;line-height:1.55;background:#F4EEE1;border:2px solid #16171B;border-radius:30px;padding:16px 24px;margin:14px 0 22px}
+.mes b{font-family:Bricolage;font-weight:700}
+.rang{display:flex;gap:28px;overflow-x:auto;padding:6px 2px 10px;align-items:flex-start}
+.cap{font-family:ApfelMid;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin:10px 0 0;text-align:center}
+.f{position:relative;width:390px;height:844px;border-radius:44px;overflow:hidden;flex:none;background:#F4EEE1;--corps:#F4EEE1;--trait:#16171B;--txt:#16171B}
+.f.sombre{background:#16171B;--corps:#16171B;--trait:#F4EEE1;--txt:#F4EEE1}
+.f.long{height:auto;border-radius:44px}
+.im{position:absolute;left:0;top:0;width:390px;height:844px}
+.crop{position:absolute;left:0;width:390px;overflow:hidden}
+.crop img{position:absolute;left:0;width:390px;height:844px}
+.plat{position:absolute;left:24px;top:40px;width:342px;border:2px solid var(--trait);background:var(--corps);color:var(--txt)}
+.plat .ti{position:absolute;left:26px;top:14px;font-family:Bricolage;font-weight:700;font-size:27px;letter-spacing:-.945px;line-height:33px}
+.plat .li{position:absolute;left:26px;top:56px;font-family:ApfelMid;font-size:13px;letter-spacing:.02em;line-height:16px}
+.plat .fer{position:absolute;right:26px;top:34px;font-family:ApfelMid;font-size:12px;letter-spacing:.14em}
+/* variante regroupée */
+.grp{padding:0 0 40px}
+.gt{font-family:Bricolage;font-weight:700;font-size:20px;letter-spacing:-.3px;margin:22px 24px 10px;color:var(--txt)}
+.gg{display:grid;grid-template-columns:165px 165px;gap:12px;padding:0 24px}
+.gg img{width:165px;height:198px;display:block}
+.gl{display:grid;gap:12px;padding:0 16px}
+.gl img{width:358px;height:128px;display:block}
+/* l'entrée pour planter dans une Nuée */
+.plant{position:absolute;left:24px;width:342px;height:62px;border-radius:31px;background:var(--mau);border:2px solid var(--trait);display:flex;align-items:center;gap:14px;padding:0 12px;color:#F4EEE1;font-family:Bricolage;font-weight:700;font-size:18px;letter-spacing:-.18px}
+.plant .dq{width:40px;height:40px;border-radius:50%;background:#F4EEE1;display:grid;place-items:center;flex:none}
+/* Peaufiner · le Cercle */
+.reg{position:absolute;left:24px;width:342px;height:64px;border-radius:32px;border:2px solid var(--trait);display:flex;align-items:center;justify-content:space-between;padding:0 22px}
+.reg .lab{font-family:ApfelMid;font-size:13px;letter-spacing:2.34px;color:#3A54FF}
+.f.sombre .reg .lab{color:#CBAAFF}
+.reg .val{font-family:Bricolage;font-weight:700;font-size:18px;letter-spacing:-.18px;color:var(--txt)}
+.flou{filter:blur(2.4px)}
+.encart{position:absolute;left:24px;width:342px;height:90px;border-radius:45px;background:var(--trait);color:var(--corps);display:grid;place-items:center;font-family:Bricolage;font-weight:700;font-size:22px;z-index:6}
+.coul{position:absolute;left:24px;width:342px;border-radius:30px;border:2px solid var(--trait)}
+.coul .lab{position:absolute;left:22px;top:23px;font-family:ApfelMid;font-size:13px;letter-spacing:2.34px;color:#3A54FF}
+.f.sombre .coul .lab{color:#CBAAFF}
+.pas{position:absolute;top:64px;width:44px;height:44px;border-radius:50%}
+.pas.on{box-shadow:0 0 0 3px var(--corps),0 0 0 5px var(--trait)}
+.code{position:absolute;left:20px;right:20px;top:126px;height:44px;border-radius:22px;border:2px solid var(--trait);display:flex;align-items:center;gap:10px;padding:0 8px 0 18px;font-family:ApfelMid;font-size:13px;letter-spacing:.06em;color:var(--txt)}
+.code b{font-family:Bricolage;font-size:17px;letter-spacing:0;margin-left:auto;margin-right:8px}
+.code i{width:28px;height:28px;border-radius:50%;flex:none}
+.note{font-size:13px;line-height:1.5;max-width:390px;margin-top:8px}
+</style></head><body>
+
+<h1>Repérage · Nuée · couleur</h1>
+<p class="lede">Rendus de l'Index et du Fil tirés d'une <b>copie de travail</b> de l'app (<code>scratchpad/app-planche-reperage.html</code> — vrai moteur, vraies cartes, vraies dalles), <code>app.html</code> intouché. La fiche de Nuée et le Cercle sont des compositions sur des captures de l'app actuelle. Deux thèmes.</p>
+
+<div class="mes"><b>Intégré dans app.html — la couleur de la dalle figée à la plantation, et le monde passé aux peintres des cartes</b> (Q213, feu vert Tom pour le moteur, pour cette raison seule). <code>redteam_dalle_figee.py</code> : même couleur sur 3 pages neuves × 2 thèmes, couleur gardée après plantation, après <code>sync</code>, après sauvegarde, monde transmis à l'Index et au Fil — <b>4/4</b> ; la version d'avant : <b>0/4</b>. Un second voleur de couleur trouvé en chemin : la réserve de l'onboarding, jamais vidée, repeignait en lilas toute dalle passée sous ses anciens textes.</div>
+
+<!-- ═════════ 1 · INDEX, libellés, ordre chronologique ═════════ -->
+<h2>1 · L'Index — le libellé sur chaque carte (retenu)</h2>
+<p class="lede">« Promi », « Chiche », « Nuée » en Bricolage 700 12 px, dans une pastille crème à 10 · 10, couleur de la nature — lisible sur les trois champs et dans les deux thèmes. <b>La dalle se décale à droite du libellé, jamais dessous</b> (§4 : rien devant une dalle ; la décaler vers le bas l'écrasait sur les cartes au champ court). Le compte passe sous le titre, comme à l'accueil : « 15 paroles · 2 Nuées » ne tient pas à côté de « Index » (26 px sur ✕ FERMER, mesuré) — l'entête passe à 88, la liste descend de 28. « l'atelier du samedi » est une Nuée, plus un gardé de côté : champ plein, trait plein, « AUCUN PROMI ». <b>Une Nuée est une petite Toile</b> : ses dalles — les vraies, dans leur monde et leur couleur figés — se répartissent sur tout le champ, hors du libellé, chacune dans sa case, décalée et dimensionnée par son id (même semis à chaque ouverture, §4). <b>Les couleurs sont désormais stables</b> : c'est l'app corrigée (couleur figée à la plantation) qui a produit ces captures.</p>
+<div class="rang">
+<script>
+function IX(t,bas){
+ var th=t?'dark':'light', src='planche-reperage/v_index_'+(bas?'bas':'haut')+'_'+th+'.png';
+ return '<div><div class="f '+(t?'sombre':'')+'">'
+  +'<img class="im" src="'+src+'">'
+  +'<div class="crop" style="top:128px;height:716px"><img src="'+src+'" style="top:-100px"></div>'
+  +'<div style="position:absolute;left:18px;top:34px;width:354px;height:100px;background:'+(t?'#0E0F12':'#E8E0D0')+'"></div>'+'<div class="plat" style="height:88px;border-radius:44px"><span class="ti">Index</span><span class="li">15 paroles · 2 Nuées</span><span class="fer">✕ FERMER</span></div>'
+  +'</div><div class="cap">Index · '+(t?'sombre':'clair')+' · '+(bas?'bas de liste':'haut de liste')+'</div></div>';
+}
+document.write(IX('',0)+IX('',1)+IX(1,0)+IX(1,1));
+</script>
+</div>
+
+<h2>2 · Le Fil — le libellé à gauche de chaque ligne (retenu)</h2>
+<p class="lede">Même pastille, posée en haut à gauche de la dalle de la ligne ; la dalle descend sous elle (le bandeau a 128 de haut, c'est la place qui existe). La nature lue est celle du champ : « Adrien a planté · semer les radis » vit dans le potager, son champ est mauve — « Nuée ».</p>
+<div class="rang">
+ <div><div class="f"><img class="im" src="planche-reperage/v_fil_light.png"></div><div class="cap">Fil · clair</div></div>
+ <div><div class="f sombre"><img class="im" src="planche-reperage/v_fil_dark.png"></div><div class="cap">Fil · sombre</div></div>
+</div>
+
+<!-- ═════════ 4 · FICHE DE NUÉE ═════════ -->
+<h2>3 · La fiche de Nuée — « Planter dans la Nuée » (retenu)</h2>
+<p class="lede">Rendus de la <b>copie de travail</b> (vraie fiche, vrai fil, vraie règle du trait). <b>Une seule place</b> : la dernière ligne du fil — sous la dernière carte d'une Nuée pleine, sous « ENCORE AUCUNE PAROLE » d'une Nuée vide. <b>La règle du trait n'est pas modifiée</b> : <code>base = max(176, 460 − 86 n)</code>, où n compte les lignes du fil — l'entrée en est une. Vide : n = 1, le trait passe de 460 à 374 et tout ce qui est dessous remonte avec lui. Pleine : le trait est déjà au plancher (176), rien ne bouge.</p>
+<div class="mes"><b>Les écarts verticaux, mesurés à l'encre, app actuelle contre proposition, deux thèmes</b> (<code>scratchpad/nuee_ecarts.py</code>) —
+<b>pleine</b> : trait → Noyaux 11 · Noyaux → « Avec… » 19 · → titre 5 · titre → état 22 · état → carte 1 16 · entre cartes 12 — <b>identiques</b> ; dernière carte → « Planter dans la Nuée » <b>12</b> (le pas du fil). Au bout du fil, l'entrée finit à 730 : 30 au-dessus de la barre.
+<b>vide</b> : 11 · 19 · 5 · 22 — <b>identiques</b> ; état → « Planter dans la Nuée » <b>16</b> (l'écart de la première carte d'une Nuée pleine) ; l'entrée finit à 737 : 23 au-dessus de la barre.
+<b>Retiré de la fiche vide</b> : l'invitation du §5 « Plante le premier Promi de ta Nuée… » — <b>déjà invisible dans l'app actuelle</b> (posée à y 761, sous la barre), elle nomme une nature et ferait doublon avec l'entrée.</div>
+<div class="rang">
+ <div><div class="f"><img class="im" src="planche-reperage/nuee_proposition_atelier_light.png"></div><div class="cap">vide · clair</div></div>
+ <div><div class="f sombre"><img class="im" src="planche-reperage/nuee_proposition_atelier_dark.png"></div><div class="cap">vide · sombre</div></div>
+ <div><div class="f"><img class="im" src="planche-reperage/nuee_proposition_potager_light_bout.png"></div><div class="cap">pleine · bout du fil · clair</div></div>
+ <div><div class="f sombre"><img class="im" src="planche-reperage/nuee_proposition_potager_dark_bout.png"></div><div class="cap">pleine · bout du fil · sombre</div></div>
+ <div><div class="f"><img class="im" src="planche-reperage/nuee_actuelle_atelier_light.png"></div><div class="cap">aujourd'hui · vide · clair</div></div>
+</div>
+
+<!-- ═════════ 5 · LE CERCLE : LA COULEUR ═════════ -->
+<h2>4 · Le Cercle — choisir la couleur de sa dalle</h2>
+<p class="lede"><b>Le bloc tient à cinq</b> : quatre rangées font 304 (158 → 462), cinq font <b>384</b> (158 → 542) ; « SUPPRIMER CE PROMI » passe de 566 à 646, dans un Peaufiner qui défile déjà (1 328 de contenu). L'encart « ✦ Le Cercle » se recentre (top 147 dans le bloc). Il faut lever le <code>height:304px!important</code> du bloc — c'est la seule cote qui bloquait.<br>
+La rangée : « LA COULEUR », la vraie dalle du Promi en aperçu à droite. Ouverte : les quatre tons de la palette du Studio en disques 44, puis un champ « code couleur » (#…) pour une couleur libre. « LA COULEUR » : validé. Mêmes rangées à la page + et dans le Peaufiner d'une Nuée — qui n'a pas de bloc du Cercle aujourd'hui : il y porterait cette seule rangée.</p>
+<div class="rang">
+<script>
+var PAL=['#D0B0FF','#3A54FF','#F07A2E','#8FA0FF'];
+function APER(col,sz){ return '<canvas class="aper" data-col="'+col+'" width="'+(sz*2)+'" height="'+(sz*2)+'" style="width:'+sz+'px;height:'+sz+'px"></canvas>'; }
+function REGS(verrou){
+ var R=[["RÉCURRENCE","chaque semaine"],["RAPPEL","la veille à 19:00"],["C'EST IMPORTANT ?","· ·· ···"],["LA MÉMOIRE","réveille tes « en l’air »"]];
+ var h=''; R.forEach(function(r,i){ h+='<div class="reg'+(verrou?' flou':'')+'" style="top:'+(158+80*i)+'px"><span class="lab">'+r[0]+'</span><span class="val">'+r[1]+'</span></div>'; });
+ return h;
+}
+function CER(t,mode){
+ var th=t?'dark':'light', src='planche-reperage/actuel_peaufiner_cercle_'+(mode==='verrou'?'':'ouvert_')+th+'.png';
+ var h='<div><div class="f '+(t?'sombre':'')+'" style="'+(t?'background:#12142A;--corps:#12142A':'')+'"><div class="crop" style="top:0;height:150px"><img src="'+src+'"></div>';
+ if(mode==='verrou'){
+  h+=REGS(true)+'<div class="reg flou" style="top:478px"><span class="lab">LA COULEUR</span>'+APER('#3A54FF',40)+'</div>'
+   +'<div class="encart" style="top:305px">✦ Le Cercle</div>'
+   +'<div class="crop" style="top:646px;height:114px"><img src="planche-reperage/actuel_peaufiner_cercle_'+th+'.png" style="top:-566px"></div>';
+ } else {
+  h+=REGS(false)+'<div class="coul" style="top:478px;height:186px"><span class="lab">LA COULEUR</span><span style="position:absolute;right:18px;top:12px">'+APER('#F07A2E',40)+'</span>';
+  PAL.forEach(function(c,i){ h+='<span class="pas'+(i===2?' on':'')+'" style="left:'+(22+i*58)+'px;background:'+c+'"></span>'; });
+  h+='<div class="code">code couleur<b>#F07A2E</b><i style="background:#F07A2E"></i></div></div>';
+ }
+ h+='<div class="crop" style="top:760px;height:84px"><img src="'+src+'" style="top:-760px"></div>';
+ return h+'</div><div class="cap">'+(mode==='verrou'?'sans le Cercle':'avec le Cercle · la couleur ouverte')+' · '+(t?'sombre':'clair')+'</div></div>';
+}
+document.write(CER('','verrou')+CER(1,'verrou')+CER('','ouvert')+CER(1,'ouvert'));
+/* l'aperçu : la VRAIE dalle du Promi (moteur, capturée), recolorée — sa forme ne bouge pas */
+var DAL=new Image(); DAL.onload=function(){ document.querySelectorAll('canvas.aper').forEach(function(cv){ var g=cv.getContext('2d');
+  var s=Math.min(cv.width/DAL.width,cv.height/DAL.height), w=DAL.width*s, hh=DAL.height*s;
+  g.drawImage(DAL,(cv.width-w)/2,(cv.height-hh)/2,w,hh); g.globalCompositeOperation='source-in'; g.fillStyle=cv.dataset.col; g.fillRect(0,0,cv.width,cv.height); }); };
+DAL.src='planche-reperage/dalle125.png';
+</script>
+</div>
+
+<h2>6 · Ce qui reste ouvert, avant d'intégrer</h2>
+<p class="lede"><b>Libellé sur chaque carte (1 · 2) ou titres de catégorie (3)</b> — ton choix. · <b>L'entrée de la Nuée</b> et la place qu'elle prend au trait d'une Nuée vide. · <b>« LA COULEUR »</b>, le mot. · <b>« AUCUN PROMI »</b> sur la carte d'une Nuée vide (« AUCUN PROMI ENCORE », le mot de la fiche, déborde de la carte).</p>
+</body></html>

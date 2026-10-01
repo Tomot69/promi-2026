@@ -1,0 +1,145 @@
+/* ══════════════════════════════════════════════════════════════════════
+   LA PLANCHE — trois partis pour l'Aura, une page pour le Cercle.
+   Aplats francs. Les dalles viennent du moteur (Toile.dalleTrame, k=1).
+   ══════════════════════════════════════════════════════════════════════ */
+var MENTHE='#2BE88C', TERRA='#F07A2E', PERI='#8FA0FF',
+    BLEU='#3A54FF', MAUVE='#8A5CF0', FRAMB='#FA2258',
+    CREME='#F4EEE1', ENCRE='#16171B';
+
+/* le jeu de la planche : les gens, par ordre alphabétique, JAMAIS par valeur */
+var GENS=[
+  {n:'Adrien', piste:BLEU,  toi:[.62,.23,.15], eux:[.55,.30,.15]},
+  {n:'Marion', piste:MAUVE, toi:[.80,.20,.00], eux:[.70,.20,.10]},
+  {n:'Rachel', piste:TERRA, toi:[.34,.33,.33], eux:[.40,.35,.25]}
+];
+var NUEES=[{n:'le potager',piste:MAUVE,p:[.60,.28,.12],pid:4},
+           {n:'la course',  piste:BLEU, p:[.72,.18,.10],pid:5},
+           {n:'la maison',  piste:TERRA,p:[.45,.30,.25],pid:6}];
+
+function el(tag,cls,css,txt){var n=document.createElement(tag);
+  if(cls)n.className=cls; if(css)n.style.cssText=css;
+  if(txt!=null)n.textContent=txt; return n;}
+
+/* ── L'ANNEAU ────────────────────────────────────────────────────────────
+   piste pleine (teinte de la nature) + arcs des trois états, bout franc.
+   Aucun dégradé : trois aplats d'arc, posés bout à bout.               */
+function anneau(cv,d,lw,parts,piste,second){
+  var D=2; cv.width=d*D; cv.height=d*D; cv.style.width=d+'px'; cv.style.height=d+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,d,d);
+  var cx=d/2, cy=d/2, R=(d-lw)/2 - (second?(9+lw*0.7):0);
+  function ring(r,w,segs){
+    g.lineWidth=w; g.lineCap='butt';
+    g.strokeStyle=piste; g.beginPath(); g.arc(cx,cy,r,0,6.2832); g.stroke();
+    var a=-Math.PI/2;
+    var cols=[MENTHE,PERI,TERRA];
+    for(var i=0;i<segs.length;i++){ if(segs[i]<=0)continue;
+      var a2=a+segs[i]*6.2832;
+      g.strokeStyle=cols[i]; g.beginPath(); g.arc(cx,cy,r,a,a2); g.stroke(); a=a2; }
+  }
+  ring(R,lw,parts);
+  if(second) ring(R+9+lw*0.7, lw*0.7, second);
+  return {cx:cx,cy:cy,R:R};
+}
+
+/* ── LE VISAGE — §2.10, silhouette crème sur couleur de nature ───────── */
+function visage(d,fond){
+  var i='vc'+(visage._n=(visage._n||0)+1);
+  var s='<svg width="'+d+'" height="'+d+'" viewBox="0 0 '+d+' '+d+'">'
+   +'<defs><clipPath id="'+i+'"><circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'"/></clipPath></defs>'
+   +'<g clip-path="url(#'+i+')">'
+   +'<circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'" fill="'+fond+'"/>'
+   +'<circle cx="'+(d/2)+'" cy="'+(0.78*d/2)+'" r="'+(0.19*d)+'" fill="'+CREME+'"/>'
+   +'<path d="M'+(d/2-0.30*d)+' '+(0.98*d)+' A '+(0.30*d)+' '+(0.27*d)+' 0 0 1 '
+     +(d/2+0.30*d)+' '+(0.98*d)+' Z" fill="'+CREME+'"/></g></svg>';
+  return s;
+}
+
+/* ── LE TRAIT — deux points, une courbe quadratique. Jamais de segment. ── */
+function trait(cv,w,h,o){
+  o=o||{}; var D=2; cv.width=w*D; cv.height=h*D;
+  cv.style.width=w+'px'; cv.style.height=h+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,w,h);
+  var r=7, x0=r+1, x1=w-r-1, mid=(o.mid===undefined?h/2:o.mid),
+      amp=(o.amp===undefined?16:o.amp), per=(o.per===undefined?1.5:o.per);
+  function courbe(y0,sens,col,ep){
+    g.lineWidth=ep||3; g.lineCap='round'; g.strokeStyle=col;
+    var N=64, pts=[];
+    for(var i=0;i<=N;i++){var t=i/N,x=x0+(x1-x0)*t;
+      pts.push([x, y0 + sens*amp*Math.sin(t*per*6.2832)*Math.sin(Math.PI*t)]);}
+    g.beginPath(); g.moveTo(pts[0][0],pts[0][1]);
+    for(var j=1;j<pts.length-1;j++){
+      var mx=(pts[j][0]+pts[j+1][0])/2, my=(pts[j][1]+pts[j+1][1])/2;
+      g.quadraticCurveTo(pts[j][0],pts[j][1],mx,my);}
+    g.quadraticCurveTo(pts[N-1][0],pts[N-1][1],pts[N][0],pts[N][1]); g.stroke();
+    return pts;
+  }
+  var A=courbe(mid,1,o.col||PERI,3);
+  var B=o.double? courbe(mid,-1,o.col2||MAUVE,3) : null;
+  g.fillStyle=o.col||PERI;
+  g.beginPath(); g.arc(x0,mid,r,0,6.2832); g.fill();
+  g.beginPath(); g.arc(x1,mid,r,0,6.2832); g.fill();
+  cv.__A=A; cv.__B=B; cv.__mid=mid;
+  return A;
+}
+
+/* ── LA VRAIE DALLE ──────────────────────────────────────────────────── */
+function dalle(pid,px){
+  var c=document.createElement('canvas'); c.width=px*2; c.height=px*2;
+  c.style.cssText='width:'+px+'px;height:'+px+'px;display:block';
+  try{ window.Toile && Toile.dalleTrame(c,pid,1); }catch(e){}
+  return c;
+}
+
+/* ── LE CADRE ────────────────────────────────────────────────────────── */
+function cadre(theme){
+  var f=el('div','fr '+(theme==='lt'?'lt':'dk'));
+  f.__ink = theme==='lt'? ENCRE : CREME;
+  f.__fond= theme==='lt'? CREME : ENCRE;
+  return f;
+}
+function plateau(f,titre){
+  var p=el('div','plat');
+  p.appendChild(el('div','t',null,titre));
+  p.appendChild(el('div','c',null,'✕ FERMER'));
+  f.appendChild(p); return p;
+}
+function eb(f,x,y,txt,col){ var n=el('div','eb',
+  'left:'+x+'px;top:'+y+'px;'+(col?'color:'+col:''), txt); f.appendChild(n); return n;}
+function txt(f,cls,x,y,w,fs,fw,t,extra){
+  var n=el('div',cls,'left:'+x+'px;top:'+y+'px;width:'+w+'px;font-size:'+fs+'px;'
+    +(fw?'font-weight:'+fw+';':'')+(extra||''), t);
+  f.appendChild(n); return n;}
+function bouton(f,y,t,plein,col,ink){
+  var b=el('div','btn'+(plein?' plein':''),'top:'+y+'px;'
+    +(plein?'background:'+col+';color:'+ink+';':''));
+  b.appendChild(el('span',null,null,t)); f.appendChild(b); return b;}
+function legPos(f,y,ink){
+  var n=el('div','eb','left:24px;top:'+y+'px;width:342px;text-align:center;line-height:19px;'
+    +'text-transform:none;letter-spacing:.10em',
+    'dedans, ce que tu tiens · dehors, ce qu’on te tient');
+  f.appendChild(n); return n;}
+function legende(f,x,y){
+  var L=el('div','leg','left:'+x+'px;top:'+y+'px');
+  [['tenues',MENTHE],['en cours',PERI],['à tenir',TERRA]].forEach(function(p){
+    var s=el('span'); s.appendChild(el('i',null,'background:'+p[1]));
+    s.appendChild(document.createTextNode(p[0])); L.appendChild(s);});
+  f.appendChild(L); return L;}
+
+/* la grille d'anneaux — JAMAIS une rangée de barres, JAMAIS un tri par valeur */
+function grille(f,y,d,gens,cercle,ink,centre){
+  var n=gens.length, ecart=26, tot=n*d+(n-1)*ecart, x0=(390-tot)/2;
+  gens.forEach(function(p,i){
+    var x=x0+i*(d+ecart);
+    var box=el('div',null,'left:'+x+'px;top:'+y+'px;width:'+d+'px;height:'+d+'px');
+    var cv=document.createElement('canvas');
+    cv.style.cssText='position:absolute;left:0;top:0';
+    box.appendChild(cv); f.appendChild(box);
+    anneau(cv,d,Math.round(d*0.104),p.toi||p.p,p.piste, null);
+    var vd=Math.round(d*0.62), vx=x+(d-vd)/2, vy=y+(d-vd)/2;
+    var v=el('div',null,'left:'+vx+'px;top:'+vy+'px;width:'+vd+'px;height:'+vd+'px');
+    if(centre==='dalle') v.appendChild(dalle(p.pid||1,vd));
+    else v.innerHTML=visage(vd,p.piste);
+    f.appendChild(v);
+    txt(f,'bg600',x-14,y+d+11,d+28,13.5,600,p.n,'text-align:center;color:'+ink);
+  });
+}

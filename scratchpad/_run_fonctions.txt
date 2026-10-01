@@ -1,0 +1,39 @@
+
+── planter ──
+le + ouvre la page de création                             OK  
+on plante un Promi au geste                                OK  
+la bascule mène à un vrai bouton « planter »               OK  
+
+── tenir sa parole ──
+le geste est à l'écran sur une fiche à tenir               OK  
+on tient sa parole au geste, depuis la fiche               OK  
+
+── tenir depuis le FIL, sans ouvrir de fiche ──
+le Fil porte le geste « TENIR »                            OK  
+le Fil porte « REPORTER »                                  OK  
+« TENIR » depuis le Fil tient vraiment la parole           KO  
+
+── chercher, trier ──
+on cherche dans l'Index                                    OK  
+le tri de l'Index s'ouvre                                  OK  
+le menu de tri ne couvre pas tout l'écran                  OK  
+
+── ouvrir ──
+une carte d'Index ouvre sa fiche                           OK  
+un bandeau du Fil ouvre sa fiche                           KO  
+
+── peaufiner ──
+Peaufiner s'ouvre sur une fiche                            OK  
+Peaufiner se referme                                       OK  
+
+── les écrans du dock ──
+Studio s'ouvre                                             OK  
+Aura s'ouvre                                               OK  
+Partager s'ouvre                                           OK  
+Réglages s'ouvre                                           OK  
+
+17/19
+
+FONCTIONS PERDUES OU CASSÉES :
+   · « TENIR » depuis le Fil tient vraiment la parole
+   · un bandeau du Fil ouvre sa fiche

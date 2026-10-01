@@ -1,0 +1,57 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>mesure empreinte pavage</title>
+<style>body{margin:0;background:#0A0B0E}canvas{display:block;width:392px;height:392px}</style>
+</head><body>
+<div style="position:absolute;left:0;top:0;width:390px;height:620px;opacity:.012;pointer-events:none;z-index:-1"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<div id="g"></div>
+<script>function cc(){return[200,180,255];}function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script src="/scratchpad/_p_moteur.js"></script>
+<script src="/scratchpad/_p_semis.js"></script>
+<script src="/scratchpad/_p_peint.js"></script>
+<script>
+var KDENS=[4.7,5.3,4.1,0.6,1.9,1.1,  6.7,5.9,7.3,2.4,0.7,1.5];
+var FROISSE=[[0.030,11.3,12.7,10.9,0.4,1.1,2.2],[0.017,21.7,19.3,22.1,1.9,0.3,1.4],
+             [0.008,37.1,34.3,35.9,0.7,2.4,1.0]];
+var ENV=[0.10,0.90,1.7,1.3,1.9,0.4,1.9,0.8,1.7];
+/* ⚠ ON REMESURE A LA PROFONDEUR DE LA PREUVE D'ORIGINE (0,105 et a = 0,34),
+   pas a celle de la planche (0,245 et 0,42). C'est volontaire : on isole LE
+   CHANGEMENT DE LOI DE PAROI, une variable a la fois. A 24,5 % de rayon, la
+   perturbation couvre la moitie de la sphere et la sonde decroche — elle lit
+   alors le limbe autant que le creux. Dit autrement : ce qui suit prouve la
+   NOUVELLE LOI ; la profondeur de la planche, elle, n'est pas prouvee. */
+var BASE={ c:[-0.36,-0.22,0.91], ax:[0.62,-0.72,0.00], a:0.34, el:0.62,
+           dmax:0.105, biais:0.14, rho:0.085, ub:0.35, B:0.32, U:0.50 };
+function E(p,cl){var o={};for(var k in BASE)o[k]=BASE[k];o.p=p;if(cl)o.cloche=1;return o;}
+var CAS=[['repos',null],['plateau14',E(0.14)],['plateau55',E(0.55)],['plateau100',E(1)],
+         ['cloche14',E(0.14,1)],['cloche55',E(0.55,1)],['cloche100',E(1,1)]];
+window.addEventListener('load',function(){
+  try{Toile_resize();Toile.sync([1,2,3,4,5]);}catch(e){}
+  setTimeout(function(){
+    var TAI=[5.0,7.0,9.5];   /* les memes qu'a la preuve d'origine */
+    var ATL=atlasAlpha(GRAIN_FIL,TAI,ORI,NIVA,0.16,1.00);
+    /* ⚠ ON MESURE SUR UN SEMIS UNIFORME (joint = -1 : aucune dalle retiree).
+       Sur le pavage habille, la densite projetee est deja tres inegale — des
+       dalles pleines et des joints vides — et le profil ne lit plus que le
+       deplacement des joints. La loi de contact est un CHAMP DE DEPLACEMENT :
+       elle se prouve sur une matiere uniforme, puis elle porte n'importe
+       quelle matiere. C'est le meme moteur, ligne pour ligne. */
+    var SEM=semisPavage(30000,240,-1,KDENS,4);
+    var G=document.getElementById('g'), P=Toile.cols();
+    CAS.forEach(function(c){
+      var cv=document.createElement('canvas'); cv.setAttribute('data-cad',c[0]);
+      G.appendChild(cv);
+      peint(cv,{css:392,R:0.425,tailles:TAI,atlas:ATL,semis:SEM,relief:FROISSE,env:ENV,
+                lac:2.9,tan:0.32,pal:P,emp:c[1],nu:1,nuLum:1});
+      if(c[1]){var e=prepEmp(c[1],Math.cos(2.9),Math.sin(2.9),Math.cos(0.32),Math.sin(0.32));
+        var R=0.425*392*2, FOC=R*5.4;
+        var cl=Math.cos(2.9),sl=Math.sin(2.9),ct=Math.cos(0.32),st=Math.sin(0.32);
+        var X=e.c[0]*cl+e.c[2]*sl, Z=-e.c[0]*sl+e.c[2]*cl, Y=e.c[1]*ct-Z*st; Z=e.c[1]*st+Z*ct;
+        var k=FOC/(FOC-Z*R);
+        var ax=e.ax[0]*cl+e.ax[2]*sl, az=-e.ax[0]*sl+e.ax[2]*cl, ay=e.ax[1]*ct-az*st;
+        (window.__emp=window.__emp||{})[c[0]]={x:(392+X*R*k)/2,y:(392+Y*R*k)/2,
+          ux:ax,uy:ay,aC:e.aC*R*k/2,bC:e.bC*R*k/2};}
+    });
+    window.__pret=true;
+  },800);
+});
+</script></body></html>

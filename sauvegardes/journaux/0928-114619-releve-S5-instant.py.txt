@@ -1,0 +1,12 @@
+
+═══ SECTION 5 · L'INSTANT — 6 écrans mesurés ═══
+
+écarts de position > 3 px    0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              2
+      referme   [dark] #dptNat « Promi » : ton sur ton (Δ0)
+      referme   [dark] .closeb « FERMER » : ton sur ton (Δ0)
+
+❌  2 ÉCARTS

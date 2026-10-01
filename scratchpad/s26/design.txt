@@ -1,0 +1,67 @@
+❌  62 ÉCARTS avec la référence :
+
+    clair/atenir · fiche · nature · fontFamily : Fraunces, Georgia, serif -> PromiLate, Gilbert, Bricol
+    clair/atenir · fiche · nature · fontWeight : 600 -> 400
+    clair/atenir · fiche · nature · letterSpacing : -0.27px -> None
+    clair/atenir · fiche · nature · lineHeight : 27px -> 28.62px
+    clair/atenir · fiche · nature · width : 74.8125px -> 113.359px
+    clair/atenir · fiche · nature · height : 27px -> 29.625px
+    clair/atenir · fiche · nature · _px : [70, 25] -> [106, 28]
+    clair/atenir · fiche · nom lien · width : 21.0938px -> 22.7812px
+    clair/atenir · fiche · libelle geste · fontFamily : Atkinson, Apfel, system-ui -> PromiLate, Gilbert, Bricol
+    clair/atenir · fiche · libelle geste · fontWeight : 500 -> 400
+    clair/tenue · fiche · nature · fontFamily : Fraunces, Georgia, serif -> PromiLate, Gilbert, Bricol
+    clair/tenue · fiche · nature · fontWeight : 600 -> 400
+    clair/tenue · fiche · nature · letterSpacing : -0.27px -> None
+    clair/tenue · fiche · nature · lineHeight : 27px -> 28.62px
+    clair/tenue · fiche · nature · width : 74.8125px -> 113.359px
+    clair/tenue · fiche · nature · height : 27px -> 29.625px
+    clair/tenue · fiche · nature · _px : [70, 25] -> [106, 28]
+    clair/tenue · fiche · nom lien · opacity : 0.9 -> 1
+    clair/tenue · fiche · nom lien · width : 21.0938px -> 22.7812px
+    clair/tenue · fiche · libelle geste · fontFamily : Atkinson, Apfel, system-ui -> PromiLate, Gilbert, Bricol
+    clair/tenue · fiche · libelle geste · fontWeight : 500 -> 400
+    clair/nuee · fiche · nature · fontFamily : Fraunces, Georgia, serif -> PromiLate, Gilbert, Bricol
+    clair/nuee · fiche · nature · fontWeight : 600 -> 400
+    clair/nuee · fiche · nature · letterSpacing : -0.27px -> None
+    clair/nuee · fiche · nature · lineHeight : 27px -> 28.62px
+    clair/nuee · fiche · nature · width : 60.6562px -> 80.0156px
+    clair/nuee · fiche · nature · height : 27px -> 29.625px
+    clair/nuee · fiche · nature · _px : [57, 25] -> [75, 28]
+    clair/nuee · fiche · nom lien · width : 21.0938px -> 22.7812px
+    clair/nuee · fiche · libelle geste · fontFamily : Atkinson, Apfel, system-ui -> PromiLate, Gilbert, Bricol
+    clair/nuee · fiche · libelle geste · fontWeight : 500 -> 400
+    sombre/atenir · fiche · nature · fontFamily : Fraunces, Georgia, serif -> PromiLate, Gilbert, Bricol
+    sombre/atenir · fiche · nature · fontWeight : 600 -> 400
+    sombre/atenir · fiche · nature · letterSpacing : -0.27px -> None
+    sombre/atenir · fiche · nature · lineHeight : 27px -> 28.62px
+    sombre/atenir · fiche · nature · width : 74.8125px -> 113.359px
+    sombre/atenir · fiche · nature · height : 27px -> 29.625px
+    sombre/atenir · fiche · nature · _px : [70, 25] -> [106, 28]
+    sombre/atenir · fiche · nom lien · width : 21.0938px -> 22.7812px
+    sombre/atenir · fiche · libelle geste · fontFamily : Atkinson, Apfel, system-ui -> PromiLate, Gilbert, Bricol
+    sombre/atenir · fiche · libelle geste · fontWeight : 500 -> 400
+    sombre/tenue · fiche · nature · fontFamily : Fraunces, Georgia, serif -> PromiLate, Gilbert, Bricol
+    sombre/tenue · fiche · nature · fontWeight : 600 -> 400
+    sombre/tenue · fiche · nature · letterSpacing : -0.27px -> None
+    sombre/tenue · fiche · nature · lineHeight : 27px -> 28.62px
+    sombre/tenue · fiche · nature · width : 74.8125px -> 113.359px
+    sombre/tenue · fiche · nature · height : 27px -> 29.625px
+    sombre/tenue · fiche · nature · _px : [70, 25] -> [106, 28]
+    sombre/tenue · fiche · nom lien · opacity : 0.9 -> 1
+    sombre/tenue · fiche · nom lien · width : 21.0938px -> 22.7812px
+    sombre/tenue · fiche · libelle geste · fontFamily : Atkinson, Apfel, system-ui -> PromiLate, Gilbert, Bricol
+    sombre/tenue · fiche · libelle geste · fontWeight : 500 -> 400
+    sombre/nuee · fiche · nature · fontFamily : Fraunces, Georgia, serif -> PromiLate, Gilbert, Bricol
+    sombre/nuee · fiche · nature · fontWeight : 600 -> 400
+    sombre/nuee · fiche · nature · letterSpacing : -0.27px -> None
+    sombre/nuee · fiche · nature · lineHeight : 27px -> 28.62px
+    sombre/nuee · fiche · nature · width : 60.6562px -> 80.0156px
+    sombre/nuee · fiche · nature · height : 27px -> 29.625px
+    sombre/nuee · fiche · nature · _px : [57, 25] -> [75, 28]
+    sombre/nuee · fiche · nom lien · width : 21.0938px -> 22.7812px
+    sombre/nuee · fiche · libelle geste · fontFamily : Atkinson, Apfel, system-ui -> PromiLate, Gilbert, Bricol
+    sombre/nuee · fiche · libelle geste · fontWeight : 500 -> 400
+    … et 22 autres
+
+Si le lot ne demandait pas ces changements, c'est une régression.

@@ -1,0 +1,4 @@
+(function(){try{
+var qt=document.getElementById("shQrTog");if(qt)qt.addEventListener("click",function(){if(typeof _shShowQR!=="undefined"){_shShowQR=!_shShowQR;qt.classList.toggle("on",_shShowQR);qt.textContent="QR";qt.classList.toggle("on",_shShowQR);}if(typeof window.shShowQR!=="undefined")window.shShowQR=_shShowQR;try{if(typeof shareRender==="function")shareRender();}catch(e){}});
+var wp=document.getElementById("shWmPos");if(wp)wp.addEventListener("click",function(){if(typeof wmPos!=="undefined"){wmPos=(wmPos+1)%3;var _ar=['↙','↓','↘'],_cl=['left','center','right'];wp.textContent="promi.app "+_ar[wmPos];var wm=document.getElementById("shWm");if(wm)wm.className="sh-wm "+_cl[wmPos];}try{if(typeof shareRender==="function")shareRender();}catch(e){}});
+}catch(e){}})();

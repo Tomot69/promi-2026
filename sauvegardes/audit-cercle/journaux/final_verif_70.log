@@ -1,0 +1,12 @@
+════ light
+   ✓ light · la liste n’est plus rebâtie pour rien (3 s de repos, 3 s de défilement)  ('repos', 0, 'défilement', 0)
+   ✓ light · l’encart du mur ouvre le Cercle à chaque toucher (20)  ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+   ✓ light · une vraie modification rebâtit la liste (le titre suit)  ('Promi', '→', 'aller voir la mer')
+   ✓ light · le mur du Cercle est posé une fois, pas deux  1
+════ dark
+   ✓ dark · la liste n’est plus rebâtie pour rien (3 s de repos, 3 s de défilement)  ('repos', 0, 'défilement', 0)
+   ✓ dark · l’encart du mur ouvre le Cercle à chaque toucher (20)  ✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓✓
+   ✓ dark · une vraie modification rebâtit la liste (le titre suit)  ('Promi', '→', 'aller voir la mer')
+   ✓ dark · le mur du Cercle est posé une fois, pas deux  1
+══ 0 raté(s)
+fin rc=0

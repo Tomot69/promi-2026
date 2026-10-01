@@ -1,0 +1,36 @@
+{
+ "dark": {
+  "promi": {
+   "id": 129,
+   "titre": "le grand plongeoir",
+   "qui": "Marion",
+   "avec": "Marion",
+   "complete": false
+  },
+  "zone": {
+   "x": 0,
+   "y": 0,
+   "w": 0,
+   "h": 0,
+   "w390": 0,
+   "h390": 0
+  }
+ },
+ "light": {
+  "promi": {
+   "id": 129,
+   "titre": "le grand plongeoir",
+   "qui": "Marion",
+   "avec": "Marion",
+   "complete": false
+  },
+  "zone": {
+   "x": 0,
+   "y": 0,
+   "w": 0,
+   "h": 0,
+   "w390": 0,
+   "h390": 0
+  }
+ }
+}

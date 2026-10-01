@@ -1,0 +1,7268 @@
+{
+ "gratuit-Marion": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    8,
+    122,
+    374,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    8,
+    124,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    64,
+    122,
+    318,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : rayonnante · ta parole : rayonnante",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    64,
+    130,
+    318,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    177,
+    374,
+    243
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    8,
+    185,
+    374,
+    119
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-duo",
+   "box": [
+    156,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-one kr-toi",
+   "box": [
+    156,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    156,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>span.kr-side",
+   "txt": "toi",
+   "vu": false,
+   "cache": "visibility sur kr-side",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": true,
+   "clic": false,
+   "cls": "kr-one kr-eux",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>canvas.kr-c",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>span.kr-side",
+   "txt": "Marion",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-mleg prem-only",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "toi envers eux",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-toi",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-toi",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "eux envers toi",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-eux",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-eux",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    8,
+    320,
+    374,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    8,
+    320,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    345,
+    374,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    351,
+    202,
+    10
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    347,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    8,
+    399,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    399,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    399,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    399,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    8,
+    442,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    463,
+    374,
+    235
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "3 Promi échangés · 1 reçu · 2 donnés",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    8,
+    463,
+    374,
+    28
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    491,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    511,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    507,
+    107,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "courir dimanche",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    507,
+    107,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    527,
+    107,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    516,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    560,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    580,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    576,
+    119,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "le grand plongeoir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    576,
+    119,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    596,
+    119,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    585,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    629,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    649,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    645,
+    250,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "vider le composteur à deux",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    645,
+    250,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "de Marion → le groupe · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    665,
+    250,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    654,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "Marion",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    86,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ],
+ "gratuit-Rachel": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    8,
+    122,
+    374,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    8,
+    124,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    64,
+    122,
+    318,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : naissante · ta parole : installée",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    64,
+    130,
+    318,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    177,
+    374,
+    243
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    8,
+    185,
+    374,
+    119
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-duo",
+   "box": [
+    156,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-one kr-toi",
+   "box": [
+    156,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    156,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>span.kr-side",
+   "txt": "toi",
+   "vu": false,
+   "cache": "visibility sur kr-side",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": true,
+   "clic": false,
+   "cls": "kr-one kr-eux",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>canvas.kr-c",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>span.kr-side",
+   "txt": "Rachel",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-mleg prem-only",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "toi envers eux",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-toi",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-toi",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "eux envers toi",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-eux",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-eux",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-eq prem-only",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-track",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end",
+   "txt": "toi",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-end",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end>b",
+   "txt": "50%",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>div.eq-line",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-line",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>div.eq-line>div.eq-mark",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-mark",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end",
+   "txt": "eux",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-end",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end>b",
+   "txt": "0%",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-phrase",
+   "txt": "tu portes un peu plus",
+   "vu": false,
+   "cache": "display:none sur ps-eq prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-phrase",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    8,
+    320,
+    374,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    8,
+    320,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    345,
+    374,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    374,
+    202,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    370,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    8,
+    399,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    399,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    399,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    399,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    8,
+    442,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    463,
+    374,
+    235
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "3 Promi échangés · 1 reçu · 2 donnés",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    8,
+    463,
+    374,
+    28
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    491,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    511,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    507,
+    98,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "faire les crêpes",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    507,
+    98,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    527,
+    98,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    516,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    560,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    580,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    576,
+    235,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "reprendre l'arrosage automatique",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    576,
+    235,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "de Rachel → le groupe · à tenir · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    596,
+    235,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    585,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    629,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    649,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    645,
+    106,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "rapporter le livre",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    645,
+    106,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    665,
+    106,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    654,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "Rachel",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    81,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ],
+ "gratuit-moi": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    8,
+    122,
+    374,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    8,
+    124,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    64,
+    122,
+    318,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : rayonnante · ta parole : rayonnante",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    64,
+    130,
+    318,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    177,
+    374,
+    227
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    8,
+    185,
+    374,
+    103
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-wrap",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-wrap",
+   "box": [
+    156,
+    197,
+    78,
+    83
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-wrap>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    156,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    8,
+    304,
+    374,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    8,
+    304,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    329,
+    374,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    335,
+    202,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    337,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    8,
+    383,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    383,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    388,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    383,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    388,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    383,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    388,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    8,
+    426,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    447,
+    374,
+    787
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "11 Promi échangés · 11 reçus · 5 donnés",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    8,
+    447,
+    374,
+    28
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    475,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    495,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    491,
+    103,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "planter un arbre",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    491,
+    103,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    511,
+    103,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    500,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    544,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    564,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    560,
+    98,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "faire les crêpes",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    560,
+    98,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    580,
+    98,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    569,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    613,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    633,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    629,
+    107,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "courir dimanche",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    629,
+    107,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    649,
+    107,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    638,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    682,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    702,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    698,
+    103,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "nager le mardi",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    698,
+    103,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    718,
+    103,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    707,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    751,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    771,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    767,
+    119,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "le grand plongeoir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    767,
+    119,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    787,
+    119,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    776,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    820,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    840,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    836,
+    203,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "monter la serre avant les gelées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    836,
+    203,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à le groupe · tenue · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    856,
+    203,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    845,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    889,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    909,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    905,
+    173,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "arroser tous les soirs",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    905,
+    173,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à le groupe · tenue · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    925,
+    173,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    914,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    958,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    978,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    974,
+    170,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "arroser les tomates",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    974,
+    170,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    994,
+    170,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    983,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    1027,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    1047,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    1043,
+    170,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "tailler la vigne",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    1043,
+    170,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    1063,
+    170,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    1052,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    1096,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    1116,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    1112,
+    170,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "ramasser les courges",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    1112,
+    170,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    1132,
+    170,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    1121,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    8,
+    1165,
+    374,
+    69
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    10,
+    1185,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    56,
+    1181,
+    106,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "rapporter le livre",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    56,
+    1181,
+    106,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    56,
+    1201,
+    106,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    375,
+    1190,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "moi",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    45,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ],
+ "gratuit-Zoé": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    8,
+    122,
+    374,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    8,
+    124,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    64,
+    122,
+    318,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : à tisser",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    64,
+    130,
+    318,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    177,
+    374,
+    243
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    8,
+    185,
+    374,
+    119
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-duo",
+   "box": [
+    156,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-one kr-toi",
+   "box": [
+    156,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    156,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>span.kr-side",
+   "txt": "toi",
+   "vu": false,
+   "cache": "visibility sur kr-side",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": true,
+   "clic": false,
+   "cls": "kr-one kr-eux",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>canvas.kr-c",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>span.kr-side",
+   "txt": "Zoé",
+   "vu": false,
+   "cache": "display:none sur kr-one kr-eux",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-mleg prem-only",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "toi envers eux",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-toi",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-toi",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "eux envers toi",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-eux",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur ps-mleg prem-only",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-eux",
+   "box": null
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    8,
+    320,
+    374,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    8,
+    320,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    345,
+    374,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    365,
+    202,
+    10
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    361,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    8,
+    399,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    399,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    399,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    399,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    404,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    8,
+    442,
+    374,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    8,
+    463,
+    374,
+    44
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "aucun Promi pour l'instant",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    8,
+    463,
+    374,
+    44
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "Zoé",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    43,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ],
+ "cercle-Marion": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    24,
+    122,
+    342,
+    64
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    24,
+    132,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    80,
+    122,
+    286,
+    64
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : rayonnante · ta parole : rayonnante",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    80,
+    130,
+    286,
+    34
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    194,
+    342,
+    260
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    24,
+    202,
+    342,
+    119
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-duo",
+   "box": [
+    109,
+    214,
+    172,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-one kr-toi",
+   "box": [
+    109,
+    214,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    109,
+    214,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>span.kr-side",
+   "txt": "toi",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": [
+    138,
+    296,
+    20,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "kr-one kr-eux",
+   "box": [
+    203,
+    214,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    203,
+    214,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>span.kr-side",
+   "txt": "Marion",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": [
+    217,
+    296,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-mleg prem-only",
+   "box": [
+    24,
+    321,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "toi envers eux",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    91,
+    321,
+    96,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-toi",
+   "box": [
+    91,
+    324,
+    11,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "eux envers toi",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    203,
+    321,
+    96,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-eux",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-eux",
+   "box": [
+    203,
+    324,
+    11,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    24,
+    354,
+    342,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    24,
+    354,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    379,
+    342,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    385,
+    202,
+    10
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    381,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    24,
+    433,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    433,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    438,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    433,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    438,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    433,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    438,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    24,
+    476,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    497,
+    342,
+    238
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "3 Promi échangés · 1 reçu · 2 donnés",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    24,
+    497,
+    342,
+    28
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    525,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    546,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    542,
+    107,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "courir dimanche",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    542,
+    107,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    562,
+    107,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    551,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    595,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    616,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    612,
+    119,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "le grand plongeoir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    612,
+    119,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    632,
+    119,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    621,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    665,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    686,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    682,
+    250,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "vider le composteur à deux",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    682,
+    250,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "de Marion → le groupe · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    702,
+    250,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    691,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "Marion",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    86,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ],
+ "cercle-Rachel": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    24,
+    122,
+    342,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    24,
+    124,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    80,
+    122,
+    286,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : naissante · ta parole : installée",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    80,
+    130,
+    286,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    177,
+    342,
+    346
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    24,
+    185,
+    342,
+    119
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-duo",
+   "box": [
+    109,
+    197,
+    172,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-one kr-toi",
+   "box": [
+    109,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    109,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>span.kr-side",
+   "txt": "toi",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": [
+    138,
+    279,
+    20,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "kr-one kr-eux",
+   "box": [
+    203,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    203,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>span.kr-side",
+   "txt": "Rachel",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": [
+    217,
+    279,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-mleg prem-only",
+   "box": [
+    24,
+    304,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "toi envers eux",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    91,
+    304,
+    96,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-toi",
+   "box": [
+    91,
+    307,
+    11,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "eux envers toi",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    203,
+    304,
+    96,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-eux",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-eux",
+   "box": [
+    203,
+    307,
+    11,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-eq prem-only",
+   "box": [
+    32,
+    333,
+    326,
+    74
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-track",
+   "box": [
+    32,
+    333,
+    326,
+    39
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end",
+   "txt": "toi",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-end",
+   "box": [
+    32,
+    333,
+    40,
+    39
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end>b",
+   "txt": "50%",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    32,
+    354,
+    40,
+    18
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>div.eq-line",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-line",
+   "box": [
+    88,
+    348,
+    214,
+    10
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>div.eq-line>div.eq-mark",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-mark",
+   "box": [
+    117,
+    342,
+    6,
+    22
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end",
+   "txt": "eux",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-end",
+   "box": [
+    318,
+    333,
+    40,
+    39
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-track>span.eq-end>b",
+   "txt": "0%",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    318,
+    354,
+    40,
+    18
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-eq.prem-only>div.eq-phrase",
+   "txt": "tu portes un peu plus",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "eq-phrase",
+   "box": [
+    32,
+    388,
+    326,
+    19
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    24,
+    423,
+    342,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    24,
+    423,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    448,
+    342,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    477,
+    202,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    473,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    24,
+    502,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    502,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    507,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    502,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    507,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    502,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    507,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    24,
+    545,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    566,
+    342,
+    238
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "3 Promi échangés · 1 reçu · 2 donnés",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    24,
+    566,
+    342,
+    28
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    594,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    615,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    611,
+    98,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "faire les crêpes",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    611,
+    98,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    631,
+    98,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    620,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    664,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    685,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    681,
+    235,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "reprendre l'arrosage automatique",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    681,
+    235,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "de Rachel → le groupe · à tenir · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    701,
+    235,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    690,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    734,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    755,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    751,
+    106,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "rapporter le livre",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    751,
+    106,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    771,
+    106,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    760,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "Rachel",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    81,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ],
+ "cercle-moi": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    24,
+    122,
+    342,
+    64
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    24,
+    132,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    80,
+    122,
+    286,
+    64
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : rayonnante · ta parole : rayonnante",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    80,
+    130,
+    286,
+    34
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    194,
+    342,
+    227
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    24,
+    202,
+    342,
+    103
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-wrap",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-wrap",
+   "box": [
+    156,
+    214,
+    78,
+    83
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-wrap>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    156,
+    214,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    24,
+    321,
+    342,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    24,
+    321,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    346,
+    342,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    352,
+    202,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    354,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    24,
+    400,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    400,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    405,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    400,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    405,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    400,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    405,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    24,
+    443,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    464,
+    342,
+    798
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "11 Promi échangés · 11 reçus · 5 donnés",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    24,
+    464,
+    342,
+    28
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    492,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    513,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    509,
+    103,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "planter un arbre",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    509,
+    103,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    529,
+    103,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    518,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    562,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    583,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    579,
+    98,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "faire les crêpes",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    579,
+    98,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    599,
+    98,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    588,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    632,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    653,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    649,
+    107,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "courir dimanche",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    649,
+    107,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    669,
+    107,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    658,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    702,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    723,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    719,
+    103,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "nager le mardi",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    719,
+    103,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    739,
+    103,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    728,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    772,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    793,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    789,
+    119,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "le grand plongeoir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    789,
+    119,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Marion · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    809,
+    119,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    798,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    842,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    863,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    859,
+    203,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "monter la serre avant les gelées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    859,
+    203,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à le groupe · tenue · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    879,
+    203,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    868,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    912,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    933,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    929,
+    173,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "arroser tous les soirs",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    929,
+    173,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à le groupe · tenue · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    949,
+    173,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    938,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    982,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    1003,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    999,
+    170,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "arroser les tomates",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    999,
+    170,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    1019,
+    170,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    1008,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    1052,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    1073,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    1069,
+    170,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "tailler la vigne",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    1069,
+    170,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    1089,
+    170,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    1078,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    1122,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    1143,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    1139,
+    170,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "ramasser les courges",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    1139,
+    170,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "pour toi · en cours · le potager",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    1159,
+    170,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    1148,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "#psList>div.row",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "row",
+   "box": [
+    24,
+    1192,
+    342,
+    70
+   ]
+  },
+  {
+   "n": "#psList>div.row>canvas.bul.mini-dalle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "bul mini-dalle",
+   "box": [
+    26,
+    1213,
+    30,
+    30
+   ]
+  },
+  {
+   "n": "#psList>div.row>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "",
+   "box": [
+    72,
+    1209,
+    106,
+    37
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.a",
+   "txt": "rapporter le livre",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "a",
+   "box": [
+    72,
+    1209,
+    106,
+    19
+   ]
+  },
+  {
+   "n": "#psList>div.row>div>div.b",
+   "txt": "à Rachel · tenue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "b",
+   "box": [
+    72,
+    1229,
+    106,
+    17
+   ]
+  },
+  {
+   "n": "#psList>div.row>div.chev",
+   "txt": "›",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "chev",
+   "box": [
+    359,
+    1218,
+    5,
+    20
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "moi",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    45,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ],
+ "cercle-Zoé": [
+  {
+   "n": "div.grip",
+   "txt": "",
+   "vu": false,
+   "cache": "display:none sur grip",
+   "prem": false,
+   "clic": false,
+   "cls": "grip",
+   "box": null
+  },
+  {
+   "n": "div.ps-head",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-head",
+   "box": [
+    24,
+    122,
+    342,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>#psAva",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-ava ava-blob",
+   "box": [
+    24,
+    124,
+    44,
+    44
+   ]
+  },
+  {
+   "n": "div.ps-head>div",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    80,
+    122,
+    286,
+    47
+   ]
+  },
+  {
+   "n": "div.ps-head>div>#psSub",
+   "txt": "votre harmonie : à tisser",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "sub",
+   "box": [
+    80,
+    130,
+    286,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    177,
+    342,
+    260
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-mir",
+   "box": [
+    24,
+    185,
+    342,
+    119
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-duo",
+   "box": [
+    109,
+    197,
+    172,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-one kr-toi",
+   "box": [
+    109,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    109,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-toi>span.kr-side",
+   "txt": "toi",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": [
+    138,
+    279,
+    20,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "kr-one kr-eux",
+   "box": [
+    203,
+    197,
+    78,
+    99
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>canvas.kr-c",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-c",
+   "box": [
+    203,
+    197,
+    78,
+    78
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mir>div.kr-duo>div.kr-one.kr-eux>span.kr-side",
+   "txt": "Zoé",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "kr-side",
+   "box": [
+    229,
+    279,
+    25,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ps-mleg prem-only",
+   "box": [
+    24,
+    304,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "toi envers eux",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    91,
+    304,
+    96,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-toi",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-toi",
+   "box": [
+    91,
+    307,
+    11,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span",
+   "txt": "eux envers toi",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "",
+   "box": [
+    203,
+    304,
+    96,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-mleg.prem-only>span>i.ppl.ppl-eux",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": true,
+   "clic": false,
+   "cls": "ppl ppl-eux",
+   "box": [
+    203,
+    307,
+    11,
+    11
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-curve",
+   "box": [
+    24,
+    337,
+    342,
+    71
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>div.ps-clab",
+   "txt": "comment ça évolue",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-clab",
+   "box": [
+    24,
+    337,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    362,
+    342,
+    46
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>path",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    89,
+    382,
+    202,
+    10
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-curve>svg>circle",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    288,
+    378,
+    8,
+    8
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "ps-leg3",
+   "box": [
+    24,
+    416,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "en cours",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    416,
+    61,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    104,
+    421,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "tenues",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    416,
+    50,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    177,
+    421,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span",
+   "txt": "à tenir",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    416,
+    46,
+    17
+   ]
+  },
+  {
+   "n": "#psMirror>div.ps-leg3>span>i",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    239,
+    421,
+    7,
+    7
+   ]
+  },
+  {
+   "n": "div.grouplab",
+   "txt": "Promesses partagées",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "grouplab",
+   "box": [
+    24,
+    459,
+    342,
+    17
+   ]
+  },
+  {
+   "n": "#psList",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "",
+   "box": [
+    24,
+    480,
+    342,
+    44
+   ]
+  },
+  {
+   "n": "#psList>div.b",
+   "txt": "aucun Promi pour l'instant",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "b",
+   "box": [
+    24,
+    480,
+    342,
+    44
+   ]
+  },
+  {
+   "n": "div.enh",
+   "txt": "",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh",
+   "box": [
+    24,
+    40,
+    342,
+    60
+   ]
+  },
+  {
+   "n": "div.enh>#psName",
+   "txt": "Zoé",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": false,
+   "cls": "enh-t",
+   "box": [
+    52,
+    60,
+    43,
+    28
+   ]
+  },
+  {
+   "n": "div.enh>div.closeb",
+   "txt": "✕ Fermer",
+   "vu": true,
+   "cache": "",
+   "prem": false,
+   "clic": true,
+   "cls": "closeb",
+   "box": [
+    264,
+    63,
+    74,
+    15
+   ]
+  }
+ ]
+}

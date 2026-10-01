@@ -1,0 +1,38 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ v61 · cinq mondes à l'horloge, 0,83 / 0,78 (= 0,17 / 0,22 à 60 i/s) 
+  ✓ v61 · un redémarrage de boucle fait UN pas 
+  ✓ v61 · mondes neufs : temps vrai en sous-pas de 1/60 s 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu d'arrivée 760 ms 
+  ✓ Brouillamini, transition 1 600 ms · retrait 900 ms 
+  ✓ Chamade, transition 1 600 ms · retrait 900 ms 
+  ✓ Volubilis, transition 1 600 ms · retrait 900 ms 
+  ✓ Guingois, transition 1 600 ms · retrait 900 ms 
+  ✓ Chantourné, transition 1 600 ms · retrait 900 ms 
+  ✓ Mascaret, transition 1 600 ms · retrait 900 ms 
+  ✓ Ramage, transition 1 600 ms · retrait 900 ms 
+  ✓ v72 · Ramage : le fondu du plumage d'arrivée = ARR 900 ms 
+  ✓ v61 · Houle reste par image (exception) 
+— chemin : moteur
+  ✓ ramage · moteur · arrivee fin du mouvement 1723 ms (attendu 1690 ± 557) · cadence 94 % · [vu 1541 ms, 71 images]
+  ✓ ramage · moteur · depart fin du mouvement 1969 ms (attendu 2620 ± 864) · cadence 77 % · [vu 1623 ms, 71 images]
+  ✓ madrure · moteur · arrivee fin du mouvement 2431 ms (attendu 2432 ± 194) · cadence 90 % · [vu 1698 ms, 90 images]
+  ✓ madrure · moteur · depart fin du mouvement 2430 ms (attendu 2431 ± 194) · cadence 93 % · [vu 1996 ms, 108 images]
+  ✓ esquille · moteur · arrivee fin du mouvement 1433 ms (attendu 1437 ± 114) · cadence 98 % · [vu 1218 ms, 71 images]
+  ✓ esquille · moteur · depart fin du mouvement 1437 ms (attendu 1426 ± 114) · cadence 98 % · [vu 1088 ms, 64 images]
+— chemin : reel
+  ✓ ramage · reel · arrivee fin du mouvement 1749 ms (attendu 1690 ± 557) · cadence 77 % · [vu 1617 ms, 61 images]
+  ✓ ramage · reel · depart fin du mouvement 2031 ms (attendu 2620 ± 864) · cadence 80 % · [vu 1575 ms, 72 images]
+  ✓ madrure · reel · arrivee fin du mouvement 2430 ms (attendu 2432 ± 194) · cadence 81 % · [vu 1638 ms, 78 images]
+  ✓ madrure · reel · depart fin du mouvement 2437 ms (attendu 2431 ± 194) · cadence 92 % · [vu 1896 ms, 102 images]
+  ✓ esquille · reel · arrivee fin du mouvement 1436 ms (attendu 1437 ± 114) · cadence 91 % · [vu 1220 ms, 66 images]
+  ✓ esquille · reel · depart fin du mouvement 1438 ms (attendu 1426 ± 114) · cadence 86 % · [vu 1087 ms, 56 images]
+
+33 / 33

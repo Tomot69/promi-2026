@@ -1,0 +1,46 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>Promi — l'Orbite, vraies dalles</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0A0B0E;color:#F4EEE1;font-family:Apfel,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.page{max-width:1300px;margin:0 auto;padding:56px 24px 130px}
+h1{font-family:Bricolage;font-weight:700;font-size:34px;letter-spacing:-.02em;margin:0 0 10px}
+.chapo{font-size:15px;line-height:1.65;color:#8B8778;max-width:700px;margin:0 0 46px}
+.grille{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+figure{margin:0}
+.cadre{background:#131319;border-radius:26px;overflow:hidden;position:relative;
+  width:100%;aspect-ratio:1/1}
+.cadre canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+figcaption{margin:13px 2px 0;font-size:14px;color:#8B8778}
+figcaption b{color:#F4EEE1;font-weight:400}
+</style></head><body>
+<div style="position:absolute;left:0;top:0;width:390px;height:620px;opacity:.012;pointer-events:none;z-index:-1"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<div class="page">
+<h1>L'Orbite — le moteur peint lui-même</h1>
+<p class="chapo">Chaque cellule est un <b>vrai polygone de Voronoï sphérique</b>, calculé en
+sommets et raboté par ses bissectrices. On le projette, on découpe dessus, et
+<code>Toile.dalleTrame</code> peint dedans <b>à l'échelle 1</b> : vrai pas de motif, vraies
+couleurs, vraies strates. Plus de ré-échantillonnage, plus de grain qui écrase le dessin.</p>
+<div class="grille" id="g"></div>
+</div>
+<script>
+/* ⚑ `cc(s)` EST L'INDEX DE PALETTE D'UNE DALLE, PAS UNE COULEUR.
+   Le moteur fait `s.ci=cc(s); s.c=PAL[s.ci]`. Mon bouchon de planche rendait
+   un TABLEAU [200,180,255] : `PAL[tableau]` valait `undefined`, et toutes les
+   dalles retombaient sur le meme mauve. C'est ce bouchon, pas le moteur, qui
+   privait l'Orbite de la palette du Studio depuis le debut.
+   On rend un index, tire de la position de la graine — donc stable. */
+function cc(s){
+  var v=((s&&s.x||0)*7349 + (s&&s.y||0)*15731)|0;
+  v=(v^(v>>13))*1274126177; v=(v^(v>>16))>>>0;
+  return v%4;
+}
+function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js?v=1788574251"></script>
+<script src="/scratchpad/_q_cellule.js?v=1788896941"></script>
+<script src="/scratchpad/_q_peint.js?v=1788897007"></script>
+<script src="/scratchpad/_q_planche.js?v=1788896941"></script>
+</body></html>

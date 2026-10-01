@@ -1,0 +1,94 @@
+  promi                  [dark]
+      tete                     y=   36.0 h=  40.0 x= 24.0 w=342.0
+      LE TRAIT                 y=  110.0 h=  64.0 x= 24.0 w=342.0
+      À QUI                    y=  190.0 h=  64.0 x= 24.0 w=342.0
+      AVANT                    y=  270.0 h=  64.0 x= 24.0 w=342.0
+      DANS UNE NUÉE            y=  350.0 h=  64.0 x= 24.0 w=342.0
+      NOTE                     y=  430.0 h= 118.0 x= 24.0 w=342.0
+      PIÈCES JOINTES           y=  564.0 h=  92.0 x= 24.0 w=342.0
+      COMMENTAIRES             y=  672.0 h= 118.0 x= 24.0 w=342.0
+      RELANCER RACHEL          y=  806.0 h=  64.0 x= 24.0 w=342.0
+      cercle                   y=  886.0 h= 304.0 x= 24.0 w=342.0
+      SUPPRIMER CE PROMI       y= 1294.0 h=  64.0 x= 24.0 w=342.0
+  chiche                 [dark]
+      tete                     y=   36.0 h=  40.0 x= 24.0 w=342.0
+      LE TRAIT                 y=  110.0 h=  64.0 x= 24.0 w=342.0
+      À QUI JE LANCE           y=  190.0 h=  64.0 x= 24.0 w=342.0
+      AVEC                     y=  270.0 h=  64.0 x= 24.0 w=342.0
+      AVANT                    y=  350.0 h=  64.0 x= 24.0 w=342.0
+      NOTE                     y=  430.0 h= 118.0 x= 24.0 w=342.0
+      PIÈCES JOINTES           y=  564.0 h=  92.0 x= 24.0 w=342.0
+      COMMENTAIRES             y=  672.0 h= 104.0 x= 24.0 w=342.0
+      RELANCER MARION          y=  792.0 h=  64.0 x= 24.0 w=342.0
+      cercle                   y=  872.0 h= 304.0 x= 24.0 w=342.0
+      SUPPRIMER CE CHICHE      y= 1280.0 h=  64.0 x= 24.0 w=342.0
+  nuee                   [dark]
+      tete                     y=   36.0 h=  40.0 x= 24.0 w=342.0
+      LE TRAIT                 y=  110.0 h=  64.0 x= 24.0 w=342.0
+      DESCRIPTION              y=  190.0 h= 104.0 x= 24.0 w=342.0
+      MEMBRES                  y=  310.0 h=  64.0 x= 24.0 w=342.0
+      PIÈCES JOINTES           y=  390.0 h=  92.0 x= 24.0 w=342.0
+      COMMENTAIRES             y=  498.0 h= 104.0 x= 24.0 w=342.0
+      bouton                   y=  618.0 h=  62.0 x= 24.0 w=342.0
+      DISSOUDRE LA NUÉE        y=  696.0 h=  64.0 x= 24.0 w=342.0
+  promi                  [light]
+      tete                     y=   36.0 h=  40.0 x= 24.0 w=342.0
+      LE TRAIT                 y=  110.0 h=  64.0 x= 24.0 w=342.0
+      À QUI                    y=  190.0 h=  64.0 x= 24.0 w=342.0
+      AVANT                    y=  270.0 h=  64.0 x= 24.0 w=342.0
+      DANS UNE NUÉE            y=  350.0 h=  64.0 x= 24.0 w=342.0
+      NOTE                     y=  430.0 h= 118.0 x= 24.0 w=342.0
+      PIÈCES JOINTES           y=  564.0 h=  92.0 x= 24.0 w=342.0
+      COMMENTAIRES             y=  672.0 h= 118.0 x= 24.0 w=342.0
+      RELANCER RACHEL          y=  806.0 h=  64.0 x= 24.0 w=342.0
+      cercle                   y=  886.0 h= 304.0 x= 24.0 w=342.0
+      SUPPRIMER CE PROMI       y= 1294.0 h=  64.0 x= 24.0 w=342.0
+  chiche                 [light]
+      tete                     y=   36.0 h=  40.0 x= 24.0 w=342.0
+      LE TRAIT                 y=  110.0 h=  64.0 x= 24.0 w=342.0
+      À QUI JE LANCE           y=  190.0 h=  64.0 x= 24.0 w=342.0
+      AVEC                     y=  270.0 h=  64.0 x= 24.0 w=342.0
+      AVANT                    y=  350.0 h=  64.0 x= 24.0 w=342.0
+      NOTE                     y=  430.0 h= 118.0 x= 24.0 w=342.0
+      PIÈCES JOINTES           y=  564.0 h=  92.0 x= 24.0 w=342.0
+      COMMENTAIRES             y=  672.0 h= 104.0 x= 24.0 w=342.0
+      RELANCER MARION          y=  792.0 h=  64.0 x= 24.0 w=342.0
+      cercle                   y=  872.0 h= 304.0 x= 24.0 w=342.0
+      SUPPRIMER CE CHICHE      y= 1280.0 h=  64.0 x= 24.0 w=342.0
+  nuee                   [light]
+      tete                     y=   36.0 h=  40.0 x= 24.0 w=342.0
+      LE TRAIT                 y=  110.0 h=  64.0 x= 24.0 w=342.0
+      DESCRIPTION              y=  190.0 h= 104.0 x= 24.0 w=342.0
+      MEMBRES                  y=  310.0 h=  64.0 x= 24.0 w=342.0
+      PIÈCES JOINTES           y=  390.0 h=  92.0 x= 24.0 w=342.0
+      COMMENTAIRES             y=  498.0 h= 104.0 x= 24.0 w=342.0
+      bouton                   y=  618.0 h=  62.0 x= 24.0 w=342.0
+      DISSOUDRE LA NUÉE        y=  696.0 h=  64.0 x= 24.0 w=342.0
+
+── ÉCARTS DE POSITION (> 3 px) : 4
+     promi                  [dark] Cercle : ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'] au lieu de ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE']
+     chiche                 [dark] Cercle : ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'] au lieu de ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE']
+     promi                  [light] Cercle : ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'] au lieu de ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE']
+     chiche                 [light] Cercle : ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE'] au lieu de ["C'EST IMPORTANT ?", 'RÉCURRENCE', 'RAPPEL', 'LA MÉMOIRE']
+
+── ÉCARTS DE STYLE : 12
+     promi                  [dark] NOTE : rayon 30 au lieu de 59 (hauteur 118 ÷ 2)
+     promi                  [dark] COMMENTAIRES : rayon 30 au lieu de 59 (hauteur 118 ÷ 2)
+     chiche                 [dark] NOTE : rayon 30 au lieu de 59 (hauteur 118 ÷ 2)
+     chiche                 [dark] COMMENTAIRES : rayon 30 au lieu de 52 (hauteur 104 ÷ 2)
+     nuee                   [dark] DESCRIPTION : rayon 30 au lieu de 52 (hauteur 104 ÷ 2)
+     nuee                   [dark] COMMENTAIRES : rayon 30 au lieu de 52 (hauteur 104 ÷ 2)
+     promi                  [light] NOTE : rayon 30 au lieu de 59 (hauteur 118 ÷ 2)
+     promi                  [light] COMMENTAIRES : rayon 30 au lieu de 59 (hauteur 118 ÷ 2)
+     chiche                 [light] NOTE : rayon 30 au lieu de 59 (hauteur 118 ÷ 2)
+     chiche                 [light] COMMENTAIRES : rayon 30 au lieu de 52 (hauteur 104 ÷ 2)
+     nuee                   [light] DESCRIPTION : rayon 30 au lieu de 52 (hauteur 104 ÷ 2)
+     nuee                   [light] COMMENTAIRES : rayon 30 au lieu de 52 (hauteur 104 ÷ 2)
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+❌  position 4 · style 12 · collisions 0 · hors cadre 0 · peinture 0

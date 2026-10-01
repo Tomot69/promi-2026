@@ -1,0 +1,31 @@
+
+== accueil — 10 éléments touchables
+
+== Index — 8 éléments touchables
+
+== Fil — 7 éléments touchables
+
+== Aura — 5 éléments touchables
+   (clic issu du toucher tombé sur une couche ouverte pendant le geste : ['scrim'] — div.au-n « Marion »)
+   (clic issu du toucher tombé sur une couche ouverte pendant le geste : ['scrim'] — div.au-n « Rachel »)
+
+== fiche Promi 126 — 4 éléments touchables
+
+== fiche Chiche 127 — 5 éléments touchables
+
+== Peaufiner Promi 126 — 8 éléments touchables
+
+== fiche Nuée potager — 6 éléments touchables
+
+== Peaufiner Nuée — 6 éléments touchables
+
+== fiche de Rachel — 5 éléments touchables
+
+== Studio — 9 éléments touchables
+
+== Réglages — 6 éléments touchables
+
+═══ finale (48b1a56b) — 79 éléments touchés au doigt ET à la souris · 0 écart(s) doigt ≠ souris · 2 clic(s) fantôme(s) consigné(s)
+   FANTÔME [Aura] div.au-n « Marion » → ['scrim']
+   FANTÔME [Aura] div.au-n « Rachel » → ['scrim']
+exit 0

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #EFE9DE; }
+  a { color: #C8452B; }
+  a:hover { color: #1A1613; }
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="{{ fond }}">
+  <div style="max-width:1400px;margin:0 auto;display:flex;flex-direction:column;gap:22px">
+
+    <header style="display:flex;flex-direction:column;gap:11px;max-width:76ch">
+      <p style="margin:0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.5">Promi · Esquille</p>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(24px,3.4vw,38px);line-height:1.06">Peu de fragments, gros ; et une dalle seule est une silhouette</h1>
+      <p style="margin:0;font-size:12.5px;line-height:1.7;opacity:.72;text-wrap:pretty">La plaque se casse autour des promesses jusqu'à un fragment par cellule. Une promesse pèse beaucoup plus lourd que la matière dans le choix des coupes : son fragment est franchement plus gros. Rendue seule, une dalle n'est que son fragment — sur rien.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button onClick="{{ mode }}" style="cursor:pointer;background:none;border:1px solid #1A161340;padding:9px 15px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#1A1613">Clair / sombre</button>
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:none;border:1px solid #1A161340;padding:9px 15px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#1A1613">Nouveau semis</button>
+        <span style="font-size:11px;opacity:.5">{{ etat }}</span>
+      </div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:12px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:26px">Quatre dalles, seules, à 3×</h2>
+      <p style="margin:0;font-size:12px;opacity:.6;max-width:64ch">Chacune est un fragment posé sur rien : sa silhouette, sa matière dedans. Aucun carré, aucune voisine, aucun fond.</p>
+      <div style="display:flex;gap:22px;flex-wrap:wrap;align-items:flex-end">
+        <canvas data-seule="0"></canvas>
+        <canvas data-seule="1"></canvas>
+        <canvas data-seule="2"></canvas>
+        <canvas data-seule="3"></canvas>
+      </div>
+      <p style="margin:0;font-size:12px;opacity:.6;max-width:64ch">Les mêmes à 40 px, la taille d'une carte d'Index :</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+        <canvas data-petite="0"></canvas>
+        <canvas data-petite="1"></canvas>
+        <canvas data-petite="2"></canvas>
+        <canvas data-petite="3"></canvas>
+        <canvas data-petite="4"></canvas>
+        <canvas data-petite="5"></canvas>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:12px;border-top:1px solid #1A161326;padding-top:18px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:26px">Six, vingt, quarante promesses</h2>
+      <p style="margin:0;font-size:12px;opacity:.6;max-width:64ch">À six : six grandes formes franches qui occupent presque tout l'écran, quelques fragments de matière entre elles. À quarante : quarante formes plus petites, la matière presque disparue.</p>
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-toile="6"></canvas><span style="font-size:11px;opacity:.5">6 promesses</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-toile="20"></canvas><span style="font-size:11px;opacity:.5">20 promesses</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-toile="40"></canvas><span style="font-size:11px;opacity:.5">40 promesses</span></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:12px;border-top:1px solid #1A161326;padding-top:18px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:26px">La Toile grandit</h2>
+      <p style="margin:0;font-size:12px;opacity:.6;max-width:64ch">1, 3, 6, 14, 40 promesses. À chaque étape le semis a exactement autant de cellules qu'il y a de promesses, plus un peu de matière : planter une promesse ajoute une cellule, les voisines s'écartent, se reproportionnent, se stabilisent.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <canvas data-g="1"></canvas><canvas data-g="3"></canvas><canvas data-g="6"></canvas><canvas data-g="14"></canvas><canvas data-g="40"></canvas>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { seed: 7, etat: '', sombre: false };
+  PAL = ['#1A1613', '#C8452B', '#E2A43B', '#2F6157'];
+  // la matière : des nuances de la couleur du mode (crème en clair, sombre en sombre).
+  // Dans le moteur, ce sont exactement les gris de cOf pour une cellule vide (rampe GLIGHT / TH[monde].g).
+  MATC = ['#E9E1CF', '#EFE8D8', '#E2DAC6', '#F3EDE0', '#E6DECB'];
+  MATS = ['#2A2419', '#221C13', '#332B1E', '#1B160F', '#2E2719'];
+  BGC = '#EFE9DE';
+  BGS = '#14110C';
+
+  lcg(k) { let sd = (k >>> 0) || 1; return () => { sd = (sd * 1103515245 + 12345) & 0x7fffffff; return sd / 0x7fffffff; }; }
+  fnv(t) { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = (h * 16777619) >>> 0; } return h >>> 0; }
+  area(p) { let a = 0; for (let i = 0, j = p.length - 1; i < p.length; j = i++) a += p[j][0] * p[i][1] - p[i][0] * p[j][1]; return Math.abs(a / 2); }
+  centroid(p) { let x = 0, y = 0; p.forEach(q => { x += q[0]; y += q[1]; }); return [x / p.length, y / p.length]; }
+  clipHalf(p, px, py, nx, ny) {
+    const out = [];
+    for (let i = 0, j = p.length - 1; i < p.length; j = i++) {
+      const A = p[j], B = p[i], da = (A[0] - px) * nx + (A[1] - py) * ny, db = (B[0] - px) * nx + (B[1] - py) * ny;
+      if (db <= 0) { if (da > 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); } out.push(B); }
+      else if (da <= 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); }
+    }
+    return out;
+  }
+  // retrait à largeur constante : les angles restent vifs
+  offset(p, d) {
+    const n = p.length, c = this.centroid(p), li = [];
+    for (let i = 0; i < n; i++) {
+      const a = p[i], b = p[(i + 1) % n];
+      let nx = b[1] - a[1], ny = -(b[0] - a[0]);
+      const l = Math.hypot(nx, ny) || 1; nx /= l; ny /= l;
+      if ((c[0] - a[0]) * nx + (c[1] - a[1]) * ny < 0) { nx = -nx; ny = -ny; }
+      li.push([a[0] + nx * d, a[1] + ny * d, b[0] - a[0], b[1] - a[1]]);
+    }
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      const A = li[i], B = li[(i + 1) % n], den = A[2] * B[3] - A[3] * B[2];
+      if (Math.abs(den) < 1e-9) { out.push([B[0], B[1]]); continue; }
+      const t = ((B[0] - A[0]) * B[3] - (B[1] - A[1]) * B[2]) / den;
+      out.push([A[0] + A[2] * t, A[1] + A[3] * t]);
+    }
+    return out;
+  }
+  trace(g, p) { g.beginPath(); g.moveTo(p[0][0], p[0][1]); for (let i = 1; i < p.length; i++) g.lineTo(p[i][0], p[i][1]); g.closePath(); }
+
+  // le semis : peu de cellules, quelques-unes portent une promesse
+  champ(W, H, nPromi, seed) {
+    // le semis a exactement autant de cellules qu'il y a de promesses, plus un peu de matière
+    const nMat = Math.max(2, Math.round(2 + nPromi * 0.15));
+    const nCells = nPromi + nMat;
+    const R = this.lcg(this.fnv('s' + seed));
+    const cols = Math.max(1, Math.round(Math.sqrt(nCells * W / H))), rows = Math.max(1, Math.ceil(nCells / cols));
+    const sx = W / cols, sy = H / rows, sites = [];
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++)
+      sites.push({ x: (i + 0.5 + (R() - 0.5) * 0.66) * sx, y: (j + 0.5 + (R() - 0.5) * 0.66) * sy, i: sites.length });
+    sites.forEach(s => { s.cle = this.fnv('c' + s.i + '|' + seed); });
+    // les promesses arrivent dans un ordre stable : planter la suivante ajoute une cellule
+    const ordre = sites.slice().sort((a, b) => (a.cle % 99991) - (b.cle % 99991));
+    const np = Math.min(nPromi, ordre.length);
+    ordre.forEach((s, i) => { s.promi = i < np; });
+    // ton de la promesse : aucun voisin proche ne le porte
+    sites.forEach(s => {
+      if (!s.promi) return;
+      const pris = {};
+      sites.forEach(o => { if (o !== s && o.promi && o.c !== undefined && Math.hypot(o.x - s.x, o.y - s.y) < (sx + sy) * 0.9) pris[o.c] = 1; });
+      // l'ordre des tons candidats vient de la clé : aucun ton n'est privilégié
+      const r2 = this.lcg((s.cle ^ 0x9e3779b9) >>> 0), cand = [0, 1, 2, 3];
+      for (let i = 3; i > 0; i--) { const j = Math.floor(r2() * (i + 1)), t = cand[i]; cand[i] = cand[j]; cand[j] = t; }
+      let c = cand.find(k => !pris[k]);
+      if (c === undefined) c = cand[0];
+      s.c = c;
+      s.c2 = (c + 1 + Math.floor(this.lcg(s.cle)() * 3)) % 4; if (s.c2 === c) s.c2 = (c + 2) % 4;
+    });
+    return { sites, u: (sx + sy) / 2, sat: np / sites.length };
+  }
+
+  // la plaque se casse autour des promesses, jusqu'à un fragment par cellule
+  fragments(F, W, H) {
+    const u = F.u, S = F.sites;
+    // une promesse pèse BEAUCOUP plus lourd que la matière : 8× à vide, 2× à saturation
+    const place = s => (s.promi ? 1 + (7 - 5 * F.sat) : 1);
+    let bx0 = 1e18, by0 = 1e18, bx1 = -1e18, by1 = -1e18;
+    S.forEach(s => { bx0 = Math.min(bx0, s.x); by0 = Math.min(by0, s.y); bx1 = Math.max(bx1, s.x); by1 = Math.max(by1, s.y); });
+    const m = u * 0.72;
+    const out = [];
+    const casser = (poly, germes, prof) => {
+      if (germes.length === 1 || prof > 26) { out.push({ p: poly, s: germes[0] }); return; }
+      let cx = 0, cy = 0;
+      germes.forEach(s => { cx += s.x; cy += s.y; });
+      cx /= germes.length; cy /= germes.length;
+      let xx = 0, yy = 0, xy = 0;
+      germes.forEach(s => { const dx = s.x - cx, dy = s.y - cy; xx += dx * dx; yy += dy * dy; xy += dx * dy; });
+      let kx = 0; germes.forEach(s => { kx = (kx ^ s.cle) >>> 0; });
+      const r = this.lcg(kx);
+      const ang = 0.5 * Math.atan2(2 * xy, xx - yy) + (r() - 0.5) * 0.6;
+      const nx = Math.cos(ang), ny = Math.sin(ang);
+      const proj = germes.map(s => ({ s, t: s.x * nx + s.y * ny })).sort((a, b) => a.t - b.t);
+      let tot = 0; proj.forEach(q => { tot += place(q.s); });
+      let acc = 0, idx = 0;
+      for (let i = 0; i < proj.length - 1; i++) { acc += place(proj[i].s); idx = i; if (acc >= tot * 0.5) break; }
+      const t0 = proj[idx].t, t1 = proj[idx + 1].t, w0 = place(proj[idx].s), w1 = place(proj[idx + 1].s);
+      const cut = t0 + (t1 - t0) * (w0 / (w0 + w1)) * (0.75 + r() * 0.5);
+      const A = this.clipHalf(poly, nx * cut, ny * cut, nx, ny), B = this.clipHalf(poly, nx * cut, ny * cut, -nx, -ny);
+      const GA = [], GB = [];
+      proj.forEach((q, i) => { (i <= idx ? GA : GB).push(q.s); });
+      if (A.length > 2 && GA.length) casser(A, GA, prof + 1);
+      if (B.length > 2 && GB.length) casser(B, GB, prof + 1);
+    };
+    casser([[bx0 - m, by0 - m], [bx1 + m, by0 - m], [bx1 + m, by1 + m], [bx0 - m, by1 + m]], S, 0);
+    return out;
+  }
+
+  get BG() { return this.state.sombre ? this.BGS : this.BGC; }
+  couleur(s) {
+    if (!s.promi) {
+      const M = this.state.sombre ? this.MATS : this.MATC;
+      return M[Math.floor(this.lcg(s.cle)() * M.length)];
+    }
+    const t = this.lcg((s.cle ^ 0x5bf03635) >>> 0)();
+    return this.PAL[t < 0.18 ? s.c2 : s.c];
+  }
+
+  toile(cv, W, H, nPromi, seed, D) {
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    cv.width = W * D; cv.height = H * D;
+    const g = cv.getContext('2d');
+    g.setTransform(D, 0, 0, D, 0, 0);
+    g.fillStyle = this.BG; g.fillRect(0, 0, W, H);
+    const F = this.champ(W, H, nPromi, seed), fel = F.u * 0.022;
+    this.fragments(F, W, H).forEach(fe => {
+      if (!fe.p || fe.p.length < 3 || !fe.s) return;
+      const a = this.area(fe.p); if (a < F.u * F.u * 0.004) return;
+      g.fillStyle = this.couleur(fe.s);
+      this.trace(g, this.offset(fe.p, Math.min(fel, Math.sqrt(a) * 0.16))); g.fill();
+    });
+  }
+
+  // UNE DALLE SEULE : on ne peint QUE son fragment, sur rien. Sa silhouette, pas un carré.
+  dalleSeule(cv, taille, rang, seed, D) {
+    const A = 620;
+    const F = this.champ(A, A, 9, seed);
+    const frs = this.fragments(F, A, A).filter(fe => fe.s && fe.s.promi);
+    if (!frs.length) return;
+    const fe = frs[rang % frs.length];
+    const fel = F.u * 0.022, a = this.area(fe.p);
+    const p = this.offset(fe.p, Math.min(fel, Math.sqrt(a) * 0.16));
+    let x0 = 1e18, y0 = 1e18, x1 = -1e18, y1 = -1e18;
+    p.forEach(q => { x0 = Math.min(x0, q[0]); y0 = Math.min(y0, q[1]); x1 = Math.max(x1, q[0]); y1 = Math.max(y1, q[1]); });
+    const w = x1 - x0, h = y1 - y0, k = taille / Math.max(w, h);
+    const cw = Math.round(w * k), ch = Math.round(h * k);
+    cv.style.width = cw + 'px'; cv.style.height = ch + 'px';
+    cv.width = Math.round(cw * D); cv.height = Math.round(ch * D);
+    const g = cv.getContext('2d');
+    // aucun fond : le canevas reste transparent, la page fait la table
+    g.setTransform(k * D, 0, 0, k * D, -x0 * k * D, -y0 * k * D);
+    g.fillStyle = this.couleur(fe.s);
+    this.trace(g, p); g.fill();
+  }
+
+  componentDidMount() { this.tout(); }
+  componentDidUpdate() { this.tout(); }
+
+  tout() {
+    const root = this.root; if (!root) return;
+    root.querySelectorAll('canvas[data-seule]').forEach(cv => this.dalleSeule(cv, 210, +cv.dataset.seule, this.state.seed, 2));
+    root.querySelectorAll('canvas[data-petite]').forEach(cv => this.dalleSeule(cv, 40, +cv.dataset.petite, this.state.seed, 3));
+    root.querySelectorAll('canvas[data-toile]').forEach(cv => this.toile(cv, 270, 585, +cv.dataset.toile, this.state.seed, 2));
+    root.querySelectorAll('canvas[data-g]').forEach(cv => this.toile(cv, 170, 368, +cv.dataset.g, this.state.seed, 2));
+  }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      etat: this.state.etat,
+      fond: "min-height:100vh;font-family:'IBM Plex Mono',monospace;padding:36px 26px 70px;box-sizing:border-box;" + (this.state.sombre ? 'background:#14110C;color:#EFE9DE' : 'background:#EFE9DE;color:#1A1613'),
+      reroll: () => this.setState(s => ({ seed: s.seed + 1 })),
+      mode: () => this.setState(s => ({ sombre: !s.sombre }))
+    };
+  }
+}
+</script>
+</body>
+</html>

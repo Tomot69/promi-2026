@@ -1,0 +1,68 @@
+
+═══ L'AURA — l'Pelote dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    8
+    [sombre] la légende ne se déclare pas centrée (data-centre-entre)
+    [sombre] la légende n'est pas centrée à l'encre : 27.5 au-dessus, 116.0 en dessous (écart attendu 1.0)
+    [sombre] « Ce que tu as tenu » à 728.5 au lieu de 635.0
+    [sombre] le bouton (24, 640.5, 342, 60) au lieu de (24, 1140.8, 342, 60)
+    [clair] la légende ne se déclare pas centrée (data-centre-entre)
+    [clair] la légende n'est pas centrée à l'encre : 27.5 au-dessus, 116.0 en dessous (écart attendu 1.0)
+    [clair] « Ce que tu as tenu » à 728.5 au lieu de 635.0
+    [clair] le bouton (24, 640.5, 342, 60) au lieu de (24, 1138.8, 342, 60)
+écarts de style              2
+    [sombre] le bouton : « Partager ma Pelote »
+    [clair] le bouton : « Partager ma Pelote »
+collisions                   0
+débordements                 0
+présence peinte              3
+    [sombre] le sol est à 43° pour une palette à 218°
+    [clair] la sphère n'est pas pleine (0.942)
+    [clair] le sol est à 267° pour une palette à 218°
+données                      2
+    le sol a suivi la nature chiche (266° au lieu de 211°) — il doit suivre la PALETTE
+    le sol a suivi la nature nuee (338° au lieu de 211°) — il doit suivre la PALETTE
+les huit acquis              0
+densité                      0
+air de la colonne            14
+    [sombre] « Rien de ce qui est ici n’a é » : -317.5 pt entre les libellés des dalles et le bouton
+    [sombre] à l'encre, la légende n'est pas centrée : 36.5 au-dessus, 31.0 en dessous
+    [sombre] « Tout ça, tu l’as dit. Et tu  » : -317.5 pt entre les libellés des dalles et le bouton
+    [sombre] à l'encre, la légende n'est pas centrée : 36.5 au-dessus, 31.0 en dessous
+    [sombre] « On ne dirait pas comme ça, m » : -317.5 pt entre les libellés des dalles et le bouton
+    [sombre] « Il y en a, des paroles tenue » : -317.5 pt entre les libellés des dalles et le bouton
+    [sombre] « Et dire que tout ça, c’est t » : -317.5 pt entre les libellés des dalles et le bouton
+    [clair] « Rien de ce qui est ici n’a é » : -317.5 pt entre les libellés des dalles et le bouton
+    [clair] à l'encre, la légende n'est pas centrée : 36.5 au-dessus, 31.0 en dessous
+    [clair] « Tout ça, tu l’as dit. Et tu  » : -317.5 pt entre les libellés des dalles et le bouton
+    [clair] à l'encre, la légende n'est pas centrée : 36.5 au-dessus, 31.0 en dessous
+    [clair] « On ne dirait pas comme ça, m » : -317.5 pt entre les libellés des dalles et le bouton
+    [clair] « Il y en a, des paroles tenue » : -317.5 pt entre les libellés des dalles et le bouton
+    [clair] « Et dire que tout ça, c’est t » : -317.5 pt entre les libellés des dalles et le bouton
+la matière                   1
+    [sombre] la dalle « rapporter le livre » est illisible : ΔE 8.1 (plancher 15)
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 5 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi
+   air [sombre]         phrase → disques : 1 l. 36.7 · 1 l. 36.7 · 2 l. 37.4 · 1 l. 36.7 · 1 l. 36.7 · à l'encre 1 l. 38.0 · légende à l'encre (36.5, 31) · libellés → bouton -317.5 · la colonne défile de 291 pt
+   matière [sombre]     boule ↔ page 167.5 (plancher 42) · contour 142.9 · dalles : 5 de face, |Δlum| la plus faible 12.7, médiane 31.1 · ΔE 21 43 32 17 8
+   air [clair]          phrase → disques : 1 l. 36.7 · 1 l. 36.7 · 2 l. 37.4 · 1 l. 36.7 · 1 l. 36.7 · à l'encre 1 l. 38.0 · légende à l'encre (36.5, 31) · libellés → bouton -317.5 · la colonne défile de 291 pt
+   matière [clair]      boule ↔ page 104.9 (plancher 42) · contour 119.8 · dalles : 5 de face, |Δlum| la plus faible 35.6, médiane 86.0 · ΔE 40 32 27 50 16
+   1 · rotation lente   0.0628 rad/s sur 2 s (décidé 0.0628, un tour en 100 s)
+   2 · prise, droite    Δlac +0.822 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.004 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.603 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 2.99 rad/s · éteint à 4.6 s · puis 0.0630 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 83 ms (dont peintre 16.3 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 6.0 → 2.9 → 1.7 → 0.7 → lisse · DERNIER PAS 0.68 niveau (médiane des 10 d'avant 2.20) · 10 images · empreinte retirée à 0.25 s
+   4 · toucher          p 0.749 à 250 ms, 0.952 à 950 ms · sous le doigt 94.8 % des pixels changent, hors de portée 0.00 %, bruit 0.00 % · revenu ≈ 0.2 s après le lâcher, écart au repos 0.00 %
+   5 · trace            en attente au lâcher : 1 · 0 → 1 caresse(s), gardée(s) : 1 · au repos, 11.2 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 0.71 s lâché sur place, 0.16 s lancé (23 %)
+   8 · personne         toucher sur « Adrien » → ouvre « Adrien », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.11 rad, personne d'ouvert
+   8 bis · dalle        glissement de 30 pt sur « rapporter le livre » → rien d'ouvert · toucher → fiche affichée (Promi 139, attendu 139) · ✕ → Aura
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.895
+   6 bis · monde        Studio encre → pixel · 5 dalles, 5 jugées · distance à la plantation / au courant : rapporter le livre 0.000/0.093 · arroser tous les s 0.002/0.166 · monter la serre av 0.001/0.163 · le grand plongeoir 0.000/0.205 · planter un arbre 0.000/0.198
+
+palier 75000 · médiane 13.8 ms · 2296 images · plus longue image pendant l'élan : 83 ms (dont peintre 16.3 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 3 décision(s) · à la réouverture : palier 75000
+
+❌  30 ÉCARTS

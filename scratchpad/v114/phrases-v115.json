@@ -1,0 +1,1290 @@
+{
+ "soi": {
+  "me coucher le jour même": {
+   "430": {
+    "lignes": 2,
+    "droite": 97.91009521484375,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 97.91007126405644,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   }
+  },
+  "finir ce livre avant d’en ouvrir trois": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.23626708984375,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.2362294622618,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   }
+  },
+  "apprendre enfin le nom de mes voisins": {
+   "430": {
+    "lignes": 2,
+    "droite": 27.59515380859375,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 27.595115459208717,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   }
+  },
+  "faire la sieste sans culpabiliser": {
+   "430": {
+    "lignes": 2,
+    "droite": 75.69091796875,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 75.69088659254466,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   }
+  },
+  "arroser mes plantes avant qu’elles m’en veuillent": {
+   "430": {
+    "lignes": 3,
+    "droite": 27.26324462890625,
+    "gauche": 24,
+    "fs": 33,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 27.263193379801276,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 3
+   }
+  },
+  "prendre des nouvelles avant d’avoir une raison": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.6156005859375,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.615552584159637,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   }
+  },
+  "me garder une soirée pour moi": {
+   "430": {
+    "lignes": 2,
+    "droite": 48.04864501953125,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 48.048637250494984,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   }
+  },
+  "trouver un nouveau hobby": {
+   "430": {
+    "lignes": 2,
+    "droite": 96.39459228515625,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 96.39457055684808,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   }
+  },
+  "adopter un animal à la SPA": {
+   "430": {
+    "lignes": 2,
+    "droite": 93.59524536132812,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 93.59524382167096,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   }
+  },
+  "retourner voir cet endroit que j’ai adoré": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.55126953125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.551222888385066,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "commencer sans attendre le bon moment": {
+   "430": {
+    "lignes": 2,
+    "droite": 29.692840576171875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 29.692790188166736,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "m’engager pour cette cause": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.87200927734375,
+    "gauche": 24,
+    "fs": 36,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.871973674007325,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 2
+   }
+  },
+  "apprendre à jouer d’un instrument": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.65228271484375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.65224545051107,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  }
+ },
+ "demander": {
+  "m’écrire quand tu es chez toi": {
+   "430": {
+    "lignes": 2,
+    "droite": 61.736778259277344,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 61.736743730520566,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me prévenir si j’ai quelque chose entre les dents": {
+   "430": {
+    "lignes": 3,
+    "droite": 58.14884948730469,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 58.14884334654315,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "ne jamais parler comme sur Linkédine": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.137115478515625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.137067836146993,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me dire si je commence à dire « ça fait sens »": {
+   "430": {
+    "lignes": 3,
+    "droite": 114.38156127929688,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 114.38155047532219,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "me dire si je commence à dire « disruptif »": {
+   "430": {
+    "lignes": 3,
+    "droite": 111.95513916015625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 111.95514546518106,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "me dire si je commence à parler de « synergies »": {
+   "430": {
+    "lignes": 3,
+    "droite": 85.94155883789062,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 85.94155106457724,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "me partager ta recette": {
+   "430": {
+    "lignes": 2,
+    "droite": 95.27165985107422,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 95.27165105686373,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "me prévenir quand tu auras changé d’avis": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.08497619628906,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.084928610113046,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "me dire si je deviens comme mes parents": {
+   "430": {
+    "lignes": 2,
+    "droite": 32.89088439941406,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 32.8908772524428,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "me rappeler cette histoire quand on sera vieux": {
+   "430": {
+    "lignes": 3,
+    "droite": 58.60002136230469,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 58.60000402555321,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "me rappeler de ne pas devenir raisonnable": {
+   "430": {
+    "lignes": 2,
+    "droite": 30.491943359375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 30.491896771107353,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  }
+ },
+ "chiche": {
+  "dire oui pour une fois": {
+   "430": {
+    "lignes": 2,
+    "droite": 123.00640869140625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 123.00640270120248,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "te baigner fin octobre": {
+   "430": {
+    "lignes": 2,
+    "droite": 151.4200439453125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 151.42000993037993,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "te lever pour voir le soleil se lever": {
+   "430": {
+    "lignes": 2,
+    "droite": 63.229644775390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 63.22962755499867,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "dormir à la belle étoile": {
+   "430": {
+    "lignes": 2,
+    "droite": 142.3408203125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 142.34078029134162,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "choisir une ville au hasard": {
+   "430": {
+    "lignes": 2,
+    "droite": 146.63763427734375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 146.63762394560683,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "partir demain matin": {
+   "430": {
+    "lignes": 1,
+    "droite": 35.234375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 35.23436532933731,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "faire cette chose qu’on n’a jamais faite": {
+   "430": {
+    "lignes": 2,
+    "droite": 62.721649169921875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 62.721617957302335,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "nous faire confiance et voir où ça mène": {
+   "430": {
+    "lignes": 2,
+    "droite": 35.42802429199219,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 35.428027686598966,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "dire oui sans demander pourquoi": {
+   "430": {
+    "lignes": 2,
+    "droite": 83.387939453125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 83.38791299771847,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "faire le Mont Blanc": {
+   "430": {
+    "lignes": 1,
+    "droite": 44.203125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 44.20307895485795,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "te mettre à la salsa": {
+   "430": {
+    "lignes": 1,
+    "droite": 40.140625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 40.14059807239939,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "monter un groupe": {
+   "430": {
+    "lignes": 1,
+    "droite": 56.0625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 56.06248453972735,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 1
+   }
+  },
+  "prendre un cours de trapèze": {
+   "430": {
+    "lignes": 2,
+    "droite": 71.17361450195312,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 71.17357446311806,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "courir notre premier marathon": {
+   "430": {
+    "lignes": 2,
+    "droite": 105.94082641601562,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 105.94080017358472,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "apprendre une nouvelle langue": {
+   "430": {
+    "lignes": 2,
+    "droite": 98.07513427734375,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 98.07512712973248,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "apprendre à jouer d’un instrument": {
+   "430": {
+    "lignes": 2,
+    "droite": 55.00474548339844,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 55.004722608182014,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "faire un trek de plusieurs jours": {
+   "430": {
+    "lignes": 2,
+    "droite": 92.7784423828125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 92.77841777140054,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "apprendre à naviguer": {
+   "430": {
+    "lignes": 2,
+    "droite": 152.199951171875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 152.19992582649672,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  }
+ },
+ "nuee": {
+  "Week-end à Marseille": {
+   "430": {
+    "lignes": 2,
+    "droite": 59.794281005859375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 59.79425522866677,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "La coloc": {
+   "430": {
+    "lignes": 1,
+    "droite": 77.078125,
+    "gauche": 24,
+    "fs": 36,
+    "n": 1
+   },
+   "375": {
+    "lignes": 1,
+    "droite": 77.07808199831939,
+    "gauche": 23.99999861893346,
+    "fs": 36,
+    "n": 1
+   }
+  },
+  "Le club de lecture": {
+   "430": {
+    "lignes": 2,
+    "droite": 106.755126953125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 106.75510270838402,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le club de running": {
+   "430": {
+    "lignes": 2,
+    "droite": 60.53955078125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 60.539540114049494,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Les 42 kilomètres": {
+   "430": {
+    "lignes": 2,
+    "droite": 113.96038818359375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 113.96036776369726,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "L’apéro qu’on repousse depuis mars": {
+   "430": {
+    "lignes": 2,
+    "droite": 29.4185791015625,
+    "gauche": 24,
+    "fs": 32,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 29.41854988729474,
+    "gauche": 23.99999861893346,
+    "fs": 32,
+    "n": 2
+   }
+  },
+  "La maison qu’on veut construire": {
+   "430": {
+    "lignes": 2,
+    "droite": 35.203643798828125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 35.20360936113499,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Notre tour du monde": {
+   "430": {
+    "lignes": 2,
+    "droite": 66.82275390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 66.82271461109065,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le voyage qu’on repousse": {
+   "430": {
+    "lignes": 2,
+    "droite": 54.988037109375,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 54.988005564982046,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Notre premier festival": {
+   "430": {
+    "lignes": 2,
+    "droite": 111.4044189453125,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 111.40440068157169,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "La maison de campagne": {
+   "430": {
+    "lignes": 2,
+    "droite": 62.0709228515625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 62.07088510713086,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le projet qu’on mijote depuis deux ans": {
+   "430": {
+    "lignes": 2,
+    "droite": 24.87518310546875,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 24.875144807384185,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le road trip des parkings de supermarché": {
+   "430": {
+    "lignes": 2,
+    "droite": 30.29461669921875,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 30.294563845887705,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   }
+  },
+  "Le road trip en Meuse": {
+   "430": {
+    "lignes": 2,
+    "droite": 42.8160400390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 42.81600324151662,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le road trip des plus beaux ronds-points": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.415069580078125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.41504034146512,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le road trip des zones pavillonnaires": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.415069580078125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.41504034146512,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le road trip des sous-préfectures": {
+   "430": {
+    "lignes": 2,
+    "droite": 34.983367919921875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 34.98333538617792,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le road trip des ZAC": {
+   "430": {
+    "lignes": 2,
+    "droite": 42.8160400390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 42.81600324151662,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le road trip des zones commerciales": {
+   "430": {
+    "lignes": 2,
+    "droite": 24.249542236328125,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 24.249497496382116,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "Le road trip des aires de repos": {
+   "430": {
+    "lignes": 2,
+    "droite": 42.8160400390625,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 42.81600324151662,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le mariage de Philippine et Pascal": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.378387451171875,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.378356733374567,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   }
+  },
+  "Le mariage de Huguette et Jean-Roch": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.730224609375,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.730178037891147,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le mariage de Blandine et Bruno-Stanislas": {
+   "430": {
+    "lignes": 3,
+    "droite": 77.29254150390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 77.29253094151704,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Nadine et Bernard-Guy": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.730224609375,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.730178037891147,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le mariage de Monique et Didier-Régis": {
+   "430": {
+    "lignes": 2,
+    "droite": 33.8497314453125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 33.84968845184896,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Chantal et Jean-Guy": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.730224609375,
+    "gauche": 24,
+    "fs": 31,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.730178037891147,
+    "gauche": 23.99999861893346,
+    "fs": 31,
+    "n": 2
+   }
+  },
+  "Le mariage de Fabienne et Thierry-Alain": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.358551025390625,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.358487789428068,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Corinne et Michel-Régis": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.476043701171875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.475996910093794,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "Le mariage de Raymonde et Gérard-Yves": {
+   "430": {
+    "lignes": 3,
+    "droite": 36.514129638671875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 36.5141168273853,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Gisèle et Rodolphe": {
+   "430": {
+    "lignes": 2,
+    "droite": 28.757537841796875,
+    "gauche": 24,
+    "fs": 33,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 28.75747361600253,
+    "gauche": 23.99999861893346,
+    "fs": 33,
+    "n": 2
+   }
+  },
+  "Le mariage de Huguette et Mireille": {
+   "430": {
+    "lignes": 2,
+    "droite": 25.43426513671875,
+    "gauche": 24,
+    "fs": 32,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 25.43421320230047,
+    "gauche": 23.99999861893346,
+    "fs": 32,
+    "n": 2
+   }
+  },
+  "Le mariage de Ginette et Gisèle": {
+   "430": {
+    "lignes": 2,
+    "droite": 43.593963623046875,
+    "gauche": 24,
+    "fs": 34,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 43.5939242637432,
+    "gauche": 23.99999861893346,
+    "fs": 34,
+    "n": 2
+   }
+  },
+  "Le mariage de Jean-Roch et Jean-Guy": {
+   "430": {
+    "lignes": 2,
+    "droite": 30.90966796875,
+    "gauche": 24,
+    "fs": 30,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 30.90962336371748,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 2
+   }
+  },
+  "Le mariage de Didier-Régis et Rodolphe": {
+   "430": {
+    "lignes": 2,
+    "droite": 27.21685791015625,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 27.21683251059278,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Bruno-Stanislas et Pascal": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.00811767578125,
+    "gauche": 24,
+    "fs": 29,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.008058625558487,
+    "gauche": 23.99999861893346,
+    "fs": 29,
+    "n": 2
+   }
+  },
+  "Le mariage de Thierry-Alain et Bernard-Guy": {
+   "430": {
+    "lignes": 3,
+    "droite": 77.29254150390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 77.29253094151704,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Michel-Régis et Gérard-Yves": {
+   "430": {
+    "lignes": 3,
+    "droite": 77.29254150390625,
+    "gauche": 24,
+    "fs": 30,
+    "n": 3
+   },
+   "375": {
+    "lignes": 3,
+    "droite": 77.29253094151704,
+    "gauche": 23.99999861893346,
+    "fs": 30,
+    "n": 3
+   }
+  },
+  "Le mariage de Jean-Noël et Alain-Gilbert": {
+   "430": {
+    "lignes": 2,
+    "droite": 26.574005126953125,
+    "gauche": 24,
+    "fs": 28,
+    "n": 2
+   },
+   "375": {
+    "lignes": 2,
+    "droite": 26.57396445073347,
+    "gauche": 23.99999861893346,
+    "fs": 28,
+    "n": 2
+   }
+  }
+ }
+}

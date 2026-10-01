@@ -1,0 +1,23 @@
+
+
+  ❌  16 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   Peaufiner Nuée [dark]      .pc-t«Coulé»                       → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [dark]      .pc-t«Peigné»                      → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [dark]      .pc-n«Coulé»                       → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [dark]      .pc-n«Peigné»                      → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [dark]      .np-lab«DESCRIPTION»               → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [dark]      .np-ph«présente le Cercle, »       → .np-bas«visible par tous les»
+   Peaufiner Nuée [dark]      .np-lab«COMMENTAIRES»              → .np-ph«écris un mot…»
+   Peaufiner Nuée [dark]      .np-ph«écris un mot…»              → .np-bas«visibles par les mem»
+   Peaufiner Nuée [light]     .pc-t«Coulé»                       → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [light]     .pc-t«Peigné»                      → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [light]     .pc-n«Coulé»                       → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [light]     .pc-n«Peigné»                      → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [light]     .np-lab«DESCRIPTION»               → .np-ph«présente le Cercle, »
+   Peaufiner Nuée [light]     .np-ph«présente le Cercle, »       → .np-bas«visible par tous les»
+   Peaufiner Nuée [light]     .np-lab«COMMENTAIRES»              → .np-ph«écris un mot…»
+   Peaufiner Nuée [light]     .np-ph«écris un mot…»              → .np-bas«visibles par les mem»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

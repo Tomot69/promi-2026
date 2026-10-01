@@ -1,0 +1,80 @@
+{
+"css": {
+".device": [
+"accueil/dark",
+"accueil/light",
+"aura/dark",
+"aura/light",
+"fiche cercle/dark",
+"fiche cercle/light",
+"fiche chiche/dark",
+"fiche chiche/light",
+"fiche promi/dark",
+"fiche promi/light",
+"fiche tenue/dark",
+"fiche tenue/light",
+"fil/dark",
+"fil/light",
+"index/dark",
+"index/light",
+"ma parole/dark",
+"ma parole/light",
+"page+ cercle/dark",
+"page+ cercle/light",
+"page+ chiche/dark",
+"page+ chiche/light",
+"page+ promi/dark",
+"page+ promi/light",
+"partager/dark",
+"partager/light",
+"peaufiner/dark",
+"peaufiner/light",
+"reglages/dark",
+"reglages/light",
+"studio/dark",
+"studio/light"
+],
+"#detailPoster .closeb": [
+"fiche chiche/dark",
+"fiche chiche/light",
+"fiche promi/dark",
+"fiche promi/light",
+"fiche tenue/dark",
+"fiche tenue/light",
+"peaufiner/dark",
+"peaufiner/light"
+],
+".aura-band": [
+"fiche cercle/dark",
+"fiche cercle/light",
+"fiche chiche/dark",
+"fiche chiche/light",
+"fiche promi/dark",
+"fiche promi/light",
+"fiche tenue/dark",
+"fiche tenue/light",
+"peaufiner/dark",
+"peaufiner/light"
+],
+"#shareScreen .sh-badge .sh-bt": [
+"partager/dark",
+"partager/light"
+],
+".pl-buy.prim": [
+"ma parole/dark",
+"ma parole/light"
+],
+"#plusScreen #pcCadre #buyMonth .pc-eclat": [
+"ma parole/dark"
+]
+},
+"canvas": {
+"createLinearGradient@promi-moteur.js:6014": 909,
+"shadowBlur@app.html:9226": 2,
+"createLinearGradient@app.html:3863": 6,
+"createLinearGradient@app.html:3928": 4,
+"createRadialGradient@app.html:7055": 16,
+"createRadialGradient@app.html:7058": 4,
+"createLinearGradient@app.html:31498": 25
+}
+}

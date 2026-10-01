@@ -1,0 +1,41 @@
+
+── ÉCARTS DE POSITION (> 3 px) : 0
+
+── ÉCARTS DE STYLE : 28
+     pp_promi_vide      [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_promi_soi       [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_promi_rachel    [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_promets_moi     [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_chiche_vide     [dark] interligne 58 au lieu de 62 (taille 29)
+     pp_chiche_rempli   [dark] interligne 64 au lieu de 69 (taille 34)
+     pp_promettez_moi   [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_choix_mot       [dark] interligne 60 au lieu de 64 (taille 30)
+     pp_choix_personne  [dark] interligne 60 au lieu de 64 (taille 30)
+     pp_nuee            [dark] interligne 66 au lieu de 71 (taille 35)
+     pp_garde_apres     [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_geste_repos     [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_geste_pendant   [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_geste_signe     [dark] interligne 67 au lieu de 72 (taille 36)
+     pp_promi_vide      [light] interligne 67 au lieu de 72 (taille 36)
+     pp_promi_soi       [light] interligne 67 au lieu de 72 (taille 36)
+     pp_promi_rachel    [light] interligne 67 au lieu de 72 (taille 36)
+     pp_promets_moi     [light] interligne 67 au lieu de 72 (taille 36)
+     pp_chiche_vide     [light] interligne 58 au lieu de 62 (taille 29)
+     pp_chiche_rempli   [light] interligne 64 au lieu de 69 (taille 34)
+     pp_promettez_moi   [light] interligne 67 au lieu de 72 (taille 36)
+     pp_choix_mot       [light] interligne 60 au lieu de 64 (taille 30)
+     pp_choix_personne  [light] interligne 60 au lieu de 64 (taille 30)
+     pp_nuee            [light] interligne 66 au lieu de 71 (taille 35)
+     pp_garde_apres     [light] interligne 67 au lieu de 72 (taille 36)
+     pp_geste_repos     [light] interligne 67 au lieu de 72 (taille 36)
+     pp_geste_pendant   [light] interligne 67 au lieu de 72 (taille 36)
+     pp_geste_signe     [light] interligne 67 au lieu de 72 (taille 36)
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+❌  position 0 · style 28 · collisions 0 · hors cadre 0 · peinture 0
+   écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire

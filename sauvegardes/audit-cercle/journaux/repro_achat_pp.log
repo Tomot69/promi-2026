@@ -1,0 +1,6 @@
+écran refait 8b3c8cb1  light ✓✓✓✓·✓✓✓✓✓   (9 ✓ / 9 essais)
+écran refait 8b3c8cb1  dark  ✓✓✓✓✓✓✓✓✓✓   (10 ✓ / 10 essais)
+avant le lot a543d1e1  light ✓✓✓✓✓✓✓✓✓✓   (10 ✓ / 10 essais)
+avant le lot a543d1e1  dark  ✗✓✓✓✓✓✓·✓✓   (8 ✓ / 9 essais)
+      raté : {'écran qui vend ouvert avant l’achat': False, 'encart détaché': True, 'le doigt sur « Prendre l’année »': 'personSheet', 'abonné': False, 'couches': 'createSheet'}
+fin rc=0

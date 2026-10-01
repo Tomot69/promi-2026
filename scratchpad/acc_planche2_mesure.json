@@ -1,0 +1,144 @@
+{
+ "libelles": {
+  "Studio": 45.8,
+  "Aura": 33.5,
+  "Index · Fil": 67.6,
+  "Partager": 64,
+  "Fil": 17.9,
+  "Index": 37.2
+ },
+ "cadres": {
+  "B2-clair-repos": {
+   "libre_pct": 82.7,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-clair-ouvert": {
+   "libre_pct": 66.1,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-clair-zoom": {
+   "libre_pct": 82.2,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-clair-dezoom": {
+   "libre_pct": 82.2,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "IF-clair-index": {
+   "libre_pct": 100.0,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "IF-clair-fil": {
+   "libre_pct": 100.0,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-sombre-repos": {
+   "libre_pct": 82.7,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-sombre-ouvert": {
+   "libre_pct": 66.1,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-sombre-zoom": {
+   "libre_pct": 82.2,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-sombre-dezoom": {
+   "libre_pct": 82.2,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "IF-sombre-index": {
+   "libre_pct": 100.0,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "IF-sombre-fil": {
+   "libre_pct": 100.0,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-contre-clair": {
+   "libre_pct": 85.9,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "B2-contre-sombre": {
+   "libre_pct": 85.9,
+   "non_confirme": 0,
+   "collisions": []
+  },
+  "BD-clair-sans-ligne": {
+   "libre_pct": 62.3,
+   "non_confirme": 6566,
+   "collisions": []
+  },
+  "BD-sombre-sans-ligne": {
+   "libre_pct": 62.3,
+   "non_confirme": 6566,
+   "collisions": []
+  },
+  "BD-clair-1-paroles-et-Nuées": {
+   "libre_pct": 59.6,
+   "non_confirme": 6566,
+   "collisions": []
+  },
+  "BD-sombre-1-paroles-et-Nuées": {
+   "libre_pct": 59.6,
+   "non_confirme": 6566,
+   "collisions": []
+  },
+  "BD-clair-2-par-nature": {
+   "libre_pct": 59.6,
+   "non_confirme": 6566,
+   "collisions": []
+  },
+  "BD-sombre-2-par-nature": {
+   "libre_pct": 59.6,
+   "non_confirme": 6566,
+   "collisions": []
+  },
+  "BD-clair-3-paroles": {
+   "libre_pct": 59.6,
+   "non_confirme": 6566,
+   "collisions": []
+  },
+  "BD-sombre-3-paroles": {
+   "libre_pct": 59.6,
+   "non_confirme": 6566,
+   "collisions": []
+  }
+ },
+ "atteinte": {
+  "repos @ 0.4": "0 inatteignables / 180",
+  "repos @ 0.48": "0 inatteignables / 180",
+  "repos @ 0.6": "0 inatteignables / 180",
+  "repos @ 0.8": "0 inatteignables / 180",
+  "repos @ 1": "0 inatteignables / 180",
+  "repos @ 1.25": "0 inatteignables / 180",
+  "repos @ 1.5": "0 inatteignables / 180",
+  "repos @ 2": "0 inatteignables / 180",
+  "repos @ 3": "0 inatteignables / 180",
+  "repos @ 5": "0 inatteignables / 180",
+  "zoom @ 0.4": "0 inatteignables / 180",
+  "zoom @ 0.48": "0 inatteignables / 180",
+  "zoom @ 0.6": "0 inatteignables / 180",
+  "zoom @ 0.8": "0 inatteignables / 180",
+  "zoom @ 1": "0 inatteignables / 180",
+  "zoom @ 1.25": "0 inatteignables / 180",
+  "zoom @ 1.5": "0 inatteignables / 180",
+  "zoom @ 2": "0 inatteignables / 180",
+  "zoom @ 3": "0 inatteignables / 180",
+  "zoom @ 5": "0 inatteignables / 180"
+ }
+}

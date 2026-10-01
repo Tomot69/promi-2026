@@ -1,0 +1,69 @@
+=== redteam_souffle.py (90 s)
+OK [light] A · 0,3 s → 4,6 s : 26364 pixels changés dans la silhouette, 0 au-delà
+✗  [light] B · lumière de la boule : sommet à 6.0 s (décidé 4.6), retour au bas à 11.7 s (décidé 10.6), amplitude 5.18 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 44672 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+❌ le souffle ne tient pas sa loi
+=== redteam_contour.py (42 s)
+OK [clair] la Pelote s'arrête à 124.5 du centre (silhouette 121.5) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.4 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== releve-aura.py (217 s)
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.947
+   6 bis · monde        Studio encre → pixel · 5 dalles, 5 jugées · distance à la plantation / au courant : rapporter le livre 0.003/0.067 · arroser tous les s 0.001/0.069 · monter la serre av 0.001/0.063 · le grand plongeoir 0.004/0.276 · planter un arbre 0.007/0.024
+
+palier 110000 · médiane 27.6 ms · 1371 images · plus longue image pendant l'élan : 833 ms (dont peintre 216.7 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 5 décision(s) · à la réouverture : palier 75000
+
+❌  45 ÉCARTS
+=== redteam_murs.py (133 s)
+  ✅ 5a · la 21e touche fait monter la 21e phrase  — 'On se dit directement à la prochaine\xa0?'
+  ✅ 5b · au-delà : au hasard, jamais deux fois la même de suite  — 24 tirages, 15 distinctes, 0 répétitions, 0 hors liste
+  ✅ 6 · après une longue absence le compteur repart à la phrase 1 (sans rouvrir l'offre seule)  — 'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.'
+  ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none
+
+25/26
+=== releve-design.py (35 s)
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_air.py (340 s)
+✅  L'AIR EST INTACT — 696 paires de textes, 68 écrans, deux thèmes.
+=== redteam_vide.py (233 s)
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_flash.py (123 s)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (84 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1567 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1785 ms)
+
+32/32
+=== redteam_suggestions.py (52 s)
+soi       N=20 60 ouvertures  OK
+faire     N=16 48 ouvertures  OK
+demander  N=15 45 ouvertures  OK
+chiche    N=29 87 ouvertures  OK
+nuee      N=40 120 ouvertures  OK
+✅ tirage sans remise
+=== redteam_ajouter.py (44 s)
+OK page+ [dark] {'barre': 760, 'liste': [487, 659], 'ajouter': [681, 733], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK fiche [dark] {'barre': 760, 'liste': [255.8, 607.8], 'ajouter': [629.8, 681.8], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK page+ [light] {'barre': 760, 'liste': [487, 659], 'ajouter': [681, 733], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK fiche [light] {'barre': 760, 'liste': [255.8, 607.8], 'ajouter': [629.8, 681.8], 'pastilles_sous_le_bouton': 0, 'trait': None}
+✅ la liste défile dans son espace, le bouton garde sa ligne
+=== redteam_kaki.py (136 s)
+  gravure      toile-clair   kaki   0.0 %  OK
+  gravure      toile-sombre  kaki   5.8 %  ✗ #5C5448 (h 78°, C 0.022, L 0.45) ×49; #776D5E (h 78°, C 0.026, L 0.54) ×46; #756B5C (h 78°, C 0.026, L 0.53) ×45
+  sillons      toile-clair   kaki   0.0 %  OK
+  sillons      toile-sombre  kaki   6.8 %  ✗ #C8B89F (h 79°, C 0.039, L 0.79) ×130; #CDBB9E (h 80°, C 0.044, L 0.80) ×111; #C4BAAB (h 78°, C 0.024, L 0.79) ×78
+
+❌ DU KAKI — 14 coupable(s)
+=== redteam_marges.py (363 s)
+✗ soi      la mise en page change avec l'écran  « ranger » : [(1, 36), (1, 36), (0, 36)]
+✗ soi      la mise en page change avec l'écran  « finir un stylo » : [(1, 36), (1, 36), (0, 36)]
+✗ soi      la mise en page change avec l'écran  « apprendre à faire mon pain » : [(2, 36), (2, 36), (0, 36)]
+✗ soi      la mise en page change avec l'écran  « voir ce tableau en vrai » : [(2, 36), (2, 36), (0, 36)]
+passent à la ligne : 106 / 120
+❌ 20 défaut(s)

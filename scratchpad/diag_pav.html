@@ -1,0 +1,59 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>diag</title>
+<style>body{margin:0;background:#0A0B0E}canvas{width:420px;height:420px;display:inline-block;margin:4px}</style>
+</head><body>
+<div style="position:absolute;left:0;top:0;width:390px;height:620px;opacity:.012;pointer-events:none;z-index:-1"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<div id="g"></div>
+<script>function cc(){return[200,180,255];}function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script src="/scratchpad/_p_moteur.js"></script>
+<script src="/scratchpad/_p_semis.js"></script>
+<script src="/scratchpad/_p_peint.js"></script>
+<script>
+var FROISSE=[[0.030,11.3,12.7,10.9,0.4,1.1,2.2],[0.017,21.7,19.3,22.1,1.9,0.3,1.4],
+             [0.008,37.1,34.3,35.9,0.7,2.4,1.0]];
+var ENV=[0.10,0.90,1.7,1.3,1.9,0.4,1.9,0.8,1.7];
+var KDENS=[4.7,5.3,4.1,0.6,1.9,1.1,  6.7,5.9,7.3,2.4,0.7,1.5];
+/* un peintre NU : tout a plat, un seul ton. On ne voit QUE le semis. */
+function nuPeint(cv,S,css,ATL,TAI){
+  var W=css*D; cv.width=W;cv.height=W;
+  var g=cv.getContext('2d'); g.fillStyle='#131319'; g.fillRect(0,0,W,W);
+  var A=lieTampons(ATL,W), R=css*0.425*D, FOC=R*5.4, CX=W/2,CY=W/2;
+  var cl=Math.cos(2.9),sl=Math.sin(2.9),ct=Math.cos(0.32),st=Math.sin(0.32);
+  var im=g.createImageData(W,W), B=new Uint32Array(im.data.buffer), col=pack([230,226,214]);
+  for(var i=0;i<S.n;i++){
+    var x=S.P[i*3],y=S.P[i*3+1],z=S.P[i*3+2];
+    var X2=x*cl+z*sl, Zt=-x*sl+z*cl, Y2=y*ct-Zt*st, Z2=y*st+Zt*ct;
+    if(Z2<0) continue;
+    var k=FOC/(FOC-Z2*R), px=(CX+X2*R*k)|0, py=(CY+Y2*R*k)|0;
+    if(px<6||py<6||px>W-6||py>W-6) continue;
+    var sp=A[(1*ORI+((i*2654435761)>>>0)%ORI)*NIVA+(NIVA-1)];
+    var bas=py*W+px;
+    for(var j=0;j<sp.n;j++){var oo=bas+sp.off[j],a=sp.alp[j];
+      if(oo>=0&&oo<B.length&&a>(B[oo]&0xFF000000)) B[oo]=(a|col)>>>0;}
+  }
+  g.putImageData(im,0,0);
+}
+window.addEventListener('load',function(){
+  try{Toile_resize();Toile.sync([1,2,3,4,5]);}catch(e){}
+  setTimeout(function(){
+    var TAI=[3.2,4.2,5.4], ATL=atlasAlpha(GRAIN_FIL,TAI,ORI,NIVA,0.16,1.00);
+    var G=document.getElementById('g');
+    function cv(id){var c=document.createElement('canvas');c.setAttribute('data-cad',id);
+      G.appendChild(c);return c;}
+    /* 1 · le semis de remplissage SEUL, sans Voronoi */
+    var brut=semisPavage(56000,240,-1,KDENS,4);
+    nuPeint(cv('d1-brut'),brut,420,ATL,TAI);
+    /* 2 · le meme, joint applique */
+    var jt=semisPavage(56000,240,0.0225,KDENS,4);
+    nuPeint(cv('d2-joint'),jt,420,ATL,TAI);
+    /* 3 · sites uniformes (densite constante), joint applique */
+    var uni=semisPavage(56000,240,0.0225,[0,0,0,0,0,0, 0,0,0,0,0,0],4);
+    nuPeint(cv('d3-uni'),uni,420,ATL,TAI);
+    /* 4 · la version complete */
+    peint(cv('d4-plein'),{css:420,R:0.425,tailles:TAI,atlas:ATL,semis:jt,
+      relief:FROISSE,env:ENV,lac:2.9,tan:0.32,pal:Toile.cols(),nu:1});
+    window.__n=[brut.n,jt.n,uni.n,uni.sites];
+    window.__pret=true;
+  },700);
+});
+</script></body></html>

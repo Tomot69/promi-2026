@@ -1,0 +1,36 @@
+
+══ thème dark ══
+Cercle non payé  [dark] · les réglages sont floutés      OK  
+Cercle payé      [dark] · les réglages sont NETS         OK  
+Cercle payé      [dark] · l'encart s'efface              OK  
+Nuée [dark] · un seul écran                              OK  
+Nuée [dark] · ni trait à tracer, ni geste                OK  
+Nuée [dark] · rien ne se superpose                       KO  CHICHE RELEVÉvider ⨯ Peaufiner▾ · CHICHE RELEVÉvider ⨯ ▾ · vider le composteu ⨯ Peaufiner▾ · vider le composteu ⨯ ▾ · TENU ⨯ Peaufiner▾
+parcours [dark] · planter                                OK  
+parcours [dark] · la fiche s'ouvre                       OK  
+parcours [dark] · tenir au geste                         OK  
+parcours [dark] · l'Index le montre                      OK  
+parcours [dark] · l'Index ne se superpose pas            OK  
+parcours [dark] · le Fil le montre                       OK  
+parcours [dark] · le Fil ne se superpose pas             OK  
+
+══ thème light ══
+Cercle non payé  [light] · les réglages sont floutés     OK  
+Cercle payé      [light] · les réglages sont NETS        OK  
+Cercle payé      [light] · l'encart s'efface             OK  
+Nuée [light] · un seul écran                             OK  
+Nuée [light] · ni trait à tracer, ni geste               OK  
+Nuée [light] · rien ne se superpose                      KO  CHICHE RELEVÉvider ⨯ Peaufiner▾ · CHICHE RELEVÉvider ⨯ ▾ · vider le composteu ⨯ Peaufiner▾ · vider le composteu ⨯ ▾ · TENU ⨯ Peaufiner▾
+parcours [light] · planter                               OK  
+parcours [light] · la fiche s'ouvre                      OK  
+parcours [light] · tenir au geste                        OK  
+parcours [light] · l'Index le montre                     OK  
+parcours [light] · l'Index ne se superpose pas           OK  
+parcours [light] · le Fil le montre                      OK  
+parcours [light] · le Fil ne se superpose pas            OK  
+
+24/26
+
+CE QUI NE MARCHE PAS :
+   · Nuée [dark] · rien ne se superpose
+   · Nuée [light] · rien ne se superpose

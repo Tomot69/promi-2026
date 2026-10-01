@@ -1,0 +1,36 @@
+
+
+  ❌  29 PAIRE(S) DE TEXTES SE SONT RAPPROCHÉES
+      « deux blocs de texte ne doivent jamais être à moins de leur écart d'origine »
+
+   −47.3  page + [dark]            .«Je me promets»                   → .pc-t.on«Plein»                 (66.8 → 19.5)
+   −46.8  page + [dark]            .ph-hint«Je me promets se ret»     → .pc-t.on«Plein»                 (64.3 → 17.5)
+   −46.8  page + [dark]            .pc-t«Sec»                         → #csBotBar«Peaufiner▾»           (71.3 → 24.5)
+   −46.8  page + [dark]            .pc-t«Peigné»                      → #csBotBar«Peaufiner▾»           (71.3 → 24.5)
+   −46.8  page + [dark]            .pc-t«Coulé»                       → #csBotBar«Peaufiner▾»           (71.3 → 24.5)
+   −46.8  page + [dark]            .pc-t.on«Plein»                    → #csBotBar«Peaufiner▾»           (71.3 → 24.5)
+   −46.7  page + [dark]            .pc-n«Sec»                         → #csBotBar«Peaufiner▾»           (78.9 → 32.2)
+   −46.7  page + [dark]            .pc-n«Plein»                       → #csBotBar«Peaufiner▾»           (78.9 → 32.2)
+   −46.7  page + [dark]            .pc-n«Peigné»                      → #csBotBar«Peaufiner▾»           (78.9 → 32.2)
+   −46.7  page + [dark]            .pc-n«Coulé»                       → #csBotBar«Peaufiner▾»           (78.9 → 32.2)
+   −13.3  page + [light]           .«Je me promets»                   → .pc-t.on«Plein»                 (65.8 → 52.5)
+   −12.8  page + [light]           .ph-hint«Je me promets se ret»     → .pc-t.on«Plein»                 (63.3 → 50.5)
+   −12.8  page + [light]           .pc-t«Sec»                         → #csBotBar«Peaufiner▾»           (70.3 → 57.5)
+   −12.8  page + [light]           .pc-t«Peigné»                      → #csBotBar«Peaufiner▾»           (70.3 → 57.5)
+   −12.8  page + [light]           .pc-t«Coulé»                       → #csBotBar«Peaufiner▾»           (70.3 → 57.5)
+   −12.8  page + [light]           .pc-t.on«Plein»                    → #csBotBar«Peaufiner▾»           (70.3 → 57.5)
+   −12.7  page + [light]           .pc-n«Sec»                         → #csBotBar«Peaufiner▾»           (77.9 → 65.2)
+   −12.7  page + [light]           .pc-n«Plein»                       → #csBotBar«Peaufiner▾»           (77.9 → 65.2)
+   −12.7  page + [light]           .pc-n«Peigné»                      → #csBotBar«Peaufiner▾»           (77.9 → 65.2)
+   −12.7  page + [light]           .pc-n«Coulé»                       → #csBotBar«Peaufiner▾»           (77.9 → 65.2)
+   −6     Fil [light]              .au-lb«Nico»                       → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Fil [light]              .au-lb«Marion»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Fil [light]              .au-lb«Adrien»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Aura [light]             .au-lb«Nico»                       → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Aura [light]             .au-lb«Marion»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Aura [light]             .au-lb«Adrien»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Aura [dark]              .au-lb«Nico»                       → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Aura [dark]              .au-lb«Marion»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Aura [dark]              .au-lb«Adrien»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+
+  Si le lot demandait ce resserrement, refige : python3 redteam_air.py --figer

@@ -1,0 +1,123 @@
+=== redteam_tokens.py
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_volume.py
+liste blanche (la Pelote) : 6 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE
+dette de naissance : 305 · retrouvée : 305 · soldée depuis : 0
+✅ AUCUN VOLUME HORS DE LA PELOTE
+=== redteam_clavier.py
+  ✓ Peaufiner — le champ visé par la barre de la fiche (400 ms) — dans le geste (l.6177, différé en secours)
+  ✓ fiche — le commentaire, depuis le bouton rond (400 ms) — dans le geste (l.6232, différé en secours)
+  ✓ l'onboarding — le pseudo (520 ms) — dans le geste (l.8012, différé en secours)
+  ✓ le nom du Cercle (v114) — dans le geste (l.13261, différé en secours)
+  ✓ la page + d'un gardé de côté — le titre (30 ms) — dans le geste (l.13441, différé en secours)
+  ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.31758, différé en secours)
+✅ le clavier s'ouvre au geste — 8 champs
+=== redteam_pilules.py
+nuee   [light]  titre 8.05:1  sous-titre 8.05:1  OK
+chiche [light]  titre 10.83:1  sous-titre 10.83:1  OK
+promi  [light]  titre 7.77:1  sous-titre 7.77:1  OK
+nuee   [dark]  titre 8.05:1  sous-titre 8.05:1  OK
+chiche [dark]  titre 10.83:1  sous-titre 10.83:1  OK
+promi  [dark]  titre 7.77:1  sous-titre 7.77:1  OK
+✅ les pilules se lisent
+=== redteam_suggestions.py
+soi       N=13 39 ouvertures  OK
+demander  N=11 33 ouvertures  OK
+chiche    N=18 54 ouvertures  OK
+nuee      N=38 114 ouvertures  OK
+✅ tirage sans remise
+=== redteam_couronne.py
+A OK à 0,3 s s=0.855 · à 4,6 s s=1.141 · pixels changés dans l'anneau 26818 · HORS de l'anneau 0
+C OK la couronne s'arrête à 27.3 de la silhouette (au plus 0,12 D = 27.8)
+B OK « Réduire les animations » : s=1 · pixels changés en 5 s : anneau 0, ailleurs 0
+✅ la couronne respire, et rien d'autre
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_filets.py
+fiche cercle   [light]  filet non    OK
+fiche tenue    [light]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [light]  filet non    OK
+page+ chiche   [light]  filet non    OK
+page+ cercle   [light]  filet non    OK
+
+filet du trait : 14/14
+=== redteam_vide.py
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_flash.py
+  ✅ B1 · + → nuee : aucun flash au premier plan (156 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (84 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1614 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1834 ms)
+
+32/32
+=== redteam_champ.py
+  Nuée [light]                   OK
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_tonsurton.py
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_decoupe.py
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_verbe.py
+light : la phrase montre son verbe (Promets-moi)     OK  h=56.0 txt='je promets'
+light : la bascule mène à un vrai bouton             OK  bouton={'f': 1, 'h': 60, 'vis': True}
+dark : la phrase montre son verbe (Je promets)       OK  h=56.0 txt='je me promets'
+dark : la phrase montre son verbe (Promets-moi)      OK  h=56.0 txt='je promets'
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 60, 'vis': True}
+
+6/6
+=== redteam_tuiles.py
+[sombre · souris · clic] chiche après chiche→nuee→promi    OK  
+[sombre · souris · clic] nuee après rien                   OK  
+[sombre · souris · clic] chiche après nuee                 OK  
+[sombre · souris · clic] nuee après nuee→chiche            OK  
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+=== redteam_gens.py
+[sombre] Nuée · avec · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[sombre] Nuée · avec · la liste vit au-dessus de Peaufiner       OK  
+[sombre] Fiche · Peaufiner · À QUI · toucher « Marion » l'ajoute OK  
+[sombre] Fiche · Peaufiner · À QUI · la croix de « Marion » la retire OK  
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK  
+
+38/38
+=== releve-S3-plus.py (absent)
+=== redteam_air.py
+   page + Chiche [dark]       .ph-m.ph-vide«dire oui pour une fo → .ph-m.ph-vide«qui en est ?»
+   page + Chiche [light]      .pp-trace«trace pour lancer»       → .ph-txt«à qui ose ?Chiche ✦d»
+   page + Chiche [light]      .ph-txt«à qui ose ?Chiche ✦d»      → .ph-hint«un Chiche se lance, »
+   page + Chiche [light]      .ph-li«de»                         → .«avec»
+   page + Chiche [light]      .ph-m.ph-vide«dire oui pour une fo → .ph-m.ph-vide«qui en est ?»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+FIN

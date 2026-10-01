@@ -1,0 +1,15 @@
+Ma Toile : le Noyau se deplace au doigt      OK  
+l'anneau est peint a sa nouvelle place       OK  
+l'aimant de la ligne du QR attire            OK  
+Mes Promi : le bloc change de case           OK  
+le bloc reste dans la grille                 OK  
+un tap simple ne deplace rien                OK  
+Mon Folio : la Pelote est peinte dans son bloc OK  
+Mes Promi : le % est peint                   KO  
+le cadrage ne suit pas le Noyau              OK  
+Mon Folio : la Pelote centrée sur la hauteur de son bloc OK  
+Mes Promi : la reorganisation est animee     OK  
+Mon Folio : rien ne disparaît, rien ne se superpose OK  
+aucune erreur JS                             OK  
+
+12/13

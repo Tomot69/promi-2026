@@ -1,0 +1,51 @@
+=== redteam_tokens 20:28:52
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_ecrans 20:28:52
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+150/150
+=== redteam_reperage 20:30:20
+[sombre] 1 · Fil : chaque ligne lit sa nature, à gauche        OK  5 lignes · fautives : []
+[sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : []
+
+16/16
+=== redteam_tonsurton 20:30:57
+l'instant · referme  [light]                         OK  ΔE 24.3  Δlum 16   
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_champ 20:31:55
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_toile 20:34:01
+grand : le chiffre tient dans le trou      OK  trou 89 · texte jusqu a 76
+aucune erreur JS                           OK  []
+
+17/17
+=== redteam_vide 20:35:09
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== releve-aura 20:39:00
+
+palier 90000 · médiane 14.7 ms · 2419 images · plus longue image pendant l'élan : 117 ms (dont peintre 15.6 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 2 décision(s) · à la réouverture : palier 75000
+
+❌  1 ÉCARTS
+=== redteam_air 20:41:24
+   −6     Aura [dark]              .au-lb«Marion»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+   −6     Aura [dark]              .au-lb«Adrien»                     → .au-lg«tenuesen coursà teni»    (28 → 22)
+
+  Si le lot demandait ce resserrement, refige : python3 redteam_air.py --figer
+=== releve-design 20:44:27
+    sombre/nuee · nuee · ligne · _px : [319, 69] -> [319, 77]
+    … et 40 autres
+
+Si le lot ne demandait pas ces changements, c'est une régression.
+FIN

@@ -1,0 +1,42 @@
+<!doctype html><meta charset="utf-8"><title>mesure png</title>
+<script>
+/* On mesure LES IMAGES RENDUES, pas le code : on recharge le PNG capturé et on lit
+   ses pixels. C'est la seule preuve qui vaille. */
+window.mesure=function(url,x,y,w,h,seuil){return new Promise(function(res){
+  var im=new Image();
+  im.onload=function(){
+    var c=document.createElement('canvas'); c.width=im.width; c.height=im.height;
+    var g=c.getContext('2d'); g.drawImage(im,0,0);
+    var d=g.getImageData(x,y,w,h).data;
+    seuil=seuil||46;
+    var somme=0, allumes=0, N=w*h;
+    /* le fond de l'écran sombre vaut ~22 ; on compte ce qui est AU-DESSUS */
+    var lit=new Uint8Array(N);
+    for(var i=0;i<N;i++){
+      var L=0.299*d[i*4]+0.587*d[i*4+1]+0.114*d[i*4+2];
+      somme+=L; if(L>seuil){ lit[i]=1; allumes++; }
+    }
+    /* l'ANISOTROPIE : longueur moyenne des suites allumées, horizontale et verticale.
+       Un grain rond donne deux longueurs égales ; un grain qui traîne allonge celle
+       qui suit le mouvement. */
+    function runs(horiz){
+      var n=0, tot=0, cur=0;
+      for(var a=0;a<(horiz?h:w);a++){
+        cur=0;
+        for(var b2=0;b2<(horiz?w:h);b2++){
+          var idx=horiz?(a*w+b2):(b2*w+a);
+          if(lit[idx]) cur++;
+          else { if(cur){ n++; tot+=cur; } cur=0; }
+        }
+        if(cur){ n++; tot+=cur; }
+      }
+      return n? tot/n : 0;
+    }
+    res({moy:+(somme/N).toFixed(2), part:+(100*allumes/N).toFixed(2),
+         runH:+runs(true).toFixed(2), runV:+runs(false).toFixed(2)});
+  };
+  im.onerror=function(){res(null);};
+  im.src=url;
+});};
+window.__pret=true;
+</script>

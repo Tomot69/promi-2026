@@ -1,0 +1,192 @@
+{
+ "dark · tenu": {
+  "trait": {
+   "w390": 0,
+   "h390": 0,
+   "motsA": null
+  },
+  "anneaux": {
+   "boite": [
+    24,
+    444,
+    342,
+    103
+   ],
+   "anneaux": [
+    {
+     "p": null,
+     "vis": true,
+     "r": [
+      24,
+      444,
+      82,
+      103
+     ]
+    },
+    {
+     "p": "Marion",
+     "vis": true,
+     "r": [
+      136,
+      454,
+      70,
+      83
+     ]
+    }
+   ],
+   "textes": [
+    "toi",
+    "Marion"
+   ],
+   "chiffres": []
+  }
+ },
+ "dark · encours": {
+  "trait": {
+   "w390": 390,
+   "h390": 118,
+   "motsA": null
+  },
+  "anneaux": {
+   "boite": [
+    24,
+    376,
+    342,
+    103
+   ],
+   "anneaux": [
+    {
+     "p": null,
+     "vis": true,
+     "r": [
+      24,
+      376,
+      82,
+      103
+     ]
+    },
+    {
+     "p": "Marion",
+     "vis": true,
+     "r": [
+      136,
+      386,
+      70,
+      83
+     ]
+    },
+    {
+     "p": "Rachel",
+     "vis": true,
+     "r": [
+      220,
+      386,
+      70,
+      83
+     ]
+    }
+   ],
+   "textes": [
+    "toi",
+    "Marion",
+    "Rachel"
+   ],
+   "chiffres": []
+  }
+ },
+ "light · tenu": {
+  "trait": {
+   "w390": 0,
+   "h390": 0,
+   "motsA": null
+  },
+  "anneaux": {
+   "boite": [
+    24,
+    444,
+    342,
+    103
+   ],
+   "anneaux": [
+    {
+     "p": null,
+     "vis": true,
+     "r": [
+      24,
+      444,
+      82,
+      103
+     ]
+    },
+    {
+     "p": "Marion",
+     "vis": true,
+     "r": [
+      136,
+      454,
+      70,
+      83
+     ]
+    }
+   ],
+   "textes": [
+    "toi",
+    "Marion"
+   ],
+   "chiffres": []
+  }
+ },
+ "light · encours": {
+  "trait": {
+   "w390": 390,
+   "h390": 118,
+   "motsA": null
+  },
+  "anneaux": {
+   "boite": [
+    24,
+    376,
+    342,
+    103
+   ],
+   "anneaux": [
+    {
+     "p": null,
+     "vis": true,
+     "r": [
+      24,
+      376,
+      82,
+      103
+     ]
+    },
+    {
+     "p": "Marion",
+     "vis": true,
+     "r": [
+      136,
+      386,
+      70,
+      83
+     ]
+    },
+    {
+     "p": "Rachel",
+     "vis": true,
+     "r": [
+      220,
+      386,
+      70,
+      83
+     ]
+    }
+   ],
+   "textes": [
+    "toi",
+    "Marion",
+    "Rachel"
+   ],
+   "chiffres": []
+  }
+ }
+}

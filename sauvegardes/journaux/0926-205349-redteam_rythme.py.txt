@@ -1,0 +1,67 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu de départ 760 ms 
+  ✓ fondu d'arrivée 760 ms 
+— chemin : moteur
+  ✓ encre · moteur · arrivee 824 ms (attendu 796 ± 119) · cadence 114 % · [824 ms, 47 images]
+  ✓ encre · moteur · depart 351 ms (attendu 334 ± 100) · cadence 129 % · [351 ms, 19 images]
+  ✓ touffe · moteur · arrivee 788 ms (attendu 795 ± 119) · cadence 103 % · [788 ms, 47 images]
+  ✓ touffe · moteur · depart 272 ms (attendu 250 ± 100) · cadence 120 % · [272 ms, 17 images]
+  ✓ mosaique · moteur · arrivee 48 images (attendu 48 ± 9) · cadence 99 % · [793 ms, 48 images]
+  ✓ mosaique · moteur · depart 16 images (attendu 16 ± 3) · cadence 104 % · [254 ms, 16 images]
+  ✓ braille · moteur · arrivee 43 images (attendu 41 ± 8) · cadence 103 % · [798 ms, 43 images]
+  ✓ braille · moteur · depart 16 images (attendu 16 ± 3) · cadence 101 % · [311 ms, 16 images]
+  ✓ pixel · moteur · arrivee 47 images (attendu 40 ± 8) · cadence 127 % · [782 ms, 47 images]
+  ✓ pixel · moteur · depart 16 images (attendu 16 ± 3) · cadence 116 % · [257 ms, 16 images]
+  ✓ halin · moteur · arrivee 2509 ms (attendu 2407 ± 361) · cadence 98 % · [2509 ms, 151 images]
+  ✓ halin · moteur · depart 2913 ms (attendu 2847 ± 427) · cadence 99 % · [2913 ms, 170 images]
+  ✓ esquille · moteur · arrivee 1411 ms (attendu 1400 ± 210) · cadence 107 % · [1411 ms, 85 images]
+  ✓ esquille · moteur · depart 1345 ms (attendu 1400 ± 210) · cadence 109 % · [1345 ms, 81 images]
+  ✓ madrure · moteur · arrivee 2402 ms (attendu 2369 ± 355) · cadence 100 % · [2402 ms, 135 images]
+  ✓ madrure · moteur · depart 2503 ms (attendu 2350 ± 352) · cadence 96 % · [2503 ms, 139 images]
+  ✓ ritournelle · moteur · arrivee 1922 ms (attendu 1928 ± 289) · cadence 102 % · [1922 ms, 115 images]
+  ✓ ritournelle · moteur · depart 1939 ms (attendu 1943 ± 291) · cadence 99 % · [1939 ms, 117 images]
+  ✓ bobinette · moteur · arrivee 2035 ms (attendu 2090 ± 313) · cadence 104 % · [2035 ms, 118 images]
+  ✓ bobinette · moteur · depart 2025 ms (attendu 2110 ± 316) · cadence 123 % · [2025 ms, 119 images]
+  ✓ terrazzo · moteur · arrivee 48 images (attendu 48 ± 9) · cadence 101 % · [786 ms, 48 images]
+  ✓ terrazzo · moteur · depart 20 images (attendu 20 ± 4) · cadence 99 % · [330 ms, 20 images]
+  ✓ gravure · moteur · arrivee 38 images (attendu 40 ± 8) · cadence 87 % · [876 ms, 38 images]
+  ✓ gravure · moteur · depart 17 images (attendu 17 ± 3) · cadence 111 % · [312 ms, 17 images]
+  ✓ sillons · moteur · arrivee 32 images (attendu 34 ± 6) · cadence 96 % · [961 ms, 32 images]
+  ✓ sillons · moteur · depart 17 images (attendu 17 ± 3) · cadence 90 % · [534 ms, 17 images]
+— chemin : reel
+  ✓ encre · reel · arrivee 808 ms (attendu 796 ± 119) · cadence 99 % · [808 ms, 40 images]
+  ✓ encre · reel · depart 364 ms (attendu 334 ± 100) · cadence 92 % · [364 ms, 14 images]
+  ✓ touffe · reel · arrivee 792 ms (attendu 795 ± 119) · cadence 87 % · [792 ms, 40 images]
+  ✓ touffe · reel · depart 301 ms (attendu 250 ± 100) · cadence 83 % · [301 ms, 13 images]
+  ✓ mosaique · reel · arrivee 46 images (attendu 48 ± 9) · cadence 96 % · [783 ms, 46 images]
+  ✓ mosaique · reel · depart 16 images (attendu 16 ± 3) · cadence 83 % · [316 ms, 16 images]
+  ✓ braille · reel · arrivee 39 images (attendu 41 ± 8) · cadence 89 % · [838 ms, 39 images]
+  ✓ braille · reel · depart 18 images (attendu 16 ± 3) · cadence 73 % · [482 ms, 18 images]
+  ✓ pixel · reel · arrivee 39 images (attendu 40 ± 8) · cadence 103 % · [796 ms, 39 images]
+  ✓ pixel · reel · depart 16 images (attendu 16 ± 3) · cadence 92 % · [326 ms, 16 images]
+  ✓ halin · reel · arrivee 2513 ms (attendu 2407 ± 361) · cadence 93 % · [2513 ms, 144 images]
+  ✓ halin · reel · depart 2759 ms (attendu 2847 ± 427) · cadence 99 % · [2759 ms, 161 images]
+  ✓ esquille · reel · arrivee 1399 ms (attendu 1400 ± 210) · cadence 101 % · [1399 ms, 80 images]
+  ✓ esquille · reel · depart 1355 ms (attendu 1400 ± 210) · cadence 102 % · [1355 ms, 76 images]
+  ✓ madrure · reel · arrivee 2018 ms (attendu 2369 ± 355) · cadence 95 % · [2018 ms, 108 images]
+  ✓ madrure · reel · depart 2225 ms (attendu 2350 ± 352) · cadence 91 % · [2225 ms, 117 images]
+  ✓ ritournelle · reel · arrivee 1918 ms (attendu 1928 ± 289) · cadence 88 % · [1918 ms, 99 images]
+  ✓ ritournelle · reel · depart 1934 ms (attendu 1943 ± 291) · cadence 89 % · [1934 ms, 106 images]
+  ✓ bobinette · reel · arrivee 2103 ms (attendu 2090 ± 313) · cadence 66 % · [2103 ms, 78 images]
+  ✓ bobinette · reel · depart 2079 ms (attendu 2110 ± 316) · cadence 88 % · [2079 ms, 88 images]
+  ✓ terrazzo · reel · arrivee 46 images (attendu 48 ± 9) · cadence 95 % · [801 ms, 46 images]
+  ✓ terrazzo · reel · depart 20 images (attendu 20 ± 4) · cadence 89 % · [369 ms, 20 images]
+  ✓ gravure · reel · arrivee 34 images (attendu 40 ± 8) · cadence 72 % · [944 ms, 34 images]
+  ✓ gravure · reel · depart 17 images (attendu 17 ± 3) · cadence 76 % · [456 ms, 17 images]
+  ✓ sillons · reel · arrivee 32 images (attendu 34 ± 6) · cadence 75 % · [1229 ms, 32 images]
+  ✓ sillons · reel · depart 17 images (attendu 17 ± 3) · cadence 87 % · [554 ms, 17 images]
+
+62 / 62

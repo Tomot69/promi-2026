@@ -1,0 +1,266 @@
+{
+ "dark": {
+  "mesures": {
+   "sphere": {
+    "x": 79,
+    "y": 104,
+    "w": 232,
+    "h": 232,
+    "bas": 336,
+    "txt": ""
+   },
+   "prix": {
+    "x": 24,
+    "y": 366,
+    "w": 342,
+    "h": 56,
+    "bas": 422,
+    "txt": "29 €"
+   },
+   "sous": {
+    "x": 24,
+    "y": 432,
+    "w": 342,
+    "h": 17.3,
+    "bas": 449.3,
+    "txt": "soit 2,42 €/mois · −39 %"
+   },
+   "annee": {
+    "x": 24,
+    "y": 470,
+    "w": 342,
+    "h": 62,
+    "bas": 532,
+    "txt": "Prendre l'année"
+   },
+   "essai": {
+    "x": 24,
+    "y": 548,
+    "w": 342,
+    "h": 62,
+    "bas": 610,
+    "txt": "Essayer 14 jours, puis 3,99 €/mois"
+   },
+   "n1": {
+    "x": 24,
+    "y": 632,
+    "w": 342,
+    "h": 18.2,
+    "bas": 650.2,
+    "txt": "Sans engagement · annulable en 2 taps, à tout moment."
+   },
+   "n2": {
+    "x": 24,
+    "y": 658,
+    "w": 342,
+    "h": 18.2,
+    "bas": 676.2,
+    "txt": "ou un design à l'unité — 1 €, ou 4 pour 3 €"
+   },
+   "lignes": [
+    {
+     "top": 698,
+     "bas": 735.3,
+     "tete": "La parole qu’on te tient",
+     "queue": "ce que je tiens · ce qu’on me tient"
+    },
+    {
+     "top": 746,
+     "bas": 783.3,
+     "tete": "Chaque parole se règle",
+     "queue": "récurrence, rappel, importance, mémoire"
+    },
+    {
+     "top": 794,
+     "bas": 831.3,
+     "tete": "Trois mondes de plus",
+     "queue": "Sillons, Gravure, Terrazzo"
+    }
+   ],
+   "dallesCachees": true,
+   "encre": {
+    "cv": [
+     464,
+     464
+    ],
+    "peints": 112131,
+    "part": 52.1
+   },
+   "vend": {
+    "iles": 14,
+    "mondes": [
+     "sillons",
+     "gravure",
+     "terrazzo"
+    ],
+    "sol": [
+     250,
+     34,
+     88
+    ],
+    "css": 232,
+    "lac": 3.258855910613419,
+    "auto": 0.06283185307,
+    "peint": true,
+    "err": null,
+    "errIles": null,
+    "cv": [
+     464,
+     464
+    ],
+    "ms": 13
+   },
+   "ecran": {
+    "scrollH": 876,
+    "clientH": 876,
+    "defile": false
+   },
+   "toile": 15
+  },
+  "rotation": {
+   "lac0": 3.3227,
+   "lac1": 3.5112,
+   "avance_rad": 0.1885,
+   "vitesse_rad_s": 0.06283,
+   "tour_s": 100.0
+  },
+  "aura": {
+   "AUTO": 0.06283185307,
+   "tour_s": 100,
+   "etat": true,
+   "ms": 14.100000023841858
+  }
+ },
+ "light": {
+  "mesures": {
+   "sphere": {
+    "x": 79,
+    "y": 104,
+    "w": 232,
+    "h": 232,
+    "bas": 336,
+    "txt": ""
+   },
+   "prix": {
+    "x": 24,
+    "y": 366,
+    "w": 342,
+    "h": 56,
+    "bas": 422,
+    "txt": "29 €"
+   },
+   "sous": {
+    "x": 24,
+    "y": 432,
+    "w": 342,
+    "h": 17.3,
+    "bas": 449.3,
+    "txt": "soit 2,42 €/mois · −39 %"
+   },
+   "annee": {
+    "x": 24,
+    "y": 470,
+    "w": 342,
+    "h": 62,
+    "bas": 532,
+    "txt": "Prendre l'année"
+   },
+   "essai": {
+    "x": 24,
+    "y": 548,
+    "w": 342,
+    "h": 62,
+    "bas": 610,
+    "txt": "Essayer 14 jours, puis 3,99 €/mois"
+   },
+   "n1": {
+    "x": 24,
+    "y": 632,
+    "w": 342,
+    "h": 18.2,
+    "bas": 650.2,
+    "txt": "Sans engagement · annulable en 2 taps, à tout moment."
+   },
+   "n2": {
+    "x": 24,
+    "y": 658,
+    "w": 342,
+    "h": 18.2,
+    "bas": 676.2,
+    "txt": "ou un design à l'unité — 1 €, ou 4 pour 3 €"
+   },
+   "lignes": [
+    {
+     "top": 698,
+     "bas": 735.3,
+     "tete": "La parole qu’on te tient",
+     "queue": "ce que je tiens · ce qu’on me tient"
+    },
+    {
+     "top": 746,
+     "bas": 783.3,
+     "tete": "Chaque parole se règle",
+     "queue": "récurrence, rappel, importance, mémoire"
+    },
+    {
+     "top": 794,
+     "bas": 831.3,
+     "tete": "Trois mondes de plus",
+     "queue": "Sillons, Gravure, Terrazzo"
+    }
+   ],
+   "dallesCachees": true,
+   "encre": {
+    "cv": [
+     464,
+     464
+    ],
+    "peints": 112137,
+    "part": 52.1
+   },
+   "vend": {
+    "iles": 14,
+    "mondes": [
+     "sillons",
+     "gravure",
+     "terrazzo"
+    ],
+    "sol": [
+     250,
+     34,
+     88
+    ],
+    "css": 232,
+    "lac": 3.2557143179599186,
+    "auto": 0.06283185307,
+    "peint": true,
+    "err": null,
+    "errIles": null,
+    "cv": [
+     464,
+     464
+    ],
+    "ms": 13
+   },
+   "ecran": {
+    "scrollH": 876,
+    "clientH": 876,
+    "defile": false
+   },
+   "toile": 15
+  },
+  "rotation": {
+   "lac0": 3.3227,
+   "lac1": 3.5144,
+   "avance_rad": 0.1916,
+   "vitesse_rad_s": 0.06388,
+   "tour_s": 98.4
+  },
+  "aura": {
+   "AUTO": 0.06283185307,
+   "tour_s": 100,
+   "etat": true,
+   "ms": 14.200000047683716
+  }
+ }
+}

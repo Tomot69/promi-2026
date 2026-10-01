@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>Planche 2 — l'accueil, direction B</title>
+<link rel="stylesheet" href="planche-polices.css">
+<style>
+:root{--cr:#F4EEE1;--en:#16171B;--bleu:#3A54FF;--fra:#FA2258;--mau:#8A5CF0;--ter:#F07A2E;--men:#2BE88C;--per:#8FA0FF}
+*{box-sizing:border-box}
+body{margin:0;background:#D9D4C8;color:#16171B;font-family:Apfel,system-ui,sans-serif;padding:40px 40px 120px}
+h1{font-family:Bricolage;font-weight:700;font-size:44px;margin:0 0 6px}
+h2{font-family:Bricolage;font-weight:700;font-size:30px;margin:64px 0 6px}
+.lede{font-size:16px;max-width:980px;line-height:1.45;margin:0 0 8px}
+.mes{font-family:ApfelMid;font-size:13px;letter-spacing:.02em;max-width:1100px;line-height:1.55;background:#F4EEE1;border:2px solid #16171B;border-radius:30px;padding:16px 24px;margin:14px 0 22px}
+.mes b{font-family:Bricolage;font-weight:700}
+.rang{display:flex;gap:28px;overflow-x:auto;padding:6px 2px 10px}
+.cap{font-family:ApfelMid;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin:10px 0 0;text-align:center}
+/* ── le cadre ── */
+.f{position:relative;width:390px;height:844px;border-radius:44px;overflow:hidden;flex:none;background:#E7E1D4}
+.f.sombre{background:#16171B}
+.f>.fond{position:absolute;inset:0;width:390px;height:844px;display:block}
+.f .sb{position:absolute;top:28px;left:32px;right:32px;display:flex;justify-content:space-between;font-family:ApfelMid;font-size:12px;letter-spacing:.06em;color:var(--en);pointer-events:none}
+.f.sombre .sb{color:var(--cr)}
+/* corps du chrome, selon le thème */
+.f{--corps:var(--cr);--trait:var(--en);--txt:var(--en)}
+.f.sombre{--corps:var(--en);--trait:var(--cr);--txt:var(--cr)}
+.ch{position:absolute}
+/* le plateau (grammaire du §5 : 342 × 60, trait 2, rayon 30) */
+.plat{left:24px;top:40px;width:342px;height:60px;border:2px solid var(--trait);border-radius:30px;background:var(--corps);color:var(--txt)}
+.plat .mm{position:absolute;left:26px;top:9px;font-family:Fraunces;font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:24px}
+.plat .ct{position:absolute;left:26px;top:35px;font-family:ApfelMid;font-size:12px;letter-spacing:.08em;text-transform:uppercase;line-height:14px}
+.plat .ic{position:absolute;top:6px;width:44px;height:44px;display:grid;place-items:center}
+.plat .ic svg{width:28px;height:28px}
+/* disques (44, trait 2, rayon 50 %) */
+.dq{width:44px;height:44px;border-radius:50%;border:2px solid var(--trait);background:var(--corps);color:var(--txt);display:grid;place-items:center}
+.dq svg{width:26px;height:26px}
+.lb{font-family:ApfelMid;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt);white-space:nowrap;text-align:center;line-height:14px}
+.f:not(.sombre) .lb.surtoile{color:var(--en)}
+.dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--ter);border:2px solid var(--corps)}
+/* le + */
+.plus{border-radius:50%;background:var(--trait);display:grid;place-items:center}
+.plus::before{content:"";position:absolute;inset:-7px;border-radius:50%;
+  background:conic-gradient(var(--men) 0deg 144deg,var(--per) 144deg 288deg,var(--ter) 288deg 360deg);
+  -webkit-mask:radial-gradient(closest-side,transparent calc(100% - 5px),#000 calc(100% - 4.5px));mask:radial-gradient(closest-side,transparent calc(100% - 5px),#000 calc(100% - 4.5px))}
+.plus svg{position:relative}
+.plus.x svg{transform:rotate(45deg)}
+/* panneau barre (C) */
+.barre{border:2px solid var(--trait);background:var(--corps);border-radius:37px}
+.it{position:absolute;width:90px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--txt)}
+.it svg{width:28px;height:28px}
+/* pilules de nature (B ouvert) */
+.pil{height:62px;border-radius:31px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;gap:12px;white-space:nowrap;color:#F4EEE1;font-family:Bricolage;font-weight:700;font-size:22px;border:2px solid var(--trait)}
+.pil small{font-family:ApfelMid;font-weight:500;font-size:13px;letter-spacing:.02em;opacity:.9}
+/* Index · Fil */
+.crop{position:absolute;left:0;width:390px;overflow:hidden}
+.crop img{position:absolute;left:0;width:390px;height:844px}
+.tabs .t1{position:absolute;left:26px;top:13px;font-family:Bricolage;font-weight:700;font-size:27px;line-height:30px}
+.tabs .n{font-size:20px;margin-left:5px}
+.tabs .off{opacity:.72}
+.tabs .fer{position:absolute;right:26px;top:21px;font-family:ApfelMid;font-size:12px;letter-spacing:.14em}
+.sel{border:2px solid var(--trait);border-radius:22px;background:var(--corps);display:flex;overflow:hidden}
+.sel div{flex:1;display:grid;place-items:center;font-family:Bricolage;font-weight:700;font-size:17px;color:var(--txt)}
+.sel .on{background:var(--trait);color:var(--corps)}
+.note{font-size:13px;line-height:1.5;max-width:390px;margin-top:8px}
+
+.plat .mm .bi,.plat .mm2 .bi{color:#3A54FF}
+.plat .mm2{position:absolute;left:26px;top:11.5px;font-family:Fraunces;font-weight:600;font-size:27px;letter-spacing:-.27px;line-height:33px;white-space:nowrap}
+.plat .mm2 .ct2{font-family:Apfel;font-weight:400;font-size:12px;letter-spacing:0;margin-left:10px;vertical-align:baseline}
+/* 3 · le + : sur la ligne des autres, plus grand qu'eux, dans le panneau — l'anneau est son bord */
+.plus2{border-radius:50%;background:conic-gradient(var(--men) 0deg 144deg,var(--per) 144deg 288deg,var(--ter) 288deg 360deg);display:grid;place-items:center}
+.plus2::after{content:"";position:absolute;inset:5px;border-radius:50%;background:var(--trait)}
+.plus2 svg{position:relative;z-index:1}
+.plus2.x svg{transform:rotate(45deg)}
+.rec{width:44px;height:44px;border-radius:50%;border:2px solid var(--trait);background:var(--corps);color:var(--txt);display:grid;place-items:center}
+.rec svg{width:24px;height:24px}
+.contre{outline:4px solid #FA2258;outline-offset:6px}
+</style></head><body>
+<script>
+var I={
+ studio:'<svg viewBox="0 0 32 32" fill="none"><path d="M7 11 L14 9 L16 15 L11 20 L6 17 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M18 8 L25 10 L26 17 L20 19 L17 13 Z" fill="currentColor"/><path d="M13 20 L20 21 L19 26 L13 26 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+ aura:'<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="2"/><path d="M16 16 L16 8 A8 8 0 0 1 23.4 19 Z" fill="currentColor"/></svg>',
+ fil:'<svg viewBox="0 0 32 32" fill="none"><path d="M16 6.4 C11.6 6.4 9.4 9.2 9.4 13.2 C9.4 18.6 7.6 20.4 7.6 20.4 L24.4 20.4 C24.4 20.4 22.6 18.6 22.6 13.2 C22.6 9.2 20.4 6.4 16 6.4 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.6 23.4 A2.6 2.6 0 0 0 18.4 23.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+ share:'<svg viewBox="0 0 32 32" fill="none"><path d="M16 20 L16 7 M16 7 L11.5 11.5 M16 7 L20.5 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 15 L8.5 25 L23.5 25 L23.5 15" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+ cercle:'<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="9.5" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="3.4" fill="currentColor"/></svg>',
+ regl:'<svg viewBox="0 0 32 32" fill="none"><path d="M16 4.5 C22 4.5 27.5 8.5 27.5 15 C27.5 22 22.5 27.5 16 27.5 C9 27.5 4.5 22 4.5 15 C4.5 9 10 4.5 16 4.5 Z" stroke="currentColor" stroke-width="2"/><line x1="16" y1="16" x2="16" y2="5" stroke="currentColor" stroke-width="2"/><line x1="16" y1="16" x2="6.5" y2="23" stroke="currentColor" stroke-width="2"/><line x1="16" y1="16" x2="25.5" y2="23" stroke="currentColor" stroke-width="2"/></svg>',
+ plus:function(c,w){return '<svg viewBox="0 0 32 32" width="'+w+'" height="'+w+'"><path d="M16 6 V26 M6 16 H26" stroke="'+c+'" stroke-width="3.2" stroke-linecap="round"/></svg>';}
+};
+/* « recadrer » : les trois dalles-fantômes de la Toile vide (#toileEmpty .te-ghosts) — la Toile entière */
+I.recadre='<svg viewBox="0 0 200 200" fill="none" stroke="currentColor" stroke-width="15" stroke-linejoin="round"><path d="M40 34 Q80 24 94 56 Q102 90 66 98 Q30 102 26 68 Q22 40 40 34Z"/><path d="M120 62 Q160 56 166 92 Q170 126 132 132 Q100 134 100 100 Q100 70 120 62Z"/><path d="M58 122 Q96 116 106 148 Q110 178 74 182 Q42 184 40 152 Q40 128 58 122Z"/></svg>';
+/* « Index » : la carte d'Index (lot-S4) — deux colonnes, la vague du §3.9 sous le champ */
+I.index='<svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="4.5" y="5" width="10" height="22" rx="3"/><rect x="17.5" y="5" width="10" height="22" rx="3"/><path d="M4.5 14 Q7 12 9.5 14 T14.5 14 M17.5 14 Q20 12 22.5 14 T27.5 14" stroke-linecap="round"/></svg>';
+function HAUT(){
+ return '<div class="ch plat" data-z="haut"><span class="mm2">Prom<span class="bi">i</span><span class="ct2">15 Promi vivants</span></span>'
+  +'<span class="ic" style="left:236px" title="Partager">'+I.share+'</span><span class="ic" style="left:286px" title="Réglages">'+I.regl+'</span></div>';
+}
+/* la barre du bas : Studio · Aura | + | Index · Fil — CINQ entrées (Tom) — panneau 342 × 84, le + de 60 SUR LA LIGNE des autres */
+function BAS(ouvert, nuBarre){
+ var h='';
+ if(!nuBarre) h+='<div class="ch barre" data-z="dock" style="left:24px;top:740px;width:342px;height:84px;border-radius:42px"></div>';
+ [{x:60,i:'studio',l:'Studio'},{x:116,i:'aura',l:'Aura'},{x:274,i:'index',l:'Index'},{x:330,i:'fil',l:'Fil',dot:1}].forEach(function(o){
+  h+='<div class="ch it" data-z="dock" style="left:'+(o.x-45)+'px;top:756.5px"><span style="position:relative">'+I[o.i]+(o.dot?'<span class="dot" style="left:18px;top:-2px"></span>':'')+'</span><span class="lb" data-lb="1">'+o.l+'</span></div>';
+ });
+ h+='<div class="ch plus2'+(ouvert?' x':'')+'" data-z="plus" style="left:165px;top:752px;width:60px;height:60px">'+I.plus('var(--corps)',30)+'</div>';
+ if(ouvert){
+  [['Une Nuée','un groupe, un projet','var(--mau)',452],['Un Chiche','un défi lancé','var(--fra)',526],['Un Promi','à quelqu\'un, ou à toi','var(--bleu)',600]].forEach(function(p){
+   h+='<div class="ch pil" data-z="pil" style="left:40px;width:310px;top:'+p[3]+'px;background:'+p[2]+'">'+p[0]+'<small>'+p[1]+'</small></div>';});
+ }
+ return h;
+}
+function REC(){ return '<div class="ch rec" data-z="rec" style="left:322px;top:680px" title="revenir au cadrage">'+I.recadre+'</div>'; }
+function F(id,t,fond,chrome,cap,cls){
+ return '<div><div class="f '+(t?'sombre ':'')+(cls||'')+'" data-cadre="'+id+'"><img class="fond" src="'+fond+'">'+chrome+'</div><div class="cap">'+cap+'</div></div>';
+}
+function IXF(t,onglet){
+ var src0=onglet==='index'?'scratchpad/acc_index_'+(t?'dark':'light')+'.png':'scratchpad/acc_fil_'+(t?'dark':'light')+'.png';
+ return '<div><div class="f '+(t?'sombre':'')+'" data-cadre="IF-'+(t?'sombre':'clair')+'-'+onglet+'"><img class="fond" src="'+src0+'"></div><div class="cap">'+(onglet==='index'?'Index':'Fil')+' · '+(t?'sombre':'clair')+' · sans sélecteur</div></div>';
+ var src=onglet==='index'?'scratchpad/acc_index_'+(t?'dark':'light')+'.png':'scratchpad/acc_fil_'+(t?'dark':'light')+'.png';
+ var tabs='<div class="ch plat tabs"><span class="t1">'
+  +'<span class="'+(onglet==='index'?'':'off')+'">Index<span class="n" style="color:'+(onglet==='index'?'#3A54FF':'inherit')+'">16</span></span>'
+  +'<span class="'+(onglet==='fil'?'':'off')+'" style="margin-left:14px">Fil<span class="n" style="color:'+(onglet==='fil'?'#2BE88C':'inherit')+'">4</span></span></span><span class="fer">✕ FERMER</span></div>';
+ return '<div><div class="f '+(t?'sombre':'')+'" data-cadre="IF-'+(t?'sombre':'clair')+'-'+onglet+'"><img class="fond" src="'+src+'">'+tabs+'</div><div class="cap">Index · Fil · '+(t?'sombre':'clair')+' · '+onglet+'</div></div>';
+}
+</script>
+
+<h1>L'accueil — direction B</h1>
+<p class="lede"><b>Tes décisions :</b> barre du bas en <b>cinq entrées</b> — Studio · Aura | <b>+</b> | Index · Fil, Index et Fil séparés · Index et Fil restent deux écrans séparés, <b>sans sélecteur</b> (il faisait doublon) · Partager et Réglages en haut à droite · plus de bouton Toile (on y revient en fermant) · le « i » reste bleu · le + s'ouvre sur place (B), puis les trois écrans de création. Tout le chrome à la grammaire : plateau 342 × 60, trait 2 couleur du corps, rayon = h ÷ 2, libellés 12, corps opaques — <b>aucun flou, aucun voile devant une dalle</b>. Fonds : la vraie Toile, capturée sur <code>app.html</code>.</p>
+<div class="mes" id="mesures"><b>Mesuré sur cette planche</b> (<code>scratchpad/acc_planche2_mesure.py</code>, <code>acc_planche2_coll.py</code>, <code>pl2_barre.py</code>) —
+<b>Atteinte</b>, vrai moteur, 3 chargements × 2 thèmes : <b>0 dalle inatteignable sur 180</b> au repos et avec « recadrer », à 0,4 · 0,48 · 0,6 · 0,8 · 1 · 1,25 · 1,5 · 2 · 3 · 5.
+<b>Zone libre</b> : repos 85,4 % · avec « recadrer » 84,9 % · + ouvert 68,8 % · aujourd'hui 86,3 %.
+<b>Air</b> : aucune paire sous 8 px, 14 cadres, deux thèmes.
+<b>La barre</b> (panneau 342 × 84, rayon 42) : libellés 12 px — Studio↔Aura 16,4 · Index↔Fil 28,5 · bords 11,1 / 25 · icône↔libellé 9 · au-dessus et au-dessous des entrées 14,5. <b>Le +</b> : 60 px, l'anneau est son bord, centre sur la ligne des entrées (écart 0), 10 px d'air en haut et en bas, 35 px jusqu'aux icônes voisines.
+<b>Le plateau</b> : « Promi » en Fraunces 600 27 px à 52 · 53,5 — la cote exacte du plateau de la page + ; « 15 Promi vivants » sur la même ligne, Apfel 12 (le §6 interdit plus petit).</div>
+
+<h2>Clair</h2>
+<div class="rang">
+<script>document.write(
+ F('B2-clair-repos','', 'planche-accueil/toile_light_1.png', HAUT()+BAS(), 'repos · zoom 1')
++F('B2-clair-ouvert','', 'planche-accueil/toile_light_1.png', HAUT()+BAS(true), '+ touché')
++F('B2-clair-zoom','', 'planche-accueil/toile_light_zoom2.png', HAUT()+BAS()+REC(), 'zoom × 2,25 · recadrer')
++F('B2-clair-dezoom','', 'planche-accueil/toile_light_dezoom.png', HAUT()+BAS()+REC(), 'dézoom 0,4 · recadrer')
++IXF('', 'index')+IXF('', 'fil'));</script>
+</div>
+
+<h2>Sombre</h2>
+<div class="rang">
+<script>document.write(
+ F('B2-sombre-repos',1, 'planche-accueil/toile_dark_1.png', HAUT()+BAS(), 'repos · zoom 1')
++F('B2-sombre-ouvert',1, 'planche-accueil/toile_dark_1.png', HAUT()+BAS(true), '+ touché')
++F('B2-sombre-zoom',1, 'planche-accueil/toile_dark_zoom2.png', HAUT()+BAS()+REC(), 'zoom × 2,25 · recadrer')
++F('B2-sombre-dezoom',1, 'planche-accueil/toile_dark_dezoom.png', HAUT()+BAS()+REC(), 'dézoom 0,4 · recadrer')
++IXF(1, 'index')+IXF(1, 'fil'));</script>
+</div>
+
+<h2>Pourquoi un panneau sous la barre</h2>
+<p class="lede">Même Toile zoomée, même barre, <b>sans panneau</b> : les libellés de 12 px se posent sur les dalles et sur leurs propres libellés — c'est exactement le défaut du titre aujourd'hui (infraction 12 de l'audit). Le panneau opaque est ce qui les garde lisibles à tous les zooms.</p>
+<div class="rang">
+<script>document.write(
+ F('B2-contre-clair','', 'planche-accueil/toile_light_zoom2.png', HAUT()+BAS(false,true), 'contre-exemple · sans panneau','contre')
++F('B2-contre-sombre',1, 'planche-accueil/toile_dark_zoom2.png', HAUT()+BAS(false,true), 'contre-exemple · sans panneau','contre'));</script>
+</div>
+
+
+<h2>Les deux icônes, de près</h2>
+<p class="lede">À gauche, la taille réelle dans son rond ou dans la barre ; à droite, le même glyphe à <b>2×</b>. Deux thèmes.</p>
+<div id="icones" style="display:grid;grid-template-columns:repeat(2,max-content);gap:28px 48px;background:#D9D4C8;padding:20px">
+<script>
+function PLAQUE(t,titre,reel,grand){
+ return '<div class="f '+(t?'sombre':'')+'" style="width:420px;height:230px;border-radius:30px;background:var(--corps);color:var(--txt);border:2px solid var(--trait)">'
+  +'<div style="position:absolute;left:24px;top:16px;font-family:ApfelMid;font-size:12px;letter-spacing:.08em;text-transform:uppercase">'+titre+' · '+(t?'sombre':'clair')+'</div>'
+  +'<div style="position:absolute;left:24px;top:64px;width:130px;height:130px;display:grid;place-items:center">'+reel+'</div>'
+  +'<div style="position:absolute;left:190px;top:44px;width:200px;height:170px;display:grid;place-items:center">'+grand+'</div></div>';
+}
+var RECr='<div class="rec" style="position:relative">'+I.recadre+'</div>';
+var RECg='<div class="rec" style="position:relative;width:88px;height:88px;border-width:4px"><span style="width:48px;height:48px;display:grid">'+I.recadre.replace('<svg ','<svg style="width:48px;height:48px" ')+'</span></div>';
+var IDXr='<div style="display:flex;flex-direction:column;align-items:center;gap:4px"><span style="width:28px;height:28px;display:grid">'+I.index+'</span><span class="lb">Index</span></div>';
+var IDXg='<div style="display:flex;flex-direction:column;align-items:center;gap:8px"><span style="width:56px;height:56px;display:grid">'+I.index.replace('<svg ','<svg style="width:56px;height:56px" ')+'</span><span class="lb" style="font-size:24px;line-height:28px">Index</span></div>';
+document.write(PLAQUE('', 'recadrer', RECr, RECg)+PLAQUE(1,'recadrer',RECr,RECg)+PLAQUE('', 'Index', IDXr, IDXg)+PLAQUE(1,'Index',IDXr,IDXg));
+</script>
+</div>
+<h2>Ce qui change aussi, sans dessin</h2>
+<p class="lede"><b>La barre d'état « 9:41 · 5G · v592 » disparaît</b> : c'est l'app qui la peint (<code>.statusbar</code> dans <code>#device</code>), aucun moodboard ne la porte, iOS la fournit. Elle n'est pas dessinée ici.<br>
+<b>Le zoom tient</b> : le pincement et le repos partagent la même borne (plus de ressort 0,40 → 0,48) ; planter ne remet plus la vue à 1 si on l'a déplacée au doigt — la vue ne se recadre seule que si on ne l'a pas touchée.<br>
+<b>Revenir au cadrage</b> : le rond « recadrer » n'existe <b>que</b> quand la vue a quitté son cadrage (ajout hors inventaire, §5 : il apparaît au besoin, il disparaît une fois recadré) ; un double toucher sur la Toile fait la même chose. Son glyphe est une forme du produit : les trois dalles-fantômes de la Toile vide (<code>#toileEmpty</code>) — la Toile entière.<br>
+<b>Le Cercle</b> quitte l'accueil : sa porte dans les Réglages (« ✦ Le Cercle ») est vérifiée au doigt, deux thèmes. <b>Retirés</b> (décision Tom) : l'appui long sur la Toile qui ouvrait le Studio, et le mot-marque qui allumait le mode signature.<br>
+<b>L'icône d'Index</b> n'existait pas (l'Index n'avait pas de bouton) : elle reprend la carte d'Index — deux colonnes, la vague sous le champ.</p>
+</body></html>

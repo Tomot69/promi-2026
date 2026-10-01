@@ -1,0 +1,19 @@
+Toile.renderTo existe                      OK  
+renderTo rend une image                    OK  {'ok': True, 'w': 780, 'h': 1688, 'teintes': 201, 'ech': 82290}
+les dalles sont aux bonnes positions       OK  9/10 concordent · ecarts [0, 2, 1, 0, 0, 212, 2, 2]
+renderTo utilise les vrais germes          OK  
+planter des Promi change l'apercu          OK  hash 258612950 -> 260997979
+Mon Folio : poser la Pelote recompose la planche OK  
+Mes Promi : la planche ECRIT des intitules OK  21 -> 21 intitules
+Mes Promi : les intitules restent          KO  avant arroser les tomates|arroser tous les soirs|courir dimanche|essai 0|essai 1|essai 2|faire les crêpes|le grand plongeoir|monter la serre avant les gelées|nager le mardi|planter un arbre|ramasser les courges|rapporter la perceuse|rapporter le livre|reprendre l'arrosage automatique|récupérer les plants de tomates|semer les radis|t'apprendre à nager|tailler la vigne|venir dimanche|vider le composteur à deux / apres arroser les tomates|arroser tous les soirs|courir dimanche|essai 0|essai 1|essai 2|faire les crêpes|le grand plongeoir|monter la serre avant les gelées|nager le mardi|planter un arbre|ramasser les courges|rapporter la perceuse|rapporter le livre|reprendre l'arrosage auto…|récupérer les plants de toma…|semer les radis|t'apprendre à nager|tailler la vigne|venir dimanche|vider le composteur à…
+Mon Folio : retirer la Pelote recompose    OK  
+Ma Toile : le Noyau se pose                OK  
+le % s'affiche                             OK  chiffre composé : 33%
+le % porte la double encre terracotta      OK  encres : #DD4D23 #82AEF8 #F3E7D1
+le % porte la double encre de nature       OK  attendu #82AEF8 · encres écrites : #DD4D23 #82AEF8 #F3E7D1
+petit : le chiffre tient dans le trou      OK  trou 48 · texte jusqu a 42
+moyen : le chiffre tient dans le trou      OK  trou 67 · texte jusqu a 57
+grand : le chiffre tient dans le trou      OK  trou 89 · texte jusqu a 76
+aucune erreur JS                           OK  []
+
+16/17

@@ -1,0 +1,13 @@
+B · premier passage 110 000 → 90 000, sphère qui tourne : plus longue image avant 50 ms, AU CHANGEMENT 783 ms (peintre 526 ms)
+A · dark  110 000 →  90000 : 71.4 % des pixels changent, 10.7 niveaux en moyenne · luminance 93.0 → 90.2 (-2.8)
+A · dark  110 000 →  75000 : 76.1 % des pixels changent, 14.1 niveaux en moyenne · luminance 93.0 → 86.4 (-6.6)
+A · light 110 000 →  90000 : 73.2 % des pixels changent, 10.3 niveaux en moyenne · luminance 106.7 → 111.5 (+4.8)
+A · light 110 000 →  75000 : 77.6 % des pixels changent, 14.9 niveaux en moyenne · luminance 106.7 → 117.9 (+11.2)
+C · sous ×4, un lancer au départ (élan éteint à 446 ms) :
+    à  7244 ms  110000 →  90000 · élan éteint (vlac 0.000) · creux False · doigt False · cette image : 100 ms
+    à 13906 ms   90000 →  75000 · élan éteint (vlac 0.000) · creux False · doigt False · cette image : 50 ms
+    à 16911 ms   75000 →  90000 · élan éteint (vlac 0.000) · creux False · doigt False · cette image : 17 ms
+    processeur rendu → sur 30 s :
+    à 12919 ms   90000 → 110000 · cette image : 17 ms
+    palier à la fin : 110000
+planches : ['palier_dark_110000.png', 'palier_dark_75000.png', 'palier_dark_90000.png', 'palier_light_110000.png', 'palier_light_75000.png', 'palier_light_90000.png', 'paliers_dark.png', 'paliers_light.png']

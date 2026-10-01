@@ -1,0 +1,78 @@
+
+== dark · pure · Peaufiner de la page +
+   recouvrements : ['span.cb-mot « FERMER » ↔ div.s2-titre « Promi » [AU DOIGT]']
+   sous (349,247) : ['div.s2-reg', 'div.s2-liste', 'div.dpd-corps', 'svg.']
+     button.ph-photo-btn                                                                     x  332.0 y  230.0   34.0×34.0  bd 1px pos absolute
+     div.enh                                                                                 x   24.0 y   40.0  342.0×60.0  bd 2px pos absolute
+     span.cb-mot                                                FERMER                       x   66.2 y   63.8   60.4×12.5  bd 0px pos static
+     div.s2-titre                                               Promi                        x   24.0 y   43.0   71.6×26.0  bd 0px pos static
+     div.s2-fermer                                              ✕ FERMER                     x  288.5 y   49.8   77.5×12.5  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  110.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 À QUI                        x   48.0 y  136.3   37.7×11.5  bd 0px pos static
+     div.s2-val                                                 moi                          x  309.6 y  132.1   32.4×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  190.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 AVANT                        x   48.0 y  216.3   43.3×11.5  bd 0px pos static
+     div.s2-val                                                 un jour                      x  281.5 y  212.1   60.5×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  270.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 DANS UNE NUÉE                x   48.0 y  296.3  109.1×11.5  bd 0px pos static
+     div.s2-val                                                 aucune                       x  278.1 y  292.1   63.9×19.8  bd 0px pos static
+
+== dark · phrase · Peaufiner de la page +
+   recouvrements : ['span.cb-mot « FERMER » ↔ div.s2-titre « aller voir la mer » [AU DOIGT]']
+   sous (349,247) : ['div.s2-reg', 'div.s2-liste', 'div.dpd-corps', 'svg.']
+     button.ph-photo-btn                                                                     x  332.0 y  230.0   34.0×34.0  bd 1px pos absolute
+     div.enh                                                                                 x   24.0 y   40.0  342.0×60.0  bd 2px pos absolute
+     span.cb-mot                                                FERMER                       x   66.2 y   63.8   60.4×12.5  bd 0px pos static
+     div.s2-titre                                               aller voir la mer            x   24.0 y   43.0  182.8×26.0  bd 0px pos static
+     div.s2-fermer                                              ✕ FERMER                     x  288.5 y   49.8   77.5×12.5  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  110.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 À QUI                        x   48.0 y  136.3   37.7×11.5  bd 0px pos static
+     div.s2-val                                                 moi                          x  309.6 y  132.1   32.4×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  190.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 AVANT                        x   48.0 y  216.3   43.3×11.5  bd 0px pos static
+     div.s2-val                                                 un jour                      x  281.5 y  212.1   60.5×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  270.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 DANS UNE NUÉE                x   48.0 y  296.3  109.1×11.5  bd 0px pos static
+     div.s2-val                                                 aucune                       x  278.1 y  292.1   63.9×19.8  bd 0px pos static
+
+== dark · Peaufiner d’une fiche (126), en haut
+   recouvrements : []
+
+== light · pure · Peaufiner de la page +
+   recouvrements : ['span.cb-mot « FERMER » ↔ div.s2-titre « Promi » [AU DOIGT]']
+   sous (349,247) : ['div.s2-reg', 'div.s2-liste', 'div.dpd-corps', 'svg.']
+     button.ph-photo-btn                                                                     x  332.0 y  230.0   34.0×34.0  bd 1px pos absolute
+     div.enh                                                                                 x   24.0 y   40.0  342.0×60.0  bd 2px pos absolute
+     span.cb-mot                                                FERMER                       x   66.2 y   63.8   60.4×12.5  bd 0px pos static
+     div.s2-titre                                               Promi                        x   24.0 y   43.0   71.6×26.0  bd 0px pos static
+     div.s2-fermer                                              ✕ FERMER                     x  288.5 y   49.8   77.5×12.5  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  110.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 À QUI                        x   48.0 y  136.3   37.7×11.5  bd 0px pos static
+     div.s2-val                                                 moi                          x  309.6 y  132.1   32.4×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  190.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 AVANT                        x   48.0 y  216.3   43.3×11.5  bd 0px pos static
+     div.s2-val                                                 un jour                      x  281.5 y  212.1   60.5×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  270.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 DANS UNE NUÉE                x   48.0 y  296.3  109.1×11.5  bd 0px pos static
+     div.s2-val                                                 aucune                       x  278.1 y  292.1   63.9×19.8  bd 0px pos static
+
+== light · phrase · Peaufiner de la page +
+   recouvrements : ['span.cb-mot « FERMER » ↔ div.s2-titre « aller voir la mer » [AU DOIGT]']
+   sous (349,247) : ['div.s2-reg', 'div.s2-liste', 'div.dpd-corps', 'svg.']
+     button.ph-photo-btn                                                                     x  332.0 y  230.0   34.0×34.0  bd 1px pos absolute
+     div.enh                                                                                 x   24.0 y   40.0  342.0×60.0  bd 2px pos absolute
+     span.cb-mot                                                FERMER                       x   66.2 y   63.8   60.4×12.5  bd 0px pos static
+     div.s2-titre                                               aller voir la mer            x   24.0 y   43.0  182.8×26.0  bd 0px pos static
+     div.s2-fermer                                              ✕ FERMER                     x  288.5 y   49.8   77.5×12.5  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  110.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 À QUI                        x   48.0 y  136.3   37.7×11.5  bd 0px pos static
+     div.s2-val                                                 moi                          x  309.6 y  132.1   32.4×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  190.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 AVANT                        x   48.0 y  216.3   43.3×11.5  bd 0px pos static
+     div.s2-val                                                 un jour                      x  281.5 y  212.1   60.5×19.8  bd 0px pos static
+     div.s2-reg                                                                              x   24.0 y  270.0  342.0×64.0  bd 2px pos relative
+     div.s2-lab                                                 DANS UNE NUÉE                x   48.0 y  296.3  109.1×11.5  bd 0px pos static
+     div.s2-val                                                 aucune                       x  278.1 y  292.1   63.9×19.8  bd 0px pos static
+
+== light · Peaufiner d’une fiche (126), en haut
+   recouvrements : []

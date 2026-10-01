@@ -1,0 +1,23 @@
+      [12] légende : tel quel [28, 28] / [[28, 28]] · sondé [37, 19] / [[37, 19]]
+
+contrat réécrit                                            tel quel   défaut posé exprès
+rien ne déborde (sonde hors de tout)                       passe      PRIS
+  … exemptée dans une rangée glissante qui rogne           passe      PRIS
+  … PRISE si la rangée glissante ne rogne pas              passe      PRIS
+le Noyau « toi » porte ses arcs                            passe      PRIS
+la sphère est peinte                                       passe      PRIS
+« Partager mon Noyau » mène au partage du Noyau            passe      PRIS
+les Noyaux ne portent que l'image et le prénom             passe      PRIS
+le mot qualifie l'objet (une des phrases de Tom)           passe      PRIS
+aucun chiffre ni pourcentage                               passe      PRIS
+aucune signature chiffrée                                  passe      PRIS
+sphère, Noyaux, légende, ce que tu as tenu, bouton         passe      PRIS
+la légende nomme trois arcs en trois teintes d'état        passe      PRIS
+le Studio ne repeint pas les dalles déjà plantées          passe      PRIS
+redteam_ecrans · la légende est centrée (≤ 1 px)           passe      PRIS
+redteam_air · un bloc annoncé centré a des écarts égaux    passe      PRIS
+les arcs des Noyaux sont lisibles (6 px et plus)           passe      PRIS
+la piste est neutre, les arcs disent l'état                passe      PRIS
+la signature est identique partout où elle est portée      passe      PRIS
+
+✅  les 18 contrats mordent

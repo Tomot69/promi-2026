@@ -1,0 +1,42 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ v61 · cinq mondes à l'horloge, 0,83 / 0,78 (= 0,17 / 0,22 à 60 i/s) 
+  ✓ v61 · un redémarrage de boucle fait UN pas 
+  ✓ v61 · mondes neufs : temps vrai en sous-pas de 1/60 s 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu d'arrivée 760 ms 
+  ✓ Brouillamini, transition 1 600 ms · retrait 900 ms 
+  ✓ Chamade, transition 1 600 ms · retrait 900 ms 
+  ✓ Volubilis, transition 1 600 ms · retrait 900 ms 
+  ✓ Guingois, transition 1 600 ms · retrait 900 ms 
+  ✓ Chantourné, transition 1 600 ms · retrait 900 ms 
+  ✓ Mascaret, transition 1 600 ms · retrait 900 ms 
+  ✓ Ramage, transition 1 600 ms · retrait 900 ms 
+  ✓ v72 · Ramage : le fondu du plumage d'arrivée = ARR 900 ms 
+  ✓ v61 · Houle reste par image (exception) 
+— chemin : moteur
+  ✗ volubilis · moteur · arrivee fin du mouvement 3138 ms (attendu 2711 ± 406) · cadence 104 % · [vu 3138 ms, 159 images]
+  ✗ volubilis · moteur · depart fin du mouvement 2472 ms (attendu 2045 ± 306) · cadence 107 % · [vu 2472 ms, 119 images]
+  ✓ ramage · moteur · arrivee fin du mouvement 1681 ms (attendu 1690 ± 557) · cadence 101 % · [vu 1668 ms, 83 images]
+  ✓ ramage · moteur · depart fin du mouvement 1918 ms (attendu 2620 ± 864) · cadence 62 % · [vu 1652 ms, 58 images]
+  ✓ madrure · moteur · arrivee fin du mouvement 2427 ms (attendu 2432 ± 194) · cadence 92 % · [vu 1599 ms, 86 images]
+  ✓ madrure · moteur · depart fin du mouvement 2431 ms (attendu 2431 ± 194) · cadence 97 % · [vu 2431 ms, 137 images]
+  ✓ encre · moteur · arrivee fin du mouvement 949 ms (attendu 872 ± 100) · cadence 83 % · [vu 949 ms, 30 images]
+  ✓ encre · moteur · depart fin du mouvement 832 ms (attendu 851 ± 100) · cadence 89 % · [vu 832 ms, 28 images]
+— chemin : reel
+  ✗ volubilis · reel · arrivee fin du mouvement 3217 ms (attendu 2711 ± 406) · cadence 96 % · [vu 3217 ms, 151 images]
+  ✓ volubilis · reel · depart fin du mouvement 2277 ms (attendu 2045 ± 306) · cadence 102 % · [vu 2277 ms, 105 images]
+  ✓ ramage · reel · arrivee fin du mouvement 1652 ms (attendu 1690 ± 557) · cadence 75 % · [vu 1636 ms, 60 images]
+  ✓ ramage · reel · depart fin du mouvement 2033 ms (attendu 2620 ± 864) · cadence 72 % · [vu 1667 ms, 68 images]
+  ✓ madrure · reel · arrivee fin du mouvement 2425 ms (attendu 2432 ± 194) · cadence 79 % · [vu 1981 ms, 92 images]
+  ✓ madrure · reel · depart fin du mouvement 2438 ms (attendu 2431 ± 194) · cadence 82 % · [vu 1906 ms, 91 images]
+  ✓ encre · reel · arrivee fin du mouvement 942 ms (attendu 872 ± 100) · cadence 78 % · [vu 942 ms, 28 images]
+  ✓ encre · reel · depart fin du mouvement 840 ms (attendu 851 ± 100) · cadence 82 % · [vu 840 ms, 26 images]
+
+34 / 37

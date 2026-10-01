@@ -1,0 +1,1 @@
+window.toileBreathe=function(){try{var c=document.getElementById('toileCv');if(!c)return;c.classList.remove('breathe');void c.offsetWidth;c.classList.add('breathe');}catch(e){}};

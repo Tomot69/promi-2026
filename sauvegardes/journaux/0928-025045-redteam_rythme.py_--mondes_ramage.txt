@@ -1,0 +1,30 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ v61 · cinq mondes à l'horloge, 0,83 / 0,78 (= 0,17 / 0,22 à 60 i/s) 
+  ✓ v61 · un redémarrage de boucle fait UN pas 
+  ✓ v61 · mondes neufs : temps vrai en sous-pas de 1/60 s 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu d'arrivée 760 ms 
+  ✓ Brouillamini, transition 1 600 ms · retrait 900 ms 
+  ✓ Chamade, transition 1 600 ms · retrait 900 ms 
+  ✓ Volubilis, transition 1 600 ms · retrait 900 ms 
+  ✓ Guingois, transition 1 600 ms · retrait 900 ms 
+  ✓ Chantourné, transition 1 600 ms · retrait 900 ms 
+  ✓ Mascaret, transition 1 600 ms · retrait 900 ms 
+  ✓ Ramage, transition 1 600 ms · retrait 900 ms 
+  ✓ v72 · Ramage : le fondu du plumage d'arrivée = ARR 900 ms 
+  ✓ v61 · Houle reste par image (exception) 
+— chemin : moteur
+  ✓ ramage · moteur · arrivee fin du mouvement 1762 ms (attendu 1690 ± 557) · cadence 63 % · [vu 1529 ms, 47 images]
+  ✓ ramage · moteur · depart fin du mouvement 2011 ms (attendu 2620 ± 864) · cadence 60 % · [vu 1609 ms, 55 images]
+— chemin : reel
+  ✗ ramage · reel · arrivee fin du mouvement 1732 ms (attendu 1690 ± 557) · cadence 50 % · [vu 1636 ms, 40 images]
+  ✗ ramage · reel · depart fin du mouvement 1995 ms (attendu 2620 ± 864) · cadence 51 % · [vu 1681 ms, 49 images]
+
+23 / 25

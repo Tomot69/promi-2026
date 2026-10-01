@@ -1,0 +1,1 @@
+/* diagnostic, seulement avec ?mesure= (diag-studio.js) */ if(location.search.indexOf('mesure=')>=0){ var _dg=document.createElement('script'); _dg.src='diag-studio.js'; document.head.appendChild(_dg); }

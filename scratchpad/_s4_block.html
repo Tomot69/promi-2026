@@ -1,0 +1,484 @@
+<style id="lot-S4-css">
+/* ═══════════════════════════════════════════════════════════════════════════════════════
+   SECTION 4 · INDEX ET FIL — portage en coordonnées absolues (PROMI-SPECIFICATIONS.md
+   §5 « Index et Fil », §3.9 la carte d'Index, §3.10 le bandeau du Fil, §2.1 à §2.7).
+   Bloc NEUF en fin de fichier ; aucune règle existante n'est touchée.
+
+   DÉCISION DE PRODUIT (Tom) : l'Index et le Fil deviennent des ÉCRANS PLEINS. Entête
+   « Index N » + ✕ FERMER, champ de recherche, grille. Plus de topbar, plus de mot-marque,
+   plus de #viewSwitch, plus de dock. Les deux seuls éléments de chrome persistants du
+   produit sont le ✕ FERMER et la barre Peaufiner.
+   ═══════════════════════════════════════════════════════════════════════════════════════ */
+
+/* — L'ÉCRAN PLEIN : tout le chrome de la Toile sort de l'écran. Le crible est posé
+     ÉLÉMENT PAR ÉLÉMENT (CLAUDE.md §8, « le crible en bloc ») : on nomme les quatre
+     nœuds de chrome, jamais un conteneur ni une famille. */
+#device.s4-plein .topbar{display:none!important}
+#device.s4-plein .footer{display:none!important}
+#device.s4-plein .statusbar{display:none!important}
+#device.s4-plein #viewSwitch{display:none!important}
+
+/* — LE CORPS D'ÉCRAN (§1.3) : #0E0F12 en sombre, #E8E0D0 en clair. La trame animée sort :
+     un écran qui montre des dalles de référence n'a pas de dalle en fond (CLAUDE.md §4.6). */
+#device #indexSheet.s4, #device #feedView.s4{background:#0E0F12!important}
+#device.light #indexSheet.s4, #device.light #feedView.s4{background:#E8E0D0!important}
+#device #indexSheet.s4>#ixTrameCv, #device #feedView.s4>#fdTrameCv{display:none!important}
+#device #indexSheet.s4 .ix-menu, #device #feedView.s4 .ix-menu{z-index:9}
+
+/* — L'ENTÊTE : bloc 24 / 40, hauteur 44. « Index » Bricolage 700/38 interlettre -.035em,
+     le compte Bricolage 700/26 dans la couleur signal, écart 12 px, alignés sur la ligne
+     de base. À droite ✕ FERMER, Apfel 500/12.5, interlettre .20em. */
+#device #indexSheet.s4>.scr-ti, #device #feedView.s4>.scr-ti{
+  position:absolute!important;left:24px!important;right:auto!important;top:40px!important;
+  width:auto!important;max-width:none!important;height:44px!important;margin:0!important;padding:0!important;
+  display:flex!important;align-items:baseline!important;gap:12px!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;font-size:38px!important;
+  letter-spacing:-.035em!important;line-height:1!important;opacity:1!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important;background:none!important}
+#device.light #indexSheet.s4>.scr-ti, #device.light #feedView.s4>.scr-ti{
+  color:#16171B!important;-webkit-text-fill-color:#16171B!important}
+/* le « x » d'Index et le « l » de Fil portaient un accent de couleur : le moodboard écrit
+   le mot d'un seul ton, la couleur est réservée au compte. */
+#device #indexSheet.s4>.scr-ti .ti-x, #device #feedView.s4>.scr-ti .ti-x{
+  color:inherit!important;-webkit-text-fill-color:currentColor!important;
+  background:none!important;-webkit-background-clip:border-box!important;
+  font:inherit!important;letter-spacing:inherit!important;padding:0!important;margin:0!important;
+  animation:none!important;text-shadow:none!important}
+#device #indexSheet.s4>.scr-ti .ix-count, #device #feedView.s4>.scr-ti .ix-count{
+  display:inline-block!important;position:static!important;margin:0!important;padding:0!important;
+  min-width:0!important;width:auto!important;height:auto!important;border:0!important;background:none!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;font-size:26px!important;
+  letter-spacing:0!important;line-height:1!important;opacity:1!important;border-radius:0!important;
+  color:#3A54FF!important;-webkit-text-fill-color:#3A54FF!important}
+#device #feedView.s4>.scr-ti .ix-count{color:#2BE88C!important;-webkit-text-fill-color:#2BE88C!important}
+
+#device #indexSheet.s4>.closeb, #device #feedView.s4>.closeb{
+  position:absolute!important;left:auto!important;right:24px!important;top:40px!important;
+  height:44px!important;width:auto!important;max-width:none!important;margin:0!important;padding:0!important;
+  display:flex!important;align-items:center!important;justify-content:flex-end!important;
+  font-family:Apfel,system-ui,sans-serif!important;font-weight:500!important;font-size:12.5px!important;
+  letter-spacing:.20em!important;line-height:1!important;text-transform:uppercase!important;opacity:1!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important;background:none!important;border:0!important;z-index:6}
+#device.light #indexSheet.s4>.closeb, #device.light #feedView.s4>.closeb{
+  color:#16171B!important;-webkit-text-fill-color:#16171B!important}
+
+/* — LA RECHERCHE : 270 × 56 à 24 / 108, rayon 28, contour 3, écart 12, Bricolage 600/16.
+     Le bouton de tri : 56 × 56 à 310 / 108, même rayon, même contour. */
+#device #indexSheet.s4>.ix-bar, #device #feedView.s4>.ix-bar{
+  position:absolute!important;left:24px!important;right:auto!important;top:108px!important;
+  width:342px!important;max-width:none!important;height:56px!important;margin:0!important;padding:0!important;
+  display:block!important;background:none!important;border:0!important;box-shadow:none!important}
+#device #indexSheet.s4 .ix-srch, #device #feedView.s4 .ix-srch{
+  position:absolute!important;left:0!important;top:0!important;width:270px!important;height:56px!important;
+  box-sizing:border-box!important;margin:0!important;padding:0 22px!important;
+  display:flex!important;align-items:center!important;gap:12px!important;
+  border:3px solid #5D636D!important;border-radius:28px!important;background:transparent!important;
+  box-shadow:none!important;overflow:hidden!important}
+#device.light #indexSheet.s4 .ix-srch, #device.light #feedView.s4 .ix-srch{border-color:#9A9384!important}
+#device #indexSheet.s4 .ix-srch::before, #device #feedView.s4 .ix-srch::before{
+  content:'⌕';flex:0 0 auto;font-size:17px;line-height:1;
+  color:#F4EEE1;-webkit-text-fill-color:#F4EEE1}
+#device.light #indexSheet.s4 .ix-srch::before, #device.light #feedView.s4 .ix-srch::before{
+  color:#16171B;-webkit-text-fill-color:#16171B}
+#device #indexSheet.s4 .ix-search, #device #feedView.s4 .ix-search{
+  flex:1 1 auto!important;width:auto!important;min-width:0!important;height:24px!important;
+  margin:0!important;padding:0!important;border:0!important;background:transparent!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:600!important;font-size:16px!important;
+  letter-spacing:0!important;line-height:1!important;opacity:1!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+#device.light #indexSheet.s4 .ix-search, #device.light #feedView.s4 .ix-search{
+  color:#16171B!important;-webkit-text-fill-color:#16171B!important}
+#device #indexSheet.s4 .ix-search::placeholder, #device #feedView.s4 .ix-search::placeholder{
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important;opacity:1!important}
+#device.light #indexSheet.s4 .ix-search::placeholder, #device.light #feedView.s4 .ix-search::placeholder{
+  color:#16171B!important;-webkit-text-fill-color:#16171B!important;opacity:1!important}
+#device #indexSheet.s4 .ix-tri, #device #feedView.s4 .ix-tri{
+  position:absolute!important;left:286px!important;top:0!important;width:56px!important;height:56px!important;
+  box-sizing:border-box!important;margin:0!important;padding:0!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  border:3px solid #5D636D!important;border-radius:28px!important;background:transparent!important;
+  box-shadow:none!important;font-size:20px!important;line-height:1!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+#device.light #indexSheet.s4 .ix-tri, #device.light #feedView.s4 .ix-tri{
+  border-color:#9A9384!important;color:#16171B!important;-webkit-text-fill-color:#16171B!important}
+
+/* — LA GRILLE : elle commence à 196 et court jusqu'au bas de l'écran. */
+#device #indexSheet.s4>#indexList, #device #feedView.s4>#feedList{
+  position:absolute!important;left:0!important;right:auto!important;top:196px!important;
+  width:390px!important;max-width:none!important;height:648px!important;
+  margin:0!important;padding:0!important;overflow-x:hidden!important;overflow-y:auto!important;
+  -webkit-mask-image:none!important;mask-image:none!important;background:none!important}
+#device #indexSheet.s4 .s4-grille, #device #feedView.s4 .s4-grille{
+  position:relative!important;width:390px!important;margin:0!important;padding:0!important}
+
+/* — LA CARTE D'INDEX (§3.9) et LE BANDEAU DU FIL (§3.10). */
+#device .s4-carte{position:absolute;overflow:hidden;box-sizing:border-box;
+  margin:0;padding:0;border:0;box-shadow:none;cursor:pointer;opacity:1;filter:none}
+#device .s4-carte>canvas{position:absolute;left:0;top:0;display:block;
+  opacity:1!important;filter:none!important;mix-blend-mode:normal!important;z-index:1}
+#device .s4-carte>.s4-eb,#device .s4-carte>.s4-ti,#device .s4-carte>.s4-et,
+#device .s4-carte>.s4-ev,#device .s4-carte>.s4-vg{position:absolute;z-index:2;margin:0;padding:0}
+#device .s4-carte>.s4-eb{font-family:Bricolage,system-ui,sans-serif;font-weight:600;line-height:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#device .s4-carte>.s4-ti{font-family:Bricolage,system-ui,sans-serif;font-weight:700;
+  letter-spacing:-.025em;overflow:hidden}
+#device .s4-carte>.s4-et{font-family:Apfel,system-ui,sans-serif;font-weight:500;
+  letter-spacing:.18em;line-height:1;white-space:nowrap;overflow:hidden}
+#device .s4-carte>.s4-ev{font-family:Bricolage,system-ui,sans-serif;font-weight:600;font-size:14px;
+  line-height:1;display:flex;align-items:center;gap:9px;overflow:hidden;white-space:nowrap}
+#device .s4-carte>.s4-ev>span.s4-nom{overflow:hidden;text-overflow:ellipsis}
+#device .s4-carte .s4-vis{flex:0 0 auto;width:26px;height:26px;border-radius:999px;display:block;overflow:hidden}
+#device .s4-carte .s4-vis svg{display:block;width:100%;height:100%}
+</style>
+<script id="lot-S4">
+/* ═══════════════════════════════════════════════════════════════════════════════════════
+   SECTION 4 · LE MOTEUR DES CARTES ET DES BANDEAUX.
+   Rien n'est estimé. La géométrie de la carte est celle du moodboard, relevée dans ses
+   propres chemins SVG (cadres 72, 74 et les cartes isolées) :
+
+       échelle    = hauteur de la carte / 600
+       base       = LA HAUTEUR DE TRAIT FIGÉE À LA PLANTATION × échelle   (§2.5)
+       amplitude  = 13 × largeur / 173                                    (§3.9)
+       boîte      = ⌊ base + amplitude + 20 ⌋
+       épaisseur  = 5.5 × largeur / 173 · points r = 3,2 × l/173 tous les 11 × l/173
+
+   Vérifié sur les trois tailles du document : 165 × 198, 106 × 133, 173 × 208 — la boîte
+   retombe sur 135 / 97 / 141, les valeurs des tableaux, au pixel près.
+   L'onde, l'amorce, le chevron et les points viennent de `window._onde` : une seule
+   formule d'onde existe dans le produit (§2.1), on l'appelle, on ne la duplique pas.
+   ═══════════════════════════════════════════════════════════════════════════════════════ */
+(function(){
+  if(!window._onde) return;
+  var O=window._onde;
+  var NATCOL=O.NATCOL, NATCLAIR=O.NATCLAIR, TERRA=O.TERRA, MENTHE=O.MENTHE;
+  var CREME='#F4EEE1', ENCRE='#16171B';
+  var CORPS={promi:'#1C2049',chiche:'#37141F',nuee:'#271B45'};   /* §1.3 · corps de carte */
+
+  function light(){ var d=document.getElementById('device');
+    return !!(d&&d.classList.contains('light')); }
+
+  /* ── §2.5 · LA HAUTEUR DE TRAIT. Elle n'est JAMAIS recalculée ici : on demande à la
+       fiche la sienne, avec le même moteur (`window._ficheEcran`). Un faux poster suffit —
+       `ecran()` ne lit que les classes de nature. C'est la garantie du §4 : la carte et la
+       fiche portent exactement la même composition. ── */
+  function faussePoster(nat){
+    return {classList:{contains:function(c){
+      if(c==='dp-chiche') return nat==='chiche';
+      if(c==='dp-nuee'||c==='dp-mode-nuee') return nat==='nuee';
+      return false; }}};
+  }
+  function etatPromi(p){
+    var nat = p.chiche ? 'chiche' : (p.nuee && p.nueeFiche ? 'nuee' : 'promi');
+    var e = window._ficheEcran(faussePoster(nat), p);
+    return e;
+  }
+  /* une Nuée n'est pas un Promi : sa fiche a ses propres cotes (§5, « Nuée · avec des
+     Promi » base 232, « Nuée · vide » base 282, mode complet). */
+  function etatNuee(nb){
+    var l=light();
+    return {nat:'nuee', light:l, natCol:NATCOL.nuee, base:(nb?232:282), amp:(nb?36:44),
+            mode:'complet', aplat:true, col:NATCLAIR.nuee,
+            colTexte:(l?NATCOL.nuee:NATCLAIR.nuee)};
+  }
+
+  /* ── LA GÉOMÉTRIE D'UNE CARTE ── */
+  function geo(w,h,base_fiche){
+    var s=h/600, k=w/173;
+    var base=base_fiche*s, amp=13*k;
+    var boite=Math.floor(base+amp+20);
+    var dh=Math.round(base-amp-13.7*(h/198));
+    if(dh<10) dh=10;
+    var dw=Math.floor(1.2*dh);
+    if(dw>w-8){ dw=w-8; dh=Math.round(dw/1.2); }
+    return {w:w,h:h,base:base,amp:amp,boite:boite,ep:5.5*k,r:3.2*k,esp:11*k,
+            dalle:{x:Math.floor((w-dw)/2), y:Math.round(0.0455*h), w:dw, h:dh}};
+  }
+
+  /* ── LE TRAIT D'UNE CARTE (§2.6) — même grammaire que la fiche, à l'échelle. ── */
+  function peintCarte(cv,g2,e,id){
+    var W=g2.w, H=g2.h, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2));
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    cv.style.width=W+'px'; cv.style.height=H+'px';
+    var g=cv.getContext('2d'); if(!g) return;
+    g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+    g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high';
+    var y=O.onde(g2.base,g2.amp);
+    /* le chemin de l'onde, à la largeur de la carte : on rejoue la Bézier du §2.1 avec
+       per = 1 (§3.9), soit quatre segments d'un quart de période. */
+    function chemin(a,b){
+      var seg=W/4, xs=[a], x=Math.ceil(a/seg)*seg;
+      while(x<b-0.5){ xs.push(x); x+=seg; } xs.push(b);
+      var d=function(t){ return y(t+0.5)-y(t-0.5); };
+      g.moveTo(xs[0],y(xs[0]));
+      for(var i=0;i<xs.length-1;i++){ var p0=xs[i],p1=xs[i+1],hh=(p1-p0)/3;
+        g.bezierCurveTo(p0+hh, y(p0)+d(p0)*hh, p1-hh, y(p1)-d(p1)*hh, p1, y(p1)); }
+    }
+    /* 1 · l'aplat de nature, borné en bas par l'onde. Un gardé de côté n'en a pas (§5). */
+    if(e.aplat!==false){ g.beginPath(); chemin(0,W); g.lineTo(W,0); g.lineTo(0,0); g.closePath();
+      g.fillStyle=e.natCol; g.fill(); }
+    /* 2 · LA DALLE — la vraie, celle du moteur, NON TEINTÉE : dans une liste elle porte le
+         MONDE, jamais la nature (CLAUDE.md §4, Q30 bis). Échelle 1, opacité 1. */
+    if(id!==null && id!==undefined && window.Toile && Toile.dalleTrame){
+      var src=document.createElement('canvas');
+      try{ if(Toile.dalleTrame(src,id,1) && src.width){
+        var b=g2.dalle, r=src.height/src.width, dw=b.w, dh=b.w*r;
+        if(dh>b.h){ dh=b.h; dw=b.h/r; }
+        g.drawImage(src, b.x+(b.w-dw)/2, b.y+(b.h-dh)/2, dw, dh);
+      } }catch(_){}
+    }
+    /* 3 · la ligne (§2.6) : la couleur d'état, jamais celle de la nature (§2.1 bis). */
+    var col=e.col, ep=g2.ep, rr=g2.r, esp=g2.esp, mid=W/2;
+    g.strokeStyle=col; g.fillStyle=col; g.lineWidth=ep; g.lineCap='round'; g.lineJoin='round';
+    function plein(a,b){ g.beginPath(); chemin(a,b); g.stroke(); }
+    function points(x0){ for(var x=x0;x<W-rr;x+=esp){ g.beginPath(); g.arc(x,y(x),rr,0,6.2832); g.fill(); } }
+    if(e.mode==='complet'){ plein(0,W); }
+    else if(e.mode==='duo'){ var gp=4*(W/173); plein(0,mid-gp); plein(mid+gp,W); }
+    else if(e.mode==='points'){ var cx=W*0.11;
+      O.ruban(g,y,-W*0.03, cx+ep*0.6, ep*2.2, ep*0.15); g.fill();
+      O.chevron(g,y,cx,col,ep); points(cx+esp*1.3); }
+    else { plein(0,mid); O.chevron(g,y,mid,col,ep); points(mid+esp); }
+  }
+
+  /* ── LES MOTS. Aucun n'est inventé : ils viennent du moodboard (cadres 72 à 77) pour
+       l'état, et de l'app pour les noms propres. ── */
+  function motEtat(p,e){
+    if(p.draft) return 'GARDÉ DE CÔTÉ';
+    if(p.status==='tenu') return (p.chiche&&p.avec)?'TENU À DEUX':'TENUE';
+    if(p.chiche && p.status!=='rate') return 'LANCÉ';
+    if(p.status==='rate') return 'À TENIR';
+    return 'EN COURS';
+  }
+  function motQui(p){
+    if(p.draft) return 'gardé de côté';
+    var w=(p.who||'').trim();
+    if(!w || w.toLowerCase()==='moi') return 'à moi';
+    return 'à '+w;
+  }
+
+  /* ═══ L'INDEX (§5 « Index 2 par ligne » / « Index 3 par ligne ») ═══
+     Le crible est posé ENTRÉE PAR ENTRÉE : on relit les blocs que `buildIndex` vient
+     d'écrire, on en garde l'ordre, le filtre et le tri — et on repose la présentation.
+     On ne réécrit pas la logique de l'app, on porte son écran. */
+  function densite(){ return (window._s4Trois===true) ? 3 : 2; }
+  window._s4Index=function(){ try{
+    var sh=document.getElementById('indexSheet'), li=document.getElementById('indexList');
+    if(!sh||!li) return;
+    var blocs=[].slice.call(li.querySelectorAll('.ix-bloc'));
+    if(!blocs.length && !li.querySelector('.s4-grille')) return;
+    if(!blocs.length) return;
+    var l=light(), n=densite();
+    var CW = (n===3)?106:165, CH=(n===3)?133:198, RAD=(n===3)?11:17;
+    var GX = (n===3)?[24,142,260]:[24,201], PAS=(n===3)?145:210;
+    var FEB=(n===3)?8.0:12.4, FTI=(n===3)?12.9:20.0, FET=(n===3)?6.4:10.0;
+    var PADX=(n===3)?7:12, TXW=(n===3)?90:140;
+    var DY_EB=(n===3)?14:10.5, DY_TI=(n===3)?11:17;
+    var BAS_TI=(n===3)?15:24, BAS_ET=(n===3)?8:12;
+    var h='<div class="s4-grille" style="height:'+(Math.ceil(blocs.length/GX.length)*PAS+40)+'px"></div>';
+    li.innerHTML=h;
+    var gr=li.querySelector('.s4-grille');
+    blocs.forEach(function(b,i){
+      var e, p=null, id=null, eb, et, titre;
+      if(b.hasAttribute('data-nuee')){
+        var k=b.getAttribute('data-nuee');
+        var mem=(typeof NUEEMEM!=='undefined'&&NUEEMEM[k])||[];
+        var lp=promises.filter(function(q){return q.nuee===k&&!q.draft;});
+        e=etatNuee(lp.length);
+        id=lp.length?lp[lp.length-1].id:null;   /* §3 · une Nuée prend sa dernière dalle */
+        titre=(typeof NUE!=='undefined'&&NUE[k])||k;
+        eb=mem.length?('avec +'+mem.length):'avec moi';
+        et=lp.length+' PROMI · '+lp.filter(function(q){return q.status==='tenu';}).length+' TENU';
+      } else {
+        id=+b.getAttribute('data-id');
+        p=promises.filter(function(q){return q.id===id;})[0];
+        if(!p) return;
+        e=etatPromi(p); titre=p.title||''; eb=motQui(p); et=motEtat(p,e);
+      }
+      var g2=geo(CW,CH,e.base);
+      var col=GX[i%GX.length], row=Math.floor(i/GX.length);
+      var fond = l ? CREME : CORPS[e.nat];
+      var encre = l ? ENCRE : CREME;
+      var d=document.createElement('div');
+      d.className='s4-carte';
+      d.style.cssText='left:'+GX[i%GX.length]+'px;top:'+(row*PAS)+'px;width:'+CW+'px;height:'+CH+'px;'
+        +'border-radius:'+RAD+'px;background:'+fond+';';
+      if(p&&p.draft) d.style.outline='2px dashed '+e.natCol;
+      var yEb=Math.round(g2.boite-DY_EB), yTi=yEb+DY_TI;
+      d.innerHTML='<canvas></canvas>'
+        +'<div class="s4-eb" style="left:'+PADX+'px;top:'+yEb+'px;width:'+TXW+'px;font-size:'+FEB+'px;'
+          +'color:'+e.colTexte+';-webkit-text-fill-color:'+e.colTexte+'">'+_esc(eb)+'</div>'
+        +'<div class="s4-ti" style="left:'+PADX+'px;top:'+yTi+'px;width:'+TXW+'px;'
+          +'height:'+Math.max(0,(CH-BAS_TI-yTi))+'px;font-size:'+FTI+'px;line-height:1;'
+          +'color:'+encre+';-webkit-text-fill-color:'+encre+'">'+_esc(titre)+'</div>'
+        +'<div class="s4-et" style="left:'+PADX+'px;bottom:'+BAS_ET+'px;width:'+TXW+'px;font-size:'+FET+'px;'
+          +'color:'+e.colTexte+';-webkit-text-fill-color:'+e.colTexte+'">'+_esc(et)+'</div>';
+      gr.appendChild(d);
+      peintCarte(d.querySelector('canvas'), g2, e, id);
+      if(b.hasAttribute('data-nuee')){ var kk=b.getAttribute('data-nuee');
+        d.onclick=function(){ openEssaim(kk); }; }
+      else { var ii=id; d.onclick=function(){ openDetail(ii); }; }
+    });
+  }catch(err){} };
+
+  /* ═══ LE FIL (§5 « Fil », §3.10) ═══ */
+  window._s4Fil=function(){ try{
+    var fv=document.getElementById('feedView'), li=document.getElementById('feedList');
+    if(!fv||!li) return;
+    var items=[].slice.call(li.querySelectorAll('.fd-item'));
+    if(!items.length) return;
+    var l=light();
+    var W=358, H=128, X=16, PAS=140, CX=143;
+    var gr=document.createElement('div');
+    gr.className='s4-grille'; gr.style.height=(items.length*PAS+40)+'px';
+    var lus=items.map(function(it){
+      var pid=it.getAttribute('data-pid'), nk=it.getAttribute('data-nuee');
+      var tx=it.querySelector('.fd-tx'), tt=it.querySelector('.fd-t');
+      return {pid:pid?+pid:null, nk:nk,
+              texte:tx?(tx.textContent||'').trim():'', quand:tt?(tt.textContent||'').trim():''};
+    });
+    li.innerHTML=''; li.appendChild(gr);
+    lus.forEach(function(F,i){
+      var p=F.pid!==null?promises.filter(function(q){return q.id===F.pid;})[0]:null;
+      var e, id=null, titre, ev, et, vis=false;
+      if(p){ e=etatPromi(p); id=p.id; titre=p.title||'';
+        /* la ligne 2 porte LE TITRE, la ligne 1 l'événement : on retire du texte de l'app
+           le titre entre guillemets, on n'écrit pas une phrase à la place. */
+        ev=F.texte.replace(/[«"']\s*[^«»"']*\s*[»"']/,'').replace(/\s*:\s*$/,'').replace(/\s+/g,' ').trim();
+        if(!ev) ev=motQui(p);
+        vis = !!(p.from && (''+p.from).trim() && (''+p.from).trim().toLowerCase()!=='moi');
+        et=motEtat(p,e)+(F.quand?(' · '+F.quand.toUpperCase()):'');
+      } else if(F.nk){
+        var lp=promises.filter(function(q){return q.nuee===F.nk&&!q.draft;});
+        e=etatNuee(lp.length); id=lp.length?lp[lp.length-1].id:null;
+        titre=(typeof NUE!=='undefined'&&NUE[F.nk])||F.nk; ev=F.texte; vis=true;
+        et=lp.length+' PROMI · '+lp.filter(function(q){return q.status==='tenu';}).length+' TENU';
+      } else {
+        e=etatNuee(0); e.nat='promi'; e.natCol=NATCOL.promi;
+        e.col=l?NATCOL.promi:NATCLAIR.promi; e.colTexte=e.col; e.base=262; e.amp=44;
+        titre=F.texte; ev=''; et=F.quand?F.quand.toUpperCase():'';
+      }
+      var fond = l ? CREME : CORPS[e.nat];
+      var encre = l ? ENCRE : CREME;
+      var d=document.createElement('div');
+      d.className='s4-carte';
+      d.style.cssText='left:'+X+'px;top:'+(i*PAS)+'px;width:'+W+'px;height:'+H+'px;'
+        +'border-radius:22px;background:'+fond+';';
+      d.innerHTML='<canvas></canvas>'
+        +'<div class="s4-ev" style="left:145px;top:16px;width:197px;height:28px;'
+          +'color:'+e.colTexte+';-webkit-text-fill-color:'+e.colTexte+'">'
+          +(vis?('<span class="s4-vis" style="background:'+e.natCol+'">'+_visSvg(26)+'</span>'):'')
+          +'<span class="s4-nom">'+_esc(ev)+'</span></div>'
+        +'<div class="s4-ti" style="left:145px;top:50px;width:197px;height:42px;font-size:20px;'
+          +'line-height:1.04;color:'+encre+';-webkit-text-fill-color:'+encre+'">'+_esc(titre)+'</div>'
+        +'<div class="s4-et" style="left:145px;top:98px;width:197px;font-size:11px;'
+          +'color:'+e.colTexte+';-webkit-text-fill-color:'+e.colTexte+'">'+_esc(et)+'</div>';
+      gr.appendChild(d);
+      peintBandeau(d.querySelector('canvas'), e, id);
+      if(p){ var ii=p.id; d.onclick=function(){ setView('toile'); openDetail(ii); }; }
+      else if(F.nk){ var kk=F.nk; d.onclick=function(){ setView('toile'); openEssaim(kk); }; }
+    });
+  }catch(err){} };
+
+  /* ── §3.10 · LE TRAIT DU BANDEAU EST VERTICAL. Même onde, tournée d'un quart de tour :
+       x(t) = base − mont·t − a·sin(2π·t), base = 0,34 × largeur, per = 1, amp = 13,5.
+       Relevé dans le cadre 76 : plein 0 → 64 puis des points r 3,4 tous les 13 quand une
+       moitié manque ; plein 0 → 128 quand la parole est entière. ── */
+  function peintBandeau(cv,e,id){
+    var W=143, H=128, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2));
+    cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr);
+    cv.style.width=W+'px'; cv.style.height=H+'px';
+    var g=cv.getContext('2d'); if(!g) return;
+    g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,H);
+    g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high';
+    var bx=0.34*358, amp=13.5, mont=amp*0.34, a=amp*0.62;
+    var x=function(t){ var u=Math.max(0,Math.min(1,t/H));
+      return bx - mont*u - a*Math.sin(2*Math.PI*u); };
+    function trace(y0,y1){ g.beginPath(); g.moveTo(x(y0),y0);
+      for(var yy=y0;yy<=y1;yy+=2) g.lineTo(x(yy),yy); g.lineTo(x(y1),y1); }
+    if(e.aplat!==false){ trace(0,H); g.lineTo(0,H); g.lineTo(0,0); g.closePath();
+      g.fillStyle=e.natCol; g.fill(); }
+    if(id!==null && id!==undefined && window.Toile && Toile.dalleTrame){
+      var src=document.createElement('canvas');
+      try{ if(Toile.dalleTrame(src,id,1) && src.width){
+        var bw=110, bh=89, r=src.height/src.width, dw=bw, dh=bw*r;
+        if(dh>bh){ dh=bh; dw=bh/r; }
+        g.drawImage(src, 5+(bw-dw)/2, 19+(bh-dh)/2, dw, dh);
+      } }catch(_){}
+    }
+    g.strokeStyle=e.col; g.fillStyle=e.col; g.lineWidth=7; g.lineCap='round'; g.lineJoin='round';
+    if(e.mode==='complet'||e.mode==='duo'){ trace(0,H); g.stroke(); }
+    else { trace(0,H/2); g.stroke();
+      for(var yy=77;yy<H;yy+=13){ g.beginPath(); g.arc(x(yy),yy,3.4,0,6.2832); g.fill(); } }
+  }
+
+  function _visSvg(d){
+    var x0=(d/2-0.30*d).toFixed(2), x1=(d/2+0.30*d).toFixed(2), ye=(0.98*d).toFixed(2);
+    return '<svg viewBox="0 0 '+d+' '+d+'" xmlns="http://www.w3.org/2000/svg">'
+      +'<circle cx="'+(d/2)+'" cy="'+(0.78*d/2).toFixed(2)+'" r="'+(0.19*d).toFixed(2)+'" fill="#F4EEE1"/>'
+      +'<path d="M'+x0+' '+ye+' A'+(0.30*d).toFixed(2)+' '+(0.27*d).toFixed(2)+' 0 0 1 '+x1+' '+ye
+      +' Z" fill="#F4EEE1"/></svg>';
+  }
+
+  /* ── LA MISE EN SCÈNE : l'écran plein s'arme quand la feuille s'ouvre, et se désarme
+       quand elle se ferme. On COMPARE L'ÉTAT AVANT D'AGIR (CLAUDE.md §8, le
+       MutationObserver qui s'auto-déclenche). ── */
+  function armer(){
+    var dev=document.getElementById('device');
+    var sh=document.getElementById('indexSheet'), fv=document.getElementById('feedView');
+    if(!dev) return;
+    var ixOn = !!(sh && sh.classList.contains('show'));
+    var flOn = !!(fv && fv.classList.contains('in') && getComputedStyle(fv).display!=='none');
+    var veut = ixOn || flOn;
+    if(dev.classList.contains('s4-plein')!==veut) dev.classList.toggle('s4-plein',veut);
+    if(sh && sh.classList.contains('s4')!==ixOn) sh.classList.toggle('s4',ixOn);
+    if(fv && fv.classList.contains('s4')!==flOn) fv.classList.toggle('s4',flOn);
+  }
+  window._s4Armer=armer;
+
+  /* les libellés du moodboard : « Rechercher », rien de plus. */
+  function libelles(){
+    var a=document.getElementById('ixSearch'), b=document.getElementById('fdSearch');
+    if(a&&a.placeholder!=='Rechercher') a.placeholder='Rechercher';
+    if(b&&b.placeholder!=='Rechercher') b.placeholder='Rechercher';
+    var c=document.getElementById('fdCount');
+    if(c){ var n=0; try{ n=(FEED||[]).length; }catch(_){}
+      if(c.textContent!==''+n) c.textContent=n;
+      c.style.setProperty('display','inline-block','important'); }
+  }
+
+  var _biOrig=window.buildIndex;
+  if(typeof _biOrig==='function'){
+    window.buildIndex=function(){ var r=_biOrig.apply(this,arguments);
+      try{ libelles(); armer(); window._s4Index(); }catch(_){}
+      return r; };
+    try{ buildIndex=window.buildIndex; }catch(_){}
+  }
+  var _bfOrig=window.buildFeed;
+  if(typeof _bfOrig==='function'){
+    window.buildFeed=function(){ var r=_bfOrig.apply(this,arguments);
+      try{ libelles(); armer(); window._s4Fil(); }catch(_){}
+      return r; };
+    try{ buildFeed=window.buildFeed; }catch(_){}
+  }
+  var _svOrig=window.setView;
+  if(typeof _svOrig==='function'){
+    window.setView=function(v){ var r=_svOrig.apply(this,arguments);
+      try{ armer(); setTimeout(armer,60); setTimeout(armer,420); }catch(_){}
+      return r; };
+    try{ setView=window.setView; }catch(_){}
+  }
+  var _oiOrig=window.ouvrirIndex;
+  if(typeof _oiOrig==='function'){
+    window.ouvrirIndex=function(){ var r=_oiOrig.apply(this,arguments);
+      try{ armer(); setTimeout(armer,60); setTimeout(function(){ armer(); window._s4Index(); },380); }catch(_){}
+      return r; };
+  }
+  var _caOrig=window.closeAll;
+  if(typeof _caOrig==='function'){
+    window.closeAll=function(){ var r=_caOrig.apply(this,arguments);
+      try{ setTimeout(armer,60); setTimeout(armer,420); }catch(_){}
+      return r; };
+    try{ closeAll=window.closeAll; }catch(_){}
+  }
+  document.addEventListener('click',function(){ setTimeout(armer,80); setTimeout(armer,440); },true);
+})();
+</script>

@@ -1,0 +1,119 @@
+{
+ "url": "http://127.0.0.1:8752/app.html",
+ "graine": 1592598566,
+ "t_fige": 123456.0,
+ "ks": [
+  0.5,
+  1,
+  2
+ ],
+ "paroles": [
+  [
+   "promi",
+   "nager le mardi"
+  ],
+  [
+   "chiche",
+   "courir dimanche"
+  ],
+  [
+   "tenu",
+   "planter un arbre"
+  ],
+  [
+   "cercle",
+   "arroser les tomates"
+  ]
+ ],
+ "mondes": {
+  "chamade": {
+   "stable": true,
+   "images": {
+    "toile-sombre": {
+     "fichier": "chamade__toile-sombre.png",
+     "w": 390,
+     "h": 844,
+     "fnv": "b89ded8d"
+    },
+    "toile-clair": {
+     "fichier": "chamade__toile-clair.png",
+     "w": 390,
+     "h": 844,
+     "fnv": "386db739"
+    },
+    "dalle-promi-k0.5": {
+     "fichier": "chamade__dalle-promi-k0.5.png",
+     "w": 114,
+     "h": 103,
+     "fnv": "f244f6a"
+    },
+    "dalle-promi-k1": {
+     "fichier": "chamade__dalle-promi-k1.png",
+     "w": 228,
+     "h": 206,
+     "fnv": "85afc008"
+    },
+    "dalle-promi-k2": {
+     "fichier": "chamade__dalle-promi-k2.png",
+     "w": 456,
+     "h": 411,
+     "fnv": "7f2d4a02"
+    },
+    "dalle-chiche-k0.5": {
+     "fichier": "chamade__dalle-chiche-k0.5.png",
+     "w": 102,
+     "h": 91,
+     "fnv": "bbd6a2a8"
+    },
+    "dalle-chiche-k1": {
+     "fichier": "chamade__dalle-chiche-k1.png",
+     "w": 203,
+     "h": 181,
+     "fnv": "6c28753f"
+    },
+    "dalle-chiche-k2": {
+     "fichier": "chamade__dalle-chiche-k2.png",
+     "w": 405,
+     "h": 362,
+     "fnv": "96b3317f"
+    },
+    "dalle-tenu-k0.5": {
+     "fichier": "chamade__dalle-tenu-k0.5.png",
+     "w": 90,
+     "h": 75,
+     "fnv": "d36d5ade"
+    },
+    "dalle-tenu-k1": {
+     "fichier": "chamade__dalle-tenu-k1.png",
+     "w": 180,
+     "h": 150,
+     "fnv": "dc2d9ad9"
+    },
+    "dalle-tenu-k2": {
+     "fichier": "chamade__dalle-tenu-k2.png",
+     "w": 360,
+     "h": 299,
+     "fnv": "5e016694"
+    },
+    "dalle-cercle-k0.5": {
+     "fichier": "chamade__dalle-cercle-k0.5.png",
+     "w": 78,
+     "h": 97,
+     "fnv": "2e4e992a"
+    },
+    "dalle-cercle-k1": {
+     "fichier": "chamade__dalle-cercle-k1.png",
+     "w": 156,
+     "h": 193,
+     "fnv": "f312398d"
+    },
+    "dalle-cercle-k2": {
+     "fichier": "chamade__dalle-cercle-k2.png",
+     "w": 312,
+     "h": 386,
+     "fnv": "f626ffd5"
+    }
+   }
+  }
+ }
+}

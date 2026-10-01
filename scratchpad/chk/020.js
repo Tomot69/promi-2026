@@ -1,0 +1,1 @@
+(function(){try{document.addEventListener("click",function(e){var t=e.target&&e.target.closest?e.target.closest(".more-toggle"):null;if(t){var box=t.nextElementSibling;if(box&&box.classList.contains("more-opts")){var op=box.classList.toggle("open");t.classList.toggle("open",op);}}});}catch(e){}})();

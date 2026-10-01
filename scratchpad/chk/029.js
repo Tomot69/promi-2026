@@ -1,0 +1,1 @@
+document.addEventListener('click',function(e){try{if(e.target&&e.target.closest&&e.target.closest('.closeb')){setTimeout(function(){if(window.Toile_liven)window.Toile_liven();},70);}}catch(_){}},true);

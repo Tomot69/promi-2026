@@ -1,0 +1,154 @@
+Toile : canvas présent [sombre]                OK  
+Toile : remplit l'écran [sombre]               OK  
+Toile : des dalles colorées [sombre]           OK  
+Toile : API vue() lisible [sombre]             OK  
+Toile : hit() ignore les cellules grises [sombre] OK  
+Toile : hit() désigne un Promi planté [sombre] OK  
+Toile : planter garde la densité [sombre]      OK  
+Créer : s'ouvre [sombre]                       OK  
+Créer : trois tuiles (promi, chiche, nuée) [sombre] OK  
+Créer : sélecteur de sens [sombre]             OK  
+Créer : rien ne déborde [sombre]               OK  
+Créer : une seule forme visible [sombre]       OK  
+Créer : « garder de côté » présent [sombre]    OK  
+Créer : champ vide refusé [sombre]             OK  
+Créer : le refus se voit [sombre]              OK  
+Index : s'ouvre [sombre]                       OK  
+Index : des lignes [sombre]                    OK  
+Index : miniatures de dalle [sombre]           OK  
+Index : rien ne déborde [sombre]               OK  
+Index : ✕ ferme [sombre]                       OK  
+Fil : s'ouvre [sombre]                         OK  
+Fil : rien ne déborde [sombre]                 OK  
+Aura : s'ouvre [sombre]                        OK  
+Aura : le Noyau « toi » porte ses arcs [sombre] OK  
+Aura : la sphère est peinte [sombre]           OK  
+Aura : « Partager ma Pelote » mène au partage de la Pelote [sombre] OK  
+Aura : rien ne déborde [sombre]                OK  
+Studio : s'ouvre [sombre]                      OK  
+Studio : les deux bascules existent [sombre]   OK  
+Studio : les deux réglages de vue sont sur le plateau [sombre] OK  
+Studio : le disque atteint vraiment la bascule [sombre] OK  
+Studio : rangée de vue centrée [sombre]        OK  
+Studio : aperçus de monde [sombre]             OK  
+Réglages : s'ouvre [sombre]                    OK  
+Réglages : ligne Inviter [sombre]              OK  
+Réglages : encart Cercle [sombre]              OK  
+Réglages : rien ne déborde [sombre]            OK  
+Fiche : s'ouvre [sombre]                       OK  
+Fiche : vignette de dalle [sombre]             OK  
+Fiche : le + commun [sombre]                   OK  
+Fiche : rien ne déborde [sombre]               OK  
+Aura : les Noyaux ne portent que l image et le prénom [sombre] OK  
+Aura : le mot qualifie l objet (une des phrases de Tom) [sombre] OK  
+Aura : aucun chiffre ni pourcentage [sombre]   KO  ['5', '5', '1']
+Aura : aucune signature chiffrée [sombre]      OK  
+Aura : Pelote, Noyaux, légende, bouton, ce que tu as tenu [sombre] OK  
+Aura : la légende nomme trois arcs en trois teintes d état [sombre] OK  
+Aura : le Studio ne repeint pas les dalles déjà plantées [sombre] OK  
+Aura : la légende est centrée à l'encre (boîtes décalées de lgINK) [sombre] KO  [20.53, 63.44]
+le selecteur Toile / Index est retire [sombre] OK  
+un seul Fil dans l app [sombre]                OK  
+l Index s ouvre par sa porte de l accueil [sombre] OK  
+aucun bouton Toile ni Index dans la barre du haut [sombre] OK  
+aucun reste du selecteur (.viewswitch) [sombre] OK  
+Index : les Promi sont des blocs [sombre]      OK  
+Index : seuls les urgents ont un aplat [sombre] OK  
+Index : le mot du temps est peint [sombre]     OK  
+Index : la vraie dalle est peinte [sombre]     OK  
+Index : « a rattraper » a disparu [sombre]     OK  
+Index : la recherche est conservee [sombre]    OK  
+Index : le ✕ Fermer est conserve [sombre]      OK  
+Index : toucher un bloc ouvre la fiche [sombre] OK  
+le Fil a son bouton dans le dock [sombre]      OK  
+le Fil a sa pastille [sombre]                  OK  
+la pastille s allume sur ce qui attend un geste [sombre] OK  
+le bouton ouvre le Fil [sombre]                OK  
+le Fil affiche ses evenements [sombre]         OK  
+le compteur ne redescend pas a la lecture (Q347) [sombre] OK  
+le compteur redescend quand j agis (Q347) [sombre] OK  
+l anneau du + porte des proportions [sombre]   OK  
+elles correspondent aux Promi tenus [sombre]   OK  
+Aura : les arcs des Noyaux sont lisibles (6 px et plus) [sombre] OK  
+Aura : aucune piste vide, les arcs disent l état [sombre] OK  
+bouton + : rotation lente [sombre]             OK  
+la signature est identique partout où elle est portée [sombre] OK  
+aucune erreur JS [sombre]                      OK  
+Toile : canvas présent [clair]                 OK  
+Toile : remplit l'écran [clair]                OK  
+Toile : des dalles colorées [clair]            OK  
+Toile : API vue() lisible [clair]              OK  
+Toile : hit() ignore les cellules grises [clair] OK  
+Toile : hit() désigne un Promi planté [clair]  OK  
+Toile : planter garde la densité [clair]       OK  
+Créer : s'ouvre [clair]                        OK  
+Créer : trois tuiles (promi, chiche, nuée) [clair] OK  
+Créer : sélecteur de sens [clair]              OK  
+Créer : rien ne déborde [clair]                OK  
+Créer : une seule forme visible [clair]        OK  
+Créer : « garder de côté » présent [clair]     OK  
+Créer : champ vide refusé [clair]              OK  
+Créer : le refus se voit [clair]               OK  
+Index : s'ouvre [clair]                        OK  
+Index : des lignes [clair]                     OK  
+Index : miniatures de dalle [clair]            OK  
+Index : rien ne déborde [clair]                OK  
+Index : ✕ ferme [clair]                        OK  
+Fil : s'ouvre [clair]                          OK  
+Fil : rien ne déborde [clair]                  OK  
+Aura : s'ouvre [clair]                         OK  
+Aura : le Noyau « toi » porte ses arcs [clair] OK  
+Aura : la sphère est peinte [clair]            OK  
+Aura : « Partager ma Pelote » mène au partage de la Pelote [clair] OK  
+Aura : rien ne déborde [clair]                 OK  
+Studio : s'ouvre [clair]                       OK  
+Studio : les deux bascules existent [clair]    OK  
+Studio : les deux réglages de vue sont sur le plateau [clair] OK  
+Studio : le disque atteint vraiment la bascule [clair] OK  
+Studio : rangée de vue centrée [clair]         OK  
+Studio : aperçus de monde [clair]              OK  
+Réglages : s'ouvre [clair]                     OK  
+Réglages : ligne Inviter [clair]               OK  
+Réglages : encart Cercle [clair]               OK  
+Réglages : rien ne déborde [clair]             OK  
+Fiche : s'ouvre [clair]                        OK  
+Fiche : vignette de dalle [clair]              OK  
+Fiche : le + commun [clair]                    OK  
+Fiche : rien ne déborde [clair]                OK  
+Aura : les Noyaux ne portent que l image et le prénom [clair] OK  
+Aura : le mot qualifie l objet (une des phrases de Tom) [clair] OK  
+Aura : aucun chiffre ni pourcentage [clair]    KO  ['5', '5', '1']
+Aura : aucune signature chiffrée [clair]       OK  
+Aura : Pelote, Noyaux, légende, bouton, ce que tu as tenu [clair] OK  
+Aura : la légende nomme trois arcs en trois teintes d état [clair] OK  
+Aura : le Studio ne repeint pas les dalles déjà plantées [clair] OK  
+Aura : la légende est centrée à l'encre (boîtes décalées de lgINK) [clair] KO  [20.53, 63.44]
+le selecteur Toile / Index est retire [clair]  OK  
+un seul Fil dans l app [clair]                 OK  
+l Index s ouvre par sa porte de l accueil [clair] OK  
+aucun bouton Toile ni Index dans la barre du haut [clair] OK  
+aucun reste du selecteur (.viewswitch) [clair] OK  
+Index : les Promi sont des blocs [clair]       OK  
+Index : seuls les urgents ont un aplat [clair] OK  
+Index : le mot du temps est peint [clair]      OK  
+Index : la vraie dalle est peinte [clair]      OK  
+Index : « a rattraper » a disparu [clair]      OK  
+Index : la recherche est conservee [clair]     OK  
+Index : le ✕ Fermer est conserve [clair]       OK  
+Index : toucher un bloc ouvre la fiche [clair] OK  
+le Fil a son bouton dans le dock [clair]       OK  
+le Fil a sa pastille [clair]                   OK  
+la pastille s allume sur ce qui attend un geste [clair] OK  
+le bouton ouvre le Fil [clair]                 OK  
+le Fil affiche ses evenements [clair]          OK  
+le compteur ne redescend pas a la lecture (Q347) [clair] OK  
+le compteur redescend quand j agis (Q347) [clair] OK  
+l anneau du + porte des proportions [clair]    OK  
+elles correspondent aux Promi tenus [clair]    OK  
+Aura : les arcs des Noyaux sont lisibles (6 px et plus) [clair] OK  
+Aura : aucune piste vide, les arcs disent l état [clair] OK  
+bouton + : rotation lente [clair]              OK  
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+148/152

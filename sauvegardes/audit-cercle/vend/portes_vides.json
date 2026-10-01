@@ -1,0 +1,374 @@
+{
+ "dark · accueil · le bouton du Cercle": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 322,
+   "y": 128.5,
+   "texte": ""
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": []
+ },
+ "dark · Réglages · l’encart": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 317.6,
+   "y": 514,
+   "texte": "✦ Le Cercledébloque tout Promi · essai 1"
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": [
+   "openPlusTop « ✦ Le Cercledébloque tout Promi »"
+  ]
+ },
+ "dark · Studio · un monde payant (Terrazzo)": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 305.6,
+   "y": 749,
+   "texte": "Ou débloque-les tousavec Le Cercle›"
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": [
+   "stLockCta « Ou débloque-les tousavec Le Ce »"
+  ]
+ },
+ "dark · Aura · l’aide « i »": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 318.8,
+   "y": 465.5,
+   "texte": "Vois la parole qu'on te tienten douceur "
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": [
+   "ahCercleCta « Vois la parole qu'on te tiente »"
+  ]
+ },
+ "dark · page + · le mur de son Peaufiner": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 317.6,
+   "y": 745,
+   "texte": "✦ Le Cercle"
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": []
+ },
+ "light · accueil · le bouton du Cercle": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 322,
+   "y": 128.5,
+   "texte": ""
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": []
+ },
+ "light · Réglages · l’encart": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 317.6,
+   "y": 514,
+   "texte": "✦ Le Cercledébloque tout Promi · essai 1"
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": [
+   "openPlusTop « ✦ Le Cercledébloque tout Promi »"
+  ]
+ },
+ "light · Studio · un monde payant (Terrazzo)": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 305.6,
+   "y": 749,
+   "texte": "Ou débloque-les tousavec Le Cercle›"
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": [
+   "stLockCta « Ou débloque-les tousavec Le Ce »"
+  ]
+ },
+ "light · Aura · l’aide « i »": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 318.8,
+   "y": 465.5,
+   "texte": "Vois la parole qu'on te tienten douceur "
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": [
+   "ahCercleCta « Vois la parole qu'on te tiente »"
+  ]
+ },
+ "light · page + · le mur de son Peaufiner": {
+  "promi_plantes": 15,
+  "porte": {
+   "existe": true,
+   "vis": true,
+   "doigt": true,
+   "x": 317.6,
+   "y": 745,
+   "texte": "✦ Le Cercle"
+  },
+  "ouvre_le_cercle": true,
+  "ecran_vide": {
+   "n": 16,
+   "sans": false,
+   "dalles": [
+    true,
+    true,
+    true
+   ],
+   "noms": [
+    true,
+    true,
+    true
+   ],
+   "prix": 276,
+   "sous": 342,
+   "annee": 386,
+   "essai": 464,
+   "notes": [
+    548,
+    574
+   ],
+   "declare": false
+  },
+  "autres_portes_visibles": []
+ }
+}

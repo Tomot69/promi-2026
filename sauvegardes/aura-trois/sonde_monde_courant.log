@@ -1,0 +1,44 @@
+
+═══ L'AURA — l'Orbite dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+données                      5
+    6 bis · Studio en pixel : la dalle « rapporter le livre », plantée en encre, sort dans le monde COURANT (à 0.262 de sa plantation, 0.000 du courant)
+    6 bis · Studio en pixel : la dalle « arroser tous les soirs », plantée en encre, sort dans le monde COURANT (à 0.123 de sa plantation, 0.007 du courant)
+    6 bis · Studio en pixel : la dalle « monter la serre avant les gelées », plantée en encre, sort dans le monde COURANT (à 0.097 de sa plantation, 0.000 du courant)
+    6 bis · Studio en pixel : la dalle « le grand plongeoir », plantée en encre, sort dans le monde COURANT (à 0.723 de sa plantation, 0.000 du courant)
+    6 bis · Studio en pixel : la dalle « planter un arbre », plantée en encre, sort dans le monde COURANT (à 0.158 de sa plantation, 0.000 du courant)
+les huit acquis              0
+densité                      0
+air de la colonne            0
+la matière                   0
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 5 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi
+   air [sombre]         phrase → disques : 2 l. 27.1 · 1 l. 27.7 · 2 l. 27.1 · 1 l. 27.7 · 1 l. 27.7 · à l'encre 2 l. 29.0 · 1 l. 28.0 · libellés → bouton 28.5 · la colonne défile de 129 pt
+   matière [sombre]     boule ↔ page 74.4 (décidé 76) · contour 59.5 · dalles : 5 de face, |Δlum| la plus faible 18.3, médiane 39.9 · ΔE 35 48 52 42 32
+   air [clair]          phrase → disques : 2 l. 27.1 · 1 l. 27.7 · 2 l. 27.1 · 1 l. 27.7 · 1 l. 27.7 · à l'encre 2 l. 29.0 · 1 l. 28.0 · libellés → bouton 28.5 · la colonne défile de 129 pt
+   matière [clair]      boule ↔ page 84.2 (décidé 85) · contour 94.7 · dalles : 5 de face, |Δlum| la plus faible 23.3, médiane 44.5 · ΔE 32 38 40 35 30
+   1 · rotation lente   0.0528 rad/s sur 2 s (décidé 0.0524, un tour en 2 min)
+   2 · prise, droite    Δlac +0.810 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.003 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.603 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 9.42 rad/s · éteint à 5.2 s · puis 0.0519 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 50 ms (dont peintre 13.5 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 40.5 → 36.1 → 30.4 → 21.9 → 10.0 → 0.6 → lisse · DERNIER PAS 0.60 niveau (médiane des 10 d'avant 0.86) · 127 images · empreinte retirée à 3.27 s
+   4 · toucher          p 1.000 à 250 ms, 1.000 à 950 ms · sous le doigt 98.4 % des pixels changent, hors de portée 1.66 %, bruit 0.00 % · revenu ≈ 3.3 s après le lâcher, écart au repos 0.00 %
+   5 · trace            en attente au lâcher : 1 · 0 → 1 caresse(s), gardée(s) : 1 · au repos, 11.0 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 3.60 s lâché sur place, 0.28 s lancé (8 %)
+   8 · personne         toucher sur « Marion » → ouvre « Marion », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.11 rad, personne d'ouvert
+   8 bis · dalle        glissement de 30 pt sur « rapporter le livre » → rien d'ouvert · toucher → fiche affichée (Promi 139, attendu 139) · ✕ → Aura
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.931
+   6 bis · monde        Studio encre → pixel · 5 dalles, 5 jugées · distance à la plantation / au courant : rapporter le livre 0.262/0.000 · arroser tous les s 0.123/0.007 · monter la serre av 0.097/0.000 · le grand plongeoir 0.723/0.000 · planter un arbre 0.158/0.000
+
+palier 110000 · médiane 14 ms · 2208 images · plus longue image pendant l'élan : 50 ms (dont peintre 13.5 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 1 décision(s) · à la réouverture : palier 75000
+
+❌  5 ÉCARTS
+exit 1

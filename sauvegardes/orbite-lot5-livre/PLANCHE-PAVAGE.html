@@ -1,0 +1,50 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-store">
+<title>Promi — le pavage</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0A0B0E;color:#F4EEE1;font-family:Apfel,system-ui,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.page{max-width:1300px;margin:0 auto;padding:56px 24px 130px}
+h1{font-family:Bricolage;font-weight:700;font-size:36px;letter-spacing:-.02em;margin:0 0 10px}
+.chapo{font-size:15px;line-height:1.65;color:#8B8778;max-width:680px;margin:0 0 52px}
+.rang{margin:0 0 46px}
+.rang h2{font-family:Bricolage;font-weight:700;font-size:20px;margin:0 0 5px;letter-spacing:-.01em}
+.rang p{font-size:14px;line-height:1.6;color:#8B8778;max-width:760px;margin:0 0 20px}
+.duo{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:46px}
+.quatre{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.deux{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.trois{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.trio-petit{display:flex;gap:26px;align-items:flex-start}
+.trio-petit figure{width:200px;flex:none}
+figure{margin:0}
+.cadre{background:#131319;border-radius:26px;overflow:hidden;position:relative;
+  width:100%;aspect-ratio:1/1}
+.trio-petit .cadre{border-radius:16px}
+.cadre canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block}
+figcaption{margin:13px 2px 0;font-size:14px;line-height:1.5;color:#8B8778}
+figcaption b{color:#F4EEE1;font-weight:400}
+.trio-petit figcaption{font-size:13px}
+</style></head><body>
+<div style="position:absolute;left:0;top:0;width:390px;height:620px;opacity:.012;pointer-events:none;z-index:-1"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<div class="page">
+<h1>Le pavage, habillé</h1>
+<p class="chapo">La Toile fermée sur elle-même. <b>Aucun trou</b> : la sphère est
+entièrement pavée, comme le canevas de la Toile — ce qu’on prend pour des écarts entre les
+dalles, ce sont des <b>cellules vides</b>, sombres, qui portent la même trame. Chaque cellule
+montre <b>une vraie dalle du moteur</b>, entière, et il y en a <b>77</b> : la taille de dalle
+mesurée sur la Toile. <b>535 000 poils</b> en touffes, tous sur la face qu’on voit. L’entre-dalles reste <b>vide</b> : c’est la place du Noyau et des six. Le contour reste un
+cercle exact — c’est l’amortissement au limbe qui le garantit, pas la prudence.</p>
+<div id="g"></div>
+</div>
+<script>var CREME_='#F4EEE1';function cc(){return[200,180,255];}
+function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js?v=1788574251"></script>
+<script src="/scratchpad/_p_moteur.js?v=1788887605"></script>
+<script src="/scratchpad/_f_dalle.js?v=1788907058"></script>
+<script src="/scratchpad/_p_trame.js?v=1788906832"></script>
+<script src="/scratchpad/_p_semis.js?v=1788891215"></script>
+<script src="/scratchpad/_p_peint.js?v=1788906873"></script>
+<script src="/scratchpad/_p_planche.js?v=1788891343"></script>
+</body></html>

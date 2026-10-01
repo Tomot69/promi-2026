@@ -1,0 +1,45 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ v61 · cinq mondes à l'horloge, 0,83 / 0,78 (= 0,17 / 0,22 à 60 i/s) 
+  ✓ v61 · un redémarrage de boucle fait UN pas 
+  ✓ v61 · mondes neufs : temps vrai en sous-pas de 1/60 s 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu de départ 760 ms 
+  ✓ fondu d'arrivée 760 ms 
+  ✓ v61 · Houle reste par image (exception) 
+— chemin : moteur
+   processeur bridé ×3
+  ✓ encre · moteur · arrivee (×3) fin du mouvement 871 ms (attendu 872 ± 100) · [vu 871 ms, 28 images]
+  ✓ encre · moteur · depart (×3) fin du mouvement 423 ms (attendu 386 ± 100) · [vu 423 ms, 14 images]
+  ✓ touffe · moteur · arrivee (×3) fin du mouvement 803 ms (attendu 812 ± 100) · [vu 803 ms, 40 images]
+  ✓ touffe · moteur · depart (×3) fin du mouvement 307 ms (attendu 321 ± 100) · [vu 307 ms, 16 images]
+  ✓ mosaique · moteur · arrivee (×3) fin du mouvement 806 ms (attendu 792 ± 100) · [vu 806 ms, 35 images]
+  ✓ mosaique · moteur · depart (×3) fin du mouvement 312 ms (attendu 316 ± 100) · [vu 312 ms, 13 images]
+  ✓ braille · moteur · arrivee (×3) fin du mouvement 810 ms (attendu 865 ± 100) · [vu 810 ms, 28 images]
+  ✓ braille · moteur · depart (×3) fin du mouvement 380 ms (attendu 351 ± 100) · [vu 380 ms, 13 images]
+  ✓ pixel · moteur · arrivee (×3) fin du mouvement 808 ms (attendu 817 ± 100) · [vu 808 ms, 23 images]
+  ✓ pixel · moteur · depart (×3) fin du mouvement 381 ms (attendu 313 ± 100) · [vu 381 ms, 11 images]
+  ✓ halin · moteur · arrivee (×3) fin du mouvement 2557 ms (attendu 2483 ± 198) · [vu 2372 ms, 130 images]
+  ✓ halin · moteur · depart (×3) fin du mouvement 2952 ms (attendu 2995 ± 239) · [vu 2952 ms, 166 images]
+  ✓ esquille · moteur · arrivee (×3) fin du mouvement 1431 ms (attendu 1437 ± 114) · [vu 1333 ms, 78 images]
+  ✓ esquille · moteur · depart (×3) fin du mouvement 1428 ms (attendu 1426 ± 114) · [vu 1381 ms, 82 images]
+  ✓ madrure · moteur · arrivee (×3) fin du mouvement 2465 ms (attendu 2432 ± 194) · [vu 2136 ms, 74 images]
+  ✓ madrure · moteur · depart (×3) fin du mouvement 2448 ms (attendu 2431 ± 194) · [vu 2448 ms, 93 images]
+  ✓ ritournelle · moteur · arrivee (×3) fin du mouvement 1951 ms (attendu 1945 ± 155) · [vu 1933 ms, 81 images]
+  ✓ ritournelle · moteur · depart (×3) fin du mouvement 1960 ms (attendu 2040 ± 163) · [vu 1960 ms, 87 images]
+  ✓ bobinette · moteur · arrivee (×3) fin du mouvement 2472 ms (attendu 2462 ± 196) · [vu 2146 ms, 53 images]
+  ✓ bobinette · moteur · depart (×3) fin du mouvement 2459 ms (attendu 2463 ± 197) · [vu 2098 ms, 54 images]
+  ✓ terrazzo · moteur · arrivee (×3) fin du mouvement 860 ms (attendu 799 ± 100) · [vu 860 ms, 35 images]
+  ✓ terrazzo · moteur · depart (×3) fin du mouvement 378 ms (attendu 365 ± 100) · [vu 378 ms, 16 images]
+  ✓ gravure · moteur · arrivee (×3) fin du mouvement 844 ms (attendu 793 ± 100) · [vu 844 ms, 29 images]
+  ✓ gravure · moteur · depart (×3) fin du mouvement 337 ms (attendu 357 ± 100) · [vu 337 ms, 12 images]
+  · sillons · moteur · arrivee (×3) — exception par image, non jugée : 28 images, vu 1336 ms
+  · sillons · moteur · depart (×3) — exception par image, non jugée : 16 images, vu 784 ms
+
+38 / 38

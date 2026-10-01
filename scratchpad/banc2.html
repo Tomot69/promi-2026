@@ -1,0 +1,54 @@
+<!doctype html><meta charset="utf-8"><title>banc2</title>
+<body style="background:#16171B;margin:0"><div id="h"></div>
+<script>
+/* ⚠ LE PREMIER BANC MESURAIT LE MAUVAIS CHIFFRE : le canevas 2D EMPILE les ordres,
+   il ne les exécute pas. Le temps d'appel n'est pas le temps de peinture.
+   Celui-ci mesure L'INTERVALLE RÉEL ENTRE DEUX IMAGES. */
+var BOX=330, D=2, CVS=[], GS=[];
+function toiles(n,d){
+  document.getElementById('h').innerHTML='';
+  CVS=[];GS=[];
+  for(var i=0;i<n;i++){var c=document.createElement('canvas');
+    c.width=BOX*d;c.height=BOX*d;
+    c.style.cssText='position:absolute;left:20px;top:20px;width:'+BOX+'px;height:'+BOX+'px';
+    document.getElementById('h').appendChild(c);CVS.push(c);GS.push(c.getContext('2d'));}
+}
+var SEG=null;
+function fab(N){SEG=new Float32Array(N*4);
+  for(var i=0;i<N;i++){var a=i*2.4,r=140*Math.sqrt((i%997)/997);
+    SEG[i*4]=165+Math.cos(a)*r;SEG[i*4+1]=165+Math.sin(a)*r;
+    SEG[i*4+2]=165+Math.cos(a+0.06)*(r+6);SEG[i*4+3]=165+Math.sin(a+0.06)*(r+6);}}
+function peint(N,d){
+  var par=Math.ceil(N/GS.length);
+  for(var k=0;k<GS.length;k++){
+    var g=GS[k];g.setTransform(d,0,0,d,0,0);g.clearRect(0,0,BOX,BOX);
+    g.strokeStyle='#F4EEE1';g.lineCap='butt';
+    for(var b=0;b<7;b++){
+      g.globalAlpha=0.08+0.72*(b+0.5)/7; g.lineWidth=0.35+0.85*(b+0.5)/7;
+      g.beginPath();
+      var i0=k*par+Math.floor(b*par/7), i1=k*par+Math.floor((b+1)*par/7);
+      for(var i=i0;i<i1&&i<N;i++){var o=i*4;
+        g.moveTo(SEG[o],SEG[o+1]);g.lineTo(SEG[o+2],SEG[o+3]);}
+      g.stroke();
+    }
+    g.globalAlpha=1;
+  }
+}
+window.essai=function(N,ntoiles,d,ms){return new Promise(function(res){
+  toiles(ntoiles,d); fab(N);
+  var dt=[],prev=null,t0=null,a=0;
+  function tick(t){
+    if(t0===null){t0=t;prev=t;}
+    else{dt.push(t-prev);prev=t;}
+    a+=0.01; peint(N,d);
+    if(t-t0<ms) requestAnimationFrame(tick);
+    else{dt.sort(function(x,y){return x-y;});
+      var moy=dt.reduce(function(x,y){return x+y;},0)/dt.length;
+      res({N:N,toiles:ntoiles,dpr:d,images:dt.length,moy:+moy.toFixed(2),
+           med:+dt[dt.length>>1].toFixed(2),p95:+dt[Math.floor(dt.length*.95)].toFixed(2),
+           sup20:dt.filter(function(x){return x>20;}).length});}
+  }
+  requestAnimationFrame(tick);
+});};
+window.__pret=true;
+</script>

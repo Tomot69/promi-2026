@@ -1,0 +1,75 @@
+
+════ dark
+   ✓ l’app déclare la bascule 94,5  94.5
+   ✓ fiche · rayon = règle de hauteur (12 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ fiche · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ fiche · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ fiche · note 4 rangées · air de l’encre ≥ 14.69  ('min 15.67', [])
+   ✓ fiche · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ fiche · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ fiche · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ fiche · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · rayon = règle de hauteur (9 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ page + · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ page + · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ page + · note 4 rangées · air de l’encre ≥ 14.69  ('min 15.67', [])
+   ✓ page + · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ page + · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ page + · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · aucun rebâtissage ne laisse la zone mal calée (0 vus)  rien à reprendre
+   ✓ Nuée · rayon = règle de hauteur (6 champs)  [(64, 32), (92, 46), (104, 30), (118, 30)]
+   ✓ Nuée · air de l’encre ≥ 14.69  ('min 16.06', [])
+   ✓ côte à côte · capturés (pilule 64 / rayon 32 · champ ouvert 140 / rayon 30)  seuil/dark_cote_a_cote.png
+   ✓ écran qui vend · trois VRAIES dalles du moteur, Sillons · Gravure · Terrazzo, dans cet ordre  [{'monde': 'sillons', 'id': 139, 'ok': True, 'source': [182, 146], 'pose': [98, 78.6]}, {'monde': 'gravure', 'id': 138, 'ok': True, 'source': [157, 153], 'pose': [98, 95.5]}, {'monde': 'terrazzo', 'id': 137, 'ok': True, 'source': [118, 157], 'pose': [73.7, 98]}]
+   ✗ écran qui vend · chaque dalle peinte (≥ 5 % de pixels), à sa cote (24 | 146 | 268, 132, 98 × 98), jamais étirée, les trois différentes  ([('sillons', [24, 132, 98, 98], 16.7, [196, 149]), ('gravure', [146, 132, 98, 98], 28.4, [196, 192]), ('terrazzo', [268, 132, 98, 98], 32.1, [148, 196])], 'étirées', [('sillons', 'source 1.247, peinte 1.315')])
+   ✓ écran qui vend · « 29 € » en grand (Bricolage 700 / 56, à 24 / 276, 342 × 56)  {'t': '29 €', 'r': [24, 276, 342, 56], 'ff': 'Bricolage', 'fw': '700', 'fs': 56}
+   ✓ écran qui vend · « Prendre l’année » en premier (386), l’essai de 14 jours VISIBLE dessous (464), sans défiler, au doigt  ({'t': "Prendre l'année", 'r': [24, 386, 342, 62], 'doigt': True}, {'t': 'Essayer 14 jours, puis 3,99 €/mois', 'r': [24, 464, 342, 62], 'doigt': True}, 'défile', 0)
+   ✓ écran qui vend · chaque texte se lit (rapport ≥ 4,5, remplissage = couleur, opacité ≥ 72 %)  min 7.20
+   ✓ écran qui vend · les deux boutons se voient (fond de l’année, contour de l’essai : écart de luminosité ≥ 42)  (217.2, 217.2)
+   ✓ écran qui vend · plus de visuel ni d’explication : visuel, titre, phrase, cinq lignes, ombre de dalle du fond  ([], 'none')
+   ✓ écran qui vend · les cotes de la planche (noms 238, sous-prix 342, notes 548 / 574) et la forme du prix, jamais « offert »  ([['Sillons', [24, 238, 98, 16.9]], ['Gravure', [146, 238, 98, 16.9]], ['Terrazzo', [268, 238, 98, 16.9]]], {'t': 'soit 2,42 €/mois · −39 %', 'r': [24, 342, 342, 17.3]}, [548, 574], False)
+   ✓ gardé de côté · l’encart mène à l’écran qui vend, par-dessus  ('soi', 'createSheet,plusScreen')
+   ✓ Réglages · l’encart mène à l’écran qui vend  ('soi', 'plusScreen')
+   ✓ écran qui vend SANS Promi · la rangée se cache (dalles et noms), l’app le déclare  {'n': 0, 'sans': True, 'declare': True, 'dalles': [False, False, False], 'noms': [False, False, False], 'prix': 132, 'sous': 198, 'annee': 242, 'essai': 320, 'essai_doigt': True, 'annee_doigt': True, 'notes': [404, 430]}
+   ✓ écran qui vend SANS Promi · le prix remonte à 132, « Prendre l’année » 242, l’essai VISIBLE dessous à 320, notes 404 / 430  {'n': 0, 'sans': True, 'declare': True, 'dalles': [False, False, False], 'noms': [False, False, False], 'prix': 132, 'sous': 198, 'annee': 242, 'essai': 320, 'essai_doigt': True, 'annee_doigt': True, 'notes': [404, 430]}
+
+════ light
+   ✓ l’app déclare la bascule 94,5  94.5
+   ✓ fiche · rayon = règle de hauteur (12 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ fiche · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ fiche · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ fiche · note 4 rangées · air de l’encre ≥ 14.69  ('min 15.67', [])
+   ✓ fiche · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ fiche · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ fiche · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ fiche · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · rayon = règle de hauteur (9 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ page + · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ page + · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ page + · note 4 rangées · air de l’encre ≥ 14.69  ('min 15.67', [])
+   ✓ page + · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ page + · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ page + · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · aucun rebâtissage ne laisse la zone mal calée (0 vus)  rien à reprendre
+   ✓ Nuée · rayon = règle de hauteur (6 champs)  [(64, 32), (92, 46), (104, 30), (118, 30)]
+   ✓ Nuée · air de l’encre ≥ 14.69  ('min 16.06', [])
+   ✓ côte à côte · capturés (pilule 64 / rayon 32 · champ ouvert 140 / rayon 30)  seuil/light_cote_a_cote.png
+   ✓ écran qui vend · trois VRAIES dalles du moteur, Sillons · Gravure · Terrazzo, dans cet ordre  [{'monde': 'sillons', 'id': 139, 'ok': True, 'source': [187, 204], 'pose': [89.8, 98]}, {'monde': 'gravure', 'id': 138, 'ok': True, 'source': [146, 145], 'pose': [98, 97.3]}, {'monde': 'terrazzo', 'id': 137, 'ok': True, 'source': [127, 104], 'pose': [98, 80.3]}]
+   ✓ écran qui vend · chaque dalle peinte (≥ 5 % de pixels), à sa cote (24 | 146 | 268, 132, 98 × 98), jamais étirée, les trois différentes  ([('sillons', [24, 132, 98, 98], 20.6, [180, 196]), ('gravure', [146, 132, 98, 98], 30.6, [196, 194]), ('terrazzo', [268, 132, 98, 98], 33.8, [196, 160])], 'étirées', [])
+   ✓ écran qui vend · « 29 € » en grand (Bricolage 700 / 56, à 24 / 276, 342 × 56)  {'t': '29 €', 'r': [24, 276, 342, 56], 'ff': 'Bricolage', 'fw': '700', 'fs': 56}
+   ✓ écran qui vend · « Prendre l’année » en premier (386), l’essai de 14 jours VISIBLE dessous (464), sans défiler, au doigt  ({'t': "Prendre l'année", 'r': [24, 386, 342, 62], 'doigt': True}, {'t': 'Essayer 14 jours, puis 3,99 €/mois', 'r': [24, 464, 342, 62], 'doigt': True}, 'défile', 0)
+   ✓ écran qui vend · chaque texte se lit (rapport ≥ 4,5, remplissage = couleur, opacité ≥ 72 %)  min 4.95
+   ✓ écran qui vend · les deux boutons se voient (fond de l’année, contour de l’essai : écart de luminosité ≥ 42)  (215.3, 215.3)
+   ✓ écran qui vend · plus de visuel ni d’explication : visuel, titre, phrase, cinq lignes, ombre de dalle du fond  ([], 'none')
+   ✓ écran qui vend · les cotes de la planche (noms 238, sous-prix 342, notes 548 / 574) et la forme du prix, jamais « offert »  ([['Sillons', [24, 238, 98, 16.9]], ['Gravure', [146, 238, 98, 16.9]], ['Terrazzo', [268, 238, 98, 16.9]]], {'t': 'soit 2,42 €/mois · −39 %', 'r': [24, 342, 342, 17.3]}, [548, 574], False)
+   ✓ gardé de côté · l’encart mène à l’écran qui vend, par-dessus  ('soi', 'createSheet,plusScreen')
+   ✓ Réglages · l’encart mène à l’écran qui vend  ('soi', 'plusScreen')
+   ✓ écran qui vend SANS Promi · la rangée se cache (dalles et noms), l’app le déclare  {'n': 0, 'sans': True, 'declare': True, 'dalles': [False, False, False], 'noms': [False, False, False], 'prix': 132, 'sous': 198, 'annee': 242, 'essai': 320, 'essai_doigt': True, 'annee_doigt': True, 'notes': [404, 430]}
+   ✓ écran qui vend SANS Promi · le prix remonte à 132, « Prendre l’année » 242, l’essai VISIBLE dessous à 320, notes 404 / 430  {'n': 0, 'sans': True, 'declare': True, 'dalles': [False, False, False], 'noms': [False, False, False], 'prix': 132, 'sous': 198, 'annee': 242, 'essai': 320, 'essai_doigt': True, 'annee_doigt': True, 'notes': [404, 430]}
+
+══ défauts connus, déclarés (non comptés) :
+══ 1 contrat(s) raté(s)
+   ✗ dark · écran qui vend · chaque dalle peinte (≥ 5 % de pixels), à sa cote (24 | 146 | 268, 132, 98 × 98), jamais étirée, les trois différentes · ([('sillons', [24, 132, 98, 98], 16.7, [196, 149]), ('gravure', [146, 132, 98, 98], 28.4, [196, 192]), ('terrazzo', [268, 132, 98, 98], 32.1, [148, 196])], 'étirées', [('sillons', 'source 1.247, peinte 1.315')])
+fin rc=0

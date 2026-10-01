@@ -1,0 +1,5 @@
+
+  ❌  1 BLOC(S) ANNONCÉ(S) CENTRÉ(S) NE LE SONT PAS
+      « un bloc centré entre deux voisins a des écarts égaux »
+
+   Aura                   .au-nx|#auPartage           au-dessus   22.0   en dessous   28.0   écart   6.0

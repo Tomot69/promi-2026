@@ -1,0 +1,1019 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<title>Promi — l'Aura · l'orbite en 3D</title>
+<link rel="stylesheet" href="/planche-polices.css">
+<style>
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:#0E0F12;color:#F4EEE1;
+  font-family:Apfel,system-ui,sans-serif;font-weight:400;-webkit-font-smoothing:antialiased}
+.page{max-width:1780px;margin:0 auto;padding:44px 32px 120px}
+h1{font-family:Bricolage,system-ui,sans-serif;font-weight:700;font-size:38px;letter-spacing:-.02em;margin:0 0 6px}
+.lede{font-size:16px;line-height:1.55;max-width:900px;color:#C8C3B6;margin:0 0 30px}
+h2{font-family:Bricolage,system-ui,sans-serif;font-weight:700;font-size:27px;letter-spacing:-.02em;margin:52px 0 4px}
+h2 .n{color:#8FA0FF}
+.q{font-family:Bricolage,system-ui,sans-serif;font-weight:600;font-size:17px;color:#8FA0FF;margin:0 0 10px}
+.pr{font-size:15px;line-height:1.6;max-width:900px;color:#C8C3B6;margin:0 0 22px}
+.pr b{color:#F4EEE1;font-weight:400;font-family:ApfelMid;font-weight:500}
+.box{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:980px}
+.box h3{font-family:Bricolage,font-weight:700;font-size:16px;margin:0 0 8px;letter-spacing:.02em}
+.box p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.box p:last-child{margin-bottom:0}
+.row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin:0 0 8px}
+figure{margin:0}
+figcaption{font-family:ApfelMid;font-weight:500;font-size:12px;letter-spacing:.18em;text-transform:uppercase;
+  color:#8B8778;margin:10px 0 0;width:390px}
+figcaption b{color:#F4EEE1;font-weight:500}
+
+/* ─────────── le cadre : 390 x 844, exactement ─────────── */
+.fr{position:relative;width:390px;height:844px;overflow:hidden;border-radius:38px;
+   font-family:Apfel,system-ui,sans-serif}
+.fr.dk{background:#16171B;color:#F4EEE1}
+.fr.lt{background:#F4EEE1;color:#16171B}
+.fr *{position:absolute;margin:0}
+
+/* le plateau — 342 x 60, r30, trait 2, couleur du corps */
+.plat{left:24px;top:40px;width:342px;height:60px;border-radius:30px;border:2px solid currentColor;
+  display:flex!important;align-items:center;justify-content:space-between;padding:0 22px;position:absolute}
+.plat>*{position:static!important}
+.plat .t{font-family:Bricolage;font-weight:700;font-size:27px;letter-spacing:-.02em}
+.plat .c{font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.20em}
+
+.eb{font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.18em;text-transform:uppercase}
+.bg600{font-family:Bricolage;font-weight:600}
+.bg700{font-family:Bricolage;font-weight:700}
+.ap{font-family:Apfel;font-weight:400}
+.apm{font-family:ApfelMid;font-weight:500}
+.mark{font-family:Fraunces;font-weight:600}
+
+/* le bouton — 342 x 62, r31, trait 2 */
+.btn{left:24px;width:342px;height:62px;border-radius:31px;border:2px solid currentColor;
+  display:flex!important;align-items:center;justify-content:center;
+  font-family:Bricolage;font-weight:700;font-size:19px;position:absolute}
+.btn>*{position:static!important}
+.btn.plein{border:0}
+
+/* l'encart du Cercle — §3.8, la SEULE superposition du produit */
+.enc{left:24px;width:342px;height:90px;border-radius:26px;
+  display:flex!important;flex-direction:column;justify-content:center;padding:0 24px;position:absolute}
+.enc>*{position:static!important}
+.enc .t{font-family:Bricolage;font-weight:700;font-size:22px;letter-spacing:-.02em}
+.enc .s{font-family:Bricolage;font-weight:600;font-size:15px;margin-top:3px}
+.voile{filter:blur(2.4px)}
+.leg{display:flex!important;gap:18px;position:absolute}
+.leg>span{position:static!important;display:flex;align-items:center;gap:8px;
+  font-family:ApfelMid;font-weight:500;font-size:12.5px;letter-spacing:.14em;text-transform:uppercase}
+.leg i{position:static!important;width:13px;height:13px;border-radius:4px;display:block}
+.note{font-family:Apfel;font-weight:400;font-size:13px;text-align:center;width:342px;left:24px}
+
+.corr{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1000px}
+.corr h3{font-family:Bricolage;font-weight:700;font-size:16px;margin:0 0 10px;letter-spacing:.02em}
+.corr ol{margin:0;padding-left:20px}
+.corr li{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin-bottom:9px}
+.corr li b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+.corr li:last-child{margin-bottom:0}
+.mots{width:100%;border-collapse:collapse;max-width:1000px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;white-space:nowrap;color:#F4EEE1}
+.mots td:nth-child(2){color:#C8C3B6}
+.ok{color:#2BE88C}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+.num{font-family:Fraunces;font-size:17px;color:#F4EEE1}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+.num{font-family:Fraunces;font-size:17px;color:#F4EEE1}
+.alerte{border:2px solid #F07A2E;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.alerte h3{font-family:Bricolage;font-weight:700;font-size:17px;margin:0 0 10px;color:#F07A2E}
+.alerte p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.alerte p:last-child{margin:0}
+.alerte b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+h3.alt{font-family:Bricolage;font-weight:700;font-size:21px;margin:34px 0 4px}
+h3.alt span{color:#8FA0FF}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.alerte{border:2px solid #F07A2E;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.alerte h3{font-family:Bricolage;font-weight:700;font-size:17px;margin:0 0 10px;color:#F07A2E}
+.alerte p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.alerte p:last-child{margin:0}
+.alerte b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+.vivant{border:2px solid #2BE88C;border-radius:18px;padding:16px 20px;margin:0 0 26px;max-width:1020px;
+  font-size:14.5px;line-height:1.6;color:#C8C3B6}
+.vivant b{color:#2BE88C;font-weight:400;font-family:ApfelMid}
+.mots{width:100%;border-collapse:collapse;max-width:1020px;font-size:14px;margin:0 0 30px}
+.mots td,.mots th{border-bottom:1px solid #2A2C34;padding:9px 12px;text-align:left;vertical-align:top}
+.mots th{font-family:ApfelMid;font-weight:500;font-size:11.5px;letter-spacing:.16em;
+  text-transform:uppercase;color:#8B8778}
+.mots td:first-child{font-family:Bricolage;font-weight:600;color:#F4EEE1;white-space:nowrap}
+.mots td{color:#C8C3B6}
+.ok{color:#2BE88C}.ko{color:#F07A2E}
+pre{background:#131419;border:2px solid #2A2C34;border-radius:14px;padding:14px 16px;
+  font-size:12.5px;line-height:1.65;color:#C8C3B6;overflow-x:auto;max-width:1020px}
+pre b{color:#2BE88C;font-weight:400}
+.vivant{border:2px solid #2BE88C;border-radius:18px;padding:16px 20px;margin:0 0 26px;max-width:1020px;
+  font-size:15px;line-height:1.6;color:#C8C3B6}
+.vivant b{color:#2BE88C;font-weight:400;font-family:ApfelMid}
+.corr{border:2px solid #2A2C34;border-radius:18px;padding:20px 22px;margin:0 0 30px;max-width:1020px}
+.corr h3{font-family:Bricolage;font-weight:700;font-size:16px;margin:0 0 10px}
+.corr p{font-size:14.5px;line-height:1.62;color:#C8C3B6;margin:0 0 10px}
+.corr p:last-child{margin:0}
+.corr b{color:#F4EEE1;font-weight:400;font-family:ApfelMid}
+</style></head><body>
+
+<canvas id="toileCv" style="position:fixed;left:0;top:0;width:390px;height:620px;opacity:.01;pointer-events:none;z-index:-1"></canvas>
+
+<div class="page">
+<h1>L'Aura — l'orbite en 3D</h1>
+<div class="vivant"><b>Cette page tourne.</b> Le premier cadre est vivant — un tour en
+<b>48 secondes</b>, et chacun sur son orbite propre : on passe devant, on passe derrière, on est
+haut, on est bas. <b>Regarde-le tourner une minute avant de lire le reste.</b> La bande de
+huit cadres plus bas n'est là que pour les captures.</div>
+
+<h2>La mécanique</h2>
+<pre>LA TRAÎNÉE — <b>discrète</b>. Elle dit un chemin, elle ne se regarde pas.
+   Longueur 0,24 → <b>0,12</b> du tour · opacité 0,92 → <b>0,34</b> · largeur × 0,52
+   · bouts francs (des bouts ronds qui se chevauchent faisaient des perles)
+   · elle est peinte SOUS ton Noyau : elle disparaît derrière lui et reprend de
+     l'autre côté
+
+L'IDÉE, ET C'EST UNE SOUSTRACTION — <b>la traînée s'éteint derrière.</b>
+   Chaque pas est éclairé par sa PROFONDEUR : vif quand il vient vers toi, presque
+   nul quand il s'enfonce. Comme une comète. <b>Ça divise le bruit par deux ET ça
+   renforce le volume</b> : la moitié arrière du chemin ne se dessine plus, elle se
+   devine. Elle ne coûte qu'une ligne — si elle nuit à la lecture, elle sort.
+
+TON NOYAU — l'arc s'amincit PAR L'INTÉRIEUR : 26 → <b>18</b>. Le bord extérieur ne
+   bouge pas (anneau() trace à R = (d − lw)/2), donc les 8 px rendus vont TOUS au
+   creux — et le visage retrouve sa place : 27 → <b>40</b>.
+
+CHACUN SUR SON ORBITE PROPRE   un cercle en 3D, à SON rayon (la date), dans SON plan.
+                               L'inclinaison et le noeud viennent du NOM — donc stables :
+                               la même personne a toujours la même orbite.
+LA PERSPECTIVE, MESURÉE        foyer <b>180</b>, inclinaisons 38° à 78°, échelle bornée.
+                               Le plus petit anneau fait <b>20,0 px</b>, le plus gros
+                               <b>68,8 px</b> — <b>un rapport de 3,43</b>.
+                               (420 → 1,3 · 230 → 2,59 · 180 → <b>3,43</b>)
+                               Ton Noyau reste à 90 : rien ne l'atteint jamais.
+TON NOYAU                      arc <b>13 → 26</b>, et <b>le diamètre ne bouge pas</b> :
+                               anneau() trace à R = (d−lw)/2, donc le bord extérieur
+                               reste à 45 et tout l'ajout mange le centre. Le creux
+                               tombe de 64 à 38, le visage suit (48 → 27).
+                               ⚠ <b>Il en devient épais au point de tirer vers le
+                               disque</b> — c'est la conséquence directe de l'épaisseur
+                               que tu as demandée. Si ça te paraît trop, l'arc à 20
+                               garderait le geste sans le pâté.
+LA MÊME VITESSE POUR TOUS      même vitesse angulaire, un tour en 48 s. Rien à ranger.
+LE RAYON DIT TOUJOURS LA DATE  78 px pour hier, 128 pour six mois. Inchangé.
+LA LUNE                        binaire, une seule.  LA COULEUR : la Nuée.  L'ARC : §2.9.
+
+TA HIÉRARCHIE, ÉPAISSIE        toi <b>96 / arc 14</b> · une personne <b>48 / arc 4</b>
+                               (le §2.9 donne 78/8 et 58/6 — écart volontaire, tu l'as
+                               demandé : c'est le soleil, pas une planète parmi d'autres)</pre>
+
+<div class="corr">
+<h3>Tes deux réserves, tenues — et l'une des deux a demandé du travail</h3>
+<p><b>1 · Un anneau qui passe derrière PASSE DERRIÈRE — et c'est ça qui fait la sphère.</b>
+Ma version précédente interdisait <i>tout</i> recouvrement du centre : les orbites le
+<b>contournaient</b>, personne ne passait jamais derrière, et on voyait un cercle.
+<b>Ce qui est interdit, c'est de passer DEVANT.</b> La recherche d'inclinaison ne teste plus
+que la <b>moitié avant</b> ; derrière, ton Noyau masque, franchement. Vérifié sur 72 positions :
+un anneau <i>devant</i> ne touche jamais le tien.</p>
+<p><b>2 · Les prénoms restent droits et à taille fixe.</b> Ils ne subissent aucune perspective,
+aucune rotation, aucune mise à l'échelle — <b>13,5 px, horizontaux, toujours</b>. Un nom qui
+rétrécit avec la profondeur deviendrait illisible, et un nom penché n'est plus un nom.</p>
+</div>
+
+<div class="corr">
+<h3>Ce que j'exempte du contrôle, et ce que je mets à la place</h3>
+<p>En 3D, <b>deux personnes se recouvrent — c'est le sujet</b> : l'une passe devant l'autre.
+Le contrôle de collisions ne peut plus les compter comme un défaut. <b>Je les exempte, et je le
+dis</b> : la zone d'orbite est déclarée, et les recouvrements entre ses habitants ne sont plus
+signalés.</p>
+<p><b>Ce que je mets à la place, et qui est plus dur :</b> un contrôle qui balaie
+<b>soixante-douze positions</b> et vérifie que <b>jamais</b> un anneau — <b>ni sa lune</b> —
+ne touche le tien. C'est la règle qui compte, et elle est mesurée en continu.</p>
+<p><b>⚠ Et j'ai d'abord exempté trop large.</b> J'avais exempté « personnes entre elles »,
+prénoms compris — et la moitié gauche de l'écran est sortie illisible, des noms sur des
+visages, sans que rien ne le signale. <b>Deux anneaux qui se croisent, c'est le sujet ; deux
+noms qui se croisent, c'est une faute.</b> L'exemption ne couvre plus que les anneaux.</p>
+</div>
+
+<div class="corr">
+<h3>Deux décisions que je n'avais pas prévues, et qu'il faut que tu voies</h3>
+<p><b>1 · Le mot « toi » est retiré, et ce n'est pas un oubli.</b> Il occupait la bande juste
+sous ton Noyau — exactement là où passe une personne qui arrive par le bas. Le garder obligeait
+à pousser l'orbite minimale de 78 à 106 px, c'est-à-dire à <b>grossir</b> l'orbite que tu venais
+de me demander de resserrer. Et il ne dit rien qu'on ne voie : tu es au centre, tu es le plus
+gros, tu as ton visage.</p>
+<p><b>2 · Les prénoms sont placés par essais, pas posés dessous.</b> Posés bêtement vers
+l'extérieur, ils se recouvraient entre eux et couvraient les anneaux. Chaque nom essaie
+<b>huit directions</b> autour de son anneau, en commençant par les personnes les plus proches
+du regard, et garde la première qui ne touche ni un anneau, ni un nom déjà posé, ni ton Noyau.
+Ils restent <b>droits, 13,5 px, sans aucune perspective</b>.</p>
+</div>
+
+<h2>Elle tourne — le cadre vivant</h2>
+<p class="pr">Celui-ci n'est pas figé. Laisse-le tourner.</p>
+<div class="row" id="rowVif"></div>
+
+<h2>Huit moments du tour</h2>
+<p class="pr">Le même écran, à un huitième de tour d'intervalle. On voit qui passe devant, qui
+passe derrière, qui monte, qui descend.</p>
+<div class="row" id="rowSuite"></div>
+
+<h2>L'écran, en entier</h2>
+<p class="pr"><b>L'orbite remplace la grille « avec qui »</b> — les mêmes personnes ne peuvent
+pas figurer deux fois. <b>On touche un anneau, ça ouvre la personne</b> (<code>openPerson</code>,
+la fonction existe déjà) : l'orbite fait le même travail que la grille, en mieux.
+La place gagnée va à la moisson, qui montre maintenant <b>trois rangées</b> dès le premier écran.</p>
+<div class="row" id="rowEcran"></div>
+
+<h2>Les douze phrases</h2>
+<div id="avisPhrases"></div>
+<div class="row" id="rowPh"></div>
+
+<h2>Les relevés</h2>
+<div id="mesure"></div>
+
+</div>
+
+<script>
+var state={structure:'encre'};
+function cc(){return [200,180,255];}
+function render(){}
+</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+/* ══════════════════════════════════════════════════════════════════════
+   LA PLANCHE — trois partis pour l'Aura, une page pour le Cercle.
+   Aplats francs. Les dalles viennent du moteur (Toile.dalleTrame, k=1).
+   ══════════════════════════════════════════════════════════════════════ */
+var MENTHE='#2BE88C', TERRA='#F07A2E', PERI='#8FA0FF',
+    BLEU='#3A54FF', MAUVE='#8A5CF0', FRAMB='#FA2258',
+    CREME='#F4EEE1', ENCRE='#16171B';
+
+/* le jeu de la planche : les gens, par ordre alphabétique, JAMAIS par valeur */
+var GENS=[
+  {n:'Adrien', piste:BLEU,  toi:[.62,.23,.15], eux:[.55,.30,.15]},
+  {n:'Marion', piste:MAUVE, toi:[.80,.20,.00], eux:[.70,.20,.10]},
+  {n:'Rachel', piste:TERRA, toi:[.34,.33,.33], eux:[.40,.35,.25]}
+];
+var NUEES=[{n:'le potager',piste:MAUVE,p:[.60,.28,.12],pid:4},
+           {n:'la course',  piste:BLEU, p:[.72,.18,.10],pid:5},
+           {n:'la maison',  piste:TERRA,p:[.45,.30,.25],pid:6}];
+
+function el(tag,cls,css,txt){var n=document.createElement(tag);
+  if(cls)n.className=cls; if(css)n.style.cssText=css;
+  if(txt!=null)n.textContent=txt; return n;}
+
+/* ── L'ANNEAU ────────────────────────────────────────────────────────────
+   piste pleine (teinte de la nature) + arcs des trois états, bout franc.
+   Aucun dégradé : trois aplats d'arc, posés bout à bout.               */
+function anneau(cv,d,lw,parts,piste,second){
+  var D=2; cv.width=d*D; cv.height=d*D; cv.style.width=d+'px'; cv.style.height=d+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,d,d);
+  var cx=d/2, cy=d/2, R=(d-lw)/2 - (second?(9+lw*0.7):0);
+  function ring(r,w,segs){
+    g.lineWidth=w; g.lineCap='butt';
+    g.strokeStyle=piste; g.beginPath(); g.arc(cx,cy,r,0,6.2832); g.stroke();
+    var a=-Math.PI/2;
+    var cols=[MENTHE,PERI,TERRA];
+    for(var i=0;i<segs.length;i++){ if(segs[i]<=0)continue;
+      var a2=a+segs[i]*6.2832;
+      g.strokeStyle=cols[i]; g.beginPath(); g.arc(cx,cy,r,a,a2); g.stroke(); a=a2; }
+  }
+  ring(R,lw,parts);
+  if(second) ring(R+9+lw*0.7, lw*0.7, second);
+  return {cx:cx,cy:cy,R:R};
+}
+
+/* ── LE VISAGE — §2.10, silhouette crème sur couleur de nature ───────── */
+function visage(d,fond){
+  var i='vc'+(visage._n=(visage._n||0)+1);
+  var s='<svg width="'+d+'" height="'+d+'" viewBox="0 0 '+d+' '+d+'">'
+   +'<defs><clipPath id="'+i+'"><circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'"/></clipPath></defs>'
+   +'<g clip-path="url(#'+i+')">'
+   +'<circle cx="'+(d/2)+'" cy="'+(d/2)+'" r="'+(d/2)+'" fill="'+fond+'"/>'
+   +'<circle cx="'+(d/2)+'" cy="'+(0.78*d/2)+'" r="'+(0.19*d)+'" fill="'+CREME+'"/>'
+   +'<path d="M'+(d/2-0.30*d)+' '+(0.98*d)+' A '+(0.30*d)+' '+(0.27*d)+' 0 0 1 '
+     +(d/2+0.30*d)+' '+(0.98*d)+' Z" fill="'+CREME+'"/></g></svg>';
+  return s;
+}
+
+/* ── LE TRAIT — deux points, une courbe quadratique. Jamais de segment. ── */
+function trait(cv,w,h,o){
+  o=o||{}; var D=2; cv.width=w*D; cv.height=h*D;
+  cv.style.width=w+'px'; cv.style.height=h+'px';
+  var g=cv.getContext('2d'); g.setTransform(D,0,0,D,0,0); g.clearRect(0,0,w,h);
+  var r=7, x0=r+1, x1=w-r-1, mid=(o.mid===undefined?h/2:o.mid),
+      amp=(o.amp===undefined?16:o.amp), per=(o.per===undefined?1.5:o.per);
+  function courbe(y0,sens,col,ep){
+    g.lineWidth=ep||3; g.lineCap='round'; g.strokeStyle=col;
+    var N=64, pts=[];
+    for(var i=0;i<=N;i++){var t=i/N,x=x0+(x1-x0)*t;
+      pts.push([x, y0 + sens*amp*Math.sin(t*per*6.2832)*Math.sin(Math.PI*t)]);}
+    g.beginPath(); g.moveTo(pts[0][0],pts[0][1]);
+    for(var j=1;j<pts.length-1;j++){
+      var mx=(pts[j][0]+pts[j+1][0])/2, my=(pts[j][1]+pts[j+1][1])/2;
+      g.quadraticCurveTo(pts[j][0],pts[j][1],mx,my);}
+    g.quadraticCurveTo(pts[N-1][0],pts[N-1][1],pts[N][0],pts[N][1]); g.stroke();
+    return pts;
+  }
+  var A=courbe(mid,1,o.col||PERI,3);
+  var B=o.double? courbe(mid,-1,o.col2||MAUVE,3) : null;
+  g.fillStyle=o.col||PERI;
+  g.beginPath(); g.arc(x0,mid,r,0,6.2832); g.fill();
+  g.beginPath(); g.arc(x1,mid,r,0,6.2832); g.fill();
+  cv.__A=A; cv.__B=B; cv.__mid=mid;
+  return A;
+}
+
+/* ── LA VRAIE DALLE ──────────────────────────────────────────────────── */
+function dalle(pid,px){
+  var c=document.createElement('canvas'); c.width=px*2; c.height=px*2;
+  c.style.cssText='width:'+px+'px;height:'+px+'px;display:block';
+  try{ window.Toile && Toile.dalleTrame(c,pid,1); }catch(e){}
+  return c;
+}
+
+/* ── LE CADRE ────────────────────────────────────────────────────────── */
+function cadre(theme){
+  var f=el('div','fr '+(theme==='lt'?'lt':'dk'));
+  f.__ink = theme==='lt'? ENCRE : CREME;
+  f.__fond= theme==='lt'? CREME : ENCRE;
+  return f;
+}
+function plateau(f,titre){
+  var p=el('div','plat');
+  p.appendChild(el('div','t',null,titre));
+  p.appendChild(el('div','c',null,'✕ FERMER'));
+  f.appendChild(p); return p;
+}
+function eb(f,x,y,txt,col){ var n=el('div','eb',
+  'left:'+x+'px;top:'+y+'px;'+(col?'color:'+col:''), txt); f.appendChild(n); return n;}
+function txt(f,cls,x,y,w,fs,fw,t,extra){
+  var n=el('div',cls,'left:'+x+'px;top:'+y+'px;width:'+w+'px;font-size:'+fs+'px;'
+    +(fw?'font-weight:'+fw+';':'')+(extra||''), t);
+  f.appendChild(n); return n;}
+function bouton(f,y,t,plein,col,ink){
+  var b=el('div','btn'+(plein?' plein':''),'top:'+y+'px;'
+    +(plein?'background:'+col+';color:'+ink+';':''));
+  b.appendChild(el('span',null,null,t)); f.appendChild(b); return b;}
+function legPos(f,y,ink){
+  var n=el('div','eb','left:24px;top:'+y+'px;width:342px;text-align:center;line-height:19px;'
+    +'text-transform:none;letter-spacing:.10em',
+    'dedans, ce que tu tiens · dehors, ce qu’on te tient');
+  f.appendChild(n); return n;}
+function legende(f,x,y){
+  var L=el('div','leg','left:'+x+'px;top:'+y+'px');
+  [['tenues',MENTHE],['en cours',PERI],['à tenir',TERRA]].forEach(function(p){
+    var s=el('span'); s.appendChild(el('i',null,'background:'+p[1]));
+    s.appendChild(document.createTextNode(p[0])); L.appendChild(s);});
+  f.appendChild(L); return L;}
+
+/* la grille d'anneaux — JAMAIS une rangée de barres, JAMAIS un tri par valeur */
+function grille(f,y,d,gens,cercle,ink,centre){
+  var n=gens.length, ecart=26, tot=n*d+(n-1)*ecart, x0=(390-tot)/2;
+  gens.forEach(function(p,i){
+    var x=x0+i*(d+ecart);
+    var box=el('div',null,'left:'+x+'px;top:'+y+'px;width:'+d+'px;height:'+d+'px');
+    var cv=document.createElement('canvas');
+    cv.style.cssText='position:absolute;left:0;top:0';
+    box.appendChild(cv); f.appendChild(box);
+    anneau(cv,d,Math.round(d*0.104),p.toi||p.p,p.piste, null);
+    var vd=Math.round(d*0.62), vx=x+(d-vd)/2, vy=y+(d-vd)/2;
+    var v=el('div',null,'left:'+vx+'px;top:'+vy+'px;width:'+vd+'px;height:'+vd+'px');
+    if(centre==='dalle') v.appendChild(dalle(p.pid||1,vd));
+    else v.innerHTML=visage(vd,p.piste);
+    f.appendChild(v);
+    txt(f,'bg600',x-14,y+d+11,d+28,13.5,600,p.n,'text-align:center;color:'+ink);
+  });
+}
+</script>
+<script>
+/* ════════ UNE SEULE SOURCE : anneau, chiffre et mot ════════ */
+var PARTS={tenu:62,encours:24,rate:14};
+function partsArc(){var t=PARTS.tenu+PARTS.encours+PARTS.rate;
+  return [PARTS.tenu/t,PARTS.encours/t,PARTS.rate/t];}
+function harmonieVal(){return Math.round(100*PARTS.tenu/(PARTS.tenu+PARTS.rate));}
+function harmonyWord(p){if(p==null)return 'à tisser';
+  if(p>=85)return 'rayonnante'; if(p>=65)return 'solide';
+  if(p>=40)return 'installée'; return 'naissante';}
+function couleurHarmonie(){var v=harmonieVal(); return v>=65?MENTHE:(v>=40?PERI:TERRA);}
+
+/* ════════ LE MONDE D'ALORS ════════ */
+var _mc='encre', _cache={};
+function dalleDans(pid,px,m,p){
+  var c=document.createElement('canvas'); c.width=px*2; c.height=px*2;
+  c.style.cssText='width:'+px+'px;height:'+px+'px;display:block;'
+    +'opacity:1;filter:none;mix-blend-mode:normal;position:relative;z-index:2';
+  var k=pid+'|'+(m||'-')+'|'+(p||'-')+'|'+px;
+  try{
+    if(_cache[k]){c.getContext('2d').drawImage(_cache[k],0,0);return c;}
+    if(m&&m!==_mc){Toile.setTheme(m);_mc=m;}
+    if(p&&Toile.setPalette)Toile.setPalette(p);
+    Toile.dalleTrame(c,pid,1);
+    var s=document.createElement('canvas'); s.width=c.width; s.height=c.height;
+    s.getContext('2d').drawImage(c,0,0); _cache[k]=s;
+  }catch(e){}
+  return c;
+}
+function dalle(pid,px){return dalleDans(pid,px,null,null);}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   L'ORBITE EN 3D — un système planétaire vu de biais.
+     LE RAYON       la date de la dernière parole tenue. Inchangé.
+     LE PLAN        inclinaison et noeud tirés du NOM : stables, jamais d'une valeur.
+     LA PERSPECTIVE plus loin dans la profondeur = plus petit. Ce n'est pas un rang :
+                    la taille apparente change à chaque seconde.
+     LA VITESSE     la même pour tous. LA LUNE : binaire. LA COULEUR : la Nuée.
+   ════════════════════════════════════════════════════════════════════════════ */
+/* nd = le noeud · inc = l'inclinaison · ph = la phase — COMPOSÉS, en degrés.
+   Trois plans presque couchés (Maman, Marion, Rachel) se croisent près du centre ;
+   deux plans redressés (Léa, Nico) balaient large ; Adrien coupe en travers.
+   Les phases sont décalées pour qu'aucun alignement régulier ne se produise. */
+var ORBITE=[
+  {n:'Maman',  piste:MAUVE, arc:[.86,.14,.00], bouge:true,  j:1,   nd:214, inc:26, ph:118},
+  {n:'Adrien', piste:BLEU,  arc:[.62,.23,.15], bouge:true,  j:3,   nd:118, inc:56, ph:250},
+  {n:'Marion', piste:MAUVE, arc:[.80,.20,.00], bouge:false, j:12,  nd:250, inc:34, ph:22 },
+  {n:'Rachel', piste:TERRA, arc:[.34,.33,.33], bouge:true,  j:28,  nd:  6, inc:30, ph:196},
+  {n:'Léa',    piste:TERRA, arc:[.55,.30,.15], bouge:false, j:62,  nd:302, inc:58, ph:74 },
+  {n:'Nico',   piste:BLEU,  arc:[.70,.18,.12], bouge:false, j:150, nd: 46, inc:60, ph:308}
+];
+/* le tour dure 2 min 12 : assez lent pour qu'aucun mouvement ne se remarque,
+   assez pour que la scène ait changé si on la laisse. */
+/* ⚠ 132 s, c'était trop lent pour être VU : 0,024 px par image, la scène paraissait
+   figée — et le moindre frémissement de prénom devenait alors le seul mouvement de
+   l'écran. À 84 s un anneau avance de 0,038 px par image : toujours calme, mais la
+   scène a visiblement changé quand on y revient. */
+/* 122 sortait par la gauche (x = 3) et passait sous « solide » (y = 454).
+   116 à 268 est la borne mesurée : boîte 20 · 138 → 353 · 444. */
+var ORB_CX=195, ORB_CY=268, ORB_T=84000, ORB_RMIN=80, ORB_RMAX=116, ORB_JMAX=180;
+/* ⚠ LE FOYER FAIT TOUT. À 420 un anneau qui passait derrière gardait 88 % de sa
+   taille : on voyait un cercle, pas une sphère. À 170 il tombe à 42 % et double
+   au premier plan — l'écart se SENT. Mesuré et publié dans le relevé. */
+/* ⚠ L'ARC DU NOYAU DOUBLE (13 → 26) SANS QUE LE DIAMÈTRE BOUGE.
+   anneau() trace à R = (d − lw)/2, donc le bord EXTÉRIEUR reste à d/2 = 45 :
+   tout l'ajout mange le centre. Le creux tombe de 64 à 38 — le visage suit,
+   48 → 34 (écart au §2.10, conséquence directe de l'épaisseur demandée). */
+/* ⚠ L'ARC S'AMINCIT PAR L'INTÉRIEUR. anneau() trace à R = (d − lw)/2 : le bord
+   EXTÉRIEUR reste à 45 quoi qu'il arrive, donc passer de 26 à 18 rend 8 px au
+   CREUX (19 → 27 de rayon intérieur) et le visage retrouve sa place : 27 → 40. */
+var TOI_D=90, TOI_ARC=18, TOI_VIS=40, PERS_D=32, PERS_ARC=4, FOC=180;
+
+function rayonDe(j){
+  return ORB_RMIN + (ORB_RMAX-ORB_RMIN)*Math.log(1+j)/Math.log(1+ORB_JMAX);
+}
+function cleAlpha(n){
+  var s=n.toLowerCase().normalize('NFD').replace(/[^a-z]/g,'')+'aaa';
+  var v=function(c){return Math.max(0,Math.min(25,c.charCodeAt(0)-97));};
+  return v(s[0])*676+v(s[1])*26+v(s[2]);
+}
+/* la base 3D du plan de l'orbite : deux vecteurs orthonormés */
+function basePlan(inc,noeud){
+  var ci=Math.cos(inc), si=Math.sin(inc), cn=Math.cos(noeud), sn=Math.sin(noeud);
+  return {u:[cn,sn,0], v:[-sn*ci,cn*ci,si]};
+}
+function point3(r,th,B){
+  var c=Math.cos(th), s=Math.sin(th);
+  return [r*(c*B.u[0]+s*B.v[0]), r*(c*B.u[1]+s*B.v[1]), r*(c*B.u[2]+s*B.v[2])];
+}
+/* ⚠ ON BORNE L'ÉCHELLE. Sans bornes, un anneau au premier plan atteignait 129 px —
+   presque ton Noyau (90) : la hiérarchie que tu voulais s'effondrait, et la boîte
+   sortait du cadre. Bornée à [0,52 · 1,92], la profondeur reste franche et rien
+   ne dépasse jamais ton Noyau. */
+function projete(P){ var k=Math.max(0.44,Math.min(2.15,FOC/(FOC-P[2])));
+  return {x:P[0]*k, y:P[1]*k, k:k}; }
+
+/* ⚠ AUCUN ANNEAU NE PASSE JAMAIS DEVANT TON NOYAU.
+   Ce n'est PAS une question de z-index : une orbite trop inclinée TRAVERSE le centre
+   à l'écran. On cherche donc, pour chaque personne, la plus grande inclinaison qui
+   dégage ton anneau sur SOIXANTE-DOUZE positions du tour, et on garde celle-là. */
+function inclinaisonTenable(r, noeud, incVoulue){
+  var Rtoi=TOI_D/2, rr=PERS_D/2, MARGE=7;
+  /* LA ZONE INTERDITE, c'est TOUT TON NOYAU : l'anneau ET le mot « toi » dessous.
+     Une première version ne dégageait que l'anneau — et un prénom, ou un anneau qui
+     passait bas, venait recouvrir « toi ». Le contrôle l'a pris. */
+  for(var inc=incVoulue; inc>=0; inc-=0.02){
+    var B=basePlan(inc,noeud), ok=true;
+    for(var s=0;s<96;s++){
+      var P3=point3(r, s/96*6.2832, B);
+      /* ⚠ LA RÈGLE A CHANGÉ, ET C'EST CE QUI FAIT LA SPHÈRE.
+         Interdire tout recouvrement du centre obligeait les orbites à le CONTOURNER :
+         personne ne passait jamais derrière, tout le monde restait à côté — un cercle.
+         Ce qui est interdit, c'est de passer DEVANT. Derrière, c'est le sujet :
+         ton Noyau la masque, franchement. On ne teste donc que la moitié AVANT. */
+      if(P3[2] < 0) continue;
+      var p=projete(P3);
+      var rad=rr*p.k, d=Math.hypot(p.x,p.y);
+      /* 1 · l'anneau NI SA LUNE ne touchent le tien. La lune tourne à rad + 9 du
+         centre de la personne et fait 5 de rayon : son enveloppe est rad + 14.
+         Sans elle, un point terracotta passait devant ton Noyau — pris par le contrôle. */
+      if(d < Rtoi + rad + 11 + MARGE){ ok=false; break; }
+      /* 2 · SON prénom non plus — il est posé VERS L'EXTÉRIEUR, jamais vers toi,
+             mais on le vérifie quand même : c'est la règle, pas une intention. */
+      var ux=p.x/(d||1), uy=p.y/(d||1), nd=rad+17;
+      var N={x1:p.x+ux*nd-31, x2:p.x+ux*nd+31, y1:p.y+uy*nd-9, y2:p.y+uy*nd+9};
+      var nx=Math.max(N.x1,Math.min(0,N.x2)), ny=Math.max(N.y1,Math.min(0,N.y2));
+      if(Math.hypot(nx,ny) < Rtoi + MARGE){ ok=false; break; }
+    }
+    if(ok) return inc;
+  }
+  return 0;
+}
+function placeOrbite(){
+  return ORBITE.map(function(p){
+    /* ⚠ LES PLANS SONT COMPOSÉS À LA MAIN, plus tirés de l'alphabet.
+       L'alphabet répartissait les orbites régulièrement — et une constellation
+       régulière est morte, même quand elle tourne. On choisit les noeuds, les
+       inclinaisons et les phases pour que les chemins se croisent, se resserrent et
+       laissent des vides. LE RAYON, LUI, RESTE LA DATE : la seule chose qu'on ne
+       compose pas. */
+    var noeud=p.nd*Math.PI/180;
+    var voulue=p.inc*Math.PI/180;
+    var r=rayonDe(p.j);
+    return {p:p, r:r, noeud:noeud, th0:p.ph*Math.PI/180,
+            inc:inclinaisonTenable(r,noeud,voulue)};
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   LA TRAÎNÉE — l'idée forte de ce lot.
+   On ne voyait pas le VOLUME parce qu'on ne voyait pas les CHEMINS : six objets
+   bougeaient, le cerveau n'avait rien à reconstruire. Chaque personne traîne
+   maintenant un arc de SA PROPRE ORBITE derrière elle — une trace, pas un filet :
+     · elle s'affine et s'efface en s'éloignant de l'anneau ;
+     · sa LARGEUR suit la perspective : fine au loin, large au premier plan ;
+     · elle est peinte SOUS ton Noyau, donc elle DISPARAÎT derrière lui et
+       reprend de l'autre côté — c'est ça qui dit la profondeur, mieux que la taille ;
+     · elle porte la couleur de la NUÉE, comme la piste de l'anneau.
+   La lune en a une aussi, minuscule : un point qui traîne dit qu'il tourne ;
+   un point posé ne dit rien.
+   ════════════════════════════════════════════════════════════════════════════ */
+/* la traînée DIT un chemin, elle ne se regarde pas : courte, sourde, presque effacée */
+var TRACE_LONG=0.085, TRACE_N=28;
+function dessineTraces(f,u){
+  var cv=f.__trace; if(!cv) return;
+  var g=cv.getContext('2d');
+  g.setTransform(2,0,0,2,0,0);
+  g.clearRect(0,0,390,844);
+  f.querySelectorAll('.orb').forEach(function(w){
+    var B=basePlan(+w.dataset.inc,+w.dataset.noeud), th0=+w.dataset.th0;
+    /* la traînée suit LE MÊME rayon que l'anneau, retour d'ouverture compris :
+       sinon elle décrocherait du chemin réel pendant la seconde et demie. */
+    var r=retourOuverture(w, +w.dataset.r, f.__ms===undefined?1e9:f.__ms);
+    var col=w.dataset.piste;
+    for(var i=0;i<TRACE_N;i++){
+      var f1=i/TRACE_N, f2=(i+1)/TRACE_N;
+      var a=projete(point3(r, th0+(u-f1*TRACE_LONG)*6.2832, B));
+      var b=projete(point3(r, th0+(u-f2*TRACE_LONG)*6.2832, B));
+      var t=1-f1;
+      /* ⚑ L'IDÉE — ET C'EST UNE SOUSTRACTION : LA TRAÎNÉE S'ÉTEINT DERRIÈRE.
+         Chaque pas est éclairé par sa PROFONDEUR : vif quand il vient vers toi,
+         presque nul quand il s'enfonce. Comme une comète — le plus lumineux est le
+         plus proche. Ça divise le bruit par deux ET ça renforce le volume : la moitié
+         arrière du chemin ne se dessine plus, elle se devine.
+         Si elle nuit à la lecture, elle sort : elle ne coûte qu'une ligne. */
+      var prof=Math.max(0.10, Math.min(1, 0.5 + a.k*0.42));
+      g.globalAlpha=Math.pow(t,2.3)*0.30*prof;
+      g.lineWidth=Math.max(0.4, PERS_ARC*a.k*t*0.52);
+      /* bouts FRANCS : à cette opacité, des bouts ronds qui se chevauchent
+         composaient des perles — la traînée redevenait un motif qu'on regarde. */
+      g.lineCap='butt'; g.strokeStyle=col;
+      g.beginPath();
+      g.moveTo(ORB_CX+a.x,ORB_CY+a.y); g.lineTo(ORB_CX+b.x,ORB_CY+b.y);
+      g.stroke();
+    }
+    /* la traînée de la lune : douze pas, minuscule */
+    if(w.dataset.lune==='1'){
+      var pr=projete(point3(r, th0+u*6.2832, B)), d=PERS_D*pr.k;
+      for(var k=0;k<12;k++){
+        var b1=(u-k/12*0.055)*6*6.2832+th0, R=d/2+7;
+        var b2=(u-(k+1)/12*0.055)*6*6.2832+th0;
+        var t2=1-k/12;
+        g.globalAlpha=Math.pow(t2,1.6)*0.85;
+        g.lineWidth=Math.max(0.5,3.4*pr.k*t2);
+        g.strokeStyle=TERRA;
+        g.beginPath();
+        g.moveTo(ORB_CX+pr.x+R*Math.cos(b1), ORB_CY+pr.y+R*Math.sin(b1));
+        g.lineTo(ORB_CX+pr.x+R*Math.cos(b2), ORB_CY+pr.y+R*Math.sin(b2));
+        g.stroke();
+      }
+    }
+  });
+  g.globalAlpha=1;
+}
+
+function orbite(f,ink){
+  /* la toile des traînées : SOUS tout le monde, et sous ton Noyau */
+  var tc=document.createElement('canvas');
+  tc.width=780; tc.height=1688;
+  tc.style.cssText='left:0;top:0;width:390px;height:844px;z-index:10;pointer-events:none';
+  f.appendChild(tc); f.__trace=tc;
+  /* TON NOYAU — épaissi : 96 / arc 14. Toujours au premier plan. */
+  var box=el('div',null,'left:'+(ORB_CX-TOI_D/2)+'px;top:'+(ORB_CY-TOI_D/2)+'px;'
+    +'width:'+TOI_D+'px;height:'+TOI_D+'px;z-index:40');
+  var cv=document.createElement('canvas'); cv.style.cssText='position:absolute;left:0;top:0';
+  cv.dataset.forme='anneau'; cv.dataset.rayon=(TOI_D/2);
+  box.appendChild(cv); f.appendChild(box);
+  anneau(cv,TOI_D,TOI_ARC,partsArc(),BLEU,null);
+  var vd=TOI_VIS;
+  var v=el('div',null,'left:'+(ORB_CX-vd/2)+'px;top:'+(ORB_CY-vd/2)+'px;'
+    +'width:'+vd+'px;height:'+vd+'px;z-index:41');
+  v.innerHTML=visage(vd,BLEU); f.appendChild(v);
+  /* ⚠ LE MOT « toi » EST RETIRÉ, et ce n'est pas un oubli.
+     Il occupe la bande juste sous ton Noyau — exactement là où passe une personne
+     qui arrive par le bas. Le garder obligeait à pousser l'orbite minimale de 78 à
+     106 px, c'est-à-dire à GROSSIR l'orbite que tu venais de me demander de resserrer.
+     Et il ne dit rien qu'on ne voie déjà : tu es au centre, tu es le plus gros, tu as
+     ton visage. C'est « ce qui est petit peut disparaître ». */
+
+  /* LES PERSONNES — 48 / arc 4, amincis pour que la hiérarchie saute aux yeux */
+  var VD=30;
+  placeOrbite().forEach(function(q){
+    var p=q.p;
+    var w=el('div','orb','width:'+PERS_D+'px;height:'+PERS_D+'px');
+    w.dataset.role='pers';
+    w.dataset.r=q.r; w.dataset.inc=q.inc; w.dataset.noeud=q.noeud; w.dataset.th0=q.th0;
+    w.dataset.qui=p.n;
+    var c=document.createElement('canvas'); c.style.cssText='position:absolute;left:0;top:0';
+    c.dataset.forme='anneau'; c.dataset.rayon=(PERS_D/2);
+    w.appendChild(c); f.appendChild(w);
+    anneau(c,PERS_D,PERS_ARC,p.arc,p.piste,null);
+    var fa=el('div',null,'position:absolute;left:'+((PERS_D-VD)/2)+'px;top:'+((PERS_D-VD)/2)+'px;'
+      +'width:'+VD+'px;height:'+VD+'px');
+    fa.innerHTML=visage(VD,p.piste); w.appendChild(fa);
+    w.dataset.piste=p.piste;
+    if(p.bouge){
+      w.dataset.lune='1';
+      var mo=el('div','lune','position:absolute;width:9px;height:9px;border-radius:50%;'
+        +'background:'+TERRA);
+      w.appendChild(mo);
+    }
+    /* ⚠ LE PRÉNOM NE SUBIT AUCUNE PERSPECTIVE : droit, 13,5 px, toujours.
+       Il est posé HORS de la boîte mise à l'échelle, pour ne jamais être déformé. */
+    var nm=el('div','bg600 orbnom','font-size:13.5px;text-align:center;width:62px;'
+      +'color:'+ink, p.n);
+    nm.dataset.role='nom';
+    f.appendChild(nm);
+    w.__nom=nm;
+  });
+  return f;
+}
+
+/* la pose : chacun sur son orbite, à la même vitesse angulaire */
+/* ⚑ LE RETOUR VERS LE CENTRE — UNE FOIS, À L'OUVERTURE.
+   Ce que le rejeu avait trouvé et qui restait vrai : quand tu reviens sur l'Aura après
+   avoir tenu, la personne concernée RENTRE. Une seule fois, une seconde et demie, et
+   l'écran se repose — ici Maman, la parole tenue hier. Son rayon part de celui qu'elle
+   avait AVANT (seize jours) et rejoint le sien. Lissage d'ordre 5 : aucun à-coup. */
+var OUV_MS=1500, OUV_QUI='Maman';
+function retourOuverture(w,R,ms){
+  if(w.dataset.qui!==OUV_QUI || ms>=OUV_MS) return R;
+  var k=1-ms/OUV_MS, e=k*k*k*(k*(k*6-15)+10);
+  var avant=ORB_RMIN+(ORB_RMAX-ORB_RMIN)*Math.log(1+16)/Math.log(1+ORB_JMAX);
+  return R + (avant-R)*e;
+}
+function orbitePose(f,u,ms){
+  if(ms!==undefined) f.__ms=ms;
+  f.querySelectorAll('.orb').forEach(function(w){
+    var r=retourOuverture(w, +w.dataset.r, f.__ms===undefined?1e9:f.__ms);
+    var B=basePlan(+w.dataset.inc, +w.dataset.noeud);
+    var th=+w.dataset.th0 + u*6.2832;
+    var P=point3(r,th,B), pr=projete(P);
+    var d=PERS_D*pr.k;                       /* la perspective : plus loin = plus petit */
+    w.style.width=d+'px'; w.style.height=d+'px';
+    w.style.left=(ORB_CX+pr.x-d/2)+'px';
+    w.style.top =(ORB_CY+pr.y-d/2)+'px';
+    w.style.zIndex=String(Math.round(20+P[2]/10));   /* toi restes à 40 : toujours devant */
+    var c=w.querySelector('canvas'); if(c){c.style.width=d+'px'; c.style.height=d+'px';}
+    var fa=w.children[1]; if(fa){var vd=30*pr.k;
+      fa.style.width=vd+'px'; fa.style.height=vd+'px';
+      fa.style.left=((d-vd)/2)+'px'; fa.style.top=((d-vd)/2)+'px';
+      var sv=fa.querySelector('svg'); if(sv){sv.setAttribute('width',vd); sv.setAttribute('height',vd);} }
+    var mo=w.querySelector('.lune');
+    /* la lune tourne à SA vitesse — six tours quand l'orbite en fait un */
+    if(mo){ var b=(u*6)*6.2832+(+w.dataset.th0), R=d/2+7;
+      mo.style.left=(d/2+R*Math.cos(b)-4.5)+'px';
+      mo.style.top =(d/2+R*Math.sin(b)-4.5)+'px'; }
+    /* ⚠ LE PRÉNOM PART VERS L'EXTÉRIEUR, le long du rayon — jamais entre la personne
+       et toi. Posé dessous, il venait recouvrir ton Noyau chaque fois qu'elle passait
+       au-dessus. Il reste DROIT et à TAILLE FIXE : aucune perspective. */
+    w.__pr=pr; w.__d=d; w.__z=P[2];
+  });
+  dessineTraces(f,u);
+  /* le CALCUL du placement reste à quatre fois par seconde : il est coûteux et n'a
+     aucune raison d'être refait à chaque image. */
+  if(f.__np===undefined || Math.abs(u-f.__np)>0.0019){ f.__np=u; placeNoms(f); }
+  /* mais le MOUVEMENT du prénom se fait à CHAQUE image : il GLISSE vers sa cible au
+     lieu d'y sauter. Douze pour cent par image = il y est en 0,4 s, sans qu'on voie
+     jamais ni un départ ni une arrivée. */
+  f.querySelectorAll('.orb').forEach(function(w){
+    if(!w.__cible||!w.__pos||!w.__nom) return;
+    /* et AUCUN PAS NE DÉPASSE 1,2 px : sous ce seuil un déplacement ne se voit pas.
+       Un glissement proportionnel seul faisait un premier pas de 4,3 px — le seul
+       moment encore perceptible. Le transit dure plus longtemps ; il ne se voit plus. */
+    var dx=w.__cible.x1-w.__pos.x, dy=w.__cible.y1-w.__pos.y;
+    var d=Math.hypot(dx,dy);
+    if(d>0.01){ var pas=Math.min(d, Math.max(d*0.06, 0.04), 1.2);
+      w.__pos.x += dx/d*pas; w.__pos.y += dy/d*pas; }
+    w.__nom.style.left=w.__pos.x+'px';
+    w.__nom.style.top =w.__pos.y+'px';
+  });
+}
+
+/* ⚠ LE PLACEMENT DES PRÉNOMS — un vrai problème, et je l'ai d'abord raté.
+   Posés bêtement vers l'extérieur, ils se recouvraient entre eux et recouvraient les
+   anneaux : le premier dessin en 3D était illisible sur la moitié gauche.
+   Ce n'est PAS un cas de profondeur : deux anneaux qui se croisent, c'est le sujet ;
+   deux NOMS qui se croisent, c'est une faute.
+   On place donc chaque nom par ESSAIS, en commençant par les personnes les plus
+   proches du regard : huit directions autour de son anneau, on garde la première qui
+   ne touche ni un anneau, ni un nom déjà posé. Si aucune ne convient — ça arrive —
+   on garde la position extérieure : le nom reste attaché au bon anneau, c'est ce qui
+   compte le plus. */
+function placeNoms(f){
+  var NW=62, NH=18, MG=4;
+  var gens=[].slice.call(f.querySelectorAll('.orb')).filter(function(w){return w.__pr;});
+  gens.sort(function(a,b){return b.__z-a.__z;});          /* les plus près d'abord */
+  var anneaux=gens.map(function(w){
+    /* on évite l'ANNEAU, pas la lune : elle fait huit tours quand l'orbite en fait
+       un, aucun placement fixe ne peut l'esquiver. Et il n'y a rien à esquiver —
+       le nom est au-dessus d'elle (z 45) : elle passe DERRIÈRE, elle ne cache rien.
+       Élargir le rayon pour elle a fait pire : 30 recouvrements au lieu de 3, parce
+       que plus aucune position ne convenait et que le repli s'appliquait partout. */
+    return {x:ORB_CX+w.__pr.x, y:ORB_CY+w.__pr.y, r:w.__d/2+6};});
+  var poses=[];
+  /* le COÛT d'une position : la surface qu'elle recouvre. Zéro = parfaite. */
+  var coût=function(b){
+    var c=0;
+    var rond=function(x,y,r){
+      var px=Math.max(b.x1,Math.min(x,b.x2)), py=Math.max(b.y1,Math.min(y,b.y2));
+      var d=Math.hypot(px-x,py-y);
+      return d<r ? (r-d)*(r-d) : 0;
+    };
+    for(var i=0;i<anneaux.length;i++) c+=rond(anneaux[i].x,anneaux[i].y,anneaux[i].r);
+    c += rond(ORB_CX,ORB_CY,TOI_D/2+6) * 4;        /* ton Noyau pèse quatre fois */
+    for(var k=0;k<poses.length;k++){var p=poses[k];
+      var ox=Math.min(b.x2,p.x2)-Math.max(b.x1,p.x1);
+      var oy=Math.min(b.y2,p.y2)-Math.max(b.y1,p.y1);
+      if(ox>0&&oy>0) c += ox*oy*3;                 /* un nom sur un nom pèse trois fois */
+    }
+    return c;
+  };
+  gens.forEach(function(w){
+    if(!w.__nom) return;
+    var cx=ORB_CX+w.__pr.x, cy=ORB_CY+w.__pr.y, R=w.__d/2+13;
+    var dd=Math.hypot(w.__pr.x,w.__pr.y)||1;
+    var a0=Math.atan2(w.__pr.y/dd, w.__pr.x/dd);
+    /* ⚠ TRENTE-DEUX ESSAIS, ET ON GARDE LE MOINS MAUVAIS.
+       Une première version essayait huit directions et, si aucune n'allait, se rabattait
+       AVEUGLÉMENT vers l'extérieur — d'où treize noms l'un sur l'autre. Maintenant on
+       évalue chaque candidat par la SURFACE qu'il recouvre, et on garde le minimum :
+       la position parfaite quand elle existe, la moins mauvaise sinon. */
+    var best=null, bestCoût=1e9;
+    for(var t=0;t<2;t++)for(var i=0;i<16;i++){
+      var a=a0+(i%2?1:-1)*Math.floor(i/2)*0.42;
+      var rr2=R+NH/2+4+t*16;
+      var x=cx+Math.cos(a)*(rr2+NW/2*Math.abs(Math.cos(a))*0.55);
+      var y=cy+Math.sin(a)*rr2;
+      var b={x1:x-NW/2,x2:x+NW/2,y1:y-NH/2,y2:y+NH/2};
+      if(b.x1<8||b.x2>382||b.y1<112||b.y2>440) continue;
+      var c=coût(b) + t*3 + Math.floor(i/2)*1.2;   /* on préfère près, et vers l'extérieur */
+      if(c<bestCoût){bestCoût=c; best=b;}
+      if(bestCoût===0 && i===0 && t===0) break;
+    }
+    if(!best){
+      var x2=Math.max(8+NW/2,Math.min(382-NW/2,cx+w.__pr.x/dd*(R+14)));
+      var y2=Math.max(112+NH/2,Math.min(440-NH/2,cy+w.__pr.y/dd*(R+14)));
+      best={x1:x2-NW/2,x2:x2+NW/2,y1:y2-NH/2,y2:y2+NH/2};
+    }
+    /* ⚑ L'HYSTÉRÉSIS — C'EST ICI QU'ÉTAIT LE SACCADE, ET NULLE PART AILLEURS.
+       Mesuré : la boucle rAF est parfaite (16,67 ms, écart-type 0,06 ms, aucune image
+       au-delà de 20 ms) et une image coûte 0,37 ms. Mais un anneau n'avançait que de
+       0,024 px par image — invisible — pendant que CHAQUE PRÉNOM SAUTAIT 46 FOIS EN
+       DIX SECONDES, jusqu'à 112,6 px d'un coup : le placement au moindre coût
+       BASCULAIT d'un créneau à l'autre au moindre frémissement. Le seul mouvement
+       visible de l'écran était un nom qui se téléporte.
+       On garde donc le créneau courant tant qu'un autre ne fait pas MIEUX DE BEAUCOUP. */
+    /* ⚠ mais l'hystérésis ne doit pas garder un créneau DEVENU MAUVAIS : une marge
+       fixe laissait « Nico » finir sur un anneau (12 × 16 px, pris par le contrôle).
+       On réévalue le créneau courant à chaque passe : s'il ne recouvre plus rien on
+       le garde, sinon on ne change que pour NETTEMENT mieux. */
+    /* LA RÈGLE, FINALE : on garde le créneau courant TANT QU'IL EST PARFAIT — il ne
+       recouvre rien — et on prend le meilleur dès qu'il cesse de l'être. C'est ce qui
+       tue les 46 sauts par nom : ils venaient de bascules entre créneaux ÉGALEMENT
+       bons. Un créneau parfait n'est jamais abandonné ; un créneau qui se dégrade est
+       remplacé tout de suite, et le glissement rend le changement invisible. */
+    if(w.__slot && coût(w.__slot) <= 0.5) best = w.__slot;
+    else w.__slot = best;
+    poses.push(best);
+    w.__cible = best;                     /* la CIBLE ; la position, elle, glisse */
+    if(!w.__pos) w.__pos={x:best.x1,y:best.y1};
+    w.__nom.style.zIndex='45';
+  });
+}
+/* pour le contrôle : les prénoms À LEUR CIBLE, sans le transit. Un prénom qui GLISSE
+   peut croiser un anneau pendant une demi-seconde — c'est un déplacement, pas un
+   recouvrement au repos. Le contrôle doit juger l'état posé, et il doit le dire. */
+window._nomsALaCible=function(){
+  document.querySelectorAll('.fr .orb').forEach(function(w){
+    if(!w.__cible||!w.__pos) return;
+    w.__pos.x=w.__cible.x1; w.__pos.y=w.__cible.y1;
+    if(w.__nom){ w.__nom.style.left=w.__pos.x+'px'; w.__nom.style.top=w.__pos.y+'px'; }
+  });
+};
+window._orbitePhase=function(u){
+  document.querySelectorAll('.fr').forEach(function(f){orbitePose(f,u);});
+};
+
+/* ════════ LA MOISSON ════════ */
+var EPOQUES=[{m:'terrazzo',p:'signal',n:12},{m:'mosaique',p:'terre',n:22},
+             {m:'encre',p:'signal',n:43}];
+function moissonListe(){var o=[],k=0;
+  EPOQUES.forEach(function(e){for(var i=0;i<e.n;i++){o.push({pid:(k%9)+1,m:e.m,p:e.p});k++;}});
+  return o;}
+function moisson(f,y,depuis,combien){
+  var L=moissonListe(), s=44, pas=50, cols=7;
+  for(var i=0;i<combien&&depuis+i<L.length;i++){
+    var d=L[depuis+i], cx=24+(i%cols)*pas, cy=y+Math.floor(i/cols)*pas;
+    var w=el('div',null,'left:'+cx+'px;top:'+cy+'px;width:'+s+'px;height:'+s+'px;z-index:2');
+    w.dataset.role='moisson'; w.appendChild(dalleDans(d.pid,s,d.m,d.p)); f.appendChild(w);}
+}
+
+/* ════════ LE REJEU — DOUZE phrases, tirées au hasard ════════ */
+/* les sept retenues, plus cinq neuves au même calibre : le clin d'oeil qu'un ami
+   ferait en souriant. Aucune description, aucun constat, aucune poésie. */
+var PHRASES=['Tu l’avais dit.','Et tu l’as fait.','Personne n’en doutait.','Voilà.',
+  'Comme prévu.','Évidemment.','Parole tenue.',
+  'C’est bien toi.','Comme d’habitude.','Tu ne t’es pas fait prier.',
+  'On n’en attendait pas moins.','Tiens donc.'];
+function instant(theme,phrase){
+  var f=cadre(theme);
+  f.style.background=MENTHE; f.style.color='#06231A';
+  var p=el('div','plat'); p.appendChild(el('div','t',null,'Aura'));
+  p.appendChild(el('div','c',null,'✕ FERMER')); f.appendChild(p);
+  var w=el('div',null,'left:100px;top:132px;width:190px;height:190px');
+  w.appendChild(dalleDans(5,190,'mosaique','terre')); f.appendChild(w);
+  txt(f,'bg700',24,388,342,64,700,'tenue.',
+    'letter-spacing:-.04em;line-height:64px;color:#06231A');
+  /* la phrase respire : 20 → 38 px sous le titre */
+  txt(f,'bg600',24,490,342,20,600,phrase,'line-height:26px;color:#06231A');
+  txt(f,'ap',24,760,342,14,400,'lève le doigt pour revenir',
+    'text-align:center;color:#06231A;opacity:.80');
+  return f;
+}
+
+/* ════════════════ L'AURA ════════════════ */
+function auraHaut(theme){
+  var f=cadre(theme), ink=f.__ink;
+  plateau(f,'Aura');
+  orbite(f,ink);
+  txt(f,'bg700',24,448,342,64,700,harmonyWord(harmonieVal()),
+    'text-align:center;letter-spacing:-.04em;line-height:74px');
+  var hw=el('div',null,'left:24px;top:534px;width:342px;'
+    +'display:flex;align-items:baseline;justify-content:center;gap:12px');
+  var lb=el('span','eb',null,'harmonie'); lb.style.position='static';
+  var nb=el('span','mark',null,String(harmonieVal()));
+  nb.style.cssText='position:static;font-size:34px;line-height:34px;letter-spacing:-.01em;color:'
+    +couleurHarmonie();
+  hw.appendChild(lb); hw.appendChild(nb); f.appendChild(hw);
+  legende(f,79,594);                 /* 26 px d'air au-dessus, 33 en dessous */
+  eb(f,24,644,'tout ce que tu as tenu');
+  moisson(f,688,0,21);               /* 27 px sous le titre, au lieu de 11 */
+  return f;
+}
+function auraBas(theme){
+  var f=cadre(theme);
+  plateau(f,'Aura');
+  eb(f,24,132,'tout ce que tu as tenu');
+  moisson(f,164,21,56);
+  bouton(f,700,'Partager mon Noyau');
+  return f;
+}
+
+function pose(row,frame,cap){
+  var fg=document.createElement('figure'); fg.appendChild(frame);
+  var fc=document.createElement('figcaption'); fc.innerHTML=cap; fg.appendChild(fc);
+  document.getElementById(row).appendChild(fg);
+}
+function tableau(id,lignes,entetes){
+  var h='<table class="mots"><tr>'+entetes.map(function(e){return '<th>'+e+'</th>';}).join('')+'</tr>';
+  h+=lignes.map(function(l){return '<tr>'+l.map(function(c){return '<td>'+c+'</td>';}).join('')+'</tr>';}).join('');
+  document.getElementById(id).innerHTML=h+'</table>';
+}
+
+window.addEventListener('load',function(){
+  try{ window.Toile_resize&&window.Toile_resize();
+       window.Toile&&Toile.sync([1,2,3,4,5,6,7,8,9]); }catch(e){}
+  setTimeout(function(){
+    var vif=auraHaut('dk'); vif.dataset.vif='1';
+    pose('rowVif', vif, '<b>vivant</b> — un tour en 48 s');
+    for(var i=0;i<8;i++){
+      var f=auraHaut(i<6?'dk':'lt');
+      pose('rowSuite', f, (i/8*100).toFixed(0)+' % du tour');
+      orbitePose(f, i/8);
+    }
+    var e1=auraHaut('dk'); pose('rowEcran', e1, 'le haut · <b>sombre</b>'); orbitePose(e1,0.13);
+    var e2=auraHaut('lt'); pose('rowEcran', e2, 'le haut · clair'); orbitePose(e2,0.13);
+    pose('rowEcran', auraBas('dk'), 'le bas — <b>les époques</b>');
+    [PHRASES[0],PHRASES[7],PHRASES[11]].forEach(function(p,i){
+      pose('rowPh', instant('dk',p), (i?'':'<b>elle ouvre la série</b> · ')+'« '+p+' »'); });
+
+    document.getElementById('avisPhrases').innerHTML =
+      '<p class="pr">Les <b>douze</b>, tirées au hasard, une par rejeu. <b>« Tu l’avais dit. » '
+     +'ouvre la série.</b> Et la phrase respire : <b>20 → 38 px</b> sous « tenue. ».</p><pre>'
+     +PHRASES.map(function(p,i){return (i+1)+' · '+p;}).join('\n')+'</pre>';
+
+    tableau('mesure',[
+      ['le rayon','78 → 128 px, la date','inchangé — c’est la donnée'],
+      ['le plan','inclinaison et nœud tirés du NOM','stables : la même personne a toujours la même orbite'],
+      ['l’inclinaison','cherchée par dichotomie, 72 positions','<b>celle qui dégage ton Noyau</b>, pas celle qu’on voulait'],
+      ['la perspective','foyer 420','loin = petit. La taille apparente change en permanence'],
+      ['ta hiérarchie','96 / arc 14 contre 48 / arc 4','écart volontaire au §2.9 (78/8 et 58/6)'],
+      ['les prénoms','13,5 px, droits, taille fixe','<b>aucune perspective</b> — posés hors de la boîte mise à l’échelle'],
+      ['la moisson','3 rangées dès le premier écran','la place gagnée sur la grille « avec qui »']
+    ],['ce que c’est','la valeur','ce qu’on en lit']);
+
+    window._verifOrbite=function(){
+      var out=[], f=document.querySelectorAll('.fr')[0];
+      var fr=f.getBoundingClientRect();
+      var toi=f.querySelector('[data-forme=anneau]');
+      var Rtoi=+toi.dataset.rayon;
+      for(var s=0;s<72;s++){
+        orbitePose(f, s/72);
+        [].forEach.call(f.querySelectorAll('.orb'),function(w){
+          var c=w.querySelector('canvas'), r=c.getBoundingClientRect();
+          if(+w.style.zIndex < 20) return;   /* elle est DERRIÈRE : ton Noyau la masque */
+          var cx=(r.left+r.width/2-fr.left)-ORB_CX, cy=(r.top+r.height/2-fr.top)-ORB_CY;
+          var d=Math.hypot(cx,cy);
+          var env=r.width/2+11;
+          if(d < Rtoi + env)
+            out.push('à u='+(s/72).toFixed(3)+' un anneau DEVANT touche ton Noyau (d='
+              +d.toFixed(1)+' < '+(Rtoi+env).toFixed(1)+')');
+        });
+      }
+      /* la profondeur, mesurée : de combien un anneau grossit-il en s'approchant ? */
+      var mn=1e9, mx=0, boite={x1:1e9,x2:-1e9,y1:1e9,y2:-1e9};
+      for(var s2=0;s2<72;s2++){
+        orbitePose(f, s2/72);
+        [].forEach.call(f.querySelectorAll('.orb canvas'),function(c){
+          var r=c.getBoundingClientRect();
+          if(r.width<mn)mn=r.width; if(r.width>mx)mx=r.width;
+          boite.x1=Math.min(boite.x1,r.left-fr.left); boite.x2=Math.max(boite.x2,r.right-fr.left);
+          boite.y1=Math.min(boite.y1,r.top-fr.top);   boite.y2=Math.max(boite.y2,r.bottom-fr.top);
+        });
+      }
+      orbitePose(f,0);
+      return {ecarts:out.slice(0,6), total:out.length,
+              petit:mn.toFixed(1), gros:mx.toFixed(1), rapport:(mx/mn).toFixed(2),
+              boite:[boite.x1,boite.y1,boite.x2,boite.y2].map(Math.round).join(' · ')};
+    };
+    window.__pret=true;
+  },1800);
+
+  var t0=null;
+  function boucle(ts){
+    if(t0===null)t0=ts;
+    if(window.__pret && !window.__fige){
+      var u=((ts-t0)%ORB_T)/ORB_T;
+      document.querySelectorAll('.fr[data-vif]').forEach(function(f){orbitePose(f,u,ts-t0);});
+    }
+    requestAnimationFrame(boucle);
+  }
+  requestAnimationFrame(boucle);
+});
+</script>
+</body></html>

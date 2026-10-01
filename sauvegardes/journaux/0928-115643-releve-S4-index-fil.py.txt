@@ -1,0 +1,16 @@
+
+═══ SECTION 4 · INDEX ET FIL — 6 écrans mesurés ═══
+    les 8 cartes isolées du §5, par la loi du §3.9 bis  : 8/8
+    la borne du §2.5 mord où il faut, et nulle part ailleurs : oui
+
+écarts de position > 3 px    4
+      Index 2 par ligne    [dark] compte à y -30 : hors de la seconde ligne du plateau
+      Index 3 par ligne    [dark] compte à y -30 : hors de la seconde ligne du plateau
+      Index 2 par ligne    [light] compte à y -30 : hors de la seconde ligne du plateau
+      Index 3 par ligne    [light] compte à y -30 : hors de la seconde ligne du plateau
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              0
+
+❌  4 ÉCARTS

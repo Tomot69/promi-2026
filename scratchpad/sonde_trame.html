@@ -1,0 +1,49 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>sonde trame</title>
+<style>body{margin:0;background:#0A0B0E;color:#ddd;font:12px monospace}
+canvas.d{border:1px solid #333;margin:3px;background:#16171B}</style></head><body>
+<div style="position:absolute;left:0;top:0;width:390px;height:620px;opacity:.012;pointer-events:none;z-index:-1"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<div id="g"></div>
+<script>function cc(){return[200,180,255];}function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+window.addEventListener('load',function(){
+  try{Toile_resize();Toile.sync([1,2,3,4,5,6,7,8,9,10,11,12]);}catch(e){}
+  setTimeout(function(){
+    window.__diag0={count:Toile.count(), plantOne:!!Toile.plantOne(true)};
+    for(var q=1;q<=12;q++){ try{ Toile.addPromi(q); }catch(e){ window.__diag0.err=''+e; } }
+    window.__diag={count:Toile.count(), abs1:!!Toile.dalleAbs(1), abs2:!!Toile.dalleAbs(2),
+                   theme:Toile.getTheme(), pal:Toile.getPalette()};
+    try{ var t=document.createElement('canvas'); Toile.dalleTrame(t,1,1);
+         window.__diag.taille=t.width+'x'+t.height; }catch(e){ window.__diag.err=''+e; }
+    /* on agrandit la Toile AVANT de rendre : dalles de 72 px -> 200 et plus */
+    var host=document.getElementById('toileCv'), par=host.parentNode;
+    par.style.width='1500px'; par.style.height='2100px';
+    host.style.width='1500px'; host.style.height='2100px';
+    Toile_resize(); Toile.sync([1,2,3,4,5,6,7,8,9,10,11,12]);
+    window.__diag.apres={count:Toile.count(), abs1:!!Toile.dalleAbs(1)};
+    var MONDES=['encre','mosaique','touffe','braille','pixel','terrazzo','gravure','sillons'];
+    var G=document.getElementById('g'), R={};
+    MONDES.forEach(function(m){
+      Toile.setTheme(m);
+      var li=document.createElement('div'); li.textContent=m; G.appendChild(li);
+      var info=[];
+      for(var pid=1;pid<=4;pid++){
+        var cv=document.createElement('canvas'); cv.className='d';
+        cv.setAttribute('data-cad',m+'-'+pid);
+        try{ Toile.dalleTrame(cv,pid,1); }catch(e){ info.push('ERR'); continue; }
+        G.appendChild(cv);
+        var g=cv.getContext('2d'), d=g.getImageData(0,0,cv.width,cv.height).data;
+        var cols={}, plein=0;
+        for(var i=0;i<d.length;i+=4){ if(d[i+3]>8){ plein++;
+          var key=((d[i]>>3)<<10)|((d[i+1]>>3)<<5)|(d[i+2]>>3); cols[key]=(cols[key]||0)+1; } }
+        info.push(cv.width+'x'+cv.height+' plein '+Math.round(plein/(cv.width*cv.height)*100)+'% '
+          +Object.keys(cols).length+' teintes');
+      }
+      var p=document.createElement('div'); p.textContent='   '+info.join(' | ');
+      G.appendChild(p); R[m]=info;
+    });
+    Toile.setTheme('encre');
+    window.__R=R; window.__pret=true;
+  },1200);
+});
+</script></body></html>

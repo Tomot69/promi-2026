@@ -1,0 +1,8 @@
+light : la phrase montre son verbe (Je promets)      OK  h=51.3 txt='je me promets'
+light : la phrase montre son verbe (Promets-moi)     OK  h=51.3 txt='je promets'
+light : la bascule mène à un vrai bouton             OK  bouton={'f': 1, 'h': 58, 'vis': True}
+dark : la phrase montre son verbe (Je promets)       OK  h=51.3 txt='je me promets'
+dark : la phrase montre son verbe (Promets-moi)      OK  h=51.3 txt='je promets'
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 58, 'vis': True}
+
+6/6

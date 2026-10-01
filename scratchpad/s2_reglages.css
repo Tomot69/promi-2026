@@ -1,0 +1,101 @@
+
+/* ═══════════════════════════════════════════════════════════════════════════════════════
+   SECTION 2 · RÉGLAGES GÉNÉRAUX (§5 « Réglages généraux »).
+   L'écran de l'app porte DOUZE réglages ; l'inventaire n'en dessine que trois plus le bloc
+   du Cercle. Réduire l'app à trois lignes serait retirer des fonctions : je ne le fais pas
+   (QUESTIONS.md · S2/Q13). Ce qui est porté, c'est la GRAMMAIRE de l'inventaire — entête à
+   sa cote, réglages 342 × 64 rayon 22 contour 3, libellé en capitales dans la teinte,
+   valeur Bricolage 700/18, et le bloc du Cercle avec ses quatre réglages floutés.
+   Les pastilles vertes et le dégradé du Cercle disparaissent : §6 interdit le dégradé, et
+   CLAUDE.md §3 la couleur qui ne dit rien.
+   ═══════════════════════════════════════════════════════════════════════════════════════ */
+
+/* — l'entête : « Réglages » Bricolage 700 / 38, interlettre -.035em, à 24 / 40 — */
+#device #settingsScreen .scr-ti{
+  position:absolute!important;left:24px!important;top:40px!important;height:44px!important;
+  margin:0!important;padding:0!important;display:flex!important;align-items:center!important;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;font-size:38px!important;
+  letter-spacing:-.035em!important;line-height:1!important}
+/* le « s » clignotant portait une couleur atténuée : le moodboard écrit le mot d'un trait */
+#device #settingsScreen .scr-ti .ti-x{color:inherit!important;-webkit-text-fill-color:currentColor!important;
+  opacity:1!important;animation:none!important}
+#device.device:not(.light) #settingsScreen .scr-ti{color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+#device.device.light #settingsScreen .scr-ti{color:#16171B!important;-webkit-text-fill-color:#16171B!important}
+#device #settingsScreen>.closeb{
+  position:absolute!important;left:auto!important;right:24px!important;top:44px!important;
+  height:34px!important;display:flex!important;align-items:center!important;gap:9px!important}
+#device #settingsScreen>.closeb span{
+  font-family:Apfel,system-ui,sans-serif!important;font-weight:500!important;font-size:12.5px!important;
+  letter-spacing:.20em!important;line-height:1!important}
+
+/* — la liste part de 112, écart 14 (les cotes de l'inventaire : 112 · 190 · 296 · 374) — */
+#device #settingsScreen{padding:112px 24px 40px!important;box-sizing:border-box!important}
+#device #settingsScreen>*{margin-left:0!important;margin-right:0!important}
+
+/* — LE RÉGLAGE (§3.3) — */
+#device #settingsScreen .scard{
+  width:342px!important;min-height:64px!important;box-sizing:border-box!important;
+  border-radius:22px!important;border:3px solid #F4EEE1!important;background:transparent!important;
+  padding:0 22px!important;margin:0 0 14px 0!important;display:flex!important;align-items:center!important;
+  justify-content:space-between!important;gap:12px!important;box-shadow:none!important}
+#device.device.light #settingsScreen .scard{border-color:#16171B!important}
+#device #settingsScreen .scard .k{
+  font-family:Apfel,system-ui,sans-serif!important;font-weight:500!important;font-size:11.5px!important;
+  letter-spacing:.18em!important;text-transform:uppercase!important;line-height:1!important;
+  opacity:1!important;white-space:nowrap!important}
+#device #settingsScreen .scard .v{
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;font-size:18px!important;
+  letter-spacing:-.01em!important;line-height:1.1!important;text-transform:none!important;
+  background:none!important;border:0!important;border-radius:0!important;padding:0!important;
+  box-shadow:none!important;opacity:1!important;white-space:nowrap!important;
+  overflow:hidden!important;text-overflow:ellipsis!important}
+/* la teinte du Promi porte les libellés (§1.2 / §5) */
+#device.device:not(.light) #settingsScreen .scard .k{color:#CBAAFF!important;-webkit-text-fill-color:#CBAAFF!important}
+#device.device.light #settingsScreen .scard .k{color:#3A54FF!important;-webkit-text-fill-color:#3A54FF!important}
+#device.device:not(.light) #settingsScreen .scard .v,
+#device.device:not(.light) #settingsScreen .scard .v *{color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+#device.device.light #settingsScreen .scard .v,
+#device.device.light #settingsScreen .scard .v *{color:#16171B!important;-webkit-text-fill-color:#16171B!important}
+/* le rouge d'un réglage définitif reste : il DIT quelque chose (CLAUDE.md §3) */
+#device #settingsScreen .scard .v.danger,#device #settingsScreen .scard .v[style*="rate"]{
+  color:#F07A2E!important;-webkit-text-fill-color:#F07A2E!important}
+/* les libellés de groupe : Apfel en capitales, dans la teinte — pas de gros titre */
+#device #settingsScreen .grouplab{
+  font-family:Apfel,system-ui,sans-serif!important;font-weight:500!important;font-size:11.5px!important;
+  letter-spacing:.18em!important;text-transform:uppercase!important;opacity:1!important;
+  margin:18px 0 12px 2px!important;padding:0!important}
+#device.device:not(.light) #settingsScreen .grouplab{color:#CBAAFF!important;-webkit-text-fill-color:#CBAAFF!important}
+#device.device.light #settingsScreen .grouplab{color:#3A54FF!important;-webkit-text-fill-color:#3A54FF!important}
+
+/* — L'ENCART DU CERCLE (§3.8) : 342 × 90, rayon 26, fond crème en sombre / encre en clair,
+     titre et sous-titre dans la teinte de la dalle. AUCUN DÉGRADÉ (§6). — */
+#device #settingsScreen .set-cercle{
+  width:342px!important;height:90px!important;box-sizing:border-box!important;border-radius:26px!important;
+  border:0!important;padding:0 22px!important;margin:0 0 14px 0!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;
+  justify-content:center!important;gap:5px!important;box-shadow:none!important;
+  background-image:none!important;-webkit-mask-image:none!important}
+#device.device:not(.light) #settingsScreen .set-cercle{background:#F4EEE1!important}
+#device.device.light #settingsScreen .set-cercle{background:#16171B!important}
+#device #settingsScreen .set-cercle .sc-tx{display:flex!important;flex-direction:column!important;
+  align-items:center!important;gap:5px!important;width:100%!important}
+#device #settingsScreen .set-cercle .sc-t{
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;font-size:22px!important;
+  letter-spacing:-.02em!important;line-height:1!important;white-space:nowrap!important}
+#device #settingsScreen .set-cercle .sc-s{
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:600!important;font-size:15px!important;
+  letter-spacing:-.01em!important;line-height:1.1!important;white-space:nowrap!important}
+#device #settingsScreen .set-cercle .sc-t,#device #settingsScreen .set-cercle .sc-s,
+#device #settingsScreen .set-cercle .sc-t *,#device #settingsScreen .set-cercle .sc-s *{
+  color:#AE86F2!important;-webkit-text-fill-color:#AE86F2!important;opacity:1!important}
+#device.device.light #settingsScreen .set-cercle .sc-t,#device.device.light #settingsScreen .set-cercle .sc-s,
+#device.device.light #settingsScreen .set-cercle .sc-t *,#device.device.light #settingsScreen .set-cercle .sc-s *{
+  color:#CBAAFF!important;-webkit-text-fill-color:#CBAAFF!important}
+#device #settingsScreen .set-cercle .sc-go{display:none!important}
+
+/* la carte de profil garde sa fonction (photo, prénom) et prend la grammaire du réglage */
+#device #settingsScreen .prof-card{
+  width:342px!important;box-sizing:border-box!important;border-radius:22px!important;
+  border:3px solid #F4EEE1!important;background:transparent!important;margin:0 0 14px 0!important;
+  box-shadow:none!important}
+#device.device.light #settingsScreen .prof-card{border-color:#16171B!important}

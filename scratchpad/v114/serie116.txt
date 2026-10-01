@@ -1,0 +1,129 @@
+=== redteam_tokens.py
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_contour.py
+OK [clair] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== redteam_volume.py
+liste blanche (la Pelote) : 1 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE
+dette de naissance : 305 · retrouvée : 305 · soldée depuis : 0
+✅ AUCUN VOLUME HORS DE LA PELOTE
+=== redteam_ajouter.py
+OK page+ [dark] {'barre': 760, 'liste': [487, 659], 'ajouter': [681, 733], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK fiche [dark] {'barre': 760, 'liste': [255.8, 607.8], 'ajouter': [629.8, 681.8], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK page+ [light] {'barre': 760, 'liste': [487, 659], 'ajouter': [681, 733], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK fiche [light] {'barre': 760, 'liste': [255.8, 607.8], 'ajouter': [629.8, 681.8], 'pastilles_sous_le_bouton': 0, 'trait': None}
+✅ la liste défile dans son espace, le bouton garde sa ligne
+=== redteam_clavier.py
+  ✓ Peaufiner — le champ visé par la barre de la fiche (400 ms) — dans le geste (l.6177, différé en secours)
+  ✓ fiche — le commentaire, depuis le bouton rond (400 ms) — dans le geste (l.6232, différé en secours)
+  ✓ l'onboarding — le pseudo (520 ms) — dans le geste (l.7950, différé en secours)
+  ✓ le nom du Cercle (v114) — dans le geste (l.13199, différé en secours)
+  ✓ la page + d'un gardé de côté — le titre (30 ms) — dans le geste (l.13379, différé en secours)
+  ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.31701, différé en secours)
+✅ le clavier s'ouvre au geste — 8 champs
+=== redteam_pilules.py
+nuee   [light]  titre 8.05:1  sous-titre 8.05:1  OK
+chiche [light]  titre 10.83:1  sous-titre 10.83:1  OK
+promi  [light]  titre 7.77:1  sous-titre 7.77:1  OK
+nuee   [dark]  titre 8.05:1  sous-titre 8.05:1  OK
+chiche [dark]  titre 12.78:1  sous-titre 12.78:1  OK
+promi  [dark]  titre 9.17:1  sous-titre 9.17:1  OK
+✅ les pilules se lisent
+=== redteam_suggestions.py
+soi       N=13 39 ouvertures  OK
+demander  N=11 33 ouvertures  OK
+chiche    N=18 54 ouvertures  OK
+nuee      N=38 114 ouvertures  OK
+✅ tirage sans remise
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_filets.py
+fiche cercle   [light]  filet non    OK
+fiche tenue    [light]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [light]  filet non    OK
+page+ chiche   [light]  filet non    OK
+page+ cercle   [light]  filet non    OK
+
+filet du trait : 14/14
+=== redteam_vide.py
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_flash.py
+  ✅ B1 · + → nuee : aucun flash au premier plan (154 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (84 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1713 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1934 ms)
+
+32/32
+=== redteam_champ.py
+  Nuée [light]                   OK
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_tonsurton.py
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_decoupe.py
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_verbe.py
+light : la phrase montre son verbe (Promets-moi)     OK  h=56.0 txt='je promets'
+light : la bascule mène à un vrai bouton             OK  bouton={'f': 1, 'h': 60, 'vis': True}
+dark : la phrase montre son verbe (Je promets)       OK  h=56.0 txt='je me promets'
+dark : la phrase montre son verbe (Promets-moi)      OK  h=56.0 txt='je promets'
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 60, 'vis': True}
+
+6/6
+=== redteam_tuiles.py
+[sombre · souris · clic] chiche après chiche→nuee→promi    OK  
+[sombre · souris · clic] nuee après rien                   OK  
+[sombre · souris · clic] chiche après nuee                 OK  
+[sombre · souris · clic] nuee après nuee→chiche            OK  
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+=== redteam_gens.py
+[sombre] Chiche · qui tu défies · une personne à toucher         KO  aucune pastille libre
+[sombre] Chiche · avec qui · une personne à toucher              KO  aucune pastille libre
+[sombre] Nuée · avec · une personne à toucher                    KO  aucune pastille libre
+[sombre] Fiche · Peaufiner · À QUI · une personne à toucher      KO  aucune pastille libre
+
+0/10
+KO : [clair] Promi · à qui · une personne à toucher · [clair] Chiche · qui tu défies · une personne à toucher · [clair] Chiche · avec qui · une personne à toucher · [clair] Nuée · avec · une personne à toucher · [clair] Fiche · Peaufiner · À QUI · une personne à toucher · [sombre] Promi · à qui · une personne à toucher · [sombre] Chiche · qui tu défies · une personne à toucher · [sombre] Chiche · avec qui · une personne à toucher · [sombre] Nuée · avec · une personne à toucher · [sombre] Fiche · Peaufiner · À QUI · une personne à toucher
+=== releve-S3-page-plus.py
+
+── PRÉSENCE PEINTE : 2
+     pp_geste_pendant   [dark] pp-trace « continue → » : ton sur ton (Δ25)
+     pp_geste_signe     [dark] pp-trace « UN JOUR » : ton sur ton (Δ25)
+
+❌  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 2
+   écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire
+=== redteam_air.py
+✅  L'AIR EST INTACT — 698 paires de textes, 68 écrans, deux thèmes.
+FIN

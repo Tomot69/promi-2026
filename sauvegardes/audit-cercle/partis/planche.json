@@ -1,0 +1,23 @@
+[
+ {
+  "parti": "A",
+  "prix_y": 360.0,
+  "essai_y": 548.0,
+  "essai_sous_le_pli": false,
+  "hauteur": 1214.0
+ },
+ {
+  "parti": "B",
+  "prix_y": 250.0,
+  "essai_y": 438.0,
+  "essai_sous_le_pli": false,
+  "hauteur": 1108.0
+ },
+ {
+  "parti": "C",
+  "prix_y": 473.0,
+  "essai_y": 661.0,
+  "essai_sous_le_pli": false,
+  "hauteur": 1327.0
+ }
+]

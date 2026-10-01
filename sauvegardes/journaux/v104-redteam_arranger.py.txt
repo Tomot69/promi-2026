@@ -1,0 +1,12 @@
+  ✅ 1 · la porte est sur l'accueil et ouvre la feuille, au doigt  — {'x': 308, 'y': 746, 'vu': True}
+  ✅ 2 · « Date » : les plus proches en haut (corrélation échéance ↔ hauteur ≥ 0.6)  — corrélation 0.86 sur 18 paroles
+  ✅ 3 · « Nuée » : les paroles d'une Nuée au-dessus des autres  — avec 369 · sans 612
+  ✅ 4 · « Personne » : mes paroles au-dessus de celles des autres  — moi 272 · autres 549
+  ✅ 5 · « Inspi » : chaque dalle revient à sa place (≤ 2 px)  — écart max 1.0 px
+  ✅ 6 · esquille : la Toile se réorganise, elle ne saute pas  — trajet 447 px en 50 images, plus grand pas 6 %
+  ✅ 6 · madrure : la Toile se réorganise, elle ne saute pas  — trajet 708 px en 44 images, plus grand pas 10 %
+  ✅ 6 · encre : la Toile se réorganise, elle ne saute pas  — trajet 455 px en 35 images, plus grand pas 8 %
+  ✅ 6 · braille : la Toile se réorganise, elle ne saute pas  — trajet 461 px en 20 images, plus grand pas 27 %
+  ✅ 7 · après rechargement l'ordre est gardé et la Toile déjà rangée  — state.sort date · corrélation 0.95
+
+10/10

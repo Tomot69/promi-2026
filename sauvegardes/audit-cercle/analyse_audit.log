@@ -1,0 +1,365 @@
+
+── accueil
+   div.stage-fade-b                                               dégradé : linear-gradient(to top, color(srgb 0.109804 0.1137   [S·C S·g]
+   div.stage-fade-b                                               dégradé : linear-gradient(to top, color(srgb 0.968627 0.9529   [C·C C·g]
+   div.stage-fade-t                                               dégradé : radial-gradient(120% 105% at 100% 0%, color(srgb 0   [S·C S·g C·C C·g]
+   #filDot                                                        ombre portée : rgb(22, 23, 27) 0px 0px 0px 2px   [S·C S·g]
+   #filDot                                                        ombre portée : rgb(239, 234, 224) 0px 0px 0px 2px   [C·C C·g]
+   #device                                                        ombre portée : rgba(0, 0, 0, 0.62) 0px 30px 80px 0px, rgb(35, 36, 42) 0px 0   [S·C S·g C·C C·g]
+   #createBtn                                                     ombre portée : rgba(58, 84, 255, 0.38) 0px 0px 24px 0px, rgba(208, 176, 255   [S·C S·g C·C C·g]
+   #promiI « i »                                                  opacité effective 0.60 (< .72)   [S·C S·g C·C C·g]
+   #sidelabel « LA TOILE · 15 »                                   opacité effective 0.70 (< .72)   [S·C S·g C·C C·g]
+   #sidelabel « LA TOILE · 15 »                                   texte à 10.0 px (< 12)   [S·C S·g C·C C·g]
+   span.l « Aura »                                                texte à 10.0 px (< 12)   [S·C S·g C·C C·g]
+   span.l « Fil »                                                 texte à 10.0 px (< 12)   [S·C S·g C·C C·g]
+   span.l « Partager »                                            texte à 10.0 px (< 12)   [S·C S·g C·C C·g]
+   span.l « Studio »                                              texte à 10.0 px (< 12)   [S·C S·g C·C C·g]
+   span.eb « 5G · v592 »                                          texte à 11.0 px (< 12)   [S·C S·g C·C C·g]
+   span.eb « 9:41 »                                               texte à 11.0 px (< 12)   [S·C S·g C·C C·g]
+
+── aura
+   div.au-vis                                                     dégradé : radial-gradient(circle at 70% 23%, rgb(185, 140, 2   [S·C S·g C·C C·g]
+   div.au-vis                                                     dégradé : radial-gradient(circle at 72% 54%, rgb(95, 120, 25   [S·C S·g C·C C·g]
+   div.au-vis                                                     dégradé : radial-gradient(circle at 88% 30%, rgb(208, 176, 2   [S·C S·g C·C C·g]
+   #auraInfoBtn « i »                                             face hors des six : Georgia   [S·C S·g C·C C·g]
+   #auraInfoBtn « i »                                             opacité effective 0.42 (< .72)   [S·C S·g C·C C·g]
+
+── aura_aide
+   span « mauve »                                                 ILLISIBLE : contraste 1.67 (rgb(208, 176, 255) sur rgb(247, 243, 234), fond de #auraHelp)   [C·C]
+   span « terracotta »                                            ILLISIBLE : contraste 2.52 (rgb(240, 122, 46) sur rgb(247, 243, 234), fond de #auraHelp)   [C·C]
+   #ahCercleCta                                                   dégradé : linear-gradient(120deg, rgb(58, 84, 255), rgb(107,   [C·g]
+   span.ah-badge.prem « Avec le Cercle »                          dégradé : linear-gradient(120deg, rgba(58, 84, 255, 0.9), rg   [S·C S·g C·C C·g]
+   #ahCercleCta                                                   dégradé : linear-gradient(152deg, rgb(66, 87, 255) 0%, rgb(1   [S·g]
+   div.ah-ill.i3                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(143, 160,    [S·C S·g C·C C·g]
+   div.ah-ill.i1                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(208, 176,    [S·C S·g C·C C·g]
+   div.ah-ill.i11                                                 dégradé : radial-gradient(circle at 45% 40%, rgba(208, 176,    [S·C S·g C·C C·g]
+   div.ah-ill.i10                                                 dégradé : radial-gradient(circle at 45% 40%, rgba(240, 122,    [S·C S·g C·C C·g]
+   div.ah-ill.i12                                                 dégradé : radial-gradient(circle at 45% 40%, rgba(240, 122,    [S·C S·g C·C C·g]
+   div.ah-ill.i5                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(240, 122,    [S·C S·g C·C C·g]
+   div.ah-ill.i2                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(58, 84, 25   [S·C S·g C·C C·g]
+   div.ah-ill.i4                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(58, 84, 25   [S·C S·g C·C C·g]
+   div.ah-ill.i6                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(58, 84, 25   [S·C S·g C·C C·g]
+   div.ah-ill.i7                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(58, 84, 25   [S·C S·g C·C C·g]
+   div.ah-ill.i8                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(58, 84, 25   [S·C S·g C·C C·g]
+   div.ah-ill.i9                                                  dégradé : radial-gradient(circle at 45% 40%, rgba(58, 84, 25   [S·C S·g C·C C·g]
+   #ahLocked                                                      flou 7 px (≠ 2,4)   [S·g C·g]
+   b « Les promesses tenues qui vous lient »                      flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   b « dans les deux sens »                                       flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   b « des deux côtés »                                           flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   b « deux disques »                                             flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   b « déclinées Nuée par Nuée »                                  flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   b « ensemble »                                                 flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   b « orbite »                                                   flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-card                                                    flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-ill.i10                                                 flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-ill.i11                                                 flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-ill.i12                                                 flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-ill.i7                                                  flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-ill.i8                                                  flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-ill.i9                                                  flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-s « : les paroles honorées — la trace vivant »          flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-s « Chaque proche a alors — ta parole envers »          flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-s « Crée autant de Nuées que tu veux et ouvr »          flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-s « En activant ton Cercle, ton Noyau s’ento »          flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-s « Les mêmes lectures (Évolution, Compositi »          flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-s « L’harmonie du lien, ressentie : ce que t »          flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-t « Le double Noyau & l’orbite »                        flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-t « Les disques par personne »                          flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-t « Les graphs par Nuée »                               flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-t « L’équilibre du lien »                               flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-t « Nuées illimitées & designs »                        flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.ah-t « Tes proches et toi »                                flou 7 px (≠ 2,4) — hérité de #ahLocked   [S·g C·g]
+   div.sc-go « › »                                                ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-s « en douceur · et ce qui circule entre vou »          ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-t « Vois la parole qu'on te tient »                     ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.ah-ill.i1                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i10                                                 ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i11                                                 ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i12                                                 ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i2                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i3                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i4                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i5                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i6                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i7                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i8                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   div.ah-ill.i9                                                  ombre portée : rgba(255, 255, 255, 0.16) 0px 0px 0px 1px inset   [S·C S·g C·C C·g]
+   span.ah-badge.prem « Avec le Cercle »                          ombre portée : rgba(58, 84, 255, 0.3) 0px 4px 14px 0px   [S·C S·g C·C C·g]
+   #ahCercleCta                                                   ombre portée : rgba(58, 84, 255, 0.3) 0px 8px 26px 0px   [C·g]
+   #ahCercleCta                                                   ombre portée : rgba(58, 84, 255, 0.34) 0px 10px 30px 0px   [S·g]
+   b « Les promesses tenues qui vous lient »                      opacité effective 0.49 (< .72)   [S·g C·g]
+   b « dans les deux sens »                                       opacité effective 0.49 (< .72)   [S·g C·g]
+   b « des deux côtés »                                           opacité effective 0.49 (< .72)   [S·g C·g]
+   b « deux disques »                                             opacité effective 0.49 (< .72)   [S·g C·g]
+   b « déclinées Nuée par Nuée »                                  opacité effective 0.49 (< .72)   [S·g C·g]
+   b « ensemble »                                                 opacité effective 0.49 (< .72)   [S·g C·g]
+   b « orbite »                                                   opacité effective 0.49 (< .72)   [S·g C·g]
+   div.ah-s « : les paroles honorées — la trace vivant »          opacité effective 0.49 (< .72)   [S·g C·g]
+   div.ah-s « Chaque proche a alors — ta parole envers »          opacité effective 0.49 (< .72)   [S·g C·g]
+   div.ah-s « Crée autant de Nuées que tu veux et ouvr »          opacité effective 0.49 (< .72)   [S·g C·g]
+   div.ah-s « En activant ton Cercle, ton Noyau s’ento »          opacité effective 0.49 (< .72)   [S·g C·g]
+   div.ah-s « Les mêmes lectures (Évolution, Compositi »          opacité effective 0.49 (< .72)   [S·g C·g]
+   div.ah-s « L’harmonie du lien, ressentie : ce que t »          opacité effective 0.49 (< .72)   [S·g C·g]
+   div.ah-t « Le double Noyau & l’orbite »                        opacité effective 0.60 (< .72)   [S·g C·g]
+   div.ah-t « Les disques par personne »                          opacité effective 0.60 (< .72)   [S·g C·g]
+   div.ah-t « Les graphs par Nuée »                               opacité effective 0.60 (< .72)   [S·g C·g]
+   div.ah-t « L’équilibre du lien »                               opacité effective 0.60 (< .72)   [S·g C·g]
+   div.ah-t « Nuées illimitées & designs »                        opacité effective 0.60 (< .72)   [S·g C·g]
+   div.ah-t « Tes proches et toi »                                opacité effective 0.60 (< .72)   [S·g C·g]
+
+── pageplus_peauf
+   span.ph-b « Je me promets »                                    ILLISIBLE : contraste 1.00 (rgb(244, 238, 225) sur rgb(244, 238, 225), fond de #createSheet)   [C·C C·g]
+   span.ph-m « aller voir la mer »                                ILLISIBLE : contraste 1.00 (rgb(244, 238, 225) sur rgb(244, 238, 225), fond de #createSheet)   [C·C C·g]
+   span.ph-m « aller voir la mer »                                ILLISIBLE : contraste 1.01 (rgb(22, 23, 27) sur rgb(18, 20, 42), fond de #createSheet)   [S·C S·g]
+   span.pc-n « Plein »                                            ILLISIBLE : contraste 2.76 (rgb(203, 170, 255) sur rgb(58, 84, 255), fond de button.pc-t.on)   [S·g]
+   #csPinceauRail                                                 déborde latéralement : x 0 → 1070   [S·C S·g C·C C·g]
+   button.pc-t                                                    déborde latéralement : x 376 → 454   [S·C S·g C·C C·g]
+
+── peauf_chiche
+   div.s2-enc-s « importance, récurrence, rappels, mémoire »      ILLISIBLE : contraste 1.92 (rgb(242, 151, 122) sur rgb(244, 238, 225), fond de div.s2-encart)   [S·g]
+   div.s2-enc-t « ✦ Le Cercle »                                   ILLISIBLE : contraste 1.92 (rgb(242, 151, 122) sur rgb(244, 238, 225), fond de div.s2-encart)   [S·g]
+
+── peauf_nuee
+   i « ▾ »                                                        ILLISIBLE : contraste 1.01 (rgb(244, 238, 225) sur rgb(243, 233, 254), fond de #dpDetails)   [C·C C·g]
+   span.dpd-mot « Peaufiner »                                     ILLISIBLE : contraste 1.01 (rgb(244, 238, 225) sur rgb(243, 233, 254), fond de #dpDetails)   [C·C C·g]
+   #nfAdd « Planter un Promi dans la Nuée »                       face hors des six : Arial   [S·C S·g C·C C·g]
+   div.np-lab « COMMENTAIRES »                                    texte à 11.5 px (< 12)   [S·C S·g C·C C·g]
+   div.np-lab « DESCRIPTION »                                     texte à 11.5 px (< 12)   [S·C S·g C·C C·g]
+   div.np-lab « DISSOUDRE LA NUÉE »                               texte à 11.5 px (< 12)   [S·C S·g C·C C·g]
+   div.np-lab « LE TRAIT »                                        texte à 11.5 px (< 12)   [S·C S·g C·C C·g]
+   div.np-lab « MEMBRES »                                         texte à 11.5 px (< 12)   [S·C S·g C·C C·g]
+   div.np-lab « PIÈCES JOINTES »                                  texte à 11.5 px (< 12)   [S·C S·g C·C C·g]
+
+── peauf_promi
+   div.s2-enc-s « importance, récurrence, rappels, mémoire »      ILLISIBLE : contraste 2.42 (rgb(174, 134, 242) sur rgb(244, 238, 225), fond de div.s2-encart)   [S·g]
+   div.s2-enc-t « ✦ Le Cercle »                                   ILLISIBLE : contraste 2.42 (rgb(174, 134, 242) sur rgb(244, 238, 225), fond de div.s2-encart)   [S·g]
+
+── personne
+   #personSheet                                                   déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   div.ps-vis                                                     dégradé : radial-gradient(circle at 88% 30%, rgb(208, 176, 2   [S·C S·g C·C C·g]
+
+── plus_cercleTopBtn_bas
+   #buyYear « Prendre l'année — 29 € »                            ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   b « 29 € »                                                     ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   b « 3,99 €/mois »                                              ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   b « l'inverse »                                                ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   b « ta »                                                       ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ILLISIBLE : contraste 1.16 (rgb(255, 255, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   div.pl-ic « ⟷ »                                                ILLISIBLE : contraste 2.10 (rgb(143, 160, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   #plusScreen                                                    déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   div.enh-voile                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ombre portée : rgba(58, 84, 255, 0.3) 0px 12px 30px 0px   [S·C S·g C·C C·g]
+   div.pl-note « ou un design à l'unité — 1 €, ou 4 pour  »       opacité effective 0.70 (< .72)   [S·C S·g C·C C·g]
+
+── plus_cercleTopBtn_haut
+   b « 29 € »                                                     ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   b « 3,99 €/mois »                                              ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   b « l'inverse »                                                ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   b « ta »                                                       ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ILLISIBLE : contraste 1.16 (rgb(255, 255, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   div.pl-ic « ⟷ »                                                ILLISIBLE : contraste 2.10 (rgb(143, 160, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·C C·g]
+   #plusScreen                                                    déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   div.enh-voile                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ombre portée : rgba(58, 84, 255, 0.3) 0px 12px 30px 0px   [S·C S·g C·C C·g]
+   div.pl-note « ou un design à l'unité — 1 €, ou 4 pour  »       opacité effective 0.70 (< .72)   [S·C S·g C·C C·g]
+
+── plus_openPlusTop_bas
+   #buyYear « Prendre l'année — 29 € »                            ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   b « 29 € »                                                     ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   b « 3,99 €/mois »                                              ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   b « l'inverse »                                                ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   b « ta »                                                       ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ILLISIBLE : contraste 1.16 (rgb(255, 255, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   div.pl-ic « ⟷ »                                                ILLISIBLE : contraste 2.10 (rgb(143, 160, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   #plusScreen                                                    déborde latéralement : x -16 → 406   [S·g C·g]
+   div.enh-voile                                                  déborde latéralement : x -16 → 406   [S·g C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ombre portée : rgba(58, 84, 255, 0.3) 0px 12px 30px 0px   [S·g C·g]
+   div.pl-note « ou un design à l'unité — 1 €, ou 4 pour  »       opacité effective 0.70 (< .72)   [S·g C·g]
+
+── plus_openPlusTop_haut
+   b « 29 € »                                                     ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   b « 3,99 €/mois »                                              ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   b « l'inverse »                                                ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   b « ta »                                                       ILLISIBLE : contraste 1.09 (rgb(231, 229, 223) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ILLISIBLE : contraste 1.16 (rgb(255, 255, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   div.pl-ic « ⟷ »                                                ILLISIBLE : contraste 2.10 (rgb(143, 160, 255) sur rgb(244, 238, 225), fond de #plusScreen)   [C·g]
+   #plusScreen                                                    déborde latéralement : x -16 → 406   [S·g C·g]
+   div.enh-voile                                                  déborde latéralement : x -16 → 406   [S·g C·g]
+   #buyMonth « Essayer 14 jours, puis 3,99 €/mois »               ombre portée : rgba(58, 84, 255, 0.3) 0px 12px 30px 0px   [S·g C·g]
+   div.pl-note « ou un design à l'unité — 1 €, ou 4 pour  »       opacité effective 0.70 (< .72)   [S·g C·g]
+
+── reglages
+   div.sc-s « · »                                                 ILLISIBLE : contraste 2.42 (rgb(174, 134, 242) sur rgb(244, 238, 225), fond de #openPlusTop)   [S·g]
+   div.sc-t « ✦ Le Cercle »                                       ILLISIBLE : contraste 2.42 (rgb(174, 134, 242) sur rgb(244, 238, 225), fond de #openPlusTop)   [S·g]
+   span « débloque tout Promi »                                   ILLISIBLE : contraste 2.42 (rgb(174, 134, 242) sur rgb(244, 238, 225), fond de #openPlusTop)   [S·g]
+   span « essai 14 jours »                                        ILLISIBLE : contraste 2.42 (rgb(174, 134, 242) sur rgb(244, 238, 225), fond de #openPlusTop)   [S·g]
+   #setAva                                                        dégradé : radial-gradient(circle at 72% 54%, rgb(95, 120, 25   [S·C S·g C·C C·g]
+   div.sc-s « tout Promi débloqué · merci »                       ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [C·g]
+   div.sc-s « · »                                                 ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   div.sc-t « ✦ Le Cercle »                                       ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   div.sc-t « ✦ Membre du Cercle ✓ »                              ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [C·g]
+   span « débloque tout Promi »                                   ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   span « essai 14 jours »                                        ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   #setAva                                                        ombre portée : rgba(0, 0, 0, 0.35) 0px 6px 20px 0px   [S·C S·g C·C C·g]
+   span.prof-cam                                                  ombre portée : rgba(255, 255, 255, 0.12) 0px 0px 0px 1px   [S·C S·g C·C C·g]
+
+── studio
+   #studioScreen                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #stBuyTx « Adopte ce design — 1 € »                            ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·C C·C]
+   div.sc-go « › »                                                ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·C C·C]
+   div.sc-s « avec Le Cercle »                                    ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·C C·C]
+   div.sc-t « Ou débloque-les tous »                              ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·C C·C]
+   span.st-buy-arr « › »                                          ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·C C·C]
+   div.stp-d.on                                                   ombre portée : rgb(22, 23, 27) 0px 0px 0px 6.5px, rgb(244, 238, 225) 0px 0p   [S·C S·g]
+   div.stp-d.on                                                   ombre portée : rgb(244, 238, 225) 0px 0px 0px 6.5px, rgb(22, 23, 27) 0px 0p   [C·C C·g]
+   div.sc-s « avec Le Cercle »                                    opacité effective 0.66 (< .72)   [S·C C·C]
+   div.stp-l « avec texte »                                       texte à 10.5 px (< 12)   [S·C S·g C·C C·g]
+   div.stp-l « clair »                                            texte à 10.5 px (< 12)   [C·C C·g]
+   div.stp-l « sombre »                                           texte à 10.5 px (< 12)   [S·C S·g]
+
+── studio_eclats
+   #studioScreen                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #stBuyTx « Adopte ce design — 1 € »                            ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-go « › »                                                ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-s « avec Le Cercle »                                    ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-t « Ou débloque-les tous »                              ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   span.st-buy-arr « › »                                          ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.stp-d.on                                                   ombre portée : rgb(22, 23, 27) 0px 0px 0px 6.5px, rgb(244, 238, 225) 0px 0p   [S·C S·g]
+   div.stp-d.on                                                   ombre portée : rgb(244, 238, 225) 0px 0px 0px 6.5px, rgb(22, 23, 27) 0px 0p   [C·C C·g]
+   div.sc-s « avec Le Cercle »                                    opacité effective 0.66 (< .72)   [S·g C·g]
+   div.stp-l « avec texte »                                       texte à 10.5 px (< 12)   [S·C S·g C·C C·g]
+   div.stp-l « clair »                                            texte à 10.5 px (< 12)   [C·C C·g]
+   div.stp-l « sombre »                                           texte à 10.5 px (< 12)   [S·C S·g]
+
+── studio_encre
+   #studioScreen                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #stBuyTx « Adopte ce design — 1 € »                            ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   div.sc-go « › »                                                ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   div.sc-s « avec Le Cercle »                                    ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   div.sc-t « Ou débloque-les tous »                              ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   span.st-buy-arr « › »                                          ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g]
+   div.stp-d.on                                                   ombre portée : rgb(22, 23, 27) 0px 0px 0px 6.5px, rgb(244, 238, 225) 0px 0p   [S·C S·g]
+   div.stp-d.on                                                   ombre portée : rgb(244, 238, 225) 0px 0px 0px 6.5px, rgb(22, 23, 27) 0px 0p   [C·C C·g]
+   div.sc-s « avec Le Cercle »                                    opacité effective 0.66 (< .72)   [S·g]
+
+── studio_gravure
+   #studioScreen                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #stBuyTx « Adopte ce design — 1 € »                            ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-go « › »                                                ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-s « avec Le Cercle »                                    ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-t « Ou débloque-les tous »                              ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   span.st-buy-arr « › »                                          ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.stp-d.on                                                   ombre portée : rgb(22, 23, 27) 0px 0px 0px 6.5px, rgb(244, 238, 225) 0px 0p   [S·C S·g]
+   div.stp-d.on                                                   ombre portée : rgb(244, 238, 225) 0px 0px 0px 6.5px, rgb(22, 23, 27) 0px 0p   [C·C C·g]
+   div.sc-s « avec Le Cercle »                                    opacité effective 0.66 (< .72)   [S·g C·g]
+   div.stp-l « avec texte »                                       texte à 10.5 px (< 12)   [C·g]
+   div.stp-l « clair »                                            texte à 10.5 px (< 12)   [C·g]
+
+── studio_sillons
+   #studioScreen                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #stBuyTx « Adopte ce design — 1 € »                            ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-go « › »                                                ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-s « avec Le Cercle »                                    ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-t « Ou débloque-les tous »                              ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   span.st-buy-arr « › »                                          ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.stp-d.on                                                   ombre portée : rgb(22, 23, 27) 0px 0px 0px 6.5px, rgb(244, 238, 225) 0px 0p   [S·C S·g]
+   div.stp-d.on                                                   ombre portée : rgb(244, 238, 225) 0px 0px 0px 6.5px, rgb(22, 23, 27) 0px 0p   [C·C C·g]
+   div.sc-s « avec Le Cercle »                                    opacité effective 0.66 (< .72)   [S·g C·g]
+
+── studio_terrazzo
+   #studioScreen                                                  déborde latéralement : x -16 → 406   [S·C S·g C·C C·g]
+   #stBuyTx « Adopte ce design — 1 € »                            ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-go « › »                                                ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-s « avec Le Cercle »                                    ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.sc-t « Ou débloque-les tous »                              ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   span.st-buy-arr « › »                                          ombre de texte : rgba(20, 8, 40, 0.55) 0px 1px 10px   [S·g C·g]
+   div.stp-d.on                                                   ombre portée : rgb(22, 23, 27) 0px 0px 0px 6.5px, rgb(244, 238, 225) 0px 0p   [S·C S·g]
+   div.stp-d.on                                                   ombre portée : rgb(244, 238, 225) 0px 0px 0px 6.5px, rgb(22, 23, 27) 0px 0p   [C·C C·g]
+   div.sc-s « avec Le Cercle »                                    opacité effective 0.66 (< .72)   [S·g C·g]
+
+familles de polices vues sur du texte visible : {'ApfelMid': 18, 'Bricolage': 19, 'Apfel': 8, 'Arial': 1, 'Fraunces': 1, 'Georgia': 1}
+
+contraste NON JUGÉ (dégradé dessous, texte recouvert ou inerte) — à regarder sur la capture :
+   accueil                  5G · v592 | 9:41 | Aura | Fil | Index | LA TOILE · 15 | Partager | Studio | Toile
+   aura                     le grand plongeoir | planter un arbre
+   aura_aide                : les paroles honorées — la tr | Avec le Cercle | Chaque proche a alors — ta par | Crée autant de Nuées que tu ve | En activant ton Cercle, ton No | Le double Noyau & l’orbite | Les disques par personne | Les graphs | Les graphs par Nuée | Les mêmes lectures (
+   pageplus_peauf           Promi | trace ta moitié
+   peauf_chiche             C'EST IMPORTANT ? | LA MÉMOIRE | RAPPEL | RÉCURRENCE | chaque semaine | la veille à 19:00 | réveille tes « en l’air » | visibles par Marion | · ·· ···
+   peauf_nuee               Planter un Promi dans la Nuée | Sec
+   peauf_promi              C'EST IMPORTANT ? | LA MÉMOIRE | RAPPEL | RÉCURRENCE | chaque semaine | la veille à 19:00 | réveille tes « en l’air » | · ·· ···
+   personne                 + Lancer un Chiche | + Planter un Promi | 2 J | 5 J · LE POTAGER | courir dimanche | faire les crêpes | rapporter le livre | reprendre l'arrosage automatiq | à Marion | à Rachel | à le groupe
+   plus_cercleTopBtn_bas    Essaie tout, | sans t'engager.
+   plus_cercleTopBtn_haut   Prendre l'année — 29 € | soit 2,42 €/mois · −39 %
+   plus_openPlusTop_bas     Essaie tout, | sans t'engager.
+   plus_openPlusTop_haut    Prendre l'année — 29 € | soit 2,42 €/mois · −39 %
+   reglages                 C'EST IMPORTANT ? | LA MÉMOIRE | Partager | RAPPEL | RÉCURRENCE | chaque semaine | la veille à 19:00 | réveille tes « en l’air » | · ·· ···
+   studio                   Encre | Terrazzo ✦ | avec texte | clair | glisse pour changer de monde | sombre | ‹ | ›
+   studio_eclats            Encre | Sillons ✦ | Terrazzo ✦ | avec texte | clair | glisse pour changer de monde | sombre | ‹ | ›
+   studio_encre             Encre | avec texte | clair | glisse pour changer de monde | sombre | ‹ | ›
+   studio_gravure           Gravure | avec texte | clair | glisse pour changer de monde | sombre | ‹ | ›
+   studio_sillons           Sillons | avec texte | clair | glisse pour changer de monde | sombre | ‹ | ›
+   studio_terrazzo          Terrazzo | avec texte | clair | glisse pour changer de monde | sombre | ‹ | ›
+
+══ LES PORTES
+   #cercleTopBtn                        dark_gratuit   doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 0}
+   #cercleTopBtn                        dark_cercle    doigt→soi                            → plusScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #cercleTopBtn                        light_gratuit  doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #cercleTopBtn                        light_cercle   doigt→soi                            → plusScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #openPlusTop                         dark_gratuit   doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #openPlusTop                         dark_cercle    doigt→invisible (0×0)                → settingsScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #openPlusTop                         light_gratuit  doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #openPlusTop                         light_cercle   doigt→invisible (0×0)                → settingsScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-encart             dark_gratuit   doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-encart             dark_cercle    doigt→invisible (0×0)                → detailPoster · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-encart             light_gratuit  doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-encart             light_cercle   doigt→invisible (0×0)                → detailPoster · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-cercle .s2-reg     dark_gratuit   doigt→div.s2-cercle                  → detailPoster · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-cercle .s2-reg     dark_cercle    doigt→soi                            → detailPoster · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-cercle .s2-reg     light_gratuit  doigt→div.s2-cercle                  → detailPoster · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #detailPoster .s2-cercle .s2-reg     light_cercle   doigt→soi                            → detailPoster · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #ahCercleCta                         dark_gratuit   doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #ahCercleCta                         dark_cercle    doigt→invisible (0×0)                → auraHelp,auraScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #ahCercleCta                         light_gratuit  doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #ahCercleCta                         light_cercle   doigt→invisible (0×0)                → auraHelp,auraScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #stLockCta                           dark_gratuit   doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #stLockCta                           dark_cercle    doigt→invisible (0×0)                → studioScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #stLockCta                           light_gratuit  doigt→soi                            → plusScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #stLockCta                           light_cercle   doigt→invisible (0×0)                → studioScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #karmaCercle                         dark_gratuit   doigt→invisible (0×0)                → auraScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #karmaCercle                         dark_cercle    doigt→invisible (0×0)                → auraScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #karmaCercle                         light_gratuit  doigt→invisible (0×0)                → auraScreen · premium False→False · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+   #karmaCercle                         light_cercle   doigt→invisible (0×0)                → auraScreen · premium True→True · héros {'w': 688, 'h': 344, 'affiche': [390, 195], 'peint': 100}
+
+══ LES ACHATS
+   #buyYear     {"recoit": "soi", "apres": {"premium": true, "couches": "auraScreen", "toast": "", "owned": [], "monde": "encre", "ls": "promi_orbite_ordre,promi_orbite_vus,promi_sigdemo,promi_state,promi_theme"}, "apres_rechargement": {"premium": false, "couches": "", "toast": "", "owned": [], "monde": "encre", "ls": "promi_orbite_ordre,promi_orbite_vus,promi_sigdemo,promi_state,promi_theme"}}
+   #buyMonth    {"recoit": "soi", "apres": {"premium": true, "couches": "auraScreen", "toast": "", "owned": [], "monde": "encre", "ls": "promi_orbite_ordre,promi_orbite_vus,promi_sigdemo,promi_state,promi_theme"}, "apres_rechargement": {"premium": false, "couches": "", "toast": "", "owned": [], "monde": "encre", "ls": "promi_orbite_ordre,promi_orbite_vus,promi_sigdemo,promi_state,promi_theme"}}
+   #stLockBuy   {"recoit": "soi", "avant": {"premium": false, "couches": "studioScreen", "toast": "", "owned": [], "monde": "encre", "ls": "promi_sigdemo,promi_state,promi_theme"}, "apres": {"premium": false, "couches": "studioScreen", "toast": "", "owned": ["gravure"], "monde": "gravure", "ls": "promi_monde,promi_sigdemo,promi_state,promi_studio_glisse,promi_theme"}, "apres_rechargement": {"premium": false, "couches": "", "toast": "", "owned": [], "monde": "encre", "ls": "promi_monde,promi_sigdemo,promi_state,promi_studio_glisse,promi_theme"}}
+   #resetApp    {"recoit": "soi", "apres": {"premium": true, "couches": "toileEmpty", "toast": "", "owned": [], "monde": "encre", "ls": "promi_sigdemo,promi_state,promi_theme"}}
+
+══ LES PINCEAUX
+   dark_gratuit : {"rail": [{"n": "Plein", "bord": "solid", "txt": "Plein", "vis": true}, {"n": "Coulé", "bord": "solid", "txt": "Coulé", "vis": true}, {"n": "Peigné", "bord": "solid", "txt": "Peigné", "vis": true}, {"n": "Sec", "bord": "solid", "txt": "Sec", "vis": true}, {"n": "Tressé", "bord": "dashed", "txt": "Tressé", "vis": true}, {"n": "Frangé", "bord": "dashed", "txt": "Frangé", "vis": true}, {"n": "Doublé", "bord": "dashed", "txt": "Doublé", "vis": true}, {"n": "Fendu", "bord": "dashed", "txt": "Fendu", "vis": true}, {"n": "Cranté", "bord": "dashed", "txt": "Cranté", "vis": true}, {"n": "Vrillé", "bord": "dashed", "txt": "Vrillé", "vis": true}, {"n": "Semé", "bord": "dashed", "txt": "Semé", "vis": tr
+   dark_cercle : {"rail": [{"n": "Plein", "bord": "solid", "txt": "Plein", "vis": true}, {"n": "Coulé", "bord": "solid", "txt": "Coulé", "vis": true}, {"n": "Peigné", "bord": "solid", "txt": "Peigné", "vis": true}, {"n": "Sec", "bord": "solid", "txt": "Sec", "vis": true}, {"n": "Tressé", "bord": "dashed", "txt": "Tressé", "vis": true}, {"n": "Frangé", "bord": "dashed", "txt": "Frangé", "vis": true}, {"n": "Doublé", "bord": "dashed", "txt": "Doublé", "vis": true}, {"n": "Fendu", "bord": "dashed", "txt": "Fendu", "vis": true}, {"n": "Cranté", "bord": "dashed", "txt": "Cranté", "vis": true}, {"n": "Vrillé", "bord": "dashed", "txt": "Vrillé", "vis": true}, {"n": "Semé", "bord": "dashed", "txt": "Semé", "vis": tr
+   light_gratuit : {"rail": [{"n": "Plein", "bord": "solid", "txt": "Plein", "vis": true}, {"n": "Coulé", "bord": "solid", "txt": "Coulé", "vis": true}, {"n": "Peigné", "bord": "solid", "txt": "Peigné", "vis": true}, {"n": "Sec", "bord": "solid", "txt": "Sec", "vis": true}, {"n": "Tressé", "bord": "dashed", "txt": "Tressé", "vis": true}, {"n": "Frangé", "bord": "dashed", "txt": "Frangé", "vis": true}, {"n": "Doublé", "bord": "dashed", "txt": "Doublé", "vis": true}, {"n": "Fendu", "bord": "dashed", "txt": "Fendu", "vis": true}, {"n": "Cranté", "bord": "dashed", "txt": "Cranté", "vis": true}, {"n": "Vrillé", "bord": "dashed", "txt": "Vrillé", "vis": true}, {"n": "Semé", "bord": "dashed", "txt": "Semé", "vis": tr
+   light_cercle : {"rail": [{"n": "Plein", "bord": "solid", "txt": "Plein", "vis": true}, {"n": "Coulé", "bord": "solid", "txt": "Coulé", "vis": true}, {"n": "Peigné", "bord": "solid", "txt": "Peigné", "vis": true}, {"n": "Sec", "bord": "solid", "txt": "Sec", "vis": true}, {"n": "Tressé", "bord": "dashed", "txt": "Tressé", "vis": true}, {"n": "Frangé", "bord": "dashed", "txt": "Frangé", "vis": true}, {"n": "Doublé", "bord": "dashed", "txt": "Doublé", "vis": true}, {"n": "Fendu", "bord": "dashed", "txt": "Fendu", "vis": true}, {"n": "Cranté", "bord": "dashed", "txt": "Cranté", "vis": true}, {"n": "Vrillé", "bord": "dashed", "txt": "Vrillé", "vis": true}, {"n": "Semé", "bord": "dashed", "txt": "Semé", "vis": tr
+
+══ LE STUDIO, MONDE PAR MONDE
+   terrazzo  dark_gratuit   data-w · classes « screen s-studio st-plat stp-inv show world-locked stp-verrou » · monde appliqué encre
+   terrazzo  dark_cercle    data-w · classes « screen s-studio st-plat show » · monde appliqué terrazzo
+   terrazzo  light_gratuit  data-w · classes « screen s-studio st-plat stp-clair show world-locked stp-verrou » · monde appliqué terrazzo
+   terrazzo  light_cercle   data-w · classes « screen s-studio st-plat stp-clair show » · monde appliqué terrazzo
+   gravure   dark_gratuit   data-w · classes « screen s-studio st-plat stp-inv world-locked stp-verrou show » · monde appliqué encre
+   gravure   dark_cercle    data-w · classes « screen s-studio st-plat show » · monde appliqué gravure
+   gravure   light_gratuit  data-w · classes « screen s-studio st-plat stp-clair world-locked stp-verrou show » · monde appliqué terrazzo
+   gravure   light_cercle   data-w · classes « screen s-studio st-plat stp-clair show » · monde appliqué gravure
+   sillons   dark_gratuit   data-w · classes « screen s-studio st-plat stp-inv world-locked stp-verrou show » · monde appliqué encre
+   sillons   dark_cercle    data-w · classes « screen s-studio st-plat show » · monde appliqué sillons
+   sillons   light_gratuit  data-w · classes « screen s-studio st-plat stp-clair world-locked stp-verrou show » · monde appliqué terrazzo
+   sillons   light_cercle   data-w · classes « screen s-studio st-plat stp-clair show » · monde appliqué sillons
+   eclats    dark_gratuit   aucun [data-w] pour eclats — portes vues · classes « screen s-studio st-plat stp-inv world-locked stp-verrou show » · monde appliqué encre
+   eclats    dark_cercle    aucun [data-w] pour eclats — portes vues · classes « screen s-studio st-plat show » · monde appliqué sillons
+   eclats    light_gratuit  aucun [data-w] pour eclats — portes vues · classes « screen s-studio st-plat stp-clair world-locked stp-verrou show » · monde appliqué terrazzo
+   eclats    light_cercle   aucun [data-w] pour eclats — portes vues · classes « screen s-studio st-plat stp-clair show » · monde appliqué sillons
+   encre     dark_gratuit   data-w · classes « screen s-studio st-plat stp-inv stp-verrou show » · monde appliqué encre
+   encre     dark_cercle    data-w · classes « screen s-studio st-plat show » · monde appliqué encre
+   encre     light_gratuit  data-w · classes « screen s-studio st-plat stp-clair show » · monde appliqué encre
+   encre     light_cercle   data-w · classes « screen s-studio st-plat stp-clair show » · monde appliqué encre

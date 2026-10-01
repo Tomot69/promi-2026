@@ -1,0 +1,39 @@
+
+==============================================================================
+  SECTION 1 — LES FICHES · les cinq lignes du critère
+==============================================================================
+  le corps descend pour dégager le plateau : 18 · 20 px
+      dark  promi_atenir     +20
+      dark  promi_encours    +20
+      dark  promi_tenue      +18
+      dark  chiche_lance     +20
+      dark  chiche_releve    +20
+      dark  chiche_duo       +20
+      light promi_atenir     +20
+      light promi_encours    +20
+      light promi_tenue      +18
+      light chiche_lance     +20
+      light chiche_releve    +20
+      light chiche_duo       +20
+  écarts de position > 3 px ............ 14
+  écarts de style ...................... 0
+  ÉLÉMENTS DÉCLARÉS MAIS PAS PEINTS .... 0
+  collisions de blocs .................. 0
+  éléments au-delà de y = 844 .......... 0
+==============================================================================
+  ✗ POS  dark  promi_atenir    titre            y   attendu 549.9  mesuré 541.2
+  ✗ POS  dark  promi_encours   titre            y   attendu 549.9  mesuré 541.2
+  ✗ POS  dark  promi_tenue     titre            y   attendu 621.9  mesuré 613.2
+  ✗ POS  dark  chiche_lance    titre            y   attendu 549.9  mesuré 541.2
+  ✗ POS  dark  chiche_releve   titre            y   attendu 547.6  mesuré 539.0
+  ✗ POS  dark  chiche_duo      à qui            y   attendu 575.0  mesuré 572.0
+  ✗ POS  dark  chiche_duo      titre            y   attendu 617.9  mesuré 609.2
+  ✗ POS  light promi_atenir    titre            y   attendu 549.9  mesuré 541.2
+  ✗ POS  light promi_encours   titre            y   attendu 549.9  mesuré 541.2
+  ✗ POS  light promi_tenue     titre            y   attendu 621.9  mesuré 613.2
+  ✗ POS  light chiche_lance    titre            y   attendu 549.9  mesuré 541.2
+  ✗ POS  light chiche_releve   titre            y   attendu 547.6  mesuré 539.0
+  ✗ POS  light chiche_duo      à qui            y   attendu 575.0  mesuré 572.0
+  ✗ POS  light chiche_duo      titre            y   attendu 617.9  mesuré 609.2
+
+  ❌  14 écarts restants.

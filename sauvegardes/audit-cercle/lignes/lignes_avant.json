@@ -1,0 +1,694 @@
+{
+ "fiche Promi 126 · invite": [
+  {
+   "champ": "LE TRAIT",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "À QUI",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "AVANT",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "NOTE",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 3,
+   "premiere": 3,
+   "derniere": 2.5,
+   "ys": [
+    17,
+    41,
+    84.6
+   ],
+   "min": 2.5
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "rayon": 46,
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "ys": [
+    23,
+    50.8
+   ],
+   "min": 12.9
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 3,
+   "premiere": 3,
+   "derniere": 2.5,
+   "ys": [
+    17,
+    41,
+    84.6
+   ],
+   "min": 2.5
+  },
+  {
+   "champ": "C'EST IMPORTANT ?",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "RÉCURRENCE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "RAPPEL",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "LA MÉMOIRE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "SUPPRIMER CE PROMI",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  }
+ ],
+ "fiche Promi 126 · long": [
+  {
+   "champ": "LE TRAIT",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "À QUI",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "AVANT",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "NOTE",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 4,
+   "premiere": 3,
+   "derniere": 2.5,
+   "ys": [
+    17,
+    41,
+    63.5,
+    84.6
+   ],
+   "min": 2.5
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "rayon": 46,
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "ys": [
+    23,
+    50.8
+   ],
+   "min": 12.9
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 3,
+   "premiere": 3,
+   "derniere": 2.5,
+   "ys": [
+    17,
+    41,
+    84.6
+   ],
+   "min": 2.5
+  },
+  {
+   "champ": "C'EST IMPORTANT ?",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "RÉCURRENCE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "RAPPEL",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "LA MÉMOIRE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "SUPPRIMER CE PROMI",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  }
+ ],
+ "page + · invite": [
+  {
+   "champ": "PromiFERMER",
+   "cls": "enh",
+   "h": 60,
+   "rayon": 30,
+   "lignes": 1,
+   "premiere": 40.2,
+   "derniere": 40.2,
+   "ys": [
+    21.8
+   ],
+   "min": 40.2
+  },
+  {
+   "champ": "À QUI",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "AVANT",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "NOTE",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 3,
+   "premiere": 3,
+   "derniere": 2.5,
+   "ys": [
+    17,
+    39.5,
+    84.6
+   ],
+   "min": 2.5
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "rayon": 46,
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "ys": [
+    23,
+    50.8
+   ],
+   "min": 12.9
+  }
+ ],
+ "page + · long": [
+  {
+   "champ": "PromiFERMER",
+   "cls": "enh",
+   "h": 60,
+   "rayon": 30,
+   "lignes": 1,
+   "premiere": 40.2,
+   "derniere": 40.2,
+   "ys": [
+    21.8
+   ],
+   "min": 40.2
+  },
+  {
+   "champ": "À QUI",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "AVANT",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "DANS UNE NUÉE",
+   "cls": "s2-reg",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 21.9,
+   "derniere": 21.9,
+   "ys": [
+    20.1
+   ],
+   "min": 21.9
+  },
+  {
+   "champ": "NOTE",
+   "cls": "s2-reg.s2-zone",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 4,
+   "premiere": 3,
+   "derniere": 2.5,
+   "ys": [
+    17,
+    39.5,
+    62,
+    84.6
+   ],
+   "min": 2.5
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "cls": "s2-reg.s2-vis2",
+   "h": 92,
+   "rayon": 46,
+   "lignes": 2,
+   "premiere": 12.9,
+   "derniere": 13.7,
+   "ys": [
+    23,
+    50.8
+   ],
+   "min": 12.9
+  }
+ ],
+ "Nuée potager · invite": [
+  {
+   "champ": "LE TRAIT",
+   "cls": "np-carte",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 2,
+   "premiere": 5.3,
+   "derniere": 19.7,
+   "ys": [
+    21,
+    80.8
+   ],
+   "min": 5.3
+  },
+  {
+   "champ": "DESCRIPTION",
+   "cls": "np-carte",
+   "h": 104,
+   "rayon": 52,
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "ys": [
+    19,
+    43,
+    70
+   ],
+   "min": 5.8
+  },
+  {
+   "champ": "MEMBRES",
+   "cls": "np-carte",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 23,
+   "derniere": 23,
+   "ys": [
+    21
+   ],
+   "min": 23
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "cls": "np-carte",
+   "h": 92,
+   "rayon": 46,
+   "lignes": 2,
+   "premiere": 6.3,
+   "derniere": 6.3,
+   "ys": [
+    14.8,
+    60.3
+   ],
+   "min": 6.3
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "cls": "np-carte",
+   "h": 104,
+   "rayon": 52,
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "ys": [
+    19,
+    43,
+    70
+   ],
+   "min": 5.8
+  },
+  {
+   "champ": "DISSOUDRE LA NUÉE",
+   "cls": "np-carte",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 23,
+   "derniere": 23,
+   "ys": [
+    21
+   ],
+   "min": 23
+  },
+  {
+   "champ": "Planter un Promi dans ",
+   "cls": "nf-add",
+   "h": 68,
+   "rayon": 31,
+   "lignes": 1,
+   "premiere": 41.6,
+   "derniere": 41.6,
+   "ys": [
+    23
+   ],
+   "min": 41.6
+  }
+ ],
+ "Nuée potager · long": [
+  {
+   "champ": "LE TRAIT",
+   "cls": "np-carte",
+   "h": 118,
+   "rayon": 59,
+   "lignes": 2,
+   "premiere": 5.3,
+   "derniere": 19.7,
+   "ys": [
+    21,
+    80.8
+   ],
+   "min": 5.3
+  },
+  {
+   "champ": "DESCRIPTION",
+   "cls": "np-carte",
+   "h": 104,
+   "rayon": 52,
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "ys": [
+    19,
+    43,
+    70
+   ],
+   "min": 5.8
+  },
+  {
+   "champ": "MEMBRES",
+   "cls": "np-carte",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 23,
+   "derniere": 23,
+   "ys": [
+    21
+   ],
+   "min": 23
+  },
+  {
+   "champ": "PIÈCES JOINTES",
+   "cls": "np-carte",
+   "h": 92,
+   "rayon": 46,
+   "lignes": 2,
+   "premiere": 6.3,
+   "derniere": 6.3,
+   "ys": [
+    14.8,
+    60.3
+   ],
+   "min": 6.3
+  },
+  {
+   "champ": "COMMENTAIRES",
+   "cls": "np-carte",
+   "h": 104,
+   "rayon": 52,
+   "lignes": 3,
+   "premiere": 7.4,
+   "derniere": 5.8,
+   "ys": [
+    19,
+    43,
+    70
+   ],
+   "min": 5.8
+  },
+  {
+   "champ": "DISSOUDRE LA NUÉE",
+   "cls": "np-carte",
+   "h": 64,
+   "rayon": 32,
+   "lignes": 1,
+   "premiere": 23,
+   "derniere": 23,
+   "ys": [
+    21
+   ],
+   "min": 23
+  },
+  {
+   "champ": "Planter un Promi dans ",
+   "cls": "nf-add",
+   "h": 68,
+   "rayon": 31,
+   "lignes": 1,
+   "premiere": 41.6,
+   "derniere": 41.6,
+   "ys": [
+    23
+   ],
+   "min": 41.6
+  }
+ ]
+}

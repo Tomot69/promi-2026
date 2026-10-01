@@ -1,0 +1,19 @@
+== S1 avant v117
+
+  ❌  12 écarts restants.
+== S1 v117
+  ✗ STY  dark  promi_atenir    trace            couleur  attendu #DD4D23   mesuré rgb(243, 231, 209)
+  ✗ STY  dark  promi_atenir    à qui            couleur  attendu #DD4D23   mesuré rgb(247, 240, 222)
+  ✗ STY  dark  promi_atenir    état             couleur  attendu #DD4D23   mesuré rgb(247, 240, 222)
+  ✗ STY  dark  promi_atenir    mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+  ✗ STY  dark  promi_encours   mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+  ✗ STY  dark  promi_tenue     mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+  ✗ STY  dark  chiche_lance    mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+  ✗ STY  dark  chiche_releve   trace            couleur  attendu #DD4D23   mesuré rgb(243, 231, 209)
+  ✗ STY  dark  chiche_releve   à qui            couleur  attendu #DD4D23   mesuré rgb(247, 240, 222)
+  ✗ STY  dark  chiche_releve   état             couleur  attendu #DD4D23   mesuré rgb(247, 240, 222)
+  ✗ STY  dark  chiche_releve   mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+  ✗ STY  dark  chiche_duo      mot Peaufiner    couleur  attendu #201908   mesuré rgb(5, 3, 2)
+== aura avant v117
+❌  35 ÉCARTS
+== marges seul

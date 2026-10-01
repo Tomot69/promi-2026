@@ -1,0 +1,65 @@
+
+════ dark
+   ✓ l’app déclare la bascule 94,5  94.5
+   ✓ fiche · rayon = règle de hauteur (12 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ fiche · air de l’encre ≥ 14.69  ('min 15.75', [])
+   ✓ fiche · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ fiche · note 4 rangées · air de l’encre ≥ 14.69  ('min 16.25', [])
+   ✓ fiche · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ fiche · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ fiche · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.75', [])
+   ✓ fiche · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · rayon = règle de hauteur (9 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ page + · air de l’encre ≥ 14.69  ('min 15.19', [("C'EST IMPORTANT ?", 'non confirmé : recouvert par cbb-lab,csBotBar'), ('LA MÉMOIRE', 'non confirmé : hors cadre')])
+   ✓ page + · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ page + · note 4 rangées · air de l’encre ≥ 14.69  ('min 15.67', [])
+   ✓ page + · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 17, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ page + · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ page + · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 17, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · la zone rebâtie est recalée avant toute image (16 rebâtissages vus)  toutes à 163, trois lignes, tout montré
+   ✓ Nuée · rayon = règle de hauteur (6 champs)  [(64, 32), (92, 46), (104, 30), (118, 30)]
+   ✓ Nuée · air de l’encre ≥ 14.69  ('min 16.06', [])
+   ✓ côte à côte · capturés (pilule 64 / rayon 32 · champ ouvert 140 / rayon 30)  seuil/dark_cote_a_cote.png
+   ✓ écran qui vend · prix et boutons lisibles (rapport ≥ 4,5, remplissage = couleur)  min 14.38
+   ✓ écran qui vend · « 29 € · soit 2,42 €/mois · −39 % », jamais « offerts »  Tout Promi pour 3,99 €/mois, arrête quand tu veux. Ou prends l'année : 29 € · soit 2,42 €/mois · −39 %.
+   ✓ écran qui vend · marge de 24 (titre, phrase, liste, boutons)  {'titre': 24, 'phrase': 24, 'liste': 24, 'bouton': 24, 'bouton2': 24}
+   ✓ gardé de côté · l’encart mène à l’écran qui vend, par-dessus  ('soi', 'createSheet,plusScreen')
+   ✓ Réglages · l’encart mène à l’écran qui vend  ('soi', 'plusScreen')
+
+════ light
+   ✓ l’app déclare la bascule 94,5  94.5
+   ✓ fiche · rayon = règle de hauteur (12 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ fiche · air de l’encre ≥ 14.69  ('min 15.75', [])
+   ✓ fiche · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ fiche · note 4 rangées · air de l’encre ≥ 14.69  ('min 16.25', [])
+   ✓ fiche · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ fiche · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ fiche · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.75', [])
+   ✓ fiche · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 15, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · rayon = règle de hauteur (9 champs)  [(64, 32), (92, 46), (118, 30)]
+   ✓ page + · air de l’encre ≥ 14.69  ('min 15.19', [("C'EST IMPORTANT ?", 'non confirmé : recouvert par cbb-lab,csBotBar'), ('LA MÉMOIRE', 'non confirmé : hors cadre')])
+   ✓ page + · note 4 rangées · rayon = règle de hauteur (1 champs)  [(140.5, 30)]
+   ✓ page + · note 4 rangées · air de l’encre ≥ 14.69  ('min 15.67', [])
+   ✓ page + · note 4 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 4, 'h', 140.5, 'libellé→texte', 17, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · note 5 rangées · rayon = règle de hauteur (1 champs)  [(163, 30)]
+   ✓ page + · note 5 rangées · air de l’encre ≥ 14.69  ('min 15.19', [])
+   ✓ page + · note 5 rangées · chantier 68 : libellé→texte et texte→visibilité ≥ 10, toutes les lignes montrées  ('rangées', 5, 'h', 163, 'libellé→texte', 17, 'texte→visibilité', 14.6, 'tout montré', True)
+   ✓ page + · la zone rebâtie est recalée avant toute image (16 rebâtissages vus)  toutes à 163, trois lignes, tout montré
+   ✓ Nuée · rayon = règle de hauteur (6 champs)  [(64, 32), (92, 46), (104, 30), (118, 30)]
+   ✓ Nuée · air de l’encre ≥ 14.69  ('min 16.06', [])
+   ✓ côte à côte · capturés (pilule 64 / rayon 32 · champ ouvert 140 / rayon 30)  seuil/light_cote_a_cote.png
+   ✗ écran qui vend · prix et boutons lisibles (rapport ≥ 4,5, remplissage = couleur)  [{'t': 'soit 2,42\xa0€/mois · −39\xa0%', 'r': 15.49, 'fill_egal': False}]
+   ✓ écran qui vend · « 29 € · soit 2,42 €/mois · −39 % », jamais « offerts »  Tout Promi pour 3,99 €/mois, arrête quand tu veux. Ou prends l'année : 29 € · soit 2,42 €/mois · −39 %.
+   ✓ écran qui vend · marge de 24 (titre, phrase, liste, boutons)  {'titre': 24, 'phrase': 24, 'liste': 24, 'bouton': 24, 'bouton2': 24}
+   ✓ gardé de côté · l’encart mène à l’écran qui vend, par-dessus  ('soi', 'createSheet,plusScreen')
+   ✓ Réglages · l’encart mène à l’écran qui vend  ('soi', 'plusScreen')
+
+══ défauts connus, déclarés (non comptés) :
+   · dark · page + · AVANT : le rond photo de la page + posé sur la rangée (chantier 64) — exclu de la mesure
+   · dark · Nuée · LE TRAIT (Nuée) : encre à 11.14 du contour — chantier 67, la rangée de pinceaux à 14,25 du bord droit
+   · light · page + · AVANT : le rond photo de la page + posé sur la rangée (chantier 64) — exclu de la mesure
+   · light · Nuée · LE TRAIT (Nuée) : encre à 11.14 du contour — chantier 67, la rangée de pinceaux à 14,25 du bord droit
+══ 1 contrat(s) raté(s)
+   ✗ light · écran qui vend · prix et boutons lisibles (rapport ≥ 4,5, remplissage = couleur) · [{'t': 'soit 2,42\xa0€/mois · −39\xa0%', 'r': 15.49, 'fill_egal': False}]
+fin rc=0

@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Arrivée et retrait</title>
+<style>
+:root{--fond:#F7F0DE;--encre:#201908;--doux:#6E6350}
+@media (prefers-color-scheme:dark){:root{--fond:#100D0B;--encre:#F7F0DE;--doux:#A2947C}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre);font:15px/1.45 Atkinson,system-ui,sans-serif}
+.page{max-width:1100px;margin:0 auto;padding:24px 16px 48px;display:flex;gap:28px;flex-wrap:wrap}
+.col{flex:1;min-width:300px}
+h1{font:600 28px/1.1 PromiLate,system-ui,sans-serif;margin:0 0 10px}
+.regarde{border:2px solid var(--encre);border-radius:22px;padding:14px 18px;margin:0 0 16px}
+.regarde p{margin:4px 0}
+.rail{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+.rail button{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--encre);background:transparent;color:var(--encre);border-radius:18px;height:36px;padding:0 14px;cursor:pointer}
+.rail button.on{background:var(--encre);color:var(--fond)}
+.etat{font:700 13px/1.2 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;margin:6px 0 0}
+.tel{width:390px;height:844px;border-radius:44px;overflow:hidden;border:2px solid var(--encre);flex:none;max-width:100%}
+.tel iframe{width:430px;height:932px;border:0;transform-origin:0 0}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="col">
+    <h1>L’arrivée et le retrait, monde par monde</h1>
+    <div class="regarde">
+      <p><b>Ce qu'il faut regarder :</b> la vraie app. Une parole est plantée : sa dalle arrive, la Toile lui fait une place. Deux secondes et demie plus tard, elle repart.</p>
+      <p><b>« Tous »</b> passe les treize mondes l'un après l'autre. Touche un monde pour rester dessus.</p>
+    </div>
+    <div class="rail" id="rail"></div>
+    <div class="rail"><button data-th="sombre" class="on">Sombre</button><button data-th="clair">Clair</button></div>
+    <div class="etat" id="etat">chargement de l'app…</div>
+  </div>
+  <div class="tel"><iframe id="app" src="app.html"></iframe></div>
+</div>
+<script>
+var MONDES=[['encre','Pochade'],['touffe','Touffe'],['mosaique','Tesselle'],['braille','Braille'],['pixel','Buvard'],['halin','Halin'],['esquille','Esquille'],['madrure','Madrure'],['ritournelle','Ritournelle'],['bobinette','Bobinette'],['terrazzo','Éclisse'],['gravure','Taille-douce'],['sillons','Houle']];
+var fr=document.getElementById('app'), etat=document.getElementById('etat'), rail=document.getElementById('rail');
+var choix=null, idx=0, pret=false, cycle=0;
+fr.style.transform='scale('+(390/430)+')';
+function bouton(k,nom){ var b=document.createElement('button'); b.textContent=nom; b.onclick=function(){ choix=k; [].forEach.call(rail.children,function(x){x.classList.toggle('on',x===b);}); }; rail.appendChild(b); return b; }
+bouton(null,'Tous').classList.add('on'); MONDES.forEach(function(m){ bouton(m[0],m[1]); });
+[].forEach.call(document.querySelectorAll('[data-th]'),function(b){ b.onclick=function(){ [].forEach.call(document.querySelectorAll('[data-th]'),function(x){x.classList.toggle('on',x===b);}); try{ fr.contentWindow.setTheme(b.dataset.th==='clair'?'light':'dark'); }catch(_){} }; });
+fr.onload=function(){ setTimeout(function(){ var w=fr.contentWindow; try{ var o=w.document.getElementById('promiOnb'); if(o){o.classList.add('gone');o.style.display='none';} w.setTheme(document.querySelector('[data-th].on').dataset.th==='clair'?'light':'dark'); }catch(_){} pret=true; tour(); },6500); };
+function nom(k){ for(var i=0;i<MONDES.length;i++) if(MONDES[i][0]===k) return MONDES[i][1]; return k; }
+function tour(){ var w=fr.contentWindow; if(!pret||!w.Toile){ setTimeout(tour,500); return; }
+  var k=choix||MONDES[idx%MONDES.length][0]; if(!choix) idx++;
+  if(w.Toile.getTheme()!==k){ w.Toile.setTheme(k); etat.textContent=nom(k)+' — la Toile se pose'; setTimeout(function(){ plante(w,k); },1800); } else plante(w,k); }
+/* v93 (Tom : « celebration-mondes doit montrer ce que voit vraiment quelqu'un qui plante par la page + — c'est le seul chemin réel »)
+   — comme la page + : la parole existe pendant qu'on l'écrit, l'app prépare son arrivée (_simPrepare), puis on la plante ; son départ se
+   prépare comme à l'ouverture de Peaufiner. Sans préparation (monde qui n'en a pas), rien ne change. */
+var PREP=3000;
+function prepare(w,aj,re){ try{ if(w._simPrepare) w._simPrepare(aj,re); }catch(_){ } }
+function auRepos(w,fn,n){ n=n||0; var r=false; try{ r=!!(w.Toile_state&&w.Toile_state().running); }catch(_){ } if(r&&n<40){ setTimeout(function(){ auRepos(w,fn,n+1); },150); return; } fn(); }   /* on écrit une parole sur une Toile posée */
+function plante(w,k){ auRepos(w,function(){ plante2(w,k); }); }
+function plante2(w,k){ var P=w.eval('promises'), id=90000+(cycle++);
+  P.push(Object.assign({},P[0],{id:id,title:'une parole',nuee:null})); prepare(w,[{id:id}],null); etat.textContent=nom(k)+' — une parole s\u2019écrit';
+  setTimeout(function(){ w.Toile.addPromi(id); etat.textContent=nom(k)+' — une parole est plantée';
+    setTimeout(function(){ prepare(w,null,[id]); },600);
+    setTimeout(function(){ etat.textContent=nom(k)+' — elle repart'; P.splice(P.length-1,1); w.Toile.sync(P.filter(function(p){return !p.draft;}).map(function(p){return p.id;})); setTimeout(tour,2000); },2400); },PREP); }
+</script>
+</body>
+</html>

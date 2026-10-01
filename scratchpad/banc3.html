@@ -1,0 +1,44 @@
+<!doctype html><meta charset="utf-8"><title>banc3</title>
+<body style="background:#16171B;margin:0"><div id="h"></div>
+<script>
+var BOX=330,CVS=[],GS=[],SEG=null,MODE='lignes';
+function toiles(n,d){document.getElementById('h').innerHTML='';CVS=[];GS=[];
+  for(var i=0;i<n;i++){var c=document.createElement('canvas');c.width=BOX*d;c.height=BOX*d;
+    c.style.cssText='position:absolute;left:20px;top:20px;width:'+BOX+'px;height:'+BOX+'px';
+    document.getElementById('h').appendChild(c);CVS.push(c);GS.push(c.getContext('2d'));}}
+/* N segments de longueur LG, répartis dans un disque de 150 : la couverture
+   totale vaut N × LG, quelle que soit la découpe. */
+function fab(N,LG){SEG=new Float32Array(N*4);
+  for(var i=0;i<N;i++){var a=i*2.399963,r=145*Math.sqrt(((i*7919)%9973)/9973);
+    var x=165+Math.cos(a)*r,y=165+Math.sin(a)*r,b=a*3.1;
+    SEG[i*4]=x;SEG[i*4+1]=y;SEG[i*4+2]=x+Math.cos(b)*LG;SEG[i*4+3]=y+Math.sin(b)*LG;}}
+function peint(N,d){
+  var par=Math.ceil(N/GS.length);
+  for(var k=0;k<GS.length;k++){var g=GS[k];
+    g.setTransform(d,0,0,d,0,0);g.clearRect(0,0,BOX,BOX);
+    g.strokeStyle='#F4EEE1';g.fillStyle='#F4EEE1';g.lineCap='butt';
+    for(var b=0;b<7;b++){
+      g.globalAlpha=0.08+0.72*(b+0.5)/7;g.lineWidth=0.35+0.85*(b+0.5)/7;
+      var i0=k*par+Math.floor(b*par/7),i1=k*par+Math.floor((b+1)*par/7);
+      if(MODE==='points'){for(var i=i0;i<i1&&i<N;i++){var o=i*4;g.fillRect(SEG[o],SEG[o+1],1.3,1.3);}}
+      else{g.beginPath();
+        for(var i2=i0;i2<i1&&i2<N;i2++){var o2=i2*4;
+          g.moveTo(SEG[o2],SEG[o2+1]);g.lineTo(SEG[o2+2],SEG[o2+3]);}
+        g.stroke();}
+    }
+    g.globalAlpha=1;}
+}
+window.essai=function(N,LG,ntoiles,d,mode,ms){return new Promise(function(res){
+  MODE=mode;toiles(ntoiles,d);fab(N,LG);
+  var dt=[],prev=null,t0=null;
+  function tick(t){
+    if(t0===null){t0=t;prev=t;}else{dt.push(t-prev);prev=t;}
+    peint(N,d);
+    if(t-t0<ms)requestAnimationFrame(tick);
+    else{dt.sort(function(x,y){return x-y;});
+      var moy=dt.reduce(function(x,y){return x+y;},0)/dt.length;
+      res({N:N,LG:LG,mode:mode,moy:+moy.toFixed(2),med:+dt[dt.length>>1].toFixed(2),
+           sup20:dt.filter(function(x){return x>20;}).length,im:dt.length});}}
+  requestAnimationFrame(tick);});};
+window.__pret=true;
+</script>

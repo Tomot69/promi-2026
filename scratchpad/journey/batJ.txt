@@ -1,0 +1,18 @@
+=== design ===
+❌  391 ÉCARTS avec la référence :
+=== ecrans ===
+144/144
+=== demande ===
+19/19
+=== toile ===
+14/16
+=== geste ===
+13/13
+=== filets ===
+OK — 0 filet(s) parasite(s)
+=== verbe ===
+6/6
+=== r2 ===
+10/10
+=== r3 ===
+18/18

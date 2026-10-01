@@ -1,0 +1,136 @@
+md5 app.html 93286104c8b4b204634d7eb844d556a8  18:53:29
+=== redteam_ecrans.py  rc=0  97s
+Fiche : s'ouvre [clair]                        OK  
+Fiche : vignette de dalle [clair]              OK  
+Fiche : le + commun [clair]                    OK  
+Fiche : rien ne déborde [clair]                OK  
+Aura : les Noyaux ne portent que l image et le prénom [clair] OK  
+Aura : le mot qualifie l objet (une des phrases de Tom) [clair] OK  
+Aura : aucun chiffre ni pourcentage [clair]    OK  
+Aura : aucune signature chiffrée [clair]       OK  
+Aura : sphère, Noyaux, légende, ce que tu as tenu, bouton [clair] OK  
+Aura : la légende nomme trois arcs en trois teintes d état [clair] OK  
+Aura : le Studio ne repeint pas les dalles déjà plantées [clair] OK  
+Aura : la légende est centrée entre les Noyaux et « Ce que tu as tenu » [clair] OK  
+le selecteur dit Toile / Index [clair]         OK  
+un seul Fil dans l app [clair]                 OK  
+le selecteur ouvre l Index [clair]             OK  
+les libelles tiennent dans le selecteur [clair] OK  
+le selecteur fait la largeur des deux boutons [clair] OK  
+Index : les Promi sont des blocs [clair]       OK  
+Index : seuls les urgents ont un aplat [clair] OK  
+Index : le mot du temps est peint [clair]      OK  
+Index : la vraie dalle est peinte [clair]      OK  
+Index : « a rattraper » a disparu [clair]      OK  
+Index : la recherche est conservee [clair]     OK  
+Index : le ✕ Fermer est conserve [clair]       OK  
+Index : toucher un bloc ouvre la fiche [clair] OK  
+le Fil a son bouton dans le dock [clair]       OK  
+le Fil a sa pastille [clair]                   OK  
+la pastille s allume sur du non-lu [clair]     OK  
+le bouton ouvre le Fil [clair]                 OK  
+le Fil affiche ses evenements [clair]          OK  
+la pastille s eteint apres lecture [clair]     OK  
+l anneau du + porte des proportions [clair]    OK  
+elles correspondent aux Promi tenus [clair]    OK  
+Aura : les arcs des Noyaux sont lisibles (6 px et plus) [clair] OK  
+Aura : la piste est neutre, les arcs disent l état [clair] OK  
+bouton + : rotation lente [clair]              OK  
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+150/150
+=== redteam.py  rc=0  23s
+titres et blocs alignes a gauche           OK  
+la barre Peaufiner ouvre et referme        OK  
+rien ne traine hors du tiroir              OK  
+un tap ailleurs referme                    OK  
+les deux modes basculent et restent accordes OK  
+Sombre / Clair de l epreuve                OK  
+le QR s active depuis le tiroir            OK  
+les formats changent et le pied suit       OK  
+Visibles / Tous reagit                     OK  
+Inviter present dans le tiroir             OK  
+le bouton rond relaie Partager             OK  
+le mot-marque alterne                      OK  
+aucun recouvrement                         OK  
+le ✕ ferme                                 OK  
+aucune erreur JS                           OK  
+
+15/15
+=== redteam2.py  rc=0  20s
+la barre est en bas, sous Peaufiner, dans le cadre OK  
+rangee Le Noyau presente                     OK  
+rangee Le texte presente                     OK  
+bouton QR present                            OK  
+le Noyau se pose et change de taille         OK  
+le Noyau se masque                           OK  
+Sans texte reagit                            OK  
+Visibles reagit                              OK  
+le QR bascule                                OK  
+aucune erreur JS                             OK  
+
+10/10
+=== redteam3.py  rc=0  37s
+Sombre -> Clair change l'image                 OK  
+Clair -> Sombre change l'image                 OK  
+QR active change l'image                       OK  
+QR desactive change l'image                    OK  
+format Carre change l'image                    OK  
+format Story change l'image                    OK  
+Noyau pose change l'image                      OK  
+Noyau Grand change l'image                     OK  
+Avec le chiffre change l'image                 OK  
+Noyau masque change l'image                    OK  
+mode Mes Promi change l'image                  OK  
+Sans texte change l'image                      OK  
+Avec texte change l'image                      OK  
+masquer un Promi bascule son encart            OK  
+mode Ma Toile change l'image                   OK  
+le logo bascule en signature                   OK  
+le Noyau ne pose aucun fond (centre intact)    OK  
+aucune erreur JS                               OK  
+
+18/18
+=== redteam_demande.py  rc=0  15s
+l'API du cycle existe                        OK  
+une demande ne pose PAS de dalle             OK  
+elle n'entre pas dans les compteurs          OK  
+elle est listee en attente                   OK  
+accepter fait apparaitre la dalle            OK  
+accepter la sort de l'attente                OK  
+accepter la compte comme un Promi            OK  
+accepter n'agit qu'une fois                  OK  
+l'acceptation nourrit le Fil                 OK  
+une demande expire apres un mois             OK  
+l'expiration ne notifie rien                 OK  
+une demande expiree quitte l'attente         OK  
+il n'existe pas d'etat « refusee »           OK  
+une demande allume la pastille du Fil        OK  
+sa vignette est dans la brume                OK  
+un seul geste la rend reelle                 OK  
+aucun bouton refuser dans la fiche           OK  
+accepter dissipe la brume                    OK  
+aucune erreur JS                             OK  
+
+19/19
+=== redteam_toile.py  rc=0  69s
+Toile.renderTo existe                      OK  
+renderTo rend une image                    OK  {'ok': True, 'w': 780, 'h': 1688, 'teintes': 241, 'ech': 82290}
+les dalles sont aux bonnes positions       OK  6/10 concordent · ecarts [13, 253, 1, 0, 192, 1, 13, 581]
+renderTo utilise les vrais germes          OK  
+planter des Promi change l'apercu          OK  hash 261975944 -> 261515051
+Mes Promi : poser le Noyau recompose la planche OK  
+Mes Promi : la planche ECRIT des intitules OK  18 -> 18 intitules
+Mes Promi : les intitules restent          OK  les memes mots
+Mes Promi : retirer le Noyau recompose     OK  
+Ma Toile : le Noyau se pose                OK  
+le % s'affiche                             OK  chiffre composé : 33%
+le % porte la double encre terracotta      OK  encres : #F07A2E #3A54FF #F3EFE6
+le % porte la double encre bleue           OK  décalages : [[-0.116, 0.074], [0.095, -0.047], [0, 0]]
+petit : le chiffre tient dans le trou      OK  trou 49 · texte jusqu a 42
+moyen : le chiffre tient dans le trou      OK  trou 69 · texte jusqu a 59
+grand : le chiffre tient dans le trou      OK  trou 91 · texte jusqu a 79
+aucune erreur JS                           OK  []
+
+17/17

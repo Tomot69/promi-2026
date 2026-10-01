@@ -1,0 +1,16 @@
+avant    #1  A: écart au lâcher 0.0 niv · 50 % à 0.00 s · 10 % à 0.00 s · < 1 niveau à 0.00 s · retirée à 0.00 s (restait 0.00 niv)
+avant    #1  B: 0 caresse(s), creux refermé · la trace : 9.6 % des pixels, 1.48 niv · 5 s après : l'image bouge de 0.000 niv · paliers [110000, 110000, 110000] · la trace à 5 s, contre un relissage même vue même palier : 9.6 % des pixels, 1.48 niv
+avant    #2  A: écart au lâcher 0.0 niv · 50 % à 0.00 s · 10 % à 0.00 s · < 1 niveau à 0.00 s · retirée à 0.00 s (restait 0.00 niv)
+avant    #2  B: 0 caresse(s), creux refermé · la trace : 9.6 % des pixels, 1.48 niv · 5 s après : l'image bouge de 0.000 niv · paliers [110000, 110000, 110000] · la trace à 5 s, contre un relissage même vue même palier : 9.6 % des pixels, 1.48 niv
+avant    #3  A: écart au lâcher 0.0 niv · 50 % à 0.00 s · 10 % à 0.00 s · < 1 niveau à 0.00 s · retirée à 0.00 s (restait 0.00 niv)
+avant    #3  B: 0 caresse(s), creux refermé · la trace : 9.6 % des pixels, 1.48 niv · 5 s après : l'image bouge de 0.000 niv · paliers [110000, 110000, 110000] · la trace à 5 s, contre un relissage même vue même palier : 9.6 % des pixels, 1.48 niv
+après    #1  A: écart au lâcher 0.0 niv · 50 % à 0.00 s · 10 % à 0.00 s · < 1 niveau à 0.00 s · retirée à 0.00 s (restait 0.00 niv)
+après    #1  B: 0 caresse(s), creux refermé · la trace : 9.6 % des pixels, 1.50 niv · 5 s après : l'image bouge de 10.085 niv · paliers [110000, 90000, 90000] · la trace à 5 s, contre un relissage même vue même palier : 10.3 % des pixels, 1.67 niv
+après    #2  A: écart au lâcher 0.0 niv · 50 % à 0.00 s · 10 % à 0.00 s · < 1 niveau à 0.00 s · retirée à 0.00 s (restait 0.00 niv)
+après    #2  B: 0 caresse(s), creux refermé · la trace : 10.3 % des pixels, 1.67 niv · 5 s après : l'image bouge de 0.000 niv · paliers [90000, 90000, 90000] · la trace à 5 s, contre un relissage même vue même palier : 10.3 % des pixels, 1.67 niv
+après    #3  A: écart au lâcher 0.0 niv · 50 % à 0.00 s · 10 % à 0.00 s · < 1 niveau à 0.00 s · retirée à 0.00 s (restait 0.00 niv)
+après    #3  B: 0 caresse(s), creux refermé · la trace : 10.3 % des pixels, 1.67 niv · 5 s après : l'image bouge de 0.000 niv · paliers [90000, 90000, 90000] · la trace à 5 s, contre un relissage même vue même palier : 10.3 % des pixels, 1.67 niv
+
+             50 %     10 %    < 1 niv    retirée    restait    trace %      niv    à 5 s %      niv
+avant       0.00s    0.00s      0.00s      0.00s     0.00 n       9.6%     1.48       9.6%     1.48
+après       0.00s    0.00s      0.00s      0.00s     0.00 n      10.0%     1.61      10.3%     1.67

@@ -1,0 +1,29 @@
+
+== cercle_dk_haut
+   hors cadre 1 · <12px/opacité 1 · faces 0 · recouvrements 6 · contraste < 4,5 : 3 (min 1.12)
+     hors : btn « SONDE » x 330→450
+     petits : note « SONDE dix pixels » 10px
+     recouvrements : reg « RAPPELla veille à 19:00 » ↔ note.sonde « SONDE ton sur ton »
+     recouvrements : reg « LA MÉMOIREréveille tes « en  » ↔ btn.sonde « SONDE »
+     recouvrements : enc « ✦ Le Cercleimportance, récur » ↔ note.sonde « SONDE ton sur ton »
+     recouvrements : dal «  » ↔ btn.sonde « SONDE »
+     recouvrements : prix « 29 € » ↔ sous « soit 2,42 €/mois · −39 % »
+     recouvrements : btn « Prendre l’année » ↔ note.sonde « SONDE dix pixels »
+     contraste_faible : {'t': '✦ Le Cercle', 'k': 2.42}
+     contraste_faible : {'t': 'importance, récurrence, rappels, m', 'k': 2.42}
+     contraste_faible : {'t': 'SONDE ton sur ton', 'k': 1.12}
+   air : C'EST IMPORTANT ?· ·· ··· → RÉCURRENCEchaque semaine : 16.0 | SONDE ton sur ton → LA MÉMOIREréveille tes « en  : 53.8 | dal → Sillons : 8.0 | Terrazzo → 29 € : 22.0 | soit 2,42 €/mois · −39 % → Prendre l’année : 64.7 | SONDE dix pixels → Essayer 14 jours, puis 3,99  : 27.0
+
+== cercle_dk_bas
+   hors cadre 0 · <12px/opacité 0 · faces 0 · recouvrements 0 · contraste < 4,5 : 2 (min 2.42)
+     contraste_faible : {'t': '✦ Le Cercle', 'k': 2.42}
+     contraste_faible : {'t': 'importance, récurrence, rappels, m', 'k': 2.42}
+   air : RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0 | LA MÉMOIREréveille tes « en  → dal : 32.0 | dal → Sillons : 8.0 | Terrazzo → 29 € : 22.0 | 29 € → soit 2,42 €/mois · −39 % : 10.0 | soit 2,42 €/mois · −39 % → Prendre l’année : 26.7 | Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0 | Essayer 14 jours, puis 3,99  → Sans engagement · annulable  : 22.0 | Sans engagement · annulable  → ou un design à l’unité — 1 € : 7.8
+
+== cercle_lt_haut
+   hors cadre 0 · <12px/opacité 0 · faces 0 · recouvrements 0 · contraste < 4,5 : 0 (min 8.14)
+   air : C'EST IMPORTANT ?· ·· ··· → RÉCURRENCEchaque semaine : 16.0 | RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0 | LA MÉMOIREréveille tes « en  → dal : 32.0 | dal → Sillons : 8.0 | Terrazzo → 29 € : 22.0 | 29 € → soit 2,42 €/mois · −39 % : 10.0 | soit 2,42 €/mois · −39 % → Prendre l’année : 26.7 | Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0
+
+== cercle_lt_bas
+   hors cadre 0 · <12px/opacité 0 · faces 0 · recouvrements 0 · contraste < 4,5 : 0 (min 4.95)
+   air : RAPPELla veille à 19:00 → LA MÉMOIREréveille tes « en  : 16.0 | LA MÉMOIREréveille tes « en  → dal : 32.0 | dal → Sillons : 8.0 | Terrazzo → 29 € : 22.0 | 29 € → soit 2,42 €/mois · −39 % : 10.0 | soit 2,42 €/mois · −39 % → Prendre l’année : 26.7 | Prendre l’année → Essayer 14 jours, puis 3,99  : 16.0 | Essayer 14 jours, puis 3,99  → Sans engagement · annulable  : 22.0 | Sans engagement · annulable  → ou un design à l’unité — 1 € : 7.8

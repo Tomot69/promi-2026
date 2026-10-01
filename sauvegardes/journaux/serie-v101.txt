@@ -1,0 +1,19 @@
+=== redteam_nuee_entree.py
+24/24
+=== redteam_vide.py
+61/61
+=== redteam_air.py
+  ✅  L'AIR EST INTACT — 500 paires de textes, 38 écrans, deux thèmes.
+=== releve-S2-peaufiner.py
+✅ SECTION 2 AU CRITÈRE  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+=== redteam_nuee_dalle.py
+38/38
+=== redteam_reperage.py
+16/16
+=== redteam_ecrans.py
+152/152
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_aveugle.py
+26/26
+fini

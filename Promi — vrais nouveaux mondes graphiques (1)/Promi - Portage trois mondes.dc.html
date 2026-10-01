@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #EFE9DE; }
+  a { color: #C8452B; }
+  a:hover { color: #1A1613; }
+</style>
+<script src="mondes-origine-exec.js"></script>
+<script src="mondes-avant.js"></script>
+<script src="mondes.js"></script>
+</helmet>
+<div ref="{{ setRoot }}" style="min-height:100vh;font-family:'IBM Plex Mono',monospace;color:#1A1613;padding:36px 26px 70px;box-sizing:border-box">
+  <div style="max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:22px">
+
+    <header style="display:flex;flex-direction:column;gap:11px;max-width:78ch">
+      <p style="margin:0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.5">Promi · portage depuis mondes-origine.js</p>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(24px,3.4vw,40px);line-height:1.06">Bobinette · Ritournelle · Madrure — l'original et le portage, même semis</h1>
+      <p style="margin:0;font-size:12.5px;line-height:1.7;opacity:.72;text-wrap:pretty">À gauche, les fonctions d'origine exécutées telles quelles sur le champ d'origine (<code>makeField</code>). À droite, <code>mondes.js</code> sur les mêmes graines : <code>cOf</code> rend la couleur d'origine de chaque cellule, <code>curPAL</code> la palette. Aucune image côté portage.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button onClick="{{ mesurer }}" style="cursor:pointer;background:#1A1613;color:#EFE9DE;border:none;padding:9px 15px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Budget (Toile 390×844, 25 passes)</button>
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:none;border:1px solid #1A161340;padding:9px 15px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#1A1613">Nouveau semis</button>
+        <span style="font-size:11px;opacity:.55">{{ etat }}</span>
+      </div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:10px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Loupe 3× — avant / après</h2>
+      <p style="margin:0;font-size:12px;opacity:.6;max-width:66ch">Un carré de 130 px pris dans une Toile pleine de 390×844, grossi trois fois. Même semis des deux côtés.</p>
+      <div style="display:flex;gap:14px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-l="bobinette|0"></canvas><span style="font-size:10px;opacity:.5">Bobinette · avant</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-l="bobinette|1"></canvas><span style="font-size:10px;opacity:.5">Bobinette · après</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-l="madrure|2"></canvas><span style="font-size:10px;opacity:.5">Madrure · origine (pixels)</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-l="madrure|0"></canvas><span style="font-size:10px;opacity:.5">Madrure · avant</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-l="madrure|1"></canvas><span style="font-size:10px;opacity:.5">Madrure · après</span></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #1A161326;padding-top:16px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Bobinette</h2>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-o="noeud|0"></canvas><span style="font-size:10px;opacity:.5">origine</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-o="noeud|1"></canvas><span style="font-size:10px;opacity:.5">portage</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-z="noeud|0"></canvas><span style="font-size:10px;opacity:.5">origine · 3×</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-z="noeud|1"></canvas><span style="font-size:10px;opacity:.5">portage · 3×</span></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #1A161326;padding-top:16px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Ritournelle</h2>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-o="coulee|0"></canvas><span style="font-size:10px;opacity:.5">origine</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-o="coulee|1"></canvas><span style="font-size:10px;opacity:.5">portage</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-z="coulee|0"></canvas><span style="font-size:10px;opacity:.5">origine · 3×</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-z="coulee|1"></canvas><span style="font-size:10px;opacity:.5">portage · 3×</span></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:10px;border-top:1px solid #1A161326;padding-top:16px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Madrure</h2>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-o="ecume|0"></canvas><span style="font-size:10px;opacity:.5">origine</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-o="ecume|1"></canvas><span style="font-size:10px;opacity:.5">portage</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-z="ecume|0"></canvas><span style="font-size:10px;opacity:.5">origine · 3×</span></div>
+        <div style="display:flex;flex-direction:column;gap:5px"><canvas data-z="ecume|1"></canvas><span style="font-size:10px;opacity:.5">portage · 3×</span></div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { seed: 7, etat: '' };
+  PAL = ['#1A1613', '#C8452B', '#E2A43B', '#2F6157'];
+  BG = '#EFE9DE';
+  MAP = { noeud: 'bobinette', coulee: 'ritournelle', ecume: 'madrure' };
+
+  hex(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+
+  // env du portage, construit sur les graines de l'origine
+  env(g, W, H, F) {
+    const PAL = this.PAL.map(h => this.hex(h));
+    const seeds = F.sites.map(s => ({ x: s.x, y: s.y, w: (s.w - 1) * F.spacing * 0.5, pid: 'p' + s.i, c: s.c }));
+    return {
+      g, W, H, DPR: 2, seeds, view: { s: 1, ox: 0, oy: 0 },
+      isLightM: () => true,
+      avg: () => F.spacing,
+      cOf: s => PAL[s.c],
+      curPAL: () => this.PAL,
+      cAt: () => seeds[0],
+      _dalleDeCle: pid => { let h = 0x811c9dc5; const t = String(pid) + '|' + this.state.seed; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = (h * 16777619) >>> 0; } return h >>> 0; }
+    };
+  }
+
+  rendu(cv, monde, port, W, H, cell, seed, D, mesure) {
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    cv.width = Math.round(W * D); cv.height = Math.round(H * D);
+    const g = cv.getContext('2d');
+    g.setTransform(D, 0, 0, D, 0, 0);
+    g.fillStyle = this.BG; g.fillRect(0, 0, W, H);
+    const O = window.ORIGINE;
+    const F = O.makeField(W, H, cell, seed);
+    if (!port) { O.worlds[monde](g, W, H, F, this.PAL, O.lib, this.BG); return 0; }
+    const M = window.creerMondes(this.env(g, W, H, F));
+    const t0 = performance.now();
+    M[this.MAP[monde]](0, 0, 0, W, H);
+    return performance.now() - t0;
+  }
+
+  componentDidMount() { this.tout(); }
+  componentDidUpdate() { this.tout(); }
+
+  tout() {
+    // chaque canevas dans sa propre tâche : la page reste réactive pendant les rendus d'origine (lents, pixel par pixel)
+    const id = (this._job = (this._job || 0) + 1);
+    const jobs = [];
+    const realG = this.toutSync.bind(this);
+    realG(jobs);
+    const next = () => { if (this._job !== id || !jobs.length) return; jobs.shift()(); setTimeout(next, 0); };
+    setTimeout(next, 0);
+  }
+
+  toutSync(jobs) {
+    const root = this.root; if (!root || !window.ORIGINE || !window.creerMondes) return;
+    const q = (sel, fn) => root.querySelectorAll(sel).forEach(cv => jobs.push(() => fn(cv)));
+    q('canvas[data-l]', cv => this.loupe(cv));
+    q('canvas[data-o]', cv => { const [m, p] = cv.dataset.o.split('|'); this.rendu(cv, m, p === '1', 260, 562, 64, this.state.seed, 2); });
+    q('canvas[data-z]', cv => { const [m, p] = cv.dataset.z.split('|'); this.rendu(cv, m, p === '1', 300, 300, 150, this.state.seed + 3, 2); });
+  }
+
+  loupe(cv) {
+      const [m, v] = cv.dataset.l.split('|');
+      const fab = v === '1' ? window.creerMondes : window.creerMondesAvant; if (!fab) return;
+      const S = (window.__S || 130), K = 390 / S, D = 2, ox = (window.__ox || 120), oy = (window.__oy || 360);
+      if (v === '2') {
+        // origine exécutée telle quelle sur la Toile entière, puis on montre le même carré
+        const full = document.createElement('canvas'); full.width = 390 * 3; full.height = 844 * 3;
+        const fg = full.getContext('2d'); fg.setTransform(3, 0, 0, 3, 0, 0); fg.fillStyle = this.BG; fg.fillRect(0, 0, 390, 844);
+        const F0 = window.ORIGINE.makeField(390, 844, 74, this.state.seed);
+        window.ORIGINE.worlds.ecume(fg, 390, 844, F0, this.PAL, window.ORIGINE.lib, this.BG);
+        cv.style.width = S * K + 'px'; cv.style.height = S * K + 'px'; cv.width = S * K * D; cv.height = S * K * D;
+        const g0 = cv.getContext('2d'); g0.imageSmoothingEnabled = false;
+        g0.drawImage(full, ox * 3, oy * 3, S * 3, S * 3, 0, 0, cv.width, cv.height);
+        return;
+      }
+      cv.style.width = S * K + 'px'; cv.style.height = S * K + 'px';
+      cv.width = S * K * D; cv.height = S * K * D;
+      const g = cv.getContext('2d');
+      g.setTransform(K * D, 0, 0, K * D, -ox * K * D, -oy * K * D);
+      g.fillStyle = this.BG; g.fillRect(ox, oy, S, S);
+      const F = window.ORIGINE.makeField(390, 844, 74, this.state.seed);
+      fab(this.env(g, 390, 844, F))[m](0, ox, oy, ox + S, oy + S);
+  }
+
+  ancienTout() {
+    const root = this.root; if (!root || !window.ORIGINE || !window.creerMondes) return;
+    root.querySelectorAll('canvas[data-o]').forEach(cv => {
+      const [m, p] = cv.dataset.o.split('|');
+      this.rendu(cv, m, p === '1', 260, 562, 64, this.state.seed, 2);
+    });
+    root.querySelectorAll('canvas[data-l]').forEach(cv => {
+      const [m, v] = cv.dataset.l.split('|');
+      const fab = v === '1' ? window.creerMondes : window.creerMondesAvant; if (!fab || window.__sansLoupe) return;
+      const S = 130, K = 3, D = 2, ox = 120, oy = 360;
+      cv.style.width = S * K + 'px'; cv.style.height = S * K + 'px';
+      cv.width = S * K * D; cv.height = S * K * D;
+      const g = cv.getContext('2d');
+      g.setTransform(K * D, 0, 0, K * D, -ox * K * D, -oy * K * D);
+      g.fillStyle = this.BG; g.fillRect(ox, oy, S, S);
+      const F = window.ORIGINE.makeField(390, 844, 74, this.state.seed);
+      fab(this.env(g, 390, 844, F))[m](0, ox, oy, ox + S, oy + S);
+    });
+    root.querySelectorAll('canvas[data-z]').forEach(cv => {
+      const [m, p] = cv.dataset.z.split('|');
+      this.rendu(cv, m, p === '1', 300, 300, 150, this.state.seed + 3, 2);
+    });
+  }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      etat: this.state.etat,
+      reroll: () => this.setState(s => ({ seed: s.seed + 1 })),
+      mesurer: () => {
+        const cv = document.createElement('canvas'), out = [];
+        ['noeud', 'coulee', 'ecume'].forEach(m => {
+          const ms = [];
+          for (let i = 0; i < 9; i++) ms.push(this.rendu(cv, m, true, 390, 844, 74, this.state.seed + i, 2));
+          ms.sort((a, b) => a - b);
+          out.push(this.MAP[m] + ' ' + ms[4].toFixed(1) + ' / ' + ms[8].toFixed(1) + ' ms');
+        });
+        this.setState({ etat: 'médiane / max — ' + out.join(' · ') });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

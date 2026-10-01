@@ -1,0 +1,19 @@
+      Index 3 par ligne    [dark] carte 3 .s4-eb « à Marion » : ton sur ton (Δ4)
+      Index 3 par ligne    [dark] carte 3 .s4-et « LANCÉ » : ton sur ton (Δ4)
+      Index 3 par ligne    [dark] carte 4 .s4-eb « à moi » : ton sur ton (Δ22)
+      Index 3 par ligne    [dark] carte 4 .s4-et « EN COURS » : ton sur ton (Δ22)
+      Fil                  [dark] carte 0 .s4-et « À RELEVER » : ton sur ton (Δ7)
+      Fil                  [dark] carte 0 .s4-ev « Marion te lance  » : ton sur ton (Δ7)
+      Fil                  [dark] carte 1 .s4-ev « à moi » : ton sur ton (Δ12)
+      Fil                  [dark] carte 2 .s4-et « LE POTAGER · 9 P » : ton sur ton (Δ23)
+      Fil                  [dark] carte 2 .s4-ev « Adrien a planté » : ton sur ton (Δ23)
+      Fil                  [dark] carte 4 .s4-ev « Marion a relevé » : ton sur ton (Δ6)
+
+❌  124 ÉCARTS
+=== studio_geste
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+
+13/13

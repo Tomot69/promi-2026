@@ -1,0 +1,836 @@
+[
+ {
+  "k": "js",
+  "l": 3202,
+  "raw": "'Le Cercle activé · Nuées illimitées'",
+  "t": "Le Cercle activé · Nuées illimitées"
+ },
+ {
+  "k": "js",
+  "l": 3218,
+  "raw": "'✦ Membre du Cercle ✓'",
+  "t": "✦ Membre du Cercle ✓"
+ },
+ {
+  "k": "js",
+  "l": 3220,
+  "raw": "'Bienvenue dans le Cercle \\u2713 \\u00b7 tout Promi d\\u00e9bloqu\\u00e9'",
+  "t": "Bienvenue dans le Cercle ✓ · tout Promi débloqué"
+ },
+ {
+  "k": "js",
+  "l": 3234,
+  "raw": "'Donne un nom à ta Nuée'",
+  "t": "Donne un nom à ta Nuée"
+ },
+ {
+  "k": "js",
+  "l": 3234,
+  "raw": "'Tu as créé la Nuée '",
+  "t": "Tu as créé la Nuée "
+ },
+ {
+  "k": "js",
+  "l": 3368,
+  "raw": "'Bienvenue dans le Cercle ✓'",
+  "t": "Bienvenue dans le Cercle ✓"
+ },
+ {
+  "k": "js",
+  "l": 3368,
+  "raw": "'Le Cercle débloqué · Nuées illimitées'",
+  "t": "Le Cercle débloqué · Nuées illimitées"
+ },
+ {
+  "k": "js",
+  "l": 3550,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 3662,
+  "raw": "' Nuée'",
+  "t": " Nuée"
+ },
+ {
+  "k": "js",
+  "l": 3698,
+  "raw": "'Rejoins ma Nuée \\u00ab '",
+  "t": "Rejoins ma Nuée « "
+ },
+ {
+  "k": "js",
+  "l": 3700,
+  "raw": "'Dissoudre la Nuée ?'",
+  "t": "Dissoudre la Nuée ?"
+ },
+ {
+  "k": "js",
+  "l": 3775,
+  "raw": "' \\u00b7 visible par la Nu\\u00e9e'",
+  "t": " · visible par la Nuée"
+ },
+ {
+  "k": "js",
+  "l": 4379,
+  "raw": "'UNE NUÉE T’ATTEND'",
+  "t": "UNE NUÉE T’ATTEND"
+ },
+ {
+  "k": "js",
+  "l": 4392,
+  "raw": "'NUÉE REJOINTE'",
+  "t": "NUÉE REJOINTE"
+ },
+ {
+  "k": "js",
+  "l": 4395,
+  "raw": "'NUÉE'",
+  "t": "NUÉE"
+ },
+ {
+  "k": "js",
+  "l": 5322,
+  "raw": "'aucune Nuée'",
+  "t": "aucune Nuée"
+ },
+ {
+  "k": "js",
+  "l": 5486,
+  "raw": "'DANS QUELLE NU\\u00c9E'",
+  "t": "DANS QUELLE NUÉE"
+ },
+ {
+  "k": "js",
+  "l": 5496,
+  "raw": "'\" data-nuee=\"\"><span class=\"pno-none\">aucune Nu\\u00e9e</span></button>'",
+  "t": "\" data-nuee=\"\"><span class=\"pno-none\">aucune Nuée</span></button>"
+ },
+ {
+  "k": "js",
+  "l": 5783,
+  "raw": "'Nu\\u00e9e'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 5820,
+  "raw": "'Cette Nu\\u00e9e'",
+  "t": "Cette Nuée"
+ },
+ {
+  "k": "js",
+  "l": 5821,
+  "raw": "'Cette Nu\\u00e9e'",
+  "t": "Cette Nuée"
+ },
+ {
+  "k": "js",
+  "l": 5867,
+  "raw": "'<button class=\"nf-add\" id=\"nfAdd\"><span class=\"nf-plus\"><svg viewBox=\"0 0 32 32\" width=\"22\" height=\"22\" aria-hidden=\"true\"><path d=\"M16 6 V26 M6 16 H26\" stroke=\"#291547\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></svg></span>Planter dans la Nuée</button>'",
+  "t": "<button class=\"nf-add\" id=\"nfAdd\"><span class=\"nf-plus\"><svg viewBox=\"0 0 32 32\" width=\"22\" height=\"22\" aria-hidden=\"true\"><path d=\"M16 6 V26 M6 16 H26\" stroke=\"#291547\" stroke-width=\"3.6\" stroke-linecap=\"round\"/></svg></span>Planter dans la Nuée</button>"
+ },
+ {
+  "k": "js",
+  "l": 5868,
+  "raw": "'<button class=\"nf-part\" id=\"nfPart\" aria-label=\"Partager la Nu\\u00e9e\">'",
+  "t": "<button class=\"nf-part\" id=\"nfPart\" aria-label=\"Partager la Nuée\">"
+ },
+ {
+  "k": "js",
+  "l": 6292,
+  "raw": "'<button data-k=\"nueepromi\">en Nu\\u00e9e</button>'",
+  "t": "<button data-k=\"nueepromi\">en Nuée</button>"
+ },
+ {
+  "k": "js",
+  "l": 6293,
+  "raw": "'<button data-k=\"nuee\">une Nu\\u00e9e</button></div>'",
+  "t": "<button data-k=\"nuee\">une Nuée</button></div>"
+ },
+ {
+  "k": "js",
+  "l": 6700,
+  "raw": "'il plante un <b style=\"color:#C9A8F5\">Promi</b> \\u2014 une promesse. Ou il ouvre une <b style=\"color:#C9A8F5\">Nu\\u00e9e</b> : des amis autour d\\u2019un th\\u00e8me, qui se promettent des choses.'",
+  "t": "il plante un <b style=\"color:#C9A8F5\">Promi</b> — une promesse. Ou il ouvre une <b style=\"color:#C9A8F5\">Nuée</b> : des amis autour d’un thème, qui se promettent des choses."
+ },
+ {
+  "k": "js",
+  "l": 6703,
+  "raw": "'un seul endroit o\\u00f9 tout se retrouve : chacun de tes <b style=\"color:#F2D075\">Promi</b>, et chacune de tes <b style=\"color:#F2D075\">Nu\\u00e9es</b>.'",
+  "t": "un seul endroit où tout se retrouve : chacun de tes <b style=\"color:#F2D075\">Promi</b>, et chacune de tes <b style=\"color:#F2D075\">Nuées</b>."
+ },
+ {
+  "k": "js",
+  "l": 6779,
+  "raw": "'ta parole se cherche — reprends une Nuée à la fois.'",
+  "t": "ta parole se cherche — reprends une Nuée à la fois."
+ },
+ {
+  "k": "js",
+  "l": 6792,
+  "raw": "'<div class=\"b\" style=\"color:var(--gsub);padding:8px 0\">pas encore de Nuée à suivre</div>'",
+  "t": "<div class=\"b\" style=\"color:var(--gsub);padding:8px 0\">pas encore de Nuée à suivre</div>"
+ },
+ {
+  "k": "js",
+  "l": 7764,
+  "raw": "'<div class=\"sh-sg\">Nuées</div>'",
+  "t": "<div class=\"sh-sg\">Nuées</div>"
+ },
+ {
+  "k": "js",
+  "l": 7774,
+  "raw": "'Je tiens mes promesses sur Promi. Rejoins-moi : 3 Nu\\u00e9es offertes pour toi et pour moi.'",
+  "t": "Je tiens mes promesses sur Promi. Rejoins-moi : 3 Nuées offertes pour toi et pour moi."
+ },
+ {
+  "k": "js",
+  "l": 7803,
+  "raw": "'){Object.keys(NUE).forEach(function(k){delete NUE[k];});Object.assign(NUE,d.NUE);}if(d.NUEEMEM)NUEEMEM=d.NUEEMEM;if(d.NUEDALLE)window.NUEDALLE=d.NUEDALLE;if(Array.isArray(d.PEOPLE))PEOPLE=d.PEOPLE;if(Array.isArray(d.FEED))FEED=d.FEED;if(d.feedReacted)feedReacted=d.feedReacted;if(d.shareHidden)share",
+  "t": "){Object.keys(NUE).forEach(function(k){delete NUE[k];});Object.assign(NUE,d.NUE);}if(d.NUEEMEM)NUEEMEM=d.NUEEMEM;if(d.NUEDALLE)window.NUEDALLE=d.NUEDALLE;if(Array.isArray(d.PEOPLE))PEOPLE=d.PEOPLE;if(Array.isArray(d.FEED))FEED=d.FEED;if(d.feedReacted)feedReacted=d.feedReacted;if(d.shareHidden)shareH"
+ },
+ {
+  "k": "js",
+  "l": 15747,
+  "raw": "'Les <span style=\"color:var(--verm)\">Nuées.</span>'",
+  "t": "Les <span style=\"color:var(--verm)\">Nuées.</span>"
+ },
+ {
+  "k": "js",
+  "l": 16510,
+  "raw": "\"le nom de la Nuée…\"",
+  "t": "le nom de la Nuée…"
+ },
+ {
+  "k": "js",
+  "l": 16511,
+  "raw": "\"Mettre la Nuée de côté\"",
+  "t": "Mettre la Nuée de côté"
+ },
+ {
+  "k": "js",
+  "l": 16721,
+  "raw": "' Nuée'",
+  "t": " Nuée"
+ },
+ {
+  "k": "js",
+  "l": 16722,
+  "raw": "\" Nu\\u00e9e\"",
+  "t": " Nuée"
+ },
+ {
+  "k": "js",
+  "l": 16957,
+  "raw": "'<div class=\\'nqh-cercle\\'>\\u2726 Cercle \\u2014 vois la r\\u00e9ciprocit\\u00e9 (les autres envers toi)</div>'",
+  "t": "<div class=\\'nqh-cercle\\'>✦ Cercle — vois la réciprocité (les autres envers toi)</div>"
+ },
+ {
+  "k": "js",
+  "l": 16975,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 17210,
+  "raw": "'Nu\\u00e9e'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 17210,
+  "raw": "'une Nu\\u00e9e, et chacun y plante la sienne'",
+  "t": "une Nuée, et chacun y plante la sienne"
+ },
+ {
+  "k": "js",
+  "l": 20949,
+  "raw": "'<span class=\"ph-b ph-b-fixe\">Je lance une Nuée</span><br><em>nommée</em> '",
+  "t": "<span class=\"ph-b ph-b-fixe\">Je lance une Nuée</span><br><em>nommée</em> "
+ },
+ {
+  "k": "js",
+  "l": 20959,
+  "raw": "'<div class=\"ph-lab\">LE NOM DE LA NUÉE</div><input class=\"ph-in\" id=\"nueeNomIn\" placeholder=\"'",
+  "t": "<div class=\"ph-lab\">LE NOM DE LA NUÉE</div><input class=\"ph-in\" id=\"nueeNomIn\" placeholder=\""
+ },
+ {
+  "k": "js",
+  "l": 21445,
+  "raw": "'Plante le premier Promi de ta Nuée →'",
+  "t": "Plante le premier Promi de ta Nuée →"
+ },
+ {
+  "k": "js",
+  "l": 22691,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 23131,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 23958,
+  "raw": "'✦ Le Cercle'",
+  "t": "✦ Le Cercle"
+ },
+ {
+  "k": "js",
+  "l": 24021,
+  "raw": "'visibles par la Nuée'",
+  "t": "visibles par la Nuée"
+ },
+ {
+  "k": "js",
+  "l": 24023,
+  "raw": "'visibles par les membres de la Nuée'",
+  "t": "visibles par les membres de la Nuée"
+ },
+ {
+  "k": "js",
+  "l": 24024,
+  "raw": "'Planter un Promi dans la Nuée'",
+  "t": "Planter un Promi dans la Nuée"
+ },
+ {
+  "k": "js",
+  "l": 24026,
+  "raw": "'DISSOUDRE LA NUÉE'",
+  "t": "DISSOUDRE LA NUÉE"
+ },
+ {
+  "k": "js",
+  "l": 24050,
+  "raw": "'DANS UNE NUÉE'",
+  "t": "DANS UNE NUÉE"
+ },
+ {
+  "k": "js",
+  "l": 25117,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 25621,
+  "raw": "'Nu\\u00e9e'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 25636,
+  "raw": "'LES PROMI DE LA NU\\u00c9E'",
+  "t": "LES PROMI DE LA NUÉE"
+ },
+ {
+  "k": "js",
+  "l": 25654,
+  "raw": "'DANS UNE NU\\u00c9E'",
+  "t": "DANS UNE NUÉE"
+ },
+ {
+  "k": "js",
+  "l": 26669,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 26674,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 26854,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 27003,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 28197,
+  "raw": "'présente la Nuée, son but…'",
+  "t": "présente la Nuée, son but…"
+ },
+ {
+  "k": "js",
+  "l": 28199,
+  "raw": "'visibles par la Nuée'",
+  "t": "visibles par la Nuée"
+ },
+ {
+  "k": "js",
+  "l": 28200,
+  "raw": "'visibles par les membres de la Nuée'",
+  "t": "visibles par les membres de la Nuée"
+ },
+ {
+  "k": "js",
+  "l": 28201,
+  "raw": "'DISSOUDRE LA NUÉE'",
+  "t": "DISSOUDRE LA NUÉE"
+ },
+ {
+  "k": "js",
+  "l": 28329,
+  "raw": "'Planter un Promi dans la Nuée'",
+  "t": "Planter un Promi dans la Nuée"
+ },
+ {
+  "k": "js",
+  "l": 37111,
+  "raw": "'✦ Le Cercle'",
+  "t": "✦ Le Cercle"
+ },
+ {
+  "k": "js",
+  "l": 38501,
+  "raw": "'Bienvenue dans le Cercle ✓ · tout Promi débloqué'",
+  "t": "Bienvenue dans le Cercle ✓ · tout Promi débloqué"
+ },
+ {
+  "k": "js",
+  "l": 38742,
+  "raw": "'Rejoins le Cercle !'",
+  "t": "Rejoins le Cercle !"
+ },
+ {
+  "k": "js",
+  "l": 39194,
+  "raw": "'Cercle'",
+  "t": "Cercle"
+ },
+ {
+  "k": "js",
+  "l": 39817,
+  "raw": "'<div class=\"acc-pil\" data-k=\"nuee\" style=\"top:0;background:#C9A8F5;color:#291547\">Une Nuée<small>un groupe, un projet</small></div>'",
+  "t": "<div class=\"acc-pil\" data-k=\"nuee\" style=\"top:0;background:#C9A8F5;color:#291547\">Une Nuée<small>un groupe, un projet</small></div>"
+ },
+ {
+  "k": "js",
+  "l": 39886,
+  "raw": "' Nuée'",
+  "t": " Nuée"
+ },
+ {
+  "k": "js",
+  "l": 40181,
+  "raw": "'<div class=\"ah-sect\"><span class=\"ah-badge prem\">Avec le Cercle</span></div>'",
+  "t": "<div class=\"ah-sect\"><span class=\"ah-badge prem\">Avec le Cercle</span></div>"
+ },
+ {
+  "k": "js",
+  "l": 40182,
+  "raw": "'<div class=\"ah-cercle-cta set-cercle\" id=\"ahCercleCta\" role=\"button\"><div class=\"sc-tx\"><div class=\"sc-t\">✦ Le Cercle</div></div><div class=\"sc-go\">›</div></div>'",
+  "t": "<div class=\"ah-cercle-cta set-cercle\" id=\"ahCercleCta\" role=\"button\"><div class=\"sc-tx\"><div class=\"sc-t\">✦ Le Cercle</div></div><div class=\"sc-go\">›</div></div>"
+ },
+ {
+  "k": "js",
+  "l": 40184,
+  "raw": "'Les réglages du Cercle'",
+  "t": "Les réglages du Cercle"
+ },
+ {
+  "k": "js",
+  "l": 40184,
+  "raw": "'Récurrence, rappel, importance, mémoire et <b>la couleur</b> de ta dalle — sur chaque Promi, Chiche et Nuée.'",
+  "t": "Récurrence, rappel, importance, mémoire et <b>la couleur</b> de ta dalle — sur chaque Promi, Chiche et Nuée."
+ },
+ {
+  "k": "js",
+  "l": 40956,
+  "raw": "'Nuée'",
+  "t": "Nuée"
+ },
+ {
+  "k": "js",
+  "l": 41589,
+  "raw": "'Le Cercle'",
+  "t": "Le Cercle"
+ },
+ {
+  "k": "js",
+  "l": 41604,
+  "raw": "'CERCLE'",
+  "t": "CERCLE"
+ },
+ {
+  "k": "js",
+  "l": 41604,
+  "raw": "'CERCLE'",
+  "t": "CERCLE"
+ },
+ {
+  "k": "js",
+  "l": 42719,
+  "raw": "\"<h3>À propos</h3>\\n<p>Une promesse est une drôle de chose.</p>\\n<p>On se lance des « promis » toute la journée.</p>\\n<div class=\\\"v16-cit\\\"><p>« Promis, on se raconte tout. »</p><p>« Promis, je te rends ça demain. »</p><p>« Promis, cette fois, on le fait. »</p><p>« Promis, on ne laisse pas tomber. ",
+  "t": "<h3>À propos</h3>\\n<p>Une promesse est une drôle de chose.</p>\\n<p>On se lance des « promis » toute la journée.</p>\\n<div class=\\\"v16-cit\\\"><p>« Promis, on se raconte tout. »</p><p>« Promis, je te rends ça demain. »</p><p>« Promis, cette fois, on le fait. »</p><p>« Promis, on ne laisse pas tomber. »"
+ },
+ {
+  "k": "html",
+  "l": 2555,
+  "raw": "Par Nuée",
+  "t": "Par Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2555,
+  "raw": "Nuées",
+  "t": "Nuées"
+ },
+ {
+  "k": "html",
+  "l": 2555,
+  "raw": "Nuée",
+  "t": "Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2578,
+  "raw": "Une Nuée",
+  "t": "Une Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2582,
+  "raw": "Dans une Nuée",
+  "t": "Dans une Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2587,
+  "raw": "Le nom de la Nuée",
+  "t": "Le nom de la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2588,
+  "raw": "Les Promi de la Nuée ",
+  "t": "Les Promi de la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2588,
+  "raw": "Lancer la Nuée",
+  "t": "Lancer la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2590,
+  "raw": "en Nuée",
+  "t": "en Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2590,
+  "raw": "Nuée",
+  "t": "Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2590,
+  "raw": "Dans quelle Nuée",
+  "t": "Dans quelle Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2642,
+  "raw": "Nuée",
+  "t": "Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2642,
+  "raw": "Par Nuée",
+  "t": "Par Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2642,
+  "raw": "Nuées",
+  "t": "Nuées"
+ },
+ {
+  "k": "html",
+  "l": 2657,
+  "raw": "tout fichier · visible par la Nuée",
+  "t": "tout fichier · visible par la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2665,
+  "raw": "Promesses de la Nuée",
+  "t": "Promesses de la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2666,
+  "raw": "✦&nbsp;&nbsp;Planter un Promi dans la Nuée",
+  "t": "✦  Planter un Promi dans la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2668,
+  "raw": "Dissoudre la Nuée",
+  "t": "Dissoudre la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2670,
+  "raw": "Promi en Nuée",
+  "t": "Promi en Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2670,
+  "raw": "Nuée",
+  "t": "Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2670,
+  "raw": "Brouillon de Nuée. Prépare ici son thème, ses membres et ses premiers Promi, puis appuie sur Planter pour la créer.",
+  "t": "Brouillon de Nuée. Prépare ici son thème, ses membres et ses premiers Promi, puis appuie sur Planter pour la créer."
+ },
+ {
+  "k": "html",
+  "l": 2672,
+  "raw": "Dans une Nuée",
+  "t": "Dans une Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2685,
+  "raw": "✦ Récurrence &amp; rappels · Le Cercle",
+  "t": "✦ Récurrence & rappels · Le Cercle"
+ },
+ {
+  "k": "html",
+  "l": 2709,
+  "raw": "Ta meilleure Nuée",
+  "t": "Ta meilleure Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2711,
+  "raw": "Par Nuée · touche pour déplier",
+  "t": "Par Nuée · touche pour déplier"
+ },
+ {
+  "k": "html",
+  "l": 2719,
+  "raw": "Le Cercle",
+  "t": "Le Cercle"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "Ta meilleure Nuée",
+  "t": "Ta meilleure Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "La Nuée que tu honores le mieux ressort en premier — celle où ta parole tient le plus.",
+  "t": "La Nuée que tu honores le mieux ressort en premier — celle où ta parole tient le plus."
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": " selon la Nuée. En gratuit : ta parole ",
+  "t": "selon la Nuée. En gratuit : ta parole"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "Avec le Cercle",
+  "t": "Avec le Cercle"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "En activant ton Cercle, ton Noyau s’entoure de ",
+  "t": "En activant ton Cercle, ton Noyau s’entoure de"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "Les graphs par Nuée",
+  "t": "Les graphs par Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "déclinées Nuée par Nuée",
+  "t": "déclinées Nuée par Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "Nuées illimitées &amp; designs",
+  "t": "Nuées illimitées & designs"
+ },
+ {
+  "k": "html",
+  "l": 2728,
+  "raw": "Crée autant de Nuées que tu veux et ouvre les designs signature de la Toile.",
+  "t": "Crée autant de Nuées que tu veux et ouvre les designs signature de la Toile."
+ },
+ {
+  "k": "html",
+  "l": 2736,
+  "raw": "\n        Le vocabulaire de Promi — Promi, Toile, Nuée, Fil, Aura — ne se traduit pas :",
+  "t": "Le vocabulaire de Promi — Promi, Toile, Nuée, Fil, Aura — ne se traduit pas :"
+ },
+ {
+  "k": "html",
+  "l": 2754,
+  "raw": "\n        Tes Promi perso restent sur ton téléphone. Ce que tu déposes dans une Nuée est partagé avec ses membres — rien d'autre ne sort.\n      ",
+  "t": "Tes Promi perso restent sur ton téléphone. Ce que tu déposes dans une Nuée est partagé avec ses membres — rien d'autre ne sort."
+ },
+ {
+  "k": "html",
+  "l": 2766,
+  "raw": "toile vide + 1 Nuée ›",
+  "t": "toile vide + 1 Nuée ›"
+ },
+ {
+  "k": "html",
+  "l": 2774,
+  "raw": "avec Le Cercle",
+  "t": "avec Le Cercle"
+ },
+ {
+  "k": "html",
+  "l": 2782,
+  "raw": "Le Cercle",
+  "t": "Le Cercle"
+ },
+ {
+  "k": "html",
+  "l": 2785,
+  "raw": " parole envers les autres. Le Cercle révèle ",
+  "t": "parole envers les autres. Le Cercle révèle"
+ },
+ {
+  "k": "html",
+  "l": 2785,
+  "raw": " : ce que tes proches tiennent envers toi — sur le Noyau, chaque lien et chaque Nuée.",
+  "t": ": ce que tes proches tiennent envers toi — sur le Noyau, chaque lien et chaque Nuée."
+ },
+ {
+  "k": "html",
+  "l": 2786,
+  "raw": "Nuées illimitées",
+  "t": "Nuées illimitées"
+ },
+ {
+  "k": "html",
+  "l": 2787,
+  "raw": "Ton harmonie dans le temps, par personne, par Nuée.",
+  "t": "Ton harmonie dans le temps, par personne, par Nuée."
+ },
+ {
+  "k": "html",
+  "l": 2788,
+  "raw": "Thèmes et matières exclusives au Cercle.",
+  "t": "Thèmes et matières exclusives au Cercle."
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "Nuée",
+  "t": "Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "renomme ou dissous cette Nuée",
+  "t": "renomme ou dissous cette Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "Nom de la Nuée",
+  "t": "Nom de la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "+ Ajouter un Promi à la Nuée",
+  "t": "+ Ajouter un Promi à la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "Aura de la Nuée",
+  "t": "Aura de la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "Nuée · membres",
+  "t": "Nuée · membres"
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "Promesses de la Nuée",
+  "t": "Promesses de la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 2808,
+  "raw": "Dissoudre la Nuée",
+  "t": "Dissoudre la Nuée"
+ },
+ {
+  "k": "html",
+  "l": 15660,
+  "raw": "les mêmes Promi et Nuées",
+  "t": "les mêmes Promi et Nuées"
+ },
+ {
+  "k": "attr",
+  "l": 2548,
+  "raw": "aria-label=\"Le Cercle\"",
+  "t": "Le Cercle"
+ },
+ {
+  "k": "attr",
+  "l": 2588,
+  "raw": "aria-label=\"Trace pour lancer la Nuée\"",
+  "t": "Trace pour lancer la Nuée"
+ },
+ {
+  "k": "attr",
+  "l": 2642,
+  "raw": "placeholder=\"Rechercher un Promi, une Nuée…\"",
+  "t": "Rechercher un Promi, une Nuée…"
+ },
+ {
+  "k": "attr",
+  "l": 2653,
+  "raw": "placeholder=\"de quoi parle cette Nuée ?\"",
+  "t": "de quoi parle cette Nuée ?"
+ },
+ {
+  "k": "attr",
+  "l": 2656,
+  "raw": "placeholder=\"présente la Nuée, son but…\"",
+  "t": "présente la Nuée, son but…"
+ }
+]

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #EFE9DE; }
+  a { color: #C8452B; }
+  a:hover { color: #1A1613; }
+</style>
+<script src="mondes-pdf.js"></script>
+<script src="mondes.js"></script>
+</helmet>
+<div ref="{{ setRoot }}" style="min-height:100vh;font-family:'IBM Plex Mono',monospace;color:#1A1613;padding:38px 28px 70px;box-sizing:border-box">
+  <div style="max-width:1640px;margin:0 auto;display:flex;flex-direction:column;gap:24px">
+
+    <header style="display:flex;flex-direction:column;gap:12px;max-width:78ch">
+      <p style="margin:0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.5">Promi · planche validée vs code au contrat · mesure de FORME</p>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(26px,3.6vw,42px);line-height:1.05">Ce n'est pas la densité qu'on compare, c'est le dessin</h1>
+      <p style="margin:0;font-size:12.5px;line-height:1.7;opacity:.72;text-wrap:pretty">Régions connexes de même ton : combien, quelle taille, quelle compacité, quel allongement. Plus la longueur des plages et la part de contours. Rendu sur canevas transparent, composé ensuite sur la Toile — comme dans l'app.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button onClick="{{ comparer }}" style="cursor:pointer;background:#C8452B;color:#fff;border:none;padding:10px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Mesurer la forme</button>
+        <button onClick="{{ mesurer }}" style="cursor:pointer;background:#1A1613;color:#EFE9DE;border:none;padding:10px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Budget (25 passes)</button>
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:none;border:1px solid #1A161340;padding:10px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#1A1613">Nouveau semis</button>
+        <span style="font-size:11px;opacity:.5">{{ etat }}</span>
+      </div>
+    </header>
+
+    <div data-diff="" style="font-size:11px;line-height:1.95;white-space:pre;overflow-x:auto;border:1px solid #1A161326;padding:16px 18px"></div>
+
+    <section style="display:flex;flex-direction:column;gap:14px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Quatre cellules, à 3×</h2>
+      <p style="margin:0;font-size:12px;opacity:.6;max-width:62ch">Planche à gauche, contrat à droite. C'est ici que se voit le dessin d'un éclat, d'une bobine.</p>
+      <div style="display:flex;gap:26px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Esquille</span>
+          <div style="display:flex;gap:6px"><canvas data-z="esquille|1"></canvas><canvas data-z="esquille|0"></canvas></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Bobinette</span>
+          <div style="display:flex;gap:6px"><canvas data-z="bobinette|1"></canvas><canvas data-z="bobinette|0"></canvas></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Ritournelle</span>
+          <div style="display:flex;gap:6px"><canvas data-z="ritournelle|1"></canvas><canvas data-z="ritournelle|0"></canvas></div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:6px">
+          <span style="font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.5">Madrure</span>
+          <div style="display:flex;gap:6px"><canvas data-z="madrure|1"></canvas><canvas data-z="madrure|0"></canvas></div>
+        </div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:14px;border-top:1px solid #1A161326;padding-top:18px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:28px">Toile entière</h2>
+      <div style="display:flex;gap:30px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;opacity:.5">Esquille</span><div style="display:flex;gap:6px"><canvas data-p="esquille"></canvas><canvas data-m="esquille"></canvas></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;opacity:.5">Bobinette</span><div style="display:flex;gap:6px"><canvas data-p="bobinette"></canvas><canvas data-m="bobinette"></canvas></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;opacity:.5">Ritournelle</span><div style="display:flex;gap:6px"><canvas data-p="ritournelle"></canvas><canvas data-m="ritournelle"></canvas></div></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><span style="font-size:11px;opacity:.5">Madrure</span><div style="display:flex;gap:6px"><canvas data-p="madrure"></canvas><canvas data-m="madrure"></canvas></div></div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { seed: 7, etat: 'prêt' };
+
+  PAL = ['#1A1613', '#C8452B', '#E2A43B', '#2F6157'];
+  LITS = [0, .10, .04, .14, .07];
+  BG = '#EFE9DE';
+
+  hex(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+  lit(c, t) { return [c[0] + (255 - c[0]) * t, c[1] + (255 - c[1]) * t, c[2] + (255 - c[2]) * t]; }
+  rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  fabrique(W, H, n, seed, k) {
+    const R = this.rng(seed), sites = [];
+    const cols = Math.max(1, Math.round(Math.sqrt(n * W / H))), rows = Math.max(1, Math.ceil(n / cols));
+    const sx = W / cols, sy = H / rows;
+    for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {
+      if (sites.length >= n) break;
+      sites.push({
+        x: (i + 0.5 + (R() - 0.5) * 0.7) * sx, y: (j + 0.5 + (R() - 0.5) * 0.7) * sy,
+        w: (R() - 0.5) * sx * 0.18, kind: R() < 0.78 ? 'promi' : 'gray',
+        pid: 'p' + (sites.length + seed * 97), ci: 0, lit: 0
+      });
+    }
+    const u = Math.sqrt(W * H / Math.max(1, sites.length));
+    sites.forEach(s => {
+      const pris = {};
+      sites.forEach(o => { if (o !== s && o.done && Math.hypot(o.x - s.x, o.y - s.y) < u * 1.6) pris[o.ci] = 1; });
+      let c = 0; while (pris[c] && c < 3) c++;
+      s.ci = c; s.done = 1;
+      const prisL = {};
+      sites.forEach(o => { if (o !== s && o.doneL && Math.hypot(o.x - s.x, o.y - s.y) < u * 1.5) prisL[o.lit] = 1; });
+      let l = 0; while (prisL[l] && l < 4) l++;
+      s.lit = l; s.doneL = 1;
+    });
+    if (k && k !== 1) sites.forEach(s => { s.x *= k; s.y *= k; s.w *= k; });
+    return sites;
+  }
+
+  env(g, W, H, seeds) {
+    const PAL = this.PAL.map(h => this.hex(h)), LITS = this.LITS;
+    const gris = [214, 208, 196];
+    return {
+      g, W, H, DPR: 1, seeds, view: { s: 1, ox: 0, oy: 0 }, bg: this.BG, PAL,
+      isLightM: () => true,
+      avg: () => Math.sqrt(W * H / Math.max(1, seeds.length)),
+      cOf: (s) => s.kind === 'gray' ? gris : this.lit(PAL[s.ci], LITS[s.lit]),
+      cAt: (x, y) => { let b = seeds[0], bd = 1e18; seeds.forEach(s => { const d = Math.hypot(x - s.x, y - s.y) - s.w; if (d < bd) { bd = d; b = s; } }); return b; },
+      _dalleDeCle: (pid) => { let h = 0x811c9dc5; const t = String(pid); for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = (h * 16777619) >>> 0; } return h >>> 0; }
+    };
+  }
+
+  // rendu sur canevas TRANSPARENT (comme la Toile de l'app), composé ensuite sur le fond
+  rendu(monde, pdf, W, H, n, seed, k, dpr) {
+    const D = dpr || 1;
+    const cv = document.createElement('canvas');
+    cv.width = Math.round(W * D); cv.height = Math.round(H * D);
+    const g = cv.getContext('2d', { willReadFrequently: true });
+    g.setTransform(D, 0, 0, D, 0, 0);
+    const seeds = this.fabrique(W / (k || 1), H / (k || 1), n, seed, k || 1);
+    const env = this.env(g, W, H, seeds);
+    const M = pdf ? window.creerMondesPDF(env) : window.creerMondes(env);
+    M[monde](0, 0, 0, W, H);
+    return cv;
+  }
+
+  composer(src, W, H, D) {
+    const out = document.createElement('canvas');
+    out.width = Math.round(W * D); out.height = Math.round(H * D);
+    const g = out.getContext('2d', { willReadFrequently: true });
+    g.fillStyle = this.BG; g.fillRect(0, 0, out.width, out.height);
+    g.drawImage(src, 0, 0);
+    return out;
+  }
+
+  // ---- mesure de FORME ---------------------------------------------------
+  labels(data, W, H) {
+    const PAL = this.PAL.map(h => this.hex(h)), bg = this.hex(this.BG);
+    const L = new Uint8Array(W * H);
+    for (let i = 0; i < W * H; i++) {
+      const k = i * 4, r = data[k], g2 = data[k + 1], b = data[k + 2];
+      let bi = 4, bd = Math.abs(r - bg[0]) + Math.abs(g2 - bg[1]) + Math.abs(b - bg[2]);
+      for (let p = 0; p < 4; p++) {
+        const q = Math.abs(r - PAL[p][0]) + Math.abs(g2 - PAL[p][1]) + Math.abs(b - PAL[p][2]);
+        if (q < bd) { bd = q; bi = p; }
+      }
+      L[i] = bi;
+    }
+    return L;
+  }
+
+  forme(L, W, H) {
+    // plages horizontales
+    let runs = 0, runN = 0, cur = 1;
+    for (let y = 0; y < H; y++) { cur = 1; for (let x = 1; x < W; x++) { const i = y * W + x; if (L[i] === L[i - 1]) cur++; else { runs += cur; runN++; cur = 1; } } runs += cur; runN++; }
+    // contours
+    let per = 0;
+    for (let y = 0; y < H; y++) for (let x = 0; x < W; x++) {
+      const i = y * W + x;
+      if (x + 1 < W && L[i] !== L[i + 1]) per++;
+      if (y + 1 < H && L[i] !== L[i + W]) per++;
+    }
+    // régions connexes (4-voisinage), aires, périmètres, moments
+    const vu = new Uint8Array(W * H), pile = new Int32Array(W * H);
+    const aires = [], comp = [], allo = [];
+    for (let s = 0; s < W * H; s++) {
+      if (vu[s]) continue;
+      const lab = L[s]; let top = 0; pile[top++] = s; vu[s] = 1;
+      let a = 0, p = 0, sx = 0, sy = 0, sxx = 0, syy = 0, sxy = 0;
+      while (top) {
+        const i = pile[--top], x = i % W, y = (i / W) | 0;
+        a++; sx += x; sy += y; sxx += x * x; syy += y * y; sxy += x * y;
+        if (x > 0) { if (L[i - 1] === lab) { if (!vu[i - 1]) { vu[i - 1] = 1; pile[top++] = i - 1; } } else p++; } else p++;
+        if (x < W - 1) { if (L[i + 1] === lab) { if (!vu[i + 1]) { vu[i + 1] = 1; pile[top++] = i + 1; } } else p++; } else p++;
+        if (y > 0) { if (L[i - W] === lab) { if (!vu[i - W]) { vu[i - W] = 1; pile[top++] = i - W; } } else p++; } else p++;
+        if (y < H - 1) { if (L[i + W] === lab) { if (!vu[i + W]) { vu[i + W] = 1; pile[top++] = i + W; } } else p++; } else p++;
+      }
+      if (a < 12) continue;
+      aires.push(a);
+      comp.push(Math.min(1, 4 * Math.PI * a / (p * p)));
+      const mx = sx / a, my = sy / a;
+      const cxx = sxx / a - mx * mx, cyy = syy / a - my * my, cxy = sxy / a - mx * my;
+      const tr = cxx + cyy, de = cxx * cyy - cxy * cxy;
+      const d2 = Math.max(0, tr * tr / 4 - de), l1 = tr / 2 + Math.sqrt(d2), l2 = Math.max(1e-6, tr / 2 - Math.sqrt(d2));
+      allo.push(Math.sqrt(l1 / l2));
+    }
+    aires.sort((a, b) => a - b);
+    const moy = t => t.reduce((a, b) => a + b, 0) / Math.max(1, t.length);
+    const med = aires.length ? aires[aires.length >> 1] : 0;
+    return {
+      plage: runs / Math.max(1, runN),
+      contours: per / (W * H),
+      n: aires.length,
+      aireMed: med,
+      queue: med ? aires[Math.min(aires.length - 1, Math.floor(aires.length * 0.95))] / med : 0,
+      compacite: moy(comp),
+      allongement: moy(allo)
+    };
+  }
+
+  compare(monde, W, H, n, seed) {
+    const A = this.composer(this.rendu(monde, true, W, H, n, seed, 1, 1), W, H, 1);
+    const B = this.composer(this.rendu(monde, false, W, H, n, seed, 1, 1), W, H, 1);
+    const da = A.getContext('2d').getImageData(0, 0, W, H).data;
+    const db = B.getContext('2d').getImageData(0, 0, W, H).data;
+    let diff = 0;
+    for (let i = 0; i < W * H; i++) { const k = i * 4; if (Math.abs(da[k] - db[k]) + Math.abs(da[k + 1] - db[k + 1]) + Math.abs(da[k + 2] - db[k + 2]) > 36) diff++; }
+    return { diff: diff / (W * H), a: this.forme(this.labels(da, W, H), W, H), b: this.forme(this.labels(db, W, H), W, H) };
+  }
+
+  mesure(monde, passes) {
+    const W = 390, H = 844, cv = document.createElement('canvas'), D = 2;
+    cv.width = W * D; cv.height = H * D;
+    const g = cv.getContext('2d'), ms = [];
+    for (let i = 0; i < passes; i++) {
+      g.setTransform(D, 0, 0, D, 0, 0); g.clearRect(0, 0, W, H);
+      const seeds = this.fabrique(W, H, 60, this.state.seed + i, 1);
+      const M = window.creerMondes(this.env(g, W, H, seeds));
+      const t0 = performance.now();
+      M[monde](0, 0, 0, W, H);
+      ms.push(performance.now() - t0);
+    }
+    ms.sort((a, b) => a - b);
+    return { med: ms[ms.length >> 1], max: ms[ms.length - 1] };
+  }
+
+  componentDidMount() { this.tout(); }
+  componentDidUpdate() { this.tout(); }
+
+  poser(cv, src, W, H, D) {
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    cv.width = Math.round(W * D); cv.height = Math.round(H * D);
+    const g = cv.getContext('2d');
+    g.fillStyle = this.BG; g.fillRect(0, 0, cv.width, cv.height);
+    g.drawImage(src, 0, 0);
+  }
+
+  tout() {
+    const root = this.root; if (!root || !window.creerMondes || !window.creerMondesPDF) return;
+    root.querySelectorAll('canvas[data-z]').forEach(cv => {
+      const [m, pdf] = cv.dataset.z.split('|');
+      const S = 380;
+      this.poser(cv, this.rendu(m, pdf === '1', S, S, 4, this.state.seed + 5, 3, 2), S, S, 2);
+    });
+    root.querySelectorAll('canvas[data-p]').forEach(cv => this.poser(cv, this.rendu(cv.dataset.p, true, 300, 650, 40, this.state.seed, 1, 2), 300, 650, 2));
+    root.querySelectorAll('canvas[data-m]').forEach(cv => this.poser(cv, this.rendu(cv.dataset.m, false, 300, 650, 40, this.state.seed, 1, 2), 300, 650, 2));
+  }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      etat: this.state.etat,
+      reroll: () => this.setState(s => ({ seed: s.seed + 1 })),
+      comparer: () => {
+        const W = 340, H = 736, lg = [];
+        const f2 = (v, d) => v.toFixed(d === undefined ? 2 : d);
+        lg.push('monde         pix≠     plage px        contours        régions        aire méd.       queue p95/méd   compacité       allongement');
+        lg.push('                       planche/contrat planche/contrat planche/contrat planche/contrat planche/contrat planche/contrat planche/contrat');
+        ['esquille', 'bobinette', 'ritournelle', 'madrure'].forEach(m => {
+          const r = this.compare(m, W, H, 48, this.state.seed), a = r.a, b = r.b;
+          const P = (x, y, d) => (f2(x, d) + '/' + f2(y, d)).padEnd(16);
+          lg.push(m.padEnd(14) + (100 * r.diff).toFixed(0) + '%'.padEnd(5) + '  ' +
+            P(a.plage, b.plage, 1) + P(a.contours, b.contours, 3) + P(a.n, b.n, 0) +
+            P(a.aireMed, b.aireMed, 0) + P(a.queue, b.queue, 1) + P(a.compacite, b.compacite, 2) + P(a.allongement, b.allongement, 2));
+        });
+        const el = this.root.querySelector('[data-diff]');
+        if (el) el.textContent = lg.join('\n');
+        this.setState({ etat: 'forme mesurée' });
+      },
+      mesurer: () => {
+        const out = [];
+        ['esquille', 'bobinette', 'ritournelle', 'madrure'].forEach(m => { const r = this.mesure(m, 25); out.push(m + ' ' + r.med.toFixed(1) + '/' + r.max.toFixed(1)); });
+        this.setState({ etat: 'budget ms (méd/max) — ' + out.join(' · ') });
+      }
+    };
+  }
+}
+</script>
+</body>
+</html>

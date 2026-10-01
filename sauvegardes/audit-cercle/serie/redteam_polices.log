@@ -1,0 +1,19 @@
+══ FACES EMBARQUÉES (lues dans app.html) ══
+   apfel      400  normal
+   apfelmid   500  normal
+   bricolage  600  normal
+   bricolage  700  normal
+   fraunces   600  italic
+   fraunces   600  normal
+
+══ COUPLES DEMANDÉS ET EMBARQUÉS ══
+   apfelmid   500  normal   268 élément(s)
+   bricolage  700  normal   240 élément(s)
+   bricolage  600  normal   49 élément(s)
+   apfel      400  normal   26 élément(s)
+   fraunces   600  normal   7 élément(s)
+
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)

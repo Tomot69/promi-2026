@@ -1,0 +1,15 @@
+
+
+  ❌  8 PAIRE(S) DE TEXTES SE SONT RAPPROCHÉES
+      « deux blocs de texte ne doivent jamais être à moins de leur écart d'origine »
+
+   −14.2  Peaufiner Nuée [light]   .np-val«aucun fichier»             → .np-bas«visibles par la Nuée»   (23.5 → 9.3)
+   −14.2  Peaufiner Nuée [light]   .np-lab«PIÈCES JOINTES»            → .np-bas«visibles par la Nuée»   (27 → 12.8)
+   −14.2  Peaufiner Nuée [dark]    .np-val«aucun fichier»             → .np-bas«visibles par la Nuée»   (23.5 → 9.3)
+   −14.2  Peaufiner Nuée [dark]    .np-lab«PIÈCES JOINTES»            → .np-bas«visibles par la Nuée»   (27 → 12.8)
+   −2     Peaufiner Nuée [light]   .np-lab«DESCRIPTION»               → .np-ph«présente la Nuée, so»    (9 → 7)
+   −2     Peaufiner Nuée [light]   .np-lab«COMMENTAIRES»              → .np-ph«écris un mot…»           (9 → 7)
+   −2     Peaufiner Nuée [dark]    .np-lab«DESCRIPTION»               → .np-ph«présente la Nuée, so»    (9 → 7)
+   −2     Peaufiner Nuée [dark]    .np-lab«COMMENTAIRES»              → .np-ph«écris un mot…»           (9 → 7)
+
+  Si le lot demandait ce resserrement, refige : python3 redteam_air.py --figer

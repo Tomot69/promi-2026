@@ -1,0 +1,19 @@
+Toile.renderTo existe                      OK  
+renderTo rend une image                    OK  {'ok': True, 'w': 780, 'h': 1688, 'teintes': 248, 'ech': 82290}
+les dalles sont aux bonnes positions       KO  5/10 concordent · ecarts [2, 552, 157, 519, 1, 2, 318, 1]
+renderTo utilise les vrais germes          OK  
+planter des Promi change l'apercu          OK  hash 260541413 -> 262611958
+Mes Promi : poser le Noyau recompose la planche OK  
+Mes Promi : la planche ECRIT des intitules OK  18 -> 18 intitules
+Mes Promi : les intitules restent          OK  les memes mots
+Mes Promi : retirer le Noyau recompose     OK  
+Ma Toile : le Noyau se pose                OK  
+le % s'affiche                             OK  chiffre composé : 33%
+le % porte la double encre terracotta      OK  encres : #F07A2E #3A54FF #F3EFE6
+le % porte la double encre bleue           OK  décalages : [[-0.116, 0.074], [0.095, -0.047], [0, 0]]
+petit : le chiffre tient dans le trou      OK  trou 49 · texte jusqu a 42
+moyen : le chiffre tient dans le trou      OK  trou 69 · texte jusqu a 58
+grand : le chiffre tient dans le trou      OK  trou 91 · texte jusqu a 79
+aucune erreur JS                           OK  []
+
+16/17

@@ -1,0 +1,15 @@
+Ma Toile : le Noyau se deplace au doigt      OK  
+l'anneau est peint a sa nouvelle place       OK  
+l'aimant de la ligne du QR attire            OK  
+Mes Promi : le bloc change de case           OK  
+le bloc reste dans la grille                 OK  
+un tap simple ne deplace rien                OK  
+Mes Promi : l'anneau est peint               KO  avec 0 - sans 0 = 0
+Mes Promi : le % est peint                   OK  
+le cadrage ne suit pas le Noyau              OK  
+Mes Promi : le Noyau centre sur la hauteur du bloc KO  
+Mes Promi : la reorganisation est animee     OK  
+la reorganisation est progressive            KO  1 images distinctes
+aucune erreur JS                             OK  
+
+10/13

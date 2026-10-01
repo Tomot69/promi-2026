@@ -1,0 +1,590 @@
+{
+ "onboarding/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "tutoriel/light": {
+  "etat": "PAS OUVERT"
+ },
+ "Langue/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "Confidentialite/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "essaim/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "apercu/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "tri/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "fiche personne/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "partage/light": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "FERMER",
+    "encre": "#F7F0DE",
+    "fond": "#F7EBD6",
+    "sel": "span"
+   },
+   {
+    "mot": "Une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "on s'y met ensemble",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Dans une Nuée",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Quand",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   },
+   {
+    "mot": "Important ?",
+    "encre": "#F3E7D1",
+    "fond": "#CFE5FE",
+    "sel": "label"
+   }
+  ]
+ },
+ "onboarding/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "Vos promesses, tenues.",
+    "encre": "#4B4740",
+    "fond": "#201908",
+    "sel": "div.tag"
+   },
+   {
+    "mot": "Conditions",
+    "encre": "#4B4740",
+    "fond": "#201908",
+    "sel": "a"
+   },
+   {
+    "mot": "Politique de confidentialité",
+    "encre": "#4B4740",
+    "fond": "#201908",
+    "sel": "a"
+   },
+   {
+    "mot": "✦ Le Cercle",
+    "encre": "#AA80EA",
+    "fond": "#F7F0DE",
+    "sel": "div.sc-t"
+   }
+  ]
+ },
+ "tutoriel/dark": {
+  "etat": "PAS OUVERT"
+ },
+ "Langue/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "✦ Le Cercle",
+    "encre": "#AA80EA",
+    "fond": "#F7F0DE",
+    "sel": "div.sc-t"
+   }
+  ]
+ },
+ "Confidentialite/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "✦ Le Cercle",
+    "encre": "#AA80EA",
+    "fond": "#F7F0DE",
+    "sel": "div.sc-t"
+   }
+  ]
+ },
+ "essaim/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "✦ Le Cercle",
+    "encre": "#AA80EA",
+    "fond": "#F7F0DE",
+    "sel": "div.sc-t"
+   }
+  ]
+ },
+ "apercu/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "✦ Le Cercle",
+    "encre": "#AA80EA",
+    "fond": "#F7F0DE",
+    "sel": "div.sc-t"
+   }
+  ]
+ },
+ "tri/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "à Rachel",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-eb"
+   },
+   {
+    "mot": "À TENIR · 2 J",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-et"
+   },
+   {
+    "mot": "de Marion",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-eb"
+   },
+   {
+    "mot": "À TENIR · 3 J",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-et"
+   }
+  ]
+ },
+ "fiche personne/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "à Rachel",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-eb"
+   },
+   {
+    "mot": "2 J",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-et"
+   },
+   {
+    "mot": "au groupe",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-eb"
+   },
+   {
+    "mot": "5 J · LE POTAGER",
+    "encre": "#DD4D23",
+    "fond": "#183759",
+    "sel": "div.s4-et"
+   }
+  ]
+ },
+ "partage/dark": {
+  "etat": "ouvert",
+  "anciennes": [],
+  "textes_sous_42": [
+   {
+    "mot": "Un Chiche",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hname"
+   },
+   {
+    "mot": "tu oses le lancer",
+    "encre": "#201908",
+    "fond": "#082137",
+    "sel": "div.hsub"
+   },
+   {
+    "mot": "✦ Le Cercle",
+    "encre": "#AA80EA",
+    "fond": "#F7F0DE",
+    "sel": "div.sc-t"
+   }
+  ]
+ }
+}

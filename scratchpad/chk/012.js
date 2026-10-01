@@ -1,0 +1,1 @@
+(function(){try{var nps=document.querySelectorAll("#shNoyauParts button");[].forEach.call(nps,function(b){b.addEventListener("click",function(){var key=b.getAttribute("data-p");if(typeof _sealParts!=="undefined"){_sealParts[key]=!_sealParts[key];b.classList.toggle("on",_sealParts[key]);}try{if(typeof shareRender==="function")shareRender();}catch(e){}});});}catch(e){}})();

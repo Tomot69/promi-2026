@@ -1,0 +1,40 @@
+— les constantes du rythme, dans le source (app-derive-ressort.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✗ ressort du moteur 0,17 / 0,22 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu de départ 760 ms 
+  ✓ fondu d'arrivée 760 ms 
+— chemin : moteur
+  ✓ encre · moteur · arrivee 827 ms (attendu 793 ± 100) · 43 images (plancher 25)
+  ✓ encre · moteur · depart 351 ms (attendu 332 ± 100) · 17 images (plancher 10)
+  ✓ touffe · moteur · arrivee 793 ms (attendu 795 ± 100) · 48 images (plancher 28)
+  ✗ touffe · moteur · depart 325 ms (attendu 218 ± 100) · 20 images (plancher 12)
+  ✓ mosaique · moteur · arrivee 825 ms (attendu 794 ± 100) · 50 images (plancher 29)
+  ✓ mosaique · moteur · depart 346 ms (attendu 257 ± 100) · 21 images (plancher 12)
+  ✓ braille · moteur · arrivee 810 ms (attendu 798 ± 100) · 43 images (plancher 26)
+  ✓ braille · moteur · depart 394 ms (attendu 305 ± 100) · 21 images (plancher 12)
+  ✓ pixel · moteur · arrivee 795 ms (attendu 787 ± 100) · 48 images (plancher 29)
+  ✓ pixel · moteur · depart 324 ms (attendu 259 ± 100) · 20 images (plancher 12)
+  ✓ halin · moteur · arrivee 2428 ms (attendu 2371 ± 284) · 145 images (plancher 86)
+  ✓ halin · moteur · depart 2831 ms (attendu 2799 ± 335) · 169 images (plancher 101)
+  ✓ esquille · moteur · arrivee 1337 ms (attendu 1414 ± 169) · 81 images (plancher 48)
+  ✓ esquille · moteur · depart 1404 ms (attendu 1396 ± 167) · 85 images (plancher 50)
+  ✓ madrure · moteur · arrivee 2380 ms (attendu 2338 ± 280) · 134 images (plancher 79)
+  ✓ madrure · moteur · depart 2429 ms (attendu 2409 ± 289) · 139 images (plancher 82)
+  ✓ ritournelle · moteur · arrivee 1972 ms (attendu 1920 ± 230) · 115 images (plancher 70)
+  ✓ ritournelle · moteur · depart 1994 ms (attendu 1943 ± 233) · 120 images (plancher 71)
+  ✓ bobinette · moteur · arrivee 2081 ms (attendu 2086 ± 250) · 106 images (plancher 68)
+  ✓ bobinette · moteur · depart 2108 ms (attendu 2117 ± 254) · 114 images (plancher 68)
+  ✓ terrazzo · moteur · arrivee 870 ms (attendu 782 ± 100) · 53 images (plancher 31)
+  ✗ terrazzo · moteur · depart 410 ms (attendu 308 ± 100) · 25 images (plancher 15)
+  ✓ gravure · moteur · arrivee 884 ms (attendu 813 ± 100) · 43 images (plancher 24)
+  ✓ gravure · moteur · depart 453 ms (attendu 369 ± 100) · 21 images (plancher 11)
+  ✗ sillons · moteur · arrivee 1172 ms (attendu 941 ± 112) · 34 images (plancher 23)
+  ✓ sillons · moteur · depart 561 ms (attendu 461 ± 100) · 19 images (plancher 11)
+
+32 / 36

@@ -1,0 +1,754 @@
+{
+ "dark · accueil": {
+  "dalles": [
+   {
+    "monde": "sillons",
+    "id": 155,
+    "ok": true,
+    "source": [
+     207,
+     190
+    ],
+    "pose": [
+     98,
+     90
+    ]
+   },
+   {
+    "monde": "gravure",
+    "id": 154,
+    "ok": true,
+    "source": [
+     140,
+     147
+    ],
+    "pose": [
+     93.3,
+     98
+    ]
+   },
+   {
+    "monde": "terrazzo",
+    "id": 153,
+    "ok": true,
+    "source": [
+     125,
+     125
+    ],
+    "pose": [
+     98,
+     98
+    ]
+   }
+  ],
+  "canevas": [
+   {
+    "monde": "sillons",
+    "r": [
+     24,
+     132,
+     98,
+     98
+    ],
+    "peint": 20.3
+   },
+   {
+    "monde": "gravure",
+    "r": [
+     146,
+     132,
+     98,
+     98
+    ],
+    "peint": 23.3
+   },
+   {
+    "monde": "terrazzo",
+    "r": [
+     268,
+     132,
+     98,
+     98
+    ],
+    "peint": 42
+   }
+  ],
+  "noms": [
+   [
+    "Sillons",
+    [
+     24,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Gravure",
+    [
+     146,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Terrazzo",
+    [
+     268,
+     238,
+     98,
+     16.9
+    ]
+   ]
+  ],
+  "prix": [
+   "29 €",
+   [
+    24,
+    276,
+    342,
+    56
+   ]
+  ],
+  "sous": [
+   "soit 2,42 €/mois · −39 %",
+   [
+    24,
+    342,
+    342,
+    17.3
+   ]
+  ],
+  "annee": [
+   "Prendre l'année",
+   [
+    24,
+    386,
+    342,
+    62
+   ]
+  ],
+  "essai": [
+   "Essayer 14 jours, puis 3,99 €/mois",
+   [
+    24,
+    464,
+    342,
+    62
+   ]
+  ],
+  "notes": [
+   [
+    "Sans engagement · annulable en",
+    [
+     24,
+     548,
+     342,
+     18.2
+    ],
+    "1"
+   ],
+   [
+    "ou un design à l'unité — 1 €, ",
+    [
+     24,
+     574,
+     342,
+     18.2
+    ],
+    "1"
+   ]
+  ],
+  "anciens": [
+   [
+    "#plHeroCv",
+    false
+   ],
+   [
+    ".pl-h",
+    false
+   ],
+   [
+    ".pl-sub",
+    false
+   ],
+   [
+    ".pl-feat",
+    false
+   ]
+  ],
+  "defile": 0,
+  "plateau": [
+   24,
+   40,
+   342,
+   60
+  ],
+  "dessus": false
+ },
+ "dark · par-dessus": {
+  "dalles": [
+   {
+    "monde": "sillons",
+    "id": 155,
+    "ok": true,
+    "source": [
+     207,
+     190
+    ],
+    "pose": [
+     98,
+     90
+    ]
+   },
+   {
+    "monde": "gravure",
+    "id": 154,
+    "ok": true,
+    "source": [
+     140,
+     147
+    ],
+    "pose": [
+     93.3,
+     98
+    ]
+   },
+   {
+    "monde": "terrazzo",
+    "id": 153,
+    "ok": true,
+    "source": [
+     125,
+     125
+    ],
+    "pose": [
+     98,
+     98
+    ]
+   }
+  ],
+  "canevas": [
+   {
+    "monde": "sillons",
+    "r": [
+     24,
+     132,
+     98,
+     98
+    ],
+    "peint": 20.3
+   },
+   {
+    "monde": "gravure",
+    "r": [
+     146,
+     132,
+     98,
+     98
+    ],
+    "peint": 23.3
+   },
+   {
+    "monde": "terrazzo",
+    "r": [
+     268,
+     132,
+     98,
+     98
+    ],
+    "peint": 42
+   }
+  ],
+  "noms": [
+   [
+    "Sillons",
+    [
+     24,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Gravure",
+    [
+     146,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Terrazzo",
+    [
+     268,
+     238,
+     98,
+     16.9
+    ]
+   ]
+  ],
+  "prix": [
+   "29 €",
+   [
+    24,
+    276,
+    342,
+    56
+   ]
+  ],
+  "sous": [
+   "soit 2,42 €/mois · −39 %",
+   [
+    24,
+    342,
+    342,
+    17.3
+   ]
+  ],
+  "annee": [
+   "Prendre l'année",
+   [
+    24,
+    386,
+    342,
+    62
+   ]
+  ],
+  "essai": [
+   "Essayer 14 jours, puis 3,99 €/mois",
+   [
+    24,
+    464,
+    342,
+    62
+   ]
+  ],
+  "notes": [
+   [
+    "Sans engagement · annulable en",
+    [
+     24,
+     548,
+     342,
+     18.2
+    ],
+    "1"
+   ],
+   [
+    "ou un design à l'unité — 1 €, ",
+    [
+     24,
+     574,
+     342,
+     18.2
+    ],
+    "1"
+   ]
+  ],
+  "anciens": [
+   [
+    "#plHeroCv",
+    false
+   ],
+   [
+    ".pl-h",
+    false
+   ],
+   [
+    ".pl-sub",
+    false
+   ],
+   [
+    ".pl-feat",
+    false
+   ]
+  ],
+  "defile": 0,
+  "plateau": [
+   24,
+   40,
+   342,
+   60
+  ],
+  "dessus": true
+ },
+ "light · accueil": {
+  "dalles": [
+   {
+    "monde": "sillons",
+    "id": 139,
+    "ok": true,
+    "source": [
+     170,
+     204
+    ],
+    "pose": [
+     81.7,
+     98
+    ]
+   },
+   {
+    "monde": "gravure",
+    "id": 138,
+    "ok": true,
+    "source": [
+     150,
+     162
+    ],
+    "pose": [
+     90.7,
+     98
+    ]
+   },
+   {
+    "monde": "terrazzo",
+    "id": 137,
+    "ok": true,
+    "source": [
+     116,
+     124
+    ],
+    "pose": [
+     91.7,
+     98
+    ]
+   }
+  ],
+  "canevas": [
+   {
+    "monde": "sillons",
+    "r": [
+     24,
+     132,
+     98,
+     98
+    ],
+    "peint": 20.1
+   },
+   {
+    "monde": "gravure",
+    "r": [
+     146,
+     132,
+     98,
+     98
+    ],
+    "peint": 20
+   },
+   {
+    "monde": "terrazzo",
+    "r": [
+     268,
+     132,
+     98,
+     98
+    ],
+    "peint": 49
+   }
+  ],
+  "noms": [
+   [
+    "Sillons",
+    [
+     24,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Gravure",
+    [
+     146,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Terrazzo",
+    [
+     268,
+     238,
+     98,
+     16.9
+    ]
+   ]
+  ],
+  "prix": [
+   "29 €",
+   [
+    24,
+    276,
+    342,
+    56
+   ]
+  ],
+  "sous": [
+   "soit 2,42 €/mois · −39 %",
+   [
+    24,
+    342,
+    342,
+    17.3
+   ]
+  ],
+  "annee": [
+   "Prendre l'année",
+   [
+    24,
+    386,
+    342,
+    62
+   ]
+  ],
+  "essai": [
+   "Essayer 14 jours, puis 3,99 €/mois",
+   [
+    24,
+    464,
+    342,
+    62
+   ]
+  ],
+  "notes": [
+   [
+    "Sans engagement · annulable en",
+    [
+     24,
+     548,
+     342,
+     18.2
+    ],
+    "1"
+   ],
+   [
+    "ou un design à l'unité — 1 €, ",
+    [
+     24,
+     574,
+     342,
+     18.2
+    ],
+    "1"
+   ]
+  ],
+  "anciens": [
+   [
+    "#plHeroCv",
+    false
+   ],
+   [
+    ".pl-h",
+    false
+   ],
+   [
+    ".pl-sub",
+    false
+   ],
+   [
+    ".pl-feat",
+    false
+   ]
+  ],
+  "defile": 0,
+  "plateau": [
+   24,
+   40,
+   342,
+   60
+  ],
+  "dessus": false
+ },
+ "light · par-dessus": {
+  "dalles": [
+   {
+    "monde": "sillons",
+    "id": 139,
+    "ok": true,
+    "source": [
+     170,
+     204
+    ],
+    "pose": [
+     81.7,
+     98
+    ]
+   },
+   {
+    "monde": "gravure",
+    "id": 138,
+    "ok": true,
+    "source": [
+     150,
+     162
+    ],
+    "pose": [
+     90.7,
+     98
+    ]
+   },
+   {
+    "monde": "terrazzo",
+    "id": 137,
+    "ok": true,
+    "source": [
+     116,
+     124
+    ],
+    "pose": [
+     91.7,
+     98
+    ]
+   }
+  ],
+  "canevas": [
+   {
+    "monde": "sillons",
+    "r": [
+     24,
+     132,
+     98,
+     98
+    ],
+    "peint": 20.1
+   },
+   {
+    "monde": "gravure",
+    "r": [
+     146,
+     132,
+     98,
+     98
+    ],
+    "peint": 20
+   },
+   {
+    "monde": "terrazzo",
+    "r": [
+     268,
+     132,
+     98,
+     98
+    ],
+    "peint": 49
+   }
+  ],
+  "noms": [
+   [
+    "Sillons",
+    [
+     24,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Gravure",
+    [
+     146,
+     238,
+     98,
+     16.9
+    ]
+   ],
+   [
+    "Terrazzo",
+    [
+     268,
+     238,
+     98,
+     16.9
+    ]
+   ]
+  ],
+  "prix": [
+   "29 €",
+   [
+    24,
+    276,
+    342,
+    56
+   ]
+  ],
+  "sous": [
+   "soit 2,42 €/mois · −39 %",
+   [
+    24,
+    342,
+    342,
+    17.3
+   ]
+  ],
+  "annee": [
+   "Prendre l'année",
+   [
+    24,
+    386,
+    342,
+    62
+   ]
+  ],
+  "essai": [
+   "Essayer 14 jours, puis 3,99 €/mois",
+   [
+    24,
+    464,
+    342,
+    62
+   ]
+  ],
+  "notes": [
+   [
+    "Sans engagement · annulable en",
+    [
+     24,
+     548,
+     342,
+     18.2
+    ],
+    "1"
+   ],
+   [
+    "ou un design à l'unité — 1 €, ",
+    [
+     24,
+     574,
+     342,
+     18.2
+    ],
+    "1"
+   ]
+  ],
+  "anciens": [
+   [
+    "#plHeroCv",
+    false
+   ],
+   [
+    ".pl-h",
+    false
+   ],
+   [
+    ".pl-sub",
+    false
+   ],
+   [
+    ".pl-feat",
+    false
+   ]
+  ],
+  "defile": 0,
+  "plateau": [
+   24,
+   40,
+   342,
+   60
+  ],
+  "dessus": true
+ }
+}

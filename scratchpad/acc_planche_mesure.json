@@ -1,0 +1,122 @@
+{
+ "libelles": {
+  "Studio": 45.8,
+  "Aura": 33.5,
+  "Index · Fil": 67.6,
+  "Partager": 64,
+  "Fil": 17.9,
+  "Index": 37.2
+ },
+ "cadres": {
+  "A-clair-1": {
+   "libre_pct": 89.3,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "A-clair-dezoom": {
+   "libre_pct": 89.3,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "A-sombre-1": {
+   "libre_pct": 89.3,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "A-sombre-dezoom": {
+   "libre_pct": 89.3,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "B-clair-ouvert": {
+   "libre_pct": 72.4,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "B-sombre-ouvert": {
+   "libre_pct": 72.4,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "C-clair-1": {
+   "libre_pct": 85.1,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "C-clair-dezoom": {
+   "libre_pct": 85.1,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "C-sombre-1": {
+   "libre_pct": 85.1,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  },
+  "C-sombre-dezoom": {
+   "libre_pct": 85.1,
+   "non_confirme": 0,
+   "collisions": [
+    [
+     "mm:Promi",
+     "ct:15 Promi viv",
+     0
+    ]
+   ]
+  }
+ }
+}

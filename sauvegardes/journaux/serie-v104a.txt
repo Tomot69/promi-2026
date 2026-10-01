@@ -1,0 +1,31 @@
+=== redteam_toile.py
+
+18/18
+=== redteam_zoom.py
+
+16/16
+=== redteam_nuee_dalle.py
+
+38/38
+=== redteam_dalle_figee.py
+
+4/4
+=== redteam_decoupe.py
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_accueil.py
+
+22/22
+=== redteam_apercus.py
+
+✅  10/10
+=== redteam_vide.py
+
+61/61
+=== redteam_flash.py
+
+32/32
+=== redteam_rythme.py
+
+96 / 99
+fini

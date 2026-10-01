@@ -1,0 +1,10 @@
+   ✓ dark · l’encre de la carte LE TRAIT tient l’air d’un champ ouvert (≥ 14.69)  encre à 16.68 · rayon 30
+   ✓ dark · le contenu est symétrique : air du libellé en haut = air du rail en bas  ('libellé en haut', 24, 'rail en bas', 24)
+   ✓ dark · le rail reste dans la carte, sous le libellé (air ≥ 10)  [24, 50, 298, 44]
+   ✓ dark · toucher une pastille change le trait (au doigt)  ('Plein', '→', 'Coulé', {'x': 195, 'y': 226, 'nom': 'Coulé', 'doigt': True})
+   ✓ light · l’encre de la carte LE TRAIT tient l’air d’un champ ouvert (≥ 14.69)  encre à 16.68 · rayon 30
+   ✓ light · le contenu est symétrique : air du libellé en haut = air du rail en bas  ('libellé en haut', 24, 'rail en bas', 24)
+   ✓ light · le rail reste dans la carte, sous le libellé (air ≥ 10)  [24, 50, 298, 44]
+   ✓ light · toucher une pastille change le trait (au doigt)  ('Plein', '→', 'Coulé', {'x': 195, 'y': 226, 'nom': 'Coulé', 'doigt': True})
+══ 0 raté(s)
+fin rc=0

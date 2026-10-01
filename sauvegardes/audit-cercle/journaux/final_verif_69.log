@@ -1,0 +1,8 @@
+   ✓ dark · le toucher sur la pastille « Coulé » est pris (sous le doigt : la pastille)  [('la pastille', 'Coulé')]
+   ✓ dark · le Promi planté porte le pinceau choisi (« Coulé »)  ('Coulé', [{'id': 141, 'titre': 'essayer le pinceau', 'trait': 'Coulé'}])
+   ✓ dark · sa fiche, rouverte, montre ce trait dans Peaufiner (LE TRAIT)  Coulé
+   ✓ light · le toucher sur la pastille « Peigné » est pris (sous le doigt : la pastille)  [('la pastille', 'Peigné')]
+   ✓ light · le Promi planté porte le pinceau choisi (« Peigné »)  ('Peigné', [{'id': 141, 'titre': 'essayer le pinceau', 'trait': 'Peigné'}])
+   ✓ light · sa fiche, rouverte, montre ce trait dans Peaufiner (LE TRAIT)  Peigné
+══ 0 raté(s)
+fin rc=0

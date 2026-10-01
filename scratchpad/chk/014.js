@@ -1,0 +1,1 @@
+(function(){try{var cta=document.getElementById("ahCercleCta");if(cta){cta.addEventListener("click",function(e){e.stopPropagation();var h=document.getElementById("auraHelp");if(h)h.classList.remove("show");var pl=document.getElementById("plusScreen");if(pl)pl.classList.add("show");});}}catch(e){}})();

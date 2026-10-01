@@ -1,0 +1,86 @@
+=== redteam_tokens 17:13:24
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_polices 17:13:24
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)
+=== redteam_ecrans 17:14:05
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+150/150
+=== redteam_vide 17:15:33
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_verbe 17:19:25
+dark : la phrase montre son verbe (Promets-moi)      OK  h=51.3 txt='je promets'
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 58, 'vis': True}
+
+6/6
+=== redteam_champ 17:19:48
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_tonsurton 17:21:55
+l'instant · referme  [light]                         OK  ΔE 24.3  Δlum 16   
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_reperage 17:22:52
+[sombre] 1 · Fil : chaque ligne lit sa nature, à gauche        OK  5 lignes · fautives : []
+[sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : []
+
+16/16
+=== redteam_nuee 17:23:29
+  débordements ......................  0
+==============================================================================
+
+  ❌  24 écran(s) · 94 écart(s)
+=== redteam_accueil 17:27:12
+[sombre] 7 · toute dalle atteignable, dix zooms              OK  18 dalles · inatteignables {}
+[sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False
+
+22/22
+=== redteam_gens 17:29:59
+[sombre] Fiche · Peaufiner · À QUI · la croix de « Marion » la retire OK  
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK  
+
+38/38
+=== redteam_tuiles 17:33:16
+[sombre · souris · clic] nuee après nuee→chiche            OK  
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+=== redteam_toile 17:37:44
+grand : le chiffre tient dans le trou      OK  trou 89 · texte jusqu a 76
+aucune erreur JS                           OK  []
+
+17/17
+=== redteam_geste 17:38:52
+Mon Folio : rien ne disparaît, rien ne se superpose OK  
+aucune erreur JS                             OK  
+
+13/13
+=== redteam_filets 17:39:41
+fiche tenue [dark]     OK
+fiche nuee [dark]      OK
+
+OK — 0 filet(s) parasite(s)
+=== redteam_air 17:41:48
+   −4     Index 3 [dark]           [t'apprendre à nager·de Rachel].s4 → [t'apprendre à nager·de Rachel  (22 → 18)
+   … et 24 autres.
+
+  Si le lot demandait ce resserrement, refige : python3 redteam_air.py --figer
+=== releve-design 17:44:51
+    sombre/nuee · nuee · ligne · _px : [319, 69] -> [319, 77]
+    … et 40 autres
+
+Si le lot ne demandait pas ces changements, c'est une régression.
+FIN

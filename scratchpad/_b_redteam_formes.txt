@@ -1,0 +1,48 @@
+
+══ thème dark ══
+Fil · carte 2 « TENUE » [dark] · la courbe est celle du cadre 76 OK  
+Fil · carte 2 « TENUE » [dark] · épaisseur 7           OK  
+Fil · carte 2 « TENUE » [dark] · le trait va jusqu'en bas OK  
+Fil · carte 4 « À TENIR » [dark] · la courbe est celle du cadre 76 OK  
+Fil · carte 4 « À TENIR » [dark] · épaisseur 7         OK  
+Fil · carte 4 « À TENIR » [dark] · le plein s'arrête à la moitié OK  
+Fil · carte 5 « RELEVÉ » [dark] · la courbe est celle du cadre 76 OK  
+Fil · carte 5 « RELEVÉ » [dark] · épaisseur 7          OK  
+Fil · carte 5 « RELEVÉ » [dark] · le trait va jusqu'en bas OK  
+Index · carte 1 « TENUE » [dark] · épaisseur 5,5 × l/173 OK  
+Index · carte 1 « TENUE » [dark] · le trait traverse la carte OK  
+Index · carte 2 « À TENIR » [dark] · épaisseur 5,5 × l/173 OK  
+Index · carte 2 « À TENIR » [dark] · le plein s'arrête à la moitié OK  
+Index · carte 4 « LANCÉ » [dark] · épaisseur 5,5 × l/173 OK  
+Index · carte 4 « LANCÉ » [dark] · le plein s'arrête à la moitié OK  
+Index · carte 5 « EN COURS » [dark] · épaisseur 5,5 × l/173 OK  
+Index · carte 5 « EN COURS » [dark] · le plein s'arrête à la moitié OK  
+Index · carte 6 « TENU À DEUX » [dark] · épaisseur 5,5 × l/173 OK  
+Index · carte 6 « TENU À DEUX » [dark] · le trait traverse la carte KO  dernier point à 80 sur 165
+
+══ thème light ══
+Fil · carte 2 « TENUE » [light] · la courbe est celle du cadre 76 OK  
+Fil · carte 2 « TENUE » [light] · épaisseur 7          OK  
+Fil · carte 2 « TENUE » [light] · le trait va jusqu'en bas OK  
+Fil · carte 4 « À TENIR » [light] · la courbe est celle du cadre 76 OK  
+Fil · carte 4 « À TENIR » [light] · épaisseur 7        OK  
+Fil · carte 4 « À TENIR » [light] · le plein s'arrête à la moitié OK  
+Fil · carte 5 « RELEVÉ » [light] · la courbe est celle du cadre 76 OK  
+Fil · carte 5 « RELEVÉ » [light] · épaisseur 7         OK  
+Fil · carte 5 « RELEVÉ » [light] · le trait va jusqu'en bas OK  
+Index · carte 1 « TENUE » [light] · épaisseur 5,5 × l/173 OK  
+Index · carte 1 « TENUE » [light] · le trait traverse la carte OK  
+Index · carte 2 « À TENIR » [light] · épaisseur 5,5 × l/173 OK  
+Index · carte 2 « À TENIR » [light] · le plein s'arrête à la moitié OK  
+Index · carte 4 « LANCÉ » [light] · épaisseur 5,5 × l/173 OK  
+Index · carte 4 « LANCÉ » [light] · le plein s'arrête à la moitié OK  
+Index · carte 5 « EN COURS » [light] · épaisseur 5,5 × l/173 OK  
+Index · carte 5 « EN COURS » [light] · le plein s'arrête à la moitié OK  
+Index · carte 6 « TENU À DEUX » [light] · épaisseur 5,5 × l/173 OK  
+Index · carte 6 « TENU À DEUX » [light] · le trait traverse la carte KO  dernier point à 80 sur 165
+
+36/38
+
+COURBES QUI NE SONT PAS CELLES DU CADRE :
+   · Index · carte 6 « TENU À DEUX » [dark] · le trait traverse la carte
+   · Index · carte 6 « TENU À DEUX » [light] · le trait traverse la carte

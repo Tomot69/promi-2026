@@ -1,0 +1,331 @@
+============================================================================
+  RELEVÉ MOODBOARD — « choix » (ph-0)
+============================================================================
+  21 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (18) — à relire ──
+     [dalle  ] dalle-1          hauteur%       18.4%→10.1%  Δ8.3%
+     [dalle  ] dalle-2          hauteur%       11.6%→7.3%  Δ4.3%
+     [base 352↔390] cartes-flex      hauteur%       36.4%→32.8%  Δ3.6%
+     [base 352↔390] cartes-wrap      hauteur%       48.4%→50.6%  Δ2.2%
+     [base 352↔390] titre-conteneur  hauteur%       15.8%→14.2%  Δ1.6%
+     [repli de maquette] wordmark         fontFamily     Georgia, serif → Fraunces, Georgia, serif
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] carte1-sous      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte2-sous      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte3-sous      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] cartes-flex      largeur%       87.4%→88.7%  Δ1.3%
+     [base 352↔390] carte2           hauteur%       11.2%→10.1%  Δ1.1%
+     [base 352↔390] carte3           hauteur%       11.2%→10.1%  Δ1.1%
+     [base 352↔390] carte1           hauteur%       11.2%→10.1%  Δ1.1%
+     [dalle  ] dalle-3          hauteur%       7.0%→8.1%  Δ1.0%
+     [base 352↔390] titre-texte      hauteur%       8.9%→8.0%  Δ0.9%
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « dalle : hauteur = aspect moteur (une dalle ne se déforme jamais) ; positions & largeurs du fichier respectées »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+
+============================================================================
+  RELEVÉ MOODBOARD — « phrase » (ph-1)
+============================================================================
+  11 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (11) — à relire ──
+     [mécanisme de remplissage] panneau          marginTop      0px→185.578px Δ185.58px
+     [base 352↔390] phrase           largeur%       87.4%→100.0%  Δ12.6%
+     [base 352↔390] phrase           hauteur%       24.6%→22.3%  Δ2.3%
+     [repli de maquette] wordmark         fontFamily     Georgia, serif → Fraunces, Georgia, serif
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] aide             fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] panneau-lab      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] bouton           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] panneau          largeur%       87.4%→88.7%  Δ1.3%
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « mécanisme de remplissage (bug a) : margin-top:auto ancre le panneau en bas (le moodboard le fait via flex:1 sur la phrase) »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+
+============================================================================
+  RELEVÉ MOODBOARD — « prometsmoi » (ph-2)
+============================================================================
+  11 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (10) — à relire ──
+     [mécanisme de remplissage] panneau          marginTop      0px→185.578px Δ185.58px
+     [base 352↔390] phrase           hauteur%       24.6%→22.3%  Δ2.3%
+     [repli de maquette] wordmark         fontFamily     Georgia, serif → Fraunces, Georgia, serif
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] aide             fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] panneau-lab      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] bouton           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] panneau          largeur%       87.4%→88.7%  Δ1.3%
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « mécanisme de remplissage (bug a) : margin-top:auto ancre le panneau en bas (le moodboard le fait via flex:1 sur la phrase) »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+
+============================================================================
+  RELEVÉ MOODBOARD — « nuee » (ph-3)
+============================================================================
+  11 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (11) — à relire ──
+     [mécanisme de remplissage] panneau          marginTop      0px→185.578px Δ185.58px
+     [base 352↔390] phrase           largeur%       87.4%→100.0%  Δ12.6%
+     [base 352↔390] phrase           hauteur%       24.6%→22.3%  Δ2.3%
+     [repli de maquette] wordmark         fontFamily     Georgia, serif → Fraunces, Georgia, serif
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] aide             fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] panneau-lab      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] bouton           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] panneau          largeur%       87.4%→88.7%  Δ1.3%
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « mécanisme de remplissage (bug a) : margin-top:auto ancre le panneau en bas (le moodboard le fait via flex:1 sur la phrase) »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+
+============================================================================
+  RELEVÉ MOODBOARD — « aqui » (ph-4)
+============================================================================
+  16 nœuds mappés · 1 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (26) — à relire ──
+     [position 'à qui' pilotée par le contenu] pastille-4       pos-right      247.0px→69.8px  Δ177.2px
+     [position 'à qui' pilotée par le contenu] pastille-5       pos-left       112.0px→22.0px  Δ90.0px
+     [mécanisme de remplissage] panneau          marginTop      0px→80.4375px Δ80.44px
+     [position 'à qui' pilotée par le contenu] aqui-lab         pos-bottom     435.2px→391.9px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-1       pos-bottom     373.5px→330.2px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-2       pos-bottom     373.5px→330.2px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-3       pos-bottom     373.5px→330.2px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-5       pos-bottom     316.8px→273.4px  Δ43.3px
+     [base 352↔390] phrase           hauteur%       14.5%→21.6%  Δ7.1%
+     [position 'à qui' pilotée par le contenu] pastille-4       pos-bottom     316.8px→330.2px  Δ13.4px
+     [position 'à qui' pilotée par le contenu] pastille-3       pos-left       189.4px→184.5px  Δ4.9px
+     [repli de maquette] wordmark         fontFamily     Georgia, serif → Fraunces, Georgia, serif
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] aqui-lab         fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-1       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-2       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-3       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-4       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-5       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] panneau-lab      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] bouton           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] panneau          largeur%       87.4%→88.7%  Δ1.3%
+     [position 'à qui' pilotée par le contenu] pastille-2       pos-left       93.2px→91.6px  Δ1.7px
+     [résidu d'arrondi du défilement épinglé] phrase           pos-bottom     477.8px→479.2px  Δ1.4px
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « mécanisme de remplissage (bug a) : margin-top:auto ancre le panneau en bas (le moodboard le fait via flex:1 sur la phrase) »
+       → « position 'à qui' pilotée par le contenu (noms d'exemple + nombre différents → wrap ; phrase moodboard remplie 3 lignes vs créneaux vides 4 lignes → hauteur) ; style, box et conteneur des pastilles vérifiés »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+       → « résidu d'arrondi du défilement épinglé (remplissage bug-a) : phrase et panneau liés dans le formulaire ; le clamp cale le panneau à zéro, la phrase garde ~1,4 px — même mécanisme que la marge du panneau, déjà exclue »
+
+  NON APPARIÉS (map sans sélecteur app) :
+   • pastille-plus
+
+============================================================================
+  RELEVÉ MOODBOARD — « aquinuee » (ph-5)
+============================================================================
+  15 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (26) — à relire ──
+     [position 'à qui' pilotée par le contenu] pastille-3       pos-right      259.7px→74.3px  Δ185.4px
+     [position 'à qui' pilotée par le contenu] pastille-5       pos-left       195.1px→91.2px  Δ103.9px
+     [mécanisme de remplissage] panneau          marginTop      0px→80.4375px Δ80.44px
+     [position 'à qui' pilotée par le contenu] pastille-4       pos-left       99.3px→22.0px  Δ77.3px
+     [position 'à qui' pilotée par le contenu] aqui-lab         pos-bottom     435.2px→391.9px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-1       pos-bottom     373.5px→330.2px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-2       pos-bottom     373.5px→330.2px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-4       pos-bottom     316.8px→273.4px  Δ43.3px
+     [position 'à qui' pilotée par le contenu] pastille-5       pos-bottom     316.8px→273.4px  Δ43.3px
+     [base 352↔390] phrase           hauteur%       14.5%→21.6%  Δ7.1%
+     [position 'à qui' pilotée par le contenu] pastille-3       pos-bottom     316.8px→330.2px  Δ13.4px
+     [position 'à qui' pilotée par le contenu] pastille-2       pos-left       168.7px→156.2px  Δ12.5px
+     [repli de maquette] wordmark         fontFamily     Georgia, serif → Fraunces, Georgia, serif
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] aqui-lab         fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-1       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-2       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-3       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-4       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-5       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] panneau-lab      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] bouton           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] panneau          largeur%       87.4%→88.7%  Δ1.3%
+     [résidu d'arrondi du défilement épinglé] phrase           pos-bottom     477.8px→479.2px  Δ1.4px
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « mécanisme de remplissage (bug a) : margin-top:auto ancre le panneau en bas (le moodboard le fait via flex:1 sur la phrase) »
+       → « position 'à qui' pilotée par le contenu (noms d'exemple + nombre différents → wrap ; phrase moodboard remplie 3 lignes vs créneaux vides 4 lignes → hauteur) ; style, box et conteneur des pastilles vérifiés »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+       → « résidu d'arrondi du défilement épinglé (remplissage bug-a) : phrase et panneau liés dans le formulaire ; le clamp cale le panneau à zéro, la phrase garde ~1,4 px — même mécanisme que la marge du panneau, déjà exclue »
+
+============================================================================
+  RELEVÉ MOODBOARD — « fiche-court » (ph-6)
+============================================================================
+  19 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (38) — à relire ──
+     [bitonal de fiche] pastille-1       boxShadow      rgba(255, 255, 255, 0.34) 0px 0px 0px 1.3px inset → rgba(6, 35, 26, 0.26) 0px 0px 0px 1.3px inset  Δ249/255 α0.08
+     [bitonal de fiche] pastille-2       boxShadow      rgba(255, 255, 255, 0.34) 0px 0px 0px 1.3px inset → rgba(6, 35, 26, 0.26) 0px 0px 0px 1.3px inset  Δ249/255 α0.08
+     [bitonal de fiche] pastille-3       boxShadow      rgba(255, 255, 255, 0.34) 0px 0px 0px 1.3px inset → rgba(6, 35, 26, 0.26) 0px 0px 0px 1.3px inset  Δ249/255 α0.08
+     [bitonal de fiche] barre            boxShadow      rgba(255, 255, 255, 0.3) 0px 1px 0px 0px inset → rgba(6, 35, 26, 0.24) 0px 1px 0px 0px inset  Δ249/255 α0.06
+     [bitonal de fiche] carte            backgroundColor rgba(255, 255, 255, 0.15) → rgba(6, 35, 26, 0.1)  Δ249/255 α0.05
+     [bitonal de fiche] panneau          backgroundColor rgba(255, 255, 255, 0.14) → rgba(6, 35, 26, 0.1)  Δ249/255 α0.04
+     [bitonal de fiche] qui              color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] titre            color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] quand            color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] carte-head       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] carte-msg        color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] pastille-1       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] pastille-2       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] pastille-3       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] panneau-lab      color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] bouton           color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] bouton           boxShadow      rgb(255, 255, 255) 0px 0px 0px 1px inset → rgb(6, 35, 26) 0px 0px 0px 1px inset  Δ249/255 α0.0
+     [bitonal de fiche] phone            backgroundColor rgb(240, 122, 46) → rgb(246, 220, 196)  Δ150/255 α0.0
+     [base 352↔390] carte            largeur%       100%→88.7%  Δ11.3%
+     [base 352↔390] pastilles        largeur%       100%→88.7%  Δ11.3%
+     [bitonal de fiche] panneau          boxShadow      none → rgba(22, 23, 27, 0.1) 0px 1px 0px 0px inset
+     [position 'à qui' pilotée par le contenu] pastille-3       pos-left       171.9px→167.9px  Δ4.0px
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] qui              fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] quand            fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte-head       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte-msg        fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-1       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-2       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-3       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] panneau-lab      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] bouton           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] carte            hauteur%       14.9%→13.4%  Δ1.5%
+     [base 352↔390] carte-rep        largeur%       87.6%→89.0%  Δ1.4%
+     [base 352↔390] panneau          largeur%       87.4%→88.7%  Δ1.3%
+     [position 'à qui' pilotée par le contenu] pastille-2       pos-left       107.1px→105.3px  Δ1.8px
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « bitonal de fiche (CLAUDE.md §3) : corps CLAIR + contenu en encre (patron ph-8) ; le moodboard pose le corps en blanc sur couleur pleine. Seule exclusion — haut (mot-marque, FERMER) et toutes les tailles/structure à zéro »
+       → « position 'à qui' pilotée par le contenu (noms d'exemple + nombre différents → wrap ; phrase moodboard remplie 3 lignes vs créneaux vides 4 lignes → hauteur) ; style, box et conteneur des pastilles vérifiés »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+
+============================================================================
+  RELEVÉ MOODBOARD — « fiche-long » (ph-7)
+============================================================================
+  19 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (38) — à relire ──
+     [bitonal de fiche] pastille-1       boxShadow      rgba(255, 255, 255, 0.34) 0px 0px 0px 1.3px inset → rgba(6, 35, 26, 0.26) 0px 0px 0px 1.3px inset  Δ249/255 α0.08
+     [bitonal de fiche] pastille-2       boxShadow      rgba(255, 255, 255, 0.34) 0px 0px 0px 1.3px inset → rgba(6, 35, 26, 0.26) 0px 0px 0px 1.3px inset  Δ249/255 α0.08
+     [bitonal de fiche] pastille-3       boxShadow      rgba(255, 255, 255, 0.34) 0px 0px 0px 1.3px inset → rgba(6, 35, 26, 0.26) 0px 0px 0px 1.3px inset  Δ249/255 α0.08
+     [bitonal de fiche] barre            boxShadow      rgba(255, 255, 255, 0.3) 0px 1px 0px 0px inset → rgba(6, 35, 26, 0.24) 0px 1px 0px 0px inset  Δ249/255 α0.06
+     [bitonal de fiche] carte            backgroundColor rgba(255, 255, 255, 0.15) → rgba(6, 35, 26, 0.1)  Δ249/255 α0.05
+     [bitonal de fiche] panneau          backgroundColor rgba(255, 255, 255, 0.14) → rgba(6, 35, 26, 0.1)  Δ249/255 α0.04
+     [bitonal de fiche] qui              color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] titre            color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] quand            color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] carte-head       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] carte-msg        color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] pastille-1       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] pastille-2       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] pastille-3       color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] panneau-lab      color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] bouton           color          rgb(255, 255, 255) → rgb(6, 35, 26)  Δ249/255 α0.0
+     [bitonal de fiche] bouton           boxShadow      rgb(255, 255, 255) 0px 0px 0px 1px inset → rgb(6, 35, 26) 0px 0px 0px 1px inset  Δ249/255 α0.0
+     [bitonal de fiche] phone            backgroundColor rgb(240, 122, 46) → rgb(246, 220, 196)  Δ150/255 α0.0
+     [base 352↔390] carte            largeur%       100%→88.7%  Δ11.3%
+     [base 352↔390] pastilles        largeur%       100%→88.7%  Δ11.3%
+     [bitonal de fiche] panneau          boxShadow      none → rgba(22, 23, 27, 0.1) 0px 1px 0px 0px inset
+     [position 'à qui' pilotée par le contenu] pastille-3       pos-left       171.9px→167.9px  Δ4.0px
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] qui              fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] quand            fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte-head       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte-msg        fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-1       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-2       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-3       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] panneau-lab      fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] bouton           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] carte            hauteur%       14.9%→13.4%  Δ1.5%
+     [base 352↔390] carte-rep        largeur%       87.6%→89.0%  Δ1.4%
+     [base 352↔390] panneau          largeur%       87.4%→88.7%  Δ1.3%
+     [position 'à qui' pilotée par le contenu] pastille-2       pos-left       107.1px→105.3px  Δ1.8px
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « bitonal de fiche (CLAUDE.md §3) : corps CLAIR + contenu en encre (patron ph-8) ; le moodboard pose le corps en blanc sur couleur pleine. Seule exclusion — haut (mot-marque, FERMER) et toutes les tailles/structure à zéro »
+       → « position 'à qui' pilotée par le contenu (noms d'exemple + nombre différents → wrap ; phrase moodboard remplie 3 lignes vs créneaux vides 4 lignes → hauteur) ; style, box et conteneur des pastilles vérifiés »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+
+============================================================================
+  RELEVÉ MOODBOARD — « fiche-tenue » (ph-8)
+============================================================================
+  16 nœuds mappés · 0 non appariés · 0 manquants
+
+  ── ÉCARTS RÉELS (0) — objectif ZÉRO ──
+     ✅ ZÉRO ÉCART RÉEL
+
+  ── EXCLUSIONS JUSTIFIÉES (17) — à relire ──
+     [bitonal de fiche] phone            backgroundColor rgb(43, 232, 140) → rgb(174, 229, 206)  Δ131/255 α0.0
+     [base 352↔390] trace            largeur%       100%→88.7%  Δ11.3%
+     [base 352↔390] carte            largeur%       100%→88.7%  Δ11.3%
+     [base 352↔390] pastilles        largeur%       100%→88.7%  Δ11.3%
+     [repli de maquette] fermer           fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, -apple-system, sans-serif
+     [repli de maquette] qui              fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] quand            fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte-head       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] carte-msg        fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-1       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [repli de maquette] pastille-2       fontFamily     -apple-system, system-ui, sans-serif → Apfel, system-ui, sans-serif
+     [base 352↔390] carte            hauteur%       14.9%→13.4%  Δ1.5%
+     [base 352↔390] carte-rep        largeur%       87.6%→89.0%  Δ1.4%
+     [position 'à qui' pilotée par le contenu] pastille-2       pos-left       107.1px→105.3px  Δ1.8px
+     [base 352↔390] trace            hauteur%       8.8%→7.9%  Δ0.9%
+     [auto-référence de la racine] phone            pos-top        -1px→0px  Δ1px
+     [auto-référence de la racine] phone            pos-left       -1px→0px  Δ1px
+       → « auto-référence de la racine (le nœud .ph comparé à lui-même) »
+       → « base 352↔390 : %-dérivé d'un absolu (padding/flex) — l'absolu colle, le relatif reste relatif »
+       → « bitonal de fiche (CLAUDE.md §3) : corps CLAIR + contenu en encre (patron ph-8) ; le moodboard pose le corps en blanc sur couleur pleine. Seule exclusion — haut (mot-marque, FERMER) et toutes les tailles/structure à zéro »
+       → « position 'à qui' pilotée par le contenu (noms d'exemple + nombre différents → wrap ; phrase moodboard remplie 3 lignes vs créneaux vides 4 lignes → hauteur) ; style, box et conteneur des pastilles vérifiés »
+       → « repli de maquette : police non chargée dans le fichier (l'app garde Fraunces/Apfel, ses vraies polices) »
+

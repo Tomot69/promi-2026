@@ -1,0 +1,1 @@
+(function(){try{var slc=document.getElementById("stLockCta");if(slc){slc.addEventListener("click",function(e){e.stopPropagation();var st=document.getElementById("studioScreen");if(st)st.classList.remove("show");var pl=document.getElementById("plusScreen");if(pl)pl.classList.add("show");});}}catch(e){}})();

@@ -1,0 +1,36 @@
+[sombre] 1 · fiche : cinq réglages, LA COULEUR en dernier        OK  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR']
+[sombre] 1 · fiche : bloc de 384, tout dedans, rien ne se superpose OK  h 384.0 · sup 0
+[sombre] 1 · fiche : encart centré à 147                         KO  encart None
+[sombre] 2 · sans le Cercle, LA COULEUR est floutée et inerte    OK  blur(4.8px) · none
+[sombre] 1 · Réglages : aucun réglage du Cercle (v16)            OK  0 rangée(s)
+[sombre] 1 · Réglages : l'encart « ✦ Le Cercle » seul, visible   OK  {'regs': 0, 'encDedans': True, 'vu': True, 'mot': '✦ Le Cercle'}
+[sombre] 1 · Réglages : l'encart ouvre Le Cercle                 OK  
+[sombre] 1 · page + : cinq réglages, LA COULEUR en dernier       OK  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR']
+[sombre] 1 · page + : bloc de 384, tout dedans, rien ne se superpose OK  h 384.0 · sup 0
+[sombre] 1 · page + : encart centré à 147                        KO  encart None
+[sombre] 3 · un ton de la palette : la dalle de la Toile le prend OK  rgb(201,168,245) attendu rgb(201,168,245) · flou ['none', 'auto']
+[sombre] 4 · un code libre : la dalle est #12AB34 et la valeur l'affiche OK  rgb(18,171,52) · « #12AB34 »
+[sombre] 7 · LA COULEUR ouverte ne recouvre rien                 OK  {'dedans': True, 'suivant': True, 'h': 188}
+[sombre] 5 · le code tient après une plantation                  OK  rgb(18,171,52)
+[sombre] 6 · un code choisi à la page + est celui de la dalle plantée OK  rgb(192,255,238) attendu rgb(192,255,238)
+[sombre] 6 · rouvrir la page + efface le choix en attente        OK  
+[sombre] aucune erreur JS                                        OK  []
+[clair] 1 · fiche : cinq réglages, LA COULEUR en dernier         OK  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR']
+[clair] 1 · fiche : bloc de 384, tout dedans, rien ne se superpose OK  h 384.0 · sup 0
+[clair] 1 · fiche : encart centré à 147                          KO  encart None
+[clair] 2 · sans le Cercle, LA COULEUR est floutée et inerte     OK  blur(4.8px) · none
+[clair] 1 · Réglages : aucun réglage du Cercle (v16)             OK  0 rangée(s)
+[clair] 1 · Réglages : l'encart « ✦ Le Cercle » seul, visible    OK  {'regs': 0, 'encDedans': True, 'vu': True, 'mot': '✦ Le Cercle'}
+[clair] 1 · Réglages : l'encart ouvre Le Cercle                  OK  
+[clair] 1 · page + : cinq réglages, LA COULEUR en dernier        OK  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR']
+[clair] 1 · page + : bloc de 384, tout dedans, rien ne se superpose OK  h 384.0 · sup 0
+[clair] 1 · page + : encart centré à 147                         KO  encart None
+[clair] 3 · un ton de la palette : la dalle de la Toile le prend OK  rgb(201,168,245) attendu rgb(201,168,245) · flou ['none', 'auto']
+[clair] 4 · un code libre : la dalle est #12AB34 et la valeur l'affiche OK  rgb(18,171,52) · « #12AB34 »
+[clair] 7 · LA COULEUR ouverte ne recouvre rien                  OK  {'dedans': True, 'suivant': True, 'h': 188}
+[clair] 5 · le code tient après une plantation                   OK  rgb(18,171,52)
+[clair] 6 · un code choisi à la page + est celui de la dalle plantée OK  rgb(192,255,238) attendu rgb(192,255,238)
+[clair] 6 · rouvrir la page + efface le choix en attente         OK  
+[clair] aucune erreur JS                                         OK  []
+
+30/34

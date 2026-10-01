@@ -1,0 +1,108 @@
+{
+  "artboards": [
+    {
+      "file": "Main.dc.html",
+      "x": 0,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "A · sous le trait",
+      "is_interactive": true
+    },
+    {
+      "file": "OptionB.dc.html",
+      "x": 490,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "B · sous la phrase",
+      "is_interactive": true
+    },
+    {
+      "file": "OptionC.dc.html",
+      "x": 980,
+      "y": 0,
+      "w": 390,
+      "h": 844,
+      "title": "C · un Choix ouvert de plus",
+      "is_interactive": true
+    },
+    {
+      "file": "PeaufinerD.dc.html",
+      "x": 0,
+      "y": 1090,
+      "w": 390,
+      "h": 844,
+      "title": "D · la rangée de 64"
+    },
+    {
+      "file": "PeaufinerE.dc.html",
+      "x": 490,
+      "y": 1090,
+      "w": 390,
+      "h": 844,
+      "title": "E · la rangée de 118"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "titre-haut",
+      "x": 0,
+      "y": -230,
+      "w": 900,
+      "text": "LE CHOIX À LA PAGE +  ·  trois emplacements, trois coûts.\nTouche une pastille : elle prend le champ de nature, l'échantillon passe en teinte claire (§2.1 bis). Les quatre libres sont pleins, le cinquième est en pointillé — sans matière, comme un gardé de côté (Q128 §4)."
+    },
+    {
+      "id": "note-a",
+      "x": 0,
+      "y": -110,
+      "w": 390,
+      "text": "A · SOUS LE TRAIT\nPour : le choix touche ce qu'il change ; l'œil ne fait pas d'aller-retour.\nContre : il pousse tout. Mesuré — la phrase descend de 414 à 478, l'invite de 564 à 628, « garder de côté » de 708 à 712. 64 px de cascade, et l'air sous l'invite tombe de 123 à 47."
+    },
+    {
+      "id": "note-b",
+      "x": 490,
+      "y": -110,
+      "w": 390,
+      "text": "B · SOUS LA PHRASE\nPour : rien ne bouge d'un pixel. La bande 637 → 760 est libre, relevée à l'écran.\nContre : le choix est à 270 px du trait qu'il change. On ne voit pas l'effet en même temps que la cause."
+    },
+    {
+      "id": "note-c",
+      "x": 980,
+      "y": -110,
+      "w": 390,
+      "text": "C · UN « CHOIX OUVERT » DE PLUS\nUn doigt sur le trait ouvre un quatrième panneau, aux cotes exactes des trois autres (base 196, amplitude 22).\nPour : zéro cote déplacée au repos, et les douze traits tiennent en entier.\nContre : le repos ne dit pas que le choix existe — et la grille de 12 empile, là où Q128 §3 voulait une rangée qui glisse. Cette règle-là visait le Studio, qui n'existe plus."
+    },
+    {
+      "id": "titre-bas",
+      "x": 0,
+      "y": 900,
+      "w": 900,
+      "text": "LA REPRISE DANS PEAUFINER  ·  haut de liste, sur une fiche comme sur une Nuée.\nLes deux ouvrent le même panneau que C. Grammaire des contours appliquée : trait 2, couleur du corps, rayon = hauteur ÷ 2 — les rangées passent donc de 3 px / rayon 22 (moodboard) à 2 px / rayon 32."
+    },
+    {
+      "id": "note-d",
+      "x": 0,
+      "y": 1010,
+      "w": 390,
+      "text": "D · LA RANGÉE DE 64\nExactement une rangée de plus, avec un aperçu du trait à droite.\nPour : rien de neuf à apprendre, le reste descend de 80 px comme pour n'importe quel ajout.\nContre : 96 px d'aperçu, c'est peu pour distinguer Peigné de Sec."
+    },
+    {
+      "id": "note-e",
+      "x": 490,
+      "y": 1010,
+      "w": 390,
+      "text": "E · LA RANGÉE DE 118\nLe trait est dessiné en vrai, sur 290 px, dans la rangée.\nPour : on voit sa signature, pas le nom de sa signature. C'est le seul réglage de la liste qui a une FORME.\nContre : 118 au lieu de 64 — le reste descend de 134, et la rangée sort du rythme des autres."
+    },
+    {
+      "id": "note-mots",
+      "x": 980,
+      "y": 1010,
+      "w": 390,
+      "text": "DEUX POINTS QUE JE N'AI PAS TRANCHÉS\n\n1 · Le libellé de la rangée. J'ai écrit « LE TRAIT » (le mot de Q128, qui écrit « LE TRAIT du Promi qu'on plante ») plutôt que « LE PINCEAU ». Le pinceau est l'outil, le trait est ce qu'on règle — et les neuf autres libellés nomment la chose réglée, pas l'outil.\n\n2 · Le tracé montré dans les pastilles est celui de la planche des douze traits, à plat. Sur l'app il suivra l'onde. Ces cadres arbitrent le SÉLECTEUR, pas le trait — le trait, lui, est déjà dessiné.\n\n3 · La dalle du moteur n'est pas rendue dans ces cadres — c'est pour ça que le champ paraît nu. Toile.dalleTrame ne tourne pas ici, et je ne reconstruis pas une forme de dalle (§9). Sur l'app, elle occupe 244 × 200 à x 73 / y 88."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

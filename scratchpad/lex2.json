@@ -1,0 +1,782 @@
+[
+[
+"js",
+3202,
+"'Le Cercle activé · Nuées illimitées'"
+],
+[
+"js",
+3218,
+"'✦ Membre du Cercle ✓'"
+],
+[
+"js",
+3220,
+"'Bienvenue dans le Cercle   tout Promi dbloqu'"
+],
+[
+"js",
+3234,
+"'Donne un nom à ta Nuée'"
+],
+[
+"js",
+3234,
+"'addNuee'"
+],
+[
+"js",
+3234,
+"'Tu as créé la Nuée '"
+],
+[
+"js",
+3368,
+"'Bienvenue dans le Cercle ✓'"
+],
+[
+"js",
+3368,
+"'Le Cercle débloqué · Nuées illimitées'"
+],
+[
+"js",
+3550,
+"'Nuée'"
+],
+[
+"js",
+3662,
+"' Nuée'"
+],
+[
+"js",
+3698,
+"'Rejoins ma Nuée  '"
+],
+[
+"js",
+3700,
+"'Dissoudre la Nuée ?'"
+],
+[
+"js",
+4379,
+"'UNE NUÉE T’ATTEND'"
+],
+[
+"js",
+4392,
+"'NUÉE REJOINTE'"
+],
+[
+"js",
+4395,
+"'NUÉE'"
+],
+[
+"js",
+5322,
+"'aucune Nuée'"
+],
+[
+"js",
+5857,
+"'dpNueeFil'"
+],
+[
+"js",
+5860,
+"'dpNueeFil'"
+],
+[
+"js",
+5966,
+"'dpNueeFil'"
+],
+[
+"js",
+6005,
+"'dpNueeBody'"
+],
+[
+"js",
+6022,
+"'dpNueeFil'"
+],
+[
+"js",
+6779,
+"'ta parole se cherche — reprends une Nuée à la fois.'"
+],
+[
+"js",
+6792,
+"'<div class=\"b\" style=\"color:var(--gsub);padding:8px 0\">pas encore de Nuée à suivre</div>'"
+],
+[
+"js",
+7764,
+"'<div class=\"sh-sg\">Nuées</div>'"
+],
+[
+"js",
+7803,
+"'){Object.keys(NUE).forEach(function(k){delete NUE[k];});Object.assign(NUE,d.NUE);}if(d.NUEEMEM)NUEEMEM=d.NUEEMEM;if(d.NUEDALLE)window.NUEDALLE=d.NUEDALLE;if(Array.isArray(d.PEOPLE))PEOPLE=d.PEOPLE;if"
+],
+[
+"js",
+15747,
+"'Les <span style=\"color:var(--verm)\">Nuées.</span>'"
+],
+[
+"js",
+16313,
+"\"ahCercleCta\""
+],
+[
+"js",
+16510,
+"\"le nom de la Nuée…\""
+],
+[
+"js",
+16511,
+"\"Mettre la Nuée de côté\""
+],
+[
+"js",
+16721,
+"' Nuée'"
+],
+[
+"js",
+16957,
+"'<div class='nqh-cercle'> Cercle  vois la rciprocit (les autres envers toi)</div>'"
+],
+[
+"js",
+16975,
+"'dpNuee'"
+],
+[
+"js",
+16975,
+"'Nuée'"
+],
+[
+"js",
+16981,
+"'dpFilesNuee'"
+],
+[
+"js",
+16999,
+"'dpNuee'"
+],
+[
+"js",
+17009,
+"'labNuee'"
+],
+[
+"js",
+17009,
+"'dNueeChips'"
+],
+[
+"js",
+17009,
+"'dNueeInfo'"
+],
+[
+"js",
+17009,
+"'dkNueeNote'"
+],
+[
+"js",
+17023,
+"'dpPlusNuee'"
+],
+[
+"js",
+20514,
+"'addNuee'"
+],
+[
+"js",
+20949,
+"'<span class=\"ph-b ph-b-fixe\">Je lance une Nuée</span><br><em>nommée</em> '"
+],
+[
+"js",
+20959,
+"'<div class=\"ph-lab\">LE NOM DE LA NUÉE</div><input class=\"ph-in\" id=\"nueeNomIn\" placeholder=\"'"
+],
+[
+"js",
+21341,
+"'gcNuee'"
+],
+[
+"js",
+21425,
+"'addNuee'"
+],
+[
+"js",
+21440,
+"'dpNueeFil'"
+],
+[
+"js",
+21445,
+"'Plante le premier Promi de ta Nuée →'"
+],
+[
+"js",
+21468,
+"'dpNueeFil'"
+],
+[
+"js",
+22691,
+"'Nuée'"
+],
+[
+"js",
+22834,
+"'dpNueeFil'"
+],
+[
+"js",
+23131,
+"'Nuée'"
+],
+[
+"js",
+23209,
+"'dpNueeFil'"
+],
+[
+"js",
+23304,
+"'dpNueeFil'"
+],
+[
+"js",
+23319,
+"'dpNueeFil'"
+],
+[
+"js",
+23958,
+"'✦ Le Cercle'"
+],
+[
+"js",
+24019,
+"'dpFilesNuee'"
+],
+[
+"js",
+24021,
+"'visibles par la Nuée'"
+],
+[
+"js",
+24021,
+"'dpFilesNuee'"
+],
+[
+"js",
+24023,
+"'visibles par les membres de la Nuée'"
+],
+[
+"js",
+24024,
+"'Planter un Promi dans la Nuée'"
+],
+[
+"js",
+24026,
+"'DISSOUDRE LA NUÉE'"
+],
+[
+"js",
+24050,
+"'DANS UNE NUÉE'"
+],
+[
+"js",
+24050,
+"'dNueeChips'"
+],
+[
+"js",
+25117,
+"'Nuée'"
+],
+[
+"js",
+26669,
+"'Nuée'"
+],
+[
+"js",
+26674,
+"'Nuée'"
+],
+[
+"js",
+26854,
+"'Nuée'"
+],
+[
+"js",
+27003,
+"'Nuée'"
+],
+[
+"js",
+28197,
+"'présente la Nuée, son but…'"
+],
+[
+"js",
+28199,
+"'visibles par la Nuée'"
+],
+[
+"js",
+28200,
+"'visibles par les membres de la Nuée'"
+],
+[
+"js",
+28201,
+"'DISSOUDRE LA NUÉE'"
+],
+[
+"js",
+28329,
+"'Planter un Promi dans la Nuée'"
+],
+[
+"js",
+28414,
+"'dpNueeFil'"
+],
+[
+"js",
+28750,
+"'_ficheNuee'"
+],
+[
+"js",
+29192,
+"'renderNueeDetail'"
+],
+[
+"js",
+32663,
+"'addNuee'"
+],
+[
+"js",
+37111,
+"'✦ Le Cercle'"
+],
+[
+"js",
+38501,
+"'Bienvenue dans le Cercle ✓ · tout Promi débloqué'"
+],
+[
+"js",
+38742,
+"'Rejoins le Cercle !'"
+],
+[
+"js",
+39194,
+"'Cercle'"
+],
+[
+"js",
+39817,
+"'<div class=\"acc-pil\" data-k=\"nuee\" style=\"top:0;background:#C9A8F5;color:#291547\">Une Nuée<small>un groupe, un projet</small></div>'"
+],
+[
+"js",
+39886,
+"' Nuée'"
+],
+[
+"js",
+40096,
+"'npCercle'"
+],
+[
+"js",
+40101,
+"'npCercle'"
+],
+[
+"js",
+40105,
+"'npCercle'"
+],
+[
+"js",
+40181,
+"'<div class=\"ah-sect\"><span class=\"ah-badge prem\">Avec le Cercle</span></div>'"
+],
+[
+"js",
+40182,
+"'<div class=\"ah-cercle-cta set-cercle\" id=\"ahCercleCta\" role=\"button\"><div class=\"sc-tx\"><div class=\"sc-t\">✦ Le Cercle</div></div><div class=\"sc-go\">›</div></div>'"
+],
+[
+"js",
+40184,
+"'Les réglages du Cercle'"
+],
+[
+"js",
+40184,
+"'Récurrence, rappel, importance, mémoire et <b>la couleur</b> de ta dalle — sur chaque Promi, Chiche et Nuée.'"
+],
+[
+"js",
+40189,
+"'ahCercleCta'"
+],
+[
+"js",
+40956,
+"'Nuée'"
+],
+[
+"js",
+41471,
+"'dpNueeFil'"
+],
+[
+"js",
+41532,
+"'openNueeDetail'"
+],
+[
+"js",
+41589,
+"'Le Cercle'"
+],
+[
+"js",
+41604,
+"'CERCLE'"
+],
+[
+"js",
+41604,
+"'CERCLE'"
+],
+[
+"html",
+2555,
+"Par Nuée"
+],
+[
+"html",
+2555,
+"Nuées"
+],
+[
+"html",
+2555,
+"Nuée"
+],
+[
+"html",
+2578,
+"Une Nuée"
+],
+[
+"html",
+2582,
+"Dans une Nuée"
+],
+[
+"html",
+2587,
+"Le nom de la Nuée"
+],
+[
+"html",
+2588,
+"Les Promi de la Nuée"
+],
+[
+"html",
+2588,
+"Lancer la Nuée"
+],
+[
+"html",
+2590,
+"en Nuée"
+],
+[
+"html",
+2590,
+"Nuée"
+],
+[
+"html",
+2590,
+"Dans quelle Nuée"
+],
+[
+"html",
+2642,
+"Nuée"
+],
+[
+"html",
+2642,
+"Par Nuée"
+],
+[
+"html",
+2642,
+"Nuées"
+],
+[
+"html",
+2657,
+"tout fichier · visible par la Nuée"
+],
+[
+"html",
+2665,
+"Promesses de la Nuée"
+],
+[
+"html",
+2666,
+"✦&nbsp;&nbsp;Planter un Promi dans la Nuée"
+],
+[
+"html",
+2668,
+"Dissoudre la Nuée"
+],
+[
+"html",
+2670,
+"Promi en Nuée"
+],
+[
+"html",
+2670,
+"Nuée"
+],
+[
+"html",
+2670,
+"Brouillon de Nuée. Prépare ici son thème, ses membres et ses premiers Promi, puis appuie sur Planter pour la créer."
+],
+[
+"html",
+2672,
+"Dans une Nuée"
+],
+[
+"html",
+2685,
+"✦ Récurrence &amp; rappels · Le Cercle"
+],
+[
+"html",
+2709,
+"Ta meilleure Nuée"
+],
+[
+"html",
+2711,
+"Par Nuée · touche pour déplier"
+],
+[
+"html",
+2719,
+"Le Cercle"
+],
+[
+"html",
+2728,
+"Ta meilleure Nuée"
+],
+[
+"html",
+2728,
+"La Nuée que tu honores le mieux ressort en premier — celle où ta parole tient le plus."
+],
+[
+"html",
+2728,
+"selon la Nuée. En gratuit : ta parole"
+],
+[
+"html",
+2728,
+"Avec le Cercle"
+],
+[
+"html",
+2728,
+"En activant ton Cercle, ton Noyau s’entoure de"
+],
+[
+"html",
+2728,
+"Les graphs par Nuée"
+],
+[
+"html",
+2728,
+"déclinées Nuée par Nuée"
+],
+[
+"html",
+2728,
+"Nuées illimitées &amp; designs"
+],
+[
+"html",
+2728,
+"Crée autant de Nuées que tu veux et ouvre les designs signature de la Toile."
+],
+[
+"html",
+2736,
+"Le vocabulaire de Promi — Promi, Toile, Nuée, Fil, Aura — ne se traduit pas :"
+],
+[
+"html",
+2754,
+"Tes Promi perso restent sur ton téléphone. Ce que tu déposes dans une Nuée est partagé avec ses membres — rien d'autre ne sort."
+],
+[
+"html",
+2766,
+"toile vide + 1 Nuée ›"
+],
+[
+"html",
+2774,
+"avec Le Cercle"
+],
+[
+"html",
+2782,
+"Le Cercle"
+],
+[
+"html",
+2785,
+"parole envers les autres. Le Cercle révèle"
+],
+[
+"html",
+2785,
+": ce que tes proches tiennent envers toi — sur le Noyau, chaque lien et chaque Nuée."
+],
+[
+"html",
+2786,
+"Nuées illimitées"
+],
+[
+"html",
+2787,
+"Ton harmonie dans le temps, par personne, par Nuée."
+],
+[
+"html",
+2788,
+"Thèmes et matières exclusives au Cercle."
+],
+[
+"html",
+2808,
+"Nuée"
+],
+[
+"html",
+2808,
+"renomme ou dissous cette Nuée"
+],
+[
+"html",
+2808,
+"Nom de la Nuée"
+],
+[
+"html",
+2808,
+"+ Ajouter un Promi à la Nuée"
+],
+[
+"html",
+2808,
+"Aura de la Nuée"
+],
+[
+"html",
+2808,
+"Nuée · membres"
+],
+[
+"html",
+2808,
+"Promesses de la Nuée"
+],
+[
+"html",
+2808,
+"Dissoudre la Nuée"
+],
+[
+"html",
+15660,
+"les mêmes Promi et Nuées"
+],
+[
+"attr",
+2548,
+"aria-label=\"Le Cercle\""
+],
+[
+"attr",
+2588,
+"aria-label=\"Trace pour lancer la Nuée\""
+],
+[
+"attr",
+2642,
+"placeholder=\"Rechercher un Promi, une Nuée…\""
+],
+[
+"attr",
+2653,
+"placeholder=\"de quoi parle cette Nuée ?\""
+],
+[
+"attr",
+2656,
+"placeholder=\"présente la Nuée, son but…\""
+]
+]

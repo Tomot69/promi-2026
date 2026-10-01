@@ -1,0 +1,13 @@
+
+── ÉCARTS DE POSITION (> 3 px) : 1
+   nuee [light] : ÉCRAN JAMAIS POSÉ (liste 0 × 0 après 6 s)
+
+── ÉCARTS DE STYLE : 0
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+❌  position 1 · style 0 · collisions 0 · hors cadre 0 · peinture 0

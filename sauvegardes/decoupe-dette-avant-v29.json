@@ -1,0 +1,131 @@
+{
+ "date": "22 sept. 2026",
+ "pourquoi": "dette relevée à la naissance du contrôle — chaque ligne est un chantier ouvert, pas une exemption",
+ "lignes": [
+  {
+   "k": "B·redimension",
+   "l": 3442,
+   "emp": "B:5346f1daff69"
+  },
+  {
+   "k": "B·redimension",
+   "l": 3696,
+   "emp": "B:3f50de44e578"
+  },
+  {
+   "k": "C·getImageData",
+   "l": 4205,
+   "emp": "C:fabf6438552b"
+  },
+  {
+   "k": "A·découpe",
+   "l": 4574,
+   "emp": "A:630eca47ab95"
+  },
+  {
+   "k": "B·redimension",
+   "l": 4884,
+   "emp": "B:6ccbdbc25fe2"
+  },
+  {
+   "k": "D·fragment",
+   "l": 7358,
+   "emp": "D:26a1c77859c1"
+  },
+  {
+   "k": "B·redimension",
+   "l": 7643,
+   "emp": "B:73d187ace31d"
+  },
+  {
+   "k": "F·photo",
+   "l": 9374,
+   "emp": "F:e2e23924d563"
+  },
+  {
+   "k": "B·redimension",
+   "l": 9374,
+   "emp": "B:e2e23924d563"
+  },
+  {
+   "k": "C·getImageData",
+   "l": 15329,
+   "emp": "C:b3c981a2a140"
+  },
+  {
+   "k": "B·redimension",
+   "l": 15432,
+   "emp": "B:eb9c3e71e5fa"
+  },
+  {
+   "k": "B·redimension",
+   "l": 15954,
+   "emp": "B:2e2f5d425d7d"
+  },
+  {
+   "k": "B·redimension",
+   "l": 17759,
+   "emp": "B:57cd11e09029"
+  },
+  {
+   "k": "C·getImageData",
+   "l": 17850,
+   "emp": "C:26cb9f8aca2c"
+  },
+  {
+   "k": "C·putImageData",
+   "l": 17865,
+   "emp": "C:d2cbbdfeab0d"
+  },
+  {
+   "k": "C·getImageData",
+   "l": 19261,
+   "emp": "C:52ed6f7cad03"
+  },
+  {
+   "k": "B·redimension",
+   "l": 19427,
+   "emp": "B:cb07f1499800"
+  },
+  {
+   "k": "B·redimension",
+   "l": 19922,
+   "emp": "B:ae7907cbbecd"
+  },
+  {
+   "k": "B·redimension",
+   "l": 20152,
+   "emp": "B:9585ae6b5379"
+  },
+  {
+   "k": "C·getImageData",
+   "l": 27190,
+   "emp": "C:b4b36c2e83b1"
+  },
+  {
+   "k": "C·getImageData",
+   "l": 29537,
+   "emp": "C:e7e68b9ea0ce"
+  },
+  {
+   "k": "B·redimension",
+   "l": 32187,
+   "emp": "B:de731533b0b4"
+  },
+  {
+   "k": "C·getImageData",
+   "l": 34894,
+   "emp": "C:039621d0537a"
+  },
+  {
+   "k": "C·putImageData",
+   "l": 34902,
+   "emp": "C:b06b0beb000d"
+  },
+  {
+   "k": "B·redimension",
+   "l": 35308,
+   "emp": "B:418e0ef27777"
+  }
+ ]
+}

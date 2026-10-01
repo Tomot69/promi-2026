@@ -1,0 +1,37 @@
+
+══ thème dark ══
+fiche · encours   [dark]                             OK  Δ92   
+fiche · atenir    [dark]                             OK  Δ51   
+fiche · tenue     [dark]                             OK  Δ94   
+fiche · chiche    [dark]                             OK  Δ120  
+page + · Promi    [dark]                             KO  None sur None
+page + · Chiche   [dark]                             KO  None sur None
+page + · Nuée     [dark]                             KO  None sur None
+carte d'Index · mesurable [dark]                     OK  Δ42   
+carte d'Index · le pire des 7 [dark]                 OK  Δ51   
+bandeau du Fil · le pire [dark]                      OK  Δ51   
+l'instant · arrive   [dark]                          OK  Δ51   
+l'instant · referme  [dark]                          OK  Δ162  
+l'instant · apres    [dark]                          OK  Δ94   
+
+══ thème light ══
+fiche · encours   [light]                            OK  Δ92   
+fiche · atenir    [light]                            OK  Δ51   
+fiche · tenue     [light]                            OK  Δ94   
+fiche · chiche    [light]                            OK  Δ120  
+page + · Promi    [light]                            OK  Δ92   
+page + · Chiche   [light]                            OK  Δ120  
+page + · Nuée     [light]                            OK  Δ76   
+carte d'Index · mesurable [light]                    OK  Δ42   
+carte d'Index · le pire des 7 [light]                OK  Δ51   
+bandeau du Fil · le pire [light]                     OK  Δ51   
+l'instant · arrive   [light]                         OK  Δ51   
+l'instant · referme  [light]                         OK  Δ162  
+l'instant · apres    [light]                         OK  Δ94   
+
+23/26
+
+TRAITS SOUS LE SEUIL DE 42 :
+   · page + · Promi    [dark]
+   · page + · Chiche   [dark]
+   · page + · Nuée     [dark]

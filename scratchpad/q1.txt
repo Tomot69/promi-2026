@@ -1,0 +1,26 @@
+── la page + ──
+la page + porte le bouton                                OK  
+
+29/29
+== photo sur avant-v117b (preuve du contrat réécrit)
+27/29
+
+CE QUI NE MARCHE PAS :
+   · Promi · le bouton ouvre son menu sans rien effacer
+   · Chiche · le bouton ouvre son menu sans rien effacer
+== souffle seul
+OK [light] A · 0,3 s → 4,6 s : 27049 pixels changés dans la silhouette, 0 au-delà
+OK [light] B · lumière de la boule : sommet à 5.1 s (décidé 4.6), retour au bas à 11.5 s (décidé 10.6), amplitude 4.42 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 23489 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+✅ la Pelote respire par son velours, et rien d'autre
+== photo_menu seul
+
+18/18
+✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+== murs seul
+  ❌ 7 · « Ma Parole ! » d'une autre couleur que la phrase, les deux lisibles sur le corps (Δlum ≥ 42)  — texte rgb(247, 240, 222) · Ma Parole rgb(254, 80, 0) · fond rgb(51, 83, 130) · Δ 161 / 32
+
+══ light
+
+25/26

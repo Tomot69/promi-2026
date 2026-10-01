@@ -1,0 +1,13 @@
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== toile
+petit : le chiffre tient dans le trou      OK  trou 48 · texte jusqu a 42
+moyen : le chiffre tient dans le trou      OK  trou 67 · texte jusqu a 57
+grand : le chiffre tient dans le trou      OK  trou 89 · texte jusqu a 76
+aucune erreur JS                           OK  []
+
+17/17

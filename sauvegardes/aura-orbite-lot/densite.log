@@ -1,0 +1,17 @@
+
+processeur   palier     médiane   9e décile   images   au-dessus de 16,7 ms ?
+   ×1       110000      13.7 ms     15.2 ms     60      non
+   ×1        90000      12.2 ms     12.8 ms     60      non
+   ×1        75000      10.6 ms     11.1 ms     60      non
+   ×1       le gouverneur, parti de 110 000 : se pose à 110000 (0 cession)
+
+   ×4       110000      58.4 ms     66.0 ms     44      OUI
+   ×4        90000      51.9 ms     53.5 ms     60      OUI
+   ×4        75000      45.7 ms     47.1 ms     76      OUI
+   ×4       le gouverneur, parti de 110 000 : se pose à 75000 (2 cessions)
+
+   ×6       110000      88.6 ms    100.3 ms     44      OUI
+   ×6        90000      78.9 ms     81.8 ms     60      OUI
+   ×6        75000      69.7 ms     72.2 ms     76      OUI
+   ×6       le gouverneur, parti de 110 000 : se pose à 75000 (2 cessions)
+

@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8">
+<title>Planche — l'accueil</title>
+<link rel="stylesheet" href="planche-polices.css">
+<style>
+:root{--cr:#F4EEE1;--en:#16171B;--bleu:#3A54FF;--fra:#FA2258;--mau:#8A5CF0;--ter:#F07A2E;--men:#2BE88C;--per:#8FA0FF}
+*{box-sizing:border-box}
+body{margin:0;background:#D9D4C8;color:#16171B;font-family:Apfel,system-ui,sans-serif;padding:40px 40px 120px}
+h1{font-family:Bricolage;font-weight:700;font-size:44px;margin:0 0 6px}
+h2{font-family:Bricolage;font-weight:700;font-size:30px;margin:64px 0 6px}
+.lede{font-size:16px;max-width:980px;line-height:1.45;margin:0 0 8px}
+.mes{font-family:ApfelMid;font-size:13px;letter-spacing:.02em;max-width:1100px;line-height:1.55;background:#F4EEE1;border:2px solid #16171B;border-radius:30px;padding:16px 24px;margin:14px 0 22px}
+.mes b{font-family:Bricolage;font-weight:700}
+.rang{display:flex;gap:28px;overflow-x:auto;padding:6px 2px 10px}
+.cap{font-family:ApfelMid;font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin:10px 0 0;text-align:center}
+/* ── le cadre ── */
+.f{position:relative;width:390px;height:844px;border-radius:44px;overflow:hidden;flex:none;background:#E7E1D4}
+.f.sombre{background:#16171B}
+.f>.fond{position:absolute;inset:0;width:390px;height:844px;display:block}
+.f .sb{position:absolute;top:28px;left:32px;right:32px;display:flex;justify-content:space-between;font-family:ApfelMid;font-size:12px;letter-spacing:.06em;color:var(--en);pointer-events:none}
+.f.sombre .sb{color:var(--cr)}
+/* corps du chrome, selon le thème */
+.f{--corps:var(--cr);--trait:var(--en);--txt:var(--en)}
+.f.sombre{--corps:var(--en);--trait:var(--cr);--txt:var(--cr)}
+.ch{position:absolute}
+/* le plateau (grammaire du §5 : 342 × 60, trait 2, rayon 30) */
+.plat{left:24px;top:40px;width:342px;height:60px;border:2px solid var(--trait);border-radius:30px;background:var(--corps);color:var(--txt)}
+.plat .mm{position:absolute;left:26px;top:9px;font-family:Fraunces;font-weight:600;font-size:20px;letter-spacing:-.01em;line-height:24px}
+.plat .ct{position:absolute;left:26px;top:35px;font-family:ApfelMid;font-size:12px;letter-spacing:.08em;text-transform:uppercase;line-height:14px}
+.plat .ic{position:absolute;top:6px;width:44px;height:44px;display:grid;place-items:center}
+.plat .ic svg{width:28px;height:28px}
+/* disques (44, trait 2, rayon 50 %) */
+.dq{width:44px;height:44px;border-radius:50%;border:2px solid var(--trait);background:var(--corps);color:var(--txt);display:grid;place-items:center}
+.dq svg{width:26px;height:26px}
+.lb{font-family:ApfelMid;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--txt);white-space:nowrap;text-align:center;line-height:14px}
+.f:not(.sombre) .lb.surtoile{color:var(--en)}
+.dot{position:absolute;width:10px;height:10px;border-radius:50%;background:var(--ter);border:2px solid var(--corps)}
+/* le + */
+.plus{border-radius:50%;background:var(--trait);display:grid;place-items:center}
+.plus::before{content:"";position:absolute;inset:-7px;border-radius:50%;
+  background:conic-gradient(var(--men) 0deg 144deg,var(--per) 144deg 288deg,var(--ter) 288deg 360deg);
+  -webkit-mask:radial-gradient(closest-side,transparent calc(100% - 5px),#000 calc(100% - 4.5px));mask:radial-gradient(closest-side,transparent calc(100% - 5px),#000 calc(100% - 4.5px))}
+.plus svg{position:relative}
+.plus.x svg{transform:rotate(45deg)}
+/* panneau barre (C) */
+.barre{border:2px solid var(--trait);background:var(--corps);border-radius:37px}
+.it{position:absolute;width:90px;display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--txt)}
+.it svg{width:28px;height:28px}
+/* pilules de nature (B ouvert) */
+.pil{height:62px;border-radius:31px;display:flex;align-items:center;justify-content:space-between;padding:0 26px;gap:12px;white-space:nowrap;color:#F4EEE1;font-family:Bricolage;font-weight:700;font-size:22px;border:2px solid var(--trait)}
+.pil small{font-family:ApfelMid;font-weight:500;font-size:13px;letter-spacing:.02em;opacity:.9}
+/* Index · Fil */
+.crop{position:absolute;left:0;width:390px;overflow:hidden}
+.crop img{position:absolute;left:0;width:390px;height:844px}
+.tabs .t1{position:absolute;left:26px;top:13px;font-family:Bricolage;font-weight:700;font-size:27px;line-height:30px}
+.tabs .n{font-size:20px;margin-left:5px}
+.tabs .off{opacity:.72}
+.tabs .fer{position:absolute;right:26px;top:21px;font-family:ApfelMid;font-size:12px;letter-spacing:.14em}
+.sel{border:2px solid var(--trait);border-radius:22px;background:var(--corps);display:flex;overflow:hidden}
+.sel div{flex:1;display:grid;place-items:center;font-family:Bricolage;font-weight:700;font-size:17px;color:var(--txt)}
+.sel .on{background:var(--trait);color:var(--corps)}
+.note{font-size:13px;line-height:1.5;max-width:390px;margin-top:8px}
+</style></head><body>
+<script>
+/* ── les icônes : celles de l'app, trait couleur du corps (plus de #55576c) ── */
+var I={
+ studio:'<svg viewBox="0 0 32 32" fill="none"><path d="M7 11 L14 9 L16 15 L11 20 L6 17 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M18 8 L25 10 L26 17 L20 19 L17 13 Z" fill="currentColor"/><path d="M13 20 L20 21 L19 26 L13 26 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+ aura:'<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="10" stroke="currentColor" stroke-width="2"/><path d="M16 16 L16 8 A8 8 0 0 1 23.4 19 Z" fill="currentColor"/></svg>',
+ fil:'<svg viewBox="0 0 32 32" fill="none"><path d="M16 6.4 C11.6 6.4 9.4 9.2 9.4 13.2 C9.4 18.6 7.6 20.4 7.6 20.4 L24.4 20.4 C24.4 20.4 22.6 18.6 22.6 13.2 C22.6 9.2 20.4 6.4 16 6.4 Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M13.6 23.4 A2.6 2.6 0 0 0 18.4 23.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+ share:'<svg viewBox="0 0 32 32" fill="none"><path d="M16 20 L16 7 M16 7 L11.5 11.5 M16 7 L20.5 11.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 15 L8.5 25 L23.5 25 L23.5 15" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
+ cercle:'<svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="9.5" stroke="currentColor" stroke-width="2"/><circle cx="16" cy="16" r="3.4" fill="currentColor"/></svg>',
+ regl:'<svg viewBox="0 0 32 32" fill="none"><path d="M16 4.5 C22 4.5 27.5 8.5 27.5 15 C27.5 22 22.5 27.5 16 27.5 C9 27.5 4.5 22 4.5 15 C4.5 9 10 4.5 16 4.5 Z" stroke="currentColor" stroke-width="2"/><line x1="16" y1="16" x2="16" y2="5" stroke="currentColor" stroke-width="2"/><line x1="16" y1="16" x2="6.5" y2="23" stroke="currentColor" stroke-width="2"/><line x1="16" y1="16" x2="25.5" y2="23" stroke="currentColor" stroke-width="2"/></svg>',
+ plus:function(c,w){return '<svg viewBox="0 0 32 32" width="'+w+'" height="'+w+'"><path d="M16 6 V26 M6 16 H26" stroke="'+c+'" stroke-width="3.2" stroke-linecap="round"/></svg>';}
+};
+function HAUT(){
+ return '<div class="sb"><span>9:41</span><span>5G</span></div>'
+  +'<div class="ch plat" data-z="haut"><span class="mm">Promi</span><span class="ct">15 Promi vivants</span>'
+  +'<span class="ic" style="left:186px" title="Partager">'+I.share+'</span><span class="ic" style="left:236px" title="Le Cercle">'+I.cercle+'</span><span class="ic" style="left:286px" title="Réglages">'+I.regl+'</span></div>';
+}
+/* A : disques 44 à y 744, libellés 12 à y 794 ; + 76 centré sur 195·782 */
+function CH_A(ouvert){
+ var xs=[{x:48,i:'studio',l:'Studio'},{x:114,i:'aura',l:'Aura'},{x:306,i:'fil',l:'Index · Fil',dot:1}];
+ var h=HAUT();
+ xs.forEach(function(o){
+  h+='<div class="ch dq" data-z="dock" style="left:'+(o.x-22)+'px;top:744px">'+I[o.i]+'</div>';
+  if(o.dot)h+='<span class="ch dot" style="left:'+(o.x+10)+'px;top:742px"></span>';
+  h+='<div class="ch lb" data-z="dock" data-lb="1" style="left:'+(o.x-45)+'px;top:796px;width:90px">'+o.l+'</div>';
+ });
+ h+='<div class="ch plus'+(ouvert?' x':'')+'" data-z="plus" style="left:153px;top:726px;width:84px;height:84px">'+I.plus('var(--corps)',34)+'</div>';
+ if(ouvert){
+  var P=[['Un Chiche','un défi lancé','var(--fra)',556],['Un Promi','à quelqu\'un, ou à toi','var(--bleu)',630],['Une Nuée','un groupe, un projet','var(--mau)',482]];
+  P.sort(function(a,b){return a[3]-b[3];});
+  P.forEach(function(p){h+='<div class="ch pil" data-z="pil" style="left:40px;width:310px;top:'+p[3]+'px;background:'+p[2]+'">'+p[0]+'<small>'+p[1]+'</small></div>';});
+ }
+ return h;
+}
+/* C : panneau 342 × 74 à y 750 ; + 84 centré sur 195·750 */
+function CH_C(){
+ var h=HAUT();
+ h+='<div class="ch barre" data-z="dock" style="left:24px;top:750px;width:342px;height:74px"></div>';
+ [{x:62,i:'studio',l:'Studio'},{x:122,i:'aura',l:'Aura'},{x:300,i:'fil',l:'Index · Fil',dot:1}].forEach(function(o){
+  h+='<div class="ch it" data-z="dock" style="left:'+(o.x-45)+'px;top:763px"><span style="position:relative">'+I[o.i]+(o.dot?'<span class="dot" style="left:18px;top:-2px"></span>':'')+'</span><span class="lb" data-lb="1">'+o.l+'</span></div>';
+ });
+ h+='<div class="ch plus" data-z="plus" style="left:153px;top:704px;width:84px;height:84px">'+I.plus('var(--corps)',38)+'</div>';
+ return h;
+}
+</script>
+
+
+<h1>L'accueil — la Toile</h1>
+<p class="lede">Trois directions, toutes centrées sur le <b>+</b>. La Toile de fond est la <b>vraie Toile</b>, capturée sur <code>app.html</code> (moteur, jeu de démonstration, zoom 1 puis dézoom à 0,4 au doigt) — rien n'est redessiné dessous. Le chrome suit la grammaire du §5 : plateau 342 × 60, disques 44, trait 2 couleur du corps, rayon = hauteur ÷ 2, corps opaques — <b>aucun flou ni voile devant une dalle</b>. Rien n'est intégré : c'est à toi de choisir.</p>
+<div class="mes" id="mesures"><b>Mesuré sur la planche</b> (<code>scratchpad/acc_planche_mesure.py</code>) —
+<b>Atteinte</b> : avec le vrai moteur (3 chargements × 2 thèmes, 15 dalles), le chrome de A et de C laisse <b>0 dalle inatteignable sur 180</b> à chacun des zooms 0,4 · 0,48 · 0,6 · 0,8 · 1 · 1,25 · 1,5 · 2 · 3 · 5. Aujourd'hui : 0 aussi.
+<b>Zone libre</b> : aujourd'hui 86,3 % · A 89,3 % · C 85,1 % · B ouvert 72,4 % (le temps du choix).
+<b>Air entre éléments</b> : aucune paire sous 8 px dans A, B, C, deux thèmes.
+<b>Libellés à 12 px</b> : « Index · Fil » 67,6 · « Partager » 64 · « Studio » 45,8 · « Aura » 33,5. Dans une barre à cinq places (70 px d'entraxe), « Index · Fil » et « Partager » gardent <b>4,2 px d'air</b> — la barre à cinq ne tient pas avec ce mot ; A et C passent à trois entrées, Partager monte au plateau.
+<b>Le +</b> : 56 → 84 px ; aujourd'hui 3 touchers au doigt ne suffisent pas pour un Chiche (voir l'audit) ; B : 2 touchers sans écran intermédiaire.</div>
+
+<h2>0 · Aujourd'hui</h2>
+<div class="rang">
+ <div><div class="f"><img class="fond" src="planche-accueil/actuel_light.png"></div><div class="cap">clair · repos</div></div>
+ <div><div class="f sombre"><img class="fond" src="planche-accueil/actuel_dark.png"></div><div class="cap">sombre · repos</div></div>
+</div>
+
+<!-- ═════════════════ A ═════════════════ -->
+<h2>A · Cinq disques, le + au milieu</h2>
+<p class="lede">La structure d'aujourd'hui, mise à la grammaire. Le haut devient le plateau : mot-marque en Fraunces 20, le compte dessous, Partager, le Cercle et les Réglages en icônes nues, comme ✕ FERMER sur les autres plateaux. Le sélecteur Toile/Index disparaît : l'Index rejoint le Fil (§ Index · Fil). La barre garde trois entrées (Studio, Aura · Index · Fil) : à cinq, le libellé « Index · Fil » ne tient pas (mesure ci-dessus). Le + passe de 56 à <b>84</b>, encre pleine, son anneau dans les couleurs d'état (tenu menthe · en cours periwinkle · à tenir terracotta — aujourd'hui le tenu est lilas).</p>
+<div class="rang" data-dir="A">
+ <script>document.write(['','sombre'].map(function(t){return ['1','dezoom'].map(function(z){return '<div><div class="f '+t+'" data-cadre="A-'+(t||'clair')+'-'+z+'"><img class="fond" src="planche-accueil/toile_'+(t?'dark':'light')+'_'+z+'.png">'+CH_A()+'</div><div class="cap">'+(t||'clair')+' · '+(z==='1'?'zoom 1':'dézoom 0,4')+'</div></div>';}).join('');}).join(''));</script>
+</div>
+
+<!-- ═════════════════ B ═════════════════ -->
+<h2>B · Le + s'ouvre sur place</h2>
+<p class="lede">Au repos, exactement A. Au toucher du +, les trois natures montent au-dessus de lui, sur la Toile — <b>sans quitter l'écran</b> : un second toucher ouvre la phrase de cette nature. Même nombre de touchers qu'aujourd'hui (2), mais plus d'écran intermédiaire plein cadre, et le Chiche se choisit sans passer par l'écran des tuiles où le doigt le perd aujourd'hui. Les mots sont ceux des tuiles.</p>
+<div class="rang" data-dir="B">
+ <script>document.write(['','sombre'].map(function(t){return '<div><div class="f '+t+'" data-cadre="B-'+(t||'clair')+'-ouvert"><img class="fond" src="planche-accueil/toile_'+(t?'dark':'light')+'_1.png">'+CH_A(true)+'</div><div class="cap">'+(t||'clair')+' · + touché</div></div>';}).join(''));</script>
+</div>
+
+<!-- ═════════════════ C ═════════════════ -->
+<h2>C · La barre, le + posé dessus</h2>
+<p class="lede">Un seul panneau en bas (342 × 74, trait 2), les trois entrées de A en icône + mot, et le + de <b>84</b> qui déborde au-dessus du panneau : c'est la seule forme qui dépasse de tout l'écran. Le haut est celui de A.</p>
+<div class="rang" data-dir="C">
+ <script>document.write(['','sombre'].map(function(t){return ['1','dezoom'].map(function(z){return '<div><div class="f '+t+'" data-cadre="C-'+(t||'clair')+'-'+z+'"><img class="fond" src="planche-accueil/toile_'+(t?'dark':'light')+'_'+z+'.png">'+CH_C()+'</div><div class="cap">'+(t||'clair')+' · '+(z==='1'?'zoom 1':'dézoom 0,4')+'</div></div>';}).join('');}).join(''));</script>
+</div>
+
+<!-- ═════════════════ Index · Fil ═════════════════ -->
+<h2>Index · Fil — un seul bouton</h2>
+<p class="lede">Les deux écrans ont <b>le même haut au pixel</b> (titre 52·57, recherche et tri à 116, liste à 204). Deux façons de poser le sélecteur. Les listes sont les vraies, capturées.</p>
+<div class="rang" data-dir="IF">
+ <div><div class="f"><img class="fond" src="scratchpad/acc_index_light.png" style="width:390px;height:844px">
+   <div class="ch plat tabs"><span class="t1">Index<span class="n" style="color:#3A54FF">16</span> <span class="off" style="margin-left:14px">Fil<span class="n">4</span></span></span><span class="fer">✕ FERMER</span></div>
+ </div><div class="cap">V1 · onglets dans le plateau · Index</div><div class="note"><b>0 px.</b> La liste reste à 204.</div></div>
+ <div><div class="f sombre"><img class="fond" src="scratchpad/acc_fil_dark.png" style="width:390px;height:844px">
+   <div class="ch plat tabs"><span class="t1"><span class="off">Index<span class="n">16</span></span> <span style="margin-left:14px">Fil<span class="n" style="color:#2BE88C">4</span></span></span><span class="fer">✕ FERMER</span></div>
+ </div><div class="cap">V1 · sombre · Fil</div></div>
+ <div><div class="f"><div class="crop" style="top:0;height:180px"><img src="scratchpad/acc_index_light.png"></div>
+   <div class="crop" style="top:260px;height:584px"><img src="scratchpad/acc_index_light.png" style="top:-204px"></div>
+   <div class="ch plat tabs" style="background:var(--corps)"><span class="t1">Index<span class="n" style="color:#3A54FF">16</span></span><span class="fer">✕ FERMER</span></div>
+   <div class="ch sel" style="left:24px;top:180px;width:342px;height:44px"><div class="on">Index</div><div>Fil</div></div>
+ </div><div class="cap">V2 · sélecteur sous la recherche</div><div class="note"><b>−56 px de liste</b> : sélecteur 44 à 12 px sous la recherche, la liste garde ses 36 px d'air (204 → 260). Le sélecteur est celui de la grammaire (167 × 44 ×2, rayon 22).</div></div>
+ <div><div class="f sombre"><div class="crop" style="top:0;height:180px"><img src="scratchpad/acc_fil_dark.png"></div>
+   <div class="crop" style="top:260px;height:584px"><img src="scratchpad/acc_fil_dark.png" style="top:-204px"></div>
+   <div class="ch plat tabs"><span class="t1">Fil<span class="n" style="color:#2BE88C">4</span></span><span class="fer">✕ FERMER</span></div>
+   <div class="ch sel" style="left:24px;top:180px;width:342px;height:44px"><div>Index</div><div class="on">Fil</div></div>
+ </div><div class="cap">V2 · sombre · Fil</div></div>
+</div>
+
+
+</body></html>

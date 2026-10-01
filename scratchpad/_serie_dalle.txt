@@ -1,0 +1,70 @@
+== releve-design.py (code 0)
+✅  AUCUN ÉCART. Le design est intact.
+== redteam_ecrans.py (code 0)
+aucune erreur JS [clair]                       OK  
+
+150/150
+== redteam.py (code 0)
+aucune erreur JS                           OK  
+
+15/15
+== redteam2.py (code 0)
+aucune erreur JS                             OK  
+
+10/10
+== redteam3.py (code 0)
+aucune erreur JS                               OK  
+
+18/18
+== redteam_demande.py (code 0)
+aucune erreur JS                             OK  
+
+19/19
+== redteam_toile.py (code 0)
+aucune erreur JS                           OK  []
+
+17/17
+== redteam_geste.py (code 0)
+aucune erreur JS                             OK  
+
+13/13
+== redteam_verbe.py (code 0)
+dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 58, 'vis': True}
+
+6/6
+== redteam_filets.py (code 0)
+fiche nuee [dark]      OK
+
+OK — 0 filet(s) parasite(s)
+== redteam_vide.py (code 0)
+aucune erreur JS                               OK  
+
+61/61
+== redteam_air.py (code 0)
+
+
+  ✅  L'AIR EST INTACT — 436 paires de textes, 38 écrans, deux thèmes.
+== redteam_champ.py (code 0)
+  l'instant après [light]        OK
+
+32/32
+== redteam_pastilles.py (code 0)
+l'échéance · choisir une date la POSE                    OK  
+
+12/12
+== redteam_phrase.py (code 0)
+aucune erreur JS                                 OK  []
+
+6/6
+== redteam_gens.py (code 0)
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : False) OK  
+
+38/38
+== redteam_tuiles.py (code 0)
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+== redteam_dalle_figee.py (code 0)
+D · les peintres des cartes reçoivent le monde du Promi    OK  21 appels · 0 sans monde · 3 pour le Promi en « pixel · terre » (juste : True) · 0 faux
+
+4/4

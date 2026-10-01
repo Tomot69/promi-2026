@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,900;1,6..96,900&family=Instrument+Serif:ital@0;1&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #14120F; }
+  a { color: #E9A93A; }
+  a:hover { color: #EDE6D7; }
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="min-height:100vh;background:#14120F;color:#EDE6D7;font-family:'IBM Plex Mono',monospace;padding:56px 40px 120px;box-sizing:border-box">
+  <div style="max-width:1440px;margin:0 auto;display:flex;flex-direction:column;gap:72px">
+
+    <header style="display:flex;flex-direction:column;gap:22px">
+      <p style="margin:0;font-size:11px;letter-spacing:.28em;text-transform:uppercase;opacity:.5">Promi · trois ruptures</p>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(44px,6.4vw,96px);line-height:.95;letter-spacing:-.01em;max-width:16ch">Hors de tout ce qu'on a fait</h1>
+      <p style="margin:0;max-width:62ch;font-size:13px;line-height:1.8;opacity:.66;text-wrap:pretty">Jusqu'ici, toutes nos matières étaient des motifs posés à plat : du trait, de l'éclat, du fil, du champ. Ces trois-là changent de nature. La première donne un volume à la Toile, la deuxième l'écrit, la troisième la survole. Le semis de Voronoï reste le squelette, mais il n'est plus jamais le dessin.</p>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-top:6px">
+        <button onClick="{{ p0 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1F1A17;box-shadow:0 0 0 1px #EDE6D733"></span><span style="width:12px;height:12px;background:#D2462C"></span><span style="width:12px;height:12px;background:#E9A93A"></span><span style="width:12px;height:12px;background:#2E6A5E"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Chafouin</span>
+        </button>
+        <button onClick="{{ p1 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#1C2541"></span><span style="width:12px;height:12px;background:#3A7CA5"></span><span style="width:12px;height:12px;background:#E26D5C"></span><span style="width:12px;height:12px;background:#F3C969"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Primesautier</span>
+        </button>
+        <button onClick="{{ p2 }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:8px 12px;display:flex;gap:10px;align-items:center;font:inherit;color:inherit" style-hover="border-color:#EDE6D7">
+          <span style="display:flex"><span style="width:12px;height:12px;background:#2B1D3A"></span><span style="width:12px;height:12px;background:#8C3F8E"></span><span style="width:12px;height:12px;background:#E0506F"></span><span style="width:12px;height:12px;background:#F2B544"></span></span>
+          <span style="font-size:11px;letter-spacing:.12em">Rogue</span>
+        </button>
+        <button onClick="{{ mode }}" style="cursor:pointer;background:transparent;border:1px solid #EDE6D733;padding:10px 14px;font:inherit;color:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#EDE6D7">Clair / sombre</button>
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:#EDE6D7;color:#14120F;border:none;padding:11px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase">Nouvelle Toile</button>
+      </div>
+    </header>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">I · le volume</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:60px;line-height:1">Orgue</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">Les orgues basaltiques, comme la Chaussée des Géants. La lave, en refroidissant, se fend en colonnes, et c'est le pavage de Voronoï que la nature fait toute seule. Chaque promesse se dresse en colonne ; la matière reste une dalle basse.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : sa colonne, avec son sommet et ses faces. Plus la promesse compte, plus elle s'élève. Le relief est en aplats, sans ombre portée ni dégradé.</p>
+      </div>
+      <canvas data-t="orgue|22|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="orgue|5|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">5 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="orgue|14|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">14</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="orgue|40|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">40</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="orgue|0|104" style="display:block"></canvas><canvas data-d="orgue|1|104" style="display:block"></canvas><canvas data-d="orgue|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="orgue|0|40" style="display:block"></canvas><canvas data-d="orgue|1|40" style="display:block"></canvas><canvas data-d="orgue|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">II · la parole</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:60px;line-height:1">Capitale</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">Une promesse, c'est une parole. Ici, la Toile est composée comme une affiche au plomb : chaque promesse devient la capitale de son premier mot, aussi grande que sa place le permet, en romain ou en italique. Entre elles, la ponctuation fait la matière.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : sa lettre. Une Toile est ainsi faite des mots mêmes qu'on s'est donnés, et nulle autre ne s'écrit pareil.</p>
+      </div>
+      <canvas data-t="capitale|22|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="capitale|5|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">5 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="capitale|14|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">14</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="capitale|40|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">40</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="capitale|0|104" style="display:block"></canvas><canvas data-d="capitale|1|104" style="display:block"></canvas><canvas data-d="capitale|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="capitale|0|40" style="display:block"></canvas><canvas data-d="capitale|1|40" style="display:block"></canvas><canvas data-d="capitale|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+    <section style="display:flex;gap:44px;flex-wrap:wrap;align-items:flex-start;border-top:1px solid #EDE6D71F;padding-top:40px">
+      <div style="flex:1 1 240px;max-width:320px;display:flex;flex-direction:column;gap:14px">
+        <span style="font-size:11px;letter-spacing:.24em;opacity:.45">III · le survol</span>
+        <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:60px;line-height:1">Arpent</h2>
+        <p style="margin:0;font-size:12.5px;line-height:1.75;opacity:.74;text-wrap:pretty">La Toile vue d'avion. La matière, ce sont des parcelles labourées, chacune avec ses sillons dans son propre sens, et les haies sont la Toile. Chaque promesse est un cercle d'irrigation, avec son bras pivotant et la part déjà moissonnée.</p>
+        <p style="margin:0;font-size:11px;line-height:1.7;opacity:.46">La dalle : son cercle cultivé. Ce qu'on a promis se voit de haut, comme les champs du Kansas.</p>
+      </div>
+      <canvas data-t="arpent|22|300" style="display:block;border-radius:26px"></canvas>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="display:flex;gap:12px;align-items:flex-end">
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="arpent|5|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">5 promesses</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="arpent|14|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">14</span></div>
+          <div style="display:flex;flex-direction:column;gap:6px"><canvas data-t="arpent|40|120" style="display:block;border-radius:12px"></canvas><span style="font-size:10px;opacity:.45">40</span></div>
+        </div>
+        <div data-fond="" style="display:flex;gap:16px;align-items:center;padding:14px 16px;border-radius:14px">
+          <canvas data-d="arpent|0|104" style="display:block"></canvas><canvas data-d="arpent|1|104" style="display:block"></canvas><canvas data-d="arpent|2|104" style="display:block"></canvas>
+          <div style="display:flex;gap:8px"><canvas data-d="arpent|0|40" style="display:block"></canvas><canvas data-d="arpent|1|40" style="display:block"></canvas><canvas data-d="arpent|2|40" style="display:block"></canvas></div>
+        </div>
+        <span style="font-size:10px;opacity:.45">dalles seules · 104 px et 40 px</span>
+      </div>
+    </section>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { pal: 0, sombre: false, seed: (Math.random() * 100000) | 0 };
+
+  PALS = [
+    ['#1F1A17', '#D2462C', '#E9A93A', '#2E6A5E'],
+    ['#1C2541', '#3A7CA5', '#E26D5C', '#F3C969'],
+    ['#2B1D3A', '#8C3F8E', '#E0506F', '#F2B544']
+  ];
+  TITRES = ['Appeler maman le dimanche', 'Rendre le livre de Jeanne', 'Nager chaque mardi', 'Écrire à Paul', 'Finir le mémoire', 'Ne plus fumer', 'Visiter Lisbonne', 'Offrir des fleurs', 'Dormir avant minuit', 'Kilimandjaro', 'Méditer le matin', 'Zéro retard au travail', 'Honorer ma parole', 'Garder le jardin', 'Bricoler la cabane', 'Un livre par mois', 'Réparer le vélo', 'Tenir le budget', 'Ouvrir l\'atelier', 'Faire du yoga', 'Voir grand-père', 'Quitter les écrans', 'Soutenir Inès', 'Déménager', 'Jouer du piano', 'Courir un marathon', 'Semer des tomates', 'Épargner', 'Aimer mieux', 'Wagner à l\'opéra', 'Xavier, la dette', 'Rire plus', 'Laisser tomber le sucre', 'Marcher en forêt', 'Nettoyer la cave', 'Organiser la fête', 'Peindre la chambre', 'Quiche du jeudi', 'Sortir le chien', 'Trier les photos', 'Un café avec Léa', 'Venir à l\'heure', 'Yeux fermés, respirer'];
+  W = 300; H = 650;
+
+  rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+  fnv(t) { let h = 0x811c9dc5; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619) >>> 0; } return h >>> 0; }
+  hex(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+  nu(h, t) { const c = this.hex(h), b = t > 0 ? 255 : 0, a = Math.abs(t); return 'rgb(' + c.map(v => Math.round(v + (b - v) * a)).join(',') + ')'; }
+  lum(h) { const c = this.hex(h); return 0.3 * c[0] + 0.59 * c[1] + 0.11 * c[2]; }
+
+  theme() {
+    const P = this.PALS[this.state.pal];
+    return this.state.sombre
+      ? { P, bg: '#15120E', mat: ['#26211A', '#2D261E', '#211C16', '#342C22'], ink: '#E6DDCB' }
+      : { P, bg: '#EFE9DE', mat: ['#E1D7C3', '#D9CEB8', '#E7DECC', '#D1C5AD'], ink: P.slice().sort((a, b) => this.lum(a) - this.lum(b))[0] };
+  }
+
+  /* ---------- le semis (promesses + un peu de matière), qui grandit ---------- */
+  clip(poly, mx, my, nx, ny) {
+    const out = [];
+    for (let i = 0, j = poly.length - 1; i < poly.length; j = i++) {
+      const A = poly[j], B = poly[i], da = (A[0] - mx) * nx + (A[1] - my) * ny, db = (B[0] - mx) * nx + (B[1] - my) * ny;
+      if (db <= 0) { if (da > 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); } out.push(B); }
+      else if (da <= 0) { const t = da / (da - db); out.push([A[0] + (B[0] - A[0]) * t, A[1] + (B[1] - A[1]) * t]); }
+    }
+    return out;
+  }
+  centroid(p) {
+    let a = 0, x = 0, y = 0;
+    for (let i = 0, j = p.length - 1; i < p.length; j = i++) { const f = p[j][0] * p[i][1] - p[i][0] * p[j][1]; a += f; x += (p[j][0] + p[i][0]) * f; y += (p[j][1] + p[i][1]) * f; }
+    return Math.abs(a) < 1e-9 ? null : [x / (3 * a), y / (3 * a), Math.abs(a) / 2];
+  }
+  cellPoly(p, pts, u) {
+    const pad = u * 0.9, W = this.W, H = this.H;
+    let poly = [[-pad, -pad], [W + pad, -pad], [W + pad, H + pad], [-pad, H + pad]];
+    for (const q of pts) {
+      if (q === p) continue;
+      const dx = q.x - p.x, dy = q.y - p.y, d2 = dx * dx + dy * dy;
+      if (d2 > 20 * u * u || d2 < 1e-9) continue;
+      const t = Math.min(0.85, Math.max(0.15, 0.5 + (p.w - q.w) / (2 * d2)));
+      poly = this.clip(poly, p.x + dx * t, p.y + dy * t, dx, dy);
+      if (poly.length < 3) break;
+    }
+    return poly;
+  }
+  inset(poly, d) {
+    let out = poly;
+    for (let i = 0; i < poly.length; i++) {
+      const A = poly[i], B = poly[(i + 1) % poly.length], ex = B[0] - A[0], ey = B[1] - A[1], l = Math.hypot(ex, ey) || 1;
+      const nx = -ey / l, ny = ex / l;                     // normale intérieure (polygone orienté positivement)
+      out = this.clip(out, A[0] + nx * d, A[1] + ny * d, -nx, -ny);
+      if (out.length < 3) return null;
+    }
+    return out;
+  }
+  orient(p) { let a = 0; for (let i = 0, j = p.length - 1; i < p.length; j = i++) a += p[j][0] * p[i][1] - p[i][0] * p[j][1]; return a < 0 ? p.slice().reverse() : p; }
+
+  semis(n) {
+    this._s = this._s || {};
+    const key = n + '|' + this.state.seed;
+    if (this._s[key]) return this._s[key];
+    const W = this.W, H = this.H, m = Math.max(3, Math.round(3 + n * 0.3)), N = n + m;
+    const R = this.rng(this.fnv('semis' + this.state.seed)), pts = [];
+    for (let i = 0; i < N; i++) {
+      let best = null, bd = -1;
+      for (let c = 0; c < 16; c++) {
+        const x = 8 + R() * (W - 16), y = 8 + R() * (H - 16);
+        let d = 1e18; for (const p of pts) { const dx = p.x - x, dy = p.y - y; d = Math.min(d, dx * dx + dy * dy); }
+        if (d > bd) { bd = d; best = [x, y]; }
+      }
+      pts.push({ x: best[0], y: best[1], i, h: this.fnv('h' + this.state.seed + '|' + i) });
+    }
+    pts.slice().sort((a, b) => (a.h % 1009) - (b.h % 1009)).forEach((p, k) => { p.promi = k >= m; });
+    const u = Math.sqrt(W * H / N);
+    pts.forEach(p => { p.w = p.promi ? 0.28 * u * u : 0; });
+    for (let it = 0; it < 3; it++) {
+      const polys = pts.map(p => this.cellPoly(p, pts, u));
+      pts.forEach((p, k) => { const c = this.centroid(polys[k]); if (c) { p.x = Math.min(W - 3, Math.max(3, c[0])); p.y = Math.min(H - 3, Math.max(3, c[1])); } });
+    }
+    let t = 0;
+    pts.forEach(p => {
+      if (!p.promi) return;
+      p.titre = this.TITRES[(p.i * 7 + (this.state.seed % 13)) % this.TITRES.length];
+      const used = {};
+      pts.forEach(o => { if (o !== p && o.promi && o.ci !== undefined && Math.hypot(o.x - p.x, o.y - p.y) < u * 1.7) used[o.ci] = 1; });
+      const r = this.rng(p.h), cand = [0, 1, 2, 3];
+      for (let i = 3; i > 0; i--) { const j = Math.floor(r() * (i + 1)); const tt = cand[i]; cand[i] = cand[j]; cand[j] = tt; }
+      p.ci = cand.find(k => !used[k]); if (p.ci === undefined) p.ci = cand[0];
+      p.ci2 = cand.find(k => k !== p.ci);
+    });
+    const cells = pts.map(p => {
+      const poly = this.orient(this.cellPoly(p, pts, u)), c = this.centroid(poly) || [p.x, p.y, 0];
+      return Object.assign({}, p, { poly, cx: c[0], cy: c[1], area: c[2] });
+    });
+    return (this._s[key] = { n, u, cells });
+  }
+
+  /* ---------- I · ORGUE — la colonne de basalte ---------- */
+  orgueCell(g, c, u, T) {
+    const top = this.inset(c.poly, u * 0.035); if (!top) return;
+    const h = this.hauteur(c, u);
+    const col = c.promi ? T.P[c.ci] : T.mat[c.h % 4];
+    // faces tournées vers nous (normale vers le bas de l'écran), chacune d'un seul ton selon son orientation
+    for (let i = 0; i < top.length; i++) {
+      const A = top[i], B = top[(i + 1) % top.length], ex = B[0] - A[0], ey = B[1] - A[1], l = Math.hypot(ex, ey) || 1;
+      const nx = ey / l, ny = -ex / l;                     // normale extérieure
+      if (ny <= 0.02) continue;
+      const tone = nx < -0.35 ? -0.34 : nx > 0.35 ? 0.1 : -0.16;
+      g.fillStyle = this.nu(col, this.state.sombre && !c.promi ? tone * 0.5 : tone);
+      g.beginPath(); g.moveTo(A[0], A[1]); g.lineTo(B[0], B[1]); g.lineTo(B[0], B[1] - h); g.lineTo(A[0], A[1] - h); g.closePath(); g.fill();
+    }
+    g.fillStyle = col;
+    g.beginPath(); top.forEach((q, i) => i ? g.lineTo(q[0], q[1] - h) : g.moveTo(q[0], q[1] - h)); g.closePath(); g.fill();
+    if (c.promi) {
+      // la cupule : le sommet d'une colonne de basalte est légèrement creusé
+      const cup = this.inset(top, u * 0.1);
+      if (cup) { g.fillStyle = this.nu(col, -0.1); g.beginPath(); cup.forEach((q, i) => i ? g.lineTo(q[0], q[1] - h) : g.moveTo(q[0], q[1] - h)); g.closePath(); g.fill(); }
+    }
+    return h;
+  }
+  hauteur(c, u) { const r = this.rng(c.h ^ 0xba5a17); return c.promi ? u * (0.42 + 0.42 * r()) : u * (0.05 + 0.07 * r()); }
+  orgue(g, S, T) { S.cells.slice().sort((a, b) => a.cy - b.cy).forEach(c => this.orgueCell(g, c, S.u, T)); }
+
+  /* ---------- II · CAPITALE — la lettre au plomb ---------- */
+  inside(poly, x, y) {
+    for (let i = 0; i < poly.length; i++) { const A = poly[i], B = poly[(i + 1) % poly.length]; if ((B[0] - A[0]) * (y - A[1]) - (B[1] - A[1]) * (x - A[0]) < 0) return false; }
+    return true;
+  }
+  capitaleFit(g, c, u) {
+    const zone = this.inset(c.poly, u * 0.05); if (!zone) return null;
+    const PONCT = ['«', '»', ';', ',', '·', '’', ':', '—', '!', '?'];
+    const ch = c.promi ? (c.titre || 'P').normalize('NFD').replace(/[\u0300-\u036f]/g, '').charAt(0).toUpperCase() : PONCT[c.h % PONCT.length];
+    const ital = c.promi ? (c.h >> 3) % 3 === 0 : (c.h >> 3) % 2 === 0;
+    g.font = (ital ? 'italic ' : '') + '900 100px "Bodoni Moda", "Didot", serif';
+    const m = g.measureText(ch);
+    const l = -m.actualBoundingBoxLeft, rgt = m.actualBoundingBoxRight, tp = -m.actualBoundingBoxAscent, bt = m.actualBoundingBoxDescent;
+    const bw = rgt - l, bh = bt - tp; if (!(bw > 0 && bh > 0)) return null;
+    let best = null;
+    for (const rot of [0, Math.PI / 2]) {
+      const ca = Math.cos(rot), sa = Math.sin(rot);
+      const fits = s => {
+        for (const [px, py] of [[0, 0], [0.5, 0], [1, 0], [1, 0.5], [1, 1], [0.5, 1], [0, 1], [0, 0.5]]) {
+          const lx = (px - 0.5) * bw * s * 0.92, ly = (py - 0.5) * bh * s * 0.92;
+          if (!this.inside(zone, c.cx + lx * ca - ly * sa, c.cy + lx * sa + ly * ca)) return false;
+        }
+        return true;
+      };
+      let lo = 0, hi = 8;
+      for (let k = 0; k < 22; k++) { const md = (lo + hi) / 2; if (fits(md)) lo = md; else hi = md; }
+      if (!best || lo > best.s * 1.12) best = { s: lo, rot };
+    }
+    if (best.s <= 0) return null;
+    return { ch, ital, s: best.s, rot: best.rot, l, tp, bw, bh };
+  }
+  capitaleCell(g, c, u, T) {
+    const F = this.capitaleFit(g, c, u); if (!F) return;
+    const { ch, ital, s, l, tp, bw, bh } = F, best = F;
+    g.font = (ital ? 'italic ' : '') + '900 100px "Bodoni Moda", "Didot", serif';
+    g.save();
+    g.translate(c.cx, c.cy); g.rotate(best.rot); g.scale(s, s);
+    g.translate(-(l + bw / 2), -(tp + bh / 2));
+    g.fillStyle = c.promi ? T.P[c.ci] : T.mat[c.h % 4];
+    g.fillText(ch, 0, 0);
+    g.restore();
+  }
+  capitale(g, S, T) { S.cells.forEach(c => this.capitaleCell(g, c, S.u, T)); }
+
+  /* ---------- III · ARPENT — le paysage vu d'avion ---------- */
+  arpentCell(g, c, u, T, seule) {
+    const r = this.rng(c.h ^ 0xa4e1);
+    const zone = this.inset(c.poly, u * 0.03); if (!zone) return;
+    const path = () => { g.beginPath(); zone.forEach((q, i) => i ? g.lineTo(q[0], q[1]) : g.moveTo(q[0], q[1])); g.closePath(); };
+    const mat = T.mat[c.h % 4], sillon = this.nu(mat, this.state.sombre ? 0.1 : -0.1);
+    const R0 = this.rayon(zone, c);
+    if (!c.promi || !seule) {
+      // la parcelle : des sillons dans son propre sens (ou en jachère)
+      g.save(); path(); g.fillStyle = mat; g.fill(); g.clip();
+      if (r() < 0.8) {
+        const a = r() * Math.PI, ca = Math.cos(a), sa = Math.sin(a), st = u * 0.042, L = u * 2;
+        g.strokeStyle = sillon; g.lineWidth = st * 0.42; g.beginPath();
+        for (let k = -L; k <= L; k += st) { g.moveTo(c.cx + ca * -L - sa * k, c.cy + sa * -L + ca * k); g.lineTo(c.cx + ca * L - sa * k, c.cy + sa * L + ca * k); }
+        g.stroke();
+      }
+      g.restore();
+    } else r(); r(); 
+    if (!c.promi) return;
+    // le cercle d'irrigation : rangs concentriques, part moissonnée, bras pivotant
+    const Rc = R0 * 0.97, col = T.P[c.ci], col2 = T.P[c.ci2], cx = c.cx, cy = c.cy;
+    g.fillStyle = col; g.beginPath(); g.arc(cx, cy, Rc, 0, 2 * Math.PI); g.fill();
+    const a0 = r() * 2 * Math.PI, span = (0.18 + r() * 0.3) * 2 * Math.PI;
+    g.fillStyle = col2; g.beginPath(); g.moveTo(cx, cy); g.arc(cx, cy, Rc, a0, a0 + span); g.closePath(); g.fill();
+    const st = u * 0.034;
+    g.strokeStyle = this.nu(col, -0.2); g.lineWidth = st * 0.34; g.beginPath();
+    for (let rr = st; rr < Rc - st * 0.4; rr += st) { g.moveTo(cx + Math.cos(a0 + span) * rr, cy + Math.sin(a0 + span) * rr); g.arc(cx, cy, rr, a0 + span, a0 + 2 * Math.PI); }
+    g.stroke();
+    g.strokeStyle = this.nu(col2, -0.2); g.beginPath();
+    for (let rr = st; rr < Rc - st * 0.4; rr += st * 2) { g.moveTo(cx + Math.cos(a0) * rr, cy + Math.sin(a0) * rr); g.arc(cx, cy, rr, a0, a0 + span); }
+    g.stroke();
+    g.strokeStyle = T.ink; g.lineWidth = u * 0.014; g.lineCap = 'round';
+    g.beginPath(); g.moveTo(cx, cy); g.lineTo(cx + Math.cos(a0) * Rc * 0.98, cy + Math.sin(a0) * Rc * 0.98); g.stroke();
+    g.fillStyle = T.ink; g.beginPath(); g.arc(cx, cy, u * 0.022, 0, 2 * Math.PI); g.fill();
+  }
+  rayon(zone, c) {
+    let R0 = 1e9;
+    for (let i = 0; i < zone.length; i++) {
+      const A = zone[i], B = zone[(i + 1) % zone.length], ex = B[0] - A[0], ey = B[1] - A[1], l = Math.hypot(ex, ey) || 1;
+      R0 = Math.min(R0, Math.abs((c.cx - A[0]) * ey - (c.cy - A[1]) * ex) / l);
+    }
+    return R0;
+  }
+  arpent(g, S, T) { S.cells.forEach(c => this.arpentCell(g, c, S.u, T, false)); }
+
+  // la boîte de ce que la dalle peint vraiment — c'est sur elle qu'on cadre une dalle seule
+  boite(world, g, c, u) {
+    if (world === 'orgue') {
+      const top = this.inset(c.poly, u * 0.035); if (!top) return null;
+      const h = this.hauteur(c, u); let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      top.forEach(q => { x0 = Math.min(x0, q[0]); x1 = Math.max(x1, q[0]); y0 = Math.min(y0, q[1] - h); y1 = Math.max(y1, q[1]); });
+      return [x0, y0, x1, y1];
+    }
+    if (world === 'capitale') {
+      const F = this.capitaleFit(g, c, u); if (!F) return null;
+      const ca = Math.cos(F.rot), sa = Math.sin(F.rot); let x0 = 1e9, y0 = 1e9, x1 = -1e9, y1 = -1e9;
+      for (const [px, py] of [[-0.5, -0.5], [0.5, -0.5], [0.5, 0.5], [-0.5, 0.5]]) {
+        const lx = px * F.bw * F.s, ly = py * F.bh * F.s, x = c.cx + lx * ca - ly * sa, y = c.cy + lx * sa + ly * ca;
+        x0 = Math.min(x0, x); x1 = Math.max(x1, x); y0 = Math.min(y0, y); y1 = Math.max(y1, y);
+      }
+      return [x0, y0, x1, y1];
+    }
+    const zone = this.inset(c.poly, u * 0.03); if (!zone) return null;
+    const Rc = this.rayon(zone, c) * 0.97;
+    return [c.cx - Rc, c.cy - Rc, c.cx + Rc, c.cy + Rc];
+  }
+
+  /* ---------- rendu ---------- */
+  toile(cv, world, n, disp) {
+    const S = this.semis(n), W = this.W, H = this.H, D = 2, k = disp / W;
+    cv.style.width = disp + 'px'; cv.style.height = Math.round(H * k) + 'px';
+    cv.width = Math.round(disp * D); cv.height = Math.round(H * k * D);
+    const g = cv.getContext('2d'), T = this.theme();
+    g.setTransform(D * k, 0, 0, D * k, 0, 0);
+    g.fillStyle = T.bg; g.fillRect(0, 0, W, H);
+    this[world](g, S, T);
+  }
+
+  dalle(cv, world, rang, size) {
+    const S = this.semis(22), T = this.theme(), D = 2, W = this.W, H = this.H;
+    cv.style.width = size + 'px'; cv.style.height = size + 'px'; cv.width = size * D; cv.height = size * D;
+    const g = cv.getContext('2d'); g.setTransform(1, 0, 0, 1, 0, 0); g.clearRect(0, 0, cv.width, cv.height);
+    const cand = S.cells.filter(c => c.promi && c.cx > W * 0.15 && c.cx < W * 0.85 && c.cy > H * 0.1 && c.cy < H * 0.9).sort((a, b) => b.area - a.area).slice(0, 6).sort((a, b) => a.i - b.i);
+    const c = cand[rang % Math.max(1, cand.length)]; if (!c) return;
+    // la dalle est rendue pour elle-même, cadrée sur ce qu'elle peint vraiment
+    const bb = this.boite(world, g, c, S.u); if (!bb) return;
+    const sc = size * 0.94 / Math.max(bb[2] - bb[0], bb[3] - bb[1]);
+    g.setTransform(D * sc, 0, 0, D * sc, D * (size / 2 - (bb[0] + bb[2]) / 2 * sc), D * (size / 2 - (bb[1] + bb[3]) / 2 * sc));
+    if (world === 'orgue') this.orgueCell(g, c, S.u, T);
+    else if (world === 'capitale') this.capitaleCell(g, c, S.u, T);
+    else this.arpentCell(g, c, S.u, T, true);
+  }
+
+  lance() {
+    const root = this.root; if (!root) return;
+    const T = this.theme();
+    root.querySelectorAll('[data-fond]').forEach(el => { el.style.background = T.bg; });
+    const id = (this._job = (this._job || 0) + 1), jobs = [];
+    root.querySelectorAll('canvas[data-t]').forEach(cv => jobs.push(() => { const [w, n, d] = cv.dataset.t.split('|'); this.toile(cv, w, +n, +d); }));
+    root.querySelectorAll('canvas[data-d]').forEach(cv => jobs.push(() => { const [w, r, s] = cv.dataset.d.split('|'); this.dalle(cv, w, +r, +s); }));
+    const next = () => { if (this._job !== id) return; const j = jobs.shift(); if (!j) return; try { j(); } catch (e) { console.error(e); } setTimeout(next, 0); };
+    const go = () => setTimeout(next, 20);
+    if (document.fonts && document.fonts.load) Promise.all([document.fonts.load('900 100px "Bodoni Moda"'), document.fonts.load('italic 900 100px "Bodoni Moda"')]).then(go, go);
+    else go();
+  }
+
+  componentDidMount() { this.lance(); }
+  componentDidUpdate(pp, ps) { if (ps.pal !== this.state.pal || ps.sombre !== this.state.sombre || ps.seed !== this.state.seed) this.lance(); }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      p0: () => this.setState({ pal: 0 }),
+      p1: () => this.setState({ pal: 1 }),
+      p2: () => this.setState({ pal: 2 }),
+      mode: () => this.setState(s => ({ sombre: !s.sombre })),
+      reroll: () => this.setState({ seed: (Math.random() * 100000) | 0 })
+    };
+  }
+}
+</script>
+</body>
+</html>

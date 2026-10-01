@@ -1,0 +1,36 @@
+{
+ "dark": {
+  "boite": {
+   "x": 44,
+   "y": 272,
+   "w": 342,
+   "h": 304,
+   "vis": true,
+   "enfants": [
+    "s2-reg",
+    "s2-reg",
+    "s2-reg",
+    "s2-reg",
+    "s2-encart"
+   ]
+  },
+  "dans_fenetre": true
+ },
+ "light": {
+  "boite": {
+   "x": 44,
+   "y": 272,
+   "w": 342,
+   "h": 304,
+   "vis": true,
+   "enfants": [
+    "s2-reg",
+    "s2-reg",
+    "s2-reg",
+    "s2-reg",
+    "s2-encart"
+   ]
+  },
+  "dans_fenetre": true
+ }
+}

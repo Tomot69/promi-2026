@@ -1,0 +1,314 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Célébration — moodboard</title>
+<style>
+:root{--fond:#F7F0DE;--encre:#201908;--doux:#6E6350;--trait:#E4D7BB;--amande:#8FE08F}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--fond:#100D0B;--encre:#F7F0DE;--doux:#A2947C;--trait:#3A2E22}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--fond);color:var(--encre);font:15px/1.45 Atkinson,system-ui,sans-serif}
+.page{max-width:1180px;margin:0 auto;padding:24px 16px 48px}
+h1{font:600 28px/1.1 PromiLate,system-ui,sans-serif;margin:0 0 10px}
+.regarde{border:2px solid var(--encre);border-radius:22px;padding:14px 18px;margin:0 0 16px;max-width:860px}
+.regarde b{font-weight:700}
+.regarde p{margin:4px 0}
+.barre{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 14px}
+.barre button{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;border:2px solid var(--encre);background:transparent;color:var(--encre);border-radius:18px;height:36px;padding:0 14px;cursor:pointer}
+.barre button.on{background:var(--encre);color:var(--fond)}
+.temps{display:flex;align-items:center;gap:12px;margin:0 0 16px}
+.piste{position:relative;flex:1;max-width:620px;height:10px;border-radius:5px;background:var(--trait);overflow:hidden}
+.piste i{position:absolute;left:0;top:0;bottom:0;width:0;background:var(--encre);border-radius:5px}
+.piste b{position:absolute;top:0;bottom:0;background:#8FE08F}
+.phase{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;min-width:280px}
+.grille{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+@media (max-width:760px){.grille{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.tel{display:flex;flex-direction:column;gap:8px}
+.tel canvas{width:100%;aspect-ratio:390/844;border-radius:22px;display:block;background:#150D00}
+.lab{font:700 12px/1.2 Gilbert,system-ui,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+.lab small{display:block;font:400 13px/1.3 Atkinson,system-ui,sans-serif;letter-spacing:0;text-transform:none;color:var(--doux);margin-top:3px}
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>La célébration — Halin</h1>
+  <div class="regarde">
+    <p><b>Ce qu'il faut regarder :</b> quand une dalle <b>arrive</b>, les jours qui la bordent prennent le <b>vert amande #8FE08F</b>, en aplat — pas de halo, pas de dégradé — puis le rendent au fond. Il apparaît et disparaît en douceur.</p>
+    <p>Le mouvement est plus doux : la dalle neuve grandit <b>sans pousser</b> ses voisines, et celle qui <b>repart</b> leur cède sa place jusqu'au bout, sans saut.</p>
+    <p>Partout : le monde <b>Halin</b>, avec le code de l'app — dalles de tailles différentes, jours légèrement inégaux, quelques petits triangles aux jonctions.</p>
+    <p>Le panneau <b>« repère »</b> joue la même chose <b>trois fois plus lentement</b>.</p>
+  </div>
+  <div class="barre">
+    <button data-v="sombre" class="on">Sombre</button><button data-v="clair">Clair</button>
+    <span style="width:14px"></span>
+    <button id="pause">Pause</button><button id="lent">Ralenti ×3</button>
+  </div>
+  <div class="temps"><div class="piste"><b id="zone"></b><i id="curseur"></i></div><div class="phase" id="phase"></div></div>
+  <div class="grille" id="grille"></div>
+</div>
+<script>
+/* Le moteur de ce moodboard : la même Toile à cellules pondérées que l'app, et le monde Cabochon avec LE CODE DE L'APP
+   (bloc lot-V32-MONDES, v49) — la frontière qui cède au retrait, l'impact, les bulles taillées dans l'espace libre.
+   Chaque panneau a sa propre horloge (le repère tourne trois fois plus lentement) ; la Toile est la même. */
+var W=390,H=844,theme='sombre',pause=false,lent=1;
+var PANNEAUX=[
+  {nom:'Sans célébration',note:'la référence',cel:0,vit:1},
+  {nom:'La célébration',note:'l\'amande en aplat, dans les jours de la dalle neuve',cel:1,vit:1},
+  {nom:'Repère',note:'la même, trois fois plus lente',cel:1,vit:1/3}
+];
+var TONS=[[130,174,248],[255,184,210],[201,168,245],[239,227,199]];
+function lcg(s){return function(){s=(s*1103515245+12345)&0x7fffffff;return s/0x7fffffff;};}
+function clip(p,px,py,nx,ny){var o=[],n=p.length;for(var i=0,j=n-1;i<n;j=i++){var A=p[j],B=p[i],da=(A[0]-px)*nx+(A[1]-py)*ny,db=(B[0]-px)*nx+(B[1]-py)*ny;
+  if(db<=0){if(da>0){var t=da/(da-db);o.push([A[0]+(B[0]-A[0])*t,A[1]+(B[1]-A[1])*t]);}o.push(B);}else if(da<=0){var t2=da/(da-db);o.push([A[0]+(B[0]-A[0])*t2,A[1]+(B[1]-A[1])*t2]);}}return o;}
+var _clip=clip;
+function _fnv(t){var h=0x811c9dc5;for(var i=0;i<t.length;i++){h^=t.charCodeAt(i);h=(h*16777619)>>>0;}return h>>>0;}
+function _cent(p){var x=0,y=0;for(var i=0;i<p.length;i++){x+=p[i][0];y+=p[i][1];}return [x/p.length,y/p.length];}
+function _traceArrondi(T,p,r){var n=p.length;T.beginPath();for(var i=0;i<n;i++){var a=p[(i-1+n)%n],b=p[i],c=p[(i+1)%n];
+  var l1=Math.hypot(b[0]-a[0],b[1]-a[1])||1,l2=Math.hypot(c[0]-b[0],c[1]-b[1])||1,rr=Math.min(r,l1/2,l2/2);
+  var p1x=b[0]+(a[0]-b[0])/l1*rr,p1y=b[1]+(a[1]-b[1])/l1*rr,p2x=b[0]+(c[0]-b[0])/l2*rr,p2y=b[1]+(c[1]-b[1])/l2*rr;
+  if(i===0)T.moveTo(p1x,p1y);else T.lineTo(p1x,p1y);T.quadraticCurveTo(b[0],b[1],p2x,p2y);}T.closePath();}
+/* ——— le code de l'app, recopié tel quel (lot-V32-MONDES, Halin v50) ——— */
+  var HAL_RET = 760;
+  function _halPart(s, now) { if (s.part == null) return 0; var a = Math.min(1, Math.max(0, (now - s.part) / HAL_RET)); return a * a * (3 - 2 * a); }
+  var _halBiais = {};
+  function _halW(p, u) { var b = _halBiais[p.k]; if (b == null) { b = ((_fnv('b' + p.k) % 1000) / 1000 - 0.5); _halBiais[p.k] = b; } return p.w + b * u * 0.32; }
+  function _halJour(p, q, jour) { var h = _fnv(p.k < q.k ? p.k + ':' + q.k : q.k + ':' + p.k); return jour * (0.72 + (h % 1000) / 1000 * 0.56); }
+  function _halFront(p, q, d, now, u) {
+    var t = 0.5 * d + (_halW(p, u) - _halW(q, u)) * 0.5;
+    if (t < d * 0.06) t = d * 0.06; if (t > d * 0.94) t = d * 0.94;
+    var fp = _halPart(p.s, now), fq = _halPart(q.s, now);
+    if (fp > 0) t *= (1 - fp);                                     // celle qui part cède sa place…
+    if (fq > 0) t = d - (d - t) * (1 - fq) + fq * fq * fq * fq * d; // …et ses voisines la prennent, jusqu'au bout
+    return t;
+  }
+  function _halCellule(p, vois, M, jour, now, u) {
+    var poly = [[p.x - M, p.y - M], [p.x + M, p.y - M], [p.x + M, p.y + M], [p.x - M, p.y + M]];
+    for (var v = 0; v < vois.length && poly.length > 2; v++) {
+      var q = vois[v].p, d = vois[v].d; if (d <= 0) continue;
+      var nx = (q.x - p.x) / d, ny = (q.y - p.y) / d, t = _halFront(p, q, d, now, u) - (jour ? _halJour(p, q, jour) : 0) / 2;
+      poly = _clip(poly, p.x + nx * t, p.y + ny * t, nx, ny);
+    }
+    return poly;
+  }
+  // le contour arrondi, aplati — EXACTEMENT la géométrie de _traceArrondi
+  function _halContour(p, r) {
+    var n = p.length, o = [];
+    for (var i = 0; i < n; i++) {
+      var a = p[(i - 1 + n) % n], b = p[i], c = p[(i + 1) % n];
+      var l1 = Math.hypot(b[0] - a[0], b[1] - a[1]) || 1, l2 = Math.hypot(c[0] - b[0], c[1] - b[1]) || 1, rr = Math.min(r, l1 / 2, l2 / 2);
+      var p1x = b[0] + (a[0] - b[0]) / l1 * rr, p1y = b[1] + (a[1] - b[1]) / l1 * rr, p2x = b[0] + (c[0] - b[0]) / l2 * rr, p2y = b[1] + (c[1] - b[1]) / l2 * rr;
+      for (var k = 0; k <= 4; k++) { var t = k / 4, u1 = 1 - t; o.push(u1 * u1 * p1x + 2 * u1 * t * b[0] + t * t * p2x, u1 * u1 * p1y + 2 * u1 * t * b[1] + t * t * p2y); }
+    }
+    o.push(o[0], o[1]);
+    return o;
+  }
+  function _halRayon(ox, oy, dx, dy, C, lim) {
+    var best = lim;
+    for (var c = 0; c < C.length; c++) {
+      var o = C[c].o;
+      for (var i = 0; i + 3 < o.length; i += 2) {
+        var ax = o[i], ay = o[i + 1], ex = o[i + 2] - ax, ey = o[i + 3] - ay, den = dx * ey - dy * ex;
+        if (den > -1e-9 && den < 1e-9) continue;
+        var wx = ax - ox, wy = ay - oy, s = (wx * ey - wy * ex) / den; if (s <= 0 || s >= best) continue;
+        var uu = (wx * dy - wy * dx) / den; if (uu >= 0 && uu <= 1) best = s;
+      }
+    }
+    return best;
+  }
+  function _halDedans(x, y, o) {
+    var ins = false;
+    for (var i = 0, j = o.length - 4; i + 1 < o.length - 2; j = i, i += 2) {
+      var xi = o[i], yi = o[i + 1], xj = o[j], yj = o[j + 1];
+      if (((yi > y) !== (yj > y)) && (x < (xj - xi) * (y - yi) / (yj - yi) + xi)) ins = !ins;
+    }
+    return ins;
+  }
+  function _halVoisines(ox, oy, lim, cells) {
+    var C = [];
+    for (var c = 0; c < cells.length; c++) { var b = cells[c].bb; if (b[0] > ox + lim || b[2] < ox - lim || b[1] > oy + lim || b[3] < oy - lim) continue; C.push(cells[c]); }
+    for (var c2 = 0; c2 < C.length; c2++) if (_halDedans(ox, oy, C[c2].o)) return null;
+    return C;
+  }
+  // un polygone convexe (triangle ou œuf) autour de (ox, oy) rétréci jusqu'à tenir dans l'espace libre, avec une marge
+  function _halTient(ox, oy, pts, C, marge) {
+    for (var e = 1; e > 0.3; e *= 0.85) {
+      var ok = true, n = pts.length;
+      for (var i = 0; i < n && ok; i++) {
+        var a = pts[i], b = pts[(i + 1) % n];
+        var ch = [[a[0] * e, a[1] * e], [(a[0] + b[0]) / 2 * e, (a[1] + b[1]) / 2 * e]];
+        for (var k = 0; k < 2 && ok; k++) { var L = Math.hypot(ch[k][0], ch[k][1]) || 1e-6;
+          if (_halRayon(ox, oy, ch[k][0] / L, ch[k][1] / L, C, L + marge * 2) < L + marge) ok = false; }
+      }
+      if (ok) return e;
+    }
+    return 0;
+  }
+  function _halCalme(p, u) {   // 1 quand la dalle est posée, 0 quand elle bouge ou naît ou part
+    var s = p.s; if (s.part != null) return 0;
+    var m = Math.hypot((s.tx != null ? s.tx : p.x) - p.x, (s.ty != null ? s.ty : p.y) - p.y) + 0.5 * Math.abs((s.wt != null ? s.wt : s.w) - s.w);
+    var a = Math.min(1, Math.max(0, (m - u * 0.01) / (u * 0.05))); return 1 - a * a * (3 - 2 * a);
+  }
+/* les accès que Rhal attend du moteur, pour une Toile de moodboard */
+var g=null, env={trans:true,cible:null,bords:null}, _T=null;
+function _sync(){}
+function _rgb(c){return 'rgb('+c[0]+','+c[1]+','+c[2]+')';}
+function cOf(s){return s.c;}
+function _uGlobal(){return Math.sqrt(W*H/22);}
+function _idx(){ var P=_T.seeds.map(function(s){return {s:s,x:s.x,y:s.y,w:s.w,k:s.k};});
+  return {P:P, near:function(p,n){return P.filter(function(q){return q!==p;}).map(function(q){return {p:q,d:Math.hypot(q.x-p.x,q.y-p.y)};}).sort(function(a,b){return a.d-b.d;}).slice(0,n);},
+    owner:function(x,y){var b=null,bd=1e18;P.forEach(function(q){var dd=Math.hypot(x-q.x,y-q.y)-_halW(q,_uGlobal());if(dd<bd){bd=dd;b=q;}});return b;}}; }
+  function Rhal(now, x0, y0, x1, y1) {
+    _sync();
+    var ix = _idx(), P = ix.P;
+    if (!P.length) return;
+    var u = _uGlobal(ix), jour = u * 0.09, rayon = u * 0.17, M = Math.max(W, H, u * 3), TR = env.trans, seule = env.cible != null;
+    var cells = [];
+    for (var i = 0; i < P.length; i++) {
+      var p = P[i];
+      if (seule && p.s.pid !== env.cible) continue;
+      if (p.x < x0 - u * 3 || p.x > x1 + u * 3 || p.y < y0 - u * 3 || p.y > y1 + u * 3) continue;
+      var vois = ix.near(p, 12), poly = _halCellule(p, vois, M, jour, now, u);
+      if (seule && env.bords && poly.length > 2) { var BT = env.bords;
+        poly = _clip(poly, BT[0], 0, -1, 0); if (poly.length > 2) poly = _clip(poly, BT[2], 0, 1, 0);
+        if (poly.length > 2) poly = _clip(poly, 0, BT[1], 0, -1); if (poly.length > 2) poly = _clip(poly, 0, BT[3], 0, 1); }
+      if (poly.length < 3) continue;
+      var f = 1;
+      if (p.s.part == null && TR && p.s.t0 != null && now - p.s.t0 < 800) { var fa = Math.max(0, (now - p.s.t0) / 800); f = fa * fa * (3 - 2 * fa); }
+      var imp = 0;   // l'impact : un souffle, quand les voisines se rejoignent
+      if (p.s.part == null) for (var v = 0; v < vois.length; v++) { var qs = vois[v].p.s; if (qs.part == null) continue;
+        var e = (now - qs.part - HAL_RET * 0.7) / 360; if (e > 0 && e < 1) imp = Math.max(imp, Math.sin(Math.PI * e)); }
+      var sc = f * (1 - 0.006 * imp);
+      if (sc < 1) { var cc = _cent(poly); poly = poly.map(function (q2) { return [cc[0] + (q2[0] - cc[0]) * sc, cc[1] + (q2[1] - cc[1]) * sc]; }); }
+      cells.push({ p: p, poly: poly, f: f, vois: vois, r: rayon * Math.min(1, f + 0.2), part: p.s.part != null });
+    }
+    cells.sort(function (a1, b1) { return (b1.part ? 1 : 0) - (a1.part ? 1 : 0); });
+    for (var c2 = 0; c2 < cells.length; c2++) {
+      var D = cells[c2]; if (D.f <= 0.01) continue;
+      g.fillStyle = _rgb(cOf(D.p.s, now)); _traceArrondi(g, D.poly, D.r); g.fill();
+    }
+    if (seule) return;
+    for (var c3 = 0; c3 < cells.length; c3++) { var E = cells[c3], o = _halContour(E.poly, E.r), bx0 = 1e9, by0 = 1e9, bx1 = -1e9, by1 = -1e9;
+      for (var k = 0; k < o.length; k += 2) { if (o[k] < bx0) bx0 = o[k]; if (o[k] > bx1) bx1 = o[k]; if (o[k + 1] < by0) by0 = o[k + 1]; if (o[k + 1] > by1) by1 = o[k + 1]; }
+      E.o = o; E.bb = [bx0, by0, bx1, by1]; }
+    var vus = {};
+    for (var c = 0; c < cells.length; c++) {
+      var C0 = cells[c], p0 = C0.p; if (C0.part || C0.f < 1) continue;
+      var calme0 = _halCalme(p0, u); if (calme0 <= 0.01) continue;
+      // (1) aux jonctions QUI ONT DE LA PLACE (une sur trois) : un triangle aux coins arrondis qui ÉPOUSE l'espace. Chacune des trois dalles
+      //     présente un coin arrondi (centre Ci, rayon ri) ; chaque côté de la bulle est parallèle à ce coin, à un jeu fixe :
+      //     {x : (x − Ci)·ni ≥ ri + jeu}, ni pointant du coin vers la jonction. Une dalle est convexe, elle est tout entière de
+      //     l'autre côté de cette droite : la bulle ne peut pas la toucher. Ses pointes filent dans les jours, bornées.
+      var brut = _halCellule(p0, C0.vois, M, 0, now, u);
+      for (var z = 0; z < brut.length; z++) {
+        var J = brut[z]; if (J[0] < 0 || J[1] < 0 || J[0] > W || J[1] > H) continue;
+        var tri = [[Math.hypot(J[0] - p0.x, J[1] - p0.y) - _halW(p0, u), p0]];
+        for (var n = 0; n < C0.vois.length; n++) { var ov = C0.vois[n].p; tri.push([Math.hypot(J[0] - ov.x, J[1] - ov.y) - _halW(ov, u), ov]); }
+        tri.sort(function (a1, b1) { return a1[0] - b1[0]; }); if (tri.length < 3) continue;
+        var cle = [tri[0][1].k, tri[1][1].k, tri[2][1].k].sort().join('|'); if (vus[cle]) continue; vus[cle] = 1;
+        var h = _fnv('a' + cle); if (h % 3 !== 0) continue;
+        var calme = Math.min(calme0, _halCalme(tri[1][1], u), _halCalme(tri[2][1], u)); if (calme <= 0.01) continue;
+        var coins = [], ok = true;
+        for (var e2 = 0; e2 < 3 && ok; e2++) {
+          var Ce = null; for (var y = 0; y < cells.length; y++) if (cells[y].p === tri[e2][1]) { Ce = cells[y]; break; }
+          if (!Ce) { ok = false; break; }
+          var Pl = Ce.poly, NP = Pl.length, bi = -1, bd = 1e18;
+          for (var y2 = 0; y2 < NP; y2++) { var dd = Math.hypot(Pl[y2][0] - J[0], Pl[y2][1] - J[1]); if (dd < bd) { bd = dd; bi = y2; } }
+          if (bd > jour * 2.5) { ok = false; break; }
+          var Va = Pl[(bi - 1 + NP) % NP], Vb = Pl[bi], Vc = Pl[(bi + 1) % NP];
+          var l1 = Math.hypot(Va[0] - Vb[0], Va[1] - Vb[1]) || 1, l2 = Math.hypot(Vc[0] - Vb[0], Vc[1] - Vb[1]) || 1, rr = Math.min(Ce.r, l1 / 2, l2 / 2);
+          var ax = (Va[0] - Vb[0]) / l1, ay = (Va[1] - Vb[1]) / l1, cx2 = (Vc[0] - Vb[0]) / l2, cy2 = (Vc[1] - Vb[1]) / l2;
+          var bx = ax + cx2, by = ay + cy2, bl = Math.hypot(bx, by) || 1e-6, demi = Math.acos(Math.max(-1, Math.min(1, ax * cx2 + ay * cy2))) / 2;
+          var dc = rr / Math.max(0.05, Math.sin(demi)), Cx = Vb[0] + bx / bl * dc, Cy = Vb[1] + by / bl * dc;
+          var nx0 = J[0] - Cx, ny0 = J[1] - Cy, nl = Math.hypot(nx0, ny0) || 1e-6;
+          coins.push({ cx: Cx, cy: Cy, r: rr, nx: nx0 / nl, ny: ny0 / nl, s: tri[e2][1].s });
+        }
+        if (!ok) continue;
+        var jeu = jour * 0.32, poly = [[J[0] - M, J[1] - M], [J[0] + M, J[1] - M], [J[0] + M, J[1] + M], [J[0] - M, J[1] + M]];
+        for (var e3 = 0; e3 < 3 && poly.length > 2; e3++) { var K = coins[e3];   // garder (x − C)·n ≥ r + jeu
+          poly = _clip(poly, K.cx + K.nx * (K.r + jeu), K.cy + K.ny * (K.r + jeu), -K.nx, -K.ny); }
+        if (poly.length < 3) continue;
+        // le rayon inscrit : la place qu'offre la jonction ; en dessous, pas de bulle
+        var gx = 0, gy = 0; for (var y3 = 0; y3 < poly.length; y3++) { gx += poly[y3][0]; gy += poly[y3][1]; } gx /= poly.length; gy /= poly.length;
+        var ins = 1e9; for (var e4 = 0; e4 < 3; e4++) { var K2 = coins[e4]; ins = Math.min(ins, (gx - K2.cx) * K2.nx + (gy - K2.cy) * K2.ny - K2.r - jeu); }
+        if (!(ins > jour * 0.22)) continue;
+        // les pointes s'arrêtent : 2,4 × le rayon inscrit depuis le centre
+        for (var e5 = 0; e5 < 3 && poly.length > 2; e5++) { var K3 = coins[e5], vx = -K3.nx, vy = -K3.ny;   // la pointe opposée au coin e5
+          poly = _clip(poly, gx + vx * ins * 2.4, gy + vy * ins * 2.4, vx, vy); }
+        if (poly.length < 3) continue;
+        var C = _halVoisines(gx, gy, ins * 4, cells); if (!C) continue;
+        var ech = (0.72 + ((h >>> 3) % 8) / 8 * 0.2) * calme;
+        var Pb = poly.map(function (q3) { return [gx + (q3[0] - gx) * ech, gy + (q3[1] - gy) * ech]; });
+        g.fillStyle = _rgb(cOf(coins[(h >>> 22) % 3].s, now));
+        _traceArrondi(g, Pb, ins * ech * 0.9); g.fill();
+      }
+      // (2) très rarement, dans un jour LARGE : une pilule fine, couchée dans le jour
+      for (var v2 = 0; v2 < Math.min(6, C0.vois.length); v2++) {
+        var q = C0.vois[v2].p, d = C0.vois[v2].d; if (d <= 0) continue;
+        var cle2 = p0.k < q.k ? p0.k + ':' + q.k : q.k + ':' + p0.k; if (vus[cle2]) continue; vus[cle2] = 1;
+        var jr = _halJour(p0, q, jour); if (jr < jour * 1.1) continue;
+        var h2 = _fnv('j' + cle2); if (h2 % 5 !== 0) continue;
+        var calme2 = Math.min(calme0, _halCalme(q, u)); if (calme2 <= 0.01) continue;
+        var nx = (q.x - p0.x) / d, ny = (q.y - p0.y) / d, t = _halFront(p0, q, d, now, u);
+        var gl = (((h2 >>> 4) % 100) / 100 - 0.5) * u * 0.3, cx = p0.x + nx * t - ny * gl, cy = p0.y + ny * t + nx * gl;
+        if (ix.owner(cx + nx * jour, cy + ny * jour) !== q || ix.owner(cx - nx * jour, cy - ny * jour) !== p0) continue;
+        var ep = jr * 0.2, la = ep * (2.2 + ((h2 >>> 12) % 8) / 8 * 0.8);
+        var pil = [[-ny * la - nx * ep, nx * la - ny * ep], [-ny * la + nx * ep, nx * la + ny * ep], [ny * la + nx * ep, -nx * la + ny * ep], [ny * la - nx * ep, -nx * la - ny * ep]];
+        var C2 = _halVoisines(cx, cy, la * 2, cells); if (!C2) continue;
+        if (_halTient(cx, cy, pil, C2, jr * 0.1) < 0.999) continue;
+        var e6 = calme2;
+        g.fillStyle = _rgb(cOf((h2 >>> 24) % 2 ? p0.s : q.s, now));
+        _traceArrondi(g, pil.map(function (q4) { return [cx + q4[0] * e6, cy + q4[1] * e6]; }), ep * e6); g.fill();
+      }
+    }
+  }
+
+/* ——— une Toile par panneau (même graine, même semis) — le ressort de Halin : pas de poussée, 6,2 / 5,2 rad/s, retrait 900 ms ——— */
+function Toile(vit){ this.vit=vit; this.R=lcg(20260924); this.seeds=[]; this.h=0; this.nouvelle=null; this.nid=0;
+  for(var i=0;i<22;i++) this.seeds.push({k:'s'+i,x:30+this.R()*330,y:40+this.R()*764,w:0,wt:0,vx:0,vy:0,vw:0,c:TONS[i%3===2?3:i%3]});
+  for(var k=0;k<40;k++){ this.relax(); this.seeds.forEach(function(s){s.x=s.tx;s.y=s.ty;}); } }
+Toile.prototype.relax=function(){ var S=this.seeds, ac=Math.sqrt(W*H/S.length);
+  for(var i=0;i<S.length;i++){var s=S[i],fx=0,fy=0; for(var j=0;j<S.length;j++){ if(i===j)continue; var o=S[j],dx=s.x-o.x,dy=s.y-o.y,d=Math.sqrt(dx*dx+dy*dy),w=ac*(0.92+s.wt*0.026+o.wt*0.026);
+    if(d<w&&d>0.01){var f=(w-d)/d*0.16;fx+=dx*f;fy+=dy*f;} } s.tx=Math.max(8,Math.min(W-8,s.x+fx)); s.ty=Math.max(8,Math.min(H-8,s.y+fy)); } };
+Toile.prototype.arrive=function(){ var x=60+this.R()*270,y=120+this.R()*600; this.nouvelle={k:'n'+(this.nid++),x:x,y:y,tx:x,ty:y,w:-22,wt:3.4,vx:0,vy:0,vw:0,c:TONS[(this.R()*3)|0],t0:this.h}; this.seeds.push(this.nouvelle); this.relax(); };
+Toile.prototype.part=function(){ var n=this.nouvelle; if(!n)return; n.wt=n.w-30; n.part=this.h; this.relax(); };
+Toile.prototype.pas=function(dt){ var grow=false,O=6.2,OW=5.2;
+  this.seeds.forEach(function(s){ s.vw+=(OW*OW*(s.wt-s.w)-2*OW*s.vw)*dt; s.w+=s.vw*dt; if(Math.abs(s.wt-s.w)>0.02||Math.abs(s.vw)>0.05)grow=true;
+    s.vx+=(O*O*(s.tx-s.x)-2*O*s.vx)*dt; s.vy+=(O*O*(s.ty-s.y)-2*O*s.vy)*dt; s.x+=s.vx*dt; s.y+=s.vy*dt; });
+  if(grow){this.relax();this.relax();this.relax();}
+  var n=this.nouvelle; if(n&&n.part!=null&&this.h-n.part>900){ this.seeds.splice(this.seeds.indexOf(n),1); this.nouvelle=null; this.relax(); } };
+Toile.prototype.avance=function(dt){ var CY=4000, h0=this.h%CY; this.h+=dt*1000*this.vit; var h1=this.h%CY;
+  if(h1<h0) this.arrive(); if(h0<2000&&h1>=2000) this.part(); this.pas(dt*this.vit); };
+
+/* ——— la célébration : les jours qui bordent la dalle neuve prennent l'amande, en APLAT, sous les dalles ——— */
+function celebre(T,gg){ var n=T.nouvelle; if(!n||n.part!=null)return; var tau=T.h-n.t0; if(tau<380||tau>1750)return;
+  var mo=Math.min(1,(tau-380)/320), de=1-Math.max(0,Math.min(1,(tau-1050)/700));   /* comme l'app : il TIENT le vert exact, à pleine opacité, de 700 à 1 050 ms */   /* quand la dalle a presque fini de grandir : seuls ses jours prennent l'amande */ mo=mo*mo*(3-2*mo); de=de*de*(3-2*de); var a=mo*de; if(a<0.004)return;
+  var u=_uGlobal(), jour=u*0.09, M=Math.max(W,H,u*3), ix=_idx(), p=null; for(var i=0;i<ix.P.length;i++) if(ix.P[i].s===n) p=ix.P[i];
+  var poly=_halCellule(p,ix.near(p,12),M,0,T.h,u); if(poly.length<3)return;
+  var f=Math.min(1,tau/800); f=f*f*(3-2*f); if(f<1){ var cc=_cent(poly); poly=poly.map(function(q){return [cc[0]+(q[0]-cc[0])*f,cc[1]+(q[1]-cc[1])*f];}); }   /* l'aplat grandit AVEC la dalle : il n'est jamais qu'un liseré */
+  gg.save(); gg.globalAlpha=a; gg.fillStyle='#8FE08F'; _traceArrondi(gg,poly,u*0.17); gg.fill(); gg.restore(); }
+function peint(T,gg,cel){ _T=T; g=gg; if(cel) celebre(T,gg); Rhal(T.h,0,0,W,H); }
+var toiles=[], grille=document.getElementById('grille');
+PANNEAUX.forEach(function(P){ var d=document.createElement('div'); d.className='tel';
+  d.innerHTML='<canvas></canvas><div class="lab">'+P.nom+'<small>'+P.note+'</small></div>'; grille.appendChild(d); toiles.push({P:P,cv:d.querySelector('canvas'),T:new Toile(P.vit)}); });
+function taille(){ toiles.forEach(function(X){ var r=X.cv.getBoundingClientRect(),dpr=Math.min(2,window.devicePixelRatio||1); X.cv.width=Math.round(r.width*dpr); X.cv.height=Math.round(r.width*844/390*dpr); X.k=X.cv.width/W; }); }
+window.addEventListener('resize',taille); taille();
+var phase=document.getElementById('phase'), curseur=document.getElementById('curseur'), zone=document.getElementById('zone');
+zone.style.left='0%'; zone.style.width=(1400/4000*100)+'%';
+var tPrev=null;
+function boucle(t){ if(tPrev==null)tPrev=t; var dt=Math.min(0.05,(t-tPrev)/1000); tPrev=t;
+  toiles.forEach(function(X){ if(!pause) X.T.avance(dt/lent);
+    var g=X.cv.getContext('2d'); g.setTransform(X.k,0,0,X.k,0,0);
+    var bg=g.createLinearGradient(0,0,W*0.55,H); if(theme==='clair'){bg.addColorStop(0,'#E6D1AE');bg.addColorStop(1,'#D8C29A');}else{bg.addColorStop(0,'#221702');bg.addColorStop(1,'#150D00');}
+    g.fillStyle=bg; g.fillRect(0,0,W,H); peint(X.T,g,X.P.cel); });
+  var h=toiles[0].T.h%4000; curseur.style.width=(h/4000*100)+'%';
+  phase.textContent = h<1400 ? 'une dalle arrive — l\'amande dans ses jours' : (h<2000 ? 'la Toile se pose' : (h<3000 ? 'elle repart — jusqu\'au bout' : 'repos'));
+  requestAnimationFrame(boucle); }
+[].forEach.call(document.querySelectorAll('[data-v]'),function(b){ b.onclick=function(){ theme=b.getAttribute('data-v'); [].forEach.call(document.querySelectorAll('[data-v]'),function(x){x.classList.toggle('on',x===b);}); }; });
+document.getElementById('pause').onclick=function(){ pause=!pause; this.classList.toggle('on',pause); this.textContent=pause?'Reprendre':'Pause'; };
+document.getElementById('lent').onclick=function(){ lent=lent===1?3:1; this.classList.toggle('on',lent===3); };
+toiles.forEach(function(X){ X.T.h=3999; });
+requestAnimationFrame(boucle);
+</script>
+</body>
+</html>

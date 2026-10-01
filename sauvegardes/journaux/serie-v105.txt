@@ -1,0 +1,78 @@
+=== redteam_murs.py
+
+26/26
+=== redteam_cercle_couleur.py
+
+34/34
+=== releve-S2-peaufiner.py
+
+✅ SECTION 2 AU CRITÈRE  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+=== redteam_ecrans.py
+
+152/152
+=== redteam_vide.py
+
+61/61
+=== redteam_flash.py
+
+32/32
+=== redteam_accueil.py
+
+22/22
+=== redteam_zoom.py
+
+16/16
+=== redteam_toile.py
+
+18/18
+=== redteam_nuee_dalle.py
+
+36/38
+=== redteam_dalle_figee.py
+
+4/4
+=== redteam_decoupe.py
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_apercus.py
+
+✅  10/10
+=== redteam_tuiles.py
+
+64/64
+=== redteam_gens.py
+
+38/38
+=== redteam_verbe.py
+
+6/6
+=== redteam_champ.py
+
+32/32
+=== releve-S3-page-plus.py
+✅  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 0
+   écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire
+=== redteam_nuee.py
+
+  ✅  24 écran(s) · 0 écart(s)
+=== redteam_nuee_entree.py
+
+24/24
+=== redteam_air.py
+
+  ✅  L'AIR EST INTACT — 708 paires de textes, 68 écrans, deux thèmes.
+=== releve-design.py
+✅  AUCUN ÉCART. Le design est intact.
+=== releve-aura.py
+
+❌  4 ÉCARTS
+=== redteam_studio_geste.py
+
+13/13
+=== redteam_tokens.py
+
+46/46
+=== redteam_rythme.py
+
+99 / 99
+fini

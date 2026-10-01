@@ -1,0 +1,20 @@
+
+═══ SECTION 4 · INDEX ET FIL — 6 écrans mesurés ═══
+    les 8 cartes isolées du §5, par la loi du §3.9 bis  : 8/8
+    la borne du §2.5 mord où il faut, et nulle part ailleurs : oui
+
+écarts de position > 3 px    8
+      Index 2 par ligne    [dark] recherche 278×52 au lieu de 270×52
+      Index 3 par ligne    [dark] recherche 278×52 au lieu de 270×52
+      Fil                  [dark] recherche 278×52 au lieu de 270×52
+      Fil                  [dark] grille à y=215 au lieu de 204
+      Index 2 par ligne    [light] recherche 278×52 au lieu de 270×52
+      Index 3 par ligne    [light] recherche 278×52 au lieu de 270×52
+      Fil                  [light] recherche 278×52 au lieu de 270×52
+      Fil                  [light] grille à y=215 au lieu de 204
+écarts de style              102
+collisions                   0
+débordements                 0
+présence peinte              0
+
+❌  110 ÉCARTS

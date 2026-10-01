@@ -1,0 +1,38 @@
+
+════ dark_gratuit
+  A · page + Peaufiner : doigt→soi ouvert=True · bloc du Cercle=None
+      lignes : aller voir la mer✕ FERMER | À QUI | AVANT | DANS UNE NUÉE | NOTE | PIÈCES JOINTES
+  B · pinceau payant choisi=Doublé → planté : [{'id': 141, 'titre': 'aller voir la mer', 'trait': None}]
+  C · partage_fiche : couches=detailPoster · ✦=[] · Cercle=[] · flou=[]
+  C · partage_dock : couches=shareScreen · ✦=[] · Cercle=[] · flou=[]
+  D · fiche de Rachel : []
+  E · toucher RÉCURRENCE : doigt→div.s2-encart · avant ['RÉCURRENCEchaque semaine'] · après ['RÉCURRENCEchaque semaine'] · couches=plusScreen
+
+════ dark_cercle
+  A · page + Peaufiner : doigt→soi ouvert=True · bloc du Cercle=None
+      lignes : aller voir la mer✕ FERMER | À QUI | AVANT | DANS UNE NUÉE | NOTE | PIÈCES JOINTES
+  B · pinceau payant choisi=Doublé → planté : [{'id': 142, 'titre': 'aller voir la mer', 'trait': None}]
+  C · partage_fiche : couches=detailPoster · ✦=[] · Cercle=[] · flou=[]
+  C · partage_dock : couches=shareScreen · ✦=[] · Cercle=[] · flou=[]
+  D · fiche de Rachel : []
+  E · toucher RÉCURRENCE : doigt→soi · avant ['RÉCURRENCEchaque semaine'] · après ['RÉCURRENCEchaque semaine'] · couches=detailPoster
+
+════ light_gratuit
+  A · page + Peaufiner : doigt→soi ouvert=True · bloc du Cercle=None
+      lignes : aller voir la mer✕ FERMER | À QUI | AVANT | DANS UNE NUÉE | NOTE | PIÈCES JOINTES
+  B · pinceau payant choisi=Doublé → planté : [{'id': 143, 'titre': 'aller voir la mer', 'trait': None}]
+  C · partage_fiche : couches=detailPoster · ✦=[] · Cercle=[] · flou=[]
+  C · partage_dock : couches=shareScreen · ✦=[] · Cercle=[] · flou=[]
+  D · fiche de Rachel : []
+  E · toucher RÉCURRENCE : doigt→div.s2-encart · avant ['RÉCURRENCEchaque semaine'] · après ['RÉCURRENCEchaque semaine'] · couches=plusScreen
+
+════ light_cercle
+  A · page + Peaufiner : doigt→soi ouvert=True · bloc du Cercle=None
+      lignes : aller voir la mer✕ FERMER | À QUI | AVANT | DANS UNE NUÉE | NOTE | PIÈCES JOINTES
+  B · pinceau payant choisi=Doublé → planté : [{'id': 144, 'titre': 'aller voir la mer', 'trait': None}]
+  C · partage_fiche : couches=detailPoster · ✦=[] · Cercle=[] · flou=[]
+  C · partage_dock : couches=shareScreen · ✦=[] · Cercle=[] · flou=[]
+  D · fiche de Rachel : []
+  E · toucher RÉCURRENCE : doigt→soi · avant ['RÉCURRENCEchaque semaine'] · après ['RÉCURRENCEchaque semaine'] · couches=detailPoster
+
+écrit : /Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/sauvegardes/audit-cercle/ecran/complement.json

@@ -1,0 +1,246 @@
+{
+ "friction": {
+  "apres_plus": {
+   "tuiles": [
+    {
+     "t": "Un Promi\nà quelqu'un, ou à toi\nCHOISIR →",
+     "k": "promi",
+     "x": 16,
+     "y": 246,
+     "w": 358,
+     "h": 174
+    },
+    {
+     "t": "Un Chiche\nun défi lancé\nCHOISIR →",
+     "k": "chiche",
+     "x": 16,
+     "y": 436,
+     "w": 358,
+     "h": 174
+    },
+    {
+     "t": "Une Nuée\nun groupe, un projet\nCHOISIR →",
+     "k": "nuee",
+     "x": 16,
+     "y": 626,
+     "w": 358,
+     "h": 174
+    }
+   ],
+   "kind": null,
+   "phrase_visible": [],
+   "classes": "sheet trame show pp-promi pp-choix"
+  },
+  "promi": {
+   "tuile_visible_sans_glisser": [
+    {
+     "t": "Un Promi\nà quelqu'un, ou à toi\nCHOISIR →",
+     "k": "promi",
+     "x": 16,
+     "y": 246,
+     "w": 358,
+     "h": 174
+    }
+   ],
+   "apres_tuile": {
+    "kind": "promi",
+    "phrase": [
+     {
+      "t": "Je me promets\n ✦\nde dormir avant minuit\n",
+      "k": "",
+      "x": 24,
+      "y": 2,
+      "w": 341,
+      "h": 216
+     }
+    ],
+    "focus": "BODY"
+   }
+  },
+  "chiche": {
+   "tuile_visible_sans_glisser": [
+    {
+     "t": "Un Chiche\nun défi lancé\nCHOISIR →",
+     "k": "chiche",
+     "x": 16,
+     "y": 436,
+     "w": 358,
+     "h": 174
+    }
+   ],
+   "apres_tuile": {
+    "kind": "promi",
+    "phrase": [
+     {
+      "t": "Je me promets\n\nde ranger le garage\ntouch",
+      "k": "",
+      "x": 24,
+      "y": 414,
+      "w": 342,
+      "h": 122
+     }
+    ],
+    "focus": "BODY"
+   }
+  },
+  "nuee": {
+   "tuile_visible_sans_glisser": [
+    {
+     "t": "Une Nuée\nun groupe, un projet\nCHOISIR →",
+     "k": "nuee",
+     "x": 16,
+     "y": 626,
+     "w": 358,
+     "h": 174
+    }
+   ],
+   "apres_tuile": {
+    "kind": "nuee",
+    "phrase": [],
+    "focus": "BODY"
+   }
+  }
+ },
+ "plein_30": {
+  "vue": {
+   "s": 1,
+   "ox": 0,
+   "oy": 0,
+   "dpr": 2
+  },
+  "sansPoly": 0,
+  "zooms": {
+   "1": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "2": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 12
+   },
+   "3": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 20
+   },
+   "5": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 26
+   },
+   "0.48": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "0.6": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "0.8": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "0.9": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "1.25": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 1
+   },
+   "1.5": {
+    "n": 30,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 5
+   }
+  }
+ },
+ "plein_60": {
+  "vue": {
+   "s": 1,
+   "ox": 0,
+   "oy": 0,
+   "dpr": 2
+  },
+  "sansPoly": 0,
+  "zooms": {
+   "1": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "2": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 33
+   },
+   "3": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 47
+   },
+   "5": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 54
+   },
+   "0.48": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "0.6": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "0.8": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 0
+   },
+   "0.9": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 1
+   },
+   "1.25": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 5
+   },
+   "1.5": {
+    "n": 60,
+    "inatteignables": 0,
+    "ids": [],
+    "sansDeplacer": 19
+   }
+  }
+ }
+}

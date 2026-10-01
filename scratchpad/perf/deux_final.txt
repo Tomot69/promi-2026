@@ -1,0 +1,17 @@
+chromium ×1 {"pixel": {"calcul": 9, "dessin": 10.8, "ecran": 18.3}, "sillons": {"calcul": 6.7, "dessin": 8.2, "ecran": 16.9}}
+chromium ×4 {"pixel": {"calcul": 38.7, "dessin": 45.7, "ecran": 55.4}, "sillons": {"calcul": 29.5, "dessin": 35.2, "ecran": 41.9}}
+webkit {"pixel": {"calcul": 7.6, "dessin": 10.9, "ecran": 19.4}, "sillons": {"calcul": 4.5, "dessin": 6.3, "ecran": 17.2}}
+chromium ×1 {"pixel": {"calcul": 13.1, "dessin": 19.1, "ecran": 20.4}, "sillons": {"calcul": 7.4, "dessin": 24, "ecran": 29.6}}
+chromium ×4 {"pixel": {"calcul": 58.1, "dessin": 86.1, "ecran": 89.5}, "sillons": {"calcul": 33.3, "dessin": 108.5, "ecran": 127.7}}
+chromium×1 pixel ancien {'images': 111, 'med': 16.7, 'p90': 16.8, 'max': 33.4}
+chromium×1 pixel nouveau {'images': 121, 'med': 16.7, 'p90': 16.7, 'max': 16.8}
+chromium×1 sillons ancien {'images': 97, 'med': 16.7, 'p90': 33.3, 'max': 33.4}
+chromium×1 sillons nouveau {'images': 98, 'med': 16.7, 'p90': 33.3, 'max': 50}
+chromium×4 pixel ancien {'images': 22, 'med': 100, 'p90': 116.6, 'max': 166.6}
+chromium×4 pixel nouveau {'images': 48, 'med': 50, 'p90': 66.7, 'max': 116.7}
+chromium×4 sillons ancien {'images': 16, 'med': 133.3, 'p90': 150, 'max': 166.7}
+chromium×4 sillons nouveau {'images': 17, 'med': 133.3, 'p90': 133.4, 'max': 150}
+webkit pixel ancien {'images': 31, 'med': 63, 'p90': 80, 'max': 205}
+webkit pixel nouveau {'images': 121, 'med': 17, 'p90': 19, 'max': 39}
+webkit sillons ancien {'images': 48, 'med': 58, 'p90': 63, 'max': 90}
+webkit sillons nouveau {'images': 120, 'med': 17, 'p90': 20, 'max': 24}

@@ -1,0 +1,13 @@
+P1 dark  gratuit sur Terrazzo : ['Terrazzo', 'Adopte ce design — 1 €', 'Ou débloque-les tous', 'avec Le Cercle']
+       achat → premium=True, ouvre auraScreen · Studio rouvert : {'classes': 'screen s-studio st-plat world-locked stp-verrou show', 'visible': ['Encre', 'Adopte ce design — 1 €', 'Ou débloque-les tous', 'avec Le Cercle'], 'monde': 'encre', 'encart': '✦ Membre du Cercle ✓'}
+P2 dark  Encre après Terrazzo : {'classes': 'screen s-studio st-plat stp-inv show', 'visible': ['Encre'], 'monde': 'encre', 'encart': '✦ Le Cercle'}
+P3 dark  fin d’abonnement sur Terrazzo : la Toile reste en terrazzo · Studio : {'classes': 'screen s-studio st-plat stp-inv show', 'visible': ['Terrazzo ✦'], 'monde': 'terrazzo', 'encart': '✦ Membre du Cercle ✓'}
+P4 dark  Réglages après la fin : {'texte': '✦ Membre du Cercle ✓tout Promi débloqué · merci›', 'vis': True}
+P5 dark  Mosaïque (gratuit) avant la fin : mosaique → après : encre
+P1 light  gratuit sur Terrazzo : ['Terrazzo', 'Adopte ce design — 1 €', 'Ou débloque-les tous', 'avec Le Cercle']
+       achat → premium=True, ouvre auraScreen · Studio rouvert : {'classes': 'screen s-studio st-plat stp-clair world-locked stp-verrou show', 'visible': ['Encre', 'Adopte ce design — 1 €', 'Ou débloque-les tous', 'avec Le Cercle'], 'monde': 'encre', 'encart': '✦ Membre du Cercle ✓'}
+P2 light  Encre après Terrazzo : {'classes': 'screen s-studio st-plat stp-clair stp-inv show', 'visible': ['Encre'], 'monde': 'encre', 'encart': '✦ Le Cercle'}
+P3 light  fin d’abonnement sur Terrazzo : la Toile reste en terrazzo · Studio : {'classes': 'screen s-studio st-plat stp-clair stp-inv show', 'visible': ['Terrazzo ✦'], 'monde': 'terrazzo', 'encart': '✦ Membre du Cercle ✓'}
+P4 light  Réglages après la fin : {'texte': '✦ Membre du Cercle ✓tout Promi débloqué · merci›', 'vis': True}
+P5 light  Mosaïque (gratuit) avant la fin : mosaique → après : encre
+écrit repro.json

@@ -1,0 +1,204 @@
+{
+ "dark": [
+  {
+   "sel": "#buyMonth",
+   "texte": "Essayer 14 jours, puis 3,99 €/mois",
+   "couleur": "rgb(255, 255, 255)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 18.12,
+   "op": "1",
+   "x": 44,
+   "y": 820,
+   "w": 342
+  },
+  {
+   "sel": "#buyYear",
+   "texte": "Prendre l'année — 29 € soit 2,42 €/mois · −39 %",
+   "couleur": "rgb(231, 229, 223)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 14.38,
+   "op": "1",
+   "x": 44,
+   "y": 894,
+   "w": 342
+  },
+  {
+   "sel": "#buyYear span",
+   "texte": "soit 2,42 €/mois · −39 %",
+   "couleur": "rgb(58, 84, 255)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 3.36,
+   "op": "1",
+   "x": 223,
+   "y": 917,
+   "w": 148
+  },
+  {
+   "sel": ".pl-sub",
+   "texte": "Tout Promi pour 3,99 €/mois, arrête quand tu veux.",
+   "couleur": "rgba(243, 239, 230, 0.6)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 15.79,
+   "op": "1",
+   "x": 26,
+   "y": 329,
+   "w": 265
+  },
+  {
+   "sel": ".pl-sub b",
+   "texte": "3,99 €/mois",
+   "couleur": "rgb(231, 229, 223)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 14.38,
+   "op": "1",
+   "x": 126,
+   "y": 330,
+   "w": 72
+  },
+  {
+   "sel": ".pl-sub b#1",
+   "texte": "29 €",
+   "couleur": "rgb(231, 229, 223)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 14.38,
+   "op": "1",
+   "x": 194,
+   "y": 350,
+   "w": 28
+  },
+  {
+   "sel": ".pl-h",
+   "texte": "Essaie tout,sans t'engager.",
+   "couleur": "rgb(243, 239, 230)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 15.79,
+   "op": "1",
+   "x": 26,
+   "y": 235,
+   "w": 378
+  },
+  {
+   "sel": ".pl-note",
+   "texte": "Sans engagement · annulable en 2 taps, à tout mome",
+   "couleur": "rgb(243, 239, 230)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 15.79,
+   "op": "1",
+   "x": 26,
+   "y": 968,
+   "w": 378
+  },
+  {
+   "sel": ".pl-note#1",
+   "texte": "ou un design à l'unité — 1 €, ou 4 pour 3 €",
+   "couleur": "rgb(243, 239, 230)",
+   "fond": "rgb(18, 20, 42)",
+   "rapport": 15.79,
+   "op": "0.7",
+   "x": 26,
+   "y": 993,
+   "w": 378
+  }
+ ],
+ "light": [
+  {
+   "sel": "#buyMonth",
+   "texte": "Essayer 14 jours, puis 3,99 €/mois",
+   "couleur": "rgb(255, 255, 255)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 1.16,
+   "op": "1",
+   "x": 44,
+   "y": 820,
+   "w": 342
+  },
+  {
+   "sel": "#buyYear",
+   "texte": "Prendre l'année — 29 € soit 2,42 €/mois · −39 %",
+   "couleur": "rgb(231, 229, 223)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 1.09,
+   "op": "1",
+   "x": 44,
+   "y": 894,
+   "w": 342
+  },
+  {
+   "sel": "#buyYear span",
+   "texte": "soit 2,42 €/mois · −39 %",
+   "couleur": "rgb(58, 84, 255)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 4.67,
+   "op": "1",
+   "x": 223,
+   "y": 917,
+   "w": 148
+  },
+  {
+   "sel": ".pl-sub",
+   "texte": "Tout Promi pour 3,99 €/mois, arrête quand tu veux.",
+   "couleur": "rgba(22, 23, 27, 0.55)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 15.49,
+   "op": "1",
+   "x": 26,
+   "y": 329,
+   "w": 265
+  },
+  {
+   "sel": ".pl-sub b",
+   "texte": "3,99 €/mois",
+   "couleur": "rgb(231, 229, 223)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 1.09,
+   "op": "1",
+   "x": 126,
+   "y": 330,
+   "w": 72
+  },
+  {
+   "sel": ".pl-sub b#1",
+   "texte": "29 €",
+   "couleur": "rgb(231, 229, 223)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 1.09,
+   "op": "1",
+   "x": 194,
+   "y": 350,
+   "w": 28
+  },
+  {
+   "sel": ".pl-h",
+   "texte": "Essaie tout,sans t'engager.",
+   "couleur": "rgb(18, 19, 26)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 16.02,
+   "op": "1",
+   "x": 26,
+   "y": 235,
+   "w": 378
+  },
+  {
+   "sel": ".pl-note",
+   "texte": "Sans engagement · annulable en 2 taps, à tout mome",
+   "couleur": "rgb(18, 19, 26)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 16.02,
+   "op": "1",
+   "x": 26,
+   "y": 968,
+   "w": 378
+  },
+  {
+   "sel": ".pl-note#1",
+   "texte": "ou un design à l'unité — 1 €, ou 4 pour 3 €",
+   "couleur": "rgb(18, 19, 26)",
+   "fond": "rgb(244, 238, 225)",
+   "rapport": 16.02,
+   "op": "0.7",
+   "x": 26,
+   "y": 993,
+   "w": 378
+  }
+ ]
+}

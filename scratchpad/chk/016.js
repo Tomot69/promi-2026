@@ -1,0 +1,7 @@
+(function(){
+function ghostInk(){var s=(Math.random()*99999)|0;var rnd=function(){s=(s*9301+49297)%233280;return s/233280;};var e="";for(var b=0;b<12;b++){var cx=100+(rnd()-.5)*88,cy=100+(rnd()-.5)*88,rx=24+rnd()*40,ry=18+rnd()*34,rot=(rnd()*180)|0;e+="<ellipse cx=%27"+cx.toFixed(0)+"%27 cy=%27"+cy.toFixed(0)+"%27 rx=%27"+rx.toFixed(0)+"%27 ry=%27"+ry.toFixed(0)+"%27 transform=%27rotate("+rot+" "+cx.toFixed(0)+" "+cy.toFixed(0)+")%27 fill=%27%23C8BAA4%27/>";}var svg="<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 200 200%27>"+e+"</svg>";return "url(\"data:image/svg+xml,"+svg+"\")";}
+function setEl(el){if(el&&el.style&&!el.style.getPropertyValue("--ghost-ink"))el.style.setProperty("--ghost-ink",ghostInk());}
+function apply(){[].forEach.call(document.querySelectorAll(".tuto-fond,#createSheet"),setEl);}
+if(document.readyState!=="loading")apply();else document.addEventListener("DOMContentLoaded",apply);
+try{var mo=new MutationObserver(function(muts){muts.forEach(function(m){[].forEach.call(m.addedNodes,function(n){if(n.nodeType!==1)return;if(n.classList&&(n.classList.contains("tuto-fond")||n.id==="createSheet"))setEl(n);if(n.querySelectorAll)[].forEach.call(n.querySelectorAll(".tuto-fond,#createSheet"),setEl);});});});mo.observe(document.body,{childList:true,subtree:true});}catch(e){}
+})();

@@ -1,0 +1,110 @@
+{
+ "indexList | div.s4-eb | texte #DD4D23": [
+  "dark:Index",
+  "light:Index"
+ ],
+ "indexList | div.s4-et | texte #DD4D23": [
+  "dark:Index",
+  "light:Index"
+ ],
+ "feedList | i.s4-att | fond #DD4D23": [
+  "dark:Fil",
+  "dark:Fil",
+  "light:Fil",
+  "light:Fil"
+ ],
+ "feedList | span.s4-nom | texte #DD4D23": [
+  "dark:Fil",
+  "light:Fil"
+ ],
+ "feedList | div.s4-et | texte #DD4D23": [
+  "dark:Fil",
+  "light:Fil"
+ ],
+ "dptQuand | div.dpt-quand | texte #8FE08F": [
+  "dark:fiche tenue",
+  "dark:fiche chiche",
+  "light:fiche tenue",
+  "light:fiche chiche"
+ ],
+ "dptQui | div.dpt-qui | texte #DD4D23": [
+  "dark:fiche à tenir",
+  "light:fiche à tenir"
+ ],
+ "dptQuand | div.dpt-quand | texte #DD4D23": [
+  "dark:fiche à tenir",
+  "light:fiche à tenir"
+ ],
+ "dpNueeFil | path. | stroke #00341A": [
+  "dark:Nuée",
+  "dark:Nuée",
+  "light:Nuée",
+  "light:Nuée"
+ ],
+ "dpNueeFil | path. | stroke #DD4D23": [
+  "dark:Nuée",
+  "light:Nuée"
+ ],
+ "dpNueeFil | circle. | fill #DD4D23": [
+  "dark:Nuée",
+  "dark:Nuée",
+  "dark:Nuée",
+  "light:Nuée",
+  "light:Nuée",
+  "light:Nuée"
+ ],
+ "dpNueeFil | em. | texte #DD4D23": [
+  "dark:Nuée",
+  "light:Nuée"
+ ],
+ "dpdTog | div.dpd-tog | texte #291547": [
+  "dark:Nuée",
+  "light:Nuée"
+ ],
+ "dpdTog | i. | texte #291547": [
+  "dark:Nuée",
+  "light:Nuée"
+ ],
+ "dpdTog | svg. | stroke #291547": [
+  "dark:Nuée",
+  "light:Nuée"
+ ],
+ "indexList | div.s4-eb | texte #00341A": [
+  "light:Index",
+  "light:Index"
+ ],
+ "indexList | div.s4-et | texte #00341A": [
+  "light:Index",
+  "light:Index"
+ ],
+ "indexList | div.s4-eb | texte #291547": [
+  "light:Index",
+  "light:Index"
+ ],
+ "indexList | div.s4-et | texte #291547": [
+  "light:Index",
+  "light:Index"
+ ],
+ "fdCount | span.ix-count fd-count | texte #00341A": [
+  "light:Fil"
+ ],
+ "feedList | span.s4-nom | texte #00341A": [
+  "light:Fil"
+ ],
+ "feedList | div.s4-et | texte #00341A": [
+  "light:Fil"
+ ],
+ "dptQui | div.dpt-qui | texte #291547": [
+  "light:fiche en cours"
+ ],
+ "dptQuand | div.dpt-quand | texte #291547": [
+  "light:fiche en cours"
+ ],
+ "dpMsg | div. | bord #291547": [
+  "light:fiche en cours"
+ ],
+ "dpNueeFil | em. | texte #00341A": [
+  "light:Nuée",
+  "light:Nuée"
+ ]
+}

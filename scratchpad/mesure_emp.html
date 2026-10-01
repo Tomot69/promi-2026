@@ -1,0 +1,39 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8"><title>mesure empreinte</title>
+<style>body{margin:0;background:#0C0D10}canvas{display:block;width:392px;height:392px}</style>
+</head><body>
+<canvas id="toileCv" style="position:fixed;left:0;top:0;width:390px;height:620px;opacity:.01;pointer-events:none;z-index:-1"></canvas>
+<div id="g"></div>
+<script>var CREME='#F4EEE1',ENCRE='#16171B';function cc(){return[200,180,255];}
+function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script src="/scratchpad/_m_moteur.js"></script>
+<script src="/scratchpad/_m_semis.js"></script>
+<script src="/scratchpad/_m_peint.js"></script>
+<script>
+/* LA MESURE — la MEME scene, les DEUX lois, la MEME pression.
+   On ne mesure rien ici : on ne fait que PEINDRE. C'est le script Python qui
+   lit les images. Un chiffre pris dans le code ne prouverait rien. */
+var BASE={ c:[-0.40,-0.26,0.88], ax:[0.62,-0.72,0.00],
+           a:0.34, el:0.64, dmax:0.105, biais:0.14,
+           rho:0.10, ub:0.30, B:0.55, U:1.10 };
+function E(p,cloche){var o={};for(var k in BASE)o[k]=BASE[k];o.p=p;if(cloche)o.cloche=1;return o;}
+var CAS=[['repos',null],
+         ['plateau14',E(0.14,0)],['plateau55',E(0.55,0)],['plateau100',E(1.0,0)],
+         ['cloche14',E(0.14,1)],['cloche55',E(0.55,1)],['cloche100',E(1.0,1)]];
+window.addEventListener('load',function(){
+  try{ window.Toile_resize&&window.Toile_resize(); window.Toile&&Toile.sync([1,2,3,4,5,6,7,8,9]); }catch(e){}
+  setTimeout(function(){
+    var CR=[244,238,225], TAI=[5.0,7.0,9.5];
+    var A=atlasForme(GRAIN_FIL,CR,TAI,ORI,10,0.05,1.00);
+    var S=semisPoussiere(30000), G=document.getElementById('g');
+    CAS.forEach(function(c){
+      var cv=document.createElement('canvas'); cv.setAttribute('data-cad',c[0]);
+      G.appendChild(cv);
+      peint(cv,{css:392,R:0.405,niv:10,tailles:TAI,atlas:A,semis:S,
+                relief:P_PEAU,loi:'poussiere',lac:2.9,tan:0.32,emp:c[1],nu:1,nuLum:1});
+      if(cv.__emp){ (window.__emp=window.__emp||{})[c[0]]=cv.__emp; }
+    });
+    window.__pret=true;
+  },700);
+});
+</script></body></html>

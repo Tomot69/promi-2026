@@ -1,0 +1,15 @@
+OK    fiche de Nuée (potager) · toucher « Rachel » ouvre SA fiche (la refaite)  ligne « Avec Rachel, Adrien, +3 » → Rachel
+OK    fiche de Nuée (potager) · toucher « Adrien » ouvre SA fiche (la refaite)  ligne « Avec Rachel, Adrien, +3 » → Adrien
+OK    fiche de Nuée (potager) · toucher « +3 » n'ouvre aucune personne  ligne « Avec Rachel, Adrien, +3 » → None
+OK    Peaufiner de la Nuée · toucher « Rachel » ouvre SA fiche (la refaite)  ligne « Rachel · Adrien · +3 » → Rachel
+OK    Peaufiner de la Nuée · toucher « Adrien » ouvre SA fiche (la refaite)  ligne « Rachel · Adrien · +3 » → Adrien
+OK    Peaufiner de la Nuée · toucher « +3 » n'ouvre aucune personne  ligne « Rachel · Adrien · +3 » → None
+OK    fiche du Chiche « courir dimanche » · toucher « Marion » ouvre SA fiche (la refaite)  ligne « À Marion · avec Rachel » → Marion
+OK    fiche du Chiche « courir dimanche » · toucher « Rachel » ouvre SA fiche (la refaite)  ligne « À Marion · avec Rachel » → Rachel
+OK    fiche du Promi « faire les crêpes » · toucher « Rachel » ouvre SA fiche (la refaite)  ligne « À Rachel » → Rachel
+OK    Peaufiner du Promi (rangée À QUI) · toucher « Rachel » n'ouvre aucune personne  ligne « Rachel » → None
+OK    fiche de Nuée · un glissement de 30 pt sur « Rachel » n'ouvre rien  {'fiche': None}
+OK    aucune erreur de page  []
+
+✅  12 / 12
+exit 0

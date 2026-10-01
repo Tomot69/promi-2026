@@ -1,0 +1,157 @@
+{
+ "fil": [
+  {
+   "titre": "le grand plongeoir",
+   "fs": "24px",
+   "cote": "26,42,50,24,1",
+   "champ": "rgb(255,128,174)",
+   "dalleDelta": 132.1,
+   "top": "50px",
+   "ev": "16px"
+  },
+  {
+   "titre": "planter un arbre",
+   "fs": "24px",
+   "cote": "26,42,50,24,1",
+   "champ": "rgb(111,161,247)",
+   "dalleDelta": 98.3,
+   "top": "50px",
+   "ev": "16px"
+  },
+  {
+   "titre": "semer les radis",
+   "fs": "24px",
+   "cote": "26,42,50,24,1",
+   "champ": "#C9A8F5",
+   "dalleDelta": 220.5,
+   "top": "50px",
+   "ev": "16px"
+  },
+  {
+   "titre": "faire les crêpes",
+   "fs": "24px",
+   "cote": "26,42,50,24,1",
+   "champ": "rgb(193,215,252)",
+   "dalleDelta": 108.4,
+   "top": "50px",
+   "ev": "16px"
+  },
+  {
+   "titre": "courir dimanche",
+   "fs": "24px",
+   "cote": "26,42,50,24,1",
+   "champ": "rgb(255,215,229)",
+   "dalleDelta": 185.4,
+   "top": "50px",
+   "ev": "16px"
+  }
+ ],
+ "chiche-groupe": {
+  "filet": "1",
+  "textes": [
+   {
+    "txt": "Peaufiner",
+    "col": "rgb(32, 25, 8)",
+    "d": 175.7,
+    "lis": null
+   },
+   {
+    "txt": "▾",
+    "col": "rgb(32, 25, 8)",
+    "d": 175.7,
+    "lis": null
+   },
+   {
+    "txt": "trace pour tenir",
+    "col": "rgb(243, 231, 209)",
+    "d": 209.9,
+    "lis": null
+   },
+   {
+    "txt": "Toi",
+    "col": "rgb(243, 231, 209)",
+    "d": 209.9,
+    "lis": null
+   },
+   {
+    "txt": "Adrien",
+    "col": "rgb(243, 231, 209)",
+    "d": 209.9,
+    "lis": null
+   },
+   {
+    "txt": "Chiche",
+    "col": "rgb(247, 240, 222)",
+    "d": 214.9,
+    "lis": null
+   }
+  ]
+ },
+ "chiche-tenu": {
+  "filet": "1",
+  "textes": [
+   {
+    "txt": "Peaufiner",
+    "col": "rgb(32, 25, 8)",
+    "d": 175.7,
+    "lis": null
+   },
+   {
+    "txt": "▾",
+    "col": "rgb(32, 25, 8)",
+    "d": 175.7,
+    "lis": null
+   },
+   {
+    "txt": "À Marion",
+    "col": "rgb(143, 224, 143)",
+    "d": 178,
+    "lis": null
+   },
+   {
+    "txt": "TENU À DEUX · 3 AOÛT",
+    "col": "rgb(143, 224, 143)",
+    "d": 178,
+    "lis": null
+   },
+   {
+    "txt": "Chiche",
+    "col": "rgb(247, 240, 222)",
+    "d": 214.9,
+    "lis": null
+   },
+   {
+    "txt": "FERMER",
+    "col": "rgb(247, 240, 222)",
+    "d": 214.9,
+    "lis": null
+   }
+  ]
+ },
+ "pelote1": {
+  "idx": 1,
+  "rgb": [
+   255,
+   184,
+   210
+  ]
+ },
+ "aura_col": {
+  "nx": 453.76,
+  "lg": 584.135,
+  "bt": 636.385,
+  "mo": 724.385,
+  "mo2": 982.385,
+  "finBas": 1108.385,
+  "fin": 1130.385
+ },
+ "sols": [
+  2,
+  3,
+  3,
+  0,
+  1,
+  2
+ ],
+ "erreurs": []
+}

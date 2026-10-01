@@ -1,0 +1,122 @@
+{
+ "dark": {
+  "A_plante_141": {
+   "hote": true,
+   "peaufiner_ouvert": true,
+   "bloc": true,
+   "visible": true,
+   "taille": [
+    342,
+    304
+   ],
+   "reglages": 4,
+   "flous": 4,
+   "encart": "✦ Le Cercleimportance, récurrence, rappels, mémoire"
+  },
+  "B_temoin_126": {
+   "hote": true,
+   "peaufiner_ouvert": true,
+   "bloc": true,
+   "visible": true,
+   "taille": [
+    342,
+    304
+   ],
+   "reglages": 4,
+   "flous": 4,
+   "encart": "✦ Le Cercleimportance, récurrence, rappels, mémoire"
+  },
+  "C_garde": {
+   "gardes": [
+    {
+     "id": 140,
+     "t": "appeler Mamie"
+    }
+   ],
+   "ouvre": "scrim,createSheet",
+   "barre": {
+    "vis": true,
+    "w": 390,
+    "h": 84
+   },
+   "apres_toucher_barre": {
+    "hote": true,
+    "peaufiner_ouvert": true,
+    "bloc": true,
+    "visible": false,
+    "taille": [
+     342,
+     304
+    ],
+    "reglages": 4,
+    "flous": 4,
+    "encart": "✦ Le Cercleimportance, récurrence, rappels, mémoire"
+   }
+  },
+  "D_page_plus": {
+   "hote": true,
+   "peaufiner_ouvert": true,
+   "bloc": false
+  }
+ },
+ "light": {
+  "A_plante_141": {
+   "hote": true,
+   "peaufiner_ouvert": true,
+   "bloc": true,
+   "visible": true,
+   "taille": [
+    342,
+    304
+   ],
+   "reglages": 4,
+   "flous": 4,
+   "encart": "✦ Le Cercleimportance, récurrence, rappels, mémoire"
+  },
+  "B_temoin_126": {
+   "hote": true,
+   "peaufiner_ouvert": true,
+   "bloc": true,
+   "visible": true,
+   "taille": [
+    342,
+    304
+   ],
+   "reglages": 4,
+   "flous": 4,
+   "encart": "✦ Le Cercleimportance, récurrence, rappels, mémoire"
+  },
+  "C_garde": {
+   "gardes": [
+    {
+     "id": 140,
+     "t": "appeler Mamie"
+    }
+   ],
+   "ouvre": "scrim,createSheet",
+   "barre": {
+    "vis": true,
+    "w": 390,
+    "h": 84
+   },
+   "apres_toucher_barre": {
+    "hote": true,
+    "peaufiner_ouvert": true,
+    "bloc": true,
+    "visible": false,
+    "taille": [
+     342,
+     304
+    ],
+    "reglages": 4,
+    "flous": 4,
+    "encart": "✦ Le Cercleimportance, récurrence, rappels, mémoire"
+   }
+  },
+  "D_page_plus": {
+   "hote": true,
+   "peaufiner_ouvert": true,
+   "bloc": false
+  }
+ }
+}

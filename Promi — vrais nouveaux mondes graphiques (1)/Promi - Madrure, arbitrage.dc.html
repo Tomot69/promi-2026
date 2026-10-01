@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  body { margin: 0; background: #EFE9DE; }
+  a { color: #C8452B; }
+  a:hover { color: #1A1613; }
+</style>
+</helmet>
+<div ref="{{ setRoot }}" style="min-height:100vh;font-family:'IBM Plex Mono',monospace;color:#1A1613;padding:38px 28px 70px;box-sizing:border-box">
+  <div style="max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:22px">
+
+    <header style="display:flex;flex-direction:column;gap:12px;max-width:74ch">
+      <p style="margin:0;font-size:11px;letter-spacing:.22em;text-transform:uppercase;opacity:.5">Promi · arbitrage Madrure</p>
+      <h1 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:clamp(26px,3.6vw,42px);line-height:1.05">L'onde teintée par la palette, ou par les promesses ?</h1>
+      <p style="margin:0;font-size:12.5px;line-height:1.7;opacity:.72;text-wrap:pretty">Même champ, même semis, même palette, même graine. Seule la source de couleur change. À gauche l'origine : trois index bruts de palette pour toute la Toile. À droite le contrat : la couleur de la cellule par <code>cOf</code>, le filet et la seconde veine en nuances de cette couleur.</p>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+        <button onClick="{{ reroll }}" style="cursor:pointer;background:none;border:1px solid #1A161340;padding:10px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#1A1613">Nouveau semis</button>
+        <button onClick="{{ pal }}" style="cursor:pointer;background:none;border:1px solid #1A161340;padding:10px 16px;font:inherit;font-size:11px;letter-spacing:.14em;text-transform:uppercase" style-hover="border-color:#1A1613">Changer de palette</button>
+        <span style="font-size:11px;opacity:.5">{{ etat }}</span>
+      </div>
+    </header>
+
+    <section style="display:flex;flex-direction:column;gap:12px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:26px">Toile entière</h2>
+      <div style="display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start">
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-v="0"></canvas><span style="font-size:11px;letter-spacing:.1em;opacity:.5">origine — palette brute</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-v="1"></canvas><span style="font-size:11px;letter-spacing:.1em;opacity:.5">contrat — cOf par cellule</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-v="2"></canvas><span style="font-size:11px;letter-spacing:.1em;opacity:.5">mixte — filet et clair de la palette, base par cOf</span></div>
+      </div>
+    </section>
+
+    <section style="display:flex;flex-direction:column;gap:12px;border-top:1px solid #1A161326;padding-top:18px">
+      <h2 style="margin:0;font-family:'Instrument Serif',serif;font-weight:400;font-size:26px">Quatre cellules, à 3×</h2>
+      <div style="display:flex;gap:20px;flex-wrap:wrap">
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-z="0"></canvas><span style="font-size:11px;opacity:.5">origine</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-z="1"></canvas><span style="font-size:11px;opacity:.5">contrat</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><canvas data-z="2"></canvas><span style="font-size:11px;opacity:.5">mixte</span></div>
+      </div>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { seed: 7, pi: 0, etat: '' };
+
+  PALS = [
+    ['#1A1613', '#C8452B', '#E2A43B', '#2F6157'],
+    ['#14213D', '#4A7FA5', '#D1462F', '#E5C3A6'],
+    ['#2B1B3D', '#7A3B8F', '#D94F70', '#F2B441']
+  ];
+  BG = '#EFE9DE';
+
+  hex(h) { return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16)]; }
+  nu(c, t) { const b = t > 0 ? 255 : 0, a = Math.abs(t); return [c[0] + (b - c[0]) * a, c[1] + (b - c[1]) * a, c[2] + (b - c[2]) * a]; }
+  lit(c, t) { return this.nu(c, t); }
+  rng(a) { return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+
+  // le champ, repris de makeField d'origine (semis pondéré + couleurs figées par cellule)
+  champ(W, H, cell, seed) {
+    const R = this.rng(seed * 7919 + 13);
+    const cols = Math.max(2, Math.round(W / cell)), rows = Math.max(2, Math.round(H / cell));
+    const sx = W / cols, sy = H / rows, sites = [];
+    for (let j = -1; j <= rows; j++) for (let i = -1; i <= cols; i++)
+      sites.push({ x: (i + 0.5 + (R() - 0.5) * 0.62) * sx, y: (j + 0.5 + (R() - 0.5) * 0.62) * sy, w: 0.84 + R() * 0.32, i: sites.length });
+    const spacing = (sx + sy) / 2;
+    sites.forEach(s => {
+      const used = {};
+      sites.forEach(o => { if (o !== s && o.c !== undefined && Math.hypot(o.x - s.x, o.y - s.y) < spacing * 1.45) used[o.c] = 1; });
+      let c = 0; while (used[c] && c < 3) c++;
+      s.c = c;
+      s.c2 = (c + 1 + Math.floor(R() * 3)) % 4; if (s.c2 === c) s.c2 = (c + 2) % 4;
+      s.c3 = [0, 1, 2, 3].filter(k => k !== c && k !== s.c2)[Math.floor(R() * 2)];
+      s.lit = Math.floor(R() * 3);
+    });
+    return { sites, spacing, R };
+  }
+
+  // Madrure — le corps d'origine, verbatim ; seule la table de couleurs change selon la variante
+  madrure(ctx, W, H, F, PAL, variante) {
+    const sp = F.spacing, R = F.R, SS = 2, iw = W * SS, ih = H * SS;
+    const th = R() * 6.283, ct = Math.cos(th), st = Math.sin(th);
+    const band = sp * 0.17 * SS;
+    const knots = F.sites.map(s => ({ s, x: s.x * SS, y: s.y * SS, k: band * (7.5 + R() * 2), r: sp * SS * (0.36 + R() * 0.12) }));
+    const off = document.createElement('canvas'); off.width = iw; off.height = ih;
+    const octx = off.getContext('2d');
+    const img = octx.createImageData(iw, ih), d = img.data;
+    const rgb = PAL.map(h => this.hex(h)), bgc = this.hex(this.BG);
+    const LITS = [0, .10, .04];
+    // trois tons par nœud : filet, veine A, veine B
+    const tons = knots.map(K => {
+      const base = this.lit(rgb[K.s.c], LITS[K.s.lit]);
+      if (variante === 0) return [rgb[0], rgb[1], rgb[2]];                       // origine : palette brute, globale
+      if (variante === 1) return [this.nu(base, -0.5), base, this.nu(base, 0.3)]; // contrat : tout vient de cOf
+      return [rgb[0], base, rgb[2]];                                             // mixte : filet et clair de la palette
+    });
+    for (let y = 0; y < ih; y++) for (let x = 0; x < iw; x++) {
+      let phi = x * ct + y * st;
+      let own = 0, bestD = 1e18;
+      for (let i = 0; i < knots.length; i++) {
+        const K = knots[i], dx = x - K.x, dy = y - K.y, dd = dx * dx + dy * dy;
+        if (dd < bestD) { bestD = dd; own = i; }
+        phi += K.k / (1 + dd / (K.r * K.r));
+      }
+      const v = phi / band, b = Math.floor(v), fr = v - b, m = ((b % 3) + 3) % 3;
+      const T = tons[own];
+      const col = fr < 0.11 ? T[0] : m === 2 ? null : (m === 0 ? T[1] : T[2]);
+      const c = col || bgc, i4 = (y * iw + x) * 4;
+      d[i4] = c[0]; d[i4 + 1] = c[1]; d[i4 + 2] = c[2]; d[i4 + 3] = 255;
+    }
+    octx.putImageData(img, 0, 0);
+    ctx.imageSmoothingEnabled = true; ctx.imageSmoothingQuality = 'high';
+    ctx.drawImage(off, 0, 0, W, H);
+  }
+
+  peindre(cv, W, H, cell, variante, seed) {
+    const D = 2;
+    cv.style.width = W + 'px'; cv.style.height = H + 'px';
+    cv.width = W * D; cv.height = H * D;
+    const g = cv.getContext('2d');
+    g.setTransform(D, 0, 0, D, 0, 0);
+    g.fillStyle = this.BG; g.fillRect(0, 0, W, H);
+    this.madrure(g, W, H, this.champ(W, H, cell, seed), this.PALS[this.state.pi], variante);
+  }
+
+  componentDidMount() { this.tout(); }
+  componentDidUpdate() { this.tout(); }
+
+  tout() {
+    const root = this.root; if (!root) return;
+    root.querySelectorAll('canvas[data-v]').forEach(cv => this.peindre(cv, 270, 585, 110, +cv.dataset.v, this.state.seed));
+    root.querySelectorAll('canvas[data-z]').forEach(cv => this.peindre(cv, 290, 290, 155, +cv.dataset.z, this.state.seed + 4));
+  }
+
+  renderVals() {
+    return {
+      setRoot: el => { this.root = el; },
+      etat: this.state.etat,
+      reroll: () => this.setState(s => ({ seed: s.seed + 1 })),
+      pal: () => this.setState(s => ({ pi: (s.pi + 1) % 3 }))
+    };
+  }
+}
+</script>
+</body>
+</html>

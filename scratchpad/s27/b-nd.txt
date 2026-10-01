@@ -1,0 +1,40 @@
+[sombre] 1 · « le potager » et « l'atelier » répondent au doigt sur la Toile OK  {'potager': 317, 'atelier': 344}
+[sombre] 2 · après une plantation, les deux dalles de Nuée sont là OK  {'atelier': 391, 'potager': 330}
+[sombre] 4 · la couleur de la dalle du potager est figée           OK  rgb(255,184,210) → rgb(255,184,210)
+[sombre] 3 · au doigt, sa dalle ouvre la fiche du potager          OK  [305, 489] · {'show': True, 'nuee': True, 'cle': 'potager'}
+[sombre] 5 · Peaufiner d'une Nuée : cinq réglages, LA COULEUR en dernier OK  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR']
+[sombre] 5 · bloc 384 en page 2, encart à 147                      OK  y 890 h 384 encart 147
+[sombre] 5 · sous « Planter », DISSOUDRE à 104 sous le bloc, rien ne se superpose OK  planter bas 874 · bloc 890–1274 · dissoudre 1378
+[sombre] 6 · code #C0FFEE : la dalle du potager est rgb(192,255,238) OK  rgb(192,255,238)
+[sombre] 6 · les dalles de ses 9 Promi n'ont pas bougé             OK  0 changées
+[sombre] 7 · LA COULEUR ouverte : DISSOUDRE descend, rien ne se superpose OK  ouverte bas 1398 · bloc bas 1414 · dissoudre 1518
+[sombre] 9 · fermée, aucun bloc de Nuée ne reste sur une fiche de Promi OK  
+[sombre] 8 · page + d'une Nuée : le code va à la dalle de la Nuée créée OK  nuee · rgb(127,59,18)
+[sombre] 8 · … et jamais au Promi planté entre-temps               OK  rgb(239,227,199)
+[sombre] 10 · planté dans le potager : une dalle de plus, reliée, couleur figée OK  {'id': 147, 'nuee': 'potager', 'abs': True, 'c': 'rgb(201,168,245)', 'n': 25, 'fig': True} · avant 24
+[sombre] 10 · le potager garde sa dalle, toujours au doigt         OK  {'atelier': 361, 'potager': 329, 'njuge': 371}
+[sombre] 10 · au doigt, sa dalle ouvre SA fiche                    OK  [108, 496] · True
+[sombre] 10 · sa couleur tient après une plantation                OK  rgb(201,168,245) → rgb(201,168,245)
+[sombre] 11 · Nuée neuve : sa dalle au doigt, et son premier Promi relié OK  ok · {'k': 'n1789954304354', 'q': True, 'abs': True, 'nuee': 421}
+[sombre] aucune erreur JS                                          OK  []
+[clair] 1 · « le potager » et « l'atelier » répondent au doigt sur la Toile OK  {'potager': 321, 'atelier': 351}
+[clair] 2 · après une plantation, les deux dalles de Nuée sont là  OK  {'potager': 340, 'atelier': 316}
+[clair] 4 · la couleur de la dalle du potager est figée            OK  rgb(255,184,210) → rgb(255,184,210)
+[clair] 3 · au doigt, sa dalle ouvre la fiche du potager           OK  [105, 349] · {'show': True, 'nuee': True, 'cle': 'potager'}
+[clair] 5 · Peaufiner d'une Nuée : cinq réglages, LA COULEUR en dernier OK  ['RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR']
+[clair] 5 · bloc 384 en page 2, encart à 147                       OK  y 890 h 384 encart 147
+[clair] 5 · sous « Planter », DISSOUDRE à 104 sous le bloc, rien ne se superpose OK  planter bas 874 · bloc 890–1274 · dissoudre 1378
+[clair] 6 · code #C0FFEE : la dalle du potager est rgb(192,255,238) OK  rgb(192,255,238)
+[clair] 6 · les dalles de ses 9 Promi n'ont pas bougé              OK  0 changées
+[clair] 7 · LA COULEUR ouverte : DISSOUDRE descend, rien ne se superpose OK  ouverte bas 1398 · bloc bas 1414 · dissoudre 1518
+[clair] 9 · fermée, aucun bloc de Nuée ne reste sur une fiche de Promi OK  
+[clair] 8 · page + d'une Nuée : le code va à la dalle de la Nuée créée OK  nuee · rgb(127,59,18)
+[clair] 8 · … et jamais au Promi planté entre-temps                OK  rgb(142,182,248)
+[clair] 10 · planté dans le potager : une dalle de plus, reliée, couleur figée OK  {'id': 147, 'nuee': 'potager', 'abs': True, 'c': 'rgb(201,168,245)', 'n': 25, 'fig': True} · avant 24
+[clair] 10 · le potager garde sa dalle, toujours au doigt          OK  {'njuge': 185, 'potager': 337, 'atelier': 314}
+[clair] 10 · au doigt, sa dalle ouvre SA fiche                     OK  [152, 332] · True
+[clair] 10 · sa couleur tient après une plantation                 OK  rgb(201,168,245) → rgb(201,168,245)
+[clair] 11 · Nuée neuve : sa dalle au doigt, et son premier Promi relié OK  ok · {'k': 'n1789954349065', 'q': True, 'abs': True, 'nuee': 522}
+[clair] aucune erreur JS                                           OK  []
+
+38/38

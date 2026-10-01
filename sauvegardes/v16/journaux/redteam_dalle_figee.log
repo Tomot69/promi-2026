@@ -1,0 +1,6 @@
+A · même couleur à chaque ouverture (3 × 2 thèmes)         OK  18 dalles · 0 écarts 
+C · après sync, la Toile rend la même couleur              OK  plantée rgb(147,185,248) → rgb(147,185,248)
+B · une dalle plantée garde sa couleur, sauvée puis rechargée OK  rgb(147,185,248) → rgb(147,185,248) · dalle sauvée {'ci': 1, 'lit': 3}
+D · les peintres des cartes reçoivent le monde du Promi    OK  47 appels · 0 sans monde · 3 pour le Promi en « pixel · terre » (juste : True) · 0 faux
+
+4/4

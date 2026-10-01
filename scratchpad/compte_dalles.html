@@ -1,0 +1,18 @@
+<!doctype html><html lang="fr"><head><meta charset="utf-8">
+<meta http-equiv="Cache-Control" content="no-store"><title>compte</title></head><body>
+<div style="width:390px;height:620px"><canvas id="toileCv" style="width:390px;height:620px"></canvas></div>
+<script>function cc(){return[200,180,255];}function render(){}var state={structure:'encre'};</script>
+<script src="/scratchpad/toile-extrait.js"></script>
+<script>
+window.addEventListener('load',function(){
+  try{ Toile_resize(); Toile.sync([1,2,3]); }catch(e){}
+  setTimeout(function(){
+    /* on plante jusqu'a ce qu'il n'y ait plus une seule cellule vide :
+       le compte donne le NOMBRE TOTAL de cellules de la Toile a 390 x 620 */
+    var n=Toile.count(), g=0;
+    while(g<4000 && Toile.plantOne(true)) g++;
+    window.__R={cellules:n+g, planteesAvant:n};
+    window.__pret=true;
+  },1500);
+});
+</script></body></html>

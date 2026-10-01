@@ -1,0 +1,12 @@
+
+== dark
+  A · Promi planté à neuf (141) : {'hote': True, 'peaufiner_ouvert': True, 'bloc': True, 'visible': True, 'taille': [342, 304], 'reglages': 4, 'flous': 4, 'encart': '✦ Le Cercleimportance, récurrence, rappels, mémoire'}
+  B · témoin 126 : {'hote': True, 'peaufiner_ouvert': True, 'bloc': True, 'visible': True, 'taille': [342, 304], 'reglages': 4, 'flous': 4, 'encart': '✦ Le Cercleimportance, récurrence, rappels, mémoire'}
+  C · gardé de côté : {'gardes': [{'id': 140, 't': 'appeler Mamie'}], 'ouvre': 'scrim,createSheet', 'barre': {'vis': True, 'w': 390, 'h': 84}, 'apres_toucher_barre': {'hote': True, 'peaufiner_ouvert': True, 'bloc': True, 'visible': False, 'taille': [342, 304], 'reglages': 4, 'flous': 4, 'encart': '✦ Le Cercleimportance, récurrence, rappels, mémoire'}}
+  D · page + : {'hote': True, 'peaufiner_ouvert': True, 'bloc': False}
+
+== light
+  A · Promi planté à neuf (141) : {'hote': True, 'peaufiner_ouvert': True, 'bloc': True, 'visible': True, 'taille': [342, 304], 'reglages': 4, 'flous': 4, 'encart': '✦ Le Cercleimportance, récurrence, rappels, mémoire'}
+  B · témoin 126 : {'hote': True, 'peaufiner_ouvert': True, 'bloc': True, 'visible': True, 'taille': [342, 304], 'reglages': 4, 'flous': 4, 'encart': '✦ Le Cercleimportance, récurrence, rappels, mémoire'}
+  C · gardé de côté : {'gardes': [{'id': 140, 't': 'appeler Mamie'}], 'ouvre': 'scrim,createSheet', 'barre': {'vis': True, 'w': 390, 'h': 84}, 'apres_toucher_barre': {'hote': True, 'peaufiner_ouvert': True, 'bloc': True, 'visible': False, 'taille': [342, 304], 'reglages': 4, 'flous': 4, 'encart': '✦ Le Cercleimportance, récurrence, rappels, mémoire'}}
+  D · page + : {'hote': True, 'peaufiner_ouvert': True, 'bloc': False}

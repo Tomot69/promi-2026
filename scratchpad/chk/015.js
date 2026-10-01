@@ -1,0 +1,1 @@
+(function(){try{var btn=document.getElementById("auraInfoBtn");if(btn){btn.addEventListener("click",function(e){e.stopPropagation();try{if(typeof closeAll==="function")closeAll();}catch(_){}var h=document.getElementById("auraHelp");if(h){var sc=document.getElementById("scrim");if(sc)sc.classList.remove("show");h.classList.add("show");}});}}catch(e){}})();

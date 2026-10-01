@@ -1,0 +1,12 @@
+Nuées initiales: 4
+champ nName: {'nName': True, 'vis': 'inline-block'}
+fill nName échec: Page.fill: Timeout 30000ms exceeded.
+Call log:
+  - waiting f
+fill nFirst: Page.fill: Timeout 30000ms exceeded.
+Call log:
+  -
+Nuées après: 4
+clé nouvelle Nuée: lisbonne = Weekend à Lisbonne
+bouton +Planter dans Nuée présent: True
+contexte plant depuis Nuée: {'show': True, 'kind': 'promi', 'nuee': 'lisbonne'}

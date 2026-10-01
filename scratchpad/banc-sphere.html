@@ -1,0 +1,100 @@
+<!doctype html><meta charset="utf-8"><title>banc</title>
+<body style="background:#16171B;margin:0">
+<canvas id="cv" width="660" height="660" style="width:330px;height:330px"></canvas>
+<pre id="out" style="color:#F4EEE1;font:12px monospace"></pre>
+<script>
+var CV=document.getElementById('cv'), G=CV.getContext('2d');
+var CX=165, CY=165, R=150, FOC=560;
+/* ── la fabrique : N traits courts, tangents à des grands cercles ── */
+function fabrique(N){
+  var A=new Float32Array(N*6);          /* x1,y1,z1, x2,y2,z2 en 3D unité */
+  for(var i=0;i<N;i++){
+    /* Fibonacci : répartition régulière sur la sphère */
+    var y=1-2*(i+0.5)/N, rr=Math.sqrt(Math.max(0,1-y*y));
+    var ph=i*2.399963229728653;
+    var x=Math.cos(ph)*rr, z=Math.sin(ph)*rr;
+    /* la tangente : direction du grand cercle autour de l'axe Y */
+    var tx=-z, ty=0, tz=x, tn=Math.hypot(tx,tz)||1;
+    var L=0.055;
+    A[i*6  ]=x-tx/tn*L; A[i*6+1]=y-ty*L;      A[i*6+2]=z-tz/tn*L;
+    A[i*6+3]=x+tx/tn*L; A[i*6+4]=y+ty*L;      A[i*6+5]=z+tz/tn*L;
+  }
+  return A;
+}
+var TILT=0.42, CT=Math.cos(TILT), ST=Math.sin(TILT);
+/* T1 : un beginPath + un stroke PAR SEGMENT */
+function T1(A,ang){
+  var c=Math.cos(ang), s=Math.sin(ang), N=A.length/6;
+  G.clearRect(0,0,660,660); G.setTransform(2,0,0,2,0,0);
+  G.lineCap='butt'; G.strokeStyle='#F4EEE1';
+  for(var i=0;i<N;i++){
+    var o=i*6, X1,Y1,Z1,X2,Y2,Z2,t;
+    X1=A[o]*c+A[o+2]*s; Z1=-A[o]*s+A[o+2]*c; t=A[o+1]*CT-Z1*ST; Z1=A[o+1]*ST+Z1*CT; Y1=t;
+    X2=A[o+3]*c+A[o+5]*s; Z2=-A[o+3]*s+A[o+5]*c; t=A[o+4]*CT-Z2*ST; Z2=A[o+4]*ST+Z2*CT; Y2=t;
+    var k1=FOC/(FOC-Z1*R), k2=FOC/(FOC-Z2*R);
+    G.globalAlpha=0.15+0.55*(Z1+1)/2;
+    G.lineWidth=0.6+1.1*(Z1+1)/2;
+    G.beginPath();
+    G.moveTo(CX+X1*R*k1,CY+Y1*R*k1); G.lineTo(CX+X2*R*k2,CY+Y2*R*k2);
+    G.stroke();
+  }
+  G.globalAlpha=1; G.setTransform(1,0,0,1,0,0);
+}
+/* T2 : SEAUX de profondeur — un seul chemin et un seul stroke par seau */
+var NS=7, SEAU=null;
+function T2(A,ang){
+  var c=Math.cos(ang), s=Math.sin(ang), N=A.length/6;
+  if(!SEAU){ SEAU=[]; for(var b=0;b<NS;b++) SEAU.push(new Float32Array(N*4)); }
+  var cpt=new Int32Array(NS);
+  G.clearRect(0,0,660,660); G.setTransform(2,0,0,2,0,0);
+  G.lineCap='butt'; G.strokeStyle='#F4EEE1';
+  for(var i=0;i<N;i++){
+    var o=i*6, X1,Y1,Z1,X2,Y2,Z2,t;
+    X1=A[o]*c+A[o+2]*s; Z1=-A[o]*s+A[o+2]*c; t=A[o+1]*CT-Z1*ST; Z1=A[o+1]*ST+Z1*CT; Y1=t;
+    X2=A[o+3]*c+A[o+5]*s; Z2=-A[o+3]*s+A[o+5]*c; t=A[o+4]*CT-Z2*ST; Z2=A[o+4]*ST+Z2*CT; Y2=t;
+    var k1=FOC/(FOC-Z1*R), k2=FOC/(FOC-Z2*R);
+    var b=(Z1+1)*0.5*NS|0; if(b>=NS)b=NS-1; if(b<0)b=0;
+    var p=cpt[b]*4, S=SEAU[b];
+    S[p]=CX+X1*R*k1; S[p+1]=CY+Y1*R*k1; S[p+2]=CX+X2*R*k2; S[p+3]=CY+Y2*R*k2;
+    cpt[b]++;
+  }
+  for(var b2=0;b2<NS;b2++){
+    var n=cpt[b2]; if(!n) continue;
+    G.globalAlpha=0.13+0.60*(b2+0.5)/NS;
+    G.lineWidth=0.55+1.15*(b2+0.5)/NS;
+    G.beginPath();
+    var S2=SEAU[b2];
+    for(var j=0;j<n;j++){ var q=j*4; G.moveTo(S2[q],S2[q+1]); G.lineTo(S2[q+2],S2[q+3]); }
+    G.stroke();
+  }
+  G.globalAlpha=1; G.setTransform(1,0,0,1,0,0);
+}
+/* T3 : des POINTS en fillRect, seaux de profondeur */
+function T3(A,ang){
+  var c=Math.cos(ang), s=Math.sin(ang), N=A.length/6;
+  G.clearRect(0,0,660,660); G.setTransform(2,0,0,2,0,0);
+  G.fillStyle='#F4EEE1';
+  var last=-1;
+  for(var i=0;i<N;i++){
+    var o=i*6, X1,Z1,t,Y1;
+    X1=A[o]*c+A[o+2]*s; Z1=-A[o]*s+A[o+2]*c; t=A[o+1]*CT-Z1*ST; Z1=A[o+1]*ST+Z1*CT; Y1=t;
+    var k1=FOC/(FOC-Z1*R);
+    var b=(Z1+1)*0.5*NS|0; if(b>=NS)b=NS-1;
+    if(b!==last){ G.globalAlpha=0.13+0.60*(b+0.5)/NS; last=b; }
+    G.fillRect(CX+X1*R*k1, CY+Y1*R*k1, 1.4, 1.4);
+  }
+  G.globalAlpha=1; G.setTransform(1,0,0,1,0,0);
+}
+window.banc=function(tech,N,frames){
+  var A=fabrique(N); SEAU=null;
+  var f={T1:T1,T2:T2,T3:T3}[tech];
+  f(A,0); f(A,0.1);                      /* chauffe */
+  var t=[];
+  for(var i=0;i<frames;i++){ var a=performance.now(); f(A,i*0.01); t.push(performance.now()-a); }
+  t.sort(function(x,y){return x-y;});
+  var moy=t.reduce(function(x,y){return x+y;},0)/t.length;
+  return {tech:tech,N:N,moy:+moy.toFixed(3),median:+t[t.length>>1].toFixed(3),
+          p95:+t[Math.floor(t.length*.95)].toFixed(3),pire:+t[t.length-1].toFixed(3)};
+};
+window.__pret=true;
+</script>

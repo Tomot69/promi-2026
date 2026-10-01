@@ -1,0 +1,40 @@
+
+── ÉCARTS DE POSITION (> 3 px) : 8
+     promi                  [dark] encart : -916 px sous le bloc au lieu de 147
+     promi                  [dark] encart : 0 × 0 au lieu de 342 × 90
+     chiche                 [dark] encart : -902 px sous le bloc au lieu de 147
+     chiche                 [dark] encart : 0 × 0 au lieu de 342 × 90
+     promi                  [light] encart : -916 px sous le bloc au lieu de 147
+     promi                  [light] encart : 0 × 0 au lieu de 342 × 90
+     chiche                 [light] encart : -902 px sous le bloc au lieu de 147
+     chiche                 [light] encart : 0 × 0 au lieu de 342 × 90
+
+── ÉCARTS DE STYLE : 20
+     promi                  [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [dark] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     promi                  [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+     chiche                 [light] Cercle : flou « blur(4.8px) » au lieu de blur(2.4px)
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+❌  position 8 · style 20 · collisions 0 · hors cadre 0 · peinture 0

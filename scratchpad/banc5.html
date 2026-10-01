@@ -1,0 +1,83 @@
+<!doctype html><meta charset="utf-8"><title>banc5</title>
+<body style="background:#16171B;margin:0"><div id="h"></div>
+<script>
+var BOX=344,D=2,W=BOX*D,CVS=[],GS=[],IMG=[],BUF=[],PT=null,SPR=null,SPRC=null;
+function toiles(n){document.getElementById('h').innerHTML='';CVS=[];GS=[];IMG=[];BUF=[];
+  for(var i=0;i<n;i++){var c=document.createElement('canvas');c.width=W;c.height=W;
+    c.style.cssText='position:absolute;left:20px;top:20px;width:'+BOX+'px;height:'+BOX+'px';
+    document.getElementById('h').appendChild(c);CVS.push(c);
+    var g=c.getContext('2d');GS.push(g);
+    var im=g.createImageData(W,W);IMG.push(im);BUF.push(new Uint32Array(im.data.buffer));}}
+function fab(N){PT=new Float32Array(N*2);
+  for(var i=0;i<N;i++){var a=i*2.399963,r=160*Math.sqrt(((i*7919)%9973)/9973);
+    PT[i*2]=(W/2+Math.cos(a)*r)|0;PT[i*2+1]=(W/2+Math.sin(a)*r)|0;}}
+/* ── l'atlas : des grains RONDS, de tailles inégales, certains étirés ── */
+function atlas(){
+  if(SPR) return;
+  SPR=[]; SPRC=[];
+  var cv=document.createElement('canvas'); cv.width=24; cv.height=24;
+  var g=cv.getContext('2d');
+  for(var v=0;v<24;v++){
+    var lg=1+(v%4)*2.2, ep=1.6+((v/4)|0)%3*0.7, an=(v*0.7854);
+    g.clearRect(0,0,24,24);
+    g.strokeStyle='#fff'; g.fillStyle='#fff'; g.lineCap='round'; g.lineWidth=ep;
+    g.beginPath();
+    if(lg<1.6){ g.arc(12,12,ep/2,0,6.2832); g.fill(); }
+    else { g.moveTo(12-Math.cos(an)*lg/2,12-Math.sin(an)*lg/2);
+           g.lineTo(12+Math.cos(an)*lg/2,12+Math.sin(an)*lg/2); g.stroke(); }
+    var d=g.getImageData(0,0,24,24).data;
+    /* on recadre au plus juste */
+    var x1=24,y1=24,x2=0,y2=0;
+    for(var y=0;y<24;y++)for(var x=0;x<24;x++){ if(d[(y*24+x)*4+3]>4){
+      if(x<x1)x1=x; if(x>x2)x2=x; if(y<y1)y1=y; if(y>y2)y2=y; } }
+    var w=x2-x1+1,h=y2-y1+1, a=new Uint8Array(w*h);
+    for(var y2b=0;y2b<h;y2b++)for(var x2b=0;x2b<w;x2b++)
+      a[y2b*w+x2b]=d[((y1+y2b)*24+(x1+x2b))*4+3];
+    SPR.push({w:w,h:h,a:a});
+    /* la version pré-colorée (ARGB) pour le tampon */
+    var u=new Uint32Array(w*h);
+    for(var i2=0;i2<w*h;i2++) u[i2]=((a[i2]&255)<<24)|(0xE1<<16)|(0xEE<<8)|0xF4;
+    SPRC.push({w:w,h:h,u:u});
+  }
+  /* et les mêmes en petits canevas, pour drawImage */
+  window.SPRCV=SPR.map(function(s){
+    var c=document.createElement('canvas'); c.width=s.w; c.height=s.h;
+    var gg=c.getContext('2d'), im=gg.createImageData(s.w,s.h), b=new Uint32Array(im.data.buffer);
+    for(var i=0;i<s.w*s.h;i++) b[i]=((s.a[i]&255)<<24)|(0xE1<<16)|(0xEE<<8)|0xF4;
+    gg.putImageData(im,0,0); return c;});
+}
+function carre(N){var par=Math.ceil(N/GS.length);
+  for(var k=0;k<GS.length;k++){var B=BUF[k];B.fill(0);
+    for(var b=0;b<7;b++){var al=Math.round((0.08+0.8*(b+.5)/7)*255);
+      var col=((al&255)<<24)|(0xE1<<16)|(0xEE<<8)|0xF4, tp=2+((b*3/7)|0);
+      var i0=k*par+Math.floor(b*par/7),i1=k*par+Math.floor((b+1)*par/7);
+      for(var i=i0;i<i1&&i<N;i++){var o=i*2,x=PT[o],y=PT[o+1];
+        for(var dy=0;dy<tp;dy++){var row=(y+dy)*W;
+          for(var dx=0;dx<tp;dx++) B[row+x+dx]=col;}}}
+    GS[k].putImageData(IMG[k],0,0);}}
+function tampon(N){atlas();var par=Math.ceil(N/GS.length);
+  for(var k=0;k<GS.length;k++){var B=BUF[k];B.fill(0);
+    for(var i=k*par;i<(k+1)*par&&i<N;i++){
+      var o=i*2,x=PT[o],y=PT[o+1],s=SPRC[i%24],u=s.u,sw=s.w,sh=s.h;
+      if(x<2||y<2||x>W-14||y>W-14) continue;
+      for(var dy=0;dy<sh;dy++){var row=(y+dy)*W+x, sr=dy*sw;
+        for(var dx=0;dx<sw;dx++){var v=u[sr+dx]; if(v>>>24 > B[row+dx]>>>24) B[row+dx]=v;}}}
+    GS[k].putImageData(IMG[k],0,0);}}
+function dessin(N){atlas();var par=Math.ceil(N/GS.length);
+  for(var k=0;k<GS.length;k++){var g=GS[k];g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,W,W);
+    for(var b=0;b<7;b++){g.globalAlpha=0.08+0.8*(b+.5)/7;
+      var i0=k*par+Math.floor(b*par/7),i1=k*par+Math.floor((b+1)*par/7);
+      for(var i=i0;i<i1&&i<N;i++){var o=i*2;g.drawImage(window.SPRCV[i%24],PT[o],PT[o+1]);}}
+    g.globalAlpha=1;}}
+window.essai=function(mode,N,nt,ms){return new Promise(function(res){
+  toiles(nt);fab(N);var f={carre:carre,tampon:tampon,dessin:dessin}[mode];
+  var dt=[],prev=null,t0=null;
+  function tick(t){if(t0===null){t0=t;prev=t;}else{dt.push(t-prev);prev=t;}
+    f(N);
+    if(t-t0<ms)requestAnimationFrame(tick);
+    else{dt.sort(function(a,b){return a-b;});
+      res({mode:mode,N:N,moy:+(dt.reduce(function(a,b){return a+b;},0)/dt.length).toFixed(2),
+           med:+dt[dt.length>>1].toFixed(2),sup20:dt.filter(function(x){return x>20;}).length,im:dt.length});}}
+  requestAnimationFrame(tick);});};
+window.__pret=true;
+</script>

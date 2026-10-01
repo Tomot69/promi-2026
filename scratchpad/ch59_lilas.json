@@ -1,0 +1,26 @@
+{
+ "avant (hasard + réserve)": {
+  "lilas": 75,
+  "dalles": 150,
+  "part": 50.0,
+  "zones_reservees": [
+   3
+  ]
+ },
+ "avant + réserve corrigée seule": {
+  "lilas": 41,
+  "dalles": 150,
+  "part": 27.3,
+  "zones_reservees": [
+   3
+  ]
+ },
+ "actuelle (figée + réserve)": {
+  "lilas": 40,
+  "dalles": 150,
+  "part": 26.7,
+  "zones_reservees": [
+   3
+  ]
+ }
+}

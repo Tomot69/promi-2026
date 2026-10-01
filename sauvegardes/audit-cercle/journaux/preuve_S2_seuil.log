@@ -1,0 +1,51 @@
+════ a_avant_mur
+
+── ÉCARTS DE POSITION (> 3 px) : 4
+
+── ÉCARTS DE STYLE : 13
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+❌  position 4 · style 13 · collisions 0 · hors cadre 0 · peinture 0
+   SEUIL DU RAYON : l’app déclare None, la décision est 94.5 (Q203)
+     promi                  [dark] NOTE : rayon 59 au lieu de 30 (hauteur 118 au-delà de 94,5 : 30)
+     promi                  [dark] COMMENTAIRES : rayon 59 au lieu de 30 (hauteur 118 au-delà de 94,5 : 30)
+     chiche                 [dark] NOTE : rayon 59 au lieu de 30 (hauteur 118 au-delà de 94,5 : 30)
+     chiche                 [dark] COMMENTAIRES : rayon 52 au lieu de 30 (hauteur 104 au-delà de 94,5 : 30)
+     nuee                   [dark] DESCRIPTION : rayon 52 au lieu de 30 (hauteur 104 au-delà de 94,5 : 30)
+     nuee                   [dark] COMMENTAIRES : rayon 52 au lieu de 30 (hauteur 104 au-delà de 94,5 : 30)
+     promi                  [light] NOTE : rayon 59 au lieu de 30 (hauteur 118 au-delà de 94,5 : 30)
+     promi                  [light] COMMENTAIRES : rayon 59 au lieu de 30 (hauteur 118 au-delà de 94,5 : 30)
+     chiche                 [light] NOTE : rayon 59 au lieu de 30 (hauteur 118 au-delà de 94,5 : 30)
+     chiche                 [light] COMMENTAIRES : rayon 52 au lieu de 30 (hauteur 104 au-delà de 94,5 : 30)
+     nuee                   [light] DESCRIPTION : rayon 52 au lieu de 30 (hauteur 104 au-delà de 94,5 : 30)
+════ b_seuil_60
+
+── ÉCARTS DE POSITION (> 3 px) : 0
+
+── ÉCARTS DE STYLE : 37
+
+── COLLISIONS : 0
+
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 0
+
+❌  position 0 · style 37 · collisions 0 · hors cadre 0 · peinture 0
+   SEUIL DU RAYON : l’app déclare 60, la décision est 94.5 (Q203)
+     promi                  [dark] LE TRAIT : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     promi                  [dark] À QUI : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     promi                  [dark] AVANT : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     promi                  [dark] DANS UNE NUÉE : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     promi                  [dark] PIÈCES JOINTES : rayon 30 au lieu de 46 (hauteur 92 ÷ 2)
+     promi                  [dark] RELANCER RACHEL : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     promi                  [dark] SUPPRIMER CE PROMI : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     chiche                 [dark] LE TRAIT : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     chiche                 [dark] À QUI JE LANCE : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     chiche                 [dark] AVEC : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+     chiche                 [dark] AVANT : rayon 30 au lieu de 32 (hauteur 64 ÷ 2)
+fin

@@ -1,0 +1,8 @@
+2737 Le vocabulaire de Promi — Promi, Toile, Nuée, Fil, Aura — ne se traduit pas :<br>c'est le même partout.
+2755 Tes Promi perso restent sur ton téléphone. Ce que tu déposes dans une Nuée est partagé avec ses membres — rien d'autre ne sort.
+27179 window._petiteToile(g,{x:6,y:6,w:_xm-12,h:H-12},{x:0,y:0,w:(_nlF?10+(function(el){ var W={'Promi':73,'Chiche':81,'Nuée':57};                                                                                             return el ? (W[(el.textContent||'').trim()]
+38362 <script id="lot-CERCLE-MUR">
+38723 <script id="lot-CERCLE-TOILE">
+39963 <script id="lot-CERCLE-COULEUR">
+40082 <script id="lot-NUEE-CERCLE">
+43607 <script id="lot-V74-CERCLE-PAYE">

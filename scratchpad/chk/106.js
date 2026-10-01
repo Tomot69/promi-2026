@@ -1,0 +1,409 @@
+
+(function(){
+  var CREME='#F7F0DE';
+  function $i(id){ return document.getElementById(id); }
+  function dev(){ return $i('device'); }
+  function clair(){ var d=dev(); return !!(d && d.classList.contains('light')); }
+
+  /* ══ DÉCISION 3 · CHAQUE ARC D'ÉTAT, CERNÉ DE CRÈME SUR LE SOMBRE ══════════════════════
+     L'arc garde SA valeur exacte (#DD4D23 · #291547 · #00341A). Sur un fond sombre, il se
+     resserre de 1,4 px sur chaque bord et à chaque bout, et une copie crème à sa largeur
+     d'origine passe dessous : le filet est dans l'empreinte de l'arc, collé à son bord, et
+     le « jour » de 3 px entre deux arcs ne bouge pas. La condition est ce qui est peint SOUS
+     l'arc (§3), jamais une classe ; et on repasse au changement de thème. */
+  var ETAT={'#00341A':1,'#291547':1,'#DD4D23':1};
+  function hx(v){ v=String(v||'').trim(); if(!v) return ''; if(v.charAt(0)==='#') return v.toUpperCase();
+    var m=v.match(/\d+(\.\d+)?/g); if(!m||m.length<3) return '';
+    return '#'+m.slice(0,3).map(function(x){ return (Math.round(+x)).toString(16).padStart(2,'0'); }).join('').toUpperCase(); }
+  /* le premier fond OPAQUE sous l'élément (un voile translucide de carte n'est pas un fond) */
+  function sombre(el){ try{ var n=el;
+    while(n && n.nodeType===1){ var m=/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?/.exec(getComputedStyle(n).backgroundColor||'');
+      if(m && (m[4]===undefined || +m[4]>0.85)) return (0.2126*m[1]+0.7152*m[2]+0.0722*m[3])<90;
+      n=n.parentElement; }
+    return !clair(); }catch(_){ return false; } }
+  /* ⚑ v18 (Tom) — LE FILET NE SUIT QUE LE BORD EXTÉRIEUR DE CHAQUE SEGMENT, ET S'INTERROMPT DANS LES ÉCARTS.
+     Le v16 cernait tout (bords intérieur et extérieur, les deux bouts) : faux. L'arc garde sa largeur et sa
+     valeur ; un filet crème de 1 px est posé PAR-DESSUS, sur son bord extérieur, sur la même étendue d'angle. */
+  var FW=1;
+  function filetDe(p){ var n=p.nextElementSibling; return (n&&n.getAttribute('data-v16-filet')==='1')?n:null; }
+  function cerne(p, on){
+    var fil=filetDe(p);
+    if(!on){ if(fil) fil.remove(); return; }
+    var sw=parseFloat(p.getAttribute('stroke-width'))||0; if(sw<=2) { if(fil) fil.remove(); return; }
+    var svg=p.ownerSVGElement; if(!svg) return;
+    var tag=p.tagName.toLowerCase(), f=fil||document.createElementNS('http://www.w3.org/2000/svg', tag);
+    if(tag==='circle'){
+      var r=parseFloat(p.getAttribute('r')), r2=r+sw/2-FW/2, k=r2/r;
+      f.setAttribute('cx',p.getAttribute('cx')); f.setAttribute('cy',p.getAttribute('cy')); f.setAttribute('r',r2.toFixed(3));
+      var da=p.getAttribute('stroke-dasharray');
+      if(da){ var q=da.split(/[\s,]+/).map(parseFloat); var C2=2*Math.PI*r2, l2=q[0]*k;
+        f.setAttribute('stroke-dasharray',l2.toFixed(3)+' '+Math.max(0,C2-l2).toFixed(3));
+        var o=parseFloat(p.getAttribute('stroke-dashoffset'))||0; f.setAttribute('stroke-dashoffset',(o*k).toFixed(3)); }
+      var tr=p.getAttribute('transform'); if(tr) f.setAttribute('transform',tr);
+    } else {
+      var m=/M\s*([\d.-]+)[\s,]+([\d.-]+)\s*A\s*([\d.]+)[\s,]+([\d.]+)[\s,]+[\d.]+[\s,]+(\d)[\s,]+(\d)[\s,]+([\d.-]+)[\s,]+([\d.-]+)/.exec(p.getAttribute('d')||'');
+      if(!m) return;
+      var vb=(svg.getAttribute('viewBox')||'').split(/\s+/).map(Number), c=(vb.length===4?vb[2]:svg.getBoundingClientRect().width)/2;
+      var rr=parseFloat(m[3]), R2=rr+sw/2-FW/2;
+      var a0=Math.atan2(+m[2]-c,+m[1]-c), a1=Math.atan2(+m[8]-c,+m[7]-c);
+      var P=function(a){ return (c+R2*Math.cos(a)).toFixed(3)+' '+(c+R2*Math.sin(a)).toFixed(3); };
+      f.setAttribute('d','M'+P(a0)+' A'+R2.toFixed(3)+' '+R2.toFixed(3)+' 0 '+m[5]+' '+m[6]+' '+P(a1));
+    }
+    f.setAttribute('fill','none'); f.setAttribute('stroke', CREME); f.setAttribute('stroke-width', FW); f.setAttribute('stroke-linecap','butt');
+    f.setAttribute('data-v16-filet','1');
+    if(!fil) p.parentNode.insertBefore(f, p.nextSibling);
+  }
+  /* une forme PLEINE d'état (les icônes de l'aide) : un contour crème de 1 px */
+  function cerneForme(e, on){
+    if(on){ if(e.getAttribute('data-v16-f')==='1') return; e.setAttribute('data-v16-f','1');
+      e.setAttribute('data-v16-fs', e.getAttribute('stroke')||''); e.setAttribute('data-v16-fw', e.getAttribute('stroke-width')||'');
+      e.setAttribute('stroke', CREME); e.setAttribute('stroke-width','1'); }
+    else { if(e.getAttribute('data-v16-f')!=='1') return; e.setAttribute('data-v16-f','0');
+      var s=e.getAttribute('data-v16-fs'), w=e.getAttribute('data-v16-fw');
+      if(s) e.setAttribute('stroke',s); else e.removeAttribute('stroke');
+      if(w) e.setAttribute('stroke-width',w); else e.removeAttribute('stroke-width'); }
+  }
+  function passeArcs(){
+    try{
+      document.querySelectorAll('#device svg path.au-arc, #device svg circle.ps-arc, .frame svg circle.ps-arc, #auraHelp .ah-ill svg [stroke]').forEach(function(p){
+        if(p.getAttribute('data-v16-filet')==='1') return;
+        var c=hx(p.getAttribute('stroke')); if(!ETAT[c]) return;
+        cerne(p, sombre(p.ownerSVGElement||p));
+      });
+      document.querySelectorAll('#auraHelp .ah-ill svg [fill]').forEach(function(e){
+        var c=hx(e.getAttribute('fill')); if(!ETAT[c]) return;
+        cerneForme(e, sombre(e.ownerSVGElement||e));
+      });
+    }catch(_){}
+  }
+  window._v16Arcs=passeArcs;
+
+  /* ══ L'ANNEAU DU + DE L'ACCUEIL — même grammaire que tous les disques (v18) ══
+     C'était un dégradé conique FONDU aux jonctions, cerné d'un contour continu : deux grammaires pour un même
+     objet. On le peint en segments nets, un jour de 3 px entre eux, le filet sur le seul bord extérieur. Il est
+     posé sur la barre sombre dans les deux thèmes : le filet y est toujours. */
+  function plusAnneau(){ try{
+    var el=$i('createBtn'); if(!el) return; var D=el.offsetWidth; if(!D) return;
+    var ins=parseFloat(getComputedStyle(el,'::after').top)||11;
+    var t=0,e=0,r=0; promises.forEach(function(p){ if(p.draft||p.req) return; if(p.status==='tenu') t++; else if(p.status==='rate') r++; else e++; });
+    var tot=t+e+r, parts=[[t,'#00341A'],[e,'#291547'],[r,'#DD4D23']].filter(function(x){ return x[0]>0; });
+    var c=D/2, w=ins, rm=c-w/2, Ro=c-FW/2, out='';
+    var GJ=parts.length>1?3/rm:0.002, a=-Math.PI/2+GJ/2;
+    function arc(R,a0,a1){ var P=function(q){ return (c+R*Math.cos(q)).toFixed(2)+' '+(c+R*Math.sin(q)).toFixed(2); };
+      return 'M'+P(a0)+' A'+R.toFixed(2)+' '+R.toFixed(2)+' 0 '+((a1-a0)>Math.PI?1:0)+' 1 '+P(a1); }
+    parts.forEach(function(x){ var L=x[0]/tot*2*Math.PI, a1=a+L-GJ;
+      out+='<path d="'+arc(rm,a,a1)+'" fill="none" stroke="'+x[1]+'" stroke-width="'+w+'"/>'
+          +'<path d="'+arc(Ro,a,a1)+'" fill="none" stroke="'+CREME+'" stroke-width="'+FW+'"/>';
+      a+=L; });
+    var svg='<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 '+D+' '+D+'">'+out+'</svg>';
+    var v='url("data:image/svg+xml;utf8,'+encodeURIComponent(svg)+'")';
+    if(el.style.getPropertyValue('--kr-svg')!==v) el.style.setProperty('--kr-svg', v);
+  }catch(_){} }
+  window._v16PlusAnneau=plusAnneau;
+
+  /* ══ Q297 · INGÉNU — LE RECALAGE DE Q30 ÉTENDU AUX CARTES ET AUX ÎLES DE LA PELOTE (Tom, v18) ══
+     Sous Ingénu, une dalle a la couleur de sa nature, posée sur un champ de sa nature : ΔE 11. On garde la
+     méthode de Q30 — LA FORME NE BOUGE PAS, seule la CLARTÉ est remappée sur une rampe — mais la rampe est
+     celle de SA nature, tirée des jetons : son trait sombre (§2.1 bis) → sa couleur → sa clarté.
+     ⚠ Pas la rampe DALPAL de Q30 : elle date d'avant la palette du 17 sept., et pour un Promi elle va du
+     violet au lilas — la couleur de la Nuée. Sous Ingénu ce serait un mensonge. */
+  /* ⚑ v19 (Tom) : « une île de Chiche ne doit jamais s'approcher du terracotta « à tenir » — ΔE 25 minimum de
+     #DD4D23, à toutes les tailles ». L'ancienne rampe (#3D0F23 → rose) passait par un rose poudré à ΔE 26,4.
+     Elle passe maintenant par un rose FROID (#A8457E) depuis un bas prune (#3A0F33) : sur la rampe ET sur tout
+     mélange de deux de ses points (ce que fait une dalle réduite, un bord lissé), le minimum est ΔE 2000 = 28,9.
+     La teinte reste rose (345°). Une rampe peut donc avoir plus de trois points. */
+  var RAMPE={promi:[[2,33,64],[130,174,248],[221,233,253]], chiche:[[58,15,51],[168,69,126],[255,184,210],[255,230,239]],
+             nuee:[[41,21,71],[201,168,245],[240,230,253]]};
+  /* la hauteur de la rampe pour une ÎLE de la Pelote, par thème — mesurée par releve-aura (Q297) */
+  /* ⚑ v35 — la hauteur sombre dépend du semis : 0,85 sur le semis constant (mesurée par Q297), 1,4 sur le semis qui grandit
+     (mondes neufs : cellules deux fois plus grandes, l'île sortait plus sombre, ΔE 7–14 du sol — releve-aura, v34) */
+  window._v18Haut={get sombre(){ try{ return (window.Toile&&Toile.semisNeuf&&Toile.semisNeuf())?1.4:0.85; }catch(_){ return 0.85; } }, clair:1.8};
+  /* ⚑ v29 — LA MÊME RAMPE, DONNÉE AU MOTEUR : `dalleTrame(…, {rampe})` la peint, avec la formule ci-dessous.
+     Rend null hors d'Ingénu (la dalle garde alors sa couleur), comme `_ingenuTeinte` rendait false. */
+  window._ingenuRampe=function(id, haut, plantation){
+    var p=null; try{ p=promises.filter(function(x){ return x.id===id; })[0]; }catch(_){}
+    if(!p) return null;
+    /* ⚑ v34 (Tom) — « tout suit le Studio, sauf l'Aura » : la palette qui décide d'Ingénu est celle du STUDIO ; seule la
+       Pelote demande celle de la plantation (`plantation`). Lire la palette de plantation donnait, sous une autre palette
+       du Studio, une dalle recalée sur une rampe de nature qui n'avait plus lieu d'être — la « mauvaise couleur ». */
+    var m=plantation?(p.monde||{}):((window.Toile&&Toile.mondeCourant&&Toile.mondeCourant())||{}); if((m.p||'signal')!=='signal') return null;
+    var nat=p.chiche?'chiche':(p.nuee&&p.kind==='nuee'?'nuee':'promi');
+    return {cols:RAMPE[nat], haut:(haut||0.9)};
+  };
+  window._ingenuTeinte=function(src, id, haut){
+    var p=null; try{ p=promises.filter(function(x){ return x.id===id; })[0]; }catch(_){}
+    if(!p) return false;
+    var m=p.monde||{}; if((m.p||'signal')!=='signal') return false;
+    var nat=p.chiche?'chiche':(p.nuee&&p.kind==='nuee'?'nuee':'promi'), pal=RAMPE[nat];
+    var g=src.getContext('2d'); if(!g) return false;
+    var im=g.getImageData(0,0,src.width,src.height), d=im.data, mn=255, mx=0, i, L;
+    for(i=0;i<d.length;i+=4){ if(d[i+3]<24) continue; L=0.2126*d[i]+0.7152*d[i+1]+0.0722*d[i+2]; if(L<mn) mn=L; if(L>mx) mx=L; }
+    var et=(mx-mn)||1;
+    for(i=0;i<d.length;i+=4){ if(d[i+3]<24) continue;
+      L=(0.2126*d[i]+0.7152*d[i+1]+0.0722*d[i+2]-mn)/et;
+      /* la dalle occupe le bas de la rampe (du trait à un peu au-dessus de la couleur) : elle se détache d'un champ clair */
+      var t=Math.min(2,L*(haut||0.9))/2*(pal.length-1), k=Math.min(pal.length-2,Math.floor(t)), f=Math.min(1,t-k), a=pal[k], z=pal[k+1];
+      d[i]=a[0]+(z[0]-a[0])*f; d[i+1]=a[1]+(z[1]-a[1])*f; d[i+2]=a[2]+(z[2]-a[2])*f; }
+    g.putImageData(im,0,0); return true;
+  };
+
+  /* ══ LA PROFONDEUR D'ENCRE DE LA DERNIÈRE LIGNE D'UN TITRE, SOUS SA LIGNE DE BASE (px écran) ══
+     Lue par la fiche pour poser sa ligne d'état (v18). On isole la dernière ligne RENDUE (les caractères
+     dont la boîte est la plus basse), puis on mesure SON encre au canevas, dans la police calculée. */
+  var _cvJ=null;
+  window._jambageDernier=function(el){
+    var tw=document.createTreeWalker(el,NodeFilter.SHOW_TEXT), n, rg=document.createRange(), bas=-1e9, lignes=[];
+    while((n=tw.nextNode())){ for(var i=0;i<n.nodeValue.length;i++){ rg.setStart(n,i); rg.setEnd(n,i+1);
+      var r=rg.getClientRects()[0]; if(!r) continue; lignes.push([r.top,n.nodeValue.charAt(i)]); if(r.top>bas) bas=r.top; } }
+    var t=lignes.filter(function(x){ return Math.abs(x[0]-bas)<2; }).map(function(x){ return x[1]; }).join('').trim();
+    if(!t) return 0;
+    var c=getComputedStyle(el); _cvJ=_cvJ||document.createElement('canvas'); var g=_cvJ.getContext('2d');
+    g.font=c.fontStyle+' '+c.fontWeight+' '+c.fontSize+' '+c.fontFamily;
+    var sc=el.getBoundingClientRect().width/Math.max(1,el.offsetWidth||1);
+    return Math.max(0, g.measureText(t).actualBoundingBoxDescent)*sc;
+  };
+  /* ce que les accents de la ligne ajoutent AU-DESSUS de la hauteur de capitale (px CSS) */
+  window._accentHaut=function(el, fs){
+    var t=(el.textContent||'').trim(); if(!t) return 0; var c=getComputedStyle(el);
+    if(c.textTransform==='uppercase') t=t.toUpperCase();
+    _cvJ=_cvJ||document.createElement('canvas'); var g=_cvJ.getContext('2d');
+    g.font=c.fontStyle+' '+c.fontWeight+' '+fs+'px '+c.fontFamily;
+    return Math.max(0, g.measureText(t).actualBoundingBoxAscent - g.measureText('HTE').actualBoundingBoxAscent);
+  };
+
+  /* ══ LA FICHE D'UNE PERSONNE : « à Marion », « au groupe » en violet sur le corps prune ══
+     La passe de lisibilité (lot-V13) ne parcourait que #device ; la fiche d'une personne vit
+     sous .frame. On lui passe la feuille. */
+  function lisPersonne(){ try{ var ps=$i('personSheet'); if(ps && window._lisibiliteCorps) window._lisibiliteCorps(ps); }catch(_){} passeArcs(); }
+
+  /* ══ LE NOM AFFICHÉ « Ton » — le champ se taillait sur une police qui n'était pas la sienne ══
+     `field-sizing:content` le mesurait avant Gilbert : 30 px pour 37 de texte, le « m » rogné. */
+  var _cvN=null;
+  function tailleNom(){ try{
+    var i=$i('setNameInput'); if(!i) return; var c=getComputedStyle(i);
+    _cvN=_cvN||document.createElement('canvas'); var g=_cvN.getContext('2d');
+    g.font=c.fontStyle+' '+c.fontWeight+' '+c.fontSize+' '+c.fontFamily;
+    var v=i.value||''; var w=g.measureText(v).width+(parseFloat(c.letterSpacing)||0)*v.length
+          +(parseFloat(c.paddingLeft)||0)+(parseFloat(c.paddingRight)||0)+3;
+    var px=Math.ceil(w)+'px'; if(i.style.getPropertyValue('width')!==px){ i.style.setProperty('width',px,'important'); i.style.setProperty('max-width','240px','important'); i.style.setProperty('min-width',px,'important'); }
+  }catch(_){} }
+
+  /* ══ LA CONFIRMATION ET L'« ANNULER » ══════════════════════════════════════════════════ */
+  function conf(o){
+    var d=dev(); if(!d) return;
+    var v=$i('v16Conf'); if(v) v.remove();
+    v=document.createElement('div'); v.id='v16Conf'; v.className='v16-conf';
+    v.innerHTML='<div class="v16-conf-p" role="alertdialog" aria-modal="true"><div class="v16-conf-t"></div><div class="v16-conf-x"></div>'
+      +'<div class="v16-conf-b"><button type="button" class="v16-non"></button><button type="button" class="v16-oui"></button></div></div>';
+    v.querySelector('.v16-conf-t').textContent=o.titre; v.querySelector('.v16-conf-x').textContent=o.texte||'';
+    if(!o.texte) v.querySelector('.v16-conf-x').style.display='none';
+    v.querySelector('.v16-non').textContent=o.non||'Garder'; v.querySelector('.v16-oui').textContent=o.oui||'Supprimer';
+    function ferme(){ v.classList.remove('ouv'); setTimeout(function(){ if(v.parentNode) v.remove(); },220); }
+    v.addEventListener('click',function(e){ e.stopPropagation(); if(e.target===v) ferme(); });
+    v.querySelector('.v16-non').addEventListener('click',function(e){ e.stopPropagation(); ferme(); });
+    v.querySelector('.v16-oui').addEventListener('click',function(e){ e.stopPropagation(); ferme(); try{ o.faire(); }catch(err){} });
+    d.appendChild(v); requestAnimationFrame(function(){ v.classList.add('ouv'); });
+  }
+  window._v16Conf=conf;
+  var _toT=null;
+  function annulable(msg, defaire, ms){
+    var d=dev(); if(!d) return;
+    var t=$i('v16Toast'); if(t) t.remove(); clearTimeout(_toT);
+    t=document.createElement('div'); t.id='v16Toast'; t.className='v16-toast'; t.setAttribute('role','status');
+    t.innerHTML='<span></span><button type="button">Annuler</button>'; t.querySelector('span').textContent=msg;
+    function ferme(){ t.classList.remove('ouv'); setTimeout(function(){ if(t.parentNode) t.remove(); },220); }
+    t.querySelector('button').addEventListener('click',function(e){ e.stopPropagation(); clearTimeout(_toT); ferme(); try{ defaire(); }catch(_){} });
+    d.appendChild(t); requestAnimationFrame(function(){ t.classList.add('ouv'); });
+    _toT=setTimeout(ferme, ms||5000);
+  }
+  window._v16Annulable=annulable;
+  /* une suppression qu'on ne sait pas défaire (tout effacer, le compte) : on ATTEND avant de la faire */
+  function differe(msg, faire){
+    var ok=true; annulable(msg, function(){ ok=false; }, 5000);
+    setTimeout(function(){ if(ok){ try{ faire(); }catch(_){} } }, 5200);
+  }
+  function instantane(){
+    var s={pr:promises.slice(), liens:promises.map(function(p){ return [p,p.nuee]; })};
+    try{ s.NUE=Object.assign({},NUE); }catch(_){}
+    try{ s.MEM=JSON.parse(JSON.stringify(NUEEMEM)); }catch(_){}
+    return s; }
+  function rafraichit(){
+    /* ⚑ v60 — SUPPRIMER UNE PAROLE LAISSAIT SA DALLE SUR LA TOILE (mesuré : la parole partie des données, `Toile.dalleAbs` la
+       trouvait toujours, aucun appel au moteur). La Toile se resynchronise : la dalle part avec l'animation de départ de son
+       monde — celle que Tom a validée. Et « Annuler » la fait revenir (restaure → rafraichit). */
+    try{ if(window.Toile&&Toile.sync) Toile.sync(promises.filter(function(q){ return !q.draft; }).map(function(q){ return q.id; })); }catch(_){}
+    try{ if(typeof relayout==='function') relayout(); }catch(_){}
+    try{ if(typeof render==='function') render(); }catch(_){}
+    try{ if(typeof caption==='function') caption(); }catch(_){}
+    try{ if(window.syncAll) window.syncAll(); }catch(_){}
+    try{ if(typeof queueSave==='function') queueSave(); }catch(_){}
+  }
+  function restaure(s){
+    promises=s.pr; s.liens.forEach(function(x){ x[0].nuee=x[1]; });
+    try{ if(s.NUE){ Object.keys(NUE).forEach(function(k){ delete NUE[k]; }); Object.assign(NUE,s.NUE); } }catch(_){}
+    try{ if(s.MEM){ Object.keys(NUEEMEM).forEach(function(k){ delete NUEEMEM[k]; }); Object.assign(NUEEMEM,s.MEM); } }catch(_){}
+    rafraichit();
+  }
+  window._v16SupprimerPromi=function(p){
+    try{ p=p||cur; }catch(_){}
+    if(!p) return;
+    var ch=!!p.chiche;
+    conf({titre: ch?'Supprimer ce Chiche ?':'Supprimer ce Promi ?',
+          texte:'« '+(p.title||'')+' » quitte ta Toile.', oui:'Supprimer', non:'Garder',
+          faire:function(){
+            var s=instantane(), id=p.id;
+            promises=promises.filter(function(q){ return q.id!==id; });
+            try{ closeAll(); }catch(_){}
+            rafraichit();
+            annulable(ch?'Chiche supprimé':'Promi supprimé', function(){ restaure(s); });
+          }});
+  };
+  window._v16SupprimerCompte=function(){
+    conf({titre:'Supprimer ton compte ?', texte:'Tous tes Promi seront effacés de cet appareil.', oui:'Supprimer', non:'Garder',
+          faire:function(){ differe('Compte supprimé', function(){ try{ localStorage.clear(); }catch(_){} location.reload(); }); }});
+  };
+
+  /* ══ LES PAGES : À PROPOS, ET LES DEUX TEXTES LÉGAUX « BIENTÔT DISPONIBLES » ═══════════ */
+  var OFL = "Copyright © 2020, 2024 Braille Institute of America, Inc., with Reserved Font Names Atkinson and Hyperlegible.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttps://openfontlicense.org\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n";
+  var APROPOS = "<h3>À propos</h3>\n<p>Une promesse est une drôle de chose.</p>\n<p>On se lance des « promis » toute la journée.</p>\n<div class=\"v16-cit\"><p>« Promis, on se raconte tout. »</p><p>« Promis, je te rends ça demain. »</p><p>« Promis, cette fois, on le fait. »</p><p>« Promis, on ne laisse pas tomber. »</p></div>\n<p>Sur le moment, on le pense vraiment. Puis la vie passe par là, les jours s’empilent, et certaines paroles s’effacent. D’autres nous suivent pendant des années. Certaines n’arrivent même pas jusqu’à vendredi.</p>\n<p><b>Promi est né pour ces paroles-là.</b></p>\n<p>Planter une promesse, c’est en faire un <b>Promi</b>. Elle prend place sur la Toile, sous la forme d’une dalle de couleur. Une parole en devenir, puis une trace lorsqu’elle est tenue.</p>\n<p>Un <b>Chiche</b>, c’est autre chose : tenter quelqu’un — ou soi-même — avec un peu plus d’élan. Une petite bravade.</p>\n<p>Et quand plusieurs personnes ont quelque chose à vivre ensemble, un <b>Cercle</b> permet de mettre leurs Promi et leurs Chiches au même endroit : un week-end à Marseille, une virée, un projet, une soirée qui mérite de ne pas rester au stade du « on devrait ».</p>\n<p><b>Promi ne compte pas les promesses. Il leur donne une place.</b></p>\n<p>La Toile garde les paroles en cours comme celles qui ont été tenues. Elle devient peu à peu le paysage de tout ce qu’on a décidé de ne pas laisser tomber.</p>\n<h3>Les lettres</h3>\n<p>Le texte est composé en <b>Atkinson Hyperlegible</b>, créée pour le <b>Braille Institute</b> afin de rendre les caractères plus faciles à distinguer, notamment pour les personnes malvoyantes.</p>\n<p>Les titres sont en <b>Gilbert</b>, créée dans le cadre de <b>Type With Pride</b> en hommage à <b>Gilbert Baker</b>, artiste et créateur du drapeau arc-en-ciel original.</p>\n<p>Deux polices pour deux idées simples : rendre les choses lisibles, et leur donner de la couleur.</p>";
+  window.PROMI_VERSION = window.PROMI_VERSION || '0.16';
+  function page(id, titre, html){
+    var s=$i(id);
+    if(!s){
+      var priv=$i('privScreen'); if(!priv) return null;
+      s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id=id;
+      s.innerHTML='<div class="closeb" data-close>✕ Fermer</div><h2 class="scr-t"></h2><div class="v16-corps"></div>';
+      priv.parentNode.insertBefore(s, priv.nextSibling);
+      s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show');
+        var st=$i('settingsScreen'); if(st) st.classList.add('show'); });
+    }
+    s.querySelector('h2.scr-t').textContent=titre;
+    s.querySelector('.v16-corps').innerHTML=html;
+    return s;
+  }
+  function ouvre(s){ if(!s) return; var st=$i('settingsScreen'); if(st) st.classList.remove('show');
+    s.querySelector('.v16-corps').scrollTop=0; s.classList.add('show'); }
+  window._v16Legal=function(q){
+    var nom = q==='pol' ? 'Politique de confidentialité' : 'Conditions d’utilisation';
+    ouvre(page('legalScreen','Légal','<h3>'+nom+'</h3><p class="v16-bientot">Bientôt disponible.</p>'));
+  };
+  window._v16APropos=function(){
+    var cr =
+      '<h3>Crédits</h3>'
+     +'<div class="v16-cr"><div class="v16-cr-n">Gilbert</div><p class="v16-petit">Type With Pride, en hommage à Gilbert Baker. '
+     +'Copyright 2017, 2019 Ogilvy &amp; Mather. Dessin : Robyn Makinson, Kazunori Shiina, Hayato Yamasaki. '
+     +'Distribuée sous licence Creative Commons Attribution – Partage dans les mêmes conditions 4.0 International (CC BY-SA 4.0) : '
+     +'<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">creativecommons.org/licenses/by-sa/4.0</a>. '
+     +'Glyphes non modifiés. Fournie telle quelle, sans garantie.</p></div>'
+     +'<div class="v16-cr"><div class="v16-cr-n">Atkinson Hyperlegible Next</div><p class="v16-petit">© 2020, 2024 Braille Institute of America, Inc. '
+     +'Noms de police réservés : Atkinson, Hyperlegible. Distribuée sous SIL Open Font License, version 1.1.</p>'
+     +'<details><summary>Lire la licence (SIL OFL 1.1)</summary><pre></pre></details></div>'
+     +'<p class="v16-version">Promi · '+window.PROMI_VERSION+'</p>';
+    var s=page('aboutScreen','Promi', APROPOS+cr);
+    if(s){ var pre=s.querySelector('details pre'); if(pre) pre.textContent=OFL; }
+    ouvre(s);
+  };
+
+  /* ══ LES RÉGLAGES : les portes neuves ══════════════════════════════════════════════════ */
+  function notifPose(on){ var t=$i('notifTog'), c=$i('notifCard'); if(t) t.classList.toggle('off',!on);
+    if(c) c.setAttribute('aria-checked', on?'true':'false'); }
+  function notifLu(){ try{ var v=localStorage.getItem('promi_notifs'); if(v!=null) return v==='1'; }catch(_){}
+    try{ return !!notifOn; }catch(_){ return false; } }
+  function arme(){
+    var c;
+    if((c=$i('notifCard')) && !c._v16){ c._v16=1; notifPose(notifLu());
+      c.onclick=function(){ var on=!notifLu(); try{ localStorage.setItem('promi_notifs',on?'1':'0'); }catch(_){}
+        notifPose(on);
+        try{ if(on){ if(typeof enableNotifs==='function') enableNotifs(); } else { notifOn=false; } }catch(_){}
+        try{ if(typeof queueSave==='function') queueSave(); }catch(_){} }; }
+    /* ⚑ v23 · le groupe Compte a deux visages : sans compte on peut en garder un, avec compte on en sort. */
+    var _fait = (typeof window._onbCompteFait==='function') ? window._onbCompteFait() : false;
+    if((c=$i('compteCard'))){ c.style.display = _fait ? 'none' : '';
+      if(!c._v16){ c._v16=1; c.addEventListener('click',function(e){ e.stopPropagation();
+        try{ if(window._onbCompte) window._onbCompte(); }catch(_){} }); } }
+    if((c=$i('logoutCard')) && !c._v16){ c._v16=1; c.addEventListener('click',function(e){ e.stopPropagation();
+      conf({titre:'Se déconnecter ?', texte:'Tes Promi restent sur cet appareil.', oui:'Se déconnecter', non:'Rester',
+        faire:function(){ try{ if(typeof window.promiDeconnexion==='function') window.promiDeconnexion(); }catch(_){}
+          try{ closeAll(); var st=$i('settingsScreen'); if(st) st.classList.remove('show'); }catch(_){}
+          try{ if(typeof toast==='function') toast('À bientôt'); }catch(_){} }}); }); }
+    if((c=$i('polCard')) && !c._v16){ c._v16=1; c.addEventListener('click',function(e){ e.stopPropagation(); window._v16Legal('pol'); }); }
+    if((c=$i('aboutCard')) && !c._v16){ c._v16=1; c.addEventListener('click',function(e){ e.stopPropagation(); window._v16APropos(); }); }
+    /* « Réinitialiser mes données » et « Tout effacer » : on laisse quelques secondes pour annuler */
+    if((c=$i('resetData')) && !c._v16){ c._v16=1; var o=c.onclick;
+      c.onclick=function(){ conf({titre:'Réinitialiser tes données ?', texte:'Tous tes Promi seront effacés de cet appareil.', oui:'Effacer', non:'Garder',
+        faire:function(){ differe('Données effacées', function(){ try{ _resetArm=true; }catch(_){} try{ o && o.call(c); }catch(_){} }); }}); }; }
+    if((c=$i('pvReset')) && !c._v16){ c._v16=1;
+      c.onclick=function(){ conf({titre:'Tout effacer ?', texte:'Tous tes Promi seront effacés de cet appareil.', oui:'Effacer', non:'Garder',
+        faire:function(){ differe('Tout est effacé', function(){ try{ localStorage.clear(); }catch(_){} location.reload(); }); }}); }; }
+    /* l'ancien bouton caché « Supprimer » de la fiche passe par le même chemin */
+    if((c=$i('actDel')) && !c._v16){ c._v16=1; c.onclick=function(){ try{ window._v16SupprimerPromi(cur); }catch(_){} }; }
+    /* la photo retirée revient si on annule */
+    if((c=$i('setDelPhoto')) && !c._v16){ c._v16=1; var od=c.onclick;
+      c.onclick=function(e){ var ph=USER.photo, sd=USER.seed; try{ od && od.call(c,e); }catch(_){}
+        annulable('Photo retirée', function(){ USER.photo=ph; USER.seed=sd; try{ renderProfile(); _refreshAvatars(); }catch(_){} }); }; }
+    var sv=$i('saveStatus'); if(sv && sv.parentNode && !sv.parentNode.classList.contains('v16-pile')) sv.parentNode.classList.add('v16-pile');
+    var rd=$i('resetData'); if(rd && !rd.classList.contains('v16-danger')) rd.classList.add('v16-danger');
+    var pc=$i('privCard'); if(pc){ var k=pc.querySelector('.k'); if(k && k.textContent!=='Vie privée') k.textContent='Vie privée'; }
+    var ni=$i('setNameInput'); if(ni && !ni._v16){ ni._v16=1; ni.addEventListener('input',tailleNom); ni.addEventListener('blur',function(){ setTimeout(tailleNom,0); }); }
+  }
+  /* une Nuée dissoute revient si on annule */
+  function enveloppeDissolution(){
+    var f=window._nqDissolve; if(typeof f!=='function' || f._v16) return;
+    var g=function(key,del){ var s=instantane(), nm=''; try{ nm=NUE[key]||key; }catch(_){}
+      var r=f.apply(this,arguments);
+      annulable('« '+nm+' » dissoute', function(){ restaure(s); });
+      return r; };
+    g._v16=1; window._nqDissolve=g;
+  }
+
+  /* ══ LES TEXTES COUPÉS ══════════════════════════════════════════════════════════════════
+     Le fil d'une Nuée : le titre passe à la ligne selon SES mots ; la carte le coupait par le
+     bas. Deux lignes au plus, points de suite au-delà — et c'est LA CARTE qui grandit pour les
+     porter, jamais le texte qui rétrécit. */
+  function filNuee(){
+    try{
+      document.querySelectorAll('#dpNueeFil .nf-item').forEach(function(it){
+        var tx=it.querySelector('.nf-tx'); if(!tx) return;
+        /* le titre est le dernier bloc de texte de la carte */
+        var bl=[].filter.call(tx.children,function(k){ return (k.textContent||'').trim() && !/^(em|b|i)$/i.test(k.tagName); });
+        var ti=bl.length?bl[bl.length-1]:null; if(!ti) return;
+        if(!ti.classList.contains('v16-2l')) ti.classList.add('v16-2l');
+        var need=Math.ceil(tx.getBoundingClientRect().bottom - it.getBoundingClientRect().top + 12 + (window._encreSup?window._encreSup(19).bas:0));   /* v102 : + l'encre agrandie du titre (v96) */
+        /* ⚑ v102 — UNE CARTE D'UNE LIGNE NE TENAIT PLUS DANS SES 74. Avant v96 elle laissait 17 d'air sous l'encre de son titre ; le libellé
+           et le titre ayant grandi (et leur air rendu : marge 8 → 11, texte 15 → 16), il faut 79 pour garder les 42 d'une carte à l'autre.
+           On ne reprend jamais l'air pour faire tenir (§8) : c'est la carte qui grandit, comme celle de deux lignes (v16). */
+        need=Math.max(need, 79);
+        var h=it.getBoundingClientRect().height;
+        if(need>h+0.5){ var px=need+'px'; if(it.style.getPropertyValue('min-height')!==px) it.style.setProperty('min-height',px,'important'); }
+      });
+    }catch(_){}
+  }
+
+  /* ══ LE BRANCHEMENT — ON ENVELOPPE, ON COMPARE AVANT D'AGIR (§8) ═════════════════════ */
+  var _pt=null;
+  function passe(){ clearTimeout(_pt); _pt=setTimeout(function(){ arme(); enveloppeDissolution(); passeArcs(); filNuee(); tailleNom(); plusAnneau(); }, 90); }
+  window._v16Passe=passe;
+  function envelope(nom, apres){
+    var f=window[nom]; if(typeof f!=='function' || f._v16) return;
+    var g=function(){ var r=f.apply(this,arguments); try{ apres(); }catch(_){} return r; }; g._v16=1; window[nom]=g;
+  }
+  function brancher(){
+    envelope('_majAnneauPlus', plusAnneau);
+    envelope('openPerson', function(){ [60,300,900].forEach(function(t){ setTimeout(lisPersonne,t); }); });
+    envelope('openEssaim', function(){ [120,500,1200].forEach(function(t){ setTimeout(filNuee,t); }); });
+    try{ var d=dev(); if(d){ var cl=d.classList.contains('light');
+      new MutationObserver(function(){ var c=d.classList.contains('light'); if(c===cl) return; cl=c; passe(); setTimeout(passeArcs,400); })
+        .observe(d,{attributes:true,attributeFilter:['class']}); } }catch(_){}
+    /* les écrans qui BÂTISSENT des arcs ou des cartes : on repasse quand ils s'ouvrent */
+    ['auraScreen','auraHelp','personSheet','detailPoster','settingsScreen'].forEach(function(id){
+      var s=$i(id); if(!s) return;
+      try{ new MutationObserver(passe).observe(s,{childList:true,subtree:true}); }catch(_){}
+      try{ new MutationObserver(passe).observe(s,{attributes:true,attributeFilter:['class']}); }catch(_){}
+    });
+    try{ document.fonts && document.fonts.ready && document.fonts.ready.then(tailleNom); }catch(_){}
+    /* iOS n'applique `:active` qu'avec un écouteur de toucher sur le document */
+    try{ document.addEventListener('touchstart',function(){},{passive:true}); }catch(_){}
+    passe();
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',brancher); else brancher();
+})();

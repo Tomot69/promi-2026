@@ -1,0 +1,71 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ v61 · cinq mondes à l'horloge, 0,83 / 0,78 (= 0,17 / 0,22 à 60 i/s) 
+  ✓ v61 · un redémarrage de boucle fait UN pas 
+  ✓ v61 · mondes neufs : temps vrai en sous-pas de 1/60 s 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu de départ 760 ms 
+  ✓ fondu d'arrivée 760 ms 
+  ✓ v61 · Houle reste par image (exception) 
+— chemin : moteur
+  ✓ encre · moteur · arrivee fin du mouvement 860 ms (attendu 872 ± 100) · cadence 101 % · [vu 860 ms, 33 images]
+  ✓ encre · moteur · depart fin du mouvement 381 ms (attendu 386 ± 100) · cadence 108 % · [vu 381 ms, 14 images]
+  ✓ touffe · moteur · arrivee fin du mouvement 789 ms (attendu 812 ± 100) · cadence 102 % · [vu 789 ms, 48 images]
+  ✓ touffe · moteur · depart fin du mouvement 254 ms (attendu 321 ± 100) · cadence 103 % · [vu 254 ms, 16 images]
+  ✓ mosaique · moteur · arrivee fin du mouvement 789 ms (attendu 792 ± 100) · cadence 104 % · [vu 789 ms, 49 images]
+  ✓ mosaique · moteur · depart fin du mouvement 271 ms (attendu 316 ± 100) · cadence 97 % · [vu 271 ms, 16 images]
+  ✓ braille · moteur · arrivee fin du mouvement 813 ms (attendu 865 ± 100) · cadence 103 % · [vu 813 ms, 43 images]
+  ✓ braille · moteur · depart fin du mouvement 271 ms (attendu 351 ± 100) · cadence 101 % · [vu 271 ms, 15 images]
+  ✓ pixel · moteur · arrivee fin du mouvement 810 ms (attendu 817 ± 100) · cadence 100 % · [vu 810 ms, 46 images]
+  ✓ pixel · moteur · depart fin du mouvement 302 ms (attendu 313 ± 100) · cadence 76 % · [vu 302 ms, 14 images]
+  ✓ halin · moteur · arrivee fin du mouvement 2328 ms (attendu 2483 ± 198) · cadence 103 % · [vu 2328 ms, 140 images]
+  ✓ halin · moteur · depart fin du mouvement 2787 ms (attendu 2995 ± 239) · cadence 102 % · [vu 2787 ms, 162 images]
+  ✓ esquille · moteur · arrivee fin du mouvement 1437 ms (attendu 1437 ± 114) · cadence 100 % · [vu 1287 ms, 77 images]
+  ✓ esquille · moteur · depart fin du mouvement 1437 ms (attendu 1426 ± 114) · cadence 101 % · [vu 1337 ms, 81 images]
+  ✓ madrure · moteur · arrivee fin du mouvement 2428 ms (attendu 2432 ± 194) · cadence 100 % · [vu 1976 ms, 116 images]
+  ✓ madrure · moteur · depart fin du mouvement 2429 ms (attendu 2431 ± 194) · cadence 102 % · [vu 1996 ms, 119 images]
+  ✓ ritournelle · moteur · arrivee fin du mouvement 1939 ms (attendu 1945 ± 155) · cadence 98 % · [vu 1921 ms, 107 images]
+  ✓ ritournelle · moteur · depart fin du mouvement 1937 ms (attendu 2040 ± 163) · cadence 92 % · [vu 1920 ms, 101 images]
+  ✓ bobinette · moteur · arrivee fin du mouvement 2459 ms (attendu 2462 ± 196) · cadence 115 % · [vu 2130 ms, 65 images]
+  ✓ bobinette · moteur · depart fin du mouvement 2464 ms (attendu 2463 ± 197) · cadence 97 % · [vu 2138 ms, 68 images]
+  ✓ terrazzo · moteur · arrivee fin du mouvement 795 ms (attendu 799 ± 100) · cadence 96 % · [vu 795 ms, 43 images]
+  ✓ terrazzo · moteur · depart fin du mouvement 374 ms (attendu 365 ± 100) · cadence 97 % · [vu 374 ms, 20 images]
+  ✓ gravure · moteur · arrivee fin du mouvement 799 ms (attendu 793 ± 100) · cadence 99 % · [vu 799 ms, 48 images]
+  ✓ gravure · moteur · depart fin du mouvement 285 ms (attendu 357 ± 100) · cadence 99 % · [vu 285 ms, 17 images]
+  ✓ sillons · moteur · arrivee 32 images (attendu 36 ± 7) · cadence 118 % · [vu 987 ms, 32 images]
+  ✓ sillons · moteur · depart 17 images (attendu 20 ± 4) · cadence 107 % · [vu 538 ms, 17 images]
+— chemin : reel
+  ✓ encre · reel · arrivee fin du mouvement 946 ms (attendu 872 ± 100) · cadence 92 % · [vu 946 ms, 33 images]
+  ✓ encre · reel · depart fin du mouvement 389 ms (attendu 386 ± 100) · cadence 98 % · [vu 389 ms, 13 images]
+  ✓ touffe · reel · arrivee fin du mouvement 781 ms (attendu 812 ± 100) · cadence 101 % · [vu 781 ms, 47 images]
+  ✓ touffe · reel · depart fin du mouvement 282 ms (attendu 321 ± 100) · cadence 93 % · [vu 282 ms, 16 images]
+  ✓ mosaique · reel · arrivee fin du mouvement 781 ms (attendu 792 ± 100) · cadence 99 % · [vu 781 ms, 46 images]
+  ✓ mosaique · reel · depart fin du mouvement 267 ms (attendu 316 ± 100) · cadence 93 % · [vu 267 ms, 15 images]
+  ✓ braille · reel · arrivee fin du mouvement 797 ms (attendu 865 ± 100) · cadence 105 % · [vu 797 ms, 43 images]
+  ✓ braille · reel · depart fin du mouvement 300 ms (attendu 351 ± 100) · cadence 92 % · [vu 300 ms, 15 images]
+  ✓ pixel · reel · arrivee fin du mouvement 786 ms (attendu 817 ± 100) · cadence 99 % · [vu 786 ms, 44 images]
+  ✓ pixel · reel · depart fin du mouvement 296 ms (attendu 313 ± 100) · cadence 77 % · [vu 296 ms, 14 images]
+  ✓ halin · reel · arrivee fin du mouvement 2334 ms (attendu 2483 ± 198) · cadence 95 % · [vu 2334 ms, 130 images]
+  ✓ halin · reel · depart fin du mouvement 2772 ms (attendu 2995 ± 239) · cadence 95 % · [vu 2772 ms, 150 images]
+  ✓ esquille · reel · arrivee fin du mouvement 1431 ms (attendu 1437 ± 114) · cadence 92 % · [vu 1330 ms, 73 images]
+  ✓ esquille · reel · depart fin du mouvement 1421 ms (attendu 1426 ± 114) · cadence 98 % · [vu 1340 ms, 79 images]
+  ✓ madrure · reel · arrivee fin du mouvement 2431 ms (attendu 2432 ± 194) · cadence 93 % · [vu 1614 ms, 88 images]
+  ✓ madrure · reel · depart fin du mouvement 2435 ms (attendu 2431 ± 194) · cadence 97 % · [vu 1751 ms, 99 images]
+  ✓ ritournelle · reel · arrivee fin du mouvement 1950 ms (attendu 1945 ± 155) · cadence 88 % · [vu 1926 ms, 97 images]
+  ✓ ritournelle · reel · depart fin du mouvement 1949 ms (attendu 2040 ± 163) · cadence 86 % · [vu 1918 ms, 94 images]
+  ✓ bobinette · reel · arrivee fin du mouvement 2466 ms (attendu 2462 ± 196) · cadence 118 % · [vu 2149 ms, 67 images]
+  ✓ bobinette · reel · depart fin du mouvement 2469 ms (attendu 2463 ± 197) · cadence 96 % · [vu 2096 ms, 66 images]
+  ✓ terrazzo · reel · arrivee fin du mouvement 822 ms (attendu 799 ± 100) · cadence 97 % · [vu 822 ms, 45 images]
+  ✓ terrazzo · reel · depart fin du mouvement 370 ms (attendu 365 ± 100) · cadence 93 % · [vu 370 ms, 19 images]
+  ✓ gravure · reel · arrivee fin du mouvement 819 ms (attendu 793 ± 100) · cadence 89 % · [vu 819 ms, 44 images]
+  ✓ gravure · reel · depart fin du mouvement 310 ms (attendu 357 ± 100) · cadence 80 % · [vu 310 ms, 15 images]
+  ✓ sillons · reel · arrivee 31 images (attendu 36 ± 7) · cadence 106 % · [vu 1065 ms, 31 images]
+  ✓ sillons · reel · depart 16 images (attendu 20 ± 4) · cadence 94 % · [vu 576 ms, 16 images]
+
+66 / 66

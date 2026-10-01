@@ -1,0 +1,147 @@
+/* ════════════════════════════════════════════════════════════════════════════
+   lot-AURA-ORBITE — L'ÉCRAN AURA, RÉÉCRIT EN ENTIER · 10 septembre 2026
+   Référence : PLANCHE-VELOURS.html, `ecranAura()` (gabarit 340 × 736). Toutes les
+   cotes ci-dessous sont celles de la planche ramenées à l'écran de 390 × 844
+   (÷ 0,872), et les Noyaux sont au §2.9 À LA LETTRE (78 / 58, arcs 8 / 6, visages
+   48 / 36, libellés 14 / 13,5, écart 11, écarts 30 et 26).
+   Bloc NEUF : aucune règle existante n'est modifiée. Les nœuds de l'ancienne Aura
+   sont masqués NOMMÉMENT, un par un (§8 : jamais un crible en bloc).
+   ════════════════════════════════════════════════════════════════════════════ */
+
+/* le fond : l'encre et la crème du §3, comme la planche — PLAT */
+#device #auraScreen.au2,.frame #auraScreen.au2{overflow:hidden!important;background-color:#16171B!important;
+  background-image:none!important}
+#device.light #auraScreen.au2,.frame.light #auraScreen.au2{background-color:#F4EEE1!important;background-image:none!important}
+/* ⚠ L'OMBRE DE DALLE DE `.tuto-fond::before` (le « ghost-ink ») se peignait en grand
+   derrière la sphère — une forme grise que la planche ne porte pas. Masquée ICI
+   seulement : les autres écrans `.tuto-fond` la gardent. */
+#device #auraScreen.au2::before,.frame #auraScreen.au2::before{display:none!important}
+
+/* ⚠ L'ANCIENNE AURA — masquée NŒUD PAR NŒUD, relevée enfant par enfant le 10 septembre
+   (capture `aura_avant_*.png`). Ce qui n'est pas dans la liste reste : le plateau
+   (.enh, avec « Aura », le i et ✕ FERMER) et son voile. Les nœuds restent dans le DOM :
+   buildAura(), drawKRing(), drawKarmaGraph() les adressent par id et ne lèvent donc
+   jamais — le gestionnaire de #souffleBtn n'est pas protégé par un try. */
+#device #auraScreen.au2>#auTrameCv,#device #auraScreen.au2>.keyebrow,#device #auraScreen.au2>.k-intro,
+#device #auraScreen.au2>#demoTg,#device #auraScreen.au2>#ringLeg,#device #auraScreen.au2>#auraSeal,
+#device #auraScreen.au2>.klegend,#device #auraScreen.au2>#kCount,#device #auraScreen.au2>.khead,
+#device #auraScreen.au2>.klabel,#device #auraScreen.au2>#souffleLine,#device #auraScreen.au2>.ksec,
+#device #auraScreen.au2>#kBalance,#device #auraScreen.au2>#kStats,#device #auraScreen.au2>#kEquilibre,
+#device #auraScreen.au2>#kLens,#device #auraScreen.au2>#kchart,#device #auraScreen.au2>#kxaxis,
+#device #auraScreen.au2>#kLegend,#device #auraScreen.au2>#kBestNue,#device #auraScreen.au2>#kessaims,
+#device #auraScreen.au2>.pp-leg,#device #auraScreen.au2>#kpers,#device #auraScreen.au2>#kTogether,
+#device #auraScreen.au2>.korb-wrap,
+.frame #auraScreen.au2>#auTrameCv,.frame #auraScreen.au2>.keyebrow,.frame #auraScreen.au2>.k-intro,
+.frame #auraScreen.au2>#demoTg,.frame #auraScreen.au2>#ringLeg,.frame #auraScreen.au2>#auraSeal,
+.frame #auraScreen.au2>.klegend,.frame #auraScreen.au2>#kCount,.frame #auraScreen.au2>.khead,
+.frame #auraScreen.au2>.klabel,.frame #auraScreen.au2>#souffleLine,.frame #auraScreen.au2>.ksec,
+.frame #auraScreen.au2>#kBalance,.frame #auraScreen.au2>#kStats,.frame #auraScreen.au2>#kEquilibre,
+.frame #auraScreen.au2>#kLens,.frame #auraScreen.au2>#kchart,.frame #auraScreen.au2>#kxaxis,
+.frame #auraScreen.au2>#kLegend,.frame #auraScreen.au2>#kBestNue,.frame #auraScreen.au2>#kessaims,
+.frame #auraScreen.au2>.pp-leg,.frame #auraScreen.au2>#kpers,.frame #auraScreen.au2>#kTogether,
+.frame #auraScreen.au2>.korb-wrap{display:none!important}
+
+/* ── LE CADRE : 390 × 844, les cotes du document sans un calc() ─────────────── */
+#auraScreen.au2 .au-cadre{position:absolute!important;left:0!important;top:0!important;
+  width:390px!important;height:844px!important;z-index:2!important;margin:0!important;padding:0!important;
+  color:#F4EEE1;font-family:Apfel,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#device.light #auraScreen.au2 .au-cadre,.frame.light #auraScreen.au2 .au-cadre{color:#16171B}
+#auraScreen.au2 .au-cadre,#auraScreen.au2 .au-cadre *{-webkit-text-fill-color:currentColor}
+/* ⚑ LA COLONNE DÉFILE SOUS LE PLATEAU — la parade de l'Index (§8). Le cadre garde ses cotes 390 × 844
+   et défile ; il ROGNE au bas du plateau (y 100), si bien que rien ne remonte dans la bande
+   au-dessus de lui. Le bas du défilement est posé par `.au-fin` (bouton + 22). Voir `place()`. */
+#auraScreen.au2 .au-cadre{overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;clip-path:inset(100px 0 0 0)}
+#auraScreen.au2 .au-cadre::-webkit-scrollbar{display:none}
+#auraScreen.au2 .au-fin{position:absolute!important;left:0!important;width:1px!important;height:1px!important;
+  margin:0!important;pointer-events:none;visibility:hidden}
+
+/* la sphère — .bo de la planche : 41 · 78 · 258 → 47 · 89,4 · 296. Le canevas est
+   TRANSPARENT hors de la boule : le plateau (z 9) passe devant sans qu'on le recouvre. */
+#auraScreen.au2 .au-bo{position:absolute!important;left:47px!important;top:89.4px!important;
+  width:296px!important;height:296px!important;margin:0!important}
+#auraScreen.au2 .au-bo canvas{position:absolute!important;left:0!important;top:0!important;
+  width:296px!important;height:296px!important;display:block!important;max-width:none!important;
+  opacity:1!important;filter:none!important;mix-blend-mode:normal!important}
+#auraScreen.au2 .au-prise{position:absolute;left:0;top:0;width:296px;height:296px;z-index:2;
+  touch-action:none;cursor:grab;-webkit-user-select:none;user-select:none}
+
+/* le mot — il qualifie L'OBJET, jamais la personne. 352 → 403,7 ; 16,5 → 18,9 */
+#auraScreen.au2 .au-mot{position:absolute!important;left:24px!important;right:24px!important;top:403.7px!important;
+  margin:0!important;text-align:center;font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;
+  font-size:18.9px!important;letter-spacing:-.012em;line-height:1.25!important}
+
+/* l'état vide — .inv de la planche : 33 → 37,8 ; 17 → 19,5 ; 13 → 14,9 */
+#auraScreen.au2 .au-inv{position:absolute!important;left:37.8px!important;right:37.8px!important;top:403.7px!important;
+  margin:0!important;text-align:center;font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;
+  font-size:19.5px!important;line-height:1.42!important;letter-spacing:-.012em}
+#auraScreen.au2 .au-inv em{display:block;margin-top:12.6px;font-style:normal;font-weight:600!important;
+  font-size:14.9px!important;line-height:1.5!important;letter-spacing:-.005em;color:#A8A396}
+#device.light #auraScreen.au2 .au-inv em,.frame.light #auraScreen.au2 .au-inv em{color:#6B6658}
+
+/* les Noyaux — §2.9 : le tien 78, une personne 58, écart 30 puis 26. Colonne de
+   hauteur FIXE alignée par le bas : tous les prénoms sur la même ligne de base.
+   78 + 11 + 18 = 107. La rangée DÉFILE (data-glisse, Q128 §3). */
+#auraScreen.au2 .au-nx{position:absolute!important;left:24px!important;right:0!important;top:454px!important;
+  height:107px!important;margin:0!important;display:flex!important;align-items:flex-end;gap:26px;
+  overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#auraScreen.au2 .au-nx::-webkit-scrollbar{display:none}
+#auraScreen.au2 .au-gp{display:flex;align-items:flex-end;gap:26px;margin-left:4px;padding-right:24px;flex:none}
+#auraScreen.au2 .au-n{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
+  flex:none;height:107px;cursor:pointer;-webkit-user-select:none;user-select:none}
+#auraScreen.au2 .au-nb{position:relative;flex:none}
+#auraScreen.au2 .au-nb svg{position:absolute;left:0;top:0;display:block}
+#auraScreen.au2 .au-vis{position:absolute;border-radius:999px;overflow:hidden}
+#auraScreen.au2 .au-grain{position:absolute;left:0;top:0;right:0;bottom:0;background-size:88px 88px;
+  opacity:.5;mix-blend-mode:soft-light;border-radius:inherit}
+#auraScreen.au2 .au-lb{height:18px;line-height:18px!important;margin-top:11px;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:600!important;font-size:13.5px!important;
+  letter-spacing:-.01em;white-space:nowrap}
+#auraScreen.au2 .au-moi .au-lb{font-weight:700!important;font-size:14px!important}
+/* la piste est NEUTRE — une personne n'a pas de nature (§2.9 corrigé, Tom 10 sept.) */
+#auraScreen.au2 .au-piste{stroke:#2A2C34}
+#device.light #auraScreen.au2 .au-piste,.frame.light #auraScreen.au2 .au-piste{stroke:#DED7C6}
+
+/* la légende — elle NOMME les trois arcs, elle ne quantifie rien. Sa cote se CALCULE :
+   bas des prénoms 561, haut de « CE QUE TU AS TENU » 633, hauteur 16 → (633−561−16)/2 = 28
+   de chaque côté, donc 589. Elle se DÉCLARE centrée (data-centre-entre). */
+#auraScreen.au2 .au-lg{position:absolute!important;left:24px!important;right:24px!important;top:589px!important;
+  height:16px!important;line-height:16px!important;margin:0!important;display:flex!important;justify-content:center;gap:17px;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:600!important;font-size:13px!important;
+  letter-spacing:-.005em;white-space:nowrap;color:#A8A396}
+#device.light #auraScreen.au2 .au-lg,.frame.light #auraScreen.au2 .au-lg{color:#6B6658}
+#auraScreen.au2 .au-lg i{display:inline-block;width:8px;height:8px;border-radius:999px;margin-right:6px;vertical-align:.5px}
+
+/* ce que tu as tenu — .mo de la planche : 552 → 633. ⚠ La planche posait le titre à
+   opacity .60 ; le §6 interdit toute opacité sous 72 % sur du texte lisible. Même
+   teinte que la légende, pleine : c'est la valeur qu'.60 produisait sur ce fond, au
+   point de luminance près (152 contre 163 en sombre, 109 contre 102 en clair). */
+#auraScreen.au2 .au-mo{position:absolute!important;left:24px!important;right:24px!important;top:633px!important;margin:0!important}
+#auraScreen.au2 .au-mo h3{margin:0 0 21px!important;padding:0!important;font-family:Bricolage,system-ui,sans-serif!important;
+  font-weight:700!important;font-size:13px!important;line-height:16px!important;letter-spacing:.10em!important;
+  text-transform:uppercase;color:#A8A396;opacity:1!important}
+#device.light #auraScreen.au2 .au-mo h3,.frame.light #auraScreen.au2 .au-mo h3{color:#6B6658}
+#auraScreen.au2 .au-gr{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+#auraScreen.au2 .au-c{min-width:0}
+#auraScreen.au2 .au-bx{height:64px;display:flex;align-items:center;justify-content:center}
+/* ⚠ dalleTrame RECADRE au plus juste : on borne la BOÎTE, jamais le dessin (planche) */
+#auraScreen.au2 .au-bx canvas{display:block!important;max-width:101px!important;max-height:64px!important;
+  width:auto!important;height:auto!important;opacity:1!important;filter:none!important;mix-blend-mode:normal!important}
+#auraScreen.au2 .au-c span{display:block;margin-top:9px;font-family:Bricolage,system-ui,sans-serif!important;
+  font-weight:600!important;font-size:12.6px!important;line-height:1.25!important;letter-spacing:-.01em;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:center;color:#C9C4B4}
+#device.light #auraScreen.au2 .au-c span,.frame.light #auraScreen.au2 .au-c span{color:#4A463C}
+
+/* le bouton — grammaire des contours : 2 px, couleur du corps, rayon = h/2 */
+#auraScreen.au2 .au-bt{position:absolute!important;left:24px!important;top:762px!important;width:342px!important;
+  height:60px!important;margin:0!important;border-radius:30px!important;box-sizing:border-box!important;
+  border:2px solid #F4EEE1!important;background:transparent!important;display:flex!important;align-items:center;
+  justify-content:center;font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;
+  font-size:16.6px!important;letter-spacing:-.01em;cursor:pointer;-webkit-user-select:none;user-select:none}
+#device.light #auraScreen.au2 .au-bt,.frame.light #auraScreen.au2 .au-bt{border-color:#16171B!important}
+
+/* ce qu'un état n'a pas : l'écran vide n'a ni mot, ni Noyaux, ni légende, ni moisson */
+#auraScreen.au2 .au-cadre.au-vide .au-mot,#auraScreen.au2 .au-cadre.au-vide .au-nx,
+#auraScreen.au2 .au-cadre.au-vide .au-lg,#auraScreen.au2 .au-cadre.au-vide .au-mo{display:none!important}
+#auraScreen.au2 .au-cadre:not(.au-vide) .au-inv{display:none!important}
+#auraScreen.au2 .au-mo.au-sans{display:none!important}

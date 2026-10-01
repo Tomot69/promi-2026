@@ -1,0 +1,403 @@
+{
+ "order": [
+  "encre",
+  "touffe",
+  "brouillamini",
+  "halin",
+  "esquille",
+  "mosaique",
+  "braille",
+  "pixel",
+  "ramage",
+  "guingois",
+  "chantourne",
+  "volubilis",
+  "madrure",
+  "chamade",
+  "ritournelle",
+  "bobinette",
+  "mascaret",
+  "terrazzo",
+  "gravure",
+  "sillons"
+ ],
+ "WL": {
+  "pixel": "Buvard",
+  "braille": "Braille",
+  "sillons": "Houle",
+  "gravure": "Taille-douce",
+  "mosaique": "Tesselle",
+  "encre": "Pochade",
+  "terrazzo": "Éclisse",
+  "touffe": "Touffe",
+  "esquille": "Esquille",
+  "halin": "Halin",
+  "brouillamini": "Brouillamini",
+  "chamade": "Chamade",
+  "volubilis": "Volubilis",
+  "guingois": "Guingois",
+  "chantourne": "Chantourné",
+  "mascaret": "Mascaret",
+  "ramage": "Ramage",
+  "bobinette": "Bobinette",
+  "ritournelle": "Ritournelle",
+  "madrure": "Madrure"
+ },
+ "cercle": {
+  "sillons": 1,
+  "gravure": 1,
+  "terrazzo": 1,
+  "bobinette": 1,
+  "ritournelle": 1,
+  "madrure": 1,
+  "chamade": 1,
+  "volubilis": 1,
+  "guingois": 1,
+  "mascaret": 1,
+  "ramage": 1,
+  "chantourne": 1
+ },
+ "neuf": {
+  "encre": false,
+  "touffe": false,
+  "brouillamini": true,
+  "halin": true,
+  "esquille": true,
+  "mosaique": false,
+  "braille": false,
+  "pixel": false,
+  "ramage": true,
+  "guingois": true,
+  "chantourne": true,
+  "volubilis": true,
+  "madrure": true,
+  "chamade": true,
+  "ritournelle": true,
+  "bobinette": true,
+  "mascaret": true,
+  "terrazzo": false,
+  "gravure": false,
+  "sillons": false
+ },
+ "pals": {
+  "signal": {
+   "name": "Ingénu",
+   "cols": [
+    "#82AEF8",
+    "#FFB8D2",
+    "#C9A8F5",
+    "#EFE3C7"
+   ]
+  },
+  "primesautier": {
+   "name": "Primesautier",
+   "cols": [
+    "#FFD60A",
+    "#FF7AA2",
+    "#005F73",
+    "#FFF4C2"
+   ]
+  },
+  "candide": {
+   "name": "Candide",
+   "cols": [
+    "#CDB4FF",
+    "#FFC8A2",
+    "#BDE0A8",
+    "#FFB5C8"
+   ]
+  },
+  "gouailleur": {
+   "name": "Gouailleur",
+   "cols": [
+    "#9C4A1A",
+    "#E07A1F",
+    "#E9B824",
+    "#7D8B2E"
+   ]
+  },
+  "alangui": {
+   "name": "Alangui",
+   "cols": [
+    "#C4A69F",
+    "#7D6A8A",
+    "#DDCBB0",
+    "#8C97AB"
+   ]
+  },
+  "irascible": {
+   "name": "Irascible",
+   "cols": [
+    "#FF2D1A",
+    "#FF8A1C",
+    "#B80F2E",
+    "#2B0A0A"
+   ]
+  },
+  "hurluberlu": {
+   "name": "Hurluberlu",
+   "cols": [
+    "#C8FF00",
+    "#7B2FF7",
+    "#FF3D9A",
+    "#2B1400"
+   ]
+  },
+  "beat": {
+   "name": "Béat",
+   "cols": [
+    "#1F4FD1",
+    "#FFC21A",
+    "#FFFFFF",
+    "#E0673F"
+   ]
+  },
+  "minaudier": {
+   "name": "Minaudier",
+   "cols": [
+    "#FF9FC8",
+    "#E0115F",
+    "#FFE0EC",
+    "#B5F2FF"
+   ]
+  },
+  "chafouin": {
+   "name": "Chafouin",
+   "cols": [
+    "#A9B41F",
+    "#E6A3BE",
+    "#6C4675",
+    "#3FA7D6"
+   ]
+  },
+  "frivole": {
+   "name": "Frivole",
+   "cols": [
+    "#FF71CE",
+    "#01CDFE",
+    "#05FFA1",
+    "#FFFB96"
+   ]
+  },
+  "cajoleur": {
+   "name": "Cajoleur",
+   "cols": [
+    "#9FE6CF",
+    "#4B2B1F",
+    "#FFF0D4",
+    "#E23E57"
+   ]
+  },
+  "allegre": {
+   "name": "Allègre",
+   "cols": [
+    "#1FB36A",
+    "#7EC8FF",
+    "#0E5E4A",
+    "#EFFBEA"
+   ]
+  },
+  "lunatique": {
+   "name": "Lunatique",
+   "cols": [
+    "#2BC4C4",
+    "#D9A21B",
+    "#C2185B",
+    "#1E1B3A"
+   ]
+  },
+  "flegmatique": {
+   "name": "Flegmatique",
+   "cols": [
+    "#CFE8FF",
+    "#6FA8DC",
+    "#4A5A6A",
+    "#FFB3A7"
+   ]
+  },
+  "narquois": {
+   "name": "Narquois",
+   "cols": [
+    "#FF9A5A",
+    "#7A1FA2",
+    "#FFE8D6",
+    "#FF2F6D"
+   ]
+  },
+  "truculent": {
+   "name": "Truculent",
+   "cols": [
+    "#FF3E00",
+    "#00E5FF",
+    "#5600D6",
+    "#F6FF00"
+   ]
+  },
+  "petulant": {
+   "name": "Pétulant",
+   "cols": [
+    "#FF8A00",
+    "#6800E0",
+    "#00C85A",
+    "#FFAAC8"
+   ]
+  },
+  "fantasque": {
+   "name": "Fantasque",
+   "cols": [
+    "#00FF8C",
+    "#E60073",
+    "#0040FF",
+    "#FFF7DE"
+   ]
+  },
+  "fielleux": {
+   "name": "Fielleux",
+   "cols": [
+    "#1A1400",
+    "#5A3300",
+    "#FFE600",
+    "#B38F00"
+   ]
+  },
+  "sibyllin": {
+   "name": "Sibyllin",
+   "cols": [
+    "#0A0A1F",
+    "#2A1B4D",
+    "#5E2CA5",
+    "#00E0FF"
+   ]
+  },
+  "veneneux": {
+   "name": "Vénéneux",
+   "cols": [
+    "#140014",
+    "#4A0033",
+    "#FF007A",
+    "#C0C0C0"
+   ]
+  },
+  "atrabilaire": {
+   "name": "Atrabilaire",
+   "cols": [
+    "#0A2E36",
+    "#1B6F80",
+    "#FF9E00",
+    "#F2F2F2"
+   ]
+  },
+  "taciturne": {
+   "name": "Taciturne",
+   "cols": [
+    "#0B0D4F",
+    "#2A2AD4",
+    "#8F8CFF",
+    "#E4E2FF"
+   ]
+  }
+ },
+ "palDefaut": "signal",
+ "reglages": {
+  "encre": {
+   "ressort": [
+    0.838,
+    0.79,
+    0
+   ],
+   "elanPlante": 1,
+   "libre": 1
+  },
+  "touffe": {
+   "ressort": [
+    0.838,
+    0.79,
+    0
+   ],
+   "elanPlante": 1,
+   "libre": 1
+  },
+  "brouillamini": {},
+  "halin": {
+   "compagnons": 1
+  },
+  "esquille": {
+   "finaleAuRepos": 1,
+   "relaxLocal": 1
+  },
+  "mosaique": {
+   "ressort": [
+    0.83,
+    0.78,
+    1
+   ],
+   "grille": 1,
+   "pasTrame": 11
+  },
+  "braille": {
+   "ressort": [
+    0.83,
+    0.78,
+    1
+   ],
+   "grille": 1,
+   "pasTrame": 9
+  },
+  "pixel": {
+   "ressort": [
+    0.83,
+    0.78,
+    1
+   ],
+   "grille": 1,
+   "pasTrame": 5
+  },
+  "ramage": {
+   "apercuPause": [
+    "_apOccupe",
+    120
+   ],
+   "apercuFilm": 1
+  },
+  "guingois": {},
+  "chantourne": {},
+  "volubilis": {
+   "apercuPause": [
+    "_volBouge",
+    60
+   ],
+   "apercuPetit": 1
+  },
+  "madrure": {
+   "ondeNoeuds": 1,
+   "donneesPropres": 1
+  },
+  "chamade": {},
+  "ritournelle": {},
+  "bobinette": {
+   "relaxLocal": 1
+  },
+  "mascaret": {},
+  "terrazzo": {
+   "ressort": [
+    0.83,
+    0.78,
+    1
+   ],
+   "libre": 1
+  },
+  "gravure": {
+   "ressort": [
+    0.83,
+    0.78,
+    1
+   ],
+   "grille": 1
+  },
+  "sillons": {
+   "grille": 1,
+   "pasTrame": 6
+  }
+ },
+ "version": "0.16"
+}

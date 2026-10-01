@@ -1,0 +1,21 @@
+l'API du cycle existe                        OK  
+une demande ne pose PAS de dalle             OK  
+elle n'entre pas dans les compteurs          OK  
+elle est listee en attente                   OK  
+accepter fait apparaitre la dalle            OK  
+accepter la sort de l'attente                OK  
+accepter la compte comme un Promi            OK  
+accepter n'agit qu'une fois                  OK  
+l'acceptation nourrit le Fil                 OK  
+une demande expire apres un mois             OK  
+l'expiration ne notifie rien                 OK  
+une demande expiree quitte l'attente         OK  
+il n'existe pas d'etat « refusee »           OK  
+une demande allume la pastille du Fil        OK  
+sa vignette est dans la brume                OK  
+un seul geste la rend reelle                 OK  
+aucun bouton refuser dans la fiche           OK  
+accepter dissipe la brume                    OK  
+aucune erreur JS                             OK  
+
+19/19

@@ -1,0 +1,51 @@
+
+── la page + · Promi ──
+le titre, par la phrase · atteignable                KO  boîte 0×0
+le titre, par la phrase · accepte le texte           KO  champ inatteignable
+le titre, par la phrase · la donnée le reçoit        KO  champ inatteignable
+le titre, par la phrase · l'écran le montre          KO  champ inatteignable
+le titre · le formulaire suit                        KO  
+
+── la page + · à qui ──
+la phrase porte un créneau « à qui »                 OK  
+à qui · le créneau ouvre une liste de personnes      KO  0 personnes proposées
+
+── la page + · l'échéance a quitté la phrase (Q28) ──
+la phrase ne porte PAS de créneau « quand »          OK  
+
+── la page + · le compagnon d'un Chiche ──
+la phrase d'un Chiche porte un créneau « avec »      OK  
+
+── la page + · la Nuée ──
+le nom de la Nuée · atteignable                      KO  ABSENT
+le nom de la Nuée · accepte le texte                 KO  champ inatteignable
+le nom de la Nuée · la donnée le reçoit              KO  champ inatteignable
+le nom de la Nuée · l'écran le montre                KO  champ inatteignable
+
+── une fiche · Peaufiner ──
+la note d'un Promi · atteignable                     OK  
+la note d'un Promi · accepte le texte                OK  
+la note d'un Promi · la donnée le reçoit             OK  
+la note d'un Promi · l'écran le montre               OK  
+
+── le champ de recherche de l'Index ──
+la recherche de l'Index · atteignable                OK  
+la recherche de l'Index · FILTRE                     OK  
+la recherche de l'Index · se vide                    OK  
+
+── le champ de recherche du Fil ──
+la recherche du Fil · FILTRE                         OK  
+
+11/21
+
+CE QUI NE MARCHE PAS :
+   · le titre, par la phrase · atteignable
+   · le titre, par la phrase · accepte le texte
+   · le titre, par la phrase · la donnée le reçoit
+   · le titre, par la phrase · l'écran le montre
+   · le titre · le formulaire suit
+   · à qui · le créneau ouvre une liste de personnes
+   · le nom de la Nuée · atteignable
+   · le nom de la Nuée · accepte le texte
+   · le nom de la Nuée · la donnée le reçoit
+   · le nom de la Nuée · l'écran le montre

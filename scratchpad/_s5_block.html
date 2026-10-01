@@ -1,0 +1,257 @@
+<style id="lot-S5-css">
+/* ═══════════════════════════════════════════════════════════════════════════════════════
+   SECTION 5 · L'INSTANT (PROMI-SPECIFICATIONS.md §5 « L'instant », cadres 96 à 101).
+   Le moment où la seconde moitié se referme. C'est LE SEUL endroit du produit où la
+   couleur d'état prend toute la place — et c'est ce qui en fait un événement (CLAUDE.md §3,
+   règle 9 du §9 du moodboard). Une seconde, pas plus : le champ entier passe au menthe, la
+   dalle se recompose plus grande, le mot tombe, puis le champ revient à sa nature.
+   Bloc NEUF en fin de fichier ; aucune règle existante n'est touchée.
+   ═══════════════════════════════════════════════════════════════════════════════════════ */
+
+/* — « tenue. » (cadre 98) : bloc texte 24 / 388, 342 de large, Bricolage 700/64,
+     interlettre -.04em, interligne 1, crème. */
+#device #detailPoster #instTenue{
+  position:absolute!important;left:24px!important;top:388px!important;width:342px!important;
+  margin:0!important;padding:0!important;display:none;z-index:3;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:700!important;font-size:64px!important;
+  letter-spacing:-.04em!important;line-height:1!important;opacity:1!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+/* — le mot qui suit (cadre 98) : 24 / 472, 342, Bricolage 600/20, interligne 1.3. */
+#device #detailPoster #instSous{
+  position:absolute!important;left:24px!important;top:472px!important;width:342px!important;
+  margin:0!important;padding:0!important;display:none;z-index:3;
+  font-family:Bricolage,system-ui,sans-serif!important;font-weight:600!important;font-size:20px!important;
+  letter-spacing:0!important;line-height:1.3!important;opacity:1!important;
+  color:#F4EEE1!important;-webkit-text-fill-color:#F4EEE1!important}
+#device #detailPoster.inst-referme #instTenue,
+#device #detailPoster.inst-referme #instSous{display:block!important}
+/* — le mot de l'instant (cadre 96) est CENTRÉ dans les 342 px. */
+#device #detailPoster.inst-arrive #dptTrace{text-align:center!important}
+/* — pendant l'instant, il n'y a plus rien à tracer : le geste sort de l'écran. */
+#device #detailPoster.inst-arrive .geste-env,
+#device #detailPoster.inst-referme .geste-env,
+#device #detailPoster.inst-apres .geste-env{display:none!important}
+</style>
+<script id="lot-S5">
+/* ═══════════════════════════════════════════════════════════════════════════════════════
+   SECTION 5 · LE MOTEUR DE L'INSTANT.
+   Trois écrans, une seule fiche. Les cotes sont celles du §5 ; le trait est relevé dans les
+   chemins du moodboard (cadres 96, 98, 100) :
+
+     · l'autre moitié arrive   champ NATURE · orange plein 0 → 195 + chevron ·
+                               MENTHE plein 195 → 268 (l'autre trace) · points orange dès 213
+     · le trait se referme     champ MENTHE PLEIN · trait ENCRE plein 0 → 390
+     · juste après             champ NATURE · trait MENTHE plein 0 → 390
+
+   base = 300, amplitude = 44, boîte SVG = 384 — les trois cadres, sans exception.
+   L'onde vient de `window._onde` : une seule formule d'onde existe dans le produit.
+   ═══════════════════════════════════════════════════════════════════════════════════════ */
+(function(){
+  if(!window._onde || !window._ficheTrait) return;
+  var O=window._onde, W=390;
+  var CREME='#F4EEE1', ENCRE='#16171B', MENTHE='#2BE88C', TERRA='#F07A2E';
+
+  window._instant = null;        /* null · 'arrive' · 'referme' · 'apres' */
+  window._instantX = 268;        /* où en est l'autre moitié (cadre 96 : 268) */
+
+  /* ── LES TROIS ÉCRANS (§5) — les cotes se lisent, elles ne se déduisent pas. ── */
+  function inv(nom, nat){
+    var natCol=O.NATCOL[nat]||O.NATCOL.promi;
+    if(nom==='arrive') return {
+      base:300, amp:44, boite:384, champ:natCol, encreHaut:CREME,
+      dalle:{x:105,y:91,w:180,h:150},
+      trait:{mode:'arrive', col:TERRA},
+      trace:{y:388, mot:'l’autre moitié arrive', col:MENTHE},
+      aura:{y:432, y2:442}, qui:{y:556, col:TERRA}, titre:{y:586}, quand:null};
+    if(nom==='referme') return {
+      base:300, amp:44, boite:384, champ:MENTHE, encreHaut:ENCRE,
+      dalle:{x:81,y:88,w:228,h:190},
+      trait:{mode:'complet', col:ENCRE},
+      trace:null, aura:null, qui:null, titre:null, quand:null};
+    return {                                              /* juste après (cadre 100) */
+      base:300, amp:44, boite:384, champ:natCol, encreHaut:CREME,
+      dalle:{x:105,y:91,w:180,h:150},
+      trait:{mode:'complet', col:MENTHE},
+      trace:null, aura:{y:388, y2:398}, qui:{y:512, col:MENTHE}, titre:{y:542},
+      quand:{y:607, col:MENTHE}};
+  }
+
+  function nature(dp){
+    return dp.classList.contains('dp-chiche')?'chiche'
+      :((dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee'))?'nuee':'promi');
+  }
+  function armable(){
+    var dp=document.getElementById('detailPoster');
+    if(!dp||!dp.classList.contains('show')) return null;
+    if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')) return null;
+    if(!window._instant) return null;
+    return dp;
+  }
+
+  /* ═══ LE TRAIT DE L'INSTANT ═══ */
+  function trait(dp, E, p){
+    var cv=document.getElementById('dpTrameCv'); if(!cv) return;
+    var y=O.onde(E.base,E.amp), H=E.boite;
+    var posterW=dp.clientWidth||W, sc=posterW/W, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2));
+    cv.width=Math.round(posterW*dpr); cv.height=Math.round(H*sc*dpr);
+    cv.style.width=posterW+'px';
+    cv.style.setProperty('height',(H*sc)+'px','important');
+    cv.style.setProperty('opacity','1','important');  cv.style.setProperty('filter','none','important');
+    cv.style.setProperty('mix-blend-mode','normal','important');
+    cv.style.setProperty('-webkit-mask','none','important'); cv.style.setProperty('mask','none','important');
+    cv.style.setProperty('position','absolute','important');
+    cv.style.setProperty('top','0','important'); cv.style.setProperty('left','0','important');
+    cv.style.setProperty('background','transparent','important');
+    var g=cv.getContext('2d'); if(!g) return;
+    g.setTransform(dpr*sc,0,0,dpr*sc,0,0); g.clearRect(0,0,W,H);
+    g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high';
+
+    /* 1 · L'APLAT. Sur « le trait se referme » il est MENTHE, et c'est la seule exception
+         du produit : l'état prend toute la place, une seconde. */
+    g.beginPath(); O.chemin(g,y,0,W); g.lineTo(W,0); g.lineTo(0,0); g.closePath();
+    g.fillStyle=E.champ; g.fill();
+
+    /* 2 · LA DALLE — la vraie, celle du moteur (§4.1), non teintée, opacité 1. Elle se
+         recompose PLUS GRANDE à l'instant où la parole est tenue : 228 × 190 au lieu de
+         180 × 150 (cadres 98 contre 96 et 100). */
+    if(p && window.Toile && Toile.dalleTrame){
+      var src=document.createElement('canvas');
+      try{ if(Toile.dalleTrame(src,p.id,1) && src.width){
+        var b=E.dalle, r=src.height/src.width, dw=b.w, dh=b.w*r;
+        if(dh>b.h){ dh=b.h; dw=b.h/r; }
+        g.drawImage(src, b.x+(b.w-dw)/2, b.y+(b.h-dh)/2, dw, dh);
+      } }catch(_){}
+    }
+
+    /* 3 · LA LIGNE (§2.6). */
+    var ep=10, rr=4.5, esp=18, mid=W/2;
+    g.lineWidth=ep; g.lineCap='round'; g.lineJoin='round';
+    function plein(col,a,b){ g.strokeStyle=col; g.beginPath(); O.chemin(g,y,a,b); g.stroke(); }
+    if(E.trait.mode==='complet'){ plein(E.trait.col,0,W); }
+    else {
+      /* ma moitié est donnée : plein 0 → 195, le milieu exact (§2.6). */
+      plein(E.trait.col,0,mid);
+      O.chevron(g,y,mid,E.trait.col,ep);
+      /* les points disent ce qui manque — ils restent de MA couleur (cadre 96). */
+      g.fillStyle=E.trait.col;
+      for(var x=mid+esp;x<W-rr;x+=esp){ g.beginPath(); g.arc(x,y(x),rr,0,6.2832); g.fill(); }
+      /* et par-dessus, la moitié de l'autre, en menthe, jusqu'où elle est arrivée. */
+      var xa=window._instantX;
+      if(typeof xa==='number' && xa>mid) plein(MENTHE, mid, Math.min(W,xa));
+    }
+  }
+
+  /* ═══ LES COTES DE L'INSTANT ═══ */
+  function pose(el,css){ if(!el) return; for(var k in css) el.style.setProperty(k,css[k],'important'); }
+  function cache(el){ pose(el,{display:'none'}); }
+
+  function cotes(dp, E, p){
+    var nom=window._instant;
+    dp.classList.toggle('inst-arrive', nom==='arrive');
+    dp.classList.toggle('inst-referme', nom==='referme');
+    dp.classList.toggle('inst-apres', nom==='apres');
+
+    /* l'entête (§3.1) : le mot-marque et ✕ FERMER passent à l'encre sur le champ menthe. */
+    var mm=document.getElementById('dptNat'), cb=dp.querySelector('.closeb');
+    pose(mm,{color:E.encreHaut,'-webkit-text-fill-color':E.encreHaut});
+    if(cb){ pose(cb,{color:E.encreHaut,'-webkit-text-fill-color':E.encreHaut});
+      [].forEach.call(cb.querySelectorAll('*'),function(x){
+        pose(x,{color:E.encreHaut,'-webkit-text-fill-color':E.encreHaut}); }); }
+
+    /* les deux mots du cadre 98. Ils viennent du moodboard ; le prénom vient du Promi. */
+    var t1=document.getElementById('instTenue'), t2=document.getElementById('instSous');
+    if(!t1){ t1=document.createElement('div'); t1.id='instTenue'; dp.appendChild(t1); }
+    if(!t2){ t2=document.createElement('div'); t2.id='instSous'; dp.appendChild(t2); }
+    if(nom==='referme'){
+      var qui=(p&&((p.from&&p.from!=='moi')?p.from:((p.who&&p.who!=='moi'&&p.who!=='le groupe')?p.who:''))) || '';
+      t1.textContent='tenue.';
+      t2.textContent = qui ? (qui+' vient de tracer sa moitié. Le dessin existe.')
+                           : 'Le dessin existe.';
+    }
+
+    /* le mot de l'instant (cadre 96) */
+    var tr=document.getElementById('dptTrace');
+    if(E.trace){ pose(tr,{display:'block', top:E.trace.y+'px', left:'24px', width:'342px',
+                          color:E.trace.col, '-webkit-text-fill-color':E.trace.col}); 
+      if(tr) tr.textContent=E.trace.mot; }
+    else cache(tr);
+
+    /* les Noyaux (§2.9) : le tien Ø78, une personne Ø58, 10 px plus bas. */
+    var au=document.getElementById('dAura');
+    if(E.aura) pose(au,{display:'block', position:'absolute', left:'24px', top:E.aura.y+'px',
+                        width:'342px', height:'auto', margin:'0', padding:'0', background:'none'});
+    else cache(au);
+
+    var qi=document.getElementById('dptQui'), ti=document.getElementById('dptTitre'),
+        qd=document.getElementById('dptQuand');
+    if(E.qui) pose(qi,{display:'block', top:E.qui.y+'px', 'font-size':'21px',
+                       color:E.qui.col, '-webkit-text-fill-color':E.qui.col});
+    else cache(qi);
+    if(E.titre) pose(ti,{display:'block', top:E.titre.y+'px', 'font-size':'38px',
+                         color:CREME, '-webkit-text-fill-color':CREME});
+    else cache(ti);
+    if(E.quand){ pose(qd,{display:'block', top:E.quand.y+'px',
+                          color:E.quand.col, '-webkit-text-fill-color':E.quand.col});
+      /* « TENUE À DEUX · À L'INSTANT » — les mots du cadre 101. */
+      if(qd) qd.textContent='TENUE À DEUX · À L’INSTANT'; }
+    else cache(qd);
+
+    /* aucune zone de message pendant l'instant : le cadre n'en porte pas. */
+    cache(document.getElementById('dpCorps'));
+  }
+
+  /* ── ON ENVELOPPE, ON NE RÉÉCRIT PAS. La fiche ordinaire garde son moteur ; l'instant
+       prend la main le temps qu'il dure, et le rend. ── */
+  var _traitOrig=window._ficheTrait, _cotesOrig=window._ficheCotes;
+  window._ficheTrait=function(){
+    var dp=armable();
+    if(!dp) return _traitOrig.apply(this,arguments);
+    var p=(typeof cur!=='undefined')?cur:null;
+    try{ trait(dp, inv(window._instant, nature(dp)), p); }catch(e){}
+  };
+  window._ficheCotes=function(){
+    var dp=armable();
+    if(!dp){ var d2=document.getElementById('detailPoster');
+      if(d2){ d2.classList.remove('inst-arrive','inst-referme','inst-apres'); }
+      return _cotesOrig.apply(this,arguments); }
+    var p=(typeof cur!=='undefined')?cur:null;
+    /* la fiche ordinaire pose d'abord tout ce qui ne change pas (l'entête, la barre
+       Peaufiner, les Noyaux) ; l'instant ne repose QUE ce que son cadre déplace. */
+    try{ _cotesOrig.apply(this,arguments); }catch(e){}
+    try{ cotes(dp, inv(window._instant, nature(dp)), p); }catch(e){}
+  };
+
+  /* ── LA MISE EN SCÈNE. « Une seconde, pas plus » : le champ menthe dure 1 000 ms, puis
+       le champ revient à sa nature et l'écran « juste après » reste. ── */
+  function rejoue(){
+    try{ if(window._ficheCotes) _ficheCotes(); }catch(_){}
+    try{ if(window._ficheTrait) _ficheTrait(); }catch(_){}
+  }
+  window._instantJoue=function(nom){ window._instant=nom||null; rejoue(); };
+  window._instantTenue=function(){
+    var dp=document.getElementById('detailPoster');
+    if(!dp||!dp.classList.contains('show')) return;
+    if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')) return;
+    window._instant='referme'; rejoue();
+    setTimeout(function(){ if(window._instant==='referme'){ window._instant='apres'; rejoue(); } },1000);
+  };
+  /* le déclencheur RÉEL : le geste qui se referme passe par le bouton « Tenue » du
+     sélecteur d'état (l. 4604). On écoute ce nœud-là, pas une famille. */
+  document.addEventListener('click',function(e){
+    var b=e.target.closest&&e.target.closest('#segStatus button[data-st="tenu"]');
+    if(!b) return;
+    setTimeout(function(){ try{ window._instantTenue(); }catch(_){} },40);
+  },true);
+  /* la fiche se ferme : l'instant est fini. */
+  var _cd=window.closeAll;
+  if(typeof _cd==='function'){
+    window.closeAll=function(){ window._instant=null; return _cd.apply(this,arguments); };
+    try{ closeAll=window.closeAll; }catch(_){}
+  }
+  var _od=window.openDetail;
+  if(typeof _od==='function'){
+    window.openDetail=function(){ window._instant=null; return _od.apply(this,arguments); };
+    try{ openDetail=window.openDetail; }catch(_){}
+  }
+})();
+</script>

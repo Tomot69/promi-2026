@@ -1,0 +1,110 @@
+[
+ {
+  "ch": 1,
+  "th": "dark",
+  "titre": "planter un arbre",
+  "defait": 0.0,
+  "actuel": [
+   10.8,
+   14.5
+  ],
+  "sans": [
+   6.9,
+   8.6
+  ],
+  "travers": [
+   7.1,
+   11.9
+  ]
+ },
+ {
+  "ch": 1,
+  "th": "dark",
+  "titre": "rapporter le livre",
+  "defait": 0.0,
+  "actuel": [
+   9.6,
+   11.1
+  ],
+  "sans": [
+   4.6,
+   6.0
+  ],
+  "travers": [
+   9.7,
+   11.0
+  ]
+ },
+ {
+  "ch": 1,
+  "th": "light",
+  "titre": "planter un arbre",
+  "defait": 0.0,
+  "actuel": [
+   10.9,
+   17.6
+  ],
+  "sans": [
+   7.2,
+   11.2
+  ],
+  "travers": [
+   7.6,
+   16.5
+  ]
+ },
+ {
+  "ch": 1,
+  "th": "light",
+  "titre": "rapporter le livre",
+  "defait": 0.0,
+  "actuel": [
+   10.9,
+   11.6
+  ],
+  "sans": [
+   6.4,
+   7.3
+  ],
+  "travers": [
+   10.8,
+   11.4
+  ]
+ },
+ {
+  "ch": 2,
+  "th": "dark",
+  "titre": "planter un arbre",
+  "defait": 0.0,
+  "actuel": [
+   12.4,
+   15.9
+  ],
+  "sans": [
+   8.5,
+   10.0
+  ],
+  "travers": [
+   8.0,
+   13.0
+  ]
+ },
+ {
+  "ch": 2,
+  "th": "light",
+  "titre": "planter un arbre",
+  "defait": 0.0,
+  "actuel": [
+   12.3,
+   18.9
+  ],
+  "sans": [
+   8.6,
+   12.4
+  ],
+  "travers": [
+   8.3,
+   17.9
+  ]
+ }
+]

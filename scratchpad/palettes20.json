@@ -1,0 +1,122 @@
+{
+ "primesautier": [
+  "#FFD60A",
+  "#FF7AA2",
+  "#005F73",
+  "#FFF4C2"
+ ],
+ "candide": [
+  "#CDB4FF",
+  "#FFC8A2",
+  "#BDE0A8",
+  "#FFB5C8"
+ ],
+ "gouailleur": [
+  "#9C4A1A",
+  "#E07A1F",
+  "#E9B824",
+  "#7D8B2E"
+ ],
+ "alangui": [
+  "#C4A69F",
+  "#7D6A8A",
+  "#DDCBB0",
+  "#8C97AB"
+ ],
+ "irascible": [
+  "#FF2D1A",
+  "#FF8A1C",
+  "#B80F2E",
+  "#2B0A0A"
+ ],
+ "hurluberlu": [
+  "#C8FF00",
+  "#7B2FF7",
+  "#FF3D9A",
+  "#2B1400"
+ ],
+ "beat": [
+  "#1F4FD1",
+  "#FFC21A",
+  "#FFFFFF",
+  "#E0673F"
+ ],
+ "minaudier": [
+  "#FF9FC8",
+  "#E0115F",
+  "#FFE0EC",
+  "#B5F2FF"
+ ],
+ "chafouin": [
+  "#A9B41F",
+  "#E6A3BE",
+  "#6C4675",
+  "#3FA7D6"
+ ],
+ "frivole": [
+  "#FF71CE",
+  "#01CDFE",
+  "#05FFA1",
+  "#FFFB96"
+ ],
+ "cajoleur": [
+  "#9FE6CF",
+  "#4B2B1F",
+  "#FFF0D4",
+  "#E23E57"
+ ],
+ "allegre": [
+  "#1FB36A",
+  "#7EC8FF",
+  "#0E5E4A",
+  "#EFFBEA"
+ ],
+ "lunatique": [
+  "#2BC4C4",
+  "#D9A21B",
+  "#C2185B",
+  "#1E1B3A"
+ ],
+ "flegmatique": [
+  "#CFE8FF",
+  "#6FA8DC",
+  "#4A5A6A",
+  "#FFB3A7"
+ ],
+ "narquois": [
+  "#FF9A5A",
+  "#7A1FA2",
+  "#FFE8D6",
+  "#FF2F6D"
+ ],
+ "fielleux": [
+  "#1A1400",
+  "#5A3300",
+  "#FFE600",
+  "#B38F00"
+ ],
+ "sibyllin": [
+  "#0A0A1F",
+  "#2A1B4D",
+  "#5E2CA5",
+  "#00E0FF"
+ ],
+ "veneneux": [
+  "#140014",
+  "#4A0033",
+  "#FF007A",
+  "#C0C0C0"
+ ],
+ "atrabilaire": [
+  "#0A2E36",
+  "#1B6F80",
+  "#FF9E00",
+  "#F2F2F2"
+ ],
+ "taciturne": [
+  "#0B0D4F",
+  "#2A2AD4",
+  "#8F8CFF",
+  "#E4E2FF"
+ ]
+}

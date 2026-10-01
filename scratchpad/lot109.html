@@ -1,0 +1,177 @@
+<style id="lot-V109-NOTIFS-css">
+/* ⚑ v109 (Tom, 30 sept. 2026) — LES NOTIFICATIONS. Jamais au lancement ; la permission ne se demande qu'après un « oui » à
+   « Je te le rappelle ? », posé à la plantation d'une parole DATÉE. Le rappel d'une parole datée est GRATUIT ; Ma Parole ! garde
+   la mémoire des paroles en l'air, la récurrence et le choix de l'heure. Rien quand la date est passée. */
+/* la question : la grammaire du bandeau de l'accueil (#accRappel), à sa place — une seule ligne, sous le plateau */
+#rapQuestion{position:absolute;left:24px;top:114px;width:342px;height:52px;box-sizing:border-box;border:2px solid var(--c-creme95);border-radius:26px;
+  background:var(--c-brun03);z-index:61;display:none;align-items:center;justify-content:space-between;gap:14px;padding:0 20px;
+  font-family:var(--f-libelle);font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.02em;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95)}
+#device.light #rapQuestion{border-color:var(--c-brun09);background:var(--c-creme95);color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+#rapQuestion.vu{display:flex}
+#device #rapQuestion.rap-cache{display:none!important}
+#rapQuestion .rq-t{flex:1 1 auto;white-space:nowrap}
+#rapQuestion [data-r]{cursor:pointer;padding:12px 0;white-space:nowrap}
+#device #accRappel.rq-cede{display:none!important}
+/* les Réglages : « Notifications › » ouvre sa page (la bascule unique s'efface) */
+#device#device #settingsScreen #notifCard #notifTog{display:none!important}
+#settingsScreen #notifCard .nt-go{font-family:var(--f-libelle);font-weight:700}
+/* la page */
+.frame #notifScreen,#device #notifScreen{background-color:var(--c-brun09)!important;color:var(--c-creme95);padding:0!important;overflow:hidden!important}
+.frame.light #notifScreen,#device.light #notifScreen{background-color:var(--c-creme95)!important;color:var(--c-brun09)}
+#notifScreen .v16-corps.nt-corps{left:24px;right:24px}
+#notifScreen .nt-row{position:relative;width:342px;box-sizing:border-box;min-height:64px;border:3px solid var(--c-creme95);border-radius:22px;
+  padding:12px 12px 12px 20px;margin:0 0 16px;display:flex;align-items:center;justify-content:space-between;gap:14px;cursor:pointer}
+#device.light #notifScreen .nt-row{border-color:var(--c-brun09)}
+#notifScreen .nt-tx{display:flex;flex-direction:column;gap:4px;min-width:0}
+#notifScreen .nt-k{font-family:var(--f-texte);font-weight:500;font-size:13px;letter-spacing:.18em;text-transform:uppercase;line-height:1.2;color:var(--c-mauve75);-webkit-text-fill-color:var(--c-mauve75)}
+#device.light #notifScreen .nt-k{color:var(--c-bleu45-txt);-webkit-text-fill-color:var(--c-bleu45-txt)}
+#notifScreen .nt-s{font-family:var(--f-texte);font-weight:400;font-size:14px;line-height:1.3;color:inherit;-webkit-text-fill-color:currentColor}
+#notifScreen .nt-v{flex:none;font-family:var(--f-libelle);font-weight:700;font-size:16px;white-space:nowrap}
+#notifScreen .nt-tog{flex:none;display:inline-block;position:relative;width:48px;height:28px;border-radius:14px;border:2px solid currentColor;box-sizing:border-box;background:transparent;transition:background .18s}
+#notifScreen .nt-tog::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:currentColor;opacity:.5;transition:left .18s}
+#notifScreen .nt-tog.on{background:currentColor}
+#notifScreen .nt-tog.on::after{left:22px;opacity:1;background:var(--c-brun09)}
+#device.light #notifScreen .nt-tog.on::after{background:var(--c-creme95)}
+/* « Ce qu'on me lance » attend Firebase : visible, éteint, sans prise */
+#notifScreen .nt-row.nt-bientot{cursor:default}
+#notifScreen .nt-row.nt-bientot .nt-tog{opacity:.4}
+/* Ma Parole ! : un mur comme les autres — flou 4,8 px, sans explication ; la phrase monte au toucher (lot-V104-MURS) */
+#device:not(.premium)#device #notifScreen .nt-mur .nt-row{filter:blur(4.8px)!important;pointer-events:none!important}
+</style>
+<script id="lot-V109-NOTIFS">
+(function(){
+  var K='promi_notifs2', LOG='promi_notifs_log';
+  var HEURES=[[8,'le matin, vers 8 h'],[12,'à midi'],[19,'le soir, vers 19 h']];   /* à valider (QUESTIONS) : les deux autres heures */
+  var JOUR_MEME=9;   /* « c'est aujourd'hui » : le matin du jour, quand la veille était déjà passée à la plantation */
+  var LAIR_JOURS=7;  /* une parole en l'air au plus par semaine — à valider */
+  function lit(){ var o=null; try{ o=JSON.parse(localStorage.getItem(K)||'null'); }catch(_){}
+    if(!o||typeof o!=='object'){ o={datees:false,lair:false,heure:19,refus:0}; try{ if(localStorage.getItem('promi_notifs')==='1') o.datees=true; }catch(_){} }
+    if(o.heure==null) o.heure=19; if(o.refus==null) o.refus=0; return o; }
+  function ecrit(o){ try{ localStorage.setItem(K, JSON.stringify(o)); }catch(_){} }
+  function paye(){ try{ return !!document.getElementById('device').classList.contains('premium'); }catch(_){ return false; } }
+  function sauve(){ try{ if(window.saveState) saveState(); }catch(_){} }
+  function api(){ return (typeof Notification!=='undefined') ? Notification : null; }
+  function demande(){ var N=api(); try{ if(N && N.permission==='default' && N.requestPermission) N.requestPermission(); }catch(_){} }
+  window._notifEtat=lit;
+
+  /* ── LES MOTS (Tom, 30 sept.) — le titre de la parole paraît UNE fois : dans la phrase, ou en tête de la notification ── */
+  function qui(p){ var w=(p.who||'').trim(); return (!w || /^(moi|soi|moi-même)$/i.test(w)) ? null : w; }
+  var MOTS={
+    veille:function(p){ var w=qui(p);
+      if(p.chiche && w) return {titre:'Promi', texte:'Ton Chiche à '+w+' arrive demain.'};
+      if(w) return {titre:'« '+p.title+' »', texte:'Tu as promis ça à '+w+'. Demain.'};
+      return {titre:'Promi', texte:'Demain, c’est « '+p.title+' ».'}; },
+    jour:function(p){ return {titre:'« '+p.title+' »', texte:'C’est aujourd’hui.'}; },
+    lair:function(p){ return {titre:'Promi', texte:'« '+p.title+' » flotte toujours. Un de ces jours ?'}; }
+  };
+  window._notifMots=MOTS;
+
+  /* ── LE JOUR D'UNE PAROLE — sa date choisie (dueISO), sinon « dans N jours » compté du jour où on l'a vue ── */
+  function debut(d){ var x=new Date(d); x.setHours(0,0,0,0); return x; }
+  function jourJ(p){
+    if(p.dueISO){ var m=/^(\d{4})-(\d{2})-(\d{2})/.exec(p.dueISO); if(m) return new Date(+m[1],+m[2]-1,+m[3]); }
+    if(p.enLair || p.due==null) return null;
+    if(!p.rap || p.rap.due!==p.due){ p.rap={due:p.due, base:debut(Date.now()).getTime(), vu:Date.now()}; }
+    return new Date(p.rap.base + p.due*864e5);
+  }
+  function vuLe(p){ if(!p.rap) p.rap={vu:Date.now()}; if(!p.rap.vu) p.rap.vu=Date.now(); return p.rap.vu; }
+  function a(d,h){ var x=new Date(d); x.setHours(h,0,0,0); return x.getTime(); }
+  function mienne(p){ return p && !p.draft && !p.req && p.status==='encours' && (!p.from || p.from==='moi'); }
+
+  /* ── LE PLAN : ce qui partirait, et quand. Jamais rien pour une date passée. ── */
+  function plan(now){ var o=lit(), L=[]; now=now||Date.now();
+    if(o.datees) promises.forEach(function(p){ if(!mienne(p) || p.rappel===false) return; var J=jourJ(p); if(!J) return;
+      var fin=a(J,0)+864e5; if(now>=fin) return;                       /* la date est passée : silence */
+      var v=vuLe(p), veille=a(new Date(J.getTime()-864e5), o.heure), jm=a(J,JOUR_MEME);
+      if(v<=veille) L.push({id:p.id, type:'veille', quand:veille, jusque:a(J,0), cle:p.id+'|'+J.toDateString()+'|v', mots:MOTS.veille(p)});
+      else if(v<jm) L.push({id:p.id, type:'jour', quand:jm, jusque:fin, cle:p.id+'|'+J.toDateString()+'|j', mots:MOTS.jour(p)}); });
+    if(o.lair && paye()){ var ln=promises.filter(function(p){ return mienne(p) && (p.enLair || (p.due==null && !p.dueISO)); });
+      if(ln.length){ ln.sort(function(x,y){ return (x.rapLair||0)-(y.rapLair||0); }); var p=ln[0];
+        var depuis=Math.max(o.lairDepuis||0, o.lairDernier||0), q=a(new Date((depuis||now)+LAIR_JOURS*864e5), o.heure);
+        L.push({id:p.id, type:'lair', quand:q, jusque:a(new Date(q),0)+864e5, cle:p.id+'|'+new Date(q).toDateString()+'|l', mots:MOTS.lair(p)}); } }
+    L.sort(function(x,y){ return x.quand-y.quand; }); return L; }
+  window._notifPlan=plan;
+
+  /* ── L'ENVOI — page ouverte seulement (l'app fermée attend Firebase). Une notification par jour au plus. ── */
+  function journal(){ try{ return JSON.parse(localStorage.getItem(LOG)||'{}')||{}; }catch(_){ return {}; } }
+  function tick(){ try{ var N=api(), now=Date.now(), j=journal(), auj=new Date().toDateString(); if(j._jour===auj) return;
+      var L=plan(now); for(var i=0;i<L.length;i++){ var e=L[i]; if(e.quand>now || now>=e.jusque || j[e.cle]) continue;
+        if(!N || N.permission!=='granted') return;
+        try{ new Notification(e.mots.titre, {body:e.mots.texte, tag:e.cle}); }catch(_){ return; }
+        j[e.cle]=now; j._jour=auj; try{ localStorage.setItem(LOG, JSON.stringify(j)); }catch(_){}
+        if(e.type==='lair'){ var o=lit(); o.lairDernier=now; ecrit(o); var p=promises.find(function(x){ return x.id===e.id; }); if(p){ p.rapLair=now; sauve(); } }
+        return; } }catch(_){} }
+  setInterval(tick, 30000); setTimeout(tick, 5000);
+  document.addEventListener('visibilitychange', function(){ if(!document.hidden) tick(); });
+  /* « Rappels activés ✓ » est retiré (Tom) : une notification qui ne dit rien, c'est du bruit */
+
+  /* ── LA QUESTION, à la plantation d'une parole datée ── */
+  function ouvert(){ var dev=document.getElementById('device'); if(!dev) return true; var D=dev.getBoundingClientRect();
+    if(document.querySelector('#device .sheet.show, #device .poster.show, #feedView.in')) return true;
+    var L=document.querySelectorAll('.screen.show'); for(var i=0;i<L.length;i++){ var e=L[i], r=e.getBoundingClientRect(), s=getComputedStyle(e);
+      if(s.visibility!=='hidden' && parseFloat(s.opacity)>0.1 && Math.min(r.bottom,D.bottom)-Math.max(r.top,D.top) > D.height*0.5) return true; }
+    return false; }
+  function peutDemander(){ var o=lit(), N=api(); if(o.datees || o.refus>=2) return false; if(N && N.permission==='denied') return false;
+    try{ if(localStorage.getItem('promi_onb')!=='1') return false; }catch(_){}
+    var dev=document.getElementById('device'); if(dev && dev.classList.contains('onb-actif')) return false; return true; }
+  var qEl=null, qPid=null, qFin=0;
+  function range(){ if(qEl) qEl.classList.remove('vu'); qPid=null; var a2=document.getElementById('accRappel'); if(a2) a2.classList.remove('rq-cede'); }
+  window._rapRange=range;
+  function montre(p){ if(!peutDemander()) return;
+    var dev=document.getElementById('device'); if(!dev) return;
+    if(!qEl){ qEl=document.createElement('div'); qEl.id='rapQuestion'; qEl.setAttribute('role','group');
+      qEl.innerHTML='<span class="rq-t">Je te le rappelle ?</span><span data-r="oui" role="button">oui</span><span data-r="non" role="button">pas besoin</span>';
+      dev.appendChild(qEl);
+      qEl.addEventListener('click', function(ev){ var r=ev.target.closest&&ev.target.closest('[data-r]'); if(!r) return; ev.stopPropagation();
+        var o=lit(), p2=promises.find(function(x){ return x.id===qPid; });
+        if(r.getAttribute('data-r')==='oui'){ o.datees=true; o.refus=0; ecrit(o); if(p2){ p2.rappel=true; vuLe(p2); sauve(); } demande(); }
+        else { o.refus=(o.refus||0)+1; ecrit(o); if(p2){ p2.rappel=false; sauve(); } }
+        range(); tick(); }); }
+    qPid=p.id; qFin=Date.now()+12000; qEl.classList.add('vu'); qEl.classList.toggle('rap-cache', ouvert());
+    var a2=document.getElementById('accRappel'); if(a2) a2.classList.add('rq-cede'); }
+  window._rapMontre=function(id){ var p=promises.find(function(x){ return x.id===id; }); if(p) montre(p); };
+  /* elle s'efface derrière un écran ouvert, et s'en va seule au bout de 12 s — sans compter comme un « pas besoin » */
+  setInterval(function(){ if(!qEl||!qEl.classList.contains('vu')) return; if(Date.now()>qFin){ range(); return; }
+    var c=ouvert(); if(qEl.classList.contains('rap-cache')!==c) qEl.classList.toggle('rap-cache', c); }, 250);
+  (window._rangeurs=window._rangeurs||[]);
+  var avant=null;
+  window.addEventListener('click', function(ev){ var t=ev.target; if(!t||!t.closest||!t.closest('#addPromi')) return;
+    avant={}; promises.forEach(function(p){ avant[p.id]=1; });
+    setTimeout(function(){ var neufs=promises.filter(function(p){ return avant && !avant[p.id]; }); avant=null;
+      var d=neufs.filter(function(p){ return mienne(p) && (p.dueISO || (!p.enLair && p.due!=null)); });
+      d.forEach(function(p){ vuLe(p); });
+      if(d.length) setTimeout(function(){ montre(d[d.length-1]); }, 1900); }, 0); }, true);
+
+  /* ── LA PAGE DES RÉGLAGES ── */
+  function row(cls, k, s, droite, attrs){ return '<div class="nt-row '+(cls||'')+'" '+(attrs||'')+'><div class="nt-tx"><span class="nt-k">'+k+'</span>'+(s?'<span class="nt-s">'+s+'</span>':'')+'</div>'+droite+'</div>'; }
+  function tog(on){ return '<span class="nt-tog'+(on?' on':'')+'"></span>'; }
+  function heureMot(h){ for(var i=0;i<HEURES.length;i++) if(HEURES[i][0]===h) return HEURES[i][1]; return HEURES[2][1]; }
+  function remplit(s){ var o=lit(), c=s.querySelector('.v16-corps');
+    c.innerHTML=row('', 'Mes paroles datées', 'un petit mot la veille', tog(o.datees), 'data-nt="datees" role="switch" aria-checked="'+o.datees+'"')
+      +'<div class="nt-mur">'
+      +row('', 'Mes paroles en l’air', 'de temps en temps, une douce relance', tog(o.lair && paye()), 'data-nt="lair" role="switch" aria-checked="'+(o.lair&&paye())+'"')
+      +row('', 'L’heure', '', '<span class="nt-v">'+heureMot(paye()?o.heure:19)+'</span>', 'data-nt="heure" role="button"')
+      +'</div>'
+      +row('nt-bientot', 'Ce qu’on me lance', 'Chiches, invitations, réponses · bientôt', tog(false), 'aria-disabled="true"'); }
+  function page(){ var s=document.getElementById('notifScreen');
+    if(!s){ var priv=document.getElementById('privScreen'); if(!priv) return null;
+      s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id='notifScreen';
+      s.innerHTML='<div class="closeb" data-close>✕ Fermer</div><h2 class="scr-t">Notifications</h2><div class="v16-corps nt-corps"></div>';
+      priv.parentNode.insertBefore(s, priv.nextSibling);
+      s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show');
+        var st=document.getElementById('settingsScreen'); if(st) st.classList.add('show'); });
+      s.addEventListener('click', function(e){ var r=e.target.closest&&e.target.closest('[data-nt]'); if(!r) return; var o=lit(), k=r.getAttribute('data-nt');
+        if(k==='datees'){ o.datees=!o.datees; if(o.datees){ o.refus=0; demande(); } }
+        else if(k==='lair'){ if(!paye()) return; o.lair=!o.lair; if(o.lair && !o.lairDepuis) o.lairDepuis=Date.now(); if(o.lair) demande(); }
+        else if(k==='heure'){ if(!paye()) return; var i=0; for(var j=0;j<HEURES.length;j++) if(HEURES[j][0]===o.heure) i=j; o.heure=HEURES[(i+1)%HEURES.length][0]; }
+        ecrit(o); remplit(s); }); }
+    remplit(s); return s; }
+  window._notifPage=function(){ var s=page(); if(!s) return; var st=document.getElementById('settingsScreen'); if(st) st.classList.remove('show');
+    s.querySelector('.v16-corps').scrollTop=0; s.classList.add('show'); };
+  function carte(){ var c=document.getElementById('notifCard'); if(!c) return; c.setAttribute('role','button'); c.removeAttribute('aria-checked');
+    var v=c.querySelector('.v'); if(v && !v.querySelector('.nt-go')){ var g=document.createElement('span'); g.className='nt-go'; g.textContent='›'; v.appendChild(g); } }
+  carte(); setTimeout(carte, 1500);
+  window.addEventListener('click', function(ev){ var t=ev.target; if(!t||!t.closest||!t.closest('#notifCard')) return;
+    ev.preventDefault(); ev.stopImmediatePropagation(); carte(); window._notifPage(); }, true);
+})();
+</script>
