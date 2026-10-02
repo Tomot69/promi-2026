@@ -1,0 +1,218 @@
+=== redteam_ecrans.py  [code 1, 95 s]
+Aura : les arcs des Noyaux sont lisibles (6 px et plus) [clair] OK  
+Aura : aucune piste vide, les arcs disent l état [clair] OK  
+bouton + : rotation lente [clair]              OK  
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+148/152
+=== redteam.py  [code 0, 21 s]
+le bouton rond relaie Partager             OK  
+le mot-marque reste en PromiLate, son i en accent OK  
+aucun recouvrement                         OK  
+le ✕ ferme                                 OK  
+aucune erreur JS                           OK  
+
+15/15
+=== redteam2.py  [code 0, 19 s]
+le Noyau se masque                           OK  
+Sans texte reagit                            OK  
+Visibles reagit                              OK  
+le QR bascule                                OK  
+aucune erreur JS                             OK  
+
+10/10
+=== redteam3.py  [code 0, 36 s]
+masquer un Promi bascule son encart            OK  
+mode Ma Toile change l'image                   OK  
+le mot-marque reste en PromiLate, son i en accent OK  
+le Noyau ne pose aucun fond (centre intact)    OK  
+aucune erreur JS                               OK  
+
+18/18
+=== redteam_demande.py  [code 0, 17 s]
+sa vignette est dans la brume                OK  
+un seul geste la rend reelle                 OK  
+aucun bouton refuser dans la fiche           OK  
+accepter dissipe la brume                    OK  
+aucune erreur JS                             OK  
+
+19/19
+=== redteam_toile.py  [code 0, 75 s]
+le % porte la double encre de nature       OK  attendu #82AEF8 · encres du chiffre : #82aef8 #dd4d23 #f3e7d1
+petit : le chiffre tient dans le trou      OK  trou 42 · texte jusqu a 41
+moyen : le chiffre tient dans le trou      OK  trou 58 · texte jusqu a 56
+grand : le chiffre tient dans le trou      OK  trou 77 · texte jusqu a 75
+aucune erreur JS                           OK  []
+
+18/18
+=== redteam_geste.py  [code 0, 48 s]
+le cadrage ne suit pas le Noyau              OK  
+Mon Folio : la Pelote centrée sur la hauteur de son bloc OK  
+Mes Promi : la reorganisation est animee     OK  
+Mon Folio : rien ne disparaît, rien ne se superpose OK  
+aucune erreur JS                             OK  
+
+12/12
+=== redteam_verbe.py  [code 0, 29 s]
+light : la phrase montre son verbe (Promets-moi)     OK  h=53.2 txt='je promets'
+light : la bascule mène à un vrai bouton             OK  bouton={'f': 1, 'h': 60, 'vis': True}
+dark : la phrase montre son verbe (Je promets)       KO  h=0 txt='je me promets'
+dark : la phrase montre son verbe (Promets-moi)      KO  h=0 txt='je promets'
+dark : la bascule mène à un vrai bouton              KO  bouton={'f': 1, 'h': 0, 'vis': False}
+
+3/6
+=== redteam_filets.py  [code 0, 194 s]
+fiche cercle   [light]  filet non    OK
+fiche tenue    [light]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [light]  filet non    OK
+page+ chiche   [light]  filet non    OK
+page+ cercle   [light]  filet non    OK
+
+filet du trait : 14/14
+=== redteam_vide.py  [code 0, 235 s]
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_air.py  [code 0, 322 s]
+✅  L'AIR EST INTACT — 686 paires de textes, 68 écrans, deux thèmes.
+=== redteam_champ.py  [code 0, 128 s]
+  Nuée [light]                   OK
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_gens.py  [code 0, 201 s]
+[sombre] Nuée · avec · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[sombre] Nuée · avec · la liste vit au-dessus de Peaufiner       OK  
+[sombre] Fiche · Peaufiner · À QUI · toucher « Marion » l'ajoute OK  
+[sombre] Fiche · Peaufiner · À QUI · la croix de « Marion » la retire OK  
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+
+38/38
+=== redteam_tuiles.py  [code 0, 278 s]
+[sombre · souris · clic] chiche après chiche→nuee→promi    OK  
+[sombre · souris · clic] nuee après rien                   OK  
+[sombre · souris · clic] chiche après nuee                 OK  
+[sombre · souris · clic] nuee après nuee→chiche            OK  
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64
+=== redteam_dalle_figee.py  [code 0, 100 s]
+A · même couleur à chaque ouverture (3 × 2 thèmes)         OK  18 dalles · 0 écarts 
+C · après sync, la Toile rend la même couleur              OK  plantée rgb(130,174,248) → rgb(130,174,248)
+B · une dalle plantée garde sa couleur, sauvée puis rechargée OK  rgb(130,174,248) → rgb(130,174,248) · dalle sauvée {'ci': 3, 'lit': 0}
+D · les peintres des cartes suivent le Studio (v34)        OK  69 appels · 6 pour le Promi planté en « pixel · terre », peint dans le Studio (encre) : True · 0 hors du Studio
+
+4/4
+=== redteam_reperage.py  [code 0, 41 s]
+[sombre] 4 · une Nuée vide est une Nuée                        OK  [{'et': 'AUCUNE PAROLE', 'eb': 'perso', 'etat': 'nuee', 'outline': ''}]
+[sombre] 5 · l'Index ne compte plus (Q347)                     OK  {'vu': False}
+[sombre] 2 · Index 3 par ligne : dalle peinte, rien devant elle OK  fautives : []
+[sombre] 1 · Fil : chaque ligne lit sa nature, à gauche        OK  7 lignes · fautives : []
+[sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : []
+
+16/16
+=== redteam_nuee_entree.py  [code 0, 46 s]
+[sombre · pleine] 2 · 12 sous la dernière carte              OK  air 12
+[sombre · pleine] 4 · état→carte 16, entre cartes 12         OK  état→carte 15 · pas [12]
+[sombre · pleine] 3 · la règle du trait : base 176           OK  base 176
+[sombre · pleine] 4 · trait→Noyaux→Avec→titre→état : [11, 18, 5, 22] OK  mesuré [11, 19, 5, 22]
+[sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True}
+
+24/24
+=== redteam_accueil.py  [code 0, 177 s]
+[sombre] 3 · le + ouvre les natures sur place, reste un +    OK  {'ouvert': True, 'sheet': False, 'tr': 'none'}
+[sombre] 3 · chaque nature ouvre SA phrase, trois ordres, au doigt OK  ratées : []
+[sombre] 5 · l'appui long sur la Toile n'ouvre pas le Studio OK  Studio ouvert : False
+[sombre] 7 · toute dalle atteignable, dix zooms              OK  18 dalles · inatteignables {}
+[sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False
+
+22/22
+=== redteam_zoom.py  [code 0, 90 s]
+[sombre] 3 · le rond « recadrer » est là                       OK  
+[sombre] 5 · double toucher sur une dalle → défaut, pas de fiche OK  échelle 1.000 (défaut 1.0 pour 20) · fiche False
+[sombre] 6 · un toucher simple ouvre la fiche                  OK  dalle 125 · fiche True
+[sombre] 7 · planter ramène le défaut                          OK  échelle 1.000 (défaut 1.0 pour 21)
+[sombre] 8 · supprimer ramène le défaut                        OK  échelle 1.000 (défaut 1.0 pour 20)
+
+16/16
+=== redteam_cercle_couleur.py  [code 0, 86 s]
+[clair] 7 · LA COULEUR ouverte ne recouvre rien                  OK  {'dedans': True, 'suivant': True, 'h': 188}
+[clair] 5 · le code tient après une plantation                   OK  rgb(18,171,52)
+[clair] 6 · un code choisi à la page + est celui de la dalle plantée OK  rgb(192,255,238) attendu rgb(192,255,238)
+[clair] 6 · rouvrir la page + efface le choix en attente         OK  
+[clair] aucune erreur JS                                         OK  []
+
+34/34
+=== redteam_tokens.py  [code 0, 1 s]
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_studio_geste.py  [code 0, 27 s]
+  la palette revient d'où elle vient                           OK   signal
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+
+13/13
+=== redteam_apercus.py  [code 1, 68 s]
+  ✅ A le fond du Studio porte de la matière colorée [light]  (45.7 %)
+  ✅ B les graines de l'aperçu se déclarent [light]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [light]
+  ✅ D la deuxième ouverture vaut la première [light]  (72/72, 46.9 %)
+  ❌ E le fond d'un aperçu est celui de la vraie Toile [light] — fond sombre #050302 au lieu de #201908 (celui du mode)
+
+❌  8/10
+=== redteam_nuee_dalle.py  [code 0, 97 s]
+[clair] 10 · le potager garde sa dalle, toujours au doigt          OK  {'atelier': 356, 'potager': 354, 'njuge': 197}
+[clair] 10 · au doigt, sa dalle ouvre SA fiche                     OK  [228, 364] · True
+[clair] 10 · sa couleur tient après une plantation                 OK  rgb(130,174,248) → rgb(130,174,248)
+[clair] 11 · Nuée neuve : sa dalle au doigt, et son premier Promi relié OK  ok · {'k': 'n1790953415881', 'q': True, 'abs': True, 'nuee': 503}
+[clair] aucune erreur JS                                           OK  []
+
+38/38
+=== redteam_decoupe.py  [code 0, 136 s]
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_flash.py  [code 0, 117 s]
+  ✅ B1 · + → nuee : aucun flash au premier plan (148 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (78 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1798 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2025 ms)
+
+32/32
+=== redteam_joignable.py  [code 0, 129 s]
+la page se charge sans erreur                              OK  
+des éléments ont été relevés sur chaque écran              OK  36 écrans
+aucun élément interactif injoignable hors dette            OK  0 neufs, 2 en dette
+aucun gestionnaire n'appelle une fonction absente hors dette OK  0 neufs, 4 en dette
+aucun gestionnaire en attribut on…=""                      OK  0
+
+5 / 5
+=== redteam_garder.py  [code 0, 81 s]
+[chromium] C · avec la personne de la phrase                           OK  Rachel
+[chromium, sans personne] A · le lien « garder de côté » paraît, et il est joignable OK  {'vu': True, 'joignable': True, 'mot': 'garder de côté'}
+[chromium, sans personne] B · la page + se ferme                       OK  
+[chromium, sans personne] C · un gardé de côté de plus, avec le titre de la phrase OK  1 → 2 · ['appeler Mamie', 'aller voir la mer']
+[chromium, sans personne] D · sans personne choisie : gardé « à moi »  OK  moi
+
+18 / 18
+=== FIN

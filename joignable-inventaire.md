@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 394 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 284 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 395 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -74,12 +74,12 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 422 | 342 × 94 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 435 | 342 × 79 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 526 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 447 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 535 | 342 × 94 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 617 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 538 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 629 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 641 | 342 × 94 | oui |  |
-| Nuée | `#nfAdd` | natif | 195, 699 | 342 × 62 | oui |  |
+| Nuée | `#nfAdd` | natif | 195, 711 | 342 × 62 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUrécupérer les plants»` | on… | 195, 747 | 342 × 94 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
@@ -181,8 +181,9 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 | Studio | `div#stpHaut>div.closeb«✕ Fermer»` | on… | 293, 70 | 91 × 19 | oui |  |
 | Studio | `#studioScreen` | écouteur | 195, 422 | 422 × 876 | oui |  |
 | Studio | `div#stpTons>div.stp-ton«»` | on… | 75, 620 | 54 × 54 | oui |  |
-| Studio | `div#stpVue>div.stp-d«»` | on… | 81, 724 | 44 × 44 | oui |  |
-| Studio | `div#stpVue>div.stp-d.on«»` | on… | 145, 724 | 44 × 44 | oui |  |
+| Studio | `div#stpVue>div.stp-d«»` | on… | 67, 724 | 44 × 44 | oui |  |
+| Studio | `div#stpVue>div.stp-d.on«»` | on… | 131, 724 | 44 × 44 | oui |  |
+| Studio | `#stpZzz` | on… | 195, 724 | 44 × 44 | oui |  |
 | Vie privée | `div#privScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
 | Vie privée | `#pvExport` | on… | 195, 525 | 342 × 54 | oui |  |
 | Vie privée | `#pvReset` | on… | 195, 585 | 342 × 54 | oui |  |

@@ -1,0 +1,240 @@
+=== redteam_souffle.py  [code 1, 74 s]
+OK [light] A · 0,3 s → 4,6 s : 15965 pixels changés dans la silhouette, 0 au-delà
+✗  [light] B · lumière de la boule : sommet à 6.5 s (décidé 4.6), retour au bas à 11.4 s (décidé 10.6), amplitude 2.15 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 19794 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+❌ le souffle ne tient pas sa loi
+=== redteam_contour.py  [code 0, 39 s]
+[clair] avec le halo : la lumière s'arrête à 135.8 du centre (borne 139.6) · pixels au-delà : 0
+OK [clair] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+   [sombre] avec le halo : la lumière s'arrête à 138.7 du centre (borne 139.6) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.2 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== redteam_halo.py  [code 1, 137 s]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre] le halo ne touche pas le plateau ; le bouton est à sa place de v118 OK  haut du halo 131.0 · bas du plateau 100.0 · bouton 525.47
+D · le halo respire avec la lumière : ± 20 % (sommet ÷ creux = 1,5 ± 0,3)    OK  1.62 (9 relevés au sommet, 10 au creux)
+aucune erreur de page                                                        OK  
+
+22 / 23
+KO : C · [clair] trame : aucune bande de plus de 2 pt à valeur constante
+=== redteam_pelote_partage.py  [code 0, 67 s]
+✅ clair · export mosaic : sous le plafond iPhone (16,7 Mpx) 8298720
+✅ clair · export pelote : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 0.6778296988577363, 'px': 8294400}
+✅ clair · export pelote : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ clair · export toile : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 1.2787642782969886, 'px': 8294400}
+✅ clair · export toile : sous le plafond iPhone (16,7 Mpx) 8294400
+
+42/42
+=== redteam_partage_fiche.py  [code 0, 226 s]
+[doigt · Cercle] D · la réduction n'est jamais sauvegardée         OK  {"139":true,"n:potager":true}
+[doigt · Cercle] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Cercle] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt] aucune erreur JS                                           OK  
+
+48/48
+✅ le rond Partager d'une fiche partage son Folio
+=== redteam_photo_menu.py  [code 0, 58 s]
+[chromium] D · le libellé devient « La dalle du Studio »         OK  {'mots': ['Importer une image', 'La dalle du Studio'], 'vis': True}
+[chromium] E · le partage suit l'option                          OK  planche avec ↔ sans 3.76 niveaux
+[chromium] F · page + : le bouton ouvre le sélecteur, sans menu  OK  
+[chromium] aucune erreur JS                                      OK  
+
+18/18
+✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+=== redteam_origine.py  [code 0, 62 s]
+[chromium] chiche · truculent · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 103.6
+[chromium] chiche · truculent · origine à ΔE 105.9 → la couleur d'ORIGINE OK  à l'origine 2.3 · à la rampe 129.0 · app : origine|105.9
+[chromium] sans l'option, la bande garde la rampe de Q30           OK  
+[chromium] aucune erreur de page                                   OK  
+
+64 / 64
+=== redteam_nuit.py  [code 0, 125 s]
+cran · la légende de l'Aura est la MÊME, au hex près, en sombre ordinaire et en sombre de nuit OK  [[0, 52, 26], [41, 21, 71], [221, 77, 35]] / [[0, 52, 26], [41, 21, 71], [221, 77, 35]]
+5 · sombre, Zzz éteint, la nuit : sombre ordinaire                             OK  clair=False cran=False crème=#F7F0DE
+5 · la crème est revenue à sa valeur                                           OK  #F7F0DE
+6 · après rechargement : le choix « sombre » et le Zzz activé sont retrouvés   OK  ('dark', True)
+6 · après rechargement : le choix « clair » et le Zzz éteint sont retrouvés    OK  ('light', False)
+
+44 / 44
+=== redteam_notifs.py  [code 0, 92 s]
+  ✅ 8c · toucher le mur : la phrase monte, rien ne s'active  — {'leve': True, 't': 'Tiens tiens, on dirait que ça commence à t’intéresser…', 'lair': False}
+  ✅ 8d · Ma Parole ! : net, la mémoire s'active, l'heure passe au matin  — {'e': {'datees': True, 'lair': True, 'heure': 8, 'refus': 0, 'lairDepuis': 1790951868018}, 'f': ['none', 'none'], 'h': 'le matin, vers 8 h', 'lairPlan': ['« apprendre la guitare » flotte toujours. Un de ces jours ?']}
+  ✅ 8e · la mémoire propose une parole en l'air, avec ses mots  — ['« apprendre la guitare » flotte toujours. Un de ces jours ?']
+  ✅ 8f · « Ce qu'on me lance » attend Firebase : éteint, sans prise  — [False, 'Chiches, invitations, réponses · bientôt']
+  ✅ 0 · aucune erreur JS  — []
+
+36/36
+=== redteam_volume.py  [code 0, 0 s]
+liste blanche (la Pelote) : 8 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE, lot-V119-PELOTE
+dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0
+✅ AUCUN VOLUME HORS DE LA PELOTE
+=== redteam_clavier.py  [code 0, 0 s]
+focus() : 18, dont 3 différé(s)
+  ✓ le nom du Cercle (v114) — dans le geste (l.13145, différé en secours)
+  ✓ la page + d'un gardé de côté — le titre (30 ms) — dans le geste (l.13325, différé en secours)
+  ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.31788, différé en secours)
+✅ le clavier s'ouvre au geste — 3 champs
+=== redteam_ajouter.py  [code 0, 45 s]
+OK page+ [dark] {'barre': 760, 'liste': [487, 659], 'ajouter': [681, 733], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK fiche [dark] {'barre': 760, 'liste': [255.8, 607.8], 'ajouter': [629.8, 681.8], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK page+ [light] {'barre': 760, 'liste': [487, 659], 'ajouter': [681, 733], 'pastilles_sous_le_bouton': 0, 'trait': None}
+OK fiche [light] {'barre': 760, 'liste': [255.8, 607.8], 'ajouter': [629.8, 681.8], 'pastilles_sous_le_bouton': 0, 'trait': None}
+✅ la liste défile dans son espace, le bouton garde sa ligne
+=== redteam_suggestions.py  [code 0, 51 s]
+soi       N=20 60 ouvertures  OK
+faire     N=16 48 ouvertures  OK
+demander  N=15 45 ouvertures  OK
+chiche    N=29 87 ouvertures  OK
+nuee      N=40 120 ouvertures  OK
+✅ tirage sans remise
+=== redteam_pilules.py  [code 0, 14 s]
+nuee   [light]  titre 8.05:1  sous-titre 8.05:1  OK
+chiche [light]  titre 10.83:1  sous-titre 10.83:1  OK
+promi  [light]  titre 7.77:1  sous-titre 7.77:1  OK
+nuee   [dark]  titre 8.05:1  sous-titre 8.05:1  OK
+chiche [dark]  titre 12.78:1  sous-titre 12.78:1  OK
+promi  [dark]  titre 9.17:1  sous-titre 9.17:1  OK
+✅ les pilules se lisent
+=== redteam_murs.py  [code 1, 123 s]
+  ✅ 4 · compteur global : l'Aura fait monter la phrase 4  — 'Tiens tiens, on dirait que ça commence à t’intéresser…'
+  ✅ 5a · la 21e touche fait monter la 21e phrase  — 'On se dit directement à la prochaine\xa0?'
+  ✅ 5b · au-delà : au hasard, jamais deux fois la même de suite  — 24 tirages, 14 distinctes, 0 répétitions, 0 hors liste
+  ✅ 6 · après une longue absence le compteur repart à la phrase 1 (sans rouvrir l'offre seule)  — 'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.'
+  ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none
+
+25/26
+=== redteam_tonsurton.py  [code 0, 58 s]
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_polices.py  [code 0, 41 s]
+   atkinson   500  normal   179 élément(s)
+   promilate  400  normal   132 élément(s)
+
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)
+=== redteam_nuee.py  [code 0, 204 s]
+  écarts de style ...................  0
+  ÉLÉMENTS DÉCLARÉS MAIS PAS PEINTS .  0
+  collisions de blocs ...............  0
+  débordements ......................  0
+==============================================================================
+
+  ✅  24 écran(s) · 0 écart(s)
+=== redteam_aveugle.py  [code 0, 65 s]
+parcours [light] · tenir au geste                        OK  
+parcours [light] · l'Index le montre                     OK  
+parcours [light] · l'Index ne se superpose pas           OK  
+parcours [light] · le Fil le montre                      OK  
+parcours [light] · le Fil ne se superpose pas            OK  
+
+26/26
+=== redteam_fonctions.py  [code 0, 72 s]
+── les écrans du dock ──
+Studio s'ouvre                                             OK  
+Aura s'ouvre                                               OK  
+Partager s'ouvre                                           OK  
+Réglages s'ouvre                                           OK  
+
+22/22
+=== redteam_pastilles.py  [code 0, 52 s]
+── une fiche · Peaufiner ──
+fiche Peaufiner · des réglages qui se déplient           OK  
+fiche Peaufiner · leurs pastilles ont un effet           OK  
+l'échéance · le réglage s'ouvre et propose ses dates     OK  
+l'échéance · choisir une date la POSE                    OK  
+
+12/12
+=== redteam_champs.py  [code 0, 43 s]
+la recherche de l'Index · FILTRE                     OK  
+la recherche de l'Index · se vide                    OK  
+
+── le champ de recherche du Fil ──
+la recherche du Fil · FILTRE                         OK  
+
+22/22
+=== redteam_enchaine.py  [code 0, 83 s]
+fiche → index · rien en trop                             OK  
+fiche → index · rien de perdu                            OK  
+pp_chiche → fiche · mêmes classes                        OK  
+pp_chiche → fiche · rien en trop                         OK  
+pp_chiche → fiche · rien de perdu                        OK  
+
+24/24
+=== redteam_phrase.py  [code 0, 18 s]
+sens : la bascule atteint la forme « demander »  OK  demander actif=True apres cycle
+qui : la phrase alimente #fWho                   OK  attache=True choix='Léa' recu='Léa'
+quand : l'echeance a quitte la phrase et aucune pastille n'est adressable par son texte OK  phrase sans creneau=True · pastilles sans prise=True
+titre : la phrase alimente #fTitle               OK  fTitle='RENDRE-LE-LIVRE-56'
+aucune erreur JS                                 OK  []
+
+6/6
+=== redteam_onboarding.py  [code 0, 113 s]
+  ✅ O21 au rejeu, le compte revient tant qu'il n'existe pas dark
+  ✅ O21 au rejeu, le compte revient tant qu'il n'existe pas light
+  ✅ O22 une porte permanente vers le compte            dark
+  ✅ O22 une porte permanente vers le compte            light
+======================================================================================
+
+  ✅  44 / 44 contrats tenus
+=== redteam_photo.py  [code 0, 35 s]
+Q53 · une carte d'Index montre la photo                  OK  
+Q53 · un bandeau du Fil montre la photo                  OK  
+
+── la page + ──
+la page + porte le bouton                                OK  
+
+29/29
+=== redteam_titres_longs.py  [code 0, 112 s]
+[sombre] 1 · chiche « réparer enfin … » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 3 lignes · verbe 34 (court 34)
+[sombre] 1 · chiche « anticonstituti… » : dans l'écran, ≤ 3 lignes, verbe intact OK  bord 366 · 3 lignes · verbe 34 (court 34)
+[sombre] 2 · fiche « réparer enfin … » : ≤ 3 lignes, au-dessus de son état OK  {'lignes': 3, 'bas': 695, 'etat': 730, 'droite': 366}
+[sombre] 2 · fiche « anticonstituti… » : ≤ 3 lignes, au-dessus de son état OK  {'lignes': 3, 'bas': 726, 'etat': 756, 'droite': 366}
+[sombre] 3 · l'élision suit la frappe                            OK  « a » → d’ · « b » → de
+
+14/14
+=== redteam_formes.py  [code 0, 14 s]
+Index · carte 4 « LANCÉ » [light] · le plein s'arrête à la moitié OK  
+Index · carte 5 « EN COURS » [light] · épaisseur 5,5 × l/173 OK  
+Index · carte 5 « EN COURS » [light] · le plein s'arrête à la moitié OK  
+Index · carte 6 « TENU À DEUX » [light] · épaisseur 5,5 × l/173 OK  
+Index · carte 6 « TENU À DEUX » [light] · le trait traverse la carte OK  
+
+38/38
+=== redteam_superpo.py  [code 0, 321 s]
+recouvrements de texte : 0
+=== releve-S2-peaufiner.py  [code 0, 21 s]
+── HORS CADRE : 0
+
+── PRÉSENCE PEINTE : 2
+     promi                  [dark] s2-lab « SUPPRIMER CE PROMI » : ton sur ton (Δlum 25)
+     chiche                 [dark] s2-lab « SUPPRIMER CE CHICHE » : ton sur ton (Δlum 27)
+
+❌  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 2
+=== releve-S3-page-plus.py  [code 0, 94 s]
+
+── PRÉSENCE PEINTE : 2
+     pp_geste_pendant   [dark] pp-trace « continue → » : ton sur ton (Δ25)
+     pp_geste_signe     [dark] pp-trace « UN JOUR » : ton sur ton (Δ25)
+
+❌  position 0 · style 0 · collisions 0 · hors cadre 0 · peinture 2
+   écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire
+=== releve-design.py  [code 0, 34 s]
+✅  AUCUN ÉCART. Le design est intact.
+=== banc_rendu.py  [code 0, 113 s]
+  mascaret     stable     3.7 s  T-sombre:6398cf T-clair:bd5c52 promi-k0.5:67c457 promi-k1:acc6f4 promi-k2:fa3380 chiche-k0.5:c6113b chiche-k1:d0f6ef chiche-k2:9df220 tenu-k0.5:4dd81c tenu-k1:709a37 tenu-k2:3ce65f cercle-k0.5:e66960 cercle-k1:1517a8 cercle-k2:b8ad82
+  terrazzo     stable     4.0 s  T-sombre:c66438 T-clair:e58fa0 promi-k0.5:76ce12 promi-k1:3b6d78 promi-k2:7c8772 chiche-k0.5:cf53a0 chiche-k1:658caa chiche-k2:3cf38a tenu-k0.5:2cfef7 tenu-k1:8f7c61 tenu-k2:d08c26 cercle-k0.5:d1cced cercle-k1:d706d0 cercle-k2:29b254
+  gravure      stable     3.8 s  T-sombre:d2bbfe T-clair:f04d00 promi-k0.5:81e2be promi-k1:377d56 promi-k2:c69ae1 chiche-k0.5:769cad chiche-k1:a75daf chiche-k2:27cd6c tenu-k0.5:1fc6ec tenu-k1:aa53e6 tenu-k2:deef15 cercle-k0.5:ee96ce cercle-k1:d6861e cercle-k2:794a4f
+  sillons      stable     3.8 s  T-sombre:aa1d9c T-clair:7798a3 promi-k0.5:3bab71 promi-k1:9b6a56 promi-k2:54b0fe chiche-k0.5:32828a chiche-k1:c690d5 chiche-k2:a89664 tenu-k0.5:20cffb tenu-k1:91dee5 tenu-k2:706e87 cercle-k0.5:9cdb16 cercle-k1:ab40de cercle-k2:825422
+
+280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0
+✅ AU PIXEL.
+=== FIN

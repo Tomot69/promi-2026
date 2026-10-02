@@ -1,0 +1,73 @@
+
+═══ L'AURA — la Pelote dans l'app, deux thèmes ═══
+
+écarts de position > 3 px    16
+    [sombre] la sphère (47, 122.5, 296) au lieu de (47, 89.4, 296, 296)
+    [sombre] le mot à (24, 639.6) au lieu de (24, 394.1)
+    [sombre] la rangée des Noyaux (24, 724.3, 107) au lieu de y 478.3 (phrase de 2 ligne(s) + 35.680)
+    [sombre] la légende (850.5, 24.2) au lieu de y 607.3
+    [sombre] la légende ne se déclare pas centrée (data-centre-entre)
+    [sombre] la légende : 19.3 au-dessus, -391.8 en dessous (attendu 22.0 et 28.0)
+    [sombre] « Ce que tu as tenu » à 942.0 au lieu de 790.0
+    [sombre] le bouton (24, 525.5, 342, 60) au lieu de (24, 702.0, 342, 60)
+    [clair] la sphère (47, 122.5, 296) au lieu de (47, 89.4, 296, 296)
+    [clair] le mot à (24, 639.6) au lieu de (24, 394.1)
+    [clair] la rangée des Noyaux (24, 724.3, 107) au lieu de y 478.3 (phrase de 2 ligne(s) + 35.680)
+    [clair] la légende (850.5, 24.2) au lieu de y 607.3
+    [clair] la légende ne se déclare pas centrée (data-centre-entre)
+    [clair] la légende : 19.3 au-dessus, -391.8 en dessous (attendu 22.0 et 28.0)
+    [clair] « Ce que tu as tenu » à 942.0 au lieu de 790.0
+    [clair] le bouton (24, 525.5, 342, 60) au lieu de (24, 702.0, 342, 60)
+écarts de style              1
+    [sombre] fond #050302 au lieu de #201908
+collisions                   0
+débordements                 0
+présence peinte              1
+    [clair] le canevas n'est pas transparent autour de la boule (0.906)
+données                      0
+les huit acquis              0
+densité                      0
+air de la colonne            16
+    [sombre] « Rien de ce qui est ici n’a é » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [sombre] à l'encre, « Rien de ce qui est ici n’a é » : 0.0 pt entre la phrase et les disques
+    [sombre] à l'encre, la légende : 0.0 au-dessus, 66.0 en dessous (plancher 26)
+    [sombre] « Tout ça, tu l’as dit. Et tu  » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [sombre] à l'encre, « Tout ça, tu l’as dit. Et tu  » : 0.0 pt entre la phrase et les disques
+    [sombre] à l'encre, la légende : 0.0 au-dessus, 41.0 en dessous (plancher 26)
+    [sombre] « On ne dirait pas comme ça, m » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [sombre] « Il y en a, des paroles tenue » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [sombre] « Et dire que tout ça, c’est t » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [clair] « Rien de ce qui est ici n’a é » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [clair] à l'encre, la légende : 17.0 au-dessus, 83.0 en dessous (plancher 26)
+    [clair] « Tout ça, tu l’as dit. Et tu  » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [clair] à l'encre, la légende n'est pas centrée : 28.0 au-dessus, 41.0 en dessous
+    [clair] « On ne dirait pas comme ça, m » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [clair] « Il y en a, des paroles tenue » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+    [clair] « Et dire que tout ça, c’est t » : à l'ouverture, aucune dalle n'est coupée par le bord — False pt de fond nu sous la dernière rangée
+la matière                   1
+    [clair] les dalles se noient : médiane 43.1 et plus faible 33.2, contre 60.4 et 54.8 en sombre
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 5 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi
+   air [sombre]         phrase → disques : 2 l. 35.4 · 1 l. 34.7 · 2 l. 35.4 · 1 l. 34.7 · 1 l. 34.7 · à l'encre 2 l. 0.0 · 1 l. 0.0 · légende à l'encre (0, 41) · libellés → bouton -678.5 · la colonne défile de 511 pt
+   matière [sombre]     boule ↔ page 124.5 (plancher 42) · contour 113.5 · dalles : 5 de face, |Δlum| la plus faible 54.8, médiane 60.4 · ΔE 23 51 23 28 24
+   air [clair]          phrase → disques : 2 l. 35.4 · 1 l. 34.7 · 2 l. 35.4 · 1 l. 34.7 · 1 l. 34.7 · à l'encre 2 l. 34.5 · 1 l. 35.5 · légende à l'encre (28, 41) · libellés → bouton -678.5 · la colonne défile de 511 pt
+   matière [clair]      boule ↔ page 91.5 (plancher 42) · contour 107.9 · dalles : 5 de face, |Δlum| la plus faible 33.2, médiane 43.1 · ΔE 26 35 27 27 23
+   1 · rotation lente   0.0628 rad/s sur 2 s (décidé 0.0628, un tour en 100 s)
+   2 · prise, droite    Δlac +0.812 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.004 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.603 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 4.01 rad/s · éteint à 4.9 s · puis 0.0695 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 850 ms (dont peintre 22.2 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 16.9 → 13.7 → 10.1 → 8.0 → 7.4 → 7.2 → lisse · DERNIER PAS 0.46 niveau (médiane des 10 d'avant 4.52) · 16 images · empreinte retirée à 0.38 s
+   4 · toucher          p 0.764 à 250 ms, 0.947 à 950 ms · sous le doigt 95.6 % des pixels changent, hors de portée 0.00 %, bruit 0.00 % · revenu ≈ 0.4 s après le lâcher, écart au repos 73.82 %
+   5 · trace            en attente au lâcher : 6 · 1 → 7 caresse(s), gardée(s) : 0 · au repos, 18.9 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · comblement       le creux vit 0.71 s lâché sur place, 0.31 s lancé (44 %)
+   8 · personne         toucher sur « Adrien » → ouvre « Adrien », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.11 rad, personne d'ouvert
+   8 bis · dalle        glissement de 30 pt sur « rapporter le livre » → rien d'ouvert · toucher → fiche affichée (Promi 139, attendu 139) · ✕ → Aura
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.909
+   6 bis · monde        Studio encre → pixel · 5 dalles, 5 jugées · distance à la plantation / au courant : rapporter le livre 0.007/0.104 · arroser tous les s 0.002/0.060 · monter la serre av 0.006/0.113 · le grand plongeoir 0.005/0.136 · planter un arbre 0.004/0.126
+
+palier 110000 · médiane 18 ms · 2204 images · plus longue image pendant l'élan : 850 ms (dont peintre 22.2 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 11 décision(s) · à la réouverture : palier 75000
+
+❌  35 ÉCARTS

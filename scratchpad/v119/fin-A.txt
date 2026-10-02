@@ -1,0 +1,79 @@
+=== redteam_ecrans.py  [code 0, 93 s]
+Aura : les arcs des Noyaux sont lisibles (6 px et plus) [clair] OK  
+Aura : aucune piste vide, les arcs disent l état [clair] OK  
+bouton + : rotation lente [clair]              OK  
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+152/152
+=== redteam_nuit.py  [code 0, 117 s]
+cran · la légende de l'Aura est la MÊME, au hex près, en sombre ordinaire et en sombre de nuit OK  [[0, 52, 26], [41, 21, 71], [221, 77, 35]] / [[0, 52, 26], [41, 21, 71], [221, 77, 35]]
+5 · sombre, Zzz éteint, la nuit : sombre ordinaire                             OK  clair=False cran=False crème=#F7F0DE
+5 · la crème est revenue à sa valeur                                           OK  #F7F0DE
+6 · après rechargement : le choix « sombre » et le Zzz activé sont retrouvés   OK  ('dark', True)
+6 · après rechargement : le choix « clair » et le Zzz éteint sont retrouvés    OK  ('light', False)
+
+44 / 44
+=== redteam_joignable.py  [code 0, 133 s]
+la page se charge sans erreur                              OK  
+des éléments ont été relevés sur chaque écran              OK  36 écrans
+aucun élément interactif injoignable hors dette            OK  0 neufs, 2 en dette
+aucun gestionnaire n'appelle une fonction absente hors dette OK  0 neufs, 4 en dette
+aucun gestionnaire en attribut on…=""                      OK  0
+
+5 / 5
+=== redteam_vide.py  [code 0, 234 s]
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_garder.py  [code 0, 86 s]
+[chromium] C · avec la personne de la phrase                           OK  Rachel
+[chromium, sans personne] A · le lien « garder de côté » paraît, et il est joignable OK  {'vu': True, 'joignable': True, 'mot': 'garder de côté'}
+[chromium, sans personne] B · la page + se ferme                       OK  
+[chromium, sans personne] C · un gardé de côté de plus, avec le titre de la phrase OK  1 → 2 · ['appeler Mamie', 'aller voir la mer']
+[chromium, sans personne] D · sans personne choisie : gardé « à moi »  OK  moi
+
+18 / 18
+=== redteam_origine.py  [code 0, 65 s]
+[chromium] chiche · truculent · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 103.6
+[chromium] chiche · truculent · origine à ΔE 105.9 → la couleur d'ORIGINE OK  à l'origine 2.3 · à la rampe 129.0 · app : origine|105.9
+[chromium] sans l'option, la bande garde la rampe de Q30           OK  
+[chromium] aucune erreur de page                                   OK  
+
+64 / 64
+=== redteam_tokens.py  [code 0, 1 s]
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_polices.py  [code 0, 44 s]
+   atkinson   500  normal   179 élément(s)
+   promilate  400  normal   132 élément(s)
+
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)
+=== redteam_clavier.py  [code 0, 0 s]
+focus() : 18, dont 3 différé(s)
+  ✓ le nom du Cercle (v114) — dans le geste (l.13145, différé en secours)
+  ✓ la page + d'un gardé de côté — le titre (30 ms) — dans le geste (l.13325, différé en secours)
+  ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.31808, différé en secours)
+✅ le clavier s'ouvre au geste — 3 champs
+=== redteam_filets.py  [code 0, 184 s]
+fiche cercle   [light]  filet non    OK
+fiche tenue    [light]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [light]  filet non    OK
+page+ chiche   [light]  filet non    OK
+page+ cercle   [light]  filet non    OK
+
+filet du trait : 14/14
+=== FIN

@@ -2771,7 +2771,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
       <div style="font-size:13px;color:#7B7163;margin-top:22px;line-height:1.6">Tes Promi perso restent sur ton appareil.<br>Privé par défaut, partagé quand tu le choisis. Pas de pub.</div>
     </div>
 
-    <div class="screen s-studio" id="studioScreen"><canvas class="st-bg" id="stBg"></canvas><div class="st-scrim-t"></div><div class="st-scrim"></div><div class="st-lock" id="stLock"><button class="st-lock-buy" id="stLockBuy"><canvas class="st-buy-bg" id="stBuyBg" aria-hidden="true"></canvas><span class="st-buy-tx" id="stBuyTx">Adopte ce design — 1 €</span><span class="st-buy-arr">›</span></button><div class="st-lock-card set-cercle" id="stLockCta" role="button"><div class="sc-tx"><div class="sc-t">Ou débloque-les tous</div><div class="sc-s">Avec Ma Parole !</div></div><div class="sc-go">›</div></div></div>
+    <div class="screen s-studio" id="studioScreen"><canvas class="st-bg" id="stBg"></canvas><div class="st-scrim-t"></div><div class="st-scrim"></div><div class="st-lock" id="stLock"><button class="st-lock-buy" id="stLockBuy"><canvas class="st-buy-bg" id="stBuyBg" aria-hidden="true"></canvas><span class="st-buy-tx" id="stBuyTx">Adopte ce design — 2 €</span><span class="st-buy-arr">›</span></button><div class="st-lock-card set-cercle" id="stLockCta" role="button"><div class="sc-tx"><div class="sc-t">Ou débloque-les tous</div><div class="sc-s">Avec Ma Parole !</div></div><div class="sc-go">›</div></div></div>
       <div class="closeb" data-close>✕ Fermer</div><h2>Le <span class="it sig">Studio</span></h2>
       <div class="studio-toggles studio-grp"><div class="thtoggle" id="thToggle"><button data-th="dark" class="on">◐&nbsp;Sombre</button><button data-th="light">◑&nbsp;Clair</button></div><div class="thtoggle" id="txToggle"><button data-tx="off" class="on">Sans&nbsp;texte</button><button data-tx="on">Avec&nbsp;texte</button></div></div>
       <div id="studioBody"></div>
@@ -5334,11 +5334,13 @@ window._phraseRendu = function(){ try{
      L'exemple est tiré UNE FOIS par ouverture de la page + (window._ppExemple). */
   /* on ne tire QUE l'exemple du type affiché : sinon chaque rendu entame les trois compteurs */
   var _exSoi = (window._ppExemple && P.sens!=='demander' && P.sens!=='chiche' && faireSoi) ? window._ppExemple('soi') : 'reprendre la guitare';
-  var _exDem = (window._ppExemple && P.sens==='demander') ? window._ppExemple('demander') : 'venir dimanche';
+  var _V = window._ppVar || function(s){ return s; };
+  var _exDem = (window._ppExemple && P.sens==='demander') ? _V(window._ppExemple('demander'), estPluriel) : 'venir dimanche';
   /* ⚑ 17 sept. : le Chiche en a trois lui aussi. « lâcher ton téléphone un soir » mesure
      312,7 px dans une pastille de 342 — il tient, mesuré à 28 px Gilbert. */
   var _exChi = (window._ppExemple && P.sens==='chiche') ? window._ppExemple('chiche') : 'dire oui pour une fois';
-  var _exFaire = faireSoi ? _exSoi : 'aller voir la mer';
+  /* v117 : la Promi à quelqu'un a SA liste (« je te promets / je vous promets ») — elle ne se tire que si cette forme est affichée */
+  var _exFaire = faireSoi ? _exSoi : ((window._ppExemple && P.sens==='faire') ? _V(window._ppExemple('faire'), estPluriel) : 't’emmener voir la mer');
   window._ppExempleCourant = (P.sens === 'demander') ? _exDem : (P.sens === 'chiche' ? _exChi : _exFaire);
   /* 3.8 · l'INVITE du champ n'est pas l'exemple de la pastille : sur un Chiche elle joue sur
      ce qu'on n'ose pas. 321,3 px mesurés dans un champ de 342 (Gilbert 22), 20,7 de marge. */
@@ -5499,8 +5501,6 @@ window._phraseChoix = function(cle, el){ try{
       return '<button type="button" class="ph-o' + (P[cle] === o ? ' on' : '')
         + '" data-v="' + o + '">' + o + '</button>';
     }).join('')
-    /* « à qui » / « avec » : une pastille + pour ajouter un nom (même gabarit, sobre) */
-    + ((cle === 'qui' || cle === 'avec') ? '<button type="button" class="ph-o ph-add" data-add="1" aria-label="ajouter une personne">+</button>' : '')
     /* « quand » : une DATE PRÉCISE — le sélecteur natif s'ouvre d'un geste (« avant mardi 12 »). */
     + (cle === 'quand' ? '<button type="button" class="ph-o ph-date" data-datepick="1">une date précise…</button>' : '')
     + '</div>'
@@ -5579,36 +5579,7 @@ window._phraseChoix = function(cle, el){ try{
   }
   zone.querySelectorAll('.ph-o').forEach(function(b){
     b.onclick = function(){
-      if(b.dataset.add){
-        /* CHANTIER F — barre de recherche IN-PAGE (plus de window.prompt / clavier
-           système) : même DA que la ligne du Promi (Bricolage, filet franc). On tape
-           un prénom, les personnes connues se filtrent en dessous. */
-        var host=b.parentNode; /* .ph-opts */
-        if(host.querySelector('.ph-addbar')) return;
-        var bar=document.createElement('div'); bar.className='ph-addbar';
-        bar.innerHTML='<input type="text" class="ph-addwho" placeholder="un prénom…" autocomplete="off" spellcheck="false"><div class="ph-addsug"></div>';
-        host.appendChild(bar); b.style.display='none';
-        var ai=bar.querySelector('.ph-addwho'), sug=bar.querySelector('.ph-addsug');
-        var people=[]; try{ people=(typeof peopleList==='function'?peopleList():[]).filter(function(n){return n&&n.toLowerCase()!=='moi';}); }catch(_){}
-        function commit(nm){ nm=(nm||'').trim(); if(!nm){ return; }
-          P[cle]=nm;
-          /* seul « qui » (le destinataire/défié) alimente le plant via newWhoSel/#fWho ;
-             « avec » est un compagnon, stocké dans P.avec uniquement. */
-          if(cle !== 'avec'){
-            try{ window.newWhoSel = (''+nm).toLowerCase()!=='moi' ? [nm] : []; }catch(_){}
-            try{var w2=document.getElementById('fWho'); if(w2){w2.value=nm; w2.dispatchEvent(new Event('input',{bubbles:true}));}}catch(_){}
-          }
-          zone.classList.remove('ouvert'); _phraseRendu(); }
-        function draw(){ var q=ai.value.trim().toLowerCase();
-          var list=people.filter(function(n){return q&&n.toLowerCase().indexOf(q)>=0;}).slice(0,4);
-          sug.innerHTML=list.map(function(n){return '<button type="button" class="ph-o" data-pick="'+n.replace(/"/g,'&quot;')+'">'+n+'</button>';}).join('');
-          sug.querySelectorAll('[data-pick]').forEach(function(pb){pb.onclick=function(){commit(pb.dataset.pick);};}); }
-        ai.oninput=draw;
-        ai.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); commit(ai.value); } };
-        /* v115 : focus DANS le geste (iOS n'ouvre le clavier qu'ainsi) ; le différé n'est plus qu'un secours */ try{ ai.focus({preventScroll:true}); }catch(_){}
-        setTimeout(function(){ try{ if(document.activeElement!==ai) ai.focus(); }catch(_){} },30);
-        return;
-      }
+      /* v118 (Q363) : l'ancien champ « à qui » est retiré — le choix des gens (lot-GENS) le remplace */
       if(b.dataset.datepick){
         /* DATE PRÉCISE — le sélecteur natif s'ouvre d'un geste. À la validation :
            on calcule le nombre de jours (→ due), on garde la date ISO (→ np.dueISO),
@@ -6011,30 +5982,6 @@ window._fichePose = function(){ try{
      sert a la note, aux fichiers et aux commentaires. */
   att.innerHTML = '';
   att.style.display = '';
-  var bj = document.getElementById('dpaJoint');
-  if(bj && !bj._pose){
-    bj._pose = true;
-    bj.addEventListener('click', function(){
-      var d = document.getElementById('dpDetails');
-      if(d){
-        d.classList.add('ouvert');
-        /* on glisse jusqu'au champ, sans a-coup : on attend que le tiroir
-           ait fini de s'ouvrir avant de defiler. */
-        var n = document.getElementById('dNote');
-        /* v115 : focus DANS le geste (iOS n'ouvre le clavier qu'ainsi) ; le différé n'est plus qu'un secours */ if(n){ try{ n.focus({preventScroll:true}); }catch(_){} }
-        if(n) setTimeout(function(){
-          try{
-            var dp = document.getElementById('detailPoster');
-            var cible = n.getBoundingClientRect().top - dp.getBoundingClientRect().top
-                      + dp.scrollTop - 180;
-            dp.scrollTo({ top: cible, behavior: 'smooth' });
-            setTimeout(function(){ if(document.activeElement!==n) n.focus({preventScroll:true}); }, 420);
-          }catch(_){ n.scrollIntoView({block:'center',behavior:'smooth'}); }
-        }, 430);
-      }
-    });
-  }
-
   /* LA TEINTE DE LA DALLE devient la couleur des accents : le trait du
      geste, la pastille, le filet sous le titre. Chaque Promi a donc SA
      couleur — c'est ce qui fait qu'aucune fiche ne ressemble a une autre. */
@@ -6165,84 +6112,7 @@ window._fichePose = function(){ try{
   dp.classList.toggle('dp-nuee', estNuee);
   dp.classList.toggle('dp-draft', !!cur.draft);
 
-  /* (le rang social a ete remplace par la barre dans le rang du lien) */
-  var ouvrePeaufiner = function(champ){
-    var d = document.getElementById('dpDetails');
-    if(!d) return;
-    d.classList.add('ouvert');
-    /* v115 : focus DANS le geste (iOS n'ouvre le clavier qu'ainsi) ; le différé n'est plus qu'un secours */ var t0 = document.getElementById(champ); if(t0){ try{ t0.focus({preventScroll:true}); }catch(_){} }
-    setTimeout(function(){
-      var t = document.getElementById(champ);
-      if(t){ try{ t.scrollIntoView({block:'center', behavior:'smooth'});
-        setTimeout(function(){ if(document.activeElement!==t) t.focus({preventScroll:true}); }, 400); }catch(_){}
-      }
-    }, 420);
-  };
-  var bc = document.getElementById('dpsCom');
-  if(bc) bc.onclick = function(){ ouvrePeaufiner('dCommentInput'); };
-  var bj = document.getElementById('dpsJoint');
-  if(bj) bj.onclick = function(){ ouvrePeaufiner('dNote'); };
-  var bpa = document.getElementById('dpsPart');
-  if(bpa) bpa.onclick = function(){
-    try{ if(window.ouvrirPartage) ouvrirPartage();
-      else { var s = document.getElementById('shareSheet')
-                 || document.getElementById('partageScreen');
-             if(s) s.classList.add('show'); } }catch(_){}
-  };
-
-  /* ── LA BARRE DU ONE PAGER ──
-     Trois gestes, toujours visibles : commenter, joindre, partager.
-     Un Promi se commente a deux quel que soit son etat — c'est le fil de
-     la parole, pas un journal de bord. */
-  /* les actions vivent SUR la ligne du disque : l'espace a droite etait
-     perdu, et une barre a part ajoutait une ligne pour rien. */
-  var barre = document.getElementById('dpBarre');
-  if(!barre){
-    barre = document.createElement('div');
-    barre.id = 'dpBarre';
-  }
-  var au = document.getElementById('dAura');
-  if(au && barre.parentNode !== au) au.appendChild(barre);
-  var nC = 0, nN = 0, nF = 0;
-  try{
-    nC = (cur.comments && cur.comments.length) || 0;
-    nN = (cur.note && String(cur.note).trim()) ? 1 : 0;
-    nF = (cur.files && cur.files.length) || 0;
-  }catch(_){}
-  /* des signes, pas des mots : trois icones de 46 px, un compte en pastille
-     quand il y a du contenu. */
-  var ic = function(d){ return '<svg viewBox="0 0 24 24" width="21" height="21" '
-    + 'fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" '
-    + 'stroke-linejoin="round">' + d + '</svg>'; };
-  var iCom  = ic('<path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.2A8.4 8.4 0 0 1 21 11.5z"/>');
-  var iJoin = ic('<path d="M21.4 11.05 12.25 20.2a5 5 0 0 1-7.07-7.07l9.19-9.19a3.34 3.34 0 0 1 4.71 4.71l-9.19 9.2a1.67 1.67 0 0 1-2.36-2.36l8.49-8.48"/>');
-  var iPart = ic('<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/>');
-  var pastille = function(n){ return n ? '<i class="dpb-n">' + n + '</i>' : ''; };
-  barre.innerHTML =
-      '<button class="dpb" id="dpbCom" aria-label="Commenter">' + iCom + pastille(nC) + '</button>'
-    + '<button class="dpb" id="dpbJoint" aria-label="Joindre une note ou un fichier">' + iJoin + pastille(nN+nF) + '</button>'
-    + '<button class="dpb" id="dpbPart" aria-label="Partager">' + iPart + '</button>';
-  var vaVers = function(id){
-    var d = document.getElementById('dpDetails');
-    if(d) d.classList.add('ouvert');
-    /* v115 : focus DANS le geste (iOS n'ouvre le clavier qu'ainsi) ; le différé n'est plus qu'un secours */ var c0 = document.getElementById(id); if(c0){ try{ c0.focus({preventScroll:true}); }catch(_){} }
-    setTimeout(function(){
-      var c = document.getElementById(id);
-      if(c){ try{ c.scrollIntoView({block:'center', behavior:'smooth'}); }catch(_){}
-        setTimeout(function(){ try{ if(document.activeElement!==c) c.focus({preventScroll:true}); }catch(_){} }, 400); }
-    }, 420);
-  };
-  var b1 = document.getElementById('dpbCom');
-  if(b1) b1.onclick = function(){ vaVers('dCommentInput'); };
-  var b2 = document.getElementById('dpbJoint');
-  if(b2) b2.onclick = function(){ vaVers('dNote'); };
-  var b3 = document.getElementById('dpbPart');
-  if(b3) b3.onclick = function(){
-    try{ if(window.ouvrirPartage) ouvrirPartage();
-      else { var s = document.getElementById('shareSheet') || document.getElementById('partageScreen');
-             if(s) s.classList.add('show'); } }catch(_){}
-  };
-
+  /* v118 (Q363) : la barre #dpBarre (commenter · joindre · partager), masquée depuis le portage des fiches, est retirée */
   var z = document.getElementById('tenirZone');
   if(z) z.style.display = (etat === 'tenue' || cur.draft || estNuee) ? 'none' : '';
 
@@ -6361,6 +6231,8 @@ window._fichePose = function(){ try{
         + '<path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>';
       sp.onclick = function(e){
         e.stopPropagation();
+        /* ⚑ v117 · `ouvrirPartage` n'existait pas : le bouton ne faisait rien (lot-V117-PARTAGE-FICHE) */
+        try{ if(window._partageFiche && window._partageFiche.deja()) return; }catch(_){}
         try{ if(window.ouvrirPartage) ouvrirPartage();
           else { var s = document.getElementById('shareScreen');
                  if(s) s.classList.add('show'); } }catch(_){}
@@ -7783,12 +7655,32 @@ try{if(notifOn)armAllReminders();}catch(e){}
    OMBRE       ⚑ v116 (Tom, Q362 : « elle flotte trop haut ») — centre à 0,04 D (9,283) sous le bas de la silhouette → 407,347 ;
                0,45 D × 0,07 D = 104,429 × 16,245 ; 0,10 ; encre du mode. EN SOMBRE : AUCUNE, sa place reste réservée.
                (v115 : 0,20 D — la colonne descendait de 37,1 de trop et « Partager ma Pelote » sortait du pli, à 877,7.)
-   G2          bas de l'ombre 415,470 → haut de l'encre de la phrase 471,470 (= 56) : la phrase à 473,141 (encre 1,671 au-dessus). */
-#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:399.224px!important;width:104.429px!important;height:16.245px!important;
+   G2          bas de l'ombre 415,470 → haut de l'encre de la phrase 471,470 (= 56) : la phrase à 473,141 (encre 1,671 au-dessus).
+   ⚑ v117 (Tom, 1er oct.) : « écarte l'ombre d'environ un centimètre — elle est trop proche ; en sombre, inverse sa couleur ;
+               remonte la Pelote d'un millimètre, et tout ce qui suit avec ». 1 cm ≈ 60 pt, 1 mm ≈ 6 pt (iPhone 16e, 460 ppp, ×3).
+               La boîte de la boule 128,532 → 122,532 (G1 = 50) ; bas de la silhouette 392,064 ; centre de l'ombre 9,283 + 60 sous
+               lui → 461,347, haut 453,224 ; G2 inchangé (56) : la phrase à 527,141 ; toute la colonne +54. EN SOMBRE : la crème.
+               ⚠ « Partager ma Pelote » finit alors sous le pli (≈ 894 pour 844) : l'écran défile (§8 — on ne reprend jamais l'air). */
+#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:453.224px!important;width:104.429px!important;height:16.245px!important;
   margin:0!important;pointer-events:none;z-index:0;background:radial-gradient(closest-side,rgba(var(--c-brun09-rgb),.10),rgba(var(--c-brun09-rgb),0))}
-#device:not(.light) #auraScreen.au2 .au-ombre{visibility:hidden}
+/* ⚑ v117 (Tom) : « en sombre elle est invisible : inverse sa couleur plutôt que de la supprimer » — la crème, au même 0,10 */
+#device:not(.light) #auraScreen.au2 .au-ombre{background:radial-gradient(closest-side,rgba(var(--c-creme95-rgb),.10),rgba(var(--c-creme95-rgb),0))!important}
 #auraScreen.au2 .au-bo{z-index:1}
+/* ⚑ v118 (Tom, Q368 → A) — L'ÉCHO DÉCALÉ : un disque PLAT (aucun flou, aucun dégradé), le rayon de la silhouette (121), décalé de
+   11 vers le bas et la droite, dans un autre ton de la palette (posé par le code : le ton dominant + 2). Liste blanche
+   NOMINATIVE de la Pelote : `.au-echo` et `window._echoPelote` ne vivent qu'ici et dans le lot de l'Aura. */
+#auraScreen.au2 .au-echo{position:absolute!important;margin:0!important;border-radius:50%!important;pointer-events:none;z-index:0;
+  box-shadow:none!important;filter:none!important;opacity:1!important}
 </style>
+<script id="lot-V118-PELOTE">
+/* ⚑ v118 — l'écho décalé de la Pelote. Un seul peintre, nommé : le poser ailleurs (une dalle, une carte) fait rougir redteam_volume. */
+window._echoPelote=function(hote, cx, cy, r, dec){
+  var e=document.createElement('div'); e.className='au-echo'; e.id='auPeloteEcho';
+  e.style.setProperty('left',(cx+dec-r)+'px','important'); e.style.setProperty('top',(cy+dec-r)+'px','important');
+  e.style.setProperty('width',(2*r)+'px','important'); e.style.setProperty('height',(2*r)+'px','important');
+  hote.appendChild(e); return e;
+};
+</script>
 
 <style id="lot-V116-GENS-css">
 /* ⚑ v116 — la liste des profils défile dans SON espace ; « + ajouter quelqu'un » garde sa ligne dessous, 16 d'air (il en avait 14,
@@ -7941,18 +7833,8 @@ function setDalles(target){
 }
 
 var pseudoReady=false;
-function toPseudo(){
-  document.getElementById('authScreen').style.display='none';
-  document.getElementById('pseudoScreen').style.display='flex';
-  pseudoReady=false;
-  setTimeout(function(){pseudoReady=true;},450);try{obFill(OB_FILL_NAME);}catch(e){}
-  /* v115 : focus DANS le geste (iOS n'ouvre le clavier qu'ainsi) ; le différé n'est plus qu'un secours */ try{ var el0=document.getElementById('pseudoInput'); if(el0) el0.focus({preventScroll:true}); }catch(_){}
-  setTimeout(function(){var el=document.getElementById('pseudoInput');if(el&&document.activeElement!==el)el.focus();},520);
-}
-function prefill(name){var el=document.getElementById('pseudoInput');if(el&&name){el.value=name;liveName(name);}}
 function liveName(v){var n=document.getElementById('liveName');if(n)n.textContent=v&&v.trim()?(' '+v.trim()):'';}
-document.getElementById('btnApple').onclick=function(){/* Firebase signInWithApple -> prénom Apple */prefill('Tom');toPseudo();};
-document.getElementById('btnGoogle').onclick=function(){/* Firebase signInWithGoogle -> prénom Google */prefill('Tom');toPseudo();};
+/* v118 (Q363) : toPseudo, prefill et les deux boutons de l'ancien écran de compte sont retirés — l'onboarding v20 a son écran « Garder ta Toile » */
 
 var _pin=document.getElementById('pseudoInput');if(_pin)_pin.addEventListener('input',function(){liveName(this.value);});
 var pseudoValidated=false;
@@ -8278,8 +8160,8 @@ setInterval(function(){
     setTimeout(function(){
       try{
         var th=null; try{th=localStorage.getItem('promi_theme');}catch(e){}
-        /* v20 (Q301) : sans choix mémorisé, le thème suit celui du téléphone */
-        if(!th){try{th=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}catch(e){th='light';}}
+        /* ⚑ v118 (Tom, le Zzz) : sans choix mémorisé, le thème est CLAIR (remplace Q301 — il ne suit plus le téléphone) */
+        if(!th){ th='light'; }
         if(typeof setTheme==='function')setTheme(th);
       }catch(e){}
     },260);
@@ -8553,7 +8435,7 @@ try{var mo=new MutationObserver(function(muts){muts.forEach(function(m){[].forEa
 <script>(function(){try{var st=document.getElementById("shTheme");if(st){[].forEach.call(st.querySelectorAll("button"),function(b){b.addEventListener("click",function(){if(typeof _sealDark!=="undefined")_sealDark=(b.getAttribute("data-t")==="dark");try{var _ss=document.getElementById("shareScreen");if(_ss)_ss.classList.toggle("sh-lightwm",!_sealDark);}catch(_){}[].forEach.call(st.querySelectorAll("button"),function(x){x.classList.toggle("on",x===b);});try{var _so=document.querySelectorAll("#sealTheme button");[].forEach.call(_so,function(y){y.classList.toggle("on",y.getAttribute("data-t")===(_sealDark?"dark":"light"));});}catch(_){}try{if(typeof shareRender==="function")shareRender();}catch(e){}});});}}catch(e){}})();</script>
 <script>function _paintBuyBg(){try{var cv=document.getElementById("stBuyBg");if(!cv)return;var b=cv.parentNode;var w=b.clientWidth||300,h=b.clientHeight||50;if(!w||!h)return;var dpr=Math.min(2,window.devicePixelRatio||1);cv.width=w*dpr;cv.height=h*dpr;var g=cv.getContext("2d");if(!g)return;g.setTransform(dpr,0,0,dpr,0,0);g.fillStyle="#132235";g.fillRect(0,0,w,h);var pal=(typeof SIGNAL!=="undefined"?SIGNAL:[[201,168,245],[130,174,248],[221,77,35],[41,21,71]]);var blobs=[[0.14,0.5,pal[0],0.6],[0.44,0.32,pal[1],0.55],[0.8,0.62,pal[2],0.5],[0.62,0.8,pal[3],0.42]];blobs.forEach(function(bl){var cx=bl[0]*w,cy=bl[1]*h,r=Math.max(w,h)*0.62,c=bl[2];var gr=g.createRadialGradient(cx,cy,0,cx,cy,r);gr.addColorStop(0,"rgba("+c[0]+","+c[1]+","+c[2]+","+bl[3]+")");gr.addColorStop(1,"rgba("+c[0]+","+c[1]+","+c[2]+",0)");g.fillStyle=gr;g.fillRect(0,0,w,h);});try{if(typeof _grain==="function")_grain(g,w,h,0.5);}catch(e){}}catch(e){}}</script>
 <script>(function(){try{document.addEventListener("click",function(e){var t=e.target&&e.target.closest?e.target.closest(".more-toggle"):null;if(t){var box=t.nextElementSibling;if(box&&box.classList.contains("more-opts")){var op=box.classList.toggle("open");t.classList.toggle("open",op);}}});}catch(e){}})();</script>
-<script>(function(){try{var ROT=["Adopte ce design — 1 €","Nouvelle trame ? — 1 €","Débloque-le — 1 €"];function rot(){var t=document.getElementById("stBuyTx");if(t)t.textContent=ROT[Math.floor(Math.random()*ROT.length)];}var IO=(typeof IntersectionObserver!=="undefined")?new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle("enc-paused",!e.isIntersecting);});},{threshold:0.01}):null;function init(){try{var sels=["#stLockBuy","#stLockCta",".set-cercle",".pplus-card"],seen=[];sels.forEach(function(sel){[].forEach.call(document.querySelectorAll(sel),function(el){if(seen.indexOf(el)>=0||el.classList.contains("enc-live"))return;seen.push(el);el.classList.add("enc-live");var fx=document.createElement("div");fx.className="enc-fx";fx.setAttribute("aria-hidden","true");fx.innerHTML='<i class="eb eb1"></i><i class="eb eb2"></i><i class="eb eb3"></i><i class="eb eb4"></i><div class="eg"></div>';el.insertBefore(fx,el.firstChild);if(IO)IO.observe(el);});});}catch(e){}}function boot(){init();rot();var ss=document.getElementById("studioScreen");if(ss&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){if(ss.classList.contains("show"))rot();init();}).observe(ss,{attributes:true,attributeFilter:["class"]});}var ps=document.getElementById("plusScreen");if(ps&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){init();}).observe(ps,{attributes:true,attributeFilter:["class"]});}}if(document.readyState!=="loading")boot();else document.addEventListener("DOMContentLoaded",boot);}catch(e){}})();</script>
+<script>(function(){try{var ROT=["Adopte ce design — 2 €","Nouvelle trame ? — 2 €","Débloque-le — 2 €"];function rot(){var t=document.getElementById("stBuyTx");if(t)t.textContent=ROT[Math.floor(Math.random()*ROT.length)];}var IO=(typeof IntersectionObserver!=="undefined")?new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle("enc-paused",!e.isIntersecting);});},{threshold:0.01}):null;function init(){try{var sels=["#stLockBuy","#stLockCta",".set-cercle",".pplus-card"],seen=[];sels.forEach(function(sel){[].forEach.call(document.querySelectorAll(sel),function(el){if(seen.indexOf(el)>=0||el.classList.contains("enc-live"))return;seen.push(el);el.classList.add("enc-live");var fx=document.createElement("div");fx.className="enc-fx";fx.setAttribute("aria-hidden","true");fx.innerHTML='<i class="eb eb1"></i><i class="eb eb2"></i><i class="eb eb3"></i><i class="eb eb4"></i><div class="eg"></div>';el.insertBefore(fx,el.firstChild);if(IO)IO.observe(el);});});}catch(e){}}function boot(){init();rot();var ss=document.getElementById("studioScreen");if(ss&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){if(ss.classList.contains("show"))rot();init();}).observe(ss,{attributes:true,attributeFilter:["class"]});}var ps=document.getElementById("plusScreen");if(ps&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){init();}).observe(ps,{attributes:true,attributeFilter:["class"]});}}if(document.readyState!=="loading")boot();else document.addEventListener("DOMContentLoaded",boot);}catch(e){}})();</script>
 <script>(function(){try{document.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('#urgSeg .is'):null;if(b){[].forEach.call(document.querySelectorAll('#urgSeg .is'),function(x){x.classList.toggle('on',x===b);});}var i=e.target&&e.target.closest?e.target.closest('#impSeg .is'):null;if(i){[].forEach.call(document.querySelectorAll('#impSeg .is'),function(x){x.classList.toggle('on',x===i);});}});}catch(e){}})();</script>
 
 <script>(function(){
@@ -14718,7 +14600,11 @@ var CREMEETAT='#F7F0DE';
          Restent exclues, comme avant : un gardé de côté (pas d'aplat, Q83) et une fiche à
          photo (Q53). */
       if(e.aplat && !(p&&p.photo)){
-        try{ if(window._ppRampe) src.__o={rampe:window._ppRampe(e.nat)}; }catch(_){}
+        /* ⚑ v118 (Tom, Q365 tranchée) : avec « La dalle d'origine », la bande haute prend la COULEUR d'origine — sauf si elle
+           tombe sous le seuil du ton sur ton face au champ (ΔE 15, redteam_tonsurton) : alors seulement, la rampe de Q30. */
+        var _ob=null; try{ _ob=window._origineBande ? window._origineBande(p, e.natCol) : null; }catch(_){ _ob=null; }
+        if(!(_ob && _ob.origine)){ try{ if(window._ppRampe) src.__o={rampe:window._ppRampe(e.nat)}; }catch(_){} }
+        try{ cv.setAttribute('data-origine', _ob ? ((_ob.origine?'origine':'rampe')+'|'+_ob.dE.toFixed(1)) : ''); }catch(_){}
       }
       if(e.aplat && e.auPlancher && !(p&&p.photo)){
         /* Q30 · LA TEINTURE EST BORNÉE À LA BANDE HAUTE — et la bande haute d'une fiche EN
@@ -19997,12 +19883,14 @@ var CREMEETAT='#F7F0DE';
       };
       b.onclick=function(ev){ ev.stopPropagation();
         var q=b._p;
+        /* ⚑ v117 · SUR UNE FICHE, le bouton propose deux choses (importer une image · la dalle d'origine) : `lot-V117-PHOTO-MENU` */
+        if(b._hote && b._hote.id==='detailPoster' && window._photoMenu){ window._photoMenu(b, inp, q, b._rejoue); return; }
         /* une photo est déjà là : le MÊME bouton la retire et rend la dalle. */
         if(q && q.photo){ q.photo=null; rejoue && rejoue(); return; }
         try{ inp.click(); }catch(_){}
       };
     }
-    b._p=p;
+    b._p=p; b._hote=hote; b._rejoue=rejoue;
     /* ⚠ ET PAS SUR UN GARDÉ DE CÔTÉ. C'est ICI que le nid se montre — la ligne qui suit
        reposait `display:block !important` APRÈS le garde du haut, et le rond revenait :
        le refus n'a de valeur qu'à l'endroit qui montre, pas seulement à celui qui crée. */
@@ -22265,7 +22153,7 @@ var CREMEETAT='#F7F0DE';
      — 1 € » à la place de « Adopte ce design — 1 € ». On le fige par un observateur QUI
      COMPARE AVANT D'AGIR : sans la comparaison, l'écriture réveille l'observateur, qui
      réécrit, qui se réveille — c'est le piège du MutationObserver qui s'auto-déclenche. */
-  var MOT='Adopte ce design — 1 €';
+  var MOT='Adopte ce design — 2 €';   /* v118 (Tom) : 2 € l'unité */
   try{
     var _tx=document.getElementById('stBuyTx');
     if(_tx){
@@ -25950,7 +25838,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
 
 /* la sphère — .bo de la planche : 41 · 78 · 258 → 47 · 89,4 · 296. Le canevas est
    TRANSPARENT hors de la boule : le plateau (z 9) passe devant sans qu'on le recouvre. */
-#auraScreen.au2 .au-bo{position:absolute!important;left:47px!important;top:128.532px!important;
+#auraScreen.au2 .au-bo{position:absolute!important;left:47px!important;top:122.532px!important;
   width:296px!important;height:296px!important;margin:0!important}
 #auraScreen.au2 .au-bo canvas{position:absolute!important;left:0!important;top:0!important;
   width:296px!important;height:296px!important;display:block!important;max-width:none!important;
@@ -25971,12 +25859,12 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
    Noyaux exactement où la planche la met (454) pour une phrase d'une ligne : 38,18.
    Sur une phrase de DEUX lignes, la rangée descend et la colonne défile — §8, règle 3 :
    on ne reprend jamais l'air pour faire tenir. */
-#auraScreen.au2 .au-mot{position:absolute!important;left:24px!important;right:24px!important;top:473.141px!important;
+#auraScreen.au2 .au-mot{position:absolute!important;left:24px!important;right:24px!important;top:527.141px!important;
   margin:0!important;text-align:center;font-family:var(--f-libelle)!important;font-weight:700!important;
   font-size:19.4px!important;letter-spacing:-.012em;line-height:1.25!important}
 
 /* l'état vide — .inv de la planche : 33 → 37,8 ; 17 → 19,5 ; 13 → 14,9 */
-#auraScreen.au2 .au-inv{position:absolute!important;left:37.8px!important;right:37.8px!important;top:482.761px!important;
+#auraScreen.au2 .au-inv{position:absolute!important;left:37.8px!important;right:37.8px!important;top:536.761px!important;
   margin:0!important;text-align:center;font-family:var(--f-libelle)!important;font-weight:700!important;
   font-size:19.5px!important;line-height:1.42!important;letter-spacing:-.012em}
 #auraScreen.au2 .au-inv em{display:block;margin-top:12.6px;font-style:normal;font-weight:600!important;
@@ -28758,8 +28646,8 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
 
   /* ── LES COTES — planche ÷ 0,872 ; une cote se CALCULE, elle ne se mesure jamais
         sur elle-même (§8). ───────────────────────────────────────────────────── */
-  var K = { bo:{x:47, y:128.532, d:296}, R:0.392,   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
-            nx:{y:533.061, h:107}, mo:{y:712.061}, lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:762, h:60}, motY:473.141, motL:19.4*1.25, marge:22,
+  var K = { bo:{x:47, y:122.532, d:296}, R:0.392,   /* ⚑ v117 (Tom) : « remonte la Pelote d'un millimètre vers l'encart du haut » — −6 pt (1 mm ≈ 6 pt sur l'iPhone 16e) : G1 = 50 */   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
+            nx:{y:587.061, h:107}, mo:{y:766.061},   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
             /* ⚑ 22 sept. (Tom) : « les disques sont trop fins partout ». L'arc passe de 8 à 12
                sur « toi » et de 6 à 9 sur une personne — la moitié en plus, comme sur les fiches.
                Le diamètre et la photo ne bougent pas : c'est l'ANNEAU qui s'épaissit, vers l'intérieur. */
@@ -28785,6 +28673,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
                             19,41, légende → chiffres 13,98. La légende remonte de la demi-différence (2,714), les chiffres ne bougent pas
                             (K.cptAIR la rend) : les deux écarts valent 16,70. */
   K.lgY = K.nx.y + K.nx.h + (K.mo.y - (K.nx.y + K.nx.h) - K.lgH) / 2 + K.lgINK;
+  K.moINK = -9.5;   /* v118 : relevé sur l'image rendue (WebKit, deux thèmes) à moINK 0 : 27,0 d'encre au-dessus du groupe « légende + chiffres », 36,5 en dessous → −9,5 */
   K.Rpt = K.bo.d * K.R;                                                  /* 116 pt */
   /* ⚑ L'AIR DE LA COLONNE — deux valeurs, prises dans la planche, jamais à l'œil (voir `place`) :
      sous la phrase, l'air que la planche laissait sous UNE ligne (454 − 403,7 − 23,625) ; entre les
@@ -28802,6 +28691,15 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
   K.AIR_MOT = 38.18 - K.MOT_INK;
   K.BOULE_BAS = K.bo.y + K.bo.d/2 + K.bo.d*K.R;                          /* 353,4 — la BOULE, pas sa boîte */
   K.AIR = 28;
+  /* ⚑ v118 (Tom, Q367 tranchée) — « PARTAGER MA PELOTE » REMONTE SOUS L'OMBRE. « Le bouton se place juste sous l'ombre de la
+     Pelote, à G2 = 56 du bas de l'ombre. La phrase et ce qui suit se placent ensuite, à 56 sous le bouton. L'ombre garde ses
+     60 pt, l'air ne se reprend pas. » L'ombre : la cote de lot-V114-PELOTE-css (haut 453,224, haut. 16,245 → bas 469,469).
+     Le bouton : 525,469 → 585,469. La phrase : son ENCRE à 56 sous le bouton. */
+  K.ombre = {y:453.224, h:16.245};
+  K.G2 = 56;
+  K.MOT_ENCRE = -1.87;   /* relevé sur l'image rendue (WebKit, deux thèmes) : l'encre de la phrase commence 1,87 SOUS le haut de sa boîte */
+  K.btY = K.ombre.y + K.ombre.h + K.G2;                                  /* 525,469 */
+  K.motY2 = K.btY + K.bt.h + K.G2 + K.MOT_ENCRE;                         /* 639,599 */
   K.PLI = 844;
   K.MOISSON = 6;                                                         /* deux rangées de trois (Q187) */
   /* ⚑ RÈGLE (Tom, 10 sept. — Q189) : LA SECONDE RANGÉE PARAÎT À PARTIR DE CINQ DALLES TENUES. En dessous,
@@ -29330,7 +29228,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
   /* ════════════════════════════════════════════════════════════════════════════
      L'ÉCRAN — bâti une fois, rempli à chaque ouverture
      ════════════════════════════════════════════════════════════════════════════ */
-  var CAD, BO, CV, PRISE, MOT, INV, NX, LG, CPT, MO, GR, BT, D=null, FIN, HALO, OMBRE;
+  var CAD, BO, CV, PRISE, MOT, INV, NX, LG, CPT, MO, GR, BT, D=null, FIN, HALO, OMBRE, ECHO;
   function squelette(){
     if(CAD) return;
     SC.classList.add('au2');
@@ -29366,6 +29264,9 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
        dans l'appareil et qu'il rogne — la même règle que la rangée glissante (data-glisse) */
     CAD.setAttribute('data-defile','1');
     /* v114 (Tom) — LE SEUL VOLUME DE L'APP : un halo de sa couleur et une ombre, posés SOUS la boule. */
+    /* ⚑ v118 (Tom, Q368 → A) : L'ÉCHO DÉCALÉ — une copie PLATE de la silhouette, dans un autre ton de la palette, décalée de 11 ;
+       c'est la célébration, citée. Aucun flou, aucun dégradé : il reste plat. Il n'existe QUE sous la Pelote (redteam_volume). */
+    ECHO=window._echoPelote(CAD, K.bo.x+K.bo.d/2, K.bo.y+K.bo.d/2, 121, 11);
     OMBRE=el('div','au-ombre'); OMBRE.id='auPeloteOmbre'; CAD.appendChild(OMBRE);
     BO=el('div','au-bo'); CV=el('canvas'); CV.id='auBoule'; BO.appendChild(CV);
     PRISE=el('div','au-prise'); BO.appendChild(PRISE); CAD.appendChild(BO);
@@ -29563,7 +29464,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     /* ⚑ 23 sept., second tour : le bouton s'intercale entre la légende et la moisson.
        La légende est donc centrée entre les Noyaux et LE BOUTON — c'est la déclaration qui
        change, et le juge la suit sans qu'on touche à son code (§7). */
-    else LG.setAttribute('data-centre-entre', '.au-nx|#auPartage|'+(K.lgINK-K.cptINK)+'|.au-cpt');   /* v95 : le bloc centré est le GROUPE « légende + chiffres » (4e champ : ce qui le ferme) */
+    else LG.setAttribute('data-centre-entre', '.au-nx|.au-mo|'+(K.lgINK-K.moINK)+'|.au-cpt');   /* v118 : le voisin du bas n'est plus le bouton (remonté sous l'ombre), c'est « Ce que tu as tenu » */   /* v95 : le bloc centré est le GROUPE « légende + chiffres » (4e champ : ce qui le ferme) */
     [0,60,200,600].forEach(function(t){ setTimeout(peintMoisson, t); });
     CAD.scrollTop=0; PEL.colK=''; place();
     publie();
@@ -29588,8 +29489,19 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     var v=[t,e,r], S=CPT.children, L=LG.children;
     for(var i=0;i<S.length&&i<L.length;i++){ var s=''+v[i]; if(S[i].textContent!==s) S[i].textContent=s;
       var x=(L[i].offsetLeft+L[i].offsetWidth/2).toFixed(1)+'px'; if(S[i].style.left!==x) S[i].style.left=x; } }catch(_){} }
+  /* le ton de l'écho : le ton dominant + 2 (la planche v117) — mais s'il se confond avec la PAGE (le crème dalle d'Ingénu sur la
+     crème : ΔE 5), on prend le suivant (+3, puis +1). Plancher : ΔE 15, celui d'une matière sur un aplat (§3, Q216). */
+  function echoTeinte(){ try{ if(!ECHO) return; var P=window.Toile.cols(), n=P.length, f=CREME, c=null;
+      if(!clair()){ var mm=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(getComputedStyle(SC).backgroundColor); f=mm?[+mm[1],+mm[2],+mm[3]]:[5,3,2]; }
+      var F=_lab(f[0],f[1],f[2]);
+      [2,3,1].some(function(k){ var q=P[(SOL_IDX+k)%n], L=_lab(q[0],q[1],q[2]);
+        if(Math.sqrt((L[0]-F[0])*(L[0]-F[0])+(L[1]-F[1])*(L[1]-F[1])+(L[2]-F[2])*(L[2]-F[2]))>=15){ c=q; return true; } return false; });
+      if(!c) c=P[(SOL_IDX+2)%n];
+      var v='rgb('+c[0]+','+c[1]+','+c[2]+')';
+      if(ECHO.getAttribute('data-ton')!==v){ ECHO.setAttribute('data-ton',v); ECHO.style.setProperty('background-color',v,'important'); } }catch(_){} }
   function place(){
     if(!CAD) return;
+    echoTeinte();
     try{ reteintSiBesoin(); }catch(e){}   /* ⚑ 21 sept. : les états suivent le thème, quel que soit le chemin */
     /* ⚑ 23 SEPTEMBRE 2026, second tour (Tom) — « LE BOUTON DE PARTAGE REMONTE SOUS LA
        LÉGENDE — EN BAS DE PAGE, PERSONNE N'Y VA. REPRENDS LES ESPACES DE TOUTE LA COLONNE. »
@@ -29604,16 +29516,17 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
        elle le renverrait sous le pli — c'est-à-dire exactement le défaut qu'on corrige. */
     var c;
     if(CAD.classList.contains('au-vide')){
-      c={nx:K.nx.y, lg:K.lgY, bt:K.lgY+K.lgH+K.AIR};
-      c.mo=c.bt+K.bt.h+K.AIR;
+      /* v118 : le bouton sous l'ombre ; l'invite à 56 sous le bouton (rien d'autre ne paraît sur une Aura vide) */
+      c={nx:K.nx.y, lg:K.lgY, bt:K.btY, inv:K.btY+K.bt.h+K.G2};
+      c.mo=c.inv;
     } else {
-      var nx=K.motY+MOT.offsetHeight+K.AIR_MOT, d=nx-K.nx.y;
+      var nx=K.motY2+MOT.offsetHeight+K.AIR_MOT, d=nx-K.nx.y;
       /* l'air AU-DESSUS de la légende vaut K.AIR, comme celui en dessous : la colonne garde
          un rythme unique (28) de la rangée des Noyaux jusqu'à la moisson. */
       c={nx:nx, lg:nx + K.nx.h + K.AIR + K.lgINK};
       c.cpt = c.lg + K.lgH + K.cptAIR;                   /* v95 : les trois chiffres, tout près de leur légende */
-      c.bt = c.cpt + K.cptH + K.AIR + K.cptINK;          /* le bouton, sous les chiffres : l'air À L'ENCRE est égal au-dessus du groupe « légende + chiffres » et en dessous */
-      c.mo = c.bt + K.bt.h + K.AIR;                      /* puis « ce que tu as tenu » */
+      c.bt = K.btY;                                      /* v118 : le bouton est sous l'ombre, il ne dépend plus de la colonne */
+      c.mo = c.cpt + K.cptH + K.AIR + K.moINK;           /* « ce que tu as tenu » suit les chiffres, du même air (28) à l'encre */
       var bas = MO.classList.contains('au-sans') ? c.mo : c.mo+MO.offsetHeight;
       /* la seconde rangée suit la première du même air (28) */
       c.mo2 = bas + K.AIR; if(MO2 && !MO2.classList.contains('au-sans')) bas = c.mo2 + MO2.offsetHeight;
@@ -29623,10 +29536,11 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     if(c.mo2==null) c.mo2=c.mo;
     if(c.cpt==null) c.cpt=c.lg;
     comptes();
-    var k=[c.nx,c.lg,c.cpt,c.mo,c.mo2,c.bt,c.fin].map(function(v){ return v.toFixed(2); }).join('|');
+    c.mot=K.motY2; if(c.inv==null) c.inv=c.bt+K.bt.h+K.G2;
+    var k=[c.nx,c.lg,c.cpt,c.mo,c.mo2,c.bt,c.fin,c.mot,c.inv].map(function(v){ return v.toFixed(2); }).join('|');
     if(k===PEL.colK) return;                 /* on compare avant d'écrire (§8) */
     PEL.colK=k; PEL.col=c;
-    [[NX,c.nx],[LG,c.lg],[CPT,c.cpt],[MO,c.mo],[MO2,c.mo2],[BT,c.bt],[FIN,c.fin-1]].forEach(function(a){ if(!a[0]) return;
+    [[NX,c.nx],[LG,c.lg],[CPT,c.cpt],[MO,c.mo],[MO2,c.mo2],[BT,c.bt],[FIN,c.fin-1],[MOT,c.mot],[INV,c.inv]].forEach(function(a){ if(!a[0]) return;
       a[0].style.setProperty('top', a[1].toFixed(2)+'px', 'important'); });
   }
 
@@ -29739,12 +29653,51 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     return {c:E.c, ax:E.ax, a:E.a, el:E.el, dmax:E.dmax, p:E.p,
             biais:0.14, rho:0.085, ub:0.35, B:0.32, U:0.50};
   }
+  /* ⚑ v117 · Q364 → A (Tom) : « la respiration est la lumière du velours — seule la matière respire, rien ne sort du
+     contour ». Cycle décidé : 10 s (4 s qui monte, 6 s qui redescend, sinusoïdal), départ 0,6 s après l'affichage,
+     arrêt hors écran (le temps n'avance que quand la Pelote est peinte et visible), immobile au milieu du cycle avec
+     « Réduire les animations ». Amplitude : 0 → 0,55, celle de la planche (ΔE00 4,1 clair / 3,7 sombre). */
+  var SOUFFLE={MAX:0.55, MONTE:4, DESCEND:6, DEPART:0.6};
+  /* ⚑ v118 (Tom) — LE COÛT DE LA RESPIRATION, MESURÉ SUR L'APPAREIL : visible SEULEMENT avec `?mesure=1`. Dix secondes
+     respiration active (un cycle entier), dix secondes respiration coupée : le temps PAR IMAGE (l'écart entre deux images
+     peintes, au temps réel) p50 et p95, et le temps de peinture seul. Rien n'est envoyé ; on lit le cadre. Toucher le cadre relance. */
+  var MES=null;
+  try{ if(/[?&]mesure=1(?:&|$)/.test(location.search)) MES={phase:0, t:0, A:{dt:[],ms:[]}, B:{dt:[],ms:[]}, el:null, DUREE:10, CHAUFFE:2}; }catch(_){}
+  function mesCentile(L,p){ if(!L.length) return 0; var s=L.slice().sort(function(a,b){return a-b;}); return s[Math.min(s.length-1, Math.floor(p*s.length))]; }
+  function mesLigne(nom,X){ var n=X.dt.length, tot=0; for(var i=0;i<n;i++) tot+=X.dt[i];
+    var f=function(v){ return (Math.round(v*10)/10).toFixed(1).replace('.',','); };
+    return nom+'\n  image  p50 '+f(mesCentile(X.dt,.5))+' ms · p95 '+f(mesCentile(X.dt,.95))+' ms · '+(n?f(1000*n/tot):'0')+' images/s\n  peinture  p50 '+f(mesCentile(X.ms,.5))+' ms · p95 '+f(mesCentile(X.ms,.95))+' ms · '+n+' images'; }
+  function mesAffiche(txt){ if(!MES) return;
+    if(!MES.el){ var e=document.createElement('div'); e.id='auMesure';
+      e.style.cssText='position:absolute;left:24px;right:24px;top:108px;z-index:60;padding:10px 12px;border:2px solid #201908;border-radius:14px;background:#F7F0DE;color:#201908;-webkit-text-fill-color:#201908;font:500 13px/1.35 Atkinson,system-ui,sans-serif;white-space:pre-wrap;cursor:pointer';
+      e.addEventListener('click', function(ev){ ev.stopPropagation(); MES.phase=0; MES.t=0; MES.A={dt:[],ms:[]}; MES.B={dt:[],ms:[]}; PEL.souffleT=null; });
+      SC.appendChild(e); MES.el=e; }
+    if(MES.el.textContent!==txt) MES.el.textContent=txt; }
+  function mesImage(dtR, ms){ if(!MES) return;
+    if(dtR>0.5) return;                                /* une pause (onglet caché) n'est pas une image */
+    MES.t+=dtR;
+    if(MES.phase===0){ mesAffiche('MESURE DE LA PELOTE — ne touche à rien (≈ '+(MES.CHAUFFE+2*MES.DUREE)+' s)\nmise en route…'); if(MES.t>=MES.CHAUFFE){ MES.phase=1; MES.t=0; PEL.souffleT=0; } return; }
+    if(MES.phase===1){ MES.A.dt.push(dtR*1000); MES.A.ms.push(ms); mesAffiche('MESURE DE LA PELOTE — ne touche à rien\nrespiration ACTIVE… '+Math.ceil(MES.DUREE-MES.t)+' s'); if(MES.t>=MES.DUREE){ MES.phase=2; MES.t=0; } return; }
+    if(MES.phase===2){ MES.B.dt.push(dtR*1000); MES.B.ms.push(ms); mesAffiche('MESURE DE LA PELOTE — ne touche à rien\nrespiration COUPÉE… '+Math.ceil(MES.DUREE-MES.t)+' s'); if(MES.t>=MES.DUREE){ MES.phase=3; MES.t=0;
+        var d=mesCentile(MES.A.dt,.95)-mesCentile(MES.B.dt,.95), dp=mesCentile(MES.A.ms,.95)-mesCentile(MES.B.ms,.95), f=function(v){ return (v>=0?'+':'−')+(Math.round(Math.abs(v)*10)/10).toFixed(1).replace('.',','); };
+        MES.txt='MESURE DE LA PELOTE — '+MES.DUREE+' s + '+MES.DUREE+' s · palier '+PALIERS[PEL.palier]+' poils\n'+mesLigne('respiration ACTIVE',MES.A)+'\n'+mesLigne('respiration COUPÉE',MES.B)+'\nla respiration ajoute au p95 : image '+f(d)+' ms · peinture '+f(dp)+' ms\n(toucher ce cadre relance la mesure)';
+        window._peloteMesure={A:MES.A, B:MES.B, texte:MES.txt}; } return; }
+    mesAffiche(MES.txt); }
+  function souffle(){
+    if(MES && MES.phase===2) return 0;                 /* v118 · ?mesure=1 : la seconde moitié du relevé coupe la respiration */
+    try{ if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return SOUFFLE.MAX*0.5; }catch(_){}
+    var t=PEL.souffleT; if(t==null || t<=0) return 0;
+    var c=SOUFFLE.MONTE+SOUFFLE.DESCEND, u=t%c;
+    var s=(u<SOUFFLE.MONTE) ? (1-Math.cos(Math.PI*u/SOUFFLE.MONTE))/2 : (1+Math.cos(Math.PI*(u-SOUFFLE.MONTE)/SOUFFLE.DESCEND))/2;
+    return SOUFFLE.MAX*s;
+  }
+  window._peloteSouffle={valeur:souffle, regle:SOUFFLE, t:function(){ return PEL.souffleT; }};
   function opts(){
     var A=atlas();
     return {css:K.bo.d, R:K.R, sol:PEL.solR||solEffectif(), tailles:A.t, atlas:A.a, semis:semis(),
             relief:FROISSE, env:ENV, kn:KN, lac:V.lac, tan:V.tan, pal:window.Toile.cols(),
             trame:PEL.sansIles?ilesVides():PEL.iles, libre:false, fond:'rgba(0,0,0,0)',
-            velours:0, contre:0, duvet:0, grade:0, velours2:1, dresse:0,
+            velours:souffle(), contre:0, duvet:0, grade:0, velours2:1, dresse:0,
             pousse:Math.min(1, D.n/34), traces:TRACES, peigneAxial:1, tracesIncr:1,
             emp:(EMP && EMP.p>=G.EMP_FIN) ? empPour(EMP) : null, peauVers:peauVers()};
   }
@@ -29869,10 +29822,12 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     majEmp(dt);
     inscrit();
     if(!PEL.pret || couvert()) return;
+    PEL.souffleT=(PEL.souffleT==null ? -SOUFFLE.DEPART : PEL.souffleT)+Math.min(0.5, dtR);   /* v117 : le souffle n'avance que quand on la voit — au TEMPS RÉEL (§8) : borné à 0,1 s comme la rotation, il ralentissait sous charge (WebKit, 150–250 ms par image : sommet mesuré à 8,2 s au lieu de 4,6) ; la borne de 0,5 s ne sert qu'après une pause */
     var S=semis(), av=S.__stCle, t0=performance.now();
     try{ var _o=opts(); if(window._peloteMod){ try{ window._peloteMod(_o); }catch(_){} }   /* v116 : un crochet pour les PLANCHES de la respiration — sans effet s'il n'est pas posé */
       M.peint(CV, _o); }catch(e){ window._auraErreur=String(e&&e.stack||e); PEL.pret=false; return; }
     var ms=performance.now()-t0;
+    if(MES) mesImage(dtR, ms);
     PEL.dernier=ms; PEL.peints=(PEL.peints||0)+1;
     if(PEL.peints%30===0) place();
     densite(ms, S.__stCle!==av);
@@ -30189,6 +30144,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     })();
   }
   function ouvre(){
+    PEL.souffleT=-SOUFFLE.DEPART;           /* v117 : le souffle repart, 0,6 s après l'affichage */
     try{ nouveauSol(); }catch(_){}          /* ⚑ un ton neuf à chaque ouverture (Tom) */
     try{ squelette(); remplit(); prepare(); }catch(e){ window._auraErreur=String(e&&e.stack||e); }
     if(!RAF){ TP=0; RAF=requestAnimationFrame(boucle); }
@@ -35195,7 +35151,12 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    ensuite, un tirage. Nuée : on tire d'abord une CATÉGORIE, puis un nom dedans — les
    mariages sont nombreux, ils ne doivent pas écraser le reste. Un tirage PAR OUVERTURE. */
 (function(){
-  var L={"soi": ["me coucher le jour même", "finir ce livre avant d’en ouvrir trois", "apprendre enfin le nom de mes voisins", "faire la sieste sans culpabiliser", "arroser mes plantes avant qu’elles m’en veuillent", "prendre des nouvelles avant d’avoir une raison", "me garder une soirée pour moi", "trouver un nouveau hobby", "adopter un animal à la SPA", "retourner voir cet endroit que j’ai adoré", "commencer sans attendre le bon moment", "m’engager pour cette cause", "apprendre à jouer d’un instrument"], "demander": ["m’écrire quand tu es chez toi", "me prévenir si j’ai quelque chose entre les dents", "ne jamais parler comme sur Linkédine", "me dire si je commence à dire « ça fait sens »", "me dire si je commence à dire « disruptif »", "me dire si je commence à parler de « synergies »", "me partager ta recette", "me prévenir quand tu auras changé d’avis", "me dire si je deviens comme mes parents", "me rappeler cette histoire quand on sera vieux", "me rappeler de ne pas devenir raisonnable"], "chiche": ["dire oui pour une fois", "te baigner fin octobre", "te lever pour voir le soleil se lever", "dormir à la belle étoile", "choisir une ville au hasard", "partir demain matin", "faire cette chose qu’on n’a jamais faite", "nous faire confiance et voir où ça mène", "dire oui sans demander pourquoi", "faire le Mont Blanc", "te mettre à la salsa", "monter un groupe", "prendre un cours de trapèze", "courir notre premier marathon", "apprendre une nouvelle langue", "apprendre à jouer d’un instrument", "faire un trek de plusieurs jours", "apprendre à naviguer"]}, NU={"projets": ["Week-end à Marseille", "La coloc", "Le club de lecture", "Le club de running", "Les 42 kilomètres", "L’apéro qu’on repousse depuis mars", "La maison qu’on veut construire", "Notre tour du monde", "Le voyage qu’on repousse", "Notre premier festival", "La maison de campagne", "Le projet qu’on mijote depuis deux ans"], "road": ["Le road trip des parkings de supermarché", "Le road trip en Meuse", "Le road trip des plus beaux ronds-points", "Le road trip des zones pavillonnaires", "Le road trip des sous-préfectures", "Le road trip des ZAC", "Le road trip des zones commerciales", "Le road trip des aires de repos"], "mariages": ["Le mariage de Philippine et Pascal", "Le mariage de Huguette et Jean-Roch", "Le mariage de Blandine et Bruno-Stanislas", "Le mariage de Nadine et Bernard-Guy", "Le mariage de Monique et Didier-Régis", "Le mariage de Chantal et Jean-Guy", "Le mariage de Fabienne et Thierry-Alain", "Le mariage de Corinne et Michel-Régis", "Le mariage de Raymonde et Gérard-Yves", "Le mariage de Gisèle et Rodolphe", "Le mariage de Huguette et Mireille", "Le mariage de Ginette et Gisèle", "Le mariage de Jean-Roch et Jean-Guy", "Le mariage de Didier-Régis et Rodolphe", "Le mariage de Bruno-Stanislas et Pascal", "Le mariage de Thierry-Alain et Bernard-Guy", "Le mariage de Michel-Régis et Gérard-Yves", "Le mariage de Jean-Noël et Alain-Gilbert"]};
+  /* ⚑ v117 (Tom, 1er oct.) — LES LISTES DÉFINITIVES, intégrées TELLES QUELLES. Cinq listes : à soi, « je te promets » (la Promi à
+     quelqu'un : elle remplace l'exemple fixe « aller voir la mer »), « promets-moi », Chiche, Cercle. Une phrase « A / B » porte sa
+     variante plurielle (« vous ») : `_ppVar` choisit. Les phrases fixes : deux, sauf le Chiche (une). */
+  var L={"soi": ["me coucher le jour même", "finir ce livre avant d’en ouvrir trois", "arroser mes plantes avant qu’elles m’en veuillent", "prendre des nouvelles avant d’avoir une raison", "me garder une soirée pour moi", "retourner voir cet endroit que j’ai adoré", "commencer sans attendre le bon moment", "m’engager pour cette cause", "apprendre à jouer d’un instrument", "planter quelque chose que je pourrai manger", "réparer plutôt que racheter", "laisser mon téléphone à la maison un dimanche", "apprendre un truc par jour", "apprendre à reconnaître les oiseaux", "apprendre à repriser", "m’offrir des fleurs", "ranger", "finir un stylo", "apprendre à faire mon pain", "voir ce tableau en vrai"], "faire": ["t’emmener voir la mer / vous emmener voir la mer", "te ramener quelque chose de là-bas / vous ramener quelque chose de là-bas", "m’y mettre", "t’écrire une vraie lettre / vous écrire une vraie lettre", "te faire découvrir cet endroit / vous faire découvrir cet endroit", "te fabriquer quelque chose / vous fabriquer quelque chose", "te planter un arbre / vous planter un arbre", "venir te chercher à la gare / venir vous chercher à la gare", "venir te chercher après ton premier jour", "te ramener vivant de cette idée", "te donner un double des clefs, un jour / vous donner un double des clefs, un jour", "m’acquitter des 23 centimes", "régulariser la situation du Tupperware", "honorer ma dette de trois frites", "mettre un terme au dossier des cintres", "rendre le tournevis avant 2030"], "demander": ["m’écrire quand tu es chez toi / m’écrire quand vous êtes chez vous", "me prévenir si j’ai du persil entre les dents", "ne jamais parler comme sur Linkédine", "me dire si je commence à dire « ça fait sens »", "me dire si je commence à dire « disruptif »", "me dire si je commence à parler de « synergies »", "me donner ta recette, la vraie / me donner votre recette, la vraie", "me rappeler cette histoire quand on sera vieux", "m’envoyer une carte postale de là-bas", "prendre cette sabbatique avec moi", "me garder une chaise à ton procès / me garder une chaise à votre procès", "aller voter", "faire pipi assis", "me montrer ton coin à champignons / me montrer votre coin à champignons", "me donner une bouture de celle-là"], "chiche": ["dire oui pour une fois", "te baigner en janvier", "te lever pour voir le soleil se lever", "dormir à la belle étoile", "choisir une ville au hasard", "partir dans une heure", "faire cette chose qu’on n’a jamais faite", "nous faire confiance et voir où ça mène", "dire oui sans demander pourquoi", "faire le Mont Blanc", "te mettre à la salsa", "monter un groupe", "prendre un cours de trapèze", "courir notre premier marathon", "apprendre une nouvelle langue", "apprendre à jouer d’un instrument", "faire un trek de plusieurs jours", "apprendre à naviguer", "y aller en stop", "bivouaquer", "monter notre festival", "traverser un pays à pied", "monter un refuge", "aller courir maintenant", "adopter un animal à la SPA", "planter dix arbres", "retaper cette baraque", "restaurer ce vieux bateau", "racheter le bar du village"]}, NU={liste:["Week-end à Marseille", "La coloc", "Le club de lecture", "Le club de running", "L’apéro qu’on repousse depuis mars", "La maison qu’on veut construire", "Notre tour du monde", "La maison de campagne", "Le projet qu’on mijote depuis deux ans", "Le road trip des parkings de supermarché", "Le road trip en Meuse", "Le road trip des plus beaux ronds-points", "Le road trip des zones pavillonnaires", "Le road trip des sous-préfectures", "Le road trip des ZAC", "Le road trip des zones commerciales", "Le road trip des aires de repos", "Le mariage de Philippine et Pascal", "Le mariage de Huguette et Jean-Roch", "Le mariage de Blandine et Bruno-Stanislas", "Le mariage de Nadine et Bernard-Guy", "Le mariage de Monique et Didier-Régis", "Le mariage de Chantal et Jean-Guy", "Le mariage de Fabienne et Thierry-Alain", "Le mariage de Corinne et Michel-Régis", "Le mariage de Raymonde et Gérard-Yves", "Le mariage de Gisèle et Rodolphe", "Le mariage de Huguette et Mireille", "Le mariage de Ginette et Gisèle", "Le mariage de Jean-Roch et Jean-Guy", "Le mariage de Didier-Régis et Rodolphe", "Le mariage de Bruno-Stanislas et Pascal", "Le mariage de Thierry-Alain et Bernard-Guy", "Le mariage de Michel-Régis et Gérard-Yves", "Le mariage de Jean-Noël et Alain-Gilbert", "Le mariage de Guy", "L’UTMB du dimanche", "Le voyage aux 42 onglets ouverts", "Le dîner des inconnus connus", "La traversée des Pyrénées"]};
+  var FIXES={"soi": 2, "faire": 2, "demander": 2, "chiche": 1, "nuee": 2};
+  window._ppVar=function(s, pluriel){ s=String(s||''); var k=s.split(' / '); return (pluriel && k[1]) ? k[1] : k[0]; };
   window._ppExemplesListes={L:L, NU:NU};
   /* pour les juges : oublier le tirage de l'ouverture en cours (les scènes s'enchaînent sans refermer la page +) */
   window._ppExempleRaz=function(){ choix={}; };
@@ -35206,18 +35167,18 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   window._ppExemple=function(t){
     /* la phrase se rend aussi page + FERMÉE (au chargement) : ça n'est pas une ouverture */
     var cs0=document.getElementById('createSheet');
-    if(cs0 && !cs0.classList.contains('show')) return t==='nuee' ? NU.projets[0] : (L[t]||[''])[0];
+    if(cs0 && !cs0.classList.contains('show')) return t==='nuee' ? NU.liste[0] : (L[t]||[''])[0];
     if(choix[t]) return choix[t];
     /* ⚑ v115 (Tom) — LES PHRASES 1 ET 2 SONT FIXES, LA TROISIÈME EST TIRÉE SANS REMISE. Ouverture 1 : la phrase 1 ; ouverture 2 :
        la phrase 2 ; ensuite un SAC des phrases 3…N : une phrase tirée ne revient pas avant que tout le sac soit passé, puis il se
        remplit à nouveau. Le sac est gardé d'une ouverture à l'autre (promi_ex_sac_<type>). Le Cercle : sa liste est la suite de
        ses trois catégories, dans l'ordre (projets, road trips, mariages) — le tirage par catégorie de v20 est remplacé par le sac. */
-    var n=cpt(t), v, a=(t==='nuee') ? [].concat(NU.projets||[], NU.road||[], NU.mariages||[]) : (L[t]||['']);
-    if(n<2 && a[n]!=null) v=a[n];
+    var n=cpt(t), v, a=(t==='nuee') ? NU.liste : (L[t]||['']), nf=(FIXES[t]!=null?FIXES[t]:2);
+    if(n<nf && a[n]!=null) v=a[n];
     else {
       var cle='promi_ex_sac_'+t, sac=null; try{ sac=JSON.parse(localStorage.getItem(cle)||'null'); }catch(e){}
-      if(Array.isArray(sac)) sac=sac.filter(function(x){ return x>=2 && x<a.length; });   /* une liste réécrite plus courte */
-      if(!Array.isArray(sac) || !sac.length){ sac=[]; for(var k=2;k<a.length;k++) sac.push(k); }
+      if(Array.isArray(sac)) sac=sac.filter(function(x){ return x>=nf && x<a.length; });   /* une liste réécrite plus courte */
+      if(!Array.isArray(sac) || !sac.length){ sac=[]; for(var k=nf;k<a.length;k++) sac.push(k); }
       if(!sac.length){ v=a[0]; }
       else { var j=Math.floor(Math.random()*sac.length), idx=sac.splice(j,1)[0]; v=a[idx]!=null?a[idx]:a[0];
         try{ localStorage.setItem(cle, JSON.stringify(sac)); }catch(e){} }
@@ -35723,9 +35684,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   /* ⚑ v94 — onboarding déjà fait, mais aucune sauvegarde relue (un arrêt avant l'écriture) : le jeu de démonstration ne s'installe pas chez un vrai utilisateur */
   if(deja && !window._etatRelu && !navigator.webdriver){ var videDemo=function(){ try{ if(window._etatRelu) return; obResetData(); Toile.sync([]); if(typeof render==='function') render(); if(typeof window.buildFeed==='function') window.buildFeed(); }catch(_){} }; setTimeout(videDemo,700); setTimeout(videDemo,1600); }
   if(!deja){
-    /* le thème du premier lancement suit celui du téléphone (Q301) */
+    /* ⚑ v118 (Tom, le Zzz) : le premier lancement est en CLAIR (remplace Q301) */
     var th=LS.g('promi_theme');
-    if(!th){ try{ th=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light'; }catch(_){ th='light'; } }
+    if(!th){ th='light'; }
     setTimeout(function(){ try{ if(typeof setTheme==='function') setTheme(th); }catch(_){} }, 260);
     demarrer(false);
     /* le jeu de démonstration s'installe APRÈS nous (DOMContentLoaded / 400 ms) : on reprend sa copie, puis on vide */
@@ -36036,7 +35997,147 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #auraScreen.au2 .au-cadre.au-vide .au-cpt{display:none!important}
 </style>
 <script>/* v92 : le chemin de Madrure affiché, seulement avec ?chemin (diag-chemin.js) */ if(location.search.indexOf('chemin')>=0){ var _dc=document.createElement('script'); _dc.src='diag-chemin.js'; document.head.appendChild(_dc); }</script>
-<script>/* diagnostic, seulement avec ?mesure= (diag-studio.js) */ if(location.search.indexOf('mesure=')>=0){ var _dg=document.createElement('script'); _dg.src='diag-studio.js'; document.head.appendChild(_dg); }</script>
+<script>/* diagnostic, seulement avec ?mesure= (diag-studio.js) */ if(/[?&]mesure=[a-z]/.test(location.search)){ /* v118 : ?mesure=1 est le relevé de la Pelote, pas ce diagnostic */ var _dg=document.createElement('script'); _dg.src='diag-studio.js'; document.head.appendChild(_dg); }</script>
+<style id="lot-V118-ZZZ-css">
+/* ⚑ v118 — le Zzz : un changement de thème se fait d'un coup, sans fondu */
+#device.zzz-coupe,#device.zzz-coupe *,.frame.zzz-coupe,.frame.zzz-coupe *{transition:none!important}
+</style>
+<script id="lot-V118-ZZZ">
+/* ⚑ v118 (Tom, 2 oct. 2026) — LE Zzz : LA NUIT, L'APP SE REPOSE. (CLAUDE.md §3.)
+   · le CHOIX de thème (clair / sombre, `promi_theme`) et le Zzz (`promi_zzz`) sont deux réglages mémorisés ;
+   · clair + Zzz : du coucher du soleil + 1 h au lever, l'app passe en SOMBRE DE NUIT ; au lever elle revient au clair ;
+   · sombre + Zzz : le CRAN DE NUIT s'applique sur les mêmes heures ; Zzz éteint : clair ou sombre ordinaire, toujours ;
+   · le soleil se CALCULE (algorithme NOAA) aux coordonnées de RÉFÉRENCE du fuseau horaire de l'appareil — aucune
+     permission de localisation ; fuseau inconnu : 22 h – 7 h ;
+   · un changement ne se fait JAMAIS sous les yeux : seulement à un changement d'écran ou au retour au premier plan, sans fondu ;
+   · le cran de nuit : seuls les NEUTRES CLAIRS (les jetons crème et blanc — texte et surfaces) baissent de 0,06 de luminance
+     OKLCH, teinte et chroma gardées. Les natures, les états, les dalles et l'amande ne bougent pas. Ni filtre, ni voile. */
+(function(){
+  var FUSEAUX={}; 'Africa/Abidjan,5.32,-4.03;Africa/Accra,5.55,-0.22;Africa/Addis_Ababa,9.03,38.7;Africa/Algiers,36.78,3.05;Africa/Asmara,15.33,38.88;Africa/Bamako,12.65,-8.0;Africa/Bangui,4.37,18.58;Africa/Banjul,13.47,-16.65;Africa/Bissau,11.85,-15.58;Africa/Blantyre,-15.78,35.0;Africa/Brazzaville,-4.27,15.28;Africa/Bujumbura,-3.38,29.37;Africa/Cairo,30.05,31.25;Africa/Casablanca,33.65,-7.58;Africa/Ceuta,35.88,-5.32;Africa/Conakry,9.52,-13.72;Africa/Dakar,14.67,-17.43;Africa/Dar_es_Salaam,-6.8,39.28;Africa/Djibouti,11.6,43.15;Africa/Douala,4.05,9.7;Africa/El_Aaiun,27.15,-13.2;Africa/Freetown,8.5,-13.25;Africa/Gaborone,-24.65,25.92;Africa/Harare,-17.83,31.05;Africa/Johannesburg,-26.25,28.0;Africa/Juba,4.85,31.62;Africa/Kampala,0.32,32.42;Africa/Khartoum,15.6,32.53;Africa/Kigali,-1.95,30.07;Africa/Kinshasa,-4.3,15.3;Africa/Lagos,6.45,3.4;Africa/Libreville,0.38,9.45;Africa/Lome,6.13,1.22;Africa/Luanda,-8.8,13.23;Africa/Lubumbashi,-11.67,27.47;Africa/Lusaka,-15.42,28.28;Africa/Malabo,3.75,8.78;Africa/Maputo,-25.97,32.58;Africa/Maseru,-29.47,27.5;Africa/Mbabane,-26.3,31.1;Africa/Mogadishu,2.07,45.37;Africa/Monrovia,6.3,-10.78;Africa/Nairobi,-1.28,36.82;Africa/Ndjamena,12.12,15.05;Africa/Niamey,13.52,2.12;Africa/Nouakchott,18.1,-15.95;Africa/Ouagadougou,12.37,-1.52;Africa/Porto-Novo,6.48,2.62;Africa/Sao_Tome,0.33,6.73;Africa/Tripoli,32.9,13.18;Africa/Tunis,36.8,10.18;Africa/Windhoek,-22.57,17.1;America/Adak,51.88,-176.66;America/Anchorage,61.22,-149.9;America/Anguilla,18.2,-63.07;America/Antigua,17.05,-61.8;America/Araguaina,-7.2,-48.2;America/Argentina/Buenos_Aires,-34.6,-58.45;America/Argentina/Catamarca,-28.47,-65.78;America/Argentina/Cordoba,-31.4,-64.18;America/Argentina/Jujuy,-24.18,-65.3;America/Argentina/La_Rioja,-29.43,-66.85;America/Argentina/Mendoza,-32.88,-68.82;America/Argentina/Rio_Gallegos,-51.63,-69.22;America/Argentina/Salta,-24.78,-65.42;America/Argentina/San_Juan,-31.53,-68.52;America/Argentina/San_Luis,-33.32,-66.35;America/Argentina/Tucuman,-26.82,-65.22;America/Argentina/Ushuaia,-54.8,-68.3;America/Aruba,12.5,-69.97;America/Asuncion,-25.27,-57.67;America/Atikokan,48.76,-91.62;America/Bahia,-12.98,-38.52;America/Bahia_Banderas,20.8,-105.25;America/Barbados,13.1,-59.62;America/Belem,-1.45,-48.48;America/Belize,17.5,-88.2;America/Blanc-Sablon,51.42,-57.12;America/Boa_Vista,2.82,-60.67;America/Bogota,4.6,-74.08;America/Boise,43.61,-116.2;America/Buenos_Aires,-34.6,-58.45;America/Cambridge_Bay,69.11,-105.05;America/Campo_Grande,-20.45,-54.62;America/Cancun,21.08,-86.77;America/Caracas,10.5,-66.93;America/Cayenne,4.93,-52.33;America/Cayman,19.3,-81.38;America/Chicago,41.85,-87.65;America/Chihuahua,28.63,-106.08;America/Ciudad_Juarez,31.73,-106.48;America/Costa_Rica,9.93,-84.08;America/Coyhaique,-45.57,-72.07;America/Creston,49.1,-116.52;America/Cuiaba,-15.58,-56.08;America/Curacao,12.18,-69.0;America/Danmarkshavn,76.77,-18.67;America/Dawson,64.07,-139.42;America/Dawson_Creek,55.77,-120.23;America/Denver,39.74,-104.98;America/Detroit,42.33,-83.05;America/Dominica,15.3,-61.4;America/Edmonton,53.55,-113.47;America/Eirunepe,-6.67,-69.87;America/El_Salvador,13.7,-89.2;America/Fort_Nelson,58.8,-122.7;America/Fortaleza,-3.72,-38.5;America/Glace_Bay,46.2,-59.95;America/Godthab,64.18,-51.73;America/Goose_Bay,53.33,-60.42;America/Grand_Turk,21.47,-71.13;America/Grenada,12.05,-61.75;America/Guadeloupe,16.23,-61.53;America/Guatemala,14.63,-90.52;America/Guayaquil,-2.17,-79.83;America/Guyana,6.8,-58.17;America/Halifax,44.65,-63.6;America/Havana,23.13,-82.37;America/Hermosillo,29.07,-110.97;America/Indiana/Indianapolis,39.77,-86.16;America/Indiana/Knox,41.3,-86.62;America/Indiana/Marengo,38.38,-86.34;America/Indiana/Petersburg,38.49,-87.28;America/Indiana/Tell_City,37.95,-86.76;America/Indiana/Vevay,38.75,-85.07;America/Indiana/Vincennes,38.68,-87.53;America/Indiana/Winamac,41.05,-86.6;America/Inuvik,68.35,-133.72;America/Iqaluit,63.73,-68.47;America/Jamaica,17.97,-76.79;America/Juneau,58.3,-134.42;America/Kentucky/Louisville,38.25,-85.76;America/Kentucky/Monticello,36.83,-84.85;America/Kralendijk,12.15,-68.28;America/La_Paz,-16.5,-68.15;America/Lima,-12.05,-77.05;America/Los_Angeles,34.05,-118.24;America/Lower_Princes,18.05,-63.05;America/Maceio,-9.67,-35.72;America/Managua,12.15,-86.28;America/Manaus,-3.13,-60.02;America/Marigot,18.07,-63.08;America/Martinique,14.6,-61.08;America/Matamoros,25.83,-97.5;America/Mazatlan,23.22,-106.42;America/Menominee,45.11,-87.61;America/Merida,20.97,-89.62;America/Metlakatla,55.13,-131.58;America/Mexico_City,19.4,-99.15;America/Miquelon,47.05,-56.33;America/Moncton,46.1,-64.78;America/Monterrey,25.67,-100.32;America/Montevideo,-34.91,-56.21;America/Montserrat,16.72,-62.22;America/Nassau,25.08,-77.35;America/New_York,40.71,-74.01;America/Nome,64.5,-165.41;America/Noronha,-3.85,-32.42;America/North_Dakota/Beulah,47.26,-101.78;America/North_Dakota/Center,47.12,-101.3;America/North_Dakota/New_Salem,46.84,-101.41;America/Nuuk,64.18,-51.73;America/Ojinaga,29.57,-104.42;America/Panama,8.97,-79.53;America/Paramaribo,5.83,-55.17;America/Phoenix,33.45,-112.07;America/Port-au-Prince,18.53,-72.33;America/Port_of_Spain,10.65,-61.52;America/Porto_Velho,-8.77,-63.9;America/Puerto_Rico,18.47,-66.11;America/Punta_Arenas,-53.15,-70.92;America/Rankin_Inlet,62.82,-92.08;America/Recife,-8.05,-34.9;America/Regina,50.4,-104.65;America/Resolute,74.7,-94.83;America/Rio_Branco,-9.97,-67.8;America/Santarem,-2.43,-54.87;America/Santiago,-33.45,-70.67;America/Santo_Domingo,18.47,-69.9;America/Sao_Paulo,-23.53,-46.62;America/Scoresbysund,70.48,-21.97;America/Sitka,57.18,-135.3;America/St_Barthelemy,17.88,-62.85;America/St_Johns,47.57,-52.72;America/St_Kitts,17.3,-62.72;America/St_Lucia,14.02,-61.0;America/St_Thomas,18.35,-64.93;America/St_Vincent,13.15,-61.23;America/Swift_Current,50.28,-107.83;America/Tegucigalpa,14.1,-87.22;America/Thule,76.57,-68.78;America/Tijuana,32.53,-117.02;America/Toronto,43.65,-79.38;America/Tortola,18.45,-64.62;America/Vancouver,49.27,-123.12;America/Whitehorse,60.72,-135.05;America/Winnipeg,49.88,-97.15;America/Yakutat,59.55,-139.73;Antarctica/Casey,-66.28,110.52;Antarctica/Davis,-68.58,77.97;Antarctica/DumontDUrville,-66.67,140.02;Antarctica/Macquarie,-54.5,158.95;Antarctica/Mawson,-67.6,62.88;Antarctica/McMurdo,-77.83,166.6;Antarctica/Palmer,-64.8,-64.1;Antarctica/Rothera,-67.57,-68.13;Antarctica/Syowa,-69.01,39.59;Antarctica/Troll,-72.01,2.53;Antarctica/Vostok,-78.4,106.9;Arctic/Longyearbyen,78.0,16.0;Asia/Aden,12.75,45.2;Asia/Almaty,43.25,76.95;Asia/Amman,31.95,35.93;Asia/Anadyr,64.75,177.48;Asia/Aqtau,44.52,50.27;Asia/Aqtobe,50.28,57.17;Asia/Ashgabat,37.95,58.38;Asia/Atyrau,47.12,51.93;Asia/Baghdad,33.35,44.42;Asia/Bahrain,26.38,50.58;Asia/Baku,40.38,49.85;Asia/Bangkok,13.75,100.52;Asia/Barnaul,53.37,83.75;Asia/Beirut,33.88,35.5;Asia/Bishkek,42.9,74.6;Asia/Brunei,4.93,114.92;Asia/Calcutta,22.53,88.37;Asia/Chita,52.05,113.47;Asia/Colombo,6.93,79.85;Asia/Dacca,23.72,90.42;Asia/Damascus,33.5,36.3;Asia/Dhaka,23.72,90.42;Asia/Dili,-8.55,125.58;Asia/Dubai,25.3,55.3;Asia/Dushanbe,38.58,68.8;Asia/Famagusta,35.12,33.95;Asia/Gaza,31.5,34.47;Asia/Hebron,31.53,35.09;Asia/Ho_Chi_Minh,10.75,106.67;Asia/Hong_Kong,22.28,114.15;Asia/Hovd,48.02,91.65;Asia/Irkutsk,52.27,104.33;Asia/Jakarta,-6.17,106.8;Asia/Jayapura,-2.53,140.7;Asia/Jerusalem,31.78,35.22;Asia/Kabul,34.52,69.2;Asia/Kamchatka,53.02,158.65;Asia/Karachi,24.87,67.05;Asia/Kathmandu,27.72,85.32;Asia/Katmandu,27.72,85.32;Asia/Khandyga,62.66,135.55;Asia/Kolkata,22.53,88.37;Asia/Krasnoyarsk,56.02,92.83;Asia/Kuala_Lumpur,3.17,101.7;Asia/Kuching,1.55,110.33;Asia/Kuwait,29.33,47.98;Asia/Macau,22.2,113.54;Asia/Magadan,59.57,150.8;Asia/Makassar,-5.12,119.4;Asia/Manila,14.59,120.97;Asia/Muscat,23.6,58.58;Asia/Nicosia,35.17,33.37;Asia/Novokuznetsk,53.75,87.12;Asia/Novosibirsk,55.03,82.92;Asia/Omsk,55.0,73.4;Asia/Oral,51.22,51.35;Asia/Phnom_Penh,11.55,104.92;Asia/Pontianak,-0.03,109.33;Asia/Pyongyang,39.02,125.75;Asia/Qatar,25.28,51.53;Asia/Qostanay,53.2,63.62;Asia/Qyzylorda,44.8,65.47;Asia/Rangoon,16.78,96.17;Asia/Riyadh,24.63,46.72;Asia/Saigon,10.75,106.67;Asia/Sakhalin,46.97,142.7;Asia/Samarkand,39.67,66.8;Asia/Seoul,37.55,126.97;Asia/Shanghai,31.23,121.47;Asia/Singapore,1.28,103.85;Asia/Srednekolymsk,67.47,153.72;Asia/Taipei,25.05,121.5;Asia/Tashkent,41.33,69.3;Asia/Tbilisi,41.72,44.82;Asia/Tehran,35.67,51.43;Asia/Thimphu,27.47,89.65;Asia/Tokyo,35.65,139.74;Asia/Tomsk,56.5,84.97;Asia/Ulaanbaatar,47.92,106.88;Asia/Urumqi,43.8,87.58;Asia/Ust-Nera,64.56,143.23;Asia/Vientiane,17.97,102.6;Asia/Vladivostok,43.17,131.93;Asia/Yakutsk,62.0,129.67;Asia/Yangon,16.78,96.17;Asia/Yekaterinburg,56.85,60.6;Asia/Yerevan,40.18,44.5;Atlantic/Azores,37.73,-25.67;Atlantic/Bermuda,32.28,-64.77;Atlantic/Canary,28.1,-15.4;Atlantic/Cape_Verde,14.92,-23.52;Atlantic/Faeroe,62.02,-6.77;Atlantic/Faroe,62.02,-6.77;Atlantic/Madeira,32.63,-16.9;Atlantic/Reykjavik,64.15,-21.85;Atlantic/South_Georgia,-54.27,-36.53;Atlantic/St_Helena,-15.92,-5.7;Atlantic/Stanley,-51.7,-57.85;Australia/Adelaide,-34.92,138.58;Australia/Brisbane,-27.47,153.03;Australia/Broken_Hill,-31.95,141.45;Australia/Darwin,-12.47,130.83;Australia/Eucla,-31.72,128.87;Australia/Hobart,-42.88,147.32;Australia/Lindeman,-20.27,149.0;Australia/Lord_Howe,-31.55,159.08;Australia/Melbourne,-37.82,144.97;Australia/Perth,-31.95,115.85;Australia/Sydney,-33.87,151.22;Europe/Amsterdam,52.37,4.9;Europe/Andorra,42.5,1.52;Europe/Astrakhan,46.35,48.05;Europe/Athens,37.97,23.72;Europe/Belgrade,44.83,20.5;Europe/Berlin,52.5,13.37;Europe/Bratislava,48.15,17.12;Europe/Brussels,50.83,4.33;Europe/Bucharest,44.43,26.1;Europe/Budapest,47.5,19.08;Europe/Busingen,47.7,8.68;Europe/Chisinau,47.0,28.83;Europe/Copenhagen,55.67,12.58;Europe/Dublin,53.33,-6.25;Europe/Gibraltar,36.13,-5.35;Europe/Guernsey,49.45,-2.54;Europe/Helsinki,60.17,24.97;Europe/Isle_of_Man,54.15,-4.47;Europe/Istanbul,41.02,28.97;Europe/Jersey,49.18,-2.11;Europe/Kaliningrad,54.72,20.5;Europe/Kiev,50.43,30.52;Europe/Kirov,58.6,49.65;Europe/Kyiv,50.43,30.52;Europe/Lisbon,38.72,-9.13;Europe/Ljubljana,46.05,14.52;Europe/London,51.51,-0.13;Europe/Luxembourg,49.6,6.15;Europe/Madrid,40.4,-3.68;Europe/Malta,35.9,14.52;Europe/Mariehamn,60.1,19.95;Europe/Minsk,53.9,27.57;Europe/Monaco,43.7,7.38;Europe/Moscow,55.76,37.62;Europe/Oslo,59.92,10.75;Europe/Paris,48.87,2.33;Europe/Podgorica,42.43,19.27;Europe/Prague,50.08,14.43;Europe/Riga,56.95,24.1;Europe/Rome,41.9,12.48;Europe/Samara,53.2,50.15;Europe/San_Marino,43.92,12.47;Europe/Sarajevo,43.87,18.42;Europe/Saratov,51.57,46.03;Europe/Simferopol,44.95,34.1;Europe/Skopje,41.98,21.43;Europe/Sofia,42.68,23.32;Europe/Stockholm,59.33,18.05;Europe/Tallinn,59.42,24.75;Europe/Tirane,41.33,19.83;Europe/Ulyanovsk,54.33,48.4;Europe/Vaduz,47.15,9.52;Europe/Vatican,41.9,12.45;Europe/Vienna,48.22,16.33;Europe/Vilnius,54.68,25.32;Europe/Volgograd,48.73,44.42;Europe/Warsaw,52.25,21.0;Europe/Zagreb,45.8,15.97;Europe/Zurich,47.38,8.53;Indian/Antananarivo,-18.92,47.52;Indian/Chagos,-7.33,72.42;Indian/Christmas,-10.42,105.72;Indian/Cocos,-12.17,96.92;Indian/Comoro,-11.68,43.27;Indian/Kerguelen,-49.35,70.22;Indian/Mahe,-4.67,55.47;Indian/Maldives,4.17,73.5;Indian/Mauritius,-20.17,57.5;Indian/Mayotte,-12.78,45.23;Indian/Reunion,-20.87,55.47;Pacific/Apia,-13.83,-171.73;Pacific/Auckland,-36.87,174.77;Pacific/Bougainville,-6.22,155.57;Pacific/Chatham,-43.95,-176.55;Pacific/Chuuk,7.42,151.78;Pacific/Easter,-27.15,-109.43;Pacific/Efate,-17.67,168.42;Pacific/Fakaofo,-9.37,-171.23;Pacific/Fiji,-18.13,178.42;Pacific/Funafuti,-8.52,179.22;Pacific/Galapagos,-0.9,-89.6;Pacific/Gambier,-23.13,-134.95;Pacific/Guadalcanal,-9.53,160.2;Pacific/Guam,13.47,144.75;Pacific/Honolulu,21.31,-157.86;Pacific/Kanton,-2.78,-171.72;Pacific/Kiritimati,1.87,-157.33;Pacific/Kosrae,5.32,162.98;Pacific/Kwajalein,9.08,167.33;Pacific/Majuro,7.15,171.2;Pacific/Marquesas,-9.0,-139.5;Pacific/Midway,28.22,-177.37;Pacific/Nauru,-0.52,166.92;Pacific/Niue,-19.02,-169.92;Pacific/Norfolk,-29.05,167.97;Pacific/Noumea,-22.27,166.45;Pacific/Pago_Pago,-14.27,-170.7;Pacific/Palau,7.33,134.48;Pacific/Pitcairn,-25.07,-130.08;Pacific/Pohnpei,6.97,158.22;Pacific/Ponape,6.97,158.22;Pacific/Port_Moresby,-9.5,147.17;Pacific/Rarotonga,-21.23,-159.77;Pacific/Saipan,15.2,145.75;Pacific/Tahiti,-17.53,-149.57;Pacific/Tarawa,1.42,173.0;Pacific/Tongatapu,-21.13,-175.2;Pacific/Truk,7.42,151.78;Pacific/Wake,19.28,166.62;Pacific/Wallis,-13.3,-176.17'.split(';').forEach(function(l){ var p=l.split(','); FUSEAUX[p[0]]=[+p[1],+p[2]]; });
+  /* ⚠ LE BOUTON « Zzz » N'EST PAS POSÉ (v118) : la ligne SOMBRE / AVEC TEXTE du Studio ne reçoit pas un troisième bouton sans
+     déplacer ses voisins (cotes au rapport). Tant qu'il manque, le Zzz ne s'allume pas tout seul : on ne livre pas un réglage
+     qu'on ne peut pas éteindre. Quand le bouton sera posé : BOUTON_POSE = true, et le premier lancement l'aura activé. */
+  var BOUTON_POSE=false, DELTA_L=-0.06, H=3600000;
+  function lsG(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }
+  function lsS(k,v){ try{ localStorage.setItem(k,v); }catch(_){} }
+  var Z={choix:null, zzz:null, theme:null, cran:false, force:null};
+  try{ var q=/[?&]zzz=([01])(?:&|$)/.exec(location.search); if(q) lsS('promi_zzz', q[1]);
+       q=/[?&]nuit=([01])(?:&|$)/.exec(location.search); if(q) Z.force=(q[1]==='1'); }catch(_){}
+  Z.zzz=(lsG('promi_zzz')===null) ? BOUTON_POSE : lsG('promi_zzz')==='1';
+
+  function maintenant(){ return typeof window._zzzMaintenant==='function' ? +window._zzzMaintenant() : Date.now(); }
+  function fuseau(){ if(typeof window._zzzFuseau==='string') return window._zzzFuseau;
+    try{ return Intl.DateTimeFormat().resolvedOptions().timeZone||''; }catch(_){ return ''; } }
+  /* NOAA — lever et coucher, en minutes UTC du jour (y, m, d) ; null si le soleil ne se lève ou ne se couche pas */
+  function soleil(y,m,d,lat,lon){
+    var R=Math.PI/180, a=y, b=m; if(b<=2){ a-=1; b+=12; }
+    var A=Math.floor(a/100), B=2-A+Math.floor(A/4);
+    var JD=Math.floor(365.25*(a+4716))+Math.floor(30.6001*(b+1))+d+B-1524.5+0.5, T=(JD-2451545)/36525;
+    var L0=(280.46646+T*(36000.76983+T*0.0003032))%360, M=357.52911+T*(35999.05029-0.0001537*T), e=0.016708634-T*(0.000042037+0.0000001267*T);
+    var C=Math.sin(M*R)*(1.914602-T*(0.004817+0.000014*T))+Math.sin(2*M*R)*(0.019993-0.000101*T)+Math.sin(3*M*R)*0.000289;
+    var om=125.04-1934.136*T, lam=L0+C-0.00569-0.00478*Math.sin(om*R);
+    var eps=23+(26+((21.448-T*(46.815+T*(0.00059-T*0.001813))))/60)/60+0.00256*Math.cos(om*R);
+    var dec=Math.asin(Math.sin(eps*R)*Math.sin(lam*R)), yy=Math.tan(eps*R/2); yy*=yy;
+    var eot=4*(yy*Math.sin(2*L0*R)-2*e*Math.sin(M*R)+4*e*yy*Math.sin(M*R)*Math.cos(2*L0*R)-0.5*yy*yy*Math.sin(4*L0*R)-1.25*e*e*Math.sin(2*M*R))/R;
+    var ch=Math.cos(90.833*R)/(Math.cos(lat*R)*Math.cos(dec))-Math.tan(lat*R)*Math.tan(dec);
+    if(!(ch>=-1 && ch<=1)) return null;
+    var ha=Math.acos(ch)/R, midi=720-4*lon-eot;
+    return {lever:midi-4*ha, coucher:midi+4*ha};
+  }
+  /* le lever et le coucher du jour LOCAL de l'instant donné, en millisecondes */
+  function fenetre(ms){
+    var d=new Date(ms), c=FUSEAUX[fuseau()];
+    if(c){ var s=soleil(d.getFullYear(), d.getMonth()+1, d.getDate(), c[0], c[1]);
+      if(s){ var b=Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()); return {lever:b+s.lever*60000, coucher:b+s.coucher*60000, source:'soleil'}; } }
+    /* fuseau inconnu (ou soleil de minuit) : 22 h – 7 h, c'est-à-dire un « coucher » à 21 h */
+    return {lever:new Date(d.getFullYear(),d.getMonth(),d.getDate(),7,0,0).getTime(), coucher:new Date(d.getFullYear(),d.getMonth(),d.getDate(),21,0,0).getTime(), source:'22h-7h'};
+  }
+  function nuit(ms){
+    if(Z.force!==null) return Z.force;
+    var f=fenetre(ms);
+    if(ms>=f.coucher+H) return true;
+    if(ms<f.lever){ var h=fenetre(ms-24*H); return ms>=h.coucher+H; }     /* avant le lever : la nuit d'hier a-t-elle commencé ? */
+    return false;
+  }
+  function cible(){ var n=!!(Z.zzz && nuit(maintenant())); return {theme:(Z.choix==='dark'||n)?'dark':'light', cran:n}; }
+
+  /* ── le cran de nuit : OKLCH, L − 0,06 ── */
+  function versOk(r,g,b){ function l(c){ c/=255; return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4); } r=l(r); g=l(g); b=l(b);
+    var x=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b), y=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b), z=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+    return [0.2104542553*x+0.7936177850*y-0.0040720468*z, 1.9779984951*x-2.4285922050*y+0.4505937099*z, 0.0259040371*x+0.7827717662*y-0.8086757660*z]; }
+  function deOk(L,a,b){ var x=L+0.3963377774*a+0.2158037573*b, y=L-0.1055613458*a-0.0638541728*b, z=L-0.0894841775*a-1.2914855480*b; x=x*x*x; y=y*y*y; z=z*z*z;
+    function g(c){ c=c<=0.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-0.055; return Math.max(0,Math.min(255,Math.round(c*255))); }
+    return [g(4.0767416621*x-3.3077115913*y+0.2309699292*z), g(-1.2684380046*x+2.6097574011*y-0.3413193965*z), g(-0.0041960863*x-0.7034186147*y+1.7076147010*z)]; }
+  function cran(c){ var o=versOk(c[0],c[1],c[2]); return deOk(Math.max(0,o[0]+DELTA_L), o[1], o[2]); }
+  var NEUTRES=null;
+  function neutres(){
+    if(NEUTRES) return NEUTRES; NEUTRES=[];
+    try{ var st=document.getElementById('lot-TOKENS-css'), t=st?st.textContent:'', re=/(--c-(?:creme|blanc)[\w-]*?)\s*:\s*#([0-9a-fA-F]{6})\b/g, m, vu={};
+      while((m=re.exec(t))){ if(vu[m[1]]||/-rgb$/.test(m[1])) continue; vu[m[1]]=1;
+        var c=[parseInt(m[2].slice(0,2),16),parseInt(m[2].slice(2,4),16),parseInt(m[2].slice(4,6),16)];
+        if(versOk(c[0],c[1],c[2])[0]<0.80) continue;                     /* un neutre CLAIR */
+        NEUTRES.push({n:m[1], de:c, a:cran(c)}); } }catch(_){}
+    return NEUTRES;
+  }
+  function hex(c){ return '#'+c.map(function(v){ return (v<16?'0':'')+v.toString(16).toUpperCase(); }).join(''); }
+  function poseCran(on){
+    var R=document.documentElement;
+    neutres().forEach(function(k){
+      if(on){ R.style.setProperty(k.n, hex(k.a)); R.style.setProperty(k.n+'-rgb', k.a.join(',')); }
+      else { R.style.removeProperty(k.n); R.style.removeProperty(k.n+'-rgb'); } });
+    ['device'].forEach(function(i){ var e=document.getElementById(i); if(e) e.classList.toggle('zzz-nuit', !!on); });
+    var fr=document.querySelector('.frame'); if(fr) fr.classList.toggle('zzz-nuit', !!on);
+  }
+  /* pour ce qui se peint en canevas : le même cran, sur une couleur donnée ([r,g,b]) — sans effet hors de la nuit */
+  window._zzzTon=function(c){ return Z.cran ? cran(c) : c; };
+
+  var base=null;
+  function applique(c, force){
+    if(!base) return false;
+    if(c.theme===Z.theme && c.cran===Z.cran){
+      /* rien ne change : un choix répété (setTheme rappelé par l'app) repasse par le chemin d'avant, tel quel, sans couper les transitions */
+      if(force){ try{ base(c.theme); }catch(_){} if(Z.choix) lsS('promi_theme', Z.choix); }
+      return false; }
+    var dv=document.getElementById('device'), fr=document.querySelector('.frame');
+    [dv,fr].forEach(function(e){ if(e) e.classList.add('zzz-coupe'); });
+    var avant=Z.cran; Z.cran=c.cran;
+    if(c.cran!==avant) poseCran(c.cran);
+    if(c.theme!==Z.theme || c.cran!==avant){ Z.theme=c.theme; try{ base(c.theme); }catch(_){} if(Z.choix) lsS('promi_theme', Z.choix); }
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ [dv,fr].forEach(function(e){ if(e) e.classList.remove('zzz-coupe'); }); }); });
+    Z.bascules=(Z.bascules||0)+1;
+    return true;
+  }
+  function evalue(force){ try{ return applique(cible(), force===true); }catch(_){ return false; } }
+
+  function branche(){
+    if(typeof window.setTheme!=='function' || typeof window.closeAll!=='function') return false;
+    base=window.setTheme;
+    /* un CHOIX de thème (le Studio, le démarrage) : il se mémorise, et il s'applique tout de suite — c'est un geste */
+    window.setTheme=function(t){ Z.choix=(t==='light')?'light':'dark'; lsS('promi_theme', Z.choix); evalue(true); };
+    try{ setTheme=window.setTheme; }catch(_){}
+    var ca=window.closeAll;
+    window.closeAll=function(){ var r=ca.apply(this, arguments); evalue(); return r; };
+    try{ closeAll=window.closeAll; }catch(_){}
+    /* un écran qui s'ouvre : `.show` qui se POSE sur un écran, une feuille ou une fiche (on compare avec l'état d'avant, §8) */
+    try{ var fr=document.querySelector('.frame')||document.body;
+      new MutationObserver(function(L){ for(var i=0;i<L.length;i++){ var e=L[i].target;
+          if(e.classList && e.classList.contains('show') && !/(^|\s)show(\s|$)/.test(L[i].oldValue||'') && /(^|\s)(screen|sheet|poster)(\s|$)/.test(e.className)){ evalue(); return; } } })
+        .observe(fr, {attributes:true, attributeFilter:['class'], attributeOldValue:true, subtree:true}); }catch(_){}
+    document.addEventListener('visibilitychange', function(){ if(!document.hidden) evalue(); });
+    window.addEventListener('pageshow', function(){ evalue(); });
+    var th=lsG('promi_theme'); Z.choix=(th==='dark')?'dark':'light';
+    return true;
+  }
+  (function essaie(n){ if(!branche() && n<100) setTimeout(function(){ essaie(n+1); }, 50); })(0);
+
+  window._zzz={
+    etat:function(){ var f=fenetre(maintenant()); return {choix:Z.choix, zzz:Z.zzz, theme:Z.theme, cran:Z.cran, nuit:nuit(maintenant()), fuseau:fuseau(), source:f.source, lever:f.lever, coucher:f.coucher, bascules:Z.bascules||0, bouton:BOUTON_POSE}; },
+    regle:function(b){ Z.zzz=!!b; lsS('promi_zzz', Z.zzz?'1':'0'); evalue(); },     /* le geste sur le bouton : tout de suite */
+    nuit:nuit, fenetre:fenetre, soleil:soleil, evalue:evalue, cran:cran, neutres:function(){ return neutres().map(function(k){ return {n:k.n, de:hex(k.de), a:hex(k.a)}; }); },
+    fuseaux:Object.keys(FUSEAUX).length, DELTA_L:DELTA_L
+  };
+})();
+</script>
 <style id="lot-V104-MURS-css">
 /* ⚑ v104 (Tom, 30 sept. 2026) — LES MURS DU CERCLE. « Les encarts qui disent LE CERCLE disparaissent. Un réglage verrouillé est
    simplement flouté, sans explication. » Le flou reste (le signal), l'encart part — dans les trois Peaufiner (fiche, page +, Nuée),
@@ -36367,6 +36468,208 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    0,7 s d'accueil grisé, puis la page + d'un coup). Il paraît avec elle, sous elle. */
 #device:has(#createSheet.acc-passe) #scrim{opacity:0!important;transition:none!important}
 </style>
+<style id="lot-V117-PHOTO-MENU-css">
+/* ⚑ v117 (Tom) — le bouton photo d'une fiche propose deux choses. Grammaire des contours (§5) : trait 2, rayon = h ÷ 2. */
+/* ⚠ le nid est de taille NULLE : un `max-width:100%` hérité d'une règle générale y vaut 0 (mesuré : menu de 0 px) */
+#device .ph-photo-menu,#device .ph-photo-menu button,.frame .ph-photo-menu,.frame .ph-photo-menu button{max-width:none!important}
+.ph-photo-menu{position:absolute!important;display:flex!important;flex-direction:column;align-items:flex-end;gap:8px;
+  pointer-events:auto!important;z-index:40}
+.ph-photo-menu button{height:44px;padding:0 20px;border-radius:22px;border:2px solid var(--c-creme95);
+  background:var(--c-brun09);color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95);
+  font-family:var(--f-libelle);font-size:15px;letter-spacing:.04em;text-transform:uppercase;white-space:nowrap;cursor:pointer}
+/* ⚠ CAUSE MESURÉE (v117) : sur la fiche, le nid du bouton et `#dpMain` sont tous deux à z-index 2, et `#dpMain` vient
+   APRÈS : il recouvrait le bouton — au doigt, `elementFromPoint` au centre du rond rendait `dpMain`. Le bouton photo d'une
+   fiche n'était donc pas atteignable. Le nid passe au-dessus ; il reste sans taille et sans doigt (seuls le rond et le menu
+   en prennent un). */
+#device #detailPoster > .ph-photo-nid,.frame #detailPoster > .ph-photo-nid{z-index:3!important}
+</style>
+<script id="lot-V117-PHOTO-MENU">
+/* ⚑ v117 (Tom) — « Sur chaque fiche, le bouton photo propose deux choses : importer une image — le menu du téléphone
+   s'ouvre — ou remettre la dalle telle qu'elle était à sa création, dans son monde, sa forme et sa couleur d'origine.
+   Par défaut rien ne change : la dalle suit le monde et la palette en cours. C'est une option, et elle vaut aussi pour
+   le partage. »
+   · l'option est `p.dalleOrigine` (sauvegardée avec le Promi) ; le monde d'origine est `p.monde` (figé à la plantation) ;
+   · elle s'applique PARTOUT où la dalle de CE Promi est rendue seule (fiche, cartes, partage) — comme la photo (Q53 :
+     une promesse n'a pas deux visages) — en ENVELOPPANT `Toile.dalleTrame` et `_rendDalle` (§8) : un appel qui ne
+     demande aucun monde reçoit celui de la plantation. Un appel qui en demande un (l'Aura, le Studio) n'est pas touché.
+     La Toile elle-même ne bouge pas (§9) ;
+   · ⚑ v118 (Q365 tranchée) : la bande haute d'une fiche prend la couleur d'origine, sauf ton sur ton (lot-V118-ORIGINE) ;
+   · le champ de fichier s'ouvre DANS le geste (le toucher sur « Importer une image ») : iOS refuse sinon. */
+(function(){
+  window._mondeOrigine=function(id){
+    try{ if(typeof promises==='undefined') return null;
+      for(var i=0;i<promises.length;i++){ var p=promises[i];
+        if(p && p.id===id) return (p.dalleOrigine && p.monde && p.monde.m) ? p.monde : null; } }catch(_){}
+    return null;
+  };
+  function enveloppe(){
+    if(!(window.Toile && window.Toile.dalleTrame && window._rendDalle)) return false;
+    if(!window.Toile.__origineV117){
+      var dt=window.Toile.dalleTrame;
+      window.Toile.dalleTrame=function(cv, id, k, monde, opts){
+        if(monde===undefined || monde===null){
+          if(!(opts && opts.courant)){ var m=window._mondeOrigine(id); if(m) monde=m; } }
+        return dt.call(this, cv, id, k, monde, opts);
+      };
+      window.Toile.__origineV117=true;
+    }
+    if(!window._rendDalle.__origineV117){
+      var rd=window._rendDalle;
+      var f=function(id, tw, th, o, deFond){
+        var m=window._mondeOrigine(id);
+        if(m && !(o && (o.monde || o.courant))){ var o2={}; if(o) for(var c in o) o2[c]=o[c]; o2.monde=m; o=o2; }
+        return rd.call(this, id, tw, th, o, deFond);
+      };
+      f.__origineV117=true; window._rendDalle=f;
+    }
+    return true;
+  }
+  (function essaie(n){ if(!enveloppe() && n<80) setTimeout(function(){ essaie(n+1); }, 100); })(0);
+
+  var MENU=null;
+  function ferme(){ if(MENU){ try{ MENU.remove(); }catch(_){} MENU=null; } }
+  window._photoMenuFerme=ferme;
+  document.addEventListener('pointerdown', function(e){
+    if(MENU && !MENU.contains(e.target) && !(e.target.closest && e.target.closest('.ph-photo-btn'))) ferme(); }, true);
+
+  window._photoMenu=function(b, inp, p, rejoue){
+    if(MENU){ ferme(); return; }
+    if(!p) return;
+    var nid=b.parentNode; if(!nid) return;
+    var m=document.createElement('div'); m.className='ph-photo-menu';
+    function item(txt, on, fn){ var x=document.createElement('button'); x.type='button'; x.textContent=txt;
+      x.onclick=function(ev){ ev.stopPropagation(); fn(); }; m.appendChild(x); return x; }
+    /* les mots (Tom, v118, Q366 tranchée) : « Importer une image » · « La dalle d’origine » · « La dalle du Studio » · « Retirer la photo » */
+    item('Importer une image', false, function(){ try{ inp.click(); }catch(_){} ferme(); });
+    if(p.monde && p.monde.m)
+      item(p.dalleOrigine ? 'La dalle du Studio' : 'La dalle d’origine', false, function(){
+        p.dalleOrigine=!p.dalleOrigine; if(p.photo) p.photo=null; ferme();
+        try{ if(typeof saveState==='function') saveState(); }catch(_){}
+        repeint(rejoue); });
+    if(p.photo) item('Retirer la photo', false, function(){ p.photo=null; ferme(); repeint(rejoue); });
+    /* au-dessus du bouton, aligné à droite sur la marge (x 366) */
+    var top=parseFloat(b.style.top)||0;
+    m.style.setProperty('left', (366-342)+'px', 'important');
+    m.style.setProperty('right', 'auto', 'important');
+    nid.appendChild(m);
+    var h=m.getBoundingClientRect().height/(((document.getElementById('device')||{}).getBoundingClientRect?document.getElementById('device').getBoundingClientRect().width:390)/390||1);
+    m.style.setProperty('top', Math.round(top - 10 - h)+'px', 'important');
+    m.style.setProperty('width', '342px', 'important');
+    MENU=m;
+  };
+  function repeint(rejoue){
+    try{ if(window._ficheDalle) window._ficheDalle(); }catch(_){}
+    try{ rejoue && rejoue(); }catch(_){}
+    try{ if(window.buildIndex) buildIndex(); }catch(_){}
+    try{ if(window.buildFeed) buildFeed(); }catch(_){}
+  }
+  /* le menu ne survit pas à la fiche (§8, « rien ne survit à closeAll ») */
+  (window._rangeurs=window._rangeurs||[]).push(ferme);
+})();
+</script>
+<script id="lot-V118-ORIGINE">
+/* ⚑ v118 (Tom, Q365 tranchée) — « Avec La dalle d'origine, la bande haute de la fiche prend la couleur d'origine, sauf si elle
+   passe sous le seuil de redteam_tonsurton face au champ. Dans ce cas seulement, la rampe de Q30 s'applique. »
+   Le seuil est celui du juge : ΔE 15 (CIELAB), entre le Lab MOYEN de la dalle rendue dans son monde de plantation — DÉCLARÉ par
+   le moteur (`__dalleInfo.lab`, jamais relu en pixels : redteam_decoupe) — et la couleur du champ (la nature). */
+(function(){
+  var SEUIL=15, MEMO={};
+  window._seuilOrigine=SEUIL;
+  function lin(c){ c/=255; return c<=0.04045 ? c/12.92 : Math.pow((c+0.055)/1.055, 2.4); }
+  function f(t){ return t>0.008856 ? Math.pow(t,1/3) : 7.787*t+16/116; }
+  function lab(r,g,b){ r=lin(r); g=lin(g); b=lin(b);
+    var x=(0.4124564*r+0.3575761*g+0.1804375*b)/0.95047, y=0.2126729*r+0.7151522*g+0.0721750*b, z=(0.0193339*r+0.1191920*g+0.9503041*b)/1.08883;
+    return [116*f(y)-16, 500*(f(x)-f(y)), 200*(f(y)-f(z))]; }
+  function rgb(s){ s=''+s; var m=/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(s.trim());
+    if(m) return [parseInt(m[1],16),parseInt(m[2],16),parseInt(m[3],16)];
+    m=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(s); return m ? [+m[1],+m[2],+m[3]] : null; }
+  /* null : l'option n'est pas prise (ou rien à mesurer) ; sinon {dE, origine} */
+  window._origineBande=function(p, natCol){
+    try{ if(!(p && p.dalleOrigine && p.monde && p.monde.m && window.Toile && window.Toile.dalleTrame)) return null;
+      var c=rgb(natCol); if(!c) return null;
+      var k=p.id+'|'+p.monde.m+'|'+p.monde.p+'|'+p.monde.h+'|'+(p.dalle?p.dalle.ci+','+p.dalle.lit:'')+'|'+c.join(',');
+      if(MEMO[k]) return MEMO[k];
+      var cv=document.createElement('canvas');
+      if(!window.Toile.dalleTrame(cv, p.id, 1, p.monde, {donnees:true}) || !cv.__dalleInfo || !cv.__dalleInfo.lab) return null;
+      var L=cv.__dalleInfo.lab, F=lab(c[0],c[1],c[2]);
+      var d=Math.sqrt((L[0]-F[0])*(L[0]-F[0])+(L[1]-F[1])*(L[1]-F[1])+(L[2]-F[2])*(L[2]-F[2]));
+      return (MEMO[k]={dE:d, origine:d>=SEUIL});
+    }catch(_){ return null; }
+  };
+})();
+</script>
+<script id="lot-V117-PARTAGE-FICHE">
+/* ⚑ v117 (Tom) — « Les boutons Partager des fiches ne font rien — Promi, Chiche, Cercle. Corrige. Et vérifie que l'image
+   produite ressemble à ce que donne Mon Folio quand on ne garde qu'une dalle. »
+   CAUSE, mesurée : le rond appelait `ouvrirPartage()`, qui n'existe nulle part — il retombait sur `#shareScreen.show`
+   posé à nu, sans `openShare()` : écran vide, rien de peint. Et AU DOIGT, la barre Peaufiner ne produit aucun `click`
+   (§8, v104) : même la branche de secours ne partait pas.
+   · le partage d'une fiche, c'est MON FOLIO réduit à cette parole — EXACTEMENT ce que donne Mon Folio quand on décoche
+     tout le reste : mêmes peintres (`sharePlanche`, export `_shExporteCanevas`), sans la Pelote ;
+   · un Cercle : son Folio, c'est-à-dire ses Promi (une Nuée n'a pas de case de Folio) ;
+   · ce que l'utilisateur avait choisi au partage (`shareHidden`, le sujet, la Pelote) est RENDU à la fermeture et n'est
+     jamais sauvegardé entre-temps. */
+(function(){
+  var AV=null, tDoigt=0;
+  function sujet(){
+    try{
+      if(typeof curNuee!=='undefined' && curNuee){
+        var dp=document.getElementById('detailPoster');
+        if(dp && (dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')))
+          return {ids:promises.filter(function(p){ return p.nuee===curNuee && !p.draft && !p.req; }).map(function(p){ return p.id; }), nuee:curNuee};
+      }
+      if(typeof cur!=='undefined' && cur) return {ids:[cur.id], nuee:null};
+    }catch(_){}
+    return null;
+  }
+  function rends(){
+    if(!AV) return;
+    try{ shareHidden=AV.h; window.shareHidden=AV.h; }catch(_){}
+    try{ window.shPelote=AV.pel; }catch(_){}
+    try{ var b=document.querySelector('#shMode button[data-mode="'+AV.mode+'"]'); AV=null; if(b) b.click(); }catch(_){ AV=null; }
+    try{ if(window._majQpRail) _majQpRail(); }catch(_){}
+  }
+  window.ouvrirPartage=function(){
+    var s=sujet(); if(!s || !s.ids.length) { try{ openShare(); }catch(_){} return; }
+    if(!AV) AV={h:shareHidden, mode:(typeof shareMode!=='undefined'?shareMode:'toile'), pel:!!window.shPelote};
+    var h={}; promises.forEach(function(p){ if(s.ids.indexOf(p.id)<0) h[p.id]=true; });
+    try{ Object.keys(NUE).forEach(function(k){ if(k!==s.nuee) h['n:'+k]=true; }); }catch(_){}
+    shareHidden=h; window.shareHidden=h; window.shPelote=false;
+    window._partageFicheSujet=s;
+    openShare();
+    try{ var b=document.querySelector('#shMode button[data-mode="mosaic"]'); if(b) b.click(); }catch(_){}
+    try{ if(window._majQpRail) _majQpRail(); }catch(_){}
+  };
+  /* la barre Peaufiner ne produit pas de `click` (§8 v104) — on lit le geste (appui, lever sans glisser) */
+  var x0=0,y0=0,t0=0,sur=null;
+  document.addEventListener('pointerdown', function(e){
+    sur=e.target.closest && e.target.closest('#dpDetails .dpd-part'); x0=e.clientX; y0=e.clientY; t0=performance.now(); }, true);
+  document.addEventListener('pointerup', function(e){
+    var s=sur; sur=null; if(!s) return;   /* tous les pointeurs : à la souris non plus, le `click` n'arrive pas au rond (mesuré, v117) */
+    if(Math.hypot(e.clientX-x0, e.clientY-y0)>10 || performance.now()-t0>600) return;
+    tDoigt=performance.now(); e.stopPropagation();
+    try{ window.ouvrirPartage(); }catch(_){}
+  }, true);
+  window._partageFiche={ deja:function(){ return performance.now()-tDoigt<800; }, rends:rends };
+  /* la fermeture : `#shareScreen` PERD-il `.show` ? (§8 — vérifié à la mesure, `redteam_partage_fiche`) */
+  function guette(){
+    var sc=document.getElementById('shareScreen'); if(!sc){ setTimeout(guette, 300); return; }
+    var etait=sc.classList.contains('show');
+    new MutationObserver(function(){ var est=sc.classList.contains('show'); if(est===etait) return; etait=est;
+      if(!est && AV) rends(); }).observe(sc, {attributes:true, attributeFilter:['class']});
+  }
+  guette();
+  /* jamais sauvegardé pendant : la sauvegarde écrit ce que l'utilisateur avait choisi */
+  (function enveloppe(n){
+    if(typeof window.saveState!=='function'){ if(n<50) setTimeout(function(){ enveloppe(n+1); },100); return; }
+    if(window.saveState.__v117) return;
+    var f=window.saveState;
+    var g=function(){ if(!AV) return f.apply(this, arguments);
+      var tmp=shareHidden; shareHidden=AV.h; try{ return f.apply(this, arguments); } finally { shareHidden=tmp; } };
+    g.__v117=true; window.saveState=g;
+  })(0);
+})();
+</script>
 </body>
 
 </html>

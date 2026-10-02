@@ -128,57 +128,17 @@ la nature, la ligne dit l'état.)*
 > bougent pas, AU HEX PRÈS. Contraste du texte ≥ 7 : 1 (mesuré 14,2). **Aucun filtre de couleur, aucun voile.**
 > **Le bouton : « Zzz »** — écrit exactement ainsi (Z majuscule, zz minuscules), même si ses voisins sont en capitales ; au Studio,
 > au milieu de la ligne SOMBRE / AVEC TEXTE, avec la grammaire de ses voisins ; VoiceOver « Mode nuit, activé / désactivé ».
-> *(v118 : le bouton n'était pas posé ; il l'est en v119 — bloc ci-dessus.)* Essai : `?zzz=1` / `?zzz=0` (mémorisé), `?nuit=1` simule la nuit.
+> ⚠ **v118 : LE BOUTON N'EST PAS POSÉ** — la ligne ne reçoit pas un troisième disque sans déplacer ses voisins (56 entre les paires,
+> il en faudrait 84 : `planche-v118/planche-zzz.png`). Tant qu'il manque, le Zzz ne s'active pas seul (`BOUTON_POSE` dans
+> `lot-V118-ZZZ`) : on ne livre pas un réglage qu'on ne peut pas éteindre. Essai : `?zzz=1` l'active (mémorisé), `?nuit=1` simule la nuit.
 > Juge : **`redteam_nuit.py`** (heures d'almanach en dur, second calcul indépendant, bascule en direct = rouge).
 
-### ⚑ v119 (2 oct. 2026) — LA PELOTE : UN MINI HALO QUI PROLONGE SA LUMIÈRE, UNE OMBRE PORTÉE, DANS LES DEUX MODES. (Décision Tom.)
-> **Q368 : écho, couronne de fibres et halo flou REFUSÉS. Mise en valeur : un mini halo qui prolonge la lumière de la Pelote, plus
-> une ombre portée, dans les deux modes.** D (un trait par parole tenue) reste EXCLU DÉFINITIVEMENT : c'est un compteur visuel qui
-> croît avec l'action — la grille l'interdit. Ne jamais le reproposer.
-> **Le halo** n'est pas un flou posé autour : c'est la lumière du velours qui déborde à peine de la silhouette.
-> ```
-> couleur     le ton LE PLUS CLAIR de la rampe de la Pelote (pas une moyenne)
-> forme       serré, décroissance EXPONENTIELLE — ΔE00 face au fond : 5 à 9 au ras de la silhouette (dosé 7), 2 à 4 à 0,04 D (2,9),
->             moins de 1 à 0,08 D ; RIEN au-delà (D = 232,064 ; silhouette = 121)
-> direction   plein du côté éclairé (en haut à gauche), 20 % à l'opposé ; presque nul sur le quart inférieur (l'ombre s'y lit)
-> mouvement   il respire avec la lumière du velours, même cycle, même phase, ± 20 % ; immobile avec Réduire les animations
-> rendu       TRAMÉ avec le grain de l'app (± 1,5 niveau) : aucune marche de quantification
-> ```
-> **L'ombre** : géométrie de v117 (écart de 60 pt), dans les deux thèmes. En clair : encre du mode, 0,10. **En sombre : aucune ombre
-> crème** — le halo dépose sous la Pelote une flaque de lumière à peine perceptible (`#auPeloteFlaque`), et l'ombre est la zone que
-> cette lumière n'atteint pas. ΔE00 ≥ 2 entre l'ombre et son pourtour, dans les deux thèmes.
-> Liste blanche NOMINATIVE : `lot-V119-PELOTE` (`window._haloPelote`, `window._flaquePelote`), appelés de l'Aura seule ;
-> `redteam_volume --sonde=mini` rougit. Juges : **`redteam_halo.py`** (23, `--sonde` sans trame rougit), `redteam_contour.py` (la
-> matière ne dépasse pas, halo éteint ; le halo s'arrête à 0,08 D).
-> **⚑ LA LUMIÈRE DU VELOURS S'APPLIQUE APRÈS LE RENDU (Q371).** Les poils sont peints au repos ; la lumière est une CARTE (la moyenne
-> du maximum moins celle du repos, calibrée sur le peintre à l'ouverture, bornée à la silhouette) ajoutée EN UN PASSAGE aux couleurs
-> de la fourrure, dans le tampon du peintre (`o.apres` → `lumB`), avec UN réglage — la valeur du souffle ; le halo suit le même
-> réglage. Identité avec v118 : ΔE00 moyen 0,3 à 1,05 au maximum (pire zone d'un neuvième : 2,8 — la carte tient à la vue, elle se
-> réemploie quand la Pelote tourne).
-> ⚠ **LA PELOTE N'EST PAS OPAQUE** (alpha jusqu'à 109 au palier de densité réduit, 72 % de pixels sous 255 au palier plein) : une
-> lumière COMPOSÉE sur le canevas (`lighter`) ajoute aussi de l'opacité, la page se retire d'autant et la lumière s'éteint (2 niveaux
-> au lieu de 10, vu à la réouverture de l'Aura) ; une interpolation qui garde l'alpha (`source-atop`) imprime le fantôme des îles
-> de l'angle de calibrage. **Une lumière s'ajoute aux COULEURS, dans le tampon, jamais par une composition qui touche l'alpha.**
-> Et le calibrage attend trois images posées : une image où le peintre refait son cache n'est pas une image ordinaire. ⚠ C'est le peintre qui TAILLE
-> le canevas : on lit sa taille APRÈS la première peinture.
-
-### ⚑ v119 — LE BOUTON « Zzz » EST POSÉ ; LE CRAN DE NUIT COUVRE TOUT ; « GARDER DE CÔTÉ » GARDE. (Décisions Tom.)
-> **Le bouton** : au Studio, les deux paires de la ligne SOMBRE / AVEC TEXTE s'écartent de 14 chacune (45, 109 · 237, 301) et le
-> disque du Zzz se pose au milieu (173), 20 d'air de chaque côté, avec la grammaire de ses voisins (44, trait 2, l'anneau quand il
-> est pris) ; son mot s'écrit « Zzz ». VoiceOver : « Mode nuit, activé / désactivé ». **Le Zzz est activé au premier lancement.**
-> ⚠ Sous un navigateur PILOTÉ (`navigator.webdriver`), il ne s'allume pas seul : sans quoi tout juge passé après le coucher du
-> soleil verrait le sombre alors qu'il a demandé le clair.
-> **La couverture** : bien des encres sont posées EN LIGNE par le code, en dur (textes d'une fiche, cartes de l'Index et du Fil,
-> `fill` / `stroke` des SVG, image de l'anneau du +). La nuit seulement, une passe les ramène à la valeur de nuit de leur jeton et un
-> observateur reprend ce que les peintres réécrivent (plafond : 20 reprises en 2 s par nœud) ; au jour tout est rendu. Le filet des
-> anneaux et du trait prend la crème par `window._cremeJeton()`. Le crème dalle `#EFE3C7` posé en ligne et les pastilles de palette
-> ne sont pas touchés (ce sont des tons de dalle). `redteam_nuit` lit l'IMAGE de 13 écrans : aucun neutre clair à sa valeur de jour.
-> **« Garder de côté » (Q370)** : au toucher, le titre et la personne de la phrase passent au gardé de côté, puis la page + se ferme
-> (`redteam_garder.py`, au doigt). Ce n'est pas la mémoire des paroles en l'air (celle-ci relance les paroles sans date).
-> **v115, les violations visibles sont soldées** : plus d'ombre de texte sur « ✕ FERMER », le mot-marque d'une fiche ni le badge de
-> Partager ; plus d'ombre dure ni d'éclat en dégradé sur le bouton d'achat de Ma Parole ! (le flou n'est permis qu'aux murs).
-
-### ⚑ v118 — « PARTAGER MA PELOTE » SOUS L'OMBRE. (Décision Tom.) *(l'écho décalé de v118 est retiré en v119 — bloc ci-dessus)*
+### ⚑ v118 — LA PELOTE : L'ÉCHO DÉCALÉ ; « PARTAGER MA PELOTE » SOUS L'OMBRE ; D EST EXCLU DÉFINITIVEMENT. (Décisions Tom.)
+> **L'écho (Q368 → A)** : une copie PLATE de la silhouette (rayon 121), décalée de 11, dans un autre ton de la palette (le ton
+> dominant + 2 ; le suivant s'il se confond avec la page, ΔE < 15). Aucun flou, aucun dégradé. Il entre dans la liste blanche
+> NOMINATIVE de la Pelote (`.au-echo`, `window._echoPelote`, `lot-V118-PELOTE`) : `redteam_volume --sonde=echo` rougit si on le pose
+> sur une dalle. **D (un trait par parole tenue) est EXCLU DÉFINITIVEMENT : c'est un compteur visuel qui croît avec l'action — la
+> grille l'interdit.** Ne jamais le reproposer.
 > **Le bouton (Q367)** : juste sous l'ombre, à **G2 = 56** du bas de l'ombre (525,5 → 585,5) ; la phrase et ce qui suit se placent
 > ensuite, l'ENCRE de la phrase à 56 sous le bouton. L'ombre garde ses 60 pt, l'air ne se reprend pas. La colonne se lit : la Pelote ·
 > l'ombre · le bouton · la phrase · les Noyaux · la légende et ses chiffres · ce que tu as tenu · ce qu'on t'a tenu.
@@ -1525,13 +1485,9 @@ python3 redteam_joignable.py   # v118 — CE QUI SE TOUCHE EST JOIGNABLE : eleme
                                #   (bouton photo recouvert, ouvrirPartage). ≈ 2 min.
 python3 redteam_origine.py     # 64 — v118 (Q365) : avec « La dalle d'origine », la bande haute porte la couleur d'origine, sauf ton sur
                                #   ton (ΔE < 15, en dur) → rampe de Q30. Rougit sur app-avant-v118 et avec --sonde.
-python3 redteam_nuit.py        # 44 — LE Zzz (v118–v119) : six cas, almanach en dur (Paris, juin et décembre), fuseau inconnu, aucune bascule
-                               #   sous les yeux, cran de nuit au hex près, le bouton du Studio (cotes de ses voisins), la COUVERTURE
-                               #   (13 écrans lus sur l'image : aucun neutre clair à sa valeur de jour — rougit sur v118). --sonde rougit.
-python3 redteam_halo.py        # 23 — v119, LE MINI HALO ET L'OMBRE DE LA PELOTE, lus sur l'image @3x : profil (ΔE00 au ras, à 0,04 D, à 0,08 D,
-                               #   rien au-delà), direction, trame, respiration ± 20 %, ombre ΔE00 ≥ 2 dans les deux thèmes. --sonde (sans trame) rougit.
-python3 redteam_garder.py      # 18 — v119 (Q370), AU DOIGT, deux moteurs : « garder de côté » garde le titre et la personne de la phrase.
-                               #   Rougit sur app-avant-v119 (rien n'était gardé).
+python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur (Paris, juin et décembre), fuseau inconnu, aucune bascule
+                               #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
+                               #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;
                                #   immobile avec Réduire les animations. Rougit sur app-avant-v117b.
