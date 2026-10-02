@@ -24,7 +24,12 @@
 /planche-corps/
 /planche-grammaire/
 /planche-identite/
-/planche-onboarding/
+# planche-onboarding : on suit ce qui n'est pas une image (Tom, v118)
+/planche-onboarding/*
+!/planche-onboarding/*.html
+!/planche-onboarding/*.css
+!/planche-onboarding/*.py
+!/planche-onboarding/*.json
 /planche-palette/
 /planche-pelote/
 /planche-reperage/
@@ -55,3 +60,5 @@ __pycache__/
 .cache/
 node_modules/
 /.claude/
+/planche-v118/
+zz-*.html

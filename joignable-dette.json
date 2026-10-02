@@ -1,0 +1,12 @@
+{
+ "rendu": {
+  "div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»": "mur de Ma Parole ! : réglage flouté du gratuit, sans prise par décision (v104)",
+  "div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»": "mur de Ma Parole ! : réglage flouté du gratuit, sans prise par décision (v104)"
+ },
+ "source": {
+  "#fToAll · onchange": "nœud disparu : code mort hors de Q363 — à retirer sur décision",
+  "c · onclick → promiDeconnexion()": "point de branchement de Firebase : voulu",
+  "document · onclick → ouvrirPersonne() [après un return]": "garde morte : openPerson, juste après, fait le travail",
+  "document · onclick → renderPerson() [après un return]": "garde morte : openPerson, juste avant, fait le travail"
+ }
+}

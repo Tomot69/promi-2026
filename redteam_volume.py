@@ -12,16 +12,20 @@ LA DETTE DE NAISSANCE — ce qui existait avant la règle — est inscrite dans 
 jamais pour faire passer : elle NOMME chaque occurrence ancienne (le fond de la Toile `_fondVif` en fait partie) ; elle se
 solde à la main, et toute occurrence NOUVELLE hors liste blanche fait échouer.
 Preuve que le juge mord : `--sonde` pose un halo (shadowBlur) sur une dalle de la Toile dans une copie du moteur → il doit rougir.
-Usage : python3 redteam_volume.py [--figer] [--sonde]
+v118 : `--sonde=echo` pose l'écho décalé de la Pelote sous une dalle → il doit rougir (l'écho est plat, mais il n'est qu'à elle).
+Usage : python3 redteam_volume.py [--figer] [--sonde | --sonde=halo | --sonde=echo]
+Original : sauvegardes/redteam_volume-avant-v118.py
 """
 import io, os, re, sys, json, collections
 ICI=os.path.dirname(os.path.abspath(__file__))
 # LISTE BLANCHE NOMINATIVE — (bloc → motifs permis). v115 : le halo flou devient la COURONNE de fibres ; son peintre,
 # window._couronnePelote, est un VOLUME lui aussi : il n'est permis que dans son bloc et à son unique appel (l'Aura).
-BLANCHE={'lot-V114-PELOTE-css':'*', 'lot-V115-PELOTE':'*', 'lot-AURA-PELOTE':{'_couronnePelote'}}
+# v118 (Tom, Q368 → A) : L'ÉCHO DÉCALÉ entre dans la liste — il est PLAT, mais il n'appartient qu'à la Pelote : son peintre
+# (window._echoPelote) et sa classe (.au-echo) ne sont permis que dans leurs blocs et à leur unique appel (l'Aura).
+BLANCHE={'lot-V114-PELOTE-css':'*', 'lot-V115-PELOTE':'*', 'lot-V118-PELOTE':'*', 'lot-AURA-PELOTE':{'_couronnePelote','_echoPelote','au-echo'}}
 def permis(lot, motif):
     b=BLANCHE.get(lot); return b=='*' or (b is not None and any(motif.startswith(m) for m in b))
-MOTIFS=re.compile(r"_couronnePelote|(?:repeating-)?(?:radial|linear|conic)-gradient\(|create(?:Radial|Linear|Conic)Gradient|shadowBlur|shadowColor|drop-shadow\(|text-shadow\s*:[^;}\"']*|box-shadow\s*:[^;}\"']*")
+MOTIFS=re.compile(r"_couronnePelote|_echoPelote|au-echo|(?:repeating-)?(?:radial|linear|conic)-gradient\(|create(?:Radial|Linear|Conic)Gradient|shadowBlur|shadowColor|drop-shadow\(|text-shadow\s*:[^;}\"']*|box-shadow\s*:[^;}\"']*")
 LONG=r"-?\d*\.?\d+(?:px|em|rem)?"
 def floue(val):
     """une ombre CSS n'est un VOLUME que si elle a un flou (3e longueur > 0) et n'est pas inset (un filet, pas un volume)"""
@@ -61,7 +65,10 @@ def main():
         M=io.open(os.path.join(ICI,'promi-moteur.js'),encoding='utf-8').read()
         old="g.fillStyle=bg;g.fillRect(0,0,W,H);"
         assert M.count(old)>=1, 'point de sonde absent'
-        if '--sonde=halo' in sys.argv:
+        if '--sonde=echo' in sys.argv:
+            moteur=M.replace(old, old+"try{ if(window._echoPelote) window._echoPelote(g.canvas.parentNode, W/2, H/2, 40, 11); }catch(_){}",1)   # l'écho sous une dalle
+            print('SONDE : un ÉCHO décalé (window._echoPelote) posé sous les dalles de la Toile, dans une copie du moteur')
+        elif '--sonde=halo' in sys.argv:
             moteur=M.replace(old, old+"g.shadowBlur=14;g.shadowColor='rgba(130,174,248,.6)';",1)   # un halo sur les dalles de la Toile
             print('SONDE : un halo (shadowBlur 14) posé sur les dalles de la Toile, dans une copie du moteur')
         else:

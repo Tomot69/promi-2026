@@ -1,0 +1,8 @@
+      apres     [light] #dptNat « Promi » : ton sur ton (Δ0)
+      apres     [light] .closeb « FERMER » : ton sur ton (Δ0)
+      arrive    [dark] #dptQui « À Rachel » : ton sur ton (Δ25)
+      arrive    [light] #dptNat « Promi » : ton sur ton (Δ0)
+      arrive    [light] .closeb « FERMER » : ton sur ton (Δ0)
+      referme   [dark] #dptNat « Promi » : ton sur ton (Δ22)
+      referme   [dark] .closeb « FERMER » : ton sur ton (Δ22)
+❌  19 ÉCARTS

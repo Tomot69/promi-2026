@@ -208,30 +208,6 @@
     13
    ]
   },
-  "fiche · bouton rond": {
-   "fontFamily": "Atkinson, system-ui, sans-serif",
-   "fontSize": "14.5px",
-   "fontWeight": "600",
-   "color": "rgb(32, 25, 8)",
-   "backgroundColor": "rgba(0, 0, 0, 0)",
-   "opacity": "1",
-   "paddingTop": "0px",
-   "paddingRight": "0px",
-   "paddingBottom": "0px",
-   "paddingLeft": "0px",
-   "marginTop": "0px",
-   "marginBottom": "0px",
-   "borderRadius": "50%",
-   "boxShadow": "rgba(0, 52, 26, 0.26) 0px 0px 0px 1.5px inset",
-   "width": "46px",
-   "height": "46px",
-   "display": "grid",
-   "position": "relative",
-   "_px": [
-    0,
-    0
-   ]
-  },
   "fiche · zone geste": {
    "fontFamily": "Atkinson, system-ui, sans-serif",
    "fontSize": "16px",
@@ -628,30 +604,6 @@
    "_px": [
     23,
     13
-   ]
-  },
-  "fiche · bouton rond": {
-   "fontFamily": "Atkinson, system-ui, sans-serif",
-   "fontSize": "14.5px",
-   "fontWeight": "600",
-   "color": "rgb(32, 25, 8)",
-   "backgroundColor": "rgba(0, 0, 0, 0)",
-   "opacity": "1",
-   "paddingTop": "0px",
-   "paddingRight": "0px",
-   "paddingBottom": "0px",
-   "paddingLeft": "0px",
-   "marginTop": "0px",
-   "marginBottom": "0px",
-   "borderRadius": "50%",
-   "boxShadow": "rgba(0, 52, 26, 0.26) 0px 0px 0px 1.5px inset",
-   "width": "46px",
-   "height": "46px",
-   "display": "grid",
-   "position": "relative",
-   "_px": [
-    0,
-    0
    ]
   },
   "fiche · zone geste": {
@@ -1095,30 +1047,6 @@
    "_px": [
     23,
     13
-   ]
-  },
-  "fiche · bouton rond": {
-   "fontFamily": "Atkinson, system-ui, sans-serif",
-   "fontSize": "14.5px",
-   "fontWeight": "600",
-   "color": "rgb(29, 22, 0)",
-   "backgroundColor": "rgba(0, 0, 0, 0)",
-   "opacity": "1",
-   "paddingTop": "0px",
-   "paddingRight": "0px",
-   "paddingBottom": "0px",
-   "paddingLeft": "0px",
-   "marginTop": "0px",
-   "marginBottom": "0px",
-   "borderRadius": "50%",
-   "boxShadow": "rgba(0, 52, 26, 0.26) 0px 0px 0px 1.5px inset",
-   "width": "46px",
-   "height": "46px",
-   "display": "grid",
-   "position": "relative",
-   "_px": [
-    0,
-    0
    ]
   },
   "fiche · zone geste": {
@@ -1709,30 +1637,6 @@
     13
    ]
   },
-  "fiche · bouton rond": {
-   "fontFamily": "Atkinson, system-ui, sans-serif",
-   "fontSize": "14.5px",
-   "fontWeight": "600",
-   "color": "rgb(247, 240, 222)",
-   "backgroundColor": "rgba(0, 0, 0, 0)",
-   "opacity": "1",
-   "paddingTop": "0px",
-   "paddingRight": "0px",
-   "paddingBottom": "0px",
-   "paddingLeft": "0px",
-   "marginTop": "0px",
-   "marginBottom": "0px",
-   "borderRadius": "50%",
-   "boxShadow": "rgba(41, 21, 71, 0.32) 0px 0px 0px 1.5px inset",
-   "width": "46px",
-   "height": "46px",
-   "display": "grid",
-   "position": "relative",
-   "_px": [
-    0,
-    0
-   ]
-  },
   "fiche · zone geste": {
    "fontFamily": "Atkinson, system-ui, sans-serif",
    "fontSize": "16px",
@@ -2309,30 +2213,6 @@
    "_px": [
     23,
     13
-   ]
-  },
-  "fiche · bouton rond": {
-   "fontFamily": "Atkinson, system-ui, sans-serif",
-   "fontSize": "14.5px",
-   "fontWeight": "600",
-   "color": "rgb(247, 240, 222)",
-   "backgroundColor": "rgba(0, 0, 0, 0)",
-   "opacity": "1",
-   "paddingTop": "0px",
-   "paddingRight": "0px",
-   "paddingBottom": "0px",
-   "paddingLeft": "0px",
-   "marginTop": "0px",
-   "marginBottom": "0px",
-   "borderRadius": "50%",
-   "boxShadow": "rgba(41, 21, 71, 0.32) 0px 0px 0px 1.5px inset",
-   "width": "46px",
-   "height": "46px",
-   "display": "grid",
-   "position": "relative",
-   "_px": [
-    0,
-    0
    ]
   },
   "fiche · zone geste": {
@@ -2912,30 +2792,6 @@
    "_px": [
     23,
     13
-   ]
-  },
-  "fiche · bouton rond": {
-   "fontFamily": "Atkinson, system-ui, sans-serif",
-   "fontSize": "14.5px",
-   "fontWeight": "600",
-   "color": "rgb(243, 231, 209)",
-   "backgroundColor": "rgba(0, 0, 0, 0)",
-   "opacity": "1",
-   "paddingTop": "0px",
-   "paddingRight": "0px",
-   "paddingBottom": "0px",
-   "paddingLeft": "0px",
-   "marginTop": "0px",
-   "marginBottom": "0px",
-   "borderRadius": "50%",
-   "boxShadow": "rgba(41, 21, 71, 0.32) 0px 0px 0px 1.5px inset",
-   "width": "46px",
-   "height": "46px",
-   "display": "grid",
-   "position": "relative",
-   "_px": [
-    0,
-    0
    ]
   },
   "fiche · zone geste": {

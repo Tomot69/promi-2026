@@ -333,11 +333,16 @@ def batterie(theme):
         #   en bas de page, personne n'y va. » Mesuré avant : le bouton tombait à y 1045, soit
         #   201 px sous le pli. MÊME INTENTION — la colonne est ordonnée et sans recouvrement —
         #   nouvel ordre : Pelote, Noyaux, légende, BOUTON, ce que tu as tenu.
-        _o = [_g[k] for k in ('boule','nx','lg','bt','mo')]
-        t('Aura : Pelote, Noyaux, légende, bouton, ce que tu as tenu'+S,
+        # ⚑ REPRIS EN v118 (§7). LA RÈGLE QUE CE CONTRÔLE ENCODAIT : Pelote, Noyaux, légende, BOUTON, ce que tu as tenu.
+        #   LA DÉCISION QUI LA REMPLACE (Tom, Q367) : « Le bouton remonte et se place juste sous l'ombre de la Pelote ;
+        #   la phrase et ce qui suit se placent ensuite. » MÊME INTENTION — la colonne est ordonnée et sans recouvrement —
+        #   nouvel ordre : Pelote, BOUTON, Noyaux, légende, ce que tu as tenu. Et le bouton est entier au-dessus du pli (844).
+        #   Original : sauvegardes/redteam_ecrans-avant-v118.py
+        _o = [_g[k] for k in ('boule','bt','nx','lg','mo')]
+        t('Aura : Pelote, bouton, Noyaux, légende, ce que tu as tenu'+S,
           all(_o) and all(_o[i][0] < _o[i+1][0] for i in range(4))
-          and _g['nx'][1] <= _g['lg'][0] and _g['lg'][1] <= _g['bt'][0]
-          and _g['bt'][1] <= _g['mo'][0], str(_g))
+          and _g['bt'][1] <= _g['nx'][0] and _g['nx'][1] <= _g['lg'][0]
+          and _g['lg'][1] <= _g['mo'][0] and _g['bt'][1] <= 844, str(_g))
         _hc = pg.evaluate("()=>[...document.querySelectorAll('#auraScreen .au-lg span')].map(s=>[s.textContent.trim(),getComputedStyle(s.querySelector('i')).backgroundColor])")
         t('Aura : la légende nomme trois arcs en trois teintes d état'+S,
           [x[0] for x in _hc]==['tenues','en cours','à tenir']
@@ -383,7 +388,9 @@ def batterie(theme):
         #   sauvegardes/redteam_ecrans-avant-v13.py
         # ⚑ v95 (Tom) : le bloc centré est le GROUPE « légende + chiffres » ; l'écart de boîte décidé vaut lgINK − cptINK = −6 − (−3,5),
         #   ce qui rend l'air à l'ENCRE égal (30,9 / 30,9, relevé WebKit, deux thèmes).
-        LG_INK = -2.5
+        # ⚑ v118 (Q367) : le voisin du bas n'est plus le bouton (remonté sous l'ombre) mais le titre « Ce que tu as tenu » ;
+        #   l'écart de boîte décidé vaut lgINK − moINK = −8,714 − (−9,5) : l'air à l'ENCRE est égal (27,0 / 27,0, relevé WebKit).
+        LG_INK = 0.786
         t('Aura : la légende est centrée à l\'encre (boîtes décalées de lgINK)'+S,
           bool(_c) and abs((_c[0]-_c[1]) - LG_INK) <= 1, str(_c))
         pg.evaluate("()=>{const c=document.querySelector('#auraScreen .closeb');if(c)c.click();}"); pg.wait_for_timeout(600)

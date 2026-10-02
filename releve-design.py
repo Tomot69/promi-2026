@@ -36,7 +36,7 @@ CIBLES = {
  'fiche · disque':'#detailPoster .kr-c',
  'fiche · nom lien':'#detailPoster .kr-n',
  'fiche · mot lien':'#detailPoster .kr-w',
- 'fiche · bouton rond':'#dpBarre .dpb',
+ # v118 (Q363) : 'fiche · bouton rond' (#dpBarre .dpb) est retiré — la barre, masquée, n'existe plus. Original : sauvegardes/releve-design-avant-v118.py
  'fiche · zone geste':'#tenirZone',
  'fiche · libelle geste':'#detailPoster .tenir-lab',
  'fiche · bascule':'#detailPoster .tenir-alt',

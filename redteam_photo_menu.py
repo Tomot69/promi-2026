@@ -12,7 +12,7 @@ Au doigt (`touchscreen.tap`, WebKit et Chromium), Studio réglé sur un AUTRE mo
   B · « Importer une image » ouvre le sélecteur de fichiers du système (évènement filechooser), dans le geste
   C · PAR DÉFAUT la dalle suit le Studio : un rendu sans monde demandé = le rendu dans le monde du Studio, ≠ plantation
   D · « La dalle d'origine » : le même rendu = celui du monde de plantation (pixels, horloge figée), ≠ Studio ;
-      la fiche est REPEINTE (sa matière change) ; l'option est sauvegardée ; le libellé devient « Suivre le Studio »
+      la fiche est REPEINTE (sa matière change) ; l'option est sauvegardée ; le libellé devient « La dalle du Studio »
   E · le partage suit : la planche de Mon Folio réduit à cette parole change avec l'option
   F · la page + garde son geste : toucher le bouton photo ouvre directement le sélecteur, sans menu
 Preuve (§7) : copier `sauvegardes/app-avant-v117b.html` À LA RACINE, puis
@@ -22,7 +22,7 @@ import os, sys
 from playwright.sync_api import sync_playwright
 
 APP = os.environ.get('APP', 'http://127.0.0.1:8752/app.html')
-MOTS = ['Importer une image', 'La dalle d’origine']      # « importer une image » : Tom ; l'autre : à valider (Q366)
+MOTS = ['Importer une image', 'La dalle d’origine']      # v118 (Tom, Q366 tranchée) : les quatre mots sont décidés
 SEUIL = 2.0               # niveaux : en dessous, deux rendus sont « le même » (horloge figée) ; au-dessus, différents
 ok = [0]; ko = []
 
@@ -114,7 +114,7 @@ def passe(b, moteur):
         t(tag + ' D · la fiche est repeinte, l\'option sauvegardée', ecart(F0, F1) > SEUIL and etat['s'] is True,
           'matière de la fiche %.2f niveaux · sauvegardé %s' % (ecart(F0, F1), etat['s']))
         tape(pg, '#detailPoster .ph-photo-btn'); m2 = menu(pg)
-        t(tag + ' D · le libellé devient « Suivre le Studio »', bool(m2) and 'Suivre le Studio' in m2['mots'], str(m2))
+        t(tag + ' D · le libellé devient « La dalle du Studio »', bool(m2) and 'La dalle du Studio' in m2['mots'], str(m2))
         pg.evaluate("()=>{window._photoMenuFerme&&_photoMenuFerme();}")
         P1 = pg.evaluate(PLANCHE, pid); pg.wait_for_timeout(600)
         pg.evaluate("(id)=>{promises.find(p=>p.id===id).dalleOrigine=false;}", pid)

@@ -302,6 +302,5 @@
 "app.html | plus-css | r:var(--c-blanc100)!important;box-shadow:0 8px 24px rgba(var(--c-bleu4",
 "app.html | plus-mirror | ottom:0;height:1px;background:linear-gradient(90deg,rgba(var(--c-ton54",
 "app.html | plus-netflou | eateSheet .ix-hair{background:linear-gradient(90deg,rgba(var(--c-ton54",
-"promi-moteur.js | (hors bloc) | if(gg,xa,ya,xb,yb){ var bg=gg.createLinearGradient(xa,ya,xb,yb); if(is",
 "promi-moteur.js | (hors bloc) | nCanvas(1,1).getContext('2d').createLinearGradient(q.l[0],q.l[1],q.l[2"
 ]

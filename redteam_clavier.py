@@ -9,6 +9,10 @@ v115 (Tom, Q361) : LES HUIT CHAMPS SONT EXIGÉS SYNCHRONES — le Cercle (v114) 
 Un différé n'y est accepté que comme SECOURS (focus synchrone juste avant, et le différé ne refocalise que si le focus a été
 perdu). Tout différé NOUVEAU fait échouer. Rougi : sur sauvegardes/app-avant-v115.html, les sept ; sur app-avant-v114, les huit.
 Rougi : python3 redteam_clavier.py sauvegardes/app-avant-v114.html
+⚑ v118 (Tom, Q363 tranchée) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION : cinq des huit champs étaient sur des chemins
+INJOIGNABLES (l'ancien « à qui », la note par #dpaJoint, le champ visé par #dpsCom/#dpsJoint, le commentaire par #dpbCom, le pseudo
+de l'ancien onboarding). Leur code est RETIRÉ ; le juge exige les TROIS champs qui restent, et tout différé nouveau rougit toujours.
+Original : sauvegardes/redteam_clavier-avant-v118.py
 """
 import io, os, re, sys
 ICI=os.path.dirname(os.path.abspath(__file__))
@@ -17,12 +21,7 @@ S=io.open(F,encoding='utf-8').read()
 # l'audit v114 : le champ, et pourquoi il attend (motif de 60 caractères autour du focus)
 EXIGES={
   'nueeNomIn':'le nom du Cercle (v114)',
-  'ai.focus':'la page + — « à qui » : le champ de recherche d\'une personne (30 ms)',
   'draftTitreIn':'la page + d\'un gardé de côté — le titre (30 ms)',
-  'n.focus({preventScroll:true})':'Peaufiner — la note, après l\'ouverture du tiroir (420 ms)',
-  't.focus({preventScroll:true})':'Peaufiner — le champ visé par la barre de la fiche (400 ms)',
-  'c.focus({preventScroll:true})':'fiche — le commentaire, depuis le bouton rond (400 ms)',
-  'pseudoInput':'l\'onboarding — le pseudo (520 ms)',
   "inp.focus(); }catch(_){} }, 30)":'les gens — « + ajouter quelqu\'un » (30 ms)',
 }
 # un bloc DIFFÉRÉ : setTimeout(function(){ … }, n) ou requestAnimationFrame(function(){ … }) dont le corps (≤ 200 car.) appelle focus()

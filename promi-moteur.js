@@ -6012,12 +6012,11 @@ function _repliF(s){ var w=(s.w!=null?s.w:0); if(w>=0) return 1; return Math.max
 /* ⚑ v66 — LE FOND DE LA TOILE VIVANTE, un seul propriétaire : `frame()` le peint, et un monde qui « découpe » en papier (Ramage,
    Mascaret) le REPREND par `env.papier`, recalé dans son repère (la vue) — un aplat ferait des traits d'une autre teinte sur le dégradé. */
 /* v92 : les deux tons du fond vif, lus aussi par le Worker de Ramage (un dégradé ne passe pas un postMessage : on lui en envoie la description) */
-function _fondVifDesc(xa,ya,xb,yb){ var l=isLightM(); return {l:[xa,ya,xb,yb],a:l?'#E6D1AE':'#050302',b:l?'#D8C29A':'#050302'}; }
-function _fondVif(gg,xa,ya,xb,yb){ var bg=gg.createLinearGradient(xa,ya,xb,yb); if(isLightM()){
-    /* le fond se creuse d'un ton : sans cela, les dalles vides — crème, très claires —
-       se noyaient dedans, et les mondes braille/sillons/gravure ne dessinaient plus rien.
-       En sombre, on ne touche à rien : c'est déjà juste. */
-    }var q=_fondVifDesc(xa,ya,xb,yb); bg.addColorStop(0,q.a);bg.addColorStop(1,q.b); return bg; }
+/* ⚑ v118 (Tom) — LE FOND DE LA TOILE EST À PLAT, EN CLAIR COMME EN SOMBRE : la Pelote est le seul volume de l'app (redteam_volume).
+   Le clair portait encore un dégradé #E6D1AE → #D8C29A (ΔE00 3,8 d'un coin à l'autre) : il prend leur ton médian, #DFCAA4
+   (OKLCH L 0,847 — hors de la plage du kaki). `_fondVif` rend désormais une COULEUR, plus un dégradé. */
+function _fondVifDesc(xa,ya,xb,yb){ var l=isLightM(); return {l:[xa,ya,xb,yb],a:l?'#DFCAA4':'#050302',b:l?'#DFCAA4':'#050302'}; }
+function _fondVif(gg,xa,ya,xb,yb){ return _fondVifDesc(xa,ya,xb,yb).a; }
 
 /* ⚑ v47 — OÙ LES GRAINES VONT SE POSER. Au début d'une transition, le moteur rejoue son propre écartement (`relax`, même
    formule) avec les poids FINAUX jusqu'à l'équilibre : un monde qui préfère se recomposer une fois plutôt que suivre le glissé

@@ -1,6 +1,6 @@
 # LES RÈGLES QUE PORTENT LES JUGES — spécification pour le portage
 
-> Engendré par `spec_juges_generer.py` le 2026-10-01. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
+> Engendré par `spec_juges_generer.py` le 2026-10-02. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
 
 ## 1 · Le rythme de chaque monde — `redteam_rythme.py`
 
@@ -78,9 +78,12 @@ On juge **la fin du mouvement dans le moteur** (l'image où la Toile cesse de bo
 - **Partager la Pelote** (`redteam_pelote_partage.py`) : appui long **380 ms**, tolérance de déplacement **8 px** ; seule, ou dans Mon Folio, déplaçable au doigt ; jamais dans « Ma Toile ».
 - **Le geste de couleur du Studio** (`redteam_studio_geste.py`) : appui **480 ms**, course horizontale **390 px** = un tour de teinte, un pas vertical de **48 px** = une palette ; on revient exactement d'où l'on vient.
 - **Rien ne paraît une fraction de seconde** (`redteam_flash.py`) : aucune couche de premier plan (grille 6 × 11, 2 points au moins) ne vit moins de **800 ms**, ni au début ni à la fin ; jamais l'ancien chrome `.topbar`, `.footer`, `.statusbar` ; la page + paraît composée dès sa première image ; une plantation coupe.
-- **L'air entre les textes** (`redteam_air.py`) : aucune paire de textes ne se resserre de plus de **0.6 px** à l'ENCRE contre la référence `air-reference.json` (ses paires sont la spécification : 696 paires sur 68 écrans-thèmes) ; un bloc annoncé centré entre deux voisins a des écarts égaux.
+- **L'air entre les textes** (`redteam_air.py`) : aucune paire de textes ne se resserre de plus de **0.6 px** à l'ENCRE contre la référence `air-reference.json` (ses paires sont la spécification : 686 paires sur 68 écrans-thèmes) ; un bloc annoncé centré entre deux voisins a des écarts égaux.
 - **Les filets** (`redteam_filets.py`) : aucun trait horizontal hors de ceux que le moodboard porte : `csBotBar`, `cbb`, `dpDetails`, `dpdTog`, `dpd-tog`, `dpm-filet`, `dpMsg`, `mg-note-line`, `ix-hair`.
-- **Le contrat visuel** (`releve-design.py`, référence `design-reference.json`, figée le 30 sept.) : 26 cibles × 25 propriétés × 6 configurations ; ⚠ les couleurs n'y sont PAS comparées (accent, backgroundColor, borderColor, boxShadow, color, dalle, fill, stroke) — elles vivent dans `PROMI-TOKENS.json` et `redteam_tokens`.
+- **Ce qui se touche est joignable** (`redteam_joignable.py`, v118) : au centre de chaque élément interactif, `elementFromPoint` rend l'élément ou un de ses descendants ; chaque gestionnaire n'appelle que des fonctions qui existent, sur un nœud qui existe ; la dette est nommée dans `joignable-dette.json`.
+- **La dalle d'origine dans la bande haute** (`redteam_origine.py`, v118) : la couleur d'origine, sauf si son écart au champ est sous **ΔE 15.0** (CIELAB) — alors la rampe de Q30 ; les cas à moins de 2.0 du seuil ne sont jugés que sur la lisibilité.
+- **Le Zzz** (`redteam_nuit.py`, v118) : premier lancement en clair, Zzz activé ; nuit = coucher du soleil + 1 h → lever (NOAA, coordonnées du fuseau ; inconnu : 22 h – 7 h ; almanach de Paris à ± 3 min) ; aucune bascule sous les yeux, aucun fondu ; cran de nuit = neutres clairs à OKLCH L − 0,06 (± 0,006), tous les autres jetons au hex près, contraste ≥ 7 : 1.
+- **Le contrat visuel** (`releve-design.py`, référence `design-reference.json`, figée le 30 sept.) : 25 cibles × 25 propriétés × 6 configurations ; ⚠ les couleurs n'y sont PAS comparées (accent, backgroundColor, borderColor, boxShadow, color, dalle, fill, stroke) — elles vivent dans `PROMI-TOKENS.json` et `redteam_tokens`.
 
 ## 5 · Ce que les juges ne portent PAS, et qu'il faudra porter autrement
 

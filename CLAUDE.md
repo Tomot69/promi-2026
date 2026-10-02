@@ -110,6 +110,54 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v118 (2 oct. 2026) — LE Zzz : LA NUIT, L'APP SE REPOSE. (Décision Tom.)
+> **La raison : c'est l'ÉBLOUISSEMENT qui compte, pas la teinte** — on baisse la lumière des neutres clairs, on ne colore rien ; et
+> **aucune permission de localisation** n'est demandée : le soleil se calcule (NOAA) aux coordonnées de RÉFÉRENCE du fuseau horaire
+> de l'appareil ; fuseau inconnu : 22 h – 7 h.
+> ```
+> premier lancement              thème CLAIR, Zzz ACTIVÉ   (remplace Q301 : le thème ne suit plus celui du téléphone)
+> clair + Zzz activé             du coucher du soleil + 1 h au lever : SOMBRE DE NUIT ; au lever, retour au clair
+> clair + Zzz désactivé          toujours clair
+> sombre + Zzz activé            le CRAN DE NUIT du coucher + 1 h au lever ; le jour, sombre ordinaire
+> sombre + Zzz désactivé         sombre ordinaire
+> ```
+> **Un changement de thème ne se fait JAMAIS sous les yeux** : seulement au changement d'écran ou au retour au premier plan, et sans
+> fondu. Les deux choix sont mémorisés (`promi_theme` = le CHOIX, `promi_zzz`).
+> **Le cran de nuit** : seuls les NEUTRES CLAIRS (les jetons `--c-creme*` et `--c-blanc*` clairs — texte et surfaces crème) baissent
+> d'un cran, **ΔL OKLCH = −0,06, teinte conservée** (crème `#F7F0DE` → `#E3DCCA`). Les natures, les états, les dalles et l'amande ne
+> bougent pas, AU HEX PRÈS. Contraste du texte ≥ 7 : 1 (mesuré 14,2). **Aucun filtre de couleur, aucun voile.**
+> **Le bouton : « Zzz »** — écrit exactement ainsi (Z majuscule, zz minuscules), même si ses voisins sont en capitales ; au Studio,
+> au milieu de la ligne SOMBRE / AVEC TEXTE, avec la grammaire de ses voisins ; VoiceOver « Mode nuit, activé / désactivé ».
+> ⚠ **v118 : LE BOUTON N'EST PAS POSÉ** — la ligne ne reçoit pas un troisième disque sans déplacer ses voisins (56 entre les paires,
+> il en faudrait 84 : `planche-v118/planche-zzz.png`). Tant qu'il manque, le Zzz ne s'active pas seul (`BOUTON_POSE` dans
+> `lot-V118-ZZZ`) : on ne livre pas un réglage qu'on ne peut pas éteindre. Essai : `?zzz=1` l'active (mémorisé), `?nuit=1` simule la nuit.
+> Juge : **`redteam_nuit.py`** (heures d'almanach en dur, second calcul indépendant, bascule en direct = rouge).
+
+### ⚑ v118 — LA PELOTE : L'ÉCHO DÉCALÉ ; « PARTAGER MA PELOTE » SOUS L'OMBRE ; D EST EXCLU DÉFINITIVEMENT. (Décisions Tom.)
+> **L'écho (Q368 → A)** : une copie PLATE de la silhouette (rayon 121), décalée de 11, dans un autre ton de la palette (le ton
+> dominant + 2 ; le suivant s'il se confond avec la page, ΔE < 15). Aucun flou, aucun dégradé. Il entre dans la liste blanche
+> NOMINATIVE de la Pelote (`.au-echo`, `window._echoPelote`, `lot-V118-PELOTE`) : `redteam_volume --sonde=echo` rougit si on le pose
+> sur une dalle. **D (un trait par parole tenue) est EXCLU DÉFINITIVEMENT : c'est un compteur visuel qui croît avec l'action — la
+> grille l'interdit.** Ne jamais le reproposer.
+> **Le bouton (Q367)** : juste sous l'ombre, à **G2 = 56** du bas de l'ombre (525,5 → 585,5) ; la phrase et ce qui suit se placent
+> ensuite, l'ENCRE de la phrase à 56 sous le bouton. L'ombre garde ses 60 pt, l'air ne se reprend pas. La colonne se lit : la Pelote ·
+> l'ombre · le bouton · la phrase · les Noyaux · la légende et ses chiffres · ce que tu as tenu · ce qu'on t'a tenu.
+> **`?mesure=1`** affiche, dans l'Aura, le temps par image (p50, p95) respiration active puis coupée — le diagnostic du Studio ne se
+> lance plus que sur un nom de monde (`?mesure=madrure`).
+
+### ⚑ v118 — LE FOND DE LA TOILE EST À PLAT, EN CLAIR AUSSI : `#DFCAA4`. (Tom.) Le dégradé `#E6D1AE → #D8C29A` est retiré
+> (`_fondVif` rend une couleur) ; son entrée est soldée dans `volume-dette.json`. Le sombre était à plat depuis v116 (`#050302`).
+
+### ⚑ v118 — LA DALLE D'ORIGINE DANS LA BANDE HAUTE (Q365 tranchée) ; LES MOTS DU MENU PHOTO (Q366) ; 2 € LE DESIGN.
+> Avec « La dalle d'origine », la bande haute d'une fiche prend la COULEUR d'origine — **sauf si elle passe sous le seuil du ton sur
+> ton face au champ (ΔE 15) : alors seulement, la rampe de Q30** (`window._origineBande`, `lot-V118-ORIGINE` ; juge `redteam_origine.py`).
+> Le menu : « Importer une image » · « La dalle d'origine » · « La dalle du Studio » · « Retirer la photo ».
+> Un design s'adopte à **2 €** (« Adopte ce design — 2 € ») ; les blocs datés d'avant écrivent 1 €.
+
+### ⚑ v118 — CE QUI SE TOUCHE EST JOIGNABLE (`redteam_joignable.py`). Tout élément interactif se prouve par `elementFromPoint` à son
+> centre ; tout gestionnaire n'appelle que des fonctions qui existent, et n'est posé que sur un nœud qui existe. La dette de naissance
+> est NOMMÉE (`joignable-dette.json`). Q363 tranchée : le code des chemins de saisie remplacés est retiré (JS ; le CSS ne se nettoie pas).
+
 ### ⚑ v116 (1er oct. 2026) — LE MODE SOMBRE EST L'ENCRE DE SEICHE. (Décision Tom, série 4 adoptée, descendue de 2 %.)
 > Fond `#050302` (OKLCH L 0,101, h 54,8° — la teinte y est plus juste qu'à L 0,12 : Δh +5° contre +13°), cellules vides L 0,136–0,161
 > (h 40–56°), dalle neutre d'Ingénu en sombre `#1F1611`, grain léger ; **jamais bleu**. Le moteur la peint (rampes, `_fondVifDesc` plat,
@@ -1431,6 +1479,15 @@ python3 redteam_partage_fiche.py # 48 — v117 : le rond Partager d'une fiche (P
 python3 redteam_photo_menu.py  # 18 — v117 : le bouton photo d'une fiche ouvre « Importer une image » (sélecteur du système) et
                                #   « La dalle d'origine » ; par défaut la dalle suit le Studio ; l'option se tient sur la fiche et au
                                #   partage (pixels, horloge figée) ; la page + garde l'import direct. 6/8 sur app-avant-v117b.
+python3 redteam_joignable.py   # v118 — CE QUI SE TOUCHE EST JOIGNABLE : elementFromPoint au centre de chaque élément interactif, 38 écrans ;
+                               #   chaque gestionnaire n'appelle que des fonctions qui existent, sur un nœud qui existe. Dette nommée
+                               #   (joignable-dette.json), inventaire écrit (joignable-inventaire.md). Rougit sur app-avant-v117b
+                               #   (bouton photo recouvert, ouvrirPartage). ≈ 2 min.
+python3 redteam_origine.py     # 64 — v118 (Q365) : avec « La dalle d'origine », la bande haute porte la couleur d'origine, sauf ton sur
+                               #   ton (ΔE < 15, en dur) → rampe de Q30. Rougit sur app-avant-v118 et avec --sonde.
+python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur (Paris, juin et décembre), fuseau inconnu, aucune bascule
+                               #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
+                               #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;
                                #   immobile avec Réduire les animations. Rougit sur app-avant-v117b.

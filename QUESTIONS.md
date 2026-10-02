@@ -8258,20 +8258,33 @@ Même motif que le Cercle, mais sur des champs VISIBLES (au pire, deux touchers 
 #### Q362 · TRANCHÉE (v116 : l'ombre à 0,04 D, le bouton à 840,6) — — L'AURA : G2 = 56 FAIT DESCENDRE LA COLONNE, ET « PARTAGER MA PELOTE » SORT DU PLI
 La règle G1 = G2 = 56, mesurée sur la silhouette, fait monter la Pelote de 8,1 (garde-fou : dans les bornes). Mais l'ombre, plus loin (centre à 0,20 D), finit à 452,6, et G2 place la phrase à 508,6 : **tout ce qui suit descend de 50,4 au lieu de remonter**. « Partager ma Pelote » finit à **877,7** — 33,7 sous le pli, à 390 × 844 comme à 375 × 667 (l'appareil est mis à l'échelle, les cotes sont les mêmes). Rien n'a été tassé. Pistes, à choisir : G2 plus petit, l'ombre plus près, ou le bouton qui défile.
 
-#### Q363 · À DÉCIDER (v115) — CINQ CHEMINS DE SAISIE SONT INJOIGNABLES
+#### Q363 · TRANCHÉE (v118 : le code des quatre chemins remplacés est retiré ; « garder de côté » n'est pas touché, voir Q370) — CINQ CHEMINS DE SAISIE SONT INJOIGNABLES
 Corrigés quand même (focus synchrone), mais aucun doigt ne peut les atteindre aujourd'hui : « à qui » (`ai`, l'ancien choix de personne, remplacé par le choix des gens) ; la note de Peaufiner et le champ visé par la barre (`dpsJoint`, `dpsCom` n'existent plus) ; le commentaire (`dpbCom` en 0 × 0) ; le pseudo (`toPseudo` n'est appelé que par l'ancien onboarding) ; le titre d'un gardé de côté (le lien « garder de côté » est masqué, la feuille ne s'ouvre pas). Code mort à retirer, ou chemins à rouvrir ?
 
 #### Q364 · TRANCHÉE (v117 : A, la lumière du velours — redteam_souffle.py) — CE QUI RESPIRE DANS LA PELOTE
 Planche `planche-pelote/v116/planche-respiration.png`, trois options, toutes DANS le contour (0 pixel au-delà) : A · la lumière du velours (ΔE00 4,1 clair / 3,7 sombre entre repos et maximum) ; B · le contre-jour au bord (2,8 / 1,8) ; C · les tenus se dressent (2,7 / 1,7). Cycle déjà décidé : 10 s (4 s + 6 s), départ 0,6 s après l'affichage, pause hors écran, immobile avec Réduire les animations.
 
-#### Q365 · À DÉCIDER (v117) — LA DALLE D'ORIGINE DANS LA BANDE HAUTE D'UNE FICHE
+#### Q365 · TRANCHÉE (v118 : la couleur d'origine, sauf ton sur ton ΔE < 15 → rampe de Q30 — redteam_origine.py) — LA DALLE D'ORIGINE DANS LA BANDE HAUTE D'UNE FICHE
 « Remettre la dalle telle qu'elle était à sa création, dans son monde, sa forme et sa COULEUR d'origine » (Tom, v117). Fait partout où la dalle de ce Promi est rendue seule (fiche, cartes, Mon Folio, partage). **Mais la bande haute d'une fiche porte la rampe de Q30** (sa matière est remappée sur les trois teintes de la nature, pour ne jamais faire bleu sur bleu) : la fiche montre donc le monde et la FORME d'origine, la COULEUR reste celle de la nature (mesuré : la matière de la fiche ne change que de 2,6 niveaux en moyenne, la planche de Mon Folio de 3,8). Lever Q30 pour une dalle d'origine, ou la garder ?
 
-#### Q366 · À VALIDER (v117) — LES MOTS DU MENU DU BOUTON PHOTO
+#### Q366 · TRANCHÉE (v118 : « Importer une image » · « La dalle d'origine » · « La dalle du Studio » · « Retirer la photo ») — LES MOTS DU MENU DU BOUTON PHOTO
 « Importer une image » est de Tom. Les deux autres sont les plus sobres que j'aie trouvés : **« La dalle d'origine »** (l'option), **« Suivre le Studio »** (pour revenir au défaut) et **« Retirer la photo »** (quand une photo est posée). Grammaire des pilules (44, trait 2, rayon 22), Gilbert 15 en capitales, encre sur crème.
 
-#### Q367 · À DÉCIDER (v117) — L'OMBRE À 1 CM SORT « PARTAGER MA PELOTE » DU PLI
+#### Q367 · TRANCHÉE (v118 : le bouton remonte sous l'ombre, G2 = 56 ; la phrase à 56 sous le bouton) — L'OMBRE À 1 CM SORT « PARTAGER MA PELOTE » DU PLI
 Écartée de 60 pt (≈ 1 cm sur l'iPhone 16e) et la Pelote remontée de 6 : toute la colonne descend de 54. « Partager ma Pelote » finit à **894,6** pour un écran de 844 (v116 : 840,6, « doit être visible sans défiler »). Appliqué selon le §8 (« on ne reprend jamais l'air ; l'écran défile »). Garder, ou rapprocher l'ombre jusqu'à ce que le bouton rentre (il faudrait ≤ 9 pt d'écart en plus de v116 — ce n'est plus un centimètre) ?
 
-#### Q368 · À CHOISIR (v117) — METTRE LA PELOTE EN VALEUR, À PLAT
+#### Q368 · TRANCHÉE (v118 : A, l'écho décalé ; D exclu définitivement — un compteur visuel) — METTRE LA PELOTE EN VALEUR, À PLAT
 Planche `planche-pelote/v117/planche-mise-en-valeur.png` (@3x, deux thèmes, app réelle) : A · l'écho décalé (une copie plate de la silhouette dans un autre ton de la palette, décalée de 11 — la célébration citée) ; B · le disque de soleil (un grand aplat d'un autre ton, en haut à gauche, derrière) ; C · le passe-partout (un panneau crème dalle 342, rayon 30 — l'épreuve encadrée) ; D · les rayons des paroles tenues (un trait de 2 pt par parole tenue, au-dessus de la boule — elle se « couronne » de ce que tu as tenu). Tout est plat : le halo et la couronne de fibres ont été refusés, et aucun volume n'est permis hors de la Pelote.
+
+#### Q369 · À DÉCIDER (v118) — LE BOUTON « Zzz » NE TIENT PAS DANS LA LIGNE SOMBRE / AVEC TEXTE
+La ligne porte deux paires de disques de 44 (59→103, 123→167 · 223→267, 287→331), 20 dans la paire, 56 entre les paires ; le disque pris porte un anneau de 9,7. Un troisième disque de 44 centré (173→217) n'a que 6 de jeu, l'anneau d'un voisin pris le recouvre de 3,7 et le sien recouvrirait ses deux voisins de 3,7. Il faudrait 84 entre les paires (elles s'écarteraient de 14 chacune : 45→345, dans le panneau 24→366). À 375 l'appareil est réduit en bloc : mêmes cotes. Le moteur du Zzz est livré et jugé ; le bouton attend, et tant qu'il manque le Zzz ne s'active pas seul (`BOUTON_POSE`). Planche : `planche-v118/planche-zzz.png`. Écarter les paires, ou une autre forme pour Zzz ?
+
+#### Q370 · À DÉCIDER (v118) — « GARDER DE CÔTÉ » FERME LA PAGE + SANS RIEN GARDER
+Le lien n'est pas masqué en permanence : il est fermé tant que la phrase est vide, sur un choix ouvert et pendant le geste (depuis le portage de la page +, 18 août) ; v16 l'a retiré d'un gardé de côté (il créait un doublon). Phrase écrite, il paraît à 24 / 708 et il est joignable. Touché (mesuré, WebKit, au doigt) : la page + se ferme et RIEN n'est gardé — il clique `#addDraft`, qui exige le titre de l'ancien formulaire (`#dfTitle`), vide. Ce n'est pas la « mémoire des paroles en l'air » de Ma Parole ! (elle relance les paroles SANS DATE, `enLair` ; un gardé de côté est une parole pas encore plantée, `draft`). Pour le rouvrir : faire passer le titre et la personne de la phrase au gardé de côté avant le clic, et un juge au doigt.
+
+#### Q371 · À DÉCIDER (v118) — LA RESPIRATION : CE QUE DISENT LES CHIFFRES DE L'iPHONE
+`?mesure=1` donne le temps par image, respiration active puis coupée. Au banc : WebKit sans GPU @3x, peinture p50 74 → 64 ms, p95 +24 ms (10 à 14 images/s dans les deux cas) ; Chromium sur GPU @3x : aucun écart (p95 22,9 / 24,5 ms). Le remède prévu (deux états pré-rendus, mélangés par pixel) ne s'applique pas tel quel : la Pelote tourne en permanence, les poils sont recalculés à chaque image avec ou sans respiration — deux états pré-rendus devraient être refaits à chaque image. À décider sur les chiffres de l'iPhone.
+
+#### Q372 · À DÉCIDER (v118) — L'INVENTAIRE DE JOIGNABILITÉ : LA DETTE
+`joignable-inventaire.md`. Nommé dans `joignable-dette.json`, non corrigé : les réglages floutés du gratuit (murs, voulus) ; `promiDeconnexion` (attend Firebase) ; `ouvrirPersonne` et `renderPerson` (gardes mortes avant `openPerson`) ; `#fToAll` (nœud disparu).
+

@@ -1,0 +1,140 @@
+=== redteam_rythme.py  [code 0, 678 s]
+  ✓ chantourne · reel · depart fin du mouvement 1909 ms (attendu 1849 ± 610) · cadence 155 % · [vu 1891 ms, 57 images]
+  ✓ mascaret · reel · arrivee fin du mouvement 1668 ms (attendu 1674 ± 133) · cadence 140 % · [vu 1157 ms, 31 images]
+  ✓ mascaret · reel · depart fin du mouvement 1973 ms (attendu 1834 ± 146) · cadence 128 % · [vu 1614 ms, 41 images]
+  ✓ ramage · reel · arrivee fin du mouvement 1629 ms (attendu 1690 ± 557) · cadence 116 % · [vu 1163 ms, 66 images]
+  · ramage · reel · depart — ligne retirée (v93), relevé : {'duree': 1623, 'images': 97, 'boucle': 1910, 'debut': 30}
+
+99 / 99
+=== redteam_flash.py  [code 0, 116 s]
+  ✅ B1 · + → nuee : aucun flash au premier plan (146 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (76 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1815 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2038 ms)
+
+32/32
+=== redteam_souffle.py  [code 0, 69 s]
+OK [light] A · 0,3 s → 4,6 s : 27361 pixels changés dans la silhouette, 0 au-delà
+OK [light] B · lumière de la boule : sommet à 5.0 s (décidé 4.6), retour au bas à 10.7 s (décidé 10.6), amplitude 4.42 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 16518 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+✅ la Pelote respire par son velours, et rien d'autre
+=== redteam_contour.py  [code 0, 31 s]
+OK [clair] la Pelote s'arrête à 124.2 du centre (silhouette 121.5) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.1 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== redteam_photo_menu.py  [code 0, 55 s]
+[chromium] D · le libellé devient « La dalle du Studio »         OK  {'mots': ['Importer une image', 'La dalle du Studio'], 'vis': True}
+[chromium] E · le partage suit l'option                          OK  planche avec ↔ sans 3.71 niveaux
+[chromium] F · page + : le bouton ouvre le sélecteur, sans menu  OK  
+[chromium] aucune erreur JS                                      OK  
+
+18/18
+✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+=== redteam_vide.py  [code 0, 230 s]
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_origine.py  [code 0, 57 s]
+[chromium] chiche · truculent · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 103.6
+[chromium] chiche · truculent · origine à ΔE 105.9 → la couleur d'ORIGINE OK  à l'origine 2.3 · à la rampe 129.0 · app : origine|105.9
+[chromium] sans l'option, la bande garde la rampe de Q30           OK  
+[chromium] aucune erreur de page                                   OK  
+
+64 / 64
+=== redteam_volume.py  [code 0, 0 s]
+liste blanche (la Pelote) : 8 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE, lot-V118-PELOTE
+dette de naissance : 304 · retrouvée : 304 · soldée depuis : 0
+✅ AUCUN VOLUME HORS DE LA PELOTE
+=== redteam_clavier.py  [code 0, 0 s]
+focus() : 18, dont 3 différé(s)
+  ✓ le nom du Cercle (v114) — dans le geste (l.13081, différé en secours)
+  ✓ la page + d'un gardé de côté — le titre (30 ms) — dans le geste (l.13261, différé en secours)
+  ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.31657, différé en secours)
+✅ le clavier s'ouvre au geste — 3 champs
+=== redteam_tokens.py  [code 0, 0 s]
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_accueil.py  [code 0, 172 s]
+[sombre] 3 · le + ouvre les natures sur place, reste un +    OK  {'ouvert': True, 'sheet': False, 'tr': 'none'}
+[sombre] 3 · chaque nature ouvre SA phrase, trois ordres, au doigt OK  ratées : []
+[sombre] 5 · l'appui long sur la Toile n'ouvre pas le Studio OK  Studio ouvert : False
+[sombre] 7 · toute dalle atteignable, dix zooms              OK  18 dalles · inatteignables {}
+[sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False
+
+22/22
+=== redteam_studio_geste.py  [code 0, 25 s]
+  la palette revient d'où elle vient                           OK   signal
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+
+13/13
+=== redteam_decoupe.py  [code 0, 134 s]
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_partage_fiche.py  [code 0, 183 s]
+[doigt · Cercle] D · la réduction n'est jamais sauvegardée         OK  {"139":true,"n:potager":true}
+[doigt · Cercle] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Cercle] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt] aucune erreur JS                                           OK  
+
+48/48
+✅ le rond Partager d'une fiche partage son Folio
+=== redteam_pelote_partage.py  [code 0, 62 s]
+✅ clair · export mosaic : sous le plafond iPhone (16,7 Mpx) 8298720
+✅ clair · export pelote : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 0.6784008307372793, 'px': 8294400}
+✅ clair · export pelote : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ clair · export toile : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 1.4188473520249223, 'px': 8294400}
+✅ clair · export toile : sous le plafond iPhone (16,7 Mpx) 8294400
+
+42/42
+=== redteam_gens.py  [code 0, 201 s]
+[sombre] Nuée · avec · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+[sombre] Nuée · avec · la liste vit au-dessus de Peaufiner       OK  
+[sombre] Fiche · Peaufiner · À QUI · toucher « Marion » l'ajoute OK  
+[sombre] Fiche · Peaufiner · À QUI · la croix de « Marion » la retire OK  
+[sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : True) OK  
+
+38/38
+=== redteam_verbe.py  [code 0, 30 s]
+light : la phrase montre son verbe (Promets-moi)     OK  h=53.2 txt='je promets'
+light : la bascule mène à un vrai bouton             OK  bouton={'f': 1, 'h': 60, 'vis': True}
+dark : la phrase montre son verbe (Je promets)       KO  h=0 txt='je me promets'
+dark : la phrase montre son verbe (Promets-moi)      KO  h=0 txt='je promets'
+dark : la bascule mène à un vrai bouton              KO  bouton={'f': 1, 'h': 0, 'vis': False}
+
+3/6
+=== redteam_onboarding.py  [code 0, 121 s]
+  ✅ O21 au rejeu, le compte revient tant qu'il n'existe pas dark
+  ✅ O21 au rejeu, le compte revient tant qu'il n'existe pas light
+  ✅ O22 une porte permanente vers le compte            dark
+  ✅ O22 une porte permanente vers le compte            light
+======================================================================================
+
+  ✅  44 / 44 contrats tenus
+=== redteam_polices.py  [code 0, 48 s]
+   atkinson   500  normal   176 élément(s)
+   promilate  400  normal   135 élément(s)
+
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)

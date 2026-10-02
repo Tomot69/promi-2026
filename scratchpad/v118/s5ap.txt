@@ -1,0 +1,23 @@
+      apres     [dark] titre (24,546) au lieu de (24,542)
+      apres     [dark] à-qui (24,515) au lieu de (24,512)
+      apres     [dark] état (24,614) au lieu de (24,607)
+      apres     [light] #dptNat « Promi » : ton sur ton (Δ0)
+      apres     [light] .closeb « FERMER » : ton sur ton (Δ0)
+      apres     [light] titre (24,546) au lieu de (24,542)
+      apres     [light] à-qui (24,515) au lieu de (24,512)
+      apres     [light] état (24,614) au lieu de (24,607)
+      arrive    [dark] #dptQui « À Rachel » : ton sur ton (Δ25)
+      arrive    [dark] titre (24,590) au lieu de (24,586)
+      arrive    [dark] à-qui (24,559) au lieu de (24,556)
+      arrive    [light] titre (24,590) au lieu de (24,586)
+      arrive    [light] à-qui (24,559) au lieu de (24,556)
+      referme   [dark] #dptNat « Promi » : ton sur ton (Δ22)
+      referme   [dark] .closeb « FERMER » : ton sur ton (Δ22)
+      referme   [dark] le mot qui suit (24,479) au lieu de (24,472)
+      referme   [light] le mot qui suit (24,479) au lieu de (24,472)
+collisions                   0
+débordements                 0
+présence peinte              5
+écarts de position > 3 px    12
+écarts de style              0
+❌  17 ÉCARTS
