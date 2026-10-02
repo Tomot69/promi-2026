@@ -19,9 +19,8 @@ Le cran de nuit : les jetons crème et blanc clairs baissent de 0,06 de luminanc
 jetons sont identiques AU HEX PRÈS ; les couleurs de nature et d'état PEINTES (champ d'une fiche, légende de l'Aura) sont exactes ;
 contraste du texte ≥ 7 : 1 ; aucun filtre, aucun voile.
 Preuve (§7) : `--sonde` fait basculer l'app EN DIRECT (une réévaluation toutes les 150 ms) → le juge doit ROUGIR.
-v119 : le bouton « Zzz » est posé au Studio (les deux paires écartées de 14, Tom) : le juge vérifie ses cotes contre ses voisins.
-Sous un navigateur piloté, l'app n'allume pas le Zzz seule (les batteries demandent leur thème) : le premier lancement se joue donc
-en se présentant comme un vrai navigateur (`navigator.webdriver` faux).
+⚠ v118 : le bouton « Zzz » du Studio n'est pas posé (la ligne ne reçoit pas trois boutons sans déplacer ses voisins — rapport
+v118) ; tant qu'il manque, le Zzz ne s'active pas seul au premier lancement : la ligne 1 est ROUGE, nommément, jusqu'à sa pose.
 """
 import os, sys, math, datetime
 from playwright.sync_api import sync_playwright
@@ -92,29 +91,9 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     # ── 1 · premier lancement, téléphone en SOMBRE ────────────────────────────────────────────────────────────────
     ctx = b.new_context(viewport={'width': 430, 'height': 932}, timezone_id='Europe/Paris', color_scheme='dark')
-    # le premier lancement d'un VRAI navigateur : sous pilotage, l'app n'allume pas le Zzz seule (les autres juges demandent leur thème)
-    ctx.add_init_script("Object.defineProperty(navigator,'webdriver',{get:function(){return false}}); window._zzzMaintenant=function(){return Date.parse('2026-12-21T12:00:00+01:00')};")
     pg = page(ctx); e = pg.evaluate(ETAT)
     t('1 · premier lancement : thème CLAIR, même si le téléphone est en sombre', bool(e['e']) and e['e']['choix'] == 'light' and e['clair'], str(e['e'] and e['e']['choix']))
     t('1 · premier lancement : Zzz ACTIVÉ', bool(e['e']) and e['e']['zzz'] is True, 'zzz=%s · bouton posé=%s' % (e['e'] and e['e']['zzz'], e['e'] and e['e']['bouton']))
-    # ── le bouton « Zzz » du Studio (v119) : au milieu de la ligne, les cotes de ses voisins au demi-point, la même façon de dire « pris »
-    pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} closeAll(); document.getElementById('openStudio2').click();}"); pg.wait_for_timeout(2600)
-    BT = """()=>{ const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390; const R=e=>{const r=e.getBoundingClientRect(), c=getComputedStyle(e); return {x:+((r.left-dv.left)/k).toFixed(2), y:+((r.top-dv.top)/k).toFixed(2), w:+(r.width/k).toFixed(2), h:+(r.height/k).toFixed(2), bord:c.borderTopWidth+' '+c.borderTopStyle+' '+c.borderTopColor, rayon:c.borderRadius, anneau:c.boxShadow!=='none', on:e.classList.contains('on'), id:e.id, aria:e.getAttribute('aria-label'), role:e.getAttribute('role'), coche:e.getAttribute('aria-checked')}};
-      return {d:[...document.querySelectorAll('#stpVue .stp-d')].map(R), l:[...document.querySelectorAll('#stpLab .stp-l')].map(e=>{const r=e.getBoundingClientRect(), c=getComputedStyle(e); return {t:e.textContent, tt:c.textTransform, x:+((r.left-dv.left)/k).toFixed(1), w:+(r.width/k).toFixed(1), police:c.fontFamily.split(',')[0]+' '+c.fontSize+' '+c.fontWeight+' '+c.letterSpacing, couleur:c.color}})}; }"""
-    g = pg.evaluate(BT); d = g['d']; z = [x for x in d if x['id'] == 'stpZzz']
-    t('Zzz · cinq disques sur la ligne, le Zzz au milieu', len(d) == 5 and len(z) == 1 and d[2]['id'] == 'stpZzz', str([x['x'] for x in d]))
-    if len(d) == 5 and z:
-        z = z[0]; v = d[1]
-        t('Zzz · les paires écartées de 14 (45, 109 · 237, 301), le Zzz à 173, 20 d\'air de chaque côté', [x['x'] for x in d] == [45, 109, 173, 237, 301], str([x['x'] for x in d]))
-        t('Zzz · les cotes de ses voisins, au demi-point : taille, hauteur de pose, trait, rayon', abs(z['w'] - v['w']) <= 0.5 and abs(z['h'] - v['h']) <= 0.5 and abs(z['y'] - v['y']) <= 0.5 and z['bord'] == v['bord'] and z['rayon'] == v['rayon'], '%s × %s à y %s · %s · %s' % (z['w'], z['h'], z['y'], z['bord'], z['rayon']))
-        t('Zzz · activé, il porte l\'anneau comme ses voisins pris', z['on'] and z['anneau'] and v['on'] == v['anneau'], 'on=%s anneau=%s' % (z['on'], z['anneau']))
-        t('Zzz · VoiceOver : « Mode nuit, activé »', z['aria'] == 'Mode nuit, activé' and z['role'] == 'switch' and z['coche'] == 'true', str(z['aria']))
-        lz = [x for x in g['l'] if x['t'] == 'Zzz']
-        t('Zzz · le mot est écrit « Zzz », dans la police et la couleur de ses voisins', len(lz) == 1 and lz[0]['tt'] == 'none' and lz[0]['police'] == g['l'][0]['police'] and lz[0]['couleur'] == g['l'][0]['couleur'] and g['l'][0]['tt'] == 'uppercase', str(lz))
-        bb = pg.evaluate("()=>{const r=document.getElementById('stpZzz').getBoundingClientRect(); return {x:r.left+r.width/2, y:r.top+r.height/2}}")
-        pg.mouse.click(bb['x'], bb['y']); pg.wait_for_timeout(500); g2 = pg.evaluate(BT); z2 = [x for x in g2['d'] if x['id'] == 'stpZzz'][0]
-        t('Zzz · touché, il s\'éteint : plus d\'anneau, « Mode nuit, désactivé », et le réglage est mémorisé', (not z2['on']) and (not z2['anneau']) and z2['aria'] == 'Mode nuit, désactivé' and pg.evaluate("()=>localStorage.getItem('promi_zzz')") == '0', str(z2['aria']))
-        t('Zzz · rien d\'autre ne bouge quand on le touche', [x['x'] for x in g2['d']] == [x['x'] for x in d], str([x['x'] for x in g2['d']]))
     ctx.close()
 
     # ── le soleil : l'almanach, puis le second calcul ─────────────────────────────────────────────────────────────
@@ -190,46 +169,6 @@ with sync_playwright() as p:
     pal = pg.evaluate("()=>JSON.stringify(Toile.cols())")
     t('cran · la palette des dalles n\'a pas bougé', pal == pg.evaluate("()=>{const p=Toile.palettes()[Toile.getPalette()]; return JSON.stringify(p.cols)}"), pal[:60])
     pg.evaluate("()=>{ const x=document.querySelector('#auraScreen .closeb'); if(x) x.click(); closeAll(); }"); pg.wait_for_timeout(600)
-
-    # ── v119 · LA COUVERTURE : en sombre de nuit, AUCUN neutre clair ne garde sa valeur de jour, sur aucun écran. On lit l'IMAGE :
-    #    tout pixel resté à ± 1 d'une crème ou d'un blanc de jour est compté, sauf dans la MATIÈRE (la Toile, ses aperçus, les dalles,
-    #    la Pelote — les dalles ne bougent pas). Rougit sur v118 (67 000 pixels : textes des fiches, cartes, anneaux, pinceaux).
-    from PIL import Image as _Im
-    import io as _io
-    JOUR = [(247, 240, 222), (243, 231, 209), (255, 255, 255), (228, 215, 187), (244, 231, 209)]
-    COUV = [('accueil', "()=>{closeAll()}"),
-            ('fiche à tenir', "()=>{closeAll(); const p=promises.find(q=>!q.draft&&!q.req&&!q.nuee&&!q.chiche&&q.status!=='tenu'); openDetail(p.id)}"),
-            ('fiche tenue', "()=>{closeAll(); const p=promises.find(q=>q.status==='tenu'&&!q.nuee); openDetail(p.id)}"),
-            ('fiche chiche', "()=>{closeAll(); const p=promises.find(q=>q.chiche&&!q.draft); openDetail(p.id)}"),
-            ('Cercle', "()=>{closeAll(); openEssaim('potager')}"),
-            ('page +', "()=>{closeAll(); document.getElementById('createBtn').click(); setTimeout(()=>{const x=[...document.querySelectorAll('#createSheet .tile')][0]; if(x)x.click();},300)}"),
-            ('Index', "()=>{closeAll(); setView('toile'); ouvrirIndex()}"), ('Fil', "()=>{closeAll(); setView('fil')}"),
-            ('Aura', "()=>{closeAll(); setView('toile'); document.getElementById('souffleBtn').click()}"),
-            ('Studio', "()=>{const x=document.querySelector('#auraScreen .closeb'); if(x) x.click(); closeAll(); document.getElementById('openStudio2').click()}"),
-            ('Réglages', "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); document.getElementById('settingsBtn').click()}"),
-            ('Partager', "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); document.getElementById('shareBtn').click()}"),
-            ('personne', "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); openPerson('Rachel')}")]
-    pg.evaluate(HEURE, '2026-12-21T23:30:00+01:00'); pg.evaluate("()=>{ setTheme('dark'); _zzz.regle(true); closeAll(); }"); pg.wait_for_timeout(1000)
-    restes = []
-    for nom, js in COUV:
-        pg.evaluate(js); pg.wait_for_timeout(2600)
-        im = _Im.open(_io.BytesIO(pg.screenshot(clip={'x': 20, 'y': 44, 'width': 390, 'height': 844}))).convert('RGB'); px = im.load(); pts = []
-        for y in range(0, im.height, 2):
-            for x in range(0, im.width, 2):
-                c = px[x, y]
-                if any(abs(c[0] - k[0]) <= 1 and abs(c[1] - k[1]) <= 1 and abs(c[2] - k[2]) <= 1 for k in JOUR): pts.append((x // 2, y // 2))
-        n = 0; ou = {}
-        for (x, y) in pts[::max(1, len(pts) // 60)]:
-            e = pg.evaluate("([x,y])=>{const e=document.elementFromPoint(x+20,y+44); if(!e) return ['?',false]; const mat=e.tagName==='CANVAS' && (/^(toileCv|stBg|shCanvas|auBoule|shareToileBg|dpTrameCv|csTrameCv)$/.test(e.id) || !!e.closest('.s4-carte,.nf-d,.au-gr,.au-gr2,.pc-t')); return [(e.id?'#'+e.id:e.tagName.toLowerCase()+'.'+(''+(e.className.baseVal!==undefined?e.className.baseVal:e.className)).split(' ')[0]), mat]}", [x, y])
-            if not e[1]: n += 1; ou[e[0]] = ou.get(e[0], 0) + 1
-        if n: restes.append('%s : %s' % (nom, ', '.join(sorted(ou, key=lambda k: -ou[k])[:4])))
-    t('couverture · en sombre de nuit, aucun neutre clair ne garde sa valeur de jour (13 écrans, lu sur l\'image)', not restes, ' · '.join(restes)[:300] if restes else '0 pixel hors matière')
-    pg.evaluate("()=>{ const x=document.querySelector('#auraScreen .closeb'); if(x) x.click(); closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); }"); pg.wait_for_timeout(600)
-    # et au JOUR, tout est rendu : la passe de nuit ne laisse rien derrière elle
-    pg.evaluate(HEURE, '2026-12-22T12:00:00+01:00'); pg.evaluate("()=>{ closeAll(); const p=promises.find(q=>q.chiche&&!q.draft); openDetail(p.id) }"); pg.wait_for_timeout(2200)
-    cj = pg.evaluate("()=>[getComputedStyle(document.getElementById('dptTitre')).color, getComputedStyle(document.getElementById('dptNat')).color, document.getElementById('device').className]")
-    t('couverture · au jour, les encres posées en ligne retrouvent leur valeur', cj[0] == 'rgb(247, 240, 222)' and 'zzz-nuit' not in cj[2], str(cj))
-    pg.evaluate("()=>{ closeAll(); }"); pg.wait_for_timeout(500)
 
     # ── 3 · clair, Zzz éteint ─────────────────────────────────────────────────────────────────────────────────────
     pg.evaluate(HEURE, '2026-12-21T23:30:00+01:00'); pg.evaluate("()=>{ setTheme('light'); _zzz.regle(false); closeAll(); }")

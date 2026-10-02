@@ -240,16 +240,12 @@ def batterie(theme):
         # bas (`#stpVue`), qui ne les remplacent pas : ils les CLIQUENT. Le contrôle est
         # donc plus fort qu'avant — il vérifie que le geste arrive vraiment à la bascule.
         # Original : sauvegardes/redteam_ecrans-avant-studio-plateaux.py
-        # ⚑ CONTRAT RÉÉCRIT (v119, Tom, 2 oct. 2026 : « bouton Zzz : paires écartées de 14, Zzz au centre »). La ligne porte
-        #   CINQ disques : les deux paires (quatre disques de vue) et, entre elles, le Zzz. Le contrôle exigeait « 4 » et
-        #   cliquait les indices 2 et 3 — qui visent maintenant le Zzz. Même intention : les deux réglages de vue sont là, et
-        #   leur disque atteint la bascule. Original : sauvegardes/redteam_ecrans-avant-v119.py
         t('Studio : les deux réglages de vue sont sur le plateau'+S,
-          pg.evaluate("()=>[document.querySelectorAll('#stpVue .stp-d:not(.stp-zzz)').length, document.querySelectorAll('#stpVue .stp-d.stp-zzz').length].join('+')")=='4+1',
-          str(pg.evaluate("()=>[document.querySelectorAll('#stpVue .stp-d:not(.stp-zzz)').length, document.querySelectorAll('#stpVue .stp-d.stp-zzz').length].join('+')")))
+          pg.evaluate("()=>document.querySelectorAll('#stpVue .stp-d').length")==4,
+          str(pg.evaluate("()=>document.querySelectorAll('#stpVue .stp-d').length")))
         _av=pg.evaluate("()=>{const b=document.querySelector('#txToggle [data-tx=\"on\"]');return !!(b&&b.classList.contains('on'));}")
-        pg.evaluate("()=>{const d=document.querySelectorAll('#stpVue .stp-d:not(.stp-zzz)');if(d[2])d[2].click();}"); pg.wait_for_timeout(320)
-        pg.evaluate("()=>{const d=document.querySelectorAll('#stpVue .stp-d:not(.stp-zzz)');if(d[3])d[3].click();}"); pg.wait_for_timeout(320)
+        pg.evaluate("()=>{const d=document.querySelectorAll('#stpVue .stp-d');if(d[2])d[2].click();}"); pg.wait_for_timeout(320)
+        pg.evaluate("()=>{const d=document.querySelectorAll('#stpVue .stp-d');if(d[3])d[3].click();}"); pg.wait_for_timeout(320)
         _ap=pg.evaluate("()=>{const b=document.querySelector('#txToggle [data-tx=\"on\"]');return !!(b&&b.classList.contains('on'));}")
         t('Studio : le disque atteint vraiment la bascule'+S, _ap is False,
           'avant %s / apres %s' % (_av, _ap))
