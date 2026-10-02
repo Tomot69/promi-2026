@@ -1,0 +1,81 @@
+=== redteam_air.py  [code 0, 331 s]
+✅  L'AIR EST INTACT — 686 paires de textes, 68 écrans, deux thèmes.
+=== releve-design.py  [code 0, 36 s]
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_flash.py  [code 0, 133 s]
+  ✅ B1 · + → nuee : aucun flash au premier plan (85 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (17 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 2601 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2821 ms)
+
+32/32
+=== redteam_tonsurton.py  [code 0, 60 s]
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_decoupe.py  [code 0, 141 s]
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_pelote_partage.py  [code 0, 75 s]
+✅ clair · export mosaic : sous le plafond iPhone (16,7 Mpx) 8298720
+✅ clair · export pelote : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 0.6818795430944964, 'px': 8294400}
+✅ clair · export pelote : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ clair · export toile : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 1.3406542056074766, 'px': 8294400}
+✅ clair · export toile : sous le plafond iPhone (16,7 Mpx) 8294400
+
+42/42
+=== redteam_origine.py  [code 0, 59 s]
+[chromium] chiche · truculent · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 103.6
+[chromium] chiche · truculent · origine à ΔE 105.9 → la couleur d'ORIGINE OK  à l'origine 2.3 · à la rampe 129.0 · app : origine|105.9
+[chromium] sans l'option, la bande garde la rampe de Q30           OK  
+[chromium] aucune erreur de page                                   OK  
+
+64 / 64
+=== redteam_nuit.py  [code 1, 60 s]
+5 · sombre, Zzz éteint, la nuit : sombre ordinaire                             OK  clair=False cran=False crème=#F7F0DE
+5 · la crème est revenue à sa valeur                                           OK  #F7F0DE
+6 · après rechargement : le choix « sombre » et le Zzz activé sont retrouvés   OK  ('dark', True)
+6 · après rechargement : le choix « clair » et le Zzz éteint sont retrouvés    OK  ('light', False)
+
+26 / 34
+KO : 1 · premier lancement : Zzz ACTIVÉ · 2 · au changement d'écran : sombre DE NUIT · 2 · la bascule se fait sans fondu · 2 · le lever passé SOUS LES YEUX : rien ne bouge · 2 · à l'ouverture d'un écran (les Réglages) : sombre de nuit · cran · les neutres clairs baissent de 0,06 de luminance OKLCH (± 0,006) · cran · le contraste du texte reste ≥ 7 : 1 · 4 · sombre + Zzz, la nuit : le cran de nuit
+=== redteam_plein.py  [code 0, 178 s]
+[?densite=3 · sombre · signal · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[?densite=3 · sombre · signal · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[?densite=3 · sombre · signal · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[?densite=3 · sombre · signal · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[?densite=3] aucune erreur de page                                             OK  
+
+75 / 75
+=== redteam_halo.py  [code 1, 143 s]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [32, 25, 8] · fond (32, 25, 8)
+F · [sombre] le halo ne touche pas le plateau ; le bouton est à sa place de v118 OK  haut du halo 131.0 · bas du plateau 100.0 · bouton 525.47
+D · le halo respire avec la lumière : ± 20 % (sommet ÷ creux = 1,5 ± 0,3)    OK  1.63 (9 relevés au sommet, 10 au creux)
+aucune erreur de page                                                        OK  
+
+22 / 23
+KO : C · [sombre] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps)
+=== redteam_souffle.py  [code 1, 70 s]
+OK [light] A · 0,3 s → 4,6 s : 31336 pixels changés dans la silhouette, 0 au-delà
+✗  [light] B · lumière de la boule : sommet à 5.7 s (décidé 4.6), retour au bas à 10.9 s (décidé 10.6), amplitude 4.97 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 15597 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+❌ le souffle ne tient pas sa loi
+=== redteam_contour.py  [code 0, 35 s]
+[clair] avec le halo : la lumière s'arrête à 136.1 du centre (borne 139.6) · pixels au-delà : 0
+OK [clair] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+   [sombre] avec le halo : la lumière s'arrête à 137.8 du centre (borne 139.6) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.1 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== FIN

@@ -1,0 +1,13 @@
+14 écran(s) repris sur une page fraîche : Nuée[d], Nuée défilée[l], Nuée vide[d], Peaufiner Nuée[d], chiche lancé[d], fiche chiche[d], fiche chiche[l], fiche en cours[d], fiche tenue[d], fiche tenue[l], fiche à tenir[d], l'instant après[d], l'instant referme[d], l'instant referme[l]
+4091 propriétés comparées · 36 écrans × 2 thèmes · 1446 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile 78 canevas · E2 matière de dalle 41 · E3 orange des murs 0 · E4 Pelote 4
+  ✗ color    réf rgb(221, 77, 35)                   → app rgb(247, 240, 222)                 ×3   fiche à tenir[d]
+        fiche à tenir [dark] · #dptTrace [1]
+        fiche à tenir [dark] · #dptQui [1]
+        fiche à tenir [dark] · #dptQuand [1]
+  ✗ color    réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×1   fiche tenue[d]
+        fiche tenue [dark] · #dptNat [1]
+  ✗ color    réf rgb(0, 52, 26)                     → app rgb(247, 240, 222)                 ×1   fiche chiche[d]
+        fiche chiche [dark] · #dptQui [1]
+
+❌ — 5 écart(s) de couleur avec la référence d'avant v116

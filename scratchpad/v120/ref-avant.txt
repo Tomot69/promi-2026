@@ -1,0 +1,38 @@
+5688 propriétés comparées · 36 écrans × 2 thèmes · 525 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile 78 canevas · E2 matière de dalle 26 · E3 orange des murs 0 · E4 Pelote 4
+  ✗ bg       réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×122   Aura[d], Conditions[d], Fil[d], Index 2[d], Index 3[d], Nuée défilée[d] …
+  ✗ stroke   réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×53   Aura[d], Conditions[d], Index 2[d], Index 3[d], Nuée défilée[d], Nuée vide défilée[d] …
+  ✗ shadow   réf rgba(0, 0, 0, 0.62) , rgb(44, 38,  → app rgba(0, 0, 0, 0.62) , rgb(44, 38,  ×36   Aura[d], Conditions[d], Fil[d], Index 2[d], Index 3[d], Nuée défilée[d] …
+  ✗ bT       réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×35   Aura[d], Conditions[d], Index 2[d], Index 3[d], Nuée défilée[d], Nuée vide défilée[d] …
+  ✗ bB       réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×35   Aura[d], Conditions[d], Index 2[d], Index 3[d], Nuée défilée[d], Nuée vide défilée[d] …
+  ✗ bL       réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×35   Aura[d], Conditions[d], Index 2[d], Index 3[d], Nuée défilée[d], Nuée vide défilée[d] …
+  ✗ bR       réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×35   Aura[d], Conditions[d], Index 2[d], Index 3[d], Nuée défilée[d], Nuée vide défilée[d] …
+  ✗ color    réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×23   Partager[d], Peaufiner Chiche[d], Peaufiner[d], fiche chiche[d], fiche en cours[d], fiche tenue[d] …
+  ✗ color    réf rgb(228, 215, 187)                 → app rgb(0, 52, 26)                     ×4   Index 2[d]
+  ✗ color    réf rgb(0, 52, 26)                     → app rgb(247, 240, 222)                 ×3   fiche chiche[l], fiche tenue[d], fiche tenue[l]
+  ✗ bT       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   Nuée défilée[l], Peaufiner Chiche[l]
+  ✗ bB       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   Nuée défilée[l], Peaufiner Chiche[l]
+  ✗ bL       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   Nuée défilée[l], Peaufiner Chiche[l]
+  ✗ bR       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   Nuée défilée[l], Peaufiner Chiche[l]
+  ✗ color    réf rgb(247, 240, 222)                 → app rgb(221, 77, 35)                   ×2   fiche à tenir[d]
+  ✗ fill     réf rgb(32, 25, 8)                     → app rgb(5, 3, 2)                       ×2   page +[d]
+  ✗ stroke   réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   page +[d]
+  ✗ color    réf rgb(32, 25, 8)                     → app rgb(247, 240, 222)                 ×2   l'instant après[d]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 249) 54 %            ×2   Nuée[d], Peaufiner Nuée[d]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 248) 43 %            ×2   Nuée[d], Peaufiner Nuée[d]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 248) 63 %            ×2   Nuée[d], Peaufiner Nuée[d]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 249) 33 %            ×2   Nuée[d], Peaufiner Nuée[d]
+  ✗ color    réf rgb(243, 231, 209)                 → app rgb(221, 77, 35)                   ×1   fiche à tenir[d]
+  ✗ color    réf rgb(247, 240, 222)                 → app rgb(243, 231, 209)                 ×1   fiche en cours[d]
+  ✗ bgi      réf linear-gradient(90deg, rgb(32, 25, → app linear-gradient(90deg, rgb(5, 3, 2 ×1   Studio[d]
+  ✗ canevas  réf au plus près ΔE 5.5                → app rgb(67, 105, 157) 20 %             ×1   Fil[l]
+  ✗ canevas  réf au plus près ΔE 2.9                → app rgb(73, 111, 165) 13 %             ×1   Fil[l]
+  ✗ canevas  réf au plus près ΔE 12.3               → app rgb(248, 226, 194) 18 %            ×1   Nuée vide défilée[l]
+  ✗ canevas  réf au plus près ΔE 47.3               → app rgb(130, 174, 249) 53 %            ×1   fiche chiche[d]
+  ✗ canevas  réf au plus près ΔE 47.1               → app rgb(130, 174, 248) 46 %            ×1   fiche chiche[d]
+  ✗ canevas  réf au plus près ΔE 7.9                → app rgb(155, 176, 240) 100 %           ×1   page +[d]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 248) 60 %            ×1   Peaufiner Nuée[d]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 249) 37 %            ×1   Peaufiner Nuée[d]
+  ✗ canevas  réf au plus près ΔE 31.7               → app rgb(130, 174, 248) 86 %            ×1   l'instant après[d]
+
+❌ — 417 écart(s) de couleur avec la référence d'avant v116

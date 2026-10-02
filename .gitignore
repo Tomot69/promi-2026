@@ -61,4 +61,6 @@ __pycache__/
 node_modules/
 /.claude/
 /planche-v118/
-zz-*.html
+zz-*
+/planche-v120/
+/planche-v119/

@@ -23,11 +23,6 @@ with sync_playwright() as p:
         ouvre(pg,d); pg.wait_for_timeout(3000); pg.evaluate("()=>{try{_aura.fige(true)}catch(e){}}"); pg.wait_for_timeout(300)
         g=pg.evaluate("()=>{const dv=document.getElementById('device').getBoundingClientRect(),s=dv.width/390,r=document.getElementById('auBoule').getBoundingClientRect();return {cy:(r.top-dv.top)/s+r.height/s/2}}")
         CY=g['cy']; RS=116.032+5.5   # la silhouette lue à 50 % d'opacité (poil compris)
-        # ⚑ REPRIS EN v119 (§7). LA RÈGLE QUE CE CONTRÔLE ENCODE : aucune MATIÈRE (poil, fibre) ne dépasse de la silhouette — intacte.
-        #   LA DÉCISION QUI S'AJOUTE (Tom, v119) : un MINI HALO prolonge la lumière de la Pelote, borné à 0,08 D (18,6 pt). Le juge lit
-        #   donc deux fois : halo ÉTEINT (crochet `_peloteSansHalo`), rien ne dépasse, comme avant ; halo allumé, RIEN au-delà de 0,08 D.
-        #   Original : sauvegardes/redteam_contour-avant-v119.py
-        pg.evaluate("()=>{window._peloteSansHalo=true}"); pg.wait_for_timeout(500)
         A=cap(pg)
         pg.evaluate("()=>{[...document.querySelectorAll('#auraScreen .au-bo, #auPeloteCouronne')].forEach(e=>e.style.visibility='hidden')}"); B=cap(pg)
         pg.evaluate("()=>{[...document.querySelectorAll('#auraScreen .au-bo, #auPeloteCouronne')].forEach(e=>e.style.visibility='')}")
@@ -37,15 +32,7 @@ with sync_playwright() as p:
                 if px[x,y]:
                     r=math.hypot(x/S-CX,y/S-CY); rmax=max(rmax,r)
                     if r>RS+4: hors+=1   # + 4 : les POINTES du poil natif, mesurées à 124,1–124,3 depuis toujours ; la couronne de v115 allait à 147
-        pg.evaluate("()=>{window._peloteSansHalo=false}"); pg.wait_for_timeout(500); A2=cap(pg)
-        d2=ImageChops.difference(A2,B).convert('L').point(lambda v:255 if v>2 else 0); p2=d2.load(); loin=0; rh=0
-        for y in range(d2.height):
-            for x in range(d2.width):
-                if p2[x,y]:
-                    r=math.hypot(x/S-CX,y/S-CY); rh=max(rh,r)
-                    if r>121.0+0.08*232.064+1.0: loin+=1
-        bon = hors==0 and loin==0
-        print('   [%s] avec le halo : la lumière s\'arrête à %.1f du centre (borne %.1f) · pixels au-delà : %d'%('sombre' if d else 'clair',rh,121.0+0.08*232.064,loin))
+        bon = hors==0
         print('%s [%s] la Pelote s\'arrête à %.1f du centre (silhouette %.1f) · pixels au-delà : %d'%('OK' if bon else '✗','sombre' if d else 'clair',rmax,RS,hors)); ok=ok and bon
     b.close()
 if tmp: os.remove(tmp)

@@ -110,35 +110,7 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
-### ⚑ v120 (2 oct. 2026) — RETOUR EN ARRIÈRE. (Décision Tom.) Ce bloc CORRIGE les blocs v116 à v118 qui le suivent.
-> **v119 est ANNULÉ** (`git revert bd156ae`, l'historique reste). **La casse du Studio, nommée :** le Zzz activé au premier lancement
-> (`BOUTON_POSE=true`, hors navigateur piloté) — la nuit, l'app passait en sombre quel que soit le choix, les disques SOMBRE / CLAIR
-> ne changeaient plus rien à l'écran (le choix n'était appliqué « qu'au changement d'écran », et le thème restait celui de la nuit)
-> et le disque allumé contredisait le choix. ⚠ Aucun juge ne pouvait le voir : sous navigateur piloté le Zzz ne s'allumait pas.
-> **⚑ LE Zzz EST COUPÉ PARTOUT, ET LA PASSE DE NUIT AVEC, JUSQU'À NOUVEL ORDRE** (`COUPE=true` dans `lot-V118-ZZZ` : ni thème de
-> nuit, ni cran de nuit, quels que soient le réglage mémorisé, `?zzz=1` ou `?nuit=1`). `redteam_nuit` est donc ROUGE par décision.
-> **⚑ HORS DE LA TOILE, LES COULEURS SONT CELLES D'AVANT v116** (référence : `sauvegardes/app-avant-v116.html`) — textes, fonds, corps,
-> filets, pilules, anneaux, en clair et en sombre. **Le fond des pages sombres est le brun `#201908`**, plus la seiche (la
-> substitution `--c-brun09 → --c-seiche10` de `lot-V116-SEICHE-css` est retirée). Exceptions, et seulement celles-là : la Toile en
-> sombre garde l'encre de seiche (c'est le moteur qui la peint) ; le fond de la Toile en clair reste à plat ; l'orange des murs.
-> Juge : **`redteam_couleurs_ref.py`** (styles calculés et échantillons de canevas, 36 écrans × 2 thèmes, contre la référence servie
-> avec son moteur d'alors ; un écran pris en écart est repris sur une page fraîche avant d'être cru).
-> **⚑ LA PELOTE EST PLEINE** : l'intérieur est opaque, toujours — alpha 255 en retrait de 4 % de D, aux deux thèmes, à tous les
-> paliers. La peau n'était opaque que là où la fourrure couvrait son bloc à 98 % (alpha jusqu'à 57 au palier réduit) : on pose sous
-> elle la même peau rendue opaque, bornée par un disque plein jusqu'à 0,972 R, fondu jusqu'à 1,012 R. Juge : **`redteam_plein.py`**.
-> **Le halo et l'ombre de v119 sont repris tels quels** (`lot-V119-PELOTE`, `window._haloPelote`, `window._flaquePelote`) : le ton le
-> plus clair de la rampe, décroissance exponentielle (ΔE00 7 au ras, 2,9 à 0,04 D, rien au-delà de 0,08 D), plein du côté éclairé,
-> presque nul sur le quart inférieur, tramé au grain de l'app, respiration ± 20 % avec le souffle ; l'ombre : encre 0,10 en clair, en
-> sombre une flaque de lumière dont l'ombre est le creux (aucune ombre crème). Écho, couronne de fibres et halo flou restent REFUSÉS ;
-> D (un trait par parole tenue) reste EXCLU DÉFINITIVEMENT. L'écho de v118 est retiré ; la lumière du velours reste DANS le peintre.
-> **Deux réglages à l'œil, par l'adresse, jamais mémorisés** : `?densite=1|2|3` (densité ×1, ×1,5, ×2 ; poil ×1, ×0,8, ×0,7 ; reflet
-> adouci à 2 et 3) et `?halo=1|2|3` (ΔE00 au ras 6, 10, 14 ; étendue 0,08, 0,10, 0,12 D). Tom choisit sur l'iPhone.
-> **L'orange des mots des murs est `#FB4C0D`** (jeton `--c-orange56-mur`). ⚠ **OUVERT (Q373)** : il n'atteint pas 3 : 1 sur cinq des
-> huit fonds de mur (2,27 sur les trois corps sombres, 2,65 et 2,78 sur les corps clairs du Promi et du Cercle) — `redteam_murs` 25/26.
-> **Non repris de v119** (le lot s'est arrêté au §4) : « garder de côté » (Q370) et les violations visibles (« ✕ FERMER », badge,
-> bouton d'achat).
-
-### ⚑ v118 (2 oct. 2026) — LE Zzz : LA NUIT, L'APP SE REPOSE. (Décision Tom.) *(COUPÉ en v120 — bloc ci-dessus)*
+### ⚑ v118 (2 oct. 2026) — LE Zzz : LA NUIT, L'APP SE REPOSE. (Décision Tom.)
 > **La raison : c'est l'ÉBLOUISSEMENT qui compte, pas la teinte** — on baisse la lumière des neutres clairs, on ne colore rien ; et
 > **aucune permission de localisation** n'est demandée : le soleil se calcule (NOAA) aux coordonnées de RÉFÉRENCE du fuseau horaire
 > de l'appareil ; fuseau inconnu : 22 h – 7 h.
@@ -161,7 +133,7 @@ la nature, la ligne dit l'état.)*
 > `lot-V118-ZZZ`) : on ne livre pas un réglage qu'on ne peut pas éteindre. Essai : `?zzz=1` l'active (mémorisé), `?nuit=1` simule la nuit.
 > Juge : **`redteam_nuit.py`** (heures d'almanach en dur, second calcul indépendant, bascule en direct = rouge).
 
-### ⚑ v118 — LA PELOTE : L'ÉCHO DÉCALÉ *(retiré en v120 : halo et ombre de v119)* ; « PARTAGER MA PELOTE » SOUS L'OMBRE ; D EST EXCLU DÉFINITIVEMENT. (Décisions Tom.)
+### ⚑ v118 — LA PELOTE : L'ÉCHO DÉCALÉ ; « PARTAGER MA PELOTE » SOUS L'OMBRE ; D EST EXCLU DÉFINITIVEMENT. (Décisions Tom.)
 > **L'écho (Q368 → A)** : une copie PLATE de la silhouette (rayon 121), décalée de 11, dans un autre ton de la palette (le ton
 > dominant + 2 ; le suivant s'il se confond avec la page, ΔE < 15). Aucun flou, aucun dégradé. Il entre dans la liste blanche
 > NOMINATIVE de la Pelote (`.au-echo`, `window._echoPelote`, `lot-V118-PELOTE`) : `redteam_volume --sonde=echo` rougit si on le pose
@@ -186,7 +158,7 @@ la nature, la ligne dit l'état.)*
 > centre ; tout gestionnaire n'appelle que des fonctions qui existent, et n'est posé que sur un nœud qui existe. La dette de naissance
 > est NOMMÉE (`joignable-dette.json`). Q363 tranchée : le code des chemins de saisie remplacés est retiré (JS ; le CSS ne se nettoie pas).
 
-### ⚑ v116 (1er oct. 2026) — LE MODE SOMBRE EST L'ENCRE DE SEICHE. (Décision Tom, série 4 adoptée, descendue de 2 %.) *(v120 : la seiche ne vaut plus que pour la TOILE ; les pages sombres sont revenues au brun `#201908`)*
+### ⚑ v116 (1er oct. 2026) — LE MODE SOMBRE EST L'ENCRE DE SEICHE. (Décision Tom, série 4 adoptée, descendue de 2 %.)
 > Fond `#050302` (OKLCH L 0,101, h 54,8° — la teinte y est plus juste qu'à L 0,12 : Δh +5° contre +13°), cellules vides L 0,136–0,161
 > (h 40–56°), dalle neutre d'Ingénu en sombre `#1F1611`, grain léger ; **jamais bleu**. Le moteur la peint (rampes, `_fondVifDesc` plat,
 > `renderTo`, `fondToile`, aperçus, noir et blanc, `cOf`) ; les pages sombres la prennent par `--c-brun09` en sombre (`lot-V116-SEICHE-css`,
@@ -1516,13 +1488,6 @@ python3 redteam_origine.py     # 64 — v118 (Q365) : avec « La dalle d'origine
 python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur (Paris, juin et décembre), fuseau inconnu, aucune bascule
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
-                               #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_couleurs_ref.py # v120 — LES COULEURS SONT CELLES D'AVANT v116 : styles calculés et échantillons de canevas, 36 écrans × 2 thèmes,
-                               #   contre sauvegardes/app-avant-v116.html. Exceptions nommées en dur (Toile, matière de dalle, orange des murs,
-                               #   Pelote). Rougit sur sauvegardes/app-avant-v120.html (417 écarts). ≈ 15 min, SEUL, simulateur éteint.
-python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
-                               #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
-python3 redteam_halo.py        # 23 — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119, repris en v120), lus sur l'image @3x. --sonde rougit.
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;
                                #   immobile avec Réduire les animations. Rougit sur app-avant-v117b.

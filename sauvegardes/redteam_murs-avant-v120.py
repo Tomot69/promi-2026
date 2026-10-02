@@ -96,20 +96,9 @@ with sync_playwright() as p:
             couleur:s.webkitTextFillColor||s.color, dansMur:cx>=w.left&&cx<=w.right&&cy>=w.top&&cy<=w.bottom}}""")
         ok9 = bool(f) and f['fond'] in ('rgba(0, 0, 0, 0)', 'transparent') and f['bord'] in ('0px',) and f['ombre'] in ('none',) and f['lignes'] <= 3 and f['taille'] == f['tailleMP'] and f['couleur'] == ENCRE[th] and f['dansMur']
         t('9 · la phrase posée sur le flou : centrée dans le mur, sans fond ni trait, ≤ 3 lignes, une taille, %s' % ('encre' if th == 'light' else 'crème'), ok9, str(f))
-        # ⚑ CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (§7) — v120, Tom, 2 oct. 2026 : « les mots orange des phrases des murs passent à
-        #   #FB4C0D. Mesure le contraste de #FB4C0D sur chaque fond de mur (cible ≥ 3:1 pour du grand texte). » Le contrôle exigeait
-        #   Δlum ≥ 42 pour « Ma Parole ! » comme pour la phrase ; il exige maintenant la VALEUR décidée, en dur, et le contraste WCAG
-        #   ≥ 3 : 1 sur le fond du mur. La phrase, elle, garde son Δlum ≥ 42. Original : sauvegardes/redteam_murs-avant-v120.py
-        def _rgb(s): return [int(v) for v in __import__('re').findall(r'\d+', s)[:3]]
-        def _L(c):
-            c = [v / 255.0 for v in c]; c = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in c]; return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
-        def _k(a, b_):
-            x, y = sorted((_L(_rgb(a)), _L(_rgb(b_))), reverse=True); return (x + 0.05) / (y + 0.05)
-        MUR_ORANGE = 'rgb(251, 76, 13)'                                    # #FB4C0D — la décision, en dur
-        kmp = _k(col['mp'], col['fond']) if col['mp'] else 0
-        ok7 = col['mp'] == MUR_ORANGE and abs(lum(col['texte']) - lum(col['fond'])) >= DLUM and kmp >= 3.0
-        t('7 · « Ma Parole ! » en #FB4C0D, à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),
-          'texte %s · Ma Parole %s · fond %s · phrase Δlum %.0f · Ma Parole %.2f : 1' % (col['texte'], col['mp'], col['fond'], abs(lum(col['texte']) - lum(col['fond'])), kmp))
+        ok7 = col['mp'] and col['mp'] != col['texte'] and abs(lum(col['texte']) - lum(col['fond'])) >= DLUM and abs(lum(col['mp']) - lum(col['fond'])) >= DLUM
+        t('7 · « Ma Parole ! » d\'une autre couleur que la phrase, les deux lisibles sur le corps (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),
+          'texte %s · Ma Parole %s · fond %s · Δ %.0f / %.0f' % (col['texte'], col['mp'], col['fond'], abs(lum(col['texte']) - lum(col['fond'])), abs(lum(col['mp']) - lum(col['fond'])) if col['mp'] else -1))
         pg.wait_for_timeout(LECTURE_MAX + 1000); e4b = pg.evaluate(ETAT)
         t('3c · après le temps de lecture, la phrase s\'efface seule (sans ouvrir l\'offre)', not e4b['leve'] and not e4b['offre'], 'levée %s · offre %s' % (e4b['leve'], e4b['offre']))
         pg.evaluate("()=>{window._murBaisse&&_murBaisse();closeAll();}"); pg.wait_for_timeout(700)

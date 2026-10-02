@@ -1,0 +1,77 @@
+=== redteam_couleurs_ref.py  [code 0, 728 s]
+3 écran(s) repris sur une page fraîche : Nuée défilée[d], fiche tenue[d], fiche à tenir[d]
+6666 propriétés comparées · 36 écrans × 2 thèmes · 13 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile 78 canevas · E2 matière de dalle 99 · E3 orange des murs 0 · E4 Pelote 6
+
+✅ — 0 écart(s) de couleur avec la référence d'avant v116
+=== redteam_ecrans.py  [code 0, 95 s]
+Aura : les arcs des Noyaux sont lisibles (6 px et plus) [clair] OK  
+Aura : aucune piste vide, les arcs disent l état [clair] OK  
+bouton + : rotation lente [clair]              OK  
+la signature est identique partout où elle est portée [clair] OK  
+aucune erreur JS [clair]                       OK  
+
+152/152
+=== redteam_vide.py  [code 0, 231 s]
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61
+=== redteam_joignable.py  [code 0, 135 s]
+la page se charge sans erreur                              OK  
+des éléments ont été relevés sur chaque écran              OK  36 écrans
+aucun élément interactif injoignable hors dette            OK  0 neufs, 2 en dette
+aucun gestionnaire n'appelle une fonction absente hors dette OK  0 neufs, 4 en dette
+aucun gestionnaire en attribut on…=""                      OK  0
+
+5 / 5
+=== redteam_studio_geste.py  [code 0, 27 s]
+  la palette revient d'où elle vient                           OK   signal
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+
+13/13
+=== redteam_champ.py  [code 0, 127 s]
+  Nuée [light]                   OK
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_tokens.py  [code 0, 0 s]
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46
+=== redteam_polices.py  [code 0, 40 s]
+   atkinson   500  normal   179 élément(s)
+   promilate  400  normal   132 élément(s)
+
+══ COUPLES DEMANDÉS MAIS ABSENTS — casseraient en Swift ══
+   aucun.
+
+0 couple(s) absent(s) · 0 élément(s)
+=== redteam_filets.py  [code 0, 179 s]
+fiche cercle   [light]  filet non    OK
+fiche tenue    [light]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [light]  filet non    OK
+page+ chiche   [light]  filet non    OK
+page+ cercle   [light]  filet non    OK
+
+filet du trait : 14/14
+=== redteam_clavier.py  [code 0, 0 s]
+focus() : 18, dont 3 différé(s)
+  ✓ le nom du Cercle (v114) — dans le geste (l.13159, différé en secours)
+  ✓ la page + d'un gardé de côté — le titre (30 ms) — dans le geste (l.13339, différé en secours)
+  ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.31776, différé en secours)
+✅ le clavier s'ouvre au geste — 3 champs
+=== FIN

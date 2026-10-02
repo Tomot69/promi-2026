@@ -1,0 +1,17 @@
+11 écran(s) repris sur une page fraîche : Fil[l], Index 3[l], Nuée défilée[d], Peaufiner Chiche[d], chiche lancé[l], fiche chiche[d], fiche en cours[d], fiche tenue[d], l'instant après[l], page + Chiche[d], personne[l]
+4918 propriétés comparées · 36 écrans × 2 thèmes · 456 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile 78 canevas · E2 matière de dalle 20 · E3 orange des murs 0 · E4 Pelote 4
+  ✗ color    réf rgb(32, 25, 8)                     → app rgb(247, 240, 222)                 ×1   fiche en cours[d]
+        fiche en cours [dark] · #dptNat [1]
+  ✗ canevas  réf au plus près ΔE 6.1                → app rgb(86, 125, 184) 13 %             ×1   Fil[l]
+        Fil [light] · #feedList > div.s4-grille > div.s4-carte > canvas [2]
+  ✗ canevas  réf au plus près ΔE 4.4                → app rgb(82, 122, 178) 10 %             ×1   Fil[l]
+        Fil [light] · #feedList > div.s4-grille > div.s4-carte > canvas [2]
+  ✗ canevas  réf au plus près ΔE 5.8                → app rgb(80, 110, 165) 13 %             ×1   Fil[l]
+        Fil [light] · #feedList > div.s4-grille > div.s4-carte > canvas [3]
+  ✗ canevas  réf au plus près ΔE 3.5                → app rgb(161, 66, 122) 11 %             ×1   Fil[l]
+        Fil [light] · #feedList > div.s4-grille > div.s4-carte > canvas [5]
+  ✗ canevas  réf au plus près ΔE 7.9                → app rgb(155, 176, 240) 100 %           ×1   page + Chiche[d]
+        page + Chiche [dark] · csTrameCv
+
+❌ — 6 écart(s) de couleur avec la référence d'avant v116

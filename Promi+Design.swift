@@ -382,6 +382,7 @@ extension Color {
         static let orange53Txt = Color(red: 0.8667, green: 0.3020, blue: 0.1373)   // #DD4D23
         static let orange58 = Color(red: 0.8118, green: 0.4392, blue: 0.3725)   // #CF705F
         static let orange59 = Color(red: 0.9961, green: 0.3137, blue: 0.0000)   // #FE5000
+        static let orange56Mur = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D
         static let orange61 = Color(red: 0.9098, green: 0.4392, blue: 0.2353)   // #E8703C
         static let orange62 = Color(red: 0.8784, green: 0.4706, blue: 0.4275)   // #E0786D
         static let orange64 = Color(red: 0.8392, green: 0.5412, blue: 0.3098)   // #D68A4F

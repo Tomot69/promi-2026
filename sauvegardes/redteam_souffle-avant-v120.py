@@ -42,10 +42,7 @@ def zones(A, B, g):
     for y in range(d.height):
         for x in range(d.width):
             if px[x, y]:
-                # ⚑ REPRIS EN v119 (§7). LA RÈGLE ENCODÉE : seule la matière respire, rien ne change au-delà de la silhouette.
-                #   LA DÉCISION QUI LA COMPLÈTE (Tom, v119) : le mini halo respire avec la lumière (± 20 %), et il est borné à 0,08 D.
-                #   « Au-delà » commence donc à la fin du halo : silhouette + 0,08 D (18,6 pt). Original : sauvegardes/redteam_souffle-avant-v119.py
-                if math.hypot(x / S - g['cx'], y / S - g['cy']) <= g['rsil'] + 0.08 * 232.064 + 1: dedans += 1
+                if math.hypot(x / S - g['cx'], y / S - g['cy']) <= g['rsil'] + 1: dedans += 1
                 else: dehors += 1
     return dedans, dehors
 
@@ -97,15 +94,10 @@ with sync_playwright() as p:
                 attend(pg, s); im = cap(pg)
                 T.append(pg.evaluate("()=>(performance.now()-window.__t0)/1000")); L.append(lum(im, g)); s += 0.4
             prem = [i for i in range(len(L)) if T[i] < 8.5] or [0]      # le PREMIER cycle (la capture peut déborder sur le second)
-            # ⚑ v119 (instrument) : au sommet et au creux la courbe est PLATE (la lumière, composée après le rendu, y tient la même valeur
-            #   d'écran pendant près d'une seconde) : le premier relevé du plateau n'en est pas le milieu. On prend le MILIEU des relevés
-            #   à moins de 0,15 niveau de l'extrême. Original : sauvegardes/redteam_souffle-avant-v119.py
-            def milieu(idx, ext): pl = [i for i in idx if abs(L[i] - ext) <= 0.15]; return pl[len(pl) // 2]
-            i_max = milieu(prem, max(L[i] for i in prem))
+            i_max = max(prem, key=lambda i: L[i])
             bas = [i for i in range(len(L)) if 8.5 < T[i] < 12.5]
-            i_bas = milieu(bas, min(L[i] for i in bas)) if bas else 0
+            i_bas = min(bas, key=lambda i: L[i]) if bas else 0
             amp = max(L) - min(L)
-            if '--trace' in sys.argv: print('   ', ' '.join('%.1f:%.2f' % (T[i], L[i]) for i in range(len(L))))
             dit(amp > 1.0 and abs(T[i_max] - (DEPART + MONTE)) <= 0.8 and abs(T[i_bas] - (DEPART + CYCLE)) <= 1.0,
                 '[%s] B · lumière de la boule : sommet à %.1f s (décidé %.1f), retour au bas à %.1f s (décidé %.1f), amplitude %.2f niveaux'
                 % (th, T[i_max], DEPART + MONTE, T[i_bas], DEPART + CYCLE, amp))

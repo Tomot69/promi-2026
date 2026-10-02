@@ -8288,11 +8288,3 @@ Le lien n'est pas masqué en permanence : il est fermé tant que la phrase est v
 #### Q372 · À DÉCIDER (v118) — L'INVENTAIRE DE JOIGNABILITÉ : LA DETTE
 `joignable-inventaire.md`. Nommé dans `joignable-dette.json`, non corrigé : les réglages floutés du gratuit (murs, voulus) ; `promiDeconnexion` (attend Firebase) ; `ouvrirPersonne` et `renderPerson` (gardes mortes avant `openPerson`) ; `#fToAll` (nœud disparu).
 
-#### Q373 · À DÉCIDER (v120) — L'ORANGE DES MURS `#FB4C0D` N'ATTEINT PAS 3 : 1 PARTOUT
-Tom : « les mots orange des phrases des murs passent à #FB4C0D ; cible ≥ 3 : 1 pour du grand texte ; redteam_murs à 26/26 ».
-Posé (jeton `--c-orange56-mur`). **Mesuré (contraste WCAG)** : page claire 3,01 · page sombre 5,10 · Peaufiner Chiche clair 3,19 —
-mais Peaufiner Promi clair **2,65**, Cercle clair **2,78**, et les trois corps sombres (Promi `#335382`, Chiche `#7C3F58`, Cercle
-`#5D4978`) **2,27**. `redteam_murs` reste à 25/26 (contrôle 7, réécrit sur ce critère ; original gardé). Un orange ne peut pas être à
-3 : 1 à la fois de la crème et de ces corps de clarté moyenne (L* 35) : il faut soit deux valeurs (une sur fond clair, une sur fond
-sombre), soit une autre teinte sur les corps sombres, soit accepter 2,3 : 1 là. **Le lot v120 s'est arrêté ici** : le §5 n'est pas fait.
-Les autres usages rendus de `#DD4D23` hors lignes d'état : `planche-v120/usages-DD4D23-rendus.txt` (rien n'a été changé).

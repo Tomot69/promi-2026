@@ -1,0 +1,40 @@
+=== redteam_halo.py  [code 0, 124 s]
+E · [sombre] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2)          OK  2.71 · centre [32, 25, 8] · pourtour [39, 33, 17]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [32, 25, 8] · fond (32, 25, 8)
+F · [sombre] le halo ne touche pas le plateau ; le bouton est à sa place de v118 OK  haut du halo 131.0 · bas du plateau 100.0 · bouton 525.47
+D · le halo respire avec la lumière : ± 20 % (sommet ÷ creux = 1,5 ± 0,3)    OK  1.58 (10 relevés au sommet, 12 au creux)
+aucune erreur de page                                                        OK  
+
+23 / 23
+=== redteam_halo.py --sonde  [code 1, 29 s]
+E · [sombre] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2)          OK  2.40 · centre [32, 25, 8] · pourtour [38, 32, 16]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [32, 25, 8] · fond (32, 25, 8)
+F · [sombre] le halo ne touche pas le plateau ; le bouton est à sa place de v118 OK  haut du halo 131.0 · bas du plateau 100.0 · bouton 525.47
+aucune erreur de page                                                        OK  
+
+21 / 22
+KO : C · [sombre] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps)
+=== redteam_contour.py  [code 0, 34 s]
+[clair] avec le halo : la lumière s'arrête à 135.7 du centre (borne 139.6) · pixels au-delà : 0
+OK [clair] la Pelote s'arrête à 124.2 du centre (silhouette 121.5) · pixels au-delà : 0
+   [sombre] avec le halo : la lumière s'arrête à 137.8 du centre (borne 139.6) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== redteam_souffle.py  [code 0, 68 s]
+OK [light] A · 0,3 s → 4,6 s : 18089 pixels changés dans la silhouette, 0 au-delà
+OK [light] B · lumière de la boule : sommet à 5.3 s (décidé 4.6), retour au bas à 11.2 s (décidé 10.6), amplitude 5.66 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 48970 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+✅ la Pelote respire par son velours, et rien d'autre
+=== redteam_volume.py  [code 0, 0 s]
+liste blanche (la Pelote) : 8 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE, lot-V119-PELOTE
+dette de naissance : 304 · retrouvée : 304 · soldée depuis : 0
+✅ AUCUN VOLUME HORS DE LA PELOTE
+=== redteam_volume.py --sonde=mini  [code 1, 0 s]
+SONDE : le MINI HALO de la Pelote (window._haloPelote) posé sur les dalles de la Toile, dans une copie du moteur
+liste blanche (la Pelote) : 8 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE, lot-V119-PELOTE
+dette de naissance : 304 · retrouvée : 304 · soldée depuis : 0
+  ✗ NOUVEAU VOLUME : promi-moteur.js | (hors bloc) | lRect(0,0,W,H);try{ if(window._haloPelote) g.drawImage(window._haloPel
+  ✗ NOUVEAU VOLUME : promi-moteur.js | (hors bloc) | aloPelote) g.drawImage(window._haloPelote(120,40,44,8,[130,174,248],[5
+❌ 2 volume(s) hors de la Pelote
+=== FIN

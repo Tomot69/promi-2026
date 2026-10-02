@@ -1,0 +1,25 @@
+=== redteam_joignable.py  [code 0, 130 s]
+la page se charge sans erreur                              OK  
+des éléments ont été relevés sur chaque écran              OK  36 écrans
+aucun élément interactif injoignable hors dette            OK  0 neufs, 2 en dette
+aucun gestionnaire n'appelle une fonction absente hors dette OK  0 neufs, 4 en dette
+aucun gestionnaire en attribut on…=""                      OK  0
+
+5 / 5
+=== redteam_studio_geste.py  [code 0, 25 s]
+  la palette revient d'où elle vient                           OK   signal
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+
+13/13
+=== redteam_apercus.py  [code 1, 65 s]
+  ✅ A le fond du Studio porte de la matière colorée [light]  (46.4 %)
+  ✅ B les graines de l'aperçu se déclarent [light]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [light]
+  ✅ D la deuxième ouverture vaut la première [light]  (72/72, 43.0 %)
+  ❌ E le fond d'un aperçu est celui de la vraie Toile [light] — fond sombre #050302 au lieu de #201908 (celui du mode)
+
+❌  8/10
+=== FIN
