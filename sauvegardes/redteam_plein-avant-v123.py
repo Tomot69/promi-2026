@@ -8,9 +8,7 @@ redteam_plein.py — LA PELOTE EST PLEINE (v120, Tom, 2 oct. 2026).
 Le juge lit le CANEVAS de la boule (#auBoule) et exige alpha = 255 sur tout pixel situé en retrait de 4 % de D à l'intérieur de la
 silhouette — les cotes sont écrites EN DUR ici (§7) : D = 232,064 pt, silhouette = 121 pt, boîte du canevas = 296 pt ; donc tout pixel
 à moins de 121 − 0,04 × 232,064 = 111,72 pt du centre. Dans les deux thèmes, à CHACUN des paliers du régulateur, sur quatre palettes
-(Ingénu, Candide, Irascible, Taciturne). ⚑ v123 (Tom) : la densité 3 est retenue, `?densite` est retiré — une seule densité, ses
-trois paliers (220 000 · 180 000 · 150 000) ; le CORPS (une autre teinte de la palette, sous les poils) reste plein. Original :
-sauvegardes/redteam_plein-avant-v123.py.
+(Ingénu, Candide, Irascible, Taciturne), et aux trois densités de `?densite=`.
 Il vérifie aussi que la silhouette n'a pas bougé : aucun pixel peint au-delà de 121 + 4 pt (le halo éteint).
 
   python3 redteam_plein.py
@@ -42,7 +40,7 @@ MESURE = """([rp, rs, boite])=>{ const cv=document.getElementById('auBoule'), W=
 
 with sync_playwright() as p:
     b = p.webkit.launch()
-    for dens in ('',):
+    for dens in ('', '?densite=2', '?densite=3'):
         ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=2, reduced_motion='reduce')
         ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
         pg = ctx.new_page(); er = []; pg.on('pageerror', lambda e: er.append(str(e)[:160]))
@@ -60,10 +58,10 @@ with sync_playwright() as p:
                 for i in range(npal):
                     pg.evaluate("(i)=>{ window._peloteSansHalo=true; try{_aura.fige(true); _aura.palier(i);}catch(e){} }", i); pg.wait_for_timeout(2600)
                     m = pg.evaluate(MESURE, [R_PLEIN, SILHOUETTE_PT, BOITE_PT])
-                    tag = '[%s · %s · %s · palier %s]' % (dens or 'densité 3', 'clair' if th == 'light' else 'sombre', pal, m['palier'])
+                    tag = '[%s · %s · %s · palier %s]' % (dens or 'densité 1', 'clair' if th == 'light' else 'sombre', pal, m['palier'])
                     t(tag + ' alpha = 255 en retrait de 4 % de D', m['trous'] == 0 and m['n'] > 10000, '%d pixels sous 255 sur %d%s' % (m['trous'], m['n'], (' · le plus bas : %d' % m['amin']) if m['trous'] else ''))
                     t(tag + ' la silhouette n\'a pas bougé (rien au-delà de 121 + 4 pt)', m['dehors'] == 0, '%d pixels' % m['dehors'])
-        t('[%s] aucune erreur de page' % (dens or 'densité 3'), not er, '; '.join(er[:2]))
+        t('[%s] aucune erreur de page' % (dens or 'densité 1'), not er, '; '.join(er[:2]))
         ctx.close()
     b.close()
 print('\n%d / %d' % (ok[0], ok[0] + len(ko)))

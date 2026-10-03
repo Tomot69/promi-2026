@@ -1,0 +1,51 @@
+[densité 3 · clair · signal · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · signal · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · signal · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · signal · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · signal · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · signal · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · candide · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · candide · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · candide · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · candide · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · candide · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · candide · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · irascible · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · irascible · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · irascible · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · irascible · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · irascible · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · irascible · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · taciturne · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · taciturne · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · taciturne · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · taciturne · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · clair · taciturne · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · clair · taciturne · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · signal · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · signal · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · signal · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · signal · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · signal · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · signal · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · candide · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · candide · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · candide · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · candide · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · candide · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · candide · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · irascible · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · irascible · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · irascible · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · irascible · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · irascible · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · irascible · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · taciturne · palier 220000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · taciturne · palier 220000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · taciturne · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · taciturne · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3 · sombre · taciturne · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[densité 3 · sombre · taciturne · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[densité 3] aucune erreur de page                                              OK  
+
+49 / 49

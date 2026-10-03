@@ -8328,17 +8328,3 @@ mais ce n'est ni l'orange ni « à tenir » : pas corrigé (hors lot).
 | à-qui en clair | encre (Q221, 17 sept.) ↔ couleur d'état (Q262) | la couleur d'état (Q262, la plus récente) |
 | fond des pages sombres | brun `#201908` (v120) ↔ seiche `#050302` (v121) | la seiche (v121) |
 | le trait sur un champ | §2.1 bis (teinte sombre de la nature) ↔ « le trait porte l'état » (Horizon) | inchangé depuis v118 : l'état pour à tenir et tenu, la nature pour en cours (« l'autre viendra le finir ») |
-**→ Q375 TRANCHÉE en v123 (Tom) : l'état juste dès la première image.** Trois causes (voir CLAUDE.md, bloc v123) : cotes posées deux
-images après l'ouverture ; à-qui d'une fiche tenue écrit par deux propriétaires ; passe de lisibilité qui retirait la couleur du poseur.
-**→ Q376 : corps sombre du Cercle `#5D4978` VALIDÉ (Tom, v123).**
-
-#### Q377 · v123 — CE QUE LE CORPS DE LA PELOTE CHANGE, À REGARDER SUR L'IPHONE
-Le corps est une teinte franche de la palette : il se voit entre les poils (c'est demandé) et il teinte ce qui est posé dessus — les
-îles (les dalles tenues) comprises, surtout en sombre. La lisibilité des îles (plancher ΔE 15, Q192) a été calibrée sur une peau qui
-était la moyenne de son poil : `releve-aura` dit ce qu'il en reste. **À valider à l'œil ; si une île se noie, deux voies : garder sous
-une île la peau de l'île, ou écarter le corps du ton des îles.**
-
-#### Q378 · v123 — À 220 000 POILS, CE MAC NE TIENT PAS 60 IMAGES PAR SECONDE
-Chromium sur le vrai GPU, @3x : peinture 31,8 ms par image à 220 000 poils (30 images/s), 18,5 ms à 110 000. Le régulateur vise alors
-150 000 — son dernier palier — où l'on reste au-dessus de 16,7 ms. Aucun palier plus bas n'existe à la densité 3. **À mesurer sur
-l'iPhone (`?mesure=1`) : si 150 000 ne tient pas, faut-il rendre au régulateur les paliers de la densité 1 (110 000 → 75 000) ?**

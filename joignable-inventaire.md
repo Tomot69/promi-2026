@@ -24,9 +24,9 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 |---|---|---|---|---|---|---|
 | Aura | `div#auraScreen.screen.s-karma>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
 | Aura | `#auraInfoBtn` | natif | 218, 78 | 20 × 20 | oui |  |
-| Aura | `div#auCadre.au-cadre.au-voile>div.au-bo>div.au-prise«»` | écouteur | 195, 260 | 296 × 296 | oui |  |
-| Aura | `#auPartage` | natif | 195, 505 | 342 × 60 | oui |  |
-| Aura | `div#auCadre.au-cadre.au-voile>div.au-nx«ToiAdrienMarionNicoRache»` | écouteur | 207, 716 | 366 × 107 | oui |  |
+| Aura | `div#auCadre.au-cadre.au-voile>div.au-bo>div.au-prise«»` | écouteur | 195, 254 | 296 × 296 | oui |  |
+| Aura | `#auPartage` | natif | 195, 487 | 342 × 60 | oui |  |
+| Aura | `div#auCadre.au-cadre.au-voile>div.au-nx«ToiAdrienMarionNicoRache»` | écouteur | 207, 689 | 366 × 107 | oui |  |
 | Conditions | `div#legalScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | écouteur | 296, 70 | 84 × 18 | oui |  |
 | Fil | `#fdClose` | on… | 296, 70 | 84 × 18 | oui |  |
 | Fil | `#fdSearch` | natif | 174, 142 | 208 × 24 | oui |  |

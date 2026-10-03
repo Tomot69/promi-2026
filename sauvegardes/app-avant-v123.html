@@ -7663,24 +7663,18 @@ try{if(notifOn)armAllReminders();}catch(e){}
                ⚠ « Partager ma Pelote » finit alors sous le pli (≈ 894 pour 844) : l'écran défile (§8 — on ne reprend jamais l'air). */
 /* ⚑ v121 (Tom, 3 oct. 2026) — « L'ombre de la Pelote remonte de 6 pt (environ 1 mm sur l'iPhone 16e). L'écart G2 sous l'ombre passe de
    56 à 50 pt. Tout ce qui suit remonte d'autant, soit 12 pt en tout. » Ombre 453,224 → 447,224 ; flaque 437,347 → 431,347. */
-/* ⚑ v123 (Tom, 3 oct. 2026) — « remonter pour que le compteur se voie » : plateau → halo −6 · halo → ombre −6 · ombre → « Partager ma
-   Pelote » −6 · bouton → phrase −6 · phrase → ses disques −3. Boule 111,532 → 105,532, halo 94,532 → 88,532, ombre 421,224 → 409,224,
-   bouton −18, phrase −24, tout ce qui suit −27 : la ligne des chiffres finit à 833,5, sous 844. */
 /* ⚑ v122 (Tom, 3 oct. 2026) — l'Aura en points (1 mm = 6 pt), chaque réduction faisant remonter tout ce qui suit : plateau → silhouette
    −11 · bas de la Pelote → ombre (et flaque) −15 · ombre → « Partager ma Pelote » −12 · bouton → phrase −12. Ombre 447,224 → 421,224 (−26),
    flaque 431,347 → 405,347, boule 122,532 → 111,532, halo 105,532 → 94,532 ; bouton −38, phrase et tout ce qui suit −50. */
-#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:409.224px!important;width:104.429px!important;height:16.245px!important;
+#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:421.224px!important;width:104.429px!important;height:16.245px!important;
   margin:0!important;pointer-events:none;z-index:0;background:radial-gradient(closest-side,rgba(var(--c-brun09-rgb),.10),rgba(var(--c-brun09-rgb),0))}
 /* ⚑ v119 (Tom) : EN SOMBRE, AUCUNE OMBRE CRÈME. Le halo dépose sous la Pelote une flaque de lumière à peine perceptible, et l'ombre
    est la zone que cette lumière n'atteint pas : `#auPeloteFlaque`, peinte et tramée par `window._flaquePelote` (lot-V119-PELOTE). */
-/* ⚑ v123 (Tom, 3 oct. 2026) — « En sombre, l'ombre devient une ellipse crème, comme une ombre inversée sur le fond noir. Elle remplace
-   la flaque. Même géométrie qu'en clair, ΔE00 entre 4 et 6 face à son pourtour. Le clair ne change pas. » (Renverse v119 : « aucune
-   ombre crème ».) Crème à 0,105 au centre sur la seiche : ΔE00 ≈ 5 mesuré au cœur. La flaque (`#auPeloteFlaque`) n'est plus affichée. */
-#device:not(.light) #auraScreen.au2 .au-ombre{background:radial-gradient(closest-side,rgba(var(--c-creme95-rgb),.105),rgba(var(--c-creme95-rgb),0))!important}
-#auraScreen.au2 .au-flaque{position:absolute!important;left:55px!important;top:393.347px!important;width:280px!important;height:48px!important;margin:0!important;pointer-events:none;z-index:0;display:none}
-#device:not(.light) #auraScreen.au2 .au-flaque{display:none}
+#device:not(.light) #auraScreen.au2 .au-ombre{display:none!important}
+#auraScreen.au2 .au-flaque{position:absolute!important;left:55px!important;top:405.347px!important;width:280px!important;height:48px!important;margin:0!important;pointer-events:none;z-index:0;display:none}
+#device:not(.light) #auraScreen.au2 .au-flaque{display:block}
 /* ⚑ v121 — le halo a son canevas, sous la boule : 330 × 330 centré sur elle (centre 195 ; 270,532), assez pour 121 + 0,16 D = 158,1 */
-#auraScreen.au2 .au-halo{position:absolute!important;left:30px!important;top:88.532px!important;width:330px!important;height:330px!important;margin:0!important;pointer-events:none;z-index:0}
+#auraScreen.au2 .au-halo{position:absolute!important;left:30px!important;top:94.532px!important;width:330px!important;height:330px!important;margin:0!important;pointer-events:none;z-index:0}
 #auraScreen.au2 .au-bo{z-index:1}
 </style>
 <script id="lot-V119-PELOTE">
@@ -7734,10 +7728,11 @@ try{if(notifOn)armAllReminders();}catch(e){}
   /* ⚑ v121 (Tom, 3 oct. 2026) — « Par défaut, sans paramètre : le niveau ?halo=3. Ajoute ?halo=4 et ?halo=5 : écart ΔE00 au ras de 18
      et 24, étendue de 0,14 et 0,16 D. Mêmes règles. » Au-delà de 0,12 D le halo sortait du canevas de la boule (boîte de 296, demi-côté
      148 pour 121 + 0,16 D = 158,1) : il a désormais SON canevas, sous la boule (`#auPeloteHalo`, voir `halo` dans l'Aura). */
-  /* ⚑ v123 (Tom, 3 oct. 2026) — « Densité : 3 retenue. Halo : niveau 3 retenu. Retire les paramètres ?halo et ?densite, et les niveaux
-     de halo 4 et 5. » Les deux réglages sont des CONSTANTES : densité ×2 (220 000 poils au palier haut ; le régulateur garde ses trois
-     paliers, 220 000 → 180 000 → 150 000), poil ×0,7, reflet adouci ; halo ΔE00 14 au ras, étendue 0,12 D. Plus rien ne se lit dans l'adresse. */
-  var REG={densite:3, halo:3, facteur:2, epaisseur:0.7, doux:true, haloRas:14, haloExt:0.12};
+  var REG={densite:1, halo:3, facteur:1, epaisseur:1, doux:false, haloRas:14, haloExt:0.12};
+  try{ var _m=/[?&]densite=([123])(?:&|$)/.exec(location.search); if(_m) REG.densite=+_m[1];
+       _m=/[?&]halo=([1-5])(?:&|$)/.exec(location.search); if(_m) REG.halo=+_m[1]; }catch(_){}
+  REG.facteur=[1,1,1.5,2][REG.densite]; REG.epaisseur=[1,1,0.8,0.7][REG.densite]; REG.doux=REG.densite>1;
+  REG.haloRas=[7,6,10,14,18,24][REG.halo]; REG.haloExt=[0.08,0.08,0.10,0.12,0.14,0.16][REG.halo];
   CIBLE.ras=REG.haloRas; CIBLE.mi=REG.haloRas*2.9/7;
   window._peloteReglage=REG;
   /* W : le côté du canevas ; R : le rayon de la boule ; RS : celui de la silhouette (boule + poil) ; P : 0,08 D, en pixels */
@@ -14941,12 +14936,7 @@ var CREMEETAT='#F7F0DE';
          cadre 52 « LANCÉ · PAS ENCORE RELEVÉ ». */
       qd.textContent = motC + ((p && p.leJour) ? (' · '+(''+p.leJour).toUpperCase()) : '');
     }
-    /* ⚑ v123 (Tom, Q375) — sur la terre d'une fiche TENUE, l'à-qui est crème (v8 : « sur la terre le texte passe crème » ; c'est ce
-       qu'on voyait déjà, une fois la passe de lisibilité passée). Le poseur écrivait `#00341A`, la passe (`data-lis`) repeignait la
-       crème, le poseur repassait : mesuré image par image, vert à 455 ms, crème à 644. Deux propriétaires (§7), comme Q374 : la
-       couleur finale est posée ICI. `e.colTexte` ne bouge pas (il peint aussi le contour de la carte du mot). */
-    var _colQui = dp.classList.contains('f-tenue') ? CREME : e.colTexte;
-    pose(qui,{top:e.yQui+'px', color:_colQui, '-webkit-text-fill-color':_colQui, 'font-size':e.quiFs+'px'});
+    pose(qui,{top:e.yQui+'px', color:e.colTexte, '-webkit-text-fill-color':e.colTexte, 'font-size':e.quiFs+'px'});
     pose(ti ,{top:e.yTitre+'px', color:encre, '-webkit-text-fill-color':encre, 'font-size':e.titreFs+'px'});
     /* ⚠ UN CRAN, SAUF SI LA LIGNE CASSE. Le cran du 29 août (38 → 42) fait passer « le grand
        plongeoir » à DEUX lignes là où le cadre 56 le tient sur une : « ça doit rester
@@ -15608,12 +15598,6 @@ var CREMEETAT='#F7F0DE';
     }catch(e){} }
   window._ficheTout=tout;
   window._fichePose=function(){ if(_pose) _pose.apply(this,arguments);
-    /* ⚑ v123 (Tom, Q375) — « L'ÉTAT JUSTE DÈS LA PREMIÈRE IMAGE. » La fiche est montrée tout de suite (`.show`), mais ses cotes, ses
-       couleurs et son mot d'état n'étaient posés que deux images plus tard (et l'étaient en pratique vers 200 ms, puis 480 ms pour
-       « LANCÉ ») : entre-temps on voyait l'état de la fiche d'AVANT (un Chiche lancé ouvert après un Chiche tenu : « EN COURS » en
-       vert). On pose donc aussi TOUT DE SUITE, dans la même tâche que l'ouverture ; les deux passes différées restent (elles
-       rattrapent ce qui ne se mesure qu'une fois la fiche disposée). */
-    try{ tout(); }catch(e){}
     try{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ tout(); tout(); }); }); }catch(e){} };
   var _ref=window.dpRefresh;
   if(_ref){ window.dpRefresh=function(){ _ref.apply(this,arguments); tout(); }; }
@@ -25958,7 +25942,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
 
 /* la sphère — .bo de la planche : 41 · 78 · 258 → 47 · 89,4 · 296. Le canevas est
    TRANSPARENT hors de la boule : le plateau (z 9) passe devant sans qu'on le recouvre. */
-#auraScreen.au2 .au-bo{position:absolute!important;left:47px!important;top:105.532px!important;   /* v123 : −6 · v122 : −11 (plateau → silhouette 50 → 39) */
+#auraScreen.au2 .au-bo{position:absolute!important;left:47px!important;top:111.532px!important;   /* v122 : −11 (plateau → silhouette 50 → 39) */
   
   width:296px!important;height:296px!important;margin:0!important}
 #auraScreen.au2 .au-bo canvas{position:absolute!important;left:0!important;top:0!important;
@@ -28388,7 +28372,7 @@ function peint(cv,o){
   /* les six passent au contexte, apres le versement : voir `disques` */
   /* la peau d'abord, la fourrure par-dessus */
   if(!o.sansVerse && !o.sansPeau){
-    var PB=o.bloc||26, PK=peau(B,W,PB,o.omb,o.peauVers,o.corps);
+    var PB=o.bloc||26, PK=peau(B,W,PB,o.omb,o.peauVers);
     if(!cv.__pk || cv.__pk.width!==PK.w){
       cv.__pk=document.createElement('canvas'); cv.__pk.width=PK.w; cv.__pk.height=PK.w;
       cv.__pg=cv.__pk.getContext('2d');
@@ -28577,7 +28561,7 @@ function comble(B,W,C){
    fond alors dans ses voisins au lieu de se fondre dans le vide.
    L'alpha d'un bloc suit sa part peinte : au limbe la peau s'eteint avec la
    fourrure, et rien ne deborde de la silhouette. */
-function peau(B,W,BLOC,OMB,VERS,CORPS){
+function peau(B,W,BLOC,OMB,VERS){
   OMB=OMB===undefined?0.64:OMB;
   var SW=Math.ceil(W/BLOC), out=new Uint32Array(SW*SW), frc=new Float32Array(SW*SW);
   for(var by=0;by<SW;by++){
@@ -28606,11 +28590,7 @@ function peau(B,W,BLOC,OMB,VERS,CORPS){
          gravier ne revient pas : le fond reste LA COULEUR DU LIEU, jamais
          l'encre. */
       var rr, gg, bb;
-      /* ⚑ v123 (Tom) — LE CORPS : « l'intérieur et la surface de la Pelote, sous les poils, prennent une autre teinte de la palette.
-         Jamais celle des poils. » La peau n'est plus la moyenne assombrie de son poil : c'est la teinte du corps, à plat, partout
-         (sous le sol comme sous les îles). Sa forme (blocs, érosion au limbe) et le plein de v120 ne changent pas. */
-      if(CORPS){ rr=CORPS[0]|0; gg=CORPS[1]|0; bb=CORPS[2]|0; }
-      else if(VERS){ var tv=VERS[3]; rr=(sr/sw*(1-tv)+VERS[0]*tv)|0; gg=(sg/sw*(1-tv)+VERS[1]*tv)|0; bb=(sb/sw*(1-tv)+VERS[2]*tv)|0; }
+      if(VERS){ var tv=VERS[3]; rr=(sr/sw*(1-tv)+VERS[0]*tv)|0; gg=(sg/sw*(1-tv)+VERS[1]*tv)|0; bb=(sb/sw*(1-tv)+VERS[2]*tv)|0; }
       else { rr=(sr/sw*OMB)|0; gg=(sg/sw*OMB)|0; bb=(sb/sw*OMB)|0; }   /* ⚑ PORTAGE — la peau claire (fabrique.py) */
       out[by*SW+bx]=((bb<<16)|(gg<<8)|rr)>>>0;
     }
@@ -28799,8 +28779,8 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
 
   /* ── LES COTES — planche ÷ 0,872 ; une cote se CALCULE, elle ne se mesure jamais
         sur elle-même (§8). ───────────────────────────────────────────────────── */
-  var K = { bo:{x:47, y:105.532, d:296}, R:0.392,   /* ⚑ v123 (Tom) : −6 — du bas du plateau au haut du halo */   /* ⚑ v122 (Tom) : −11 — du bas du plateau au haut de la silhouette, 50 → 39 */   /* ⚑ v117 (Tom) : « remonte la Pelote d'un millimètre vers l'encart du haut » — −6 pt (1 mm ≈ 6 pt sur l'iPhone 16e) : G1 = 50 */   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
-            nx:{y:498.061, h:107}, mo:{y:677.061},   /* ⚑ v123 : −27 (−6 −6 −6 −6 −3) */   /* ⚑ v122 : −50 (−11 −15 −12 −12) */   /* ⚑ v121 : −12 (l'ombre monte de 6, G2 sous l'ombre 56 → 50) */   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
+  var K = { bo:{x:47, y:111.532, d:296}, R:0.392,   /* ⚑ v122 (Tom) : −11 — du bas du plateau au haut de la silhouette, 50 → 39 */   /* ⚑ v117 (Tom) : « remonte la Pelote d'un millimètre vers l'encart du haut » — −6 pt (1 mm ≈ 6 pt sur l'iPhone 16e) : G1 = 50 */   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
+            nx:{y:525.061, h:107}, mo:{y:704.061},   /* ⚑ v122 : −50 (−11 −15 −12 −12) */   /* ⚑ v121 : −12 (l'ombre monte de 6, G2 sous l'ombre 56 → 50) */   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
             /* ⚑ 22 sept. (Tom) : « les disques sont trop fins partout ». L'arc passe de 8 à 12
                sur « toi » et de 6 à 9 sur une personne — la moitié en plus, comme sur les fiches.
                Le diamètre et la photo ne bougent pas : c'est l'ANNEAU qui s'épaissit, vers l'intérieur. */
@@ -28841,16 +28821,16 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
      la boîte descend de 2,5 et l'air du dessous en rend autant, pour que la rangée des Noyaux
      reste à 454. Air à l'encre après : 36,5 / 36,5. */
   K.MOT_INK = 2.5;
-  K.AIR_MOT = 35.18 - K.MOT_INK;   /* ⚑ v123 (Tom) : de la phrase à ses disques, −3 */
+  K.AIR_MOT = 38.18 - K.MOT_INK;
   K.BOULE_BAS = K.bo.y + K.bo.d/2 + K.bo.d*K.R;                          /* 353,4 — la BOULE, pas sa boîte */
   K.AIR = 28;
   /* ⚑ v118 (Tom, Q367 tranchée) — « PARTAGER MA PELOTE » REMONTE SOUS L'OMBRE. « Le bouton se place juste sous l'ombre de la
      Pelote, à G2 = 56 du bas de l'ombre. La phrase et ce qui suit se placent ensuite, à 56 sous le bouton. L'ombre garde ses
      60 pt, l'air ne se reprend pas. » L'ombre : la cote de lot-V114-PELOTE-css (haut 453,224, haut. 16,245 → bas 469,469).
      Le bouton : 525,469 → 585,469. La phrase : son ENCRE à 56 sous le bouton. */
-  K.ombre = {y:409.224, h:16.245};   /* ⚑ v123 (Tom) : −12 (la Pelote −6, du halo à l'ombre −6) */   /* ⚑ v121 (Tom) : −6 ; ⚑ v122 : −26 (la Pelote −11, l'ombre −15) */
-  K.G2 = 38;   /* ⚑ v123 (Tom) : −6 */                         /* ⚑ v122 (Tom) : de « Partager ma Pelote » à la phrase, 56 → 44 */
-  K.G2_OMBRE = 32;   /* ⚑ v123 (Tom) : −6 */                   /* ⚑ v121 (Tom) : l'écart SOUS l'ombre, 56 → 50 ; sous le bouton il reste 56 */
+  K.ombre = {y:421.224, h:16.245};   /* ⚑ v121 (Tom) : −6 ; ⚑ v122 : −26 (la Pelote −11, l'ombre −15) */
+  K.G2 = 44;                         /* ⚑ v122 (Tom) : de « Partager ma Pelote » à la phrase, 56 → 44 */
+  K.G2_OMBRE = 38;                   /* ⚑ v121 (Tom) : l'écart SOUS l'ombre, 56 → 50 ; sous le bouton il reste 56 */
   K.MOT_ENCRE = -1.87;   /* relevé sur l'image rendue (WebKit, deux thèmes) : l'encre de la phrase commence 1,87 SOUS le haut de sa boîte */
   K.btY = K.ombre.y + K.ombre.h + K.G2_OMBRE;                            /* 475,469 (v121 : 513,469 ; v118 : 525,469) */
   K.motY2 = K.btY + K.bt.h + K.G2 + K.MOT_ENCRE;                         /* 577,599 (v121 : 627,599 ; v118 : 639,599) */
@@ -29174,64 +29154,9 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
   }
   /* ⚠ UN TIRAGE INVALIDE LES DEUX CACHES : le semis (le poil porte la couleur du sol) et les
      îles (le sol entre dans leur clé). Sans ça la Pelote garde l'ancienne couleur à l'écran. */
-  /* ⚑ v123 (Tom, 3 oct. 2026) — LE CORPS DE LA PELOTE. « Une autre teinte de la palette choisie au Studio. Jamais celle des poils.
-     Tirée au hasard parmi les teintes de la palette, à chaque ouverture, comme les poils. ΔE00 ≥ 15 entre le corps et la teinte
-     dominante des poils, et jamais de kaki (si la teinte tirée est kaki, on tire la suivante). »
-     Le tirage est un ORDRE (les autres tons de la palette, mélangés à l'ouverture) ; la couleur se lit dans cet ordre : le premier ton
-     qui tient les deux règles face au poil d'AUJOURD'HUI (`solEffectif()` — il change avec le thème). Si aucun ton brut ne les tient
-     (palette à tons voisins), on garde la TEINTE du ton tiré et on l'écarte en clarté, vers le blanc puis vers le noir, jusqu'à les
-     tenir ; dernier recours : la crème ou la seiche. Le kaki est celui de v115 : OKLCH h 78–140°, C 0,015–0,10, L 0,20–0,80. */
-  var CORPS_ORDRE=[], CORPS_MEMO={cle:'', c:null, idx:-1};
-  function _okl(c){ function l(v){ v/=255; return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4); }
-    var r=l(c[0]), g=l(c[1]), b=l(c[2]);
-    var L=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b), Mm=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b), Sx=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
-    var OL=0.2104542553*L+0.7936177850*Mm-0.0040720468*Sx, a=1.9779984951*L-2.4285922050*Mm+0.4505937099*Sx, bb=0.0259040371*L+0.7827717662*Mm-0.8086757660*Sx;
-    return [OL, Math.hypot(a,bb), (Math.atan2(bb,a)*180/Math.PI+360)%360]; }
-  function _kaki(c){ var o=_okl(c); return o[2]>=78 && o[2]<=140 && o[1]>=0.015 && o[1]<=0.10 && o[0]>=0.20 && o[0]<=0.80; }
-  function _dE00(c1,c2){ var A=_lab(c1[0],c1[1],c1[2]), B=_lab(c2[0],c2[1],c2[2]), R=Math.PI/180, L1=A[0],a1=A[1],b1=A[2],L2=B[0],a2=B[1],b2=B[2];
-    var C1=Math.hypot(a1,b1), C2=Math.hypot(a2,b2), Cb=(C1+C2)/2, G7=0.5*(1-Math.sqrt(Math.pow(Cb,7)/(Math.pow(Cb,7)+Math.pow(25,7))));
-    var ap1=(1+G7)*a1, ap2=(1+G7)*a2, Cp1=Math.hypot(ap1,b1), Cp2=Math.hypot(ap2,b2);
-    var h1=(Math.atan2(b1,ap1)/R+360)%360, h2=(Math.atan2(b2,ap2)/R+360)%360, dL=L2-L1, dC=Cp2-Cp1, dh=h2-h1;
-    if(Cp1*Cp2===0) dh=0; else if(dh>180) dh-=360; else if(dh<-180) dh+=360;
-    var dH=2*Math.sqrt(Cp1*Cp2)*Math.sin(dh*R/2), Lb=(L1+L2)/2, Cpb=(Cp1+Cp2)/2, hb=h1+h2;
-    if(Cp1*Cp2!==0) hb=Math.abs(h1-h2)<=180 ? (h1+h2)/2 : ((h1+h2<360) ? (h1+h2+360)/2 : (h1+h2-360)/2);
-    var T=1-0.17*Math.cos((hb-30)*R)+0.24*Math.cos(2*hb*R)+0.32*Math.cos((3*hb+6)*R)-0.20*Math.cos((4*hb-63)*R);
-    var Sl=1+0.015*(Lb-50)*(Lb-50)/Math.sqrt(20+(Lb-50)*(Lb-50)), Sc=1+0.045*Cpb, Sh=1+0.015*Cpb*T;
-    var Rt=-2*Math.sqrt(Math.pow(Cpb,7)/(Math.pow(Cpb,7)+Math.pow(25,7)))*Math.sin(60*R*Math.exp(-Math.pow((hb-275)/25,2)));
-    return Math.sqrt(Math.pow(dL/Sl,2)+Math.pow(dC/Sc,2)+Math.pow(dH/Sh,2)+Rt*(dC/Sc)*(dH/Sh)); }
-  var CORPS_ECART=15;
-  /* « la teinte dominante des poils » : ce qu'on VOIT n'est pas le sol nu mais sa rampe de velours (le poil va du creux sombre au reflet
-     clair — mesuré : le rose d'Ingénu en sombre rend un poil dominant à ΔE00 11 du crème dalle, alors que le sol nu en était à 27).
-     Le corps tient donc l'écart face à CHAQUE marche de la rampe, et face au sol lui-même. */
-  function corpsTient(c, poil){ if(_kaki(c) || _dE00(c, poil)<CORPS_ECART) return false;
-    var R=null; try{ R=M.rampeVelours(poil); }catch(_){}
-    if(R) for(var i=0;i<R.length;i++){ if(_dE00(c, R[i])<CORPS_ECART) return false; }
-    return true; }
-  function nouveauCorps(){
-    var n=4; try{ var c=window.Toile.cols(); if(c&&c.length) n=c.length; }catch(_){}
-    var L=[], i, j, t; for(i=0;i<n;i++) if(i!==SOL_IDX) L.push(i);
-    for(i=L.length-1;i>0;i--){ j=(Math.random()*(i+1))|0; t=L[i]; L[i]=L[j]; L[j]=t; }
-    CORPS_ORDRE=L; CORPS_MEMO.cle='';
-  }
-  function corps(){
-    var P=null; try{ P=window.Toile.cols(); }catch(_){}
-    if(!P || !P.length) return null;
-    if(!CORPS_ORDRE.length || CORPS_ORDRE.some(function(i){ return i>=P.length || i===SOL_IDX; })) nouveauCorps();
-    var poil=PEL.solR||solEffectif(), cle=[poil[0]|0,poil[1]|0,poil[2]|0,SOL_IDX,CORPS_ORDRE.join('.'),P.map(function(q){ return (q[0]|0)+'.'+(q[1]|0)+'.'+(q[2]|0); }).join('_')].join(',');
-    if(CORPS_MEMO.cle===cle) return CORPS_MEMO.c;
-    var k, q, c=null, idx=-1, pas, s;
-    for(k=0;k<CORPS_ORDRE.length && !c;k++){ q=P[CORPS_ORDRE[k]]; q=[q[0]|0,q[1]|0,q[2]|0]; if(corpsTient(q, poil)){ c=q; idx=CORPS_ORDRE[k]; } }
-    for(k=0;k<CORPS_ORDRE.length && !c;k++){ q=P[CORPS_ORDRE[k]];
-      for(pas=1;pas<=16 && !c;pas++){ s=versBlanc(q, pas*0.05); s=[Math.round(s[0]),Math.round(s[1]),Math.round(s[2])]; if(corpsTient(s, poil)){ c=s; idx=CORPS_ORDRE[k]; } }
-      for(pas=1;pas<=16 && !c;pas++){ s=versNoir(q, pas*0.05); s=[Math.round(s[0]),Math.round(s[1]),Math.round(s[2])]; if(corpsTient(s, poil)){ c=s; idx=CORPS_ORDRE[k]; } } }
-    if(!c){ c=corpsTient([CREME[0],CREME[1],CREME[2]], poil) ? [CREME[0],CREME[1],CREME[2]] : [5,3,2]; idx=-1; }
-    CORPS_MEMO={cle:cle, c:c, idx:idx};
-    return c;
-  }
   function nouveauSol(){
     var n=4; try{ var c=window.Toile.cols(); if(c&&c.length) n=c.length; }catch(_){}
     SOL_IDX = (Math.random()*n)|0;
-    try{ nouveauCorps(); }catch(_){}        /* v123 : un corps neuf avec le sol, à chaque ouverture */
     try{ var S2=semis(); if(S2) S2.__stCle=null; }catch(_){}
     PEL.iles=null; PEL.cleI='';
     return SOL_IDX;
@@ -29882,7 +29807,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     if(MES.phase===1){ MES.A.dt.push(dtR*1000); MES.A.ms.push(ms); mesAffiche('MESURE DE LA PELOTE — ne touche à rien\nrespiration ACTIVE… '+Math.ceil(MES.DUREE-MES.t)+' s'); if(MES.t>=MES.DUREE){ MES.phase=2; MES.t=0; } return; }
     if(MES.phase===2){ MES.B.dt.push(dtR*1000); MES.B.ms.push(ms); mesAffiche('MESURE DE LA PELOTE — ne touche à rien\nrespiration COUPÉE… '+Math.ceil(MES.DUREE-MES.t)+' s'); if(MES.t>=MES.DUREE){ MES.phase=3; MES.t=0;
         var d=mesCentile(MES.A.dt,.95)-mesCentile(MES.B.dt,.95), dp=mesCentile(MES.A.ms,.95)-mesCentile(MES.B.ms,.95), f=function(v){ return (v>=0?'+':'−')+(Math.round(Math.abs(v)*10)/10).toFixed(1).replace('.',','); };
-        MES.txt='MESURE DE LA PELOTE — '+MES.DUREE+' s + '+MES.DUREE+' s · palier '+PALIERS[PEL.palier]+' poils\n'+mesLigne('respiration ACTIVE',MES.A)+'\n'+mesLigne('respiration COUPÉE',MES.B)+'\nla respiration ajoute au p95 : image '+f(d)+' ms · peinture '+f(dp)+' ms\nle régulateur vise : '+PALIERS[PEL.vise]+' poils'+(PEL.vise!==PEL.palier?' (appliqué à la prochaine ouverture)':' (le palier en cours)')+'\n(toucher ce cadre relance la mesure)';   /* v123 (Tom) : « rapporte à quel palier il la ramène » */
+        MES.txt='MESURE DE LA PELOTE — '+MES.DUREE+' s + '+MES.DUREE+' s · palier '+PALIERS[PEL.palier]+' poils\n'+mesLigne('respiration ACTIVE',MES.A)+'\n'+mesLigne('respiration COUPÉE',MES.B)+'\nla respiration ajoute au p95 : image '+f(d)+' ms · peinture '+f(dp)+' ms\n(toucher ce cadre relance la mesure)';
         window._peloteMesure={A:MES.A, B:MES.B, texte:MES.txt}; } return; }
     mesAffiche(MES.txt); }
   function souffle(){
@@ -29917,7 +29842,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
           var src=window._haloPelote(W, K.R*K.bo.d*pr, (K.bo.d*K.R+5)*pr, (RG.haloExt||0.12)*K.bo.d*K.R*2*pr, ton, f, !!window._haloSansTrame);
           if(HCV.width!==W){ HCV.width=W; HCV.height=W; }
           var hg=HCV.getContext('2d'); hg.setTransform(1,0,0,1,0,0); hg.globalCompositeOperation='copy'; hg.drawImage(src,0,0);
-          /* v123 : la flaque du sombre n'est plus peinte — l'ombre crème la remplace */ }catch(_){ } } }
+          if(FLAQUE) window._flaquePelote(FLAQUE, 280, 48, 52.2145, 8.1225, ton, f, pr, !!window._haloSansTrame); }catch(_){ } } }
     /* il respire avec la lumière du velours : ± 20 %, même cycle, même phase — par son opacité, écrite seulement quand elle change */
     var op=((0.8+0.4*souffleU())/1.2).toFixed(3);
     if(HCV.__op!==op){ HCV.__op=op; HCV.style.opacity=op; }
@@ -29931,7 +29856,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
             trame:PEL.sansIles?ilesVides():PEL.iles, libre:false, fond:'rgba(0,0,0,0)',
             velours:souffle(), doux:!!(window._peloteReglage||{}).doux, contre:0, duvet:0, grade:0, velours2:1, dresse:0,
             pousse:Math.min(1, D.n/34), traces:TRACES, peigneAxial:1, tracesIncr:1,
-            emp:(EMP && EMP.p>=G.EMP_FIN) ? empPour(EMP) : null, peauVers:peauVers(), corps:corps()};
+            emp:(EMP && EMP.p>=G.EMP_FIN) ? empPour(EMP) : null, peauVers:peauVers()};
   }
   /* pour la mesure seulement : une trame SANS île (`trame:null` fait lever le peintre — mesuré) */
   function ilesVides(){
@@ -30334,8 +30259,6 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     vue:function(l,t){ V.lac=+l; V.tan=borne(+t); V.lacAv=V.lac; V.vlac=0; V.vtan=0; },
     /* le ton du sol : lequel des quatre, et en tirer un neuf (pour le juge et pour le partage) */
     sol:function(){ return {idx:SOL_IDX, rgb:solPalette()}; },
-    /* v123 — le corps : la teinte posée sous les poils, l'indice du ton de palette dont elle vient (−1 : dernier recours), le poil d'aujourd'hui */
-    corps:function(){ var c=corps(); return {rgb:c, idx:CORPS_MEMO.idx, ordre:CORPS_ORDRE.slice(), poil:(PEL.solR||solEffectif()), solIdx:SOL_IDX}; },
     nouveauSol:nouveauSol,
     /* ⚑ LE PARTAGE DEMANDE LA PELOTE. On peint DANS `CV` — `opts()` lit ses cotes — puis
        l'appelant recopie. On ne rappelle PAS `ouvre()` : un partage ne retire pas un ton neuf. */
@@ -34182,14 +34105,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var t=(el.textContent||''); if(!t.trim()) return;
       var r=el.getBoundingClientRect(); if(r.width<2||r.height<2) return;
       /* on rend d'abord ce qu'on avait posé, puis on relit la cascade */
-      /* ⚑ v123 (Tom, Q375) — ON NE RETIRE QUE CE QU'ON A ÉCRIT. Le poseur de la fiche écrit les MÊMES propriétés, en ligne : si la
-         couleur en place n'est plus celle que cette passe avait posée (la fiche d'après a été posée entre-temps), la retirer effaçait
-         la couleur du POSEUR — la phrase du trait d'un Chiche lancé retombait une image sur l'encre de la feuille (mesuré : retrait à
-         119 ms, image à 136). Deux propriétaires (§7) : on compare avant de retirer. */
       if(el.getAttribute('data-lis')!=null){
-        var _dl=String(el.getAttribute('data-lis')||''), _hx=/^#([0-9a-f]{6})$/i.exec(_dl), _ic=col3(el.style.getPropertyValue('color'));
-        var _mien = !_hx || !_ic || (Math.abs(_ic[0]-parseInt(_hx[1].slice(0,2),16))+Math.abs(_ic[1]-parseInt(_hx[1].slice(2,4),16))+Math.abs(_ic[2]-parseInt(_hx[1].slice(4,6),16))<3);
-        if(_mien){ el.style.removeProperty('color'); el.style.removeProperty('-webkit-text-fill-color'); }
+        el.style.removeProperty('color'); el.style.removeProperty('-webkit-text-fill-color');
         el.removeAttribute('data-lis'); }
       var cs=getComputedStyle(el);
       if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity<0.05) return;

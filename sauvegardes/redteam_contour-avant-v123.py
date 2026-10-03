@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 from PIL import Image, ImageChops
 S=2; CX=195
 # ⚑ v121 (Tom) : le halo par défaut est le niveau 3 — étendue 0,12 D ; `--halo=N` juge un autre niveau (1 à 5 : 0,08 · 0,10 · 0,12 · 0,14 · 0,16 D)
-NIV_HALO=3; EXT_HALO=0.12   # ⚑ v123 (Tom) : un seul niveau de halo (3), plus de paramètre d'adresse — original : sauvegardes/redteam_contour-avant-v123.py
+NIV_HALO=int(([a.split('=')[1] for a in sys.argv if a.startswith('--halo=')] or ['3'])[0]); EXT_HALO={1:0.08,2:0.10,3:0.12,4:0.14,5:0.16}[NIV_HALO]
 ARG=next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html'); tmp=None
 if '/' in ARG: shutil.copy(ARG,'zz-contour.html'); ARG=tmp='zz-contour.html'
 def cap(pg): return Image.open(io.BytesIO(pg.screenshot(clip={'x':20,'y':44,'width':390,'height':844}))).convert('RGB')

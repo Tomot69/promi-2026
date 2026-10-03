@@ -14,8 +14,6 @@
 > fichier (ni `Last-Modified` ni `ETag`) : `http.server` laissait Safari garder un fichier « à l'heuristique » (≈ 10 % de son âge —
 > `promi-moteur.js` jusqu'à 2,6 h), l'iPhone montrait un MÉLANGE de versions. `/version.json` rend le commit servi ; l'Aura avec
 > `?mesure=1` l'affiche en tête du relevé (« version : f1fc823 + modifs non commitées »). Même port, écoute sur 0.0.0.0.
-> **⚑ v123 : au lancement il affiche l'adresse iPhone en clair** (l'IP du Mac, relue à chaque fois) — et **il s'arrête avec le Mac**
-> (extinction, fermeture de session) : à chaque session, vérifier `lsof -nP -iTCP:8752 -sTCP:LISTEN` et le relancer.
 >
 > - `http://127.0.0.1:8752/app.html`
 > - `http://127.0.0.1:8752/promi-moodboard-H.html`
@@ -115,31 +113,6 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
-
-### ⚑ v123 (3 oct. 2026) — LA PELOTE : DENSITÉ 3, UN CORPS D'UNE AUTRE TEINTE, L'OMBRE CRÈME EN SOMBRE ; L'AURA REMONTÉE ; Q375. (Décisions Tom.)
-> **Densité 3 et halo 3 RETENUS — ce sont des constantes** (`REG` : ×2, poil ×0,7, reflet adouci ; ΔE00 14 au ras, 0,12 D). **`?densite`,
-> `?halo` et les niveaux 4 et 5 sont RETIRÉS.** Paliers du régulateur : 220 000 → 180 000 → 150 000. Mesuré (Chromium GPU @3x, ce Mac) :
-> peinture 31,8 ms à 220 000 → le régulateur vise 150 000 ; `?mesure=1` dit le palier visé. **Corps sombre du Cercle `#5D4978` : validé.**
-> **⚑ LE CORPS** : la peau sous les poils (et le plein de v120) prend **une AUTRE teinte de la palette du Studio, jamais celle des poils**,
-> tirée au hasard à chaque ouverture avec le sol (`nouveauCorps`, `corps()`, option `corps` du peintre → `peau(…, CORPS)`). Elle tient
-> **ΔE00 ≥ 15 face au sol ET à chaque marche de sa rampe de velours** (c'est la rampe qu'on voit, pas le sol nu), et **n'est jamais kaki**
-> (sinon le ton suivant ; à défaut, la teinte écartée en clarté ; dernier recours crème ou seiche). Juge : **`redteam_corps.py`** (50
-> ouvertures × 4 palettes ; le verdict vient de la peau PEINTE `__po` et de la marche de rampe la plus peinte). ⚠ Le bac de couleur le plus
-> fréquent d'une Pelote est un MÉLANGE poil + corps : il ne dit pas la teinte du poil.
-> **⚑ L'OMBRE EN SOMBRE EST UNE ELLIPSE CRÈME** (renverse v119) : même géométrie qu'en clair, crème 0,105 → ΔE00 5,05 (décidé 4 à 6) ;
-> la flaque n'est plus affichée ni peinte.
-> **L'Aura (en points)** : plateau → haut du halo −6 (10,7 → **4,7** : il ne touche pas) · Pelote → ombre −6 · ombre → bouton −6 · bouton →
-> phrase −6 · phrase → ses disques −3. `K.bo.y` 105,532 · ombre 409,224 · bouton 457,47 · phrase 553,6 · Noyaux 634,3 · **les chiffres
-> finissent à 833,5 : entiers sans défiler à 390 × 844**. `redteam_halo` : un seul niveau, 23 contrôles ; sa marge de 8 sous le plateau
-> (jamais une décision) est remplacée par la cote décidée (4,5 ± 0,5).
-> **⚑ Q375 — LA PREMIÈRE IMAGE D'UNE FICHE, trois causes** : ① les cotes n'étaient posées que deux images après l'ouverture (`_fichePose`
-> pose maintenant aussi tout de suite) ; ② sur la terre d'une fiche tenue, le poseur écrivait l'à-qui en `#00341A` et la passe de
-> lisibilité le repeignait crème (deux propriétaires : la crème est posée à la source) ; ③ **la passe de lisibilité retirait une couleur
-> qu'elle n'avait plus écrite** (celle du poseur de la fiche suivante) — elle compare avant de retirer. Juge : `redteam_flash_etat.py`,
-> contrôle 3 (6/10 avant, 10/10). ⚠ **Un relevé pris DANS un `requestAnimationFrame` passe avant les autres rappels de la même image :
-> il lit un état qui ne sera jamais peint. On lit APRÈS l'image (une tâche postée depuis le rappel, `MessageChannel`).**
-> **`redteam_couleurs_ref`** : un canevas sans id se nomme par le TEXTE de sa ligne, plus par son rang (la « mini-dalle instable » de v122
-> était le juge : sur une liste qui défile le rang [3] n'était pas la même ligne des deux côtés). 0 écart, E7 = l'ombre crème.
 
 ### ⚑ v122 (3 oct. 2026) — LES COULEURS : LE CACHE, LES DÉCISIONS, L'ORANGE DE MA PAROLE !, LE FLASH. (Décisions Tom.)
 > **Ce que Tom voyait sur l'iPhone et que la mesure ne voyait pas : le CACHE de Safari** (voir `serveur.py` en tête). Mesuré : à
@@ -1594,13 +1567,11 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_corps.py       # 25 — v123, LE CORPS DE LA PELOTE : 50 ouvertures × 4 palettes — ΔE00 ≥ 15 face au poil (rampe et image), jamais kaki,
-                               #   jamais le ton du sol, tiré au hasard. Lu sur la peau PEINTE. Rougit sur app-avant-v123 (16/25). ≈ 25 min.
 python3 redteam_decisions.py   # 79 — v122 : CHAQUE DÉCISION DE COULEUR DE TOM (en dur, avec sa source) contre l'écran rendu — fiches Promi,
                                #   Chiche, Cercle, page +, Index, deux thèmes. Rougit sur app-avant-v122 (77/79).
 python3 redteam_maparole.py    # v122 : #FB4C0D et #FF7A55 n'existent QUE dans la phrase des murs (« Ma Parole ! ») — source, rendu, au doigt.
                                #   --statique (sans navigateur) ; --sonde rougit. Rougit sur app-avant-v122.
-python3 redteam_flash_etat.py  # 10 — v123 (Q375) : + la première image d'une fiche porte SON état (six enchaînements, lus après l'image) · v122 (Q374) : aucune image orange sur l'à-qui, l'échéance et « trace pour tenir » d'une fiche à tenir en
+python3 redteam_flash_etat.py  # 4 — v122 (Q374) : aucune image orange sur l'à-qui, l'échéance et « trace pour tenir » d'une fiche à tenir en
                                #   sombre, 20 ouvertures, capture à la première image. Rougit sur app-avant-v122 (1/4).
 python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (commit 578ec80, servi avec son moteur) : styles calculés, canevas et
                                #   dalles rendues seules (synchrones, horloge figée), 36 écrans × 2 thèmes. Exceptions nommées en dur (Toile
@@ -1608,7 +1579,7 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
-python3 redteam_halo.py        # 23 — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119 ; v123 : un seul niveau, ombre crème en sombre ΔE00 4–6, halo à 4,5 du plateau), lus sur l'image @3x. --sonde rougit.
+python3 redteam_halo.py        # 91 — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119 ; cinq niveaux v121, défaut 3), lus sur l'image @3x. --sonde rougit.
 python3 redteam_garder.py      # 18 — v119 (Q370), repris en v121 : « garder de côté » garde le titre et la personne de la phrase, au doigt.
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;

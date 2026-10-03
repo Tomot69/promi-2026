@@ -14,13 +14,6 @@ Pour chacune des vingt ouvertures (WebKit, sombre, « faire les crêpes ») :
       première image où ils paraissent les montre déjà crème ;
   2 · une capture prise dès que la fiche paraît : dans le rectangle de chacun des trois éléments, aucun pixel proche de l'orange (ΔRVB ≤ 40).
 Preuve (§7) : sur `sauvegardes/app-avant-v122.html` il ROUGIT (orange de ~400 ms à ~1 s, à chaque ouverture).
-
-⚑ v123 (Tom, Q375) — « À l'ouverture d'une fiche, la première image porte encore l'état de la fiche précédente pendant environ 200 ms.
-L'état juste dès la première image. » Contrôle 3 : trois enchaînements (une fiche, on la ferme, on ouvre la suivante), cinq fois chacun,
-dans le thème où l'écart se voit — Chiche tenu → Chiche lancé (clair) · Promi tenue → Promi à tenir (clair) · Promi à tenir → Promi
-tenue (sombre). À la PREMIÈRE image où la fiche paraît (premier `requestAnimationFrame` après l'ouverture, donc ce qui va être peint),
-le MOT et la COULEUR de l'à-qui, de l'échéance et de la phrase du trait sont déjà ceux de l'état posé (relevés à 1,5 s).
-Preuve : sur `sauvegardes/app-avant-v123.html` il ROUGIT.
 """
 import os, sys, io
 from playwright.sync_api import sync_playwright
@@ -93,32 +86,6 @@ with sync_playwright() as p:
     t('1 · [sombre] la première image où ils paraissent les montre déjà crème', premieres_ko == 0, '%d sur %d' % (premieres_ko, N))
     t('2 · [sombre] la capture à la première image : aucun pixel orange sur eux', pix_ko == 0, '%d sur %d' % (pix_ko, N))
     for d in details[:6]: print('     ', d)
-    # 3 · Q375 : la première image porte l'état de CETTE fiche, pas celui de la précédente
-    # ⚠ L'INSTRUMENT : un relevé pris DANS un `requestAnimationFrame` passe avant les autres rappels de la même image (dont celui qui
-    #   pose la fiche) — il lit un état qui ne sera jamais peint. On lit donc APRÈS l'image : une tâche postée depuis le rappel
-    #   (MessageChannel), qui s'exécute une fois l'image rendue. Deux enchaînements : la fiche d'avant FERMÉE puis la suivante
-    #   (`ferme`), et la suivante ouverte PAR-DESSUS la fiche d'avant, sans la fermer (`direct` — un disque, une carte du fil).
-    PREM = r"""([avant, apres, ids, direct])=>new Promise(async res=>{ const F=t=>promises.filter(q=>q.title===t)[0].id;
-      try{closeAll()}catch(e){} openDetail(F(avant)); await new Promise(r=>setTimeout(r,2200)); if(!direct){ try{closeAll()}catch(e){} await new Promise(r=>setTimeout(r,700)); }
-      const lit=()=>{ const o={}; ids.forEach(i=>{ const e=document.getElementById(i); if(!e) return; const cs=getComputedStyle(e), b=e.getBoundingClientRect();
-        if(b.width>2&&b.height>2&&cs.visibility!=='hidden'&&cs.display!=='none'&&+cs.opacity>0.05&&(e.textContent||'').trim()) o[i]=(e.textContent||'').trim()+' | '+(cs.webkitTextFillColor||cs.color); }); return o; };
-      let premiere=null; const t0=performance.now(); const mc=new MessageChannel();
-      mc.port1.onmessage=()=>{ const dp=document.getElementById('detailPoster'); const paru=dp&&dp.classList.contains('show')&&+getComputedStyle(dp).opacity>0.05;
-        if(paru&&!premiere){ const o=lit(); if(Object.keys(o).length) premiere={t:(performance.now()-t0)|0, o:o}; }
-        if(performance.now()-t0<1500) requestAnimationFrame(f); else res({premiere:premiere, fin:lit()}); };
-      function f(){ mc.port2.postMessage(1); }
-      openDetail(F(apres)); requestAnimationFrame(f); })"""
-    for avant, apres, th, direct in [(a, b_, c, d) for d in (False, True) for (a, b_, c) in (('le grand plongeoir', 'courir dimanche', 'light'), ('planter un arbre', 'faire les crêpes', 'light'), ('faire les crêpes', 'planter un arbre', 'dark'))]:
-        pg.evaluate("(t)=>{ try{closeAll()}catch(e){} setTheme(t); }", th); pg.wait_for_timeout(600)
-        faux = 0; ex = ''
-        for _ in range(5):
-            r = pg.evaluate(PREM, [avant, apres, IDS, direct])
-            pr = (r or {}).get('premiere') or {}; fin = (r or {}).get('fin') or {}
-            dif = [k for k in fin if (pr.get('o') or {}).get(k) != fin[k]]
-            if not pr or not fin or dif:
-                faux += 1
-                if not ex and dif: ex = '%s : « %s » à la 1re image (%d ms), « %s » posé' % (dif[0], (pr.get('o') or {}).get(dif[0]), pr.get('t', -1), fin[dif[0]])
-        t('3 · [%s · %s] « %s » après « %s » : la première image porte déjà le mot et la couleur posés (5 ouvertures)' % ('clair' if th == 'light' else 'sombre', 'par-dessus' if direct else 'fermée', apres, avant), faux == 0, '%d sur 5 %s' % (faux, ex))
     t('aucune erreur de page', not er, '; '.join(er[:2]))
     b.close()
 print('\n%d / %d' % (ok[0], ok[0] + len(ko)))

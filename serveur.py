@@ -30,6 +30,19 @@ def version():
         return {'commit': '?', 'modifie': None, 'erreur': str(e)[:80]}
 
 
+def ip_du_mac():
+    # l'adresse du Mac sur le réseau local (elle CHANGE : .132 le 27 sept., .133 le 29) — lue à chaque lancement
+    for cmd in (['ipconfig', 'getifaddr', 'en0'], ['ipconfig', 'getifaddr', 'en1']):
+        try:
+            ip = subprocess.run(cmd, capture_output=True, text=True, timeout=3).stdout.strip()
+            if ip: return ip
+        except Exception: pass
+    try:
+        import socket
+        s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM); s.connect(('10.255.255.255', 1)); ip = s.getsockname()[0]; s.close(); return ip
+    except Exception: return '(adresse introuvable : ipconfig getifaddr en0)'
+
+
 class SansCache(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *a, **k):
         super().__init__(*a, directory=ICI, **k)
@@ -62,6 +75,9 @@ class Serveur(socketserver.ThreadingMixIn, http.server.HTTPServer):
 
 if __name__ == '__main__':
     with Serveur(('0.0.0.0', PORT), SansCache) as s:
-        print('Promi · http://127.0.0.1:%d/app.html · Cache-Control: no-store · commit %s' % (PORT, version()['commit']), flush=True)
+        print('Promi · commit %s · Cache-Control: no-store · écoute sur 0.0.0.0:%d' % (version()['commit'], PORT), flush=True)
+        print('  sur ce Mac  : http://127.0.0.1:%d/app.html' % PORT, flush=True)
+        print('  sur l\'iPhone (même Wi-Fi) : http://%s:%d/app.html' % (ip_du_mac(), PORT), flush=True)
+        print('  Le serveur s\'arrête avec le Mac (extinction, fermeture de session) : relancer « python3 serveur.py ».', flush=True)
         try: s.serve_forever()
         except KeyboardInterrupt: pass

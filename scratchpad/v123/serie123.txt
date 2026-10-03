@@ -1,0 +1,29 @@
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+  127s  redteam_halo.py            aucune erreur de page                                                        OK   / 23 / 23
+  106s  redteam_plein.py           [densité 3] aucune erreur de page                                              OK   / 49 / 49
+   34s  redteam_contour.py         OK [sombre] la Pelote s'arrête à 124.2 du centre (silhouette 121.5) · pixels au-delà : 0 / ✅ rien ne dépasse du contour
+   67s  redteam_souffle.py         OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0 / ✅ la Pelote respire par son velours, et rien d'autre
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+  229s  redteam_corps.py           aucune erreur de page                                                                  OK   / 25 / 25
+  183s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+   67s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #00351A #2A1548 #00341A #291547 OK   (Q262, v8c) / 79 / 79
+  216s  redteam_maparole.py        [dark] aucune erreur de page                                                     OK   / 12 / 12
+  119s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 26/26
+  126s  redteam_champ.py             l'instant après [light]        OK / 32/32
+   56s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  175s  redteam_filets.py          page+ cercle   [light]  filet non    OK / filet du trait : 14/14
+   38s  redteam_reperage.py        [sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : [] / 16/16
+   25s  redteam_verbe.py           dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 60, 'vis': True} / 6/6
+  227s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  115s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1947 ms) / 32/32
+  314s  redteam_air.py                Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune» /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+   91s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+   20s  redteam.py                 aucune erreur JS                           OK   / 15/15
+   17s  redteam2.py                aucune erreur JS                             OK   / 10/10
+   33s  redteam3.py                aucune erreur JS                               OK   / 18/18
+   43s  redteam_geste.py           aucune erreur JS                             OK   / 12/12
+   68s  redteam_toile.py           aucune erreur JS                           OK  [] / 18/18
+  127s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+  115s  redteam_kaki.py              sillons      toile-sombre  kaki   6.8 %  ✗ #C8B89F (h 79°, C 0.039, L 0.79) ×130; #CDBB9E (h 80°, C 0.044, L 0.80) ×111; #C4BAAB (h 78°, C 0.024, L 0.79) ×78 / ❌ DU KAKI — 14 cou
+  176s  releve-aura.py             palier 220000 · médiane 38.5 ms · 1416 images · plus longue image pendant l'élan : 117 ms (dont peintre 39.1 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 p
+   33s  releve-design.py           ✅  AUCUN ÉCART. Le design est intact.

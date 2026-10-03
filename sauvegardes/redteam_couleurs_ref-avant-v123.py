@@ -26,11 +26,7 @@ Les exceptions sont NOMMÉES ici, en dur (§7) — rien d'autre n'est toléré :
       (.s4-et, .s4-eb, .s4-nom, étaient #DD4D23 en v118 — la passe ne les atteignait pas) — sur ces nœuds-là, en sombre, vers la crème ;
   E5  les violations visibles retirées (v119, reprises en v121 §5) : l'ombre de texte de « ✕ FERMER », du mot-marque d'une fiche et du
       badge de Partager, l'ombre dure du bouton d'achat — seulement leur DISPARITION (la valeur de l'app est absente), sur ces nœuds-là.
-  E7  v123 §2 : en sombre, l'ombre de la Pelote est une ellipse CRÈME (`#auPeloteOmbre`, dégradé radial crème 0,105) — sur ce nœud-là,
-      en sombre, cette valeur-là. (Le corps de la Pelote vit dans son canevas, E4 ; Q375 : l'à-qui d'une fiche tenue est posé crème à
-      la source — c'était déjà sa couleur finale en v118, aucun écart attendu.)
-Un nœud qui n'existe que d'un côté n'est pas un écart de couleur : il est LISTÉ. ⚑ v123 : le canevas d'une ligne de fil ou d'une carte se
-nomme par le TEXTE de sa ligne, plus par son rang (la mini-dalle instable de v122).
+Un nœud qui n'existe que d'un côté n'est pas un écart de couleur : il est LISTÉ.
 
   python3 redteam_couleurs_ref.py            → tous les écrans
   python3 redteam_couleurs_ref.py --liste    → détaille chaque écart
@@ -100,14 +96,7 @@ COLLECTE = r"""()=>{
         for(let y=0;y<H;y+=pas) for(let x=0;x<W;x+=pas){ const i=(y*W+x)*4; if(d[i+3]<250) continue; let dm=false; for(const z of ZM){ if(x>=z[0]&&x<=z[2]&&y>=z[1]&&y<=z[3]){ dm=true; break; } } if(dm){ nm++; const qm=(d[i]<<16)|(d[i+1]<<8)|d[i+2]; hm[qm]=(hm[qm]||0)+1; continue; } n++; const q=(d[i]<<16)|(d[i+1]<<8)|d[i+2]; h[q]=(h[q]||0)+1; }
         const L=Object.keys(h).map(q=>[+q,h[q]/Math.max(1,n)]).filter(a=>a[1]>=0.012).sort((a,b)=>b[1]-a[1]).slice(0,10).map(a=>[(a[0]>>16)&255,(a[0]>>8)&255,a[0]&255,+a[1].toFixed(3)]);
         const LM=Object.keys(hm).map(q=>[+q,hm[q]/Math.max(1,nm)]).filter(a=>a[1]>=0.03).sort((a,b)=>b[1]-a[1]).slice(0,8).map(a=>[(a[0]>>16)&255,(a[0]>>8)&255,a[0]&255,+a[1].toFixed(3)]);
-        /* ⚑ v123 — LA MINI-DALLE DU FIL D'UN CERCLE : un canevas sans id était nommé par son RANG parmi les nœuds visibles. Sur une liste
-           qui défile, l'app et la référence n'ont pas toujours la même ligne au même rang (la butée du défilement tombe à une ligne
-           près) : le rang [3] était un Chiche (rose) d'un côté, un Promi (bleu) de l'autre — ΔE 99, un écart qui changeait de thème
-           d'une passe à l'autre. Le produit, lui, est stable (six pages fraîches : même ordre, mêmes couleurs). Les textes avaient
-           déjà cette garde (`mot`) ; le canevas d'une ligne ou d'une carte se nomme maintenant par le TEXTE de sa ligne. */
-        const hote=e.closest('.nf-item,.s4-carte');
-        const kc=e.id||(hote ? k.replace(/ \[\d+\]$/,'')+' «'+(hote.textContent||'').replace(/\s+/g,' ').trim().slice(0,30)+'»' : k);
-        out.c[kc]={dom:L, domM:LM, n:n, mat:nm, zones:ZM.length, coin:[d[(4*W+4)*4],d[(4*W+4)*4+1],d[(4*W+4)*4+2],d[(4*W+4)*4+3]]}; } }catch(_){ } }
+        out.c[e.id||k]={dom:L, domM:LM, n:n, mat:nm, zones:ZM.length, coin:[d[(4*W+4)*4],d[(4*W+4)*4+1],d[(4*W+4)*4+2],d[(4*W+4)*4+3]]}; } }catch(_){ } }
   }
   return out; }"""
 
@@ -208,7 +197,7 @@ with sync_playwright() as p:
 
     def compare_tout(A, B):
         global ecarts, orphelins, compares, cv_ecarts, exceptions
-        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0, 'E6': 0, 'E7': 0}
+        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0, 'E6': 0}
         for cle in A:
             if cle[0] == '__dalles': compare_dalles(cle[1], A[cle], B.get(cle, {})); continue
             compare_un(cle, A[cle], B.get(cle, {'n': {}, 'c': {}}))
@@ -241,7 +230,6 @@ with sync_playwright() as p:
                     if pr_ in ('color', 'tfill') and 'dptTrace' in k and va == 'rgb(247, 240, 222)' and vr == 'rgb(243, 231, 209)': exceptions['E6'] += 1; continue
                     if pr_ in ('color', 'tfill') and cle[1] == 'dark' and re.search(r's4-(et|eb|nom)\b', k) and va == 'rgb(247, 240, 222)' and vr == 'rgb(221, 77, 35)': exceptions['E6'] += 1; continue
                     if pr_ in ('tshadow', 'shadow', 'bgi') and va is None and VIOLATIONS.search(k): exceptions['E5'] += 1; continue
-                    if pr_ == 'bgi' and cle[1] == 'dark' and 'auPeloteOmbre' in k and va and va.startswith('radial-gradient(') and re.search(r'rgba\(247, 240, 222, 0\.10[456]\d*\)', va) and va.count('rgba(') == 2 and 'rgba(247, 240, 222, 0)' in va: exceptions['E7'] += 1; continue
                     ecarts.append((cle, k, pr_, va, vr))
             for k, c in a['c'].items():
                 q = r['c'].get(k)
@@ -271,7 +259,7 @@ tout = ecarts + cv_ecarts
 par = {}
 for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)
 print('%d propriétés comparées · %d écrans × 2 thèmes · %d nœuds sans vis-à-vis (listés, non jugés)' % (compares, len(ECRANS) if not SEUL else len(SEUL), orphelins))
-print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7']))
+print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
     ec = sorted(set('%s[%s]' % (e[0][0], e[0][1][0]) for e in L))
     print('  ✗ %-8s réf %-34s → app %-34s ×%d   %s' % (pr_, vr[:34], va[:34], len(L), ', '.join(ec[:6]) + (' …' if len(ec) > 6 else '')))
