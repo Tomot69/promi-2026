@@ -1,0 +1,48 @@
+  ✓ la valeur décidée « promi » vaut #82AEF8
+  ✓ la valeur décidée « chiche » vaut #FFB8D2
+  ✓ la valeur décidée « nuee » vaut #C9A8F5
+  ✓ la valeur décidée « a-tenir » vaut #DD4D23
+  ✓ la valeur décidée « tenu » vaut #00341A
+  ✓ la valeur décidée « en-cours » vaut #291547
+  ✓ la valeur décidée « fond-clair » vaut #F7F0DE
+  ✓ la valeur décidée « fond-sombre » vaut #100D0B
+  ✓ la valeur décidée « amande » vaut #8FE08F
+  ✓ la valeur décidée « en-cours-clair » vaut #291547
+  ✓ la valeur décidée « brun-encre » vaut #43291C
+  ✓ la valeur décidée « crete » vaut #0B4A2A
+  ✓ la valeur décidée « tenu-clair » vaut #00341A
+  ✓ la valeur décidée « exception » vaut #2B1020
+  ✓ l'encre --c-bleu45-txt vaut #82AEF8 en sombre
+  ✓ l'encre --c-bleu45-txt vaut #022140 en clair
+  ✓ l'encre --c-framboise54-txt vaut #FFB8D2 en sombre
+  ✓ l'encre --c-framboise54-txt vaut #3D0F23 en clair
+  ✓ l'encre --c-mauve77-txt vaut #C9A8F5 en sombre
+  ✓ l'encre --c-mauve77-txt vaut #43291C en clair
+  ✓ l'encre --c-menthe67-txt vaut #00341A en sombre
+  ✓ l'encre --c-menthe67-txt vaut #00341A en clair
+  ✓ l'encre --c-mauve63-txt vaut #291547 en sombre
+  ✓ l'encre --c-mauve63-txt vaut #291547 en clair
+  ✓ l'encre --c-orange53-txt vaut #DD4D23 en sombre
+  ✓ l'encre --c-orange53-txt vaut #DD4D23 en clair
+  ✓ l'encre du mode clair est arrêtée à #201908
+  ✓ le fond du mode sombre N'EST PLUS l'encre du mode clair
+  ✓ l'encre du mode sombre reste le fond du mode clair
+  ✓ l'escalier des bruns : brun encre au-dessus de encre du clair (≥ 8 de L*)
+  ✓ le jeu porte le brun « encre du clair » #201908
+  ✓ le jeu porte le brun « brun encre » #43291C
+  ✓ #FFD447 ne revient nulle part — le jaune, retiré en v6
+  ✓ #8FA0FF ne revient nulle part — le périwinkle
+  ✓ aucune couleur en dur dans les <style>
+  ✓ aucune police appelée en dur (tout passe par --f-*)
+  ✓ le bloc de tokens et PROMI-TOKENS.json sont d'accord
+  ✓ les faces neuves sont embarquées (Gilbert 700 · Atkinson 400/500/700)
+  ✓ l'extension Swift porte les mêmes rôles
+  ✓ l'extension Swift porte le niveau « titre »
+  ✓ l'extension Swift porte le niveau « sous-titre »
+  ✓ l'extension Swift porte le niveau « texte »
+  ✓ l'extension Swift porte le niveau « accent »
+  ✓ l'extension Swift porte le niveau « petit »
+  ✓ l'extension Swift porte le niveau « meta »
+  ✓ l'extension Swift porte le niveau « libelle »
+
+46/46

@@ -1,0 +1,17 @@
+Traceback (most recent call last):
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_flash_etat.py", line 66, in <module>
+    im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB') if rects else None
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/sync_api/_generated.py", line 10596, in screenshot
+    self._sync(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_page.py", line 825, in screenshot
+    encoded_binary = await self._channel.send(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.screenshot: Timeout 30000ms exceeded.
+Call log:
+  - taking page screenshot
+

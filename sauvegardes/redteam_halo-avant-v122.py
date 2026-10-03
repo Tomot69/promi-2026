@@ -7,7 +7,7 @@ redteam_halo.py — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119, Tom, 2 oct. 2026
 0,14 et 0,16 D. Mêmes règles. » Les cinq niveaux, EN DUR : (ΔE00 au ras, étendue) = 1 (6 ; 0,08 D) · 2 (10 ; 0,10) · 3 (14 ; 0,12) ·
 4 (18 ; 0,14) · 5 (24 ; 0,16). A, C et F se jugent à CHAQUE niveau (le 3 sans paramètre) ; B, D et E au niveau par défaut. Les bornes de A
 gardent les proportions de v119 (7 → 5 à 9 au ras ; 2,9 → 2 à 4 à mi-étendue) : ras × [0,72 ; 1,28], mi-étendue (ras × 2,9/7) × [0,7 ;
-1,38], sous 1 au bout de l'étendue, rien au-delà. ⚑ v122 §3 : la boule −11 (centre 259,532), l'ombre −26 (centre 429,35), le bouton à 475,47.
+1,38], sous 1 au bout de l'étendue, rien au-delà. ⚑ v121 §2 : l'ombre monte de 6 (centre 455,35), le bouton est à 513,47.
 
 « Ce n'est pas un flou posé autour, c'est la lumière du velours qui déborde à peine de la silhouette. »
 Les valeurs décidées, EN DUR (§7) — D = 232,064 pt (le diamètre de la boule), silhouette = boule + poil = 121 pt de rayon :
@@ -29,9 +29,9 @@ from PIL import Image
 
 APP = os.environ.get('APP', 'http://127.0.0.1:8752/app.html')
 SONDE = '--sonde' in sys.argv
-S = 3; D = 232.064; RS = 121.0; CXY = (195.0, 111.532 + 148.0)   # ⚑ v122 : la boule −11
+S = 3; D = 232.064; RS = 121.0; CXY = (195.0, 122.532 + 148.0)
 NIVEAUX = {1: (6, 0.08), 2: (10, 0.10), 3: (14, 0.12), 4: (18, 0.14), 5: (24, 0.16)}   # la décision, en dur
-DEFAUT = 3; OMBRE_Y = 429.35; BOUTON = 475.47   # ⚑ v122 (Tom) : l'ombre −26, le bouton −38
+DEFAUT = 3; OMBRE_Y = 455.35; BOUTON = 513.47
 LUM = math.atan2(-0.72, -0.58)                      # d'où vient la lumière (repère de l'écran, y vers le bas)
 ok = [0]; ko = []
 
@@ -147,7 +147,7 @@ with sync_playwright() as p:
                 st = pg.evaluate("()=>[getComputedStyle(document.getElementById('auPeloteOmbre')).display, getComputedStyle(document.getElementById('auPeloteFlaque')).display]")
                 t('E · [sombre] aucune ombre crème : l\'ombre est le creux de la flaque de lumière', st[0] == 'none' and st[1] != 'none' and all(abs(cen[i] - fond[i]) <= 2 for i in range(3)), '%s · creux %s · fond %s' % (st, [round(v) for v in cen], fond))
             g = pg.evaluate("()=>{const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, R=s=>{const r=document.querySelector(s).getBoundingClientRect(); return [(r.top-dv.top)/k,(r.bottom-dv.top)/k]}; return {pl:R('#auraScreen .enh'), bt:R('#auPartage')}}")
-            t('F · [%s] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47)' % th, CXY[1] - RS - EXT * D > g['pl'][1] + 8 and abs(g['bt'][0] - BOUTON) < 0.3, 'haut du halo %.1f · bas du plateau %.1f · bouton %.2f' % (CXY[1] - RS - EXT * D, g['pl'][1], g['bt'][0]))
+            t('F · [%s] le halo ne touche pas le plateau ; le bouton est à sa place (v121 : 513,47)' % th, CXY[1] - RS - EXT * D > g['pl'][1] + 8 and abs(g['bt'][0] - BOUTON) < 0.3, 'haut du halo %.1f · bas du plateau %.1f · bouton %.2f' % (CXY[1] - RS - EXT * D, g['pl'][1], g['bt'][0]))
             pg.evaluate("()=>{_aura.fige(false); const x=document.querySelector('#auraScreen .closeb'); if(x) x.click();}"); pg.wait_for_timeout(800)
     ctx.close()
     # D · la respiration, animations permises : le halo au sommet (4,6 s) et au creux (10,6 s) du cycle

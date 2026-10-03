@@ -1,0 +1,20 @@
+5 écran(s) repris sur une page fraîche : Fil[d], Index 2[d], Index 3[d], Nuée défilée[l], personne[d]
+6762 propriétés comparées · 36 écrans × 2 thèmes · 51 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 10 · E5 violations retirées 22 · E6 trace crème (Q374) 0
+  ✗ color    réf rgb(221, 77, 35)                   → app rgb(247, 240, 222)                 ×12   Fil[d], Index 2[d], Index 3[d], personne[d]
+        Index 2 [dark] · #indexList > div.s4-grille > div.s4-carte > div.s4-eb [2]
+        Index 2 [dark] · #indexList > div.s4-grille > div.s4-carte > div.s4-et [2]
+        Index 3 [dark] · #indexList > div.s4-grille > div.s4-carte > div.s4-eb [2]
+        Index 3 [dark] · #indexList > div.s4-grille > div.s4-carte > div.s4-et [2]
+        Index 3 [dark] · #indexList > div.s4-grille > div.s4-carte > div.s4-eb [10]
+        Index 3 [dark] · #indexList > div.s4-grille > div.s4-carte > div.s4-et [10]
+        Fil [dark] · div.s4-carte > div.s4-ev > span.s4-nom [4]
+        Fil [dark] · #feedList > div.s4-grille > div.s4-carte > div.s4-et [4]
+        personne [dark] · #psCartes > div.s4-grille > div.s4-carte > div.s4-eb [1]
+        personne [dark] · #psCartes > div.s4-grille > div.s4-carte > div.s4-et [1]
+        personne [dark] · #psCartes > div.s4-grille > div.s4-carte > div.s4-eb [3]
+        personne [dark] · #psCartes > div.s4-grille > div.s4-carte > div.s4-et [2]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 248) 100 %           ×1   Nuée défilée[l]
+        Nuée défilée [light] · div.nf-item.nf-menthe.nf-vif > span.nf-dw > canvas.bul.mini-dalle.nf-d [3]
+
+❌ — 13 écart(s) de couleur avec la référence v118

@@ -1,0 +1,5 @@
+OK [light] A · 0,3 s → 4,6 s : 20211 pixels changés dans la silhouette, 0 au-delà
+✗  [light] B · lumière de la boule : sommet à 7.2 s (décidé 4.6), retour au bas à 11.8 s (décidé 10.6), amplitude 4.91 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 33341 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+❌ le souffle ne tient pas sa loi

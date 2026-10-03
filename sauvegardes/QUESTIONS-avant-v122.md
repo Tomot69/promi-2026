@@ -8307,24 +8307,3 @@ Les autres usages rendus de `#DD4D23` hors lignes d'état restent à décider : 
 #### Q374 · À REGARDER (v121) — UN FLASH D'ENCRE À L'OUVERTURE D'UNE FICHE « À TENIR » EN SOMBRE
 Mesuré au juge des couleurs, dans v118 comme dans l'app (1 chargement sur 4 de chaque côté) : l'à-qui, l'échéance et « trace pour tenir »
 s'affichent une à deux secondes à l'encre du clair (orange `#DD4D23`) avant de passer à la crème. Rien n'a été corrigé (hors lot).
-**→ TRANCHÉ en v122 (Tom) : la couleur finale dès la première image.** Cause nommée : deux propriétaires — le poseur de la fiche peignait
-`#DD4D23` dans les deux thèmes, la passe de lisibilité (`data-lis`, Q290) repeignait la crème en sombre, le poseur repassait. La crème
-est posée à la source (`e.colTexte`). ⚠ Le même `e` peint les cartes : en sombre, les cartes « à tenir » de l'Index, du Fil et d'une
-personne passent elles aussi de `#DD4D23` (v118) à la crème — c'est Q290 (« les textes d'état sur fond sombre passent crème ») ; la passe
-ne les atteignait pas. Juge : `redteam_flash_etat.py` (1/4 avant, 4/4 après), `redteam_decisions.py`.
-
-#### Q375 · À REGARDER (v122) — LA PREMIÈRE IMAGE D'UNE FICHE PORTE ENCORE L'ÉTAT DE LA FICHE D'AVANT
-Mesuré en v118 comme aujourd'hui (WebKit, clair) : un Chiche lancé ouvert juste après un Chiche tenu montre, de 0 à ~200 ms, « EN COURS »
-dans le vert de « tenu » `#00341A`, puis « LANCÉ » en `#291547`. Même famille que Q374 (une composition qui se voit avant d'être finie),
-mais ce n'est ni l'orange ni « à tenir » : pas corrigé (hors lot).
-
-#### Q376 · LES CONTRADICTIONS ENTRE DÉCISIONS DE COULEUR, RELEVÉES EN v122 (la plus récente gagne)
-| sujet | décisions | appliqué |
-|---|---|---|
-| corps sombre des fiches | tableau de CLAUDE.md (`#0D1F33` · `#201221` · `#1B1426`) ↔ v113 / Q358 (`#335382` · `#7C3F58`, « option 2 ») | v113 ; le Cercle `#5D4978` est une valeur de v113, Tom n'a tranché que Promi et Chiche — **à valider** |
-| corps clair des fiches | tableau de CLAUDE.md (`#CFE5FE`…) ↔ Q221 « sur le corps crème » | la crème `#F7F0DE` (rendu v118) ; le tableau est corrigé |
-| claires d'état en sombre | 21 sept. `#A77CF7` / `#33BA6C` ↔ Q262 (une valeur par état, dans les deux thèmes) ↔ Q290 (textes d'état crème sur le sombre) | Q290 pour les TEXTES, Q262 pour les arcs et les traits |
-| marques sur la terre d'une fiche tenue | `#33BA6C` (21 sept.) → amande (Q269, 23 sept.) → crème (Q290) → amande pour « TENUE » (Q299) | « TENUE » en amande, le reste crème |
-| à-qui en clair | encre (Q221, 17 sept.) ↔ couleur d'état (Q262) | la couleur d'état (Q262, la plus récente) |
-| fond des pages sombres | brun `#201908` (v120) ↔ seiche `#050302` (v121) | la seiche (v121) |
-| le trait sur un champ | §2.1 bis (teinte sombre de la nature) ↔ « le trait porte l'état » (Horizon) | inchangé depuis v118 : l'état pour à tenir et tenu, la nature pour en cours (« l'autre viendra le finir ») |

@@ -1,0 +1,23 @@
+{
+ "1": {
+  "p50": 20.6,
+  "p95": 22.5,
+  "image_p50": 16.7,
+  "n": 432,
+  "txt": "peinture 20,6 ms p50 · 22,5 p95 · image 16,7 ms p50 (Chromium GPU @3x)"
+ },
+ "2": {
+  "p50": 27.7,
+  "p95": 30.2,
+  "image_p50": 33.3,
+  "n": 330,
+  "txt": "peinture 27,7 ms p50 · 30,2 p95 · image 33,3 ms p50 (Chromium GPU @3x)"
+ },
+ "3": {
+  "p50": 35,
+  "p95": 40.3,
+  "image_p50": 33.4,
+  "n": 260,
+  "txt": "peinture 35 ms p50 · 40,3 p95 · image 33,4 ms p50 (Chromium GPU @3x)"
+ }
+}

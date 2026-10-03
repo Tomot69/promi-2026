@@ -20,10 +20,6 @@ Les exceptions sont NOMMÉES ici, en dur (§7) — rien d'autre n'est toléré :
       leur moteur est celui de v118, inchangé (banc_rendu) ;
   E3  les mots d'accent des phrases des murs : #FB4C0D, et son éclairci sur les trois corps sombres de Peaufiner (v121 §4) ;
   E4  la Pelote et son halo (canevas de l'Aura) : ils ont leurs juges (redteam_plein, redteam_halo, redteam_contour).
-  E6  v122 §4 (Q374) : en sombre, les libellés d'état « à tenir » prennent la crème #F7F0DE (décision v16, Q290 : « les textes d'état
-      sur fond sombre passent crème ») dès la première image, au lieu d'un orange que la passe de lisibilité repeignait ensuite :
-      « trace pour tenir » de la fiche (#dptTrace, était #F3E7D1) et les lignes d'état des cartes de l'Index, du Fil et d'une personne
-      (.s4-et, .s4-eb, .s4-nom, étaient #DD4D23 en v118 — la passe ne les atteignait pas) — sur ces nœuds-là, en sombre, vers la crème ;
   E5  les violations visibles retirées (v119, reprises en v121 §5) : l'ombre de texte de « ✕ FERMER », du mot-marque d'une fiche et du
       badge de Partager, l'ombre dure du bouton d'achat — seulement leur DISPARITION (la valeur de l'app est absente), sur ces nœuds-là.
 Un nœud qui n'existe que d'un côté n'est pas un écart de couleur : il est LISTÉ.
@@ -197,7 +193,7 @@ with sync_playwright() as p:
 
     def compare_tout(A, B):
         global ecarts, orphelins, compares, cv_ecarts, exceptions
-        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0, 'E6': 0}
+        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0}
         for cle in A:
             if cle[0] == '__dalles': compare_dalles(cle[1], A[cle], B.get(cle, {})); continue
             compare_un(cle, A[cle], B.get(cle, {'n': {}, 'c': {}}))
@@ -226,9 +222,7 @@ with sync_playwright() as p:
                     compares += 1
                     va, vr = o.get(pr_), q.get(pr_)
                     if va == vr: continue
-                    if pr_ in ('color', 'tfill') and va in MUR_ORANGE and re.search(r'murPhrase|\bmp\b', k): exceptions['E3'] += 1; continue   # v122 : seulement dans la phrase des murs
-                    if pr_ in ('color', 'tfill') and 'dptTrace' in k and va == 'rgb(247, 240, 222)' and vr == 'rgb(243, 231, 209)': exceptions['E6'] += 1; continue
-                    if pr_ in ('color', 'tfill') and cle[1] == 'dark' and re.search(r's4-(et|eb|nom)\b', k) and va == 'rgb(247, 240, 222)' and vr == 'rgb(221, 77, 35)': exceptions['E6'] += 1; continue
+                    if pr_ in ('color', 'tfill') and va in MUR_ORANGE: exceptions['E3'] += 1; continue
                     if pr_ in ('tshadow', 'shadow', 'bgi') and va is None and VIOLATIONS.search(k): exceptions['E5'] += 1; continue
                     ecarts.append((cle, k, pr_, va, vr))
             for k, c in a['c'].items():
@@ -259,7 +253,7 @@ tout = ecarts + cv_ecarts
 par = {}
 for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)
 print('%d propriétés comparées · %d écrans × 2 thèmes · %d nœuds sans vis-à-vis (listés, non jugés)' % (compares, len(ECRANS) if not SEUL else len(SEUL), orphelins))
-print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6']))
+print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
     ec = sorted(set('%s[%s]' % (e[0][0], e[0][1][0]) for e in L))
     print('  ✗ %-8s réf %-34s → app %-34s ×%d   %s' % (pr_, vr[:34], va[:34], len(L), ', '.join(ec[:6]) + (' …' if len(ec) > 6 else '')))

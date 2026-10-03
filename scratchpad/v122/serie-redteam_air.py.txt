@@ -1,0 +1,15 @@
+
+
+  ❌  8 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   Peaufiner Chiche [dark]    .s2-val«Marion»                    → .s2-val«lundi 5»
+   Peaufiner Chiche [dark]    .s2-val«lundi 5»                   → .s2-val«0 fichier»
+   Peaufiner Chiche [light]   .s2-val«Marion»                    → .s2-val«lundi 5»
+   Peaufiner Chiche [light]   .s2-val«lundi 5»                   → .s2-val«0 fichier»
+   Peaufiner [dark]           .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [dark]           .s2-val«mercredi 14»               → .s2-val«aucune»
+   Peaufiner [light]          .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

@@ -1,0 +1,7 @@
+3 écran(s) repris sur une page fraîche : Nuée défilée[d], fiche à tenir[d], l'instant arrive[l]
+6757 propriétés comparées · 36 écrans × 2 thèmes · 44 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 10 · E5 violations retirées 22 · E6 trace crème (Q374) 0
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 248) 100 %           ×1   Nuée défilée[d]
+        Nuée défilée [dark] · div.nf-item.nf-menthe.nf-vif > span.nf-dw > canvas.bul.mini-dalle.nf-d [3]
+
+❌ — 1 écart(s) de couleur avec la référence v118

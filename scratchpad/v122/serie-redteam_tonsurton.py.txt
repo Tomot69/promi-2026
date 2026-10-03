@@ -1,0 +1,32 @@
+
+══ thème dark ══
+fiche · encours   [dark]                             OK  ΔE 61.2  Δlum 141  
+fiche · atenir    [dark]                             OK  ΔE 107.8 Δlum 65   
+fiche · tenue     [dark]                             OK  ΔE 77.5  Δlum 112  
+fiche · chiche    [dark]                             OK  ΔE 69.8  Δlum 175  
+page + · Promi    [dark]                             OK  ΔE 61.2  Δlum 141  
+page + · Chiche   [dark]                             OK  ΔE 69.8  Δlum 175  
+page + · Nuée     [dark]                             OK  ΔE 74.2  Δlum 135  
+carte d'Index · mesurable [dark]                     OK  Δ42   
+carte d'Index · le pire des 6 [dark]                 OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [dark]                      OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [dark]                          OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [dark]                          OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [dark]                          OK  ΔE 87.2  Δlum 31   
+
+══ thème light ══
+fiche · encours   [light]                            OK  ΔE 61.2  Δlum 141  
+fiche · atenir    [light]                            OK  ΔE 107.8 Δlum 65   
+fiche · tenue     [light]                            OK  ΔE 77.5  Δlum 112  
+fiche · chiche    [light]                            OK  ΔE 69.8  Δlum 175  
+page + · Promi    [light]                            OK  ΔE 61.2  Δlum 141  
+page + · Chiche   [light]                            OK  ΔE 69.8  Δlum 175  
+page + · Nuée     [light]                            OK  ΔE 74.2  Δlum 135  
+carte d'Index · mesurable [light]                    OK  Δ42   
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26

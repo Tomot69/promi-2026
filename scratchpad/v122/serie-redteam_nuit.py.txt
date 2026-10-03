@@ -1,0 +1,37 @@
+1 · premier lancement : thème CLAIR, même si le téléphone est en sombre        OK  light
+1 · premier lancement : Zzz ACTIVÉ                                             KO  zzz=False · bouton posé=False
+soleil · 2026-06-21 (Paris) : l'almanach, ± 3 min                              OK  lever 05:47:02 · coucher 21:57:58
+soleil · 2026-06-21 : le second calcul, ± 3 min                                OK  écarts 0.1 / 0.1 min
+soleil · 2026-12-21 (Paris) : l'almanach, ± 3 min                              OK  lever 08:41:29 · coucher 16:56:00
+soleil · 2026-12-21 : le second calcul, ± 3 min                                OK  écarts 0.1 / 0.1 min
+la nuit · juin : coucher + 1 h → lever                                         OK  22:50☀ 23:05☾ 00:10☾ 05:40☾ 05:55☀ 15:00☀
+la nuit · décembre : coucher + 1 h → lever                                     OK  17:50☀ 18:02☾ 08:35☾ 08:48☀
+la nuit · fuseau inconnu : coucher + 1 h → lever                               OK  21:59☀ 22:01☾ 06:59☾ 07:01☀
+la nuit · fuseau inconnu : la source est « 22 h – 7 h »                        OK  
+2 · clair + Zzz, le jour : clair                                               OK  clair=True cran=False crème=#F7F0DE
+2 · le seuil franchi SOUS LES YEUX : rien ne bouge                             OK  clair=True cran=False crème=#F7F0DE
+2 · au changement d'écran : sombre DE NUIT                                     KO  clair=True cran=False crème=#F7F0DE
+2 · la bascule se fait sans fondu                                              KO  0.55s|false
+2 · le lever passé SOUS LES YEUX : rien ne bouge                               KO  clair=True cran=False crème=#F7F0DE
+2 · au retour au premier plan : le clair revient                               OK  clair=True cran=False crème=#F7F0DE
+2 · à l'ouverture d'un écran (les Réglages) : sombre de nuit                   KO  clair=True cran=False crème=#F7F0DE
+cran · tous les jetons qui ne sont pas des neutres clairs sont identiques AU HEX PRÈS OK  222 jetons, 0 ont bougé []
+cran · les neutres clairs baissent de 0,06 de luminance OKLCH (± 0,006)        KO  32 jetons, pire écart 0.0600
+cran · leur teinte est gardée (± 2°, hors arrondi des 8 bits)                  OK  pire écart hors arrondi 0.00°
+cran · le contraste du texte reste ≥ 7 : 1                                     KO  1.0 : 1 (#F7F0DE sur [247, 240, 222])
+cran · aucun filtre, aucun voile                                               OK  []
+cran · le champ d'une fiche promi garde sa couleur, au hex près                OK  [130, 174, 248]
+cran · le champ d'une fiche chiche garde sa couleur, au hex près               OK  [255, 184, 210]
+cran · la légende de l'Aura porte trois couleurs d'état exactes                OK  [[0, 52, 26], [41, 21, 71], [221, 77, 35]]
+cran · la palette des dalles n'a pas bougé                                     OK  [[130,174,248],[255,184,210],[201,168,245],[239,227,199]]
+3 · clair, Zzz éteint, la nuit : toujours clair                                OK  clair=True cran=False crème=#F7F0DE
+4 · sombre + Zzz, la nuit : le cran de nuit                                    KO  clair=False cran=False crème=#F7F0DE
+4 · sombre + Zzz, le jour : sombre ordinaire                                   OK  clair=False cran=False crème=#F7F0DE
+cran · la légende de l'Aura est la MÊME, au hex près, en sombre ordinaire et en sombre de nuit OK  [[0, 52, 26], [41, 21, 71], [221, 77, 35]] / [[0, 52, 26], [41, 21, 71], [221, 77, 35]]
+5 · sombre, Zzz éteint, la nuit : sombre ordinaire                             OK  clair=False cran=False crème=#F7F0DE
+5 · la crème est revenue à sa valeur                                           OK  #F7F0DE
+6 · après rechargement : le choix « sombre » et le Zzz activé sont retrouvés   OK  ('dark', True)
+6 · après rechargement : le choix « clair » et le Zzz éteint sont retrouvés    OK  ('light', False)
+
+26 / 34
+KO : 1 · premier lancement : Zzz ACTIVÉ · 2 · au changement d'écran : sombre DE NUIT · 2 · la bascule se fait sans fondu · 2 · le lever passé SOUS LES YEUX : rien ne bouge · 2 · à l'ouverture d'un écran (les Réglages) : sombre de nuit · cran · les neutres clairs baissent de 0,06 de luminance OKLCH (± 0,006) · cran · le contraste du texte reste ≥ 7 : 1 · 4 · sombre + Zzz, la nuit : le cran de nuit

@@ -1,0 +1,94 @@
+A · [clair · niveau défaut · 3] au ras : ΔE00 entre 10.1 et 17.9             OK  12.86
+A · [clair · niveau défaut · 3] à mi-étendue : ΔE00 entre 4.1 et 8.0         OK  5.52
+A · [clair · niveau défaut · 3] au bout de l'étendue (0.12 D) : ΔE00 sous 1  OK  0.12
+A · [clair · niveau défaut · 3] rien au-delà                                 OK  pire ΔE00 0.00 sur 18 directions
+B · [clair · niveau défaut · 3] il décroît vers l'opposé : 60 % à 90° de la lumière, 32 % à 135° (± 12) OK  60 % · 33 %
+B · [clair · niveau défaut · 3] sur le quart inférieur (l'opposé y tombe) : presque nul OK  ΔE00 0.27 en bas · 0.25 à l'opposé
+C · [clair · niveau défaut · 3] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.3 pt (4 px)
+C · [clair · niveau défaut · 3] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  27 % de remontées sur 180 pas
+E · [clair · niveau défaut · 3] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  4.21 · centre [228, 221, 203] · pourtour [247, 240, 222]
+F · [clair · niveau défaut · 3] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) OK  haut du halo 110.7 · bas du plateau 100.0 · bouton 475.47
+A · [sombre · niveau défaut · 3] au ras : ΔE00 entre 10.1 et 17.9            OK  12.47
+A · [sombre · niveau défaut · 3] à mi-étendue : ΔE00 entre 4.1 et 8.0        OK  5.45
+A · [sombre · niveau défaut · 3] au bout de l'étendue (0.12 D) : ΔE00 sous 1 OK  0.10
+A · [sombre · niveau défaut · 3] rien au-delà                                OK  pire ΔE00 0.07 sur 18 directions
+B · [sombre · niveau défaut · 3] il décroît vers l'opposé : 60 % à 90° de la lumière, 32 % à 135° (± 12) OK  66 % · 42 %
+B · [sombre · niveau défaut · 3] sur le quart inférieur (l'opposé y tombe) : presque nul OK  ΔE00 0.19 en bas · 0.17 à l'opposé
+C · [sombre · niveau défaut · 3] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.7 pt (5 px)
+C · [sombre · niveau défaut · 3] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  29 % de remontées sur 180 pas
+E · [sombre · niveau défaut · 3] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) KO  1.77 · centre [5, 3, 2] · pourtour [15, 14, 13]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre · niveau défaut · 3] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) OK  haut du halo 110.7 · bas du plateau 100.0 · bouton 475.47
+A · [clair · niveau 1] au ras : ΔE00 entre 4.3 et 7.7                        OK  5.17
+A · [clair · niveau 1] à mi-étendue : ΔE00 entre 1.7 et 3.4                  OK  2.29
+A · [clair · niveau 1] au bout de l'étendue (0.08 D) : ΔE00 sous 1           OK  0.11
+A · [clair · niveau 1] rien au-delà                                          OK  pire ΔE00 0.00 sur 18 directions
+C · [clair · niveau 1] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.3 pt (4 px)
+C · [clair · niveau 1] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  39 % de remontées sur 96 pas
+E · [clair · niveau 1] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  4.21 · centre [228, 221, 203] · pourtour [247, 240, 222]
+F · [clair · niveau 1] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) OK  haut du halo 120.0 · bas du plateau 100.0 · bouton 475.47
+A · [sombre · niveau 1] au ras : ΔE00 entre 4.3 et 7.7                       OK  5.03
+A · [sombre · niveau 1] à mi-étendue : ΔE00 entre 1.7 et 3.4                 OK  2.36
+A · [sombre · niveau 1] au bout de l'étendue (0.08 D) : ΔE00 sous 1          OK  0.06
+A · [sombre · niveau 1] rien au-delà                                         OK  pire ΔE00 0.00 sur 18 directions
+C · [sombre · niveau 1] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.0 pt (3 px)
+C · [sombre · niveau 1] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  32 % de remontées sur 96 pas
+E · [sombre · niveau 1] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  2.08 · centre [5, 3, 2] · pourtour [17, 15, 15]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre · niveau 1] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) OK  haut du halo 120.0 · bas du plateau 100.0 · bouton 475.47
+A · [clair · niveau 2] au ras : ΔE00 entre 7.2 et 12.8                       OK  9.08
+A · [clair · niveau 2] à mi-étendue : ΔE00 entre 2.9 et 5.7                  OK  4.02
+A · [clair · niveau 2] au bout de l'étendue (0.10 D) : ΔE00 sous 1           OK  0.15
+A · [clair · niveau 2] rien au-delà                                          OK  pire ΔE00 0.00 sur 18 directions
+C · [clair · niveau 2] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.0 pt (3 px)
+C · [clair · niveau 2] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  36 % de remontées sur 138 pas
+E · [clair · niveau 2] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  4.21 · centre [228, 221, 203] · pourtour [247, 240, 222]
+F · [clair · niveau 2] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) OK  haut du halo 115.3 · bas du plateau 100.0 · bouton 475.47
+A · [sombre · niveau 2] au ras : ΔE00 entre 7.2 et 12.8                      OK  8.76
+A · [sombre · niveau 2] à mi-étendue : ΔE00 entre 2.9 et 5.7                 OK  3.78
+A · [sombre · niveau 2] au bout de l'étendue (0.10 D) : ΔE00 sous 1          OK  0.10
+A · [sombre · niveau 2] rien au-delà                                         OK  pire ΔE00 0.00 sur 18 directions
+C · [sombre · niveau 2] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.0 pt (3 px)
+C · [sombre · niveau 2] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  29 % de remontées sur 138 pas
+E · [sombre · niveau 2] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  2.05 · centre [5, 3, 2] · pourtour [16, 15, 14]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre · niveau 2] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) OK  haut du halo 115.3 · bas du plateau 100.0 · bouton 475.47
+A · [clair · niveau 4] au ras : ΔE00 entre 13.0 et 23.0                      OK  17.05
+A · [clair · niveau 4] à mi-étendue : ΔE00 entre 5.2 et 10.3                 OK  7.26
+A · [clair · niveau 4] au bout de l'étendue (0.14 D) : ΔE00 sous 1           OK  0.16
+A · [clair · niveau 4] rien au-delà                                          OK  pire ΔE00 0.00 sur 18 directions
+C · [clair · niveau 4] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.0 pt (3 px)
+C · [clair · niveau 4] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  29 % de remontées sur 219 pas
+E · [clair · niveau 4] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  4.21 · centre [228, 221, 203] · pourtour [247, 240, 222]
+F · [clair · niveau 4] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) KO  haut du halo 106.0 · bas du plateau 100.0 · bouton 475.47
+A · [sombre · niveau 4] au ras : ΔE00 entre 13.0 et 23.0                     OK  16.14
+A · [sombre · niveau 4] à mi-étendue : ΔE00 entre 5.2 et 10.3                OK  6.98
+A · [sombre · niveau 4] au bout de l'étendue (0.14 D) : ΔE00 sous 1          OK  0.13
+A · [sombre · niveau 4] rien au-delà                                         OK  pire ΔE00 0.44 sur 18 directions
+C · [sombre · niveau 4] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.0 pt (3 px)
+C · [sombre · niveau 4] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  32 % de remontées sur 219 pas
+E · [sombre · niveau 4] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  2.61 · centre [5, 3, 2] · pourtour [19, 17, 15]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre · niveau 4] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) KO  haut du halo 106.0 · bas du plateau 100.0 · bouton 475.47
+A · [clair · niveau 5] au ras : ΔE00 entre 17.3 et 30.7                      OK  23.11
+A · [clair · niveau 5] à mi-étendue : ΔE00 entre 7.0 et 13.7                 OK  9.98
+A · [clair · niveau 5] au bout de l'étendue (0.16 D) : ΔE00 sous 1           OK  0.16
+A · [clair · niveau 5] rien au-delà                                          KO  pire ΔE00 6.54 sur 18 directions
+C · [clair · niveau 5] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.3 pt (4 px)
+C · [clair · niveau 5] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  33 % de remontées sur 261 pas
+E · [clair · niveau 5] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  4.21 · centre [228, 221, 203] · pourtour [247, 240, 222]
+F · [clair · niveau 5] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) KO  haut du halo 101.4 · bas du plateau 100.0 · bouton 475.47
+A · [sombre · niveau 5] au ras : ΔE00 entre 17.3 et 30.7                     OK  21.84
+A · [sombre · niveau 5] à mi-étendue : ΔE00 entre 7.0 et 13.7                OK  9.66
+A · [sombre · niveau 5] au bout de l'étendue (0.16 D) : ΔE00 sous 1          OK  0.11
+A · [sombre · niveau 5] rien au-delà                                         KO  pire ΔE00 8.34 sur 18 directions
+C · [sombre · niveau 5] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.3 pt (4 px)
+C · [sombre · niveau 5] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  26 % de remontées sur 261 pas
+E · [sombre · niveau 5] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  2.07 · centre [5, 3, 2] · pourtour [17, 15, 13]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre · niveau 5] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) KO  haut du halo 101.4 · bas du plateau 100.0 · bouton 475.47
+D · le halo respire avec la lumière : ± 20 % (sommet ÷ creux = 1,5 ± 0,3)    OK  1.70 (10 relevés au sommet, 11 au creux)
+aucune erreur de page                                                        OK  
+
+84 / 91
+KO : E · [sombre · niveau défaut · 3] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) · F · [clair · niveau 4] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) · F · [sombre · niveau 4] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) · A · [clair · niveau 5] rien au-delà · F · [clair · niveau 5] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47) · A · [sombre · niveau 5] rien au-delà · F · [sombre · niveau 5] le halo ne touche pas le plateau ; le bouton est à sa place (v122 : 475,47)

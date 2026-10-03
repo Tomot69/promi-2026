@@ -8,12 +8,8 @@
 > message, sans que Tom ait à le demander.**
 >
 > ```bash
-> python3 serveur.py
+> python3 -m http.server 8752 --bind 0.0.0.0
 > ```
-> **⚑ v122 (Tom, 3 oct. 2026) : `serveur.py` remplace `python3 -m http.server`.** Il envoie `Cache-Control: no-store` sur chaque
-> fichier (ni `Last-Modified` ni `ETag`) : `http.server` laissait Safari garder un fichier « à l'heuristique » (≈ 10 % de son âge —
-> `promi-moteur.js` jusqu'à 2,6 h), l'iPhone montrait un MÉLANGE de versions. `/version.json` rend le commit servi ; l'Aura avec
-> `?mesure=1` l'affiche en tête du relevé (« version : f1fc823 + modifs non commitées »). Même port, écoute sur 0.0.0.0.
 >
 > - `http://127.0.0.1:8752/app.html`
 > - `http://127.0.0.1:8752/promi-moodboard-H.html`
@@ -113,27 +109,6 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
-
-### ⚑ v122 (3 oct. 2026) — LES COULEURS : LE CACHE, LES DÉCISIONS, L'ORANGE DE MA PAROLE !, LE FLASH. (Décisions Tom.)
-> **Ce que Tom voyait sur l'iPhone et que la mesure ne voyait pas : le CACHE de Safari** (voir `serveur.py` en tête). Mesuré : à
-> l'écran rendu, v121 = v118 sur toutes les fiches, la page + et l'Index, deux thèmes.
-> **La règle : chaque couleur porte la DERNIÈRE décision de Tom ; sans décision, sa valeur de v118** (`578ec80`). Juges :
-> `redteam_couleurs_ref.py` (contre v118, exceptions nommées E1–E6) et **`redteam_decisions.py`** (79 décisions EN DUR, chacune avec
-> sa source, contre l'écran rendu). **Les seuls écarts à v118 sont des décisions** : en sombre, les libellés d'état « à tenir » sont
-> CRÈME (Q290) dès la première image — sur la fiche (« trace pour tenir » était `#F3E7D1`) ET sur les cartes de l'Index, du Fil et
-> d'une personne (elles restaient `#DD4D23` : la passe de lisibilité ne les atteignait pas).
-> **⚑ L'ORANGE DE MA PAROLE ! EST UN JETON À LUI SEUL** : `--orange-maparole` (posé sur `#murPhrase`, lu par `#murPhrase .mp` et rien
-> d'autre) = `--c-orange-maparole` `#FB4C0D`, et `--c-orange-maparole-corps` `#FF7A55` sur les trois corps sombres de Peaufiner
-> (`#murPhrase.sur-corps`). Ces deux valeurs n'existent NULLE PART ailleurs (`redteam_maparole.py` : source, 36 écrans × 2 thèmes, la
-> phrase au doigt). Les jetons `--c-orange56-mur` / `--c-orange66-mur` de v121 sont retirés.
-> **⚑ Q374 — LE FLASH ORANGE, NOMMÉ : deux propriétaires.** Le poseur de la fiche peignait « à tenir » en `#DD4D23` dans les deux thèmes ;
-> la passe de lisibilité (`data-lis`, Q290) le repeignait crème en sombre, puis le poseur repassait (orange 400 ms, crème 476, orange
-> 727, crème 1095). La crème est maintenant posée À LA SOURCE (`e.colTexte`, comme pour « en cours »). Juge : `redteam_flash_etat.py`
-> (20 ouvertures, chaque image et une capture à la première).
-> **L'Aura (§3, en points) :** plateau → silhouette −11 · Pelote → ombre (et flaque) −15 · ombre → « Partager ma Pelote » −12 · bouton →
-> phrase −12 ; tout ce qui suit remonte d'autant (−50 au total). `K.bo.y` 111,532 · ombre 421,224 · flaque 405,347 · bouton 475,47 ·
-> phrase 577,6 · `K.G2_OMBRE` 38 · `K.G2` 44. Le halo au niveau 3 commence à 110,7, le plateau finit à 100 : ils ne se touchent pas.
-> ⚠ **Au niveau 5 (`?halo=5`), le halo monte à 101,4 : 1,4 pt du plateau.**
 
 ### ⚑ v121 (3 oct. 2026) — LES COULEURS DE v118. (Décision Tom.) Ce bloc CORRIGE le bloc v120 qui le suit.
 > **Erreur de référence au lot v120** : la bonne référence est le commit **`578ec80` (v118)**, servi avec son moteur — pas « avant v116 ».
@@ -797,10 +772,6 @@ Chiche          #FFB8D2          #FFF4FC       #201221
 Cercle          #C9A8F5          #EEE4F8       #1B1426
 tenue           (sa nature)      terre #2B1020 dans les deux thèmes — texte crème, marques d'état en amande
 ```
-> **⚑ v122 — CE TABLEAU ÉTAIT FAUX SUR DEUX COLONNES** (mesuré à l'écran, v118 comme aujourd'hui) : le corps CLAIR d'une fiche est la
-> **crème `#F7F0DE`** (Tom, Q221 : *« sur le corps crème »*) — `#CFE5FE` · `#FFF4FC` · `#EEE4F8` sont des jetons qui ne peignent pas
-> le corps ; le corps SOMBRE est celui de v113 (Q358) : **`#335382` · `#7C3F58` · `#5D4978`** (le Cercle : valeur posée par v113, pas
-> une citation de Tom).
 
 **Le contenu du corps passe en encre** (le moodboard le pose en blanc sur couleur
 pleine ; sur un corps clair ce serait illisible). **Tout texte posé sur un champ pastel passe à
@@ -1567,12 +1538,6 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_decisions.py   # 79 — v122 : CHAQUE DÉCISION DE COULEUR DE TOM (en dur, avec sa source) contre l'écran rendu — fiches Promi,
-                               #   Chiche, Cercle, page +, Index, deux thèmes. Rougit sur app-avant-v122 (77/79).
-python3 redteam_maparole.py    # v122 : #FB4C0D et #FF7A55 n'existent QUE dans la phrase des murs (« Ma Parole ! ») — source, rendu, au doigt.
-                               #   --statique (sans navigateur) ; --sonde rougit. Rougit sur app-avant-v122.
-python3 redteam_flash_etat.py  # 4 — v122 (Q374) : aucune image orange sur l'à-qui, l'échéance et « trace pour tenir » d'une fiche à tenir en
-                               #   sombre, 20 ouvertures, capture à la première image. Rougit sur app-avant-v122 (1/4).
 python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (commit 578ec80, servi avec son moteur) : styles calculés, canevas et
                                #   dalles rendues seules (synchrones, horloge figée), 36 écrans × 2 thèmes. Exceptions nommées en dur (Toile
                                #   entière, orange des murs, Pelote et halo, violations retirées). Rougit sur app-avant-v121 (480 écarts : le brun

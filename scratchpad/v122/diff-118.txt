@@ -1,0 +1,557 @@
+diff --git a/app.html b/app.html
+index e121dcb..e395f40 100644
+--- a/app.html
++++ b/app.html
+@@ -1614,10 +1614,10 @@ input.req-vide::placeholder{color:rgba(var(--c-orange61-rgb),.72)!important}
+   .sh-canvas-wrap{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 16px 48px rgba(var(--c-noir00-rgb),.6);touch-action:none}
+   .sh-canvas-wrap canvas{display:block;width:100%;height:100%}
+   .sh-badge{position:absolute;top:11px;left:12px}
+-#shareScreen .sh-badge .sh-bt{color:var(--c-creme95-3);text-shadow:0 1px 6px rgba(var(--c-noir00-rgb),.42)}
+-#shareScreen .sh-badge .sh-bf{color:rgba(var(--c-creme95-3-rgb),.82);text-shadow:0 1px 5px rgba(var(--c-noir00-rgb),.42)}
+-#shareScreen.sh-lightwm .sh-badge .sh-bt{color:var(--c-brun08-4);text-shadow:0 1px 6px rgba(var(--c-blanc100-rgb),.5)}
+-#shareScreen.sh-lightwm .sh-badge .sh-bf{color:rgba(var(--c-brun08-4-rgb),.72);text-shadow:0 1px 5px rgba(var(--c-blanc100-rgb),.5)}
++#shareScreen .sh-badge .sh-bt{color:var(--c-creme95-3);text-shadow:none}
++#shareScreen .sh-badge .sh-bf{color:rgba(var(--c-creme95-3-rgb),.82);text-shadow:none}
++#shareScreen.sh-lightwm .sh-badge .sh-bt{color:var(--c-brun08-4);text-shadow:none}
++#shareScreen.sh-lightwm .sh-badge .sh-bf{color:rgba(var(--c-brun08-4-rgb),.72);text-shadow:none}
+   .sh-bt{font-family:var(--f-libelle);font-weight:700;font-size:15px;letter-spacing:-.02em;color:var(--c-blanc100);-webkit-text-stroke:.4px rgba(var(--c-noir00-rgb),.5);line-height:1}
+   .sh-badge .uvi{color:var(--verm-txt)}
+   .sh-bf{font-family:var(--f-texte);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--c-creme94);-webkit-text-stroke:.3px rgba(var(--c-noir00-rgb),.45);margin-top:4px}
+@@ -2512,7 +2512,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
+   --f-marque:PromiLate,Gilbert,system-ui,sans-serif;
+   --f-texte:Atkinson,system-ui,sans-serif;
+   --t-titre-taille:36px;--t-titre-poids:600;--t-sous-titre-taille:22px;--t-sous-titre-poids:700;--t-texte-taille:16px;--t-texte-poids:400;--t-accent-taille:16px;--t-accent-poids:700;--t-petit-taille:14px;--t-petit-poids:400;--t-meta-taille:13px;--t-meta-poids:400;--t-libelle-taille:15px;--t-libelle-poids:700;
+-  --c-beige26:#453C32;--c-prune09:#2B1020;--c-crete27:#0B4A2A;--c-beige26-2:#493D28;--c-beige27:#4B3F29;--c-beige30:#4B463C;--c-beige30-2:#4B4740;--c-beige37:#615740;--c-beige38:#635741;--c-beige40:#655E55;--c-beige42:#6C6157;--c-beige42-2:#6C6253;--c-beige43:#6C6558;--c-beige44:#6E6350;--c-beige45:#706B64;--c-beige45-2:#6F6A5A;--c-beige47:#776E64;--c-beige53:#8B7D6F;--c-beige55:#928166;--c-beige56:#A2947C;--c-beige58:#8E897E;--c-beige58-2:#948A72;--c-beige59:#938C81;--c-beige59-2:#978C82;--c-beige60:#9D8D76;--c-beige61:#9B9080;--c-beige62:#9A9185;--c-beige65:#A89985;--c-beige65-2:#A89987;--c-beige67:#A8A08E;--c-beige69:#AFA498;--c-blanc100:#FFFFFF;--c-bleu13:#133352;--c-bleu14:#04375D;--c-bleu14-2:#05355D;--c-bleu17:#25405D;--c-bleu17-2:#294261;--c-bleu18:#2C4665;--c-bleu19:#1F4770;--c-bleu19-2:#294767;--c-bleu19-3:#2B4767;--c-bleu19-4:#2D4765;--c-bleu19-5:#284A71;--c-bleu20:#1D4B78;--c-bleu22:#385475;--c-bleu45:#82AEF8;--c-bleu46:#82AFFA;--c-bleu50:#8BB5F4;--c-bleu51:#91B7E8;--c-bleu51-2:#88B7F9;--c-bleu54:#8FBBF7;--c-bleu60:#92C1FE;--c-bleu62:#98C3FD;--c-bleu62-2:#A7C2F6;--c-bleu67:#9CCBFE;--c-bleu80:#B9DAFF;--c-bleu83:#C0DDFE;--c-bleu85:#CDDCFF;--c-brun03:#100D0B;--c-brun05:#171000;--c-brun06:#15130F;--c-brun06-2:#1A1201;--c-brun06-3:#171200;--c-brun06-4:#1A1100;--c-brun07:#1E1301;--c-brun08:#1A1613;--c-brun08-2:#1D1600;--c-brun08-3:#1D1700;--c-brun08-4:#1F1605;--c-brun05-2:#120E05;--c-brun09:#201908;--c-brun09-2:#1D1A17;--c-brun10:#211B05;--c-brun11:#231E02;--c-brun12:#242006;--c-brun12-2:#251F11;--c-brun14:#2F201C;--c-brun15:#2C2618;--c-brun19:#372D1E;--c-brun19-2:#3B2924;--c-brun19-3:#43291C;--c-brun21:#3C321E;--c-creme70:#B4A693;--c-creme76:#BDB5AA;--c-creme76-2:#D4B17F;--c-creme78:#C8BAA4;--c-creme79:#CABEA4;--c-creme79-2:#CBBCA6;--c-creme83:#E3C39D;--c-creme85:#EFC3B9;--c-creme85-2:#FAC2A8;--c-creme85-3:#E7C79F;--c-creme87:#E0D0B2;--c-creme88:#ECCFC6;--c-creme90:#E9D8B7;--c-creme90-2:#EAD9B9;--c-creme90-3:#EFD7B7;--c-creme90-4:#FCD1C1;--c-creme91:#EDDBBD;--c-creme91-2:#EDDBC8;--c-creme92:#E4D7BB;--c-creme92-2:#EFE3C7;--c-creme92-3:#F1DBD3;--c-creme93:#F1E1C5;--c-creme93-2:#EDDFD2;--c-creme93-3:#EFE0CE;--c-creme93-4:#EDE1D6;--c-creme94:#E9E5D5;--c-creme95:#F7F0DE;--c-creme95-2:#F3E7D1;--c-creme95-3:#F4E7D1;--c-creme95-4:#EEE6D5;--c-creme95-5:#F5E5CA;--c-creme95-6:#F3E5D7;--c-creme95-7:#F2E7D8;--c-creme97:#F7EBD6;--c-creme99:#FAF4E8;--c-framboise08:#201221;--c-framboise08-2:#260F1F;--c-framboise10:#380D25;--c-framboise54:#FFB8D2;--c-framboise70:#FBCEFF;--c-framboise91:#FFEFFA;--c-framboise94:#FFF4FC;--c-framboise97:#FFF9FC;--c-mauve04:#150828;--c-mauve08:#1B1426;--c-mauve08-2:#1B1230;--c-mauve10:#250F46;--c-mauve11:#2B1140;--c-mauve11-2:#290D49;--c-mauve12:#291547;--c-mauve12-2:#2B1640;--c-mauve12-3:#221E30;--c-mauve13:#221D42;--c-mauve17:#2E2740;--c-mauve17-2:#27235A;--c-mauve17-3:#2B2352;--c-mauve18:#29245A;--c-mauve18-2:#2D2656;--c-mauve20:#3A2A3E;--c-mauve23:#3D3352;--c-mauve24:#402D6A;--c-mauve28:#4D2D8B;--c-mauve33:#313AC3;--c-mauve36:#2F3ED6;--c-mauve39:#6D3DC5;--c-mauve40:#5E42D3;--c-mauve41:#6B4DAD;--c-mauve47:#8155C8;--c-mauve50:#75717F;--c-mauve52:#8F62D1;--c-mauve52-2:#B04BD2;--c-mauve54:#896BD3;--c-mauve58:#BF5AE5;--c-mauve59:#8876F8;--c-mauve62:#CB73AE;--c-mauve63:#291547;--c-mauve63-rgb:41,21,71;--c-mauve64:#AA80EA;--c-mauve69:#B294E7;--c-mauve69-2:#B194E3;--c-mauve73:#BC9DEE;--c-mauve74:#C0A0F5;--c-mauve75:#C4A2F5;--c-mauve77:#C9A8F5;--c-mauve80:#CDB4F6;--c-mauve84:#CBC7D7;--c-mauve86:#E6D8FA;--c-mauve90:#DEDAE6;--c-mauve92:#E7E1EE;--c-mauve94:#EEE4F8;--c-mauve95:#EDE9F5;--c-menthe11:#00341A;--c-menthe15:#132B1B;--c-menthe27:#1E492C;--c-menthe58:#589B63;--c-menthe59:#5C9B70;--c-menthe72:#80C095;--c-menthe72-2:#95BA8C;--c-menthe67:#00341A;--c-menthe82:#8FE08F;--c-menthe87:#C1E3CC;--c-menthe96:#E4FAE9;--c-noir00:#000000;--c-noir01:#050505;--c-noir01-2:#030307;--c-noir02:#08090C;--c-noir03:#0B0C0F;--c-orange34:#8B3328;--c-orange40:#AB3729;--c-orange40-2:#B92124;--c-orange41:#AE3929;--c-orange42:#F07A2E;--c-orange43:#B63B2B;--c-orange50:#DD3937;--c-orange53:#DD4D23;--c-orange58:#CF705F;--c-orange59:#FE5000;--c-orange61:#E8703C;--c-orange62:#E0786D;--c-orange64:#D68A4F;--c-orange69:#E1966E;--c-orange77:#F5AC9E;--c-periwinkle53:#C59552;--c-ton03:#0F1215;--c-ton03-2:#0B0F12;--c-ton07:#0D1F33;--c-ton07-2:#022039;--c-ton07-3:#171D26;--c-ton08:#082137;--c-ton08-2:#132235;--c-ton09:#052743;--c-ton09-2:#11263A;--c-ton09-3:#13263A;--c-ton09-4:#172536;--c-ton09-5:#152639;--c-ton09-6:#16263A;--c-ton09-7:#152439;--c-ton10:#312325;--c-ton11:#162B42;--c-ton11-2:#182B3F;--c-ton12:#19314A;--c-ton12-2:#19304C;--c-ton13:#1B334C;--c-ton13-2:#1D324A;--c-ton13-3:#1C344F;--c-ton13-4:#1A324F;--c-ton14:#4B2D30;--c-ton14-2:#1D3651;--c-ton14-3:#1E3651;--c-ton15:#303A4C;--c-ton16:#533336;--c-ton16-2:#323D4D;--c-ton54:#AEB9CB;--c-ton66:#C2C6CD;--c-ton67:#92D2D1;--c-ton82:#FED0A5;--c-ton90:#CFE5FE;--c-blanc100-rgb:255,255,255;--c-bleu14-rgb:4,55,93;--c-bleu45-rgb:130,174,248;--c-bleu51-2-rgb:136,183,249;--c-bleu60-rgb:146,193,254;--c-bleu62-2-rgb:167,194,246;--c-bleu62-rgb:152,195,253;--c-bleu67-rgb:156,203,254;--c-bleu85-rgb:205,220,255;--c-brun05-rgb:23,16,0;--c-brun06-4-rgb:26,17,0;--c-brun06-rgb:21,19,15;--c-brun08-4-rgb:31,22,5;--c-brun09-rgb:32,25,8;--c-brun21-rgb:60,50,30;--c-creme85-rgb:239,195,185;--c-creme92-2-rgb:239,227,199;--c-creme92-rgb:228,215,187;--c-creme95-2-rgb:243,231,209;--c-creme95-3-rgb:244,231,209;--c-creme95-rgb:247,240,222;--c-framboise54-rgb:255,184,210;--c-mauve04-rgb:21,8,40;--c-mauve10-rgb:37,15,70;--c-mauve11-2-rgb:41,13,73;--c-mauve11-rgb:43,17,64;--c-mauve12-2-rgb:43,22,64;--c-mauve12-rgb:41,21,71;--c-mauve40-rgb:94,66,211;--c-mauve50-rgb:117,113,127;--c-mauve52-rgb:143,98,209;--c-mauve54-rgb:137,107,211;--c-mauve63-rgb:41,21,71;--c-mauve77-rgb:201,168,245;--c-mauve84-rgb:203,199,215;--c-mauve86-rgb:230,216,250;--c-mauve90-rgb:222,218,230;--c-menthe11-rgb:0,52,26;--c-menthe72-rgb:128,192,149;--c-menthe67-rgb:0,52,26;--c-menthe82-rgb:143,224,143;--c-noir00-rgb:0,0,0;--c-noir01-2-rgb:3,3,7;--c-noir02-rgb:8,9,12;--c-brun03-rgb:16,13,11;--c-brun19-3-rgb:67,41,28;--c-prune09-rgb:43,16,32;--c-crete27-rgb:11,74,42;--c-noir03-rgb:11,12,15;--c-orange41-rgb:174,57,41;--c-orange42-rgb:240,122,46;--c-orange53-rgb:221,77,35;--c-orange59-rgb:254,80,0;--c-orange61-rgb:232,112,60;--c-orange69-rgb:225,150,110;--c-ton03-2-rgb:11,15,18;--c-ton03-rgb:15,18,21;--c-ton07-3-rgb:23,29,38;--c-ton07-rgb:13,31,51;--c-ton16-rgb:83,51,54;--c-ton54-rgb:174,185,203;--c-ton66-rgb:194,198,205;--c-ton90-rgb:207,229,254;
++  --c-beige26:#453C32;--c-prune09:#2B1020;--c-crete27:#0B4A2A;--c-beige26-2:#493D28;--c-beige27:#4B3F29;--c-beige30:#4B463C;--c-beige30-2:#4B4740;--c-beige37:#615740;--c-beige38:#635741;--c-beige40:#655E55;--c-beige42:#6C6157;--c-beige42-2:#6C6253;--c-beige43:#6C6558;--c-beige44:#6E6350;--c-beige45:#706B64;--c-beige45-2:#6F6A5A;--c-beige47:#776E64;--c-beige53:#8B7D6F;--c-beige55:#928166;--c-beige56:#A2947C;--c-beige58:#8E897E;--c-beige58-2:#948A72;--c-beige59:#938C81;--c-beige59-2:#978C82;--c-beige60:#9D8D76;--c-beige61:#9B9080;--c-beige62:#9A9185;--c-beige65:#A89985;--c-beige65-2:#A89987;--c-beige67:#A8A08E;--c-beige69:#AFA498;--c-blanc100:#FFFFFF;--c-bleu13:#133352;--c-bleu14:#04375D;--c-bleu14-2:#05355D;--c-bleu17:#25405D;--c-bleu17-2:#294261;--c-bleu18:#2C4665;--c-bleu19:#1F4770;--c-bleu19-2:#294767;--c-bleu19-3:#2B4767;--c-bleu19-4:#2D4765;--c-bleu19-5:#284A71;--c-bleu20:#1D4B78;--c-bleu22:#385475;--c-bleu45:#82AEF8;--c-bleu46:#82AFFA;--c-bleu50:#8BB5F4;--c-bleu51:#91B7E8;--c-bleu51-2:#88B7F9;--c-bleu54:#8FBBF7;--c-bleu60:#92C1FE;--c-bleu62:#98C3FD;--c-bleu62-2:#A7C2F6;--c-bleu67:#9CCBFE;--c-bleu80:#B9DAFF;--c-bleu83:#C0DDFE;--c-bleu85:#CDDCFF;--c-brun03:#100D0B;--c-brun05:#171000;--c-brun06:#15130F;--c-brun06-2:#1A1201;--c-brun06-3:#171200;--c-brun06-4:#1A1100;--c-brun07:#1E1301;--c-brun08:#1A1613;--c-brun08-2:#1D1600;--c-brun08-3:#1D1700;--c-brun08-4:#1F1605;--c-brun05-2:#120E05;--c-brun09:#201908;--c-brun09-2:#1D1A17;--c-brun10:#211B05;--c-brun11:#231E02;--c-brun12:#242006;--c-brun12-2:#251F11;--c-brun14:#2F201C;--c-brun15:#2C2618;--c-brun19:#372D1E;--c-brun19-2:#3B2924;--c-brun19-3:#43291C;--c-brun21:#3C321E;--c-creme70:#B4A693;--c-creme76:#BDB5AA;--c-creme76-2:#D4B17F;--c-creme78:#C8BAA4;--c-creme79:#CABEA4;--c-creme79-2:#CBBCA6;--c-creme83:#E3C39D;--c-creme85:#EFC3B9;--c-creme85-2:#FAC2A8;--c-creme85-3:#E7C79F;--c-creme87:#E0D0B2;--c-creme88:#ECCFC6;--c-creme90:#E9D8B7;--c-creme90-2:#EAD9B9;--c-creme90-3:#EFD7B7;--c-creme90-4:#FCD1C1;--c-creme91:#EDDBBD;--c-creme91-2:#EDDBC8;--c-creme92:#E4D7BB;--c-creme92-2:#EFE3C7;--c-creme92-3:#F1DBD3;--c-creme93:#F1E1C5;--c-creme93-2:#EDDFD2;--c-creme93-3:#EFE0CE;--c-creme93-4:#EDE1D6;--c-creme94:#E9E5D5;--c-creme95:#F7F0DE;--c-creme95-2:#F3E7D1;--c-creme95-3:#F4E7D1;--c-creme95-4:#EEE6D5;--c-creme95-5:#F5E5CA;--c-creme95-6:#F3E5D7;--c-creme95-7:#F2E7D8;--c-creme97:#F7EBD6;--c-creme99:#FAF4E8;--c-framboise08:#201221;--c-framboise08-2:#260F1F;--c-framboise10:#380D25;--c-framboise54:#FFB8D2;--c-framboise70:#FBCEFF;--c-framboise91:#FFEFFA;--c-framboise94:#FFF4FC;--c-framboise97:#FFF9FC;--c-mauve04:#150828;--c-mauve08:#1B1426;--c-mauve08-2:#1B1230;--c-mauve10:#250F46;--c-mauve11:#2B1140;--c-mauve11-2:#290D49;--c-mauve12:#291547;--c-mauve12-2:#2B1640;--c-mauve12-3:#221E30;--c-mauve13:#221D42;--c-mauve17:#2E2740;--c-mauve17-2:#27235A;--c-mauve17-3:#2B2352;--c-mauve18:#29245A;--c-mauve18-2:#2D2656;--c-mauve20:#3A2A3E;--c-mauve23:#3D3352;--c-mauve24:#402D6A;--c-mauve28:#4D2D8B;--c-mauve33:#313AC3;--c-mauve36:#2F3ED6;--c-mauve39:#6D3DC5;--c-mauve40:#5E42D3;--c-mauve41:#6B4DAD;--c-mauve47:#8155C8;--c-mauve50:#75717F;--c-mauve52:#8F62D1;--c-mauve52-2:#B04BD2;--c-mauve54:#896BD3;--c-mauve58:#BF5AE5;--c-mauve59:#8876F8;--c-mauve62:#CB73AE;--c-mauve63:#291547;--c-mauve63-rgb:41,21,71;--c-mauve64:#AA80EA;--c-mauve69:#B294E7;--c-mauve69-2:#B194E3;--c-mauve73:#BC9DEE;--c-mauve74:#C0A0F5;--c-mauve75:#C4A2F5;--c-mauve77:#C9A8F5;--c-mauve80:#CDB4F6;--c-mauve84:#CBC7D7;--c-mauve86:#E6D8FA;--c-mauve90:#DEDAE6;--c-mauve92:#E7E1EE;--c-mauve94:#EEE4F8;--c-mauve95:#EDE9F5;--c-menthe11:#00341A;--c-menthe15:#132B1B;--c-menthe27:#1E492C;--c-menthe58:#589B63;--c-menthe59:#5C9B70;--c-menthe72:#80C095;--c-menthe72-2:#95BA8C;--c-menthe67:#00341A;--c-menthe82:#8FE08F;--c-menthe87:#C1E3CC;--c-menthe96:#E4FAE9;--c-noir00:#000000;--c-noir01:#050505;--c-noir01-2:#030307;--c-noir02:#08090C;--c-noir03:#0B0C0F;--c-orange34:#8B3328;--c-orange40:#AB3729;--c-orange40-2:#B92124;--c-orange41:#AE3929;--c-orange42:#F07A2E;--c-orange43:#B63B2B;--c-orange50:#DD3937;--c-orange53:#DD4D23;--c-orange58:#CF705F;--c-orange59:#FE5000;--c-orange-maparole:#FB4C0D;--c-orange-maparole-corps:#FF7A55;--c-orange61:#E8703C;--c-orange62:#E0786D;--c-orange64:#D68A4F;--c-orange69:#E1966E;--c-orange77:#F5AC9E;--c-periwinkle53:#C59552;--c-ton03:#0F1215;--c-ton03-2:#0B0F12;--c-ton07:#0D1F33;--c-ton07-2:#022039;--c-ton07-3:#171D26;--c-ton08:#082137;--c-ton08-2:#132235;--c-ton09:#052743;--c-ton09-2:#11263A;--c-ton09-3:#13263A;--c-ton09-4:#172536;--c-ton09-5:#152639;--c-ton09-6:#16263A;--c-ton09-7:#152439;--c-ton10:#312325;--c-ton11:#162B42;--c-ton11-2:#182B3F;--c-ton12:#19314A;--c-ton12-2:#19304C;--c-ton13:#1B334C;--c-ton13-2:#1D324A;--c-ton13-3:#1C344F;--c-ton13-4:#1A324F;--c-ton14:#4B2D30;--c-ton14-2:#1D3651;--c-ton14-3:#1E3651;--c-ton15:#303A4C;--c-ton16:#533336;--c-ton16-2:#323D4D;--c-ton54:#AEB9CB;--c-ton66:#C2C6CD;--c-ton67:#92D2D1;--c-ton82:#FED0A5;--c-ton90:#CFE5FE;--c-blanc100-rgb:255,255,255;--c-bleu14-rgb:4,55,93;--c-bleu45-rgb:130,174,248;--c-bleu51-2-rgb:136,183,249;--c-bleu60-rgb:146,193,254;--c-bleu62-2-rgb:167,194,246;--c-bleu62-rgb:152,195,253;--c-bleu67-rgb:156,203,254;--c-bleu85-rgb:205,220,255;--c-brun05-rgb:23,16,0;--c-brun06-4-rgb:26,17,0;--c-brun06-rgb:21,19,15;--c-brun08-4-rgb:31,22,5;--c-brun09-rgb:32,25,8;--c-brun21-rgb:60,50,30;--c-creme85-rgb:239,195,185;--c-creme92-2-rgb:239,227,199;--c-creme92-rgb:228,215,187;--c-creme95-2-rgb:243,231,209;--c-creme95-3-rgb:244,231,209;--c-creme95-rgb:247,240,222;--c-framboise54-rgb:255,184,210;--c-mauve04-rgb:21,8,40;--c-mauve10-rgb:37,15,70;--c-mauve11-2-rgb:41,13,73;--c-mauve11-rgb:43,17,64;--c-mauve12-2-rgb:43,22,64;--c-mauve12-rgb:41,21,71;--c-mauve40-rgb:94,66,211;--c-mauve50-rgb:117,113,127;--c-mauve52-rgb:143,98,209;--c-mauve54-rgb:137,107,211;--c-mauve63-rgb:41,21,71;--c-mauve77-rgb:201,168,245;--c-mauve84-rgb:203,199,215;--c-mauve86-rgb:230,216,250;--c-mauve90-rgb:222,218,230;--c-menthe11-rgb:0,52,26;--c-menthe72-rgb:128,192,149;--c-menthe67-rgb:0,52,26;--c-menthe82-rgb:143,224,143;--c-noir00-rgb:0,0,0;--c-noir01-2-rgb:3,3,7;--c-noir02-rgb:8,9,12;--c-brun03-rgb:16,13,11;--c-brun19-3-rgb:67,41,28;--c-prune09-rgb:43,16,32;--c-crete27-rgb:11,74,42;--c-noir03-rgb:11,12,15;--c-orange41-rgb:174,57,41;--c-orange42-rgb:240,122,46;--c-orange53-rgb:221,77,35;--c-orange59-rgb:254,80,0;--c-orange61-rgb:232,112,60;--c-orange69-rgb:225,150,110;--c-ton03-2-rgb:11,15,18;--c-ton03-rgb:15,18,21;--c-ton07-3-rgb:23,29,38;--c-ton07-rgb:13,31,51;--c-ton16-rgb:83,51,54;--c-ton54-rgb:174,185,203;--c-ton66-rgb:194,198,205;--c-ton90-rgb:207,229,254;
+   --c-menthe67-txt:#00341A;--c-mauve63-txt:#291547;--c-orange53-txt:#DD4D23;
+   --c-bleu08:#022140;--c-framboise11:#3D0F23;
+   --c-bleu45-txt:#82AEF8;--c-framboise54-txt:#FFB8D2;--c-mauve77-txt:#C9A8F5;--c-mauve12-txt:#C9A8F5;
+@@ -7661,25 +7661,116 @@ try{if(notifOn)armAllReminders();}catch(e){}
+                La boîte de la boule 128,532 → 122,532 (G1 = 50) ; bas de la silhouette 392,064 ; centre de l'ombre 9,283 + 60 sous
+                lui → 461,347, haut 453,224 ; G2 inchangé (56) : la phrase à 527,141 ; toute la colonne +54. EN SOMBRE : la crème.
+                ⚠ « Partager ma Pelote » finit alors sous le pli (≈ 894 pour 844) : l'écran défile (§8 — on ne reprend jamais l'air). */
+-#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:453.224px!important;width:104.429px!important;height:16.245px!important;
++/* ⚑ v121 (Tom, 3 oct. 2026) — « L'ombre de la Pelote remonte de 6 pt (environ 1 mm sur l'iPhone 16e). L'écart G2 sous l'ombre passe de
++   56 à 50 pt. Tout ce qui suit remonte d'autant, soit 12 pt en tout. » Ombre 453,224 → 447,224 ; flaque 437,347 → 431,347. */
++/* ⚑ v122 (Tom, 3 oct. 2026) — l'Aura en points (1 mm = 6 pt), chaque réduction faisant remonter tout ce qui suit : plateau → silhouette
++   −11 · bas de la Pelote → ombre (et flaque) −15 · ombre → « Partager ma Pelote » −12 · bouton → phrase −12. Ombre 447,224 → 421,224 (−26),
++   flaque 431,347 → 405,347, boule 122,532 → 111,532, halo 105,532 → 94,532 ; bouton −38, phrase et tout ce qui suit −50. */
++#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:421.224px!important;width:104.429px!important;height:16.245px!important;
+   margin:0!important;pointer-events:none;z-index:0;background:radial-gradient(closest-side,rgba(var(--c-brun09-rgb),.10),rgba(var(--c-brun09-rgb),0))}
+-/* ⚑ v117 (Tom) : « en sombre elle est invisible : inverse sa couleur plutôt que de la supprimer » — la crème, au même 0,10 */
+-#device:not(.light) #auraScreen.au2 .au-ombre{background:radial-gradient(closest-side,rgba(var(--c-creme95-rgb),.10),rgba(var(--c-creme95-rgb),0))!important}
++/* ⚑ v119 (Tom) : EN SOMBRE, AUCUNE OMBRE CRÈME. Le halo dépose sous la Pelote une flaque de lumière à peine perceptible, et l'ombre
++   est la zone que cette lumière n'atteint pas : `#auPeloteFlaque`, peinte et tramée par `window._flaquePelote` (lot-V119-PELOTE). */
++#device:not(.light) #auraScreen.au2 .au-ombre{display:none!important}
++#auraScreen.au2 .au-flaque{position:absolute!important;left:55px!important;top:405.347px!important;width:280px!important;height:48px!important;margin:0!important;pointer-events:none;z-index:0;display:none}
++#device:not(.light) #auraScreen.au2 .au-flaque{display:block}
++/* ⚑ v121 — le halo a son canevas, sous la boule : 330 × 330 centré sur elle (centre 195 ; 270,532), assez pour 121 + 0,16 D = 158,1 */
++#auraScreen.au2 .au-halo{position:absolute!important;left:30px!important;top:94.532px!important;width:330px!important;height:330px!important;margin:0!important;pointer-events:none;z-index:0}
+ #auraScreen.au2 .au-bo{z-index:1}
+-/* ⚑ v118 (Tom, Q368 → A) — L'ÉCHO DÉCALÉ : un disque PLAT (aucun flou, aucun dégradé), le rayon de la silhouette (121), décalé de
+-   11 vers le bas et la droite, dans un autre ton de la palette (posé par le code : le ton dominant + 2). Liste blanche
+-   NOMINATIVE de la Pelote : `.au-echo` et `window._echoPelote` ne vivent qu'ici et dans le lot de l'Aura. */
+-#auraScreen.au2 .au-echo{position:absolute!important;margin:0!important;border-radius:50%!important;pointer-events:none;z-index:0;
+-  box-shadow:none!important;filter:none!important;opacity:1!important}
+ </style>
+-<script id="lot-V118-PELOTE">
+-/* ⚑ v118 — l'écho décalé de la Pelote. Un seul peintre, nommé : le poser ailleurs (une dalle, une carte) fait rougir redteam_volume. */
+-window._echoPelote=function(hote, cx, cy, r, dec){
+-  var e=document.createElement('div'); e.className='au-echo'; e.id='auPeloteEcho';
+-  e.style.setProperty('left',(cx+dec-r)+'px','important'); e.style.setProperty('top',(cy+dec-r)+'px','important');
+-  e.style.setProperty('width',(2*r)+'px','important'); e.style.setProperty('height',(2*r)+'px','important');
+-  hote.appendChild(e); return e;
+-};
++<script id="lot-V119-PELOTE">
++/* ⚑ v119 (Tom, 2 oct. 2026) — LA PELOTE : UN MINI HALO QUI PROLONGE SA LUMIÈRE, ET UNE OMBRE PORTÉE, DANS LES DEUX MODES.
++   Écho, couronne de fibres et halo flou sont REFUSÉS. Le halo n'est pas un flou posé autour : c'est la lumière du velours qui
++   déborde à peine de la silhouette.
++   · couleur : le ton LE PLUS CLAIR de la rampe de la Pelote (pas une moyenne) ;
++   · forme : serré, décroissance EXPONENTIELLE — dosé au calcul (ΔE00 face au fond) : 7 au ras de la silhouette, 2,9 à 0,04 D,
++     nul à 0,08 D, rien au-delà ;
++   · direction : plein du côté éclairé (la lumière de la Pelote vient d'en haut à gauche), 20 % à l'opposé ; presque nul sur
++     le quart inférieur, pour laisser l'ombre se lire ;
++   · rendu : TRAMÉ avec le grain de l'app (`_noiseCanvas`) — aucune marche de quantification ;
++   · il respire avec la lumière du velours (± 20 %, même cycle, même phase) : c'est l'appelant qui règle son opacité.
++   Liste blanche NOMINATIVE de la Pelote : `window._haloPelote` et `window._flaquePelote` ne s'appellent que depuis l'Aura. */
++(function(){
++  function lin(c){ c/=255; return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4); }
++  function lab(c){ var r=lin(c[0]), g=lin(c[1]), b=lin(c[2]);
++    var x=(0.4124564*r+0.3575761*g+0.1804375*b)/0.95047, y=0.2126729*r+0.7151522*g+0.0721750*b, z=(0.0193339*r+0.1191920*g+0.9503041*b)/1.08883;
++    function f(t){ return t>0.008856?Math.cbrt(t):7.787*t+16/116; } return [116*f(y)-16, 500*(f(x)-f(y)), 200*(f(y)-f(z))]; }
++  function dE00(c1,c2){ var A=lab(c1), B=lab(c2), R=Math.PI/180, L1=A[0],a1=A[1],b1=A[2],L2=B[0],a2=B[1],b2=B[2];
++    var C1=Math.hypot(a1,b1), C2=Math.hypot(a2,b2), Cb=(C1+C2)/2, G=0.5*(1-Math.sqrt(Math.pow(Cb,7)/(Math.pow(Cb,7)+Math.pow(25,7))));
++    var ap1=(1+G)*a1, ap2=(1+G)*a2, Cp1=Math.hypot(ap1,b1), Cp2=Math.hypot(ap2,b2);
++    var h1=(Math.atan2(b1,ap1)/R+360)%360, h2=(Math.atan2(b2,ap2)/R+360)%360;
++    var dL=L2-L1, dC=Cp2-Cp1, dh=h2-h1; if(Cp1*Cp2===0) dh=0; else if(dh>180) dh-=360; else if(dh<-180) dh+=360;
++    var dH=2*Math.sqrt(Cp1*Cp2)*Math.sin(dh/2*R), Lb=(L1+L2)/2, Cpb=(Cp1+Cp2)/2, hb=h1+h2;
++    if(Cp1*Cp2!==0){ if(Math.abs(h1-h2)>180) hb+= (hb<360?360:-360); hb/=2; }
++    var T=1-0.17*Math.cos((hb-30)*R)+0.24*Math.cos(2*hb*R)+0.32*Math.cos((3*hb+6)*R)-0.20*Math.cos((4*hb-63)*R);
++    var Sl=1+0.015*(Lb-50)*(Lb-50)/Math.sqrt(20+(Lb-50)*(Lb-50)), Sc=1+0.045*Cpb, Sh=1+0.015*Cpb*T;
++    var Rt=-2*Math.sqrt(Math.pow(Cpb,7)/(Math.pow(Cpb,7)+Math.pow(25,7)))*Math.sin(60*Math.exp(-Math.pow((hb-275)/25,2))*R);
++    return Math.sqrt(Math.pow(dL/Sl,2)+Math.pow(dC/Sc,2)+Math.pow(dH/Sh,2)+Rt*(dC/Sc)*(dH/Sh)); }
++  window._dE00=dE00;
++  /* l'opacité qui donne l'écart voulu entre le fond et (fond + ton × opacité) — par dichotomie */
++  function dose(ton, fond, cible){ var mel=function(a){ return [fond[0]+(ton[0]-fond[0])*a, fond[1]+(ton[1]-fond[1])*a, fond[2]+(ton[2]-fond[2])*a]; };
++    if(cible<=0) return 0; if(dE00(mel(1),fond)<=cible) return 1;
++    var lo=0, hi=1; for(var i=0;i<22;i++){ var m=(lo+hi)/2; if(dE00(mel(m),fond)<cible) lo=m; else hi=m; } return (lo+hi)/2; }
++  var GRAIN=null;
++  function grain(){ if(GRAIN) return GRAIN; var n=96, d=null;
++    try{ if(typeof _noiseCanvas!=='undefined' && _noiseCanvas && _noiseCanvas.width){ n=_noiseCanvas.width; d=_noiseCanvas.getContext('2d').getImageData(0,0,n,n).data; } }catch(_){ d=null; }
++    var G=new Float32Array(n*n), vide=true, i;
++    if(d){ for(i=0;i<n*n;i++){ G[i]=d[i*4+3]>0 ? ((d[i*4]+d[i*4+3]*7)%256)/256 : 0; if(G[i]) vide=false; } }
++    if(!d || vide){ for(i=0;i<n*n;i++){ var x=(i*2654435761)>>>0; x^=x>>>15; x=(x*2246822519)>>>0; x^=x>>>13; G[i]=(x>>>8)/16777216; } }
++    /* on égalise : la trame doit être sans biais (chaque seuil autant de fois) */
++    var ord=[]; for(i=0;i<n*n;i++) ord.push(i); ord.sort(function(a,b){ return G[a]-G[b]||a-b; }); for(i=0;i<n*n;i++) G[ord[i]]=(i+0.5)/(n*n);
++    return (GRAIN={n:n, g:G}); }
++  var CIBLE={ras:7, mi:2.9, fin:0.08, mi_d:0.04, oppose:0.20, bas:0.06, crete:1.2};
++  /* ⚑ v120 (Tom, 2 oct. 2026) — DEUX RÉGLAGES À L'ŒIL, PAR L'ADRESSE, pour choisir sur l'iPhone (jamais mémorisés) :
++       ?densite=1|2|3   la pelure : densité ×1 (l'actuelle), ×1,5, ×2 ; l'épaisseur du poil ×1, ×0,8, ×0,7 ; à 2 et 3 le reflet s'adoucit
++       ?halo=1|2|3      l'écart ΔE00 au ras de la silhouette 6, 10, 14 ; l'étendue 0,08, 0,10, 0,12 D — toujours tramé, toujours
++                        plus vif du côté éclairé. Sans le paramètre : le halo de v119 (7 au ras, 0,08 D).
++     La forme (exponentielle, mi-chemin à 2,9/7 du ras), la direction, la trame, la respiration et l'ombre ne changent pas. */
++  /* ⚑ v121 (Tom, 3 oct. 2026) — « Par défaut, sans paramètre : le niveau ?halo=3. Ajoute ?halo=4 et ?halo=5 : écart ΔE00 au ras de 18
++     et 24, étendue de 0,14 et 0,16 D. Mêmes règles. » Au-delà de 0,12 D le halo sortait du canevas de la boule (boîte de 296, demi-côté
++     148 pour 121 + 0,16 D = 158,1) : il a désormais SON canevas, sous la boule (`#auPeloteHalo`, voir `halo` dans l'Aura). */
++  var REG={densite:1, halo:3, facteur:1, epaisseur:1, doux:false, haloRas:14, haloExt:0.12};
++  try{ var _m=/[?&]densite=([123])(?:&|$)/.exec(location.search); if(_m) REG.densite=+_m[1];
++       _m=/[?&]halo=([1-5])(?:&|$)/.exec(location.search); if(_m) REG.halo=+_m[1]; }catch(_){}
++  REG.facteur=[1,1,1.5,2][REG.densite]; REG.epaisseur=[1,1,0.8,0.7][REG.densite]; REG.doux=REG.densite>1;
++  REG.haloRas=[7,6,10,14,18,24][REG.halo]; REG.haloExt=[0.08,0.08,0.10,0.12,0.14,0.16][REG.halo];
++  CIBLE.ras=REG.haloRas; CIBLE.mi=REG.haloRas*2.9/7;
++  window._peloteReglage=REG;
++  /* W : le côté du canevas ; R : le rayon de la boule ; RS : celui de la silhouette (boule + poil) ; P : 0,08 D, en pixels */
++  window._haloPelote=function(W, R, RS, P, ton, fond, sansTrame){
++    var cv=document.createElement('canvas'); cv.width=W; cv.height=W;
++    var g=cv.getContext('2d'), im=g.createImageData(W,W), d=im.data, c=(W-1)/2, GR=grain(), LX=-0.58, LY=-0.72, nL=Math.hypot(LX,LY);
++    /* la décroissance : exponentielle, ramenée à zéro en P ; son pas est réglé pour que le mi-chemin tombe sur sa cible */
++    var q=CIBLE.mi/CIBLE.ras, e=q/(1-q), lam=-(P/2)/Math.log(e), e2=Math.exp(-P/lam);
++    function f(dd){ return dd<=0 ? 1 : (dd>=P ? 0 : (Math.exp(-dd/lam)-e2)/(1-e2)); }
++    /* la table de l'opacité au ras, dosée au calcul ; la crête (+20 %) est dans l'image, l'appelant la module */
++    var N=64, T=new Float32Array(N+1); for(var k=0;k<=N;k++) T[k]=dose(ton, fond, CIBLE.ras*CIBLE.crete*k/N);
++    function op(v){ v=Math.max(0,Math.min(1,v))*N; var i=Math.floor(v), t=v-i; return i>=N?T[N]:T[i]+(T[i+1]-T[i])*t; }
++    /* ⚑ v120 — LA TRAME SE DOSE EN NIVEAUX DE COULEUR, PAS D'OPACITÉ. Elle valait ± 1,5 niveau d'OPACITÉ : sur la seiche de v119 cela
++       suffisait, sur le brun revenu (#201908) un niveau d'opacité ne fait plus un niveau de couleur et l'escalier revenait (mesuré :
++       8 à 11 % de remontées pour 12 % exigés). On vise ± 2,75 niveaux de COULEUR sur le canal qui bouge le plus (à ± 2, la respiration — qui baisse l'opacité d'un tiers au creux — laissait encore une bande de 2,3 pt une fois sur trois). */
++    var DMAX=Math.max(1, Math.abs(ton[0]-fond[0]), Math.abs(ton[1]-fond[1]), Math.abs(ton[2]-fond[2])), AMP=Math.max(3, 5.5*255/DMAX);
++    for(var y=0;y<W;y++) for(var x=0;x<W;x++){
++      var dx=x-c, dy=y-c, r=Math.hypot(dx,dy); if(r<R*0.9 || r>RS+P) continue;
++      var co=(dx*LX+dy*LY)/(r*nL), w=CIBLE.oppose+(1-CIBLE.oppose)*(1+co)/2;
++      var bas=dy/r, qb=bas<=0.5736 ? 1 : (bas>=0.7071 ? CIBLE.bas : 1-(1-CIBLE.bas)*((bas-0.5736)/(0.7071-0.5736)));   /* le quart inférieur (± 45° du bas), fondu sur 10° */
++      var a=op(f(r-RS)*w*qb)*255, n=sansTrame ? 0.5 : GR.g[(y%GR.n)*GR.n+(x%GR.n)], v=a<=0 ? 0 : Math.floor(a+(n-0.5)*AMP+0.5);   /* trame de ± 1,5 niveau : le canevas est agrandi à l'écran, une trame d'un demi-niveau s'y lisse et l'escalier revient (mesuré : 1 % de remontées) */
++      if(v<=0) continue; var i4=(y*W+x)*4; d[i4]=ton[0]; d[i4+1]=ton[1]; d[i4+2]=ton[2]; d[i4+3]=v>255?255:v; }
++    g.putImageData(im,0,0); return cv;
++  };
++  /* la flaque du sombre : la lumière du halo, posée au sol autour de l'ombre — l'ombre (demi-axes a × b) est le creux qu'elle n'atteint pas */
++  window._flaquePelote=function(cv, lw, lh, a, b, ton, fond, dpr, sansTrame){
++    var W=Math.round(lw*dpr), H=Math.round(lh*dpr); if(cv.width!==W) cv.width=W; if(cv.height!==H) cv.height=H;
++    var g=cv.getContext('2d'), im=g.createImageData(W,H), d=im.data, GR=grain(), a0=dose(ton, fond, 3.2), cx=(W-1)/2, cy=(H-1)/2,
++        AMPF=Math.max(3, 5.5*255/Math.max(1, Math.abs(ton[0]-fond[0]), Math.abs(ton[1]-fond[1]), Math.abs(ton[2]-fond[2])));   /* v120 : la trame en niveaux de couleur (voir le halo) */
++    for(var y=0;y<H;y++) for(var x=0;x<W;x++){
++      var rho=Math.hypot((x-cx)/(a*dpr), (y-cy)/(b*dpr)), t;
++      if(rho<0.82) continue;
++      if(rho<1.04) t=(rho-0.82)/0.22; else if(rho<2.55) t=Math.exp(-(rho-1.04)/0.62)*(1-Math.pow((rho-1.04)/1.51,3)); else continue;
++      var al=a0*t*255, n=sansTrame ? 0.5 : GR.g[(y%GR.n)*GR.n+(x%GR.n)], v=al<=0 ? 0 : Math.floor(al+(n-0.5)*AMPF+0.5);
++      if(v<=0) continue; var i4=(y*W+x)*4; d[i4]=ton[0]; d[i4+1]=ton[1]; d[i4+2]=ton[2]; d[i4+3]=v>255?255:v; }
++    g.putImageData(im,0,0);
++  };
++})();
+ </script>
+ 
+ <style id="lot-V116-GENS-css">
+@@ -7697,6 +7788,8 @@ window._echoPelote=function(hote, cx, cy, r, dec){
+    qu'à L 0,12, Δh +5° contre +13°). Même geste que la planche adoptée : en sombre, là où le produit peint son brun de fond, il
+    peint la seiche. La Toile, elle, la reçoit du moteur (fond plat, vides, dalle neutre d'Ingénu, grain léger). Le clair ne bouge pas. */
+ #device:not(.light),.frame:not(.light){--c-brun09:var(--c-seiche10)}
++/* ⚑ v121 (Tom, 3 oct. 2026) — « Erreur de référence au lot v120 : Tom garde le nouveau sombre (la seiche, dans les pages comme sur
++   la Toile). » La substitution retirée en v120 est rendue telle quelle. Juge : redteam_couleurs_ref.py, contre le commit 578ec80. */
+ </style>
+ <style id="lot-V113-CORPS-SOMBRE-css">
+ /* ⚑ v113 (Tom, 30 sept. 2026) — « Le corps sombre : option 2 pour le Promi et pour le Chiche. Elle s'écarte le moins de l'actuel
+@@ -10298,7 +10391,7 @@ input.ix-search,textarea{background-image:none!important}
+ .device.light #dpTete .dpt-nat{color:var(--c-blanc100)!important}
+ #dpTete .dpt-qui{margin-top:0!important}
+ /* le ✕ reste au-dessus de la dalle */
+-#detailPoster .closeb{text-shadow:0 1px 10px rgba(var(--c-noir00-rgb),.3);color:var(--c-blanc100)!important;z-index:9;right:22px;top:54px;position:fixed!important}
++#detailPoster .closeb{text-shadow:none;color:var(--c-blanc100)!important;z-index:9;right:22px;top:54px;position:fixed!important}
+ /* ── BLOC 3 · LE LIEN ── */
+ #detailPoster #dAura{box-shadow:inset 0 1px 0 rgba(var(--c-blanc100-rgb),.18);padding:22px 24px!important;margin:0!important}
+ #detailPoster.f-tenue #dAura{box-shadow:inset 0 1px 0 rgba(var(--c-menthe11-rgb),.14)}
+@@ -11062,10 +11155,10 @@ input.ix-search,textarea{background-image:none!important}
+    « Nuée » et « ✕ Fermer » etaient blancs sur une dalle claire. */
+ .device.light #detailPoster #dpTete .dpt-nat,
+ .device.light #detailPoster>.closeb{color:var(--c-brun09)!important;
+-  text-shadow:0 1px 10px rgba(var(--c-blanc100-rgb),.5)!important}
++  text-shadow:none!important}
+ .device:not(.light) #detailPoster #dpTete .dpt-nat,
+ .device:not(.light) #detailPoster>.closeb{color:var(--c-creme95)!important;
+-  text-shadow:0 1px 12px rgba(var(--c-noir00-rgb),.4)!important}
++  text-shadow:none!important}
+ 
+ /* ══ PEAUFINER AU BAS DE L'ECRAN ══
+    La fiche est une colonne : Peaufiner ferme la marche et se colle en bas
+@@ -11170,7 +11263,7 @@ input.ix-search,textarea{background-image:none!important}
+ /* « Nuée » et le ✕ s'inversent selon le mode, sur cette trame */
+ .device.light #detailPoster.dp-mode-nuee #dpTete .dpt-nat,
+ .device.light #detailPoster.dp-mode-nuee>.closeb{color:var(--c-blanc100)!important;
+-  text-shadow:0 1px 12px rgba(var(--c-noir00-rgb),.28)!important}
++  text-shadow:none!important}
+ .device:not(.light) #detailPoster.dp-mode-nuee #dpTete .dpt-nat,
+ .device:not(.light) #detailPoster.dp-mode-nuee>.closeb{color:var(--c-creme95)!important}
+ 
+@@ -11268,7 +11361,7 @@ input.ix-search,textarea{background-image:none!important}
+ .frame.light #detailPoster.dp-mode-nuee>.closeb,
+ .frame:not(.light) #detailPoster.dp-mode-nuee #dptNat,
+ .frame:not(.light) #detailPoster.dp-mode-nuee>.closeb{
+-  color:var(--c-blanc100)!important;text-shadow:0 2px 14px rgba(var(--c-noir00-rgb),.45)!important;opacity:1!important}
++  color:var(--c-blanc100)!important;text-shadow:none!important;opacity:1!important}
+ 
+ /* ── LES LIBELLES DE SECTION : jamais delaves ── */
+ #detailPoster .mg-lab,#detailPoster .grouplab,#detailPoster .dp-lab{
+@@ -11308,7 +11401,7 @@ input.ix-search,textarea{background-image:none!important}
+ /* 1 · « Nuée » et « ✕ » sur la planche : une ombre portee les detache */
+ #detailPoster.dp-mode-nuee #dptNat,#detailPoster.dp-mode-nuee>.closeb{
+   color:var(--c-blanc100)!important;-webkit-text-fill-color:var(--c-blanc100)!important;
+-  text-shadow:0 2px 18px rgba(var(--c-noir00-rgb),.55),0 0 3px rgba(var(--c-noir00-rgb),.4)!important}
++  text-shadow:none!important}
+ /* 2 · les lignes du fil : leur encre suit leur aplat, sans exception */
+ #dpNueeFil .nf-item,#dpNueeFil .nf-item *{
+   -webkit-text-fill-color:currentColor!important}
+@@ -14350,7 +14443,11 @@ var CREMEETAT='#F7F0DE';
+     } else if(p && p.status==='rate'){                  /* à tenir · Chiche relevé */
+       /* ⚑ 22 sept. (Tom) : « à tenir » s'écrit #DD4D23, dans les deux thèmes — il tombait
+          à l'encre en mode clair. Mesuré : Δlum 65 sur la crème, il s'y lit. */
+-      e.col=TERRA; e.colTexte=TERRA; e.trace='trace pour tenir';
++      /* ⚑ v122 (Tom, Q374) — LE FLASH ORANGE. En sombre, ce libellé passait à la crème par une passe de lisibilité (`data-lis`, v16 /
++         Q290 : « les textes d'état sur fond sombre passent crème »), APRÈS que ce poseur l'avait peint en #DD4D23 — et le poseur repassait
++         ensuite (mesuré : orange à 400 ms, crème à 476, orange à 727, crème à 1095). Deux propriétaires d'une même couleur (§7). La
++         décision est posée ICI, à la source, comme pour « en cours » : #DD4D23 en clair, la crème en sombre — dès la première image. */
++      e.col=TERRA; e.colTexte=(light?TERRA:CREMEETAT); e.trace='trace pour tenir';
+       if(duo) e.quiFs=21;   /* le duo suivait 19, il suit 21 — même cran */
+     } else {                                            /* en cours */
+       /* ⚑ 22 sept. (Tom) : le LIBELLÉ d'état s'écrit #291547 — c'est un état qui paraît.
+@@ -17520,6 +17617,13 @@ var CREMEETAT='#F7F0DE';
+         g.textContent = 'garder de côté';
+         g.addEventListener('click', function(ev){ ev.stopPropagation();
+           var b = document.querySelector('#addDraft,#csDraft,#csGarder,[data-garder],.cs-draft');
++          /* ⚑ v119 (Tom, Q370) : LE TITRE ET LA PERSONNE DE LA PHRASE PASSENT AU GARDÉ DE CÔTÉ, puis la page + se ferme. Le bouton
++             rebranché lit l'ancien formulaire (`#dfTitle`, `#dfWho`), que la phrase ne remplit pas : il fermait la page sans rien
++             garder (mesuré au doigt). On lui passe ce que la phrase porte — on ne crée pas une fonction, on lui donne ses mots. */
++          try{ var ft=document.getElementById('fTitle'), dt=document.getElementById('dfTitle'), dw=document.getElementById('dfWho'), fw=document.getElementById('fWho');
++            var qui=(window.newWhoSel && window.newWhoSel.length) ? window.newWhoSel[0] : ((fw && fw.value.trim()) || '');
++            if(dt && ft) dt.value=ft.value.trim();
++            if(dw) dw.value=(qui && (''+qui).toLowerCase()!=='moi') ? qui : ''; }catch(_){}
+           if(b) b.click(); }, true);
+         cs.appendChild(g);
+       }
+@@ -25838,7 +25942,8 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
+ 
+ /* la sphère — .bo de la planche : 41 · 78 · 258 → 47 · 89,4 · 296. Le canevas est
+    TRANSPARENT hors de la boule : le plateau (z 9) passe devant sans qu'on le recouvre. */
+-#auraScreen.au2 .au-bo{position:absolute!important;left:47px!important;top:122.532px!important;
++#auraScreen.au2 .au-bo{position:absolute!important;left:47px!important;top:111.532px!important;   /* v122 : −11 (plateau → silhouette 50 → 39) */
++  
+   width:296px!important;height:296px!important;margin:0!important}
+ #auraScreen.au2 .au-bo canvas{position:absolute!important;left:0!important;top:0!important;
+   width:296px!important;height:296px!important;display:block!important;max-width:none!important;
+@@ -26228,7 +26333,7 @@ function GRAIN_POIL(g,e,v){
+      de brins ; monter l'opacité du bas de rampe assombrit toute la matière.
+      RIEN N'EST TOUCHÉ. Le défaut reste ouvert : il demande de comprendre la normalisation de
+      `atlasAlpha`, pas d'essayer un quatrième réglage au jugé (§7). */
+-  var T=TOUFFE[(v||0)%TOUFFE.length], ep=Math.max(0.82,e*0.118);
++  var T=TOUFFE[(v||0)%TOUFFE.length], ep=Math.max(0.82,e*0.118)*((window._peloteReglage||{}).epaisseur||1);   /* v120 : ?densite= affine le poil (×1, ×0,8, ×0,7) */
+   g.lineCap='round';
+   for(var k=0;k<T.length;k++){
+     g.save(); g.rotate(T[k][0]);
+@@ -27968,7 +28073,7 @@ function peint(cv,o){
+       var s2=1-tv*tv; s2=s2>0?Math.sqrt(s2):0;
+       var kk=s1*s2-tl*tv; if(kk<0)kk=0;
+       var k2=kk*kk, k4=k2*k2;                  /* exposant 8, une bande large */
+-      lum+=o.velours*(0.26*s1*dl + 0.62*k4*k2);
++      lum+=o.velours*(o.doux ? (0.26*s1*dl + 0.44*k4) : (0.26*s1*dl + 0.62*k4*k2));   /* v120, ?densite=2|3 : un reflet plus doux — la bande s'élargit (exposant 4 au lieu de 6) et baisse */
+     }
+ 
+     /* ⚑ LE CONTRE-JOUR — la photo qui fait vendre.
+@@ -28287,6 +28392,34 @@ function peint(cv,o){
+     g.imageSmoothingEnabled=true; g.imageSmoothingQuality='high';
+     g.drawImage(cv.__pk, -PB*0.5, -PB*0.5, PK.w*PB, PK.w*PB);
+     g.restore();
++    /* ⚑ v120 (Tom, 2 oct. 2026) — LA PELOTE EST PLEINE : « l'intérieur est opaque, toujours, dans les deux thèmes et à tous les
++       paliers du régulateur. On ne doit jamais voir le fond à travers. » La peau ci-dessus n'est opaque que là où la fourrure
++       couvre son bloc à 98 % : au palier réduit elle tombait à alpha 109, et la page se voyait entre les poils.
++       On pose donc, SOUS elle, la même peau rendue OPAQUE (les mêmes couleurs, un bloc sans poil prend la moyenne), bornée par un
++       disque plein jusqu'à 0,972 R et fondu jusqu'à 1,012 R — la limite que la peau avait déjà. Au-delà, c'est toujours la
++       fourrure, antialiasée, qui dessine seule la silhouette : elle ne change pas. Ni découpe (`clip`), ni dégradé : le disque est
++       un masque calculé une fois par taille. Juge : redteam_plein.py. */
++    if(!o.sansPlein){
++      if(!cv.__pm || cv.__pm.width!==W){
++        cv.__pm=document.createElement('canvas'); cv.__pm.width=W; cv.__pm.height=W;
++        var _mg=cv.__pm.getContext('2d'), _mi=_mg.createImageData(W,W), _md=_mi.data, _r0=R*0.972, _r1=R*1.012;
++        for(var _y=0;_y<W;_y++) for(var _x=0;_x<W;_x++){ var _r=Math.hypot(_x+0.5-CX,_y+0.5-CY); if(_r>=_r1) continue;
++          var _t=_r<=_r0 ? 1 : 1-(_r-_r0)/(_r1-_r0); _t=_t*_t*(3-2*_t); _md[(_y*W+_x)*4+3]=Math.round(255*_t); }
++        _mg.putImageData(_mi,0,0);
++        cv.__pt=document.createElement('canvas'); cv.__pt.width=W; cv.__pt.height=W; cv.__ptg=cv.__pt.getContext('2d');
++        cv.__po=document.createElement('canvas'); cv.__pog=null;
++      }
++      if(cv.__po.width!==PK.w || !cv.__pog){ cv.__po.width=PK.w; cv.__po.height=PK.w; cv.__pog=cv.__po.getContext('2d'); cv.__poi=cv.__pog.createImageData(PK.w,PK.w); cv.__pob=new Uint32Array(cv.__poi.data.buffer); }
++      var _ob=cv.__pob, _sr=0,_sg=0,_sb=0,_sn=0, _v, _q;
++      for(_q=0;_q<PK.c.length;_q++){ _v=PK.c[_q]; if(_v){ _sr+=_v&255; _sg+=(_v>>>8)&255; _sb+=(_v>>>16)&255; _sn++; } }
++      var _moy=_sn ? ((((_sb/_sn)|0)<<16)|(((_sg/_sn)|0)<<8)|((_sr/_sn)|0)) : 0;
++      for(_q=0;_q<PK.c.length;_q++){ _v=PK.c[_q]; _ob[_q]=(0xFF000000|((_v?_v:_moy)&0x00FFFFFF))>>>0; }
++      cv.__pog.putImageData(cv.__poi,0,0);
++      var _tg=cv.__ptg; _tg.globalCompositeOperation='copy'; _tg.imageSmoothingEnabled=true; _tg.imageSmoothingQuality='high';
++      _tg.drawImage(cv.__po, -PB*0.5, -PB*0.5, PK.w*PB, PK.w*PB);
++      _tg.globalCompositeOperation='destination-in'; _tg.drawImage(cv.__pm,0,0);
++      g.save(); g.globalCompositeOperation='destination-over'; g.drawImage(cv.__pt,0,0); g.restore();
++    }
+   }
+   og.putImageData(cv.__im,0,0);
+   g.drawImage(cv.__off,0,0);
+@@ -28485,7 +28618,7 @@ function peau(B,W,BLOC,OMB,VERS){
+       if(a2) out2[id]=(((a2<<24)>>>0)|(out[id]&0x00FFFFFF))>>>0;
+     }
+   }
+-  return {w:SW, d:out2};
++  return {w:SW, d:out2, c:out};   /* v120 : `c`, la couleur de chaque bloc sans son alpha — pour la peau pleine */
+ }
+ function verse(A,COL,L,n,B,W){
+   var OF=A.__off, AL=A.__alp, ST=A.__sta;
+@@ -28646,8 +28779,8 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+ 
+   /* ── LES COTES — planche ÷ 0,872 ; une cote se CALCULE, elle ne se mesure jamais
+         sur elle-même (§8). ───────────────────────────────────────────────────── */
+-  var K = { bo:{x:47, y:122.532, d:296}, R:0.392,   /* ⚑ v117 (Tom) : « remonte la Pelote d'un millimètre vers l'encart du haut » — −6 pt (1 mm ≈ 6 pt sur l'iPhone 16e) : G1 = 50 */   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
+-            nx:{y:587.061, h:107}, mo:{y:766.061},   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
++  var K = { bo:{x:47, y:111.532, d:296}, R:0.392,   /* ⚑ v122 (Tom) : −11 — du bas du plateau au haut de la silhouette, 50 → 39 */   /* ⚑ v117 (Tom) : « remonte la Pelote d'un millimètre vers l'encart du haut » — −6 pt (1 mm ≈ 6 pt sur l'iPhone 16e) : G1 = 50 */   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
++            nx:{y:525.061, h:107}, mo:{y:704.061},   /* ⚑ v122 : −50 (−11 −15 −12 −12) */   /* ⚑ v121 : −12 (l'ombre monte de 6, G2 sous l'ombre 56 → 50) */   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
+             /* ⚑ 22 sept. (Tom) : « les disques sont trop fins partout ». L'arc passe de 8 à 12
+                sur « toi » et de 6 à 9 sur une personne — la moitié en plus, comme sur les fiches.
+                Le diamètre et la photo ne bougent pas : c'est l'ANNEAU qui s'épaissit, vers l'intérieur. */
+@@ -28695,11 +28828,12 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+      Pelote, à G2 = 56 du bas de l'ombre. La phrase et ce qui suit se placent ensuite, à 56 sous le bouton. L'ombre garde ses
+      60 pt, l'air ne se reprend pas. » L'ombre : la cote de lot-V114-PELOTE-css (haut 453,224, haut. 16,245 → bas 469,469).
+      Le bouton : 525,469 → 585,469. La phrase : son ENCRE à 56 sous le bouton. */
+-  K.ombre = {y:453.224, h:16.245};
+-  K.G2 = 56;
++  K.ombre = {y:421.224, h:16.245};   /* ⚑ v121 (Tom) : −6 ; ⚑ v122 : −26 (la Pelote −11, l'ombre −15) */
++  K.G2 = 44;                         /* ⚑ v122 (Tom) : de « Partager ma Pelote » à la phrase, 56 → 44 */
++  K.G2_OMBRE = 38;                   /* ⚑ v121 (Tom) : l'écart SOUS l'ombre, 56 → 50 ; sous le bouton il reste 56 */
+   K.MOT_ENCRE = -1.87;   /* relevé sur l'image rendue (WebKit, deux thèmes) : l'encre de la phrase commence 1,87 SOUS le haut de sa boîte */
+-  K.btY = K.ombre.y + K.ombre.h + K.G2;                                  /* 525,469 */
+-  K.motY2 = K.btY + K.bt.h + K.G2 + K.MOT_ENCRE;                         /* 639,599 */
++  K.btY = K.ombre.y + K.ombre.h + K.G2_OMBRE;                            /* 475,469 (v121 : 513,469 ; v118 : 525,469) */
++  K.motY2 = K.btY + K.bt.h + K.G2 + K.MOT_ENCRE;                         /* 577,599 (v121 : 627,599 ; v118 : 639,599) */
+   K.PLI = 844;
+   K.MOISSON = 6;                                                         /* deux rangées de trois (Q187) */
+   /* ⚑ RÈGLE (Tom, 10 sept. — Q189) : LA SECONDE RANGÉE PARAÎT À PARTIR DE CINQ DALLES TENUES. En dessous,
+@@ -28792,7 +28926,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+   })();
+   var ENV = [1.0,0.0, 1.31,0.77,-1.05,0.4, -0.83,1.49,0.61,1.9], KN = 0.55;
+   var KDENS = [4.7,5.3,4.1,0.6,1.9,1.1, 6.7,5.9,7.3,2.4,0.7,1.5];
+-  var PALIERS = [110000, 90000, 75000];
++  var PALIERS = [110000, 90000, 75000].map(function(n){ return Math.round(n*((window._peloteReglage||{}).facteur||1)); });   /* v120 : ?densite= (×1, ×1,5, ×2) — les trois paliers du régulateur suivent */
+   var PXR = 620*0.438, MAG = 2.2;     /* l'échelle des îles, celle de la planche */
+ 
+   function lsGet(k,d){ try{ var v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } }
+@@ -29228,7 +29362,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+   /* ════════════════════════════════════════════════════════════════════════════
+      L'ÉCRAN — bâti une fois, rempli à chaque ouverture
+      ════════════════════════════════════════════════════════════════════════════ */
+-  var CAD, BO, CV, PRISE, MOT, INV, NX, LG, CPT, MO, GR, BT, D=null, FIN, HALO, OMBRE, ECHO;
++  var CAD, BO, CV, PRISE, MOT, INV, NX, LG, CPT, MO, GR, BT, D=null, FIN, HALO, OMBRE, FLAQUE, HCV;
+   function squelette(){
+     if(CAD) return;
+     SC.classList.add('au2');
+@@ -29264,9 +29398,9 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+        dans l'appareil et qu'il rogne — la même règle que la rangée glissante (data-glisse) */
+     CAD.setAttribute('data-defile','1');
+     /* v114 (Tom) — LE SEUL VOLUME DE L'APP : un halo de sa couleur et une ombre, posés SOUS la boule. */
+-    /* ⚑ v118 (Tom, Q368 → A) : L'ÉCHO DÉCALÉ — une copie PLATE de la silhouette, dans un autre ton de la palette, décalée de 11 ;
+-       c'est la célébration, citée. Aucun flou, aucun dégradé : il reste plat. Il n'existe QUE sous la Pelote (redteam_volume). */
+-    ECHO=window._echoPelote(CAD, K.bo.x+K.bo.d/2, K.bo.y+K.bo.d/2, 121, 11);
++    /* ⚑ v119, repris en v120 : l'écho est retiré ; le mini halo se peint dans le canevas de la boule (voir `halo`), la flaque du sombre ici */
++    FLAQUE=el('canvas','au-flaque'); FLAQUE.id='auPeloteFlaque'; CAD.appendChild(FLAQUE);
++    HCV=el('canvas','au-halo'); HCV.id='auPeloteHalo'; CAD.appendChild(HCV);   /* v121 : le halo, sous la boule */
+     OMBRE=el('div','au-ombre'); OMBRE.id='auPeloteOmbre'; CAD.appendChild(OMBRE);
+     BO=el('div','au-bo'); CV=el('canvas'); CV.id='auBoule'; BO.appendChild(CV);
+     PRISE=el('div','au-prise'); BO.appendChild(PRISE); CAD.appendChild(BO);
+@@ -29489,19 +29623,8 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+     var v=[t,e,r], S=CPT.children, L=LG.children;
+     for(var i=0;i<S.length&&i<L.length;i++){ var s=''+v[i]; if(S[i].textContent!==s) S[i].textContent=s;
+       var x=(L[i].offsetLeft+L[i].offsetWidth/2).toFixed(1)+'px'; if(S[i].style.left!==x) S[i].style.left=x; } }catch(_){} }
+-  /* le ton de l'écho : le ton dominant + 2 (la planche v117) — mais s'il se confond avec la PAGE (le crème dalle d'Ingénu sur la
+-     crème : ΔE 5), on prend le suivant (+3, puis +1). Plancher : ΔE 15, celui d'une matière sur un aplat (§3, Q216). */
+-  function echoTeinte(){ try{ if(!ECHO) return; var P=window.Toile.cols(), n=P.length, f=CREME, c=null;
+-      if(!clair()){ var mm=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(getComputedStyle(SC).backgroundColor); f=mm?[+mm[1],+mm[2],+mm[3]]:[5,3,2]; }
+-      var F=_lab(f[0],f[1],f[2]);
+-      [2,3,1].some(function(k){ var q=P[(SOL_IDX+k)%n], L=_lab(q[0],q[1],q[2]);
+-        if(Math.sqrt((L[0]-F[0])*(L[0]-F[0])+(L[1]-F[1])*(L[1]-F[1])+(L[2]-F[2])*(L[2]-F[2]))>=15){ c=q; return true; } return false; });
+-      if(!c) c=P[(SOL_IDX+2)%n];
+-      var v='rgb('+c[0]+','+c[1]+','+c[2]+')';
+-      if(ECHO.getAttribute('data-ton')!==v){ ECHO.setAttribute('data-ton',v); ECHO.style.setProperty('background-color',v,'important'); } }catch(_){} }
+   function place(){
+     if(!CAD) return;
+-    echoTeinte();
+     try{ reteintSiBesoin(); }catch(e){}   /* ⚑ 21 sept. : les états suivent le thème, quel que soit le chemin */
+     /* ⚑ 23 SEPTEMBRE 2026, second tour (Tom) — « LE BOUTON DE PARTAGE REMONTE SOUS LA
+        LÉGENDE — EN BAS DE PAGE, PERSONNE N'Y VA. REPRENDS LES ESPACES DE TOUTE LA COLONNE. »
+@@ -29667,7 +29790,11 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+   function mesLigne(nom,X){ var n=X.dt.length, tot=0; for(var i=0;i<n;i++) tot+=X.dt[i];
+     var f=function(v){ return (Math.round(v*10)/10).toFixed(1).replace('.',','); };
+     return nom+'\n  image  p50 '+f(mesCentile(X.dt,.5))+' ms · p95 '+f(mesCentile(X.dt,.95))+' ms · '+(n?f(1000*n/tot):'0')+' images/s\n  peinture  p50 '+f(mesCentile(X.ms,.5))+' ms · p95 '+f(mesCentile(X.ms,.95))+' ms · '+n+' images'; }
+-  function mesAffiche(txt){ if(!MES) return;
++  /* ⚑ v122 (Tom) : le relevé affiche, en clair, le commit que le serveur sert (`serveur.py` → /version.json) — pour vérifier sur
++     l'iPhone qu'on voit bien la dernière version. « + modifs » : l'arbre de travail porte des changements non commités. */
++  if(MES){ MES.version='version : …'; try{ fetch('version.json?t='+Date.now(), {cache:'no-store'}).then(function(r){ return r.json(); }).then(function(v){
++      MES.version='version : '+(v.commit||'?')+(v.modifie?' + modifs non commitées':''); }).catch(function(){ MES.version='version : inconnue (serveur sans /version.json)'; }); }catch(_){} }
++  function mesAffiche(txt){ if(!MES) return; txt=(MES.version||'')+'\n'+txt;
+     if(!MES.el){ var e=document.createElement('div'); e.id='auMesure';
+       e.style.cssText='position:absolute;left:24px;right:24px;top:108px;z-index:60;padding:10px 12px;border:2px solid #201908;border-radius:14px;background:#F7F0DE;color:#201908;-webkit-text-fill-color:#201908;font:500 13px/1.35 Atkinson,system-ui,sans-serif;white-space:pre-wrap;cursor:pointer';
+       e.addEventListener('click', function(ev){ ev.stopPropagation(); MES.phase=0; MES.t=0; MES.A={dt:[],ms:[]}; MES.B={dt:[],ms:[]}; PEL.souffleT=null; });
+@@ -29692,12 +29819,42 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+     return SOUFFLE.MAX*s;
+   }
+   window._peloteSouffle={valeur:souffle, regle:SOUFFLE, t:function(){ return PEL.souffleT; }};
++  /* ⚑ v119, repris en v120 — LE MINI HALO : la lumière du velours qui déborde à peine de la silhouette (lot-V119-PELOTE). Il se
++     peint SOUS la boule, dans son canevas, après le peintre ; il respire avec le souffle (± 20 %, même cycle, même phase) ; il se
++     refait quand le sol, le fond de la page ou la taille changent. La flaque du sombre se refait avec lui. */
++  var HAL={cv:null, cle:'', n:0};
++  function fondPage(){ if(clair()) return [CREME[0],CREME[1],CREME[2]];
++    var mm=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(getComputedStyle(SC).backgroundColor); return mm?[+mm[1],+mm[2],+mm[3]]:[32,25,8]; }
++  function tonLumiere(){ var R=M.rampeVelours(PEL.solR||solEffectif()), b=R[0], lb=-1;
++    for(var i=0;i<R.length;i++){ var l=0.2126*R[i][0]+0.7152*R[i][1]+0.0722*R[i][2]; if(l>lb){ lb=l; b=R[i]; } } return [Math.round(b[0]),Math.round(b[1]),Math.round(b[2])]; }
++  function souffleU(){ if(typeof window._peloteU==='number') return window._peloteU;   /* `_peloteU` : un crochet pour les juges — jamais posé par le produit */
++    return Math.max(0, Math.min(1, souffle()/SOUFFLE.MAX)); }
++  function halo(){
++    if(!HCV) return;
++    if(window._peloteSansHalo){ HCV.style.visibility='hidden'; return; }   /* un crochet pour le juge du contour — jamais posé par le produit */
++    if(HCV.style.visibility) HCV.style.visibility='';
++    if(!HAL.cle || (HAL.n++)%20===0){
++      var pr=Math.min(3, window.devicePixelRatio||1), W=Math.round(330*pr), s=PEL.solR||solEffectif(), f=fondPage(),
++          RG=window._peloteReglage||{}, k=[s[0]|0,s[1]|0,s[2]|0,f[0],f[1],f[2],W,RG.halo,window._haloSansTrame?1:0].join(',');
++      if(k!==HAL.cle){ HAL.cle=k;
++        try{ var ton=tonLumiere();
++          /* le même halo qu'en v119 (lot-V119-PELOTE), en pixels de l'écran : R = la boule, RS = la silhouette (boule + 5), P = l'étendue */
++          var src=window._haloPelote(W, K.R*K.bo.d*pr, (K.bo.d*K.R+5)*pr, (RG.haloExt||0.12)*K.bo.d*K.R*2*pr, ton, f, !!window._haloSansTrame);
++          if(HCV.width!==W){ HCV.width=W; HCV.height=W; }
++          var hg=HCV.getContext('2d'); hg.setTransform(1,0,0,1,0,0); hg.globalCompositeOperation='copy'; hg.drawImage(src,0,0);
++          if(FLAQUE) window._flaquePelote(FLAQUE, 280, 48, 52.2145, 8.1225, ton, f, pr, !!window._haloSansTrame); }catch(_){ } } }
++    /* il respire avec la lumière du velours : ± 20 %, même cycle, même phase — par son opacité, écrite seulement quand elle change */
++    var op=((0.8+0.4*souffleU())/1.2).toFixed(3);
++    if(HCV.__op!==op){ HCV.__op=op; HCV.style.opacity=op; }
++  }
++  window._peloteLumiere={etat:function(){ return {cle:HAL.cle, u:souffleU(), halo:!!(HCV&&HCV.width>300), ton:(function(){ try{ return tonLumiere(); }catch(_){ return null; } })()}; },
++                         recalibre:function(){ HAL.cle=''; }};
+   function opts(){
+     var A=atlas();
+     return {css:K.bo.d, R:K.R, sol:PEL.solR||solEffectif(), tailles:A.t, atlas:A.a, semis:semis(),
+             relief:FROISSE, env:ENV, kn:KN, lac:V.lac, tan:V.tan, pal:window.Toile.cols(),
+             trame:PEL.sansIles?ilesVides():PEL.iles, libre:false, fond:'rgba(0,0,0,0)',
+-            velours:souffle(), contre:0, duvet:0, grade:0, velours2:1, dresse:0,
++            velours:souffle(), doux:!!(window._peloteReglage||{}).doux, contre:0, duvet:0, grade:0, velours2:1, dresse:0,
+             pousse:Math.min(1, D.n/34), traces:TRACES, peigneAxial:1, tracesIncr:1,
+             emp:(EMP && EMP.p>=G.EMP_FIN) ? empPour(EMP) : null, peauVers:peauVers()};
+   }
+@@ -29825,7 +29982,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+     PEL.souffleT=(PEL.souffleT==null ? -SOUFFLE.DEPART : PEL.souffleT)+Math.min(0.5, dtR);   /* v117 : le souffle n'avance que quand on la voit — au TEMPS RÉEL (§8) : borné à 0,1 s comme la rotation, il ralentissait sous charge (WebKit, 150–250 ms par image : sommet mesuré à 8,2 s au lieu de 4,6) ; la borne de 0,5 s ne sert qu'après une pause */
+     var S=semis(), av=S.__stCle, t0=performance.now();
+     try{ var _o=opts(); if(window._peloteMod){ try{ window._peloteMod(_o); }catch(_){} }   /* v116 : un crochet pour les PLANCHES de la respiration — sans effet s'il n'est pas posé */
+-      M.peint(CV, _o); }catch(e){ window._auraErreur=String(e&&e.stack||e); PEL.pret=false; return; }
++      M.peint(CV, _o); halo(); }catch(e){ window._auraErreur=String(e&&e.stack||e); PEL.pret=false; return; }
+     var ms=performance.now()-t0;
+     if(MES) mesImage(dtR, ms);
+     PEL.dernier=ms; PEL.peints=(PEL.peints||0)+1;
+@@ -30111,7 +30268,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
+               null (reading 'dl')` — mesuré : la Pelote sortait NOIRE dans le partage tant que
+               l'Aura n'avait pas été ouverte une fois. On les bâtit avant de peindre. */
+            if(!PEL.iles) iles();
+-           M.peint(CV, opts()); PEL.peints=(PEL.peints||0)+1; }catch(e){ window._auraErreur=String(e&&e.stack||e); }
++           M.peint(CV, opts()); halo(); PEL.peints=(PEL.peints||0)+1; }catch(e){ window._auraErreur=String(e&&e.stack||e); }
+       return CV; }
+   };
+ 
+@@ -30853,17 +31010,15 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
+   display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;
+   background:var(--c-framboise54)!important;color:var(--c-framboise97)!important;-webkit-text-fill-color:var(--c-framboise97)!important;
+   font-family:var(--f-libelle)!important;font-weight:700!important;font-size:17px!important;
+-  letter-spacing:-.01em!important;box-shadow:0 4px 0 0 var(--c-mauve12)!important;pointer-events:auto!important;
++  letter-spacing:-.01em!important;box-shadow:none!important;pointer-events:auto!important;   /* v119 (Tom) : plus d'ombre dure sous le bouton d'achat */
+   position:absolute!important;overflow:hidden!important;transition:box-shadow .11s linear,transform .11s linear}
+ /* ⚑ LA SECONDE COUCHE DU BOUTON EST EN MAUVE (Tom, 12 sept.) : framboise foncée, puis terracotta, puis mauve —
+    retenu parce qu'il répond au « Cercle » du titre et ne parle pas le langage des états. */
+ #plusScreen #pcCadre #buyMonth.pc-pose{animation:pcPose .52s cubic-bezier(.32,.72,0,1) both}
+-@keyframes pcPose{from{transform:translateY(-6px);box-shadow:0 0 0 0 var(--c-mauve12)}to{transform:none;box-shadow:0 4px 0 0 var(--c-mauve12)}}
+-#plusScreen #pcCadre #buyMonth:active{box-shadow:0 0 0 0 var(--c-mauve12)!important;transform:translateY(4px)}
+-#plusScreen #pcCadre #buyMonth .pc-eclat{position:absolute;top:0;left:-45%;width:30%;height:100%;z-index:1;pointer-events:none;
+-  background:linear-gradient(100deg,rgba(var(--c-blanc100-rgb),0),rgba(var(--c-blanc100-rgb),.30) 50%,rgba(var(--c-blanc100-rgb),0));
+-  transform:skewX(-14deg);animation:pcEclat 5.2s linear infinite}
+-@keyframes pcEclat{0%{left:-45%}12%{left:125%}100%{left:125%}}
++@keyframes pcPose{from{transform:translateY(-6px)}to{transform:none}}
++#plusScreen #pcCadre #buyMonth:active{transform:translateY(4px)}
++#plusScreen #pcCadre #buyMonth .pc-eclat{display:none!important   /* v119 (Tom) : l'éclat en dégradé est retiré — le flou et le dégradé ne sont permis qu'aux murs, pas au bouton */}
++
+ @media (prefers-reduced-motion:reduce){#plusScreen #pcCadre #buyMonth .pc-eclat{animation:none;opacity:0}
+   #plusScreen #pcCadre #buyMonth.pc-pose{animation:none}}
+ /* ⚑ LA SIGNATURE DE MATIÈRE AU RELÂCHEMENT A ÉTÉ RETIRÉE (Tom, 12 sept. 2026). Elle était peinte correctement
+@@ -30885,12 +31040,12 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
+ #plusScreen #pcCadre.pc-b2 #buyYear{background:rgba(var(--c-mauve12-rgb),.16)!important;border-color:rgba(var(--c-mauve12-rgb),.46)!important;
+   color:var(--c-mauve39)!important;-webkit-text-fill-color:var(--c-mauve39)!important}
+ #plusScreen #pcCadre.pc-b2 #buyYear::before{display:block!important;
+-  background:linear-gradient(118deg,rgba(var(--c-mauve12-rgb),.26) 0%,rgba(var(--c-mauve12-rgb),.10) 46%,rgba(var(--c-mauve12-rgb),.26) 100%)!important}
++  background:none!important}
+ /* 4 bis · la variante TERRACOTTA du fond, texte en mauve — ⚠ le terracotta est la couleur d'état « à tenir » (§3) */
+ #plusScreen #pcCadre.pc-b4 #buyYear{background:rgba(var(--c-orange53-rgb),.15)!important;border-color:rgba(var(--c-orange53-rgb),.46)!important;
+   color:var(--c-mauve39)!important;-webkit-text-fill-color:var(--c-mauve39)!important}
+ #plusScreen #pcCadre.pc-b4 #buyYear::before{display:block!important;
+-  background:linear-gradient(118deg,rgba(var(--c-orange53-rgb),.24) 0%,rgba(var(--c-orange53-rgb),.09) 46%,rgba(var(--c-orange53-rgb),.24) 100%)!important}
++  background:none!important}
+ .frame:not(.light) #plusScreen #pcCadre.pc-b4 #buyYear,#device:not(.light) #plusScreen #pcCadre.pc-b4 #buyYear{
+   background:rgba(var(--c-orange53-rgb),.20)!important;border-color:rgba(var(--c-orange53-rgb),.5)!important;
+   color:var(--c-mauve80)!important;-webkit-text-fill-color:var(--c-mauve80)!important}
+@@ -30907,7 +31062,7 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
+   letter-spacing:-.01em!important;color:var(--pc-ink)!important;-webkit-text-fill-color:var(--pc-ink)!important;
+   text-decoration:none!important;pointer-events:auto!important;position:absolute!important;overflow:hidden!important}
+ #plusScreen #pcCadre #buyYear::before{content:'';position:absolute;left:-30%;top:-140%;width:160%;height:380%;
+-  background:linear-gradient(118deg,var(--pc-sec2) 0%,var(--pc-sec) 46%,var(--pc-sec2) 100%);
++  background:none;   /* v119 : le second bouton est un aplat */
+   transform:rotate(-12deg);z-index:0;pointer-events:none}
+ #plusScreen #pcCadre #buyYear>*{position:relative;z-index:1}
+ /* ⚑ LA BANDE ENTRE LA TOILE ET LE BOUTON (Tom, 12 sept.) : « tout est gris et noir sur crème, sur presque
+@@ -36059,7 +36214,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
+     if(ms<f.lever){ var h=fenetre(ms-24*H); return ms>=h.coucher+H; }     /* avant le lever : la nuit d'hier a-t-elle commencé ? */
+     return false;
+   }
+-  function cible(){ var n=!!(Z.zzz && nuit(maintenant())); return {theme:(Z.choix==='dark'||n)?'dark':'light', cran:n}; }
++  /* ⚑ v120 (Tom, 2 oct. 2026) — LE Zzz EST COUPÉ PARTOUT, JUSQU'À NOUVEL ORDRE : ni thème de nuit, ni cran de nuit, quels que soient
++     le réglage mémorisé, `?zzz=1` ou `?nuit=1`. Le thème est le CHOIX, toujours. Pour le rouvrir : COUPE = false. */
++  var COUPE=true;
++  function cible(){ var n=!COUPE && !!(Z.zzz && nuit(maintenant())); return {theme:(Z.choix==='dark'||n)?'dark':'light', cran:n}; }
+ 
+   /* ── le cran de nuit : OKLCH, L − 0,06 ── */
+   function versOk(r,g,b){ function l(c){ c/=255; return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4); } r=l(r); g=l(g); b=l(b);
+@@ -36164,7 +36322,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
+   transition:opacity .35s ease,transform .45s cubic-bezier(.32,.72,0,1),visibility 0s linear .45s}
+ #device.light #murPhrase{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+ #murPhrase.leve{opacity:1;visibility:visible;transform:none;transition:opacity .35s ease,transform .45s cubic-bezier(.32,.72,0,1),visibility 0s}
+-#murPhrase .mp{color:var(--c-orange59);-webkit-text-fill-color:var(--c-orange59)}   /* ⚑ v112 (Tom : « plus vif, il paraît terne, ce n'est pas invitant ») — était #F07A2E, l'orange franc #FE5000 du jeu */
++/* ⚑ v122 (Tom, 3 oct. 2026) — L'ORANGE DE MA PAROLE !, ISOLÉ : un jeton dédié, `--orange-maparole`, posé sur la phrase des murs et LU
++   PAR SES SEULS MOTS « Ma Parole ! » (`.mp`). #FB4C0D ; #FF7A55 sur les trois corps sombres de Peaufiner (Promi, Chiche, Cercle) — le même
++   orange (OKLCH h 36,4°) éclairci jusqu'à 3 : 1 sur les trois (3,02 · 3,02 · 3,04). Aucune autre règle ne lit ce jeton, aucune autre
++   couleur ne vaut #FB4C0D ni #FF7A55 : `redteam_maparole.py`. (v121 : jetons --c-orange56-mur / --c-orange66-mur, remplacés.) */
++#murPhrase{--orange-maparole:var(--c-orange-maparole)}
++#device:not(.light) #murPhrase.sur-corps{--orange-maparole:var(--c-orange-maparole-corps)}
++#murPhrase .mp{color:var(--orange-maparole);-webkit-text-fill-color:var(--orange-maparole)}
+ </style>
+ <script id="lot-V104-MURS">
+ /* ⚑ v104 — TOUCHER UN MUR (la phrase reprise en v105 : au centre du mur, sans plateau, le temps d'être lue). « Quand on touche un mur, une phrase monte du bas et reste. Ensuite, toucher n'importe où à l'écran
+@@ -36206,7 +36370,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
+   /* v105 — AU CENTRE DU MUR TOUCHÉ (la part visible de son rectangle, dans l'appareil), en gros : 34 px, réduite par pas de 1 jusqu'à
+      tenir en TROIS lignes au plus (plancher 18). Cotes en unités de l'appareil (390), l'échelle de .frame retirée. */
+   var TAILLE_MAX=38, TAILLE_MIN=20, LIGNES=3, LH=1.16;   /* ⚑ v112 (Tom : « un peu plus gros, pas beaucoup ») — était 34 / 18 */ function fsMinH(){ return Math.ceil(TAILLE_MIN*LH*LIGNES); }
+-  function pose(mur){ var p=el(), dv=document.getElementById('device'); if(!dv) return; var D=dv.getBoundingClientRect(), k=(D.width/390)||1;
++  function pose(mur){ var p=el(), dv=document.getElementById('device'); if(!dv) return;
++    /* v121 : posée sur le corps d'une fiche ou de la page + (Peaufiner), la phrase le sait — en sombre, son orange s'y éclaircit */
++    try{ p.classList.toggle('sur-corps', !!(mur && mur.closest && mur.closest('#detailPoster, #createSheet'))); }catch(_){} var D=dv.getBoundingClientRect(), k=(D.width/390)||1;
+     var r=mur?mur.getBoundingClientRect():D; var x0=Math.max(r.left,D.left), x1=Math.min(r.right,D.right), y0=Math.max(r.top,D.top), y1=Math.min(r.bottom,D.bottom);
+     if(!(x1-x0>60 && y1-y0>40)){ x0=D.left; x1=D.right; y0=D.top; y1=D.bottom; }
+     var w=Math.min(342, (x1-x0)/k-24), cx=((x0+x1)/2-D.left)/k, cy=((y0+y1)/2-D.top)/k;
