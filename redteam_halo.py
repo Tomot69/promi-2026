@@ -39,7 +39,7 @@ SONDE = '--sonde' in sys.argv
 S = 3; D = 232.064; RS = 121.0; CXY = (195.0, 105.532 + 148.0)   # ⚑ v123 : la boule −6
 NIVEAUX = {3: (14, 0.12)}   # ⚑ v123 : la décision, en dur — un seul niveau
 HALO_PLATEAU = 4.5   # ⚑ v123 (Tom) : du bas du plateau au haut du halo, 10,5 − 6
-DEFAUT = 3; OMBRE_Y = 413.35; BOUTON = 449.47   # ⚑ v124 (Tom) : l'ombre −4, le bouton −8 · v123 : −12, −18
+DEFAUT = 3; OMBRE_Y = 403.35; BOUTON = 439.47   # ⚑ v125 (Tom, composition A) : l’ombre −10, le bouton −10 · ⚑ v124 (Tom) : l'ombre −4, le bouton −8 · v123 : −12, −18
 LUM = math.atan2(-0.72, -0.58)                      # d'où vient la lumière (repère de l'écran, y vers le bas)
 ok = [0]; ko = []
 
@@ -117,11 +117,13 @@ with sync_playwright() as p:
             th = ('sombre' if sombre else 'clair') + ' · niveau ' + N; ouvre(pg, sombre); im = cap(pg); px = im.load()
             fond = px[int(22 * S), int(300 * S)]
             e0 = dE00(moy(im, RS + 1.5, LUM), fond); e4 = dE00(moy(im, RS + EXT / 2 * D, LUM), fond); e8 = dE00(moy(im, RS + EXT * D, LUM), fond)
-            au = max(dE00(moy(im, RS + EXT * D + 2.5, math.radians(a), demi=4), fond) for a in range(0, 360, 20))
+            # ⚑ v125 (composition A) : l'ombre est remontée de 10 pt — elle passe maintenant DANS l'anneau lu ici (à 142–158 pt du centre, entre 71° et
+            #   109° : droit sous la boule). Ce n'est pas le halo : ces deux directions (80° et 100°) sont jugées par E (l'ombre), pas par A.
+            au = max(dE00(moy(im, RS + EXT * D + 2.5, math.radians(a), demi=4), fond) for a in range(0, 360, 20) if a not in (80, 100))
             t('A · [%s] au ras : ΔE00 entre %.1f et %.1f' % (th, 0.72 * RAS, 1.28 * RAS), 0.72 * RAS <= e0 <= 1.28 * RAS, '%.2f' % e0)
             t('A · [%s] à mi-étendue : ΔE00 entre %.1f et %.1f' % (th, 0.7 * MI, 1.38 * MI), 0.7 * MI <= e4 <= 1.38 * MI, '%.2f' % e4)
             t('A · [%s] au bout de l\'étendue (%.2f D) : ΔE00 sous 1' % (th, EXT), e8 < 1, '%.2f' % e8)
-            t('A · [%s] rien au-delà' % th, au < 0.5, 'pire ΔE00 %.2f sur 18 directions' % au)
+            t('A · [%s] rien au-delà' % th, au < 0.5, 'pire ΔE00 %.2f sur 16 directions (hors l\'ombre)' % au)
             # ⚠ à l'opposé et en bas, le POIL dépasse de 5,5 pt : on lit le halo à 5 pt de la silhouette (au-delà du poil), et on le compare
             #   au côté éclairé AU MÊME RAYON — sinon on mesure la fourrure, pas le halo
             #   ⚠ et l'opposé exact de la lumière (en bas à droite) tombe DANS le quart inférieur, où le halo est presque nul : la loi

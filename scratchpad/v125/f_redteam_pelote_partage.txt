@@ -1,0 +1,44 @@
+✅ sombre · le fond de l'image est bien Sombre 
+✅ sombre · Ma Toile : la rangée « La Pelote » ne paraît pas {'rowVis': False, 'compo': None}
+✅ sombre · Ma Toile : aucune composition Pelote n'est peinte {'rowVis': False, 'compo': None}
+✅ sombre · Mon Folio : la rangée « La Pelote » paraît {'rowVis': True, 'hint': 'none'}
+✅ sombre · Mon Folio : l'invite du doigt ne barre pas la planche {'rowVis': True, 'hint': 'none'}
+✅ sombre · la géométrie du bloc est publiée {'r': 1, 'c': 0, 'x': 23.7, 'y': 109.54495427116848, 'w': 114.12190854233695, 'h': 162.84190854233697, 'D': 105}
+✅ sombre · glissement rapide : la Pelote reste en place (1, 0) → (1, 0)
+✅ sombre · un doigt qui bouge avant 380 ms ne prend pas la Pelote prise=False
+✅ sombre · appui long immobile : la Pelote est prise 
+✅ sombre · pendant le geste, la planche se recompose (case visée en haut à droite) bloc (0, 2)
+✅ sombre · au lâcher, la Pelote est posée où on l'a laissée (0, 2)
+✅ sombre · rien ne disparaît (mêmes Promi) 18 → 18
+✅ sombre · rien ne se superpose au bloc (au tracé) {'pelote': 1, 'dalles': 18, 'recouvrements': []}
+✅ sombre · posée tout en bas : bornée à la dernière rangée utile r=4 maxR=4
+✅ sombre · posée tout en bas : rien ne disparaît, rien ne se superpose (au tracé) {'pelote': 1, 'dalles': 18, 'recouvrements': []}
+✅ sombre · export mosaic : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3842, 'ecart': 2.305036344755971, 'px': 8298720}
+✅ sombre · export mosaic : sous le plafond iPhone (16,7 Mpx) 8298720
+✅ sombre · export pelote : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 0.6507788161993769, 'px': 8294400}
+✅ sombre · export pelote : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ sombre · export toile : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 2.047507788161994, 'px': 8294400}
+✅ sombre · export toile : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ clair · le fond de l'image est bien Clair 
+✅ clair · Ma Toile : la rangée « La Pelote » ne paraît pas {'rowVis': False, 'compo': None}
+✅ clair · Ma Toile : aucune composition Pelote n'est peinte {'rowVis': False, 'compo': None}
+✅ clair · Mon Folio : la rangée « La Pelote » paraît {'rowVis': True, 'hint': 'none'}
+✅ clair · Mon Folio : l'invite du doigt ne barre pas la planche {'rowVis': True, 'hint': 'none'}
+✅ clair · la géométrie du bloc est publiée {'r': 1, 'c': 0, 'x': 23.7, 'y': 109.54495427116848, 'w': 114.12190854233695, 'h': 162.84190854233697, 'D': 105}
+✅ clair · glissement rapide : la Pelote reste en place (1, 0) → (1, 0)
+✅ clair · un doigt qui bouge avant 380 ms ne prend pas la Pelote prise=False
+✅ clair · appui long immobile : la Pelote est prise 
+✅ clair · pendant le geste, la planche se recompose (case visée en haut à droite) bloc (0, 2)
+✅ clair · au lâcher, la Pelote est posée où on l'a laissée (0, 2)
+✅ clair · rien ne disparaît (mêmes Promi) 18 → 18
+✅ clair · rien ne se superpose au bloc (au tracé) {'pelote': 1, 'dalles': 18, 'recouvrements': []}
+✅ clair · posée tout en bas : bornée à la dernière rangée utile r=4 maxR=4
+✅ clair · posée tout en bas : rien ne disparaît, rien ne se superpose (au tracé) {'pelote': 1, 'dalles': 18, 'recouvrements': []}
+✅ clair · export mosaic : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3842, 'ecart': 1.6346832814122534, 'px': 8298720}
+✅ clair · export mosaic : sous le plafond iPhone (16,7 Mpx) 8298720
+✅ clair · export pelote : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 0.6608515057113188, 'px': 8294400}
+✅ clair · export pelote : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ clair · export toile : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 1.5489096573208723, 'px': 8294400}
+✅ clair · export toile : sous le plafond iPhone (16,7 Mpx) 8294400
+
+42/42

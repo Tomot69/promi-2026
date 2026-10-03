@@ -1,0 +1,32 @@
+[signal · clair] les 20 retours sont lus (dont 10 par un sous-écran refermé)                     OK  20 lus
+1 · [signal · clair] « Garder ta Toile » est en gras (Atkinson 700)                              OK  20 sur 20
+2 · [signal · clair] contraste ≥ 4,5:1 à chaque retour                                           OK  le plus bas : 15.34 · retour 1 : [32, 25, 8] sur [247, 240, 222]
+2 · [signal · clair] jamais kaki                                                                 OK  0 retour(s)
+3 · [signal · clair] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée         KO  20 retour(s) hors règle · 4 ton(s)
+4 · [signal · clair] au moins deux teintes différentes vues (si deux tons sont tirables)         KO  1 teinte(s) vue(s), 4 tirable(s)
+5 · [signal · clair] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) KO  0 changement(s) sur 19 retours
+[signal · sombre] les 20 retours sont lus (dont 10 par un sous-écran refermé)                    OK  20 lus
+1 · [signal · sombre] « Garder ta Toile » est en gras (Atkinson 700)                             OK  20 sur 20
+2 · [signal · sombre] contraste ≥ 4,5:1 à chaque retour                                          OK  le plus bas : 9.17 · retour 4 : [130, 174, 248] sur [5, 3, 2]
+2 · [signal · sombre] jamais kaki                                                                OK  0 retour(s)
+3 · [signal · sombre] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée        OK  0 retour(s) hors règle · 4 ton(s)
+4 · [signal · sombre] au moins deux teintes différentes vues (si deux tons sont tirables)        OK  4 teinte(s) vue(s), 4 tirable(s)
+5 · [signal · sombre] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) OK  17 changement(s) sur 19 retours
+[irascible · clair] les 20 retours sont lus (dont 10 par un sous-écran refermé)                  OK  20 lus
+1 · [irascible · clair] « Garder ta Toile » est en gras (Atkinson 700)                           OK  20 sur 20
+2 · [irascible · clair] contraste ≥ 4,5:1 à chaque retour                                        OK  le plus bas : 5.87 · retour 1 : [184, 15, 46] sur [247, 240, 222]
+2 · [irascible · clair] jamais kaki                                                              OK  0 retour(s)
+3 · [irascible · clair] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée      OK  0 retour(s) hors règle · 4 ton(s)
+4 · [irascible · clair] au moins deux teintes différentes vues (si deux tons sont tirables)      OK  2 teinte(s) vue(s), 4 tirable(s)
+5 · [irascible · clair] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) OK  10 changement(s) sur 19 retours
+[irascible · sombre] les 20 retours sont lus (dont 10 par un sous-écran refermé)                 OK  20 lus
+1 · [irascible · sombre] « Garder ta Toile » est en gras (Atkinson 700)                          OK  20 sur 20
+2 · [irascible · sombre] contraste ≥ 4,5:1 à chaque retour                                       OK  le plus bas : 5.53 · retour 1 : [255, 45, 26] sur [5, 3, 2]
+2 · [irascible · sombre] jamais kaki                                                             OK  0 retour(s)
+3 · [irascible · sombre] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée     OK  0 retour(s) hors règle · 4 ton(s)
+4 · [irascible · sombre] au moins deux teintes différentes vues (si deux tons sont tirables)     OK  2 teinte(s) vue(s), 4 tirable(s)
+5 · [irascible · sombre] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) OK  10 changement(s) sur 19 retours
+aucune erreur de page                                                                            OK  
+
+26 / 29
+KO : 3 · [signal · clair] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée · 4 · [signal · clair] au moins deux teintes différentes vues (si deux tons sont tirables) · 5 · [signal · clair] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables)

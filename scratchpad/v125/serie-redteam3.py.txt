@@ -1,0 +1,20 @@
+Sombre -> Clair change l'image                 OK  
+Clair -> Sombre change l'image                 OK  
+QR active change l'image                       OK  
+QR desactive change l'image                    OK  
+format Carre change l'image                    OK  
+format Story change l'image                    OK  
+Noyau pose change l'image                      OK  
+Noyau Grand change l'image                     OK  
+Avec le chiffre change l'image                 OK  
+Noyau masque change l'image                    OK  
+mode Mes Promi change l'image                  OK  
+Sans texte change l'image                      OK  
+Avec texte change l'image                      OK  
+masquer un Promi bascule son encart            OK  
+mode Ma Toile change l'image                   OK  
+le mot-marque reste en PromiLate, son i en accent OK  
+le Noyau ne pose aucun fond (centre intact)    OK  
+aucune erreur JS                               OK  
+
+18/18

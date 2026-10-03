@@ -1,0 +1,41 @@
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+   60s  redteam_mesure.py          OK  [dark] la page n'a pas défilé  0 / 0 / 10 / 10
+  193s  redteam_zone.py            OK  [light] aucune erreur de page   / 8 / 8
+  112s  redteam_onboarding.py      ====================================================================================== /   ❌  43 / 44 contrats tenus
+   73s  redteam_pelote_partage.py  ✅ clair · export toile : sous le plafond iPhone (16,7 Mpx) 8294400 / 42/42
+  179s  redteam_partage_fiche.py   48/48 / ✅ le rond Partager d'une fiche partage son Folio
+  660s  redteam_couleurs_ref.py    exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 8 · E5 violations retirées 22 · E6 trace crème (Q374) 12 · E7 ombre crème en sombre 2 / 
+  202s  redteam_fluide.py          5 / 6 / KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4034 images)
+  251s  redteam_bouton.py          aucune erreur de page                                                                        OK   / 33 / 33
+  133s  redteam_garder_toile.py    aucune erreur de page                                                                            OK   / 29 / 29
+  105s  redteam_halo.py            21 / 23 / KO : A · [clair · niveau défaut · 3] rien au-delà · A · [sombre · niveau défaut · 3] rien au-delà
+  168s  redteam_plein.py           [densité 3] aucune erreur de page                                              OK   / 97 / 97
+   32s  redteam_contour.py         OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0 / ✅ rien ne dépasse du contour
+   67s  redteam_souffle.py         OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0 / ❌ le souffle ne tient pas sa loi
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+  210s  redteam_corps.py           aucune erreur de page                                                                  OK   / 33 / 33
+  185s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+   67s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #00351A #2A1548 #00341A #291547 OK   (Q262, v8c) / 79 / 79
+  216s  redteam_maparole.py        [dark] aucune erreur de page                                                     OK   / 12 / 12
+  108s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 26/26
+  126s  redteam_champ.py             l'instant après [light]        OK / 32/32
+   56s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  175s  redteam_filets.py          page+ cercle   [light]  filet non    OK / filet du trait : 14/14
+   38s  redteam_reperage.py        [sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : [] / 16/16
+   24s  redteam_verbe.py           dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 54, 'vis': True} / 6/6
+  227s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  114s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1952 ms) / 32/32
+  316s  redteam_air.py                Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune» /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+   98s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+   19s  redteam.py                 aucune erreur JS                           OK   / 15/15
+   17s  redteam2.py                aucune erreur JS                             OK   / 10/10
+   33s  redteam3.py                aucune erreur JS                               OK   / 18/18
+   44s  redteam_geste.py           aucune erreur JS                             OK   / 12/12
+   68s  redteam_fonctions.py       Réglages s'ouvre                                           OK   / 22/22
+   69s  redteam_toile.py           aucune erreur JS                           OK  [] / 18/18
+  128s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   39s  redteam_polices.py            aucun. / 0 couple(s) absent(s) · 0 élément(s)
+    0s  redteam_clavier.py           ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.32390, différé en secours) / ✅ le clavier s'ouvre au geste — 3 champs
+   25s  releve-S5-instant.py             arrive    [dark] #dptQui « À Rachel » : ton sur ton (Δ25) / ❌  13 ÉCARTS
+  278s  releve-aura.py             palier 220000 · médiane 158.7 ms · 767 images · plus longue image pendant l'élan : 250 ms (dont peintre 242.1 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 
+   33s  releve-design.py           ✅  AUCUN ÉCART. Le design est intact.

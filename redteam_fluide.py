@@ -27,6 +27,9 @@ from playwright.sync_api import sync_playwright
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
 N = int(next((a.split('=')[1] for a in sys.argv if a.startswith('--n=')), 20))
 SEUIL, P95, DUREE = 20.0, 16.7, 1700.0
+# ⚑ v125 (Tom, Q379) : « le travail remis après "tenir" part en tâche de fond, découpée, pour qu'un toucher à cet instant ne soit
+# jamais retenu ». De la fin de l'animation à 3,5 s après le lever : aucune TÂCHE du fil principal au-delà de deux images (33,4 ms).
+TACHE_APRES = 33.4
 ok = [0]; ko = []
 
 
@@ -62,7 +65,7 @@ with sync_playwright() as p:
     pg.goto('http://127.0.0.1:8752/' + FICHIER); pg.wait_for_timeout(6800)
     pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';}}")
     cdp = ctx.new_cdp_session(pg)
-    toutes = []; pires = []; apres_t = []; etats = 0; apres_max = 0.0
+    toutes = []; pires = []; apres_t = []; etats = 0; apres_max = 0.0; tache_max = 0.0
     for k in range(N):
         pid = pg.evaluate("()=>{ try{closeAll()}catch(e){} const L=promises.filter(x=>!x.draft&&!x.req&&!x.chiche&&!x.nuee); const p=L[%d %% Math.min(3,L.length)]; p.status='rate'; return p.id; }" % k)
         pg.wait_for_timeout(500); pg.evaluate("(i)=>{openDetail(i)}", pid); pg.wait_for_timeout(1500)
@@ -89,6 +92,7 @@ with sync_playwright() as p:
         toutes += [w for _, w in anim]
         pire = max(anim, key=lambda x: x[1]) if anim else (0, 0); pires.append(pire[1])
         apres_max = max(apres_max, max([w for _, w in suite] or [0]))
+        tache_max = max(tache_max, max([(y - x) / 1000.0 for x, y in _ if DUREE * 1000 <= x - t0 <= 3500 * 1000] or [0]))
         v = {s: tt - d['t0'] for s, tt in d['vu'] if s and d.get('t0')}
         if 'referme' in v and 'apres' in v: apres_t.append(v['apres'] - v['referme'])
         if d['st'] == 'tenu' and 'referme' in v and 'apres' in v: etats += 1
@@ -100,6 +104,7 @@ with sync_playwright() as p:
     t('2 · p95 du travail par image ≤ 16,7 ms', bool(toutes) and p95 <= P95, 'p50 %.1f · p95 %.1f ms' % (p50, p95))
     t('3 · la durée : « juste après » paraît 1 000 ms (± 80) après « le trait se referme »', len(apres_t) == N and all(abs(x - 1000) <= 80 for x in apres_t), '%s' % ('de %d à %d ms' % (min(apres_t), max(apres_t)) if apres_t else 'non relevée'))
     t('4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois', etats == N, '%d sur %d' % (etats, N))
+    t('5 · après l\'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n\'attend jamais plus de deux images', tache_max > 0 and tache_max <= TACHE_APRES, 'la plus longue : %.1f ms' % tache_max)
     t('aucune erreur de page', not er, '; '.join(er[:2]))
     print('   (après l\'animation, relevé : la plus longue image de travail %.1f ms — les passes de tout le document et la pose complète)' % apres_max)
     b.close()

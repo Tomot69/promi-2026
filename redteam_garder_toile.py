@@ -80,15 +80,19 @@ with sync_playwright() as p:
                 r_ = contraste(c, f)
                 if r_ < bas: bas = r_; ex = 'retour %d : %s sur %s' % (i + 1, c, f)
                 if c != encre and kaki(c): n_kaki += 1
-                T = [q for q in m['pal'] if not kaki(q) and contraste(q, f) >= 4.5]; tir = max(tir, len(set(tuple(q) for q in T)))
-                if not ((c == encre and not T) or any(dE00(c, q) < 1 for q in T)): hors += 1
+                # ⚑ v125 (Tom) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_garder_toile-avant-v125.py). « La teinte tirée garde sa teinte OKLCH
+                #   et s'assombrit, ou s'éclaircit en sombre, juste assez pour atteindre le contraste. Plus de repli sur l'encre. » Jamais l'encre ;
+                #   la teinte OKLCH du texte est celle d'un ton de la palette (à 8° près ; un ton presque gris n'a pas de teinte à comparer).
+                T = m['pal']; tir = max(tir, len(set(tuple(q) for q in T)))
+                hc = oklch(c)
+                if c == encre or not any((abs((hc[2] - oklch(q)[2] + 180) % 360 - 180) <= 8) or oklch(q)[1] < 0.03 or hc[1] < 0.02 for q in T): hors += 1
                 vus.append(tuple(c))
             tag = '[%s · %s]' % (pal, 'clair' if th == 'light' else 'sombre')
             t('%s les %d retours sont lus (dont %d par un sous-écran refermé)' % (tag, N, sous_ok), lus == N, '%d lus' % lus)
             t('1 · %s « Garder ta Toile » est en gras (Atkinson 700)' % tag, lus > 0 and gras == lus, '%d sur %d' % (gras, lus))
             t('2 · %s contraste ≥ 4,5:1 à chaque retour' % tag, lus > 0 and bas >= 4.5, 'le plus bas : %.2f · %s' % (bas, ex))
             t('2 · %s jamais kaki' % tag, lus > 0 and n_kaki == 0, '%d retour(s)' % n_kaki)
-            t('3 · %s un ton tirable de la palette, ou l\'encre du mode si aucun ne l\'est' % tag, lus > 0 and hors == 0, '%d retour(s) hors règle · %d ton(s) tirable(s)' % (hors, tir))
+            t('3 · %s jamais à l\'encre : la teinte d\'un ton de la palette, clarté ajustée' % tag, lus > 0 and hors == 0, '%d retour(s) hors règle · %d ton(s)' % (hors, tir))
             t('4 · %s au moins deux teintes différentes vues (si deux tons sont tirables)' % tag, lus > 0 and (len(set(vus)) >= 2 or tir < 2), '%d teinte(s) vue(s), %d tirable(s)' % (len(set(vus)), tir))
             chg = sum(1 for a_, b_ in zip(vus, vus[1:]) if a_ != b_)
             t('5 · %s la teinte est retirée au retour (elle change d\'un retour à l\'autre, si deux tons sont tirables)' % tag, lus > 0 and (chg >= 1 or tir < 2), '%d changement(s) sur %d retours' % (chg, max(0, len(vus) - 1)))

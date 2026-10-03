@@ -1,0 +1,9 @@
+1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4102 images) OK  0 image(s) au-delà · la plus longue 18.8 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               OK  p50 2.2 · p95 5.5 ms
+3 · la durée : « juste après » paraît 1 000 ms (± 80) après « le trait se referme »  OK  de 1018 à 1033 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  20 sur 20
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images OK  la plus longue : 30.4 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 40.2 ms — les passes de tout le document et la pose complète)
+
+6 / 6

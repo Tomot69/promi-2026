@@ -100,7 +100,9 @@ LIT = r"""()=>{ const cv=document.getElementById('auBoule'); if(!cv||!cv.width||
       for(let y=0;y<W;y+=2) for(let x=0;x<W;x+=2){ const i=(y*W+x)*4; if(d[i+3]<250) continue; if(Math.hypot(x-W/2,y-W/2)>W*0.33) continue; const p=[d[i],d[i+1],d[i+2]];
         let bi=0, bd=1e9; for(let k=0;k<RV.length;k++){ const e=d2(p,RV[k]); if(e<bd){ bd=e; bi=k; } } if(bd<d2(p,C)) cnt[bi]++; }
       let bk=0; for(let k=1;k<cnt.length;k++) if(cnt[k]>cnt[bk]) bk=k; dom=[RV[bk][0],RV[bk][1],RV[bk][2]]; } }catch(e){}
-  return {corps:[med(R),med(G),med(B)], dom:dom, part:top[0]/n, sol:sol, ramp:ramp, pal:pal,
+  /* v125 : la teinte du halo — la couleur que porte son canevas (elle est la même sur tous ses pixels) */
+  let halo=null; try{ const h=document.getElementById('auPeloteHalo'), hd=h.getContext('2d').getImageData(0,(h.height/2)|0,h.width,1).data; let am=0; for(let i=0;i<hd.length;i+=4){ if(hd[i+3]>am){ am=hd[i+3]; halo=[hd[i],hd[i+1],hd[i+2]]; } } if(am<24) halo=null;   /* le pixel le plus opaque : à faible alpha la couleur relue est quantifiée */ }catch(e){}
+  return {halo:halo, corps:[med(R),med(G),med(B)], dom:dom, part:top[0]/n, sol:sol, ramp:ramp, pal:pal,
           decl:(()=>{try{return _aura.corps?_aura.corps():null}catch(e){return null}})(), peint:cv.__peints||null}; }"""
 
 with sync_playwright() as p:
@@ -111,7 +113,7 @@ with sync_playwright() as p:
     pg.goto(APP); pg.wait_for_timeout(7000)
     pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';}}")
     for pal in PALETTES:
-        pires = {'ramp': 999, 'dom': 999}; n_kaki = 0; n_meme = 0; n_lu = 0; corps_vus = {}; ex = ''
+        pires = {'ramp': 999, 'dom': 999}; n_kaki = 0; n_meme = 0; n_lu = 0; corps_vus = {}; ex = ''; halo_ko = 0; ex_h = ''; suite_ko = 0; ex_s = ''; avant = None
         for i in range(N):
             th = 'light' if i % 2 == 0 else 'dark'
             pg.evaluate("([t,p])=>{ try{closeAll()}catch(e){} const x=document.querySelector('#auraScreen .closeb'); if(x && document.getElementById('auraScreen').getBoundingClientRect().top<200) x.click(); setTheme(t); try{Toile.setPalette(p)}catch(e){} }", [th, pal]); pg.wait_for_timeout(350)
@@ -132,11 +134,24 @@ with sync_playwright() as p:
             proche = min(range(len(m['pal'])), key=lambda k: dE00(c, m['pal'][k]))
             if m['sol'] is not None and (proche == m['sol'] or dE00(c, m['pal'][m['sol']]) < 5): n_meme += 1
             corps_vus.setdefault(m['sol'], set()).add(tuple(round(v / 6) for v in c))
+            # ⚑ v125 (Tom) — « le halo prend la couleur du corps » : sa teinte OKLCH est celle du corps (à 8° près ; sa clarté peut s'écarter
+            #   du fond pour faire une lumière). Et d'une ouverture à l'autre, ni le même sol ni le même corps (redteam d'avant : rien ne l'interdisait).
+            if i < 20:
+                h = m.get('halo'); oc = oklch(c); oh = oklch(h) if h else None
+                if not h or not (abs((oh[2] - oc[2] + 180) % 360 - 180) <= 8 or oc[1] < 0.03 or oh[1] < 0.02):
+                    halo_ko += 1; ex_h = 'ouverture %d [%s] halo %s · corps %s' % (i + 1, th, h, [round(v) for v in c])
+            d = m.get('decl') or {}
+            ici = (d.get('solIdx'), d.get('idx'))
+            if avant is not None and len(m['pal']) > 2 and (ici[0] == avant[0] or (ici[1] == avant[1] and ici[1] is not None and ici[1] >= 0)):
+                suite_ko += 1; ex_s = 'ouverture %d : sol %s corps %s après sol %s corps %s' % (i + 1, ici[0], ici[1], avant[0], avant[1])
+            avant = ici
         t('[%s] les %d ouvertures sont lues (la peau pleine est peinte)' % (pal, N), n_lu == N, '%d lues' % n_lu)
         t('1 · [%s] ΔE00(corps, poil) ≥ 15 à chaque ouverture — face à la rampe de velours' % pal, n_lu > 0 and pires['ramp'] >= ECART, 'le pire : %.1f · %s' % (pires['ramp'], ex))
         t('1 · [%s] ΔE00(corps, poil) ≥ 15 — face à la couleur dominante lue sur la fourrure' % pal, n_lu > 0 and pires['dom'] >= ECART, 'le pire : %.1f' % pires['dom'])
         t('2 · [%s] le corps n\'est jamais kaki' % pal, n_lu > 0 and n_kaki == 0, '%d ouverture(s) kaki' % n_kaki)
         t('3 · [%s] le corps n\'a jamais la teinte des poils' % pal, n_lu > 0 and n_meme == 0, '%d ouverture(s) où le corps est le ton du sol' % n_meme)
+        t('5 · [%s] v125 : la teinte du halo est celle du corps (vingt ouvertures)' % pal, n_lu > 0 and halo_ko == 0, '%d ouverture(s) · %s' % (halo_ko, ex_h))
+        t('6 · [%s] v125 : jamais le même sol ni le même corps deux ouvertures de suite' % pal, n_lu > 0 and suite_ko == 0, '%d fois · %s' % (suite_ko, ex_s))
         t('4 · [%s] le corps se tire au hasard (au moins deux corps différents sur %d ouvertures)' % (pal, N), len(set().union(*corps_vus.values())) >= 2 if corps_vus else False, '%s' % {k: len(v) for k, v in corps_vus.items()})
     t('aucune erreur de page', not er, '; '.join(er[:2]))
     b.close()

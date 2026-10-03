@@ -1,0 +1,31 @@
+[signal · clair] les 20 retours sont lus (dont 10 par un sous-écran refermé)                     OK  20 lus
+1 · [signal · clair] « Garder ta Toile » est en gras (Atkinson 700)                              OK  20 sur 20
+2 · [signal · clair] contraste ≥ 4,5:1 à chaque retour                                           OK  le plus bas : 4.52 · retour 2 : [127, 95, 166] sur [247, 240, 222]
+2 · [signal · clair] jamais kaki                                                                 OK  0 retour(s)
+3 · [signal · clair] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée         OK  0 retour(s) hors règle · 4 ton(s)
+4 · [signal · clair] au moins deux teintes différentes vues (si deux tons sont tirables)         OK  3 teinte(s) vue(s), 4 tirable(s)
+5 · [signal · clair] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) OK  13 changement(s) sur 19 retours
+[signal · sombre] les 20 retours sont lus (dont 10 par un sous-écran refermé)                    OK  20 lus
+1 · [signal · sombre] « Garder ta Toile » est en gras (Atkinson 700)                             OK  20 sur 20
+2 · [signal · sombre] contraste ≥ 4,5:1 à chaque retour                                          OK  le plus bas : 9.17 · retour 2 : [130, 174, 248] sur [5, 3, 2]
+2 · [signal · sombre] jamais kaki                                                                OK  0 retour(s)
+3 · [signal · sombre] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée        OK  0 retour(s) hors règle · 4 ton(s)
+4 · [signal · sombre] au moins deux teintes différentes vues (si deux tons sont tirables)        OK  4 teinte(s) vue(s), 4 tirable(s)
+5 · [signal · sombre] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) OK  17 changement(s) sur 19 retours
+[irascible · clair] les 20 retours sont lus (dont 10 par un sous-écran refermé)                  OK  20 lus
+1 · [irascible · clair] « Garder ta Toile » est en gras (Atkinson 700)                           OK  20 sur 20
+2 · [irascible · clair] contraste ≥ 4,5:1 à chaque retour                                        OK  le plus bas : 4.51 · retour 3 : [168, 89, 13] sur [247, 240, 222]
+2 · [irascible · clair] jamais kaki                                                              OK  0 retour(s)
+3 · [irascible · clair] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée      OK  0 retour(s) hors règle · 4 ton(s)
+4 · [irascible · clair] au moins deux teintes différentes vues (si deux tons sont tirables)      OK  4 teinte(s) vue(s), 4 tirable(s)
+5 · [irascible · clair] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) OK  15 changement(s) sur 19 retours
+[irascible · sombre] les 20 retours sont lus (dont 10 par un sous-écran refermé)                 OK  20 lus
+1 · [irascible · sombre] « Garder ta Toile » est en gras (Atkinson 700)                          OK  20 sur 20
+2 · [irascible · sombre] contraste ≥ 4,5:1 à chaque retour                                       OK  le plus bas : 4.53 · retour 9 : [216, 58, 72] sur [5, 3, 2]
+2 · [irascible · sombre] jamais kaki                                                             OK  0 retour(s)
+3 · [irascible · sombre] jamais à l'encre : la teinte d'un ton de la palette, clarté ajustée     OK  0 retour(s) hors règle · 4 ton(s)
+4 · [irascible · sombre] au moins deux teintes différentes vues (si deux tons sont tirables)     OK  4 teinte(s) vue(s), 4 tirable(s)
+5 · [irascible · sombre] la teinte est retirée au retour (elle change d'un retour à l'autre, si deux tons sont tirables) OK  16 changement(s) sur 19 retours
+aucune erreur de page                                                                            OK  
+
+29 / 29

@@ -1,0 +1,10 @@
+OK  [dark] les 30 ouvertures sont lues  30
+OK  A · [dark] hors silhouette, halo et ombre : chaque pixel est le fond  0 pixel(s) · 
+KO  B · [dark] le halo n'a pas de second bord (≤ 30 % de son maximum en 6°)  le pire : 40 % · ouverture 17, vers 135° (0° = à droite, 90° = en bas) : 2.6 → 14.8 niveaux (maximum du tour 30.4)
+OK  [dark] aucune erreur de page  
+OK  [light] les 30 ouvertures sont lues  30
+OK  A · [light] hors silhouette, halo et ombre : chaque pixel est le fond  0 pixel(s) · 
+KO  B · [light] le halo n'a pas de second bord (≤ 30 % de son maximum en 6°)  le pire : 40 % · ouverture 3, vers 138° (0° = à droite, 90° = en bas) : 7.7 → 22.9 niveaux (maximum du tour 38.3)
+OK  [light] aucune erreur de page  
+
+6 / 8

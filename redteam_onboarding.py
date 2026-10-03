@@ -122,7 +122,7 @@ TEXTES = r"""()=>{ const vis=%s; const o=document.getElementById('promiOnb'); if
         if(q.width*q.height>0.5*D.width*D.height) break;
         const m=s.backgroundColor.match(/[\d.]+/g); if(m&&(m.length<4||+m[3]>0.95)){ bg=s.backgroundColor; break; }
         p=p.parentElement; }
-      return {t:e.textContent.replace(/\s+/g,' ').trim().slice(0,40), x:r.left,y:r.top,w:r.width,h:r.height, bg:bg,
+      return {t:e.textContent.replace(/\s+/g,' ').trim().slice(0,40), x:r.left,y:r.top,w:r.width,h:r.height, bg:bg, mot:e.classList.contains('onbv-nat'),
               c:c.webkitTextFillColor&&c.webkitTextFillColor!=='rgba(0, 0, 0, 0)'?c.webkitTextFillColor:c.color}; }); }""" % VIS
 
 
@@ -148,6 +148,20 @@ def contraste(pg):
             d = abs(lum(c) - lum(rgb(t['bg'])))
             if d < SEUIL_LUM:
                 bas.append('« %s » Δlum %.1f (sur son aplat)' % (t['t'], d))
+            continue
+        if t.get('mot'):
+            # ⚑ v125 — un MOT en couleur DANS une phrase (« Promi », « Chiche », « Cercle ») : l'anneau de 3 px autour de sa boîte tombe sur
+            #   les lettres voisines, pas sur le fond (mesuré : Δlum 1,0 pour un mot à 4,99:1). Le fond d'un mot en ligne = la couleur la plus
+            #   fréquente de sa boîte élargie — ce qui est peint SOUS lui. La règle (Δlum ≥ 42) ne change pas.
+            h = {}
+            for Y in range(max(0, int((t['y'] - 2) * dpr)), min(img.height, int((t['y'] + t['h'] + 2) * dpr)), 2):
+                for X in range(max(0, int((t['x'] - 2) * dpr)), min(img.width, int((t['x'] + t['w'] + 2) * dpr)), 2):
+                    q = img.getpixel((X, Y)); h[q] = h.get(q, 0) + 1
+            # la couleur du mot lui-même peut dominer sa boîte (un mot gras) : on l'écarte
+            cand = sorted(h.items(), key=lambda kv: -kv[1]); fond = next((k for k, _ in cand if abs(lum(k) - lum(c)) > 8), None)
+            if fond is None: bas.append('« %s » : aucun fond lu sous le mot' % t['t']); continue
+            d = abs(lum(c) - lum(fond))
+            if d < SEUIL_LUM: bas.append('« %s » Δlum %.1f (mot en couleur, sur %s)' % (t['t'], d, fond))
             continue
         L = []
         for i in range(12):

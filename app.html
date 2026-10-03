@@ -7715,6 +7715,39 @@ try{if(notifOn)armAllReminders();}catch(e){}
     var Rt=-2*Math.sqrt(Math.pow(Cpb,7)/(Math.pow(Cpb,7)+Math.pow(25,7)))*Math.sin(60*Math.exp(-Math.pow((hb-275)/25,2))*R);
     return Math.sqrt(Math.pow(dL/Sl,2)+Math.pow(dC/Sc,2)+Math.pow(dH/Sh,2)+Rt*(dC/Sc)*(dH/Sh)); }
   window._dE00=dE00;
+  /* ⚑ v125 (Tom, 3 oct. 2026) — UNE TEINTE DE PALETTE QUI DOIT SE LIRE GARDE SA TEINTE. « La teinte tirée garde sa teinte OKLCH et
+     s'assombrit, ou s'éclaircit en sombre, juste assez pour atteindre le contraste. Plus de repli sur l'encre. » `_teinte.ajuste` ne
+     touche qu'à la CLARTÉ (OKLCH L), par pas de 0,005, dans le sens qui s'éloigne du fond ; la chroma ne baisse que si la couleur sort
+     de l'écran (sRGB). Sert à « PARTAGER MA PELOTE », à « Garder ta Toile », aux mots de l'onboarding et au halo de la Pelote. */
+  window._teinte=(function(){
+    function lin(v){ v/=255; return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4); }
+    function okl(c){ var r=lin(c[0]), g=lin(c[1]), b=lin(c[2]);
+      var l=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b), m=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b), s=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+      var L=0.2104542553*l+0.7936177850*m-0.0040720468*s, a=1.9779984951*l-2.4285922050*m+0.4505937099*s, bb=0.0259040371*l+0.7827717662*m-0.8086757660*s;
+      return [L, Math.hypot(a,bb), (Math.atan2(bb,a)*180/Math.PI+360)%360]; }
+    function brut(L,C,h){ var a=C*Math.cos(h*Math.PI/180), b=C*Math.sin(h*Math.PI/180);
+      var l=L+0.3963377774*a+0.2158037573*b, m=L-0.1055613458*a-0.0638541728*b, s=L-0.0894841775*a-1.2914855480*b; l=l*l*l; m=m*m*m; s=s*s*s;
+      return [4.0767416621*l-3.3077115913*m+0.2309699292*s, -1.2684380046*l+2.6097574011*m-0.3413193965*s, -0.0041960863*l-0.7034186147*m+1.7076147010*s]; }
+    function gam(v){ v=v<0?0:(v>1?1:v); return Math.round(255*(v<=0.0031308?12.92*v:1.055*Math.pow(v,1/2.4)-0.055)); }
+    function deOkl(L,C,h){ var q; for(var k=0;k<60;k++){ q=brut(L,C,h); if(q[0]>=-0.0006&&q[0]<=1.0006&&q[1]>=-0.0006&&q[1]<=1.0006&&q[2]>=-0.0006&&q[2]<=1.0006) break; C*=0.95; }
+      return [gam(q[0]),gam(q[1]),gam(q[2])]; }
+    function lum(c){ return 0.2126*lin(c[0])+0.7152*lin(c[1])+0.0722*lin(c[2]); }
+    function contraste(a,b){ var x=lum(a), y=lum(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
+    function kaki(c){ var o=okl(c); return o[2]>=78 && o[2]<=140 && o[1]>=0.015 && o[1]<=0.10 && o[0]>=0.20 && o[0]<=0.80; }
+    /* la teinte gardée, la clarté déplacée jusqu'au contraste voulu face au fond */
+    function ajuste(c, fond, ratio){ c=[c[0]|0,c[1]|0,c[2]|0]; if(contraste(c,fond)>=ratio) return c;
+      var o=okl(c), sens=lum(fond)>0.18?-1:1, L=o[0], q=c;
+      for(var i=0;i<220;i++){ L+=sens*0.005; if(L<0.02||L>0.995) break; q=deOkl(L,o[1],o[2]); if(contraste(q,fond)>=ratio) return q; }
+      return q; }
+    /* la teinte gardée, la clarté déplacée jusqu'à l'écart ΔE00 voulu face au fond (pour une lumière : le halo) */
+    function ecarte(c, fond, ecart){ c=[c[0]|0,c[1]|0,c[2]|0]; if(dE00(c,fond)>=ecart) return c;
+      var o=okl(c), sens=lum(fond)>0.18?-1:1, L=o[0], q=c;
+      for(var i=0;i<220;i++){ L+=sens*0.005; if(L<0.02||L>0.995) break; q=deOkl(L,o[1],o[2]); if(dE00(q,fond)>=ecart) return q; }
+      return q; }
+    /* la même teinte sortie du kaki par la chroma (le kaki est borné : C ≤ 0,10) — dernier recours avant l'encre */
+    function vive(c){ var o=okl(c); return deOkl(o[0], Math.max(o[1],0.112), o[2]); }
+    return {okl:okl, deOkl:deOkl, lum:lum, contraste:contraste, kaki:kaki, ajuste:ajuste, ecarte:ecarte, vive:vive};
+  })();
   /* l'opacité qui donne l'écart voulu entre le fond et (fond + ton × opacité) — par dichotomie */
   function dose(ton, fond, cible){ var mel=function(a){ return [fond[0]+(ton[0]-fond[0])*a, fond[1]+(ton[1]-fond[1])*a, fond[2]+(ton[2]-fond[2])*a]; };
     if(cible<=0) return 0; if(dE00(mel(1),fond)<=cible) return 1;
@@ -7760,24 +7793,16 @@ try{if(notifOn)armAllReminders();}catch(e){}
     for(var y=0;y<W;y++) for(var x=0;x<W;x++){
       var dx=x-c, dy=y-c, r=Math.hypot(dx,dy); if(r<R*0.9 || r>RS+P) continue;
       var co=(dx*LX+dy*LY)/(r*nL), w=CIBLE.oppose+(1-CIBLE.oppose)*(1+co)/2;
-      var bas=dy/r, qb=bas<=0.5736 ? 1 : (bas>=0.7071 ? CIBLE.bas : 1-(1-CIBLE.bas)*((bas-0.5736)/(0.7071-0.5736)));   /* le quart inférieur (± 45° du bas), fondu sur 10° */
+      /* ⚑ v125 (Tom : « la double zone derrière la Pelote, en sombre ») — MESURÉ : rien d'autre que le halo et l'ombre ne peint ici. La
+         « seconde zone » était LE HALO LUI-MÊME : plein jusqu'à 35° sous l'horizontale puis coupé en 10° (de 1 à 0,06) — deux épaules
+         franches, en bas à gauche et à droite, qui dessinaient le bord d'un second disque derrière la boule. Le quart inférieur reste
+         presque nul ; le fondu part maintenant de l'horizontale (45° de fondu, en S) : plus d'épaule. Juge : redteam_zone.py. */
+      var bas=dy/r, tb=bas<=0 ? 0 : (bas>=0.7071 ? 1 : bas/0.7071), qb=1-(1-CIBLE.bas)*(tb*tb*(3-2*tb));
       var a=op(f(r-RS)*w*qb)*255, n=sansTrame ? 0.5 : GR.g[(y%GR.n)*GR.n+(x%GR.n)], v=a<=0 ? 0 : Math.floor(a+(n-0.5)*AMP+0.5);   /* trame de ± 1,5 niveau : le canevas est agrandi à l'écran, une trame d'un demi-niveau s'y lisse et l'escalier revient (mesuré : 1 % de remontées) */
       if(v<=0) continue; var i4=(y*W+x)*4; d[i4]=ton[0]; d[i4+1]=ton[1]; d[i4+2]=ton[2]; d[i4+3]=v>255?255:v; }
     g.putImageData(im,0,0); return cv;
   };
-  /* la flaque du sombre : la lumière du halo, posée au sol autour de l'ombre — l'ombre (demi-axes a × b) est le creux qu'elle n'atteint pas */
-  window._flaquePelote=function(cv, lw, lh, a, b, ton, fond, dpr, sansTrame){
-    var W=Math.round(lw*dpr), H=Math.round(lh*dpr); if(cv.width!==W) cv.width=W; if(cv.height!==H) cv.height=H;
-    var g=cv.getContext('2d'), im=g.createImageData(W,H), d=im.data, GR=grain(), a0=dose(ton, fond, 3.2), cx=(W-1)/2, cy=(H-1)/2,
-        AMPF=Math.max(3, 5.5*255/Math.max(1, Math.abs(ton[0]-fond[0]), Math.abs(ton[1]-fond[1]), Math.abs(ton[2]-fond[2])));   /* v120 : la trame en niveaux de couleur (voir le halo) */
-    for(var y=0;y<H;y++) for(var x=0;x<W;x++){
-      var rho=Math.hypot((x-cx)/(a*dpr), (y-cy)/(b*dpr)), t;
-      if(rho<0.82) continue;
-      if(rho<1.04) t=(rho-0.82)/0.22; else if(rho<2.55) t=Math.exp(-(rho-1.04)/0.62)*(1-Math.pow((rho-1.04)/1.51,3)); else continue;
-      var al=a0*t*255, n=sansTrame ? 0.5 : GR.g[(y%GR.n)*GR.n+(x%GR.n)], v=al<=0 ? 0 : Math.floor(al+(n-0.5)*AMPF+0.5);
-      if(v<=0) continue; var i4=(y*W+x)*4; d[i4]=ton[0]; d[i4+1]=ton[1]; d[i4+2]=ton[2]; d[i4+3]=v>255?255:v; }
-    g.putImageData(im,0,0);
-  };
+  /* v125 : `_flaquePelote` (la flaque du sombre, v119) est RETIRÉE — elle n'était plus affichée depuis v123 (l'ombre crème la remplace). */
 })();
 </script>
 
@@ -19858,9 +19883,16 @@ var CREMEETAT='#F7F0DE';
      (`window._tenirAnime`) aucune passe de tout le document ne tourne — elles passent après ; les couleurs que la passe de lisibilité
      rattrapait sont posées à la source ; la cadence est celle de l'affichage (`requestAnimationFrame`), plus de minuteries ; une
      reprise n'a lieu que si la dalle n'a pas pu être peinte. La durée (1 000 ms d'amande) et le dessin ne changent pas. */
+  /* ⚑ v125 (Tom, Q379) — LE TRAVAIL REMIS APRÈS « TENIR » PART EN TÂCHE DE FOND, DÉCOUPÉE. Mesuré (trace, Chromium) : à la fin de
+     l'animation, UNE tâche de 77 ms (la pose complète de la fiche : 57, puis la passe de lisibilité), suivie de 20 à 49 ms — un toucher
+     posé là attendait. La pose se fait maintenant morceau par morceau (`_tenirMorceaux`), une tâche par morceau, une image rendue
+     entre deux (`_enFond`) : un toucher passe entre deux morceaux. Juge : redteam_fluide.py (contrôle 5). */
+  window._enFond=window._enFond||function(L){ var i=0;
+    (function suite(){ if(i>=L.length) return; requestAnimationFrame(function(){ setTimeout(function(){ var f=L[i++]; try{ f(); }catch(_){} suite(); }, 0); }); })(); };
   function finAnime(){ if(!window._tenirAnime) return; window._tenirAnime=false;
-    try{ if(window._tenirApres) window._tenirApres(); }catch(_){}        /* la pose complète de la fiche, remise après l'animation */
-    try{ if(window._repasseSombre) window._repasseSombre(); }catch(_){} }
+    var L=null; try{ if(window._tenirMorceaux) L=window._tenirMorceaux(); }catch(_){}
+    if(!L) L=[function(){ if(window._tenirApres) window._tenirApres(); }, function(){ if(window._repasseSombre) window._repasseSombre(); }];
+    window._enFond(L); }
   window._instantTenue=function(){
     var dp=document.getElementById('detailPoster');
     if(!dp||!dp.classList.contains('show')){ finAnime(); return; }
@@ -27389,9 +27421,13 @@ var SIX=[[0.34,0.30],[1.42,0.58],[2.31,0.86],[3.55,0.44],[4.48,0.72],[5.63,0.94]
 
 function peint(cv,o){
   var CSS=o.css||520, W=CSS*D;
+  var g=null;
+  if(!o.seulementEtat){   /* v125 : `seulementEtat` — on ne veut que l'état des poils et la table des couleurs (pour la carte graphique) : le canevas n'est pas touché */
+  if(cv.__glc){ cv.__sale=false; cv.__plein=true; if(cv.__glc.style.visibility!=='hidden') cv.__glc.style.visibility='hidden'; }   /* v125 : ce peintre reprend la main (un toucher) — le canevas de la carte graphique se retire */
   cv.width=W; cv.height=W;
-  var g=cv.getContext('2d');
+  g=cv.getContext('2d');
   g.fillStyle=o.fond||'#1D1501'; g.fillRect(0,0,W,W);
+  }
   var A=lieTampons(o.atlas,W), TAI=o.tailles;
   var R=CSS*(o.R||0.425)*D, FOC=R*5.4, CX=W/2, CY=W/2;
   var lac=o.lac, tan=o.tan;
@@ -27993,6 +28029,8 @@ function peint(cv,o){
     }
     cv.__ntch=ntch;
   }
+  /* v125 : l'état pour la carte graphique — les poils, la table des couleurs, et (sous un doigt) les poils que le contact déplace */
+  if(o.seulementEtat) return {ST:ST, COL:COL, NCOL:NCOL, ETAGE:ETAGE, TDL:TDL, ILE:!!ILE, A:o.atlas, TAI:TAI, W:W, R:R, FOC:FOC, POUSSE:POUSSE, FE:FE, NTCH:cv.__ntch};
 
   /* ⚑ DES TABLEAUX TYPES PREALLOUES, PAS DES push().
      Un `av.push(a,b,c)` sur un tableau JS ordinaire realloue, boxe et suit un
@@ -28841,10 +28879,316 @@ function retoucheTraces(ST, anciennes, nouvelles){
     POL[i]=(_po*255)|0;
     if(CIX[i]===0){ Q[qb+7]=fx; Q[qb+8]=fy; Q[qb+9]=fz; }   /* une île garde son épi */
   }
+  ST.__v=(ST.__v|0)+1;   /* v125 : l'état a changé en place — la carte graphique le renvoie (`peintGL`) */
   return n;
 }
 
-try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAIN_POIL:GRAIN_POIL, ORI:ORI, NIVA:NIVA,
+/* ⚑ v125 (Tom, 3 oct. 2026) — LA PELOTE PASSE À LA CARTE GRAPHIQUE. « Mesuré sur iPhone 16e, au palier de 75 000 poils : image p50
+   187 ms, 5 images/s. Cause à nommer : les poils sont recalculés à chaque image. » CONFIRMÉ à la lecture : `peint` repasse, en
+   JavaScript, sur chaque poil visible (rotation, projection, lumière du velours, choix de la marche de couleur), puis recopie son
+   tampon pixel par pixel (`verse`) — 75 000 à 220 000 fois par image, sur le fil principal.
+   LA PARADE : les poils ne bougent pas dans le repère de l'objet. Leur état (`S.__st` : position, normale, flux, couleur, poli) est
+   envoyé UNE FOIS à la carte graphique ; à chaque image elle fait elle-même la rotation, la projection et la lumière (le souffle
+   compris), et pose le tampon du poil — un rectangle instancié par poil, lu dans le même atlas. Plus un seul poil n'est recalculé en
+   JavaScript. Ce sont LES MÊMES poils, aux mêmes pixels, dans les mêmes couleurs : pas de texture plaquée sur une sphère, donc ni
+   couture ni pôle, et la frange de la silhouette reste celle du poil.
+   · la règle de `verse` (« le plus opaque gagne » : `if(v>B[o2]) B[o2]=v`, l'alpha en poids fort) devient un test de profondeur :
+     la profondeur écrite est 1 − alpha ;
+   · sous la fourrure, le corps plein (v120, v123) : le même disque (opaque jusqu'à 0,972 R, fondu jusqu'à 1,012 R) ;
+   · le toucher (l'empreinte, le prénom effleuré) reste peint par `peint` : il déforme des poils image par image — ces images-là
+     gardent le peintre d'origine ; dès que la main est levée et le creux refermé, la carte graphique reprend.
+   WebGL 2 ; s'il manque, `peintGL` rend `false` et le peintre d'origine peint, comme avant. */
+var _GL=null;
+function _glProg(gl, vs, fs){
+  function sh(t,s){ var o=gl.createShader(t); gl.shaderSource(o,s); gl.compileShader(o);
+    if(!gl.getShaderParameter(o,gl.COMPILE_STATUS)) throw new Error('shader : '+gl.getShaderInfoLog(o)); return o; }
+  var p=gl.createProgram(); gl.attachShader(p,sh(gl.VERTEX_SHADER,vs)); gl.attachShader(p,sh(gl.FRAGMENT_SHADER,fs)); gl.linkProgram(p);
+  if(!gl.getProgramParameter(p,gl.LINK_STATUS)) throw new Error('programme : '+gl.getProgramInfoLog(p));
+  return p;
+}
+function _glInit(W){
+  var cv=document.createElement('canvas'); cv.width=W; cv.height=W;
+  /* ⚠ `failIfMajorPerformanceCaveat` : un WebGL rendu par le PROCESSEUR (pas de carte graphique : un banc Chromium sans GPU, mesuré
+     159 ms par image contre 41 pour le peintre d'origine) est refusé — le peintre d'origine peint, comme avant. */
+  var gl=cv.getContext('webgl2', {alpha:true, premultipliedAlpha:true, antialias:false, depth:false, stencil:false, preserveDrawingBuffer:true, powerPreference:'high-performance', failIfMajorPerformanceCaveat:true});
+  if(!gl) return null;
+  var VS=['#version 300 es','precision highp float;',
+    'layout(location=0) in vec2 aCoin;','layout(location=1) in vec3 aPos;','layout(location=2) in vec3 aNrm;','layout(location=3) in float aRel;',
+    'layout(location=4) in vec3 aFlux;','layout(location=5) in vec4 aE0;','layout(location=6) in vec4 aE1;','layout(location=7) in float aVar;',
+    'layout(location=8) in float aMod;','layout(location=9) in vec2 aDyn;','uniform float uDyn,uFE;',
+    'uniform float uCl,uSl,uCt,uSt,uR,uFOC,uC,uW,uVel,uDoux,uPousse,uNCOL,uNT,uILE,uETAGE,uM,uCell,uGrid,uORI,uNVAR;','uniform vec2 uAtlas;','uniform sampler2D uPal;','uniform sampler2D uBB;',
+    'out vec2 vUV;','flat out vec3 vCol;','flat out vec3 vPt;','flat out vec2 vCel;',
+    'const vec3 L=vec3(-0.58,-0.72,0.380);','const float TAU=6.283185307179586;',
+    /* les mêmes tables que le peintre (1 024 pas) : la même marche de couleur au même endroit */
+    'float tab(float t, float e){ return t<=0.0 ? 0.0 : (t>=1.0 ? 1.0 : pow(floor(t*1024.0)/1024.0, e)); }',
+    'void main(){',
+    '  float ci=aE0.x; gl_Position=vec4(2.0,2.0,2.0,1.0); vUV=vec2(0.0); vCol=vec3(0.0); vPt=vec3(0.0); vCel=vec2(0.0); gl_PointSize=1.0;',
+    '  if(ci<0.0) return;',
+    '  if(uDyn<0.5 && aMod>0.5) return;                      /* un poil que le doigt déplace : il est dessiné par la seconde passe */',
+    '  float Zt=-aPos.x*uSl+aPos.z*uCl, Z2=aPos.y*uSt+Zt*uCt;',
+    '  if(Z2<0.0) return;',
+    '  float X2=aPos.x*uCl+aPos.z*uSl, Y2=aPos.y*uCt-Zt*uSt;',
+    '  float rrp=uDyn>0.5 ? 1.0 : 1.0+aRel*tab(Z2,0.60); X2*=rrp; Y2*=rrp; Z2*=rrp;',
+    '  float nX=aNrm.x*uCl+aNrm.z*uSl, nZt=-aNrm.x*uSl+aNrm.z*uCl, nY=aNrm.y*uCt-nZt*uSt, nZ2=aNrm.y*uSt+nZt*uCt;',
+    '  float k=uFOC/(uFOC-Z2*uR);',
+    '  float px=floor(uC+X2*uR*k), py=floor(uC+Y2*uR*k);',
+    '  if(px<26.0||py<26.0||px>uW-26.0||py>uW-26.0) return;',
+    '  float fX=aFlux.x*uCl+aFlux.z*uSl, fZt=-aFlux.x*uSl+aFlux.z*uCl;',
+    '  float fY=aFlux.y*uCt-fZt*uSt, fZv=aFlux.y*uSt+fZt*uCt;',
+    '  float fx2=fX*aE1.y-fY*aE1.z; fY=fX*aE1.z+fY*aE1.y; fX=fx2;',
+    '  float dl=max(0.0, nX*L.x+nY*L.y+nZ2*L.z);',
+    '  float lum=0.30+0.70*tab(dl,0.74);',
+    '  float tl=fX*L.x+fY*L.y+fZv*L.z;',
+    '  float s1=sqrt(max(0.0,1.0-tl*tl));',
+    '  if(uVel>0.0){ float tv=fZv; float s2=sqrt(max(0.0,1.0-tv*tv)); float kk=max(0.0,s1*s2-tl*tv); float k2=kk*kk, k4=k2*k2;',
+    '    lum+=uVel*(uDoux>0.5 ? (0.26*s1*dl+0.44*k4) : (0.26*s1*dl+0.62*k4*k2)); }',
+    '  lum=min(lum,1.0);',
+    '  if(uDyn>0.5 && aDyn.x>0.5) lum*=1.0-uFE*(1.0-(0.20+0.62*smoothstep(-0.55,0.62,-aDyn.y)));   /* le fond du creux, dans son ombre */',
+    '  float po=aE0.z, ew=aE0.w;',
+    '  float lu=(s1-0.78)*(11.5+16.0*ew); lu=max(lu,-1.0-1.4*ew);',
+    '  float mar=trunc((lum-0.30)*16.4+5.4+aE0.y+lu+po*2.6+uPousse*1.4);',
+    '  mar=min(mar,uM-3.0); mar=clamp(mar,0.0,uM-1.0);',
+    '  float zz=(Z2+1.0)*0.5, tai;',
+    '  if(uILE>0.5 && ci>0.0 && uNT>1.0){ tai=0.0; }',
+    '  else { float b0=(uILE>0.5 && uNT>1.0)?1.0:0.0; float z3=zz*(1.0-0.72*uPousse)+0.72*uPousse; tai=clamp(b0+floor(z3*(uNT-b0)), b0, uNT-1.0); }',
+    '  if(ci>=uNCOL && tai>0.0) tai-=1.0;',
+    '  if(uDyn>0.5 && tai>0.0 && aE1.w<uFE) tai-=1.0;         /* le poil couché, raccourci, tramé */',
+    '  if(uILE<0.5 && aE1.x<18.0 && tai>0.0) tai-=1.0;',
+    '  if(po>0.34 && tai>0.0) tai-=1.0;',
+    '  if(ew>0.30 && tai<uNT-1.0) tai+=1.0;',
+    '  float ax=abs(fX), ay=abs(fY), a;',
+    '  if(ax>=ay) a=atan(floor(ay/max(ax,1e-9)*256.0)/256.0); else a=1.5707963268-atan(floor(ax/max(ay,1e-9)*256.0)/256.0);',
+    '  if(fX<0.0) a=3.1415926536-a; if(fY<0.0) a=TAU-a;',
+    '  float sec=clamp(floor(a/TAU*uORI),0.0,uORI-1.0);',
+    '  float spr=tai*uORI*uNVAR+sec*uNVAR+aVar;',
+    '  float et=(po>0.10+0.62*aE1.w && ci<uNCOL)?uETAGE:0.0;',
+    '  vCol=texelFetch(uPal, ivec2(int(et+ci*uM+mar),0), 0).rgb;',
+    /* le rectangle est celui du tampon, au plus juste (sa boîte, lue dans une table) : la carte ne parcourt que les pixels du poil */
+    '  float m=(uCell-1.0)*0.5;',
+    '  vec2 cel=vec2(mod(spr,uGrid), floor(spr/uGrid));',
+    '  vec4 bb=texelFetch(uBB, ivec2(cel), 0);',
+    '#ifdef POINTS',
+    /* un POINT par poil (un seul sommet, pas quatre) : un carré calé sur le coin de la boîte du tampon, de son plus grand côté */
+    '  float s=max(bb.z-bb.x, bb.w-bb.y)+1.0;',
+    '  gl_PointSize=s; vPt=vec3(cel*uCell+vec2(m)+bb.xy, s); vCel=cel*uCell;',
+    '  gl_Position=vec4((px+bb.x+s*0.5)/uW*2.0-1.0, 1.0-(py+bb.y+s*0.5)/uW*2.0, 0.0, 1.0);',
+    '#else',
+    '  vec2 d=mix(bb.xy, bb.zw+vec2(1.0), aCoin);',
+    '  vec2 P=vec2(px,py)+d;',
+    '  vUV=(cel*uCell+vec2(m)+d)/uAtlas;',
+    '  gl_Position=vec4(P.x/uW*2.0-1.0, 1.0-P.y/uW*2.0, 0.0, 1.0);',
+    '#endif',
+    '}'].join('\n');
+  var FS=['precision highp float;','in vec2 vUV;','flat in vec3 vCol;','flat in vec3 vPt;','flat in vec2 vCel;','uniform sampler2D uAt;','uniform float uCell;','out vec4 o;',
+    'void main(){',
+    '#ifdef POINTS',
+    '  vec2 tx=floor(vPt.xy+gl_PointCoord*vPt.z);',
+    '  if(tx.x<vCel.x || tx.y<vCel.y || tx.x>=vCel.x+uCell || tx.y>=vCel.y+uCell) discard;   /* hors de la case de ce tampon */',
+    '  float a=texelFetch(uAt, ivec2(tx), 0).r;',
+    '#else',
+    '  float a=texture(uAt,vUV).r;',
+    '#endif',
+    '  if(a<=0.0) discard; o=vec4(vCol,a); gl_FragDepth=1.0-a; }'].join('\n');
+  var PTS=(window._pelotePoints!==false), ENT='#version 300 es\n'+(PTS?'#define POINTS\n':'');
+  try{ var _pr=gl.getParameter(gl.ALIASED_POINT_SIZE_RANGE); if(!_pr || _pr[1]<64) { PTS=false; ENT='#version 300 es\n'; } }catch(_){ PTS=false; ENT='#version 300 es\n'; }
+  VS=ENT+VS.replace('#version 300 es\n',''); FS=ENT+FS;
+  var VS2=['#version 300 es','void main(){ vec2 p=vec2(float((gl_VertexID<<1)&2), float(gl_VertexID&2)); gl_Position=vec4(p*2.0-1.0,0.0,1.0); }'].join('\n');
+  var FS2=['#version 300 es','precision highp float;','uniform sampler2D uFur;','uniform vec3 uCorps;','uniform float uA,uR0,uR1,uC2,uW2;','out vec4 o;',
+    /* `comble` : un pixel vide dont deux voisins au moins portent un poil prend le plus opaque d'entre eux */
+    'bool plus(vec4 a, vec4 b){ if(a.a!=b.a) return a.a>b.a; if(a.b!=b.b) return a.b>b.b; if(a.g!=b.g) return a.g>b.g; return a.r>b.r; }',
+    'void main(){ ivec2 q=ivec2(gl_FragCoord.xy); vec4 f=texelFetch(uFur, q, 0);',
+    '  if(f.a==0.0){ float k=0.0; vec4 mx=vec4(0.0), v;',
+    '    v=texelFetch(uFur,q+ivec2(-1,0),0); if(v.a>0.0){ k+=1.0; if(plus(v,mx)) mx=v; }',
+    '    v=texelFetch(uFur,q+ivec2(1,0),0);  if(v.a>0.0){ k+=1.0; if(plus(v,mx)) mx=v; }',
+    '    v=texelFetch(uFur,q+ivec2(0,-1),0); if(v.a>0.0){ k+=1.0; if(plus(v,mx)) mx=v; }',
+    '    v=texelFetch(uFur,q+ivec2(0,1),0);  if(v.a>0.0){ k+=1.0; if(plus(v,mx)) mx=v; }',
+    '    if(k>=2.0) f=mx; }',
+    '  float r=distance(vec2(gl_FragCoord.x, uW2-gl_FragCoord.y), vec2(uC2));',
+    '  float t=r<=uR0 ? 1.0 : (r>=uR1 ? 0.0 : 1.0-(r-uR0)/(uR1-uR0)); t=t*t*(3.0-2.0*t); t*=uA;',
+    '  o=vec4(f.rgb*f.a+uCorps*t*(1.0-f.a), f.a+t*(1.0-f.a)); }'].join('\n');
+  var G={cv:cv, gl:gl, W:W, pts:PTS}, DIV=PTS?0:1;
+  G.p1=_glProg(gl,VS,FS); G.p2=_glProg(gl,VS2,FS2);
+  G.u1={}; ['uCl','uSl','uCt','uSt','uR','uFOC','uC','uW','uVel','uDoux','uPousse','uNCOL','uNT','uILE','uETAGE','uM','uCell','uGrid','uORI','uNVAR','uAtlas','uPal','uAt','uBB','uDyn','uFE'].forEach(function(n){ G.u1[n]=gl.getUniformLocation(G.p1,n); });
+  G.u2={}; ['uFur','uCorps','uA','uR0','uR1','uC2','uW2'].forEach(function(n){ G.u2[n]=gl.getUniformLocation(G.p2,n); });
+  G.vao=gl.createVertexArray(); gl.bindVertexArray(G.vao);
+  G.bCoin=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,G.bCoin); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([0,0,1,0,0,1,1,1]),gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+  G.bQ=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,G.bQ);
+  [[1,3,0],[2,3,12],[3,1,24],[4,3,28]].forEach(function(a){ gl.enableVertexAttribArray(a[0]); gl.vertexAttribPointer(a[0],a[1],gl.FLOAT,false,40,a[2]); gl.vertexAttribDivisor(a[0],DIV); });
+  G.bE=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,G.bE);
+  [[5,4,0],[6,4,16],[7,1,32]].forEach(function(a){ gl.enableVertexAttribArray(a[0]); gl.vertexAttribPointer(a[0],a[1],gl.FLOAT,false,36,a[2]); gl.vertexAttribDivisor(a[0],DIV); });
+  if(PTS) gl.disableVertexAttribArray(0);
+  /* les poils marqués par un toucher (un octet par poil) */
+  G.bM=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,G.bM); gl.enableVertexAttribArray(8); gl.vertexAttribPointer(8,1,gl.UNSIGNED_BYTE,false,1,0); gl.vertexAttribDivisor(8,DIV);
+  gl.bindVertexArray(null);
+  /* la seconde passe : les poils que le doigt déplace, recalculés par `peint` (le contact) et envoyés à chaque image — eux seuls */
+  G.vaoD=gl.createVertexArray(); gl.bindVertexArray(G.vaoD);
+  if(!PTS){ gl.bindBuffer(gl.ARRAY_BUFFER,G.bCoin); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0); }
+  G.bD=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,G.bD);
+  [[1,3,0],[2,3,12],[3,1,24],[4,3,28],[5,4,40],[6,4,56],[7,1,72],[9,2,76]].forEach(function(a){ gl.enableVertexAttribArray(a[0]); gl.vertexAttribPointer(a[0],a[1],gl.FLOAT,false,84,a[2]); gl.vertexAttribDivisor(a[0],DIV); });
+  gl.bindVertexArray(null);
+  G.vao2=gl.createVertexArray();
+  /* la cible de la fourrure : couleur + profondeur */
+  G.tFur=gl.createTexture(); gl.bindTexture(gl.TEXTURE_2D,G.tFur); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,W,W,0,gl.RGBA,gl.UNSIGNED_BYTE,null);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+  G.rb=gl.createRenderbuffer(); gl.bindRenderbuffer(gl.RENDERBUFFER,G.rb); gl.renderbufferStorage(gl.RENDERBUFFER,gl.DEPTH_COMPONENT24,W,W);
+  G.fb=gl.createFramebuffer(); gl.bindFramebuffer(gl.FRAMEBUFFER,G.fb);
+  gl.framebufferTexture2D(gl.FRAMEBUFFER,gl.COLOR_ATTACHMENT0,gl.TEXTURE_2D,G.tFur,0); gl.framebufferRenderbuffer(gl.FRAMEBUFFER,gl.DEPTH_ATTACHMENT,gl.RENDERBUFFER,G.rb);
+  if(gl.checkFramebufferStatus(gl.FRAMEBUFFER)!==gl.FRAMEBUFFER_COMPLETE) throw new Error('cible incomplète');
+  gl.bindFramebuffer(gl.FRAMEBUFFER,null);
+  G.tAt=gl.createTexture(); G.tPal=gl.createTexture(); G.tBB=gl.createTexture();
+  cv.addEventListener('webglcontextlost', function(e){ try{ e.preventDefault(); }catch(_){} _GL=null; }, false);
+  return G;
+}
+/* l'atlas : un tampon par (taille, orientation × variante), au niveau d'alpha le plus haut (le seul que la boucle emploie : `pres=1`) */
+function _glAtlas(G, A, NT){
+  var gl=G.gl, NS=NT*ORI*NVAR, m=0, s, j, t;
+  for(s=0;s<NS;s++){ t=A[s*NIVA+NIVA-1]; for(j=0;j<t.rel.length;j++){ var a=Math.abs(t.rel[j][0]), b=Math.abs(t.rel[j][1]); if(a>m)m=a; if(b>m)m=b; } }
+  var CELL=2*m+1, GRID=ORI, rows=Math.ceil(NS/GRID), TW=GRID*CELL, TH=rows*CELL, D8=new Uint8Array(TW*TH);
+  for(s=0;s<NS;s++){ t=A[s*NIVA+NIVA-1]; var ox=(s%GRID)*CELL+m, oy=((s/GRID)|0)*CELL+m;
+    for(j=0;j<t.rel.length;j++) D8[(oy+t.rel[j][0])*TW+ox+t.rel[j][1]]=t.al[j]; }
+  gl.pixelStorei(gl.UNPACK_ALIGNMENT,1);
+  gl.bindTexture(gl.TEXTURE_2D,G.tAt); gl.texImage2D(gl.TEXTURE_2D,0,gl.R8,TW,TH,0,gl.RED,gl.UNSIGNED_BYTE,D8);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  var BB=new Float32Array(GRID*rows*4);
+  for(s=0;s<NS;s++){ t=A[s*NIVA+NIVA-1]; var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+    for(j=0;j<t.rel.length;j++){ if(!t.al[j]) continue; var dy=t.rel[j][0], dx=t.rel[j][1]; if(dx<x0)x0=dx; if(dx>x1)x1=dx; if(dy<y0)y0=dy; if(dy>y1)y1=dy; }
+    if(x1<x0){ x0=0; x1=-1; y0=0; y1=-1; }
+    BB[s*4]=x0; BB[s*4+1]=y0; BB[s*4+2]=x1; BB[s*4+3]=y1; }
+  gl.bindTexture(gl.TEXTURE_2D,G.tBB); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA32F,GRID,rows,0,gl.RGBA,gl.FLOAT,BB);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+  gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+  G.atlas=A; G.cell=CELL; G.grid=GRID; G.tw=TW; G.th=TH; G.nt=NT;
+}
+/* l'état des poils, envoyé une fois (il ne change qu'avec le semis, les îles ou une caresse inscrite) */
+function _glEtat(G, E){
+  var gl=G.gl, ST=E.ST, N=ST.n, Q=ST.Q, CIX=ST.ci, BRD=ST.bd, POL=ST.po, EW=ST.ew, NC=E.NCOL, TDL=E.TDL, X=new Float32Array(N*9), i;
+  for(i=0;i<N;i++){ var ci=CIX[i], st=0, o=i*9;
+    if(ci>=NC){ st=TDL[ci-NC]; ci=NC; }
+    var ja=(((i*2246822519)>>>0)%2048/2048-0.5)*0.74;
+    X[o]=ci; X[o+1]=st; X[o+2]=POL?POL[i]/255:0; X[o+3]=EW?EW[i]/255:0;
+    X[o+4]=BRD[i]; X[o+5]=Math.cos(ja); X[o+6]=Math.sin(ja); X[o+7]=(((i*2654435761)>>>0)%1024)/1024; X[o+8]=i%NVAR; }
+  gl.bindBuffer(gl.ARRAY_BUFFER,G.bQ); gl.bufferData(gl.ARRAY_BUFFER, Q.subarray ? Q.subarray(0,N*10) : new Float32Array(Q).subarray(0,N*10), gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,G.bE); gl.bufferData(gl.ARRAY_BUFFER, X, gl.STATIC_DRAW);
+  gl.bindBuffer(gl.ARRAY_BUFFER,G.bM); gl.bufferData(gl.ARRAY_BUFFER, new Uint8Array(N), gl.DYNAMIC_DRAW); G.modSale=false;
+  G.X=X; G.st=ST; G.n=N; G.envois=(G.envois||0)+1;
+}
+function peintGL(cv,o){
+  try{
+    if(window._peloteGL===false) return false;
+    if(o.effleure || o.pastilles || o.pulpe || o.nuLum || o.sonde || o.sansVerse || o.sansPeau || o.sansPlein || o.contre || o.duvet || o.dresse || !o.velours2) return false;
+    if(!glDispo()) return false;                                   /* pas de carte graphique : on ne touche à rien, le peintre d'origine fait tout */
+    var o2={}; for(var kq in o) o2[kq]=o[kq]; o2.seulementEtat=true;
+    var E=peint(cv,o2); if(!E || !E.ST) return false;
+    var W=E.W;
+    if(!_GL || _GL.W!==W){ if(_GL===false) return false; _GL=_glInit(W); if(!_GL){ _GL=false; return false; } }
+    var G=_GL, gl=G.gl;
+    if(G.atlas!==E.A || G.nt!==E.TAI.length) _glAtlas(G, E.A, E.TAI.length);
+    if(G.st!==E.ST || G.n!==E.ST.n || G.stV!==(E.ST.__v|0)){ _glEtat(G, E); G.stV=(E.ST.__v|0); }   /* `__v` : une caresse inscrite retouche l'état en place (`retoucheTraces`) */
+    /* la table des couleurs (le sol, les îles, leurs marches) : elle suit la palette, le thème et le sol tiré */
+    var COL=E.COL, nP=COL.length, kP='';
+    if(!G.pal || G.pal.length!==nP*4) G.pal=new Uint8Array(nP*4);
+    for(var c=0;c<nP;c++){ var v=COL[c]; G.pal[c*4]=v&255; G.pal[c*4+1]=(v>>>8)&255; G.pal[c*4+2]=(v>>>16)&255; G.pal[c*4+3]=255; }
+    gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,G.tPal);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA8,nP,1,0,gl.RGBA,gl.UNSIGNED_BYTE,G.pal);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.NEAREST); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.NEAREST);
+    gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D,G.tBB);
+    gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,G.tAt);
+    /* 1 · la fourrure, dans sa cible : le plus opaque gagne */
+    gl.bindFramebuffer(gl.FRAMEBUFFER,G.fb); gl.viewport(0,0,W,W);
+    gl.disable(gl.BLEND); gl.enable(gl.DEPTH_TEST); gl.depthFunc(gl.LESS); gl.depthMask(true);
+    gl.clearColor(0,0,0,0); gl.clearDepth(1); gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);
+    gl.useProgram(G.p1); var u=G.u1;
+    gl.uniform1f(u.uCl,Math.cos(o.lac)); gl.uniform1f(u.uSl,Math.sin(o.lac)); gl.uniform1f(u.uCt,Math.cos(o.tan)); gl.uniform1f(u.uSt,Math.sin(o.tan));
+    gl.uniform1f(u.uR,E.R); gl.uniform1f(u.uFOC,E.FOC); gl.uniform1f(u.uC,W/2); gl.uniform1f(u.uW,W);
+    gl.uniform1f(u.uVel,o.velours||0); gl.uniform1f(u.uDoux,o.doux?1:0); gl.uniform1f(u.uPousse,E.POUSSE);
+    gl.uniform1f(u.uNCOL,E.NCOL); gl.uniform1f(u.uNT,E.TAI.length); gl.uniform1f(u.uILE,E.ILE?1:0); gl.uniform1f(u.uETAGE,E.ETAGE); gl.uniform1f(u.uM,MARCHES);
+    gl.uniform1f(u.uCell,G.cell); gl.uniform1f(u.uGrid,G.grid); gl.uniform1f(u.uORI,ORI); gl.uniform1f(u.uNVAR,NVAR); gl.uniform2f(u.uAtlas,G.tw,G.th);
+    gl.uniform1i(u.uPal,1); gl.uniform1i(u.uAt,0); gl.uniform1i(u.uBB,2); gl.uniform1f(u.uDyn,0); gl.uniform1f(u.uFE,E.FE||0);
+    /* ⚑ LE TOUCHER. Le contact (l'empreinte du doigt) reste calculé par `peint` — pour les seuls poils qu'il déplace (`cv.__tch`) ; ils
+       sont retirés de la passe fixe (un octet par poil) et dessinés par une seconde passe, avec leur place, leur normale et leur
+       peigne du moment. Plus aucune image de la Pelote ne repasse par l'ancien peintre. */
+    var NT2=E.NTCH|0;
+    if(NT2>0 || G.modSale){ gl.bindBuffer(gl.ARRAY_BUFFER,G.bM); gl.bufferSubData(gl.ARRAY_BUFFER,0,cv.__mod,0,G.n); G.modSale=NT2>0; }
+    gl.bindVertexArray(G.vao);
+    /* ⚠ MESURÉ (WebKit, ce Mac) : 220 000 poils envoyés à chaque image = 21 à 26 ms au p50 ; 110 000 = 17 ms. Le coût est celui des
+       SOMMETS, pas des pixels. On n'envoie donc que les pavés tournés vers l'œil — le même tri que le peintre (`VU`, seuil −0,26) —,
+       par suites de pavés voisins. */
+    var ST2=E.ST, PD=ST2.pd, PST=ST2.pst, NP=ST2.np, sl=Math.sin(o.lac), cl=Math.cos(o.lac), st=Math.sin(o.tan), ct=Math.cos(o.tan), nvu=0;
+    if(PD && PST && NP && window._peloteGLTout!==true){
+      var d0=-1, pq, vu;
+      for(pq=0;pq<=NP;pq++){
+        vu=false;
+        if(pq<NP){ var pzt=-PD[pq*3]*sl+PD[pq*3+2]*cl; vu=(PD[pq*3+1]*st+pzt*ct) > -0.26; }
+        if(vu){ if(d0<0) d0=PST[pq]; }
+        else if(d0>=0){ var fin=PST[pq], nb=fin-d0;
+          if(nb>0 && G.pts){ gl.drawArrays(gl.POINTS,d0,nb); nvu+=nb; }
+          else if(nb>0){ gl.bindBuffer(gl.ARRAY_BUFFER,G.bQ);
+            gl.vertexAttribPointer(1,3,gl.FLOAT,false,40,d0*40); gl.vertexAttribPointer(2,3,gl.FLOAT,false,40,d0*40+12); gl.vertexAttribPointer(3,1,gl.FLOAT,false,40,d0*40+24); gl.vertexAttribPointer(4,3,gl.FLOAT,false,40,d0*40+28);
+            gl.bindBuffer(gl.ARRAY_BUFFER,G.bE);
+            gl.vertexAttribPointer(5,4,gl.FLOAT,false,36,d0*36); gl.vertexAttribPointer(6,4,gl.FLOAT,false,36,d0*36+16); gl.vertexAttribPointer(7,1,gl.FLOAT,false,36,d0*36+32);
+            gl.bindBuffer(gl.ARRAY_BUFFER,G.bM); gl.vertexAttribPointer(8,1,gl.UNSIGNED_BYTE,false,1,d0);
+            gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,nb); nvu+=nb; }
+          d0=-1; }
+      }
+    } else { if(G.pts) gl.drawArrays(gl.POINTS,0,G.n); else gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,G.n); nvu=G.n; }
+    G.nvu=nvu;
+    if(NT2>0){
+      if(!G.D || G.D.length<NT2*21) G.D=new Float32Array(Math.max(NT2*21, 21*4096));
+      var DD=G.D, TC=cv.__tch, QQ=E.ST.Q, XX=G.X, dX_=cv.__dX, dY_=cv.__dY, dZ_=cv.__dZ, nX_=cv.__nX, nY_=cv.__nY, nZ_=cv.__nZ, fX_=cv.__fX, fY_=cv.__fY, fZ_=cv.__fZ, pl_=cv.__pl, om_=cv.__om, t2, i2, o2, x9;
+      for(t2=0;t2<NT2;t2++){ i2=TC[t2]; o2=t2*21; x9=i2*9;
+        DD[o2]=dX_[i2]; DD[o2+1]=dY_[i2]; DD[o2+2]=dZ_[i2]; DD[o2+3]=nX_[i2]; DD[o2+4]=nY_[i2]; DD[o2+5]=nZ_[i2]; DD[o2+6]=0;
+        DD[o2+7]=fX_[i2]; DD[o2+8]=fY_[i2]; DD[o2+9]=fZ_[i2];
+        DD[o2+10]=XX[x9]; DD[o2+11]=XX[x9+1]; DD[o2+12]=XX[x9+2]; DD[o2+13]=XX[x9+3]; DD[o2+14]=XX[x9+4]; DD[o2+15]=XX[x9+5]; DD[o2+16]=XX[x9+6]; DD[o2+17]=XX[x9+7]; DD[o2+18]=XX[x9+8];
+        DD[o2+19]=pl_[i2]; DD[o2+20]=om_[i2]; }
+      gl.bindVertexArray(G.vaoD); gl.bindBuffer(gl.ARRAY_BUFFER,G.bD); gl.bufferData(gl.ARRAY_BUFFER, DD.subarray(0,NT2*21), gl.DYNAMIC_DRAW);
+      gl.uniform1f(u.uDyn,1);
+      if(G.pts) gl.drawArrays(gl.POINTS,0,NT2); else gl.drawArraysInstanced(gl.TRIANGLE_STRIP,0,4,NT2);
+      gl.uniform1f(u.uDyn,0);
+    }
+    /* 2 · la fourrure sur le corps plein, vers le canevas */
+    gl.bindFramebuffer(gl.FRAMEBUFFER,null); gl.viewport(0,0,W,W); gl.disable(gl.DEPTH_TEST);
+    gl.clearColor(0,0,0,0); gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.useProgram(G.p2); var u2=G.u2, C=o.corps||[0,0,0];
+    gl.bindTexture(gl.TEXTURE_2D,G.tFur); gl.uniform1i(u2.uFur,0);
+    gl.uniform3f(u2.uCorps,C[0]/255,C[1]/255,C[2]/255); gl.uniform1f(u2.uA,o.corps?1:0);
+    gl.uniform1f(u2.uR0,E.R*0.972); gl.uniform1f(u2.uR1,E.R*1.012); gl.uniform1f(u2.uC2,W/2); gl.uniform1f(u2.uW2,W);
+    gl.bindVertexArray(G.vao2); gl.drawArrays(gl.TRIANGLES,0,3);
+    gl.bindVertexArray(null);
+    /* 3 · à l'écran : LE CANEVAS DE LA CARTE GRAPHIQUE LUI-MÊME, posé sur celui de la Pelote (même boîte : `.au-bo canvas`).
+       ⚠ MESURÉ (WebKit) : le recopier à chaque image dans le canevas 2D coûte 6 ms au p50 et 20 au p95 — le navigateur attend la carte.
+       Sans la recopie : 17 / 18 ms, la cadence de l'écran. Le canevas 2D (`#auBoule`, celui que le partage et les juges lisent, et qui
+       reçoit le doigt) reste donc VIDE pendant que la carte peint, et n'est rempli QU'À LA DEMANDE : `getContext('2d')` demandé de
+       l'extérieur recopie d'abord l'image courante (`_gl2d`). */
+    if(cv.width!==W || cv.height!==W){ cv.width=W; cv.height=W; cv.__plein=false; }
+    if(!cv.__glc){
+      cv.__glc=G.cv; G.cv.id='auBouleGL'; G.cv.setAttribute('aria-hidden','true'); G.cv.style.pointerEvents='none';
+      if(cv.parentNode) cv.parentNode.insertBefore(G.cv, cv.nextSibling);
+      var _gc=cv.getContext;
+      cv.__ctx2d=function(){ return _gc.call(cv,'2d'); };
+      cv.getContext=function(t){ var g0=_gc.apply(cv,arguments);
+        if(t==='2d' && cv.__sale && cv.__glc){ cv.__sale=false; cv.__plein=true; cv.__copies=(cv.__copies||0)+1;
+          g0.save(); g0.setTransform(1,0,0,1,0,0); g0.globalAlpha=1; g0.globalCompositeOperation='copy'; g0.drawImage(cv.__glc,0,0); g0.restore(); }
+        return g0; };
+    }
+    if(G.cv.parentNode!==cv.parentNode && cv.parentNode) cv.parentNode.insertBefore(G.cv, cv.nextSibling);
+    if(cv.__plein){ cv.__plein=false; var g=cv.__ctx2d(); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,W,W); }
+    if(G.cv.style.visibility) G.cv.style.visibility='';
+    cv.__sale=true;
+    /* la peau pleine que le juge du corps relit (`__po`) : la teinte du corps, à plat */
+    if(o.corps){ if(!cv.__po || cv.__po.__gl!==1){ cv.__po=document.createElement('canvas'); cv.__po.width=4; cv.__po.height=4; cv.__po.__gl=1; }
+      var kc=C.join(','); if(cv.__po.__k!==kc){ cv.__po.__k=kc; var pg=cv.__po.getContext('2d'); pg.fillStyle='rgb('+(C[0]|0)+','+(C[1]|0)+','+(C[2]|0)+')'; pg.fillRect(0,0,4,4); } }
+    cv.__gl=(cv.__gl||0)+1;
+    return true;
+  }catch(e){ window._peloteGLErreur=String(e&&e.stack||e); _GL=false; return false; }
+}
+try{ window._peloteGLEtat=function(){ return _GL ? {envois:_GL.envois||0, poils:_GL.n, envoyes:_GL.nvu, points:_GL.pts, cote:_GL.W, cellule:_GL.cell, tailles:_GL.nt} : null; }; }catch(_){}
+var _glOui=null;
+function glDispo(){ if(window._peloteGL===false || _GL===false) return false;
+  if(_glOui===null){ try{ _glOui=!!document.createElement('canvas').getContext('webgl2', {failIfMajorPerformanceCaveat:true}); }catch(_){ _glOui=false; } }
+  return _glOui; }
+try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAIN_POIL:GRAIN_POIL, ORI:ORI, NIVA:NIVA,
   NVAR:NVAR, semisPavage:semisPavage, batIles:batIles, peint:peint, m_gestes:m_gestes,
   retoucheTraces:retoucheTraces}; }catch(e){}
 })();
@@ -28880,8 +29224,17 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
 
   /* ── LES COTES — planche ÷ 0,872 ; une cote se CALCULE, elle ne se mesure jamais
         sur elle-même (§8). ───────────────────────────────────────────────────── */
+  /* ⚑ v125 (Tom, 3 oct. 2026) — L'AURA : TROIS COMPOSITIONS, TOM EN CHOISIT UNE, ON FIGE. « L'ombre plus près de la Pelote ; la phrase
+     remontée ; le disque TOI, sa ligne et tout ce qui suit remontés ; de l'air franc sous la ligne des chiffres. »
+     Les trois retraits, en points, face à v124 : [Pelote → ombre, bouton → phrase, phrase → disques].
+       A (APPLIQUÉE) : −10 · −8 · −8   (tout ce qui suit l'ombre −10, la phrase −18, les disques et la suite −26 ; air sous les chiffres 50)
+       B (plus serrée) : −14 · −12 · −12   C (plus aérée) : −6 · −6 · −6
+     `?aura=B` ou `?aura=C` montrent les deux autres, à l'œil, jamais mémorisées — elles disparaissent quand Tom a choisi. */
+  var _CMPN=(function(){ try{ var m=/[?&]aura=([ABC])/i.exec(location.search); return m?m[1].toUpperCase():'A'; }catch(_){ return 'A'; } })();
+  var _CMP={A:[10,8,8], B:[14,12,12], C:[6,6,6]}[_CMPN], _CMPS=_CMP[0]+_CMP[1]+_CMP[2];
+  window._auraComposition={nom:_CMPN, retraits:_CMP};
   var K = { bo:{x:47, y:105.532, d:296}, R:0.392,   /* ⚑ v123 (Tom) : −6 — du bas du plateau au haut du halo */   /* ⚑ v122 (Tom) : −11 — du bas du plateau au haut de la silhouette, 50 → 39 */   /* ⚑ v117 (Tom) : « remonte la Pelote d'un millimètre vers l'encart du haut » — −6 pt (1 mm ≈ 6 pt sur l'iPhone 16e) : G1 = 50 */   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
-            nx:{y:482.061, h:107}, mo:{y:661.061},   /* ⚑ v124 : −16 (−4 −4 −4 −4) */   /* ⚑ v123 : −27 (−6 −6 −6 −6 −3) */   /* ⚑ v122 : −50 (−11 −15 −12 −12) */   /* ⚑ v121 : −12 (l'ombre monte de 6, G2 sous l'ombre 56 → 50) */   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
+            nx:{y:482.061-_CMPS, h:107}, mo:{y:661.061-_CMPS},   /* v125 : A = 456,061 et 635,061 */   /* ⚑ v124 : −16 (−4 −4 −4 −4) */   /* ⚑ v123 : −27 (−6 −6 −6 −6 −3) */   /* ⚑ v122 : −50 (−11 −15 −12 −12) */   /* ⚑ v121 : −12 (l'ombre monte de 6, G2 sous l'ombre 56 → 50) */   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
             /* ⚑ 22 sept. (Tom) : « les disques sont trop fins partout ». L'arc passe de 8 à 12
                sur « toi » et de 6 à 9 sur une personne — la moitié en plus, comme sur les fiches.
                Le diamètre et la photo ne bougent pas : c'est l'ANNEAU qui s'épaissit, vers l'intérieur. */
@@ -28922,15 +29275,15 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
      la boîte descend de 2,5 et l'air du dessous en rend autant, pour que la rangée des Noyaux
      reste à 454. Air à l'encre après : 36,5 / 36,5. */
   K.MOT_INK = 2.5;
-  K.AIR_MOT = 30.71 - K.MOT_INK;   /* ⚑ v124 (Tom) : −4 (35,18 → 31,18), et −0,47 : la hauteur de la phrase est maintenant lue exacte, plus arrondie */   /* ⚑ v123 (Tom) : de la phrase à ses disques, −3 */
+  K.AIR_MOT = 30.71 - _CMP[2] - K.MOT_INK;   /* v125 : A = 22,71 à l'encre */   /* ⚑ v124 (Tom) : −4 (35,18 → 31,18), et −0,47 : la hauteur de la phrase est maintenant lue exacte, plus arrondie */   /* ⚑ v123 (Tom) : de la phrase à ses disques, −3 */
   K.BOULE_BAS = K.bo.y + K.bo.d/2 + K.bo.d*K.R;                          /* 353,4 — la BOULE, pas sa boîte */
   K.AIR = 28;
   /* ⚑ v118 (Tom, Q367 tranchée) — « PARTAGER MA PELOTE » REMONTE SOUS L'OMBRE. « Le bouton se place juste sous l'ombre de la
      Pelote, à G2 = 56 du bas de l'ombre. La phrase et ce qui suit se placent ensuite, à 56 sous le bouton. L'ombre garde ses
      60 pt, l'air ne se reprend pas. » L'ombre : la cote de lot-V114-PELOTE-css (haut 453,224, haut. 16,245 → bas 469,469).
      Le bouton : 525,469 → 585,469. La phrase : son ENCRE à 56 sous le bouton. */
-  K.ombre = {y:405.224, h:16.245};   /* ⚑ v124 (Tom) : −4 */   /* ⚑ v123 (Tom) : −12 (la Pelote −6, du halo à l'ombre −6) */   /* ⚑ v121 (Tom) : −6 ; ⚑ v122 : −26 (la Pelote −11, l'ombre −15) */
-  K.G2 = 34;   /* ⚑ v124 (Tom) : −4 · v123 : −6 */                         /* ⚑ v122 (Tom) : de « Partager ma Pelote » à la phrase, 56 → 44 */
+  K.ombre = {y:405.224-_CMP[0], h:16.245};   /* v125 : A = 395,224 (à 20,2 du bas de la silhouette) */   /* ⚑ v124 (Tom) : −4 */   /* ⚑ v123 (Tom) : −12 (la Pelote −6, du halo à l'ombre −6) */   /* ⚑ v121 (Tom) : −6 ; ⚑ v122 : −26 (la Pelote −11, l'ombre −15) */
+  K.G2 = 34-_CMP[1];   /* v125 : A = 26 */   /* ⚑ v124 (Tom) : −4 · v123 : −6 */                         /* ⚑ v122 (Tom) : de « Partager ma Pelote » à la phrase, 56 → 44 */
   K.G2_OMBRE = 28;   /* ⚑ v124 (Tom) : −4 · v123 : −6 */                   /* ⚑ v121 (Tom) : l'écart SOUS l'ombre, 56 → 50 ; sous le bouton il reste 56 */
   K.MOT_ENCRE = -1.87;   /* relevé sur l'image rendue (WebKit, deux thèmes) : l'encre de la phrase commence 1,87 SOUS le haut de sa boîte */
   K.btY = K.ombre.y + K.ombre.h + K.G2_OMBRE;                            /* 475,469 (v121 : 513,469 ; v118 : 525,469) */
@@ -29335,21 +29688,51 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     corps();                                           /* le corps d'abord : son indice entre dans l'exclusion */
     var cle=[f.join('.'),SOL_IDX,CORPS_MEMO.idx,TEXTE_ORDRE.join('.'),P.map(function(q){ return (q[0]|0)+'.'+(q[1]|0)+'.'+(q[2]|0); }).join('_')].join(',');
     if(TEXTE_MEMO.cle===cle) return {rgb:TEXTE_MEMO.c, idx:TEXTE_MEMO.idx};
-    var c=null, idx=-1, k, q;
-    for(k=0;k<TEXTE_ORDRE.length && !c;k++){ var i2=TEXTE_ORDRE[k]; if(i2===SOL_IDX || i2===CORPS_MEMO.idx) continue;
-      q=[P[i2][0]|0,P[i2][1]|0,P[i2][2]|0];
-      if(!_kaki(q) && _contraste(q,f)>=3){ c=q; idx=i2; } }
+    /* ⚑ v125 (Tom) — JAMAIS NOIR : « la teinte tirée garde sa teinte OKLCH et s'assombrit, ou s'éclaircit en sombre, juste assez pour
+       atteindre le contraste. Plus de repli sur l'encre. Toujours distincte des poils et du corps, jamais kaki. » Dans l'ordre tiré :
+       le premier ton (ni celui des poils ni celui du corps) qui, sa clarté ajustée à 3:1, n'est pas kaki ; à défaut, le même ton sorti
+       du kaki par la chroma ; l'encre ne reste que si la palette n'a aucun autre ton (jamais vu sur les 24). */
+    var c=null, idx=-1, k, q, TT=window._teinte, i2;
+    for(k=0;k<TEXTE_ORDRE.length && !c;k++){ i2=TEXTE_ORDRE[k]; if(i2===SOL_IDX || i2===CORPS_MEMO.idx) continue;
+      q=TT.ajuste(P[i2], f, 3);
+      if(!TT.kaki(q)){ c=q; idx=i2; } }
+    for(k=0;k<TEXTE_ORDRE.length && !c;k++){ i2=TEXTE_ORDRE[k]; if(i2===SOL_IDX || i2===CORPS_MEMO.idx) continue;
+      q=TT.ajuste(TT.vive(TT.ajuste(P[i2], f, 3)), f, 3);
+      if(!TT.kaki(q)){ c=q; idx=i2; } }
     if(!c){ c=encre; idx=-1; }
     TEXTE_MEMO={cle:cle, c:c, idx:idx};
     return {rgb:c, idx:idx};
   }
   function peintBouton(){ try{ if(!BT) return; var t=texteBouton(), v='rgb('+t.rgb[0]+', '+t.rgb[1]+', '+t.rgb[2]+')';
       if(BT.__col!==v){ BT.__col=v; BT.style.setProperty('color',v,'important'); BT.style.setProperty('-webkit-text-fill-color',v,'important'); } }catch(_){} }
+  /* la couleur que la boule rend, à peu près : la marche médiane de la rampe du poil pour deux tiers, le corps pour un tiers */
+  function _rendue(){ try{ var p=solEffectif(), R=M.rampeVelours(p), m=R[(R.length*0.55)|0]||p, c=corps(); if(!c) return null;
+      return [Math.round(m[0]*0.675+c[0]*0.325), Math.round(m[1]*0.675+c[1]*0.325), Math.round(m[2]*0.675+c[2]*0.325)]; }catch(_){ return null; } }
   function nouveauSol(){
     var n=4; try{ var c=window.Toile.cols(); if(c&&c.length) n=c.length; }catch(_){}
-    SOL_IDX = (Math.random()*n)|0;
-    try{ nouveauCorps(); }catch(_){}        /* v123 : un corps neuf avec le sol, à chaque ouverture */
+    /* ⚑ v125 (Tom : « je ne vois pas la teinte du corps changer d'une ouverture à l'autre ») — MESURÉ, 20 ouvertures × 4 palettes :
+       le tirage change bien (4 corps distincts), mais ① rien n'interdisait de retirer le même sol et le même corps (vu : trois
+       ouvertures de suite identiques), et ② le corps ne se voit jamais seul : les poils sont translucides, il compte pour un TIERS de
+       la couleur rendue (32,5 %), mêlé à eux — la boule ne bougeait que de ΔE00 8 (médiane, Ingénu sombre) d'une ouverture à l'autre.
+       LA PARADE : on tire jusqu'à douze couples (sol, corps) et on garde le premier dont la couleur RENDUE (2/3 poil, 1/3 corps) est à
+       ΔE00 ≥ 14 de celle de l'ouverture d'avant, avec un sol ET un corps différents ; à défaut, le plus éloigné. La dernière couleur
+       est gardée d'une séance à l'autre (`promi_pelote_vue`). Juge : redteam_corps.py. */
+    var av=null; try{ av=JSON.parse(localStorage.getItem('promi_pelote_vue')||'null'); }catch(_){}
+    /* ⚠ une ouverture peut passer DEUX fois ici (la porte, puis la classe `show`) : dans les 400 ms, la référence reste
+       l'ouverture d'AVANT — sinon le second tirage s'écarte du premier et peut retomber sur celle qu'on vient de quitter */
+    var ref=(av && av.p && (Date.now()-(av.t||0))<400) ? av.p : av; av=ref;
+    var best=null, essai, mx;
+    for(essai=0;essai<12;essai++){
+      SOL_IDX=(Math.random()*n)|0;
+      try{ nouveauCorps(); }catch(_){}
+      mx=_rendue();
+      var d=(av && av.c && mx) ? _dE00(mx, av.c) : 99, meme=!!(av && (av.s===SOL_IDX || av.k===CORPS_MEMO.idx)) && n>2;
+      if(!best || (meme?0:d)>best.d) best={d:(meme?0:d), s:SOL_IDX, o:CORPS_ORDRE.slice(), c:mx};
+      if(!meme && d>=14) break;
+    }
+    if(best){ SOL_IDX=best.s; CORPS_ORDRE=best.o; CORPS_MEMO.cle=''; try{ corps(); localStorage.setItem('promi_pelote_vue', JSON.stringify({s:SOL_IDX, k:CORPS_MEMO.idx, c:best.c, t:Date.now(), p:(ref?{s:ref.s, k:ref.k, c:ref.c}:null)})); }catch(_){} }
     try{ nouveauTexte(); }catch(_){}        /* v124 : et une couleur neuve pour « PARTAGER MA PELOTE » */
+    try{ HAL.cle=''; }catch(_){}            /* v125 : le halo se refait à la première image (il gardait la teinte de l'ouverture d'avant jusqu'à vingt images) */
     try{ var S2=semis(); if(S2) S2.__stCle=null; }catch(_){}
     PEL.iles=null; PEL.cleI='';
     return SOL_IDX;
@@ -29592,9 +29975,10 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     CAD.setAttribute('data-defile','1');
     /* v114 (Tom) — LE SEUL VOLUME DE L'APP : un halo de sa couleur et une ombre, posés SOUS la boule. */
     /* ⚑ v119, repris en v120 : l'écho est retiré ; le mini halo se peint dans le canevas de la boule (voir `halo`), la flaque du sombre ici */
-    FLAQUE=el('canvas','au-flaque'); FLAQUE.id='auPeloteFlaque'; CAD.appendChild(FLAQUE);
+    /* v125 : le canevas de la flaque (`#auPeloteFlaque`) n'est plus créé — il n'était plus peint depuis v123 */
     HCV=el('canvas','au-halo'); HCV.id='auPeloteHalo'; CAD.appendChild(HCV);   /* v121 : le halo, sous la boule */
     OMBRE=el('div','au-ombre'); OMBRE.id='auPeloteOmbre'; CAD.appendChild(OMBRE);
+    OMBRE.style.setProperty('top', K.ombre.y+'px', 'important');   /* v125 : la cote de l'ombre vient de K (la feuille porte encore celle de v124) */
     BO=el('div','au-bo'); CV=el('canvas'); CV.id='auBoule'; BO.appendChild(CV);
     PRISE=el('div','au-prise'); BO.appendChild(PRISE); CAD.appendChild(BO);
     MOT=el('div','au-mot'); CAD.appendChild(MOT);
@@ -29994,10 +30378,16 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
       MES.version='version : '+(v.commit||'?')+(v.modifie?' + modifs non commitées':''); }).catch(function(){ MES.version='version : inconnue (serveur sans /version.json)'; }); }catch(_){} }
   function mesAffiche(txt){ if(!MES) return; txt=(MES.version||'')+'\n'+txt;
     if(!MES.el){ var e=document.createElement('div'); e.id='auMesure';
-      e.style.cssText='position:absolute;left:24px;right:24px;top:108px;z-index:60;padding:10px 12px;border:2px solid #201908;border-radius:14px;background:#F7F0DE;color:#201908;-webkit-text-fill-color:#201908;font:500 13px/1.35 Atkinson,system-ui,sans-serif;white-space:pre-wrap;cursor:pointer';
+      /* ⚑ v125 (Tom) : « le cadre de mesure se superpose à la page, sans rien déplacer, et la Pelote reste visible ». Il était posé à y 108,
+         SUR la Pelote. Il se tient maintenant au BAS de l'écran (il suit le défilement : `mesPlace`), hors du flux, et rien ne dépend de lui.
+         Juge : redteam_mesure.py. */
+      e.style.cssText='position:absolute;left:12px;right:12px;top:0;z-index:60;padding:7px 10px;border:2px solid #201908;border-radius:14px;background:rgba(247,240,222,.94);color:#201908;-webkit-text-fill-color:#201908;font:500 12px/1.25 Atkinson,system-ui,sans-serif;white-space:pre-wrap;cursor:pointer';
       e.addEventListener('click', function(ev){ ev.stopPropagation(); MES.phase=0; MES.t=0; MES.A={dt:[],ms:[]}; MES.B={dt:[],ms:[]}; PEL.souffleT=null; });
       SC.appendChild(e); MES.el=e; }
-    if(MES.el.textContent!==txt) MES.el.textContent=txt; }
+    if(MES.el.textContent!==txt){ MES.el.textContent=txt; MES.h=0; }
+    /* au bas de l'écran visible : la cote suit le défilement (lu une fois par image, écrit seulement s'il change) */
+    if(!MES.h) MES.h=MES.el.offsetHeight;
+    var yy=Math.round(SC.scrollTop+SC.clientHeight-MES.h-8); if(MES.y!==yy){ MES.y=yy; MES.el.style.top=yy+'px'; } }
   function mesImage(dtR, ms){ if(!MES) return;
     if(dtR>0.5) return;                                /* une pause (onglet caché) n'est pas une image */
     MES.t+=dtR;
@@ -30005,7 +30395,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     if(MES.phase===1){ MES.A.dt.push(dtR*1000); MES.A.ms.push(ms); mesAffiche('MESURE DE LA PELOTE — ne touche à rien\nrespiration ACTIVE… '+Math.ceil(MES.DUREE-MES.t)+' s'); if(MES.t>=MES.DUREE){ MES.phase=2; MES.t=0; } return; }
     if(MES.phase===2){ MES.B.dt.push(dtR*1000); MES.B.ms.push(ms); mesAffiche('MESURE DE LA PELOTE — ne touche à rien\nrespiration COUPÉE… '+Math.ceil(MES.DUREE-MES.t)+' s'); if(MES.t>=MES.DUREE){ MES.phase=3; MES.t=0;
         var d=mesCentile(MES.A.dt,.95)-mesCentile(MES.B.dt,.95), dp=mesCentile(MES.A.ms,.95)-mesCentile(MES.B.ms,.95), f=function(v){ return (v>=0?'+':'−')+(Math.round(Math.abs(v)*10)/10).toFixed(1).replace('.',','); };
-        MES.txt='MESURE DE LA PELOTE — '+MES.DUREE+' s + '+MES.DUREE+' s · palier '+PALIERS[PEL.palier]+' poils\n'+mesLigne('respiration ACTIVE',MES.A)+'\n'+mesLigne('respiration COUPÉE',MES.B)+'\nla respiration ajoute au p95 : image '+f(d)+' ms · peinture '+f(dp)+' ms\nle régulateur vise : '+PALIERS[PEL.vise]+' poils'+(PEL.vise!==PEL.palier?' (appliqué à la prochaine ouverture)':' (le palier en cours)')+'\n(toucher ce cadre relance la mesure)';   /* v123 (Tom) : « rapporte à quel palier il la ramène » */
+        MES.txt='MESURE DE LA PELOTE — '+MES.DUREE+' s + '+MES.DUREE+' s · palier '+PALIERS[PEL.palier]+' poils\nrendu : '+(MES.gl?'CARTE GRAPHIQUE (v125)':'peintre d\'origine — pas de WebGL 2 ici')+(window._peloteGLErreur?' · erreur : '+String(window._peloteGLErreur).slice(0,90):'')+'\n'+mesLigne('respiration ACTIVE',MES.A)+'\n'+mesLigne('respiration COUPÉE',MES.B)+'\nla respiration ajoute au p95 : image '+f(d)+' ms · peinture '+f(dp)+' ms\nle régulateur vise : '+PALIERS[PEL.vise]+' poils'+(PEL.vise!==PEL.palier?' (appliqué à la prochaine ouverture)':' (le palier en cours)')+'\n(toucher ce cadre relance la mesure)';   /* v123 (Tom) : « rapporte à quel palier il la ramène » */
         window._peloteMesure={A:MES.A, B:MES.B, texte:MES.txt}; } return; }
     mesAffiche(MES.txt); }
   function souffle(){
@@ -30023,8 +30413,15 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
   var HAL={cv:null, cle:'', n:0};
   function fondPage(){ if(clair()) return [CREME[0],CREME[1],CREME[2]];
     var mm=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(getComputedStyle(SC).backgroundColor); return mm?[+mm[1],+mm[2],+mm[3]]:[32,25,8]; }
-  function tonLumiere(){ var R=M.rampeVelours(PEL.solR||solEffectif()), b=R[0], lb=-1;
-    for(var i=0;i<R.length;i++){ var l=0.2126*R[i][0]+0.7152*R[i][1]+0.0722*R[i][2]; if(l>lb){ lb=l; b=R[i]; } } return [Math.round(b[0]),Math.round(b[1]),Math.round(b[2])]; }
+  /* ⚑ v125 (Tom, 3 oct. 2026) — « LE HALO PREND LA COULEUR DU CORPS, PLUS CELLE DES POILS, POUR NE JAMAIS TERNIR LA PELOTE. » Il prenait
+     le ton le plus clair de la rampe du poil : presque blanc — en sombre, un disque gris derrière la boule. Il prend la teinte du corps
+     tiré à cette ouverture ; si elle est trop proche du fond pour faire une lumière (ΔE00 < 42), sa clarté
+     s'écarte du fond, teinte gardée (`_teinte.ecarte`). Juge : redteam_corps.py (la teinte du halo est celle du corps). */
+  function tonLumiere(){ var c=null; try{ c=corps(); }catch(_){}
+    if(!c){ var R=M.rampeVelours(PEL.solR||solEffectif()), b=R[0], lb=-1;
+      for(var i=0;i<R.length;i++){ var l=0.2126*R[i][0]+0.7152*R[i][1]+0.0722*R[i][2]; if(l>lb){ lb=l; b=R[i]; } } c=[Math.round(b[0]),Math.round(b[1]),Math.round(b[2])]; }
+    try{ c=window._teinte.ecarte(c, fondPage(), 42); }catch(_){}   /* 42 et non 26 : plus près du fond, la trame (dosée en niveaux de couleur) devient du bruit au bout du halo — mesuré, ΔE00 2,2 au-delà de l'étendue */
+    return [Math.round(c[0]),Math.round(c[1]),Math.round(c[2])]; }
   function souffleU(){ if(typeof window._peloteU==='number') return window._peloteU;   /* `_peloteU` : un crochet pour les juges — jamais posé par le produit */
     return Math.max(0, Math.min(1, souffle()/SOUFFLE.MAX)); }
   function halo(){
@@ -30033,9 +30430,9 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     if(HCV.style.visibility) HCV.style.visibility='';
     if(!HAL.cle || (HAL.n++)%20===0){
       var pr=Math.min(3, window.devicePixelRatio||1), W=Math.round(330*pr), s=PEL.solR||solEffectif(), f=fondPage(),
-          RG=window._peloteReglage||{}, k=[s[0]|0,s[1]|0,s[2]|0,f[0],f[1],f[2],W,RG.halo,window._haloSansTrame?1:0].join(',');
+          RG=window._peloteReglage||{}, ton=tonLumiere(), k=[s[0]|0,s[1]|0,s[2]|0,ton[0],ton[1],ton[2],f[0],f[1],f[2],W,RG.halo,window._haloSansTrame?1:0].join(',');
       if(k!==HAL.cle){ HAL.cle=k;
-        try{ var ton=tonLumiere();
+        try{
           /* le même halo qu'en v119 (lot-V119-PELOTE), en pixels de l'écran : R = la boule, RS = la silhouette (boule + 5), P = l'étendue */
           var src=window._haloPelote(W, K.R*K.bo.d*pr, (K.bo.d*K.R+5)*pr, (RG.haloExt||0.12)*K.bo.d*K.R*2*pr, ton, f, !!window._haloSansTrame);
           if(HCV.width!==W){ HCV.width=W; HCV.height=W; }
@@ -30185,9 +30582,15 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     PEL.souffleT=(PEL.souffleT==null ? -SOUFFLE.DEPART : PEL.souffleT)+Math.min(0.5, dtR);   /* v117 : le souffle n'avance que quand on la voit — au TEMPS RÉEL (§8) : borné à 0,1 s comme la rotation, il ralentissait sous charge (WebKit, 150–250 ms par image : sommet mesuré à 8,2 s au lieu de 4,6) ; la borne de 0,5 s ne sert qu'après une pause */
     var S=semis(), av=S.__stCle, t0=performance.now();
     try{ var _o=opts(); if(window._peloteMod){ try{ window._peloteMod(_o); }catch(_){} }   /* v116 : un crochet pour les PLANCHES de la respiration — sans effet s'il n'est pas posé */
-      M.peint(CV, _o); halo(); }catch(e){ window._auraErreur=String(e&&e.stack||e); PEL.pret=false; return; }
+      /* v125 : la carte graphique peint (les poils y sont, elle les tourne et les éclaire) ; à défaut — pas de WebGL 2, ou un toucher en
+         cours — le peintre d'origine */
+      var _parGL=!!(M.peintGL && M.peintGL(CV, _o)); if(!_parGL) M.peint(CV, _o);
+      halo(); }catch(e){ window._auraErreur=String(e&&e.stack||e); PEL.pret=false; return; }
     var ms=performance.now()-t0;
-    if(MES) mesImage(dtR, ms);
+    if(MES){ MES.gl=_parGL; mesImage(dtR, ms); }
+    /* v125 : sous la carte graphique, le temps passé en JavaScript ne dit plus rien (≈ 1 ms) — le régulateur juge l'IMAGE : ce qu'elle
+       dure au-delà d'une demi-image d'attente (60 images/s → 8,7 ; 30 images/s → 25,3, il cède). */
+    if(_parGL) ms=Math.max(ms, dtR*1000-8);
     PEL.dernier=ms; PEL.peints=(PEL.peints||0)+1;
     if(PEL.peints%30===0) place();
     densite(ms, S.__stCle!==av);
@@ -30475,7 +30878,9 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
               null (reading 'dl')` — mesuré : la Pelote sortait NOIRE dans le partage tant que
               l'Aura n'avait pas été ouverte une fois. On les bâtit avant de peindre. */
            if(!PEL.iles) iles();
-           M.peint(CV, opts()); halo(); PEL.peints=(PEL.peints||0)+1; }catch(e){ window._auraErreur=String(e&&e.stack||e); }
+           var _op=opts(); if(!(M.peintGL && M.peintGL(CV, _op))) M.peint(CV, _op);   /* v125 : la carte graphique d'abord */
+           try{ CV.getContext('2d'); }catch(_){}                                          /* … et l'image rendue au canevas que le partage dessine */
+           halo(); PEL.peints=(PEL.peints||0)+1; }catch(e){ window._auraErreur=String(e&&e.stack||e); }
       return CV; }
   };
 
@@ -30510,6 +30915,9 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
   function ouvre(){
     PEL.souffleT=-SOUFFLE.DEPART;           /* v117 : le souffle repart, 0,6 s après l'affichage */
     try{ nouveauSol(); }catch(_){}          /* ⚑ un ton neuf à chaque ouverture (Tom) */
+    /* v125 : la première fois que la carte graphique est là, la Pelote repart du palier le plus dense (un iPhone descendu à 75 000 poils
+       sous l'ancien peintre n'a plus de raison d'y rester) ; ensuite le régulateur décide, comme avant. */
+    try{ if(M.glDispo && M.glDispo() && lsGet('promi_pelote_gl')!=='1'){ lsSet('promi_pelote_gl','1'); PEL.vise=0; } }catch(_){}
     try{ squelette(); remplit(); prepare(); }catch(e){ window._auraErreur=String(e&&e.stack||e); }
     if(!RAF){ TP=0; RAF=requestAnimationFrame(boucle); }
   }
@@ -35729,6 +36137,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #device.light #accRappelCompte{--onb-ink:var(--c-brun09);--onb-inv:var(--c-creme95);--onb-fond:var(--c-creme95)}
 #accRappelCompte.vu{display:block}
 </style>
+<style id="lot-V125-ONB-css">
+/* ⚑ v125 (Tom, 3 oct. 2026) — L'ONBOARDING. 1 · « Promi, Chiche et Cercle prennent la couleur de leur nature » (`.onbv-nat`, teinte posée
+   en ligne par `_onbNat` : la teinte OKLCH de la nature, sa clarté ajustée jusqu'à 4,5:1 sur ce qui est peint sous le texte).
+   2 · « entre la phrase en gras et le paragraphe, un écart égal à 1,5 fois l'interligne du paragraphe » : 1,5 × 22 = 33 (il était de 10). */
+#onbV .onbv-nat{font-style:normal;font-weight:700}
+#onbV .onbv-fin b + span{margin-top:33px}
+</style>
 <script id="lot-ONB-ECART">
 /* ⚑ v83 (Tom) — PENDANT L'ONBOARDING, LA TOILE S'ÉCARTE DES ÉLÉMENTS : le mot-marque, la phrase, les pastilles, la zone où tracer.
    Relevé toutes les 250 ms tant que l'onboarding est actif ; transmis seulement s'il change (§8 : comparer avant d'agir) ; rendu vide à la fin. */
@@ -35772,6 +36187,25 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   var W=390, BASE=70, AMP=36, ZONE_Y=590, EP=10, RR=4.5, ESP=18, MID=195, CX=W*0.11;
   var PH_PRENOM='ton prénom', PH_PAROLE='ne plus dire “je commence lundi”';
   function T(f,ms){ minuteurs.push(setTimeout(f,ms)); }
+  /* ⚑ v125 (Tom) — LES MOTS EN COULEUR. « Promi, Chiche et Cercle prennent la couleur de leur nature, avec la même règle qu'au §4
+     (teinte gardée, contraste ≥ 4,5:1), en clair comme en sombre. » Le fond est celui de la Toile vide sous le texte (#DFCAA4 en clair,
+     la seiche #050302 en sombre) ; on vise 5:1 pour que les cellules vides, un peu plus denses que le fond, tiennent 4,5. */
+  var NATC={promi:[130,174,248], chiche:[255,184,210], cercle:[201,168,245]};
+  function natCol(n){ var fd=clair()?[223,202,164]:[5,3,2], c=NATC[n]; try{ c=window._teinte.ajuste(c, fd, 5); }catch(_){}
+    return 'rgb('+c[0]+', '+c[1]+', '+c[2]+')'; }
+  function nat(mot){ var n=mot.toLowerCase(), v=natCol(n); return '<i class="onbv-nat" data-n="'+n+'" style="color:'+v+';-webkit-text-fill-color:'+v+'">'+mot+'</i>'; }
+  window._onbNat=function(){ [].forEach.call(document.querySelectorAll('#onbV .onbv-nat'), function(e){ var v=natCol(e.getAttribute('data-n')); e.style.color=v; e.style.webkitTextFillColor=v; }); };
+  /* le thème change pendant que l'onboarding est là : les mots reprennent la teinte de CE thème (pris par redteam_onboarding O17 : les
+     pastels du sombre restaient sur le fond clair, Δlum 22). Un observateur qui compare avant d'agir. */
+  try{ var _clOnb=null; new MutationObserver(function(){ var c=clair(); if(c===_clOnb) return; _clOnb=c; window._onbNat(); }).observe(dev, {attributes:true, attributeFilter:['class']}); }catch(_){}
+  /* « LE CONCEPT, SUR LA DIAPOSITIVE CONCERNÉE, EN AJOUT » — les deux phrases de Tom, mot pour mot. Posées sur la PREMIÈRE diapositive
+     (le prénom) : c'est là qu'on arrive « ici », et c'est la seule que la personne quitte quand elle veut (Q382, à valider). */
+  function concept(oui){
+    var d=document.getElementById('onbDit'), so=document.getElementById('onbSous'); if(!d||!so) return;
+    if(oui){ d.style.top='166px'; d.innerHTML='Ici, c’est '+nat('Promi')+'.<br>Et ça veut dire quelque chose.';
+      so.innerHTML='Un '+nat('Promi')+', c’est ta parole. Un '+nat('Chiche')+', celle que tu lances à quelqu’un. Un '+nat('Cercle')+', celles qu’on tient à plusieurs.'; so.style.display='block'; }
+    else { d.style.top=''; so.textContent='Petite ou grande promesse, elle compte.'; }
+  }
   function esc(s){ return (''+s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
   function clair(){ return dev.classList.contains('light'); }
   function k(){ var r=dev.getBoundingClientRect(); return (r.width||390)/390; }
@@ -35793,7 +36227,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         '<div class="onbv-a onbv-trace" id="onbTrace" style="display:none;top:'+(ZONE_Y-34)+'px">trace pour planter</div>'+
         '<canvas class="onbv-a onbv-trait" id="onbTrait" data-onb="trait" style="display:none;top:'+ZONE_Y+'px" aria-label="Trace pour planter"></canvas>'+
       '</div>'+
-      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier Promi, ta première dalle sur ta Toile.</span><span>Le reste se découvre à ton rythme.</span></div>'+
+      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier '+nat('Promi')+', ta première dalle sur ta Toile.</span><span>Le reste se découvre à ton rythme.</span></div>'+
       '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">';
     ov.appendChild(v);
     var inp=v.querySelector('#onbIn');
@@ -35857,7 +36291,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     }
   }
   function allerParole(garderClavier){
-    etape='parole';
+    etape='parole'; concept(false);
     var d=document.getElementById('onbDit'); if(d) d.textContent=(prenom||(window.USER&&USER.name)||'')+', donc.';
     var so=document.getElementById('onbSous'); if(so) so.style.display='block';
     peindrePhrase(); if(garderClavier) focus();
@@ -36024,7 +36458,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     batir();
     var nom=LS.g('promi_prenom');
     if(rejeu && nom){ prenom=nom; allerParole(false); }
-    else { prenom=''; etape='prenom'; peindrePhrase(); }
+    else { prenom=''; etape='prenom'; concept(true); peindrePhrase(); }
   }
 
   /* l'ancien parcours ne peint plus rien sur la Toile */
@@ -37078,7 +37512,11 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     K=K||document.querySelector('#settingsScreen #compteCard .k'); if(!K) return;
     var P=[]; try{ P=window.Toile.cols()||[]; }catch(_){}
     var f=fond(K), bons=[], i, q;
-    for(i=0;i<P.length;i++){ q=[P[i][0]|0,P[i][1]|0,P[i][2]|0]; if(!kaki(q) && contraste(q,f)>=4.5) bons.push([i,q]); }
+    /* ⚑ v125 (Tom) — jamais à l'encre : chaque ton garde sa teinte OKLCH, sa clarté s'ajuste jusqu'à 4,5:1 (`_teinte.ajuste`) ; un ton
+       qui en devient kaki est écarté, et s'ils le sont tous, on le sort du kaki par la chroma. */
+    var TT=window._teinte;
+    for(i=0;i<P.length;i++){ q=TT.ajuste(P[i], f, 4.5); if(!TT.kaki(q)) bons.push([i,q]); }
+    if(!bons.length) for(i=0;i<P.length;i++){ q=TT.ajuste(TT.vive(TT.ajuste(P[i], f, 4.5)), f, 4.5); if(!TT.kaki(q)) bons.push([i,q]); }
     var c, idx=-1;
     if(bons.length){ var cand=bons.filter(function(b){ return b[0]!==dernier; }); if(!cand.length) cand=bons;   /* un retour change la teinte quand la palette le permet */
       var t=cand[(Math.random()*cand.length)|0]; c=t[1]; idx=t[0]; }
@@ -37108,8 +37546,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 /* ⚑ v124 (Tom) — pendant l'animation « tenir » (`window._tenirAnime`), aucune passe de tout le document : `_apresMouvement` (par où
    passent les polices, le plancher des tailles et la lisibilité après un clic) attend la fin, puis rend la main à celui du moteur. */
 (function(){ var f=window._apresMouvement; if(typeof f!=='function') return;
-  window._apresMouvement=function(fn){ var t0=performance.now();
-    (function att(){ if(window._tenirAnime && performance.now()-t0<3500) setTimeout(att, 120); else f(fn); })(); };
+  /* v125 (Q379) : les passes retenues pendant l'animation ne repartent pas toutes ensemble — la même passe demandée trois fois
+     (60, 420, 900 ms après le clic) ne se fait qu'une fois, et chacune dans sa tâche, à la suite des morceaux de la pose. */
+  var retenues=[], veille=false;
+  window._apresMouvement=function(fn){
+    if(!window._tenirAnime) return f(fn);
+    if(retenues.indexOf(fn)<0) retenues.push(fn);
+    if(veille) return; veille=true; var t0=performance.now();
+    (function att(){ if(window._tenirAnime && performance.now()-t0<3500){ setTimeout(att, 120); return; }
+      veille=false; var L=retenues.map(function(g){ return function(){ f(g); }; }); retenues=[];
+      setTimeout(function(){ (window._enFond||function(a){ a.forEach(function(h){ h(); }); })(L); }, 260); })(); };
 })();
 
 /* ⚑ v124 (Tom, §4) — L'IMAGE DU LEVER DU DOIGT. Le clic qui tient la parole reposait TOUTE la fiche dans la même tâche (48 ms mesurés :
@@ -37134,6 +37580,21 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   /* le contenu de la fiche, sans sa pose : `renderDetail` d'origine, le temps d'un appel où `_fichePose` ne fait rien */
   window._tenirCorps=function(){ var fp=window._fichePose; window._fichePose=function(){};
     try{ _rd.apply(window, arguments); }catch(_){} window._fichePose=fp; };
+  /* ⚑ v125 (Q379) — la même pose, en morceaux : le contenu, la pose de base (elle bâtit les Noyaux), l'en-tête, le trait, les cotes,
+     puis la pose entière en garantie (elle ne coûte plus que la pose d'une fiche au repos, ≈ 10 ms) et la passe de lisibilité. Chaque
+     morceau vérifie que la fiche est encore là. */
+  window._tenirMorceaux=function(){
+    var la=function(){ try{ var dp=document.getElementById('detailPoster'); return !!(dp && dp.classList.contains('show') && window._instant); }catch(_){ return false; } };
+    var fin=[function(){ try{ if(window._repasseSombre) window._repasseSombre(); }catch(_){} }];
+    if(!remise) return fin; remise=false;
+    return [
+      function(){ if(la()) window._tenirCorps(); },
+      function(){ if(la() && window._fichePoseBase) window._fichePoseBase(); },
+      function(){ if(la() && window._lot7Fiche) window._lot7Fiche(); },
+      function(){ if(la() && window._ficheTrait) window._ficheTrait(); },
+      function(){ if(la() && window._ficheCotes) window._ficheCotes(); },
+      function(){ if(la() && window._fichePose) window._fichePose(); }
+    ].concat(fin); };
   window._tenirApres=function(){ if(!remise) return; remise=false;
     try{ var dp=document.getElementById('detailPoster'); if(dp && dp.classList.contains('show') && window._instant) window.renderDetail(); }catch(_){} };
 })();

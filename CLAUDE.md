@@ -170,6 +170,43 @@ la nature, la ligne dit l'état.)*
 > **`redteam_couleurs_ref`** : un canevas sans id se nomme par le TEXTE de sa ligne, plus par son rang (la « mini-dalle instable » de v122
 > était le juge : sur une liste qui défile le rang [3] n'était pas la même ligne des deux côtés). 0 écart, E7 = l'ombre crème.
 
+### ⚑ v125 (3 oct. 2026) — LA PELOTE PASSE À LA CARTE GRAPHIQUE ; LE HALO PREND LA COULEUR DU CORPS ; LES TEXTES DE PALETTE NE SONT JAMAIS NOIRS. (Décisions Tom.)
+> **⚑ LA PELOTE N'EST PLUS RECALCULÉE À CHAQUE IMAGE.** Cause nommée (iPhone 16e : 187 ms par image, 5 images/s) : `peint` repassait en
+> JavaScript sur chaque poil (rotation, projection, lumière, marche de couleur) puis recopiait son tampon pixel par pixel. `peintGL`
+> (`PeloteMoteur`, WebGL 2) envoie l'état des poils UNE FOIS à la carte graphique ; elle fait la rotation, la projection, la lumière du
+> velours (le souffle compris) et pose le tampon de chaque poil — un POINT par poil, seuls les pavés tournés vers l'œil. Ce sont les
+> mêmes poils aux mêmes pixels (ΔE00 moyen 0,3 contre le peintre, 98 % des pixels ≤ 2) : pas de texture plaquée, donc ni couture ni pôle.
+> Banc WebKit : 141 → 17 ms au p50, 7 → 58 images/s. **Trois mesures à ne pas reperdre :** ① recopier le canevas de la carte dans le
+> canevas 2D à chaque image coûte 6 à 20 ms en WebKit — on AFFICHE le canevas de la carte (`#auBouleGL`, posé sur `#auBoule`), et
+> `#auBoule` n'est rempli qu'à la demande (`getContext('2d')` appelé de l'extérieur, `_aura.pelote()`) ; ② le coût est celui des SOMMETS,
+> pas des pixels (220 000 rectangles de quatre sommets : 21–26 ms ; un point par poil, pavés visibles seuls : 17) ; ③ le carré du point
+> se cale sur la boîte du tampon, pas sur le pixel du poil (le tampon part d'un côté). **Le toucher** : le contact (l'empreinte) reste
+> CALCULÉ par `peint` (`seulementEtat`), pour les seuls poils qu'il déplace ; ils sont retirés de la passe fixe (un octet par poil) et
+> dessinés par une seconde passe. Banc WebKit, doigt posé et glissé : 156–175 → 25–42 ms par image (Q383 : le calcul du contact reste
+> au processeur). Sans WebGL 2, `peint` peint, comme avant.
+> Le régulateur juge l'IMAGE sous la carte graphique (ce qu'elle dure au-delà de 8 ms), plus le temps de JavaScript ; la première
+> fois que la carte est là, il repart de 220 000. `?mesure=1` écrit « rendu : CARTE GRAPHIQUE » et son cadre se tient au BAS de l'écran
+> (il couvrait la Pelote) — `redteam_mesure.py`.
+> **⚑ « LA DOUBLE ZONE » DERRIÈRE LA PELOTE ÉTAIT LE HALO LUI-MÊME** (mesuré : rien d'autre ne peint là ; `_flaquePelote` et
+> `#auPeloteFlaque`, morts depuis v123, sont retirés) : presque blanc, plein jusqu'à 35° sous l'horizontale puis coupé en 10° — deux
+> épaules, le bord d'un second disque. Le fondu du quart inférieur part de l'horizontale (45°, en S). **Le halo prend la teinte du
+> corps** tiré à l'ouverture (clarté écartée du fond si elle ne peut pas faire une lumière : ΔE00 < 42). Juges : `redteam_zone.py`
+> (30 ouvertures × 2 thèmes), `redteam_corps.py` 5.
+> **⚑ LE CORPS NE SE VOIT JAMAIS SEUL** : les poils sont translucides, il compte pour un TIERS de la couleur rendue (32,5 %). Le tirage
+> écarte maintenant la couleur RENDUE (2/3 poil, 1/3 corps) de ΔE00 ≥ 14 face à l'ouverture d'avant, jamais le même sol ni le même corps
+> deux fois de suite (`promi_pelote_vue`) : la boule change de ΔE00 14–17 (médiane) d'une ouverture à l'autre, contre 6–15.
+> **⚑ UNE TEINTE DE PALETTE QUI DOIT SE LIRE GARDE SA TEINTE** (`window._teinte.ajuste`) : OKLCH, la clarté seule bouge jusqu'au
+> contraste (3:1 « PARTAGER MA PELOTE », 4,5:1 « Garder ta Toile », 5:1 visé pour les mots de l'onboarding). **Plus de repli sur
+> l'encre** ; un ton qui en devient kaki est écarté, puis sorti du kaki par la chroma. Juges réécrits : `redteam_bouton` 5,
+> `redteam_garder_toile` 3 (originaux dans `sauvegardes/`).
+> **L'Aura — composition A appliquée, B et C par `?aura=B|C` (à l'œil, à retirer au choix de Tom)** : face à v124, Pelote → ombre −10,
+> bouton → phrase −8, phrase → disques −8 ; ombre 395,224 · bouton 439,47 · disques 456,06 · 50 pt d'air sous les chiffres (794 / 844).
+> ⚠ **Les cotes ne sont PAS figées : elles le seront, ici et dans `releve-aura`, quand Tom aura choisi.**
+> **L'onboarding** : Promi, Chiche, Cercle en couleur de leur nature (`.onbv-nat`) ; 33 pt (1,5 interligne) entre « Ça y est. » et son
+> paragraphe ; le concept (deux phrases de Tom) sur la première diapositive (Q382, à valider).
+> **Q379** : le travail remis après « tenir » part en morceaux (`_tenirMorceaux`, `_enFond` : une tâche par morceau, une image entre
+> deux) : la plus longue tâche après l'animation passe de 77 à 22 ms — `redteam_fluide` 5.
+
 ### ⚑ v122 (3 oct. 2026) — LES COULEURS : LE CACHE, LES DÉCISIONS, L'ORANGE DE MA PAROLE !, LE FLASH. (Décisions Tom.)
 > **Ce que Tom voyait sur l'iPhone et que la mesure ne voyait pas : le CACHE de Safari** (voir `serveur.py` en tête). Mesuré : à
 > l'écran rendu, v121 = v118 sur toutes les fiches, la page + et l'Index, deux thèmes.
@@ -1630,6 +1667,9 @@ python3 redteam_bouton.py      # 33 — v124, « PARTAGER MA PELOTE » : PromiLa
 python3 redteam_garder_toile.py # 29 — v124, « Garder ta Toile » : gras, teinte retirée à chaque retour (20 × 2 palettes × 2 thèmes), ≥ 4,5:1. 15/29 avant.
 python3 redteam_corps.py       # 25 — v123, LE CORPS DE LA PELOTE : 50 ouvertures × 4 palettes — ΔE00 ≥ 15 face au poil (rampe et image), jamais kaki,
                                #   jamais le ton du sol, tiré au hasard. Lu sur la peau PEINTE. Rougit sur app-avant-v123 (16/25). ≈ 25 min.
+python3 redteam_mesure.py      # 10 — v125 : `?mesure=1` ne décale rien, son cadre ne couvre pas la Pelote. Rougit sur l'état d'avant (8/10).
+python3 redteam_zone.py        # 8 — v125 : rien ne peint derrière la Pelote hors halo et ombre ; le halo n'a pas de second bord (≤ 30 % en 6°).
+                               #   30 ouvertures × 2 thèmes (≈ 4 min). Rougit sur l'état d'avant (B, deux thèmes).
 python3 redteam_decisions.py   # 79 — v122 : CHAQUE DÉCISION DE COULEUR DE TOM (en dur, avec sa source) contre l'écran rendu — fiches Promi,
                                #   Chiche, Cercle, page +, Index, deux thèmes. Rougit sur app-avant-v122 (77/79).
 python3 redteam_maparole.py    # v122 : #FB4C0D et #FF7A55 n'existent QUE dans la phrase des murs (« Ma Parole ! ») — source, rendu, au doigt.

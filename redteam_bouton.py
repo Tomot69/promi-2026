@@ -71,7 +71,7 @@ with sync_playwright() as p:
     pg.evaluate("()=>{ try{ openDetail(promises.filter(q=>q.title==='faire les crêpes')[0].id); }catch(e){} }"); pg.wait_for_timeout(2500)
     premier = None
     for pal in PALETTES:
-        n_lu = 0; meme_poil = 0; meme_corps = 0; bas = 99.0; n_kaki = 0; encre_fausse = 0; vus = set(); tirables_max = 0; ex = ''
+        n_lu = 0; meme_poil = 0; meme_corps = 0; bas = 99.0; n_kaki = 0; encre_fausse = 0; vus = set(); tirables_max = 0; ex = ''; ex5 = ''
         for i in range(N):
             th = 'light' if i % 2 == 0 else 'dark'
             pg.evaluate("([t,p])=>{ try{closeAll()}catch(e){} const x=document.querySelector('#auraScreen .closeb'); if(x && document.getElementById('auraScreen').getBoundingClientRect().top<200) x.click(); setTheme(t); try{Toile.setPalette(p)}catch(e){} }", [th, pal]); pg.wait_for_timeout(350)
@@ -95,17 +95,26 @@ with sync_playwright() as p:
             if c != encre and kaki(c): n_kaki += 1
             # ce qui était tirable, recalculé ici : hors poils, hors corps (le ton de palette le plus proche du corps), non kaki, ≥ 3:1
             ic = min(range(len(m['pal'])), key=lambda k: dE00(m['corps'], m['pal'][k]))
-            tirables = [k for k in range(len(m['pal'])) if k != m['sol'] and k != ic and not kaki(m['pal'][k]) and contraste(m['pal'][k], f) >= 3]
-            tirables_max = max(tirables_max, len(set(tuple(m['pal'][k]) for k in range(len(m['pal'])) if not kaki(m['pal'][k]) and contraste(m['pal'][k], f) >= 3)))
-            if c == encre and tirables: encre_fausse += 1
-            if c != encre and not any(dE00(c, m['pal'][k]) < 1 for k in range(len(m['pal']))): encre_fausse += 1     # ni l'encre ni un ton de la palette
+            # ⚑ v125 (Tom) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_bouton-avant-v125.py). « La teinte tirée garde sa teinte OKLCH et
+            #   s'assombrit, ou s'éclaircit en sombre, juste assez pour atteindre le contraste. Plus de repli sur l'encre. » Le texte n'est
+            #   donc JAMAIS l'encre du mode, et sa teinte OKLCH est celle d'un ton de la palette qui n'est ni les poils ni le corps (à 8° près
+            #   quand le ton a de la couleur ; un ton presque gris n'a pas de teinte à comparer).
+            tirables = [k for k in range(len(m['pal'])) if k != m['sol'] and k != ic]
+            tirables_max = max(tirables_max, len(set(tuple(m['pal'][k]) for k in tirables)))
+            if c == encre: encre_fausse += 1; ex5 = 'ouverture %d [%s] : le texte est l\'encre %s' % (i + 1, th, c)
+            else:
+                hc = oklch(c)
+                def proche(k):
+                    hk = oklch(m['pal'][k]); dh = abs((hc[2] - hk[2] + 180) % 360 - 180)
+                    return dh <= 8 or hk[1] < 0.03 or hc[1] < 0.02
+                if not any(proche(k) for k in tirables): encre_fausse += 1; ex5 = 'ouverture %d [%s] : %s n\'a la teinte d\'aucun ton tirable' % (i + 1, th, c)
             vus.add((th, tuple(c)))
         t('[%s] les %d ouvertures sont lues' % (pal, N), n_lu == N, '%d lues' % n_lu)
         t('3 · [%s] le texte n\'est jamais le ton des poils' % pal, n_lu > 0 and meme_poil == 0, '%d ouverture(s)' % meme_poil)
         t('3 · [%s] le texte n\'est jamais la teinte du corps' % pal, n_lu > 0 and meme_corps == 0, '%d ouverture(s)' % meme_corps)
         t('4 · [%s] contraste ≥ 3:1 face au fond, à chaque ouverture' % pal, n_lu > 0 and bas >= 3, 'le plus bas : %.2f · %s' % (bas, ex))
         t('4 · [%s] jamais kaki' % pal, n_lu > 0 and n_kaki == 0, '%d ouverture(s)' % n_kaki)
-        t('5 · [%s] le texte est un ton de la palette ; l\'encre du mode seulement quand aucun ton n\'était tirable' % pal, n_lu > 0 and encre_fausse == 0, '%d ouverture(s) fautive(s)' % encre_fausse)
+        t('5 · [%s] le texte n\'est jamais à l\'encre : il garde la teinte d\'un ton de la palette (ni les poils ni le corps)' % pal, n_lu > 0 and encre_fausse == 0, '%d ouverture(s) fautive(s) · %s' % (encre_fausse, ex5))
         t('6 · [%s] la couleur se tire au hasard (au moins deux couleurs vues quand au moins deux tons sont tirables)' % pal, n_lu > 0 and (len(set(c for _, c in vus)) >= 2 or tirables_max < 2), '%d couleur(s) vue(s), jusqu\'à %d ton(s) tirable(s)' % (len(set(c for _, c in vus)), tirables_max))
     m = premier or {}
     t('1 · le mot : « PARTAGER MA PELOTE » (capitales, aucune accentuée)', m.get('mot') == 'PARTAGER MA PELOTE', repr(m.get('mot')))

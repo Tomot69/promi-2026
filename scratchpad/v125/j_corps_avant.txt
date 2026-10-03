@@ -1,0 +1,36 @@
+[signal] les 20 ouvertures sont lues (la peau pleine est peinte)                       OK  20 lues
+1 · [signal] ΔE00(corps, poil) ≥ 15 à chaque ouverture — face à la rampe de velours    OK  le pire : 16.3 · ouverture 8 [dark] corps [201, 168, 245] · poil (rampe) [140, 174, 231] · sol n° 0
+1 · [signal] ΔE00(corps, poil) ≥ 15 — face à la couleur dominante lue sur la fourrure  OK  le pire : 15.9
+2 · [signal] le corps n'est jamais kaki                                                OK  0 ouverture(s) kaki
+3 · [signal] le corps n'a jamais la teinte des poils                                   OK  0 ouverture(s) où le corps est le ton du sol
+5 · [signal] v125 : la teinte du halo est celle du corps (vingt ouvertures)            KO  7 ouverture(s) · ouverture 20 [dark] halo [170, 128, 128] · corps [130, 174, 248]
+6 · [signal] v125 : jamais le même sol ni le même corps deux ouvertures de suite       KO  9 fois · ouverture 20 : sol 3 corps 0 après sol 3 corps 0
+4 · [signal] le corps se tire au hasard (au moins deux corps différents sur 20 ouvertures) OK  {3: 3, 2: 2, 0: 3, 1: 3}
+[candide] les 20 ouvertures sont lues (la peau pleine est peinte)                      OK  20 lues
+1 · [candide] ΔE00(corps, poil) ≥ 15 à chaque ouverture — face à la rampe de velours   OK  le pire : 20.0 · ouverture 12 [dark] corps [255, 200, 162] · poil (rampe) [237, 180, 193] · sol n° 3
+1 · [candide] ΔE00(corps, poil) ≥ 15 — face à la couleur dominante lue sur la fourrure OK  le pire : 18.9
+2 · [candide] le corps n'est jamais kaki                                               OK  0 ouverture(s) kaki
+3 · [candide] le corps n'a jamais la teinte des poils                                  OK  0 ouverture(s) où le corps est le ton du sol
+5 · [candide] v125 : la teinte du halo est celle du corps (vingt ouvertures)           KO  20 ouverture(s) · ouverture 20 [dark] halo [170, 128, 85] · corps [189, 224, 168]
+6 · [candide] v125 : jamais le même sol ni le même corps deux ouvertures de suite      KO  10 fois · ouverture 19 : sol 0 corps 1 après sol 0 corps 2
+4 · [candide] le corps se tire au hasard (au moins deux corps différents sur 20 ouvertures) OK  {0: 3, 2: 2, 3: 3, 1: 3}
+[irascible] les 20 ouvertures sont lues (la peau pleine est peinte)                    OK  20 lues
+1 · [irascible] ΔE00(corps, poil) ≥ 15 à chaque ouverture — face à la rampe de velours OK  le pire : 22.4 · ouverture 14 [dark] corps [255, 45, 26] · poil (rampe) [234, 139, 49] · sol n° 1
+1 · [irascible] ΔE00(corps, poil) ≥ 15 — face à la couleur dominante lue sur la fourrure OK  le pire : 16.5
+2 · [irascible] le corps n'est jamais kaki                                             OK  0 ouverture(s) kaki
+3 · [irascible] le corps n'a jamais la teinte des poils                                OK  0 ouverture(s) où le corps est le ton du sol
+5 · [irascible] v125 : la teinte du halo est celle du corps (vingt ouvertures)         KO  18 ouverture(s) · ouverture 20 [dark] halo [255, 128, 128] · corps [255, 138, 28]
+6 · [irascible] v125 : jamais le même sol ni le même corps deux ouvertures de suite    KO  9 fois · ouverture 20 : sol 0 corps 1 après sol 0 corps 1
+4 · [irascible] le corps se tire au hasard (au moins deux corps différents sur 20 ouvertures) OK  {1: 2, 2: 1, 3: 2, 0: 2}
+[taciturne] les 20 ouvertures sont lues (la peau pleine est peinte)                    OK  20 lues
+1 · [taciturne] ΔE00(corps, poil) ≥ 15 à chaque ouverture — face à la rampe de velours OK  le pire : 25.5 · ouverture 1 [light] corps [42, 42, 212] · poil (rampe) [91, 89, 107] · sol n° 3
+1 · [taciturne] ΔE00(corps, poil) ≥ 15 — face à la couleur dominante lue sur la fourrure OK  le pire : 17.8
+2 · [taciturne] le corps n'est jamais kaki                                             OK  0 ouverture(s) kaki
+3 · [taciturne] le corps n'a jamais la teinte des poils                                OK  0 ouverture(s) où le corps est le ton du sol
+5 · [taciturne] v125 : la teinte du halo est celle du corps (vingt ouvertures)         KO  12 ouverture(s) · ouverture 20 [dark] halo [128, 128, 255] · corps [228, 226, 255]
+6 · [taciturne] v125 : jamais le même sol ni le même corps deux ouvertures de suite    KO  5 fois · ouverture 12 : sol 1 corps 3 après sol 2 corps 3
+4 · [taciturne] le corps se tire au hasard (au moins deux corps différents sur 20 ouvertures) OK  {3: 3, 2: 2, 1: 1, 0: 1}
+aucune erreur de page                                                                  OK  
+
+25 / 33
+KO : 5 · [signal] v125 : la teinte du halo est celle du corps (vingt ouvertures) · 6 · [signal] v125 : jamais le même sol ni le même corps deux ouvertures de suite · 5 · [candide] v125 : la teinte du halo est celle du corps (vingt ouvertures) · 6 · [candide] v125 : jamais le même sol ni le même corps deux ouvertures de suite · 5 · [irascible] v125 : la teinte du halo est celle du corps (vingt ouvertures) · 6 · [irascible] v125 : jamais le même sol ni le même corps deux ouvertures de suite · 5 · [taciturne] v125 : la teinte du halo est celle du corps (vingt ouvertures) · 6 · [taciturne] v125 : jamais le même sol ni le même corps deux ouvertures de suite

@@ -8356,3 +8356,30 @@ couleur qu'en sombre, ou sous une palette saturée. **À valider** — ou abaiss
 
 #### Q381 · LA NUMÉROTATION : le « dossier de portage » était annoncé comme lot v124
 Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture seule) reste à faire : je le numérote v125 sauf avis contraire.
+
+
+#### v125 — décisions et questions (3 oct. 2026)
+- **Q379 — TRANCHÉE (Tom, v125)** : le travail remis après « tenir » part en tâche de fond découpée. Fait : 77 → 22 ms (la plus longue tâche), `redteam_fluide` 5.
+- **Q380 — TRANCHÉE (Tom, v125)** : plus de repli sur l'encre ; la teinte garde sa teinte OKLCH, sa clarté s'ajuste (`_teinte.ajuste`).
+- **Q381 — TRANCHÉE (Tom)** : le dossier de portage passe au lot v126.
+- **Q382 — À VALIDER** : « le concept, sur la diapositive concernée » — posé sur la PREMIÈRE diapositive de l'onboarding (le prénom) : « Ici, c'est Promi. Et ça veut dire quelque chose. » au-dessus de la phrase, « Un Promi, c'est ta parole. Un Chiche… Un Cercle… » dessous. Si c'était la dernière (« Ça y est. »), le dire.
+- **Q383 — OUVERTE (réduite)** : sous le DOIGT, la Pelote est dessinée par la carte graphique elle aussi, mais le contact (l'empreinte) reste calculé par le processeur pour les poils qu'il déplace (≈ 43 000 sous un doigt) : banc WebKit 25–42 ms par image (156–175 avant) — pas encore 16,7. Le porter dans le shader est un lot à part ; en Metal, il se fera de toute façon là.
+- **Q384 — À CHOISIR (Tom)** : la composition de l'Aura — A (appliquée), B (`?aura=B`), C (`?aura=C`) ; planches `planche-v125/aura-A|B|C.png`. Au choix : cotes figées dans CLAUDE.md, `releve-aura` refigé (ses 36 écarts de dette disparaissent), `?aura=` retiré.
+- **Q385 — À VALIDER** : le corps ne se voit jamais seul (un tiers de la couleur, sous des poils translucides). v125 garantit que la boule change à chaque ouverture ; si Tom veut VOIR le corps lui-même, il faut des poils plus clairsemés ou plus courts par endroits — une décision de dessin.
+
+#### v125 — LES POINTS DE LATENCE À TRAITER DANS LE PORTAGE SWIFT (demande de Tom : « du sublime, de l'immédiat, sans latence partout »)
+À reprendre dans le dossier de portage (v126, SPEC-RENDU et REGLES). Chacun a été MESURÉ dans le prototype ; l'ordre est celui du gain.
+1. **La Pelote** — jamais un poil recalculé par le processeur à chaque image (187 ms sur iPhone 16e). Metal : les poils dans un tampon statique, un point (ou un quad) instancié par poil, rotation + lumière + souffle dans le vertex shader, « le plus opaque gagne » par la profondeur. L'empreinte du doigt (Q383) se fait dans le même shader (centre, axes et profondeur du contact en uniformes).
+2. **Une dalle se rend une fois** — `dalleTrame` coûte jusqu'à 120 ms (Voronoï pondéré, pixel par pixel). En Swift : rendue hors du fil principal, mise en cache par (id, taille, monde, thème, couleur), AVANT la transition qui la montre (à la plantation, à l'ouverture de l'Index). Jamais dans le geste, jamais dans une animation.
+3. **Tenir une parole** — les deux dalles de l'instant préparées quand la fiche se pose ; pendant l'animation, seuls les changements que l'instant montre ; la mise à jour du reste (Noyaux, listes, Aura, sauvegarde) après, en tâches courtes. Cible : aucune image > 8 ms de travail à 120 Hz.
+4. **Le geste** — tous les `coalescedTouches`, le trait dessiné dans la trame du toucher, l'élan calculé sur l'horodatage des événements (jamais sur le compte d'images), les `predictedTouches` pour la pointe.
+5. **Un écran paraît composé** — rien ne se compose par minuteries après l'affichage (la page + attendait 450 ms cachée ; le plateau, la phrase, l'encre arrivaient l'un après l'autre). En SwiftUI : l'état complet avant la présentation, les cotes calculées (jamais mesurées puis corrigées).
+6. **Les passes « tout le document »** (lisibilité, polices, plancher des tailles, filets) — elles n'existent que parce que le prototype corrige après coup : 13 à 50 ms après chaque toucher. À NE PAS PORTER : chaque couleur et chaque taille se décide à la source, par les jetons.
+7. **La Toile vivante** — pas de découpe (`clip`) par image en CoreGraphics (154 ms mesurés pour un coin arrondi en WebKit) : masque de calque ou Metal ; les mondes lourds (Madrure, Ramage, Volubilis) calculés hors du fil principal, construits par tranches, l'état d'avant affiché pendant ce temps ; un cache ne se refait que quand la Toile est POSÉE (25 reconstructions pendant une plantation, mesurées).
+8. **Le clavier s'ouvre dans le geste** — le champ prend le focus dans le même tour que le toucher (iOS le refuse après un délai).
+9. **Le halo, l'ombre, les anneaux** — des textures fixes dont on ne module que l'opacité ; jamais refaites dans une image (le halo se refait seulement quand la teinte change).
+10. **Les listes (Index, Fil, une personne)** — cellules paresseuses, textures de dalle prêtes avant le défilement (préchargement), aucun rendu de dalle pendant le défilement.
+11. **Le Studio** — les aperçus vivants : un seul moteur animé à la fois, les autres figés sur leur dernière image ; pas de flou en direct sur une surface animée.
+12. **La persistance** — écritures hors du fil principal, regroupées (le prototype écrit `localStorage` de façon synchrone dans des gestes).
+13. **Le partage** — l'image rendue hors écran dès l'ouverture de l'écran Partager, pas au toucher du bouton.
+14. **Les polices** — les trois faces chargées avant la première image ; aucune mesure de texte « trop tôt » (le libellé d'une carte mesuré 53 puis 64,5).
