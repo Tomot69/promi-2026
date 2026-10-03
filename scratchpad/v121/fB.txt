@@ -1,0 +1,79 @@
+=== redteam_air.py  [code 1, 325 s]
+   Peaufiner Chiche [light]   .s2-val«lundi 5»                   → .s2-val«0 fichier»
+   Peaufiner [dark]           .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [dark]           .s2-val«mercredi 14»               → .s2-val«aucune»
+   Peaufiner [light]          .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+=== releve-design.py  [code 0, 34 s]
+✅  AUCUN ÉCART. Le design est intact.
+=== redteam_flash.py  [code 0, 122 s]
+  ✅ B1 · + → nuee : aucun flash au premier plan (138 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (67 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 2278 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2495 ms)
+
+32/32
+=== redteam_tonsurton.py  [code 0, 58 s]
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_decoupe.py  [code 0, 135 s]
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+=== redteam_pelote_partage.py  [code 0, 65 s]
+✅ clair · export mosaic : sous le plafond iPhone (16,7 Mpx) 8298720
+✅ clair · export pelote : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 0.6695223260643822, 'px': 8294400}
+✅ clair · export pelote : sous le plafond iPhone (16,7 Mpx) 8294400
+✅ clair · export toile : l'image est l'aperçu (écart moyen < 12 niveaux) {'W': 2160, 'H': 3840, 'ecart': 1.4119418483904465, 'px': 8294400}
+✅ clair · export toile : sous le plafond iPhone (16,7 Mpx) 8294400
+
+42/42
+=== redteam_origine.py  [code 0, 60 s]
+[chromium] chiche · truculent · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 103.6
+[chromium] chiche · truculent · origine à ΔE 105.9 → la couleur d'ORIGINE OK  à l'origine 2.3 · à la rampe 129.0 · app : origine|105.9
+[chromium] sans l'option, la bande garde la rampe de Q30           OK  
+[chromium] aucune erreur de page                                   OK  
+
+64 / 64
+=== redteam_plein.py  [code 0, 176 s]
+[?densite=3 · sombre · signal · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[?densite=3 · sombre · signal · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[?densite=3 · sombre · signal · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[?densite=3 · sombre · signal · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[?densite=3] aucune erreur de page                                             OK  
+
+75 / 75
+=== redteam_halo.py  [code 0, 232 s]
+E · [sombre · niveau 5] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  2.18 · centre [5, 3, 2] · pourtour [17, 15, 13]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre · niveau 5] le halo ne touche pas le plateau ; le bouton est à sa place (v121 : 513,47) OK  haut du halo 112.4 · bas du plateau 100.0 · bouton 513.47
+D · le halo respire avec la lumière : ± 20 % (sommet ÷ creux = 1,5 ± 0,3)    OK  1.63 (9 relevés au sommet, 10 au creux)
+aucune erreur de page                                                        OK  
+
+91 / 91
+=== redteam_souffle.py  [code 1, 70 s]
+OK [light] A · 0,3 s → 4,6 s : 32226 pixels changés dans la silhouette, 0 au-delà
+✗  [light] B · lumière de la boule : sommet à 5.4 s (décidé 4.6), retour au bas à 11.2 s (décidé 10.6), amplitude 4.33 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 36181 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+❌ le souffle ne tient pas sa loi
+=== redteam_contour.py  [code 0, 35 s]
+[clair] avec le halo : la lumière s'arrête à 146.9 du centre (borne 148.8) · pixels au-delà : 0
+OK [clair] la Pelote s'arrête à 124.1 du centre (silhouette 121.5) · pixels au-delà : 0
+   [sombre] avec le halo : la lumière s'arrête à 148.8 du centre (borne 148.8) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.1 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== FIN

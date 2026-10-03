@@ -1,0 +1,24 @@
+=== redteam_joignable.py  [code 0, 133 s]
+la page se charge sans erreur                              OK  
+des éléments ont été relevés sur chaque écran              OK  36 écrans
+aucun élément interactif injoignable hors dette            OK  0 neufs, 2 en dette
+aucun gestionnaire n'appelle une fonction absente hors dette OK  0 neufs, 4 en dette
+aucun gestionnaire en attribut on…=""                      OK  0
+
+5 / 5
+=== redteam_studio_geste.py  [code 0, 26 s]
+  la palette revient d'où elle vient                           OK   signal
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+
+13/13
+=== redteam_couleurs_ref.py  [code 1, 736 s]
+3 écran(s) repris sur une page fraîche : Nuée défilée[d], Nuée défilée[l], fiche à tenir[d]
+6783 propriétés comparées · 36 écrans × 2 thèmes · 36 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 10 · E5 violations retirées 0
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 248) 100 %           ×2   Nuée défilée[d], Nuée défilée[l]
+
+❌ — 2 écart(s) de couleur avec la référence v118
+=== FIN

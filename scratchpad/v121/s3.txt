@@ -1,0 +1,39 @@
+=== redteam_halo.py  [code 0, 224 s]
+E · [sombre · niveau 5] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  2.29 · centre [5, 3, 2] · pourtour [18, 16, 14]
+E · [sombre] aucune ombre crème : l'ombre est le creux de la flaque de lumière OK  ['none', 'block'] · creux [5, 3, 2] · fond (5, 3, 2)
+F · [sombre · niveau 5] le halo ne touche pas le plateau ; le bouton est à sa place (v121 : 513,47) OK  haut du halo 112.4 · bas du plateau 100.0 · bouton 513.47
+D · le halo respire avec la lumière : ± 20 % (sommet ÷ creux = 1,5 ± 0,3)    OK  1.60 (10 relevés au sommet, 11 au creux)
+aucune erreur de page                                                        OK  
+
+91 / 91
+=== redteam_contour.py  [code 0, 34 s]
+[clair] avec le halo : la lumière s'arrête à 146.9 du centre (borne 148.8) · pixels au-delà : 0
+OK [clair] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+   [sombre] avec le halo : la lumière s'arrête à 148.7 du centre (borne 148.8) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== redteam_contour.py --halo=5  [code 0, 35 s]
+[clair] avec le halo : la lumière s'arrête à 158.0 du centre (borne 158.1) · pixels au-delà : 0
+OK [clair] la Pelote s'arrête à 124.2 du centre (silhouette 121.5) · pixels au-delà : 0
+   [sombre] avec le halo : la lumière s'arrête à 158.2 du centre (borne 158.1) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.1 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour
+=== redteam_volume.py  [code 0, 0 s]
+liste blanche (la Pelote) : 8 occurrence(s) dans lot-AURA-PELOTE, lot-V114-PELOTE-css, lot-V115-PELOTE, lot-V119-PELOTE
+dette de naissance : 304 · retrouvée : 304 · soldée depuis : 0
+✅ AUCUN VOLUME HORS DE LA PELOTE
+=== redteam_plein.py  [code 0, 174 s]
+[?densite=3 · sombre · signal · palier 180000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[?densite=3 · sombre · signal · palier 180000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[?densite=3 · sombre · signal · palier 150000] alpha = 255 en retrait de 4 % de D OK  0 pixels sous 255 sur 156792
+[?densite=3 · sombre · signal · palier 150000] la silhouette n'a pas bougé (rien au-delà de 121 + 4 pt) OK  0 pixels
+[?densite=3] aucune erreur de page                                             OK  
+
+75 / 75
+=== redteam_souffle.py  [code 1, 69 s]
+OK [light] A · 0,3 s → 4,6 s : 55257 pixels changés dans la silhouette, 0 au-delà
+✗  [light] B · lumière de la boule : sommet à 5.7 s (décidé 4.6), retour au bas à 11.6 s (décidé 10.6), amplitude 4.71 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 39873 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+❌ le souffle ne tient pas sa loi
+=== FIN

@@ -110,28 +110,7 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
-### ⚑ v121 (3 oct. 2026) — LES COULEURS DE v118. (Décision Tom.) Ce bloc CORRIGE le bloc v120 qui le suit.
-> **Erreur de référence au lot v120** : la bonne référence est le commit **`578ec80` (v118)**, servi avec son moteur — pas « avant v116 ».
-> **Tom garde le nouveau sombre : la seiche, dans les pages comme sur la Toile** (`--c-brun09 → --c-seiche10` en sombre, rendu tel quel).
-> Toutes les couleurs de tous les écrans sont celles de v118 ; seules différences admises : la Pelote pleine (v120), l'Aura remontée,
-> le halo, l'orange des murs (ci-dessous) et les violations retirées (§5). Juge : **`redteam_couleurs_ref.py`**, repointé sur 578ec80 —
-> styles calculés, couleurs des canevas, et **les dalles rendues seules** (bande haute, cartes), rendues par le moteur de façon
-> synchrone, à horloge figée et hasard réamorcé (relues à l'écran, v118 contre elle-même donnait ΔE 12 : la respiration et l'ordre
-> des tirages). ⚠ Un flash du produit, présent dans v118 aussi : à l'ouverture d'une fiche « à tenir » en sombre, l'à-qui, l'échéance
-> et « trace pour tenir » passent parfois une à deux secondes à l'encre du clair (orange) avant la crème.
-> **L'Aura remonte** : l'ombre de 6 (453,224 → 447,224 ; flaque 437,347 → 431,347), l'écart sous l'ombre 56 → **50** (`K.G2_OMBRE`),
-> tout ce qui suit de 12 (« Partager ma Pelote » 525,47 → 513,47 ; la phrase 639,59 → 627,59 ; …). Sous le bouton, l'air reste 56.
-> **Le halo** : par défaut le niveau **3** (ΔE00 14 au ras, 0,12 D) ; `?halo=1…5` = 6/0,08 · 10/0,10 · 14/0,12 · 18/0,14 · 24/0,16 D.
-> Il a son canevas, SOUS la boule (`#auPeloteHalo`, 330 × 330 centré) : au-delà de 0,12 D il sortait du canevas de la boule (demi-côté
-> 148). Sa trame se dose en niveaux de COULEUR (± 2,75 sur le canal qui bouge le plus), pas d'opacité. Juges : `redteam_halo` (cinq
-> niveaux, 91), `redteam_contour --halo=N`, `redteam_souffle` (« au-delà » = 0,12 D).
-> **L'orange des murs** : `#FB4C0D` partout, sauf sur les trois corps sombres de Peaufiner (Promi, Chiche, Cercle) : **`#FF7A55`**, le même
-> orange (OKLCH h 36,4°) éclairci jusqu'à 3 : 1 sur les TROIS (3,02 · 3,02 · 3,04 ; `#FF7954` ne tenait 3 : 1 que sur le plus sombre).
-> Jeton `--c-orange66-mur` ; la phrase sait qu'elle est posée sur un corps (`.sur-corps`). `redteam_murs` 26/26. Q373 tranchée.
-> **Repris de v119 (§5), un à la fois** : « garder de côté » (Q370, `redteam_garder` 18/18) puis les violations retirées (ombres de texte
-> de « ✕ FERMER », du mot-marque et du badge, ombre dure et éclat du bouton d'achat ; dette du volume 304 → 290).
-
-### ⚑ v120 (2 oct. 2026) — RETOUR EN ARRIÈRE. (Décision Tom.) Ce bloc CORRIGE les blocs v116 à v118 qui le suivent. *(v121 : sa référence « avant v116 » était FAUSSE — les couleurs sont celles de v118, seiche comprise : bloc ci-dessus)*
+### ⚑ v120 (2 oct. 2026) — RETOUR EN ARRIÈRE. (Décision Tom.) Ce bloc CORRIGE les blocs v116 à v118 qui le suivent.
 > **v119 est ANNULÉ** (`git revert bd156ae`, l'historique reste). **La casse du Studio, nommée :** le Zzz activé au premier lancement
 > (`BOUTON_POSE=true`, hors navigateur piloté) — la nuit, l'app passait en sombre quel que soit le choix, les disques SOMBRE / CLAIR
 > ne changeaient plus rien à l'écran (le choix n'était appliqué « qu'au changement d'écran », et le thème restait celui de la nuit)
@@ -207,7 +186,7 @@ la nature, la ligne dit l'état.)*
 > centre ; tout gestionnaire n'appelle que des fonctions qui existent, et n'est posé que sur un nœud qui existe. La dette de naissance
 > est NOMMÉE (`joignable-dette.json`). Q363 tranchée : le code des chemins de saisie remplacés est retiré (JS ; le CSS ne se nettoie pas).
 
-### ⚑ v116 (1er oct. 2026) — LE MODE SOMBRE EST L'ENCRE DE SEICHE. (Décision Tom, série 4 adoptée, descendue de 2 %.) *(v121 : TOM LA GARDE, pages comprises — le retour au brun de v120 était une erreur de référence)*
+### ⚑ v116 (1er oct. 2026) — LE MODE SOMBRE EST L'ENCRE DE SEICHE. (Décision Tom, série 4 adoptée, descendue de 2 %.) *(v120 : la seiche ne vaut plus que pour la TOILE ; les pages sombres sont revenues au brun `#201908`)*
 > Fond `#050302` (OKLCH L 0,101, h 54,8° — la teinte y est plus juste qu'à L 0,12 : Δh +5° contre +13°), cellules vides L 0,136–0,161
 > (h 40–56°), dalle neutre d'Ingénu en sombre `#1F1611`, grain léger ; **jamais bleu**. Le moteur la peint (rampes, `_fondVifDesc` plat,
 > `renderTo`, `fondToile`, aperçus, noir et blanc, `cOf`) ; les pages sombres la prennent par `--c-brun09` en sombre (`lot-V116-SEICHE-css`,
@@ -1538,14 +1517,12 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (commit 578ec80, servi avec son moteur) : styles calculés, canevas et
-                               #   dalles rendues seules (synchrones, horloge figée), 36 écrans × 2 thèmes. Exceptions nommées en dur (Toile
-                               #   entière, orange des murs, Pelote et halo, violations retirées). Rougit sur app-avant-v121 (480 écarts : le brun
-                               #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
+python3 redteam_couleurs_ref.py # v120 — LES COULEURS SONT CELLES D'AVANT v116 : styles calculés et échantillons de canevas, 36 écrans × 2 thèmes,
+                               #   contre sauvegardes/app-avant-v116.html. Exceptions nommées en dur (Toile, matière de dalle, orange des murs,
+                               #   Pelote). Rougit sur sauvegardes/app-avant-v120.html (417 écarts). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
-python3 redteam_halo.py        # 91 — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119 ; cinq niveaux v121, défaut 3), lus sur l'image @3x. --sonde rougit.
-python3 redteam_garder.py      # 18 — v119 (Q370), repris en v121 : « garder de côté » garde le titre et la personne de la phrase, au doigt.
+python3 redteam_halo.py        # 23 — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119, repris en v120), lus sur l'image @3x. --sonde rougit.
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;
                                #   immobile avec Réduire les animations. Rougit sur app-avant-v117b.

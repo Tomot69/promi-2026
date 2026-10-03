@@ -105,7 +105,8 @@ with sync_playwright() as p:
             c = [v / 255.0 for v in c]; c = [v / 12.92 if v <= 0.04045 else ((v + 0.055) / 1.055) ** 2.4 for v in c]; return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]
         def _k(a, b_):
             x, y = sorted((_L(_rgb(a)), _L(_rgb(b_))), reverse=True); return (x + 0.05) / (y + 0.05)
-        MUR_ORANGE = 'rgb(251, 76, 13)'                                    # #FB4C0D — la décision, en dur
+        # ⚑ v121 (Tom) : « #FB4C0D partout, sauf sur les trois corps sombres de Peaufiner : là, ce même orange éclairci jusqu'à 3:1 » → #FF7A55
+        MUR_ORANGE = 'rgb(255, 122, 85)' if th != 'light' else 'rgb(251, 76, 13)'     # la décision, en dur (la phrase est mesurée sur le Peaufiner d'une fiche)
         kmp = _k(col['mp'], col['fond']) if col['mp'] else 0
         ok7 = col['mp'] == MUR_ORANGE and abs(lum(col['texte']) - lum(col['fond'])) >= DLUM and kmp >= 3.0
         t('7 · « Ma Parole ! » en #FB4C0D, à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),

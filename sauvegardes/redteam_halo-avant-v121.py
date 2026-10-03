@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-redteam_halo.py — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119, Tom, 2 oct. 2026 ; niveaux v121, 3 oct.). WebKit, @3x, lu sur l'IMAGE RENDUE.
-
-⚑ v121 (Tom) : « Par défaut, sans paramètre : le niveau ?halo=3. Ajoute ?halo=4 et ?halo=5 : écart ΔE00 au ras de 18 et 24, étendue de
-0,14 et 0,16 D. Mêmes règles. » Les cinq niveaux, EN DUR : (ΔE00 au ras, étendue) = 1 (6 ; 0,08 D) · 2 (10 ; 0,10) · 3 (14 ; 0,12) ·
-4 (18 ; 0,14) · 5 (24 ; 0,16). A, C et F se jugent à CHAQUE niveau (le 3 sans paramètre) ; B, D et E au niveau par défaut. Les bornes de A
-gardent les proportions de v119 (7 → 5 à 9 au ras ; 2,9 → 2 à 4 à mi-étendue) : ras × [0,72 ; 1,28], mi-étendue (ras × 2,9/7) × [0,7 ;
-1,38], sous 1 au bout de l'étendue, rien au-delà. ⚑ v121 §2 : l'ombre monte de 6 (centre 455,35), le bouton est à 513,47.
+redteam_halo.py — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119, Tom, 2 oct. 2026). WebKit, @3x, lu sur l'IMAGE RENDUE.
 
 « Ce n'est pas un flou posé autour, c'est la lumière du velours qui déborde à peine de la silhouette. »
 Les valeurs décidées, EN DUR (§7) — D = 232,064 pt (le diamètre de la boule), silhouette = boule + poil = 121 pt de rayon :
@@ -30,8 +24,6 @@ from PIL import Image
 APP = os.environ.get('APP', 'http://127.0.0.1:8752/app.html')
 SONDE = '--sonde' in sys.argv
 S = 3; D = 232.064; RS = 121.0; CXY = (195.0, 122.532 + 148.0)
-NIVEAUX = {1: (6, 0.08), 2: (10, 0.10), 3: (14, 0.12), 4: (18, 0.14), 5: (24, 0.16)}   # la décision, en dur
-DEFAUT = 3; OMBRE_Y = 455.35; BOUTON = 513.47
 LUM = math.atan2(-0.72, -0.58)                      # d'où vient la lumière (repère de l'écran, y vers le bas)
 ok = [0]; ko = []
 
@@ -102,53 +94,50 @@ with sync_playwright() as p:
     ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}" + (" window._haloSansTrame=true;" if SONDE else ""))
     if SONDE: print('SONDE : le halo est fabriqué SANS trame')
     pg = ctx.new_page(); er = []; pg.on('pageerror', lambda e: er.append(str(e)[:160]))
-    for niv in ([DEFAUT] + [n for n in NIVEAUX if n != DEFAUT]):
-        RAS, EXT = NIVEAUX[niv]; MI = RAS * 2.9 / 7; N = '%s%d' % ('' if niv != DEFAUT else 'défaut · ', niv)
-        pg.goto(APP + ('' if niv == DEFAUT else '?halo=%d' % niv)); pg.wait_for_timeout(7000)
-        for sombre in (0, 1):
-            th = ('sombre' if sombre else 'clair') + ' · niveau ' + N; ouvre(pg, sombre); im = cap(pg); px = im.load()
-            fond = px[int(22 * S), int(300 * S)]
-            e0 = dE00(moy(im, RS + 1.5, LUM), fond); e4 = dE00(moy(im, RS + EXT / 2 * D, LUM), fond); e8 = dE00(moy(im, RS + EXT * D, LUM), fond)
-            au = max(dE00(moy(im, RS + EXT * D + 2.5, math.radians(a), demi=4), fond) for a in range(0, 360, 20))
-            t('A · [%s] au ras : ΔE00 entre %.1f et %.1f' % (th, 0.72 * RAS, 1.28 * RAS), 0.72 * RAS <= e0 <= 1.28 * RAS, '%.2f' % e0)
-            t('A · [%s] à mi-étendue : ΔE00 entre %.1f et %.1f' % (th, 0.7 * MI, 1.38 * MI), 0.7 * MI <= e4 <= 1.38 * MI, '%.2f' % e4)
-            t('A · [%s] au bout de l\'étendue (%.2f D) : ΔE00 sous 1' % (th, EXT), e8 < 1, '%.2f' % e8)
-            t('A · [%s] rien au-delà' % th, au < 0.5, 'pire ΔE00 %.2f sur 18 directions' % au)
-            # ⚠ à l'opposé et en bas, le POIL dépasse de 5,5 pt : on lit le halo à 5 pt de la silhouette (au-delà du poil), et on le compare
-            #   au côté éclairé AU MÊME RAYON — sinon on mesure la fourrure, pas le halo
-            #   ⚠ et l'opposé exact de la lumière (en bas à droite) tombe DANS le quart inférieur, où le halo est presque nul : la loi
-            #   (100 % → 20 %) se vérifie donc à 90° (60 % attendus) et à 135° (32 % attendus) de la lumière, en opacité
-            if niv == DEFAUT:
-              ref = exces(moy(im, RS + 5, LUM), fond); q90 = exces(moy(im, RS + 5, LUM + math.pi / 2), fond) / ref; q135 = exces(moy(im, RS + 5, LUM + 0.75 * math.pi), fond) / ref
-              bas = dE00(moy(im, RS + 5, math.pi / 2), fond); opp = dE00(moy(im, RS + 5, LUM + math.pi), fond)
-              t('B · [%s] il décroît vers l\'opposé : 60 %% à 90° de la lumière, 32 %% à 135° (± 12)' % th, 0.48 <= q90 <= 0.72 and 0.20 <= q135 <= 0.44, '%.0f %% · %.0f %%' % (100 * q90, 100 * q135))
-              t('B · [%s] sur le quart inférieur (l\'opposé y tombe) : presque nul' % th, bas < 1 and opp < 1, 'ΔE00 %.2f en bas · %.2f à l\'opposé' % (bas, opp))
-            # C · la plus longue bande à valeur constante, le long de trois profils radiaux, là où le halo se voit encore
-            #   une MARCHE de quantification, c'est un escalier : l'écart au fond ne fait que descendre, par paliers. Tramé, il remonte
-            #   d'un pixel à l'autre une fois sur trois. On exige au moins 12 % de remontées, et aucun palier de plus de 2 pt.
-            pire = 0; rem = 0; tot = 0
-            for da in (-25, 0, 25):
-                a = LUM + math.radians(da); prec = None; n = 0; av = None
-                for k in range(int((RS + 6) * S), int((RS + EXT * D - 1.5) * S)):
-                    c = px[int(round(CXY[0] * S + k * math.cos(a))), int(round(CXY[1] * S + k * math.sin(a)))]
-                    if c == prec: n += 1
-                    else: prec = c; n = 1
-                    pire = max(pire, n); v = sum(abs(c[i] - fond[i]) for i in range(3))
-                    if av is not None: tot += 1; rem += 1 if v > av else 0
-                    av = v
-            t('C · [%s] trame : aucune bande de plus de 2 pt à valeur constante' % th, pire / S <= 2.0, 'la plus longue : %.1f pt (%d px)' % (pire / S, pire))
-            t('C · [%s] trame : aucune marche de quantification (le profil remonte ≥ 12 %% du temps)' % th, tot > 60 and rem / tot >= 0.12, '%.0f %% de remontées sur %d pas' % (100.0 * rem / max(1, tot), tot))
-            # E · l'ombre (centre 195 ; 455,35 depuis v121 — demi-axes 52,2 × 8,1) contre son pourtour immédiat
-            cen = [sum(px[int((195 + dx) * S), int((OMBRE_Y + dy) * S)][c] for dx in (-6, 0, 6) for dy in (-1, 0, 1)) / 9.0 for c in range(3)]
-            tour = [sum(px[int((195 + sx * 64) * S), int((OMBRE_Y + dy) * S)][c] for sx in (-1, 1) for dy in (-1, 0, 1)) / 6.0 for c in range(3)]
-            eo = dE00(cen, tour)
-            t('E · [%s] l\'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2)' % th, eo >= 2, '%.2f · centre %s · pourtour %s' % (eo, [round(v) for v in cen], [round(v) for v in tour]))
-            if sombre:
-                st = pg.evaluate("()=>[getComputedStyle(document.getElementById('auPeloteOmbre')).display, getComputedStyle(document.getElementById('auPeloteFlaque')).display]")
-                t('E · [sombre] aucune ombre crème : l\'ombre est le creux de la flaque de lumière', st[0] == 'none' and st[1] != 'none' and all(abs(cen[i] - fond[i]) <= 2 for i in range(3)), '%s · creux %s · fond %s' % (st, [round(v) for v in cen], fond))
-            g = pg.evaluate("()=>{const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, R=s=>{const r=document.querySelector(s).getBoundingClientRect(); return [(r.top-dv.top)/k,(r.bottom-dv.top)/k]}; return {pl:R('#auraScreen .enh'), bt:R('#auPartage')}}")
-            t('F · [%s] le halo ne touche pas le plateau ; le bouton est à sa place (v121 : 513,47)' % th, CXY[1] - RS - EXT * D > g['pl'][1] + 8 and abs(g['bt'][0] - BOUTON) < 0.3, 'haut du halo %.1f · bas du plateau %.1f · bouton %.2f' % (CXY[1] - RS - EXT * D, g['pl'][1], g['bt'][0]))
-            pg.evaluate("()=>{_aura.fige(false); const x=document.querySelector('#auraScreen .closeb'); if(x) x.click();}"); pg.wait_for_timeout(800)
+    pg.goto(APP); pg.wait_for_timeout(7000)
+    for sombre in (0, 1):
+        th = 'sombre' if sombre else 'clair'; ouvre(pg, sombre); im = cap(pg); px = im.load()
+        fond = px[int(22 * S), int(300 * S)]
+        e0 = dE00(moy(im, RS + 1.5, LUM), fond); e4 = dE00(moy(im, RS + 0.04 * D, LUM), fond); e8 = dE00(moy(im, RS + 0.08 * D, LUM), fond)
+        au = max(dE00(moy(im, RS + 0.08 * D + 2.5, math.radians(a), demi=4), fond) for a in range(0, 360, 20))
+        t('A · [%s] au ras de la silhouette : ΔE00 entre 5 et 9' % th, 5 <= e0 <= 9, '%.2f' % e0)
+        t('A · [%s] à 0,04 D : ΔE00 entre 2 et 4' % th, 2 <= e4 <= 4, '%.2f' % e4)
+        t('A · [%s] à 0,08 D : ΔE00 sous 1' % th, e8 < 1, '%.2f' % e8)
+        t('A · [%s] rien au-delà de 0,08 D' % th, au < 0.5, 'pire ΔE00 %.2f sur 18 directions' % au)
+        # ⚠ à l'opposé et en bas, le POIL dépasse de 5,5 pt : on lit le halo à 5 pt de la silhouette (au-delà du poil), et on le compare
+        #   au côté éclairé AU MÊME RAYON — sinon on mesure la fourrure, pas le halo
+        #   ⚠ et l'opposé exact de la lumière (en bas à droite) tombe DANS le quart inférieur, où le halo est presque nul : la loi
+        #   (100 % → 20 %) se vérifie donc à 90° (60 % attendus) et à 135° (32 % attendus) de la lumière, en opacité
+        ref = exces(moy(im, RS + 5, LUM), fond); q90 = exces(moy(im, RS + 5, LUM + math.pi / 2), fond) / ref; q135 = exces(moy(im, RS + 5, LUM + 0.75 * math.pi), fond) / ref
+        bas = dE00(moy(im, RS + 5, math.pi / 2), fond); opp = dE00(moy(im, RS + 5, LUM + math.pi), fond)
+        t('B · [%s] il décroît vers l\'opposé : 60 %% à 90° de la lumière, 32 %% à 135° (± 12)' % th, 0.48 <= q90 <= 0.72 and 0.20 <= q135 <= 0.44, '%.0f %% · %.0f %%' % (100 * q90, 100 * q135))
+        t('B · [%s] sur le quart inférieur (l\'opposé y tombe) : presque nul' % th, bas < 1 and opp < 1, 'ΔE00 %.2f en bas · %.2f à l\'opposé' % (bas, opp))
+        # C · la plus longue bande à valeur constante, le long de trois profils radiaux, là où le halo se voit encore
+        #   une MARCHE de quantification, c'est un escalier : l'écart au fond ne fait que descendre, par paliers. Tramé, il remonte
+        #   d'un pixel à l'autre une fois sur trois. On exige au moins 12 % de remontées, et aucun palier de plus de 2 pt.
+        pire = 0; rem = 0; tot = 0
+        for da in (-25, 0, 25):
+            a = LUM + math.radians(da); prec = None; n = 0; av = None
+            for k in range(int((RS + 6) * S), int((RS + 0.08 * D - 1.5) * S)):
+                c = px[int(round(CXY[0] * S + k * math.cos(a))), int(round(CXY[1] * S + k * math.sin(a)))]
+                if c == prec: n += 1
+                else: prec = c; n = 1
+                pire = max(pire, n); v = sum(abs(c[i] - fond[i]) for i in range(3))
+                if av is not None: tot += 1; rem += 1 if v > av else 0
+                av = v
+        t('C · [%s] trame : aucune bande de plus de 2 pt à valeur constante' % th, pire / S <= 2.0, 'la plus longue : %.1f pt (%d px)' % (pire / S, pire))
+        t('C · [%s] trame : aucune marche de quantification (le profil remonte ≥ 12 %% du temps)' % th, tot > 60 and rem / tot >= 0.12, '%.0f %% de remontées sur %d pas' % (100.0 * rem / max(1, tot), tot))
+        # E · l'ombre (centre 195 ; 461,35 — demi-axes 52,2 × 8,1) contre son pourtour immédiat
+        cen = [sum(px[int((195 + dx) * S), int((461.35 + dy) * S)][c] for dx in (-6, 0, 6) for dy in (-1, 0, 1)) / 9.0 for c in range(3)]
+        tour = [sum(px[int((195 + sx * 64) * S), int((461.35 + dy) * S)][c] for sx in (-1, 1) for dy in (-1, 0, 1)) / 6.0 for c in range(3)]
+        eo = dE00(cen, tour)
+        t('E · [%s] l\'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2)' % th, eo >= 2, '%.2f · centre %s · pourtour %s' % (eo, [round(v) for v in cen], [round(v) for v in tour]))
+        if sombre:
+            st = pg.evaluate("()=>[getComputedStyle(document.getElementById('auPeloteOmbre')).display, getComputedStyle(document.getElementById('auPeloteFlaque')).display]")
+            t('E · [sombre] aucune ombre crème : l\'ombre est le creux de la flaque de lumière', st[0] == 'none' and st[1] != 'none' and all(abs(cen[i] - fond[i]) <= 2 for i in range(3)), '%s · creux %s · fond %s' % (st, [round(v) for v in cen], fond))
+        g = pg.evaluate("()=>{const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, R=s=>{const r=document.querySelector(s).getBoundingClientRect(); return [(r.top-dv.top)/k,(r.bottom-dv.top)/k]}; return {pl:R('#auraScreen .enh'), bt:R('#auPartage')}}")
+        t('F · [%s] le halo ne touche pas le plateau ; le bouton est à sa place de v118' % th, CXY[1] - RS - 0.08 * D > g['pl'][1] + 8 and abs(g['bt'][0] - 525.47) < 0.3, 'haut du halo %.1f · bas du plateau %.1f · bouton %.2f' % (CXY[1] - RS - 0.08 * D, g['pl'][1], g['bt'][0]))
+        pg.evaluate("()=>{_aura.fige(false); const x=document.querySelector('#auraScreen .closeb'); if(x) x.click();}"); pg.wait_for_timeout(800)
     ctx.close()
     # D · la respiration, animations permises : le halo au sommet (4,6 s) et au creux (10,6 s) du cycle
     if not SONDE:

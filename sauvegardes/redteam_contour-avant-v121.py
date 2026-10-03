@@ -11,8 +11,6 @@ sys.path.insert(0,'scratchpad'); from aura_ouvre import ouvre
 from playwright.sync_api import sync_playwright
 from PIL import Image, ImageChops
 S=2; CX=195
-# ⚑ v121 (Tom) : le halo par défaut est le niveau 3 — étendue 0,12 D ; `--halo=N` juge un autre niveau (1 à 5 : 0,08 · 0,10 · 0,12 · 0,14 · 0,16 D)
-NIV_HALO=int(([a.split('=')[1] for a in sys.argv if a.startswith('--halo=')] or ['3'])[0]); EXT_HALO={1:0.08,2:0.10,3:0.12,4:0.14,5:0.16}[NIV_HALO]
 ARG=next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html'); tmp=None
 if '/' in ARG: shutil.copy(ARG,'zz-contour.html'); ARG=tmp='zz-contour.html'
 def cap(pg): return Image.open(io.BytesIO(pg.screenshot(clip={'x':20,'y':44,'width':390,'height':844}))).convert('RGB')
@@ -20,7 +18,7 @@ ok=True
 with sync_playwright() as p:
     b=p.webkit.launch(); pg=b.new_page(viewport={'width':430,'height':932},device_scale_factor=S)
     pg.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
-    pg.goto('http://127.0.0.1:8752/'+ARG+('' if NIV_HALO==3 else '?halo=%d'%NIV_HALO)); pg.wait_for_timeout(7000)
+    pg.goto('http://127.0.0.1:8752/'+ARG); pg.wait_for_timeout(7000)
     for d in (0,1):
         ouvre(pg,d); pg.wait_for_timeout(3000); pg.evaluate("()=>{try{_aura.fige(true)}catch(e){}}"); pg.wait_for_timeout(300)
         g=pg.evaluate("()=>{const dv=document.getElementById('device').getBoundingClientRect(),s=dv.width/390,r=document.getElementById('auBoule').getBoundingClientRect();return {cy:(r.top-dv.top)/s+r.height/s/2}}")
@@ -45,9 +43,9 @@ with sync_playwright() as p:
             for x in range(d2.width):
                 if p2[x,y]:
                     r=math.hypot(x/S-CX,y/S-CY); rh=max(rh,r)
-                    if r>121.0+EXT_HALO*232.064+1.0: loin+=1
+                    if r>121.0+0.08*232.064+1.0: loin+=1
         bon = hors==0 and loin==0
-        print('   [%s] avec le halo : la lumière s\'arrête à %.1f du centre (borne %.1f) · pixels au-delà : %d'%('sombre' if d else 'clair',rh,121.0+EXT_HALO*232.064,loin))
+        print('   [%s] avec le halo : la lumière s\'arrête à %.1f du centre (borne %.1f) · pixels au-delà : %d'%('sombre' if d else 'clair',rh,121.0+0.08*232.064,loin))
         print('%s [%s] la Pelote s\'arrête à %.1f du centre (silhouette %.1f) · pixels au-delà : %d'%('OK' if bon else '✗','sombre' if d else 'clair',rmax,RS,hors)); ok=ok and bon
     b.close()
 if tmp: os.remove(tmp)

@@ -1,6 +1,6 @@
 # LES RÈGLES QUE PORTENT LES JUGES — spécification pour le portage
 
-> Engendré par `spec_juges_generer.py` le 2026-10-02. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
+> Engendré par `spec_juges_generer.py` le 2026-10-03. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
 
 ## 1 · Le rythme de chaque monde — `redteam_rythme.py`
 
@@ -83,7 +83,7 @@ On juge **la fin du mouvement dans le moteur** (l'image où la Toile cesse de bo
 - **Ce qui se touche est joignable** (`redteam_joignable.py`, v118) : au centre de chaque élément interactif, `elementFromPoint` rend l'élément ou un de ses descendants ; chaque gestionnaire n'appelle que des fonctions qui existent, sur un nœud qui existe ; la dette est nommée dans `joignable-dette.json`.
 - **La dalle d'origine dans la bande haute** (`redteam_origine.py`, v118) : la couleur d'origine, sauf si son écart au champ est sous **ΔE 15.0** (CIELAB) — alors la rampe de Q30 ; les cas à moins de 2.0 du seuil ne sont jugés que sur la lisibilité.
 - **La Pelote est pleine** (`redteam_plein.py`, v120) : alpha 255 sur tout pixel en retrait de **0.04 × D** à l'intérieur de la silhouette (D 232.064 pt, silhouette 121.0 pt), aux deux thèmes, à chaque palier, sur quatre palettes et trois densités ; rien au-delà de la silhouette + 4 pt.
-- **Les couleurs sont celles d'avant v116** (`redteam_couleurs_ref.py`, v120) : styles calculés et couleurs dominantes des canevas, 36 écrans × 2 thèmes, contre `sauvegardes/app-avant-v116.html` ; exceptions nommées : les canevas de la Toile, la matière déclarée d'une dalle, l'orange des murs `#FB4C0D`, la Pelote.
+- **Les couleurs sont celles de v118** (`redteam_couleurs_ref.py`, v121) : styles calculés, couleurs dominantes des canevas et dalles rendues seules (synchrones, horloge figée), 36 écrans × 2 thèmes, contre le commit `578ec80` ; exceptions nommées : la Toile entière, l'orange des murs (`#FB4C0D`, `#FF7A55` sur les corps sombres), la Pelote et son halo, les violations retirées.
 - **Le Zzz** (`redteam_nuit.py`, v118) : premier lancement en clair, Zzz activé ; nuit = coucher du soleil + 1 h → lever (NOAA, coordonnées du fuseau ; inconnu : 22 h – 7 h ; almanach de Paris à ± 3 min) ; aucune bascule sous les yeux, aucun fondu ; cran de nuit = neutres clairs à OKLCH L − 0,06 (± 0,006), tous les autres jetons au hex près, contraste ≥ 7 : 1.
 - **Le contrat visuel** (`releve-design.py`, référence `design-reference.json`, figée le 30 sept.) : 25 cibles × 25 propriétés × 6 configurations ; ⚠ les couleurs n'y sont PAS comparées (accent, backgroundColor, borderColor, boxShadow, color, dalle, fill, stroke) — elles vivent dans `PROMI-TOKENS.json` et `redteam_tokens`.
 

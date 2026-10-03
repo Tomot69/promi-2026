@@ -1614,10 +1614,10 @@ input.req-vide::placeholder{color:rgba(var(--c-orange61-rgb),.72)!important}
   .sh-canvas-wrap{position:relative;border-radius:10px;overflow:hidden;box-shadow:0 16px 48px rgba(var(--c-noir00-rgb),.6);touch-action:none}
   .sh-canvas-wrap canvas{display:block;width:100%;height:100%}
   .sh-badge{position:absolute;top:11px;left:12px}
-#shareScreen .sh-badge .sh-bt{color:var(--c-creme95-3);text-shadow:none}
-#shareScreen .sh-badge .sh-bf{color:rgba(var(--c-creme95-3-rgb),.82);text-shadow:none}
-#shareScreen.sh-lightwm .sh-badge .sh-bt{color:var(--c-brun08-4);text-shadow:none}
-#shareScreen.sh-lightwm .sh-badge .sh-bf{color:rgba(var(--c-brun08-4-rgb),.72);text-shadow:none}
+#shareScreen .sh-badge .sh-bt{color:var(--c-creme95-3);text-shadow:0 1px 6px rgba(var(--c-noir00-rgb),.42)}
+#shareScreen .sh-badge .sh-bf{color:rgba(var(--c-creme95-3-rgb),.82);text-shadow:0 1px 5px rgba(var(--c-noir00-rgb),.42)}
+#shareScreen.sh-lightwm .sh-badge .sh-bt{color:var(--c-brun08-4);text-shadow:0 1px 6px rgba(var(--c-blanc100-rgb),.5)}
+#shareScreen.sh-lightwm .sh-badge .sh-bf{color:rgba(var(--c-brun08-4-rgb),.72);text-shadow:0 1px 5px rgba(var(--c-blanc100-rgb),.5)}
   .sh-bt{font-family:var(--f-libelle);font-weight:700;font-size:15px;letter-spacing:-.02em;color:var(--c-blanc100);-webkit-text-stroke:.4px rgba(var(--c-noir00-rgb),.5);line-height:1}
   .sh-badge .uvi{color:var(--verm-txt)}
   .sh-bf{font-family:var(--f-texte);font-size:10px;letter-spacing:.13em;text-transform:uppercase;color:var(--c-creme94);-webkit-text-stroke:.3px rgba(var(--c-noir00-rgb),.45);margin-top:4px}
@@ -10388,7 +10388,7 @@ input.ix-search,textarea{background-image:none!important}
 .device.light #dpTete .dpt-nat{color:var(--c-blanc100)!important}
 #dpTete .dpt-qui{margin-top:0!important}
 /* le ✕ reste au-dessus de la dalle */
-#detailPoster .closeb{text-shadow:none;color:var(--c-blanc100)!important;z-index:9;right:22px;top:54px;position:fixed!important}
+#detailPoster .closeb{text-shadow:0 1px 10px rgba(var(--c-noir00-rgb),.3);color:var(--c-blanc100)!important;z-index:9;right:22px;top:54px;position:fixed!important}
 /* ── BLOC 3 · LE LIEN ── */
 #detailPoster #dAura{box-shadow:inset 0 1px 0 rgba(var(--c-blanc100-rgb),.18);padding:22px 24px!important;margin:0!important}
 #detailPoster.f-tenue #dAura{box-shadow:inset 0 1px 0 rgba(var(--c-menthe11-rgb),.14)}
@@ -11152,10 +11152,10 @@ input.ix-search,textarea{background-image:none!important}
    « Nuée » et « ✕ Fermer » etaient blancs sur une dalle claire. */
 .device.light #detailPoster #dpTete .dpt-nat,
 .device.light #detailPoster>.closeb{color:var(--c-brun09)!important;
-  text-shadow:none!important}
+  text-shadow:0 1px 10px rgba(var(--c-blanc100-rgb),.5)!important}
 .device:not(.light) #detailPoster #dpTete .dpt-nat,
 .device:not(.light) #detailPoster>.closeb{color:var(--c-creme95)!important;
-  text-shadow:none!important}
+  text-shadow:0 1px 12px rgba(var(--c-noir00-rgb),.4)!important}
 
 /* ══ PEAUFINER AU BAS DE L'ECRAN ══
    La fiche est une colonne : Peaufiner ferme la marche et se colle en bas
@@ -11260,7 +11260,7 @@ input.ix-search,textarea{background-image:none!important}
 /* « Nuée » et le ✕ s'inversent selon le mode, sur cette trame */
 .device.light #detailPoster.dp-mode-nuee #dpTete .dpt-nat,
 .device.light #detailPoster.dp-mode-nuee>.closeb{color:var(--c-blanc100)!important;
-  text-shadow:none!important}
+  text-shadow:0 1px 12px rgba(var(--c-noir00-rgb),.28)!important}
 .device:not(.light) #detailPoster.dp-mode-nuee #dpTete .dpt-nat,
 .device:not(.light) #detailPoster.dp-mode-nuee>.closeb{color:var(--c-creme95)!important}
 
@@ -11358,7 +11358,7 @@ input.ix-search,textarea{background-image:none!important}
 .frame.light #detailPoster.dp-mode-nuee>.closeb,
 .frame:not(.light) #detailPoster.dp-mode-nuee #dptNat,
 .frame:not(.light) #detailPoster.dp-mode-nuee>.closeb{
-  color:var(--c-blanc100)!important;text-shadow:none!important;opacity:1!important}
+  color:var(--c-blanc100)!important;text-shadow:0 2px 14px rgba(var(--c-noir00-rgb),.45)!important;opacity:1!important}
 
 /* ── LES LIBELLES DE SECTION : jamais delaves ── */
 #detailPoster .mg-lab,#detailPoster .grouplab,#detailPoster .dp-lab{
@@ -11398,7 +11398,7 @@ input.ix-search,textarea{background-image:none!important}
 /* 1 · « Nuée » et « ✕ » sur la planche : une ombre portee les detache */
 #detailPoster.dp-mode-nuee #dptNat,#detailPoster.dp-mode-nuee>.closeb{
   color:var(--c-blanc100)!important;-webkit-text-fill-color:var(--c-blanc100)!important;
-  text-shadow:none!important}
+  text-shadow:0 2px 18px rgba(var(--c-noir00-rgb),.55),0 0 3px rgba(var(--c-noir00-rgb),.4)!important}
 /* 2 · les lignes du fil : leur encre suit leur aplat, sans exception */
 #dpNueeFil .nf-item,#dpNueeFil .nf-item *{
   -webkit-text-fill-color:currentColor!important}
@@ -17610,13 +17610,6 @@ var CREMEETAT='#F7F0DE';
         g.textContent = 'garder de côté';
         g.addEventListener('click', function(ev){ ev.stopPropagation();
           var b = document.querySelector('#addDraft,#csDraft,#csGarder,[data-garder],.cs-draft');
-          /* ⚑ v119 (Tom, Q370) : LE TITRE ET LA PERSONNE DE LA PHRASE PASSENT AU GARDÉ DE CÔTÉ, puis la page + se ferme. Le bouton
-             rebranché lit l'ancien formulaire (`#dfTitle`, `#dfWho`), que la phrase ne remplit pas : il fermait la page sans rien
-             garder (mesuré au doigt). On lui passe ce que la phrase porte — on ne crée pas une fonction, on lui donne ses mots. */
-          try{ var ft=document.getElementById('fTitle'), dt=document.getElementById('dfTitle'), dw=document.getElementById('dfWho'), fw=document.getElementById('fWho');
-            var qui=(window.newWhoSel && window.newWhoSel.length) ? window.newWhoSel[0] : ((fw && fw.value.trim()) || '');
-            if(dt && ft) dt.value=ft.value.trim();
-            if(dw) dw.value=(qui && (''+qui).toLowerCase()!=='moi') ? qui : ''; }catch(_){}
           if(b) b.click(); }, true);
         cs.appendChild(g);
       }
@@ -30998,15 +30991,17 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
   display:flex!important;align-items:center!important;justify-content:center!important;gap:10px!important;
   background:var(--c-framboise54)!important;color:var(--c-framboise97)!important;-webkit-text-fill-color:var(--c-framboise97)!important;
   font-family:var(--f-libelle)!important;font-weight:700!important;font-size:17px!important;
-  letter-spacing:-.01em!important;box-shadow:none!important;pointer-events:auto!important;   /* v119 (Tom) : plus d'ombre dure sous le bouton d'achat */
+  letter-spacing:-.01em!important;box-shadow:0 4px 0 0 var(--c-mauve12)!important;pointer-events:auto!important;
   position:absolute!important;overflow:hidden!important;transition:box-shadow .11s linear,transform .11s linear}
 /* ⚑ LA SECONDE COUCHE DU BOUTON EST EN MAUVE (Tom, 12 sept.) : framboise foncée, puis terracotta, puis mauve —
    retenu parce qu'il répond au « Cercle » du titre et ne parle pas le langage des états. */
 #plusScreen #pcCadre #buyMonth.pc-pose{animation:pcPose .52s cubic-bezier(.32,.72,0,1) both}
-@keyframes pcPose{from{transform:translateY(-6px)}to{transform:none}}
-#plusScreen #pcCadre #buyMonth:active{transform:translateY(4px)}
-#plusScreen #pcCadre #buyMonth .pc-eclat{display:none!important   /* v119 (Tom) : l'éclat en dégradé est retiré — le flou et le dégradé ne sont permis qu'aux murs, pas au bouton */}
-
+@keyframes pcPose{from{transform:translateY(-6px);box-shadow:0 0 0 0 var(--c-mauve12)}to{transform:none;box-shadow:0 4px 0 0 var(--c-mauve12)}}
+#plusScreen #pcCadre #buyMonth:active{box-shadow:0 0 0 0 var(--c-mauve12)!important;transform:translateY(4px)}
+#plusScreen #pcCadre #buyMonth .pc-eclat{position:absolute;top:0;left:-45%;width:30%;height:100%;z-index:1;pointer-events:none;
+  background:linear-gradient(100deg,rgba(var(--c-blanc100-rgb),0),rgba(var(--c-blanc100-rgb),.30) 50%,rgba(var(--c-blanc100-rgb),0));
+  transform:skewX(-14deg);animation:pcEclat 5.2s linear infinite}
+@keyframes pcEclat{0%{left:-45%}12%{left:125%}100%{left:125%}}
 @media (prefers-reduced-motion:reduce){#plusScreen #pcCadre #buyMonth .pc-eclat{animation:none;opacity:0}
   #plusScreen #pcCadre #buyMonth.pc-pose{animation:none}}
 /* ⚑ LA SIGNATURE DE MATIÈRE AU RELÂCHEMENT A ÉTÉ RETIRÉE (Tom, 12 sept. 2026). Elle était peinte correctement
@@ -31028,12 +31023,12 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
 #plusScreen #pcCadre.pc-b2 #buyYear{background:rgba(var(--c-mauve12-rgb),.16)!important;border-color:rgba(var(--c-mauve12-rgb),.46)!important;
   color:var(--c-mauve39)!important;-webkit-text-fill-color:var(--c-mauve39)!important}
 #plusScreen #pcCadre.pc-b2 #buyYear::before{display:block!important;
-  background:none!important}
+  background:linear-gradient(118deg,rgba(var(--c-mauve12-rgb),.26) 0%,rgba(var(--c-mauve12-rgb),.10) 46%,rgba(var(--c-mauve12-rgb),.26) 100%)!important}
 /* 4 bis · la variante TERRACOTTA du fond, texte en mauve — ⚠ le terracotta est la couleur d'état « à tenir » (§3) */
 #plusScreen #pcCadre.pc-b4 #buyYear{background:rgba(var(--c-orange53-rgb),.15)!important;border-color:rgba(var(--c-orange53-rgb),.46)!important;
   color:var(--c-mauve39)!important;-webkit-text-fill-color:var(--c-mauve39)!important}
 #plusScreen #pcCadre.pc-b4 #buyYear::before{display:block!important;
-  background:none!important}
+  background:linear-gradient(118deg,rgba(var(--c-orange53-rgb),.24) 0%,rgba(var(--c-orange53-rgb),.09) 46%,rgba(var(--c-orange53-rgb),.24) 100%)!important}
 .frame:not(.light) #plusScreen #pcCadre.pc-b4 #buyYear,#device:not(.light) #plusScreen #pcCadre.pc-b4 #buyYear{
   background:rgba(var(--c-orange53-rgb),.20)!important;border-color:rgba(var(--c-orange53-rgb),.5)!important;
   color:var(--c-mauve80)!important;-webkit-text-fill-color:var(--c-mauve80)!important}
@@ -31050,7 +31045,7 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
   letter-spacing:-.01em!important;color:var(--pc-ink)!important;-webkit-text-fill-color:var(--pc-ink)!important;
   text-decoration:none!important;pointer-events:auto!important;position:absolute!important;overflow:hidden!important}
 #plusScreen #pcCadre #buyYear::before{content:'';position:absolute;left:-30%;top:-140%;width:160%;height:380%;
-  background:none;   /* v119 : le second bouton est un aplat */
+  background:linear-gradient(118deg,var(--pc-sec2) 0%,var(--pc-sec) 46%,var(--pc-sec2) 100%);
   transform:rotate(-12deg);z-index:0;pointer-events:none}
 #plusScreen #pcCadre #buyYear>*{position:relative;z-index:1}
 /* ⚑ LA BANDE ENTRE LA TOILE ET LE BOUTON (Tom, 12 sept.) : « tout est gris et noir sur crème, sur presque

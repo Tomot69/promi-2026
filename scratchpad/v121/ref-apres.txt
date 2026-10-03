@@ -1,0 +1,9 @@
+2 écran(s) repris sur une page fraîche : Nuée défilée[d], fiche à tenir[d]
+6791 propriétés comparées · 36 écrans × 2 thèmes · 8 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 6
+  ✗ color    réf rgb(221, 77, 35)                   → app rgb(247, 240, 222)                 ×3   fiche à tenir[d]
+        fiche à tenir [dark] · #dptTrace [1]
+        fiche à tenir [dark] · #dptQui [1]
+        fiche à tenir [dark] · #dptQuand [1]
+
+❌ — 3 écart(s) de couleur avec la référence v118

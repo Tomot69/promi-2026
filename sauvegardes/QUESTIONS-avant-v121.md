@@ -8296,14 +8296,3 @@ mais Peaufiner Promi clair **2,65**, Cercle clair **2,78**, et les trois corps s
 3 : 1 à la fois de la crème et de ces corps de clarté moyenne (L* 35) : il faut soit deux valeurs (une sur fond clair, une sur fond
 sombre), soit une autre teinte sur les corps sombres, soit accepter 2,3 : 1 là. **Le lot v120 s'est arrêté ici** : le §5 n'est pas fait.
 Les autres usages rendus de `#DD4D23` hors lignes d'état : `planche-v120/usages-DD4D23-rendus.txt` (rien n'a été changé).
-
-#### Q373 · TRANCHÉE (v121) — L'ORANGE DES MURS
-Tom : « #FB4C0D partout, sauf sur les trois corps sombres de Peaufiner (Promi, Chiche, Cercle) : là, ce même orange (même teinte OKLCH) est
-éclairci jusqu'à 3:1 sur le plus sombre des trois. » Posé : **`#FF7A55`** (OKLCH L 0,728 · C 0,171 · h 36,4°) — 3,02 sur le Promi, 3,02 sur le
-Chiche, 3,04 sur le Cercle. ⚠ Écart à la lettre, assumé : l'éclairci qui fait juste 3 : 1 sur le plus sombre (le Cercle) est `#FF7954`, mais
-il ne donne que 2,996 sur le Chiche ; j'ai pris le premier qui tient 3 : 1 sur les trois. `redteam_murs` 26/26.
-Les autres usages rendus de `#DD4D23` hors lignes d'état restent à décider : `planche-v120/usages-DD4D23-rendus.txt`.
-
-#### Q374 · À REGARDER (v121) — UN FLASH D'ENCRE À L'OUVERTURE D'UNE FICHE « À TENIR » EN SOMBRE
-Mesuré au juge des couleurs, dans v118 comme dans l'app (1 chargement sur 4 de chaque côté) : l'à-qui, l'échéance et « trace pour tenir »
-s'affichent une à deux secondes à l'encre du clair (orange `#DD4D23`) avant de passer à la crème. Rien n'a été corrigé (hors lot).

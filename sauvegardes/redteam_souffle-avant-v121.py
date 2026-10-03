@@ -45,8 +45,7 @@ def zones(A, B, g):
                 # ⚑ REPRIS EN v119 (§7). LA RÈGLE ENCODÉE : seule la matière respire, rien ne change au-delà de la silhouette.
                 #   LA DÉCISION QUI LA COMPLÈTE (Tom, v119) : le mini halo respire avec la lumière (± 20 %), et il est borné à 0,08 D.
                 #   « Au-delà » commence donc à la fin du halo : silhouette + 0,08 D (18,6 pt). Original : sauvegardes/redteam_souffle-avant-v119.py
-                #   ⚑ v121 (Tom) : le halo par défaut est le niveau 3, étendue 0,12 D (27,8 pt) — « au-delà » commence là.
-                if math.hypot(x / S - g['cx'], y / S - g['cy']) <= g['rsil'] + 0.12 * 232.064 + 1: dedans += 1
+                if math.hypot(x / S - g['cx'], y / S - g['cy']) <= g['rsil'] + 0.08 * 232.064 + 1: dedans += 1
                 else: dehors += 1
     return dedans, dehors
 
