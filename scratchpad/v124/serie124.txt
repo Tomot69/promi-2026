@@ -1,0 +1,35 @@
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+  207s  redteam_fluide.py          4 / 5 / KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4095 images)
+  251s  redteam_bouton.py          aucune erreur de page                                                                        OK   / 33 / 33
+  132s  redteam_garder_toile.py    aucune erreur de page                                                                            OK   / 29 / 29
+  127s  redteam_halo.py            19 / 23 / KO : F · [clair · niveau défaut · 3] le halo ne touche pas le plateau (à 4,5 ± 0,5 pt, décidé) ; le bouton est à sa place (v123 : 457,47) · E · [sombre · niveau défaut · 
+  170s  redteam_plein.py           [densité 3] aucune erreur de page                                              OK   / 97 / 97
+   35s  redteam_contour.py         OK [sombre] la Pelote s'arrête à 124.2 du centre (silhouette 121.5) · pixels au-delà : 0 / ✅ rien ne dépasse du contour
+   67s  redteam_souffle.py         OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0 / ❌ le souffle ne tient pas sa loi
+    0s  redteam_volume.py            ✗ NOUVEAU VOLUME : app.html | lot-V124-FLUIDE | ax(w,h)*0.62,c=bl[2];var gr=g.createRadialGradient(cx,cy,0,cx,cy,r);gr / ❌ 3 volume(s) hors de la Pelote
+  228s  redteam_corps.py           aucune erreur de page                                                                  OK   / 25 / 25
+  183s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+   67s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #00351A #2A1548 #00341A #291547 OK   (Q262, v8c) / 79 / 79
+  216s  redteam_maparole.py        [dark] aucune erreur de page                                                     OK   / 12 / 12
+  120s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 26/26
+  126s  redteam_champ.py             l'instant après [light]        OK / 32/32
+   56s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  175s  redteam_filets.py          page+ cercle   [light]  filet non    OK / filet du trait : 14/14
+   38s  redteam_reperage.py        [sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : [] / 16/16
+   24s  redteam_verbe.py           dark : la bascule mène à un vrai bouton              OK  bouton={'f': 1, 'h': 60, 'vis': True} / 6/6
+  227s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  114s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1958 ms) / 32/32
+  313s  redteam_air.py                Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune» /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+   91s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+   20s  redteam.py                 aucune erreur JS                           OK   / 15/15
+   17s  redteam2.py                aucune erreur JS                             OK   / 10/10
+   33s  redteam3.py                aucune erreur JS                               OK   / 18/18
+   44s  redteam_geste.py           aucune erreur JS                             OK   / 12/12
+   67s  redteam_fonctions.py       Réglages s'ouvre                                           OK   / 22/22
+   69s  redteam_toile.py           aucune erreur JS                           OK  [] / 18/18
+  127s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   39s  redteam_polices.py            aucun. / 0 couple(s) absent(s) · 0 élément(s)
+    0s  redteam_clavier.py           ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.32027, différé en secours) / ✅ le clavier s'ouvre au geste — 3 champs
+   24s  releve-S5-instant.py             apres     [light] #dptQuand « TENUE À DEUX · À L » : ton sur ton (Δ39) / ❌  23 ÉCARTS
+  179s  releve-aura.py             palier 220000 · médiane 41.5 ms · 1374 images · plus longue image pendant l'élan : 117 ms (dont peintre 41.6 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 p
+   33s  releve-design.py           ✅  AUCUN ÉCART. Le design est intact.

@@ -1,0 +1,5 @@
+focus() : 18, dont 3 différé(s)
+  ✓ le nom du Cercle (v114) — dans le geste (l.13191, différé en secours)
+  ✓ la page + d'un gardé de côté — le titre (30 ms) — dans le geste (l.13371, différé en secours)
+  ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.32027, différé en secours)
+✅ le clavier s'ouvre au geste — 3 champs

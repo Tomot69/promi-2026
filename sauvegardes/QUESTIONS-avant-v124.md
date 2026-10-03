@@ -8342,17 +8342,3 @@ une île la peau de l'île, ou écarter le corps du ton des îles.**
 Chromium sur le vrai GPU, @3x : peinture 31,8 ms par image à 220 000 poils (30 images/s), 18,5 ms à 110 000. Le régulateur vise alors
 150 000 — son dernier palier — où l'on reste au-dessus de 16,7 ms. Aucun palier plus bas n'existe à la densité 3. **À mesurer sur
 l'iPhone (`?mesure=1`) : si 150 000 ne tient pas, faut-il rendre au régulateur les paliers de la densité 1 (110 000 → 75 000) ?**
-**→ Q378 TRANCHÉE (Tom, v124) : oui — le régulateur descend jusqu'à 75 000 poils. La fluidité passe avant la densité.**
-**→ Q377 : à juger par Tom sur iPhone (reste dans la liste « à valider sur iPhone »).**
-
-#### Q379 · v124 — APRÈS L'ANIMATION « TENIR », UN BLOC DE TRAVAIL REMIS (À REGARDER SUR L'IPHONE)
-Pour que l'animation soit fluide, la pose complète de la fiche et les passes de tout le document attendent sa fin : elles tombent vers
-1,8–2,1 s après le lever du doigt (banc GPU : jusqu'à 92 ms de travail dans une image ; WebKit : environ 200 ms). Rien ne bouge à
-l'écran à ce moment, mais un toucher à cet instant précis attendrait. Si ça se sent : découper ce bloc en plusieurs images.
-
-#### Q380 · v124 — « GARDER TA TOILE » SOUS INGÉNU EN CLAIR
-Aucun ton pastel d'Ingénu ne tient 4,5:1 sur la crème : la rangée y est toujours à l'encre (le repli décidé). Elle ne prend une
-couleur qu'en sombre, ou sous une palette saturée. **À valider** — ou abaisser à 3:1 en le composant plus grand.
-
-#### Q381 · LA NUMÉROTATION : le « dossier de portage » était annoncé comme lot v124
-Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture seule) reste à faire : je le numérote v125 sauf avis contraire.

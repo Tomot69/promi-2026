@@ -1,0 +1,17 @@
+titres et blocs alignes a gauche           OK  
+la barre Peaufiner ouvre et referme        OK  
+rien ne traine hors du tiroir              OK  
+un tap ailleurs referme                    OK  
+les deux modes basculent et restent accordes OK  
+Sombre / Clair de l epreuve                OK  
+le QR s active depuis le tiroir            OK  
+les formats changent et le pied suit       OK  
+Visibles / Tous reagit                     OK  
+Inviter present dans le tiroir             OK  
+le bouton rond relaie Partager             OK  
+le mot-marque reste en PromiLate, son i en accent OK  
+aucun recouvrement                         OK  
+le ✕ ferme                                 OK  
+aucune erreur JS                           OK  
+
+15/15

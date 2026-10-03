@@ -1,0 +1,30 @@
+page+ promi [light]    OK
+page+ nuee [light]     OK
+page+ draft [light]    OK
+fiche a-tenir [light]  OK
+fiche tenue [light]    OK
+fiche nuee [light]     OK
+page+ promi [dark]     OK
+page+ nuee [dark]      OK
+page+ draft [dark]     OK
+fiche a-tenir [dark]   OK
+fiche tenue [dark]     OK
+fiche nuee [dark]      OK
+
+OK — 0 filet(s) parasite(s)
+fiche promi    [dark]  filet non    OK
+fiche chiche   [dark]  filet non    OK
+fiche cercle   [dark]  filet non    OK
+fiche tenue    [dark]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [dark]  filet non    OK
+page+ chiche   [dark]  filet non    OK
+page+ cercle   [dark]  filet non    OK
+fiche promi    [light]  filet non    OK
+fiche chiche   [light]  filet non    OK
+fiche cercle   [light]  filet non    OK
+fiche tenue    [light]  filet oui  (exigé — liste blanche)  OK
+page+ promi    [light]  filet non    OK
+page+ chiche   [light]  filet non    OK
+page+ cercle   [light]  filet non    OK
+
+filet du trait : 14/14

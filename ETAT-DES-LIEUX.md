@@ -9888,6 +9888,8 @@ le défaut est **antérieur** au grossissement (4/12 encore coupés à 15 px).
 
 - **v123 (3 oct.)** — **La Pelote** : densité 3 et halo 3 retenus (constantes ; `?densite`, `?halo`, niveaux 4 et 5 retirés) ; **le corps** sous les poils = une autre teinte de la palette, tirée à chaque ouverture, ΔE00 ≥ 15 face au poil, jamais kaki (`redteam_corps.py`) ; **l'ombre en sombre** = ellipse crème (ΔE00 5,05), la flaque retirée. **L'Aura** remontée (−6 −6 −6 −6 −3) : les chiffres finissent à 833,5, entiers à 390 × 844. **Q375** corrigée (trois causes ; `redteam_flash_etat` 10/10). `redteam_couleurs_ref` : la mini-dalle était le juge (canevas nommés par le texte de leur ligne), 0 écart. `serveur.py` affiche l'adresse iPhone. Juges réécrits : `redteam_halo` (un niveau, 23), `redteam_plein`, `redteam_contour`. Planches : `planche-v123/`. Q377, Q378 ouvertes.
 
+- **v124 (3 oct.)** — **L'Aura** encore remontée (−4 −4 −4 −4, la phrase à 20,4 px) : les chiffres finissent à 820, 24 pt d'air à 390 × 844. **« PARTAGER MA PELOTE »** en PromiLate 15 px, d'une couleur de la palette (≠ poils, ≠ corps, ≥ 3:1, jamais kaki ; `redteam_bouton.py`). **« Garder ta Toile »** en gras, teinte retirée à chaque retour sur les Réglages (≥ 4,5:1 ; `redteam_garder_toile.py`). **Tenir une parole est fluide** : la cause nommée (rendus de dalle, passes de tout le document), l'instant armé en capture, les dalles préparées, les passes remises après ; `redteam_fluide.py` 5/5 (la plus longue image 19,8 ms, avant 322). **Régulateur** : six paliers, jusqu'à 75 000 poils (Q378). Planches : `planche-v124/`. Q379–Q381 ouvertes.
+
 ## ⚑ À VALIDER SUR IPHONE — liste tenue à jour (ouverte en v123)
 
 Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item reste ici jusqu'à ce que Tom l'ait vu sur l'appareil.
@@ -9898,8 +9900,13 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v122 | Couleurs des fiches Promi, Chiche, Cercle, clair et sombre | `redteam_decisions` 79/79, `redteam_couleurs_ref` 0 | les fiches, la page +, l'Index |
 | v122 | L'orange de « Ma Parole ! » seulement dans la phrase des murs | `redteam_maparole` 12/12 | toucher un réglage flouté de Peaufiner |
 | v122 | Plus de flash orange à l'ouverture d'une fiche « à tenir » en sombre | `redteam_flash_etat` | ouvrir « faire les crêpes » en sombre |
-| v123 | Pelote : densité 3 (220 000 poils) — fluidité, palier visé | banc : 31,8 ms/image, vise 150 000 (Q378) | `?mesure=1` : images/s et « le régulateur vise » |
+| v123 | Pelote : densité 3 (220 000 poils) — fluidité, palier visé | banc : 31,8 ms/image, vise 150 000 (Q378 tranchée en v124) | `?mesure=1` : images/s et « le régulateur vise » |
 | v123 | Pelote : le corps d'une autre teinte sous les poils ; les îles se lisent-elles ? (Q377) | `redteam_corps`, planche `pelote-densites-corps` | l'Aura, plusieurs ouvertures, deux palettes, clair et sombre |
 | v123 | L'ombre crème en sombre | `redteam_halo` E : ΔE00 5,05 | l'Aura en sombre |
 | v123 | L'Aura remontée : la ligne des chiffres visible sans défiler | cotes : fin à 833,5 / 844 à 390 × 844 | l'Aura à l'ouverture (⚠ un iPhone plus court que 844 pt la coupera) |
 | v123 | La première image d'une fiche porte son état (Q375) | `redteam_flash_etat` 10/10 | ouvrir une fiche juste après une autre |
+| v124 | **LE GESTE — tenir une parole : l'animation est-elle fluide ? (validation obligatoire)** | `redteam_fluide` 5/5 : aucune image > 20 ms de travail, p95 5,6 ms ; WebKit : la plus longue image 30–54 ms (562 avant) | tracer le trait d'une parole à tenir : le champ amande paraît sans temps mort, « juste après » une seconde plus tard ; rien ne se fige ensuite (Q379) |
+| v124 | L'Aura : la ligne des chiffres avec 24 pt d'air, la phrase un point plus grande | cotes : fin à 820,0 / 844 | l'Aura à l'ouverture |
+| v124 | « PARTAGER MA PELOTE » en PromiLate, d'une couleur de la palette | `redteam_bouton` | plusieurs ouvertures de l'Aura, deux palettes, deux thèmes |
+| v124 | « Garder ta Toile » en gras, d'une couleur qui change à chaque retour (Q380) | `redteam_garder_toile` 29/29 | Réglages, tout en bas : y revenir plusieurs fois, en sombre et sous une palette vive |
+| v124 | Le régulateur descend jusqu'à 75 000 poils si l'appareil ne tient pas | six paliers ; banc : vise 150 000 sur ce Mac | `?mesure=1` : « le régulateur vise », puis rouvrir l'Aura |

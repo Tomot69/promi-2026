@@ -1,0 +1,26 @@
+A · [clair · niveau défaut · 3] au ras : ΔE00 entre 10.1 et 17.9             OK  12.62
+A · [clair · niveau défaut · 3] à mi-étendue : ΔE00 entre 4.1 et 8.0         OK  5.65
+A · [clair · niveau défaut · 3] au bout de l'étendue (0.12 D) : ΔE00 sous 1  OK  0.10
+A · [clair · niveau défaut · 3] rien au-delà                                 OK  pire ΔE00 0.00 sur 18 directions
+B · [clair · niveau défaut · 3] il décroît vers l'opposé : 60 % à 90° de la lumière, 32 % à 135° (± 12) OK  62 % · 35 %
+B · [clair · niveau défaut · 3] sur le quart inférieur (l'opposé y tombe) : presque nul OK  ΔE00 0.22 en bas · 0.25 à l'opposé
+C · [clair · niveau défaut · 3] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 1.3 pt (4 px)
+C · [clair · niveau défaut · 3] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  28 % de remontées sur 180 pas
+E · [clair · niveau défaut · 3] l'ombre se détache de son pourtour immédiat (ΔE00 ≥ 2) OK  2.16 · centre [237, 230, 212] · pourtour [247, 240, 222]
+F · [clair · niveau défaut · 3] le halo ne touche pas le plateau (à 4,5 ± 0,5 pt, décidé) ; le bouton est à sa place (v123 : 457,47) KO  haut du halo 104.7 · bas du plateau 100.0 · bouton 449.47
+A · [sombre · niveau défaut · 3] au ras : ΔE00 entre 10.1 et 17.9            OK  12.62
+A · [sombre · niveau défaut · 3] à mi-étendue : ΔE00 entre 4.1 et 8.0        OK  5.43
+A · [sombre · niveau défaut · 3] au bout de l'étendue (0.12 D) : ΔE00 sous 1 OK  0.10
+A · [sombre · niveau défaut · 3] rien au-delà                                OK  pire ΔE00 0.00 sur 18 directions
+B · [sombre · niveau défaut · 3] il décroît vers l'opposé : 60 % à 90° de la lumière, 32 % à 135° (± 12) OK  66 % · 42 %
+B · [sombre · niveau défaut · 3] sur le quart inférieur (l'opposé y tombe) : presque nul OK  ΔE00 0.18 en bas · 0.19 à l'opposé
+C · [sombre · niveau défaut · 3] trame : aucune bande de plus de 2 pt à valeur constante OK  la plus longue : 2.0 pt (6 px)
+C · [sombre · niveau défaut · 3] trame : aucune marche de quantification (le profil remonte ≥ 12 % du temps) OK  28 % de remontées sur 180 pas
+E · [sombre · niveau défaut · 3] l'ombre crème : ΔE00 entre 4 et 6 face à son pourtour KO  2.16 · centre [17, 15, 13] · pourtour [5, 3, 2]
+E · [sombre] l'ombre est une ellipse PLUS CLAIRE que le fond (crème), la flaque n'est plus affichée, même géométrie qu'en clair (104,4 × 16,2, centre 195 ; 417,35) KO  ['block', 'none', 104.42, 16.23, 194.99, 413.34] · centre [17, 15, 13]
+F · [sombre · niveau défaut · 3] le halo ne touche pas le plateau (à 4,5 ± 0,5 pt, décidé) ; le bouton est à sa place (v123 : 457,47) KO  haut du halo 104.7 · bas du plateau 100.0 · bouton 449.47
+D · le halo respire avec la lumière : ± 20 % (sommet ÷ creux = 1,5 ± 0,3)    OK  1.61 (12 relevés au sommet, 11 au creux)
+aucune erreur de page                                                        OK  
+
+19 / 23
+KO : F · [clair · niveau défaut · 3] le halo ne touche pas le plateau (à 4,5 ± 0,5 pt, décidé) ; le bouton est à sa place (v123 : 457,47) · E · [sombre · niveau défaut · 3] l'ombre crème : ΔE00 entre 4 et 6 face à son pourtour · E · [sombre] l'ombre est une ellipse PLUS CLAIRE que le fond (crème), la flaque n'est plus affichée, même géométrie qu'en clair (104,4 × 16,2, centre 195 ; 417,35) · F · [sombre · niveau défaut · 3] le halo ne touche pas le plateau (à 4,5 ± 0,5 pt, décidé) ; le bouton est à sa place (v123 : 457,47)

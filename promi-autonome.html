@@ -7663,13 +7663,16 @@ try{if(notifOn)armAllReminders();}catch(e){}
                ⚠ « Partager ma Pelote » finit alors sous le pli (≈ 894 pour 844) : l'écran défile (§8 — on ne reprend jamais l'air). */
 /* ⚑ v121 (Tom, 3 oct. 2026) — « L'ombre de la Pelote remonte de 6 pt (environ 1 mm sur l'iPhone 16e). L'écart G2 sous l'ombre passe de
    56 à 50 pt. Tout ce qui suit remonte d'autant, soit 12 pt en tout. » Ombre 453,224 → 447,224 ; flaque 437,347 → 431,347. */
+/* ⚑ v124 (Tom, 3 oct. 2026) — « remonter, et faire respirer le compteur » : Pelote → ombre −4 · ombre → « PARTAGER MA PELOTE » −4 · bouton →
+   phrase −4 · phrase → ses disques −4 ; la phrase gagne 1 pt de corps (19,4 → 20,4). Ombre 409,224 → 405,224 ; bouton −8, phrase −12, la
+   suite −16 (+ ce que la phrase prend en grandissant). Objectif : la ligne des chiffres entière à 390 × 844, avec au moins 20 pt d'air. */
 /* ⚑ v123 (Tom, 3 oct. 2026) — « remonter pour que le compteur se voie » : plateau → halo −6 · halo → ombre −6 · ombre → « Partager ma
    Pelote » −6 · bouton → phrase −6 · phrase → ses disques −3. Boule 111,532 → 105,532, halo 94,532 → 88,532, ombre 421,224 → 409,224,
    bouton −18, phrase −24, tout ce qui suit −27 : la ligne des chiffres finit à 833,5, sous 844. */
 /* ⚑ v122 (Tom, 3 oct. 2026) — l'Aura en points (1 mm = 6 pt), chaque réduction faisant remonter tout ce qui suit : plateau → silhouette
    −11 · bas de la Pelote → ombre (et flaque) −15 · ombre → « Partager ma Pelote » −12 · bouton → phrase −12. Ombre 447,224 → 421,224 (−26),
    flaque 431,347 → 405,347, boule 122,532 → 111,532, halo 105,532 → 94,532 ; bouton −38, phrase et tout ce qui suit −50. */
-#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:409.224px!important;width:104.429px!important;height:16.245px!important;
+#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:405.224px!important;width:104.429px!important;height:16.245px!important;
   margin:0!important;pointer-events:none;z-index:0;background:radial-gradient(closest-side,rgba(var(--c-brun09-rgb),.10),rgba(var(--c-brun09-rgb),0))}
 /* ⚑ v119 (Tom) : EN SOMBRE, AUCUNE OMBRE CRÈME. Le halo dépose sous la Pelote une flaque de lumière à peine perceptible, et l'ombre
    est la zone que cette lumière n'atteint pas : `#auPeloteFlaque`, peinte et tramée par `window._flaquePelote` (lot-V119-PELOTE). */
@@ -7677,7 +7680,7 @@ try{if(notifOn)armAllReminders();}catch(e){}
    la flaque. Même géométrie qu'en clair, ΔE00 entre 4 et 6 face à son pourtour. Le clair ne change pas. » (Renverse v119 : « aucune
    ombre crème ».) Crème à 0,105 au centre sur la seiche : ΔE00 ≈ 5 mesuré au cœur. La flaque (`#auPeloteFlaque`) n'est plus affichée. */
 #device:not(.light) #auraScreen.au2 .au-ombre{background:radial-gradient(closest-side,rgba(var(--c-creme95-rgb),.105),rgba(var(--c-creme95-rgb),0))!important}
-#auraScreen.au2 .au-flaque{position:absolute!important;left:55px!important;top:393.347px!important;width:280px!important;height:48px!important;margin:0!important;pointer-events:none;z-index:0;display:none}
+#auraScreen.au2 .au-flaque{position:absolute!important;left:55px!important;top:389.347px!important;width:280px!important;height:48px!important;margin:0!important;pointer-events:none;z-index:0;display:none}
 #device:not(.light) #auraScreen.au2 .au-flaque{display:none}
 /* ⚑ v121 — le halo a son canevas, sous la boule : 330 × 330 centré sur elle (centre 195 ; 270,532), assez pour 121 + 0,16 D = 158,1 */
 #auraScreen.au2 .au-halo{position:absolute!important;left:30px!important;top:88.532px!important;width:330px!important;height:330px!important;margin:0!important;pointer-events:none;z-index:0}
@@ -20333,6 +20336,7 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
     if(corpsDet) dp.appendChild(corpsDet);    // les réglages, EN DESSOUS de la barre
   };
   var orig=window._fichePose;
+  window._fichePoseBase=orig;   /* v124 : la pose de base, seule — l'animation « tenir » l'appelle dans une image calme (elle bâtit les Noyaux du nouvel état) */
   window._fichePose=function(){ if(orig) orig.apply(this,arguments); try{ window._lot7Fiche(); }catch(e){} };
 })();
 </script>
@@ -22742,6 +22746,7 @@ var CREMEETAT='#F7F0DE';
      2 · le VISAGE (§2.10), absent de l'app, est posé au centre : tête et épaules calculées. */
   function noyaux(au, natCol){
     if(!au) return;
+    if(window._instant==='referme') return;   /* v124 : pendant « le trait se referme » les Noyaux sont cachés — on ne les repeint pas pour rien */
     au.querySelectorAll('.kring').forEach(function(k){
       var moi = k.classList.contains('kring-moi');
       /* ⚑ 23 SEPTEMBRE 2026 (Tom) — « JE VEUX LES DISQUES DE LA MÊME ÉPAISSEUR DANS
@@ -23507,6 +23512,9 @@ var CREMEETAT='#F7F0DE';
        vert). On pose donc aussi TOUT DE SUITE, dans la même tâche que l'ouverture ; les deux passes différées restent (elles
        rattrapent ce qui ne se mesure qu'une fois la fiche disposée). */
     try{ tout(); }catch(e){}
+    /* v124 : pendant l'animation « tenir », la fiche vient d'être posée dans son état d'instant — les deux passes différées (trois
+       poses de plus, 26 ms dans l'image suivante) ne rattrapent rien : l'animation repose elle-même ce qui change. */
+    if(window._tenirAnime) return;
     try{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ tout(); tout(); }); }); }catch(e){} };
   var _ref=window.dpRefresh;
   if(_ref){ window.dpRefresh=function(){ _ref.apply(this,arguments); tout(); }; }
@@ -27473,6 +27481,11 @@ var CREMEETAT='#F7F0DE';
        du 23 septembre prime sur v18. » Les TEXTES de l'instant sont posés sur le corps : clair en mode clair. */
     var _clair=!!(document.getElementById('device')&&document.getElementById('device').classList.contains('light'));
     var TXT=_clair?'#00341A':MENTHE;
+    /* ⚑ v124 (Tom, §4) — SUR LA TERRE, LE TENU EST L'AMANDE, EN CLAIR AUSSI (Q269 : « mode clair comme sombre, puisque le fond pourpre ne
+       change pas »). Depuis v8 le corps d'une fiche tenue est la terre dans les deux thèmes : en clair, ces mots étaient posés en
+       #00341A sur #2B1020 (illisibles), et c'était la passe de lisibilité qui les rattrapait, une image plus tard — un travail de
+       tout le document au milieu de l'animation. La couleur juste est posée ICI ; « l'autre part arrive » (corps crème) ne change pas. */
+    if(nom!=='arrive' && _surTerre()) TXT=MENTHE;      /* « le trait se referme » et « juste après » d'une parole TENUE : le corps est la terre */
     if(nom==='arrive') return {
       nat:nat, base:300, amp:36, boite:384, champ:natCol, encreHaut:CREME,
       dalle:{x:105,y:91,w:180,h:150},
@@ -27492,6 +27505,10 @@ var CREMEETAT='#F7F0DE';
       quand:{y:614, col:TXT}};   /* ⚑ v102 : +2 · +3 · +6 — mêmes airs à l'encre que le cadre 100 avant l'agrandissement (v96) */
   }
 
+  /* v124 : le corps réellement peint sous les mots de l'instant (la terre d'une parole tenue, dans les deux thèmes) */
+  /* la terre : la fiche porte `f-tenue` (posée par la fiche, ou par l'animation en capture). On lit la CLASSE, pas le style calculé
+     (9 ms par appel dans l'image du lever). Sur une fiche qui n'est pas tenue (un état rejoué pour un relevé), rien ne change. */
+  function _surTerre(){ try{ var dp=document.getElementById('detailPoster'); return !!(dp && dp.classList.contains('f-tenue')); }catch(_){ return false; } }
   function nature(dp){
     return dp.classList.contains('dp-chiche')?'chiche'
       :((dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee'))?'nuee':'promi');
@@ -27509,7 +27526,8 @@ var CREMEETAT='#F7F0DE';
     var cv=document.getElementById('dpTrameCv'); if(!cv) return;
     var y=O.onde(E.base,E.amp), H=E.boite;
     var posterW=dp.clientWidth||W, sc=posterW/W, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2));
-    cv.width=Math.round(posterW*dpr); cv.height=Math.round(H*sc*dpr);
+    var _cw=Math.round(posterW*dpr), _ch=Math.round(H*sc*dpr);
+    if(cv.width!==_cw || cv.height!==_ch){ cv.width=_cw; cv.height=_ch; }   /* v124 : le canevas n'est réalloué que s'il change de taille */
     cv.style.width=posterW+'px';
     cv.style.setProperty('height',(H*sc)+'px','important');
     cv.style.setProperty('opacity','1','important');  cv.style.setProperty('filter','none','important');
@@ -27550,7 +27568,8 @@ var CREMEETAT='#F7F0DE';
            et la page + — un seul site de teinture dans le produit. La forme ne bouge pas. */
         /* ⚑ v29 — la teinture de Q30 peinte PAR LE MOTEUR, la dalle rendue à la taille de sa boîte, posée 1:1 */
         var b=E.dalle;
-        window._poseDalle(g, p.id, b.x, b.y, b.w, b.h, (E.nat&&window._ppRampe)?{rampe:window._ppRampe(E.nat)}:undefined);
+        var _rd=window._poseDalle(g, p.id, b.x, b.y, b.w, b.h, (E.nat&&window._ppRampe)?{rampe:window._ppRampe(E.nat)}:undefined);
+        window._instDalle=!!_rd;                           /* v124 : peinte ? — sinon l'animation la redemande */
       } }catch(_){}
     }
 
@@ -27609,17 +27628,20 @@ var CREMEETAT='#F7F0DE';
        « faire les crêpes » avait disparu du cadre 101 clair. */
     var dev=document.getElementById('device');
     var clair=!!(dev&&dev.classList.contains('light'));
-    var encreCorps = clair ? ENCRE : CREME;
+    var encreCorps = (clair && !(nom!=='arrive' && _surTerre())) ? ENCRE : CREME;   /* v124 : sur la terre, le texte est crème (v8) — posé à la source */
     dp.classList.toggle('inst-arrive', nom==='arrive');
     dp.classList.toggle('inst-referme', nom==='referme');
     dp.classList.toggle('inst-apres', nom==='apres');
 
     /* l'entête (§3.1) : le mot-marque et ✕ FERMER passent à l'encre sur le champ menthe. */
-    var mm=document.getElementById('dptNat'), cb=dp.querySelector('.closeb');
-    pose(mm,{color:E.encreHaut,'-webkit-text-fill-color':E.encreHaut});
-    if(cb){ pose(cb,{color:E.encreHaut,'-webkit-text-fill-color':E.encreHaut});
+    /* ⚑ v124 — LE MOT-MARQUE ET « ✕ FERMER » SONT POSÉS SUR LE PLATEAU (crème en clair, seiche en sombre), plus sur le champ : leur encre
+       est celle du plateau. `E.encreHaut` datait d'avant le plateau (crème sur le champ de nature) : en clair, « PROMI ✕ FERMER »
+       disparaissait pendant « juste après » (crème sur crème) jusqu'à ce qu'une passe le rattrape — vu au film, image par image. */
+    var mm=document.getElementById('dptNat'), cb=dp.querySelector('.closeb'), _eh=clair?ENCRE:CREME;
+    pose(mm,{color:_eh,'-webkit-text-fill-color':_eh});
+    if(cb){ pose(cb,{color:_eh,'-webkit-text-fill-color':_eh});
       [].forEach.call(cb.querySelectorAll('*'),function(x){
-        pose(x,{color:E.encreHaut,'-webkit-text-fill-color':E.encreHaut}); }); }
+        pose(x,{color:_eh,'-webkit-text-fill-color':_eh}); }); }
 
     /* les deux mots du cadre 98. Ils viennent du moodboard ; le prénom vient du Promi. */
     var t1=document.getElementById('instTenue'), t2=document.getElementById('instSous');
@@ -27717,19 +27739,75 @@ var CREMEETAT='#F7F0DE';
     [60,200,600].forEach(function(ms){ setTimeout(function(){
       if(window._instant) rejoue(); },ms); }); }
   window._instantJoue=function(nom){ window._instant=nom||null; rejoueTard(); };
+  /* ⚑ v124 (Tom, 3 oct. 2026) — « QUAND ON COMPLÈTE LE TRAIT, L'ANIMATION EST SACCADÉE. Même durée, même dessin : elle doit devenir
+     fluide. » LA CAUSE, MESURÉE (banc GPU @3x, `scratchpad/v124/banc_tenir.py`) : ce n'est pas un mouvement, ce sont deux changements
+     d'état (le champ amande une seconde, puis « juste après ») — et à chacun le fil principal restait bloqué 400 à 580 ms :
+       ① deux rendus de dalle à des tailles neuves (la fiche tenue ordinaire, peinte 40 ms AVANT l'instant puis recouverte par lui ;
+          et la dalle agrandie de l'instant) — ≈ 990 ms cumulés la première fois ;
+       ② la passe des polices sur tout le document visible, lancée par le clic (340 à 400 ms d'un bloc, vers 900 ms) ;
+       ③ la passe de lisibilité après chaque pose de cotes (≈ 100 ms), et huit reprises par minuteries (0, 60, 200, 600 ms × 2).
+     LA CORRECTION : l'instant est armé AVANT que la fiche se repeigne (la dalle ordinaire n'est plus rendue pour rien) ; les deux
+     dalles de l'instant sont rendues À L'AVANCE, quand la fiche à tenir est posée (`prechauffe`) ; pendant l'animation
+     (`window._tenirAnime`) aucune passe de tout le document ne tourne — elles passent après ; les couleurs que la passe de lisibilité
+     rattrapait sont posées à la source ; la cadence est celle de l'affichage (`requestAnimationFrame`), plus de minuteries ; une
+     reprise n'a lieu que si la dalle n'a pas pu être peinte. La durée (1 000 ms d'amande) et le dessin ne changent pas. */
+  function finAnime(){ if(!window._tenirAnime) return; window._tenirAnime=false;
+    try{ if(window._tenirApres) window._tenirApres(); }catch(_){}        /* la pose complète de la fiche, remise après l'animation */
+    try{ if(window._repasseSombre) window._repasseSombre(); }catch(_){} }
   window._instantTenue=function(){
     var dp=document.getElementById('detailPoster');
-    if(!dp||!dp.classList.contains('show')) return;
-    if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')) return;
-    window._instant='referme'; rejoueTard();
-    setTimeout(function(){ if(window._instant==='referme'){ window._instant='apres'; rejoueTard(); } },1000);
+    if(!dp||!dp.classList.contains('show')){ finAnime(); return; }
+    if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')){ window._instant=null; finAnime(); return; }
+    /* le clic vient de repeindre la fiche dans cet état (l'instant était armé en capture) : on ne repose que si ce n'est pas fait */
+    var _deja=(window._instant==='referme' && dp.classList.contains('inst-referme') && window._instDalle);
+    window._instant='referme'; window._tenirAnime=true;
+    if(!_deja){ window._instDalle=false; rejoue(); }
+    var t0=performance.now(), apres=false, vu={};
+    (function img(){
+      var t=performance.now()-t0;
+      if(!window._instant){ finAnime(); return; }
+      /* §4.5 — la dalle n'a pas pu être peinte (monde pas prêt) : on la redemande, aux mêmes instants qu'avant, mais seulement alors */
+      [60,200,600].forEach(function(ms){ var k=(apres?'a':'r')+ms, dt=apres?t-1000:t;
+        if(dt>=ms && !vu[k]){ vu[k]=1; if(!window._instDalle) rejoue(); } });
+      /* le CONTENU de la fiche (les Noyaux du nouvel état) se remplit dans une image calme de la seconde d'amande — rien ne bouge alors
+         à l'écran — pour que « juste après » trouve ses Noyaux justes ; la pose complète, elle, attend la fin (`_tenirApres`) */
+      if(!vu.base && t>=320 && !apres){ vu.base=1; try{ if(window._tenirCorps) window._tenirCorps(); }catch(_){}
+        try{ if(window._instant==='referme') cache(document.getElementById('dAura')); }catch(_){} }   /* le contenu seul (titre, Noyaux du nouvel état), sans la pose ; les Noyaux restent cachés jusqu'à « juste après » */
+      if(!apres && t>=1000){ apres=true; if(window._instant==='referme'){ window._instant='apres'; window._instDalle=false; rejoue(); } }
+      if(t<1700) requestAnimationFrame(img); else finAnime();
+    })();
+    setTimeout(finAnime, 3000);            /* garde-fou : rien ne reste suspendu si l'affichage s'arrête (onglet caché) */
   };
+  /* v124 — LES DALLES DE L'INSTANT, RENDUES À L'AVANCE : 228 × 190 (le trait se referme) et 180 × 150 (juste après), teintées comme
+     la bande haute. Quand une fiche qui porte le geste est posée, au repos (jamais pendant qu'un doigt trace). Le cache du moteur
+     les garde : à l'instant, la pose est un simple `drawImage`. */
+  var _prech=0;
+  function prechauffe(){
+    try{
+      var dp=document.getElementById('detailPoster'), p=(typeof cur!=='undefined')?cur:null;
+      if(!dp || !dp.classList.contains('show') || !p || p.draft || p.status==='tenu' || window._instant) return;
+      if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')) return;
+      if(window._tirageActive || window._tenirAnime){ clearTimeout(_prech); _prech=setTimeout(prechauffe, 500); return; }
+      if(!(window._rendDalle && window.Toile && Toile.dalleAbs && Toile.dalleAbs(p.id))) return;
+      var posterW=dp.clientWidth||W, sc=posterW/W, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2)), k=dpr*sc, nat=nature(dp);
+      var o=window._ppRampe?{rampe:window._ppRampe(nat)}:undefined, B=[[228,190],[180,150]], i=0;
+      (function un(){ if(i>=B.length) return;
+        if(window._tirageActive || window._tenirAnime || window._instant) return;
+        try{ window._rendDalle(p.id, B[i][0]*k, B[i][1]*k, o, true); }catch(_){}
+        i++; if(i<B.length) setTimeout(un, 120); })();
+    }catch(_){}
+  }
+  window._instantPrechauffe=prechauffe;
   /* le déclencheur RÉEL : le geste qui se referme passe par le bouton « Tenue » du
      sélecteur d'état (l. 4604). On écoute ce nœud-là, pas une famille. */
   document.addEventListener('click',function(e){
     var b=e.target.closest&&e.target.closest('#segStatus button[data-st="tenu"]');
     if(!b) return;
-    setTimeout(function(){ try{ window._instantTenue(); }catch(_){} },40);
+    /* v124 : l'instant est armé ICI, en phase de capture — avant que le clic ne repeigne la fiche. Elle se repeint alors directement
+       dans l'état « le trait se referme » (la dalle de la fiche tenue ordinaire n'est plus rendue pour être recouverte 40 ms après). */
+    try{ var dp=document.getElementById('detailPoster');
+      if(dp && dp.classList.contains('show') && !(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee'))){ window._instant='referme'; window._tenirAnime=true; } }catch(_){}
+    requestAnimationFrame(function(){ try{ window._instantTenue(); }catch(_){} });
   },true);
   /* la fiche se ferme : l'instant est fini. */
   var _cd=window.closeAll;
@@ -27739,7 +27817,7 @@ var CREMEETAT='#F7F0DE';
   }
   var _od=window.openDetail;
   if(typeof _od==='function'){
-    window.openDetail=function(){ window._instant=null; return _od.apply(this,arguments); };
+    window.openDetail=function(){ window._instant=null; var r=_od.apply(this,arguments); clearTimeout(_prech); _prech=setTimeout(prechauffe, 900); return r; };
     try{ openDetail=window.openDetail; }catch(_){}
   }
 })();
@@ -33875,7 +33953,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
    on ne reprend jamais l'air pour faire tenir. */
 #auraScreen.au2 .au-mot{position:absolute!important;left:24px!important;right:24px!important;top:527.141px!important;
   margin:0!important;text-align:center;font-family:var(--f-libelle)!important;font-weight:700!important;
-  font-size:19.4px!important;letter-spacing:-.012em;line-height:1.25!important}
+  font-size:20.4px!important;letter-spacing:-.012em;line-height:1.25!important}   /* v124 (Tom) : +1 pt de corps (était 19,4) */
 
 /* l'état vide — .inv de la planche : 33 → 37,8 ; 17 → 19,5 ; 13 → 14,9 */
 #auraScreen.au2 .au-inv{position:absolute!important;left:37.8px!important;right:37.8px!important;top:536.761px!important;
@@ -33949,8 +34027,11 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
 #auraScreen.au2 .au-bt{position:absolute!important;left:24px!important;top:762px!important;width:342px!important;
   height:60px!important;margin:0!important;border-radius:30px!important;box-sizing:border-box!important;
   border:2px solid var(--c-creme95)!important;background:transparent!important;display:flex!important;align-items:center;
-  justify-content:center;font-family:var(--f-libelle)!important;font-weight:700!important;
-  font-size:16.6px!important;letter-spacing:-.01em;cursor:pointer;-webkit-user-select:none;user-select:none}
+  justify-content:center;font-family:var(--f-marque)!important;font-weight:400!important;font-style:normal!important;font-synthesis:none!important;
+  font-size:15px!important;letter-spacing:0!important;text-transform:none!important;cursor:pointer;-webkit-user-select:none;user-select:none}
+/* ⚑ v124 (Tom, 3 oct. 2026) — « PARTAGER MA PELOTE » : PromiLate, en capitales (écrites telles quelles : PromiLate n'a pas de capitale
+   accentuée, la phrase n'en demande aucune), à la hauteur de capitale de « TRACE POUR LANCER » (les phrases du trait : PromiLate 15 px,
+   chasse 0). La grammaire du bouton ne change pas (342 × 60, trait 2, rayon 30). Sa couleur : `texteBouton()` dans l'Aura. (Était Gilbert 16,6.) */
 #device.light #auraScreen.au2 .au-bt,.frame.light #auraScreen.au2 .au-bt{border-color:var(--c-brun09)!important}
 
 /* ce qu'un état n'a pas : l'écran vide n'a ni mot, ni Noyaux, ni légende, ni moisson */
@@ -36693,7 +36774,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
   /* ── LES COTES — planche ÷ 0,872 ; une cote se CALCULE, elle ne se mesure jamais
         sur elle-même (§8). ───────────────────────────────────────────────────── */
   var K = { bo:{x:47, y:105.532, d:296}, R:0.392,   /* ⚑ v123 (Tom) : −6 — du bas du plateau au haut du halo */   /* ⚑ v122 (Tom) : −11 — du bas du plateau au haut de la silhouette, 50 → 39 */   /* ⚑ v117 (Tom) : « remonte la Pelote d'un millimètre vers l'encart du haut » — −6 pt (1 mm ≈ 6 pt sur l'iPhone 16e) : G1 = 50 */   /* v115 : la SILHOUETTE (boule + poil 4,5) à 56 sous le plateau — voir lot-V115-PELOTE */
-            nx:{y:498.061, h:107}, mo:{y:677.061},   /* ⚑ v123 : −27 (−6 −6 −6 −6 −3) */   /* ⚑ v122 : −50 (−11 −15 −12 −12) */   /* ⚑ v121 : −12 (l'ombre monte de 6, G2 sous l'ombre 56 → 50) */   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
+            nx:{y:482.061, h:107}, mo:{y:661.061},   /* ⚑ v124 : −16 (−4 −4 −4 −4) */   /* ⚑ v123 : −27 (−6 −6 −6 −6 −3) */   /* ⚑ v122 : −50 (−11 −15 −12 −12) */   /* ⚑ v121 : −12 (l'ombre monte de 6, G2 sous l'ombre 56 → 50) */   /* ⚑ v117 : +54 — l'ombre s'écarte de 60 (« environ un centimètre ») et la Pelote monte de 6 ; tout ce qui suit descend d'autant */ lgH:24.25, lgINK:0, cptH:30, cptAIR:16+2.714, cptINK:-3.5,   /* v97 (Tom, iPhone : « la bande des chiffres est trop près de la légende — écarte-les, et descends « Partager ma Pelote » en conséquence ») : 10 → 16 */   /* v95 : relevé sur l'image rendue (WebKit, deux thèmes) : 30,9 au-dessus du groupe, 34,4 en dessous → −3,5 */   /* v95 : la rangée des chiffres (PromiLate 29, interligne 30) et son air sous la légende */   /* ⚑ 20 sept. (Tom) : la légende grossit — 13 → 15 px, le niveau « libellé » du §6. `lgY` se RECALCULE, l'air reste égal des deux côtés (27 et 27, contre 28 et 28 à 13 px). */ bt:{y:816, h:60}, motY:527.141, motL:19.4*1.25, marge:22,
             /* ⚑ 22 sept. (Tom) : « les disques sont trop fins partout ». L'arc passe de 8 à 12
                sur « toi » et de 6 à 9 sur une personne — la moitié en plus, comme sur les fiches.
                Le diamètre et la photo ne bougent pas : c'est l'ANNEAU qui s'épaissit, vers l'intérieur. */
@@ -36734,16 +36815,16 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
      la boîte descend de 2,5 et l'air du dessous en rend autant, pour que la rangée des Noyaux
      reste à 454. Air à l'encre après : 36,5 / 36,5. */
   K.MOT_INK = 2.5;
-  K.AIR_MOT = 35.18 - K.MOT_INK;   /* ⚑ v123 (Tom) : de la phrase à ses disques, −3 */
+  K.AIR_MOT = 30.71 - K.MOT_INK;   /* ⚑ v124 (Tom) : −4 (35,18 → 31,18), et −0,47 : la hauteur de la phrase est maintenant lue exacte, plus arrondie */   /* ⚑ v123 (Tom) : de la phrase à ses disques, −3 */
   K.BOULE_BAS = K.bo.y + K.bo.d/2 + K.bo.d*K.R;                          /* 353,4 — la BOULE, pas sa boîte */
   K.AIR = 28;
   /* ⚑ v118 (Tom, Q367 tranchée) — « PARTAGER MA PELOTE » REMONTE SOUS L'OMBRE. « Le bouton se place juste sous l'ombre de la
      Pelote, à G2 = 56 du bas de l'ombre. La phrase et ce qui suit se placent ensuite, à 56 sous le bouton. L'ombre garde ses
      60 pt, l'air ne se reprend pas. » L'ombre : la cote de lot-V114-PELOTE-css (haut 453,224, haut. 16,245 → bas 469,469).
      Le bouton : 525,469 → 585,469. La phrase : son ENCRE à 56 sous le bouton. */
-  K.ombre = {y:409.224, h:16.245};   /* ⚑ v123 (Tom) : −12 (la Pelote −6, du halo à l'ombre −6) */   /* ⚑ v121 (Tom) : −6 ; ⚑ v122 : −26 (la Pelote −11, l'ombre −15) */
-  K.G2 = 38;   /* ⚑ v123 (Tom) : −6 */                         /* ⚑ v122 (Tom) : de « Partager ma Pelote » à la phrase, 56 → 44 */
-  K.G2_OMBRE = 32;   /* ⚑ v123 (Tom) : −6 */                   /* ⚑ v121 (Tom) : l'écart SOUS l'ombre, 56 → 50 ; sous le bouton il reste 56 */
+  K.ombre = {y:405.224, h:16.245};   /* ⚑ v124 (Tom) : −4 */   /* ⚑ v123 (Tom) : −12 (la Pelote −6, du halo à l'ombre −6) */   /* ⚑ v121 (Tom) : −6 ; ⚑ v122 : −26 (la Pelote −11, l'ombre −15) */
+  K.G2 = 34;   /* ⚑ v124 (Tom) : −4 · v123 : −6 */                         /* ⚑ v122 (Tom) : de « Partager ma Pelote » à la phrase, 56 → 44 */
+  K.G2_OMBRE = 28;   /* ⚑ v124 (Tom) : −4 · v123 : −6 */                   /* ⚑ v121 (Tom) : l'écart SOUS l'ombre, 56 → 50 ; sous le bouton il reste 56 */
   K.MOT_ENCRE = -1.87;   /* relevé sur l'image rendue (WebKit, deux thèmes) : l'encre de la phrase commence 1,87 SOUS le haut de sa boîte */
   K.btY = K.ombre.y + K.ombre.h + K.G2_OMBRE;                            /* 475,469 (v121 : 513,469 ; v118 : 525,469) */
   K.motY2 = K.btY + K.bt.h + K.G2 + K.MOT_ENCRE;                         /* 577,599 (v121 : 627,599 ; v118 : 639,599) */
@@ -36839,7 +36920,12 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
   })();
   var ENV = [1.0,0.0, 1.31,0.77,-1.05,0.4, -0.83,1.49,0.61,1.9], KN = 0.55;
   var KDENS = [4.7,5.3,4.1,0.6,1.9,1.1, 6.7,5.9,7.3,2.4,0.7,1.5];
-  var PALIERS = [110000, 90000, 75000].map(function(n){ return Math.round(n*((window._peloteReglage||{}).facteur||1)); });   /* v120 : ?densite= (×1, ×1,5, ×2) — les trois paliers du régulateur suivent */
+  /* ⚑ v124 (Tom, Q378) — « Si l'appareil ne tient pas, le régulateur descend au-delà de 150 000, jusqu'à 75 000 poils. La fluidité passe
+     avant la densité. » Six paliers : les trois de la densité 3 (220 000 · 180 000 · 150 000), puis les trois de la densité 1 (110 000 ·
+     90 000 · 75 000). À 110 000 et en dessous, le poil reprend l'épaisseur et le reflet de la densité 1 — l'aspect validé à cette densité
+     (un poil ×0,7 à 75 000 laisserait voir le corps partout) : voir `reglePoil`. */
+  var PALIERS = (((window._peloteReglage||{}).facteur||1)>=2) ? [220000, 180000, 150000, 110000, 90000, 75000]
+              : [110000, 90000, 75000].map(function(n){ return Math.round(n*((window._peloteReglage||{}).facteur||1)); });   /* v120 : ?densite= (×1, ×1,5, ×2) — les trois paliers du régulateur suivent */
   var PXR = 620*0.438, MAG = 2.2;     /* l'échelle des îles, celle de la planche */
 
   function lsGet(k,d){ try{ var v=localStorage.getItem(k); return v==null?d:JSON.parse(v); }catch(e){ return d; } }
@@ -37121,10 +37207,42 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     CORPS_MEMO={cle:cle, c:c, idx:idx};
     return c;
   }
+  /* ⚑ v124 (Tom, 3 oct. 2026) — LA COULEUR DE « PARTAGER MA PELOTE ». « Tirée au hasard dans la palette choisie au Studio, à chaque
+     ouverture de l'Aura. Jamais celle des poils ni celle du corps, à cette même ouverture. Seules les teintes assez contrastées avec le
+     fond peuvent être tirées : ≥ 3:1 (grand texte en capitales). Si aucune ne l'est, le texte prend l'encre du mode. Jamais de kaki. »
+     Comme le corps : le tirage est un ORDRE, la couleur se lit dans cet ordre face au fond d'AUJOURD'HUI (elle suit le thème). */
+  var TEXTE_ORDRE=[], TEXTE_MEMO={cle:'', c:null, idx:-1};
+  function _lumRel(c){ function l(v){ v/=255; return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4); } return 0.2126*l(c[0])+0.7152*l(c[1])+0.0722*l(c[2]); }
+  function _contraste(a,b){ var x=_lumRel(a), y=_lumRel(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
+  function nouveauTexte(){
+    var n=4; try{ var c=window.Toile.cols(); if(c&&c.length) n=c.length; }catch(_){}
+    var L=[], i, j, t; for(i=0;i<n;i++) L.push(i);
+    for(i=L.length-1;i>0;i--){ j=(Math.random()*(i+1))|0; t=L[i]; L[i]=L[j]; L[j]=t; }
+    TEXTE_ORDRE=L; TEXTE_MEMO.cle='';
+  }
+  function texteBouton(){
+    var P=null; try{ P=window.Toile.cols(); }catch(_){}
+    var f=fondPage(), encre=clair()?[32,25,8]:[CREME[0],CREME[1],CREME[2]];
+    if(!P || !P.length) return {rgb:encre, idx:-1};
+    if(!TEXTE_ORDRE.length || TEXTE_ORDRE.some(function(i){ return i>=P.length; })) nouveauTexte();
+    corps();                                           /* le corps d'abord : son indice entre dans l'exclusion */
+    var cle=[f.join('.'),SOL_IDX,CORPS_MEMO.idx,TEXTE_ORDRE.join('.'),P.map(function(q){ return (q[0]|0)+'.'+(q[1]|0)+'.'+(q[2]|0); }).join('_')].join(',');
+    if(TEXTE_MEMO.cle===cle) return {rgb:TEXTE_MEMO.c, idx:TEXTE_MEMO.idx};
+    var c=null, idx=-1, k, q;
+    for(k=0;k<TEXTE_ORDRE.length && !c;k++){ var i2=TEXTE_ORDRE[k]; if(i2===SOL_IDX || i2===CORPS_MEMO.idx) continue;
+      q=[P[i2][0]|0,P[i2][1]|0,P[i2][2]|0];
+      if(!_kaki(q) && _contraste(q,f)>=3){ c=q; idx=i2; } }
+    if(!c){ c=encre; idx=-1; }
+    TEXTE_MEMO={cle:cle, c:c, idx:idx};
+    return {rgb:c, idx:idx};
+  }
+  function peintBouton(){ try{ if(!BT) return; var t=texteBouton(), v='rgb('+t.rgb[0]+', '+t.rgb[1]+', '+t.rgb[2]+')';
+      if(BT.__col!==v){ BT.__col=v; BT.style.setProperty('color',v,'important'); BT.style.setProperty('-webkit-text-fill-color',v,'important'); } }catch(_){} }
   function nouveauSol(){
     var n=4; try{ var c=window.Toile.cols(); if(c&&c.length) n=c.length; }catch(_){}
     SOL_IDX = (Math.random()*n)|0;
     try{ nouveauCorps(); }catch(_){}        /* v123 : un corps neuf avec le sol, à chaque ouverture */
+    try{ nouveauTexte(); }catch(_){}        /* v124 : et une couleur neuve pour « PARTAGER MA PELOTE » */
     try{ var S2=semis(); if(S2) S2.__stCle=null; }catch(_){}
     PEL.iles=null; PEL.cleI='';
     return SOL_IDX;
@@ -37392,7 +37510,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     ENC2=el('div','au-enc2'); ENC2.setAttribute('role','button'); ENC2.appendChild(el('span',null,'✦ Ma Parole !'));
     ENC2.addEventListener('click', function(ev){ ev.stopPropagation(); try{ var pl=document.getElementById('plusScreen'); if(pl) pl.classList.add('show'); }catch(_){} });
     z2.appendChild(ENC2); MO2.appendChild(z2); CAD.appendChild(MO2);
-    BT=el('div','au-bt','Partager ma Pelote'); BT.id='auPartage'; BT.setAttribute('role','button');
+    BT=el('div','au-bt','PARTAGER MA PELOTE'); BT.id='auPartage'; BT.setAttribute('aria-label','Partager ma Pelote'); BT.setAttribute('role','button');
     /* la même porte que l'ancien #sealShare : le partage, en mode Noyau */
     BT.onclick=function(){ try{
       /* ⚑ 22 SEPTEMBRE 2026 (Tom) — « Partager mon Noyau ne fait rien ». Mesuré : la page
@@ -37593,6 +37711,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
       var x=(L[i].offsetLeft+L[i].offsetWidth/2).toFixed(1)+'px'; if(S[i].style.left!==x) S[i].style.left=x; } }catch(_){} }
   function place(){
     if(!CAD) return;
+    peintBouton();                          /* v124 : la couleur du bouton suit l'ouverture et le thème (elle compare avant d'écrire) */
     try{ reteintSiBesoin(); }catch(e){}   /* ⚑ 21 sept. : les états suivent le thème, quel que soit le chemin */
     /* ⚑ 23 SEPTEMBRE 2026, second tour (Tom) — « LE BOUTON DE PARTAGE REMONTE SOUS LA
        LÉGENDE — EN BAS DE PAGE, PERSONNE N'Y VA. REPRENDS LES ESPACES DE TOUTE LA COLONNE. »
@@ -37611,7 +37730,10 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
       c={nx:K.nx.y, lg:K.lgY, bt:K.btY, inv:K.btY+K.bt.h+K.G2};
       c.mo=c.inv;
     } else {
-      var nx=K.motY2+MOT.offsetHeight+K.AIR_MOT, d=nx-K.nx.y;
+      /* v124 : la hauteur EXACTE de la phrase (offsetHeight l'arrondit : à 20,4 px une phrase de deux lignes fait 50,97, lue 51 — l'air
+         sous elle variait d'un demi-point selon le nombre de lignes) */
+      var _mr=MOT.getBoundingClientRect(), _mh=(_mr.width>0 && MOT.offsetWidth>0) ? _mr.height*MOT.offsetWidth/_mr.width : MOT.offsetHeight;
+      var nx=K.motY2+_mh+K.AIR_MOT, d=nx-K.nx.y;
       /* l'air AU-DESSUS de la légende vaut K.AIR, comme celui en dessous : la colonne garde
          un rythme unique (28) de la rangée des Noyaux jusqu'à la moisson. */
       c={nx:nx, lg:nx + K.nx.h + K.AIR + K.lgINK};
@@ -37647,6 +37769,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
       if(v!==null){ localStorage.setItem(nv,v); localStorage.removeItem(av); } } }); }catch(_){}
   var PEL = { iles:null, cleI:'', palier:Math.max(0, Math.min(PALIERS.length-1, lsGet('promi_pelote_palier',0)|0)),
               ms:[], frames:0, skip:0, pret:false, cede:0, dernier:0 };
+  reglePoil();
   PEL.vise=PEL.palier;   /* le palier VISÉ par le régulateur — il s'applique à l'ouverture suivante (densite) */
   var V = { lac:2.9, tan:G.TANG, vlac:0, vtan:0, om:G.AUTO, lacAv:2.9, tau:G.TAU };
   var EMP = null, TVER = 0, ATTENTE = [];
@@ -37843,6 +37966,11 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
         t=(PEL.peauT!=null)?PEL.peauT:K.PEAU_T;
     return t>0 ? [c[0],c[1],c[2],t] : null;
   }
+  /* v124 (Q378) : l'épaisseur du poil et le reflet suivent le palier APPLIQUÉ (jamais sous les yeux : le palier ne change qu'en quittant
+     l'écran) ; l'atlas des poils est refait si l'épaisseur change. */
+  function reglePoil(){ try{ var R=window._peloteReglage; if(!R || (R.facteur||1)<2) return;
+      var dense=PALIERS[PEL.palier]>=150000, ep=dense?0.7:1;
+      if(R.epaisseur!==ep || R.doux!==dense){ R.epaisseur=ep; R.doux=dense; ATL=null; try{ var S2=semis(); if(S2) S2.__stCle=null; }catch(_){} } }catch(_){} }
   function mediane(L){ if(!L.length) return null; var s=L.slice().sort(function(a,b){return a-b;}); return s[s.length>>1]; }
   /* ⚑ LA DENSITÉ CÈDE — MAIS JAMAIS SOUS LES YEUX (Tom, 10 sept. : « il doit être imperceptible »).
      Un palier n'est PAS un sous-ensemble du précédent : c'est un AUTRE semis — la spirale dépend du
@@ -38198,7 +38326,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
                                                   : MOTS[((i|0)%MOTS.length+MOTS.length)%MOTS.length];
       place(); return MOT.textContent; },
     /* pour le juge : repartir d'un palier donné (0 = 110 000) et oublier les mesures */
-    palier:function(i){ PEL.palier=PEL.vise=Math.max(0, Math.min(PALIERS.length-1, i|0)); PEL.ms=[]; PEL.skip=4; },
+    palier:function(i){ PEL.palier=PEL.vise=Math.max(0, Math.min(PALIERS.length-1, i|0)); PEL.ms=[]; PEL.skip=4; reglePoil(); },
     /* pour la preuve : le cache RETOUCHÉ est-il celui qu'une reconstruction complète donnerait
        avec les mêmes caresses ? On copie, on reconstruit, on compare point par point. */
     verifie:function(){
@@ -38228,6 +38356,8 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
     /* le ton du sol : lequel des quatre, et en tirer un neuf (pour le juge et pour le partage) */
     sol:function(){ return {idx:SOL_IDX, rgb:solPalette()}; },
     /* v123 — le corps : la teinte posée sous les poils, l'indice du ton de palette dont elle vient (−1 : dernier recours), le poil d'aujourd'hui */
+    /* v124 — la couleur de « PARTAGER MA PELOTE » : sa teinte, l'indice du ton de palette (−1 : l'encre du mode), le fond */
+    bouton:function(){ var t=texteBouton(); return {rgb:t.rgb, idx:t.idx, ordre:TEXTE_ORDRE.slice(), fond:fondPage()}; },
     corps:function(){ var c=corps(); return {rgb:c, idx:CORPS_MEMO.idx, ordre:CORPS_ORDRE.slice(), poil:(PEL.solR||solEffectif()), solIdx:SOL_IDX}; },
     nouveauSol:nouveauSol,
     /* ⚑ LE PARTAGE DEMANDE LA PELOTE. On peint DANS `CV` — `opts()` lit ses cotes — puis
@@ -38253,7 +38383,7 @@ try{ window.PeloteMoteur={rampeVelours:rampeVelours, atlasAlpha:atlasAlpha, GRAI
      où l'on QUITTE l'Aura, et quand l'onglet passe en arrière-plan. */
   function applique(){
     if(PEL.vise===PEL.palier) return false;
-    PEL.palier=PEL.vise; PEL.ms=[]; PEL.skip=4;
+    PEL.palier=PEL.vise; PEL.ms=[]; PEL.skip=4; reglePoil();
     lsSet('promi_pelote_palier', PEL.palier);
     return true;
   }
@@ -41889,7 +42019,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      maintenant UNE FOIS PAR IMAGE au plus, dans le rappel d'image — avant que l'image soit peinte : elle garde le dernier mot,
      sans flash possible. */
   var _rpDemande = false;
-  function repasse(){ if(_rpDemande) return; _rpDemande = true; requestAnimationFrame(function(){ _rpDemande = false; repasseVraie(); }); }
+  function repasse(){ if(window._tenirAnime) return;   /* v124 : pas pendant l'animation « tenir » — elle repasse à la fin (`finAnime`) */
+    if(_rpDemande) return; _rpDemande = true; requestAnimationFrame(function(){ _rpDemande = false; repasseVraie(); }); }
   window._repasseSombre = repasseVraie;
   /* ⚠ DEUX PROPRIÉTAIRES POUR UNE MÊME PROPRIÉTÉ (§7) — ET ON L'A PAYÉ ICI.
      `data-amande` était bien posé, et la couleur revenait quand même au vert profond :
@@ -44810,6 +44941,94 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var tmp=shareHidden; shareHidden=AV.h; try{ return f.apply(this, arguments); } finally { shareHidden=tmp; } };
     g.__v117=true; window.saveState=g;
   })(0);
+})();
+</script>
+<style id="lot-V124-GARDER-css">
+/* ⚑ v124 (Tom, 3 oct. 2026) — « Garder ta Toile » (Réglages) passe en gras : Atkinson 700, la face embarquée. Sa couleur : lot-V124-GARDER. */
+#device#device #settingsScreen #compteCard .k{font-weight:700!important}
+</style>
+<script id="lot-V124-GARDER">
+/* ⚑ v124 (Tom, 3 oct. 2026) — « GARDER TA TOILE » : UNE COULEUR DE LA PALETTE, RETIRÉE À CHAQUE RETOUR SUR LA PAGE.
+   « Sa couleur est tirée au hasard dans la palette choisie, et retirée chaque fois qu'on revient sur la page, par n'importe quel chemin.
+   Même règle de contraste (≥ 4,5:1 s'il s'agit de texte courant, ≥ 3:1 s'il est en grand), même repli sur l'encre, jamais de kaki. »
+   C'est du texte courant (13 px) : 4,5:1 face au fond réellement peint sous la rangée. « Revenir sur la page » ne peut pas se lire dans
+   la classe `.show` (les Réglages ne la perdent jamais, §8) : on regarde si la PAGE est joignable (le point au milieu de l'écran lui
+   appartient) — elle le redevient quel que soit le chemin (le bouton, un sous-écran qu'on referme). Un retour = un tirage. */
+(function(){
+  var K=null, joignable=false, dernier=-1;
+  function lin(v){ v/=255; return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4); }
+  function lum(c){ return 0.2126*lin(c[0])+0.7152*lin(c[1])+0.0722*lin(c[2]); }
+  function contraste(a,b){ var x=lum(a), y=lum(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
+  function kaki(c){ var r=lin(c[0]), g=lin(c[1]), b=lin(c[2]);
+    var L=Math.cbrt(0.4122214708*r+0.5363325363*g+0.0514459929*b), M=Math.cbrt(0.2119034982*r+0.6806995451*g+0.1073969566*b), S=Math.cbrt(0.0883024619*r+0.2817188376*g+0.6299787005*b);
+    var OL=0.2104542553*L+0.7936177850*M-0.0040720468*S, a=1.9779984951*L-2.4285922050*M+0.4505937099*S, bb=0.0259040371*L+0.7827717662*M-0.8086757660*S;
+    var C=Math.hypot(a,bb), h=(Math.atan2(bb,a)*180/Math.PI+360)%360;
+    return h>=78 && h<=140 && C>=0.015 && C<=0.10 && OL>=0.20 && OL<=0.80; }
+  function fond(el){ var a=el; while(a && a!==document.documentElement){ var m=/rgba?\((\d+)[, ]+(\d+)[, ]+(\d+)(?:[, \/]+([\d.]+))?\)/.exec(getComputedStyle(a).backgroundColor);
+      if(m && (m[4]===undefined || +m[4]>0.98)) return [+m[1],+m[2],+m[3]]; a=a.parentElement; } return [247,240,222]; }
+  function clair(){ var d=document.getElementById('device'); return !!(d && d.classList.contains('light')); }
+  function tire(){
+    K=K||document.querySelector('#settingsScreen #compteCard .k'); if(!K) return;
+    var P=[]; try{ P=window.Toile.cols()||[]; }catch(_){}
+    var f=fond(K), bons=[], i, q;
+    for(i=0;i<P.length;i++){ q=[P[i][0]|0,P[i][1]|0,P[i][2]|0]; if(!kaki(q) && contraste(q,f)>=4.5) bons.push([i,q]); }
+    var c, idx=-1;
+    if(bons.length){ var cand=bons.filter(function(b){ return b[0]!==dernier; }); if(!cand.length) cand=bons;   /* un retour change la teinte quand la palette le permet */
+      var t=cand[(Math.random()*cand.length)|0]; c=t[1]; idx=t[0]; }
+    else c=clair()?[32,25,8]:[247,240,222];                          /* aucune teinte assez contrastée : l'encre du mode */
+    dernier=idx;
+    var v='rgb('+c[0]+', '+c[1]+', '+c[2]+')';
+    K.style.setProperty('color',v,'important'); K.style.setProperty('-webkit-text-fill-color',v,'important');
+    window._garderTeinte={rgb:c, idx:idx, fond:f, n:((window._garderTeinte||{}).n||0)+1};
+  }
+  function regarde(){
+    if(window._tenirAnime) return;                       /* pas de lecture de mise en page pendant l'animation « tenir » */
+    K=K||document.querySelector('#settingsScreen #compteCard .k'); if(!K) return;
+    /* la rangée est sous le pli (elle défile) : c'est la PAGE qu'on regarde — elle est revenue quand le point au milieu de l'écran, sous
+       le plateau, lui appartient (rien ne la recouvre, elle n'est pas glissée hors champ) */
+    var dv=document.getElementById('device'), j=false;
+    if(dv){ var d=dv.getBoundingClientRect(), e=document.elementFromPoint(d.left+d.width/2, d.top+d.height*0.5); j=!!(e && e.closest && e.closest('#settingsScreen')); }
+    if(j && !joignable) tire();
+    joignable=j;
+  }
+  setInterval(regarde, 250);
+  /* le thème ou la palette changent pendant qu'on regarde la page : la teinte en place peut ne plus tenir le contraste — on retire */
+  try{ new MutationObserver(function(){ if(joignable) tire(); }).observe(document.getElementById('device'), {attributes:true, attributeFilter:['class']}); }catch(_){}
+  window._garderTire=tire;
+})();
+</script>
+<script id="lot-V124-FLUIDE-POSE">
+/* ⚑ v124 (Tom) — pendant l'animation « tenir » (`window._tenirAnime`), aucune passe de tout le document : `_apresMouvement` (par où
+   passent les polices, le plancher des tailles et la lisibilité après un clic) attend la fin, puis rend la main à celui du moteur. */
+(function(){ var f=window._apresMouvement; if(typeof f!=='function') return;
+  window._apresMouvement=function(fn){ var t0=performance.now();
+    (function att(){ if(window._tenirAnime && performance.now()-t0<3500) setTimeout(att, 120); else f(fn); })(); };
+})();
+
+/* ⚑ v124 (Tom, §4) — L'IMAGE DU LEVER DU DOIGT. Le clic qui tient la parole reposait TOUTE la fiche dans la même tâche (48 ms mesurés :
+   la pose de base, l'ordre, les cotes, le trait), alors que l'instant « le trait se referme » ne montre que le champ amande, la dalle
+   et deux mots. « Aucun travail lourd pendant l'animation : il passe avant ou après. » Pendant l'animation, le premier `renderDetail`
+   ne pose donc que ce que l'instant montre (la terre du corps, les cotes et le trait de l'instant) ; la pose complète passe à la fin
+   de l'animation (`window._tenirApres`, appelée par `finAnime`). Hors de l'animation, rien ne change. */
+(function(){
+  var _rd=window.renderDetail; if(typeof _rd!=='function') return;
+  var remise=false;
+  window.renderDetail=function(){
+    if(window._tenirAnime && window._instant==='referme' && !remise){
+      remise=true;
+      try{ var dp=document.getElementById('detailPoster');
+        if(dp){ dp.classList.remove('f-atenir','f-encours','f-brouillon'); dp.classList.add('f-tenue'); } }catch(_){}
+      try{ if(window._ficheCotes) window._ficheCotes(); if(window._ficheTrait) window._ficheTrait(); }catch(_){}
+      return;
+    }
+    return _rd.apply(this,arguments);
+  };
+  try{ renderDetail=window.renderDetail; }catch(_){}
+  /* le contenu de la fiche, sans sa pose : `renderDetail` d'origine, le temps d'un appel où `_fichePose` ne fait rien */
+  window._tenirCorps=function(){ var fp=window._fichePose; window._fichePose=function(){};
+    try{ _rd.apply(window, arguments); }catch(_){} window._fichePose=fp; };
+  window._tenirApres=function(){ if(!remise) return; remise=false;
+    try{ var dp=document.getElementById('detailPoster'); if(dp && dp.classList.contains('show') && window._instant) window.renderDetail(); }catch(_){} };
 })();
 </script>
 </body>

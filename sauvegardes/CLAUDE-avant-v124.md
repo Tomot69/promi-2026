@@ -116,35 +116,6 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
-### ⚑ v124 (3 oct. 2026) — L'AURA REMONTÉE ENCORE ; « PARTAGER MA PELOTE » ET « GARDER TA TOILE » EN COULEUR ; TENIR EST FLUIDE. (Décisions Tom.)
-> **Q378 tranchée : la fluidité passe avant la densité.** Six paliers : 220 000 · 180 000 · 150 000 · **110 000 · 90 000 · 75 000**. À
-> 110 000 et en dessous, le poil reprend l'épaisseur et le reflet de la densité 1 (`reglePoil`, l'atlas est refait) — jamais sous les yeux.
-> **L'Aura (en points)** : Pelote → ombre −4 · ombre → bouton −4 · bouton → phrase −4 · phrase → ses disques −4 ; la phrase passe de 19,4 à
-> **20,4 px**. Ombre 405,224 · bouton 449,47 · phrase 541,6 · Noyaux 620,8 · **les chiffres finissent à 820,0 : 24 pt d'air sous eux à
-> 390 × 844** (objectif : 20). ⚠ La hauteur de la phrase se lit EXACTE (`getBoundingClientRect`), plus par `offsetHeight` (arrondi : un
-> demi-point d'air selon le nombre de lignes).
-> **⚑ « PARTAGER MA PELOTE »** : PromiLate 15 px, capitales écrites telles quelles, chasse 0 — la hauteur de capitale des phrases du trait
-> (10,67). La grammaire du bouton ne bouge pas. **Sa couleur** (`texteBouton`, `nouveauTexte`) : un ton de la palette du Studio tiré à
-> chaque ouverture, jamais celui des poils ni celui du corps, **≥ 3:1** face au fond, jamais kaki ; sinon l'encre du mode. Juge :
-> **`redteam_bouton.py`** (50 ouvertures × 4 palettes). ⚠ L'encre du clair `#201908` est dans la plage du kaki (h 87°, L 0,21) : le repli
-> décidé n'est pas un tirage, la règle du kaki juge les teintes TIRÉES.
-> **⚑ « GARDER TA TOILE »** (Réglages, `#compteCard .k`) : Atkinson 700 ; un ton de la palette **retiré à chaque retour sur la page**
-> (`lot-V124-GARDER`), **≥ 4,5:1** (texte courant), jamais kaki, sinon l'encre du mode. « Revenir sur la page » ne se lit pas dans `.show`
-> (les Réglages ne la perdent jamais) : c'est le point au milieu de l'écran qui redevient le leur. Juge : **`redteam_garder_toile.py`**.
-> ⚠ Sous Ingénu en clair, aucun ton pastel ne tient 4,5:1 sur la crème : le texte y est toujours à l'encre.
-> **⚑ TENIR UNE PAROLE — LA SACCADE, NOMMÉE.** Ce n'est pas un mouvement : deux changements d'état (amande 1 000 ms, puis « juste après »),
-> et à chacun le fil principal restait bloqué 400 à 580 ms — ① deux rendus de dalle à des tailles neuves (dont la fiche tenue ordinaire,
-> peinte 40 ms avant d'être recouverte par l'instant) ; ② la passe des polices sur tout le document (340–400 ms) ; ③ la passe de
-> lisibilité et huit reprises par minuteries. **Parades** (`_instantTenue`, `lot-V124-FLUIDE`, `lot-V124-FLUIDE-POSE`) : l'instant est armé
-> en phase de CAPTURE du clic ; ses deux dalles sont rendues À L'AVANCE quand la fiche à tenir est posée (`prechauffe`) ; pendant
-> l'animation (`window._tenirAnime`) aucune passe de tout le document (`_apresMouvement` attend), la pose complète de la fiche passe APRÈS
-> (`_tenirApres`), son contenu se remplit dans une image calme (`_tenirCorps`) ; les couleurs se posent à la source (sur la terre : texte
-> crème, tenu en amande — Q269, en clair aussi ; le mot-marque à l'encre du plateau) ; cadence : `requestAnimationFrame`. Juge :
-> **`redteam_fluide.py`** — 20 animations, travail du fil principal par image lu dans la trace Chromium (GPU, @3x) : la plus longue
-> 19,8 ms, p95 5,6 ms (avant : 322 ms, 82 images au-delà de 20 ms).
-> ⚠ **L'intervalle entre deux `requestAnimationFrame` ne juge pas une saccade au banc** : page au repos, il donne déjà p95 18,3 ms et un
-> maximum de 26,7 ms. On mesure le TRAVAIL par image (les `RunTask` entre deux `AnimationFrame::Render`).
-
 ### ⚑ v123 (3 oct. 2026) — LA PELOTE : DENSITÉ 3, UN CORPS D'UNE AUTRE TEINTE, L'OMBRE CRÈME EN SOMBRE ; L'AURA REMONTÉE ; Q375. (Décisions Tom.)
 > **Densité 3 et halo 3 RETENUS — ce sont des constantes** (`REG` : ×2, poil ×0,7, reflet adouci ; ΔE00 14 au ras, 0,12 D). **`?densite`,
 > `?halo` et les niveaux 4 et 5 sont RETIRÉS.** Paliers du régulateur : 220 000 → 180 000 → 150 000. Mesuré (Chromium GPU @3x, ce Mac) :
@@ -1623,11 +1594,6 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_fluide.py      # 5 — v124, TENIR EST FLUIDE : 20 animations, aucune image au-delà de 20 ms de travail du fil principal, p95 ≤ 16,7 ms
-                               #   (trace Chromium, vrai GPU, @3x) ; la durée (1 000 ms) et les deux états. Rougit sur app-avant-v124 (2/5). ≈ 3 min.
-python3 redteam_bouton.py      # 33 — v124, « PARTAGER MA PELOTE » : PromiLate 15 px, capitale = celle du trait ; couleur de la palette ≠ poils ≠ corps,
-                               #   ≥ 3:1, jamais kaki, 50 ouvertures × 4 palettes. Rougit sur app-avant-v124 (26/33).
-python3 redteam_garder_toile.py # 29 — v124, « Garder ta Toile » : gras, teinte retirée à chaque retour (20 × 2 palettes × 2 thèmes), ≥ 4,5:1. 15/29 avant.
 python3 redteam_corps.py       # 25 — v123, LE CORPS DE LA PELOTE : 50 ouvertures × 4 palettes — ΔE00 ≥ 15 face au poil (rampe et image), jamais kaki,
                                #   jamais le ton du sol, tiré au hasard. Lu sur la peau PEINTE. Rougit sur app-avant-v123 (16/25). ≈ 25 min.
 python3 redteam_decisions.py   # 79 — v122 : CHAQUE DÉCISION DE COULEUR DE TOM (en dur, avec sa source) contre l'écran rendu — fiches Promi,

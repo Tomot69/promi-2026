@@ -1,0 +1,33 @@
+
+═══ SECTION 5 · L'INSTANT — 6 écrans mesurés ═══
+
+écarts de position > 3 px    12
+      arrive    [dark] à-qui (24,559) au lieu de (24,556)
+      arrive    [dark] titre (24,590) au lieu de (24,586)
+      referme   [dark] le mot qui suit (24,479) au lieu de (24,472)
+      apres     [dark] à-qui (24,515) au lieu de (24,512)
+      apres     [dark] titre (24,546) au lieu de (24,542)
+      apres     [dark] état (24,614) au lieu de (24,607)
+      arrive    [light] à-qui (24,559) au lieu de (24,556)
+      arrive    [light] titre (24,590) au lieu de (24,586)
+      referme   [light] le mot qui suit (24,479) au lieu de (24,472)
+      apres     [light] à-qui (24,515) au lieu de (24,512)
+      apres     [light] titre (24,546) au lieu de (24,542)
+      apres     [light] état (24,614) au lieu de (24,607)
+écarts de style              5
+      referme   [light] « tenue. » : encre #F7F0DE au lieu de #201908
+      referme   [light] le mot qui suit : encre #F7F0DE au lieu de #201908
+      apres     [light] à-qui : encre #8FE08F au lieu de #00341A
+      apres     [light] titre : encre #F7F0DE au lieu de #201908
+      apres     [light] état : encre #8FE08F au lieu de #00341A
+collisions                   0
+débordements                 0
+présence peinte              6
+      arrive    [dark] #dptQui « À Rachel » : ton sur ton (Δ25)
+      referme   [light] #instTenue « tenue. » : ton sur ton (Δ0)
+      referme   [light] #instSous « Rachel vient de tr » : ton sur ton (Δ0)
+      apres     [light] #dptQui « À Rachel » : ton sur ton (Δ39)
+      apres     [light] #dptTitre « faire les crêpes » : ton sur ton (Δ0)
+      apres     [light] #dptQuand « TENUE À DEUX · À L » : ton sur ton (Δ39)
+
+❌  23 ÉCARTS

@@ -39,7 +39,7 @@ SONDE = '--sonde' in sys.argv
 S = 3; D = 232.064; RS = 121.0; CXY = (195.0, 105.532 + 148.0)   # ⚑ v123 : la boule −6
 NIVEAUX = {3: (14, 0.12)}   # ⚑ v123 : la décision, en dur — un seul niveau
 HALO_PLATEAU = 4.5   # ⚑ v123 (Tom) : du bas du plateau au haut du halo, 10,5 − 6
-DEFAUT = 3; OMBRE_Y = 417.35; BOUTON = 457.47   # ⚑ v123 (Tom) : l'ombre −12, le bouton −18
+DEFAUT = 3; OMBRE_Y = 413.35; BOUTON = 449.47   # ⚑ v124 (Tom) : l'ombre −4, le bouton −8 · v123 : −12, −18
 LUM = math.atan2(-0.72, -0.58)                      # d'où vient la lumière (repère de l'écran, y vers le bas)
 ok = [0]; ko = []
 
@@ -155,11 +155,11 @@ with sync_playwright() as p:
             else:
                 t('E · [%s] l\'ombre crème : ΔE00 entre 4 et 6 face à son pourtour' % th, 4 <= eo <= 6, '%.2f · centre %s · pourtour %s' % (eo, [round(v) for v in cen], [round(v) for v in tour]))
                 st = pg.evaluate("()=>{const o=document.getElementById('auPeloteOmbre'), f=document.getElementById('auPeloteFlaque'), dv=document.getElementById('device').getBoundingClientRect(), r=o.getBoundingClientRect(); return [getComputedStyle(o).display, f?getComputedStyle(f).display:'none', r.width, r.height, r.left-dv.left+r.width/2, r.top-dv.top+r.height/2]}")
-                t('E · [sombre] l\'ombre est une ellipse PLUS CLAIRE que le fond (crème), la flaque n\'est plus affichée, même géométrie qu\'en clair (104,4 × 16,2, centre 195 ; 417,35)',
+                t('E · [sombre] l\'ombre est une ellipse PLUS CLAIRE que le fond (crème), la flaque n\'est plus affichée, même géométrie qu\'en clair (104,4 × 16,2, centre 195 ; 413,35)',
                   st[0] != 'none' and st[1] == 'none' and sum(cen) > sum(tour) + 6 and abs(cen[0] - cen[2]) < 12 and cen[0] >= cen[2] and abs(st[2] - 104.429) < 0.3 and abs(st[3] - 16.245) < 0.3 and abs(st[4] - 195) < 0.3 and abs(st[5] - OMBRE_Y) < 0.3, '%s · centre %s' % ([st[0], st[1]] + [round(v, 2) for v in st[2:]], [round(v) for v in cen]))
             g = pg.evaluate("()=>{const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, R=s=>{const r=document.querySelector(s).getBoundingClientRect(); return [(r.top-dv.top)/k,(r.bottom-dv.top)/k]}; return {pl:R('#auraScreen .enh'), bt:R('#auPartage')}}")
             _hp = CXY[1] - RS - EXT * D - g['pl'][1]
-            t('F · [%s] le halo ne touche pas le plateau (à 4,5 ± 0,5 pt, décidé) ; le bouton est à sa place (v123 : 457,47)' % th, _hp > 0 and abs(_hp - HALO_PLATEAU) <= 0.5 and abs(g['bt'][0] - BOUTON) < 0.3, 'haut du halo %.1f · bas du plateau %.1f · bouton %.2f' % (CXY[1] - RS - EXT * D, g['pl'][1], g['bt'][0]))
+            t('F · [%s] le halo ne touche pas le plateau (à 4,5 ± 0,5 pt, décidé) ; le bouton est à sa place (v124 : 449,47)' % th, _hp > 0 and abs(_hp - HALO_PLATEAU) <= 0.5 and abs(g['bt'][0] - BOUTON) < 0.3, 'haut du halo %.1f · bas du plateau %.1f · bouton %.2f' % (CXY[1] - RS - EXT * D, g['pl'][1], g['bt'][0]))
             pg.evaluate("()=>{_aura.fige(false); const x=document.querySelector('#auraScreen .closeb'); if(x) x.click();}"); pg.wait_for_timeout(800)
     ctx.close()
     # D · la respiration, animations permises : le halo au sommet (4,6 s) et au creux (10,6 s) du cycle
