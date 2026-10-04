@@ -39,7 +39,7 @@ SONDE = '--sonde' in sys.argv
 S = 3; D = 232.064; RS = 121.0; CXY = (195.0, 105.532 + 148.0)   # ⚑ v123 : la boule −6
 NIVEAUX = {3: (14, 0.12)}   # ⚑ v123 : la décision, en dur — un seul niveau
 HALO_PLATEAU = 4.5   # ⚑ v123 (Tom) : du bas du plateau au haut du halo, 10,5 − 6
-DEFAUT = 3; OMBRE_Y = 403.35; BOUTON = 439.47   # ⚑ v125 (Tom, composition A) : l’ombre −10, le bouton −10 · ⚑ v124 (Tom) : l'ombre −4, le bouton −8 · v123 : −12, −18
+DEFAUT = 3; OMBRE_Y = 399.35; BOUTON = 435.47   # ⚑ v126 (Tom, composition B, FIGÉE) : l’ombre −14, le bouton −14 · v125 (A) : −10 · ⚑ v124 (Tom) : l'ombre −4, le bouton −8 · v123 : −12, −18
 LUM = math.atan2(-0.72, -0.58)                      # d'où vient la lumière (repère de l'écran, y vers le bas)
 ok = [0]; ko = []
 

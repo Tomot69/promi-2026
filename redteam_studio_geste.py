@@ -84,6 +84,36 @@ with sync_playwright() as p:
     t("un glissement franc change encore de MONDE", m1['monde']!=m0['monde'], "%s → %s"%(m0['monde'],m1['monde']))
     t("et il n'a pas armé le geste de couleur", pg.evaluate("()=>window._studioGesteCouleur.arme()")==False)
     t("et il n'a pas touché à la teinte", abs(m1['hue']-m0['hue'])<0.01, "%.3f vs %.3f"%(m0['hue'],m1['hue']))
+
+    # 6 · ⚑ v126 (Tom, C-010 : « appui long sur la Toile prévisualisée, puis déplacement du doigt : la palette varie en continu, et relâcher
+    #   fixe le résultat ») — DANS TOUS LES SENS, ET À L'IMAGE. Les contrôles 2 à 4 partent tous à l'HORIZONTALE : ils étaient verts pendant
+    #   que le geste mourait dès qu'un doigt partait à la verticale ou en diagonale (`touch-action:pan-y` → `pointercancel`). Et ils lisaient
+    #   des valeurs : ici le verdict vient aussi de l'écran (la Toile du Studio change sous le doigt, et reste changée au lever).
+    import io as _io
+    from PIL import Image, ImageChops, ImageStat
+    dv=pg.evaluate("()=>{var d=document.getElementById('device').getBoundingClientRect();return [d.left,d.top,d.width,d.height];}")
+    clip={'x':dv[0]+30,'y':dv[1]+150,'width':dv[2]-60,'height':330}
+    cap=lambda: Image.open(_io.BytesIO(pg.screenshot(clip=clip))).convert('RGB')
+    # ⚠ l'aperçu du Studio VIT (des paroles y arrivent et en partent toutes les quelques secondes) : un écart pixel à pixel mesure aussi ce
+    #   mouvement (bruit de 0,5 à 15 niveaux selon l'instant). Le geste change la COULEUR : on compare la couleur MOYENNE de la Toile.
+    def ec(a_,b_):
+        ma=ImageStat.Stat(a_).mean; mb=ImageStat.Stat(b_).mean
+        return (sum((ma[k]-mb[k])**2 for k in range(3)))**0.5
+    pg.wait_for_timeout(3500)   # le monde vient de changer (contrôle 5) : on laisse son arrivée se poser avant de lire l'image
+    for nom,(ux,uy) in (("à la VERTICALE d'abord",(0,1)),("en DIAGONALE d'abord",(0.7,0.7))):
+        pg.evaluate("()=>{Toile.setHue(0); Toile.setPalette('signal'); try{Toile.repaint(document.getElementById('stBg'))}catch(e){}}"); pg.wait_for_timeout(700)
+        i0=cap(); pg.wait_for_timeout(500); bruit=ec(i0,cap()); e0=pg.evaluate(ETAT)
+        ms=1000; doigt(cdp,pt[0],pt[1],ms); pg.wait_for_timeout(MAINTIEN+240)
+        for i in range(1,9):
+            ms+=40; bouge(cdp,pt[0]+ux*i*15,pt[1]+uy*i*15,ms); pg.wait_for_timeout(30)
+        pg.wait_for_timeout(600); e1=pg.evaluate(ETAT); i1=cap()
+        t("6 · %s : le geste reste armé pendant qu'on glisse"%nom, e1['arme']==True, str(e1['arme']))
+        att_pal=round(uy*120/PAS_PAL); att_hue=(ux*120*(360/COURSE))%360
+        t("6 · %s : la palette suit le doigt (120 px → %d palette(s))"%(nom,att_pal), e1['pal']!=e0['pal'], "%s → %s"%(e0['pal'],e1['pal']))
+        if ux: t("6 · %s : la teinte suit aussi"%nom, abs(e1['hue']-att_hue)<3, "attendu %.0f, lu %.0f"%(att_hue,e1['hue']))
+        t("6 · %s : la Toile du Studio change À L'ÉCRAN"%nom, ec(i0,i1)>max(3,2.5*bruit), "%.1f niveaux (bruit %.1f)"%(ec(i0,i1),bruit))
+        ms+=60; leve(cdp,ms); pg.wait_for_timeout(700); e2=pg.evaluate(ETAT); i2=cap()
+        t("6 · %s : relâcher fixe le résultat"%nom, e2['arme']==False and e2['pal']==e1['pal'] and abs(e2['hue']-e1['hue'])<0.5 and ec(i0,i2)>max(3,2.5*bruit), "%s · %.0f° · %.1f niveaux"%(e2['pal'],e2['hue'],ec(i0,i2)))
     b.close()
 print('\n%d/%d'%(ok[0],ok[0]+len(ko)))
 if ko: print('KO :', ' · '.join(ko))

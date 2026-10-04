@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 394 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 395 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -25,8 +25,8 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 | Aura | `div#auraScreen.screen.s-karma>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
 | Aura | `#auraInfoBtn` | natif | 218, 78 | 20 × 20 | oui |  |
 | Aura | `div#auCadre.au-cadre.au-voile>div.au-bo>div.au-prise«»` | écouteur | 195, 254 | 296 × 296 | oui |  |
-| Aura | `#auPartage` | natif | 195, 469 | 342 × 60 | oui |  |
-| Aura | `div#auCadre.au-cadre.au-voile>div.au-nx«ToiAdrienMarionNicoRache»` | écouteur | 207, 648 | 366 × 107 | oui |  |
+| Aura | `#auPartage` | natif | 195, 465 | 342 × 60 | oui |  |
+| Aura | `div#auCadre.au-cadre.au-voile>div.au-nx«ToiAdrienMarionNicoRache»` | écouteur | 207, 636 | 366 × 107 | oui |  |
 | Conditions | `div#legalScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | écouteur | 296, 70 | 84 × 18 | oui |  |
 | Fil | `#fdClose` | on… | 296, 70 | 84 × 18 | oui |  |
 | Fil | `#fdSearch` | natif | 174, 142 | 208 × 24 | oui |  |

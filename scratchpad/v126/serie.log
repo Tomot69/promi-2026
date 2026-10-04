@@ -1,0 +1,29 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 41
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+   66s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #2A1548 #00351A #00341A #291547 OK   (Q262, v8c) / 79 / 79
+  128s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   91s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  110s  redteam_onboarding.py      ====================================================================================== /   ✅  44 / 44 contrats tenus
+   37s  redteam_studio_geste.py    19/22 / KO : 6 · à la VERTICALE d'abord : la Toile du Studio change À L'ÉCRAN · 6 · à la VERTICALE d'abord : relâcher fixe le résultat · 6 · en DIAGONALE d'abord : relâcher fixe le
+   28s  redteam_pelote_doigt.py    6 / 7 / KO : 1 · [passe 2] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+  102s  redteam_halo.py            aucune erreur de page                                                        OK   / 23 / 23
+  167s  redteam_plein.py           [densité 3] aucune erreur de page                                              OK   / 97 / 97
+   33s  redteam_contour.py         OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0 / ✅ rien ne dépasse du contour
+   66s  redteam_souffle.py         OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0 / ✅ la Pelote respire par son velours, et rien d'autre
+   91s  redteam_corps.py           aucune erreur de page                                                                  OK   / 33 / 33
+   91s  redteam_zone.py            OK  [light] aucune erreur de page   / 8 / 8
+   60s  redteam_mesure.py          OK  [dark] la page n'a pas défilé  0 / 0 / 10 / 10
+  111s  redteam_bouton.py          aucune erreur de page                                                                        OK   / 33 / 33
+  176s  releve-aura.py             palier 220000 · médiane 38.5 ms · 1423 images · plus longue image pendant l'élan : 833 ms (dont peintre 39.8 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 p
+  114s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2050 ms) / 32/32
+  227s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+   68s  redteam_toile.py           aucune erreur JS                           OK  [] / 18/18
+   44s  redteam_geste.py           aucune erreur JS                             OK   / 12/12
+  172s  redteam_accueil.py         [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False / 22/22
+   58s  redteam_apercus.py           ❌ E le fond d'un aperçu est celui de la vraie Toile [light] — fond sombre #050302 au lieu de #201908 (celui du mode) / ❌  8/10
+   43s  redteam_ramage_onde.py     OK  [passe 2] aucune erreur de page   / 3 / 6
+  105s  banc_rendu.py              280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0 / ✅ AU PIXEL.
+  280s  redteam_rythme.py            · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 2888, 'images': 170, 'boucle': 2904, 'debut': 21} / 60 / 60
+   36s  releve-design.py           ✅  AUCUN ÉCART. Le design est intact.
+  695s  redteam_couleurs_ref.py    exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 8 · E5 violations retirées 22 · E6 trace crème (Q374) 12 · E7 ombre crème en sombre 2 / 

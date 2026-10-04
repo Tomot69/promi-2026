@@ -41,6 +41,32 @@ APP = os.environ.get('APP_AURA', "http://127.0.0.1:8752/app.html")
 VERBOSE = '--verbose' in sys.argv
 INJECTE = '--injecte' in sys.argv
 TOL = 3
+# ═══ ⚑ v126 (Tom, 4 oct. 2026) — L'AURA EST FIGÉE SUR LA COMPOSITION B (C-005). CONTRAT RÉÉCRIT — original : sauvegardes/releve-aura-avant-v126.py.
+#   « Tom retient B. Inscris ses cotes dans CLAUDE.md comme figées, refige releve-aura sur elles (la dette de 36 écarts tombe) […] Le juge
+#   doit rougir si une cote bouge de plus de 0,5 pt. »
+#   CE QUE LES CONTRÔLES DE POSITION ENCODAIENT : la colonne de septembre (la sphère à 89,4, le mot à 394, le bouton à 702 ou 762, l'air de 28
+#   et de 35,7) — remontée cinq fois par décision depuis (v118 à v125). Ils sont remplacés par les cotes de B, EN DUR, haut et bas de chaque
+#   bloc en points 390 × 844, pour une phrase de DEUX lignes (la première) et le jeu de démonstration, dans les deux thèmes.
+COTES_B = {
+    'plateau':             (40.00, 100.00),
+    'silhouette':          (132.53, 374.53),     # le centre de la Pelote ± 121
+    'ombre':               (391.22, 407.45),
+    'bouton':              (435.47, 495.47),
+    'phrase':              (515.59, 566.56),     # deux lignes ; une ligne finit à 541,07
+    'Noyaux':              (582.77, 689.77),
+    'légende':             (709.05, 733.30),
+    'chiffres':            (752.02, 782.02),     # 62 pt d'air sous eux
+    'ce que tu as tenu':   (800.52, None),       # son bas dépend du nombre de dalles tenues
+}
+TOL_B = 0.5
+AIR_PHRASE_B = 15.70      # phrase → disques, tel que ce juge le mesure (bas du texte de la phrase → haut des disques), quel que soit le nombre de lignes
+COTES_JS = r"""()=>{ const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, sc=document.getElementById('auraScreen'); const o={};
+  const r=(nom,e)=>{ if(!e) return; const b=e.getBoundingClientRect(); if(!b.height) return; o[nom]=[(b.top-dv.top)/k, (b.bottom-dv.top)/k]; };
+  r('plateau', sc.querySelector('.enh')); { const c=document.getElementById('auBoule').getBoundingClientRect(), cy=(c.top+c.height/2-dv.top)/k; o['silhouette']=[cy-121, cy+121]; }
+  r('ombre', document.getElementById('auPeloteOmbre'));
+  [['bouton','.au-bt'],['phrase','.au-mot'],['Noyaux','.au-nx'],['légende','.au-lg'],['chiffres','.au-cpt'],['ce que tu as tenu','.au-mo']].forEach(a=>r(a[0], sc.querySelector(a[1])));
+  return o; }"""
+ANCIENNES_POSITIONS = (' la sphère (', ' le mot à (', ' la rangée des Noyaux (', ' la légende (', ' la légende ne se déclare pas centrée', ' la légende : ', ' « Ce que tu as tenu » à ', ' le bouton (')
 SP_AURA = os.environ.get('AURA_DEV', '/private/tmp/claude-501/-Users-macbookpro-Documents-IA-projetcs-Promi-Promi-App-Promi-2026/dcd8febe-cb8b-4dd6-a4f8-2c1646ff8fa4/scratchpad/aura')
 
 # ⚑ LA ROTATION LENTE EST UNE DÉCISION, ÉCRITE ICI — jamais lue dans l'app : un juge qui prendrait
@@ -323,6 +349,7 @@ AIR_BLOC = 28.0           # le rythme de la colonne : la légende de la planche,
 #   Original : sauvegardes/releve-aura-avant-v8d.py
 GAP_LG = AIR_BLOC + 18.0 + AIR_BLOC   # 74 — l'espace de la légende, constant (cote de la planche)
 LIGNE_MOT = 19.4 * 1.25   # une ligne de phrase (19,4 px, interligne 1,25)
+AIR_ENCRE_B, AIR_LEGENDE_B = 14.0, 25.5   # v126 : planchers À L'ENCRE de la composition B (mesuré : phrase → disques 15,0 et 16,0 ; légende 28,0 au-dessus, 26,5 en dessous)
 AIR_MIN = 26.0            # plancher mesuré à l'encre / aux boîtes (l'air décidé, moins l'arrondi des glyphes)
 PLI = 844.0               # le bas de l'écran à l'ouverture — Q186 (Tom) : le bouton y est ENTIER (avec sa marge)
 MARGE_BAS = 22.0          #   ou FRANCHEMENT sous le pli, jamais coupé en deux
@@ -515,7 +542,7 @@ def juge():
             m = pg.evaluate(MESURE, th)
             comp = pg.evaluate("()=>window._auraComp")
             if not m['show']: pos.append(E + " l'Aura ne s'ouvre pas"); continue
-            fondAttendu = ENCRE if th == 'dark' else CREME
+            fondAttendu = '#050302' if th == 'dark' else CREME   # v116 / v121 : le fond des pages sombres est la seiche
             encre = CREME if th == 'dark' else ENCRE
             gris = GRIS_S if th == 'dark' else GRIS_C
             if hexa(m['fond']) != fondAttendu: sty.append(E + ' fond %s au lieu de %s' % (hexa(m['fond']), fondAttendu))
@@ -537,7 +564,7 @@ def juge():
                 if not g or abs(g['y']-K['mot']) > TOL or abs(g['x']-24) > TOL:
                     pos.append(E + ' le mot à %s au lieu de (24, %.1f)' % (g and (round(g['x']), round(g['y'],1)), K['mot']))
                 s = m['mot']['s']
-                if s['ff'] != 'Gilbert' or s['fw'] != '700' or abs(s['fs']-19.4) > 0.3 or hexa(s['col']) != encre:
+                if s['ff'] != 'Gilbert' or s['fw'] != '700' or abs(s['fs']-20.4) > 0.3 or hexa(s['col']) != encre:   # v124 : la phrase à 20,4 px
                     sty.append(E + ' le mot : %s %s %.1f %s' % (s['ff'], s['fw'], s['fs'], hexa(s['col'])))
                 # ⚑ RÉÉCRIT AU NIVEAU DE LA DÉCISION (Tom, 10 sept.) : la rangée n'est plus attendue à 454 en
                 #   dur — elle se DÉRIVE du bas réel de la phrase (1 ou 2 lignes) + l'air de la planche, et la
@@ -663,24 +690,37 @@ def juge():
             # ⚑ Q186 SORT AVEC LE BOUTON : la règle « jamais coupé par le pli » le poussait à 844
             #   pour qu'il ne soit pas coupé en deux. Il est maintenant à mi-hauteur d'écran :
             #   appliquée ici, elle le renverrait sous le pli — le défaut même qu'on corrige.
+            if not vide:
+                pg.evaluate("()=>{ document.getElementById('auraScreen').scrollTop=0; try{ _aura.mot(0); }catch(e){} }"); pg.wait_for_timeout(350)
+                if '--sonde-cote' in sys.argv:   # la preuve : le bouton déplacé de 0,6 pt doit être pris
+                    pg.evaluate("()=>{ const b=document.querySelector('#auraScreen .au-bt'); b.style.setProperty('top', (parseFloat(getComputedStyle(b).top)+0.6)+'px', 'important'); }")
+                cb = pg.evaluate(COTES_JS)
+                for nom, (y0, y1) in COTES_B.items():
+                    v = cb.get(nom)
+                    if not v: pos.append(E + ' v126 · %s : absent' % nom); continue
+                    if abs(v[0] - y0) > TOL_B or (y1 is not None and abs(v[1] - y1) > TOL_B):
+                        pos.append(E + ' v126 · %s : %.2f → %.2f au lieu de %.2f → %s (figé, ± %.1f)' % (nom, v[0], v[1], y0, ('%.2f' % y1) if y1 is not None else '—', TOL_B))
+                VAL.append(('cotes B %s' % E, ' · '.join('%s %.2f–%.2f' % (n_, cb[n_][0], cb[n_][1]) for n_ in COTES_B if n_ in cb)))
+                try: pg.evaluate("()=>{ try{ _aura.mot(null); }catch(e){} }")
+                except Exception: pass
             g, s = m['bt']['g'], m['bt']['s']
             if not g or max(abs(g['x']-K['bt'][0]), abs(g['y']-exp_bt), abs(g['w']-K['bt'][2]), abs(g['h']-K['bt'][3])) > TOL:
                 pos.append(E + ' le bouton %s au lieu de (24, %.1f, 342, 60)' % (g and (round(g['x']), round(g['y'],1), round(g['w']), round(g['h'])), exp_bt))
             # ⚑ RÉÉCRIT (Tom, 23 sept.) : « On ne partage plus son Noyau ··· ce qu'on partage, c'est la Pelote. »
-            if m['bt']['t'] != 'Partager ma Pelote': sty.append(E + ' le bouton : « %s »' % m['bt']['t'])
+            if m['bt']['t'] != 'PARTAGER MA PELOTE': sty.append(E + ' le bouton : « %s »' % m['bt']['t'])
             if s['bw'] != '2px' or hexa(s['bc']) != encre or s['br'] != '30px':
                 sty.append(E + ' le bouton : trait %s %s rayon %s (grammaire : 2 px, couleur du corps, h/2)' % (s['bw'], hexa(s['bc']), s['br']))
             # ═══ 9 · L'AIR DE LA COLONNE — les CINQ phrases, aux boîtes ET à l'encre ═══════════════
             #   Un contrôle d'air qui ne regarde que des paires de TEXTES ne voit pas une phrase qui
             #   touche une rangée de disques : ici, chaque bloc de la colonne, texte ou non.
             if not vide:
-                fondRGB = [32, 25, 8] if th == 'dark' else [247, 240, 222]   # ⚑ palette du 16 sept.
+                fondRGB = [5, 3, 2] if th == 'dark' else [247, 240, 222]   # v116 / v121 : la seiche (la sonde d'encre rendait 0,0 en sombre : elle cherchait encore le brun)
                 sous, rec = [], {}
                 for i in range(5):
                     pg.evaluate(POSE_MOT, i); pg.wait_for_timeout(250)
                     a = pg.evaluate(AIRM)
                     g1 = a['disques'] - a['mot_bas']; sous.append((a['lignes'], g1))
-                    if g1 < AIR_MIN: air.append(E + ' « %s » (%d ligne(s)) : %.1f pt entre la phrase et les disques (air décidé %.1f)' % (a['texte'][:28], a['lignes'], g1, AIR_MOT))
+                    if abs(g1 - AIR_PHRASE_B) > TOL_B: air.append(E + ' « %s » (%d ligne(s)) : %.2f pt entre la phrase et les disques (figé : %.2f ± %.1f)' % (a['texte'][:28], a['lignes'], g1, AIR_PHRASE_B, TOL_B))
                     g2, g3 = a['lg_h'] - a['prenoms'], (a['h3'] - a['lg_b']) if a['h3'] is not None else None
                     # ⚑ RÉÉCRIT AU NIVEAU DE LA DÉCISION (Tom, 22 septembre 2026 : « la légende de
                     #   l'Aura : double sa taille, et positionne-la correctement dans son espace.
@@ -716,14 +756,14 @@ def juge():
                         u = 'data:image/png;base64,' + base64.b64encode(pg.query_selector('#device').screenshot()).decode()
                         gi = pg.evaluate(ENCRE_GAP, [u, fondRGB, a['mot_bas']])
                         rec[a['lignes']] = gi
-                        if gi < AIR_MIN: air.append(E + ' à l\'encre, « %s » : %.1f pt entre la phrase et les disques' % (a['texte'][:28], gi))
+                        if gi < AIR_ENCRE_B: air.append(E + ' à l\'encre, « %s » : %.1f pt entre la phrase et les disques (plancher de B : %.1f)' % (a['texte'][:28], gi, AIR_ENCRE_B))
                         # ── la légende : son air au-dessus et en dessous, À L'ENCRE, sur la même image
                         if a['h3'] is not None:
                             ga = pg.evaluate(ENCRE_GAP, [u, fondRGB, (a['prenoms'] + a['lg_h']) / 2.0])
                             gb = pg.evaluate(ENCRE_GAP, [u, fondRGB, (a['lg_b'] + a['h3']) / 2.0])
                             rec['lg_encre'] = (round(ga, 1), round(gb, 1))
-                            if ga < AIR_MIN or gb < AIR_MIN:
-                                air.append(E + ' à l\'encre, la légende : %.1f au-dessus, %.1f en dessous (plancher %.0f)' % (ga, gb, AIR_MIN))
+                            if ga < AIR_LEGENDE_B or gb < AIR_LEGENDE_B:
+                                air.append(E + ' à l\'encre, la légende : %.1f au-dessus, %.1f en dessous (plancher de B : %.1f)' % (ga, gb, AIR_LEGENDE_B))
                             elif abs(ga - gb) > 1.5:
                                 air.append(E + ' à l\'encre, la légende n\'est pas centrée : %.1f au-dessus, %.1f en dessous' % (ga, gb))
                     rec.setdefault('lib', a['bt_h'] - a['lib'] if a['lib'] is not None else None); rec['defil'] = a['defil'] - 844
@@ -958,6 +998,11 @@ def juge():
         # ⚠ la référence est l'objet NEUF : les glissements des tests 2 et 3 ont eux-mêmes
         #   laissé des caresses, et un relissage efface TOUT — on ne pourrait jamais y revenir
         pg.evaluate("()=>{_aura.relisse(); _aura.fige(true); const e=_aura.etat(); window.__vue=[e.lac,e.tan];}")
+        # ⚑ v126 (Tom : « reprends son acquis 7 qui flotte avec le souffle ») — MESURÉ : 6,8 %, 12,6 %, 43,6 % et 47,9 % des pixels « changés »
+        #   entre le repos et le relissé, sur quatre passes dont une sur la version d'avant — la lumière du velours respire (10 s), et les deux
+        #   captures ne tombent jamais au même instant du souffle. Règle du §8 étendue : on compare au même angle ET au même souffle. Le
+        #   crochet des planches (`_peloteMod`) épingle la lumière sur sa première valeur, des captures de repos jusqu'au relissé.
+        pg.evaluate("()=>{ window.__vel=null; window._peloteMod=function(o){ if(window.__vel==null) window.__vel=o.velours; o.velours=window.__vel; }; }")
         peintes(3); pg.evaluate(SNAP, 'repos'); peintes(2); pg.evaluate(SNAP, 'repos2')
         # ⚠ la pulpe se CALCULE pour cette boule : a = 46,4 pt / 116 pt = 0,40, et la cuvette
         #   (2/π)·asin(a/r) porte jusqu'à trois fois a (1,2 rad). La zone témoin est donc
@@ -1062,6 +1107,7 @@ def juge():
         rl = pg.evaluate(DIFF, ['repos', 'relisse', None])
         VAL.append(('7 · relisse', 'deux touchers à 120 ms : %d caresse restante · écart à l\'objet neuf %.3f %% des pixels' % (n2, 100 * (rl or 0))))
         if rl is None or rl > max(0.01, 2 * (bruit or 0)): acq.append('7 · relissé, le velours n\'est pas revenu à neuf : %.4f des pixels' % (rl or -1))
+        pg.evaluate("()=>{ window._peloteMod=null; }")
         pg.evaluate("()=>_aura.fige(false)")
         # 6 · le comblement du creux au lancer
         def vie(lance):
@@ -1234,7 +1280,8 @@ def juge():
 
     print("\n═══ L'AURA — la Pelote dans l'app, deux thèmes ═══\n")
     tot = 0
-    for nom, lst in (('écarts de position > 3 px', pos), ('écarts de style', sty), ('collisions', coll),
+    pos = [x for x in pos if ' v126 · ' in x or not any(k_ in x for k_ in ANCIENNES_POSITIONS)]   # v126 : les positions de septembre sortent, les cotes figées de B les remplacent
+    for nom, lst in (('écarts de position (cotes figées de B, ± 0,5 pt)', pos), ('écarts de style', sty), ('collisions', coll),
                      ('débordements', hors), ('présence peinte', peint), ('données', don),
                      ('les huit acquis', acq), ('densité', den), ('air de la colonne', air), ('la matière', mat)):
         print('%-28s %d' % (nom, len(lst))); tot += len(lst)

@@ -1,0 +1,12 @@
+encre         dalles 1 · durée 1611 ms · pendant : 0.58 % de la Toile change (boîte (418, 1758, 675, 2382)) · après : 0.30 % · bruit 0.13 %
+touffe        dalles 1 · durée 1219 ms · pendant : 1.32 % de la Toile change (boîte (354, 181, 674, 2369)) · après : 0.41 % · bruit 0.14 %
+mosaique      dalles 2 · durée 1834 ms · pendant : 0.95 % de la Toile change (boîte (3, 630, 684, 2378)) · après : 0.38 % · bruit 0.12 %
+braille       dalles 2 · durée 1974 ms · pendant : 0.97 % de la Toile change (boîte (220, 1031, 687, 2382)) · après : 0.32 % · bruit 0.20 %
+pixel         dalles 2 · durée 1632 ms · pendant : 0.73 % de la Toile change (boîte (434, 181, 1140, 2381)) · après : 0.29 % · bruit 0.12 %
+halin         dalles 1 · durée 1429 ms · pendant : 1.28 % de la Toile change (boîte (488, 864, 1042, 2378)) · après : 0.36 % · bruit 0.13 %
+esquille      dalles 1 · durée 1049 ms · pendant : 0.66 % de la Toile change (boîte (483, 867, 1166, 2362)) · après : 0.31 % · bruit 0.20 %
+ritournelle   dalles 1 · durée 1027 ms · pendant : 1.38 % de la Toile change (boîte (490, 304, 1170, 2374)) · après : 0.31 % · bruit 0.13 %
+bobinette     dalles 1 · durée 1298 ms · pendant : 0.49 % de la Toile change (boîte (369, 1827, 686, 2381)) · après : 0.31 % · bruit 0.13 %
+gravure       dalles 1 · durée 1568 ms · pendant : 4.10 % de la Toile change (boîte (0, 0, 1170, 2532)) · après : 4.09 % · bruit 0.12 %
+sillons       dalles 1 · durée 1781 ms · pendant : 0.38 % de la Toile change (boîte (96, 1803, 687, 2382)) · après : 0.31 % · bruit 0.13 %
+brouillamini  dalles 2 · durée 1350 ms · pendant : 0.91 % de la Toile change (boîte (240, 489, 876, 2382)) · après : 0.38 % · bruit 0.13 %

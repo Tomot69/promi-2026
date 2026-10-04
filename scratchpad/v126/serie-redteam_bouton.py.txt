@@ -1,0 +1,35 @@
+[signal] les 20 ouvertures sont lues                                                         OK  20 lues
+3 · [signal] le texte n'est jamais le ton des poils                                          OK  0 ouverture(s)
+3 · [signal] le texte n'est jamais la teinte du corps                                        OK  0 ouverture(s)
+4 · [signal] contraste ≥ 3:1 face au fond, à chaque ouverture                                OK  le plus bas : 3.03 · ouverture 3 [light] texte [185, 119, 144] sur [247, 240, 222]
+4 · [signal] jamais kaki                                                                     OK  0 ouverture(s)
+5 · [signal] le texte n'est jamais à l'encre : il garde la teinte d'un ton de la palette (ni les poils ni le corps) OK  0 ouverture(s) fautive(s) · 
+6 · [signal] la couleur se tire au hasard (au moins deux couleurs vues quand au moins deux tons sont tirables) OK  7 couleur(s) vue(s), jusqu'à 2 ton(s) tirable(s)
+[candide] les 20 ouvertures sont lues                                                        OK  20 lues
+3 · [candide] le texte n'est jamais le ton des poils                                         OK  0 ouverture(s)
+3 · [candide] le texte n'est jamais la teinte du corps                                       OK  0 ouverture(s)
+4 · [candide] contraste ≥ 3:1 face au fond, à chaque ouverture                               OK  le plus bas : 3.03 · ouverture 3 [light] texte [150, 126, 197] sur [247, 240, 222]
+4 · [candide] jamais kaki                                                                    OK  0 ouverture(s)
+5 · [candide] le texte n'est jamais à l'encre : il garde la teinte d'un ton de la palette (ni les poils ni le corps) OK  0 ouverture(s) fautive(s) · 
+6 · [candide] la couleur se tire au hasard (au moins deux couleurs vues quand au moins deux tons sont tirables) OK  6 couleur(s) vue(s), jusqu'à 2 ton(s) tirable(s)
+[irascible] les 20 ouvertures sont lues                                                      OK  20 lues
+3 · [irascible] le texte n'est jamais le ton des poils                                       OK  0 ouverture(s)
+3 · [irascible] le texte n'est jamais la teinte du corps                                     OK  0 ouverture(s)
+4 · [irascible] contraste ≥ 3:1 face au fond, à chaque ouverture                             OK  le plus bas : 3.03 · ouverture 5 [light] texte [213, 111, 0] sur [247, 240, 222]
+4 · [irascible] jamais kaki                                                                  OK  0 ouverture(s)
+5 · [irascible] le texte n'est jamais à l'encre : il garde la teinte d'un ton de la palette (ni les poils ni le corps) OK  0 ouverture(s) fautive(s) · 
+6 · [irascible] la couleur se tire au hasard (au moins deux couleurs vues quand au moins deux tons sont tirables) OK  5 couleur(s) vue(s), jusqu'à 2 ton(s) tirable(s)
+[taciturne] les 20 ouvertures sont lues                                                      OK  20 lues
+3 · [taciturne] le texte n'est jamais le ton des poils                                       OK  0 ouverture(s)
+3 · [taciturne] le texte n'est jamais la teinte du corps                                     OK  0 ouverture(s)
+4 · [taciturne] contraste ≥ 3:1 face au fond, à chaque ouverture                             OK  le plus bas : 3.00 · ouverture 2 [dark] texte [68, 86, 157] sur [5, 3, 2]
+4 · [taciturne] jamais kaki                                                                  OK  0 ouverture(s)
+5 · [taciturne] le texte n'est jamais à l'encre : il garde la teinte d'un ton de la palette (ni les poils ni le corps) OK  0 ouverture(s) fautive(s) · 
+6 · [taciturne] la couleur se tire au hasard (au moins deux couleurs vues quand au moins deux tons sont tirables) OK  7 couleur(s) vue(s), jusqu'à 2 ton(s) tirable(s)
+1 · le mot : « PARTAGER MA PELOTE » (capitales, aucune accentuée)                            OK  'PARTAGER MA PELOTE'
+1 · PromiLate, 15 px, chasse 0, écrit tel quel                                               OK  PromiLate, Gilbert, system-ui, sans-serif · 15px · normal · none
+1 · la grammaire du bouton n'a pas bougé : 342 × 60 à x 24, trait 2, rayon 30                OK  [24, 342, 60] · 2px · 30px
+2 · la hauteur de capitale = celle de « TRACE POUR LANCER »                                  OK  bouton 10.67 · phrase du trait 10.67 (PromiLate, Gilbert, system-ui, sans-serif 15px)
+aucune erreur de page                                                                        OK  
+
+33 / 33

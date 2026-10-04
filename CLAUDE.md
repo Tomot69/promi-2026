@@ -116,6 +116,55 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v126 (4 oct. 2026) — LE REGISTRE DES CHANTIERS ; L'AURA FIGÉE (B) ; LA TOILE VIT AU REPOS ; LE CREUX DU DOIGT SUR LA CARTE. (Décisions Tom.)
+> **⚑ `CHANTIERS.md` EST LE REGISTRE — quatre règles** (Tom : « Tom perd des demandes d'un lot à l'autre, et ça s'arrête maintenant ») :
+> **① un numéro (C-001…) n'est jamais supprimé ni réutilisé ; ② seul Tom valide ou abandonne un chantier ; ③ toute nouvelle demande
+> reçoit un numéro AVANT le moindre travail ; ④ chaque rapport finit par le tableau des chantiers non validés.** États : OUVERT · EN COURS ·
+> FAIT, EN ATTENTE DE TOM · VALIDÉ PAR TOM · REPORTÉ (raison, lot visé) · ABANDONNÉ PAR TOM. Juge : **`redteam_registre.py`** (sans
+> navigateur ; rougit sur une copie amputée d'une ligne). Le carnet d'avant (chantiers 1 à 78) : `CARNET-CHANTIERS-ARCHIVE.md` — là où ce
+> fichier écrit « chantier 59 », « CHANTIERS.md, chantier prioritaire », c'est lui.
+> **⚑ LA SÉRIE DE JUGES, ALLÉGÉE (C-030).** À chaque lot, une série COURTE : les juges des chantiers touchés, plus **six sentinelles —
+> `redteam_couleurs_ref` · `redteam_decisions` · `redteam_joignable` · `redteam_ecrans` · `redteam_volume` · `redteam_registre`**. La série
+> COMPLÈTE tourne **un lot sur trois, et avant tout refigeage**. Un juge lent réduit son échantillon dans la série courte
+> (`redteam_corps --n=20`, `redteam_zone --n=12`, `redteam_vivant --duree=70 --mondes=…`). Ce qui touche le moteur garde `banc_rendu` et
+> `redteam_rythme`.
+> **⚑ L'AURA EST FIGÉE SUR LA COMPOSITION B (C-005).** Cotes en points 390 × 844, haut → bas de chaque bloc, phrase de deux lignes :
+> ```
+> plateau 40 → 100 · Pelote (silhouette) 132,53 → 374,53 · ombre 391,22 → 407,45 · « PARTAGER MA PELOTE » 435,47 → 495,47
+> phrase 515,59 → 566,56 (une ligne : 541,07) · Noyaux 582,77 → 689,77 · légende 709,05 → 733,30 · chiffres 752,02 → 782,02
+> « ce que tu as tenu » 800,52        — 62 pt d'air sous les chiffres
+> ```
+> Dans le code : `_CMP=[14,12,12]` (face à v124), ombre `K.ombre.y` 391,224 · `K.G2` 22 · `K.AIR_MOT` 18,71 − 2,5 · `K.nx.y` 444,061.
+> `?aura=` est retiré. **`releve-aura.py` porte ces cotes EN DUR (`COTES_B`, ± 0,5 pt)** — la dette de 36 écarts est soldée ; la preuve :
+> `--sonde-cote` (le bouton à +0,6 pt) rougit. Son acquis 7 épingle le souffle (`_peloteMod`) : **on compare au même angle ET au même
+> souffle** (il rendait 6,8 %, 12,6 %, 43,6 % ou 47,9 % selon l'instant). Sa sonde d'encre cherchait encore le brun en sombre (0,0 pt).
+> **⚑ LA TOILE VIT AU REPOS (C-028).** Avant : aucun des vingt mondes ne bougeait au repos (mesuré, 24 s chacun) ; le seul mouvement sans
+> parole était le FRÉMISSEMENT de toute la Toile au retour sur l'accueil (`liven`). Depuis v126 (`promi-moteur.js`, `_vivTire`) : toutes
+> les 5 à 15 s (tiré au hasard, compté de la fin d'un mouvement), UNE dalle (70 %) ou DEUX bougent 1 à 2 s par les voies du frémissement
+> (place, étirement, tour, poids de matière), en cloche, au quart de son amplitude ; un seul minuteur entre deux mouvements, la boucle
+> d'images arrêtée ; rien si l'écran est couvert, en arrière-plan, sous « Réduire les animations », ou dans les 5 s d'un toucher.
+> **Douze mondes vivent** ; **huit restent immobiles** faute de manière (`_VIV_NON` : Volubilis, Guingois, Mascaret, Ramage — rien ne
+> bouge par cette voie ; Madrure, Chantourné — seul le titre bougeait ; Chamade, Éclisse — le mouvement gagnait toute la Toile) : C-031.
+> Juge : **`redteam_vivant.py`** (3 min par monde ; `--fixe` rougit). ⚠ Mesuré à la naissance : environ une fois sur dix la dalle ne revient pas
+> exactement à l'image d'avant (0,1 à 1 % des pixels : Touffe, Tesselle, Bobinette, Taille-douce) ; sous Houle un intervalle de 25 s. Le juge les
+> prend : c'est le produit qui varie (§7), pas l'instrument.
+> **⚑ LE CREUX DU DOIGT EST SUR LA CARTE GRAPHIQUE (C-029).** `contact()` est porté ligne pour ligne dans le shader (plateau, cuvette en
+> asin, bourrelet, cloche ; place, normale par la pente, peigne couché, ombre du fond) ; l'empreinte arrive en uniformes. Banc WebKit,
+> doigt posé et glissé : p50 17 ms, p95 20 à 25 ms selon la passe — la cible de 22 est au bord du banc, qui plafonne à 19–20 sans rien peindre (25–42 en v125, 156–175 avant) ; ΔE00 moyen 0,7 contre le peintre. Juge :
+> **`redteam_pelote_doigt.py`** (`--temoin` : le contact par le processeur, il rougit). **Le rendu par les poils, pas par une texture :
+> accepté par Tom.** Mesure de Tom, iPhone 16e (`b116538`) : 220 000 poils, p50 17 ms, p95 25 ms, 54–56 images/s.
+> **⚑ LE GESTE DE COULEUR DU STUDIO (C-010) — la cause** : `touch-action:pan-y` sur `#stBg` (posé par le glissement de monde) ; un doigt
+> qui part à la VERTICALE ou en diagonale est repris par le navigateur (`pointercancel`, plus aucun `pointermove`). Le juge partait
+> toujours à l'horizontale ; à la souris il n'y a pas de `touch-action`. **Un geste au doigt se prouve dans TOUTES les directions.**
+> Parade : au doigt, le geste se lit sur `touchmove` (non passif, annulé dès qu'il est armé). `redteam_studio_geste` 22/22 (16/22 avant).
+> **⚑ RAMAGE, L'ONDE RONDE (C-009) — OUVERT.** Déclencheur mesuré : l'ARRIVÉE d'une plume. Le film de la pousse est un disque (Worker,
+> état d'arrivée) posé sur le plumage de l'état d'avant : anneau de liserés au bord, puis 5 à 16 % des pixels sautent hors du disque à la
+> dernière image. Trois essais (canevas processeur, papier et plumage borné de l'image d'ouverture) n'ont rien supprimé : le moteur est
+> rendu tel quel. `redteam_ramage_onde.py` est ROUGE (le défaut).
+> **L'onboarding (C-006)** : le concept est sur la DERNIÈRE diapositive ; son fond est un fragment de Toile posé par le moteur — la
+> nouvelle parole et des voisines qui ne sont à personne (`Toile.sync(ids + voisines)`, rien n'est sauvegardé ; `terminer` rend la Toile
+> à la seule parole plantée). `?voisines=4|7|10` ; 7 en attendant le choix de Tom.
+
 ### ⚑ v124 (3 oct. 2026) — L'AURA REMONTÉE ENCORE ; « PARTAGER MA PELOTE » ET « GARDER TA TOILE » EN COULEUR ; TENIR EST FLUIDE. (Décisions Tom.)
 > **Q378 tranchée : la fluidité passe avant la densité.** Six paliers : 220 000 · 180 000 · 150 000 · **110 000 · 90 000 · 75 000**. À
 > 110 000 et en dessous, le poil reprend l'épaisseur et le reflet de la densité 1 (`reglePoil`, l'atlas est refait) — jamais sous les yeux.
@@ -1667,6 +1716,12 @@ python3 redteam_bouton.py      # 33 — v124, « PARTAGER MA PELOTE » : PromiLa
 python3 redteam_garder_toile.py # 29 — v124, « Garder ta Toile » : gras, teinte retirée à chaque retour (20 × 2 palettes × 2 thèmes), ≥ 4,5:1. 15/29 avant.
 python3 redteam_corps.py       # 25 — v123, LE CORPS DE LA PELOTE : 50 ouvertures × 4 palettes — ΔE00 ≥ 15 face au poil (rampe et image), jamais kaki,
                                #   jamais le ton du sol, tiré au hasard. Lu sur la peau PEINTE. Rougit sur app-avant-v123 (16/25). ≈ 25 min.
+python3 redteam_registre.py    # 6 — v126, SENTINELLE : aucun chantier ne disparaît de CHANTIERS.md (numéros sans trou, aucun perdu depuis les commits passés,
+                               #   états de la liste). Sans navigateur. Rougit sur une copie amputée d'une ligne.
+python3 redteam_vivant.py      # v126 (C-028) : la Toile vit au repos — 3 min par monde, douze mondes vivent, huit immobiles ; intervalle ≥ 5 s, jamais
+                               #   périodique, ≤ 2 dalles, ≤ 4 % de la Toile, retour à l'image d'avant, boucle arrêtée entre deux. ≈ 65 min ; --duree= --mondes= --fixe.
+python3 redteam_pelote_doigt.py # 7 — v126 (C-029) : sous le doigt, image p95 ≤ 22 ms (banc WebKit), ΔE00 ≤ 2 contre le peintre, aucun poil au processeur. --temoin rougit.
+python3 redteam_ramage_onde.py # v126 (C-009) : ⚠ ROUGE — le saut d'ensemble à la fin de l'arrivée d'une plume (5 à 16 % ; décidé ≤ 2 %). Le défaut est ouvert.
 python3 redteam_mesure.py      # 10 — v125 : `?mesure=1` ne décale rien, son cadre ne couvre pas la Pelote. Rougit sur l'état d'avant (8/10).
 python3 redteam_zone.py        # 8 — v125 : rien ne peint derrière la Pelote hors halo et ombre ; le halo n'a pas de second bord (≤ 30 % en 6°).
                                #   30 ouvertures × 2 thèmes (≈ 4 min). Rougit sur l'état d'avant (B, deux thèmes).

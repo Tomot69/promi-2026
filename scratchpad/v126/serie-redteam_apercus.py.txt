@@ -1,0 +1,12 @@
+  ✅ A le fond du Studio porte de la matière colorée [dark]  (47.5 %)
+  ✅ B les graines de l'aperçu se déclarent [dark]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [dark]
+  ✅ D la deuxième ouverture vaut la première [dark]  (72/72, 45.8 %)
+  ❌ E le fond d'un aperçu est celui de la vraie Toile [dark] — fond sombre #050302 au lieu de #201908 (celui du mode)
+  ✅ A le fond du Studio porte de la matière colorée [light]  (44.9 %)
+  ✅ B les graines de l'aperçu se déclarent [light]  (72 graines, 4 tons)
+  ✅ C les cinq mondes gratuits portent leur matière [light]
+  ✅ D la deuxième ouverture vaut la première [light]  (72/72, 40.9 %)
+  ❌ E le fond d'un aperçu est celui de la vraie Toile [light] — fond sombre #050302 au lieu de #201908 (celui du mode)
+
+❌  8/10

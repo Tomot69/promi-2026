@@ -1,0 +1,25 @@
+  le lot est posé                                              OK   
+  Toile.getHue existe                                          OK   
+  les constantes sont celles décidées (480 · 390 · 48)         OK   {'MAINTIEN': 480, 'COURSE': 390, 'PAS_PAL': 48, 'arme': None, 'mot': 'reste appuyé pour changer de couleur'}
+  l'appui maintenu arme le geste                               OK   
+  l'horizontale fait varier la teinte                          OK   0.0 → 110.8
+  la teinte suit le doigt, sans accélération (Q125)            OK   attendu 110.8, lu 110.8
+  on revient exactement d'où l'on vient (Q125)                 OK   0.000 vs 0.000
+  la verticale change de palette                               OK   signal → alangui
+  la palette revient d'où elle vient                           OK   signal
+  le geste se désarme au lever du doigt                        OK   
+  un glissement franc change encore de MONDE                   OK   encre → touffe
+  et il n'a pas armé le geste de couleur                       OK   
+  et il n'a pas touché à la teinte                             OK   0.000 vs 0.000
+  6 · à la VERTICALE d'abord : le geste reste armé pendant qu'on glisse OK   True
+  6 · à la VERTICALE d'abord : la palette suit le doigt (120 px → 2 palette(s)) OK   signal → candide
+  6 · à la VERTICALE d'abord : la Toile du Studio change À L'ÉCRAN KO   33.2 niveaux (bruit 14.9)
+  6 · à la VERTICALE d'abord : relâcher fixe le résultat       KO   candide · 0° · 8.1 niveaux
+  6 · en DIAGONALE d'abord : le geste reste armé pendant qu'on glisse OK   True
+  6 · en DIAGONALE d'abord : la palette suit le doigt (120 px → 2 palette(s)) OK   signal → candide
+  6 · en DIAGONALE d'abord : la teinte suit aussi              OK   attendu 78, lu 78
+  6 · en DIAGONALE d'abord : la Toile du Studio change À L'ÉCRAN OK   33.0 niveaux (bruit 6.2)
+  6 · en DIAGONALE d'abord : relâcher fixe le résultat         KO   candide · 78° · 13.2 niveaux
+
+19/22
+KO : 6 · à la VERTICALE d'abord : la Toile du Studio change À L'ÉCRAN · 6 · à la VERTICALE d'abord : relâcher fixe le résultat · 6 · en DIAGONALE d'abord : relâcher fixe le résultat

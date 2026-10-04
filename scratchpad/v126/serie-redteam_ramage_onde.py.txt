@@ -1,0 +1,8 @@
+KO  [passe 1] le déclencheur est joué : une arrivée, au Studio, juste après l'ouverture  1 image(s)
+KO  1 · [passe 1] pas de saut d'ensemble à la fin de l'événement (≤ 2 % des pixels)  48.1 %
+OK  [passe 1] aucune erreur de page  
+OK  [passe 2] le déclencheur est joué : une arrivée, au Studio, juste après l'ouverture  50 image(s)
+KO  1 · [passe 2] pas de saut d'ensemble à la fin de l'événement (≤ 2 % des pixels)  9.7 %
+OK  [passe 2] aucune erreur de page  
+
+3 / 6

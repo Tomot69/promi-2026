@@ -8383,3 +8383,11 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 12. **La persistance** — écritures hors du fil principal, regroupées (le prototype écrit `localStorage` de façon synchrone dans des gestes).
 13. **Le partage** — l'image rendue hors écran dès l'ouverture de l'écran Partager, pas au toucher du bouton.
 14. **Les polices** — les trois faces chargées avant la première image ; aucune mesure de texte « trop tôt » (le libellé d'une carte mesuré 53 puis 64,5).
+
+#### v126 — décisions (4 oct. 2026). Les chantiers vivent désormais dans `CHANTIERS.md` (C-001…) ; ce fichier garde les décisions.
+- **Q382 — TRANCHÉE (Tom)** : le concept passe sur la DERNIÈRE diapositive de l'onboarding (C-006).
+- **Q383 — TRANCHÉE (Tom)** : le creux du doigt passe à la carte graphique (C-029) ; validation sur iPhone à faire.
+- **Q384 — TRANCHÉE (Tom)** : composition B de l'Aura, figée (C-005).
+- **Le rendu de la Pelote par les poils (pas une texture) : ACCEPTÉ par Tom.**
+- **Mesure de Tom, iPhone 16e (b116538)** : carte graphique, 220 000 poils, image p50 17 ms, p95 25 ms, 54 à 56 images/s, la respiration n'ajoute rien — C-001 : fluidité acquise.
+- **À CHOISIR (C-006)** : la densité du fond de la dernière diapositive — A (4 voisines), B (7), C (10).

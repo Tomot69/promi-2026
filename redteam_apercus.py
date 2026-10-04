@@ -198,8 +198,10 @@ def main():
             nom = "E le fond d'un aperçu est celui de la vraie Toile [%s]" % th
             if not f:
                 ko(nom, "aucun `Toile.fondToile` : le fond est encore écrit à trois endroits")
-            elif f['sombre'].upper() != '#201908':
-                ko(nom, "fond sombre %s au lieu de #201908 (celui du mode)" % f['sombre'])
+            # ⚑ v126 — CONTRAT MIS À JOUR AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_apercus-avant-v126.py). Il attendait le brun
+            #   `#201908` ; le mode sombre est l'encre de seiche `#050302` depuis v116 (Tom), gardée en v121. Rouge depuis v116, hors de toute série.
+            elif f['sombre'].upper() != '#050302':
+                ko(nom, "fond sombre %s au lieu de #050302 (la seiche, v116)" % f['sombre'])
             else:
                 ok(nom + "  (sombre %s · clair %s)" % (f['sombre'], f['clair']))
 
