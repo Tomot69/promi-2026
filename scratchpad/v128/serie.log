@@ -1,0 +1,17 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 44
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+  961s  redteam_vivant.py          OK  aucune erreur de page   / 84 / 84
+  518s  redteam_retour.py          OK  aucune erreur de page   / 34 / 34
+  111s  redteam_onboarding.py      ====================================================================================== /   ✅  44 / 44 contrats tenus
+   68s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #00351A #2A1548 #00341A #291547 OK   (Q262, v8c) / 79 / 79
+  128s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   92s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  134s  redteam_decoupe.py         ✅  AUCUNE DÉCOUPE NOUVELLE. / ✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+   55s  redteam_apercus.py           ✅ E le fond d'un aperçu est celui de la vraie Toile [light]  (sombre #050302 · clair #F1ECD9) / ✅  10/10
+  115s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1933 ms) / 32/32
+   68s  redteam_toile.py           aucune erreur JS                           OK  [] / 18/18
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+  108s  banc_rendu.py              280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0 / ✅ AU PIXEL.
+  279s  redteam_rythme.py            · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 44, 'images': 3, 'boucle': 1824, 'debut': 22} / 59 / 60
+   33s  releve-design.py           ✅  AUCUN ÉCART. Le design est intact.
+  651s  redteam_couleurs_ref.py      ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 249) 33 %            ×1   Nuée défilée[l] / ❌ — 2 écart(s) de couleur avec la référence v118

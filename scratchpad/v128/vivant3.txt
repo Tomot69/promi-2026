@@ -1,0 +1,35 @@
+OK  [encre] la Toile bouge au repos (au moins 2 mouvements en 70 s)  8 mouvement(s)
+OK  [encre] jamais moins de 5 s entre deux mouvements  le plus court : 5.5 s
+OK  [encre] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 10.7 s
+OK  [encre] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 6.6 à 12.1 s
+OK  [encre] un mouvement dure 1 à 2 s  de 0.9 à 1.7 s
+OK  [encre] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 0.41 %
+OK  [encre] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+OK  [encre] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+OK  [encre] rien d'autre ne bouge sur la Toile au repos  0 changement(s) sans tirage : 
+OK  [encre] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  6 lecture(s) sur 610 où la boucle tournait
+OK  [chamade] la Toile bouge au repos (au moins 2 mouvements en 70 s)  6 mouvement(s)
+OK  [chamade] jamais moins de 5 s entre deux mouvements  le plus court : 6.1 s
+OK  [chamade] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 15.1 s
+OK  [chamade] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 7.7 à 16.0 s
+OK  [chamade] un mouvement dure 1 à 2 s  de 1.0 à 1.8 s
+OK  [chamade] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 1.03 %
+OK  [chamade] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+OK  [chamade] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+OK  [chamade] rien d'autre ne bouge sur la Toile au repos  0 changement(s) sans tirage : 
+OK  [chamade] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  2 lecture(s) sur 605 où la boucle tournait
+OK  [sillons] la Toile bouge au repos (au moins 2 mouvements en 70 s)  6 mouvement(s)
+OK  [sillons] jamais moins de 5 s entre deux mouvements  le plus court : 5.7 s
+OK  [sillons] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 11.2 s
+OK  [sillons] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 7.6 à 12.9 s
+OK  [sillons] un mouvement dure 1 à 2 s  de 1.5 à 2.0 s
+OK  [sillons] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 0.60 %
+OK  [sillons] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+OK  [sillons] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+OK  [sillons] rien d'autre ne bouge sur la Toile au repos  0 changement(s) sans tirage : 
+OK  [sillons] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  1 lecture(s) sur 610 où la boucle tournait
+OK  « Réduire les animations » : immobile (24 s)  0 mouvement(s)
+OK  hors écran (l'Index ouvert par-dessus, 22 s) : aucun mouvement tiré  26 → 26
+OK  aucune erreur de page  
+
+33 / 33

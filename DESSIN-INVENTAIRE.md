@@ -29,7 +29,9 @@ par-dessus l'app rendue, `pen.js` rend le trait, `dessin.py` et `trait.py` monte
 - **Le trait** (`pen.js`) : peinture pleine et opaque, contour lissé (Catmull-Rom), largeur variable.
 - **Le ton grisé** : la teinte du fond, à 28 % d'opacité, dans l'onglet TRAIT.
 
-## Ce que montrent les planches
+> ⚑ v128 : la planche est refaite en PARCOURS (`planche-v128/dessin-parcours-*`) ; trois principes : le dessin REMPLACE la dalle, le menu est compact (pastille `.chip`, 32,5 px, écart 4), « Dessiner » est en tête. Les planches v127 ci-dessous restent pour le trait (C) et les états.
+
+## Ce que montrent les planches (v127)
 
 - **A · la rangée d'outils** (`dessin-A-rangee-*`) — PLUME · GOMME · ANNULER · COULEUR · POSER, sur une fiche Promi, Chiche et Cercle :
   - **A** : sous la bande, icônes seules, cinq cibles réparties sur 342 pt (disques de 44, « POSER » en pilule pleine à droite) ;

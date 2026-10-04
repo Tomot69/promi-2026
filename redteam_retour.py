@@ -5,7 +5,7 @@ redteam_retour.py — LA VIE AU REPOS : LE RETOUR EST EXACT (v127, Tom, C-028).
 
 « Retour exact : après chaque mouvement, la dalle revient au pixel près à son image d'avant, en restaurant l'état d'origine plutôt qu'en
 rejouant le mouvement à l'envers. Juge : cent mouvements, zéro pixel d'écart au retour. »
-Le juge force les mouvements (`Toile.vivant.force()`, le tirage du moteur) sur les douze mondes qui bougent, neuf par monde (108), en
+Le juge force les mouvements (`Toile.vivant.force()`, le tirage du moteur) sur les seize mondes qui bougent, sept par monde (112), en
 WebKit ; avant chaque mouvement il lit le canevas de la Toile ENTIER, il vérifie que le mouvement a bien lieu (des pixels changent
 pendant), puis il relit après : ZÉRO pixel différent, à l'égalité stricte (aucune tolérance : la valeur décidée est 0, écrite en dur).
 Preuve : sur la version d'avant (app et moteur de v126, sauvegardes/*-avant-v127) il ROUGIT — les mondes à ressort ne reviennent pas.
@@ -14,8 +14,8 @@ Preuve : sur la version d'avant (app et moteur de v126, sauvegardes/*-avant-v127
 import sys, json
 from playwright.sync_api import sync_playwright
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
-MONDES = ['encre', 'touffe', 'mosaique', 'braille', 'pixel', 'sillons', 'gravure', 'halin', 'bobinette', 'ritournelle', 'madrure', 'terrazzo']
-N = 9; RESTE_DECIDE = 0
+MONDES = ['encre', 'touffe', 'mosaique', 'braille', 'pixel', 'sillons', 'gravure', 'halin', 'bobinette', 'ritournelle', 'madrure', 'terrazzo', 'chamade', 'chantourne', 'brouillamini', 'mascaret']
+N = 7; RESTE_DECIDE = 0
 for a in sys.argv[1:]:
     if a.startswith('--mondes='): MONDES = a[9:].split(',')
     if a.startswith('--n='): N = int(a[4:])

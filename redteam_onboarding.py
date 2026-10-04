@@ -363,8 +363,8 @@ def un_theme(pw, theme):
             fin = pg.evaluate("()=>{const f=document.getElementById('onbFin');return f?{vu:getComputedStyle(f).display!=='none'&&+getComputedStyle(f).opacity>0.5,t:f.innerText}:null}")
             if not fin or not fin['vu']:
                 ko('O20 le message reste (4 s, puis le toucher)', 'le message n\'est plus là 5,4 s après le trait')
-            elif 'Le reste se découvre à ton rythme' not in (fin['t'] or '').replace('\u00a0', ' '):
-                ko('O20 le message reste (4 s, puis le toucher)', 'le message ne dit pas « Le reste se découvre à ton rythme. »')
+            elif 'Le reste se trace' not in (fin['t'] or '').replace('\u00a0', ' '):
+                ko('O20 le message reste (4 s, puis le toucher)', 'le message ne dit pas « Le reste se trace. » (v128, Tom)')
             if pg.evaluate(POIGNEE, '[data-onb="plus-tard"]'):
                 ko('O20 le message reste (4 s, puis le toucher)', 'le panneau du compte est venu sans toucher')
             ok('O20 le message reste (4 s, puis le toucher)')

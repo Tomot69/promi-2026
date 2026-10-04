@@ -1,0 +1,14 @@
+OK  [encre] les mouvements sont joués (5 demandés) et des pixels changent pendant  5 joué(s), pendant : 3366 5306 9528 5570 10135 px
+OK  [encre] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0
+OK  [touffe] les mouvements sont joués (5 demandés) et des pixels changent pendant  5 joué(s), pendant : 18287 6448 7562 7142 16741 px
+OK  [touffe] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0
+OK  [chamade] les mouvements sont joués (5 demandés) et des pixels changent pendant  5 joué(s), pendant : 11590 2704 11226 2765 6164 px
+OK  [chamade] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0
+OK  [sillons] les mouvements sont joués (5 demandés) et des pixels changent pendant  5 joué(s), pendant : 339 562 647 283 761 px
+OK  [sillons] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0
+OK  [bobinette] les mouvements sont joués (5 demandés) et des pixels changent pendant  5 joué(s), pendant : 2836 1731 1343 4227 5478 px
+OK  [bobinette] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0
+OK  cent mouvements au moins, tous revenus au pixel  25 revenus sur 25
+OK  aucune erreur de page  
+
+12 / 12

@@ -116,22 +116,6 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
-### ⚑ v128 (4 oct. 2026) — L'ONBOARDING (TEXTE, VOISINES VIDES) ; LE DESSIN REMPLACE LA DALLE ; QUATRE MONDES ONT LEUR MOUVEMENT. (Décisions Tom.)
-> **L'onboarding, dernière diapositive (C-006)** : « Ça y est. » · « Ton premier Promi, ta première dalle sur ta Toile. » (le texte d'avant
-> v125) · « Un Promi, ta parole donnée. Un Chiche, un défi lancé. Un Cercle, une parole à plusieurs voix. » · « Le reste se trace. »
-> (qui prend la place de « Le reste se découvre à ton rythme. »). **Les voisines ne sont PAS colorées** : des cellules vides, rendues comme
-> celles de la vraie Toile, à leur taille de v127 (`Toile.voisines`, la teinte ne vient que sur `couleur:true`, que personne ne demande).
-> **C-043** : l'onboarding en Gilbert est une décision de Tom (message joint au lot v127, 4 oct. 2026).
-> **⚑ L'OUTIL DE DESSIN (C-042, toujours une PLANCHE) — trois principes** : ① **le dessin REMPLACE la dalle ou la photo dans la bande** —
-> jamais par-dessus, ni sur un Promi, ni sur un Chiche, ni sur les dalles d'un Cercle ; la bande montre UNE chose à la fois (la dalle, la
-> photo ou le dessin) ; masquer le dessin fait revenir la dalle ; ② **le menu du bouton photo est compact** — la géométrie de la pastille
-> `.chip` (32,5 px de haut), 4 px entre deux (8 avant) ; ③ **« Dessiner » est en tête du menu**, sur la fiche et sur la page +.
-> **⚑ LA VIE AU REPOS** : `_VIV_PLEIN` (une cloche pleine : le mouvement se voit 1 à 2 s, plus seulement son milieu — Houle, Éclisse) ; la
-> QUEUE (420 ms après un mouvement, la boucle tourne, l'image d'avant rendue à chaque image : les ressorts convergent sans se voir —
-> Bobinette) ; **quatre mouvements écrits dans le peintre** : Chamade (le cœur bat), Chantourné (le médaillon tourne à peine), Brouillamini
-> (la dalle pivote sur sa graine), Mascaret (la lame glisse) — des tracés repeints sous une transformation, jamais une image déplacée ; le
-> calque de repos est sauté pendant le mouvement. **Seize mondes bougent ; quatre restent immobiles : Volubilis, Guingois, Ramage, Esquille.**
-
 ### ⚑ v126 (4 oct. 2026) — LE REGISTRE DES CHANTIERS ; L'AURA FIGÉE (B) ; LA TOILE VIT AU REPOS ; LE CREUX DU DOIGT SUR LA CARTE. (Décisions Tom.)
 > **⚑ `CHANTIERS.md` EST LE REGISTRE — quatre règles** (Tom : « Tom perd des demandes d'un lot à l'autre, et ça s'arrête maintenant ») :
 > **① un numéro (C-001…) n'est jamais supprimé ni réutilisé ; ② seul Tom valide ou abandonne un chantier ; ③ toute nouvelle demande
@@ -1386,15 +1370,12 @@ autre contour. Contrôlé par un balayage qui vérifie les trois cotes sur dix �
 > du tableau ci-dessus, qui était déjà la règle. Un seul propriétaire dans l'app : `rayon()` (`lot-CERCLE-MUR`,
 > `window._seuilPilule`) ; les juges portent 94,5 EN DUR (§7).
 
-### ⚑ LA LOI DES POINTS (Tom, 4 oct. 2026, v128 — C-044)
-> **« Les points disent qu'il manque quelque chose : une moitié de trait, un mot, un engagement. Ils ne servent jamais à autre chose.
-> Exception nominative : les trois petits points du choix de taille de l'outil de dessin. »**
-
 ### ⚑ v127 — LA LOI DES POINTS : UNE SEULE EXCEPTION, NOMINATIVE — LE CHOIX DE TAILLE DE L'OUTIL DE DESSIN (C-042)
 > (Décision Tom, 4 oct. 2026.) *« Au second toucher sur la plume ou la gomme, trois petits points côte à côte, de taille croissante, à
 > l'encre du mode. Inscris dans CLAUDE.md l'exception nominative à la loi des points : seul ce choix de taille y échappe. »*
 > **Seul le choix de taille de la plume et de la gomme porte des points** ; nulle part ailleurs un point ne sert de commande ni de repère.
-> Le texte de la loi : bloc ci-dessus (dicté par Tom en v128). L'outil n'est pas construit : planche `planche-v127/dessin-*`, en attente de son choix.
+> ⚠ Le texte de la loi elle-même n'est écrit nulle part dans ce fichier (cherché le 4 oct. dans CLAUDE.md, QUESTIONS.md, CHANTIERS.md) :
+> à faire dicter par Tom. L'outil n'est pas construit : planche `planche-v127/dessin-*`, en attente de son choix.
 
 ### ⚑ UN RÉGLAGE VIT LÀ OÙ VIT CE QU'IL RÈGLE
 

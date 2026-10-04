@@ -23,7 +23,7 @@ from playwright.sync_api import sync_playwright
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
 DUREE = int(next((a.split('=')[1] for a in sys.argv if a.startswith('--duree=')), 180))
 VIVENT = 'encre,touffe,mosaique,braille,pixel,halin,esquille,ritournelle,bobinette,gravure,sillons,brouillamini'.split(',')
-IMMOBILES = 'volubilis,guingois,mascaret,ramage,chantourne,brouillamini,chamade,esquille'.split(',')   # v127 : Madrure, Chamade, Éclisse ont leur mouvement ; Brouillamini ne bougeait que son titre (figé en v127)
+IMMOBILES = 'volubilis,guingois,ramage,esquille'.split(',')   # v128 : Chamade, Chantourné, Brouillamini, Mascaret ont leur mouvement, écrit dans leur peintre   # v127 : Madrure, Chamade, Éclisse ont leur mouvement ; Brouillamini ne bougeait que son titre (figé en v127)
 MONDES = next((a.split('=')[1].split(',') for a in sys.argv if a.startswith('--mondes=')), VIVENT + IMMOBILES)
 FIXE = '--fixe' in sys.argv
 INT_MIN, INT_MAX, DUR_MIN, DUR_MAX, DALLES_MAX, PART_MAX = 5.0, 15.0, 1.0, 2.0, 2, 6.0   # 6 % : deux grandes dalles (mesuré : jusqu’à 4,2 % sous Ritournelle) ; « toute la Toile » = des dizaines de %
@@ -54,6 +54,9 @@ with sync_playwright() as p:
     if FIXE: print('SONDE : intervalle fixe de 6 s')
     for m in MONDES:
         pg.evaluate("m=>{ try{closeAll()}catch(e){} Toile.setTheme(m); }", m); pg.wait_for_timeout(7000)
+        # v128 : la référence de repos se prend sur une Toile POSÉE — on attend que la boucle du moteur soit arrêtée une seconde (sous Houle, par image, elle
+        # finissait parfois de se poser après le départ de la mesure : un « changement à 0 s » et un reste constant, de l'instrument)
+        pg.evaluate("async ()=>{ let calme=0, n=0; while(calme<10 && n++<150){ await new Promise(r=>setTimeout(r,100)); calme = Toile.vivant.boucle() ? 0 : calme+1; } }")
         r = pg.evaluate(JS, DUREE); Etous = r['E']; J = r['journal']
         # un mouvement de la vie au repos = une suite de lectures qui commence quand le moteur a tiré (le journal ne sert qu'à RECONNAÎTRE
         #   l'épisode ; ce qu'on en juge — durée, étendue, retour — est lu sur les pixels). Ce qui bouge sans tirage est compté à part.

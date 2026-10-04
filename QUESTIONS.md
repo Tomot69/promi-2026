@@ -8401,3 +8401,9 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Ouvert** : huit mondes immobiles au repos (Volubilis, Guingois, Mascaret, Ramage, Chantourné, Brouillamini, Chamade, Esquille) — une
   manière à écrire dans leur propre peintre. Le texte de « la loi des points » n'est écrit nulle part : à dicter.
 - **En attente du choix de Tom** : l'outil de dessin — rangée A, B ou C ; effilé E1 ou E2 ; symbole S1 ou S2 (`DESSIN-INVENTAIRE.md`).
+
+## LOT v128 — 4 octobre 2026 (décisions dans CHANTIERS.md : C-006, C-028, C-031, C-042, C-043, C-044)
+
+- **Tranché par Tom** : la loi des points (texte) ; voisines de l'onboarding non colorées ; le dessin remplace la dalle ; menu compact ; « Dessiner » en tête.
+- **À confirmer** : « Le reste se trace. » prend la place de « Le reste se découvre à ton rythme. » (les deux à la suite auraient fait doublon).
+- **Ouvert** : quatre mondes immobiles (Volubilis, Guingois, Ramage, Esquille) ; une fiche Cercle n'a ni bouton photo ni la place d'un dessin (bande de 50 pt).

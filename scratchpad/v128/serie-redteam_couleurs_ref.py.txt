@@ -1,0 +1,7 @@
+1 écran(s) repris sur une page fraîche : Nuée défilée[l]
+6744 propriétés comparées · 36 écrans × 2 thèmes · 64 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 8 · E5 violations retirées 22 · E6 trace crème (Q374) 13 · E7 ombre crème en sombre 2
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 248) 67 %            ×1   Nuée défilée[l]
+  ✗ canevas  réf au plus près ΔE 99.0               → app rgb(130, 174, 249) 33 %            ×1   Nuée défilée[l]
+
+❌ — 2 écart(s) de couleur avec la référence v118
