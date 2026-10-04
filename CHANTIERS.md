@@ -29,7 +29,7 @@
 | C-018 | v124 | « redteam_air et les dates. » | OUVERT | 10 paires de la référence ne sont plus retrouvées (8 dates du Peaufiner, 2 du bouton de l'Aura renommé). | redteam_air | à fixer |
 | C-019 | v124 | « releve-S5. » | OUVERT | 13 écarts de dette (`releve-S5-instant`). | releve-S5-instant | à fixer |
 | C-020 | v118–v124 | « Code mort et faux positifs de redteam_volume. » | OUVERT | Dette nommée : 290 occurrences (`volume-dette.json`). | redteam_volume | à fixer |
-| C-021 | 3 oct. · v123 | « Dossier de portage » (dossier `portage/`, dix documents, lecture seule). | REPORTÉ | Reporté par Tom : v124 → v125 → v126 → **v127**. | — | v127 |
+| C-021 | 3 oct. · v123 | « Dossier de portage » (dossier `portage/`, dix documents, lecture seule). | REPORTÉ | Reporté par Tom : v124 → v125 → v126 → **v127**. | — | v128 |
 | C-022 | 3 oct. · v123 | « Vibrations et notifications (conversation dédiée). » | REPORTÉ | Dans une nouvelle conversation (Core Haptics, notifications). | redteam_notifs | conversation dédiée |
 | C-023 | 4 oct. · liste de Tom | « Page du trait partagé. » | OUVERT | — | — | à fixer |
 | C-024 | héritage (carnet d'avant v126 : CARNET-CHANTIERS-ARCHIVE.md) | « Héritage : Fil en ligne de temps, visages, dalle floue de la page +, Ramage à 5,5 s sur 500 paroles, mondes de la saison 2, contrôles intermittents. » | OUVERT | Mondes de la saison 2 à valider (Q332–Q336, rythme Q342). Contrôles intermittents connus : redteam_toile, redteam_geste (anneau), releve-aura (deux contrôles qui dépendent du tirage : « sol hors des tons », « les dalles se noient »). | redteam_rythme | à fixer |
