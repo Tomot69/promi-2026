@@ -8407,3 +8407,9 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Tranché par Tom** : la loi des points (texte) ; voisines de l'onboarding non colorées ; le dessin remplace la dalle ; menu compact ; « Dessiner » en tête.
 - **À confirmer** : « Le reste se trace. » prend la place de « Le reste se découvre à ton rythme. » (les deux à la suite auraient fait doublon).
 - **Ouvert** : quatre mondes immobiles (Volubilis, Guingois, Ramage, Esquille) ; une fiche Cercle n'a ni bouton photo ni la place d'un dessin (bande de 50 pt).
+
+## LOT v129 — 4 octobre 2026 (décisions dans CHANTIERS.md : C-006, C-031, C-042, C-045, C-046, C-047)
+
+- **Tranché par Tom** : le texte de la dernière diapositive (quatre paragraphes, « Deuxio » penché de 3°) ; voisines validées ; C-031 reporté à Swift ; le mode dessin libère l'écran.
+- **À confirmer** : le « ! » isolé à la fin du texte dicté (« La suite t’appartient. ! ») — non posé.
+- **À trancher** : le trait personnalisé (C-045) — quatre décisions listées en fin de `TRAIT-PERSONNALISE-CONCEPT.md`.

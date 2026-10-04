@@ -116,25 +116,6 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
-### ⚑ v129 (4 oct. 2026) — L'ONBOARDING, TEXTE FIGÉ ; « CERCLE » CENTRÉ ; LE MODE DESSIN LIBÈRE L'ÉCRAN. (Décisions Tom.)
-> **La dernière diapositive (C-006), quatre paragraphes, mot pour mot** : « C’est planté. » · « Ton premier Promi, ta première dalle sur ta
-> Toile. Plus qu’à le tenir. » · « Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle,
-> c’est tout cela à la fois, mais à plusieurs. » · « Le reste se découvre en traçant. La suite t’appartient. » **« Deuxio » est le seul
-> mot penché : 3°** (`.onbv-deux`, `skewX(-3deg)`), même police, même graisse, même couleur. La taille et la disposition des voisines sont
-> validées. `redteam_onboarding` porte le texte EN DUR (`TEXTE_FIN`) et l'inclinaison (O22 : 3° ± 0,5, aucune autre).
-> **« CERCLE » dans son encart (C-046) — la cause n'était ni la police ni la ligne de base** : une règle de v100
-> (`#detailPoster.dp-mode-nuee #dptNat{translate:none}`) retirait au Cercle le recentrage de v97 (+2,65), pour rendre à `redteam_nuee` sa
-> cote d'avant. L'encre du mot est maintenant à la même hauteur pour les trois natures (58,7 → 81,3, milieu 70). Juge :
-> **`redteam_motmarque.py`** (l'ENCRE, pas la boîte ; ± 0,5 pt ; 0/4 avant). `redteam_nuee` : la cote du mot passe de 52 à 55,7.
-> **⚑ L'OUTIL DE DESSIN (C-042, toujours une PLANCHE) — quatrième principe : LE MODE DESSIN LIBÈRE L'ÉCRAN.** Les disques et leurs noms
-> disparaissent : la place va aux réglages du dessin. L'encart du haut (nature, ✕ FERMER) est masqué : il n'en reste que le CONTOUR, au
-> trait fin, sans fond ni texte — jamais une transparence. Tout revient à POSER ou à la sortie du mode.
-> **C-031** : Volubilis, Guingois, Ramage et Esquille restent immobiles au repos dans le prototype — REPORTÉ au portage Swift.
-> **`redteam_couleurs_ref` (C-047)** : les « 2 écarts » de v128 étaient du JUGE — une mini-dalle du fil d'un Cercle défilé, peinte à la
-> demande, était vide côté référence au moment du relevé (« ΔE 99 » face à rien). Un canevas vide d'un seul côté est compté et listé
-> (« non peints »), dans les deux sens ; il n'est plus comparé à rien.
-> **C-045 — le trait de validation personnalisé** : concept seul, `TRAIT-PERSONNALISE-CONCEPT.md` ; rien n'est construit.
-
 ### ⚑ v128 (4 oct. 2026) — L'ONBOARDING (TEXTE, VOISINES VIDES) ; LE DESSIN REMPLACE LA DALLE ; QUATRE MONDES ONT LEUR MOUVEMENT. (Décisions Tom.)
 > **L'onboarding, dernière diapositive (C-006)** : « Ça y est. » · « Ton premier Promi, ta première dalle sur ta Toile. » (le texte d'avant
 > v125) · « Un Promi, ta parole donnée. Un Chiche, un défi lancé. Un Cercle, une parole à plusieurs voix. » · « Le reste se trace. »
@@ -1775,8 +1756,6 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_motmarque.py   # 4 — v129 (C-046) : l'encre du mot de la nature (PROMI, CHICHE, CERCLE) est à la même hauteur dans son encart, ± 0,5 pt,
-                               #   clair et sombre (capture @3x). Rougit sur sauvegardes/app-avant-v129.html (0/4 : CERCLE 2,7 pt trop haut).
 python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvements de repos forcés sur 15 mondes, 0 pixel d'écart au retour (égalité stricte,
                                #   canevas entier, WebKit) ; les mouvements ont bien lieu. Rougit sur la version de v126 (Touffe). ≈ 10 min, seul.
 python3 redteam_fluide.py      # 5 — v124, TENIR EST FLUIDE : 20 animations, aucune image au-delà de 20 ms de travail du fil principal, p95 ≤ 16,7 ms

@@ -116,10 +116,7 @@ def attendus(e):
             #   tombe donc à 40 + (60 − 36) / 2 = 52 au lieu de 56,5.
             #   Écart noté dans ECARTS-MOODBOARD.md avec sa raison.
             #   Version d'avant : sauvegardes/redteam_nuee-avant-COTE-GILBERT.py
-            # ⚑ v129 (Tom, C-046) — CONTRAT MIS À LA DÉCISION (original : sauvegardes/redteam_nuee-avant-v129.py). « CERCLE » était trop haut dans
-            #   son encart ; Tom : il est centré exactement comme « PROMI » et « CHICHE ». La boîte du mot est donc à 55,7 (celle de « PROMI »
-            #   sur une fiche Promi : le recentrage de v97, +2,65), plus à 52. Le juge de l'ENCRE : redteam_motmarque.py.
-            out.append(('mot-marque', '#dptNat', 52, 55.7, None, 36, None))
+            out.append(('mot-marque', '#dptNat', 52, 52.0, None, 36, None))
         elif t == 'bloc' and x == 24 and w == 82:
             out.append(('noyau toi', '#dAura .kring.kring-moi', 24, y, 82, None, None))
         elif t == 'bloc' and x == 136 and w == 70:

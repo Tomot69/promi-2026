@@ -28,12 +28,6 @@ le fenêtrage 430 × 932 donne `#device` exactement 390 × 844 (§8, le comparat
 
 Usage :  python3 redteam_onboarding.py
 """
-# ⚑ v129 (Tom, C-006) — LE TEXTE DE LA DERNIÈRE DIAPOSITIVE EST FIGÉ, EN DUR (original du juge : sauvegardes/redteam_onboarding-avant-v129.py)
-TEXTE_FIN = ['C’est planté.', 'Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.',
-             'Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.',
-             'Le reste se découvre en traçant. La suite t’appartient.']
-DEUXIO_ANGLE = 3.0
-
 import io, json, re, sys, time
 from playwright.sync_api import sync_playwright
 from PIL import Image
@@ -369,23 +363,11 @@ def un_theme(pw, theme):
             fin = pg.evaluate("()=>{const f=document.getElementById('onbFin');return f?{vu:getComputedStyle(f).display!=='none'&&+getComputedStyle(f).opacity>0.5,t:f.innerText}:null}")
             if not fin or not fin['vu']:
                 ko('O20 le message reste (4 s, puis le toucher)', 'le message n\'est plus là 5,4 s après le trait')
-            elif any(m not in (fin['t'] or '').replace('\u00a0', ' ') for m in TEXTE_FIN):
-                ko('O20 le message reste (4 s, puis le toucher)', 'le message ne dit pas le texte figé en v129 : ' + ' / '.join(m for m in TEXTE_FIN if m not in (fin['t'] or '').replace('\u00a0', ' ')))
+            elif 'Le reste se trace' not in (fin['t'] or '').replace('\u00a0', ' '):
+                ko('O20 le message reste (4 s, puis le toucher)', 'le message ne dit pas « Le reste se trace. » (v128, Tom)')
             if pg.evaluate(POIGNEE, '[data-onb="plus-tard"]'):
                 ko('O20 le message reste (4 s, puis le toucher)', 'le panneau du compte est venu sans toucher')
             ok('O20 le message reste (4 s, puis le toucher)')
-            # ⚑ v129 (Tom) — « Deuxio » : le seul mot penché, de 3° (± 0,5) ; aucune autre inclinaison sur la diapositive (ni transformation, ni italique)
-            dx = pg.evaluate("""()=>{ const f=document.getElementById('onbFin'); if(!f) return null; const out={deux:null, autres:[]};
-              [...f.querySelectorAll('*')].forEach(e=>{ const cs=getComputedStyle(e), tr=cs.transform, it=cs.fontStyle; let ang=0;
-                if(tr&&tr!=='none'){ const m=tr.match(/matrix\\(([^)]+)\\)/); if(m){ const v=m[1].split(',').map(parseFloat); ang=Math.atan2(v[2], v[3])*180/Math.PI; if(Math.abs(v[1])>1e-4||Math.abs(v[0]-1)>1e-4||Math.abs(v[3]-1)>1e-4) ang=999; } else ang=999; }
-                if(e.classList.contains('onbv-deux')) out.deux={mot:e.textContent, ang:ang, it:it, police:cs.fontFamily.split(',')[0], poids:cs.fontWeight, couleur:cs.color, pPolice:getComputedStyle(e.parentElement).fontFamily.split(',')[0], pPoids:getComputedStyle(e.parentElement).fontWeight, pCouleur:getComputedStyle(e.parentElement).color};
-                else if(ang!==0 || (it!=='normal')) out.autres.push((e.textContent||'').slice(0,14)+' '+ang.toFixed(1)+'° '+it); }); return out; }""")
-            d2 = (dx or {}).get('deux')
-            if not d2 or d2['mot'] != 'Deuxio': ko('O22 « Deuxio » est penché de 3°, et lui seul', 'le mot penché est introuvable : %s' % d2)
-            elif abs(abs(d2['ang']) - DEUXIO_ANGLE) > 0.5 or d2['ang'] > 0: ko('O22 « Deuxio » est penché de 3°, et lui seul', 'angle %.2f° (décidé : %.0f° ± 0,5, vers la droite)' % (d2['ang'], DEUXIO_ANGLE))
-            elif d2['it'] != 'normal' or d2['police'] != d2['pPolice'] or d2['poids'] != d2['pPoids'] or d2['couleur'] != d2['pCouleur']: ko('O22 « Deuxio » est penché de 3°, et lui seul', 'police, graisse ou couleur différentes du texte : %s' % d2)
-            elif dx['autres']: ko('O22 « Deuxio » est penché de 3°, et lui seul', 'autre inclinaison : %s' % dx['autres'][:3])
-            else: ok('O22 « Deuxio » est penché de 3°, et lui seul')
             pg.wait_for_timeout(1200)
             dd = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height*0.45}}")
             toucher(cdp, dd['x'], dd['y']); pg.wait_for_timeout(900)

@@ -207,8 +207,8 @@ with sync_playwright() as p:
         pg.context.close(); return r
 
     def compare_tout(A, B):
-        global ecarts, orphelins, compares, cv_ecarts, exceptions, non_peints
-        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; non_peints = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0, 'E6': 0, 'E7': 0}
+        global ecarts, orphelins, compares, cv_ecarts, exceptions
+        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0, 'E6': 0, 'E7': 0}
         for cle in A:
             if cle[0] == '__dalles': compare_dalles(cle[1], A[cle], B.get(cle, {})); continue
             compare_un(cle, A[cle], B.get(cle, {'n': {}, 'c': {}}))
@@ -253,15 +253,6 @@ with sync_playwright() as p:
                 pareils = [q] if not k.endswith(']') else [v for kk, v in r['c'].items() if kk.rsplit(' [', 1)[0] == k.rsplit(' [', 1)[0]]
                 def pire(qq): return max([min([dE(col[:3], x[:3]) for x in qq['dom']] or [99]) for col in c['dom']] or [0])
                 q = min(pareils, key=pire)
-                # ⚑ v129 (Tom, C-047) — LES « 2 ÉCARTS » DE v128 ÉTAIENT DU JUGE. Une mini-dalle du fil d'un Cercle défilé (« TENU arroser tous
-                #   les… », la dernière carte, au bord du pli) est peinte À LA DEMANDE : selon le moment, elle est peinte d'un côté et encore VIDE
-                #   de l'autre. Vide côté app, le juge ne disait rien (aucune couleur à comparer) ; vide côté référence, il comparait à rien et
-                #   sortait « ΔE 99 ». Mesuré : 1 passage sur 3, tantôt en clair, tantôt en sombre, jamais deux fois de suite. Un canevas vide
-                #   d'un côté n'est pas une couleur fausse : il est COMPTÉ et listé (« non peints »), dans les deux sens, et n'est pas jugé ici
-                #   (qu'un canevas soit peint, c'est redteam_vide et redteam_apercus qui le jugent).
-                if not q['dom'] or not c['dom']:
-                    if bool(q['dom']) != bool(c['dom']): non_peints.append((cle, k, 'réf' if not q['dom'] else 'app'))
-                    continue
                 for col in c['dom']:
                     m = min([dE(col[:3], x[:3]) for x in q['dom']] or [99])
                     if m > 2.5:
@@ -286,9 +277,6 @@ for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
     print('  ✗ %-8s réf %-34s → app %-34s ×%d   %s' % (pr_, vr[:34], va[:34], len(L), ', '.join(ec[:6]) + (' …' if len(ec) > 6 else '')))
     if LISTE:
         for e in L[:12]: print('        %s [%s] · %s' % (e[0][0], e[0][1], e[1][:90]))
-try:
-    if non_peints: print('canevas non peints d\'un côté (comptés, non jugés) : %d — %s' % (len(non_peints), ' · '.join('%s[%s] vide côté %s' % (e[0][0], e[0][1][0], e[2]) for e in non_peints[:6])))
-except NameError: pass
 if ER[0] or ER[1]: print('erreurs de page : app %s · réf %s' % (ER[0][:2], ER[1][:2]))
 print('\n%s — %d écart(s) de couleur avec la référence v118' % ('✅' if not tout else '❌', len(tout)))
 sys.exit(1 if tout else 0)

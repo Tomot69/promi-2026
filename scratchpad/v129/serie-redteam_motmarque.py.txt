@@ -1,0 +1,12 @@
+Promi   light encre 58.67 → 81.33  (hauteur 22.67)  milieu 70.00  (plateau : 70,00)
+Chiche  light encre 58.67 → 81.00  (hauteur 22.33)  milieu 69.83  (plateau : 70,00)
+Cercle  light encre 58.67 → 81.00  (hauteur 22.33)  milieu 69.83  (plateau : 70,00)
+Promi   dark  encre 58.67 → 81.33  (hauteur 22.67)  milieu 70.00  (plateau : 70,00)
+Chiche  dark  encre 58.67 → 81.00  (hauteur 22.33)  milieu 69.83  (plateau : 70,00)
+Cercle  dark  encre 58.67 → 81.00  (hauteur 22.33)  milieu 69.83  (plateau : 70,00)
+OK  [light] le milieu de l'encre du mot est à la même hauteur pour les trois natures (± 0.5 pt)  Promi 70.00 · Chiche 69.83 · Cercle 69.83
+OK  [light] le haut de l'encre aussi (± 0.5 pt)  Promi 58.67 · Chiche 58.67 · Cercle 58.67
+OK  [dark] le milieu de l'encre du mot est à la même hauteur pour les trois natures (± 0.5 pt)  Promi 70.00 · Chiche 69.83 · Cercle 69.83
+OK  [dark] le haut de l'encre aussi (± 0.5 pt)  Promi 58.67 · Chiche 58.67 · Cercle 58.67
+
+4 / 4

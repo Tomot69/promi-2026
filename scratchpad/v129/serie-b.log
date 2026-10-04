@@ -1,0 +1,4 @@
+  229s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  116s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1956 ms) / 32/32
+   33s  releve-design.py           ✅  AUCUN ÉCART. Le design est intact.
+  617s  redteam_couleurs_ref.py    canevas non peints d'un côté (comptés, non jugés) : 1 — Nuée défilée[d] vide côté app / ✅ — 0 écart(s) de couleur avec la référence v118

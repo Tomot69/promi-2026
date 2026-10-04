@@ -31,6 +31,8 @@ par-dessus l'app rendue, `pen.js` rend le trait, `dessin.py` et `trait.py` monte
 
 > ⚑ v128 : la planche est refaite en PARCOURS (`planche-v128/dessin-parcours-*`) ; trois principes : le dessin REMPLACE la dalle, le menu est compact (pastille `.chip`, 32,5 px, écart 4), « Dessiner » est en tête. Les planches v127 ci-dessous restent pour le trait (C) et les états.
 
+> ⚑ v129 : **le mode dessin libère l'écran** — les disques et leurs noms disparaissent, l'encart du haut ne garde que son contour au trait fin (sans fond ni texte, jamais une transparence) ; tout revient à POSER ou à la sortie du mode. Planche `planche-v129/dessin-epure-*`.
+
 ## Ce que montrent les planches (v127)
 
 - **A · la rangée d'outils** (`dessin-A-rangee-*`) — PLUME · GOMME · ANNULER · COULEUR · POSER, sur une fiche Promi, Chiche et Cercle :

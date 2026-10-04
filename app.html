@@ -36205,6 +36205,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #onbV .onbv-fin span{margin-top:20px;line-height:23px}
 #onbV .onbv-fin b + span{margin-top:33px}
 #onbV .onbv-fin .onbv-cpt{margin-top:20px}
+/* ⚑ v129 (Tom, C-006) — « Deuxio » : le seul mot « Deuxio » est penché de 3° (oblique, bien moins qu'un italique) — un clin d'œil à la faute
+   volontaire, qui ne se remarque qu'en regardant de près. Même police, même graisse, même couleur ; aucun autre mot penché. */
+#onbV .onbv-fin .onbv-deux{display:inline-block;font-style:normal;font-weight:inherit;color:inherit;-webkit-text-fill-color:inherit;transform:skewX(-3deg)}
 </style>
 <script id="lot-ONB-ECART">
 /* ⚑ v83 (Tom) — PENDANT L'ONBOARDING, LA TOILE S'ÉCARTE DES ÉLÉMENTS : le mot-marque, la phrase, les pastilles, la zone où tracer.
@@ -36289,7 +36292,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         '<div class="onbv-a onbv-trace" id="onbTrace" style="display:none;top:'+(ZONE_Y-34)+'px">trace pour planter</div>'+
         '<canvas class="onbv-a onbv-trait" id="onbTrait" data-onb="trait" style="display:none;top:'+ZONE_Y+'px" aria-label="Trace pour planter"></canvas>'+
       '</div>'+
-      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier '+nat('Promi')+', ta première dalle sur ta Toile.</span><span class="onbv-cpt">Un '+nat('Promi')+', ta parole donnée. Un '+nat('Chiche')+', un défi lancé. Un '+nat('Cercle')+', une parole à plusieurs voix.</span><span>Le reste se trace.</span></div>'+
+      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>C’est planté.</b><span>Ton premier '+nat('Promi')+', ta première dalle sur ta Toile. Plus qu’à le tenir.</span><span class="onbv-cpt">Primo, un '+nat('Promi')+', c’est ta parole donnée. <i class="onbv-deux">Deuxio</i>, un '+nat('Chiche')+', c’est un coup de culot. Tertio, un '+nat('Cercle')+', c’est tout cela à la fois, mais à plusieurs.</span><span>Le reste se découvre en traçant. La suite t’appartient.</span></div>'+
       '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">';
     ov.appendChild(v);
     var inp=v.querySelector('#onbIn');
@@ -36862,7 +36865,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #dptNat.dpt-nat.enh-t{translate:0 2.65px}
 #shareScreen .enh .scr-t.enh-t{translate:0 2.5px}
 #stpHaut .stp-t{translate:0 1.65px}
-#detailPoster.dp-mode-nuee #dptNat.dpt-nat.enh-t{translate:none}   /* ⚑ v100 (Tom : « un défaut de mon recentrage v97, répare la fiche ») — la Nuée gardait son mot-marque à 61,9 au lieu de 52 (redteam_nuee, 18 écarts) : il revient à sa place d'avant v97, 53,1. (v97 : +8,85, « −12,4 de plus que la fiche, relevé à part ».) */
+#detailPoster.dp-mode-nuee #dptNat.dpt-nat.enh-t{translate:0 2.65px}   /* ⚑ v129 (Tom, C-046) : « CERCLE » était trop haut dans son encart ; il est centré comme « PROMI » et « CHICHE ». LA CAUSE : ni la police ni la ligne de base — cette règle. En v100 elle retirait au Cercle le recentrage de v97 (translate 0 2.65px, qui compense la boîte de PromiLate, plus haute au-dessus de la capitale qu'en dessous) pour rendre à redteam_nuee sa cote d'avant v97 : l'encre de « CERCLE » était à 56,0 → 78,3 (milieu 67,2) quand « PROMI » est à 58,7 → 81,3 (milieu 70,0, le milieu de l'encart). Juge : redteam_motmarque.py. */   /* ⚑ v100 (Tom : « un défaut de mon recentrage v97, répare la fiche ») — la Nuée gardait son mot-marque à 61,9 au lieu de 52 (redteam_nuee, 18 écarts) : il revient à sa place d'avant v97, 53,1. (v97 : +8,85, « −12,4 de plus que la fiche, relevé à part ».) */
 #langScreen .enh .scr-t.enh-t,#privScreen .enh .scr-t.enh-t{translate:0 2.55px}
 </style>
 <style id="lot-V95-AURA-CPT-css">

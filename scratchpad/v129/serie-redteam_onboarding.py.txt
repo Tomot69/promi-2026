@@ -1,0 +1,52 @@
+======================================================================================
+  L'ONBOARDING — prénom → premier trait → la Toile · au doigt · deux thèmes
+======================================================================================
+  ✅ O1 s'ouvre au premier lancement                    dark
+  ✅ O1 s'ouvre au premier lancement                    light
+  ✅ O2 rien de l'accueil dessous                       dark
+  ✅ O2 rien de l'accueil dessous                       light
+  ✅ O3 ni diapositive ni mot banni                     dark
+  ✅ O3 ni diapositive ni mot banni                     light
+  ✅ O4 pas de compte avant le premier trait            dark
+  ✅ O4 pas de compte avant le premier trait            light
+  ✅ O5 le prénom se saisit                             dark
+  ✅ O5 le prénom se saisit                             light
+  ✅ O6 « Je me promets de » et la parole               dark
+  ✅ O6 « Je me promets de » et la parole               light
+  ✅ O7 la zone du trait (§5)                           dark
+  ✅ O7 la zone du trait (§5)                           light
+  ✅ O8 la Toile est vide avant le trait                dark
+  ✅ O8 la Toile est vide avant le trait                light
+  ✅ O9 un trait interrompu ne plante rien              dark
+  ✅ O9 un trait interrompu ne plante rien              light
+  ✅ O10 le trait plante UN Promi à soi                 dark
+  ✅ O10 le trait plante UN Promi à soi                 light
+  ✅ O11 sa dalle est la seule de la Toile              dark
+  ✅ O11 sa dalle est la seule de la Toile              light
+  ✅ O12 il se referme sur la Toile, sans reste         dark
+  ✅ O12 il se referme sur la Toile, sans reste         light
+  ✅ O13 aucun tutoriel ne suit                         dark
+  ✅ O13 aucun tutoriel ne suit                         light
+  ✅ O14 aucune demande de notifications                dark
+  ✅ O14 aucune demande de notifications                light
+  ✅ O15 la réserve de la Toile est vide                dark
+  ✅ O15 la réserve de la Toile est vide                light
+  ✅ O16 le verrou est posé                             dark
+  ✅ O16 le verrou est posé                             light
+  ✅ O17 les textes se lisent (Δlum ≥ 42)               dark
+  ✅ O17 les textes se lisent (Δlum ≥ 42)               light
+  ✅ O18 un rechargement ne relance pas, le Promi reste dark
+  ✅ O18 un rechargement ne relance pas, le Promi reste light
+  ✅ O19 « Revoir la présentation » relance             dark
+  ✅ O19 « Revoir la présentation » relance             light
+  ✅ O20 le message reste (4 s, puis le toucher)        dark
+  ✅ O20 le message reste (4 s, puis le toucher)        light
+  ✅ O21 au rejeu, le compte revient tant qu'il n'existe pas dark
+  ✅ O21 au rejeu, le compte revient tant qu'il n'existe pas light
+  ✅ O22 une porte permanente vers le compte            dark
+  ✅ O22 une porte permanente vers le compte            light
+  ✅ O22 « Deuxio » est penché de 3°, et lui seul       dark
+  ✅ O22 « Deuxio » est penché de 3°, et lui seul       light
+======================================================================================
+
+  ✅  46 / 46 contrats tenus
