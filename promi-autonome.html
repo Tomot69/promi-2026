@@ -13746,6 +13746,13 @@ function creerRamage(env) {
     return false; };   /* v89 : le plumage fait, la suite (matière, empreintes) se prépare aux appels suivants */
   /* v89 : l'état K (tiré d'avance au Studio) est-il prêt à glisser — plumage, matière, empreintes ? */
   window._ramBaseSig = function () { if (!_aS) return null; var T = _tons(_aS.P, performance.now()); if (T.sig === _aS.tsig) return 'ok'; var a = _aS.tsig.split('|'), b = T.sig.split('|'), d = []; _aS.P.toks.filter(function (t) { return t !== 'B'; }).forEach(function (t, i) { if (a[i] !== b[i]) d.push(t + ':' + a[i] + '>' + b[i]); }); return d.slice(0, 6).join(' ; ') + ' (' + d.length + ')'; };
+  /* ⚑ v127 (Tom, C-009) — LE DISQUE DE LA POUSSE EST SUPPRIMÉ. « Une plume qui arrive pousse dans un disque qui grandit, posé sur le plumage
+     d'avant. Ce disque est en lui-même un effet posé sur la Toile, et la loi l'interdit. On ne cherche plus à le raccorder : on le supprime. […]
+     Si c'est impossible proprement, elle apparaît d'un coup, sans animation. » Mesuré : sous Ramage la Toile n'est faite que de ses paroles —
+     une plume qui arrive redessine TOUT le plumage (27 % des pixels, sur 84 % de la Toile) ; le disque servait à cacher ce changement et il
+     balayait 87 % de la Toile. Pousser « le long de ses traits » demanderait de recalculer tout le plumage à chaque image (hors budget) :
+     la plume arrive donc D'UN COUP, en une image. Le code du film reste (`window._ramFilmOn=true` avant le chargement le rend, pour comparer). */
+  if (!window._ramFilmOn) window._ramFilmOff = true;
   window._ramPret = function (K) { for (var i = _calC.length - 1; i >= 0; i--) { var e = _calC[i]; if (e.K === K) return window._ramFilmOff || !(_aS && _aS !== e && _aS.sem === e.sem && _aS.ms === e.ms) || !!(e.film && e.film.fini && e.film.de === _aS); } return false; };   /* v90 : et son film tracé */
   Rram.transDur = 1600; Rram.douce = true; Rram.partDur = 900; Rram.toucheStrict = true;
   return { ramage: Rram, seule: seule, contour: contour, toucher: toucher, nature: nature, boite: boite };
@@ -14060,8 +14067,36 @@ function kick(){if(!running){running=true;frame._redem=1;requestAnimationFrame(f
    de repos — rien n'y bouge ; dans Madrure et Chantourné seul le TITRE de la dalle bougeait, pas la matière ; dans Chamade et Éclisse
    (`terrazzo`) le mouvement d'une dalle gagnait toute la Toile (7 % et 1 % des pixels, sur toute sa surface). La règle (« jamais toute la
    Toile », « la matière ») n'y tient pas par cette voie : ils restent immobiles au repos, jusqu'à ce que chacun ait la sienne. */
-var _VIV_NON={volubilis:1,guingois:1,mascaret:1,ramage:1,madrure:1,chantourne:1,chamade:1,terrazzo:1};
-var _vivT=null, _vivJ=[], _vivDer=0, _vivTouche=-1e9;
+/* ⚑ v127 (Tom, C-031) — « Les huit mondes immobiles : pour chacun, un micro-mouvement dans sa propre manière, qui ne touche qu'une ou
+   deux dalles, jamais toute la Toile et jamais le titre. » MESURÉ, monde par monde (scratchpad/v127/viv_essai.py) :
+   · Éclisse (`terrazzo`) : son mouvement existait, il gagnait toute la Toile → ENFERMÉ dans la cellule de la dalle tirée (`_VIV_CLOS`) ;
+   · Madrure (Chamade : essayé, retiré plus bas) : ils lisent la place de REPOS de la graine → pendant le mouvement, la graine tirée est prêtée au monde à sa place
+     du moment (`_VIV_GR` : rendue aussitôt le monde peint, rien n'est déplacé dans le semis), et le mouvement est enfermé ;
+   · Volubilis, Guingois, Mascaret, Ramage, Chantourné : RIEN ne bouge par ces deux voies (leur matière est construite une fois et gardée
+     tant que le semis bouge) — ils restent immobiles, il leur faut une manière écrite dans leur propre peintre. */
+/* ⚠ ET TROIS DES « DOUZE » DE v126 NE BOUGEAIENT QUE LEUR TITRE (mesuré en v127, une fois le titre figé : 0 pixel de matière) : Bobinette et
+   Esquille bougent par la graine prêtée (`_VIV_GR`) ; Brouillamini ne bouge par aucune des deux voies → immobile, avec les cinq autres. */
+/* ⚠ Chamade et Esquille, essayés par la graine prêtée, sont RETIRÉS (redteam_vivant) : Esquille bouge par à-coups de 0,1 à 0,2 s et sa boucle
+   ne s'arrête plus ; Chamade bouge encore après le mouvement (0,07 % des pixels, hors tirage). Ils restent immobiles. */
+var _VIV_NON={volubilis:1,guingois:1,mascaret:1,ramage:1,chantourne:1,brouillamini:1,chamade:1,esquille:1};
+var _VIV_CLOS={madrure:1,terrazzo:1,bobinette:1}, _VIV_GR={madrure:1,bobinette:1};
+var _vivT=null, _vivJ=[], _vivDer=0, _vivTouche=-1e9, _vivC=null, _vivSig='', _vivRend=false, _vivPolys=null, _vivFin=0;
+/* ⚑ v127 (Tom, C-028) — LE RETOUR EXACT. « Après chaque mouvement, la dalle revient au pixel près à son image d'avant, en restaurant
+   l'état d'origine plutôt qu'en rejouant le mouvement à l'envers. » La cause du reste (0,1 à 1 % des pixels, une fois sur dix) : les
+   mondes à ressort (Touffe, Tesselle, Bobinette, Taille-douce) n'avaient pas fini de converger quand la boucle s'arrêtait. Au tirage,
+   la Toile ENTIÈRE est gardée telle qu'elle est peinte (1:1, sur elle-même — ce n'est ni une dalle ni un fragment) ; à la dernière image
+   du mouvement elle est RENDUE, pixel pour pixel, si rien d'autre n'a changé entre-temps (vue, semis, monde, taille : `_vivSigne`).
+   ⚑ C-031 — LES MONDES ENFERMÉS (`_VIV_CLOS`) : leur mouvement gagnait toute la Toile ; pendant le mouvement, tout ce qui est HORS de la
+   cellule de la dalle tirée est rendu à l'image d'avant — seule la matière de cette dalle bouge. */
+function _vivSigne(){ return [theme,palKey,W,H,DPR,seeds.length,lastChange,view.s,view.ox,view.oy,isLightM()?1:0].join('|'); }
+function _vivGarde(){ try{ var c=g.canvas; if(!_vivC) _vivC=document.createElement('canvas'); if(_vivC.width!==c.width||_vivC.height!==c.height){ _vivC.width=c.width; _vivC.height=c.height; }
+    var x=_vivC.getContext('2d'); x.globalCompositeOperation='copy'; x.drawImage(c,0,0); _vivSig=_vivSigne(); _vivRend=true; return true; }catch(_){ _vivRend=false; return false; } }
+function _vivRendre(){ if(!_vivRend) return; _vivRend=false; _vivPolys=null; if(!_vivC||_vivSig!==_vivSigne()||_vivC.width!==g.canvas.width||_vivC.height!==g.canvas.height) return;
+  g.save(); g.setTransform(1,0,0,1,0,0); g.globalAlpha=1; g.globalCompositeOperation='copy'; g.drawImage(_vivC,0,0); g.restore(); }
+function _vivEnferme(){ if(!_vivRend||!_vivPolys||!_vivC||_vivSig!==_vivSigne()) return;
+  g.save(); g.setTransform(view.s*DPR,0,0,view.s*DPR,view.ox*DPR,view.oy*DPR); g.beginPath(); g.rect(-view.ox/view.s-2,-view.oy/view.s-2,W/view.s+4,H/view.s+4);
+  for(var i=0;i<_vivPolys.length;i++){ var P=_vivPolys[i]; g.moveTo(P[0][0],P[0][1]); for(var j=1;j<P.length;j++) g.lineTo(P[j][0],P[j][1]); g.closePath(); }
+  g.clip('evenodd'); g.setTransform(1,0,0,1,0,0); g.drawImage(_vivC,0,0); g.restore(); }
 function _vivAlea(){ return Math.random(); }   /* hors de la suite du moteur (`_alea` est réamorcée à chaque plantation : le rythme en deviendrait prévisible) */
 function _vivReduit(){ try{ return !!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
 function _vivLibre(){ try{ if(document.hidden) return false; var cv=document.getElementById('toileCv'); if(!cv) return false; var r=cv.getBoundingClientRect(); if(!r.width) return false;
@@ -14070,7 +14105,7 @@ function _vivPlan(){ if(_vivT) clearTimeout(_vivT); _vivT=null; if(_vivReduit()|
   var d=(typeof window._vivantFixe==='number') ? window._vivantFixe : 5000+_vivAlea()*10000;
   _vivT=setTimeout(_vivTire, d); }
 function _vivTire(){ _vivT=null; var now=performance.now();
-  if(_VIV_NON[theme]){ _vivPlan(); return; }
+  if(_VIV_NON[theme]&&!window._vivTous){ _vivPlan(); return; }
   /* le moteur est occupé un instant (sa boucle tourne encore, une transition finit) : on réessaie tout de suite après — sans quoi un
      tirage manqué coûtait un intervalle entier de plus (mesuré : 20,7 s sans mouvement) ; un toucher, un écran par-dessus : l'intervalle entier */
   if(_AP||_trans||running){ _vivT=setTimeout(_vivTire, 400); return; }
@@ -14078,8 +14113,8 @@ function _vivTire(){ _vivT=null; var now=performance.now();
   var L=[], i; for(i=0;i<seeds.length;i++){ var s=seeds[i]; if(s.kind==='gray'||s.pid==null&&s.kind!=='nuee') continue;
     var x=s.x*view.s+view.ox, y=s.y*view.s+view.oy; if(x<0||y<0||x>W||y>H) continue; L.push(s); }
   if(!L.length){ _vivPlan(); return; }
-  var n=(_vivAlea()<0.3&&L.length>1)?2:1, dur=1000+_vivAlea()*1000, pris=[];
-  for(i=0;i<n;i++){ var k=(_vivAlea()*L.length)|0, q=L.splice(k,1)[0]; if(q.ph==null){ q.ph=_vivAlea()*6.28; q.am=0.6+_vivAlea()*0.7; } q._vt0=now; q._vd=dur; pris.push(q.pid); }
+  var n=(_vivAlea()<0.3&&L.length>1)?2:1, dur=1000+_vivAlea()*1000, pris=[]; _vivGarde(); _vivPolys=null;
+  for(i=0;i<n;i++){ var k=(_vivAlea()*L.length)|0, q=L.splice(k,1)[0]; if(q.ph==null){ q.ph=_vivAlea()*6.28; q.am=0.6+_vivAlea()*0.7; } q._vt0=now; q._vd=dur; pris.push(q.pid); if(_VIV_CLOS[theme]||window._vivClos){ try{ var _pq=_cellPoly(q); if(_pq&&_pq.length>2) (_vivPolys||(_vivPolys=[])).push(_pq); }catch(_){} } }
   _vivJ.push({t:Math.round(now), d:Math.round(dur), n:n, pid:pris}); if(_vivJ.length>60) _vivJ.shift();
   kick();
   _vivT=setTimeout(function(){ _vivT=null; _vivDer=performance.now(); _vivPlan(); }, dur+40); }
@@ -14175,7 +14210,7 @@ function _grilleProp(){
   return {prop:prop, X:X, Y:Y, Wt:Wt};   /* v38 : les coordonnées et poids que `prop` compare — Gravure s'en sert pour écarter un point sans requête */
 }
 function cAt(x,y){var bd=1e18,bi=0;for(var k=0;k<seeds.length;k++){var _kx=seeds[k].px==null?seeds[k].x:seeds[k].px,_ky=seeds[k].py==null?seeds[k].y:seeds[k].py,dx=x-_kx,dy=y-_ky,d=Math.sqrt(dx*dx+dy*dy)-seeds[k].w;if(d<bd){bd=d;bi=k;}}return seeds[bi];}
-function cOf(s,now){var g0=s.gc||(s.gc=_shadeG(s.gray,s.tone,s.shade));if(s.tOut!=null&&s.cOut){var pO=ease(Math.max(0,(now-s.tOut)/760));if(pO<1)return [s.cOut[0]+(g0[0]-s.cOut[0])*pO,s.cOut[1]+(g0[1]-s.cOut[1])*pO,s.cOut[2]+(g0[2]-s.cOut[2])*pO];s.tOut=null;s.cOut=null;}   /* ⚑ v55 : une dalle qui part (semis constant) éteint sa couleur vers son gris, en 760 ms comme elle l'a allumée */if(s.kind==='gray'&&(s.t0===0||now-s.t0>760))return g0;var p=ease((now-s.t0)/760);var to=s.ci!=null?(s.rgb||((palKey==='signal'&&!s.apercu&&!s.choisi)?((s.nat==null&&!isLightM())?[31,22,17]:PALL()[s.nat!=null?s.nat:3][s.lit|0]):PALL()[s.ci][s.lit|0])):g0;   /* ⚑ v27 (Tom, Q307 tranché) : « sous Ingénu, un ton de palette CHOISI À LA MAIN passe devant la nature, comme le code libre le fait déjà. Ingénu colore par nature PAR DÉFAUT ; un choix explicite prime toujours. » */   /* ⚑ v17 INGÉNU (Tom) : la couleur dit la nature — Promi 0 bleu, Chiche 1 rose, Nuée 2 lilas ; une cellule sans parole prend le crème dalle (3) ; un code libre du Cercle, choisi à la main, passe toujours devant */   /* ⚑ Cercle · LA COULEUR (Tom 13 sept.) : un code libre passe devant la palette — jamais sur une dalle masquée (ci nul) */var c=[g0[0]+(to[0]-g0[0])*p,g0[1]+(to[1]-g0[1])*p,g0[2]+(to[2]-g0[2])*p];for(var q=0;q<3;q++){if(c[q]>255)c[q]=255;if(c[q]<0)c[q]=0;}return c;}
+function cOf(s,now){var g0=s.gc||(s.gc=_shadeG(s.gray,s.tone,s.shade));if(s.voisine&&s.kind==='gray'){var _pv=PALL(),_tv=(_pv[(palKey==='signal')?s.vnat:s.vci]||_pv[0])[0],_qv=ease(Math.min(1,Math.max(0,(now-s.vt0)/760)));return [g0[0]+(_tv[0]-g0[0])*_qv,g0[1]+(_tv[1]-g0[1])*_qv,g0[2]+(_tv[2]-g0[2])*_qv];}   /* v127 : une voisine de l'onboarding prend une teinte de la palette, sans devenir une parole */if(s.tOut!=null&&s.cOut){var pO=ease(Math.max(0,(now-s.tOut)/760));if(pO<1)return [s.cOut[0]+(g0[0]-s.cOut[0])*pO,s.cOut[1]+(g0[1]-s.cOut[1])*pO,s.cOut[2]+(g0[2]-s.cOut[2])*pO];s.tOut=null;s.cOut=null;}   /* ⚑ v55 : une dalle qui part (semis constant) éteint sa couleur vers son gris, en 760 ms comme elle l'a allumée */if(s.kind==='gray'&&(s.t0===0||now-s.t0>760))return g0;var p=ease((now-s.t0)/760);var to=s.ci!=null?(s.rgb||((palKey==='signal'&&!s.apercu&&!s.choisi)?((s.nat==null&&!isLightM())?[31,22,17]:PALL()[s.nat!=null?s.nat:3][s.lit|0]):PALL()[s.ci][s.lit|0])):g0;   /* ⚑ v27 (Tom, Q307 tranché) : « sous Ingénu, un ton de palette CHOISI À LA MAIN passe devant la nature, comme le code libre le fait déjà. Ingénu colore par nature PAR DÉFAUT ; un choix explicite prime toujours. » */   /* ⚑ v17 INGÉNU (Tom) : la couleur dit la nature — Promi 0 bleu, Chiche 1 rose, Nuée 2 lilas ; une cellule sans parole prend le crème dalle (3) ; un code libre du Cercle, choisi à la main, passe toujours devant */   /* ⚑ Cercle · LA COULEUR (Tom 13 sept.) : un code libre passe devant la palette — jamais sur une dalle masquée (ci nul) */var c=[g0[0]+(to[0]-g0[0])*p,g0[1]+(to[1]-g0[1])*p,g0[2]+(to[2]-g0[2])*p];for(var q=0;q<3;q++){if(c[q]>255)c[q]=255;if(c[q]<0)c[q]=0;}return c;}
 /* ⚑ v89 (Tom, Q348) — LE NOIR ET BLANC. La Toile passe au ton de la Toile vide : en sombre, du crème sur le fond sombre ; en clair,
    l'inverse. Chaque couleur de dalle (et de graine vide) est ramenée à ce ton ; il ne reste qu'une légère différence de clarté, que la
    JAUGE dose (0 : les dalles ne se distinguent plus des vides ; 1 : des tons francs). L'agencement, le monde, rien d'autre ne change.
@@ -14216,7 +14251,7 @@ function RgraDirect(now,x0,y0,x1,y1){g.lineCap='round';g.lineJoin='round';var HS
 function Rgra(now,x0,y0,x1,y1){if(window._perfAncien)return RgraDirect(now,x0,y0,x1,y1);g.lineCap='round';g.lineJoin='round';var HS=8*UK,SS=5*UK,ac=avg(),_G=_grilleProp(),_GX=_G&&_G.X,_GY=_G&&_G.Y,_GW=_G&&_G.Wt,_der=-1,_lx=null,_ly=0;for(var ci=0;ci<seeds.length;ci++){var s=seeds[ci];if(s.x<x0-100||s.x>x1+100||s.y<y0-100||s.y>y1+100)continue;var R=ac*1.85+s.w,an=s.ang,dx=Math.cos(an),dy=Math.sin(an),px=-dy,py=dx,c=cOf(s,now),cl=(s.kind!=='gray');g.strokeStyle='rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')';g.lineWidth=(cl?2:1.05)*UK;for(var off=-R;off<=R;off+=HS){var ox=s.x+px*off,oy=s.y+py*off,run=false;for(var t=-R;t<=R;t+=SS){var qx=ox+dx*t,qy=oy+dy*t,bd=1e18,bi=0,ins=qx>=x0-2&&qx<=x1+2&&qy>=y0-2&&qy<=y1+2;if(ins){if(_G){var _ex=qx-_GX[ci],_ey=qy-_GY[ci],_dc=Math.sqrt(_ex*_ex+_ey*_ey)-_GW[ci],_ecarte=false;if(_der>=0&&_der!==ci){var _fx=qx-_GX[_der],_fy=qy-_GY[_der],_dl=Math.sqrt(_fx*_fx+_fy*_fy)-_GW[_der];_ecarte=(_dl<_dc||(_dl===_dc&&_der<ci));}if(_ecarte)ins=false;else{bi=_G.prop(qx,qy).bi;_der=bi;ins=(bi===ci);}}else{for(var k=0;k<seeds.length;k++){var _kx=seeds[k].px==null?seeds[k].x:seeds[k].px,_ky=seeds[k].py==null?seeds[k].y:seeds[k].py,ex=qx-_kx,ey=qy-_ky,d=Math.sqrt(ex*ex+ey*ey)-seeds[k].w;if(d<bd){bd=d;bi=k;}}ins=(bi===ci);}}if(ins&&!run){run=true;g.beginPath();g.moveTo(qx,qy);_lx=null;}else if(ins){_lx=qx;_ly=qy;}else if(run){if(_lx!==null)g.lineTo(_lx,_ly);g.stroke();run=false;}}if(run){if(_lx!==null)g.lineTo(_lx,_ly);g.stroke();}}}}   /* v38 : une hachure est une DROITE — ses points intermédiaires, alignés, n'ajoutaient que des sommets au traceur ; on va du premier au dernier */
 function Rmos(now,x0,y0,x1,y1){var _vv=(g.canvas&&g.canvas.id==='toileCv')?view.s:1,_gx=(g.canvas&&g.canvas.id==='toileCv')?view.ox:0,_gy=(g.canvas&&g.canvas.id==='toileCv')?view.oy:0;   /* ⚑ v46 : la grille est celle de la Toile, à la taille du zoom */
   var T=11*UK*_vv,_G=_grilleProp();g.setTransform(DPR,0,0,DPR,0,0);var _sy0=_gy-Math.ceil(_gy/T)*T,_sx0=_gx-Math.ceil(_gx/T)*T;for(var sy=_sy0;sy<H;sy+=T){for(var sx=_sx0;sx<W;sx+=T){var lx=(sx+T/2-view.ox)/view.s,ly=(sy+T/2-view.oy)/view.s;if(lx<0||lx>W||ly<0||ly>H)continue;var bi=0;if(_G){bi=_G.prop(lx,ly).bi;}else{var bd=1e18,bi=0;for(var k=0;k<seeds.length;k++){var _kx=seeds[k].px==null?seeds[k].x:seeds[k].px,_ky=seeds[k].py==null?seeds[k].y:seeds[k].py,dx=lx-_kx,dy=ly-_ky,d=Math.sqrt(dx*dx+dy*dy)-seeds[k].w;if(d<bd){bd=d;bi=k;}}}var c=cOf(seeds[bi],now);g.fillStyle='rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')';g.fillRect(sx+UK*_vv,sy+UK*_vv,T-2*UK*_vv,T-2*UK*_vv);}}}
-function Renc(now,x0,y0,x1,y1){g.setTransform(DPR,0,0,DPR,0,0);var sp=Math.sqrt(W*H/Math.max(1,seeds.length));for(var k=0;k<seeds.length;k++){var s=seeds[k];var _sx=(s.px!=null?s.px:s.x),_sy=(s.py!=null?s.py:s.y);var px=_sx*view.s+view.ox,py=_sy*view.s+view.oy;var rad=sp*0.6*view.s;if(px<-rad*2.5||px>W+rad*2.5||py<-rad*2.5||py>H+rad*2.5)continue;var _rf=_repliF(s);if(_rf<0.02)continue;var c=cOf(s,now);g.save();g.translate(px,py);if(_rf<0.999)g.scale(_rf,_rf);   /* v76 : le repli */if(s.drot)g.rotate(s.drot);if(s.dsx)g.scale(s.dsx,s.dsy);g.fillStyle='rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+',.9)';var sd=((k+1)*2654435761)>>>0,rnd=function(){sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};for(var b=0;b<9;b++){var _ex=(rnd()-.5)*rad*1.2,_ey=(rnd()-.5)*rad,_rx=rad*(.32+rnd()*.42),_ry=rad*(.16+rnd()*.32),_ea=rnd()*3.14;if(s.dw){var _wp=s.ph+b*1.7;_ex+=Math.sin(now*0.006+_wp)*rad*0.22*s.dw;_ey+=Math.cos(now*0.0072+_wp)*rad*0.18*s.dw;_rx*=1+Math.sin(now*0.0085+_wp)*0.26*s.dw;_ry*=1+Math.cos(now*0.0079+_wp)*0.26*s.dw;_ea+=Math.sin(now*0.005+_wp)*0.6*s.dw;}g.beginPath();g.ellipse(_ex,_ey,_rx,_ry,_ea,0,6.3);g.fill();}g.restore();}}
+function Renc(now,x0,y0,x1,y1){g.setTransform(DPR,0,0,DPR,0,0);var sp=Math.sqrt(W*H/Math.max(1,seeds.length));for(var k=0;k<seeds.length;k++){var s=seeds[k];var _sx=(s.px!=null?s.px:s.x),_sy=(s.py!=null?s.py:s.y);var px=_sx*view.s+view.ox,py=_sy*view.s+view.oy;var rad=sp*0.6*view.s;if(px<-rad*2.5||px>W+rad*2.5||py<-rad*2.5||py>H+rad*2.5)continue;var _rf=_repliF(s);if(s.voisine&&s.kind==='gray')_rf=s.voisine;   /* v127 : une voisine de l'onboarding — une cellule vide, dépliée à sa taille */if(_rf<0.02)continue;var c=cOf(s,now);g.save();g.translate(px,py);if(_rf<0.999)g.scale(_rf,_rf);   /* v76 : le repli */if(s.drot)g.rotate(s.drot);if(s.dsx)g.scale(s.dsx,s.dsy);g.fillStyle='rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+',.9)';var sd=((k+1)*2654435761)>>>0,rnd=function(){sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};for(var b=0;b<9;b++){var _ex=(rnd()-.5)*rad*1.2,_ey=(rnd()-.5)*rad,_rx=rad*(.32+rnd()*.42),_ry=rad*(.16+rnd()*.32),_ea=rnd()*3.14;if(s.dw){var _wp=s.ph+b*1.7;_ex+=Math.sin(now*0.006+_wp)*rad*0.22*s.dw;_ey+=Math.cos(now*0.0072+_wp)*rad*0.18*s.dw;_rx*=1+Math.sin(now*0.0085+_wp)*0.26*s.dw;_ry*=1+Math.cos(now*0.0079+_wp)*0.26*s.dw;_ea+=Math.sin(now*0.005+_wp)*0.6*s.dw;}g.beginPath();g.ellipse(_ex,_ey,_rx,_ry,_ea,0,6.3);g.fill();}g.restore();}}
 /* assainissement (30 sept.) : Rblok retiré — le monde Éclats n'existait plus au Studio (Q102) */
 
 function Rterr(now,x0,y0,x1,y1){if(!(g.canvas&&g.canvas.id==='toileCv'))g.setTransform(DPR,0,0,DPR,0,0);   /* ⚑ v46 : sur la Toile vivante, la vue (le zoom) est gardée */var sp=Math.sqrt(W*H/Math.max(1,seeds.length));for(var k=0;k<seeds.length;k++){var s=seeds[k];var _rf=_repliF(s);if(_rf<0.02)continue;var c=cOf(s,now);var _sx=(s.px!=null?s.px:s.x),_sy=(s.py!=null?s.py:s.y);var sd=((k+1)*2654435761)>>>0;var rr=function(){sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};g.fillStyle="rgb("+(c[0]|0)+","+(c[1]|0)+","+(c[2]|0)+")";for(var e=0;e<7;e++){var a=rr()*6.2832,rd=rr()*sp*0.46*_rf;var ex=_sx+Math.cos(a)*rd,ey=_sy+Math.sin(a)*rd;var w2=sp*(0.11+rr()*0.19)*_rf,h2=sp*(0.08+rr()*0.15)*_rf;   /* v76 : _rf, le repli */g.save();g.translate(ex,ey);g.rotate(rr()*3.1416);g.beginPath();var sides=4+((rr()*3)|0);for(var s2=0;s2<sides;s2++){var an=s2/sides*6.2832;var px=Math.cos(an)*w2*(0.7+rr()*0.5),py=Math.sin(an)*h2*(0.7+rr()*0.5);s2?g.lineTo(px,py):g.moveTo(px,py);}g.closePath();g.fill();g.restore();}}}
@@ -14365,7 +14400,7 @@ function _labels(now){
     if(!L||!L.title)continue;
     /* la dalle est dessinée à px/py (position réellement occupée) : l'étiquette doit suivre,
        sinon le texte reste à côté de sa dalle. */
-    var _lx=(s.px!=null?s.px:s.x), _ly=(s.py!=null?s.py:s.y), _la=null;
+    var _lx=(s.px!=null&&!s._vt0?s.px:s.x), _ly=(s.py!=null&&!s._vt0?s.py:s.y), _la=null;   /* v127 (Tom) : au repos, le titre ne bouge jamais */
     /* ⚑ v63 — un monde qui DÉPLACE sa dalle (Chamade écarte ses cœurs) déclare où il l'a posée, et sa largeur : le titre y va */
     if(RD[theme]&&RD[theme].ancre){ try{ _la=RD[theme].ancre(s); }catch(_e){ _la=null; } if(_la){ _lx=_la[0]; _ly=_la[1]; } }
     var sx=_lx*view.s+view.ox, sy=_ly*view.s+view.oy;
@@ -14506,14 +14541,15 @@ function frame(now){if(!g){running=false;return;}var _ss=document.getElementById
      frémissement du moteur (place, étirement, tour, poids de matière — chaque monde les lit à sa manière), en cloche (rien au début,
      rien à la fin), au quart de son amplitude. Jamais toute la Toile, jamais de propagation : seules les dalles tirées portent `_vt0`. */
   var _vu=(now-_ps._vt0)/_ps._vd; if(_vu>=1||_vu<0){ _ps._vt0=0; _ps.px=_ps.x;_ps.py=_ps.y;_ps.dsx=1;_ps.dsy=1;_ps.drot=0;_ps.dw=0; }
-  else{ var _ve=Math.sin(Math.PI*_vu); _ve=_ve*_ve*0.28; var _vq=now-_ps._vt0; _viv=true;
+  else{ var _ve=Math.sin(Math.PI*_vu); _ve=(_VIV_CLOS[theme]&&theme!=='madrure')?Math.pow(_ve,0.6)*0.42:_ve*_ve*0.28;   /* v127 : Éclisse, Bobinette — un mouvement si ténu que seul son milieu se voyait (0,3 à 0,6 s) : cloche plus pleine */ var _vq=now-_ps._vt0; _viv=true;
     _ps.px=_ps.x+Math.sin(_vq*0.0092+_ps.ph)*(_isG?11:7)*_ps.am*_ve;_ps.py=_ps.y+Math.cos(_vq*0.0096+_ps.ph)*(_isG?8:5)*_ps.am*_ve;
     _ps.dsx=1+Math.sin(_vq*0.0100+_ps.ph)*0.09*_ve;_ps.dsy=1+Math.cos(_vq*0.0112+_ps.ph*1.2)*0.09*_ve;_ps.drot=Math.sin(_vq*0.0085+_ps.ph*0.7)*0.08*_ve;_ps.dw=_ve; } }
-else{_ps.px=_ps.x;_ps.py=_ps.y;_ps.dsx=1;_ps.dsy=1;_ps.drot=0;_ps.dw=0;}}if(seeds.length){_transVive=true;try{window._mondeEncore=false;RD[theme](now,x0,y0,x1,y1);}finally{_transVive=false;}}g.restore();if(!_clipA&&!_AP){g.beginPath();g.moveTo(rr,0);g.arcTo(W,0,W,H,rr);g.arcTo(W,H,0,H,rr);g.arcTo(0,H,0,0,rr);g.arcTo(0,0,W,0,rr);g.closePath();g.setTransform(DPR,0,0,DPR,0,0);g.rect(0,0,W,H);g.fillStyle=bg;g.fill('evenodd');}   /* ⚑ v38 (perf) — LE COIN ARRONDI N'EST PLUS UN clip() : on peint la matière sans découpage, puis le fond (même dégradé) autour du rectangle arrondi. Mêmes pixels (le clip antialiasé et l'aplat du complément ont la même couverture) ; WebKit faisait payer le clip à CHAQUE tracé — Touffe 205 → 51 ms par image, Gravure 56 → 33. `_perfAncien` rend l'ancien chemin (preuve). */
+else{_ps.px=_ps.x;_ps.py=_ps.y;_ps.dsx=1;_ps.dsy=1;_ps.drot=0;_ps.dw=0;}}if(seeds.length){_transVive=true;var _vg=null;if(_viv&&(_VIV_GR[theme]||window._vivGr)){_vg=[];for(var _vi=0;_vi<seeds.length;_vi++){var _vs=seeds[_vi];if(_vs._vt0){_vg.push([_vs,_vs.x,_vs.y]);_vs.x=_vs.px;_vs.y=_vs.py;}}}try{window._mondeEncore=false;RD[theme](now,x0,y0,x1,y1);}finally{_transVive=false;if(_vg)for(var _vj=0;_vj<_vg.length;_vj++){_vg[_vj][0].x=_vg[_vj][1];_vg[_vj][0].y=_vg[_vj][2];}}}g.restore();if(!_clipA&&!_AP){g.beginPath();g.moveTo(rr,0);g.arcTo(W,0,W,H,rr);g.arcTo(W,H,0,H,rr);g.arcTo(0,H,0,0,rr);g.arcTo(0,0,W,0,rr);g.closePath();g.setTransform(DPR,0,0,DPR,0,0);g.rect(0,0,W,H);g.fillStyle=bg;g.fill('evenodd');}   /* ⚑ v38 (perf) — LE COIN ARRONDI N'EST PLUS UN clip() : on peint la matière sans découpage, puis le fond (même dégradé) autour du rectangle arrondi. Mêmes pixels (le clip antialiasé et l'aplat du complément ont la même couverture) ; WebKit faisait payer le clip à CHAQUE tracé — Touffe 205 → 51 ms par image, Gravure 56 → 33. `_perfAncien` rend l'ancien chemin (preuve). */
   if(!_AP){_voile();
   try{_labels(now);}catch(e){}}var _trv=!!(_trans&&RD[theme]&&RD[theme].transDur&&now-_trans.t0<RD[theme].transDur);   /* ⚑ v43 */
   if(_AP){_AP.encore=!!(an||now-lastChange<170||_quiv||_trv||_parts||window._mondeEncore);return;}   /* v75 : l'aperçu tient sa propre boucle */
-  if(an||now-lastChange<170||_quiv||_viv||_trv||_parts||window._mondeEncore)requestAnimationFrame(frame);else running=false;}
+  if(_viv&&_vivPolys) _vivEnferme();   /* v127 : un monde enfermé — hors de la dalle tirée, l'image d'avant */
+  if(an||now-lastChange<170||_quiv||_viv||_trv||_parts||window._mondeEncore)requestAnimationFrame(frame);else{ _vivRendre();   /* v127 : le retour exact */ running=false; }}
 function addP(k){
   /* ⚑ v34/v35 — monde neuf : on ne ressème pas le semis vide, il s'efface ; monde ancien : le code d'origine */
   if(_semisNeuf()) _sansGris(); else if(!seeds.length) seedGray();
@@ -14729,6 +14765,27 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
   reserved:[],
   /* L'onboarding plante de VRAIES dalles : elles s'insèrent entre les autres,
      qui s'écartent. Le même geste que dans l'app — plus aucun fondu. */
+  /* ⚑ v127 (Tom, C-006) — LES VOISINES DE LA DERNIÈRE DIAPOSITIVE DE L'ONBOARDING. « La dalle de la nouvelle parole reprend exactement sa
+     taille et sa place d'avant v126, plus grande que toutes les autres. Les voisines, gardées à sept, […] restent nettement plus petites
+     que la dalle principale (au plus 60 % de sa surface) […] et prennent des teintes de la palette, comme de vraies paroles. »
+     LA CAUSE de v126 : les voisines étaient synchronisées comme des paroles ; la vue se recadrait sur huit dalles (zoom 2 → 1), la
+     dalle principale tombait au quart de sa surface (14 710 → 3 686 pt²).
+     ICI : les voisines RESTENT des cellules vides du semis (ni parole, ni poids, ni relâchement, ni cadrage : mesuré, les changer en
+     paroles poussait la dalle principale de 10 pt) ; le peintre les déplie à leur taille et leur donne une teinte de la palette.
+     `Toile.voisines(0)` les rend au vide. ⚠ Seul Pochade (le monde du premier lancement) les peint. */
+  voisines:function(n, o){ o=o||{}; var P=null, i;
+    for(i=0;i<seeds.length;i++){ if(seeds[i].voisine){ seeds[i].voisine=0; seeds[i].gc=null; } }
+    if(!n){ lastChange=performance.now(); kick(); return 0; }
+    for(i=0;i<seeds.length;i++){ var q=seeds[i]; if(q.kind!=='gray'&&q.kind!=='nuee'&&q.pid!=null&&q.part==null) P=q; }
+    if(!P) return 0;
+    /* la vue : celle que la plantation a posée, telle quelle */
+    var vt=vTarget||view, a=avg(), s=vt.s, x0=-vt.ox/s, y0=-vt.oy/s, x1=x0+W/s, y1=y0+H/s, m=a*(o.marge!=null?o.marge:0.05), yh=y0+(y1-y0)*(o.haut||0);
+    var C=seeds.filter(function(g){ return g.kind==='gray' && !g.compagnon && g.x>x0+m && g.x<x1-m && g.y>yh+m && g.y<y1-m; });
+    /* les plus proches de la parole, d'abord : ce sont elles qu'on voit autour d'elle */
+    C.sort(function(u,v){ return Math.hypot(u.x-P.x,u.y-P.y)-Math.hypot(v.x-P.x,v.y-P.y); });
+    var pris=C.slice(0, Math.min(n, C.length)), now=performance.now(), nat=o.natures||[1,2], np=Math.max(1,PAL.length);
+    pris.forEach(function(g,k){ g.voisine=(o.taille||0.62); g.vnat=nat[k%nat.length]; g.vci=(((P.ci|0)+1+k)%np); g.vt0=now; });
+    lastChange=now; kick(); return pris.length; },
   plantOne:function(dejaPosee){
     var gris=[];
     for(var i=0;i<seeds.length;i++)if(seeds[i].kind==='gray')gris.push(seeds[i]);
@@ -44140,6 +44197,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #onbV .onbv-nat{font-style:normal;font-weight:700}
 #onbV .onbv-fin b + span{margin-top:33px}
 #onbV .onbv-fin .onbv-cpt{margin-top:22px}   /* v126 : le concept, un interligne plus bas que le paragraphe qui le précède */
+/* ⚑ v127 (Tom, C-043) — « l'onboarding : mets tout le texte en Gilbert, ce sera plus beau, et espace les phrases, de moins qu'entre la
+   première et la phrase en gros gras, mais fais respirer, c'est tout tassé. » Tout le texte courant de l'onboarding passe en Gilbert
+   (une seule graisse, 700 ; écrit en minuscules, tel quel) ; sur la dernière diapositive, 20 px entre deux phrases (33 sous « Ça y est. »). */
+#onbV .onbv-dit,#onbV .onbv-sous,#onbV .onbv-fin span,.onbv-compte .tx{font-family:var(--f-libelle);font-weight:700;letter-spacing:.01em}
+#onbV .onbv-fin span{margin-top:20px;line-height:23px}
+#onbV .onbv-fin b + span{margin-top:33px}
+#onbV .onbv-fin .onbv-cpt{margin-top:20px}
 </style>
 <script id="lot-ONB-ECART">
 /* ⚑ v83 (Tom) — PENDANT L'ONBOARDING, LA TOILE S'ÉCARTE DES ÉLÉMENTS : le mot-marque, la phrase, les pastilles, la zone où tracer.
@@ -44224,7 +44288,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         '<div class="onbv-a onbv-trace" id="onbTrace" style="display:none;top:'+(ZONE_Y-34)+'px">trace pour planter</div>'+
         '<canvas class="onbv-a onbv-trait" id="onbTrait" data-onb="trait" style="display:none;top:'+ZONE_Y+'px" aria-label="Trace pour planter"></canvas>'+
       '</div>'+
-      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier '+nat('Promi')+', ta première dalle sur ta Toile.</span><span class="onbv-cpt">Ici, c’est '+nat('Promi')+'. Et ça veut dire quelque chose.</span><span>Un '+nat('Promi')+', c’est ta parole. Un '+nat('Chiche')+', celle que tu lances à quelqu’un. Un '+nat('Cercle')+', celles qu’on tient à plusieurs.</span><span>Le reste se découvre à ton rythme.</span></div>'+
+      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier '+nat('Promi')+', ta première dalle sur ta Toile.</span><span class="onbv-cpt">Ici, c’est '+nat('Promi')+'. Et ça veut dire quelque chose.</span><span>Un '+nat('Promi')+', tu donnes ta parole. Un '+nat('Chiche')+', tu tentes quelqu’un. Un '+nat('Cercle')+', on tient à plusieurs.</span><span>Le reste se découvre à ton rythme.</span></div>'+
       '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">';
     ov.appendChild(v);
     var inp=v.querySelector('#onbIn');
@@ -44362,9 +44426,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
          écrit dans les données, rien n'est sauvegardé) ; il les pose comme il pose toute dalle — c'est SA Toile, pas un dessin. À la
          fin (`terminer`), la Toile est rendue à la seule parole plantée. Densité : `window._onbVoisines` (4, 7 ou 10 — Tom choisit ;
          7 en attendant, `?voisines=` pour la planche). */
-      if(!rejeu && window.Toile&&Toile.sync){ var _nv=window._onbVoisines; try{ var _mq=/[?&]voisines=(\d+)/.exec(location.search); if(_mq) _nv=+_mq[1]; }catch(_){}
-        if(_nv==null) _nv=7; var _fx=[]; for(var _iv=0;_iv<_nv;_iv++) _fx.push(900000001+_iv);
-        if(_fx.length){ voisines=true; Toile.sync(ids.concat(_fx)); } }
+      /* ⚑ v127 (Tom) : sept voisines, posées par `Toile.voisines` — la vue et la cellule de la parole restent celles d'avant v126 ;
+         les voisines sont des cellules vides de la Toile qui prennent une teinte de la palette. `?voisines=` est retiré. */
+      if(!rejeu && window.Toile&&Toile.voisines){ try{ if(Toile.voisines(7, {natures:[1,2,2,1,2,1,2], haut:0.52, marge:-0.1, taille:(window._onbPoids||0.62)})) voisines=true; }catch(_){} }
     }catch(e){}
     var D=dev.getBoundingClientRect(), s=k(), cible=null;
     try{ var a=Toile.dalleAbs(np.id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
@@ -44432,7 +44496,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var v=document.getElementById('onbV'); if(v) v.remove();
     parNous=true; ov.classList.add('gone'); dev.classList.remove('onb-actif'); parNous=false;
     reserveDonnees=null; etape=null;
-    if(voisines){ voisines=false; try{ if(window.Toile&&Toile.sync) Toile.sync(promises.filter(function(p){return !p.draft;}).map(function(p){return p.id;})); }catch(_){} }   /* v126 : les voisines de la dernière diapositive s'en vont */
+    if(voisines){ voisines=false; try{ if(window.Toile&&Toile.voisines) Toile.voisines(0); }catch(_){} }   /* v126 : les voisines de la dernière diapositive s'en vont */
     LS.s('promi_onb','1'); if(!LS.g('promi_debut')) LS.s('promi_debut', ''+Date.now());
     try{ if(window.Toile&&Toile.reserve) Toile.reserve([]); }catch(_){}
     try{ if(typeof saveState==='function') saveState(); }catch(_){}

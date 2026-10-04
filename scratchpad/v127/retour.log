@@ -1,0 +1,35 @@
+OK  [encre] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 6151 3938 4688 3165 10966 6006 5227 px
+OK  [encre] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [touffe] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 11889 6336 7128 6027 5950 17623 10817 px
+OK  [touffe] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [mosaique] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 1620 1296 2268 2268 648 648 648 px
+OK  [mosaique] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [braille] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 888 888 1192 1196 2716 1436 2168 px
+OK  [braille] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [pixel] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 500 600 3100 700 3300 400 1400 px
+OK  [pixel] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [sillons] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 229 175 293 609 1071 109 666 px
+OK  [sillons] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [gravure] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 2647 3550 1482 4026 1464 2851 1835 px
+OK  [gravure] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [halin] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 3892 17457 19251 0 6805 7301 18419 px
+OK  [halin] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+KO  [esquille] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 0 0 0 0 0 0 0 px
+OK  [esquille] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+KO  [bobinette] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 0 0 0 0 0 0 0 px
+OK  [bobinette] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [ritournelle] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 9738 48337 17279 22392 49554 20332 15800 px
+OK  [ritournelle] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+KO  [brouillamini] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 0 0 0 0 0 0 0 px
+OK  [brouillamini] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [madrure] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 42345 15213 24837 28618 12865 14901 26730 px
+OK  [madrure] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [chamade] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 5289 4896 6062 7662 4081 0 2343 px
+OK  [chamade] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  [terrazzo] les mouvements sont joués (7 demandés) et des pixels changent pendant  7 joué(s), pendant : 2204 2668 2223 1642 2144 2183 1401 px
+OK  [terrazzo] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0
+OK  cent mouvements au moins, tous revenus au pixel  105 revenus sur 105
+OK  aucune erreur de page  
+
+29 / 32
+KO : [esquille] les mouvements sont joués (7 demandés) et des pixels changent pendant · [bobinette] les mouvements sont joués (7 demandés) et des pixels changent pendant · [brouillamini] les mouvements sont joués (7 demandés) et des pixels changent pendant

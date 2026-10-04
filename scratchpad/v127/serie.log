@@ -1,0 +1,18 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 43
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+   67s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #2A1548 #00351A #00341A #291547 OK   (Q262, v8c) / 79 / 79
+  128s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   90s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  110s  redteam_onboarding.py      ====================================================================================== /   ✅  44 / 44 contrats tenus
+  135s  redteam_decoupe.py         ✅  AUCUNE DÉCOUPE NOUVELLE. / ✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+   53s  redteam_ramage_onde.py     OK  [vraie Toile] aucune erreur de page   / 9 / 9
+   51s  redteam_apercus.py           ✅ E le fond d'un aperçu est celui de la vraie Toile [light]  (sombre #050302 · clair #F1ECD9) / ✅  10/10
+  112s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1921 ms) / 32/32
+  227s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+   74s  redteam_toile.py           aucune erreur JS                           OK  [] / 18/18
+  192s  redteam_accueil.py         [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False / 22/22
+  116s  redteam_dalle_figee.py     D · les peintres des cartes suivent le Studio (v34)        OK  82 appels · 6 pour le Promi planté en « pixel · terre », peint dans le Studio (encre) : True · 0 hors du Studio / 4/4
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+   47s  redteam_polices.py            aucun. / 0 couple(s) absent(s) · 0 élément(s)
+  350s  redteam_air.py                Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune» /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+  150s  banc_rendu.py              280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0 / ✅ AU PIXEL.

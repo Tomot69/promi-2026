@@ -8391,3 +8391,13 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Le rendu de la Pelote par les poils (pas une texture) : ACCEPTÉ par Tom.**
 - **Mesure de Tom, iPhone 16e (b116538)** : carte graphique, 220 000 poils, image p50 17 ms, p95 25 ms, 54 à 56 images/s, la respiration n'ajoute rien — C-001 : fluidité acquise.
 - **À CHOISIR (C-006)** : la densité du fond de la dernière diapositive — A (4 voisines), B (7), C (10).
+
+
+## LOT v127 — 4 octobre 2026 (les décisions vivent dans CHANTIERS.md : C-006, C-009, C-028, C-031, C-042, C-043)
+
+- **Tranché par Tom** : la dalle de l'onboarding à sa place d'avant v126, sept voisines (B) en couleur ; le disque de Ramage supprimé ;
+  retour exact de la vie au repos ; l'exception à la loi des points (choix de taille de l'outil de dessin).
+- **À valider** : Ramage — la plume arrive d'un coup (27 % des pixels en une image), faute de pouvoir pousser le long de ses traits.
+- **Ouvert** : huit mondes immobiles au repos (Volubilis, Guingois, Mascaret, Ramage, Chantourné, Brouillamini, Chamade, Esquille) — une
+  manière à écrire dans leur propre peintre. Le texte de « la loi des points » n'est écrit nulle part : à dicter.
+- **En attente du choix de Tom** : l'outil de dessin — rangée A, B ou C ; effilé E1 ou E2 ; symbole S1 ou S2 (`DESSIN-INVENTAIRE.md`).

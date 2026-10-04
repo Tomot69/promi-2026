@@ -1,0 +1,28 @@
+OK  [encre] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 8700 10535 5575 5719 7429 4558 3754 10147 4722 px
+OK  [encre] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [touffe] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 9055 0 9834 13348 15017 9633 7621 7578 10128 px
+OK  [touffe] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [mosaique] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 648 324 2268 972 648 2268 324 324 648 px
+OK  [mosaique] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [braille] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 796 1252 2532 1164 1164 1776 2348 1740 1988 px
+OK  [braille] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [pixel] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 1400 1800 800 600 780 0 200 2400 1800 px
+OK  [pixel] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [sillons] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 117 345 374 345 574 685 0 233 903 px
+OK  [sillons] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [gravure] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 3098 1350 2492 706 1398 1958 3053 2442 2515 px
+OK  [gravure] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [halin] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 17051 2740 7881 4381 18600 2351 5909 18352 2725 px
+OK  [halin] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [bobinette] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 1640 4276 1343 2751 3248 1343 815 1577 3897 px
+OK  [bobinette] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [ritournelle] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 14152 11509 9302 11878 22473 11216 0 14607 0 px
+OK  [ritournelle] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [madrure] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 36046 9144 15139 15581 27709 25936 17180 17736 16482 px
+OK  [madrure] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  [terrazzo] les mouvements sont joués (9 demandés) et des pixels changent pendant  9 joué(s), pendant : 3936 2756 4566 5061 1323 2500 4688 5223 2845 px
+OK  [terrazzo] retour : 0 pixel d'écart après chaque mouvement  restes : 0 0 0 0 0 0 0 0 0
+OK  cent mouvements au moins, tous revenus au pixel  108 revenus sur 108
+OK  aucune erreur de page  
+
+26 / 26

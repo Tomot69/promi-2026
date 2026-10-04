@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><title>C-042 · le trait</title>
+<base href="/">
+<style>body{margin:0;background:#F0ECE2;font-family:Atkinson,system-ui;color:#201908}
+.col{width:390px;padding:16px 0 8px}.h{font-family:Gilbert,system-ui;font-weight:700;text-transform:uppercase;font-size:15px;letter-spacing:.02em;margin:0 16px 4px}
+.s{font-size:13px;margin:0 16px 10px;opacity:.8}canvas{display:block;width:390px}</style>
+<div class="col" id="c"></div>
+<script src="/scratchpad/v127/dessin/pen.js"></script>
+<script>
+fetch('/app.html').then(function(r){return r.text()}).then(function(t){ var st=document.createElement('style'); st.textContent=(t.match(/@font-face\s*\{[^}]*\}/g)||[]).join('\n'); document.head.appendChild(st); return Promise.all([document.fonts.load('700 15px Gilbert'),document.fonts.load('400 13px Atkinson')]); }).then(go, go);
+function go(){
+var q=new URLSearchParams(location.search), V=q.get('v')||'E1', sombre=q.get('th')==='dark', DPR=window.devicePixelRatio||1;
+var CH={promi:'#82AEF8', chiche:'#FFB8D2', cercle:'#C9A8F5'}, ENCRE='#201908', CREME='#F7F0DE';
+document.body.style.background=sombre?'#100D0B':'#F0ECE2'; document.body.style.color=sombre?CREME:ENCRE;
+var c=document.getElementById('c');
+c.innerHTML='<p class="h">'+V+' · '+(V==='E1'?'effilé court — derniers 10 % du trait':'effilé long — derniers 25 %, début plus marqué')+'</p><p class="s">Trait plein et opaque. Fin 2,5 pt · moyen 4,5 pt · gros 8 pt. La pointe ne descend pas sous 1 pt ; un trait très court reste sans effilé.</p>';
+[['fin · 2,5 pt',2.5],['moyen · 4,5 pt',4.5],['gros · 8 pt',8]].forEach(function(T, k){
+  var p=document.createElement('p'); p.className='h'; p.style.marginTop='14px'; p.textContent=T[0]; c.appendChild(p);
+  var cv=document.createElement('canvas'), H=236; cv.width=390*DPR; cv.height=H*DPR; cv.style.height=H+'px'; c.appendChild(cv); var g=cv.getContext('2d'); g.scale(DPR,DPR);
+  g.fillStyle=CH[['promi','chiche','cercle'][k]]; g.fillRect(0,0,390,H);
+  var col=ENCRE, b=T[1];
+  PEN.trace(g, PEN.mot(26, 96, 78), b, V, col);                 /* un mot écrit au doigt */
+  PEN.trace(g, PEN.coeur(306, 62, 34), b, V, col);              /* un petit dessin */
+  PEN.trace(g, PEN.rapide(24, 150, 200), b, V, col);            /* un trait rapide */
+  PEN.trace(g, PEN.lent(24, 204, 200), b, V, col);              /* un trait lent */
+  PEN.trace(g, PEN.point(262, 150), b, V, col); PEN.trace(g, [{x:280,y:146,t:0},{x:288,y:152,t:60}], b, V, col);   /* un point, un trait très court */
+  PEN.trace(g, PEN.etoile(340, 196, 26), b, V, sombre?CREME:CREME);  /* la crème, pour l'opacité sur le champ */
+  g.font='700 11px Gilbert, system-ui'; g.fillStyle=ENCRE; g.globalAlpha=.72; [['UN MOT',26,116],['RAPIDE',24,170],['LENT',24,228],['TRÈS COURT',250,170]].forEach(function(l){ g.fillText(l[0],l[1],l[2]); }); g.globalAlpha=1;
+});
+window._pret=1; }
+</script>

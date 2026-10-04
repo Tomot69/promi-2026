@@ -165,27 +165,6 @@ la nature, la ligne dit l'état.)*
 > nouvelle parole et des voisines qui ne sont à personne (`Toile.sync(ids + voisines)`, rien n'est sauvegardé ; `terminer` rend la Toile
 > à la seule parole plantée). `?voisines=4|7|10` ; 7 en attendant le choix de Tom.
 
-### ⚑ v127 (4 oct. 2026) — L'ONBOARDING, RAMAGE SANS DISQUE, LE RETOUR EXACT DE LA VIE AU REPOS. (Décisions Tom.)
-> **L'onboarding, dernière diapositive (C-006, C-043).** La dalle de la nouvelle parole garde la taille et la place d'avant v126 (à l'image,
-> clair : 158,7 × 155,0 pt à (131–133 ; 570–571), 14 710 pt²). **Les voisines ne sont PAS des paroles** : ce sont sept cellules vides du
-> semis, dépliées par le peintre à 0,62 et teintes d'un ton de la palette (`Toile.voisines(7, {…})`, `Toile.voisines(0)` les rend au vide).
-> ⚠ Mesuré : en faire des paroles recadrait la vue (zoom 2 → 1) puis, même sans recadrage, leur poids POUSSAIT la dalle principale de 10 pt.
-> ⚠ Seul Pochade (le monde du premier lancement) les peint. `?voisines=` est retiré. **Tout le texte courant de l'onboarding est en Gilbert**
-> (écrit en minuscules, tel quel — exception à « Gilbert en capitales », décidée par Tom) ; 20 px entre deux phrases, 33 sous « Ça y est. ».
-> **Ramage (C-009) : LE DISQUE DE LA POUSSE EST SUPPRIMÉ** — c'était un effet posé sur la Toile. La plume arrive D'UN COUP, en une image
-> (`window._ramFilmOff` par défaut ; `_ramFilmOn` rend le film, pour comparer). ⚠ Sous Ramage, une plume qui arrive redessine tout le plumage
-> (27 % des pixels) : pousser « le long de ses traits » demanderait de le recalculer à chaque image. Juge : `redteam_ramage_onde` (réécrit).
-> **La vie au repos (C-028) — LE RETOUR EST EXACT** : au tirage la Toile entière est gardée telle qu'elle est peinte (`_vivGarde`), et rendue
-> pixel pour pixel à la dernière image (`_vivRendre`) si rien d'autre n'a changé (`_vivSigne`). Ce n'est ni une dalle ni un fragment : la
-> Toile entière, 1:1, sur elle-même. **Le titre ne bouge jamais** pendant un mouvement de repos. Juge : **`redteam_retour.py`** (cent
-> mouvements et plus, 0 pixel ; rouge sur v126). ⚠ **Un mouvement qui ne déplace que le TITRE n'est pas un mouvement de matière** : trois des
-> « douze » de v126 (Bobinette, Esquille, Brouillamini) n'avaient que lui (Bobinette est réparé, les deux autres sont immobiles) — le juge comptait les pixels du titre.
-> **Les mondes (C-031)** : `_VIV_CLOS` (hors de la cellule de la dalle tirée, l'image d'avant est rendue à chaque image : le mouvement ne
-> gagne jamais la Toile) et `_VIV_GR` (la graine tirée est prêtée au monde à sa place du moment, le temps de le peindre). **Douze mondes
-> bougent** : Pochade, Touffe, Tesselle, Braille, Buvard, Houle, Taille-douce, Halin, Ritournelle, Bobinette, + Madrure et Éclisse (v127).
-> **Huit sont immobiles, à écrire dans leur propre peintre : Volubilis, Guingois, Mascaret, Ramage, Chantourné, Brouillamini, Chamade,
-> Esquille** (Chamade et Esquille essayés par la graine prêtée : à-coups, mouvement hors tirage — retirés).
-
 ### ⚑ v124 (3 oct. 2026) — L'AURA REMONTÉE ENCORE ; « PARTAGER MA PELOTE » ET « GARDER TA TOILE » EN COULEUR ; TENIR EST FLUIDE. (Décisions Tom.)
 > **Q378 tranchée : la fluidité passe avant la densité.** Six paliers : 220 000 · 180 000 · 150 000 · **110 000 · 90 000 · 75 000**. À
 > 110 000 et en dessous, le poil reprend l'épaisseur et le reflet de la densité 1 (`reglePoil`, l'atlas est refait) — jamais sous les yeux.
@@ -1370,13 +1349,6 @@ autre contour. Contrôlé par un balayage qui vérifie les trois cotes sur dix �
 > du tableau ci-dessus, qui était déjà la règle. Un seul propriétaire dans l'app : `rayon()` (`lot-CERCLE-MUR`,
 > `window._seuilPilule`) ; les juges portent 94,5 EN DUR (§7).
 
-### ⚑ v127 — LA LOI DES POINTS : UNE SEULE EXCEPTION, NOMINATIVE — LE CHOIX DE TAILLE DE L'OUTIL DE DESSIN (C-042)
-> (Décision Tom, 4 oct. 2026.) *« Au second toucher sur la plume ou la gomme, trois petits points côte à côte, de taille croissante, à
-> l'encre du mode. Inscris dans CLAUDE.md l'exception nominative à la loi des points : seul ce choix de taille y échappe. »*
-> **Seul le choix de taille de la plume et de la gomme porte des points** ; nulle part ailleurs un point ne sert de commande ni de repère.
-> ⚠ Le texte de la loi elle-même n'est écrit nulle part dans ce fichier (cherché le 4 oct. dans CLAUDE.md, QUESTIONS.md, CHANTIERS.md) :
-> à faire dicter par Tom. L'outil n'est pas construit : planche `planche-v127/dessin-*`, en attente de son choix.
-
 ### ⚑ UN RÉGLAGE VIT LÀ OÙ VIT CE QU'IL RÈGLE
 
 > **Décision Tom, 31 août 2026. Née du pinceau, elle vaut pour tout réglage à venir.**
@@ -1737,8 +1709,6 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvements de repos forcés sur 15 mondes, 0 pixel d'écart au retour (égalité stricte,
-                               #   canevas entier, WebKit) ; les mouvements ont bien lieu. Rougit sur la version de v126 (Touffe). ≈ 10 min, seul.
 python3 redteam_fluide.py      # 5 — v124, TENIR EST FLUIDE : 20 animations, aucune image au-delà de 20 ms de travail du fil principal, p95 ≤ 16,7 ms
                                #   (trace Chromium, vrai GPU, @3x) ; la durée (1 000 ms) et les deux états. Rougit sur app-avant-v124 (2/5). ≈ 3 min.
 python3 redteam_bouton.py      # 33 — v124, « PARTAGER MA PELOTE » : PromiLate 15 px, capitale = celle du trait ; couleur de la palette ≠ poils ≠ corps,

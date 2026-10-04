@@ -23,7 +23,7 @@ from playwright.sync_api import sync_playwright
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
 DUREE = int(next((a.split('=')[1] for a in sys.argv if a.startswith('--duree=')), 180))
 VIVENT = 'encre,touffe,mosaique,braille,pixel,halin,esquille,ritournelle,bobinette,gravure,sillons,brouillamini'.split(',')
-IMMOBILES = 'volubilis,guingois,mascaret,ramage,chantourne,brouillamini,chamade,esquille'.split(',')   # v127 : Madrure, Chamade, Éclisse ont leur mouvement ; Brouillamini ne bougeait que son titre (figé en v127)
+IMMOBILES = 'volubilis,guingois,mascaret,ramage,chantourne,brouillamini'.split(',')   # v127 : Madrure, Chamade, Éclisse ont leur mouvement ; Brouillamini ne bougeait que son titre (figé en v127)
 MONDES = next((a.split('=')[1].split(',') for a in sys.argv if a.startswith('--mondes=')), VIVENT + IMMOBILES)
 FIXE = '--fixe' in sys.argv
 INT_MIN, INT_MAX, DUR_MIN, DUR_MAX, DALLES_MAX, PART_MAX = 5.0, 15.0, 1.0, 2.0, 2, 6.0   # 6 % : deux grandes dalles (mesuré : jusqu’à 4,2 % sous Ritournelle) ; « toute la Toile » = des dizaines de %

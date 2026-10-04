@@ -1,0 +1,11 @@
+OK  [passe 1] le déclencheur est joué : une arrivée, au Studio, juste après l'ouverture  1 image(s)
+OK  1 · [passe 1] ni disque ni saut : aucune image d'un film ne change plus de 2 % des pixels sur plus de 60 % de la Toile  apparition d'un coup, 1 image (26.8 %)
+OK  [passe 1] aucune erreur de page  
+OK  [passe 2] le déclencheur est joué : une arrivée, au Studio, juste après l'ouverture  1 image(s)
+OK  1 · [passe 2] ni disque ni saut : aucune image d'un film ne change plus de 2 % des pixels sur plus de 60 % de la Toile  apparition d'un coup, 1 image (41.5 %)
+OK  [passe 2] aucune erreur de page  
+OK  2 · [vraie Toile] la plume plantée paraît  1 image(s) de changement
+OK  2 · [vraie Toile] une seule image de changement d'ensemble : ni disque qui grandit, ni saut après coup  1 image(s) d'ensemble sur 1 · 27.0%/100
+OK  [vraie Toile] aucune erreur de page  
+
+9 / 9

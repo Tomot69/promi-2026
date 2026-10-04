@@ -36198,13 +36198,6 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #onbV .onbv-nat{font-style:normal;font-weight:700}
 #onbV .onbv-fin b + span{margin-top:33px}
 #onbV .onbv-fin .onbv-cpt{margin-top:22px}   /* v126 : le concept, un interligne plus bas que le paragraphe qui le précède */
-/* ⚑ v127 (Tom, C-043) — « l'onboarding : mets tout le texte en Gilbert, ce sera plus beau, et espace les phrases, de moins qu'entre la
-   première et la phrase en gros gras, mais fais respirer, c'est tout tassé. » Tout le texte courant de l'onboarding passe en Gilbert
-   (une seule graisse, 700 ; écrit en minuscules, tel quel) ; sur la dernière diapositive, 20 px entre deux phrases (33 sous « Ça y est. »). */
-#onbV .onbv-dit,#onbV .onbv-sous,#onbV .onbv-fin span,.onbv-compte .tx{font-family:var(--f-libelle);font-weight:700;letter-spacing:.01em}
-#onbV .onbv-fin span{margin-top:20px;line-height:23px}
-#onbV .onbv-fin b + span{margin-top:33px}
-#onbV .onbv-fin .onbv-cpt{margin-top:20px}
 </style>
 <script id="lot-ONB-ECART">
 /* ⚑ v83 (Tom) — PENDANT L'ONBOARDING, LA TOILE S'ÉCARTE DES ÉLÉMENTS : le mot-marque, la phrase, les pastilles, la zone où tracer.
@@ -36289,7 +36282,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         '<div class="onbv-a onbv-trace" id="onbTrace" style="display:none;top:'+(ZONE_Y-34)+'px">trace pour planter</div>'+
         '<canvas class="onbv-a onbv-trait" id="onbTrait" data-onb="trait" style="display:none;top:'+ZONE_Y+'px" aria-label="Trace pour planter"></canvas>'+
       '</div>'+
-      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier '+nat('Promi')+', ta première dalle sur ta Toile.</span><span class="onbv-cpt">Ici, c’est '+nat('Promi')+'. Et ça veut dire quelque chose.</span><span>Un '+nat('Promi')+', tu donnes ta parole. Un '+nat('Chiche')+', tu tentes quelqu’un. Un '+nat('Cercle')+', on tient à plusieurs.</span><span>Le reste se découvre à ton rythme.</span></div>'+
+      '<div class="onbv-a onbv-fin onbv-f" id="onbFin" style="opacity:0;display:none"><b>Ça y est.</b><span>Ton premier '+nat('Promi')+', ta première dalle sur ta Toile.</span><span class="onbv-cpt">Ici, c’est '+nat('Promi')+'. Et ça veut dire quelque chose.</span><span>Un '+nat('Promi')+', c’est ta parole. Un '+nat('Chiche')+', celle que tu lances à quelqu’un. Un '+nat('Cercle')+', celles qu’on tient à plusieurs.</span><span>Le reste se découvre à ton rythme.</span></div>'+
       '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">';
     ov.appendChild(v);
     var inp=v.querySelector('#onbIn');
@@ -36427,9 +36420,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
          écrit dans les données, rien n'est sauvegardé) ; il les pose comme il pose toute dalle — c'est SA Toile, pas un dessin. À la
          fin (`terminer`), la Toile est rendue à la seule parole plantée. Densité : `window._onbVoisines` (4, 7 ou 10 — Tom choisit ;
          7 en attendant, `?voisines=` pour la planche). */
-      /* ⚑ v127 (Tom) : sept voisines, posées par `Toile.voisines` — la vue et la cellule de la parole restent celles d'avant v126 ;
-         les voisines sont des cellules vides de la Toile qui prennent une teinte de la palette. `?voisines=` est retiré. */
-      if(!rejeu && window.Toile&&Toile.voisines){ try{ if(Toile.voisines(7, {natures:[1,2,2,1,2,1,2], haut:0.52, marge:-0.1, taille:(window._onbPoids||0.62)})) voisines=true; }catch(_){} }
+      if(!rejeu && window.Toile&&Toile.sync){ var _nv=window._onbVoisines; try{ var _mq=/[?&]voisines=(\d+)/.exec(location.search); if(_mq) _nv=+_mq[1]; }catch(_){}
+        if(_nv==null) _nv=7; var _fx=[]; for(var _iv=0;_iv<_nv;_iv++) _fx.push(900000001+_iv);
+        if(_fx.length){ voisines=true; Toile.sync(ids.concat(_fx)); } }
     }catch(e){}
     var D=dev.getBoundingClientRect(), s=k(), cible=null;
     try{ var a=Toile.dalleAbs(np.id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
@@ -36497,7 +36490,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var v=document.getElementById('onbV'); if(v) v.remove();
     parNous=true; ov.classList.add('gone'); dev.classList.remove('onb-actif'); parNous=false;
     reserveDonnees=null; etape=null;
-    if(voisines){ voisines=false; try{ if(window.Toile&&Toile.voisines) Toile.voisines(0); }catch(_){} }   /* v126 : les voisines de la dernière diapositive s'en vont */
+    if(voisines){ voisines=false; try{ if(window.Toile&&Toile.sync) Toile.sync(promises.filter(function(p){return !p.draft;}).map(function(p){return p.id;})); }catch(_){} }   /* v126 : les voisines de la dernière diapositive s'en vont */
     LS.s('promi_onb','1'); if(!LS.g('promi_debut')) LS.s('promi_debut', ''+Date.now());
     try{ if(window.Toile&&Toile.reserve) Toile.reserve([]); }catch(_){}
     try{ if(typeof saveState==='function') saveState(); }catch(_){}

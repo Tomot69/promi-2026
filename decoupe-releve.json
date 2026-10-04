@@ -1,9 +1,9 @@
 {
  "moteur": {
-  "C·getImageData": 1517,
-  "A·découpe": 538,
-  "ok·pose": 1139,
-  "C·putImageData": 536
+  "C·getImageData": 1595,
+  "A·découpe": 571,
+  "ok·pose": 1206,
+  "C·putImageData": 560
  },
  "prises": []
 }

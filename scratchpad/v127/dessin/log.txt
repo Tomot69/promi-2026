@@ -1,0 +1,24 @@
+cercle : blocs descendus 7
+planche-v127/dessin-A-rangee-clair.png (3726, 8196)
+planche-v127/dessin-A-rangee-clair-tel-A.png (3726, 2832)
+planche-v127/dessin-A-rangee-clair-tel-B.png (3726, 2832)
+planche-v127/dessin-A-rangee-clair-tel-C.png (3726, 2832)
+planche-v127/dessin-BDE-etats-clair.png (3726, 5514)
+planche-v127/dessin-BDE-clair-tel-1.png (3726, 2832)
+planche-v127/dessin-BDE-clair-tel-2.png (3726, 2832)
+menu photo : ['BUTTON', '', 'static', 150]
+planche-v127/dessin-E-autres-clair.png (3726, 5514)
+planche-v127/dessin-E-clair-tel-1.png (3726, 2832)
+planche-v127/dessin-E-clair-tel-2.png (2502, 2832)
+cercle : blocs descendus 7
+planche-v127/dessin-A-rangee-sombre.png (3726, 8196)
+planche-v127/dessin-A-rangee-sombre-tel-A.png (3726, 2832)
+planche-v127/dessin-A-rangee-sombre-tel-B.png (3726, 2832)
+planche-v127/dessin-A-rangee-sombre-tel-C.png (3726, 2832)
+planche-v127/dessin-BDE-etats-sombre.png (3726, 5514)
+planche-v127/dessin-BDE-sombre-tel-1.png (3726, 2832)
+planche-v127/dessin-BDE-sombre-tel-2.png (3726, 2832)
+menu photo : ['BUTTON', '', 'static', 150]
+planche-v127/dessin-E-autres-sombre.png (3726, 5514)
+planche-v127/dessin-E-sombre-tel-1.png (3726, 2832)
+planche-v127/dessin-E-sombre-tel-2.png (2502, 2832)

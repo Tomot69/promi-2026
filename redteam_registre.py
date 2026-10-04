@@ -14,7 +14,7 @@ Sans navigateur. `python3 redteam_registre.py copie.md` juge une copie (la preuv
 import sys, re, subprocess, os
 ICI = os.path.dirname(os.path.abspath(__file__))
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), os.path.join(ICI, 'CHANTIERS.md'))
-ETATS = ['OUVERT', 'EN COURS', 'FAIT, EN ATTENTE DE TOM', 'VALIDÉ PAR TOM', 'REPORTÉ', 'ABANDONNÉ PAR TOM']
+ETATS = ['OUVERT', 'EN COURS', 'PLANCHE EN ATTENTE DU CHOIX DE TOM', 'FAIT, EN ATTENTE DE TOM', 'VALIDÉ PAR TOM', 'REPORTÉ', 'ABANDONNÉ PAR TOM']
 def lignes(txt):
     R = {}
     for l in txt.split('\n'):

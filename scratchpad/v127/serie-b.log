@@ -1,0 +1,5 @@
+  287s  redteam_rythme.py            · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 45, 'images': 3, 'boucle': 1827, 'debut': 27} / 60 / 60
+  430s  redteam_retour.py          OK  aucune erreur de page   / 26 / 26
+  693s  redteam_vivant.py          53 / 56 / KO : [sillons] un mouvement dure 1 à 2 s · [terrazzo] un mouvement dure 1 à 2 s · [bobinette] rien d'autre ne bouge sur la Toile au repos
+   33s  releve-design.py           ✅  AUCUN ÉCART. Le design est intact.
+  654s  redteam_couleurs_ref.py    exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 8 · E5 violations retirées 22 · E6 trace crème (Q374) 13 · E7 ombre crème en sombre 2 / 

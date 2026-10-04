@@ -1,0 +1,67 @@
+OK  [sillons] la Toile bouge au repos (au moins 3 mouvements en 90 s)  7 mouvement(s)
+OK  [sillons] jamais moins de 5 s entre deux mouvements  le plus court : 7.5 s
+OK  [sillons] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 14.8 s
+OK  [sillons] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 8.7 à 16.2 s
+OK  [sillons] un mouvement dure 1 à 2 s  de 0.9 à 1.5 s
+OK  [sillons] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 0.06 %
+OK  [sillons] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+OK  [sillons] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+OK  [sillons] rien d'autre ne bouge sur la Toile au repos  0 changement(s) sans tirage : 
+OK  [sillons] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  17 lecture(s) sur 805 où la boucle tournait
+OK  [madrure] la Toile bouge au repos (au moins 3 mouvements en 90 s)  9 mouvement(s)
+OK  [madrure] jamais moins de 5 s entre deux mouvements  le plus court : 5.6 s
+OK  [madrure] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 14.9 s
+OK  [madrure] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 6.6 à 16.1 s
+OK  [madrure] un mouvement dure 1 à 2 s  de 1.1 à 1.6 s
+OK  [madrure] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 3.57 %
+OK  [madrure] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+OK  [madrure] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+OK  [madrure] rien d'autre ne bouge sur la Toile au repos  0 changement(s) sans tirage : 
+OK  [madrure] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  6 lecture(s) sur 785 où la boucle tournait
+OK  [chamade] la Toile bouge au repos (au moins 3 mouvements en 90 s)  7 mouvement(s)
+OK  [chamade] jamais moins de 5 s entre deux mouvements  le plus court : 6.2 s
+KO  [chamade] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 16.8 s
+OK  [chamade] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 7.3 à 18.6 s
+KO  [chamade] un mouvement dure 1 à 2 s  de 0.3 à 1.9 s
+OK  [chamade] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 0.97 %
+OK  [chamade] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+KO  [chamade] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.066 %
+KO  [chamade] rien d'autre ne bouge sur la Toile au repos  2 changement(s) sans tirage : à 58 s, 1.15 s, 0.32 % (reste 0.000 %) · à 68 s, 0.10 s, 0.07 % (reste 0.066 %)
+OK  [chamade] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  13 lecture(s) sur 782 où la boucle tournait
+OK  [terrazzo] la Toile bouge au repos (au moins 3 mouvements en 90 s)  9 mouvement(s)
+OK  [terrazzo] jamais moins de 5 s entre deux mouvements  le plus court : 5.8 s
+OK  [terrazzo] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 14.7 s
+OK  [terrazzo] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 7.2 à 16.7 s
+KO  [terrazzo] un mouvement dure 1 à 2 s  de 0.6 à 2.1 s
+OK  [terrazzo] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 0.19 %
+OK  [terrazzo] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+OK  [terrazzo] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+OK  [terrazzo] rien d'autre ne bouge sur la Toile au repos  0 changement(s) sans tirage : 
+OK  [terrazzo] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  3 lecture(s) sur 782 où la boucle tournait
+OK  [bobinette] la Toile bouge au repos (au moins 3 mouvements en 90 s)  8 mouvement(s)
+OK  [bobinette] jamais moins de 5 s entre deux mouvements  le plus court : 6.7 s
+OK  [bobinette] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 15.4 s
+OK  [bobinette] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 7.5 à 16.3 s
+KO  [bobinette] un mouvement dure 1 à 2 s  de 0.3 à 1.1 s
+OK  [bobinette] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 0.24 %
+OK  [bobinette] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+OK  [bobinette] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+OK  [bobinette] rien d'autre ne bouge sur la Toile au repos  0 changement(s) sans tirage : 
+OK  [bobinette] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  23 lecture(s) sur 783 où la boucle tournait
+KO  [esquille] la Toile bouge au repos (au moins 3 mouvements en 90 s)  0 mouvement(s)
+OK  [esquille] jamais moins de 5 s entre deux mouvements  le plus court : 0.0 s
+OK  [esquille] jamais plus de 15 s (+ les lectures) sans mouvement  le plus long : 0.0 s
+OK  [esquille] aucun motif périodique (les intervalles s'étalent sur plus de 3 s)  de 0.0 à 0.0 s
+KO  [esquille] un mouvement dure 1 à 2 s  de 0.0 à 0.0 s
+KO  [esquille] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement  le plus grand : 0.00 %
+OK  [esquille] jamais plus de deux dalles (le tirage du moteur)  au plus 2
+KO  [esquille] après un mouvement, la Toile est revenue à l'image d'avant  reste : 0.000 %
+KO  [esquille] rien d'autre ne bouge sur la Toile au repos  3 changement(s) sans tirage : à 16 s, 0.10 s, 0.20 % (reste 0.199 %) · à 16 s, 0.22 s, 0.20 % (reste 0.199 %) · à 39 s, 0.22 s, 0.55 % (reste 0.000 %)
+KO  [esquille] coût nul entre deux mouvements : la boucle du moteur est arrêtée, aucun pixel ne change  94 lecture(s) sur 782 où la boucle tournait
+OK  [brouillamini] immobile au repos (il n'a pas encore sa manière) : rien ne bouge en 90 s  0 mouvement(s)
+OK  « Réduire les animations » : immobile (24 s)  0 mouvement(s)
+OK  hors écran (l'Index ouvert par-dessus, 22 s) : aucun mouvement tiré  50 → 50
+OK  aucune erreur de page  
+
+52 / 64
+KO : [chamade] jamais plus de 15 s (+ les lectures) sans mouvement · [chamade] un mouvement dure 1 à 2 s · [chamade] après un mouvement, la Toile est revenue à l'image d'avant · [chamade] rien d'autre ne bouge sur la Toile au repos · [terrazzo] un mouvement dure 1 à 2 s · [bobinette] un mouvement dure 1 à 2 s · [esquille] la Toile bouge au repos (au moins 3 mouvements en 90 s) · [esquille] un mouvement dure 1 à 2 s · [esquille] jamais toute la Toile : au plus 6 % des pixels pendant un mouvement · [esquille] après un mouvement, la Toile est revenue à l'image d'avant
