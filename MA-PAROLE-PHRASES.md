@@ -11,7 +11,7 @@ modifié dans l'app.
 - **Laquelle paraît dépend d'un compteur GLOBAL** (toutes zones confondues, gardé par personne) : le 1er mur touché montre la phrase 1,
   le 2e la phrase 2… jusqu'à la 21 ; ensuite une phrase au hasard parmi les 21, jamais la même deux fois de suite. Après 14 jours sans
   toucher un mur, le compteur repart à la phrase 1.
-- **Les espaces avant « ! » et « ? » sont des espaces insécables** (notées ⍽ dans la colonne « détail » quand il y en a) ; les
+- **Les espaces avant « ! » et « ? » sont des espaces insécables** (elles le sont dans ce fichier aussi) ; les
   apostrophes sont typographiques (’) ; la phrase 4 finit par le caractère « … ».
 - **Un mot porte l'orange de Ma Parole !** dans neuf phrases : « Ma Parole ! » lui-même (phrases 1, 2, 3, 6, 15) ou un seul mot
   (phrases 5, 7, 9, 17). Les douze autres sont d'une seule couleur.
@@ -21,7 +21,7 @@ modifié dans l'app.
 
 | Mur | Écran | Ce qui est flouté et qu'on touche |
 |---|---|---|
-| A | Peaufiner d'une fiche (Promi, Chiche) | le bloc des réglages de Ma Parole ! (récurrence, rappel, « c'est important ? », la mémoire, la couleur) |
+| A | Peaufiner d'une fiche | le bloc des réglages de Ma Parole ! (récurrence, rappel, « c'est important ? », la mémoire, la couleur) |
 | B | Peaufiner de la page + | le même bloc, à la création |
 | C | L'Aura | la rangée « Ce qu'on t'a tenu » |
 | D | L'aide de l'Aura | les rubriques verrouillées |
@@ -29,6 +29,9 @@ modifié dans l'app.
 | F | Le Studio, sur un monde ou une palette verrouillés | les teintes, la vue, les points et le nom du panneau des palettes |
 
 Chaque phrase ci-dessous peut donc paraître sur **A, B, C, D, E et F**.
+
+⚠ L'affichage à l'écran a été relevé sur le mur A (les 21 phrases, une à une). Les murs B à F sont lus dans le code (la liste des
+murs du lot) : ils appellent la même liste, mais leur contenu flouté est décrit d'après leurs sélecteurs, pas d'après une capture.
 
 ## Les 21 phrases
 
