@@ -8,13 +8,15 @@ l'Index, le Fil, la liste de l'Aura et le fil du Cercle concerné, À L'IMAGE SU
   · l'écran est RESTÉ AFFICHÉ pendant l'action (on a ouvert la fiche depuis lui, on y revient) ;
   · l'écran est OUVERT juste après.
 Le verdict vient du DOM rendu, comparé aux données (`promises`) ; la liste de l'Aura est jugée COMPLÈTE contre la règle
-décidée EN DUR (Q187 : trois dalles, six dès cinq tenues — les plus récentes d'abord).
+décidée EN DUR (v131 : TOUTES les paroles tenues, dans l'ordre chronologique — plus de limite à 3 ou 6).
 Usage : python3 redteam_reactif.py [fichier.html]"""
 import sys
 from playwright.sync_api import sync_playwright
 F=[a for a in sys.argv[1:] if not a.startswith('--')]; F=F[0] if F else 'app.html'
 T='parole du juge'; CERCLE='potager'
-MOISSON_PETIT, MOISSON_GRAND, SEUIL = 3, 6, 5          # Q187, en dur
+# ⚑ v131 (Tom, 5 oct. 2026, C-052) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_reactif-avant-v131.py). La règle d'avant (Q187) : trois
+#   dalles, six dès cinq tenues, les plus récentes d'abord. La décision qui la remplace : « la liste montre TOUTES les paroles tenues, dans
+#   l'ordre chronologique, l'Aura défilant. Plus de limite à 3 ou 6. » La parole qu'on vient de tenir est donc la DERNIÈRE.
 ANIME_MAX = 3000                                       # l'amande (1 000 ms, v124) puis « juste après » : la fiche couvre l'Aura ; borne en dur
 LIRE=r"""()=>{ const moi=p=>p&&!p.draft&&!p.req&&(!p.from||p.from==='moi');
   const sc=(id)=>{const e=document.getElementById(id); return !!e&&(e.classList.contains('show')||e.classList.contains('in'));};
@@ -43,7 +45,7 @@ with sync_playwright() as p:
         pg.evaluate("()=>{ const a=document.getElementById('auraScreen'); const x=document.querySelector('#auraScreen .closeb'); if(a&&a.classList.contains('show')&&x) x.click(); closeAll(); try{ if(typeof setView==='function') setView('toile'); }catch(e){} }"); pg.wait_for_timeout(500)
     OUVRE={'Index':"()=>ouvrirIndex()", 'Fil':"()=>document.getElementById('filBtn').click()", 'Aura':"()=>document.getElementById('souffleBtn').click()", 'Cercle':"()=>openEssaim('potager')"}
     def attendu_moisson(e):
-        t=e['tenus']; n=MOISSON_GRAND if len(t)>=SEUIL else MOISSON_PETIT; return min(len(t), n)
+        return len(e['tenus'])
     def juge(lab, e, ecran, present, etat=None):
         """present : la parole du juge doit-elle paraître sur cet écran ?"""
         if ecran=='Index':
@@ -59,8 +61,8 @@ with sync_playwright() as p:
                 c=[x for x in e['filCartes'] if T in x]; ok('%s · Fil : elle y est dite tenue'%lab, any('TENU' in x.upper() for x in c), str(c)[:160])
         elif ecran=='Aura':
             n=attendu_moisson(e); recents=list(reversed(e['tenus']))
-            ok('%s · Aura : la liste est complète (%d dalles attendues)'%(lab,n), len(e['moisson'])==n and all(t in e['tenus'] for t in e['moisson']), 'rendu %s'%e['moisson'])
-            if etat=='tenu' and present: ok('%s · Aura : la parole tenue est en tête de la liste'%lab, e['moisson'][:1]==[T], 'tête %s'%e['moisson'][:1])
+            ok('%s · Aura : la liste est complète — TOUTES les paroles tenues (%d)'%(lab,n), len(e['moisson'])==n and sorted(e['moisson'])==sorted(e['tenus']), 'rendu %s'%e['moisson'])
+            if etat=='tenu' and present: ok('%s · Aura : la parole tenue est la dernière de la liste (ordre chronologique)'%lab, e['moisson'][-1:]==[T], 'fin %s'%e['moisson'][-1:])
             if not present: ok("%s · Aura : la parole n'y est pas"%lab, T not in e['moisson'], str(e['moisson']))
         elif ecran=='Cercle':
             att=sorted(x.split('|')[0] for x in e['duCercle']); rendu=sorted([t for t in att if any(t in y for y in e['nf'])])
@@ -74,6 +76,12 @@ with sync_playwright() as p:
     # ── chaque écran est ouvert une première fois : c'est après qu'un écran « construit une fois » se trahit ──
     for ecran in ('Index','Fil','Aura','Cercle'):
         accueil(); pg.evaluate(OUVRE[ecran]); pg.wait_for_timeout(1600)
+    # ── 0 · on dépasse l'ancienne borne (6) : deux paroles de plus sont tenues par le vrai bouton, AVANT le reste
+    for ti in ('nager le mardi','tailler la vigne'):
+        accueil(); pg.evaluate("(t)=>openDetail(promises.find(p=>p.title===t).id)", ti); pg.wait_for_timeout(2000)
+        pg.evaluate("()=>document.querySelector('#segStatus button[data-st=tenu]').click()"); pg.wait_for_function("()=>!window._tenirAnime", timeout=ANIME_MAX); pg.wait_for_timeout(600)
+    accueil(); pg.evaluate(OUVRE['Aura']); e0=lire()
+    ok("Aura : sept paroles tenues, sept dalles (l'ancienne borne était six)", len(e0['tenus'])==7 and len(e0['moisson'])==7, '%d tenues · %d dalles'%(len(e0['tenus']),len(e0['moisson'])))
     # ── 1 · PLANTER dans le Cercle, par « Planter dans le Cercle », le fil du Cercle étant AFFICHÉ ──
     print('1 · PLANTER'); accueil(); pg.evaluate(OUVRE['Cercle']); pg.wait_for_timeout(1800)
     pg.evaluate("()=>document.getElementById('nfAdd').click()"); pg.wait_for_timeout(2600)

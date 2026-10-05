@@ -1,0 +1,14 @@
+A · #FB4C0D et #FF7A55 n'existent que dans le bloc des jetons                    OK  
+A · le moteur n'en porte aucun                                                   OK  
+A · les jetons ne sont lus que par #murPhrase (qui pose --orange-maparole)       OK  #murPhrase | #device:not(.light) #murPhrase.sur-corps
+A · --orange-maparole n'est lu que par « #murPhrase .mp »                        OK  #murPhrase .mp
+B · [light] aucun nœud ni canevas ne porte #FB4C0D ni #FF7A55 (34 écrans)        OK  
+C · [light] sur le Peaufiner : « Ma Parole ! » en #FB4C0D                        OK  'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.' · mp rgb(251, 76, 13) · reste rgb(32, 25, 8)
+C · [light] le reste de la phrase n'est pas l'orange de Ma Parole !              OK  rgb(32, 25, 8)
+[light] aucune erreur de page                                                    OK  
+B · [dark] aucun nœud ni canevas ne porte #FB4C0D ni #FF7A55 (34 écrans)         OK  
+C · [dark] sur le Peaufiner : « Ma Parole ! » en #FF8664 (corps cobalt d'un Promi) OK  'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.' · mp rgb(255, 134, 100) · reste rgb(247, 240, 222)
+C · [dark] le reste de la phrase n'est pas l'orange de Ma Parole !               OK  rgb(247, 240, 222)
+[dark] aucune erreur de page                                                     OK  
+
+12 / 12

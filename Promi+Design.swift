@@ -81,9 +81,9 @@ extension Color {
         static let lilas = Color(red: 0.9020, green: 0.8471, blue: 0.9804)
         /// #C9A8F5
         static let mauveClair = Color(red: 0.7882, green: 0.6588, blue: 0.9608)
-        /// clair #CFE5FE · sombre #8ACBE8 (Tropical Breeze, Pantone 13-4307 TPG — Tom, 5 oct. 2026)
+        /// clair #CFE5FE · sombre #273CEB (cobalt électrique — Tom, 5 oct. 2026, v131 ; Tropical Breeze écarté)
         static func corpsPromi(_ s: ColorScheme) -> Color {
-            s == .dark ? Color(red: 0.5412, green: 0.7961, blue: 0.9098) : Color(red: 0.8118, green: 0.8980, blue: 0.9961)
+            s == .dark ? Color(red: 0.1529, green: 0.2353, blue: 0.9216) : Color(red: 0.8118, green: 0.8980, blue: 0.9961)
         }
         /// clair #FFF4FC · sombre #7C3F58
         static func corpsChiche(_ s: ColorScheme) -> Color {
@@ -218,7 +218,7 @@ extension Color {
         static let bleu20 = Color(red: 0.1137, green: 0.2941, blue: 0.4706)   // #1D4B78
         static let bleu22 = Color(red: 0.2196, green: 0.3294, blue: 0.4588)   // #385475
         static let bleu35 = Color(red: 0.2000, green: 0.3255, blue: 0.5098)   // #335382
-        static let tropical78 = Color(red: 0.5412, green: 0.7961, blue: 0.9098)   // #8ACBE8
+        static let cobalt50 = Color(red: 0.1529, green: 0.2353, blue: 0.9216)   // #273CEB
         static let bleu45 = Color(red: 0.5098, green: 0.6824, blue: 0.9725)   // #82AEF8
         static let bleu45Txt = Color(red: 0.5098, green: 0.6824, blue: 0.9725)   // #82AEF8
         static let bleu46 = Color(red: 0.5098, green: 0.6863, blue: 0.9804)   // #82AFFA
@@ -384,7 +384,8 @@ extension Color {
         static let orange58 = Color(red: 0.8118, green: 0.4392, blue: 0.3725)   // #CF705F
         static let orange59 = Color(red: 0.9961, green: 0.3137, blue: 0.0000)   // #FE5000
         static let orangeMaParole = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — les mots « Ma Parole ! » des murs, et rien d'autre
-        static let orangeMaParoleCorps = Color(red: 1.0000, green: 0.4784, blue: 0.3333)   // #FF7A55 — les mêmes, sur les trois corps sombres de Peaufiner
+        static let orangeMaParoleCorps = Color(red: 1.0000, green: 0.4784, blue: 0.3333)   // #FF7A55 — les mêmes, sur les corps sombres de Peaufiner (Chiche, Cercle)
+        static let orangeMaParoleCobalt = Color(red: 1.0000, green: 0.5255, blue: 0.3922)   // #FF8664 — les mêmes, sur le corps cobalt d'un Promi (v131)
         static let orange61 = Color(red: 0.9098, green: 0.4392, blue: 0.2353)   // #E8703C
         static let orange62 = Color(red: 0.8784, green: 0.4706, blue: 0.4275)   // #E0786D
         static let orange64 = Color(red: 0.8392, green: 0.5412, blue: 0.3098)   // #D68A4F

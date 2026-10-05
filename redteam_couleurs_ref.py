@@ -26,8 +26,9 @@ Les exceptions sont NOMMÉES ici, en dur (§7) — rien d'autre n'est toléré :
       (.s4-et, .s4-eb, .s4-nom, étaient #DD4D23 en v118 — la passe ne les atteignait pas) — sur ces nœuds-là, en sombre, vers la crème ;
   E5  les violations visibles retirées (v119, reprises en v121 §5) : l'ombre de texte de « ✕ FERMER », du mot-marque d'une fiche et du
       badge de Partager, l'ombre dure du bouton d'achat — seulement leur DISPARITION (la valeur de l'app est absente), sur ces nœuds-là.
-  E8  v130 (Tom, 5 oct. 2026) : le corps sombre d'un Promi #335382 devient Tropical Breeze #8ACBE8 (fiche Promi, page + d'un Promi),
-      et ce qui est posé dessus passe à l'encre #201908. En sombre, sur les écrans qui montrent ce corps (`E8_ECRANS`) et là seulement :
+  E8  v131 (Tom, 5 oct. 2026) : le corps sombre d'un Promi #335382 devient le COBALT #273CEB (fiche Promi, page + d'un Promi) ; le texte
+      posé dessus reste crème, comme en v118 (Tropical Breeze, v130, est écarté — son exception d'encre ② est RETIRÉE).
+      E3 s'étend à #FF8664, l'orange de « Ma Parole ! » sur ce corps. En sombre, sur les écrans qui montrent ce corps (`E8_ECRANS`) et là seulement :
       ① #335382 → #8ACBE8 (la même propriété) ; ② une couleur de texte, de contour ou de tracé → l'encre #201908. Rien d'autre.
   E7  v123 §2 : en sombre, l'ombre de la Pelote est une ellipse CRÈME (`#auPeloteOmbre`, dégradé radial crème 0,105) — sur ce nœud-là,
       en sombre, cette valeur-là. (Le corps de la Pelote vit dans son canevas, E4 ; Q375 : l'à-qui d'une fiche tenue est posé crème à
@@ -181,7 +182,7 @@ def releve(pg, url):
 
 # E3 — l'orange des mots des murs (§4) : la seule encre qui peut différer, et seulement vers cette valeur
 VIOLATIONS = __import__('re').compile(r'closeb|dptNat|sh-bt|sh-bf|shWordmark|buyMonth|buyYear|pc-eclat')   # E5, nominatif (#shWordmark EST le .sh-bt du badge)
-MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)')   # #FB4C0D, et #FF7A55 sur les corps sombres de Peaufiner (v121 §4)
+MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 134, 100)')   # #FB4C0D, et #FF7A55 sur les corps sombres de Peaufiner (v121 §4)
 
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -249,8 +250,7 @@ with sync_playwright() as p:
                     if pr_ in ('tshadow', 'shadow', 'bgi') and va is None and VIOLATIONS.search(k): exceptions['E5'] += 1; continue
                     if pr_ == 'bgi' and cle[1] == 'dark' and 'auPeloteOmbre' in k and va and va.startswith('radial-gradient(') and re.search(r'rgba\(247, 240, 222, 0\.10[456]\d*\)', va) and va.count('rgba(') == 2 and 'rgba(247, 240, 222, 0)' in va: exceptions['E7'] += 1; continue
                     if cle[1] == 'dark' and cle[0] in E8_ECRANS and va and vr:
-                        if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '138, 203, 232'): exceptions['E8'] += 1; continue          # ① le corps
-                        if pr_ in ('color', 'tfill', 'bT', 'bR', 'bB', 'bL', 'fill', 'stroke', 'outline') and va == 'rgb(32, 25, 8)': exceptions['E8'] += 1; continue   # ② l'encre
+                        if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '39, 60, 235'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
                     ecarts.append((cle, k, pr_, va, vr))
             for k, c in a['c'].items():
                 q = r['c'].get(k)
@@ -289,7 +289,7 @@ tout = ecarts + cv_ecarts
 par = {}
 for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)
 print('%d propriétés comparées · %d écrans × 2 thèmes · %d nœuds sans vis-à-vis (listés, non jugés)' % (compares, len(ECRANS) if not SEUL else len(SEUL), orphelins))
-print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 Tropical Breeze et son encre (v130) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8']))
+print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 le cobalt, corps sombre d'un Promi (v131) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
     ec = sorted(set('%s[%s]' % (e[0][0], e[0][1][0]) for e in L))
     print('  ✗ %-8s réf %-34s → app %-34s ×%d   %s' % (pr_, vr[:34], va[:34], len(L), ', '.join(ec[:6]) + (' …' if len(ec) > 6 else '')))

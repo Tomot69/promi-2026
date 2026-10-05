@@ -368,7 +368,14 @@ G2_PIEGE = r"""()=>{ if(window.__g2) return; window.__g2=[]; const f=Toile.dalle
         for(let i=0;i<d.length;i+=4){ if(d[i+3]<250) continue; n++; const q=(d[i]>>3)+','+(d[i+1]>>3)+','+(d[i+2]>>3); H[q]=(H[q]||0)+1; }
         let m=null,mc=0; for(const q in H) if(H[q]>mc){ mc=H[q]; m=q; }
         if(m&&n>60){ const c=m.split(',').map(v=>v*8+4); let au=0;
-          for(let i=0;i<d.length;i+=4){ if(d[i+3]<250) continue; if(Math.max(Math.abs(d[i]-c[0]),Math.abs(d[i+1]-c[1]),Math.abs(d[i+2]-c[2]))>48) au++; }
+          /* ⚑ v131 (C-048) — LA « DALLE À 3,11 % » ÉTAIT DU JUGE. Reproduite en boucle (zz-v130, cinquante passages) : une dalle Tesselle
+             rendue avec une RAMPE (`opts.rampe`, Q30 : la luminosité remappée sur les trois tons de la nature) — l'ombre de ses carreaux
+             prend le ton sombre de la rampe, à plus de 48 du ton dominant. Ce sont SES couleurs, pas un morceau de voisine. Une couleur
+             qui tombe sur la rampe déclarée (ses tons et leurs intermédiaires) n'est donc pas « une autre couleur ». */
+          const RP=[]; try{ const cs=opts&&opts.rampe&&opts.rampe.cols; if(cs&&cs.length>1){ for(let a=0;a<cs.length-1;a++) for(let u=0;u<=12;u++){ const t=u/12; RP.push([cs[a][0]+(cs[a+1][0]-cs[a][0])*t, cs[a][1]+(cs[a+1][1]-cs[a][1])*t, cs[a][2]+(cs[a+1][2]-cs[a][2])*t]); } } }catch(e){}
+          for(let i=0;i<d.length;i+=4){ if(d[i+3]<250) continue; if(Math.max(Math.abs(d[i]-c[0]),Math.abs(d[i+1]-c[1]),Math.abs(d[i+2]-c[2]))>48){
+              let sur=false; for(let q=0;q<RP.length&&!sur;q++){ if(Math.max(Math.abs(d[i]-RP[q][0]),Math.abs(d[i+1]-RP[q][1]),Math.abs(d[i+2]-RP[q][2]))<=30) sur=true; }
+              if(!sur) au++; } }
           const pp=(typeof promises!=='undefined')?promises.find(x=>x.id===pid):null, mi=dcv.__dalleInfo&&dcv.__dalleInfo.monde;
           window.__g2.push({pid:pid, monde:Toile.getTheme(), n:n, autres:+(100*au/n).toFixed(2), ecran:window.__g2e||'', qui:(pp?pp.title:'(pas une parole)')+' · '+w+'×'+h+' · monde peint '+(mi?mi.m:'non déclaré')+' · '+JSON.stringify(opts||{}).slice(0,60)}); } } }catch(e){}
     return r; }; }"""

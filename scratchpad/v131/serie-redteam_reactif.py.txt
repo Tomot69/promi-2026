@@ -1,0 +1,36 @@
+  ✅ Aura : sept paroles tenues, sept dalles (l'ancienne borne était six)
+1 · PLANTER
+  ✅ la parole est plantée dans le Cercle (données)
+  ✅ planter · ouvert ensuite · Index complet (12 cartes, aucune parole hors Cercle absente)
+  ✅ planter · ouvert ensuite · Index sans parole retirée
+  ✅ planter · ouvert ensuite · Fil : la parole y est
+  ✅ planter · ouvert ensuite · Aura : la liste est complète — TOUTES les paroles tenues (7)
+  ✅ planter · ouvert ensuite · fil du Cercle complet (10 paroles)
+  ✅ planter · ouvert ensuite · fil du Cercle : la parole y est
+2 · TENIR
+  ✅ tenir · l'animation rend la main en moins de 3000 ms
+  ✅ tenir · Aura restée affichée · Aura : la liste est complète — TOUTES les paroles tenues (8)
+  ✅ tenir · Aura restée affichée · Aura : la parole tenue est la dernière de la liste (ordre chronologique)
+  ✅ tenir · ouvert ensuite · Index complet (12 cartes, aucune parole hors Cercle absente)
+  ✅ tenir · ouvert ensuite · Index sans parole retirée
+  ✅ tenir · ouvert ensuite · Fil : la parole y est
+  ✅ tenir · ouvert ensuite · Fil : elle y est dite tenue
+  ✅ tenir · ouvert ensuite · Aura : la liste est complète — TOUTES les paroles tenues (8)
+  ✅ tenir · ouvert ensuite · Aura : la parole tenue est la dernière de la liste (ordre chronologique)
+  ✅ tenir · ouvert ensuite · fil du Cercle complet (10 paroles)
+  ✅ tenir · ouvert ensuite · fil du Cercle : la parole y est
+  ✅ tenir · ouvert ensuite · fil du Cercle : elle y est dite tenue
+3 · RETIRER
+  ✅ la parole est retirée (données)
+  ✅ retirer · Aura restée affichée · Aura : la liste est complète — TOUTES les paroles tenues (7)
+  ✅ retirer · Aura restée affichée · Aura : la parole n'y est pas
+  ✅ retirer · ouvert ensuite · Index complet (12 cartes, aucune parole hors Cercle absente)
+  ✅ retirer · ouvert ensuite · Index sans parole retirée
+  ✅ retirer · ouvert ensuite · Fil : la parole n'y est plus
+  ✅ retirer · ouvert ensuite · Aura : la liste est complète — TOUTES les paroles tenues (7)
+  ✅ retirer · ouvert ensuite · Aura : la parole n'y est pas
+  ✅ retirer · ouvert ensuite · fil du Cercle complet (9 paroles)
+  ✅ retirer · ouvert ensuite · fil du Cercle : la parole n'y est plus
+  ✅ aucune erreur de page
+
+redteam_reactif : 31/31

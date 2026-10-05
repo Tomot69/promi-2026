@@ -8428,3 +8428,18 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   que l'Aura restait affichée. Elle reste bornée à 3 dalles, 6 dès cinq tenues (Q187). Si « incomplète » voulait dire « toutes les
   paroles tenues », c'est une décision à prendre (la colonne défile déjà).
 - **À CHOISIR (C-042)** : E1 ou E2, S1 ou S2, et l'écart de 24 pt entre le trait et la rangée.
+
+
+## LOT v131 — 5 octobre 2026 (les décisions vivent dans CHANTIERS.md : C-042, C-048, C-050, C-051, C-052)
+
+- **Tranché par Tom** : Tropical Breeze écarté, le corps sombre d'un Promi = cobalt `#273CEB`, texte crème (Q387 close) ; « Ma Parole ! »
+  sur ce corps = la teinte de `#FB4C0D` éclaircie à 3:1 → `#FF8664` (Q386 close) ; la liste de l'Aura montre toutes les paroles tenues,
+  ordre chronologique (Q388 close, Q187 remplacée) ; l'outil de dessin : Promi, seule la rangée bouge (16 pt) ; Cercle, tout descend d'un bloc.
+- **Q389 — À REGARDER (Tom)** : sur le cobalt, deux textes que le lot n'a pas touchés sont sous 4,5:1 — la phrase de la page + en lilas
+  `#C4A2F5` (3,35:1 ; elle faisait 3,85:1 sur l'ancien corps) et « SUPPRIMER CE PROMI » en `#DD4D23` (1,76:1).
+- **Q390 — À CONFIRMER (Tom)** : « ordre chronologique » est posé du plus ancien au plus récent — la parole qu'on vient de tenir est la
+  DERNIÈRE de la liste, donc sous le pli quand il y en a beaucoup. L'inverse (la plus récente d'abord) est une ligne.
+- **Q391 — À CONFIRMER (Tom)** : en mode dessin sur une fiche Promi, les disques et « TRACE POUR TENIR » s'effacent toujours (principe de
+  v129, non révoqué) — « tout reste à sa place » est lu comme « rien ne se déplace ». Si les disques doivent rester, les déploiements les
+  recouvriraient (ils commencent à 376, la rangée finit à 375).
+- **À CHOISIR (C-042)** : E1 ou E2, S1 ou S2.

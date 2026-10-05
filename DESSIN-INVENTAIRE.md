@@ -64,3 +64,15 @@ par-dessus l'app rendue, `pen.js` rend le trait, `dessin.py` et `trait.py` monte
 - Preuve de non-superposition, lue sur la planche : le plus haut des outils est à 339 (Promi) / 223 (Cercle), sous le bas du trait
   (315 / 199) — 20 cadres sur 20 ; le plus bas des outils (521 / 405) reste au-dessus du premier texte (539 / 423).
 - Restent au choix de Tom : **E1 ou E2** (l'effilé du trait), **S1 ou S2** (le symbole de la couleur), et l'écart de 24 pt.
+
+## v131 (5 oct. 2026) — la mise en page corrigée par Tom (planche `planche-v131/dessin-*`, rien dans l'app)
+- **La planche v130 ne suivait pas ses consignes.** **Fiche Promi et Chiche : tout reste à sa place.** Les trois lignes du bas ne
+  descendent pas (mesuré sur la planche : 0,0 pt sur « À Rachel », le titre, l'échéance, Peaufiner et la bande). Seule la rangée bouge :
+  à **16 pt sous le trait** (331 → 375). Les tailles se déploient sous elle (383 → 427), les couleurs aussi (383 → 497, panneau compacté
+  à 114 pt) ; le premier texte est à 503.
+- **Fiche Cercle : rien ne disparaît** — ni le titre, ni le fil, ni les disques. Tout descend d'un bloc (166 pt) pour laisser la place à
+  la rangée (215 → 259) et à ses déploiements (267 → 381) ; ce qui dépasse passe sous le bandeau Peaufiner, comme en défilant.
+- Toujours aucun outil dans la bande (20 cadres sur 20). Tout revient à POSER ou à la sortie.
+- Gardé de v129 (non révoqué) : sur une fiche Promi, les disques et « TRACE POUR TENIR » s'effacent le temps du dessin ; le plateau ne
+  garde que son contour.
+- Restent au choix de Tom : **E1 ou E2**, **S1 ou S2**.

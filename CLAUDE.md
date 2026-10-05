@@ -116,6 +116,34 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v131 (5 oct. 2026) — LE COBALT REMPLACE TROPICAL BREEZE ; LA LISTE DE L'AURA EST COMPLÈTE ; VOIR UNE PHOTO EN ENTIER. (Décisions Tom.) Ce bloc CORRIGE le bloc v130 qui le suit.
+> **⚑ LE CORPS SOMBRE D'UN PROMI EST LE COBALT ÉLECTRIQUE `#273CEB`** (jeton `--c-cobalt50` ; fiche Promi et page + d'un Promi, en sombre).
+> **Tropical Breeze `#8ACBE8` est ÉCARTÉ** (« trop proche du bleu du champ »). **Le texte posé dessus redevient crème `#F7F0DE`** (6,30:1) :
+> plus rien ne déclare un corps pastel, la passe `lot-V130-TROPICAL` est COUPÉE (ses portes restent, inertes). Mesuré : états contre le corps
+> (ΔE CIELAB, seuil 15) — à tenir 141,9 · en cours `#291547` 72,9 · tenu 128,8 · trait Promi `#022140` 87,2 ; bande `#82AEF8` contre corps
+> ΔE 76,3. **« Ma Parole ! » sur ce corps : `#FF8664`** (`--c-orange-maparole-cobalt`, la teinte OKLCH de `#FB4C0D`, h 36°, éclaircie jusqu'à
+> 3,02:1 — `#FF7A55` n'y fait que 2,79:1) ; Chiche et Cercle gardent `#FF7A55`. La phrase lit le premier fond opaque sous le mur
+> (`.sur-cobalt`). `redteam_maparole` porte les TROIS valeurs, `redteam_murs` 26/26. ⚠ Non retouché, mesuré : la phrase de la page + (lilas
+> `#C4A2F5`) fait 3,35:1 sur le cobalt (3,85:1 sur l'ancien `#335382`) ; « SUPPRIMER CE PROMI » en `#DD4D23` y fait 1,76:1.
+> **⚑ « CE QUE TU AS TENU » MONTRE TOUTES LES PAROLES TENUES, dans l'ordre chronologique, l'Aura défilant (C-052 — remplace Q187 : trois
+> dalles, six dès cinq tenues).** La parole qu'on vient de tenir est la DERNIÈRE. `redteam_reactif` 31 contrôles (réécrit).
+> **⚑ VOIR UNE PHOTO EN ENTIER (C-051, `lot-V131-ENTIER`).** Toucher la bande d'une fiche quand elle porte une PHOTO (jamais la dalle) l'ouvre
+> en entier, par-dessus tout l'appareil, sur un fond PLEIN — la seiche, sans transparence, ni ombre, ni fondu ; l'image entière (`contain`) :
+> on y voit ce que la bande recadrait. Un nouveau toucher, ✕ ou `closeAll` referme. La bande s'annonce « Voir la photo en entier » (rôle de
+> commande) seulement quand elle porte une photo. Le dessin viendra avec l'outil (`source()`). **Trois faits à ne pas reperdre** : ① c'est
+> `#dpMain` (la colonne) qu'on touche dans la bande, pas le canevas ; ② « dans la bande » se lit sur ce qui est PEINT (le canevas est opaque
+> jusqu'à l'onde) ; ③ **« la fiche est intacte » se juge sur le RENDU** (place, couleur, police, texte de chaque nœud) : l'attribut `style`
+> est réécrit par les passes de l'app à chaque toucher, la racine retire au sort `gsN` et `--ghost-ink`, l'invite du geste respire.
+> Juge : **`redteam_entier.py`** (36 contrôles, au vrai doigt ; 16/36 sur v130).
+> **⚑ C-048 — LA « DALLE À 3,11 % » ÉTAIT DU JUGE.** Reproduite en boucle (cinquante passages sur la copie de v130) : chaque prise est une
+> dalle rendue avec une RAMPE (`opts.rampe`, Q30) — l'ombre des carreaux prend le ton sombre de la rampe, à plus de 48 du ton dominant. Ce
+> sont ses couleurs. `redteam_decoupe` G2 ne compte plus une couleur qui tombe sur la rampe déclarée.
+> **⚑ L'OUTIL DE DESSIN (C-042, toujours une PLANCHE) — la mise en page corrigée par Tom** : **Promi et Chiche, tout reste à sa place** —
+> les trois lignes ne descendent pas ; seule la rangée bouge, à **16 pt sous le trait** ; tailles et couleurs se déploient sous elle (le
+> panneau des couleurs est compacté à 114 pt pour finir au-dessus de « À Rachel » : 383 → 497, le texte à 503). **Cercle : rien ne
+> disparaît**, tout descend d'un bloc (166 pt sur la planche) et passe sous le bandeau Peaufiner, comme en défilant. Toujours aucun outil
+> dans la bande. ⚠ Gardé de v129, non révoqué : en mode dessin les disques d'une fiche Promi et le plateau s'effacent (contour seul).
+
 ### ⚑ v130 (5 oct. 2026) — TROIS RÉCIDIVES NOMMÉES ; TROPICAL BREEZE ; LE MODE DESSIN NE RECOUVRE JAMAIS LA BANDE. (Décisions Tom.)
 > **⚑ UNE DALLE SEULE EST ENGENDRÉE, JAMAIS DÉCOUPÉE DANS LA TOILE (C-048 — récidive, « interdit, définitivement, dans le prototype comme
 > dans Swift »).** *Pourquoi c'est revenu* : ce n'est pas un retour récent — depuis v29, pour les cinq mondes à trame (Buvard, Braille,
@@ -1047,7 +1075,7 @@ tenue           (sa nature)      terre #2B1020 dans les deux thèmes — texte c
 > **crème `#F7F0DE`** (Tom, Q221 : *« sur le corps crème »*) — `#CFE5FE` · `#FFF4FC` · `#EEE4F8` sont des jetons qui ne peignent pas
 > le corps ; le corps SOMBRE est celui de v113 (Q358) : **`#335382` · `#7C3F58` · `#5D4978`** (le Cercle : valeur posée par v113, pas
 > une citation de Tom).
-> **⚑ v130 — le corps sombre d'un PROMI est `#8ACBE8` (Tropical Breeze), texte à l'encre ; Chiche et Cercle ne bougent pas.**
+> **⚑ v131 — le corps sombre d'un PROMI est le cobalt `#273CEB`, texte crème (Tropical Breeze, v130, est écarté) ; Chiche et Cercle ne bougent pas.**
 
 **Le contenu du corps passe en encre** (le moodboard le pose en blanc sur couleur
 pleine ; sur un corps clair ce serait illisible). **Tout texte posé sur un champ pastel passe à
@@ -1824,7 +1852,9 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_reactif.py     # 30 — v130 (C-049) : planter, tenir, retirer par les vrais boutons ; l'Index, le Fil, la liste de l'Aura et le fil du Cercle
+python3 redteam_entier.py      # 36 — v131 (C-051) : toucher une photo dans la bande l'ouvre en entier (fond seiche plein, image entière) ; un toucher, ✕ ou
+                               #   closeAll referme, la fiche intacte ; une dalle n'ouvre rien ; VoiceOver. Au vrai doigt. Rougit sur v130 (16/36).
+python3 redteam_reactif.py     # 31 (v131 : la liste de l'Aura = TOUTES les tenues) — v130 (C-049) : planter, tenir, retirer par les vrais boutons ; l'Index, le Fil, la liste de l'Aura et le fil du Cercle
                                #   sont à jour à l'image suivante, complets — écran resté affiché, ou ouvert ensuite. Rougit sur v129 (25/30).
 python3 redteam_motmarque.py   # 4 — v129 (C-046) : l'encre du mot de la nature (PROMI, CHICHE, CERCLE) est à la même hauteur dans son encart, ± 0,5 pt,
                                #   clair et sombre (capture @3x). Rougit sur sauvegardes/app-avant-v129.html (0/4 : CERCLE 2,7 pt trop haut).

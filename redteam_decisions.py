@@ -18,10 +18,12 @@ ok = [0]; ko = []
 ETATS = {'atenir': '#DD4D23', 'encours': '#291547', 'tenu': '#00341A'}      # Q262 (22 sept.) : « une fois pour toutes »
 CREME, ENCRE, SEICHE, TERRE, AMANDE = '#F7F0DE', '#201908', '#050302', '#2B1020', '#8FE08F'
 CHAMP = {'promi': '#82AEF8', 'chiche': '#FFB8D2', 'nuee': '#C9A8F5'}           # 17 sept. (planche des correspondances)
-CORPS_SOMBRE = {'promi': '#8ACBE8', 'chiche': '#7C3F58', 'nuee': '#5D4978'}     # v113 (Q358) ; ⚠ le Cercle : ajout de v113, pas une citation de Tom
+CORPS_SOMBRE = {'promi': '#273CEB', 'chiche': '#7C3F58', 'nuee': '#5D4978'}     # v113 (Q358) ; ⚠ le Cercle : ajout de v113, pas une citation de Tom
 # ⚑ v130 (Tom, 5 oct. 2026) : le corps sombre d'un Promi #335382 est REMPLACÉ par le Pantone 13-4307 TPG « Tropical Breeze », #8ACBE8
 #   (relevé par Tom sur son échantillon) — fiche Promi et page + d'un Promi ; le texte posé dessus passe à l'encre #201908.
-SRC_TROPICAL = 'v130 (Tom, 5 oct. 2026) : Pantone 13-4307 TPG Tropical Breeze #8ACBE8, relevé sur son échantillon ; remplace #335382 (v113, Q358)'
+# ⚑ v131 (Tom, 5 oct. 2026) : « Tropical Breeze est écarté (trop proche du bleu du champ) » — le corps sombre d'un Promi devient le
+#   COBALT ÉLECTRIQUE #273CEB (fiche Promi et page + d'un Promi) ; « le texte posé sur ce corps redevient crème #F7F0DE, comme avant ».
+SRC_TROPICAL = 'v131 (Tom, 5 oct. 2026) : cobalt électrique #273CEB ; remplace Tropical Breeze #8ACBE8 (v130, écarté) et #335382 (v113, Q358)'
 
 # (écran, thème, zone, valeur décidée, source)
 D = []
@@ -41,7 +43,7 @@ for th in ('light', 'dark'):
             D.append(('Chiche lancé', th, z, CREME, 'v16 (Q290) : les textes d\'état sur fond sombre passent crème'))
         for nom in ('Promi à tenir', 'Promi en cours'):
             for z in ('titre', 'aQui', 'echeance', 'trace'):
-                D.append((nom, th, z, ENCRE, 'v130 (Tom, 5 oct. 2026) : « le texte posé sur ce corps passe à l\'encre #201908 (titre, à-qui, échéance, mentions) »'))
+                D.append((nom, th, z, CREME, 'v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE, comme avant Tropical : titre, à-qui, échéance, mentions »'))
     else:
         for z in ('aQui', 'echeance', 'trace'):
             D.append(('Promi à tenir', th, z, ETATS['atenir'], 'Q262 (22 sept.) : l\'état, partout où il paraît'))

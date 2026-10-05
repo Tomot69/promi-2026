@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 395 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 399 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 

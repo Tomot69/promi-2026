@@ -35,6 +35,8 @@ CREME, ORANGE = 'rgb(247, 240, 222)', 'rgb(221, 77, 35)'
 #   passe à l'encre #201908 (titre, à-qui, échéance, mentions) ». Le contrôle protège la même chose — la couleur FINALE dès la
 #   première image, jamais l'orange — avec la valeur d'aujourd'hui.
 ENCRE = 'rgb(32, 25, 8)'
+# ⚑ v131 (Tom, 5 oct. 2026) — Tropical Breeze est écarté, le corps sombre d'un Promi est le cobalt #273CEB : « le texte posé sur ce corps
+#   redevient crème #F7F0DE, comme avant ». Le contrat revient à la crème (v16, Q290), avec cette source.
 IDS = ['dptQui', 'dptQuand', 'dptTrace']
 ok = [0]; ko = []
 
@@ -82,7 +84,7 @@ with sync_playwright() as p:
         o_img = [(v['t'], k) for v in (r or {}).get('vu', []) for k, c in v['c'].items() if c == ORANGE]
         if o_img: oranges += 1; details.append('ouverture %d : orange de %d à %d ms (%s)' % (i + 1, o_img[0][0], o_img[-1][0], ', '.join(sorted(set(k for _, k in o_img)))))
         pr = (r or {}).get('premiere') or {}
-        if not pr or any(c != ENCRE for c in pr.get('c', {}).values()): premieres_ko += 1
+        if not pr or any(c != CREME for c in pr.get('c', {}).values()): premieres_ko += 1
         # 2 · la capture
         if im:
             px = im.load(); n_or = 0
@@ -96,7 +98,7 @@ with sync_playwright() as p:
                 pix_ko += 1; details.append('ouverture %d : %d pixels orange sur la capture %s' % (i + 1, n_or, str({k: [round(v) for v in r_] for k, r_ in rects.items()})))
                 if '--garder' in sys.argv: im.save('scratchpad/v122/flash-%d.png' % (i + 1))
     t('1 · [sombre] aucune image (0 → 1,5 s) ne montre l\'orange sur les trois éléments (%d ouvertures)' % N, oranges == 0, '%d ouverture(s) avec orange' % oranges)
-    t('1 · [sombre] la première image où ils paraissent les montre déjà à l\'encre #201908 (v130, corps Tropical Breeze)', premieres_ko == 0, '%d sur %d' % (premieres_ko, N))
+    t('1 · [sombre] la première image où ils paraissent les montre déjà crème (v131, corps cobalt)', premieres_ko == 0, '%d sur %d' % (premieres_ko, N))
     t('2 · [sombre] la capture à la première image : aucun pixel orange sur eux', pix_ko == 0, '%d sur %d' % (pix_ko, N))
     for d in details[:6]: print('     ', d)
     # 3 · Q375 : la première image porte l'état de CETTE fiche, pas celui de la précédente

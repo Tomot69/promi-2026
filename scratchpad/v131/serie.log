@@ -1,0 +1,23 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 52
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+   72s  redteam_reactif.py           ✅ aucune erreur de page / redteam_reactif : 31/31
+   64s  redteam_entier.py            ✅ [light] 5 · aucune erreur de page / redteam_entier : 36/36
+   67s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #00351A #2A1548 #00341A #291547 OK   (Q262, v8c) / 81 / 81
+  183s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+  108s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 26/26
+  216s  redteam_maparole.py        [dark] aucune erreur de page                                                     OK   / 12 / 12
+   57s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  316s  redteam_decoupe.py           OK  sillons   dark  fil du Cercle, défilé       13 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur / ✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut
+  124s  redteam_zone.py            OK  [light] aucune erreur de page   / 12 / 12
+  185s  releve-aura.py             palier 220000 · médiane 42.2 ms · 1332 images · plus longue image pendant l'élan : 200 ms (dont peintre 46.4 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 p
+   33s  redteam_photo.py           la page + porte le bouton                                OK   / 29/29
+   54s  redteam_photo_menu.py      18/18 / ✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+  185s  redteam_partage_fiche.py   48/48 / ✅ le rond Partager d'une fiche partage son Folio
+  129s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   95s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  230s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  115s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1716 ms) / 32/32
+  126s  redteam_champ.py             l'instant après [light]        OK / 32/32
+  198s  redteam_gens.py            [sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : True) OK   / 38/38
+  654s  redteam_couleurs_ref.py    canevas non peints d'un côté (comptés, non jugés) : 1 — Nuée défilée[d] vide côté app / ❌ — 8 écart(s) de couleur avec la référence v118
