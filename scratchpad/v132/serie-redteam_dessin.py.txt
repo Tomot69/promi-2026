@@ -1,0 +1,65 @@
+  ✅ F · « Dessiner » est en tête du menu du bouton photo (fiche)
+  ✅ F · le menu est compact (33 pt de haut, 4 pt entre deux)
+  ✅ F · toucher « Dessiner » ouvre le mode dessin
+  ✅ C · le mode couvre tout l'appareil, plein (aucune transparence)
+  ✅ C · la surface de dessin part du haut de l'écran et occupe toute la largeur
+  ✅ C · la rangée porte PLUME · GOMME · ANNULER · COULEUR · POSER, dans cet ordre
+  ✅ C · la rangée est EN BAS de l'écran, sous la surface : aucun outil sur la surface de dessin
+  ✅ C · la surface va jusqu'à la rangée (la marge déclarée, pas un vide)
+  ✅ C · rien d'autre que la surface sous le doigt, sur toute sa hauteur
+  ✅ C · l'encart du haut ne garde que son contour : trait fin, ni fond ni texte
+  ✅ C · tout le reste de la fiche s'est retiré (le mode est devant)
+  ✅ E · chaque outil de la rangée est sous le doigt, à son centre
+  ✅ E · chaque outil fait au moins 44 pt
+  ✅ E · VoiceOver : chaque outil a son nom
+  ✅ le geste trace un trait (il est gardé dans le dessin)
+  ✅ l'épaisseur de base est le moyen : 4,5 pt
+  ✅ second toucher sur la plume : trois petits points, de taille croissante
+  ✅ C · les tailles se déploient juste AU-DESSUS de la rangée
+  ✅ E · les trois tailles sont sous le doigt et nommées (Fin, Moyen, Gros)
+  ✅ C · le choix fait, les tailles se replient
+  ✅ le gros trait fait 8 pt
+  ✅ ANNULER retire le dernier trait
+  ✅ ANNULER, à volonté : le dessin est vide
+  ✅ ANNULER n'a plus rien à annuler : il se déclare inactif
+  ✅ C · la couleur choisie, le panneau se replie (trait 1)
+  ✅ A · le dessin en cours est gardé si l'on sort
+  ✅ C · la couleur choisie, le panneau se replie (trait 2)
+  ✅ C · la couleur choisie, le panneau se replie (trait 3)
+  ✅ A · trois traits, sous trois palettes, de trois teintes différentes
+  ✅ A · chaque trait garde SA couleur dans le dessin (les données)
+  ✅ A · chaque trait garde SA couleur à l'image (lue sur le rendu)
+  ✅ COULEUR : les onglets TRAIT et FOND, tant que le dessin n'a jamais été posé
+  ✅ COULEUR : les teintes sont celles de la palette du Studio EN COURS
+  ✅ COULEUR : la teinte du fond est grisée pour le trait
+  ✅ C · les couleurs se déploient juste AU-DESSUS de la rangée
+  ✅ E · onglets et teintes sont sous le doigt, nommés pour VoiceOver
+  ✅ COULEUR · FOND : la teinte choisie devient le fond du dessin
+  ✅ la gomme efface le trait là où elle passe, et rend le fond
+  ✅ D · POSER referme le mode, sans rien laisser (ni panneau, ni outil)
+  ✅ D · retour exact de la fiche après POSER (place, couleur, police, texte de chaque nœud ; 186 nœuds)
+  ✅ D · le dessin est dans la bande : une couche pleine, calée en haut, sur toute la largeur
+  ✅ D · à l'écran, la bande montre le dessin — son trait et son fond — à la place de la dalle (capture)
+  ✅ A · posé, chaque trait a toujours SA couleur
+  ✅ D · toucher la bande ouvre le dessin ENTIER (C-051), plus haut que la bande
+  ✅ A · après le premier POSER, le fond est fixé : plus d'onglet FOND
+  ✅ A · après le premier POSER, les nouveaux traits ne prennent que les couleurs déjà présentes dans le dessin
+  ✅ B · un petit bouton discret, dans un coin de la bande : « Masquer le dessin »
+  ✅ B · non masqué, le dessin part dans le partage
+  ✅ B · masqué : la bande rend la dalle, le bouton propose « Afficher le dessin »
+  ✅ B · un dessin masqué n'est JAMAIS emporté dans un partage (la case rend la dalle)
+  ✅ B · à l'image du partage, rien du dessin masqué (0 pixel de son fond)
+  ✅ B · affiché de nouveau, le dessin est dans l'image du partage
+  ✅ B · le masquage est mémorisé avec la fiche (sauvegardé)
+  ✅ D · « Retirer le dessin » rend la dalle (plus de couche, plus de bouton de masquage, plus de dessin)
+  ✅ aucune erreur de page (fiche Promi)
+  ✅ F · la fiche d'un Cercle a son bouton photo : il propose « Dessiner »
+  ✅ F · un Cercle garde son dessin, sa bande le montre
+  ✅ F · page + (un Promi) : « Dessiner » en tête du menu du bouton photo
+  ✅ F · page + (un Chiche) : « Dessiner » en tête du menu du bouton photo
+  ✅ F · page + (un Cercle) : « Dessiner » en tête du menu du bouton photo
+  ✅ F · page + : le dessin posé paraît dans la bande de la page +
+  ✅ F · à la plantation, le dessin de la page + suit la parole
+  ✅ aucune erreur de page (Cercle, page +)
+
+redteam_dessin : 63/63

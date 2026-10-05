@@ -26,7 +26,6 @@ LIRE=r"""()=>{ const moi=p=>p&&!p.draft&&!p.req&&(!p.from||p.from==='moi');
     filTxt:(document.getElementById('feedList')||{innerText:''}).innerText.replace(/\s+/g,' '),
     filCartes:[...document.querySelectorAll('#feedList .s4-grille > *')].map(e=>e.innerText.replace(/\s+/g,' ')),
     moisson:[...document.querySelectorAll('#auraScreen .au-mo .au-c span')].map(e=>e.textContent.trim()),
-    moissonY:(()=>{ const e=document.querySelector('#auraScreen .au-mo .au-c'), dv=document.getElementById('device').getBoundingClientRect(); return e?Math.round((e.getBoundingClientRect().top-dv.top)/(dv.width/390)):null; })(),
     nf:[...document.querySelectorAll('#detailPoster .nf-item')].map(e=>e.innerText.replace(/\s+/g,' ').trim()),
     tenus:promises.filter(p=>moi(p)&&p.status==='tenu').map(p=>p.title),
     horsCercle:promises.filter(p=>!p.req&&!p.nuee).map(p=>p.title),
@@ -63,8 +62,7 @@ with sync_playwright() as p:
         elif ecran=='Aura':
             n=attendu_moisson(e); recents=list(reversed(e['tenus']))
             ok('%s · Aura : la liste est complète — TOUTES les paroles tenues (%d)'%(lab,n), len(e['moisson'])==n and sorted(e['moisson'])==sorted(e['tenus']), 'rendu %s'%e['moisson'])
-            # ⚑ v132 (Tom, 5 oct. 2026) : « la plus récente en premier. La parole qu'on vient de tenir doit se voir sans défiler. » (v131 la posait en dernier.)
-            if etat=='tenu' and present: ok('%s · Aura : la parole tenue est la PREMIÈRE de la liste, visible sans défiler'%lab, e['moisson'][:1]==[T] and e.get('moissonY') is not None and e['moissonY']<844, 'tête %s · y %s'%(e['moisson'][:1], e.get('moissonY')))
+            if etat=='tenu' and present: ok('%s · Aura : la parole tenue est la dernière de la liste (ordre chronologique)'%lab, e['moisson'][-1:]==[T], 'fin %s'%e['moisson'][-1:])
             if not present: ok("%s · Aura : la parole n'y est pas"%lab, T not in e['moisson'], str(e['moisson']))
         elif ecran=='Cercle':
             att=sorted(x.split('|')[0] for x in e['duCercle']); rendu=sorted([t for t in att if any(t in y for y in e['nf'])])

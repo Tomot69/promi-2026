@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 399 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 409 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -70,6 +70,7 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 | Index 3 | `div#indexList>div.s4-grille>div.s4-carte«Cerclepersol'atelier du »` | on… | 195, 734 | 106 × 133 | oui |  |
 | Index 3 | `div#indexList>div.s4-grille>div.s4-carte«Promigardé de côtéappele»` | on… | 313, 734 | 106 × 133 | oui |  |
 | Nuée | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| Nuée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 108 | 34 × 34 | oui |  |
 | Nuée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 422 | 342 × 94 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
@@ -83,6 +84,7 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUrécupérer les plants»` | on… | 195, 747 | 342 × 94 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
+| Nuée défilée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 10 | 34 × 34 | oui |  |
 | Nuée défilée | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 234 | 342 × 94 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 340 | 342 × 94 | oui |  |
@@ -98,10 +100,12 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée défilée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée défilée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | Nuée vide | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| Nuée vide | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 306 | 34 × 34 | oui |  |
 | Nuée vide | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Nuée vide | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée vide | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée vide | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
+| Nuée vide défilée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 10 | 34 × 34 | oui |  |
 | Nuée vide défilée | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
 | Nuée vide défilée | `#nfAdd` | natif | 195, 218 | 342 × 62 | oui |  |
 | Nuée vide défilée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
@@ -257,9 +261,10 @@ Source : `app.html`. 283 éléments interactifs relevés sur 36 écrans (mode cl
 | le Cercle | `#buyMonth` | natif | 195, 709 | 346 × 58 | oui |  |
 | le Cercle | `#buyYear` | natif | 195, 778 | 346 × 44 | oui |  |
 | menu photo | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
-| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu>button«Importer une image»` | natif | 262, 234 | 208 × 44 | oui |  |
-| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu>button«La dalle d’origine»` | natif | 269, 286 | 193 × 44 | oui |  |
-| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 335 | 34 × 34 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«Dessiner»` | natif | 277, 262 | 94 × 33 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«Importer une image»` | natif | 237, 299 | 174 × 33 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 335 | 34 × 34 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«La dalle d’origine»` | natif | 243, 336 | 162 × 33 | oui |  |
 | menu photo | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | menu photo | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | menu photo | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |

@@ -88,13 +88,11 @@ def passe(b, moteur):
     pg.evaluate("(i)=>openDetail(i)", pid); pg.wait_for_timeout(2200)
     tape(pg, '#detailPoster .ph-photo-btn')
     m = menu(pg)
-    # ⚑ v132 (Tom, C-042) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_photo_menu-avant-v132.py) : « Dessiner » est en tête du menu, sur la
-    #   fiche ET sur la page + (v128 ③, construit en v132) ; les deux choix de v117 suivent, dans le même ordre.
-    t(tag + ' A · le bouton photo d\'une fiche ouvre son menu : « Dessiner » en tête, puis les deux choix', bool(m) and m['vis'] and m['mots'] == ['Dessiner'] + MOTS, str(m))
+    t(tag + ' A · le bouton photo d\'une fiche ouvre un menu de deux choix', bool(m) and m['vis'] and m['mots'] == MOTS, str(m))
     if m:
         try:
             with pg.expect_file_chooser(timeout=2500) as fc:
-                tape(pg, '.ph-photo-menu button:nth-child(2)')
+                tape(pg, '.ph-photo-menu button:nth-child(1)')
             t(tag + ' B · « Importer une image » ouvre le sélecteur du système', fc.value is not None)
         except Exception as e:
             t(tag + ' B · « Importer une image » ouvre le sélecteur du système', False, str(e)[:120])
@@ -102,7 +100,7 @@ def passe(b, moteur):
         F0 = pg.evaluate(FICHE)
         pg.evaluate("()=>{performance.now=window.__pn;}")
         tape(pg, '#detailPoster .ph-photo-btn')
-        tape(pg, '.ph-photo-menu button:nth-child(3)')
+        tape(pg, '.ph-photo-menu button:nth-child(2)')
         pg.wait_for_timeout(1500)
         etat = pg.evaluate("(id)=>{const p=promises.find(p=>p.id===id); let s=null; try{s=JSON.parse(localStorage.getItem('promi_state')).promises.find(q=>q.id===id).dalleOrigine}catch(e){} return {o:!!p.dalleOrigine, s:s}}", pid)
         pg.evaluate("()=>{performance.now=()=>4242;}")
@@ -126,15 +124,12 @@ def passe(b, moteur):
     pg.evaluate("()=>{if(window.closeAll)closeAll();}"); pg.wait_for_timeout(500)
     pg.evaluate("()=>document.getElementById('createBtn').click()"); pg.wait_for_timeout(1000)
     pg.evaluate("()=>{const t=document.querySelector('#createSheet .tile[data-kind=promi]'); if(t) t.click();}"); pg.wait_for_timeout(1500)
-    # v132 : la page + ouvre le même menu — « Dessiner », puis « Importer une image », qui ouvre le sélecteur
-    tape(pg, '#createSheet .ph-photo-btn'); mp = menu(pg)
-    t(tag + ' F · page + : le bouton ouvre le menu, « Dessiner » en tête puis « Importer une image »', bool(mp) and mp['mots'][:2] == ['Dessiner', 'Importer une image'], str(mp))
     try:
         with pg.expect_file_chooser(timeout=2500) as fc:
-            tape(pg, '.ph-photo-menu button:nth-child(2)')
-        t(tag + ' F · page + : « Importer une image » ouvre le sélecteur', fc.value is not None)
+            tape(pg, '#createSheet .ph-photo-btn')
+        t(tag + ' F · page + : le bouton ouvre le sélecteur, sans menu', fc.value is not None and not menu(pg))
     except Exception as e:
-        t(tag + ' F · page + : « Importer une image » ouvre le sélecteur', False, str(e)[:120])
+        t(tag + ' F · page + : le bouton ouvre le sélecteur, sans menu', False, str(e)[:120])
     t(tag + ' aucune erreur JS', not er, '; '.join(er)[:200])
     ctx.close()
 

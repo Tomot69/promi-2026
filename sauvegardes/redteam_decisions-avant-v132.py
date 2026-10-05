@@ -59,7 +59,6 @@ D = [d for d in D if d[3]]
 
 S = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scratchpad', 'v122', 'zones.py'), encoding='utf-8').read()
 Z = re.search(r'Z=r"""(.*?)"""', S, re.S).group(1)
-V132 = []
 FICHES = [('Promi à tenir', 'faire les crêpes'), ('Promi en cours', 'nager le mardi'), ('Promi tenue', 'planter un arbre'), ('Chiche tenu à deux', 'le grand plongeoir'), ('Chiche lancé', 'courir dimanche')]
 
 
@@ -97,14 +96,6 @@ with sync_playwright() as p:
         R[('page +', th)] = {k: hexa(v) for k, v in pg.evaluate("()=>{const s=document.getElementById('createSheet'); const cv=document.getElementById('csTrameCv'); let ch=null; try{const d=cv.getContext('2d').getImageData(6,6,1,1).data; ch='rgb('+d[0]+', '+d[1]+', '+d[2]+')';}catch(e){} return {corps:getComputedStyle(s).backgroundColor, champ:ch};}").items()}
         pg.evaluate("()=>{closeAll(); setView('toile'); ouvrirIndex(); window._s4Trois=false; if(window._s4Index)_s4Index();}"); pg.wait_for_timeout(3000)
         R[('Index', th)] = {k: hexa(v) for k, v in pg.evaluate("()=>{const s=document.getElementById('indexSheet'); const c=document.querySelector('#indexList .s4-carte'); const et=c&&c.querySelector('.s4-et'); const nl=c&&c.querySelector('.s4-natlab'); const H=v=>{const n=(v.match(/\\d+/g)||[]).slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join('').toUpperCase(); return '#'+n;}; const toutes=[...new Set([...document.querySelectorAll('#indexList .s4-carte')].filter(c=>{const t=c.querySelector('.s4-et'); return t&&/^(À TENIR|EN COURS|LANCÉ)/.test(t.textContent.trim());}).flatMap(c=>[...c.querySelectorAll('.s4-et,.s4-eb')]).map(e=>H(getComputedStyle(e).color)))].join(' ');   /* les cartes À TENIR, EN COURS, LANCÉ — les états ; une Nuée, un gardé de côté portent leur nature, une tenue l'amande ou la crème panneau */ return {fond:getComputedStyle(s).backgroundColor, carte_etat:et?getComputedStyle(et).color:null, carte_libelle:nl?getComputedStyle(nl).color:null, cartes_etats:toutes};}").items()}
-        if th == 'dark':
-            pg.evaluate("()=>{closeAll(); document.getElementById('createBtn').click(); var n=0; (function essai(){ var cs=document.getElementById('createSheet'); var x=[...document.querySelectorAll('#createSheet .tile')][0]; if(cs&&cs.classList.contains('pp-choix')&&x){ x.click(); } if(++n<6) setTimeout(essai,350); })();}"); pg.wait_for_timeout(3500)
-            for sel, nom in (('#csPhrase .ph-li', 'page + [dark] phrase'), ('#csPhrase .ph-hint', 'page + [dark] consigne')):
-                V132.append(((nom, hexa(pg.evaluate("(s)=>{const e=document.querySelector(s); return e?getComputedStyle(e).color:null}", sel))), '#DAC3FF', 'v132 (C-054) : le lilas éclairci à 4,5:1'))
-        pg.evaluate("()=>{closeAll(); const p=promises.filter(q=>q.title==='nager le mardi')[0]; openDetail(p.id);}"); pg.wait_for_timeout(1800)
-        pg.evaluate("()=>{const x=document.querySelector('#dpDetails .dpd-tog');if(x)x.click();}"); pg.wait_for_timeout(1500)
-        V132.append((('Peaufiner [%s] « Supprimer ce Promi »' % th, hexa(pg.evaluate("()=>{const e=document.querySelector('#detailPoster .s2-reg.v16-danger .s2-lab'); return e?getComputedStyle(e).color:null}"))), CREME if th == 'dark' else ENCRE, 'v132 (C-053) : jamais l\'orange d\'état'))
-        pg.evaluate("()=>closeAll()"); pg.wait_for_timeout(400)
         # l'anneau : ses arcs ne portent que les trois états (Q262, v8c « trois arcs ») — les couleurs franches, à ΔE près
         a = (R[('Promi à tenir', th)].get('anneau') or '').split()
         R[('Promi à tenir', th)]['anneau_ok'] = all(min(sum((int(x[i:i + 2], 16) - int(e[i:i + 2], 16)) ** 2 for i in (1, 3, 5)) ** .5 for e in list(ETATS.values()) + ['#2A1548', '#00351A']) < 12 for x in a) and bool(a)
@@ -122,14 +113,6 @@ for th in ('light', 'dark'):
     if c: ok[0] += 1
     else: ko.append('anneau [%s]' % th)
     print('%-20s %-5s %-14s décidé 3 états  rendu %-24s %s   (Q262, v8c)' % ('Promi à tenir', th, 'anneau', R[('Promi à tenir', th)].get('anneau'), 'OK' if c else 'KO'))
-# ⚑ v132 (Tom, 5 oct. 2026) — deux décisions de plus, lues à l'écran :
-#   C-054 · « la phrase lilas de la page + garde sa teinte, éclaircie jusqu'à 4,5:1 » → #DAC3FF sur le cobalt (4,51:1), en sombre ;
-#   C-053 · « SUPPRIMER CE PROMI passe en crème #F7F0DE : le #DD4D23 est une couleur d'état et ne sert à rien d'autre » (encre en clair).
-for cle, val, src in V132:
-    cond = cle[1] == val
-    if cond: ok[0] += 1
-    else: ko.append(cle[0])
-    print('%-44s décidé %-8s rendu %-8s %s   (%s)' % (cle[0], val, cle[1], 'OK' if cond else 'KO', src))
 print('\n%d / %d' % (ok[0], ok[0] + len(ko)))
 if ko: print('KO :', ' · '.join(ko))
 sys.exit(1 if ko else 0)

@@ -116,43 +116,6 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
-### ⚑ v132 (5 oct. 2026) — LE DESSIN EST CONSTRUIT DANS L'APP. (Décisions Tom.) Ce bloc CORRIGE ce que les blocs v127 à v131 disent de l'outil de dessin.
-> **« On ne fait plus de planche : on construit, et Tom juge au doigt sur iPhone. »** Choix : **effilé E2, symbole de couleur S2** (celui du
-> Studio). **Les planches v130 et v131 sont ABANDONNÉES** (elles laissaient la surface coincée en haut et un vide dessous).
-> **⚑ LA MISE EN PAGE DU MODE DESSIN** (`lot-V132-DESSIN`, fiches Promi, Chiche, Cercle et page +) : **la surface de dessin prend toute la
-> place, du haut de l'écran jusqu'à la rangée d'outils ; la rangée A (PLUME · GOMME · ANNULER · COULEUR · POSER) est EN BAS, à portée de
-> pouce ; tailles et couleurs se déploient juste AU-DESSUS d'elle et se replient dès le choix fait ; tout le reste de la fiche se retire ;
-> l'encart du haut ne garde que son contour au trait fin ; tout revient à POSER ou à la sortie, sans fondu.** Le mode est une couche PLEINE
-> posée dans `#device` : la fiche dessous n'est pas touchée (le retour est exact par construction). **Les paramètres sont en tête du lot**
-> (`window._dessinParams` : `RANGEE_H` 44 · `MARGE_BAS` 34 · `MARGE_HAUT` 12 · `MARGE_COTE` 24 · `PAS_OUTIL` 58 · `POSER_L` 104 ·
-> `ECART_DEPLOI` 8 · `TAILLES` 2,5 / 4,5 / 8 · `TAILLES_GOMME` 10 / 18 / 30 · `BANDE_RETRAIT` 7). La surface fait 390 × 754 pt.
-> **⚑ UN DESSIN EST UNE LISTE DE TRAITS, JAMAIS UNE IMAGE** : `{fond, traits:[{c, t, g, pts}], poses, pose, masque}` — sur la parole
-> (`p.dessin`, sauvegardé avec elle), sur le brouillon de la page + (`_phrase.dessin`, il suit la parole ou le Cercle à la plantation), ou par
-> Cercle (`localStorage promi_dessins_cercle`). **Chaque trait garde SA couleur** (un hex) : un changement de palette ne touche que les traits
-> à venir. `traits` = le dessin en cours (gardé si l'on sort) ; `poses` = ce que POSER a posé (la bande, la vue entière et le partage ne
-> montrent que lui). **Après le premier POSER, le fond est fixé (plus d'onglet FOND) et les nouveaux traits ne prennent que les couleurs
-> déjà présentes.** Le trait : plein, opaque, contours nets, effilé E2 (début +38 %, fin effilée sur le dernier quart), plus fin quand le
-> geste est rapide (jusqu'à −28 %), la pression d'un stylet module la largeur, jamais sous 1 pt.
-> **⚑ LE DESSIN REMPLACE LA DALLE OU LA PHOTO DANS LA BANDE** : une couche pleine (`canvas.dz-bande` : le fond du dessin puis ses traits, à
-> l'échelle 1, calés EN HAUT) posée sur la bande, découpée à 7 pt au-dessus de l'axe du trait d'état. Le dessin est plus grand que la
-> bande : la fiche en montre le haut ; **toucher la bande l'ouvre en entier (C-051, « Voir le dessin en entier »)**. Rien n'est relu ni
-> retouché dans le canevas de la bande : « Retirer le dessin » rend la dalle. **Le masquage** (`button.dz-oeil`, coin bas gauche de la
-> bande) est pour soi seul, mémorisé par fiche ; **un dessin masqué n'est jamais emporté dans un partage** (`window._dessinCase`, lu par la
-> case du Folio). **Les entrées** : « Dessiner » en tête du menu du bouton photo, devenu COMPACT (33 pt, 4 pt entre deux, posé À GAUCHE du
-> bouton) — sur la fiche, sur la page + (Promi, Chiche, Cercle : le bouton y ouvre le menu, plus l'import direct) et sur la fiche d'un
-> Cercle, qui reçoit son bouton photo. La loi des points : seul le choix de taille (trois points) y échappe (§5).
-> ⚠ **Trois pièges payés** : ① une couche ajoutée à `#detailPoster` sort en `display:none` (le crible) — on la déclare visible nommément ;
-> ② `_dalleReelle` (dans `sharePlanche`) est du code MORT : la case du Folio passe par `_poseDalle` ; ③ le menu posé au-dessus du bouton
-> passait sous le plateau dès quatre lignes.
-> ⚠ **OUVERT** : il n'y a pas de bouton de SORTIE sans poser (Échap et la fermeture générale sortent en gardant le dessin en cours) — Q392.
-> Juge : **`redteam_dessin.py`** (63 contrôles : couleurs figées sous trois palettes, masquage et partage, aucune superposition, retour exact
-> après POSER, joignabilité et VoiceOver, les entrées) ; **cinq sondes** (`--sonde=couleurs|partage|superpose|retour|joignable`) fabriquent
-> la version fautive, il y rougit à chaque fois. **C'est un geste : la validation de Tom sur iPhone est obligatoire.**
-> **⚑ « CE QUE TU AS TENU » : LA PLUS RÉCENTE EN PREMIER** (corrige v131) — la parole qu'on vient de tenir se voit sans défiler.
-> **⚑ SUR LE COBALT** : la phrase lilas de la page + d'un Promi (sombre) est **`#DAC3FF`** (`--c-lilas85`, la teinte de `#C4A2F5` éclaircie à
-> 4,51:1 ; le jeton `--c-mauve75` y est remplacé, sur cet écran seulement) ; **« SUPPRIMER CE PROMI » est crème en sombre, encre en clair —
-> `#DD4D23` est une couleur d'état et ne sert à rien d'autre** (C-015 reste ouvert pour les Réglages).
-
 ### ⚑ v131 (5 oct. 2026) — LE COBALT REMPLACE TROPICAL BREEZE ; LA LISTE DE L'AURA EST COMPLÈTE ; VOIR UNE PHOTO EN ENTIER. (Décisions Tom.) Ce bloc CORRIGE le bloc v130 qui le suit.
 > **⚑ LE CORPS SOMBRE D'UN PROMI EST LE COBALT ÉLECTRIQUE `#273CEB`** (jeton `--c-cobalt50` ; fiche Promi et page + d'un Promi, en sombre).
 > **Tropical Breeze `#8ACBE8` est ÉCARTÉ** (« trop proche du bleu du champ »). **Le texte posé dessus redevient crème `#F7F0DE`** (6,30:1) :
@@ -1889,8 +1852,6 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_dessin.py      # 63 — v132 (C-042) : le dessin dans l'app — couleurs figées (trois traits, trois palettes), masquage absent du partage, aucun outil
-                               #   sur la surface, retour exact après POSER, joignabilité et VoiceOver, les entrées. Cinq sondes (--sonde=) : il y rougit.
 python3 redteam_entier.py      # 36 — v131 (C-051) : toucher une photo dans la bande l'ouvre en entier (fond seiche plein, image entière) ; un toucher, ✕ ou
                                #   closeAll referme, la fiche intacte ; une dalle n'ouvre rien ; VoiceOver. Au vrai doigt. Rougit sur v130 (16/36).
 python3 redteam_reactif.py     # 31 (v131 : la liste de l'Aura = TOUTES les tenues) — v130 (C-049) : planter, tenir, retirer par les vrais boutons ; l'Index, le Fil, la liste de l'Aura et le fil du Cercle

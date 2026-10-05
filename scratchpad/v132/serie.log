@@ -1,0 +1,22 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 54
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+   80s  redteam_dessin.py            ✅ aucune erreur de page (Cercle, page +) / redteam_dessin : 63/63
+   64s  redteam_entier.py            ✅ [light] 5 · aucune erreur de page / redteam_entier : 36/36
+   33s  redteam_photo.py           la page + porte le bouton                                OK   / 29/29
+  172s  redteam_partage_fiche.py   48/48 / ✅ le rond Partager d'une fiche partage son Folio
+  316s  redteam_decoupe.py           OK  sillons   dark  fil du Cercle, défilé       15 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur / ✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut
+  130s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   91s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  228s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  115s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1918 ms) / 32/32
+  184s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+  126s  redteam_champ.py             l'instant après [light]        OK / 32/32
+  269s  redteam_tuiles.py          [sombre · souris · clic] promi après nuee→chiche→nuee      OK   / 64/64
+  198s  redteam_gens.py            [sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : True) OK   / 38/38
+  206s  redteam_nuee.py            ============================================================================== /   ✅  24 écran(s) · 0 écart(s)
+   43s  redteam_nuee_entree.py     [sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True} / 24/24
+  109s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 26/26
+   56s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  177s  releve-aura.py             palier 220000 · médiane 40.8 ms · 1439 images · plus longue image pendant l'élan : 117 ms (dont peintre 40.1 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 p
+  655s  redteam_couleurs_ref.py    canevas non peints d'un côté (comptés, non jugés) : 2 — Nuée défilée[l] vide côté réf · Nuée[d] vide côté app / ❌ — 8 écart(s) de couleur avec la référence v118

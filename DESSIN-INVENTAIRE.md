@@ -76,3 +76,7 @@ par-dessus l'app rendue, `pen.js` rend le trait, `dessin.py` et `trait.py` monte
 - Gardé de v129 (non révoqué) : sur une fiche Promi, les disques et « TRACE POUR TENIR » s'effacent le temps du dessin ; le plateau ne
   garde que son contour.
 - Restent au choix de Tom : **E1 ou E2**, **S1 ou S2**.
+
+## v132 (5 oct. 2026) — CONSTRUIT DANS L'APP (`lot-V132-DESSIN`) ; les planches v130 et v131 sont abandonnées
+- Choix de Tom : effilé **E2**, symbole **S2**. La surface prend tout l'écran jusqu'à la rangée, posée en bas ; les déploiements au-dessus
+  d'elle ; le reste de la fiche se retire. Paramètres : `window._dessinParams`. Détail : bloc v132 de `CLAUDE.md`. Juge : `redteam_dessin.py`.

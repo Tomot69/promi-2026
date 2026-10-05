@@ -1,0 +1,337 @@
+<style id="lot-V132-DESSIN-css">
+/* ⚑ v132 (Tom, 5 oct. 2026, C-042) — LE DESSIN, CONSTRUIT. Aucune couleur en dur ici : les couleurs du mode dessin (le corps de l'écran
+   d'où l'on vient, son encre, le fond et les teintes du dessin) sont posées par le script, en variables. Ni ombre, ni dégradé, ni
+   transparence, ni fondu (la Pelote est le seul volume ; tout revient à POSER ou à la sortie, sans fondu). */
+#device #dessinMode{position:absolute;left:0;top:0;width:100%;height:100%;z-index:390;display:none;margin:0;padding:0;border:0;border-radius:inherit;overflow:hidden;background:var(--dz-corps);touch-action:none;-webkit-user-select:none;user-select:none}
+#device #dessinMode.ouv{display:block}
+#device #dessinMode .dz-surface{position:absolute;left:0;top:0;width:390px;background:var(--dz-fond);overflow:hidden;touch-action:none}
+#device #dessinMode .dz-surface canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block;max-width:none;touch-action:none}
+#device #dessinMode .dz-plateau{position:absolute;left:24px;top:40px;width:342px;height:60px;box-sizing:border-box;border:1px solid var(--dz-trait-fin);border-radius:30px;background:none;pointer-events:none}
+#device #dessinMode .dz-rangee{position:absolute;left:0;width:390px;margin:0;padding:0}
+#device #dessinMode button{position:absolute;box-sizing:border-box;margin:0;padding:0;font:inherit;cursor:pointer;max-width:none;-webkit-appearance:none;appearance:none}
+#device #dessinMode .dz-o{width:44px;height:44px;border-radius:22px;border:2px solid var(--dz-encre);background:var(--dz-corps);color:var(--dz-encre);display:flex;align-items:center;justify-content:center}
+#device #dessinMode .dz-o svg{width:22px;height:22px;display:block;flex:none}
+#device #dessinMode .dz-o.on{background:var(--dz-encre);color:var(--dz-corps)}
+#device #dessinMode .dz-o[disabled]{border-style:dashed;cursor:default}
+#device #dessinMode .dz-poser{height:44px;width:104px;border-radius:22px;border:2px solid var(--dz-encre);background:var(--dz-encre);color:var(--dz-corps);-webkit-text-fill-color:var(--dz-corps);
+  font-family:var(--f-libelle);font-weight:700;font-size:15px;letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;justify-content:center}
+#device #dessinMode .dz-deploi{position:absolute;box-sizing:border-box;border:2px solid var(--dz-encre);background:var(--dz-corps);margin:0;padding:0}
+#device #dessinMode .dz-tailles{height:44px;width:118px;border-radius:22px}
+#device #dessinMode .dz-tailles button{top:7px;width:26px;height:26px;border-radius:13px;border:2px solid var(--dz-corps);background:var(--dz-corps);display:flex;align-items:center;justify-content:center}
+#device #dessinMode .dz-tailles button.on{border-color:var(--dz-encre)}
+#device #dessinMode .dz-tailles button i{display:block;border-radius:50%;background:var(--dz-encre)}
+#device #dessinMode .dz-couleurs{left:24px;width:342px;height:114px;border-radius:30px}
+#device #dessinMode .dz-onglet{top:6px;height:44px;width:159px;border-radius:22px;border:2px solid var(--dz-encre);background:var(--dz-corps);color:var(--dz-encre);-webkit-text-fill-color:var(--dz-encre);
+  font-family:var(--f-libelle);font-weight:700;font-size:15px;letter-spacing:.02em;text-transform:uppercase;display:flex;align-items:center;justify-content:center}
+#device #dessinMode .dz-onglet.on{background:var(--dz-encre);color:var(--dz-corps);-webkit-text-fill-color:var(--dz-corps)}
+#device #dessinMode .dz-onglet.seul{width:326px;cursor:default}
+#device #dessinMode .dz-ton{top:58px;width:44px;height:44px;border-radius:22px;border:2px solid var(--dz-encre);background:var(--dz-ton)}
+#device #dessinMode .dz-ton.on{outline:2px solid var(--dz-encre);outline-offset:2px}
+#device #dessinMode .dz-ton[disabled]{border-style:dashed;cursor:default}
+#device #dessinMode .dz-ton[disabled]::after{content:"";position:absolute;left:8px;right:8px;top:19px;height:2px;background:var(--dz-encre);transform:rotate(-45deg)}
+/* la bande : le dessin REMPLACE la dalle ou la photo — une couche pleine posée sur la bande, sous le plateau et sous les textes */
+#device .dz-bande{position:absolute!important;left:0!important;top:0!important;margin:0!important;padding:0!important;border:0!important;z-index:1!important;pointer-events:none!important;max-width:none!important;display:block}
+#device .dz-oeil{position:absolute!important;width:34px!important;height:34px!important;box-sizing:border-box!important;border-radius:17px!important;margin:0!important;padding:0!important;z-index:6!important;
+  border:1px solid var(--dz-oeil-encre)!important;background:var(--dz-oeil-fond)!important;color:var(--dz-oeil-encre)!important;display:flex!important;align-items:center;justify-content:center;cursor:pointer;max-width:none!important}
+#device .dz-oeil svg{width:17px;height:17px;display:block}
+/* le menu du bouton photo, compact (Tom, v128) : la géométrie de la pastille, 4 px entre deux */
+#device .ph-photo-menu.dz-compact{gap:4px!important;align-items:flex-end!important}
+#device .ph-photo-menu.dz-compact button{height:33px!important;padding:0 14px!important;border-radius:17px!important;font-size:13px!important;width:auto!important}
+</style>
+<script id="lot-V132-DESSIN">
+/* ⚑ v132 (Tom, 5 oct. 2026, C-042) — LE DESSIN, CONSTRUIT DANS L'APP. « On ne fait plus de planche : on construit, et Tom juge au doigt. »
+   LA MISE EN PAGE (elle remplace les planches v130 et v131) : en mode dessin la surface prend toute la place, du haut de l'écran jusqu'à la
+   rangée d'outils, posée EN BAS, à portée de pouce ; tailles et couleurs se déploient juste au-dessus d'elle et se replient dès le choix
+   fait ; tout le reste de la fiche se retire (le mode est une couche pleine : la fiche dessous n'est pas touchée) ; l'encart du haut ne
+   garde que son contour. Le dessin posé est plus grand que la bande : la fiche en montre le HAUT, toucher la bande l'ouvre en entier (C-051).
+   LES DONNÉES — un dessin est une liste de TRAITS, jamais une image : {fond, traits:[{c, t, g, pts:[x,y,t,p …]}], poses:[…], pose, masque}.
+   · chaque trait garde SA couleur (un hex) : changer de palette ne touche que les traits à venir ;
+   · `traits` est le dessin en cours (gardé si l'on sort) ; `poses` est ce que POSER a posé — c'est lui que la bande, la vue entière et le
+     partage montrent ;
+   · après le premier POSER le fond est fixé, et les nouveaux traits ne prennent que les couleurs déjà présentes dans le dessin ;
+   · le masquage est pour soi seul, mémorisé par fiche ; un dessin masqué n'est jamais emporté dans un partage. */
+(function(){
+  /* ══ LES PARAMÈTRES DE MISE EN PAGE — à régler d'après le retour de Tom (points, écran 390 × 844) ══ */
+  var P = window._dessinParams = {
+    RANGEE_H: 44,          /* hauteur de la rangée d'outils */
+    MARGE_BAS: 34,         /* sous la rangée, jusqu'au bas de l'écran */
+    MARGE_HAUT: 12,        /* entre le bas de la surface de dessin et la rangée */
+    MARGE_COTE: 24,        /* à gauche et à droite de la rangée */
+    PAS_OUTIL: 58,         /* d'un disque d'outil au suivant */
+    POSER_L: 104,          /* largeur de POSER */
+    ECART_DEPLOI: 8,       /* entre la rangée et ce qui se déploie au-dessus d'elle */
+    TAILLES: [2.5, 4.5, 8],          /* fin, moyen, gros — la pointe jamais sous 1 pt */
+    TAILLES_GOMME: [10, 18, 30],
+    BANDE_RETRAIT: 7,      /* la couche du dessin s'arrête à 7 pt au-dessus de l'axe du trait d'état : le trait reste entier */
+    OEIL: {x: 24, ecart: 52}          /* le bouton de masquage : coin bas gauche de la bande, à 52 pt au-dessus du trait */
+  };
+  var W=390, H=844;
+  function surfH(){ return H - P.MARGE_BAS - P.RANGEE_H - P.MARGE_HAUT; }
+  var NAT={promi:'#82AEF8', chiche:'#FFB8D2', nuee:'#C9A8F5'};
+  var ENCRE='#201908', CREME='#F7F0DE';
+  function $(id){ return document.getElementById(id); }
+  function dev(){ return $('device'); }
+  function clair(){ var d=dev(); return !!(d && d.classList.contains('light')); }
+  function hex(c){ if(typeof c==='string') return c.toUpperCase(); return '#'+[c[0],c[1],c[2]].map(function(v){ v=Math.max(0,Math.min(255,Math.round(v))); return (v<16?'0':'')+v.toString(16); }).join('').toUpperCase(); }
+  function rgb3(s){ var m=String(s||'').match(/[\d.]+/g); if(m && m.length>=3 && String(s).indexOf('#')<0) return [+m[0],+m[1],+m[2]]; var h=String(s||'').replace('#',''); return [parseInt(h.slice(0,2),16)||0, parseInt(h.slice(2,4),16)||0, parseInt(h.slice(4,6),16)||0]; }
+  function lumi(c){ c=rgb3(c); return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]; }
+  function palette(){ try{ var m=window.Toile.mondeCourant(); return window.Toile.tonsDe(m.p, m.h).map(hex); }catch(_){ return ['#82AEF8','#FFB8D2','#C9A8F5','#EFE3C7']; } }
+
+  /* ══ LES CIBLES : une parole, le brouillon de la page +, un Cercle ══ */
+  var CERCLES=null;
+  function cercles(){ if(CERCLES) return CERCLES; try{ CERCLES=JSON.parse(localStorage.getItem('promi_dessins_cercle')||'{}')||{}; }catch(_){ CERCLES={}; } return CERCLES; }
+  function garde(c){ try{ if(c && c.type==='cercle') localStorage.setItem('promi_dessins_cercle', JSON.stringify(cercles())); else if(c && c.type==='promi' && typeof saveState==='function') saveState(); }catch(_){ } }
+  function lit(c){ if(!c) return null; if(c.type==='promi') return c.p.dessin||null; if(c.type==='brouillon') return (window._phrase||{}).dessin||null; if(c.type==='cercle') return cercles()[c.cle]||null; return null; }
+  function ecrit(c, d){ if(!c) return;
+    if(c.type==='promi'){ if(d) c.p.dessin=d; else delete c.p.dessin; }
+    else if(c.type==='brouillon'){ window._phrase=window._phrase||{}; if(d) window._phrase.dessin=d; else delete window._phrase.dessin; }
+    else if(c.type==='cercle'){ if(d) cercles()[c.cle]=d; else delete cercles()[c.cle]; }
+    garde(c); }
+  function natureDe(c){ try{ if(c.type==='cercle') return 'nuee'; if(c.type==='promi') return c.p.chiche?'chiche':'promi';
+      var e=window._ppEcran&&window._ppEcran(); return (e&&e.nat)||'promi'; }catch(_){ return 'promi'; } }
+  /* la cible de l'écran affiché */
+  function cibleFiche(){ var dp=$('detailPoster'); if(!dp || !dp.classList.contains('show')) return null;
+    try{ if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')){ return (typeof curNuee!=='undefined' && curNuee) ? {type:'cercle', cle:curNuee, hote:dp} : null; }
+      if(typeof cur!=='undefined' && cur) return {type:'promi', p:cur, hote:dp}; }catch(_){ } return null; }
+  function ciblePlus(){ var cs=$('createSheet'); if(!cs || !cs.classList.contains('show')) return null; return {type:'brouillon', hote:cs}; }
+  function pose_(d){ return !!(d && d.poses && d.poses.length); }
+  function visible(c){ var d=lit(c); return pose_(d) && !d.masque; }
+
+  /* ══ LE TRAIT « STYLET » : plein, opaque, contours nets ; effilé E2 (le début plus épais, la fin effilée sur le dernier quart) ;
+        plus fin quand le geste est rapide ; la pression d'un stylet module la largeur ; jamais sous 1 pt. ══ */
+  function cr(Q, n){ var o=[], L=Q.length; for(var i=0;i<L-1;i++){ var a=Q[Math.max(0,i-1)], b=Q[i], c=Q[i+1], d=Q[Math.min(L-1,i+2)];
+      for(var k=0;k<n;k++){ var u=k/n, u2=u*u, u3=u2*u;
+        o.push({x:0.5*((2*b.x)+(-a.x+c.x)*u+(2*a.x-5*b.x+4*c.x-d.x)*u2+(-a.x+3*b.x-3*c.x+d.x)*u3),
+                y:0.5*((2*b.y)+(-a.y+c.y)*u+(2*a.y-5*b.y+4*c.y-d.y)*u2+(-a.y+3*b.y-3*c.y+d.y)*u3),
+                t:b.t+(c.t-b.t)*u, p:b.p+(c.p-b.p)*u}); } } o.push(Q[L-1]); return o; }
+  function largeurs(Q, base, effile){ var n=Q.length, s=[0], i; for(i=1;i<n;i++) s.push(s[i-1]+Math.hypot(Q[i].x-Q[i-1].x, Q[i].y-Q[i-1].y)); var L=s[n-1]||1, w=[];
+    var court = L < base*3.2, FIN=0.25, DEB=0.20, SUR=0.38;                                    /* E2 */
+    for(i=0;i<n;i++){ var a=Math.max(0,i-3), b=Math.min(n-1,i+3), dt=Math.max(1,(Q[b].t-Q[a].t)), vit=(s[b]-s[a])/dt, u=s[i]/L, k=1;
+      if(effile && !court){ if(u<DEB){ var q=1-u/DEB; k*=1+SUR*q*q; }
+        k*=Math.max(0.72, Math.min(1.06, 1.06-0.42*vit));
+        if(u>1-FIN){ k*=Math.pow((1-u)/FIN, 0.85); } }
+      k*=(Q[i].p<0 ? 1 : Math.min(1.35, 0.55+0.9*Q[i].p));                                       /* la pression d'un stylet ; un doigt : 1 */
+      w.push(Math.max(1, base*k)); }
+    return w; }
+  function points(tr){ var a=tr.pts, o=[]; for(var i=0;i+3<a.length;i+=4) o.push({x:a[i], y:a[i+1], t:a[i+2], p:a[i+3]}); return o; }
+  function traceUn(g, tr, enCours){ var Q=points(tr); if(!Q.length) return;
+    g.save(); g.globalAlpha=1; g.globalCompositeOperation = tr.g ? 'destination-out' : 'source-over'; g.fillStyle = tr.g ? '#000000' : tr.c;
+    if(Q.length===1){ g.beginPath(); g.arc(Q[0].x, Q[0].y, Math.max(1,tr.t)/2, 0, 6.2832); g.fill(); g.restore(); return; }
+    var R=cr(Q, Q.length>240?3:6), Wd=largeurs(R, tr.t, !tr.g && !enCours ? true : !tr.g), n=R.length, G=[], D=[], i;
+    for(i=0;i<n;i++){ var a=R[Math.max(0,i-1)], b=R[Math.min(n-1,i+1)], dx=b.x-a.x, dy=b.y-a.y, m=Math.hypot(dx,dy)||1, nx=-dy/m, ny=dx/m, h=Wd[i]/2;
+      G.push([R[i].x+nx*h, R[i].y+ny*h]); D.push([R[i].x-nx*h, R[i].y-ny*h]); }
+    g.beginPath(); g.moveTo(G[0][0],G[0][1]); for(i=1;i<n;i++) g.lineTo(G[i][0],G[i][1]); for(i=n-1;i>=0;i--) g.lineTo(D[i][0],D[i][1]); g.closePath(); g.fill();
+    g.beginPath(); for(i=0;i<n;i++){ g.moveTo(R[i].x+Wd[i]/2, R[i].y); g.arc(R[i].x, R[i].y, Wd[i]/2, 0, 6.2832); } g.fill();     /* ni trou aux virages serrés, ni bout carré */
+    g.restore(); }
+  /* les traits seuls (sans le fond), dans un canevas à l'échelle k (px par point) */
+  function calque(traits, k, hPt){ var cv=document.createElement('canvas'); cv.width=Math.max(1,Math.round(W*k)); cv.height=Math.max(1,Math.round(hPt*k));
+    var g=cv.getContext('2d'); g.setTransform(k,0,0,k,0,0); (traits||[]).forEach(function(tr){ traceUn(g, tr); }); return cv; }
+  /* le dessin POSÉ, entier, avec son fond : pour la bande, la vue entière, le partage */
+  var MEMO={};
+  function signature(d){ var n=0; (d.poses||[]).forEach(function(t){ n+=t.pts.length; }); return (d.fond||'')+'|'+(d.poses||[]).length+'|'+n+'|'+(d.h||0); }
+  function entier(d, k){ var cle=signature(d)+'|'+k; if(MEMO[cle]) return MEMO[cle];
+    var hPt=d.h||surfH(), cv=document.createElement('canvas'); cv.width=Math.round(W*k); cv.height=Math.round(hPt*k);
+    var g=cv.getContext('2d'); g.fillStyle=d.fond; g.fillRect(0,0,cv.width,cv.height); g.drawImage(calque(d.poses, k, hPt), 0, 0);
+    var n=0; for(var q in MEMO){ if(++n>8){ MEMO={}; break; } } MEMO[cle]=cv; return cv; }
+
+  /* ══ LA BANDE : le dessin remplace la dalle ou la photo. Une couche PLEINE (le fond du dessin, puis ses traits, à l'échelle 1, calés en
+        haut) posée sur la bande, découpée à 7 pt au-dessus de l'axe du trait d'état : la bande montre UNE chose. Rien n'est relu ni
+        retouché dans le canevas de la bande : la retirer rend la dalle. ══ */
+  var ICO_OEIL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.6"/></svg>';
+  var ICO_OEIL_NON='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 12S6 5.8 12 5.8 21.5 12 21.5 12 18 18.2 12 18.2 2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.6"/><path d="M4 20L20 4"/></svg>';
+  function ondeDe(c){ try{ var O=window._onde; if(!O) return null; var b=null, a=null;
+      if(c.type==='promi'){ var e=window._ficheEcran(c.hote, c.p); b=e.base; a=e.amp; }
+      else if(c.type==='brouillon'){ var e2=window._ppEcran(); if(!e2 || e2.garde) return null; b=e2.base; a=e2.amp; }
+      else if(c.type==='cercle'){ if(window._nueeDefileEtat){ b=58; a=16; } else { var s=window._nueeSemis; if(!s) return null; b=s.base; a=s.amp; } }
+      if(b==null || a==null) return null; return {y:O.onde(b,a), chemin:O.chemin}; }catch(_){ return null; } }
+  function bande(c){ if(!c || !c.hote) return;
+    var h=c.hote, cv=h.querySelector(':scope > canvas.dz-bande'), oe=h.querySelector(':scope > button.dz-oeil'), d=lit(c), on=ondeDe(c);
+    var instant=!!window._instant;
+    /* le bouton de masquage : seulement quand un dessin est posé (masqué ou non), jamais pendant l'instant ni sur la page + */
+    if(pose_(d) && on && !instant && c.type!=='brouillon'){
+      if(!oe){ oe=document.createElement('button'); oe.type='button'; oe.className='dz-oeil'; h.appendChild(oe);
+        oe.addEventListener('click', function(ev){ ev.stopPropagation(); ev.preventDefault(); var cc=cibleFiche(), dd=lit(cc); if(!pose_(dd)) return; dd.masque=!dd.masque; garde(cc); bande(cc); try{ if(window._entier && window._entier.annonce) window._entier.annonce(); }catch(_){ } }); }
+      var sc=(h.clientWidth||W)/W, yo=on.y(P.OEIL.x+17)-P.OEIL.ecart, m=!!d.masque;
+      var etat=(m?'1':'0')+'|'+Math.round(yo*10)+'|'+(clair()?'c':'s');
+      if(oe.getAttribute('data-etat')!==etat){ oe.setAttribute('data-etat', etat);
+        oe.innerHTML = m ? ICO_OEIL_NON : ICO_OEIL; oe.setAttribute('aria-label', m ? 'Afficher le dessin' : 'Masquer le dessin'); oe.setAttribute('aria-pressed', m?'true':'false');
+        oe.style.setProperty('left', (P.OEIL.x*sc)+'px', 'important'); oe.style.setProperty('top', (yo*sc)+'px', 'important');
+        var fd = m ? NAT[natureDe(c)] : d.fond, en = lumi(fd)>128 ? ENCRE : CREME;
+        oe.style.setProperty('--dz-oeil-fond', fd); oe.style.setProperty('--dz-oeil-encre', en); }
+      if(oe.style.display==='none') oe.style.removeProperty('display');
+    } else if(oe){ oe.remove(); }
+    if(!(visible(c) && on) || instant){ if(cv) cv.remove(); return; }
+    var sc2=(h.clientWidth||W)/W, dpr=Math.max(2, Math.min(3, window.devicePixelRatio||2));
+    var bas=0; for(var x=0;x<=W;x+=6){ var yy=on.y(x); if(yy>bas) bas=yy; } bas=Math.ceil(Math.min(bas, d.h||surfH()));
+    var sig=signature(d)+'|'+Math.round(on.y(0)*10)+','+Math.round(on.y(130)*10)+','+Math.round(on.y(260)*10)+','+Math.round(on.y(390)*10)+'|'+sc2+'|'+dpr;
+    if(!cv){ cv=document.createElement('canvas'); cv.className='dz-bande'; cv.setAttribute('aria-hidden','true');
+      var ref=h.querySelector(':scope > canvas'); if(ref && ref.nextSibling) h.insertBefore(cv, ref.nextSibling); else h.appendChild(cv); }
+    if(cv.getAttribute('data-sig')===sig) return;                                    /* on compare avant de repeindre (§8) */
+    cv.setAttribute('data-sig', sig);
+    cv.width=Math.round(W*dpr); cv.height=Math.round(bas*dpr);
+    cv.style.setProperty('width', (W*sc2)+'px', 'important'); cv.style.setProperty('height', (bas*sc2)+'px', 'important');
+    var g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0);
+    var R=P.BANDE_RETRAIT, y2=function(x){ return on.y(x)-R; };
+    g.beginPath(); on.chemin(g, y2, 0, W); g.lineTo(W,0); g.lineTo(0,0); g.closePath(); g.clip();
+    g.setTransform(1,0,0,1,0,0); g.drawImage(entier(d, dpr), 0, 0);                    /* 1:1, calé en haut : la fiche en montre le haut */
+  }
+  var prevu=false;
+  function bandes(){ if(prevu) return; prevu=true; requestAnimationFrame(function(){ prevu=false; try{ bande(cibleFiche()); bande(ciblePlus()); nettoie(); boutonCercle(); }catch(_){ } }); }
+  function nettoie(){ ['detailPoster','createSheet'].forEach(function(id){ var h=$(id); if(!h || h.classList.contains('show')) return; [].forEach.call(h.querySelectorAll(':scope > .dz-bande, :scope > .dz-oeil'), function(e){ e.remove(); }); }); }
+  /* derrière les peintres de bande (on ENVELOPPE, §8) */
+  ['_ficheTrait','_ppTrait','_nueeBande','_nueeDefile','_fichePose'].forEach(function(nom){ var f=window[nom];
+    if(typeof f==='function' && !f.__dz){ var g=function(){ var r=f.apply(this,arguments); bandes(); return r; }; g.__dz=true; for(var k in f){ try{ g[k]=f[k]; }catch(_){ } } window[nom]=g; } });
+  (window._rangeurs=window._rangeurs||[]).push(function(){ sort(false); bandes(); setTimeout(bandes, 60); });
+  try{ var _dv=dev(); if(_dv) new MutationObserver(bandes).observe(_dv, {attributes:true, attributeFilter:['class']}); }catch(_){ }
+  ['detailPoster','createSheet'].forEach(function(id){ var h=$(id); if(h){ try{ new MutationObserver(bandes).observe(h, {attributes:true, attributeFilter:['class']}); }catch(_){ } } });
+
+  /* ══ LE MODE DESSIN ══ */
+  var ICO={
+    plume:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 20l1-4L16.2 4.8a2.1 2.1 0 0 1 3 3L8 19l-4 1z"/><path d="M14 7l3 3"/></svg>',
+    gomme:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 19h10"/><path d="M4.6 14.2l8.6-8.6a2 2 0 0 1 2.8 0l2.4 2.4a2 2 0 0 1 0 2.8L10.2 19H8.4l-3.8-3.4a1 1 0 0 1 0-1.4z"/><path d="M9.6 9.2l5.2 5.2"/></svg>',
+    annuler:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 13L4.5 8.5 9 4"/><path d="M4.5 8.5H14a5.5 5.5 0 0 1 0 11h-3"/></svg>' };
+  function icoCouleur(){ try{ var s=$('studioBtn').querySelector('svg').cloneNode(true); s.removeAttribute('width'); s.removeAttribute('height'); s.removeAttribute('style'); s.setAttribute('aria-hidden','true'); return s.outerHTML; }catch(_){ return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="5"><circle cx="12" cy="12" r="7"/></svg>'; } }
+  var M=null;   /* l'état du mode : {c, d, outil, taille:{plume,gomme}, couleur, deploi, onglet, cvB, cvV, gV, k, trait} */
+  function racine(){ var r=$('dessinMode'); if(r) return r; var d=dev(); if(!d) return null;
+    r=document.createElement('div'); r.id='dessinMode'; r.setAttribute('role','dialog'); r.setAttribute('aria-modal','true'); r.setAttribute('aria-label','Dessiner');
+    r.innerHTML='<div class="dz-surface" role="img" aria-label="La surface de dessin"><canvas></canvas></div><div class="dz-plateau" aria-hidden="true"></div><div class="dz-rangee" role="toolbar" aria-label="Les outils du dessin"></div>';
+    d.appendChild(r);
+    /* rien ne traverse le mode : un toucher sur lui n'atteint pas la fiche dessous */
+    ['click','pointerdown','pointerup','touchstart','touchend','mousedown','mouseup'].forEach(function(t){ r.addEventListener(t, function(e){ e.stopPropagation(); }, false); });
+    var s=r.querySelector('.dz-surface');
+    s.addEventListener('pointerdown', debut, false); s.addEventListener('pointermove', bouge, false);
+    s.addEventListener('pointerup', fin, false); s.addEventListener('pointercancel', fin, false);
+    s.addEventListener('touchstart', function(e){ e.preventDefault(); }, {passive:false}); s.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
+    return r; }
+  function choixTrait(){ var d=M.d;
+    if(d.pose){ var vus=[]; (d.traits||[]).concat(d.poses||[]).forEach(function(t){ if(!t.g && vus.indexOf(t.c)<0) vus.push(t.c); }); if(!vus.length) vus=[lumi(d.fond)>128?ENCRE:CREME]; return vus; }
+    var L=palette(), enc=clair()?ENCRE:CREME; if(L.indexOf(enc)<0) L.push(enc); return L; }
+  function choixFond(){ var L=[NAT[natureDe(M.c)]]; palette().forEach(function(t){ if(L.indexOf(t)<0) L.push(t); }); return L.slice(0,5); }
+  function ouvre(c){ c=c||cibleFiche()||ciblePlus(); if(!c) return false; var r=racine(); if(!r) return false;
+    try{ if(window._photoMenuFerme) window._photoMenuFerme(); }catch(_){ }
+    var d=lit(c), neuf=false;
+    if(!d){ neuf=true; d={v:1, w:W, h:surfH(), fond:NAT[natureDe(c)], traits:[], poses:[], pose:false, masque:false}; }
+    if(!d.traits) d.traits=(d.poses||[]).slice();
+    var corps=(getComputedStyle(c.hote).backgroundColor.match(/[\d.]+/g)||[247,240,222]).slice(0,3).map(Number), enc=lumi(corps)>128?ENCRE:CREME;
+    M={c:c, d:d, neuf:neuf, outil:'plume', taille:{plume:1, gomme:1}, deploi:null, onglet:'TRAIT', trait:null, corps:hex(corps), encre:enc};
+    var ch=choixTrait(); M.couleur=(ch.indexOf(enc)>=0 && enc!==d.fond) ? enc : (ch.filter(function(t){ return t!==d.fond; })[0]||ch[0]);
+    r.style.setProperty('--dz-corps', M.corps); r.style.setProperty('--dz-encre', enc);
+    var s=r.querySelector('.dz-surface'), hS=d.h||surfH(); s.style.height=hS+'px';
+    var cv=s.querySelector('canvas'), dpr=Math.max(2, Math.min(3, window.devicePixelRatio||2)); M.k=dpr; M.hS=hS;
+    cv.width=Math.round(W*dpr); cv.height=Math.round(hS*dpr); M.cvV=cv; M.gV=cv.getContext('2d');
+    M.cvB=calque(d.traits, dpr, hS);
+    fondPose(); repeint(); rangee(); r.classList.add('ouv'); return true; }
+  function fondPose(){ var r=$('dessinMode'); r.style.setProperty('--dz-fond', M.d.fond); r.style.setProperty('--dz-trait-fin', lumi(M.d.fond)>128?ENCRE:CREME); }
+  function repeint(){ var g=M.gV; g.setTransform(1,0,0,1,0,0); g.globalCompositeOperation='source-over'; g.clearRect(0,0,M.cvV.width,M.cvV.height); g.drawImage(M.cvB,0,0);
+    if(M.trait){ g.setTransform(M.k,0,0,M.k,0,0); traceUn(g, M.trait, true); } }
+  function rebatit(){ M.cvB=calque(M.d.traits, M.k, M.hS); repeint(); }
+  /* la rangée A, en bas : PLUME · GOMME · ANNULER · COULEUR · POSER ; ce qui se déploie, juste au-dessus */
+  function rangee(){ var r=$('dessinMode'), z=r.querySelector('.dz-rangee'); z.textContent='';
+    [].forEach.call(r.querySelectorAll('.dz-deploi'), function(e){ e.remove(); });
+    var yR=H-P.MARGE_BAS-P.RANGEE_H; z.style.top=yR+'px'; z.style.height=P.RANGEE_H+'px';
+    function b(cls, x, w, html, label, fn, on, off){ var e=document.createElement('button'); e.type='button'; e.className=cls+(on?' on':''); e.style.left=x+'px'; e.style.top='0px'; if(w) e.style.width=w+'px';
+      e.innerHTML=html; e.setAttribute('aria-label', label); if(on!=null && cls==='dz-o') e.setAttribute('aria-pressed', on?'true':'false'); if(off){ e.disabled=true; e.setAttribute('aria-disabled','true'); }
+      e.addEventListener('click', function(ev){ ev.stopPropagation(); if(!e.disabled) fn(); }); z.appendChild(e); return e; }
+    var x0=P.MARGE_COTE, pas=P.PAS_OUTIL;
+    b('dz-o', x0, 0, ICO.plume, 'Plume'+(M.outil==='plume'?', choisie. Toucher de nouveau pour la taille':''), function(){ outil('plume'); }, M.outil==='plume').setAttribute('data-outil','plume');
+    b('dz-o', x0+pas, 0, ICO.gomme, 'Gomme'+(M.outil==='gomme'?', choisie. Toucher de nouveau pour la taille':''), function(){ outil('gomme'); }, M.outil==='gomme').setAttribute('data-outil','gomme');
+    b('dz-o', x0+2*pas, 0, ICO.annuler, 'Annuler le dernier trait', annuler, null, !M.d.traits.length).setAttribute('data-outil','annuler');
+    b('dz-o', x0+3*pas, 0, icoCouleur(), 'Couleur', function(){ deploie(M.deploi==='couleur'?null:'couleur'); }, M.deploi==='couleur').setAttribute('data-outil','couleur');
+    b('dz-poser', W-P.MARGE_COTE-P.POSER_L, P.POSER_L, 'Poser', 'Poser le dessin', function(){ sort(true); }).setAttribute('data-outil','poser');
+    var yD=yR-P.ECART_DEPLOI;
+    if(M.deploi==='plume' || M.deploi==='gomme'){ var o=M.deploi, p=document.createElement('div'); p.className='dz-deploi dz-tailles'; p.setAttribute('role','group'); p.setAttribute('aria-label','La taille de la '+o);
+      p.style.left=(x0+(o==='gomme'?pas:0))+'px'; p.style.top=(yD-44)+'px';
+      [6,10,16].forEach(function(dd,i){ var e=document.createElement('button'); e.type='button'; e.className=(M.taille[o]===i?'on':''); e.style.left=(8+i*36)+'px';
+        e.innerHTML='<i style="width:'+dd+'px;height:'+dd+'px"></i>'; e.setAttribute('aria-label', ['Fin','Moyen','Gros'][i]); e.setAttribute('aria-pressed', M.taille[o]===i?'true':'false'); e.setAttribute('data-taille', i);
+        e.addEventListener('click', function(ev){ ev.stopPropagation(); M.taille[o]=i; deploie(null); }); p.appendChild(e); });
+      r.appendChild(p); }
+    if(M.deploi==='couleur'){ var q=document.createElement('div'); q.className='dz-deploi dz-couleurs'; q.setAttribute('role','group'); q.setAttribute('aria-label','Les couleurs du dessin'); q.style.top=(yD-114)+'px';
+      var avecFond=!M.d.pose; if(!avecFond) M.onglet='TRAIT';
+      ['TRAIT','FOND'].forEach(function(t,i){ if(t==='FOND' && !avecFond) return; var e=document.createElement('button'); e.type='button'; e.className='dz-onglet'+(M.onglet===t?' on':'')+(avecFond?'':' seul'); e.style.left=(6+i*165)+'px';
+        e.textContent=(t==='TRAIT'?'Trait':'Fond'); e.setAttribute('role','tab'); e.setAttribute('aria-selected', M.onglet===t?'true':'false'); e.setAttribute('aria-label', t==='TRAIT'?'La couleur du trait':'La couleur du fond'); e.setAttribute('data-onglet', t);
+        e.addEventListener('click', function(ev){ ev.stopPropagation(); if(M.onglet!==t){ M.onglet=t; rangee(); } }); q.appendChild(e); });
+      var tons = M.onglet==='TRAIT' ? choixTrait() : choixFond(), pasT=Math.min(64, (342-32-44)/Math.max(1,tons.length-1));
+      tons.forEach(function(t,i){ var e=document.createElement('button'); e.type='button'; var sel=(M.onglet==='TRAIT' ? M.couleur===t : M.d.fond===t), gris=(M.onglet==='TRAIT' && t===M.d.fond);
+        e.className='dz-ton'+(sel?' on':''); e.style.left=(14+i*pasT)+'px'; e.style.setProperty('--dz-ton', t); e.setAttribute('data-ton', t);
+        e.setAttribute('aria-label', (M.onglet==='TRAIT'?'Trait':'Fond')+', teinte '+(i+1)+' sur '+tons.length+(gris?', c’est la couleur du fond':'')); e.setAttribute('aria-pressed', sel?'true':'false'); if(gris){ e.disabled=true; e.setAttribute('aria-disabled','true'); }
+        e.addEventListener('click', function(ev){ ev.stopPropagation(); if(e.disabled) return;
+          if(M.onglet==='TRAIT'){ M.couleur=t; if(M.outil==='gomme') M.outil='plume'; }
+          else { M.d.fond=t; fondPose(); if(M.couleur===t){ var a=choixTrait().filter(function(u){ return u!==t; }); M.couleur=a[a.length-1]||M.couleur; } garde_(); }
+          deploie(null); }); q.appendChild(e); });
+      r.appendChild(q); } }
+  function deploie(q){ M.deploi=q; rangee(); }
+  function outil(o){ if(M.outil===o){ deploie(M.deploi===o?null:o); return; } M.outil=o; deploie(null); }
+  function annuler(){ if(!M.d.traits.length) return; M.d.traits.pop(); garde_(); rebatit(); deploie(null); }
+  function garde_(){ ecrit(M.c, M.d); }                                             /* le dessin en cours est gardé, même si l'on sort */
+  /* le geste */
+  function pt(e){ var r=M.cvV.getBoundingClientRect(); return {x:Math.round(((e.clientX-r.left)/r.width*W)*10)/10, y:Math.round(((e.clientY-r.top)/r.height*M.hS)*10)/10,
+      t:Math.round(e.timeStamp||performance.now()), p:(e.pointerType==='pen' && e.pressure>0) ? Math.round(e.pressure*100)/100 : -1}; }
+  function ajoute(q){ var a=M.trait.pts, n=a.length; if(n>=4 && Math.abs(a[n-4]-q.x)<0.3 && Math.abs(a[n-3]-q.y)<0.3) return; a.push(q.x, q.y, q.t, q.p); }
+  var RAF=0;
+  function debut(e){ if(!M || M.trait || (e.button!=null && e.button>0)) return; e.preventDefault();
+    if(M.deploi){ deploie(null); }
+    try{ e.currentTarget.setPointerCapture(e.pointerId); }catch(_){ }
+    var g=M.outil==='gomme';
+    M.trait={c:g?'':M.couleur, t:(g?P.TAILLES_GOMME:P.TAILLES)[M.taille[M.outil]], g:g?1:0, pts:[], id:e.pointerId}; ajoute(pt(e)); peintBientot(); }
+  function bouge(e){ if(!M || !M.trait || e.pointerId!==M.trait.id) return; e.preventDefault();
+    var L=(e.getCoalescedEvents && e.getCoalescedEvents()) || []; if(!L.length) L=[e]; L.forEach(function(x){ ajoute(pt(x)); }); peintBientot(); }
+  function fin(e){ if(!M || !M.trait || e.pointerId!==M.trait.id) return; e.preventDefault();
+    var tr=M.trait; M.trait=null; delete tr.id; if(tr.pts.length>=4){ M.d.traits.push(tr); var g=M.cvB.getContext('2d'); g.setTransform(M.k,0,0,M.k,0,0); traceUn(g, tr); garde_(); }
+    repeint(); rangee(); }
+  function peintBientot(){ if(RAF) return; RAF=requestAnimationFrame(function(){ RAF=0; if(M) repeint(); }); }
+  /* POSER, ou la sortie : tout revient, sans fondu. La fiche dessous n'a pas été touchée. */
+  function sort(poser){ var r=$('dessinMode'); if(!M || !r || !r.classList.contains('ouv')) return false;
+    var c=M.c, d=M.d; M.trait=null;
+    if(poser){ if(d.traits.length){ d.poses=JSON.parse(JSON.stringify(d.traits)); d.pose=true; d.masque=false; ecrit(c, d); } else { ecrit(c, null); } }
+    else { if(d.traits.length || pose_(d)) ecrit(c, d); else ecrit(c, null); }
+    r.classList.remove('ouv'); [].forEach.call(r.querySelectorAll('.dz-deploi'), function(e){ e.remove(); }); r.querySelector('.dz-rangee').textContent=''; M=null; MEMO={};
+    try{ if(c.type==='promi' || c.type==='cercle'){ if(window._ficheTrait) window._ficheTrait(); } else if(window._ppTrait) window._ppTrait(); }catch(_){ }
+    bandes(); try{ if(window._entier && window._entier.annonce) setTimeout(window._entier.annonce, 60); }catch(_){ }
+    return true; }
+  document.addEventListener('keydown', function(e){ if(M && e.key==='Escape'){ sort(false); e.preventDefault(); } }, true);
+  function retire(c){ c=c||cibleFiche()||ciblePlus(); if(!c) return; ecrit(c, null); MEMO={}; bandes(); try{ if(window._entier && window._entier.annonce) setTimeout(window._entier.annonce, 60); }catch(_){ } }
+
+  /* ══ LES ENTRÉES : « Dessiner » en tête du menu compact du bouton photo — fiche, page + (Promi, Chiche, Cercle), fiche d'un Cercle ══ */
+  var _pm=window._photoMenu;
+  if(typeof _pm==='function') window._photoMenu=function(b, inp, p, rejoue){
+    var nid=b && b.parentNode, deja=nid && nid.querySelector('.ph-photo-menu');
+    _pm.call(this, b, inp, p||{}, rejoue);
+    var m=nid && nid.querySelector('.ph-photo-menu'); if(!m || deja) return;
+    var hote=b._hote||b.closest('#detailPoster, #createSheet'), c=(hote && hote.id==='createSheet') ? ciblePlus() : cibleFiche(); if(!c) return;
+    m.classList.add('dz-compact');
+    if(c.type==='cercle'){ [].forEach.call(m.querySelectorAll('button'), function(x){ x.remove(); }); }       /* un Cercle ne porte pas de photo : il dessine */
+    function item(txt, fn, tete){ var x=document.createElement('button'); x.type='button'; x.textContent=txt; x.onclick=function(ev){ ev.stopPropagation(); try{ window._photoMenuFerme(); }catch(_){ } fn(); };
+      if(tete && m.firstChild) m.insertBefore(x, m.firstChild); else m.appendChild(x); return x; }
+    if(pose_(lit(c)) || (lit(c) && (lit(c).traits||[]).length)) item('Retirer le dessin', function(){ retire(c); });
+    item('Dessiner', function(){ ouvre(c); }, true).setAttribute('data-dessiner','1');
+    /* la place : au-dessus du bouton, comme avant — recalculée, le menu a changé de hauteur */
+    var k=((dev()||{}).getBoundingClientRect ? dev().getBoundingClientRect().width : 390)/390||1, h=m.getBoundingClientRect().height/k, top=parseFloat(b.style.top)||0;
+    m.style.setProperty('top', Math.round(top-10-h)+'px', 'important'); };
+  /* la page + : le bouton photo ouvre le même menu (« Dessiner » en tête, puis l'import) */
+  document.addEventListener('click', function(e){ var b=e.target && e.target.closest && e.target.closest('#createSheet .ph-photo-btn'); if(!b || !window._photoMenu) return;
+    e.stopPropagation(); e.preventDefault(); window._photoMenu(b, b._in, b._p||(window._phrase=window._phrase||{}), b._rejoue); }, true);
+  /* la fiche d'un Cercle reçoit son bouton photo (il ouvre « Dessiner ») */
+  function boutonCercle(){ var c=cibleFiche(); if(!c || c.type!=='cercle' || !window._photoBouton) return; var on=ondeDe(c); if(!on) return;
+    try{ var s=window._nueeDefileEtat ? {base:58, amp:16} : window._nueeSemis; var cle=c.cle+'|'+s.base+'|'+s.amp, n=c.hote.querySelector(':scope > .ph-photo-nid');
+      if(n && n.getAttribute('data-dz-cercle')===cle && n.style.display!=='none') return;
+      window._photoBouton(c.hote, {_cercle:c.cle}, s.base, s.amp, bandes); n=c.hote.querySelector(':scope > .ph-photo-nid'); if(n) n.setAttribute('data-dz-cercle', cle);
+      var b=n && n.querySelector('.ph-photo-btn'); if(b) b.setAttribute('aria-label','Dessiner sur ce Cercle'); }catch(_){ } }
+  /* le dessin de la page + suit la parole (ou le Cercle) à la plantation */
+  ['addPromi','addNuee','addDraft'].forEach(function(id){ var bt=$(id); if(!bt) return; bt.addEventListener('click', function(){
+      var d=(window._phrase||{}).dessin; if(!d) return; var n0=promises.length, cles0=Object.keys(NUE);
+      var essais=0; (function suit(){ try{
+          if(id==='addNuee'){ var neuve=Object.keys(NUE).filter(function(k){ return cles0.indexOf(k)<0; })[0]; if(neuve){ ecrit({type:'cercle', cle:neuve}, d); delete window._phrase.dessin; bandes(); return; } }
+          else if(promises.length>n0){ var p=promises[promises.length-1]; if(p && !p.dessin){ p.dessin=d; delete window._phrase.dessin; garde({type:'promi', p:p}); bandes(); return; } }
+        }catch(_){ } if(++essais<12) setTimeout(suit, 120); })(); }, true); });
+
+  /* ══ LE PARTAGE : la case d'une parole dont le dessin est posé ET NON MASQUÉ montre son dessin, entier. Un dessin masqué n'y est jamais. ══ */
+  window._dessinCase=function(pid){ try{ var p=promises.filter(function(x){ return x.id===pid; })[0]; if(!p || !pose_(p.dessin) || p.dessin.masque) return null; return entier(p.dessin, 2); }catch(_){ return null; } };
+  /* ══ LA VUE ENTIÈRE (C-051) ══ */
+  function sourceVue(){ var c=cibleFiche(); if(!c || !visible(c)) return null; try{ return {src:entier(lit(c), 3).toDataURL('image/png'), quoi:'dessin'}; }catch(_){ return null; } }
+
+  window._dessin={ouvre:ouvre, sort:sort, retire:retire, bandes:bandes, visible:function(){ var c=cibleFiche()||ciblePlus(); return !!(c && visible(c)); }, lit:function(){ return lit(cibleFiche()||ciblePlus()); },
+    cible:function(){ return cibleFiche()||ciblePlus(); }, sourceVue:sourceVue, ouvert:function(){ return !!M; }, etat:function(){ return M ? {outil:M.outil, couleur:M.couleur, fond:M.d.fond, taille:M.taille, deploi:M.deploi, traits:M.d.traits.length, pose:!!M.d.pose, corps:M.corps} : null; },
+    choix:function(){ return M ? {trait:choixTrait(), fond:choixFond()} : null; }, surface:surfH, trace:traceUn, entier:entier};
+  bandes();
+})();
+</script>

@@ -8443,3 +8443,17 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   v129, non révoqué) — « tout reste à sa place » est lu comme « rien ne se déplace ». Si les disques doivent rester, les déploiements les
   recouvriraient (ils commencent à 376, la rangée finit à 375).
 - **À CHOISIR (C-042)** : E1 ou E2, S1 ou S2.
+
+
+## LOT v132 — 5 octobre 2026 (les décisions vivent dans CHANTIERS.md : C-042, C-052, C-053, C-054)
+
+- **Tranché par Tom** : E2 et S2 ; on construit le dessin dans l'app ; la surface plein écran, la rangée en bas (Q391 close) ; la liste de
+  l'Aura, la plus récente en premier (Q390 close) ; « SUPPRIMER CE PROMI » en crème, la phrase lilas éclaircie à 4,5:1 → `#DAC3FF` (Q389 close).
+- **Q392 — À TRANCHER (Tom)** : la SORTIE du mode dessin sans poser. Aucun bouton ne la porte (la rangée décidée n'en a pas, l'encart du
+  haut n'a plus de texte) : aujourd'hui seuls Échap et la fermeture générale sortent, en gardant le dessin en cours. Sur iPhone, on ne sort
+  donc que par POSER (ou ANNULER jusqu'au vide, puis POSER, qui ne pose rien).
+- **Q393 — À VALIDER (Tom)** : en clair, « SUPPRIMER CE PROMI » passe à l'encre (pas à la crème, illisible sur le corps crème) ; les
+  Réglages (« Supprimer mon compte ») gardent `#DD4D23` — C-015.
+- **Q394 — À VALIDER (Tom)** : les tailles de la gomme (10 · 18 · 30 pt), le fond par défaut du dessin (le champ de la nature), les cinq
+  fonds proposés (le champ, puis la palette), et le dessin d'un Cercle hors du partage (son Folio ne montre que ses Promi).
+- **Q395 — À VALIDER (Tom)** : les cartes de l'Index et du Fil gardent la dalle (le dessin ne remplace que la bande).
