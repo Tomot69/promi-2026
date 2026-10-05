@@ -1,0 +1,27 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 50
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+    6s  redteam_maparole.py        A · --orange-maparole n'est lu que par « #murPhrase .mp »                        OK  #murPhrase .mp / 4 / 4
+   61s  redteam_reactif.py           ✅ aucune erreur de page / redteam_reactif : 30/30
+   67s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #00351A #2A1548 #00341A #291547 OK   (Q262, v8c) / 81 / 81
+  186s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+   56s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  124s  redteam_zone.py            OK  [light] aucune erreur de page   / 12 / 12
+  317s  redteam_decoupe.py           OK  sillons   dark  fil du Cercle, défilé       14 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur / ❌  G2 : 50 écran(s) × monde × thème jugés, 1 en défaut
+   43s  redteam_motmarque.py       OK  [dark] le haut de l'encre aussi (± 0.5 pt)  Promi 58.67 · Chiche 58.67 · Cercle 58.67 / 4 / 4
+  199s  redteam_nuee.py            ============================================================================== /   ✅  24 écran(s) · 0 écart(s)
+   43s  redteam_nuee_entree.py     [sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True} / 24/24
+   94s  redteam_dalle_figee.py     D · les peintres des cartes suivent le Studio (v34)        OK  69 appels · 6 pour le Promi planté en « pixel · terre », peint dans le Studio (encre) : True · 0 hors du Studio / 4/4
+   38s  redteam_reperage.py        [sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : [] / 16/16
+   54s  redteam_apercus.py           ✅ E le fond d'un aperçu est celui de la vraie Toile [light]  (sombre #050302 · clair #F1ECD9) / ✅  10/10
+  228s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  126s  redteam_champ.py             l'instant après [light]        OK / 32/32
+  128s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   91s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  114s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1833 ms) / 32/32
+  203s  redteam_fluide.py          4 / 6 / KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4099 images) · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un
+  198s  redteam_gens.py            [sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : True) OK   / 38/38
+   55s  redteam_origine.py         [chromium] aucune erreur de page                                   OK   / 64 / 64
+  104s  banc_rendu.py                 ≠ sillons      dalle-cercle-k2    None px  taille (319, 297) ≠ (294, 294) / ❌ LE RENDU A CHANGÉ.
+  279s  redteam_rythme.py            · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 53, 'images': 3, 'boucle': 1831, 'debut': 34} / 60 / 60
+  615s  redteam_couleurs_ref.py    exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 8 · E5 violations retirées 22 · E6 trace crème (Q374) 12 · E7 ombre crème en sombre 2 · 

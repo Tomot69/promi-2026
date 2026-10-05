@@ -116,6 +116,54 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v130 (5 oct. 2026) — TROIS RÉCIDIVES NOMMÉES ; TROPICAL BREEZE ; LE MODE DESSIN NE RECOUVRE JAMAIS LA BANDE. (Décisions Tom.)
+> **⚑ UNE DALLE SEULE EST ENGENDRÉE, JAMAIS DÉCOUPÉE DANS LA TOILE (C-048 — récidive, « interdit, définitivement, dans le prototype comme
+> dans Swift »).** *Pourquoi c'est revenu* : ce n'est pas un retour récent — depuis v29, pour les cinq mondes à trame (Buvard, Braille,
+> Tesselle, Taille-douce, Houle), `dalleTrame` peignait la Toile AUTOUR de la dalle puis rognait au pixel sur sa cellule : un polygone à
+> bords en marches, avec les éclats des voisines (mesuré : 1,2 à 3,5 % de pixels d'une autre dalle). `redteam_decoupe` ne piégeait que les
+> appels (`drawImage`, `getImageData`…) des ÉCRANS, pas ce que le moteur faisait en lui-même. *La parade* : chaque peintre de trame saute
+> les graines qui ne sont pas la dalle demandée (`_cibleDalle`), et le masque au pixel ne s'applique plus à ces mondes (`_ENGENDRE`).
+> *Le juge* : `redteam_decoupe`, famille **G2** — sur la fiche, l'Index, le Fil, la fiche d'un Cercle et son fil (défilé compris), en clair
+> et en sombre, une dalle rendue seule ne porte pas plus de 0,3 % de pixels d'une autre couleur que la sienne ; rouge sur v129.
+> *La règle* : **un peintre de monde reçoit la dalle à peindre et n'engendre qu'elle ; rogner un rendu plus large est une découpe, même
+> à l'intérieur du moteur.**
+> **⚑ LA DOUBLE ZONE DE LA PELOTE (C-002 — récidive).** *Pourquoi* : le Studio ouvre d'autres contextes WebGL ; le navigateur retire
+> celui de la Pelote ; à l'ouverture suivante `_glInit` créait un canevas NEUF et l'ancien `#auBouleGL` restait dans la page, figé, sous
+> le nouveau — un second contour. `redteam_zone` n'ouvrait jamais le Studio. *La parade* : `peintGL` retire l'ancien canevas (et tout
+> `#auBouleGL` orphelin) avant de poser le neuf. *Le juge* : `redteam_zone`, contrôle C — Aura, Studio (contexte perdu), Studio, Aura ;
+> il n'y a que `auBoule` et UN `auBouleGL`. *La règle* : **un canevas qu'on remplace se RETIRE ; un juge passe par le chemin de
+> l'utilisateur (les écrans qu'il traverse entre deux ouvertures), pas seulement par l'écran jugé.**
+> **⚑ LES ÉCRANS REFLÈTENT L'ÉTAT RÉEL TOUT DE SUITE (C-049 — régression).** Deux causes mesurées : ① l'Aura n'était bâtie qu'à son
+> ouverture (`ouvre()`), et `closeAll()` ne lui retire pas `.show` (§8) : tenir ou retirer depuis une fiche ouverte par-dessus elle la
+> laissait telle quelle ; `syncAll` appelait l'ancien `buildAura`, qui ne peint plus cet écran ; ② le Fil gardait les événements d'une
+> parole retirée (son journal n'est pas la liste des paroles). **Une seule source de vérité : `promises` ; `window._paroles`
+> (`signe`, `abonne`, `publie`) ; l'Index, le Fil, l'Aura et le fil du Cercle s'y abonnent et comparent avant d'agir** (`lot-V130-REACTIF`) ;
+> `syncAll` publie ; après chaque geste, une signature qui a changé sans publication est publiée (aucun chemin ne peut l'oublier).
+> ⚠ L'Aura attend la fin de l'animation de « tenir » (v124) : elle est alors sous la fiche. Juge : **`redteam_reactif.py`** (planter,
+> tenir, retirer par les vrais boutons ; 30 contrôles ; 25/30 sur v129). ⚠ La liste « Ce que tu as tenu » reste bornée à trois dalles,
+> six dès cinq tenues (Q187) — les plus récentes d'abord.
+> **⚑ LE CORPS SOMBRE D'UN PROMI EST TROPICAL BREEZE `#8ACBE8`** (Pantone 13-4307 TPG, relevé par Tom sur son échantillon ; remplace
+> `#335382`) — fiche Promi et page + d'un Promi, en sombre. **Le texte posé dessus passe à l'encre `#201908`** (9,79:1) : titre, à-qui,
+> échéance, mention du trait (posés à la source, par le poseur de la fiche), et tout le reste par un seul propriétaire
+> (`lot-V130-TROPICAL` : texte < 4,5:1 ou contour < 3:1 sur ce fond → l'encre ; il passe dans la micro-tâche de la mutation, avant
+> l'image). Jeton `--c-tropical78`. ⚠ **Le résolveur d'état de la fiche sert aussi aux cartes de l'Index et du Fil** (corps resté sombre) :
+> il DÉCLARE le corps pastel (`e.corpsPastel`), c'est le poseur de la fiche qui en tire l'encre. Mesuré : états sur ce corps — à tenir
+> ΔE 103, en cours 76, tenu 70 (seuil 15) ; **bande `#82AEF8` contre corps : ΔE (CIELAB) 28,5 — au-dessus du seuil du ton sur ton (15) —
+> mais ΔE00 13,1 et Δlum 17,6** : c'est le trait qui les sépare. Aucune des deux couleurs n'a été retouchée.
+> ⚠ **Deux pièges du lot** : ① **une passe accrochée à un `MutationObserver` ne lit jamais les styles dans la micro-tâche de la
+> mutation** — chaque `getComputedStyle` y force le recalcul des styles de tout le document (la première image d'une fiche passait de
+> 450 à 600 ms) ; elle se demande pour l'image qui vient (`requestAnimationFrame`, avant la peinture). ② **le Peaufiner a SON corps** :
+> celui d'une fiche Promi TENUE est Tropical alors que la fiche est terre — « sur quel fond suis-je » se lit sur le premier fond opaque
+> sous le nœud (`window._tropicalSous`), jamais sur une classe de la fiche.
+> **Juges réécrits au niveau de la décision** (originaux dans `sauvegardes/*-avant-v130.py`) : `redteam_flash_etat` (la première image à
+> l'encre, plus à la crème), `redteam_murs` contrôle 9 (la phrase suit le fond du mur), `redteam_decisions`, `redteam_couleurs_ref` (E8).
+> ⚠ **OUVERT (Q386)** : « Ma Parole ! » ne tient pas 3:1 sur Tropical (`#FB4C0D` : 1,9:1) — `redteam_murs` 25/26, rouge par décision à prendre.
+> `banc_rendu` REFIGÉ : les 60 images de dalles des cinq mondes à trame ont changé (c'est la correction) ; les 220 autres sont au pixel.
+> **⚑ L'OUTIL DE DESSIN (C-042, toujours une PLANCHE) — cinquième principe : AUCUNE SUPERPOSITION SUR L'ESPACE DE DESSIN.** Tom retient la
+> rangée A, sous la bande. Ni rangée, ni menu de tailles, ni couleurs dans la bande : la page se réorganise. Promi et Chiche : les trois
+> lignes du bas descendent (36 pt sur la planche), espacements gardés ; la rangée est sous le trait avec un écart franc (24 pt proposé) ;
+> tailles et couleurs se déploient SOUS la rangée. Cercle : tout est masqué sous la bande sauf le titre. Tout revient à POSER ou à la sortie.
+
 ### ⚑ v129 (4 oct. 2026) — L'ONBOARDING, TEXTE FIGÉ ; « CERCLE » CENTRÉ ; LE MODE DESSIN LIBÈRE L'ÉCRAN. (Décisions Tom.)
 > **La dernière diapositive (C-006), quatre paragraphes, mot pour mot** : « C’est planté. » · « Ton premier Promi, ta première dalle sur ta
 > Toile. Plus qu’à le tenir. » · « Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle,
@@ -999,6 +1047,7 @@ tenue           (sa nature)      terre #2B1020 dans les deux thèmes — texte c
 > **crème `#F7F0DE`** (Tom, Q221 : *« sur le corps crème »*) — `#CFE5FE` · `#FFF4FC` · `#EEE4F8` sont des jetons qui ne peignent pas
 > le corps ; le corps SOMBRE est celui de v113 (Q358) : **`#335382` · `#7C3F58` · `#5D4978`** (le Cercle : valeur posée par v113, pas
 > une citation de Tom).
+> **⚑ v130 — le corps sombre d'un PROMI est `#8ACBE8` (Tropical Breeze), texte à l'encre ; Chiche et Cercle ne bougent pas.**
 
 **Le contenu du corps passe en encre** (le moodboard le pose en blanc sur couleur
 pleine ; sur un corps clair ce serait illisible). **Tout texte posé sur un champ pastel passe à
@@ -1775,6 +1824,8 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
+python3 redteam_reactif.py     # 30 — v130 (C-049) : planter, tenir, retirer par les vrais boutons ; l'Index, le Fil, la liste de l'Aura et le fil du Cercle
+                               #   sont à jour à l'image suivante, complets — écran resté affiché, ou ouvert ensuite. Rougit sur v129 (25/30).
 python3 redteam_motmarque.py   # 4 — v129 (C-046) : l'encre du mot de la nature (PROMI, CHICHE, CERCLE) est à la même hauteur dans son encart, ± 0,5 pt,
                                #   clair et sombre (capture @3x). Rougit sur sauvegardes/app-avant-v129.html (0/4 : CERCLE 2,7 pt trop haut).
 python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvements de repos forcés sur 15 mondes, 0 pixel d'écart au retour (égalité stricte,

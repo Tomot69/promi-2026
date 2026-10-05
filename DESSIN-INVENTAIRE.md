@@ -51,3 +51,16 @@ par-dessus l'app rendue, `pen.js` rend le trait, `dessin.py` et `trait.py` monte
 - **E · les états** : plume choisie, gomme choisie, le bouton de masquage (dessin affiché, puis masqué), « Dessiner » dans le menu photo
   et sur la page +, une bande avec trois palettes mêlées (Ingénu, Truculent, Fantasque).
 - Les états B, D et E sont montrés sur la composition A ; ils se transposent tels quels sur B et C.
+
+## v130 (5 oct. 2026) — la mise en page du mode dessin (planche `planche-v130/dessin-*`, rien dans l'app)
+- **Tom retient la rangée A (sous la bande).** **Principe absolu : aucune superposition sur l'espace de dessin** — ni rangée, ni menu
+  de tailles, ni couleurs déployées. En mode dessin, la page se réorganise pour faire de la place ; tout revient à POSER ou à la sortie.
+- **Fiche Promi et Chiche** (mesuré sur la fiche « à tenir ») : bas du trait à 315 ; la rangée à **339** (24 pt sous le trait — proposé) ;
+  les tailles se déploient sous elle (393 → 437), les couleurs aussi (393 → 521) ; les disques, leurs noms et « TRACE POUR TENIR » sont
+  masqués ; les trois lignes (« À Rachel », le titre, « À TENIR · … ») descendent de **36 pt** (503 → 539), espacements gardés ; la barre
+  Peaufiner ne bouge pas.
+- **Fiche Cercle** : bas du trait à 199 ; la rangée à **223** (24 pt) ; tailles 277 → 321, couleurs 277 → 405 ; tout ce qui est sous la
+  bande est masqué (disques, « Avec… », le compte, le fil), **sauf le titre**, descendu de 42 pt (381 → 423), sous les déploiements.
+- Preuve de non-superposition, lue sur la planche : le plus haut des outils est à 339 (Promi) / 223 (Cercle), sous le bas du trait
+  (315 / 199) — 20 cadres sur 20 ; le plus bas des outils (521 / 405) reste au-dessus du premier texte (539 / 423).
+- Restent au choix de Tom : **E1 ou E2** (l'effilé du trait), **S1 ou S2** (le symbole de la couleur), et l'écart de 24 pt.

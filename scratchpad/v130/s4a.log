@@ -1,0 +1,65 @@
+=== redteam_tonsurton
+fiche · chiche    [light]                            OK  ΔE 69.8  Δlum 175  
+page + · Promi    [light]                            OK  ΔE 61.2  Δlum 141  
+page + · Chiche   [light]                            OK  ΔE 69.8  Δlum 175  
+page + · Nuée     [light]                            OK  ΔE 74.2  Δlum 135  
+carte d'Index · mesurable [light]                    OK  Δ42   
+carte d'Index · le pire des 6 [light]                OK  ΔE 107.8 Δlum 65   
+bandeau du Fil · le pire [light]                     OK  ΔE 107.8 Δlum 65   
+l'instant · arrive   [light]                         OK  ΔE 107.8 Δlum 65   
+l'instant · referme  [light]                         OK  ΔE 86.9  Δlum 176  
+l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31   
+
+26/26
+=== redteam_murs
+  ✅ 3b · toucher ailleurs : l'offre s'ouvre, la fiche est toujours là dessous  — offre True · fiche True
+  ✅ 9 · la phrase posée sur le flou : centrée dans le mur, sans fond ni trait, ≤ 3 lignes, une taille, encre  — {'fond': 'rgba(0, 0, 0, 0)', 'bord': '0px', 'ombre': 'none', 'lignes': 3, 'taille': '35px', 'tailleMP': '35px', 'couleur': 'rgb(32, 25, 8)'
+  ✅ 7 · « Ma Parole ! » en #FB4C0D, à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ 42)  — texte rgb(32, 25, 8) · Ma Parole rgb(251, 76, 13) · fond rgb(247, 240, 222) · phrase Δlum 215 · Ma Parole 3.01 : 1
+  ✅ 3c · après le temps de lecture, la phrase s'efface seule (sans ouvrir l'offre)  — levée False · offre False
+  ✅ 1b · Aura : plus d'encart, « Ce qu'on t'a tenu » flouté  — {'flou': 'blur(4.8px)', 'encart': False}
+  ✅ 4 · compteur global : l'Aura fait monter la phrase 4  — 'Tiens tiens, on dirait que ça commence à t’intéresser…'
+  ✅ 5a · la 21e touche fait monter la 21e phrase  — 'On se dit directement à la prochaine\xa0?'
+  ✅ 5b · au-delà : au hasard, jamais deux fois la même de suite  — 24 tirages, 14 distinctes, 0 répétitions, 0 hors liste
+  ✅ 6 · après une longue absence le compteur repart à la phrase 1 (sans rouvrir l'offre seule)  — 'Eh non\xa0! Mais avec Ma Parole\xa0!, oui.'
+  ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none
+
+25/26
+=== redteam_flash_etat
+2 · [sombre] la capture à la première image : aucun pixel orange sur eux   KO  1 sur 20
+      ouverture 1 : 2814 pixels orange sur la capture {'dptQui': [44, 41, 124, 70], 'dptQuand': [44, 44, 262, 58]}
+3 · [clair · fermée] « courir dimanche » après « le grand plongeoir » : la première image porte déjà le mot et la couleur posés (5 ouvertures) OK  0 sur 5 
+3 · [clair · fermée] « faire les crêpes » après « planter un arbre » : la première image porte déjà le mot et la couleur posés (5 ouvertures) OK  0 sur 5 
+3 · [sombre · fermée] « planter un arbre » après « faire les crêpes » : la première image porte déjà le mot et la couleur posés (5 ouvertures) OK  0 sur 5 
+3 · [clair · par-dessus] « courir dimanche » après « le grand plongeoir » : la première image porte déjà le mot et la couleur posés (5 ouvertures) OK  0 sur 5 
+3 · [clair · par-dessus] « faire les crêpes » après « planter un arbre » : la première image porte déjà le mot et la couleur posés (5 ouvertures) OK  0 sur 5 
+3 · [sombre · par-dessus] « planter un arbre » après « faire les crêpes » : la première image porte déjà le mot et la couleur posés (5 ouvertures) OK  0 sur 5 
+aucune erreur de page                                                      OK  
+
+8 / 10
+KO : 1 · [sombre] la première image où ils paraissent les montre déjà crème · 2 · [sombre] la capture à la première image : aucun pixel orange sur eux
+=== redteam_champ
+  page + [light]                 OK
+  page + Nuée [light]            OK
+  Index 2 [light]                OK
+  Index 3 [light]                OK
+  Fil [light]                    OK
+  Nuée [light]                   OK
+  Nuée vide [light]              OK
+  l'instant arrive [light]       OK
+  l'instant referme [light]      OK
+  l'instant après [light]        OK
+
+32/32
+=== redteam_air
+   Aura [dark]                #auPartage«Partager ma Pelote»     → .au-mot«Rien de ce qui est i»
+   Aura [light]               #auPartage«Partager ma Pelote»     → .au-mot«Rien de ce qui est i»
+   Peaufiner Chiche [dark]    .s2-val«Marion»                    → .s2-val«lundi 5»
+   Peaufiner Chiche [dark]    .s2-val«lundi 5»                   → .s2-val«0 fichier»
+   Peaufiner Chiche [light]   .s2-val«Marion»                    → .s2-val«lundi 5»
+   Peaufiner Chiche [light]   .s2-val«lundi 5»                   → .s2-val«0 fichier»
+   Peaufiner [dark]           .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [dark]           .s2-val«mercredi 14»               → .s2-val«aucune»
+   Peaufiner [light]          .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

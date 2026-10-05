@@ -178,7 +178,7 @@
     },
     "corps-promi": {
       "clair": "#CFE5FE",
-      "sombre": "#335382"
+      "sombre": "#8ACBE8"
     },
     "corps-chiche": {
       "clair": "#FFF4FC",
@@ -459,6 +459,9 @@
     "--c-framboise94": "#FFF4FC",
     "--c-framboise97": "#FFF9FC",
     "--c-blanc100": "#FFFFFF",
+    "--c-tropical78": "#8ACBE8",
+    "--c-encre-attente": "rgba(32,25,8,.72)",
+    "--c-encre09": "#201908",
     "--c-bleu35": "#335382",
     "--c-framboise35": "#7C3F58",
     "--c-mauve35": "#5D4978",

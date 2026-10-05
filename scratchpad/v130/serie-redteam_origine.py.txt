@@ -1,0 +1,66 @@
+[webkit] promi · signal · le champ est celui de la nature          OK  [130, 174, 248]
+[webkit] promi · signal · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 29.9
+[webkit] promi · signal · origine à ΔE 0.2 → la RAMPE de Q30       OK  à la rampe 1.8 · à l'origine 30.1 · app : rampe|0.2
+[webkit] promi · irascible · le champ est celui de la nature       OK  [130, 174, 248]
+[webkit] promi · irascible · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 118.4
+[webkit] promi · irascible · origine à ΔE 125.0 → la couleur d'ORIGINE OK  à l'origine 6.9 · à la rampe 99.5 · app : origine|125.1
+[webkit] promi · primesautier · le champ est celui de la nature    OK  [130, 174, 248]
+[webkit] promi · primesautier · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 126.0
+[webkit] promi · primesautier · origine à ΔE 128.7 → la couleur d'ORIGINE OK  à l'origine 3.2 · à la rampe 101.0 · app : origine|128.7
+[webkit] promi · taciturne · le champ est celui de la nature       OK  [130, 174, 248]
+[webkit] promi · taciturne · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 61.7
+[webkit] promi · taciturne · origine à ΔE 65.8 → la couleur d'ORIGINE OK  à l'origine 4.2 · à la rampe 81.6 · app : origine|65.8
+[webkit] promi · truculent · le champ est celui de la nature       OK  [130, 174, 248]
+[webkit] promi · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 123.5
+[webkit] promi · truculent · origine à ΔE 128.6 → la couleur d'ORIGINE OK  à l'origine 5.4 · à la rampe 103.4 · app : origine|128.7
+[webkit] chiche · signal · le champ est celui de la nature         OK  [255, 184, 210]
+[webkit] chiche · signal · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 26.9
+[webkit] chiche · signal · origine à ΔE 0.1 → la RAMPE de Q30      OK  à la rampe 1.1 · à l'origine 26.8 · app : rampe|0.1
+[webkit] chiche · irascible · le champ est celui de la nature      OK  [255, 184, 210]
+[webkit] chiche · irascible · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 61.4
+[webkit] chiche · irascible · origine à ΔE 63.7 → la couleur d'ORIGINE OK  à l'origine 3.2 · à la rampe 76.8 · app : origine|63.8
+[webkit] chiche · primesautier · le champ est celui de la nature   OK  [255, 184, 210]
+[webkit] chiche · primesautier · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 64.7
+[webkit] chiche · primesautier · origine à ΔE 65.9 → la couleur d'ORIGINE OK  à l'origine 1.7 · à la rampe 65.4 · app : origine|65.9
+[webkit] chiche · taciturne · le champ est celui de la nature      OK  [255, 184, 210]
+[webkit] chiche · taciturne · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 55.3
+[webkit] chiche · taciturne · origine à ΔE 57.4 → la couleur d'ORIGINE OK  à l'origine 2.0 · à la rampe 75.4 · app : origine|57.4
+[webkit] chiche · truculent · le champ est celui de la nature      OK  [255, 184, 210]
+[webkit] chiche · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 103.4
+[webkit] chiche · truculent · origine à ΔE 105.9 → la couleur d'ORIGINE OK  à l'origine 2.5 · à la rampe 128.8 · app : origine|105.9
+[webkit] sans l'option, la bande garde la rampe de Q30             OK  
+[webkit] aucune erreur de page                                     OK  
+[chromium] promi · signal · le champ est celui de la nature        OK  [130, 174, 248]
+[chromium] promi · signal · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 30.0
+[chromium] promi · signal · origine à ΔE 0.3 → la RAMPE de Q30     OK  à la rampe 1.7 · à l'origine 30.1 · app : rampe|0.3
+[chromium] promi · irascible · le champ est celui de la nature     OK  [130, 174, 248]
+[chromium] promi · irascible · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 118.4
+[chromium] promi · irascible · origine à ΔE 125.1 → la couleur d'ORIGINE OK  à l'origine 6.9 · à la rampe 99.6 · app : origine|125.1
+[chromium] promi · primesautier · le champ est celui de la nature  OK  [130, 174, 248]
+[chromium] promi · primesautier · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 126.1
+[chromium] promi · primesautier · origine à ΔE 128.7 → la couleur d'ORIGINE OK  à l'origine 3.2 · à la rampe 101.0 · app : origine|128.7
+[chromium] promi · taciturne · le champ est celui de la nature     OK  [130, 174, 248]
+[chromium] promi · taciturne · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 61.8
+[chromium] promi · taciturne · origine à ΔE 65.8 → la couleur d'ORIGINE OK  à l'origine 4.0 · à la rampe 81.7 · app : origine|65.8
+[chromium] promi · truculent · le champ est celui de la nature     OK  [130, 174, 248]
+[chromium] promi · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 123.5
+[chromium] promi · truculent · origine à ΔE 128.6 → la couleur d'ORIGINE OK  à l'origine 5.4 · à la rampe 103.4 · app : origine|128.6
+[chromium] chiche · signal · le champ est celui de la nature       OK  [255, 184, 210]
+[chromium] chiche · signal · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 27.1
+[chromium] chiche · signal · origine à ΔE 0.1 → la RAMPE de Q30    OK  à la rampe 0.8 · à l'origine 27.3 · app : rampe|0.1
+[chromium] chiche · irascible · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · irascible · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 61.5
+[chromium] chiche · irascible · origine à ΔE 63.8 → la couleur d'ORIGINE OK  à l'origine 3.0 · à la rampe 76.9 · app : origine|63.8
+[chromium] chiche · primesautier · le champ est celui de la nature OK  [255, 184, 210]
+[chromium] chiche · primesautier · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 64.8
+[chromium] chiche · primesautier · origine à ΔE 65.9 → la couleur d'ORIGINE OK  à l'origine 1.5 · à la rampe 65.5 · app : origine|65.9
+[chromium] chiche · taciturne · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · taciturne · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 55.4
+[chromium] chiche · taciturne · origine à ΔE 57.5 → la couleur d'ORIGINE OK  à l'origine 2.1 · à la rampe 75.5 · app : origine|57.5
+[chromium] chiche · truculent · le champ est celui de la nature    OK  [255, 184, 210]
+[chromium] chiche · truculent · la matière se lit sur son champ (ΔE ≥ 15) OK  ΔE 103.6
+[chromium] chiche · truculent · origine à ΔE 105.9 → la couleur d'ORIGINE OK  à l'origine 2.3 · à la rampe 129.0 · app : origine|105.9
+[chromium] sans l'option, la bande garde la rampe de Q30           OK  
+[chromium] aucune erreur de page                                   OK  
+
+64 / 64

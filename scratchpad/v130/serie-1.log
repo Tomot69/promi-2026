@@ -1,0 +1,17 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 50
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+   61s  redteam_reactif.py           ✅ aucune erreur de page / redteam_reactif : 30/30
+   67s  redteam_decisions.py       Promi à tenir        dark  anneau         décidé 3 états  rendu #00351A #2A1548 #00341A #291547 OK   (Q262, v8c) / 81 / 81
+  184s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+  109s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 25/26
+   57s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  124s  redteam_zone.py            OK  [light] aucune erreur de page   / 12 / 12
+  317s  redteam_decoupe.py           OK  sillons   dark  fil du Cercle, défilé       14 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur / ❌  G2 : 50 écran(s) × monde × thème jugés, 1 en défaut
+   43s  redteam_motmarque.py       OK  [dark] le haut de l'encre aussi (± 0.5 pt)  Promi 58.67 · Chiche 58.67 · Cercle 58.67 / 4 / 4
+  199s  redteam_nuee.py            ============================================================================== /   ✅  24 écran(s) · 0 écart(s)
+   43s  redteam_nuee_entree.py     [sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee': 'potager', 'cs': True} / 24/24
+   91s  redteam_nuee_dalle.py      [clair] aucune erreur JS                                           OK  [] / 38/38
+   93s  redteam_dalle_figee.py     D · les peintres des cartes suivent le Studio (v34)        OK  68 appels · 6 pour le Promi planté en « pixel · terre », peint dans le Studio (encre) : True · 0 hors du Studio / 4/4
+   38s  redteam_reperage.py        [sombre] 2 · Fil : rien devant une dalle, libellé au doigt     OK  fautives : [] / 16/16
+   68s  redteam_apercus.py           ✅ E le fond d'un aperçu est celui de la vraie Toile [light]  (sombre #050302 · clair #F1ECD9) / ✅  10/10

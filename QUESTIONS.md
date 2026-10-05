@@ -8413,3 +8413,18 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Tranché par Tom** : le texte de la dernière diapositive (quatre paragraphes, « Deuxio » penché de 3°) ; voisines validées ; C-031 reporté à Swift ; le mode dessin libère l'écran.
 - **À confirmer** : le « ! » isolé à la fin du texte dicté (« La suite t’appartient. ! ») — non posé.
 - **À trancher** : le trait personnalisé (C-045) — quatre décisions listées en fin de `TRAIT-PERSONNALISE-CONCEPT.md`.
+
+
+## LOT v130 — 5 octobre 2026 (les décisions vivent dans CHANTIERS.md : C-002, C-042, C-048, C-049, C-050)
+
+- **Tranché par Tom** : « La suite t’appartient. », sans point d'exclamation ; le corps sombre d'un Promi = Tropical Breeze `#8ACBE8`,
+  texte à l'encre ; l'outil de dessin : rangée A sous la bande, aucune superposition sur l'espace de dessin.
+- **Q386 — À TRANCHER (Tom)** : sur le corps Tropical Breeze, « Ma Parole ! » (phrase des murs du Peaufiner d'un Promi, en sombre) ne tient
+  plus 3:1 : `#FB4C0D` y fait 1,9:1 (`#FF7A55`, l'éclairci des corps sombres, 1,4:1). La phrase passe à l'encre et le mot garde `#FB4C0D`
+  (l'orange des fonds clairs) ; `redteam_murs` reste rouge sur ce contrôle (25/26) tant qu'aucune valeur n'est décidée pour ce fond.
+- **Q387 — À REGARDER (Tom)** : la bande `#82AEF8` contre le corps `#8ACBE8` — ΔE CIELAB 28,5 (au-dessus du seuil 15 du ton sur ton),
+  ΔE00 13,1, Δlum 17,6. Deux bleus clairs voisins, séparés par le trait. Aucune des deux couleurs n'a été retouchée.
+- **Q388 — À CONFIRMER (Tom)** : « la liste de l'Aura est incomplète » — corrigé : elle ne suivait pas une parole tenue ou retirée pendant
+  que l'Aura restait affichée. Elle reste bornée à 3 dalles, 6 dès cinq tenues (Q187). Si « incomplète » voulait dire « toutes les
+  paroles tenues », c'est une décision à prendre (la colonne défile déjà).
+- **À CHOISIR (C-042)** : E1 ou E2, S1 ou S2, et l'écart de 24 pt entre le trait et la rangée.

@@ -1,0 +1,6 @@
+A · #FB4C0D et #FF7A55 n'existent que dans le bloc des jetons                    OK  
+A · le moteur n'en porte aucun                                                   OK  
+A · les jetons ne sont lus que par #murPhrase (qui pose --orange-maparole)       OK  #murPhrase | #device:not(.light) #murPhrase.sur-corps
+A · --orange-maparole n'est lu que par « #murPhrase .mp »                        OK  #murPhrase .mp
+
+4 / 4

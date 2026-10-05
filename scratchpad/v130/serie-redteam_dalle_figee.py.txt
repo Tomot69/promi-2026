@@ -1,0 +1,6 @@
+A · même couleur à chaque ouverture (3 × 2 thèmes)         OK  18 dalles · 0 écarts 
+C · après sync, la Toile rend la même couleur              OK  plantée rgb(130,174,248) → rgb(130,174,248)
+B · une dalle plantée garde sa couleur, sauvée puis rechargée OK  rgb(130,174,248) → rgb(130,174,248) · dalle sauvée {'ci': 3, 'lit': 0}
+D · les peintres des cartes suivent le Studio (v34)        OK  69 appels · 6 pour le Promi planté en « pixel · terre », peint dans le Studio (encre) : True · 0 hors du Studio
+
+4/4

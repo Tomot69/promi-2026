@@ -1,6 +1,6 @@
 # ÉTAT AU 30 SEPTEMBRE 2026 — CE QUI EST VRAI AUJOURD'HUI
 
-> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-04 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version 0.16). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
+> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-05 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version 0.16). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
 > Les valeurs de ce document priment sur tout autre document. `PROMI-SPECIFICATIONS.md`, `PARCOURS.md` et `MOODBOARD-VALEURS.md` sont des **archives** (valeurs antérieures au 16 septembre 2026) : ils disent la géométrie et l'intention d'août, jamais une couleur, une police ni un libellé à porter.
 
 **Ordre des sources, en cas de doute :** ce document → `PROMI-TOKENS.json` (couleurs, polices) → `CONTRAT-MONDE.md` (ce qu'un monde doit faire) → `SPEC-JUGES.md` (les règles que les juges portent) → `CLAUDE.md` (méthode, pièges, décisions datées) → les moodboards (géométrie d'origine) → une mesure de l'app (jamais une référence).
@@ -59,7 +59,7 @@ Un rôle vaut deux valeurs (mode clair · mode sombre). **Une règle CSS emploie
 | `nuee-clair` | `#E6D8FA` | `#E6D8FA` |
 | `lilas` | `#E6D8FA` | `#E6D8FA` |
 | `mauve-clair` | `#C9A8F5` | `#C9A8F5` |
-| `corps-promi` | `#CFE5FE` | `#335382` |
+| `corps-promi` | `#CFE5FE` | `#8ACBE8` |
 | `corps-chiche` | `#FFF4FC` | `#7C3F58` |
 | `corps-nuee` | `#EEE4F8` | `#5D4978` |
 | `corps-tenu` | `#2B1020` | `#2B1020` |

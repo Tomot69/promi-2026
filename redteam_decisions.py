@@ -18,7 +18,10 @@ ok = [0]; ko = []
 ETATS = {'atenir': '#DD4D23', 'encours': '#291547', 'tenu': '#00341A'}      # Q262 (22 sept.) : « une fois pour toutes »
 CREME, ENCRE, SEICHE, TERRE, AMANDE = '#F7F0DE', '#201908', '#050302', '#2B1020', '#8FE08F'
 CHAMP = {'promi': '#82AEF8', 'chiche': '#FFB8D2', 'nuee': '#C9A8F5'}           # 17 sept. (planche des correspondances)
-CORPS_SOMBRE = {'promi': '#335382', 'chiche': '#7C3F58', 'nuee': '#5D4978'}     # v113 (Q358) ; ⚠ le Cercle : ajout de v113, pas une citation de Tom
+CORPS_SOMBRE = {'promi': '#8ACBE8', 'chiche': '#7C3F58', 'nuee': '#5D4978'}     # v113 (Q358) ; ⚠ le Cercle : ajout de v113, pas une citation de Tom
+# ⚑ v130 (Tom, 5 oct. 2026) : le corps sombre d'un Promi #335382 est REMPLACÉ par le Pantone 13-4307 TPG « Tropical Breeze », #8ACBE8
+#   (relevé par Tom sur son échantillon) — fiche Promi et page + d'un Promi ; le texte posé dessus passe à l'encre #201908.
+SRC_TROPICAL = 'v130 (Tom, 5 oct. 2026) : Pantone 13-4307 TPG Tropical Breeze #8ACBE8, relevé sur son échantillon ; remplace #335382 (v113, Q358)'
 
 # (écran, thème, zone, valeur décidée, source)
 D = []
@@ -33,17 +36,19 @@ for th in ('light', 'dark'):
         D.append((nom, th, 'titre', CREME, 'v8 (21 sept.) : sur la terre, le texte passe crème'))
     if th == 'dark':
         for nom, nat in (('Promi à tenir', 'promi'), ('Promi en cours', 'promi'), ('Chiche lancé', 'chiche'), ('Cercle', 'nuee')):
-            D.append((nom, th, 'corps', CORPS_SOMBRE[nat], 'v113 (30 sept., Q358) : « option 2 »'))
-        for nom in ('Promi à tenir', 'Promi en cours', 'Chiche lancé'):
-            for z in ('aQui', 'echeance', 'trace'):
-                D.append((nom, th, z, CREME, 'v16 (Q290) : les textes d\'état sur fond sombre passent crème'))
+            D.append((nom, th, 'corps', CORPS_SOMBRE[nat], SRC_TROPICAL if nat == 'promi' else 'v113 (30 sept., Q358) : « option 2 »'))
+        for z in ('aQui', 'echeance', 'trace'):
+            D.append(('Chiche lancé', th, z, CREME, 'v16 (Q290) : les textes d\'état sur fond sombre passent crème'))
+        for nom in ('Promi à tenir', 'Promi en cours'):
+            for z in ('titre', 'aQui', 'echeance', 'trace'):
+                D.append((nom, th, z, ENCRE, 'v130 (Tom, 5 oct. 2026) : « le texte posé sur ce corps passe à l\'encre #201908 (titre, à-qui, échéance, mentions) »'))
     else:
         for z in ('aQui', 'echeance', 'trace'):
             D.append(('Promi à tenir', th, z, ETATS['atenir'], 'Q262 (22 sept.) : l\'état, partout où il paraît'))
             D.append(('Promi en cours', th, z, ETATS['encours'], 'Q262 (22 sept.)'))
             D.append(('Chiche lancé', th, z, ETATS['encours'], 'v29 (Q310) : « LANCÉ » suit la règle des états'))
     D.append(('page +', th, 'champ', CHAMP['promi'], 'Q101 (29 août) : la couleur de la nature'))
-    if th == 'dark': D.append(('page +', th, 'corps', CORPS_SOMBRE['promi'], 'v113 (Q358) : « corps sombre de la fiche et de la page + »'))
+    if th == 'dark': D.append(('page +', th, 'corps', CORPS_SOMBRE['promi'], SRC_TROPICAL))
     D.append(('Index', th, 'fond', SEICHE if th == 'dark' else None, 'v116 + v121 : la seiche dans les pages'))
     if th == 'light': D.append(('Index', th, 'carte_libelle', '#022140', 'Q221 (17 sept.) : le compagnon sombre, mode clair'))
     D.append(('Index', th, 'carte_etat', CREME if th == 'dark' else None, 'v16 (Q290) : état sur fond sombre en crème'))

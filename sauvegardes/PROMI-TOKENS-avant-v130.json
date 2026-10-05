@@ -1,0 +1,468 @@
+{
+  "genere_le": "2026-09-20",
+  "note": "Source unique du design de Promi. Les rôles basculent avec le mode ; la palette fixe ne bascule jamais. ⚠ Les jetons `-txt` sont l'exception qui confirme la règle : ils portent l'ENCRE d'une nature ou d'un état, et celle-ci bascule (sombre = le pastel, clair = le compagnon sombre). Une règle qui peint du TEXTE les emploie ; une règle qui peint un APLAT emploie la valeur fixe.",
+  "polices": {
+    "titre": {
+      "css": "PromiLate,Gilbert,system-ui,sans-serif",
+      "fichier": "PromiLate-Regular.otf (Polices Promi/)",
+      "licence": "Police propre à Promi."
+    },
+    "libelle": {
+      "css": "Gilbert,system-ui,sans-serif",
+      "fichier": "Gilbert-Bold.woff2",
+      "licence": "CC BY-SA 4.0 — Ogilvy & Mather / Type With Pride. Crédit obligatoire, glyphes non modifiables."
+    },
+    "texte": {
+      "css": "Atkinson,system-ui,sans-serif",
+      "fichier": "Atkinson-{Regular,Medium,Bold}.woff2",
+      "licence": "SIL Open Font License 1.1 — Braille Institute of America."
+    },
+    "marque": {
+      "css": "PromiLate,Gilbert,system-ui,sans-serif",
+      "fichier": "PromiLate-Regular.otf (Polices Promi/)",
+      "licence": "Police propre à Promi.",
+      "emploi": "titres d'écran et mot-marque (27 px, 29 sur la page +) · phrases d'action du trait"
+    }
+  },
+  "niveaux": {
+    "titre": {
+      "famille": "titre",
+      "poids": 600,
+      "taille": 36,
+      "capitales": false,
+      "opacite": 1.0
+    },
+    "sous-titre": {
+      "famille": "libelle",
+      "poids": 700,
+      "taille": 22,
+      "capitales": true,
+      "opacite": 1.0
+    },
+    "texte": {
+      "famille": "texte",
+      "poids": 400,
+      "taille": 16,
+      "capitales": false,
+      "opacite": 1.0
+    },
+    "accent": {
+      "famille": "texte",
+      "poids": 700,
+      "taille": 16,
+      "capitales": false,
+      "opacite": 1.0
+    },
+    "petit": {
+      "famille": "texte",
+      "poids": 400,
+      "taille": 14,
+      "capitales": false,
+      "opacite": 1.0
+    },
+    "meta": {
+      "famille": "texte",
+      "poids": 400,
+      "taille": 13,
+      "capitales": false,
+      "opacite": 0.65
+    },
+    "libelle": {
+      "famille": "libelle",
+      "poids": 700,
+      "taille": 15,
+      "capitales": true,
+      "opacite": 1.0
+    }
+  },
+  "roles": {
+    "fond": {
+      "clair": "#F7F0DE",
+      "sombre": "#100D0B"
+    },
+    "encre": {
+      "clair": "#201908",
+      "sombre": "#F7F0DE"
+    },
+    "surface": {
+      "clair": "#F7EBD6",
+      "sombre": "#211B05"
+    },
+    "surface-haute": {
+      "clair": "#FAF4E8",
+      "sombre": "#251F11"
+    },
+    "sous-texte": {
+      "clair": "#6E6350",
+      "sombre": "#928166"
+    },
+    "grip": {
+      "clair": "#C8BAA4",
+      "sombre": "#493D28"
+    },
+    "exception": {
+      "clair": "#2B1020",
+      "sombre": "#2B1020"
+    },
+    "crete": {
+      "clair": "#0B4A2A",
+      "sombre": "#0B4A2A"
+    },
+    "brun-encre": {
+      "clair": "#43291C",
+      "sombre": "#43291C"
+    },
+    "promi": {
+      "clair": "#82AEF8",
+      "sombre": "#82AEF8"
+    },
+    "chiche": {
+      "clair": "#FFB8D2",
+      "sombre": "#FFB8D2"
+    },
+    "nuee": {
+      "clair": "#C9A8F5",
+      "sombre": "#C9A8F5"
+    },
+    "garde-de-cote": {
+      "clair": "#AE3929",
+      "sombre": "#AE3929"
+    },
+    "tenu": {
+      "clair": "#00341A",
+      "sombre": "#00341A"
+    },
+    "tenu-clair": {
+      "clair": "#00341A",
+      "sombre": "#00341A"
+    },
+    "amande": {
+      "clair": "#8FE08F",
+      "sombre": "#8FE08F"
+    },
+    "a-tenir": {
+      "clair": "#DD4D23",
+      "sombre": "#DD4D23"
+    },
+    "en-cours": {
+      "clair": "#291547",
+      "sombre": "#291547"
+    },
+    "en-cours-clair": {
+      "clair": "#291547",
+      "sombre": "#291547"
+    },
+    "encre-sur-tenu": {
+      "clair": "#00341A",
+      "sombre": "#00341A"
+    },
+    "promi-clair": {
+      "clair": "#C4A2F5",
+      "sombre": "#C4A2F5"
+    },
+    "chiche-clair": {
+      "clair": "#F5AC9E",
+      "sombre": "#F5AC9E"
+    },
+    "nuee-clair": {
+      "clair": "#E6D8FA",
+      "sombre": "#E6D8FA"
+    },
+    "lilas": {
+      "clair": "#E6D8FA",
+      "sombre": "#E6D8FA"
+    },
+    "mauve-clair": {
+      "clair": "#C9A8F5",
+      "sombre": "#C9A8F5"
+    },
+    "corps-promi": {
+      "clair": "#CFE5FE",
+      "sombre": "#335382"
+    },
+    "corps-chiche": {
+      "clair": "#FFF4FC",
+      "sombre": "#7C3F58"
+    },
+    "corps-nuee": {
+      "clair": "#EEE4F8",
+      "sombre": "#5D4978"
+    },
+    "corps-tenu": {
+      "clair": "#2B1020",
+      "sombre": "#2B1020"
+    },
+    "corps-a-tenir": {
+      "clair": "#EFC3B9",
+      "sombre": "#533336"
+    },
+    "corps-garde": {
+      "clair": "#EFC3B9",
+      "sombre": "#4B2D30"
+    },
+    "blanc": {
+      "clair": "#FFFFFF",
+      "sombre": "#FFFFFF"
+    },
+    "noir": {
+      "clair": "#000000",
+      "sombre": "#000000"
+    }
+  },
+  "palette_fixe": {
+    "--c-noir00": "#000000",
+    "--c-menthe11": "#00341A",
+    "--c-menthe67": "#00341A",
+    "--c-menthe67-txt": "#00341A",
+    "--c-ton07-2": "#022039",
+    "--c-bleu08": "#022140",
+    "--c-noir01-2": "#030307",
+    "--c-bleu14": "#04375D",
+    "--c-noir01": "#050505",
+    "--c-ton09": "#052743",
+    "--c-bleu14-2": "#05355D",
+    "--c-noir02": "#08090C",
+    "--c-ton08": "#082137",
+    "--c-noir03": "#0B0C0F",
+    "--c-ton03-2": "#0B0F12",
+    "--c-crete27": "#0B4A2A",
+    "--c-ton07": "#0D1F33",
+    "--c-ton03": "#0F1215",
+    "--c-brun03": "#100D0B",
+    "--c-ton09-2": "#11263A",
+    "--c-brun05-2": "#120E05",
+    "--c-ton08-2": "#132235",
+    "--c-ton09-3": "#13263A",
+    "--c-menthe15": "#132B1B",
+    "--c-bleu13": "#133352",
+    "--c-mauve04": "#150828",
+    "--c-brun06": "#15130F",
+    "--c-ton09-7": "#152439",
+    "--c-ton09-5": "#152639",
+    "--c-ton09-6": "#16263A",
+    "--c-ton11": "#162B42",
+    "--c-brun05": "#171000",
+    "--c-brun06-3": "#171200",
+    "--c-ton07-3": "#171D26",
+    "--c-ton09-4": "#172536",
+    "--c-ton11-2": "#182B3F",
+    "--c-ton12-2": "#19304C",
+    "--c-ton12": "#19314A",
+    "--c-brun06-4": "#1A1100",
+    "--c-brun06-2": "#1A1201",
+    "--c-brun08": "#1A1613",
+    "--c-ton13-4": "#1A324F",
+    "--c-mauve08-2": "#1B1230",
+    "--c-mauve08": "#1B1426",
+    "--c-ton13": "#1B334C",
+    "--c-ton13-3": "#1C344F",
+    "--c-brun08-2": "#1D1600",
+    "--c-brun08-3": "#1D1700",
+    "--c-brun09-2": "#1D1A17",
+    "--c-ton13-2": "#1D324A",
+    "--c-ton14-2": "#1D3651",
+    "--c-bleu20": "#1D4B78",
+    "--c-brun07": "#1E1301",
+    "--c-ton14-3": "#1E3651",
+    "--c-menthe27": "#1E492C",
+    "--c-brun08-4": "#1F1605",
+    "--c-bleu19": "#1F4770",
+    "--c-framboise08": "#201221",
+    "--c-brun09": "#201908",
+    "--c-brun10": "#211B05",
+    "--c-mauve13": "#221D42",
+    "--c-mauve12-3": "#221E30",
+    "--c-brun11": "#231E02",
+    "--c-brun12": "#242006",
+    "--c-mauve10": "#250F46",
+    "--c-brun12-2": "#251F11",
+    "--c-bleu17": "#25405D",
+    "--c-framboise08-2": "#260F1F",
+    "--c-mauve17-2": "#27235A",
+    "--c-bleu19-5": "#284A71",
+    "--c-mauve11-2": "#290D49",
+    "--c-mauve12": "#291547",
+    "--c-mauve63": "#291547",
+    "--c-mauve63-txt": "#291547",
+    "--c-mauve18": "#29245A",
+    "--c-bleu17-2": "#294261",
+    "--c-bleu19-2": "#294767",
+    "--c-prune09": "#2B1020",
+    "--c-mauve11": "#2B1140",
+    "--c-mauve12-2": "#2B1640",
+    "--c-mauve17-3": "#2B2352",
+    "--c-bleu19-3": "#2B4767",
+    "--c-brun15": "#2C2618",
+    "--c-bleu18": "#2C4665",
+    "--c-mauve18-2": "#2D2656",
+    "--c-bleu19-4": "#2D4765",
+    "--c-mauve17": "#2E2740",
+    "--c-brun14": "#2F201C",
+    "--c-mauve36": "#2F3ED6",
+    "--c-ton15": "#303A4C",
+    "--c-ton10": "#312325",
+    "--c-mauve33": "#313AC3",
+    "--c-ton16-2": "#323D4D",
+    "--c-brun19": "#372D1E",
+    "--c-framboise10": "#380D25",
+    "--c-bleu22": "#385475",
+    "--c-mauve20": "#3A2A3E",
+    "--c-brun19-2": "#3B2924",
+    "--c-brun21": "#3C321E",
+    "--c-framboise11": "#3D0F23",
+    "--c-mauve23": "#3D3352",
+    "--c-mauve24": "#402D6A",
+    "--c-brun19-3": "#43291C",
+    "--c-beige26": "#453C32",
+    "--c-beige26-2": "#493D28",
+    "--c-ton14": "#4B2D30",
+    "--c-beige27": "#4B3F29",
+    "--c-beige30": "#4B463C",
+    "--c-beige30-2": "#4B4740",
+    "--c-mauve28": "#4D2D8B",
+    "--c-ton16": "#533336",
+    "--c-menthe58": "#589B63",
+    "--c-menthe59": "#5C9B70",
+    "--c-mauve40": "#5E42D3",
+    "--c-beige37": "#615740",
+    "--c-beige38": "#635741",
+    "--c-beige40": "#655E55",
+    "--c-mauve41": "#6B4DAD",
+    "--c-beige42": "#6C6157",
+    "--c-beige42-2": "#6C6253",
+    "--c-beige43": "#6C6558",
+    "--c-mauve39": "#6D3DC5",
+    "--c-beige44": "#6E6350",
+    "--c-beige45-2": "#6F6A5A",
+    "--c-beige45": "#706B64",
+    "--c-mauve50": "#75717F",
+    "--c-beige47": "#776E64",
+    "--c-menthe72": "#80C095",
+    "--c-mauve47": "#8155C8",
+    "--c-bleu45": "#82AEF8",
+    "--c-bleu45-txt": "#82AEF8",
+    "--c-bleu46": "#82AFFA",
+    "--c-mauve59": "#8876F8",
+    "--c-bleu51-2": "#88B7F9",
+    "--c-mauve54": "#896BD3",
+    "--c-orange34": "#8B3328",
+    "--c-beige53": "#8B7D6F",
+    "--c-bleu50": "#8BB5F4",
+    "--c-beige58": "#8E897E",
+    "--c-mauve52": "#8F62D1",
+    "--c-bleu54": "#8FBBF7",
+    "--c-menthe82": "#8FE08F",
+    "--c-bleu51": "#91B7E8",
+    "--c-beige55": "#928166",
+    "--c-bleu60": "#92C1FE",
+    "--c-ton67": "#92D2D1",
+    "--c-beige59": "#938C81",
+    "--c-beige58-2": "#948A72",
+    "--c-menthe72-2": "#95BA8C",
+    "--c-beige59-2": "#978C82",
+    "--c-bleu62": "#98C3FD",
+    "--c-beige62": "#9A9185",
+    "--c-beige61": "#9B9080",
+    "--c-bleu67": "#9CCBFE",
+    "--c-beige60": "#9D8D76",
+    "--c-beige56": "#A2947C",
+    "--c-bleu62-2": "#A7C2F6",
+    "--c-beige65": "#A89985",
+    "--c-beige65-2": "#A89987",
+    "--c-beige67": "#A8A08E",
+    "--c-mauve64": "#AA80EA",
+    "--c-orange40": "#AB3729",
+    "--c-orange41": "#AE3929",
+    "--c-ton54": "#AEB9CB",
+    "--c-beige69": "#AFA498",
+    "--c-mauve52-2": "#B04BD2",
+    "--c-mauve69-2": "#B194E3",
+    "--c-mauve69": "#B294E7",
+    "--c-creme70": "#B4A693",
+    "--c-orange43": "#B63B2B",
+    "--c-orange40-2": "#B92124",
+    "--c-bleu80": "#B9DAFF",
+    "--c-mauve73": "#BC9DEE",
+    "--c-creme76": "#BDB5AA",
+    "--c-mauve58": "#BF5AE5",
+    "--c-mauve74": "#C0A0F5",
+    "--c-bleu83": "#C0DDFE",
+    "--c-menthe87": "#C1E3CC",
+    "--c-ton66": "#C2C6CD",
+    "--c-mauve75": "#C4A2F5",
+    "--c-periwinkle53": "#C59552",
+    "--c-creme78": "#C8BAA4",
+    "--c-mauve77": "#C9A8F5",
+    "--c-mauve77-txt": "#C9A8F5",
+    "--c-mauve12-txt": "#C9A8F5",
+    "--c-creme79": "#CABEA4",
+    "--c-mauve62": "#CB73AE",
+    "--c-creme79-2": "#CBBCA6",
+    "--c-mauve84": "#CBC7D7",
+    "--c-mauve80": "#CDB4F6",
+    "--c-bleu85": "#CDDCFF",
+    "--c-orange58": "#CF705F",
+    "--c-ton90": "#CFE5FE",
+    "--c-creme76-2": "#D4B17F",
+    "--c-orange64": "#D68A4F",
+    "--c-orange50": "#DD3937",
+    "--c-orange53": "#DD4D23",
+    "--c-orange53-txt": "#DD4D23",
+    "--c-mauve90": "#DEDAE6",
+    "--c-orange62": "#E0786D",
+    "--c-creme87": "#E0D0B2",
+    "--c-orange69": "#E1966E",
+    "--c-creme83": "#E3C39D",
+    "--c-creme92": "#E4D7BB",
+    "--c-menthe96": "#E4FAE9",
+    "--c-mauve86": "#E6D8FA",
+    "--c-creme85-3": "#E7C79F",
+    "--c-mauve92": "#E7E1EE",
+    "--c-orange61": "#E8703C",
+    "--c-creme90": "#E9D8B7",
+    "--c-creme94": "#E9E5D5",
+    "--c-creme90-2": "#EAD9B9",
+    "--c-creme88": "#ECCFC6",
+    "--c-creme91": "#EDDBBD",
+    "--c-creme91-2": "#EDDBC8",
+    "--c-creme93-2": "#EDDFD2",
+    "--c-creme93-4": "#EDE1D6",
+    "--c-mauve95": "#EDE9F5",
+    "--c-mauve94": "#EEE4F8",
+    "--c-creme95-4": "#EEE6D5",
+    "--c-creme85": "#EFC3B9",
+    "--c-creme90-3": "#EFD7B7",
+    "--c-creme93-3": "#EFE0CE",
+    "--c-creme92-2": "#EFE3C7",
+    "--c-orange42": "#F07A2E",
+    "--c-creme92-3": "#F1DBD3",
+    "--c-creme93": "#F1E1C5",
+    "--c-creme95-7": "#F2E7D8",
+    "--c-creme95-6": "#F3E5D7",
+    "--c-creme95-2": "#F3E7D1",
+    "--c-creme95-3": "#F4E7D1",
+    "--c-orange77": "#F5AC9E",
+    "--c-creme95-5": "#F5E5CA",
+    "--c-creme97": "#F7EBD6",
+    "--c-creme95": "#F7F0DE",
+    "--c-creme85-2": "#FAC2A8",
+    "--c-creme99": "#FAF4E8",
+    "--c-framboise70": "#FBCEFF",
+    "--c-creme90-4": "#FCD1C1",
+    "--c-orange59": "#FE5000",
+    "--c-orange-maparole": "#FB4C0D",
+    "--c-orange-maparole-corps": "#FF7A55",
+    "--c-ton82": "#FED0A5",
+    "--c-framboise54": "#FFB8D2",
+    "--c-framboise54-txt": "#FFB8D2",
+    "--c-framboise91": "#FFEFFA",
+    "--c-framboise94": "#FFF4FC",
+    "--c-framboise97": "#FFF9FC",
+    "--c-blanc100": "#FFFFFF",
+    "--c-bleu35": "#335382",
+    "--c-framboise35": "#7C3F58",
+    "--c-mauve35": "#5D4978",
+    "--c-seiche10": "#050302",
+    "--c-seiche21": "#1F1611"
+  }
+}

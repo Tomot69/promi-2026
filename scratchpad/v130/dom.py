@@ -1,0 +1,15 @@
+from playwright.sync_api import sync_playwright
+with sync_playwright() as p:
+    b=p.webkit.launch(); ctx=b.new_context(viewport={'width':430,'height':932})
+    ctx.add_init_script("try{localStorage.setItem('promi_onb','1')}catch(e){}")
+    pg=ctx.new_page(); pg.goto('http://127.0.0.1:8752/app.html'); pg.wait_for_timeout(6500)
+    pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';}}")
+    pg.evaluate("()=>{closeAll(); document.getElementById('filBtn').click();}"); pg.wait_for_timeout(1800)
+    print('FIL', pg.evaluate("()=>{const l=document.getElementById('feedList'); return [l.children.length, [...l.children].slice(0,4).map(c=>c.className+' # '+c.innerText.replace(/\\s+/g,' ').slice(0,70)+' # '+[...c.attributes].map(a=>a.name+'='+a.value.slice(0,20)).join(',')), (typeof FEED!=='undefined')?FEED.length+' '+JSON.stringify(FEED[0]).slice(0,200):'']}"))
+    pg.evaluate("()=>{closeAll(); document.getElementById('souffleBtn').click();}"); pg.wait_for_timeout(2500)
+    print('AURA', pg.evaluate("()=>{const m=document.querySelector('#auraScreen .au-mo'); return [m&&m.outerHTML.replace(/<canvas[^>]*>/g,'<cv>').slice(0,700), document.getElementById('auraScreen').className, getComputedStyle(document.getElementById('auraScreen')).transform]}"))
+    pg.evaluate("()=>{const x=document.querySelector('#auraScreen .closeb'); if(x) x.click();}"); pg.wait_for_timeout(900)
+    print('AURA fermée', pg.evaluate("()=>[document.getElementById('auraScreen').className, getComputedStyle(document.getElementById('auraScreen')).transform, document.body.className, document.getElementById('device').className]"))
+    pg.evaluate("()=>{closeAll(); openEssaim('potager');}"); pg.wait_for_timeout(2500)
+    print('CERCLE', pg.evaluate("()=>[[...document.querySelectorAll('.nf-item')].map(e=>e.className+' # '+e.innerText.replace(/\\s+/g,' ').slice(0,60)), typeof curNuee!=='undefined'?curNuee:'?', typeof curEssaim!=='undefined'?curEssaim:'?', [...document.querySelectorAll('#detailPoster [class*=plant], #detailPoster .nf-plus, #detailPoster [data-planter]')].map(e=>e.className)]"))
+    b.close()
