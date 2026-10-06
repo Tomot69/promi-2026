@@ -31,3 +31,15 @@
   390 × 742, rangée centrée entre la surface et le bord bas utile (`safeAreaInsets.bottom`), déploiements à 16 pt ; un ✕ « Quitter le dessin »
   dans le contour ; les teintes du trait et du fond sont dans Ma Parole ! (sans elle : l'encre du mode sur le champ de la nature). Les murs :
   dix-huit phrases, chacune avec sa liste de mots en orange (`TEXTES` dans `lot-V104-MURS`).
+
+## v135 (6 oct. 2026) — ce qui a changé APRÈS l'écriture du dossier, à reporter dans les dix documents
+
+- **Plus aucun filet** (disques, Noyaux, trait, crête ; clair et sombre) : l'exception « terre d'une fiche tenue » de JETONS et de REGLES tombe.
+- **Le bouton photo** porte le cadre traversé d'un trait (SPEC-ECRANS : fiche, page +, Cercle) ; VoiceOver inchangé.
+- **Sur `#0E78F2`** : les libellés lilas du Peaufiner d'une fiche Promi sont `#F4EEFF` (JETONS).
+- **Contradictions du README, tranchées** : Pelote = un tour en 100 s ; fond sombre = seiche `#050302` dans le rôle `fond` ; un design = 2 €
+  (« 4 pour 3 € » retiré) ; aide de l'Aura = « la plus récente en premier » ; À propos = Gilbert pour sous-titres et libellés, PromiLate pour les titres.
+- **Studio** : la pagination des mondes est une rangée de barrettes (10 × 4, la courante 18 × 4), plus des points.
+- **Moteur** : `_AMP_MI` — ampleur à mi-force sous TROIS mondes (Esquille 0,3 · Ritournelle 0,3 · Ramage 0,6 ; SPEC-RENDU §a) ; le banc de rendu est refigé pour eux. Guingois (et Chantourné seul) diffèrent de la référence du banc depuis avant v135 (C-066).
+- **La grille anti-coercition** est au §12 de `CLAUDE.md` (les trente-deux règles de REGLES §A) ; les six critères et les six risques de Tom manquent (Q406).
+- **Juge neuf** : `redteam_lexique.py` (TESTS : termes bannis et loi des points ; se porte en test sur les chaînes et en revue des composants).

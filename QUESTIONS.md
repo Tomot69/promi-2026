@@ -8482,3 +8482,21 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   il se lit par la teinte (ΔE 126). Rien n'a été retouché.
 - **Q405 — OUVERTE (portage)** : la rotation lente de la Pelote est `2π/100` (un tour en 100 s) dans l'app et dans `releve-aura.py`, `2π/120` dans
   `CLAUDE.md` §7. Laquelle fait foi pour Swift ? Les autres contradictions trouvées en écrivant le dossier : `portage/README.md`.
+- **Q403, Q405 — TRANCHÉES (Tom, v135)** : la phrase lilas reste `#F4EEFF`, et les libellés lilas du Peaufiner d'une fiche Promi la suivent ;
+  la Pelote tourne en 100 s. Fond sombre = seiche dans les jetons ; un design = 2 €, « 4 pour 3 € » retiré.
+- **Q406 — OUVERTE (C-065)** : « les six critères disqualifiants et les six risques cumulés » de la grille anti-coercition ne sont écrits
+  nulle part dans le dépôt (ni dans `portage/REGLES.md`). CLAUDE.md §12 porte les trente-deux règles reconstituées. Il me faut le texte de Tom.
+- **Q407 — OUVERTE (C-059)** : « ce n'est pas le bon fond » pour un Promi tenu en clair. Mesuré : Promi et Chiche tenus sont identiques
+  (terre `#2B1020`, texte crème, deux thèmes) ; un Cercle n'a pas d'état tenu. Quel fond Tom attend-il ? Les filets, eux, sont retirés.
+- **Q408 — OUVERTE (C-011)** : le menu des palettes vide en sombre n'est pas reproduit, et les captures jointes n'arrivent pas (quatre lots).
+  Les points étaient la pagination des mondes : remplacés par des barrettes — à valider.
+- **Q409 — À VALIDER (C-062)** : l'objectif « +15 % sans dépasser Pochade prototype (0,57 à 20, 0,67 à 40) » n'est pas tenable partout — à 40
+  dalles, Esquille, Halin, Ritournelle et Mascaret étaient déjà à 0,59–0,60 (+15 % = 0,68–0,69), Ramage à 0,72. Volubilis ne répond pas
+  (ses formes ont leur taille propre). Bobinette : mêmes chiffres que Halin et Ritournelle (0,46 / 0,57) — non touché, à dire.
+- **Q410 — À VALIDER (C-064)** : « Les titres, eux, sont en PromiLate. » ajouté à « À propos » sans crédit (origine et licence de PromiLate
+  inconnues, C-025). La dette de la loi des points : la pastille du Fil et les pastilles de la légende de l'Aura ; et la valeur « · ·· ··· »
+  de « C'EST IMPORTANT ? » dans le Peaufiner payant.
+- **Q411 — OUVERTE (C-062)** : sous Halin, Guingois, Chantourné et Brouillamini, l'ampleur allonge l'arrivée d'une dalle (Halin 2 526 ms pour
+  2 270 ± 181 ; Brouillamini 1 941 pour 1 742 ± 139 ; Guingois 2 326 pour 1 722 ± 137 ; Chantourné 2 317 pour 1 677 ± 134). Retirée sous ces
+  quatre ; et sous Mascaret, Chamade, Volubilis (le banc de rendu ne retrouvait plus sa référence). Reste : Esquille, Ritournelle, Ramage. Tom accepte-t-il une arrivée plus longue pour y gagner en variété, ou reste-t-on au rythme validé ?
+- **Q408 — MISE À JOUR** : la capture du Studio est arrivée ; la cause reste non nommée, une parade est posée (C-011).

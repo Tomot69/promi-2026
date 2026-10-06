@@ -116,6 +116,40 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v135 (6 oct. 2026) — PLUS AUCUN FILET ; LE SYMBOLE DU BOUTON PHOTO ; LES CONTRADICTIONS TRANCHÉES ; L'AMPLEUR À MI-FORCE. (Décisions Tom.) Ce bloc CORRIGE v114 (le filet de la terre), v133, v134 et le §3 là où ils disent autre chose.
+> **« La vérité est ce que Tom voit à l'écran. »** Quatre contradictions tranchées : **la Pelote fait un tour en 100 s** (`2π/100`, comme
+> l'app et `releve-aura` ; ce fichier écrivait 120) ; **le fond sombre est la seiche `#050302`** dans le rôle `fond` des jetons (JSON, CSS,
+> Swift — ils portaient encore `#100D0B`) ; **un design se vend 2 €** (l'écran de l'offre disait « 1 €, ou 4 pour 3 € » : « 4 pour 3 € »
+> est RETIRÉ, Tom ne l'a pas redécidé) ; **l'aide de l'Aura et « À propos » disent l'app d'aujourd'hui** (« la plus récente en premier » ;
+> « Les sous-titres et les libellés sont en Gilbert », « Les titres, eux, sont en PromiLate. »).
+> **⚑ PLUS AUCUN FILET, NULLE PART (C-059).** « Retire le filet autour des disques et des Noyaux, et celui sous le trait et la crête, en clair
+> comme en sombre. L'exception de v114 tombe. » `window._sansFilet` rend toujours vrai. Mesuré sans filet (ΔE CIELAB, seuil 15 de
+> `redteam_tonsurton`) : sur la terre `#2B1020`, crête `#0B4A2A` 51,3 (Δlum 35,4) · arc tenu `#00341A` 44,6 (Δlum 16,2) · **arc en cours
+> `#291547` 24,0 (Δlum 6,0)** — le plus faible, au-dessus du seuil ; sur la seiche, 31,8 à 40,7. `redteam_filets` : liste blanche VIDE.
+> ⚠ **Le fond d'un Promi tenu n'a PAS changé** : Promi et Chiche tenus sont déjà identiques (terre, deux thèmes) ; un Cercle n'a pas
+> d'état « tenu » (corps ordinaire). « Ce n'est pas le bon fond » attend de savoir lequel (Q407).
+> **⚑ LE BOUTON PHOTO PORTE LE CADRE TRAVERSÉ D'UN TRAIT (C-060, choix C)** — fiche, page +, fiche d'un Cercle, deux thèmes ; VoiceOver
+> inchangé. (L'appareil de l'avatar, aux Réglages, reste : il parle bien d'une photo.)
+> **⚑ SUR `#0E78F2`, LES LIBELLÉS LILAS DU PEAUFINER D'UNE FICHE PROMI SONT `#F4EEFF`** comme la phrase de la page + (Q403 tranchée) —
+> mesurés à l'écran : `#C4A2F5` y faisait 1,97:1. « Ma Parole ! » y reste `#FED0C3` (Tom juge sur l'iPhone).
+> **⚑ LA PAGINATION DES MONDES AU STUDIO EST UNE RANGÉE DE BARRETTES** (10 × 4, la courante 18 × 4), plus des points : la loi des points.
+> **⚑ LE MENU DES PALETTES « VIDE » (C-011) — LA CAUSE N'EST PAS NOMMÉE.** La capture de Tom (reçue en cours de lot) montre les 24 pastilles
+> réduites à des points, le nom sans son style, la jauge sans hauteur : dans le panneau, les règles de BASE (`.st3-p`, `.st3-orb`, `.st3-q`,
+> `.st3-pn`, `.st3-spec`) n'avaient pas pris. Non reproduit (WebKit et Chromium, trois tailles de fenêtre, vingt mondes, gratuit et payé,
+> trois ouvertures). **Parade** : `#studioScreen #stpPals` porte en propre tout ce dont une pastille, le nom et la jauge ont besoin.
+> `redteam_palettes` (58) compte les teintes PEINTES de chaque pastille sur la capture (`--sonde=vide` : il rougit).
+> **⚑ L'AMPLEUR À MI-FORCE, SOUS TROIS MONDES SEULEMENT (C-062)** — `_AMP_MI` dans le moteur : à l'ampleur stable de chaque parole (titre et
+> personne) s'ajoute `force × (−0,07 + 0,40·u⁴)` : **Esquille 0,3 · Ritournelle 0,3 · Ramage 0,6**. Elle se recalcule au changement de monde.
+> Tom en demandait dix. **Sept sont RETIRÉS, avec leur raison mesurée** : Halin, Guingois, Chantourné, Brouillamini — elle allongeait
+> l'arrivée d'une dalle de 11 à 38 % (`redteam_rythme` : le rythme validé ne dérive pas) ; Mascaret, Chamade, Volubilis — sous elle le banc
+> de rendu ne retrouvait plus sa référence (mondes déclarés « instables »), et Volubilis n'y répond pas (ses formes ont leur taille propre).
+> Arbitrage de Tom : Q411. La taille ne porte toujours aucun sens. `banc_rendu` est refigé pour ces trois mondes, et eux seuls.
+> ⚠ **`banc_rendu` : Guingois diffère de la référence DEPUIS AVANT ce lot** (vu avec le moteur de v134 ; le banc n'avait pas tourné depuis
+> v130) ; Chantourné aussi quand on le passe seul ; Volubilis ne se répète pas d'une passe à l'autre — non refigés, ouverts (C-066).
+> **⚑ LA GRILLE ANTI-COERCITION EST AU §12** (reconstituée ; les six critères et les six risques de Tom manquent — Q406).
+> Juge neuf : **`redteam_lexique.py`** — termes bannis (liste du §2, en dur) et loi des points, à l'écran, 34 écrans × 2 thèmes × gratuit et
+> Ma Parole ! ; dette nommée `lexique-dette.json` (la pastille du Fil `#filDot`, les pastilles de la légende de l'Aura) ; deux sondes.
+
 ### ⚑ v134 (6 oct. 2026) — LE CORPS SOMBRE D'UN PROMI EST `#0E78F2`, DÉFINITIF. (Décision Tom.) Ce bloc CORRIGE ce que les blocs v133, v131 et v130 disent de ce bleu.
 > **« Tom a choisi #0E78F2, en connaissance de cause. »** Fiche Promi et page + d'un Promi, en sombre (jetons `--c-cobalt50`, `--p-corps-promi` ;
 > JSON = CSS = Swift). **`?bleu=` est RETIRÉ.** `#1A52F0`, `#273CEB`, `#8ACBE8`, `#335382` sont morts pour ce rôle.
@@ -1930,7 +1964,8 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
-python3 redteam_palettes.py    # 32 — v133 (C-057) : le menu des palettes du Studio, deux thèmes, deux ouvertures, les 24 pastilles touchées une à une ;
+python3 redteam_lexique.py     # 3 — v135 (C-065) : aucun terme banni affiché, aucun point nouveau hors de l'exception du dessin (dette : lexique-dette.json). --sonde=terme|point : il rougit.
+python3 redteam_palettes.py    # 58 (v135 : trois ouvertures, les teintes PEINTES de chaque pastille, la pagination en barrettes) — v133 (C-057) : le menu des palettes du Studio, deux thèmes, deux ouvertures, les 24 pastilles touchées une à une ;
                                #   l'ordre en dur, Primesautier en tête. Rougit sur l'état d'avant (22/32).
 python3 redteam_toucher.py     # 21 — v133 (C-058) : vingt mondes, trois dalles touchées au vrai doigt : la fiche de la bonne parole s'ouvre.
                                #   ⚠ VERT sur l'état d'avant : le défaut de Tom n'est pas reproduit.
@@ -2109,7 +2144,7 @@ python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lu
 > **Décision Tom, 10 septembre 2026.** Vécu au portage de la Pelote : le juge comparait la vitesse de
 > rotation à `_aura.G.AUTO` — la valeur que l'app DÉCLARE. Changer la vitesse dans l'app changeait donc
 > la cible avec : il aurait accepté n'importe quelle vitesse. **Une valeur décidée s'écrit EN DUR dans
-> le juge** (`AUTO_DECIDE = 2π/120`, avec la décision qui la fixe), et le juge vérifie AUSSI que l'app
+> le juge** (`AUTO_DECIDE = 2π/100` — un tour en 100 s ; ⚑ v135, Tom : « 100 s, comme dans l'app » ; ce fichier écrivait 2π/120 —, avec la décision qui la fixe), et le juge vérifie AUSSI que l'app
 > déclare bien cette valeur. Vaut pour toute cote, toute durée, toute couleur : le juge porte la
 > décision, l'app la respecte — jamais l'inverse.
 >
@@ -2542,3 +2577,60 @@ les affirmations non vérifiées.
 Dégradation adaptative — principe, à étalonner. Raison : iOS 26 fixe le plancher système à l'iPhone 11. Promi n'ajoute aucun plancher : l'app tourne sur tout appareil supporté et sa qualité s'adapte, pour que personne ne soit exclu et que personne ne subisse une Toile qui saccade. Ce qui fait tenir une parole ne se négocie jamais. Seul l'ornement se dégrade, du moins visible au plus visible.
 Ne se dégrade jamais : le geste (tous les coalescedTouches traités, le trait rendu dans la trame du toucher, en pleine résolution) · les couleurs (hex exacts, aucune quantification) · la lisibilité (texte natif, contrastes, tailles, Dynamic Type) · la composition de la Toile (toutes les dalles présentes, positions identiques) · VoiceOver.
 Peut se dégrader : le nombre de dalles animées, les transitions de navigation, la complexité des mondes, la densité de la Pelote (le régulateur actuel, de 110 000 à 75 000 poils, en est le modèle). L'ordre, les paliers et les seuils seront fixés par mesure Instruments sur appareil, au premier lot Toile du portage. Aucun chiffre n'est décidé à ce jour : n'en invente pas, n'en implémente pas.
+
+---
+
+## 12. La grille anti-coercition (inscrite le 6 oct. 2026, v135 — C-065)
+
+> **⚑ D'OÙ VIENT CE TEXTE.** Tom, 6 oct. 2026 : « La grille anti-coercition n'est écrite nulle part : inscris-la dans CLAUDE.md, mot pour mot
+> depuis portage/REGLES (les six critères disqualifiants et les six risques cumulés). » **⚠ Ni « six critères disqualifiants » ni « six
+> risques cumulés » n'existent dans `portage/REGLES.md`, ni ailleurs dans le dépôt** (cherché : « disqualifiant », « risques cumulés »,
+> « coercition »). Ce qui suit est donc la grille telle que `portage/REGLES.md` §A la porte — **trente-deux règles RECONSTITUÉES** à partir
+> des décisions écrites (les huit règles anti-notation de `AUDIT-AURA-CERCLE.md` §C, la « ligne rouge » de `BRIEF-ETUDE-PSYCHO.md`,
+> `DECISIONS.md` A1, Q347, Q368, v104, v109), recopiées mot pour mot. Les sources, la façon de vérifier et le juge de chacune sont dans
+> `portage/REGLES.md`. **Les six critères et les six risques attendent le texte de Tom (Q406) ; ils remplaceront ou coifferont cette liste.**
+> Juge des mots : **`redteam_lexique.py`** (termes bannis, loi des points).
+
+**A1 · Ce n'est pas un gestionnaire de tâches**
+- **R-001** · Toute décision qui rapproche Promi d'un gestionnaire de tâches est rejetée, même si elle est pratique.
+- **R-002** · On tient sa parole par un geste tracé au doigt, jamais par une case à cocher ni par une touche.
+- **R-003** · L'échéance n'est jamais obligatoire : « un jour » est une réponse valable, et aucun bouton « ajouter une échéance » n'existe.
+- **R-004** · La création est une phrase dont les mots se touchent, pas un formulaire.
+- **R-005** · On ne défait pas une parole tenue.
+- **R-006** · Aucun réglage « urgent » : l'urgence n'existe pas dans le produit.
+
+**A2 · Rien ne note, rien ne classe**
+- **R-007** · Aucune carte, aucun corps, aucun fond n'est peint d'une couleur d'état : l'état vit dans la ligne.
+- **R-008** · Dans une liste et sur la Toile, une dalle n'est jamais teintée par sa nature : ce serait un classement par nature.
+- **R-009** · Pas de score, pas de points, pas de badges, pas de série.
+- **R-010** · Aucun compteur visuel ne croît avec l'action.
+- **R-011** · Aucun chiffre, aucun mot de valeur, aucun agrégat n'est attaché à une personne.
+- **R-012** · Aucun tri par valeur, aucun superlatif.
+- **R-013** · Ce qui se mesure à deux est symétrique : aucun verdict ne désigne un porteur et un porté.
+- **R-014** · Des anneaux, jamais une liste de barres.
+- **R-015** · L'Aura ne porte que trois chiffres — tenues, en cours, à tenir — sous la légende, et aucun pourcentage.
+- **R-016** · Rien ne recule jamais : aucune grandeur dessinée ne décroît parce que le temps passe.
+- **R-017** · Les mots du Noyau ne sont jamais un reproche, et leur échelle est monotone.
+- **R-018** · Un seul compteur dans l'app : celui du Fil, et il ne redescend que quand on a agi.
+- **R-019** · L'état reste un signal fixe : il ne suit ni la palette, ni le monde, ni le thème.
+
+**A3 · Les notifications**
+- **R-020** · Aucune demande de permission au lancement.
+- **R-021** · « Je te le rappelle ? · oui · pas besoin » ne paraît qu'après la plantation d'une parole DATÉE ; la permission n'est demandée qu'après « oui ».
+- **R-022** · Deux « pas besoin » d'affilée, puis plus jamais la question.
+- **R-023** · Rien quand la date est passée.
+- **R-024** · Une notification par jour au plus.
+- **R-025** · Les mots des notifications sont ceux-là, au caractère près.
+- **R-026** · Aucun événement négatif n'est notifié.
+
+**A4 · Les murs de Ma Parole !**
+- **R-027** · Un réglage réservé est flouté à 4,8 px, sans encart, sans cadenas, sans explication.
+- **R-028** · Au toucher d'un mur, une phrase paraît seule sur le flou, le temps d'être lue, puis s'efface.
+- **R-029** · L'offre ne s'ouvre seule que la toute première fois ; ensuite elle ne s'ouvre que si l'on touche pendant la lecture.
+- **R-030** · Les phrases des murs sont les dix-huit de Tom, dans l'ordre, puis au hasard sans répéter la précédente ; le compteur est global et se remet à zéro après quatorze jours sans mur.
+- **R-031** · Rien de tout cela chez un membre : aucun mur, aucune phrase.
+- **R-032** · On ne livre pas un réglage qu'on ne peut pas éteindre.
+
+**Trois tensions connues, qui ne sont pas des règles** (détail dans `portage/REGLES.md`) : « un seul chiffre, pas de pourcentage » face aux
+trois chiffres de l'Aura (v95) et à la liste « Ce que tu as tenu » qui s'allonge (v131) ; « Ton meilleur Cercle » face à « aucun
+superlatif » ; « REPORTER » dans le Fil face à « rien ne reproche ».

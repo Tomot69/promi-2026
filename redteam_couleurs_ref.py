@@ -256,6 +256,7 @@ with sync_playwright() as p:
                         if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '14, 120, 242'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
                     # E9 (v132) : le lilas éclairci de la page + d'un Promi en sombre ; le libellé « Supprimer ce Promi / ce Chiche » et sa corbeille
                     if cle[1] == 'dark' and cle[0] in ('page +', 'gardé de côté') and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '244, 238, 255'): exceptions['E9'] += 1; continue
+                    if cle[1] == 'dark' and cle[0] == 'Peaufiner' and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '244, 238, 255'): exceptions['E9'] += 1; continue   # v135 (Q403) : les libellés lilas du Peaufiner d'une fiche Promi, sur le bleu
                     if cle[0].startswith('Peaufiner') and 'Nuée' not in cle[0] and va and vr and '221, 77, 35' in vr and va == vr.replace('221, 77, 35', '247, 240, 222' if cle[1] == 'dark' else '32, 25, 8') and re.search(r'danger|s2-lab|s2-reg', k): exceptions['E9'] += 1; continue
                     ecarts.append((cle, k, pr_, va, vr))
             for k, c in a['c'].items():

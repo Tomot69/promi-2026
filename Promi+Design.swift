@@ -19,9 +19,9 @@ import SwiftUI
 // MARK: - Les rôles. Ils basculent avec le mode ; c'est ce qu'une vue emploie.
 extension Color {
     enum Promi {
-        /// clair #F7F0DE · sombre #100D0B
+        /// clair #F7F0DE · sombre #050302 (la seiche — v116, v121 ; corrigé en v135 : le jeu portait encore #100D0B)
         static func fond(_ s: ColorScheme) -> Color {
-            s == .dark ? Color(red: 0.0627, green: 0.0510, blue: 0.0431) : Color(red: 0.9686, green: 0.9412, blue: 0.8706)
+            s == .dark ? Color(red: 0.0196, green: 0.0118, blue: 0.0078) : Color(red: 0.9686, green: 0.9412, blue: 0.8706)
         }
         /// clair #201908 · sombre #F7F0DE
         static func encre(_ s: ColorScheme) -> Color {

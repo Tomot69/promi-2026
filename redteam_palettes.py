@@ -14,6 +14,7 @@ Usage : python3 redteam_palettes.py [fichier.html]"""
 import sys
 from playwright.sync_api import sync_playwright
 F=[a for a in sys.argv[1:] if not a.startswith('--')]; F=F[0] if F else 'app.html'
+SONDE=next((x.split('=')[1] for x in sys.argv if x.startswith('--sonde=')), None)   # v135 : --sonde=vide (les teintes des pastilles ne sont plus peintes)
 ORDRE=['primesautier', 'signal', 'candide', 'gouailleur', 'alangui', 'irascible', 'hurluberlu', 'beat', 'minaudier', 'chafouin', 'frivole', 'cajoleur', 'allegre', 'lunatique', 'flegmatique', 'narquois', 'truculent', 'petulant', 'fantasque', 'fielleux', 'sibyllin', 'veneneux', 'atrabilaire', 'taciturne']   # en dur : l'ordre d'avant v133, Primesautier remonté en tête
 R=[]
 def ok(nom, cond, detail=''):
@@ -35,7 +36,7 @@ with sync_playwright() as p:
         pg=ctx.new_page(); errs=[]; pg.on('pageerror', lambda e: errs.append(str(e)[:160]))
         pg.goto('http://127.0.0.1:8752/'+F); pg.wait_for_timeout(6500)
         pg.evaluate("(t)=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} setTheme(t); try{setPremium(true)}catch(e){} }", th); pg.wait_for_timeout(600)
-        for tour in (1,2):
+        for tour in (1,2,3):   # v135 (C-011) : trois ouvertures — la 3e après avoir fermé le menu par RETOUR avant de fermer le Studio
             tag='[%s · ouverture %d]'%(th,tour)
             pg.evaluate("()=>document.getElementById('studioBtn').click()"); pg.wait_for_timeout(2600)
             c=pg.evaluate("()=>{const t=[...document.querySelectorAll('#studioScreen .stp-ton')].filter(e=>e.getBoundingClientRect().width>0)[0]; if(!t) return null; const r=t.getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height/2]}")
@@ -73,12 +74,30 @@ with sync_playwright() as p:
                     chang+=1
                     if pg.evaluate(SIG)==s0: pb.append('la Toile du Studio n\'a pas changé')
                 if pb: ko.append((i, pb))
+            # ⚑ v135 (Tom, C-011) — « chaque palette doit s'afficher avec ses teintes » : on COMPTE les teintes peintes, sur la capture, pastille par pastille
+            if SONDE=='vide': pg.evaluate("()=>{ const s=document.createElement('style'); s.textContent='#stpPals .st3-q{display:none!important}'; document.head.appendChild(s); }")
+            import io as _io
+            from PIL import Image as _Im
+            geo=pg.evaluate("""()=>{ const P=Toile.palettes(); return [...document.querySelectorAll('#stpPals .st3-pals > *')].filter(e=>e.getBoundingClientRect().width>0).map(e=>{ const o=e.querySelector('.st3-orb')||e, r=o.getBoundingClientRect(); return {cle:e.getAttribute('data-p'), x:r.left, y:r.top, w:r.width, h:r.height, cols:(P[e.getAttribute('data-p')]||{cols:[]}).cols.map(c=>c.slice(0,3).map(Math.round))} }) }""")
+            im=_Im.open(_io.BytesIO(pg.screenshot())).convert('RGB'); k=im.width/430.0; manque=[]
+            for q in geo:
+                vues=set()
+                for (fx,fy) in ((0.3,0.3),(0.7,0.3),(0.3,0.7),(0.7,0.7)):
+                    px=im.getpixel((int((q['x']+q['w']*fx)*k), int((q['y']+q['h']*fy)*k)))
+                    for j,c in enumerate(q['cols']):
+                        if sum(abs(px[t]-c[t]) for t in range(3))<=18: vues.add(j); break
+                att=len(set(tuple(c) for c in q['cols']))
+                if q['w']<36 or len(vues)<min(4,att): manque.append('%s : %d teinte(s) sur %d, orbe %.0f pt'%(q['cle'],len(vues),att,q['w']))
+            ok(tag+' chaque pastille montre SES teintes à l\'écran (comptées sur la capture, 24 pastilles × 4)', len(geo)==24 and not manque, manque[:4] or '%d pastilles'%len(geo))
+            pts=pg.evaluate("()=>[...document.querySelectorAll('#studioScreen #stpDots > *, #stpPals .st3-dot')].map(e=>{const r=e.getBoundingClientRect(); return [Math.round(r.width*10)/10, Math.round(r.height*10)/10]}).filter(v=>v[0]>0&&v[0]<1.6*v[1])")
+            ok(tag+' la pagination des mondes n\'est pas une rangée de points (loi des points) : des barrettes', not pts, '%d point(s) %s'%(len(pts),pts[:2]))
             ok(tag+' les 24 palettes choisies une à une : le menu reste juste à chaque toucher', not ko, ko[:4])
             ok(tag+' chaque toucher a changé la palette du moteur (%d changements)'%chang, chang>=22, chang)
             if tour==1:
                 premiere=(e['O'][0]['cle'] if e else '')
                 nom1=pg.evaluate("()=>{ const e=[...document.querySelectorAll('#stpPals .st3-pals > *')][0]; e.click(); return (document.getElementById('st3pn')||{textContent:''}).textContent.trim() }")
                 ok(tag+' la première palette de la liste est Primesautier', nom1.upper()=='PRIMESAUTIER', nom1)
+            if tour==2: pg.evaluate("()=>{ const x=document.querySelector('#stpPals .stp-retour'); if(x) x.click(); }"); pg.wait_for_timeout(500)
             pg.evaluate("()=>{ const x=document.querySelector('#studioScreen .closeb'); if(x) x.click(); }"); pg.wait_for_timeout(900)
         ok('[%s] aucune erreur de page'%th, not errs, errs[:2]); ctx.close()
     b.close()

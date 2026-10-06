@@ -1,0 +1,21 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 65
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+  178s  redteam_filets.py          page+ cercle   [light]  filet non    OK / filet du trait : 14/14
+   56s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+   78s  redteam_decisions.py       Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état) / 85 / 85
+   63s  redteam_photo_menu.py      20/20 / ✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+  133s  redteam_dessin.py            ✅ aucune erreur de page (Cercle, page +) / redteam_dessin : 79/79
+  135s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 28/28
+  243s  redteam_maparole.py        [dark] aucune erreur de page                                                     OK   / 14 / 14
+  133s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   92s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  187s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+   71s  redteam_reactif.py           ✅ aucune erreur de page / redteam_reactif : 31/31
+   52s  redteam_apercus.py           ✅ E le fond d'un aperçu est celui de la vraie Toile [light]  (sombre #050302 · clair #F1ECD9) / ✅  10/10
+   37s  redteam_studio_geste.py      6 · en DIAGONALE d'abord : relâcher fixe le résultat         OK   candide · 78° · 8.9 niveaux / 22/22
+   91s  redteam_nuee_dalle.py      [clair] aucune erreur JS                                           OK  [] / 38/38
+   83s  redteam_zoom.py            [sombre] 8 · supprimer ramène le défaut                        OK  échelle 1.000 (défaut 1.0 pour 20) / 16/16
+  524s  redteam_retour.py          OK  aucune erreur de page   / 34 / 34
+  282s  redteam_rythme.py            · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 33, 'images': 2, 'boucle': 1915, 'debut': 11} / 56 / 60
+  110s  banc_rendu.py                 ≠ guingois     dalle-tenu-k1      3216 px  max 97 / ❌ LE RENDU A CHANGÉ.

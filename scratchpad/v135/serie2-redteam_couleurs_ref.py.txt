@@ -1,0 +1,7 @@
+2 écran(s) repris sur une page fraîche : Studio[d], panneau des palettes[l]
+E10 l'ordre des palettes (Primesautier en tête, v133) : 18
+6515 propriétés comparées · 36 écrans × 2 thèmes · 101 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 8 · E5 violations retirées 22 · E6 trace crème (Q374) 13 · E7 ombre crème en sombre 2 · E8 cobalt, corps sombre Promi (v131) 8 · E9 lilas éclairci et libellé de suppression (v132) 19
+canevas non peints d'un côté (comptés, non jugés) : 2 — Nuée défilée[l] vide côté app · Nuée défilée[l] vide côté app
+
+✅ — 0 écart(s) de couleur avec la référence v118

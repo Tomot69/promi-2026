@@ -1,6 +1,6 @@
 # ÉTAT AU 30 SEPTEMBRE 2026 — CE QUI EST VRAI AUJOURD'HUI
 
-> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-06 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version 0.16). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
+> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-07 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version 0.16). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
 > Les valeurs de ce document priment sur tout autre document. `PROMI-SPECIFICATIONS.md`, `PARCOURS.md` et `MOODBOARD-VALEURS.md` sont des **archives** (valeurs antérieures au 16 septembre 2026) : ils disent la géométrie et l'intention d'août, jamais une couleur, une police ni un libellé à porter.
 
 **Ordre des sources, en cas de doute :** ce document → `PROMI-TOKENS.json` (couleurs, polices) → `CONTRAT-MONDE.md` (ce qu'un monde doit faire) → `SPEC-JUGES.md` (les règles que les juges portent) → `CLAUDE.md` (méthode, pièges, décisions datées) → les moodboards (géométrie d'origine) → une mesure de l'app (jamais une référence).
@@ -34,7 +34,7 @@ Un rôle vaut deux valeurs (mode clair · mode sombre). **Une règle CSS emploie
 
 | Rôle | Clair | Sombre |
 |---|---|---|
-| `fond` | `#F7F0DE` | `#100D0B` |
+| `fond` | `#F7F0DE` | `#050302` |
 | `encre` | `#201908` | `#F7F0DE` |
 | `surface` | `#F7EBD6` | `#211B05` |
 | `surface-haute` | `#FAF4E8` | `#251F11` |

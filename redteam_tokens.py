@@ -64,7 +64,7 @@ DECIDE = {
     'en-cours-clair': '#291547',   # ⚑ 22 sept. : plus de clair dérivé — une seule valeur par état
     # les fonds et les surfaces
     'fond-clair': '#F7F0DE',   # « le clair devient #F7F0DE — fond du mode clair »
-    'fond-sombre': '#100D0B',  # v7, « mode sombre — café noir subtil ». L'ÉCHANGE EST ABANDONNÉ.
+    'fond-sombre': '#050302',  # ⚑ v135 (Tom, 6 oct. 2026) : « Fond sombre : seiche #050302 ; corrige les jetons et le Swift » (v116, v121) — était #100D0B,  # v7, « mode sombre — café noir subtil ». L'ÉCHANGE EST ABANDONNÉ.
     # ⚑ REPRIS LE 21 SEPTEMBRE 2026 (§7). LA RÈGLE QUE CE CONTRÔLE ENCODAIT : la surface
     #   d'exception est le brun #6B4630. LA DÉCISION QUI LA REMPLACE (Tom, moodboard v8) :
     #   « Le brun #6B4630 ne va pas — pas élégant, et il s'accorde mal au champ bleu. »

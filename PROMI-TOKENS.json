@@ -78,7 +78,7 @@
   "roles": {
     "fond": {
       "clair": "#F7F0DE",
-      "sombre": "#100D0B"
+      "sombre": "#050302"
     },
     "encre": {
       "clair": "#201908",

@@ -27,6 +27,8 @@ les plus récents corrigent les plus anciens).
 
 `A-INTEGRER.md` (les notes prises de v126 à v133) est intégré dans les documents 1 à 5 ; il reste là comme journal.
 
+> **⚑ v135 (6 oct. 2026)** : les cinq premières contradictions ci-dessous sont TRANCHÉES par Tom (« la vérité est ce que Tom voit à l'écran ») et corrigées dans l'app et dans `CLAUDE.md` — voir `A-INTEGRER.md`, section v135. Les documents 1 à 10 n'ont pas été réécrits : la section v135 d'`A-INTEGRER.md` prime sur eux.
+
 ## Les contradictions trouvées en écrivant le dossier (à trancher avant de coder)
 
 - **La rotation de la Pelote** : `2π/100` dans l'app et dans `releve-aura.py` ; `2π/120` dans `CLAUDE.md` §7 (Q405).

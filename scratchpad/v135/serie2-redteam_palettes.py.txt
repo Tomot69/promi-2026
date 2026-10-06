@@ -1,0 +1,60 @@
+  ✅ [dark · ouverture 1] toucher une teinte ouvre le menu des palettes
+  ✅ [dark · ouverture 1] une seule rangée, 24 pastilles, quatre rangées de six
+  ✅ [dark · ouverture 1] un seul nom de palette dans le document, une seule jauge
+  ✅ [dark · ouverture 1] dans l'ordre : la grille, puis le nom, puis la jauge — sans recouvrement
+  ✅ [dark · ouverture 1] l'ordre des pastilles : Primesautier, puis les 23 autres dans l'ordre d'avant
+  ✅ [dark · ouverture 1] chaque pastille montre SES teintes à l'écran (comptées sur la capture, 24 pastilles × 4)
+  ✅ [dark · ouverture 1] la pagination des mondes n'est pas une rangée de points (loi des points) : des barrettes
+  ✅ [dark · ouverture 1] les 24 palettes choisies une à une : le menu reste juste à chaque toucher
+  ✅ [dark · ouverture 1] chaque toucher a changé la palette du moteur (24 changements)
+  ✅ [dark · ouverture 1] la première palette de la liste est Primesautier
+  ✅ [dark · ouverture 2] toucher une teinte ouvre le menu des palettes
+  ✅ [dark · ouverture 2] une seule rangée, 24 pastilles, quatre rangées de six
+  ✅ [dark · ouverture 2] un seul nom de palette dans le document, une seule jauge
+  ✅ [dark · ouverture 2] dans l'ordre : la grille, puis le nom, puis la jauge — sans recouvrement
+  ✅ [dark · ouverture 2] l'ordre des pastilles : Primesautier, puis les 23 autres dans l'ordre d'avant
+  ✅ [dark · ouverture 2] chaque pastille montre SES teintes à l'écran (comptées sur la capture, 24 pastilles × 4)
+  ✅ [dark · ouverture 2] la pagination des mondes n'est pas une rangée de points (loi des points) : des barrettes
+  ✅ [dark · ouverture 2] les 24 palettes choisies une à une : le menu reste juste à chaque toucher
+  ✅ [dark · ouverture 2] chaque toucher a changé la palette du moteur (24 changements)
+  ✅ [dark · ouverture 3] toucher une teinte ouvre le menu des palettes
+  ✅ [dark · ouverture 3] une seule rangée, 24 pastilles, quatre rangées de six
+  ✅ [dark · ouverture 3] un seul nom de palette dans le document, une seule jauge
+  ✅ [dark · ouverture 3] dans l'ordre : la grille, puis le nom, puis la jauge — sans recouvrement
+  ✅ [dark · ouverture 3] l'ordre des pastilles : Primesautier, puis les 23 autres dans l'ordre d'avant
+  ✅ [dark · ouverture 3] chaque pastille montre SES teintes à l'écran (comptées sur la capture, 24 pastilles × 4)
+  ✅ [dark · ouverture 3] la pagination des mondes n'est pas une rangée de points (loi des points) : des barrettes
+  ✅ [dark · ouverture 3] les 24 palettes choisies une à une : le menu reste juste à chaque toucher
+  ✅ [dark · ouverture 3] chaque toucher a changé la palette du moteur (24 changements)
+  ✅ [dark] aucune erreur de page
+  ✅ [light · ouverture 1] toucher une teinte ouvre le menu des palettes
+  ✅ [light · ouverture 1] une seule rangée, 24 pastilles, quatre rangées de six
+  ✅ [light · ouverture 1] un seul nom de palette dans le document, une seule jauge
+  ✅ [light · ouverture 1] dans l'ordre : la grille, puis le nom, puis la jauge — sans recouvrement
+  ✅ [light · ouverture 1] l'ordre des pastilles : Primesautier, puis les 23 autres dans l'ordre d'avant
+  ✅ [light · ouverture 1] chaque pastille montre SES teintes à l'écran (comptées sur la capture, 24 pastilles × 4)
+  ✅ [light · ouverture 1] la pagination des mondes n'est pas une rangée de points (loi des points) : des barrettes
+  ✅ [light · ouverture 1] les 24 palettes choisies une à une : le menu reste juste à chaque toucher
+  ✅ [light · ouverture 1] chaque toucher a changé la palette du moteur (24 changements)
+  ✅ [light · ouverture 1] la première palette de la liste est Primesautier
+  ✅ [light · ouverture 2] toucher une teinte ouvre le menu des palettes
+  ✅ [light · ouverture 2] une seule rangée, 24 pastilles, quatre rangées de six
+  ✅ [light · ouverture 2] un seul nom de palette dans le document, une seule jauge
+  ✅ [light · ouverture 2] dans l'ordre : la grille, puis le nom, puis la jauge — sans recouvrement
+  ✅ [light · ouverture 2] l'ordre des pastilles : Primesautier, puis les 23 autres dans l'ordre d'avant
+  ✅ [light · ouverture 2] chaque pastille montre SES teintes à l'écran (comptées sur la capture, 24 pastilles × 4)
+  ✅ [light · ouverture 2] la pagination des mondes n'est pas une rangée de points (loi des points) : des barrettes
+  ✅ [light · ouverture 2] les 24 palettes choisies une à une : le menu reste juste à chaque toucher
+  ✅ [light · ouverture 2] chaque toucher a changé la palette du moteur (24 changements)
+  ✅ [light · ouverture 3] toucher une teinte ouvre le menu des palettes
+  ✅ [light · ouverture 3] une seule rangée, 24 pastilles, quatre rangées de six
+  ✅ [light · ouverture 3] un seul nom de palette dans le document, une seule jauge
+  ✅ [light · ouverture 3] dans l'ordre : la grille, puis le nom, puis la jauge — sans recouvrement
+  ✅ [light · ouverture 3] l'ordre des pastilles : Primesautier, puis les 23 autres dans l'ordre d'avant
+  ✅ [light · ouverture 3] chaque pastille montre SES teintes à l'écran (comptées sur la capture, 24 pastilles × 4)
+  ✅ [light · ouverture 3] la pagination des mondes n'est pas une rangée de points (loi des points) : des barrettes
+  ✅ [light · ouverture 3] les 24 palettes choisies une à une : le menu reste juste à chaque toucher
+  ✅ [light · ouverture 3] chaque toucher a changé la palette du moteur (24 changements)
+  ✅ [light] aucune erreur de page
+
+redteam_palettes : 58/58

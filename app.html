@@ -2516,7 +2516,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
   --c-menthe67-txt:#00341A;--c-mauve63-txt:#291547;--c-orange53-txt:#DD4D23;
   --c-bleu08:#022140;--c-framboise11:#3D0F23;
   --c-bleu45-txt:#82AEF8;--c-framboise54-txt:#FFB8D2;--c-mauve77-txt:#C9A8F5;--c-mauve12-txt:#C9A8F5;
-  --p-fond:#100D0B;--p-encre:#F7F0DE;--p-surface:#211B05;--p-surface-haute:#251F11;--p-sous-texte:#928166;--p-grip:#493D28;--p-exception:#2B1020;--p-crete:#0B4A2A;--p-brun-encre:#43291C;--p-promi:#82AEF8;--p-chiche:#FFB8D2;--p-nuee:#C9A8F5;--p-garde-de-cote:#AE3929;--p-tenu:#00341A;--p-tenu-clair:#00341A;--p-amande:#8FE08F;--p-a-tenir:#DD4D23;--p-en-cours:#291547;--p-en-cours-clair:#291547;--p-encre-sur-tenu:#00341A;--p-promi-clair:#C4A2F5;--p-chiche-clair:#F5AC9E;--p-nuee-clair:#E6D8FA;--p-lilas:#E6D8FA;--p-mauve-clair:#C9A8F5;--p-corps-promi:#0E78F2;--p-corps-chiche:#7C3F58;--p-corps-nuee:#5D4978;--p-corps-tenu:#2B1020;--p-corps-a-tenir:#533336;--p-corps-garde:#4B2D30;--p-blanc:#FFFFFF;--p-noir:#000000
+  --p-fond:#050302;--p-encre:#F7F0DE;--p-surface:#211B05;--p-surface-haute:#251F11;--p-sous-texte:#928166;--p-grip:#493D28;--p-exception:#2B1020;--p-crete:#0B4A2A;--p-brun-encre:#43291C;--p-promi:#82AEF8;--p-chiche:#FFB8D2;--p-nuee:#C9A8F5;--p-garde-de-cote:#AE3929;--p-tenu:#00341A;--p-tenu-clair:#00341A;--p-amande:#8FE08F;--p-a-tenir:#DD4D23;--p-en-cours:#291547;--p-en-cours-clair:#291547;--p-encre-sur-tenu:#00341A;--p-promi-clair:#C4A2F5;--p-chiche-clair:#F5AC9E;--p-nuee-clair:#E6D8FA;--p-lilas:#E6D8FA;--p-mauve-clair:#C9A8F5;--p-corps-promi:#0E78F2;--p-corps-chiche:#7C3F58;--p-corps-nuee:#5D4978;--p-corps-tenu:#2B1020;--p-corps-a-tenir:#533336;--p-corps-garde:#4B2D30;--p-blanc:#FFFFFF;--p-noir:#000000
 }
 #device.light,.device.light,.frame.light,.light{ --c-menthe67-txt:#00341A;--c-mauve63-txt:#291547;--c-orange53-txt:#DD4D23;--verm-txt:#022140;--c-bleu45-txt:#022140;--c-framboise54-txt:#3D0F23;--c-mauve77-txt:#43291C;--c-mauve12-txt:#43291C;--p-fond:#F7F0DE;--p-encre:#201908;--p-surface:#F7EBD6;--p-surface-haute:#FAF4E8;--p-sous-texte:#6E6350;--p-grip:#C8BAA4;--p-exception:#2B1020;--p-crete:#0B4A2A;--p-brun-encre:#43291C;--p-promi:#82AEF8;--p-chiche:#FFB8D2;--p-nuee:#C9A8F5;--p-garde-de-cote:#AE3929;--p-tenu:#00341A;--p-tenu-clair:#00341A;--p-amande:#8FE08F;--p-a-tenir:#DD4D23;--p-en-cours:#291547;--p-en-cours-clair:#291547;--p-encre-sur-tenu:#00341A;--p-promi-clair:#C4A2F5;--p-chiche-clair:#F5AC9E;--p-nuee-clair:#E6D8FA;--p-lilas:#E6D8FA;--p-mauve-clair:#C9A8F5;--p-corps-promi:#CFE5FE;--p-corps-chiche:#FFF4FC;--p-corps-nuee:#EEE4F8;--p-corps-tenu:#2B1020;--p-corps-a-tenir:#EFC3B9;--p-corps-garde:#EFC3B9;--p-blanc:#FFFFFF;--p-noir:#000000 }
 .t-titre{font-family:var(--f-titre);font-weight:600;font-size:36px;}
@@ -2791,7 +2791,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
         <button class="pl-buy sec" id="buyYear">ou prendre l'année — 39&nbsp;€</button>
       </div>
       <div class="pl-note">Sans engagement · annulable en 2 taps, à tout moment.</div>
-      <div class="pl-note" style="margin-top:8px;opacity:.7">ou un design à l'unité — 1&nbsp;€, ou 4 pour 3&nbsp;€</div>
+      <div class="pl-note" style="margin-top:8px;opacity:.7">ou un design à l'unité — 2&nbsp;€</div>
     </div>
     <div class="screen s-feed fond" id="feedScreen">
       <div class="closeb" data-close>✕ Fermer</div>
@@ -7844,10 +7844,10 @@ try{if(notifOn)armAllReminders();}catch(e){}
    cerclages autour des disques, dans les deux natures. » Le filet crème ne compensait que le manque de contraste des corps sombres.
    Sur la fiche et la page +, plus aucun filet — trait, flèche, disques. ⚠ Seule réserve : la TERRE d'une fiche tenue (#2B1020),
    que ce changement de corps ne touche pas — la crête #0B4A2A y est à Δlum 16 : sans filet elle disparaît. */
-window._sansFilet=function(el){ try{
-  var sc = el && el.closest && el.closest('#detailPoster, #createSheet'); if(!sc) return false;
-  return getComputedStyle(sc).backgroundColor !== 'rgb(43, 16, 32)';
-}catch(_){ return false; } };
+/* ⚑ v135 (Tom, 6 oct. 2026, C-059) — « Retire le filet autour des disques et des Noyaux, et celui sous le trait et la crête, en clair comme
+   en sombre. L'exception de v114 (le filet sur la terre d'une fiche tenue) tombe. » Plus aucun filet, nulle part : la règle vaut pour
+   tout disque, tout Noyau, tout trait, sur tout écran (l'ancienne ne valait que sur la fiche et la page +, hors terre). */
+window._sansFilet=function(el){ return true; };
 window._sansFiletCercle=window._sansFilet;   /* v111 : l'exception du Cercle devient la règle des trois natures */
 </script>
 <style id="lot-V111-CHAMPS-CERCLE-css">#device#device #detailPoster .np-champ::placeholder,#device#device .np-champ::placeholder{color:var(--np-ph)!important;-webkit-text-fill-color:var(--np-ph)!important;opacity:1!important}</style>
@@ -20149,11 +20149,11 @@ var CREMEETAT='#F7F0DE';
         +'stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>'
         +'<path d="M4 9 h9 a6 6 0 0 1 6 6 v1" stroke="currentColor" stroke-width="2" '
         +'stroke-linecap="round"/></svg>'
-      /* poser une photo : l'appareil, dessiné, jamais un glyphe emprunté */
-      : '<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">'
-        +'<rect x="3" y="6.5" width="18" height="13" rx="3" stroke="currentColor" stroke-width="2"/>'
-        +'<path d="M8.5 6.5 L10 4h4l1.5 2.5" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>'
-        +'<circle cx="12" cy="13" r="3.2" stroke="currentColor" stroke-width="2"/></svg>';
+      /* ⚑ v135 (Tom, 6 oct. 2026, C-060) — « Tom choisit C, le cadre traversé d'un trait. Remplace l'appareil photo partout, dans les deux
+         thèmes, VoiceOver inchangé. » Le bouton sert aussi à dessiner et à revenir à la dalle : l'appareil ne le disait plus. */
+      : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" data-symbole="cadre-trait">'
+        +'<rect x="3.5" y="5" width="17" height="14" rx="2.5"/>'
+        +'<path d="M1.5 14.5c2.6-5 5.2-5 7.2-1.6s4.400 3.4 6.4 0 4-4.4 7.400-3.4"/></svg>';
     b.style.setProperty('color', '#F7F0DE', 'important');
     try{ var dev=document.getElementById('device');
       if(dev && dev.classList.contains('light') && !aPhoto)
@@ -21847,9 +21847,12 @@ var CREMEETAT='#F7F0DE';
 /* LES HUIT POINTS — rangée fine, cliquables */
 #stpDots{position:absolute;left:0;top:768px;width:390px;display:flex;justify-content:center;
   align-items:center;gap:13px;z-index:6}
-#stpDots .stp-dot{width:9px;height:9px;border-radius:50%;background:var(--on-ground,var(--c-creme95));
+/* ⚑ v135 (Tom, 6 oct. 2026, C-011) — « Ces points sont interdits par la loi des points (ils ne disent pas qu'il manque quelque chose) :
+   s'ils servent de pagination, remplace-les par autre chose. » La pagination des mondes est une rangée de BARRETTES (10 × 4, la courante
+   18 × 4) ; toucher une barrette mène toujours à son monde. */
+#stpDots .stp-dot{width:10px;height:4px;border-radius:2px;background:var(--on-ground,var(--c-creme95));
   opacity:.38;cursor:pointer;flex:none}
-#stpDots .stp-dot.on{width:14px;height:14px;opacity:1}
+#stpDots .stp-dot.on{width:18px;height:4px;opacity:1}
 #studioScreen.st-plat.stp-clair #stpDots .stp-dot{background:var(--c-brun09)}
 
 /* L'INVITE DE GLISSEMENT — elle prend la ligne des points, et elle meurt */
@@ -22118,7 +22121,7 @@ var CREMEETAT='#F7F0DE';
     /* ⚑ v74 (Tom, capture) — LES POINTS RESTENT DANS L'ENCART. La rangée a été dessinée pour huit mondes (écart 13) ; à vingt elle
        faisait 432 px dans un encart de 342 et sortait des deux côtés. Elle tient dans l'encart (24 → 366) à la marge des pastilles de
        palette (22 px), et l'écart se CALCULE sur le nombre de points (jamais une mesure) : 13 au plus. */
-    var n=src.length, larg=342-2*22, pts=9*Math.max(0,n-1)+14, gap=n>1?Math.min(13,(larg-pts)/(n-1)):0;
+    var n=src.length, larg=342-2*22, pts=10*Math.max(0,n-1)+18, gap=n>1?Math.min(13,(larg-pts)/(n-1)):0;   /* v135 : des barrettes (10, la courante 18) */
     dt.style.setProperty('left',(24+22)+'px','important'); dt.style.setProperty('width',larg+'px','important');
     dt.style.setProperty('gap',Math.max(2,gap).toFixed(2)+'px','important');
   }
@@ -33263,7 +33266,7 @@ window._petiteToile=function(g,A,Lr,ids){ try{
       +carte('sphere','La Pelote','Chaque parole tenue y devient une île : elle s’étoffe à mesure que tu tiens. Touche une île pour la revoir.')
       +carte('phrase','La phrase','Sous la Pelote, quelques mots pour te rappeler ce que tu as déjà tenu.')
       +carte('noyaux','Les Noyaux','<b>Toi</b>, puis chaque personne avec qui tu échanges des paroles. L’anneau dit où vous en êtes : <b>tenu</b>, <b>en cours</b>, <b>à tenir</b>.')
-      +carte('tenu','Ce que tu as tenu','Tes paroles tenues, dans l’ordre où tu les as tenues. Touche-en une pour la revoir.')
+      +carte('tenu','Ce que tu as tenu','Tes paroles tenues, la plus récente en premier. Touche-en une pour la revoir.')
       +carte('partage','Partager ma Pelote','Une image à partager : on y voit que tu tiens parole, jamais ce que tu as promis.')
       +'<div class="ah-sect"><span class="ah-badge prem">Avec Ma Parole !</span></div>'
       +'<div class="ah-cercle-cta set-cercle" id="ahCercleCta" role="button"><div class="sc-tx"><div class="sc-t">✦ Ma Parole !</div></div><div class="sc-go">›</div></div>'
@@ -35831,7 +35834,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 
   /* ══ LES PAGES : À PROPOS, ET LES DEUX TEXTES LÉGAUX « BIENTÔT DISPONIBLES » ═══════════ */
   var OFL = "Copyright © 2020, 2024 Braille Institute of America, Inc., with Reserved Font Names Atkinson and Hyperlegible.\n\nThis Font Software is licensed under the SIL Open Font License, Version 1.1.\nThis license is copied below, and is also available with a FAQ at:\nhttps://openfontlicense.org\n\n\n-----------------------------------------------------------\nSIL OPEN FONT LICENSE Version 1.1 - 26 February 2007\n-----------------------------------------------------------\n\nPREAMBLE\nThe goals of the Open Font License (OFL) are to stimulate worldwide\ndevelopment of collaborative font projects, to support the font creation\nefforts of academic and linguistic communities, and to provide a free and\nopen framework in which fonts may be shared and improved in partnership\nwith others.\n\nThe OFL allows the licensed fonts to be used, studied, modified and\nredistributed freely as long as they are not sold by themselves. The\nfonts, including any derivative works, can be bundled, embedded, \nredistributed and/or sold with any software provided that any reserved\nnames are not used by derivative works. The fonts and derivatives,\nhowever, cannot be released under any other type of license. The\nrequirement for fonts to remain under this license does not apply\nto any document created using the fonts or their derivatives.\n\nDEFINITIONS\n\"Font Software\" refers to the set of files released by the Copyright\nHolder(s) under this license and clearly marked as such. This may\ninclude source files, build scripts and documentation.\n\n\"Reserved Font Name\" refers to any names specified as such after the\ncopyright statement(s).\n\n\"Original Version\" refers to the collection of Font Software components as\ndistributed by the Copyright Holder(s).\n\n\"Modified Version\" refers to any derivative made by adding to, deleting,\nor substituting -- in part or in whole -- any of the components of the\nOriginal Version, by changing formats or by porting the Font Software to a\nnew environment.\n\n\"Author\" refers to any designer, engineer, programmer, technical\nwriter or other person who contributed to the Font Software.\n\nPERMISSION & CONDITIONS\nPermission is hereby granted, free of charge, to any person obtaining\na copy of the Font Software, to use, study, copy, merge, embed, modify,\nredistribute, and sell modified and unmodified copies of the Font\nSoftware, subject to the following conditions:\n\n1) Neither the Font Software nor any of its individual components,\nin Original or Modified Versions, may be sold by itself.\n\n2) Original or Modified Versions of the Font Software may be bundled,\nredistributed and/or sold with any software, provided that each copy\ncontains the above copyright notice and this license. These can be\nincluded either as stand-alone text files, human-readable headers or\nin the appropriate machine-readable metadata fields within text or\nbinary files as long as those fields can be easily viewed by the user.\n\n3) No Modified Version of the Font Software may use the Reserved Font\nName(s) unless explicit written permission is granted by the corresponding\nCopyright Holder. This restriction only applies to the primary font name as\npresented to the users.\n\n4) The name(s) of the Copyright Holder(s) or the Author(s) of the Font\nSoftware shall not be used to promote, endorse or advertise any\nModified Version, except to acknowledge the contribution(s) of the\nCopyright Holder(s) and the Author(s) or with their explicit written\npermission.\n\n5) The Font Software, modified or unmodified, in part or in whole,\nmust be distributed entirely under this license, and must not be\ndistributed under any other license. The requirement for fonts to\nremain under this license does not apply to any document created\nusing the Font Software.\n\nTERMINATION\nThis license becomes null and void if any of the above conditions are\nnot met.\n\nDISCLAIMER\nTHE FONT SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND,\nEXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO ANY WARRANTIES OF\nMERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT\nOF COPYRIGHT, PATENT, TRADEMARK, OR OTHER RIGHT. IN NO EVENT SHALL THE\nCOPYRIGHT HOLDER BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,\nINCLUDING ANY GENERAL, SPECIAL, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL\nDAMAGES, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING\nFROM, OUT OF THE USE OR INABILITY TO USE THE FONT SOFTWARE OR FROM\nOTHER DEALINGS IN THE FONT SOFTWARE.\n";
-  var APROPOS = "<h3>À propos</h3>\n<p>Une promesse est une drôle de chose.</p>\n<p>On se lance des « promis » toute la journée.</p>\n<div class=\"v16-cit\"><p>« Promis, on se raconte tout. »</p><p>« Promis, je te rends ça demain. »</p><p>« Promis, cette fois, on le fait. »</p><p>« Promis, on ne laisse pas tomber. »</p></div>\n<p>Sur le moment, on le pense vraiment. Puis la vie passe par là, les jours s’empilent, et certaines paroles s’effacent. D’autres nous suivent pendant des années. Certaines n’arrivent même pas jusqu’à vendredi.</p>\n<p><b>Promi est né pour ces paroles-là.</b></p>\n<p>Planter une promesse, c’est en faire un <b>Promi</b>. Elle prend place sur la Toile, sous la forme d’une dalle de couleur. Une parole en devenir, puis une trace lorsqu’elle est tenue.</p>\n<p>Un <b>Chiche</b>, c’est autre chose : tenter quelqu’un — ou soi-même — avec un peu plus d’élan. Une petite bravade.</p>\n<p>Et quand plusieurs personnes ont quelque chose à vivre ensemble, un <b>Cercle</b> permet de mettre leurs Promi et leurs Chiches au même endroit : un week-end à Marseille, une virée, un projet, une soirée qui mérite de ne pas rester au stade du « on devrait ».</p>\n<p><b>Promi ne compte pas les promesses. Il leur donne une place.</b></p>\n<p>La Toile garde les paroles en cours comme celles qui ont été tenues. Elle devient peu à peu le paysage de tout ce qu’on a décidé de ne pas laisser tomber.</p>\n<h3>Les lettres</h3>\n<p>Le texte est composé en <b>Atkinson Hyperlegible</b>, créée pour le <b>Braille Institute</b> afin de rendre les caractères plus faciles à distinguer, notamment pour les personnes malvoyantes.</p>\n<p>Les titres sont en <b>Gilbert</b>, créée dans le cadre de <b>Type With Pride</b> en hommage à <b>Gilbert Baker</b>, artiste et créateur du drapeau arc-en-ciel original.</p>\n<p>Deux polices pour deux idées simples : rendre les choses lisibles, et leur donner de la couleur.</p>";
+  var APROPOS = "<h3>À propos</h3>\n<p>Une promesse est une drôle de chose.</p>\n<p>On se lance des « promis » toute la journée.</p>\n<div class=\"v16-cit\"><p>« Promis, on se raconte tout. »</p><p>« Promis, je te rends ça demain. »</p><p>« Promis, cette fois, on le fait. »</p><p>« Promis, on ne laisse pas tomber. »</p></div>\n<p>Sur le moment, on le pense vraiment. Puis la vie passe par là, les jours s’empilent, et certaines paroles s’effacent. D’autres nous suivent pendant des années. Certaines n’arrivent même pas jusqu’à vendredi.</p>\n<p><b>Promi est né pour ces paroles-là.</b></p>\n<p>Planter une promesse, c’est en faire un <b>Promi</b>. Elle prend place sur la Toile, sous la forme d’une dalle de couleur. Une parole en devenir, puis une trace lorsqu’elle est tenue.</p>\n<p>Un <b>Chiche</b>, c’est autre chose : tenter quelqu’un — ou soi-même — avec un peu plus d’élan. Une petite bravade.</p>\n<p>Et quand plusieurs personnes ont quelque chose à vivre ensemble, un <b>Cercle</b> permet de mettre leurs Promi et leurs Chiches au même endroit : un week-end à Marseille, une virée, un projet, une soirée qui mérite de ne pas rester au stade du « on devrait ».</p>\n<p><b>Promi ne compte pas les promesses. Il leur donne une place.</b></p>\n<p>La Toile garde les paroles en cours comme celles qui ont été tenues. Elle devient peu à peu le paysage de tout ce qu’on a décidé de ne pas laisser tomber.</p>\n<h3>Les lettres</h3>\n<p>Le texte est composé en <b>Atkinson Hyperlegible</b>, créée pour le <b>Braille Institute</b> afin de rendre les caractères plus faciles à distinguer, notamment pour les personnes malvoyantes.</p>\n<p>Les sous-titres et les libellés sont en <b>Gilbert</b>, créée dans le cadre de <b>Type With Pride</b> en hommage à <b>Gilbert Baker</b>, artiste et créateur du drapeau arc-en-ciel original.</p>\n<p>Deux polices pour deux idées simples : rendre les choses lisibles, et leur donner de la couleur.</p>\n<p>Les titres, eux, sont en <b>PromiLate</b>.</p>";
   window.PROMI_VERSION = window.PROMI_VERSION || '0.16';
   function page(id, titre, html){
     var s=$i(id);
@@ -36116,6 +36119,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #studioScreen .st3-thumb.st3-dalle canvas{position:absolute;left:-3px;top:-3px;width:36px;height:36px;pointer-events:none}
 /* 2 · la grille des palettes : sans fondu sur les bords (il floutait la première colonne), et centrée */
 #studioScreen #stpPals .st3-pals{-webkit-mask-image:none!important;mask-image:none!important;justify-content:center!important}
+/* ⚑ v135 (Tom, capture du 6 oct. 2026, C-011) — LE MENU DES PALETTES « VIDE ». La capture montre les 24 pastilles réduites à des points,
+   le nom sans son style et la jauge sans hauteur : dans le panneau, les règles de BASE des pastilles (`.st3-p`, `.st3-orb`, `.st3-q`,
+   `.st3-pn`, `.st3-spec`, écrites pour l'ancien rail) n'avaient pas pris. ⚠ La cause n'est PAS nommée : l'état n'est pas reproduit
+   (deux navigateurs, trois tailles de fenêtre, vingt mondes, gratuit et payé). PARADE, en attendant : le panneau porte lui-même, en
+   propre, tout ce dont une pastille, le nom et la jauge ont besoin — mêmes valeurs que les règles de base, rien ne change quand elles prennent. */
+#studioScreen #stpPals .st3-p{flex:0 0 auto!important;display:block!important;background:none!important;border:none!important;padding:0!important;margin:0!important;width:auto!important;min-width:40px!important;cursor:pointer}
+#studioScreen #stpPals .st3-orb{flex:0 0 auto!important;display:block!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;box-sizing:border-box!important;border-radius:50%!important;position:relative!important;overflow:hidden!important;border-width:2px!important;border-style:solid!important}
+#studioScreen #stpPals .st3-q{position:absolute!important;display:block!important;width:50%!important;height:50%!important}
+#studioScreen #stpPals #st3pn{display:block!important;text-align:center!important;text-transform:uppercase!important;min-height:15px!important;line-height:15px!important}
+#studioScreen #stpPals .st3-spec{position:relative!important;height:16px!important;min-height:16px!important;border-radius:4px!important}
 /* 3 · l'Aura — les pastilles de la légende, et elles seules, prennent le filet crème (1,4 px, collé au
    bord, DANS la pastille), dans les deux thèmes ; et elles grossissent : 11 → 20 px. */
 #device #auraScreen.au2 .au-lg i{width:20px!important;height:20px!important;vertical-align:middle!important;margin:-6px 10px -6px 0!important;
@@ -37968,6 +37981,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    C-053 · « SUPPRIMER CE PROMI passe en crème : le #DD4D23 est une couleur d'état et ne sert à rien d'autre » — le libellé et sa corbeille,
    dans le Peaufiner d'une fiche : crème en sombre, encre en clair (jamais l'orange d'état). */
 #device.device:not(.light) #createSheet:not([data-kind="chiche"]):not([data-kind="nuee"]){--c-mauve75:var(--c-lilas85)}
+/* ⚑ v135 (Tom, 6 oct. 2026, Q403) — « garde #F4EEFF. Même traitement pour les libellés lilas du Peaufiner (COMMENTAIRES, écris un mot…) sur
+   ce bleu. » Mesurés à l'écran : #C4A2F5 y faisait 1,97:1. Le Peaufiner d'une fiche Promi (son corps est le bleu, fiche tenue comprise) prend
+   le même jeton que la page +. */
+#device.device:not(.light) #detailPoster.dp-promi #dpdCorps,#device.device:not(.light) #detailPoster.dp-promi #dpDetails{--c-mauve75:var(--c-lilas85)}
 #device#device #detailPoster#detailPoster .s2-reg.v16-danger.v16-danger .s2-lab{color:var(--c-creme95)!important;-webkit-text-fill-color:var(--c-creme95)!important}
 #device#device #detailPoster#detailPoster .s2-reg.v16-danger.v16-danger::before{background:var(--c-creme95)!important}
 #device#device.light #detailPoster#detailPoster .s2-reg.v16-danger.v16-danger .s2-lab{color:var(--c-brun09)!important;-webkit-text-fill-color:var(--c-brun09)!important}

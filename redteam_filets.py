@@ -122,7 +122,9 @@ print('\n%s — %d filet(s) parasite(s)' % ('OK' if total==0 else 'ECHEC', total
 
 # ── SECONDE PARTIE — le filet du trait et des disques, piégé dans le canevas ───────────────────────────────
 APP = next((a.split('=',1)[1] for a in _sys.argv if a.startswith('--app=')), 'app.html')
-FILET_BLANCHE = {'fiche tenue'}          # nominative : la terre d'une fiche tenue, et rien d'autre
+# ⚑ v135 (Tom, 6 oct. 2026, C-059) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_filets-avant-v135.py) : « Retire le filet autour des
+#   disques et des Noyaux, et celui sous le trait et la crête, en clair comme en sombre. L'exception de v114 tombe. » La liste blanche est VIDE.
+FILET_BLANCHE = set()          # nominative : la terre d'une fiche tenue, et rien d'autre
 PIEGE = """(()=>{const o=CanvasRenderingContext2D.prototype.stroke;
   CanvasRenderingContext2D.prototype.stroke=function(){ try{ const s=this.strokeStyle;
     const t=String(s).toLowerCase().replace(/\\s/g,''); if(t==='#f7f0de' || t.indexOf('rgba(247,240,222,')===0 || t==='rgb(247,240,222)'){ const c=this.canvas, sc=c.closest&&c.closest('#detailPoster,#createSheet');
