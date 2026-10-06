@@ -1,0 +1,2722 @@
+{
+ "meta": {
+  "document": "portage/JETONS.json — couleurs, typographie, espacements de Promi, avec la décision de Tom qui fonde chaque valeur",
+  "etabliLe": "2026-10-06",
+  "lot": "v134 (arbre de travail non commité ; dernier commit ceac9ac = v133)",
+  "unite": "points, écran de référence 390 × 844 (1 pt = 1 px CSS du prototype)",
+  "ordreDesSources": [
+   "ETAT-30-SEPTEMBRE-2026.md",
+   "PROMI-TOKENS.json",
+   "CONTRAT-MONDE.md",
+   "SPEC-JUGES.md",
+   "CLAUDE.md (les blocs « ⚑ » les plus récents corrigent les plus anciens)",
+   "les décisions du 6 oct. 2026 (lot v134) priment sur ce que CLAUDE.md écrit encore"
+  ],
+  "lecture": "Chaque entrée porte `valeur` (ou `clair`/`sombre`), `decision` (citation courte, date, lot) et `source` (fichier:ligne ou bloc). `null` dans `decision` = aucune décision de Tom retrouvée (voir `trous`).",
+  "cleInterne": "Le Cercle s'appelle `nuee` dans les clés ; l'offre « Ma Parole ! » s'appelle `cercle`/`isPremium` (ETAT §1)."
+ },
+ "couleurs": {
+  "natures": {
+   "promi": {
+    "valeur": "#82AEF8",
+    "role": "le CHAMP d'un Promi (bande haute, champ de la page +, carte d'Index), dans les deux thèmes",
+    "decision": "Tom, 17 sept. 2026, planche des correspondances : « bleu Promi #3A54FF → #82AEF8 » ; Q101 (29 août) : un champ blanc n'existe jamais",
+    "source": "CLAUDE.md §3 « Les couleurs signal » · PROMI-TOKENS.json roles.promi · app.html:14286 (NATCOL)"
+   },
+   "chiche": {
+    "valeur": "#FFB8D2",
+    "role": "le CHAMP d'un Chiche",
+    "decision": "Tom, 17 sept. 2026 : « rose Chiche #FA2258 → #FFB8D2 »",
+    "source": "CLAUDE.md §3 · roles.chiche · app.html:14286"
+   },
+   "cercle": {
+    "valeur": "#C9A8F5",
+    "role": "le CHAMP d'un Cercle",
+    "cleInterne": "nuee",
+    "decision": "Tom, 17 sept. 2026 : « Les trois natures sont des pastels : la Nuée ne peut pas être la seule avec un champ sombre » — le lilas est le CHAMP, le violet ce qu'on pose dessus",
+    "source": "CLAUDE.md §3 bloc 17 sept. · roles.nuee · app.html:14286"
+   },
+   "gardeDeCote": {
+    "valeur": "#AE3929",
+    "role": "rôle déclaré dans le jeu ; ⚠ CLAUDE.md §4 dit qu'un gardé de côté porte le champ de SA nature, sans matière (Q83, Q101)",
+    "decision": null,
+    "source": "PROMI-TOKENS.json roles.garde-de-cote"
+   }
+  },
+  "etats": {
+   "aTenir": {
+    "valeur": "#DD4D23",
+    "note": "« À éviter pour du texte » (Δlum 42 sur la crème, 43 sur le brun — au seuil)",
+    "decision": "Tom, 16 sept. 2026 : « l'orange #F07A2E → #DD4D23 » ; Q262 (22 sept.) : un état a UNE valeur, « une fois pour toutes » ; v132 (C-053) : « #DD4D23 est une couleur d'état et ne sert à rien d'autre »",
+    "source": "CLAUDE.md §3 · redteam_decisions.py:17"
+   },
+   "enCours": {
+    "valeur": "#291547",
+    "decision": "Tom, 20 sept. 2026 (v7) : « en cours #291547 » ; Q262 (22 sept.)",
+    "source": "CLAUDE.md §3 · redteam_decisions.py:17"
+   },
+   "tenu": {
+    "valeur": "#00341A",
+    "decision": "Tom, 20 sept. 2026 (v7) : « tenu #00341A (vert profond) » ; Q262 (22 sept.)",
+    "source": "CLAUDE.md §3 · redteam_decisions.py:17"
+   },
+   "tenuSurFondSombre": {
+    "valeur": "#8FE08F",
+    "role": "le tenu posé sur la terre #2B1020 ; la mention « TENU(E) »",
+    "decision": "Tom, 23 sept. 2026 : « Tout ce qui est en vert sombre sur pourpre, tu le mets dans le vert amande — mode clair comme sombre » (Δlum 11,3 → 190,6 sur la terre)",
+    "source": "CLAUDE.md §3 bloc 23 sept. · redteam_decisions.py:39 (Q269, Q299)"
+   },
+   "amande": {
+    "valeur": "#8FE08F",
+    "role": "la célébration (seconde dalle qui apparaît sous la première, se décale, disparaît) et la mention TENU(E), rien d'autre",
+    "decision": "Tom, 22 sept. 2026 : « L'amande ne peint jamais un état, ni un arc, ni un texte, ni une valeur claire » — elle peint l'animation de célébration ; 23 sept. : + la mention « TENUE » (« ce vert amande est beau et rare, donc célèbre »)",
+    "source": "CLAUDE.md §3 blocs 22 et 23 sept. · roles.amande"
+   },
+   "libellesEtatEnSombre": {
+    "valeur": "#F7F0DE",
+    "role": "à-qui, échéance, « trace pour tenir », libellés d'état des cartes de l'Index, du Fil, d'une personne — en thème sombre",
+    "decision": "v16 (Q290) : les textes d'état sur fond sombre passent crème — « à tenir » compris ; v122 (Q374) : posée à la source dès la première image",
+    "source": "redteam_decisions.py:46,60-61 · CLAUDE.md bloc v122"
+   },
+   "libellesEtatEnClair": {
+    "valeur": {
+     "aTenir": "#DD4D23",
+     "enCours": "#291547",
+     "chicheLance": "#291547"
+    },
+    "decision": "Q262 (22 sept.) : « l'état, partout où il paraît » ; v29 (Q310) : « LANCÉ » suit la règle des états",
+    "source": "redteam_decisions.py:52-55"
+   },
+   "clairsMorts": {
+    "valeur": [
+     "#A77CF7 (en cours, clair)",
+     "#33BA6C (tenu, clair)",
+     "#FFD447 (jaune)",
+     "#8FA0FF (périwinkle)",
+     "#2BE88C (menthe)"
+    ],
+    "decision": "Q262 (22 sept. 2026) : une valeur par état dans les deux thèmes ; « le jaune sort […] il ne doit revenir nulle part » (Tom, 21 sept.)",
+    "source": "PROMI-TOKENS.json roles.en-cours-clair = #291547, tenu-clair = #00341A ; ⚠ CLAUDE.md §3 (table « Les couleurs signal ») écrit encore « clair sur fond sombre : #A77CF7 » — voir trous"
+   }
+  },
+  "fonds": {
+   "pageClair": {
+    "valeur": "#F7F0DE",
+    "decision": "Tom, 16 sept. 2026 : « le clair #F4EEE1 → #F7F0DE, le FOND du mode clair »",
+    "source": "CLAUDE.md §3 · roles.fond.clair · redteam_decisions.py:31"
+   },
+   "pageSombre": {
+    "valeur": "#050302",
+    "alerte": "PROMI-TOKENS.json roles.fond.sombre vaut encore #100D0B (« café noir », v7, 20 sept.) : le rôle n'a pas suivi la seiche — voir trous",
+    "decision": "Tom, 1er oct. 2026 (v116) : le mode sombre est l'encre de seiche, « jamais bleu » ; v121 (3 oct.) : « Tom garde le nouveau sombre : la seiche, dans les pages comme sur la Toile »",
+    "source": "CLAUDE.md blocs v116 et v121 · app.html:7830 (--c-brun09 → --c-seiche10 en sombre) · redteam_decisions.py:31,57"
+   },
+   "encreClair": {
+    "valeur": "#201908",
+    "decision": "Tom, 20 sept. 2026 (v7) : « l'encre du mode clair est arrêtée à #201908 » (15,34:1 sur la crème)",
+    "source": "CLAUDE.md §3 · roles.encre.clair"
+   },
+   "encreSombre": {
+    "valeur": "#F7F0DE",
+    "decision": "le texte du mode sombre est la crème (roles.encre.sombre)",
+    "source": "PROMI-TOKENS.json roles.encre"
+   },
+   "brunEncre": {
+    "valeur": "#43291C",
+    "decision": "Tom, 20 sept. 2026 (v7) : « brun encre #43291C, trait et texte sur champ lilas » (6,62:1 sur le lilas)",
+    "source": "CLAUDE.md §3 bloc 20 sept. · roles.brun-encre"
+   },
+   "terre": {
+    "valeur": "#2B1020",
+    "decision": "v8 (21 sept. 2026) : « terre #2B1020, prune sombre — le SOL d'une fiche [tenue], dans les deux thèmes »",
+    "source": "CLAUDE.md §3 bloc 21 sept. · roles.exception / corps-tenu · redteam_decisions.py:38"
+   },
+   "crete": {
+    "valeur": "#0B4A2A",
+    "decision": "v8 (21 sept. 2026) : « crête #0B4A2A, la ligne d'horizon, posée sur la terre (ΔE 51,3 · Δlum 35,4) »",
+    "source": "CLAUDE.md §3 · roles.crete"
+   },
+   "toileClair": {
+    "valeur": "#DFCAA4",
+    "decision": "Tom, 2 oct. 2026 (v118) : « le fond de la Toile est à plat, en clair aussi : #DFCAA4 » (le dégradé #E6D1AE → #D8C29A est retiré)",
+    "source": "CLAUDE.md bloc v118"
+   },
+   "toileSombre": {
+    "valeur": "#050302",
+    "decision": "Tom, v116 : fond #050302 (OKLCH L 0,101, h 54,8°) ; cellules vides L 0,136–0,161 (h 40–56°) ; grain léger ; jamais bleu",
+    "source": "CLAUDE.md bloc v116"
+   },
+   "dalleNeutreIngenuSombre": {
+    "valeur": "#1F1611",
+    "decision": "v116",
+    "source": "CLAUDE.md bloc v116 · --c-seiche21"
+   },
+   "dalleNeutreIngenuClair": {
+    "valeur": "#EFE3C7",
+    "alerte": "h OKLCH 88 : dans la plage du kaki par la teinte (bloc v114) ; v115 borne le kaki par la luminance 0,20–0,80 (« le crème n'est pas du kaki »)",
+    "decision": "Tom, 20 sept. 2026 : crème dalle, quatrième ton de la palette d'identité ; 21 sept. : sous Ingénu elle peint les cellules neutres",
+    "source": "CLAUDE.md §3 · CLAUDE.md §4 exception Ingénu"
+   },
+   "vuePhotoEntiere": {
+    "valeur": "#050302",
+    "decision": "v131 (C-051) : « fond PLEIN — la seiche, sans transparence, ni ombre, ni fondu »",
+    "source": "CLAUDE.md bloc v131"
+   },
+   "surface": {
+    "clair": "#F7EBD6",
+    "sombre": "#211B05",
+    "decision": null,
+    "source": "PROMI-TOKENS.json roles.surface"
+   },
+   "surfaceHaute": {
+    "clair": "#FAF4E8",
+    "sombre": "#251F11",
+    "decision": null,
+    "source": "PROMI-TOKENS.json roles.surface-haute"
+   },
+   "sousTexte": {
+    "clair": "#6E6350",
+    "sombre": "#928166",
+    "decision": null,
+    "source": "PROMI-TOKENS.json roles.sous-texte"
+   },
+   "grip": {
+    "clair": "#C8BAA4",
+    "sombre": "#493D28",
+    "decision": null,
+    "source": "PROMI-TOKENS.json roles.grip"
+   },
+   "cremePanneau": {
+    "valeur": "#F3E7D1",
+    "decision": "Tom, 17 sept. 2026 : « crème panneau #F3E7D1 · crème bordure #E4D7BB · crème dalle #EFE3C7 »",
+    "source": "CLAUDE.md §3 bloc 17 sept."
+   },
+   "cremeBordure": {
+    "valeur": "#E4D7BB",
+    "decision": "Tom, 17 sept. 2026",
+    "source": "CLAUDE.md §3 bloc 17 sept."
+   },
+   "orangeOrigine": {
+    "valeur": "#F07A2E",
+    "alerte": "⚠ v132 dit que l'amande seule peint la célébration : emploi réel à vérifier — voir trous",
+    "decision": "Tom, 17 sept. 2026 : « orange d'origine → #F07A2E, accent secondaire, célébration »",
+    "source": "CLAUDE.md §3 bloc 17 sept."
+   }
+  },
+  "corps": {
+   "promi": {
+    "clair": "#F7F0DE",
+    "sombre": "#0E78F2",
+    "ou": "fiche Promi et page + d'un Promi",
+    "morts": [
+     "#1A52F0 (v133, provisoire)",
+     "#273CEB (v131, cobalt)",
+     "#8ACBE8 (v130, Tropical Breeze)",
+     "#335382 (v113)"
+    ],
+    "alerte": "roles.corps-promi.clair = #CFE5FE dans le jeu : « jeton qui ne peint pas le corps » (v122)",
+    "decision": "CLAIR — v122 : « le corps CLAIR d'une fiche est la crème #F7F0DE » (Tom, Q221 : « sur le corps crème »). SOMBRE — Tom, 6 oct. 2026 (v134, C-050) : « DÉFINITIF : Tom a choisi #0E78F2, en connaissance de cause »",
+    "source": "redteam_decisions.py:22-25 · PROMI-TOKENS.json roles.corps-promi.sombre, --c-cobalt50 · app.html:38332"
+   },
+   "chiche": {
+    "clair": "#F7F0DE",
+    "sombre": "#7C3F58",
+    "decision": "CLAIR — v122 : crème. SOMBRE — v113 (30 sept., Q358) : « option 2 »",
+    "source": "redteam_decisions.py:25,44 · CLAUDE.md §3 bloc v122"
+   },
+   "cercle": {
+    "clair": "#F7F0DE",
+    "sombre": "#5D4978",
+    "decision": "CLAIR — v122 : crème. SOMBRE — v113 : valeur posée par le lot, « pas une citation de Tom » ; v123 : « Corps sombre du Cercle #5D4978 : validé »",
+    "source": "redteam_decisions.py:25 · CLAUDE.md blocs v122 et v123"
+   },
+   "tenu": {
+    "valeur": "#2B1020",
+    "decision": "v8 (21 sept.) : la terre, dans les deux thèmes ; texte crème #F7F0DE (15,42:1), marques d'état en amande",
+    "source": "redteam_decisions.py:38-40"
+   },
+   "peaufinerTenuPromi": {
+    "valeur": "le corps sombre du Promi",
+    "decision": "v130 : « le Peaufiner a SON corps : celui d'une fiche Promi TENUE est [le corps du Promi] alors que la fiche est terre »",
+    "source": "CLAUDE.md bloc v130 (piège ②)"
+   },
+   "aTenirJeu": {
+    "clair": "#EFC3B9",
+    "sombre": "#533336",
+    "alerte": "rôle déclaré ; aucun aplat d'état ne peint plus un corps (§3 : « plus aucun aplat d'état n'existe ») — voir trous",
+    "decision": null,
+    "source": "PROMI-TOKENS.json roles.corps-a-tenir"
+   },
+   "gardeJeu": {
+    "clair": "#EFC3B9",
+    "sombre": "#4B2D30",
+    "alerte": "idem",
+    "decision": null,
+    "source": "PROMI-TOKENS.json roles.corps-garde"
+   }
+  },
+  "textes": {
+   "surChampPastel": {
+    "valeur": "#201908",
+    "decision": "Tom, 17 sept. 2026 : « le texte posé sur un champ passe à l'encre #201908 » (mot-marque, ✕ FERMER, barre Peaufiner ; Δlum 72,8 et 61,6)",
+    "source": "CLAUDE.md §3 bloc 17 sept."
+   },
+   "surTerre": {
+    "valeur": "#F7F0DE",
+    "decision": "v8 (21 sept.) : sur la terre, le texte passe crème (15,42:1)",
+    "source": "redteam_decisions.py:40"
+   },
+   "surCorpsSombrePromi": {
+    "valeur": "#F7F0DE",
+    "decision": "Tom, 6 oct. 2026 (v134) : le texte reste crème — 3,70:1, EXCEPTION NOMMÉE (petites mentions sous 4,5:1)",
+    "source": "redteam_decisions.py:22-24,49"
+   },
+   "plateauMotMarque": {
+    "clair": "#201908",
+    "sombre": "#F7F0DE",
+    "decision": "17 sept. : le texte du plateau à l'encre en clair",
+    "source": "redteam_decisions.py:32"
+   },
+   "plateauFond": {
+    "clair": "#F7F0DE",
+    "sombre": "#050302",
+    "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)",
+    "source": "redteam_decisions.py:31"
+   },
+   "phraseLilasPagePlus": {
+    "defaut": "#C4A2F5",
+    "surCorpsSombrePromi": "#F4EEFF",
+    "vaut": "phrase (.ph-li) ET consigne (.ph-hint) de la page + d'un Promi, en sombre",
+    "decision": "défaut : jeton --c-mauve75 #C4A2F5 ; sur le corps sombre d'un Promi : v132 (C-054) « garde sa teinte, éclaircie » puis v134 : #F4EEFF (3,71:1) — QUESTION OUVERTE Q403 (4,5:1 hors d'atteinte : le blanc pur fait 4,21:1)",
+    "source": "redteam_decisions.py:24,107 · --c-lilas85 · QUESTIONS.md:8478"
+   },
+   "supprimerCePromi": {
+    "clair": "#201908",
+    "sombre": "#F7F0DE",
+    "decision": "Tom, 5 oct. 2026 (v132, C-053) : « SUPPRIMER CE PROMI passe en crème : le #DD4D23 est une couleur d'état et ne sert à rien d'autre » ; encre en clair (Q393, à valider)",
+    "source": "redteam_decisions.py:110"
+   },
+   "libelleNatureCarteClair": {
+    "valeur": "#022140",
+    "decision": "Q221 (17 sept.) : le compagnon sombre, mode clair",
+    "source": "redteam_decisions.py:58"
+   },
+   "encreTouffeSombre": {
+    "valeur": "#F4F2F0",
+    "decision": "Tom, v115 : « l'encre de Touffe, en sombre, est neutre : #F4F2F0 » (Touffe seul)",
+    "source": "CLAUDE.md bloc v115"
+   },
+   "phraseDesMurs": {
+    "clair": "#201908",
+    "sombre": "#F7F0DE",
+    "decision": "v105 (Tom) : « encre #201908 sur clair, crème #F7F0DE sur sombre, une seule taille »",
+    "source": "CLAUDE.md bloc v104–v105 · SPEC-JUGES.md §2"
+   }
+  },
+  "traits": {
+   "regle": "Le trait posé sur un champ plein porte une TEINTE DE SA NATURE (sombre, depuis que les champs sont pastels), jamais la couleur pleine du champ ; il se juge en ΔE ≥ 15 sur son champ (Q216).",
+   "promi": {
+    "valeur": "#022140",
+    "decision": "Tom, 18 sept. 2026 : « Les teintes claires du §2.1 bis sont mortes […] Recalcule-les sur les champs pastel » (Δlum 58,3 · ΔE 61,2 sur #82AEF8)",
+    "source": "CLAUDE.md §3 « §2.1 bis corrigé » · app.html:14301 (NATTRAIT)"
+   },
+   "chiche": {
+    "valeur": "#3D0F23",
+    "decision": "Tom, 18 sept. 2026 (Δlum 69,6 · ΔE 69,8 sur #FFB8D2)",
+    "source": "app.html:14301"
+   },
+   "cercle": {
+    "valeur": "#43291C",
+    "alerte": "deux sources se contredisent : voir trous",
+    "decision": "v7 (20 sept.) : le brun encre prend le rôle d'encre sur le lilas ; ⚠ CLAUDE.md « §2.1 bis corrigé » (18 sept.) et la table « couleurs signal » écrivent #291547",
+    "source": "app.html:14301 (valeur du code)"
+   },
+   "libellesSurCorpsSombre": {
+    "valeur": {
+     "promi": "#C4A2F5",
+     "chiche": "#F5AC9E",
+     "cercle": "#C9A8F5"
+    },
+    "decision": "18 sept. : « on sépare au NOM » — NATCLAIR garde les libellés posés sur le corps sombre",
+    "source": "app.html:14287 (NATCLAIR)"
+   },
+   "cercleTeinteDerniereDalle": {
+    "valeur": "une Nuée prend la teinte de sa dernière dalle plantée",
+    "alerte": "phrase d'août, non reprise depuis : statut incertain — voir trous",
+    "decision": null,
+    "source": "CLAUDE.md §3 « Le trait sur le champ »"
+   }
+  },
+  "maParole": {
+   "regle": "Jeton à lui seul (--orange-maparole) : ces valeurs n'existent NULLE PART ailleurs que dans les mots orange des phrases des murs (redteam_maparole.py).",
+   "defaut": {
+    "valeur": "#FB4C0D",
+    "decision": "Tom, v120–v121 : « #FB4C0D partout, sauf sur les trois corps sombres de Peaufiner »",
+    "source": "CLAUDE.md blocs v121, v122 · --c-orange-maparole · QUESTIONS.md:8300"
+   },
+   "surCorpsSombreChicheEtCercle": {
+    "valeur": "#FF7A55",
+    "decision": "Tom, v121 (Q373) : « ce même orange (même teinte OKLCH) éclairci jusqu'à 3:1 » — 3,02 (Chiche) · 3,04 (Cercle)",
+    "source": "--c-orange-maparole-corps · QUESTIONS.md:8300-8304"
+   },
+   "surCorpsSombrePromi": {
+    "valeur": "#FED0C3",
+    "alerte": "Q403 : « un pêche très pâle — à voir sur l'iPhone »",
+    "morts": [
+     "#FF8664 (sur #273CEB, v131)"
+    ],
+    "decision": "Tom, 6 oct. 2026 (v134 ; Q399 tranchée : « la méthode est validée — même teinte, éclaircie jusqu'à son seuil ») : 3,01:1 sur #0E78F2",
+    "source": "--c-orange-maparole-cobalt · QUESTIONS.md:8476-8480"
+   },
+   "contrastesMesuresDefaut": {
+    "pageClaire": "3,01:1",
+    "pageSombre": "5,10:1",
+    "peaufinerChicheClair": "3,19:1",
+    "peaufinerPromiClair": "2,65:1",
+    "peaufinerCercleClair": "2,78:1",
+    "source": "QUESTIONS.md Q373 (v120), l.8294-8297",
+    "alerte": "les deux corps clairs sous 3:1 ne sont pas repris par la décision de v121 — voir trous"
+   }
+  },
+  "pelote": {
+   "regle": "La Pelote est le seul volume de l'app : elle seule porte un halo et une ombre (v114).",
+   "sol": {
+    "valeur": "le ton dominant (C1) de la palette du Studio ; clarté de Q210 (SOL_CLAIR 0,38, SOL_CREME 0,39), ressaturé à 0,72 × la chroma du ton ; décalé (teinte gardée, vers le blanc ou le noir) jusqu'à ΔE ≥ 42 face à la page (on vise 44)",
+    "decision": "Tom, 20–22 sept. 2026",
+    "source": "CLAUDE.md §3 blocs 20, 21, 22 sept."
+   },
+   "corps": {
+    "valeur": "une AUTRE teinte de la palette, jamais celle des poils, tirée à chaque ouverture ; ΔE00 ≥ 15 face au sol et à chaque marche de sa rampe ; jamais kaki ; compte pour 1/3 (32,5 %) de la couleur rendue ; couleur rendue à ΔE00 ≥ 14 de l'ouverture d'avant",
+    "decision": "Tom, v123 et v125",
+    "source": "CLAUDE.md blocs v123, v125 · redteam_corps.py"
+   },
+   "halo": {
+    "valeur": {
+     "teinte": "celle du corps tiré (clarté écartée du fond si ΔE00 < 42)",
+     "deltaE00AuRas": 14,
+     "etendue": "0,12 D",
+     "fonduBas": "part de l'horizontale (45°, en S)",
+     "trame": "± 2,75 niveaux de couleur",
+     "respiration": "± 20 % avec le souffle",
+     "distanceAuPlateau": "4,5 ± 0,5 pt"
+    },
+    "decision": "Tom, v123 : « densité 3 et halo 3 RETENUS — ce sont des constantes » ; v125 : le halo prend la teinte du corps",
+    "source": "CLAUDE.md blocs v119–v125 · app.html:7783 (REG : haloRas 14, haloExt 0.12)"
+   },
+   "ombre": {
+    "valeur": {
+     "clair": "ellipse, encre du mode, 0,10",
+     "sombre": "ellipse crème 0,105 → ΔE00 5,05 (décidé 4 à 6)",
+     "geometrie": "≤ 55 % × 10 % de D (v114) ; v115 : 0,45 D × 0,07 D ; centrée à 0,04 D sous la silhouette (v116)"
+    },
+    "decision": "Tom, v114, v116, v123 (« l'ombre en sombre est une ellipse crème », renverse v119)",
+    "source": "CLAUDE.md blocs v114, v116, v123"
+   },
+   "silhouette": {
+    "valeur": {
+     "rayon": 121,
+     "D": 232.064,
+     "plein": "alpha 255 en retrait de 0,04 D"
+    },
+    "decision": "v120 : « la Pelote est pleine » ; v116 : rien ne dépasse du contour",
+    "source": "SPEC-JUGES.md §4 · redteam_plein.py, redteam_contour.py"
+   },
+   "densite": {
+    "valeur": {
+     "paliers": [
+      220000,
+      180000,
+      150000,
+      110000,
+      90000,
+      75000
+     ],
+     "facteur": 2,
+     "epaisseurPoil": 0.7
+    },
+    "decision": "Tom, v124 (Q378) : « la fluidité passe avant la densité »",
+    "source": "CLAUDE.md bloc v124 · app.html:7783"
+   },
+   "boutonPartager": {
+    "valeur": "un ton de la palette tiré à chaque ouverture, ≠ poils ≠ corps, ≥ 3:1 face au fond, jamais kaki ; la clarté seule bouge (OKLCH), plus de repli sur l'encre",
+    "decision": "Tom, v124 puis v125",
+    "source": "CLAUDE.md blocs v124, v125 · redteam_bouton.py"
+   },
+   "garderTaToile": {
+    "valeur": "un ton de la palette retiré à chaque retour sur la page, ≥ 4,5:1, jamais kaki ; teinte gardée (v125)",
+    "decision": "Tom, v124–v125",
+    "source": "redteam_garder_toile.py"
+   }
+  },
+  "mesuresSurCorpsSombrePromi": {
+   "fond": "#0E78F2",
+   "source": "mesures du lot v134 (6 oct. 2026), « rien retouché » · QUESTIONS.md Q404",
+   "aTenir #DD4D23": {
+    "deltaE_CIELAB": 126.2,
+    "deltaLum": 1.7,
+    "contraste": "1,03:1"
+   },
+   "enCours #291547": {
+    "deltaE_CIELAB": 56.8,
+    "contraste": "3,86:1"
+   },
+   "tenu #00341A": {
+    "deltaE_CIELAB": 97.2,
+    "contraste": "3,31:1"
+   },
+   "traitPromi #022140": {
+    "deltaE_CIELAB": 62.4,
+    "contraste": "3,85:1"
+   },
+   "bande #82AEF8": {
+    "deltaE_CIELAB": 36.1
+   },
+   "texteCreme #F7F0DE": {
+    "contraste": "3,70:1"
+   },
+   "phraseLilas #F4EEFF": {
+    "contraste": "3,71:1"
+   },
+   "maParole #FED0C3": {
+    "contraste": "3,01:1"
+   },
+   "blancPur": {
+    "contraste": "4,21:1"
+   }
+  },
+  "decisions": {
+   "source": "redteam_decisions.py (tableau D, l.27-61, + anneau l.124-128, + V132 l.107-110), rejoué ici sans navigateur ; arbre de travail v134",
+   "lecture": "chaque ligne : écran, thème, zone, valeur décidée, décision",
+   "lignes": [
+    {
+     "ecran": "Promi à tenir",
+     "theme": "clair",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "clair",
+     "zone": "plateau",
+     "valeur": "#F7F0DE",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "clair",
+     "zone": "motMarque",
+     "valeur": "#201908",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "clair",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "clair",
+     "zone": "plateau",
+     "valeur": "#F7F0DE",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "clair",
+     "zone": "motMarque",
+     "valeur": "#201908",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "clair",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "clair",
+     "zone": "plateau",
+     "valeur": "#F7F0DE",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "clair",
+     "zone": "motMarque",
+     "valeur": "#201908",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "clair",
+     "zone": "champ",
+     "valeur": "#FFB8D2",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "clair",
+     "zone": "plateau",
+     "valeur": "#F7F0DE",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "clair",
+     "zone": "motMarque",
+     "valeur": "#201908",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "clair",
+     "zone": "champ",
+     "valeur": "#FFB8D2",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "clair",
+     "zone": "plateau",
+     "valeur": "#F7F0DE",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "clair",
+     "zone": "motMarque",
+     "valeur": "#201908",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Cercle",
+     "theme": "clair",
+     "zone": "champ",
+     "valeur": "#C9A8F5",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Cercle",
+     "theme": "clair",
+     "zone": "plateau",
+     "valeur": "#F7F0DE",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Cercle",
+     "theme": "clair",
+     "zone": "motMarque",
+     "valeur": "#201908",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "clair",
+     "zone": "corps",
+     "valeur": "#2B1020",
+     "decision": "v8 (21 sept.) : la terre, dans les deux thèmes"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "clair",
+     "zone": "echeance",
+     "valeur": "#8FE08F",
+     "decision": "Q269 (23 sept.) · Q299 : « TENUE » en amande"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "clair",
+     "zone": "titre",
+     "valeur": "#F7F0DE",
+     "decision": "v8 (21 sept.) : sur la terre, le texte passe crème"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "clair",
+     "zone": "corps",
+     "valeur": "#2B1020",
+     "decision": "v8 (21 sept.) : la terre, dans les deux thèmes"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "clair",
+     "zone": "echeance",
+     "valeur": "#8FE08F",
+     "decision": "Q269 (23 sept.) · Q299 : « TENUE » en amande"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "clair",
+     "zone": "titre",
+     "valeur": "#F7F0DE",
+     "decision": "v8 (21 sept.) : sur la terre, le texte passe crème"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "clair",
+     "zone": "aQui",
+     "valeur": "#DD4D23",
+     "decision": "Q262 (22 sept.) : l'état, partout où il paraît"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "clair",
+     "zone": "aQui",
+     "valeur": "#291547",
+     "decision": "Q262 (22 sept.)"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "clair",
+     "zone": "aQui",
+     "valeur": "#291547",
+     "decision": "v29 (Q310) : « LANCÉ » suit la règle des états"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "clair",
+     "zone": "echeance",
+     "valeur": "#DD4D23",
+     "decision": "Q262 (22 sept.) : l'état, partout où il paraît"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "clair",
+     "zone": "echeance",
+     "valeur": "#291547",
+     "decision": "Q262 (22 sept.)"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "clair",
+     "zone": "echeance",
+     "valeur": "#291547",
+     "decision": "v29 (Q310) : « LANCÉ » suit la règle des états"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "clair",
+     "zone": "trace",
+     "valeur": "#DD4D23",
+     "decision": "Q262 (22 sept.) : l'état, partout où il paraît"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "clair",
+     "zone": "trace",
+     "valeur": "#291547",
+     "decision": "Q262 (22 sept.)"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "clair",
+     "zone": "trace",
+     "valeur": "#291547",
+     "decision": "v29 (Q310) : « LANCÉ » suit la règle des états"
+    },
+    {
+     "ecran": "page +",
+     "theme": "clair",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "Q101 (29 août) : la couleur de la nature"
+    },
+    {
+     "ecran": "Index",
+     "theme": "clair",
+     "zone": "carte_libelle",
+     "valeur": "#022140",
+     "decision": "Q221 (17 sept.) : le compagnon sombre, mode clair"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "clair",
+     "zone": "anneau",
+     "valeur": "#DD4D23 · #291547 · #00341A (trois arcs, rien d'autre)",
+     "decision": "Q262, v8c : un anneau ne porte que les trois états"
+    },
+    {
+     "ecran": "Peaufiner",
+     "theme": "clair",
+     "zone": "« Supprimer ce Promi »",
+     "valeur": "#201908",
+     "decision": "v132 (C-053) : jamais l'orange d'état"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "plateau",
+     "valeur": "#050302",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "motMarque",
+     "valeur": "#F7F0DE",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "plateau",
+     "valeur": "#050302",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "motMarque",
+     "valeur": "#F7F0DE",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "sombre",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "sombre",
+     "zone": "plateau",
+     "valeur": "#050302",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "sombre",
+     "zone": "motMarque",
+     "valeur": "#F7F0DE",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "sombre",
+     "zone": "champ",
+     "valeur": "#FFB8D2",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "sombre",
+     "zone": "plateau",
+     "valeur": "#050302",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "sombre",
+     "zone": "motMarque",
+     "valeur": "#F7F0DE",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "sombre",
+     "zone": "champ",
+     "valeur": "#FFB8D2",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "sombre",
+     "zone": "plateau",
+     "valeur": "#050302",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "sombre",
+     "zone": "motMarque",
+     "valeur": "#F7F0DE",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Cercle",
+     "theme": "sombre",
+     "zone": "champ",
+     "valeur": "#C9A8F5",
+     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
+    },
+    {
+     "ecran": "Cercle",
+     "theme": "sombre",
+     "zone": "plateau",
+     "valeur": "#050302",
+     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
+    },
+    {
+     "ecran": "Cercle",
+     "theme": "sombre",
+     "zone": "motMarque",
+     "valeur": "#F7F0DE",
+     "decision": "17 sept. : le texte du plateau à l'encre en clair"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "sombre",
+     "zone": "corps",
+     "valeur": "#2B1020",
+     "decision": "v8 (21 sept.) : la terre, dans les deux thèmes"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "sombre",
+     "zone": "echeance",
+     "valeur": "#8FE08F",
+     "decision": "Q269 (23 sept.) · Q299 : « TENUE » en amande"
+    },
+    {
+     "ecran": "Promi tenue",
+     "theme": "sombre",
+     "zone": "titre",
+     "valeur": "#F7F0DE",
+     "decision": "v8 (21 sept.) : sur la terre, le texte passe crème"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "sombre",
+     "zone": "corps",
+     "valeur": "#2B1020",
+     "decision": "v8 (21 sept.) : la terre, dans les deux thèmes"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "sombre",
+     "zone": "echeance",
+     "valeur": "#8FE08F",
+     "decision": "Q269 (23 sept.) · Q299 : « TENUE » en amande"
+    },
+    {
+     "ecran": "Chiche tenu à deux",
+     "theme": "sombre",
+     "zone": "titre",
+     "valeur": "#F7F0DE",
+     "decision": "v8 (21 sept.) : sur la terre, le texte passe crème"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "corps",
+     "valeur": "#0E78F2",
+     "decision": "v134 (Tom, 6 oct. 2026, C-050) : DÉFINITIF, « Tom a choisi #0E78F2, en connaissance de cause » — remplace #1A52F0 (v133), #273CEB (v131), #8ACBE8 (v130), #335382 (v113, Q358)"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "corps",
+     "valeur": "#0E78F2",
+     "decision": "v134 (Tom, 6 oct. 2026, C-050) : DÉFINITIF, « Tom a choisi #0E78F2, en connaissance de cause » — remplace #1A52F0 (v133), #273CEB (v131), #8ACBE8 (v130), #335382 (v113, Q358)"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "sombre",
+     "zone": "corps",
+     "valeur": "#7C3F58",
+     "decision": "v113 (30 sept., Q358) : « option 2 »"
+    },
+    {
+     "ecran": "Cercle",
+     "theme": "sombre",
+     "zone": "corps",
+     "valeur": "#5D4978",
+     "decision": "v113 (30 sept., Q358) : « option 2 » ; ⚠ le Cercle : ajout de v113, pas une citation de Tom (validé v123)"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "sombre",
+     "zone": "aQui",
+     "valeur": "#F7F0DE",
+     "decision": "v16 (Q290) : les textes d'état sur fond sombre passent crème"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "sombre",
+     "zone": "echeance",
+     "valeur": "#F7F0DE",
+     "decision": "v16 (Q290) : les textes d'état sur fond sombre passent crème"
+    },
+    {
+     "ecran": "Chiche lancé",
+     "theme": "sombre",
+     "zone": "trace",
+     "valeur": "#F7F0DE",
+     "decision": "v16 (Q290) : les textes d'état sur fond sombre passent crème"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "titre",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "aQui",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "echeance",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "trace",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "titre",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "aQui",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "echeance",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "Promi en cours",
+     "theme": "sombre",
+     "zone": "trace",
+     "valeur": "#F7F0DE",
+     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
+    },
+    {
+     "ecran": "page +",
+     "theme": "sombre",
+     "zone": "champ",
+     "valeur": "#82AEF8",
+     "decision": "Q101 (29 août) : la couleur de la nature"
+    },
+    {
+     "ecran": "page +",
+     "theme": "sombre",
+     "zone": "corps",
+     "valeur": "#0E78F2",
+     "decision": "v134 (Tom, 6 oct. 2026, C-050) : DÉFINITIF, « Tom a choisi #0E78F2, en connaissance de cause » — remplace #1A52F0 (v133), #273CEB (v131), #8ACBE8 (v130), #335382 (v113, Q358)"
+    },
+    {
+     "ecran": "Index",
+     "theme": "sombre",
+     "zone": "fond",
+     "valeur": "#050302",
+     "decision": "v116 + v121 : la seiche dans les pages"
+    },
+    {
+     "ecran": "Index",
+     "theme": "sombre",
+     "zone": "carte_etat",
+     "valeur": "#F7F0DE",
+     "decision": "v16 (Q290) : état sur fond sombre en crème"
+    },
+    {
+     "ecran": "Index",
+     "theme": "sombre",
+     "zone": "cartes_etats",
+     "valeur": "#F7F0DE",
+     "decision": "v16 (Q290) : les libellés des cartes À TENIR, EN COURS, LANCÉ, sur le corps sombre, en crème — « à tenir » compris"
+    },
+    {
+     "ecran": "Promi à tenir",
+     "theme": "sombre",
+     "zone": "anneau",
+     "valeur": "#DD4D23 · #291547 · #00341A (trois arcs, rien d'autre)",
+     "decision": "Q262, v8c : un anneau ne porte que les trois états"
+    },
+    {
+     "ecran": "Peaufiner",
+     "theme": "sombre",
+     "zone": "« Supprimer ce Promi »",
+     "valeur": "#F7F0DE",
+     "decision": "v132 (C-053) : jamais l'orange d'état"
+    },
+    {
+     "ecran": "page +",
+     "theme": "sombre",
+     "zone": "phrase (.ph-li)",
+     "valeur": "#F4EEFF",
+     "decision": "v132 (C-054), v134 (C-050) : le lilas éclairci, même teinte — 3,71:1, Q403 ouverte"
+    },
+    {
+     "ecran": "page +",
+     "theme": "sombre",
+     "zone": "consigne (.ph-hint)",
+     "valeur": "#F4EEFF",
+     "decision": "v132 (C-054), v134 (C-050)"
+    }
+   ],
+   "nombre": 85
+  },
+  "exceptions": [
+   {
+    "nom": "Le texte crème sur le corps sombre d'un Promi",
+    "ou": "fiche Promi et page + d'un Promi, thème sombre, corps #0E78F2",
+    "quoi": "titre, à-qui, échéance, mentions — les petites mentions sont sous 4,5:1",
+    "valeur": "#F7F0DE",
+    "contrasteMesure": "3,70:1",
+    "decideePar": "Tom",
+    "quand": "6 oct. 2026, lot v134 (C-050) — « en connaissance de cause »",
+    "source": "redteam_decisions.py:22-24 · QUESTIONS.md:8476"
+   },
+   {
+    "nom": "La phrase lilas de la page + sur ce même corps",
+    "ou": "page + d'un Promi, sombre",
+    "quoi": "4,5:1 est hors d'atteinte en éclaircissant (blanc pur : 4,21:1) ; posée au niveau de la crème",
+    "valeur": "#F4EEFF",
+    "contrasteMesure": "3,71:1",
+    "decideePar": "NON DÉCIDÉE — Q403 ouverte (autres voies : #FBF9FF à 4:1, ou la crème)",
+    "quand": "v134",
+    "source": "QUESTIONS.md:8478-8480"
+   },
+   {
+    "nom": "Le trait « à tenir » sur ce même corps",
+    "ou": "fiche Promi à tenir, sombre",
+    "quoi": "aucun écart de clarté ; il se lit par la teinte ; rien retouché",
+    "valeur": "#DD4D23",
+    "contrasteMesure": "Δlum 1,7 · 1,03:1 · ΔE (CIELAB) 126,2",
+    "decideePar": "À SAVOIR (Q404) — conforme à la règle du trait (ΔE ≥ 15), pas à un critère de clarté",
+    "quand": "v134",
+    "source": "QUESTIONS.md:8481"
+   },
+   {
+    "nom": "Le filet crème sous le trait d'une fiche tenue",
+    "ou": "sur la terre #2B1020, deux thèmes",
+    "quoi": "seul filet crème permis sous un trait : la crête #0B4A2A n'est qu'à Δlum 15,7 de la terre — le filet y est EXIGÉ",
+    "valeur": "rgba(247,240,222,.55)",
+    "contrasteMesure": "crête/terre Δlum 15,7 ; crème/terre Δlum 217,3",
+    "decideePar": "Tom",
+    "quand": "30 sept. 2026, v114 (« une seule exception, nominative »)",
+    "source": "CLAUDE.md bloc v114 · redteam_filets.py"
+   },
+   {
+    "nom": "L'encre neutre de Touffe",
+    "ou": "monde Touffe, thème sombre",
+    "quoi": "l'encre du produit composée sur un brun virait au kaki ; Touffe seul reçoit une encre neutre",
+    "valeur": "#F4F2F0",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "v115 (1er oct. 2026)",
+    "source": "CLAUDE.md bloc v115 (_tfInkTouffe)"
+   },
+   {
+    "nom": "La couleur mère choisie par l'utilisateur face au kaki",
+    "ou": "la jauge de teinte du Studio",
+    "quoi": "seule couleur qui peut être kaki ; aucune teinte DÉRIVÉE ne doit entrer d'elle-même dans la plage",
+    "valeur": "OKLCH h 78–140°, C 0,015–0,10, L 0,20–0,80",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "30 sept. 2026 (v114), bornes v115",
+    "source": "CLAUDE.md blocs v114, v115 · redteam_kaki.py"
+   },
+   {
+    "nom": "Le brun de page face au kaki",
+    "ou": "encre #201908 (h 87°, L 0,21)",
+    "quoi": "hors périmètre : « c'est une page, pas une dalle » ; le repli sur l'encre n'est pas un tirage",
+    "valeur": "#201908",
+    "contrasteMesure": null,
+    "decideePar": "constat du lot (v114, v124)",
+    "quand": "v114",
+    "source": "CLAUDE.md blocs v114, v124"
+   },
+   {
+    "nom": "La Pelote, seul volume",
+    "ou": "l'Aura (et la Pelote partagée)",
+    "quoi": "seule à porter un halo et une ombre ; partout ailleurs ni halo, ni ombre floue, ni dégradé",
+    "valeur": "halo ΔE00 14 au ras, 0,12 D ; ombre encre 0,10 (clair) / crème 0,105 (sombre)",
+    "contrasteMesure": "ombre sombre ΔE00 5,05",
+    "decideePar": "Tom",
+    "quand": "30 sept. 2026 (v114) ; constantes v123",
+    "source": "CLAUDE.md blocs v114, v123 · redteam_volume.py, redteam_halo.py"
+   },
+   {
+    "nom": "Le choix de taille du dessin face à la loi des points",
+    "ou": "mode dessin, second toucher sur la plume ou la gomme",
+    "quoi": "trois petits points côte à côte, de taille croissante, à l'encre du mode — seule commande en points de l'app",
+    "valeur": "plume 2,5 / 4,5 / 8 pt ; gomme 10 / 18 / 30 pt",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "4 oct. 2026 (v127, loi dictée en v128, C-044)",
+    "source": "CLAUDE.md §5 « La loi des points »"
+   },
+   {
+    "nom": "Ingénu : la couleur de la dalle dit la nature",
+    "ou": "palette par défaut (clé signal) seulement",
+    "quoi": "exception à « la dalle porte le monde, l'accent porte la nature »",
+    "valeur": "Promi #82AEF8 · Chiche #FFB8D2 · Cercle #C9A8F5 · neutre #EFE3C7",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "21 sept. 2026 (v17, Q292, Q297)",
+    "source": "CLAUDE.md §4"
+   },
+   {
+    "nom": "La bande haute teinte sa dalle (Q30)",
+    "ou": "bande haute d'une fiche et champ de la page +, nulle part ailleurs",
+    "quoi": "la dalle y prend la rampe de sa nature (luminosité remappée, forme intacte)",
+    "valeur": "ton sur ton 16 → 109 de Δlum",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "18 août 2026 (Q30)",
+    "source": "CLAUDE.md §4"
+   },
+   {
+    "nom": "Le Studio garde ses flous",
+    "ou": "Studio",
+    "quoi": "les murs y gardent leur propre flou et « Adopte ce design » : « on doit voir le monde pour avoir envie de l'acheter »",
+    "valeur": "partout ailleurs 4,8 px",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "30 sept. 2026 (v104–v105)",
+    "source": "CLAUDE.md bloc v104"
+   },
+   {
+    "nom": "L'onboarding en Gilbert minuscules ; « Deuxio » penché",
+    "ou": "onboarding",
+    "quoi": "exception à « Gilbert en capitales » ; « Deuxio » seul mot penché, 3°",
+    "valeur": "skewX(-3deg) ± 0,5",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "4 oct. 2026 (v127, v129 ; C-043)",
+    "source": "CLAUDE.md blocs v127, v129 · redteam_onboarding (O22)"
+   },
+   {
+    "nom": "« Zzz » en minuscules",
+    "ou": "bouton du mode nuit (Studio)",
+    "quoi": "Z majuscule, zz minuscules, même si ses voisins sont en capitales",
+    "valeur": "Zzz",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "2 oct. 2026 (v118) ; ⚠ le Zzz est COUPÉ depuis v120",
+    "source": "CLAUDE.md blocs v118, v120"
+   },
+   {
+    "nom": "Le ✕ sur la surface de dessin",
+    "ou": "mode dessin",
+    "quoi": "seule superposition permise : le ✕ « Quitter le dessin » dans le contour de l'encart",
+    "valeur": "44 pt, ✕ de 18",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "5 oct. 2026 (v133, C-056, Q392)",
+    "source": "CHANTIERS.md C-056"
+   },
+   {
+    "nom": "Houle reste par image",
+    "ou": "monde Houle (clé sillons)",
+    "quoi": "exception à « un mouvement suit l'horloge » : elle s'étire sous charge, par décision",
+    "valeur": "36 images à l'arrivée, 29 au départ",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "27 sept. 2026 (v61)",
+    "source": "CLAUDE.md bloc v61 · SPEC-JUGES.md §1"
+   },
+   {
+    "nom": "La pilule cède à 94,5",
+    "ou": "tout contour",
+    "quoi": "rayon = hauteur ÷ 2 jusqu'à 94,5 de haut, 30 au-delà",
+    "valeur": 94.5,
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "11 sept. 2026 (Q203)",
+    "source": "CLAUDE.md §5 · app.html:31489"
+   },
+   {
+    "nom": "Les pertes d'air de l'agrandissement des textes",
+    "ou": "page +, Index, Fil, Peaufiner, Réglages, Partager",
+    "quoi": "écarts VOULUS (−1,5 à −13 pt) : « on accepte la perte d'air, ne fais pas défiler la page + »",
+    "valeur": "table du bloc v102",
+    "contrasteMesure": null,
+    "decideePar": "Tom",
+    "quand": "30 sept. 2026 (v102)",
+    "source": "CLAUDE.md bloc v102"
+   }
+  ],
+  "roles": {
+   "source": "PROMI-TOKENS.json « roles » (copie intégrale ; engendré le 2026-09-20, retouché v113–v134)",
+   "alerte": "trois rôles sont en retard sur les décisions : fond.sombre (#100D0B, la seiche #050302 fait foi), corps-*.clair (la crème fait foi), niveaux.titre.poids — voir trous",
+   "valeurs": {
+    "fond": {
+     "clair": "#F7F0DE",
+     "sombre": "#100D0B"
+    },
+    "encre": {
+     "clair": "#201908",
+     "sombre": "#F7F0DE"
+    },
+    "surface": {
+     "clair": "#F7EBD6",
+     "sombre": "#211B05"
+    },
+    "surface-haute": {
+     "clair": "#FAF4E8",
+     "sombre": "#251F11"
+    },
+    "sous-texte": {
+     "clair": "#6E6350",
+     "sombre": "#928166"
+    },
+    "grip": {
+     "clair": "#C8BAA4",
+     "sombre": "#493D28"
+    },
+    "exception": {
+     "clair": "#2B1020",
+     "sombre": "#2B1020"
+    },
+    "crete": {
+     "clair": "#0B4A2A",
+     "sombre": "#0B4A2A"
+    },
+    "brun-encre": {
+     "clair": "#43291C",
+     "sombre": "#43291C"
+    },
+    "promi": {
+     "clair": "#82AEF8",
+     "sombre": "#82AEF8"
+    },
+    "chiche": {
+     "clair": "#FFB8D2",
+     "sombre": "#FFB8D2"
+    },
+    "nuee": {
+     "clair": "#C9A8F5",
+     "sombre": "#C9A8F5"
+    },
+    "garde-de-cote": {
+     "clair": "#AE3929",
+     "sombre": "#AE3929"
+    },
+    "tenu": {
+     "clair": "#00341A",
+     "sombre": "#00341A"
+    },
+    "tenu-clair": {
+     "clair": "#00341A",
+     "sombre": "#00341A"
+    },
+    "amande": {
+     "clair": "#8FE08F",
+     "sombre": "#8FE08F"
+    },
+    "a-tenir": {
+     "clair": "#DD4D23",
+     "sombre": "#DD4D23"
+    },
+    "en-cours": {
+     "clair": "#291547",
+     "sombre": "#291547"
+    },
+    "en-cours-clair": {
+     "clair": "#291547",
+     "sombre": "#291547"
+    },
+    "encre-sur-tenu": {
+     "clair": "#00341A",
+     "sombre": "#00341A"
+    },
+    "promi-clair": {
+     "clair": "#C4A2F5",
+     "sombre": "#C4A2F5"
+    },
+    "chiche-clair": {
+     "clair": "#F5AC9E",
+     "sombre": "#F5AC9E"
+    },
+    "nuee-clair": {
+     "clair": "#E6D8FA",
+     "sombre": "#E6D8FA"
+    },
+    "lilas": {
+     "clair": "#E6D8FA",
+     "sombre": "#E6D8FA"
+    },
+    "mauve-clair": {
+     "clair": "#C9A8F5",
+     "sombre": "#C9A8F5"
+    },
+    "corps-promi": {
+     "clair": "#CFE5FE",
+     "sombre": "#0E78F2"
+    },
+    "corps-chiche": {
+     "clair": "#FFF4FC",
+     "sombre": "#7C3F58"
+    },
+    "corps-nuee": {
+     "clair": "#EEE4F8",
+     "sombre": "#5D4978"
+    },
+    "corps-tenu": {
+     "clair": "#2B1020",
+     "sombre": "#2B1020"
+    },
+    "corps-a-tenir": {
+     "clair": "#EFC3B9",
+     "sombre": "#533336"
+    },
+    "corps-garde": {
+     "clair": "#EFC3B9",
+     "sombre": "#4B2D30"
+    },
+    "blanc": {
+     "clair": "#FFFFFF",
+     "sombre": "#FFFFFF"
+    },
+    "noir": {
+     "clair": "#000000",
+     "sombre": "#000000"
+    }
+   }
+  },
+  "paletteFixe": {
+   "source": "PROMI-TOKENS.json « palette_fixe » (copie intégrale, 257 jetons --c-*) : ce sont les valeurs que les règles du prototype emploient ; beaucoup sont de la dette (règles mortes). Ne porter que ce que les sections ci-dessus nomment.",
+   "valeurs": {
+    "--c-noir00": "#000000",
+    "--c-menthe11": "#00341A",
+    "--c-menthe67": "#00341A",
+    "--c-menthe67-txt": "#00341A",
+    "--c-ton07-2": "#022039",
+    "--c-bleu08": "#022140",
+    "--c-noir01-2": "#030307",
+    "--c-bleu14": "#04375D",
+    "--c-noir01": "#050505",
+    "--c-ton09": "#052743",
+    "--c-bleu14-2": "#05355D",
+    "--c-noir02": "#08090C",
+    "--c-ton08": "#082137",
+    "--c-noir03": "#0B0C0F",
+    "--c-ton03-2": "#0B0F12",
+    "--c-crete27": "#0B4A2A",
+    "--c-ton07": "#0D1F33",
+    "--c-ton03": "#0F1215",
+    "--c-brun03": "#100D0B",
+    "--c-ton09-2": "#11263A",
+    "--c-brun05-2": "#120E05",
+    "--c-ton08-2": "#132235",
+    "--c-ton09-3": "#13263A",
+    "--c-menthe15": "#132B1B",
+    "--c-bleu13": "#133352",
+    "--c-mauve04": "#150828",
+    "--c-brun06": "#15130F",
+    "--c-ton09-7": "#152439",
+    "--c-ton09-5": "#152639",
+    "--c-ton09-6": "#16263A",
+    "--c-ton11": "#162B42",
+    "--c-brun05": "#171000",
+    "--c-brun06-3": "#171200",
+    "--c-ton07-3": "#171D26",
+    "--c-ton09-4": "#172536",
+    "--c-ton11-2": "#182B3F",
+    "--c-ton12-2": "#19304C",
+    "--c-ton12": "#19314A",
+    "--c-brun06-4": "#1A1100",
+    "--c-brun06-2": "#1A1201",
+    "--c-brun08": "#1A1613",
+    "--c-ton13-4": "#1A324F",
+    "--c-mauve08-2": "#1B1230",
+    "--c-mauve08": "#1B1426",
+    "--c-ton13": "#1B334C",
+    "--c-ton13-3": "#1C344F",
+    "--c-brun08-2": "#1D1600",
+    "--c-brun08-3": "#1D1700",
+    "--c-brun09-2": "#1D1A17",
+    "--c-ton13-2": "#1D324A",
+    "--c-ton14-2": "#1D3651",
+    "--c-bleu20": "#1D4B78",
+    "--c-brun07": "#1E1301",
+    "--c-ton14-3": "#1E3651",
+    "--c-menthe27": "#1E492C",
+    "--c-brun08-4": "#1F1605",
+    "--c-bleu19": "#1F4770",
+    "--c-framboise08": "#201221",
+    "--c-brun09": "#201908",
+    "--c-brun10": "#211B05",
+    "--c-mauve13": "#221D42",
+    "--c-mauve12-3": "#221E30",
+    "--c-brun11": "#231E02",
+    "--c-brun12": "#242006",
+    "--c-mauve10": "#250F46",
+    "--c-brun12-2": "#251F11",
+    "--c-bleu17": "#25405D",
+    "--c-framboise08-2": "#260F1F",
+    "--c-mauve17-2": "#27235A",
+    "--c-bleu19-5": "#284A71",
+    "--c-mauve11-2": "#290D49",
+    "--c-mauve12": "#291547",
+    "--c-mauve63": "#291547",
+    "--c-mauve63-txt": "#291547",
+    "--c-mauve18": "#29245A",
+    "--c-bleu17-2": "#294261",
+    "--c-bleu19-2": "#294767",
+    "--c-prune09": "#2B1020",
+    "--c-mauve11": "#2B1140",
+    "--c-mauve12-2": "#2B1640",
+    "--c-mauve17-3": "#2B2352",
+    "--c-bleu19-3": "#2B4767",
+    "--c-brun15": "#2C2618",
+    "--c-bleu18": "#2C4665",
+    "--c-mauve18-2": "#2D2656",
+    "--c-bleu19-4": "#2D4765",
+    "--c-mauve17": "#2E2740",
+    "--c-brun14": "#2F201C",
+    "--c-mauve36": "#2F3ED6",
+    "--c-ton15": "#303A4C",
+    "--c-ton10": "#312325",
+    "--c-mauve33": "#313AC3",
+    "--c-ton16-2": "#323D4D",
+    "--c-brun19": "#372D1E",
+    "--c-framboise10": "#380D25",
+    "--c-bleu22": "#385475",
+    "--c-mauve20": "#3A2A3E",
+    "--c-brun19-2": "#3B2924",
+    "--c-brun21": "#3C321E",
+    "--c-framboise11": "#3D0F23",
+    "--c-mauve23": "#3D3352",
+    "--c-mauve24": "#402D6A",
+    "--c-brun19-3": "#43291C",
+    "--c-beige26": "#453C32",
+    "--c-beige26-2": "#493D28",
+    "--c-ton14": "#4B2D30",
+    "--c-beige27": "#4B3F29",
+    "--c-beige30": "#4B463C",
+    "--c-beige30-2": "#4B4740",
+    "--c-mauve28": "#4D2D8B",
+    "--c-ton16": "#533336",
+    "--c-menthe58": "#589B63",
+    "--c-menthe59": "#5C9B70",
+    "--c-mauve40": "#5E42D3",
+    "--c-beige37": "#615740",
+    "--c-beige38": "#635741",
+    "--c-beige40": "#655E55",
+    "--c-mauve41": "#6B4DAD",
+    "--c-beige42": "#6C6157",
+    "--c-beige42-2": "#6C6253",
+    "--c-beige43": "#6C6558",
+    "--c-mauve39": "#6D3DC5",
+    "--c-beige44": "#6E6350",
+    "--c-beige45-2": "#6F6A5A",
+    "--c-beige45": "#706B64",
+    "--c-mauve50": "#75717F",
+    "--c-beige47": "#776E64",
+    "--c-menthe72": "#80C095",
+    "--c-mauve47": "#8155C8",
+    "--c-bleu45": "#82AEF8",
+    "--c-bleu45-txt": "#82AEF8",
+    "--c-bleu46": "#82AFFA",
+    "--c-mauve59": "#8876F8",
+    "--c-bleu51-2": "#88B7F9",
+    "--c-mauve54": "#896BD3",
+    "--c-orange34": "#8B3328",
+    "--c-beige53": "#8B7D6F",
+    "--c-bleu50": "#8BB5F4",
+    "--c-beige58": "#8E897E",
+    "--c-mauve52": "#8F62D1",
+    "--c-bleu54": "#8FBBF7",
+    "--c-menthe82": "#8FE08F",
+    "--c-bleu51": "#91B7E8",
+    "--c-beige55": "#928166",
+    "--c-bleu60": "#92C1FE",
+    "--c-ton67": "#92D2D1",
+    "--c-beige59": "#938C81",
+    "--c-beige58-2": "#948A72",
+    "--c-menthe72-2": "#95BA8C",
+    "--c-beige59-2": "#978C82",
+    "--c-bleu62": "#98C3FD",
+    "--c-beige62": "#9A9185",
+    "--c-beige61": "#9B9080",
+    "--c-bleu67": "#9CCBFE",
+    "--c-beige60": "#9D8D76",
+    "--c-beige56": "#A2947C",
+    "--c-bleu62-2": "#A7C2F6",
+    "--c-beige65": "#A89985",
+    "--c-beige65-2": "#A89987",
+    "--c-beige67": "#A8A08E",
+    "--c-mauve64": "#AA80EA",
+    "--c-orange40": "#AB3729",
+    "--c-orange41": "#AE3929",
+    "--c-ton54": "#AEB9CB",
+    "--c-beige69": "#AFA498",
+    "--c-mauve52-2": "#B04BD2",
+    "--c-mauve69-2": "#B194E3",
+    "--c-mauve69": "#B294E7",
+    "--c-creme70": "#B4A693",
+    "--c-orange43": "#B63B2B",
+    "--c-orange40-2": "#B92124",
+    "--c-bleu80": "#B9DAFF",
+    "--c-mauve73": "#BC9DEE",
+    "--c-creme76": "#BDB5AA",
+    "--c-mauve58": "#BF5AE5",
+    "--c-mauve74": "#C0A0F5",
+    "--c-bleu83": "#C0DDFE",
+    "--c-menthe87": "#C1E3CC",
+    "--c-ton66": "#C2C6CD",
+    "--c-mauve75": "#C4A2F5",
+    "--c-periwinkle53": "#C59552",
+    "--c-creme78": "#C8BAA4",
+    "--c-mauve77": "#C9A8F5",
+    "--c-mauve77-txt": "#C9A8F5",
+    "--c-mauve12-txt": "#C9A8F5",
+    "--c-creme79": "#CABEA4",
+    "--c-mauve62": "#CB73AE",
+    "--c-creme79-2": "#CBBCA6",
+    "--c-mauve84": "#CBC7D7",
+    "--c-mauve80": "#CDB4F6",
+    "--c-bleu85": "#CDDCFF",
+    "--c-orange58": "#CF705F",
+    "--c-ton90": "#CFE5FE",
+    "--c-creme76-2": "#D4B17F",
+    "--c-orange64": "#D68A4F",
+    "--c-orange50": "#DD3937",
+    "--c-orange53": "#DD4D23",
+    "--c-orange53-txt": "#DD4D23",
+    "--c-mauve90": "#DEDAE6",
+    "--c-orange62": "#E0786D",
+    "--c-creme87": "#E0D0B2",
+    "--c-orange69": "#E1966E",
+    "--c-creme83": "#E3C39D",
+    "--c-creme92": "#E4D7BB",
+    "--c-menthe96": "#E4FAE9",
+    "--c-mauve86": "#E6D8FA",
+    "--c-creme85-3": "#E7C79F",
+    "--c-mauve92": "#E7E1EE",
+    "--c-orange61": "#E8703C",
+    "--c-creme90": "#E9D8B7",
+    "--c-creme94": "#E9E5D5",
+    "--c-creme90-2": "#EAD9B9",
+    "--c-creme88": "#ECCFC6",
+    "--c-creme91": "#EDDBBD",
+    "--c-creme91-2": "#EDDBC8",
+    "--c-creme93-2": "#EDDFD2",
+    "--c-creme93-4": "#EDE1D6",
+    "--c-mauve95": "#EDE9F5",
+    "--c-mauve94": "#EEE4F8",
+    "--c-creme95-4": "#EEE6D5",
+    "--c-creme85": "#EFC3B9",
+    "--c-creme90-3": "#EFD7B7",
+    "--c-creme93-3": "#EFE0CE",
+    "--c-creme92-2": "#EFE3C7",
+    "--c-orange42": "#F07A2E",
+    "--c-creme92-3": "#F1DBD3",
+    "--c-creme93": "#F1E1C5",
+    "--c-creme95-7": "#F2E7D8",
+    "--c-creme95-6": "#F3E5D7",
+    "--c-creme95-2": "#F3E7D1",
+    "--c-creme95-3": "#F4E7D1",
+    "--c-orange77": "#F5AC9E",
+    "--c-creme95-5": "#F5E5CA",
+    "--c-creme97": "#F7EBD6",
+    "--c-creme95": "#F7F0DE",
+    "--c-creme85-2": "#FAC2A8",
+    "--c-creme99": "#FAF4E8",
+    "--c-framboise70": "#FBCEFF",
+    "--c-creme90-4": "#FCD1C1",
+    "--c-orange59": "#FE5000",
+    "--c-orange-maparole": "#FB4C0D",
+    "--c-orange-maparole-corps": "#FF7A55",
+    "--c-orange-maparole-cobalt": "#FED0C3",
+    "--c-ton82": "#FED0A5",
+    "--c-framboise54": "#FFB8D2",
+    "--c-framboise54-txt": "#FFB8D2",
+    "--c-framboise91": "#FFEFFA",
+    "--c-framboise94": "#FFF4FC",
+    "--c-framboise97": "#FFF9FC",
+    "--c-blanc100": "#FFFFFF",
+    "--c-cobalt50": "#0E78F2",
+    "--c-lilas85": "#F4EEFF",
+    "--c-bleu35": "#335382",
+    "--c-framboise35": "#7C3F58",
+    "--c-mauve35": "#5D4978",
+    "--c-seiche10": "#050302",
+    "--c-seiche21": "#1F1611"
+   }
+  }
+ },
+ "typographie": {
+  "polices": {
+   "PromiLate": {
+    "valeur": {
+     "fichier": "Polices Promi/PromiLate-Regular.otf",
+     "graisse": 400,
+     "licence": "Police propre à Promi",
+     "emploi": "titres d'écran, mot-marque « Promi », phrases d'action DU TRAIT — rien d'autre"
+    },
+    "manque": "ni « ! », ni espace insécable, ni capitales accentuées : ils viennent de Gilbert (v106–v108, « ça va »)",
+    "decision": "Tom, 18 sept. 2026 (Q234) : les titres sont la police PromiLate ; une seule graisse",
+    "source": "CLAUDE.md §6 · PROMI-TOKENS.json polices.titre"
+   },
+   "Gilbert": {
+    "valeur": {
+     "fichier": "Gilbert-Bold.woff2",
+     "graisse": 700,
+     "licence": "CC BY-SA 4.0 — Ogilvy & Mather / Type With Pride. Crédit OBLIGATOIRE dans « à propos » ; glyphes non modifiables",
+     "emploi": "sous-titres, libellés, navigation — EN CAPITALES"
+    },
+    "decision": "Tom, 16 sept. 2026 (planche du lexique)",
+    "source": "CLAUDE.md §6 · PROMI-TOKENS.json polices.libelle"
+   },
+   "Atkinson": {
+    "valeur": {
+     "fichier": "Atkinson-{Regular,Medium,Bold}.woff2 (Atkinson Hyperlegible Next)",
+     "graisses": [
+      400,
+      500,
+      700
+     ],
+     "licence": "SIL Open Font License 1.1 — Braille Institute of America",
+     "emploi": "tout le texte"
+    },
+    "decision": "Tom, 16 sept. 2026",
+    "source": "CLAUDE.md §6 · PROMI-TOKENS.json polices.texte"
+   }
+  },
+  "faces": {
+   "valeur": [
+    "Gilbert 700",
+    "Atkinson 400",
+    "Atkinson 500",
+    "Atkinson 700",
+    "PromiLate 400"
+   ],
+   "decision": "Tom, 22 sept. 2026 : « il n'y a plus que trois polices » ; cinq faces et cinq seulement (Fraunces, Bricolage, Apfel retirées)",
+   "source": "CLAUDE.md §6"
+  },
+  "niveaux": {
+   "source": "PROMI-TOKENS.json « niveaux » ; CLAUDE.md §6 « Les sept niveaux » (16 sept. 2026)",
+   "alerte": "⚠ le jeu écrit titre.poids = 600 : PromiLate n'a qu'une graisse, 400 (§6). ⚠ Ces jetons de taille ont ZÉRO consommateur dans le prototype (§8) : les tailles réelles des écrans sont posées règle par règle. ⚠ Depuis v96 les faces Gilbert et Atkinson sont agrandies de 12 % (size-adjust:112 %) : taille optique = taille × 1,12.",
+   "valeurs": {
+    "titre": {
+     "famille": "titre",
+     "poids": 600,
+     "taille": 36,
+     "capitales": false,
+     "opacite": 1.0,
+     "police": "PromiLate"
+    },
+    "sous-titre": {
+     "famille": "libelle",
+     "poids": 700,
+     "taille": 22,
+     "capitales": true,
+     "opacite": 1.0,
+     "police": "Gilbert"
+    },
+    "texte": {
+     "famille": "texte",
+     "poids": 400,
+     "taille": 16,
+     "capitales": false,
+     "opacite": 1.0,
+     "police": "Atkinson"
+    },
+    "accent": {
+     "famille": "texte",
+     "poids": 700,
+     "taille": 16,
+     "capitales": false,
+     "opacite": 1.0,
+     "police": "Atkinson"
+    },
+    "petit": {
+     "famille": "texte",
+     "poids": 400,
+     "taille": 14,
+     "capitales": false,
+     "opacite": 1.0,
+     "police": "Atkinson"
+    },
+    "meta": {
+     "famille": "texte",
+     "poids": 400,
+     "taille": 13,
+     "capitales": false,
+     "opacite": 0.65,
+     "police": "Atkinson"
+    },
+    "libelle": {
+     "famille": "libelle",
+     "poids": 700,
+     "taille": 15,
+     "capitales": true,
+     "opacite": 1.0,
+     "police": "Gilbert"
+    }
+   }
+  },
+  "agrandissementV96": {
+   "valeur": {
+    "facteur": 1.12,
+    "faces": [
+     "Gilbert",
+     "Atkinson"
+    ],
+    "saufPromiLate": true
+   },
+   "decision": "Tom, 29 sept. 2026 (v96) : « Tous les textes sauf PromiLate sont trop petits […] Augmente-les tous, en gardant leurs proportions »",
+   "source": "app.html:2503-2507"
+  },
+  "tableDeReport": {
+   "valeur": {
+    "Gilbert, toute graisse": "Gilbert 700",
+    "Atkinson italique": "Atkinson 400",
+    "Atkinson ≥ 450": "Atkinson 500",
+    "Atkinson < 450": "Atkinson 400",
+    "Atkinson 700 demandé nommément (niveau « accentué »)": "Atkinson 700",
+    "PromiLate (et ex-Fraunces)": "PromiLate 400"
+   },
+   "decision": "22 sept. 2026 : aucune graisse hors des faces embarquées (« en Swift, elle casse »)",
+   "source": "CLAUDE.md §6 « La table de report » · redteam_polices.py"
+  },
+  "minima": {
+   "valeur": {
+    "tailleMin": 12,
+    "opaciteMinTexteLisible": 0.72
+   },
+   "alerte": "le niveau « meta » du jeu est à l'opacité 0,65 — sous 72 % : voir trous",
+   "decision": "§6 : « rien en dessous de 12 px. Aucune opacité sous 72 % sur du texte lisible »",
+   "source": "CLAUDE.md §6"
+  },
+  "taillesParticulieres": {
+   "titreEcran": {
+    "valeur": 27,
+    "pagePlus": 29,
+    "decision": "18 sept. : PromiLate 27 px (cap 18,9), 29 sur la page +",
+    "source": "CLAUDE.md §6"
+   },
+   "partagerMaPelote": {
+    "valeur": 15,
+    "decision": "Tom, v124 : PromiLate 15 px, capitales écrites telles quelles, chasse 0 (hauteur de capitale 10,67, celle des phrases du trait)",
+    "source": "CLAUDE.md bloc v124"
+   },
+   "phraseAura": {
+    "valeur": 20.4,
+    "decision": "v124 : la phrase passe de 19,4 à 20,4 px",
+    "source": "CLAUDE.md bloc v124"
+   },
+   "chiffresAura": {
+    "valeur": 29,
+    "decision": "v95 : trois chiffres sous la légende, PromiLate 29, à l'encre de la page",
+    "source": "ETAT-DES-LIEUX.md:9768"
+   },
+   "phraseDesMurs": {
+    "valeur": 34,
+    "decision": "Tom, v105 : « en gros » — 34 px, réduite jusqu'à tenir en trois lignes ; police Gilbert (v106)",
+    "source": "CLAUDE.md bloc v104–v105 · RENOMMAGE-LEXIQUE.md §2"
+   },
+   "nomPalette": {
+    "valeur": 12,
+    "decision": "23 sept. : nom sous la rangée, Gilbert 12 px capitales",
+    "source": "CLAUDE.md §3 bloc 17/23 sept."
+   },
+   "garderTaToile": {
+    "valeur": "Atkinson 700",
+    "decision": "v124",
+    "source": "CLAUDE.md bloc v124"
+   },
+   "onboardingTexte": {
+    "valeur": {
+     "police": "Gilbert",
+     "casse": "minuscules (exception)",
+     "entrePhrases": 20,
+     "sousTitre": 33
+    },
+    "decision": "Tom, v127–v129",
+    "source": "CLAUDE.md blocs v125, v127"
+   },
+   "libelleCarteLargeurs": {
+    "valeur": {
+     "Promi": 73,
+     "Chiche": 81,
+     "Cercle": 76
+    },
+    "decision": "cotes relevées police chargée (« la cote se calcule »)",
+    "source": "RENOMMAGE-LEXIQUE.md §1"
+   }
+  },
+  "estimationLargeur": {
+   "valeur": {
+    "coefficientGilbert": 0.44,
+    "parPastille": 32,
+    "parEcart": 11
+   },
+   "decision": "23 sept. : le 0,53 du §2.8 était celui de l'ancienne police ; avec Gilbert, 0,44 — « toute constante qui traduit des caractères en pixels se remesure au changement de police »",
+   "source": "CLAUDE.md §8"
+  }
+ },
+ "espacements": {
+  "ecran": {
+   "valeur": {
+    "largeur": 390,
+    "hauteur": 844
+   },
+   "decision": "cotes du document en écran 390 × 844",
+   "source": "CLAUDE.md §8"
+  },
+  "margeDeCote": {
+   "valeur": 24,
+   "decision": "plateau à 24/40, largeur utile 342 = 390 − 2 × 24",
+   "source": "CLAUDE.md §5 (grammaire) · mémoire « plateau du Studio partout »"
+  },
+  "plateau": {
+   "valeur": {
+    "x": 24,
+    "y": 40,
+    "largeur": 342,
+    "hauteur": 60,
+    "trait": 2,
+    "rayon": 30
+   },
+   "decision": "Tom, 2 sept. 2026 (grammaire des contours) ; v95 : plateau 60",
+   "source": "CLAUDE.md §5 · releve-aura.py:51 (40 → 100)"
+  },
+  "fermer": {
+   "valeur": {
+    "top": 50,
+    "texte": "✕ FERMER",
+    "place": "haut à droite"
+   },
+   "decision": "composant commun",
+   "source": "CLAUDE.md §5"
+  },
+  "peaufiner": {
+   "valeur": {
+    "largeur": 342,
+    "hauteur": 62,
+    "trait": 2,
+    "rayon": 31
+   },
+   "decision": "composant commun, en bas de chaque fiche, icône de partage à droite",
+   "source": "CLAUDE.md §5"
+  },
+  "geste": {
+   "valeur": {
+    "hauteur": 118,
+    "rayonPanneau": 26
+   },
+   "decision": "« 118 px de haut, deux points, un trait. Toujours entier » ; panneau corrigé à 118 / 26",
+   "source": "CLAUDE.md §5 et en-tête"
+  },
+  "boutonPhoto": {
+   "valeur": {
+    "diametre": 34,
+    "menu": {
+     "hauteurLigne": 33,
+     "ecart": 4,
+     "place": "à gauche du bouton",
+     "premiereEntree": "Dessiner"
+    }
+   },
+   "decision": "v128 : menu compact (géométrie de la pastille .chip 32,5), 4 entre deux, « Dessiner » en tête ; v132 : 33 pt",
+   "source": "app.html:20014, 21552 · CLAUDE.md blocs v128, v132"
+  },
+  "disque": {
+   "valeur": {
+    "diametre": 44,
+    "trait": 2
+   },
+   "decision": "grammaire : « le disque 44 × 44, trait 2, rayon 50 % »",
+   "source": "CLAUDE.md §5"
+  },
+  "recherche": {
+   "valeur": {
+    "largeur": 270,
+    "hauteur": 52,
+    "rayon": 26
+   },
+   "decision": "grammaire",
+   "source": "CLAUDE.md §5"
+  },
+  "tri": {
+   "valeur": {
+    "cote": 52,
+    "rayon": 26
+   },
+   "decision": "grammaire",
+   "source": "CLAUDE.md §5"
+  },
+  "selecteur": {
+   "valeur": {
+    "largeur": 167,
+    "hauteur": 44,
+    "rayon": 22
+   },
+   "decision": "grammaire",
+   "source": "CLAUDE.md §5"
+  },
+  "inviterPartager": {
+   "valeur": {
+    "largeur": 168,
+    "hauteur": 62,
+    "rayon": 31
+   },
+   "decision": "grammaire",
+   "source": "CLAUDE.md §5"
+  },
+  "grandPanneau": {
+   "valeur": {
+    "largeur": 342,
+    "hauteur": 253,
+    "rayon": 30
+   },
+   "decision": "grammaire : « un panneau, pas une pilule »",
+   "source": "CLAUDE.md §5"
+  },
+  "anneau": {
+   "valeur": {
+    "jourArcPx": 3,
+    "conversion": "3/r radians, par anneau",
+    "arcsMax": 3,
+    "jourCentreSurMidi": true,
+    "unSeulEtat": "laisser 0,1° (un arc de 360° pile ne se dessine pas)",
+    "filet": "1 px, crème, sur le seul bord extérieur de chaque segment, interrompu dans les jours, quand l'anneau est posé sur du sombre",
+    "epaisseurAnneauFicheTenue": 5
+   },
+   "alerte": "v113/v114 : plus aucun filet crème autour des disques, sauf la fiche tenue — la portée exacte du filet des anneaux aujourd'hui est à confirmer : voir trous",
+   "decision": "Tom, 22 sept. (trois arcs) ; 23 sept. (« les espaces […] uniformisé partout, net ») ; v18 (filet 1 px bord extérieur)",
+   "source": "CLAUDE.md §3, §5 · ETAT §8"
+  },
+  "ligneSombreAvecTexte": {
+   "valeur": {
+    "paires": [
+     [
+      59,
+      103
+     ],
+     [
+      123,
+      167
+     ],
+     [
+      223,
+      267
+     ],
+     [
+      287,
+      331
+     ]
+    ],
+    "dansLaPaire": 20,
+    "entreLesPaires": 56
+   },
+   "decision": "relevé (Q369)",
+   "source": "QUESTIONS.md Q369"
+  },
+  "ondeFiche": {
+   "valeur": {
+    "periode": 1.5,
+    "largeur": 390,
+    "plancherBaseFicheEtPagePlus": 196,
+    "plancherBaseCercle": 176,
+    "baseCercle": "max(176, 460 − 86 n)",
+    "cercleDefile": {
+     "base": 58,
+     "amplitude": 16,
+     "bande": 114
+    },
+    "carteIndex": {
+     "periode": 1,
+     "sur": "sa largeur"
+    },
+    "pagePlusChoixOuvert": {
+     "base": 144,
+     "amplitude": 16,
+     "trace": 184,
+     "phrase": 228
+    }
+   },
+   "alerte": "les valeurs de repos (base, amplitude) de chaque état de fiche ne sont pas dans les sources lues : voir trous",
+   "decision": "§2.1, §2.5, §9, §13 ; v116 (choix ouvert)",
+   "source": "CLAUDE.md §4, §5, §8, bloc v116"
+  },
+  "index": {
+   "valeur": {
+    "listeTop": 212,
+    "carteDeuxParLigne": 165,
+    "carteTroisParLigne": 106
+   },
+   "decision": "le conteneur commence sous le plateau",
+   "source": "CLAUDE.md §8"
+  },
+  "fil": {
+   "valeur": {
+    "bandeau": [
+     358,
+     128
+    ],
+    "pas": 140
+   },
+   "decision": "cadre 76 : cinq bandeaux nus, de 140 en 140 ; « TENIR · REPORTER » sur appui maintenu (ajout validé hors inventaire)",
+   "source": "CLAUDE.md §5"
+  },
+  "aura": {
+   "valeur": {
+    "cotesB": {
+     "plateau": [
+      40.0,
+      100.0
+     ],
+     "silhouettePelote": [
+      132.53,
+      374.53
+     ],
+     "ombre": [
+      391.22,
+      407.45
+     ],
+     "boutonPartagerMaPelote": [
+      435.47,
+      495.47
+     ],
+     "phraseDeuxLignes": [
+      515.59,
+      566.56
+     ],
+     "phraseUneLigneBas": 541.07,
+     "noyaux": [
+      582.77,
+      689.77
+     ],
+     "legende": [
+      709.05,
+      733.3
+     ],
+     "chiffres": [
+      752.02,
+      782.02
+     ],
+     "ceQueTuAsTenuHaut": 800.52
+    },
+    "tolerance": 0.5,
+    "airSousLesChiffres": 62,
+    "airPhraseVersDisques": 15.7,
+    "K": {
+     "AIR": 28,
+     "G2": 22,
+     "ombre.y": 391.224,
+     "nx.y": 444.061,
+     "AIR_MOT": "18,71 − 2,5"
+    },
+    "ordre": [
+     "plateau",
+     "Pelote",
+     "ombre",
+     "PARTAGER MA PELOTE",
+     "phrase",
+     "Noyaux",
+     "légende",
+     "chiffres",
+     "ce que tu as tenu (toutes, la plus récente en premier)",
+     "ce qu'on t'a tenu"
+    ]
+   },
+   "decision": "Tom, 4 oct. 2026 (v126, C-005) : « Tom retient B. Inscris ses cotes comme figées […] Le juge doit rougir si une cote bouge de plus de 0,5 pt »",
+   "source": "CLAUDE.md bloc v126 · releve-aura.py:50-62 · app.html:29346"
+  },
+  "dessin": {
+   "valeur": {
+    "RANGEE_H": 44,
+    "SECU_BAS": 34,
+    "MARGE_BAS": 12,
+    "MARGE_HAUT": 12,
+    "MARGE_COTE": 24,
+    "PAS_OUTIL": 58,
+    "POSER_L": 104,
+    "ECART_DEPLOI": 16,
+    "TAILLES": [
+     2.5,
+     4.5,
+     8
+    ],
+    "TAILLES_GOMME": [
+     10,
+     18,
+     30
+    ],
+    "BANDE_RETRAIT": 7,
+    "OEIL": {
+     "x": 24,
+     "ecartAuDessusDuTrait": 52
+    },
+    "surface": [
+     390,
+     742
+    ],
+    "surfaceCalcul": "844 − 34 − 12 − 44 − 12",
+    "quitter": {
+     "cote": 44,
+     "croix": 18
+    },
+    "trait": {
+     "debut": "+38 %",
+     "fin": "effilée sur le dernier quart",
+     "vitesse": "jusqu'à −28 % quand le geste est rapide",
+     "largeurMin": 1
+    },
+    "rangee": [
+     "PLUME",
+     "GOMME",
+     "ANNULER",
+     "COULEUR",
+     "POSER"
+    ]
+   },
+   "alerte": "CLAUDE.md v132 écrit encore MARGE_BAS 34, ECART_DEPLOI 8, surface 754 : corrigés par v133",
+   "decision": "Tom, 5 oct. 2026 (v132) corrigé par v133 : « déploiements à 16 pt, rangée centrée (surface 742) » ; Q394 validée (gomme 10 · 18 · 30)",
+   "source": "app.html:38036-38050 (_dessinParams) · CLAUDE.md bloc v132 · portage/A-INTEGRER.md"
+  },
+  "flous": {
+   "valeur": {
+    "mursPx": 4.8,
+    "sauf": "le Studio garde les siens"
+   },
+   "decision": "Tom, 30 sept. 2026 (v104) : « deux fois plus flou — on veut plutôt illisible » → un seul flou, 4,8 px",
+   "source": "app.html:37075, 37274, 37990 · SPEC-JUGES.md §2"
+  },
+  "air": {
+   "valeur": {
+    "tolerancePx": 0.6,
+    "mesure": "à l'ENCRE (Range.getBoundingClientRect), jamais à la boîte",
+    "reference": "air-reference.json (686 paires, 68 écrans-thèmes)"
+   },
+   "decision": "Tom, 30 sept. 2026 : « on mesure toujours l'encre, jamais la boîte »",
+   "source": "CLAUDE.md §8 · SPEC-JUGES.md §4"
+  },
+  "durees": {
+   "valeur": {
+    "tenirAnimationMs": 1000,
+    "flashMinMs": 800,
+    "appuiLongPeloteMs": 380,
+    "toleranceDeplacementPx": 8,
+    "gesteCouleurStudio": {
+     "appuiMs": 480,
+     "tourDeTeintePx": 390,
+     "pasPalettePx": 48
+    },
+    "lectureMur": "1,4 s + 60 ms par caractère, borné à [3 ; 5,5] s",
+    "rappelDemande": {
+     "apresPlantationS": 1.9,
+     "partSeuleS": 12
+    },
+    "vieAuRepos": {
+     "intervalleS": [
+      5,
+      15
+     ],
+     "dureeS": [
+      1,
+      2
+     ],
+     "dalles": "1 (70 %) ou 2"
+    },
+    "souffle": {
+     "cycleS": 10,
+     "expansionS": 4,
+     "retourS": 6
+    }
+   },
+   "decision": "décisions datées (v104–v126)",
+   "source": "SPEC-JUGES.md §2–§4 · ETAT §7 · CLAUDE.md blocs v115, v124, v126"
+  }
+ },
+ "rayons": {
+  "regle": {
+   "valeur": "trait de 2 px, couleur du corps, rayon = hauteur ÷ 2 ; au-delà de 94,5 de haut : rayon 30",
+   "decision": "Tom, 2 sept. 2026 : « que le cadre paraisse plus marqué que le reste — le reste s'y adapte » ; 11 sept. (Q203) : la pilule cède à 94,5",
+   "source": "CLAUDE.md §5 · app.html:31489 (_seuilPilule)"
+  },
+  "trait": 2,
+  "seuilPilule": 94.5,
+  "rayonAuDela": 30,
+  "table": {
+   "plateau 342×60": 30,
+   "recherche 270×52": 26,
+   "tri 52×52": 26,
+   "sélecteur 167×44": 22,
+   "Peaufiner 342×62": 31,
+   "Inviter/Partager 168×62": 31,
+   "disque 44×44": "50 %",
+   "grand panneau 342×253": 30,
+   "panneau du geste 118": 26,
+   "coin de la Toile vivante": "arrondi sans clip() — ⚠ valeur non relevée"
+  }
+ },
+ "palettes": {
+  "source": "promi-moteur.js:5912 (var PALS, triplets convertis en hexadécimal) ; ordre affiché : redteam_palettes.py:17 (ORDRE, en dur)",
+  "decision": "Tom, 17 sept. 2026 (PDF des vingt palettes) + 23 sept. (« il reste la place pour trois palettes » : Truculent, Pétulant, Fantasque) + 20 sept. (Signal, palette d'identité, devenue Ingénu en v17) ; Tom, 5 oct. 2026 (v133, C-057) : « Primesautier passe en premier (clin d'œil au créateur). L'ordre des autres est inchangé. »",
+  "defaut": {
+   "valeur": "signal",
+   "decision": "v17 (21 sept. 2026) : le défaut est Ingénu (clé signal)",
+   "source": "CLAUDE.md §3, §4 · ETAT §5"
+  },
+  "poidsDesTons": {
+   "valeur": [
+    0.34,
+    0.28,
+    0.23,
+    0.15
+   ],
+   "decision": "C1 ≈ 34 % → C2 ≈ 28 % → C3 ≈ 23 % → C4 ≈ 15 %",
+   "source": "CLAUDE.md §3 bloc 17 sept."
+  },
+  "grille": {
+   "valeur": {
+    "rangees": 4,
+    "parRangee": 6
+   },
+   "decision": "23 sept. : 24 pastilles = quatre rangées de six",
+   "source": "CLAUDE.md §3"
+  },
+  "ordreAffiche": [
+   "primesautier",
+   "signal",
+   "candide",
+   "gouailleur",
+   "alangui",
+   "irascible",
+   "hurluberlu",
+   "beat",
+   "minaudier",
+   "chafouin",
+   "frivole",
+   "cajoleur",
+   "allegre",
+   "lunatique",
+   "flegmatique",
+   "narquois",
+   "truculent",
+   "petulant",
+   "fantasque",
+   "fielleux",
+   "sibyllin",
+   "veneneux",
+   "atrabilaire",
+   "taciturne"
+  ],
+  "liste": [
+   {
+    "cle": "primesautier",
+    "nom": "Primesautier",
+    "tons": [
+     "#FFD60A",
+     "#FF7AA2",
+     "#005F73",
+     "#FFF4C2"
+    ]
+   },
+   {
+    "cle": "signal",
+    "nom": "Ingénu",
+    "tons": [
+     "#82AEF8",
+     "#FFB8D2",
+     "#C9A8F5",
+     "#EFE3C7"
+    ]
+   },
+   {
+    "cle": "candide",
+    "nom": "Candide",
+    "tons": [
+     "#CDB4FF",
+     "#FFC8A2",
+     "#BDE0A8",
+     "#FFB5C8"
+    ]
+   },
+   {
+    "cle": "gouailleur",
+    "nom": "Gouailleur",
+    "tons": [
+     "#9C4A1A",
+     "#E07A1F",
+     "#E9B824",
+     "#7D8B2E"
+    ]
+   },
+   {
+    "cle": "alangui",
+    "nom": "Alangui",
+    "tons": [
+     "#C4A69F",
+     "#7D6A8A",
+     "#DDCBB0",
+     "#8C97AB"
+    ]
+   },
+   {
+    "cle": "irascible",
+    "nom": "Irascible",
+    "tons": [
+     "#FF2D1A",
+     "#FF8A1C",
+     "#B80F2E",
+     "#2B0A0A"
+    ]
+   },
+   {
+    "cle": "hurluberlu",
+    "nom": "Hurluberlu",
+    "tons": [
+     "#C8FF00",
+     "#7B2FF7",
+     "#FF3D9A",
+     "#2B1400"
+    ]
+   },
+   {
+    "cle": "beat",
+    "nom": "Béat",
+    "tons": [
+     "#1F4FD1",
+     "#FFC21A",
+     "#FFFFFF",
+     "#E0673F"
+    ]
+   },
+   {
+    "cle": "minaudier",
+    "nom": "Minaudier",
+    "tons": [
+     "#FF9FC8",
+     "#E0115F",
+     "#FFE0EC",
+     "#B5F2FF"
+    ]
+   },
+   {
+    "cle": "chafouin",
+    "nom": "Chafouin",
+    "tons": [
+     "#A9B41F",
+     "#E6A3BE",
+     "#6C4675",
+     "#3FA7D6"
+    ]
+   },
+   {
+    "cle": "frivole",
+    "nom": "Frivole",
+    "tons": [
+     "#FF71CE",
+     "#01CDFE",
+     "#05FFA1",
+     "#FFFB96"
+    ]
+   },
+   {
+    "cle": "cajoleur",
+    "nom": "Cajoleur",
+    "tons": [
+     "#9FE6CF",
+     "#4B2B1F",
+     "#FFF0D4",
+     "#E23E57"
+    ]
+   },
+   {
+    "cle": "allegre",
+    "nom": "Allègre",
+    "tons": [
+     "#1FB36A",
+     "#7EC8FF",
+     "#0E5E4A",
+     "#EFFBEA"
+    ]
+   },
+   {
+    "cle": "lunatique",
+    "nom": "Lunatique",
+    "tons": [
+     "#2BC4C4",
+     "#D9A21B",
+     "#C2185B",
+     "#1E1B3A"
+    ]
+   },
+   {
+    "cle": "flegmatique",
+    "nom": "Flegmatique",
+    "tons": [
+     "#CFE8FF",
+     "#6FA8DC",
+     "#4A5A6A",
+     "#FFB3A7"
+    ]
+   },
+   {
+    "cle": "narquois",
+    "nom": "Narquois",
+    "tons": [
+     "#FF9A5A",
+     "#7A1FA2",
+     "#FFE8D6",
+     "#FF2F6D"
+    ]
+   },
+   {
+    "cle": "truculent",
+    "nom": "Truculent",
+    "tons": [
+     "#FF3E00",
+     "#00E5FF",
+     "#5600D6",
+     "#F6FF00"
+    ]
+   },
+   {
+    "cle": "petulant",
+    "nom": "Pétulant",
+    "tons": [
+     "#FF8A00",
+     "#6800E0",
+     "#00C85A",
+     "#FFAAC8"
+    ]
+   },
+   {
+    "cle": "fantasque",
+    "nom": "Fantasque",
+    "tons": [
+     "#00FF8C",
+     "#E60073",
+     "#0040FF",
+     "#FFF7DE"
+    ]
+   },
+   {
+    "cle": "fielleux",
+    "nom": "Fielleux",
+    "tons": [
+     "#1A1400",
+     "#5A3300",
+     "#FFE600",
+     "#B38F00"
+    ]
+   },
+   {
+    "cle": "sibyllin",
+    "nom": "Sibyllin",
+    "tons": [
+     "#0A0A1F",
+     "#2A1B4D",
+     "#5E2CA5",
+     "#00E0FF"
+    ]
+   },
+   {
+    "cle": "veneneux",
+    "nom": "Vénéneux",
+    "tons": [
+     "#140014",
+     "#4A0033",
+     "#FF007A",
+     "#C0C0C0"
+    ]
+   },
+   {
+    "cle": "atrabilaire",
+    "nom": "Atrabilaire",
+    "tons": [
+     "#0A2E36",
+     "#1B6F80",
+     "#FF9E00",
+     "#F2F2F2"
+    ]
+   },
+   {
+    "cle": "taciturne",
+    "nom": "Taciturne",
+    "tons": [
+     "#0B0D4F",
+     "#2A2AD4",
+     "#8F8CFF",
+     "#E4E2FF"
+    ]
+   }
+  ],
+  "alerte": "ETAT-30-SEPTEMBRE-2026.md §5 liste encore Ingénu en premier (ordre du moteur) : l'ordre AFFICHÉ est celui-ci."
+ },
+ "seuils": {
+  "texteSurFond": {
+   "valeur": {
+    "deltaLumMin": 42
+   },
+   "decision": "§3 : « jamais de ton sur ton. Un TEXTE sur un fond : écart de luminosité ≥ 42 »",
+   "source": "CLAUDE.md §3 « Interdits absolus »"
+  },
+  "traitSurAplat": {
+   "valeur": {
+    "deltaE_CIELAB_min": 15
+   },
+   "decision": "Tom, 18 sept. 2026 (Q216) : « Juge en ΔE, pas en Δlum […] Sur un aplat coloré, c'est l'écart de couleur qui compte »",
+   "source": "CLAUDE.md §3 · redteam_tonsurton.py"
+  },
+  "matiereSurFond": {
+   "valeur": {
+    "deltaE_min": 15
+   },
+   "decision": "Tom, 10 sept. 2026 (Q192) : une dalle se lit par sa teinte ; plancher de la Pelote ΔE 15",
+   "source": "CLAUDE.md §7"
+  },
+  "kaki": {
+   "valeur": {
+    "espace": "OKLCH",
+    "teinteDeg": [
+     78,
+     140
+    ],
+    "chroma": [
+     0.015,
+     0.1
+    ],
+    "luminance": [
+     0.2,
+     0.8
+    ],
+    "perimetre": "toute dalle et toute matière vide produite par l'app (palettes, teintes dérivées)",
+    "exception": "la couleur mère choisie par l'utilisateur dans la jauge"
+   },
+   "decision": "Tom, 30 sept. 2026 (v114) : « JAMAIS DE KAKI » ; v115 : « le crème et les jaunes vifs ne sont pas du kaki » (bornes de chroma et de luminance) ; Q360 : on ne touche à aucune palette",
+   "source": "CLAUDE.md blocs v114, v115 · redteam_kaki.py"
+  },
+  "contrasteGrandTexte": {
+   "valeur": "3:1",
+   "decision": "Tom, v120 : « cible ≥ 3:1 pour du grand texte » (mots des murs, PARTAGER MA PELOTE)",
+   "source": "QUESTIONS.md Q373 · CLAUDE.md bloc v124"
+  },
+  "contrasteTexteCourant": {
+   "valeur": "4,5:1",
+   "decision": "v124 : « ≥ 4,5:1 (texte courant) » ; v125 : 5:1 visé pour les mots de l'onboarding",
+   "source": "CLAUDE.md blocs v124, v125"
+  },
+  "solPeloteContrePage": {
+   "valeur": {
+    "deltaE_min": 42,
+    "vise": 44
+   },
+   "decision": "Tom, 21 sept. 2026 : « si le sol ne se détache pas assez de la page, il se décale jusqu'à passer le seuil »",
+   "source": "CLAUDE.md §3"
+  },
+  "clairDUnEtatContreNatures": {
+   "valeur": {
+    "deltaE_min": 25
+   },
+   "decision": "21 sept. : « le clair d'un état est de la famille de son état, et s'écarte des trois natures d'au moins ΔE 25 » (règle devenue sans objet : les clairs sont morts)",
+   "source": "CLAUDE.md §3"
+  },
+  "dalleSeulePixelsEtrangers": {
+   "valeur": {
+    "max": "0,3 %"
+   },
+   "decision": "Tom, 5 oct. 2026 (v130, C-048)",
+   "source": "CLAUDE.md bloc v130 · redteam_decoupe.py G2"
+  },
+  "origineBande": {
+   "valeur": {
+    "deltaE_CIELAB_min": 15
+   },
+   "decision": "v118 (Q365) : la couleur d'origine dans la bande, sauf ton sur ton → rampe de Q30",
+   "source": "SPEC-JUGES.md §4"
+  },
+  "titreSurToile": {
+   "valeur": {
+    "dalleMinPx": 48
+   },
+   "decision": "Tom, 29 sept. 2026 (v98) : les titres s'effacent quand la dalle n'a pas 48 px à l'écran",
+   "source": "CLAUDE.md bloc v98"
+  },
+  "cotesAura": {
+   "valeur": {
+    "tolerancePt": 0.5
+   },
+   "decision": "v126",
+   "source": "releve-aura.py:62"
+  },
+  "motMarqueNature": {
+   "valeur": {
+    "tolerancePt": 0.5,
+    "encre": [
+     58.7,
+     81.3
+    ],
+    "milieu": 70
+   },
+   "decision": "v129 (C-046) : l'encre du mot de la nature à la même hauteur pour les trois natures",
+   "source": "CLAUDE.md bloc v129 · redteam_motmarque.py"
+  },
+  "cranDeNuit": {
+   "valeur": {
+    "deltaL_OKLCH": -0.06,
+    "contrasteMin": "7:1",
+    "exemple": "#F7F0DE → #E3DCCA"
+   },
+   "decision": "Tom, v118 ; ⚠ COUPÉ depuis v120 « jusqu'à nouvel ordre »",
+   "source": "CLAUDE.md blocs v118, v120"
+  },
+  "performancePelote": {
+   "valeur": {
+    "p50ms": 17,
+    "p95ms": "20–25",
+    "cibleP95": 22
+   },
+   "alerte": "§11 : aucun seuil de dégradation n'est décidé pour le portage",
+   "decision": "v126 (banc WebKit ; iPhone 16e : p50 17, p95 25, 54–56 images/s)",
+   "source": "CLAUDE.md bloc v126"
+  }
+ },
+ "trous": [
+  "roles.fond.sombre (#100D0B) contredit la seiche #050302 des pages sombres (v116/v121, redteam_decisions) : le jeu n'a pas suivi.",
+  "roles.corps-promi/chiche/nuee.clair (#CFE5FE, #FFF4FC, #EEE4F8) : « jetons qui ne peignent pas le corps » (v122) — le corps clair est la crème ; leur emploi réel (barre Peaufiner ? cartes ?) n'est pas établi.",
+  "Trait et texte sur le lilas d'un Cercle : le code dit #43291C (NATTRAIT, v7), CLAUDE.md §3 dit #291547 à deux endroits (18 et 30 sept.) et #43291C à un troisième.",
+  "CLAUDE.md §3 écrit encore « en cours, clair sur fond sombre : #A77CF7 » alors que Q262 et le jeu donnent une seule valeur.",
+  "ETAT-30-SEPTEMBRE-2026.md (engendré le 6 oct.) donne corps-promi sombre #1A52F0 et « un monde à l'unité 1 € » : en retard sur v134 (#0E78F2) et sur v118 (2 €).",
+  "niveaux.titre.poids = 600 dans le jeu ; PromiLate n'a que 400. niveaux.meta.opacite = 0,65, sous le plancher de 72 %.",
+  "Les sept niveaux de texte ne sont pas câblés dans le prototype : la taille réelle de chaque texte de chaque écran n'est dans aucune source lue ici (à prendre dans le document des écrans).",
+  "Couleur de la barre Peaufiner par nature et par thème : CLAUDE.md (17 sept.) dit « corps mauve #291547 » pour un Cercle, C-059 (v133) mesure « à la couleur de la nature » en clair.",
+  "roles.garde-de-cote (#AE3929), corps-a-tenir, corps-garde : rôles déclarés sans décision retrouvée, contraires à « aucun aplat d'état ».",
+  "#F07A2E « accent secondaire, célébration » (17 sept.) : emploi actuel non établi (l'amande seule peint la célébration).",
+  "Le filet crème des anneaux posés sur du sombre (v18) face à v113/v114 (« plus aucun filet crème autour des disques », sauf la fiche tenue) : portée actuelle à confirmer.",
+  "« Ma Parole ! » #FB4C0D sur les corps clairs du Peaufiner Promi (2,65:1) et Cercle (2,78:1), mesurés en v120 quand ces corps n'étaient pas crème : à remesurer, non tranché.",
+  "Q403 ouverte : la phrase lilas sur #0E78F2 (#F4EEFF, 3,71:1).",
+  "Valeurs de repos de l'onde (base, amplitude) par état de fiche, rayon du coin de la Toile, cotes détaillées de l'accueil et de la barre du bas : absentes des sources lues pour ce document.",
+  "Les rampes de nature de Q30 (trois teintes par nature, §1.2 de PROMI-SPECIFICATIONS, archive d'août) : valeurs actuelles non relevées.",
+  "Le symbole du bouton photo (C-060, A/B/C) et la diversité des tailles de dalles (C-062) attendent Tom."
+ ]
+}

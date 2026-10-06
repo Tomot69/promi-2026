@@ -59,7 +59,7 @@ Un rôle vaut deux valeurs (mode clair · mode sombre). **Une règle CSS emploie
 | `nuee-clair` | `#E6D8FA` | `#E6D8FA` |
 | `lilas` | `#E6D8FA` | `#E6D8FA` |
 | `mauve-clair` | `#C9A8F5` | `#C9A8F5` |
-| `corps-promi` | `#CFE5FE` | `#1A52F0` |
+| `corps-promi` | `#CFE5FE` | `#0E78F2` |
 | `corps-chiche` | `#FFF4FC` | `#7C3F58` |
 | `corps-nuee` | `#EEE4F8` | `#5D4978` |
 | `corps-tenu` | `#2B1020` | `#2B1020` |

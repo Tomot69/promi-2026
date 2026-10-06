@@ -19,10 +19,7 @@ ETATS = {'atenir': '#DD4D23', 'encours': '#291547', 'tenu': '#00341A'}      # Q2
 CREME, ENCRE, SEICHE, TERRE, AMANDE = '#F7F0DE', '#201908', '#050302', '#2B1020', '#8FE08F'
 CHAMP = {'promi': '#82AEF8', 'chiche': '#FFB8D2', 'nuee': '#C9A8F5'}           # 17 sept. (planche des correspondances)
 # ⚑ v133 (Tom, 6 oct. 2026, C-050) — « sur son iPhone, #273CEB tire nettement au violet. Défaut provisoire : #1A52F0 » ; la phrase lilas, éclaircie à 4,5:1 sur ce bleu : #E8DAFF
-# ⚑ v134 (Tom, 6 oct. 2026, C-050) — DÉFINITIF : « Tom a choisi #0E78F2, en connaissance de cause. » Le texte reste crème (3,70:1 : exception nommée,
-#   les petites mentions sous 4,5:1). La phrase lilas : éclaircie, même teinte — 4,5:1 est HORS D'ATTEINTE sur ce bleu (le blanc y fait 4,21:1) ; elle est
-#   portée au niveau de la crème, #F4EEFF (3,71:1), en attendant le mot de Tom (Q403).
-CORPS_SOMBRE = {'promi': '#0E78F2', 'chiche': '#7C3F58', 'nuee': '#5D4978'}     # v113 (Q358) ; ⚠ le Cercle : ajout de v113, pas une citation de Tom
+CORPS_SOMBRE = {'promi': '#1A52F0', 'chiche': '#7C3F58', 'nuee': '#5D4978'}     # v113 (Q358) ; ⚠ le Cercle : ajout de v113, pas une citation de Tom
 # ⚑ v130 (Tom, 5 oct. 2026) : le corps sombre d'un Promi #335382 est REMPLACÉ par le Pantone 13-4307 TPG « Tropical Breeze », #8ACBE8
 #   (relevé par Tom sur son échantillon) — fiche Promi et page + d'un Promi ; le texte posé dessus passe à l'encre #201908.
 # ⚑ v131 (Tom, 5 oct. 2026) : « Tropical Breeze est écarté (trop proche du bleu du champ) » — le corps sombre d'un Promi devient le
@@ -104,7 +101,7 @@ with sync_playwright() as p:
         if th == 'dark':
             pg.evaluate("()=>{closeAll(); document.getElementById('createBtn').click(); var n=0; (function essai(){ var cs=document.getElementById('createSheet'); var x=[...document.querySelectorAll('#createSheet .tile')][0]; if(cs&&cs.classList.contains('pp-choix')&&x){ x.click(); } if(++n<6) setTimeout(essai,350); })();}"); pg.wait_for_timeout(3500)
             for sel, nom in (('#csPhrase .ph-li', 'page + [dark] phrase'), ('#csPhrase .ph-hint', 'page + [dark] consigne')):
-                V132.append(((nom, hexa(pg.evaluate("(s)=>{const e=document.querySelector(s); return e?getComputedStyle(e).color:null}", sel))), '#F4EEFF', 'v132 (C-054), v134 (C-050) : le lilas éclairci à 4,5:1'))
+                V132.append(((nom, hexa(pg.evaluate("(s)=>{const e=document.querySelector(s); return e?getComputedStyle(e).color:null}", sel))), '#E8DAFF', 'v132 (C-054), v133 (C-050) : le lilas éclairci à 4,5:1'))
         pg.evaluate("()=>{closeAll(); const p=promises.filter(q=>q.title==='nager le mardi')[0]; openDetail(p.id);}"); pg.wait_for_timeout(1800)
         pg.evaluate("()=>{const x=document.querySelector('#dpDetails .dpd-tog');if(x)x.click();}"); pg.wait_for_timeout(1500)
         V132.append((('Peaufiner [%s] « Supprimer ce Promi »' % th, hexa(pg.evaluate("()=>{const e=document.querySelector('#detailPoster .s2-reg.v16-danger .s2-lab'); return e?getComputedStyle(e).color:null}"))), CREME if th == 'dark' else ENCRE, 'v132 (C-053) : jamais l\'orange d\'état'))

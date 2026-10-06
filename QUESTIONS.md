@@ -8473,3 +8473,12 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   sur le mur du dessin, les teintes floutées sont celles de la palette (l'encre, floutée, faisait une tache sous la phrase).
 - **Q402 — OUVERTE (C-062)** : le coefficient de variation ne baisse pas avec le nombre de dalles. Ce que Tom voit comme monotone est peut-être
   la taille ABSOLUE (à 40 dalles, toutes petites) ou le monde (Pochade : des taches de même famille). À dire avant de choisir un mécanisme.
+- **Q399 — TRANCHÉE (Tom, v134)** : la méthode est validée — l'orange de « Ma Parole ! » et la phrase lilas suivent le bleu, même teinte,
+  éclaircies jusqu'à leur seuil. Le bleu est `#0E78F2`, définitif ; le texte y reste crème (3,70:1), exception nommée.
+- **Q403 — À VALIDER (C-050)** : sur `#0E78F2`, la phrase lilas de la page + ne peut PAS atteindre 4,5:1 en s'éclaircissant (le blanc pur :
+  4,21:1). Posée à `#F4EEFF` (3,71:1, le niveau de la crème, teinte gardée). Autres voies : 4:1 = `#FBF9FF` (presque blanc), ou la crème.
+  « Ma Parole ! » à 3:1 = `#FED0C3` : c'est un pêche très pâle (un quart de la chroma de l'orange) — à voir sur l'iPhone.
+- **Q404 — À SAVOIR (C-050)** : sur `#0E78F2`, le trait « à tenir » `#DD4D23` n'a aucun écart de clarté avec le corps (Δlum 1,7 ; 1,03:1) ;
+  il se lit par la teinte (ΔE 126). Rien n'a été retouché.
+- **Q405 — OUVERTE (portage)** : la rotation lente de la Pelote est `2π/100` (un tour en 100 s) dans l'app et dans `releve-aura.py`, `2π/120` dans
+  `CLAUDE.md` §7. Laquelle fait foi pour Swift ? Les autres contradictions trouvées en écrivant le dossier : `portage/README.md`.

@@ -178,7 +178,7 @@
     },
     "corps-promi": {
       "clair": "#CFE5FE",
-      "sombre": "#0E78F2"
+      "sombre": "#1A52F0"
     },
     "corps-chiche": {
       "clair": "#FFF4FC",
@@ -452,7 +452,7 @@
     "--c-orange59": "#FE5000",
     "--c-orange-maparole": "#FB4C0D",
     "--c-orange-maparole-corps": "#FF7A55",
-    "--c-orange-maparole-cobalt": "#FED0C3",
+    "--c-orange-maparole-cobalt": "#FF9F84",
     "--c-ton82": "#FED0A5",
     "--c-framboise54": "#FFB8D2",
     "--c-framboise54-txt": "#FFB8D2",
@@ -460,8 +460,8 @@
     "--c-framboise94": "#FFF4FC",
     "--c-framboise97": "#FFF9FC",
     "--c-blanc100": "#FFFFFF",
-    "--c-cobalt50": "#0E78F2",
-    "--c-lilas85": "#F4EEFF",
+    "--c-cobalt50": "#1A52F0",
+    "--c-lilas85": "#E8DAFF",
     "--c-bleu35": "#335382",
     "--c-framboise35": "#7C3F58",
     "--c-mauve35": "#5D4978",

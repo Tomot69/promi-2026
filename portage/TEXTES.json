@@ -1,0 +1,3490 @@
+{
+ "_meta": {
+  "document": "portage/TEXTES.json — toutes les chaînes de l’app Promi, clé par clé",
+  "extrait_de": "app.html et promi-moteur.js, arbre de travail du 6 oct. 2026 (après le commit ceac9ac « v133 », modifications v134 non commitées comprises)",
+  "mode_d_emploi": "portage/TEXTES.md",
+  "champs": {
+   "fr": "le texte exact, au caractère près (apostrophes typographiques ’, espaces insécables U+00A0, « … »)",
+   "ou": "l’écran et l’endroit",
+   "source": "app.html:ligne (bloc)",
+   "variantes": "pluriels, accords, états, valeurs par défaut",
+   "gabarit": "chaîne à trous ; les trous sont entre accolades",
+   "voiceover": "le libellé lu par le lecteur d’écran (aria-label du prototype)",
+   "liste": "les éléments d’une liste ordonnée",
+   "regle": "la règle de tirage, d’accord ou d’affichage",
+   "casse": "ce que l’écran affiche quand la feuille de style change la casse de la source",
+   "note": "ce qu’il faut savoir",
+   "etat": "présent seulement si la chaîne n’est PAS sûre d’être affichée aujourd’hui"
+  },
+  "cles_par_ecran": {
+   "Commun": {
+    "cles": 10,
+    "chaines": 19,
+    "a_confirmer": 0
+   },
+   "Onboarding": {
+    "cles": 21,
+    "chaines": 22,
+    "a_confirmer": 2
+   },
+   "Accueil et barre": {
+    "cles": 19,
+    "chaines": 25,
+    "a_confirmer": 5
+   },
+   "Page +": {
+    "cles": 54,
+    "chaines": 200,
+    "a_confirmer": 6
+   },
+   "Échéances": {
+    "cles": 1,
+    "chaines": 8,
+    "a_confirmer": 0
+   },
+   "Le pinceau (LE TRAIT)": {
+    "cles": 2,
+    "chaines": 14,
+    "a_confirmer": 0
+   },
+   "Le trait (phrases)": {
+    "cles": 12,
+    "chaines": 14,
+    "a_confirmer": 2
+   },
+   "Fiches": {
+    "cles": 15,
+    "chaines": 36,
+    "a_confirmer": 2
+   },
+   "Mots du temps": {
+    "cles": 2,
+    "chaines": 17,
+    "a_confirmer": 0
+   },
+   "L’instant": {
+    "cles": 3,
+    "chaines": 5,
+    "a_confirmer": 0
+   },
+   "Peaufiner (fiche)": {
+    "cles": 15,
+    "chaines": 35,
+    "a_confirmer": 1
+   },
+   "Le Cercle": {
+    "cles": 19,
+    "chaines": 41,
+    "a_confirmer": 4
+   },
+   "Index": {
+    "cles": 7,
+    "chaines": 25,
+    "a_confirmer": 1
+   },
+   "Cartes (Index et Fil)": {
+    "cles": 4,
+    "chaines": 19,
+    "a_confirmer": 0
+   },
+   "Fil": {
+    "cles": 9,
+    "chaines": 56,
+    "a_confirmer": 1
+   },
+   "Aura et son aide": {
+    "cles": 15,
+    "chaines": 35,
+    "a_confirmer": 2
+   },
+   "Fiche d’une personne": {
+    "cles": 5,
+    "chaines": 8,
+    "a_confirmer": 1
+   },
+   "Studio": {
+    "cles": 14,
+    "chaines": 81,
+    "a_confirmer": 4
+   },
+   "Partager": {
+    "cles": 18,
+    "chaines": 50,
+    "a_confirmer": 0
+   },
+   "Réglages": {
+    "cles": 20,
+    "chaines": 40,
+    "a_confirmer": 2
+   },
+   "Vie privée": {
+    "cles": 2,
+    "chaines": 10,
+    "a_confirmer": 0
+   },
+   "La langue": {
+    "cles": 1,
+    "chaines": 4,
+    "a_confirmer": 1
+   },
+   "Légal": {
+    "cles": 1,
+    "chaines": 2,
+    "a_confirmer": 0
+   },
+   "À propos": {
+    "cles": 7,
+    "chaines": 29,
+    "a_confirmer": 0
+   },
+   "Notifications": {
+    "cles": 11,
+    "chaines": 17,
+    "a_confirmer": 0
+   },
+   "Offre Ma Parole !": {
+    "cles": 10,
+    "chaines": 28,
+    "a_confirmer": 1
+   },
+   "Murs de Ma Parole !": {
+    "cles": 1,
+    "chaines": 19,
+    "a_confirmer": 0
+   },
+   "Mode dessin": {
+    "cles": 13,
+    "chaines": 23,
+    "a_confirmer": 0
+   },
+   "Menu photo": {
+    "cles": 5,
+    "chaines": 6,
+    "a_confirmer": 0
+   },
+   "Dialogues": {
+    "cles": 5,
+    "chaines": 21,
+    "a_confirmer": 0
+   },
+   "Messages": {
+    "cles": 6,
+    "chaines": 7,
+    "a_confirmer": 0
+   },
+   "Anciens écrans": {
+    "cles": 3,
+    "chaines": 51,
+    "a_confirmer": 3
+   }
+  },
+  "total": {
+   "cles": 330,
+   "chaines": 967,
+   "a_confirmer": 38
+  }
+ },
+ "textes": {
+  "commun.motMarque": {
+   "fr": "Promi",
+   "ou": "partout (plateau, mot-marque)",
+   "source": "app.html:36324 (lot-ONB-V20)",
+   "note": "le « i » final porte la couleur d’accent et clignote (`Prom<i>i</i>`)"
+  },
+  "commun.nature.promi": {
+   "fr": "Promi",
+   "ou": "mot-marque d’une fiche / page + / libellé de carte",
+   "source": "app.html:14959 (lot-S1B-geo)",
+   "variantes": {
+    "pluriel": "Promi (invariable)"
+   }
+  },
+  "commun.nature.chiche": {
+   "fr": "Chiche",
+   "ou": "mot-marque d’une fiche / page + / libellé de carte",
+   "source": "app.html:14959 (lot-S1B-geo)",
+   "variantes": {
+    "pluriel": "Chiches"
+   }
+  },
+  "commun.nature.cercle": {
+   "fr": "Cercle",
+   "ou": "mot-marque d’une fiche / page + / libellé de carte",
+   "source": "app.html:14959 (lot-S1B-geo)",
+   "variantes": {
+    "pluriel": "Cercles"
+   },
+   "note": "masculin ; clé interne `nuee`"
+  },
+  "commun.fermer": {
+   "fr": "✕ Fermer",
+   "ou": "plateau des écrans (Index, Fil, Aura, Réglages, Studio, Partager, pages légales)",
+   "source": "app.html:2761 (HTML statique)",
+   "variantes": {
+    "fiche et page +": "FERMER (croix dessinée + mot — app.html:12385)",
+    "Peaufiner": "✕ FERMER (app.html:16255)"
+   },
+   "voiceover": "Fermer (vue entière : app.html:37915)"
+  },
+  "commun.peaufiner": {
+   "fr": "Peaufiner",
+   "ou": "barre du bas d’une fiche, de la page +, de Partager",
+   "source": "app.html:12391 (lot7-fiche-js)"
+  },
+  "commun.moi": {
+   "fr": "Moi",
+   "ou": "premier destinataire de toute liste de personnes",
+   "source": "app.html:32437 (lot-GENS)",
+   "variantes": {
+    "minuscule": "moi (valeur interne et « à moi »)"
+   }
+  },
+  "commun.toutLeMonde": {
+   "fr": "tout le monde",
+   "ou": "destinataire dans un Cercle (passe devant « Moi »)",
+   "source": "app.html:5094 (script principal)"
+  },
+  "commun.aQui": {
+   "fr": "À {personne}",
+   "ou": "fiche (à-qui, avec capitale) ; listes : « à {personne} »",
+   "source": "app.html:3475 (script principal)",
+   "variantes": {
+    "soi (fiche)": "À moi",
+    "soi (liste)": "à moi",
+    "reçue (liste)": "de {personne}"
+   },
+   "gabarit": "À {personne} · « le X » → « Au X » · « les X » → « Aux X » ; en liste, sans capitale"
+  },
+  "commun.annuler": {
+   "fr": "Annuler",
+   "ou": "bouton du message annulable (5 s)",
+   "source": "app.html:35779 (lot-V16)"
+  },
+  "onb.prenom.question": {
+   "fr": "Toi, c’est {prénom} ?",
+   "ou": "onboarding · diapositive 1",
+   "source": "app.html:36362 (lot-ONB-V20)",
+   "gabarit": "Toi, c’est [pastille] ?",
+   "note": "espace insécable (U+00A0) avant « ? »"
+  },
+  "onb.prenom.invite": {
+   "fr": "ton prénom",
+   "ou": "onboarding · pastille vide du prénom",
+   "source": "app.html:36290 (lot-ONB-V20)"
+  },
+  "onb.parole.dit": {
+   "fr": "{prénom}, donc.",
+   "ou": "onboarding · diapositive 2, au-dessus de la phrase",
+   "source": "app.html:36397 (lot-ONB-V20)",
+   "gabarit": "{prénom}, donc."
+  },
+  "onb.parole.verbe": {
+   "fr": "Je me promets",
+   "ou": "onboarding · diapositive 2 (pastille-verbe)",
+   "source": "app.html:36365 (lot-ONB-V20)"
+  },
+  "onb.parole.liaison": {
+   "fr": "de",
+   "ou": "onboarding · entre le verbe et la parole",
+   "source": "app.html:36365 (lot-ONB-V20)",
+   "variantes": {
+    "élidé": "d’"
+   },
+   "regle": "« d’ » devant voyelle, h muet, « y » et « en » pronoms ; « de » devant h aspiré, y consonne, onze, onzième, oui, un chiffre ; pastille vide : « de » (window._promiElide, lot-ONB-V20)"
+  },
+  "onb.parole.invite": {
+   "fr": "ne plus dire “je commence lundi”",
+   "ou": "onboarding · pastille vide de la parole",
+   "source": "app.html:36290 (lot-ONB-V20)",
+   "note": "les espaces entre les mots sont insécables (U+00A0) dans la source, sauf avant « “ » ; guillemets anglais courbes"
+  },
+  "onb.sous": {
+   "fr": "Petite ou grande promesse, elle compte.",
+   "ou": "onboarding · sous la phrase",
+   "source": "app.html:36327 (lot-ONB-V20)"
+  },
+  "onb.suite": {
+   "fr": "→",
+   "ou": "onboarding · bouton de suite",
+   "source": "app.html:36328 (lot-ONB-V20)",
+   "voiceover": "Suite"
+  },
+  "onb.trace": {
+   "fr": "trace pour planter",
+   "ou": "onboarding · au-dessus du trait",
+   "source": "app.html:36329 (lot-ONB-V20)",
+   "voiceover": "Trace pour planter",
+   "casse": "capitales à l’écran (phrases du trait, PromiLate)"
+  },
+  "onb.fin.titre": {
+   "fr": "C’est planté.",
+   "ou": "onboarding · dernière diapositive, § 1",
+   "source": "app.html:36332 (lot-ONB-V20)"
+  },
+  "onb.fin.p1": {
+   "fr": "Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.",
+   "ou": "onboarding · dernière diapositive, § 2",
+   "source": "app.html:36332 (lot-ONB-V20)",
+   "note": "« Promi » en couleur de sa nature"
+  },
+  "onb.fin.p2": {
+   "fr": "Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.",
+   "ou": "onboarding · dernière diapositive, § 3",
+   "source": "app.html:36332 (lot-ONB-V20)",
+   "note": "« Deuxio » est le SEUL mot penché : 3° (`.onbv-deux`, skewX(-3deg)), même police, même graisse, même couleur ; Promi, Chiche, Cercle en couleur de leur nature (v125) ; texte courant en Gilbert écrit en minuscules (v127)"
+  },
+  "onb.fin.p3": {
+   "fr": "Le reste se découvre en traçant. La suite t’appartient.",
+   "ou": "onboarding · dernière diapositive, § 4",
+   "source": "app.html:36332 (lot-ONB-V20)"
+  },
+  "onb.compte.titre": {
+   "fr": "Garder ta Toile",
+   "ou": "onboarding · panneau du compte (fin) ; rappel sur l’accueil",
+   "source": "app.html:36515 (lot-ONB-V20)"
+  },
+  "onb.compte.texte": {
+   "fr": "Pour la retrouver sur un autre téléphone.",
+   "ou": "onboarding · panneau du compte",
+   "source": "app.html:36515 (lot-ONB-V20)"
+  },
+  "onb.compte.apple": {
+   "fr": "Continuer avec Apple",
+   "ou": "onboarding · panneau du compte",
+   "source": "app.html:36516 (lot-ONB-V20)"
+  },
+  "onb.compte.google": {
+   "fr": "Continuer avec Google",
+   "ou": "onboarding · panneau du compte",
+   "source": "app.html:36517 (lot-ONB-V20)"
+  },
+  "onb.compte.tard": {
+   "fr": "Plus tard",
+   "ou": "onboarding · panneau du compte ; rappel sur l’accueil",
+   "source": "app.html:36518 (lot-ONB-V20)"
+  },
+  "onb.compte.legal": {
+   "fr": "En continuant, tu acceptes les Conditions et la Politique de confidentialité.",
+   "ou": "onboarding · panneau du compte",
+   "source": "app.html:36519 (lot-ONB-V20)",
+   "note": "« Conditions » et « Politique de confidentialité » soulignés"
+  },
+  "onb.concept.titre": {
+   "fr": "Ici, c’est Promi. Et ça veut dire quelque chose.",
+   "ou": "onboarding · ancien concept de la 1re diapositive",
+   "source": "app.html:36307 (lot-ONB-V20)",
+   "note": "`concept(true)` : le concept a quitté la première diapositive en v126 ; saut de ligne après « Promi. »",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "onb.concept.texte": {
+   "fr": "Un Promi, c’est ta parole. Un Chiche, celle que tu lances à quelqu’un. Un Cercle, celles qu’on tient à plusieurs.",
+   "ou": "onboarding · ancien concept de la 1re diapositive",
+   "source": "app.html:36308 (lot-ONB-V20)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "accueil.ligne": {
+   "fr": "{n} paroles · {m} Cercles",
+   "ou": "accueil · plateau du haut, à droite du mot-marque",
+   "source": "app.html:32973 (lot-ACCUEIL)",
+   "variantes": {
+    "singulier": "1 parole · 1 Cercle",
+    "pluriel": "9 paroles · 2 Cercles",
+    "zéro": "0 parole · 0 Cercle"
+   },
+   "gabarit": "{n} parole(s) · {m} Cercle(s)"
+  },
+  "accueil.barre.studio": {
+   "fr": "Studio",
+   "ou": "accueil · barre du bas (1)",
+   "source": "app.html:2560 (HTML statique)",
+   "casse": "STUDIO à l’écran (Gilbert, capitales)"
+  },
+  "accueil.barre.aura": {
+   "fr": "Aura",
+   "ou": "accueil · barre du bas (2)",
+   "source": "app.html:2561 (HTML statique)",
+   "casse": "AURA à l’écran"
+  },
+  "accueil.barre.index": {
+   "fr": "Index",
+   "ou": "accueil · barre du bas (4)",
+   "source": "app.html:32896 (lot-ACCUEIL)",
+   "casse": "INDEX à l’écran"
+  },
+  "accueil.barre.fil": {
+   "fr": "Fil",
+   "ou": "accueil · barre du bas (5)",
+   "source": "app.html:2563 (HTML statique)",
+   "casse": "FIL à l’écran"
+  },
+  "accueil.plus.cercle": {
+   "fr": "Un Cercle",
+   "ou": "accueil · pilule du + (haut)",
+   "source": "app.html:32904 (lot-ACCUEIL)",
+   "variantes": {
+    "sous-titre": "un groupe, un projet"
+   }
+  },
+  "accueil.plus.chiche": {
+   "fr": "Un Chiche",
+   "ou": "accueil · pilule du + (milieu)",
+   "source": "app.html:32905 (lot-ACCUEIL)",
+   "variantes": {
+    "sous-titre": "un défi lancé"
+   }
+  },
+  "accueil.plus.promi": {
+   "fr": "Un Promi",
+   "ou": "accueil · pilule du + (bas)",
+   "source": "app.html:32906 (lot-ACCUEIL)",
+   "variantes": {
+    "sous-titre": "à quelqu’un, ou à toi"
+   }
+  },
+  "accueil.recadrer": {
+   "fr": "recadrer",
+   "ou": "accueil · rond de recadrage de la Toile (après un zoom)",
+   "source": "app.html:33003 (lot-ZOOM)",
+   "voiceover": "recadrer",
+   "note": "icône seule ; le mot n’existe que pour le lecteur d’écran"
+  },
+  "accueil.rappelCompte.oui": {
+   "fr": "Garder ta Toile",
+   "ou": "accueil · rappel du compte",
+   "source": "app.html:36657 (lot-ONB-V20)"
+  },
+  "accueil.rappelCompte.non": {
+   "fr": "Plus tard",
+   "ou": "accueil · rappel du compte",
+   "source": "app.html:36657 (lot-ONB-V20)"
+  },
+  "accueil.rappel.question": {
+   "fr": "Je te le rappelle ?",
+   "ou": "accueil · après la plantation d’une parole datée",
+   "source": "app.html:37359 (lot-V109-NOTIFS)"
+  },
+  "accueil.rappel.oui": {
+   "fr": "oui",
+   "ou": "accueil · réponse à « Je te le rappelle ? »",
+   "source": "app.html:37359 (lot-V109-NOTIFS)"
+  },
+  "accueil.rappel.non": {
+   "fr": "pas besoin",
+   "ou": "accueil · réponse à « Je te le rappelle ? »",
+   "source": "app.html:37359 (lot-V109-NOTIFS)"
+  },
+  "accueil.vide.titre": {
+   "fr": "Ta Toile n’attend que toi",
+   "ou": "accueil · Toile sans parole",
+   "source": "app.html:2553 (HTML statique)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "accueil.vide.texte": {
+   "fr": "Plante ton premier Promi — touche le +",
+   "ou": "accueil · Toile sans parole",
+   "source": "app.html:2553 (HTML statique)",
+   "note": "« + » en gras",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "accueil.vide.nudge": {
+   "fr": "chaque parole tenue devient une dalle",
+   "ou": "accueil · Toile sans parole",
+   "source": "app.html:2553 (HTML statique)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "accueil.ancien.sousTitre": {
+   "fr": "la Toile attend",
+   "ou": "accueil · ancien sous-titre du mot-marque",
+   "source": "app.html:2546 (HTML statique)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "accueil.ancien.motMarqueVO": {
+   "fr": "Ma Parole !",
+   "ou": "accueil · aria-label d’un bouton de l’ancien chrome",
+   "source": "app.html:2548 (HTML statique)",
+   "voiceover": "Ma Parole !",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "plus.choix.question": {
+   "fr": "Qu’est-ce que tu promets ?",
+   "ou": "page + · écran des trois tuiles",
+   "source": "app.html:2577 (HTML statique)",
+   "note": "saut de ligne après « que » ; espace insécable avant « ? »"
+  },
+  "plus.choix.promi": {
+   "fr": "Un Promi",
+   "ou": "page + · tuile",
+   "source": "app.html:2578 (HTML statique)",
+   "variantes": {
+    "sous-titre": "une parole qu'on donne"
+   }
+  },
+  "plus.choix.chiche": {
+   "fr": "Un Chiche",
+   "ou": "page + · tuile",
+   "source": "app.html:2578 (HTML statique)",
+   "variantes": {
+    "sous-titre": "tu oses le lancer"
+   }
+  },
+  "plus.choix.cercle": {
+   "fr": "Un Cercle",
+   "ou": "page + · tuile",
+   "source": "app.html:2578 (HTML statique)",
+   "variantes": {
+    "sous-titre": "on s'y met ensemble"
+   }
+  },
+  "plus.choix.choisir": {
+   "fr": "CHOISIR →",
+   "ou": "page + · appel de chaque tuile",
+   "source": "app.html:18000 (lot-S3-page-plus)"
+  },
+  "plus.fermer": {
+   "fr": "FERMER",
+   "ou": "page + · plateau",
+   "source": "app.html:2573 (HTML statique)"
+  },
+  "plus.promi.verbe": {
+   "fr": "Je me promets",
+   "ou": "page + Promi · pastille-verbe (défaut : à soi)",
+   "source": "app.html:5301 (script principal)",
+   "variantes": {
+    "à quelqu’un": "Je promets",
+    "demandé (tu)": "promets-moi",
+    "demandé (vous / plusieurs prénoms / Cercle)": "promettez-moi"
+   },
+   "regle": "la pastille bascule en cycle au toucher : « Je me promets » → « Je promets » (à …) → « promets-moi » → … ; majuscule seulement si le verbe ouvre la phrase"
+  },
+  "plus.chiche.verbe": {
+   "fr": "Chiche",
+   "ou": "page + Chiche · pastille-verbe (figée, ne bascule pas)",
+   "source": "app.html:5299 (script principal)",
+   "variantes": {
+    "après un prénom rempli": "chiche"
+   }
+  },
+  "plus.liaison.de": {
+   "fr": "de",
+   "ou": "page + · entre le verbe et la parole",
+   "source": "app.html:5276 (script principal)",
+   "variantes": {
+    "élidé": "d’"
+   },
+   "regle": "même règle d’élision que l’onboarding (window._promiElide)"
+  },
+  "plus.liaison.a": {
+   "fr": "à",
+   "ou": "page + · devant le destinataire",
+   "source": "app.html:5392 (script principal)"
+  },
+  "plus.liaison.avec": {
+   "fr": "avec",
+   "ou": "page + Chiche et Cercle · devant le compagnon / les membres",
+   "source": "app.html:5377 (script principal)"
+  },
+  "plus.etoile": {
+   "fr": "✦",
+   "ou": "page + · après la pastille-verbe",
+   "source": "app.html:5317 (script principal)"
+  },
+  "plus.promi.quiVide": {
+   "fr": "qui ?",
+   "ou": "page + Promi à quelqu’un · pastille en pointillé du destinataire",
+   "source": "app.html:5392 (script principal)"
+  },
+  "plus.demander.quiVide": {
+   "fr": "Rachel",
+   "ou": "page + Promi demandé · pastille en pointillé du prénom qui ouvre la phrase",
+   "source": "app.html:5351 (script principal)",
+   "note": "exemple de prénom ; suivi d’une virgule quand il est rempli"
+  },
+  "plus.chiche.quiVide": {
+   "fr": "qui ose ?",
+   "ou": "page + Chiche · pastille en pointillé du défié",
+   "source": "app.html:5367 (script principal)"
+  },
+  "plus.chiche.avecVide": {
+   "fr": "qui en est ?",
+   "ou": "page + Chiche · pastille en pointillé du compagnon",
+   "source": "app.html:5377 (script principal)"
+  },
+  "plus.chiche.inviteChamp": {
+   "fr": "ce que tu n’as jamais osé lui lancer…",
+   "ou": "page + Chiche · invite du champ de saisie",
+   "source": "app.html:5348 (script principal)"
+  },
+  "plus.aide.soi": {
+   "fr": "Je me promets se retourne — touche‑le",
+   "ou": "page + Promi à soi · aide sous la phrase vide",
+   "source": "app.html:17666 (lot-S3-page-plus)",
+   "note": "trait d’union insécable U+2011 dans « touche‑le »"
+  },
+  "plus.aide.autre": {
+   "fr": "Je promets se retourne — touche‑le",
+   "ou": "page + Promi à quelqu’un · aide",
+   "source": "app.html:17665 (lot-S3-page-plus)"
+  },
+  "plus.aide.demander": {
+   "fr": "promets-moi se retourne — touche‑le",
+   "ou": "page + Promi demandé · aide",
+   "source": "app.html:17663 (lot-S3-page-plus)"
+  },
+  "plus.aide.chiche": {
+   "fr": "un Chiche se lance, il ne se retourne pas",
+   "ou": "page + Chiche · aide",
+   "source": "app.html:17661 (lot-S3-page-plus)"
+  },
+  "plus.garder": {
+   "fr": "garder de côté",
+   "ou": "page + · sous la phrase",
+   "source": "app.html:17681 (lot-S3-page-plus)"
+  },
+  "plus.garde.mot": {
+   "fr": "GARDÉ DE CÔTÉ · RIEN N’EST PROMIS",
+   "ou": "page + · reprise d’un gardé de côté",
+   "source": "app.html:17708 (lot-S3-page-plus)"
+  },
+  "plus.gens.ajouter": {
+   "fr": "+ ajouter quelqu’un",
+   "ou": "page + et Peaufiner · dernière ligne de la liste des personnes",
+   "source": "app.html:17784 (lot-S3-page-plus)"
+  },
+  "plus.gens.invite": {
+   "fr": "un prénom…",
+   "ou": "page + et Peaufiner · champ d’ajout d’une personne",
+   "source": "app.html:32482 (lot-GENS)"
+  },
+  "plus.gens.retirer": {
+   "fr": "retirer {prénom}",
+   "ou": "page + et Peaufiner · croix d’une personne choisie",
+   "source": "app.html:32456 (lot-GENS)",
+   "gabarit": "retirer {prénom}",
+   "voiceover": "retirer {prénom}"
+  },
+  "plus.date.vo": {
+   "fr": "Choisir une date",
+   "ou": "page + · champ de date caché derrière « une date précise… »",
+   "source": "app.html:5507 (script principal)",
+   "voiceover": "Choisir une date"
+  },
+  "plus.photo.vo": {
+   "fr": "Photo",
+   "ou": "page + et fiche · bouton rond photo",
+   "source": "app.html:20116 (lot-PHOTO)",
+   "voiceover": "Photo"
+  },
+  "plus.cercle.verbe": {
+   "fr": "Je lance un Cercle",
+   "ou": "page + Cercle · pastille-verbe (figée)",
+   "source": "app.html:13195 (da2-nuee-phrase-js)"
+  },
+  "plus.cercle.nomme": {
+   "fr": "nommé",
+   "ou": "page + Cercle · 2e ligne",
+   "source": "app.html:13195 (da2-nuee-phrase-js)"
+  },
+  "plus.cercle.champNom": {
+   "fr": "LE NOM DU CERCLE",
+   "ou": "page + Cercle · libellé du champ ouvert",
+   "source": "app.html:13205 (da2-nuee-phrase-js)"
+  },
+  "plus.cercle.champNomInvite": {
+   "fr": "{exemple}…",
+   "ou": "page + Cercle · invite du champ (la suggestion tirée, suivie de « … »)",
+   "source": "app.html:13205 (da2-nuee-phrase-js)",
+   "variantes": {
+    "repli": "Week-end à Marseille…"
+   },
+   "gabarit": "{suggestion du Cercle}…"
+  },
+  "plus.cercle.avecVide": {
+   "fr": "tout le monde",
+   "ou": "page + Cercle · pastille des membres, vide",
+   "source": "app.html:13189 (da2-nuee-phrase-js)",
+   "variantes": {
+    "« Moi » choisi": "Moi",
+    "rempli": "{a} · {b} · {c}"
+   }
+  },
+  "plus.cercle.toastNom": {
+   "fr": "Donne un nom à ton Cercle",
+   "ou": "page + Cercle · message si l’on lance sans nom",
+   "source": "app.html:3196 (script principal)"
+  },
+  "plus.garde.phrase": {
+   "fr": "Je garde une idée",
+   "ou": "page + · phrase d’un gardé de côté",
+   "source": "app.html:13378 (da3-draft-phrase-js)",
+   "note": "chemin de l’ancien formulaire `#draftPhrase` ; mot banni « brouillon » dans les ids seulement",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "plus.garde.titreVide": {
+   "fr": "le titre",
+   "ou": "page + gardé de côté · pastille vide",
+   "source": "app.html:13378 (da3-draft-phrase-js)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "plus.garde.pour": {
+   "fr": "pour",
+   "ou": "page + gardé de côté · liaison",
+   "source": "app.html:13379 (da3-draft-phrase-js)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "plus.garde.quand": {
+   "fr": "y revenir un jour",
+   "ou": "page + gardé de côté · pastille",
+   "source": "app.html:13376 (da3-draft-phrase-js)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "plus.garde.champ": {
+   "fr": "CE QUE TU GARDES",
+   "ou": "page + gardé de côté · libellé du champ",
+   "source": "app.html:13388 (da3-draft-phrase-js)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "plus.garde.champInvite": {
+   "fr": "une idée, un projet…",
+   "ou": "page + gardé de côté · invite",
+   "source": "app.html:13388 (da3-draft-phrase-js)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "plus.peauf.aQui": {
+   "fr": "À QUI",
+   "ou": "page + · Peaufiner (Promi à quelqu’un)",
+   "source": "app.html:17942 (lot-S3-page-plus)",
+   "variantes": {
+    "Chiche": "À QUI JE LANCE",
+    "valeur par défaut": "moi"
+   }
+  },
+  "plus.peauf.avec": {
+   "fr": "AVEC",
+   "ou": "page + · Peaufiner (Chiche)",
+   "source": "app.html:17944 (lot-S3-page-plus)",
+   "variantes": {
+    "valeur vide": "personne"
+   }
+  },
+  "plus.peauf.avant": {
+   "fr": "AVANT",
+   "ou": "page + · Peaufiner",
+   "source": "app.html:17946 (lot-S3-page-plus)",
+   "variantes": {
+    "valeur par défaut": "un jour"
+   }
+  },
+  "plus.peauf.dansUnCercle": {
+   "fr": "DANS UN CERCLE",
+   "ou": "page + · Peaufiner (Promi)",
+   "source": "app.html:17948 (lot-S3-page-plus)",
+   "variantes": {
+    "valeur vide": "aucune"
+   },
+   "note": "⚠ « aucune » est resté au féminin dans la source (le Cercle est masculin) — à valider"
+  },
+  "plus.peauf.note": {
+   "fr": "NOTE",
+   "ou": "page + · Peaufiner",
+   "source": "app.html:17950 (lot-S3-page-plus)",
+   "variantes": {
+    "aide, à soi": "privée — visible par toi seul",
+    "aide, à quelqu’un": "visible par {personne}",
+    "invite": "ajoute un mot, un contexte…"
+   }
+  },
+  "plus.peauf.pieces": {
+   "fr": "PIÈCES JOINTES",
+   "ou": "page + · Peaufiner",
+   "source": "app.html:17953 (lot-S3-page-plus)",
+   "variantes": {
+    "0": "0 fichier",
+    "1": "1 fichier",
+    "2+": "2 fichiers",
+    "aide, à soi": "privées — visibles par toi seul",
+    "aide, à quelqu’un": "visibles par {personne}"
+   },
+   "gabarit": "{n} fichier(s)"
+  },
+  "plus.peauf.cercle.membres": {
+   "fr": "MEMBRES",
+   "ou": "page + · Peaufiner (Cercle)",
+   "source": "app.html:17927 (lot-S3-page-plus)",
+   "variantes": {
+    "vide": "personne encore"
+   },
+   "gabarit": "{a} · {b} · +{n}"
+  },
+  "plus.peauf.cercle.inviter": {
+   "fr": "INVITER",
+   "ou": "page + · Peaufiner (Cercle)",
+   "source": "app.html:17928 (lot-S3-page-plus)",
+   "variantes": {
+    "valeur": "→"
+   }
+  },
+  "plus.peauf.cercle.promi": {
+   "fr": "LES PROMI DU CERCLE",
+   "ou": "page + · Peaufiner (Cercle)",
+   "source": "app.html:17930 (lot-S3-page-plus)",
+   "gabarit": "{n} Promi"
+  },
+  "echeance.liste": {
+   "fr": "un jour",
+   "ou": "Peaufiner (fiche et page +) · réglage AVANT, la liste unique",
+   "source": "app.html:16164 (lot-S2-peaufiner)",
+   "liste": [
+    "un jour",
+    "en l’air",
+    "demain",
+    "5 jours",
+    "2 semaines",
+    "ce mois-ci",
+    "une date précise…"
+   ],
+   "regle": "« un jour » et « en l’air » sont deux valeurs distinctes (aucune date) ; sans choix explicite, aucune n’est marquée"
+  },
+  "pinceau.libelle": {
+   "fr": "LE TRAIT",
+   "ou": "Peaufiner (fiche, Cercle) et rangée du pinceau de la page +",
+   "source": "app.html:25206 (lot-PINCEAU-PEAUFINER)"
+  },
+  "pinceau.noms": {
+   "fr": "Plein",
+   "ou": "rail du pinceau",
+   "source": "app.html:24814 (lot-PINCEAU-data)",
+   "gabarit": "{nom} — 0,50 €  (valeur affichée quand le tracé n’est pas gratuit)",
+   "liste": [
+    {
+     "nom": "Plein",
+     "gratuit": true,
+     "description": "le ruban franc, bord net"
+    },
+    {
+     "nom": "Coulé",
+     "gratuit": true,
+     "description": "la plume charge et décharge, elle pose des gouttes"
+    },
+    {
+     "nom": "Peigné",
+     "gratuit": true,
+     "description": "peigné de barres perpendiculaires"
+    },
+    {
+     "nom": "Sec",
+     "gratuit": true,
+     "description": "le feutre se rompt et s'amenuise"
+    },
+    {
+     "nom": "Tressé",
+     "gratuit": false,
+     "description": "deux brins qui se croisent"
+    },
+    {
+     "nom": "Frangé",
+     "gratuit": false,
+     "description": "le bas du trait s'effiloche"
+    },
+    {
+     "nom": "Doublé",
+     "gratuit": false,
+     "description": "un second trait accompagne le premier"
+    },
+    {
+     "nom": "Fendu",
+     "gratuit": false,
+     "description": "le trait s'ouvre en deux lèvres"
+    },
+    {
+     "nom": "Cranté",
+     "gratuit": false,
+     "description": "des crans mordus dans le bord haut"
+    },
+    {
+     "nom": "Vrillé",
+     "gratuit": false,
+     "description": "le ruban se tord"
+    },
+    {
+     "nom": "Semé",
+     "gratuit": false,
+     "description": "le trait se disperse en grains"
+    },
+    {
+     "nom": "Perlé",
+     "gratuit": false,
+     "description": "le trait se noue en perles"
+    }
+   ],
+   "note": "les descriptions sont dans la table du lot ; leur affichage à l’écran n’a pas été vérifié"
+  },
+  "plus.suggestions.soi": {
+   "fr": "me coucher le jour même",
+   "ou": "page + Promi à soi · pastille vide de la parole (« Je me promets de … »)",
+   "source": "app.html:36025 (lot-EXEMPLES-V20)",
+   "liste": [
+    "me coucher le jour même",
+    "finir ce livre avant d’en ouvrir trois",
+    "arroser mes plantes avant qu’elles m’en veuillent",
+    "prendre des nouvelles avant d’avoir une raison",
+    "me garder une soirée pour moi",
+    "retourner voir cet endroit que j’ai adoré",
+    "commencer sans attendre le bon moment",
+    "m’engager pour cette cause",
+    "apprendre à jouer d’un instrument",
+    "planter quelque chose que je pourrai manger",
+    "réparer plutôt que racheter",
+    "laisser mon téléphone à la maison un dimanche",
+    "apprendre un truc par jour",
+    "apprendre à reconnaître les oiseaux",
+    "apprendre à repriser",
+    "m’offrir des fleurs",
+    "ranger",
+    "finir un stylo",
+    "apprendre à faire mon pain",
+    "voir ce tableau en vrai"
+   ],
+   "regle": "ouverture 1 : la phrase 1 ; ouverture 2 : la phrase 2 (le Chiche n’a qu’UNE phrase fixe) ; ensuite un SAC des phrases restantes, tirées sans remise — une phrase tirée ne revient pas avant que tout le sac soit passé, puis il se remplit ; le sac est gardé d’une ouverture à l’autre ; un tirage par ouverture de la page +. Une entrée « A / B » porte sa variante plurielle (« vous ») : B est prise quand le destinataire est pluriel.",
+   "note": "fixes : 2"
+  },
+  "plus.suggestions.faire": {
+   "fr": "t’emmener voir la mer",
+   "ou": "page + Promi à quelqu’un (« Je promets de … à … »)",
+   "source": "app.html:36025 (lot-EXEMPLES-V20)",
+   "liste": [
+    {
+     "tu": "t’emmener voir la mer",
+     "vous": "vous emmener voir la mer"
+    },
+    {
+     "tu": "te ramener quelque chose de là-bas",
+     "vous": "vous ramener quelque chose de là-bas"
+    },
+    "m’y mettre",
+    {
+     "tu": "t’écrire une vraie lettre",
+     "vous": "vous écrire une vraie lettre"
+    },
+    {
+     "tu": "te faire découvrir cet endroit",
+     "vous": "vous faire découvrir cet endroit"
+    },
+    {
+     "tu": "te fabriquer quelque chose",
+     "vous": "vous fabriquer quelque chose"
+    },
+    {
+     "tu": "te planter un arbre",
+     "vous": "vous planter un arbre"
+    },
+    {
+     "tu": "venir te chercher à la gare",
+     "vous": "venir vous chercher à la gare"
+    },
+    "venir te chercher après ton premier jour",
+    "te ramener vivant de cette idée",
+    {
+     "tu": "te donner un double des clefs, un jour",
+     "vous": "vous donner un double des clefs, un jour"
+    },
+    "m’acquitter des 23 centimes",
+    "régulariser la situation du Tupperware",
+    "honorer ma dette de trois frites",
+    "mettre un terme au dossier des cintres",
+    "rendre le tournevis avant 2030"
+   ],
+   "regle": "ouverture 1 : la phrase 1 ; ouverture 2 : la phrase 2 (le Chiche n’a qu’UNE phrase fixe) ; ensuite un SAC des phrases restantes, tirées sans remise — une phrase tirée ne revient pas avant que tout le sac soit passé, puis il se remplit ; le sac est gardé d’une ouverture à l’autre ; un tirage par ouverture de la page +. Une entrée « A / B » porte sa variante plurielle (« vous ») : B est prise quand le destinataire est pluriel.",
+   "note": "fixes : 2"
+  },
+  "plus.suggestions.demander": {
+   "fr": "m’écrire quand tu es chez toi",
+   "ou": "page + Promi demandé (« …, promets-moi de … »)",
+   "source": "app.html:36025 (lot-EXEMPLES-V20)",
+   "liste": [
+    {
+     "tu": "m’écrire quand tu es chez toi",
+     "vous": "m’écrire quand vous êtes chez vous"
+    },
+    "me prévenir si j’ai du persil entre les dents",
+    "ne jamais parler comme sur Linkédine",
+    "me dire si je commence à dire « ça fait sens »",
+    "me dire si je commence à dire « disruptif »",
+    "me dire si je commence à parler de « synergies »",
+    {
+     "tu": "me donner ta recette, la vraie",
+     "vous": "me donner votre recette, la vraie"
+    },
+    "me rappeler cette histoire quand on sera vieux",
+    "m’envoyer une carte postale de là-bas",
+    "prendre cette sabbatique avec moi",
+    {
+     "tu": "me garder une chaise à ton procès",
+     "vous": "me garder une chaise à votre procès"
+    },
+    "aller voter",
+    "faire pipi assis",
+    {
+     "tu": "me montrer ton coin à champignons",
+     "vous": "me montrer votre coin à champignons"
+    },
+    "me donner une bouture de celle-là"
+   ],
+   "regle": "ouverture 1 : la phrase 1 ; ouverture 2 : la phrase 2 (le Chiche n’a qu’UNE phrase fixe) ; ensuite un SAC des phrases restantes, tirées sans remise — une phrase tirée ne revient pas avant que tout le sac soit passé, puis il se remplit ; le sac est gardé d’une ouverture à l’autre ; un tirage par ouverture de la page +. Une entrée « A / B » porte sa variante plurielle (« vous ») : B est prise quand le destinataire est pluriel.",
+   "note": "fixes : 2"
+  },
+  "plus.suggestions.chiche": {
+   "fr": "dire oui pour une fois",
+   "ou": "page + Chiche (« chiche de … »)",
+   "source": "app.html:36025 (lot-EXEMPLES-V20)",
+   "liste": [
+    "dire oui pour une fois",
+    "te baigner en janvier",
+    "te lever pour voir le soleil se lever",
+    "dormir à la belle étoile",
+    "choisir une ville au hasard",
+    "partir dans une heure",
+    "faire cette chose qu’on n’a jamais faite",
+    "nous faire confiance et voir où ça mène",
+    "dire oui sans demander pourquoi",
+    "faire le Mont Blanc",
+    "te mettre à la salsa",
+    "monter un groupe",
+    "prendre un cours de trapèze",
+    "courir notre premier marathon",
+    "apprendre une nouvelle langue",
+    "apprendre à jouer d’un instrument",
+    "faire un trek de plusieurs jours",
+    "apprendre à naviguer",
+    "y aller en stop",
+    "bivouaquer",
+    "monter notre festival",
+    "traverser un pays à pied",
+    "monter un refuge",
+    "aller courir maintenant",
+    "adopter un animal à la SPA",
+    "planter dix arbres",
+    "retaper cette baraque",
+    "restaurer ce vieux bateau",
+    "racheter le bar du village"
+   ],
+   "regle": "ouverture 1 : la phrase 1 ; ouverture 2 : la phrase 2 (le Chiche n’a qu’UNE phrase fixe) ; ensuite un SAC des phrases restantes, tirées sans remise — une phrase tirée ne revient pas avant que tout le sac soit passé, puis il se remplit ; le sac est gardé d’une ouverture à l’autre ; un tirage par ouverture de la page +. Une entrée « A / B » porte sa variante plurielle (« vous ») : B est prise quand le destinataire est pluriel.",
+   "note": "fixes : 1"
+  },
+  "plus.suggestions.cercle": {
+   "fr": "Week-end à Marseille",
+   "ou": "page + Cercle (« nommé … »)",
+   "source": "app.html:36025 (lot-EXEMPLES-V20)",
+   "liste": [
+    "Week-end à Marseille",
+    "La coloc",
+    "Le club de lecture",
+    "Le club de running",
+    "L’apéro qu’on repousse depuis mars",
+    "La maison qu’on veut construire",
+    "Notre tour du monde",
+    "La maison de campagne",
+    "Le projet qu’on mijote depuis deux ans",
+    "Le road trip des parkings de supermarché",
+    "Le road trip en Meuse",
+    "Le road trip des plus beaux ronds-points",
+    "Le road trip des zones pavillonnaires",
+    "Le road trip des sous-préfectures",
+    "Le road trip des ZAC",
+    "Le road trip des zones commerciales",
+    "Le road trip des aires de repos",
+    "Le mariage de Philippine et Pascal",
+    "Le mariage de Huguette et Jean-Roch",
+    "Le mariage de Blandine et Bruno-Stanislas",
+    "Le mariage de Nadine et Bernard-Guy",
+    "Le mariage de Monique et Didier-Régis",
+    "Le mariage de Chantal et Jean-Guy",
+    "Le mariage de Fabienne et Thierry-Alain",
+    "Le mariage de Corinne et Michel-Régis",
+    "Le mariage de Raymonde et Gérard-Yves",
+    "Le mariage de Gisèle et Rodolphe",
+    "Le mariage de Huguette et Mireille",
+    "Le mariage de Ginette et Gisèle",
+    "Le mariage de Jean-Roch et Jean-Guy",
+    "Le mariage de Didier-Régis et Rodolphe",
+    "Le mariage de Bruno-Stanislas et Pascal",
+    "Le mariage de Thierry-Alain et Bernard-Guy",
+    "Le mariage de Michel-Régis et Gérard-Yves",
+    "Le mariage de Jean-Noël et Alain-Gilbert",
+    "Le mariage de Guy",
+    "L’UTMB du dimanche",
+    "Le voyage aux 42 onglets ouverts",
+    "Le dîner des inconnus connus",
+    "La traversée des Pyrénées"
+   ],
+   "regle": "ouverture 1 : la phrase 1 ; ouverture 2 : la phrase 2 (le Chiche n’a qu’UNE phrase fixe) ; ensuite un SAC des phrases restantes, tirées sans remise — une phrase tirée ne revient pas avant que tout le sac soit passé, puis il se remplit ; le sac est gardé d’une ouverture à l’autre ; un tirage par ouverture de la page +. Une entrée « A / B » porte sa variante plurielle (« vous ») : B est prise quand le destinataire est pluriel.",
+   "note": "fixes : 2 ; la liste est la suite des catégories (projets, road trips, mariages, autres)"
+  },
+  "trait.tenir": {
+   "fr": "trace pour tenir",
+   "ou": "fiche à tenir / en cours · au-dessus du trait",
+   "source": "app.html:14491 (lot-S1B-geo)",
+   "voiceover": "Trace pour tenir",
+   "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
+  },
+  "trait.taPart": {
+   "fr": "trace ta part",
+   "ou": "page + Promi au repos",
+   "source": "app.html:17432 (lot-S3-page-plus)",
+   "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
+  },
+  "trait.planter": {
+   "fr": "trace pour planter",
+   "ou": "page + Promi, choix ouvert ; reprise d’un gardé de côté ; fiche d’un Promi gardé de côté ; onboarding",
+   "source": "app.html:17432 (lot-S3-page-plus)",
+   "voiceover": "Trace pour planter",
+   "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
+  },
+  "trait.lancer": {
+   "fr": "trace pour lancer",
+   "ou": "page + Chiche et Cercle ; fiche d’un Chiche ou d’un Cercle gardé de côté",
+   "source": "app.html:17433 (lot-S3-page-plus)",
+   "voiceover": "Trace pour lancer le Cercle (app.html:2588, zone du geste d’un Cercle)",
+   "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
+  },
+  "trait.continue": {
+   "fr": "continue →",
+   "ou": "page + · pendant le geste",
+   "source": "app.html:17417 (lot-S3-page-plus)",
+   "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
+  },
+  "trait.signe.unJour": {
+   "fr": "UN JOUR",
+   "ou": "page + · trait signé, sans échéance",
+   "source": "app.html:17864 (lot-S3-page-plus)"
+  },
+  "trait.signe.enLair": {
+   "fr": "EN L’AIR",
+   "ou": "page + · trait signé, parole en l’air",
+   "source": "app.html:17865 (lot-S3-page-plus)"
+  },
+  "trait.signe.aTenir": {
+   "fr": "À TENIR · {ÉCHÉANCE}",
+   "ou": "page + · trait signé, avec échéance",
+   "source": "app.html:17866 (lot-S3-page-plus)",
+   "variantes": {
+    "exemple": "À TENIR · DEMAIN"
+   },
+   "gabarit": "À TENIR · {échéance en capitales}"
+  },
+  "trait.chicheLance": {
+   "fr": "{personne} tracera sa part si elle ose",
+   "ou": "fiche d’un Chiche lancé, pas encore relevé",
+   "source": "app.html:14483 (lot-S1B-geo)",
+   "variantes": {
+    "sans prénom": "elle tracera sa part si elle ose"
+   },
+   "gabarit": "{personne} tracera sa part si elle ose",
+   "note": "⚠ « elle » est en dur, quel que soit le prénom — aucune variante masculine",
+   "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
+  },
+  "trait.autrePart": {
+   "fr": "l’autre part arrive",
+   "ou": "l’instant · après avoir tracé sa moitié",
+   "source": "app.html:19640 (lot-S5)",
+   "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
+  },
+  "trait.vo.boutonOuTrait": {
+   "fr": "trait ou bouton",
+   "ou": "zone du geste (bascule d’accessibilité)",
+   "source": "app.html:4589 (script principal)",
+   "voiceover": "trait ou bouton",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "trait.vo.mettreDeCote": {
+   "fr": "Trace pour mettre de côté",
+   "ou": "zone du geste d’un gardé de côté (ancien formulaire)",
+   "source": "app.html:2591 (HTML statique)",
+   "voiceover": "Trace pour mettre de côté",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "fiche.aQui.avec": {
+   "fr": "À {personne} · avec {compagnon}",
+   "ou": "fiche Chiche · à-qui quand le compagnon est un tiers",
+   "source": "app.html:12373 (lot7-fiche-js)",
+   "gabarit": "{À qui} · avec {compagnon}"
+  },
+  "fiche.aQui.garde": {
+   "fr": "Gardé de côté",
+   "ou": "fiche d’un gardé de côté · à la place de l’à-qui",
+   "source": "app.html:12366 (lot7-fiche-js)"
+  },
+  "fiche.etat.promi": {
+   "fr": "EN COURS",
+   "ou": "fiche Promi · ligne d’état",
+   "source": "app.html:12344 (lot7-fiche-js)",
+   "variantes": {
+    "tenue": "TENUE",
+    "à tenir": "À TENIR"
+   },
+   "gabarit": "{ÉTAT} · {SUITE}",
+   "note": "la suite est `leJour` de la parole s’il existe (ex. « DEPUIS LE 4 AVRIL »), sinon, pour « à tenir », le mot du temps (voir temps.*) ; tout en capitales"
+  },
+  "fiche.etat.chiche": {
+   "fr": "LANCÉ",
+   "ou": "fiche Chiche · ligne d’état",
+   "source": "app.html:14984 (lot-S1B-geo)",
+   "variantes": {
+    "tenu seul": "TENUE",
+    "tenu à deux": "TENU À DEUX",
+    "relevé, à tenir": "À RELEVER"
+   },
+   "gabarit": "{ÉTAT} · {SUITE}",
+   "note": "exemples des cadres : « TENU À DEUX · 3 AOÛT », « LANCÉ · PAS ENCORE RELEVÉ »"
+  },
+  "fiche.etat.exemplesSuite": {
+   "fr": "depuis le 4 avril",
+   "ou": "fiche · suite de la ligne d’état (données du jeu de démonstration)",
+   "source": "app.html:21331 (lot-JEU-PLANCHE)",
+   "liste": [
+    "depuis le 4 avril",
+    "3 août",
+    "pas encore relevé"
+   ],
+   "note": "ce sont des DONNÉES (`leJour`), pas des libellés : aucune règle de calcul de « DEPUIS LE … » n’existe dans le prototype — ⚠ TROU"
+  },
+  "fiche.mot.taNote": {
+   "fr": "TA NOTE",
+   "ou": "fiche · en-tête de la carte du mot (la note)",
+   "source": "app.html:12405 (lot7-fiche-js)"
+  },
+  "fiche.mot.entete": {
+   "fr": "{AUTEUR}, {QUAND}",
+   "ou": "fiche · en-tête de la carte du mot (dernier commentaire)",
+   "source": "app.html:12404 (lot7-fiche-js)",
+   "gabarit": "{auteur}, {date relative} — en capitales"
+  },
+  "fiche.mot.repondre": {
+   "fr": "répondre",
+   "ou": "fiche · invite de la carte du mot (s’il y a un commentaire)",
+   "source": "app.html:12415 (lot7-fiche-js)",
+   "variantes": {
+    "aucun mot encore": "écris un mot"
+   }
+  },
+  "fiche.partager.vo": {
+   "fr": "Partager",
+   "ou": "fiche · rond de partage dans la barre Peaufiner (icône seule)",
+   "source": "app.html:6226 (script principal)",
+   "voiceover": "Partager"
+  },
+  "fiche.bande.voirPhoto": {
+   "fr": "Voir la photo en entier",
+   "ou": "fiche · bande haute quand elle porte une photo",
+   "source": "app.html:37956 (lot-V131-ENTIER)",
+   "voiceover": "Voir la photo en entier"
+  },
+  "fiche.bande.voirDessin": {
+   "fr": "Voir le dessin en entier",
+   "ou": "fiche · bande haute quand elle porte un dessin",
+   "source": "app.html:37956 (lot-V131-ENTIER)",
+   "voiceover": "Voir le dessin en entier"
+  },
+  "fiche.entier.photo": {
+   "fr": "La photo en entier",
+   "ou": "fiche · vue entière (titre du dialogue)",
+   "source": "app.html:37921 (lot-V131-ENTIER)",
+   "variantes": {
+    "texte de l’image": "La photo de cette parole, en entier"
+   },
+   "voiceover": "La photo en entier"
+  },
+  "fiche.entier.dessin": {
+   "fr": "Le dessin en entier",
+   "ou": "fiche · vue entière (titre du dialogue)",
+   "source": "app.html:37921 (lot-V131-ENTIER)",
+   "variantes": {
+    "texte de l’image": "Le dessin de cette parole, en entier"
+   },
+   "voiceover": "Le dessin en entier"
+  },
+  "fiche.ancien.paroleTenue": {
+   "fr": "PAROLE TENUE",
+   "ou": "fiche tenue · ancien bloc `#dpTrace`",
+   "source": "app.html:6153 (script principal)",
+   "liste": [
+    "PAROLE TENUE",
+    "Partager",
+    "En replanter un",
+    "Belle parole.",
+    "C’est fait.",
+    "Une de plus.",
+    "Tenue, comme promis.",
+    "Bien joué.",
+    "{n} Promi tenus"
+   ],
+   "note": "« En replanter un » et « Belle parole » sont des termes BANNIS (CLAUDE.md §2) : ce bloc est très probablement masqué",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "temps.mots": {
+   "fr": "un jour",
+   "ou": "fiche, cartes · mot du temps d’une échéance (`motDuTemps`)",
+   "source": "app.html:6244 (script principal)",
+   "variantes": {
+    "mois": "janvier · février · mars · avril · mai · juin · juillet · août · septembre · octobre · novembre · décembre"
+   },
+   "liste": [
+    "un jour",
+    "tenue",
+    "à tenir",
+    "aujourd'hui",
+    "demain",
+    "dimanche",
+    "lundi",
+    "mardi",
+    "mercredi",
+    "jeudi",
+    "vendredi",
+    "samedi",
+    "{jour} {mois}"
+   ],
+   "regle": "tenue → « tenue » ; échéance dépassée → « à tenir » ; aucune date → « un jour » ; 0 j → « aujourd'hui » ; 1 j → « demain » ; 2 à 7 j → le jour de la semaine ; 8 à 60 j → « {jour} {mois} » ; au-delà → « un jour »",
+   "note": "« aujourd'hui » porte une apostrophe droite dans la source"
+  },
+  "temps.filDefaut": {
+   "fr": "à l'instant",
+   "ou": "Fil · date d’un événement neuf",
+   "source": "app.html:6836 (script principal)",
+   "variantes": {
+    "jeu de démonstration": "hier · récemment · il y a 3 j · il y a 1 h · il y a 2 h · 2 j"
+   },
+   "note": "⚠ TROU : aucune fonction ne calcule « il y a N … » — les dates relatives du Fil sont des chaînes posées à la main dans le jeu de démonstration"
+  },
+  "instant.tenue": {
+   "fr": "tenue.",
+   "ou": "l’instant (juste après avoir tenu) · grand mot",
+   "source": "app.html:19801 (lot-S5)"
+  },
+  "instant.sous": {
+   "fr": "Le dessin existe.",
+   "ou": "l’instant (juste après avoir tenu) · sous le grand mot",
+   "source": "app.html:19803 (lot-S5)",
+   "variantes": {
+    "avec une personne": "{personne} vient de tracer sa moitié. Le dessin existe."
+   },
+   "gabarit": "{personne} vient de tracer sa moitié. Le dessin existe."
+  },
+  "instant.etat": {
+   "fr": "TENUE · À L’INSTANT",
+   "ou": "l’instant (juste après avoir tenu) · ligne d’état",
+   "source": "app.html:19841 (lot-S5)",
+   "variantes": {
+    "à deux": "TENUE À DEUX · À L’INSTANT"
+   }
+  },
+  "peauf.aQui": {
+   "fr": "À QUI",
+   "ou": "Peaufiner d’une fiche (Promi à quelqu’un)",
+   "source": "app.html:16319 (lot-S2-peaufiner)",
+   "variantes": {
+    "Chiche": "À QUI JE LANCE",
+    "valeur par défaut": "moi"
+   }
+  },
+  "peauf.avec": {
+   "fr": "AVEC",
+   "ou": "Peaufiner d’une fiche (Chiche)",
+   "source": "app.html:16322 (lot-S2-peaufiner)",
+   "variantes": {
+    "valeur vide": "personne"
+   }
+  },
+  "peauf.avant": {
+   "fr": "AVANT",
+   "ou": "Peaufiner d’une fiche",
+   "source": "app.html:16327 (lot-S2-peaufiner)",
+   "note": "la valeur est l’échéance, sans le mot « avant » ; contrôle : echeance.liste"
+  },
+  "peauf.dansUnCercle": {
+   "fr": "DANS UN CERCLE",
+   "ou": "Peaufiner d’une fiche (Promi)",
+   "source": "app.html:16332 (lot-S2-peaufiner)",
+   "variantes": {
+    "valeur vide": "aucune"
+   },
+   "note": "⚠ « aucune » au féminin dans la source — à valider"
+  },
+  "peauf.note": {
+   "fr": "NOTE",
+   "ou": "Peaufiner d’une fiche",
+   "source": "app.html:16335 (lot-S2-peaufiner)",
+   "variantes": {
+    "aide, à soi": "privée — visible par toi seul",
+    "aide, à quelqu’un": "visible par {personne}",
+    "invite": "ajoute un mot, un contexte…"
+   }
+  },
+  "peauf.pieces": {
+   "fr": "PIÈCES JOINTES",
+   "ou": "Peaufiner d’une fiche",
+   "source": "app.html:16338 (lot-S2-peaufiner)",
+   "variantes": {
+    "aide, à soi": "privées — visibles par toi seul",
+    "aide, à quelqu’un": "visibles par {personne}"
+   },
+   "gabarit": "{n} fichier(s)"
+  },
+  "peauf.commentaires": {
+   "fr": "COMMENTAIRES",
+   "ou": "Peaufiner d’une fiche",
+   "source": "app.html:16344 (lot-S2-peaufiner)",
+   "variantes": {
+    "invite": "écris un mot…",
+    "aide, à soi": "privé — personne d’autre ne le voit",
+    "aide, à quelqu’un": "visible par {personne}, qui peut y répondre"
+   }
+  },
+  "peauf.relancer": {
+   "fr": "RELANCER {PRÉNOM}",
+   "ou": "Peaufiner d’une fiche (parole reçue ou donnée à quelqu’un)",
+   "source": "app.html:16352 (lot-S2-peaufiner)",
+   "variantes": {
+    "valeur": "→"
+   },
+   "gabarit": "RELANCER {prénom en capitales}"
+  },
+  "peauf.supprimer": {
+   "fr": "SUPPRIMER CE PROMI",
+   "ou": "Peaufiner d’une fiche · dernière rangée",
+   "source": "app.html:16356 (lot-S2-peaufiner)",
+   "variantes": {
+    "Chiche": "SUPPRIMER CE CHICHE"
+   }
+  },
+  "peauf.mp.recurrence": {
+   "fr": "RÉCURRENCE",
+   "ou": "Peaufiner d’une fiche · bloc Ma Parole ! (flouté en gratuit)",
+   "source": "app.html:16233 (lot-S2-peaufiner)",
+   "variantes": {
+    "valeur d’exemple": "chaque semaine"
+   }
+  },
+  "peauf.mp.rappel": {
+   "fr": "RAPPEL",
+   "ou": "Peaufiner d’une fiche · bloc Ma Parole !",
+   "source": "app.html:16234 (lot-S2-peaufiner)",
+   "variantes": {
+    "valeur d’exemple": "la veille à 19:00"
+   }
+  },
+  "peauf.mp.important": {
+   "fr": "C'EST IMPORTANT ?",
+   "ou": "Peaufiner d’une fiche · bloc Ma Parole !",
+   "source": "app.html:16235 (lot-S2-peaufiner)",
+   "variantes": {
+    "valeur": "· ·· ···"
+   },
+   "note": "apostrophe droite dans la source"
+  },
+  "peauf.mp.memoire": {
+   "fr": "LA MÉMOIRE",
+   "ou": "Peaufiner d’une fiche · bloc Ma Parole !",
+   "source": "app.html:16236 (lot-S2-peaufiner)",
+   "variantes": {
+    "valeur d’exemple": "réveille tes « en l’air »"
+   }
+  },
+  "peauf.mp.couleur": {
+   "fr": "LA COULEUR",
+   "ou": "Peaufiner d’une fiche · bloc Ma Parole ! (5e réglage)",
+   "source": "app.html:33129 (lot-CERCLE-COULEUR)",
+   "variantes": {
+    "invite du champ": "code couleur"
+   },
+   "voiceover": "couleur {i} (chaque ton de la palette)"
+  },
+  "peauf.mp.encart": {
+   "fr": "✦ Ma Parole !",
+   "ou": "Peaufiner d’une fiche · ancien encart du bloc",
+   "source": "app.html:16240 (lot-S2-peaufiner)",
+   "variantes": {
+    "sous-titre": "importance, récurrence, rappels, mémoire"
+   },
+   "note": "les encarts sont cachés depuis v104 (un mur est flouté, sans explication)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "cercle.avec": {
+   "fr": "Avec {a}, {b}, +{n}",
+   "ou": "fiche d’un Cercle · à-qui",
+   "source": "app.html:15455 (lot-S1B-geo)",
+   "variantes": {
+    "sans membre": "Avec toi seulement"
+   },
+   "gabarit": "Avec {a}, {b}, +{n}",
+   "note": "{n} = membres non nommés, soi compris"
+  },
+  "cercle.etat": {
+   "fr": "{n} Promi · {t} tenus",
+   "ou": "fiche d’un Cercle · ligne d’état",
+   "source": "app.html:5769 (script principal)",
+   "variantes": {
+    "aucune parole": "encore aucune parole",
+    "1 tenu": "9 Promi · 1 tenu",
+    "aucun tenu": "9 Promi"
+   },
+   "gabarit": "{n} Promi · {t} tenu(s)",
+   "casse": "capitales à l’écran (« ENCORE AUCUNE PAROLE », Q213)"
+  },
+  "cercle.etat.extras": {
+   "fr": "  ·  une note  ·  {n} fichier(s)  ·  {n} mot(s)",
+   "ou": "fiche d’un Cercle · suite de la ligne d’état",
+   "source": "app.html:5777 (script principal)",
+   "gabarit": "une note · {n} fichier(s) · {n} mot(s)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "cercle.nomDefaut": {
+   "fr": "Ce Cercle",
+   "ou": "fiche d’un Cercle · titre si le Cercle n’a pas de nom",
+   "source": "app.html:5755 (script principal)"
+  },
+  "cercle.fil.etats": {
+   "fr": "à tenir",
+   "ou": "fiche d’un Cercle · fil des paroles, mot d’état de chaque carte",
+   "source": "app.html:3813 (script principal)",
+   "liste": [
+    "à tenir",
+    "en cours",
+    "TENU",
+    "CHICHE LANCÉ",
+    "CHICHE RELEVÉ"
+   ],
+   "note": "« tenue » de la fiche devient « TENU » dans le fil d’un Cercle (app.html:15538)"
+  },
+  "cercle.planter": {
+   "fr": "Planter dans le Cercle",
+   "ou": "fiche d’un Cercle · dernière ligne du fil",
+   "source": "app.html:5801 (script principal)"
+  },
+  "cercle.partager.vo": {
+   "fr": "Partager le Cercle",
+   "ou": "fiche d’un Cercle · bouton de partage du fil",
+   "source": "app.html:5802 (script principal)",
+   "voiceover": "Partager le Cercle"
+  },
+  "cercle.invite.premier": {
+   "fr": "Plante le premier Promi de ton Cercle →",
+   "ou": "fiche d’un Cercle · Cercle vide",
+   "source": "app.html:13696 (nuee-jeune-js)",
+   "variantes": {
+    "un seul Promi": "Plante le Promi suivant →"
+   }
+  },
+  "cercle.dessiner.vo": {
+   "fr": "Dessiner sur ce Cercle",
+   "ou": "fiche d’un Cercle · bouton photo (il n’ouvre que « Dessiner »)",
+   "source": "app.html:38311 (lot-V132-DESSIN)",
+   "voiceover": "Dessiner sur ce Cercle"
+  },
+  "cercle.peauf.trait": {
+   "fr": "LE TRAIT",
+   "ou": "Peaufiner d’un Cercle",
+   "source": "app.html:20570 (lot-NUEE-PEAUFINER)"
+  },
+  "cercle.peauf.description": {
+   "fr": "DESCRIPTION",
+   "ou": "Peaufiner d’un Cercle",
+   "source": "app.html:20571 (lot-NUEE-PEAUFINER)",
+   "variantes": {
+    "invite": "présente le Cercle, son but…",
+    "aide": "visible par tous les membres"
+   }
+  },
+  "cercle.peauf.membres": {
+   "fr": "MEMBRES",
+   "ou": "Peaufiner d’un Cercle",
+   "source": "app.html:20572 (lot-NUEE-PEAUFINER)",
+   "variantes": {
+    "vide": "personne encore"
+   },
+   "gabarit": "{a} · {b} · +{n}"
+  },
+  "cercle.peauf.pieces": {
+   "fr": "PIÈCES JOINTES",
+   "ou": "Peaufiner d’un Cercle",
+   "source": "app.html:20573 (lot-NUEE-PEAUFINER)",
+   "variantes": {
+    "vide": "aucun fichier",
+    "aide": "visibles par le Cercle"
+   }
+  },
+  "cercle.peauf.commentaires": {
+   "fr": "COMMENTAIRES",
+   "ou": "Peaufiner d’un Cercle",
+   "source": "app.html:20574 (lot-NUEE-PEAUFINER)",
+   "variantes": {
+    "invite": "écris un mot…",
+    "aide": "visibles par les membres du Cercle"
+   }
+  },
+  "cercle.peauf.dissoudre": {
+   "fr": "DISSOUDRE LE CERCLE",
+   "ou": "Peaufiner d’un Cercle · page 2",
+   "source": "app.html:20575 (lot-NUEE-PEAUFINER)",
+   "variantes": {
+    "valeur": "→"
+   }
+  },
+  "cercle.peauf.planter": {
+   "fr": "Planter un Promi dans le Cercle",
+   "ou": "Peaufiner d’un Cercle · bouton",
+   "source": "app.html:16306 (lot-S2-peaufiner)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "cercle.dissoute": {
+   "fr": "« {nom} » dissoute",
+   "ou": "message annulable après dissolution",
+   "source": "app.html:35920 (lot-V16)",
+   "gabarit": "« {nom} » dissoute",
+   "note": "⚠ « dissoute » au féminin (reste de « Nuée ») — à valider"
+  },
+  "cercle.dissoudre.ancien": {
+   "fr": "Dissoudre le Cercle ?",
+   "ou": "ancien message à deux boutons",
+   "source": "app.html:3662 (script principal)",
+   "variantes": {
+    "bouton 1": "Libérer les Promi",
+    "bouton 2": "Tout supprimer"
+   },
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "cercle.invitation": {
+   "fr": "Rejoins mon Cercle « {nom} » sur Promi — nos Promi, tenus ensemble. https://promi.app",
+   "ou": "texte d’invitation à un Cercle",
+   "source": "app.html:3660 (script principal)",
+   "variantes": {
+    "message, partage natif": "Invitation prête à partager",
+    "message, copie": "Invitation copiée · promi.app"
+   },
+   "gabarit": "Rejoins mon Cercle « {nom} » sur Promi — nos Promi, tenus ensemble. https://promi.app",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "index.titre": {
+   "fr": "Index",
+   "ou": "Index · plateau",
+   "source": "app.html:2642 (HTML statique)"
+  },
+  "index.recherche": {
+   "fr": "Rechercher",
+   "ou": "Index · champ de recherche",
+   "source": "app.html:19514 (lot-S4)",
+   "note": "remplace l’invite d’origine « Rechercher un Promi, un Cercle… » (app.html:2642)"
+  },
+  "index.tri.vo": {
+   "fr": "Trier et filtrer",
+   "ou": "Index et Fil · bouton rond de tri",
+   "source": "app.html:2642 (HTML statique)",
+   "voiceover": "Trier et filtrer"
+  },
+  "index.tri.trier": {
+   "fr": "TRIER",
+   "ou": "Index · menu de tri",
+   "source": "app.html:2642 (HTML statique)",
+   "liste": [
+    "Récents",
+    "À tenir en premier",
+    "Par personne",
+    "Par Cercle"
+   ]
+  },
+  "index.tri.montrer": {
+   "fr": "NE MONTRER QUE",
+   "ou": "Index · menu de tri",
+   "source": "app.html:2642 (HTML statique)",
+   "liste": [
+    "Tout",
+    "En suspens",
+    "Manquées",
+    "Promi",
+    "Cercles",
+    "Gardés de côté",
+    "Demandes"
+   ],
+   "note": "⚠ « Manquées » et « Demandes » : mots d’août, à valider"
+  },
+  "index.tri.quadrillage": {
+   "fr": "QUADRILLAGE",
+   "ou": "Index · menu de tri",
+   "source": "app.html:2642 (HTML statique)",
+   "liste": [
+    "Deux par ligne",
+    "Trois par ligne",
+    "Quatre par ligne"
+   ]
+  },
+  "index.onglets": {
+   "fr": "Récent",
+   "ou": "Index · anciens onglets",
+   "source": "app.html:2642 (HTML statique)",
+   "liste": [
+    "Récent",
+    "Personne",
+    "Cercle",
+    "Gardés de côté"
+   ],
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "carte.qui": {
+   "fr": "à {personne}",
+   "ou": "Index et Fil · sur-titre d’une carte",
+   "source": "app.html:19032 (lot-S4)",
+   "variantes": {
+    "à soi": "à moi",
+    "reçue": "de {personne}",
+    "gardé de côté": "gardé de côté",
+    "Cercle avec membres": "avec +{n}",
+    "Cercle sans membre": "perso"
+   },
+   "gabarit": "à {personne} / de {personne} / avec +{n}"
+  },
+  "carte.etat": {
+   "fr": "EN COURS",
+   "ou": "Index et Fil · mot d’état d’une carte",
+   "source": "app.html:18997 (lot-S4)",
+   "variantes": {
+    "gardé de côté": "GARDÉ DE CÔTÉ",
+    "tenue": "TENUE",
+    "Chiche tenu à deux": "TENU À DEUX",
+    "Chiche lancé": "LANCÉ",
+    "à tenir": "À TENIR",
+    "à tenir, demain": "À TENIR · DEMAIN",
+    "à tenir, dans n jours": "À TENIR · {n} JOURS"
+   },
+   "gabarit": "À TENIR · {n} JOURS"
+  },
+  "carte.cercle.etat": {
+   "fr": "{n} PROMI · {t} TENUS",
+   "ou": "Index et Fil · mot d’état de la carte d’un Cercle",
+   "source": "app.html:19085 (lot-S4)",
+   "variantes": {
+    "0 ou 1 tenu": "9 PROMI · 1 TENU",
+    "2+": "9 PROMI · 3 TENUS",
+    "Cercle vide": "AUCUNE PAROLE"
+   },
+   "gabarit": "{n} PROMI · {t} TENU(S)",
+   "note": "« PROMI » est invariable ; « TENU » s’accorde"
+  },
+  "carte.cercle.evenement": {
+   "fr": "{NOM} · {n} PROMI",
+   "ou": "Fil · mot d’événement d’un Cercle",
+   "source": "app.html:19022 (lot-S4)",
+   "gabarit": "{NOM DU CERCLE} · {n} PROMI"
+  },
+  "fil.titre": {
+   "fr": "Fil",
+   "ou": "Fil · plateau",
+   "source": "app.html:2555 (HTML statique)"
+  },
+  "fil.recherche": {
+   "fr": "Rechercher",
+   "ou": "Fil · champ de recherche",
+   "source": "app.html:19515 (lot-S4)",
+   "note": "remplace « Rechercher dans le Fil… » (app.html:2555)"
+  },
+  "fil.tri.trier": {
+   "fr": "TRIER",
+   "ou": "Fil · menu de tri",
+   "source": "app.html:2555 (HTML statique)",
+   "liste": [
+    "Récents",
+    "Par personne",
+    "Par Cercle"
+   ]
+  },
+  "fil.tri.montrer": {
+   "fr": "NE MONTRER QUE",
+   "ou": "Fil · menu de tri",
+   "source": "app.html:2555 (HTML statique)",
+   "liste": [
+    "Tout",
+    "Ce qui attend un geste",
+    "Paroles tenues",
+    "Demandes",
+    "À tenir",
+    "Cercles",
+    "Mes Promi",
+    "Mes proches"
+   ]
+  },
+  "fil.actes": {
+   "fr": "TENIR",
+   "ou": "Fil · rangée de gestes, dépliée par un appui maintenu sur un bandeau",
+   "source": "app.html:6874 (script principal)",
+   "liste": [
+    "TENIR",
+    "REPORTER",
+    "RELEVER",
+    "REJOINDRE",
+    "TRACER",
+    "✧ bravo",
+    "✦ bravo"
+   ],
+   "regle": "parole reçue en attente ou à tenir : TENIR · REPORTER ; Chiche reçu : RELEVER ; invitation à un Cercle : REJOINDRE ; l’autre a tracé sa moitié : TRACER ; événement tenu / planté / rejoint : « ✧ bravo » (devient « ✦ bravo » une fois touché)"
+  },
+  "fil.reporter": {
+   "fr": "Reporter…",
+   "ou": "Fil · message après REPORTER",
+   "source": "app.html:6921 (script principal)",
+   "variantes": {
+    "bouton 1": "+1 j",
+    "bouton 2": "+3 j",
+    "bouton 3": "+1 sem"
+   }
+  },
+  "fil.etat": {
+   "fr": "{ÉTAT} · {QUAND}",
+   "ou": "Fil · ligne d’état d’un bandeau",
+   "source": "app.html:19262 (lot-S4)",
+   "gabarit": "{mot d’état} · {date relative en capitales}"
+  },
+  "fil.evenements": {
+   "fr": "Tu as tenu « {titre} »",
+   "ou": "Fil · texte des événements (le titre de la parole entre « »)",
+   "source": "app.html:3042 (script principal)",
+   "liste": [
+    "Tu as tenu « {titre} »",
+    "Tu as tenu : « {titre} »",
+    "Tu as planté « {titre} »",
+    "Tu as planté « {titre} » pour {personne}",
+    "Tu t’es promis « {titre} »",
+    "Tu as créé le Cercle {nom}",
+    "Tu as créé le Cercle {nom} · invité {a}, {b}",
+    "Tu as rejoint « {nom} »",
+    "Tu as relancé {personne} sur « {titre} »",
+    "Tu as commenté « {titre} »",
+    "Tu as mis de côté « {titre} »",
+    "Tu as gardé « {titre} » de côté",
+    "Tu as reporté : « {titre} » (+1 j)",
+    "Tu as relevé le chiche de {personne} : « {titre} »",
+    "« {titre} » reportée de {durée}",
+    "« {titre} » est à tenir",
+    "« {titre} » est promis",
+    "{personne} te promet : « {titre} »",
+    "{personne} a planté : « {titre} »",
+    "{personne} a relevé : « {titre} »",
+    "{personne} a tracé sa moitié : « {titre} »",
+    "{personne} te lance un chiche : « {titre} »",
+    "{personne} t’invite à rejoindre « {nom} »",
+    "à {personne} : « {titre} »",
+    "à moi : « {titre} »"
+   ],
+   "note": "relevés aux appels de `feedAdd` (script principal, lot-JEU-PLANCHE, lot-V89) ; à l’écran, le bandeau sépare l’événement (avant « : ») du titre (entre « »). Variantes de repli : « Quelqu'un », « quelqu’un », « un Promi », « un chiche »"
+  },
+  "fil.serie": {
+   "fr": "Belle série — partage ton Noyau",
+   "ou": "Fil et fiche · message à la 2e et à la 5e parole tenue",
+   "source": "app.html:6906 (script principal)",
+   "variantes": {
+    "bouton": "Partager"
+   },
+   "note": "« Noyau » : nom d’avant la Pelote — à valider",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "aura.titre": {
+   "fr": "L’aura",
+   "ou": "Aura · plateau",
+   "source": "app.html:2696 (HTML statique)",
+   "voiceover": "À propos de l'Aura (bouton ⓘ, app.html:2696)"
+  },
+  "aura.phrases": {
+   "fr": "Rien de ce qui est ici n’a été dit à la légère.",
+   "ou": "Aura · phrase sous la Pelote",
+   "source": "app.html:29407 (lot-AURA-PELOTE)",
+   "liste": [
+    "Rien de ce qui est ici n’a été dit à la légère.",
+    "Tout ça, tu l’as dit. Et tu l’as fait.",
+    "On ne dirait pas comme ça, mais c’est du solide.",
+    "Il y en a, des paroles tenues.",
+    "Et dire que tout ça, c’est toi."
+   ],
+   "regle": "phrase n° (nombre de paroles tenues modulo 5) ; aucune parole tenue : aura.vide"
+  },
+  "aura.vide": {
+   "fr": "La première parole laissera sa trace ici.",
+   "ou": "Aura · sans aucune parole tenue",
+   "source": "app.html:29412 (lot-AURA-PELOTE)",
+   "variantes": {
+    "seconde ligne": "Tout commence par une parole donnée."
+   }
+  },
+  "aura.legende": {
+   "fr": "tenues",
+   "ou": "Aura · légende des trois états, sous les Noyaux (un chiffre sous chacun)",
+   "source": "app.html:29404 (lot-AURA-PELOTE)",
+   "liste": [
+    "tenues",
+    "en cours",
+    "à tenir"
+   ]
+  },
+  "aura.noyau.toi": {
+   "fr": "Toi",
+   "ou": "Aura · nom du premier Noyau (les autres : le prénom)",
+   "source": "app.html:30171 (lot-AURA-PELOTE)"
+  },
+  "aura.tenu": {
+   "fr": "Ce que tu as tenu",
+   "ou": "Aura · titre de la liste des paroles tenues",
+   "source": "app.html:30061 (lot-AURA-PELOTE)",
+   "casse": "« CE QUE TU AS TENU » à l’écran"
+  },
+  "aura.onTaTenu": {
+   "fr": "Ce qu’on t’a tenu",
+   "ou": "Aura · titre de la rangée miroir (mur de Ma Parole ! en gratuit)",
+   "source": "app.html:30065 (lot-AURA-PELOTE)",
+   "casse": "« CE QU’ON T’A TENU » à l’écran"
+  },
+  "aura.partager": {
+   "fr": "PARTAGER MA PELOTE",
+   "ou": "Aura · bouton sous l’ombre de la Pelote",
+   "source": "app.html:30070 (lot-AURA-PELOTE)",
+   "voiceover": "Partager ma Pelote"
+  },
+  "aura.encartMP": {
+   "fr": "✦ Ma Parole !",
+   "ou": "Aura · ancien encart sur « Ce qu’on t’a tenu »",
+   "source": "app.html:30067 (lot-AURA-PELOTE)",
+   "note": "caché depuis v104",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "aura.aide.titre": {
+   "fr": "L’aura",
+   "ou": "aide de l’Aura · plateau",
+   "source": "app.html:2725 (HTML statique)",
+   "variantes": {
+    "sous-titre": "ce que chaque élément raconte"
+   }
+  },
+  "aura.aide.legende": {
+   "fr": "TENUES",
+   "ou": "aide de l’Aura · légende",
+   "source": "app.html:33256 (lot-HUIT)",
+   "liste": [
+    "TENUES",
+    "EN COURS",
+    "À TENIR"
+   ]
+  },
+  "aura.aide.badgeGratuit": {
+   "fr": "En gratuit",
+   "ou": "aide de l’Aura · étiquette de section",
+   "source": "app.html:33259 (lot-HUIT)"
+  },
+  "aura.aide.badgeMP": {
+   "fr": "Avec Ma Parole !",
+   "ou": "aide de l’Aura · étiquette de section",
+   "source": "app.html:33268 (lot-HUIT)"
+  },
+  "aura.aide.cartes": {
+   "fr": "La Pelote",
+   "ou": "aide de l’Aura · les cartes",
+   "source": "app.html:33263 (lot-HUIT)",
+   "liste": [
+    {
+     "titre": "La Pelote",
+     "texte": "Chaque parole tenue y devient une île : elle s’étoffe à mesure que tu tiens. Touche une île pour la revoir.",
+     "section": "En gratuit"
+    },
+    {
+     "titre": "La phrase",
+     "texte": "Sous la Pelote, quelques mots pour te rappeler ce que tu as déjà tenu.",
+     "section": "En gratuit"
+    },
+    {
+     "titre": "Les Noyaux",
+     "texte": "Toi, puis chaque personne avec qui tu échanges des paroles. L’anneau dit où vous en êtes : tenu, en cours, à tenir.",
+     "section": "En gratuit",
+     "gras": [
+      "Toi",
+      "tenu",
+      "en cours",
+      "à tenir"
+     ]
+    },
+    {
+     "titre": "Ce que tu as tenu",
+     "texte": "Tes paroles tenues, dans l’ordre où tu les as tenues. Touche-en une pour la revoir.",
+     "section": "En gratuit"
+    },
+    {
+     "titre": "Partager ma Pelote",
+     "texte": "Une image à partager : on y voit que tu tiens parole, jamais ce que tu as promis.",
+     "section": "En gratuit"
+    },
+    {
+     "titre": "Peaufiner, avec Ma Parole !",
+     "texte": "Récurrence, rappel, importance, mémoire et la couleur de ta dalle — sur chaque Promi, Chiche et Cercle.",
+     "section": "Avec Ma Parole !",
+     "gras": [
+      "la couleur"
+     ]
+    },
+    {
+     "titre": "Les designs signature",
+     "texte": "Ramage, Madrure et Volubilis pour ta Toile.",
+     "section": "Avec Ma Parole !"
+    }
+   ],
+   "note": "⚠ « dans l’ordre où tu les as tenues » : depuis v132 la liste montre la plus récente EN PREMIER — texte à valider"
+  },
+  "aura.aide.encartMP": {
+   "fr": "✦ Ma Parole !",
+   "ou": "aide de l’Aura · porte vers l’offre",
+   "source": "app.html:33269 (lot-HUIT)",
+   "note": "encarts cachés depuis v104",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "personne.tenuEnsemble": {
+   "fr": "Tenu ensemble",
+   "ou": "fiche d’une personne (depuis un Noyau)",
+   "source": "app.html:31257 (lot-FICHE-PERSONNE)"
+  },
+  "personne.partages": {
+   "fr": "Ce que tu partages avec {prénom}",
+   "ou": "fiche d’une personne (depuis un Noyau)",
+   "source": "app.html:31269 (lot-FICHE-PERSONNE)",
+   "gabarit": "Ce que tu partages avec {prénom}"
+  },
+  "personne.planter": {
+   "fr": "+ Planter un Promi",
+   "ou": "fiche d’une personne (depuis un Noyau) · bouton",
+   "source": "app.html:31274 (lot-FICHE-PERSONNE)"
+  },
+  "personne.lancer": {
+   "fr": "+ Lancer un Chiche",
+   "ou": "fiche d’une personne (depuis un Noyau) · bouton",
+   "source": "app.html:31274 (lot-FICHE-PERSONNE)"
+  },
+  "personne.legende": {
+   "fr": "en cours",
+   "ou": "fiche d’une personne (depuis un Noyau) · légende",
+   "source": "app.html:31076 (lot-PERSONNE-AVEC)",
+   "liste": [
+    "en cours",
+    "tenues",
+    "à tenir"
+   ],
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "studio.titre": {
+   "fr": "Le Studio",
+   "ou": "Studio · plateau",
+   "source": "app.html:22022 (lot-STUDIO-PLATEAUX)"
+  },
+  "studio.mondes": {
+   "fr": "Pochade",
+   "ou": "Studio · nom du monde affiché (vingt mondes, dans l’ordre du rail)",
+   "source": "app.html:6651 (script principal)",
+   "liste": [
+    {
+     "cle": "encre",
+     "nom": "Pochade",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "touffe",
+     "nom": "Touffe",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "brouillamini",
+     "nom": "Brouillamini",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "halin",
+     "nom": "Halin",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "esquille",
+     "nom": "Esquille",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "mosaique",
+     "nom": "Tesselle",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "braille",
+     "nom": "Braille",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "pixel",
+     "nom": "Buvard",
+     "acces": "gratuit"
+    },
+    {
+     "cle": "ramage",
+     "nom": "Ramage",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "guingois",
+     "nom": "Guingois",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "chantourne",
+     "nom": "Chantourné",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "volubilis",
+     "nom": "Volubilis",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "madrure",
+     "nom": "Madrure",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "chamade",
+     "nom": "Chamade",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "ritournelle",
+     "nom": "Ritournelle",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "bobinette",
+     "nom": "Bobinette",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "mascaret",
+     "nom": "Mascaret",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "terrazzo",
+     "nom": "Éclisse",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "gravure",
+     "nom": "Taille-douce",
+     "acces": "Ma Parole !"
+    },
+    {
+     "cle": "sillons",
+     "nom": "Houle",
+     "acces": "Ma Parole !"
+    }
+   ],
+   "note": "un monde de Ma Parole ! porte « ✦ » après son nom ; les clés internes gardent les anciens noms (encre, mosaique, pixel, terrazzo, gravure, sillons)"
+  },
+  "studio.mondes.descriptions": {
+   "fr": "taches d’encre abstraites, une par dalle",
+   "ou": "Studio · descriptions des mondes (table STRUCT)",
+   "source": "app.html:2896 (script principal)",
+   "liste": [
+    {
+     "cle": "encre",
+     "nom": "Pochade",
+     "description": "taches d’encre abstraites, une par dalle"
+    },
+    {
+     "cle": "touffe",
+     "nom": "Touffe",
+     "description": "touffes de fleurs dessinées au marqueur"
+    },
+    {
+     "cle": "brouillamini",
+     "nom": "Brouillamini",
+     "description": "la gouache découpée, chaque promesse taillée d’un seul geste"
+    },
+    {
+     "cle": "halin",
+     "nom": "Halin",
+     "description": "des pierres polies, serrées les unes contre les autres"
+    },
+    {
+     "cle": "esquille",
+     "nom": "Esquille",
+     "description": "la plaque brisée, les éclats font les promesses"
+    },
+    {
+     "cle": "mosaique",
+     "nom": "Tesselle",
+     "description": "tesselles carrées, sol de céramique"
+    },
+    {
+     "cle": "braille",
+     "nom": "Braille",
+     "description": "trame de points, la couleur pousse dessus"
+    },
+    {
+     "cle": "pixel",
+     "nom": "Buvard",
+     "description": "pavé Voronoï pixel, chaque dalle un Promi"
+    },
+    {
+     "cle": "ramage",
+     "nom": "Ramage",
+     "description": "le plumage, chaque promesse y ouvre un œil"
+    },
+    {
+     "cle": "guingois",
+     "nom": "Guingois",
+     "description": "le quadrillage à main levée, chaque promesse y fait un pli"
+    },
+    {
+     "cle": "chantourne",
+     "nom": "Chantourné",
+     "description": "la soie chinée, chaque promesse est un médaillon"
+    },
+    {
+     "cle": "volubilis",
+     "nom": "Volubilis",
+     "description": "le jardin découpé, chaque promesse y est une fleur"
+    },
+    {
+     "cle": "madrure",
+     "nom": "Madrure",
+     "description": "l’onde du bois se referme autour de chaque promesse"
+    },
+    {
+     "cle": "chamade",
+     "nom": "Chamade",
+     "description": "la page rayée au feutre, chaque promesse y bat comme un cœur"
+    },
+    {
+     "cle": "ritournelle",
+     "nom": "Ritournelle",
+     "description": "la coulée tourne et revient depuis le centre"
+    },
+    {
+     "cle": "bobinette",
+     "nom": "Bobinette",
+     "description": "le fil s’enroule, chaque promesse est une bobine"
+    },
+    {
+     "cle": "mascaret",
+     "nom": "Mascaret",
+     "description": "l’affiche d’op art, chaque promesse soulève la page"
+    },
+    {
+     "cle": "terrazzo",
+     "nom": "Éclisse",
+     "description": "éclats fins dispersés dans un liant"
+    },
+    {
+     "cle": "gravure",
+     "nom": "Taille-douce",
+     "description": "hachures nettes, angle par dalle"
+    },
+    {
+     "cle": "sillons",
+     "nom": "Houle",
+     "description": "lignes ondulées, la couleur coule"
+    }
+   ],
+   "note": "table du script principal ; leur affichage au Studio d’aujourd’hui n’est pas établi. Descriptions absentes de la table pour : ",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "studio.palettes": {
+   "fr": "Primesautier",
+   "ou": "Studio · nom de la palette (vingt-quatre, quatre rangées de six)",
+   "source": "promi-moteur.js:5912 (PALS) ; app.html:6659 (ordre : Primesautier en tête, v133)",
+   "liste": [
+    {
+     "cle": "primesautier",
+     "nom": "Primesautier"
+    },
+    {
+     "cle": "signal",
+     "nom": "Ingénu"
+    },
+    {
+     "cle": "candide",
+     "nom": "Candide"
+    },
+    {
+     "cle": "gouailleur",
+     "nom": "Gouailleur"
+    },
+    {
+     "cle": "alangui",
+     "nom": "Alangui"
+    },
+    {
+     "cle": "irascible",
+     "nom": "Irascible"
+    },
+    {
+     "cle": "hurluberlu",
+     "nom": "Hurluberlu"
+    },
+    {
+     "cle": "beat",
+     "nom": "Béat"
+    },
+    {
+     "cle": "minaudier",
+     "nom": "Minaudier"
+    },
+    {
+     "cle": "chafouin",
+     "nom": "Chafouin"
+    },
+    {
+     "cle": "frivole",
+     "nom": "Frivole"
+    },
+    {
+     "cle": "cajoleur",
+     "nom": "Cajoleur"
+    },
+    {
+     "cle": "allegre",
+     "nom": "Allègre"
+    },
+    {
+     "cle": "lunatique",
+     "nom": "Lunatique"
+    },
+    {
+     "cle": "flegmatique",
+     "nom": "Flegmatique"
+    },
+    {
+     "cle": "narquois",
+     "nom": "Narquois"
+    },
+    {
+     "cle": "truculent",
+     "nom": "Truculent"
+    },
+    {
+     "cle": "petulant",
+     "nom": "Pétulant"
+    },
+    {
+     "cle": "fantasque",
+     "nom": "Fantasque"
+    },
+    {
+     "cle": "fielleux",
+     "nom": "Fielleux"
+    },
+    {
+     "cle": "sibyllin",
+     "nom": "Sibyllin"
+    },
+    {
+     "cle": "veneneux",
+     "nom": "Vénéneux"
+    },
+    {
+     "cle": "atrabilaire",
+     "nom": "Atrabilaire"
+    },
+    {
+     "cle": "taciturne",
+     "nom": "Taciturne"
+    }
+   ],
+   "note": "palette par défaut : Ingénu (clé `signal`)"
+  },
+  "studio.nom.en": {
+   "fr": "en",
+   "ou": "Studio · entre le nom du monde et celui de la palette (« Esquille / en / Ingénu »)",
+   "source": "app.html:22134 (lot-STUDIO-PLATEAUX)",
+   "gabarit": "{monde} ⏎ en ⏎ {palette}"
+  },
+  "studio.invite.monde": {
+   "fr": "glisse pour changer de monde",
+   "ou": "Studio · invite, entre ‹ et ›",
+   "source": "app.html:22181 (lot-STUDIO-PLATEAUX)",
+   "gabarit": "‹ glisse pour changer de monde ›"
+  },
+  "studio.invite.couleur": {
+   "fr": "reste appuyé pour changer de couleur",
+   "ou": "Studio · invite du geste de couleur",
+   "source": "app.html:34103 (lot-V7-STUDIO-COULEUR)",
+   "note": "marqué « à valider » dans la source"
+  },
+  "studio.ecran": {
+   "fr": "sombre",
+   "ou": "Studio · mot sous la paire de disques de l’écran (dit l’état courant)",
+   "source": "app.html:22084 (lot-STUDIO-PLATEAUX)",
+   "variantes": {
+    "clair": "clair"
+   },
+   "casse": "SOMBRE / CLAIR à l’écran"
+  },
+  "studio.texte": {
+   "fr": "avec texte",
+   "ou": "Studio · mot sous la paire de disques du texte",
+   "source": "app.html:22084 (lot-STUDIO-PLATEAUX)",
+   "variantes": {
+    "sans": "sans texte"
+   },
+   "casse": "AVEC TEXTE / SANS TEXTE à l’écran"
+  },
+  "studio.noirEtBlanc": {
+   "fr": "Noir et blanc",
+   "ou": "Studio · bouton (icône seule)",
+   "source": "app.html:33822 (lot-V89-NB)",
+   "voiceover": "Noir et blanc"
+  },
+  "studio.adopter": {
+   "fr": "Adopte ce design — 2 €",
+   "ou": "Studio · bouton d’achat d’un monde verrouillé",
+   "source": "app.html:22410 (lot-STUDIO-PLATEAUX)"
+  },
+  "studio.zzz": {
+   "fr": "Zzz",
+   "ou": "Studio · bouton du mode nuit",
+   "source": "CLAUDE.md v118 (lot-V118-ZZZ)",
+   "voiceover": "Mode nuit, activé / Mode nuit, désactivé",
+   "etat": "COUPÉ (v120) — le Zzz est coupé partout jusqu’à nouvel ordre ; libellés donnés par CLAUDE.md, non relevés dans le code"
+  },
+  "studio.ancien.debloque": {
+   "fr": "Ou débloque-les tous",
+   "ou": "Studio · ancien encart sous le bouton d’achat",
+   "source": "app.html:2774 (HTML statique)",
+   "variantes": {
+    "suite": "Avec Ma Parole !"
+   },
+   "note": "caché depuis v104",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "studio.ancien.paletteTeinte": {
+   "fr": "Palette · Teinte",
+   "ou": "Studio · ancien libellé du rail des palettes",
+   "source": "app.html:6661 (script principal)",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "partage.titre": {
+   "fr": "Partager",
+   "ou": "Partager · plateau",
+   "source": "app.html:22683 (lot-PARTAGE-FEUILLE)",
+   "note": "le « r » final clignote"
+  },
+  "partage.fermer": {
+   "fr": "✕ FERMER",
+   "ou": "Partager · plateau",
+   "source": "app.html:22683 (lot-PARTAGE-FEUILLE)"
+  },
+  "partage.sujets": {
+   "fr": "Ma Toile",
+   "ou": "Partager · LE SUJET",
+   "source": "app.html:2612 (HTML statique)",
+   "liste": [
+    "Ma Toile",
+    "Mon Folio",
+    "Ma Pelote"
+   ],
+   "note": "« Ma Pelote » : app.html:34966 ; « Mon Folio » = la planche des dalles, une case par Promi"
+  },
+  "partage.reglages": {
+   "fr": "LE SUJET",
+   "ou": "Partager · libellés des rangées du panneau Peaufiner",
+   "source": "app.html:34999 (lot-V13-PELOTE)",
+   "liste": [
+    "LE SUJET",
+    "DANS L’IMAGE",
+    "QUELS PROMI",
+    "LE FORMAT",
+    "LE FOND DE L’IMAGE",
+    "LE MOT-MARQUE",
+    "LE QR",
+    "LE TEXTE DES DALLES"
+   ]
+  },
+  "partage.dansLimage": {
+   "fr": "La Pelote",
+   "ou": "Partager · rangée DANS L’IMAGE",
+   "source": "app.html:35143 (lot-V14-js)",
+   "liste": [
+    "La Pelote",
+    "Promitteurs",
+    "Disques",
+    "Harmonie chiffrée",
+    "Jauge équilibre"
+   ],
+   "note": "« La Pelote » relevée dans lot-V14-js ; les quatre autres viennent du HTML statique (app.html:2614) — ⚠ à confirmer (« Harmonie chiffrée », « Jauge équilibre », « Promitteurs » sont des mots d’août)"
+  },
+  "partage.formats": {
+   "fr": "Plein écran",
+   "ou": "Partager · LE FORMAT",
+   "source": "app.html:2618 (HTML statique)",
+   "variantes": {
+    "sous-titre de Plein écran": "9:19.5 · immersif",
+    "Définir": "Largeur · Hauteur"
+   },
+   "liste": [
+    "Plein écran",
+    "Story",
+    "Post carré",
+    "Paysage",
+    "Édito",
+    "Définir"
+   ]
+  },
+  "partage.fond": {
+   "fr": "Sombre",
+   "ou": "Partager · LE FOND DE L’IMAGE",
+   "source": "app.html:2613 (HTML statique)",
+   "liste": [
+    "Sombre",
+    "Clair"
+   ]
+  },
+  "partage.qr": {
+   "fr": "QR",
+   "ou": "Partager · LE QR",
+   "source": "app.html:2613 (HTML statique)"
+  },
+  "partage.texteDalles": {
+   "fr": "Avec texte",
+   "ou": "Partager · LE TEXTE DES DALLES",
+   "source": "app.html:2628 (HTML statique)",
+   "liste": [
+    "Avec texte",
+    "Sans texte"
+   ]
+  },
+  "partage.quelsPromi.tout": {
+   "fr": "Tout choisir",
+   "ou": "Partager · QUELS PROMI",
+   "source": "app.html:2631 (HTML statique)",
+   "variantes": {
+    "titre du volet": "Afficher · masquer"
+   },
+   "voiceover": "Tout choisir"
+  },
+  "partage.ligne": {
+   "fr": "{sujet} · {format}",
+   "ou": "Partager · ligne posée sur l’image (fermée) ; ouverte, elle dit « Peaufiner »",
+   "source": "app.html:25813 (lot-PARTAGE-PLEIN)",
+   "variantes": {
+    "exemple": "Ma Toile · Story"
+   },
+   "gabarit": "{sujet} · {format}"
+  },
+  "partage.inviter": {
+   "fr": "Inviter",
+   "ou": "Partager · bouton du bas (gauche)",
+   "source": "app.html:22750 (lot-PARTAGE-FEUILLE)"
+  },
+  "partage.partager": {
+   "fr": "Partager",
+   "ou": "Partager · bouton du bas (droite)",
+   "source": "app.html:22750 (lot-PARTAGE-FEUILLE)",
+   "voiceover": "Partager"
+  },
+  "partage.geste": {
+   "fr": "pince pour zoomer · glisse pour placer",
+   "ou": "Partager · invite sur l’aperçu",
+   "source": "app.html:2603 (HTML statique)"
+  },
+  "partage.invitation": {
+   "fr": "Je tiens mes promesses sur Promi. Rejoins-moi : 3 Cercles offerts pour toi et pour moi.",
+   "ou": "Partager · texte de l’invitation (Inviter sur Promi)",
+   "source": "app.html:7619 (script principal)",
+   "variantes": {
+    "adresse": "https://promi.app"
+   }
+  },
+  "partage.titreSysteme": {
+   "fr": "Mon Promi",
+   "ou": "Partager · titre passé à la feuille de partage du système",
+   "source": "app.html:35373 (lot-V15)",
+   "variantes": {
+    "nom du fichier": "mon-promi.png"
+   }
+  },
+  "partage.copieImpossible": {
+   "fr": "Copie impossible ici",
+   "ou": "Partager · message d’erreur",
+   "source": "app.html:3276 (script principal)"
+  },
+  "partage.signature": {
+   "fr": "promi.app",
+   "ou": "Partager · signature dans l’image",
+   "source": "app.html:7615 (script principal)"
+  },
+  "reglages.titre": {
+   "fr": "Réglages",
+   "ou": "Réglages · plateau",
+   "source": "app.html:2761 (HTML statique)",
+   "note": "le « s » final clignote"
+  },
+  "reglages.groupes": {
+   "fr": "Toi",
+   "ou": "Réglages · titres de groupe",
+   "source": "app.html:2762 (HTML statique)",
+   "liste": [
+    "Toi",
+    "Partager",
+    "App",
+    "Données",
+    "Compte",
+    "Légal"
+   ]
+  },
+  "reglages.photo.changer": {
+   "fr": "Toucher pour changer la photo",
+   "ou": "Réglages · Toi (info-bulle de l’avatar)",
+   "source": "app.html:2762 (HTML statique)",
+   "variantes": {
+    "retirer": "Retirer la photo"
+   }
+  },
+  "reglages.maParole": {
+   "fr": "Ma Parole !",
+   "ou": "Réglages · porte vers l’offre",
+   "source": "app.html:31592 (lot-CERCLE-MUR)",
+   "variantes": {
+    "abonné": "Tu es Membre Ma Parole !",
+    "sous-titre": "débloque tout Promi · essai 14 jours",
+    "sous-titre abonné": "tout Promi débloqué · merci"
+   },
+   "note": "espace insécable avant « ! » ; le sous-titre abonné vient du script principal (app.html:3180) — à confirmer"
+  },
+  "reglages.studio": {
+   "fr": "Le Studio",
+   "ou": "Réglages",
+   "source": "app.html:2764 (HTML statique)",
+   "variantes": {
+    "valeur": "visuels & humeurs ›"
+   }
+  },
+  "reglages.presentation": {
+   "fr": "Revoir la présentation",
+   "ou": "Réglages",
+   "source": "app.html:2766 (HTML statique)",
+   "variantes": {
+    "valeur": "rejouer ›"
+   }
+  },
+  "reglages.reinitTest": {
+   "fr": "Réinitialiser (test)",
+   "ou": "Réglages",
+   "source": "app.html:2766 (HTML statique)",
+   "variantes": {
+    "valeur": "toile vide + 1 Cercle ›"
+   },
+   "etat": "outil de test du prototype — à ne pas porter"
+  },
+  "reglages.inviter": {
+   "fr": "Inviter sur Promi",
+   "ou": "Réglages · Partager",
+   "source": "app.html:2767 (HTML statique)"
+  },
+  "reglages.notifications": {
+   "fr": "Notifications",
+   "ou": "Réglages · App (ouvre la page des notifications)",
+   "source": "app.html:2767 (HTML statique)"
+  },
+  "reglages.confidentialite": {
+   "fr": "Confidentialité",
+   "ou": "Réglages · App",
+   "source": "app.html:2767 (HTML statique)",
+   "variantes": {
+    "valeur": "privé & partagé ›"
+   }
+  },
+  "reglages.langue": {
+   "fr": "Langue",
+   "ou": "Réglages · App",
+   "source": "app.html:2767 (HTML statique)",
+   "variantes": {
+    "valeur": "Français ›"
+   },
+   "etat": "masqué (`hidden`) dans le prototype"
+  },
+  "reglages.sauvegarde": {
+   "fr": "Sauvegarde locale",
+   "ou": "Réglages · Données",
+   "source": "app.html:2768 (HTML statique)",
+   "variantes": {
+    "en cours": "vérification…",
+    "faite": "enregistré {hh}:{mm}",
+    "active": "active ✓",
+    "impossible": "indisponible ici"
+   }
+  },
+  "reglages.reinit": {
+   "fr": "Réinitialiser mes données",
+   "ou": "Réglages · Données",
+   "source": "app.html:2768 (HTML statique)",
+   "variantes": {
+    "valeur": "effacer ›"
+   }
+  },
+  "reglages.garderTaToile": {
+   "fr": "Garder ta Toile",
+   "ou": "Réglages · Compte (masqué une fois le compte fait)",
+   "source": "app.html:2769 (HTML statique)"
+  },
+  "reglages.deconnecter": {
+   "fr": "Se déconnecter",
+   "ou": "Réglages · Compte",
+   "source": "app.html:2769 (HTML statique)"
+  },
+  "reglages.supprimerCompte": {
+   "fr": "Supprimer mon compte",
+   "ou": "Réglages · Compte",
+   "source": "app.html:2769 (HTML statique)"
+  },
+  "reglages.conditions": {
+   "fr": "Conditions d’utilisation",
+   "ou": "Réglages · Légal",
+   "source": "app.html:2770 (HTML statique)"
+  },
+  "reglages.politique": {
+   "fr": "Politique de confidentialité",
+   "ou": "Réglages · Légal",
+   "source": "app.html:2770 (HTML statique)"
+  },
+  "reglages.aPropos": {
+   "fr": "À propos",
+   "ou": "Réglages · Légal",
+   "source": "app.html:2770 (HTML statique)"
+  },
+  "reglages.pied": {
+   "fr": "Tes Promi perso restent sur ton appareil. Privé par défaut, partagé quand tu le choisis. Pas de pub.",
+   "ou": "Réglages · bas de page",
+   "source": "app.html:2771 (HTML statique)",
+   "note": "saut de ligne après « appareil. »"
+  },
+  "viePrivee.titre": {
+   "fr": "Vie privée",
+   "ou": "Confidentialité (page « Vie privée »)",
+   "source": "app.html:2743 (HTML statique)",
+   "variantes": {
+    "sous-titre": "Privé par défaut. Partagé seulement quand tu le choisis."
+   }
+  },
+  "viePrivee.rangs": {
+   "fr": "Tes Promi perso",
+   "ou": "Confidentialité (page « Vie privée ») · rangées",
+   "source": "app.html:2747 (HTML statique)",
+   "variantes": {
+    "titre de groupe": "Tes Promi"
+   },
+   "liste": [
+    {
+     "k": "Tes Promi perso",
+     "v": "privés sur ton appareil"
+    },
+    {
+     "k": "Ce que tu partages",
+     "v": "synchronisé pour tes proches"
+    },
+    {
+     "k": "Compte",
+     "v": "seulement si tu partages"
+    },
+    {
+     "k": "Traceurs",
+     "v": "aucun"
+    },
+    {
+     "k": "Exporter mes données",
+     "v": "copier ›"
+    },
+    {
+     "k": "Tout effacer",
+     "v": "effacer ›"
+    }
+   ]
+  },
+  "langue.page": {
+   "fr": "La langue",
+   "ou": "page La langue (rangée masquée)",
+   "source": "app.html:2733 (HTML statique)",
+   "liste": [
+    "La langue",
+    "Promi te parle dans la langue que tu choisis.",
+    "Le vocabulaire de Promi — Promi, Toile, Cercle, Fil, Aura — ne se traduit pas : c'est le même partout."
+   ],
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "legal.titre": {
+   "fr": "Légal",
+   "ou": "pages Conditions d’utilisation / Politique de confidentialité",
+   "source": "app.html:35854 (lot-V16)",
+   "variantes": {
+    "contenu": "Bientôt disponible."
+   },
+   "note": "⚠ TROU : aucun texte légal n’existe dans le prototype"
+  },
+  "apropos.titre": {
+   "fr": "Promi",
+   "ou": "À propos · plateau",
+   "source": "app.html:35868 (lot-V16)"
+  },
+  "apropos.texte": {
+   "fr": "À propos",
+   "ou": "À propos · le texte, paragraphe par paragraphe",
+   "source": "app.html:35834 (lot-V16)",
+   "liste": [
+    "À propos",
+    "Une promesse est une drôle de chose.",
+    "On se lance des « promis » toute la journée.",
+    "« Promis, on se raconte tout. »",
+    "« Promis, je te rends ça demain. »",
+    "« Promis, cette fois, on le fait. »",
+    "« Promis, on ne laisse pas tomber. »",
+    "Sur le moment, on le pense vraiment. Puis la vie passe par là, les jours s’empilent, et certaines paroles s’effacent. D’autres nous suivent pendant des années. Certaines n’arrivent même pas jusqu’à vendredi.",
+    "Promi est né pour ces paroles-là.",
+    "Planter une promesse, c’est en faire un Promi. Elle prend place sur la Toile, sous la forme d’une dalle de couleur. Une parole en devenir, puis une trace lorsqu’elle est tenue.",
+    "Un Chiche, c’est autre chose : tenter quelqu’un — ou soi-même — avec un peu plus d’élan. Une petite bravade.",
+    "Et quand plusieurs personnes ont quelque chose à vivre ensemble, un Cercle permet de mettre leurs Promi et leurs Chiches au même endroit : un week-end à Marseille, une virée, un projet, une soirée qui mérite de ne pas rester au stade du « on devrait ».",
+    "Promi ne compte pas les promesses. Il leur donne une place.",
+    "La Toile garde les paroles en cours comme celles qui ont été tenues. Elle devient peu à peu le paysage de tout ce qu’on a décidé de ne pas laisser tomber.",
+    "Les lettres",
+    "Le texte est composé en Atkinson Hyperlegible, créée pour le Braille Institute afin de rendre les caractères plus faciles à distinguer, notamment pour les personnes malvoyantes.",
+    "Les titres sont en Gilbert, créée dans le cadre de Type With Pride en hommage à Gilbert Baker, artiste et créateur du drapeau arc-en-ciel original.",
+    "Deux polices pour deux idées simples : rendre les choses lisibles, et leur donner de la couleur."
+   ],
+   "note": "titres : « À propos », « Les lettres » ; en gras : « Promi est né pour ces paroles-là. », « Promi », « Chiche », « Cercle », « Promi ne compte pas les promesses. Il leur donne une place. », « Atkinson Hyperlegible », « Braille Institute », « Gilbert », « Type With Pride », « Gilbert Baker » ; les quatre « Promis, … » forment un bloc de citations"
+  },
+  "apropos.credits.titre": {
+   "fr": "Crédits",
+   "ou": "À propos",
+   "source": "app.html:35858 (lot-V16)"
+  },
+  "apropos.credits.gilbert": {
+   "fr": "Type With Pride, en hommage à Gilbert Baker. Copyright 2017, 2019 Ogilvy & Mather. Dessin : Robyn Makinson, Kazunori Shiina, Hayato Yamasaki. Distribuée sous licence Creative Commons Attribution – Partage dans les mêmes conditions 4.0 International (CC BY-SA 4.0) : creativecommons.org/licenses/by-sa/4.0. Glyphes non modifiés. Fournie telle quelle, sans garantie.",
+   "ou": "À propos · crédit de Gilbert (OBLIGATOIRE : CC BY-SA 4.0)",
+   "source": "app.html:35859 (lot-V16) ; app.html:35863 (lot-V16)",
+   "variantes": {
+    "nom": "Gilbert",
+    "lien": "https://creativecommons.org/licenses/by-sa/4.0/"
+   }
+  },
+  "apropos.credits.atkinson": {
+   "fr": "© 2020, 2024 Braille Institute of America, Inc. Noms de police réservés : Atkinson, Hyperlegible. Distribuée sous SIL Open Font License, version 1.1.",
+   "ou": "À propos · crédit d’Atkinson",
+   "source": "app.html:35864 (lot-V16) ; app.html:35865 (lot-V16)",
+   "variantes": {
+    "nom": "Atkinson Hyperlegible Next",
+    "dépliant": "Lire la licence (SIL OFL 1.1)"
+   },
+   "note": "le texte entier de la licence OFL 1.1 (en anglais) est dans la source, app.html:35833 — à embarquer tel quel"
+  },
+  "apropos.version": {
+   "fr": "Promi · {version}",
+   "ou": "À propos · bas de page",
+   "source": "app.html:35867 (lot-V16)",
+   "gabarit": "Promi · {version}"
+  },
+  "apropos.credits.promilate": {
+   "fr": "⚠ TROU",
+   "ou": "À propos",
+   "source": "—",
+   "note": "aucun crédit pour PromiLate (la police des titres) dans l’écran À propos ; le texte « Les titres sont en Gilbert » date d’avant PromiLate — à valider"
+  },
+  "notifs.titre": {
+   "fr": "Notifications",
+   "ou": "Notifications · page (depuis les Réglages)",
+   "source": "app.html:37395 (lot-V109-NOTIFS)"
+  },
+  "notifs.datees": {
+   "fr": "Mes paroles datées",
+   "ou": "Notifications · page",
+   "source": "app.html:37386 (lot-V109-NOTIFS)",
+   "variantes": {
+    "aide": "un petit mot la veille"
+   }
+  },
+  "notifs.enLair": {
+   "fr": "Mes paroles en l’air",
+   "ou": "Notifications · page (mur de Ma Parole !)",
+   "source": "app.html:37388 (lot-V109-NOTIFS)",
+   "variantes": {
+    "aide": "de temps en temps, une douce relance"
+   }
+  },
+  "notifs.heure": {
+   "fr": "L’heure",
+   "ou": "Notifications · page (mur de Ma Parole !)",
+   "source": "app.html:37389 (lot-V109-NOTIFS)",
+   "liste": [
+    "le matin, vers 8 h",
+    "à midi",
+    "le soir, vers 19 h"
+   ],
+   "note": "défaut : le soir, vers 19 h ; les deux autres heures sont « à valider » dans la source (app.html:37279)"
+  },
+  "notifs.onMeLance": {
+   "fr": "Ce qu’on me lance",
+   "ou": "Notifications · page (inactif)",
+   "source": "app.html:37391 (lot-V109-NOTIFS)",
+   "variantes": {
+    "aide": "Chiches, invitations, réponses · bientôt"
+   }
+  },
+  "notifs.veille.aQuelquun": {
+   "fr": "Tu as promis ça à {personne}. Demain.",
+   "ou": "notification du système · la veille, parole à quelqu’un",
+   "source": "app.html:37297 (lot-V109-NOTIFS)",
+   "gabarit": "titre : « {titre} » — texte : Tu as promis ça à {personne}. Demain."
+  },
+  "notifs.veille.chiche": {
+   "fr": "Ton Chiche à {personne} arrive demain.",
+   "ou": "notification du système · la veille, Chiche à quelqu’un",
+   "source": "app.html:37296 (lot-V109-NOTIFS)",
+   "gabarit": "titre : Promi — texte : Ton Chiche à {personne} arrive demain."
+  },
+  "notifs.veille.aSoi": {
+   "fr": "Demain, c’est « {titre} ».",
+   "ou": "notification du système · la veille, parole à soi",
+   "source": "app.html:37298 (lot-V109-NOTIFS)",
+   "gabarit": "titre : Promi — texte : Demain, c’est « {titre} »."
+  },
+  "notifs.jour": {
+   "fr": "C’est aujourd’hui.",
+   "ou": "notification du système · le jour même, à l’heure choisie",
+   "source": "app.html:37299 (lot-V109-NOTIFS)",
+   "gabarit": "titre : « {titre} » — texte : C’est aujourd’hui."
+  },
+  "notifs.enLair.relance": {
+   "fr": "« {titre} » flotte toujours. Un de ces jours ?",
+   "ou": "notification du système · parole en l’air (Ma Parole !), une par semaine au plus",
+   "source": "app.html:37300 (lot-V109-NOTIFS)",
+   "gabarit": "titre : Promi — texte : « {titre} » flotte toujours. Un de ces jours ?"
+  },
+  "notifs.regles": {
+   "fr": "—",
+   "ou": "notification du système",
+   "source": "CLAUDE.md (redteam_notifs) ; app.html:37276 (lot-V109-NOTIFS)",
+   "regle": "jamais de demande de permission au lancement ; la question « Je te le rappelle ? » ne paraît qu’à la plantation d’une parole DATÉE ; la permission n’est demandée qu’après « oui » ; deux « pas besoin » puis plus rien ; rien quand la date est passée ; une notification par jour ; le titre de la parole paraît UNE fois (dans le titre ou dans le texte)"
+  },
+  "offre.titre": {
+   "fr": "Ma Parole !",
+   "ou": "offre Ma Parole ! · grand titre (« Ma » · « Parole » en couleur · « ! » à l’encre)",
+   "source": "app.html:31824 (lot-CERCLE-TOILE) ; app.html:32275 (lot-CERCLE-TOILE)",
+   "note": "espace insécable avant « ! » ; le « ! » vient de Gilbert (PromiLate n’en a pas)",
+   "casse": "MA PAROLE ! à l’écran"
+  },
+  "offre.sousTitre": {
+   "fr": "Retourne ta Toile",
+   "ou": "offre Ma Parole ! · sous-titre",
+   "source": "app.html:31824 (lot-CERCLE-TOILE)"
+  },
+  "offre.arguments": {
+   "fr": "L’autre moitié de ta Toile",
+   "ou": "offre Ma Parole ! · les trois arguments",
+   "source": "app.html:31825 (lot-CERCLE-TOILE)",
+   "liste": [
+    {
+     "titre": "L’autre moitié de ta Toile",
+     "texte": "ce que tes proches tiennent envers toi"
+    },
+    {
+     "titre": "Chaque parole se peaufine",
+     "texte": "récurrence, rappel, importance, mémoire"
+    },
+    {
+     "titre": "Ta Toile change de matière",
+     "texte": "Douze mondes de plus, les couleurs du dessin"
+    }
+   ]
+  },
+  "offre.prix": {
+   "fr": "39 € / AN",
+   "ou": "offre Ma Parole ! · prix",
+   "source": "app.html:31828 (lot-CERCLE-TOILE)",
+   "variantes": {
+    "détail": "soit 3,25 €/⁠mois"
+   },
+   "note": "« AN » en capitales, deux fois et quart plus petit ; « 3,25 €/mois » : espace insécable avant € et U+2060 après la barre"
+  },
+  "offre.essayer": {
+   "fr": "Essayer 14 jours",
+   "ou": "offre Ma Parole ! · bouton principal (suivi de « › »)",
+   "source": "app.html:32291 (lot-CERCLE-TOILE)"
+  },
+  "offre.option": {
+   "fr": "Bon, allez d’accord — 39 € / an",
+   "ou": "offre Ma Parole ! · bouton secondaire",
+   "source": "app.html:31830 (lot-CERCLE-TOILE)"
+  },
+  "offre.mois": {
+   "fr": "ou 5,99 € par mois",
+   "ou": "offre Ma Parole ! · sous les deux boutons",
+   "source": "app.html:31830 (lot-CERCLE-TOILE)"
+  },
+  "offre.legal": {
+   "fr": "Sans engagement · résiliable à tout moment",
+   "ou": "offre Ma Parole ! · mention",
+   "source": "app.html:31829 (lot-CERCLE-TOILE)"
+  },
+  "offre.bienvenue": {
+   "fr": "Tu es Membre Ma Parole ! ✓ · tout Promi débloqué",
+   "ou": "offre Ma Parole ! · message après l’adhésion",
+   "source": "app.html:31578 (lot-CERCLE-MUR)",
+   "variantes": {
+    "autre chemin (script principal, app.html:3164)": "Tu es Membre Ma Parole ! · Cercles illimités"
+   }
+  },
+  "offre.ancienne": {
+   "fr": "Essaie tout, sans t'engager.",
+   "ou": "offre Ma Parole ! · ancienne page (HTML statique)",
+   "source": "app.html:2783 (HTML statique)",
+   "liste": [
+    "Essaie tout, sans t'engager.",
+    "La parole qu'on te tient",
+    "Rappels intelligents",
+    "Promi te relance juste avant que ça glisse.",
+    "Cercles illimités",
+    "Autant de Cercles que tu veux — famille, amis, projets.",
+    "Stats avancées",
+    "Ton harmonie dans le temps, par personne, par Cercle.",
+    "Toiles signature",
+    "Thèmes et matières, avec Ma Parole !.",
+    "ou prendre l'année — 39 €",
+    "Sans engagement · annulable en 2 taps, à tout moment.",
+    "ou un design à l'unité — 1 €, ou 4 pour 3 €"
+   ],
+   "note": "remplacée par le cadre `#pcCadre` (lot-CERCLE-TOILE) ; porte « 1 € » et « Stats »",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "murs.phrases": {
+   "fr": "Eh non. Mais avec Ma Parole !, oui.",
+   "ou": "les murs de Ma Parole ! (réglage flouté touché) : Peaufiner d’une fiche, Peaufiner de la page +, Aura (« Ce qu’on t’a tenu »), aide de l’Aura, Notifications, Studio (panneau des palettes d’un monde verrouillé), couleurs du mode dessin",
+   "source": "app.html:37115 (lot-V104-MURS)",
+   "liste": [
+    {
+     "n": 1,
+     "fr": "Eh non. Mais avec Ma Parole !, oui.",
+     "orange": [
+      "Ma Parole !"
+     ]
+    },
+    {
+     "n": 2,
+     "fr": "La solution commence par Ma et finit par Parole !",
+     "orange": [
+      "Ma",
+      "Parole !"
+     ]
+    },
+    {
+     "n": 3,
+     "fr": "Toujours non. Ma Parole !, toujours oui.",
+     "orange": [
+      "Ma Parole !",
+      "oui"
+     ]
+    },
+    {
+     "n": 4,
+     "fr": "Je vois bien que ça te titille. Ma Parole ! aussi.",
+     "orange": [
+      "Ma Parole !"
+     ]
+    },
+    {
+     "n": 5,
+     "fr": "Tiens tiens, on dirait que ça commence à t’intéresser…",
+     "orange": []
+    },
+    {
+     "n": 6,
+     "fr": "Tiens tiens. Vous ici.",
+     "orange": []
+    },
+    {
+     "n": 7,
+     "fr": "Tu sais où trouver Ma Parole ! maintenant.",
+     "orange": [
+      "Ma Parole !"
+     ]
+    },
+    {
+     "n": 8,
+     "fr": "On maintient cette position officielle, alors ?",
+     "orange": [
+      "officielle"
+     ]
+    },
+    {
+     "n": 9,
+     "fr": "Allons bon. Nous y voilà à nouveau.",
+     "orange": []
+    },
+    {
+     "n": 10,
+     "fr": "Entre nous, le mystère s’amenuise.",
+     "orange": [
+      "mystère"
+     ]
+    },
+    {
+     "n": 11,
+     "fr": "Les pourparlers se prolongent, je vois.",
+     "orange": [
+      "pourparlers"
+     ]
+    },
+    {
+     "n": 12,
+     "fr": "Tu peux continuer. Je tiens le registre.",
+     "orange": [
+      "registre"
+     ]
+    },
+    {
+     "n": 13,
+     "fr": "Ici, tout restera entre nous.",
+     "orange": []
+    },
+    {
+     "n": 14,
+     "fr": "Je commence à soupçonner une stratégie.",
+     "orange": [
+      "stratégie"
+     ]
+    },
+    {
+     "n": 15,
+     "fr": "On pourrait presque en faire une tradition.",
+     "orange": [
+      "tradition"
+     ]
+    },
+    {
+     "n": 16,
+     "fr": "Regarde-nous, avec nos petites habitudes.",
+     "orange": [
+      "habitudes"
+     ]
+    },
+    {
+     "n": 17,
+     "fr": "Dis donc, tu viendrais presque pour moi.",
+     "orange": [
+      "moi"
+     ]
+    },
+    {
+     "n": 18,
+     "fr": "On se retrouve ici tout à l’heure ?",
+     "orange": []
+    }
+   ],
+   "regle": "un compteur GLOBAL (toutes zones, par personne) : le 1er mur touché montre la phrase 1, le 2e la 2… jusqu’à la 18 ; ensuite une phrase au hasard, jamais la même deux fois de suite ; après 14 jours sans toucher un mur, le compteur repart à 1. La phrase paraît au centre du mur, sur le flou, seule, 34 px réduite jusqu’à tenir en trois lignes ; elle reste 1,4 s + 60 ms par caractère (entre 3 et 5,5 s) ; la toute première fois l’offre s’ouvre à la fin de la lecture ; pendant qu’elle est là, un toucher n’importe où ouvre l’offre. Abonné : aucun mur, aucune phrase.",
+   "note": "dans chaque phrase, SEULS les mots de `orange` prennent l’orange de Ma Parole ! (#FB4C0D ; sur les corps sombres de Peaufiner #FF7A55, sur le corps d’un Promi sombre une valeur dérivée) ; les espaces avant « ! » et « ? » sont insécables (U+00A0) ; apostrophes typographiques ; la phrase 5 finit par « … »"
+  },
+  "dessin.surface.vo": {
+   "fr": "La surface de dessin",
+   "ou": "mode dessin",
+   "source": "app.html:38180 (lot-V132-DESSIN)",
+   "voiceover": "La surface de dessin"
+  },
+  "dessin.outils.vo": {
+   "fr": "Les outils du dessin",
+   "ou": "mode dessin · rangée d’outils",
+   "source": "app.html:38180 (lot-V132-DESSIN)",
+   "voiceover": "Les outils du dessin"
+  },
+  "dessin.quitter": {
+   "fr": "Quitter le dessin",
+   "ou": "mode dessin · ✕ dans le contour (icône seule)",
+   "source": "app.html:38217 (lot-V132-DESSIN)",
+   "voiceover": "Quitter le dessin"
+  },
+  "dessin.plume": {
+   "fr": "Plume",
+   "ou": "mode dessin · outil (icône seule)",
+   "source": "app.html:38224 (lot-V132-DESSIN)",
+   "variantes": {
+    "choisie": "Plume, choisie. Toucher de nouveau pour la taille"
+   },
+   "voiceover": "Plume"
+  },
+  "dessin.gomme": {
+   "fr": "Gomme",
+   "ou": "mode dessin · outil (icône seule)",
+   "source": "app.html:38225 (lot-V132-DESSIN)",
+   "variantes": {
+    "choisie": "Gomme, choisie. Toucher de nouveau pour la taille"
+   },
+   "voiceover": "Gomme"
+  },
+  "dessin.annuler": {
+   "fr": "Annuler le dernier trait",
+   "ou": "mode dessin · outil (icône seule)",
+   "source": "app.html:38226 (lot-V132-DESSIN)",
+   "voiceover": "Annuler le dernier trait"
+  },
+  "dessin.couleur": {
+   "fr": "Couleur",
+   "ou": "mode dessin · outil (icône seule)",
+   "source": "app.html:38227 (lot-V132-DESSIN)",
+   "voiceover": "Couleur"
+  },
+  "dessin.poser": {
+   "fr": "Poser",
+   "ou": "mode dessin · bouton",
+   "source": "app.html:38228 (lot-V132-DESSIN)",
+   "voiceover": "Poser le dessin",
+   "casse": "POSER à l’écran (CLAUDE.md v132)"
+  },
+  "dessin.tailles": {
+   "fr": "Fin",
+   "ou": "mode dessin · choix de taille (trois points — la seule exception à la loi des points)",
+   "source": "app.html:38233 (lot-V132-DESSIN)",
+   "voiceover": "groupe : « La taille de la plume » / « La taille de la gomme » ; chaque point : Fin · Moyen · Gros",
+   "liste": [
+    "Fin",
+    "Moyen",
+    "Gros"
+   ]
+  },
+  "dessin.couleurs.vo": {
+   "fr": "Les couleurs du dessin",
+   "ou": "mode dessin · déploiement des couleurs",
+   "source": "app.html:38236 (lot-V132-DESSIN)",
+   "variantes": {
+    "sans Ma Parole ! (mur)": "Les couleurs du dessin, avec Ma Parole !"
+   },
+   "voiceover": "Les couleurs du dessin"
+  },
+  "dessin.onglets": {
+   "fr": "Trait",
+   "ou": "mode dessin · onglets du déploiement des couleurs",
+   "source": "app.html:38240 (lot-V132-DESSIN)",
+   "voiceover": "La couleur du trait · La couleur du fond",
+   "liste": [
+    "Trait",
+    "Fond"
+   ],
+   "note": "l’onglet « Fond » disparaît après le premier POSER",
+   "casse": "TRAIT / FOND à l’écran (CLAUDE.md v132)"
+  },
+  "dessin.ton.vo": {
+   "fr": "{Trait|Fond}, teinte {i} sur {n}",
+   "ou": "mode dessin · chaque pastille de teinte",
+   "source": "app.html:38246 (lot-V132-DESSIN)",
+   "variantes": {
+    "teinte du fond, sur l’onglet Trait": "Trait, teinte {i} sur {n}, c’est la couleur du fond"
+   },
+   "gabarit": "{Trait|Fond}, teinte {i} sur {n}",
+   "voiceover": "Trait, teinte 2 sur 5"
+  },
+  "dessin.oeil": {
+   "fr": "Masquer le dessin",
+   "ou": "fiche · œil au coin bas gauche de la bande (icône seule)",
+   "source": "app.html:38140 (lot-V132-DESSIN)",
+   "variantes": {
+    "dessin masqué": "Afficher le dessin"
+   },
+   "voiceover": "Masquer le dessin"
+  },
+  "photo.dessiner": {
+   "fr": "Dessiner",
+   "ou": "menu du bouton photo (fiche et page +) · en tête",
+   "source": "app.html:38297 (lot-V132-DESSIN)",
+   "voiceover": "Dessiner"
+  },
+  "photo.importer": {
+   "fr": "Importer une photo",
+   "ou": "menu du bouton photo (fiche et page +)",
+   "source": "app.html:37506 (lot-V117-PHOTO-MENU)"
+  },
+  "photo.dalleOrigine": {
+   "fr": "La dalle d’origine",
+   "ou": "menu du bouton photo (fiche et page +) (bascule)",
+   "source": "app.html:37508 (lot-V117-PHOTO-MENU)",
+   "variantes": {
+    "option active": "La dalle du Studio"
+   }
+  },
+  "photo.retirerPhoto": {
+   "fr": "Retirer la photo",
+   "ou": "menu du bouton photo (fiche et page +) · si la parole porte une photo",
+   "source": "app.html:37512 (lot-V117-PHOTO-MENU)"
+  },
+  "photo.retirerDessin": {
+   "fr": "Retirer le dessin",
+   "ou": "menu du bouton photo (fiche et page +) · si la parole porte un dessin",
+   "source": "app.html:38296 (lot-V132-DESSIN)"
+  },
+  "dialogue.supprimerPromi": {
+   "fr": "Supprimer ce Promi ?",
+   "ou": "dialogue de confirmation",
+   "source": "app.html:35817 (lot-V16)",
+   "variantes": {
+    "Chiche": "Supprimer ce Chiche ?",
+    "texte": "« {titre} » quitte ta Toile.",
+    "oui": "Supprimer",
+    "non": "Garder"
+   },
+   "gabarit": "« {titre} » quitte ta Toile."
+  },
+  "dialogue.supprimerCompte": {
+   "fr": "Supprimer ton compte ?",
+   "ou": "dialogue de confirmation",
+   "source": "app.html:35828 (lot-V16)",
+   "variantes": {
+    "texte": "Tous tes Promi seront effacés de cet appareil.",
+    "oui": "Supprimer",
+    "non": "Garder"
+   }
+  },
+  "dialogue.deconnecter": {
+   "fr": "Se déconnecter ?",
+   "ou": "dialogue de confirmation",
+   "source": "app.html:35891 (lot-V16)",
+   "variantes": {
+    "texte": "Tes Promi restent sur cet appareil.",
+    "oui": "Se déconnecter",
+    "non": "Rester"
+   }
+  },
+  "dialogue.reinit": {
+   "fr": "Réinitialiser tes données ?",
+   "ou": "dialogue de confirmation",
+   "source": "app.html:35899 (lot-V16)",
+   "variantes": {
+    "texte": "Tous tes Promi seront effacés de cet appareil.",
+    "oui": "Effacer",
+    "non": "Garder"
+   }
+  },
+  "dialogue.toutEffacer": {
+   "fr": "Tout effacer ?",
+   "ou": "dialogue de confirmation",
+   "source": "app.html:35902 (lot-V16)",
+   "variantes": {
+    "texte": "Tous tes Promi seront effacés de cet appareil.",
+    "oui": "Effacer",
+    "non": "Garder"
+   }
+  },
+  "message.promiSupprime": {
+   "fr": "Promi supprimé",
+   "ou": "message (annulable 5 s, bouton « Annuler »)",
+   "source": "app.html:35824 (lot-V16)",
+   "variantes": {
+    "Chiche": "Chiche supprimé"
+   }
+  },
+  "message.compteSupprime": {
+   "fr": "Compte supprimé",
+   "ou": "message (annulable 5 s, bouton « Annuler »)",
+   "source": "app.html:35829 (lot-V16)"
+  },
+  "message.donneesEffacees": {
+   "fr": "Données effacées",
+   "ou": "message (annulable 5 s, bouton « Annuler »)",
+   "source": "app.html:35900 (lot-V16)"
+  },
+  "message.toutEfface": {
+   "fr": "Tout est effacé",
+   "ou": "message (annulable 5 s, bouton « Annuler »)",
+   "source": "app.html:35903 (lot-V16)"
+  },
+  "message.photoRetiree": {
+   "fr": "Photo retirée",
+   "ou": "message (annulable 5 s, bouton « Annuler »)",
+   "source": "app.html:35909 (lot-V16)"
+  },
+  "message.aBientot": {
+   "fr": "À bientôt",
+   "ou": "message après la déconnexion",
+   "source": "app.html:35894 (lot-V16)"
+  },
+  "mort.ancienOnboarding": {
+   "fr": "Tes promesses, tenues.",
+   "ou": "ancien onboarding (HTML statique `#promiOnb`)",
+   "source": "app.html:7886 (HTML statique, `#promiOnb`)",
+   "liste": [
+    "Tes promesses, tenues.",
+    "Enchanté",
+    "Qui es-tu ?",
+    "Toi :",
+    "ton nom ou pseudo",
+    "Suivant",
+    "Tu pourras le changer plus tard.",
+    "Tes Promi, deux vues.",
+    "je m’accorde un vrai week-end",
+    "Choisis un style",
+    "Glisse la jauge pour la couleur — explore au moins un autre style pour continuer"
+   ],
+   "note": "remplacé par lot-ONB-V20",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "mort.ancienneAura": {
+   "fr": "ta parole dans le temps",
+   "ou": "ancienne Aura (HTML statique, « karma »)",
+   "source": "app.html:2696 (HTML statique)",
+   "liste": [
+    "ta parole dans le temps",
+    "ton harmonie envers les autres",
+    "l’harmonie, des deux côtés",
+    "Aperçu gratuit",
+    "Aperçu membre",
+    "de ta parole tenue",
+    "L'équilibre du lien",
+    "Évolution",
+    "Répartition",
+    "Composition",
+    "Ton meilleur Cercle",
+    "Tes proches et toi",
+    "vois la parole qu'on te tient, en douceur"
+   ],
+   "note": "remplacée par lot-AURA-PELOTE ; « karma », graphes et réciprocité ne sont plus annoncés",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "mort.ancienFormulaire": {
+   "fr": "Le Promi",
+   "ou": "ancien formulaire de création (HTML statique)",
+   "source": "app.html:2580 (HTML statique)",
+   "liste": [
+    "Le Promi",
+    "ce que tu promets…",
+    "Pour qui",
+    "une ou plusieurs personnes",
+    "Quand",
+    "2 j",
+    "5 j",
+    "2 sem",
+    "+ tard",
+    "Important ?",
+    "glisse pour planter →",
+    "Planter le Promi",
+    "glisse pour lancer →",
+    "Lancer le Chiche",
+    "Lancer le Cercle",
+    "trace le trait entier →",
+    "Avec qui",
+    "on les prévient quand tu lances",
+    "Les Promi du Cercle",
+    "on en plante autant qu'on veut, puis on lance",
+    "je vous emmène tous à la mer…",
+    "glisse pour le garder →",
+    "ce que tu gardes de côté t'attend dans l'Index, prêt à planter.",
+    "glisse pour tenir ta parole →"
+   ],
+   "note": "la phrase de la page + (lot-S3) l’a remplacé ; « + tard » sert encore de clé de liaison interne",
+   "etat": "à confirmer (peut-être morte)"
+  },
+  "fiche.demande": {
+   "fr": "En attente de ta parole",
+   "ou": "fiche d’une parole demandée (reçue)",
+   "source": "app.html:4131 (script principal)",
+   "variantes": {
+    "bouton": "Je promets"
+   },
+   "etat": "à confirmer (peut-être morte)"
+  }
+ }
+}

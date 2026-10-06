@@ -1,0 +1,1639 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://promi.app/portage/SPEC-DONNEES.schema.json",
+  "title": "Promi — le modèle de données du prototype (app.html, état v134, relevé le 6 oct. 2026)",
+  "description": "Formalise portage/SPEC-DONNEES.md. Décrit ce qui EXISTE dans le prototype (localStorage), pas un modèle cible. Mots-clés d'annotation propres : x-source (où c'est écrit dans le prototype), x-ecrit-par, x-ancien (hérité de l'interface d'origine : ne pas porter sans décision), x-demonstration (posé par le jeu de démonstration seulement), x-trou (renvoi au §13 du Markdown), x-attend-firebase, x-persistance, x-transitions (de, vers, declencheur, source).",
+  "type": "object",
+  "properties": {
+    "promi_state": {
+      "$ref": "#/$defs/Sauvegarde"
+    },
+    "promi_studio": {
+      "$ref": "#/$defs/Studio"
+    },
+    "promi_notifs2": {
+      "$ref": "#/$defs/ReglagesNotifications"
+    },
+    "promi_murs": {
+      "$ref": "#/$defs/CompteurMurs"
+    },
+    "promi_dessins_cercle": {
+      "type": "object",
+      "description": "Un dessin par clé de Cercle.",
+      "additionalProperties": {
+        "$ref": "#/$defs/Dessin"
+      },
+      "x-source": "app.html:38065-38066",
+      "x-attend-firebase": "LE DESSIN COMMUN d'un Cercle : document partagé entre les membres (TROU T13)."
+    },
+    "utilisateur": {
+      "$ref": "#/$defs/Utilisateur"
+    },
+    "reglages": {
+      "$ref": "#/$defs/Reglages"
+    },
+    "achats": {
+      "$ref": "#/$defs/Achats"
+    }
+  },
+  "$defs": {
+    "Sauvegarde": {
+      "description": "La valeur JSON de la clé localStorage `promi_state`, écrite par saveState().",
+      "x-source": "app.html:7644 (saveState), 7648 (loadState)",
+      "type": "object",
+      "required": [
+        "v",
+        "promises"
+      ],
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "promises": {
+          "type": "array",
+          "description": "LA source de vérité (C-049) : Promi, Chiche, gardés de côté, demandes.",
+          "items": {
+            "$ref": "#/$defs/Parole"
+          }
+        },
+        "NUE": {
+          "type": "object",
+          "description": "Cercles : clé → nom. La clé 'soi' (« Moi-même ») est réservée.",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "x-source": "app.html:2968"
+        },
+        "NUEEMEM": {
+          "type": "object",
+          "description": "Cercles : clé → prénoms des membres (sans « moi »).",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Prenom"
+            }
+          },
+          "x-source": "app.html:2969"
+        },
+        "NUEDALLE": {
+          "type": "object",
+          "description": "Cercles : clé → couleur figée de sa dalle.",
+          "additionalProperties": {
+            "$ref": "#/$defs/CouleurDalle"
+          },
+          "x-source": "app.html:33087 ; promi-moteur.js:6110"
+        },
+        "PEOPLE": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Prenom"
+          },
+          "x-source": "app.html:2970"
+        },
+        "FEED": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/EvenementFil"
+          }
+        },
+        "feedReacted": {
+          "type": "object",
+          "description": "id d'événement → réaction posée.",
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "x-source": "app.html:6893"
+        },
+        "shareHidden": {
+          "type": "object",
+          "description": "id de parole → true : écartée de « Mon Folio ».",
+          "additionalProperties": {
+            "type": "boolean"
+          },
+          "x-source": "app.html:6270-6282"
+        },
+        "state": {
+          "type": "object",
+          "properties": {
+            "mood": {
+              "type": "string",
+              "default": "cobalt",
+              "x-ancien": true
+            },
+            "structure": {
+              "$ref": "#/$defs/CleMonde",
+              "default": "encre"
+            },
+            "sort": {
+              "type": "string",
+              "default": "inspi",
+              "x-ancien": true
+            },
+            "labels": {
+              "type": "boolean",
+              "default": true,
+              "description": "AVEC TEXTE / sans texte."
+            }
+          },
+          "x-source": "app.html:2910"
+        },
+        "nid": {
+          "type": "integer",
+          "description": "Prochain id de parole ; part de 100.",
+          "x-source": "app.html:2912"
+        },
+        "fid": {
+          "type": "integer",
+          "description": "Prochain id d'événement du Fil."
+        },
+        "notifOn": {
+          "type": "boolean",
+          "x-ancien": true,
+          "x-source": "app.html:3666"
+        }
+      },
+      "x-non-sauvegarde": [
+        "isPremium",
+        "USER.photo",
+        "NUEE (pinceau d'un Cercle)",
+        "NUETHEME",
+        "NUENOTE",
+        "NUEFILES",
+        "NUECREATOR",
+        "NUEHT",
+        "NUEORD"
+      ]
+    },
+    "Prenom": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Une personne EST un prénom (chaîne). Valeurs réservées : 'moi'/'Moi', 'le groupe', 'tout le monde', 'qui ?', 'personne'.",
+      "x-source": "app.html:32424-32436, 31076",
+      "x-attend-firebase": "identifiant de personne, lien avec un compte"
+    },
+    "CleMonde": {
+      "type": "string",
+      "enum": [
+        "encre",
+        "touffe",
+        "brouillamini",
+        "halin",
+        "esquille",
+        "mosaique",
+        "braille",
+        "pixel",
+        "ramage",
+        "guingois",
+        "chantourne",
+        "volubilis",
+        "madrure",
+        "chamade",
+        "ritournelle",
+        "bobinette",
+        "mascaret",
+        "terrazzo",
+        "gravure",
+        "sillons"
+      ],
+      "description": "Clés internes ; noms affichés : encre=Pochade, mosaique=Tesselle, pixel=Buvard, terrazzo=Éclisse, gravure=Taille-douce, sillons=Houle. Les huit premiers sont gratuits, les douze suivants à Ma Parole !.",
+      "x-source": "app.html:6640 (_mondesCercle), 6651 (WL, order)"
+    },
+    "Monde": {
+      "type": "object",
+      "description": "Le monde de plantation, figé sur la parole. Lu depuis v34 par l'Aura et par « La dalle d'origine » seulement.",
+      "required": [
+        "m"
+      ],
+      "properties": {
+        "m": {
+          "$ref": "#/$defs/CleMonde"
+        },
+        "p": {
+          "type": "string",
+          "description": "Clé de palette (24 ; défaut 'signal' = Ingénu)."
+        },
+        "h": {
+          "type": "number",
+          "description": "Teinte.",
+          "default": 0
+        }
+      },
+      "x-source": "app.html:2920-2924 ; promi-moteur.js:7846"
+    },
+    "CouleurDalle": {
+      "type": "object",
+      "description": "La couleur figée d'une dalle.",
+      "required": [
+        "ci"
+      ],
+      "properties": {
+        "ci": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3,
+          "description": "Rang du ton dans la palette (4 tons)."
+        },
+        "lit": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Nuance.",
+          "default": 0
+        },
+        "rgb": {
+          "type": "array",
+          "items": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 255
+          },
+          "minItems": 3,
+          "maxItems": 3,
+          "description": "Code libre (Ma Parole !)."
+        },
+        "choisi": {
+          "const": 1,
+          "description": "Choisie à la main."
+        }
+      },
+      "x-source": "app.html:2954-2964, 33086-33097 ; promi-moteur.js:6105-6109"
+    },
+    "Pinceau": {
+      "type": "string",
+      "enum": [
+        "Plein",
+        "Coulé",
+        "Peigné",
+        "Sec",
+        "Tressé",
+        "Frangé",
+        "Doublé",
+        "Fendu",
+        "Cranté",
+        "Vrillé",
+        "Semé",
+        "Perlé"
+      ],
+      "default": "Plein",
+      "description": "Les quatre premiers sont libres ; les huit autres sont libellés « — 0,50 € ».",
+      "x-source": "app.html:24813-24814",
+      "x-trou": "T6 : aucun état d'achat de pinceau"
+    },
+    "Parole": {
+      "description": "Un élément de `promises`. Promi par défaut ; Chiche si chiche:true ; gardé de côté si draft:true ; demande si req:true.",
+      "x-source": "app.html:2924 (fabrique P)",
+      "type": "object",
+      "required": [
+        "id",
+        "title",
+        "who",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer",
+          "x-ecrit-par": "P() : nid++",
+          "description": "Jamais une clé stable : les ids du jeu de démonstration changent d'un chargement à l'autre."
+        },
+        "title": {
+          "type": "string",
+          "x-ecrit-par": "P() ; renommage #dRenameOk (app.html:3808)"
+        },
+        "who": {
+          "type": "string",
+          "default": "moi",
+          "description": "À qui : 'moi', un prénom, des prénoms joints par ', ', ou 'le groupe'.",
+          "x-ecrit-par": "P() ; Peaufiner À QUI (app.html:32663)",
+          "x-trou": "T21"
+        },
+        "due": {
+          "type": [
+            "number",
+            "null"
+          ],
+          "description": "Nombre de JOURS relatif (1, 5, 14, 30) ; null = « un jour » ou « en l'air ».",
+          "x-ecrit-par": "P() ; liste d'échéance (app.html:16196) ; reports (3044, 6922)",
+          "x-trou": "T3"
+        },
+        "dueISO": {
+          "type": "string",
+          "description": "Date précise choisie (AAAA-MM-JJ…).",
+          "x-source": "app.html:3192"
+        },
+        "enLair": {
+          "type": "boolean",
+          "default": false,
+          "x-source": "app.html:3192, 16197"
+        },
+        "dueChoisi": {
+          "type": "boolean",
+          "x-source": "app.html:16198"
+        },
+        "intensity": {
+          "type": "integer",
+          "enum": [
+            1,
+            2,
+            3
+          ],
+          "default": 2,
+          "description": "Importance : 1 light, 2 normal, 3 high (Ma Parole !).",
+          "x-source": "app.html:3192, 3792"
+        },
+        "status": {
+          "$ref": "#/$defs/EtatParole"
+        },
+        "nuee": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "Clé du Cercle ; absent/null = hors Cercle.",
+          "x-source": "app.html:3192, 3754"
+        },
+        "from": {
+          "type": "string",
+          "default": "moi",
+          "description": "Qui promet : 'moi' ou le prénom de l'autre.",
+          "x-attend-firebase": true
+        },
+        "recur": {
+          "enum": [
+            null,
+            "daily",
+            "weekly",
+            "monthly"
+          ],
+          "default": null,
+          "x-source": "app.html:3665, 3765"
+        },
+        "remind": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "pattern": "^[0-2][0-9]:[0-5][0-9]$",
+          "default": null,
+          "x-ancien": true,
+          "x-source": "app.html:3766"
+        },
+        "x": {
+          "type": "number",
+          "x-ancien": true
+        },
+        "y": {
+          "type": "number",
+          "x-ancien": true
+        },
+        "tx": {
+          "type": "number",
+          "x-ancien": true
+        },
+        "ty": {
+          "type": "number",
+          "x-ancien": true
+        },
+        "monde": {
+          "$ref": "#/$defs/Monde"
+        },
+        "dalle": {
+          "$ref": "#/$defs/CouleurDalle"
+        },
+        "dalleOrigine": {
+          "type": "boolean",
+          "default": false,
+          "x-source": "lot-V117-PHOTO-MENU, app.html:37509"
+        },
+        "photo": {
+          "$ref": "#/$defs/Photo"
+        },
+        "dessin": {
+          "$ref": "#/$defs/Dessin"
+        },
+        "trait": {
+          "$ref": "#/$defs/Pinceau"
+        },
+        "trace": {
+          "type": "array",
+          "description": "Points du geste qui a tenu la parole.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "x": {
+                "type": "number"
+              },
+              "y": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "x",
+              "y"
+            ]
+          },
+          "x-source": "app.html:4768"
+        },
+        "note": {
+          "type": "string"
+        },
+        "comments": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "t",
+              "d",
+              "by"
+            ],
+            "properties": {
+              "t": {
+                "type": "string"
+              },
+              "d": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "by": {
+                "type": "string"
+              }
+            }
+          },
+          "x-source": "app.html:3315"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PieceJointe"
+          }
+        },
+        "relances": {
+          "type": "integer",
+          "minimum": 0,
+          "x-source": "app.html:3313"
+        },
+        "urg": {
+          "type": "integer",
+          "x-ancien": true,
+          "description": "MASQUÉ PAR DÉCISION (« urgent » est banni). Ne pas porter."
+        },
+        "aussi": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Prenom"
+          },
+          "x-trou": "T20 : écrit, jamais lu",
+          "x-source": "app.html:3192"
+        },
+        "phraseSens": {
+          "enum": [
+            "faire",
+            "demander",
+            "chiche"
+          ],
+          "default": "faire",
+          "x-source": "app.html:3192, 5236, 8814"
+        },
+        "chiche": {
+          "type": "boolean",
+          "default": false
+        },
+        "chicheEtat": {
+          "$ref": "#/$defs/EtatChiche"
+        },
+        "avec": {
+          "type": "string",
+          "description": "Avec qui (prénoms joints par ', ').",
+          "x-source": "app.html:3194, 32662"
+        },
+        "req": {
+          "type": "boolean",
+          "default": false
+        },
+        "reqEtat": {
+          "$ref": "#/$defs/EtatDemande"
+        },
+        "reqLe": {
+          "type": "integer",
+          "description": "Horodatage ms."
+        },
+        "acceptLe": {
+          "type": "integer",
+          "description": "Horodatage ms."
+        },
+        "pending": {
+          "type": "boolean",
+          "x-attend-firebase": true,
+          "x-source": "app.html:2932, 6906"
+        },
+        "accepted": {
+          "type": "boolean",
+          "x-trou": "T20"
+        },
+        "draft": {
+          "type": "boolean",
+          "default": false,
+          "description": "Gardé de côté."
+        },
+        "dk": {
+          "$ref": "#/$defs/NatureGarde"
+        },
+        "draftKind": {
+          "$ref": "#/$defs/NatureGarde",
+          "x-ancien": true,
+          "x-trou": "T19"
+        },
+        "kindDraft": {
+          "type": "string",
+          "x-ancien": true,
+          "x-trou": "T19"
+        },
+        "nueeMembers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Prenom"
+          },
+          "x-source": "app.html:13604"
+        },
+        "rappel": {
+          "type": "boolean",
+          "description": "Réponse à « Je te le rappelle ? ».",
+          "x-source": "app.html:37363-37364"
+        },
+        "rap": {
+          "type": "object",
+          "properties": {
+            "due": {
+              "type": [
+                "number",
+                "null"
+              ]
+            },
+            "base": {
+              "type": "integer"
+            },
+            "vu": {
+              "type": "integer"
+            }
+          },
+          "x-source": "app.html:37309-37312"
+        },
+        "rapLair": {
+          "type": "integer",
+          "x-source": "app.html:37337"
+        },
+        "leJour": {
+          "type": "string",
+          "x-demonstration": true,
+          "x-trou": "T2",
+          "x-source": "app.html:21331-21334"
+        },
+        "ht": {
+          "type": "number",
+          "x-demonstration": true,
+          "x-trou": "T1",
+          "x-source": "app.html:21336-21338"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "chiche": {
+                "const": true
+              }
+            },
+            "required": [
+              "chiche"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/Chiche"
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "draft": {
+                "const": true
+              }
+            },
+            "required": [
+              "draft"
+            ]
+          },
+          "then": {
+            "$ref": "#/$defs/GardeDeCote"
+          }
+        }
+      ],
+      "x-etats": {
+        "encours": "en cours",
+        "tenu": "tenu",
+        "rate": "affiché « à tenir »"
+      },
+      "x-transitions": [
+        {
+          "de": null,
+          "vers": "encours",
+          "declencheur": "Planter : tracer le trait de la page + → #addPromi → P(t,w,due,imp,'encours',selNuee) — une parole par destinataire ; Toile.addPromi (ou addNuee + addMember) ; feedAdd('added')",
+          "source": "app.html:3192-3195"
+        },
+        {
+          "de": null,
+          "vers": "encours",
+          "declencheur": "Premier Promi de l'onboarding : P(titre,'Moi',7,2,'encours',undefined,'moi') ; Toile.sync",
+          "source": "app.html:8053, 36457"
+        },
+        {
+          "de": [
+            "encours",
+            "rate"
+          ],
+          "vers": "tenu",
+          "declencheur": "Tracer le trait de la fiche (#tenirZone) : 2/3 de la largeur atteints, ou geste lent > 6 points, ou > 50 % parcourus ; garde cur.trace puis clique #segStatus button[data-st=tenu] ; draft=false ; regenRecur si recur ; feedAdd('kept') ; instant de célébration (_instantTenue)",
+          "source": "app.html:4747-4774, 3764, 19956-19964"
+        },
+        {
+          "de": [
+            "encours",
+            "rate"
+          ],
+          "vers": "tenu",
+          "declencheur": "(ancien) carte de la Toile, bouton #ccKeep",
+          "source": "app.html:3042"
+        },
+        {
+          "de": "encours",
+          "vers": "tenu",
+          "declencheur": "Fil : TENIR sur un bandeau → feedKeep(fid) ; pending=false, accepted=true",
+          "source": "app.html:6906"
+        },
+        {
+          "de": "*",
+          "vers": "encours|tenu|rate",
+          "declencheur": "(ancien) sélecteur d'état #segStatus — TROU T4 pour tenu → encours",
+          "source": "app.html:2678, 3764"
+        },
+        {
+          "de": "encours",
+          "vers": "rate",
+          "declencheur": "Automatique : echeancesDepassees() au chargement (+3,4 s) quand due < 0, hors draft et req — TROU T3",
+          "source": "app.html:4090-4101"
+        },
+        {
+          "de": "*",
+          "vers": "encours",
+          "declencheur": "Choisir une échéance chiffrée sur la fiche (Peaufiner)",
+          "source": "app.html:16194-16199"
+        },
+        {
+          "de": "tenu",
+          "vers": "tenu + une parole neuve encours",
+          "declencheur": "regenRecur(p) si recur : même titre, who, nuee, from ; due 1/7/30",
+          "source": "app.html:3665"
+        },
+        {
+          "de": "*",
+          "vers": "supprimée",
+          "declencheur": "Peaufiner « SUPPRIMER CE PROMI / CE CHICHE » → confirmation → _v16SupprimerPromi ; annulable (restaure) ; Toile.sync",
+          "source": "app.html:35813-35824"
+        },
+        {
+          "de": "encours (moitié tracée)",
+          "vers": "tenu (tracé par l'autre)",
+          "declencheur": "AUCUNE DONNÉE : la moitié de trait de l'autre n'existe que comme événement de démonstration du Fil (type 'moitie') — TROU T5",
+          "source": "app.html:21381",
+          "x-attend-firebase": true
+        }
+      ]
+    },
+    "EtatParole": {
+      "type": "string",
+      "enum": [
+        "encours",
+        "tenu",
+        "rate"
+      ],
+      "description": "encours = en cours ; tenu = tenu ; rate = affiché « à tenir ».",
+      "x-source": "app.html:2678, 3764, 4096"
+    },
+    "EtatChiche": {
+      "type": "string",
+      "enum": [
+        "lance",
+        "releve"
+      ],
+      "description": "Un fait du Chiche, pas de la parole.",
+      "x-source": "app.html:3194, 15527-15534"
+    },
+    "EtatDemande": {
+      "type": "string",
+      "enum": [
+        "attente",
+        "acceptee",
+        "expiree"
+      ],
+      "description": "Pas d'état « refusée » : refuser, c'est ne rien faire.",
+      "x-source": "app.html:4070-4112"
+    },
+    "NatureGarde": {
+      "type": "string",
+      "enum": [
+        "solo",
+        "innuee",
+        "nuee"
+      ],
+      "description": "solo = hors Cercle ; innuee = dans un Cercle existant ; nuee = un Cercle entier gardé de côté."
+    },
+    "Promi": {
+      "description": "Une parole sans chiche:true.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/Parole"
+        },
+        {
+          "not": {
+            "properties": {
+              "chiche": {
+                "const": true
+              }
+            },
+            "required": [
+              "chiche"
+            ]
+          }
+        }
+      ],
+      "x-transitions-demande": [
+        {
+          "de": null,
+          "vers": "attente",
+          "declencheur": "Planter avec le verbe « demander » : req=true, reqEtat='attente', reqLe=now",
+          "source": "app.html:3193"
+        },
+        {
+          "de": "attente",
+          "vers": "acceptee",
+          "declencheur": "demandeAccepter(id) : req=false, acceptLe=now, Toile.addPromi, feedAdd('accept') — TROU T8 (c'est l'autre qui doit accepter)",
+          "source": "app.html:4075-4086",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "attente",
+          "vers": "expiree",
+          "declencheur": "demandesExpirer() après PROMI_EXPIRE = 30 jours, sans notification",
+          "source": "app.html:4074, 4103-4112",
+          "x-attend-firebase": true
+        }
+      ]
+    },
+    "Chiche": {
+      "description": "Une parole avec chiche:true ; who = qui je défie ; avec = avec qui.",
+      "type": "object",
+      "properties": {
+        "chiche": {
+          "const": true
+        },
+        "phraseSens": {
+          "const": "chiche"
+        },
+        "chicheEtat": {
+          "$ref": "#/$defs/EtatChiche"
+        },
+        "avec": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "chiche"
+      ],
+      "x-transitions": [
+        {
+          "de": null,
+          "vers": "lance",
+          "declencheur": "Page + « Un Chiche » : tracer pour lancer → #addPromi ; chiche=true, chicheEtat='lance', status='encours' ; avec recopié de _phrase.avec",
+          "source": "app.html:3194"
+        },
+        {
+          "de": "événement chiche_recu du Fil",
+          "vers": "une parole NEUVE (chiche, from=défieur, due 7, encours)",
+          "declencheur": "Fil : RELEVER — titre et défieur lus dans le texte de l'événement ; chicheEtat n'est pas posé",
+          "source": "app.html:6908-6916",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "lance",
+          "vers": "releve",
+          "declencheur": "AUCUN GESTE ne l'écrit (données de démonstration seulement) — TROU T9",
+          "source": "app.html:21239, 21268",
+          "x-attend-firebase": true
+        },
+        {
+          "de": [
+            "encours",
+            "rate"
+          ],
+          "vers": "tenu (« TENU À DEUX » si avec)",
+          "declencheur": "Le trait de la fiche, comme un Promi",
+          "source": "app.html:18994"
+        }
+      ]
+    },
+    "GardeDeCote": {
+      "description": "Une parole avec draft:true — rien n'est promis ; pas de matière, le champ de sa nature reste.",
+      "type": "object",
+      "properties": {
+        "draft": {
+          "const": true
+        },
+        "dk": {
+          "$ref": "#/$defs/NatureGarde"
+        },
+        "nueeMembers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Prenom"
+          }
+        }
+      },
+      "required": [
+        "draft"
+      ],
+      "x-trou": "T11 (sur la Toile ou non), T12 (ce qui survit à la conversion), T19",
+      "x-transitions": [
+        {
+          "de": null,
+          "vers": "garde",
+          "declencheur": "Page + : toucher « garder de côté » (.garde-cote) → _gardeCote(kind) ; draft=true, dk, phraseSens, note ; feedAdd('added') ; toast « gardé de côté — dans l'Index »",
+          "source": "app.html:13599-13623, 13663"
+        },
+        {
+          "de": null,
+          "vers": "garde",
+          "declencheur": "(ancien) #addDraft",
+          "source": "app.html:3327"
+        },
+        {
+          "de": "garde",
+          "vers": "repris à la page +",
+          "declencheur": "Ouvrir le gardé de côté → reprendreBrouillon(p) ; _ppGarde=true ; _brouillonRepris=id",
+          "source": "app.html:13625-13661"
+        },
+        {
+          "de": "repris",
+          "vers": "parole plantée (NOUVEL id) + gardé supprimé",
+          "declencheur": "Tracer le trait de la page + → #addPromi/#addNuee, puis retrait de l'ancien (120 ms) et Toile.sync",
+          "source": "app.html:13674-13683"
+        },
+        {
+          "de": "garde",
+          "vers": "planté sur place (draft=false)",
+          "declencheur": "(ancien) #actPlanter → Toile.addPromi ; toast « Promi planté sur la Toile »",
+          "source": "app.html:3798-3807"
+        },
+        {
+          "de": "garde",
+          "vers": "supprimé",
+          "declencheur": "La suppression d'une parole",
+          "source": "app.html:35813"
+        }
+      ]
+    },
+    "Cercle": {
+      "description": "Vue RECOMPOSÉE : dans le prototype un Cercle n'est pas un objet mais une clé dans des tables parallèles (NUE, NUEEMEM, NUEDALLE, promi_dessins_cercle, et des tables non sauvegardées). Ses paroles sont les Parole dont nuee === cle.",
+      "type": "object",
+      "required": [
+        "cle",
+        "nom"
+      ],
+      "properties": {
+        "cle": {
+          "type": "string",
+          "description": "'n'+Date.now() à la création ; 'soi' réservée.",
+          "x-source": "app.html:3196"
+        },
+        "nom": {
+          "type": "string",
+          "x-source": "NUE[cle]"
+        },
+        "membres": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Prenom"
+          },
+          "x-source": "NUEEMEM[cle]",
+          "x-attend-firebase": true
+        },
+        "dalle": {
+          "$ref": "#/$defs/CouleurDalle",
+          "x-source": "NUEDALLE[cle]"
+        },
+        "dessin": {
+          "$ref": "#/$defs/Dessin",
+          "x-source": "promi_dessins_cercle[cle]",
+          "x-attend-firebase": "dessin commun"
+        },
+        "trait": {
+          "$ref": "#/$defs/Pinceau",
+          "x-source": "NUEE[cle] (app.html:25342)",
+          "x-persistance": "aucune",
+          "x-trou": "T7"
+        },
+        "createur": {
+          "type": "string",
+          "x-source": "NUECREATOR[cle] (app.html:9112)",
+          "x-persistance": "aucune",
+          "x-attend-firebase": true
+        },
+        "theme": {
+          "type": "string",
+          "x-ancien": true,
+          "x-source": "NUETHEME",
+          "x-persistance": "aucune"
+        },
+        "note": {
+          "type": "string",
+          "x-ancien": true,
+          "x-source": "NUENOTE",
+          "x-persistance": "aucune"
+        },
+        "pieces": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/PieceJointe"
+          },
+          "x-source": "NUEFILES",
+          "x-persistance": "aucune"
+        },
+        "ht": {
+          "type": "number",
+          "x-demonstration": true,
+          "x-source": "NUEHT"
+        },
+        "ordre": {
+          "type": "number",
+          "x-demonstration": true,
+          "x-source": "NUEORD"
+        }
+      },
+      "x-trou": "T15 (limite au gratuit), T22 (résidus à la dissolution)",
+      "x-transitions": [
+        {
+          "de": null,
+          "vers": "créé",
+          "declencheur": "Page + « Un Cercle » : tracer le trait ENTIER (0 → 390) → #addNuee ; nom obligatoire ; NUE[cle]=nom, NUEEMEM[cle]=membres ; + son premier Promi (who 'le groupe' ou 'moi', due 7) ; feedAdd('nuee')",
+          "source": "app.html:3196"
+        },
+        {
+          "de": "créé",
+          "vers": "+ une parole",
+          "declencheur": "« Planter dans le Cercle » → page + avec selNuee → #addPromi",
+          "source": "app.html:3192"
+        },
+        {
+          "de": "créé",
+          "vers": "renommé",
+          "declencheur": "Fiche → renommage : NUE[curNuee]=v",
+          "source": "app.html:9271"
+        },
+        {
+          "de": "créé",
+          "vers": "membres changés",
+          "declencheur": "Peaufiner MEMBRES (_gensFiche('nuee')) ; addMem ; .nqm-rm",
+          "source": "app.html:32660, 9263, 9190",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "créé",
+          "vers": "couleur changée",
+          "declencheur": "Peaufiner COULEUR (Ma Parole !) → NUEDALLE[cle] ; Toile.refigeCouleurs()",
+          "source": "app.html:33087-33090"
+        },
+        {
+          "de": "invitation reçue (événement du Fil)",
+          "vers": "rejoint",
+          "declencheur": "Fil → filRejoindre(fid) : NUE[k]=nom, NUEEMEM[k] + l'invitant ; événement → 'joined'",
+          "source": "app.html:33791-33796",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "créé",
+          "vers": "dissous, paroles libérées (nuee=null)",
+          "declencheur": "« Dissoudre le Cercle ? » → « Libérer les Promi » → _nqDissolve(cle,false) ; seulement si NUECREATOR[cle]==='moi'",
+          "source": "app.html:9248-9249, 9227"
+        },
+        {
+          "de": "créé",
+          "vers": "dissous, paroles supprimées",
+          "declencheur": "« Tout supprimer » → _nqDissolve(cle,true)",
+          "source": "app.html:9248-9249"
+        }
+      ]
+    },
+    "Personne": {
+      "description": "Il n'existe pas d'entité : une personne est un Prenom cité par une parole (who, from, avec), un Cercle (membres) ou PEOPLE. « + ajouter quelqu'un » ajoute le prénom à la parole ou au Cercle en cours, pas à PEOPLE.",
+      "$ref": "#/$defs/Prenom",
+      "x-source": "app.html:3458 (peopleList), 32424-32497 (lot-GENS)",
+      "x-attend-firebase": "personnes réelles",
+      "x-transitions": [
+        {
+          "de": null,
+          "vers": "citée",
+          "declencheur": "« + ajouter quelqu'un » : un prénom saisi ou choisi parmi connus() → ajouté à who / avec de la parole en cours, ou aux membres du Cercle",
+          "source": "app.html:32479-32497"
+        },
+        {
+          "de": "citée",
+          "vers": "retirée de la parole ou du Cercle",
+          "declencheur": "La croix d'une pastille (.ppo-x) → cfg.retire(n)",
+          "source": "app.html:32471"
+        }
+      ]
+    },
+    "Utilisateur": {
+      "type": "object",
+      "x-source": "app.html:2909",
+      "properties": {
+        "name": {
+          "type": "string",
+          "x-persistance": "promi_prenom",
+          "x-source": "app.html:36388"
+        },
+        "photo": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "description": "data-URL.",
+          "x-persistance": "aucune",
+          "x-trou": "T10",
+          "x-source": "app.html:3131-3132"
+        },
+        "seed": {
+          "type": "integer",
+          "description": "Graine du visage : sauvegardée d'abord, sinon FNV-1a du nom mod 1e9.",
+          "x-persistance": "promi_graine",
+          "x-source": "app.html:3844-3850"
+        },
+        "compte": {
+          "enum": [
+            "demande-apple",
+            "demande-google",
+            "plus-tard",
+            null
+          ],
+          "x-persistance": "promi_compte",
+          "x-trou": "T23",
+          "x-attend-firebase": "compte réel ; window.promiConnexion n'est définie nulle part",
+          "x-source": "app.html:36525-36526"
+        }
+      },
+      "x-transitions": [
+        {
+          "de": "sans photo",
+          "vers": "avec photo",
+          "declencheur": "Réglages : toucher l'avatar → fichier → USER.photo",
+          "source": "app.html:3131"
+        },
+        {
+          "de": "avec photo",
+          "vers": "sans photo + nouvelle graine",
+          "declencheur": "Réglages : retirer la photo ; annulable (« Photo retirée »)",
+          "source": "app.html:3132, 35907-35909"
+        },
+        {
+          "de": "sans compte",
+          "vers": "demande-apple | demande-google | plus-tard",
+          "declencheur": "Panneau « Garder ta Toile » : Apple, « Continuer avec Google », « Plus tard »",
+          "source": "app.html:36515-36530",
+          "x-attend-firebase": true
+        }
+      ]
+    },
+    "TraitDessin": {
+      "type": "object",
+      "required": [
+        "c",
+        "t",
+        "g",
+        "pts"
+      ],
+      "properties": {
+        "c": {
+          "type": "string",
+          "pattern": "^(#[0-9A-Fa-f]{6})?$",
+          "description": "Couleur figée (hex) ; '' pour la gomme."
+        },
+        "t": {
+          "type": "number",
+          "enum": [
+            2.5,
+            4.5,
+            8,
+            10,
+            18,
+            30
+          ],
+          "description": "Taille : plume 2,5 · 4,5 · 8 ; gomme 10 · 18 · 30."
+        },
+        "g": {
+          "enum": [
+            0,
+            1
+          ],
+          "description": "1 = gomme (rend le fond)."
+        },
+        "pts": {
+          "type": "array",
+          "items": {
+            "type": "number"
+          },
+          "description": "À plat, 4 nombres par point : x, y (points de la surface, au dixième), t (horodatage ms), p (pression 0–1, -1 pour un doigt).",
+          "x-multiple-de": 4
+        }
+      },
+      "x-source": "app.html:38257-38269"
+    },
+    "Dessin": {
+      "description": "Une LISTE DE TRAITS, jamais une image.",
+      "type": "object",
+      "required": [
+        "fond",
+        "traits",
+        "poses",
+        "pose",
+        "masque"
+      ],
+      "properties": {
+        "v": {
+          "const": 1
+        },
+        "w": {
+          "const": 390
+        },
+        "h": {
+          "type": "number",
+          "description": "742 depuis v133 (surfH()) ; 754 dans un dessin de v132, ramené à l'ouverture.",
+          "maximum": 754
+        },
+        "fond": {
+          "type": "string",
+          "pattern": "^#[0-9A-Fa-f]{6}$"
+        },
+        "traits": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TraitDessin"
+          },
+          "description": "Le dessin en cours (gardé si l'on sort)."
+        },
+        "poses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/TraitDessin"
+          },
+          "description": "Ce que POSER a posé : seul montré par la bande, la vue entière, le partage."
+        },
+        "pose": {
+          "type": "boolean",
+          "description": "true dès le premier POSER : le fond est fixé, les traits neufs ne prennent que les couleurs déjà présentes."
+        },
+        "masque": {
+          "type": "boolean",
+          "description": "Masquage « pour soi seul ». Un dessin masqué n'est jamais emporté dans un partage.",
+          "x-attend-firebase": "LE MASQUAGE INDIVIDUEL : préférence par personne et par dessin, hors du document partagé"
+        }
+      },
+      "x-source": "lot-V132-DESSIN, app.html:38022-38330",
+      "x-persistance": "p.dessin (promi_state) · window._phrase.dessin (mémoire) · promi_dessins_cercle[cle]",
+      "x-etats": [
+        "aucun",
+        "en cours (jamais posé)",
+        "posé",
+        "posé et masqué",
+        "posé et rouvert"
+      ],
+      "x-transitions": [
+        {
+          "de": "aucun",
+          "vers": "en cours",
+          "declencheur": "Bouton photo → « Dessiner » → ouvre(c) : dessin neuf, fond = champ de la nature",
+          "source": "app.html:38193-38208, 38297"
+        },
+        {
+          "de": "en cours",
+          "vers": "en cours + 1 trait",
+          "declencheur": "Lever du doigt ou du stylet sur la surface ; sauvegarde immédiate",
+          "source": "app.html:38268-38270"
+        },
+        {
+          "de": "en cours",
+          "vers": "en cours − 1 trait",
+          "declencheur": "ANNULER",
+          "source": "app.html:38254"
+        },
+        {
+          "de": "en cours (jamais posé)",
+          "vers": "fond changé",
+          "declencheur": "COULEUR → onglet FOND (Ma Parole !)",
+          "source": "app.html:38238-38249"
+        },
+        {
+          "de": "en cours",
+          "vers": "posé (poses = copie de traits, pose=true, masque=false)",
+          "declencheur": "POSER, avec au moins un trait",
+          "source": "app.html:38273-38275"
+        },
+        {
+          "de": "en cours, sans trait",
+          "vers": "aucun",
+          "declencheur": "POSER sans trait",
+          "source": "app.html:38275"
+        },
+        {
+          "de": "en cours",
+          "vers": "gardé tel quel (aucun s'il est vide et jamais posé)",
+          "declencheur": "Sortie sans poser : ✕ « Quitter le dessin », Échap, ouverture de l'offre",
+          "source": "app.html:38217, 38276, 38281-38282"
+        },
+        {
+          "de": "posé",
+          "vers": "posé et rouvert",
+          "declencheur": "« Dessiner » sur un dessin posé",
+          "source": "app.html:38190, 38238"
+        },
+        {
+          "de": "posé",
+          "vers": "posé et masqué (et retour)",
+          "declencheur": "Bouton œil de la bande (« Masquer le dessin » / « Afficher le dessin »)",
+          "source": "app.html:38133-38143",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "*",
+          "vers": "aucun",
+          "declencheur": "Menu → « Retirer le dessin »",
+          "source": "app.html:38283, 38296"
+        },
+        {
+          "de": "dessin du brouillon de la page +",
+          "vers": "dessin de la parole plantée ou du Cercle neuf",
+          "declencheur": "Planter (#addPromi / #addNuee)",
+          "source": "app.html:38313-38317"
+        }
+      ]
+    },
+    "Photo": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "description": "Une data-URL (image/*) lue par FileReader ; null = pas de photo. La bande montre UNE chose : le dessin (posé, non masqué), sinon la photo, sinon la dalle.",
+      "x-source": "app.html:20118-20127, 20270-20278",
+      "x-trou": "T14",
+      "x-attend-firebase": "stockage de fichiers partagé",
+      "x-transitions": [
+        {
+          "de": "dalle",
+          "vers": "photo",
+          "declencheur": "Menu du bouton photo → « Importer une photo » → sélecteur du système",
+          "source": "app.html:37505, 20121"
+        },
+        {
+          "de": "photo",
+          "vers": "dalle",
+          "declencheur": "« Retirer la photo »",
+          "source": "app.html:37511"
+        },
+        {
+          "de": "dalle du Studio",
+          "vers": "dalle d'origine (et retour) ; la photo est retirée",
+          "declencheur": "« La dalle d'origine » / « La dalle du Studio » : bascule p.dalleOrigine",
+          "source": "app.html:37506-37510"
+        },
+        {
+          "de": "photo du brouillon (_phrase.photo)",
+          "vers": "p.photo",
+          "declencheur": "Planter",
+          "source": "app.html:20270-20278"
+        }
+      ]
+    },
+    "PieceJointe": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "size": {
+          "type": "integer"
+        },
+        "by": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "x-source": "app.html:9120"
+    },
+    "EvenementFil": {
+      "type": "object",
+      "required": [
+        "id",
+        "type",
+        "text"
+      ],
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "type": {
+          "enum": [
+            "added",
+            "kept",
+            "missed",
+            "nuee",
+            "relance",
+            "comment",
+            "accept",
+            "joined",
+            "received",
+            "chiche_recu",
+            "chiche_releve",
+            "invitation",
+            "moitie"
+          ]
+        },
+        "text": {
+          "type": "string",
+          "description": "Phrase toute faite ; le titre y est recopié."
+        },
+        "pid": {
+          "type": "integer"
+        },
+        "from": {
+          "type": "string"
+        },
+        "t": {
+          "type": "string",
+          "description": "Un MOT (« à l'instant », « hier »), pas une date."
+        },
+        "unread": {
+          "type": "boolean"
+        },
+        "fait": {
+          "type": "boolean"
+        },
+        "nuee": {
+          "type": "string"
+        },
+        "nom": {
+          "type": "string"
+        },
+        "ev": {
+          "type": "object",
+          "x-demonstration": true
+        }
+      },
+      "x-source": "app.html:6836, 21381-21383",
+      "x-attend-firebase": "tout événement venu d'un autre"
+    },
+    "Studio": {
+      "type": "object",
+      "description": "Clé `promi_studio` : ce que le Studio porte (global).",
+      "properties": {
+        "m": {
+          "$ref": "#/$defs/CleMonde"
+        },
+        "p": {
+          "type": "string"
+        },
+        "h": {
+          "type": "number"
+        },
+        "libre": {
+          "type": "boolean",
+          "description": "Le monde était gratuit QUAND on l'a choisi."
+        },
+        "acquis": {
+          "type": "object",
+          "description": "Mondes acquis.",
+          "additionalProperties": {
+            "const": 1
+          }
+        }
+      },
+      "x-source": "lot-V71-REOUVERTURE, app.html:36816-36846"
+    },
+    "ReglagesNotifications": {
+      "type": "object",
+      "properties": {
+        "datees": {
+          "type": "boolean",
+          "default": false
+        },
+        "lair": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ma Parole !."
+        },
+        "heure": {
+          "enum": [
+            8,
+            12,
+            19
+          ],
+          "default": 19,
+          "description": "Ma Parole ! ; 19 au gratuit."
+        },
+        "refus": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 0
+        },
+        "lairDepuis": {
+          "type": "integer"
+        },
+        "lairDernier": {
+          "type": "integer"
+        }
+      },
+      "x-source": "lot-V109-NOTIFS, app.html:37279-37401",
+      "x-attend-firebase": "envoi app fermée ; « Ce qu'on me lance »",
+      "x-transitions": [
+        {
+          "de": "datees=false",
+          "vers": "question « Je te le rappelle ? » (12 s)",
+          "declencheur": "1,9 s après la plantation d'une parole datée et mienne ; jamais si refus ≥ 2",
+          "source": "app.html:37350-37377"
+        },
+        {
+          "de": "question",
+          "vers": "datees=true, refus=0, p.rappel=true, permission système demandée",
+          "declencheur": "« oui »",
+          "source": "app.html:37363"
+        },
+        {
+          "de": "question",
+          "vers": "refus+1, p.rappel=false",
+          "declencheur": "« pas besoin »",
+          "source": "app.html:37364"
+        },
+        {
+          "de": "*",
+          "vers": "bascule datees / lair / heure suivante",
+          "declencheur": "Page Notifications des Réglages",
+          "source": "app.html:37396-37401"
+        }
+      ]
+    },
+    "CompteurMurs": {
+      "type": "object",
+      "properties": {
+        "n": {
+          "type": "integer"
+        },
+        "t": {
+          "type": "integer"
+        },
+        "der": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "decouvert": {
+          "const": 1
+        }
+      },
+      "description": "Rang de la phrase des murs, date du dernier mur, dernière phrase, première découverte ; remis à zéro après 14 jours.",
+      "x-source": "lot-V104-MURS, app.html:37135-37152"
+    },
+    "Reglages": {
+      "type": "object",
+      "description": "Réglages globaux, hors promi_state — une clé localStorage par réglage.",
+      "properties": {
+        "promi_theme": {
+          "type": "string",
+          "description": "'light' = clair, sinon sombre.",
+          "x-trou": "T16",
+          "x-source": "app.html:6717"
+        },
+        "promi_zzz": {
+          "enum": [
+            "0",
+            "1"
+          ],
+          "description": "COUPÉ depuis v120.",
+          "x-ancien": true
+        },
+        "promi_nb": {
+          "enum": [
+            "0",
+            "1"
+          ]
+        },
+        "promi_nb_j": {
+          "type": "string",
+          "description": "Nombre 0–1, défaut 0,3."
+        },
+        "promi_lang": {
+          "type": "string",
+          "default": "fr"
+        },
+        "promi_monde": {
+          "$ref": "#/$defs/CleMonde"
+        },
+        "promi_onb": {
+          "const": "1"
+        },
+        "promi_debut": {
+          "type": "string",
+          "description": "Horodatage ms."
+        },
+        "promi_prenom": {
+          "type": "string"
+        },
+        "promi_graine": {
+          "type": "string"
+        },
+        "promi_pelote_ordre": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "description": "Ordre d'apparition des paroles tenues.",
+          "x-trou": "T2"
+        }
+      },
+      "x-source": "SPEC-DONNEES.md §0 et §9"
+    },
+    "Achats": {
+      "type": "object",
+      "description": "Aucun paiement réel dans le prototype : des drapeaux locaux.",
+      "properties": {
+        "isPremium": {
+          "type": "boolean",
+          "default": false,
+          "description": "Membre Ma Parole ! (clé interne). Prix affichés : 39 € / an, 5,99 € / mois, essai 14 jours.",
+          "x-persistance": "aucune",
+          "x-trou": "T17",
+          "x-source": "app.html:3166, 2784-2791 ; ETAT §6"
+        },
+        "_ownedDesigns": {
+          "type": "object",
+          "description": "Mondes acquis à l'unité (« Adopte ce design — 2 € »).",
+          "additionalProperties": {
+            "const": true
+          },
+          "x-persistance": "promi_studio.acquis",
+          "x-trou": "T18",
+          "x-source": "app.html:3166, 8567, 22410"
+        }
+      },
+      "x-attend-firebase": "StoreKit + droit d'accès serveur (C-026)",
+      "x-etats": {
+        "maParole": [
+          "gratuit",
+          "membre"
+        ],
+        "design": [
+          "verrouillé",
+          "acquis"
+        ]
+      },
+      "x-transitions": [
+        {
+          "de": "gratuit",
+          "vers": "membre",
+          "declencheur": "Écran de l'offre : #buyMonth (« Essayer 14 jours ») ou #buyYear (« ou prendre l'année — 39 € ») → setPremium(true)",
+          "source": "app.html:3182, 31573-31579",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "membre",
+          "vers": "gratuit",
+          "declencheur": "setPremium(false) ; le monde payant en usage devient acquis (v73, Q339)",
+          "source": "app.html:36842-36844",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "design verrouillé",
+          "vers": "design acquis et appliqué",
+          "declencheur": "Studio : #stLockBuy « Adopte ce design — 2 € » → _ownedDesigns[monde]=true ; Toile.setTheme",
+          "source": "app.html:2774, 8567",
+          "x-attend-firebase": true
+        },
+        {
+          "de": "monde payant en usage",
+          "vers": "acquis (gardé)",
+          "declencheur": "Réouverture ou fin de Ma Parole ! : « on ne reprend pas ce qui a été donné »",
+          "source": "app.html:36831-36844"
+        }
+      ]
+    }
+  }
+}

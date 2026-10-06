@@ -184,7 +184,7 @@ def releve(pg, url):
 
 # E3 — l'orange des mots des murs (§4) : la seule encre qui peut différer, et seulement vers cette valeur
 VIOLATIONS = __import__('re').compile(r'closeb|dptNat|sh-bt|sh-bf|shWordmark|buyMonth|buyYear|pc-eclat')   # E5, nominatif (#shWordmark EST le .sh-bt du badge)
-MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(254, 208, 195)')   # v133 : #FF9F84 sur le bleu provisoire #1A52F0 (C-050)
+MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 159, 132)')   # v133 : #FF9F84 sur le bleu provisoire #1A52F0 (C-050)
 _ANC_MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 134, 100)')   # #FB4C0D, et #FF7A55 sur les corps sombres de Peaufiner (v121 §4)
 
 with sync_playwright() as p:
@@ -253,9 +253,9 @@ with sync_playwright() as p:
                     if pr_ in ('tshadow', 'shadow', 'bgi') and va is None and VIOLATIONS.search(k): exceptions['E5'] += 1; continue
                     if pr_ == 'bgi' and cle[1] == 'dark' and 'auPeloteOmbre' in k and va and va.startswith('radial-gradient(') and re.search(r'rgba\(247, 240, 222, 0\.10[456]\d*\)', va) and va.count('rgba(') == 2 and 'rgba(247, 240, 222, 0)' in va: exceptions['E7'] += 1; continue
                     if cle[1] == 'dark' and cle[0] in E8_ECRANS and va and vr:
-                        if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '14, 120, 242'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
+                        if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '26, 82, 240'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
                     # E9 (v132) : le lilas éclairci de la page + d'un Promi en sombre ; le libellé « Supprimer ce Promi / ce Chiche » et sa corbeille
-                    if cle[1] == 'dark' and cle[0] in ('page +', 'gardé de côté') and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '244, 238, 255'): exceptions['E9'] += 1; continue
+                    if cle[1] == 'dark' and cle[0] in ('page +', 'gardé de côté') and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '232, 218, 255'): exceptions['E9'] += 1; continue
                     if cle[0].startswith('Peaufiner') and 'Nuée' not in cle[0] and va and vr and '221, 77, 35' in vr and va == vr.replace('221, 77, 35', '247, 240, 222' if cle[1] == 'dark' else '32, 25, 8') and re.search(r'danger|s2-lab|s2-reg', k): exceptions['E9'] += 1; continue
                     ecarts.append((cle, k, pr_, va, vr))
             for k, c in a['c'].items():

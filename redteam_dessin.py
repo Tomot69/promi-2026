@@ -249,7 +249,7 @@ with sync_playwright() as p:
         Ph=pg.evaluate("""()=>{ const p=document.getElementById('murPhrase'); if(!p) return null; const m=p.querySelector('.mp'), q=document.querySelector('#dessinMode .dz-couleurs'); const r=p.getBoundingClientRect(), w=q?q.getBoundingClientRect():r;
           const h=document.elementFromPoint(r.left+8, r.top+r.height/2);
           return {leve:p.classList.contains('leve'), texte:p.textContent, mp:m?getComputedStyle(m).color:null, coul:getComputedStyle(p).color, dans:r.top>=w.top-1&&r.bottom<=w.bottom+1, z:+getComputedStyle(p).zIndex} }""")
-        MPC={'dark':'rgb(255, 159, 132)','light':'rgb(251, 76, 13)'}[th]
+        MPC={'dark':'rgb(254, 208, 195)','light':'rgb(251, 76, 13)'}[th]   # v134 : #FED0C3 sur le bleu définitif #0E78F2
         ok('I · [%s] la phrase des murs monte sur la zone, devant le mode, « Ma Parole ! » dans son orange'%th, bool(Ph) and Ph['leve'] and 'Ma Parole' in Ph['texte'] and Ph['mp']==MPC and Ph['dans'] and Ph['z']>390, Ph)
         pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); pg.wait_for_timeout(200)
         # avec Ma Parole ! : la même zone, nette, et la teinte se choisit

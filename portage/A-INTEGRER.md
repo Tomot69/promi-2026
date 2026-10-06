@@ -1,3 +1,5 @@
+> **⚑ v134 (6 oct. 2026) — INTÉGRÉ** dans `SPEC-DONNEES`, `SPEC-ECRANS`, `SPEC-GESTE`, `SPEC-RENDU` et `JETONS`. Ce fichier reste comme journal ; le corps sombre d'un Promi y est encore « provisoire » : il est `#0E78F2`, définitif.
+
 # Portage — notes à intégrer au dossier (C-021, lot v130)
 
 - **C-031 · la vie au repos (Tom, v129)** : dans le prototype, seize mondes bougent au repos ; **Volubilis, Guingois, Ramage et Esquille

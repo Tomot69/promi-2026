@@ -22,9 +22,9 @@ from playwright.sync_api import sync_playwright
 ICI = os.path.dirname(os.path.abspath(__file__))
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
 SONDE = '--sonde' in sys.argv
-ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(254, 208, 195)')   # v134 : #FED0C3 sur le bleu définitif #0E78F2
+ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 159, 132)')
 # ⚑ v133 (Tom, 6 oct. 2026) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_maparole-avant-v133.py) : ① le corps sombre d'un Promi passe
-#   à #1A52F0 (provisoire, C-050) : l'orange éclairci à 3:1 y est #FED0C3 (il remplace #FF8664) ; ② « le juge de l'orange accepte désormais
+#   à #1A52F0 (provisoire, C-050) : l'orange éclairci à 3:1 y est #FF9F84 (il remplace #FF8664) ; ② « le juge de l'orange accepte désormais
 #   les mots listés, et seulement eux, dans les phrases des murs » — la liste est EN DUR ci-dessous (MOTS).
 NB = '\u00a0'; MPX = 'Ma Parole' + NB + '!'
 MOTS = [[MPX], ['Ma', 'Parole' + NB + '!'], [MPX, 'oui'], [MPX], [], [], [MPX], ['officielle'], [], ['mystère'], ['pourparlers'], ['registre'], [], ['stratégie'], ['tradition'], ['habitudes'], ['moi'], []]
@@ -49,13 +49,13 @@ io.open(os.path.join(ICI, SERVI), 'w', encoding='utf-8').write(S)
 M = io.open(os.path.join(ICI, 'promi-moteur.js'), encoding='utf-8').read()
 
 # ── A · la source
-HEX = re.compile(r'#(?:FB4C0D|FF7A55|FED0C3)\b|\b251\s*,\s*76\s*,\s*13\b|\b255\s*,\s*122\s*,\s*85\b|\b254\s*,\s*208\s*,\s*195\b', re.I)
+HEX = re.compile(r'#(?:FB4C0D|FF7A55|FF9F84)\b|\b251\s*,\s*76\s*,\s*13\b|\b255\s*,\s*122\s*,\s*85\b|\b255\s*,\s*159\s*,\s*132\b', re.I)
 # les commentaires ne peignent rien : on les retire (en gardant les sauts de ligne, pour les numéros) avant de chercher
 def _sans_comm(m): return '\n' * m.group(0).count('\n')
 NUE = re.sub(r'/\*.*?\*/', _sans_comm, S, flags=re.S)
 NUE = re.sub(r'(?m)^\s*//.*$', '', NUE)
 lignes = NUE.split('\n')
-hors = [(i + 1, l.strip()[:90]) for i, l in enumerate(lignes) if HEX.search(l) and not re.search(r'--c-orange-maparole(-corps|-cobalt)?\s*:\s*#(FB4C0D|FF7A55|FED0C3)', l, re.I)]
+hors = [(i + 1, l.strip()[:90]) for i, l in enumerate(lignes) if HEX.search(l) and not re.search(r'--c-orange-maparole(-corps|-cobalt)?\s*:\s*#(FB4C0D|FF7A55|FF9F84)', l, re.I)]
 t('A · #FB4C0D et #FF7A55 n\'existent que dans le bloc des jetons', not hors, '; '.join('l.%d %s' % h for h in hors[:3]) or '')
 t('A · le moteur n\'en porte aucun', not HEX.search(M), '')
 lec = re.findall(r'([^{}]{0,120})\{[^{}]*var\(--c-orange-maparole(?:-corps)?\)', NUE)
@@ -110,7 +110,7 @@ with sync_playwright() as p:
         if c: pg.touchscreen.tap(*c); pg.wait_for_timeout(800)
         e = pg.evaluate(ETAT) or {}
         attendu = ORANGE[2] if th == 'dark' else ORANGE[0]
-        t('C · [%s] sur le Peaufiner : « Ma Parole ! » en %s' % (th, '#FED0C3 (corps bleu d\'un Promi)' if th == 'dark' else '#FB4C0D'), bool(e.get('leve')) and e.get('mp') == attendu and e.get('mpf') == attendu, '%r · mp %s · reste %s' % ((e.get('texte') or '')[:40], e.get('mp'), e.get('reste')))
+        t('C · [%s] sur le Peaufiner : « Ma Parole ! » en %s' % (th, '#FF9F84 (corps bleu d\'un Promi)' if th == 'dark' else '#FB4C0D'), bool(e.get('leve')) and e.get('mp') == attendu and e.get('mpf') == attendu, '%r · mp %s · reste %s' % ((e.get('texte') or '')[:40], e.get('mp'), e.get('reste')))
         t('C · [%s] le reste de la phrase n\'est pas l\'orange de Ma Parole !' % th, e.get('reste') not in ORANGE, str(e.get('reste')))
         # D (v133) · dans les dix-huit phrases, l'orange ne porte que les mots décidés
         pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); faux = []
