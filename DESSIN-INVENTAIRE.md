@@ -80,3 +80,11 @@ par-dessus l'app rendue, `pen.js` rend le trait, `dessin.py` et `trait.py` monte
 ## v132 (5 oct. 2026) — CONSTRUIT DANS L'APP (`lot-V132-DESSIN`) ; les planches v130 et v131 sont abandonnées
 - Choix de Tom : effilé **E2**, symbole **S2**. La surface prend tout l'écran jusqu'à la rangée, posée en bas ; les déploiements au-dessus
   d'elle ; le reste de la fiche se retire. Paramètres : `window._dessinParams`. Détail : bloc v132 de `CLAUDE.md`. Juge : `redteam_dessin.py`.
+
+## v133 (6 oct. 2026) — réglages de Tom
+- **Sortie sans poser** : `button.dz-quitter`, un ✕ de 18 dans une cible de 44, dans le contour de l'encart, calé sur le bord droit de
+  « ✕ FERMER » ; « Quitter le dessin » ; le dessin en cours est gardé.
+- **Mise en page** : `ECART_DEPLOI` 16 ; `SECU_BAS` 34, `MARGE_BAS` 12 = `MARGE_HAUT` 12 — la rangée est centrée entre le bas de la surface
+  (742) et le bord bas utile (810) ; surface 390 × 742.
+- **Ma Parole !** : sans elle, l'encre du mode sur le champ de la nature ; le panneau COULEUR est un mur (flou 4,8 px, phrase des murs).
+- **Menu** : « Importer une photo ».

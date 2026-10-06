@@ -1,0 +1,24 @@
+3 écran(s) repris sur une page fraîche : Studio[d], l'instant arrive[l], panneau des palettes[l]
+6524 propriétés comparées · 36 écrans × 2 thèmes · 89 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 8 · E5 violations retirées 22 · E6 trace crème (Q374) 13 · E7 ombre crème en sombre 2 · E8 cobalt, corps sombre Promi (v131) 8 · E9 lilas éclairci et libellé de suppression (v132) 6
+  ✗ bR       réf rgb(239, 227, 199)                 → app rgba(0, 0, 0, 0)                   ×1   panneau des palettes[l]
+  ✗ bB       réf rgb(239, 227, 199)                 → app rgba(0, 0, 0, 0)                   ×1   panneau des palettes[l]
+  ✗ bL       réf rgb(239, 227, 199)                 → app rgba(0, 0, 0, 0)                   ×1   panneau des palettes[l]
+  ✗ shadow   réf rgba(239, 227, 199, 0.28)          → app None                               ×1   panneau des palettes[l]
+  ✗ bT       réf rgb(239, 227, 199)                 → app rgba(0, 0, 0, 0)                   ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(130, 174, 248)                 → app rgb(255, 214, 10)                  ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(255, 184, 210)                 → app rgb(255, 122, 162)                 ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(201, 168, 245)                 → app rgb(0, 95, 115)                    ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(239, 227, 199)                 → app rgb(255, 244, 194)                 ×1   panneau des palettes[l]
+  ✗ bR       réf rgba(0, 0, 0, 0)                   → app rgb(239, 227, 199)                 ×1   panneau des palettes[l]
+  ✗ bB       réf rgba(0, 0, 0, 0)                   → app rgb(239, 227, 199)                 ×1   panneau des palettes[l]
+  ✗ bL       réf rgba(0, 0, 0, 0)                   → app rgb(239, 227, 199)                 ×1   panneau des palettes[l]
+  ✗ shadow   réf None                               → app rgba(239, 227, 199, 0.28)          ×1   panneau des palettes[l]
+  ✗ bT       réf rgba(0, 0, 0, 0)                   → app rgb(239, 227, 199)                 ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(255, 214, 10)                  → app rgb(130, 174, 248)                 ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(255, 122, 162)                 → app rgb(255, 184, 210)                 ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(0, 95, 115)                    → app rgb(201, 168, 245)                 ×1   panneau des palettes[l]
+  ✗ bg       réf rgb(255, 244, 194)                 → app rgb(239, 227, 199)                 ×1   panneau des palettes[l]
+canevas non peints d'un côté (comptés, non jugés) : 1 — Nuée défilée[l] vide côté app
+
+❌ — 18 écart(s) de couleur avec la référence v118

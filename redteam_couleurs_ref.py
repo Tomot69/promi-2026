@@ -184,7 +184,8 @@ def releve(pg, url):
 
 # E3 — l'orange des mots des murs (§4) : la seule encre qui peut différer, et seulement vers cette valeur
 VIOLATIONS = __import__('re').compile(r'closeb|dptNat|sh-bt|sh-bf|shWordmark|buyMonth|buyYear|pc-eclat')   # E5, nominatif (#shWordmark EST le .sh-bt du badge)
-MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 134, 100)')   # #FB4C0D, et #FF7A55 sur les corps sombres de Peaufiner (v121 §4)
+MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 159, 132)')   # v133 : #FF9F84 sur le bleu provisoire #1A52F0 (C-050)
+_ANC_MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 134, 100)')   # #FB4C0D, et #FF7A55 sur les corps sombres de Peaufiner (v121 §4)
 
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -252,9 +253,9 @@ with sync_playwright() as p:
                     if pr_ in ('tshadow', 'shadow', 'bgi') and va is None and VIOLATIONS.search(k): exceptions['E5'] += 1; continue
                     if pr_ == 'bgi' and cle[1] == 'dark' and 'auPeloteOmbre' in k and va and va.startswith('radial-gradient(') and re.search(r'rgba\(247, 240, 222, 0\.10[456]\d*\)', va) and va.count('rgba(') == 2 and 'rgba(247, 240, 222, 0)' in va: exceptions['E7'] += 1; continue
                     if cle[1] == 'dark' and cle[0] in E8_ECRANS and va and vr:
-                        if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '39, 60, 235'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
+                        if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '26, 82, 240'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
                     # E9 (v132) : le lilas éclairci de la page + d'un Promi en sombre ; le libellé « Supprimer ce Promi / ce Chiche » et sa corbeille
-                    if cle[1] == 'dark' and cle[0] in ('page +', 'gardé de côté') and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '218, 195, 255'): exceptions['E9'] += 1; continue
+                    if cle[1] == 'dark' and cle[0] in ('page +', 'gardé de côté') and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '232, 218, 255'): exceptions['E9'] += 1; continue
                     if cle[0].startswith('Peaufiner') and 'Nuée' not in cle[0] and va and vr and '221, 77, 35' in vr and va == vr.replace('221, 77, 35', '247, 240, 222' if cle[1] == 'dark' else '32, 25, 8') and re.search(r'danger|s2-lab|s2-reg', k): exceptions['E9'] += 1; continue
                     ecarts.append((cle, k, pr_, va, vr))
             for k, c in a['c'].items():
@@ -290,6 +291,17 @@ with sync_playwright() as p:
     compare_tout(A, B)
     b.close()
 
+# E10 (v133, Tom, 6 oct. 2026, C-057) : « Primesautier passe en premier dans la liste des palettes. L'ordre des autres est inchangé. » — dans le
+#   panneau des palettes, les deux premières pastilles ont échangé leur place : les écarts y sont admis SEULEMENT s'ils forment cet échange
+#   (chaque « a → b » a son « b → a », 18 au plus par thème) ; tout autre écart de ce panneau reste jugé.
+from collections import Counter as _Cn
+E10 = 0
+for _th in ('light', 'dark'):
+    _L = [e for e in ecarts if e[0] == ('panneau des palettes', _th)]
+    _c = _Cn((e[2], str(e[3]), str(e[4])) for e in _L)
+    if _L and len(_L) <= 18 and all(_c[(p, b_, a_)] == n for (p, a_, b_), n in _c.items()):
+        E10 += len(_L); ecarts = [e for e in ecarts if e not in _L]
+print('E10 l\'ordre des palettes (Primesautier en tête, v133) : %d' % E10)
 tout = ecarts + cv_ecarts
 par = {}
 for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)

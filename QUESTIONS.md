@@ -8457,3 +8457,19 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Q394 — À VALIDER (Tom)** : les tailles de la gomme (10 · 18 · 30 pt), le fond par défaut du dessin (le champ de la nature), les cinq
   fonds proposés (le champ, puis la palette), et le dessin d'un Cercle hors du partage (son Folio ne montre que ses Promi).
 - **Q395 — À VALIDER (Tom)** : les cartes de l'Index et du Fil gardent la dalle (le dessin ne remplace que la bande).
+- **Q392 — TRANCHÉE (Tom, v133)** : sortir du mode dessin sans poser = un ✕ dans le contour de l'encart, à l'emplacement de « ✕ FERMER » ;
+  le dessin en cours est gardé ; « Quitter le dessin ». Q394 et Q395 : validées (gomme 10 · 18 · 30, fond par défaut, Index et Fil gardent la dalle,
+  le dessin d'un Cercle hors de son partage).
+- **Q396 — OUVERTE (C-058, bloquant)** : la Toile qui ne répond plus au doigt n'est PAS reproduite (vingt mondes, trois dalles, vrai doigt :
+  21/21). Il me faut le chemin : quel monde, à quel zoom, avec ou sans Ma Parole !, après quel geste (retour du Studio, pincement, plantation).
+- **Q397 — OUVERTE (C-059)** : « le bas des fiches en clair » — mesuré, Promi, Chiche et Cercle ont déjà le même corps en clair, et aucun
+  filet n'y est peint autour des disques ni sous le trait. Une capture de ce que Tom voit est nécessaire. Rien n'a été modifié.
+- **Q398 — OUVERTE (C-057)** : la capture du Studio jointe au lot v133 n'est pas arrivée. Le défaut trouvé et corrigé : à la deuxième ouverture,
+  le nom de la palette passait au-dessus de la grille et un second nom restait dessous. Est-ce celui-là ?
+- **Q399 — À VALIDER (C-050)** : `?bleu=N` recalcule aussi « Ma Parole ! » (3:1) et la phrase lilas (4,5:1) sur le bleu choisi — les deux règles
+  décidées en v131 et v132, appliquées. Sans cela elles tombaient sous leur seuil sur quatre candidats sur cinq.
+- **Q400 — À VALIDER (C-042)** : la rangée centrée coûte 12 pt à la surface de dessin (754 → 742). Un dessin d'avant garde tous ses traits.
+- **Q401 — À VALIDER (C-061)** : la ligne ajoutée à la page de l'offre, « Douze mondes de plus, les couleurs du dessin », passe à deux lignes ;
+  sur le mur du dessin, les teintes floutées sont celles de la palette (l'encre, floutée, faisait une tache sous la phrase).
+- **Q402 — OUVERTE (C-062)** : le coefficient de variation ne baisse pas avec le nombre de dalles. Ce que Tom voit comme monotone est peut-être
+  la taille ABSOLUE (à 40 dalles, toutes petites) ou le monde (Pochade : des taches de même famille). À dire avant de choisir un mécanisme.

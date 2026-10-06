@@ -1,0 +1,129 @@
+{
+ "src": [
+  "Eh non ! Mais avec Ma Parole !, oui.",
+  "Toujours pas. Avec Ma Parole !, si.",
+  "Je vois bien que ça te titille. Ma Parole ! lève tout ça.",
+  "Tiens tiens, on dirait que ça commence à t’intéresser…",
+  "Tu connais déjà la solution, me semble-t-il.",
+  "Tu sais où trouver Ma Parole ! maintenant.",
+  "Je commence à connaître tes habitudes.",
+  "Je crois qu’on commence à bien se connaître.",
+  "C’est sûr de sûr que tu ne veux pas essayer ?",
+  "Allons bon. Nous y voilà à nouveau.",
+  "Entre nous, tu sais très bien ce qu’il faudrait faire.",
+  "À ce stade, autant arrêter de négocier, non ?",
+  "Tu peux continuer. Je ne dirai rien.",
+  "Tu sais, je ne vais pas te juger.",
+  "Ma Parole ! aussi, ça peut durer longtemps.",
+  "Je crois que tu essaies de me faire changer d’avis.",
+  "On pourrait presque appeler ça une tradition.",
+  "Tu commencerais presque à connaître le chemin.",
+  "On commence à avoir nos petites habitudes.",
+  "Je vais finir par croire que tu viens juste me voir.",
+  "On se dit directement à la prochaine ?"
+ ],
+ "vu": [
+  {
+   "t": "Eh non ! Mais avec Ma Parole !, oui.",
+   "mp": [
+    "Ma Parole !"
+   ]
+  },
+  {
+   "t": "Toujours pas. Avec Ma Parole !, si.",
+   "mp": [
+    "Ma Parole !"
+   ]
+  },
+  {
+   "t": "Je vois bien que ça te titille. Ma Parole ! lève tout ça.",
+   "mp": [
+    "Ma Parole !"
+   ]
+  },
+  {
+   "t": "Tiens tiens, on dirait que ça commence à t’intéresser…",
+   "mp": []
+  },
+  {
+   "t": "Tu connais déjà la solution, me semble-t-il.",
+   "mp": [
+    "solution"
+   ]
+  },
+  {
+   "t": "Tu sais où trouver Ma Parole ! maintenant.",
+   "mp": [
+    "Ma Parole !"
+   ]
+  },
+  {
+   "t": "Je commence à connaître tes habitudes.",
+   "mp": [
+    "habitudes"
+   ]
+  },
+  {
+   "t": "Je crois qu’on commence à bien se connaître.",
+   "mp": []
+  },
+  {
+   "t": "C’est sûr de sûr que tu ne veux pas essayer ?",
+   "mp": [
+    "essayer"
+   ]
+  },
+  {
+   "t": "Allons bon. Nous y voilà à nouveau.",
+   "mp": []
+  },
+  {
+   "t": "Entre nous, tu sais très bien ce qu’il faudrait faire.",
+   "mp": []
+  },
+  {
+   "t": "À ce stade, autant arrêter de négocier, non ?",
+   "mp": []
+  },
+  {
+   "t": "Tu peux continuer. Je ne dirai rien.",
+   "mp": []
+  },
+  {
+   "t": "Tu sais, je ne vais pas te juger.",
+   "mp": []
+  },
+  {
+   "t": "Ma Parole ! aussi, ça peut durer longtemps.",
+   "mp": [
+    "Ma Parole !"
+   ]
+  },
+  {
+   "t": "Je crois que tu essaies de me faire changer d’avis.",
+   "mp": []
+  },
+  {
+   "t": "On pourrait presque appeler ça une tradition.",
+   "mp": [
+    "tradition"
+   ]
+  },
+  {
+   "t": "Tu commencerais presque à connaître le chemin.",
+   "mp": []
+  },
+  {
+   "t": "On commence à avoir nos petites habitudes.",
+   "mp": []
+  },
+  {
+   "t": "Je vais finir par croire que tu viens juste me voir.",
+   "mp": []
+  },
+  {
+   "t": "On se dit directement à la prochaine ?",
+   "mp": []
+  }
+ ]
+}

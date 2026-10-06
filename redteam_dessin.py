@@ -12,7 +12,14 @@ Décisions Tom (5 oct. 2026), en dur dans ce juge :
   E · JOIGNABILITÉ de chaque outil (ce qui est sous le doigt, puis un vrai toucher) et VoiceOver sur chaque outil ;
   F · les entrées : « Dessiner » en tête du menu du bouton photo (fiche, page +, fiche d'un Cercle) ; le dessin de la page + suit la parole.
 Épaisseurs : 2,5 · 4,5 · 8 pt ; rangée A : PLUME · GOMME · ANNULER · COULEUR · POSER.
-Usage : python3 redteam_dessin.py [fichier.html] [--sonde=couleurs|partage|superpose|retour|joignable]
+⚑ v133 (Tom, 6 oct. 2026) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_dessin-avant-v133.py) :
+  G · SORTIR SANS POSER : un ✕ dans le contour de l'encart, à l'emplacement de « ✕ FERMER » ; le dessin en cours est gardé ; VoiceOver
+      « Quitter le dessin ». C'est le SEUL nœud admis sur la surface de dessin (l'ancien contrôle C n'en admettait aucun) ;
+  H · tailles et couleurs déployées à 16 pt au-dessus de la rangée (8 avant) ; la rangée CENTRÉE dans sa zone basse, entre le bas de la
+      surface et le bord bas utile (844 − 34 de zone de sécurité) : écarts haut et bas égaux à 0,5 pt près ;
+  I · LES COULEURS DU DESSIN SONT DANS MA PAROLE ! : sans elle, on dessine à l'encre du mode sur le champ de la nature, la zone des teintes
+      est floutée (4,8 px), rien ne s'y choisit, la phrase des murs monte ; avec elle, tout se choisit (familles A et C, jouées payant).
+Usage : python3 redteam_dessin.py [fichier.html] [--sonde=couleurs|partage|superpose|retour|joignable|quitter|centre|mur]
 Chaque sonde fabrique la version FAUTIVE dans la page (§7) : le juge doit y rougir sur sa famille."""
 import sys, io, math
 from playwright.sync_api import sync_playwright
@@ -35,7 +42,7 @@ with sync_playwright() as p:
         ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
         pg=ctx.new_page(); pg.errs=[]; pg.on('pageerror', lambda e: pg.errs.append(str(e)[:160]))
         pg.goto('http://127.0.0.1:8752/'+F); pg.wait_for_timeout(6500)
-        pg.evaluate("(t)=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} setTheme(t); try{Toile.setPalette('signal')}catch(e){}}", th); pg.wait_for_timeout(700)
+        pg.evaluate("(t)=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} setTheme(t); try{setPremium(true)}catch(e){} try{Toile.setPalette('signal')}catch(e){}}", th); pg.wait_for_timeout(700)
         return ctx, pg
     def centre(pg, sel):
         return pg.evaluate("(s)=>{const e=[...document.querySelectorAll(s)].filter(x=>x.getBoundingClientRect().width>0)[0]; if(!e) return null; const r=e.getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height/2]}", sel)
@@ -67,13 +74,17 @@ with sync_playwright() as p:
     ok('F · le menu est compact (33 pt de haut, 4 pt entre deux)', bool(menu) and all(abs(m['h']-33)<=1 for m in menu) and (len(menu)<2 or abs((menu[1]['y']-menu[0]['y'])-37)<=1.5), menu)
     tape(pg, '.ph-photo-menu [data-dessiner]', 450)
     ok('F · toucher « Dessiner » ouvre le mode dessin', pg.evaluate("()=>window._dessin.ouvert()"))
+    if SONDE=='quitter': pg.evaluate("()=>{ const e=document.querySelector('#dessinMode .dz-quitter'); if(e) e.remove(); }")
+    if SONDE=='centre': pg.evaluate("()=>{ const z=document.querySelector('#dessinMode .dz-rangee'); z.style.top=(parseFloat(z.style.top)+4)+'px'; }")
     if SONDE=='superpose': pg.evaluate("()=>{ document.querySelector('#dessinMode .dz-rangee').style.top='420px'; }")
     if SONDE=='joignable': pg.evaluate("()=>{ const v=document.createElement('div'); v.style.cssText='position:absolute;left:0;top:740px;width:390px;height:104px;z-index:5'; document.getElementById('dessinMode').appendChild(v); }")
     # C · la mise en page
     G=pg.evaluate("""()=>{ const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, m=document.getElementById('dessinMode'), s=m.querySelector('.dz-surface').getBoundingClientRect();
       const O=[...m.querySelectorAll('.dz-rangee button')].map(e=>{const r=e.getBoundingClientRect(); return {o:e.getAttribute('data-outil'), x:(r.left-dv.left)/k, y:(r.top-dv.top)/k, w:r.width/k, h:r.height/k, label:e.getAttribute('aria-label')}});
-      let autres=0; for(let y=4;y<(s.height/k)-2;y+=22) for(let x=6;x<390;x+=24){ const h=document.elementFromPoint(dv.left+x*k, dv.top+y*k); if(!h||h.tagName!=='CANVAS'||!h.closest('.dz-surface')) autres++; }
-      const cs=getComputedStyle(m); return {couvre:Math.abs(m.getBoundingClientRect().height-dv.height)<1&&Math.abs(m.getBoundingClientRect().width-dv.width)<1, fond:cs.backgroundColor, opac:cs.opacity, surf:[(s.top-dv.top)/k,(s.bottom-dv.top)/k,(s.width)/k], O:O, autres:autres, P:window._dessinParams,
+      let autres=0, nq=0; for(let y=4;y<(s.height/k)-2;y+=22) for(let x=6;x<390;x+=24){ const h=document.elementFromPoint(dv.left+x*k, dv.top+y*k); if(h&&h.closest('.dz-quitter')){ nq++; continue; } if(!h||h.tagName!=='CANVAS'||!h.closest('.dz-surface')) autres++; }
+      const cs=getComputedStyle(m); return {couvre:Math.abs(m.getBoundingClientRect().height-dv.height)<1&&Math.abs(m.getBoundingClientRect().width-dv.width)<1, fond:cs.backgroundColor, opac:cs.opacity, surf:[(s.top-dv.top)/k,(s.bottom-dv.top)/k,(s.width)/k], O:O, autres:autres, nq:nq,
+        quit:(()=>{const e=m.querySelector('.dz-quitter'); if(!e) return null; const r=e.getBoundingClientRect(), g=e.querySelector('svg').getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2);
+          return {label:e.getAttribute('aria-label'), w:r.width/k, h:r.height/k, cx:(g.left+g.width/2-dv.left)/k, cy:(g.top+g.height/2-dv.top)/k, droite:(g.right-dv.left)/k, sous:!!(h&&h.closest('.dz-quitter')), bg:getComputedStyle(e).backgroundColor, b:getComputedStyle(e).borderTopWidth}})(), P:window._dessinParams,
         plateau:(()=>{const e=m.querySelector('.dz-plateau'), c=getComputedStyle(e), r=e.getBoundingClientRect(); return {bg:c.backgroundColor, b:c.borderTopWidth, txt:e.textContent, pe:c.pointerEvents, r:[(r.left-dv.left)/k,(r.top-dv.top)/k,r.width/k,r.height/k]}})(),
         fiche:(()=>{const h=document.elementFromPoint(dv.left+195*k, dv.top+560*k); return !!(h&&h.closest('#dessinMode'))})() }; }""")
     ok('C · le mode couvre tout l\'appareil, plein (aucune transparence)', G['couvre'] and G['opac']=='1' and 'rgba' not in G['fond'], (G['couvre'],G['fond'],G['opac']))
@@ -81,8 +92,14 @@ with sync_playwright() as p:
     ok('C · la rangée porte PLUME · GOMME · ANNULER · COULEUR · POSER, dans cet ordre', [o['o'] for o in G['O']]==OUTILS and all(G['O'][i]['x']<G['O'][i+1]['x'] for i in range(4)), [o['o'] for o in G['O']])
     haut=min(o['y'] for o in G['O']) if G['O'] else 0; bas=max(o['y']+o['h'] for o in G['O']) if G['O'] else 0
     ok('C · la rangée est EN BAS de l\'écran, sous la surface : aucun outil sur la surface de dessin', bool(G['O']) and haut>=G['surf'][1]-0.5 and bas<=844 and haut>844-140, 'rangée %.1f → %.1f · surface jusqu\'à %.1f'%(haut,bas,G['surf'][1]))
-    ok('C · la surface va jusqu\'à la rangée (la marge déclarée, pas un vide)', bool(G['O']) and 0<=haut-G['surf'][1]<=G['P']['MARGE_HAUT']+0.6, 'écart %.1f'%(haut-G['surf'][1]))
-    ok('C · rien d\'autre que la surface sous le doigt, sur toute sa hauteur', G['autres']==0, '%d points couverts'%G['autres'])
+    ok('C · la surface va jusqu\'à la rangée (la marge déclarée, pas un vide)', bool(G['O']) and abs((haut-G['surf'][1])-12)<=0.5, 'écart %.1f'%(haut-G['surf'][1]))
+    UTILE=844-34   # le bord bas utile : la zone de sécurité de l'iPhone (34 pt) retirée — en dur
+    eh, eb = haut-G['surf'][1], UTILE-bas
+    ok('H · la rangée est CENTRÉE dans sa zone basse : écarts haut et bas égaux à 0,5 pt près', bool(G['O']) and abs(eh-eb)<=0.5 and eh>=8, 'haut %.1f · bas %.1f (bord bas utile %d)'%(eh,eb,UTILE))
+    Q=G['quit']
+    ok('G · un ✕ dans le contour de l\'encart, à l\'emplacement de « ✕ FERMER » (dans le plateau, calé à droite comme lui)', bool(Q) and abs(Q['cy']-70)<=1 and abs(Q['droite']-338)<=1.5 and Q['bg']=='rgba(0, 0, 0, 0)' and Q['b']=='0px', Q)
+    ok('G · le ✕ est sous le doigt, 44 pt au moins, nommé « Quitter le dessin »', bool(Q) and Q['sous'] and Q['w']>=43.5 and Q['h']>=43.5 and Q['label']=='Quitter le dessin', Q)
+    ok('C · rien d\'autre que la surface sous le doigt, sur toute sa hauteur — le ✕ de sortie excepté (44 pt)', G['autres']==0 and G['nq']<=6, '%d points couverts, %d sur le ✕'%(G['autres'],G['nq']))
     ok('C · l\'encart du haut ne garde que son contour : trait fin, ni fond ni texte', G['plateau']['bg']=='rgba(0, 0, 0, 0)' and G['plateau']['b']=='1px' and G['plateau']['txt']=='' and G['plateau']['pe']=='none' and [round(v) for v in G['plateau']['r']]==[24,40,342,60], G['plateau'])
     ok('C · tout le reste de la fiche s\'est retiré (le mode est devant)', G['fiche'])
     # E · joignabilité et VoiceOver
@@ -99,7 +116,7 @@ with sync_playwright() as p:
     T=pg.evaluate("""()=>{ const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, p=document.querySelector('#dessinMode .dz-tailles'); if(!p) return null; const r=p.getBoundingClientRect(), rg=document.querySelector('#dessinMode .dz-rangee').getBoundingClientRect();
       return {bas:(r.bottom-dv.top)/k, rangee:(rg.top-dv.top)/k, n:p.querySelectorAll('button').length, labels:[...p.querySelectorAll('button')].map(b=>b.getAttribute('aria-label')), pts:[...p.querySelectorAll('button i')].map(i=>i.getBoundingClientRect().width/k), sous:[...p.querySelectorAll('button')].every(b=>{const q=b.getBoundingClientRect(), h=document.elementFromPoint(q.left+q.width/2,q.top+q.height/2); return h===b||b.contains(h)})}; }""")
     ok('second toucher sur la plume : trois petits points, de taille croissante', bool(T) and T['n']==3 and T['pts'][0]<T['pts'][1]<T['pts'][2], T)
-    ok('C · les tailles se déploient juste AU-DESSUS de la rangée', bool(T) and T['bas']<=T['rangee']+0.5 and T['rangee']-T['bas']<=G['P']['ECART_DEPLOI']+0.6, T)
+    ok('C · les tailles se déploient juste AU-DESSUS de la rangée', bool(T) and T['bas']<=T['rangee']+0.5 and abs((T['rangee']-T['bas'])-16)<=0.5, T)
     ok('E · les trois tailles sont sous le doigt et nommées (Fin, Moyen, Gros)', bool(T) and T['sous'] and T['labels']==['Fin','Moyen','Gros'], T)
     tape(pg, '#dessinMode [data-taille="2"]')
     ok('C · le choix fait, les tailles se replient', not pg.evaluate("()=>!!document.querySelector('#dessinMode .dz-deploi')") and etat(pg)['taille']['plume']==2)
@@ -113,7 +130,10 @@ with sync_playwright() as p:
     posés=[]; ys=[230,330,430]; utilises=[]
     for i in range(3):
         if i>0:
-            pg.keyboard.press('Escape'); pg.wait_for_timeout(250)                       # on SORT : le dessin en cours est gardé
+            if i==1:
+                tape(pg, '#dessinMode .dz-quitter', 300)                                # v133 : on SORT par le ✕, au doigt — le dessin en cours est gardé
+                ok('G · toucher le ✕ quitte le mode dessin', not pg.evaluate("()=>window._dessin.ouvert()"))
+            else: pg.keyboard.press('Escape'); pg.wait_for_timeout(250)
             # une palette dont AUCUNE teinte n'a déjà servi
             for cand in PAL[1:]:
                 tn=pg.evaluate("(k)=>{ const t=Toile.palettes()[k].cols; return t.map(c=>'#'+c.slice(0,3).map(v=>(v<16?'0':'')+Math.round(v).toString(16)).join('').toUpperCase()); }", cand)
@@ -141,7 +161,7 @@ with sync_playwright() as p:
     ok('COULEUR : les onglets TRAIT et FOND, tant que le dessin n\'a jamais été posé', bool(C) and [o.split('|')[0] for o in C['onglets']]==['Trait','Fond'], C and C['onglets'])
     ok('COULEUR : les teintes sont celles de la palette du Studio EN COURS', bool(C) and all(t in [x['t'] for x in C['tons']] for t in C['pal']), C and (C['pal'],[x['t'] for x in C['tons']]))
     ok('COULEUR : la teinte du fond est grisée pour le trait', bool(C) and all((x['off']==(x['t']==C['fond'])) for x in C['tons']), C and C['tons'])
-    ok('C · les couleurs se déploient juste AU-DESSUS de la rangée', bool(C) and C['bas']<=C['rangee']+0.5 and C['rangee']-C['bas']<=G['P']['ECART_DEPLOI']+0.6, C and (C['bas'],C['rangee']))
+    ok('C · les couleurs se déploient juste AU-DESSUS de la rangée', bool(C) and C['bas']<=C['rangee']+0.5 and abs((C['rangee']-C['bas'])-16)<=0.5, C and (C['bas'],C['rangee']))
     ok('E · onglets et teintes sont sous le doigt, nommés pour VoiceOver', bool(C) and C['sous'] and all(x['label'] for x in C['tons']), C and C['tons'])
     tape(pg, '#dessinMode [data-onglet=FOND]'); fonds=pg.evaluate("()=>[...document.querySelectorAll('#dessinMode .dz-ton')].map(e=>e.getAttribute('data-ton'))")
     nouveau=[t for t in fonds if t not in [x[1] for x in posés] and t!=C['fond']][0] if C else None
@@ -211,6 +231,35 @@ with sync_playwright() as p:
     if c: pg.touchscreen.tap(*c); pg.wait_for_timeout(700)
     ok('D · « Retirer le dessin » rend la dalle (plus de couche, plus de bouton de masquage, plus de dessin)', 'Retirer le dessin' in items and items[0]=='Dessiner' and pg.evaluate("(id)=>!promises.find(p=>p.id===id).dessin && !document.querySelector('#detailPoster > .dz-bande') && !document.querySelector('#detailPoster > .dz-oeil')", pid), items)
     ok('aucune erreur de page (fiche Promi)', not pg.errs, pg.errs[:2]); ctx.close()
+
+    # ═════════ I · sans Ma Parole ! (v133, C-061) : deux thèmes ═════════
+    for th in ('dark','light'):
+        ctx,pg=page(th); pg.evaluate("()=>{ setPremium(false); try{localStorage.setItem('promi_murs',JSON.stringify({n:0,t:Date.now(),der:null,decouvert:1}))}catch(e){} closeAll(); openDetail(promises.filter(q=>q.title==='faire les crêpes')[0].id);}"); pg.wait_for_timeout(3000)
+        ouvrir_mode(pg); e=etat(pg)
+        ENC={'dark':'#F7F0DE','light':'#201908'}[th]
+        ok('I · [%s] sans Ma Parole ! : on dessine à l\'encre du mode, sur le champ de la nature'%th, e['couleur']==ENC and e['fond']=='#82AEF8', (e['couleur'],e['fond']))
+        tape(pg, '#dessinMode [data-outil=couleur]')
+        if SONDE=='mur': pg.evaluate("()=>{ const s=document.createElement('style'); s.textContent='#device #dessinMode .dz-couleurs.dz-mur > *{filter:none!important;-webkit-filter:none!important;pointer-events:auto!important}'; document.head.appendChild(s); const q=document.querySelector('#dessinMode .dz-couleurs'); q.classList.remove('dz-mur'); }")
+        Mu=pg.evaluate("""()=>{ const q=document.querySelector('#dessinMode .dz-couleurs'); if(!q) return null; const k=[...q.children];
+          return {mur:q.classList.contains('dz-mur'), flous:k.map(e=>getComputedStyle(e).filter||getComputedStyle(e).webkitFilter), pe:k.map(e=>getComputedStyle(e).pointerEvents), n:k.length, label:q.getAttribute('aria-label')}; }""")
+        ok('I · [%s] la zone des teintes est floutée (4,8 px), en entier'%th, bool(Mu) and Mu['n']>=4 and all(f=='blur(4.8px)' for f in Mu['flous']), Mu)
+        t0=pg.evaluate("()=>{ const e=[...document.querySelectorAll('#dessinMode .dz-ton')].filter(x=>x.getAttribute('data-ton')!=='#82AEF8')[0]; const r=e.getBoundingClientRect(); return [r.left+r.width/2, r.top+r.height/2, e.getAttribute('data-ton')] }")
+        pg.touchscreen.tap(t0[0], t0[1]); pg.wait_for_timeout(800); e2=etat(pg) if pg.evaluate("()=>window._dessin.ouvert()") else {'couleur':None,'fond':None}
+        ok('I · [%s] toucher une teinte ne choisit rien'%th, e2['couleur']==ENC and e2['fond']=='#82AEF8', (e2['couleur'],e2['fond'],t0[2]))
+        Ph=pg.evaluate("""()=>{ const p=document.getElementById('murPhrase'); if(!p) return null; const m=p.querySelector('.mp'), q=document.querySelector('#dessinMode .dz-couleurs'); const r=p.getBoundingClientRect(), w=q?q.getBoundingClientRect():r;
+          const h=document.elementFromPoint(r.left+8, r.top+r.height/2);
+          return {leve:p.classList.contains('leve'), texte:p.textContent, mp:m?getComputedStyle(m).color:null, coul:getComputedStyle(p).color, dans:r.top>=w.top-1&&r.bottom<=w.bottom+1, z:+getComputedStyle(p).zIndex} }""")
+        MPC={'dark':'rgb(255, 159, 132)','light':'rgb(251, 76, 13)'}[th]
+        ok('I · [%s] la phrase des murs monte sur la zone, devant le mode, « Ma Parole ! » dans son orange'%th, bool(Ph) and Ph['leve'] and 'Ma Parole' in Ph['texte'] and Ph['mp']==MPC and Ph['dans'] and Ph['z']>390, Ph)
+        pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); pg.wait_for_timeout(200)
+        # avec Ma Parole ! : la même zone, nette, et la teinte se choisit
+        pg.evaluate("()=>{ window._dessin.sort&&0; }"); pg.keyboard.press('Escape'); pg.wait_for_timeout(250)
+        pg.evaluate("()=>setPremium(true)"); pg.wait_for_timeout(300); ouvrir_mode(pg); tape(pg, '#dessinMode [data-outil=couleur]')
+        Av=pg.evaluate("()=>{ const q=document.querySelector('#dessinMode .dz-couleurs'); return q?{mur:q.classList.contains('dz-mur'), flous:[...q.children].map(e=>getComputedStyle(e).filter)}:null }")
+        ch=pg.evaluate("()=>window._dessin.choix()"); ton=[t for t in ch['trait'] if t not in (ENC, '#82AEF8')][0]; choisir_ton(pg, ton)
+        ok('I · [%s] avec Ma Parole ! : rien de flouté, la teinte touchée est choisie'%th, bool(Av) and not Av['mur'] and all(f=='none' for f in Av['flous']) and etat(pg)['couleur']==ton, (Av, etat(pg)['couleur'], ton))
+        pg.keyboard.press('Escape'); pg.wait_for_timeout(200); pg.evaluate("()=>{ try{ window._dessin.retire&&window._dessin.retire(); }catch(e){} }")
+        ok('aucune erreur de page (sans Ma Parole !, %s)'%th, not pg.errs, pg.errs[:2]); ctx.close()
 
     # ═════════ fiche d'un Cercle et page +, clair ═════════
     ctx,pg=page('light')

@@ -1,5 +1,31 @@
 # MA-PAROLE-PHRASES.md — les phrases des murs de Ma Parole !
 
+> **⚑ v133 (6 oct. 2026) — CETTE LISTE EST REMPLACÉE.** Tom a réécrit les phrases (C-063) : dix-huit, mot pour mot, dans cet ordre, avec la
+> même rotation (dans l'ordre, puis au hasard sans répéter la précédente ; 14 jours). Les 21 phrases ci-dessous sont l'état de v132, gardé
+> pour l'histoire. Un mur de plus depuis v133 : les teintes du mode dessin, sans Ma Parole ! (C-061).
+>
+> | n° | la phrase (v133) | en orange |
+> |---|---|---|
+> | 1 | Eh non. Mais avec Ma Parole !, oui. | « Ma Parole ! » |
+> | 2 | La solution commence par Ma et finit par Parole ! | « Ma » et « Parole ! » |
+> | 3 | Toujours non. Ma Parole !, toujours oui. | « Ma Parole ! » et « oui » |
+> | 4 | Je vois bien que ça te titille. Ma Parole ! aussi. | « Ma Parole ! » |
+> | 5 | Tiens tiens, on dirait que ça commence à t’intéresser… | aucun |
+> | 6 | Tiens tiens. Vous ici. | aucun |
+> | 7 | Tu sais où trouver Ma Parole ! maintenant. | « Ma Parole ! » |
+> | 8 | On maintient cette position officielle, alors ? | « officielle » |
+> | 9 | Allons bon. Nous y voilà à nouveau. | aucun |
+> | 10 | Entre nous, le mystère s’amenuise. | « mystère » |
+> | 11 | Les pourparlers se prolongent, je vois. | « pourparlers » |
+> | 12 | Tu peux continuer. Je tiens le registre. | « registre » |
+> | 13 | Ici, tout restera entre nous. | aucun |
+> | 14 | Je commence à soupçonner une stratégie. | « stratégie » |
+> | 15 | On pourrait presque en faire une tradition. | « tradition » |
+> | 16 | Regarde-nous, avec nos petites habitudes. | « habitudes » |
+> | 17 | Dis donc, tu viendrais presque pour moi. | « moi » |
+> | 18 | On se retrouve ici tout à l’heure ? | aucun |
+
+
 Extrait de l'app le 5 octobre 2026 (commit `94925d6`, v132), **mot pour mot** : chaque phrase est relevée deux fois — dans la source
 (`lot-V104-MURS`, `window._murPhrases`) et à l'écran, montée au doigt sur un mur — et les deux relevés sont identiques. Rien n'a été
 modifié dans l'app.

@@ -1,0 +1,23 @@
+  ✅ Pochade : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Touffe : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Brouillamini : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Halin : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Esquille : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Tesselle : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Braille : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Buvard : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Ramage : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Guingois : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Chantourné : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Volubilis : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Madrure : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Chamade : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Ritournelle : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Bobinette : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Mascaret : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Éclisse : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Taille-douce : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ Houle : toucher une dalle ouvre sa fiche (3 sur 3)
+  ✅ aucune erreur de page
+
+redteam_toucher : 21/21

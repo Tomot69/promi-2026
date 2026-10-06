@@ -24,3 +24,8 @@
   poses, pose, masque}`), en points sur une surface de 390 × 754 — jamais une image ; chaque trait garde sa couleur ; `poses` est ce que
   POSER a posé. En Swift : `PKCanvasView` ne convient pas tel quel (couleurs figées, effilé E2, gomme qui rend le fond) — un rendu à soi
   (`Path` remplis), le même modèle de largeur (`largeurs` dans `lot-V132-DESSIN`). Mode dessin : la surface plein écran, la rangée en bas.
+- **v133** : le corps sombre d'un Promi est PROVISOIRE (`#1A52F0`, C-050 — Tom choisit sur l'iPhone par `?bleu=`) : ne pas le figer en Swift
+  avant son choix ; « Ma Parole ! » sur ce corps et la phrase lilas en dérivent (3:1 et 4,5:1, même teinte OKLCH). Mode dessin : surface
+  390 × 742, rangée centrée entre la surface et le bord bas utile (`safeAreaInsets.bottom`), déploiements à 16 pt ; un ✕ « Quitter le dessin »
+  dans le contour ; les teintes du trait et du fond sont dans Ma Parole ! (sans elle : l'encre du mode sur le champ de la nature). Les murs :
+  dix-huit phrases, chacune avec sa liste de mots en orange (`TEXTES` dans `lot-V104-MURS`).

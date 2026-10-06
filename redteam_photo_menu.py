@@ -8,8 +8,8 @@ remettre la dalle telle qu'elle était à sa création, dans son monde, sa forme
 change : la dalle suit le monde et la palette en cours. C'est une option, et elle vaut aussi pour le partage. »
 
 Au doigt (`touchscreen.tap`, WebKit et Chromium), Studio réglé sur un AUTRE monde et une AUTRE palette que la plantation :
-  A · toucher le bouton photo d'une fiche ouvre un menu : « Importer une image » et « La dalle d'origine »
-  B · « Importer une image » ouvre le sélecteur de fichiers du système (évènement filechooser), dans le geste
+  A · toucher le bouton photo d'une fiche ouvre un menu : « Importer une photo » et « La dalle d'origine »
+  B · « Importer une photo » ouvre le sélecteur de fichiers du système (évènement filechooser), dans le geste
   C · PAR DÉFAUT la dalle suit le Studio : un rendu sans monde demandé = le rendu dans le monde du Studio, ≠ plantation
   D · « La dalle d'origine » : le même rendu = celui du monde de plantation (pixels, horloge figée), ≠ Studio ;
       la fiche est REPEINTE (sa matière change) ; l'option est sauvegardée ; le libellé devient « La dalle du Studio »
@@ -22,7 +22,8 @@ import os, sys
 from playwright.sync_api import sync_playwright
 
 APP = os.environ.get('APP', 'http://127.0.0.1:8752/app.html')
-MOTS = ['Importer une image', 'La dalle d’origine']      # v118 (Tom, Q366 tranchée) : les quatre mots sont décidés
+# ⚑ v133 (Tom, 6 oct. 2026) — contrat réécrit (original : sauvegardes/redteam_photo_menu-avant-v133.py) : « Importer une image » devient « Importer une photo »
+MOTS = ['Importer une photo', 'La dalle d’origine']      # v118 (Tom, Q366 tranchée) : les quatre mots sont décidés
 SEUIL = 2.0               # niveaux : en dessous, deux rendus sont « le même » (horloge figée) ; au-dessus, différents
 ok = [0]; ko = []
 
@@ -95,9 +96,9 @@ def passe(b, moteur):
         try:
             with pg.expect_file_chooser(timeout=2500) as fc:
                 tape(pg, '.ph-photo-menu button:nth-child(2)')
-            t(tag + ' B · « Importer une image » ouvre le sélecteur du système', fc.value is not None)
+            t(tag + ' B · « Importer une photo » ouvre le sélecteur du système', fc.value is not None)
         except Exception as e:
-            t(tag + ' B · « Importer une image » ouvre le sélecteur du système', False, str(e)[:120])
+            t(tag + ' B · « Importer une photo » ouvre le sélecteur du système', False, str(e)[:120])
         pg.evaluate("()=>{const pn=performance.now.bind(performance); window.__pn=pn; performance.now=()=>4242;}")
         F0 = pg.evaluate(FICHE)
         pg.evaluate("()=>{performance.now=window.__pn;}")
@@ -126,15 +127,15 @@ def passe(b, moteur):
     pg.evaluate("()=>{if(window.closeAll)closeAll();}"); pg.wait_for_timeout(500)
     pg.evaluate("()=>document.getElementById('createBtn').click()"); pg.wait_for_timeout(1000)
     pg.evaluate("()=>{const t=document.querySelector('#createSheet .tile[data-kind=promi]'); if(t) t.click();}"); pg.wait_for_timeout(1500)
-    # v132 : la page + ouvre le même menu — « Dessiner », puis « Importer une image », qui ouvre le sélecteur
+    # v132 : la page + ouvre le même menu — « Dessiner », puis « Importer une photo », qui ouvre le sélecteur
     tape(pg, '#createSheet .ph-photo-btn'); mp = menu(pg)
-    t(tag + ' F · page + : le bouton ouvre le menu, « Dessiner » en tête puis « Importer une image »', bool(mp) and mp['mots'][:2] == ['Dessiner', 'Importer une image'], str(mp))
+    t(tag + ' F · page + : le bouton ouvre le menu, « Dessiner » en tête puis « Importer une photo »', bool(mp) and mp['mots'][:2] == ['Dessiner', 'Importer une photo'], str(mp))
     try:
         with pg.expect_file_chooser(timeout=2500) as fc:
             tape(pg, '.ph-photo-menu button:nth-child(2)')
-        t(tag + ' F · page + : « Importer une image » ouvre le sélecteur', fc.value is not None)
+        t(tag + ' F · page + : « Importer une photo » ouvre le sélecteur', fc.value is not None)
     except Exception as e:
-        t(tag + ' F · page + : « Importer une image » ouvre le sélecteur', False, str(e)[:120])
+        t(tag + ' F · page + : « Importer une photo » ouvre le sélecteur', False, str(e)[:120])
     t(tag + ' aucune erreur JS', not er, '; '.join(er)[:200])
     ctx.close()
 

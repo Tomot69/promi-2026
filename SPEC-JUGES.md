@@ -1,6 +1,6 @@
 # LES RÈGLES QUE PORTENT LES JUGES — spécification pour le portage
 
-> Engendré par `spec_juges_generer.py` le 2026-10-05. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
+> Engendré par `spec_juges_generer.py` le 2026-10-06. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
 
 ## 1 · Le rythme de chaque monde — `redteam_rythme.py`
 

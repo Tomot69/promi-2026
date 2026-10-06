@@ -9,7 +9,7 @@ redteam_murs.py — LES MURS DU CERCLE (Tom, 30 sept. 2026). WebKit, au doigt, d
   9 · (v105, Tom) la phrase est posée SUR LE FLOU : son centre tombe dans le mur touché, sans fond ni trait, trois lignes au plus,
       une seule taille de texte, encre #201908 en clair et crème #F7F0DE en sombre
   4 · le compteur est GLOBAL : la phrase suivante vient d'une autre zone (l'Aura) sans repartir de 1
-  5 · les 21 phrases dans l'ordre, EN DUR ci-dessous (la 21e à la 21e touche) ; au-delà, au hasard sans jamais répéter la précédente
+  5 · les 18 phrases (v133) dans l'ordre, EN DUR ci-dessous (la 18e à la 18e touche) ; au-delà, au hasard sans jamais répéter la précédente
   6 · une longue absence (plus que ABSENCE_JOURS) remet le compteur à zéro
   7 · la phrase se lit : son texte à la couleur d'accent, « Ma Parole ! » dans une autre couleur, et les deux à Δlum ≥ 42 du fond
   8 · Cercle payé : rien de flouté, rien ne monte
@@ -25,13 +25,19 @@ LECTURE_MIN, LECTURE_MAX = 3000, 5500   # v105 : « le temps de la lire, sans se
 RESTE_MS = 2500; DLUM = 42
 ENCRE = {'light': 'rgb(32, 25, 8)', 'dark': 'rgb(247, 240, 222)'}
 MP = 'Ma Parole !'
-PHRASES = ['Eh non ! Mais avec ' + MP + ', oui.', 'Toujours pas. Avec ' + MP + ', si.', 'Je vois bien que ça te titille. ' + MP + ' lève tout ça.',
-    'Tiens tiens, on dirait que ça commence à t’intéresser…', 'Tu connais déjà la solution, me semble-t-il.', 'Tu sais où trouver ' + MP + ' maintenant.',
-    'Je commence à connaître tes habitudes.', 'Je crois qu’on commence à bien se connaître.', 'C’est sûr de sûr que tu ne veux pas essayer ?',
-    'Allons bon. Nous y voilà à nouveau.', 'Entre nous, tu sais très bien ce qu’il faudrait faire.', 'À ce stade, autant arrêter de négocier, non ?',
-    'Tu peux continuer. Je ne dirai rien.', 'Tu sais, je ne vais pas te juger.', MP + ' aussi, ça peut durer longtemps.',
-    'Je crois que tu essaies de me faire changer d’avis.', 'On pourrait presque appeler ça une tradition.', 'Tu commencerais presque à connaître le chemin.',
-    'On commence à avoir nos petites habitudes.', 'Je vais finir par croire que tu viens juste me voir.', 'On se dit directement à la prochaine ?']
+# ⚑ v133 (Tom, 6 oct. 2026) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_murs-avant-v133.py) : les phrases des murs sont réécrites par
+#   Tom — DIX-HUIT, mot pour mot, dans cet ordre ; dans chacune, SEULS les mots listés prennent l'orange de Ma Parole ! ; le point
+#   d'exclamation n'apparaît que dans « Ma Parole ! ». Espaces insécables avant « ! » et « ? ».
+N = '\u00a0'
+TEXTES = [('Eh non. Mais avec ' + MP + ', oui.', [MP]), ('La solution commence par Ma et finit par Parole' + N + '!', ['Ma', 'Parole' + N + '!']),
+    ('Toujours non. ' + MP + ', toujours oui.', [MP, 'oui']), ('Je vois bien que ça te titille. ' + MP + ' aussi.', [MP]),
+    ('Tiens tiens, on dirait que ça commence à t’intéresser…', []), ('Tiens tiens. Vous ici.', []), ('Tu sais où trouver ' + MP + ' maintenant.', [MP]),
+    ('On maintient cette position officielle, alors' + N + '?', ['officielle']), ('Allons bon. Nous y voilà à nouveau.', []),
+    ('Entre nous, le mystère s’amenuise.', ['mystère']), ('Les pourparlers se prolongent, je vois.', ['pourparlers']),
+    ('Tu peux continuer. Je tiens le registre.', ['registre']), ('Ici, tout restera entre nous.', []), ('Je commence à soupçonner une stratégie.', ['stratégie']),
+    ('On pourrait presque en faire une tradition.', ['tradition']), ('Regarde-nous, avec nos petites habitudes.', ['habitudes']),
+    ('Dis donc, tu viendrais presque pour moi.', ['moi']), ('On se retrouve ici tout à l’heure' + N + '?', [])]
+PHRASES = [x[0] for x in TEXTES]; DER = len(PHRASES) - 1
 res = []
 def t(nom, ok, detail=''):
     res.append(ok); print(('  ✅ ' if ok else '  ❌ ') + nom + ('  — ' + detail if detail else ''))
@@ -115,7 +121,7 @@ with sync_playwright() as p:
         # ⚑ v121 (Tom) : « #FB4C0D partout, sauf sur les trois corps sombres de Peaufiner : là, ce même orange éclairci jusqu'à 3:1 » → #FF7A55
         # ⚑ v131 (Tom, 5 oct. 2026) : sur le corps cobalt #273CEB d'un Promi, « même teinte OKLCH que #FB4C0D, éclaircie jusqu'à 3:1 » → #FF8664
         #   (3,02:1 ; #FF7A55 n'y fait que 2,79:1). La phrase est mesurée sur le Peaufiner d'une fiche PROMI : c'est cette valeur, en dur.
-        MUR_ORANGE = 'rgb(255, 134, 100)' if th != 'light' else 'rgb(251, 76, 13)'
+        MUR_ORANGE = 'rgb(255, 159, 132)' if th != 'light' else 'rgb(251, 76, 13)'
         kmp = _k(col['mp'], col['fond']) if col['mp'] else 0
         ok7 = col['mp'] == MUR_ORANGE and abs(lum(col['texte']) - lum(col['fond'])) >= DLUM and kmp >= 3.0
         t('7 · « Ma Parole ! » en #FB4C0D, à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),
@@ -136,17 +142,30 @@ with sync_playwright() as p:
         pg.evaluate("()=>{window._murBaisse&&_murBaisse();}")
 
         # 5 · l'ordre jusqu'à 21, puis le hasard sans répétition
-        pg.evaluate("()=>localStorage.setItem('promi_murs',JSON.stringify({n:20,t:Date.now(),der:19,decouvert:1}))")
+        pg.evaluate("()=>localStorage.setItem('promi_murs',JSON.stringify({n:17,t:Date.now(),der:16,decouvert:1}))")
         pg.evaluate("()=>{const e=document.querySelector('#auCadre.au-voile .au-gr2');if(e)e.scrollIntoView({block:'center'});}"); pg.wait_for_timeout(400)
         a = pg.evaluate("()=>{const e=document.querySelector('#auCadre.au-voile .au-gr2')||document.querySelector('#auraScreen .au-gr2');const q=e.getBoundingClientRect();return [q.left+q.width/2,q.top+q.height/2]}")
         pg.touchscreen.tap(*a); pg.wait_for_timeout(600); e6 = pg.evaluate(ETAT); pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); pg.wait_for_timeout(300)
-        t('5a · la 21e touche fait monter la 21e phrase', e6['texte'] == PHRASES[20], repr(e6['texte']))
+        t('5a · la 18e touche fait monter la 18e phrase', e6['texte'] == PHRASES[DER], repr(e6['texte']))
         suite = []
         for k in range(24):
             pg.touchscreen.tap(*a); pg.wait_for_timeout(250); suite.append(pg.evaluate(ETAT)['texte']); pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); pg.wait_for_timeout(120)
-        rep = sum(1 for i in range(1, len(suite)) if suite[i] == suite[i - 1]) + (1 if suite and suite[0] == PHRASES[20] else 0)
+        rep = sum(1 for i in range(1, len(suite)) if suite[i] == suite[i - 1]) + (1 if suite and suite[0] == PHRASES[DER] else 0)
         distinct = len(set(suite)); horsliste = [s for s in suite if s not in PHRASES]
         t('5b · au-delà : au hasard, jamais deux fois la même de suite', rep == 0 and distinct >= 8 and not horsliste, '%d tirages, %d distinctes, %d répétitions, %d hors liste' % (len(suite), distinct, rep, len(horsliste)))
+        # 9 (v133) · chaque phrase, mot pour mot, et SES mots en orange — eux seuls
+        faux = []
+        for i, (ph, mots) in enumerate(TEXTES):
+            pg.evaluate("(i)=>localStorage.setItem('promi_murs',JSON.stringify({n:i,t:Date.now(),der:i-1,decouvert:1}))", i)
+            pg.touchscreen.tap(*a); pg.wait_for_timeout(300)
+            v = pg.evaluate("""()=>{const p=document.getElementById('murPhrase'); if(!p) return null; const base=getComputedStyle(p).color;
+              return {texte:p.textContent, mp:[...p.querySelectorAll('.mp')].map(m=>m.textContent), cmp:[...p.querySelectorAll('.mp')].map(m=>getComputedStyle(m).color), base:base,
+                autres:[...p.querySelectorAll('*')].filter(e=>!e.closest('.mp')&&e.childElementCount===0&&getComputedStyle(e).color!==base).length}}""")
+            pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); pg.wait_for_timeout(120)
+            if not v or v['texte'] != ph or v['mp'] != mots or any(c == v['base'] for c in v['cmp']) or len(set(v['cmp'])) > 1 or v['autres']:
+                faux.append('%d %r → %r' % (i + 1, (v or {}).get('texte'), (v or {}).get('mp')))
+        excl = [x for x in PHRASES if x.replace('Ma Parole' + N + '!', '').replace('Parole' + N + '!', '').count('!')]
+        t('9 · les dix-huit phrases mot pour mot ; dans chacune, seuls les mots décidés sont en orange ; « ! » seulement dans « Ma Parole ! »', not faux and not excl and len(PHRASES) == 18, ' | '.join(faux[:3]) or '18 phrases, %d avec un mot en orange' % sum(1 for x in TEXTES if x[1]))
 
         # 6 · longue absence
         pg.evaluate("j=>localStorage.setItem('promi_murs',JSON.stringify({n:9,t:Date.now()-(j+1)*86400000,der:8,decouvert:1}))", ABSENCE_JOURS)

@@ -1,6 +1,6 @@
 # ÉTAT AU 30 SEPTEMBRE 2026 — CE QUI EST VRAI AUJOURD'HUI
 
-> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-05 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version 0.16). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
+> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-06 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version 0.16). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
 > Les valeurs de ce document priment sur tout autre document. `PROMI-SPECIFICATIONS.md`, `PARCOURS.md` et `MOODBOARD-VALEURS.md` sont des **archives** (valeurs antérieures au 16 septembre 2026) : ils disent la géométrie et l'intention d'août, jamais une couleur, une police ni un libellé à porter.
 
 **Ordre des sources, en cas de doute :** ce document → `PROMI-TOKENS.json` (couleurs, polices) → `CONTRAT-MONDE.md` (ce qu'un monde doit faire) → `SPEC-JUGES.md` (les règles que les juges portent) → `CLAUDE.md` (méthode, pièges, décisions datées) → les moodboards (géométrie d'origine) → une mesure de l'app (jamais une référence).
@@ -59,7 +59,7 @@ Un rôle vaut deux valeurs (mode clair · mode sombre). **Une règle CSS emploie
 | `nuee-clair` | `#E6D8FA` | `#E6D8FA` |
 | `lilas` | `#E6D8FA` | `#E6D8FA` |
 | `mauve-clair` | `#C9A8F5` | `#C9A8F5` |
-| `corps-promi` | `#CFE5FE` | `#273CEB` |
+| `corps-promi` | `#CFE5FE` | `#1A52F0` |
 | `corps-chiche` | `#FFF4FC` | `#7C3F58` |
 | `corps-nuee` | `#EEE4F8` | `#5D4978` |
 | `corps-tenu` | `#2B1020` | `#2B1020` |
@@ -164,28 +164,25 @@ Palette par défaut : **Ingénu** (clé `signal`). Quatre tons, dans l'ordre de 
 - **Réglages** : la porte « Ma Parole ! » ouvre l'offre (ce n'est pas un mur) ; au payé « Tu es Membre Ma Parole ! », sans lien.
 - **Ce qu'elle ouvre** : l'autre moitié de la Toile (ce qu'on te tient), la récurrence, le rappel à l'heure choisie, l'importance, la mémoire des paroles en l'air, la couleur de la dalle, douze mondes, les Cercles illimités.
 - **Les murs** : un réglage réservé est flouté à **4,8 px**, sans explication (sauf le Studio, qui garde les siens). Au toucher, une phrase paraît au centre du mur (Gilbert, encre `#201908` sur clair, crème `#F7F0DE` sur sombre, ≤ 3 lignes, 1,4 s + 60 ms par caractère, entre 3 et 5,5 s). La toute première fois, l'offre s'ouvre à la fin de la lecture ; ensuite, un toucher pendant la lecture l'ouvre. Compteur global, remis à zéro après 14 jours sans mur.
-- **Les 21 phrases, dans l'ordre** (puis au hasard sans répéter la précédente) :
-  1. Eh non ! Mais avec Ma Parole !, oui.
-  2. Toujours pas. Avec Ma Parole !, si.
-  3. Je vois bien que ça te titille. Ma Parole ! lève tout ça.
-  4. Tiens tiens, on dirait que ça commence à t’intéresser…
-  5. Tu connais déjà la solution, me semble-t-il.
-  6. Tu sais où trouver Ma Parole ! maintenant.
-  7. Je commence à connaître tes habitudes.
-  8. Je crois qu’on commence à bien se connaître.
-  9. C’est sûr de sûr que tu ne veux pas essayer ?
-  10. Allons bon. Nous y voilà à nouveau.
-  11. Entre nous, tu sais très bien ce qu’il faudrait faire.
-  12. À ce stade, autant arrêter de négocier, non ?
-  13. Tu peux continuer. Je ne dirai rien.
-  14. Tu sais, je ne vais pas te juger.
-  15. Ma Parole ! aussi, ça peut durer longtemps.
-  16. Je crois que tu essaies de me faire changer d’avis.
-  17. On pourrait presque appeler ça une tradition.
-  18. Tu commencerais presque à connaître le chemin.
-  19. On commence à avoir nos petites habitudes.
-  20. Je vais finir par croire que tu viens juste me voir.
-  21. On se dit directement à la prochaine ?
+- **Les 18 phrases, dans l'ordre** (puis au hasard sans répéter la précédente) :
+  1. Eh non. Mais avec Ma Parole !, oui.
+  2. La solution commence par Ma et finit par Parole !
+  3. Toujours non. Ma Parole !, toujours oui.
+  4. Je vois bien que ça te titille. Ma Parole ! aussi.
+  5. Tiens tiens, on dirait que ça commence à t’intéresser…
+  6. Tiens tiens. Vous ici.
+  7. Tu sais où trouver Ma Parole ! maintenant.
+  8. On maintient cette position officielle, alors ?
+  9. Allons bon. Nous y voilà à nouveau.
+  10. Entre nous, le mystère s’amenuise.
+  11. Les pourparlers se prolongent, je vois.
+  12. Tu peux continuer. Je tiens le registre.
+  13. Ici, tout restera entre nous.
+  14. Je commence à soupçonner une stratégie.
+  15. On pourrait presque en faire une tradition.
+  16. Regarde-nous, avec nos petites habitudes.
+  17. Dis donc, tu viendrais presque pour moi.
+  18. On se retrouve ici tout à l’heure ?
 
 ## 7 · Les notifications (v109–v110)
 
