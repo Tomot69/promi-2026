@@ -32,6 +32,8 @@ Les exceptions sont NOMMÉES ici, en dur (§7) — rien d'autre n'est toléré :
       ① #335382 → #8ACBE8 (la même propriété) ; ② une couleur de texte, de contour ou de tracé → l'encre #201908. Rien d'autre.
   E9  v132 (Tom, 5 oct. 2026) : ① la phrase lilas de la page + d'un Promi (et d'un gardé de côté repris, même écran), en sombre : #C4A2F5 → #DAC3FF (éclaircie à 4,5:1 sur le cobalt) ;
       ② « SUPPRIMER CE PROMI / CE CHICHE » et sa corbeille, dans le Peaufiner d'une fiche : #DD4D23 → crème en sombre, encre en clair.
+  E11 v136 (Tom, 7 oct. 2026, C-059) : en clair, la fiche tenue (Promi et Chiche) et son Peaufiner : terre → crème, crème → encre, amande → #00341A.
+      v136 (C-071) : le halo et l'ombre de la Pelote sont SUPPRIMÉS — E7 ne trouve plus son nœud (0), le nœud est listé « sans vis-à-vis ».
   E7  v123 §2 : en sombre, l'ombre de la Pelote est une ellipse CRÈME (`#auPeloteOmbre`, dégradé radial crème 0,105) — sur ce nœud-là,
       en sombre, cette valeur-là. (Le corps de la Pelote vit dans son canevas, E4 ; Q375 : l'à-qui d'une fiche tenue est posé crème à
       la source — c'était déjà sa couleur finale en v118, aucun écart attendu.)
@@ -254,6 +256,13 @@ with sync_playwright() as p:
                     if pr_ == 'bgi' and cle[1] == 'dark' and 'auPeloteOmbre' in k and va and va.startswith('radial-gradient(') and re.search(r'rgba\(247, 240, 222, 0\.10[456]\d*\)', va) and va.count('rgba(') == 2 and 'rgba(247, 240, 222, 0)' in va: exceptions['E7'] += 1; continue
                     if cle[1] == 'dark' and cle[0] in E8_ECRANS and va and vr:
                         if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '14, 120, 242'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
+                    # E11 (v136, Tom, 7 oct. 2026, C-059) : « en clair, le corps d'une fiche tenue (Promi et Chiche) devient la crème #F7F0DE ; la mention
+                    #   TENU en #00341A en clair ». Sur les quatre écrans d'une fiche tenue, EN CLAIR seulement, ces trois échanges-là et rien d'autre :
+                    #   la terre → la crème (fond) ; la crème → l'encre, pleine ou à 0,34 (texte et contours) ; l'amande → #00341A (texte).
+                    if cle[1] == 'light' and cle[0] in ('fiche tenue', 'fiche chiche', 'Peaufiner', 'Peaufiner Chiche') and va and vr:
+                        if pr_ == 'bg' and vr == 'rgb(43, 16, 32)' and va == 'rgb(247, 240, 222)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
+                        if pr_ in ('color', 'tfill', 'bT', 'bB', 'bL', 'bR') and vr == 'rgb(247, 240, 222)' and va in ('rgb(32, 25, 8)', 'rgba(32, 25, 8, 0.34)'): exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
+                        if pr_ in ('color', 'tfill') and vr == 'rgb(143, 224, 143)' and va == 'rgb(0, 52, 26)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
                     # E9 (v132) : le lilas éclairci de la page + d'un Promi en sombre ; le libellé « Supprimer ce Promi / ce Chiche » et sa corbeille
                     if cle[1] == 'dark' and cle[0] in ('page +', 'gardé de côté') and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '244, 238, 255'): exceptions['E9'] += 1; continue
                     if cle[1] == 'dark' and cle[0] == 'Peaufiner' and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '244, 238, 255'): exceptions['E9'] += 1; continue   # v135 (Q403) : les libellés lilas du Peaufiner d'une fiche Promi, sur le bleu
@@ -307,6 +316,7 @@ tout = ecarts + cv_ecarts
 par = {}
 for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)
 print('%d propriétés comparées · %d écrans × 2 thèmes · %d nœuds sans vis-à-vis (listés, non jugés)' % (compares, len(ECRANS) if not SEUL else len(SEUL), orphelins))
+print('E11 fiche tenue en clair sur la crème (v136, C-059) : %d' % exceptions.get('E11', 0))
 print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 cobalt, corps sombre Promi (v131) %d · E9 lilas éclairci et libellé de suppression (v132) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8'], exceptions['E9']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
     ec = sorted(set('%s[%s]' % (e[0][0], e[0][1][0]) for e in L))

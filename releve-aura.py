@@ -50,7 +50,8 @@ TOL = 3
 COTES_B = {
     'plateau':             (40.00, 100.00),
     'silhouette':          (132.53, 374.53),     # le centre de la Pelote ± 121
-    'ombre':               (391.22, 407.45),
+    # ⚑ v136 (Tom, 7 oct. 2026, C-071) : « enlève tout ce qu'il y a comme effet autour de la Pelote […] ne masque pas, supprime » — l'ombre
+    #   (391,22 → 407,45) n'existe plus ; sa place reste dans la colonne, les autres cotes de B ne bougent pas. Original : sauvegardes/releve-aura-avant-v136.py
     'bouton':              (435.47, 495.47),
     'phrase':              (515.59, 566.56),     # deux lignes ; une ligne finit à 541,07
     'Noyaux':              (582.77, 689.77),

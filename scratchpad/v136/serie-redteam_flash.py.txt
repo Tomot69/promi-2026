@@ -1,0 +1,38 @@
+
+══ webkit
+  ✅ A · ouverture : rien ne paraît une fraction de seconde (164 images)
+  ✅ B1 · + → promi : aucun flash au premier plan (65 images)
+  ✅ B2 · + → promi : la page + paraît COMPOSÉE dès sa première image (24 images vues)
+  ✅ C1 · planter promi : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter promi : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1283 ms
+  ✅ C2 · planter promi : la page + coupe et ne se remontre pas (fermée à 1540 ms)
+  ✅ B1 · + → chiche : aucun flash au premier plan (62 images)
+  ✅ B2 · + → chiche : la page + paraît COMPOSÉE dès sa première image (20 images vues)
+  ✅ C1 · planter chiche : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter chiche : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1226 ms
+  ✅ C2 · planter chiche : la page + coupe et ne se remontre pas (fermée à 1470 ms)
+  ✅ B1 · + → nuee : aucun flash au premier plan (50 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (15 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 1344 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1567 ms)
+
+══ chromium
+  ✅ A · ouverture : rien ne paraît une fraction de seconde (144 images)
+  ✅ B1 · + → promi : aucun flash au premier plan (130 images)
+  ✅ B2 · + → promi : la page + paraît COMPOSÉE dès sa première image (57 images vues)
+  ✅ C1 · planter promi : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter promi : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 2188 ms
+  ✅ C2 · planter promi : la page + coupe et ne se remontre pas (fermée à 2419 ms)
+  ✅ B1 · + → chiche : aucun flash au premier plan (115 images)
+  ✅ B2 · + → chiche : la page + paraît COMPOSÉE dès sa première image (50 images vues)
+  ✅ C1 · planter chiche : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter chiche : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 2403 ms
+  ✅ C2 · planter chiche : la page + coupe et ne se remontre pas (fermée à 2616 ms)
+  ✅ B1 · + → nuee : aucun flash au premier plan (98 images)
+  ✅ B2 · + → nuee : la page + paraît COMPOSÉE dès sa première image (45 images vues)
+  ✅ C1 · planter nuee : aucun flash au premier plan (19 → 20 paroles)
+  ✅ C3 · planter nuee : après la couverture, la page + ne reprend pas son aspect d'avant  — couverture à 2445 ms
+  ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2670 ms)
+
+32/32

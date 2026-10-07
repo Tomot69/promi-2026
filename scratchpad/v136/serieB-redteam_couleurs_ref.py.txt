@@ -1,0 +1,18 @@
+6 écran(s) repris sur une page fraîche : Peaufiner[l], Peaufiner Chiche[l], Studio[d], fiche chiche[l], fiche tenue[l], panneau des palettes[l]
+E10 l'ordre des palettes (Primesautier en tête, v133) : 18
+6488 propriétés comparées · 36 écrans × 2 thèmes · 135 nœuds sans vis-à-vis (listés, non jugés)
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 4 · E5 violations retirées 22 · E6 trace crème (Q374) 13 · E7 ombre crème en sombre 0 · E8 cobalt, corps sombre Promi (v131) 8 · E9 lilas éclairci et libellé de suppression (v132) 18
+  ✗ color    réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×5   fiche chiche[l], fiche tenue[l]
+  ✗ bg       réf rgb(43, 16, 32)                    → app rgb(247, 240, 222)                 ×4   Peaufiner Chiche[l], Peaufiner[l], fiche chiche[l], fiche tenue[l]
+  ✗ bR       réf rgb(247, 240, 222)                 → app rgba(32, 25, 8, 0.34)              ×2   fiche chiche[l], fiche tenue[l]
+  ✗ bL       réf rgb(247, 240, 222)                 → app rgba(32, 25, 8, 0.34)              ×2   fiche chiche[l], fiche tenue[l]
+  ✗ bB       réf rgb(247, 240, 222)                 → app rgba(32, 25, 8, 0.34)              ×2   fiche chiche[l], fiche tenue[l]
+  ✗ bT       réf rgb(247, 240, 222)                 → app rgba(32, 25, 8, 0.34)              ×2   fiche chiche[l], fiche tenue[l]
+  ✗ bR       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   fiche chiche[l], fiche tenue[l]
+  ✗ bL       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   fiche chiche[l], fiche tenue[l]
+  ✗ bB       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   fiche chiche[l], fiche tenue[l]
+  ✗ bT       réf rgb(247, 240, 222)                 → app rgb(32, 25, 8)                     ×2   fiche chiche[l], fiche tenue[l]
+  ✗ color    réf rgb(143, 224, 143)                 → app rgb(0, 52, 26)                     ×2   fiche chiche[l], fiche tenue[l]
+canevas non peints d'un côté (comptés, non jugés) : 2 — Nuée défilée[l] vide côté réf · Nuée défilée[d] vide côté réf
+
+❌ — 27 écart(s) de couleur avec la référence v118

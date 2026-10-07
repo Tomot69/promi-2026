@@ -138,7 +138,9 @@ with sync_playwright() as p:
             #   du fond pour faire une lumière). Et d'une ouverture à l'autre, ni le même sol ni le même corps (redteam d'avant : rien ne l'interdisait).
             if i < 20:
                 h = m.get('halo'); oc = oklch(c); oh = oklch(h) if h else None
-                if not h or not (abs((oh[2] - oc[2] + 180) % 360 - 180) <= 8 or oc[1] < 0.03 or oh[1] < 0.02):
+                # ⚑ v136 (Tom, 7 oct. 2026, C-071) — CONTRAT RÉÉCRIT : « le halo c'est une mauvaise idée […] supprime ». Il n'y a plus de halo :
+                #   le contrôle 5 exige qu'AUCUN canevas de halo n'existe (original : sauvegardes/redteam_corps-avant-v136.py).
+                if h:
                     halo_ko += 1; ex_h = 'ouverture %d [%s] halo %s · corps %s' % (i + 1, th, h, [round(v) for v in c])
             d = m.get('decl') or {}
             ici = (d.get('solIdx'), d.get('idx'))
@@ -150,7 +152,7 @@ with sync_playwright() as p:
         t('1 · [%s] ΔE00(corps, poil) ≥ 15 — face à la couleur dominante lue sur la fourrure' % pal, n_lu > 0 and pires['dom'] >= ECART, 'le pire : %.1f' % pires['dom'])
         t('2 · [%s] le corps n\'est jamais kaki' % pal, n_lu > 0 and n_kaki == 0, '%d ouverture(s) kaki' % n_kaki)
         t('3 · [%s] le corps n\'a jamais la teinte des poils' % pal, n_lu > 0 and n_meme == 0, '%d ouverture(s) où le corps est le ton du sol' % n_meme)
-        t('5 · [%s] v125 : la teinte du halo est celle du corps (vingt ouvertures)' % pal, n_lu > 0 and halo_ko == 0, '%d ouverture(s) · %s' % (halo_ko, ex_h))
+        t('5 · [%s] v136 : aucun halo autour de la Pelote (vingt ouvertures)' % pal, n_lu > 0 and halo_ko == 0, '%d ouverture(s) · %s' % (halo_ko, ex_h))
         t('6 · [%s] v125 : jamais le même sol ni le même corps deux ouvertures de suite' % pal, n_lu > 0 and suite_ko == 0, '%d fois · %s' % (suite_ko, ex_s))
         t('4 · [%s] le corps se tire au hasard (au moins deux corps différents sur %d ouvertures)' % (pal, N), len(set().union(*corps_vus.values())) >= 2 if corps_vus else False, '%s' % {k: len(v) for k, v in corps_vus.items()})
     t('aucune erreur de page', not er, '; '.join(er[:2]))

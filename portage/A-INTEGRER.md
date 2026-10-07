@@ -43,3 +43,13 @@
 - **Moteur** : `_AMP_MI` — ampleur à mi-force sous TROIS mondes (Esquille 0,3 · Ritournelle 0,3 · Ramage 0,6 ; SPEC-RENDU §a) ; le banc de rendu est refigé pour eux. Guingois (et Chantourné seul) diffèrent de la référence du banc depuis avant v135 (C-066).
 - **La grille anti-coercition** est au §12 de `CLAUDE.md` (les trente-deux règles de REGLES §A) ; les six critères et les six risques de Tom manquent (Q406).
 - **Juge neuf** : `redteam_lexique.py` (TESTS : termes bannis et loi des points ; se porte en test sur les chaînes et en revue des composants).
+
+## v136 (7 oct. 2026) — à reporter dans les dix documents
+
+- **Fiche tenue** : en clair le corps est la crème, la mention TENU en `#00341A` ; la terre et l'amande ne valent plus qu'en sombre (JETONS, SPEC-ECRANS).
+- **La phrase de la fiche** (`_phraseFiche`) : huit formes, le titre seul dans son nœud, « + x personnes » dépliable (SPEC-ECRANS, TEXTES).
+- **Plein écran** : aussi sur la page + (SPEC-ECRANS, SPEC-GESTE). **Le +** : 84 pt (JETONS).
+- **La grille anti-coercition** : le texte de Tom, `CLAUDE.md` §12 — il coiffe REGLES §A.
+- **Ampleur** : Esquille, Ritournelle, Halin 0,3 · Brouillamini 1,5 · Bobinette 0,3 ; lue sur le monde choisi ; ressemis d'un monde neuf à l'autre si elle est en jeu (SPEC-RENDU).
+- **Partage du dessin** (C-068) : décidé par Tom, PAS construit — mention de la nature et logo en bas à gauche par défaut, réglage qui masque la mention, une photo ne se partage jamais (MANQUES).
+- **La Pelote n'a plus ni halo ni ombre** (Tom, 7 oct., C-071 : « ne masque pas, supprime ») : dans `portage/RENDU.md` et `ECRANS.md`, retirer le halo (niveau 3), l'ombre crème du sombre et l'ellipse du clair ; la colonne de l'Aura garde les cotes B, la place de l'ombre reste vide.

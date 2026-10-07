@@ -1,0 +1,24 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 70
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+   77s  redteam_decisions.py       79 / 85 / KO : Promi tenue [light] corps · Promi tenue [light] echeance · Promi tenue [light] titre · Chiche tenu à deux [light] corps · Chiche tenu à deux [light] echeance · Chich
+   57s  redteam_tonsurton.py       l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  175s  redteam_filets.py          page+ cercle   [light]  filet non    OK / filet du trait : 14/14
+  184s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+  170s  redteam_accueil.py         [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False / 20/22
+   82s  redteam_entier.py            ✅ [light] 5 · aucune erreur de page / redteam_entier : 44/44
+  193s  redteam_phrase_fiche.py      ✅ [dark] élision : aucune erreur de page — [] / redteam_phrase_fiche : 56/56
+  114s  redteam_dessin.py            ✅ aucune erreur de page (Cercle, page +) / redteam_dessin : 79/79
+   72s  redteam_reactif.py           ✅ aucune erreur de page / redteam_reactif : 31/31
+  131s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   91s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  234s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  135s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2670 ms) / 32/32
+  318s  redteam_lexique.py            · point i / redteam_lexique : 3/3
+  135s  redteam_zone.py            OK  [light] aucune erreur de page   / 12 / 12
+  104s  redteam_halo.py            aucune erreur de page                                                        OK   / 23 / 23
+   84s  redteam_zoom.py            [sombre] 8 · supprimer ramène le défaut                        OK  échelle 1.000 (défaut 1.0 pour 20) / 16/16
+   93s  redteam_nuee_dalle.py      [clair] aucune erreur JS                                           OK  [] / 38/38
+  174s  redteam_partage_fiche.py   48/48 / ✅ le rond Partager d'une fiche partage son Folio
+  315s  redteam_air.py                … et 12 autres. /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+  279s  redteam_rythme.py            · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 47, 'images': 3, 'boucle': 1863, 'debut': 31} / 60 / 60

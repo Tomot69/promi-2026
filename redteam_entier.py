@@ -94,6 +94,26 @@ with sync_playwright() as p:
         pg.evaluate("()=>{ closeAll(); openEssaim('potager'); }"); pg.wait_for_timeout(2800)
         pg.touchscreen.tap(*pt(195,150)); pg.wait_for_timeout(500)
         ok('[%s] 3 · toucher les dalles d\'une fiche de Cercle n\'ouvre rien'%th, not ouverte())
+        # ⚑ v136 (Tom, 7 oct. 2026, C-067) — « Même comportement dès la création, sur la page + » : un dessin posé sur la page +
+        #   s'ouvre en entier au toucher de la bande ; un second toucher rend la page + telle quelle ; sans dessin ni photo, rien ne s'ouvre.
+        EMPP="""()=>[...document.querySelectorAll('#createSheet *')].filter(e=>e.getClientRects().length).map(e=>{const r=e.getBoundingClientRect(), s=getComputedStyle(e); return [e.tagName, Math.round(r.left), Math.round(r.top), Math.round(r.width), Math.round(r.height), s.color, s.fontSize].join(',')}).join('|')"""
+        pg.evaluate("()=>{ closeAll(); try{setPremium(true)}catch(e){} document.getElementById('createBtn').click(); }"); pg.wait_for_timeout(900)
+        for _k in range(3): pg.evaluate("()=>{const t=document.querySelectorAll('#createSheet .tile')[0]; if(t) t.click();}"); pg.wait_for_timeout(500)
+        pg.wait_for_timeout(1700)
+        pg.touchscreen.tap(*pt(195,110)); pg.wait_for_timeout(500)
+        ok('[%s] 6 · page + sans dessin ni photo : toucher la bande n\'ouvre rien'%th, not ouverte())
+        if pg.evaluate("()=>!!(window._dessin&&window._dessin.ouvre&&window._dessin.ouvre())"):
+            pg.wait_for_timeout(400); pg.mouse.move(120,300); pg.mouse.down()
+            for _i in range(22): pg.mouse.move(120+_i*9,300+(_i%6)*11)
+            pg.mouse.up(); pg.wait_for_timeout(200); pg.evaluate("()=>document.querySelector('#dessinMode [data-outil=poser]').click()"); pg.wait_for_timeout(1200)
+        avp=pg.evaluate(EMPP); labp=pg.evaluate("()=>document.getElementById('csTrameCv').getAttribute('aria-label')")
+        ok('[%s] 6 · page + : la bande qui porte un dessin s\'annonce « Voir le dessin en entier »'%th, labp=='Voir le dessin en entier', labp)
+        pg.touchscreen.tap(*pt(195,110)); pg.wait_for_timeout(600)
+        vp=pg.evaluate("()=>{const v=document.getElementById('entierVue'), im=v&&v.querySelector('img'), D=document.getElementById('device').getBoundingClientRect(); if(!v||!im) return null; const r=v.getBoundingClientRect(); return {ouv:v.classList.contains('ouv'), nat:im.naturalWidth, plein:Math.abs(r.width-D.width)<1&&Math.abs(r.height-D.height)<1, fond:getComputedStyle(v).backgroundColor}}")
+        ok('[%s] 6 · page + : toucher le dessin l\'affiche en entier, sur tout l\'appareil, fond plein'%th, bool(vp) and vp['ouv'] and vp['nat']>0 and vp['plein'] and 'rgba' not in vp['fond'], vp)
+        pg.touchscreen.tap(*pt(195,420)); pg.wait_for_timeout(600)
+        ok('[%s] 6 · page + : un second toucher referme, la page + est telle quelle (rendu de chaque nœud)'%th, not ouverte() and pg.evaluate(EMPP)==avp)
+        pg.evaluate("()=>{ try{ window._dessin.retire(); }catch(e){} closeAll(); }"); pg.wait_for_timeout(400)
         ok('[%s] 5 · aucune erreur de page'%th, not errs, errs[:2])
         ctx.close()
     b.close()

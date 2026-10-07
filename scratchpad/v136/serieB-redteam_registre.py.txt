@@ -1,0 +1,9 @@
+OK  le registre existe et porte des chantiers  71 chantier(s)
+OK  1 · les numéros se suivent de C-001 à C-071, sans trou  manquant(s) : 
+OK  1 · aucun numéro en double  
+OK  2 · aucun numéro d'un commit passé n'a disparu (12 version(s) du registre relue(s))  disparu(s) : 
+OK  3 · chaque ligne porte ses sept colonnes et un état de la liste  
+OK  4 · aucune demande vidée  
+
+6 / 6
+chantiers non validés : 71

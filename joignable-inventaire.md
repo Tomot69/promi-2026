@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 410 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 413 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -120,7 +120,7 @@ Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode cl
 | Partager | `#shShareBtn` | natif | 282, 789 | 168 × 62 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer«✕ FERMER»` | écouteur | 321, 56 | 91 × 13 | oui |  |
 | Peaufiner | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
-| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTlundi 19un jouren l»` | écouteur | 195, 222 | 342 × 64 | oui |  |
+| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTmardi 20un jouren l»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«DANS UN CERCLEaucuneAucu»` | écouteur | 195, 302 | 342 × 64 | oui |  |
 | Peaufiner | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner | `#dNote` | natif | 195, 426 | 292 × 56 | oui |  |
@@ -134,7 +134,7 @@ Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Chiche | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«À QUI JE LANCEMarionMMar»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVECMarionMMarionNNicoRR»` | écouteur | 195, 302 | 342 × 64 | oui |  |
-| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTsamedi 10un jouren »` | écouteur | 195, 382 | 342 × 64 | oui |  |
+| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTdimanche 11un joure»` | écouteur | 195, 382 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 430 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner Chiche | `#dNote` | natif | 195, 506 | 292 × 56 | oui |  |
@@ -197,7 +197,7 @@ Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode cl
 | accueil | `#toileCv` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | accueil | `#studioBtn` | on… | 70, 760 | 90 × 51 | oui |  |
 | accueil | `#souffleBtn` | on… | 124, 760 | 90 × 51 | oui |  |
-| accueil | `#createBtn` | on… | 195, 760 | 68 × 68 | oui |  |
+| accueil | `#createBtn` | on… | 195, 760 | 84 × 84 | oui |  |
 | accueil | `#indexBtn` | natif | 266, 760 | 90 × 51 | oui |  |
 | accueil | `#filBtn` | écouteur | 320, 760 | 90 × 51 | oui |  |
 | aide de l'Aura | `div#auraHelp.screen.tuto-fond>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |

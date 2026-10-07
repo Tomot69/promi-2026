@@ -1,0 +1,14 @@
+OK  [dark] les 12 ouvertures sont lues  12
+OK  A · [dark] hors silhouette, halo et ombre : chaque pixel est le fond  0 pixel(s) · 
+OK  B · [dark] le halo n'a pas de second bord (≤ 30 % de son maximum en 6°)  le pire : 17 % · ouverture 3, vers 156° (0° = à droite, 90° = en bas) : 12.3 → 17.2 niveaux (maximum du tour 29.6)
+OK  C · [dark] Aura, Studio, Studio, Aura : le contexte de la Pelote est bien perdu en chemin  perdu
+OK  C · [dark] après ce chemin, UN seul canevas de la carte derrière la Pelote, aucun ancien resté dessous  auBoule + auBouleGL
+OK  [dark] aucune erreur de page  
+OK  [light] les 12 ouvertures sont lues  12
+OK  A · [light] hors silhouette, halo et ombre : chaque pixel est le fond  0 pixel(s) · 
+OK  B · [light] le halo n'a pas de second bord (≤ 30 % de son maximum en 6°)  le pire : 21 % · ouverture 12, vers 162° (0° = à droite, 90° = en bas) : 12.0 → 17.3 niveaux (maximum du tour 25.7)
+OK  C · [light] Aura, Studio, Studio, Aura : le contexte de la Pelote est bien perdu en chemin  perdu
+OK  C · [light] après ce chemin, UN seul canevas de la carte derrière la Pelote, aucun ancien resté dessous  auBoule + auBouleGL
+OK  [light] aucune erreur de page  
+
+12 / 12

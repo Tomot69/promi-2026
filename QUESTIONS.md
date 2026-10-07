@@ -8500,3 +8500,12 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   2 270 ± 181 ; Brouillamini 1 941 pour 1 742 ± 139 ; Guingois 2 326 pour 1 722 ± 137 ; Chantourné 2 317 pour 1 677 ± 134). Retirée sous ces
   quatre ; et sous Mascaret, Chamade, Volubilis (le banc de rendu ne retrouvait plus sa référence). Reste : Esquille, Ritournelle, Ramage. Tom accepte-t-il une arrivée plus longue pour y gagner en variété, ou reste-t-on au rythme validé ?
 - **Q408 — MISE À JOUR** : la capture du Studio est arrivée ; la cause reste non nommée, une parade est posée (C-011).
+- **Q406, Q407, Q411 — TRANCHÉES (Tom, v136)** : la grille est donnée ; en clair une fiche tenue est sur la crème ; +15 % d'arrivée accepté.
+- **Q412 — À VALIDER (C-069)** : les formes de la phrase. Tom citait « Je te promets de… », « Je vous promets de… » ; elles ne nomment
+  personne, j'ai gardé celles de la page + (« Je promets à Rachel de »). Et « Marion me lance : chiche de » (Chiche reçu) est un mot manquant.
+- **Q413 — OUVERTE (C-002)** : halo et ombre sont SUPPRIMÉS (Tom, 7 oct.). Reste le liseré du bord de la fourrure (ΔE 15–31 avec l'intérieur) :
+  la Pelote paraît-elle encore floue au bord, sans halo ? Aucune couche en double n'existe.
+- **Q414 — OUVERTE (C-062)** : Mascaret, Chamade, Volubilis : l'essai est sur `planche-v135/essai-dix-mondes-*` ; rien n'est activé ni refigé.
+  Ramage est retiré (son ampleur déplaçait Guingois au banc) : le garder dehors, ou chercher le mécanisme ?
+- **Q415 — TRANCHÉE (C-071, Tom, 7 oct.)** : « oui tu as raison du coup enlève tout ce qu'il y a comme effet autour de la Pelote pour le moment,
+  ne masque pas, supprime. » Halo et ombre supprimés ; pas de points (la loi des points garde sa seule exception).

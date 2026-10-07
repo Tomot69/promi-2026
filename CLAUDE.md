@@ -116,6 +116,46 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v136 (7 oct. 2026) — LA FICHE TENUE EN CLAIR ; LA PHRASE COMPLÈTE ; LE PLEIN ÉCRAN DÈS LA PAGE + ; LE + ; L'AMPLEUR. (Décisions Tom.) Ce bloc CORRIGE v135, v124 (Q269) et v8 là où ils disent autre chose.
+> **⚑ EN CLAIR, LE CORPS D'UNE FICHE TENUE (PROMI ET CHICHE) EST LA CRÈME `#F7F0DE`, comme toutes les fiches en clair (C-059). LA TERRE `#2B1020`
+> NE VAUT PLUS QU'EN SOMBRE.** En clair la crête verte dit « tenu » et **la mention TENU est au vert d'état `#00341A`** (l'amande est illisible
+> sur la crème) ; l'encre reste l'encre. Où ça vit : `lot-V7-CORPS-TENU` (tout le bloc sous `:not(.light)`), le poseur de la fiche (`encre`,
+> `_colQd`), `_surTerre()`. Mesuré sur la crème (ΔE CIELAB, seuil 15) : crête `#0B4A2A` 73,1 · arc tenu 80,3 · arc en cours 93,5 · arc à
+> tenir 81,7 ; la mention `#00341A` : 12,27:1. « Sur la terre, le tenu est l'amande, en clair aussi » (Q269, v124) est donc MORT en clair.
+> **⚑ LA PHRASE COMPLÈTE DANS LES FICHES PROMI ET CHICHE (C-069, `lot-V136-PHRASE`, `window._phraseFiche`)** — dans les fiches seulement,
+> jamais dans le Fil ni l'Index, jamais sur un Cercle. La ligne « À moi » / « À Rachel » disparaît : `#dptQui` porte le reste de la phrase,
+> **le titre reste seul dans `#dptTitre`, le plus grand texte de la fiche**. Les formes sont celles de la page + : « Je me promets de » ·
+> « Je promets à Rachel de » · « Je promets à Rachel, Marion et Nico de » · au-delà de TROIS « Je promets à Rachel, Marion + 4 personnes de »
+> (toucher « + x personnes » déroule la liste, la phrase s'allonge, le titre descend) · reçue « Rachel me promet de » · demandée « Rachel,
+> promets-moi de » / « promettez-moi de » · Chiche « À Marion · avec Rachel · chiche de » · « Chiche de » · reçu « Marion me lance : chiche
+> de » (mot manquant, à valider — Q412). « de » s'élide (« d'aller »). ⚠ Tom citait « Je te promets de… », « Je vous promets de… » : ces
+> formes ne nomment personne — j'ai pris celles de la page +, qui nomment (Q412). Juge : **`redteam_phrase_fiche.py`** (56 ; 36/56 avant).
+> **⚑ LE PLEIN ÉCRAN DÈS LA PAGE + (C-067)** : toucher le dessin ou la photo dans la bande de la page + l'affiche en entier, un second
+> toucher rend la page telle quelle. ⚠ Sur la page +, c'est `#promiForm` qui est sous le doigt dans la bande. `redteam_entier` 44 (38 avant).
+> **⚑ LE + DE L'ACCUEIL FAIT 84 pt** (68 avant, × 1,235 ; C-070), centré au même point : il occupe la hauteur intérieure de la barre.
+> **Son anneau n'a plus de filet** (il l'avait gardé en v135).
+> **⚑ AUTOUR DE LA PELOTE IL N'Y A PLUS RIEN — NI HALO NI OMBRE (C-002, C-071). Ce point CORRIGE v114 à v126 (halo, ombre, flaque).**
+> Tom, 7 oct. : « Les contours ça fait flou, pas net ; le halo c'est une mauvaise idée en fait. […] Enlève tout ce qu'il y a comme effet
+> autour de la Pelote pour le moment, ne masque pas, supprime. » `#auPeloteHalo` et `#auPeloteOmbre` **ne sont plus créés** ; la colonne de
+> l'Aura garde les cotes B (la place de l'ombre reste vide). ⚠ Le code du peintre du halo (`halo()`, `window._haloPelote`) et les règles
+> `.au-halo` / `.au-ombre` restent dans le fichier, MORTS : plus rien ne les appelle. **« La Pelote est le seul volume » (v114) reste la
+> règle de `redteam_volume` : rien d'autre ne reçoit de halo ni d'ombre — elle non plus, pour le moment.** Les « points subtils, épars »
+> que Tom évoquait ne sont PAS construits (ce serait une seconde exception à la loi des points, §5) : C-071 reste ouvert.
+> Ce qui avait été isolé avant : halo, ombre, UN canevas de carte graphique — aucune couche en double. Reste, mesuré et non touché :
+> LE LISERÉ DU BORD (sur les 8 derniers pour cent du rayon la fourrure prend une autre couleur que l'intérieur, ΔE 15 à 31,
+> `scratchpad/v136/limbe.py`) — c'est le poil lui-même ; un essai (fondre le corps vers le poil au bord) n'a rien changé : RETIRÉ (Q413).
+> Juges réécrits : **`redteam_halo`** (10 contrôles : aucun nœud, l'anneau 125–150 pt et la place de l'ombre sont le fond de la page au
+> niveau près ; 2/10 sur l'état d'avant), `releve-aura` (plus de cote d'ombre), `redteam_corps` 5 (aucun halo).
+> **⚑ L'AMPLEUR À MI-FORCE (C-062) : Esquille 0,3 · Ritournelle 0,3 · Halin 0,3 · Brouillamini 1,5 · Bobinette 0,3.** « Une arrivée de dalle
+> jusqu'à 15 % plus longue est acceptée » : Halin +13 %, Brouillamini +13 %, les trois autres 0 % (`redteam_rythme`, ± 15 % à l'arrivée
+> pour eux). Dehors : Guingois (+35 %), Chantourné (+38 %) ; Mascaret, Chamade, Volubilis (banc de rendu, accord de Tom attendu) ; **Ramage
+> (C-066)**. L'ampleur se lit sur le monde CHOISI (`_ampMonde`), et d'un monde neuf à l'autre la Toile se ressème si l'ampleur est en jeu.
+> **⚑ C-066 — L'ÉCART DE GUINGOIS AU BANC VENAIT DE L'AMPLEUR DE RAMAGE (v135).** Ce fichier disait « depuis avant ce lot » : c'était FAUX
+> (mesure prise sur une référence salie). Prouvé en retirant Ramage seul : Guingois revient au pixel. Le mécanisme n'est pas nommé ;
+> Ramage est retiré de l'ampleur. `banc_rendu` : 280/280 au pixel.
+> **⚑ LA GRILLE ANTI-COERCITION DE TOM EST EN TÊTE DU §12** (six questions, six risques cumulés).
+> ⚠ **NON FAIT : le partage du dessin (C-068)** — mention de la nature, logo, réglage, photo jamais partagée : rien n'est construit.
+
 ### ⚑ v135 (6 oct. 2026) — PLUS AUCUN FILET ; LE SYMBOLE DU BOUTON PHOTO ; LES CONTRADICTIONS TRANCHÉES ; L'AMPLEUR À MI-FORCE. (Décisions Tom.) Ce bloc CORRIGE v114 (le filet de la terre), v133, v134 et le §3 là où ils disent autre chose.
 > **« La vérité est ce que Tom voit à l'écran. »** Quatre contradictions tranchées : **la Pelote fait un tour en 100 s** (`2π/100`, comme
 > l'app et `releve-aura` ; ce fichier écrivait 120) ; **le fond sombre est la seiche `#050302`** dans le rôle `fond` des jetons (JSON, CSS,
@@ -1964,6 +2004,7 @@ python3 redteam_nuit.py        # 34 — v118, LE Zzz : six cas, almanach en dur 
                                #   sous les yeux, cran de nuit au hex près. --sonde (bascule en direct) rougit.
                                #   ⚠ 33/34 tant que le bouton « Zzz » n'est pas posé (ligne « premier lancement : Zzz activé »).
                                #   ⚠ v120 : LE Zzz EST COUPÉ — ce juge est ROUGE par décision, jusqu'à nouvel ordre.
+python3 redteam_phrase_fiche.py # 56 — v136 (C-069) : chaque cas produit sa phrase (en dur), le titre est le plus grand texte, « + x personnes » se déroule au doigt, le Fil, l'Index et le Cercle sont sans phrase. 36/56 sur l'état d'avant.
 python3 redteam_lexique.py     # 3 — v135 (C-065) : aucun terme banni affiché, aucun point nouveau hors de l'exception du dessin (dette : lexique-dette.json). --sonde=terme|point : il rougit.
 python3 redteam_palettes.py    # 58 (v135 : trois ouvertures, les teintes PEINTES de chaque pastille, la pagination en barrettes) — v133 (C-057) : le menu des palettes du Studio, deux thèmes, deux ouvertures, les 24 pastilles touchées une à une ;
                                #   l'ordre en dur, Primesautier en tête. Rougit sur l'état d'avant (22/32).
@@ -2007,7 +2048,8 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
-python3 redteam_halo.py        # 23 — LE MINI HALO ET L'OMBRE DE LA PELOTE (v119 ; v123 : un seul niveau, ombre crème en sombre ΔE00 4–6, halo à 4,5 du plateau), lus sur l'image @3x. --sonde rougit.
+python3 redteam_halo.py        # 10 — v136 (C-071), RÉÉCRIT : AUTOUR DE LA PELOTE IL N'Y A QUE LA PAGE — aucun nœud de halo ni d'ombre, l'anneau 125–150 pt et la place de l'ombre
+                               #   sont le fond de la page (@3x, deux thèmes), le bouton à 435,47. 2/10 sur l'état d'avant. Original : sauvegardes/redteam_halo-avant-v136.py.
 python3 redteam_garder.py      # 18 — v119 (Q370), repris en v121 : « garder de côté » garde le titre et la personne de la phrase, au doigt.
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;
@@ -2580,16 +2622,29 @@ Peut se dégrader : le nombre de dalles animées, les transitions de navigation,
 
 ---
 
-## 12. La grille anti-coercition (inscrite le 6 oct. 2026, v135 — C-065)
+## 12. La grille anti-coercition (le texte de Tom : 7 oct. 2026, v136 — C-065)
 
-> **⚑ D'OÙ VIENT CE TEXTE.** Tom, 6 oct. 2026 : « La grille anti-coercition n'est écrite nulle part : inscris-la dans CLAUDE.md, mot pour mot
-> depuis portage/REGLES (les six critères disqualifiants et les six risques cumulés). » **⚠ Ni « six critères disqualifiants » ni « six
-> risques cumulés » n'existent dans `portage/REGLES.md`, ni ailleurs dans le dépôt** (cherché : « disqualifiant », « risques cumulés »,
-> « coercition »). Ce qui suit est donc la grille telle que `portage/REGLES.md` §A la porte — **trente-deux règles RECONSTITUÉES** à partir
-> des décisions écrites (les huit règles anti-notation de `AUDIT-AURA-CERCLE.md` §C, la « ligne rouge » de `BRIEF-ETUDE-PSYCHO.md`,
-> `DECISIONS.md` A1, Q347, Q368, v104, v109), recopiées mot pour mot. Les sources, la façon de vérifier et le juge de chacune sont dans
-> `portage/REGLES.md`. **Les six critères et les six risques attendent le texte de Tom (Q406) ; ils remplaceront ou coifferont cette liste.**
-> Juge des mots : **`redteam_lexique.py`** (termes bannis, loi des points).
+> **⚑ LA GRILLE, MOT POUR MOT (Tom, 7 oct. 2026, v136 — C-065). Elle fait loi ; les règles reconstituées qui la suivent n'en sont que le détail.**
+>
+> **« Une seule réponse "oui" bloque la mécanique :**
+>
+> 1. **Produit-elle un état visible "rompu", "raté" ou "en retard" ?**
+> 2. **Un état accumulé perd-il de la valeur par inaction ?**
+> 3. **Met-elle en évidence les manquements de la personne ?**
+> 4. **La récompense est-elle à la fois annoncée et proportionnelle à l'action ?**
+> 5. **Si on expliquait son fonctionnement exact, la personne agirait-elle autrement ?**
+> 6. **La réparation d'un état dégradé est-elle payante ou publicitaire ?**
+>
+> **Six risques cumulés : notification au calendrier de l'éditeur plutôt qu'à la disponibilité · rythme imposé plutôt que choisi · captation
+> active par défaut · plus de gestes pour désactiver que pour activer · redemande d'un choix déjà fait · relance, urgence, compte à rebours,
+> culpabilisation.**
+>
+> **La grille s'applique à la structure d'une mécanique, jamais à son nom. »**
+
+### Les règles reconstituées (v135) — le détail, sous la grille
+> Trente-deux règles reconstituées à partir des décisions écrites (les huit règles anti-notation de `AUDIT-AURA-CERCLE.md` §C, la « ligne
+> rouge » de `BRIEF-ETUDE-PSYCHO.md`, `DECISIONS.md` A1, Q347, Q368, v104, v109), telles que `portage/REGLES.md` §A les porte, avec pour
+> chacune ses sources, sa vérification et son juge. Juge des mots : **`redteam_lexique.py`** (termes bannis, loi des points).
 
 **A1 · Ce n'est pas un gestionnaire de tâches**
 - **R-001** · Toute décision qui rapproche Promi d'un gestionnaire de tâches est rejetée, même si elle est pratique.

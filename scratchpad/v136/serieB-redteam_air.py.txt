@@ -1,0 +1,38 @@
+
+
+  ❌  42 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   Aura [dark]                #auPartage«Partager ma Pelote»     → .au-mot«Rien de ce qui est i»
+   Aura [light]               #auPartage«Partager ma Pelote»     → .au-mot«Rien de ce qui est i»
+   Peaufiner Chiche [dark]    .s2-val«Marion»                    → .s2-val«lundi 5»
+   Peaufiner Chiche [dark]    .s2-val«lundi 5»                   → .s2-val«0 fichier»
+   Peaufiner Chiche [light]   .s2-val«Marion»                    → .s2-val«lundi 5»
+   Peaufiner Chiche [light]   .s2-val«lundi 5»                   → .s2-val«0 fichier»
+   Peaufiner [dark]           .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [dark]           .s2-val«mercredi 14»               → .s2-val«aucune»
+   Peaufiner [light]          .s2-val«Plein»                     → .s2-val«mercredi 14»
+   Peaufiner [light]          .s2-val«mercredi 14»               → .s2-val«aucune»
+   fiche chiche [dark]        .kr-n«Marion»                      → #dptTitre«le grand plongeoir»
+   fiche chiche [dark]        .kr-n«Toi»                         → #dptQui«À Marion»
+   fiche chiche [dark]        #dptQui«À Marion»                  → #dptTitre«le grand plongeoir»
+   fiche chiche [light]       .kr-n«Marion»                      → #dptTitre«le grand plongeoir»
+   fiche chiche [light]       .kr-n«Toi»                         → #dptQui«À Marion»
+   fiche chiche [light]       #dptQui«À Marion»                  → #dptTitre«le grand plongeoir»
+   fiche en cours [dark]      #dptTrace«trace pour tenir»        → #dptTitre«nager le mardi»
+   fiche en cours [dark]      .kr-n«Toi»                         → #dptQui«À moi»
+   fiche en cours [dark]      #dptQui«À moi»                     → #dptTitre«nager le mardi»
+   fiche en cours [light]     #dptTrace«trace pour tenir»        → #dptTitre«nager le mardi»
+   fiche en cours [light]     .kr-n«Toi»                         → #dptQui«À moi»
+   fiche en cours [light]     #dptQui«À moi»                     → #dptTitre«nager le mardi»
+   fiche tenue [dark]         .kr-n«Toi»                         → #dptQui«À moi»
+   fiche tenue [dark]         #dptQui«À moi»                     → #dptTitre«planter un arbre»
+   fiche tenue [light]        .kr-n«Toi»                         → #dptQui«À moi»
+   fiche tenue [light]        #dptQui«À moi»                     → #dptTitre«planter un arbre»
+   fiche à tenir [dark]       .kr-n«Rachel»                      → #dptTitre«faire les crêpes»
+   fiche à tenir [dark]       .kr-n«Toi»                         → #dptQui«À Rachel»
+   fiche à tenir [dark]       #dptQui«À Rachel»                  → #dptTitre«faire les crêpes»
+   fiche à tenir [light]      .kr-n«Rachel»                      → #dptTitre«faire les crêpes»
+   … et 12 autres.
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

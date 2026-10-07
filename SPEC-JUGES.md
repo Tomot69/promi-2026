@@ -1,6 +1,6 @@
 # LES RÈGLES QUE PORTENT LES JUGES — spécification pour le portage
 
-> Engendré par `spec_juges_generer.py` le 2026-10-07. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
+> Engendré par `spec_juges_generer.py` le 2026-10-08. **Les valeurs sont lues dans les juges eux-mêmes** : pour changer une valeur, on change le juge (sur une décision de Tom), puis on relance. Le portage Swift ne reprend pas Playwright : il reprend CES règles, et `banc_rendu.py` (280 images au pixel) pour la matière.
 
 ## 1 · Le rythme de chaque monde — `redteam_rythme.py`
 
@@ -13,15 +13,15 @@ On juge **la fin du mouvement dans le moteur** (l'image où la Toile cesse de bo
 | mosaique | horloge | 792 ms (47 images) | 780 ms (47 images) | — |
 | braille | horloge | 865 ms (44 images) | 786 ms (40 images) | — |
 | pixel | horloge | 817 ms (46 images) | 784 ms (44 images) | — |
-| halin | horloge | 2270 ms (135 images) | 2995 ms (170 images) | depart ± 15 % |
-| esquille | horloge | 1437 ms (82 images) | 1426 ms (73 images) | — |
+| halin | horloge | 2270 ms (135 images) | 2995 ms (170 images) | depart ± 15 %, arrivee ± 15 % |
+| esquille | horloge | 1437 ms (82 images) | 1426 ms (73 images) | arrivee ± 15 % |
 | madrure | horloge | 2432 ms (132 images) | 2431 ms (133 images) | — |
-| ritournelle | horloge | 1945 ms (113 images) | 2040 ms (116 images) | — |
-| bobinette | horloge | 2462 ms (57 images) | 2463 ms (70 images) | — |
+| ritournelle | horloge | 1945 ms (113 images) | 2040 ms (116 images) | arrivee ± 15 % |
+| bobinette | horloge | 2462 ms (57 images) | 2463 ms (70 images) | arrivee ± 15 % |
 | terrazzo | horloge | 799 ms (45 images) | 820 ms (46 images) | — |
 | gravure | horloge | 793 ms (48 images) | 797 ms (45 images) | — |
 | sillons | images | 1313 ms (36 images) | 950 ms (29 images) | — |
-| brouillamini | horloge | 1742 ms (70 images) | 2046 ms (92 images) | — |
+| brouillamini | horloge | 1742 ms (70 images) | 2046 ms (92 images) | arrivee ± 15 % |
 | chamade | horloge | 1668 ms (44 images) | 1946 ms (44 images) | — |
 | volubilis | horloge | 3178 ms (155 images) | 2472 ms (119 images) | arrivee ± 15 %, depart ± 15 % |
 | guingois | horloge | 1722 ms (30 images) | 1865 ms (31 images) | depart ± 15 % |
@@ -78,7 +78,7 @@ On juge **la fin du mouvement dans le moteur** (l'image où la Toile cesse de bo
 - **Partager la Pelote** (`redteam_pelote_partage.py`) : appui long **380 ms**, tolérance de déplacement **8 px** ; seule, ou dans Mon Folio, déplaçable au doigt ; jamais dans « Ma Toile ».
 - **Le geste de couleur du Studio** (`redteam_studio_geste.py`) : appui **480 ms**, course horizontale **390 px** = un tour de teinte, un pas vertical de **48 px** = une palette ; on revient exactement d'où l'on vient.
 - **Rien ne paraît une fraction de seconde** (`redteam_flash.py`) : aucune couche de premier plan (grille 6 × 11, 2 points au moins) ne vit moins de **800 ms**, ni au début ni à la fin ; jamais l'ancien chrome `.topbar`, `.footer`, `.statusbar` ; la page + paraît composée dès sa première image ; une plantation coupe.
-- **L'air entre les textes** (`redteam_air.py`) : aucune paire de textes ne se resserre de plus de **0.6 px** à l'ENCRE contre la référence `air-reference.json` (ses paires sont la spécification : 686 paires sur 68 écrans-thèmes) ; un bloc annoncé centré entre deux voisins a des écarts égaux.
+- **L'air entre les textes** (`redteam_air.py`) : aucune paire de textes ne se resserre de plus de **0.6 px** à l'ENCRE contre la référence `air-reference.json` (ses paires sont la spécification : 714 paires sur 68 écrans-thèmes) ; un bloc annoncé centré entre deux voisins a des écarts égaux.
 - **Les filets** (`redteam_filets.py`) : aucun trait horizontal hors de ceux que le moodboard porte : `csBotBar`, `cbb`, `dpDetails`, `dpdTog`, `dpd-tog`, `dpm-filet`, `dpMsg`, `mg-note-line`, `ix-hair`.
 - **Ce qui se touche est joignable** (`redteam_joignable.py`, v118) : au centre de chaque élément interactif, `elementFromPoint` rend l'élément ou un de ses descendants ; chaque gestionnaire n'appelle que des fonctions qui existent, sur un nœud qui existe ; la dette est nommée dans `joignable-dette.json`.
 - **La dalle d'origine dans la bande haute** (`redteam_origine.py`, v118) : la couleur d'origine, sauf si son écart au champ est sous **ΔE 15.0** (CIELAB) — alors la rampe de Q30 ; les cas à moins de 2.0 du seuil ne sont jugés que sur la lisibilité.

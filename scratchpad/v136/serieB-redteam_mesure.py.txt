@@ -1,0 +1,12 @@
+OK  [light] les 31 cotes de l'Aura sont les mêmes avec et sans ?mesure=1 (à 0.5 pt)  
+OK  [light] le cadre du relevé existe  
+OK  [light] il ne recouvre aucun point de la Pelote  croise=False
+OK  [light] au centre de la Pelote, le doigt touche ce qu'il touchait sans le relevé (la prise de la Pelote)  au-prise / au-prise
+OK  [light] la page n'a pas défilé  0 / 0
+OK  [dark] les 31 cotes de l'Aura sont les mêmes avec et sans ?mesure=1 (à 0.5 pt)  
+OK  [dark] le cadre du relevé existe  
+OK  [dark] il ne recouvre aucun point de la Pelote  croise=False
+OK  [dark] au centre de la Pelote, le doigt touche ce qu'il touchait sans le relevé (la prise de la Pelote)  au-prise / au-prise
+OK  [dark] la page n'a pas défilé  0 / 0
+
+10 / 10

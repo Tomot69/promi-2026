@@ -1,0 +1,20 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 71
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME HORS DE LA PELOTE
+   33s  redteam_halo.py            [sombre] D · « PARTAGER MA PELOTE » à 435,47                                   OK  435.46875 / 10/10
+  124s  redteam_zone.py            OK  [light] aucune erreur de page   / 12 / 12
+   60s  redteam_mesure.py          OK  [dark] la page n'a pas défilé  0 / 0 / 10 / 10
+   33s  redteam_contour.py         OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0 / ✅ rien ne dépasse du contour
+   67s  redteam_souffle.py         OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0 / ✅ la Pelote respire par son velours, et rien d'autre
+  168s  redteam_plein.py           [densité 3] aucune erreur de page                                              OK   / 97 / 97
+  247s  redteam_bouton.py          aucune erreur de page                                                                        OK   / 33 / 33
+  176s  releve-aura.py             palier 220000 · médiane 40.8 ms · 1374 images · plus longue image pendant l'élan : 850 ms (dont peintre 39.2 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 p
+   79s  redteam_decisions.py       Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état) / 85 / 85
+  172s  redteam_accueil.py         [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False / 22/22
+  130s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   90s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  228s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  314s  redteam_air.py                … et 12 autres. /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+  300s  redteam_lexique.py            · point i / redteam_lexique : 3/3
+   90s  redteam_corps.py           aucune erreur de page                                                                  OK   / 33 / 33
+  823s  redteam_couleurs_ref.py    canevas non peints d'un côté (comptés, non jugés) : 2 — Nuée défilée[l] vide côté réf · Nuée défilée[d] vide côté réf / ❌ — 27 écart(s) de couleur avec la référence v118

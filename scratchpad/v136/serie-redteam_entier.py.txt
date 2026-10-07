@@ -1,0 +1,48 @@
+══ dark
+  ✅ [dark] 4 · la bande qui porte une photo s'annonce « Voir la photo en entier », en commande
+  ✅ [dark] 1 · toucher la photo dans la bande l'ouvre en entier
+  ✅ [dark] 1 · la vue couvre tout l'appareil et passe devant le reste
+  ✅ [dark] 1 · fond plein : la seiche #050302, opacité 1, ni ombre ni dégradé
+  ✅ [dark] 1 · l'image entière, sans recadrage (contain)
+  ✅ [dark] 1 · on voit le haut ET le bas de la photo, que la bande recadrait (lus sur la capture)
+  ✅ [dark] 1 · à côté de l'image, le fond est la seiche (lu sur la capture)
+  ✅ [dark] 2 · un nouveau toucher referme
+  ✅ [dark] 2 · la fiche est intacte (même arbre, mêmes classes, mêmes styles, même défilement)
+  ✅ [dark] 2 · ✕ referme, et la fiche est toujours là, intacte
+  ✅ [dark] 1-2 · à la souris : ouvre, puis referme
+  ✅ [dark] 3 · toucher le plateau n'ouvre pas la vue
+  ✅ [dark] 3 · toucher le bouton photo n'ouvre pas la vue
+  ✅ [dark] 5 · closeAll referme la vue
+  ✅ [dark] 3 · toucher une DALLE (fiche Promi sans photo) n'ouvre rien, la fiche ne bouge pas
+  ✅ [dark] 4 · une bande qui porte une dalle ne s'annonce pas
+  ✅ [dark] 3 · toucher les dalles d'une fiche de Cercle n'ouvre rien
+  ✅ [dark] 6 · page + sans dessin ni photo : toucher la bande n'ouvre rien
+  ✅ [dark] 6 · page + : la bande qui porte un dessin s'annonce « Voir le dessin en entier »
+  ✅ [dark] 6 · page + : toucher le dessin l'affiche en entier, sur tout l'appareil, fond plein
+  ✅ [dark] 6 · page + : un second toucher referme, la page + est telle quelle (rendu de chaque nœud)
+  ✅ [dark] 5 · aucune erreur de page
+══ light
+  ✅ [light] 4 · la bande qui porte une photo s'annonce « Voir la photo en entier », en commande
+  ✅ [light] 1 · toucher la photo dans la bande l'ouvre en entier
+  ✅ [light] 1 · la vue couvre tout l'appareil et passe devant le reste
+  ✅ [light] 1 · fond plein : la seiche #050302, opacité 1, ni ombre ni dégradé
+  ✅ [light] 1 · l'image entière, sans recadrage (contain)
+  ✅ [light] 1 · on voit le haut ET le bas de la photo, que la bande recadrait (lus sur la capture)
+  ✅ [light] 1 · à côté de l'image, le fond est la seiche (lu sur la capture)
+  ✅ [light] 2 · un nouveau toucher referme
+  ✅ [light] 2 · la fiche est intacte (même arbre, mêmes classes, mêmes styles, même défilement)
+  ✅ [light] 2 · ✕ referme, et la fiche est toujours là, intacte
+  ✅ [light] 1-2 · à la souris : ouvre, puis referme
+  ✅ [light] 3 · toucher le plateau n'ouvre pas la vue
+  ✅ [light] 3 · toucher le bouton photo n'ouvre pas la vue
+  ✅ [light] 5 · closeAll referme la vue
+  ✅ [light] 3 · toucher une DALLE (fiche Promi sans photo) n'ouvre rien, la fiche ne bouge pas
+  ✅ [light] 4 · une bande qui porte une dalle ne s'annonce pas
+  ✅ [light] 3 · toucher les dalles d'une fiche de Cercle n'ouvre rien
+  ✅ [light] 6 · page + sans dessin ni photo : toucher la bande n'ouvre rien
+  ✅ [light] 6 · page + : la bande qui porte un dessin s'annonce « Voir le dessin en entier »
+  ✅ [light] 6 · page + : toucher le dessin l'affiche en entier, sur tout l'appareil, fond plein
+  ✅ [light] 6 · page + : un second toucher referme, la page + est telle quelle (rendu de chaque nœud)
+  ✅ [light] 5 · aucune erreur de page
+
+redteam_entier : 44/44

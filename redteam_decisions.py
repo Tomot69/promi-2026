@@ -37,9 +37,17 @@ for th in ('light', 'dark'):
         D.append((nom, th, 'plateau', SEICHE if th == 'dark' else CREME, 'v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)'))
         D.append((nom, th, 'motMarque', CREME if th == 'dark' else ENCRE, '17 sept. : le texte du plateau à l\'encre en clair'))
     for nom in ('Promi tenue', 'Chiche tenu à deux'):
-        D.append((nom, th, 'corps', TERRE, 'v8 (21 sept.) : la terre, dans les deux thèmes'))
-        D.append((nom, th, 'echeance', AMANDE, 'Q269 (23 sept.) · Q299 : « TENUE » en amande'))
-        D.append((nom, th, 'titre', CREME, 'v8 (21 sept.) : sur la terre, le texte passe crème'))
+        # ⚑ v136 (Tom, 7 oct. 2026, C-059) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_decisions-avant-v136.py) :
+        # « en clair, le corps d'une fiche tenue (Promi et Chiche) devient la crème #F7F0DE ; la terre reste en sombre ;
+        #   la mention TENU en #00341A en clair ». La règle d'avant (« la terre, dans les deux thèmes », v8) ne vaut plus qu'en sombre.
+        if th == 'dark':
+            D.append((nom, th, 'corps', TERRE, 'v8 (21 sept.) + v136 : la terre, en sombre'))
+            D.append((nom, th, 'echeance', AMANDE, 'Q269 (23 sept.) · Q299 : « TENUE » en amande sur la terre'))
+            D.append((nom, th, 'titre', CREME, 'v8 (21 sept.) : sur la terre, le texte passe crème'))
+        else:
+            D.append((nom, th, 'corps', CREME, 'v136 (7 oct., C-059) : en clair, le corps d\'une fiche tenue est la crème'))
+            D.append((nom, th, 'echeance', '#00341A', 'v136 (7 oct., C-059) : la mention TENU en #00341A en clair'))
+            D.append((nom, th, 'titre', ENCRE, 'v136 : sur la crème, le texte est à l\'encre (17 sept.)'))
     if th == 'dark':
         for nom, nat in (('Promi à tenir', 'promi'), ('Promi en cours', 'promi'), ('Chiche lancé', 'chiche'), ('Cercle', 'nuee')):
             D.append((nom, th, 'corps', CORPS_SOMBRE[nat], SRC_TROPICAL if nat == 'promi' else 'v113 (30 sept., Q358) : « option 2 »'))

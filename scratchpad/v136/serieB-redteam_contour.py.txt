@@ -1,0 +1,5 @@
+   [clair] avec le halo : la lumière s'arrête à 124.3 du centre (borne 148.8) · pixels au-delà : 0
+OK [clair] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+   [sombre] avec le halo : la lumière s'arrête à 124.3 du centre (borne 148.8) · pixels au-delà : 0
+OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0
+✅ rien ne dépasse du contour

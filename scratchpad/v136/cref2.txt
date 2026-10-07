@@ -1,0 +1,7 @@
+3 écran(s) repris sur une page fraîche : Studio[d], l'instant arrive[l], panneau des palettes[l]
+E10 l'ordre des palettes (Primesautier en tête, v133) : 18
+6488 propriétés comparées · 36 écrans × 2 thèmes · 135 nœuds sans vis-à-vis (listés, non jugés)
+E11 fiche tenue en clair sur la crème (v136, C-059) : 27
+exceptions nommées : E1 Toile entière 78 canevas · E3 orange des murs 0 · E4 Pelote et halo 4 · E5 violations retirées 22 · E6 trace crème (Q374) 13 · E7 ombre crème en sombre 0 · E8 cobalt, corps sombre Promi (v131) 8 · E9 lilas éclairci et libellé de suppression (v132) 18
+
+✅ — 0 écart(s) de couleur avec la référence v118

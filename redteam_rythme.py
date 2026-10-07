@@ -81,6 +81,9 @@ ATTENDU = {
 #   protège rien. » Son départ varie avec le semis (tiré au hasard à chaque page) : mesuré 2 655 à 3 124 ms, sur v61 comme sur v63.
 #   ± 15 % (au lieu de 8 %) couvre cette variation ; la preuve qu'il prend encore une vraie dérive est dans l'état des lieux (v64).
 TOLERANCE = {('halin', 'depart'): 0.15,
+  # ⚑ v136 (Tom, 7 oct. 2026, C-062) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_rythme-avant-v136.py) : « une arrivée de dalle jusqu'à
+  #   15 % plus longue est acceptée » sous les mondes qui reçoivent l'ampleur à mi-force. ± 15 % à l'arrivée pour eux (8 % avant).
+  ('halin', 'arrivee'): 0.15, ('brouillamini', 'arrivee'): 0.15, ('bobinette', 'arrivee'): 0.15, ('esquille', 'arrivee'): 0.15, ('ritournelle', 'arrivee'): 0.15,
   # ⚑ v73 (Tom) — « une tolérance large pour Ramage et Volubilis, dont la marge vient de la préparation » : le plumage d'arrivée se
   #   peint par tranches, le jardin d'arrivée se construit dans un Worker — le mouvement COMMENCE quand ils sont prêts. Relevé :
   #   Ramage 2 213–2 950 (arrivée) · 2 282–2 957 (départ), après le plancher des tranches de v73 ; Volubilis 2 608–2 832 · 1 963–2 161.
