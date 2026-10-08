@@ -443,30 +443,28 @@ def un_theme(pw, theme):
                 ko('O18 un rechargement ne relance pas, le Promi reste', 'le Promi planté a disparu')
             ok('O18 un rechargement ne relance pas, le Promi reste')
 
-            # ⚑ E1 (Tom, 10 oct. 2026, C-074) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_onboarding-avant-e1.py).
-            #   ENGAGEMENT.md, E1 point 4 : « le point d'entrée existant de obReplay devient “Revoir les gestes” et efface les drapeaux
-            #   geste_vu_*. Ne pas créer d'autre entrée. » La rangée `#replayOnb` ne relance donc PLUS la présentation : au doigt, elle
-            #   efface les drapeaux des gestes, l'onboarding ne revient pas, le Promi planté reste. (Le nom du contrat est gardé.)
-            pg.evaluate("()=>{try{closeAll()}catch(e){}; localStorage.setItem('geste_vu_essai','1'); document.getElementById('settingsScreen').classList.add('show');}")
+            # O19 · « Revoir la présentation », au doigt
+            pg.evaluate("()=>{try{closeAll()}catch(e){}; document.getElementById('settingsScreen').classList.add('show');}")
             pg.wait_for_timeout(700)
             pg.evaluate("()=>{const r=document.getElementById('replayOnb'); if(r) r.scrollIntoView({block:'center'});}")
-            pg.wait_for_timeout(900)
-            r = pg.evaluate("()=>{const e=document.getElementById('replayOnb'); if(!e) return null; const r=e.getBoundingClientRect(); return {x:r.left+r.width/2,y:r.top+r.height/2,t:e.textContent};}")
+            pg.wait_for_timeout(500)
+            r = pg.evaluate("()=>{const e=document.getElementById('replayOnb'); if(!e) return null; const r=e.getBoundingClientRect(); return {x:r.left+r.width/2,y:r.top+r.height/2};}")
             if not r:
                 ko('O19 « Revoir la présentation » relance', '#replayOnb absent des Réglages')
             else:
-                if 'Revoir les gestes' not in (r['t'] or ''): ko('O19 « Revoir la présentation » relance', 'la rangée ne dit pas « Revoir les gestes » : %r' % r['t'])
                 toucher(cdp, r['x'], r['y']); pg.wait_for_timeout(1500)
                 o = pg.evaluate(ONB); e = pg.evaluate(ETAT)
-                if o.get('vu') and not o.get('gone'):
-                    ko('O19 « Revoir la présentation » relance', 'la présentation est revenue : la rangée ne doit plus la relancer (E1)')
-                if pg.evaluate("()=>Object.keys(localStorage).some(k=>k.indexOf('geste_vu_')===0)"):
-                    ko('O19 « Revoir la présentation » relance', 'les drapeaux geste_vu_* ne sont pas effacés')
+                if not o.get('vu') or o.get('gone'):
+                    ko('O19 « Revoir la présentation » relance', 'l\'onboarding ne revient pas')
+                else:
+                    for s in pg.evaluate(ACCUEIL, CHROME):
+                        ko('O19 « Revoir la présentation » relance', 'accueil dessous · ' + s)
                 if not any(p_['title'] == PAROLE for p_ in e['promis']):
-                    ko('O19 « Revoir la présentation » relance', 'le Promi planté a disparu')
+                    ko('O19 « Revoir la présentation » relance', 'le rejeu a effacé le Promi planté')
+                # ⚑ v22 (Tom) : « la Toile doit être vide avant le premier trait » — au rejeu aussi
+                if e['colorees'] != 0:
+                    ko('O19 « Revoir la présentation » relance', 'au rejeu, la Toile n\'est pas vide : %s dalles colorées' % e['colorees'])
             ok('O19 « Revoir la présentation » relance')
-            # la suite (O21 : le compte revient au rejeu) rejoue la présentation par sa FONCTION, qui existe toujours — elle n'a plus d'entrée à l'écran (E1)
-            pg.evaluate("()=>{ try{closeAll()}catch(e){} document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); window.obReplay(); }"); pg.wait_for_timeout(1500)
 
             # ⚑ v23 (Tom, 22 sept.) — « Le panneau du compte doit apparaître à la fin de l'onboarding,
             #   ET TANT QU'AUCUN COMPTE N'EXISTE — pas seulement à la première ouverture. Quelqu'un qui a

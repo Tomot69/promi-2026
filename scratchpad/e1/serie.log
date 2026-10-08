@@ -1,0 +1,29 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 82
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME, NULLE PART (la Pelote comprise)
+  551s  redteam_gestes.py          redteam_gestes : 113/116 / ROUGE : dessin          paraît en situation (après 600 ms sans toucher) · dessin          le drapeau est posé dès l'apparition · A1 · la main jouée au-de
+   39s  redteam_verrou_onboarding.py OK  9 · aucune erreur de page                                                  [] / verrou de l'onboarding : 9/9
+  299s  redteam_lexique.py            · point i / redteam_lexique : 3/3
+   33s  redteam_halo.py            [sombre] D · « PARTAGER MA PELOTE » à 435,47                                   OK  435.46875 / 10/10
+  344s  redteam_bord.py            OK  [carte graphique · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.4 · 0.4 · 0.6 / 8/8
+  122s  redteam_zone.py            OK  [light] aucune erreur de page   / 12 / 12
+   32s  redteam_contour.py         OK [sombre] la Pelote s'arrête à 124.3 du centre (silhouette 121.5) · pixels au-delà : 0 / ✅ rien ne dépasse du contour
+  167s  redteam_plein.py           [densité 3] aucune erreur de page                                              OK   / 97 / 97
+   66s  redteam_souffle.py         OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0 / ❌ le souffle ne tient pas sa loi
+  193s  releve-aura.py             palier 220000 · médiane 48.8 ms · 1512 images · plus longue image pendant l'élan : 183 ms (dont peintre 46.1 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 p
+  115s  redteam_flash.py             ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1967 ms) / 32/32
+  184s  redteam_flash_etat.py      aucune erreur de page                                                      OK   / 10 / 10
+  114s  redteam_dessin.py            ✅ aucune erreur de page (Cercle, page +) / redteam_dessin : 79/79
+   81s  redteam_entier.py            ✅ [light] 5 · aucune erreur de page / redteam_entier : 44/44
+  101s  redteam_partage_dessin.py  OK  [sombre] aucune erreur de page                                                 [] / 34/34
+  173s  redteam_partage_fiche.py   48/48 / ✅ le rond Partager d'une fiche partage son Folio
+  257s  redteam_phrase_fiche.py      ✅ [dark] élision : aucune erreur de page — [] / redteam_phrase_fiche : 74/74
+   71s  redteam_reactif.py           ✅ aucune erreur de page / redteam_reactif : 31/31
+  171s  redteam_accueil.py         [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False / 22/22
+  124s  redteam_murs.py              ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 28/28
+   78s  redteam_decisions.py       Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état) / 85 / 85
+  131s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   90s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  228s  redteam_vide.py            aucune erreur JS                               OK   / 61/61
+  313s  redteam_air.py                fiche à tenir [dark]       #dptTitre«faire les crêpes»        → #dptQuand«À TENIR · DANS 2 JOU /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+  721s  redteam_couleurs_ref.py    canevas non peints d'un côté (comptés, non jugés) : 3 — Nuée défilée[l] vide côté app · Nuée défilée[d] vide côté app · Nuée défilée[d] vide côté réf / ✅ — 0 écart(s) de couleur av

@@ -1,0 +1,76 @@
+  ✅ [light] à soi : la phrase « Je me promets de », le titre « nager le mardi » seul dans son nœud — ('Je me promets de', 'nager le mardi')
+  ✅ [light] à soi : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [light] l'Index ne porte aucune phrase (ses cartes gardent « à … ») — []
+  ✅ [light] le Fil ne porte aucune phrase — []
+  ✅ [light] la fiche d'un Cercle garde sa ligne « avec … », sans phrase — Avec Rachel, Adrien, +3 | 
+  ✅ [light] à soi : aucune erreur de page — []
+  ✅ [light] à une personne : la phrase « Je promets à Rachel de », le titre « faire les crêpes » seul dans son nœud — ('Je promets à Rachel de', 'faire les crêpes')
+  ✅ [light] à une personne : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [light] à une personne : aucune erreur de page — []
+  ✅ [light] à trois personnes : la phrase « Je promets à Rachel, Marion et Nico de », le titre « faire les crêpes » seul dans son nœud — ('Je promets à Rachel, Marion et Nico de', 'faire les crêpes')
+  ✅ [light] à trois personnes : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [light] à trois personnes : aucune erreur de page — []
+  ✅ [light] à six personnes : la phrase « Je promets à Rachel, Marion + 4 personnes de », le titre « faire les crêpes » seul dans son nœud — ('Je promets à Rachel, Marion +\xa04\xa0personnes de', 'faire les crêpes')
+  ✅ [light] à six personnes : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [light] toucher « + 4 personnes » déroule la liste dans la phrase, le titre reste dessous — ('Je promets à Rachel, Marion, Nico, Adrien, Léa et Jo de', 17.4)
+  ✅ [light] à six personnes : aucune erreur de page — []
+  ✅ [light] Promi reçu : la phrase « Rachel me promet de », le titre « nager le mardi » seul dans son nœud — ('Rachel me promet de', 'nager le mardi')
+  ✅ [light] Promi reçu : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [light] Promi reçu : aucune erreur de page — []
+  ✅ [light] Chiche à soi : la phrase « T’es pas chiche de », le titre « courir dimanche » seul dans son nœud — ('T’es pas chiche de', 'courir dimanche')
+  ✅ [light] Chiche à soi : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [light] Chiche à soi : aucune erreur de page — []
+  ✅ [light] Chiche lancé à une personne : la phrase « Marion, t’es pas chiche de », le titre « courir dimanche » seul dans son nœud — ('Marion, t’es pas chiche de', 'courir dimanche')
+  ✅ [light] Chiche lancé à une personne : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [light] Chiche lancé à une personne : aucune erreur de page — []
+  ✅ [light] Chiche lancé à deux : la phrase « Marion et Rachel, vous êtes pas chiches de », le titre « courir dimanche » seul dans son nœud — ('Marion et Rachel, vous êtes pas chiches de', 'courir dimanche')
+  ✅ [light] Chiche lancé à deux : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [light] Chiche lancé à deux : aucune erreur de page — []
+  ✅ [light] Chiche lancé à six : la phrase « Marion, Rachel + 4 personnes, vous êtes pas chiches de », le titre « courir dimanche » seul dans son nœud — ('Marion, Rachel +\xa04\xa0personnes, vous êtes pas chiches de', 'courir dimanche')
+  ✅ [light] Chiche lancé à six : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [light] Chiche lancé à six : aucune erreur de page — []
+  ✅ [light] Chiche reçu : la phrase « Marion me dit : t’es pas chiche de », le titre « courir dimanche » seul dans son nœud — ('Marion me dit\xa0: t’es pas chiche de', 'courir dimanche')
+  ✅ [light] Chiche reçu : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [light] Chiche reçu : aucune erreur de page — []
+  ✅ [light] élision : la phrase « Je me promets d’ », le titre « aller voir la mer » seul dans son nœud — ('Je me promets d’', 'aller voir la mer')
+  ✅ [light] élision : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [light] élision : aucune erreur de page — []
+  ✅ [dark] à soi : la phrase « Je me promets de », le titre « nager le mardi » seul dans son nœud — ('Je me promets de', 'nager le mardi')
+  ✅ [dark] à soi : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [dark] l'Index ne porte aucune phrase (ses cartes gardent « à … ») — []
+  ✅ [dark] le Fil ne porte aucune phrase — []
+  ✅ [dark] la fiche d'un Cercle garde sa ligne « avec … », sans phrase — Avec Rachel, Adrien, +3 | 
+  ✅ [dark] à soi : aucune erreur de page — []
+  ✅ [dark] à une personne : la phrase « Je promets à Rachel de », le titre « faire les crêpes » seul dans son nœud — ('Je promets à Rachel de', 'faire les crêpes')
+  ✅ [dark] à une personne : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [dark] à une personne : aucune erreur de page — []
+  ✅ [dark] à trois personnes : la phrase « Je promets à Rachel, Marion et Nico de », le titre « faire les crêpes » seul dans son nœud — ('Je promets à Rachel, Marion et Nico de', 'faire les crêpes')
+  ✅ [dark] à trois personnes : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [dark] à trois personnes : aucune erreur de page — []
+  ✅ [dark] à six personnes : la phrase « Je promets à Rachel, Marion + 4 personnes de », le titre « faire les crêpes » seul dans son nœud — ('Je promets à Rachel, Marion +\xa04\xa0personnes de', 'faire les crêpes')
+  ✅ [dark] à six personnes : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [dark] toucher « + 4 personnes » déroule la liste dans la phrase, le titre reste dessous — ('Je promets à Rachel, Marion, Nico, Adrien, Léa et Jo de', 17.4)
+  ✅ [dark] à six personnes : aucune erreur de page — []
+  ✅ [dark] Promi reçu : la phrase « Rachel me promet de », le titre « nager le mardi » seul dans son nœud — ('Rachel me promet de', 'nager le mardi')
+  ✅ [dark] Promi reçu : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [dark] Promi reçu : aucune erreur de page — []
+  ✅ [dark] Chiche à soi : la phrase « T’es pas chiche de », le titre « courir dimanche » seul dans son nœud — ('T’es pas chiche de', 'courir dimanche')
+  ✅ [dark] Chiche à soi : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [dark] Chiche à soi : aucune erreur de page — []
+  ✅ [dark] Chiche lancé à une personne : la phrase « Marion, t’es pas chiche de », le titre « courir dimanche » seul dans son nœud — ('Marion, t’es pas chiche de', 'courir dimanche')
+  ✅ [dark] Chiche lancé à une personne : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [dark] Chiche lancé à une personne : aucune erreur de page — []
+  ✅ [dark] Chiche lancé à deux : la phrase « Marion et Rachel, vous êtes pas chiches de », le titre « courir dimanche » seul dans son nœud — ('Marion et Rachel, vous êtes pas chiches de', 'courir dimanche')
+  ✅ [dark] Chiche lancé à deux : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [dark] Chiche lancé à deux : aucune erreur de page — []
+  ✅ [dark] Chiche lancé à six : la phrase « Marion, Rachel + 4 personnes, vous êtes pas chiches de », le titre « courir dimanche » seul dans son nœud — ('Marion, Rachel +\xa04\xa0personnes, vous êtes pas chiches de', 'courir dimanche')
+  ✅ [dark] Chiche lancé à six : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [dark] Chiche lancé à six : aucune erreur de page — []
+  ✅ [dark] Chiche reçu : la phrase « Marion me dit : t’es pas chiche de », le titre « courir dimanche » seul dans son nœud — ('Marion me dit\xa0: t’es pas chiche de', 'courir dimanche')
+  ✅ [dark] Chiche reçu : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.4)
+  ✅ [dark] Chiche reçu : aucune erreur de page — []
+  ✅ [dark] élision : la phrase « Je me promets d’ », le titre « aller voir la mer » seul dans son nœud — ('Je me promets d’', 'aller voir la mer')
+  ✅ [dark] élision : le titre est le plus grand texte de la fiche, la phrase est au-dessus de lui sans le toucher — ('dptTitre', 42, 23, 17.6)
+  ✅ [dark] élision : aucune erreur de page — []
+
+redteam_phrase_fiche : 74/74

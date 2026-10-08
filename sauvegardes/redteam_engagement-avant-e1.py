@@ -137,27 +137,9 @@ with sync_playwright() as p:
     # ── R7
     pg.evaluate("()=>{ try{closeAll()}catch(e){} document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); }"); pg.wait_for_timeout(900)
     toile = pg.evaluate(TEXTES)
-    pg.evaluate("()=>{ try{ GesteFantome.oublierTout(); }catch(e){} openDetail(promises.find(q=>q.title==='faire les crêpes').id); }"); pg.wait_for_timeout(600)   # les drapeaux remis : la main reviendra sur cette fiche (A2)
-    pg.wait_for_timeout(300)
+    pg.evaluate("()=>openDetail(promises.find(q=>q.title==='faire les crêpes').id)"); pg.wait_for_timeout(2200)
     if SONDE: pg.evaluate("()=>{ document.getElementById('dptQuand').textContent='il y a 3 jours'; }")
     fiche = pg.evaluate(TEXTES)
-    # ── A2 — ⚑ E1 : ARMÉ SUR LA MAIN FANTÔME. La fiche à tenir est ouverte (R7 vient de la lire) et personne ne touche : la main paraît après 600 ms.
-    #   On la juge PENDANT qu'elle est à l'écran — elle, ses ancêtres, et chacun de ses tracés.
-    for _i in range(12):
-        if pg.evaluate("()=>!!document.getElementById('gesteFantome')"): break
-        pg.wait_for_timeout(250)
-    main_la = pg.evaluate("()=>{ const c=document.getElementById('gesteFantome'); return !!(c && c.getAttribute('data-eng') && c.querySelector('[data-main]')); }")
-    if SONDE: pg.evaluate("()=>{ const d=document.createElement('div'); d.setAttribute('data-eng','sonde'); d.textContent='sonde'; d.style.cssText='position:absolute;left:20px;top:300px;opacity:.6;transition:opacity .3s'; document.getElementById('device').appendChild(d); }")
-    a2 = pg.evaluate(r"""()=>{ const E=[...document.querySelectorAll('[data-eng]')], f=[];
-      E.forEach(e=>{ const nom=e.getAttribute('data-eng')||e.tagName;
-        for(let q=e;q&&q.nodeType===1&&q!==document.documentElement;q=q.parentElement){ if(+getComputedStyle(q).opacity<1){ f.push(nom+' : opacité '+getComputedStyle(q).opacity+(q===e?'':' (ancêtre)')); break; } }
-        const c=getComputedStyle(e), tp=(c.transitionProperty||''), td=(c.transitionDuration||'0s').split(',').some(x=>parseFloat(x)>0);
-        if(td && /opacity|all/.test(tp)) f.push(nom+' : fondu ('+tp+' '+c.transitionDuration+')');
-        if(c.animationName && c.animationName!=='none') f.push(nom+' : animation '+c.animationName);
-        const col=(c.color.match(/[\d.]+/g)||[]); if(col.length===4 && +col[3]<1) f.push(nom+' : texte à demi transparent '+c.color);
-        [...e.querySelectorAll('*')].forEach(d=>{ const s=getComputedStyle(d); if(+s.opacity<1) f.push(nom+' : un tracé à opacité '+s.opacity); if((s.transitionDuration||'0s').split(',').some(x=>parseFloat(x)>0)) f.push(nom+' : un tracé en fondu'); if(s.animationName&&s.animationName!=='none') f.push(nom+' : un tracé animé en CSS');
-          ['fill','stroke'].forEach(a=>{ const v=d.getAttribute(a); if(v&&/rgba\(|transparent/.test(v)) f.push(nom+' : '+a+' '+v); const o=d.getAttribute('opacity')||d.getAttribute(a+'-opacity'); if(o&&+o<1) f.push(nom+' : '+a+'-opacity '+o); }); }); });
-      return {n:E.length, f:f}; }""")
     r7 = []
     for ou, ds in (('Toile', toile), ('fiche à tenir', fiche)):
         for d in ds:
@@ -181,8 +163,18 @@ with sync_playwright() as p:
     apres = set(pg.evaluate("()=>Object.keys(localStorage)"))
     neuves = sorted(apres - avant); hors = [k for k in neuves if not any(k == c or (c.endswith('_') and k.startswith(c)) for c, _ in BLANCHE_CLES)]
     t('R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche', tenus == 3 and not hors, 'tenus %d/3 · clés nouvelles : %s · hors liste : %s' % (tenus, neuves, hors))
-    t('A2 · armé : la main fantôme est à l\'écran sur la fiche à tenir, elle porte `data-eng`', main_la or SONDE, 'main %s · %d élément(s) `data-eng`' % (main_la, a2['n']))
-    t('A2 · aucune transparence ni fondu (%d élément(s) `data-eng`, tracés compris)' % a2['n'], a2['n'] > 0 and not a2['f'], ' | '.join(a2['f'][:6]))
+    # ── A2
+    if SONDE: pg.evaluate("()=>{ const d=document.createElement('div'); d.setAttribute('data-eng','sonde'); d.textContent='sonde'; d.style.cssText='position:absolute;left:20px;top:300px;opacity:.6;transition:opacity .3s'; document.getElementById('device').appendChild(d); }")
+    a2 = pg.evaluate(r"""()=>{ const E=[...document.querySelectorAll('[data-eng]')], f=[];
+      E.forEach(e=>{ const nom=e.getAttribute('data-eng')||e.tagName;
+        for(let q=e;q&&q.nodeType===1&&q!==document.documentElement;q=q.parentElement){ if(+getComputedStyle(q).opacity<1){ f.push(nom+' : opacité '+getComputedStyle(q).opacity+(q===e?'':' (ancêtre)')); break; } }
+        const c=getComputedStyle(e), tp=(c.transitionProperty||''), td=(c.transitionDuration||'0s').split(',').some(x=>parseFloat(x)>0);
+        if(td && /opacity|all/.test(tp)) f.push(nom+' : fondu ('+tp+' '+c.transitionDuration+')');
+        if(c.animationName && c.animationName!=='none') f.push(nom+' : animation '+c.animationName);
+        const col=(c.color.match(/[\d.]+/g)||[]); if(col.length===4 && +col[3]<1) f.push(nom+' : texte à demi transparent '+c.color); });
+      return {n:E.length, f:f}; }""")
+    if a2['n'] == 0 and not SONDE: inactif('A2 · aucune transparence ni fondu sur les éléments du chantier', "0 élément `data-eng` à ce jour (le chantier n'a encore rien posé à l'écran) — le contrôle s'arme au premier")
+    else: t('A2 · aucune transparence ni fondu (%d élément(s) `data-eng`)' % a2['n'], not a2['f'], ' | '.join(a2['f'][:6]))
     t('aucune erreur de page (écrans parcourus)', not er, er[:3])
     ctx.close()
     # ══ R6 : l'onboarding, stockage vierge, étape par étape ══

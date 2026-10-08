@@ -1,0 +1,25 @@
+
+
+  ❌  18 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   Réglages [dark]            #openStudio2«Le Studiovisuels & h» → #replayOnb«Revoir la présentat
+   Réglages [dark]            .v.ac«visuels & humeurs ›»         → #replayOnb«Revoir la présentat
+   Réglages [dark]            .k«Le Studio»                      → #replayOnb«Revoir la présentat
+   Réglages [dark]            #replayOnb«Revoir la présentati»   → .grouplab«Partager»
+   Réglages [dark]            .v.ac«rejouer ›»                   → #setInvite«Inviter sur Promi›»
+   Réglages [dark]            .k«Revoir la présentati»           → .grouplab«Partager»
+   Réglages [light]           #openStudio2«Le Studiovisuels & h» → #replayOnb«Revoir la présentat
+   Réglages [light]           .v.ac«visuels & humeurs ›»         → #replayOnb«Revoir la présentat
+   Réglages [light]           .k«Le Studio»                      → #replayOnb«Revoir la présentat
+   Réglages [light]           #replayOnb«Revoir la présentati»   → .grouplab«Partager»
+   Réglages [light]           .v.ac«rejouer ›»                   → #setInvite«Inviter sur Promi›»
+   Réglages [light]           .k«Revoir la présentati»           → .grouplab«Partager»
+   fiche à tenir [dark]       #dptTrace«trace pour tenir»        → .kr-n«Rachel»
+   fiche à tenir [dark]       .kr-n«Rachel»                      → #dptQui«Je promets à Rachel »
+   fiche à tenir [dark]       .kr-n«Toi»                         → #dptQui«Je promets à Rachel »
+   fiche à tenir [dark]       #dptQui«Je promets à Rachel »      → #dptTitre«faire les crêpes»
+   fiche à tenir [dark]       .«Rachel»                          → #dptTitre«faire les crêpes»
+   fiche à tenir [dark]       #dptTitre«faire les crêpes»        → #dptQuand«À TENIR · DANS 2 JOU
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

@@ -1,0 +1,153 @@
+OK  0 · le composant existe, un seul : `GesteFantome.montrer` et `.oublier`      
+OK  0 · les valeurs décidées : 600 ms, 900 ms, deux fois                         {'INACTIF': 600, 'PAUSE': 900, 'TOURS': 2}
+OK  0 · l'inventaire porte au moins : tenir, chiche, noyau, pelote, dessin — et l'Aura (E2bis) non branchée ['tenir', 'chiche', 'planter', 'pelote', 'noyau', 'fil', 'studio-monde', 'studio-couleur', 'bande', 'dessin']
+OK  0 · chaque geste branché a sa mise en situation dans ce juge                 []
+
+     INVENTAIRE DES GESTES
+     tenir              la fiche d’un Promi                BRANCHÉ   la fiche est ouverte sur un Promi pas encore tenu
+                        geste : tracer le trait, du rond de gauche vers le milieu
+     chiche             la fiche d’un Chiche               BRANCHÉ   la fiche est ouverte sur un Chiche pas encore tenu
+                        geste : tracer sa moitié du trait
+     planter            la page +                          BRANCHÉ   la page + est ouverte sur une nature (Promi, Chiche ou Cercle), Peaufiner fermé
+                        geste : tracer le trait pour planter (entier pour un Cercle)
+     pelote             l’Aura                             BRANCHÉ   l’Aura est ouverte, la Pelote est à l’écran
+                        geste : poser le doigt sur la Pelote et glisser : elle se creuse et tourne
+     noyau              Partager                           BRANCHÉ   le Noyau est affiché sur l’image à partager (hors Mon Folio)
+                        geste : appui long (260 ms) sur le Noyau, puis le déplacer
+     fil                le Fil                             BRANCHÉ   le Fil est ouvert et porte au moins un bandeau
+                        geste : appui maintenu sur un bandeau : il déplie ce qu’on peut y faire
+     studio-monde       le Studio                          BRANCHÉ   le Studio est ouvert
+                        geste : glisser de côté sur la Toile : le monde suivant
+     studio-couleur     le Studio                          BRANCHÉ   le Studio est ouvert, le glissement de monde déjà montré
+                        geste : appui maintenu (480 ms) puis glisser : de côté la teinte, de haut en bas la palette
+     bande              la fiche (Promi, Chiche, Cercle)   BRANCHÉ   la bande haute porte une photo ou un dessin posé
+                        geste : toucher la bande : la photo ou le dessin en entier
+     dessin             le mode dessin                     BRANCHÉ   le mode dessin est ouvert, la surface encore vide
+                        geste : tracer sur la surface
+     aura-apparait      l’accueil                          non       l’Aura paraît dans la barre (au premier tenu)
+                        geste : la main désigne l’Aura
+                        raison : appartient à E2bis (C-076) : l’identifiant est réservé, rien n’est branché
+     pelote-folio       Partager · Mon Folio               non       la Pelote est posée dans le Folio
+                        geste : appui long (380 ms) sur la Pelote, puis la déplacer
+                        raison : le Folio ne publie pas la place de la Pelote à l’écran : la main ne saurait pas où se poser
+     toile-pince        l’accueil                          non       la Toile est à l’écran
+                        geste : pincer pour approcher ou reculer ; double toucher pour recadrer
+                        raison : geste à deux doigts, et sur la Toile : la main fantôme n’a qu’un doigt, et rien ne se pose sur la Toile (A1)
+     fiche-cercle-defile la fiche d’un Cercle               non       le fil du Cercle dépasse l’écran
+                        geste : glisser vers le haut : le fil défile
+                        raison : un défilement ordinaire, pas un geste à apprendre
+
+OK  tenir           paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'tenir', 'mode': 'anime'}
+OK  tenir           A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  tenir           A1 : la couche ne prend aucun toucher                        none
+OK  tenir           le drapeau est posé dès l'apparition                         ['geste_vu_tenir']
+OK  tenir           elle joue, puis part d'elle-même (deux passages au plus)     main [14, 262] → [163, 299] · encore là : False
+OK  tenir           disparaît au premier toucher, sans fondu                     
+OK  tenir           après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_tenir']}
+OK  tenir           « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  tenir           après le rejeu : de retour                                   {'la': True, 'id': 'tenir', 'devant': None}
+OK  tenir           aucune erreur de page                                        []
+OK  chiche          paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'chiche', 'mode': 'anime'}
+OK  chiche          A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  chiche          A1 : la couche ne prend aucun toucher                        none
+OK  chiche          le drapeau est posé dès l'apparition                         ['geste_vu_chiche']
+OK  chiche          elle joue, puis part d'elle-même (deux passages au plus)     main [14, 262] → [153, 297] · encore là : False
+OK  chiche          disparaît au premier toucher, sans fondu                     
+OK  chiche          après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_chiche']}
+OK  chiche          « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  chiche          après le rejeu : de retour                                   {'la': True, 'id': 'chiche', 'devant': None}
+OK  chiche          aucune erreur de page                                        []
+OK  planter         paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'planter', 'mode': 'anime'}
+OK  planter         A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  planter         A1 : la couche ne prend aucun toucher                        none
+OK  planter         le drapeau est posé dès l'apparition                         ['geste_vu_planter']
+OK  planter         elle joue, puis part d'elle-même (deux passages au plus)     main [15, 263] → [174, 295] · encore là : False
+OK  planter         disparaît au premier toucher, sans fondu                     
+OK  planter         après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_planter']}
+OK  planter         « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  planter         après le rejeu : de retour                                   {'la': True, 'id': 'planter', 'devant': None}
+OK  planter         aucune erreur de page                                        []
+OK  pelote          paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'pelote', 'mode': 'anime'}
+OK  pelote          A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  pelote          A1 : la couche ne prend aucun toucher                        none
+OK  pelote          le drapeau est posé dès l'apparition                         ['geste_vu_pelote']
+OK  pelote          elle joue, puis part d'elle-même (deux passages au plus)     main [129, 265] → [212, 243] · encore là : False
+OK  pelote          disparaît au premier toucher, sans fondu                     
+OK  pelote          après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_pelote']}
+OK  pelote          « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  pelote          après le rejeu : de retour                                   {'la': True, 'id': 'pelote', 'devant': None}
+OK  pelote          aucune erreur de page                                        []
+OK  noyau           paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'noyau', 'mode': 'anime'}
+OK  noyau           A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  noyau           A1 : la couche ne prend aucun toucher                        none
+OK  noyau           le drapeau est posé dès l'apparition                         ['geste_vu_noyau']
+OK  noyau           elle joue, puis part d'elle-même (deux passages au plus)     main [179, 392] → [138, 334] · encore là : False
+OK  noyau           disparaît au premier toucher, sans fondu                     
+OK  noyau           après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_noyau']}
+OK  noyau           « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  noyau           après le rejeu : de retour                                   {'la': True, 'id': 'noyau', 'devant': None}
+OK  noyau           aucune erreur de page                                        []
+OK  fil             paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'fil', 'mode': 'anime'}
+OK  fil             A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  fil             A1 : la couche ne prend aucun toucher                        none
+OK  fil             le drapeau est posé dès l'apparition                         ['geste_vu_fil']
+OK  fil             elle joue, puis part d'elle-même (deux passages au plus)     main [179, 273] → [179, 273] · encore là : False
+OK  fil             disparaît au premier toucher, sans fondu                     
+OK  fil             après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_fil']}
+OK  fil             « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  fil             après le rejeu : de retour                                   {'la': True, 'id': 'fil', 'devant': None}
+OK  fil             aucune erreur de page                                        []
+OK  studio-monde    paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'studio-monde', 'mode': 'anime'}
+OK  studio-monde    A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  studio-monde    A1 : la couche ne prend aucun toucher                        none
+OK  studio-monde    le drapeau est posé dès l'apparition                         ['geste_vu_studio-monde']
+OK  studio-monde    elle joue, puis part d'elle-même (deux passages au plus)     main [257, 302] → [116, 301] · encore là : False
+OK  studio-monde    disparaît au premier toucher, sans fondu                     
+OK  studio-monde    après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_studio-couleur', 'geste_vu_studio-monde']}
+OK  studio-monde    « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  studio-monde    après le rejeu : de retour                                   {'la': True, 'id': 'studio-monde', 'devant': None}
+OK  studio-monde    aucune erreur de page                                        []
+OK  studio-couleur  paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'studio-couleur', 'mode': 'anime'}
+OK  studio-couleur  A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  studio-couleur  A1 : la couche ne prend aucun toucher                        none
+OK  studio-couleur  le drapeau est posé dès l'apparition                         ['geste_vu_studio-couleur', 'geste_vu_studio-monde']
+OK  studio-couleur  elle joue, puis part d'elle-même (deux passages au plus)     main [140, 302] → [143, 302] · encore là : False
+OK  studio-couleur  disparaît au premier toucher, sans fondu                     
+OK  studio-couleur  après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_studio-couleur', 'geste_vu_studio-monde']}
+OK  studio-couleur  « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  studio-couleur  après le rejeu : de retour                                   {'la': True, 'id': 'studio-couleur', 'devant': None}
+OK  studio-couleur  aucune erreur de page                                        []
+OK  bande           paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'bande', 'mode': 'anime'}
+OK  bande           A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  bande           A1 : la couche ne prend aucun toucher                        none
+OK  bande           le drapeau est posé dès l'apparition                         ['geste_vu_bande']
+OK  bande           elle joue, puis part d'elle-même (deux passages au plus)     main [179, 152] → [179, 152] · encore là : False
+OK  bande           disparaît au premier toucher, sans fondu                     
+OK  bande           après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_bande']}
+OK  bande           « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  bande           après le rejeu : de retour                                   {'la': True, 'id': 'bande', 'devant': None}
+OK  bande           aucune erreur de page                                        []
+OK  dessin          paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'dessin', 'mode': 'anime'}
+OK  dessin          A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  dessin          A1 : la couche ne prend aucun toucher                        none
+OK  dessin          le drapeau est posé dès l'apparition                         ['geste_vu_dessin', 'geste_vu_tenir']
+OK  dessin          elle joue, puis part d'elle-même (deux passages au plus)     main [93, 310] → [188, 293] · encore là : False
+OK  dessin          disparaît au premier toucher, sans fondu                     
+OK  dessin          après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_dessin', 'geste_vu_tenir']}
+OK  dessin          « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  dessin          après le rejeu : de retour                                   {'la': True, 'id': 'dessin', 'devant': None}
+OK  dessin          aucune erreur de page                                        []
+OK  tenir           mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [14, 269], 'fleche': True}
+OK  chiche          mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [14, 269], 'fleche': True}
+OK  planter         mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [14, 263], 'fleche': True}
+OK  pelote          mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [129, 265], 'fleche': True}
+OK  noyau           mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [179, 392], 'fleche': True}
+OK  fil             mouvement réduit : la main immobile (un appui : pas de trajet) {'la': True, 'mode': 'immobile', 'main': [179, 273], 'fleche': False}
+OK  studio-monde    mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [257, 302], 'fleche': True}
+OK  studio-couleur  mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [140, 302], 'fleche': True}
+OK  bande           mouvement réduit : la main immobile (un appui : pas de trajet) {'la': True, 'mode': 'immobile', 'main': [179, 159], 'fleche': False}
+OK  dessin          mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [93, 310], 'fleche': True}
+OK  sombre · la main est à la crème, pleine, sur le fond du mode                 #F7F0DE #050302
+OK  A1 · la main jouée au-dessus de la Toile : aucune dalle ne bouge, le canevas est le même 3932251685 3932251685 3932251685
+
+redteam_gestes : 116/116

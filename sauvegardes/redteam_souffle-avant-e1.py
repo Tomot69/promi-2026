@@ -81,7 +81,7 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     for th in ('light', 'dark'):
         ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=S)
-        ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9');localStorage.setItem('geste_vu_pelote','1')}catch(e){}")   # E1 : la main fantôme du geste « pelote » est déjà vue — ce juge lit la lumière de la Pelote à l'image, la main passerait devant
+        ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
         pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + ARG); pg.wait_for_timeout(7000)
         pg.evaluate("(t)=>{closeAll();setTheme(t)}", th); pg.wait_for_timeout(800)
         pg.evaluate(OUVRE); pg.evaluate("()=>{try{_aura.fige(true)}catch(e){}}"); affiche(pg)
@@ -112,7 +112,7 @@ with sync_playwright() as p:
                 % (th, T[i_max], DEPART + MONTE, T[i_bas], DEPART + CYCLE, amp))
         ctx.close()
     ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=S, reduced_motion='reduce')
-    ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9');localStorage.setItem('geste_vu_pelote','1')}catch(e){}")   # E1 : la main fantôme du geste « pelote » est déjà vue — ce juge lit la lumière de la Pelote à l'image, la main passerait devant
+    ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
     pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + ARG); pg.wait_for_timeout(7000)
     pg.evaluate("()=>{closeAll();setTheme('light')}"); pg.wait_for_timeout(800)
     pg.evaluate(OUVRE); affiche(pg); attend(pg, 2.0); g = geo(pg)

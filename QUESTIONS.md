@@ -8535,3 +8535,11 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Q423 — À SAVOIR (R1, A4)** : « échéance » n'est affiché sur aucun des 34 écrans parcourus ; il RESTE donc dans la liste interdite. Si un écran non parcouru l'emploie, le juge le dira.
 - **Q424 — À SAVOIR** : `redteam_engagement` tourne sur le serveur du projet (127.0.0.1:8752), pas en `file://` comme l'écrit le document : c'est la règle du dépôt, et le moteur se charge depuis un second fichier.
 
+## E1 — les gestes appris en situation (10 oct. 2026)
+- **Q421 — TRANCHÉE (Tom)** : R6 reste rouge jusqu'à E2, rien n'est ajouté avant. **Q422 — TRANCHÉE (Tom)** : R3 vise le cadre de la Pelote ; les chiffres de la légende relèvent de C-036.
+- **Q425 — À VALIDER** : les trois textes du lot (« Revoir les gestes », « revoir › », « c’est remis › »), provisoires, dans `TEXTES_ENGAGEMENT`.
+- **Q426 — À SAVOIR** : « Revoir les gestes » ne relance plus la présentation (E1 point 4 : la rangée « devient »). La présentation n'a donc plus d'entrée à l'écran ; sa fonction (`obReplay`) existe toujours. Le panneau du compte reste joignable par sa porte des Réglages (« Garder ta Toile »).
+- **Q427 — À TRANCHER** : quatre gestes sont recensés sans être branchés. Deux pourraient l'être si Tom le veut : la Pelote déplacée dans Mon Folio (il faudrait que le Folio publie sa place), et le pincement de la Toile (deux doigts — et la main passerait au-dessus de la Toile).
+- **Q428 — À VALIDER (un choix de ma part)** : un seul geste est montré par passage sur un écran ; le suivant (au Studio : la couleur après le monde) attend le prochain toucher.
+- **Q429 — À VALIDER** : le dessin de la main (un index tendu, 40 × 52 pt) et sa place — le bout du doigt sur le trajet.
+

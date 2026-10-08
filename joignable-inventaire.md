@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 289 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 416 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 289 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 419 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -178,7 +178,7 @@ Source : `app.html`. 289 éléments interactifs relevés sur 36 écrans (mode cl
 | Réglages | `#logoutCard` | natif | 195, 472 | 342 × 64 | oui |  |
 | Réglages | `#delAccount` | natif | 195, 472 | 342 × 64 | oui |  |
 | Réglages | `#cguCard` | natif | 195, 532 | 342 × 64 | oui |  |
-| Réglages | `#replayOnb` | on… | 195, 548 | 342 × 64 | oui |  |
+| Réglages | `#replayOnb` | natif | 195, 548 | 342 × 64 | oui |  |
 | Réglages | `#polCard` | natif | 195, 610 | 342 × 64 | oui |  |
 | Réglages | `#setInvite` | natif | 195, 664 | 342 × 64 | oui |  |
 | Réglages | `#aboutCard` | natif | 195, 688 | 342 × 64 | oui |  |

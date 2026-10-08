@@ -116,6 +116,32 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ E1 (10 oct. 2026) — LES GESTES APPRIS EN SITUATION : LA MAIN FANTÔME. (ENGAGEMENT.md E1, corrigé par A1, A2, A3 ; C-074.)
+> **Fait, et arrêté là : E2 et E2bis viennent sur l'ordre de Tom.** Q421 (R6 reste rouge jusqu'à E2) et Q422 (R3 = le cadre de la Pelote ; les
+> chiffres de la légende relèvent de C-036) sont tranchées.
+> **⚑ UN SEUL COMPOSANT, `window.GesteFantome`** (`lot-E1-GESTES`) : `montrer(idGeste, elementCible, chemin)` · `oublier(idGeste)` ·
+> `oublierTout()` · `inventaire()` · `etat()`. La main paraît après **600 ms** sans toucher sur l'écran concerné, joue le geste **deux fois
+> au plus** (**900 ms** de pause), part **au premier toucher** n'importe où ; le drapeau `geste_vu_<id>` est posé **dès l'apparition** ;
+> **un seul geste par passage sur un écran** (le suivant attend le prochain toucher).
+> **⚑ CE QUI PRIME** : A2 — la main est **au trait plein, opaque, à l'encre du mode** (encre `#201908` sur fond crème en clair, crème sur
+> seiche en sombre), **sans aucun fondu** : elle paraît et disparaît en une image ; elle porte `data-eng`. Le mouvement est écrit en
+> JavaScript (un `transform` par image), jamais une transition ni une animation CSS — sinon A2 rougit. A1 — la couche `#gesteFantome` est
+> posée dans `#device`, AU-DESSUS de l'écran, `pointer-events:none` : rien sur la Toile, aucune dalle ne bouge. « Réduire les animations » :
+> la main immobile au départ du geste, avec une flèche du trajet.
+> **⚑ L'INVENTAIRE (dans le lot, `GESTES`)** — dix BRANCHÉS : `tenir` (fiche d'un Promi pas encore tenu : le trait suit l'onde déclarée par
+> `#dpTrameCv[data-trait]`) · `chiche` · `planter` (page +, onde de `_ppEcran()`) · `pelote` (Aura) · `noyau` (Partager, quand `shNoyau`) ·
+> `fil` (appui maintenu sur un bandeau) · `studio-monde` puis `studio-couleur` · `bande` (photo ou dessin dans la bande) · `dessin` (surface
+> vide du mode dessin). Quatre RECENSÉS, non branchés, avec leur raison : **`aura-apparait` (réservé à E2bis, ne pas le brancher avant)**,
+> `pelote-folio`, `toile-pince`, `fiche-cercle-defile`. Un geste neuf = une ligne dans `GESTES` et sa mise en situation dans le juge.
+> **⚑ « REVOIR LES GESTES »** : la rangée `#replayOnb` des Réglages (l'ancienne « Revoir la présentation ») efface les drapeaux `geste_vu_*`
+> et **ne relance plus la présentation** — aucune autre entrée, rien au Studio. `redteam_onboarding` O19 réécrit (original en sauvegarde).
+> **Juges** : **`redteam_gestes.py`** (116 contrôles : pour chaque geste branché, apparition, A2, A1, drapeau, départ d'elle-même, départ au
+> toucher, absente après rechargement, de retour après le rejeu au doigt ; mouvement réduit ; sombre ; la Toile inchangée ; captures dans
+> `planche-e1/` ; `--sonde` rougit A2 ; `--seul=<id>`) ; **`redteam_engagement`** : A2 est ARMÉ sur la main affichée (10/11, R6 rouge).
+> ⚠ **Trois pièges du lot** : ① le Studio et le partage mettent plusieurs secondes à se bâtir : un juge qui attend 4 s y croit la main
+> absente ; ② le Studio garde `.show` (§8) : « ouvrir les Réglages » depuis lui touche le Studio ; ③ **tout juge ouvre l'app sur un stockage
+> neuf : la main paraît donc dans SES captures** (Aura, fiche, page +) pendant ses quatre premières secondes.
+
 ### ⚑ E0 (9 oct. 2026) — LE CHANTIER D'ENGAGEMENT : LES GARDE-FOUS. (`ENGAGEMENT.md` ; LES AMENDEMENTS A1 À A7, EN FIN DE DOCUMENT, PRIMENT.)
 > **Le document est à la racine ; E0 est fait, seul (C-073). E1 n'est pas commencé.** Les lots : C-073 à C-081 ; **Délier : C-082** (C-027 ne
 > porte plus que le relevé). Ordre (A7) : E0 → E1 → E2 et E2bis → E3 → **point d'arrêt** → E4 → E5 → E6A → validation de Tom → E6B.
@@ -2113,6 +2139,7 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
+python3 redteam_gestes.py      # 116 — E1 (C-074) : la main fantôme, geste par geste (apparition, A2, A1, drapeau, rechargement, « Revoir les gestes » au doigt, mouvement réduit). ≈ 25 min ; --seul=<id> ; --sonde rougit.
 python3 redteam_engagement.py  # E0 (C-073) — la grille du chantier d'engagement : R1 lexique + A3 (aucun impératif), R2, R3, R4 (inactif avant E3), R5, R6, R7, A2. À PASSER À LA FIN DE CHAQUE LOT E. --sonde : il rougit. ⚠ 8/9 à la naissance : R6 rouge jusqu'à E2.
 python3 redteam_verrou_onboarding.py # 9 — E0 : stockage vierge → l'onboarding s'affiche ; terminé ; deux rechargements → il ne revient pas. --sonde : il rougit.
 python3 redteam_bord.py        # 8 — v137 (C-002) : la Pelote n'a pas de liseré — ΔE médian ≤ 5 entre la bande du bord et l'intérieur voisin, quatre palettes × deux thèmes × trois ouvertures (@3x). 3/8 sur l'état d'avant.
