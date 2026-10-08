@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 413 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 289 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 416 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -171,6 +171,7 @@ Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode cl
 | Réglages | `#setNameInput` | natif | 189, 287 | 45 × 35 | oui |  |
 | Réglages | `#openPlusTop` | on… | 195, 379 | 342 × 90 | oui |  |
 | Réglages | `#openStudio2` | on… | 195, 470 | 342 × 64 | oui |  |
+| Réglages | `#notifCard` | natif | 195, 472 | 342 × 64 | oui |  |
 | Réglages | `#privCard` | on… | 195, 472 | 342 × 64 | oui |  |
 | Réglages | `#resetData` | on… | 195, 472 | 342 × 64 | oui |  |
 | Réglages | `#compteCard` | natif | 195, 472 | 342 × 64 | oui |  |
@@ -181,7 +182,7 @@ Source : `app.html`. 288 éléments interactifs relevés sur 36 écrans (mode cl
 | Réglages | `#polCard` | natif | 195, 610 | 342 × 64 | oui |  |
 | Réglages | `#setInvite` | natif | 195, 664 | 342 × 64 | oui |  |
 | Réglages | `#aboutCard` | natif | 195, 688 | 342 × 64 | oui |  |
-| Réglages | `#notifCard` | natif | 195, 780 | 342 × 64 | oui |  |
+| Réglages | `#setMention` | natif | 195, 742 | 342 × 64 | oui |  |
 | Studio | `div#stpHaut>div.closeb«✕ Fermer»` | on… | 293, 70 | 91 × 19 | oui |  |
 | Studio | `#studioScreen` | écouteur | 195, 422 | 422 × 876 | oui |  |
 | Studio | `div#stpTons>div.stp-ton«»` | on… | 75, 620 | 54 × 54 | oui |  |

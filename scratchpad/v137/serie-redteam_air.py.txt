@@ -1,0 +1,33 @@
+
+
+  ❌  26 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   Réglages [dark]            #setInvite«Inviter sur Promi›»     → .grouplab«App»
+   Réglages [dark]            .k«Inviter sur Promi»              → .grouplab«App»
+   Réglages [dark]            #notifCard«Notifications›»         → #privCard«Vie privéeprivé & pa
+   Réglages [dark]            .k«Notifications»                  → #privCard«Vie privéeprivé & pa
+   Réglages [light]           #setInvite«Inviter sur Promi›»     → .grouplab«App»
+   Réglages [light]           .k«Inviter sur Promi»              → .grouplab«App»
+   Réglages [light]           #notifCard«Notifications›»         → #privCard«Vie privéeprivé & pa
+   Réglages [light]           .k«Notifications»                  → #privCard«Vie privéeprivé & pa
+   chiche lancé [dark]        .kr-n«Marion»                      → #dptQui«À Marion · avec Rach»
+   chiche lancé [dark]        .kr-n«Rachel»                      → #dptQui«À Marion · avec Rach»
+   chiche lancé [dark]        .kr-n«Toi»                         → #dptQui«À Marion · avec Rach»
+   chiche lancé [dark]        #dptQui«À Marion · avec Rach»      → #dptTitre«courir dimanche»
+   chiche lancé [dark]        .«Marion»                          → #dptTitre«courir dimanche»
+   chiche lancé [dark]        .«Rachel»                          → #dptTitre«courir dimanche»
+   chiche lancé [light]       .kr-n«Marion»                      → #dptQui«À Marion · avec Rach»
+   chiche lancé [light]       .kr-n«Rachel»                      → #dptQui«À Marion · avec Rach»
+   chiche lancé [light]       .kr-n«Toi»                         → #dptQui«À Marion · avec Rach»
+   chiche lancé [light]       #dptQui«À Marion · avec Rach»      → #dptTitre«courir dimanche»
+   chiche lancé [light]       .«Marion»                          → #dptTitre«courir dimanche»
+   chiche lancé [light]       .«Rachel»                          → #dptTitre«courir dimanche»
+   fiche chiche [dark]        .kr-n«Marion»                      → #dptQui«À Marion · chiche de»
+   fiche chiche [dark]        .kr-n«Toi»                         → #dptQui«À Marion · chiche de»
+   fiche chiche [dark]        #dptQui«À Marion · chiche de»      → #dptTitre«le grand plongeoir»
+   fiche chiche [light]       .kr-n«Marion»                      → #dptQui«À Marion · chiche de»
+   fiche chiche [light]       .kr-n«Toi»                         → #dptQui«À Marion · chiche de»
+   fiche chiche [light]       #dptQui«À Marion · chiche de»      → #dptTitre«le grand plongeoir»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

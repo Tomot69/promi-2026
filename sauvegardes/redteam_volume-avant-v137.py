@@ -23,11 +23,7 @@ ICI=os.path.dirname(os.path.abspath(__file__))
 # v119 (Tom) : l'écho de v118 est RETIRÉ (refusé, comme la couronne et le halo flou). La mise en valeur est un MINI HALO qui prolonge
 # la lumière de la Pelote, et une ombre portée (en sombre : une flaque de lumière dont l'ombre est le creux). Leurs deux peintres
 # (window._haloPelote, window._flaquePelote) ne sont permis que dans leur bloc et à leur unique appel (l'Aura).
-# ⚑ v137 (Tom, 8 oct. 2026, C-071) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_volume-avant-v137.py) : « Le halo et l'ombre de la Pelote
-# sortent de la liste blanche des exceptions. Il ne reste que le flou des murs de Ma Parole !. […] plus aucun effet autour de la Pelote. »
-# LA LISTE BLANCHE EST VIDE : la Pelote n'a plus ni halo, ni ombre, ni couronne, ni flaque — et leurs peintres ne doivent plus exister.
-# (Le flou des murs de Ma Parole ! est un `filter:blur`, que ce juge n'a jamais compté : il est jugé par redteam_murs.)
-BLANCHE={}
+BLANCHE={'lot-V114-PELOTE-css':'*', 'lot-V115-PELOTE':'*', 'lot-V119-PELOTE':'*', 'lot-AURA-PELOTE':{'_couronnePelote','_haloPelote','_flaquePelote'}}
 def permis(lot, motif):
     b=BLANCHE.get(lot); return b=='*' or (b is not None and any(motif.startswith(m) for m in b))
 MOTIFS=re.compile(r"_couronnePelote|_haloPelote|_flaquePelote|(?:repeating-)?(?:radial|linear|conic)-gradient\(|create(?:Radial|Linear|Conic)Gradient|shadowBlur|shadowColor|drop-shadow\(|text-shadow\s*:[^;}\"']*|box-shadow\s*:[^;}\"']*")
@@ -91,9 +87,10 @@ def main():
         k=cle(o)
         if vu[k]<dette[k]: vu[k]+=1
         else: neuf.append(k)
-    print('liste blanche : VIDE (v137) —', blanche, 'occurrence(s) exemptée(s)')
+    print('liste blanche (la Pelote) :', blanche, 'occurrence(s) dans', ', '.join(sorted(BLANCHE)))
     print('dette de naissance :', sum(dette.values()), '· retrouvée :', sum(vu.values()), '· soldée depuis :', sum(dette.values())-sum(vu.values()))
+    if blanche==0: print('✗ la Pelote ne porte plus son halo ni son ombre'); neuf.append('(liste blanche vide)')
     for k in neuf: print('  ✗ NOUVEAU VOLUME :', k)
-    print(('✅ AUCUN VOLUME, NULLE PART (la Pelote comprise)' if not neuf else '❌ %d volume(s) nouveau(x)'%len(neuf)))
+    print(('✅ AUCUN VOLUME HORS DE LA PELOTE' if not neuf else '❌ %d volume(s) hors de la Pelote'%len(neuf)))
     sys.exit(1 if neuf else 0)
 if __name__=='__main__': main()

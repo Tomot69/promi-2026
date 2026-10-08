@@ -1,0 +1,10 @@
+OK  [clair · signal] bord ↔ intérieur voisin : ΔE médian ≤ 5   1.0 · 4.0 · 2.3
+OK  [clair · candide] bord ↔ intérieur voisin : ΔE médian ≤ 5  3.3 · 1.5 · 1.5
+KO  [clair · irascible] bord ↔ intérieur voisin : ΔE médian ≤ 5 6.5 · 5.1 · 5.8
+KO  [clair · taciturne] bord ↔ intérieur voisin : ΔE médian ≤ 5 6.0 · 5.8 · 2.1
+KO  [sombre · signal] bord ↔ intérieur voisin : ΔE médian ≤ 5  5.4 · 4.9 · 4.8
+KO  [sombre · candide] bord ↔ intérieur voisin : ΔE médian ≤ 5 5.0 · 5.0 · 5.4
+OK  [sombre · irascible] bord ↔ intérieur voisin : ΔE médian ≤ 5 1.3 · 1.6 · 4.2
+KO  [sombre · taciturne] bord ↔ intérieur voisin : ΔE médian ≤ 5 5.9 · 5.4 · 2.5
+
+3/8

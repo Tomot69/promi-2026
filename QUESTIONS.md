@@ -8509,3 +8509,17 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   Ramage est retiré (son ampleur déplaçait Guingois au banc) : le garder dehors, ou chercher le mécanisme ?
 - **Q415 — TRANCHÉE (C-071, Tom, 7 oct.)** : « oui tu as raison du coup enlève tout ce qu'il y a comme effet autour de la Pelote pour le moment,
   ne masque pas, supprime. » Halo et ombre supprimés ; pas de points (la loi des points garde sa seule exception).
+
+## v137 (8 oct. 2026)
+- **Q412 — TRANCHÉE (Tom, 8 oct.)** : les formes nommées (« Je promets à Rachel de… ») sont validées. Chiche : à soi « T’es pas chiche de » ; lancé
+  « Marion, t’es pas chiche de » (« Marion et Rachel, vous êtes pas chiches de », « … + x personnes » au-delà de trois) ; reçu « Marion me dit : t’es pas chiche de ».
+- **Q413 — TRANCHÉE (Tom, 8 oct.)** : le liseré du bord de la Pelote part aussi ; ΔE ≤ 5 entre la bande du bord et l'intérieur voisin (`redteam_bord`).
+- **Q414 — TRANCHÉE (Tom, 8 oct.)** : Ramage, Mascaret, Chamade et Volubilis restent hors de l'ampleur ; rien n'est refigé.
+- **Q416 — À VALIDER (C-068)** : les mots du réglage — « Mention sur un dessin partagé », « affichée », « masquée » (les plus sobres, §2). Et la place :
+  le groupe « Partager » des Réglages, sous « Inviter sur Promi ».
+- **Q417 — À VALIDER (C-069)** : un Chiche lancé « à Marion, avec Rachel » : les deux sont interpellées dans une seule liste (« Marion et Rachel, vous
+  êtes pas chiches de ») — la forme de Tom ne distingue pas « à » de « avec ».
+- **Q418 — À VALIDER (C-068)** : sur l'image d'un dessin partagé, la mention est en capitales Gilbert AU-DESSUS du logo, tous deux en bas à gauche, à
+  l'encre ou à la crème selon le fond du dessin ; le mot-marque du haut et le QR n'y sont pas. Le dessin entier (390 × 742) est posé « contenu » dans le format choisi.
+- **Q419 — À SAVOIR (C-002)** : le bord corrigé vit dans le rendu par la carte graphique ; le peintre de secours (sans WebGL 2) garde l'ancien bord.
+

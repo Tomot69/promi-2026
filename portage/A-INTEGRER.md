@@ -53,3 +53,9 @@
 - **Ampleur** : Esquille, Ritournelle, Halin 0,3 · Brouillamini 1,5 · Bobinette 0,3 ; lue sur le monde choisi ; ressemis d'un monde neuf à l'autre si elle est en jeu (SPEC-RENDU).
 - **Partage du dessin** (C-068) : décidé par Tom, PAS construit — mention de la nature et logo en bas à gauche par défaut, réglage qui masque la mention, une photo ne se partage jamais (MANQUES).
 - **La Pelote n'a plus ni halo ni ombre** (Tom, 7 oct., C-071 : « ne masque pas, supprime ») : dans `portage/RENDU.md` et `ECRANS.md`, retirer le halo (niveau 3), l'ombre crème du sombre et l'ellipse du clair ; la colonne de l'Aura garde les cotes B, la place de l'ombre reste vide.
+
+## v137 (8 oct. 2026)
+- **Phrases des Chiche** (Q412) : « T’es pas chiche de » · « {qui}, t’es pas chiche de » · « {liste}, vous êtes pas chiches de » · « {de} me dit : t’es pas chiche de » — remplacent « Chiche de », « À … · avec … · chiche de », « … me lance : chiche de » dans `TEXTES.md` et `ECRANS.md`.
+- **La Pelote** : plus aucun effet autour (ni halo, ni ombre, ni liseré) ; au bord (> 0,92 R) la couleur est celle de l'intérieur (vis-à-vis replié autour de 0,92 R), le corps est plein jusqu'à R et s'efface de R à 1,012 R. `REGLES.md` : la liste blanche des volumes est vide ; seule exception restante, le flou des murs de Ma Parole !.
+- **Partage du dessin** (C-068) : construit — remplace la ligne « PAS construit » ci-dessus. Sujet d'une fiche avec dessin posé et non masqué → image = le dessin entier sur son fond, logo « Promi » (PromiLate) en bas à gauche, mention de la nature (Gilbert, capitales) au-dessus ; réglage `promi_dessin_mention` ('0' = masquée) ; jamais de photo ; dessin masqué → Folio réduit, dalle.
+

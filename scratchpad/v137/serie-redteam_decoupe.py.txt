@@ -1,0 +1,70 @@
+moteur de la Toile (l. 1005905–1007923, relevé, non jugé) : {'C·getImageData': 1750, 'A·découpe': 622, 'ok·pose': 1308, 'C·putImageData': 628}
+poses 1 : 1, à leur taille (autorisées) : 1915
+
+A·découpe        OK  aucune prise
+B·redimension    OK  aucune prise
+C·getImageData   OK  aucune prise
+C·putImageData   OK  aucune prise
+D·fragment       OK  aucune prise
+E·motif          OK  aucune prise
+E·image          OK  aucune prise
+F·photo          OK  aucune prise
+G·affichage      OK  aucune prise
+H·monde          OK  aucune prise
+
+
+✅  AUCUNE DÉCOUPE NOUVELLE.
+✅  AUCUNE DÉCOUPE. Toute dalle est peinte par le moteur, à sa taille.
+
+— FAMILLE G2 (v130) · une dalle seule ne porte aucun morceau de la Toile — ≤ 0.3 % de pixels d'une autre couleur —
+  OK  pixel     light fiche Promi                 10 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     light Index                       54 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     light Fil                         17 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     light fiche Cercle et son fil     40 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     light fil du Cercle, défilé       15 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   light fiche Promi                 10 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   light Index                       53 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   light Fil                         15 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   light fiche Cercle et son fil     39 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   light fil du Cercle, défilé       20 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  light fiche Promi                 12 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  light Index                       51 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  light Fil                         17 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  light fiche Cercle et son fil     39 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  light fil du Cercle, défilé       20 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   light fiche Promi                 11 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   light Index                       47 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   light Fil                         15 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   light fiche Cercle et son fil     44 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   light fil du Cercle, défilé       11 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   light fiche Promi                 12 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   light Index                       31 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   light Fil                         18 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   light fiche Cercle et son fil     39 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   light fil du Cercle, défilé       13 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     dark  fiche Promi                 10 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     dark  Index                       47 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     dark  Fil                         14 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     dark  fiche Cercle et son fil     35 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  pixel     dark  fil du Cercle, défilé        3 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   dark  fiche Promi                  9 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   dark  Index                       47 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   dark  Fil                         16 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   dark  fiche Cercle et son fil     34 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  braille   dark  fil du Cercle, défilé       11 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  dark  fiche Promi                  9 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  dark  Index                       50 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  dark  Fil                         17 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  dark  fiche Cercle et son fil     43 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  mosaique  dark  fil du Cercle, défilé       15 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   dark  fiche Promi                 15 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   dark  Index                       41 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   dark  Fil                         16 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   dark  fiche Cercle et son fil     43 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  gravure   dark  fil du Cercle, défilé       18 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   dark  fiche Promi                 10 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   dark  Index                       21 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   dark  Fil                         15 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   dark  fiche Cercle et son fil     42 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+  OK  sillons   dark  fil du Cercle, défilé       13 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre couleur
+✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut

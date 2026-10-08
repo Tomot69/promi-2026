@@ -7389,7 +7389,7 @@ function _shPoseNoyau(g,W,H){try{
  }
  if(_tr&&g.setTransform)g.setTransform(_tr);
 }catch(e){}}
-function _shPreviewQR(g,W,H){try{if(window._shDessinSeul)return;/* v137 (C-068) */if(typeof _shShowQR!=='undefined'&&!_shShowQR)return;var _q=(typeof _sealQR==='function'?_sealQR():null);if(!_q)return;var _qrRight=!(typeof wmPos!=='undefined'&&wmPos===2);var _cl=Math.max(1,Math.round(W*0.0042));var _qsz=_cl*_q.size;var pad=Math.round(W*0.045);var _qx=_qrRight?(W-_qsz-pad):pad;var _qy=H-_qsz-pad;g.save();g.setTransform(1,0,0,1,0,0);g.fillStyle='#F7F0DE';g.fillRect(_qx-_cl*2,_qy-_cl*2,_qsz+_cl*4,_qsz+_cl*4);g.fillStyle='#1C1402';for(var a=0;a<_q.size;a++){for(var bb=0;bb<_q.size;bb++){if(_q.mod[a][bb])g.fillRect(_qx+bb*_cl,_qy+a*_cl,_cl,_cl);}}g.restore();}catch(e){}}
+function _shPreviewQR(g,W,H){try{if(typeof _shShowQR!=='undefined'&&!_shShowQR)return;var _q=(typeof _sealQR==='function'?_sealQR():null);if(!_q)return;var _qrRight=!(typeof wmPos!=='undefined'&&wmPos===2);var _cl=Math.max(1,Math.round(W*0.0042));var _qsz=_cl*_q.size;var pad=Math.round(W*0.045);var _qx=_qrRight?(W-_qsz-pad):pad;var _qy=H-_qsz-pad;g.save();g.setTransform(1,0,0,1,0,0);g.fillStyle='#F7F0DE';g.fillRect(_qx-_cl*2,_qy-_cl*2,_qsz+_cl*4,_qsz+_cl*4);g.fillStyle='#1C1402';for(var a=0;a<_q.size;a++){for(var bb=0;bb<_q.size;bb++){if(_q.mod[a][bb])g.fillRect(_qx+bb*_cl,_qy+a*_cl,_cl,_cl);}}g.restore();}catch(e){}}
 /* La planche « Mes Promi » : une case par Promi, sa dalle dans la couleur de son etat,
    son intitule dessous. C'est le poster du moodboard, plus une mosaique decorative. */
 function sharePlanche(cv,W,H,dprForce){
@@ -7404,26 +7404,6 @@ function sharePlanche(cv,W,H,dprForce){
   document.getElementById('device').classList.contains('light'));}catch(e){}
  var ground=clair?'#E8D3B0':'#201502', ink=clair?'#201908':'#F3E7D1';
  g.fillStyle=ground; g.fillRect(0,0,W,H);
- /* ⚑ v137 (Tom, 8 oct. 2026, C-068) — LE PARTAGE DU DESSIN. « Seul un dessin se partage, jamais une photo importée. L'image partagée porte
-    par défaut la mention de la nature (Promi, Chiche ou Cercle) et le logo en bas à gauche. Un réglage, dans les Réglages, masque la
-    mention : il ne reste alors que le dessin et le logo. Le logo est toujours là. Un dessin masqué pour soi n'est jamais partagé. »
-    Quand le rond Partager d'une fiche est touché et que cette parole (ou ce Cercle) porte un dessin posé et non masqué, l'image EST le
-    dessin, entier (rendu de ses traits, jamais une capture), sur son fond ; en bas à gauche le logo, et au-dessus de lui la mention.
-    Sans dessin (ou masqué) : Mon Folio réduit à la parole, comme avant — la case y rend la DALLE, jamais la photo. */
- var _dps=null; try{ _dps=(window._partageFiche && window._partageFiche.actif && window._partageFiche.actif() && window._dessinPartage) ? window._dessinPartage(window._partageFicheSujet) : null; }catch(_e){ _dps=null; }
- try{ var _scr=document.getElementById('shareScreen'); if(_scr && _scr.classList.contains('sh-dessin')!==!!_dps) _scr.classList.toggle('sh-dessin', !!_dps); }catch(_e){}
- window._shDessinSeul=!!_dps;
- if(_dps && _dps.cv && _dps.cv.width){
-   var _f=String(_dps.fond||ground), _m=/^#?([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i.exec(_f), _lum=_m?(0.2126*parseInt(_m[1],16)+0.7152*parseInt(_m[2],16)+0.0722*parseInt(_m[3],16)):0;
-   var _enc=_lum>140?'#201908':'#F7F0DE', _ment=!(window._dessinMention && window._dessinMention()===false);
-   g.fillStyle=_f; g.fillRect(0,0,W,H);
-   var _k=Math.min(W/_dps.cv.width, H/_dps.cv.height), _w=_dps.cv.width*_k, _h=_dps.cv.height*_k; g.drawImage(_dps.cv, (W-_w)/2, (H-_h)/2, _w, _h);
-   var _mg=W*0.066, _fs=W*0.092, _yl=H-_mg; g.textAlign='left'; g.textBaseline='alphabetic'; g.fillStyle=_enc;
-   g.font='400 '+_fs+'px PromiLate,Gilbert,system-ui'; g.fillText('Promi', _mg, _yl);
-   if(_ment){ g.font='700 '+(W*0.040)+'px Gilbert,system-ui'; try{ g.letterSpacing=(W*0.004)+'px'; }catch(_e){} g.fillText(String(_dps.nat).toUpperCase(), _mg, _yl-_fs*0.98); try{ g.letterSpacing='0px'; }catch(_e){} }
-   try{ cv.setAttribute('data-dessin-partage', _dps.nat+'|'+(_ment?1:0)+'|'+_enc); window._plancheComp=[]; }catch(_e){}
-   return; }
- try{ cv.removeAttribute('data-dessin-partage'); }catch(_e){}
  var act=[]; try{var _h=window.shareHidden||{};
    /* un Promi masque au partage ne prend pas de case : la planche se
       reorganise autour, comme si on l'avait retire. */
@@ -7699,14 +7679,18 @@ try{if(notifOn)armAllReminders();}catch(e){}
 /* ⚑ v122 (Tom, 3 oct. 2026) — l'Aura en points (1 mm = 6 pt), chaque réduction faisant remonter tout ce qui suit : plateau → silhouette
    −11 · bas de la Pelote → ombre (et flaque) −15 · ombre → « Partager ma Pelote » −12 · bouton → phrase −12. Ombre 447,224 → 421,224 (−26),
    flaque 431,347 → 405,347, boule 122,532 → 111,532, halo 105,532 → 94,532 ; bouton −38, phrase et tout ce qui suit −50. */
-/* ⚑ v137 (Tom, 8 oct. 2026, C-071) — « Code mort : retire le peintre du halo et ses règles CSS, et tout ce qui servait l'ombre. » Les règles de
-   `.au-ombre`, `.au-flaque` et `.au-halo` sont RETIRÉES : ces nœuds n'existent plus depuis v136. Plus aucun effet autour de la Pelote. */
+#auraScreen.au2 .au-ombre{position:absolute!important;left:142.786px!important;top:405.224px!important;width:104.429px!important;height:16.245px!important;
+  margin:0!important;pointer-events:none;z-index:0;background:radial-gradient(closest-side,rgba(var(--c-brun09-rgb),.10),rgba(var(--c-brun09-rgb),0))}
 /* ⚑ v119 (Tom) : EN SOMBRE, AUCUNE OMBRE CRÈME. Le halo dépose sous la Pelote une flaque de lumière à peine perceptible, et l'ombre
-   est la zone que cette lumière n'atteint pas : `#auPeloteFlaque`, peinte et tramée par le peintre de la flaque (lot-V119-PELOTE). */
+   est la zone que cette lumière n'atteint pas : `#auPeloteFlaque`, peinte et tramée par `window._flaquePelote` (lot-V119-PELOTE). */
 /* ⚑ v123 (Tom, 3 oct. 2026) — « En sombre, l'ombre devient une ellipse crème, comme une ombre inversée sur le fond noir. Elle remplace
    la flaque. Même géométrie qu'en clair, ΔE00 entre 4 et 6 face à son pourtour. Le clair ne change pas. » (Renverse v119 : « aucune
    ombre crème ».) Crème à 0,105 au centre sur la seiche : ΔE00 ≈ 5 mesuré au cœur. La flaque (`#auPeloteFlaque`) n'est plus affichée. */
+#device:not(.light) #auraScreen.au2 .au-ombre{background:radial-gradient(closest-side,rgba(var(--c-creme95-rgb),.105),rgba(var(--c-creme95-rgb),0))!important}
+#auraScreen.au2 .au-flaque{position:absolute!important;left:55px!important;top:389.347px!important;width:280px!important;height:48px!important;margin:0!important;pointer-events:none;z-index:0;display:none}
+#device:not(.light) #auraScreen.au2 .au-flaque{display:none}
 /* ⚑ v121 — le halo a son canevas, sous la boule : 330 × 330 centré sur elle (centre 195 ; 270,532), assez pour 121 + 0,16 D = 158,1 */
+#auraScreen.au2 .au-halo{position:absolute!important;left:30px!important;top:88.532px!important;width:330px!important;height:330px!important;margin:0!important;pointer-events:none;z-index:0}
 #auraScreen.au2 .au-bo{z-index:1}
 </style>
 <script id="lot-V119-PELOTE">
@@ -7720,7 +7704,7 @@ try{if(notifOn)armAllReminders();}catch(e){}
      le quart inférieur, pour laisser l'ombre se lire ;
    · rendu : TRAMÉ avec le grain de l'app (`_noiseCanvas`) — aucune marche de quantification ;
    · il respire avec la lumière du velours (± 20 %, même cycle, même phase) : c'est l'appelant qui règle son opacité.
-   Liste blanche NOMINATIVE de la Pelote : le peintre du halo et le peintre de la flaque ne s'appellent que depuis l'Aura. */
+   Liste blanche NOMINATIVE de la Pelote : `window._haloPelote` et `window._flaquePelote` ne s'appellent que depuis l'Aura. */
 (function(){
   function lin(c){ c/=255; return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4); }
   function lab(c){ var r=lin(c[0]), g=lin(c[1]), b=lin(c[2]);
@@ -7771,6 +7755,20 @@ try{if(notifOn)armAllReminders();}catch(e){}
     function vive(c){ var o=okl(c); return deOkl(o[0], Math.max(o[1],0.112), o[2]); }
     return {okl:okl, deOkl:deOkl, lum:lum, contraste:contraste, kaki:kaki, ajuste:ajuste, ecarte:ecarte, vive:vive};
   })();
+  /* l'opacité qui donne l'écart voulu entre le fond et (fond + ton × opacité) — par dichotomie */
+  function dose(ton, fond, cible){ var mel=function(a){ return [fond[0]+(ton[0]-fond[0])*a, fond[1]+(ton[1]-fond[1])*a, fond[2]+(ton[2]-fond[2])*a]; };
+    if(cible<=0) return 0; if(dE00(mel(1),fond)<=cible) return 1;
+    var lo=0, hi=1; for(var i=0;i<22;i++){ var m=(lo+hi)/2; if(dE00(mel(m),fond)<cible) lo=m; else hi=m; } return (lo+hi)/2; }
+  var GRAIN=null;
+  function grain(){ if(GRAIN) return GRAIN; var n=96, d=null;
+    try{ if(typeof _noiseCanvas!=='undefined' && _noiseCanvas && _noiseCanvas.width){ n=_noiseCanvas.width; d=_noiseCanvas.getContext('2d').getImageData(0,0,n,n).data; } }catch(_){ d=null; }
+    var G=new Float32Array(n*n), vide=true, i;
+    if(d){ for(i=0;i<n*n;i++){ G[i]=d[i*4+3]>0 ? ((d[i*4]+d[i*4+3]*7)%256)/256 : 0; if(G[i]) vide=false; } }
+    if(!d || vide){ for(i=0;i<n*n;i++){ var x=(i*2654435761)>>>0; x^=x>>>15; x=(x*2246822519)>>>0; x^=x>>>13; G[i]=(x>>>8)/16777216; } }
+    /* on égalise : la trame doit être sans biais (chaque seuil autant de fois) */
+    var ord=[]; for(i=0;i<n*n;i++) ord.push(i); ord.sort(function(a,b){ return G[a]-G[b]||a-b; }); for(i=0;i<n*n;i++) G[ord[i]]=(i+0.5)/(n*n);
+    return (GRAIN={n:n, g:G}); }
+  var CIBLE={ras:7, mi:2.9, fin:0.08, mi_d:0.04, oppose:0.20, bas:0.06, crete:1.2};
   /* ⚑ v120 (Tom, 2 oct. 2026) — DEUX RÉGLAGES À L'ŒIL, PAR L'ADRESSE, pour choisir sur l'iPhone (jamais mémorisés) :
        ?densite=1|2|3   la pelure : densité ×1 (l'actuelle), ×1,5, ×2 ; l'épaisseur du poil ×1, ×0,8, ×0,7 ; à 2 et 3 le reflet s'adoucit
        ?halo=1|2|3      l'écart ΔE00 au ras de la silhouette 6, 10, 14 ; l'étendue 0,08, 0,10, 0,12 D — toujours tramé, toujours
@@ -7783,9 +7781,35 @@ try{if(notifOn)armAllReminders();}catch(e){}
      de halo 4 et 5. » Les deux réglages sont des CONSTANTES : densité ×2 (220 000 poils au palier haut ; le régulateur garde ses trois
      paliers, 220 000 → 180 000 → 150 000), poil ×0,7, reflet adouci ; halo ΔE00 14 au ras, étendue 0,12 D. Plus rien ne se lit dans l'adresse. */
   var REG={densite:3, halo:3, facteur:2, epaisseur:0.7, doux:true, haloRas:14, haloExt:0.12};
+  CIBLE.ras=REG.haloRas; CIBLE.mi=REG.haloRas*2.9/7;
   window._peloteReglage=REG;
-  /* ⚑ v137 (Tom, 8 oct. 2026, C-071) — le peintre du halo (le peintre du halo, sa trame, son dosage) est RETIRÉ : plus aucun effet autour de la Pelote. */
-  /* v125 : le peintre de la flaque (la flaque du sombre, v119) est RETIRÉE — elle n'était plus affichée depuis v123 (l'ombre crème la remplace). */
+  /* W : le côté du canevas ; R : le rayon de la boule ; RS : celui de la silhouette (boule + poil) ; P : 0,08 D, en pixels */
+  window._haloPelote=function(W, R, RS, P, ton, fond, sansTrame){
+    var cv=document.createElement('canvas'); cv.width=W; cv.height=W;
+    var g=cv.getContext('2d'), im=g.createImageData(W,W), d=im.data, c=(W-1)/2, GR=grain(), LX=-0.58, LY=-0.72, nL=Math.hypot(LX,LY);
+    /* la décroissance : exponentielle, ramenée à zéro en P ; son pas est réglé pour que le mi-chemin tombe sur sa cible */
+    var q=CIBLE.mi/CIBLE.ras, e=q/(1-q), lam=-(P/2)/Math.log(e), e2=Math.exp(-P/lam);
+    function f(dd){ return dd<=0 ? 1 : (dd>=P ? 0 : (Math.exp(-dd/lam)-e2)/(1-e2)); }
+    /* la table de l'opacité au ras, dosée au calcul ; la crête (+20 %) est dans l'image, l'appelant la module */
+    var N=64, T=new Float32Array(N+1); for(var k=0;k<=N;k++) T[k]=dose(ton, fond, CIBLE.ras*CIBLE.crete*k/N);
+    function op(v){ v=Math.max(0,Math.min(1,v))*N; var i=Math.floor(v), t=v-i; return i>=N?T[N]:T[i]+(T[i+1]-T[i])*t; }
+    /* ⚑ v120 — LA TRAME SE DOSE EN NIVEAUX DE COULEUR, PAS D'OPACITÉ. Elle valait ± 1,5 niveau d'OPACITÉ : sur la seiche de v119 cela
+       suffisait, sur le brun revenu (#201908) un niveau d'opacité ne fait plus un niveau de couleur et l'escalier revenait (mesuré :
+       8 à 11 % de remontées pour 12 % exigés). On vise ± 2,75 niveaux de COULEUR sur le canal qui bouge le plus (à ± 2, la respiration — qui baisse l'opacité d'un tiers au creux — laissait encore une bande de 2,3 pt une fois sur trois). */
+    var DMAX=Math.max(1, Math.abs(ton[0]-fond[0]), Math.abs(ton[1]-fond[1]), Math.abs(ton[2]-fond[2])), AMP=Math.max(3, 5.5*255/DMAX);
+    for(var y=0;y<W;y++) for(var x=0;x<W;x++){
+      var dx=x-c, dy=y-c, r=Math.hypot(dx,dy); if(r<R*0.9 || r>RS+P) continue;
+      var co=(dx*LX+dy*LY)/(r*nL), w=CIBLE.oppose+(1-CIBLE.oppose)*(1+co)/2;
+      /* ⚑ v125 (Tom : « la double zone derrière la Pelote, en sombre ») — MESURÉ : rien d'autre que le halo et l'ombre ne peint ici. La
+         « seconde zone » était LE HALO LUI-MÊME : plein jusqu'à 35° sous l'horizontale puis coupé en 10° (de 1 à 0,06) — deux épaules
+         franches, en bas à gauche et à droite, qui dessinaient le bord d'un second disque derrière la boule. Le quart inférieur reste
+         presque nul ; le fondu part maintenant de l'horizontale (45° de fondu, en S) : plus d'épaule. Juge : redteam_zone.py. */
+      var bas=dy/r, tb=bas<=0 ? 0 : (bas>=0.7071 ? 1 : bas/0.7071), qb=1-(1-CIBLE.bas)*(tb*tb*(3-2*tb));
+      var a=op(f(r-RS)*w*qb)*255, n=sansTrame ? 0.5 : GR.g[(y%GR.n)*GR.n+(x%GR.n)], v=a<=0 ? 0 : Math.floor(a+(n-0.5)*AMP+0.5);   /* trame de ± 1,5 niveau : le canevas est agrandi à l'écran, une trame d'un demi-niveau s'y lisse et l'escalier revient (mesuré : 1 % de remontées) */
+      if(v<=0) continue; var i4=(y*W+x)*4; d[i4]=ton[0]; d[i4+1]=ton[1]; d[i4+2]=ton[2]; d[i4+3]=v>255?255:v; }
+    g.putImageData(im,0,0); return cv;
+  };
+  /* v125 : `_flaquePelote` (la flaque du sombre, v119) est RETIRÉE — elle n'était plus affichée depuis v123 (l'ombre crème la remplace). */
 })();
 </script>
 
@@ -29048,17 +29072,7 @@ function _glInit(W){
     '    if(k>=2.0) f=mx; }',
     '  float r=distance(vec2(gl_FragCoord.x, uW2-gl_FragCoord.y), vec2(uC2));',
     '  float t=r<=uR0 ? 1.0 : (r>=uR1 ? 0.0 : 1.0-(r-uR0)/(uR1-uR0)); t=t*t*(3.0-2.0*t); t*=uA;',
-    /* ⚑ v137 (Tom, 8 oct. 2026, C-002) — LE LISERÉ DU BORD PART. « Sur les derniers 8 % du rayon, la fourrure prend une autre couleur que
-       l'intérieur, et ça fait la deuxième couche que Tom voit. La fourrure du bord prend les couleurs de l'intérieur. » Cause : au bord
-       les poils sont vus de profil, ils s'empilent — le poil y couvre le corps, alors qu'à l'intérieur on voit poil ET corps mêlés.
-       Parade : au-delà de 0,92 R, la COULEUR d'un pixel est celle de son vis-à-vis à l'intérieur (même angle, rayon replié autour de
-       0,92 R : poil sur corps, comme partout) ; son OPACITÉ reste la sienne — la silhouette ne bouge pas d'un pixel. Fondu de 0,90 à 0,93 R. */
-    '  float al=f.a+t*(1.0-f.a); vec3 pm=f.rgb*f.a+uCorps*t*(1.0-f.a);',
-    '  float rb=uR1*(0.92/1.012), w=clamp((r-rb*(0.90/0.92))/(rb*(0.03/0.92)),0.0,1.0); w=w*w*(3.0-2.0*w)*uA;',
-    '  if(w>0.0 && al>0.0){ vec2 d=vec2(gl_FragCoord.x-uC2, gl_FragCoord.y-(uW2-uC2)); float rr=max(2.0*rb-r, rb*0.80);',
-    '    vec4 g=texelFetch(uFur, ivec2(vec2(uC2, uW2-uC2)+d*(rr/max(r,1.0))), 0);',
-    '    vec3 ci=g.rgb*g.a+uCorps*(1.0-g.a); pm=mix(pm, ci*al, w); }',
-    '  o=vec4(pm, al); }'].join('\n');
+    '  o=vec4(f.rgb*f.a+uCorps*t*(1.0-f.a), f.a+t*(1.0-f.a)); }'].join('\n');
   var G={cv:cv, gl:gl, W:W, pts:PTS}, DIV=PTS?0:1;
   G.p1=_glProg(gl,VS,FS); G.p2=_glProg(gl,VS2,FS2);
   G.u1={}; ['uCl','uSl','uCt','uSt','uR','uFOC','uC','uW','uVel','uDoux','uPousse','uNCOL','uNT','uILE','uETAGE','uM','uCell','uGrid','uORI','uNVAR','uAtlas','uPal','uAt','uBB','uDyn','uFE','uEmp','uEaC','uEbC','uEd','uEbi','uEub','uEB','uEU','uEUc','uEcl','uESeuil','uEc','uEax','uEL'].forEach(function(n){ G.u1[n]=gl.getUniformLocation(G.p1,n); });
@@ -29211,7 +29225,7 @@ function peintGL(cv,o){
     gl.useProgram(G.p2); var u2=G.u2, C=o.corps||[0,0,0];
     gl.bindTexture(gl.TEXTURE_2D,G.tFur); gl.uniform1i(u2.uFur,0);
     gl.uniform3f(u2.uCorps,C[0]/255,C[1]/255,C[2]/255); gl.uniform1f(u2.uA,o.corps?1:0);
-    gl.uniform1f(u2.uR0,E.R*1.0); gl.uniform1f(u2.uR1,E.R*1.012);   /* v137 (C-002) : le corps reste PLEIN jusqu'au rayon de la boule (0,972 avant) — la bande du bord n'est plus une frange à demi transparente qui prend la couleur de la page ; il finit au même endroit (1,012 R) : la silhouette ne bouge pas */ gl.uniform1f(u2.uC2,W/2); gl.uniform1f(u2.uW2,W);
+    gl.uniform1f(u2.uR0,E.R*0.972); gl.uniform1f(u2.uR1,E.R*1.012); gl.uniform1f(u2.uC2,W/2); gl.uniform1f(u2.uW2,W);
     gl.bindVertexArray(G.vao2); gl.drawArrays(gl.TRIANGLES,0,3);
     gl.bindVertexArray(null);
     /* 3 · à l'écran : LE CANEVAS DE LA CARTE GRAPHIQUE LUI-MÊME, posé sur celui de la Pelote (même boîte : `.au-bo canvas`).
@@ -29794,6 +29808,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     }
     if(best){ SOL_IDX=best.s; CORPS_ORDRE=best.o; CORPS_MEMO.cle=''; try{ corps(); localStorage.setItem('promi_pelote_vue', JSON.stringify({s:SOL_IDX, k:CORPS_MEMO.idx, c:best.c, t:Date.now(), p:(ref?{s:ref.s, k:ref.k, c:ref.c}:null)})); }catch(_){} }
     try{ nouveauTexte(); }catch(_){}        /* v124 : et une couleur neuve pour « PARTAGER MA PELOTE » */
+    try{ HAL.cle=''; }catch(_){}            /* v125 : le halo se refait à la première image (il gardait la teinte de l'ouverture d'avant jusqu'à vingt images) */
     try{ var S2=semis(); if(S2) S2.__stCle=null; }catch(_){}
     PEL.iles=null; PEL.cleI='';
     return SOL_IDX;
@@ -29999,7 +30014,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   /* ════════════════════════════════════════════════════════════════════════════
      L'ÉCRAN — bâti une fois, rempli à chaque ouverture
      ════════════════════════════════════════════════════════════════════════════ */
-  var CAD, BO, CV, PRISE, MOT, INV, NX, LG, CPT, MO, GR, BT, D=null, FIN;
+  var CAD, BO, CV, PRISE, MOT, INV, NX, LG, CPT, MO, GR, BT, D=null, FIN, HALO, OMBRE, FLAQUE, HCV;
   function squelette(){
     if(CAD) return;
     SC.classList.add('au2');
@@ -30470,12 +30485,43 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     return SOUFFLE.MAX*s;
   }
   window._peloteSouffle={valeur:souffle, regle:SOUFFLE, t:function(){ return PEL.souffleT; }};
-  /* ⚑ v137 (Tom, 8 oct. 2026, C-071) — le mini halo (v119–v126), son canevas, sa teinte et sa respiration sont RETIRÉS du code. */
+  /* ⚑ v119, repris en v120 — LE MINI HALO : la lumière du velours qui déborde à peine de la silhouette (lot-V119-PELOTE). Il se
+     peint SOUS la boule, dans son canevas, après le peintre ; il respire avec le souffle (± 20 %, même cycle, même phase) ; il se
+     refait quand le sol, le fond de la page ou la taille changent. La flaque du sombre se refait avec lui. */
+  var HAL={cv:null, cle:'', n:0};
   function fondPage(){ if(clair()) return [CREME[0],CREME[1],CREME[2]];
     var mm=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(getComputedStyle(SC).backgroundColor); return mm?[+mm[1],+mm[2],+mm[3]]:[32,25,8]; }
+  /* ⚑ v125 (Tom, 3 oct. 2026) — « LE HALO PREND LA COULEUR DU CORPS, PLUS CELLE DES POILS, POUR NE JAMAIS TERNIR LA PELOTE. » Il prenait
+     le ton le plus clair de la rampe du poil : presque blanc — en sombre, un disque gris derrière la boule. Il prend la teinte du corps
+     tiré à cette ouverture ; si elle est trop proche du fond pour faire une lumière (ΔE00 < 42), sa clarté
+     s'écarte du fond, teinte gardée (`_teinte.ecarte`). Juge : redteam_corps.py (la teinte du halo est celle du corps). */
+  function tonLumiere(){ var c=null; try{ c=corps(); }catch(_){}
+    if(!c){ var R=M.rampeVelours(PEL.solR||solEffectif()), b=R[0], lb=-1;
+      for(var i=0;i<R.length;i++){ var l=0.2126*R[i][0]+0.7152*R[i][1]+0.0722*R[i][2]; if(l>lb){ lb=l; b=R[i]; } } c=[Math.round(b[0]),Math.round(b[1]),Math.round(b[2])]; }
+    try{ c=window._teinte.ecarte(c, fondPage(), 42); }catch(_){}   /* 42 et non 26 : plus près du fond, la trame (dosée en niveaux de couleur) devient du bruit au bout du halo — mesuré, ΔE00 2,2 au-delà de l'étendue */
+    return [Math.round(c[0]),Math.round(c[1]),Math.round(c[2])]; }
   function souffleU(){ if(typeof window._peloteU==='number') return window._peloteU;   /* `_peloteU` : un crochet pour les juges — jamais posé par le produit */
     return Math.max(0, Math.min(1, souffle()/SOUFFLE.MAX)); }
-  window._peloteLumiere={etat:function(){ return {cle:'', u:souffleU(), halo:false, ton:null}; }, recalibre:function(){}};   /* v137 : plus de halo ; `u` (le souffle) reste lu par les juges */
+  function halo(){
+    if(!HCV) return;
+    if(window._peloteSansHalo){ HCV.style.visibility='hidden'; return; }   /* un crochet pour le juge du contour — jamais posé par le produit */
+    if(HCV.style.visibility) HCV.style.visibility='';
+    if(!HAL.cle || (HAL.n++)%20===0){
+      var pr=Math.min(3, window.devicePixelRatio||1), W=Math.round(330*pr), s=PEL.solR||solEffectif(), f=fondPage(),
+          RG=window._peloteReglage||{}, ton=tonLumiere(), k=[s[0]|0,s[1]|0,s[2]|0,ton[0],ton[1],ton[2],f[0],f[1],f[2],W,RG.halo,window._haloSansTrame?1:0].join(',');
+      if(k!==HAL.cle){ HAL.cle=k;
+        try{
+          /* le même halo qu'en v119 (lot-V119-PELOTE), en pixels de l'écran : R = la boule, RS = la silhouette (boule + 5), P = l'étendue */
+          var src=window._haloPelote(W, K.R*K.bo.d*pr, (K.bo.d*K.R+5)*pr, (RG.haloExt||0.12)*K.bo.d*K.R*2*pr, ton, f, !!window._haloSansTrame);
+          if(HCV.width!==W){ HCV.width=W; HCV.height=W; }
+          var hg=HCV.getContext('2d'); hg.setTransform(1,0,0,1,0,0); hg.globalCompositeOperation='copy'; hg.drawImage(src,0,0);
+          /* v123 : la flaque du sombre n'est plus peinte — l'ombre crème la remplace */ }catch(_){ } } }
+    /* il respire avec la lumière du velours : ± 20 %, même cycle, même phase — par son opacité, écrite seulement quand elle change */
+    var op=((0.8+0.4*souffleU())/1.2).toFixed(3);
+    if(HCV.__op!==op){ HCV.__op=op; HCV.style.opacity=op; }
+  }
+  window._peloteLumiere={etat:function(){ return {cle:HAL.cle, u:souffleU(), halo:!!(HCV&&HCV.width>300), ton:(function(){ try{ return tonLumiere(); }catch(_){ return null; } })()}; },
+                         recalibre:function(){ HAL.cle=''; }};
   function opts(){
     var A=atlas();
     return {css:K.bo.d, R:K.R, sol:PEL.solR||solEffectif(), tailles:A.t, atlas:A.a, semis:semis(),
@@ -30617,7 +30663,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       /* v125 : la carte graphique peint (les poils y sont, elle les tourne et les éclaire) ; à défaut — pas de WebGL 2, ou un toucher en
          cours — le peintre d'origine */
       var _parGL=!!(M.peintGL && M.peintGL(CV, _o)); if(!_parGL) M.peint(CV, _o);
-      }catch(e){ window._auraErreur=String(e&&e.stack||e); PEL.pret=false; return; }
+      halo(); }catch(e){ window._auraErreur=String(e&&e.stack||e); PEL.pret=false; return; }
     var ms=performance.now()-t0;
     if(MES){ MES.gl=_parGL; mesImage(dtR, ms); }
     /* v125 : sous la carte graphique, le temps passé en JavaScript ne dit plus rien (≈ 1 ms) — le régulateur juge l'IMAGE : ce qu'elle
@@ -30914,7 +30960,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
            if(!PEL.iles) iles();
            var _op=opts(); if(!(M.peintGL && M.peintGL(CV, _op))) M.peint(CV, _op);   /* v125 : la carte graphique d'abord */
            try{ CV.getContext('2d'); }catch(_){}                                          /* … et l'image rendue au canevas que le partage dessine */
-           PEL.peints=(PEL.peints||0)+1; }catch(e){ window._auraErreur=String(e&&e.stack||e); }
+           halo(); PEL.peints=(PEL.peints||0)+1; }catch(e){ window._auraErreur=String(e&&e.stack||e); }
       return CV; }
   };
 
@@ -35327,8 +35373,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       }
       var Wc=cvx.width, Hc=cvx.height;
       g.setTransform(1,0,0,1,0,0);
-      if(!window._shDessinSeul){ marque(g, Wc, Hc);
-      try{ _shPreviewQR(g, Wc, Hc); }catch(_){} }   /* v137 (C-068) : le dessin partagé porte SON logo, en bas à gauche */
+      marque(g, Wc, Hc);
+      try{ _shPreviewQR(g, Wc, Hc); }catch(_){}
       /* l'export a publié SA composition (à 3840) : on rend l'aperçu, sans quoi le geste
          de la Pelote lirait des cotes d'export */
       try{ window.shareRender(); }catch(_){}
@@ -37595,7 +37641,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     tDoigt=performance.now(); e.stopPropagation();
     try{ window.ouvrirPartage(); }catch(_){}
   }, true);
-  window._partageFiche={ deja:function(){ return performance.now()-tDoigt<800; }, rends:rends, actif:function(){ return !!AV; } };
+  window._partageFiche={ deja:function(){ return performance.now()-tDoigt<800; }, rends:rends };
   /* la fermeture : `#shareScreen` PERD-il `.show` ? (§8 — vérifié à la mesure, `redteam_partage_fiche`) */
   function guette(){
     var sc=document.getElementById('shareScreen'); if(!sc){ setTimeout(guette, 300); return; }
@@ -38312,12 +38358,6 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 
   /* ══ LE PARTAGE : la case d'une parole dont le dessin est posé ET NON MASQUÉ montre son dessin, entier. Un dessin masqué n'y est jamais. ══ */
   window._dessinCase=function(pid){ try{ var p=promises.filter(function(x){ return x.id===pid; })[0]; if(!p || !pose_(p.dessin) || p.dessin.masque) return null; return entier(p.dessin, 2); }catch(_){ return null; } };
-  /* ⚑ v137 (Tom, 8 oct. 2026, C-068) — LE PARTAGE DU DESSIN : le dessin posé et NON MASQUÉ du sujet partagé (une parole, ou un Cercle),
-     entier, avec sa nature. Un dessin masqué pour soi n'est jamais rendu ici ; une photo n'y passe jamais (ce n'est pas un dessin). */
-  window._dessinPartage=function(s){ try{ if(!s) return null; var d=null, nat=null;
-      if(s.nuee){ d=cercles()[s.nuee]||null; nat='Cercle'; }
-      else if(s.ids && s.ids.length===1){ var p=promises.filter(function(x){ return x.id===s.ids[0]; })[0]; if(p){ d=p.dessin||null; nat=p.chiche?'Chiche':'Promi'; } }
-      if(!pose_(d) || d.masque) return null; return {cv:entier(d, 3), fond:d.fond, nat:nat}; }catch(_){ return null; } };
   /* ══ LA VUE ENTIÈRE (C-051) ══ */
   function sourceVue(){ var c=cibleFiche()||ciblePlus(); /* v136 (C-067) : la page + aussi */ if(!c || !visible(c)) return null; try{ return {src:entier(lit(c), 3).toDataURL('image/png'), quoi:'dessin'}; }catch(_){ return null; } }
 
@@ -38332,33 +38372,6 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #device #detailPoster #dptQui[data-phrase]{white-space:normal!important;overflow:visible!important;text-overflow:clip!important;max-width:342px!important}
 #device #detailPoster #dptQui .dpt-plus{all:unset;cursor:pointer;font:inherit;color:inherit;-webkit-text-fill-color:currentColor;text-decoration:underline;text-underline-offset:3px;text-decoration-thickness:1.5px}
 </style>
-<style id="lot-V137-MENTION-css">
-/* v137 (C-068) — l'aperçu d'un dessin partagé : le mot-marque du haut et le QR se retirent, le dessin porte son logo en bas à gauche */
-#device#device #shareScreen.sh-dessin #shBadge, #device#device #shareScreen.sh-dessin #shQR{display:none!important}
-</style>
-<script id="lot-V137-MENTION">
-/* ⚑ v137 (Tom, 8 oct. 2026, C-068) — LE RÉGLAGE DE LA MENTION. « Un réglage, dans les Réglages, masque la mention : il ne reste alors que
-   le dessin et le logo. Le logo est toujours là. » Une rangée du groupe « Partager » des Réglages, mémorisée (`promi_dessin_mention`,
-   '0' = masquée). Les mots (« Mention sur un dessin partagé », « affichée », « masquée ») : les plus sobres, à valider (Q416). */
-(function(){
-  var K='promi_dessin_mention';
-  window._dessinMention=function(){ try{ return localStorage.getItem(K)!=='0'; }catch(_){ return true; } };
-  function maj(c){ var v=c.querySelector('.v'), on=window._dessinMention(); if(v) v.textContent=(on?'affichée':'masquée')+' ›'; c.setAttribute('aria-pressed', on?'true':'false'); c.setAttribute('aria-label','Mention sur un dessin partagé, '+(on?'affichée':'masquée')); }
-  function pose(){ var inv=document.getElementById('setInvite'); if(!inv || document.getElementById('setMention')) return !!inv;
-    var c=document.createElement('div'); c.className='scard'; c.id='setMention'; c.setAttribute('role','button'); c.tabIndex=0;
-    c.innerHTML='<span class="k">Mention sur un dessin partagé</span><span class="v ac"></span>';
-    inv.parentNode.insertBefore(c, inv.nextSibling); maj(c);
-    /* aux Réglages, un toucher ne produit pas toujours de `click` (mesuré en WebKit, v137) : on lit le geste — appui, lever sans glisser —, pour tous les pointeurs ; le `click` qui suivrait est dédoublonné */
-    var G=null, tF=0;
-    function bascule(){ if(performance.now()-tF<500) return; tF=performance.now(); try{ localStorage.setItem(K, window._dessinMention()?'0':'1'); }catch(_){ } maj(c); }
-    c.addEventListener('pointerdown', function(e){ G={x:e.clientX, y:e.clientY, t:performance.now()}; });
-    c.addEventListener('pointerup', function(e){ var g=G; G=null; if(!g || Math.hypot(e.clientX-g.x, e.clientY-g.y)>10 || performance.now()-g.t>600) return; bascule(); });
-    c.addEventListener('click', bascule);
-    c.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); bascule(); } });
-    return true; }
-  if(!pose()){ var n=0, t=setInterval(function(){ if(pose() || ++n>40) clearInterval(t); }, 250); }
-})();
-</script>
 <script id="lot-V136-PHRASE">
 /* ⚑ v136 (Tom, 7 oct. 2026, C-069) — LA PHRASE COMPLÈTE DANS LES FICHES PROMI ET CHICHE. « Dans les fiches seulement, jamais dans le Fil ni
    l'Index, et pour les Promi et les Chiche (pas les Cercles) : on remet la phrase entière, que le titre seul ne suffit pas à faire
@@ -38368,10 +38381,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      à soi            « Je me promets de »                       à quelqu'un      « Je promets à Rachel de »
      à plusieurs      « Je promets à Rachel, Marion et Nico de » au-delà de TROIS « Je promets à Rachel, Marion + 3 personnes de »
      reçue            « Rachel me promet de »                    demandée         « Rachel, promets-moi de » · « …, promettez-moi de »
-     ⚑ v137 (Tom, Q412) — les formes nommées sont VALIDÉES ; les Chiche prennent l'expression courante :
-     Chiche à soi     « T’es pas chiche de »                     Chiche lancé     « Marion, t’es pas chiche de »
-     à plusieurs      « Marion et Rachel, vous êtes pas chiches de » (« … + x personnes » au-delà de trois)
-     Chiche reçu      « Marion me dit : t’es pas chiche de »
+     Chiche lancé     « À Marion · avec Rachel · chiche de »     Chiche à soi     « Chiche de »
+     Chiche reçu      « Marion me lance : chiche de »            (mot manquant, le plus sobre — à valider)
    « de » s'élide devant une voyelle ou un h (« d'aller »). Le titre n'est PAS dans cette ligne : il reste `#dptTitre`. */
 (function(){
   var QUELQUES=3;
@@ -38388,14 +38399,11 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var D=de(p.title), W=gens(p.who, p), A=gens(p.avec, p), from=String(p.from||'moi').trim(), recu=!!from && !/^moi$/i.test(from), txt, html;
     function fin(pre, preH){ txt=pre+' '+D; html=preH+' '+D; }
     if(p.chiche){
-      /* ⚑ v137 (Tom, 8 oct. 2026, Q412) — LES CHICHE PRENNENT L'EXPRESSION COURANTE : à soi « T’es pas chiche de » · lancé « Marion, t’es pas
-         chiche de » · à plusieurs « Marion et Rachel, vous êtes pas chiches de » (« … + x personnes » au-delà de trois) · reçu « Marion me
-         dit : t’es pas chiche de ». Ceux à qui on le lance et ceux avec qui on le fait sont les mêmes personnes interpellées (une liste). */
-      var TU='t\u2019es pas chiche', VOUS='vous êtes pas chiches';
-      if(recu){ fin(from+' me dit\u00a0: '+TU, '<b>'+esc(from)+'</b> me dit\u00a0: '+TU); }
-      else { var C=W.slice(); A.forEach(function(x){ if(C.indexOf(x)<0) C.push(x); });
-        if(!C.length){ fin('T\u2019es pas chiche','T\u2019es pas chiche'); }
-        else { var lc=liste(C, deplie, p.id), vb=(C.length>1)?VOUS:TU; fin(lc.txt+', '+vb, lc.html+', '+vb); } } }
+      if(recu){ fin(from+' me lance\u00a0: chiche', '<b>'+esc(from)+'</b> me lance\u00a0: chiche'); }
+      else { var lw=W.length?liste(W, deplie, p.id):null, la=(A.length && String(p.avec)!==String(p.who))?liste(A, deplie, p.id):null, pt='', ph='';
+        if(lw){ pt+='À '+lw.txt; ph+='À '+lw.html; }
+        if(la){ pt+=(pt?' · ':'')+(pt?'avec ':'Avec ')+la.txt; ph+=(ph?' · ':'')+(ph?'avec ':'Avec ')+la.html; }
+        if(pt){ fin(pt+' · chiche', ph+' · chiche'); } else { fin('Chiche','Chiche'); } } }
     else if(recu){ fin(from+' me promet', '<b>'+esc(from)+'</b> me promet'); }
     else if(p.req){ var lr=liste(W.length?W:[String(p.who||'')], deplie, p.id), v=(W.length>1)?'promettez-moi':'promets-moi'; fin(lr.txt+', '+v, lr.html+', '+v); }
     else if(!W.length){ fin('Je me promets','Je me promets'); }

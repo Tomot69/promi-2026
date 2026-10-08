@@ -1,0 +1,5 @@
+OK [light] A · 0,3 s → 4,6 s : 23147 pixels changés dans la silhouette, 0 au-delà
+OK [light] B · lumière de la boule : sommet à 4.9 s (décidé 4.6), retour au bas à 10.9 s (décidé 10.6), amplitude 5.50 niveaux
+OK [dark] A · 0,3 s → 4,6 s : 45894 pixels changés dans la silhouette, 0 au-delà
+OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0
+✅ la Pelote respire par son velours, et rien d'autre

@@ -116,35 +116,6 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
-### ⚑ v137 (8 oct. 2026) — PLUS AUCUN EFFET AUTOUR DE LA PELOTE ; LES CHICHE ; LE PARTAGE DU DESSIN. (Décisions Tom.) Ce bloc CORRIGE v136, et v114 à v126 pour la Pelote.
-> **⚑ DÉCISION DE TOM, 8 OCT. 2026 : PLUS AUCUN EFFET AUTOUR DE LA PELOTE.** Ni halo, ni ombre, ni couronne, ni flaque, ni liseré. **Le halo et
-> l'ombre de la Pelote SORTENT de la liste blanche des exceptions : il ne reste que le flou des murs de Ma Parole !.** « La Pelote est le seul
-> volume » (v114) est MORT : `redteam_volume` a une liste blanche VIDE (réécrit), le peintre du halo, sa trame et les règles `.au-halo`,
-> `.au-ombre`, `.au-flaque` sont RETIRÉS du code.
-> **⚑ LE LISERÉ DU BORD PART (C-002).** Cause : au bord les poils sont vus de profil et s'empilent, le poil y couvre le corps ; et le corps
-> s'effaçait de 0,972 à 1,012 R, une frange à demi transparente qui prenait la couleur de la page. Parade, dans la passe de composition de
-> la carte graphique (`FS2`) : **au-delà de 0,92 R la COULEUR d'un pixel est celle de son vis-à-vis à l'intérieur** (même angle, rayon replié
-> autour de 0,92 R), fondu de 0,90 à 0,93 R ; **le corps reste plein jusqu'à R** et finit au même endroit (1,012 R) — la silhouette ne bouge
-> pas (`redteam_contour`, `redteam_plein` verts). Juge : **`redteam_bord.py`** (ΔE CIELAB médian par secteur entre la bande 111,3–115,6 pt
-> et l'intérieur 101,6–108,9 pt, ≤ 5 en dur ; quatre palettes × deux thèmes × trois ouvertures : 0,2 à 0,6 ; 3/8 sur l'état d'avant).
-> ⚠ **Trois faits de mesure** : ① la silhouette fait 121 pt, la BOULE 116 (`E.R`) — « les derniers 8 % » se comptent sur la boule ; ② dans
-> la part déjà opaque (106–112 pt) il n'y avait AUCUN liseré avant (ΔE 0,5) : il vivait tout entier dans la frange ; ③ le peintre de
-> secours (sans WebGL 2) garde l'ancien bord (Q419).
-> **⚑ LES CHICHE PRENNENT L'EXPRESSION COURANTE (Q412 ; les formes nommées des Promi sont VALIDÉES)** : à soi « T’es pas chiche de » · lancé
-> « Marion, t’es pas chiche de » · à plusieurs « Marion et Rachel, vous êtes pas chiches de » (« … + x personnes » au-delà de trois) · reçu
-> « Marion me dit : t’es pas chiche de ». « À » et « avec » font une seule liste de personnes interpellées (Q417). `redteam_phrase_fiche` 74.
-> Mesuré à l'encre, sans rien changer : la phrase complète ne resserre pas l'air (phrase → titre 5,5 pt avant comme après ; 5,3 sur deux lignes).
-> **⚑ LE PARTAGE DU DESSIN (C-068).** « Seul un dessin se partage, jamais une photo importée. L'image partagée porte par défaut la mention de la
-> nature et le logo en bas à gauche. Un réglage, dans les Réglages, masque la mention. Le logo est toujours là. Un dessin masqué pour soi
-> n'est jamais partagé. » Le rond Partager d'une fiche (Promi, Chiche, Cercle) dont le dessin est posé et non masqué partage LE DESSIN,
-> entier, rendu de ses traits (`window._dessinPartage`, peint en tête de `sharePlanche`) : son fond, puis en bas à gauche le logo « Promi »
-> (PromiLate) et, au-dessus, la mention (Gilbert, capitales), à l'encre ou à la crème selon le fond ; ni mot-marque du haut ni QR
-> (`#shareScreen.sh-dessin`, `window._shDessinSeul`). Le réglage : rangée `#setMention` du groupe « Partager » des Réglages
-> (`lot-V137-MENTION`, `promi_dessin_mention` : '0' = masquée) — elle lit le GESTE (aux Réglages un toucher ne produit pas toujours de
-> `click`, mesuré en WebKit). Sans dessin, ou masqué : Mon Folio réduit, la case rend la DALLE — une photo n'y est jamais (elle ne vit
-> que dans la bande de la fiche). Juge : **`redteam_partage_dessin.py`** (34 ; 8/34 avant). Mots à valider : Q416, Q418.
-> **Q414** : Ramage, Mascaret, Chamade et Volubilis restent hors de l'ampleur ; rien n'est refigé. **C-011** : Tom vérifie, parade gardée.
-
 ### ⚑ v136 (7 oct. 2026) — LA FICHE TENUE EN CLAIR ; LA PHRASE COMPLÈTE ; LE PLEIN ÉCRAN DÈS LA PAGE + ; LE + ; L'AMPLEUR. (Décisions Tom.) Ce bloc CORRIGE v135, v124 (Q269) et v8 là où ils disent autre chose.
 > **⚑ EN CLAIR, LE CORPS D'UNE FICHE TENUE (PROMI ET CHICHE) EST LA CRÈME `#F7F0DE`, comme toutes les fiches en clair (C-059). LA TERRE `#2B1020`
 > NE VAUT PLUS QU'EN SOMBRE.** En clair la crête verte dit « tenu » et **la mention TENU est au vert d'état `#00341A`** (l'amande est illisible
@@ -2000,7 +1971,7 @@ python3 banc_rendu.py          # 280 images AU PIXEL — LE BANC DE RENDU DE RÉ
 python3 redteam_notifs.py      # 36 — LES NOTIFICATIONS (v109), WebKit, permission simulée : jamais au lancement ; « Je te le rappelle ? »
                                #   à la plantation d'une parole DATÉE, demande seulement après « oui » ; deux « pas besoin » puis plus rien ;
                                #   RIEN QUAND LA DATE EST PASSÉE ; les mots EN DUR ; une par jour ; « C'est aujourd'hui » à l'heure choisie ; la page (mur Ma Parole !).
-python3 redteam_volume.py      # AUCUN VOLUME, NULLE PART (v137 : la liste blanche de la Pelote est VIDE ; v114 : « le seul volume ») — statique : halo, ombre floue, dégradé ;
+python3 redteam_volume.py      # LA PELOTE EST LE SEUL VOLUME (v114) — statique : halo, ombre floue, dégradé hors de lot-V114-PELOTE-css ;
                                #   la dette de naissance est nommée (volume-dette.json). --sonde pose un halo sur une dalle : il rougit.
 python3 redteam_kaki.py        # JAMAIS DE KAKI (v114) — OKLCH h 78–140°, C ≥ 0,015 : source, rendu des 20 mondes, planches (--planche=).
                                #   ⚠ ROUGE à la naissance sur l'app : la règle est posée, la correction attend la décision de Tom.
@@ -2077,8 +2048,6 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
-python3 redteam_bord.py        # 8 — v137 (C-002) : la Pelote n'a pas de liseré — ΔE médian ≤ 5 entre la bande du bord et l'intérieur voisin, quatre palettes × deux thèmes × trois ouvertures (@3x). 3/8 sur l'état d'avant.
-python3 redteam_partage_dessin.py # 34 — v137 (C-068) : une photo n'est jamais dans l'image partagée ; un dessin porte le logo en bas à gauche, avec et sans la mention (réglage au doigt) ; un dessin masqué n'est jamais emporté. 8/34 avant.
 python3 redteam_halo.py        # 10 — v136 (C-071), RÉÉCRIT : AUTOUR DE LA PELOTE IL N'Y A QUE LA PAGE — aucun nœud de halo ni d'ombre, l'anneau 125–150 pt et la place de l'ombre
                                #   sont le fond de la page (@3x, deux thèmes), le bouton à 435,47. 2/10 sur l'état d'avant. Original : sauvegardes/redteam_halo-avant-v136.py.
 python3 redteam_garder.py      # 18 — v119 (Q370), repris en v121 : « garder de côté » garde le titre et la personne de la phrase, au doigt.

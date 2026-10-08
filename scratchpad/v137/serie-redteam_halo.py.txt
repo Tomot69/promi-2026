@@ -1,0 +1,12 @@
+[clair] le thème est le bon                                                    OK  
+[clair] A · aucun nœud de halo, d'ombre ni de flaque                           OK  []
+[clair] B · l'anneau 125–150 pt est le fond de la page                         OK  194313 px · 0 au-delà de 3 niveaux · pire 0 · fond (247, 240, 222)
+[clair] C · la place de l'ombre est le fond de la page                         OK  17136 px · 0 au-delà · pire 0
+[clair] D · « PARTAGER MA PELOTE » à 435,47                                    OK  435.46875
+[sombre] le thème est le bon                                                   OK  
+[sombre] A · aucun nœud de halo, d'ombre ni de flaque                          OK  []
+[sombre] B · l'anneau 125–150 pt est le fond de la page                        OK  194313 px · 0 au-delà de 3 niveaux · pire 0 · fond (5, 3, 2)
+[sombre] C · la place de l'ombre est le fond de la page                        OK  17136 px · 0 au-delà · pire 0
+[sombre] D · « PARTAGER MA PELOTE » à 435,47                                   OK  435.46875
+
+10/10
