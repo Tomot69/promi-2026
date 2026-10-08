@@ -1,0 +1,21 @@
+     R1 · liste interdite : tâche · to-do · objectif · valider · urgent · score · brouillon · Orbite · la sphère · Belle parole · En replanter un · Dire un mot · badge · série · streak · niveau · classement · points (récompense) · bravo · félicitations · record · échéance
+     R1 · « échéance » : l'app ne l'affiche sur aucun écran parcouru → il RESTE dans la liste (A4)
+OK  R1 · lexique : aucun mot interdit (34 écrans, 774 textes, 0 chaîne(s) du chantier) 
+OK  R1 · `TEXTES_ENGAGEMENT` existe (un seul objet, règle 6)           0 chaîne(s)
+OK  R1 · A3 : aucun texte du chantier à l'impératif (0 chaîne(s))      
+OK  R2 · absence et temps : rien dans `TEXTES_ENGAGEMENT` (0 chaîne(s)) 
+OK  R3 · aucun chiffre sur la Pelote (dans son cadre)                  dans le cadre : [] · cadre [296, 296]
+     R3 · à savoir : ailleurs sur l'écran de l'Aura, des textes portent un chiffre → ['5', '5', '1']
+--  R4 · invariance du moment « tenir »                                INACTIF AVANT E3
+OK  R7 · âge invisible (Toile : 7 textes ; fiche à tenir : 20)         
+OK  R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche tenus 3/3 · clés nouvelles : [] · hors liste : []
+--  A2 · aucune transparence ni fondu sur les éléments du chantier     0 élément `data-eng` à ce jour (le chantier n'a encore rien posé à l'écran) — le contrôle s'arme au premier
+OK  aucune erreur de page (écrans parcourus)                           []
+KO  R6 · sortie à un geste, à chaque étape de l'onboarding (4 étapes)  sans sortie : ['1 · le prénom', '2 · la parole et le trait', '3 · le message de fin']
+     R6 · 1 · le prénom              AUCUNE sortie visible
+     R6 · 2 · la parole et le trait  AUCUNE sortie visible
+     R6 · 3 · le message de fin      AUCUNE sortie visible
+     R6 · 4 · le compte              sortie : plus tard  plus-tard
+
+redteam_engagement : 8/9 au vert · 2 inactif(s) : R4 · invariance du moment « tenir » ; A2 · aucune transparence ni fondu sur les éléments du chantier
+ROUGE : R6 · sortie à un geste, à chaque étape de l'onboarding (4 étapes)

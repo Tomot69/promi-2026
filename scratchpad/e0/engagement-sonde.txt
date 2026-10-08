@@ -1,0 +1,21 @@
+     R1 · liste interdite : tâche · to-do · objectif · valider · urgent · score · brouillon · Orbite · la sphère · Belle parole · En replanter un · Dire un mot · badge · série · streak · niveau · classement · points (récompense) · bravo · félicitations · record · échéance
+     R1 · « échéance » : l'app ne l'affiche sur aucun écran parcouru → il RESTE dans la liste (A4)
+KO  R1 · lexique : aucun mot interdit (34 écrans, 773 textes, 5 chaîne(s) du chantier) bravo ← TEXTES_ENGAGEMENT.b[1] : « Bravo, trois points de plus. » | points (récompense) ← TEXTES_ENGAGEMENT.b[1] : « Bravo, trois points de plus. »
+OK  R1 · `TEXTES_ENGAGEMENT` existe (un seul objet, règle 6)           5 chaîne(s)
+KO  R1 · A3 : aucun texte du chantier à l'impératif (5 chaîne(s))      a : « Fais-le. Puis reviens le tenir. » | b[0] : « La prochaine, dis-la à quelqu’un. » | c.e : « Allons-y »
+KO  R2 · absence et temps : rien dans `TEXTES_ENGAGEMENT` (5 chaîne(s)) a : « Fais-le. Puis reviens le tenir. » | c.d : « Tu n’as rien planté depuis longtemps. »
+KO  R3 · aucun chiffre sur la Pelote (dans son cadre)                  dans le cadre : ['12'] · cadre [296, 296]
+     R3 · à savoir : ailleurs sur l'écran de l'Aura, des textes portent un chiffre → ['5', '5', '1']
+--  R4 · invariance du moment « tenir »                                INACTIF AVANT E3
+KO  R7 · âge invisible (Toile : 7 textes ; fiche à tenir : 20)         fiche à tenir : « il y a 3 jours »
+KO  R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche tenus 3/3 · clés nouvelles : ['promi_nb_tenus'] · hors liste : ['promi_nb_tenus']
+KO  A2 · aucune transparence ni fondu (1 élément(s) `data-eng`)        sonde : opacité 0.6 | sonde : fondu (opacity 0.3s)
+OK  aucune erreur de page (écrans parcourus)                           []
+KO  R6 · sortie à un geste, à chaque étape de l'onboarding (4 étapes)  sans sortie : ['1 · le prénom', '2 · la parole et le trait', '3 · le message de fin']
+     R6 · 1 · le prénom              AUCUNE sortie visible
+     R6 · 2 · la parole et le trait  AUCUNE sortie visible
+     R6 · 3 · le message de fin      AUCUNE sortie visible
+     R6 · 4 · le compte              sortie : plus tard  plus-tard
+
+redteam_engagement : 2/10 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+ROUGE : R1 · lexique : aucun mot interdit (34 écrans, 773 textes, 5 chaîne(s) du chantier) · R1 · A3 : aucun texte du chantier à l'impératif (5 chaîne(s)) · R2 · absence et temps : rien dans `TEXTES_ENGAGEMENT` (5 chaîne(s)) · R3 · aucun chiffre sur la Pelote (dans son cadre) · R7 · âge invisible (Toile : 7 textes ; fiche à tenir : 20) · R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche · A2 · aucune transparence ni fondu (1 élément(s) `data-eng`) · R6 · sortie à un geste, à chaque étape de l'onboarding (4 étapes)

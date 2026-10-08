@@ -116,6 +116,23 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ E0 (9 oct. 2026) — LE CHANTIER D'ENGAGEMENT : LES GARDE-FOUS. (`ENGAGEMENT.md` ; LES AMENDEMENTS A1 À A7, EN FIN DE DOCUMENT, PRIMENT.)
+> **Le document est à la racine ; E0 est fait, seul (C-073). E1 n'est pas commencé.** Les lots : C-073 à C-081 ; **Délier : C-082** (C-027 ne
+> porte plus que le relevé). Ordre (A7) : E0 → E1 → E2 et E2bis → E3 → **point d'arrêt** → E4 → E5 → E6A → validation de Tom → E6B.
+> **Trois conventions posées en E0, à tenir dans tous les lots E** : ① tous les textes du chantier vivent dans **`window.TEXTES_ENGAGEMENT`**
+> (`lot-ENGAGEMENT-TEXTES`, vide en E0), marqués `/* TEXTE PROVISOIRE — Tom */` ; ② **tout élément créé par le chantier porte `data-eng`** —
+> c'est sur eux que le juge vérifie A2 (opacité 1 sur eux et leurs ancêtres, aucun fondu, aucune animation, aucun texte à demi transparent) ;
+> ③ **aucun texte à l'impératif** (A3) : les textes provisoires du document qui en contiennent se réécrivent avant d'entrer dans l'objet.
+> **`redteam_engagement.py` passe à la fin de CHAQUE lot E** (Chromium, serveur du projet) : R1 lexique (la liste = les termes bannis du §2 +
+> badge, série, streak, niveau, classement, points, bravo, félicitations, record ; « échéance » y reste tant que l'app ne l'affiche pas —
+> le juge le constate et le dit) et A3 · R2 absence et temps · R3 aucun chiffre dans le cadre de la Pelote · R4 (inactif avant E3) · R5 aucune
+> clé nouvelle au stockage après trois « tenir » · R6 une sortie visible à chaque étape de l'onboarding · R7 aucun âge (« dans N jours » est un
+> horizon, en liste blanche) · A2. **`--sonde` fait rougir R1, A3, R2, R3, R5, R7 et A2.** État à la naissance : 8/9 — **R6 ROUGE** (le
+> prénom, la parole et le trait, le message de fin n'ont aucune sortie visible ; E2 refait l'onboarding avec « Plus tard » — Q421).
+> **`redteam_verrou_onboarding.py`** : stockage vierge → l'onboarding s'affiche ; terminé par son vrai chemin ; deux rechargements → il ne
+> revient pas ; 9/9 (`--sonde` retire le verrou : rouge). ⚠ Le message de fin n'accepte le toucher qu'après ses quatre secondes (v21) :
+> un parcours automatique qui touche trop tôt le croit bloqué.
+
 ### ⚑ v138 (9 oct. 2026) — LE BORD DE LA PELOTE SUR LES DEUX RENDUS ; C-072 ; LE CHANTIER D'ENGAGEMENT INSCRIT. (Décisions Tom.)
 > **Q416, Q417, Q418 validées** (le réglage « Mention sur un dessin partagé », sa place, la mention au-dessus du logo ; « à » et « avec »
 > fusionnés dans les Chiche).
@@ -2096,6 +2113,8 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
+python3 redteam_engagement.py  # E0 (C-073) — la grille du chantier d'engagement : R1 lexique + A3 (aucun impératif), R2, R3, R4 (inactif avant E3), R5, R6, R7, A2. À PASSER À LA FIN DE CHAQUE LOT E. --sonde : il rougit. ⚠ 8/9 à la naissance : R6 rouge jusqu'à E2.
+python3 redteam_verrou_onboarding.py # 9 — E0 : stockage vierge → l'onboarding s'affiche ; terminé ; deux rechargements → il ne revient pas. --sonde : il rougit.
 python3 redteam_bord.py        # 8 — v137 (C-002) : la Pelote n'a pas de liseré — ΔE médian ≤ 5 entre la bande du bord et l'intérieur voisin, quatre palettes × deux thèmes × trois ouvertures (@3x). 3/8 sur l'état d'avant.
 python3 redteam_partage_dessin.py # 34 — v137 (C-068) : une photo n'est jamais dans l'image partagée ; un dessin porte le logo en bas à gauche, avec et sans la mention (réglage au doigt) ; un dessin masqué n'est jamais emporté. 8/34 avant.
 python3 redteam_halo.py        # 10 — v136 (C-071), RÉÉCRIT : AUTOUR DE LA PELOTE IL N'Y A QUE LA PAGE — aucun nœud de halo ni d'ombre, l'anneau 125–150 pt et la place de l'ombre

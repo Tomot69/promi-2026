@@ -8528,3 +8528,10 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Q419 — TRANCHÉE (Tom, 9 oct.)** : le peintre de secours reçoit la même correction du bord de la Pelote ; `redteam_bord` passe par les deux chemins.
 - **Q420 — BLOQUANT (§1)** : `ENGAGEMENT.md` n'est pas arrivé. E0 n'est pas exécuté ; les neuf lots sont inscrits (C-073 à C-081) avec les amendements A1 à A7.
 
+## E0 — le chantier d'engagement (9 oct. 2026)
+- **Q420 — LEVÉE** : `ENGAGEMENT.md` est à la racine ; E0 est exécuté seul (C-073).
+- **Q421 — À TRANCHER (R6)** : l'onboarding d'aujourd'hui n'a de sortie visible qu'à sa dernière étape (le compte : « plus tard »). R6 est donc ROUGE jusqu'à E2, qui le refait. Faut-il poser une sortie dès maintenant ?
+- **Q422 — À TRANCHER (R3)** : « aucun chiffre sur la Pelote » est jugé dans le cadre de la Pelote. L'écran de l'Aura porte ailleurs les trois chiffres de la légende (tenues, en cours, à tenir — v95, R-015). Le document dit « sur l'écran de la Pelote » : la règle vise-t-elle aussi ces trois chiffres ?
+- **Q423 — À SAVOIR (R1, A4)** : « échéance » n'est affiché sur aucun des 34 écrans parcourus ; il RESTE donc dans la liste interdite. Si un écran non parcouru l'emploie, le juge le dira.
+- **Q424 — À SAVOIR** : `redteam_engagement` tourne sur le serveur du projet (127.0.0.1:8752), pas en `file://` comme l'écrit le document : c'est la règle du dépôt, et le moteur se charge depuis un second fichier.
+

@@ -1,0 +1,7 @@
+    0s  redteam_registre.py        6 / 6 / chantiers non validés : 82
+    0s  redteam_tokens.py            ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py          dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME, NULLE PART (la Pelote comprise)
+   79s  redteam_decisions.py       Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état) / 85 / 85
+  131s  redteam_joignable.py       aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   90s  redteam_ecrans.py          aucune erreur JS [clair]                       OK   / 152/152
+  685s  redteam_couleurs_ref.py    canevas non peints d'un côté (comptés, non jugés) : 3 — Nuée[l] vide côté réf · Nuée défilée[l] vide côté réf · Nuée[d] vide côté réf / ✅ — 0 écart(s) de couleur avec la référence 
