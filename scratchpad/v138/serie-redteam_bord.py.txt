@@ -1,0 +1,18 @@
+OK  [carte graphique · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.4 · 0.3 · 0.3
+OK  [carte graphique · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.5 · 0.4 · 0.4
+OK  [carte graphique · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.7 · 0.3 · 0.3
+OK  [carte graphique · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.6 · 0.6 · 0.5
+OK  [carte graphique · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.5 · 0.3 · 0.2
+OK  [carte graphique · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.3 · 0.6 · 0.6
+OK  [carte graphique · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.5 · 0.4 · 0.4
+OK  [carte graphique · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.3 · 0.5 · 0.4
+OK  [secours · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.4 · 0.4 · 0.4
+OK  [secours · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.3 · 0.3 · 0.3
+OK  [secours · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.4 · 0.3 · 0.4
+OK  [secours · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.5 · 0.6 · 0.5
+OK  [secours · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.3 · 0.4 · 0.5
+OK  [secours · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.4 · 0.3 · 0.4
+OK  [secours · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.3 · 0.4 · 0.3
+OK  [secours · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.3 · 0.3 · 0.4
+
+16/16

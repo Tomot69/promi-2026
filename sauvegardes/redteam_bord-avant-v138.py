@@ -16,10 +16,6 @@ import io, sys, math
 from playwright.sync_api import sync_playwright
 from PIL import Image
 F = [a for a in sys.argv[1:] if not a.startswith('--')]; F = F[0] if F else 'app.html'
-# ⚑ v138 (Tom, 9 oct. 2026) : « redteam_bord passe aussi par ce chemin » — le peintre de secours (sans WebGL 2), forcé par `window._peloteGL=false`.
-CHEMINS = [('carte graphique', ''), ('secours', 'window._peloteGL=false;')]
-if '--gl' in sys.argv: CHEMINS = CHEMINS[:1]
-if '--secours' in sys.argv: CHEMINS = CHEMINS[1:]
 SEUIL = 5.0; PALETTES = ['signal', 'candide', 'irascible', 'taciturne']; N = 3; R = 121.0
 ok = [0]; ko = []
 def t(nom, c, d=''):
@@ -44,29 +40,27 @@ def zone(px, cx, cy, e, a0, a1, r0, r1):
     return m, math.sqrt(max(0, s2 / n - l * l))
 with sync_playwright() as p:
     b = p.webkit.launch()
-    for chemin, force in CHEMINS:
-        for th in ('light', 'dark'):
-            for pal in PALETTES:
-                meds = []
-                for k in range(N):
-                    ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=3, reduced_motion='reduce')
-                    ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}" + force)
-                    pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + F); pg.wait_for_timeout(6500)
-                    pg.evaluate("([t,p])=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} var d=document.getElementById('device'); if(d.classList.contains('light')!==(t==='light')){ try{ setLight(t==='light'); }catch(e){ d.classList.toggle('light',t==='light'); } } try{Toile.setPalette(p)}catch(e){} document.getElementById('souffleBtn').click(); }", [th, pal])
-                    pg.wait_for_timeout(3800)
-                    pg.evaluate("()=>{ try{ _aura.fige(true); }catch(e){} }"); pg.wait_for_timeout(350)
-                    g = pg.evaluate("()=>{const r=document.getElementById('auBoule').getBoundingClientRect(); const e=window._peloteGLEtat?window._peloteGLEtat():null; return [r.left+r.width/2, r.top+r.height/2, document.getElementById('device').classList.contains('light'), !!(e&&e.envois)]}")
-                    if g[3] != (chemin == 'carte graphique'): meds.append(98.0)   # le chemin jugé n'est pas celui qui a peint
-                    im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB'); px = im.load(); e = im.width / 430.0
-                    des = []
-                    for sct in range(24):
-                        mi, si = zone(px, g[0] * e, g[1] * e, e, sct * 15, sct * 15 + 15, 0.84, 0.90)
-                        mb, sb = zone(px, g[0] * e, g[1] * e, e, sct * 15, sct * 15 + 15, 0.92, 0.955)
-                        if si > 14: continue
-                        des.append(math.dist(lab(mi), lab(mb)))
-                    des.sort(); meds.append(des[len(des) // 2] if len(des) >= 8 else 99.0)
-                    ctx.close()
-                t('[%s · %s · %s] bord ↔ intérieur : ΔE médian ≤ %.0f' % (chemin, 'clair' if th == 'light' else 'sombre', pal, SEUIL), max(meds) <= SEUIL, ' · '.join('%.1f' % m for m in meds))
+    for th in ('light', 'dark'):
+        for pal in PALETTES:
+            meds = []
+            for k in range(N):
+                ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=3, reduced_motion='reduce')
+                ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
+                pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + F); pg.wait_for_timeout(6500)
+                pg.evaluate("([t,p])=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} var d=document.getElementById('device'); if(d.classList.contains('light')!==(t==='light')){ try{ setLight(t==='light'); }catch(e){ d.classList.toggle('light',t==='light'); } } try{Toile.setPalette(p)}catch(e){} document.getElementById('souffleBtn').click(); }", [th, pal])
+                pg.wait_for_timeout(3800)
+                pg.evaluate("()=>{ try{ _aura.fige(true); }catch(e){} }"); pg.wait_for_timeout(350)
+                g = pg.evaluate("()=>{const r=document.getElementById('auBoule').getBoundingClientRect(); return [r.left+r.width/2, r.top+r.height/2, document.getElementById('device').classList.contains('light')]}")
+                im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB'); px = im.load(); e = im.width / 430.0
+                des = []
+                for sct in range(24):
+                    mi, si = zone(px, g[0] * e, g[1] * e, e, sct * 15, sct * 15 + 15, 0.84, 0.90)
+                    mb, sb = zone(px, g[0] * e, g[1] * e, e, sct * 15, sct * 15 + 15, 0.92, 0.955)
+                    if si > 14: continue
+                    des.append(math.dist(lab(mi), lab(mb)))
+                des.sort(); meds.append(des[len(des) // 2] if len(des) >= 8 else 99.0)
+                ctx.close()
+            t('[%s · %s] bord ↔ intérieur voisin : ΔE médian ≤ %.0f' % ('clair' if th == 'light' else 'sombre', pal, SEUIL), max(meds) <= SEUIL, ' · '.join('%.1f' % m for m in meds))
     b.close()
 print('\n%d/%d' % (ok[0], ok[0] + len(ko)))
 if ko: sys.exit(1)

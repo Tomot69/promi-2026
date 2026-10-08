@@ -1116,16 +1116,9 @@ def juge():
             # le même geste dans les deux cas : on appuie 300 ms (le creux à fond), puis on
             # lâche sur place — ou on LANCE (six pas de 14 pt toutes les 16 ms)
             r = pg.evaluate(LANCE, [cx, cy, 84 * sc if lance else 0, 6 if lance else 0, 16, 300])
-            # ⚑ v138 (Tom, 9 oct. 2026, C-072) — LA CAUSE DU FLOTTEMENT ÉTAIT DANS LE JUGE : la fin du creux était lue par `attends`, qui
-            #   interroge la page toutes les 100 ms depuis Python, puis par un second aller-retour pour l'heure — une durée de 0,4 à 0,7 s
-            #   mesurée à ± 0,1 s près, et allongée du même retard dans les deux cas (ce qui remonte le rapport). La fin se lit maintenant
-            #   DANS la page, à l'image près (§8 : un instrument dont la cadence dépend d'autre chose que de ce qu'il mesure ne mesure rien),
-            #   et chaque cas est joué TROIS fois : on juge la médiane. LE SEUIL (60 %) N'EST PAS TOUCHÉ. Original : sauvegardes/releve-aura-avant-v138.py.
-            return pg.evaluate("(t0)=>new Promise(res=>{ const lim=performance.now()+20000; (function f(){ if(!_aura.etat().emp || performance.now()>lim) res((performance.now()-t0)/1000); else requestAnimationFrame(f); })(); })", r['t'])
-        vas, vbs = [], []
-        for _k in range(3): vas.append(vie(False)); vbs.append(vie(True))
-        va, vb = sorted(vas)[1], sorted(vbs)[1]
-        VAL.append(('6 · les trois passes', 'sur place %s · lancé %s' % (' · '.join('%.2f' % v for v in vas), ' · '.join('%.2f' % v for v in vbs))))
+            attends("()=>!_aura.etat().emp", 20000)
+            return (pg.evaluate("()=>performance.now()") - r['t']) / 1000.0
+        va, vb = vie(False), vie(True)
         VAL.append(('6 · comblement', 'le creux vit %.2f s lâché sur place, %.2f s lancé (%.0f %%)' % (va, vb, 100 * vb / max(va, 1e-6))))
         if not (vb < 0.6 * va): acq.append('6 · le lancer ne comble pas : %.2f s sans lancer, %.2f s en lançant' % (va, vb))
         # 8 · un toucher ouvre la personne, un glissement tourne

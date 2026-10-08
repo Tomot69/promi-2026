@@ -116,6 +116,25 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v138 (9 oct. 2026) — LE BORD DE LA PELOTE SUR LES DEUX RENDUS ; C-072 ; LE CHANTIER D'ENGAGEMENT INSCRIT. (Décisions Tom.)
+> **Q416, Q417, Q418 validées** (le réglage « Mention sur un dessin partagé », sa place, la mention au-dessus du logo ; « à » et « avec »
+> fusionnés dans les Chiche).
+> **⚑ LE PEINTRE DE SECOURS (SANS WEBGL 2) A LA MÊME CORRECTION DU BORD (C-002)** — « pour que les deux rendus soient identiques ». Après sa
+> composition, une passe remplace, au-delà de 0,90 R, la couleur de chaque pixel par celle de son vis-à-vis intérieur (même loi que `FS2` :
+> repli autour de 0,92 R, fondu 0,90 → 0,93 R, opacité gardée) ; la table (cible, source, poids) est calculée une fois par taille (`cv.__bd`) ;
+> le masque du corps plein va jusqu'à R (0,972 avant). **`redteam_bord` passe par les DEUX chemins** (`--gl`, `--secours` ; le secours est
+> forcé par `window._peloteGL=false`, et le juge vérifie quel chemin a peint) : 16/16 ; le secours rougit sur l'état d'avant (6/8).
+> **⚑ C-072 — « LE LANCER NE COMBLE PAS » FLOTTAIT À CAUSE DU JUGE.** La fin du creux était lue par `attends` (une question à la page toutes
+> les 100 ms, depuis Python) puis par un second aller-retour : 0,4 à 0,7 s mesurées à ± 0,1 s, avec le même retard ajouté aux deux durées —
+> le rapport remontait vers son seuil. La fin se lit maintenant DANS la page, à l'image près, trois passes, médiane (53 %, 57 %, 45 % sur
+> trois relevés). **Le seuil (60 %) n'est pas touché, le produit non plus.** C'est le §8 : un instrument dont la cadence ne dépend pas de ce
+> qu'il mesure ne mesure rien.
+> **⚑ LE CHANTIER D'ENGAGEMENT EST AU REGISTRE (C-073 à C-081 : E0, E1, E2, E2bis, E3, E4, E5, E6A, E6B) avec les amendements A1 à A7 du chef
+> de chantier, qui PRIMENT sur ENGAGEMENT.md.** À ne jamais reperdre : A1 — ni onde sur les dalles voisines ni menthe de célébration en E3 ;
+> A2 — aucune transparence ni fondu (main fantôme au trait plein, phrase d'accueil opaque) ; A3 — aucun texte à l'impératif ; A4 — la liste
+> interdite de R1 = le lexique du §2 ; A5 — fil par personne sans épaisseur cumulée ; A6 — E2bis, l'interface se dévoile ; A7 — l'ordre, et
+> le point d'arrêt après E3. ⚠ **E0 N'EST PAS EXÉCUTÉ : `ENGAGEMENT.md` n'est pas arrivé** (Q420) ; rien n'a été inventé à sa place.
+
 ### ⚑ v137 (8 oct. 2026) — PLUS AUCUN EFFET AUTOUR DE LA PELOTE ; LES CHICHE ; LE PARTAGE DU DESSIN. (Décisions Tom.) Ce bloc CORRIGE v136, et v114 à v126 pour la Pelote.
 > **⚑ DÉCISION DE TOM, 8 OCT. 2026 : PLUS AUCUN EFFET AUTOUR DE LA PELOTE.** Ni halo, ni ombre, ni couronne, ni flaque, ni liseré. **Le halo et
 > l'ombre de la Pelote SORTENT de la liste blanche des exceptions : il ne reste que le flou des murs de Ma Parole !.** « La Pelote est le seul

@@ -1,0 +1,11 @@
+
+── A · au rendu : 289 éléments interactifs relevés sur 36 écrans, 2 injoignables (distincts)
+── B · à la source : 416 gestionnaires, 814 appels, 4 défauts (fonction absente ou nœud disparu)
+
+la page se charge sans erreur                              OK  
+des éléments ont été relevés sur chaque écran              OK  36 écrans
+aucun élément interactif injoignable hors dette            OK  0 neufs, 2 en dette
+aucun gestionnaire n'appelle une fonction absente hors dette OK  0 neufs, 4 en dette
+aucun gestionnaire en attribut on…=""                      OK  0
+
+5 / 5

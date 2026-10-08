@@ -8523,3 +8523,8 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   l'encre ou à la crème selon le fond du dessin ; le mot-marque du haut et le QR n'y sont pas. Le dessin entier (390 × 742) est posé « contenu » dans le format choisi.
 - **Q419 — À SAVOIR (C-002)** : le bord corrigé vit dans le rendu par la carte graphique ; le peintre de secours (sans WebGL 2) garde l'ancien bord.
 
+## v138 (9 oct. 2026)
+- **Q416, Q417, Q418 — VALIDÉES (Tom, 9 oct.)** : le libellé « Mention sur un dessin partagé », sa place aux Réglages, la mention au-dessus du logo ; « à » et « avec » fusionnés dans les Chiche.
+- **Q419 — TRANCHÉE (Tom, 9 oct.)** : le peintre de secours reçoit la même correction du bord de la Pelote ; `redteam_bord` passe par les deux chemins.
+- **Q420 — BLOQUANT (§1)** : `ENGAGEMENT.md` n'est pas arrivé. E0 n'est pas exécuté ; les neuf lots sont inscrits (C-073 à C-081) avec les amendements A1 à A7.
+
