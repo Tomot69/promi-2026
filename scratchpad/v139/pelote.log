@@ -1,0 +1,9 @@
+   32s  redteam_contour.py           OK [sombre] la Pelote s'arrête à 116.6 du centre (silhouette 121.5) · pixels au-delà : 0 / ✅ rien ne dépasse du contour
+  167s  redteam_plein.py             [densité 3] aucune erreur de page                                              OK   / 97 / 97
+  123s  redteam_zone.py --n=12       OK  [light] aucune erreur de page   / 12 / 12
+   66s  redteam_souffle.py           OK C · « Réduire les animations » : pixels changés en 5 s — dedans 0, dehors 0 / ✅ la Pelote respire par son velours, et rien d'autre
+   28s  redteam_pelote_doigt.py      6 / 7 / KO : 1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+   60s  redteam_mesure.py            OK  [dark] la page n'a pas défilé  0 / 0 / 10 / 10
+   91s  redteam_corps.py --n=20      aucune erreur de page                                                                  OK   / 33 / 33
+  199s  releve-aura.py               palier 220000 · médiane 39.8 ms · 1245 images · plus longue image pendant l'élan : 800 ms (dont peintre 41.3 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 pendant qu'on regarde
+FIN

@@ -1,0 +1,17 @@
+   29s  redteam_pelote_doigt.py      6 / 7 / KO : 1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+    0s  redteam_tokens.py              ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py            dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+  625s  redteam_gestes.py            OK  A1 · la main jouée au-dessus de la Toile : aucune dalle ne bouge, le canevas est le même 802156842 802156842 802156842 / redteam_gestes : 122/122
+  115s  redteam_engagement.py        redteam_engagement : 10/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir » / ROUGE : R6 · sortie à un geste, à chaque étape de l'onboarding (4 étapes)
+  131s  redteam_joignable.py         aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+  264s  redteam_phrase_fiche.py        ✅ [dark] élision : aucune erreur de page — [] / redteam_phrase_fiche : 74/74
+   78s  redteam_decisions.py         Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état) / 85 / 85
+  114s  redteam_dessin.py              ✅ aucune erreur de page (Cercle, page +) / redteam_dessin : 79/79
+   28s  redteam_dessin_photo.py      OK  aucune erreur de page   / 15 / 15
+   91s  redteam_ecrans.py            aucune erreur JS [clair]                       OK   / 152/152
+  184s  redteam_flash_etat.py        aucune erreur de page                                                      OK   / 10 / 10
+   57s  redteam_tonsurton.py         l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  300s  redteam_lexique.py              · point i / redteam_lexique : 3/3
+  315s  redteam_air.py                  fiche en cours [dark]      #dptQuand«EN COURS · DEPUIS LE»    → .dpm-rep«écris un mot» /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+  763s  redteam_couleurs_ref.py      canevas non peints d'un côté (comptés, non jugés) : 1 — Nuée défilée[d] vide côté app / ❌ — 3 écart(s) de couleur avec la référence v118
+FIN

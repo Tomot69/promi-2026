@@ -1,0 +1,8 @@
+  625s  redteam_gestes.py            OK  A1 · la main jouée au-dessus de la Toile : aucune dalle ne bouge, le canevas est le même 917377650 917377650 917377650 / redteam_gestes : 122/122
+  115s  redteam_engagement.py        redteam_engagement : 10/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir » / ROUGE : R6 · sortie à un geste, à chaque étape de l'onboarding (4 étapes)
+  131s  redteam_joignable.py         aucun gestionnaire en attribut on…=""                      OK  0 / 5 / 5
+   91s  redteam_ecrans.py            aucune erreur JS [clair]                       OK   / 152/152
+    0s  redteam_volume.py            dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+    0s  redteam_registre.py          6 / 6 / chantiers non validés : 90
+    0s  redteam_tokens.py              ✓ l'extension Swift porte le niveau « libelle » / 46/46
+FIN

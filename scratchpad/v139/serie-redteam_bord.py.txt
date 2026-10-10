@@ -1,0 +1,26 @@
+OK  [carte graphique · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.9
+OK  [carte graphique · clair · signal] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 0.75 · fin 116.2 (de 115.5 à 116.5)
+OK  [carte graphique · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.4
+OK  [carte graphique · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.9
+OK  [carte graphique · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 1.3
+OK  [carte graphique · clair · taciturne] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 0.75 · fin 116.2 (de 115.5 à 116.5)
+OK  [carte graphique · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 1.6
+OK  [carte graphique · sombre · signal] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 0.75 · fin 116.2 (de 115.5 à 116.5)
+OK  [carte graphique · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.6
+OK  [carte graphique · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 1.6
+OK  [carte graphique · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 1.0
+OK  [carte graphique · sombre · taciturne] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 0.75 · fin 116.2 (de 115.5 à 116.5)
+OK  [secours · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 1.1
+OK  [secours · clair · signal] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 1.00 · fin 116.2 (de 115.5 à 116.8)
+OK  [secours · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.0
+OK  [secours · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 1.2
+OK  [secours · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 2.2
+OK  [secours · clair · taciturne] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 1.00 · fin 116.2 (de 115.5 à 116.8)
+OK  [secours · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 1.6
+OK  [secours · sombre · signal] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 1.00 · fin 116.2 (de 115.5 à 116.8)
+OK  [secours · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.6
+OK  [secours · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 1.5
+OK  [secours · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 1.4
+OK  [secours · sombre · taciturne] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 1.00 · fin 116.2 (de 115.5 à 116.8)
+
+24/24

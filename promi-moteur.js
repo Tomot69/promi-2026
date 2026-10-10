@@ -6727,7 +6727,17 @@ function addP(k){
 /* ⚑ v34 — les graines grises (le semis de la Toile VIDE, §10.6) s'effacent dès qu'une vraie parole arrive. */
 /* ⚑ v35 — la famille du monde courant : les quatre neufs ont le semis qui grandit, les huit anciens le semis constant */
 var _NEUFS={esquille:1,bobinette:1,ritournelle:1,madrure:1,halin:1,brouillamini:1,chamade:1,volubilis:1,guingois:1,chantourne:1,mascaret:1,ramage:1}, _semisDe=null;   /* v48 : Halin est une Toile faite de ses paroles */
-function _semisNeuf(){ return !!_NEUFS[theme]; }
+/* ⚑ v139 (Tom, 9 oct. 2026, C-088) — « Ritournelle : au départ, la Toile est trop zoomée : on doit voir plusieurs dalles entières, comme sous
+   les autres mondes. » Cause : dans cette famille la Toile n'a QUE ses paroles ; à une parole, une seule cellule couvre tout l'écran
+   (Ritournelle et Bobinette n'y peignaient plus rien de reconnaissable), à trois ou six les coulées débordent de l'écran. Tant que la
+   Toile compte moins de SEMIS_NEUF_MIN paroles et Cercles, elle garde donc le semis constant des autres mondes (cellules vides autour,
+   recul cadré sur les dalles) ; au-delà, elle redevient la Toile faite de ses seules paroles (v34). Les aperçus du Studio (`_AP`) gardent
+   la règle d'origine. */
+var SEMIS_NEUF_MIN=9;
+function _semisCompte(){ var n=0, i; try{ for(i=0;i<promises.length && n<SEMIS_NEUF_MIN;i++){ if(!promises[i].draft) n++; } }catch(_){ return SEMIS_NEUF_MIN; }
+  try{ if(n<SEMIS_NEUF_MIN && typeof NUE!=='undefined'){ for(var k in NUE){ if(k!=='soi') n++; } } }catch(_){ }
+  return n; }
+function _semisNeuf(){ if(!_NEUFS[theme]) return false; if(_AP || window._semisNeufToujours) return true; return _semisCompte()>=SEMIS_NEUF_MIN; }
 /* ⚑ v98 (Tom, 29 sept. : « Ajoute des cellules aux huit anciens. Une parole qui n'apparaît pas est inacceptable — la décision
    v35 valait pour l'aspect, pas pour perdre des paroles. Garde leur semis constant tant qu'il y a de la place, et n'ajoute que
    lorsqu'il est plein. ») — dans un monde ancien, `plantOne` rend null quand il n'y a plus de cellule vide : la parole restait

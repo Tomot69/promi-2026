@@ -1,0 +1,13 @@
+encre (titre, texte)                 sur #F7F0DE : 15.34:1 · ΔE  85.8   →   sur #EAD9B9 : 12.56:1 · ΔE  78.5
+à tenir #DD4D23 (texte et trait)     sur #F7F0DE :  3.58:1 · ΔE  81.7   →   sur #EAD9B9 :  2.93:1 · ΔE  72.6
+en cours #291547                     sur #F7F0DE : 14.29:1 · ΔE  93.5   →   sur #EAD9B9 : 11.70:1 · ΔE  90.4
+tenu #00341A (mention, arc)          sur #F7F0DE : 12.27:1 · ΔE  80.3   →   sur #EAD9B9 : 10.04:1 · ΔE  73.7
+crête tenue #0B4A2A                  sur #F7F0DE :  9.11:1 · ΔE  73.1   →   sur #EAD9B9 :  7.46:1 · ΔE  66.8
+trait Promi #022140                  sur #F7F0DE : 14.27:1 · ΔE  88.7   →   sur #EAD9B9 : 11.69:1 · ΔE  85.3
+trait Chiche #3D0F23                 sur #F7F0DE : 14.31:1 · ΔE  87.1   →   sur #EAD9B9 : 11.71:1 · ΔE  81.0
+violet Cercle #291547                sur #F7F0DE : 14.29:1 · ΔE  93.5   →   sur #EAD9B9 : 11.70:1 · ΔE  90.4
+brun encre Cercle #43291C            sur #F7F0DE : 11.75:1 · ΔE  76.3   →   sur #EAD9B9 :  9.62:1 · ΔE  68.6
+bande Promi #82AEF8                  contre corps : ΔE  56.6 →  61.7
+bande Chiche #FFB8D2                 contre corps : ΔE  35.0 →  35.7
+bande Cercle #C9A8F5                 contre corps : ΔE  55.4 →  59.4
+carte du Cercle #F7F0DE              contre corps : ΔE   0.0 →  11.4

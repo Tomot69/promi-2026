@@ -27,7 +27,11 @@ ICI=os.path.dirname(os.path.abspath(__file__))
 # sortent de la liste blanche des exceptions. Il ne reste que le flou des murs de Ma Parole !. […] plus aucun effet autour de la Pelote. »
 # LA LISTE BLANCHE EST VIDE : la Pelote n'a plus ni halo, ni ombre, ni couronne, ni flaque — et leurs peintres ne doivent plus exister.
 # (Le flou des murs de Ma Parole ! est un `filter:blur`, que ce juge n'a jamais compté : il est jugé par redteam_murs.)
-BLANCHE={}
+# ⚑ v139 (Tom, 9 oct. 2026, C-083) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_volume-avant-v139.py) : « L'ombre revient, sous la Pelote, dans
+# les deux thèmes (géométrie de v121). Rien d'autre autour : ni halo, ni liseré. » LA LISTE BLANCHE PORTE UNE SEULE EXCEPTION, NOMINATIVE :
+# le bloc `lot-V139-OMBRE-css` (l'ombre, clair et sombre : deux dégradés, pas un de plus). Le halo, la couronne, la flaque restent interdits.
+BLANCHE={'lot-V139-OMBRE-css':'*'}
+OMBRE_ATTENDUE=2
 def permis(lot, motif):
     b=BLANCHE.get(lot); return b=='*' or (b is not None and any(motif.startswith(m) for m in b))
 MOTIFS=re.compile(r"_couronnePelote|_haloPelote|_flaquePelote|(?:repeating-)?(?:radial|linear|conic)-gradient\(|create(?:Radial|Linear|Conic)Gradient|shadowBlur|shadowColor|drop-shadow\(|text-shadow\s*:[^;}\"']*|box-shadow\s*:[^;}\"']*")
@@ -91,9 +95,10 @@ def main():
         k=cle(o)
         if vu[k]<dette[k]: vu[k]+=1
         else: neuf.append(k)
-    print('liste blanche : VIDE (v137) —', blanche, 'occurrence(s) exemptée(s)')
+    print('liste blanche : l\'ombre de la Pelote seule (v139) —', blanche, 'occurrence(s) exemptée(s), attendu', OMBRE_ATTENDUE)
+    if blanche!=OMBRE_ATTENDUE: neuf.append('(la liste blanche exempte %d occurrence(s) : l\'ombre en porte exactement %d)'%(blanche,OMBRE_ATTENDUE))
     print('dette de naissance :', sum(dette.values()), '· retrouvée :', sum(vu.values()), '· soldée depuis :', sum(dette.values())-sum(vu.values()))
     for k in neuf: print('  ✗ NOUVEAU VOLUME :', k)
-    print(('✅ AUCUN VOLUME, NULLE PART (la Pelote comprise)' if not neuf else '❌ %d volume(s) nouveau(x)'%len(neuf)))
+    print(('✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote' if not neuf else '❌ %d volume(s) nouveau(x)'%len(neuf)))
     sys.exit(1 if neuf else 0)
 if __name__=='__main__': main()

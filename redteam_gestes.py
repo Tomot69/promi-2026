@@ -18,7 +18,8 @@ SONDE = '--sonde' in sys.argv
 SEUL = next((a.split('=')[1] for a in sys.argv if a.startswith('--seul=')), None)
 LENT = {'studio-monde': 7500, 'studio-couleur': 7500, 'noyau': 6000}   # le Studio et le partage mettent plusieurs secondes à se bâtir à leur première ouverture
 URL = 'http://127.0.0.1:8752/' + F
-INACTIF, PAUSE, TOURS = 600, 900, 2
+INACTIF, PAUSE, TOURS = 600, 900, 3   # ⚑ v139 (Tom, 9 oct. 2026, C-074, Q429) : « trois passages au plus » (deux en E1) ; original : sauvegardes/redteam_gestes-avant-v139.py
+GRAND, TRAJET = 1.5, 1600               # « plus grande, et plus lente (environ 1,6 s pour le trajet) »
 ok = [0]; ko = []
 def t(nom, c, d=''):
     if c: ok[0] += 1
@@ -84,7 +85,7 @@ with sync_playwright() as p:
     INV = pg.evaluate("()=>window.GesteFantome ? GesteFantome.inventaire() : null") or []
     regle = pg.evaluate("()=>window.GesteFantome ? GesteFantome.regle : null")
     t('0 · le composant existe, un seul : `GesteFantome.montrer` et `.oublier`', pg.evaluate("()=>!!(window.GesteFantome && typeof GesteFantome.montrer==='function' && typeof GesteFantome.oublier==='function')"))
-    t('0 · les valeurs décidées : 600 ms, 900 ms, deux fois', regle == {'INACTIF': INACTIF, 'PAUSE': PAUSE, 'TOURS': TOURS}, regle)
+    t('0 · les valeurs décidées : 600 ms, 900 ms, trois fois, × 1,5, 1,6 s', regle == {'INACTIF': INACTIF, 'PAUSE': PAUSE, 'TOURS': TOURS, 'GRAND': GRAND, 'TRAJET': TRAJET}, regle)
     BR = [g['id'] for g in INV if g['branche']]
     t('0 · l\'inventaire porte au moins : tenir, chiche, noyau, pelote, dessin — et l\'Aura (E2bis) non branchée', all(x in BR for x in ('tenir', 'chiche', 'noyau', 'pelote', 'dessin')) and any(g['id'] == 'aura-apparait' and not g['branche'] for g in INV), BR)
     t('0 · chaque geste branché a sa mise en situation dans ce juge', all(x in SITU for x in BR), [x for x in BR if x not in SITU])
@@ -107,8 +108,8 @@ with sync_playwright() as p:
         if e['la']: cap(pg, '%s-1-apparition' % gid)
         # elle bouge (hors appui pur) puis s'arrête d'elle-même après deux passages
         p1 = e.get('main'); pg.wait_for_timeout(450); p2 = pg.evaluate(ETAT).get('main')
-        pg.wait_for_timeout(7500); fin = pg.evaluate(ETAT)
-        t('%-15s elle joue, puis part d\'elle-même (deux passages au plus)' % gid, not fin['la'], 'main %s → %s · encore là : %s' % (p1, p2, fin['la']))
+        pg.wait_for_timeout(13500); fin = pg.evaluate(ETAT)
+        t('%-15s elle joue, puis part d\'elle-même (trois passages au plus)' % gid, not fin['la'], 'main %s → %s · encore là : %s' % (p1, p2, fin['la']))
         # un toucher la fait partir : on rejoue le geste par l'API, puis on touche
         pg.evaluate("()=>{ try{ GesteFantome.oublierTout(); }catch(e){} }"); situe(pg, gid); e2 = attend_main(pg, 3600, gid)
         dv = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left+r.width-6, r.top+r.height-6]}")
@@ -134,6 +135,27 @@ with sync_playwright() as p:
         trajet = gid not in ('fil', 'bande')      # un appui seul n'a pas de trajet : la main, sans flèche
         t('%-15s mouvement réduit : la main immobile%s' % (gid, ', la flèche du trajet' if trajet else ' (un appui : pas de trajet)'), e['la'] and e.get('mode') == 'immobile' and e.get('main') == e_.get('main') and e.get('fleche') == trajet and not e.get('fautes'), {k: e.get(k) for k in ('la', 'mode', 'main', 'fleche')})
         if e['la']: cap(pg, '%s-4-immobile' % gid)
+        ctx.close()
+    # ══ v139 (C-074, Q429) — « tenir » : LA MAIN TRACE. Suivie image par image dans la page, pendant un passage. ══
+    if not SEUL or SEUL == 'tenir':
+        ctx, pg, er = ouvre(b); charge(pg, 'light'); situe(pg, 'tenir'); e = attend_main(pg, gid='tenir')
+        S_ = pg.evaluate("""()=>new Promise(res=>{ const L=[], t0=performance.now(), dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390; (function f(){ const c=document.getElementById('gesteFantome'); const m=c&&c.querySelector('[data-main]'), tr=c&&c.querySelector('[data-trace]');
+            if(m){ const r=m.getBoundingClientRect(); let o={t:performance.now()-t0, x:(r.left-dv.left)/k, w:r.width/k, h:r.height/k, vis:m.getAttribute('visibility')!=='hidden'};
+              if(tr){ const q=tr.getBoundingClientRect(), cs=getComputedStyle(tr); o.tv=tr.getAttribute('visibility')!=='hidden'; o.tx0=(q.left-dv.left)/k; o.tx1=(q.right-dv.left)/k; o.col=tr.getAttribute('stroke'); o.op=cs.opacity; o.tra=cs.transitionDuration; o.ani=cs.animationName; o.ep=+tr.getAttribute('stroke-width'); } L.push(o); }
+            if(performance.now()-t0<3600) requestAnimationFrame(f); else res(L); })(); })""")
+        vis = [s for s in S_ if s.get('vis')]; tr = [s for s in S_ if s.get('tv')]
+        t('tenir · la main est plus grande (× 1,5 : 49 pt de large, 33 en E1)', bool(vis) and 47.0 <= vis[0]['w'] <= 51.5, 'largeur %.1f pt' % (vis[0]['w'] if vis else -1))
+        xs = [s['x'] for s in vis]
+        t('tenir · elle va jusqu\'au bout du trait (au-delà de 330 pt ; elle s\'arrêtait à 195 en E1)', bool(xs) and max(xs) + 17 * GRAND >= 330, 'bout du doigt de %.0f à %.0f pt' % (min(xs) + 17 * GRAND if xs else -1, max(xs) + 17 * GRAND if xs else -1))
+        # le premier passage seul : du dernier relevé au départ jusqu'au premier relevé à l'arrivée
+        i1 = next((i for i, s in enumerate(vis) if s['x'] >= max(xs) - 1), None) if xs else None
+        i0 = max([i for i, s in enumerate(vis[:i1 or 0]) if s['x'] <= xs[0] + 1] or [0])
+        dur = (vis[i1]['t'] - vis[i0]['t']) if i1 else 0
+        t('tenir · le trajet dure environ 1,6 s (± 20 %)', 0.8 * TRAJET <= dur <= 1.2 * TRAJET, '%.0f ms' % dur)
+        t('tenir · la seconde moitié se trace sous le doigt : un trait plein, opaque, sans fondu, à la couleur de l\'état', bool(tr) and all((s['col'] or '').upper() == '#DD4D23' and s['op'] == '1' and s['tra'] in ('0s', '') and s['ani'] in ('none', '') and s['ep'] >= 6 for s in tr), str(tr[:1]))
+        t('tenir · il part du milieu du trait (195 pt) et grandit avec le doigt', bool(tr) and abs(min(s['tx0'] for s in tr) + tr[0]['ep'] / 2 - 195) <= 12 and tr[-1]['tx1'] - tr[0]['tx1'] > 100 and all(tr[i + 1]['tx1'] >= tr[i]['tx1'] - 0.6 for i in range(len(tr) - 1)), 'de %.0f à %.0f pt' % (tr[0]['tx1'], tr[-1]['tx1']) if tr else '')
+        cache = [s for s in S_ if not s.get('vis')]
+        t('tenir · le tracé s\'efface quand la main part', bool(cache) and all(not s.get('tv') for s in cache), '%d image(s) sans la main' % len(cache))
         ctx.close()
     # ══ en sombre, et la Toile intacte (A1) ══
     ctx, pg, er = ouvre(b, th='dark'); charge(pg, 'dark'); situe(pg, 'tenir'); e = attend_main(pg)

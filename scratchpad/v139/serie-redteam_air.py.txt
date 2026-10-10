@@ -1,0 +1,28 @@
+
+
+  ❌  21 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   Peaufiner Chiche [dark]    .s2-val«Marion»                    → .s2-val«dimanche 11»
+   Peaufiner Chiche [dark]    .s2-val«dimanche 11»               → .s2-val«0 fichier»
+   Peaufiner Chiche [light]   .s2-val«Marion»                    → .s2-val«dimanche 11»
+   Peaufiner Chiche [light]   .s2-val«dimanche 11»               → .s2-val«0 fichier»
+   Peaufiner [dark]           .s2-val«Plein»                     → .s2-val«mardi 20»
+   Peaufiner [dark]           .s2-val«mardi 20»                  → .s2-val«aucune»
+   Peaufiner [light]          .s2-val«Plein»                     → .s2-val«mardi 20»
+   Peaufiner [light]          .s2-val«mardi 20»                  → .s2-val«aucune»
+   Réglages [dark]            #openStudio2«Le Studiovisuels & h» → #replayOnb«Revoir les gestesre
+   Réglages [dark]            .v.ac«visuels & humeurs ›»         → #replayOnb«Revoir les gestesre
+   Réglages [dark]            .k«Le Studio»                      → #replayOnb«Revoir les gestesre
+   Réglages [dark]            .grouplab«App»                     → #notifCard«Notifications›»
+   Réglages [light]           #openStudio2«Le Studiovisuels & h» → #replayOnb«Revoir les gestesre
+   Réglages [light]           .v.ac«visuels & humeurs ›»         → #replayOnb«Revoir les gestesre
+   Réglages [light]           .k«Le Studio»                      → #replayOnb«Revoir les gestesre
+   Réglages [light]           .grouplab«App»                     → #notifCard«Notifications›»
+   fiche en cours [dark]      #dptTrace«trace pour tenir»        → #dptQui«Je me promets de»
+   fiche en cours [dark]      .kr-n«Toi»                         → #dptQui«Je me promets de»
+   fiche en cours [dark]      #dptQui«Je me promets de»          → #dptTitre«nager le mardi»
+   fiche en cours [dark]      #dptTitre«nager le mardi»          → #dptQuand«EN COURS · DEPUIS LE
+   fiche en cours [dark]      #dptQuand«EN COURS · DEPUIS LE»    → .dpm-rep«écris un mot»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

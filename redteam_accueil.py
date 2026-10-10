@@ -73,7 +73,7 @@ with sync_playwright() as p:
         pl, br, pu = g['plat'], g['barre'], g['plus']
         c1 = bool(pl and br and pu) and abs(pl['x'] - 24) <= 1 and abs(pl['y'] - 40) <= 1 and abs(pl['w'] - 342) <= 1 and abs(pl['h'] - 60) <= 1 \
             and abs(br['x'] - 24) <= 1 and abs(br['y'] - 716) <= 1 and abs(br['w'] - 342) <= 1 and abs(br['h'] - 88) <= 1 \
-            and abs(pu['w'] - 84) <= 1 and abs(pu['h'] - 84) <= 1 and abs(pu['x'] - 153) <= 1 and abs(pu['y'] - 718) <= 1   # ⚑ v136 (Tom, 7 oct. 2026, C-070) : le + agrandi d'environ 25 % — 84 pt (68 avant), centré dans la barre ; original : sauvegardes/redteam_accueil-avant-v136.py
+            and abs(pu['w'] - 60) <= 1 and abs(pu['h'] - 60) <= 1 and abs(pu['x'] - 165) <= 1 and abs(pu['y'] - 730) <= 1 and pu['y'] - (br['y'] + 2) >= 11.5 and (br['y'] + br['h'] - 2) - (pu['y'] + pu['h']) >= 11.5   # ⚑ v139 (Tom, 9 oct. 2026, C-087) : « réduis le diamètre extérieur de l'anneau jusqu'à 12 pt d'air au moins avec tout encart » — 60 pt (84 en v136), 12 pt d'air jusqu'au contour de la barre ; original : sauvegardes/redteam_accueil-avant-v139.py # ⚑ v136 (Tom, 7 oct. 2026, C-070) : le + agrandi d'environ 25 % — 84 pt (68 avant), centré dans la barre ; original : sauvegardes/redteam_accueil-avant-v136.py
         t('[%s] 1 · plateau, barre, + à leurs cotes' % T, c1, 'plateau %s · barre %s · + %s' % (pl, br, pu))
         cent = [round(e['b']['x'] + e['b']['w'] / 2, 1) if e['b'] else None for e in g['ent']]
         ligne_ok = all(e['b'] for e in g['ent']) and all(abs(c - v) <= 1.5 for c, v in zip(cent, [70, 124, 266, 320]))

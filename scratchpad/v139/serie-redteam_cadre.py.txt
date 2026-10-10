@@ -1,0 +1,24 @@
+OK  1 · [Promi] sans geste, aucun cadrage posé  {'z': 1, 'dx': 0, 'dy': 0, 'pose': False}
+OK  2 · [Promi] écarter du simple au double zoome du simple au double (± 6 %)  z = 2.000
+OK  6 · [Promi] un pincement n'ouvre pas la vue en entier  
+OK  3 · à l'écran, zoomée ×2 autour du centre : les quatre quarts restent autour du centre  rouge / jaune
+OK  4 · rapprocher jusqu'au sixième dézoome d'autant (2 → 0,33)  z = 0.333
+OK  4 · dézoomée, la photo laisse voir le champ de la nature autour  [130, 174, 248]
+OK  5 · [Promi] glisser de (60 ; −20) pt déplace la photo d'autant (± 3 pt après le seuil)  Δ = (60.0 ; -20.0)
+OK  5 · [Promi] … sans ouvrir ni la vue en entier ni Peaufiner  
+OK  6 · [Promi] un toucher simple ouvre toujours la photo en entier  
+OK  7 · en plein écran, le bouton « Enregistrer la photo » est là, visible, sous le doigt  {'x': 215, 'y': 820, 'w': 204.609375, 'h': 44, 'txt': 'Enregistrer la photo', 'dessus': True, 'vis': True}
+OK  7 · le toucher enregistre, et ne referme pas la vue  
+OK  1 · [Chiche] sans geste, aucun cadrage posé  {'z': 1, 'dx': 0, 'dy': 0, 'pose': False}
+OK  2 · [Chiche] écarter du simple au double zoome du simple au double (± 6 %)  z = 2.000
+OK  6 · [Chiche] un pincement n'ouvre pas la vue en entier  
+OK  5 · [Chiche] glisser de (60 ; −20) pt déplace la photo d'autant (± 3 pt après le seuil)  Δ = (60.0 ; -20.0)
+OK  5 · [Chiche] … sans ouvrir ni la vue en entier ni Peaufiner  
+OK  6 · [Chiche] un toucher simple ouvre toujours la photo en entier  
+OK  8 · le cadrage est mémorisé avec la fiche : il revient après rechargement  {'z': 1, 'dx': 60, 'dy': -20, 'n': 8594} → {'z': 1, 'dx': 60, 'dy': -20, 'n': 8594}
+OK  9 · la page + : le pincement cadre la photo (du simple au double)  z = 2.000
+OK  9 · la page + : le cadrage vit avec la photo du brouillon  
+OK  10 · les bornes déclarées du zoom : 0,3 à 8  [0.3, 8]
+OK  aucune erreur de page  
+
+22 / 22

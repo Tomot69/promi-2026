@@ -464,6 +464,18 @@ def un_theme(pw, theme):
                     ko('O19 « Revoir la présentation » relance', 'les drapeaux geste_vu_* ne sont pas effacés')
                 if not any(p_['title'] == PAROLE for p_ in e['promis']):
                     ko('O19 « Revoir la présentation » relance', 'le Promi planté a disparu')
+            # ⚑ v139 (Tom, 9 oct. 2026, Q426) — « Garde les deux rangées, “Revoir la présentation” et “Revoir les gestes”. » La rangée de la
+            #   présentation est revenue (`#replayPres`), au-dessus de celle des gestes : au doigt, elle relance la présentation.
+            #   (Original : sauvegardes/redteam_onboarding-avant-v139.py.)
+            pg.evaluate("()=>{try{closeAll()}catch(e){}; document.getElementById('settingsScreen').classList.add('show');}"); pg.wait_for_timeout(700)
+            pg.evaluate("()=>{const r=document.getElementById('replayPres'); if(r) r.scrollIntoView({block:'center'});}"); pg.wait_for_timeout(900)
+            r2 = pg.evaluate("()=>{const e=document.getElementById('replayPres'); if(!e) return null; const r=e.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {x:r.left+r.width/2,y:r.top+r.height/2,t:e.textContent,sous:!!(h&&e.contains(h))};}")
+            if not r2: ko('O19 « Revoir la présentation » relance', '#replayPres absent des Réglages (v139 : les deux rangées)')
+            else:
+                if 'Revoir la présentation' not in (r2['t'] or '') or not r2['sous']: ko('O19 « Revoir la présentation » relance', 'la rangée de la présentation : %r' % r2)
+                toucher(cdp, r2['x'], r2['y']); pg.wait_for_timeout(1800)
+                o = pg.evaluate(ONB)
+                if not (o.get('vu') and not o.get('gone')): ko('O19 « Revoir la présentation » relance', 'la rangée « Revoir la présentation » ne relance pas la présentation')
             ok('O19 « Revoir la présentation » relance')
             # la suite (O21 : le compte revient au rejeu) rejoue la présentation par sa FONCTION, qui existe toujours — elle n'a plus d'entrée à l'écran (E1)
             pg.evaluate("()=>{ try{closeAll()}catch(e){} document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); window.obReplay(); }"); pg.wait_for_timeout(1500)

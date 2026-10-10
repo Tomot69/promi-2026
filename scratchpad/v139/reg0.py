@@ -1,0 +1,16 @@
+import io
+f='CHANTIERS.md'; S=io.open(f,encoding='utf-8').read()
+assert 'C-083' not in S
+src='9 oct. · v139'
+L=[
+('C-083',src+' §1','« La Pelote » : ① « Contour net, comme avant les essais de bord : plus de poils épars de longueurs différentes. La silhouette est une limite franche, la fourrure s\'arrête au bord. Retrouve dans l\'historique le dernier bord net, et reprends-le. » ② « L\'ombre revient, sous la Pelote, dans les deux thèmes (géométrie de v121). Rien d\'autre autour : ni halo, ni liseré. » ③ « Le toucher, refait pour être crédible » : l\'empreinte suit la forme réelle du contact (radiusX/radiusY) ; plus on appuie longtemps, plus ça s\'enfonce, vite puis de plus en plus lentement, jusqu\'à une butée ; jamais de saut ; au relâcher la fourrure revient lentement.','EN COURS','Inscrit avant travail.','à écrire','v139'),
+('C-084',src+' §2','« Le crème des fiches en clair » : le corps des fiches (sous le trait) et leurs encarts prennent le crème du fond des pages du Fil et de l\'Index, au lieu du blanc actuel, jugé trop blanc. Seulement dans les fiches. Donner les deux valeurs, remesurer le texte et les états. Planche Promi, Chiche, Cercle en clair, à tenir et tenus, avant et après.','EN COURS','Inscrit avant travail.','redteam_decisions','v139'),
+('C-085',src+' §3','« La photo d\'une fiche » : recadrer au pincement, comme dans Photos sur iPhone (zoom à deux doigts, glisser pour déplacer), cadrage mémorisé par fiche, respecté au partage ; en plein écran, un petit bouton « Enregistrer la photo ». Fiches Promi, Chiche, Cercle et page +.','EN COURS','Inscrit avant travail.','à écrire','v139'),
+('C-086',src+' §4','« Le dessin » : importer une ou plusieurs photos dans le dessin, chacune déplaçable et redimensionnable au pincement, puis posée avec le reste ; les trois tailles de plume et de gomme nettement différentes (à peu près 2 · 6 · 14 pt pour la plume), les trois points du choix à l\'échelle.','EN COURS','Inscrit avant travail.','redteam_dessin','v139'),
+('C-087',src+' §5','« Le + de l\'accueil » : l\'anneau touche les encarts du haut. Réduire le diamètre extérieur de l\'anneau jusqu\'à 12 pt d\'air au moins avec tout encart ; garder l\'épaisseur de l\'anneau, grossir le signe + à l\'intérieur sans qu\'il touche l\'anneau. Capture cotée.','EN COURS','Inscrit avant travail.','redteam_accueil','v139'),
+('C-088',src+' §7','« Ritournelle » : au départ la Toile est trop zoomée — on doit voir plusieurs dalles entières, comme sous les autres mondes ; et toucher une dalle n\'ouvre pas sa fiche : nommer la cause, corriger.','EN COURS','Inscrit avant travail.','redteam_toucher (Ritournelle, trois dalles au doigt)','v139'),
+('C-089',src+' §0','« La façade animée (GIF ou vidéo de quelques secondes en couverture de fiche) », à inscrire sans rien construire. Avis du chef de chantier : boucles muettes de 3 s au plus, dans Ma Parole !, avec signalement.','REPORTÉ','Reporté au portage Swift (v139, Tom). Rien n\'est conçu ni construit.','—','portage Swift'),
+('C-090',src+' §0','« Le prix de Ma Parole ! (des testeurs le trouvent trop bas) » : décision de Tom avant publication.','OUVERT','Inscrit, rien n\'est changé. Décision de Tom attendue avant publication.','—','avant publication'),
+]
+S=S.rstrip('\n')+'\n'+''.join('| '+' | '.join(l)+' |\n' for l in L)
+io.open(f,'w',encoding='utf-8').write(S)

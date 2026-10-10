@@ -26,7 +26,7 @@ from playwright.sync_api import sync_playwright
 from PIL import Image
 F=[a for a in sys.argv[1:] if not a.startswith('--')]; F=F[0] if F else 'app.html'
 SONDE=next((a.split('=')[1] for a in sys.argv if a.startswith('--sonde=')), None)
-TAILLES=[2.5, 4.5, 8]; OUTILS=['plume','gomme','annuler','couleur','poser']
+TAILLES=[2, 6, 14]; OUTILS=['plume','gomme','annuler','couleur','photo','poser']   # v139 (C-086) : 2 · 6 · 14 pt (2,5 · 4,5 · 8 avant), et le disque PHOTO
 R=[]
 def ok(nom, cond, detail=''):
     R.append((nom,bool(cond))); print(('  ✅ ' if cond else '  ❌ ')+nom+((' — '+str(detail)[:300]) if (detail!='' and not cond) else ''))
@@ -104,14 +104,14 @@ with sync_playwright() as p:
     ok('C · tout le reste de la fiche s\'est retiré (le mode est devant)', G['fiche'])
     # E · joignabilité et VoiceOver
     J=pg.evaluate("""()=>[...document.querySelectorAll('#dessinMode .dz-rangee button')].map(e=>{const r=e.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {o:e.getAttribute('data-outil'), sous:!!(h&&(h===e||e.contains(h))), label:e.getAttribute('aria-label'), w:r.width, hh:r.height}})""")
-    ok('E · chaque outil de la rangée est sous le doigt, à son centre', len(J)==5 and all(j['sous'] for j in J), [(j['o'],j['sous']) for j in J])
-    ok('E · chaque outil fait au moins 44 pt', len(J)==5 and all(j['w']>=43.5 and j['hh']>=43.5 for j in J), [(j['o'],j['w'],j['hh']) for j in J])
-    ok('E · VoiceOver : chaque outil a son nom', len(J)==5 and all(j['label'] for j in J) and J[0]['label'].startswith('Plume') and J[1]['label'].startswith('Gomme') and J[2]['label'].startswith('Annuler') and J[3]['label']=='Couleur' and J[4]['label']=='Poser le dessin', [j['label'] for j in J])
+    ok('E · chaque outil de la rangée est sous le doigt, à son centre', len(J)==6 and all(j['sous'] for j in J), [(j['o'],j['sous']) for j in J])
+    ok('E · chaque outil fait au moins 44 pt', len(J)==6 and all(j['w']>=43.5 and j['hh']>=43.5 for j in J), [(j['o'],j['w'],j['hh']) for j in J])
+    ok('E · VoiceOver : chaque outil a son nom', len(J)==6 and all(j['label'] for j in J) and J[0]['label'].startswith('Plume') and J[1]['label'].startswith('Gomme') and J[2]['label'].startswith('Annuler') and J[3]['label']=='Couleur' and J[4]['label'].startswith('Photo') and J[5]['label']=='Poser le dessin', [j['label'] for j in J])
     # le trait
     trait(pg, 60, 250, 300, 250); e=etat(pg)
     ok('le geste trace un trait (il est gardé dans le dessin)', e['traits']==1, e)
     ep=pg.evaluate("()=>{const d=window._dessin.lit(); return d.traits[0].t}")
-    ok('l\'épaisseur de base est le moyen : 4,5 pt', ep==TAILLES[1], ep)
+    ok('l\'épaisseur de base est le moyen : 6 pt', ep==TAILLES[1], ep)
     tape(pg, '#dessinMode [data-outil=plume]')     # second toucher : les tailles
     T=pg.evaluate("""()=>{ const dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, p=document.querySelector('#dessinMode .dz-tailles'); if(!p) return null; const r=p.getBoundingClientRect(), rg=document.querySelector('#dessinMode .dz-rangee').getBoundingClientRect();
       return {bas:(r.bottom-dv.top)/k, rangee:(rg.top-dv.top)/k, n:p.querySelectorAll('button').length, labels:[...p.querySelectorAll('button')].map(b=>b.getAttribute('aria-label')), pts:[...p.querySelectorAll('button i')].map(i=>i.getBoundingClientRect().width/k), sous:[...p.querySelectorAll('button')].every(b=>{const q=b.getBoundingClientRect(), h=document.elementFromPoint(q.left+q.width/2,q.top+q.height/2); return h===b||b.contains(h)})}; }""")
@@ -121,7 +121,7 @@ with sync_playwright() as p:
     tape(pg, '#dessinMode [data-taille="2"]')
     ok('C · le choix fait, les tailles se replient', not pg.evaluate("()=>!!document.querySelector('#dessinMode .dz-deploi')") and etat(pg)['taille']['plume']==2)
     trait(pg, 60, 330, 300, 330)
-    ok('le gros trait fait 8 pt', pg.evaluate("()=>window._dessin.lit().traits[1].t")==TAILLES[2])
+    ok('le gros trait fait 14 pt', pg.evaluate("()=>window._dessin.lit().traits[1].t")==TAILLES[2])
     tape(pg, '#dessinMode [data-outil=annuler]'); ok('ANNULER retire le dernier trait', etat(pg)['traits']==1)
     tape(pg, '#dessinMode [data-outil=annuler]'); ok('ANNULER, à volonté : le dessin est vide', etat(pg)['traits']==0)
     ok('ANNULER n\'a plus rien à annuler : il se déclare inactif', pg.evaluate("()=>document.querySelector('#dessinMode [data-outil=annuler]').disabled"))

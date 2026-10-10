@@ -59,3 +59,12 @@
 - **La Pelote** : plus aucun effet autour (ni halo, ni ombre, ni liseré) ; au bord (> 0,92 R) la couleur est celle de l'intérieur (vis-à-vis replié autour de 0,92 R), le corps est plein jusqu'à R et s'efface de R à 1,012 R. `REGLES.md` : la liste blanche des volumes est vide ; seule exception restante, le flou des murs de Ma Parole !.
 - **Partage du dessin** (C-068) : construit — remplace la ligne « PAS construit » ci-dessus. Sujet d'une fiche avec dessin posé et non masqué → image = le dessin entier sur son fond, logo « Promi » (PromiLate) en bas à gauche, mention de la nature (Gilbert, capitales) au-dessus ; réglage `promi_dessin_mention` ('0' = masquée) ; jamais de photo ; dessin masqué → Folio réduit, dalle.
 
+## v139 (9 oct. 2026)
+- **La Pelote** : le contour est une limite franche au rayon de la boule (rien au-delà, un pixel de lissage) — remplace « au bord la couleur est celle de l'intérieur, le corps s'efface de R à 1,012 R » (v137). L'ombre revient (ellipse 0,45 D × 0,07 D ; encre 0,10 en clair, crème 0,105 en sombre) : `REGLES.md`, la liste blanche des volumes porte cette seule exception.
+- **Le toucher de la Pelote** : profondeur q(t) = 1 − 1/(1 + t/0,60)² pendant l'appui, retour exponentiel en 0,60 s, comblement par la rotation amorti (× e^(−c/0,08)) ; la forme de l'empreinte vient du contact (`UITouch.majorRadius`, à étalonner) — remplace la loi « cède à 62 % en 50 ms puis résiste ».
+- **Jetons** : en clair, le corps et l'encart d'une fiche = `#EAD9B9` (le fond de l'Index) ; les cartes du fil d'un Cercle et la carte du mot = `#F7F0DE`.
+- **Photo d'une fiche** : cadrage {z, dx, dy} par parole (z 0,3 à 8, points de l'écran 390), pincement 1:1 autour du milieu des doigts, glissement 1:1 ; « Enregistrer la photo » dans la vue en entier. `ECRANS.md`, `TEXTES.md`.
+- **Dessin** : tailles plume 2 · 6 · 14, gomme 8 · 18 · 36 ; un élément de dessin peut être une photo {img, x, y, w, h} ; le disque « Photo » ; le dessin partagé n'emporte pas ses photos (à trancher, Q435).
+- **Accueil** : le + fait 60 pt (12 pt d'air dans la barre).
+- **Main fantôme** : × 1,5, trajet 1,6 s, trois passages, elle trace la seconde moitié du trait ; elle va jusqu'au bout (tenir comme planter). Réglages : deux rangées, « Revoir la présentation » et « Revoir les gestes ».
+- **Toile** : sous les douze mondes faits de leurs seules paroles, semis constant tant qu'il y a moins de neuf paroles et Cercles. Un toucher se date à l'heure de l'événement (`UITouch.timestamp`), jamais à celle du traitement.

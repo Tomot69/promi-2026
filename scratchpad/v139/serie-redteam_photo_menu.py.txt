@@ -1,0 +1,23 @@
+[webkit] C · par défaut la dalle suit le Studio                  OK  nu↔Studio 0.00 · nu↔plantation 45.59
+[webkit] A · le bouton photo d'une fiche ouvre son menu : « Dessiner » en tête, puis les deux choix OK  {'mots': ['Dessiner', 'Importer une photo', 'La dalle d’origine'], 'vis': True}
+[webkit] B · « Importer une photo » ouvre le sélecteur du système OK  
+[webkit] D · « La dalle d'origine » : rendu = monde de plantation OK  option True · nu↔plantation 0.00 · nu↔Studio 45.45
+[webkit] D · la fiche est repeinte, l'option sauvegardée         OK  matière de la fiche 2.68 niveaux · sauvegardé True
+[webkit] D · le libellé devient « La dalle du Studio »           OK  {'mots': ['Dessiner', 'Importer une photo', 'La dalle du Studio'], 'vis': True}
+[webkit] E · le partage suit l'option                            OK  planche avec ↔ sans 3.62 niveaux
+[webkit] F · page + : le bouton ouvre le menu, « Dessiner » en tête puis « Importer une photo » OK  {'mots': ['Dessiner', 'Importer une photo'], 'vis': True}
+[webkit] F · page + : « Importer une photo » ouvre le sélecteur  OK  
+[webkit] aucune erreur JS                                        OK  
+[chromium] C · par défaut la dalle suit le Studio                OK  nu↔Studio 0.00 · nu↔plantation 48.15
+[chromium] A · le bouton photo d'une fiche ouvre son menu : « Dessiner » en tête, puis les deux choix OK  {'mots': ['Dessiner', 'Importer une photo', 'La dalle d’origine'], 'vis': True}
+[chromium] B · « Importer une photo » ouvre le sélecteur du système OK  
+[chromium] D · « La dalle d'origine » : rendu = monde de plantation OK  option True · nu↔plantation 0.00 · nu↔Studio 48.13
+[chromium] D · la fiche est repeinte, l'option sauvegardée       OK  matière de la fiche 2.70 niveaux · sauvegardé True
+[chromium] D · le libellé devient « La dalle du Studio »         OK  {'mots': ['Dessiner', 'Importer une photo', 'La dalle du Studio'], 'vis': True}
+[chromium] E · le partage suit l'option                          OK  planche avec ↔ sans 3.73 niveaux
+[chromium] F · page + : le bouton ouvre le menu, « Dessiner » en tête puis « Importer une photo » OK  {'mots': ['Dessiner', 'Importer une photo'], 'vis': True}
+[chromium] F · page + : « Importer une photo » ouvre le sélecteur OK  
+[chromium] aucune erreur JS                                      OK  
+
+20/20
+✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout

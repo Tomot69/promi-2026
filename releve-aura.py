@@ -1023,13 +1023,18 @@ def juge():
         #   abandonnée — original : sauvegardes/releve-aura-avant-contact.py. Même intention (le toucher
         #   creuse, la matière tient sous le doigt), nouvelle loi : elle CÈDE puis RÉSISTE.
         #   Les constantes sont DÉCIDÉES, donc écrites en dur ici (§7) — et l'app doit les déclarer.
-        CEDE, CEDE_TAU, RESISTE_TAU, PROF, REPOUSSE_TAU = 0.62, 0.05, 0.50, 0.46, 0.15
-        loi = lambda t: 1 - CEDE * math.exp(-t / CEDE_TAU) - (1 - CEDE) * math.exp(-t / RESISTE_TAU)
-        Gd = pg.evaluate("()=>{const G=_aura.G;return [G.CEDE,G.CEDE_TAU,G.RESISTE_TAU,G.PROF,G.REPOUSSE_TAU]}")
-        if [(round(x, 4) if x is not None else None) for x in Gd] != [CEDE, CEDE_TAU, RESISTE_TAU, PROF, REPOUSSE_TAU]:
+        # ⚑ v139 (Tom, 9 oct. 2026, C-083) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/releve-aura-avant-v139.py) :
+        #   « plus on appuie longtemps, plus ça s'enfonce : vite au début, puis de plus en plus lentement, jusqu'à une butée ; jamais de
+        #   saut ; au relâcher, la fourrure revient lentement. » La loi d'avant (elle cède à 62 % en 50 ms, puis résiste) prenait un tiers
+        #   de la profondeur à la première image. Nouvelle loi, en dur : profondeur q(t) = 1 − 1/(1 + t/0,60)², pression p = q^1,5 ;
+        #   retour en 0,60 s. Le détail (chaque image, la vitesse, les sauts, la forme du contact) : redteam_enfonce.py.
+        ENF_TAU, RETOUR_TAU, PROF = 0.60, 0.60, 0.46
+        loi = lambda t: (1 - 1 / (1 + t / ENF_TAU) ** 2) ** 1.5
+        Gd = pg.evaluate("()=>{const G=_aura.G;return [G.ENF_TAU,G.RETOUR_TAU,G.PROF]}")
+        if [(round(x, 4) if x is not None else None) for x in Gd] != [ENF_TAU, RETOUR_TAU, PROF]:
             acq.append('4 · la loi de contact déclarée n\'est pas celle décidée : %s' % Gd)
-        if not p1 or abs(p1['p'] - loi(0.25)) > 0.06: acq.append('4 · le toucher ne cède pas selon la loi : p = %s à 250 ms (décidé %.3f)' % (p1 and round(p1['p'], 3), loi(0.25)))
-        if not p2 or abs(p2['p'] - loi(0.95)) > 0.06 or p2['p'] <= p1['p']: acq.append('4 · le creux ne RÉSISTE pas selon la loi : p = %s à 950 ms (décidé %.3f, et plus profond qu\'à 250 ms)' % (p2 and round(p2['p'], 3), loi(0.95)))
+        if not p1 or abs(p1['p'] - loi(0.25)) > 0.06: acq.append('4 · le toucher ne s’enfonce pas selon la loi : p = %s à 250 ms (décidé %.3f)' % (p1 and round(p1['p'], 3), loi(0.25)))
+        if not p2 or abs(p2['p'] - loi(0.95)) > 0.06 or p2['p'] <= p1['p']: acq.append('4 · le creux ne continue pas de s’enfoncer selon la loi : p = %s à 950 ms (décidé %.3f, et plus profond qu\'à 250 ms)' % (p2 and round(p2['p'], 3), loi(0.95)))
         if loc is None or loc < 0.10 or loc < 4 * max(far or 0, bruit or 0, 0.005): acq.append('4 · le creux ne se voit pas : %.3f sous le doigt, %.3f hors de portée (bruit %.3f)' % (loc or -1, far or -1, bruit or -1))
         # ⚑ LE RETOUR EST CONTINU JUSQU'AU BOUT (Tom, 10 sept. : « la dernière étape avant que la
         #   sphère ne redevienne lisse saute — ça passe de trop loin encore déformé à net d'un coup »).

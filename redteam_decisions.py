@@ -17,6 +17,9 @@ FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
 ok = [0]; ko = []
 ETATS = {'atenir': '#DD4D23', 'encours': '#291547', 'tenu': '#00341A'}      # Q262 (22 sept.) : « une fois pour toutes »
 CREME, ENCRE, SEICHE, TERRE, AMANDE = '#F7F0DE', '#201908', '#050302', '#2B1020', '#8FE08F'
+# ⚑ v139 (Tom, 9 oct. 2026, C-084) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_decisions-avant-v139.py) : « En clair, le corps des fiches (sous le
+#   trait) et leurs encarts prennent le crème du fond des pages du Fil et de l'Index, au lieu du blanc actuel. Seulement dans les fiches. »
+CREME_FICHE = '#EAD9B9'
 CHAMP = {'promi': '#82AEF8', 'chiche': '#FFB8D2', 'nuee': '#C9A8F5'}           # 17 sept. (planche des correspondances)
 # ⚑ v133 (Tom, 6 oct. 2026, C-050) — « sur son iPhone, #273CEB tire nettement au violet. Défaut provisoire : #1A52F0 » ; la phrase lilas, éclaircie à 4,5:1 sur ce bleu : #E8DAFF
 # ⚑ v134 (Tom, 6 oct. 2026, C-050) — DÉFINITIF : « Tom a choisi #0E78F2, en connaissance de cause. » Le texte reste crème (3,70:1 : exception nommée,
@@ -34,7 +37,7 @@ D = []
 for th in ('light', 'dark'):
     for nom, nat in (('Promi à tenir', 'promi'), ('Promi en cours', 'promi'), ('Promi tenue', 'promi'), ('Chiche lancé', 'chiche'), ('Chiche tenu à deux', 'chiche'), ('Cercle', 'nuee')):
         D.append((nom, th, 'champ', CHAMP[nat], '17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc'))
-        D.append((nom, th, 'plateau', SEICHE if th == 'dark' else CREME, 'v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)'))
+        D.append((nom, th, 'plateau', SEICHE if th == 'dark' else CREME_FICHE, 'v116 + v121 (seiche dans les pages) · v139 (C-084) : en clair, l\'encart d\'une fiche prend le crème du Fil et de l\'Index'))
         D.append((nom, th, 'motMarque', CREME if th == 'dark' else ENCRE, '17 sept. : le texte du plateau à l\'encre en clair'))
     for nom in ('Promi tenue', 'Chiche tenu à deux'):
         # ⚑ v136 (Tom, 7 oct. 2026, C-059) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_decisions-avant-v136.py) :
@@ -44,10 +47,12 @@ for th in ('light', 'dark'):
             D.append((nom, th, 'corps', TERRE, 'v8 (21 sept.) + v136 : la terre, en sombre'))
             D.append((nom, th, 'echeance', AMANDE, 'Q269 (23 sept.) · Q299 : « TENUE » en amande sur la terre'))
             D.append((nom, th, 'titre', CREME, 'v8 (21 sept.) : sur la terre, le texte passe crème'))
+            D.append((nom, th, 'phrase', CREME, 'v8 (21 sept.) + v136 (C-069) : sur la terre, la phrase est crème'))
         else:
-            D.append((nom, th, 'corps', CREME, 'v136 (7 oct., C-059) : en clair, le corps d\'une fiche tenue est la crème'))
+            D.append((nom, th, 'corps', CREME_FICHE, 'v136 (C-059) + v139 (C-084) : en clair, le corps d\'une fiche tenue est le crème des fiches, #EAD9B9'))
             D.append((nom, th, 'echeance', '#00341A', 'v136 (7 oct., C-059) : la mention TENU en #00341A en clair'))
             D.append((nom, th, 'titre', ENCRE, 'v136 : sur la crème, le texte est à l\'encre (17 sept.)'))
+            D.append((nom, th, 'phrase', ENCRE, 'v136 + v139 : en clair le corps d\'une fiche tenue est clair — la phrase y est à l\'encre (elle restait crème sur crème sur un Chiche tenu : invisible)'))
     if th == 'dark':
         for nom, nat in (('Promi à tenir', 'promi'), ('Promi en cours', 'promi'), ('Chiche lancé', 'chiche'), ('Cercle', 'nuee')):
             D.append((nom, th, 'corps', CORPS_SOMBRE[nat], SRC_TROPICAL if nat == 'promi' else 'v113 (30 sept., Q358) : « option 2 »'))
@@ -103,6 +108,7 @@ with sync_playwright() as p:
         for nom, ti in FICHES:
             pg.evaluate("(t)=>{closeAll(); const p=promises.filter(q=>q.title===t)[0]; openDetail(p.id);}", ti); pg.wait_for_timeout(2600)
             R[(nom, th)] = pose(pg)
+            R[(nom, th)]['phrase'] = hexa(pg.evaluate("()=>getComputedStyle(document.getElementById('dptQui')).color"))   # v139 : la ligne de phrase elle-même (son texte hors du prénom)
         pg.evaluate("()=>{closeAll(); openEssaim('potager');}"); pg.wait_for_timeout(2800)
         R[('Cercle', th)] = pose(pg)
         pg.evaluate("()=>{closeAll(); document.getElementById('createBtn').click(); var n=0; (function essai(){ var cs=document.getElementById('createSheet'); var x=[...document.querySelectorAll('#createSheet .tile')][0]; if(cs&&cs.classList.contains('pp-choix')&&x){ x.click(); } if(++n<6) setTimeout(essai,350); })();}"); pg.wait_for_timeout(3500)

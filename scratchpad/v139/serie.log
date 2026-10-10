@@ -1,0 +1,38 @@
+    0s  redteam_registre.py          6 / 6 / chantiers non validés : 90
+    0s  redteam_tokens.py              ✓ l'extension Swift porte le niveau « libelle » / 46/46
+    0s  redteam_volume.py            dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 / ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+   42s  redteam_enfonce.py           OK  aucune erreur de page   / 14 / 14
+   29s  redteam_pelote_doigt.py      5 / 7 / KO : 1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms · 1 · [passe 2] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+  221s  releve-aura.py               palier 220000 · médiane 41.4 ms · 1141 images · plus longue image pendant l'élan : 250 ms (dont peintre 131.2 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 220000 pendant qu'on regard
+  122s  redteam_onboarding.py        ====================================================================================== /   ✅  46 / 46 contrats tenus
+  625s  redteam_gestes.py            redteam_gestes : 120/122 / ROUGE : tenir · la main est plus grande (× 1,5 : 60 pt de large environ, 40 en E1) · tenir · le trajet dure environ 1,6 s (± 20 %)
+  114s  redteam_engagement.py        redteam_engagement : 10/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir » / ROUGE : R6 · sortie à un geste, à chaque étape de l'onboarding (4 étapes)
+   39s  redteam_verrou_onboarding.py OK  9 · aucune erreur de page                                                  [] / verrou de l'onboarding : 9/9
+  169s  redteam_accueil.py           [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False / 22/22
+   79s  redteam_decisions.py         Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état) / 85 / 85
+   39s  redteam_cadre.py             OK  aucune erreur de page   / 22 / 22
+   82s  redteam_entier.py              ✅ [light] 5 · aucune erreur de page / redteam_entier : 44/44
+   57s  redteam_photo_menu.py        20/20 / ✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+  115s  redteam_dessin.py              ✅ aucune erreur de page (Cercle, page +) / redteam_dessin : 79/79
+   28s  redteam_dessin_photo.py      OK  aucune erreur de page   / 15 / 15
+  103s  redteam_partage_dessin.py    OK  [sombre] aucune erreur de page                                                 [] / 34/34
+  174s  redteam_partage_fiche.py     48/48 / ✅ le rond Partager d'une fiche partage son Folio
+  258s  redteam_phrase_fiche.py        ✅ [dark] élision : aucune erreur de page — [] / redteam_phrase_fiche : 74/74
+  258s  redteam_toucher.py             ✅ Ritournelle : une image longue (900 ms) entre l'appui et le lever ne fait pas perdre le toucher (3 sur 3) — [('planter un arbre', {'show': True, 'titre': 'planter un arbre'}), ('courir dimanche', 
+  299s  redteam_lexique.py              · point i / redteam_lexique : 3/3
+  133s  redteam_joignable.py         aucun gestionnaire en attribut on…=""                      OK  0 / 4 / 5
+   91s  redteam_ecrans.py            aucune erreur JS [clair]                       OK   / 152/152
+  228s  redteam_vide.py              aucune erreur JS                               OK   / 61/61
+  115s  redteam_flash.py               ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1916 ms) / 32/32
+  184s  redteam_flash_etat.py        aucune erreur de page                                                      OK   / 10 / 10
+  125s  redteam_murs.py                ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none / 28/28
+   72s  redteam_reactif.py             ✅ aucune erreur de page / redteam_reactif : 31/31
+   33s  redteam_halo.py              [sombre] D · « PARTAGER MA PELOTE » à 435,47                                   OK  435.46875 / 12/12
+  235s  redteam_bord.py --vite       OK  [secours · sombre · taciturne] F · limite franche : frange ≤ 1.5 pt, à 116 pt frange médiane 0.50, max 1.00 · fin 116.2 (de 115.5 à 116.8) / 24/24
+   57s  redteam_tonsurton.py         l'instant · apres    [light]                         OK  ΔE 87.2  Δlum 31    / 26/26
+  126s  redteam_champ.py               l'instant après [light]        OK / 32/32
+  315s  redteam_air.py                  fiche en cours [dark]      #dptQuand«EN COURS · DEPUIS LE»    → .dpm-rep«écris un mot» /   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+  106s  banc_rendu.py                280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0 / ✅ AU PIXEL.
+  672s  redteam_rythme.py              · ramage · reel · depart — ligne retirée (v93), relevé : {'duree': 30, 'images': 2, 'boucle': 1628, 'debut': 18} / 98 / 99
+ 1221s  redteam_couleurs_ref.py        ✗ bg       réf rgb(43, 16, 32)                    → app rgb(234, 217, 185)                 ×4   Peaufiner Chiche[l], Peaufiner[l], fiche chiche[l], fiche tenue[l] / ❌ — 53 écart(s) de couleur avec l
+FIN

@@ -180,6 +180,9 @@ def passe():
     with sync_playwright() as p:
         b = p.chromium.launch()
         pg = b.new_page(viewport={'width':430,'height':932}, device_scale_factor=2)
+        # ⚑ v139 — LA MAIN FANTÔME N'EST PAS DANS LA MESURE : sur un stockage neuf elle paraît sur chaque écran qui a un geste (E1), et ses tracés
+        #   qui paraissent et s'effacent changent ce que le relevé retient (81 paires perdues en sombre, le premier thème passé). Les drapeaux sont posés.
+        pg.add_init_script("try{['tenir','chiche','planter','pelote','noyau','fil','studio-monde','studio-couleur','bande','dessin'].forEach(function(g){localStorage.setItem('geste_vu_'+g,'1');});}catch(e){}")
         pg.goto(APP); pg.wait_for_timeout(6800)
         pg.evaluate('()=>{var o=document.getElementById("promiOnb");'
                     'if(o){o.classList.add("gone");o.style.display="none";}}')

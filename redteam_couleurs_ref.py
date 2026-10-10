@@ -34,6 +34,7 @@ Les exceptions sont NOMMÉES ici, en dur (§7) — rien d'autre n'est toléré :
       ② « SUPPRIMER CE PROMI / CE CHICHE » et sa corbeille, dans le Peaufiner d'une fiche : #DD4D23 → crème en sombre, encre en clair.
   E11 v136 (Tom, 7 oct. 2026, C-059) : en clair, la fiche tenue (Promi et Chiche) et son Peaufiner : terre → crème, crème → encre, amande → #00341A.
       v136 (C-071) : le halo et l'ombre de la Pelote sont SUPPRIMÉS — E7 ne trouve plus son nœud (0), le nœud est listé « sans vis-à-vis ».
+  E12 v139 (Tom, 9 oct. 2026, C-084) : en clair, le corps et l'encart des fiches #F7F0DE → #EAD9B9 ; les cartes du fil d'un Cercle #E9D8B7 → #F7F0DE.
   E7  v123 §2 : en sombre, l'ombre de la Pelote est une ellipse CRÈME (`#auPeloteOmbre`, dégradé radial crème 0,105) — sur ce nœud-là,
       en sombre, cette valeur-là. (Le corps de la Pelote vit dans son canevas, E4 ; Q375 : l'à-qui d'une fiche tenue est posé crème à
       la source — c'était déjà sa couleur finale en v118, aucun écart attendu.)
@@ -260,9 +261,16 @@ with sync_playwright() as p:
                     #   TENU en #00341A en clair ». Sur les quatre écrans d'une fiche tenue, EN CLAIR seulement, ces trois échanges-là et rien d'autre :
                     #   la terre → la crème (fond) ; la crème → l'encre, pleine ou à 0,34 (texte et contours) ; l'amande → #00341A (texte).
                     if cle[1] == 'light' and cle[0] in ('fiche tenue', 'fiche chiche', 'Peaufiner', 'Peaufiner Chiche') and va and vr:
-                        if pr_ == 'bg' and vr == 'rgb(43, 16, 32)' and va == 'rgb(247, 240, 222)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
+                        if pr_ == 'bg' and vr == 'rgb(43, 16, 32)' and va == 'rgb(234, 217, 185)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue   # v139 (C-084) : le crème des fiches, #EAD9B9 (#F7F0DE en v136)
                         if pr_ in ('color', 'tfill', 'bT', 'bB', 'bL', 'bR') and vr == 'rgb(247, 240, 222)' and va in ('rgb(32, 25, 8)', 'rgba(32, 25, 8, 0.34)'): exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
                         if pr_ in ('color', 'tfill') and vr == 'rgb(143, 224, 143)' and va == 'rgb(0, 52, 26)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
+                    # E12 (v139, Tom, 9 oct. 2026, C-084) : « En clair, le corps des fiches (sous le trait) et leurs encarts prennent le crème du fond des
+                    #   pages du Fil et de l'Index, au lieu du blanc actuel. Seulement dans les fiches. » En CLAIR, sur les écrans d'une fiche
+                    #   (Promi, Chiche, Cercle, leur Peaufiner, l'instant) et rien d'autre : le fond #F7F0DE → #EAD9B9 ; et les cartes du fil d'un
+                    #   Cercle, qui étaient à #E9D8B7 sur ce corps, → #F7F0DE (elles se confondaient avec lui).
+                    if cle[1] == 'light' and va and vr and pr_ == 'bg' and re.search(r'^(fiche|chiche|Peaufiner|Nuée|l.instant)', cle[0]):
+                        if vr == 'rgb(247, 240, 222)' and va == 'rgb(234, 217, 185)' and re.search(r'detailPoster|\benh\b|dpDetails', k): exceptions['E12'] = exceptions.get('E12', 0) + 1; continue
+                        if vr == 'rgb(233, 216, 183)' and va == 'rgb(247, 240, 222)' and re.search(r'nf-item|dpm-|msg', k): exceptions['E12'] = exceptions.get('E12', 0) + 1; continue
                     # E9 (v132) : le lilas éclairci de la page + d'un Promi en sombre ; le libellé « Supprimer ce Promi / ce Chiche » et sa corbeille
                     if cle[1] == 'dark' and cle[0] in ('page +', 'gardé de côté') and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '244, 238, 255'): exceptions['E9'] += 1; continue
                     if cle[1] == 'dark' and cle[0] == 'Peaufiner' and va and vr and '196, 162, 245' in vr and va == vr.replace('196, 162, 245', '244, 238, 255'): exceptions['E9'] += 1; continue   # v135 (Q403) : les libellés lilas du Peaufiner d'une fiche Promi, sur le bleu
@@ -317,6 +325,7 @@ par = {}
 for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)
 print('%d propriétés comparées · %d écrans × 2 thèmes · %d nœuds sans vis-à-vis (listés, non jugés)' % (compares, len(ECRANS) if not SEUL else len(SEUL), orphelins))
 print('E11 fiche tenue en clair sur la crème (v136, C-059) : %d' % exceptions.get('E11', 0))
+print('E12 le crème des fiches en clair, #EAD9B9 (v139, C-084) : %d' % exceptions.get('E12', 0))
 print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 cobalt, corps sombre Promi (v131) %d · E9 lilas éclairci et libellé de suppression (v132) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8'], exceptions['E9']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
     ec = sorted(set('%s[%s]' % (e[0][0], e[0][1][0]) for e in L))
