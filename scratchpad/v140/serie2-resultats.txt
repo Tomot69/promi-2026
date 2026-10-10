@@ -1,0 +1,31 @@
+redteam_zoom.py | rc 0 | 82 s | 16/16
+redteam_toucher.py | rc 1 | 260 s |    ROUGE : Ritournelle, 1 parole(s) : aucune dalle ne couvre plus d'un cinquième de l'écran, et la Toile compte au moins neuf cellules
+redteam_studio_mur.py | rc 0 | 96 s | 9/9
+redteam_murs.py | rc 0 | 125 s | 28/28
+redteam_maparole.py | rc 0 | 232 s | 14 / 14
+redteam_e2.py | rc 0 | 171 s | 53/53
+redteam_engagement.py | rc 0 | 170 s | 53/53
+redteam_verrou_onboarding.py | rc 0 | 171 s | 53/53
+redteam_phrase_fiche.py | rc 0 | 263 s | redteam_phrase_fiche : 74/74
+redteam_fluide.py | rc 1 | 203 s | KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4096 images)
+redteam_flash.py | rc 0 | 114 s | 32/32
+redteam_flash_etat.py | rc 0 | 204 s | 10 / 10
+redteam_vide.py | rc 0 | 242 s | 61/61
+redteam_lexique.py | rc 0 | 317 s | redteam_lexique : 3/3
+redteam_tonsurton.py | rc 0 | 64 s | 26/26
+redteam_champ.py | rc 0 | 134 s | 32/32
+redteam_filets.py | rc 0 | 205 s | filet du trait : 14/14
+redteam_joignable.py | rc 0 | 154 s | 5 / 5
+redteam_ecrans.py | rc 0 | 41264 s | 152/152
+redteam_decisions.py | rc 1 | 119 s | KO : Index [dark] carte_etat
+redteam_volume.py | rc 0 | 0 s | ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+redteam_tokens.py | rc 0 | 0 s | 46/46
+redteam_registre.py | rc 0 | 1 s | chantiers non validés : 93
+redteam_decoupe.py | rc 0 | 332 s | ✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut
+redteam_reactif.py | rc 0 | 72 s | redteam_reactif : 31/31
+releve-aura.py | rc 1 | 186 s | ❌  1 ÉCARTS
+redteam_air.py | rc 1 | 313 s |   Si le lot demandait ce resserrement, refige : python3 redteam_air.py --figer
+banc_rendu.py | rc 1 | 106 s | ❌ LE RENDU A CHANGÉ.
+redteam_rythme.py | rc 0 | 678 s | 99 / 99
+redteam_couleurs_ref.py | rc 0 | 730 s | ✅ — 0 écart(s) de couleur avec la référence v118
+FIN

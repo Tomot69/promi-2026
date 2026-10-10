@@ -30,13 +30,16 @@ DESSIN = "{fond:'#12FF34', traits:[], pose:true, masque:false, poses:[{c:'#FF00A
 SITU = {
  'tenir':   "openDetail(promises.find(q=>q.title==='faire les crêpes').id)",
  'chiche':  "openDetail(promises.find(q=>q.title==='courir dimanche').id)",
- 'planter': "document.getElementById('createBtn').click(); setTimeout(()=>{const x=document.querySelectorAll('.tile')[0]; if(x) x.click();},600)",
+ # v140 (E2) : la main ne montre le trait de plantation que lorsque la phrase porte ses mots — la mise en situation écrit un titre
+ 'planter': "document.getElementById('createBtn').click(); setTimeout(()=>{const x=document.querySelectorAll('.tile')[0]; if(x) x.click(); setTimeout(()=>{ try{ window._phrase.titre='venir dimanche'; const t=document.getElementById('fTitle'); t.value='venir dimanche'; t.dispatchEvent(new Event('input',{bubbles:true})); window._phraseRendu(); if(window._ppTrait) window._ppTrait(); }catch(e){} },700); },600)",
  'pelote':  "document.getElementById('souffleBtn').click()",
  'noyau':   "window.shNoyau=true; document.getElementById('shareBtn').click(); setTimeout(()=>{ try{ const b=document.querySelector('#shMode button[data-mode=\"toile\"]'); if(b) b.click(); window.shNoyau=true; if(window.shareRender) shareRender(); }catch(e){} },700)",
  'fil':     "setView('fil')",
  'studio-monde': "document.getElementById('studioBtn').click()",
  'studio-couleur': "localStorage.setItem('geste_vu_studio-monde','1'); document.getElementById('studioBtn').click()",
  'bande':   "const p=promises.find(q=>q.title==='planter un arbre'); p.dessin=%s; openDetail(p.id)" % DESSIN,
+ # v140 (E2bis) : l'Aura vient de paraître dans la barre — le dévoilement en est à l'Index, une parole est tenue : l'Aura paraît, la main la désigne
+ 'aura-apparait': "try{ closeAll(); }catch(e){} localStorage.setItem('promi_devoile', JSON.stringify({index:1})); try{ window._devoile.peint(); }catch(e){}",
  'dessin':  "localStorage.setItem('geste_vu_tenir','1'); const p=promises.find(q=>q.title==='nager le mardi'); openDetail(p.id); setTimeout(()=>{ try{ window._dessin.ouvre(); }catch(e){} },900)",   # le trait de la fiche est déjà vu : on arrive au mode dessin
 }
 ETAT = r"""()=>{ const c=document.getElementById('gesteFantome'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390;
@@ -87,7 +90,7 @@ with sync_playwright() as p:
     t('0 · le composant existe, un seul : `GesteFantome.montrer` et `.oublier`', pg.evaluate("()=>!!(window.GesteFantome && typeof GesteFantome.montrer==='function' && typeof GesteFantome.oublier==='function')"))
     t('0 · les valeurs décidées : 600 ms, 900 ms, trois fois, × 1,5, 1,6 s', regle == {'INACTIF': INACTIF, 'PAUSE': PAUSE, 'TOURS': TOURS, 'GRAND': GRAND, 'TRAJET': TRAJET}, regle)
     BR = [g['id'] for g in INV if g['branche']]
-    t('0 · l\'inventaire porte au moins : tenir, chiche, noyau, pelote, dessin — et l\'Aura (E2bis) non branchée', all(x in BR for x in ('tenir', 'chiche', 'noyau', 'pelote', 'dessin')) and any(g['id'] == 'aura-apparait' and not g['branche'] for g in INV), BR)
+    t('0 · l\'inventaire porte au moins : tenir, chiche, noyau, pelote, dessin — et l\'Aura qui paraît, branchée depuis E2bis (v140)', all(x in BR for x in ('tenir', 'chiche', 'noyau', 'pelote', 'dessin', 'aura-apparait')), BR)
     t('0 · chaque geste branché a sa mise en situation dans ce juge', all(x in SITU for x in BR), [x for x in BR if x not in SITU])
     print('\n     INVENTAIRE DES GESTES')
     for g in INV: print('     %-18s %-34s %-9s %s\n     %18s geste : %s%s' % (g['id'], g['ecran'], 'BRANCHÉ' if g['branche'] else 'non', g['condition'], '', g['geste'], ('\n     %18s raison : %s' % ('', g['raison'])) if g['raison'] else ''))
@@ -132,7 +135,7 @@ with sync_playwright() as p:
     for gid in (BR if not SEUL else [SEUL]):
         ctx, pg, er = ouvre(b, reduit=True); charge(pg, 'light'); situe(pg, gid); e = attend_main(pg, 3600, gid)
         pg.wait_for_timeout(700); e_ = pg.evaluate(ETAT)
-        trajet = gid not in ('fil', 'bande')      # un appui seul n'a pas de trajet : la main, sans flèche
+        trajet = gid not in ('fil', 'bande', 'aura-apparait')      # un appui seul n'a pas de trajet : la main, sans flèche
         t('%-15s mouvement réduit : la main immobile%s' % (gid, ', la flèche du trajet' if trajet else ' (un appui : pas de trajet)'), e['la'] and e.get('mode') == 'immobile' and e.get('main') == e_.get('main') and e.get('fleche') == trajet and not e.get('fautes'), {k: e.get(k) for k in ('la', 'mode', 'main', 'fleche')})
         if e['la']: cap(pg, '%s-4-immobile' % gid)
         ctx.close()

@@ -1,0 +1,16 @@
+OK  0 · l'appui est suivi image par image  183 images d'appui, 164 de retour
+OK  A · la profondeur croît à chaque image pendant l'appui  0 image(s) sans progrès sur 183 · première image à 1.7 % de la butée
+OK  C · aucun saut : le plus grand pas d'une image ≤ 8 % de la butée  plus grand pas 5.1 % (ramené à 16,7 ms)
+OK  B · la vitesse d'enfoncement décroît (fenêtres de 150 ms)  35.0 · 17.6 · 12.3 · 8.6 · 5.2 · 3.7 · 2.5 · 2.4 · 1.5 · 1.3 … % de la butée
+OK  D · une butée : > 90 %% à 3 s, jamais au-delà de 100 %%  à 0,3 s 54 % · 1 s 86 % · 3 s 97.3 %
+OK  H · au relâcher la fourrure revient lentement : à 0,6 s le creux fait encore ≥ 25 %  à 0,3 s 52 % · 0,6 s 29 % · 1,5 s 5 % de sa profondeur
+OK  H · le retour n'a pas de saut non plus  plus grand pas 5.2 %
+OK  H · à 5 s il n'y a plus de creux  
+OK  E · à l'écran, le creux grandit avec la durée de l'appui (0,15 s → 0,6 s → 2,5 s)  4264 px, somme 355790 → 8764 px, somme 773375 → 13160 px, somme 1085311
+OK  F · deux tailles de contact donnent deux empreintes différentes (pixels : ≥ 30 % d'écart)  rayon 7 pt : 8364 px changés · rayon 16 pt : 18551 px
+OK  F · … et à la cote : le demi-axe suit le contact  demi-axe 0.160 contre 0.303 rayon de boule
+OK  G · un contact allongé (16 × 8) donne une empreinte allongée, un contact rond une empreinte ronde  rond 1 · allongé 0.5
+OK  I · l'app déclare les constantes décidées (0,60 s · 0,60 s)  [0.6, 0.6]
+OK  aucune erreur de page  
+
+14 / 14

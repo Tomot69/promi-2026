@@ -1,0 +1,10 @@
+OK  A · trajet horizontal de 130 pt : une trace alignée (≤ 20°), centrée (≤ 30 pt), longue (≥ 78 pt)  {'n': 1979, 'cx': 217.4, 'cy': 261.2, 'angle': -0.2, 'long': 135.1, 'large': 17.9, 's': 1}
+OK  B · trajet oblique de 60 pt, ailleurs : une trace alignée sur lui (45° ± 25), centrée sur lui (≤ 30 pt)  {'n': 1384, 'cx': 171.6, 'cy': 335.4, 'angle': 44.1, 'long': 80.7, 'large': 23.1, 's': 1}
+OK  C · deux trajets, deux traces : la longue ≥ 1,5 × la courte, axes écartés de ≥ 25°  longueurs 135 / 81 pt · axes -0° / 44°
+OK  D · la largeur du contact : rayon 5 pt contre 16 pt, deux largeurs (≥ 20 % d'écart)  largeurs 16.8 / 27.0 pt
+OK  E · un appui sans glisser : une étoile (8 branches vers l'extérieur, ≥ 6 octants)  {'branches': 8, 'dehors': 8, 'octants': 8, 'rayon': 25.17224732913242}
+OK  E · à l'image : une tache ronde (allongement ≤ 1,6) centrée sur le point (≤ 14 pt)  {'n': 4563, 'cx': 234.0, 'cy': 284.7, 'angle': -50.2, 'long': 86.1, 'large': 56.4, 's': 1}
+OK  F · deux appuis (0,2 s et 1,6 s), deux tampons : l'étoile du long est plus grande (≥ 20 %)  rayons 18.0 / 25.2 pt · pixels 2637 / 4563
+OK  aucune erreur de page  []
+
+8/8

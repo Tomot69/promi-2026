@@ -377,6 +377,54 @@ document de rendu, pas des données.
 >    POSER le remet à `false` pour tout le monde (`app.html:38275`). Or il est « pour soi seul ». Côté serveur, le masquage doit être une
 >    préférence **par personne et par dessin** (hors du document partagé), y compris pour le dessin d'une parole que l'autre voit.
 
+### 5 bis. LE DESSIN EST COLLABORATIF (Tom, 10 oct. 2026, v140 — C-093) — À CONSTRUIRE AVEC FIREBASE
+
+> **Décision de Tom, mot pour mot : « Le dessin est collaboratif entre les personnes d'un Promi, d'un Chiche ou d'un Cercle. »**
+> Rien n'est construit dans le prototype (un seul auteur, tout est local). Ce qui suit est la spécification à porter ; chaque point marqué
+> **À TRANCHER** attend Tom — on n'invente pas la règle à sa place.
+
+**Qui dessine.** Les personnes de la parole : celui qui promet et celui (ceux) à qui il promet (Promi) ; celui qui lance, ceux qui sont
+interpellés et le compagnon (Chiche) ; tous les membres (Cercle). Personne d'autre ne voit ni ne modifie le dessin.
+
+**① Les traits de chacun.** Le dessin reste **une liste d'éléments, jamais une image** (§5). Chaque élément porte en plus :
+
+| Champ | Type | Sens |
+|---|---|---|
+| `id` | identifiant unique | engendré sur l'appareil (pas un rang : deux appareils écrivent en même temps) |
+| `auteur` | identifiant de personne | qui a tracé (ou importé) cet élément |
+| `rang` | horodatage serveur | l'ordre d'empilement — voir ② |
+| `c`, `t`, `g`, `pts` | comme aujourd'hui | couleur figée, taille, gomme, points |
+| `img`, `x`, `y`, `w`, `h` | comme aujourd'hui (v139) | une photo importée dans le dessin : le fichier vit dans le stockage de fichiers, `img` en est la référence |
+| `retire` | booléen | l'élément a été annulé par son auteur (on ne supprime pas : les autres appareils doivent l'apprendre) |
+
+**② L'ordre.** L'empilement est celui de l'arrivée **au serveur** (`rang` = horodatage serveur, départagé par `id`). Un appareil hors ligne
+dessine localement ; à la reconnexion ses éléments prennent leur rang d'arrivée et passent donc AU-DESSUS de ce qui a été posé entre-temps.
+Conséquence à connaître : la **gomme** est un élément comme un autre (elle efface ce qui est SOUS elle) — un trait arrivé après elle n'est pas
+effacé. « ANNULER » ne retire que **mes** éléments, du plus récent au plus ancien ; jamais ceux d'un autre.
+
+**③ La synchronisation.** Une sous-collection par dessin (`…/dessin/elements/{id}`), un document par élément, en **ajout seul** (plus
+`retire`) : aucune écriture ne peut écraser le trait d'un autre, il n'y a pas de fusion à faire. Les règles de sécurité : lecture et écriture
+réservées aux personnes de la parole ; un élément n'est modifiable (`retire`) que par son `auteur`.
+- « POSER » : aujourd'hui `poses` est une copie de `traits`. À plusieurs, **poser est un geste de chacun** : mes éléments passent de
+  « en cours » (visibles de moi seul, gardés si je sors) à « posés » (visibles de tous). Champ `pose:true` par élément, écrit par son auteur.
+- **Le fond** est fixé au premier POSER de n'importe qui (règle de v132) : un champ du document du dessin, écrit une seule fois (transaction).
+- Les couleurs : après le premier POSER, « les nouveaux traits ne prennent que les couleurs déjà présentes » — à plusieurs, **À TRANCHER**
+  (les couleurs déjà présentes de tous, ou les miennes).
+- Le **masquage** reste une préférence par personne et par dessin, hors du document partagé (TROU 2 ci-dessus) ; « un dessin masqué pour soi
+  n'est jamais partagé » vaut pour MON partage seulement.
+- **« Retirer le dessin »** et **remplacer le dessin par une photo** (v140 : l'un remplace l'autre dans la bande) : à plusieurs, qui en a le
+  droit — **À TRANCHER** (proposition la plus sobre : chacun ne retire que ses éléments ; le dessin disparaît quand il n'en reste aucun).
+- Le **partage** (v137, v140) : l'image partagée est le dessin entier, **photos importées comprises** (« c'est une composition ») — donc avec
+  les traits et les photos des autres : **À TRANCHER** (accord de chacun, ou règle de visibilité).
+
+**④ Le signalement.** Un dessin à plusieurs est un contenu produit par d'autres : il faut pouvoir **signaler** un élément ou un dessin
+(Apple, règle 1.2 des contenus produits par les utilisateurs), **bloquer** son auteur, et que le contenu signalé disparaisse de mon écran
+aussitôt. Champs : `signalements/{id}` = `{dessin, element, auteur, par, quand, motif}` ; côté client, une liste locale d'éléments masqués
+pour moi. Le traitement (délai, retrait pour tous) relève de l'éditeur — **À TRANCHER** avec les pages légales (C-025).
+
+**Ce que cela ne change pas** : un trait garde SA couleur (un hex figé) ; la bande montre UNE chose (la dalle, la photo ou le dessin) ; rien
+ne compte ni ne classe (aucun « qui a le plus dessiné ») ; l'auteur d'un trait n'est jamais affiché comme un chiffre ou un rang.
+
 ---
 
 ## 6. La photo
@@ -581,7 +629,7 @@ resynchronise depuis les paroles (`Toile.sync(ids)`), et « un semis est déterm
 | **La demande** | `demandeAccepter` appelée localement | l'acceptation par l'autre, l'expiration à 30 jours côté serveur (§1.7) |
 | **Le Chiche** | `chicheEtat:'releve'` jamais écrit par un geste | relever par l'autre, « tenu à deux » (§2, T9) |
 | **Cercles à plusieurs** | tables locales, membres = prénoms tapés | membres réels, invitation, créateur, paroles des autres, dissolution pour tous (§7) |
-| **LE DESSIN COMMUN d'un Cercle** | `promi_dessins_cercle[clé]`, un seul auteur | document partagé, règles d'écriture à plusieurs (§5, T13) |
+| **LE DESSIN, COLLABORATIF** (Promi, Chiche, Cercle — Tom, v140, C-093) | `p.dessin` / `promi_dessins_cercle[clé]`, un seul auteur, local | un document par élément (auteur, rang serveur, ajout seul), POSER par personne, signalement et blocage (§5 bis) |
 | **LE MASQUAGE INDIVIDUEL d'un dessin** | `masque` dans le dessin lui-même | préférence par personne et par dessin, hors du document partagé ; jamais dans un partage (§5) |
 | **Photos** | data-URL dans `promi_state` | stockage de fichiers, visibilité par l'autre (§6) |
 | **Le Fil** | journal local, textes tout faits | événements venus des autres (§8) |

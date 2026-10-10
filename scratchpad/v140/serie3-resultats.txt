@@ -1,0 +1,11 @@
+banc_rendu.py | rc 0 | 106 s | ✅ AU PIXEL.
+redteam_engagement.py | rc 0 | 151 s | redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+redteam_verrou_onboarding.py | rc 1 | 9 s |     at UtilityScript.<anonymous> (<anonymous>:1:44)
+redteam_toucher.py | rc 1 | 259 s |    ROUGE : Ritournelle, 3 parole(s) : chaque dalle est entière à l'écran, vue de près, et la Toile compte au moins neuf cellules
+redteam_accueil.py | rc 1 | 169 s | 20/22
+redteam_e2.py | rc 0 | 172 s | 53/53
+redteam_air.py | rc 0 | 313 s | ✅  L'AIR EST INTACT — 720 paires de textes, 68 écrans, deux thèmes.
+redteam_gestes.py --seul=planter | rc 0 | 95 s | redteam_gestes : 17/17
+redteam_ecrans.py | rc 0 | 90 s | 152/152
+redteam_joignable.py | rc 0 | 133 s | 5 / 5
+FIN

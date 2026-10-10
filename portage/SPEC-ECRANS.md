@@ -363,6 +363,19 @@ Tête : le titre tapé (sinon « Promi » / « Chiche » / « Cercle ») +
 - Toucher la bande : « Voir le dessin en entier ».
 - Sources : `lot-V132-DESSIN` app.html:38060–38140, paramètres `BANDE_RETRAIT` 7, `OEIL {x:24, ecart:52}` (app.html:38047–38048).
 
+#### Le dessin à plusieurs (Tom, 10 oct. 2026, v140 — C-093) — À CONSTRUIRE AVEC FIREBASE, rien n'existe dans le prototype
+> « Le dessin est collaboratif entre les personnes d'un Promi, d'un Chiche ou d'un Cercle. » Données : SPEC-DONNEES §5 bis.
+- **La bande** montre le dessin posé de TOUS (les éléments posés, dans l'ordre d'arrivée au serveur). Un trait posé par un autre pendant que la
+  fiche est ouverte paraît **sans fondu** (A2), sans déplacer quoi que ce soit.
+- **Le mode dessin** : je vois les éléments posés des autres SOUS mon dessin en cours ; je ne peux ni les déplacer ni les effacer autrement que
+  par la gomme (qui est mon élément). « ANNULER » ne défait que les miens. « POSER » pose les miens.
+- **Qui a tracé quoi** : jamais un compteur ni un classement. Si l'auteur d'un trait doit se lire, c'est par un toucher sur le trait, en
+  plein écran — **À TRANCHER** (rien n'est décidé ; par défaut : on ne l'affiche pas).
+- **Signaler** : dans la vue en entier du dessin, une entrée « Signaler » (icône seule, la grammaire des icônes de fiche) quand le dessin
+  porte un élément d'un autre ; le contenu signalé se retire de mon écran aussitôt ; « Bloquer » la personne. Mots à valider par Tom.
+- **Hors ligne** : je dessine, mes éléments partent à la reconnexion et se posent au-dessus (ordre d'arrivée).
+- **Le partage** : l'image est le dessin entier, photos importées comprises (v140, Q435) — donc avec ce que les autres y ont posé : **À TRANCHER**.
+
 ### États vides et d'erreur
 - Parole sans échéance : la ligne d'état ne porte que le mot (« EN COURS »).
 - Titre très long : coupé à trois lignes avec « … » (affichage seul).

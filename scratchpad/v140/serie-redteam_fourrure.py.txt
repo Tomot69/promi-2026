@@ -1,0 +1,13 @@
+— light · carte graphique
+  ✅ A · les réglages décidés (densité ×1, poil ×1, reflet d’origine, palier 110 000) — facteur 1, épaisseur 1, doux False, palier 110000
+  ✅ B · le poil se lit (grain ≥ 2.2) — grain 7.26
+  ✅ C · la longueur : les pointes dépassent la boule (≥ 1.2 pt) et le contour est dentelé (≥ 0.35 pt) — contour moyen 120.51 pt (boule 116), dentelure 1.72 pt, max 124.1
+  ✅ D · pas d’anneau au bord (ΔE médian ≤ 6) — ΔE médian 1.0, max 5.7
+  ✅ E · rien autour (au-delà de 9 pt, la page) — ΔE max 0.0
+— dark · carte graphique
+  ✅ B · le poil se lit (grain ≥ 2.2) — grain 4.69
+  ✅ C · la longueur : les pointes dépassent la boule (≥ 1.2 pt) et le contour est dentelé (≥ 0.35 pt) — contour moyen 120.56 pt (boule 116), dentelure 1.74 pt, max 124.1
+  ✅ D · pas d’anneau au bord (ΔE médian ≤ 6) — ΔE médian 1.0, max 4.2
+  ✅ E · rien autour (au-delà de 9 pt, la page) — ΔE max 0.0
+
+9 / 9

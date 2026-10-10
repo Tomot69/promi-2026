@@ -1,0 +1,11 @@
+OK  [panneau] on est sur un monde de Ma Parole !, en gratuit  
+OK  [les tons] la phrase paraît, entière sur le panneau flouté  phrase [650, 724] · panneau flouté [593, 784] · point flouté True
+OK  [les libellés] la phrase paraît, entière sur le panneau flouté  phrase [656, 720] · panneau flouté [593, 784] · point flouté True
+OK  [les disques] la phrase paraît, entière sur le panneau flouté  phrase [665, 709] · panneau flouté [593, 784] · point flouté True
+OK  [les barrettes] la phrase paraît, entière sur le panneau flouté  phrase [648, 727] · panneau flouté [593, 784] · point flouté True
+OK  [palettes ouvertes] on est sur un monde de Ma Parole !, en gratuit  
+OK  [les pastilles] la phrase paraît, entière sur le panneau flouté  phrase [613, 683] · panneau flouté [478, 820] · point flouté True
+OK  [le nom de la palette] la phrase paraît, entière sur le panneau flouté  phrase [600, 697] · panneau flouté [478, 820] · point flouté True
+OK  [la jauge] la phrase paraît, entière sur le panneau flouté  phrase [604, 692] · panneau flouté [478, 820] · point flouté True
+
+9/9

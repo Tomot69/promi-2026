@@ -81,8 +81,9 @@ with sync_playwright() as p:
         tape(cx, cy); ouv = pg.evaluate(entier)
         juge('6 · [%s] un toucher simple ouvre toujours la photo en entier' % nom, ouv)
         if nom == 'Promi':
-            g = pg.evaluate("()=>{ const e=document.querySelector('#entierVue .ev-garde'); if(!e) return null; const r=e.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2), c=getComputedStyle(e); return {x:r.left+r.width/2, y:r.top+r.height/2, w:r.width, h:r.height, txt:e.textContent.trim(), dessus:h===e, vis:c.display!=='none'&&c.visibility!=='hidden'&&+c.opacity===1}; }")
-            juge('7 · en plein écran, le bouton « Enregistrer la photo » est là, visible, sous le doigt', bool(g) and g['txt'] == 'Enregistrer la photo' and g['dessus'] and g['vis'] and g['h'] >= 44, str(g))
+            g = pg.evaluate("()=>{ const e=document.querySelector('#entierVue .ev-garde'); if(!e) return null; const r=e.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2), c=getComputedStyle(e); return {x:r.left+r.width/2, y:r.top+r.height/2, w:r.width, h:r.height, txt:e.textContent.trim(), voix:e.getAttribute('aria-label'), ico:!!e.querySelector('svg[data-symbole=enregistrer]'), dessus:(h===e||e.contains(h)), vis:c.display!=='none'&&c.visibility!=='hidden'&&+c.opacity===1}; }")
+            # ⚑ v140 (Tom, C-091) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_cadre-avant-v140.py) : « Un seul bouton Enregistrer, partout. Une icône seule, sans texte […]. Elle remplace le texte “Enregistrer la photo”. VoiceOver : “Enregistrer”. »
+            juge('7 · en plein écran, l\'icône « Enregistrer » est là (sans texte, VoiceOver « Enregistrer »), visible, sous le doigt, 44 pt', bool(g) and g['txt'] == '' and g['voix'] == 'Enregistrer' and g['ico'] and g['dessus'] and g['vis'] and g['h'] >= 44 and g['w'] >= 44, str(g))
             if g:
                 n0 = pg.evaluate("()=>window._entierEnregistre||0"); tape(g['x'], g['y'])
                 juge('7 · le toucher enregistre, et ne referme pas la vue', pg.evaluate("()=>window._entierEnregistre||0") == n0 + 1 and pg.evaluate(entier))

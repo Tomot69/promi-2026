@@ -50,7 +50,7 @@ with sync_playwright() as p:
     ok('aucune erreur de page', not errs, errs[:2]);
     # ── v139 (Tom, 9 oct. 2026, C-088) — RITOURNELLE : « au départ, la Toile est trop zoomée : on doit voir plusieurs dalles entières, comme sous
     #    les autres mondes. Et toucher une dalle n'ouvre pas sa fiche. » Deux contrôles, sur l'état d'un compte qui débute (1 puis 3 paroles) :
-    #    Z · aucune dalle ne couvre plus d'un cinquième de l'écran (la cellule que le toucher reconnaît) et la Toile compte au moins neuf
+    #    Z · (v140 : réécrit plus bas — chaque dalle entière à l'écran, vue de près) · avant : aucune dalle ne couvre plus d'un cinquième de l'écran (la cellule que le toucher reconnaît) et la Toile compte au moins neuf
     #        cellules — décidé en dur (SEMIS_NEUF_MIN = 9) : on voit plusieurs cellules entières, comme sous les autres mondes ;
     #    L · trois touchers au vrai doigt (Chromium, CDP, heures explicites) avec UNE IMAGE LONGUE de 900 ms entre l'appui et le lever
     #        (ce que fait Ritournelle sur un téléphone) : la fiche s'ouvre quand même. Rougit sur l'état d'avant (0 sur 3, et Z : une
@@ -63,9 +63,33 @@ with sync_playwright() as p:
             c2=b.new_context(viewport={'width':430,'height':932},device_scale_factor=2,has_touch=True)
             c2.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
             p2=c2.new_page(); p2.goto('http://127.0.0.1:8752/'+F); p2.wait_for_timeout(6000)
-            p2.evaluate("(n)=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} try{setPremium(true)}catch(e){} var L=promises.filter(p=>!p.nuee&&!p.draft).slice(0,n); promises.length=0; L.forEach(p=>promises.push(p)); try{for(var k in NUE){ if(k!=='soi') delete NUE[k]; }}catch(e){} Toile.setTheme('ritournelle'); Toile.sync(promises.map(p=>p.id));}",n); p2.wait_for_timeout(4000)
-            o=p2.evaluate(BOITES); ent=[g for g in o['G'] if g['n']*16<0.2*390*844]
-            ok('Ritournelle, %d parole(s) : aucune dalle ne couvre plus d\'un cinquième de l\'écran, et la Toile compte au moins neuf cellules'%n, len(o['G'])==n and len(ent)==n and o['total']>=9, '%d dalle(s) vue(s), %d cellule(s) ; part de l\'écran : %s'%(len(o['G']),o['total'],['%.0f %%'%(100*g['n']*16/(390*844.0)) for g in o['G']]))
+            p2.evaluate("(n)=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} try{setPremium(true)}catch(e){} var L=promises.filter(p=>!p.nuee&&!p.draft).slice(0,n); promises.length=0; L.forEach(p=>promises.push(p)); try{for(var k in NUE){ if(k!=='soi') delete NUE[k]; }}catch(e){} Toile.setTheme('ritournelle'); Toile.sync([]);}",n); p2.wait_for_timeout(1200)
+            # v140 : les paroles sont plantées UNE À UNE sur une Toile vide, comme un vrai départ (synchronisées d'un coup sur une Toile déjà pleine,
+            # elles gardaient leur ancienne place, aux quatre coins)
+            for kk in range(1, n+1): p2.evaluate("(k)=>{ Toile.sync(promises.slice(0,k).map(p=>p.id)); }", kk); p2.wait_for_timeout(500)
+            p2.evaluate("()=>{ try{ Toile_recadre(); }catch(e){} }"); p2.wait_for_timeout(4000)
+            # ⚑ v140 (Tom, 10 oct. 2026, C-088) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_toucher-avant-v140.py, « aucune dalle ne couvre plus d'un
+            # cinquième de l'écran »). La décision qui le remplace : « Bien plus zoomé qu'en v139 : avec une parole, on voit une dalle entière et un peu
+            # autour ; avec deux, les deux dalles entières ; puis trois […]. » Chaque dalle est ENTIÈRE à l'écran (sa boîte ne touche aucun bord), aucune
+            # ne couvre la moitié de l'écran (la cellule plein écran de v138 ne revient pas), la Toile compte au moins neuf cellules ; et à UNE parole la
+            # dalle est vue de près : au moins un dixième de l'écran (3 % en v139).
+            # « entière » se juge sur ce qui est PEINT : sous Ingénu, seules les dalles des paroles portent le bleu Promi ou le rose Chiche (les
+            # cellules vides sont crème). Ni la zone que le toucher attribue à une dalle ni la boîte de sa cellule ne valent sa matière : elles sont
+            # plus larges (mesuré : une « boîte » de 389 pt pour une dalle peinte sur 180).
+            o=p2.evaluate(BOITES)
+            import io as _io
+            from PIL import Image as _Im
+            dv=p2.evaluate("()=>{var r=document.getElementById('device').getBoundingClientRect();return [r.left,r.top,r.width,r.height]}")
+            im=_Im.open(_io.BytesIO(p2.screenshot(clip={'x':dv[0],'y':dv[1],'width':dv[2],'height':dv[3]}))).convert('RGB').resize((390,844)); px=im.load()
+            def dalle(c): return (abs(c[0]-130)<26 and abs(c[1]-174)<26 and abs(c[2]-248)<26) or (abs(c[0]-255)<22 and abs(c[1]-184)<24 and abs(c[2]-210)<26)
+            xs=[]; ys=[]; nb=0
+            for y in range(104,706,2):
+                for x in range(0,390,2):
+                    if dalle(px[x,y]): xs.append(x); ys.append(y); nb+=1
+            boite=[min(xs),max(xs),min(ys),max(ys)] if xs else None; part=100.0*nb*4/(390*844.0)
+            entier=bool(boite) and boite[0]>=4 and boite[1]<=385 and boite[2]>=110 and boite[3]<=700
+            pres=(n!=1) or part>=6.0
+            ok('Ritournelle, %d parole(s) : la matière des dalles est entière à l\'écran (entre le plateau et la barre), vue de près, et la Toile compte au moins neuf cellules'%n, len(o['G'])==n and entier and pres and part<50 and o['total']>=9, '%d dalle(s), %d cellule(s) ; la matière des paroles tient dans %s ; elle couvre %.0f %% de l\'écran'%(len(o['G']),o['total'],boite,part))
             c2.close()
     b.close()
     if not sel or 'ritournelle' in sel:

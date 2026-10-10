@@ -1,0 +1,21 @@
+OK  1 · stockage vierge : aucune clé au départ du contexte                     promi_graine, promi_state, promi_theme, promi_sig, promi_sigdemo
+OK  2 · stockage vierge : l'onboarding s'affiche                               
+Traceback (most recent call last):
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_verrou_onboarding.py", line 27, in <module>
+    pr = pg.evaluate(POIGNEE, '[data-onb="prenom"]')
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/sync_api/_generated.py", line 9122, in evaluate
+    self._sync(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_page.py", line 469, in evaluate
+    return await self._main_frame.evaluate(expression, arg)
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_frame.py", line 323, in evaluate
+    await self._channel.send(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.Error: Page.evaluate: SyntaxError: Unexpected token '%'
+    at eval (<anonymous>)
+    at UtilityScript.evaluate (<anonymous>:302:30)
+    at UtilityScript.<anonymous> (<anonymous>:1:44)

@@ -6159,12 +6159,18 @@ function autoView(){
   var minX=1e9,maxX=-1e9,minY=1e9,maxY=-1e9;
   col.forEach(function(s){if(s.x<minX)minX=s.x;if(s.x>maxX)maxX=s.x;if(s.y<minY)minY=s.y;if(s.y>maxY)maxY=s.y;});
   var pad=avg()*1.3;                        /* marge d'une dalle autour */
+  /* ⚑ v140 (Tom, 10 oct. 2026, C-088) — LE ZOOM DE DÉPART DES MONDES « FAITS DE LEURS SEULES PAROLES », TANT QU'ILS GARDENT LE SEMIS
+     CONSTANT (moins de SEMIS_NEUF_MIN paroles, v139) : « Bien plus zoomé qu'en v139 : avec une parole, on voit une dalle entière et un peu
+     autour ; avec deux, les deux dalles entières ; puis trois ; puis quatre, avec quelques cellules vides, peu. Le zoom recule pas à pas
+     avec le nombre de paroles. » On cadre les dalles colorées avec une marge de 0,8 cellule pour une parole, de 1,25 au-delà (1,3 ailleurs), et le plafond du zoom passe
+     de 2 à 3,6 : à une parole la dalle fait les deux tiers de la largeur ; chaque parole de plus élargit le cadre, la vue recule. */
+  var _serre=!!(_NEUFS[theme] && !_AP && !_semisNeuf()); if(_serre) pad=avg()*(col.length===1?0.8:1.25);   /* dès deux paroles, 1,25 cellule de marge : une dalle colorée pèse plus qu'une cellule vide, sa matière déborde d'une cellule autour de sa graine — à 1,0 une dalle sur deux essais touchait le bord de l'écran (mesuré sur les pixels) */
   minX-=pad;maxX+=pad;minY-=pad;maxY+=pad;
   var bw=Math.max(1,maxX-minX), bh=Math.max(1,maxY-minY);
   var topB=HAUT_LIBRE, botB=H-BAS_LIBRE;    /* zone utile (barre haut + dock evites) */
   var availW=W*0.92, availH=Math.max(1,botB-topB);
   var s=Math.min(availW/bw, availH/bh);
-  s=Math.max(1.0, Math.min(s, 2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 */
+  s=Math.max(1.0, Math.min(s, _serre?3.6:2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 (3,6 : v140, voir plus haut) */
   var cx=(minX+maxX)/2, cy=(minY+maxY)/2, scx=W/2, scy=(topB+botB)/2;
   var _ox=scx-cx*s, _oy=scy-cy*s;
   /* clamp : les bords de la Toile restent colles aux bords de l ecran (jamais de vide) */
@@ -6969,6 +6975,16 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
     var cible=pool[(_alea()*pool.length)|0];
     var a=avg();
     var jx=(_alea()-.5)*a*0.5, jy=(_alea()-.5)*a*0.5;
+    /* ⚑ v140 (Tom, 10 oct. 2026, C-088) — sous les mondes « faits de leurs seules paroles », tant qu'ils gardent le semis constant (moins
+       de SEMIS_NEUF_MIN paroles) : « avec deux, les deux dalles entières ; puis trois ; puis quatre, avec quelques cellules vides, peu ».
+       Tirées au hasard dans le semis, deux paroles tombaient aux deux bouts de la Toile : on ne peut pas les voir entières ET de près. La
+       parole neuve prend donc la cellule libre LA PLUS PROCHE des paroles déjà là (de leur centre ; la première : du milieu du champ
+       dégagé), sans décalage : elles se touchent, et la vue recule d'un cran à chacune. */
+    if(_NEUFS[theme] && !_AP && !_semisNeuf() && !(_REPLI[theme] && libres!==gris && pool===libres && pool.length && (pool[0].wt!=null?pool[0].wt:pool[0].w)<_repliW()/2)){
+      var _qx=0,_qy=0,_qn=0; for(var _qi=0;_qi<seeds.length;_qi++){ var _qs=seeds[_qi]; if(_qs.kind!=='gray' && _qs.part==null){ _qx+=_qs.x; _qy+=_qs.y; _qn++; } }
+      if(_qn){ _qx/=_qn; _qy/=_qn; } else { _qx=W/2; _qy=(HAUT_LIBRE+H-BAS_LIBRE)/2; }
+      var _qd=1e18; for(var _qj=0;_qj<pool.length;_qj++){ var _qp=pool[_qj], _qe=(_qp.x-_qx)*(_qp.x-_qx)+(_qp.y-_qy)*(_qp.y-_qy); if(_qe<_qd){ _qd=_qe; cible=_qp; } }
+      jx=0; jy=0; }
     var s=mk(Math.max(8,Math.min(W-8,cible.x+jx)), Math.max(8,Math.min(H-8,cible.y+jy)), 'promi');
     s.ci=cc(s);s.c=PAL[s.ci];
     s.t0=performance.now();      /* la dalle se REMPLIT (gris -> couleur) en prenant sa place */

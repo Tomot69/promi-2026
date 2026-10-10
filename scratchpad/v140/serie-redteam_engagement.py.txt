@@ -1,0 +1,23 @@
+     R1 · liste interdite : tâche · to-do · objectif · valider · urgent · score · brouillon · Orbite · la sphère · Belle parole · En replanter un · Dire un mot · badge · série · streak · niveau · classement · points (récompense) · bravo · félicitations · record · échéance
+     R1 · « échéance » : l'app ne l'affiche sur aucun écran parcouru → il RESTE dans la liste (A4)
+OK  R1 · lexique : aucun mot interdit (34 écrans, 809 textes, 18 chaîne(s) du chantier) 
+OK  R1 · `TEXTES_ENGAGEMENT` existe (un seul objet, règle 6)           18 chaîne(s)
+OK  R1 · A3 : aucun texte du chantier à l'impératif (18 chaîne(s))     
+OK  R2 · absence et temps : rien dans `TEXTES_ENGAGEMENT` (18 chaîne(s)) 
+OK  R3 · aucun chiffre sur la Pelote (dans son cadre)                  dans le cadre : [] · cadre [296, 296]
+     R3 · à savoir : ailleurs sur l'écran de l'Aura, des textes portent un chiffre → ['5', '5', '1']
+--  R4 · invariance du moment « tenir »                                INACTIF AVANT E3
+OK  R7 · âge invisible (Toile : 8 textes ; fiche à tenir : 21)         
+OK  R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche tenus 3/3 · clés nouvelles : ['geste_vu_chiche'] · hors liste : []
+OK  A2 · armé : la main fantôme est à l'écran sur la fiche à tenir, elle porte `data-eng` main True · 1 élément(s) `data-eng`
+OK  A2 · aucune transparence ni fondu (1 élément(s) `data-eng`, tracés compris) 
+OK  aucune erreur de page (écrans parcourus)                           []
+OK  R6 · sortie à un geste, à chaque étape de l'onboarding (E2 : prénom, principe, page +, fiche, dernière ligne, compte) R6 OK · 6 étapes · sans sortie : aucune
+     R6 · 1 · le prénom              sortie : Plus tard
+     R6 · 2 · le principe            sortie : Plus tard
+     R6 · 3 · la page +              sortie : FERMER, Plus tard
+     R6 · 4 · la fiche               sortie : FERMER, Plus tard
+     R6 · 5 · la dernière ligne      sortie : FERMER
+     R6 · 6 · le compte              sortie : Plus tard
+
+redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »

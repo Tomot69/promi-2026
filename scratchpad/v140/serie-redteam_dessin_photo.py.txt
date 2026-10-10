@@ -1,0 +1,18 @@
+OK  1 · les tailles décidées : plume 2 · 6 · 22, gomme 8 · 18 · 36  [[2, 6, 22], [8, 18, 36]]
+OK  1 · les trois points du choix : le diamètre du trait + 3 pt (5 · 9 · 25)  [5, 9, 25]
+OK  1 · chaque point a une cible tactile de 44 pt, sous le doigt  [[44, 44, True], [44, 44, True], [44, 44, True]]
+OK  2 · sur la surface, le gros trait couvre au moins quatre fois plus que le fin  pixels d'encre : [1953, 5570, 20195]
+OK  3 · le disque PHOTO est dans la rangée, sous le doigt  [250, 820, True]
+OK  3 · sans photo, le toucher ouvre le sélecteur du téléphone  
+OK  4 · deux photos importées : deux éléments de plus dans le dessin  2 photo(s), 5 élément(s)
+OK  4 · PHOTO choisie, un doigt déplace la photo touchée du geste (± 2 pt)  (195.0 ; 371.0) → (275.0 ; 151.0)
+OK  4 · deux doigts changent sa taille dans le rapport des doigts (60 → 90 : × 1,5 ± 5 %)  largeur 234.0 → 351.0
+OK  4 · rien n'a été tracé pendant ces gestes  
+OK  5 · PLUME choisie : tracer sur une photo trace un trait et ne la déplace pas  
+OK  6 · POSER : les photos sont posées avec le reste  {'poses': 6, 'imgs': 2}
+OK  6 · la bande de la fiche montre la photo posée (pixels)  [0, 176, 0]
+OK  7 · le partage du dessin emporte la photo importée (une composition), et le trait  {'photo': [0, 176, 0], 'trait': [32, 25, 8], 'fond': '#82AEF8'}
+OK  8 · ANNULER retire le dernier élément, photo comprise  4 élément(s), 1 photo(s)
+OK  aucune erreur de page  
+
+16 / 16

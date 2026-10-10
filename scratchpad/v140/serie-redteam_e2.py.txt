@@ -1,0 +1,67 @@
+OK  [clair] P · stockage vierge : l'onboarding s'ouvre sur le prénom, avec sa sortie  ['Plus tard']
+OK  [clair] P · après le prénom : le principe (titre, trois lignes, un bouton, « Plus tard »)  ['Plus tard', 'Promi garde ta parole.', 'Une promesse s’écrit en une phrase.', 'Elle se plante sur ta Toile, d’un trait du doigt.', 'Quand elle est tenue, un second trait le dit.', 'Une toute petite pour commencer, tenable tout de suite.']
+OK  [clair] S · sur la page +, « Plus tard » est là, sous le doigt  ['FERMER', 'Plus tard']
+OK  [clair] P · la vraie page + s'ouvre sur un Promi à soi, onboarding refermé (verrou posé)  {'txt': 'ouvrir la fenêtre', 'vide': True, 'verbe': 'Je me promets', 'autres': []}
+OK  [clair] F · la phrase fantôme est l'une des trois, en pastille vide  ouvrir la fenêtre
+OK  [clair] F · rien d'autre n'est montré (ni Peaufiner, ni pinceau, ni photo, ni retournement)  []
+OK  [clair] D · au départ, la barre ne porte que le +  {'plus': True, 'index': False, 'aura': False, 'studio': False, 'fil': False}
+OK  [clair] F · un toucher sur le fantôme le remplit (la phrase, le champ)  {'txt': 'ouvrir la fenêtre', 'vide': False, 't': 'ouvrir la fenêtre', 'f': 'ouvrir la fenêtre', 'choix': False}
+OK  [clair] F · la phrase remplie : toujours rien d'autre (ni « garder de côté »)  []
+OK  [clair] M · la main fantôme accompagne le trait qui plante  planter
+OK  [clair] R · la parole est RÉELLE : plantée, un id, dans les paroles ; sa fiche est ouverte, une ligne dessous  {'id': 144, 'titre': 'ouvrir la fenêtre', 'st': 'encours', 'dans': True, 'who': 'moi'}
+OK  [clair] S · sur la fiche, « Plus tard » est là, sous le doigt, et le Fil n'est pas encore paru  ['FERMER', 'Plus tard'] · {'plus': True, 'index': True, 'aura': False, 'studio': False, 'fil': False}
+OK  [clair] D · après la plantation, l'Index est dans la barre  {'plus': True, 'index': True, 'aura': False, 'studio': False, 'fil': False}
+OK  [clair] M · la main fantôme accompagne le trait qui tient  tenir
+OK  [clair] R · le trait TIENT la parole ; la dernière ligne paraît  1 · ['Tenu. La prochaine peut se dire à quelqu’un.']
+OK  [clair] C · du principe au premier tenu : 2 toucher(s) (≤ 5) et 2 trait(s) — planter est un trait, tenir en est un autre  
+OK  [clair] R · un toucher ferme : `ob_fini` posé, le compte « Garder ta Toile » se propose  1 · ['Plus tard']
+OK  [clair] D · après le premier tenu, l'Aura est dans la barre, et la main la désigne  {'plus': True, 'index': True, 'aura': True, 'studio': False, 'fil': False} · main aura-apparait · fond [70, 320]
+OK  [clair] D · au retour de l'Aura, le Studio paraît, avec son invitation  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': False} · ['Ta Toile peut changer de matière, au Studio.']
+OK  [clair] D · à la première parole adressée à quelqu'un, le Fil paraît : à la fin, TOUT est visible  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True} · fond [24, 366] · à ['moi', 'Marion']
+OK  [clair] D · rien ne disparaît d'une étape à l'autre  []
+OK  [clair] R · rechargée : aucun onboarding, les paroles et la barre sont là  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True} · 2 parole(s)
+OK  [clair] A · A2 — aucun nœud du chantier n'est transparent, en fondu ou animé  
+OK  [clair] A · A3 — aucun texte du parcours à l'impératif (10 textes)  
+OK  [clair] aucune erreur de page  []
+OK  [sombre] P · stockage vierge : l'onboarding s'ouvre sur le prénom, avec sa sortie  ['Plus tard']
+OK  [sombre] P · après le prénom : le principe (titre, trois lignes, un bouton, « Plus tard »)  ['Plus tard', 'Promi garde ta parole.', 'Une promesse s’écrit en une phrase.', 'Elle se plante sur ta Toile, d’un trait du doigt.', 'Quand elle est tenue, un second trait le dit.', 'Une toute petite pour commencer, tenable tout de suite.']
+OK  [sombre] S · sur la page +, « Plus tard » est là, sous le doigt  ['FERMER', 'Plus tard']
+OK  [sombre] P · la vraie page + s'ouvre sur un Promi à soi, onboarding refermé (verrou posé)  {'txt': 'm’étirer trentesecondes', 'vide': True, 'verbe': 'Je me promets', 'autres': []}
+OK  [sombre] F · la phrase fantôme est l'une des trois, en pastille vide  m’étirer trentesecondes
+OK  [sombre] F · rien d'autre n'est montré (ni Peaufiner, ni pinceau, ni photo, ni retournement)  []
+OK  [sombre] D · au départ, la barre ne porte que le +  {'plus': True, 'index': False, 'aura': False, 'studio': False, 'fil': False}
+OK  [sombre] F · un toucher sur le fantôme le remplit (la phrase, le champ)  {'txt': 'm’étirer trente secondes', 'vide': False, 't': 'm’étirer trente secondes', 'f': 'm’étirer trente secondes', 'choix': False}
+OK  [sombre] F · la phrase remplie : toujours rien d'autre (ni « garder de côté »)  []
+OK  [sombre] M · la main fantôme accompagne le trait qui plante  planter
+OK  [sombre] R · la parole est RÉELLE : plantée, un id, dans les paroles ; sa fiche est ouverte, une ligne dessous  {'id': 144, 'titre': 'm’étirer trente secondes', 'st': 'encours', 'dans': True, 'who': 'moi'}
+OK  [sombre] S · sur la fiche, « Plus tard » est là, sous le doigt, et le Fil n'est pas encore paru  ['FERMER', 'Plus tard'] · {'plus': True, 'index': True, 'aura': False, 'studio': False, 'fil': False}
+OK  [sombre] D · après la plantation, l'Index est dans la barre  {'plus': True, 'index': True, 'aura': False, 'studio': False, 'fil': False}
+OK  [sombre] M · la main fantôme accompagne le trait qui tient  tenir
+OK  [sombre] R · le trait TIENT la parole ; la dernière ligne paraît  1 · ['Tenu. La prochaine peut se dire à quelqu’un.']
+OK  [sombre] C · du principe au premier tenu : 2 toucher(s) (≤ 5) et 2 trait(s) — planter est un trait, tenir en est un autre  
+OK  [sombre] R · un toucher ferme : `ob_fini` posé, le compte « Garder ta Toile » se propose  1 · ['Plus tard']
+OK  [sombre] D · après le premier tenu, l'Aura est dans la barre, et la main la désigne  {'plus': True, 'index': True, 'aura': True, 'studio': False, 'fil': False} · main aura-apparait · fond [70, 320]
+OK  [sombre] A · A2 — aucun nœud du chantier n'est transparent, en fondu ou animé  
+OK  [sombre] A · A3 — aucun texte du parcours à l'impératif (9 textes)  
+OK  [sombre] aucune erreur de page  []
+OK  T · « Plus tard » au prénom : un toucher, l'accueil, TOUT est visible d'emblée, `ob_fini` posé  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True} · ob_fini 1
+OK  T · « Plus tard » au prénom, rechargée : rien n'est rejoué ni redemandé  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True}
+OK  T · « Plus tard » au principe : un toucher, l'accueil, TOUT est visible d'emblée, `ob_fini` posé  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True} · ob_fini 1
+OK  T · « Plus tard » sur la page + : un toucher, l'accueil, TOUT est visible d'emblée, `ob_fini` posé  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True} · ob_fini 1
+OK  T · « Plus tard » sur la fiche : un toucher, l'accueil, TOUT est visible d'emblée, `ob_fini` posé  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True} · ob_fini 1
+OK  T · « Plus tard » sur la fiche, rechargée : rien n'est rejoué ni redemandé  {'plus': True, 'index': True, 'aura': True, 'studio': True, 'fil': True}
+OK  S · R6 — une sortie visible, sous le doigt, à chaque étape (12 étapes)  sans sortie : aucune
+     R6 · 1 · le prénom              sortie : Plus tard
+     R6 · 2 · le principe            sortie : Plus tard
+     R6 · 3 · la page +              sortie : FERMER, Plus tard
+     R6 · 4 · la fiche               sortie : FERMER, Plus tard
+     R6 · 5 · la dernière ligne      sortie : FERMER
+     R6 · 6 · le compte              sortie : Plus tard
+     R6 · 1 · le prénom              sortie : Plus tard
+     R6 · 2 · le principe            sortie : Plus tard
+     R6 · 3 · la page +              sortie : FERMER, Plus tard
+     R6 · 4 · la fiche               sortie : FERMER, Plus tard
+     R6 · 5 · la dernière ligne      sortie : FERMER
+     R6 · 6 · le compte              sortie : Plus tard
+
+53/53

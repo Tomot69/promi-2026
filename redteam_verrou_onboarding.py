@@ -31,23 +31,27 @@ with sync_playwright() as p:
         if s: toucher(cdp, s['x'], s['y'])
         else: pg.keyboard.press('Enter')
         pg.wait_for_timeout(1400)
-    q = pg.evaluate(POIGNEE, '[data-onb="parole"]')
-    if q: toucher(cdp, q['x'], q['y']); pg.wait_for_timeout(300); pg.keyboard.type(PAROLE, delay=25); pg.wait_for_timeout(600)
-    z = pg.evaluate(POIGNEE, '[data-onb="trait"]')
-    if z and z.get('dep'): tracer(cdp, z); pg.wait_for_timeout(6600)   # le message de fin reste au moins quatre secondes (v21) avant d'accepter le toucher
-    dd = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height*0.45}}")
-    for _ in range(14):
-        pt = pg.evaluate(POIGNEE, '[data-onb="plus-tard"]')
-        if pt: toucher(cdp, pt['x'], pt['y']); pg.wait_for_timeout(1200); break
-        if not pg.evaluate(VU): break
-        if pg.evaluate("()=>{const f=document.getElementById('onbFin'); return !!f && getComputedStyle(f).display!=='none' && +getComputedStyle(f).opacity>0.5;}"): toucher(cdp, dd['x'], dd['y'])
-        pg.wait_for_timeout(900)
+    # ⚑ E2 (v140, C-075) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_verrou_onboarding-avant-v140.py) : le « vrai chemin » de l'onboarding est
+    # maintenant le prénom, le principe, puis la VRAIE page + (un toucher sur la phrase fantôme, le trait qui plante). Le verrou garde sa règle.
+    q = pg.evaluate(POIGNEE, '[data-onb="e2-suite"]')
+    if q: toucher(cdp, q['x'], q['y'])
+    try: pg.wait_for_function("()=>{const s=document.getElementById('createSheet'); return s&&s.classList.contains('show')&&s.classList.contains('pp-promi')&&!s.classList.contains('acc-passe')&&!!document.querySelector('#csPhrase [data-ph=titre]')}", timeout=9000)
+    except Exception: pass
+    pg.wait_for_timeout(1200)
+    f = pg.evaluate("()=>{ const e=document.querySelector('#csPhrase [data-ph=titre]'); if(!e) return null; const r=e.getClientRects()[0]||e.getBoundingClientRect(); return r.width>4 ? {x:r.left+r.width/2, y:r.top+r.height/2} : null; }")
+    if f: toucher(cdp, f['x'], f['y']); pg.wait_for_timeout(1300)
+    P = pg.evaluate("()=>{ const e=window._ppEcran&&window._ppEcran(), cv=document.getElementById('csTrameCv'); if(!e||!cv||!e.base) return null; const r=cv.getBoundingClientRect(), k=r.width/390, f=window._onde.onde(e.base,e.amp), P=[]; for(let x=30;x<=360;x+=11) P.push([r.left+x*k, r.top+f(x)*k]); return P; }")
+    z = bool(P)
+    if P:
+        cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': P[0][0], 'y': P[0][1]}]}); pg.wait_for_timeout(120)
+        for (x, y) in P[1:]: cdp.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'x': x, 'y': y}]}); pg.wait_for_timeout(22)
+        pg.wait_for_timeout(120); cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []}); pg.wait_for_timeout(4500)
     pg.wait_for_timeout(2500)
     if '--dbg' in sys.argv:
         pg.screenshot(path='scratchpad/e0/verrou-fin.png')
         print(pg.evaluate("()=>{const o=document.getElementById('promiOnb'); return [...o.querySelectorAll('*')].filter(e=>{const r=e.getBoundingClientRect(),c=getComputedStyle(e);return r.width>4&&c.display!=='none'&&c.visibility!=='hidden'&&+c.opacity>0.05&&e.children.length===0}).map(e=>(e.id||e.className||e.tagName)+':'+(e.textContent||'').slice(0,30)+':'+(e.getAttribute('data-onb')||'')).slice(0,14)}"))
     e = pg.evaluate("()=>({onb:localStorage.getItem('promi_onb'), n:((typeof promises!=='undefined'&&promises)||[]).filter(p=>!p.draft).length})")
-    t('3 · le parcours a été joué jusqu\'au bout (prénom, parole, trait)', bool(pr and q and z), 'prénom %s · parole %s · trait %s' % (bool(pr), bool(q), bool(z)))
+    t('3 · le parcours a été joué jusqu\'au bout (prénom, principe, phrase fantôme, trait qui plante)', bool(pr and q and f and z), 'prénom %s · principe %s · fantôme %s · trait %s' % (bool(pr), bool(q), bool(f), bool(z)))
     t('4 · terminé : l\'onboarding n\'est plus à l\'écran', not pg.evaluate(VU))
     t('5 · terminé : le verrou est posé (promi_onb = 1), un Promi est planté', e['onb'] == '1' and e['n'] == 1, e)
     if '--sonde' in sys.argv: pg.evaluate("()=>localStorage.removeItem('promi_onb')")   # la preuve : sans le verrou, les contrôles 6 et 7 doivent rougir

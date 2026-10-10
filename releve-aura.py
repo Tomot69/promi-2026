@@ -1234,8 +1234,9 @@ def juge():
         vise = e2.get('vise')
         if e2['cede'] <= c0: den.append('sous ×6, le régulateur n\'a pas décidé de céder (vise %s, médiane %s ms)' % (vise, e2['ms']))
         # ⚑ v123 (Tom) : densité 3 retenue — le palier haut est 220 000 (était 110 000)
-        if vus != [220000]: den.append('sous ×6, le palier a changé SOUS LES YEUX : %s — tous les poils changent de place d\'un coup' % vus)
-        if not vise or vise >= 220000: den.append('sous ×6, aucune vise plus basse n\'est gardée (vise %s)' % vise)
+        # ⚑ v140 (Tom, C-083) : le palier haut est 110 000 (la fourrure d'avant les essais de halo, densité ×1) — 220 000 était la « densité 3 » de v123
+        if vus != [110000]: den.append('sous ×6, le palier a changé SOUS LES YEUX : %s — tous les poils changent de place d\'un coup' % vus)
+        if not vise or vise >= 110000: den.append('sous ×6, aucune vise plus basse n\'est gardée (vise %s)' % vise)
         if lb <= la: den.append('sous ×6, la rotation lente s\'est arrêtée — le COMPORTEMENT a cédé')
         if lc - lb < 0.1: den.append('sous ×6, le doigt ne tourne plus la sphère — le COMPORTEMENT a cédé')
         # la vise prend effet à la réouverture, pendant que l'écran se bâtit

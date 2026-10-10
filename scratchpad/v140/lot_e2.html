@@ -1,0 +1,199 @@
+<style id="lot-E2-css">
+/* ⚑ E2 et E2bis (v140, Tom, 10 oct. 2026 — C-075, C-076 ; ENGAGEMENT.md, les amendements priment). A2 : rien ici n'a d'opacité, de fondu,
+   de transition ni d'animation. */
+/* « TRACE POUR TENIR » et « TRACE POUR PLANTER » : 15 → 19 px, en grandissant VERS LE HAUT (la cote du bas ne bouge pas) */
+#device#device#device#device#device #dptTrace{font-size:19px!important;margin-top:-4.4px!important}
+#device#device#device#device#device #createSheet .pp-trace{font-size:19px!important;line-height:19px!important;margin-top:-4px!important}
+/* le principe (dans l'onboarding, après le prénom) */
+#onbV .e2-principe{position:absolute;left:24px;top:150px;width:342px;color:var(--onb-ink);-webkit-text-fill-color:var(--onb-ink)}
+#onbV .e2-principe .e2-ti{font-family:var(--f-marque);font-weight:400;font-size:34px;line-height:38px;margin:0 0 26px}
+#onbV .e2-principe .e2-li{font-family:var(--f-libelle);font-weight:700;font-size:20px;line-height:26px;margin:0 0 14px}
+#onbV .e2-principe .e2-so{font-family:var(--f-texte);font-weight:400;font-size:16px;line-height:22px;margin:12px 0 0}
+#onbV .e2-bouton{position:absolute;left:24px;top:640px;width:342px;height:62px;box-sizing:border-box;border-radius:31px;border:2px solid var(--onb-ink);background:var(--onb-ink);color:var(--onb-inv);-webkit-text-fill-color:var(--onb-inv);
+  font-family:var(--f-libelle);font-weight:700;font-size:18px;letter-spacing:.04em;text-transform:uppercase;display:grid;place-items:center;margin:0;padding:0;cursor:pointer}
+#onbV .onbv-tard, #device .e2-tard{position:absolute;left:95px;width:200px;height:44px;display:grid;place-items:center;margin:0;padding:0;border:0;background:transparent;
+  font-family:var(--f-libelle);font-weight:700;font-size:14px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
+#onbV .onbv-tard{top:724px;color:var(--onb-ink);-webkit-text-fill-color:var(--onb-ink);z-index:6}
+#onbV.e2-vu #onbHaut, #onbV.e2-vu #onbIn{display:none!important}
+/* la page + du premier Promi : rien d'autre que la phrase, le trait et la sortie */
+#device.e2-plus #createSheet #csBotBar, #device.e2-plus #createSheet #csPinceau, #device.e2-plus #createSheet .ph-hint,
+#device.e2-plus #createSheet .ph-photo-nid, #device.e2-plus #createSheet .ph-b svg{display:none!important}
+#device.e2-fiche #detailPoster #dpDetails{visibility:hidden!important;pointer-events:none!important}
+#device .e2-tard{top:790px;z-index:60;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95)}
+#device.light .e2-tard{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+#device .e2-ligne{position:absolute;left:24px;top:752px;width:342px;z-index:60;margin:0;text-align:center;font-family:var(--f-texte);font-weight:500;font-size:16px;line-height:21px;
+  color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95);pointer-events:none}
+#device.light .e2-ligne{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+/* E2bis — la barre du bas se dévoile : chaque entrée paraît À SA PLACE DÉFINITIVE ; le fond de la barre s'élargit jusqu'à elle */
+#device.dv-mode #accBarre{background:transparent!important;border-color:transparent!important;pointer-events:none!important}
+#device.dv-mode #accBarre > *{pointer-events:auto}
+#device.dv-mode:not(.dv-studio) #accBarre #studioBtn, #device.dv-mode:not(.dv-aura) #accBarre #souffleBtn,
+#device.dv-mode:not(.dv-index) #accBarre #indexBtn, #device.dv-mode:not(.dv-fil) #accBarre #filBtn{display:none!important}
+#device #accBarreFond{position:absolute;top:-2px;height:100px;box-sizing:border-box;border:2px solid var(--c-creme95);border-radius:50px;background:var(--c-brun09);margin:0;padding:0}
+#device.light #accBarreFond{border-color:var(--c-brun09);background:var(--c-creme95)}
+#device .dv-invite{position:absolute;left:24px;top:672px;max-width:300px;box-sizing:border-box;padding:11px 18px;border-radius:22px;border:2px solid var(--c-creme95);background:var(--c-brun09);
+  color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95);font-family:var(--f-texte);font-weight:500;font-size:15px;line-height:20px;z-index:33;margin:0;pointer-events:none}
+#device.light .dv-invite{border-color:var(--c-brun09);background:var(--c-creme95);color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+#device #settingsScreen #dvTout,.frame #settingsScreen #dvTout{border-width:2px!important;border-style:solid!important;border-radius:32px!important;border-color:var(--c-creme95)!important}
+#device.light #settingsScreen #dvTout,.frame.light #settingsScreen #dvTout{border-color:var(--c-brun09)!important}
+</style>
+<script id="lot-E2">
+/* ⚑ E2 — « LE PREMIER PROMI, TENU EN UNE MINUTE » et E2bis — « L'INTERFACE SE DÉVOILE » (v140, Tom, 10 oct. 2026 ; C-075, C-076).
+   ENGAGEMENT.md, corrigé par A2 (ni transparence ni fondu), A3 (aucun impératif), A6 (E2bis) et par les retours des testeurs de Tom.
+   LE PARCOURS, après l'identification (le prénom, gardé tel quel) :
+     ① le PRINCIPE, dit simplement — un bouton, une sortie « Plus tard » ;
+     ② la VRAIE page +, sur un Promi à soi ; dans la pastille, une phrase fantôme tirée parmi trois : un toucher la remplit (on peut écrire la
+        sienne) ; rien d'autre n'est montré (ni Peaufiner, ni pinceau, ni photo, ni retournement) ; la main fantôme accompagne le trait ;
+     ③ la plantation, RÉELLE (la parole a son id, elle compte partout) ; sa fiche s'ouvre, une ligne dessous ; la main accompagne le trait ;
+     ④ tenir : le moment existant ; puis une dernière ligne, une fois ; un toucher ferme ; `ob_fini` ; le compte (« Garder ta Toile »).
+   « Plus tard », à chaque étape : un toucher, la Toile vide, TOUT est affiché ; le premier Promi n'est jamais redemandé.
+   E2bis : tant que `promi_devoile` n'est pas 'tout', la barre ne porte que ce qui est déjà apparu — le + seul au départ ; l'Index à la première
+   plantation ; l'Aura au premier tenu (la main la désigne) ; le Studio juste après (au premier retour sur l'accueil) ; le Fil à la première
+   parole adressée à quelqu'un ou reçue. Rien ne disparaît. Un réglage « Tout afficher ». Qui n'a pas fait ce parcours voit tout, comme avant.
+   Tous les textes sont PROVISOIRES, dans TEXTES_ENGAGEMENT.e2 ; tout nœud créé ici porte `data-eng`. */
+(function(){
+  var T=window.TEXTES_ENGAGEMENT=window.TEXTES_ENGAGEMENT||{};
+  T.e2={
+    titre:'Promi garde ta parole.',                                              /* TEXTE PROVISOIRE — Tom */
+    principe:['Une promesse s’écrit en une phrase.',                            /* TEXTE PROVISOIRE — Tom */
+              'Elle se plante sur ta Toile, d’un trait du doigt.',               /* TEXTE PROVISOIRE — Tom */
+              'Quand elle est tenue, un second trait le dit.'],                  /* TEXTE PROVISOIRE — Tom */
+    sous:'Une toute petite pour commencer, tenable tout de suite.',              /* TEXTE PROVISOIRE — Tom */
+    bouton:'C’est parti',                                                        /* TEXTE PROVISOIRE — Tom */
+    plusTard:'Plus tard',                                                        /* TEXTE PROVISOIRE — Tom */
+    fantomes:['boire un verre d’eau','ouvrir la fenêtre','m’étirer trente secondes'],   /* TEXTE PROVISOIRE — Tom */
+    fiche:'C’est planté. Une fois la chose faite, un trait suffit pour la tenir.',     /* TEXTE PROVISOIRE — Tom */
+    fin:'Tenu. La prochaine peut se dire à quelqu’un.',                         /* TEXTE PROVISOIRE — Tom */
+    studio:'Ta Toile peut changer de matière, au Studio.',                       /* TEXTE PROVISOIRE — Tom */
+    toutAfficher:'Tout afficher', toutAfficherValeur:'afficher ›'                /* TEXTE PROVISOIRE — Tom */
+  };
+  function $(i){ return document.getElementById(i); }
+  var dev=$('device'); if(!dev) return;
+  var LS={g:function(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, s:function(k,v){ try{ localStorage.setItem(k,v); }catch(_){ } }, r:function(k){ try{ localStorage.removeItem(k); }catch(_){ } }};
+  function paroles(){ try{ return promises.filter(function(p){ return !p.draft; }); }catch(_){ return []; } }
+  function eng(n, quoi){ n.setAttribute('data-eng', quoi); return n; }
+  function onbOuvert(){ var o=$('promiOnb'); return !!(o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none'); }
+  /* l'accueil est-il au premier plan (la Toile sous le milieu de l'écran) ? */
+  function accueil(){ try{ if(onbOuvert()) return false; var r=dev.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2, r.top+r.height*0.45);
+      return !!(h && !(h.closest && h.closest('.screen, .sheet, .poster, #feedView, #entierVue, #dessinMode, #accRappelCompte'))); }catch(_){ return false; } }
+
+  /* ══════════ E2bis — LE DÉVOILEMENT ══════════ */
+  var DV='promi_devoile', auraNeuve=false, auraT=0, auraVue=false;
+  function dvLit(){ var s=LS.g(DV); if(s===null || s===undefined) return null; if(s==='tout') return 'tout'; try{ return JSON.parse(s)||{}; }catch(_){ return {}; } }
+  function dvMode(){ var d=dvLit(); return !!(d && d!=='tout'); }
+  function dvPeint(){ var d=dvLit(), mode=!!(d && d!=='tout'), c=dev.classList;
+    if(c.contains('dv-mode')!==mode) c.toggle('dv-mode', mode);
+    ['index','aura','studio','fil'].forEach(function(k){ var v=mode && !!d[k]; if(c.contains('dv-'+k)!==v) c.toggle('dv-'+k, v); });
+    var br=$('accBarre'), f=$('accBarreFond'); if(!br) return;
+    if(!mode){ if(f) f.remove(); return; }
+    if(!f){ f=eng(document.createElement('div'),'barre'); f.id='accBarreFond'; f.setAttribute('aria-hidden','true'); br.insertBefore(f, br.firstChild); }
+    /* les bords du fond, en points de la barre (342 de large) : le + seul fait un rond de 100 ; l'Aura l'étire à gauche jusqu'à 46, le Studio
+       jusqu'à 0 ; l'Index l'étire à droite jusqu'à 296, le Fil jusqu'à 342 — les bords définitifs */
+    var L=d.studio?0:(d.aura?46:121), R=d.fil?342:(d.index?296:221), cle=L+'|'+R;
+    if(f.getAttribute('data-bords')!==cle){ f.setAttribute('data-bords', cle); f.style.left=(L-2)+'px'; f.style.width=(R-L)+'px'; } }
+  function dvPose(k){ var d=dvLit(); if(!d || d==='tout' || d[k]) return false; d[k]=1;
+    LS.s(DV, (d.index&&d.aura&&d.studio&&d.fil) ? 'tout' : JSON.stringify(d)); dvPeint(); return true; }
+  function dvTout(){ if(dvLit()===null) return false; LS.s(DV,'tout'); dvPeint(); invite(null); return true; }
+  function adressee(p){ try{ if(p.req || p.recu || p.from) return true; var w=(''+(p.who||'')).trim().toLowerCase(); return !!w && w!=='moi' && w!=='soi'; }catch(_){ return false; } }
+  function invite(txt){ var n=$('dvInvite'); if(!txt){ if(n) n.remove(); return; } if(n) return;
+    n=eng(document.createElement('div'),'invite'); n.id='dvInvite'; n.className='dv-invite'; n.textContent=txt; dev.appendChild(n); n._t=performance.now(); }
+  function dvVeille(){ if(!dvMode()){ return; } var P=paroles(), d=dvLit();
+    if(P.length) dvPose('index');
+    if(P.some(function(p){ return p.status==='tenu'; })){ if(dvPose('aura')){ auraNeuve=true; auraT=performance.now(); } }
+    if(P.some(adressee)) dvPose('fil');
+    try{ if(typeof FEED!=='undefined' && Array.isArray(FEED) && FEED.some(function(f){ return f && f.who && (''+f.who).toLowerCase()!=='moi'; })) dvPose('fil'); }catch(_){ }
+    d=dvLit(); if(d && d!=='tout' && d.aura && !d.studio && accueil() && (auraVue || !auraNeuve) && performance.now()-auraT>1200){ if(dvPose('studio')) invite(T.e2.studio); }
+    var n=$('dvInvite'); if(n && !accueil()) n.style.display='none'; else if(n) n.style.display=''; }
+  document.addEventListener('pointerdown', function(e){ var n=$('dvInvite'); if(n && performance.now()-(n._t||0)>400) n.remove();
+    try{ if(e.target && e.target.closest && e.target.closest('#souffleBtn')){ auraVue=true; auraNeuve=false; auraT=performance.now(); } }catch(_){ } }, true);
+  window._devoile={ lit:dvLit, mode:dvMode, tout:dvTout, pose:dvPose, peint:dvPeint,
+    /* la main désigne l'Aura : une fois, quand elle vient de paraître et que l'accueil est à l'écran */
+    auraQuand:function(){ if(!dvMode() || !auraNeuve || !accueil()) return null; var b=$('souffleBtn'); if(!b) return null; var r=b.getBoundingClientRect(); if(r.width<8) return null;
+      return {cible:b, chemin:[{x:r.left+r.width/2, y:r.top+r.height*0.36, appui:700}]}; } };
+  /* le réglage « Tout afficher » : une rangée des Réglages, au-dessus de « Revoir la présentation », tant que tout n'est pas affiché */
+  function reglage(){ var c=$('replayPres')||$('replayOnb'), p=$('dvTout'); if(!c) return;
+    if(!dvMode()){ if(p) p.remove(); return; } if(p) return;
+    p=eng(document.createElement('div'),'tout-afficher'); p.className='scard'; p.id='dvTout'; p.setAttribute('role','button'); p.tabIndex=0; p.setAttribute('aria-label', T.e2.toutAfficher);
+    p.innerHTML='<span class="k"></span><span class="v ac"></span>'; p.querySelector('.k').textContent=T.e2.toutAfficher; p.querySelector('.v').textContent=T.e2.toutAfficherValeur; c.parentNode.insertBefore(p, c);
+    var G=null, tF=0; function fait(e){ if(e){ try{ e.preventDefault(); e.stopImmediatePropagation(); }catch(_){ } } if(performance.now()-tF<600) return; tF=performance.now(); dvTout(); reglage(); }
+    p.addEventListener('pointerdown', function(e){ G={x:e.clientX, y:e.clientY, t:performance.now()}; }, true);
+    p.addEventListener('pointerup', function(e){ var g=G; G=null; if(!g || Math.hypot(e.clientX-g.x, e.clientY-g.y)>10 || performance.now()-g.t>600) return; fait(e); }, true);
+    p.addEventListener('click', fait, true); p.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' ') fait(e); }); }
+
+  /* ══════════ E2 — LE PREMIER PROMI ══════════ */
+  var CLE='promi_e2', etat=null, pid=null, n0=0, F=null, tVu=0, vuOuvert=false, tTenu=0, rejeuE2=false;
+  function fantome(){ if(!F) F=T.e2.fantomes[(Math.random()*T.e2.fantomes.length)|0]; return F; }
+  function classes(){ var c=dev.classList; if(c.contains('e2-plus')!==(etat==='plus')) c.toggle('e2-plus', etat==='plus'); var fi=(etat==='fiche'||etat==='fin'); if(c.contains('e2-fiche')!==fi) c.toggle('e2-fiche', fi); }
+  function noeud(id, cls, quoi, txt, role){ var n=$(id); if(!n){ n=eng(document.createElement('div'), quoi); n.id=id; n.className=cls; if(role){ n.setAttribute('role','button'); n.tabIndex=0; } dev.appendChild(n); } if(n.textContent!==txt) n.textContent=txt; return n; }
+  function retire(){ ['e2Tard','e2Ligne'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); }
+  function fin(tout){ etat=null; pid=null; classes(); retire(); LS.s('ob_fini','1'); LS.r(CLE); if(tout) dvTout(); }
+  function ferme(){ try{ if(typeof closeAll==='function') closeAll(); }catch(_){ } }
+  /* ① le principe — bâti dans l'onboarding, à la place du prénom */
+  function principe(rejeu){ var v=$('onbV'); if(!v) return; rejeuE2=!!rejeu; v.classList.add('e2-vu');
+    var p=v.querySelector('.e2-principe'); if(p) p.remove(); var b0=v.querySelector('.e2-bouton'); if(b0) b0.remove();
+    p=eng(document.createElement('div'),'principe'); p.className='e2-principe';
+    var h=eng(document.createElement('div'),'principe-titre'); h.className='e2-ti'; h.textContent=T.e2.titre; p.appendChild(h);
+    T.e2.principe.forEach(function(t){ var l=eng(document.createElement('div'),'principe-ligne'); l.className='e2-li'; l.textContent=t; p.appendChild(l); });
+    var so=eng(document.createElement('div'),'principe-sous'); so.className='e2-so'; so.textContent=T.e2.sous; p.appendChild(so); v.appendChild(p);
+    var b=eng(document.createElement('div'),'principe-bouton'); b.className='e2-bouton'; b.setAttribute('role','button'); b.tabIndex=0; b.setAttribute('data-onb','e2-suite'); b.textContent=T.e2.bouton; v.appendChild(b);
+    b.addEventListener('click', function(e){ e.stopPropagation(); e.preventDefault(); suite(); }); tard(); }
+  function quitteOnb(){ if(rejeuE2){ var o=$('promiOnb'); if(o) o.classList.add('gone'); }   /* au rejeu : fermé « par un autre », l'onboarding rend la Toile telle qu'elle était */
+    else { try{ window._onbV20.terminer(); }catch(_){ try{ window.obFinish(); }catch(__){ } } } }
+  function suite(){ var rj=rejeuE2; quitteOnb(); if(rj){ rejeuE2=false; return; }   /* « Revoir la présentation » : le principe seul — le premier Promi n'est jamais redemandé */
+    if(dvLit()===null) LS.s(DV,'{}'); dvPeint();
+    etat='plus'; LS.s(CLE,'plus'); n0=paroles().length; F=null; fantome(); tVu=performance.now(); vuOuvert=false; classes();
+    setTimeout(function(){ if(etat!=='plus') return; try{ var pi=document.querySelector('#accChoix .acc-pil[data-k=promi]'); if(pi) pi.click(); else $('createBtn').click(); }catch(_){ } }, 420); }
+  /* « Plus tard », partout */
+  function plusTard(){ if(onbOuvert()){ var rj=rejeuE2; quitteOnb(); rejeuE2=false; if(rj) return; if(dvLit()===null) LS.s(DV,'tout'); fin(true); return; }
+    ferme(); fin(true); }
+  function tard(){ var v=$('onbV'); if(!v || v.querySelector('#onbTard')) return; var t=eng(document.createElement('div'),'plus-tard'); t.id='onbTard'; t.className='onbv-a onbv-tard'; t.setAttribute('role','button'); t.tabIndex=0; t.setAttribute('data-onb','plus-tard'); t.textContent=T.e2.plusTard; v.appendChild(t);
+    t.addEventListener('click', function(e){ e.stopPropagation(); e.preventDefault(); plusTard(); }); }
+  /* ② la phrase fantôme : l'exemple de la pastille, pendant ce parcours */
+  (function enveloppe(n){ var f=window._ppExemple; if(typeof f!=='function'){ if(n<60) setTimeout(function(){ enveloppe(n+1); }, 100); return; } if(f.__e2) return;
+    var g=function(t){ if(etat==='plus' && t==='soi') return fantome(); return f.apply(this, arguments); }; g.__e2=true; for(var k in f){ try{ g[k]=f[k]; }catch(_){ } } window._ppExemple=g; })(0);
+  document.addEventListener('click', function(e){ if(etat!=='plus') return; var t=e.target && e.target.closest && e.target.closest('#createSheet #csPhrase [data-ph]'); if(!t) return;
+    var k=t.getAttribute('data-ph');
+    if(k==='sens'){ e.stopPropagation(); e.preventDefault(); return; }                 /* pas de retournement pendant ce parcours */
+    if(k==='titre' && window._phrase && !(''+(window._phrase.titre||'')).trim()){ e.stopPropagation(); e.preventDefault();
+      var x=fantome(); window._phrase.titre=x; try{ var ft=$('fTitle'); if(ft){ ft.value=x; ft.dispatchEvent(new Event('input', {bubbles:true})); } }catch(_){ }
+      try{ if(window._phraseRendu) window._phraseRendu(); if(window._ppArme) window._ppArme(); if(window._ppTrait) window._ppTrait(); }catch(_){ } } }, true);
+  document.addEventListener('click', function(e){ var t=e.target && e.target.closest && e.target.closest('#e2Tard'); if(!t) return; e.stopPropagation(); e.preventDefault(); plusTard(); }, true);
+  /* ④ la dernière ligne : un toucher, n'importe où, ferme */
+  document.addEventListener('pointerup', function(e){ if(etat!=='fin' || performance.now()-tTenu<700) return; if(e.target && e.target.closest && e.target.closest('#e2Tard')) return;
+    ferme(); fin(false); setTimeout(function(){ try{ if(window._onbCompte && !window._onbCompteFait()) window._onbCompte(); }catch(_){ } }, 420); }, true);
+  /* la veille : l'état se lit sur ce qui est vrai (les paroles, l'écran affiché), jamais sur un compte */
+  function veille(){
+    try{ tard(); dvVeille(); reglage(); }catch(_){ }
+    if(!etat) return; classes();
+    var cs=$('createSheet'), dp=$('detailPoster'), now=performance.now();
+    if(etat==='plus'){
+      var P=paroles();
+      if(P.length>n0){ pid=P[P.length-1].id; etat='fiche'; LS.s(CLE,'fiche'); classes(); retire(); vuOuvert=false; tVu=now;
+        (function ouvre(k){ if(etat!=='fiche') return; var c=$('createSheet'); if((c && c.classList.contains('show')) || window._plantation || k<4){ if(k<40){ setTimeout(function(){ ouvre(k+1); }, 300); return; } }
+          try{ openDetail(pid); }catch(_){ } })(0);
+        return; }
+      var ouv=!!(cs && cs.classList.contains('show')); if(ouv){ vuOuvert=true; tVu=now; noeud('e2Tard','e2-tard','plus-tard',T.e2.plusTard,true); }
+      else if(vuOuvert && now-tVu>1500){ fin(true); }                                  /* la page + refermée sans planter : comme « Plus tard » */
+      else if(!vuOuvert && now-tVu>6000){ fin(true); }
+    } else if(etat==='fiche'){
+      var p=null; try{ p=promises.find(function(q){ return q.id===pid; }); }catch(_){ }
+      if(!p){ fin(true); return; }
+      var ouvF=!!(dp && dp.classList.contains('show'));
+      if(p.status==='tenu'){ if(!window._tenirAnime && ouvF){ if(!tTenu) tTenu=now; if(now-tTenu>600){ etat='fin'; tTenu=now; LS.s(CLE,'fin'); var t=$('e2Tard'); if(t) t.remove(); noeud('e2Ligne','e2-ligne','ligne',T.e2.fin,false); } } else if(!ouvF && now-tVu>2500){ fin(false); } return; }
+      if(ouvF){ vuOuvert=true; tVu=now; noeud('e2Ligne','e2-ligne','ligne',T.e2.fiche,false); noeud('e2Tard','e2-tard','plus-tard',T.e2.plusTard,true).style.top='800px'; }
+      else if(vuOuvert && now-tVu>1500){ fin(false); }                                 /* la fiche refermée sans tenir : le parcours s'arrête, rien n'est redemandé */
+      else if(!vuOuvert && now-tVu>12000){ fin(false); }
+    } else if(etat==='fin'){ if(!(dp && dp.classList.contains('show')) && now-tTenu>1200){ fin(false); } }
+  }
+  /* un rechargement au milieu du parcours : il s'arrête là ; sans aucune parole, tout est affiché */
+  try{ if(LS.g(CLE) && LS.g('ob_fini')!=='1'){ LS.s('ob_fini','1'); LS.r(CLE); setTimeout(function(){ if(!paroles().length) dvTout(); }, 2500); } }catch(_){ }
+  /* le Studio qui n'était pas encore paru à la dernière séance paraît à celle-ci */
+  try{ var d0=dvLit(); if(d0 && d0!=='tout' && d0.aura && !d0.studio){ auraNeuve=false; auraVue=true; } }catch(_){ }
+  dvPeint(); [300,1200,2500].forEach(function(t){ setTimeout(dvPeint, t); });
+  setInterval(veille, 250);
+  try{ if(window._paroles && window._paroles.abonne) window._paroles.abonne(function(){ try{ dvVeille(); }catch(_){ } }); }catch(_){ }
+  window._e2={principe:principe, plusTard:plusTard, etat:function(){ return {etat:etat, pid:pid, fantome:F, devoile:dvLit()}; }, fin:fin};
+  /* l'onboarding est peut-être déjà à l'écran (premier lancement) : sa sortie « Plus tard » se pose tout de suite */
+  tard();
+})();
+</script>

@@ -1,0 +1,26 @@
+OK  [carte graphique · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 1.2
+OK  [carte graphique · clair · signal] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.50, max 2.00 · fin 120.2 (de 118.5 à 123.2)
+OK  [carte graphique · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.0
+OK  [carte graphique · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.8
+OK  [carte graphique · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 1.1
+OK  [carte graphique · clair · taciturne] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.75, max 1.50 · fin 120.5 (de 118.2 à 123.2)
+OK  [carte graphique · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.6
+OK  [carte graphique · sombre · signal] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.50, max 1.75 · fin 120.5 (de 118.2 à 123.2)
+OK  [carte graphique · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.2
+OK  [carte graphique · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 1.1
+OK  [carte graphique · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.9
+OK  [carte graphique · sombre · taciturne] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.50, max 1.50 · fin 120.2 (de 118.2 à 123.2)
+OK  [secours · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.8
+OK  [secours · clair · signal] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.50, max 1.50 · fin 120.5 (de 118.2 à 122.8)
+OK  [secours · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.0
+OK  [secours · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.8
+OK  [secours · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 1.1
+OK  [secours · clair · taciturne] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.50, max 1.50 · fin 120.5 (de 118.0 à 122.8)
+OK  [secours · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.6
+OK  [secours · sombre · signal] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.50, max 1.50 · fin 120.0 (de 118.0 à 122.8)
+OK  [secours · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.2
+OK  [secours · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.9
+OK  [secours · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.9
+OK  [secours · sombre · taciturne] F · des pointes sans frange pâle : frange ≤ 2.5 pt, contour 118–124 pt frange médiane 0.50, max 1.50 · fin 120.2 (de 118.0 à 122.8)
+
+24/24

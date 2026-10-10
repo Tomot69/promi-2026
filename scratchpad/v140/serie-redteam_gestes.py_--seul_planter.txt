@@ -1,0 +1,53 @@
+OK  0 · le composant existe, un seul : `GesteFantome.montrer` et `.oublier`      
+OK  0 · les valeurs décidées : 600 ms, 900 ms, trois fois, × 1,5, 1,6 s          {'INACTIF': 600, 'PAUSE': 900, 'TOURS': 3, 'GRAND': 1.5, 'TRAJET': 1600}
+OK  0 · l'inventaire porte au moins : tenir, chiche, noyau, pelote, dessin — et l'Aura qui paraît, branchée depuis E2bis (v140) ['tenir', 'chiche', 'planter', 'pelote', 'noyau', 'fil', 'studio-monde', 'studio-couleur', 'bande', 'dessin', 'aura-apparait']
+OK  0 · chaque geste branché a sa mise en situation dans ce juge                 []
+
+     INVENTAIRE DES GESTES
+     tenir              la fiche d’un Promi                BRANCHÉ   la fiche est ouverte sur un Promi pas encore tenu
+                        geste : tracer le trait, du rond de gauche jusqu’au bout : la moitié en pointillés devient pleine
+     chiche             la fiche d’un Chiche               BRANCHÉ   la fiche est ouverte sur un Chiche pas encore tenu
+                        geste : tracer le trait jusqu’au bout : sa moitié en pointillés devient pleine
+     planter            la page +                          BRANCHÉ   la page + est ouverte sur une nature (Promi, Chiche ou Cercle), Peaufiner fermé
+                        geste : tracer le trait pour planter, jusqu’au bout
+     pelote             l’Aura                             BRANCHÉ   l’Aura est ouverte, la Pelote est à l’écran
+                        geste : poser le doigt sur la Pelote et glisser : elle se creuse et tourne
+     noyau              Partager                           BRANCHÉ   le Noyau est affiché sur l’image à partager (hors Mon Folio)
+                        geste : appui long (260 ms) sur le Noyau, puis le déplacer
+     fil                le Fil                             BRANCHÉ   le Fil est ouvert et porte au moins un bandeau
+                        geste : appui maintenu sur un bandeau : il déplie ce qu’on peut y faire
+     studio-monde       le Studio                          BRANCHÉ   le Studio est ouvert
+                        geste : glisser de côté sur la Toile : le monde suivant
+     studio-couleur     le Studio                          BRANCHÉ   le Studio est ouvert, le glissement de monde déjà montré
+                        geste : appui maintenu (480 ms) puis glisser : de côté la teinte, de haut en bas la palette
+     bande              la fiche (Promi, Chiche, Cercle)   BRANCHÉ   la bande haute porte une photo ou un dessin posé
+                        geste : toucher la bande : la photo ou le dessin en entier
+     dessin             le mode dessin                     BRANCHÉ   le mode dessin est ouvert, la surface encore vide
+                        geste : tracer sur la surface
+     aura-apparait      l’accueil                          BRANCHÉ   l’Aura vient de paraître dans la barre (au premier tenu), l’accueil est à l’écran
+                        geste : la main désigne l’Aura : un appui sur son entrée
+     pelote-folio       Partager · Mon Folio               non       la Pelote est posée dans le Folio
+                        geste : appui long (380 ms) sur la Pelote, puis la déplacer
+                        raison : le Folio ne publie pas la place de la Pelote à l’écran : la main ne saurait pas où se poser
+     toile-pince        l’accueil                          non       la Toile est à l’écran
+                        geste : pincer pour approcher ou reculer ; double toucher pour recadrer
+                        raison : geste à deux doigts, et sur la Toile : la main fantôme n’a qu’un doigt, et rien ne se pose sur la Toile (A1)
+     fiche-cercle-defile la fiche d’un Cercle               non       le fil du Cercle dépasse l’écran
+                        geste : glisser vers le haut : le fil défile
+                        raison : un défilement ordinaire, pas un geste à apprendre
+
+OK  planter         paraît en situation (après 600 ms sans toucher)              {'la': True, 'id': 'planter', 'mode': 'anime'}
+OK  planter         A2 : `data-eng`, opaque, sans fondu, trait plein à l'encre du mode [] · trait #201908 · fond #F7F0DE
+OK  planter         A1 : la couche ne prend aucun toucher                        none
+OK  planter         le drapeau est posé dès l'apparition                         ['geste_vu_planter']
+OK  planter         elle joue, puis part d'elle-même (trois passages au plus)    main [6, 285] → [127, 316] · encore là : False
+OK  planter         disparaît au premier toucher, sans fondu                     
+OK  planter         après rechargement : absente                                 {'la': False, 'id': None, 'drapeaux': ['geste_vu_planter']}
+OK  planter         « Revoir les gestes » (Réglages, au doigt) efface les drapeaux Revoir les gestesrevoir › · drapeaux []
+OK  planter         après le rejeu : de retour                                   {'la': True, 'id': 'planter', 'devant': None}
+OK  planter         aucune erreur de page                                        []
+OK  planter         mouvement réduit : la main immobile, la flèche du trajet     {'la': True, 'mode': 'immobile', 'main': [6, 294], 'fleche': True}
+OK  sombre · la main est à la crème, pleine, sur le fond du mode                 #F7F0DE #050302
+OK  A1 · la main jouée au-dessus de la Toile : aucune dalle ne bouge, le canevas est le même 1790249188 1790249188 1790249188
+
+redteam_gestes : 17/17

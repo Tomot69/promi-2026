@@ -7,14 +7,16 @@ redteam_dessin_photo.py — LE DESSIN : DES PHOTOS IMPORTÉES, ET TROIS TAILLES 
 Les trois tailles de plume et de gomme doivent être nettement différentes sur la surface : à peu près 2 · 6 · 14 pt pour la plume.
 Les trois points du choix le montrent à l'échelle. »
 Au vrai doigt (CDP, un et deux doigts), Chromium.
-  1 · les tailles décidées (EN DUR) : plume 2 · 6 · 14, gomme 8 · 18 · 36 ; les trois points du choix font ces diamètres, à l'échelle ;
+  1 · les tailles décidées (EN DUR) : plume 2 · 6 · 22 (v140 : « le gros pinceau : 22 pt au lieu de 14 »), gomme 8 · 18 · 36 ; les trois points du choix
+      sont « plus grands, avec une cible tactile de 44 pt chacun ; les points eux-mêmes grossissent un peu » (v140) : le diamètre du trait + 3 pt ;
   2 · sur la surface, le gros trait couvre au moins quatre fois plus d'encre que le fin (pixels) ;
   3 · le disque PHOTO est dans la rangée, sous le doigt ; sans photo, le toucher ouvre le sélecteur du téléphone ;
   4 · deux photos importées : deux éléments du dessin ; PHOTO choisie, un doigt déplace la photo touchée du geste (± 2 pt),
       deux doigts changent sa taille dans le rapport des doigts (± 5 %), l'autre photo ne bouge pas ; rien n'est tracé ;
   5 · PLUME choisie : tracer sur une photo trace un trait et ne la déplace pas ;
   6 · POSER : les photos sont posées avec le reste, la bande de la fiche les montre (pixels) ;
-  7 · le partage du dessin n'emporte pas la photo importée (v137 : « jamais une photo importée ») — le trait, lui, y est ;
+  7 · ⚑ v140 (Tom, Q435) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_dessin_photo-avant-v140.py) : « un dessin qui contient des photos
+      importées part entier, photos comprises. C'est une composition. » Le partage du dessin EMPORTE la photo importée, et le trait ;
   8 · ANNULER retire le dernier élément, photo comprise.
 Preuve : sur l'état d'avant (`zz-av139.html`) il rougit.
 """
@@ -48,17 +50,20 @@ with sync_playwright() as p:
         for i in range(1, 16): T('touchMove', [P(x0 + (x1 - x0) * i / 15.0, y)]); pg.wait_for_timeout(12)
         T('touchEnd', []); pg.wait_for_timeout(300)
     par = pg.evaluate("()=>window._dessinParams ? [window._dessinParams.TAILLES, window._dessinParams.TAILLES_GOMME] : null")
-    juge('1 · les tailles décidées : plume 2 · 6 · 14, gomme 8 · 18 · 36', par == [[2, 6, 14], [8, 18, 36]], str(par))
+    juge('1 · les tailles décidées : plume 2 · 6 · 22, gomme 8 · 18 · 36', par == [[2, 6, 22], [8, 18, 36]], str(par))
     encre = "()=>{ const c=document.querySelector('#dessinMode .dz-surface canvas'), d=c.getContext('2d').getImageData(0,0,c.width,c.height).data; let n=0; for(let i=3;i<d.length;i+=4) if(d[i]>128) n++; return n; }"
     aires = []; pts_ = None
     for i in range(3):
         for _ in range(3):
             if pg.evaluate("()=>!!document.querySelector('#dessinMode [data-taille]')"): break
             tape('#dessinMode [data-outil="plume"]')
-        if i == 0: pts_ = pg.evaluate("()=>[].map.call(document.querySelectorAll('#dessinMode .dz-tailles button i'), e=>+e.getBoundingClientRect().width.toFixed(1))")
+        if i == 0:
+            pts_ = pg.evaluate("()=>[].map.call(document.querySelectorAll('#dessinMode .dz-tailles button i'), e=>+e.getBoundingClientRect().width.toFixed(1))")
+            cib_ = pg.evaluate("()=>[].map.call(document.querySelectorAll('#dessinMode .dz-tailles button'), e=>{ const r=e.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2); return [+r.width.toFixed(1), +r.height.toFixed(1), !!(h&&(h===e||e.contains(h)))]; })")
         tape('#dessinMode [data-taille="%d"]' % i); n0 = pg.evaluate(encre); trace(120 + 60 * i); aires.append(pg.evaluate(encre) - n0)
     k = S[2]
-    juge('1 · les trois points du choix sont à l\'échelle du trait (2 · 6 · 14 pt)', bool(pts_) and len(pts_) == 3 and all(abs(a / k - b_) <= 0.6 for a, b_ in zip(pts_, (2, 6, 14))), str(pts_))
+    juge('1 · les trois points du choix : le diamètre du trait + 3 pt (5 · 9 · 25)', bool(pts_) and len(pts_) == 3 and all(abs(a / k - b_) <= 0.6 for a, b_ in zip(pts_, (5, 9, 25))), str(pts_))
+    juge('1 · chaque point a une cible tactile de 44 pt, sous le doigt', bool(cib_) and len(cib_) == 3 and all(c[0] / k >= 43.5 and c[1] / k >= 43.5 and c[2] for c in cib_), str(cib_))
     juge('2 · sur la surface, le gros trait couvre au moins quatre fois plus que le fin', aires[0] > 0 and aires[2] >= 4 * aires[0] and aires[1] >= 2 * aires[0], 'pixels d\'encre : %s' % aires)
     r = tape('#dessinMode [data-outil="photo"]')
     juge('3 · le disque PHOTO est dans la rangée, sous le doigt', bool(r) and r[2], str(r))
@@ -88,7 +93,7 @@ with sync_playwright() as p:
         px = pg.evaluate("([x,y])=>{ const c=document.querySelector('#detailPoster canvas.dz-bande'); if(!c) return null; const r=c.getBoundingClientRect(), k=c.width/r.width; const q=c.getContext('2d').getImageData(Math.round(x*k*r.width/390), Math.round(y*k*r.width/390),1,1).data; return [q[0],q[1],q[2]]; }", [D[1]['x'] + 20, D[1]['y'] + 20])
         juge('6 · la bande de la fiche montre la photo posée (pixels)', bool(px) and px[1] > 130 and px[0] < 90, str(px))
         comp = pg.evaluate("([id,x,y,tx,ty])=>{ const S=window._dessinPartage({ids:[id]}); if(!S) return null; const g=S.cv.getContext('2d'), k=S.cv.width/390; const a=g.getImageData(Math.round(x*k),Math.round(y*k),1,1).data, t=g.getImageData(Math.round(tx*k),Math.round(ty*k),1,1).data; return {photo:[a[0],a[1],a[2]], trait:[t[0],t[1],t[2]], fond:S.fond}; }", [pid, D[1]['x'] + 20, D[1]['y'] + 20, 200, 240])
-        juge('7 · le partage du dessin n\'emporte pas la photo importée ; le trait, lui, y est', bool(comp) and not (comp['photo'][1] > 130 and comp['photo'][0] < 90) and sum(comp['trait']) < 200, str(comp))
+        juge('7 · le partage du dessin emporte la photo importée (une composition), et le trait', bool(comp) and (comp['photo'][1] > 130 and comp['photo'][0] < 90) and sum(comp['trait']) < 200, str(comp))
         pg.evaluate("()=>{ window._dessin.ouvre(); }"); pg.wait_for_timeout(700); tape('#dessinMode [data-outil="annuler"]'); tape('#dessinMode [data-outil="annuler"]')
         juge('8 · ANNULER retire le dernier élément, photo comprise', pg.evaluate("()=>window._dessin.etat().traits") == 4 and len(ph()) == 1, '%d élément(s), %d photo(s)' % (pg.evaluate("()=>window._dessin.etat().traits"), len(ph())))
     juge('aucune erreur de page', not er, '; '.join(er[:2]))

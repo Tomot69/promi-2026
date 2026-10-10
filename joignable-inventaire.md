@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 290 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 423 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 433 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -192,6 +192,7 @@ Source : `app.html`. 290 éléments interactifs relevés sur 36 écrans (mode cl
 | Vie privée | `div#privScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
 | Vie privée | `#pvExport` | on… | 195, 525 | 342 × 54 | oui |  |
 | Vie privée | `#pvReset` | on… | 195, 585 | 342 × 54 | oui |  |
+| accueil | `#enrToile` | natif | 234, 70 | 44 × 44 | oui |  |
 | accueil | `#shareBtn` | on… | 284, 70 | 44 × 44 | oui |  |
 | accueil | `#settingsBtn` | on… | 334, 70 | 44 × 44 | oui |  |
 | accueil | `div#accPlat.acc-plat>span.acc-mm«Ma Parole !»` | natif | 104, 72 | 103 × 33 | oui |  |
@@ -199,7 +200,7 @@ Source : `app.html`. 290 éléments interactifs relevés sur 36 écrans (mode cl
 | accueil | `#toileCv` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | accueil | `#studioBtn` | on… | 70, 760 | 90 × 51 | oui |  |
 | accueil | `#souffleBtn` | on… | 124, 760 | 90 × 51 | oui |  |
-| accueil | `#createBtn` | on… | 195, 760 | 60 × 60 | oui |  |
+| accueil | `#createBtn` | on… | 195, 760 | 72 × 72 | oui |  |
 | accueil | `#indexBtn` | natif | 266, 760 | 90 × 51 | oui |  |
 | accueil | `#filBtn` | écouteur | 320, 760 | 90 × 51 | oui |  |
 | aide de l'Aura | `div#auraHelp.screen.tuto-fond>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |

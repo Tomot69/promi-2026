@@ -1,0 +1,19 @@
+redteam_fourrure.py | rc 0 | 38 s | 9 / 9
+redteam_trace.py | rc 0 | 48 s | 8/8
+redteam_enfonce.py | rc 0 | 42 s | 14 / 14
+redteam_bord.py --vite | rc 0 | 232 s | 24/24
+redteam_halo.py | rc 0 | 32 s | 12/12
+redteam_plein.py | rc 0 | 104 s | 49 / 49
+redteam_contour.py | rc 0 | 32 s | ✅ rien ne dépasse du contour
+redteam_zone.py --n=12 | rc 0 | 122 s | 12 / 12
+redteam_corps.py --n=20 | rc 0 | 93 s | 33 / 33
+redteam_souffle.py | rc 0 | 65 s | ✅ la Pelote respire par son velours, et rien d'autre
+redteam_pelote_doigt.py | rc 0 | 27 s | 7 / 7
+releve-aura.py | rc 1 | 181 s | ❌  3 ÉCARTS
+redteam_remplace.py | rc 0 | 59 s | 18/18
+redteam_dessin_photo.py | rc 0 | 28 s | 16 / 16
+redteam_partage_dessin.py | rc 0 | 103 s | 34/34
+redteam_cadre.py | rc 1 | 39 s | KO : 7 · en plein écran, le bouton « Enregistrer la photo » est là, visible, sous le doigt
+redteam_entier.py | rc 0 | 83 s | redteam_entier : 44/44
+redteam_photo_menu.py | rc 0 | 55 s | ✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+redteam_accueil.py | rc 1 | 170 s | 20/22

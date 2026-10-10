@@ -26,7 +26,7 @@ from playwright.sync_api import sync_playwright
 from PIL import Image
 F=[a for a in sys.argv[1:] if not a.startswith('--')]; F=F[0] if F else 'app.html'
 SONDE=next((a.split('=')[1] for a in sys.argv if a.startswith('--sonde=')), None)
-TAILLES=[2, 6, 14]; OUTILS=['plume','gomme','annuler','couleur','photo','poser']   # v139 (C-086) : 2 · 6 · 14 pt (2,5 · 4,5 · 8 avant), et le disque PHOTO
+TAILLES=[2, 6, 22]; OUTILS=['plume','gomme','annuler','couleur','photo','poser']   # v139 (C-086) : 2 · 6 · 14 pt (2,5 · 4,5 · 8 avant), et le disque PHOTO
 R=[]
 def ok(nom, cond, detail=''):
     R.append((nom,bool(cond))); print(('  ✅ ' if cond else '  ❌ ')+nom+((' — '+str(detail)[:300]) if (detail!='' and not cond) else ''))
@@ -121,7 +121,7 @@ with sync_playwright() as p:
     tape(pg, '#dessinMode [data-taille="2"]')
     ok('C · le choix fait, les tailles se replient', not pg.evaluate("()=>!!document.querySelector('#dessinMode .dz-deploi')") and etat(pg)['taille']['plume']==2)
     trait(pg, 60, 330, 300, 330)
-    ok('le gros trait fait 14 pt', pg.evaluate("()=>window._dessin.lit().traits[1].t")==TAILLES[2])
+    ok('le gros trait fait 22 pt (v140)', pg.evaluate("()=>window._dessin.lit().traits[1].t")==TAILLES[2])
     tape(pg, '#dessinMode [data-outil=annuler]'); ok('ANNULER retire le dernier trait', etat(pg)['traits']==1)
     tape(pg, '#dessinMode [data-outil=annuler]'); ok('ANNULER, à volonté : le dessin est vide', etat(pg)['traits']==0)
     ok('ANNULER n\'a plus rien à annuler : il se déclare inactif', pg.evaluate("()=>document.querySelector('#dessinMode [data-outil=annuler]').disabled"))

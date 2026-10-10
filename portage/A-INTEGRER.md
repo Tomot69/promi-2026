@@ -68,3 +68,16 @@
 - **Accueil** : le + fait 60 pt (12 pt d'air dans la barre).
 - **Main fantôme** : × 1,5, trajet 1,6 s, trois passages, elle trace la seconde moitié du trait ; elle va jusqu'au bout (tenir comme planter). Réglages : deux rangées, « Revoir la présentation » et « Revoir les gestes ».
 - **Toile** : sous les douze mondes faits de leurs seules paroles, semis constant tant qu'il y a moins de neuf paroles et Cercles. Un toucher se date à l'heure de l'événement (`UITouch.timestamp`), jamais à celle du traitement.
+
+## v140 (10 oct. 2026)
+- **La Pelote, la fourrure** : densité ×1 (110 000 → 90 000 → 75 000), poil ×1, reflet d'origine — remplace « densité 3 » (v123) ; le corps est plein jusqu'au rayon de la boule et, au-delà, les POINTES dessinent la silhouette (opacité resserrée 0,30 → 0,62, couleur de l'intérieur) — remplace « limite franche » (v139) ; l'ombre à 391,224. `SPEC-RENDU`, `JETONS`.
+- **La Pelote, la trace** : le chemin du doigt relevé à l'écran (un point tous les 8 pt, largeur du contact), posé au lâcher en seize arcs au plus ; un appui sans glisser = une étoile de huit branches (longueur selon le contact et la profondeur). `SPEC-GESTE`.
+- **Dessin et photo** : l'un REMPLACE l'autre dans la bande (pas de coexistence) ; plume 2 · 6 · 22 ; cibles de 44 pt, point = trait + 3 ; un dessin partagé emporte ses photos importées (Q435) — remplace « n'emporte pas » (v139). **Le dessin est collaboratif** : `SPEC-DONNEES` §5 bis, `SPEC-ECRANS` (écrit en v140).
+- **Enregistrer** : une icône seule (SF Symbol `square.and.arrow.down`), VoiceOver « Enregistrer » — photo en entier, dessin en entier, plateau de l'accueil (l'image de la Toile). `SPEC-ECRANS`, `TEXTES` (« Enregistrer la photo » disparaît).
+- **Accueil** : le + fait 72 pt (disque 45, anneau 13,5) ; la barre du bas 100 pt (710 → 810 ; le centre du + reste à y 760). `JETONS`.
+- **Toile** : sous les douze mondes faits de leurs seules paroles et moins de neuf paroles — la parole neuve prend la cellule libre la plus proche des autres ; la vue cadre à 0,8 cellule de marge pour une parole, 1,25 dès deux, zoom ≤ 3,6. `SPEC-RENDU`.
+- **Murs** : au Studio, le mur est le panneau entier (la réunion des zones floutées) ; le panneau des palettes ouvert sur un monde réservé est flouté. `SPEC-ECRANS`.
+- **Onboarding** : REMPLACÉ par E2 — prénom → principe → vraie page + (phrase fantôme) → fiche → dernière ligne → compte ; « Plus tard » partout ; textes dans `TEXTES_ENGAGEMENT.e2` (provisoires). `SPEC-ECRANS` §2 est à réécrire depuis `ENGAGEMENT-E2.md`. « TRACE POUR TENIR » 19 px, points à tracer Ø 12.
+- **E2bis** : `promi_devoile` — la barre se dévoile (Index à la première plantation, Aura au premier tenu, Studio au retour de l'Aura, Fil à la première parole adressée ou reçue) ; réglage « Tout afficher ». `SPEC-DONNEES` §9, `SPEC-ECRANS` §1.
+- **Fiche** : après « tenir », la phrase complète reste (elle retombait sur « à moi ») ; sur l'instant, la ligne d'état descend sous un titre de deux lignes.
+

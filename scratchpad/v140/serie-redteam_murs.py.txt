@@ -1,0 +1,34 @@
+
+══ dark
+  ✅ 1a · Peaufiner : plus d'encart « Le Cercle », les réglages restent floutés  — {'encart': False, 'flou': 'blur(4.8px)'}
+  ✅ 2 · première fois : la phrase 1, lue (pas d'offre avant 3.0 s), puis l'offre s'ouvre seule  — phrase 'Eh non. Mais avec Ma Parole\xa0!, oui.' · offre True
+  ✅ 3a · deuxième toucher : la phrase 2, encore là à 2,5 s, sans ouvrir l'offre  — 'La solution commence par Ma et finit par Parole\xa0!' · offre False
+  ✅ 3b · toucher ailleurs : l'offre s'ouvre, la fiche est toujours là dessous  — offre True · fiche True
+  ✅ 9 · la phrase posée sur le flou : centrée dans le mur, sans fond ni trait, ≤ 3 lignes, une taille, crème  — {'fond': 'rgba(0, 0, 0, 0)', 'bord': '0px', 'ombre': 'none', 'lignes': 2, 'taille': '34px', 'tailleMP': '34px', 'couleur': 'rgb(247, 240, 222)', 'dansMur': True} · fond du mur rgb(14, 120, 242)
+  ✅ 7 · « Ma Parole ! » en #FB4C0D, à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ 42)  — texte rgb(247, 240, 222) · Ma Parole rgb(254, 208, 195) · fond rgb(14, 120, 242) · phrase Δlum 134 · Ma Parole 3.01 : 1
+  ✅ 3c · après le temps de lecture, la phrase s'efface seule (sans ouvrir l'offre)  — levée False · offre False
+  ✅ 1b · Aura : plus d'encart, « Ce qu'on t'a tenu » flouté  — {'flou': 'blur(4.8px)', 'encart': False}
+  ✅ 4 · compteur global : l'Aura fait monter la phrase 4  — 'Je vois bien que ça te titille. Ma Parole\xa0! aussi.'
+  ✅ 5a · la 18e touche fait monter la 18e phrase  — 'On se retrouve ici tout à l’heure\xa0?'
+  ✅ 5b · au-delà : au hasard, jamais deux fois la même de suite  — 24 tirages, 15 distinctes, 0 répétitions, 0 hors liste
+  ✅ 9 · les dix-huit phrases mot pour mot ; dans chacune, seuls les mots décidés sont en orange ; « ! » seulement dans « Ma Parole ! »  — 18 phrases, 13 avec un mot en orange
+  ✅ 6 · après une longue absence le compteur repart à la phrase 1 (sans rouvrir l'offre seule)  — 'Eh non. Mais avec Ma Parole\xa0!, oui.'
+  ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none
+
+══ light
+  ✅ 1a · Peaufiner : plus d'encart « Le Cercle », les réglages restent floutés  — {'encart': False, 'flou': 'blur(4.8px)'}
+  ✅ 2 · première fois : la phrase 1, lue (pas d'offre avant 3.0 s), puis l'offre s'ouvre seule  — phrase 'Eh non. Mais avec Ma Parole\xa0!, oui.' · offre True
+  ✅ 3a · deuxième toucher : la phrase 2, encore là à 2,5 s, sans ouvrir l'offre  — 'La solution commence par Ma et finit par Parole\xa0!' · offre False
+  ✅ 3b · toucher ailleurs : l'offre s'ouvre, la fiche est toujours là dessous  — offre True · fiche True
+  ✅ 9 · la phrase posée sur le flou : centrée dans le mur, sans fond ni trait, ≤ 3 lignes, une taille, encre  — {'fond': 'rgba(0, 0, 0, 0)', 'bord': '0px', 'ombre': 'none', 'lignes': 2, 'taille': '34px', 'tailleMP': '34px', 'couleur': 'rgb(32, 25, 8)', 'dansMur': True} · fond du mur rgb(247, 240, 222)
+  ✅ 7 · « Ma Parole ! » en #FB4C0D, à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ 42)  — texte rgb(32, 25, 8) · Ma Parole rgb(251, 76, 13) · fond rgb(247, 240, 222) · phrase Δlum 215 · Ma Parole 3.01 : 1
+  ✅ 3c · après le temps de lecture, la phrase s'efface seule (sans ouvrir l'offre)  — levée False · offre False
+  ✅ 1b · Aura : plus d'encart, « Ce qu'on t'a tenu » flouté  — {'flou': 'blur(4.8px)', 'encart': False}
+  ✅ 4 · compteur global : l'Aura fait monter la phrase 4  — 'Je vois bien que ça te titille. Ma Parole\xa0! aussi.'
+  ✅ 5a · la 18e touche fait monter la 18e phrase  — 'On se retrouve ici tout à l’heure\xa0?'
+  ✅ 5b · au-delà : au hasard, jamais deux fois la même de suite  — 24 tirages, 14 distinctes, 0 répétitions, 0 hors liste
+  ✅ 9 · les dix-huit phrases mot pour mot ; dans chacune, seuls les mots décidés sont en orange ; « ! » seulement dans « Ma Parole ! »  — 18 phrases, 13 avec un mot en orange
+  ✅ 6 · après une longue absence le compteur repart à la phrase 1 (sans rouvrir l'offre seule)  — 'Eh non. Mais avec Ma Parole\xa0!, oui.'
+  ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none
+
+28/28

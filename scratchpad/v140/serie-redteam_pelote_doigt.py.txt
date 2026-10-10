@@ -1,0 +1,9 @@
+OK  1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms  p50 17.0 · p95 20.0 · 168 images
+OK  3 · [passe 1] aucun poil déplacé par le processeur  0 poil(s) · 378 image(s) de la carte
+OK  1 · [passe 2] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms  p50 17.0 · p95 19.0 · 173 images
+OK  3 · [passe 2] aucun poil déplacé par le processeur  0 poil(s) · 634 image(s) de la carte
+OK  2 · doigt posé : le rendu de la carte graphique est celui du peintre (ΔE00 moyen ≤ 2)  ΔE00 moyen 1.52 · 18.4 % des pixels au-delà de 2 · par blocs 0.51
+OK  2 · le creux existe : sous le doigt, l'image n'est plus celle du repos  34.8 % des pixels de la Pelote changent
+OK  aucune erreur de page  
+
+7 / 7

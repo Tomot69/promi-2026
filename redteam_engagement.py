@@ -52,7 +52,7 @@ BLANCHE_CLES = [  # R5 : ce qui peut naître dans le stockage pendant trois « t
  ('promi_fil_vu', "le dernier passage au Fil"), ('promi_pelote_vue', "le tirage de couleur de la Pelote à la dernière ouverture"),
  ('promi_pelote_palier', "le palier de densité appliqué"), ('promi_debut', "la date de première ouverture"),
  ('promi_graine', "la graine du visage"), ('promi_theme', "le thème choisi"), ('promi_sig', "la signature de partage"), ('promi_sigdemo', "idem, jeu de démonstration"),
- ('geste_vu_', "les drapeaux de E1 (un geste déjà montré)"), ('ob_fini', "le drapeau de fin de E2"), ('promi_onb', "le verrou de l'onboarding")]
+ ('geste_vu_', "les drapeaux de E1 (un geste déjà montré)"), ('promi_devoile', "E2bis (v140) : ce qui est déjà apparu dans la barre — des drapeaux de PREMIÈRE FOIS (index, aura, studio, fil), jamais un compte"), ('promi_e2', "E2 (v140) : l'étape en cours du premier parcours, retirée à sa fin"), ('ob_fini', "le drapeau de fin de E2"), ('promi_onb', "le verrou de l'onboarding")]
 HORIZONS = r"^(?:demain|aujourd['’]hui|ce soir|un jour|cette semaine|\d+ ?jours?|dans \d+ ?j(?:ours)?|lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(?: \d+)?$"   # R7 : un horizon, pas un âge
 R7_MOTIF = r"il y a|depuis \d|\d+ ?j(?:ours)?%s" % Rb
 HORIZON_DANS = re.compile(r"(?:dans|d['’]ici|sous) \d+ ?j(?:ours?)?%s" % Rb, re.I)   # liste blanche de R7 : « dans N jours » regarde devant, ce n'est pas un âge
@@ -186,36 +186,14 @@ with sync_playwright() as p:
     t('aucune erreur de page (écrans parcourus)', not er, er[:3])
     ctx.close()
     # ══ R6 : l'onboarding, stockage vierge, étape par étape ══
-    ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=1, has_touch=True)
-    pg = ctx.new_page(); cdp = ctx.new_cdp_session(pg); pg.goto(URL); pg.wait_for_timeout(2200); pg.wait_for_timeout(4600)
-    SORTIE = r"""()=>{ const o=document.getElementById('promiOnb'); if(!o) return null; const dv=document.getElementById('device').getBoundingClientRect(), out=[];
-      [...o.querySelectorAll('button,[role=button],a,[data-onb],[tabindex]')].forEach(e=>{ const r=e.getBoundingClientRect(), c=getComputedStyle(e); if(r.width<8||r.height<8||c.display==='none'||c.visibility==='hidden'||+c.opacity<0.05) return;
-        const s=((e.textContent||'')+' '+(e.getAttribute('aria-label')||'')+' '+(e.getAttribute('data-onb')||'')).toLowerCase();
-        if(/plus[- ]tard|passer|fermer|sortir|✕|×/.test(s)){ const h=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2); out.push({t:s.trim().slice(0,30), joignable:!!(h&&(h===e||e.contains(h)))}); } });
-      return out; }"""
-    etapes = []
-    def note(nom): s = pg.evaluate(SORTIE); etapes.append((nom, bool(s and any(x['joignable'] for x in s)), s))
-    note('1 · le prénom')
-    pr = pg.evaluate(POIGNEE, '[data-onb="prenom"]')
-    if pr:
-        toucher(cdp, pr['x'], pr['y']); pg.wait_for_timeout(300); pg.keyboard.type(PRENOM, delay=30)
-        s = pg.evaluate(POIGNEE, '[data-onb="suite"]')
-        if s: toucher(cdp, s['x'], s['y'])
-        else: pg.keyboard.press('Enter')
-        pg.wait_for_timeout(1400)
-    note('2 · la parole et le trait')
-    q = pg.evaluate(POIGNEE, '[data-onb="parole"]')
-    if q: toucher(cdp, q['x'], q['y']); pg.wait_for_timeout(300); pg.keyboard.type(PAROLE, delay=25); pg.wait_for_timeout(600)
-    z = pg.evaluate(POIGNEE, '[data-onb="trait"]')
-    if z and z.get('dep'): tracer(cdp, z); pg.wait_for_timeout(3000)
-    note('3 · le message de fin')
-    pg.wait_for_timeout(3600)
-    dd = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height*0.45}}")
-    toucher(cdp, dd['x'], dd['y']); pg.wait_for_timeout(1600)
-    if pg.evaluate("()=>{ const o=document.getElementById('promiOnb'); return !!o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none'; }"): note('4 · le compte')
-    sans = [n for n, c, _ in etapes if not c]
-    t('R6 · sortie à un geste, à chaque étape de l\'onboarding (%d étapes)' % len(etapes), len(etapes) >= 3 and not sans, 'sans sortie : %s' % (sans or 'aucune'))
-    for n, c, s in etapes: print('     R6 · %-26s %s' % (n, ('sortie : ' + ', '.join(x['t'] for x in s if x['joignable'])) if c else 'AUCUNE sortie visible'))
+    # ⚑ E2 (v140, C-075) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_engagement-avant-v140.py). L'onboarding n'est plus « le prénom, la parole
+    # et le trait, le message de fin » : c'est le prénom, le principe, la vraie page +, la fiche, la dernière ligne, le compte. Le parcours est
+    # joué au vrai doigt par `redteam_e2.py --r6`, qui rend la sortie visible de chaque étape ; R6 garde sa règle : une sortie à CHAQUE étape.
+    import subprocess
+    r6 = subprocess.run([sys.executable, 'redteam_e2.py', '--r6'] + ([URL.rsplit('/', 1)[-1]] if not URL.endswith('/app.html') else []), capture_output=True, text=True, timeout=600)
+    lignes = [l for l in r6.stdout.splitlines() if l.strip().startswith('R6')]
+    t('R6 · sortie à un geste, à chaque étape de l\'onboarding (E2 : prénom, principe, page +, fiche, dernière ligne, compte)', r6.returncode == 0 and len(lignes) >= 7, (lignes[0] if lignes else r6.stdout[-200:]))
+    for l in lignes[1:]: print('     ' + l.strip())
     b.close()
 print('\nredteam_engagement : %d/%d au vert · %d inactif(s) : %s' % (ok[0], ok[0] + len(ko), len(inactifs), ' ; '.join(inactifs)))
 if ko: print('ROUGE : ' + ' · '.join(ko)); sys.exit(1)
