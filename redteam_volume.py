@@ -36,7 +36,9 @@ OMBRE_ATTENDUE=2
 # l'écran. C'est la matière du flou des murs ; il s'installe en zones abstraites […] qui se remplissent et se rejoignent. » Le guide de fin de
 # parcours (`lot-V141-GUIDE`) écrit quatre `…-gradient(` : ce sont les MASQUES de sa couche de flou (les zones qui grandissent, le trou net),
 # pas des dégradés peints — aucune couleur n'en sort. Exception NOMINATIVE, comptée : quatre, pas une de plus, et dans ce bloc seulement.
-MASQUES={'lot-V141-GUIDE':4}
+# ⚑ v143 (Tom, 12 oct. 2026, C-094) : « des formes organiques à bord doux » — le bord doux des six formes du guide est UN dégradé radial en masque,
+# écrit deux fois (préfixé et non) dans `lot-V141-GUIDE-css`. Exception NOMMÉE, bornée à ces deux écritures (original : sauvegardes/redteam_volume-avant-v143.py).
+MASQUES={'lot-V141-GUIDE-css':2}
 def permis(lot, motif):
     b=BLANCHE.get(lot); return b=='*' or (b is not None and any(motif.startswith(m) for m in b))
 MOTIFS=re.compile(r"_couronnePelote|_haloPelote|_flaquePelote|(?:repeating-)?(?:radial|linear|conic)-gradient\(|create(?:Radial|Linear|Conic)Gradient|shadowBlur|shadowColor|drop-shadow\(|text-shadow\s*:[^;}\"']*|box-shadow\s*:[^;}\"']*")
@@ -102,9 +104,9 @@ def main():
         if vu[k]<dette[k]: vu[k]+=1
         else: neuf.append(k)
     print('liste blanche : l\'ombre de la Pelote seule (v139) —', blanche, 'occurrence(s) exemptée(s), attendu', OMBRE_ATTENDUE)
-    print('masques du flou du guide (v141) —', masques, '· attendu', MASQUES)
+    print('masques du flou du guide (v143 : le bord doux des formes) —', masques, '· attendu', MASQUES)
     for _l,_n in MASQUES.items():
-        if masques.get(_l,0)>_n: neuf.append('(%s écrit %d masque(s) : quatre au plus)'%(_l,masques.get(_l,0)))
+        if masques.get(_l,0)>_n: neuf.append('(%s écrit %d masque(s) : %d au plus)'%(_l,masques.get(_l,0),_n))
     if blanche!=OMBRE_ATTENDUE: neuf.append('(la liste blanche exempte %d occurrence(s) : l\'ombre en porte exactement %d)'%(blanche,OMBRE_ATTENDUE))
     print('dette de naissance :', sum(dette.values()), '· retrouvée :', sum(vu.values()), '· soldée depuis :', sum(dette.values())-sum(vu.values()))
     for k in neuf: print('  ✗ NOUVEAU VOLUME :', k)

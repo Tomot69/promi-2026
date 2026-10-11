@@ -1,0 +1,13 @@
+OK  PLANTER · 30 pt : rien n'est planté, la page + reste ouverte  paroles 0 → 0 · page + True · geste {'quoi': 'planter', 'avance': 30, 'ok': False}
+OK  PLANTER · 70 pt lent (1 s) : la parole est plantée  paroles 0 → 1 · geste {'quoi': 'planter', 'avance': 70, 'ok': True}
+OK  PLANTER · 70 pt rapide (0,12 s) : la parole est plantée  paroles 1 → 2 · geste {'quoi': 'planter', 'avance': 70, 'ok': True}
+OK  TENIR · la fiche de la première parole s'ouvre en touchant sa dalle  
+OK  TENIR · 30 pt : la parole n'est pas tenue, le trait est revenu à son état d'avant  statut encours · en tracé False · geste {'quoi': 'tenir', 'avance': 30, 'ok': False}
+OK  TENIR · un doigt posé 1,5 s sans avancer (2 pt de jeu) : la parole n'est pas tenue  statut encours · geste {'quoi': 'tenir', 'avance': 2, 'ok': False}
+OK  TENIR · 70 pt lent (1 s) : la parole est tenue  statut tenu · geste {'quoi': 'tenir', 'avance': 70, 'ok': True}
+OK  TENIR · 70 pt rapide (0,12 s) : la parole est tenue  fiche True · statut tenu · geste {'quoi': 'tenir', 'avance': 70, 'ok': True}
+OK  la règle déclarée vaut 60 pt  60
+OK  la main fantôme paraît sur la fiche à tenir, et son geste couvre plus de 60 pt  24 relevés · de x 199 à x 364
+OK  aucune erreur de page  []
+
+11/11

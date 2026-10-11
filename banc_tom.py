@@ -25,7 +25,7 @@ def contexte(b, sombre=False, stockage=None, gestes_vus=True, onb=True, guide=Tr
     if onb: s += "localStorage.setItem('promi_onb','1');"
     if guide: s += "localStorage.setItem('promi_guide','1');"
     s += "localStorage.setItem('promi_rappel_n','9');localStorage.setItem('promi_theme','%s');" % ('dark' if sombre else 'light')
-    if gestes_vus: s += "%s.forEach(function(k){localStorage.setItem('geste_vu_'+k,'1')});" % repr(GESTES)
+    if gestes_vus: s += "%s.forEach(function(k){localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_'+k,'1')});" % repr(GESTES)
     for k, v in (stockage or {}).items(): s += "localStorage.setItem(%r,%r);" % (k, v)
     s += "}}catch(e){}"
     ctx.add_init_script(s); return ctx

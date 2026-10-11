@@ -110,18 +110,24 @@ with sync_playwright() as p:
         if SONDE and e['la']: pg.evaluate("()=>{ const c=document.getElementById('gesteFantome'); c.style.opacity='.6'; c.style.transition='opacity .3s'; }"); e = pg.evaluate(ETAT)
         t('%-15s A2 : `data-eng`, opaque, sans fondu, trait plein à l\'encre du mode' % gid, e['la'] and bool(e.get('eng')) and not e.get('fautes') and (e.get('trait') or '').upper() == '#201908' and (e.get('fond') or '').upper() == '#F7F0DE', '%s · trait %s · fond %s' % (e.get('fautes'), e.get('trait'), e.get('fond')))
         t('%-15s A1 : la couche ne prend aucun toucher' % gid, e.get('pe') == 'none', e.get('pe'))
-        t('%-15s le drapeau est posé dès l\'apparition' % gid, ('geste_vu_' + gid) in e['drapeaux'], e['drapeaux'])
+        # ⚑ v143 (Tom, 12 oct. 2026, C-109 : « la main fantôme, introuvable ») — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_gestes-avant-v143.py,
+        #   « le drapeau est posé dès l'apparition » — un toucher dans le dixième de seconde suivant la retirait pour toujours). Le drapeau n'est PAS
+        #   posé à l'apparition ; il l'est quand la main a fini son premier passage.
+        t('%-15s le drapeau n\'est pas posé à l\'apparition' % gid, e.get('immobile') or ('geste_vu_' + gid) not in e['drapeaux'], e['drapeaux'])
         if e['la']: cap(pg, '%s-1-apparition' % gid)
         # elle bouge (hors appui pur) puis s'arrête d'elle-même après deux passages
         p1 = e.get('main'); pg.wait_for_timeout(450); p2 = pg.evaluate(ETAT).get('main')
         pg.wait_for_timeout(13500); fin = pg.evaluate(ETAT)
         t('%-15s elle joue, puis part d\'elle-même (trois passages au plus)' % gid, not fin['la'], 'main %s → %s · encore là : %s' % (p1, p2, fin['la']))
+        t('%-15s le drapeau est posé une fois son premier passage fini' % gid, ('geste_vu_' + gid) in fin['drapeaux'], fin['drapeaux'])
         # un toucher la fait partir : on rejoue le geste par l'API, puis on touche
         pg.evaluate("()=>{ try{ GesteFantome.oublierTout(); }catch(e){} }"); situe(pg, gid); e2 = attend_main(pg, 3600, gid)
         dv = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left+r.width-6, r.top+r.height-6]}")
         if e2['la']: pg.touchscreen.tap(dv[0], dv[1]); pg.wait_for_timeout(120)
         t('%-15s disparaît au premier toucher, sans fondu' % gid, e2['la'] and not pg.evaluate(ETAT)['la'])
-        # rechargement : absente
+        # rechargement : absente — une fois VUE en entier (le toucher ci-dessus l'a interrompue avant la fin de son passage : son drapeau n'est pas posé,
+        # c'est la règle de v143 ; on le pose comme le fait un passage entier, vérifié plus haut)
+        pg.evaluate("(g)=>{ localStorage.setItem('geste_vu_'+g,'1'); }", gid)
         charge(pg, 'light'); situe(pg, gid); pg.wait_for_timeout(max(4200, LENT.get(gid, 0))); e3 = pg.evaluate(ETAT)
         t('%-15s après rechargement : absente' % gid, not (e3['la'] and e3.get('id') == gid) and ('geste_vu_' + gid) in e3['drapeaux'], {k: e3.get(k) for k in ('la', 'id', 'drapeaux')})
         cap(pg, '%s-2-rechargement' % gid)

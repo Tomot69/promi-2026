@@ -1,0 +1,15 @@
+passe 0 statut tenu · images de plus de 20 ms : [(-43, 33), (-10, 39), (29, 25), (674, 30), (1029, 24), (1110, 33), (1549, 78), (1767, 27)] · travail compté 196 ms
+passe 1 statut tenu · images de plus de 20 ms : [(-24, 43), (19, 27), (108, 28), (243, 22), (345, 23), (782, 24), (1018, 24), (1218, 32), (1657, 32), (1758, 30)] · travail compté 228 ms
+passe 2 statut tenu · images de plus de 20 ms : [(-49, 32), (-17, 41), (24, 31), (200, 22), (689, 25), (1024, 23), (1126, 24), (1462, 22), (1484, 185), (1763, 24)] · travail compté 281 ms
+passe 3 statut tenu · images de plus de 20 ms : [(-30, 24), (-6, 29), (23, 25), (610, 25), (1030, 22), (1483, 73)] · travail compté 243 ms
+
+ms/passe  appels pire    quand (ms après lever) rappel
+90.2      3.0    81.0    [680, 1128, 1564]      minuteur 420 |  · function(){ fond(j); }
+75.5      1.0    100.0   [1704]                 minuteur 400 |  · function(){ if(window.requestIdleCallback) requestIdleCallback(rechauffe,{timeout:2000}); else rechauffe(); }
+19.2      2.2    19.0    [1752, 1771, 1799]     minuteur 0 |  · function(){ var f=L[i++]; try{ f(); }catch(_){} suite(); }
+19.0      1.0    24.0    [0]                    écouteur touchend | fin · function fin(){ if(!actif) return; actif = false; /* trois voies : on est arrive, ou on a ecrit, ou on a parcouru une bonne moitie de la zone. R
+16.5      2.0    11.0    [357, 1030]            image | img · function img(){ var t=performance.now()-t0; if(!window._instant){ finAnime(); return; } /* §4.5 — la dalle n'a pas pu être peinte (monde pas prêt) : o
+10.5      1.0    13.0    [243]                  minuteur 0 |  · function(){ fond(j); }
+4.0       1.8    3.0     [373, 1767]            image |  · function(){ taille(); peindre(); }
+1.0       0.5    2.0     [223, 592]             image | frame · function frame(){ var all=document.querySelectorAll('.tuto-fond, #createSheet, #settingsScreen');var vis=false; for(var i=0;i<all.length;i++){if(ouver
+1.0       0.5    2.0     [120]                  minuteur 90 |  · function(){ arme(); enveloppeDissolution(); passeArcs(); filNuee(); tailleNom(); plusAnneau(); }

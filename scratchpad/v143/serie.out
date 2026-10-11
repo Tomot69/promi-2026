@@ -1,0 +1,65 @@
+== redteam_ritournelle.py [0] 192s : OK  aucune erreur de page  [] | 37 / 37
+== redteam_barre.py [1] 437s : OK  aucune erreur de page  [] | 5/7
+     KO  studioBtn : 50 touchers sur ce qu'on en voit (x 40 → 99, y 731 → 788) ouvrent sa page, 50 sur 50  48 sur 50 · à côté : [(98, 764, 'auraScreen'), (97, 779, 'auraScreen')]
+     KO  indexBtn : 50 touchers sur ce qu'on en voit (x 240 → 291, y 731 → 788) ouvrent sa page, 50 sur 50  49 sur 50 · à côté : [(291, 749, 'accueil')]
+== redteam_trait.py [0] 73s : OK  aucune erreur de page  [] | 11/11
+== redteam_partage_toile.py [0] 228s : OK  aucune erreur de page  [] | 42/42
+== redteam_guide.py [1] 249s : ❌ [sombre] plus · pendant la révélation, aucune image au-delà de 16,7 ms de travail du fil principal           | ❌  50 / 52
+     ❌ [sombre] plus · le + et son encart sont nets (≥ 75 % de leur énergie), agrandis de 10 % (8 à 12)                       le + 3.8 → 2.5 · largeur 72 → 79.2 (× 1.100)
+     ❌ [sombre] plus · pendant la révélation, aucune image au-delà de 16,7 ms de travail du fil principal                     215 images · travail total 332 ms · pire 20.2 ms · p95 2.9 ms
+     ❌  50 / 52
+== redteam_trace.py [1] 110s : OK  F · ?mesure=1 écrit le contact lu (13 × 7 pt)  'contact lu : 13 × 7 pt (pointeur) → demi-axe 13 pt' | 16/17
+     KO  C · sa largeur ne dépend pas du trajet (20 pt, ± 15 %)  30 → 18.5 pt · 60 → 18.5 pt · 100 → 24.5 pt
+== redteam_engagement.py [0] 117s : R6 · compte         sortie : « Plus tard » | redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+== redteam_onb_sorties.py [0] 92s : R6 · fin            sortie : « Plus tard » | R6 · compte         sortie : « Plus tard »
+== redteam_verrou_onboarding.py [0] 39s : OK  9 · aucune erreur de page                                                  [] | verrou de l'onboarding : 9/9
+== redteam_decisions.py [0] 87s : Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'oran | 89 / 89
+== redteam_joignable.py [0] 134s : aucun gestionnaire en attribut on…=""                      OK  0 | 5 / 5
+== redteam_ecrans.py [0] 91s : aucune erreur JS [clair]                       OK | 152/152
+== redteam_volume.py [1] 0s : ✗ NOUVEAU VOLUME : app.html | lot-V141-GUIDE-css | ,transparent 100%);mask-image:radial-gradient(closest-side, | ❌ 2 volume(s) nouveau(x)
+     ✗ NOUVEAU VOLUME : app.html | lot-V141-GUIDE-css | (4.8px); -webkit-mask-image:radial-gradient(closest-side,#000 74%,tr
+     ✗ NOUVEAU VOLUME : app.html | lot-V141-GUIDE-css | ,transparent 100%);mask-image:radial-gradient(closest-side,#000 74%,tr
+     ❌ 2 volume(s) nouveau(x)
+== redteam_registre.py [0] 0s : 6 / 6 | chantiers non validés : 108
+== redteam_tokens.py [1] 0s : ✓ l'extension Swift porte le niveau « libelle » | 45/46
+     ✗ aucune couleur en dur dans les <style>   → 2 restante(s) : ['#000', '#000']
+== redteam_lexique.py [0] 300s : · point i | redteam_lexique : 3/3
+== redteam_accueil.py [0] 171s : [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False | 22/22
+== redteam_zoom.py [0] 86s : [sombre] 8 · supprimer ramène le défaut                        OK  échelle 1.000 (défaut 1.0 pour 20) | 16/16
+== redteam_toucher.py [0] 269s : ✅ Ritournelle : une image longue (900 ms) entre l'appui et le lever ne fait pas perdre le toucher (3 sur 3) —  | redteam_toucher : 24/24
+== redteam_deplace.py [0] 274s : OK  bobinette · aucune erreur de page  [] | 45/45
+== redteam_cercle_tom.py [0] 184s : OK  [sombre] « Dissoudre le Cercle » a le dessin de « Supprimer ce Promi » (police, taille, graisse, chasse, c | 16 / 16
+== redteam_studio_tom.py [0] 267s : OK  [sombre] le panneau des palettes : la phrase reste lisible (seule sur le panneau) | 14 / 14
+== redteam_murs.py [0] 125s : ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none | 28/28
+== redteam_nuee_dalle.py [0] 94s : [clair] aucune erreur JS                                           OK  [] | 38/38
+== redteam_bouton.py [0] 243s : aucune erreur de page                                                                        OK | 33 / 33
+== redteam_vide.py [0] 237s : aucune erreur JS                               OK | 61/61
+== redteam_flash.py [0] 121s : ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2005 ms) | 32/32
+== redteam_air.py [1] 319s : … et 74 autres. | Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+     ❌  104 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+== redteam_decoupe.py [0] 318s : OK  sillons   dark  fil du Cercle, défilé       11 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre c | ✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut
+== redteam_partage_fiche.py [0] 209s : 48/48 | ✅ le rond Partager d'une fiche partage son Folio
+== redteam_partage_dessin.py [0] 103s : OK  [sombre] aucune erreur de page                                                 [] | 34/34
+== redteam_cadre.py [0] 38s : OK  aucune erreur de page | 22 / 22
+== redteam_phrase_fiche.py [0] 271s : ✅ [dark] élision : aucune erreur de page — [] | redteam_phrase_fiche : 74/74
+== redteam_reactif.py [0] 71s : ✅ aucune erreur de page | redteam_reactif : 31/31
+== redteam_enfonce.py [0] 45s : OK  aucune erreur de page | 14 / 14
+== releve-aura.py [0] 180s : palier 110000 · médiane 36.2 ms · 1667 images · plus longue image pendant l'élan : 50 ms (dont peintre 37.6 ms | ✅  L'AURA AU VERT
+== redteam_corps.py --n=20 [0] 92s : aucune erreur de page                                                                  OK | 33 / 33
+== banc_rendu.py [0] 108s : 280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0 | ✅ AU PIXEL.
+== redteam_rythme.py [1] 680s : · ramage · reel · depart — ligne retirée (v93), relevé : {'duree': 48, 'images': 3, 'boucle': 1612, 'debut': 1 | 97 / 99
+     ✗ halin · moteur · depart fin du mouvement 3460 ms (attendu 2995 ± 449) · cadence 106 % · [vu 3139 ms, 189 images]
+     ✗ halin · reel · arrivee fin du mouvement 2777 ms (attendu 2270 ± 340) · cadence 78 % · [vu 2521 ms, 115 images]
+== redteam_fluide.py [1] 209s : 5 / 6 | KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4012 images)
+     KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4012 images)
+== redteam_pelote_doigt.py [0] 31s : OK  aucune erreur de page | 7 / 7
+== redteam_gestes.py [1] 646s : redteam_gestes : 102/122 | ROUGE : tenir           le drapeau est posé dès l'apparition · tenir           après rechargement : absente · 
+     KO  tenir           le drapeau est posé dès l'apparition                         []
+     KO  tenir           après rechargement : absente                                 {'la': True, 'id': 'tenir', 'drapeaux': ['geste_vu_tenir']}
+     KO  chiche          le drapeau est posé dès l'apparition                         []
+     KO  chiche          après rechargement : absente                                 {'la': True, 'id': 'chiche', 'drapeaux': ['geste_vu_chiche']}
+     KO  planter         le drapeau est posé dès l'apparition                         []
+     KO  planter         après rechargement : absente                                 {'la': True, 'id': 'planter', 'drapeaux': []}
+     KO  pelote          le drapeau est posé dès l'apparition                         []
+== redteam_couleurs_ref.py [0] 696s : canevas non peints d'un côté (comptés, non jugés) : 2 — Nuée[d] vide côté app · Nuée défilée[d] vide côté réf | ✅ — 0 écart(s) de couleur avec la référence v118
+FIN DE SÉRIE

@@ -1,0 +1,38 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ v61 · cinq mondes à l'horloge, 0,83 / 0,78 (= 0,17 / 0,22 à 60 i/s) 
+  ✓ v61 · un redémarrage de boucle fait UN pas 
+  ✓ v61 · mondes neufs : temps vrai en sous-pas de 1/60 s 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu d'arrivée 760 ms 
+  ✓ Brouillamini, transition 1 600 ms · retrait 900 ms 
+  ✓ Chamade, transition 1 600 ms · retrait 900 ms 
+  ✓ Volubilis, transition 1 600 ms · retrait 900 ms 
+  ✓ Guingois, transition 1 600 ms · retrait 900 ms 
+  ✓ Chantourné, transition 1 600 ms · retrait 900 ms 
+  ✓ Mascaret, transition 1 600 ms · retrait 900 ms 
+  ✓ Ramage, transition 1 600 ms · retrait 900 ms 
+  ✓ v72 · Ramage : le fondu du plumage d'arrivée = ARR 900 ms 
+  ✓ v61 · Houle reste par image (exception) 
+— chemin : moteur
+  ✓ halin · moteur · arrivee fin du mouvement 2485 ms (attendu 2270 ± 340) · cadence 103 % · [vu 2368 ms, 143 images]
+  ✓ halin · moteur · depart fin du mouvement 3353 ms (attendu 2995 ± 449) · cadence 106 % · [vu 3189 ms, 192 images]
+  ✓ encre · moteur · arrivee fin du mouvement 861 ms (attendu 872 ± 100) · cadence 116 % · [vu 861 ms, 38 images]
+  ✓ encre · moteur · depart fin du mouvement 830 ms (attendu 851 ± 100) · cadence 112 % · [vu 830 ms, 35 images]
+  ✓ brouillamini · moteur · arrivee fin du mouvement 1950 ms (attendu 1742 ± 261) · cadence 130 % · [vu 1950 ms, 103 images]
+  ✓ brouillamini · moteur · depart fin du mouvement 2154 ms (attendu 2046 ± 163) · cadence 128 % · [vu 2154 ms, 124 images]
+— chemin : reel
+  ✓ halin · reel · arrivee fin du mouvement 2499 ms (attendu 2270 ± 340) · cadence 99 % · [vu 2499 ms, 145 images]
+  ✓ halin · reel · depart fin du mouvement 2875 ms (attendu 2995 ± 449) · cadence 105 % · [vu 2875 ms, 171 images]
+  ✓ encre · reel · arrivee fin du mouvement 868 ms (attendu 872 ± 100) · cadence 115 % · [vu 868 ms, 38 images]
+  ✓ encre · reel · depart fin du mouvement 877 ms (attendu 851 ± 100) · cadence 103 % · [vu 877 ms, 34 images]
+  ✓ brouillamini · reel · arrivee fin du mouvement 1872 ms (attendu 1742 ± 261) · cadence 86 % · [vu 1872 ms, 65 images]
+  ✗ brouillamini · reel · depart fin du mouvement 2221 ms (attendu 2046 ± 163) · cadence 118 % · [vu 2221 ms, 118 images]
+
+32 / 33

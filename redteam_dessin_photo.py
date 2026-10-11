@@ -33,7 +33,7 @@ PHOTO = r"""(c0)=>{ const c=document.createElement('canvas'); c.width=300; c.hei
 with sync_playwright() as p:
     b = p.chromium.launch(args=['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'])
     ctx = b.new_context(viewport={'width': 430, 'height': 932}, has_touch=True)
-    ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9'); ['tenir','chiche','planter','bande','dessin'].forEach(g=>localStorage.setItem('geste_vu_'+g,'1'));}catch(e){}")
+    ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9'); ['tenir','chiche','planter','bande','dessin'].forEach(g=>{localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_'+g,'1')});}catch(e){}")
     pg = ctx.new_page(); er = []; pg.on('pageerror', lambda e: er.append(str(e)[:140]))
     pg.goto('http://127.0.0.1:8752/' + FICHIER); pg.wait_for_timeout(6500); cdp = ctx.new_cdp_session(pg)
     pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} try{setPremium(true)}catch(e){} const q=promises.find(p=>p.title==='nager le mardi'); delete q.dessin; openDetail(q.id);}"); pg.wait_for_timeout(2800)

@@ -1,0 +1,14 @@
+passe 0 statut tenu · images de plus de 20 ms : [(-5, 29), (1041, 23)] · travail compté 58 ms
+passe 1 statut tenu · images de plus de 20 ms : [(-26, 35), (1032, 25), (1753, 28)] · travail compté 60 ms
+passe 2 statut tenu · images de plus de 20 ms : [(-31, 25), (-6, 26), (20, 26), (1769, 25)] · travail compté 57 ms
+passe 3 statut tenu · images de plus de 20 ms : [(-35, 41), (1008, 21), (1748, 28)] · travail compté 60 ms
+
+ms/passe  appels pire    quand (ms après lever) rappel
+17.8      2.0    11.0    [369, 1042]            image | img · function img(){ var t=performance.now()-t0; if(!window._instant){ finAnime(); return; } /* §4.5 — la dalle n'a pas pu être peinte (monde pas prêt) : o
+16.5      1.5    16.0    [1784]                 minuteur 0 |  · function(){ var f=L[i++]; try{ f(); }catch(_){} suite(); }
+9.2       1.0    11.0    [24]                   image |  · function(){ try{ window._instantTenue(); }catch(_){} }
+7.8       2.0    5.0     [42, 1064]             image |  · function(){ try{ if(window._instant && window._ficheTrait) _ficheTrait(); }catch(_){} }
+3.8       1.0    5.0     [0]                    écouteur touchend | fin · function fin(){ if(!actif) return; actif = false; /* trois voies : on est arrive, ou on a ecrit, ou on a parcouru une bonne moitie de la zone. R
+2.2       1.0    3.0     [388]                  image |  · function(){ taille(); peindre(); }
+1.0       0.2    4.0     [68]                   image | frame · function frame(){ var all=document.querySelectorAll('.tuto-fond, #createSheet, #settingsScreen');var vis=false; for(var i=0;i<all.length;i++){if(ouver
+0.5       0.2    2.0     [217]                  minuteur 90 |  · function(){ arme(); enveloppeDissolution(); passeArcs(); filNuee(); tailleNom(); plusAnneau(); }

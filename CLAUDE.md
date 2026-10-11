@@ -116,6 +116,78 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v143 (12 oct. 2026) — RETOURS DE TOM SUR IPHONE : RITOURNELLE, LE PARTAGE DE LA TOILE, LA BARRE, LE TRAIT DE 60 pt, TENIR, LE GUIDE REFAIT, LA MAIN, LA PELOTE. (Décisions Tom.) Ce bloc CORRIGE v142 (Ritournelle, le guide, la trace, C-102) et v141 (le trait parti du milieu).
+> **Q457 validée (les lettres cernées sur la Toile floutée). Q459, Q462, Q464 acceptées. Q463 : un Chiche lancé à soi dit « TRACE POUR LANCER ».**
+> **⚑ SAFARI N'A PAS `requestIdleCallback` — TOUT CE QUI « ATTEND UN TEMPS MORT » Y TOURNE PAR SIMPLE MINUTERIE (C-102, RÉCIDIVE).** *Pourquoi
+> `redteam_fluide` ne le voyait pas* : il tourne sous Chromium, qui a `requestIdleCallback`. Sur le banc WebKit, au vrai doigt, deux tâches de
+> fond tombaient en plein dans l'animation de « tenir » : la collection de l'écran qui vend (`fond(j)`, une dalle de 80 à 90 ms, à 620,
+> 1 070 et 1 500 ms après le lever) et le réchauffage du cache des dalles (`rechauffe`, 75 à 100 ms, à 1 700 ms). Elles attendent maintenant
+> un VRAI calme : 3 s sans aucun toucher (le lever compris), jamais pendant « tenir » ni dans les 6 s qui suivent. **La tâche du lever ne pose
+> plus rien** (les cotes et le trait de l'instant : 10 à 19 ms dans la tâche du `touchend`) : l'instant se pose à l'image suivante, les cotes
+> dans une image, le trait dans la suivante — de même au passage à « juste après » ; le contenu déjà rempli à 320 ms n'est pas refait à la
+> fin ; les deux poses différées d'une fiche passent une par image, la passe de lisibilité après elles. Mesuré (banc WebKit, 4 passes) :
+> travail compté dans les 1,8 s après le lever **196 à 281 ms → 57 à 60 ms** ; plus long rappel **100 ms (185 ms d'image) → 16 ms** ; la
+> tâche du lever **17 à 24 ms → 3 à 5 ms**. *La règle* : **une tâche de fond se garde elle-même (aucun toucher, aucune animation) — elle ne
+> compte pas sur le navigateur ; et la fluidité d'un geste se mesure AUSSI en WebKit** (`scratchpad/v143/profil.py` : chaque rappel chronométré).
+> ⚠ Reste : une tâche de 17 à 49 ms à 1,77 s (`_fichePoseBase`, après l'animation, rien ne bouge) — C-102 reste EN ATTENTE DE TOM sur l'iPhone.
+> **⚑ §1 — RITOURNELLE, LES CIBLES EN DUR (C-088, RÉCIDIVE).** Dans la zone visible (y 100 → 710) : **une parole → sa dalle entière, centrée, 50 à
+> 60 % de la largeur (55 visés), des bords de cellules vides autour, aucune cellule vide entière ; deux et trois → ensemble 70 à 85 % (78 visés ;
+> empilées, la même cible sur la hauteur de la zone) ; quatre → trois cellules vides entières au plus ; six → cinq au plus.** *Pourquoi c'est
+> revenu* : v142 obtenait « aucune cellule vide » en ne PEIGNANT plus les cellules vides — les dalles, seules sur un aplat, étaient cadrées à
+> 80 à 94 % ; et sans aucune parole la Toile n'était plus peinte du tout (**c'est « le fond de l'onboarding tout noir »** : l'onboarding
+> rejoué sous Ritournelle, en sombre). **Toutes les cellules sont de nouveau peintes** ; le cadrage se fait sur la matière publiée
+> (`cadreMatiere`, `_boiteMatiere`) aux fractions ci-dessus, 80 % de la hauteur au plus ; jusqu'à trois paroles, sous le cadrage de départ
+> seulement, les cellules vides qui tiendraient ENTIÈRES dans la zone ne sont pas peintes (`videsCaches`) — celles que les bords coupent
+> restent. Juge : **`redteam_ritournelle.py` réécrit** (37 ; 24/37 sur v142), captures annotées. *La règle* : **« un peu de Toile autour »
+> s'obtient par le cadrage, jamais en effaçant la Toile ; et un juge de cadrage tient des CHIFFRES (une largeur en pour-cent), pas « entier ».**
+> **⚑ §2 — L'IMAGE PARTAGÉE DE LA TOILE EST LA TOILE AFFICHÉE (C-105).** *La cause* : `Toile.renderTo` rendait « la Toile entière, sans cadrage »
+> (vue 1), sur un autre fond (`#EFE2C5` pour `#DFCAA4`), le monde « au repos », et **dans le thème de `_sealDark` — sombre par défaut, réglé
+> par des boutons (`#sealTheme`) qui ne sont plus à l'écran** : une app claire partageait une Toile sur fond noir, dézoomée. `renderTo(cv, ech,
+> clair, {vue:true})` (le partage, Enregistrer) rend COMME L'ÉCRAN : la vue du moment, le fond de la Toile, le monde vivant, le thème de
+> l'app ; `_rtCible` y reste posé (les calques de Touffe se bâtissent à la densité du rendu). Sans l'option (banc de rendu, aperçus) rien ne
+> change. Juge : **`redteam_partage_toile.py`** (vingt mondes, l'image que le vrai bouton produit, comparée au canevas de l'accueil).
+> **⚑ §3 — LA BARRE (C-106).** *La cause* : chaque entrée faisait 90 pt pour des centres à 54 pt — STUDIO (x 25 → 115) et AURA (79 → 169) se
+> chevauchaient de 36 pt, AURA au-dessus : la moitié droite du mot STUDIO ouvrait l'Aura (de même INDEX / FIL). Chaque entrée fait 54 pt,
+> toute la hauteur de la barre. Juge : **`redteam_barre.py`** (cinquante touchers répartis sur ce qu'on VOIT de chaque entrée ; sur v142 :
+> 17 sur 25 pour STUDIO, 13 sur 25 pour INDEX).
+> **⚑ §4 — UN TRAIT NE COMPTE QU'À 60 pt (C-107).** `window._traitRegle.MIN` = 60 : l'avancée du doigt, de là où il s'est posé au plus loin où il
+> est allé, en points de l'appareil — pour TENIR comme pour PLANTER. Les voies d'avant sont RETIRÉES (deux tiers du trait, la moitié de la
+> zone, « parti du milieu il faut aller presque au bout », et **« un geste lent de plus de six points », qui validait un doigt posé**).
+> Juge : **`redteam_trait.py`** (11 ; sur v142 un geste lent de 30 pt tenait la parole). **Geste : Tom valide sur iPhone.**
+> **⚑ §6 — LE GUIDE D'ACCUEIL, REFAIT (C-094).** **Le moment** : l'accueil entièrement posé (onboarding refermé, Toile au repos, aucun doigt), puis
+> 1,2 s de calme (`ATTENTE`). **La technique, dictée par Tom** : le rayon du flou n'est jamais animé ; six FORMES à bord doux (un dégradé
+> radial en masque, posé une fois) portent le flou des murs (4,8 px) et grandissent PAR `transform`, courbe ease-in-out, jusqu'à se rejoindre
+> en 1,6 s — c'est le navigateur qui anime, la page n'écrit rien image par image ; puis UNE couche floutée les remplace. Ce qui reste net est
+> une COPIE de l'entrée (style calculé, pseudo-éléments rendus par de vrais nœuds), au-dessus du flou, agrandie de 15 % (Studio) ou 10 % (+) ;
+> l'original est caché le temps du guide. La phrase paraît à 1,15 s, une fois le fond flouté sous elle. **« Choisis d’abord le monde qui te
+> ressemble, au Studio. » : un impératif VOULU par Tom — exception NOMMÉE de A3** (`TEXTES_ENGAGEMENT.imperatifVoulu`, portée en dur par
+> `redteam_engagement` et `redteam_guide`). **Exception NOMMÉE de A2** : les six formes, et elles seules, portent une transition CSS sur
+> `transform`. **L'étape du + vient TOUJOURS ensuite** (Studio refermé avec ou sans choix, ou toucher ailleurs pendant l'étape du Studio :
+> le flou reste, l'entrée nette change) ; seul « Plus tard » arrête tout ; à l'étape du +, toucher ailleurs finit. `?guide=1`,
+> `&gfige=800`, `&getape=plus`. Juge : **`redteam_guide.py` réécrit** (moment, technique, les chemins, images ≤ 16,7 ms : pire 4 à 5 ms).
+> ⚠ Entre 0,6 et 1,2 s, les formes se recouvrent : le flou y est un peu plus fort (flou d'un flou), puis la couche unique le remet à 4,8 px.
+> **⚑ §7 — LA MAIN FANTÔME (C-109).** Au banc, par un vrai premier lancement (onboarding, guide, fiche), elle paraît 2,1 à 2,25 s après le toucher
+> qui ouvre la fiche, par les trois chemins du guide. *Ce qui l'empêchait sur un téléphone déjà utilisé* : ① le drapeau `geste_vu_tenir`
+> (posé depuis E1) survit aux versions ; ② il était posé DÈS L'APPARITION — un toucher dans le dixième de seconde la retirait pour toujours ;
+> ③ « Revoir la présentation » ne rendait pas les gestes. **Le drapeau se pose à la fin du PREMIER PASSAGE** (corrige E1) ; faire le geste
+> soi-même le pose ; les drapeaux du trait sont oubliés une fois (`geste_v` = 143) ; « Revoir la présentation » et `?guide=1` rendent tous
+> les gestes.
+> **⚑ §8 — LA PELOTE (C-083).** **L'intensité d'un segment de trace se LIT** (`intensite`) : la lenteur du doigt (60 pt/s et moins : 1 ; 500 et
+> plus : 0), l'appui (la force si elle VARIE — un écran sans capteur rend 0 ou 1 tout le temps ; sinon la taille du contact, 7 pt → 0,
+> 16 pt → 1), la durée d'un appui immobile (0,2 s → 1,2 s) : `f` de 0,25 à 1 (0,9 constant avant). Sans capteur (une souris), la largeur
+> est celle d'un pouce — le seul nombre qui ne soit pas lu. `redteam_trace` : + G, H, I (17 ; 13/17 sur v142). Le corps : tableau
+> `scratchpad/v143/corps.txt` (24 palettes × 2 thèmes × 10 ouvertures).
+> ⚠ **La frontière entre deux entrées de la barre passe au milieu de CE QU'ON VOIT d'elles** (le mot STUDIO finit à 96, l'icône d'AURA commence
+> à 110 : la zone de STUDIO va jusqu'à 102 et passe devant) — au milieu de leurs centres (97), deux touchers sur cinquante tombaient à côté.
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v143.py`) : `redteam_ritournelle`, `redteam_guide`
+> (réécrits) · `redteam_gestes` (le drapeau à la fin du premier passage) · `redteam_engagement` (A3 : l'exception nommée, en dur) ·
+> `redteam_volume` (le bord doux des formes du guide : deux masques, bornés) · `redteam_trace` (+ G, H, I) · `redteam_decisions` et
+> `scratchpad/v122/zones.py` (C-103). ⚠ **Un juge qui veut la main fantôme CACHÉE pose aussi `geste_v` = 143** (sans lui l'app oublie une fois
+> les drapeaux du trait : `redteam_air` y a perdu 104 paires) ; `banc_tom.contexte` le fait.
+> **Aussi** : les phrases de trace, cas par cas (C-108) — un Chiche lancé à plusieurs disait « RACHEL, MARION TRACERA SA PART SI ELLE OSE » :
+> « chacun tracera sa part s’il ose » (mot manquant, à valider) ; C-103 : `redteam_decisions` lit le champ que le peintre DÉCLARE s'il est
+> réellement peint (0,3 % du canevas au moins), plus un pixel à (6 ; 6) — 89/89 trois fois.
+
 ### ⚑ v142 (11 oct. 2026) — SIX RÉCIDIVES, UNE CAUSE COMMUNE : LES JUGES NE VOYAIENT PAS CE QUE TOM VOIT ; DÉPLACER UNE DALLE. (Décisions Tom.) Ce bloc CORRIGE v141, v140 et v139 là où ils disent autre chose.
 > **Q450, Q453, Q456 acceptées ; Q454 close ; Q455 validée (les poils couchés) ; Q452 : le É de « MOITIÉ » est composé en PromiLate (le composeur
 > de v35 : E + l'apostrophe en accent ; `.pp-trace` est dans sa liste, et le mot n'est écrit que s'il change — le piège de v46).**
@@ -2444,6 +2516,9 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
+python3 redteam_barre.py       # 7 — v143 (C-106) : cinquante touchers au vrai doigt sur ce qu'on voit de chaque entrée de la barre, chacun ouvre sa page ; les zones voisines ne se chevauchent pas. --n=20. Rouge sur v142 (STUDIO 17 sur 25).
+python3 redteam_trait.py       # 11 — v143 (C-107) : un trait ne compte qu'à 60 pt — 30 pt refusé, doigt posé refusé, 70 pt lent et 70 pt rapide acceptés, pour tenir et pour planter ; la main montre plus de 60 pt. Rouge sur v142.
+python3 redteam_partage_toile.py # 42 — v143 (C-105) : sous les vingt mondes, l'image que le vrai bouton produit (Enregistrer, Partager) est la Toile affichée : mêmes dalles, mêmes places, même cadrage, mêmes couleurs. Planche des écarts. --mondes=.
 python3 banc_tom.py             # (un module, pas un juge) v142 — LE BANC « COMME TOM » : WebKit, 390 × 844, échelle 3, doigt, webdriver masqué, Toile vide, plantation par l'app. Tout juge d'un point visuel passe par lui.
 python3 redteam_deplace.py     # 45 — v142 (C-101) : déplacer une dalle — appui 0,8 s, elle suit le doigt, place gardée après rechargement, jamais sous la barre, un toucher bref ouvre toujours la fiche ; cinq mondes. 5/9 sur v141 (--mondes=pochade).
 python3 redteam_cercle_tom.py  # 16 — v142 (C-096) : la fiche d'un Cercle ouverte en touchant sa dalle sur la Toile : bandeau tout en bas, « + Planter » 12 pt au-dessus, le fil défile dessous ; « Dissoudre » sans encart. 6/16 sur v141.

@@ -10028,4 +10028,13 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v142 | Les murs du Studio (C-100) | `redteam_studio_tom` 14/14 | en gratuit, monde de Ma Parole ! : toucher la Toile floutée, le panneau, les palettes — vingt fois ; la phrase se lit-elle sur la Toile ? (Q457) |
 | v142 | « Supprimer mon compte » (C-104) | `planche-v142/reglages-bas.png` | Réglages, tout en bas |
 | v142 | Déplacer une dalle (C-101) | `redteam_deplace` 45/45 | appui de presque une seconde sur une dalle, la glisser ; relâcher ; fermer et rouvrir ; essayer sous Pochade, Ritournelle, Bobinette ; un toucher bref ouvre-t-il toujours la fiche ? le défilement et le zoom sont-ils intacts ? |
+| v143 | Ritournelle (C-088) | `redteam_ritournelle` ; `PLANCHE-1-ritournelle.png` (cotes) | Toile vide sous Ritournelle : planter 1, 2, 3, 4, 6, 9 paroles ; fermer et rouvrir : la dalle seule est-elle à la bonne taille ? Q466 : toucher la Toile, les cellules cachées reparaissent |
+| v143 | Le partage de la Toile (C-105) | `redteam_partage_toile` ; `planche-v143/partage-app.png` | sous Ritournelle, puis deux autres mondes : « Enregistrer » et « Partager » — l'image est-elle la Toile qu'on voit ? en sombre aussi |
+| v143 | La barre (C-106) | `redteam_barre` | toucher le mot STUDIO sur son bord droit, vingt fois ; INDEX sur son bord droit |
+| v143 | Le trait de 60 pt (C-107) | `redteam_trait` 11/11 | fiche à tenir : un petit geste (un demi-centimètre) ne tient pas ; un centimètre tient, lent ou rapide ; idem pour planter ; poser le doigt sans bouger ne tient pas |
+| v143 | Tenir, au lever (C-102) | `scratchpad/v143/profil-avant.txt` / `-apres.txt` | tenir trois paroles de suite : le lever est-il fluide ? |
+| v143 | Le guide (C-094) | `redteam_guide` ; `PLANCHE-6-guide-safari.png` | `…/app.html?guide=1` : le moment, la révélation, le Studio net ; refermer le Studio (avec et sans choix) : le + ; toucher ailleurs pendant l'étape du Studio : le + ; « Plus tard » |
+| v143 | La main fantôme (C-109) | `redteam_trait` (dernier contrôle) | ouvrir une fiche à tenir et attendre deux secondes sans toucher |
+| v143 | La Pelote (C-083) | `redteam_trace` 17/17 | effleurer vite, puis traîner lentement, puis appuyer : les poils se couchent-ils plus ? appui long sans bouger |
+| v143 | Un Chiche à soi, à plusieurs (C-108) | tableau au rapport | lancer un Chiche à soi : « TRACE POUR LANCER » ; à deux personnes : Q465 |
 

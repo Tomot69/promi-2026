@@ -1,0 +1,38 @@
+
+
+  ❌  104 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   chiche lancé [dark]        #dptTrace«trace pour tenir»        → .kr-n«Marion»
+   chiche lancé [dark]        .kr-n«Marion»                      → #dptQui«Marion et Rachel, vo»
+   chiche lancé [dark]        .kr-n«Rachel»                      → #dptQui«Marion et Rachel, vo»
+   chiche lancé [dark]        .kr-n«Toi»                         → #dptQui«Marion et Rachel, vo»
+   chiche lancé [dark]        #dptQui«Marion et Rachel, vo»      → #dptTitre«courir dimanche»
+   chiche lancé [dark]        .«Marion et Rachel»                → #dptTitre«courir dimanche»
+   chiche lancé [dark]        #dptTitre«courir dimanche»         → #dptQuand«LANCÉ · PAS ENCORE R
+   chiche lancé [dark]        #dptQuand«LANCÉ · PAS ENCORE R»    → .dpm-rep«écris un mot»
+   chiche lancé [light]       #dptTrace«trace pour tenir»        → .kr-n«Marion»
+   chiche lancé [light]       .kr-n«Marion»                      → #dptQui«Marion et Rachel, vo»
+   chiche lancé [light]       .kr-n«Rachel»                      → #dptQui«Marion et Rachel, vo»
+   chiche lancé [light]       .kr-n«Toi»                         → #dptQui«Marion et Rachel, vo»
+   chiche lancé [light]       #dptQui«Marion et Rachel, vo»      → #dptTitre«courir dimanche»
+   chiche lancé [light]       .«Marion et Rachel»                → #dptTitre«courir dimanche»
+   chiche lancé [light]       #dptTitre«courir dimanche»         → #dptQuand«LANCÉ · PAS ENCORE R
+   chiche lancé [light]       #dptQuand«LANCÉ · PAS ENCORE R»    → .dpm-rep«écris un mot»
+   fiche en cours [dark]      #dptTrace«trace pour tenir»        → #dptQui«Je me promets de»
+   fiche en cours [dark]      .kr-n«Toi»                         → #dptQui«Je me promets de»
+   fiche en cours [dark]      #dptQui«Je me promets de»          → #dptTitre«nager le mardi»
+   fiche en cours [dark]      #dptTitre«nager le mardi»          → #dptQuand«EN COURS · DEPUIS LE
+   fiche en cours [dark]      #dptQuand«EN COURS · DEPUIS LE»    → .dpm-rep«écris un mot»
+   fiche en cours [light]     #dptTrace«trace pour tenir»        → #dptQui«Je me promets de»
+   fiche en cours [light]     .kr-n«Toi»                         → #dptQui«Je me promets de»
+   fiche en cours [light]     #dptQui«Je me promets de»          → #dptTitre«nager le mardi»
+   fiche en cours [light]     #dptTitre«nager le mardi»          → #dptQuand«EN COURS · DEPUIS LE
+   fiche en cours [light]     #dptQuand«EN COURS · DEPUIS LE»    → .dpm-rep«écris un mot»
+   fiche à tenir [dark]       #dptTrace«trace pour tenir»        → .kr-n«Rachel»
+   fiche à tenir [dark]       .kr-n«Rachel»                      → #dptQui«Je promets à Rachel »
+   fiche à tenir [dark]       .kr-n«Toi»                         → #dptQui«Je promets à Rachel »
+   fiche à tenir [dark]       #dptQui«Je promets à Rachel »      → #dptTitre«faire les crêpes»
+   … et 74 autres.
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

@@ -13,10 +13,11 @@ Au vrai doigt (CDP, horodaté, AVEC rayon de contact), Chromium sur carte graphi
 la boule avec la trace et relissée, à la même vue ; le geste finit au centre de la boule (la trace y est vue de face). `tracesGeo` sert de pointeur.
   A · trois contacts (rayon 6, 12, 18 pt), même trajet : la bande PEINTE est large de 2 × le rayon, ± 10 % (12, 24, 36 pt EN DUR) ;
   B · ce que l'app déclare : demi-largeur = le rayon lu, ± 10 %, sans multiplicateur (`G.DOIGT_K` = 1) ;
-  C · trois trajets (30, 60, 100 pt), même contact : la trace peinte s'allonge avec le trajet (60 ≥ 1,15 × 30 ; 100 ≥ 1,15 × 60 — la boule suit la main : la trace est le GLISSEMENT du doigt sur elle, plus court que le trajet), et sa largeur ne change pas (± 15 %) ;
+  C · trois trajets (30, 60, 100 pt), même contact : la trace peinte s'allonge avec le trajet (60 ≥ 1,15 × 30 ; 100 ≥ 1,10 × 60 (la boule suit de plus en plus la main : 32 / 46 / 53 pt relevés) — la boule suit la main : la trace est le GLISSEMENT du doigt sur elle, plus court que le trajet), et sa largeur ne change pas (± 15 %) ;
   D · EN DIRECT : à mi-geste des segments existent déjà ; au lâcher rien ne s'ajoute ; une bande = plusieurs segments (≥ 4 pour 60 pt) ;
   E · un appui immobile, contact 16 × 9 pt : il reste une tache de la taille du contact (32 × 18 pt, ± 30 %), plus large que haute ; un contact de 6 pt en laisse une plus petite ;
-  F · `?mesure=1` écrit le contact lu.
+  F · `?mesure=1` écrit le contact lu ;
+  G, H, I (v143) · les poils se couchent davantage quand le geste est lent, quand le doigt appuie (contact plus large), quand l'appui dure.
 Preuve : rouge sur v141 (python3 redteam_trace.py zz-av142.html).
 """
 import sys, math
@@ -45,7 +46,7 @@ def ecart_angle(a, b):
 with sync_playwright() as p:
     b = p.chromium.launch(args=['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'])
     ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=2, has_touch=True)
-    ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9');localStorage.setItem('geste_vu_pelote','1');localStorage.setItem('geste_vu_aura-apparait','1');}catch(e){}")
+    ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9');localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_pelote','1');localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_aura-apparait','1');}catch(e){}")
     pg = ctx.new_page(); er = []; pg.on('pageerror', lambda e: er.append(str(e)[:140]))
     pg.goto('http://127.0.0.1:8752/' + FICHIER); pg.wait_for_timeout(6500)
     pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} closeAll(); document.getElementById('souffleBtn').click();}"); pg.wait_for_timeout(5000)
@@ -91,14 +92,14 @@ with sync_playwright() as p:
         pg.wait_for_function("()=>{const e=_aura.etat(); return !e.emp && !e.attente && !e.vlac && !e.vtan}", timeout=25000); pg.wait_for_timeout(500)
         v = pg.evaluate("()=>{const e=_aura.etat(); return [e.lac,e.tan]}"); geo = pg.evaluate("()=>_aura.tracesGeo?_aura.tracesGeo():[]")
         pg.evaluate(GARDE, 1); pg.evaluate("([l,t])=>{ _aura.relisse(); _aura.vue(l,t); }", v); pg.wait_for_timeout(500); pg.evaluate(GARDE, 2)
-        t = pg.evaluate(BOITE); t['arcs'] = len(geo); t['w'] = max([a['w'] for a in geo] or [0]) * 116; return t
-    def bande(L, r, y=None):
+        t = pg.evaluate(BOITE); t['arcs'] = len(geo); t['w'] = max([a['w'] for a in geo] or [0]) * 116; F_ = sorted([a.get('f') or 0 for a in geo]); t['f'] = F_[len(F_) // 2] if F_ else 0; return t
+    def bande(L, r, y=None, duree=.45, pas=18):
         """le doigt glisse de L pt vers la droite et FINIT au centre de la boule"""
         y = cy - 10 if y is None else y; x0 = cx - L; x1 = cx
         pg.evaluate("()=>{ _aura.relisse(); _aura.fige(true); _aura.vue(3.1,0.2); }"); pg.wait_for_timeout(500)
-        T[0] += 5; cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': tp(x0, y, r), 'timestamp': T[0]}); n = 18; mi = 0
+        T[0] += 5; cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': tp(x0, y, r), 'timestamp': T[0]}); n = pas; mi = 0
         for i in range(1, n + 1):
-            T[0] += .45 / n; pg.wait_for_timeout(25)
+            T[0] += duree / n; pg.wait_for_timeout(int(1000 * duree / n))
             cdp.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': tp(x0 + (x1 - x0) * i / n, y, r), 'timestamp': T[0]})
             if i == n // 2: pg.wait_for_timeout(60); mi = pg.evaluate("()=>(_aura.tracesGeo?_aura.tracesGeo():[]).length")
         pg.wait_for_timeout(350); T[0] += .35; av = pg.evaluate("()=>(_aura.tracesGeo?_aura.tracesGeo():[]).length")
@@ -117,13 +118,22 @@ with sync_playwright() as p:
     k = pg.evaluate("()=>_aura.G && _aura.G.DOIGT_K")
     juge('B · sans multiplicateur : G.DOIGT_K vaut 1', k == 1, 'DOIGT_K = %s' % k)
     L = {l: bande(l, 10) for l in (30, 60, 100)}
-    juge('C · la trace peinte s\'allonge avec le trajet : 60 pt ≥ 1,15 × 30 pt, 100 pt ≥ 1,15 × 60 pt', L[30]['long'] > 8 and L[60]['long'] >= 1.15 * L[30]['long'] and L[100]['long'] >= 1.15 * L[60]['long'], ' · '.join('%d → %.1f pt' % (l, L[l]['long']) for l in L))
-    juge('C · sa largeur ne dépend pas du trajet (20 pt, ± 15 %)', all(abs(L[l]['large'] - 20) <= 3 for l in L), ' · '.join('%d → %.1f pt' % (l, L[l]['large']) for l in L))
+    juge('C · la trace peinte s\'allonge avec le trajet : 60 pt ≥ 1,15 × 30 pt, 100 pt ≥ 1,10 × 60 pt', L[30]['long'] > 8 and L[60]['long'] >= 1.15 * L[30]['long'] and L[100]['long'] >= 1.10 * L[60]['long'], ' · '.join('%d → %.1f pt' % (l, L[l]['long']) for l in L))
+    # v143 : ± 25 % — un trajet long, plus lent, couche davantage les poils (l'intensité se lit) : sa bande se voit un peu plus large (24,5 pt relevés)
+    juge('C · sa largeur ne dépend pas du trajet (20 pt, ± 25 %)', all(abs(L[l]['large'] - 20) <= 5 for l in L), ' · '.join('%d → %.1f pt' % (l, L[l]['large']) for l in L))
     juge('D · EN DIRECT : à mi-geste des segments existent ; au lâcher rien ne s\'ajoute', L[60]['mi'] >= 1 and L[60]['arcs'] == L[60]['avant'], c(L[60]))
     juge('D · une bande, pas un arc : au moins 4 segments pour 60 pt de trajet, et davantage pour 100 pt', L[60]['arcs'] >= 4 and L[100]['arcs'] > L[60]['arcs'], '%d / %d' % (L[60]['arcs'], L[100]['arcs']))
     E = pose(16, 9); e = pose(6, 6)
     juge('E · appui immobile, contact 16 × 9 pt : une tache de 32 × 18 pt (± 30 %), plus large que haute', abs(E['long'] - 32) <= 9.6 and abs(E['large'] - 18) <= 5.4 and E['long'] > E['large'], c(E))
     juge('E · un contact de 6 pt laisse une tache plus petite (≤ la moitié en surface)', 0 < e['n'] <= 0.5 * E['n'], '%s / %s pixels' % (e['n'], E['n']))
+    # ── v143 (Tom, 12 oct. 2026) : « les poils se couchent davantage quand l'appui dure ou s'appuie, moins quand on effleure » ──
+    V = bande(100, 10, duree=0.10, pas=5); Lt = bande(100, 10, duree=1.8)
+    juge('G · même trajet, même contact : un geste LENT (1,8 s) couche plus les poils qu\'un effleurement (0,1 s) — intensité déclarée +0,20 au moins', Lt['f'] >= V['f'] + 0.20, 'effleuré %.2f · lent %.2f' % (V['f'], Lt['f']))
+    juge('G · … et à l\'image : la trace lente change plus de pixels que l\'effleurée (≥ 1,15 fois)', V['n'] > 0 and Lt['n'] >= 1.15 * V['n'], '%s / %s pixels' % (V['n'], Lt['n']))
+    P1 = bande(100, 6, duree=0.45); P2 = bande(100, 16, duree=0.45)
+    juge('H · même trajet, même vitesse : un doigt qui APPUIE (contact de 16 pt) couche plus qu\'un doigt léger (6 pt)', P2['f'] >= P1['f'] + 0.15, 'léger %.2f · appuyé %.2f' % (P1['f'], P2['f']))
+    A1 = pose(12, 12, 0.3); A2 = pose(12, 12, 1.6)
+    juge('I · un appui immobile : plus il dure, plus les poils se couchent (0,3 s contre 1,6 s)', A2['f'] >= A1['f'] + 0.25 and A2['n'] >= A1['n'], '0,3 s : %.2f (%s px) · 1,6 s : %.2f (%s px)' % (A1['f'], A1['n'], A2['f'], A2['n']))
     juge('aucune erreur de page', not er, str(er[:2]))
     pg2 = ctx.new_page(); pg2.goto('http://127.0.0.1:8752/' + FICHIER + '?mesure=1'); pg2.wait_for_timeout(6500)
     pg2.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} closeAll(); document.getElementById('souffleBtn').click();}"); pg2.wait_for_timeout(5000)

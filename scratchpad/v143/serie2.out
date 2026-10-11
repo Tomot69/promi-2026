@@ -1,0 +1,21 @@
+== redteam_barre.py [0] 440s : OK  aucune erreur de page  [] | 7/7
+== redteam_guide.py [1] 251s : ✅ [sombre] plus · pendant la révélation, aucune image au-delà de 16,7 ms de travail du fil principal           | ❌  51 / 52
+     ❌ [sombre] plus · le + et son encart sont nets (≥ 70 % de leur densité de contours), agrandis de 10 % (8 à 12)           le + 3.4 → 2.4 · largeur 72 → 79.2 (× 1.100)
+     ❌  51 / 52
+== redteam_trace.py [1] 112s : OK  F · ?mesure=1 écrit le contact lu (13 × 7 pt)  'contact lu : 13 × 7 pt (pointeur) → demi-axe 13 pt' | 16/17
+     KO  C · la trace peinte s'allonge avec le trajet : 60 pt ≥ 1,15 × 30 pt, 100 pt ≥ 1,15 × 60 pt  30 → 32.5 pt · 60 → 46.5 pt · 100 → 53.0 pt
+== redteam_air.py [1] 318s : Peaufiner [light]          .s2-val«vendredi 23»               → .s2-val«aucune» | Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+     ❌  8 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+== redteam_rythme.py --mondes=halin,encre,brouillamini [1] 126s : ✗ brouillamini · reel · depart fin du mouvement 2221 ms (attendu 2046 ± 163) · cadence 118 % · [vu 2221 ms, 11 | 32 / 33
+     ✗ brouillamini · reel · depart fin du mouvement 2221 ms (attendu 2046 ± 163) · cadence 118 % · [vu 2221 ms, 118 images]
+== redteam_gestes.py [0] 704s : OK  A1 · la main jouée au-dessus de la Toile : aucune dalle ne bouge, le canevas est le même 1492665881 149266 | redteam_gestes : 132/132
+== redteam_accueil.py [0] 172s : [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False | 22/22
+== redteam_joignable.py [0] 140s : aucun gestionnaire en attribut on…=""                      OK  0 | 5 / 5
+== redteam_ecrans.py [0] 95s : aucune erreur JS [clair]                       OK | 152/152
+== redteam_engagement.py [0] 115s : R6 · compte         sortie : « Plus tard » | redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+== redteam_cadre.py [1] 42s : 21 / 22 | KO : aucune erreur de page
+     KO  aucune erreur de page  missing ) after argument list; missing ) after argument list
+     KO : aucune erreur de page
+== redteam_studio_mur.py [0] 96s : OK  [la jauge] la phrase paraît, entière sur le panneau flouté  phrase [604, 692] · panneau flouté [478, 820]  | 9/9
+== redteam_murs_toucher.py [0] 364s : OK  [les couleurs du dessin] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 114 pt) | 8 / 8
+FIN DE SÉRIE

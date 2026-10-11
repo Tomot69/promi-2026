@@ -76,11 +76,11 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 422 | 342 × 94 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 465 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 453 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 535 | 342 × 94 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 556 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 544 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 635 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 641 | 342 × 94 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 647 | 342 × 79 | oui |  |
 | Nuée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
@@ -120,7 +120,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Partager | `#shShareBtn` | natif | 282, 789 | 168 × 62 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer«✕ FERMER»` | écouteur | 321, 56 | 91 × 13 | oui |  |
 | Peaufiner | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
-| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTvendredi 23un joure»` | écouteur | 195, 222 | 342 × 64 | oui |  |
+| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTsamedi 24un jouren »` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«DANS UN CERCLEaucuneAucu»` | écouteur | 195, 302 | 342 × 64 | oui |  |
 | Peaufiner | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner | `#dNote` | natif | 195, 426 | 292 × 56 | oui |  |
@@ -134,7 +134,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Chiche | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«À QUI JE LANCEMarionMMar»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVECMarionMMarionNNicoRR»` | écouteur | 195, 302 | 342 × 64 | oui |  |
-| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTmercredi 14un joure»` | écouteur | 195, 382 | 342 × 64 | oui |  |
+| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTjeudi 15un jouren l»` | écouteur | 195, 382 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 430 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner Chiche | `#dNote` | natif | 195, 506 | 292 × 56 | oui |  |
@@ -198,11 +198,11 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | accueil | `div#accPlat.acc-plat>span.acc-mm«Ma Parole !»` | natif | 104, 72 | 103 × 33 | oui |  |
 | accueil | `#stage` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | accueil | `#toileCv` | écouteur | 195, 422 | 390 × 844 | oui |  |
-| accueil | `#studioBtn` | on… | 70, 760 | 90 × 51 | oui |  |
-| accueil | `#souffleBtn` | on… | 124, 760 | 90 × 51 | oui |  |
+| accueil | `#studioBtn` | on… | 70, 760 | 54 × 51 | oui |  |
+| accueil | `#souffleBtn` | on… | 124, 760 | 54 × 51 | oui |  |
 | accueil | `#createBtn` | on… | 195, 760 | 72 × 72 | oui |  |
-| accueil | `#indexBtn` | natif | 266, 760 | 90 × 51 | oui |  |
-| accueil | `#filBtn` | écouteur | 320, 760 | 90 × 51 | oui |  |
+| accueil | `#indexBtn` | natif | 266, 760 | 54 × 51 | oui |  |
+| accueil | `#filBtn` | écouteur | 320, 760 | 54 × 51 | oui |  |
 | aide de l'Aura | `div#auraHelp.screen.tuto-fond>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
 | chiche lancé | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
 | chiche lancé | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 221 | 34 × 34 | oui |  |

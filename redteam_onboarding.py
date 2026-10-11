@@ -447,7 +447,7 @@ def un_theme(pw, theme):
             #   ENGAGEMENT.md, E1 point 4 : « le point d'entrée existant de obReplay devient “Revoir les gestes” et efface les drapeaux
             #   geste_vu_*. Ne pas créer d'autre entrée. » La rangée `#replayOnb` ne relance donc PLUS la présentation : au doigt, elle
             #   efface les drapeaux des gestes, l'onboarding ne revient pas, le Promi planté reste. (Le nom du contrat est gardé.)
-            pg.evaluate("()=>{try{closeAll()}catch(e){}; localStorage.setItem('geste_vu_essai','1'); document.getElementById('settingsScreen').classList.add('show');}")
+            pg.evaluate("()=>{try{closeAll()}catch(e){}; localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_essai','1'); document.getElementById('settingsScreen').classList.add('show');}")
             pg.wait_for_timeout(700)
             pg.evaluate("()=>{const r=document.getElementById('replayOnb'); if(r) r.scrollIntoView({block:'center'});}")
             pg.wait_for_timeout(900)

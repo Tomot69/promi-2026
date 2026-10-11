@@ -4689,6 +4689,9 @@ window._tenirInit = function(){ try{
     return { x: t.clientX - r.left, y: t.clientY - r.top };
   }
   function vibrer(ms){ try{ if(navigator.vibrate) navigator.vibrate(ms); }catch(_){ } }
+  window._traitRegle = window._traitRegle || {MIN:60};
+  var xMaxGeste = 0;
+  function _avanceGeste(){ var r = cv.getBoundingClientRect(), ech = (r.width / (cv.offsetWidth || 390)) || 1; return (xMaxGeste - x0Geste) / ech; }
 
   function debut(e){
     var p = pos(e), B = bornes();
@@ -4700,7 +4703,7 @@ window._tenirInit = function(){ try{
     /* ⚑ v141 (Tom, 10 oct. 2026, C-095) : « la main part du milieu, là où s'arrête la moitié plantée, et suit les points jusqu'au bout ».
        Le geste part donc AUSSI du milieu (avant : du tiers gauche seulement — tracer la seconde moitié seule ne tenait pas, mesuré). */
     if(p.x > W/2 + 44) return;
-    x0Geste = p.x;
+    x0Geste = p.x; xMaxGeste = p.x;
     actif = true; arrive = false; lent = false; lentMs = 0;
     var _t0 = e.touches ? e.touches[0] : e;
     yEcran = _t0.clientY;
@@ -4752,7 +4755,14 @@ window._tenirInit = function(){ try{
        impossible. Le couloir occupe toute la hauteur. */
     /* on valide des les DEUX TIERS parcourus : exiger le dernier pixel
        rendait le geste anxieux. Deux tiers, c'est deja franc et voulu. */
-    if(!arrive && p.x > Math.max(B.a.x + (B.b.x - B.a.x) * 0.66, Math.min(x0Geste + W*0.30, W-52))){   /* v141 : parti du milieu, il faut aller presque au bout (30 % de la largeur au moins) */
+    /* ⚑ v143 (Tom, 12 oct. 2026, C-107) — « VALIDER UN TRAIT : AU MOINS 1 CM. Un trait ne compte que si le doigt a avancé d'au moins 60 pt le
+       long du trait. En dessous, c'est un faux contact : le trait revient à son état d'avant. Un geste court et rapide de plus de 60 pt
+       reste accepté. » UNE SEULE RÈGLE, pour tenir comme pour planter (`window._traitRegle.MIN`) : l'avancée du doigt, de là où il s'est posé
+       jusqu'au plus loin où il est allé, en points de l'appareil (l'écran peut être réduit : on divise par l'échelle). Les trois voies
+       d'avant sont retirées — « deux tiers du trait », « la moitié de la zone », et surtout « un geste LENT de plus de six points »,
+       qui validait un doigt simplement posé. */
+    if(p.x > xMaxGeste) xMaxGeste = p.x;
+    if(!arrive && _avanceGeste() >= window._traitRegle.MIN){
       arrive = true; vibrer(14);
       if(lab) lab.textContent = 'PAROLE TENUE !';
       try{ zone.classList.add('atteint'); }catch(_){}
@@ -4765,9 +4775,9 @@ window._tenirInit = function(){ try{
     actif = false;
     /* trois voies : on est arrive, ou on a ecrit, ou on a parcouru
        une bonne moitie de la zone. Rien ne doit echouer par surprise. */
-    var parcouru = 0;
-    if(pts.length > 1) parcouru = pts[pts.length-1].x - pts[0].x;
-    if(arrive || (lent && pts.length > 6) || parcouru > W * 0.5){
+    var _av = _avanceGeste(), _ok = _av >= window._traitRegle.MIN;
+    try{ window._traitDernier = {quoi:'tenir', avance:Math.round(_av*10)/10, ok:_ok}; if(_ok){ localStorage.setItem('geste_vu_tenir','1'); localStorage.setItem('geste_vu_chiche','1'); } }catch(_){ }
+    if(_ok){
       /* la parole est tenue : on garde la trace et on bascule le statut */
       try{ window._traceTenir = pts.slice();
         if(typeof cur !== 'undefined' && cur) cur.trace = pts.slice();
@@ -7203,6 +7213,8 @@ function shareToile(g,W,H){
   if(TL&&TL.canvas){
     var src=TL.canvas();
     try{var _wL=(typeof _sealDark!=='undefined')?!_sealDark:null;var _dL=(function(){var d=document.getElementById('device');return !!(d&&d.classList.contains('light'));})();
+    /* ⚑ v143 (Tom, C-105) : l'image partagée de la Toile prend LE THÈME DE L'APP. Elle suivait `_sealDark` — sombre par défaut, réglé par des boutons (`#sealTheme`) qui ne sont plus à l'écran (0 × 0) : une app claire partageait une Toile sur fond noir. */
+    _wL=_dL;
     /* on rend TOUJOURS par Toile.preview() avec surcharge : le canvas vivant peut
        porter un theme perime, et c'est ce qui empechait le repeint au retour. */
     if(_wL!==null&&TL.preview){
@@ -7243,7 +7255,7 @@ function shareToile(g,W,H){
            Deux noms pour une meme intention — on lit la source du bouton. */
         try{ window._shLabels=(window.shLabels===undefined)?true:!!window.shLabels; }catch(_l){}
         var _D9=window._toileDPR?window._toileDPR():2;   /* ⚑ v16 : la densité de la Toile, pas ×2 en dur */
-        try{ if(TL.renderTo) _fait=TL.renderTo(_tc9,_ech9,_wL); }catch(_r){}
+        try{ if(TL.renderTo) _fait=TL.renderTo(_tc9,_ech9,_wL,{vue:true}); }catch(_r){}   /* v143 (C-105) : l'image partagée est la Toile telle qu'on la voit */
         try{ window._shLabels=undefined; }catch(_l2){}
         if(!_fait){
           _tc9.width=Math.max(2,Math.round(W*_D9));_tc9.height=Math.max(2,Math.round(H*_D9));
@@ -7255,7 +7267,7 @@ function shareToile(g,W,H){
       }
       src=_tc9;}}catch(e){}
     if(src&&src.width&&src.height){
-      var lightT=(typeof _sealDark!=="undefined")?!_sealDark:(TL.isLight?TL.isLight():true);
+      var lightT=(function(){var d=document.getElementById('device');return !!(d&&d.classList.contains('light'));})();   /* v143 (C-105) : le thème de l'app */
       g.clearRect(0,0,W,H);
       /* le decoupage arrondi doit venir AVANT le fond : sinon le fond
          remplit les coins et l'arrondi ne se voit pas. */
@@ -12756,11 +12768,14 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
       }
     }
     function pos(e){ var r=cv.getBoundingClientRect(); var t=e.touches?e.touches[0]:e; return { x:t.clientX-r.left, y:t.clientY-r.top }; }
+    var _x0=0,_xm=0; function _av(){ var r=cv.getBoundingClientRect(), ech=(r.width/(cv.offsetWidth||390))||1; return (_xm-_x0)/ech; }
     function debut(e){ if(!g) taille(); var p=pos(e),B=bornes(); if(p.x>B.a.x+130) return;
+      _x0=p.x; _xm=p.x;   /* v143 (C-107) : l'avancée du doigt se compte de là où il s'est posé */
       actif=true; arrive=false; pts=[{x:B.a.x,y:B.a.y}]; if(Math.hypot(p.x-B.a.x,p.y-B.a.y)>6)pts.push(p);
       zone.classList.add('ouvert'); peindre(); if(e.preventDefault)e.preventDefault(); }
     function bouge(e){ if(!actif) return; var p=pos(e); pts.push(p); var B=bornes();
-      if(!arrive && p.x>B.a.x+(B.b.x-B.a.x)*0.66){ arrive=true; try{ if(navigator.vibrate)navigator.vibrate(14); }catch(_){}}
+      if(p.x>_xm) _xm=p.x;
+      if(!arrive && _av()>=(window._traitRegle||{MIN:60}).MIN){ arrive=true; try{ if(navigator.vibrate)navigator.vibrate(14); }catch(_){}}   /* v143 (C-107) : 60 pt d'avancée, la même règle que « tenir » */
       peindre();
       /* LE DOIGT PUBLIE SA POSITION. Sur la page +, la surface où l'on trace est L'ONDE
          (§5, cadres 29-30 « Le geste · pendant ») : le plein va de 0 à la position du
@@ -12770,8 +12785,8 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
         if(window._ppTout) _ppTout(); }catch(_){}
       if(e.preventDefault)e.preventDefault(); }
     function fin(){ if(!actif) return; actif=false;
-      var parcouru=pts.length>1?pts[pts.length-1].x-pts[0].x:0;
-      var ok=arrive||parcouru>W*0.5;
+      var _a=_av(), ok=_a>=(window._traitRegle||{MIN:60}).MIN;   /* v143 (C-107) : en dessous de 60 pt c'est un faux contact, rien n'est planté */
+      try{ window._traitDernier={quoi:'planter', avance:Math.round(_a*10)/10, ok:ok}; if(ok) localStorage.setItem('geste_vu_planter','1'); }catch(_){}
       zone.classList.remove('ouvert');
       if(ok){ try{ if(navigator.vibrate)navigator.vibrate([12,40,26]); }catch(_){}
         /* bug (d) : le geste plantait TOUJOURS un Promi (#addPromi) — une Nuée ou un
@@ -14500,7 +14515,12 @@ var CREMEETAT='#F7F0DE';
       if(aMot){ e.base=286; e.amp=36; e.carte=true; } else { e.base=400; e.amp=36; }  /* +24 */
     } else if(chiche && !duo){                          /* Chiche · lancé — rien n'est dû */
       /* ⚑ v29 (Tom, Q310) : « LANCÉ » suit la règle des états, comme un Promi en cours. Le trait garde sa nature. */
-      e.col=clair; e.colTexte=(light?ENCOURS:CREMEETAT); e.trace=(p&&p.who?p.who:'elle')+' tracera sa part si elle ose';
+      e.col=clair; e.colTexte=(light?ENCOURS:CREMEETAT); /* ⚑ v143 (Tom, Q463, C-108) : « un Chiche lancé à soi ne parle jamais de soi à la troisième personne. Libellé : TRACE POUR LANCER. » */
+      var _cq=(''+((p&&p.who)||'')).trim(), _cs=(!_cq || /^(moi|soi|toi)$/i.test(_cq));
+      /* à plusieurs, la phrase disait « RACHEL, MARION TRACERA SA PART SI ELLE OSE » (un singulier sur une liste) : « chacun tracera sa part s'il ose »
+         — mot manquant, le plus sobre, à valider (QUESTIONS). À une personne, la phrase d'origine reste. */
+      var _cp=/,|\+|\bet\b/.test(_cq);
+      e.trace=_cs ? 'trace pour lancer' : (_cp ? 'chacun tracera sa part s\u2019il ose' : (_cq+' tracera sa part si elle ose'));
     } else if(p && p.status==='rate'){                  /* à tenir · Chiche relevé */
       /* ⚑ 22 sept. (Tom) : « à tenir » s'écrit #DD4D23, dans les deux thèmes — il tombait
          à l'encre en mode clair. Mesuré : Δlum 65 sur la crème, il s'y lit. */
@@ -15690,7 +15710,8 @@ var CREMEETAT='#F7F0DE';
     /* v124 : pendant l'animation « tenir », la fiche vient d'être posée dans son état d'instant — les deux passes différées (trois
        poses de plus, 26 ms dans l'image suivante) ne rattrapent rien : l'animation repose elle-même ce qui change. */
     if(window._tenirAnime) return;
-    try{ requestAnimationFrame(function(){ requestAnimationFrame(function(){ tout(); tout(); }); }); }catch(e){} };
+    /* v143 (C-102) : une pose par image (les deux dans la même image : 23 à 30 ms de travail, 1,9 s après « tenir » et à chaque ouverture de fiche) */
+    try{ window._posesEnCours=(window._posesEnCours||0)+1; requestAnimationFrame(function(){ requestAnimationFrame(function(){ try{ tout(); }catch(_){} requestAnimationFrame(function(){ try{ tout(); }catch(_){} window._posesEnCours=Math.max(0,(window._posesEnCours||1)-1); }); }); }); }catch(e){ window._posesEnCours=0; } };
   var _ref=window.dpRefresh;
   if(_ref){ window.dpRefresh=function(){ _ref.apply(this,arguments); tout(); }; }
   var _rn=window.renderNueeDetail;
@@ -19957,8 +19978,13 @@ var CREMEETAT='#F7F0DE';
     if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')){ window._instant=null; finAnime(); return; }
     /* le clic vient de repeindre la fiche dans cet état (l'instant était armé en capture) : on ne repose que si ce n'est pas fait */
     var _deja=(window._instant==='referme' && dp.classList.contains('inst-referme') && window._instDalle);
-    window._instant='referme'; window._tenirAnime=true;
-    if(!_deja){ window._instDalle=false; rejoue(); }
+    window._instant='referme'; window._tenirAnime=true; window._tenirCorpsFait=false;
+    if(!_deja){ window._instDalle=false;
+      if(window._tenirLeve){ window._tenirLeve=0;
+        try{ dp.classList.remove('f-atenir','f-encours','f-brouillon'); dp.classList.add('f-tenue'); }catch(_){}
+        try{ if(window._ficheCotes) _ficheCotes(); }catch(_){}
+        requestAnimationFrame(function(){ try{ if(window._instant && window._ficheTrait) _ficheTrait(); }catch(_){} });
+      } else rejoue(); }
     var t0=performance.now(), apres=false, vu={};
     (function img(){
       var t=performance.now()-t0;
@@ -19968,9 +19994,11 @@ var CREMEETAT='#F7F0DE';
         if(dt>=ms && !vu[k]){ vu[k]=1; if(!window._instDalle) rejoue(); } });
       /* le CONTENU de la fiche (les Noyaux du nouvel état) se remplit dans une image calme de la seconde d'amande — rien ne bouge alors
          à l'écran — pour que « juste après » trouve ses Noyaux justes ; la pose complète, elle, attend la fin (`_tenirApres`) */
-      if(!vu.base && t>=320 && !apres){ vu.base=1; try{ if(window._tenirCorps) window._tenirCorps(); }catch(_){}
+      if(!vu.base && t>=320 && !apres){ vu.base=1; try{ if(window._tenirCorps){ window._tenirCorps(); window._tenirCorpsFait=true; } }catch(_){}
         try{ if(window._instant==='referme') cache(document.getElementById('dAura')); }catch(_){} }   /* le contenu seul (titre, Noyaux du nouvel état), sans la pose ; les Noyaux restent cachés jusqu'à « juste après » */
-      if(!apres && t>=1000){ apres=true; if(window._instant==='referme'){ window._instant='apres'; window._instDalle=false; rejoue(); } }
+      if(!apres && t>=1000){ apres=true; if(window._instant==='referme'){ window._instant='apres'; window._instDalle=false;
+          /* v143 (C-102) : les cotes dans cette image, le trait dans la suivante (les deux ensemble : 12 à 15 ms + 5 de mise en page, une image de 20 à 23 ms) */
+          try{ if(window._ficheCotes) _ficheCotes(); }catch(_){} requestAnimationFrame(function(){ try{ if(window._instant && window._ficheTrait) _ficheTrait(); }catch(_){} }); } }
       if(t<1700) requestAnimationFrame(img); else finAnime();
     })();
     setTimeout(finAnime, 3000);            /* garde-fou : rien ne reste suspendu si l'affichage s'arrête (onglet caché) */
@@ -30840,7 +30868,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   /* ⚑ v139 (C-083) — LA FORME RÉELLE DU CONTACT. Safari donne, sur l'événement de toucher, `radiusX`, `radiusY` et `rotationAngle` ;
      l'événement de pointeur donne `width` et `height`. On prend le toucher quand il est là (TCH, tenu à jour par `touchstart` /
      `touchmove`), sinon le pointeur, sinon le pouce. Le grand axe du contact oriente l'empreinte tant que le doigt ne glisse pas. */
-  var TCH={rx:0, ry:0, rot:0, t:0};
+  var TCH={rx:0, ry:0, rot:0, t:0, f:0};
   /* v142 — avec `?mesure=1`, la ligne « contact lu » EN DIRECT, à chaque lecture (elle n'était réécrite qu'avec le relevé, une fois par seconde) */
   function mesContact(){ if(!MES) return; try{ var n=document.getElementById('auMesContact'); if(!n){ n=document.createElement('div'); n.id='auMesContact';
         n.style.cssText='position:absolute;left:12px;top:104px;z-index:60;margin:0;padding:4px 8px;max-width:366px;pointer-events:none;font:500 12px/1.3 Atkinson,system-ui;background:#201908;color:#F7F0DE;-webkit-text-fill-color:#F7F0DE;border-radius:8px';
@@ -30848,7 +30876,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       n.textContent='contact lu : '+(window._peloteContact||'—'); n.style.display=document.getElementById('auraScreen').classList.contains('show')?'block':'none'; }catch(_){ } }
   function lisTouche(ev){ var t=ev.touches&&ev.touches[0]; if(!t) return;
     var rx=+(t.radiusX||t.webkitRadiusX||0), ry=+(t.radiusY||t.webkitRadiusY||0); if(!(rx>1 && ry>1)){ TCH.t=0; return; }
-    TCH.rx=rx; TCH.ry=ry; TCH.rot=+(t.rotationAngle||t.webkitRotationAngle||0)||0; TCH.t=performance.now(); }
+    TCH.rx=rx; TCH.ry=ry; TCH.rot=+(t.rotationAngle||t.webkitRotationAngle||0)||0; TCH.t=performance.now(); TCH.f=+(t.force||t.webkitForce||0)||0; }
   function doigt(e){
     var a=PULPE.pouce[0]/2.2/K.Rpt, elp=PULPE.pouce[1], ax=[0.62,-0.72,0], cap=false, s=echelle(), rx=0, ry=0, rot=null;   /* v142 : sans capteur, un pouce à sa taille (21 pt), plus 2,2 fois */
     if(TCH.t && performance.now()-TCH.t<400){ rx=TCH.rx/s; ry=TCH.ry/s; rot=TCH.rot*Math.PI/180; if(ry>rx){ var _t=rx; rx=ry; ry=_t; rot+=Math.PI/2; } cap=true; }
@@ -30867,6 +30895,16 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   /* v142 — le rayon du contact EN TRAVERS d'un geste (dx, dy à l'écran), en radians sur la boule : la demi-largeur de l'ellipse de contact
      (rx ≥ ry, grand axe à `rot`) vue perpendiculairement au geste. Sans capteur (souris) : la pulpe du pouce. Jamais moins d'un point. */
   function contactRayons(){ var rx=EMP&&EMP.rx, ry=EMP&&EMP.ry; if(!(rx>0&&ry>0)){ rx=PULPE.pouce[0]/2.2; ry=rx*PULPE.pouce[1]; }   /* sans capteur : un pouce (21 × 15 pt — la pulpe de la planche, sans son ancien multiplicateur) */ return [rx, ry, (EMP&&EMP.rot)||0]; }
+  /* ⚑ v143 (Tom, 12 oct. 2026, C-083) — « Les poils se couchent davantage quand l'appui dure ou s'appuie, moins quand on effleure. Aucune forme
+     enregistrée d'avance : tout se calcule à partir des points et de la largeur de contact réellement lus. » L'INTENSITÉ d'un segment (`f` :
+     de combien les poils se couchent et se lustrent, 0,25 à 1) vient de ce qui est LU à cet instant : la LENTEUR du doigt (il traîne, 60 pt/s et moins : 1 ; il
+     effleure vite, 500 pt/s et plus : 0) et l'APPUI (la force quand l'écran la donne ; sinon la taille du contact — un doigt qui appuie
+     s'écrase : 7 pt de rayon → 0, 16 pt → 1). Un appui immobile : sa durée (0,2 s → 1,2 s). Avant, chaque segment valait 0,9, quoi qu'on fasse.
+     ⚠ Sans capteur de contact (une souris), la largeur est celle d'un pouce (21 × 15 pt) — le seul nombre qui ne soit pas lu. */
+  function intensite(vit, duree){ /* la force n'est crue que si elle VARIE : un écran sans capteur de pression rend 0, ou 1, tout le temps */
+    var c=contactRayons(), ap=Math.max((TCH.f>0.02&&TCH.f<0.98)?TCH.f:0, Math.max(0, Math.min(1, (c[0]-7)/9)));
+    var lent=(vit==null)?Math.max(0, Math.min(1, ((duree||0)-200)/1000)):Math.max(0, Math.min(1, 1-(vit-60)/440));
+    return Math.max(0.25, Math.min(1, 0.25+0.45*lent+0.30*ap)); }
   function contactTravers(dx, dy){ var c=contactRayons(), m=Math.sqrt(dx*dx+dy*dy)||1, nx=-dy/m, ny=dx/m, ca=Math.cos(c[2]), sa=Math.sin(c[2]);
     var u=nx*ca+ny*sa, w=-nx*sa+ny*ca; return Math.max(1, Math.sqrt(c[0]*c[0]*u*u+c[1]*c[1]*w*w))/K.Rpt; }
   /* v142 — « Un appui immobile laisse la forme du contact, à sa taille réelle » : un segment le long du grand axe du contact, long de la
@@ -30876,7 +30914,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     var ax=EMP.ax||[1,0,0], t=nrm([ax[0], ax[1], 0]); if(!(c[0]>c[1]*1.05)) t=[1,0,0];
     /* deux points de la boule de part et d'autre du centre du contact, le long du grand axe (à l'écran) */
     var p1=nrm([EMP.c[0]-t[0]*demi, EMP.c[1]-t[1]*demi, EMP.c[2]]), p2=nrm([EMP.c[0]+t[0]*demi, EMP.c[1]+t[1]*demi, EMP.c[2]]);
-    var g=arc(versObjet(p1), versObjet(p2)); g.w=Math.max(1,c[1])/K.Rpt; g.vif=DG.geste; g.m=o0; g.appui=1;
+    var g=arc(versObjet(p1), versObjet(p2)); g.w=Math.max(1,c[1])/K.Rpt; g.vif=DG.geste; g.m=o0; g.appui=1; g.f=intensite(null, EMP.tp?(performance.now()-EMP.tp):600);   /* v143 : plus l'appui dure, plus les poils se couchent */
     var av=TRACES; TRACES=TRACES.concat([g]).slice(-G.TRACES); TVER++; retouche(av, TRACES); return true; }catch(_){ return false; } }
   function empSuit(e, v){
     if(!EMP || EMP.tr!==0 || !v) return;
@@ -30905,7 +30943,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       var v=surBoule(e.clientX, e.clientY);
       if(v){ var f=doigt(e);
         var _q0=0; if(EMP && EMP.q>0 && EMP.comble<1e-6){ var _c0=EMP.c, _dd=Math.hypot(v[0]-_c0[0], v[1]-_c0[1], v[2]-_c0[2]); if(_dd<EMP.a*0.6) _q0=Math.min(0.98, EMP.q); }   /* v139 : on rappuie au même endroit — on repart de la profondeur en cours, sans saut */
-        EMP={c:v, ax:f.ax, a:f.a, el:f.el, el0:f.el, dmax:f.dmax, p:Math.pow(_q0,1.5), q:_q0, t0:performance.now()-1000*G.ENF_TAU*(1/Math.sqrt(1-_q0)-1), tr:0, pRel:0, qRel:0, comble:0, lx:e.clientX, ly:e.clientY, gl:0, rx:f.rx, ry:f.ry};
+        EMP={c:v, ax:f.ax, a:f.a, el:f.el, el0:f.el, dmax:f.dmax, p:Math.pow(_q0,1.5), q:_q0, t0:performance.now()-1000*G.ENF_TAU*(1/Math.sqrt(1-_q0)-1), tr:0, pRel:0, qRel:0, comble:0, lx:e.clientX, ly:e.clientY, gl:0, rx:f.rx, ry:f.ry, tp:performance.now()};
         DG.tr0=versObjet(v); DG.trN=DG.tr0;
       } else { DG.tr0=null; DG.trN=null; }
       DG.chem=[{x:e.clientX, y:e.clientY}]; DG.geste=(DG.geste||0)+1; DG.vifs=0; DG.tPose=0; DG.dernEv=null; DG.oPrec=null; DG.ePrec=null;   /* v141 : le dernier point où la trace a été posée, et le numéro du geste */
@@ -30959,10 +30997,11 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
          large du contact lu à cet instant (son rayon EN TRAVERS du geste, `radiusX` / `radiusY`, sans multiplicateur ni borne), inscrit
          aussitôt. Le chemin RÉEL du doigt sur la fourrure : court si le geste est court, fin si le doigt effleure. */
       if(v && EMP && EMP.tr===0 && DG.chem){ var _oc=versObjet(v);
-        if(!DG.oPrec){ DG.oPrec=_oc; DG.ePrec={x:e.clientX, y:e.clientY}; }
+        if(!DG.oPrec){ DG.oPrec=_oc; DG.ePrec={x:e.clientX, y:e.clientY, t:(e.timeStamp||performance.now())}; }
         else { var _an=angle(DG.oPrec,_oc);
-          if(_an>=0.035){ /* v142 : un segment tous les 4 pt de boule (0,02 d'abord : la cadence sous le doigt passait de p95 22 à 25 ms, mesuré) */ var _g=arc(DG.oPrec,_oc); _g.w=contactTravers(e.clientX-DG.ePrec.x, e.clientY-DG.ePrec.y); _g.vif=DG.geste; _g.m=nrm([DG.oPrec[0]+_oc[0], DG.oPrec[1]+_oc[1], DG.oPrec[2]+_oc[2]]);
-            var _av=TRACES; TRACES=TRACES.concat([_g]).slice(-G.TRACES); TVER++; retouche(_av, TRACES); DG.vifs=(DG.vifs||0)+1; DG.oPrec=_oc; DG.ePrec={x:e.clientX, y:e.clientY}; } } }
+          if(_an>=0.035){ /* v142 : un segment tous les 4 pt de boule (0,02 d'abord : la cadence sous le doigt passait de p95 22 à 25 ms, mesuré) */ var _g=arc(DG.oPrec,_oc); _g.w=contactTravers(e.clientX-DG.ePrec.x, e.clientY-DG.ePrec.y); _g.vif=DG.geste;
+            var _dt=Math.max(1,(e.timeStamp||performance.now())-(DG.ePrec.t||0)), _ds=Math.hypot(e.clientX-DG.ePrec.x, e.clientY-DG.ePrec.y)/echelle(); _g.f=intensite(DG.ePrec.t?_ds/_dt*1000:300);   /* v143 : l'intensité lue (lenteur, appui) */ _g.m=nrm([DG.oPrec[0]+_oc[0], DG.oPrec[1]+_oc[1], DG.oPrec[2]+_oc[2]]);
+            var _av=TRACES; TRACES=TRACES.concat([_g]).slice(-G.TRACES); TVER++; retouche(_av, TRACES); DG.vifs=(DG.vifs||0)+1; DG.oPrec=_oc; DG.ePrec={x:e.clientX, y:e.clientY, t:(e.timeStamp||performance.now())}; } } }
       if(v){
         if(EMP && EMP.tr===0){ EMP.c=v; empSuit(e, v); }
         var o=versObjet(v);
@@ -31100,7 +31139,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       ch59:PEL.ch59||null, ch59seuils:[DE_PLANCHER, DE_VISE], ch59mesure:PEL.ch59mesure||null}; },
     relisse:relisse, K:K, G:G, PALIERS:PALIERS, MOTS:MOTS,
     /* v140 : pour les juges — les traces (posées et en attente), chacune avec sa largeur et ses deux bouts dans l'objet */
-    tracesGeo:function(){ return TRACES.concat(ATTENTE).map(function(t){ var c=Math.cos(t.L), s=Math.sin(t.L); return {a:t.a, b:[t.a[0]*c+t.d[0]*s, t.a[1]*c+t.d[1]*s, t.a[2]*c+t.d[2]*s], L:t.L, w:t.w, et:t.et?1:0}; }); },
+    tracesGeo:function(){ return TRACES.concat(ATTENTE).map(function(t){ var c=Math.cos(t.L), s=Math.sin(t.L); return {a:t.a, b:[t.a[0]*c+t.d[0]*s, t.a[1]*c+t.d[1]*s, t.a[2]*c+t.d[2]*s], L:t.L, w:t.w, f:t.f, et:t.et?1:0}; }); },
     /* pour le juge : poser la phrase i (null = celle des données) et recalculer la colonne */
     mot:function(i){ if(!CAD || CAD.classList.contains('au-vide')) return null;
       MOT.textContent = (i===null||i===undefined) ? (D.n>0 ? MOTS[D.n % MOTS.length] : VIDE[0])
@@ -32239,8 +32278,15 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
      Et même avec `requestIdleCallback`, un rappel qui ne regarde pas son échéance occupe le fil 100 ms d'affilée.
      Donc : une tranche n'est rendue que si la Toile est AU REPOS (son moteur ne tourne pas) et qu'aucun doigt n'a touché
      l'écran depuis 700 ms ; sinon elle est remise à plus tard. */
-  var _toucheA=0; try{ ['pointerdown','touchstart','wheel','keydown'].forEach(function(t){ document.addEventListener(t,function(){ _toucheA=performance.now(); },{capture:true,passive:true}); }); }catch(_){ }
-  function _auRepos(){ try{ var st=window.Toile_state&&window.Toile_state(); if(st&&st.running) return false; }catch(_){ } if(window._tEcran && performance.now()-window._tEcran<2500) return false; return performance.now()-_toucheA>700; }   /* ⚑ v100 : et pas dans les 2,5 s d'un changement d'écran */
+  var _toucheA=0; try{ ['pointerdown','touchstart','wheel','keydown','touchmove','touchend','pointerup'].forEach(function(t){ document.addEventListener(t,function(){ _toucheA=performance.now(); },{capture:true,passive:true}); }); }catch(_){ }
+  function _auRepos(){ try{ var st=window.Toile_state&&window.Toile_state(); if(st&&st.running) return false; }catch(_){ } if(window._tEcran && performance.now()-window._tEcran<2500) return false;
+    /* ⚑ v143 (Tom, 12 oct. 2026, C-102 — RÉCIDIVE : « tenir n'est pas fluide au lever, sur mon iPhone »). LA CAUSE, mesurée sur le banc WebKit :
+       cette tâche de fond (une dalle de la collection de l'écran qui vend, 90 ms) passe par `requestIdleCallback` — QUI N'EXISTE PAS DANS
+       SAFARI. Là, elle tombait par simple minuteur, toutes les 420 ms : à 620, 1 070 et 1 500 ms après le lever, en plein dans l'animation
+       de « tenir » (images de 40 à 105 ms). Chromium a `requestIdleCallback` : `redteam_fluide` ne pouvait pas la voir. Elle attend
+       maintenant un vrai calme : 3 s sans aucun toucher (le lever compris), aucune animation de « tenir » en cours ni finie depuis moins de 6 s. */
+    if(window._tenirAnime || window._instant || (window._tenirFinT && performance.now()-window._tenirFinT<6000)) return false;
+    return performance.now()-_toucheA>3000; }   /* ⚑ v100 : et pas dans les 2,5 s d'un changement d'écran */
   function fond(j){
     if(j!=null && j!==JETON) return;                 /* une chaîne plus récente a pris la main */
     if(!_auRepos()){ var _mj=(j==null?JETON:j); setTimeout(function(){ planifie(_mj, 0); }, 350); return; }   /* v44 */
@@ -33037,6 +33083,20 @@ window._petiteToile=function(g,A,Lr,ids){ try{
 /* centres 70 · 124 | 266 · 320 en cotes d'écran ; le panneau commence à 24 + 2 de trait : left = centre − 45 − 26 */
 #device .acc-barre #studioBtn{left:-1px!important} #device .acc-barre #souffleBtn{left:53px!important}
 #device .acc-barre #indexBtn{left:195px!important} #device .acc-barre #filBtn{left:249px!important}
+/* ⚑ v143 (Tom, 12 oct. 2026, C-106 : « toucher STUDIO ouvre parfois l'Aura ») — LA CAUSE : chaque entrée fait 90 pt de large pour des centres
+   à 54 pt l'un de l'autre : STUDIO (x 25 → 115) et AURA (79 → 169) se chevauchaient de 36 pt, et AURA, venue après, était au-dessus — la
+   moitié droite du mot STUDIO ouvrait l'Aura (de même INDEX / FIL). Chaque entrée fait maintenant 54 pt : les zones se touchent sans se
+   recouvrir (43 → 97 → 151 ; 239 → 293 → 347), et prennent toute la hauteur intérieure de la barre. L'icône et le mot ne bougent pas. */
+#device#device .acc-barre #studioBtn{left:17px!important} #device#device .acc-barre #souffleBtn{left:71px!important}
+#device#device .acc-barre #indexBtn{left:213px!important} #device#device .acc-barre #filBtn{left:267px!important}
+#device#device .acc-barre #studioBtn,#device#device .acc-barre #souffleBtn,#device#device .acc-barre #indexBtn,#device#device .acc-barre #filBtn{width:54px!important;overflow:visible!important}
+#device#device .acc-barre #studioBtn::after,#device#device .acc-barre #souffleBtn::after,#device#device .acc-barre #indexBtn::after,#device#device .acc-barre #filBtn::after{content:"";position:absolute;left:0;right:0;top:-20px;bottom:-22px}
+#device#device .acc-barre #filDot{left:34px!important}
+/* la frontière entre deux entrées passe AU MILIEU DE CE QU'ON VOIT d'elles, pas au milieu de leurs centres : le mot STUDIO finit à 96, l'icône
+   d'AURA commence à 110 — la zone de STUDIO déborde de 5 pt (jusqu'à 102) et passe devant ; INDEX (jusqu'à 285) / FIL (dès 306) : 3 pt.
+   (Mesuré : 48 touchers sur 50 quand la frontière était à 97, à un point du mot.) */
+#device#device .acc-barre #studioBtn,#device#device .acc-barre #indexBtn{z-index:2!important}
+#device#device .acc-barre #studioBtn::after{right:-5px} #device#device .acc-barre #indexBtn::after{right:-3px}
 #device .acc-barre #filDot{position:absolute!important;left:52px!important;top:-2px!important;width:10px!important;height:10px!important;border-radius:50%!important;border:2px solid var(--c-brun09)!important}
 #device.light .acc-barre #filDot{border-color:var(--c-creme95)!important}
 /* le + : 68, sur la ligne des entrées, TOUJOURS un +. L'anneau est son bord (tenu menthe · en cours periwinkle · à tenir terracotta). */
@@ -34831,7 +34891,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      sans flash possible. */
   var _rpDemande = false;
   function repasse(){ if(window._tenirAnime) return;   /* v124 : pas pendant l'animation « tenir » — elle repasse à la fin (`finAnime`) */
-    if(_rpDemande) return; _rpDemande = true; requestAnimationFrame(function(){ _rpDemande = false; repasseVraie(); }); }
+    if(_rpDemande) return; _rpDemande = true; var _n=0; requestAnimationFrame(function att(){ if(window._posesEnCours && ++_n<8){ requestAnimationFrame(att); return; }   /* v143 (C-102) : elle laisse passer les poses différées (une par image) et garde le dernier mot, dans sa propre image */
+      _rpDemande = false; repasseVraie(); }); }
   window._repasseSombre = repasseVraie;
   /* ⚠ DEUX PROPRIÉTAIRES POUR UNE MÊME PROPRIÉTÉ (§7) — ET ON L'A PAYÉ ICI.
      `data-amande` était bien posé, et la couleur revenait quand même au vert profond :
@@ -36828,7 +36889,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 
   /* l'ancien parcours ne peint plus rien sur la Toile */
   window.obFill=function(){};
-  window.obReplay=function(){ try{ if(typeof closeAll==='function') closeAll(); document.querySelectorAll('.screen.show').forEach(function(e){e.classList.remove('show');}); }catch(_){}
+  window.obReplay=function(){ try{ if(window.GesteFantome && GesteFantome.oublierTout) GesteFantome.oublierTout(); }catch(_){}   /* v143 (C-109) : revoir la présentation rend aussi les gestes */
+    try{ if(typeof closeAll==='function') closeAll(); document.querySelectorAll('.screen.show').forEach(function(e){e.classList.remove('show');}); }catch(_){}
     demarrer(true); };
   window.obFinish=terminer;
   /* ⚑ v23 (Tom, 22 sept.) — « Le panneau doit apparaître à la fin de l'onboarding, et TANT QU'AUCUN
@@ -38035,9 +38097,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   window.renderDetail=function(){
     if(window._tenirAnime && window._instant==='referme' && !remise){
       remise=true;
-      try{ var dp=document.getElementById('detailPoster');
-        if(dp){ dp.classList.remove('f-atenir','f-encours','f-brouillon'); dp.classList.add('f-tenue'); } }catch(_){}
-      try{ if(window._ficheCotes) window._ficheCotes(); if(window._ficheTrait) window._ficheTrait(); }catch(_){}
+      /* ⚑ v143 (Tom, C-102 — RÉCIDIVE) : LA TÂCHE DU LEVER NE POSE PLUS RIEN. Mesuré sur le banc WebKit : les cotes et le trait de l'instant
+         coûtaient 10 à 19 ms DANS la tâche du lever du doigt (image de 30 à 39 ms). L'instant est posé à l'image suivante
+         (`_instantTenue`) : l'état et les cotes dans une image, le trait dans la suivante. */
+      window._tenirLeve=1;
       return;
     }
     return _rd.apply(this,arguments);
@@ -38054,7 +38117,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var fin=[function(){ try{ if(window._repasseSombre) window._repasseSombre(); }catch(_){} }];
     if(!remise) return fin; remise=false;
     return [
-      function(){ if(la()) window._tenirCorps(); },
+      function(){ if(la() && !window._tenirCorpsFait) window._tenirCorps(); },   /* v143 (C-102) : déjà rempli à 320 ms, dans la seconde calme — le refaire ici coûtait 31 à 53 ms en une tâche, 60 ms après la fin de l'animation */
       function(){ if(la() && window._fichePoseBase) window._fichePoseBase(); },
       function(){ if(la() && window._lot7Fiche) window._lot7Fiche(); },
       function(){ if(la() && window._ficheTrait) window._ficheTrait(); },
@@ -38889,10 +38952,11 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue.',    /* les mots de Tom 
       for(var i=TR.de+1;i<P.length && L[i]<d;i++) dd+=' L'+P[i].x.toFixed(1)+' '+P[i].y.toFixed(1); dd+=' L'+q.x.toFixed(1)+' '+q.y.toFixed(1); TR.el.setAttribute('d',dd); TR.el.setAttribute('visibility','visible'); }
     var m=mainNoeud(s, enc, fond, 2.6/1.5*1.25); place(m, P[0].x, P[0].y, false);
     var AVANT=320, D=tot>6 ? (TR ? TRAJET : Math.max(900, Math.min(TRAJET, tot*8))) : 0, APRES=420, UN=AVANT+appui+D+APRES;
-    A={id:id, pts:P, main:m, t0:performance.now(), tours:0}; marque(id);
+    A={id:id, pts:P, main:m, t0:performance.now(), tours:0};   /* v143 (C-109) : le drapeau n'est plus posé à l'apparition, mais quand la main a fini son PREMIER passage (voir `image`) */
     function pos(u){ var d=u*tot, i=1; while(i<L.length-1 && L[i]<d) i++; var a=P[i-1], b=P[i]||a, seg=(L[i]-L[i-1])||1, f=Math.max(0,Math.min(1,(d-L[i-1])/seg)); return {x:a.x+(b.x-a.x)*f, y:a.y+(b.y-a.y)*f}; }
     function image(){ if(!A || A.id!==id) return; var t=performance.now()-A.t0;
-      if(t>=UN){ A.tours++; if(A.tours>=TOURS){ arrete(); repos=true; return; }   /* un geste par passage : le suivant attend le prochain toucher */
+      if(t>=UN){ A.tours++; if(A.tours===1) marque(id);   /* v143 : vue une fois en entier — avant, un toucher 0,1 s après son apparition la faisait disparaître pour toujours */
+        if(A.tours>=TOURS){ arrete(); repos=true; return; }   /* un geste par passage : le suivant attend le prochain toucher */
         vis(m,'hidden'); if(TR) TR.el.setAttribute('visibility','hidden');   /* le tracé s'efface quand elle part */ A.tm=setTimeout(function(){ if(!A || A.id!==id) return; A.t0=performance.now(); vis(m,'visible'); place(m, P[0].x, P[0].y, false); A.raf=requestAnimationFrame(image); }, PAUSE); return; }
       if(t<AVANT) place(m, P[0].x, P[0].y, t>AVANT*0.5);
       else if(t<AVANT+appui) place(m, P[0].x, P[0].y, true);
@@ -38901,6 +38965,14 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue.',    /* les mots de Tom 
       A.raf=requestAnimationFrame(image); }
     A.raf=requestAnimationFrame(image); return true; }
   function oublier(id){ try{ localStorage.removeItem(PRE+id); }catch(_){ } if(A && A.id===id) arrete(); }
+  /* ⚑ v143 (Tom, 12 oct. 2026, C-109 : « la main fantôme, introuvable pour Tom »). Au banc, par un vrai premier lancement (onboarding, guide,
+     fiche), elle paraît 2,1 à 2,25 s après le toucher qui ouvre la fiche, par les trois chemins du guide. CE QUI L'EMPÊCHAIT sur un téléphone
+     déjà utilisé : ① le drapeau `geste_vu_tenir`, posé depuis E1 (v139), survit aux versions — la main redessinée de v142 ne pouvait plus
+     paraître ; ② il était posé DÈS L'APPARITION : un toucher dans le dixième de seconde suivant la retirait pour toujours ; ③ « Revoir la
+     présentation » ne rendait pas les gestes. Parades : les drapeaux des gestes du trait sont oubliés UNE fois (`geste_v`) ; le drapeau se
+     pose à la fin du premier passage ; faire le geste soi-même le pose ; « Revoir la présentation » et `?guide=1` rendent tous les gestes. */
+  try{ if(localStorage.getItem('geste_v')!=='143'){ ['tenir','chiche','planter'].forEach(function(k){ localStorage.removeItem(PRE+k); }); localStorage.setItem('geste_v','143'); } }catch(_){ }
+  try{ if(/[?&]guide=1(&|$)/.test(location.search)) Object.keys(localStorage).forEach(function(k){ if(k.indexOf(PRE)===0) localStorage.removeItem(k); }); }catch(_){ }
   function oublierTout(){ repos=false; try{ Object.keys(localStorage).forEach(function(k){ if(k.indexOf(PRE)===0) localStorage.removeItem(k); }); }catch(_){ } arrete(); relance(); }
 
   /* ══ L'INVENTAIRE. `quand()` rend {cible, chemin} (points de l'ÉCRAN) quand le geste devient utile, sinon rien. ══ */
@@ -39116,7 +39188,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue.',    /* les mots de Tom 
           var fi=new File([u], nom, {type:(/^data:([^;]+)/.exec(src)||[])[1]||'image/png'}); if(navigator.canShare({files:[fi]})){ navigator.share({files:[fi]}).catch(function(){}); return true; } } }catch(_){ }
       telecharge(); return true; }catch(_){ return false; } }
   function toile(){ try{ var TL=window.Toile; if(!TL || !TL.renderTo) return false; var d=document.getElementById('device'), cv=document.createElement('canvas');
-      if(!TL.renderTo(cv, 3, !!(d && d.classList.contains('light')))) return false;
+      if(!TL.renderTo(cv, 3, !!(d && d.classList.contains('light')), {vue:true})) return false;   /* v143 (C-105) */
       return fichier(cv.toDataURL('image/png'), 'promi-toile.png'); }catch(_){ return false; } }
   window._enr={icone:ICO, fichier:fichier, toile:toile};
   function pose(){ var pl=document.getElementById('accPlat'); if(!pl) return false; if(document.getElementById('enrToile')) return true;
@@ -39252,144 +39324,179 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue.',    /* les mots de Tom 
 /* le guide */
 #device #guide{position:absolute;left:0;top:0;width:390px;height:844px;z-index:70;margin:0;padding:0;max-width:none;overflow:hidden;background:transparent}
 #device #guideFlou{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;
-  -webkit-backdrop-filter:blur(4.8px);backdrop-filter:blur(4.8px);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;will-change:clip-path}
+  -webkit-backdrop-filter:blur(4.8px);backdrop-filter:blur(4.8px)}
+/* v143 : les six formes — le flou des murs (constant), un bord doux (un dégradé radial en masque, posé une fois), et une transition sur `transform`
+   SEULE (posée en ligne) : c'est l'exception nommée à « aucune transition » — la technique dictée par Tom */
+#device #guide .gd-t{position:absolute;margin:0;padding:0;max-width:none;pointer-events:none;border-radius:50%;
+  -webkit-backdrop-filter:blur(4.8px);backdrop-filter:blur(4.8px);
+  -webkit-mask-image:radial-gradient(closest-side,var(--c-brun09) 74%,transparent 100%);mask-image:radial-gradient(closest-side,var(--c-brun09) 74%,transparent 100%);
+  will-change:transform;transform-origin:50% 50%}
 #device #guidePhrase{position:absolute;left:36px;width:318px;margin:0;padding:0;max-width:none;text-align:center;text-wrap:balance;pointer-events:none;
   font-family:var(--f-libelle);font-weight:700;font-size:30px;line-height:1.16;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95)}
 #device.light #guidePhrase{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
 #device #guideTard{position:absolute;left:145px;width:100px;height:44px;display:grid;place-items:center;margin:0;padding:0;border:0;background:transparent;cursor:pointer;
   font-family:var(--f-libelle);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95)}
 #device.light #guideTard{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
-#device #guide, #device #guide *{transition:none!important;animation:none!important}
+#device #guide, #device #guide *:not(.gd-t){transition:none!important;animation:none!important}
+#device #guide .gd-t{animation:none!important}
 /* ce qui reste net est « un peu plus gros » */
 /* v142 : l'agrandissement (15 % le Studio, 10 % le +) est posé EN LIGNE par le guide (lot-V141-GUIDE, `grossi`) — une règle ici ne gagnait pas partout */
 </style>
 <script id="lot-V141-GUIDE">
-/* ⚑ v141 (Tom, 10 oct. 2026, C-094) — LE GUIDE DE FIN DE PARCOURS. Il REMPLACE E2bis (le dévoilement de la barre, C-076) : la barre est complète
-   dès le départ. « Une seule fois, à la fin du premier parcours :
-     1 · on arrive sur l'accueil, la première dalle est visible ; après environ 0,8 s un flou couvre l'écran — la matière du flou des murs ; il
-         s'installe en zones abstraites, aux contours arty, qui se remplissent et se rejoignent doucement ; ni orange ni “Ma Parole !” ;
-     2 · tout est flou, sauf l'icône du Studio, nette et un peu plus grosse ; au milieu : “Chacun sa matière. La tienne est au Studio.” ;
-     3 · la toucher ouvre le Studio ;
-     4 · au retour, le flou se reforme, net sur le + et son encart, un peu grossis : “Tout le reste part d'ici.” ;
-     5 · toucher le + ouvre la page +. Le guidage est fini.
-   Garde-fous : toucher le flou ailleurs le dissout et finit le guidage ; un “Plus tard” discret, toujours visible ; une seule fois, sauf par
-   “Revoir la présentation” ; avec Réduire les animations, le flou est posé sans mouvement ; les phrases sont dans TEXTES_ENGAGEMENT, sans impératif. »
-   LE FLOU est UNE couche (`backdrop-filter:blur(4,8px)`, la valeur des murs) dont le MASQUE grandit : des ellipses (les zones) qui s'étendent,
-   image par image, jusqu'à couvrir l'écran ; ce qui reste net est un trou du masque (un disque), sous lequel le vrai bouton est grossi.
-   Aucun nœud n'a d'opacité, de fondu ni de transition CSS (A2). Tout nœud créé ici porte `data-eng`. */
+/* ⚑ v143 (Tom, 12 oct. 2026, C-094) — LE GUIDE D'ACCUEIL, REFAIT. (Les écritures de v141 et v142 : sauvegardes/app-avant-v143.html.)
+   « Le flou arrive à un moment bizarre, son remplissage n'est ni beau ni fluide, et l'étape du + n'arrive jamais. »
+   CE QUI N'ALLAIT PAS, NOMMÉ : ① le moment — le guide partait 0,8 s après que l'accueil était DEVANT, pendant que la Toile bougeait encore
+   (la première dalle qui se pose, la vue qui se cadre) ; ② la technique — la découpe du flou (`clip-path:path()`) était recalculée et
+   réécrite à chaque image : Safari re-tramait la zone floutée à chaque image ; ③ l'étape du + — elle n'arrivait que si le Studio avait été
+   VU ouvert puis refermé ; un toucher ailleurs finissait tout.
+   AUJOURD'HUI :
+   · LE MOMENT : l'accueil entièrement posé — l'onboarding refermé, la Toile rendue, plus rien ne bouge, aucun doigt — puis 1,2 s de calme ;
+   · LA TECHNIQUE (dictée par Tom) : on n'anime jamais le rayon du flou, ni sa découpe. Six FORMES à bord doux (un dégradé radial en masque,
+     posé une fois) portent le flou des murs (4,8 px, constant) et GRANDISSENT PAR `transform` (de 0 à leur taille), courbe douce
+     (ease-in-out), jusqu'à se rejoindre en 1,6 s : aucun calcul par image dans la page. Puis UNE couche floutée entière les remplace ;
+   · ce qui reste net est une COPIE de l'entrée (son icône et son mot, ou le + et son encart), posée AU-DESSUS du flou, agrandie de 15 % (le
+     Studio) ou de 10 % (le +) : le flou n'a plus de trou à découper ;
+   · LES ÉTAPES : le Studio — « Choisis d'abord le monde qui te ressemble, au Studio. » (un impératif VOULU par Tom : exception nommée de A3) ;
+     puis TOUJOURS le + — Studio refermé avec ou sans choix, ou toucher ailleurs pendant l'étape du Studio : « Promi, Chiche ou Cercle :
+     tout commence par ce +. ». Seul « Plus tard » arrête tout. À l'étape du +, toucher le + ouvre les trois natures ; toucher ailleurs finit.
+   ⚑ EXCEPTION NOMMÉE À A2 (« aucune transition ») : les six formes du flou, et elles seules, portent une transition CSS sur `transform` —
+   c'est la technique demandée, la seule que le navigateur anime sans repasser par la page. Aucune opacité, aucun fondu. Tout nœud porte `data-eng`. */
 (function(){
   var T=window.TEXTES_ENGAGEMENT=window.TEXTES_ENGAGEMENT||{};
-  /* ⚑ v142 (Tom, 11 oct. 2026, C-094 — RÉCIDIVE : « pas de zones arty, Studio pas grossi, pas fluide, ça fait bordel, pas d'étape sur le + »).
-     CE QUI N'ALLAIT PAS, NOMMÉ : ① « pas fluide » — le flou était UNE couche dont le MASQUE (jusqu'à 25 dégradés radiaux) était réécrit à chaque
-     image : le navigateur re-tramait un masque de 1170 × 2532 px à chaque image ; ② « pas de zones arty » — 24 ellipses qui se recouvraient :
-     un seul nuage à bord mou, pas des taches ; ③ « Studio pas grossi » — l'agrandissement tenait à une règle CSS (`transform`) sur le bouton
-     de la barre, sans effet là où une autre règle de la barre gagne ; il est posé EN LIGNE, et mesuré ; ④ « pas d'étape sur le + » — après
-     le toucher du Studio, le guide attendait 2,5 s puis, l'accueil toujours à l'écran (le Studio met plusieurs secondes à se bâtir sur
-     l'iPhone), montrait l'étape du + AVANT que le Studio ne paraisse : le Studio la recouvrait, le guide se retirait, tout était fini.
-     AUJOURD'HUI : le flou est une couche dont la DÉCOUPE (`clip-path`, un tracé vectoriel) grandit — six taches à bord courbe, nées de six
-     points, qui s'étendent et se rejoignent jusqu'à tout couvrir en 1,8 s ; ce qui reste net est un trou FIXE du masque (tramé une fois) ;
-     l'étape du + n'arrive qu'une fois le Studio VU ouvert, puis refermé. */
-  T.guide={ studio:'Vingt mondes pour une seule Toile. Le tien est au Studio.',   /* les mots de Tom (lot v142) */
-            plus:'Promi, Chiche ou Cercle : tout commence par ce +.',            /* les mots de Tom (lot v142) */
+  /* TEXTE — Tom (lot v143) */
+  T.guide={ studio:'Choisis d’abord le monde qui te ressemble, au Studio.',
+            plus:'Promi, Chiche ou Cercle : tout commence par ce +.',
             plusTard:'Plus tard' };
+  T.imperatifVoulu=(T.imperatifVoulu||[]).concat([T.guide.studio]);   /* A3 : l'exception nommée, lue par redteam_engagement et redteam_guide */
   function $(i){ return document.getElementById(i); }
   var dev=$('device'); if(!dev) return;
-  var CLE='promi_guide', INSTALLE=1800, DISSOUT=380, ATTENTE=800, TACHES=6, GROS={studio:1.15, plus:1.10};
+  var CLE='promi_guide', PHRASE_A=1150, INSTALLE=1600, DISSOUT=360, ATTENTE=1200, TACHES=6, GROS={studio:1.15, plus:1.10}, FLOU=4.8;
   var LS={g:function(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, s:function(k,v){ try{ localStorage.setItem(k,v); }catch(_){ } }};
   function reduit(){ try{ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
-  function onbOuvert(){ var o=$('promiOnb'); return !!(o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none'); }
-  /* l'accueil est-il au premier plan (la Toile sous le milieu de l'écran) ? */
+  function onbOuvert(){ var o=$('promiOnb'); return !!($('onbV') || (o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none')); }
   function accueil(){ try{ if(onbOuvert()) return false; var r=dev.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2, r.top+r.height*0.45);
       return !!(h && !(h.closest && h.closest('.screen, .sheet, .poster, #feedView, #entierVue, #dessinMode, #accRappelCompte, #guide'))); }catch(_){ return false; } }
-  var etat=null, attente=null, tAcc=0, t0=0, raf=0, trou=null, Z=null, sens=1, tVu=0, vuStudio=false, apresDissout=null;
+  /* plus rien ne bouge : la Toile ne tourne plus, aucune parole n'arrive ni ne part, aucun doigt depuis une seconde */
+  var tDoigt=0; ['pointerdown','touchstart','touchmove','touchend','wheel','keydown'].forEach(function(n){ document.addEventListener(n,function(){ tDoigt=performance.now(); },{capture:true,passive:true}); });
+  function calme(){ try{ var st=window.Toile_state&&window.Toile_state(); if(st&&st.running) return false; }catch(_){ }
+    if(window._tirageActive) return false; var n=performance.now(); if(window._tMouv && n-window._tMouv<900) return false; if(window._tEcran && n-window._tEcran<900) return false;
+    return n-tDoigt>1000; }
+  var etat=null, attente=null, tAcc=0, trou=null, tVu=0, vuStudio=false, tFin=0, tPose=0, figeMs=null;
   function k(){ return (dev.getBoundingClientRect().width/390)||1; }
-  /* les taches : six foyers sur une grille bousculée (2 × 3) ; chacune est une forme fermée à bord courbe (dix rayons inégaux, reliés par des
-     courbes), tirée une fois par apparition ; elle naît à son heure (0 à 0,3 de la durée) et grandit doucement jusqu'à couvrir sa part. */
-  function zones(){ var sd=((Date.now()&0x7fffffff)|1), R=function(){ sd=(Math.imul(sd,1103515245)+12345)&0x7fffffff; return sd/0x7fffffff; }, L=[], ordre=[0,1,2,3,4,5];
-    for(var i=5;i>0;i--){ var j=(R()*(i+1))|0, t=ordre[i]; ordre[i]=ordre[j]; ordre[j]=t; }
-    for(var n=0;n<TACHES;n++){ var gx=n%2, gy=(n/2)|0, M=[], NA=10;
-      for(var a=0;a<NA;a++) M.push(0.80+R()*0.40);
-      L.push({x:98+gx*194+(R()-0.5)*80, y:140+gy*282+(R()-0.5)*110, R:305, M:M, rot:R()*6.283, d:ordre[n]*0.06}); }
-    return L; }
-  function ease(v){ return v<=0?0:(v>=1?1:v*v*(3-2*v)); }   /* v142 : une croissance étalée sur toute la durée (la courbe d'avant, plus raide, couvrait tout dès 1,2 s — vu dans Safari) */
-  /* le tracé de la découpe à l'instant u (0 → 1) : l'union des taches ; à 1, l'écran entier */
-  function chemin(u){ if(u>=1) return 'M0 0H390V844H0Z'; var s='';
-    for(var i=0;i<Z.length;i++){ var b=Z[i], v=ease((u-b.d)/(1-b.d)); if(v<=0.004) continue; var NA=b.M.length, P=[], a;
-      for(a=0;a<NA;a++){ var an=b.rot+a/NA*6.283185, r=b.R*v*b.M[a]; P.push([b.x+Math.cos(an)*r, b.y+Math.sin(an)*r]); }
-      s+='M'+P[0][0].toFixed(1)+' '+P[0][1].toFixed(1);
-      for(a=0;a<NA;a++){ var p0=P[(a-1+NA)%NA], p1=P[a], p2=P[(a+1)%NA], p3=P[(a+2)%NA];   /* une courbe lisse par les points (Catmull-Rom → Bézier) */
-        s+='C'+(p1[0]+(p2[0]-p0[0])/6).toFixed(1)+' '+(p1[1]+(p2[1]-p0[1])/6).toFixed(1)+' '+(p2[0]-(p3[0]-p1[0])/6).toFixed(1)+' '+(p2[1]-(p3[1]-p1[1])/6).toFixed(1)+' '+p2[0].toFixed(1)+' '+p2[1].toFixed(1); }
-      s+='Z'; }
-    return s||'M0 0H0V0Z'; }
-  function masque(u){ var f=$('guideFlou'); if(!f) return; var c='path(nonzero, "'+chemin(u)+'")'; f.style.webkitClipPath=c; f.style.clipPath=c; f.setAttribute('data-u', u.toFixed(3)); }
-  /* le trou : ce qui reste net — un masque FIXE (une image vectorielle, tramée une fois) : l'écran plein, moins un rectangle arrondi */
-  function poseTrou(){ var f=$('guideFlou'); if(!f||!trou) return; var x=trou.x-trou.w/2, y=trou.y-trou.h/2, r=Math.min(trou.r, trou.w/2, trou.h/2), w=trou.w, h=trou.h;
-    var d='M0 0H390V844H0Z M'+(x+r)+' '+y+'h'+(w-2*r)+'a'+r+' '+r+' 0 0 1 '+r+' '+r+'v'+(h-2*r)+'a'+r+' '+r+' 0 0 1 '+(-r)+' '+r+'h'+(-(w-2*r))+'a'+r+' '+r+' 0 0 1 '+(-r)+' '+(-r)+'v'+(-(h-2*r))+'a'+r+' '+r+' 0 0 1 '+r+' '+(-r)+'Z';
-    var svg="url(\"data:image/svg+xml;utf8,"+encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' width='390' height='844' viewBox='0 0 390 844'><path fill='black' fill-rule='evenodd' d='"+d+"'/></svg>")+"\")";
-    f.style.webkitMaskImage=svg; f.style.maskImage=svg; f.style.webkitMaskSize='390px 844px'; f.style.maskSize='390px 844px'; f.style.webkitMaskRepeat='no-repeat'; f.style.maskRepeat='no-repeat'; }
-  function image(){ if(!etat || (etat!=='studio' && etat!=='plus' && etat!=='part')) return; if(!t0) t0=performance.now();   /* v142 : l'horloge part à la PREMIÈRE IMAGE rendue (partie à la pose, une page occupée à l'arrivée mangeait le début : 1,42 s vues au lieu de 1,8) */
-    var u=(performance.now()-t0)/(sens>0?INSTALLE:DISSOUT); if(u>1) u=1;
-    if(sens>0){ masque(u); if(u<1) raf=requestAnimationFrame(image); }
-    else { masque(1-u); if(u<1) raf=requestAnimationFrame(image); else { retire(); var a=apresDissout; apresDissout=null; if(a) a(); } } }
-  function retire(){ try{ cancelAnimationFrame(raf); }catch(_){ } var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio'); dev.classList.remove('guide-plus'); trou=null;
-    if(grossi){ try{ grossi.n.style.removeProperty('transform'); grossi.n.style.removeProperty('transform-origin'); if(grossi.av) grossi.n.style.setProperty('transform', grossi.av[0], grossi.av[1]); }catch(_){ } grossi=null; } }
-  var grossi=null;
   function eng(n, quoi){ n.setAttribute('data-eng', quoi); return n; }
-  function montre(quoi){ retire(); var cible=$(quoi==='studio'?'studioBtn':'createBtn'); if(!cible){ etat=null; return false; }
-    var D=dev.getBoundingClientRect(), kk=k(), r=cible.getBoundingClientRect(); if(r.width<8){ etat=null; return false; }
-    /* ce qui reste net est AGRANDI (15 % le Studio, 10 % le +), posé en ligne sur le vrai bouton, depuis son centre — et rendu à la fin */
-    var gr=GROS[quoi], av=cible.style.getPropertyValue('transform'); grossi={n:cible, av:av?[av, cible.style.getPropertyPriority('transform')]:null};
-    cible.style.setProperty('transform-origin','50% 50%','important'); cible.style.setProperty('transform','scale('+gr+')','important');
-    var w0=r.width/kk, h0=r.height/kk;
-    /* le trou du Studio se cale sur ce qu'on VOIT du bouton — son icône et son mot —, pas sur sa boîte (90 pt de large : elle mordait sur « AURA ») */
-    var cx0=(r.left+r.width/2-D.left)/kk, cy0=(r.top+r.height/2-D.top)/kk, ux0=1e9, ux1=-1e9, uy0=1e9, uy1=-1e9;
-    if(quoi==='studio'){ [].forEach.call(cible.querySelectorAll('svg, span, b, i, em, div'), function(n){ if(n.children.length && n.tagName.toLowerCase()!=='svg') return; var q=n.getBoundingClientRect(); if(q.width<2||q.height<2) return;
-        ux0=Math.min(ux0,(q.left-D.left)/kk); ux1=Math.max(ux1,(q.right-D.left)/kk); uy0=Math.min(uy0,(q.top-D.top)/kk); uy1=Math.max(uy1,(q.bottom-D.top)/kk); });
-      if(!(ux1>ux0)){ ux0=cx0-w0/2; ux1=cx0+w0/2; uy0=cy0-h0/2; uy1=cy0+h0/2; } }
-    trou=(quoi==='studio') ? {x:(ux0+ux1)/2, y:(uy0+uy1)/2, w:(ux1-ux0)+12, h:(uy1-uy0)+12, r:14}        /* l'icône et le mot STUDIO (mesurés une fois agrandis), 6 pt d'air */
-                           : {x:(r.left+r.width/2-D.left)/kk, y:(r.top+r.height/2-D.top)/kk, w:Math.max(w0,h0)*gr+10, h:Math.max(w0,h0)*gr+10, r:999};   /* le + et son encart rond, agrandis */
-    Z=zones(); etat=quoi; sens=1;
-    var g=eng(document.createElement('div'),'guide'); g.id='guide'; g.setAttribute('data-guide', quoi);
-    var f=eng(document.createElement('div'),'guide-flou'); f.id='guideFlou'; f.setAttribute('aria-hidden','true'); g.appendChild(f);
+  function ease(v){ return v<=0?0:(v>=1?1:(v<0.5?4*v*v*v:1-Math.pow(-2*v+2,3)/2)); }   /* ease-in-out (cubique) — la même courbe que la transition CSS */
+  /* les six formes : une grille 2 × 3 bousculée ; chacune est une ellipse à bord doux, tournée, assez grande pour que leurs cœurs pleins se
+     rejoignent et couvrent l'écran ; elles naissent l'une après l'autre (0 à 0,25 s) et finissent ENSEMBLE à 1,6 s */
+  function formes(){ var sd=((Date.now()&0x7fffffff)|1), R=function(){ sd=(Math.imul(sd,1103515245)+12345)&0x7fffffff; return sd/0x7fffffff; }, L=[], o=[0,1,2,3,4,5];
+    for(var i=5;i>0;i--){ var j=(R()*(i+1))|0, t=o[i]; o[i]=o[j]; o[j]=t; }
+    for(var n=0;n<TACHES;n++){ var gx=n%2, gy=(n/2)|0;
+      L.push({x:98+gx*194+(R()-0.5)*70, y:140+gy*282+(R()-0.5)*90, w:600+R()*110, h:600+R()*110, rot:(R()*180)|0, d:o[n]*50}); }
+    return L; }
+  function tr(f, s){ return 'translate(-50%,-50%) rotate('+f.rot+'deg) scale('+s.toFixed(4)+')'; }
+  function poseFormes(g, Z, depart){ var L=[];
+    Z.forEach(function(f,i){ var n=eng(document.createElement('div'),'guide-tache'); n.className='gd-t'; n.setAttribute('aria-hidden','true');
+      n.style.cssText='left:'+f.x.toFixed(1)+'px;top:'+f.y.toFixed(1)+'px;width:'+f.w.toFixed(0)+'px;height:'+f.h.toFixed(0)+'px;transform:'+tr(f,depart);
+      g.insertBefore(n, g.firstChild); L.push(n); });
+    return L; }
+  function entier(g){ var f=$('guideFlou'); if(f) return f; f=eng(document.createElement('div'),'guide-flou'); f.id='guideFlou'; f.setAttribute('aria-hidden','true'); g.insertBefore(f, g.firstChild); return f; }
+  function retireFormes(){ var g=$('guide'); if(!g) return; [].slice.call(g.querySelectorAll('.gd-t')).forEach(function(n){ n.remove(); }); }
+  /* la copie nette de l'entrée, au-dessus du flou : l'élément et ses descendants, avec leur style CALCULÉ (les règles de la barre ne
+     l'atteignent pas hors d'elle), et ses deux pseudo-éléments (l'anneau et le disque du +) rendus par de vrais nœuds */
+  var PROPS=['display','flex-direction','align-items','justify-content','place-items','align-content','justify-items','gap','width','height','box-sizing','color','background-color','background-image','background-size','background-position','background-repeat','border-radius','border-top','border-right','border-bottom','border-left','font-family','font-weight','font-size','line-height','letter-spacing','text-transform','white-space','fill','stroke','stroke-width','box-shadow','outline','outline-offset'];
+  function style(src, dst, pseudo){ var cs=getComputedStyle(src, pseudo||null); PROPS.forEach(function(p){ try{ dst.style.setProperty(p, cs.getPropertyValue(p)); }catch(_){ } });
+    dst.style.setProperty('-webkit-text-fill-color', cs.getPropertyValue('color')); dst.style.margin='0'; dst.style.padding=cs.getPropertyValue('padding'); dst.style.maxWidth='none'; }
+  function pseudo(src, hote, quel){ var cs=getComputedStyle(src, quel), c=cs.getPropertyValue('content'); if(!c || c==='none' || c==='normal') return;
+    var n=document.createElement('div'); style(src, n, quel); n.style.position='absolute';
+    ['left','top','right','bottom','z-index','transform'].forEach(function(p){ n.style.setProperty(p, cs.getPropertyValue(p)); });
+    n.style.pointerEvents='none'; hote.appendChild(n); }
+  function copie(src){ var n=src.cloneNode(false); n.removeAttribute('id'); n.removeAttribute('class'); style(src, n);
+    if(src.namespaceURI!=='http://www.w3.org/2000/svg'){ pseudo(src, n, '::before'); }
+    for(var c=src.firstChild;c;c=c.nextSibling){ if(c.nodeType===3) n.appendChild(document.createTextNode(c.nodeValue));
+      else if(c.nodeType===1){ if(c.namespaceURI==='http://www.w3.org/2000/svg'){ var s=c.cloneNode(true); s.removeAttribute('id'); var q=getComputedStyle(c); s.style.width=q.width; s.style.height=q.height; s.style.color=q.color; s.style.flex='none';
+          /* le tracé garde ce que la feuille lui donne (le trait du +, son épaisseur) : hors de la barre, ses règles ne l'atteignent plus */
+          var A=c.querySelectorAll('*'), B2=s.querySelectorAll('*'); for(var z=0;z<A.length && z<B2.length;z++){ var qa=getComputedStyle(A[z]); B2[z].style.stroke=qa.stroke; B2[z].style.strokeWidth=qa.strokeWidth; B2[z].style.fill=qa.fill; } s.style.position=q.position==='absolute'?'absolute':'relative'; s.style.zIndex='2'; n.appendChild(s); }
+        else if(getComputedStyle(c).display!=='none' && c.id!=='filDot'){ var e=copie(c); e.style.position='relative'; e.style.zIndex='2'; n.appendChild(e); } } }
+    if(src.namespaceURI!=='http://www.w3.org/2000/svg'){ pseudo(src, n, '::after'); }
+    return n; }
+  function poseNet(g, quoi){ var cible=$(quoi==='studio'?'studioBtn':'createBtn'); if(!cible) return null;
+    var D=dev.getBoundingClientRect(), kk=k(), r=cible.getBoundingClientRect(); if(r.width<8) return null;
+    var x=(r.left-D.left)/kk, y=(r.top-D.top)/kk, w=r.width/kk, h=r.height/kk, gr=GROS[quoi];
+    var n=copie(cible); eng(n,'guide-net'); n.id='guideNet'; n.setAttribute('aria-hidden','true');
+    n.style.position='absolute'; n.style.left=x.toFixed(2)+'px'; n.style.top=y.toFixed(2)+'px'; n.style.width=w.toFixed(2)+'px'; n.style.height=h.toFixed(2)+'px';
+    n.style.transformOrigin='50% 50%'; n.style.transform='scale('+gr+')'; n.style.pointerEvents='none'; n.style.overflow='visible';
+    [].forEach.call(n.querySelectorAll('*'), function(e){ eng(e,'guide-net'); });
+    g.appendChild(n);
+    try{ if(cache && cache.n!==cible) montreOriginal(); if(!cache){ cache={n:cible, av:cible.style.getPropertyValue('visibility'), pr:cible.style.getPropertyPriority('visibility')}; cible.style.setProperty('visibility','hidden','important'); } }catch(_){ }
+    /* la zone qu'on touche : ce qu'on VOIT de l'entrée agrandie (l'icône et le mot ; le + et son encart rond), 6 pt d'air */
+    var cx=x+w/2, cy=y+h/2, ux0=1e9, ux1=-1e9, uy0=1e9, uy1=-1e9;
+    if(quoi==='studio'){ [].forEach.call(cible.querySelectorAll('svg, .l'), function(e){ var q=e.getBoundingClientRect(); if(q.width<2) return; ux0=Math.min(ux0,(q.left-D.left)/kk); ux1=Math.max(ux1,(q.right-D.left)/kk); uy0=Math.min(uy0,(q.top-D.top)/kk); uy1=Math.max(uy1,(q.bottom-D.top)/kk); });
+      if(!(ux1>ux0)){ ux0=x; ux1=x+w; uy0=y; uy1=y+h; }
+      return {x:cx, y:cy, w:(ux1-ux0)*gr+12, h:(uy1-uy0)*gr+12, r:14, l:w*gr}; }
+    return {x:cx, y:cy, w:Math.max(w,h)*gr+10, h:Math.max(w,h)*gr+10, r:999, l:w*gr}; }
+  var cache=null;   /* l'entrée d'origine, cachée tant que sa copie nette est au-dessus du flou — et rendue à l'identique */
+  function montreOriginal(){ if(!cache) return; try{ cache.n.style.removeProperty('visibility'); if(cache.av) cache.n.style.setProperty('visibility', cache.av, cache.pr); }catch(_){ } cache=null; }
+  function retire(){ montreOriginal(); var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio'); dev.classList.remove('guide-plus'); trou=null; clearTimeout(tFin); }
+  /* la phrase, « Plus tard », la cible : posés avec l'étape (ils changent sans rejouer le flou quand on passe du Studio au +) */
+  function habille(g, quoi){ ['guideNet','guidePhrase','guideTard','guideCible'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); montreOriginal();
+    trou=poseNet(g, quoi); if(!trou) return false;
+    g.setAttribute('data-guide', quoi); dev.classList.remove('guide-studio','guide-plus'); dev.classList.add('guide-'+quoi);
     var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.textContent=T.guide[quoi]; g.appendChild(p);
     var t=eng(document.createElement('div'),'plus-tard'); t.id='guideTard'; t.setAttribute('role','button'); t.tabIndex=0; t.textContent=T.guide.plusTard; g.appendChild(t);
     var c=eng(document.createElement('div'),'guide-cible'); c.id='guideCible'; c.setAttribute('role','button'); c.tabIndex=0; c.setAttribute('aria-label', quoi==='studio'?'Studio':'Planter');
     c.style.cssText='position:absolute;left:'+(trou.x-trou.w/2)+'px;top:'+(trou.y-trou.h/2)+'px;width:'+trou.w+'px;height:'+trou.h+'px;border-radius:'+Math.min(trou.r,trou.w/2)+'px;margin:0;padding:0;max-width:none;background:transparent'; g.appendChild(c);
-    dev.appendChild(g); dev.classList.add('guide-'+quoi); poseTrou();
     var h=p.offsetHeight||70, y=Math.round(392-h/2); p.style.top=y+'px'; t.style.top=(y+h+22)+'px';
+    etat=quoi; return true; }
+  function montre(quoi, sansRevelation){ retire(); figeMs=null;
+    var g=eng(document.createElement('div'),'guide'); g.id='guide'; dev.appendChild(g);
+    if(!habille(g, quoi)){ g.remove(); etat=null; return false; }
     g.addEventListener('click', function(e){ e.stopPropagation(); e.preventDefault(); var D2=dev.getBoundingClientRect(), q=k(), x=(e.clientX-D2.left)/q, yy=(e.clientY-D2.top)/q;
       if(e.target && e.target.closest && e.target.closest('#guideTard')){ finir(); return; }
       if(trou && Math.abs(x-trou.x)<=trou.w/2+4 && Math.abs(yy-trou.y)<=trou.h/2+4){ if(etat==='studio') versStudio(); else if(etat==='plus') versPlus(); return; }
+      if(etat==='studio'){ clearTimeout(g.__tp); habille(g,'plus'); return; }       /* toucher ailleurs pendant l'étape du Studio : l'étape du + vient ensuite, le flou reste */
       finir(); }, true);
     g.addEventListener('keydown', function(e){ if(e.key!=='Enter' && e.key!==' ') return; var q=e.target; if(q && q.id==='guideTard'){ e.preventDefault(); finir(); } else if(q && q.id==='guideCible'){ e.preventDefault(); if(etat==='studio') versStudio(); else versPlus(); } });
-    t0=0; if(reduit()){ masque(1); } else { masque(0); raf=requestAnimationFrame(image); }
+    tPose=performance.now(); g.setAttribute('data-pose', ''+Math.round(tPose));
+    if(reduit() || sansRevelation){ entier(g); g.setAttribute('data-entier','1'); return true; }
+    var Z=formes(), L=poseFormes(g, Z, 0.0005); g.__Z=Z; g.__L=L;
+    /* la phrase ne paraît qu'une fois le fond flouté sous elle (à 1,15 s) : posée dès le départ, elle se lisait mal sur les titres encore nets des dalles */
+    var _ph=$('guidePhrase'); if(_ph){ _ph.style.visibility='hidden'; g.__tp=setTimeout(function(){ var q=$('guidePhrase'); if(q && figeMs==null) q.style.visibility='visible'; }, PHRASE_A); }
+    /* deux images plus tard (la première pose est peinte à taille nulle), les formes prennent leur taille : c'est le navigateur qui anime */
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(!g.parentNode || figeMs!=null) return; tPose=performance.now(); g.setAttribute('data-depart', ''+Math.round(tPose));
+      L.forEach(function(n,i){ var f=Z[i]; n.style.transition='transform '+(INSTALLE-f.d)+'ms cubic-bezier(0.65,0,0.35,1) '+f.d+'ms'; n.style.transform=tr(f,1); }); }); });
+    tFin=setTimeout(function(){ if(!g.parentNode || figeMs!=null) return; entier(g); retireFormes(); g.setAttribute('data-entier','1'); }, INSTALLE+140);
     return true; }
-  /* 3 · le Studio */
+  /* pour les captures : l'installation arrêtée à un instant donné (aucune transition : chaque forme à la taille qu'elle a à cet instant) */
+  function fige(ms){ var g=$('guide'); if(!g || !g.__L) return; figeMs=ms; clearTimeout(tFin); var f0=$('guideFlou'); if(f0) f0.remove(); g.removeAttribute('data-entier');
+    if(!g.querySelector('.gd-t')) g.__L=poseFormes(g, g.__Z, 0.0005);
+    g.__L.forEach(function(n,i){ var f=g.__Z[i]; n.style.transition='none'; n.style.transform=tr(f, Math.max(0.0005, ease((ms-f.d)/(INSTALLE-f.d)))); });
+    clearTimeout(g.__tp); var _q=$('guidePhrase'); if(_q) _q.style.visibility=(ms>=PHRASE_A?'visible':'hidden');
+    if(ms>=INSTALLE){ entier(g); retireFormes(); g.setAttribute('data-entier','1'); } }
   function versStudio(){ retire(); etat='au-studio'; tVu=performance.now(); vuStudio=false; tAcc=0; try{ $('studioBtn').click(); }catch(_){ } }
-  /* 5 · le + : ce que fait un toucher sur le + de l'accueil — les trois natures paraissent sur place, et la page + s'ouvre sur la nature choisie */
   function versPlus(){ retire(); etat=null; attente=null; try{ var ch=$('accChoix'); if(ch) ch.classList.add('ouvert'); else $('createBtn').click(); }catch(_){ } }
-  /* toucher ailleurs, ou « Plus tard » : le flou se dissout, le guidage est fini */
-  function finir(){ attente=null; if(!$('guide')){ etat=null; return; } if(reduit()){ retire(); etat=null; return; }
-    etat='part'; sens=-1; t0=performance.now(); apresDissout=function(){ etat=null; }; try{ cancelAnimationFrame(raf); }catch(_){ } raf=requestAnimationFrame(image); }
+  /* « Plus tard », ou toucher ailleurs à l'étape du + : le flou se retire (les formes se referment), le guidage est fini */
+  function finir(){ attente=null; var g=$('guide'); if(!g){ etat=null; return; } clearTimeout(tFin); etat='part';
+    ['guideNet','guidePhrase','guideTard','guideCible'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); dev.classList.remove('guide-studio','guide-plus'); montreOriginal();
+    if(reduit() || !g.__Z){ retire(); etat=null; return; }
+    var f=$('guideFlou'); if(f){ g.__L=poseFormes(g, g.__Z, 1); f.remove(); } else g.__L=[].slice.call(g.querySelectorAll('.gd-t'));
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ (g.__L||[]).forEach(function(n,i){ var z=g.__Z[i]||g.__Z[0]; n.style.transition='transform '+DISSOUT+'ms cubic-bezier(0.65,0,0.35,1)'; n.style.transform=tr(z,0.0005); }); }); });
+    setTimeout(function(){ if(g.parentNode) g.remove(); if(etat==='part') etat=null; }, DISSOUT+120); }
   /* la veille : l'état se lit sur ce qui est à l'écran */
   setInterval(function(){ var now=performance.now();
     if(attente){ if(!attente.rejeu && LS.g(CLE)==='1'){ attente=null; return; }
-      if(accueil()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ attente=null; tAcc=0; LS.s(CLE,'1'); montre('studio'); } } else tAcc=0; return; }
+      if(accueil() && calme()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ attente=null; tAcc=0; LS.s(CLE,'1'); montre('studio'); } } else tAcc=0; return; }
     if(etat==='au-studio'){ var a=accueil();
       if(!a){ vuStudio=true; tAcc=0; }
-      else if(vuStudio || now-tVu>20000){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ tAcc=0; montre('plus'); } } }   /* v142 : seulement une fois le Studio VU ouvert puis refermé (20 s : un Studio qui ne s'ouvrirait jamais) ; le même calme de 0,8 s */
+      else if(vuStudio || now-tVu>6000){ if(calme()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ tAcc=0; montre('plus'); } } else tAcc=0; } }   /* le Studio refermé, avec ou sans choix (6 s : un Studio qui ne s'ouvrirait pas) */
     else if(etat==='studio' || etat==='plus'){
-      /* un écran s'ouvre SOUS le guide (les Réglages, une fiche, le Fil…) : l'accueil n'est plus là — le guide se retire, le guidage est fini */
       var couvert=onbOuvert(); if(!couvert){ try{ var r=dev.getBoundingClientRect(), E=document.elementsFromPoint(r.left+r.width/2, r.top+r.height*0.45);
           for(var i=0;i<E.length;i++){ var h=E[i]; if(h.closest && h.closest('#guide')) continue; couvert=!!(h.closest && h.closest('.screen, .sheet, .poster, #feedView, #entierVue, #dessinMode, #accRappelCompte')); break; } }catch(_){ } }
-      if(couvert){ retire(); etat=null; } } }, 150);
-  /* v142 : `?guide=1` rejoue le guide à l'ouverture (comme « Revoir la présentation », sans l'onboarding) — pour le regarder sur l'iPhone */
-  try{ if(/[?&]guide=1(&|$)/.test(location.search)) setTimeout(function(){ attente={rejeu:true}; tAcc=0; }, 2500); }catch(_){ }
-  /* `&gfige=600` arrête l'installation à cet instant, `&getape=plus` montre la seconde étape : pour une capture dans Safari (essai, jamais mémorisé) */
-  try{ var _gf=/[?&]gfige=(\d+)/.exec(location.search), _ge=/[?&]getape=plus/.test(location.search); if(_gf||_ge) setTimeout(function(){ attente=null; montre(_ge?'plus':'studio'); if(_gf){ try{ cancelAnimationFrame(raf); }catch(_){ } masque(Math.min(1,(+_gf[1])/INSTALLE)); } }, 4200); }catch(_){ }
-  window._guide={ attend:function(rejeu){ attente={rejeu:!!rejeu}; tAcc=0; }, montre:montre, finir:finir,
-    figeA:function(ms){ try{ cancelAnimationFrame(raf); }catch(_){ } masque(Math.max(0, Math.min(1, ms/INSTALLE))); },   /* pour les captures : l'installation arrêtée à un instant donné (une capture prend plus de temps qu'une image) */
-    etat:function(){ return {etat:etat, attente:!!attente, trou:trou, vu:LS.g(CLE)}; }, regle:{INSTALLE:INSTALLE, DISSOUT:DISSOUT, ATTENTE:ATTENTE, FLOU:4.8, TACHES:TACHES, GROS:GROS} };
+      if(couvert){ retire(); etat=null; } } }, 120);
+  /* `?guide=1` le rejoue à l'ouverture ; `&gfige=800` l'arrête à cet instant ; `&getape=plus` montre la seconde étape (pour le regarder dans Safari) */
+  try{ if(/[?&]guide=1(&|$)/.test(location.search)) setTimeout(function(){ attente={rejeu:true}; tAcc=0; }, 1500); }catch(_){ }
+  try{ var _gf=/[?&]gfige=(\d+)/.exec(location.search), _ge=/[?&]getape=plus/.test(location.search); if(_gf||_ge) setTimeout(function(){ attente=null; montre(_ge?'plus':'studio'); if(_gf) fige(+_gf[1]); }, 4200); }catch(_){ }
+  window._guide={ attend:function(rejeu){ attente={rejeu:!!rejeu}; tAcc=0; }, montre:montre, finir:finir, figeA:fige,
+    etat:function(){ var g=$('guide'); return {etat:etat, attente:!!attente, trou:trou, vu:LS.g(CLE), entier:!!(g&&g.getAttribute('data-entier')), formes:g?g.querySelectorAll('.gd-t').length:0}; },
+    regle:{INSTALLE:INSTALLE, DISSOUT:DISSOUT, ATTENTE:ATTENTE, FLOU:FLOU, TACHES:TACHES, GROS:GROS, PHRASE_A:PHRASE_A} };
 })();
 </script>
 

@@ -855,7 +855,8 @@ function creerMondes(env) {
     if (!env.trans && env.cible == null && env.vive) window._ritComp = [];
     /* ⚑ v142 (Tom, 11 oct. 2026, C-088) — sous neuf paroles, on ne montre que les dalles et QUELQUES cellules vides (aucune jusqu'à trois
        paroles) : les plus proches des paroles. Les autres ne sont pas peintes — elles bornent toujours les coulées (le semis ne change pas). */
-    var VV = (env.cible == null && typeof env.videsVus === 'number') ? env.videsVus : null, VUS = null, BT2 = (!env.trans && env.cible == null && env.vive && VV != null) ? [] : null;
+    var CACH = (env.cible == null && env.vive && !env.trans) ? (env.videsCaches || null) : null;
+    var VV = (env.cible == null && typeof env.videsVus === 'number') ? env.videsVus : null, VUS = null, BT2 = (!env.trans && env.cible == null && env.vive && (VV != null || env.cadreMatiere)) ? [] : null;   /* v143 : les boîtes de matière sont publiées même quand toutes les cellules sont peintes */
     if (VV != null) { var gx = 0, gy = 0, gn = 0, GR = [], iv;
       for (iv = 0; iv < P.length; iv++) { if (P[iv].s.kind !== 'gray') { if (P[iv].s.part == null) { gx += P[iv].x; gy += P[iv].y; gn++; } } else GR.push(P[iv]); }
       if (gn) { gx /= gn; gy /= gn; GR.sort(function (u, v) { return ((u.x - gx) * (u.x - gx) + (u.y - gy) * (u.y - gy)) - ((v.x - gx) * (v.x - gx) + (v.y - gy) * (v.y - gy)); }); }
@@ -879,6 +880,7 @@ function creerMondes(env) {
       // en éclat au bord de la dalle (vu à k = 1 et 2,5).
       if (env.cible != null && p.s.pid !== env.cible) continue;
       if (VUS && p.s.kind === 'gray' && VUS.indexOf(p.s) < 0) continue;   /* v142 : une cellule vide qu'on ne montre pas */
+      if (CACH && p.s.kind === 'gray' && CACH.indexOf(p.s) >= 0) continue;   /* v143 : une cellule vide qui tiendrait entière dans la zone, jusqu'à trois paroles */
       if (p.x < x0 - RMAX || p.x > x1 + RMAX || p.y < y0 - RMAX || p.y > y1 + RMAX) continue;
       var vois = ix.near(p, 10); if (!vois.length) continue;
       var HD = [];
@@ -6233,8 +6235,12 @@ function autoView(){
   var bw=Math.max(1,maxX-minX), bh=Math.max(1,maxY-minY);
   var topB=HAUT_LIBRE, botB=H-BAS_LIBRE;    /* zone utile (barre haut + dock evites) */
   if(_bs){ topB=H*(112/844); botB=H*(698/844); }   /* serré : entre le plateau (40 → 100) et la barre (710), 12 pt d'air */
-  var availW=W*(_bm?(col.length===1?0.80:0.94):(_bs?(col.length===1?1.18:1.0):0.92)), availH=Math.max(1,botB-topB);
-  var s=Math.min(availW/bw, availH/bh);
+  /* ⚑ v143 (Tom, C-088 — RÉCIDIVE : « en v141 trop dézoomé, en v142 les premières dalles prennent tout l'écran ») — LES CIBLES, EN DUR, sur la
+     matière peinte, dans la zone visible : une parole → sa dalle à 55 % de la largeur (50 à 60) ; deux et trois → ensemble à 78 % (70 à 85) ;
+     quatre et cinq → 90 % ; ensuite 96 %. En hauteur, jamais plus de 80 % de la zone (une dalle haute, des dalles empilées). */
+  var _fr=_bm?(col.length===1?0.55:(col.length<=3?0.78:(col.length<=5?0.90:0.96))):(_bs?(col.length===1?1.18:1.0):0.92);
+  var availW=W*_fr, availH=Math.max(1,botB-topB);
+  var s=Math.min(availW/bw, (_bm?availH*0.80:availH)/bh);
   s=Math.max(1.0, Math.min(s, _serre?(_bm?7.0:(_bs?5.0:3.6)):2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 (3,6 : v140, voir plus haut) */
   var cx=(minX+maxX)/2, cy=(minY+maxY)/2, scx=W/2, scy=(topB+botB)/2;
   var _ox=scx-cx*s, _oy=scy-cy*s;
@@ -6553,7 +6559,19 @@ try{ if(window.creerMondes){ _MN=window.creerMondes(_envM={
   get trans(){ if(!_transVive||!_trans||window._transCoupe) return null; var d=RD[theme]&&RD[theme].transDur; return (d&&performance.now()-_trans.t0<d)?_trans:null; },   /* v44 : éteinte à la fin de SA durée ; `_transCoupe` = preuve (la Toile sans transition) */
   get vive(){ return _transVive; },
   /* ⚑ v142 (C-088) — Ritournelle sous neuf paroles : combien de cellules vides on montre (0 jusqu'à trois paroles, 2 à quatre et cinq, 3 à six et sept, 4 à huit) */
-  get videsVus(){ if(theme!=='ritournelle'||!_transVive||_AP||_semisNeuf()) return null; var n=0; for(var i=0;i<seeds.length;i++){ if(seeds[i].kind!=='gray'&&seeds[i].part==null) n++; } return _videsVus(n); },
+  /* ⚑ v143 (Tom, 12 oct. 2026, C-088 — RÉCIDIVE) : TOUTES LES CELLULES SONT DE NOUVEAU PEINTES. Ne pas peindre les cellules vides (v142) laissait
+     les premières dalles seules sur un aplat — et, sans aucune parole (la Toile vide, l'onboarding rejoué), plus RIEN : « le fond de
+     l'onboarding est devenu tout noir » en sombre. « Un peu de Toile autour » s'obtient par le CADRAGE (`autoView`), pas en effaçant la Toile. */
+  get cadreMatiere(){ return theme==='ritournelle' && !!_transVive && !_AP && !_semisNeuf(); },
+  /* ⚑ v143 (Tom, C-088) : « un peu de Toile autour — des bords de cellules vides, pas une cellule vide entière ». Jusqu'à trois paroles, sous le
+     cadrage de départ (jamais sous une vue posée par la main), les cellules vides qui tiendraient ENTIÈRES dans la zone visible ne sont pas
+     peintes : celles que les bords coupent restent. Mesuré sans cela : selon le semis, jusqu'à quatre petites cellules entières au-dessus et
+     au-dessous d'une dalle seule (200 pt de marge en hauteur pour des cellules de 90). */
+  get videsCaches(){ try{ if(!this.cadreMatiere || window._vueMain || !vTarget) return null; var n=0, i; for(i=0;i<seeds.length;i++){ if(seeds[i].kind!=='gray'&&seeds[i].part==null) n++; }
+      if(n<1 || n>3) return null; var m=avg()*vTarget.s*0.40, y0=H*(100/844)+m, y1=H*(710/844)-m, L=[];
+      for(i=0;i<seeds.length;i++){ var g=seeds[i]; if(g.kind!=='gray') continue; var X=g.x*vTarget.s+vTarget.ox, Y=g.y*vTarget.s+vTarget.oy; if(X>m && X<W-m && Y>y0 && Y<y1) L.push(g); }
+      return L.length?L:null; }catch(_){ return null; } },
+  get videsVus(){ return null; if(theme!=='ritournelle'||!_transVive||_AP||_semisNeuf()) return null; var n=0; for(var i=0;i<seeds.length;i++){ if(seeds[i].kind!=='gray'&&seeds[i].part==null) n++; } return _videsVus(n); },
   boitesNeuves:function(){ if(window._vueMain) return; setTimeout(function(){ try{ if(!window._vueMain){ autoView(); kick(); } }catch(_){ } },0); },
   /* v66 — le papier : sur la Toile vivante, le dégradé même du fond, dans le repère de la vue ; ailleurs le fond du moteur */
   papierDesc:function(){ return (_transVive&&!_AP)?_fondVifDesc((0-view.ox)/view.s,(0-view.oy)/view.s,(W*0.55-view.ox)/view.s,(H-view.oy)/view.s):null; },
@@ -7524,7 +7542,13 @@ window.Toile.tonsDe=function(k,h){var b=(PALS[k]||PALS[palKey]).cols;h=+h||0;ret
 /* CHANTIER 1 — rend la VRAIE Toile hors ecran : memes germes, memes positions,
    meme monde. Contrairement a preview(), qui regenere une grille aleatoire.
    Meme patron que repaint() : on echange les globales, on peint, on restaure. */
-window.Toile.renderTo=function(cv,ech,clair){
+/* ⚑ v143 (Tom, 12 oct. 2026, C-105 : « le partage de la Toile ne correspond pas à la Toile affichée »). LA CAUSE : l'image était rendue « Toile
+   entière, sans cadrage » (vue 1), sur un autre fond (#EFE2C5 pour #DFCAA4), le monde « au repos » — alors que l'écran CADRE les paroles
+   (toute Toile de moins de vingt paroles ; Ritournelle surtout, zoomée jusqu'à 7 fois) et, sous Ritournelle, ne peint pas certaines
+   cellules vides. Avec `{vue:true}` (le partage, Enregistrer), l'image est rendue COMME L'ÉCRAN : la vue du moment, le fond de la Toile, le
+   monde vivant — mêmes dalles, mêmes places, mêmes formes, mêmes couleurs, même cadrage. Sans l'option (le banc de rendu, les aperçus),
+   rien ne change. */
+window.Toile.renderTo=function(cv,ech,clair,o){ var _vu=!!(o&&o.vue);
   if(!cv||!cv.getContext)return false;
   if(!seeds.length){try{seedGray();}catch(e){}}
   ech=ech||2;
@@ -7542,18 +7566,22 @@ window.Toile.renderTo=function(cv,ech,clair){
     cv.height=Math.max(2,Math.round(H*ech));
     g=cv.getContext('2d'); if(!g)throw 0;
     if(clair!=null)window._shThemeOverride=!!clair;
-    view={s:1,ox:0,oy:0};                 /* Toile entiere, sans cadrage */
+    view=_vu?{s:_v.s,ox:_v.ox,oy:_v.oy}:{s:1,ox:0,oy:0};                 /* Toile entiere, sans cadrage — ou la vue de l'écran (v143) */
     g.setTransform(ech,0,0,ech,0,0);
     g.clearRect(0,0,W,H);
     /* ⚑ v26 — même fond que la vraie Toile (voir `Toile.preview`) : sur Braille et Touffe,
        les deux tiers de la surface SONT ce fond, et `#120E05` s'y lisait comme un voile. */
     g.fillStyle=(clair!=null?clair:isLightM())?'#EFE2C5':'#050302';   /* v116 : l'encre de seiche */
+    if(_vu){ try{ g.fillStyle=_fondVif(g,0,0,W*0.55,H); }catch(_f){} }   /* v143 : le fond de la Toile affichée */
     g.fillRect(0,0,W,H);
     /* ⚑ v44 — LA COMPOSITION DU RENDU EST PUBLIÉE (§7 : un juge compare la composition, jamais un pixel d'une matière
        texturée). Ce sont les graines que le monde VA recevoir — publiées juste avant l'appel, jamais après (une publication faite après ne voit pas ce qui a été fait pendant). */
     try{ window._renduComp={W:W,H:H,ech:ech,monde:theme,graines:seeds.filter(function(s){return s.pid!=null;}).map(function(s){return {pid:s.pid,x:(s.px!=null?s.px:s.x),y:(s.py!=null?s.py:s.y),w:s.w};})}; }catch(_){ }   /* v38 : `_rtCible` — le rendu entier de la Toile peut se servir des calques de Touffe */
 
-    _rtCible=cv; try{ RD[theme](performance.now(),0,0,W,H); }finally{ _rtCible=null; }  /* les VRAIS germes */    /* CHANTIER 39 — le texte des dalles : frame() appelle _labels apres
+    if(_vu){ var _tv0=_transVive, _x0=Math.max(0,(-view.ox)/view.s), _y0=Math.max(0,(-view.oy)/view.s), _x1=Math.min(W,(-view.ox)/view.s+W/view.s), _y1=Math.min(H,(-view.oy)/view.s+H/view.s);
+      g.setTransform(view.s*ech,0,0,view.s*ech,view.ox*ech,view.oy*ech); _transVive=true; window._rtVue=true; _rtCible=cv;   /* `_rtCible` : les calques de Touffe se bâtissent à la densité de CE rendu (sans lui, ceux de l'écran, à la densité 2, étaient posés dans une image à la densité 3 : des fleurs plus petites) */
+      try{ RD[theme](performance.now(),_x0,_y0,_x1,_y1); }finally{ _transVive=_tv0; window._rtVue=false; _rtCible=null; } }
+    else { _rtCible=cv; try{ RD[theme](performance.now(),0,0,W,H); }finally{ _rtCible=null; } }  /* les VRAIS germes */    /* CHANTIER 39 — le texte des dalles : frame() appelle _labels apres
        RD[theme], renderTo ne le faisait pas. Sans lui « Avec / Sans texte »
        n'avait aucun effet sur l'image partagee. */
     if(window._shLabels!==false){
@@ -8122,12 +8150,16 @@ setTimeout(size,60);
      aucun doigt, aucune transition — on re-rend en tâche de fond, une à la fois, celles que le cache a perdues. L'ouverture
      suivante les trouve prêtes. Les mêmes calculs, faits quand personne n'attend. */
   var RAPPEL=[], _dernierDoigt=0;
-  ['pointerdown','pointermove','wheel','keydown'].forEach(function(t){ window.addEventListener(t,function(){ _dernierDoigt=performance.now(); },{capture:true,passive:true}); });
+  ['pointerdown','pointermove','pointerup','touchstart','touchmove','touchend','wheel','keydown'].forEach(function(t){ window.addEventListener(t,function(){ _dernierDoigt=performance.now(); },{capture:true,passive:true}); });
   function retiens(id,tw,th,o){ var s=id+'|'+Math.round(tw/4)+'|'+Math.round(th/4)+'|'+JSON.stringify(o||null);
     for(var i=0;i<RAPPEL.length;i++) if(RAPPEL[i].s===s){ RAPPEL.splice(i,1); break; }
     RAPPEL.unshift({s:s,id:id,tw:tw,th:th,o:o}); if(RAPPEL.length>40) RAPPEL.pop(); }
   function rechauffe(){
-    var calme = performance.now()-_dernierDoigt > 1500 && !(window._trans_en_cours && window._trans_en_cours()) && !document.hidden
+    /* ⚑ v143 (C-102 — RÉCIDIVE) : SAFARI N'A PAS `requestIdleCallback` — là, cette passe tombait par simple minuterie, 1,7 s après le lever du
+       doigt qui tient une parole : une dalle re-rendue, 75 à 100 ms, à la fin de l'animation (mesuré sur le banc WebKit). Elle attend 3 s
+       sans aucun toucher (lever compris), et jamais pendant « tenir » ni dans les 6 s qui suivent. */
+    var _tenir = !!(window._tenirAnime || window._instant || (window._tenirFinT && performance.now()-window._tenirFinT<6000));
+    var calme = !_tenir && performance.now()-_dernierDoigt > 3000 && !(window._trans_en_cours && window._trans_en_cours()) && !document.hidden
       && !(window.Toile_state && window.Toile_state().running) && !(window._tEcran && performance.now()-window._tEcran<2500);   /* ⚑ v100 : ni dans les 2,5 s d'un changement d'écran — il tournait pendant l'ouverture d'une Nuée (19 dalles, 0,5 s) */   /* ⚑ v72 : ni pendant que la Toile anime (fondu, relâchement) — une dalle re-rendue y coûtait une image de 100 à 330 ms */
     if(calme){
       for(var i=0;i<RAPPEL.length;i++){ var R=RAPPEL[i], o=R.o||{};

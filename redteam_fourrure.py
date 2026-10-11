@@ -16,7 +16,7 @@ from PIL import Image
 F=[a for a in sys.argv[1:] if not a.startswith('--')]; F=F[0] if F else 'app.html'
 R_PT=116.0; FACTEUR=1; EPAISSEUR=1; PALIER=110000
 GRAIN_MIN=2.2; POINTE_MIN=1.2; DENT_MIN=0.35; DE_MAX=6.0
-INIT="try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_theme','%s');['tenir','chiche','planter','pelote','noyau','fil','studio-monde','studio-couleur','bande','dessin','aura-apparait'].forEach(function(k){localStorage.setItem('geste_vu_'+k,'1')});}catch(e){}"
+INIT="try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_theme','%s');['tenir','chiche','planter','pelote','noyau','fil','studio-monde','studio-couleur','bande','dessin','aura-apparait'].forEach(function(k){localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_'+k,'1')});}catch(e){}"
 def lab(c):
     def f(u):
         u/=255.0; return u/12.92 if u<=0.04045 else ((u+0.055)/1.055)**2.4
