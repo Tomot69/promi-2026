@@ -1,23 +1,23 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-redteam_trace.py — LA TRACE EST LA SURFACE RÉELLEMENT TOUCHÉE, FORMÉE SOUS LE DOIGT (v141, Tom, 10 oct. 2026, C-083 — RÉCIDIVE).
+redteam_trace.py — LA TRACE EST UNE BANDE CONTINUE, À LA LARGEUR DU CONTACT LU (v142, Tom, 11 oct. 2026, C-083 — RÉCIDIVE).
 
-⚑ CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_trace-avant-v141.py, qui exigeait l'étoile d'un appui et une trace
-posée au lâcher le long du chemin tracé à l'écran). La décision qui le remplace :
-« Retire l'étoile à huit branches et tout dessin géométrique. La trace est la surface réellement touchée par le doigt : l'union des zones de
-contact lues à chaque image le long du chemin, les poils couchés dans le sens du mouvement. Elle se forme sous le doigt, en direct, pas au
-lâcher. Un appui immobile creuse la forme du contact, sans motif. »
+⚑ CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_trace-avant-v142.py — il vérifiait qu'une trace PARAISSAIT sous le
+doigt et suivait le sens du geste ; il ne mesurait ni sa largeur ni sa longueur, et il était vert pendant que Tom voyait « ça apparaît en grand
+alors qu'on a à peine touché, et inversement »). La décision :
+« La trace est une bande continue, image par image, plus d'arcs tous les 10 pt ni de cadence. Sa largeur est celle du contact lu (radiusX /
+radiusY), sans multiplicateur. Un appui immobile laisse la forme du contact, à taille réelle. `?mesure=1` affiche le contact lu. »
 
-Au vrai doigt (CDP, horodaté, avec rayon de contact), Chromium sur carte graphique. La trace se lit SUR L'IMAGE (la tache de différence entre
-la boule avec la trace et relissée, à la même vue : son axe, sa largeur, son centre) et dans ce que l'app déclare (`tracesGeo`).
-  A · EN DIRECT : à mi-geste, doigt posé, la trace existe déjà ; au lâcher, rien ne s'y ajoute ;
-  B · un glissement horizontal couche les poils sur son axe (≤ 25°), là où le doigt a fini (≤ 34 pt) ; un glissement oblique, sur le sien (≤ 30°) ;
-  C · les deux traces n'ont pas le même axe (≥ 25°) ;
-  D · la largeur du contact : rayon 5 pt contre 16 pt, la zone couchée est plus étendue (≥ 1,4 fois) ;
-  E · un appui immobile (0,2 s, puis 1,6 s) : pendant l'appui le creux est là ; ensuite AUCUNE trace, aucun motif (ni arc, ni tache à l'image) ;
-  F · plus d'étoile : aucun arc marqué « étoile », ni dans ce que l'app déclare, ni dans sa source.
-Preuve : rouge sur l'état d'avant (python3 redteam_trace.py zz-av141.html).
+Au vrai doigt (CDP, horodaté, AVEC rayon de contact), Chromium sur carte graphique. Le VERDICT se lit sur l'IMAGE : la tache de différence entre
+la boule avec la trace et relissée, à la même vue ; le geste finit au centre de la boule (la trace y est vue de face). `tracesGeo` sert de pointeur.
+  A · trois contacts (rayon 6, 12, 18 pt), même trajet : la bande PEINTE est large de 2 × le rayon, ± 10 % (12, 24, 36 pt EN DUR) ;
+  B · ce que l'app déclare : demi-largeur = le rayon lu, ± 10 %, sans multiplicateur (`G.DOIGT_K` = 1) ;
+  C · trois trajets (30, 60, 100 pt), même contact : la trace peinte s'allonge avec le trajet (60 ≥ 1,15 × 30 ; 100 ≥ 1,15 × 60 — la boule suit la main : la trace est le GLISSEMENT du doigt sur elle, plus court que le trajet), et sa largeur ne change pas (± 15 %) ;
+  D · EN DIRECT : à mi-geste des segments existent déjà ; au lâcher rien ne s'ajoute ; une bande = plusieurs segments (≥ 4 pour 60 pt) ;
+  E · un appui immobile, contact 16 × 9 pt : il reste une tache de la taille du contact (32 × 18 pt, ± 30 %), plus large que haute ; un contact de 6 pt en laisse une plus petite ;
+  F · `?mesure=1` écrit le contact lu.
+Preuve : rouge sur v141 (python3 redteam_trace.py zz-av142.html).
 """
 import sys, math
 from playwright.sync_api import sync_playwright
@@ -82,26 +82,56 @@ with sync_playwright() as p:
         t = mesure(); t['creux'] = creux; return t
     def court(t): return str({k: (round(v, 1) if isinstance(v, float) else v) for k, v in t.items() if k != 'geo' and v is not None})
     cx, cy = bo
-    A = geste(cx - 65, cy - 30, cx + 65, cy - 30)
-    juge('A · EN DIRECT : à mi-geste, doigt posé, la trace existe déjà', (A.get('mi') or 0) >= 1, 'traces à mi-geste : %s' % A.get('mi'))
-    juge('A · au lâcher, rien ne s\'y ajoute (elle s\'est formée sous le doigt)', (A.get('avant') or 0) >= 1 and A.get('apres') == A.get('avant'), 'avant le lâcher %s · au repos %s' % (A.get('avant'), A.get('apres')))
-    okA = A.get('n', 0) >= 40
-    juge('B · un glissement horizontal : les poils couchés sur son axe (≤ 25°), là où le doigt a fini (≤ 34 pt)', okA and ecart_angle(A['angle'], 0) <= 25 and math.hypot(A['cx'] - (cx + 65), A['cy'] - (cy - 30)) <= 34, court(A))
-    B = geste(cx - 55, cy + 15, cx - 55 + 42, cy + 15 + 42)
-    okB = B.get('n', 0) >= 40
-    juge('B · un glissement oblique : sur le sien (45° ± 30), là où le doigt a fini (≤ 34 pt)', okB and ecart_angle(B['angle'], 45) <= 30 and math.hypot(B['cx'] - (cx - 13), B['cy'] - (cy + 57)) <= 34, court(B))
-    juge('C · deux gestes, deux traces : leurs axes diffèrent d\'au moins 25°', okA and okB and ecart_angle(A['angle'], B['angle']) >= 25, 'axes %.0f° / %.0f°' % (A.get('angle', 0), B.get('angle', 0)))
-    D1 = geste(cx - 65, cy - 30, cx + 65, cy - 30, r=5); D2 = geste(cx - 65, cy - 30, cx + 65, cy - 30, r=16)
-    # la zone touchée est à peu près ronde (c'est le contact) : son « axe » ne dit pas sa largeur — on compare son ÉTENDUE (les pixels que la trace change)
-    juge('D · la largeur du contact : rayon 5 pt contre 16 pt, la zone couchée est plus étendue (≥ 1,4 fois)', D1.get('n', 0) >= 40 and D2.get('n', 0) >= 1.4 * D1.get('n', 1), 'pixels changés %s / %s' % (D1.get('n'), D2.get('n')))
-    E1 = appui(cx + 20, cy - 10, 11, 0.2); E2 = appui(cx + 20, cy - 10, 11, 1.6)
-    juge('E · un appui immobile creuse (le creux est là pendant l\'appui long)', E2.get('creux') is True, 'creux : %s' % E2.get('creux'))
-    juge('E · ensuite, aucune trace et aucun motif : ni arc, ni tache à l\'image (0,2 s et 1,6 s)', len(E1.get('geo') or []) == 0 and len(E2.get('geo') or []) == 0 and E1.get('n', 0) < 40 and E2.get('n', 0) < 40,
-         'arcs %d / %d · pixels changés %s / %s' % (len(E1.get('geo') or []), len(E2.get('geo') or []), E1.get('n'), E2.get('n')))
-    tous = (A.get('geo') or []) + (B.get('geo') or []) + (E1.get('geo') or []) + (E2.get('geo') or [])
-    src = pg.evaluate("()=>{ let n=0; document.querySelectorAll('script').forEach(s=>{ const t=s.textContent||''; if(/\\._?a?\\.et\\s*=\\s*1/.test(t) || /_a\\.et=1/.test(t)) n++; }); return n; }")
-    juge('F · plus d\'étoile : aucun arc marqué « étoile », ni déclaré ni dans la source', not any(a.get('et') for a in tous) and src == 0, 'arcs en étoile %d · source %d' % (sum(1 for a in tous if a.get('et')), src))
+    BOITE = r"""()=>{ const a=window.__i1, b=window.__i2, c=document.getElementById('auBoule'), W=c.width, k=W/296; const col={}, lig={}; let n=0;
+      for(let y=0;y<W;y++) for(let x=0;x<W;x++){ const i=(y*W+x)*4; if(!a[i+3]||!b[i+3]) continue; const e=Math.abs(a[i]-b[i])+Math.abs(a[i+1]-b[i+1])+Math.abs(a[i+2]-b[i+2]); if(e>36){ col[x]=(col[x]||0)+1; lig[y]=(lig[y]||0)+1; n++; } }
+      const et=(o,seuil)=>{ const K=Object.keys(o).map(Number).filter(v=>o[v]>=seuil).sort((p,q)=>p-q); return K.length? (K[K.length-1]-K[0])/k : 0; };
+      const mx=Math.max(1,...Object.values(lig)), my=Math.max(1,...Object.values(col));
+      return {n:n, long:et(col, my*0.35), large:et(lig, mx*0.35)}; }"""
+    def lit():
+        pg.wait_for_function("()=>{const e=_aura.etat(); return !e.emp && !e.attente && !e.vlac && !e.vtan}", timeout=25000); pg.wait_for_timeout(500)
+        v = pg.evaluate("()=>{const e=_aura.etat(); return [e.lac,e.tan]}"); geo = pg.evaluate("()=>_aura.tracesGeo?_aura.tracesGeo():[]")
+        pg.evaluate(GARDE, 1); pg.evaluate("([l,t])=>{ _aura.relisse(); _aura.vue(l,t); }", v); pg.wait_for_timeout(500); pg.evaluate(GARDE, 2)
+        t = pg.evaluate(BOITE); t['arcs'] = len(geo); t['w'] = max([a['w'] for a in geo] or [0]) * 116; return t
+    def bande(L, r, y=None):
+        """le doigt glisse de L pt vers la droite et FINIT au centre de la boule"""
+        y = cy - 10 if y is None else y; x0 = cx - L; x1 = cx
+        pg.evaluate("()=>{ _aura.relisse(); _aura.fige(true); _aura.vue(3.1,0.2); }"); pg.wait_for_timeout(500)
+        T[0] += 5; cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': tp(x0, y, r), 'timestamp': T[0]}); n = 18; mi = 0
+        for i in range(1, n + 1):
+            T[0] += .45 / n; pg.wait_for_timeout(25)
+            cdp.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': tp(x0 + (x1 - x0) * i / n, y, r), 'timestamp': T[0]})
+            if i == n // 2: pg.wait_for_timeout(60); mi = pg.evaluate("()=>(_aura.tracesGeo?_aura.tracesGeo():[]).length")
+        pg.wait_for_timeout(350); T[0] += .35; av = pg.evaluate("()=>(_aura.tracesGeo?_aura.tracesGeo():[]).length")
+        cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': [], 'timestamp': T[0]})
+        t = lit(); t['mi'] = mi; t['avant'] = av; return t
+    def pose(rx, ry, duree=1.2):
+        pg.evaluate("()=>{ _aura.relisse(); _aura.fige(true); _aura.vue(3.1,0.2); }"); pg.wait_for_timeout(500)
+        T[0] += 5; cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': cx, 'y': cy - 10, 'radiusX': rx, 'radiusY': ry, 'rotationAngle': 0, 'force': 1}], 'timestamp': T[0]})
+        pg.wait_for_timeout(int(duree * 1000)); T[0] += duree
+        cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': [], 'timestamp': T[0]}); pg.wait_for_timeout(700); return lit()
+    def c(t): return str({k: (round(v, 1) if isinstance(v, float) else v) for k, v in t.items()})
+    R = {r: bande(110, r) for r in (6, 12, 18)}
+    for r in (6, 12, 18):
+        juge('A · contact de rayon %d pt : la bande peinte est large de %d pt (± 10 %%)' % (r, 2 * r), abs(R[r]['large'] - 2 * r) <= 0.10 * 2 * r, c(R[r]))
+    juge('B · ce que l\'app déclare : demi-largeur = le rayon lu (± 10 %), pour les trois', all(abs(R[r]['w'] - r) <= 0.10 * r for r in R), ' · '.join('%d → %.1f' % (r, R[r]['w']) for r in R))
+    k = pg.evaluate("()=>_aura.G && _aura.G.DOIGT_K")
+    juge('B · sans multiplicateur : G.DOIGT_K vaut 1', k == 1, 'DOIGT_K = %s' % k)
+    L = {l: bande(l, 10) for l in (30, 60, 100)}
+    juge('C · la trace peinte s\'allonge avec le trajet : 60 pt ≥ 1,15 × 30 pt, 100 pt ≥ 1,15 × 60 pt', L[30]['long'] > 8 and L[60]['long'] >= 1.15 * L[30]['long'] and L[100]['long'] >= 1.15 * L[60]['long'], ' · '.join('%d → %.1f pt' % (l, L[l]['long']) for l in L))
+    juge('C · sa largeur ne dépend pas du trajet (20 pt, ± 15 %)', all(abs(L[l]['large'] - 20) <= 3 for l in L), ' · '.join('%d → %.1f pt' % (l, L[l]['large']) for l in L))
+    juge('D · EN DIRECT : à mi-geste des segments existent ; au lâcher rien ne s\'ajoute', L[60]['mi'] >= 1 and L[60]['arcs'] == L[60]['avant'], c(L[60]))
+    juge('D · une bande, pas un arc : au moins 4 segments pour 60 pt de trajet, et davantage pour 100 pt', L[60]['arcs'] >= 4 and L[100]['arcs'] > L[60]['arcs'], '%d / %d' % (L[60]['arcs'], L[100]['arcs']))
+    E = pose(16, 9); e = pose(6, 6)
+    juge('E · appui immobile, contact 16 × 9 pt : une tache de 32 × 18 pt (± 30 %), plus large que haute', abs(E['long'] - 32) <= 9.6 and abs(E['large'] - 18) <= 5.4 and E['long'] > E['large'], c(E))
+    juge('E · un contact de 6 pt laisse une tache plus petite (≤ la moitié en surface)', 0 < e['n'] <= 0.5 * E['n'], '%s / %s pixels' % (e['n'], E['n']))
     juge('aucune erreur de page', not er, str(er[:2]))
+    pg2 = ctx.new_page(); pg2.goto('http://127.0.0.1:8752/' + FICHIER + '?mesure=1'); pg2.wait_for_timeout(6500)
+    pg2.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} closeAll(); document.getElementById('souffleBtn').click();}"); pg2.wait_for_timeout(5000)
+    c2 = ctx.new_cdp_session(pg2)
+    c2.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': cx, 'y': cy, 'radiusX': 13, 'radiusY': 7, 'rotationAngle': 0, 'force': 1}]}); pg2.wait_for_timeout(500)
+    tx = pg2.evaluate("()=>{const n=document.getElementById('auMesContact'); return n? n.textContent : null}")
+    c2.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
+    juge('F · ?mesure=1 écrit le contact lu (13 × 7 pt)', bool(tx) and 'contact lu' in tx and '13' in tx and '7' in tx, repr(tx))
     b.close()
 print('\n%d/%d' % (ok, ok + len(ko)))
 if ko: sys.exit(1)

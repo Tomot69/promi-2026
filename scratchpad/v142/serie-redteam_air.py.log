@@ -1,0 +1,9 @@
+
+
+  ❌  2 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+      « une paire qu'on ne retrouve plus n'est pas une paire intacte »
+
+   l'instant referme [dark]   #instTenue«tenue.»                 → #instSous«C’est tenu.»
+   l'instant referme [light]  #instTenue«tenue.»                 → #instSous«C’est tenu.»
+
+  Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

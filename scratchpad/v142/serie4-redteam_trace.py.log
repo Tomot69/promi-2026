@@ -1,0 +1,15 @@
+OK  A · contact de rayon 6 pt : la bande peinte est large de 12 pt (± 10 %)  {'n': 1849, 'long': 51, 'large': 12, 'arcs': 8, 'w': 6.0, 'mi': 3, 'avant': 8}
+OK  A · contact de rayon 12 pt : la bande peinte est large de 24 pt (± 10 %)  {'n': 4373, 'long': 59.5, 'large': 23.5, 'arcs': 8, 'w': 12.0, 'mi': 3, 'avant': 8}
+OK  A · contact de rayon 18 pt : la bande peinte est large de 36 pt (± 10 %)  {'n': 6892, 'long': 67, 'large': 35.5, 'arcs': 8, 'w': 18.0, 'mi': 3, 'avant': 8}
+OK  B · ce que l'app déclare : demi-largeur = le rayon lu (± 10 %), pour les trois  6 → 6.0 · 12 → 12.0 · 18 → 18.0
+OK  B · sans multiplicateur : G.DOIGT_K vaut 1  DOIGT_K = 1
+OK  C · la trace peinte s'allonge avec le trajet : 60 pt ≥ 1,15 × 30 pt, 100 pt ≥ 1,15 × 60 pt  30 → 33.0 pt · 60 → 45.0 pt · 100 → 53.5 pt
+OK  C · sa largeur ne dépend pas du trajet (20 pt, ± 15 %)  30 → 18.5 pt · 60 → 19.0 pt · 100 → 21.5 pt
+OK  D · EN DIRECT : à mi-geste des segments existent ; au lâcher rien ne s'ajoute  {'n': 2264, 'long': 45, 'large': 19, 'arcs': 5, 'w': 10.0, 'mi': 2, 'avant': 5}
+OK  D · une bande, pas un arc : au moins 4 segments pour 60 pt de trajet, et davantage pour 100 pt  5 / 7
+OK  E · appui immobile, contact 16 × 9 pt : une tache de 32 × 18 pt (± 30 %), plus large que haute  {'n': 791, 'long': 26, 'large': 14, 'arcs': 1, 'w': 9.0}
+OK  E · un contact de 6 pt laisse une tache plus petite (≤ la moitié en surface)  241 / 791 pixels
+OK  aucune erreur de page  []
+OK  F · ?mesure=1 écrit le contact lu (13 × 7 pt)  'contact lu : 13 × 7 pt (pointeur) → demi-axe 13 pt'
+
+13/13

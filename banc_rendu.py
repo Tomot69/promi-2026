@@ -75,7 +75,11 @@ IMAGES = 240               # images données au monde après l'avoir posé (4 s 
 POSE = """(a)=>{ const [monde,graine,neufs]=a;
   /* changer de FAMILLE ressème (v35) : on passe par l'autre famille, puis on revient, la graine remise juste avant */
   const autre = neufs.indexOf(monde)>=0 ? 'encre' : 'esquille';
-  Toile.setTheme(autre); window.__amorce(graine); Toile.setTheme(monde); return Toile.getTheme(); }"""
+  /* ⚑ v142 : LA PLACE D'UNE DALLE EST GARDÉE (p.place, NUEPLACE) — une dalle garde donc, d'un monde à l'autre, le décalage du monde où elle a été
+     plantée. Le banc juge le rendu d'une Toile NEUVE sous une graine : il oublie les places avant chaque pose (sans cela Pochade, Touffe, Halin,
+     Brouillamini et Esquille différaient de la référence ; prouvé : place désactivée, 280/280 au pixel). Original : sauvegardes/banc_rendu-avant-v142.py */
+  const oublie=()=>{ try{ promises.forEach(p=>{ delete p.place; }); }catch(e){} try{ window.NUEPLACE={}; localStorage.removeItem('promi_nueplace'); }catch(e){} };
+  oublie(); Toile.setTheme(autre); oublie(); window.__amorce(graine); Toile.setTheme(monde); return Toile.getTheme(); }"""
 
 RENDU = """(a)=>{ const [monde,T,KS,PAR]=a; const out={};
   {

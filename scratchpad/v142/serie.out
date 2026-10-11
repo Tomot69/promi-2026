@@ -1,0 +1,53 @@
+== redteam_ritournelle.py [0] 79s : OK  6 parole(s) : au plus 4 cellules vides, même en partie  3 cellule(s) vide(s) dans la zone visible : [([0,  | 13 / 13
+== redteam_cercle_tom.py [0] 185s : OK  [sombre] « Dissoudre le Cercle » a le dessin de « Supprimer ce Promi » (police, taille, graisse, chasse, c | 16 / 16
+== redteam_studio_tom.py [0] 265s : OK  [sombre] le panneau des palettes : la phrase reste lisible (seule sur le panneau) | 14 / 14
+== redteam_engagement.py [0] 115s : R6 · compte         sortie : « Plus tard » | redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+== redteam_onb_sorties.py [0] 92s : R6 · fin            sortie : « Plus tard » | R6 · compte         sortie : « Plus tard »
+== redteam_verrou_onboarding.py [0] 39s : OK  9 · aucune erreur de page                                                  [] | verrou de l'onboarding : 9/9
+== redteam_decisions.py [0] 79s : Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'oran | 89 / 89
+== redteam_joignable.py [0] 133s : aucun gestionnaire en attribut on…=""                      OK  0 | 5 / 5
+== redteam_ecrans.py [0] 90s : aucune erreur JS [clair]                       OK | 152/152
+== redteam_volume.py [0] 0s : dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 | ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+== redteam_tokens.py [0] 0s : ✓ l'extension Swift porte le niveau « libelle » | 46/46
+== redteam_lexique.py [0] 298s : · point i | redteam_lexique : 3/3
+== redteam_kaki.py [1] 117s : sillons      toile-sombre  kaki   6.4 %  ✗ #C6BCAC (h 80°, C 0.025, L 0.80) ×103; #C4BAAB (h 78°, C 0.024, L 0 | ❌ DU KAKI — 15 coupable(s)
+     ❌ DU KAKI — 15 coupable(s)
+== redteam_accueil.py [0] 171s : [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False | 22/22
+== redteam_zoom.py [0] 94s : [sombre] 8 · supprimer ramène le défaut                        OK  échelle 1.000 (défaut 1.0 pour 20) | 16/16
+== redteam_toucher.py [1] 293s : ROUGE : Ritournelle, 1 parole(s) : la matière des dalles est entière à l'écran (entre le plateau et la barre), | ROUGE : Ritournelle, 3 parole(s) : la matière des dalles est entière à l'écran (entre le plateau et la barre),
+     ❌ Tesselle : toucher une dalle ouvre sa fiche (2 sur 3) — [('courir dimanche', {'show': False, 'titre': 'faire les crêpes', 'cur': 126}, 'dpMain')]
+     ❌ Buvard : toucher une dalle ouvre sa fiche (2 sur 3) — [('courir dimanche', {'show': False, 'titre': 'faire les crêpes', 'cur': 126}, 'dpMain')]
+     ❌ Guingois : toucher une dalle ouvre sa fiche (2 sur 3) — [('faire les crêpes', {'show': False, 'titre': 'planter un arbre', 'cur': 125}, 'dpMain')]
+     ❌ Madrure : toucher une dalle ouvre sa fiche (2 sur 3) — [('courir dimanche', {'show': False, 'titre': 'faire les crêpes', 'cur': 126}, 'dpMain')]
+     ❌ Ritournelle, 1 parole(s) : la matière des dalles est entière à l'écran (entre le plateau et la barre), vue de près, et la Toile compte au moins neuf cellules — 1 dalle(s), 69 cellule(s) ; la matière
+     ❌ Ritournelle, 3 parole(s) : la matière des dalles est entière à l'écran (entre le plateau et la barre), vue de près, et la Toile compte au moins neuf cellules — 3 dalle(s), 69 cellule(s) ; la matière
+== redteam_murs.py [0] 129s : ✅ 8 · Cercle payé : rien de flouté, rien ne monte  — phrase False · offre False · filtre none | 28/28
+== redteam_murs_toucher.py [0] 366s : OK  [les couleurs du dessin] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 114 pt) | 8 / 8
+== redteam_studio_mur.py [0] 99s : OK  [la jauge] la phrase paraît, entière sur le panneau flouté  phrase [604, 692] · panneau flouté [478, 820]  | 9/9
+== redteam_maparole.py [0] 235s : [dark] aucune erreur de page                                                     OK | 14 / 14
+== redteam_nuee.py [0] 200s : ============================================================================== | ✅  24 écran(s) · 0 écart(s)
+== redteam_nuee_entree.py [0] 43s : [sombre · pleine] 5 · au doigt, la page + s'ouvre dans « potager » OK  au doigt True · {'ouvert': True, 'nuee' | 24/24
+== redteam_nuee_dalle.py [1] 93s : [clair] aucune erreur JS                                           OK  [] | 36/38
+== redteam_phrase_fiche.py [0] 269s : ✅ [dark] élision : aucune erreur de page — [] | redteam_phrase_fiche : 74/74
+== redteam_vide.py [1] 229s : · l'instant referme [dark] | · l'instant referme [light]
+== redteam_flash.py [0] 120s : ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1832 ms) | 32/32
+== redteam_air.py [1] 316s : l'instant referme [light]  #instTenue«tenue.»                 → #instSous«C’est tenu.» | Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+     ❌  2 PAIRE(S) DE LA RÉFÉRENCE NE SONT PLUS MESURÉES
+== redteam_decoupe.py [0] 317s : OK  sillons   dark  fil du Cercle, défilé       23 dalle(s) rendue(s) · au pire 0.00 % de pixels d'une autre c | ✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut
+== redteam_clavier.py [0] 0s : ✓ les gens — « + ajouter quelqu'un » (30 ms) — dans le geste (l.32698, différé en secours) | ✅ le clavier s'ouvre au geste — 3 champs
+== redteam_halo.py [0] 34s : [sombre] D · « PARTAGER MA PELOTE » à 435,47                                   OK  435.46875 | 12/12
+== redteam_corps.py --n=20 [0] 103s : aucune erreur de page                                                                  OK | 33 / 33
+== redteam_bouton.py [1] 237s : 32 / 33 | KO : 2 · la hauteur de capitale = celle de « TRACE POUR LANCER »
+     KO : 2 · la hauteur de capitale = celle de « TRACE POUR LANCER »
+== releve-aura.py [1] 183s : palier 110000 · médiane 35.5 ms · 1659 images · plus longue image pendant l'élan : 200 ms (dont peintre 38.0 m | ❌  4 ÉCARTS
+     ❌  4 ÉCARTS
+== redteam_fluide.py [1] 206s : 5 / 6 | KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4096 images)
+     KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4096 images)
+== redteam_rythme.py [1] 683s : · ramage · reel · depart — ligne retirée (v93), relevé : {'duree': 409, 'images': 24, 'boucle': 1892, 'debut': | 95 / 99
+== banc_rendu.py [1] 123s : ≠ esquille     dalle-promi-k1     None px  taille (73, 71) ≠ (110, 177) | ❌ LE RENDU A CHANGÉ.
+     ❌ LE RENDU A CHANGÉ.
+== redteam_gestes.py [1] 652s : redteam_gestes : 120/122 | ROUGE : 0 · les valeurs décidées : 600 ms, 900 ms, trois fois, × 1,3, 1,6 s · tenir · la main est à × 1,3 (42,
+     KO  0 · les valeurs décidées : 600 ms, 900 ms, trois fois, × 1,3, 1,6 s          {'INACTIF': 600, 'INACTIF_FICHE': 1500, 'PAUSE': 900, 'TOURS': 3, 'GRAND': 1.3, 'TRAJET': 1600}
+     KO  tenir · la main est à × 1,3 (42,5 pt de large ; 49 en v139, 33 en E1)        largeur 39.0 pt
+== redteam_couleurs_ref.py [0] 700s : canevas non peints d'un côté (comptés, non jugés) : 2 — Nuée défilée[l] vide côté app · Nuée défilée[d] vide c | ✅ — 0 écart(s) de couleur avec la référence v118
+FIN DE SÉRIE

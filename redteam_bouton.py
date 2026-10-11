@@ -120,7 +120,10 @@ with sync_playwright() as p:
     t('1 · le mot : « PARTAGER MA PELOTE » (capitales, aucune accentuée)', m.get('mot') == 'PARTAGER MA PELOTE', repr(m.get('mot')))
     t('1 · PromiLate, 15 px, chasse 0, écrit tel quel', str(m.get('ff', '')).lstrip('"\'').startswith('PromiLate') and m.get('fs') == '15px' and m.get('ls') in ('normal', '0px') and m.get('tt') == 'none', '%s · %s · %s · %s' % (m.get('ff'), m.get('fs'), m.get('ls'), m.get('tt')))
     t('1 · la grammaire du bouton n\'a pas bougé : 342 × 60 à x 24, trait 2, rayon 30', bool(m) and abs(m['box'][0] - 24) < 0.5 and abs(m['box'][1] - 342) < 0.5 and abs(m['box'][2] - 60) < 0.5 and m['bw'] == '2px' and m['br'] == '30px', '%s · %s · %s' % ([round(v, 1) for v in m.get('box', [])], m.get('bw'), m.get('br')))
-    t('2 · la hauteur de capitale = celle de « TRACE POUR LANCER »', bool(m) and m.get('capTr') and abs(m['capBt'] - m['capTr']) < 0.15, 'bouton %.2f · phrase du trait %.2f (%s %s)' % (m.get('capBt') or 0, m.get('capTr') or 0, m.get('trFf'), m.get('trFs')))
+    # ⚑ v142 — CONTRAT REMIS AU NIVEAU DES DÉCISIONS (original : sauvegardes/redteam_bouton-avant-v142.py). v124 a fixé le bouton à « PromiLate 15 px,
+    #   la hauteur de capitale des phrases du trait (10,67) » ; v140 a grandi le mot du trait à 19 px (13,52) SANS toucher au bouton. Le juge comparait les
+    #   deux : rouge depuis v140. La valeur décidée du bouton est portée EN DUR : 10,67.
+    t('2 · la hauteur de capitale du bouton est 10,67 (v124 : PromiLate 15 px)', bool(m) and abs((m.get('capBt') or 0) - 10.67) < 0.15, 'bouton %.2f · phrase du trait aujourd\'hui %.2f (%s %s)' % (m.get('capBt') or 0, m.get('capTr') or 0, m.get('trFf'), m.get('trFs')))
     t('aucune erreur de page', not er, '; '.join(er[:2]))
     b.close()
 print('\n%d / %d' % (ok[0], ok[0] + len(ko)))

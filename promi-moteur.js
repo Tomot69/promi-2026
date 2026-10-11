@@ -853,6 +853,13 @@ function creerMondes(env) {
     if (!P.length) return;
     var sp = _uGlobal(ix) * SP_U, RMAX = sp * 2.4;
     if (!env.trans && env.cible == null && env.vive) window._ritComp = [];
+    /* ⚑ v142 (Tom, 11 oct. 2026, C-088) — sous neuf paroles, on ne montre que les dalles et QUELQUES cellules vides (aucune jusqu'à trois
+       paroles) : les plus proches des paroles. Les autres ne sont pas peintes — elles bornent toujours les coulées (le semis ne change pas). */
+    var VV = (env.cible == null && typeof env.videsVus === 'number') ? env.videsVus : null, VUS = null, BT2 = (!env.trans && env.cible == null && env.vive && VV != null) ? [] : null;
+    if (VV != null) { var gx = 0, gy = 0, gn = 0, GR = [], iv;
+      for (iv = 0; iv < P.length; iv++) { if (P[iv].s.kind !== 'gray') { if (P[iv].s.part == null) { gx += P[iv].x; gy += P[iv].y; gn++; } } else GR.push(P[iv]); }
+      if (gn) { gx /= gn; gy /= gn; GR.sort(function (u, v) { return ((u.x - gx) * (u.x - gx) + (u.y - gy) * (u.y - gy)) - ((v.x - gx) * (v.x - gx) + (v.y - gy) * (v.y - gy)); }); }
+      VUS = GR.slice(0, gn ? VV : 0).map(function (u) { return u.s; }); }
     // v43 : la transition (Toile vivante seulement)
     var TR = env.trans, tt = TR ? now - TR.t0 : -1, FG = null, trq = 0, WF = null;
     if (TR && tt < Rrit.transDur) {
@@ -871,6 +878,7 @@ function creerMondes(env) {
       // Sans cela la coulée d'une voisine, rognée par une cellule APPROCHÉE, mordait sur la vraie cellule et restait
       // en éclat au bord de la dalle (vu à k = 1 et 2,5).
       if (env.cible != null && p.s.pid !== env.cible) continue;
+      if (VUS && p.s.kind === 'gray' && VUS.indexOf(p.s) < 0) continue;   /* v142 : une cellule vide qu'on ne montre pas */
       if (p.x < x0 - RMAX || p.x > x1 + RMAX || p.y < y0 - RMAX || p.y > y1 + RMAX) continue;
       var vois = ix.near(p, 10); if (!vois.length) continue;
       var HD = [];
@@ -939,6 +947,10 @@ function creerMondes(env) {
         for (a = 0; a < NA; a++) tmp[a] = (sm[(a - 1 + NA) % NA] + 2 * sm[a] + sm[(a + 1) % NA]) / 4;
         for (a = 0; a < NA; a++) sm[a] = tmp[a];
       }
+      /* v142 : la boîte de la MATIÈRE de chaque parole, telle qu'elle est peinte au repos (unités de la Toile) — le cadrage de départ la lit */
+      if (BT2 && p.s.kind !== 'gray' && p.s.part == null) { var bx0 = 1e9, by0 = 1e9, bx1 = -1e9, by1 = -1e9;
+        for (a = 0; a < NA; a++) { var qx = cx + cs[a] * sm[a], qy = cy + sn[a] * sm[a]; if (qx < bx0) bx0 = qx; if (qx > bx1) bx1 = qx; if (qy < by0) by0 = qy; if (qy > by1) by1 = qy; }
+        BT2.push({ s: p.s, sx: p.x, sy: p.y, x0: bx0, y0: by0, x1: bx1, y1: by1 }); }
       var RP = _rampe(p.s, now);
       // v43 : une dalle PARTIE (`part`, posé par le moteur) se retire dans sa cellule, du bord vers le centre
       // v44 : sur la Toile vivante, une coulée qui ARRIVE naît de rien (elle apparaissait d'un coup à 12 % de sa cellule)
@@ -989,6 +1001,8 @@ function creerMondes(env) {
       if (sm !== lim) { tmp = sm; } // les tampons tournent, rien à rendre
       lim = new Float64Array(NA);
     }
+    if (BT2) { var sg = BT2.map(function (e) { return [e.x0, e.y0, e.x1, e.y1].map(function (v) { return Math.round(v / 2); }).join(','); }).join('|');
+      window._ritBoites = BT2; if (sg !== window._ritBoitesSig) { window._ritBoitesSig = sg; try { if (env.boitesNeuves) env.boitesNeuves(); } catch (_) { } } }
   }
 
   /* ---------- 5 · CABOCHON — les pierres polies ------------------------- */
@@ -6143,6 +6157,30 @@ var HAUT_LIBRE=176, BAS_LIBRE=138;
 /* v141 — la boîte des cellules des paroles, à leur poids FINAL (une dalle qui arrive part d'un poids négatif : sa cellule du moment est
    minuscule). Échantillonnée au pas de 3 autour de chaque parole. */
 function _poidsFin(s){ return (s.kind!=='gray' && s.wFin!=null) ? s.wFin : (s.wt!=null?s.wt:(s.w||0)); }
+/* ⚑ v142 (Tom, 11 oct. 2026, C-088 et C-101) — LA PLACE D'UNE DALLE EST GARDÉE. Une parole (ou un Cercle) retient où sa dalle a été plantée
+   ou posée (`p.place` = [x/W, y/H], sauvegardé avec elle ; un Cercle : `NUEPLACE[clé]`). POURQUOI : en rouvrant l'app, `sync` replantait
+   chaque parole dans une cellule vide TIRÉE AU HASARD — mesuré sous Ritournelle : trois paroles plantées côte à côte revenaient aux trois
+   coins de la Toile, et la vue ne pouvait plus les montrer de près. Une parole qui a une place reprend la cellule vide la plus proche d'elle. */
+var _plantePid=null, _planteNuee=null;
+/* ⚠ v142 — UNE PLACE NE VAUT QUE DANS LA FAMILLE DE SEMIS OÙ ELLE A ÉTÉ PRISE (`[x, y, 1]` = un monde fait de ses seules paroles) : notée sous le
+   semis constant, elle regroupait les graines d'un monde neuf, dont les dalles se partagent toute la Toile (Esquille au banc de rendu : des
+   dalles deux fois plus petites). D'une famille à l'autre, la parole est replacée comme avant, et sa place est notée de nouveau. */
+function _placeLue(){ try{ if(_AP) return null; var _fam=_semisNeuf()?1:0;
+  if(_plantePid!=null){ for(var i=0;i<promises.length;i++){ if(promises[i].id===_plantePid){ var p=promises[i].place; return (p&&p.length>=2&&((p[2]||0)===_fam))?p:null; } } return null; }
+  if(_planteNuee){ var m=window.NUEPLACE&&window.NUEPLACE[_planteNuee]; return (m&&m.length>=2&&((m[2]||0)===_fam))?m:null; } }catch(_){ } return null; }
+function _placeNote(x,y,force){ try{ if(_AP) return; var v=[+(x/W).toFixed(4),+(y/H).toFixed(4),_semisNeuf()?1:0], ecrit=false;
+  if(_plantePid!=null){ for(var i=0;i<promises.length;i++){ if(promises[i].id===_plantePid){ if(force||!promises[i].place||((promises[i].place[2]||0)!==v[2])){ promises[i].place=v; ecrit=true; } break; } } }
+  else if(_planteNuee){ window.NUEPLACE=window.NUEPLACE||{}; if(force||!window.NUEPLACE[_planteNuee]||((window.NUEPLACE[_planteNuee][2]||0)!==v[2])){ window.NUEPLACE[_planteNuee]=v; ecrit=true; try{ localStorage.setItem('promi_nueplace',JSON.stringify(window.NUEPLACE)); }catch(_){ } } }
+  if(ecrit){ clearTimeout(_placeNote._t); _placeNote._t=setTimeout(function(){ try{ if(typeof saveState==='function') saveState(); }catch(_){ } },400); } }catch(_){ } }
+try{ window.NUEPLACE=JSON.parse(localStorage.getItem('promi_nueplace')||'{}')||{}; }catch(_){ window.NUEPLACE={}; }
+function _videsVus(n){ return n<=3?0:(n<=5?2:(n<=7?3:4)); }
+/* ⚑ v142 (C-088) — la boîte de la MATIÈRE des paroles, telle que le peintre de Ritournelle vient de la peindre (`window._ritBoites`) ;
+   null tant qu'une parole n'a pas été peinte à sa place d'aujourd'hui (on cadre alors ses cellules, puis le peintre publie et l'on recadre). */
+function _boiteMatiere(col){ try{ var B=window._ritBoites; if(!B||!B.length) return null; var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  for(var i=0;i<col.length;i++){ var c=col[i], e=null; for(var k=0;k<B.length;k++){ if(B[k].s===c){ e=B[k]; break; } }
+    if(!e || Math.abs(e.sx-c.x)>3 || Math.abs(e.sy-c.y)>3 || c.wAt) return null;
+    if(e.x0<x0)x0=e.x0; if(e.y0<y0)y0=e.y0; if(e.x1>x1)x1=e.x1; if(e.y1>y1)y1=e.y1; }
+  return (x1>x0&&y1>y0)?{x0:x0,y0:y0,x1:x1,y1:y1,matiere:1}:null; }catch(_){ return null; } }
 function _boiteSerre(col){ try{
   var a=avg(), R=a*1.7, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9, P=[], i, k;
   for(i=0;i<seeds.length;i++){ var q=seeds[i]; P.push([(q.tx!=null?q.tx:q.x),(q.ty!=null?q.ty:q.y),_poidsFin(q),q]); }
@@ -6186,13 +6224,18 @@ function autoView(){
      cellule (mesuré sur Ritournelle) : une parole seule voit sa CELLULE cadrée à 118 % de la largeur (sa matière en fait donc 60 % au moins,
      et reste entière) ; plusieurs, à 100 %. */
   var _bs=_serre?_boiteSerre(col):null;
+  /* ⚑ v142 (Tom, 11 oct. 2026, C-088 — RÉCIDIVE) — POURQUOI C'EST REVENU : la boîte des cellules (v141) n'est pas ce qu'on voit. Par le vrai
+     chemin (une parole plantée au +), la cellule calculée faisait 234 unités pour 105 de matière : la dalle sortait à 44 % de la largeur ;
+     après un rechargement la même parole sortait à 76 %. Le juge de v141 posait ses paroles par `Toile.sync` puis recadrait lui-même.
+     On cadre maintenant la MATIÈRE PEINTE (publiée par le peintre), dans la zone visible entre le plateau et la barre. */
+  var _bm=(_serre&&theme==='ritournelle')?_boiteMatiere(col):null; if(_bm) _bs=_bm;
   if(_bs){ minX=_bs.x0; maxX=_bs.x1; minY=_bs.y0; maxY=_bs.y1; } else { minX-=pad;maxX+=pad;minY-=pad;maxY+=pad; }
   var bw=Math.max(1,maxX-minX), bh=Math.max(1,maxY-minY);
   var topB=HAUT_LIBRE, botB=H-BAS_LIBRE;    /* zone utile (barre haut + dock evites) */
   if(_bs){ topB=H*(112/844); botB=H*(698/844); }   /* serré : entre le plateau (40 → 100) et la barre (710), 12 pt d'air */
-  var availW=W*(_bs?(col.length===1?1.18:1.0):0.92), availH=Math.max(1,botB-topB);
+  var availW=W*(_bm?(col.length===1?0.80:0.94):(_bs?(col.length===1?1.18:1.0):0.92)), availH=Math.max(1,botB-topB);
   var s=Math.min(availW/bw, availH/bh);
-  s=Math.max(1.0, Math.min(s, _serre?(_bs?5.0:3.6):2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 (3,6 : v140, voir plus haut) */
+  s=Math.max(1.0, Math.min(s, _serre?(_bm?7.0:(_bs?5.0:3.6)):2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 (3,6 : v140, voir plus haut) */
   var cx=(minX+maxX)/2, cy=(minY+maxY)/2, scx=W/2, scy=(topB+botB)/2;
   var _ox=scx-cx*s, _oy=scy-cy*s;
   /* clamp : les bords de la Toile restent colles aux bords de l ecran (jamais de vide) */
@@ -6509,6 +6552,9 @@ try{ if(window.creerMondes){ _MN=window.creerMondes(_envM={
   /* ⚑ v43 — la transition en cours, sur la Toile vivante seulement ; null partout ailleurs */
   get trans(){ if(!_transVive||!_trans||window._transCoupe) return null; var d=RD[theme]&&RD[theme].transDur; return (d&&performance.now()-_trans.t0<d)?_trans:null; },   /* v44 : éteinte à la fin de SA durée ; `_transCoupe` = preuve (la Toile sans transition) */
   get vive(){ return _transVive; },
+  /* ⚑ v142 (C-088) — Ritournelle sous neuf paroles : combien de cellules vides on montre (0 jusqu'à trois paroles, 2 à quatre et cinq, 3 à six et sept, 4 à huit) */
+  get videsVus(){ if(theme!=='ritournelle'||!_transVive||_AP||_semisNeuf()) return null; var n=0; for(var i=0;i<seeds.length;i++){ if(seeds[i].kind!=='gray'&&seeds[i].part==null) n++; } return _videsVus(n); },
+  boitesNeuves:function(){ if(window._vueMain) return; setTimeout(function(){ try{ if(!window._vueMain){ autoView(); kick(); } }catch(_){ } },0); },
   /* v66 — le papier : sur la Toile vivante, le dégradé même du fond, dans le repère de la vue ; ailleurs le fond du moteur */
   papierDesc:function(){ return (_transVive&&!_AP)?_fondVifDesc((0-view.ox)/view.s,(0-view.oy)/view.s,(W*0.55-view.ox)/view.s,(H-view.oy)/view.s):null; },
   papier:function(){ if(_transVive&&!_AP) return _fondVif(g,(0-view.ox)/view.s,(0-view.oy)/view.s,(W*0.55-view.ox)/view.s,(H-view.oy)/view.s); var c=window.Toile.fondToile(); return typeof c==='string'?c:'rgb('+c[0]+','+c[1]+','+c[2]+')'; },
@@ -6705,6 +6751,7 @@ function frame(now){if(!g){running=false;return;}var _ss=document.getElementById
   }
   /* tant qu'une dalle grandit, la Toile entière se recalcule autour d'elle */
   /* la poussée se propage de proche en proche : toute la Toile réagit */
+  if(_tire){ relax(); _tirePince(); mv=true; }   /* v142 (C-101) : la poussée se propage pendant qu'on déplace une dalle */
   if(grow){relax();relax();relax();mv=true;}
   if(grow)mv=true;var an=mv;for(i=0;i<seeds.length;i++)if(seeds[i].kind!=='gray'&&now-seeds[i].t0<760)an=true;if(!_AP&&!Object.keys(ptrs).length){
     /* ⚑ v46 — l'élan du glissé, puis le retour dans les bornes (ou vers le cadrage demandé) : un ressort sur le TEMPS */
@@ -6807,7 +6854,7 @@ function _auVide(i){ var cle=0; try{ cle=(window.Toile&&window.Toile.cle)?window
     for(var k=0;k<seeds.length;k++){ var dx=x-seeds[k].x, dy=y-seeds[k].y, dd=dx*dx+dy*dy; if(dd<d) d=dd; }
     if(d>bd){ bd=d; best={x:x,y:y}; } }
   return best||{x:W/2,y:H/2}; }
-var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice(); }, force:function(){ _vivDer=-1e9; _vivTouche=-1e9; window._tMouv=0; _vivTire(); }, attend:function(){ return !!_vivT; }, boucle:function(){ return running; }},addPromi:function(id){_aleaRepart('plante|'+id+'|'+seeds.length);/* ⚑ v34/v35 — dans un monde neuf une plantation AJOUTE sa cellule ; dans un ancien elle colore une cellule du semis */var s=null;if(_semisNeuf()){_sansGris();s=addP('promi');}else{s=window.Toile.plantOne();if(!s)s=addP('promi');}if(s&&id!=null){s.pid=id;_dalleFigee(true);}if(s&&_semisNeuf()){_amplifie();relax();}return s;},
+var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice(); }, force:function(){ _vivDer=-1e9; _vivTouche=-1e9; window._tMouv=0; _vivTire(); }, attend:function(){ return !!_vivT; }, boucle:function(){ return running; }},addPromi:function(id){_aleaRepart('plante|'+id+'|'+seeds.length);/* ⚑ v34/v35 — dans un monde neuf une plantation AJOUTE sa cellule ; dans un ancien elle colore une cellule du semis */var s=null;if(_semisNeuf()){_sansGris();s=addP('promi');}else{_plantePid=id;_planteNuee=null;try{s=window.Toile.plantOne();}finally{_plantePid=null;}if(!s)s=addP('promi');}if(s&&id!=null){s.pid=id;_dalleFigee(true);}if(s&&_semisNeuf()){_amplifie();relax();}return s;},
   /* la dalle sous le doigt : même métrique que le rendu, au pixel près */
   hit:function(cx,cy){
     if(!seeds.length)return null;
@@ -6885,7 +6932,7 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
          cellules ne bouge pas, la Toile garde ses proportions */
       for(var j=0;j<list.length;j++){
         if(_restent[list[j]]) continue;
-        var np=window.Toile.plantOne(true);
+        _plantePid=list[j]; _planteNuee=null; var np=null; try{ np=window.Toile.plantOne(true); }finally{ _plantePid=null; }
         if(!np) np=_celluleEnPlus('promi',j);   /* ⚑ v98 (Tom) — « une parole qui n'apparaît pas est inacceptable » : semis plein, on ajoute */
         if(np)np.pid=list[j];
       }
@@ -6894,7 +6941,7 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
          que le moteur donne déjà (`addP('nuee')` : wFin 14). */
       try{ if(typeof NUE!=='undefined'){ for(var _nk in NUE){ if(_nk==='soi')continue;
         if(_restentN[_nk]){ nueeCells[_nk]=_restentN[_nk]; lastNuee=_restentN[_nk]; continue; }
-        var _ns=window.Toile.plantOne(true); if(!_ns)_ns=_celluleEnPlus('nuee',list.length+_nk.length);
+        _planteNuee=_nk; _plantePid=null; var _ns=null; try{ _ns=window.Toile.plantOne(true); }finally{ _planteNuee=null; } if(!_ns)_ns=_celluleEnPlus('nuee',list.length+_nk.length);
         _ns.kind='nuee'; _ns.nuee=_nk; _ns.w=14; _ns.wt=14; _ns.wFin=14; nueeCells[_nk]=_ns; lastNuee=_ns; } } }catch(_e){}
       relax();tones();lastChange=performance.now();
       autoView();
@@ -6907,10 +6954,10 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
       if(s0.pid!=null) avant['p'+s0.pid]=s0; else if(s0.kind==='nuee'&&s0.nuee) avant['n'+s0.nuee]=s0; }
     var now=performance.now(); seeds=[]; nueeCells={};
     for(var j=0;j<list.length;j++){ var s=avant['p'+list[j]];
-      if(!s){ var p=_auVide(j); s=mk(p.x,p.y,'promi'); s.ci=cc(s); s.c=PAL[s.ci]; s.t0=now-900; s.w=3.4; s.wt=3.4; s.wFin=3.4; s.wAt=0; }
+      if(!s){ _plantePid=list[j]; _planteNuee=null; var _pn=_placeLue(); _plantePid=null; var p=_pn?{x:_pn[0]*W,y:_pn[1]*H}:_auVide(j); s=mk(p.x,p.y,'promi'); s.ci=cc(s); s.c=PAL[s.ci]; s.t0=now-900; s.w=3.4; s.wt=3.4; s.wFin=3.4; s.wAt=0; }
       s.pid=list[j]; seeds.push(s); }
     for(var q=0;q<nk.length;q++){ var t=avant['n'+nk[q]];
-      if(!t){ var p2=_auVide(list.length+q); t=mk(p2.x,p2.y,'nuee'); t.ci=cc(t); t.c=PAL[t.ci]; t.t0=now-900; }
+      if(!t){ _planteNuee=nk[q]; _plantePid=null; var _pn2=_placeLue(); _planteNuee=null; var p2=_pn2?{x:_pn2[0]*W,y:_pn2[1]*H}:_auVide(list.length+q); t=mk(p2.x,p2.y,'nuee'); t.ci=cc(t); t.c=PAL[t.ci]; t.t0=now-900; }
       t.kind='nuee'; t.nuee=nk[q]; t.w=14; t.wt=14; t.wFin=14; t.wAt=0; seeds.push(t); nueeCells[nk[q]]=t; lastNuee=t; }
     /* ⚑ v43 — LE DÉPART D'UNE DALLE. Dans un monde qui anime ses transitions (`transDur`), la dalle qui part ne disparaît
        pas d'une image à l'autre : elle reste le temps de se retirer (`part` = l'heure du départ, sans pid — plus rien ne la
@@ -7016,7 +7063,10 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
       if(_qn){ _qx/=_qn; _qy/=_qn; } else { _qx=W/2; _qy=(HAUT_LIBRE+H-BAS_LIBRE)/2; }
       var _qd=1e18; for(var _qj=0;_qj<pool.length;_qj++){ var _qp=pool[_qj], _qe=(_qp.x-_qx)*(_qp.x-_qx)*3.2+(_qp.y-_qy)*(_qp.y-_qy);   /* v141 : l'écran est haut — l'amas monte plutôt qu'il ne s'étale (un écart en largeur compte 1,8 fois) */ if(_qe<_qd){ _qd=_qe; cible=_qp; } }
       jx=0; jy=0; }
-    var s=mk(Math.max(8,Math.min(W-8,cible.x+jx)), Math.max(8,Math.min(H-8,cible.y+jy)), 'promi');
+    /* v142 : une parole qui a SA place reprend la cellule vide la plus proche d'elle, sans décalage */
+    var _pl=_placeLue(), _plx=null, _ply=null; if(_pl){ var _px=_pl[0]*W, _py=_pl[1]*H, _pd=1e18; for(var _pj=0;_pj<gris.length;_pj++){ var _pg=gris[_pj], _pe=(_pg.x-_px)*(_pg.x-_px)+(_pg.y-_py)*(_pg.y-_py); if(_pe<_pd){ _pd=_pe; cible=_pg; } } jx=0; jy=0; _plx=_px; _ply=_py; }
+    else _placeNote(cible.x+jx, cible.y+jy);
+    var s=mk(Math.max(8,Math.min(W-8,(_plx!=null?_plx:cible.x+jx))), Math.max(8,Math.min(H-8,(_ply!=null?_ply:cible.y+jy))), 'promi');   /* v142 : la cellule vide la plus proche lui cède la place, et la dalle revient là où on l'a laissée */
     s.ci=cc(s);s.c=PAL[s.ci];
     s.t0=performance.now();      /* la dalle se REMPLIT (gris -> couleur) en prenant sa place */
     if(dejaPosee){ s.w=3.4; s.wt=3.4; s.wFin=3.4; s.wAt=0; s.t0=performance.now()-900; }
@@ -7960,12 +8010,54 @@ host.style.touchAction='none';
    élan au lâcher (vitesse des 100 dernières ms, à l'heure de l'événement), retour dans les bornes par ressort (frame). */
 function _loc(e){ var r=host.getBoundingClientRect(), f=r.width?W/r.width:1; return {x:(e.clientX-r.left)*f, y:(e.clientY-r.top)*f, t:e.timeStamp||performance.now()}; }
 function _bornesPan(){ var s=view.s; return s>=1 ? [W-W*s,0,H-H*s,0] : [(W-W*s)/2,(W-W*s)/2,(H-H*s)/2,(H-H*s)/2]; }
+/* ⚑ v142 (Tom, 11 oct. 2026, C-101) — DÉPLACER UNE DALLE SUR SA TOILE. « Toucher simple = ouvrir la fiche, inchangé. Un appui de 0,8 s attrape la
+   dalle : elle se soulève à peine (léger agrandissement, sans ombre) et suit le doigt partout. Les voisines se réorganisent sur son passage,
+   fluidement, dans la manière de chaque monde. Au lâcher, elle reste où on l'a posée, et la place est gardée. Défilement, zoom et toucher
+   simple inchangés ; aucun rebond, fondu ni ombre ; on ne pose pas une dalle sous la barre. »
+   Un doigt posé sans bouger (moins de TIRE_JEU points) pendant TIRE_MS sur une dalle : sa graine suit le doigt (dans le repère de la Toile,
+   quel que soit le zoom), son poids monte un peu (la cellule grandit : c'est le « soulèvement », sans rien dessiner autour), et à chaque
+   image les autres graines se repoussent (`relax`) — chaque monde les suit à SA manière (son ressort, son dessin). Au lâcher : la graine
+   reste, son poids revient, sa place est écrite sur la parole (`p.place`) ou le Cercle (`NUEPLACE`) et sauvegardée. Sa place est bornée
+   au champ dégagé (ni sous le plateau, ni sous la barre : les bornes de la plantation). Un doigt qui bouge avant 0,8 s déplace la Toile,
+   comme avant ; un second doigt rend la dalle et zoome, comme avant. */
+var _tire=null, _tireP=null, _tireT=0, TIRE_MS=800, TIRE_JEU=8, TIRE_GROS=0.07;
+function _toileXY(L){ return {x:(L.x-view.ox)/view.s, y:(L.y-view.oy)/view.s}; }
+function _graineSous(x,y){ var b=null, bd=1e18; for(var i=0;i<seeds.length;i++){ var q=seeds[i]; if(q.part!=null) continue; var d=Math.sqrt((x-q.x)*(x-q.x)+(y-q.y)*(y-q.y))-(q.w||0); if(d<bd){ bd=d; b=q; } }
+  return (b && b.kind!=='gray' && (b.pid!=null || b.nuee)) ? b : null; }
+function _tireBornes(){ var a=avg(); return [8, W-8, HAUT_LIBRE, H-(H*(134/844)+a*0.87)]; }
+function _tirePince(){ if(!_tire) return; var s=_tire.s; s.x=_tire.x; s.y=_tire.y; s.tx=_tire.x; s.ty=_tire.y; if(s.vx!=null){ s.vx=0; s.vy=0; } }
+function _tireDebut(){ _tireT=0; if(!_tireP || _AP) return; var L=ptrs[_tireP.id]; if(!L || Object.keys(ptrs).length!==1) { _tireP=null; return; }
+  var t=_toileXY(L), s=_graineSous(t.x,t.y); _tireP=null; if(!s) return;
+  window._vueMain=true;   /* v142 : dès que la dalle est attrapée, la vue appartient à la main (aucun recadrage pendant qu'on la déplace) */
+  var gros=avg()*TIRE_GROS; _tire={id:L&&_tireId, s:s, dx:s.x-t.x, dy:s.y-t.y, x:s.x, y:s.y, x0:s.x, y0:s.y, wt0:s.wt, wFin0:s.wFin, gros:gros, t0:performance.now()};
+  s.wAt=0; s.wt=(s.wt!=null?s.wt:s.w)+gros; if(s.wFin!=null) s.wFin=s.wt;
+  _pan=null; _inert=null; vTarget=null; window._dalleTiree=(s.pid!=null?s.pid:s.nuee); window._tMouv=performance.now();
+  try{ if(navigator.vibrate) navigator.vibrate(8); }catch(_){ } lastChange=performance.now(); kick(); }
+var _tireId=null;
+function _tireBouge(L){ if(!_tire) return; var t=_toileXY(L), B=_tireBornes();
+  _tire.x=Math.max(B[0], Math.min(B[1], t.x+_tire.dx)); _tire.y=Math.max(B[2], Math.min(B[3], t.y+_tire.dy));
+  _tirePince(); relax(); _tirePince(); window._tMouv=performance.now(); lastChange=performance.now(); kick(); }
+function _tireFin(garde){ clearTimeout(_tireT); _tireT=0; _tireP=null; if(!_tire) return; var s=_tire.s, T=_tire; _tire=null;
+  s.wt=T.wt0; if(T.wFin0!=null) s.wFin=T.wFin0; s.tx=T.x; s.ty=T.y;
+  /* v142 : LA CELLULE VIDE LA PLUS PROCHE LUI CÈDE LA PLACE, ET PREND CELLE QU'ELLE QUITTE — c'est ce que fait `plantOne` à la réouverture
+     (mesuré sans cela : la dalle posée restait serrée entre les cellules vides, à 28 pt de sa graine, et « sautait » d'autant à la réouverture). */
+  if(garde && Math.hypot(T.x-T.x0, T.y-T.y0)>avg()*0.5){ var _gv=null, _gd=1e18; for(var _gi=0;_gi<seeds.length;_gi++){ var _g=seeds[_gi]; if(_g===s || _g.kind!=='gray' || _g.part!=null) continue;
+      var _ge=(_g.x-T.x)*(_g.x-T.x)+(_g.y-T.y)*(_g.y-T.y); if(_ge<_gd){ _gd=_ge; _gv=_g; } }
+    if(_gv && _gd<avg()*avg()*2.2){ _gv.x=T.x0; _gv.y=T.y0; _gv.tx=T.x0; _gv.ty=T.y0; if(_gv.vx!=null){ _gv.vx=0; _gv.vy=0; } } }
+  if(garde){ try{ if(s.pid!=null){ _plantePid=s.pid; _planteNuee=null; } else { _planteNuee=s.nuee; _plantePid=null; } _placeNote(T.x, T.y, true); }finally{ _plantePid=null; _planteNuee=null; } }
+  window._dalleTiree=null; window._dalleLachee=performance.now(); if(garde) window._vueMain=true;   /* v142 : poser une dalle est un geste de la main — la vue ne se recadre pas sous elle (elle resterait sinon ailleurs que sous le doigt) */ relax(); s.tx=T.x; s.ty=T.y; window.Toile.paintOrder=null; lastChange=performance.now(); kick(); }
+window.Toile_tire=function(){ return _tire?{pid:(_tire.s.pid!=null?_tire.s.pid:null), nuee:_tire.s.nuee||null, x:_tire.x, y:_tire.y, vue:{s:view.s,ox:view.ox,oy:view.oy}}:null; };
+window.Toile_tireRegle={MS:TIRE_MS, JEU:TIRE_JEU, GROS:TIRE_GROS};
+window.Toile_vueLue=function(){ return {s:view.s, ox:view.ox, oy:view.oy, W:W, H:H}; };   /* v142 : un pointeur pour les juges (où regarder), jamais un verdict */
 host.addEventListener('pointerdown',function(e){e.stopPropagation();try{host.setPointerCapture(e.pointerId);}catch(_){}vTarget=null;_inert=null;window._panMain=0;   /* le doigt reprend la main : le cadrage automatique lâche prise */
   ptrs[e.pointerId]=_loc(e);var k=Object.keys(ptrs);
-  if(k.length===2){var a=ptrs[k[0]],b=ptrs[k[1]];pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,s:view.s,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2,ox:view.ox,oy:view.oy};_pan=null;}
-  else if(k.length===1){_pan={ox:view.ox,oy:view.oy,h:[[ptrs[k[0]].t,ptrs[k[0]].x,ptrs[k[0]].y]]};}
+  if(k.length===2){ _tireFin(true); var a=ptrs[k[0]],b=ptrs[k[1]];pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,s:view.s,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2,ox:view.ox,oy:view.oy};_pan=null;}
+  else if(k.length===1){_pan={ox:view.ox,oy:view.oy,h:[[ptrs[k[0]].t,ptrs[k[0]].x,ptrs[k[0]].y]]};
+    clearTimeout(_tireT); _tireId=e.pointerId; _tireP={id:e.pointerId, x:ptrs[k[0]].x, y:ptrs[k[0]].y}; _tireT=setTimeout(_tireDebut, TIRE_MS); }   /* v142 (C-101) : 0,8 s sans bouger → la dalle est attrapée */
   kick();});
 host.addEventListener('pointermove',function(e){if(!ptrs[e.pointerId])return;e.stopPropagation();var pr=ptrs[e.pointerId],L=_loc(e);ptrs[e.pointerId]=L;var k=Object.keys(ptrs);
+  if(_tire){ if(k.length===1){ _tireBouge(L); try{ e.preventDefault(); }catch(_){ } } return; }   /* v142 : la dalle suit le doigt — la Toile ne défile pas */
+  if(_tireP && _tireP.id===e.pointerId && Math.hypot(L.x-_tireP.x, L.y-_tireP.y)>TIRE_JEU){ clearTimeout(_tireT); _tireT=0; _tireP=null; }   /* le doigt a bougé avant 0,8 s : c'est un défilement */
   if(k.length===2&&pinch){var a=ptrs[k[0]],b=ptrs[k[1]];var d=Math.hypot(a.x-b.x,a.y-b.y);var raw=pinch.s*d/pinch.d;
     var ns=raw<ZMIN?ZMIN*Math.pow(raw/ZMIN,0.3):(raw>ZMAX?ZMAX*Math.pow(raw/ZMAX,0.3):raw);   /* au-delà des bornes, la Toile résiste */
     var cx=(a.x+b.x)/2,cy=(a.y+b.y)/2;view.ox=cx-(pinch.cx-pinch.ox)*(ns/pinch.s);view.oy=cy-(pinch.cy-pinch.oy)*(ns/pinch.s);view.s=ns;kick();window._vueMain=true;}
@@ -7974,6 +8066,7 @@ host.addEventListener('pointermove',function(e){if(!ptrs[e.pointerId])return;e.s
     window._panMain=(window._panMain||0)+Math.abs(dx)+Math.abs(dy);if(window._panMain>10)window._vueMain=true;}   /* ⚑ Q212 : la vue appartient à la main dès qu'elle la déplace vraiment — jamais sur un toucher */
 });
 function pu(e){e.stopPropagation();var L=ptrs[e.pointerId];delete ptrs[e.pointerId];var k=Object.keys(ptrs);
+  clearTimeout(_tireT); _tireT=0; _tireP=null; if(_tire){ _tireFin(true); _pan=null; kick(); return; }   /* v142 : au lâcher, la dalle reste où on l'a posée */
   if(k.length<2)pinch=null;
   if(k.length===1){var r1=ptrs[k[0]];_pan={ox:view.ox,oy:view.oy,h:[[r1.t,r1.x,r1.y]]};}   /* du pincement au glissé, sans saut */
   else if(!k.length){ if(_pan&&_pan.h.length>1&&window._panMain>10){var h0=_pan.h[0],h1=_pan.h[_pan.h.length-1],dt=(h1[0]-h0[0])/1000;

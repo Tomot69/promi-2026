@@ -63,7 +63,7 @@ with sync_playwright() as p:
             c2=b.new_context(viewport={'width':430,'height':932},device_scale_factor=2,has_touch=True)
             c2.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_rappel_n','9')}catch(e){}")
             p2=c2.new_page(); p2.goto('http://127.0.0.1:8752/'+F); p2.wait_for_timeout(6000)
-            p2.evaluate("(n)=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} try{setPremium(true)}catch(e){} var L=promises.filter(p=>!p.nuee&&!p.draft).slice(0,n); promises.length=0; L.forEach(p=>promises.push(p)); try{for(var k in NUE){ if(k!=='soi') delete NUE[k]; }}catch(e){} Toile.setTheme('ritournelle'); Toile.sync([]);}",n); p2.wait_for_timeout(1200)
+            p2.evaluate("(n)=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';} try{setPremium(true)}catch(e){} var L=promises.filter(p=>!p.nuee&&!p.draft).slice(0,n); promises.length=0; L.forEach(p=>{ delete p.place; promises.push(p); }); /* v142 : la place d'une parole est GARDÉE (p.place) — un « vrai départ » simulé avec les paroles du jeu de démonstration doit l'oublier, sinon elles reviennent aux quatre coins */ try{for(var k in NUE){ if(k!=='soi') delete NUE[k]; }}catch(e){} Toile.setTheme('ritournelle'); Toile.sync([]);}",n); p2.wait_for_timeout(1200)
             # v140 : les paroles sont plantées UNE À UNE sur une Toile vide, comme un vrai départ (synchronisées d'un coup sur une Toile déjà pleine,
             # elles gardaient leur ancienne place, aux quatre coins)
             for kk in range(1, n+1): p2.evaluate("(k)=>{ Toile.sync(promises.slice(0,k).map(p=>p.id)); }", kk); p2.wait_for_timeout(500)

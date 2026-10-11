@@ -1,0 +1,46 @@
+— les constantes du rythme, dans le source (app.html)
+  ✓ Ritournelle, transition 1 900 ms 
+  ✓ Esquille, transition 1 400 ms 
+  ✓ Bobinette, transition 2 400 ms 
+  ✓ Madrure, transition 2 400 ms 
+  ✓ Halin, transition 1 800 ms 
+  ✓ Halin, retrait 900 ms 
+  ✓ ressort du moteur 0,17 / 0,22 
+  ✓ v61 · cinq mondes à l'horloge, 0,83 / 0,78 (= 0,17 / 0,22 à 60 i/s) 
+  ✓ v61 · un redémarrage de boucle fait UN pas 
+  ✓ v61 · mondes neufs : temps vrai en sous-pas de 1/60 s 
+  ✓ ressort Pochade/Touffe 0,838 / 0,79 
+  ✓ fondu d'arrivée 760 ms 
+  ✓ Brouillamini, transition 1 600 ms · retrait 900 ms 
+  ✓ Chamade, transition 1 600 ms · retrait 900 ms 
+  ✓ Volubilis, transition 1 600 ms · retrait 900 ms 
+  ✓ Guingois, transition 1 600 ms · retrait 900 ms 
+  ✓ Chantourné, transition 1 600 ms · retrait 900 ms 
+  ✓ Mascaret, transition 1 600 ms · retrait 900 ms 
+  ✓ Ramage, transition 1 600 ms · retrait 900 ms 
+  ✓ v72 · Ramage : le fondu du plumage d'arrivée = ARR 900 ms 
+  ✓ v61 · Houle reste par image (exception) 
+— chemin : moteur
+  ✓ brouillamini · moteur · arrivee fin du mouvement 1981 ms (attendu 1742 ± 261) · cadence 117 % · [vu 1981 ms, 94 images]
+  ✓ brouillamini · moteur · depart fin du mouvement 2154 ms (attendu 2046 ± 163) · cadence 96 % · [vu 2154 ms, 93 images]
+  ✓ terrazzo · moteur · arrivee fin du mouvement 798 ms (attendu 799 ± 100) · cadence 69 % · [vu 798 ms, 31 images]
+  ✗ terrazzo · moteur · depart fin du mouvement 839 ms (attendu 820 ± 100) · cadence 53 % · [vu 839 ms, 25 images]
+  ✓ encre · moteur · arrivee fin du mouvement 813 ms (attendu 872 ± 100) · cadence 117 % · [vu 813 ms, 36 images]
+  ✓ encre · moteur · depart fin du mouvement 797 ms (attendu 851 ± 100) · cadence 103 % · [vu 797 ms, 31 images]
+  ✓ chamade · moteur · arrivee fin du mouvement 1689 ms (attendu 1668 ± 133) · cadence 84 % · [vu 1340 ms, 39 images]
+  ✓ chamade · moteur · depart fin du mouvement 1974 ms (attendu 1946 ± 155) · cadence 76 % · [vu 1258 ms, 33 images]
+  ✓ sillons · moteur · arrivee 34 images (attendu 36 ± 7) · cadence 106 % · [vu 1166 ms, 34 images]
+  ✓ sillons · moteur · depart 22 images (attendu 29 ± 8) · cadence 76 % · [vu 944 ms, 22 images]
+— chemin : reel
+  ✓ brouillamini · reel · arrivee fin du mouvement 1864 ms (attendu 1742 ± 261) · cadence 109 % · [vu 1864 ms, 82 images]
+  ✗ brouillamini · reel · depart fin du mouvement 2231 ms (attendu 2046 ± 163) · cadence 98 % · [vu 2231 ms, 98 images]
+  ✓ terrazzo · reel · arrivee fin du mouvement 801 ms (attendu 799 ± 100) · cadence 93 % · [vu 801 ms, 42 images]
+  ✓ terrazzo · reel · depart fin du mouvement 870 ms (attendu 820 ± 100) · cadence 96 % · [vu 870 ms, 47 images]
+  ✓ encre · reel · arrivee fin du mouvement 831 ms (attendu 872 ± 100) · cadence 86 % · [vu 831 ms, 27 images]
+  ✓ encre · reel · depart fin du mouvement 868 ms (attendu 851 ± 100) · cadence 83 % · [vu 868 ms, 27 images]
+  ✓ chamade · reel · arrivee fin du mouvement 1774 ms (attendu 1668 ± 133) · cadence 81 % · [vu 1281 ms, 36 images]
+  ✓ chamade · reel · depart fin du mouvement 1952 ms (attendu 1946 ± 155) · cadence 66 % · [vu 1267 ms, 29 images]
+  ✓ sillons · reel · arrivee 37 images (attendu 36 ± 7) · cadence 82 % · [vu 1643 ms, 37 images]
+  ✓ sillons · reel · depart 22 images (attendu 29 ± 8) · cadence 69 % · [vu 1052 ms, 22 images]
+
+39 / 41

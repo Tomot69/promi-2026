@@ -80,12 +80,48 @@ with sync_playwright() as p:
         pg.mouse.move(r['x'] + 12, y); pg.mouse.down()
         for i in range(1, 26):
             pg.mouse.move(r['x'] + 12 + (r['w'] - 24) * i / 25, y + (6 if i % 2 else -6)); pg.wait_for_timeout(12)
-        b.start_tracing(page=pg, categories=['toplevel', 'devtools.timeline', 'disabled-by-default-devtools.timeline', 'blink.user_timing'])
+        b.start_tracing(page=pg, categories=['toplevel', 'devtools.timeline', 'disabled-by-default-devtools.timeline', 'blink.user_timing'] + (['disabled-by-default-v8.cpu_profiler', 'v8'] if '--profil' in sys.argv else []))
         pg.wait_for_timeout(60)
         pg.mouse.up(); pg.wait_for_timeout(3600)
         tr = json.loads(b.stop_tracing().decode('utf-8'))
         d = pg.evaluate("()=>{ try{window.__obs.disconnect()}catch(e){} const o={vu:window.__vu, t0:window.__t0, st:(typeof cur!=='undefined'&&cur)?cur.status:null}; window.__t0=0; return o; }")
         r_ = images(tr)
+        if '--qui' in sys.argv and r_:         # v142 (C-102) : sans profileur — ce que la trace dit des tâches trop longues (les appels de fonction et les passes du moteur de rendu qu'elles contiennent)
+            ev_ = tr.get('traceEvents', tr); t0_ = r_[1]; pid_ = next(e['pid'] for e in ev_ if e.get('name') == 'lever')
+            for x, y in r_[2]:
+                rel = (x - t0_) / 1000.0; dur = (y - x) / 1000.0
+                if not ((-5 <= rel <= DUREE and dur > SEUIL) or (rel > DUREE and rel < 3500 and dur > 33.4)): continue
+                dans = [e for e in ev_ if e.get('ph') == 'X' and e.get('pid') == pid_ and e.get('ts', 0) >= x and e.get('ts', 0) + e.get('dur', 0) <= y and e.get('dur', 0) > 2500 and e.get('name') in ('FunctionCall', 'TimerFire', 'FireAnimationFrame', 'EventDispatch', 'Layout', 'UpdateLayoutTree', 'Paint', 'PrePaint', 'Layerize', 'Commit', 'MinorGC', 'MajorGC', 'V8.GC_SCAVENGER', 'V8.GC_MARK_COMPACTOR', 'RunMicrotasks', 'EvaluateScript', 'ParseHTML', 'HitTest', 'IntersectionObserverController::computeIntersections', 'UpdateLayerTree', 'Decode Image', 'ImageDecodeTask')]
+                desc = []
+                for e in sorted(dans, key=lambda q: -q['dur'])[:6]:
+                    d_ = (e.get('args') or {}).get('data') or {}
+                    desc.append('%s %.0f ms%s' % (e['name'], e['dur'] / 1000.0, (' ' + (d_.get('functionName') or '?') + '@' + str((d_.get('lineNumber') or 0) + 1)) if e['name'] == 'FunctionCall' else (' ' + str(d_.get('type', ''))) if e['name'] == 'EventDispatch' else ''))
+                print('   QUI passe %d · tâche de %.0f ms à %d ms : %s' % (k + 1, dur, rel, ' · '.join(desc)))
+        if '--profil' in sys.argv and r_:      # v142 (C-102) : qui fait la longue tâche ? les piles échantillonnées par V8, dans la fenêtre de chaque tâche de plus de 100 ms
+            ev_ = tr.get('traceEvents', tr); longues = [(x, y) for x, y in r_[2] if y - x > 100000 and x - r_[1] > -50000]
+            if longues:
+                nd = {}; par = {}; ech = []
+                for e in ev_:
+                    if e.get('name') != 'ProfileChunk': continue
+                    d_ = e['args']['data']; cp = d_.get('cpuProfile', {}); tt = e.get('ts', 0)
+                    for n in cp.get('nodes', []):
+                        nd[n['id']] = n['callFrame']
+                        if 'parent' in n: par[n['id']] = n['parent']
+                    tdl = d_.get('timeDeltas', []); 
+                    for s_, dl in zip(cp.get('samples', []), tdl): ech.append((s_, dl))
+                # les deltas sont relatifs au début du profil : on reconstruit les dates depuis l'évènement `Profile`
+                deb = next((e['args']['data']['startTime'] for e in ev_ if e.get('name') == 'Profile'), None); tcur = deb or 0; cnt = {}
+                for s_, dl in ech:
+                    tcur += dl
+                    if not any(x <= tcur <= y for x, y in longues): continue
+                    pile = []; q = s_
+                    while q in nd and len(pile) < 8:
+                        c = nd[q]; nm = c.get('functionName') or '(anonyme)'
+                        if nm not in ('(root)',): pile.append('%s@%s' % (nm, c.get('lineNumber', -1) + 1))
+                        q = par.get(q)
+                    k_ = ' < '.join(pile); cnt[k_] = cnt.get(k_, 0) + dl
+                print('   PROFIL passe %d · tâches longues %s' % (k + 1, [(round((x - r_[1]) / 1000), round((y - x) / 1000)) for x, y in longues]))
+                for k_, v_ in sorted(cnt.items(), key=lambda z: -z[1])[:8]: print('      %7.1f ms  %s' % (v_ / 1000.0, k_[:400]))
         if not r_: print('   passe %d : marque « lever » absente de la trace' % (k + 1)); continue
         im, t0, _ = r_
         anim = [(a, w) for a, w, _ in im if -5 <= a <= DUREE]; suite = [(a, w) for a, w, _ in im if a > DUREE]

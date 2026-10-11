@@ -1,0 +1,15 @@
+OK  1 parole(s) : on voit 1 dalle(s), entière(s), entre le plateau et la barre  1 dalle(s) vue(s) : [[40, 350, 232, 578]]
+OK  1 parole(s) : aucune cellule vide, même en partie  0 cellule(s) vide(s) dans la zone visible : []
+OK  une parole : sa dalle fait au moins 60 % de la largeur  largeur peinte 310 pt (79 %)
+OK  2 parole(s) : on voit 2 dalle(s), entière(s), entre le plateau et la barre  2 dalle(s) vue(s) : [[28, 294, 112, 370], [120, 362, 396, 698]]
+OK  2 parole(s) : aucune cellule vide, même en partie  0 cellule(s) vide(s) dans la zone visible : []
+OK  3 parole(s) : on voit 3 dalle(s), entière(s), entre le plateau et la barre  3 dalle(s) vue(s) : [[126, 322, 150, 342], [198, 378, 356, 580], [12, 312, 414, 660]]
+OK  3 parole(s) : aucune cellule vide, même en partie  0 cellule(s) vide(s) dans la zone visible : []
+OK  3 parole(s) (app rouverte) : on voit 3 dalle(s), entière(s), entre le plateau et la barre  3 dalle(s) vue(s) : [[142, 352, 128, 314], [200, 378, 356, 542], [14, 268, 448, 682]]
+OK  3 parole(s) (app rouverte) : aucune cellule vide, même en partie  0 cellule(s) vide(s) dans la zone visible : []
+OK  4 parole(s) : on voit 4 dalle(s), entière(s), entre le plateau et la barre  4 dalle(s) vue(s) : [[120, 294, 116, 280], [190, 342, 296, 462], [12, 238, 372, 582], [166, 378, 504, 696]]
+OK  4 parole(s) : au plus 3 cellules vides, même en partie  2 cellule(s) vide(s) dans la zone visible : [([0, 132, 200, 412], 20160), ([360, 388, 304, 476], 3660)]
+OK  6 parole(s) : on voit 6 dalle(s), entière(s), entre le plateau et la barre  6 dalle(s) vue(s) : [[170, 304, 156, 294], [52, 176, 248, 400], [240, 368, 300, 442], [92, 280, 368, 550], [12, 164, 470, 620], [200, 378, 482, 654]]
+OK  6 parole(s) : au plus 4 cellules vides, même en partie  3 cellule(s) vide(s) dans la zone visible : [([0, 12, 334, 402], 588), ([384, 388, 410, 448], 176), ([0, 28, 430, 518], 1680)]
+
+13 / 13

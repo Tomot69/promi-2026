@@ -10019,3 +10019,13 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v141 | Le bouton recadrer (C-099) | `PLANCHE-5-main-et-mots.png` (quatrième vue) | zoomer ou déplacer la Toile : le rond à quatre coins paraît, à 12 pt au-dessus de la barre |
 | v141 | Ritournelle (C-088) | `redteam_ritournelle` ; `PLANCHE-10-ritournelle.png` | Toile vide sous Ritournelle : une, deux, trois, quatre paroles — assez près ? |
 | v141 | Les murs (C-100, Q447) | `redteam_murs_toucher` 8/8 | au Studio, en gratuit, sur un monde de Ma Parole ! : toucher n'importe où dans le panneau flouté, vingt fois ; palettes ouvertes : la phrase se lit-elle |
+| v142 | La trace de la Pelote (C-083) | `redteam_trace` 13/13 ; `PLANCHE-2-trace.png` | caresser la Pelote du bout du doigt puis du pouce à plat : la bande a-t-elle la largeur du contact ? un trajet court laisse-t-il une trace courte ? appui sans bouger : la forme du doigt ; `?mesure=1` : lire « contact lu » pour l'index et le pouce |
+| v142 | La Pelote sous Ingénu (C-083) | `PLANCHE-1-pelote-ingenu-*.png` | cinq ouvertures de l'Aura sous Ingénu, clair et sombre : bleu, rose, lilas — jamais crème |
+| v142 | Le guide (C-094) | `redteam_guide` ; `PLANCHE-3-guide-*-safari.png` | `…/app.html?guide=1` : les taches qui grandissent sont-elles fluides ? le mot STUDIO net ; toucher le Studio, le refermer : le + net ; Q457 |
+| v142 | La main, « Parole tenue. » (C-095) | `planche-v142/main-*.png`, `tenir-*.png` | ouvrir une fiche à tenir : la main paraît-elle au bon moment ? tracer : la ligne seule, assez grande ? (Q458) ; page + à quelqu'un : le É de MOITIÉ |
+| v142 | La fiche d'un Cercle (C-096) | `redteam_cercle_tom` 16/16 | toucher la dalle d'un Cercle sur la Toile : bandeau tout en bas, « + Planter dans le Cercle » juste au-dessus, le fil défile dessous ; Peaufiner : « Dissoudre le Cercle » sans encart |
+| v142 | Ritournelle (C-088) | `redteam_ritournelle` 13/13 ; `planche-v142/rit-app-*.png` | Toile vide sous Ritournelle : planter 1, 2, 3, 4, 6 paroles, fermer et rouvrir Safari entre deux : mêmes places, aucune cellule vide jusqu'à 3 |
+| v142 | Les murs du Studio (C-100) | `redteam_studio_tom` 14/14 | en gratuit, monde de Ma Parole ! : toucher la Toile floutée, le panneau, les palettes — vingt fois ; la phrase se lit-elle sur la Toile ? (Q457) |
+| v142 | « Supprimer mon compte » (C-104) | `planche-v142/reglages-bas.png` | Réglages, tout en bas |
+| v142 | Déplacer une dalle (C-101) | `redteam_deplace` 45/45 | appui de presque une seconde sur une dalle, la glisser ; relâcher ; fermer et rouvrir ; essayer sous Pochade, Ritournelle, Bobinette ; un toucher bref ouvre-t-il toujours la fiche ? le défilement et le zoom sont-ils intacts ? |
+

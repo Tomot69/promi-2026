@@ -1,0 +1,12 @@
+   passe  3 : 195 images · la plus longue 84.9 ms à 200 ms · au-delà de 20 ms : [(-4, 48.5), (201, 84.9)] · « referme » à 40 ms, « après » à 1066 ms
+   passe 12 : 204 images · la plus longue 32.3 ms à 0 ms · au-delà de 20 ms : [(-1, 32.3)] · « referme » à 16 ms, « après » à 1056 ms
+1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4096 images) KO  3 image(s) au-delà · la plus longue 84.9 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               OK  p50 2.0 · p95 5.2 ms
+3 · la durée : « juste après » paraît 1 000 ms (± 80) après « le trait se referme »  OK  de 1013 à 1039 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  20 sur 20
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images OK  la plus longue : 27.0 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 33.7 ms — les passes de tout le document et la pose complète)
+
+5 / 6
+KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4096 images)

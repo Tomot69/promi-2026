@@ -1,0 +1,47 @@
+OK  pochade · 3 · un glissé sans attendre 0,8 s ne détache aucune dalle  images « attrapée » : 0
+OK  pochade · 1 · appui 0,95 s puis glissé : la dalle est attrapée pendant le geste  images « attrapée » : 23
+OK  pochade · 1 · elle finit sous le doigt (≤ 50 pt du lâcher), à plus de 60 pt de son départ  départ (116, 295) · lâcher (182, 383) · dalle [183, 368]
+OK  pochade · 2 · aucune fiche ne s'ouvre ; les deux autres paroles sont toujours là  fiche False · paroles 3
+OK  pochade · 4 · après rechargement, elle est où on l'a posée dans la Toile (≤ 30 pt de Toile), plus à sa place de départ (≥ 15)  départ [97, 327] · posée [153, 388] · relue [156, 390]
+OK  pochade · 5 · lâchée sous la barre (y 800) : elle reste atteignable au-dessus (centre < 710)  dalle [202, 648, 309, 156, 647]
+OK  pochade · 3 · un toucher bref ouvre toujours la fiche  True
+OK  pochade · 6 · la règle déclarée : 800 ms  {'MS': 800, 'JEU': 8, 'GROS': 0.07}
+OK  pochade · aucune erreur de page  []
+OK  touffe · 3 · un glissé sans attendre 0,8 s ne détache aucune dalle  images « attrapée » : 0
+OK  touffe · 1 · appui 0,95 s puis glissé : la dalle est attrapée pendant le geste  images « attrapée » : 24
+OK  touffe · 1 · elle finit sous le doigt (≤ 50 pt du lâcher), à plus de 60 pt de son départ  départ (117, 295) · lâcher (182, 383) · dalle [183, 369]
+OK  touffe · 2 · aucune fiche ne s'ouvre ; les deux autres paroles sont toujours là  fiche False · paroles 3
+OK  touffe · 4 · après rechargement, elle est où on l'a posée dans la Toile (≤ 30 pt de Toile), plus à sa place de départ (≥ 15)  départ [98, 326] · posée [154, 388] · relue [157, 390]
+OK  touffe · 5 · lâchée sous la barre (y 800) : elle reste atteignable au-dessus (centre < 710)  dalle [202, 649, 306, 157, 648]
+OK  touffe · 3 · un toucher bref ouvre toujours la fiche  True
+OK  touffe · 6 · la règle déclarée : 800 ms  {'MS': 800, 'JEU': 8, 'GROS': 0.07}
+OK  touffe · aucune erreur de page  []
+OK  mosaique · 3 · un glissé sans attendre 0,8 s ne détache aucune dalle  images « attrapée » : 0
+OK  mosaique · 1 · appui 0,95 s puis glissé : la dalle est attrapée pendant le geste  images « attrapée » : 24
+OK  mosaique · 1 · elle finit sous le doigt (≤ 50 pt du lâcher), à plus de 60 pt de son départ  départ (269, 525) · lâcher (213, 430) · dalle [210, 440]
+OK  mosaique · 2 · aucune fiche ne s'ouvre ; les deux autres paroles sont toujours là  fiche False · paroles 3
+OK  mosaique · 4 · après rechargement, elle est où on l'a posée dans la Toile (≤ 30 pt de Toile), plus à sa place de départ (≥ 15)  départ [269, 525] · posée [210, 440] · relue [212, 433]
+OK  mosaique · 5 · lâchée sous la barre (y 800) : elle reste atteignable au-dessus (centre < 710)  dalle [207, 648, 209, 207, 648]
+OK  mosaique · 3 · un toucher bref ouvre toujours la fiche  True
+OK  mosaique · 6 · la règle déclarée : 800 ms  {'MS': 800, 'JEU': 8, 'GROS': 0.07}
+OK  mosaique · aucune erreur de page  []
+OK  ritournelle · 3 · un glissé sans attendre 0,8 s ne détache aucune dalle  images « attrapée » : 0
+OK  ritournelle · 1 · appui 0,95 s puis glissé : la dalle est attrapée pendant le geste  images « attrapée » : 23
+OK  ritournelle · 1 · elle finit sous le doigt (≤ 50 pt du lâcher), à plus de 60 pt de son départ  départ (240, 274) · lâcher (203, 377) · dalle [194, 424]
+OK  ritournelle · 2 · aucune fiche ne s'ouvre ; les deux autres paroles sont toujours là  fiche False · paroles 3
+OK  ritournelle · 4 · après rechargement, elle est où on l'a posée dans la Toile (≤ 30 pt de Toile), plus à sa place de départ (≥ 15)  départ [187, 453] · posée [172, 504] · relue [176, 493]
+OK  ritournelle · 5 · lâchée sous la barre (y 800) : elle reste atteignable au-dessus (centre < 710)  dalle [171, 662, 464, 159, 617]
+OK  ritournelle · 3 · un toucher bref ouvre toujours la fiche  True
+OK  ritournelle · 6 · la règle déclarée : 800 ms  {'MS': 800, 'JEU': 8, 'GROS': 0.07}
+OK  ritournelle · aucune erreur de page  []
+OK  bobinette · 3 · un glissé sans attendre 0,8 s ne détache aucune dalle  images « attrapée » : 0
+OK  bobinette · 1 · appui 0,95 s puis glissé : la dalle est attrapée pendant le geste  images « attrapée » : 24
+OK  bobinette · 1 · elle finit sous le doigt (≤ 50 pt du lâcher), à plus de 60 pt de son départ  départ (260, 287) · lâcher (205, 382) · dalle [199, 424]
+OK  bobinette · 2 · aucune fiche ne s'ouvre ; les deux autres paroles sont toujours là  fiche False · paroles 3
+OK  bobinette · 4 · après rechargement, elle est où on l'a posée dans la Toile (≤ 30 pt de Toile), plus à sa place de départ (≥ 15)  départ [187, 453] · posée [164, 505] · relue [168, 490]
+OK  bobinette · 5 · lâchée sous la barre (y 800) : elle reste atteignable au-dessus (centre < 710)  dalle [181, 665, 403, 155, 616]
+OK  bobinette · 3 · un toucher bref ouvre toujours la fiche  True
+OK  bobinette · 6 · la règle déclarée : 800 ms  {'MS': 800, 'JEU': 8, 'GROS': 0.07}
+OK  bobinette · aucune erreur de page  []
+
+45/45

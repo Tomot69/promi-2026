@@ -88,7 +88,10 @@ with sync_playwright() as p:
     INV = pg.evaluate("()=>window.GesteFantome ? GesteFantome.inventaire() : null") or []
     regle = pg.evaluate("()=>window.GesteFantome ? GesteFantome.regle : null")
     t('0 · le composant existe, un seul : `GesteFantome.montrer` et `.oublier`', pg.evaluate("()=>!!(window.GesteFantome && typeof GesteFantome.montrer==='function' && typeof GesteFantome.oublier==='function')"))
-    t('0 · les valeurs décidées : 600 ms, 900 ms, trois fois, × 1,3, 1,6 s', regle == {'INACTIF': INACTIF, 'PAUSE': PAUSE, 'TOURS': TOURS, 'GRAND': GRAND, 'TRAJET': TRAJET}, regle)
+    # ⚑ v142 (Tom, 11 oct. 2026, C-095) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_gestes-avant-v142.py) : « la main apparaît 1,5 s après
+    #   l'ouverture de la fiche » (tenir, chiche : 1 500 ms EN DUR ; les autres gestes gardent 600) ; « un dessin simplifié » : la silhouette neuve est
+    #   plus étroite (39 pt à × 1,3 ; 42,5 avant).
+    t('0 · les valeurs décidées : 600 ms (1 500 sur une fiche), 900 ms, trois fois, × 1,3, 1,6 s', regle == {'INACTIF': INACTIF, 'INACTIF_FICHE': 1500, 'PAUSE': PAUSE, 'TOURS': TOURS, 'GRAND': GRAND, 'TRAJET': TRAJET}, regle)
     BR = [g['id'] for g in INV if g['branche']]
     t('0 · l\'inventaire porte au moins : tenir, chiche, noyau, pelote, dessin — et « l\'Aura qui paraît » n\'est plus branchée (E2bis est remplacé par le guide, v141)', all(x in BR for x in ('tenir', 'chiche', 'noyau', 'pelote', 'dessin')) and 'aura-apparait' not in BR, BR)
     t('0 · chaque geste branché a sa mise en situation dans ce juge', all(x in SITU for x in BR), [x for x in BR if x not in SITU])
@@ -147,7 +150,7 @@ with sync_playwright() as p:
               if(tr){ const q=tr.getBoundingClientRect(), cs=getComputedStyle(tr); o.tv=tr.getAttribute('visibility')!=='hidden'; o.tx0=(q.left-dv.left)/k; o.tx1=(q.right-dv.left)/k; o.col=tr.getAttribute('stroke'); o.op=cs.opacity; o.tra=cs.transitionDuration; o.ani=cs.animationName; o.ep=+tr.getAttribute('stroke-width'); } L.push(o); }
             if(performance.now()-t0<3600) requestAnimationFrame(f); else res(L); })(); })""")
         vis = [s for s in S_ if s.get('vis')]; tr = [s for s in S_ if s.get('tv')]
-        t('tenir · la main est à × 1,3 (42,5 pt de large ; 49 en v139, 33 en E1)', bool(vis) and 40.5 <= vis[0]['w'] <= 45.0, 'largeur %.1f pt' % (vis[0]['w'] if vis else -1))
+        t('tenir · la main est à × 1,3 (39 pt de large, la silhouette simplifiée de v142 ; 42,5 en v141)', bool(vis) and 37.5 <= vis[0]['w'] <= 40.5, 'largeur %.1f pt' % (vis[0]['w'] if vis else -1))
         xs = [s['x'] for s in vis]
         t('tenir · elle part du milieu (195 pt ± 14) et va jusqu\'au bout du trait (au-delà de 330 pt)', bool(xs) and abs(min(xs) + 17 * GRAND - 195) <= 14 and max(xs) + 17 * GRAND >= 330, 'bout du doigt de %.0f à %.0f pt' % (min(xs) + 17 * GRAND if xs else -1, max(xs) + 17 * GRAND if xs else -1))
         # le premier passage seul : du dernier relevé au départ jusqu'au premier relevé à l'arrivée

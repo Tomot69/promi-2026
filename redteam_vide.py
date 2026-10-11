@@ -69,7 +69,9 @@ INST  = {'sel': ['.dpt-nat', '#detailPoster .closeb', '#dptTitre', '#dpdTog'],
 #   « tenue. » et la phrase, rien d'autre. Exiger `#dptTitre` là aurait fait échouer un
 #   écran juste — et c'est le genre d'exigence fausse qui use un contrôle jusqu'à ce qu'on
 #   cesse de le croire. On demande donc ce que CE cadre porte.
-INST_REFERME = {'sel': ['.dpt-nat', '#detailPoster .closeb', '#instTenue', '#instSous', '#dpdTog'],
+# ⚑ v142 (Tom, 11 oct. 2026, C-095) : « après tenir, une seule ligne : Parole tenue. / Défi relevé. » — la seconde ligne (#instSous) n'existe plus à l'écran ;
+#   elle sort de la liste des éléments obligatoires (original : sauvegardes/redteam_vide-avant-v142.py).
+INST_REFERME = {'sel': ['.dpt-nat', '#detailPoster .closeb', '#instTenue', '#dpdTog'],
                 'canvas': ['#dpTrameCv'], 'interdits': AILLEURS}
 
 ECRANS = [

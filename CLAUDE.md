@@ -116,6 +116,92 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v142 (11 oct. 2026) — SIX RÉCIDIVES, UNE CAUSE COMMUNE : LES JUGES NE VOYAIENT PAS CE QUE TOM VOIT ; DÉPLACER UNE DALLE. (Décisions Tom.) Ce bloc CORRIGE v141, v140 et v139 là où ils disent autre chose.
+> **Q450, Q453, Q456 acceptées ; Q454 close ; Q455 validée (les poils couchés) ; Q452 : le É de « MOITIÉ » est composé en PromiLate (le composeur
+> de v35 : E + l'apostrophe en accent ; `.pp-trace` est dans sa liste, et le mot n'est écrit que s'il change — le piège de v46).**
+> **⚑ LA RÈGLE DU LOT, QUI DEVIENT LA RÈGLE : POUR TOUT POINT VISUEL, LA PREUVE EST PRISE COMME TOM LA VOIT — `banc_tom.py` : WebKit, 390 × 844,
+> échelle 3, évènements tactiles (touchstart, touchmove, touchend), par le chemin réel depuis l'accueil.** *Pourquoi six juges étaient verts sur
+> des défauts que Tom voyait* — trois écarts entre le banc et son iPhone, mesurés : ① **sous navigateur piloté (`navigator.webdriver`) l'app
+> garde le jeu de démonstration ; sur un téléphone la Toile part VIDE et l'état est relu** (`loadState`) — une Toile d'une parole plantée par
+> l'app, puis rouverte, n'avait jamais été jugée ; ② **à 390 × 844 l'appareil est RÉDUIT (× 0,933 ; ≈ 0,82 dans Safari sur l'iPhone)** — les
+> juges tournaient à 430 × 932, échelle 1 : tout ce qui dépend de la réduction leur échappait (un `position:sticky` borné en points d'écran,
+> une cote comparée dans deux unités) ; ③ **ils passaient par un raccourci** (`openDetail()`, `.click()`, la souris) au lieu du chemin. `banc_tom`
+> masque `webdriver`, plante par l'app, touche au doigt. ⚠ Playwright-WebKit ne rend pas `backdrop-filter` dans ses captures et n'émet pas
+> d'évènements de pointeur sur `touchscreen.tap` : un flou se juge sur l'image en Chromium (à 390 × 844) et se REGARDE dans le Safari du
+> simulateur. **⚠ Le simulateur ouvert sur Promi charge la machine (backboardd à 49 %) et fausse toute mesure de cadence : on le ferme avant
+> de mesurer** (`xcrun simctl shutdown all`).
+> **⚑ §2 — LA TRACE DE LA PELOTE EST UNE BANDE CONTINUE, À LA LARGEUR DU CONTACT LU (C-083, RÉCIDIVE).** *Pourquoi c'est revenu* : v141 posait UN arc
+> par « zone », au plus un toutes les 360 ms, long comme l'empreinte et large de 0,12 à 0,42 rad par un rapport au pouce (× 2,2) : ni sa
+> longueur ni sa largeur n'étaient celles du geste ; son juge vérifiait qu'une trace PARAISSAIT et suivait le sens, pas sa taille. *Aujourd'hui* :
+> à chaque mouvement (dès 0,035 rad, 4 pt de boule) le point de la boule sous le doigt est relié au précédent par un segment large du contact
+> lu (`radiusX` / `radiusY`, en travers du geste), **`G.DOIGT_K` = 1** (le 2,2 disparaît ; bornes 0,035–0,60 rayon, pour écarter une lecture
+> absurde) ; le creux prend la même taille ; **un appui immobile laisse la forme du contact, à taille réelle** (`poseContact`, au lâcher) ;
+> `?mesure=1` écrit « contact lu : 13 × 7 pt ». Mesuré sur l'image : contacts de 6, 12, 18 pt → bandes de 12, 23, 35 pt ; trajets de 30, 60,
+> 100 pt → 32, 45, 54 pt (la boule suit la main : la trace est le GLISSEMENT du doigt sur elle). **`retoucheTraces` ne compare plus les poils
+> retouchés qu'aux traces VOISINES** (un arc n'agit qu'à moins de sa largeur) : 12 → 4,7 ms par inscription, cadence sous le doigt p95 20–21 ms.
+> Juge : **`redteam_trace.py` réécrit** (13 ; 2/13 sur v141). `redteam_enfonce` relisse entre deux appuis (il mesurait par-dessus la marque d'avant).
+> *La règle* : **une trace se juge sur sa TAILLE peinte, contre la taille du geste — jamais sur sa seule présence.**
+> **⚑ §3 — LE GUIDE DE FIN DE PARCOURS (C-094, RÉCIDIVE).** 0,8 s de calme ; le flou naît en **six taches à bord courbe** (dix rayons inégaux reliés par
+> des courbes : `clip-path:path()`), qui grandissent et se rejoignent, **1,8 s** (`INSTALLE`) ; **net sur l'icône du Studio ET le mot STUDIO,
+> agrandis de 15 %** — « Vingt mondes pour une seule Toile. Le tien est au Studio. » ; la toucher ouvre le Studio ; **l'étape du + n'arrive
+> qu'après le Studio VU ouvert puis refermé** ; net sur le + et son encart, **agrandis de 10 %** — « Promi, Chiche ou Cercle : tout commence par
+> ce +. ». Le trou est un masque FIXE (une image vectorielle), l'agrandissement est posé en ligne sur le vrai bouton et rendu à la fin.
+> L'horloge de l'installation part à la PREMIÈRE IMAGE rendue (partie à la pose, une page occupée mangeait le début : 1,42 s vues). `?guide=1` le rejoue ; `&gfige=600` l'arrête à cet instant, `&getape=plus` montre la seconde étape (pour le regarder dans Safari).
+> *Pourquoi c'est revenu* : le juge vérifiait que le masque GRANDISSAIT et que l'icône était nette — ni la forme (des zones à bord franc),
+> ni la durée, ni le mot STUDIO, ni la taille de l'agrandissement. Juge : **`redteam_guide.py` réécrit** (51 ; travail par image lu dans la
+> trace : pire 4 à 6 ms). ⚠ **Chromium rogne un flou d'arrière-plan à la BOÎTE de sa découpe** : ses captures d'installation montrent un bord
+> droit qui n'existe pas dans Safari — les captures de l'installation se prennent au simulateur (`PLANCHE-3-guide-*-safari.png`).
+> ⚠ Sur une Toile vide (peu de contraste) le flou ne se VOIT que là où il y a des contours : le plateau, la barre, les dalles.
+> **⚑ §4** : la main paraît **1,5 s** après que la fiche est prête (`INACTIF_FICHE` ; mesuré : 1,3 s après la fin de l'ouverture, 1,8 après son
+> début) ; son dessin est une silhouette simple (un tracé, intérieur d'une couleur, contour épais) ; après « tenir », **une seule ligne :
+> « Parole tenue. » (Promi), « Défi relevé. » (Chiche)** — `TEXTES_ENGAGEMENT.tenir`, `#instTenue` à 40 px, `#instSous` vidé.
+> **⚑ §5 — LA FICHE D'UN CERCLE OUVERTE DEPUIS LA TOILE (C-096, RÉCIDIVE).** *Pourquoi c'est revenu* : WebKit borne un `position:sticky` au bas de la
+> zone visible comptée en points d'ÉCRAN quand l'ancêtre est réduit par `transform` — à 390 × 844 le bandeau s'arrêtait à 703 au lieu de 760 ;
+> le juge ouvrait la fiche par `openDetail` à l'échelle 1. Parade : l'écart est MESURÉ et rendu (`--colle`, `lot-V142-CERCLE`) ; le fil a une
+> hauteur minimale (748 − son haut). Juge : **`redteam_cercle_tom.py`** (16 ; 6/16 sur v141), par la dalle du Cercle touchée sur la Toile.
+> **⚑ §6 — « DISSOUDRE LE CERCLE » EST LE DESSIN DE « SUPPRIMER CE PROMI »** (corbeille, 13 px capitales, aucun encart). *Pourquoi c'est revenu* : la
+> règle CSS de v141 était battue par un style EN LIGNE `!important` posé par `pose()` — le juge lisait la règle, pas le rendu. Posé à la source.
+> *La règle* : **un style en ligne `!important` bat toute feuille ; ce qu'un poseur écrit se corrige dans le poseur.**
+> **⚑ §7 — RITOURNELLE (C-088, RÉCIDIVE).** Cibles sur la zone VISIBLE (plateau → barre) : **1 à 3 paroles : seulement ces dalles, aucune cellule vide,
+> même en partie ; à 4 : deux ou trois au plus ; ensuite peu** (`_videsVus` : 0 jusqu'à 3, 2 à 4–5, 3 à 6–7, 4 à 8 ; à 9 la Toile de ses
+> seules paroles, v34). Sous Ritournelle les cellules vides non montrées ne sont PAS PEINTES, et la vue cadre la MATIÈRE publiée par le
+> peintre (`window._ritBoites`, `_boiteMatiere`), 80 % de la largeur à une parole, 94 % au-delà. **La place d'une parole est GARDÉE**
+> (`p.place=[x/W, y/H]`, `NUEPLACE` pour un Cercle) : à la réouverture, `sync` replantait au hasard et dispersait les paroles.
+> *Pourquoi c'est revenu* : le juge de v141 semait par `Toile.sync` sous navigateur piloté ; par le vrai chemin (planter, rouvrir) la dalle
+> faisait 44 % de la largeur. Juge : **`redteam_ritournelle.py` réécrit** (13 ; 5/13 sur v141), par `banc_tom`, rechargement compris.
+> **⚑ §8 — LES MURS DU STUDIO (C-100, RÉCIDIVE).** *Ce qui empêchait le toucher* : ① la Toile floutée d'un monde de Ma Parole ! (`#stBg`) n'était PAS un
+> mur — on la touchait, rien ; ② un toucher tactile attendait le clic fabriqué par le navigateur, qui arrivait parfois avant le minuteur du
+> mur et ouvrait l'offre (1 sur 20). Les murs lisent `touchstart` / `touchend` et répondent tout de suite ; la Toile floutée est un mur (du
+> bas du plateau au haut du bouton d'achat ou du panneau) ; la phrase y est **cernée** (`.sur-toile` : un contour de 9 px à la couleur du
+> fond du mode — sur une matière colorée floutée l'encre seule ne se lisait pas ; à valider, Q457) ; pendant la lecture le nom du monde et
+> les réglages du panneau se retirent. Juge : **`redteam_studio_tom.py`** (14 ; 10/14 sur v141).
+> **⚑ §9** : « Supprimer mon compte » est la dernière ligne des Réglages (C-104). **§1** : sous Ingénu les poils et le corps de la Pelote sont tirés
+> parmi les trois natures et leurs voisines, jamais les crèmes (`ingenu()`) ; en clair le poil garde la teinte de la nature, clarté OKLCH bornée à
+> **0,50** (`ING_L` ; à 0,60 les dalles de la Pelote passaient sous le plancher ΔE 15 — pris par `releve-aura`), chroma × 1,5 dans le gamut.
+> ⚠ La couleur RENDUE de la boule est un mélange du poil et du corps : `releve-aura` admet une teinte sur l'arc entre les deux tons déclarés.
+> **⚑ §11 — DÉPLACER UNE DALLE (C-101).** Un appui de **0,8 s** sans bouger (8 pt de jeu) sur une dalle l'attrape : elle grossit à peine (7 % d'une
+> cellule, aucune ombre), sa graine suit le doigt, les voisines se réorganisent (`relax`) ; au lâcher sa place est écrite (`p.place`,
+> `NUEPLACE`) et **la cellule vide la plus proche prend celle qu'elle quitte** (comme à la réouverture — sans cela la dalle « sautait » de
+> 28 pt au rechargement) ; la vue appartient à la main dès la prise (aucun recadrage) ; jamais sous la barre. Un toucher bref ouvre toujours
+> la fiche ; un glissé sans attendre déplace la vue. `Toile_tire()`, `Toile_tireRegle`, `Toile_vueLue()` (pointeurs pour les juges).
+> Juge : **`redteam_deplace.py`** (45, cinq mondes, par `banc_tom` ; 5/9 sur v141). **C'est un geste : Tom valide sur iPhone.**
+> **⚑ LA PLACE GARDÉE ET LE BANC DE RENDU.** Une place ne vaut que DANS LA FAMILLE de semis où elle a été prise (`p.place=[x/W, y/H, 1]` pour un monde
+> fait de ses seules paroles) : notée sous le semis constant, elle regroupait les graines d'un monde neuf (Esquille : des dalles deux fois plus
+> petites). Et une dalle garde, d'un monde à l'autre de sa famille, le décalage du monde où elle a été plantée : `banc_rendu` juge une Toile
+> NEUVE, il **oublie les places avant chaque pose** (sans cela cinq mondes différaient ; prouvé : place désactivée, 280/280).
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v142.py`) : `redteam_trace`, `redteam_guide`,
+> `redteam_ritournelle` (réécrits) · `releve-aura` acquis 4 (un toucher immobile laisse UNE marque) et la teinte rendue (entre le ton du sol et
+> celui du corps) · `redteam_vide` (`#instSous` n'est plus obligatoire) · `redteam_gestes` (1 500 ms sur une fiche, main de 39 pt) ·
+> `redteam_toucher` (le « vrai départ » simulé oublie les places) · `redteam_enfonce` (relisse entre deux appuis) · `banc_rendu` (oublie les places).
+> **Deux juges étaient rouges depuis un lot précédent, sans que la série d'alors les ait passés** : `redteam_nuee_dalle` (le bloc du Cercle à 750
+> depuis v141, C-096 : la cote « au-delà de 760 » est remise à niveau) et `redteam_bouton` (il comparait le bouton au mot du trait, grandi à
+> 19 px en v140 : la valeur décidée du bouton, 10,67, est portée en dur). `redteam_air` : référence REFIGÉE (les deux paires de la seconde ligne
+> de l'instant, retirée par décision).
+> **⚑ §10 — C-102 RESTE OUVERT, ET LE CONSTAT CHANGE.** Machine au calme, v140, v141 et l'app d'aujourd'hui donnent tous **4/6** à `redteam_fluide`
+> (cinq à six images de 20 à 29 ms au lever et vers 1 025 ms ; des tâches de 50 à 65 ms après l'animation). **Le diff v140 → v141 n'ajoute
+> rien** : les tâches de 249 à 979 ms relevées en v141 venaient de la charge (le simulateur ouvert). Le « 6/6 » de v140 n'est pas retrouvé non
+> plus. Seule `passeVisible` a été découpée (tranches de 5 ms dans les 4,5 s qui suivent). **6/6 trois fois de suite n'est pas atteint : 5/6, 4/6, 5/6 en fin de lot** (trois images de 20 à 85 ms au lever du doigt sur vingt animations ; une fois, une tâche de plus de 33 ms après l'animation).
+
 ### ⚑ v140 (10 oct. 2026) — LA FOURRURE D'AVANT LES ESSAIS ; LA TRACE DU VRAI GESTE ; DESSIN ↔ PHOTO ; L'ICÔNE ENREGISTRER ; LE + ; RITOURNELLE ; LE MUR DU STUDIO ; E2 ET E2bis. (Décisions Tom.) Ce bloc CORRIGE v139 (la Pelote, le +, Ritournelle, le dessin partagé), v120–v123 (la densité 3) et E1 / v129 (l'onboarding).
 > **Q434 : rien à faire. Q435 : un dessin part ENTIER, photos importées comprises (« c'est une composition ») ; seule une photo posée seule dans la
 > bande ne se partage jamais. Q437 : remplacé (Ritournelle, plus bas). Le dessin est COLLABORATIF (C-093) : écrit dans `portage/SPEC-DONNEES` §5 bis
@@ -2358,6 +2444,10 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
+python3 banc_tom.py             # (un module, pas un juge) v142 — LE BANC « COMME TOM » : WebKit, 390 × 844, échelle 3, doigt, webdriver masqué, Toile vide, plantation par l'app. Tout juge d'un point visuel passe par lui.
+python3 redteam_deplace.py     # 45 — v142 (C-101) : déplacer une dalle — appui 0,8 s, elle suit le doigt, place gardée après rechargement, jamais sous la barre, un toucher bref ouvre toujours la fiche ; cinq mondes. 5/9 sur v141 (--mondes=pochade).
+python3 redteam_cercle_tom.py  # 16 — v142 (C-096) : la fiche d'un Cercle ouverte en touchant sa dalle sur la Toile : bandeau tout en bas, « + Planter » 12 pt au-dessus, le fil défile dessous ; « Dissoudre » sans encart. 6/16 sur v141.
+python3 redteam_studio_tom.py  # 14 — v142 (C-100) : les murs du Studio au vrai toucher tactile WebKit, chemin réel, chaque zone floutée, 20 sur 20, phrase lisible. 10/14 sur v141.
 python3 redteam_e2.py          # 53 — E2 et E2bis (v140, C-075, C-076) : le premier parcours au vrai doigt, stockage vierge (principe → vraie page + → trait → fiche → trait → dernière ligne → compte), clair et sombre ; les quatre « Plus tard » ; R6, A2, A3 ; la barre qui se dévoile. --r6, --vite. ≈ 6 min. ⚑ À PASSER À LA FIN DE CHAQUE LOT E.
 python3 redteam_fourrure.py    # 9 — v140 (C-083) : LA FOURRURE D'AVANT LES ESSAIS — réglages en dur (densité ×1, poil ×1), pointes au-delà de la boule, pas d'anneau, rien autour. 5/9 sur l'état d'avant.
 python3 redteam_trace.py       # 8 — v140 (C-083) : l'empreinte suit le vrai geste — deux trajets, deux traces alignées ; la largeur du contact ; l'étoile d'un appui. 2/8 avant.

@@ -1,0 +1,18 @@
+== redteam_rythme.py [1] 694s : · ramage · reel · depart — ligne retirée (v93), relevé : {'duree': 251, 'images': 13, 'boucle': 1861, 'debut': | 92 / 99
+     ✗ terrazzo · moteur · arrivee fin du mouvement 866 ms (attendu 799 ± 100) · cadence 59 % · [vu 866 ms, 29 images]
+     ✗ brouillamini · moteur · arrivee fin du mouvement 2171 ms (attendu 1742 ± 261) · cadence 82 % · [vu 2011 ms, 67 images]
+     ✗ encre · reel · arrivee fin du mouvement 890 ms (attendu 872 ± 100) · cadence 53 % · [vu 890 ms, 18 images]
+     ✗ terrazzo · reel · arrivee fin du mouvement 930 ms (attendu 799 ± 100) · cadence 72 % · [vu 930 ms, 38 images]
+     ✗ sillons · reel · depart 16 images (attendu 29 ± 8) · cadence 64 % · [vu 817 ms, 16 images]
+     ✗ brouillamini · reel · arrivee fin du mouvement 2237 ms (attendu 1742 ± 261) · cadence 93 % · [vu 2237 ms, 84 images]
+     ✗ chamade · reel · depart fin du mouvement 2126 ms (attendu 1946 ± 155) · cadence 92 % · [vu 1323 ms, 42 images]
+== redteam_toucher.py [0] 265s : ✅ Ritournelle : une image longue (900 ms) entre l'appui et le lever ne fait pas perdre le toucher (3 sur 3) —  | redteam_toucher : 24/24
+== redteam_nuee_dalle.py [0] 93s : [clair] aucune erreur JS                                           OK  [] | 38/38
+== redteam_vide.py [0] 228s : aucune erreur JS                               OK | 61/61
+== redteam_bouton.py [0] 233s : aucune erreur de page                                                                        OK | 33 / 33
+== releve-aura.py [1] 178s : palier 110000 · médiane 33.7 ms · 1654 images · plus longue image pendant l'élan : 850 ms (dont peintre 35.5 m | ❌  3 ÉCARTS
+     ❌  3 ÉCARTS
+== redteam_guide.py [1] 296s : ✅ après « Revoir la présentation » menée au bout, le guide se rejoue                                           | ❌  50 / 51
+     ❌ [sombre] 1 · il couvre tout en 1,8 s (entre 1,6 et 2,2 s, à l'horloge de la page)                                durée 1.42 s
+     ❌  50 / 51
+== redteam_gestes.py --seul=tenir [0] 111s : OK  A1 · la main jouée au-dessus de la Toile : aucune dalle ne bouge, le canevas est le même 3924884936 392488 | redteam_gestes : 23/23

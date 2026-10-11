@@ -115,6 +115,15 @@ SIG_DALLE = r"""(cv)=>{ const g=cv.getContext('2d'), w=cv.width, h=cv.height; if
   for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const i=(y*w+x)*4; if(d[i+3]<=10) continue; n++; H[q(i)]++;
     if(x+1<w && d[i+7]>10 && q(i)!==q(i+4)) e++; }
   return {n, fill:n/(w*h), edge:n?e/n:0, hist:H.map(v=>n?v/n:0)}; }"""
+def _entre_sol_et_corps(pg, teinte):
+    """v142 — la teinte RENDUE de la boule est-elle sur l'arc entre le ton du poil et celui du corps que l'app déclare (± 8°) ? Rend (oui, [poil, corps])."""
+    try:
+        cc = pg.evaluate("()=>{ var c=_aura.corps(), H=function(c){ var r=c[0]/255,g=c[1]/255,b=c[2]/255, mx=Math.max(r,g,b), mn=Math.min(r,g,b), d=mx-mn, h=0; if(d){ h = mx===r ? ((g-b)/d+(g<b?6:0)) : mx===g ? ((b-r)/d+2) : ((r-g)/d+4); h*=60; } return h; }; return [H(c.poil), H(c.rgb)]; }")
+        ar = lambda x, y: min(abs(x - y), 360 - abs(x - y))
+        return (ar(cc[0], cc[1]) <= 130 and ar(teinte, cc[0]) + ar(teinte, cc[1]) <= ar(cc[0], cc[1]) + 16), [round(v) for v in cc]
+    except Exception:
+        return False, None
+
 def dist_sig(a, b):
     return sum(abs(x - y) for x, y in zip(a['hist'], b['hist'])) + abs(a['edge'] - b['edge']) + abs(a['fill'] - b['fill'])
 
@@ -838,7 +847,11 @@ def juge():
                         return h; }); }catch(e){ return []; } }""")
                 if TT:
                     dt = min(min(abs(bo['teinte']-t), 360-abs(bo['teinte']-t)) for t in TT)
-                    if dt > 22: peint.append(E + ' le sol est à %.0f°, aucun des quatre tons de la palette (%s)' % (bo['teinte'], [round(t) for t in TT]))
+                    _cc = None
+                    if dt > 22:   # v142 : même règle que plus bas — la teinte rendue est un mélange du poil et du corps (voir « données »)
+                        _ok, _cc = _entre_sol_et_corps(pg, bo['teinte'])
+                        if _ok: dt = 0
+                    if dt > 22: peint.append(E + ' le sol est à %.0f°, aucun des quatre tons de la palette (%s), et hors de l\'arc poil–corps %s' % (bo['teinte'], [round(t) for t in TT], _cc))
             if comp['ilesPeintes'] != comp['n']: peint.append(E + ' %d îles peintes pour %d paroles tenues' % (comp['ilesPeintes'], comp['n']))
             for n in m['noyaux']:
                 if not n['visBg'] or n['visBg'] == 'none': peint.append(E + ' le visage de %s n\'a pas d\'image' % n['qui'])
@@ -872,7 +885,16 @@ def juge():
                         return h; }); }catch(e){ return []; } }""")
                 if TT2:
                     dt = min(min(abs(bo['teinte']-t), 360-abs(bo['teinte']-t)) for t in TT2)
-                    if dt > 22: don.append('nature %s : le sol est à %.0f°, hors des quatre tons de la palette %s' % (nat, bo['teinte'], [round(t) for t in TT2]))
+                    # ⚑ v142 — L'INSTRUMENT : la couleur RENDUE de la boule est un MÉLANGE du poil et du corps (v125 : le corps compte pour un tiers), et le
+                    #   corps est un AUTRE ton de la palette. Sous Ingénu en clair (v142 : les trois natures, poil plus clair qu'avant), le mélange d'un
+                    #   poil lilas (266°) et d'un corps rose (338°) se lit à 316° : entre deux tons de la palette, à plus de 22° de chacun. La frontière
+                    #   jugée ne bouge pas (« le sol est un ton de la palette, jamais une couleur venue d'ailleurs ») : la teinte rendue doit être à 22° d'un
+                    #   ton, OU sur l'arc entre le ton du sol et celui du corps que l'app déclare (un pointeur). Original : sauvegardes/releve-aura-avant-v142.py.
+                    _cc = None
+                    if dt > 22:
+                        _ok, _cc = _entre_sol_et_corps(pg, bo['teinte'])
+                        if _ok: dt = 0
+                    if dt > 22: don.append('nature %s : le sol est à %.0f°, hors des quatre tons de la palette %s, et hors de l\'arc poil–corps %s' % (nat, bo['teinte'], [round(t) for t in TT2], _cc))
             restaure()
         # égalité : Promi l'emporte (ordre du §3) ; zéro tenu : bleu
         pg.evaluate("()=>{ %s.forEach(p=>{ p.status='encours'; }); }" % MIENS)
@@ -1081,7 +1103,10 @@ def juge():
         # ⚑ v141 (Tom, 10 oct. 2026, C-083) — CONTRAT RÉÉCRIT (original : sauvegardes/releve-aura-avant-v141.py, « le toucher couche le poil : une
         #   caresse de plus »). La décision qui le remplace : « Un appui immobile creuse la forme du contact, sans motif. » Un toucher ne laisse
         #   AUCUNE trace : le creux, puis rien.
-        if n_tap: acq.append('4 · un toucher laisse une trace (%s caresse) — il ne doit laisser que son creux, qui revient' % n_tap)
+        # ⚑ v142 (Tom, 11 oct. 2026, C-083) — CONTRAT RÉÉCRIT DE NOUVEAU (original : sauvegardes/releve-aura-avant-v142.py, « un toucher ne laisse aucune
+        #   trace »). La décision qui le remplace : « Un appui immobile laisse la forme du contact, à taille réelle. » Un toucher laisse donc UNE
+        #   marque — pas zéro (v141), pas plusieurs, pas un motif. Sa taille est jugée par redteam_trace (E).
+        if n_tap != 1: acq.append('4 · un toucher immobile laisse %s marque(s) — il en laisse UNE, à la forme du contact' % n_tap)
         # 5 · la trace qui reste
         n0 = pg.evaluate("()=>_aura.etat().traces")
         pg.mouse.move(cx - 0.5 * bb['R'], cy + 0.1 * bb['R']); pg.mouse.down()

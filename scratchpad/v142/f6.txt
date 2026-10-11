@@ -1,0 +1,38 @@
+   QUI passe 2 · tâche de 23 ms à 0 ms : EventDispatch 18 ms mouseup · FunctionCall 14 ms fin@4764 · EventDispatch 14 ms click · UpdateLayoutTree 4 ms
+   QUI passe 2 · tâche de 70 ms à 1775 ms : TimerFire 70 ms · FunctionCall 67 ms ?@19947
+   QUI passe 4 · tâche de 23 ms à 1021 ms : FireAnimationFrame 18 ms · FunctionCall 15 ms img@19961 · UpdateLayoutTree 5 ms
+   passe  4 : 204 images · la plus longue 21.3 ms à 1021 ms · au-delà de 20 ms : [(1021, 21.3)] · « referme » à 12 ms, « après » à 1039 ms
+   QUI passe 5 · tâche de 21 ms à 1023 ms : FireAnimationFrame 17 ms · FunctionCall 14 ms img@19961 · UpdateLayoutTree 5 ms
+   QUI passe 6 · tâche de 20 ms à 1025 ms : FireAnimationFrame 15 ms · FunctionCall 12 ms img@19961 · UpdateLayoutTree 3 ms
+   QUI passe 6 · tâche de 34 ms à 1885 ms : TimerFire 33 ms · FunctionCall 30 ms ?@19947 · UpdateLayoutTree 4 ms · UpdateLayoutTree 4 ms · UpdateLayoutTree 4 ms · Layout 3 ms
+   QUI passe 6 · tâche de 46 ms à 1919 ms : FireAnimationFrame 34 ms · FunctionCall 34 ms ?@34809 · UpdateLayoutTree 4 ms
+   QUI passe 6 · tâche de 43 ms à 1989 ms : FireAnimationFrame 33 ms · FunctionCall 28 ms ?@15694 · FireAnimationFrame 6 ms · FunctionCall 6 ms ?@13960 · UpdateLayoutTree 5 ms · UpdateLayoutTree 4 ms
+   QUI passe 6 · tâche de 111 ms à 2152 ms : TimerFire 104 ms · FunctionCall 104 ms p@21209
+   QUI passe 6 · tâche de 74 ms à 2421 ms : TimerFire 66 ms · FunctionCall 66 ms tranche@21189
+   QUI passe 6 · tâche de 41 ms à 2494 ms : TimerFire 23 ms · FunctionCall 5 ms arme@18087
+   QUI passe 6 · tâche de 164 ms à 2730 ms : MinorGC 164 ms · V8.GC_SCAVENGER 134 ms
+   QUI passe 6 · tâche de 37 ms à 3172 ms : TimerFire 37 ms · FunctionCall 34 ms tranche@21189 · UpdateLayoutTree 9 ms · UpdateLayoutTree 5 ms
+   QUI passe 7 · tâche de 45 ms à 187 ms : FireAnimationFrame 13 ms · FunctionCall 10 ms frame@8555 · UpdateLayoutTree 9 ms · Layerize 6 ms · Commit 6 ms · PrePaint 5 ms
+   QUI passe 7 · tâche de 27 ms à 232 ms : UpdateLayoutTree 22 ms
+   QUI passe 7 · tâche de 27 ms à 269 ms : UpdateLayoutTree 10 ms · Paint 7 ms · Paint 7 ms · Commit 4 ms · Layerize 3 ms
+   QUI passe 7 · tâche de 42 ms à 367 ms : FireAnimationFrame 37 ms · FunctionCall 32 ms img@19961 · UpdateLayoutTree 11 ms · UpdateLayoutTree 8 ms
+   QUI passe 7 · tâche de 51 ms à 1055 ms : FireAnimationFrame 30 ms · FunctionCall 27 ms img@19961 · Commit 11 ms · Layout 5 ms · Layout 5 ms · UpdateLayoutTree 4 ms
+   QUI passe 7 · tâche de 38 ms à 1800 ms : TimerFire 38 ms · FunctionCall 32 ms ?@19947
+   QUI passe 7 · tâche de 46 ms à 1986 ms : FireAnimationFrame 38 ms · FunctionCall 38 ms ?@34809 · UpdateLayoutTree 3 ms
+   QUI passe 7 · tâche de 38 ms à 2113 ms : TimerFire 38 ms · FunctionCall 38 ms ?@19947
+   QUI passe 7 · tâche de 35 ms à 3100 ms : 
+   QUI passe 7 · tâche de 320 ms à 3135 ms : FireAnimationFrame 300 ms · FunctionCall 300 ms frame@8555 · UpdateLayoutTree 12 ms
+   passe  7 : 188 images · la plus longue 40.2 ms à 367 ms · au-delà de 20 ms : [(189, 31.1), (233, 23.5), (367, 40.2), (1055, 38.1)] · « referme » à 31 ms, « après » à 1082 ms
+   QUI passe 10 · tâche de 23 ms à 0 ms : EventDispatch 16 ms mouseup · FunctionCall 13 ms fin@4764 · EventDispatch 13 ms click · UpdateLayoutTree 4 ms · UpdateLayoutTree 3 ms
+   QUI passe 10 · tâche de 21 ms à 1039 ms : FireAnimationFrame 16 ms · FunctionCall 13 ms img@19961 · UpdateLayoutTree 5 ms
+   passe 10 : 205 images · la plus longue 24.4 ms à -3 ms · au-delà de 20 ms : [(-3, 24.4)] · « referme » à 15 ms, « après » à 1054 ms
+1 · aucune image de l'animation au-delà de 20 ms de travail (12 animations, 2431 images) KO  6 image(s) au-delà · la plus longue 40.2 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               OK  p50 2.5 · p95 6.1 ms
+3 · la durée : « juste après » paraît 1 000 ms (± 80) après « le trait se referme »  OK  de 1022 à 1050 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  12 sur 12
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images KO  la plus longue : 319.7 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 319.3 ms — les passes de tout le document et la pose complète)
+
+4 / 6
+KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (12 animations, 2431 images) · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images

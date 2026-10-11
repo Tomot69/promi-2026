@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 427 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 430 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -76,11 +76,11 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 422 | 342 × 94 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 447 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 465 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 535 | 342 × 94 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 538 | 342 × 79 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 629 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 556 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 641 | 342 × 94 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 647 | 342 × 79 | oui |  |
 | Nuée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
@@ -176,13 +176,13 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Réglages | `#resetData` | on… | 195, 472 | 342 × 64 | oui |  |
 | Réglages | `#compteCard` | natif | 195, 472 | 342 × 64 | oui |  |
 | Réglages | `#logoutCard` | natif | 195, 472 | 342 × 64 | oui |  |
-| Réglages | `#delAccount` | natif | 195, 472 | 342 × 64 | oui |  |
-| Réglages | `#cguCard` | natif | 195, 532 | 342 × 64 | oui |  |
+| Réglages | `#cguCard` | natif | 195, 472 | 342 × 64 | oui |  |
+| Réglages | `#polCard` | natif | 195, 532 | 342 × 64 | oui |  |
 | Réglages | `#replayPres` | natif | 195, 548 | 342 × 64 | oui |  |
-| Réglages | `#polCard` | natif | 195, 610 | 342 × 64 | oui |  |
+| Réglages | `#aboutCard` | natif | 195, 610 | 342 × 64 | oui |  |
 | Réglages | `#replayOnb` | natif | 195, 626 | 342 × 64 | oui |  |
-| Réglages | `#aboutCard` | natif | 195, 688 | 342 × 64 | oui |  |
 | Réglages | `#setInvite` | natif | 195, 742 | 342 × 64 | oui |  |
+| Réglages | `#delAccount` | natif | 195, 758 | 342 × 64 | oui |  |
 | Réglages | `#setMention` | natif | 195, 820 | 342 × 64 | oui |  |
 | Studio | `div#stpHaut>div.closeb«✕ Fermer»` | on… | 293, 70 | 91 × 19 | oui |  |
 | Studio | `#studioScreen` | écouteur | 195, 422 | 422 × 876 | oui |  |

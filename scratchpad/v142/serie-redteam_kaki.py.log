@@ -1,0 +1,65 @@
+A · LA SOURCE
+  OK
+B · LE RENDU (20 mondes × clair, sombre)
+  encre        stable     7.4 s  T-sombre:b554ff T-clair:a39a44 promi-k0.5:bf2df9 promi-k1:25243f promi-k2:5016a2 chiche-k0.5:8b2025 chiche-k1:ee09e0 chiche-k2:96ed49 tenu-k0.5:60d975 tenu-k1:3a7334 tenu-k2:91c874 cercle-k0.5:9c369a cercle-k1:43e0a4 cercle-k2:77d518
+  touffe       stable     5.8 s  T-sombre:f46771 T-clair:4e2ff2 promi-k0.5:2c549a promi-k1:c87bff promi-k2:b5bea4 chiche-k0.5:64b7da chiche-k1:83bd1a chiche-k2:b3ecee tenu-k0.5:6fb598 tenu-k1:47849d tenu-k2:365b8a cercle-k0.5:6b8488 cercle-k1:c1ce31 cercle-k2:871d96
+  brouillamini stable     3.8 s  T-sombre:9f4c11 T-clair:cbdcbd promi-k0.5:467139 promi-k1:37ffbd promi-k2:a3f575 chiche-k0.5:5a77b1 chiche-k1:bf38f1 chiche-k2:7e3e1d tenu-k0.5:27f972 tenu-k1:144cc6 tenu-k2:598a9c cercle-k0.5:d9936d cercle-k1:3c9055 cercle-k2:3f6382
+  halin        stable     8.5 s  T-sombre:556e42 T-clair:5cd5b3 promi-k0.5:bd2d8d promi-k1:7408e2 promi-k2:e8e060 chiche-k0.5:5876c7 chiche-k1:240768 chiche-k2:e838aa tenu-k0.5:ed8a8f tenu-k1:9256b7 tenu-k2:b4fb82 cercle-k0.5:3a0df7 cercle-k1:eed3bc cercle-k2:85f585
+  esquille     stable     3.5 s  T-sombre:4c4446 T-clair:6e8174 promi-k0.5:da398b promi-k1:78d559 promi-k2:cf00e5 chiche-k0.5:3b16a9 chiche-k1:1c2412 chiche-k2:6228e1 tenu-k0.5:beac29 tenu-k1:57afe9 tenu-k2:fb80db cercle-k0.5:e9334e cercle-k1:ed7656 cercle-k2:c6d23d
+  mosaique     stable     3.7 s  T-sombre:b9af39 T-clair:d1a6b7 promi-k0.5:16274b promi-k1:7b335c promi-k2:5b0b80 chiche-k0.5:88ba6e chiche-k1:998d56 chiche-k2:f372cf tenu-k0.5:dcb44c tenu-k1:89c2d4 tenu-k2:3861c2 cercle-k0.5:c1b37f cercle-k1:86bf5f cercle-k2:b3e185
+  braille      stable     3.7 s  T-sombre:2be8b1 T-clair:189e64 promi-k0.5:1505f1 promi-k1:45bee0 promi-k2:9b934c chiche-k0.5:f8b2e2 chiche-k1:5c9fe8 chiche-k2:a2cd42 tenu-k0.5:ddf303 tenu-k1:758ac5 tenu-k2:120831 cercle-k0.5:f33675 cercle-k1:762f28 cercle-k2:7feec5
+  pixel        stable     3.9 s  T-sombre:fd2a9b T-clair:fd2a9b promi-k0.5:397b03 promi-k1:e4adf6 promi-k2:21a427 chiche-k0.5:fea479 chiche-k1:c262e5 chiche-k2:47a417 tenu-k0.5:b2f47e tenu-k1:706ad1 tenu-k2:46d2ce cercle-k0.5:4bc9e7 cercle-k1:e4229a cercle-k2:9f5c57
+  ramage       stable     8.0 s  T-sombre:2c3a07 T-clair:898b34 promi-k0.5:eac2b9 promi-k1:164537 promi-k2:322a90 chiche-k0.5:f08ee1 chiche-k1:920412 chiche-k2:1e1477 tenu-k0.5:3ccdb7 tenu-k1:e184ed tenu-k2:8d05ea cercle-k0.5:eecdd7 cercle-k1:831862 cercle-k2:b28cee
+  guingois     stable     3.7 s  T-sombre:2c0473 T-clair:fd77f3 promi-k0.5:e5d7b3 promi-k1:136ebf promi-k2:90210d chiche-k0.5:1caf67 chiche-k1:d6c298 chiche-k2:9db9c1 tenu-k0.5:c39844 tenu-k1:aef2e2 tenu-k2:e226fa cercle-k0.5:f5e7e0 cercle-k1:74102f cercle-k2:9fb3ce
+  chantourne   stable     3.8 s  T-sombre:980519 T-clair:2f3610 promi-k0.5:819f44 promi-k1:6ec666 promi-k2:99f65b chiche-k0.5:77eb08 chiche-k1:27ebd8 chiche-k2:85ea9b tenu-k0.5:eef6f8 tenu-k1:98a03f tenu-k2:22f9a8 cercle-k0.5:443607 cercle-k1:b6dd65 cercle-k2:f405f0
+  volubilis    stable     4.0 s  T-sombre:f539bb T-clair:2a8732 promi-k0.5:e1d06e promi-k1:66395b promi-k2:b84761 chiche-k0.5:caf51b chiche-k1:972009 chiche-k2:10f1a8 tenu-k0.5:cfa071 tenu-k1:2e5ad7 tenu-k2:89f9bd cercle-k0.5:d98c90 cercle-k1:e6f56a cercle-k2:69191d
+  madrure      stable     7.4 s  T-sombre:98f72d T-clair:2195c4 promi-k0.5:d240df promi-k1:f2d390 promi-k2:497a88 chiche-k0.5:9b1028 chiche-k1:7607c4 chiche-k2:f3ee4b tenu-k0.5:c851f0 tenu-k1:439adc tenu-k2:5b145e cercle-k0.5:68bfcf cercle-k1:a7ff95 cercle-k2:33adc2
+  chamade      INSTABLE   5.9 s  T-sombre:96613f T-clair:5cb4d9 promi-k0.5:c2d4f2 promi-k1:98dbaf promi-k2:418f2f chiche-k0.5:192447 chiche-k1:b39b3f chiche-k2:a16298 tenu-k0.5:1d3ec9 tenu-k1:2419b9 tenu-k2:789062 cercle-k0.5:b06005 cercle-k1:4d3475 cercle-k2:99161a
+  ritournelle  stable     5.0 s  T-sombre:11441e T-clair:be0636 promi-k0.5:7d60bf promi-k1:16bce7 promi-k2:e6f126 chiche-k0.5:adcb0a chiche-k1:f694e5 chiche-k2:ed8a07 tenu-k0.5:36aa13 tenu-k1:594c2a tenu-k2:c12682 cercle-k0.5:828294 cercle-k1:4e5885 cercle-k2:776ba4
+  bobinette    stable     3.8 s  T-sombre:994f1e T-clair:f5fb34 promi-k0.5:d60e9c promi-k1:662aa6 promi-k2:c346ba chiche-k0.5:d5e561 chiche-k1:11632c chiche-k2:66ca15 tenu-k0.5:983f55 tenu-k1:e74222 tenu-k2:27bd3b cercle-k0.5:ab2d1e cercle-k1:7d9969 cercle-k2:68d7e2
+  mascaret     stable     3.9 s  T-sombre:21a757 T-clair:7aacfd promi-k0.5:87a3b3 promi-k1:fd8206 promi-k2:5d757d chiche-k0.5:61bd63 chiche-k1:973574 chiche-k2:b52685 tenu-k0.5:3bd53b tenu-k1:dd5b3b tenu-k2:c643ee cercle-k0.5:baef20 cercle-k1:f75110 cercle-k2:a8af49
+  terrazzo     stable     4.3 s  T-sombre:e1fb3c T-clair:67f8d4 promi-k0.5:a779d2 promi-k1:2d9d5e promi-k2:658741 chiche-k0.5:e2a560 chiche-k1:b5b590 chiche-k2:970f7e tenu-k0.5:2c14be tenu-k1:cee1f0 tenu-k2:d87677 cercle-k0.5:2784c8 cercle-k1:3971f0 cercle-k2:fc3a1c
+  gravure      stable     3.9 s  T-sombre:8a1291 T-clair:86ebe6 promi-k0.5:5def40 promi-k1:e1e596 promi-k2:97e757 chiche-k0.5:f447f0 chiche-k1:d398d2 chiche-k2:5141d4 tenu-k0.5:e310f4 tenu-k1:9ddaca tenu-k2:cd9a70 cercle-k0.5:41b153 cercle-k1:22db50 cercle-k2:ece99a
+  sillons      stable     3.9 s  T-sombre:e3325c T-clair:b61162 promi-k0.5:ded3e4 promi-k1:cc6807 promi-k2:9a848b chiche-k0.5:191bbf chiche-k1:9d3a30 chiche-k2:3df087 tenu-k0.5:5306d5 tenu-k1:a06382 tenu-k2:c4d576 cercle-k0.5:44a9df cercle-k1:8b234e cercle-k2:8421aa
+  encre        toile-clair   kaki   0.0 %  OK
+  encre        toile-sombre  kaki   0.7 %  ✗ #C8B89F (h 79°, C 0.039, L 0.79) ×11; #8E8270 (h 78°, C 0.030, L 0.61) ×8; #C1B199 (h 78°, C 0.038, L 0.77) ×8
+  touffe       toile-clair   kaki  10.8 %  ✗ #3B3429 (h 79°, C 0.021, L 0.33) ×1134; #3D362B (h 79°, C 0.021, L 0.34) ×1028; #3C352A (h 79°, C 0.021, L 0.33) ×960
+  touffe       toile-sombre  kaki   1.0 %  ✗ #9B917E (h 84°, C 0.030, L 0.66) ×235; #968974 (h 80°, C 0.034, L 0.64) ×180; #938C81 (h 79°, C 0.018, L 0.64) ×170
+  brouillamini toile-clair   kaki   0.0 %  OK
+  brouillamini toile-sombre  kaki   0.0 %  OK
+  halin        toile-clair   kaki   0.0 %  OK
+  halin        toile-sombre  kaki   0.0 %  OK
+  esquille     toile-clair   kaki   0.0 %  OK
+  esquille     toile-sombre  kaki   0.5 %  ✗ #A29986 (h 86°, C 0.029, L 0.69) ×25; #645E52 (h 85°, C 0.020, L 0.48) ×21; #ADA48F (h 88°, C 0.031, L 0.72) ×21
+  mosaique     toile-clair   kaki   0.0 %  OK
+  mosaique     toile-sombre  kaki   0.0 %  OK
+  braille      toile-clair   kaki   0.0 %  OK
+  braille      toile-sombre  kaki   2.8 %  ✗ #817665 (h 79°, C 0.029, L 0.57) ×504; #827B6D (h 85°, C 0.022, L 0.59) ×384; #767066 (h 81°, C 0.017, L 0.55) ×380
+  pixel        toile-clair   kaki   0.0 %  OK
+  pixel        toile-sombre  kaki   0.0 %  OK
+  ramage       toile-clair   kaki   4.7 %  ✗ #28231B (h 79°, C 0.016, L 0.26) ×200; #353027 (h 82°, C 0.017, L 0.31) ×135; #312C24 (h 80°, C 0.016, L 0.30) ×134
+  ramage       toile-sombre  kaki   0.0 %  OK
+  guingois     toile-clair   kaki   8.9 %  ✗ #766D5D (h 82°, C 0.027, L 0.54) ×382; #7E7564 (h 83°, C 0.028, L 0.57) ×354; #61594B (h 82°, C 0.024, L 0.47) ×345
+  guingois     toile-sombre  kaki   0.0 %  OK
+  chantourne   toile-clair   kaki   5.6 %  ✗ #B7AC95 (h 85°, C 0.034, L 0.75) ×1469; #B5AA93 (h 85°, C 0.034, L 0.74) ×489; #9E947F (h 86°, C 0.032, L 0.67) ×464
+  chantourne   toile-sombre  kaki   0.0 %  OK
+  volubilis    toile-clair   kaki   2.5 %  ✗ #7E7564 (h 83°, C 0.028, L 0.57) ×103; #61594B (h 82°, C 0.024, L 0.47) ×101; #938976 (h 83°, C 0.030, L 0.63) ×90
+  volubilis    toile-sombre  kaki   0.0 %  OK
+  madrure      toile-clair   kaki   0.0 %  OK
+  madrure      toile-sombre  kaki   0.0 %  OK
+  chamade      toile-clair   kaki   5.8 %  ✗ #938976 (h 83°, C 0.030, L 0.63) ×228; #61594B (h 82°, C 0.024, L 0.47) ×228; #7E7564 (h 83°, C 0.028, L 0.57) ×218
+  chamade      toile-sombre  kaki   0.0 %  OK
+  ritournelle  toile-clair   kaki   0.0 %  OK
+  ritournelle  toile-sombre  kaki   0.0 %  OK
+  bobinette    toile-clair   kaki   0.0 %  OK
+  bobinette    toile-sombre  kaki   1.4 %  ✗ #605A4E (h 85°, C 0.020, L 0.47) ×88; #A29986 (h 86°, C 0.029, L 0.69) ×76; #B4AB96 (h 88°, C 0.031, L 0.74) ×70
+  mascaret     toile-clair   kaki   5.4 %  ✗ #7E7564 (h 83°, C 0.028, L 0.57) ×218; #938976 (h 83°, C 0.030, L 0.63) ×197; #61594B (h 82°, C 0.024, L 0.47) ×194
+  mascaret     toile-sombre  kaki   0.0 %  OK
+  terrazzo     toile-clair   kaki   0.0 %  OK
+  terrazzo     toile-sombre  kaki   0.8 %  ✗ #595145 (h 78°, C 0.022, L 0.44) ×13; #756B5C (h 78°, C 0.026, L 0.53) ×12; #7A7060 (h 80°, C 0.027, L 0.55) ×11
+  gravure      toile-clair   kaki   0.0 %  OK
+  gravure      toile-sombre  kaki   5.5 %  ✗ #756B5C (h 78°, C 0.026, L 0.53) ×48; #8F8371 (h 78°, C 0.030, L 0.62) ×46; #867B6A (h 79°, C 0.028, L 0.59) ×45
+  sillons      toile-clair   kaki   0.0 %  OK
+  sillons      toile-sombre  kaki   6.4 %  ✗ #C6BCAC (h 80°, C 0.025, L 0.80) ×103; #C4BAAB (h 78°, C 0.024, L 0.79) ×89; #5C5448 (h 78°, C 0.022, L 0.45) ×77
+
+❌ DU KAKI — 15 coupable(s)

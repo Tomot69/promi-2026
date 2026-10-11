@@ -1,0 +1,83 @@
+  encre        stable     7.7 s  T-sombre:b554ff T-clair:a39a44 promi-k0.5:bf2df9 promi-k1:25243f promi-k2:5016a2 chiche-k0.5:8b2025 chiche-k1:ee09e0 chiche-k2:96ed49 tenu-k0.5:60d975 tenu-k1:3a7334 tenu-k2:91c874 cercle-k0.5:9c369a cercle-k1:43e0a4 cercle-k2:77d518
+  touffe       stable     5.9 s  T-sombre:f46771 T-clair:4e2ff2 promi-k0.5:2c549a promi-k1:c87bff promi-k2:b5bea4 chiche-k0.5:64b7da chiche-k1:83bd1a chiche-k2:b3ecee tenu-k0.5:6fb598 tenu-k1:47849d tenu-k2:365b8a cercle-k0.5:6b8488 cercle-k1:c1ce31 cercle-k2:871d96
+  brouillamini stable     4.0 s  T-sombre:9f4c11 T-clair:cbdcbd promi-k0.5:467139 promi-k1:37ffbd promi-k2:a3f575 chiche-k0.5:5a77b1 chiche-k1:bf38f1 chiche-k2:7e3e1d tenu-k0.5:27f972 tenu-k1:144cc6 tenu-k2:598a9c cercle-k0.5:d9936d cercle-k1:3c9055 cercle-k2:3f6382
+  halin        stable     8.4 s  T-sombre:556e42 T-clair:5cd5b3 promi-k0.5:bd2d8d promi-k1:7408e2 promi-k2:e8e060 chiche-k0.5:5876c7 chiche-k1:240768 chiche-k2:e838aa tenu-k0.5:ed8a8f tenu-k1:9256b7 tenu-k2:b4fb82 cercle-k0.5:3a0df7 cercle-k1:eed3bc cercle-k2:85f585
+  esquille     stable     3.6 s  T-sombre:4c4446 T-clair:6e8174 promi-k0.5:da398b promi-k1:78d559 promi-k2:cf00e5 chiche-k0.5:3b16a9 chiche-k1:1c2412 chiche-k2:6228e1 tenu-k0.5:beac29 tenu-k1:57afe9 tenu-k2:fb80db cercle-k0.5:e9334e cercle-k1:ed7656 cercle-k2:c6d23d
+  mosaique     stable     3.7 s  T-sombre:b9af39 T-clair:d1a6b7 promi-k0.5:16274b promi-k1:7b335c promi-k2:5b0b80 chiche-k0.5:88ba6e chiche-k1:998d56 chiche-k2:f372cf tenu-k0.5:dcb44c tenu-k1:89c2d4 tenu-k2:3861c2 cercle-k0.5:c1b37f cercle-k1:86bf5f cercle-k2:b3e185
+  braille      stable     3.9 s  T-sombre:2be8b1 T-clair:189e64 promi-k0.5:1505f1 promi-k1:45bee0 promi-k2:9b934c chiche-k0.5:f8b2e2 chiche-k1:5c9fe8 chiche-k2:a2cd42 tenu-k0.5:ddf303 tenu-k1:758ac5 tenu-k2:120831 cercle-k0.5:f33675 cercle-k1:762f28 cercle-k2:7feec5
+  pixel        stable     4.0 s  T-sombre:fd2a9b T-clair:fd2a9b promi-k0.5:397b03 promi-k1:e4adf6 promi-k2:21a427 chiche-k0.5:fea479 chiche-k1:c262e5 chiche-k2:47a417 tenu-k0.5:b2f47e tenu-k1:706ad1 tenu-k2:46d2ce cercle-k0.5:4bc9e7 cercle-k1:e4229a cercle-k2:9f5c57
+  ramage       stable     8.4 s  T-sombre:2c3a07 T-clair:898b34 promi-k0.5:eac2b9 promi-k1:164537 promi-k2:322a90 chiche-k0.5:f08ee1 chiche-k1:920412 chiche-k2:1e1477 tenu-k0.5:3ccdb7 tenu-k1:e184ed tenu-k2:8d05ea cercle-k0.5:eecdd7 cercle-k1:831862 cercle-k2:b28cee
+  guingois     stable     3.6 s  T-sombre:2c0473 T-clair:fd77f3 promi-k0.5:e5d7b3 promi-k1:136ebf promi-k2:90210d chiche-k0.5:1caf67 chiche-k1:d6c298 chiche-k2:9db9c1 tenu-k0.5:c39844 tenu-k1:aef2e2 tenu-k2:e226fa cercle-k0.5:f5e7e0 cercle-k1:74102f cercle-k2:9fb3ce
+  chantourne   stable     3.8 s  T-sombre:980519 T-clair:2f3610 promi-k0.5:819f44 promi-k1:6ec666 promi-k2:99f65b chiche-k0.5:77eb08 chiche-k1:27ebd8 chiche-k2:85ea9b tenu-k0.5:eef6f8 tenu-k1:98a03f tenu-k2:22f9a8 cercle-k0.5:443607 cercle-k1:b6dd65 cercle-k2:f405f0
+  volubilis    stable     3.8 s  T-sombre:f539bb T-clair:2a8732 promi-k0.5:e1d06e promi-k1:66395b promi-k2:b84761 chiche-k0.5:caf51b chiche-k1:972009 chiche-k2:10f1a8 tenu-k0.5:cfa071 tenu-k1:2e5ad7 tenu-k2:89f9bd cercle-k0.5:d98c90 cercle-k1:e6f56a cercle-k2:69191d
+  madrure      stable     7.6 s  T-sombre:98f72d T-clair:2195c4 promi-k0.5:d240df promi-k1:f2d390 promi-k2:497a88 chiche-k0.5:9b1028 chiche-k1:7607c4 chiche-k2:f3ee4b tenu-k0.5:c851f0 tenu-k1:439adc tenu-k2:5b145e cercle-k0.5:68bfcf cercle-k1:a7ff95 cercle-k2:33adc2
+  chamade      INSTABLE   5.8 s  T-sombre:96613f T-clair:5cb4d9 promi-k0.5:c2d4f2 promi-k1:98dbaf promi-k2:418f2f chiche-k0.5:192447 chiche-k1:b39b3f chiche-k2:a16298 tenu-k0.5:1d3ec9 tenu-k1:2419b9 tenu-k2:789062 cercle-k0.5:b06005 cercle-k1:4d3475 cercle-k2:99161a
+  ritournelle  stable     4.9 s  T-sombre:11441e T-clair:be0636 promi-k0.5:7d60bf promi-k1:16bce7 promi-k2:e6f126 chiche-k0.5:adcb0a chiche-k1:f694e5 chiche-k2:ed8a07 tenu-k0.5:36aa13 tenu-k1:594c2a tenu-k2:c12682 cercle-k0.5:828294 cercle-k1:4e5885 cercle-k2:776ba4
+  bobinette    stable     3.8 s  T-sombre:994f1e T-clair:f5fb34 promi-k0.5:d60e9c promi-k1:662aa6 promi-k2:c346ba chiche-k0.5:d5e561 chiche-k1:11632c chiche-k2:66ca15 tenu-k0.5:983f55 tenu-k1:e74222 tenu-k2:27bd3b cercle-k0.5:ab2d1e cercle-k1:7d9969 cercle-k2:68d7e2
+  mascaret     stable     3.8 s  T-sombre:21a757 T-clair:7aacfd promi-k0.5:87a3b3 promi-k1:fd8206 promi-k2:5d757d chiche-k0.5:61bd63 chiche-k1:973574 chiche-k2:b52685 tenu-k0.5:3bd53b tenu-k1:dd5b3b tenu-k2:c643ee cercle-k0.5:baef20 cercle-k1:f75110 cercle-k2:a8af49
+  terrazzo     stable     4.2 s  T-sombre:e1fb3c T-clair:67f8d4 promi-k0.5:a779d2 promi-k1:2d9d5e promi-k2:658741 chiche-k0.5:e2a560 chiche-k1:b5b590 chiche-k2:970f7e tenu-k0.5:2c14be tenu-k1:cee1f0 tenu-k2:d87677 cercle-k0.5:2784c8 cercle-k1:3971f0 cercle-k2:fc3a1c
+  gravure      stable     3.7 s  T-sombre:8a1291 T-clair:86ebe6 promi-k0.5:5def40 promi-k1:e1e596 promi-k2:97e757 chiche-k0.5:f447f0 chiche-k1:d398d2 chiche-k2:5141d4 tenu-k0.5:e310f4 tenu-k1:9ddaca tenu-k2:cd9a70 cercle-k0.5:41b153 cercle-k1:22db50 cercle-k2:ece99a
+  sillons      stable     3.9 s  T-sombre:e3325c T-clair:b61162 promi-k0.5:ded3e4 promi-k1:cc6807 promi-k2:9a848b chiche-k0.5:191bbf chiche-k1:9d3a30 chiche-k2:3df087 tenu-k0.5:5306d5 tenu-k1:a06382 tenu-k2:c4d576 cercle-k0.5:44a9df cercle-k1:8b234e cercle-k2:8421aa
+
+280 image(s) comparée(s) · 278 différente(s) · erreurs JS : 0
+   ≠ encre        toile-sombre       205510 px  max 251
+   ≠ encre        toile-clair        200680 px  max 125
+   ≠ encre        dalle-promi-k0.5   772 px  max 255
+   ≠ encre        dalle-promi-k1     1904 px  max 255
+   ≠ encre        dalle-promi-k2     3108 px  max 255
+   ≠ encre        dalle-chiche-k0.5  None px  taille (81, 74) ≠ (82, 75)
+   ≠ encre        dalle-chiche-k1    1934 px  max 255
+   ≠ encre        dalle-chiche-k2    None px  taille (323, 296) ≠ (323, 295)
+   ≠ encre        dalle-tenu-k0.5    864 px  max 255
+   ≠ encre        dalle-tenu-k1      None px  taille (176, 127) ≠ (177, 127)
+   ≠ encre        dalle-tenu-k2      4533 px  max 255
+   ≠ encre        dalle-cercle-k0.5  1085 px  max 255
+   ≠ encre        dalle-cercle-k1    1639 px  max 255
+   ≠ encre        dalle-cercle-k2    None px  taille (349, 275) ≠ (349, 274)
+   ≠ touffe       toile-sombre       185999 px  max 251
+   ≠ touffe       toile-clair        188119 px  max 228
+   ≠ touffe       dalle-promi-k0.5   1706 px  max 255
+   ≠ touffe       dalle-promi-k1     4372 px  max 255
+   ≠ touffe       dalle-promi-k2     8203 px  max 255
+   ≠ touffe       dalle-chiche-k0.5  None px  taille (59, 87) ≠ (58, 87)
+   ≠ touffe       dalle-chiche-k1    None px  taille (116, 173) ≠ (117, 173)
+   ≠ touffe       dalle-chiche-k2    None px  taille (232, 345) ≠ (232, 346)
+   ≠ touffe       dalle-tenu-k0.5    1086 px  max 255
+   ≠ touffe       dalle-tenu-k1      None px  taille (100, 155) ≠ (101, 155)
+   ≠ touffe       dalle-tenu-k2      5505 px  max 255
+   ≠ touffe       dalle-cercle-k0.5  1272 px  max 255
+   ≠ touffe       dalle-cercle-k1    None px  taille (79, 160) ≠ (79, 159)
+   ≠ touffe       dalle-cercle-k2    None px  taille (159, 318) ≠ (158, 317)
+   ≠ brouillamini toile-sombre       196282 px  max 250
+   ≠ brouillamini toile-clair        196071 px  max 175
+   ≠ brouillamini dalle-promi-k0.5   None px  taille (79, 101) ≠ (178, 125)
+   ≠ brouillamini dalle-promi-k1     None px  taille (158, 201) ≠ (356, 249)
+   ≠ brouillamini dalle-promi-k2     None px  taille (315, 402) ≠ (711, 497)
+   ≠ brouillamini dalle-chiche-k0.5  None px  taille (125, 124) ≠ (121, 207)
+   ≠ brouillamini dalle-chiche-k1    None px  taille (250, 247) ≠ (241, 413)
+   ≠ brouillamini dalle-chiche-k2    None px  taille (499, 493) ≠ (482, 825)
+   ≠ brouillamini dalle-tenu-k0.5    None px  taille (243, 231) ≠ (286, 171)
+   ≠ brouillamini dalle-tenu-k1      None px  taille (486, 461) ≠ (571, 341)
+   ≠ brouillamini dalle-tenu-k2      None px  taille (972, 922) ≠ (1142, 681)
+   ≠ brouillamini dalle-cercle-k0.5  None px  taille (230, 277) ≠ (126, 90)
+   ≠ brouillamini dalle-cercle-k1    None px  taille (460, 553) ≠ (251, 180)
+   ≠ brouillamini dalle-cercle-k2    None px  taille (919, 1105) ≠ (501, 360)
+   ≠ halin        toile-sombre       175278 px  max 250
+   ≠ halin        toile-clair        175046 px  max 125
+   ≠ halin        dalle-promi-k0.5   None px  taille (44, 48) ≠ (94, 65)
+   ≠ halin        dalle-promi-k1     None px  taille (87, 96) ≠ (188, 129)
+   ≠ halin        dalle-promi-k2     None px  taille (174, 191) ≠ (376, 257)
+   ≠ halin        dalle-chiche-k0.5  None px  taille (65, 87) ≠ (103, 162)
+   ≠ halin        dalle-chiche-k1    None px  taille (130, 173) ≠ (205, 324)
+   ≠ halin        dalle-chiche-k2    None px  taille (261, 345) ≠ (408, 648)
+   ≠ halin        dalle-tenu-k0.5    None px  taille (120, 198) ≠ (95, 186)
+   ≠ halin        dalle-tenu-k1      None px  taille (238, 395) ≠ (189, 373)
+   ≠ halin        dalle-tenu-k2      None px  taille (476, 790) ≠ (376, 745)
+   ≠ halin        dalle-cercle-k0.5  None px  taille (130, 217) ≠ (172, 145)
+   ≠ halin        dalle-cercle-k1    None px  taille (261, 435) ≠ (343, 289)
+   ≠ halin        dalle-cercle-k2    None px  taille (521, 868) ≠ (687, 577)
+   ≠ esquille     toile-sombre       161529 px  max 250
+   ≠ esquille     toile-clair        161317 px  max 125
+   ≠ esquille     dalle-promi-k0.5   None px  taille (37, 36) ≠ (55, 89)
+   ≠ esquille     dalle-promi-k1     None px  taille (73, 71) ≠ (110, 177)
+❌ LE RENDU A CHANGÉ.

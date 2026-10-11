@@ -1,0 +1,18 @@
+OK  [clair] la dalle du Cercle est sur la Toile de l'accueil, et la toucher ouvre sa fiche  
+OK  [clair] fil court (une parole) : le bandeau Peaufiner est tout en bas (760 → 844)  bandeau [760.0, 844.0]
+OK  [clair] fil court : « + Planter dans le Cercle » est 12 pt au-dessus du bandeau  bouton [686.0, 748.0]
+OK  [clair] fil long (7 paroles) : le bandeau est tout en bas (760 → 844)  bandeau [760.0, 844.0]
+OK  [clair] fil long : le bouton est 12 pt au-dessus du bandeau, et des cartes passent dessous  bouton [686.0, 748.0]
+OK  [clair] le fil défilé : le bandeau reste à 760 → 844 et le bouton 12 pt au-dessus  défilement 109 · bandeau [760.0, 844.0] · bouton [686.0, 748.0]
+OK  [clair] « Dissoudre le Cercle » n'a ni contour ni fond  (False, False)
+OK  [clair] « Dissoudre le Cercle » a le dessin de « Supprimer ce Promi » (police, taille, graisse, chasse, casse, couleur, corbeille), centré  écarts : {}
+OK  [sombre] la dalle du Cercle est sur la Toile de l'accueil, et la toucher ouvre sa fiche  
+OK  [sombre] fil court (une parole) : le bandeau Peaufiner est tout en bas (760 → 844)  bandeau [760.0, 844.0]
+OK  [sombre] fil court : « + Planter dans le Cercle » est 12 pt au-dessus du bandeau  bouton [686.0, 748.0]
+OK  [sombre] fil long (7 paroles) : le bandeau est tout en bas (760 → 844)  bandeau [760.0, 844.0]
+OK  [sombre] fil long : le bouton est 12 pt au-dessus du bandeau, et des cartes passent dessous  bouton [686.0, 748.0]
+OK  [sombre] le fil défilé : le bandeau reste à 760 → 844 et le bouton 12 pt au-dessus  défilement 109 · bandeau [760.0, 844.0] · bouton [686.0, 748.0]
+OK  [sombre] « Dissoudre le Cercle » n'a ni contour ni fond  (False, False)
+OK  [sombre] « Dissoudre le Cercle » a le dessin de « Supprimer ce Promi » (police, taille, graisse, chasse, casse, couleur, corbeille), centré  écarts : {}
+
+16 / 16

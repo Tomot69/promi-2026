@@ -1,0 +1,44 @@
+
+═══ L'AURA — la Pelote dans l'app, deux thèmes ═══
+
+écarts de position (cotes figées de B, ± 0,5 pt) 0
+écarts de style              0
+collisions                   0
+débordements                 0
+présence peinte              1
+    [clair] le sol est à 300°, aucun des quatre tons de la palette ([218, 338, 266, 42])
+données                      1
+    nature chiche : le sol est à 288°, hors des quatre tons de la palette [218, 338, 266, 42]
+les huit acquis              0
+densité                      0
+air de la colonne            0
+la matière                   1
+    [sombre] la dalle « monter la serre avant les gelées » est illisible : ΔE 12.1 (plancher 15)
+
+LES VALEURS MESURÉES — acquis joués en thème sombre
+   rangée · natures     5 paroles tenues à moi (promi 2, chiche 1, nuee 2) · la rangée en porte 5 : 139 promi, 134 nuee, 130 nuee, 129 chiche, 125 promi
+   cotes B [sombre]     plateau 40.00–100.00 · silhouette 132.53–374.53 · bouton 435.47–495.47 · phrase 515.59–566.59 · Noyaux 582.80–689.80 · légende 709.09–733.34 · chiffres 752.05–782.05 · ce que tu as tenu 800.55–1062.55
+   air [sombre]         phrase → disques : 2 l. 15.7 · 1 l. 15.7 · 2 l. 15.7 · 1 l. 15.7 · 1 l. 15.7 · à l'encre 2 l. 15.0 · 1 l. 16.0 · légende à l'encre (28, 26.5) · libellés → bouton -627.1 · la colonne défile de 369 pt
+   matière [sombre]     boule ↔ page 150.5 (plancher 42) · contour 154.1 · dalles : 5 de face, |Δlum| la plus faible 32.9, médiane 43.9 · ΔE 17 32 12 16 19
+   cotes B [clair]      plateau 40.00–100.00 · silhouette 132.53–374.53 · bouton 435.47–495.47 · phrase 515.59–566.59 · Noyaux 582.80–689.80 · légende 709.09–733.34 · chiffres 752.05–782.05 · ce que tu as tenu 800.55–1062.55
+   air [clair]          phrase → disques : 2 l. 15.7 · 1 l. 15.7 · 2 l. 15.7 · 1 l. 15.7 · 1 l. 15.7 · à l'encre 2 l. 15.0 · 1 l. 16.0 · légende à l'encre (28, 26.5) · libellés → bouton -627.1 · la colonne défile de 369 pt
+   matière [clair]      boule ↔ page 111.0 (plancher 42) · contour 121.9 · dalles : 5 de face, |Δlum| la plus faible 35.5, médiane 44.7 · ΔE 31 21 31 29 28
+   1 · rotation lente   0.0639 rad/s sur 2 s (décidé 0.0628, un tour en 100 s)
+   2 · prise, droite    Δlac +0.813 (attendu +0.808) · Δtan +0.000 (attendu +0.000)
+   2 · prise, bas       Δlac +0.005 (attendu +0.000) · Δtan -0.538 (attendu -0.538)
+   2 · prise, diagonale Δlac -0.601 (attendu -0.606) · Δtan +0.404 (attendu +0.404)
+   3 · élan             au lâcher 3.04 rad/s · éteint à 4.7 s · puis 0.0629 rad/s · écart max à la loi 0.0000 rad/s · plus longue image pendant l'élan : 200 ms (dont peintre 38.3 ms), 0 image(s) non échantillonnée(s)
+   4 · retour           écart au repos (niveaux) : 2.9 → 0.8 → 0.6 → 0.6 → 0.6 → 0.6 → lisse · DERNIER PAS 0.01 niveau (médiane des 10 d'avant 0.00) · 60 images · empreinte retirée à 2.50 s
+   4 · toucher          p 0.356 à 250 ms, 0.802 à 950 ms · sous le doigt 33.8 % des pixels changent, hors de portée 0.00 %, bruit 0.00 % · revenu ≈ 2.5 s après le lâcher, écart au repos 7.84 %
+   5 · trace            en attente au lâcher : 0 · 1 → 10 caresse(s), gardée(s) : 0 · au repos, 3.1 % des pixels portent la caresse
+   7 · relisse          deux touchers à 120 ms : 0 caresse restante · écart à l'objet neuf 0.000 % des pixels
+   6 · les trois passes sur place 2.50 · 2.47 · 2.48 · lancé 0.68 · 0.60 · 0.54
+   6 · comblement       le creux vit 2.48 s lâché sur place, 0.60 s lancé (24 %)
+   8 · personne         toucher sur « Adrien » → ouvre « Adrien », fiche affichée · glissement de 30 pt sur la rangée → n'ouvre rien · glissement de 80 pt sur la sphère → Δlac 1.10 rad, personne d'ouvert
+   8 bis · dalle        glissement de 30 pt sur « rapporter le livre » → rien d'ouvert · toucher → fiche affichée (Promi 139, attendu 139) · ✕ → Aura
+   croissance           une parole de plus → tour 5 · la dernière dalle finit face à toi, z = 0.914
+   6 bis · monde        Studio encre → pixel · 5 dalles, 4 jugées · distance à la plantation / au courant : rapporter le livre 0.003/0.106 · arroser tous les s non jugée (A↔B 0.020) · monter la serre av 0.007/0.051 · le grand plongeoir 0.006/0.121 · planter un arbre 0.000/0.102
+
+palier 110000 · médiane 32.6 ms · 1656 images · plus longue image pendant l'élan : 200 ms (dont peintre 38.3 ms), 0 image(s) non échantillonnée(s) · sous ×6 : palier peint 110000 pendant qu'on regarde, vise 75000, 6 décision(s) · à la réouverture : palier 75000
+
+❌  3 ÉCARTS

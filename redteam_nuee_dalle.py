@@ -98,7 +98,9 @@ with sync_playwright() as p:
         t('[%s] 5 · Peaufiner d\'une Nuée : cinq réglages, LA COULEUR en dernier' % T, g['mots'] == ORDRE, str(g['mots']))
         # ⚑ v105 (Tom, 30 sept.) — plus d'encart sur un mur, un réglage verrouillé est flouté à 4,8 px, sans explication. Original (« encart à 147 ») :
         #   sauvegardes/redteam_nuee_dalle-avant-v105.py
-        t('[%s] 5 · bloc 384 en page 2, sans encart, flouté à 4,8 px' % T, bool(bl) and bl['vis'] and abs(bl['h'] - 384) < 1 and 760 < bl['y'] < 1520 and g['enc'] is None and g.get('flou') == 'blur(4.8px)',
+        # ⚑ v142 — cote remise au niveau de v141 (C-096 : « + Planter dans le Cercle » sous COMMENTAIRES, le reste remonte de 140) : le bloc est à 750,
+        #   il était au-delà de 760. Rouge depuis v141 (36/38 sur v141 aussi), non vu alors. Original : sauvegardes/redteam_nuee_dalle-avant-v142.py.
+        t('[%s] 5 · bloc 384 en page 2, sans encart, flouté à 4,8 px' % T, bool(bl) and bl['vis'] and abs(bl['h'] - 384) < 1 and 600 < bl['y'] < 1520 and g['enc'] is None and g.get('flou') == 'blur(4.8px)',
           bl and 'y %.0f h %.0f encart %s flou %s' % (bl['y'], bl['h'], g['enc'] and round(g['enc']['y'] - bl['y']), g.get('flou')))
         t('[%s] 5 · sous « Planter », DISSOUDRE à 104 sous le bloc, rien ne se superpose' % T,
           bool(bl) and g['plant'] and g['diss'] and g['plant']['b'] <= bl['y'] - 0.5 and abs(g['diss']['y'] - bl['b'] - 104) < 1,

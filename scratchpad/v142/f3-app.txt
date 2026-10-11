@@ -1,0 +1,132 @@
+   PROFIL passe 1 · tâches longues [(-11, 351), (581, 201), (878, 182), (1142, 140), (1448, 145), (1869, 119), (2147, 196), (2371, 127), (2709, 170), (2902, 218), (3193, 152), (3389, 115), (3668, 191)]
+        444.5 ms  (program)@0
+        217.6 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < window.renderDetail@37983 < b.onclick@3766 < click@0 < fin@4763
+        209.5 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+        153.3 ms  getImageData@0 < _dalleFinit@7916 < _dalleNeuve@7886 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < rendUne@32108 < fond@32192
+        118.6 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < (anonyme)@37971 < (anonyme)@19943
+        104.4 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._rendDalle@8096 < f@37745 < rechauffe@8082
+         94.4 ms  _madGen@1348 < (anonyme)@1607 < (anonyme)@49 < _madDalle@2064 < boite@2282 < (anonyme)@49 < _MN.<computed>@6566 < _MN.<computed>@6571
+         86.7 ms  (anonyme)@1607 < (anonyme)@49 < _madDalle@2064 < boite@2282 < (anonyme)@49 < _MN.<computed>@6566 < _MN.<computed>@6571 < _MN.<computed>@6575
+   passe  1 : 57 images · la plus longue 202.8 ms à 579 ms · au-delà de 20 ms : [(375, 60.1), (436, 22.3), (499, 60.8), (579, 202.8), (782, 56.9), (877, 182.6)] · « referme » à 293 ms, « après » à 1402 ms
+   PROFIL passe 2 · tâches longues [(-1, 120), (260, 132), (557, 104), (1886, 110), (2283, 131), (3467, 201)]
+        371.9 ms  (program)@0
+        140.7 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+         81.8 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+         37.9 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         36.9 ms  window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         22.1 ms  getBoundingClientRect@0 < taille@4606 < window._tenirPeindre@4798
+         21.0 ms  querySelectorAll@0 < passe@36978 < (anonyme)@36980
+         19.9 ms  removeProperty@0 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+   passe  2 : 116 images · la plus longue 126.4 ms à 260 ms · au-delà de 20 ms : [(-4, 124.2), (120, 34.5), (155, 24.1), (180, 27.1), (260, 126.4), (397, 31.9)] · « referme » à 52 ms, « après » à 1205 ms
+   passe  3 : 196 images · la plus longue 37.4 ms à 1045 ms · au-delà de 20 ms : [(-1, 34.4), (362, 29.7), (567, 23.8), (1045, 37.4), (1085, 31.0), (1147, 23.1)] · « referme » à 22 ms, « après » à 1072 ms
+   PROFIL passe 4 · tâches longues [(1799, 110), (2075, 115), (2696, 126), (2822, 110), (3049, 142)]
+         77.3 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+         71.7 ms  (program)@0
+         45.8 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         43.1 ms  window._lot7Fiche@12335 < window._fichePose@12499 < window._fichePose@13959 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215 < window.<computed>@21654 < window.<computed>@34792
+         41.3 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085 < window._apresMouvement@6085
+         36.1 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+         20.8 ms  getClientRects@0 < enteteLisible@14642 < tout@15677 < (anonyme)@15693
+         18.2 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792
+   passe  4 : 195 images · la plus longue 52.0 ms à -1 ms · au-delà de 20 ms : [(-2, 52.0), (385, 29.8), (1052, 25.0)] · « referme » à 38 ms, « après » à 1073 ms
+   PROFIL passe 5 · tâches longues [(200, 109), (2158, 174), (2331, 156), (2594, 197), (2890, 110)]
+        190.2 ms  (program)@0
+         98.8 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+         88.4 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+         75.8 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792
+         49.9 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+         27.4 ms  trait@19704 < window._ficheTrait@19894 < window._ficheTrait@20242 < g@38249 < g@38471 < tout@15677 < window._fichePose@15683 < window._fichePose@16453
+         19.6 ms  window._lot7Fiche@12335 < window._fichePose@12499 < window._fichePose@13959 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215 < window.<computed>@21654 < window.<computed>@34792
+         18.6 ms  getClientRects@0 < enteteLisible@14642 < tout@15677 < (anonyme)@15693
+   passe  5 : 153 images · la plus longue 132.4 ms à 197 ms · au-delà de 20 ms : [(-5, 67.7), (63, 52.8), (198, 132.4), (330, 30.8), (396, 84.0), (1069, 52.0)] · « referme » à 43 ms, « après » à 1103 ms
+   passe  6 : 204 images · la plus longue 30.4 ms à -2 ms · au-delà de 20 ms : [(-2, 30.4), (1031, 25.6)] · « referme » à 18 ms, « après » à 1051 ms
+   PROFIL passe 7 · tâches longues [(2273, 127)]
+         39.8 ms  (program)@0
+         19.7 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+          9.8 ms  getBoundingClientRect@0 < window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+          9.7 ms  cotes@19801 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+          7.8 ms  trait@19704 < window._ficheTrait@19894 < window._ficheTrait@20242 < g@38249 < g@38471 < (anonyme)@13959
+          7.4 ms  getClientRects@0 < enteteLisible@14642 < tout@15677 < (anonyme)@15693
+          4.3 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792
+          3.9 ms  getPropertyValue@0 < window._ficheNuee@15119 < window._ficheNuee@21003 < window.<computed>@21215 < window._ficheNuee@39165 < tout@15677 < (anonyme)@15693
+   passe  7 : 189 images · la plus longue 49.9 ms à 366 ms · au-delà de 20 ms : [(128, 23.2), (366, 49.9), (452, 23.4), (1048, 28.2), (1421, 21.1)] · « referme » à 21 ms, « après » à 1071 ms
+   PROFIL passe 8 · tâches longues [(2293, 200), (2494, 178), (2773, 147), (3167, 114)]
+        228.3 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+        181.8 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+        177.4 ms  (program)@0
+         11.6 ms  querySelectorAll@0 < passe@36978 < (anonyme)@36980
+          7.1 ms  querySelectorAll@0 < visibles@21196 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+          6.5 ms  rgbDe@34500 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+          5.4 ms  getComputedStyle@0 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+          5.1 ms  setProperty@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+   passe  8 : 173 images · la plus longue 53.0 ms à 216 ms · au-delà de 20 ms : [(89, 34.3), (217, 53.0), (416, 47.0), (1094, 30.1)] · « referme » à 73 ms, « après » à 1119 ms
+   PROFIL passe 9 · tâches longues [(1929, 119), (2225, 157), (2454, 144), (2733, 112)]
+        160.4 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+         94.7 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+         68.7 ms  (program)@0
+         43.3 ms  _cellPoly@6667 < dalleAbs@6975 < trait@19704 < window._ficheTrait@19894 < window._ficheTrait@20242 < g@38249 < g@38471 < tout@15677
+         25.9 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215 < window.<computed>@21654
+         18.9 ms  cotes@19801 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215 < window.<computed>@21654
+         15.5 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792
+         14.0 ms  setProperty@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+   passe  9 : 187 images · la plus longue 59.3 ms à 0 ms · au-delà de 20 ms : [(-1, 59.3), (58, 24.9), (182, 20.9), (385, 25.8), (1069, 27.9)] · « referme » à 33 ms, « après » à 1091 ms
+   PROFIL passe 10 · tâches longues [(2122, 115), (2345, 125), (2573, 100), (2834, 165)]
+        239.9 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+        104.6 ms  (program)@0
+         19.5 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+         19.2 ms  querySelectorAll@0 < passe@36978 < (anonyme)@36980
+         12.9 ms  getClientRects@0 < enteteLisible@14642 < tout@15677 < (anonyme)@15693
+         11.9 ms  (anonyme)@34504 < (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+         10.2 ms  querySelectorAll@0 < caleTout@31683 < (anonyme)@31690
+         10.1 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+   passe 10 : 197 images · la plus longue 29.2 ms à 366 ms · au-delà de 20 ms : [(367, 29.2), (1045, 28.7)] · « referme » à 24 ms, « après » à 1066 ms
+   PROFIL passe 11 · tâches longues [(1840, 166)]
+         74.7 ms  window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         54.9 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         16.2 ms  (program)@0
+          8.9 ms  window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+          7.4 ms  setTransform@0 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+          6.0 ms  window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+          2.6 ms  getImageData@0 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+          2.3 ms  Renc@6476 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+   passe 11 : 172 images · la plus longue 75.5 ms à 1531 ms · au-delà de 20 ms : [(-1, 33.6), (354, 25.8), (1037, 41.8), (1090, 56.0), (1150, 41.7), (1193, 38.8)] · « referme » à 22 ms, « après » à 1071 ms
+   PROFIL passe 12 · tâches longues [(423, 133), (946, 134), (1127, 241), (1742, 123), (1938, 442), (2404, 118), (2614, 119), (2829, 211), (3229, 368)]
+        914.8 ms  (program)@0
+        367.0 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+        200.7 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+        152.8 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         59.4 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792
+         22.0 ms  removeProperty@0 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+         18.7 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215 < window.<computed>@21654
+         18.0 ms  window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+   passe 12 : 78 images · la plus longue 166.5 ms à 1127 ms · au-delà de 20 ms : [(86, 20.8), (106, 46.9), (169, 29.5), (199, 31.9), (251, 20.1), (309, 20.5)] · « referme » à 54 ms, « après » à 1242 ms
+   PROFIL passe 13 · tâches longues [(2885, 123), (3152, 345)]
+        365.6 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+         54.1 ms  report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+         12.8 ms  setAttribute@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+         10.0 ms  removeProperty@0 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+          7.4 ms  setProperty@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+          4.4 ms  passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+          3.8 ms  (program)@0
+          1.8 ms  querySelectorAll@0 < visibles@21196 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+   passe 13 : 196 images · la plus longue 44.2 ms à 1043 ms · au-delà de 20 ms : [(-2, 39.9), (362, 28.1), (1044, 44.2)] · « referme » à 25 ms, « après » à 1076 ms
+   PROFIL passe 14 · tâches longues [(1824, 148), (1975, 104), (2430, 101), (2730, 100), (2954, 129)]
+         99.3 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+         92.1 ms  (program)@0
+         67.1 ms  querySelectorAll@0 < passe@36978 < (anonyme)@36980
+         64.3 ms  getBoundingClientRect@0 < taille@4606 < window._tenirPeindre@4798
+         35.2 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         28.7 ms  window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+         22.7 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792
+         19.4 ms  setTransform@0 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+   passe 14 : 172 images · la plus longue 60.4 ms à 79 ms · au-delà de 20 ms : [(79, 60.4), (145, 27.8), (172, 48.5), (383, 29.2), (1050, 51.1), (1354, 25.1)] · « referme » à 27 ms, « après » à 1090 ms
+1 · aucune image de l'animation au-delà de 20 ms de travail (14 animations, 2285 images) KO  102 image(s) au-delà · la plus longue 202.8 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               KO  p50 4.5 · p95 18.7 ms
+3 · la durée : « juste après » paraît 1 000 ms (± 80) après « le trait se referme »  KO  de 1032 à 1187 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  14 sur 14
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images KO  la plus longue : 442.2 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 458.1 ms — les passes de tout le document et la pose complète)
+
+2 / 6
+KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (14 animations, 2285 images) · 2 · p95 du travail par image ≤ 16,7 ms · 3 · la durée : « juste après » paraît 1 000 ms (± 80) après « le trait se referme » · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images

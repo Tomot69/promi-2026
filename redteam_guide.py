@@ -1,6 +1,16 @@
 #!/usr/bin/env python3
 """
-redteam_guide.py — LE GUIDE DE FIN DE PARCOURS (v141, Tom, 10 oct. 2026 — C-094). Il remplace E2bis (C-076).
+redteam_guide.py — LE GUIDE DE FIN DE PARCOURS (v141, puis v142 — C-094, RÉCIDIVE). Il remplace E2bis (C-076).
+
+⚑ CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION v142 (Tom, 11 oct. 2026 ; original : sauvegardes/redteam_guide-avant-v142.py). Ce qui change :
+  · le flou s'installe par TACHES ORGANIQUES À BORD COURBE, nées en 5 à 7 points, qui grandissent et se rejoignent jusqu'à tout couvrir en 1,8 s ;
+    aucune image au-delà de 20 ms de travail du fil principal (trace Chromium, comme redteam_fluide) ;
+  · net sur l'icône du Studio ET le mot STUDIO, agrandis de 15 % : « Vingt mondes pour une seule Toile. Le tien est au Studio. » ;
+  · au retour, net sur le + et son encart, agrandis de 10 % : « Promi, Chiche ou Cercle : tout commence par ce +. » ;
+  · l'appareil est celui de Tom : 390 × 844, échelle 3 (l'appareil y est RÉDUIT : l'ancien juge tournait à 430 × 932, échelle 1).
+  POURQUOI L'ANCIEN ÉTAIT VERT : il vérifiait que le masque grandissait et que l'icône était nette — ni la FORME de l'installation (des zones
+  à bord franc), ni sa durée, ni le mot STUDIO (flou), ni la taille de l'agrandissement.
+Ce qui suit est le texte de v141, gardé pour ses garde-fous (inchangés) ; les phrases et les cotes en dur sont celles de v142.
 
 LA DÉCISION, EN DUR (§7) :
   « Une seule fois, à la fin du premier parcours :
@@ -15,7 +25,7 @@ LA DÉCISION, EN DUR (§7) :
   La barre du bas est COMPLÈTE dès le départ (le dévoilement de v140 est retiré).
 
 Stockage vierge, parcours complet AU VRAI DOIGT (CDP), clair et sombre. « Flou » et « net » se jugent sur l'IMAGE : l'énergie des contours
-(écart moyen entre pixels voisins) d'une zone, avant le guide et pendant. Captures : planche-v141/guide-*.png.
+(écart moyen entre pixels voisins) d'une zone, avant le guide et pendant. Captures : planche-v142/guide-*.png.
 
 Usage : python3 redteam_guide.py [--fichier=zz-av141.html] [--vite]
 """
@@ -27,11 +37,11 @@ for a in sys.argv[1:]:
     if a.startswith('--fichier='): F = a.split('=', 1)[1]
 VITE = '--vite' in sys.argv
 URL = 'http://127.0.0.1:8752/' + F
-PH_STUDIO = 'Chacun sa matière. La tienne est au Studio.'      # les mots de Tom, en dur
-PH_PLUS = 'Tout le reste part d’ici.'
+PH_STUDIO = 'Vingt mondes pour une seule Toile. Le tien est au Studio.'      # les mots de Tom, en dur
+PH_PLUS = 'Promi, Chiche ou Cercle : tout commence par ce +.'
 FLOU = 4.8                                                      # la valeur des murs (v105)
 IMP = re.compile(r"(^|[.!?…:;]\s+|\n)(touche|ouvre|trace|plante|va|viens|choisis|essaie|regarde|découvre|commence|appuie|glisse|fais|dis|reviens|clique|tape)\b", re.I)
-os.makedirs('planche-v141', exist_ok=True)
+os.makedirs('planche-v142', exist_ok=True)
 res = []
 def juge(nom, cond, detail=''):
     res.append((nom, bool(cond))); print('  %s %-112s %s' % ('✅' if cond else '❌', nom, detail))
@@ -65,15 +75,15 @@ def energie(im, x0, y0, x1, y1):   # l'énergie des contours d'une zone (points 
             v = px[x, y]; s += abs(v - px[x + 1, y]) + abs(v - px[x, y + 1]); n += 2
     return s / max(1, n)
 def cap(pg, nom):
-    d = pg.evaluate(DEV); pg.screenshot(path='planche-v141/guide-%s.png' % nom, clip={'x': d[0], 'y': d[1], 'width': d[2], 'height': d[3]})
+    d = pg.evaluate(DEV); pg.screenshot(path='planche-v142/guide-%s.png' % nom, clip={'x': d[0], 'y': d[1], 'width': d[2], 'height': d[3]})
 
 def ouvre(b, th, reduit=False):
-    ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=2, has_touch=True, reduced_motion=('reduce' if reduit else 'no-preference'))
+    ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=3, has_touch=True, reduced_motion=('reduce' if reduit else 'no-preference'))
     ctx.add_init_script("try{ if(!localStorage.getItem('promi_theme')) localStorage.setItem('promi_theme','%s'); }catch(e){}" % th)
     # le relevé se fait DANS la page, à chaque image (§8 : un instrument qui interroge la page depuis Python toutes les 300 ms ne voit pas un mouvement de 1,5 s)
     ctx.add_init_script("""window.__g={us:[],tArr:0,tG:0,vuOnb:false}; (function b(){ try{ var o=document.getElementById('onbV'), f=document.getElementById('guideFlou'), n=performance.now();
       if(o) { window.__g.vuOnb=true; window.__g.tArr=0; } else if(window.__g.vuOnb && !window.__g.tArr) window.__g.tArr=n;
-      if(f){ if(!window.__g.tG) window.__g.tG=n; var u=+f.getAttribute('data-u'); var L=window.__g.us; if(!L.length || L[L.length-1]!==u) L.push(u); } }catch(e){} requestAnimationFrame(b); })();""")
+      if(f){ if(!window.__g.tG){ window.__g.tG=n; } var u=+f.getAttribute('data-u'); var L=window.__g.us; if(!L.length || L[L.length-1]!==u) L.push(u); if(u>=1 && !window.__g.tU1) window.__g.tU1=n; if(!window.__g.cp && u>0.2 && u<0.8) window.__g.cp=(f.style.clipPath||f.style.webkitClipPath||''); } }catch(e){} requestAnimationFrame(b); })();""")
     pg = ctx.new_page(); pg.goto(URL); pg.wait_for_timeout(6500)
     pg.evaluate("(t)=>{ try{ setTheme(t); }catch(e){} }", th); pg.wait_for_timeout(500)
     return ctx, pg, ctx.new_cdp_session(pg)
@@ -125,16 +135,21 @@ def complet(b, th):
     juge('[%s] 1 · le flou paraît environ 0,8 s après l\'arrivée sur l\'accueil (entre 0,6 et 1,6 s)' % T, delai is not None and 0.6 <= delai <= 1.6, 'délai %s s' % (None if delai is None else round(delai, 2)))
     crois = len(set(us)) >= 12 and all(us[i] <= us[i + 1] + 1e-6 for i in range(len(us) - 1))
     juge('[%s] 1 · il s\'installe peu à peu (le masque grandit, sans à-coup de retour)' % T, crois, '%d valeurs relevées, de %s à %s' % (len(set(us)), us[:1], us[-1:]))
+    duree = ((g['tU1'] - g['tG']) / 1000.0) if (g.get('tU1') and g['tG']) else None
+    juge('[%s] 1 · il couvre tout en 1,8 s (entre 1,6 et 2,2 s, à l\'horloge de la page)' % T, duree is not None and 1.6 <= duree <= 2.2, 'durée %s s' % (None if duree is None else round(duree, 2)))
+    cp = g.get('cp') or ''; nt = cp.count('M'); rg = pg.evaluate("()=>window._guide&&_guide.regle")
+    juge('[%s] 1 · des taches à bord COURBE, nées en 5 à 7 points (à mi-chemin : des formes fermées faites de courbes, aucune droite)' % T, 5 <= ((rg or {}).get('TACHES') or 0) <= 7 and 2 <= nt <= 7 and 'C' in cp and 'L' not in cp and 'H' not in cp, 'règle %s · %d formes à mi-chemin · %d courbes' % ((rg or {}).get('TACHES'), nt, cp.count('C')))
     pg.wait_for_timeout(250); e = pg.evaluate(ETAT); im = image(pg); cap(pg, '1-studio-%s' % T)
     juge('[%s] 1 · la matière est le flou des murs : %s px, par un flou de l\'arrière-plan' % (T, FLOU), bool(e['flou']) and ('blur(%spx)' % FLOU) in e['flou'], '%s' % e['flou'])
     if arr:
-        zones = {'le mot-marque': (30, 48, 150, 92), 'les icônes du plateau': (210, 48, 360, 92), 'AURA': (104, 730, 146, 792), 'le +': (160, 725, 230, 795), 'INDEX': (246, 730, 288, 792), 'FIL': (300, 730, 342, 792)}
+        zones = {'le mot-marque': (30, 48, 150, 92), 'les icônes du plateau': (210, 48, 360, 92), 'AURA': (112, 736, 146, 792), 'le +': (160, 725, 230, 795), 'INDEX': (246, 730, 288, 792), 'FIL': (300, 730, 342, 792)}
         r = {n: (energie(nette, *z), energie(im, *z)) for n, z in zones.items()}
         flous = all(ap <= av * 0.62 for av, ap in r.values())
         juge('[%s] 2 · tout est flou : le plateau et les autres entrées de la barre perdent leurs contours (≤ 62 %% de l\'énergie d\'avant)' % T, flous, ' · '.join('%s %.1f→%.1f' % (n, a, p) for n, (a, p) in r.items()))
         sb = e['barre'][0]; zs = (sb[0] + 4, sb[1] + 4, sb[0] + sb[2] - 4, sb[1] + sb[3] - 4) if sb else (48, 732, 92, 790)
         av, ap = energie(nette, 46, 730, 94, 792), energie(im, 40, 724, 100, 796)
-        juge('[%s] 2 · seule l\'icône du Studio est nette (ses contours gardent ≥ 80 %% de leur énergie), et un peu plus grosse' % T, ap >= av * 0.80 and bool(sb) and bool(e0['barre'][0]) and sb[2] > e0['barre'][0][2] * 1.1, 'énergie %.1f → %.1f · largeur %s → %s' % (av, ap, e0['barre'][0][2], sb and sb[2]))
+        mot0, mot = energie(nette, 40, 770, 100, 792), energie(im, 36, 772, 104, 798)   # le mot STUDIO, sous l'icône
+        juge('[%s] 2 · seule l\'icône du Studio est nette (ses contours gardent ≥ 80 %% de leur énergie), avec le mot STUDIO, agrandis de 15 %% (13 à 17)' % T, ap >= av * 0.80 and bool(sb) and bool(e0['barre'][0]) and 1.13 <= sb[2] / e0['barre'][0][2] <= 1.17 and mot >= mot0 * 0.80, 'mot STUDIO %.1f → %.1f · icône %.1f → %.1f · largeur %s → %s' % (mot0, mot, av, ap, e0['barre'][0][2], sb and sb[2]))
     juge('[%s] 2 · la phrase, mot pour mot, au milieu de l\'écran' % T, e['phrase'] == PH_STUDIO and e['phraseB'] and abs((e['phraseB'][1] + e['phraseB'][3] / 2) - 392) <= 30 and abs((e['phraseB'][0] + e['phraseB'][2] / 2) - 195) <= 2, '« %s » %s' % (e['phrase'], e['phraseB']))
     cols = [c for c in [e['phraseCol']] if c]
     attendue = 'rgb(32, 25, 8)' if th == 'light' else 'rgb(247, 240, 222)'
@@ -155,7 +170,7 @@ def complet(b, th):
         r = {n: (energie(nette, *z), energie(im4, *z)) for n, z in {'le mot-marque': (30, 48, 150, 92), 'STUDIO': (48, 730, 92, 792), 'FIL': (300, 730, 342, 792)}.items()}
         av, ap = energie(nette, 163, 728, 227, 792), energie(im4, 157, 722, 233, 798)
         pb = e4['barre'][2]
-        juge('[%s] 4 · tout est flou, sauf le + et son encart, nets et un peu grossis' % T, all(p <= a * 0.62 for a, p in r.values()) and ap >= av * 0.75 and pb and pb[2] > e0['barre'][2][2] * 1.05,
+        juge('[%s] 4 · tout est flou, sauf le + et son encart, nets et agrandis de 10 %% (8 à 12)' % T, all(p <= a * 0.62 for a, p in r.values()) and ap >= av * 0.75 and pb and 1.08 <= pb[2] / e0['barre'][2][2] <= 1.12,
              ' · '.join('%s %.1f→%.1f' % (n, a, p) for n, (a, p) in r.items()) + ' · le + %.1f→%.1f, largeur %s → %s' % (av, ap, e0['barre'][2][2], pb and pb[2]))
     # 5 · toucher le +
     if e4['e'] and e4['e']['trou']:
@@ -169,6 +184,44 @@ def complet(b, th):
     tx = e['textes'] or {}
     juge('[%s] les phrases vivent dans TEXTES_ENGAGEMENT, sans impératif (A3)' % T, tx.get('studio') == PH_STUDIO and tx.get('plus') == PH_PLUS and not any(IMP.search(v) for v in tx.values()), '%s' % tx)
     ctx.close()
+
+def images(trace, debut_nom='lever'):
+    """le travail du fil principal par image, lu dans la trace (la méthode de redteam_fluide)"""
+    ev = trace.get('traceEvents', trace) if isinstance(trace, dict) else trace
+    m = [e for e in ev if e.get('name') == debut_nom and 'ts' in e]
+    if not m: return None
+    pid, tid, t0 = m[0]['pid'], m[0]['tid'], m[0]['ts']
+    taches = sorted((e['ts'], e['ts'] + e.get('dur', 0)) for e in ev if e.get('name') == 'RunTask' and e.get('ph') == 'X' and e.get('pid') == pid and e.get('tid') == tid and e.get('dur', 0) > 0)
+    debuts = sorted(set(e['ts'] for e in ev if e.get('name') == 'AnimationFrame::Render' and e.get('pid') == pid and 'ts' in e))
+    if len(debuts) < 10: debuts = sorted(set(e['ts'] for e in ev if e.get('name') in ('Commit', 'BeginMainThreadFrame') and e.get('pid') == pid and 'ts' in e))
+    out = []
+    for a, b_ in zip(debuts, debuts[1:]):
+        if a < t0 or a > t0 + 1900000: continue
+        out.append(sum(max(0, min(b_, y) - max(a, x)) for x, y in taches if y > a and x < b_) / 1000.0)
+    return out
+
+def installation(b, th):
+    """le flou qui s'installe, rejoué : le travail par image dans la trace, puis les captures à 0 / 0,6 / 1,2 / 1,8 s, pour les deux étapes"""
+    import json
+    T = 'clair' if th == 'light' else 'sombre'; print('\n── l\'installation du flou, %s' % T)
+    for etape in ('studio', 'plus'):
+        ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=3, has_touch=True)
+        ctx.add_init_script("try{ localStorage.setItem('promi_onb','1'); localStorage.setItem('promi_guide','1'); localStorage.setItem('promi_theme','%s'); localStorage.setItem('promi_rappel_n','9'); }catch(e){}" % th)
+        ctx.add_init_script("(function b(){ try{ var f=document.getElementById('guideFlou'); if(f && !window.__m){ window.__m=performance.now(); performance.mark('lever'); } if(!f) window.__m=0; }catch(e){} requestAnimationFrame(b); })();")
+        pg = ctx.new_page(); pg.goto(URL); pg.wait_for_timeout(6500)
+        pg.evaluate("()=>{var o=document.getElementById('promiOnb'); if(o){o.classList.add('gone');o.style.display='none';} try{closeAll()}catch(e){} }"); pg.wait_for_timeout(600)
+        if not pg.evaluate("()=>!!(window._guide&&_guide.montre)"): juge('[%s] %s · le guide se rejoue' % (T, etape), False, 'pas de _guide.montre'); ctx.close(); continue
+        b.start_tracing(page=pg, categories=['toplevel', 'devtools.timeline', 'disabled-by-default-devtools.timeline', 'blink.user_timing'])
+        pg.evaluate("(q)=>{ _guide.montre(q); }", etape); pg.wait_for_timeout(2400)
+        tr = json.loads(b.stop_tracing().decode('utf-8')); W = images(tr) or []
+        pire = max(W) if W else None; W2 = sorted(W)
+        juge('[%s] %s · pendant l\'installation, aucune image au-delà de 20 ms de travail du fil principal' % (T, etape), bool(W) and len(W) >= 40 and sum(W) > 5 and pire <= 20, '%d images · travail total %.0f ms (s\'il vaut 0, l\'instrument ne mesure rien) · pire %s ms · p95 %s ms' % (len(W), sum(W), None if pire is None else round(pire, 1), round(W2[int(len(W2) * .95)], 1) if W2 else None))
+        pg.evaluate("()=>{ _guide.finir(); }"); pg.wait_for_timeout(900)
+        pg.evaluate("(q)=>{ window.__m=0; _guide.montre(q); }", etape)
+        for ms in (0, 600, 1200, 1800):
+            # l'installation est ARRÊTÉE à l'instant voulu (`figeA`) : une capture @3x dure plus longtemps que plusieurs images
+            pg.evaluate("(ms)=>{ _guide.figeA(ms); }", ms); pg.wait_for_timeout(120); cap(pg, 'install-%s-%s-%04d' % (etape, T, ms))
+        ctx.close()
 
 def ailleurs(b, comment):
     print('\n── %s' % comment)
@@ -219,9 +272,9 @@ def rejeu(b):
 
 with sync_playwright() as p:
     b = p.chromium.launch(args=['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'])
-    complet(b, 'light')
+    complet(b, 'light'); installation(b, 'light')
     if not VITE:
-        complet(b, 'dark'); ailleurs(b, 'toucher le flou ailleurs'); ailleurs(b, '« Plus tard »'); reduit(b); tard_onboarding(b); rejeu(b)
+        complet(b, 'dark'); installation(b, 'dark'); ailleurs(b, 'toucher le flou ailleurs'); ailleurs(b, '« Plus tard »'); reduit(b); tard_onboarding(b); rejeu(b)
     b.close()
 ok = sum(1 for _, c in res if c)
 print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))

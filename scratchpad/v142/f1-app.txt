@@ -1,0 +1,154 @@
+passe 1 : tâches longues [[21, 289], [1628, 282], [1910, 374], [2393, 257], [2651, 282], [2979, 184], [3164, 81], [3253, 136], [3390, 173], [3647, 262], [4023, 290], [4331, 53], [4385, 314], [4730, 301], [5114, 328], [5507, 246], [5753, 203], [5995, 288], [6349, 460], [6812, 68], [6881, 277], [7158, 560], [7997, 421]]
+    547.2 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    283.9 ms  setProperty@0 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    283.4 ms  querySelectorAll@0 < (anonyme)@33283
+    276.6 ms  getBoundingClientRect@0 < ajuste@23160 < (anonyme)@23177 < tout@23175 < tout@24805 < passeVraie@24093 < passe@24087
+    267.9 ms  window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+    251.5 ms  getElementById@0 < cle@8064 < window._rendDalle@8096 < f@37745 < window._poseDalle@8140 < renderDetail@3674 < window.<computed>@21215
+    237.9 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < (anonyme)@37971 < (anonyme)@19943
+    177.1 ms  window._lot7Fiche@12335 < window._fichePose@12499 < window._fichePose@13959 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215 < window.<computed>@21654
+    175.2 ms  window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < window._fichePose@12499 < window._fichePose@13959 < window._fichePose@15683
+    161.7 ms  renderDetail@3674 < window.<computed>@21215 < window.<computed>@21654 < window._tenirCorps@37995 < img@19957
+passe 2 : tâches longues [[765, 74], [840, 329], [1214, 84], [1370, 172], [1574, 317], [2060, 108], [2172, 183], [2520, 137], [2702, 89], [2900, 148], [3048, 153], [3239, 100], [3340, 73], [3414, 80], [3497, 207], [3759, 177], [3936, 56], [3993, 75], [4181, 156], [4341, 279], [4644, 197], [4887, 87], [5040, 69], [5151, 135], [5286, 117]]
+    391.2 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    253.9 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+    231.5 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    184.2 ms  getBoundingClientRect@0 < (anonyme)@6402 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215
+    156.3 ms  add@0 < (anonyme)@8111 < pose@8110
+    142.8 ms  passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+     59.3 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < (anonyme)@37971 < (anonyme)@19943
+     57.2 ms  renderDetail@3674 < window.<computed>@21215 < window.<computed>@21654 < window._tenirCorps@37995 < (anonyme)@38005 < (anonyme)@19943
+     53.6 ms  drawImage@0 < window._poseUn@8124 < window._poseDalle@8140 < renderDetail@3674 < window.<computed>@21215 < window.<computed>@21654 < window._tenirCorps@37995
+     46.6 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900
+passe 3 : tâches longues [[-72, 68], [478, 470], [1215, 178], [1393, 52], [1447, 242], [1727, 138], [2018, 144], [2520, 77], [2762, 149], [2912, 63], [2977, 157], [3134, 125], [3500, 115], [3628, 109], [3770, 51], [3838, 169], [4007, 107], [4132, 56], [4318, 51], [4371, 83], [4454, 165], [4619, 218], [4851, 130], [4981, 58]]
+    392.5 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    248.8 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215
+    237.1 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    153.5 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+    146.6 ms  add@0 < (anonyme)@8111 < pose@8110
+    133.0 ms  passe@21124 < tranche@21185
+    132.6 ms  dalleAbs@6975 < cle@8064 < rechauffe@8082
+     68.6 ms  window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+     59.4 ms  getBoundingClientRect@0 < (anonyme)@6402 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215
+     52.6 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < (anonyme)@24089
+passe 4 : tâches longues [[-87, 83], [39, 115], [834, 137], [972, 53], [1050, 101], [1154, 83], [1255, 92], [1362, 147], [1554, 180], [1746, 104], [1964, 136], [2101, 60], [2274, 107], [2483, 246], [2788, 159], [3018, 116], [3135, 101], [3246, 110], [3437, 209], [3646, 63], [3715, 90], [3842, 320], [4213, 160], [4405, 53], [4459, 89], [4570, 146], [4717, 187]]
+    440.3 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    350.7 ms  passe@21124 < passeVisible@21204 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    174.2 ms  querySelectorAll@0 < frame@8554
+    136.4 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215
+    122.6 ms  drawImage@0 < window._poseUn@8124 < window._poseDalle@8140 < renderDetail@3674 < window.<computed>@21215 < window.<computed>@21654 < window._tenirCorps@37995
+    113.4 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < window._apresMouvement@6085
+    100.8 ms  passe@21124 < tranche@21185
+     85.5 ms  (anonyme)@8579 < (anonyme)@8579 < (anonyme)@8579
+     73.3 ms  passe@21124 < passeVisible@21204 < window._apresMouvement@6085 < (anonyme)@37971 < (anonyme)@19943
+     50.5 ms  setAttribute@0 < report@21075 < passe@21124 < passeVisible@21204 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+passe 5 : tâches longues [[714, 218], [933, 350], [1287, 73], [1362, 134], [1744, 60], [1845, 277], [2159, 106], [2289, 237], [2988, 244], [3297, 331], [3630, 249], [3886, 138], [4024, 108], [4175, 197], [4391, 258], [4666, 246], [4930, 192]]
+    397.1 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    288.2 ms  getBoundingClientRect@0 < ajuste@23160 < (anonyme)@23177 < tout@23175 < tout@24805 < passeVraie@24093 < passe@24087
+    200.4 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900
+    194.4 ms  getBoundingClientRect@0 < devant@38850 < fiche@38855 < traitFiche@38857 < quand@38864 < tic@38905
+    185.2 ms  setAttribute@0 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+    152.4 ms  getBoundingClientRect@0 < diag@2996 < render@3004 < window.syncAll@9139 < window.syncAll@38067 < b.onclick@3766 < click@0
+    135.1 ms  saveState@7680
+    127.1 ms  querySelectorAll@0 < tout@23175 < tout@24805 < passeVraie@24093 < passe@24087 < essaie@6085 < window._apresMouvement@6085
+     82.7 ms  trait@19704 < window._ficheTrait@19894 < window._ficheTrait@20242 < g@38249 < g@38471 < window.renderDetail@37983 < b.onclick@3766
+     78.3 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+passe 6 : tâches longues [[0, 127], [570, 85], [676, 220], [986, 62], [1053, 78], [1181, 342], [1752, 116], [1951, 166], [2237, 131], [2482, 134], [2645, 95], [2797, 57], [2859, 247], [3107, 230], [3426, 78], [3505, 71], [3577, 131], [3806, 129], [3935, 153], [4090, 160], [4287, 54], [4391, 98], [4535, 102], [4685, 71], [4782, 73], [4859, 74], [4970, 157], [5196, 192], [5390, 143]]
+    251.8 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    183.3 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    163.5 ms  querySelectorAll@0 < frame@8554
+    136.2 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+    132.3 ms  window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+    101.5 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+     88.7 ms  add@0 < (anonyme)@8111 < pose@8110
+     80.8 ms  querySelector@0 < pose@23097 < tout@23175 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+     76.0 ms  window._lot7Fiche@12335 < (anonyme)@38007 < (anonyme)@19943
+     61.4 ms  getBoundingClientRect@0 < ajuste@23160 < (anonyme)@23177 < tout@23175 < tout@24805 < passeVraie@24093 < passe@24087
+passe 7 : tâches longues [[259, 81], [382, 79], [462, 56], [537, 228], [787, 153], [1013, 89], [1291, 102], [1464, 178], [1760, 79], [1840, 57], [2046, 106], [2274, 118], [2641, 52], [2696, 63], [2760, 277], [3110, 220], [3334, 192], [3577, 71], [3649, 83], [3733, 72], [3861, 147], [4009, 145], [4342, 50], [4491, 58], [4629, 79], [4773, 164], [4954, 202]]
+    447.5 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    218.0 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    126.9 ms  pin@8132
+     79.0 ms  getClientRects@0 < enteteLisible@14642 < tout@15677 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215 < window.<computed>@21654
+     70.2 ms  querySelectorAll@0 < frame@8554
+     61.5 ms  getBoundingClientRect@0 < (anonyme)@6402 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215
+     53.2 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900
+     52.4 ms  cotes@19801 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215
+     48.6 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+     41.3 ms  querySelector@0 < window._majRecadre@33156 < (anonyme)@33162
+passe 8 : tâches longues [[591, 51], [1210, 109], [1319, 76], [2019, 109], [2272, 174], [2527, 65], [2593, 150], [2776, 173], [2950, 84], [3084, 108], [3193, 110], [3303, 68], [3372, 63], [3436, 213], [3921, 76], [3997, 94]]
+    584.1 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    268.8 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+     80.8 ms  querySelectorAll@0 < frame@8554
+     78.2 ms  querySelectorAll@0 < pose@8086
+     76.5 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215
+     75.4 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900
+     63.6 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < (anonyme)@37971 < (anonyme)@19943
+     60.3 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+     54.5 ms  passe@34521 < repasseVraie@34775 < fin@38002 < (anonyme)@19943
+     45.1 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+passe 9 : tâches longues [[373, 121], [1473, 93], [1567, 170], [2304, 83], [2428, 66], [2559, 65], [2666, 54], [2737, 89], [2829, 102], [2932, 82], [3051, 103], [3225, 92], [3318, 53], [4491, 82], [4828, 52]]
+    425.4 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    166.7 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+     89.8 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900
+     88.7 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+     87.8 ms  passe@34521 < repasseVraie@34775 < fin@38002 < (anonyme)@19943
+     81.7 ms  querySelectorAll@0 < frame@8554
+     80.1 ms  passe@21124 < tranche@21185
+     39.9 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+     28.7 ms  requestAnimationFrame@0 < frame@8554
+     28.5 ms  setProperty@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966
+passe 10 : tâches longues [[451, 62], [582, 134], [736, 68], [820, 98], [2155, 56], [2212, 82], [2328, 54], [2429, 112], [2856, 69]]
+    417.9 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    129.7 ms  passe@21124 < tranche@21185
+    112.5 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+     91.6 ms  querySelectorAll@0 < frame@8554
+     76.3 ms  getBoundingClientRect@0 < taille@4606 < (anonyme)@4787
+     64.3 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+     38.9 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < (anonyme)@37971 < (anonyme)@19943
+     37.1 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215
+     36.9 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+     29.6 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < fin@38002 < (anonyme)@19943
+passe 11 : tâches longues [[1383, 50], [2136, 92], [2459, 60], [2544, 93], [2734, 64], [3030, 56], [3599, 394], [4058, 144], [4476, 79], [4562, 57]]
+    684.8 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    141.2 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+     97.6 ms  removeProperty@0 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+     88.3 ms  passe@21124 < tranche@21185
+     43.3 ms  querySelectorAll@0 < frame@8554
+     41.2 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+     37.5 ms  (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085 < window._apresMouvement@6085
+     30.4 ms  getPropertyValue@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966
+     30.2 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900
+     28.3 ms  (anonyme)@34504 < (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+passe 12 : tâches longues [[552, 69], [2127, 74], [2297, 193], [2491, 110], [2642, 118], [2791, 223], [3017, 240], [3279, 192], [3474, 358], [3883, 50], [3933, 411], [4391, 169]]
+    724.5 ms  (anonyme)@34524 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    326.7 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    143.4 ms  window._lot7Fiche@12335 < window._fichePose@12499 < window._fichePose@13959 < window._fichePose@15683 < window._fichePose@16453 < window.<computed>@21215 < window.<computed>@21654
+    132.2 ms  setAttribute@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966
+    125.5 ms  querySelectorAll@0 < passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    112.3 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+     76.9 ms  getComputedStyle@0 < passe@21124 < tranche@21185
+     64.3 ms  querySelectorAll@0 < frame@8554
+     61.0 ms  removeProperty@0 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+     50.8 ms  cotes@19801 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+passe 13 : tâches longues [[241, 51], [618, 137], [1299, 55], [2049, 92], [2312, 80], [2534, 70], [2657, 53], [3447, 52], [3517, 50]]
+    590.5 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    120.4 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    101.2 ms  (anonyme)@23893 < (anonyme)@23886 < echelle@23883 < _c@24094 < passeVraie@24093 < passe@24087 < essaie@6085
+     70.7 ms  getImageData@0 < _dalleFinit@7916 < window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006
+     66.1 ms  passe@21124 < tranche@21185
+     65.0 ms  querySelectorAll@0 < frame@8554
+     59.6 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@3401 < peintDisques@3399 < renderDetail@3674 < window.<computed>@21215
+     56.5 ms  setProperty@0 < report@21075 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966
+     47.5 ms  drawImage@0 < window._poseUn@8124 < window._poseDalle@8140 < renderDetail@3674 < window.<computed>@21215 < window.<computed>@21654 < window._tenirCorps@37995
+     38.5 ms  removeProperty@0 < passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+passe 14 : tâches longues [[574, 50], [956, 74], [1099, 53], [1210, 93], [1318, 67], [1847, 51], [2005, 147], [2186, 102], [2401, 142], [2543, 234], [2838, 107], [2947, 372], [3319, 76], [3409, 127], [3536, 255], [3844, 109], [3955, 119], [4083, 82], [4225, 215], [4492, 62], [4554, 76], [4633, 220], [4896, 157], [5128, 158], [5327, 210], [5551, 65], [5648, 175], [5837, 132], [5970, 59], [6029, 69], [6106, 107], [6294, 67]]
+    573.2 ms  passe@21124 < passeVisible@21204 < essaie@6085 < window._apresMouvement@6085 < window._apresMouvement@37966 < p@21205
+    569.0 ms  passe@34521 < repasseVraie@34775 < (anonyme)@34782
+    303.5 ms  querySelectorAll@0 < frame@8554
+     97.6 ms  getClientRects@0 < enteteLisible@14642 < tout@15677 < (anonyme)@15693
+     86.0 ms  window._ficheCotes@14961 < window._ficheCotes@19900 < window.<computed>@34792 < tout@15677 < (anonyme)@15693
+     80.9 ms  plusAnneau@35804 < g@36107 < drawKRing@6319 < (anonyme)@14920 < noyaux@14917 < window._ficheCotes@14961 < window._ficheCotes@19900
+     70.9 ms  passe@34521 < repasseVraie@34775 < fin@38002 < (anonyme)@19943
+     63.6 ms  window.Toile.dalleTrame@7681 < window.Toile.dalleTrame@7865 < window.Toile.dalleTrame@37736 < window._fichePose@5686 < (anonyme)@38006 < (anonyme)@19943
+     54.4 ms  getBoundingClientRect@0 < taille@4606 < window._tenirPeindre@4798
+     53.8 ms  getBoundingClientRect@0 < ajuste@23160 < (anonyme)@23177 < tout@23175 < _c@24094 < passeVraie@24093 < passe@24087

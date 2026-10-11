@@ -57,7 +57,8 @@ with sync_playwright() as p:
     def pose(rx, ry, rot=0): cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': bo[0], 'y': bo[1], 'radiusX': rx, 'radiusY': ry, 'rotationAngle': rot, 'force': 1}]})
     def leve(): cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
     def repos():
-        pg.wait_for_function("()=>!_aura.etat().emp", timeout=20000); pg.wait_for_timeout(300); pg.evaluate("()=>{_aura.fige(true); _aura.vue(3.1,0.32)}"); pg.wait_for_timeout(300); pg.evaluate(REPOS)
+        # v142 : un appui immobile laisse la forme du contact (décision) — on relisse entre deux appuis, sinon on mesure par-dessus la marque d'avant
+        pg.wait_for_function("()=>!_aura.etat().emp", timeout=20000); pg.wait_for_timeout(900); pg.evaluate("()=>{_aura.relisse(); _aura.fige(true); _aura.vue(3.1,0.32)}"); pg.wait_for_timeout(300); pg.evaluate(REPOS)
     # ── A à D, H : un appui de 3 s, rayon 12, puis le retour ──
     repos(); pg.evaluate(SUIVI); pose(12, 12); pg.wait_for_timeout(3000); leve(); pg.wait_for_timeout(5200)
     S = pg.evaluate("()=>{ window.__go=false; return __S; }")

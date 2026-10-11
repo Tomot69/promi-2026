@@ -1,0 +1,17 @@
+== releve-aura.py [1] 179s : palier 110000 · médiane 32.6 ms · 1656 images · plus longue image pendant l'élan : 200 ms (dont peintre 38.3 m | ❌  3 ÉCARTS
+     [sombre] la dalle « monter la serre avant les gelées » est illisible : ΔE 12.1 (plancher 15)
+     ❌  3 ÉCARTS
+== banc_rendu.py [0] 107s : 280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0 | ✅ AU PIXEL.
+== redteam_deplace.py [0] 275s : OK  bobinette · aucune erreur de page  [] | 45/45
+== redteam_ritournelle.py [0] 78s : OK  6 parole(s) : au plus 4 cellules vides, même en partie  3 cellule(s) vide(s) dans la zone visible : [([0,  | 13 / 13
+== redteam_guide.py [0] 296s : ✅ après « Revoir la présentation » menée au bout, le guide se rejoue                                           | ✅  51 / 51
+== redteam_rythme.py --app=zz-av142.html --mondes=brouillamini,terrazzo,encre,chamade,sillons [1] 190s : ✓ sillons · reel · depart 27 images (attendu 29 ± 8) · cadence 93 % · [vu 956 ms, 27 images] | 39 / 41
+     ✗ brouillamini · reel · depart fin du mouvement 2231 ms (attendu 2046 ± 163) · cadence 99 % · [vu 2231 ms, 99 images]
+     ✗ terrazzo · reel · arrivee fin du mouvement 951 ms (attendu 799 ± 100) · cadence 63 % · [vu 951 ms, 34 images]
+== redteam_rythme.py --mondes=brouillamini,terrazzo,encre,chamade,sillons [1] 193s : ✓ sillons · reel · depart 22 images (attendu 29 ± 8) · cadence 69 % · [vu 1052 ms, 22 images] | 39 / 41
+     ✗ terrazzo · moteur · depart fin du mouvement 839 ms (attendu 820 ± 100) · cadence 53 % · [vu 839 ms, 25 images]
+     ✗ brouillamini · reel · depart fin du mouvement 2231 ms (attendu 2046 ± 163) · cadence 98 % · [vu 2231 ms, 98 images]
+== redteam_corps.py --n=20 [0] 82s : aucune erreur de page                                                                  OK | 33 / 33
+== redteam_kaki.py [1] 180s : sillons      toile-sombre  kaki   6.6 %  ✗ #C4BAAB (h 78°, C 0.024, L 0.79) ×85; #5C5448 (h 78°, C 0.022, L 0. | ❌ DU KAKI — 15 coupable(s)
+     ❌ DU KAKI — 15 coupable(s)
+FIN DE SÉRIE
