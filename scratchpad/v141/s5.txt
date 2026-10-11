@@ -1,0 +1,13 @@
+redteam_onboarding.py
+redteam_onb_sorties.py
+redteam_guide.py
+redteam_verrou_onboarding.py
+redteam_engagement.py
+redteam_volume.py
+redteam_registre.py
+redteam_ecrans.py
+redteam_joignable.py
+redteam_decisions.py
+redteam_accueil.py
+banc_rendu.py
+redteam_air.py

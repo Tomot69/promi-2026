@@ -1,0 +1,35 @@
+  ✅ « prénom » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                    
+  ❌ « prénom » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu        {'t': 'Plus tard', 'fs': '14px', 'deco': 'underline', 'b': [95, 724, 200, 44], 'encreL': 79}
+  ❌ « prénom » : l'étape « principe » n'existe plus                                                              principe False · _e2 object
+  ✅ « prénom » : aucune dalle derrière le texte (aucun pixel plus clair que le fond dans la boîte de la phrase)  0.00 % de pixels de cellule sur 25404
+  ✅ « prénom saisi » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)              
+  ❌ « prénom saisi » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu  {'t': 'Plus tard', 'fs': '14px', 'deco': 'underline', 'b': [95, 724, 200, 44], 'encreL': 79}
+  ❌ « prénom saisi » : l'étape « principe » n'existe plus                                                        principe False · _e2 object
+  ❌ « parole » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                    lu : Plus tardPromi garde ta parole.Une promesse s’écrit en une phrase.Elle se plante sur ta Toile, d’un trait du doigt.Quand elle est tenue, un second trait le dit.Une toute petite pour commencer, tenable
+  ❌ « parole » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu        {'t': 'Plus tard', 'fs': '14px', 'deco': 'underline', 'b': [95, 724, 200, 44], 'encreL': 79}
+  ❌ « parole » : l'étape « principe » n'existe plus                                                              principe True · _e2 object
+  ❌ « trait » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                     lu : Plus tardPromi garde ta parole.Une promesse s’écrit en une phrase.Elle se plante sur ta Toile, d’un trait du doigt.Quand elle est tenue, un second trait le dit.Une toute petite pour commencer, tenable
+  ❌ « trait » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu         {'t': 'Plus tard', 'fs': '14px', 'deco': 'underline', 'b': [95, 724, 200, 44], 'encreL': 79}
+  ❌ « trait » : l'étape « principe » n'existe plus                                                               principe True · _e2 object
+  ❌ le mot de trace de l'onboarding est à 19 px (gardé de v140 : « plus grand »)                                 15px
+  ❌ la main fantôme accompagne le trait de l'onboarding (gardée de v140)                                         main : None
+  ❌ « fin » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                       lu : Plus tardPromi garde ta parole.Une promesse s’écrit en une phrase.Elle se plante sur ta Toile, d’un trait du doigt.Quand elle est tenue, un second trait le dit.Une toute petite pour commencer, tenable
+  ❌ « fin » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu           {'t': 'Plus tard', 'fs': '14px', 'deco': 'underline', 'b': [95, 724, 200, 44], 'encreL': 79}
+  ❌ « fin » : l'étape « principe » n'existe plus                                                                 principe True · _e2 object
+  ❌ « compte » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                    lu : Plus tardPromi garde ta parole.Une promesse s’écrit en une phrase.Elle se plante sur ta Toile, d’un trait du doigt.Quand elle est tenue, un second trait le dit.Une toute petite pour commencer, tenable
+  ❌ « compte » : l'étape « principe » n'existe plus                                                              principe True · _e2 object
+  ❌ R6 — une sortie visible, sous le doigt, à chaque étape (6 étapes)                                            sans sortie : ['compte']
+  ✅ « Plus tard » à l'étape « prénom » : un toucher, on est sur sa Toile (0 parole), sans panneau du compte ni guide ; le verrou est posé onb False · devant accueil · verrou 1 · guide False · panneau False · paroles 0
+  ✅ « Plus tard » à l'étape « prénom » : rien n'est redemandé au rechargement                                    onb False · guide False
+  ✅ « Plus tard » à l'étape « trait » : un toucher, on est sur sa Toile (0 parole), sans panneau du compte ni guide ; le verrou est posé onb False · devant accueil · verrou 1 · guide False · panneau False · paroles 0
+  ✅ « Plus tard » à l'étape « trait » : rien n'est redemandé au rechargement                                     onb False · guide False
+  ❌ « Plus tard » à l'étape « fin » : un toucher, on est sur sa Toile (1 parole), sans panneau du compte ni guide ; le verrou est posé onb False · devant accueil · verrou 1 · guide False · panneau False · paroles 0
+  ✅ « Plus tard » à l'étape « fin » : rien n'est redemandé au rechargement                                       onb False · guide False
+
+  ❌  8 / 27
+     R6 · prénom         sortie : « Plus tard »
+     R6 · prénom saisi   sortie : « Plus tard »
+     R6 · parole         sortie : « Plus tard »
+     R6 · trait          sortie : « Plus tard »
+     R6 · fin            sortie : « Plus tard »
+     R6 · compte         AUCUNE sortie visible

@@ -261,7 +261,7 @@ with sync_playwright() as p:
                     #   TENU en #00341A en clair ». Sur les quatre écrans d'une fiche tenue, EN CLAIR seulement, ces trois échanges-là et rien d'autre :
                     #   la terre → la crème (fond) ; la crème → l'encre, pleine ou à 0,34 (texte et contours) ; l'amande → #00341A (texte).
                     if cle[1] == 'light' and cle[0] in ('fiche tenue', 'fiche chiche', 'Peaufiner', 'Peaufiner Chiche') and va and vr:
-                        if pr_ == 'bg' and vr == 'rgb(43, 16, 32)' and va == 'rgb(234, 217, 185)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue   # v139 (C-084) : le crème des fiches, #EAD9B9 (#F7F0DE en v136)
+                        if pr_ == 'bg' and vr == 'rgb(43, 16, 32)' and va == 'rgb(247, 240, 222)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue   # v139 (C-084) : le crème des fiches, #EAD9B9 (#F7F0DE en v136)
                         if pr_ in ('color', 'tfill', 'bT', 'bB', 'bL', 'bR') and vr == 'rgb(247, 240, 222)' and va in ('rgb(32, 25, 8)', 'rgba(32, 25, 8, 0.34)'): exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
                         if pr_ in ('color', 'tfill') and vr == 'rgb(143, 224, 143)' and va == 'rgb(0, 52, 26)': exceptions['E11'] = exceptions.get('E11', 0) + 1; continue
                     # E12 (v139, Tom, 9 oct. 2026, C-084) : « En clair, le corps des fiches (sous le trait) et leurs encarts prennent le crème du fond des

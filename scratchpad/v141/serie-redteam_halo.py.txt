@@ -1,0 +1,14 @@
+[clair] le thème est le bon                                                    OK  
+[clair] A · un seul nœud autour de la Pelote : son ombre                       OK  ['auPeloteOmbre', '.au-ombre']
+[clair] B · l'anneau 127–150 pt, hors de l'ombre, est le fond de la page       OK  170368 px · 0 au-delà de 3 niveaux · pire 0 · fond (247, 240, 222)
+[clair] C · l'ombre est à sa géométrie (104,429 × 16,245 à 142,786 ; 391,224)  OK  [142.78, 391.22, 104.42, 16.23]
+[clair] C · l'ombre se voit en son centre (4 à 40 niveaux) et s'éteint à ses coins OK  centre 22 niveau(x) · coins 0
+[clair] D · « PARTAGER MA PELOTE » à 435,47                                    OK  435.46875
+[sombre] le thème est le bon                                                   OK  
+[sombre] A · un seul nœud autour de la Pelote : son ombre                      OK  ['auPeloteOmbre', '.au-ombre']
+[sombre] B · l'anneau 127–150 pt, hors de l'ombre, est le fond de la page      OK  170368 px · 0 au-delà de 3 niveaux · pire 0 · fond (5, 3, 2)
+[sombre] C · l'ombre est à sa géométrie (104,429 × 16,245 à 142,786 ; 391,224) OK  [142.78, 391.22, 104.42, 16.23]
+[sombre] C · l'ombre se voit en son centre (4 à 40 niveaux) et s'éteint à ses coins OK  centre 25 niveau(x) · coins 0
+[sombre] D · « PARTAGER MA PELOTE » à 435,47                                   OK  435.46875
+
+12/12

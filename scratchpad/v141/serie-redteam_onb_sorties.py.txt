@@ -1,0 +1,35 @@
+  ✅ « prénom » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                    
+  ✅ « prénom » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu        {'t': 'Plus tard', 'fs': '12px', 'deco': 'none', 'b': [278, 46, 88, 44], 'encreL': 66}
+  ✅ « prénom » : l'étape « principe » n'existe plus                                                              principe False · _e2 undefined
+  ✅ « prénom » : aucune dalle derrière le texte (aucun pixel plus clair que le fond dans la boîte de la phrase)  0.00 % de pixels de cellule sur 25404
+  ✅ « prénom saisi » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)              
+  ✅ « prénom saisi » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu  {'t': 'Plus tard', 'fs': '12px', 'deco': 'none', 'b': [278, 46, 88, 44], 'encreL': 66}
+  ✅ « prénom saisi » : l'étape « principe » n'existe plus                                                        principe False · _e2 undefined
+  ✅ « parole » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                    
+  ✅ « parole » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu        {'t': 'Plus tard', 'fs': '12px', 'deco': 'none', 'b': [278, 46, 88, 44], 'encreL': 66}
+  ✅ « parole » : l'étape « principe » n'existe plus                                                              principe False · _e2 undefined
+  ✅ « trait » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                     
+  ✅ « trait » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu         {'t': 'Plus tard', 'fs': '12px', 'deco': 'none', 'b': [278, 46, 88, 44], 'encreL': 66}
+  ✅ « trait » : l'étape « principe » n'existe plus                                                               principe False · _e2 undefined
+  ✅ le mot de trace de l'onboarding est à 19 px (gardé de v140 : « plus grand »)                                 19px
+  ✅ la main fantôme accompagne le trait de l'onboarding (gardée de v140)                                         main : onb-trait
+  ✅ « fin » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                       
+  ✅ « fin » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu           {'t': 'Plus tard', 'fs': '12px', 'deco': 'none', 'b': [278, 46, 88, 44], 'encreL': 66}
+  ✅ « fin » : l'étape « principe » n'existe plus                                                                 principe False · _e2 undefined
+  ✅ « compte » : le texte est celui d'avant v140, mot pour mot (plus la sortie « Plus tard »)                    
+  ✅ « compte » : l'étape « principe » n'existe plus                                                              principe False · _e2 undefined
+  ✅ R6 — une sortie visible, sous le doigt, à chaque étape (6 étapes)                                            sans sortie : aucune
+  ✅ « Plus tard » à l'étape « prénom » : un toucher, on est sur sa Toile (0 parole), sans panneau du compte ni guide ; le verrou est posé onb False · devant accueil · verrou 1 · guide False · panneau False · paroles 0
+  ✅ « Plus tard » à l'étape « prénom » : rien n'est redemandé au rechargement                                    onb False · guide False
+  ✅ « Plus tard » à l'étape « trait » : un toucher, on est sur sa Toile (0 parole), sans panneau du compte ni guide ; le verrou est posé onb False · devant accueil · verrou 1 · guide False · panneau False · paroles 0
+  ✅ « Plus tard » à l'étape « trait » : rien n'est redemandé au rechargement                                     onb False · guide False
+  ✅ « Plus tard » à l'étape « fin » : un toucher, on est sur sa Toile (1 parole), sans panneau du compte ni guide ; le verrou est posé onb False · devant accueil · verrou 1 · guide False · panneau False · paroles 1
+  ✅ « Plus tard » à l'étape « fin » : rien n'est redemandé au rechargement                                       onb False · guide False
+
+  ✅  27 / 27
+     R6 · prénom         sortie : « Plus tard »
+     R6 · prénom saisi   sortie : « Plus tard »
+     R6 · parole         sortie : « Plus tard »
+     R6 · trait          sortie : « Plus tard »
+     R6 · fin            sortie : « Plus tard »
+     R6 · compte         sortie : « Plus tard »

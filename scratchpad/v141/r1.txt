@@ -1,0 +1,33 @@
+redteam_bord.py | rc 0 | 682 s | 24/24
+redteam_fourrure.py | rc 0 | 38 s | 9 / 9
+redteam_plein.py | rc 0 | 104 s | 49 / 49
+redteam_halo.py | rc 0 | 33 s | 12/12
+redteam_contour.py | rc 0 | 33 s | ✅ rien ne dépasse du contour
+redteam_enfonce.py | rc 0 | 42 s | 14 / 14
+redteam_trace.py | rc 1 | 48 s | 9/10
+redteam_pelote_doigt.py | rc 1 | 28 s | KO : 1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms · 1 · [passe 2] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+releve-aura.py | rc 1 | 181 s | ❌  6 ÉCARTS
+redteam_zone.py --n=12 | rc 0 | 134 s | 12 / 12
+redteam_corps.py --n=20 | rc 0 | 86 s | 33 / 33
+redteam_souffle.py | rc 0 | 66 s | ✅ la Pelote respire par son velours, et rien d'autre
+redteam_zoom.py | rc 0 | 91 s | 16/16
+redteam_accueil.py | rc 0 | 172 s | 22/22
+redteam_toucher.py | rc 0 | 267 s | redteam_toucher : 24/24
+redteam_cadre.py | rc 0 | 38 s | 22 / 22
+redteam_dessin_photo.py | rc 0 | 28 s | 16 / 16
+redteam_dessin.py | rc 0 | 115 s | redteam_dessin : 79/79
+redteam_remplace.py | rc 0 | 59 s | 18/18
+redteam_partage_fiche.py | rc 0 | 182 s | ✅ le rond Partager d'une fiche partage son Folio
+redteam_partage_dessin.py | rc 0 | 103 s | 34/34
+redteam_murs.py | rc 0 | 124 s | 28/28
+redteam_maparole.py | rc 0 | 233 s | 14 / 14
+redteam_studio_mur.py | rc 0 | 96 s | 9/9
+redteam_verbe.py | rc 0 | 25 s | 6/6
+redteam_gens.py | rc 0 | 197 s | 38/38
+redteam_tuiles.py | rc 0 | 271 s | 64/64
+redteam_phrase_fiche.py | rc 0 | 264 s | redteam_phrase_fiche : 74/74
+redteam_fluide.py | rc 1 | 213 s | KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4025 images) · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 
+redteam_lexique.py | rc 0 | 304 s | redteam_lexique : 3/3
+redteam_onboarding.py | rc 0 | 124 s |   ✅  46 / 46 contrats tenus
+redteam_verrou_onboarding.py | rc 1 | 46 s | verrou de l'onboarding : 3/9
+FIN

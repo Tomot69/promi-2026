@@ -66,7 +66,13 @@ with sync_playwright() as p:
                 t('[%s · vide] 6 · « ENCORE AUCUNE PAROLE »' % T, r['etat'].lower() == 'encore aucune parole', r['etat'])
             else:
                 air = (e['y0'] - r['cartes'][-1][1]) if (e and r['cartes']) else None
-                t('[%s · pleine] 2 · 12 sous la dernière carte' % T, air is not None and abs(air - 12) <= 1.5, 'air %s' % (round(air, 1) if air is not None else '—'))
+                # ⚑ v141 (Tom, 10 oct. 2026, C-096) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_nuee_entree-avant-v141.py, « 12 sous la dernière carte »).
+                #    « Le bandeau Peaufiner reste tout en bas. L'encart “+ Planter dans le Cercle” remonte juste ce qu'il faut, avec un petit écart
+                #    au-dessus du bandeau. Le fil passe sous l'encart sans jamais le recouvrir. » Le bandeau commence à 760 : le bouton finit à 748
+                #    (12 pt d'écart), DEVANT le fil (le point en son centre est lui).
+                devant = pg.evaluate("()=>{const a=document.getElementById('nfAdd'); if(!a) return false; const r=a.getBoundingClientRect(); const h=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2); return !!h&&(h===a||a.contains(h));}")
+                bas = e['y1'] if (e and 'y1' in e) else (e['y0'] + 62 if e else None)
+                t('[%s · pleine] 2 · à 12 pt au-dessus du bandeau Peaufiner (760), devant le fil' % T, bas is not None and abs((760 - bas) - 12) <= 1.5 and devant, 'bas du bouton %s · devant le fil %s' % (round(bas, 1) if bas is not None else '—', devant))
                 pas = [round(r['cartes'][i + 1][0] - r['cartes'][i][1], 1) for i in range(len(r['cartes']) - 1)]
                 qd = [x for x in r['blocs'] if x[0] == 'dptQuand']
                 a1 = r['cartes'][0][0] - qd[0][2] if (qd and r['cartes']) else None

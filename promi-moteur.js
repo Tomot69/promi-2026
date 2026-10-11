@@ -6140,6 +6140,19 @@ function _voile(){ var a=Math.max(0,Math.min(1,(view.s-0.74)/(0.88-0.74))); a=Ma
 function _rub(v,lo,hi){ return v<lo ? lo-(lo-v)*0.35 : v>hi ? hi+(v-hi)*0.35 : v; }
 /* le champ clair : la barre du haut (titre + bascule Toile/Fil) et le dock */
 var HAUT_LIBRE=176, BAS_LIBRE=138;
+/* v141 — la boîte des cellules des paroles, à leur poids FINAL (une dalle qui arrive part d'un poids négatif : sa cellule du moment est
+   minuscule). Échantillonnée au pas de 3 autour de chaque parole. */
+function _poidsFin(s){ return (s.kind!=='gray' && s.wFin!=null) ? s.wFin : (s.wt!=null?s.wt:(s.w||0)); }
+function _boiteSerre(col){ try{
+  var a=avg(), R=a*1.7, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9, P=[], i, k;
+  for(i=0;i<seeds.length;i++){ var q=seeds[i]; P.push([(q.tx!=null?q.tx:q.x),(q.ty!=null?q.ty:q.y),_poidsFin(q),q]); }
+  for(i=0;i<col.length;i++){ var c=col[i], cx=(c.tx!=null?c.tx:c.x), cy=(c.ty!=null?c.ty:c.y), wc=_poidsFin(c);
+    for(var y=Math.max(0,cy-R); y<=Math.min(H,cy+R); y+=3) for(var x=Math.max(0,cx-R); x<=Math.min(W,cx+R); x+=3){
+      var d=Math.sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy))-wc, ok=true;
+      for(k=0;k<P.length;k++){ if(P[k][3]===c) continue; var e=Math.sqrt((x-P[k][0])*(x-P[k][0])+(y-P[k][1])*(y-P[k][1]))-P[k][2]; if(e<d){ ok=false; break; } }
+      if(ok){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } } }
+  if(x1<x0) return null;
+  return {x0:x0,y0:y0,x1:x1,y1:y1}; }catch(_){ return null; } }
 function autoView(){
   /* ⚑ Q212 (Tom) : « la vue qui revient à 1 à chaque plantation » est un défaut. Une vue posée par la main n'est reprise
      que par le recadrage (le rond, ou le double toucher sur une case vide). */
@@ -6165,12 +6178,21 @@ function autoView(){
      avec le nombre de paroles. » On cadre les dalles colorées avec une marge de 0,8 cellule pour une parole, de 1,25 au-delà (1,3 ailleurs), et le plafond du zoom passe
      de 2 à 3,6 : à une parole la dalle fait les deux tiers de la largeur ; chaque parole de plus élargit le cadre, la vue recule. */
   var _serre=!!(_NEUFS[theme] && !_AP && !_semisNeuf()); if(_serre) pad=avg()*(col.length===1?0.8:1.25);   /* dès deux paroles, 1,25 cellule de marge : une dalle colorée pèse plus qu'une cellule vide, sa matière déborde d'une cellule autour de sa graine — à 1,0 une dalle sur deux essais touchait le bord de l'écran (mesuré sur les pixels) */
-  minX-=pad;maxX+=pad;minY-=pad;maxY+=pad;
+  /* ⚑ v141 (Tom, 10 oct. 2026, C-088 — RÉCIDIVE : « trop dézoomé ») — les cibles, sur 390 pt : une parole → sa dalle fait au moins 60 % de la
+     largeur ; deux, trois, quatre → toutes entières ; au plus deux cellules vides entièrement visibles jusqu'à quatre paroles.
+     POURQUOI C'EST REVENU : v140 cadrait les GRAINES avec une marge (0,8 puis 1,25 cellule). Une marge autour de points ne dit rien de la
+     taille des dalles : à une parole la dalle faisait 50 % de la largeur, à trois ou quatre la vue montrait 5 et 7 cellules vides.
+     On cadre maintenant ce qu'on VOIT : la boîte des CELLULES des paroles, calculée à leur poids final (`_boiteSerre`), entière. La matière d'une dalle occupe de 58 à 100 % de sa
+     cellule (mesuré sur Ritournelle) : une parole seule voit sa CELLULE cadrée à 118 % de la largeur (sa matière en fait donc 60 % au moins,
+     et reste entière) ; plusieurs, à 100 %. */
+  var _bs=_serre?_boiteSerre(col):null;
+  if(_bs){ minX=_bs.x0; maxX=_bs.x1; minY=_bs.y0; maxY=_bs.y1; } else { minX-=pad;maxX+=pad;minY-=pad;maxY+=pad; }
   var bw=Math.max(1,maxX-minX), bh=Math.max(1,maxY-minY);
   var topB=HAUT_LIBRE, botB=H-BAS_LIBRE;    /* zone utile (barre haut + dock evites) */
-  var availW=W*0.92, availH=Math.max(1,botB-topB);
+  if(_bs){ topB=H*(112/844); botB=H*(698/844); }   /* serré : entre le plateau (40 → 100) et la barre (710), 12 pt d'air */
+  var availW=W*(_bs?(col.length===1?1.18:1.0):0.92), availH=Math.max(1,botB-topB);
   var s=Math.min(availW/bw, availH/bh);
-  s=Math.max(1.0, Math.min(s, _serre?3.6:2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 (3,6 : v140, voir plus haut) */
+  s=Math.max(1.0, Math.min(s, _serre?(_bs?5.0:3.6):2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 (3,6 : v140, voir plus haut) */
   var cx=(minX+maxX)/2, cy=(minY+maxY)/2, scx=W/2, scy=(topB+botB)/2;
   var _ox=scx-cx*s, _oy=scy-cy*s;
   /* clamp : les bords de la Toile restent colles aux bords de l ecran (jamais de vide) */
@@ -6179,6 +6201,8 @@ function autoView(){
   vTarget={ s:s, ox:_ox, oy:_oy };
 }
 window.Toile_autoView=function(){autoView();kick();};
+/* v141 — lecture seule (juges) : la vue et les graines avec leur poids */
+window.Toile_lecture=function(){ return {W:W,H:H,vue:{s:view.s,ox:view.ox,oy:view.oy},cible:(vTarget?{s:vTarget.s,ox:vTarget.ox,oy:vTarget.oy}:null),graines:seeds.map(function(s){ var b=null; try{ if(s.kind!=='gray' && _MN && _MN.boite) b=_MN.boite(theme,s); }catch(_){ b=null; } return {pid:(s.pid==null?null:s.pid),x:s.x,y:s.y,w:s.w,kind:s.kind,boite:b};})}; };
 /* ⚑ Q212 · REVENIR AU CADRAGE DE DÉPART — le rond « recadrer » et le double toucher y mènent tous deux. */
 window.Toile_recadre=function(){ window._recadreDemande=true; window._vueMain=false; autoView(); kick(); try{ if(window._majRecadre) window._majRecadre(); }catch(_){} };
 /* ⚑ v54 (Bobinette, Tom : « les fils se tirent pour redéfinir la Toile LÀ OÙ C'EST NÉCESSAIRE. Localement, pas partout ») —
@@ -6968,9 +6992,16 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
     if(!gris.length)return null;
     /* le champ clair : ni sous la barre du haut, ni sous le dock. Une dalle plantée
        là serait illisible — on préfère toujours une cellule dégagée. */
-    var libres=gris.filter(function(s){return s.y>HAUT_LIBRE && s.y<H-BAS_LIBRE;});
+    /* ⚑ v141 (Tom, 10 oct. 2026, Q449) : « on ne plante plus de dalle sous la barre du bas ». La barre commence à 710 (sur 844) ; une dalle
+       plantée à 706 passait dessous de moitié (mesuré : une boîte de 702 à 788). La borne basse laisse la place d'une dalle entière
+       (0,62 cellule) et de son décalage (0,25 cellule) au-dessus de la barre. */
+    var _basP=H*(134/844)+avg()*0.87;
+    var libres=gris.filter(function(s){return s.y>HAUT_LIBRE && s.y<H-_basP;});
+    if(!libres.length) libres=gris.filter(function(s){return s.y>HAUT_LIBRE && s.y<H-BAS_LIBRE;});
     /* v76 — une cellule REPLIÉE (une dalle partie) est reprise d'abord : la nouvelle dalle regrandit d'où l'autre s'est retirée */
-    if(_REPLI[theme]){ var _rw=_repliW()/2, _rp=gris.filter(function(s){return (s.wt!=null?s.wt:s.w)<_rw;}); if(_rp.length) libres=_rp; }
+    if(_REPLI[theme]){ var _rw=_repliW()/2, _rp=gris.filter(function(s){return (s.wt!=null?s.wt:s.w)<_rw;});
+      /* v141 (Q449) — POURQUOI UNE DALLE TOMBAIT ENCORE SOUS LA BARRE : une cellule repliée était reprise sans passer par la zone dégagée (mesuré : des plantations à 716, 730 et 815 sur 844). Elle n'est reprise que si elle est dans la zone. */
+      var _rz=_rp.filter(function(s){return s.y>HAUT_LIBRE && s.y<H-_basP;}); if(_rz.length) libres=_rz; }
     var pool=libres.length?libres:gris;
     var cible=pool[(_alea()*pool.length)|0];
     var a=avg();
@@ -6983,7 +7014,7 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
     if(_NEUFS[theme] && !_AP && !_semisNeuf() && !(_REPLI[theme] && libres!==gris && pool===libres && pool.length && (pool[0].wt!=null?pool[0].wt:pool[0].w)<_repliW()/2)){
       var _qx=0,_qy=0,_qn=0; for(var _qi=0;_qi<seeds.length;_qi++){ var _qs=seeds[_qi]; if(_qs.kind!=='gray' && _qs.part==null){ _qx+=_qs.x; _qy+=_qs.y; _qn++; } }
       if(_qn){ _qx/=_qn; _qy/=_qn; } else { _qx=W/2; _qy=(HAUT_LIBRE+H-BAS_LIBRE)/2; }
-      var _qd=1e18; for(var _qj=0;_qj<pool.length;_qj++){ var _qp=pool[_qj], _qe=(_qp.x-_qx)*(_qp.x-_qx)+(_qp.y-_qy)*(_qp.y-_qy); if(_qe<_qd){ _qd=_qe; cible=_qp; } }
+      var _qd=1e18; for(var _qj=0;_qj<pool.length;_qj++){ var _qp=pool[_qj], _qe=(_qp.x-_qx)*(_qp.x-_qx)*3.2+(_qp.y-_qy)*(_qp.y-_qy);   /* v141 : l'écran est haut — l'amas monte plutôt qu'il ne s'étale (un écart en largeur compte 1,8 fois) */ if(_qe<_qd){ _qd=_qe; cible=_qp; } }
       jx=0; jy=0; }
     var s=mk(Math.max(8,Math.min(W-8,cible.x+jx)), Math.max(8,Math.min(H-8,cible.y+jy)), 'promi');
     s.ci=cc(s);s.c=PAL[s.ci];
@@ -7586,6 +7617,11 @@ window.Toile.dalleCapture=function(dcv,pid,ech){
   }catch(e){ return false; }
 };
 window.Toile.vue=function(){return {s:view.s,ox:view.ox,oy:view.oy,dpr:DPR};};
+/* ⚑ v141 — amener la dalle d'une parole à une hauteur de l'écran (fraction de la hauteur), sans changer le zoom : l'onboarding s'en sert pour que la
+   première dalle, qui ne se plante plus sous la barre (Q449), reste sous son message de fin comme avant. Le cadrage de départ revient par `Toile_recadre`. */
+window.Toile.vueVers=function(pid, fy){ var sd=null; for(var i=0;i<seeds.length;i++){ if(seeds[i].pid===pid && seeds[i].kind!=='gray'){ sd=seeds[i]; break; } } if(!sd) return false;
+  var t=vTarget||{s:view.s,ox:view.ox,oy:view.oy}, y=(sd.ty!=null?sd.ty:sd.y)*t.s+t.oy, oy=Math.max(H-H*t.s, Math.min(0, t.oy+(fy*H-y)));
+  vTarget={s:t.s, ox:t.ox, oy:oy}; kick(); return true; };
 /* ⚑ v130 (Tom, C-048 — RÉCIDIVE de la règle du 23 sept.) — UNE DALLE SEULE EST ENGENDRÉE, JAMAIS DÉCOUPÉE DANS LA TOILE.
    « On voit de nouveau des morceaux de Toile capturés dans un cadre, au lieu de vraies dalles engendrées, avec leur forme et leur
    contour réels. C'est interdit, définitivement. » LA CAUSE (présente depuis v29, pas un retour récent : v124 rend la même image) :

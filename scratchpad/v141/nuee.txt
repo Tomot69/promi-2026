@@ -1,0 +1,29 @@
+══ 20 écrans lus dans le §12 ══
+
+==============================================================================
+  LA FICHE DE NUÉE — les cinq lignes du critère, sur 24 écrans
+==============================================================================
+  écarts de position > 3 px .........  8
+       Peaufiner de Nuée — thème sombre · page 2 · #nfAdd y · 46 · -88.0
+       Peaufiner de Nuée — thème sombre · page 2 · #nfAdd largeur · 348 · 342.0
+       Peaufiner de Nuée — thème sombre · page 2 · #nfAdd hauteur · 68 · 62.0
+       Peaufiner de Nuée — thème sombre · page 2 · #npDiss y · 618 · 478.0
+       Peaufiner de Nuée — thème clair · page 2 · #nfAdd y · 46 · -88.0
+       Peaufiner de Nuée — thème clair · page 2 · #nfAdd largeur · 348 · 342.0
+       Peaufiner de Nuée — thème clair · page 2 · #nfAdd hauteur · 68 · 62.0
+       Peaufiner de Nuée — thème clair · page 2 · #npDiss y · 618 · 478.0
+  écarts de style ...................  0
+  ÉLÉMENTS DÉCLARÉS MAIS PAS PEINTS .  0
+  collisions de blocs ...............  40
+       Trois — thème sombre · Planter dans le Ce ⨯ CHICHE LANCÉcourir
+       Trois — thème sombre · Planter dans le Ce ⨯ CHICHE LANCÉ
+       Trois — thème sombre · Planter dans le Ce ⨯ courir dimanche
+       Trois — thème clair · Planter dans le Ce ⨯ CHICHE LANCÉcourir
+       Trois — thème clair · Planter dans le Ce ⨯ CHICHE LANCÉ
+       Trois — thème clair · Planter dans le Ce ⨯ courir dimanche
+       Quatre — thème sombre · Planter dans le Ce ⨯ CHICHE LANCÉcourir
+       Quatre — thème sombre · Planter dans le Ce ⨯ CHICHE LANCÉ
+  débordements ......................  0
+==============================================================================
+
+  ❌  24 écran(s) · 48 écart(s)

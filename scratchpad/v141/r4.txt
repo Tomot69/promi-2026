@@ -1,0 +1,12 @@
+releve-aura.py | rc 1 | 179 s | ❌  1 ÉCARTS
+redteam_guide.py --vite --fichier=zz-av141.html | rc 1 | 21 s | TypeError: 'NoneType' object is not subscriptable
+redteam_onb_sorties.py zz-av141.html | rc 1 | 89 s |      R6 · compte         AUCUNE sortie visible
+redteam_murs_toucher.py zz-av141.html --seul=studio | rc 1 | 63 s | 0 / 1
+redteam_ritournelle.py zz-av141.html | rc 1 | 100 s | 3 / 12
+redteam_tourne.py zz-av141.html | rc 1 | 29 s | KeyError: 'a'
+redteam_trace.py zz-av141.html | rc 1 | 48 s | 4/10
+redteam_bord.py zz-av141.html --vite --gl | rc 1 | 116 s | 8/12
+redteam_nuee_entree.py | rc 0 | 44 s | 24/24
+redteam_decisions.py | rc 1 | 78 s | KO : Cercle [light] champ · Cercle [dark] champ
+redteam_engagement.py | rc 0 | 114 s | redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+FIN

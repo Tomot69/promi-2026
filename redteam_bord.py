@@ -1,5 +1,15 @@
 # -*- coding: utf-8 -*-
-"""redteam_bord.py — LE BORD DE LA PELOTE : DES POINTES, SANS ANNEAU NI LISERÉ (v140, C-083 ; v137, C-002).
+"""redteam_bord.py — LE BORD DE LA PELOTE : CELUI D'AVANT v114, SANS ANNEAU NI LISERÉ (v141, C-083 ; v137, C-002).
+
+⚑ v141 (Tom, 10 oct. 2026, C-083, RÉCIDIVE) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_bord-avant-v141.py, « des pointes sans frange pâle :
+frange ≤ 2,5 pt »). La décision qui le remplace : « Compare l'algorithme de bord de l'ancien peintre (canevas) avec celui de la carte graphique,
+et reproduis l'ancien exactement : n'en invente pas un. » L'ancien bord, ce sont les pointes telles que le peintre les pose, avec l'opacité de
+leur tampon : une frange DOUCE (6,25 pt en médiane quand le corps finissait à 0,972 R, mesuré en v136 ; 3,75 pt avec le corps qui s'efface
+de 0,98 à 1,05 R sous elle).
+  F · LA FRANGE D'AVANT v114 : dans les 72 secteurs, entre le dernier pixel plein (opacité ≥ 90 %) et le dernier pixel peint (≥ 10 %), la médiane
+      est entre 3 et 8,5 pt (ni la limite franche de v139 : 0,5 pt, ni les pointes resserrées de v140 : ≤ 1,5 pt), aucune au-delà de 12 ; le contour médian reste
+      entre 118 et 124 pt, rien au-delà de 127. En dur.
+— l'en-tête de v140, pour l'histoire —
 
 ⚑ v140 (Tom, 10 oct. 2026, C-083, RÉCIDIVE « trop rase ») — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_bord-avant-v140.py). La décision qui
 remplace « la silhouette est une limite franche » (v139) : « la fourrure telle qu'elle était avant les essais de halo […] avec la longueur
@@ -36,7 +46,7 @@ CHEMINS = [('carte graphique', ''), ('secours', 'window._peloteGL=false;')]
 if '--gl' in sys.argv: CHEMINS = CHEMINS[:1]
 if '--secours' in sys.argv: CHEMINS = CHEMINS[1:]
 SEUIL = 5.0; N_ = 1 if "--vite" in sys.argv else 3; PALETTES = ['signal', 'candide', 'irascible', 'taciturne']; N = N_; R = 121.0
-FRANGE_MAX, FRANGE_MED, BOULE = 2.5, 1.5, 116.0; FIN_MIN, FIN_MAX, FIN_BUT = 118.0, 124.0, 126.0
+FRANGE_MAX, FRANGE_MED_MIN, FRANGE_MED_MAX, BOULE = 12.0, 3.0, 8.5, 116.0; FIN_MIN, FIN_MAX, FIN_BUT = 118.0, 124.0, 127.0   # v141 : la frange d'avant v114 (6,25 pt)
 FRANGE = r"""()=>{ try{ _aura.pelote(); }catch(e){} const c=document.getElementById('auBoule'); const W=c.width, d=c.getContext('2d').getImageData(0,0,W,W).data, k=W/296, cx=W/2, out=[];
  for(let s=0;s<72;s++){ const a=s*Math.PI/36; let r90=0, r10=0; for(let r=100*k;r<140*k;r+=0.5){ const x=Math.round(cx+r*Math.cos(a)), y=Math.round(cx+r*Math.sin(a)); if(x<0||y<0||x>=W||y>=W) break; const al=d[(y*W+x)*4+3]; if(al>=230) r90=r; if(al>=25) r10=r; } out.push([r90/k, r10/k]); } return out; }"""
 ok = [0]; ko = []
@@ -88,7 +98,7 @@ with sync_playwright() as p:
                 t('[%s · %s · %s] bord ↔ intérieur : ΔE médian ≤ %.0f' % (chemin, 'clair' if th == 'light' else 'sombre', pal, SEUIL), max(meds) <= SEUIL, ' · '.join('%.1f' % m for m in meds))
                 if pal in ('signal', 'taciturne'):
                     fr = sorted(x[1] - x[0] for x in frs); fin = sorted(x[1] for x in frs)
-                    t('[%s · %s · %s] F · des pointes sans frange pâle : frange ≤ %.1f pt, contour 118–124 pt' % (chemin, 'clair' if th == 'light' else 'sombre', pal, FRANGE_MAX), len(fr) == 72 and fr[-1] <= FRANGE_MAX and fr[36] <= FRANGE_MED and FIN_MIN <= fin[36] <= FIN_MAX and fin[-1] <= FIN_BUT, 'frange médiane %.2f, max %.2f · fin %.1f (de %.1f à %.1f)' % (fr[36], fr[-1], fin[36], fin[0], fin[-1]) if fr else 'non lu')
+                    t('[%s · %s · %s] F · la frange d\'avant v114 : médiane entre 3 et 8,5 pt (≤ %.0f), contour 118–124 pt' % (chemin, 'clair' if th == 'light' else 'sombre', pal, FRANGE_MAX), len(fr) == 72 and fr[-1] <= FRANGE_MAX and FRANGE_MED_MIN <= fr[36] <= FRANGE_MED_MAX and FIN_MIN <= fin[36] <= FIN_MAX and fin[-1] <= FIN_BUT, 'frange médiane %.2f, max %.2f · fin %.1f (de %.1f à %.1f)' % (fr[36], fr[-1], fin[36], fin[0], fin[-1]) if fr else 'non lu')
     b.close()
 print('\n%d/%d' % (ok[0], ok[0] + len(ko)))
 if ko: sys.exit(1)

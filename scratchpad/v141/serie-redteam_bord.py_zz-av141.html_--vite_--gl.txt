@@ -1,0 +1,14 @@
+OK  [carte graphique · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.8
+KO  [carte graphique · clair · signal] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 0.50, max 1.50 · fin 120.2 (de 118.5 à 122.8)
+OK  [carte graphique · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.2
+OK  [carte graphique · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 1.6
+OK  [carte graphique · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.9
+KO  [carte graphique · clair · taciturne] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 0.50, max 1.75 · fin 120.2 (de 118.5 à 122.8)
+OK  [carte graphique · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.6
+KO  [carte graphique · sombre · signal] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 0.50, max 2.00 · fin 120.2 (de 118.5 à 123.2)
+OK  [carte graphique · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 1.0
+OK  [carte graphique · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 1.2
+OK  [carte graphique · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 1.4
+KO  [carte graphique · sombre · taciturne] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 0.50, max 1.50 · fin 120.5 (de 118.2 à 122.8)
+
+8/12

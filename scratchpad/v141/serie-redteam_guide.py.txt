@@ -1,0 +1,59 @@
+
+── le parcours complet, clair
+  ✅ [clair] la barre du bas est complète dès l'arrivée sur l'accueil (cinq entrées), et rien n'est encore flou       [[25, 734.5, 90, 51], [79, 734.5, 90, 51], [159, 724, 72, 72], [221, 734.5, 90, 51], [275, 734.5, 90, 51]] · guide None
+  ✅ [clair] 1 · le flou paraît environ 0,8 s après l'arrivée sur l'accueil (entre 0,6 et 1,6 s)                      délai 0.92 s
+  ✅ [clair] 1 · il s'installe peu à peu (le masque grandit, sans à-coup de retour)                                   92 valeurs relevées, de [0] à [1]
+  ✅ [clair] 1 · la matière est le flou des murs : 4.8 px, par un flou de l'arrière-plan                              blur(4.8px)
+  ✅ [clair] 2 · tout est flou : le plateau et les autres entrées de la barre perdent leurs contours (≤ 62 % de l'énergie d'avant) le mot-marque 5.2→2.0 · les icônes du plateau 3.8→0.7 · AURA 8.4→1.1 · le + 4.7→2.7 · INDEX 10.4→1.2 · FIL 5.2→0.7
+  ✅ [clair] 2 · seule l'icône du Studio est nette (ses contours gardent ≥ 80 % de leur énergie), et un peu plus grosse énergie 7.7 → 6.6 · largeur 90 → 108
+  ✅ [clair] 2 · la phrase, mot pour mot, au milieu de l'écran                                                        « Chacun sa matière. La tienne est au Studio. » [36, 357, 318, 69.6]
+  ✅ [clair] 2 · ni orange ni « Ma Parole ! » : la phrase est à l'encre du mode                                       rgb(32, 25, 8)
+  ✅ [clair] un « Plus tard » discret, visible : 12 px, sans soulignement                                             Plus tard [145, 449, 100, 44] 12px none
+  ✅ [clair] A2 : aucun nœud du guide n'a d'opacité, de transition ni d'animation ; tous portent `data-eng`           []
+  ✅ [clair] 3 · toucher l'icône ouvre le Studio ; le flou n'est plus là                                              Studio True · guide None
+  ✅ [clair] 4 · au retour, le flou se reforme ; la phrase, mot pour mot                                              guide plus · « Tout le reste part d’ici. »
+  ✅ [clair] 4 · tout est flou, sauf le + et son encart, nets et un peu grossis                                       le mot-marque 5.2→2.0 · STUDIO 7.8→1.0 · FIL 5.2→0.7 · le + 4.5→4.2, largeur 72 → 79.2
+  ✅ [clair] 5 · toucher le + ouvre la création (les trois natures du +, ou la page +) ; le guidage est fini          natures True · page + False · guide None · promi_guide 1
+  ✅ [clair] après le guide, la barre est complète et à sa taille                                                     [[25, 734.5, 90, 51], [79, 734.5, 90, 51], [159, 724, 72, 72], [221, 734.5, 90, 51], [275, 734.5, 90, 51]]
+  ✅ [clair] une seule fois : après un rechargement, ni onboarding ni guide (8,5 s sur l'accueil)                     guide None · devant : accueil
+  ✅ [clair] les phrases vivent dans TEXTES_ENGAGEMENT, sans impératif (A3)                                           {'studio': 'Chacun sa matière. La tienne est au Studio.', 'plus': 'Tout le reste part d’ici.', 'plusTard': 'Plus tard'}
+
+── le parcours complet, sombre
+  ✅ [sombre] la barre du bas est complète dès l'arrivée sur l'accueil (cinq entrées), et rien n'est encore flou      [[25, 734.5, 90, 51], [79, 734.5, 90, 51], [159, 724, 72, 72], [221, 734.5, 90, 51], [275, 734.5, 90, 51]] · guide None
+  ✅ [sombre] 1 · le flou paraît environ 0,8 s après l'arrivée sur l'accueil (entre 0,6 et 1,6 s)                     délai 0.9 s
+  ✅ [sombre] 1 · il s'installe peu à peu (le masque grandit, sans à-coup de retour)                                  92 valeurs relevées, de [0] à [1]
+  ✅ [sombre] 1 · la matière est le flou des murs : 4.8 px, par un flou de l'arrière-plan                             blur(4.8px)
+  ✅ [sombre] 2 · tout est flou : le plateau et les autres entrées de la barre perdent leurs contours (≤ 62 % de l'énergie d'avant) le mot-marque 6.3→2.2 · les icônes du plateau 5.1→0.8 · AURA 9.9→1.2 · le + 3.7→1.6 · INDEX 12.1→1.3 · FIL 6.5→0.8
+  ✅ [sombre] 2 · seule l'icône du Studio est nette (ses contours gardent ≥ 80 % de leur énergie), et un peu plus grosse énergie 9.2 → 7.8 · largeur 90 → 108
+  ✅ [sombre] 2 · la phrase, mot pour mot, au milieu de l'écran                                                       « Chacun sa matière. La tienne est au Studio. » [36, 357, 318, 69.6]
+  ✅ [sombre] 2 · ni orange ni « Ma Parole ! » : la phrase est à l'encre du mode                                      rgb(247, 240, 222)
+  ✅ [sombre] un « Plus tard » discret, visible : 12 px, sans soulignement                                            Plus tard [145, 449, 100, 44] 12px none
+  ✅ [sombre] A2 : aucun nœud du guide n'a d'opacité, de transition ni d'animation ; tous portent `data-eng`          []
+  ✅ [sombre] 3 · toucher l'icône ouvre le Studio ; le flou n'est plus là                                             Studio True · guide None
+  ✅ [sombre] 4 · au retour, le flou se reforme ; la phrase, mot pour mot                                             guide plus · « Tout le reste part d’ici. »
+  ✅ [sombre] 4 · tout est flou, sauf le + et son encart, nets et un peu grossis                                      le mot-marque 6.3→2.2 · STUDIO 9.3→1.1 · FIL 6.5→0.8 · le + 4.0→3.4, largeur 72 → 79.2
+  ✅ [sombre] 5 · toucher le + ouvre la création (les trois natures du +, ou la page +) ; le guidage est fini         natures True · page + False · guide None · promi_guide 1
+  ✅ [sombre] après le guide, la barre est complète et à sa taille                                                    [[25, 734.5, 90, 51], [79, 734.5, 90, 51], [159, 724, 72, 72], [221, 734.5, 90, 51], [275, 734.5, 90, 51]]
+  ✅ [sombre] une seule fois : après un rechargement, ni onboarding ni guide (8,5 s sur l'accueil)                    guide None · devant : accueil
+  ✅ [sombre] les phrases vivent dans TEXTES_ENGAGEMENT, sans impératif (A3)                                          {'studio': 'Chacun sa matière. La tienne est au Studio.', 'plus': 'Tout le reste part d’ici.', 'plusTard': 'Plus tard'}
+
+── toucher le flou ailleurs
+  ✅ toucher le flou ailleurs : le flou se dissout, le guidage est fini (rien d'ouvert, l'accueil est là)             avant studio · après None · devant accueil
+  ✅ toucher le flou ailleurs : il ne se reforme pas                                                                  guide None
+  ✅ toucher le flou ailleurs : après un rechargement, il ne revient pas                                              guide None
+
+── « Plus tard »
+  ✅ « Plus tard » : le flou se dissout, le guidage est fini (rien d'ouvert, l'accueil est là)                        avant studio · après None · devant accueil
+  ✅ « Plus tard » : il ne se reforme pas                                                                             guide None
+  ✅ « Plus tard » : après un rechargement, il ne revient pas                                                         guide None
+
+── Réduire les animations
+  ✅ Réduire les animations : le flou est posé sans mouvement (entier dès la première image)                          [1, 1, 1, 1, 1, 1, 1, 1]
+
+── « Plus tard » dans l'onboarding : pas de guide
+  ✅ « Plus tard » à la première étape : on est sur l'accueil, sans guide                                             onb False · guide None · devant accueil
+
+── « Revoir la présentation » rejoue le guide
+  ✅ après « Revoir la présentation » menée au bout, le guide se rejoue                                               guide studio · promi_guide 1
+
+  ✅  43 / 43

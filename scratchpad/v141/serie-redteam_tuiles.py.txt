@@ -1,0 +1,66 @@
+[clair · doigt · immobile] chiche après rien               OK  
+[clair · doigt · immobile] nuee après chiche               OK  
+[clair · doigt · immobile] promi après chiche→nuee         OK  
+[clair · doigt · immobile] chiche après chiche→nuee→promi  OK  
+[clair · doigt · immobile] nuee après rien                 OK  
+[clair · doigt · immobile] chiche après nuee               OK  
+[clair · doigt · immobile] nuee après nuee→chiche          OK  
+[clair · doigt · immobile] promi après nuee→chiche→nuee    OK  
+[clair · doigt · tremble 6 px] chiche après rien           OK  
+[clair · doigt · tremble 6 px] nuee après chiche           OK  
+[clair · doigt · tremble 6 px] promi après chiche→nuee     OK  
+[clair · doigt · tremble 6 px] chiche après chiche→nuee→promi OK  
+[clair · doigt · tremble 6 px] nuee après rien             OK  
+[clair · doigt · tremble 6 px] chiche après nuee           OK  
+[clair · doigt · tremble 6 px] nuee après nuee→chiche      OK  
+[clair · doigt · tremble 6 px] promi après nuee→chiche→nuee OK  
+[clair · doigt · glisse 10 px] chiche après rien           OK  
+[clair · doigt · glisse 10 px] nuee après chiche           OK  
+[clair · doigt · glisse 10 px] promi après chiche→nuee     OK  
+[clair · doigt · glisse 10 px] chiche après chiche→nuee→promi OK  
+[clair · doigt · glisse 10 px] nuee après rien             OK  
+[clair · doigt · glisse 10 px] chiche après nuee           OK  
+[clair · doigt · glisse 10 px] nuee après nuee→chiche      OK  
+[clair · doigt · glisse 10 px] promi après nuee→chiche→nuee OK  
+[clair · souris · clic] chiche après rien                  OK  
+[clair · souris · clic] nuee après chiche                  OK  
+[clair · souris · clic] promi après chiche→nuee            OK  
+[clair · souris · clic] chiche après chiche→nuee→promi     OK  
+[clair · souris · clic] nuee après rien                    OK  
+[clair · souris · clic] chiche après nuee                  OK  
+[clair · souris · clic] nuee après nuee→chiche             OK  
+[clair · souris · clic] promi après nuee→chiche→nuee       OK  
+[sombre · doigt · immobile] chiche après rien              OK  
+[sombre · doigt · immobile] nuee après chiche              OK  
+[sombre · doigt · immobile] promi après chiche→nuee        OK  
+[sombre · doigt · immobile] chiche après chiche→nuee→promi OK  
+[sombre · doigt · immobile] nuee après rien                OK  
+[sombre · doigt · immobile] chiche après nuee              OK  
+[sombre · doigt · immobile] nuee après nuee→chiche         OK  
+[sombre · doigt · immobile] promi après nuee→chiche→nuee   OK  
+[sombre · doigt · tremble 6 px] chiche après rien          OK  
+[sombre · doigt · tremble 6 px] nuee après chiche          OK  
+[sombre · doigt · tremble 6 px] promi après chiche→nuee    OK  
+[sombre · doigt · tremble 6 px] chiche après chiche→nuee→promi OK  
+[sombre · doigt · tremble 6 px] nuee après rien            OK  
+[sombre · doigt · tremble 6 px] chiche après nuee          OK  
+[sombre · doigt · tremble 6 px] nuee après nuee→chiche     OK  
+[sombre · doigt · tremble 6 px] promi après nuee→chiche→nuee OK  
+[sombre · doigt · glisse 10 px] chiche après rien          OK  
+[sombre · doigt · glisse 10 px] nuee après chiche          OK  
+[sombre · doigt · glisse 10 px] promi après chiche→nuee    OK  
+[sombre · doigt · glisse 10 px] chiche après chiche→nuee→promi OK  
+[sombre · doigt · glisse 10 px] nuee après rien            OK  
+[sombre · doigt · glisse 10 px] chiche après nuee          OK  
+[sombre · doigt · glisse 10 px] nuee après nuee→chiche     OK  
+[sombre · doigt · glisse 10 px] promi après nuee→chiche→nuee OK  
+[sombre · souris · clic] chiche après rien                 OK  
+[sombre · souris · clic] nuee après chiche                 OK  
+[sombre · souris · clic] promi après chiche→nuee           OK  
+[sombre · souris · clic] chiche après chiche→nuee→promi    OK  
+[sombre · souris · clic] nuee après rien                   OK  
+[sombre · souris · clic] chiche après nuee                 OK  
+[sombre · souris · clic] nuee après nuee→chiche            OK  
+[sombre · souris · clic] promi après nuee→chiche→nuee      OK  
+
+64/64

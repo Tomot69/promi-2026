@@ -32,6 +32,11 @@ ICI=os.path.dirname(os.path.abspath(__file__))
 # le bloc `lot-V139-OMBRE-css` (l'ombre, clair et sombre : deux dégradés, pas un de plus). Le halo, la couronne, la flaque restent interdits.
 BLANCHE={'lot-V139-OMBRE-css':'*'}
 OMBRE_ATTENDUE=2
+# ⚑ v141 (Tom, 10 oct. 2026, C-094) — CONTRAT COMPLÉTÉ (original : sauvegardes/redteam_volume-avant-v141.py). « Après environ 0,8 s, un flou couvre
+# l'écran. C'est la matière du flou des murs ; il s'installe en zones abstraites […] qui se remplissent et se rejoignent. » Le guide de fin de
+# parcours (`lot-V141-GUIDE`) écrit quatre `…-gradient(` : ce sont les MASQUES de sa couche de flou (les zones qui grandissent, le trou net),
+# pas des dégradés peints — aucune couleur n'en sort. Exception NOMINATIVE, comptée : quatre, pas une de plus, et dans ce bloc seulement.
+MASQUES={'lot-V141-GUIDE':4}
 def permis(lot, motif):
     b=BLANCHE.get(lot); return b=='*' or (b is not None and any(motif.startswith(m) for m in b))
 MOTIFS=re.compile(r"_couronnePelote|_haloPelote|_flaquePelote|(?:repeating-)?(?:radial|linear|conic)-gradient\(|create(?:Radial|Linear|Conic)Gradient|shadowBlur|shadowColor|drop-shadow\(|text-shadow\s*:[^;}\"']*|box-shadow\s*:[^;}\"']*")
@@ -89,13 +94,17 @@ def main():
         json.dump(sorted(dette), open(F,'w',encoding='utf-8'), ensure_ascii=False, indent=0)
         print('dette figée :', len(dette), 'occurrences'); return
     dette=collections.Counter(json.load(open(F,encoding='utf-8')))
-    vu=collections.Counter(); neuf=[]; blanche=0
+    vu=collections.Counter(); neuf=[]; blanche=0; masques={}
     for o in O:
         if permis(o[1],o[3]): blanche+=1; continue
+        if o[1] in MASQUES and 'gradient(' in o[3]: masques[o[1]]=masques.get(o[1],0)+1; continue
         k=cle(o)
         if vu[k]<dette[k]: vu[k]+=1
         else: neuf.append(k)
     print('liste blanche : l\'ombre de la Pelote seule (v139) —', blanche, 'occurrence(s) exemptée(s), attendu', OMBRE_ATTENDUE)
+    print('masques du flou du guide (v141) —', masques, '· attendu', MASQUES)
+    for _l,_n in MASQUES.items():
+        if masques.get(_l,0)>_n: neuf.append('(%s écrit %d masque(s) : quatre au plus)'%(_l,masques.get(_l,0)))
     if blanche!=OMBRE_ATTENDUE: neuf.append('(la liste blanche exempte %d occurrence(s) : l\'ombre en porte exactement %d)'%(blanche,OMBRE_ATTENDUE))
     print('dette de naissance :', sum(dette.values()), '· retrouvée :', sum(vu.values()), '· soldée depuis :', sum(dette.values())-sum(vu.values()))
     for k in neuf: print('  ✗ NOUVEAU VOLUME :', k)

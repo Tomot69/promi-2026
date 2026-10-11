@@ -81,3 +81,14 @@
 - **E2bis** : `promi_devoile` — la barre se dévoile (Index à la première plantation, Aura au premier tenu, Studio au retour de l'Aura, Fil à la première parole adressée ou reçue) ; réglage « Tout afficher ». `SPEC-DONNEES` §9, `SPEC-ECRANS` §1.
 - **Fiche** : après « tenir », la phrase complète reste (elle retombait sur « à moi ») ; sur l'instant, la ligne d'état descend sous un titre de deux lignes.
 
+## v141 (10 oct. 2026)
+- **Onboarding** : celui d'avant v140 (prénom → parole → trait → message de fin → compte), mot pour mot ; « Plus tard » à chaque étape (12 px, sans soulignement, en haut à droite). L'étape « principe » et E2 n'existent plus : `SPEC-ECRANS` §2 reste celle d'avant v140, plus la sortie. `ENGAGEMENT-E2.md` est de l'histoire.
+- **Guide de fin de parcours** (remplace E2bis ; `promi_devoile` n'existe plus) : `promi_guide` ; un flou de 4,8 pt dont le masque grandit en 1,5 s, un trou net sur le Studio puis sur le + ; deux phrases (`TEXTES_ENGAGEMENT.guide`). En Swift : `UIVisualEffectView` ou un flou de calque, masque animé ; mouvement réduit : posé d'un coup. `SPEC-ECRANS` §1, `SPEC-DONNEES` §9.
+- **Pelote** : le bord — aucune retouche de l'opacité des poils ; corps opaque qui s'efface de 0,98 à 1,05 R ; couleur du bord = vis-à-vis intérieur (v137). Poils du bord inclinés par la rotation (`tour()`). Trace : inscrite pendant le geste (un arc par zone de contact), rien au lâcher, rien pour un appui. Fond du creux sans peigne. `SPEC-PELOTE`.
+- **Toile** : `plantOne` ne plante plus sous la barre (borne basse 710 − 0,87 cellule ; les cellules repliées passent par la zone) ; mondes « faits de leurs seules paroles » sous neuf paroles : cadrage sur la boîte des cellules (`_boiteSerre`). `SPEC-TOILE`.
+- **Murs** : au Studio le mur est le panneau `#stpBas` entier ; le bouton d'achat n'est pas un mur ; sur le panneau des palettes, les pastilles se retirent pendant la lecture.
+- **Fiches** : corps clair `#F7F0DE` (plus de `#EAD9B9`) ; mots de trace de la page + selon le destinataire ; le geste de tenir part aussi du milieu ; « C'est tenu. » ; photo : `photoCadre.a` (angle) ; photo d'un dessin : `a`.
+- **Cercle** : bouton « Planter dans le Cercle » collant à 12 pt au-dessus du bandeau ; Peaufiner : bouton sous Commentaires, Dissoudre sans encart.
+- **Partage** : une parole seule = une colonne, case à 56 % de la largeur, centre à 44 % de la hauteur.
+- **Accueil** : bouton recadrer à quatre coins, 12 pt au-dessus de la barre.
+

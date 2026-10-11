@@ -1,0 +1,53 @@
+=== webkit
+[doigt · Promi] A · l'écran Partager s'ouvre, sur Mon Folio        OK  True mosaic
+[doigt · Promi] B · la planche porte exactement ces paroles, sans Pelote OK  composées [125] attendues [125] · tracés True
+[doigt · Promi] D · la réduction n'est jamais sauvegardée          OK  {"139":true,"n:potager":true}
+[doigt · Promi] D · fermé, le choix de l'utilisateur est rendu     OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Promi] C · l'image = Mon Folio réduit à la main           OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt · Chiche] A · l'écran Partager s'ouvre, sur Mon Folio       OK  True mosaic
+[doigt · Chiche] B · la planche porte exactement ces paroles, sans Pelote OK  composées [127] attendues [127] · tracés True
+[doigt · Chiche] D · la réduction n'est jamais sauvegardée         OK  {"139":true,"n:potager":true}
+[doigt · Chiche] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Chiche] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt · Cercle] A · l'écran Partager s'ouvre, sur Mon Folio       OK  True mosaic
+[doigt · Cercle] B · la planche porte exactement ces paroles, sans Pelote OK  composées [130, 131, 132, 133, 134, 135, 136, 137, 138] attendues [130, 131, 132, 133, 134, 135, 136, 137, 138] · tracés True
+[doigt · Cercle] D · la réduction n'est jamais sauvegardée         OK  {"139":true,"n:potager":true}
+[doigt · Cercle] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Cercle] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt] aucune erreur JS                                           OK  
+[souris · Promi] A · l'écran Partager s'ouvre, sur Mon Folio       OK  True mosaic
+[souris · Promi] B · la planche porte exactement ces paroles, sans Pelote OK  composées [125] attendues [125] · tracés True
+[souris · Promi] D · la réduction n'est jamais sauvegardée         OK  {"139":true,"n:potager":true}
+[souris · Promi] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[souris · Promi] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[souris · Chiche] A · l'écran Partager s'ouvre, sur Mon Folio      OK  True mosaic
+[souris · Chiche] B · la planche porte exactement ces paroles, sans Pelote OK  composées [127] attendues [127] · tracés True
+[souris · Chiche] D · la réduction n'est jamais sauvegardée        OK  {"139":true,"n:potager":true}
+[souris · Chiche] D · fermé, le choix de l'utilisateur est rendu   OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[souris · Chiche] C · l'image = Mon Folio réduit à la main         OK  écart moyen 0.00 niveaux · 2160 × 3842
+[souris · Cercle] A · l'écran Partager s'ouvre, sur Mon Folio      OK  True mosaic
+[souris · Cercle] B · la planche porte exactement ces paroles, sans Pelote OK  composées [130, 131, 132, 133, 134, 135, 136, 137, 138] attendues [130, 131, 132, 133, 134, 135, 136, 137, 138] · tracés True
+[souris · Cercle] D · la réduction n'est jamais sauvegardée        OK  {"139":true,"n:potager":true}
+[souris · Cercle] D · fermé, le choix de l'utilisateur est rendu   OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[souris · Cercle] C · l'image = Mon Folio réduit à la main         OK  écart moyen 0.00 niveaux · 2160 × 3842
+[souris] aucune erreur JS                                          OK  
+=== chromium
+[doigt · Promi] A · l'écran Partager s'ouvre, sur Mon Folio        OK  True mosaic
+[doigt · Promi] B · la planche porte exactement ces paroles, sans Pelote OK  composées [125] attendues [125] · tracés True
+[doigt · Promi] D · la réduction n'est jamais sauvegardée          OK  {"139":true,"n:potager":true}
+[doigt · Promi] D · fermé, le choix de l'utilisateur est rendu     OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Promi] C · l'image = Mon Folio réduit à la main           OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt · Chiche] A · l'écran Partager s'ouvre, sur Mon Folio       OK  True mosaic
+[doigt · Chiche] B · la planche porte exactement ces paroles, sans Pelote OK  composées [127] attendues [127] · tracés True
+[doigt · Chiche] D · la réduction n'est jamais sauvegardée         OK  {"139":true,"n:potager":true}
+[doigt · Chiche] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Chiche] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt · Cercle] A · l'écran Partager s'ouvre, sur Mon Folio       OK  True mosaic
+[doigt · Cercle] B · la planche porte exactement ces paroles, sans Pelote OK  composées [130, 131, 132, 133, 134, 135, 136, 137, 138] attendues [130, 131, 132, 133, 134, 135, 136, 137, 138] · tracés True
+[doigt · Cercle] D · la réduction n'est jamais sauvegardée         OK  {"139":true,"n:potager":true}
+[doigt · Cercle] D · fermé, le choix de l'utilisateur est rendu    OK  True · {"h":{"139":true,"n:potager":true},"m":"toile","p":true}
+[doigt · Cercle] C · l'image = Mon Folio réduit à la main          OK  écart moyen 0.00 niveaux · 2160 × 3842
+[doigt] aucune erreur JS                                           OK  
+
+48/48
+✅ le rond Partager d'une fiche partage son Folio

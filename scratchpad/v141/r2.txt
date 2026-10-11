@@ -1,0 +1,30 @@
+redteam_trace.py | rc 0 | 48 s | 10/10
+redteam_pelote_doigt.py | rc 1 | 29 s | KO : 1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms · 1 · [passe 2] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+releve-aura.py | rc 1 | 180 s | ❌  4 ÉCARTS
+redteam_fluide.py | rc 1 | 203 s | KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 4097 images) · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 
+redteam_verrou_onboarding.py | rc 0 | 40 s | verrou de l'onboarding : 9/9
+redteam_guide.py | rc 0 | 223 s |   ✅  43 / 43
+redteam_onb_sorties.py | rc 0 | 93 s |      R6 · compte         sortie : « Plus tard »
+redteam_murs_toucher.py | rc 0 | 368 s | 8 / 8
+redteam_ritournelle.py | rc 0 | 102 s | 12 / 12
+redteam_tourne.py | rc 0 | 30 s | 8 / 8
+redteam_nuee.py | rc 0 | 206 s |   ✅  24 écran(s) · 0 écart(s)
+redteam_nuee_entree.py | rc 0 | 44 s | 24/24
+redteam_engagement.py | rc 0 | 114 s | redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+redteam_decisions.py | rc 1 | 80 s | KO : Cercle [light] champ · Cercle [dark] champ
+redteam_volume.py | rc 1 | 0 s | ❌ 4 volume(s) nouveau(x)
+redteam_registre.py | rc 0 | 0 s | chantiers non validés : 101
+redteam_ecrans.py | rc 0 | 91 s | 152/152
+redteam_joignable.py | rc 0 | 135 s | 5 / 5
+redteam_vide.py | rc 0 | 229 s | 61/61
+redteam_air.py | rc 1 | 313 s |   Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+redteam_flash.py | rc 0 | 117 s | 32/32
+redteam_decoupe.py | rc 0 | 316 s | ✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut
+redteam_champ.py | rc 0 | 127 s | 32/32
+redteam_studio_geste.py | rc 0 | 47 s | 22/22
+redteam_reactif.py | rc 0 | 79 s | redteam_reactif : 31/31
+banc_rendu.py | rc 1 | 113 s | ❌ LE RENDU A CHANGÉ.
+redteam_gestes.py | rc 1 | 631 s | ROUGE : 0 · les valeurs décidées : 600 ms, 900 ms, trois fois, × 1,5, 1,6 s · 0 · l'inventaire porte au moins : tenir, chiche, noyau, pelote, dessin — et l'Aura
+redteam_couleurs_ref.py | rc 1 | 806 s | ❌ — 8 écart(s) de couleur avec la référence v118
+redteam_rythme.py | rc 0 | 678 s | 99 / 99
+FIN

@@ -1,0 +1,11 @@
+OK  1 · stockage vierge : aucune clé au départ du contexte                     promi_graine, promi_state, promi_theme, promi_sig, promi_sigdemo
+OK  2 · stockage vierge : l'onboarding s'affiche                               
+OK  3 · le parcours a été joué jusqu'au bout (prénom, parole, trait)           prénom True · parole True · trait True
+OK  4 · terminé : l'onboarding n'est plus à l'écran                            
+OK  5 · terminé : le verrou est posé (promi_onb = 1), un Promi est planté      {'onb': '1', 'n': 1}
+OK  6 · rechargement n° 1 : l'onboarding ne s'affiche plus                     promi_onb = 1
+OK  7 · rechargement n° 2 : l'onboarding ne s'affiche plus                     promi_onb = 1
+OK  8 · le Promi planté est toujours là après les rechargements                
+OK  9 · aucune erreur de page                                                  []
+
+verrou de l'onboarding : 9/9

@@ -1,0 +1,11 @@
+redteam_fluide.py | rc 1 | 208 s | KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 3847 images) · 3 · la durée : « juste après » paraît 1 000 ms (± 80) après « le
+redteam_fluide.py zz-av141.html | rc 0 | 203 s | 6 / 6
+redteam_trace.py | rc 0 | 48 s | 10/10
+redteam_pelote_doigt.py | rc 1 | 32 s | KO : 1 · [passe 2] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+releve-aura.py | rc 1 | 189 s | ❌  3 ÉCARTS
+redteam_nuee.py | rc 0 | 201 s |   ✅  24 écran(s) · 0 écart(s)
+redteam_volume.py | rc 0 | 0 s | ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+banc_rendu.py --deux | rc 1 | 211 s |    ≠ chamade dalle-tenu-k2
+redteam_couleurs_ref.py | rc 0 | 702 s | ✅ — 0 écart(s) de couleur avec la référence v118
+redteam_gestes.py | rc 0 | 634 s | redteam_gestes : 122/122
+FIN

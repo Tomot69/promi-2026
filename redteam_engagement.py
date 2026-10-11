@@ -190,9 +190,9 @@ with sync_playwright() as p:
     # et le trait, le message de fin » : c'est le prénom, le principe, la vraie page +, la fiche, la dernière ligne, le compte. Le parcours est
     # joué au vrai doigt par `redteam_e2.py --r6`, qui rend la sortie visible de chaque étape ; R6 garde sa règle : une sortie à CHAQUE étape.
     import subprocess
-    r6 = subprocess.run([sys.executable, 'redteam_e2.py', '--r6'] + ([URL.rsplit('/', 1)[-1]] if not URL.endswith('/app.html') else []), capture_output=True, text=True, timeout=600)
+    r6 = subprocess.run([sys.executable, 'redteam_onb_sorties.py', '--r6'] + ([URL.rsplit('/', 1)[-1]] if not URL.endswith('/app.html') else []), capture_output=True, text=True, timeout=600)   # ⚑ v141 (Tom, C-075) : l'onboarding d'avant v140 est revenu, avec un « Plus tard » à chaque étape — le parcours est joué par redteam_onb_sorties.py (original de ce juge : sauvegardes/redteam_engagement-avant-v141.py)
     lignes = [l for l in r6.stdout.splitlines() if l.strip().startswith('R6')]
-    t('R6 · sortie à un geste, à chaque étape de l\'onboarding (E2 : prénom, principe, page +, fiche, dernière ligne, compte)', r6.returncode == 0 and len(lignes) >= 7, (lignes[0] if lignes else r6.stdout[-200:]))
+    t('R6 · sortie à un geste, à chaque étape de l\'onboarding (prénom, prénom saisi, parole, trait, message de fin, compte)', r6.returncode == 0 and len(lignes) >= 7, (lignes[0] if lignes else r6.stdout[-200:]))
     for l in lignes[1:]: print('     ' + l.strip())
     b.close()
 print('\nredteam_engagement : %d/%d au vert · %d inactif(s) : %s' % (ok[0], ok[0] + len(ko), len(inactifs), ' ; '.join(inactifs)))

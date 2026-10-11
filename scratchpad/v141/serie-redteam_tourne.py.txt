@@ -1,0 +1,10 @@
+OK  A · un pincement sans rotation ne tourne rien  angle 0.000 rad · zoom 1.56
+OK  A · deux doigts qui tournent de 30° tournent la photo de 30° (± 2°)  angle 30.0°
+OK  A · sans changer sa taille (± 4 %) ni la décentrer (± 3 pt)  zoom 1.56 → 1.56 · décalage (0.0 ; 0.0) → (0.0 ; 0.0)
+OK  A · à l'écran : tournée d'un quart de tour, le quart rouge est en haut à droite, le bleu en haut à gauche (pixels)  angle 90.0° · haut droite rouge · haut gauche bleu
+OK  A · l'angle est mémorisé : sur la parole, et encore là quand la fiche est rouverte  sur la parole 1.5707963267948966 · fiche rouverte 1.571
+OK  B · une photo du dessin : deux doigts qui tournent de 40° la tournent de 40° (± 2°)  angle 40.1° · largeur 234.0 → 234.0 · centre (195.0 ; 371.0) → (195.0 ; 371.0)
+OK  B · POSER garde l'angle (il est dans le dessin de la parole)  angle posé 0.7
+OK  B · le mode rouvert, la photo a toujours son angle  angle 0.7
+
+8 / 8

@@ -1,0 +1,11 @@
+KO  A · un pincement sans rotation ne tourne rien  angle 9.000 rad · zoom 1.56
+KO  A · deux doigts qui tournent de 30° tournent la photo de 30° (± 2°)  angle 515.7°
+OK  A · sans changer sa taille (± 4 %) ni la décentrer (± 3 pt)  zoom 1.56 → 1.56 · décalage (0.0 ; 0.0) → (0.0 ; 0.0)
+KO  A · à l'écran : tournée d'un quart de tour, le quart rouge est en haut à droite, le bleu en haut à gauche (pixels)  angle 515.7° · haut droite vert · haut gauche rouge
+KO  A · l'angle est mémorisé : sur la parole, et encore là quand la fiche est rouverte  sur la parole None · fiche rouverte 9.000
+KO  B · une photo du dessin : deux doigts qui tournent de 40° la tournent de 40° (± 2°)  angle 515.7° · largeur 234.0 → 234.0 · centre (195.0 ; 371.0) → (195.0 ; 371.0)
+KO  B · POSER garde l'angle (il est dans le dessin de la parole)  angle posé None
+Traceback (most recent call last):
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_tourne.py", line 77, in <module>
+    juge('B · le mode rouvert, la photo a toujours son angle', bool(C) and B and abs(C[0].get('a', 9) - B[0]['a']) < 0.002, 'angle %s' % (C and C[0].get('a')))
+KeyError: 'a'

@@ -1,0 +1,20 @@
+OK  [clair] 0 · la référence : la photo seule est dans la bande  {'photo': True, 'dessin': False, 'couche': False, 'oeil': False} · 29.0 % de la bande aux couleurs de la photo
+OK  [clair] 1 · dessin posé : la bande montre le dessin, sans un pixel de photo  {'photo': False, 'dessin': True, 'couche': True, 'oeil': True} · photo 0.00 %
+OK  [clair] 1 · le menu offre « Importer une photo »  ['Dessiner', 'Importer une photo', 'La dalle d’origine', 'Retirer le dessin']
+OK  [clair] 2 · dessin → photo : la bande est celle de la photo seule, sans reste (≤ 0,2 %)  écart à la référence 0.00 % · photo 29.0 %
+OK  [clair] 2 · plus de dessin : ni donnée, ni couche, ni œil  {'photo': True, 'dessin': False, 'couche': False, 'oeil': False}
+OK  [clair] 2 · le menu offre « Dessiner »  ['Dessiner', 'Importer une photo', 'La dalle d’origine', 'Retirer la photo']
+OK  [clair] 3 · photo → dessin : plus de photo, ni donnée ni pixel  {'photo': False, 'dessin': True, 'couche': True, 'oeil': True} · photo 0.00 %
+OK  [clair] 4 · dessin → photo, encore : la référence, sans reste (≤ 0,2 %)  écart 0.00 % · {'photo': True, 'dessin': False, 'couche': False, 'oeil': False}
+OK  [clair] aucune erreur de page  []
+OK  [sombre] 0 · la référence : la photo seule est dans la bande  {'photo': True, 'dessin': False, 'couche': False, 'oeil': False} · 29.0 % de la bande aux couleurs de la photo
+OK  [sombre] 1 · dessin posé : la bande montre le dessin, sans un pixel de photo  {'photo': False, 'dessin': True, 'couche': True, 'oeil': True} · photo 0.00 %
+OK  [sombre] 1 · le menu offre « Importer une photo »  ['Dessiner', 'Importer une photo', 'La dalle d’origine', 'Retirer le dessin']
+OK  [sombre] 2 · dessin → photo : la bande est celle de la photo seule, sans reste (≤ 0,2 %)  écart à la référence 0.00 % · photo 29.0 %
+OK  [sombre] 2 · plus de dessin : ni donnée, ni couche, ni œil  {'photo': True, 'dessin': False, 'couche': False, 'oeil': False}
+OK  [sombre] 2 · le menu offre « Dessiner »  ['Dessiner', 'Importer une photo', 'La dalle d’origine', 'Retirer la photo']
+OK  [sombre] 3 · photo → dessin : plus de photo, ni donnée ni pixel  {'photo': False, 'dessin': True, 'couche': True, 'oeil': True} · photo 0.00 %
+OK  [sombre] 4 · dessin → photo, encore : la référence, sans reste (≤ 0,2 %)  écart 0.00 % · {'photo': True, 'dessin': False, 'couche': False, 'oeil': False}
+OK  [sombre] aucune erreur de page  []
+
+18/18

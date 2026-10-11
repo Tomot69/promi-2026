@@ -1078,7 +1078,10 @@ def juge():
         #   sauvegardes/releve-aura-avant-v21.py
         if not ok: acq.append('4 · le creux ne revient pas en 9 s')
         n_tap = pg.evaluate("()=>_aura.etat().traces")
-        if not n_tap or n_tap < 1: acq.append('4 · le toucher ne couche pas le poil (%s caresse)' % n_tap)
+        # ⚑ v141 (Tom, 10 oct. 2026, C-083) — CONTRAT RÉÉCRIT (original : sauvegardes/releve-aura-avant-v141.py, « le toucher couche le poil : une
+        #   caresse de plus »). La décision qui le remplace : « Un appui immobile creuse la forme du contact, sans motif. » Un toucher ne laisse
+        #   AUCUNE trace : le creux, puis rien.
+        if n_tap: acq.append('4 · un toucher laisse une trace (%s caresse) — il ne doit laisser que son creux, qui revient' % n_tap)
         # 5 · la trace qui reste
         n0 = pg.evaluate("()=>_aura.etat().traces")
         pg.mouse.move(cx - 0.5 * bb['R'], cy + 0.1 * bb['R']); pg.mouse.down()
@@ -1087,9 +1090,11 @@ def juge():
         # la caresse s'inscrit AU REPOS (doigt levé, élan éteint, creux refermé) — jamais au
         # lâcher, où refaire le cache ferait une saccade
         a1 = pg.evaluate("()=>_aura.etat().attente")
-        attends("()=>_aura.etat().traces>%d" % n0, 15000)
+        attends("()=>_aura.etat().traces>%d" % n0, 3000)
         n1 = pg.evaluate("()=>_aura.etat().traces")
-        if a1 < 1: acq.append('5 · la caresse n\'est pas mise en attente au lâcher (%s)' % a1)
+        # ⚑ v141 (Tom, C-083) — CONTRAT RÉÉCRIT (original : sauvegardes/releve-aura-avant-v141.py, « la caresse est mise en attente au lâcher et
+        #   s'inscrit au repos »). La décision : « Elle se forme sous le doigt, en direct, pas au lâcher. » Au lâcher, rien n'est en attente.
+        if a1: acq.append('5 · une caresse est encore en attente au lâcher (%s) — la trace se forme sous le doigt' % a1)
         ls = pg.evaluate("()=>{try{return JSON.parse(localStorage.getItem('promi_pelote_traces')||'[]').length;}catch(e){return -1;}}")
         # ⚑ v21 — un glissement couche le poil À CHAQUE PAS (plusieurs caresses), et rien n'est gardé d'une ouverture
         #   à l'autre (« quand on ferme et rouvre l'Aura, elle redevient lisse »).

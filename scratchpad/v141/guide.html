@@ -1,0 +1,110 @@
+<style id="lot-V141-GUIDE-css">
+/* ⚑ v141 (Tom, 10 oct. 2026) — L'ONBOARDING D'AVANT v140 REVIENT EN ENTIER (C-075) ; LE GUIDE DE FIN DE PARCOURS REMPLACE E2bis (C-094).
+   « Plus tard » : sans soulignement, à 12 px (le plancher du §6 — « deux fois plus petit » que les 14 px de v140 donnerait 7 px), en haut à
+   droite, à la hauteur du mot-marque. Aucune transition, aucune animation CSS (A2) : le flou du guide s'installe par son MASQUE, image par image. */
+#onbV#onbV .onbv-tard{left:auto!important;right:24px!important;top:46px!important;width:auto!important;min-width:88px;height:44px!important;display:grid;place-items:center end;margin:0;padding:0;border:0;background:transparent;
+  font-family:var(--f-libelle)!important;font-weight:700!important;font-size:12px!important;letter-spacing:.06em;text-transform:uppercase;text-decoration:none!important;cursor:pointer;z-index:6;
+  color:var(--onb-ink);-webkit-text-fill-color:var(--onb-ink);transition:none!important;animation:none!important}
+/* « TRACE POUR PLANTER » de l'onboarding prend la taille du mot de trace des fiches et de la page + (19 px, v140), en grandissant vers le haut */
+#onbV#onbV .onbv-trace{font-size:19px!important;line-height:19px!important;margin-top:-4px!important}
+/* le guide */
+#device #guide{position:absolute;left:0;top:0;width:390px;height:844px;z-index:70;margin:0;padding:0;max-width:none;overflow:hidden;background:transparent}
+#device #guideFlou{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;
+  -webkit-backdrop-filter:blur(4.8px);backdrop-filter:blur(4.8px);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+#device #guidePhrase{position:absolute;left:36px;width:318px;margin:0;padding:0;max-width:none;text-align:center;text-wrap:balance;pointer-events:none;
+  font-family:var(--f-libelle);font-weight:700;font-size:30px;line-height:1.16;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95)}
+#device.light #guidePhrase{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+#device #guideTard{position:absolute;left:145px;width:100px;height:44px;display:grid;place-items:center;margin:0;padding:0;border:0;background:transparent;cursor:pointer;
+  font-family:var(--f-libelle);font-weight:700;font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95)}
+#device.light #guideTard{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+#device #guide, #device #guide *{transition:none!important;animation:none!important}
+/* ce qui reste net est « un peu plus gros » */
+#device#device.guide-studio #accBarre #studioBtn{transform:scale(1.2)!important;transform-origin:50% 50%!important}
+#device#device.guide-plus #accBarre #createBtn{transform:scale(1.1)!important;transform-origin:50% 50%!important}
+</style>
+<script id="lot-V141-GUIDE">
+/* ⚑ v141 (Tom, 10 oct. 2026, C-094) — LE GUIDE DE FIN DE PARCOURS. Il REMPLACE E2bis (le dévoilement de la barre, C-076) : la barre est complète
+   dès le départ. « Une seule fois, à la fin du premier parcours :
+     1 · on arrive sur l'accueil, la première dalle est visible ; après environ 0,8 s un flou couvre l'écran — la matière du flou des murs ; il
+         s'installe en zones abstraites, aux contours arty, qui se remplissent et se rejoignent doucement ; ni orange ni “Ma Parole !” ;
+     2 · tout est flou, sauf l'icône du Studio, nette et un peu plus grosse ; au milieu : “Chacun sa matière. La tienne est au Studio.” ;
+     3 · la toucher ouvre le Studio ;
+     4 · au retour, le flou se reforme, net sur le + et son encart, un peu grossis : “Tout le reste part d'ici.” ;
+     5 · toucher le + ouvre la page +. Le guidage est fini.
+   Garde-fous : toucher le flou ailleurs le dissout et finit le guidage ; un “Plus tard” discret, toujours visible ; une seule fois, sauf par
+   “Revoir la présentation” ; avec Réduire les animations, le flou est posé sans mouvement ; les phrases sont dans TEXTES_ENGAGEMENT, sans impératif. »
+   LE FLOU est UNE couche (`backdrop-filter:blur(4,8px)`, la valeur des murs) dont le MASQUE grandit : des ellipses (les zones) qui s'étendent,
+   image par image, jusqu'à couvrir l'écran ; ce qui reste net est un trou du masque (un disque), sous lequel le vrai bouton est grossi.
+   Aucun nœud n'a d'opacité, de fondu ni de transition CSS (A2). Tout nœud créé ici porte `data-eng`. */
+(function(){
+  var T=window.TEXTES_ENGAGEMENT=window.TEXTES_ENGAGEMENT||{};
+  T.guide={ studio:'Chacun sa matière. La tienne est au Studio.',   /* les mots de Tom (lot v141) */
+            plus:'Tout le reste part d’ici.',                      /* les mots de Tom (lot v141) */
+            plusTard:'Plus tard' };
+  function $(i){ return document.getElementById(i); }
+  var dev=$('device'); if(!dev) return;
+  var CLE='promi_guide', INSTALLE=1500, DISSOUT=380, ATTENTE=800;
+  var LS={g:function(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, s:function(k,v){ try{ localStorage.setItem(k,v); }catch(_){ } }};
+  function reduit(){ try{ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
+  function onbOuvert(){ var o=$('promiOnb'); return !!(o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none'); }
+  /* l'accueil est-il au premier plan (la Toile sous le milieu de l'écran) ? */
+  function accueil(){ try{ if(onbOuvert()) return false; var r=dev.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2, r.top+r.height*0.45);
+      return !!(h && !(h.closest && h.closest('.screen, .sheet, .poster, #feedView, #entierVue, #dessinMode, #accRappelCompte, #guide'))); }catch(_){ return false; } }
+  var etat=null, attente=null, tAcc=0, t0=0, raf=0, trou=null, Z=null, sens=1, tVu=0, vuStudio=false, apresDissout=null;
+  function k(){ return (dev.getBoundingClientRect().width/390)||1; }
+  /* les zones : huit foyers sur une grille bousculée, trois ellipses chacun — tirées une fois par apparition */
+  function zones(){ var sd=((Date.now()&0x7fffffff)|1), R=function(){ sd=(Math.imul(sd,1103515245)+12345)&0x7fffffff; return sd/0x7fffffff; }, L=[];
+    for(var gy=0; gy<4; gy++) for(var gx=0; gx<2; gx++){ var cx=98+gx*194+(R()-0.5)*90, cy=105+gy*211+(R()-0.5)*110, d=R()*0.42;
+      for(var e=0; e<3; e++) L.push({x:cx+(R()-0.5)*110, y:cy+(R()-0.5)*110, rx:190+R()*110, ry:170+R()*120, d:d+e*0.05+R()*0.04}); }
+    return L; }
+  function masque(u){ var f=$('guideFlou'); if(!f) return; var L=[], C=[], W=[];
+    if(trou){ L.push('radial-gradient(circle at '+trou.x.toFixed(1)+'px '+trou.y.toFixed(1)+'px, transparent '+(trou.r-0.5).toFixed(1)+'px, #000 '+(trou.r+0.5).toFixed(1)+'px)'); C.push('intersect'); W.push('source-in'); }
+    if(u<1){ for(var i=0;i<Z.length;i++){ var b=Z[i], v=(u-b.d)/(1-b.d); if(v<=0.01) continue; if(v>1) v=1; v=v*v*(3-2*v);
+        L.push('radial-gradient(ellipse '+(b.rx*v).toFixed(1)+'px '+(b.ry*v).toFixed(1)+'px at '+b.x.toFixed(1)+'px '+b.y.toFixed(1)+'px, #000 98%, transparent 100%)'); C.push('add'); W.push('source-over'); }
+      if(L.length===(trou?1:0)){ L=['linear-gradient(transparent, transparent)']; C=['add']; W=['source-over']; } }
+    else if(!trou){ L=['linear-gradient(#000, #000)']; C=['add']; W=['source-over']; }
+    var s=L.join(', '); f.style.webkitMaskImage=s; f.style.maskImage=s; f.style.webkitMaskComposite=W.join(', '); f.style.maskComposite=C.join(', ');
+    f.setAttribute('data-u', u.toFixed(3)); }
+  function image(){ if(!etat || (etat!=='studio' && etat!=='plus' && etat!=='part')) return; var u=(performance.now()-t0)/(sens>0?INSTALLE:DISSOUT); if(u>1) u=1;
+    if(sens>0){ masque(u); if(u<1) raf=requestAnimationFrame(image); }
+    else { masque(1-u); if(u<1) raf=requestAnimationFrame(image); else { retire(); var a=apresDissout; apresDissout=null; if(a) a(); } } }
+  function retire(){ try{ cancelAnimationFrame(raf); }catch(_){ } var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio'); dev.classList.remove('guide-plus'); trou=null; }
+  function eng(n, quoi){ n.setAttribute('data-eng', quoi); return n; }
+  function montre(quoi){ retire(); var cible=$(quoi==='studio'?'studioBtn':'createBtn'); if(!cible){ etat=null; return false; }
+    var D=dev.getBoundingClientRect(), kk=k(), r=cible.getBoundingClientRect(); if(r.width<8){ etat=null; return false; }
+    trou={x:(r.left+r.width/2-D.left)/kk, y:(r.top+r.height/2-D.top)/kk, r:(quoi==='studio'?44:60)};
+    Z=zones(); etat=quoi; sens=1;
+    var g=eng(document.createElement('div'),'guide'); g.id='guide'; g.setAttribute('data-guide', quoi);
+    var f=eng(document.createElement('div'),'guide-flou'); f.id='guideFlou'; f.setAttribute('aria-hidden','true'); g.appendChild(f);
+    var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.textContent=T.guide[quoi]; g.appendChild(p);
+    var t=eng(document.createElement('div'),'plus-tard'); t.id='guideTard'; t.setAttribute('role','button'); t.tabIndex=0; t.textContent=T.guide.plusTard; g.appendChild(t);
+    var c=eng(document.createElement('div'),'guide-cible'); c.id='guideCible'; c.setAttribute('role','button'); c.tabIndex=0; c.setAttribute('aria-label', quoi==='studio'?'Studio':'Planter');
+    c.style.cssText='position:absolute;left:'+(trou.x-trou.r)+'px;top:'+(trou.y-trou.r)+'px;width:'+(trou.r*2)+'px;height:'+(trou.r*2)+'px;border-radius:50%;margin:0;padding:0;max-width:none;background:transparent'; g.appendChild(c);
+    dev.appendChild(g); dev.classList.add('guide-'+quoi);
+    var h=p.offsetHeight||70, y=Math.round(392-h/2); p.style.top=y+'px'; t.style.top=(y+h+22)+'px';
+    g.addEventListener('click', function(e){ e.stopPropagation(); e.preventDefault(); var D2=dev.getBoundingClientRect(), q=k(), x=(e.clientX-D2.left)/q, yy=(e.clientY-D2.top)/q;
+      if(e.target && e.target.closest && e.target.closest('#guideTard')){ finir(); return; }
+      if(trou && Math.hypot(x-trou.x, yy-trou.y)<=trou.r+4){ if(etat==='studio') versStudio(); else if(etat==='plus') versPlus(); return; }
+      finir(); }, true);
+    g.addEventListener('keydown', function(e){ if(e.key!=='Enter' && e.key!==' ') return; var q=e.target; if(q && q.id==='guideTard'){ e.preventDefault(); finir(); } else if(q && q.id==='guideCible'){ e.preventDefault(); if(etat==='studio') versStudio(); else versPlus(); } });
+    t0=performance.now(); if(reduit()){ masque(1); } else { masque(0); raf=requestAnimationFrame(image); }
+    return true; }
+  /* 3 · le Studio */
+  function versStudio(){ retire(); etat='au-studio'; tVu=performance.now(); vuStudio=false; tAcc=0; try{ $('studioBtn').click(); }catch(_){ } }
+  /* 5 · le + : ce que fait un toucher sur le + de l'accueil — les trois natures paraissent sur place, et la page + s'ouvre sur la nature choisie */
+  function versPlus(){ retire(); etat=null; attente=null; try{ var ch=$('accChoix'); if(ch) ch.classList.add('ouvert'); else $('createBtn').click(); }catch(_){ } }
+  /* toucher ailleurs, ou « Plus tard » : le flou se dissout, le guidage est fini */
+  function finir(){ attente=null; if(!$('guide')){ etat=null; return; } if(reduit()){ retire(); etat=null; return; }
+    etat='part'; sens=-1; t0=performance.now(); apresDissout=function(){ etat=null; }; try{ cancelAnimationFrame(raf); }catch(_){ } raf=requestAnimationFrame(image); }
+  /* la veille : l'état se lit sur ce qui est à l'écran */
+  setInterval(function(){ var now=performance.now();
+    if(attente){ if(!attente.rejeu && LS.g(CLE)==='1'){ attente=null; return; }
+      if(accueil()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ attente=null; tAcc=0; LS.s(CLE,'1'); montre('studio'); } } else tAcc=0; return; }
+    if(etat==='au-studio'){ var a=accueil();
+      if(!a){ vuStudio=true; tAcc=0; }
+      else if(vuStudio || now-tVu>2500){ if(!tAcc) tAcc=now; if(now-tAcc>=450){ tAcc=0; montre('plus'); } } }
+    else if((etat==='studio' || etat==='plus') && onbOuvert()){ retire(); etat=null; } }, 150);
+  window._guide={ attend:function(rejeu){ attente={rejeu:!!rejeu}; tAcc=0; }, montre:montre, finir:finir,
+    etat:function(){ return {etat:etat, attente:!!attente, trou:trou, vu:LS.g(CLE)}; }, regle:{INSTALLE:INSTALLE, DISSOUT:DISSOUT, ATTENTE:ATTENTE, FLOU:4.8} };
+})();
+</script>

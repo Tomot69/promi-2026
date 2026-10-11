@@ -1,0 +1,36 @@
+OK  [clair] A · le partage s'ouvre sur une fiche à photo                           
+OK  [clair] A · la photo importée n'est pas dans l'image partagée                  photo 0.0000 · attr None
+OK  [clair] B · PROMI : l'image est le dessin (fond et trait)                      fond 0.987 · trait 0.0056
+OK  [clair] B · PROMI : le logo en bas à gauche, la mention au-dessus              [('Promi', 0.066, 0.963), ('PROMI', 0.066, 0.912)]
+OK  [clair] B · PROMI : rien d'autre n'est écrit (ni mot-marque du haut, ni intitulé) ['Promi', 'PROMI']
+OK  [clair] C · la rangée « Mention sur un dessin partagé » est aux Réglages, joignable {'x': 215, 'y': 516.296875, 'ok': True, 'txt': 'Mention sur un dessin partagéaffichée ›'}
+OK  [clair] C · un toucher la masque, c'est mémorisé                               {'k': '0', 'txt': 'Mention sur un dessin partagémasquée ›'}
+OK  [clair] C · mention masquée : le dessin et le logo, rien d'autre               ['Promi']
+OK  [clair] C · le logo n'a pas bougé                                              
+OK  [clair] B · CHICHE : l'image est le dessin (fond et trait)                     fond 0.987 · trait 0.0056
+OK  [clair] B · CHICHE : le logo en bas à gauche, la mention au-dessus             [('Promi', 0.066, 0.963), ('CHICHE', 0.066, 0.912)]
+OK  [clair] B · CHICHE : rien d'autre n'est écrit (ni mot-marque du haut, ni intitulé) ['Promi', 'CHICHE']
+OK  [clair] B · CERCLE : l'image est le dessin (fond et trait)                     fond 0.987 · trait 0.0056
+OK  [clair] B · CERCLE : le logo en bas à gauche, la mention au-dessus             [('Promi', 0.066, 0.963), ('CERCLE', 0.066, 0.912)]
+OK  [clair] B · CERCLE : rien d'autre n'est écrit (ni mot-marque du haut, ni intitulé) ['Promi', 'CERCLE']
+OK  [clair] D · un dessin masqué pour soi n'est jamais emporté                     fond 0.0000 · trait 0.0000 · attr None
+OK  [clair] aucune erreur de page                                                  []
+OK  [sombre] A · le partage s'ouvre sur une fiche à photo                          
+OK  [sombre] A · la photo importée n'est pas dans l'image partagée                 photo 0.0000 · attr None
+OK  [sombre] B · PROMI : l'image est le dessin (fond et trait)                     fond 0.987 · trait 0.0056
+OK  [sombre] B · PROMI : le logo en bas à gauche, la mention au-dessus             [('Promi', 0.066, 0.963), ('PROMI', 0.066, 0.912)]
+OK  [sombre] B · PROMI : rien d'autre n'est écrit (ni mot-marque du haut, ni intitulé) ['Promi', 'PROMI']
+OK  [sombre] C · la rangée « Mention sur un dessin partagé » est aux Réglages, joignable {'x': 215, 'y': 516.296875, 'ok': True, 'txt': 'Mention sur un dessin partagéaffichée ›'}
+OK  [sombre] C · un toucher la masque, c'est mémorisé                              {'k': '0', 'txt': 'Mention sur un dessin partagémasquée ›'}
+OK  [sombre] C · mention masquée : le dessin et le logo, rien d'autre              ['Promi']
+OK  [sombre] C · le logo n'a pas bougé                                             
+OK  [sombre] B · CHICHE : l'image est le dessin (fond et trait)                    fond 0.987 · trait 0.0056
+OK  [sombre] B · CHICHE : le logo en bas à gauche, la mention au-dessus            [('Promi', 0.066, 0.963), ('CHICHE', 0.066, 0.912)]
+OK  [sombre] B · CHICHE : rien d'autre n'est écrit (ni mot-marque du haut, ni intitulé) ['Promi', 'CHICHE']
+OK  [sombre] B · CERCLE : l'image est le dessin (fond et trait)                    fond 0.987 · trait 0.0056
+OK  [sombre] B · CERCLE : le logo en bas à gauche, la mention au-dessus            [('Promi', 0.066, 0.963), ('CERCLE', 0.066, 0.912)]
+OK  [sombre] B · CERCLE : rien d'autre n'est écrit (ni mot-marque du haut, ni intitulé) ['Promi', 'CERCLE']
+OK  [sombre] D · un dessin masqué pour soi n'est jamais emporté                    fond 0.0000 · trait 0.0000 · attr None
+OK  [sombre] aucune erreur de page                                                 []
+
+34/34

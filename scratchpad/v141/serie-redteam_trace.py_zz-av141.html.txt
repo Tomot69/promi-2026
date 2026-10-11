@@ -1,0 +1,12 @@
+KO  A · EN DIRECT : à mi-geste, doigt posé, la trace existe déjà  traces à mi-geste : 0
+KO  A · au lâcher, rien ne s'y ajoute (elle s'est formée sous le doigt)  avant le lâcher 0 · au repos 9
+KO  B · un glissement horizontal : les poils couchés sur son axe (≤ 25°), là où le doigt a fini (≤ 34 pt)  {'n': 1950, 'cx': 218.1, 'cy': 261.2, 'angle': -0.1, 'long': 136.0, 'large': 18.0, 's': 1, 'mi': 0, 'avant': 0, 'apres': 9}
+KO  B · un glissement oblique : sur le sien (45° ± 30), là où le doigt a fini (≤ 34 pt)  {'n': 1361, 'cx': 171.5, 'cy': 335.3, 'angle': 43.9, 'long': 81.3, 'large': 23.2, 's': 1, 'mi': 0, 'avant': 0, 'apres': 6}
+OK  C · deux gestes, deux traces : leurs axes diffèrent d'au moins 25°  axes -0° / 44°
+OK  D · la largeur du contact : rayon 5 pt contre 16 pt, la zone couchée est plus étendue (≥ 1,4 fois)  pixels changés 1061 / 2604
+OK  E · un appui immobile creuse (le creux est là pendant l'appui long)  creux : True
+KO  E · ensuite, aucune trace et aucun motif : ni arc, ni tache à l'image (0,2 s et 1,6 s)  arcs 8 / 8 · pixels changés 2744 / 4562
+KO  F · plus d'étoile : aucun arc marqué « étoile », ni déclaré ni dans la source  arcs en étoile 16 · source 1
+OK  aucune erreur de page  []
+
+4/10

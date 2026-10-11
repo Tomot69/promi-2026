@@ -33,85 +33,85 @@
      "fichier": "encre__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "9d890860"
+     "fnv": "e90d1bf7"
     },
     "toile-clair": {
      "fichier": "encre__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "fe81fcc8"
+     "fnv": "dde2d35a"
     },
     "dalle-promi-k0.5": {
      "fichier": "encre__dalle-promi-k0.5.png",
      "w": 87,
      "h": 59,
-     "fnv": "6762536f"
+     "fnv": "54f718ab"
     },
     "dalle-promi-k1": {
      "fichier": "encre__dalle-promi-k1.png",
      "w": 173,
      "h": 117,
-     "fnv": "2be07c"
+     "fnv": "251018f4"
     },
     "dalle-promi-k2": {
      "fichier": "encre__dalle-promi-k2.png",
      "w": 344,
-     "h": 233,
-     "fnv": "4dd24512"
+     "h": 234,
+     "fnv": "ca958cef"
     },
     "dalle-chiche-k0.5": {
      "fichier": "encre__dalle-chiche-k0.5.png",
-     "w": 82,
-     "h": 75,
-     "fnv": "1ab08904"
+     "w": 81,
+     "h": 74,
+     "fnv": "da9db49c"
     },
     "dalle-chiche-k1": {
      "fichier": "encre__dalle-chiche-k1.png",
      "w": 162,
-     "h": 149,
-     "fnv": "43841ebe"
+     "h": 148,
+     "fnv": "6d2cadb3"
     },
     "dalle-chiche-k2": {
      "fichier": "encre__dalle-chiche-k2.png",
      "w": 323,
      "h": 296,
-     "fnv": "7d1afee3"
+     "fnv": "56fb0f7a"
     },
     "dalle-tenu-k0.5": {
      "fichier": "encre__dalle-tenu-k0.5.png",
-     "w": 88,
+     "w": 89,
      "h": 64,
-     "fnv": "dc53e785"
+     "fnv": "d997139f"
     },
     "dalle-tenu-k1": {
      "fichier": "encre__dalle-tenu-k1.png",
      "w": 176,
-     "h": 126,
-     "fnv": "662a9bef"
+     "h": 127,
+     "fnv": "a81438ec"
     },
     "dalle-tenu-k2": {
      "fichier": "encre__dalle-tenu-k2.png",
      "w": 352,
      "h": 253,
-     "fnv": "3008e311"
+     "fnv": "8d0c2f1b"
     },
     "dalle-cercle-k0.5": {
      "fichier": "encre__dalle-cercle-k0.5.png",
      "w": 88,
-     "h": 69,
-     "fnv": "b43b8f3b"
+     "h": 70,
+     "fnv": "104405f9"
     },
     "dalle-cercle-k1": {
      "fichier": "encre__dalle-cercle-k1.png",
      "w": 175,
      "h": 138,
-     "fnv": "80caa840"
+     "fnv": "c6c99481"
     },
     "dalle-cercle-k2": {
      "fichier": "encre__dalle-cercle-k2.png",
-     "w": 348,
+     "w": 349,
      "h": 275,
-     "fnv": "3041ba7b"
+     "fnv": "968fe405"
     }
    }
   },
@@ -122,85 +122,85 @@
      "fichier": "touffe__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "7d8be80"
+     "fnv": "8315c253"
     },
     "toile-clair": {
      "fichier": "touffe__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "86745db"
+     "fnv": "2fb81645"
     },
     "dalle-promi-k0.5": {
      "fichier": "touffe__dalle-promi-k0.5.png",
-     "w": 58,
+     "w": 59,
      "h": 109,
-     "fnv": "f3b859a3"
+     "fnv": "c03ea86"
     },
     "dalle-promi-k1": {
      "fichier": "touffe__dalle-promi-k1.png",
      "w": 117,
      "h": 218,
-     "fnv": "6bad7149"
+     "fnv": "db8847ef"
     },
     "dalle-promi-k2": {
      "fichier": "touffe__dalle-promi-k2.png",
      "w": 233,
-     "h": 436,
-     "fnv": "4840c736"
+     "h": 435,
+     "fnv": "d25bbb5e"
     },
     "dalle-chiche-k0.5": {
      "fichier": "touffe__dalle-chiche-k0.5.png",
-     "w": 58,
+     "w": 59,
      "h": 87,
-     "fnv": "ad794f0d"
+     "fnv": "50d586f0"
     },
     "dalle-chiche-k1": {
      "fichier": "touffe__dalle-chiche-k1.png",
      "w": 116,
      "h": 173,
-     "fnv": "84b979cf"
+     "fnv": "3b57c03c"
     },
     "dalle-chiche-k2": {
      "fichier": "touffe__dalle-chiche-k2.png",
      "w": 232,
      "h": 345,
-     "fnv": "c11f489c"
+     "fnv": "4694d5be"
     },
     "dalle-tenu-k0.5": {
      "fichier": "touffe__dalle-tenu-k0.5.png",
-     "w": 51,
+     "w": 50,
      "h": 78,
-     "fnv": "a33d4861"
+     "fnv": "ed251044"
     },
     "dalle-tenu-k1": {
      "fichier": "touffe__dalle-tenu-k1.png",
      "w": 100,
-     "h": 154,
-     "fnv": "e4c3f9aa"
+     "h": 155,
+     "fnv": "a084b40f"
     },
     "dalle-tenu-k2": {
      "fichier": "touffe__dalle-tenu-k2.png",
      "w": 200,
      "h": 308,
-     "fnv": "8e2ef73e"
+     "fnv": "bab54884"
     },
     "dalle-cercle-k0.5": {
      "fichier": "touffe__dalle-cercle-k0.5.png",
-     "w": 41,
+     "w": 40,
      "h": 80,
-     "fnv": "cc71a23"
+     "fnv": "c0f6b0fb"
     },
     "dalle-cercle-k1": {
      "fichier": "touffe__dalle-cercle-k1.png",
-     "w": 80,
+     "w": 79,
      "h": 160,
-     "fnv": "abfe971d"
+     "fnv": "d8e5e5bc"
     },
     "dalle-cercle-k2": {
      "fichier": "touffe__dalle-cercle-k2.png",
-     "w": 158,
+     "w": 159,
      "h": 318,
-     "fnv": "cb0afce3"
+     "fnv": "f6359e3d"
     }
    }
   },
@@ -478,85 +478,85 @@
      "fichier": "mosaique__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "ca0d450b"
+     "fnv": "e64f8bf"
     },
     "toile-clair": {
      "fichier": "mosaique__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "eb27fee9"
+     "fnv": "2d4ac535"
     },
     "dalle-promi-k0.5": {
      "fichier": "mosaique__dalle-promi-k0.5.png",
      "w": 86,
      "h": 86,
-     "fnv": "ce1dbdc5"
+     "fnv": "24832c50"
     },
     "dalle-promi-k1": {
      "fichier": "mosaique__dalle-promi-k1.png",
      "w": 172,
      "h": 172,
-     "fnv": "644272c5"
+     "fnv": "a2b851cd"
     },
     "dalle-promi-k2": {
      "fichier": "mosaique__dalle-promi-k2.png",
      "w": 344,
      "h": 344,
-     "fnv": "934a74c5"
+     "fnv": "55737865"
     },
     "dalle-chiche-k0.5": {
      "fichier": "mosaique__dalle-chiche-k0.5.png",
      "w": 75,
      "h": 75,
-     "fnv": "6811c11d"
+     "fnv": "e3e1cd5"
     },
     "dalle-chiche-k1": {
      "fichier": "mosaique__dalle-chiche-k1.png",
      "w": 150,
      "h": 150,
-     "fnv": "2bdbde05"
+     "fnv": "5dc77005"
     },
     "dalle-chiche-k2": {
      "fichier": "mosaique__dalle-chiche-k2.png",
      "w": 300,
      "h": 300,
-     "fnv": "b9816ec5"
+     "fnv": "f49d72c5"
     },
     "dalle-tenu-k0.5": {
      "fichier": "mosaique__dalle-tenu-k0.5.png",
-     "w": 53,
-     "h": 97,
-     "fnv": "8f6d8339"
+     "w": 75,
+     "h": 86,
+     "fnv": "74a73d4c"
     },
     "dalle-tenu-k1": {
      "fichier": "mosaique__dalle-tenu-k1.png",
-     "w": 106,
-     "h": 194,
-     "fnv": "5c59ef55"
+     "w": 150,
+     "h": 172,
+     "fnv": "396df73d"
     },
     "dalle-tenu-k2": {
      "fichier": "mosaique__dalle-tenu-k2.png",
-     "w": 212,
-     "h": 388,
-     "fnv": "dc52ea05"
+     "w": 300,
+     "h": 344,
+     "fnv": "3b2cbf25"
     },
     "dalle-cercle-k0.5": {
      "fichier": "mosaique__dalle-cercle-k0.5.png",
-     "w": 75,
-     "h": 75,
-     "fnv": "b9be0ae9"
+     "w": 26,
+     "h": 108,
+     "fnv": "7cf5c270"
     },
     "dalle-cercle-k1": {
      "fichier": "mosaique__dalle-cercle-k1.png",
-     "w": 150,
-     "h": 150,
-     "fnv": "9f423095"
+     "w": 52,
+     "h": 216,
+     "fnv": "d92576cd"
     },
     "dalle-cercle-k2": {
      "fichier": "mosaique__dalle-cercle-k2.png",
-     "w": 300,
-     "h": 300,
-     "fnv": "a5f0cc05"
+     "w": 104,
+     "h": 432,
+     "fnv": "46e0f365"
     }
    }
   },
@@ -567,85 +567,85 @@
      "fichier": "braille__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "cc75690f"
+     "fnv": "b4e7bc8b"
     },
     "toile-clair": {
      "fichier": "braille__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "ecf88054"
+     "fnv": "7828ad0d"
     },
     "dalle-promi-k0.5": {
      "fichier": "braille__dalle-promi-k0.5.png",
-     "w": 79,
+     "w": 87,
      "h": 79,
-     "fnv": "6d273b01"
+     "fnv": "8f522285"
     },
     "dalle-promi-k1": {
      "fichier": "braille__dalle-promi-k1.png",
-     "w": 156,
+     "w": 172,
      "h": 156,
-     "fnv": "ead1a2e5"
+     "fnv": "c1c0aa25"
     },
     "dalle-promi-k2": {
      "fichier": "braille__dalle-promi-k2.png",
-     "w": 312,
+     "w": 344,
      "h": 312,
-     "fnv": "2f31137d"
+     "fnv": "39f694cd"
     },
     "dalle-chiche-k0.5": {
      "fichier": "braille__dalle-chiche-k0.5.png",
      "w": 70,
-     "h": 79,
-     "fnv": "4c2591bd"
+     "h": 78,
+     "fnv": "e99d49a"
     },
     "dalle-chiche-k1": {
      "fichier": "braille__dalle-chiche-k1.png",
      "w": 138,
-     "h": 156,
-     "fnv": "52ff940d"
+     "h": 154,
+     "fnv": "c800ba6d"
     },
     "dalle-chiche-k2": {
      "fichier": "braille__dalle-chiche-k2.png",
      "w": 276,
-     "h": 312,
-     "fnv": "d1bbe5a5"
+     "h": 308,
+     "fnv": "d7d616d"
     },
     "dalle-tenu-k0.5": {
      "fichier": "braille__dalle-tenu-k0.5.png",
-     "w": 52,
-     "h": 96,
-     "fnv": "474e0b18"
+     "w": 69,
+     "h": 87,
+     "fnv": "3991be88"
     },
     "dalle-tenu-k1": {
      "fichier": "braille__dalle-tenu-k1.png",
-     "w": 102,
-     "h": 190,
-     "fnv": "7dcfdc2d"
+     "w": 136,
+     "h": 172,
+     "fnv": "8cafa04d"
     },
     "dalle-tenu-k2": {
      "fichier": "braille__dalle-tenu-k2.png",
-     "w": 204,
-     "h": 380,
-     "fnv": "974ab31d"
+     "w": 272,
+     "h": 344,
+     "fnv": "2a0b5a1d"
     },
     "dalle-cercle-k0.5": {
      "fichier": "braille__dalle-cercle-k0.5.png",
-     "w": 78,
-     "h": 70,
-     "fnv": "2b7377cd"
+     "w": 19,
+     "h": 104,
+     "fnv": "b038269c"
     },
     "dalle-cercle-k1": {
      "fichier": "braille__dalle-cercle-k1.png",
-     "w": 154,
-     "h": 138,
-     "fnv": "56fc6c55"
+     "w": 37,
+     "h": 208,
+     "fnv": "7bb35ebd"
     },
     "dalle-cercle-k2": {
      "fichier": "braille__dalle-cercle-k2.png",
-     "w": 308,
-     "h": 276,
-     "fnv": "515d72a5"
+     "w": 74,
+     "h": 416,
+     "fnv": "e61ccf3d"
     }
    }
   },
@@ -656,85 +656,85 @@
      "fichier": "pixel__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "c5624f96"
+     "fnv": "28d861fd"
     },
     "toile-clair": {
      "fichier": "pixel__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "c5624f96"
+     "fnv": "28d861fd"
     },
     "dalle-promi-k0.5": {
      "fichier": "pixel__dalle-promi-k0.5.png",
-     "w": 86,
+     "w": 91,
      "h": 81,
-     "fnv": "1543ed4d"
+     "fnv": "47a2ec9c"
     },
     "dalle-promi-k1": {
      "fichier": "pixel__dalle-promi-k1.png",
-     "w": 172,
+     "w": 182,
      "h": 162,
-     "fnv": "abedc065"
+     "fnv": "839512bd"
     },
     "dalle-promi-k2": {
      "fichier": "pixel__dalle-promi-k2.png",
-     "w": 344,
+     "w": 364,
      "h": 324,
-     "fnv": "a7db5845"
+     "fnv": "f8861d25"
     },
     "dalle-chiche-k0.5": {
      "fichier": "pixel__dalle-chiche-k0.5.png",
-     "w": 76,
-     "h": 91,
-     "fnv": "34412645"
+     "w": 81,
+     "h": 76,
+     "fnv": "ebdf9145"
     },
     "dalle-chiche-k1": {
      "fichier": "pixel__dalle-chiche-k1.png",
-     "w": 152,
-     "h": 182,
-     "fnv": "79f9f4c5"
+     "w": 162,
+     "h": 152,
+     "fnv": "eb70c1c5"
     },
     "dalle-chiche-k2": {
      "fichier": "pixel__dalle-chiche-k2.png",
-     "w": 304,
-     "h": 364,
-     "fnv": "721f61c5"
+     "w": 324,
+     "h": 304,
+     "fnv": "9e5e71c5"
     },
     "dalle-tenu-k0.5": {
      "fichier": "pixel__dalle-tenu-k0.5.png",
-     "w": 61,
-     "h": 106,
-     "fnv": "46d854d0"
+     "w": 76,
+     "h": 91,
+     "fnv": "bd291cc5"
     },
     "dalle-tenu-k1": {
      "fichier": "pixel__dalle-tenu-k1.png",
-     "w": 122,
-     "h": 212,
-     "fnv": "ab19fdcd"
+     "w": 152,
+     "h": 182,
+     "fnv": "e4b436c5"
     },
     "dalle-tenu-k2": {
      "fichier": "pixel__dalle-tenu-k2.png",
-     "w": 244,
-     "h": 424,
-     "fnv": "9422e265"
+     "w": 304,
+     "h": 364,
+     "fnv": "2f8f38c5"
     },
     "dalle-cercle-k0.5": {
      "fichier": "pixel__dalle-cercle-k0.5.png",
-     "w": 81,
-     "h": 76,
-     "fnv": "8432b9f0"
+     "w": 25,
+     "h": 111,
+     "fnv": "c1c9d7d5"
     },
     "dalle-cercle-k1": {
      "fichier": "pixel__dalle-cercle-k1.png",
-     "w": 162,
-     "h": 152,
-     "fnv": "d2312e0d"
+     "w": 50,
+     "h": 222,
+     "fnv": "e3ec2745"
     },
     "dalle-cercle-k2": {
      "fichier": "pixel__dalle-cercle-k2.png",
-     "w": 324,
-     "h": 304,
-     "fnv": "30324565"
+     "w": 100,
+     "h": 444,
+     "fnv": "bae639c5"
     }
    }
   },
@@ -1190,13 +1190,13 @@
      "fichier": "chamade__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "1709b542"
+     "fnv": "5b46c8e3"
     },
     "toile-clair": {
      "fichier": "chamade__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "68aff36e"
+     "fnv": "8ce51427"
     },
     "dalle-promi-k0.5": {
      "fichier": "chamade__dalle-promi-k0.5.png",
@@ -1238,19 +1238,19 @@
      "fichier": "chamade__dalle-tenu-k0.5.png",
      "w": 79,
      "h": 65,
-     "fnv": "5c890a24"
+     "fnv": "47db2987"
     },
     "dalle-tenu-k1": {
      "fichier": "chamade__dalle-tenu-k1.png",
      "w": 157,
      "h": 130,
-     "fnv": "71459e49"
+     "fnv": "1646bf6"
     },
     "dalle-tenu-k2": {
      "fichier": "chamade__dalle-tenu-k2.png",
      "w": 313,
      "h": 260,
-     "fnv": "8e9d999e"
+     "fnv": "31eeb591"
     },
     "dalle-cercle-k0.5": {
      "fichier": "chamade__dalle-cercle-k0.5.png",
@@ -1546,85 +1546,85 @@
      "fichier": "terrazzo__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "c6643843"
+     "fnv": "61266584"
     },
     "toile-clair": {
      "fichier": "terrazzo__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "e58fa0e9"
+     "fnv": "6a131d79"
     },
     "dalle-promi-k0.5": {
      "fichier": "terrazzo__dalle-promi-k0.5.png",
      "w": 66,
-     "h": 61,
-     "fnv": "76ce12fa"
+     "h": 60,
+     "fnv": "dbdbe8d3"
     },
     "dalle-promi-k1": {
      "fichier": "terrazzo__dalle-promi-k1.png",
      "w": 132,
-     "h": 121,
-     "fnv": "3b6d78ba"
+     "h": 120,
+     "fnv": "eeed764f"
     },
     "dalle-promi-k2": {
      "fichier": "terrazzo__dalle-promi-k2.png",
-     "w": 263,
-     "h": 241,
-     "fnv": "7c877210"
+     "w": 264,
+     "h": 240,
+     "fnv": "10b9defe"
     },
     "dalle-chiche-k0.5": {
      "fichier": "terrazzo__dalle-chiche-k0.5.png",
      "w": 64,
      "h": 60,
-     "fnv": "cf53a060"
+     "fnv": "cd70f978"
     },
     "dalle-chiche-k1": {
      "fichier": "terrazzo__dalle-chiche-k1.png",
      "w": 128,
      "h": 119,
-     "fnv": "658caa0b"
+     "fnv": "740aef7a"
     },
     "dalle-chiche-k2": {
      "fichier": "terrazzo__dalle-chiche-k2.png",
-     "w": 255,
-     "h": 236,
-     "fnv": "3cf38af5"
+     "w": 254,
+     "h": 237,
+     "fnv": "14c49180"
     },
     "dalle-tenu-k0.5": {
      "fichier": "terrazzo__dalle-tenu-k0.5.png",
-     "w": 68,
-     "h": 55,
-     "fnv": "2cfef7b7"
+     "w": 69,
+     "h": 54,
+     "fnv": "9a2886"
     },
     "dalle-tenu-k1": {
      "fichier": "terrazzo__dalle-tenu-k1.png",
      "w": 136,
-     "h": 109,
-     "fnv": "8f7c61b2"
+     "h": 108,
+     "fnv": "fd71de78"
     },
     "dalle-tenu-k2": {
      "fichier": "terrazzo__dalle-tenu-k2.png",
      "w": 271,
      "h": 216,
-     "fnv": "d08c2604"
+     "fnv": "32407671"
     },
     "dalle-cercle-k0.5": {
      "fichier": "terrazzo__dalle-cercle-k0.5.png",
      "w": 47,
      "h": 69,
-     "fnv": "d1ccedfa"
+     "fnv": "b4a9a8a4"
     },
     "dalle-cercle-k1": {
      "fichier": "terrazzo__dalle-cercle-k1.png",
      "w": 93,
      "h": 137,
-     "fnv": "d706d0a2"
+     "fnv": "6d2a5a7f"
     },
     "dalle-cercle-k2": {
      "fichier": "terrazzo__dalle-cercle-k2.png",
-     "w": 185,
+     "w": 184,
      "h": 273,
-     "fnv": "29b2548c"
+     "fnv": "7dfa3351"
     }
    }
   },
@@ -1635,85 +1635,85 @@
      "fichier": "gravure__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "d2bbfe3e"
+     "fnv": "c0d02048"
     },
     "toile-clair": {
      "fichier": "gravure__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "f04d0007"
+     "fnv": "e56f333"
     },
     "dalle-promi-k0.5": {
      "fichier": "gravure__dalle-promi-k0.5.png",
      "w": 65,
      "h": 67,
-     "fnv": "c2df28f8"
+     "fnv": "1983df04"
     },
     "dalle-promi-k1": {
      "fichier": "gravure__dalle-promi-k1.png",
      "w": 130,
-     "h": 132,
-     "fnv": "673bfe53"
+     "h": 133,
+     "fnv": "1230f11c"
     },
     "dalle-promi-k2": {
      "fichier": "gravure__dalle-promi-k2.png",
      "w": 260,
-     "h": 265,
-     "fnv": "42723b0"
+     "h": 266,
+     "fnv": "61bc4"
     },
     "dalle-chiche-k0.5": {
      "fichier": "gravure__dalle-chiche-k0.5.png",
-     "w": 65,
-     "h": 63,
-     "fnv": "4e8fd095"
+     "w": 68,
+     "h": 67,
+     "fnv": "2b1aa7a8"
     },
     "dalle-chiche-k1": {
      "fichier": "gravure__dalle-chiche-k1.png",
-     "w": 130,
-     "h": 123,
-     "fnv": "419b4b40"
+     "w": 143,
+     "h": 136,
+     "fnv": "99920fe6"
     },
     "dalle-chiche-k2": {
      "fichier": "gravure__dalle-chiche-k2.png",
-     "w": 259,
-     "h": 247,
-     "fnv": "44e8c6f6"
+     "w": 287,
+     "h": 271,
+     "fnv": "5c3a5db9"
     },
     "dalle-tenu-k0.5": {
      "fichier": "gravure__dalle-tenu-k0.5.png",
-     "w": 52,
-     "h": 69,
-     "fnv": "2b047191"
+     "w": 72,
+     "h": 74,
+     "fnv": "3a36bd18"
     },
     "dalle-tenu-k1": {
      "fichier": "gravure__dalle-tenu-k1.png",
-     "w": 104,
-     "h": 136,
-     "fnv": "c6c342f0"
+     "w": 143,
+     "h": 154,
+     "fnv": "e8531984"
     },
     "dalle-tenu-k2": {
      "fichier": "gravure__dalle-tenu-k2.png",
-     "w": 208,
-     "h": 272,
-     "fnv": "1f009936"
+     "w": 286,
+     "h": 294,
+     "fnv": "3e650bb4"
     },
     "dalle-cercle-k0.5": {
      "fichier": "gravure__dalle-cercle-k0.5.png",
-     "w": 66,
-     "h": 69,
-     "fnv": "f7dab59b"
+     "w": 19,
+     "h": 64,
+     "fnv": "f94fa7be"
     },
     "dalle-cercle-k1": {
      "fichier": "gravure__dalle-cercle-k1.png",
-     "w": 141,
-     "h": 142,
-     "fnv": "d5c02a84"
+     "w": 38,
+     "h": 127,
+     "fnv": "e917bb1"
     },
     "dalle-cercle-k2": {
      "fichier": "gravure__dalle-cercle-k2.png",
-     "w": 280,
-     "h": 283,
-     "fnv": "944dfc1a"
+     "w": 75,
+     "h": 252,
+     "fnv": "a54bea1f"
     }
    }
   },
@@ -1724,85 +1724,85 @@
      "fichier": "sillons__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "aa1d9cd6"
+     "fnv": "75b14232"
     },
     "toile-clair": {
      "fichier": "sillons__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "7798a362"
+     "fnv": "4a00b297"
     },
     "dalle-promi-k0.5": {
      "fichier": "sillons__dalle-promi-k0.5.png",
-     "w": 80,
-     "h": 80,
-     "fnv": "e42d2c87"
+     "w": 86,
+     "h": 81,
+     "fnv": "5ad1696b"
     },
     "dalle-promi-k1": {
      "fichier": "sillons__dalle-promi-k1.png",
-     "w": 160,
-     "h": 159,
-     "fnv": "8e898542"
+     "w": 172,
+     "h": 162,
+     "fnv": "e1e6f992"
     },
     "dalle-promi-k2": {
      "fichier": "sillons__dalle-promi-k2.png",
-     "w": 318,
-     "h": 318,
-     "fnv": "73a222d"
+     "w": 342,
+     "h": 323,
+     "fnv": "88b809d"
     },
     "dalle-chiche-k0.5": {
      "fichier": "sillons__dalle-chiche-k0.5.png",
-     "w": 73,
-     "h": 79,
-     "fnv": "709b94a"
+     "w": 74,
+     "h": 74,
+     "fnv": "ab54a00d"
     },
     "dalle-chiche-k1": {
      "fichier": "sillons__dalle-chiche-k1.png",
-     "w": 146,
-     "h": 159,
-     "fnv": "c35e0b20"
+     "w": 148,
+     "h": 147,
+     "fnv": "fc6354e4"
     },
     "dalle-chiche-k2": {
      "fichier": "sillons__dalle-chiche-k2.png",
-     "w": 291,
-     "h": 317,
-     "fnv": "86063b27"
+     "w": 294,
+     "h": 293,
+     "fnv": "cda66d70"
     },
     "dalle-tenu-k0.5": {
      "fichier": "sillons__dalle-tenu-k0.5.png",
-     "w": 55,
-     "h": 92,
-     "fnv": "ba803151"
+     "w": 68,
+     "h": 82,
+     "fnv": "53193057"
     },
     "dalle-tenu-k1": {
      "fichier": "sillons__dalle-tenu-k1.png",
-     "w": 110,
-     "h": 183,
-     "fnv": "e1f0e26f"
+     "w": 136,
+     "h": 165,
+     "fnv": "b7daf6c7"
     },
     "dalle-tenu-k2": {
      "fichier": "sillons__dalle-tenu-k2.png",
-     "w": 219,
-     "h": 365,
-     "fnv": "ef230817"
+     "w": 270,
+     "h": 328,
+     "fnv": "d3256598"
     },
     "dalle-cercle-k0.5": {
      "fichier": "sillons__dalle-cercle-k0.5.png",
-     "w": 74,
-     "h": 75,
-     "fnv": "6f972e13"
+     "w": 19,
+     "h": 110,
+     "fnv": "9db56ef4"
     },
     "dalle-cercle-k1": {
      "fichier": "sillons__dalle-cercle-k1.png",
-     "w": 148,
-     "h": 148,
-     "fnv": "11e54d28"
+     "w": 38,
+     "h": 219,
+     "fnv": "d468f4e9"
     },
     "dalle-cercle-k2": {
      "fichier": "sillons__dalle-cercle-k2.png",
-     "w": 294,
-     "h": 294,
-     "fnv": "6e522477"
+     "w": 75,
+     "h": 437,
+     "fnv": "299a129d"
     }
    }
   }

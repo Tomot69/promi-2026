@@ -353,6 +353,14 @@ def reference_peaufiner(b):
     #    EN DUR, comme le +134 du trait. Même sévérité, au pixel. Version d'origine : sauvegardes/redteam_nuee-avant-nuee-cercle.py
     if '#npDiss' in ref:
         ref['#npDiss'] = dict(ref['#npDiss'], y=ref['#npDiss']['y'] + 494)
+    # ⚑ v141 (Tom, 10 oct. 2026, C-096) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_nuee-avant-v141.py).
+    #    « Dans Peaufiner, l'encart “+ Planter dans le Cercle” prend le même + que dans la fiche, et se place juste sous Commentaires ; le reste
+    #    remonte. » COMMENTAIRES finit à 656 : le bouton est à 672 (16 d'écart), soit −88 en page 2 (46 avant), 342 × 62 — le bouton de la fiche
+    #    (348 × 68 avant) ; le bloc et DISSOUDRE remontent du même pas (140) : 618 → 478. EN DUR, au pixel, comme avant.
+    if '#nfAdd' in ref:
+        ref['#nfAdd'] = dict(ref['#nfAdd'], y=-88, w=342, h=62)
+    if '#npDiss' in ref:
+        ref['#npDiss'] = dict(ref['#npDiss'], y=478)
     return ref
 
 
@@ -569,7 +577,12 @@ def main():
                     peint.append((nom, 'TRAIT', 'aucune ligne peinte sur l\'onde'))
 
             # ── collisions et débordements ──
+            # ⚑ v141 (Tom, C-096) — CONTRAT RÉÉCRIT : « L'encart “+ Planter dans le Cercle” remonte juste ce qu'il faut, avec un petit écart au-dessus du
+            #    bandeau. Le fil passe sous l'encart sans jamais le recouvrir. » Le bouton tenu au-dessus du bandeau recouvre donc, par décision, les
+            #    cartes du fil qui défilent dessous : ces recouvrements-là ne sont plus des collisions (toute autre collision reste prise). Que le
+            #    bouton soit DEVANT le fil, à 12 pt du bandeau, est jugé par redteam_nuee_entree (contrôle 2).
             for s in pg.evaluate(SUP):
+                if str(s).startswith('Planter dans le Ce') or ' ⨯ Planter dans le Ce' in str(s): continue
                 coll.append((nom, s))
             for d in pg.evaluate("""()=>{const dev=document.getElementById('device').getBoundingClientRect();
               const sc=dev.width/390; const out=[];

@@ -1,0 +1,16 @@
+
+── le parcours complet, clair
+  ❌ [clair] la barre du bas est complète dès l'arrivée sur l'accueil (cinq entrées), et rien n'est encore flou       [None, None, None, None, None] · guide None
+  ❌ [clair] 1 · le flou paraît environ 0,8 s après l'arrivée sur l'accueil (entre 0,6 et 1,6 s)                      délai None s
+  ❌ [clair] 1 · il s'installe peu à peu (le masque grandit, sans à-coup de retour)                                   0 valeurs relevées, de [] à []
+  ❌ [clair] 1 · la matière est le flou des murs : 4.8 px, par un flou de l'arrière-plan                              None
+  ❌ [clair] 2 · la phrase, mot pour mot, au milieu de l'écran                                                        « None » None
+  ❌ [clair] 2 · ni orange ni « Ma Parole ! » : la phrase est à l'encre du mode                                       None
+  ❌ [clair] un « Plus tard » discret, visible : 12 px, sans soulignement                                             None None None None
+  ✅ [clair] A2 : aucun nœud du guide n'a d'opacité, de transition ni d'animation ; tous portent `data-eng`           []
+Traceback (most recent call last):
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_guide.py", line 222, in <module>
+    complet(b, 'light')
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_guide.py", line 146, in complet
+    x, y = pt(pg, e['e']['trou']['x'], e['e']['trou']['y']); toucher(cdp, pg, x, y); pg.wait_for_timeout(2600)
+TypeError: 'NoneType' object is not subscriptable

@@ -1,5 +1,8 @@
 # ENGAGEMENT — E2 et E2bis : compte rendu (v140, 10 oct. 2026)
 
+> **⚑ v141 (Tom, 10 oct. 2026) — CE DOCUMENT EST DE L'HISTOIRE.** L'onboarding de v140 est retiré : celui d'avant v140 est revenu en entier, avec un
+> « Plus tard » à chaque étape ; E2bis (le dévoilement de la barre) est remplacé par le guide de fin de parcours (C-094). Voir le bloc v141 de `CLAUDE.md`.
+
 > Chantiers C-075 (E2) et C-076 (E2bis). `ENGAGEMENT.md` corrigé par les amendements A2, A3, A6 et par les retours des testeurs de Tom
 > (lot v140 §8). Juge : `redteam_e2.py`. **C'est un geste : la validation de Tom sur iPhone est obligatoire.**
 

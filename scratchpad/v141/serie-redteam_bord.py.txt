@@ -1,0 +1,26 @@
+OK  [carte graphique · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.4 · 0.6 · 0.6
+OK  [carte graphique · clair · signal] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 4.00, max 7.00 · fin 120.8 (de 119.8 à 123.5)
+OK  [carte graphique · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.5 · 0.6 · 0.5
+OK  [carte graphique · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.7 · 0.7 · 0.7
+OK  [carte graphique · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.7 · 1.0 · 0.7
+OK  [carte graphique · clair · taciturne] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 3.75, max 7.50 · fin 120.8 (de 119.8 à 123.8)
+OK  [carte graphique · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.9 · 0.8 · 0.8
+OK  [carte graphique · sombre · signal] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 3.75, max 7.50 · fin 121.0 (de 119.8 à 123.8)
+OK  [carte graphique · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.8 · 0.8 · 0.8
+OK  [carte graphique · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 1.0 · 0.7 · 0.7
+OK  [carte graphique · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.8 · 0.7 · 0.8
+OK  [carte graphique · sombre · taciturne] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 3.75, max 7.25 · fin 120.8 (de 119.8 à 123.5)
+OK  [secours · clair · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.7 · 0.7 · 0.8
+OK  [secours · clair · signal] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 3.75, max 7.50 · fin 120.8 (de 119.8 à 123.8)
+OK  [secours · clair · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.8 · 0.8 · 0.8
+OK  [secours · clair · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.9 · 0.8 · 0.8
+OK  [secours · clair · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 1.2 · 1.2 · 0.5
+OK  [secours · clair · taciturne] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 3.75, max 7.25 · fin 120.5 (de 119.8 à 123.5)
+OK  [secours · sombre · signal] bord ↔ intérieur : ΔE médian ≤ 5 0.5 · 0.6 · 0.7
+OK  [secours · sombre · signal] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 4.00, max 7.25 · fin 120.8 (de 119.8 à 123.5)
+OK  [secours · sombre · candide] bord ↔ intérieur : ΔE médian ≤ 5 0.6 · 0.6 · 0.6
+OK  [secours · sombre · irascible] bord ↔ intérieur : ΔE médian ≤ 5 0.4 · 0.6 · 0.6
+OK  [secours · sombre · taciturne] bord ↔ intérieur : ΔE médian ≤ 5 0.9 · 0.7 · 0.7
+OK  [secours · sombre · taciturne] F · la frange d'avant v114 : médiane entre 3 et 8,5 pt (≤ 12), contour 118–124 pt frange médiane 3.75, max 7.50 · fin 120.8 (de 119.8 à 123.8)
+
+24/24

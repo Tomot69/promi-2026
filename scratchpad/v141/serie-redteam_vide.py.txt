@@ -1,0 +1,71 @@
+
+══ tour 1 · thème dark ══
+fiche tenue [dark]                             OK  
+fiche à tenir [dark]                           OK  
+fiche en cours [dark]                          OK  
+fiche chiche [dark]                            OK  
+gardé repris [dark]                            OK  
+page + [dark]                                  OK  
+Peaufiner [dark]                               OK  
+Index [dark]                                   OK  
+Fil [dark]                                     OK  
+Nuée [dark]                                    OK  
+Nuée vide [dark]                               OK  
+Peaufiner Nuée [dark]                          OK  
+l'instant arrive [dark]                        OK  
+l'instant referme [dark]                       OK  
+l'instant après [dark]                         OK  
+
+══ tour 1 · thème light ══
+fiche tenue [light]                            OK  
+fiche à tenir [light]                          OK  
+fiche en cours [light]                         OK  
+fiche chiche [light]                           OK  
+gardé repris [light]                           OK  
+page + [light]                                 OK  
+Peaufiner [light]                              OK  
+Index [light]                                  OK  
+Fil [light]                                    OK  
+Nuée [light]                                   OK  
+Nuée vide [light]                              OK  
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+
+══ tour 2 · thème dark ══
+fiche tenue [dark]                             OK  
+fiche à tenir [dark]                           OK  
+fiche en cours [dark]                          OK  
+fiche chiche [dark]                            OK  
+gardé repris [dark]                            OK  
+page + [dark]                                  OK  
+Peaufiner [dark]                               OK  
+Index [dark]                                   OK  
+Fil [dark]                                     OK  
+Nuée [dark]                                    OK  
+Nuée vide [dark]                               OK  
+Peaufiner Nuée [dark]                          OK  
+l'instant arrive [dark]                        OK  
+l'instant referme [dark]                       OK  
+l'instant après [dark]                         OK  
+
+══ tour 2 · thème light ══
+fiche tenue [light]                            OK  
+fiche à tenir [light]                          OK  
+fiche en cours [light]                         OK  
+fiche chiche [light]                           OK  
+gardé repris [light]                           OK  
+page + [light]                                 OK  
+Peaufiner [light]                              OK  
+Index [light]                                  OK  
+Fil [light]                                    OK  
+Nuée [light]                                   OK  
+Nuée vide [light]                              OK  
+Peaufiner Nuée [light]                         OK  
+l'instant arrive [light]                       OK  
+l'instant referme [light]                      OK  
+l'instant après [light]                        OK  
+aucune erreur JS                               OK  
+
+61/61

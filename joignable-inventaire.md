@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 433 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 427 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -72,6 +72,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
 | Nuée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 108 | 34 × 34 | oui |  |
 | Nuée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUrécupérer les plants»` | on… | 195, 422 | 342 × 94 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 422 | 342 × 94 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
@@ -80,8 +81,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 538 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 629 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 641 | 342 × 94 | oui |  |
-| Nuée | `#nfAdd` | natif | 195, 711 | 342 × 62 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUrécupérer les plants»` | on… | 195, 747 | 342 × 94 | oui |  |
+| Nuée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | Nuée défilée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 10 | 34 × 34 | oui |  |
@@ -89,14 +89,14 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 234 | 342 × 94 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 340 | 342 × 94 | oui |  |
 | Nuée défilée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
+| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 435 | 342 × 79 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUrécupérer les plants»` | on… | 195, 446 | 342 × 94 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 526 | 342 × 79 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 552 | 342 × 94 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 617 | 342 × 79 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 651 | 342 × 79 | oui |  |
-| Nuée défilée | `#nfAdd` | natif | 195, 699 | 342 × 62 | oui |  |
-| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 742 | 342 × 79 | oui |  |
+| Nuée défilée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée défilée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée défilée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | Nuée vide | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
@@ -120,7 +120,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Partager | `#shShareBtn` | natif | 282, 789 | 168 × 62 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer«✕ FERMER»` | écouteur | 321, 56 | 91 × 13 | oui |  |
 | Peaufiner | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
-| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTjeudi 22un jouren l»` | écouteur | 195, 222 | 342 × 64 | oui |  |
+| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTvendredi 23un joure»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«DANS UN CERCLEaucuneAucu»` | écouteur | 195, 302 | 342 × 64 | oui |  |
 | Peaufiner | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner | `#dNote` | natif | 195, 426 | 292 × 56 | oui |  |
@@ -134,7 +134,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Chiche | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«À QUI JE LANCEMarionMMar»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVECMarionMMarionNNicoRR»` | écouteur | 195, 302 | 342 × 64 | oui |  |
-| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTmardi 13un jouren l»` | écouteur | 195, 382 | 342 × 64 | oui |  |
+| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTmercredi 14un joure»` | écouteur | 195, 382 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 430 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner Chiche | `#dNote` | natif | 195, 506 | 292 × 56 | oui |  |
@@ -148,11 +148,11 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Nuée | `div#npTrait.np-carte>div.pc-glisse>div.pc-rail>button.pc-t«Coulé»` | natif | 175, 182 | 78 × 44 | oui |  |
 | Peaufiner Nuée | `div#npTrait.np-carte>div.pc-glisse>div.pc-rail>button.pc-t«Peigné»` | natif | 263, 182 | 78 × 44 | oui |  |
 | Peaufiner Nuée | `#nqNote` | natif | 195, 297 | 292 × 23 | oui |  |
-| Peaufiner Nuée | `#nfAdd` | natif | 198, 380 | 348 × 68 | oui |  |
+| Peaufiner Nuée | `div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 380 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner Nuée | `#npMemb` | écouteur | 195, 396 | 342 × 64 | oui |  |
 | Peaufiner Nuée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
-| Peaufiner Nuée | `div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 482 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner Nuée | `#dCommentInput` | natif | 195, 605 | 292 × 23 | oui |  |
+| Peaufiner Nuée | `#nfAdd` | natif | 195, 703 | 342 × 62 | oui |  |
 | Peaufiner Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Peaufiner Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | Peaufiner gardé de côté | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |

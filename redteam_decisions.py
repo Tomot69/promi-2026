@@ -19,7 +19,7 @@ ETATS = {'atenir': '#DD4D23', 'encours': '#291547', 'tenu': '#00341A'}      # Q2
 CREME, ENCRE, SEICHE, TERRE, AMANDE = '#F7F0DE', '#201908', '#050302', '#2B1020', '#8FE08F'
 # ⚑ v139 (Tom, 9 oct. 2026, C-084) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_decisions-avant-v139.py) : « En clair, le corps des fiches (sous le
 #   trait) et leurs encarts prennent le crème du fond des pages du Fil et de l'Index, au lieu du blanc actuel. Seulement dans les fiches. »
-CREME_FICHE = '#EAD9B9'
+CREME_FICHE = '#F7F0DE'   # ⚑ v141 (Tom, C-084, retour en arrière) : « le corps et les encarts des fiches reprennent le ton clair le plus clair de l'app, comme avant v139 » (#EAD9B9 en v139–v140)
 CHAMP = {'promi': '#82AEF8', 'chiche': '#FFB8D2', 'nuee': '#C9A8F5'}           # 17 sept. (planche des correspondances)
 # ⚑ v133 (Tom, 6 oct. 2026, C-050) — « sur son iPhone, #273CEB tire nettement au violet. Défaut provisoire : #1A52F0 » ; la phrase lilas, éclaircie à 4,5:1 sur ce bleu : #E8DAFF
 # ⚑ v134 (Tom, 6 oct. 2026, C-050) — DÉFINITIF : « Tom a choisi #0E78F2, en connaissance de cause. » Le texte reste crème (3,70:1 : exception nommée,

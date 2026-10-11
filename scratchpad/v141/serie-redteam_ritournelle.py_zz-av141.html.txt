@@ -1,0 +1,14 @@
+KO  une parole (départ 1) : sa dalle fait au moins 60 % de la largeur (≥ 234 pt), entière  largeur peinte 196 pt (50 %) · boîte [90, 286, 282, 576] · zoom None
+KO  une parole (départ 1) : au plus deux cellules vides entièrement visibles  non mesurable (pas de lecture du moteur)
+KO  une parole (départ 2) : sa dalle fait au moins 60 % de la largeur (≥ 234 pt), entière  largeur peinte 202 pt (52 %) · boîte [76, 278, 338, 546] · zoom None
+KO  une parole (départ 2) : au plus deux cellules vides entièrement visibles  non mesurable (pas de lecture du moteur)
+KO  une parole (départ 3) : sa dalle fait au moins 60 % de la largeur (≥ 234 pt), entière  largeur peinte 202 pt (52 %) · boîte [76, 278, 338, 546] · zoom None
+KO  une parole (départ 3) : au plus deux cellules vides entièrement visibles  non mesurable (pas de lecture du moteur)
+OK  2 paroles : toutes entières à l'écran, entre le plateau et la barre  la matière des paroles tient dans [64, 284, 344, 534] · zoom None
+KO  2 paroles : au plus deux cellules vides entièrement visibles  non mesurable (pas de lecture du moteur)
+OK  3 paroles : toutes entières à l'écran, entre le plateau et la barre  la matière des paroles tient dans [98, 298, 322, 564] · zoom None
+KO  3 paroles : au plus deux cellules vides entièrement visibles  non mesurable (pas de lecture du moteur)
+OK  4 paroles : toutes entières à l'écran, entre le plateau et la barre  la matière des paroles tient dans [82, 296, 336, 542] · zoom None
+KO  4 paroles : au plus deux cellules vides entièrement visibles  non mesurable (pas de lecture du moteur)
+
+3 / 12
