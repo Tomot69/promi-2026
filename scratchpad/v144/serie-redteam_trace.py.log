@@ -1,0 +1,19 @@
+OK  A · contact de rayon 6 pt : la bande peinte est large de 12 pt (± 10 %)  {'n': 1632, 'long': 48, 'large': 12.5, 'arcs': 8, 'w': 6.0, 'f': 0.6, 'mi': 3, 'avant': 8}
+OK  A · contact de rayon 12 pt : la bande peinte est large de 24 pt (± 10 %)  {'n': 4232, 'long': 60, 'large': 23, 'arcs': 8, 'w': 12.0, 'f': 0.8, 'mi': 3, 'avant': 8}
+OK  A · contact de rayon 18 pt : la bande peinte est large de 36 pt (± 10 %)  {'n': 6820, 'long': 68.5, 'large': 35.5, 'arcs': 8, 'w': 18.0, 'f': 0.9, 'mi': 3, 'avant': 8}
+OK  B · ce que l'app déclare : demi-largeur = le rayon lu (± 10 %), pour les trois  6 → 6.0 · 12 → 12.0 · 18 → 18.0
+OK  B · sans multiplicateur : G.DOIGT_K vaut 1  DOIGT_K = 1
+OK  C · la trace peinte s'allonge avec le trajet : 60 pt ≥ 1,15 × 30 pt, 100 pt ≥ 1,10 × 60 pt  30 → 32.5 pt · 60 → 46.5 pt · 100 → 53.0 pt
+OK  C · sa largeur ne dépend pas du trajet (20 pt, ± 25 %)  30 → 18.5 pt · 60 → 18.5 pt · 100 → 21.5 pt
+OK  D · EN DIRECT : à mi-geste des segments existent ; au lâcher rien ne s'ajoute  {'n': 2177, 'long': 46.5, 'large': 18.5, 'arcs': 5, 'w': 10.0, 'f': 0.8, 'mi': 2, 'avant': 5}
+OK  D · une bande, pas un arc : au moins 4 segments pour 60 pt de trajet, et davantage pour 100 pt  5 / 7
+OK  E · appui immobile, contact 16 × 9 pt : une tache de 32 × 18 pt (± 30 %), plus large que haute  {'n': 735, 'long': 26, 'large': 15, 'arcs': 1, 'w': 9.0, 'f': 1}
+OK  E · un contact de 6 pt laisse une tache plus petite (≤ la moitié en surface)  199 / 735 pixels
+OK  G · même trajet, même contact : un geste LENT (1,8 s) couche plus les poils qu'un effleurement (0,1 s) — intensité déclarée +0,20 au moins  effleuré 0.55 · lent 0.80
+OK  G · … et à l'image : la trace lente change plus de pixels que l'effleurée (≥ 1,15 fois)  2857 / 3481 pixels
+OK  H · même trajet, même vitesse : un doigt qui APPUIE (contact de 16 pt) couche plus qu'un doigt léger (6 pt)  léger 0.65 · appuyé 0.96
+OK  I · un appui immobile : plus il dure, plus les poils se couchent (0,3 s contre 1,6 s)  0,3 s : 0.48 (492 px) · 1,6 s : 0.87 (626 px)
+OK  aucune erreur de page  []
+OK  F · ?mesure=1 écrit le contact lu (13 × 7 pt)  'contact lu : 13 × 7 pt (pointeur) → demi-axe 13 pt'
+
+17/17

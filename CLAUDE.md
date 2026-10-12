@@ -116,6 +116,59 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v144 (12 oct. 2026) — RETOURS DE TOM SUR IPHONE : LA FLUIDITÉ (LA TOILE QUI ÉVOLUE, LA PELOTE SOUS LE DOIGT), LA MAIN SEULEMENT SUR UNE FICHE À TENIR, RITOURNELLE PLUS PRÈS, TENIR PLUS LENT, LE GUIDE. (Décisions Tom.) Ce bloc CORRIGE v143 (le guide, Ritournelle, la main, la trace) et E1 (l'inventaire des gestes), E0 (R6).
+> **Validés par Tom sur iPhone : le partage de la Toile (C-105), la barre (C-106), le trait de 60 pt (C-107), la trace de la Pelote. Q466, Q468, Q470 acceptées.
+> Q465 : au neutre — « À RACHEL DE TRACER SA PART » / « À CHACUN DE TRACER SA PART ».**
+> **⚑ LA MAIN FANTÔME NE PARAÎT QUE SUR UNE FICHE À TENIR (PROMI OU CHICHE), POUR LE GESTE DE TENIR — NULLE PART AILLEURS, DÉFINITIVEMENT (C-110).** Ni au
+> Studio, ni sur l'Aura, ni sur la page +, ni au Fil, ni à Partager, ni en mode dessin, ni sur la bande, ni sur le trait de l'onboarding. L'inventaire
+> (`GesteFantome.inventaire()`) ne porte plus que `tenir` et `chiche` ; les huit autres gestes d'E1 et les quatre recensés sont RETIRÉS — ne pas en
+> rebrancher. Elle paraît **3 s après le toucher qui ouvre la fiche** (`INACTIF_FICHE` 3 000 ; mesuré 3,1 à 3,2 s). Juge : **`redteam_gestes.py` réécrit**
+> (27 ; 13/27 sur v143 ; original d'E1 : `sauvegardes/redteam_gestes-avant-v144.py`).
+> **⚑ UN TRAVAIL QUI N'EST PAS LE MOUVEMENT NE TOURNE PAS PENDANT LE MOUVEMENT — UN SEUL GARDE, `window._evol()` (C-112).** *Ce qui faisait saccader la Toile
+> quand une dalle arrive ou part*, mesuré sur banc_tom (WebKit), planter puis retirer, cinq mondes : ① **`_boiteSerre`** (la boîte des cellules des
+> paroles, v141) coûtait 32 à 63 ms dans l'image où la dalle doit paraître, et sous Ritournelle elle était recalculée À CHAQUE IMAGE de l'apparition
+> (`boitesNeuves` → `autoView` : 21 appels, 870 ms — une régression de v142) : elle ne compare plus un point qu'aux graines qui peuvent le prendre,
+> elle est gardée tant que places et poids finaux n'ont pas changé, et le recadrage passe au plus toutes les 220 ms (puis une dernière fois quand la
+> dalle a fini de grandir) ; ② deux tâches de fond parties 400 ms après le toucher, AVANT que la Toile ait commencé à bouger — leur garde ne regardait
+> que « la Toile tourne-t-elle » (une dalle de la collection, 36 à 59 ms ; le réchauffage du cache, jusqu'à 126 ms) ; ③ la passe de lisibilité
+> (`repasse`, 18 à 105 ms) et la passe des polices (tranches de 5 à 22 ms). `_evol()` est vrai du toucher qui plante ou retire (`_tEvol`, posé au clic
+> et par `Toile.addPromi` / `sync` / `removePromi`) jusqu'à la fin du mouvement ; les tâches de fond attendent 4 s après (`_evolRecente`) ; les passes
+> attendent la fin (2,6 s au plus) quand c'est la Toile qu'on regarde (`_toileVue()`). Le guide pose le même garde pendant ses deux transitions.
+> ⚠ **Deux pièges payés en posant ce garde** : ① il ne vaut que pour CE mouvement-là (il part de `_tEvol` et tombe au premier toucher suivant) — écrit
+> « vrai dès que la Toile bouge », il retardait la composition de la page + (`redteam_flash` B1, B2 : elle ne paraissait plus à temps) et l'ouverture
+> des fiches ; ② **on ne retarde PAS `window._apresMouvement` au nom de `_evol()`** : Ramage passe par cette porte, la retarder changeait ce qu'il rend
+> (`banc_rendu`, 14 images).
+> Juge : **`redteam_evol.py`** (le TRAVAIL de chaque rappel pendant le mouvement ; rouge sur v143). *La règle* : **avant d'accuser un monde, chronométrer
+> chaque rappel de la page pendant le mouvement (`scratchpad/v144/toile.py`) ; et un garde de tâche de fond part du TOUCHER, pas du mouvement.**
+> ⚠ Reste, nommé et non corrigé : sous Touffe, un retrait repeint la Toile trois fois vers 0,5 s (67 à 139 ms par image ; une seule en v140).
+> **⚑ LA PELOTE SOUS LE DOIGT (C-113).** *La cause* : depuis v141–v142 chaque mouvement du doigt recalculait les poils voisins DANS l'écouteur
+> `pointermove` (4 à 20 ms) et les renvoyait à la carte graphique à l'image suivante. Les segments attendent maintenant dans `FILE` ; ils sont inscrits
+> en une fois, JUSTE APRÈS une image, dans leur propre tâche (le calcul tient alors entre deux images), au plus une fois toutes les 66 ms (la cadence
+> s'espace jusqu'à 300 ms si l'image qui suit dépasse 20 ms). La trace se forme toujours sous le doigt. ⚠ Essai fait et mesuré, à ne pas refaire :
+> l'inscrire DANS le rappel d'image ajoute son coût à la peinture (18 à 32 images lentes sur une caresse de 2,3 s).
+> **⚑ RITOURNELLE, ENCORE PLUS PRÈS (C-088).** Une parole → sa dalle à **65–70 %** de la largeur (67,5 visés) ; deux et trois → ensemble à **80–90 %**
+> (85 visés), de la largeur ou, empilées, de la hauteur de la zone ; à partir de quatre : inchangé. ⚠ Trouvé : juste après une plantation la vue
+> restait cadrée sur les CELLULES (une dalle à 53 %, 67 % seulement après avoir rouvert l'app) — le recadrage repasse quand la dalle est posée.
+> `redteam_ritournelle` (37/37, cibles remontées ; original : `sauvegardes/redteam_ritournelle-avant-v144.py`).
+> **⚑ LE MOMENT « TENIR » DURE LE DOUBLE (C-111).** L'instant amande (« Parole tenue. » / « Défi relevé. ») reste **2 000 ms** (1 000 avant), Promi comme
+> Chiche (`window._tenirRegle.AMANDE`) ; « juste après » vient ensuite, la pose complète 700 ms plus tard — du lever à la fiche tenue : 2,7 s (1,7
+> avant). `redteam_fluide` porte 2 000 en dur (original : `sauvegardes/redteam_fluide-avant-v144.py`).
+> **⚑ LE GUIDE D'ACCUEIL (C-094) — CE BLOC REMPLACE CE QUE v143 DIT DE SON MOUVEMENT.** ① **Le Studio à sa taille normale** ; le + garde + 10 %.
+> ② **« Plus tard » est RETIRÉ, du guide comme de l'onboarding — « le parcours est court, on ne le passe pas » : EXCEPTION NOMMÉE DE R6**
+> (`TEXTES_ENGAGEMENT.sansPlusTard`, portée par `redteam_engagement` et `redteam_onb_sorties`). Le panneau du compte garde son « Plus tard » (c'est le
+> refus du compte). Toucher ailleurs fait AVANCER le guide (du Studio au + ; au +, il se retire). ③ **La suite de l'onboarding** : l'accueil posé, le
+> flou commence **0,6 s** plus tard (`ATTENTE` ; mesuré 0,66 à 0,70 s), **d'un seul mouvement** : les six formes partent ENSEMBLE, même durée
+> (**1,8 s**), même courbe douce presque régulière (`cubic-bezier(0.33,0.12,0.67,0.88)`) ; **elles RESTENT** (v143 les remplaçait par une couche
+> unique : le flou sautait à cet instant). ④ **Du Studio au +, pas de saut** : la zone nette est une LOUPE (`#guideLoupe` : une fenêtre ronde à bord
+> doux qui montre une copie nette des cinq entrées de la barre, au-dessus du flou) ; elle glisse du Studio au + en **1,2 s** (`GLISSE` ; un `transform`
+> par image sur deux nœuds, formules exactes), les six formes se réorganisent autour (par `transform`), puis la phrase du + paraît. **Le Studio touché
+> s'ouvre PAR-DESSUS le flou** (`#guide` est sous les écrans, z-index 69) : refermé, avec ou sans choix, la loupe glisse de même. `?guide=1`,
+> `&gfige=900`, `&getape=plus`, `&gglisse=600`. Juge : **`redteam_guide.py`** remis au niveau (57 ; original : `sauvegardes/redteam_guide-avant-v144.py`).
+> ⚠ Trois faits du lot : le calque de la loupe ne fait que la bande de la barre (à 390 × 844 ×3 sa première peinture coûtait une image de 130 ms) ;
+> les formes se recouvrent en permanence, le flou y est plus fort que 4,8 px (flou d'un flou) ; dans Safari le flou ne se VOIT qu'à partir de 0,5 s.
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v144.py`) : `redteam_gestes` (réécrit) · `redteam_guide` ·
+> `redteam_ritournelle` · `redteam_fluide` · `redteam_onb_sorties` (aucun « Plus tard », aucune main) · `redteam_engagement` (R6 : l'exception nommée).
+
 ### ⚑ v143 (12 oct. 2026) — RETOURS DE TOM SUR IPHONE : RITOURNELLE, LE PARTAGE DE LA TOILE, LA BARRE, LE TRAIT DE 60 pt, TENIR, LE GUIDE REFAIT, LA MAIN, LA PELOTE. (Décisions Tom.) Ce bloc CORRIGE v142 (Ritournelle, le guide, la trace, C-102) et v141 (le trait parti du milieu).
 > **Q457 validée (les lettres cernées sur la Toile floutée). Q459, Q462, Q464 acceptées. Q463 : un Chiche lancé à soi dit « TRACE POUR LANCER ».**
 > **⚑ SAFARI N'A PAS `requestIdleCallback` — TOUT CE QUI « ATTEND UN TEMPS MORT » Y TOURNE PAR SIMPLE MINUTERIE (C-102, RÉCIDIVE).** *Pourquoi
@@ -2516,6 +2569,7 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
+python3 redteam_evol.py        # v144 (C-112, C-113) : la Toile quand une dalle arrive ou part (cinq mondes, planter puis retirer) et la Pelote sous le doigt — le travail de chaque rappel pendant le mouvement (≤ 20 ms), le recadrage qui ne passe plus à chaque image, l'écouteur du doigt qui ne recalcule plus un poil. --mondes=. Rouge sur v143.
 python3 redteam_barre.py       # 7 — v143 (C-106) : cinquante touchers au vrai doigt sur ce qu'on voit de chaque entrée de la barre, chacun ouvre sa page ; les zones voisines ne se chevauchent pas. --n=20. Rouge sur v142 (STUDIO 17 sur 25).
 python3 redteam_trait.py       # 11 — v143 (C-107) : un trait ne compte qu'à 60 pt — 30 pt refusé, doigt posé refusé, 70 pt lent et 70 pt rapide acceptés, pour tenir et pour planter ; la main montre plus de 60 pt. Rouge sur v142.
 python3 redteam_partage_toile.py # 42 — v143 (C-105) : sous les vingt mondes, l'image que le vrai bouton produit (Enregistrer, Partager) est la Toile affichée : mêmes dalles, mêmes places, même cadrage, mêmes couleurs. Planche des écarts. --mondes=.

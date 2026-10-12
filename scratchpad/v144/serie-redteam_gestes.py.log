@@ -1,0 +1,29 @@
+OK  A · l'inventaire ne porte que tenir et chiche  ['tenir', 'chiche']
+OK  A · le délai déclaré sur une fiche vaut 3000 ms  3000
+OK  B · [Promi] la fiche à tenir est ouverte par sa dalle  
+OK  B · [Promi] aucune main dans les 2,5 s qui suivent le toucher  
+OK  B · [Promi] la main paraît 3 s après l'ouverture (2,8 à 3,6 s)  vue à 3.21 s
+OK  B · [Promi] c'est le geste de tenir (tenir)  tenir
+OK  B · [Promi] A2 : opaque, sans fondu ni animation, porte data-eng  {'id': 'tenir', 'eng': True, 'op': 1, 'anim': 'none|none', 'trans': 0}
+OK  B · [Promi] elle part au premier toucher  
+OK  B · [Chiche] la fiche à tenir est ouverte par sa dalle  
+OK  B · [Chiche] aucune main dans les 2,5 s qui suivent le toucher  
+OK  B · [Chiche] la main paraît 3 s après l'ouverture (2,8 à 3,6 s)  vue à 3.09 s
+OK  B · [Chiche] c'est le geste de tenir (chiche)  chiche
+OK  B · [Chiche] A2 : opaque, sans fondu ni animation, porte data-eng  {'id': 'chiche', 'eng': True, 'op': 1, 'anim': 'none|none', 'trans': 0}
+OK  B · [Chiche] elle part au premier toucher  
+OK  C · [accueil] aucune main en 6 s sans toucher  
+OK  C · [Peaufiner d'une fiche] aucune main en 6 s sans toucher  
+OK  C · [mode dessin] aucune main en 6 s sans toucher  
+OK  C · [fiche tenue] aucune main en 6 s sans toucher  
+OK  C · [fiche tenue portant un dessin (la bande)] aucune main en 6 s sans toucher  
+OK  C · [page +, phrase remplie] aucune main en 6 s sans toucher  
+OK  C · [Fil] aucune main en 6 s sans toucher  
+OK  C · [Index] aucune main en 6 s sans toucher  
+OK  C · [Réglages] aucune main en 6 s sans toucher  
+OK  C · [Aura] aucune main en 6 s sans toucher  
+OK  C · [Partager] aucune main en 6 s sans toucher  
+OK  C · [Studio] aucune main en 6 s sans toucher  
+OK  C · [onboarding, le trait] aucune main en 6 s sans toucher  {'onb': True, 'trait': True}
+
+27 / 27

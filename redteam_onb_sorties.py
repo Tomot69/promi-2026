@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
 """
+⚑ v144 (Tom, 12 oct. 2026) — « “Plus tard” retiré, du guide comme de l'onboarding, par décision de Tom : le parcours est court, on ne le passe pas.
+  Exception nommée dans redteam_engagement (R6) et dans CLAUDE.md. » Et la main fantôme ne paraît plus sur le trait de l'onboarding (C-110).
+  Ce juge vérifie donc : les textes d'avant v140 mot pour mot, AUCUN « Plus tard » à aucune étape (le panneau du compte garde le sien : c'est le
+  refus du compte, pas une sortie du parcours), aucune main. Original (v141, 27 contrôles) : sauvegardes/redteam_onb_sorties-avant-v144.py.
+
 redteam_onb_sorties.py — L'ONBOARDING D'AVANT v140 EST REVENU EN ENTIER, AVEC UNE SORTIE À CHAQUE ÉTAPE (v141, Tom, 10 oct. 2026 — C-075).
 
 LA DÉCISION, EN DUR (§7) :
@@ -66,11 +71,12 @@ def etape(pg, nom, textes=True):
     t = pg.evaluate(TX); s = pg.evaluate(SORTIE); so = s['compte'] if nom == 'compte' else s['tard']
     sorties.append((nom, bool(so), so and so['t']))
     if textes:
-        attendu = TEXTES[nom] + ('' if nom == 'compte' else 'Plus tard')
-        juge('« %s » : le texte est celui d\'avant v140, mot pour mot (plus la sortie « Plus tard »)' % nom, t == attendu, '' if t == attendu else 'lu : %s' % t[:200])
+        attendu = TEXTES[nom]
+        juge('« %s » : le texte est celui d\'avant v140, mot pour mot' % nom, t == attendu, '' if t == attendu else 'lu : %s' % t[:200])
     if nom != 'compte':
-        juge('« %s » : « Plus tard » est visible, sous le doigt, à 12 px, sans soulignement, opaque, sans fondu' % nom,
-             bool(so) and so['t'] == 'Plus tard' and so['fs'] == '12px' and so['deco'] == 'none' and so['op'] == 1 and so['an'] == 'none' and so['eng'] == 'plus-tard', '%s' % (so and {k: so[k] for k in ('t', 'fs', 'deco', 'b', 'encreL')}))
+        juge('« %s » : aucun « Plus tard » (décision de Tom, v144)' % nom, not so, '%s' % (so and so.get('t')))
+    else:
+        juge('« compte » : le panneau du compte garde son « Plus tard » (le refus du compte)', bool(so) and so['t'] == 'Plus tard', '%s' % (so and so.get('t')))
     juge('« %s » : l\'étape « principe » n\'existe plus' % nom, not s['principe'] and not any(p in t for p in PRINCIPE) and s['e2'] == 'undefined', 'principe %s · _e2 %s' % (s['principe'], s['e2']))
     return s
 
@@ -92,31 +98,19 @@ with sync_playwright() as p:
     if not R6:
         juge('le mot de trace de l\'onboarding est à 19 px (gardé de v140 : « plus grand »)', s['trace'] == '19px', '%s' % s['trace'])
         pg.wait_for_timeout(1500); s = pg.evaluate(SORTIE)
-        juge('la main fantôme accompagne le trait de l\'onboarding (gardée de v140)', s['main'] == 'onb-trait' and s['mainNoeud'], 'main : %s' % s['main'])
+        pg.wait_for_timeout(2500); s = pg.evaluate(SORTIE)
+        juge('aucune main fantôme sur le trait de l\'onboarding, 4 s sans toucher (C-110 : elle ne paraît que sur une fiche à tenir)', not s['main'] and not s['mainNoeud'], 'main : %s' % s['main'])
     trace(pg, cdp); pg.wait_for_timeout(6400); etape(pg, 'fin')
     d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height*0.36];}"); toucher(cdp, pg, d[0], d[1]); pg.wait_for_timeout(1000)
-    etape(pg, 'compte'); ctx.close()
-    sans = [n for n, c, _ in sorties if not c]
-    juge('R6 — une sortie visible, sous le doigt, à chaque étape (%d étapes)' % len(sorties), len(sorties) >= 6 and not sans, 'sans sortie : %s' % (sans or 'aucune'))
+    etape(pg, 'compte'); decl = bool(pg.evaluate("()=>!!(window.TEXTES_ENGAGEMENT&&TEXTES_ENGAGEMENT.sansPlusTard)")); ctx.close()
+    avec = [n for n, c, _ in sorties if c and n != 'compte']; compte_ok = any(n == 'compte' and c for n, c, _ in sorties)
+    juge('R6, EXCEPTION NOMMÉE (Tom, v144) — aucun « Plus tard » à aucune des %d étapes du parcours ; le compte garde le sien' % (len(sorties) - 1), len(sorties) >= 6 and not avec and compte_ok and decl, 'avec « Plus tard » : %s · exception déclarée par l\'app : %s' % (avec or 'aucune', decl))
     if R6:
-        print('R6 %s · %d étapes · sans sortie : %s' % ('OK' if (len(sorties) >= 6 and not sans) else 'KO', len(sorties), sans or 'aucune'))
-        for n, c, t in sorties: print('     R6 · %-14s %s' % (n, ('sortie : « %s »' % t) if c else 'AUCUNE sortie visible'))
-        b.close(); sys.exit(0 if (len(sorties) >= 6 and not sans) else 1)
-    # ── « Plus tard » fait ce qu'il dit, à trois étapes
-    for ou in ('prénom', 'trait', 'fin'):
-        ctx, pg, cdp = ouvre(b)
-        if ou != 'prénom': prenom(pg, cdp); parole(pg); saisie(pg)
-        if ou == 'fin': trace(pg, cdp); pg.wait_for_timeout(6400)
-        c = centre(pg, '#onbTard')
-        if c: toucher(cdp, pg, c[0], c[1])
-        pg.wait_for_timeout(3200); s = pg.evaluate(SORTIE)
-        juge('« Plus tard » à l\'étape « %s » : un toucher, on est sur sa Toile (%d parole), sans panneau du compte ni guide ; le verrou est posé' % (ou, 1 if ou == 'fin' else 0),
-             bool(c) and not s['onb'] and s['devant'] == 'accueil' and s['verrou'] == '1' and not s['guide'] and not s['panneau'] and s['n'] == (1 if ou == 'fin' else 0), 'onb %s · devant %s · verrou %s · guide %s · panneau %s · paroles %s' % (s['onb'], s['devant'], s['verrou'], s['guide'], s['panneau'], s['n']))
-        pg.reload(); pg.wait_for_timeout(7000); s = pg.evaluate(SORTIE)
-        juge('« Plus tard » à l\'étape « %s » : rien n\'est redemandé au rechargement' % ou, not s['onb'] and not s['guide'], 'onb %s · guide %s' % (s['onb'], s['guide']))
-        ctx.close()
+        print('R6 %s · exception nommée (Tom, v144 : « le parcours est court, on ne le passe pas ») · %s · %d étapes · avec « Plus tard » : %s' % ('OK' if (len(sorties) >= 6 and not avec and compte_ok and decl) else 'KO', 'exception déclarée' if decl else 'exception NON déclarée', len(sorties), avec or 'aucune'))
+        for n, c, t in sorties: print('     R6 · %-14s %s' % (n, ('« %s »' % t) if c else 'aucun « Plus tard »'))
+        b.close(); sys.exit(0 if (len(sorties) >= 6 and not avec and compte_ok and decl) else 1)
     b.close()
 ok = sum(1 for _, c in res if c)
 print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
-for n, c, t in sorties: print('     R6 · %-14s %s' % (n, ('sortie : « %s »' % t) if c else 'AUCUNE sortie visible'))
+for n, c, t in sorties: print('     R6 · %-14s %s' % (n, ('« %s »' % t) if c else 'aucun « Plus tard »'))
 sys.exit(0 if ok == len(res) else 1)

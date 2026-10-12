@@ -1,0 +1,9 @@
+OK  studioBtn : 20 touchers sur ce qu'on en voit (x 40 → 99, y 731 → 788) ouvrent sa page, 20 sur 20  20 sur 20 · à côté : []
+KO  souffleBtn : 20 touchers sur ce qu'on en voit (x 102 → 145, y 731 → 788) ouvrent sa page, 20 sur 20  19 sur 20 · à côté : [(102, 773, 'studioScreen')]
+OK  createBtn : 20 touchers sur ce qu'on en voit (x 156 → 234, y 721 → 799) ouvrent sa page, 20 sur 20  20 sur 20 · à côté : []
+OK  indexBtn : 20 touchers sur ce qu'on en voit (x 240 → 291, y 731 → 788) ouvrent sa page, 20 sur 20  20 sur 20 · à côté : []
+OK  filBtn : 20 touchers sur ce qu'on en voit (x 302 → 337, y 731 → 788) ouvrent sa page, 20 sur 20  20 sur 20 · à côté : []
+OK  les zones de toucher voisines ne se chevauchent pas (STUDIO / AURA, INDEX / FIL)  [[43, 97], [97, 151], [239, 293], [293, 347]]
+OK  aucune erreur de page  []
+
+6/7

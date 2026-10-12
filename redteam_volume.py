@@ -38,7 +38,9 @@ OMBRE_ATTENDUE=2
 # pas des dégradés peints — aucune couleur n'en sort. Exception NOMINATIVE, comptée : quatre, pas une de plus, et dans ce bloc seulement.
 # ⚑ v143 (Tom, 12 oct. 2026, C-094) : « des formes organiques à bord doux » — le bord doux des six formes du guide est UN dégradé radial en masque,
 # écrit deux fois (préfixé et non) dans `lot-V141-GUIDE-css`. Exception NOMMÉE, bornée à ces deux écritures (original : sauvegardes/redteam_volume-avant-v143.py).
-MASQUES={'lot-V141-GUIDE-css':2}
+# ⚑ v144 (Tom, C-094) : le guide a un second bord doux — la LOUPE (la zone nette qui glisse du Studio au +, `#guideLoupe`), le même dégradé radial en
+# masque, écrit deux fois lui aussi. L'exception nommée passe de deux à QUATRE écritures, bornée (original : sauvegardes/redteam_volume-avant-v144.py).
+MASQUES={'lot-V141-GUIDE-css':4}
 def permis(lot, motif):
     b=BLANCHE.get(lot); return b=='*' or (b is not None and any(motif.startswith(m) for m in b))
 MOTIFS=re.compile(r"_couronnePelote|_haloPelote|_flaquePelote|(?:repeating-)?(?:radial|linear|conic)-gradient\(|create(?:Radial|Linear|Conic)Gradient|shadowBlur|shadowColor|drop-shadow\(|text-shadow\s*:[^;}\"']*|box-shadow\s*:[^;}\"']*")

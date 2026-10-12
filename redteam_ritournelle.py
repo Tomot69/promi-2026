@@ -1,22 +1,24 @@
 #!/usr/bin/env python3
 """
-redteam_ritournelle.py — RITOURNELLE, CE QU'ON VOIT AU DÉPART (v143, Tom, 12 oct. 2026 — C-088, RÉCIDIVE). Réécrit ; l'original de v142 :
+redteam_ritournelle.py — RITOURNELLE, CE QU'ON VOIT AU DÉPART (v143, Tom, 12 oct. 2026 — C-088, RÉCIDIVE). ⚑ v144 (Tom, le même jour) : « avec peu de
+paroles, encore un peu plus zoomé » — les cibles à 1, 2 et 3 paroles sont remontées (original de v143 : sauvegardes/redteam_ritournelle-avant-v144.py).
+Réécrit en v143 ; l'original de v142 :
 sauvegardes/redteam_ritournelle-avant-v143.py (« de 1 à 3 paroles, aucune cellule vide, même en partie » — obtenu en ne peignant plus les
 cellules vides : les premières dalles prenaient tout l'écran, et la Toile sans parole devenait un aplat, noir en sombre).
 
 LES CIBLES DE TOM, EN DUR, dans la zone visible entre le plateau et la barre (y 100 → 710, 390 pt de large) :
-  · 1 parole : sa dalle entière, centrée, entre 50 et 60 % de la largeur (195 à 234 pt), avec un peu de Toile autour — des bords de cellules
+  · 1 parole : sa dalle entière, centrée, entre 65 et 70 % de la largeur (253,5 à 273 pt), avec un peu de Toile autour — des bords de cellules
     vides, pas une cellule vide entière ;
-  · 2 et 3 paroles : toutes entières, ensemble entre 70 et 85 % de la largeur (273 à 331,5 pt), un peu de Toile autour ;
-    ⚠ deux dalles l'une AU-DESSUS de l'autre ne peuvent pas faire 70 % de large sans sortir de la zone : l'ensemble fait alors entre 70 et 85 %
-    de la HAUTEUR de la zone (427 à 518 pt) — c'est la même cible sur l'autre axe, et le juge dit lequel il a jugé ;
+  · 2 et 3 paroles : toutes entières, ensemble entre 80 et 90 % de la largeur (312 à 351 pt), un peu de Toile autour ;
+    ⚠ deux dalles l'une AU-DESSUS de l'autre ne peuvent pas faire 80 % de large sans sortir de la zone : l'ensemble fait alors entre 80 et 90 %
+    de la HAUTEUR de la zone (485 à 545 pt) — c'est la même cible sur l'autre axe, et le juge dit lequel il a jugé ;
   · 4 paroles : toutes entières, deux ou trois cellules vides entières au plus ;
   · 6 paroles : peu de vides, proportionnellement (cinq cellules vides entières au plus) ;
   · sans parole : la Toile est PEINTE (des cellules vides partout), en clair et en sombre — jamais un aplat.
 Par le banc « comme Tom » (WebKit, 390 × 844 ×3, Toile vide, paroles plantées par le +, app ROUVERTE avant chaque mesure). Le verdict vient de la
 CAPTURE : une dalle est une tache de bleu Promi ; une cellule vide est une tache qui se détache du fond (la couleur la plus fréquente de la
 zone) et ne porte pas de bleu ; elle est « entière » si sa boîte ne touche aucun bord de la zone.
-Captures annotées (cotes) : planche-v143/rit-<fichier>-<n>.png.     Usage : python3 redteam_ritournelle.py [fichier.html]
+Captures annotées (cotes) : planche-v144/rit-<fichier>-<n>.png.     Usage : python3 redteam_ritournelle.py [fichier.html]
 """
 import sys, io
 sys.path.insert(0, '.')
@@ -96,15 +98,15 @@ def verdict(n, pg, quand=''):
     x0 = min(d[0] for d in D); x1 = max(d[1] for d in D); y0 = min(d[2] for d in D); y1 = max(d[3] for d in D); w = x1 - x0; h = y1 - y0; cx = (x0 + x1) / 2; cy = (y0 + y1) / 2
     txt = '%d × %d pt · %.0f %% de la largeur · %d vide(s) entière(s)' % (w, h, w / 3.9, len(E))
     if n == 1:
-        juge('%s : sa dalle fait entre 50 et 60 %% de la largeur (195 à 234 pt)' % nom, 195 <= w <= 234, 'largeur peinte %d pt (%.0f %%)' % (w, w / 3.9))
+        juge('%s : sa dalle fait entre 65 et 70 %% de la largeur (253,5 à 273 pt)' % nom, 253.5 <= w <= 273, 'largeur peinte %d pt (%.0f %%)' % (w, w / 3.9))
         juge('%s : elle est centrée (à 20 pt près en largeur, 40 en hauteur de la zone)' % nom, abs(cx - 195) <= 20 and abs(cy - (Y0 + Y1) / 2) <= 40, 'centre (%.0f, %.0f) pour (195, %d)' % (cx, cy, (Y0 + Y1) / 2))
     elif n in (2, 3):
-        enL = 273 <= w <= 331.5; enH = 0.70 * ZH <= h <= 0.85 * ZH
-        juge('%s : ensemble entre 70 et 85 %% de la largeur — ou, empilées, de la hauteur de la zone' % nom, (enL and h <= 0.85 * ZH) or (enH and w <= 331.5), 'ensemble %d × %d pt : %.0f %% de la largeur, %.0f %% de la hauteur de la zone — jugé sur %s' % (w, h, w / 3.9, 100.0 * h / ZH, 'la largeur' if enL else 'la hauteur'))
+        enL = 312 <= w <= 351; enH = 0.80 * ZH <= h <= 0.90 * ZH
+        juge('%s : ensemble entre 80 et 90 %% de la largeur — ou, empilées, de la hauteur de la zone' % nom, (enL and h <= 0.90 * ZH) or (enH and w <= 351), 'ensemble %d × %d pt : %.0f %% de la largeur, %.0f %% de la hauteur de la zone — jugé sur %s' % (w, h, w / 3.9, 100.0 * h / ZH, 'la largeur' if enL else 'la hauteur'))
     if n in (1, 2, 3):
         juge('%s : un peu de Toile autour (au moins deux cellules vides visibles en partie)' % nom, len(V) >= 2, '%d cellule(s) vide(s) visibles, dont %d entière(s)' % (len(V), len(E)))
     juge('%s : %s' % (nom, 'aucune cellule vide ENTIÈRE' if VIDES_ENTIERES_MAX[n] == 0 else 'au plus %d cellules vides entières' % VIDES_ENTIERES_MAX[n]), len(E) <= VIDES_ENTIERES_MAX[n], '%d entière(s) : %s' % (len(E), E[:6]))
-    annote(pg, 'planche-v143/rit-%s-%d%s.png' % (F.replace('.html', ''), n, '-rouverte' if quand else ''), D, V, E, txt)
+    annote(pg, 'planche-v144/rit-%s-%d%s.png' % (F.replace('.html', ''), n, '-rouverte' if quand else ''), D, V, E, txt)
 TITRES = ['boire un verre', 'appeler Mamie', 'courir dimanche', 'ranger le garage', 'écrire à Paul', 'lire un livre', 'faire les crêpes', 'planter un arbre', 'réparer le vélo']
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -114,7 +116,7 @@ with sync_playwright() as p:
         pg.evaluate("()=>{try{setPremium(true)}catch(e){} Toile.setTheme('ritournelle')}"); pg.wait_for_timeout(2500)
         D, V, E, fond = lit(image(pg))
         juge('sans parole [%s] : la Toile est peinte (au moins huit cellules vides visibles), jamais un aplat' % ('sombre' if sombre else 'clair'), len(V) >= 8, '%d cellule(s) vide(s) · fond %s' % (len(V), fond))
-        capture(pg, 'planche-v143/rit-%s-0-%s.png' % (F.replace('.html', ''), 'sombre' if sombre else 'clair')); ctx.close()
+        capture(pg, 'planche-v144/rit-%s-0-%s.png' % (F.replace('.html', ''), 'sombre' if sombre else 'clair')); ctx.close()
     ctx = contexte(b); pg = ouvre(ctx, F)
     pg.evaluate("()=>{try{setPremium(true)}catch(e){} Toile.setTheme('ritournelle')}"); pg.wait_for_timeout(1500)
     for i, t in enumerate(TITRES):
@@ -122,7 +124,7 @@ with sync_playwright() as p:
         if n in VIDES_ENTIERES_MAX:
             verdict(n, pg)
             pg.reload(); pg.wait_for_timeout(7500); verdict(n, pg, ' (app rouverte)')
-        if n == 9: pg.reload(); pg.wait_for_timeout(7500); capture(pg, 'planche-v143/rit-%s-9.png' % F.replace('.html', ''))
+        if n == 9: pg.reload(); pg.wait_for_timeout(7500); capture(pg, 'planche-v144/rit-%s-9.png' % F.replace('.html', ''))
     juge('aucune erreur de page', not pg.__dict__['erreurs'], pg.__dict__['erreurs'][:2])
     ctx.close(); b.close()
 ok = sum(1 for _, c in res if c)

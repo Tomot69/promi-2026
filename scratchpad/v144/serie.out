@@ -1,0 +1,30 @@
+redteam_registre.py              code  0 ·    1 s · 6 / 6 | chantiers non validés : 112
+redteam_volume.py                code  1 ·    0 s · ✗ NOUVEAU VOLUME : (lot-V141-GUIDE-css écrit 4 masque(s) : 2 au plus) | ❌ 1 volume(s) nouveau(x)
+redteam_tokens.py                code  0 ·    0 s · ✓ l'extension Swift porte le niveau « libelle » | 46/46
+redteam_evol.py                  code  0 ·  263 s · OK  aucune erreur de page  [] | 32 / 32
+redteam_fluide.py                code  1 ·  230 s · 5 / 6 | KO : 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images
+redteam_gestes.py                code  0 ·  165 s · OK  C · [onboarding, le trait] aucune main en 6 s sans toucher  {'onb': True, 'trait': True} | 27 / 27
+redteam_trait.py                 code  1 ·  126 s · OK  aucune erreur de page  [] | 10/11
+redteam_onb_sorties.py           code  0 ·   41 s · R6 · fin            aucun « Plus tard » | R6 · compte         « Plus tard »
+redteam_engagement.py            code  1 ·  141 s · raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None | playwright._impl._errors.TargetClosedError: Page.evaluate: Target page, context or browser has been closed
+redteam_verrou_onboarding.py     code  0 ·   44 s · OK  9 · aucune erreur de page                                                  [] | verrou de l'onboarding : 9/9
+redteam_trace.py                 code  1 ·  117 s · OK  F · ?mesure=1 écrit le contact lu (13 × 7 pt)  'contact lu : 13 × 7 pt (pointeur) → demi-axe 13 pt' | 16/17
+redteam_enfonce.py               code  0 ·   46 s · OK  aucune erreur de page | 14 / 14
+redteam_pelote_doigt.py          code  1 ·   31 s · 5 / 7 | KO : 1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms · 1 · [passe 2] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+redteam_ritournelle.py           code  0 ·  206 s · OK  aucune erreur de page  [] | 37 / 37
+redteam_guide.py                 code  1 ·  214 s · ✅ [sombre] pendant le glissement du Studio au + (1,2 s), aucune image au-delà de 16,7 ms de travail du fil principal     156 images · travail total 26 | ❌  56 / 57
+redteam_deplace.py               code  0 ·  114 s · OK  ritournelle · aucune erreur de page  [] | 18/18
+redteam_toucher.py               code  1 ·  282 s · ROUGE : Chantourné : toucher une dalle ouvre sa fiche (2 sur 3) | ROUGE : Volubilis : toucher une dalle ouvre sa fiche (1 sur 3)
+redteam_accueil.py               code  0 ·  184 s · [sombre] 5 · un mode signature enregistré ne se rallume pas  OK  sigmode False | 22/22
+redteam_vide.py                  code  0 ·  229 s · aucune erreur JS                               OK | 61/61
+redteam_flash.py                 code  1 ·  138 s · ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1971 ms) | 30/32
+redteam_decisions.py             code  0 ·   82 s · Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état) | 89 / 89
+redteam_joignable.py             code  0 ·  176 s · (dette soldée, à retirer de joignable-dette.json : div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2») | 5 / 5
+redteam_ecrans.py                code  0 ·   93 s · aucune erreur JS [clair]                       OK | 152/152
+redteam_lexique.py               code  0 ·  313 s · · point i | redteam_lexique : 3/3
+redteam_partage_toile.py         code  0 ·   76 s · OK  aucune erreur de page  [] | 8/8
+redteam_barre.py                 code  1 ·  200 s · OK  aucune erreur de page  [] | 6/7
+banc_rendu.py                    code  1 ·  123 s · ≠ ramage       dalle-cercle-k2    49600 px  max 255 | ❌ LE RENDU A CHANGÉ.
+redteam_rythme.py                code  1 ·  284 s · · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 47, 'images': 3, 'boucle': 1867, 'debut': 33} | 58 / 60
+redteam_air.py                   code  1 ·  314 s · Peaufiner [light]          .s2-val«vendredi 23»               → .s2-val«aucune» | Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+redteam_couleurs_ref.py          code  0 ·  782 s · canevas non peints d'un côté (comptés, non jugés) : 3 — Nuée défilée[l] vide côté app · Nuée défilée[d] vide côté réf · Nuée défilée[d] vide côté réf | ✅ — 0 écart(s) de couleur avec la référence v118

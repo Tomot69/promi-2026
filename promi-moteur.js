@@ -6183,16 +6183,26 @@ function _boiteMatiere(col){ try{ var B=window._ritBoites; if(!B||!B.length) ret
     if(!e || Math.abs(e.sx-c.x)>3 || Math.abs(e.sy-c.y)>3 || c.wAt) return null;
     if(e.x0<x0)x0=e.x0; if(e.y0<y0)y0=e.y0; if(e.x1>x1)x1=e.x1; if(e.y1>y1)y1=e.y1; }
   return (x1>x0&&y1>y0)?{x0:x0,y0:y0,x1:x1,y1:y1,matiere:1}:null; }catch(_){ return null; } }
+/* ⚑ v144 (Tom, 12 oct. 2026, C-112 — « la Toile saccade quand une dalle apparaît ou disparaît ») — LE MÊME RÉSULTAT, CALCULÉ UNE FOIS. Mesuré au
+   banc WebKit : cette boîte coûtait 32 à 63 ms à la plantation (dans l'image où la dalle doit paraître), et, sous Ritournelle, elle était
+   recalculée À CHAQUE IMAGE de l'apparition (`boitesNeuves` → `autoView` : 21 appels, 870 ms). Deux parades, sans changer une valeur :
+   ① on ne compare un point qu'aux graines qui PEUVENT le prendre (|k − c| < 2·R·√2 + w_k − w_c, borne exacte), les plus proches d'abord ;
+   ② elle ne dépend que des places et des poids FINAUX : tant qu'ils n'ont pas changé, le résultat gardé est rendu tel quel. */
+var _bsMemo=null, _bnT=0, _bnDer=0;
 function _boiteSerre(col){ try{
-  var a=avg(), R=a*1.7, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9, P=[], i, k;
-  for(i=0;i<seeds.length;i++){ var q=seeds[i]; P.push([(q.tx!=null?q.tx:q.x),(q.ty!=null?q.ty:q.y),_poidsFin(q),q]); }
-  for(i=0;i<col.length;i++){ var c=col[i], cx=(c.tx!=null?c.tx:c.x), cy=(c.ty!=null?c.ty:c.y), wc=_poidsFin(c);
-    for(var y=Math.max(0,cy-R); y<=Math.min(H,cy+R); y+=3) for(var x=Math.max(0,cx-R); x<=Math.min(W,cx+R); x+=3){
+  var a=avg(), R=a*1.7, x0=1e9,y0=1e9,x1=-1e9,y1=-1e9, P=[], i, k, sg=W+'x'+H+'|'+R.toFixed(2), PAS=3;   /* ⚠ le pas reste 3 : un pas plus large (R/45, essayé) déplaçait la boîte d'un rien, donc la vue — et le banc de rendu ne retrouvait plus Ramage (14 images) */
+  for(i=0;i<seeds.length;i++){ var q=seeds[i]; P.push([(q.tx!=null?q.tx:q.x),(q.ty!=null?q.ty:q.y),_poidsFin(q),q]); sg+='|'+P[i][0].toFixed(2)+','+P[i][1].toFixed(2)+','+P[i][2].toFixed(2)+(col.indexOf(q)>=0?'c':''); }
+  if(_bsMemo && _bsMemo.sg===sg) return _bsMemo.r ? {x0:_bsMemo.r.x0,y0:_bsMemo.r.y0,x1:_bsMemo.r.x1,y1:_bsMemo.r.y1} : null;
+  for(i=0;i<col.length;i++){ var c=col[i], cx=(c.tx!=null?c.tx:c.x), cy=(c.ty!=null?c.ty:c.y), wc=_poidsFin(c), V=[], lim=2*R*1.4143;
+    for(k=0;k<P.length;k++){ if(P[k][3]===c) continue; var dk=Math.sqrt((P[k][0]-cx)*(P[k][0]-cx)+(P[k][1]-cy)*(P[k][1]-cy)); if(dk < lim+P[k][2]-wc) V.push([P[k][0],P[k][1],P[k][2],dk-P[k][2]]); }
+    V.sort(function(u,v){ return u[3]-v[3]; });
+    for(var y=Math.max(0,cy-R); y<=Math.min(H,cy+R); y+=PAS) for(var x=Math.max(0,cx-R); x<=Math.min(W,cx+R); x+=PAS){
       var d=Math.sqrt((x-cx)*(x-cx)+(y-cy)*(y-cy))-wc, ok=true;
-      for(k=0;k<P.length;k++){ if(P[k][3]===c) continue; var e=Math.sqrt((x-P[k][0])*(x-P[k][0])+(y-P[k][1])*(y-P[k][1]))-P[k][2]; if(e<d){ ok=false; break; } }
+      for(k=0;k<V.length;k++){ var e=Math.sqrt((x-V[k][0])*(x-V[k][0])+(y-V[k][1])*(y-V[k][1]))-V[k][2]; if(e<d){ ok=false; break; } }
       if(ok){ if(x<x0)x0=x; if(x>x1)x1=x; if(y<y0)y0=y; if(y>y1)y1=y; } } }
-  if(x1<x0) return null;
-  return {x0:x0,y0:y0,x1:x1,y1:y1}; }catch(_){ return null; } }
+  var r=(x1<x0)?null:{x0:x0,y0:y0,x1:x1,y1:y1}; _bsMemo={sg:sg, r:r};
+  return r ? {x0:x0,y0:y0,x1:x1,y1:y1} : null; }catch(_){ return null; } }
+window._boiteSerreLue=function(col){ return _boiteSerre(col||seeds.filter(function(s){return s.kind!=='gray'||s.compagnon;})); };
 function autoView(){
   /* ⚑ Q212 (Tom) : « la vue qui revient à 1 à chaque plantation » est un défaut. Une vue posée par la main n'est reprise
      que par le recadrage (le rond, ou le double toucher sur une case vide). */
@@ -6238,9 +6248,11 @@ function autoView(){
   /* ⚑ v143 (Tom, C-088 — RÉCIDIVE : « en v141 trop dézoomé, en v142 les premières dalles prennent tout l'écran ») — LES CIBLES, EN DUR, sur la
      matière peinte, dans la zone visible : une parole → sa dalle à 55 % de la largeur (50 à 60) ; deux et trois → ensemble à 78 % (70 à 85) ;
      quatre et cinq → 90 % ; ensuite 96 %. En hauteur, jamais plus de 80 % de la zone (une dalle haute, des dalles empilées). */
-  var _fr=_bm?(col.length===1?0.55:(col.length<=3?0.78:(col.length<=5?0.90:0.96))):(_bs?(col.length===1?1.18:1.0):0.92);
+  /* ⚑ v144 (Tom, 12 oct. 2026, C-088) — « AVEC PEU DE PAROLES, ENCORE UN PEU PLUS ZOOMÉ » : une parole → sa dalle à 67,5 % de la largeur (65 à 70) ; deux et
+     trois → ensemble à 85 % (80 à 90), de la largeur ou, empilées, de la hauteur de la zone ; à partir de quatre : inchangé (90 %, puis 96 %). */
+  var _fr=_bm?(col.length===1?0.675:(col.length<=3?0.85:(col.length<=5?0.90:0.96))):(_bs?(col.length===1?1.18:1.0):0.92);
   var availW=W*_fr, availH=Math.max(1,botB-topB);
-  var s=Math.min(availW/bw, (_bm?availH*0.80:availH)/bh);
+  var s=Math.min(availW/bw, (_bm?availH*((col.length===2||col.length===3)?0.85:0.80):availH)/bh);
   s=Math.max(1.0, Math.min(s, _serre?(_bm?7.0:(_bs?5.0:3.6)):2.0));        /* jamais plus loin que la Toile entiere, plafond 2.0 (3,6 : v140, voir plus haut) */
   var cx=(minX+maxX)/2, cy=(minY+maxY)/2, scx=W/2, scy=(topB+botB)/2;
   var _ox=scx-cx*s, _oy=scy-cy*s;
@@ -6330,7 +6342,7 @@ function _vivEnferme(){ if(!_vivRend||!_vivPolys||!_vivC||_vivSig!==_vivSigne())
   g.clip('evenodd'); g.setTransform(1,0,0,1,0,0); g.drawImage(_vivC,0,0); g.restore(); }
 function _vivAlea(){ return Math.random(); }   /* hors de la suite du moteur (`_alea` est réamorcée à chaque plantation : le rythme en deviendrait prévisible) */
 function _vivReduit(){ try{ return !!(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
-function _vivLibre(){ try{ if(document.hidden) return false; var cv=document.getElementById('toileCv'); if(!cv) return false; var r=cv.getBoundingClientRect(); if(!r.width) return false;
+function _vivLibre(){ try{ if(document.hidden) return false; if(document.getElementById('guide')) return false;   /* v144 : pas sous le flou du guide — chaque image de la Toile y ferait recalculer six calques floutés */ var cv=document.getElementById('toileCv'); if(!cv) return false; var r=cv.getBoundingClientRect(); if(!r.width) return false;
     var e=document.elementFromPoint(r.left+r.width/2, r.top+r.height*0.45); return e===cv || !!(e&&e.id==='toileCv'); }catch(_){ return false; } }
 function _vivPlan(){ if(_vivT) clearTimeout(_vivT); _vivT=null; if(_vivReduit()||window._vivantOff) return;
   var d=(typeof window._vivantFixe==='number') ? window._vivantFixe : 5000+_vivAlea()*10000;
@@ -6572,7 +6584,10 @@ try{ if(window.creerMondes){ _MN=window.creerMondes(_envM={
       for(i=0;i<seeds.length;i++){ var g=seeds[i]; if(g.kind!=='gray') continue; var X=g.x*vTarget.s+vTarget.ox, Y=g.y*vTarget.s+vTarget.oy; if(X>m && X<W-m && Y>y0 && Y<y1) L.push(g); }
       return L.length?L:null; }catch(_){ return null; } },
   get videsVus(){ return null; if(theme!=='ritournelle'||!_transVive||_AP||_semisNeuf()) return null; var n=0; for(var i=0;i<seeds.length;i++){ if(seeds[i].kind!=='gray'&&seeds[i].part==null) n++; } return _videsVus(n); },
-  boitesNeuves:function(){ if(window._vueMain) return; setTimeout(function(){ try{ if(!window._vueMain){ autoView(); kick(); } }catch(_){ } },0); },
+  boitesNeuves:function(){ if(window._vueMain) return; /* v144 (C-112) : pendant qu'une dalle grandit, la matière publiée change à CHAQUE image — le recadrage (6 ms, pour la même cible : la boîte des cellules à leur poids final) passait donc à chaque image. Il passe au plus toutes les 220 ms, et une dernière fois après la dernière publication. */
+    var t=performance.now(); if(_bnT) return; var _essais=0; _bnT=setTimeout(function passe(){ _bnT=0; _bnDer=performance.now(); try{ if(!window._vueMain){ autoView(); kick(); } }catch(_){ }
+      /* tant qu'une parole grandit encore, la matière publiée n'est pas la sienne (`_boiteMatiere` rend null) : on repasse quand elle est posée — sans cela la vue restait cadrée sur les CELLULES après une plantation (une dalle à 53 % de la largeur, 67 % seulement après avoir rouvert l'app) */
+      try{ if(!window._vueMain && ++_essais<24 && seeds.some(function(q){ return q.kind!=='gray' && q.wAt; })) _bnT=setTimeout(passe, 220); }catch(_){ } }, Math.max(0, 220-(t-_bnDer))); },
   /* v66 — le papier : sur la Toile vivante, le dégradé même du fond, dans le repère de la vue ; ailleurs le fond du moteur */
   papierDesc:function(){ return (_transVive&&!_AP)?_fondVifDesc((0-view.ox)/view.s,(0-view.oy)/view.s,(W*0.55-view.ox)/view.s,(H-view.oy)/view.s):null; },
   papier:function(){ if(_transVive&&!_AP) return _fondVif(g,(0-view.ox)/view.s,(0-view.oy)/view.s,(W*0.55-view.ox)/view.s,(H-view.oy)/view.s); var c=window.Toile.fondToile(); return typeof c==='string'?c:'rgb('+c[0]+','+c[1]+','+c[2]+')'; },
@@ -7400,7 +7415,7 @@ function _compagnonsHalin(){
   return false; }
 window._compagnonsHalin=_compagnonsHalin;
 (function(){ ['addPromi','sync','setTheme','removePromi'].forEach(function(nom){ var f=window.Toile[nom]; if(typeof f!=='function') return;
-  window.Toile[nom]=function(){ var r=f.apply(this,arguments); try{ _compagnonsHalin(); }catch(_){ } return r; }; }); })();
+  window.Toile[nom]=function(){ if(nom!=='setTheme' && !_AP) window._tEvolDemande=1;   /* v144 (C-112) : une dalle arrive ou part — un drapeau ; l'app date la demande quand elle la lit (`_evol`), les tâches de fond et la passe de lisibilité attendent */ var r=f.apply(this,arguments); try{ _compagnonsHalin(); }catch(_){ } return r; }; }); })();
 window._simOublie=function(){ var a=!!_simRand; _simRand=null; return a; };   /* pour les juges : le tirage oublié, la prédiction manquée */
 var _addPromiNu=window.Toile.addPromi;
 window.Toile.addPromi=function(id){ var R=_simRand;
@@ -8159,7 +8174,7 @@ setTimeout(size,60);
        doigt qui tient une parole : une dalle re-rendue, 75 à 100 ms, à la fin de l'animation (mesuré sur le banc WebKit). Elle attend 3 s
        sans aucun toucher (lever compris), et jamais pendant « tenir » ni dans les 6 s qui suivent. */
     var _tenir = !!(window._tenirAnime || window._instant || (window._tenirFinT && performance.now()-window._tenirFinT<6000));
-    var calme = !_tenir && performance.now()-_dernierDoigt > 3000 && !(window._trans_en_cours && window._trans_en_cours()) && !document.hidden
+    var calme = !_tenir && !(window._evolRecente && window._evolRecente(4000)) && performance.now()-_dernierDoigt > 3000 && !(window._trans_en_cours && window._trans_en_cours()) && !document.hidden
       && !(window.Toile_state && window.Toile_state().running) && !(window._tEcran && performance.now()-window._tEcran<2500);   /* ⚑ v100 : ni dans les 2,5 s d'un changement d'écran — il tournait pendant l'ouverture d'une Nuée (19 dalles, 0,5 s) */   /* ⚑ v72 : ni pendant que la Toile anime (fondu, relâchement) — une dalle re-rendue y coûtait une image de 100 à 330 ms */
     if(calme){
       for(var i=0;i<RAPPEL.length;i++){ var R=RAPPEL[i], o=R.o||{};

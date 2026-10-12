@@ -1,0 +1,20 @@
+redteam_volume.py                code  0 ·    0 s · dette de naissance : 290 · retrouvée : 290 · soldée depuis : 0 | ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+redteam_evol.py                  code  1 ·  262 s · 30 / 32 | KO : 2 · [touffe] retirer : aucune image au-delà de 80 ms · 1 · [ritournelle] retirer : aucun rappel au-delà de 20 ms de travail pendant le mouvement
+redteam_fluide.py                code  1 ·  229 s · 5 / 6 | KO : 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images
+redteam_gestes.py                code  0 ·  164 s · OK  C · [onboarding, le trait] aucune main en 6 s sans toucher  {'onb': True, 'trait': True} | 27 / 27
+redteam_trait.py                 code  0 ·   78 s · OK  aucune erreur de page  [] | 11/11
+redteam_onb_sorties.py           code  0 ·   25 s · R6 · fin            aucun « Plus tard » | R6 · compte         « Plus tard »
+redteam_engagement.py            code  0 ·  119 s · R6 · compte         « Plus tard » | redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+redteam_trace.py                 code  0 ·  109 s · OK  F · ?mesure=1 écrit le contact lu (13 × 7 pt)  'contact lu : 13 × 7 pt (pointeur) → demi-axe 13 pt' | 17/17
+redteam_pelote_doigt.py          code  0 ·   31 s · OK  aucune erreur de page | 7 / 7
+redteam_ritournelle.py           code  1 ·  197 s · OK  aucune erreur de page  [] | 35 / 37
+redteam_guide.py                 code  1 ·  227 s · ✅ [sombre] pendant le glissement du Studio au + (1,2 s), aucune image au-delà de 16,7 ms de travail du fil principal     155 images · travail total 21 | ❌  56 / 57
+redteam_toucher.py               code  1 ·  286 s · ROUGE : Braille : toucher une dalle ouvre sa fiche (2 sur 3) | ROUGE : Buvard : toucher une dalle ouvre sa fiche (2 sur 3)
+redteam_vide.py                  code  0 ·  240 s · aucune erreur JS                               OK | 61/61
+redteam_flash.py                 code  0 ·  141 s · ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 2902 ms) | 32/32
+redteam_decisions.py             code  1 ·   86 s · 88 / 89 | KO : Index [dark] carte_etat
+redteam_joignable.py             code  0 ·  136 s · aucun gestionnaire en attribut on…=""                      OK  0 | 5 / 5
+redteam_ecrans.py                code  0 ·   93 s · aucune erreur JS [clair]                       OK | 152/152
+redteam_barre.py                 code  1 ·  194 s · OK  aucune erreur de page  [] | 6/7
+redteam_rythme.py                code  0 ·  284 s · · ramage · moteur · depart — ligne retirée (v93), relevé : {'duree': 45, 'images': 3, 'boucle': 1845, 'debut': 29} | 60 / 60
+redteam_air.py                   code  1 ·  349 s · Peaufiner [light]          .s2-val«vendredi 23»               → .s2-val«aucune» | Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer

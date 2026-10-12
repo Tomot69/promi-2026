@@ -70,7 +70,7 @@ with sync_playwright() as p:
     ctx2 = contexte(b, gestes_vus=False); pg2 = ouvre(ctx2, F); plante(pg2, 'arroser le figuier'); pg2.wait_for_timeout(800)
     G = pg2.evaluate(OU); a = list(G)[0]; tap(pg2, G[a][0], G[a][1])
     L = []
-    for i in range(40):
+    for i in range(80):   # v144 (C-110) : la main ne paraît plus qu'à 3 s — on la suit jusqu'à 9,6 s
         pg2.wait_for_timeout(120)
         v = pg2.evaluate("()=>{ const g=document.getElementById('gesteFantome'); if(!g||!g.children.length) return null; const m=g.querySelector('svg > g')||g.firstElementChild;   /* la main est le groupe déplacé dans le calque */ const r=m.getBoundingClientRect(), d=document.getElementById('device').getBoundingClientRect(); return (r.left+r.width/2-d.left)/(d.width/390); }")
         if v is not None: L.append(v)

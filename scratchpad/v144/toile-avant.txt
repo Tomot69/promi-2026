@@ -1,0 +1,10 @@
+zz-av144.html encre         planter  198 images ·  8 au-delà de 20 ms · pire   167 ms · somme des dépassements  234 ms [(93, 
+zz-av144.html encre         retirer  198 images · 10 au-delà de 20 ms · pire   150 ms · somme des dépassements  282 ms [(3, 2
+zz-av144.html touffe        planter  202 images ·  3 au-delà de 20 ms · pire    98 ms · somme des dépassements  165 ms [(826,
+zz-av144.html touffe        retirer  195 images ·  7 au-delà de 20 ms · pire   135 ms · somme des dépassements  303 ms [(453,
+zz-av144.html mosaique      planter  201 images ·  8 au-delà de 20 ms · pire   137 ms · somme des dépassements  196 ms [(193,
+zz-av144.html mosaique      retirer  198 images ·  9 au-delà de 20 ms · pire   198 ms · somme des dépassements  245 ms [(21, 
+zz-av144.html ritournelle   planter  178 images · 25 au-delà de 20 ms · pire   100 ms · somme des dépassements  601 ms [(74, 
+zz-av144.html ritournelle   retirer  172 images ·  6 au-delà de 20 ms · pire    30 ms · somme des dépassements   44 ms [(623,
+zz-av144.html brouillamini  planter  206 images · 11 au-delà de 20 ms · pire    62 ms · somme des dépassements  125 ms [(278,
+zz-av144.html brouillamini  retirer  207 images ·  9 au-delà de 20 ms · pire    40 ms · somme des dépassements   98 ms [(1, 4

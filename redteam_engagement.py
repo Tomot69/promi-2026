@@ -197,7 +197,10 @@ with sync_playwright() as p:
     import subprocess
     r6 = subprocess.run([sys.executable, 'redteam_onb_sorties.py', '--r6'] + ([URL.rsplit('/', 1)[-1]] if not URL.endswith('/app.html') else []), capture_output=True, text=True, timeout=600)   # ⚑ v141 (Tom, C-075) : l'onboarding d'avant v140 est revenu, avec un « Plus tard » à chaque étape — le parcours est joué par redteam_onb_sorties.py (original de ce juge : sauvegardes/redteam_engagement-avant-v141.py)
     lignes = [l for l in r6.stdout.splitlines() if l.strip().startswith('R6')]
-    t('R6 · sortie à un geste, à chaque étape de l\'onboarding (prénom, prénom saisi, parole, trait, message de fin, compte)', r6.returncode == 0 and len(lignes) >= 7, (lignes[0] if lignes else r6.stdout[-200:]))
+    # ⚑ v144 (Tom, 12 oct. 2026) — R6, EXCEPTION NOMMÉE : « “Plus tard” retiré, du guide comme de l'onboarding, par décision de Tom : le parcours est court,
+    #   on ne le passe pas. » R6 (« une sortie visible à chaque étape de l'onboarding ») ne s'applique plus à ce parcours ; on vérifie que la décision
+    #   est tenue : aucun « Plus tard » à aucune étape, et l'app déclare l'exception (TEXTES_ENGAGEMENT.sansPlusTard). Original : sauvegardes/redteam_engagement-avant-v144.py.
+    t('R6 · EXCEPTION NOMMÉE (Tom, v144) : l\'onboarding et le guide n\'ont plus de « Plus tard » — aucun à aucune étape, le compte garde le sien', r6.returncode == 0 and len(lignes) >= 7 and 'exception déclarée' in (lignes[0] if lignes else ''), (lignes[0] if lignes else r6.stdout[-200:]))
     for l in lignes[1:]: print('     ' + l.strip())
     b.close()
 print('\nredteam_engagement : %d/%d au vert · %d inactif(s) : %s' % (ok[0], ok[0] + len(ko), len(inactifs), ' ; '.join(inactifs)))

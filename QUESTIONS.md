@@ -8599,3 +8599,12 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Q471 — À SAVOIR (C-102)** : `redteam_fluide` (Chromium) reste à 4 ou 5 sur 6 — il reste une tâche de 17 à 49 ms à 1,77 s après le lever (la pose de base de la fiche tenue, après l'animation) et, une fois sur vingt, une image de 20 à 22 ms au passage à « juste après ». Ce que Tom sentait sur l'iPhone venait d'ailleurs (deux tâches de fond propres à Safari), corrigé.
 - **Q472 — À SAVOIR** : la main fantôme. Son drapeau se pose maintenant quand elle a fini son premier passage (E1 disait « dès l'apparition ») ; faire le geste soi-même le pose aussi. Sur l'iPhone de Tom, les drapeaux du trait sont oubliés une fois à l'arrivée de v143.
 
+### Lot v144 (12 oct. 2026)
+- **Q465 — TRANCHÉE (Tom, v144)** : au neutre. « À RACHEL DE TRACER SA PART » / « À CHACUN DE TRACER SA PART ». **Q466, Q468, Q470 : acceptées.**
+- **Q473 — À VALIDER** : « la main nulle part ailleurs que sur une fiche à tenir ». Ta liste ne nommait pas le trait de l'ONBOARDING ; je l'y ai retirée aussi (la phrase est générale). Une ligne la rend (`window._mainOnb=true`).
+- **Q474 — À SAVOIR** : « Plus tard » retiré de l'onboarding et du guide. Le panneau du COMPTE, à la fin, garde le sien : c'est le refus de créer un compte, pas une sortie du parcours.
+- **Q475 — À VALIDER SUR IPHONE** : le guide. ① dans Safari le flou ne se VOIT qu'à partir de 0,5 s environ (les formes sont encore petites) ; ② les six formes restent posées : là où elles se recouvrent le flou est plus fort que celui des murs ; ③ la zone nette est un rond à bord doux : autour du +, le fond net de la barre fait un disque un peu plus clair que la barre floutée.
+- **Q476 — À SAVOIR (C-112)** : sous Touffe, retirer une parole repeint la Toile trois fois vers 0,5 s après le toucher (67 à 139 ms par image au banc ; une seule en v140). Nommé, NON corrigé dans ce lot.
+- **Q477 — À SAVOIR** : la rangée « Revoir les gestes » des Réglages reste ; elle ne rend plus que la main de la fiche à tenir.
+- **Q478 — À SAVOIR (C-112)** : « aucune image au-delà de 20 ms » ne se prouve pas à l'intervalle entre deux images sur le banc (page au repos, il en donne déjà de 21 à 27 ms). Le juge tient 20 ms sur le TRAVAIL de chaque rappel pendant le mouvement ; l'iPhone reste le seul vrai juge de la fluidité.
+

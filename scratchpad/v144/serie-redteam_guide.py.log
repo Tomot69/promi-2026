@@ -1,0 +1,70 @@
+
+── premier lancement, clair : onboarding entier, choix au Studio
+  ✅ [clair] à l'arrivée sur l'accueil rien n'est flou, la barre est complète                                               guide None
+  ✅ [clair] LE MOMENT : le flou commence 0,6 s après que l'accueil est posé (0,55 à 1,2 s : onboarding refermé, Toile au repos, aucun doigt) calme avant le guide : 0.71 s
+  ✅ [clair] studio · six formes portent le flou des murs, CONSTANT (4,8 px — jamais un autre rayon pendant la révélation)  formes 6 · rayons vus pendant la révélation : ['blur(4.8px)']
+  ✅ [clair] studio · UN SEUL MOUVEMENT : bord doux (masque), `transform` seul, la même courbe douce, la même durée (1,8 s), aucun retard — elles partent ensemble masque ['radial-gradient(closest-side, rgb(32, 25'] · transitions [('transform', 'cubic-bezier(0.33, 0.12, 0.67, 0.88)', '1.8s', '0s')]
+  ✅ [clair] studio · la page n'écrit rien image par image : aucune forme retouchée pendant qu'elle grandit                 0 écriture(s) de style sur les formes entre le départ et la fin
+  ✅ [clair] studio · le mouvement dure 1,8 s (1,8 à 2,1 s entre le départ et la fin)                                       durée 1.84 s
+  ✅ [clair] le mouvement fini, les six formes RESTENT (aucune couche de remplacement : pas de saut), toujours à 4,8 px     formes 6 · couche False
+  ✅ [clair] studio · tout est flou : le plateau et les autres entrées perdent leurs contours (≤ 62 % de l'énergie d'avant) le mot-marque 5.6→1.2 · les icônes du plateau 3.9→0.5 · INDEX 11.5→0.8 · FIL 5.5→0.5 · AURA 10.8→0.8 · le + 4.9→1.5
+  ✅ [clair] studio · l'icône ET le mot STUDIO sont nets (≥ 70 % de leur densité de contours), À LEUR TAILLE NORMALE (× 1,00 à 1 % près) icône 5.3 → 4.8 · mot 14.4 → 13.5 · largeur 54 → 54 (× 1.000)
+  ✅ [clair] la phrase du Studio, mot pour mot, visible, au milieu de l'écran                                               « Choisis d’abord le monde qui te ressemble, au Studio. » [36, 340, 318, 104.4]
+  ✅ [clair] A3 : l'impératif de cette phrase est une exception NOMMÉE (TEXTES_ENGAGEMENT.imperatifVoulu) ; l'autre phrase n'en a pas ['Choisis d’abord le monde qui te ressemble, au Studio.']
+  ✅ [clair] « Plus tard » n'existe plus : ni dans le guide, ni à aucune image de l'onboarding (exception nommée de R6)     vu à 0 image(s) · None
+  ✅ [clair] A2, avec son exception nommée : aucune opacité, aucune animation ; une transition sur les six formes du flou SEULES ; tout porte `data-eng` []
+  ✅ [clair] toucher le Studio net ouvre le Studio PAR-DESSUS le flou : le flou reste posé dessous (six formes), sans phrase ; l'entrée de la barre est rendue Studio True · formes 6 · phrase None · état au-studio
+  ✅ [clair] CHEMIN 1 — un choix au Studio (monde encre → touffe), Studio refermé : l'étape du + arrive, sa phrase mot pour mot guide plus · « Promi, Chiche ou Cercle : tout commence par ce +. »
+  ✅ [clair] Studio refermé · DU STUDIO AU + : la zone nette glisse en 1,2 s (1,15 à 1,45 s)                                durée 1.22 s · 52 relevés
+  ✅ [clair] Studio refermé · PAS DE SAUT : elle avance à chaque image, jamais de plus de 9 % du trajet d'un coup, et ne recule pas trajet 117 px · plus grand pas 10.2 px (8.7 %) · plus petit 0.3
+  ✅ [clair] Studio refermé · le flou RESTE pendant le glissement : six formes à chaque image, aucune couche de remplacement formes au plus bas : 6 · à la fin : 6
+  ✅ [clair] plus · tout est flou : le plateau et les autres entrées perdent leurs contours (≤ 62 % de l'énergie d'avant)   le mot-marque 5.6→1.1 · les icônes du plateau 3.9→0.5 · INDEX 11.5→0.7 · FIL 5.5→0.4 · STUDIO 8.3→0.6 · AURA 10.8→0.7
+  ✅ [clair] plus · le + et son encart sont nets (≥ 70 % de leur densité de contours), agrandis de 10 % (8 à 12)            le + 4.7 → 4.4 · largeur 72 → 79.2 (× 1.100)
+  ✅ [clair] toucher le + ouvre les trois natures ; le guidage est fini, le + de la barre est rendu                         natures True · guide None
+  ✅ [clair] une seule fois : après un rechargement, ni onboarding ni guide                                                 guide None · devant accueil
+  ✅ [clair] aucune erreur de page                                                                                          []
+
+── les deux transitions, clair : mesure des images et captures
+  ✅ [clair] pendant la révélation (1,8 s), aucune image au-delà de 16,7 ms de travail du fil principal                     240 images · travail total 245 ms · pire 4.1 ms · p95 2.5 ms
+  ✅ [clair] pendant le glissement du Studio au + (1,2 s), aucune image au-delà de 16,7 ms de travail du fil principal      155 images · travail total 211 ms · pire 5.6 ms · p95 2.5 ms
+
+── les autres chemins (le guide rejoué)
+  ✅ CHEMIN 2 — Studio refermé sans choix : l'étape du + arrive                                                             guide studio → plus
+  ✅ CHEMIN 3 — toucher ailleurs pendant l'étape du Studio : la zone nette glisse vers le + (aucune phrase pendant), puis la phrase du + ; le flou reste guide studio → glisse → plus · formes 6
+  ✅ [clair] toucher ailleurs · DU STUDIO AU + : la zone nette glisse en 1,2 s (1,15 à 1,45 s)                              durée 1.22 s · 74 relevés
+  ✅ [clair] toucher ailleurs · PAS DE SAUT : elle avance à chaque image, jamais de plus de 9 % du trajet d'un coup, et ne recule pas trajet 117 px · plus grand pas 2.4 px (2.1 %) · plus petit 0.3
+  ✅ [clair] toucher ailleurs · le flou RESTE pendant le glissement : six formes à chaque image, aucune couche de remplacement formes au plus bas : 6 · à la fin : 6
+  ✅ à l'étape du +, toucher ailleurs retire le flou et finit le guidage (il ne se reforme pas)                             guide None puis None · devant accueil
+  ✅ Réduire les animations : le flou est posé sans mouvement (entier dès la première image, les six formes à leur taille, aucune transition) [(True, 6), (True, 6), (True, 6)] · [['all', 'ease', '0s', '0s']]
+
+── premier lancement, sombre : onboarding entier, choix au Studio
+  ✅ [sombre] à l'arrivée sur l'accueil rien n'est flou, la barre est complète                                              guide None
+  ✅ [sombre] LE MOMENT : le flou commence 0,6 s après que l'accueil est posé (0,55 à 1,2 s : onboarding refermé, Toile au repos, aucun doigt) calme avant le guide : 0.64 s
+  ✅ [sombre] studio · six formes portent le flou des murs, CONSTANT (4,8 px — jamais un autre rayon pendant la révélation) formes 6 · rayons vus pendant la révélation : ['blur(4.8px)']
+  ✅ [sombre] studio · UN SEUL MOUVEMENT : bord doux (masque), `transform` seul, la même courbe douce, la même durée (1,8 s), aucun retard — elles partent ensemble masque ['radial-gradient(closest-side, rgb(5, 3, '] · transitions [('transform', 'cubic-bezier(0.33, 0.12, 0.67, 0.88)', '1.8s', '0s')]
+  ✅ [sombre] studio · la page n'écrit rien image par image : aucune forme retouchée pendant qu'elle grandit                0 écriture(s) de style sur les formes entre le départ et la fin
+  ✅ [sombre] studio · le mouvement dure 1,8 s (1,8 à 2,1 s entre le départ et la fin)                                      durée 1.85 s
+  ✅ [sombre] le mouvement fini, les six formes RESTENT (aucune couche de remplacement : pas de saut), toujours à 4,8 px    formes 6 · couche False
+  ✅ [sombre] studio · tout est flou : le plateau et les autres entrées perdent leurs contours (≤ 62 % de l'énergie d'avant) le mot-marque 6.3→1.5 · les icônes du plateau 4.8→0.5 · INDEX 12.8→0.9 · FIL 6.4→0.6 · AURA 12.1→0.9 · le + 3.5→1.2
+  ✅ [sombre] studio · l'icône ET le mot STUDIO sont nets (≥ 70 % de leur densité de contours), À LEUR TAILLE NORMALE (× 1,00 à 1 % près) icône 6.2 → 5.3 · mot 15.9 → 14.7 · largeur 54 → 54 (× 1.000)
+  ✅ [sombre] la phrase du Studio, mot pour mot, visible, au milieu de l'écran                                              « Choisis d’abord le monde qui te ressemble, au Studio. » [36, 340, 318, 104.4]
+  ✅ [sombre] A3 : l'impératif de cette phrase est une exception NOMMÉE (TEXTES_ENGAGEMENT.imperatifVoulu) ; l'autre phrase n'en a pas ['Choisis d’abord le monde qui te ressemble, au Studio.']
+  ✅ [sombre] « Plus tard » n'existe plus : ni dans le guide, ni à aucune image de l'onboarding (exception nommée de R6)    vu à 0 image(s) · None
+  ✅ [sombre] A2, avec son exception nommée : aucune opacité, aucune animation ; une transition sur les six formes du flou SEULES ; tout porte `data-eng` []
+  ✅ [sombre] toucher le Studio net ouvre le Studio PAR-DESSUS le flou : le flou reste posé dessous (six formes), sans phrase ; l'entrée de la barre est rendue Studio True · formes 6 · phrase None · état au-studio
+  ✅ [sombre] CHEMIN 1 — un choix au Studio (monde encre → touffe), Studio refermé : l'étape du + arrive, sa phrase mot pour mot guide plus · « Promi, Chiche ou Cercle : tout commence par ce +. »
+  ✅ [sombre] Studio refermé · DU STUDIO AU + : la zone nette glisse en 1,2 s (1,15 à 1,45 s)                               durée 1.22 s · 74 relevés
+  ✅ [sombre] Studio refermé · PAS DE SAUT : elle avance à chaque image, jamais de plus de 9 % du trajet d'un coup, et ne recule pas trajet 117 px · plus grand pas 2.7 px (2.3 %) · plus petit 0.3
+  ✅ [sombre] Studio refermé · le flou RESTE pendant le glissement : six formes à chaque image, aucune couche de remplacement formes au plus bas : 6 · à la fin : 6
+  ✅ [sombre] plus · tout est flou : le plateau et les autres entrées perdent leurs contours (≤ 62 % de l'énergie d'avant)  le mot-marque 6.3→1.5 · les icônes du plateau 4.8→0.5 · INDEX 12.8→0.9 · FIL 6.4→0.6 · STUDIO 9.4→0.7 · AURA 12.1→0.9
+  ✅ [sombre] plus · le + et son encart sont nets (≥ 70 % de leur densité de contours), agrandis de 10 % (8 à 12)           le + 5.1 → 4.1 · largeur 72 → 79.2 (× 1.100)
+  ✅ [sombre] toucher le + ouvre les trois natures ; le guidage est fini, le + de la barre est rendu                        natures True · guide None
+  ✅ [sombre] une seule fois : après un rechargement, ni onboarding ni guide                                                guide None · devant accueil
+  ✅ [sombre] aucune erreur de page                                                                                         []
+
+── les deux transitions, sombre : mesure des images et captures
+  ❌ [sombre] pendant la révélation (1,8 s), aucune image au-delà de 16,7 ms de travail du fil principal                    202 images · travail total 275 ms · pire 62.6 ms · p95 2.8 ms
+      ce qui dépasse : ['305 ms : Commit 45 ms ', '368 ms : TimerFire 12 ms @:']
+  ✅ [sombre] pendant le glissement du Studio au + (1,2 s), aucune image au-delà de 16,7 ms de travail du fil principal     155 images · travail total 211 ms · pire 4.9 ms · p95 2.1 ms
+
+  ❌  56 / 57

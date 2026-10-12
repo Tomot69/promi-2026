@@ -1,0 +1,10 @@
+app.html     encre         planter  210 images ·  9 au-delà de 20 ms · pire    29 ms · somme des dépassements   69 ms [(691, 
+app.html     encre         retirer  212 images ·  7 au-delà de 20 ms · pire    27 ms · somme des dépassements   43 ms [(3, 22
+app.html     touffe        planter  207 images ·  8 au-delà de 20 ms · pire    69 ms · somme des dépassements  108 ms [(690, 
+app.html     touffe        retirer  199 images · 10 au-delà de 20 ms · pire   104 ms · somme des dépassements  235 ms [(21, 3
+app.html     mosaique      planter  208 images ·  5 au-delà de 20 ms · pire    43 ms · somme des dépassements   68 ms [(677, 
+app.html     mosaique      retirer  208 images ·  4 au-delà de 20 ms · pire    25 ms · somme des dépassements   24 ms [(900, 
+app.html     ritournelle   planter  208 images ·  6 au-delà de 20 ms · pire    38 ms · somme des dépassements   75 ms [(694, 
+app.html     ritournelle   retirer  205 images ·  7 au-delà de 20 ms · pire    38 ms · somme des dépassements   87 ms [(0, 26
+app.html     brouillamini  planter  209 images ·  5 au-delà de 20 ms · pire    30 ms · somme des dépassements   52 ms [(674, 
+app.html     brouillamini  retirer  201 images ·  9 au-delà de 20 ms · pire    55 ms · somme des dépassements  122 ms [(25, 3

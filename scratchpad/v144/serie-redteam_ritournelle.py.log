@@ -1,0 +1,39 @@
+OK  sans parole [clair] : la Toile est peinte (au moins huit cellules vides visibles), jamais un aplat  39 cellule(s) vide(s) · fond (219, 201, 165)
+OK  sans parole [sombre] : la Toile est peinte (au moins huit cellules vides visibles), jamais un aplat  21 cellule(s) vide(s) · fond (15, 9, 9)
+OK  1 parole(s) : on voit 1 dalle(s), entière(s), entre le plateau et la barre  1 dalle(s) : [[64, 326, 258, 552]]
+OK  1 parole(s) : sa dalle fait entre 65 et 70 % de la largeur (253,5 à 273 pt)  largeur peinte 262 pt (67 %)
+OK  1 parole(s) : elle est centrée (à 20 pt près en largeur, 40 en hauteur de la zone)  centre (195, 405) pour (195, 405)
+OK  1 parole(s) : un peu de Toile autour (au moins deux cellules vides visibles en partie)  7 cellule(s) vide(s) visibles, dont 1 entière(s)
+KO  1 parole(s) : aucune cellule vide ENTIÈRE  1 entière(s) : [[146, 214, 142, 202]]
+OK  1 parole(s) (app rouverte) : on voit 1 dalle(s), entière(s), entre le plateau et la barre  1 dalle(s) : [[68, 326, 276, 534]]
+OK  1 parole(s) (app rouverte) : sa dalle fait entre 65 et 70 % de la largeur (253,5 à 273 pt)  largeur peinte 258 pt (66 %)
+OK  1 parole(s) (app rouverte) : elle est centrée (à 20 pt près en largeur, 40 en hauteur de la zone)  centre (197, 405) pour (195, 405)
+OK  1 parole(s) (app rouverte) : un peu de Toile autour (au moins deux cellules vides visibles en partie)  3 cellule(s) vide(s) visibles, dont 0 entière(s)
+OK  1 parole(s) (app rouverte) : aucune cellule vide ENTIÈRE  0 entière(s) : []
+OK  2 parole(s) : on voit 2 dalle(s), entière(s), entre le plateau et la barre  2 dalle(s) : [[38, 282, 158, 396], [138, 350, 420, 654]]
+OK  2 parole(s) : ensemble entre 80 et 90 % de la largeur — ou, empilées, de la hauteur de la zone  ensemble 312 × 496 pt : 80 % de la largeur, 82 % de la hauteur de la zone — jugé sur la largeur
+OK  2 parole(s) : un peu de Toile autour (au moins deux cellules vides visibles en partie)  4 cellule(s) vide(s) visibles, dont 0 entière(s)
+OK  2 parole(s) : au plus 2 cellules vides entières  0 entière(s) : []
+OK  2 parole(s) (app rouverte) : on voit 2 dalle(s), entière(s), entre le plateau et la barre  2 dalle(s) : [[48, 322, 156, 384], [112, 340, 428, 654]]
+OK  2 parole(s) (app rouverte) : ensemble entre 80 et 90 % de la largeur — ou, empilées, de la hauteur de la zone  ensemble 292 × 498 pt : 75 % de la largeur, 82 % de la hauteur de la zone — jugé sur la hauteur
+OK  2 parole(s) (app rouverte) : un peu de Toile autour (au moins deux cellules vides visibles en partie)  4 cellule(s) vide(s) visibles, dont 0 entière(s)
+OK  2 parole(s) (app rouverte) : au plus 2 cellules vides entières  0 entière(s) : []
+OK  3 parole(s) : on voit 3 dalle(s), entière(s), entre le plateau et la barre  3 dalle(s) : [[112, 334, 156, 370], [56, 218, 334, 490], [130, 272, 494, 654]]
+OK  3 parole(s) : ensemble entre 80 et 90 % de la largeur — ou, empilées, de la hauteur de la zone  ensemble 278 × 498 pt : 71 % de la largeur, 82 % de la hauteur de la zone — jugé sur la hauteur
+OK  3 parole(s) : un peu de Toile autour (au moins deux cellules vides visibles en partie)  9 cellule(s) vide(s) visibles, dont 0 entière(s)
+OK  3 parole(s) : au plus 2 cellules vides entières  0 entière(s) : []
+OK  3 parole(s) (app rouverte) : on voit 3 dalle(s), entière(s), entre le plateau et la barre  3 dalle(s) : [[98, 334, 158, 386], [56, 232, 336, 482], [98, 244, 510, 654]]
+OK  3 parole(s) (app rouverte) : ensemble entre 80 et 90 % de la largeur — ou, empilées, de la hauteur de la zone  ensemble 278 × 496 pt : 71 % de la largeur, 82 % de la hauteur de la zone — jugé sur la hauteur
+OK  3 parole(s) (app rouverte) : un peu de Toile autour (au moins deux cellules vides visibles en partie)  10 cellule(s) vide(s) visibles, dont 0 entière(s)
+OK  3 parole(s) (app rouverte) : au plus 2 cellules vides entières  0 entière(s) : []
+OK  4 parole(s) : on voit 4 dalle(s), entière(s), entre le plateau et la barre  4 dalle(s) : [[76, 276, 172, 368], [20, 172, 324, 462], [230, 370, 466, 638], [66, 200, 484, 624]]
+OK  4 parole(s) : au plus 3 cellules vides entières  0 entière(s) : []
+OK  4 parole(s) (app rouverte) : on voit 4 dalle(s), entière(s), entre le plateau et la barre  4 dalle(s) : [[58, 270, 178, 384], [20, 178, 340, 470], [214, 370, 466, 630], [56, 188, 498, 624]]
+OK  4 parole(s) (app rouverte) : au plus 3 cellules vides entières  0 entière(s) : []
+OK  6 parole(s) : on voit 6 dalle(s), entière(s), entre le plateau et la barre  6 dalle(s) : [[104, 246, 172, 302], [210, 324, 280, 376], [68, 168, 284, 384], [114, 204, 396, 498], [224, 322, 396, 506], [110, 212, 542, 638]]
+OK  6 parole(s) : au plus 5 cellules vides entières  2 entière(s) : [[30, 116, 460, 546], [236, 326, 524, 614]]
+KO  6 parole(s) (app rouverte) : on voit 6 dalle(s), entière(s), entre le plateau et la barre  7 dalle(s) : [[90, 242, 172, 318], [214, 326, 278, 376], [64, 174, 294, 390], [210, 324, 396, 510], [92, 188, 412, 464], [108, 188, 464, 504], [108, 204, 548, 638]]
+OK  6 parole(s) (app rouverte) : au plus 5 cellules vides entières  2 entière(s) : [[12, 126, 460, 572], [224, 310, 532, 620]]
+OK  aucune erreur de page  []
+
+35 / 37
