@@ -1,0 +1,26 @@
+=== pleine-apres-clair · 02:12:20 · charge { 3.97 21.26 30.27 }
+   → ritournelle  n=50 C retirer | images 203 · >20 ms :  9 · >33 :  1 · pire  37 · excès   73 ms | moteur p50  10.0 p95  18.0 max  20.0 (109 img, 1278 ms) | autre  21.0 ms à 2264 (image | att · function att(){ if(window._evol && window._evo) brouillamini n=
+=== pleine-apres-sombre · 02:21:07 · charge { 3.81 6.89 18.11 }
+=== pleine-apres-sombre · 02:29:21 · charge { 4.29 24.57 25.64 }
+   → ritournelle  n=50 S retirer | images 182 · >20 ms : 30 · >33 : 15 · pire  54 · excès  489 ms | moteur p50  14.0 p95  34.0 max  37.0 (89 img, 1509 ms) | autre  42.0 ms à 2297 (image | att · function att(){ if(window._evol && window._evo) brouillamini n=5
+=== pleine-avant-clair · 02:35:12 · charge { 3.94 10.22 18.24 }
+   → ritournelle  n=50 C retirer | images 204 · >20 ms :  7 · >33 :  3 · pire  60 · excès  123 ms | moteur p50   8.0 p95  14.0 max  18.0 (111 img, 972 ms) | autre  42.0 ms à 2255 (image | att · function att(){ if(window._evol && window._evo) brouillamini n=5
+=== pleine-avant-sombre · 02:56:37 · charge { 2.89 7.69 18.98 }
+   → ritournelle  n=25 S retirer | images 203 · >20 ms :  8 · >33 :  2 · pire  51 · excès  114 ms | moteur p50   6.0 p95  13.0 max  15.0 (110 img, 840 ms) | autre  22.0 ms à 123 (minuteur 80 |  · function(){try{ /* seules les bandes SANS c) brouillamini n=25
+=== redteam_pleine · 02:59:48 · charge { 4.02 6.11 16.06 }
+   →     (charge de la machine : 4.9 → 4.4 → 4.2 → 4.2)  29 / 29 · 10 contrôle(s) de durée NON JUGÉS (machine chargée) : à repasser au calme 
+=== redteam_pleine-v144 · 03:02:08 · charge { 4.16 5.45 14.28 }
+   →  20 / 29 · 10 contrôle(s) de durée NON JUGÉS (machine chargée) : à repasser au calme KO : A · [encre, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend · B · [encre, planter] la passe de teinte du 
+=== redteam_ritournelle · 03:04:34 · charge { 3.66 4.82 12.64 }
+   → OK  aucune erreur de page  []  24 / 24 
+=== redteam_evol · 03:07:04 · charge { 3.17 4.25 11.18 }
+   → OK  aucune erreur de page  []  32 / 32 
+=== redteam_reactif · 03:11:30 · charge { 4.54 4.42 9.38 }
+   →   ✅ aucune erreur de page  redteam_reactif : 31/31 
+=== redteam_toucher · 03:12:45 · charge { 5.26 4.59 9.02 }
+   →   ✅ Ritournelle : une image longue (900 ms) entre l'appui et le lever ne fait pas perdre le toucher (3 sur 3) — [('planter un arbre', {'show': True, 'titre': 'planter un arbre'}), ('courir dimanche', {'show': True, 'titre': 'courir dimanche'}), ('nager le 
+=== banc_rendu · 03:17:11 · charge { 5.65 5.13 8.06 }
+   → Call log:   - navigating to "zz-v145a.html", waiting until "load"  
+=== redteam_rythme · 03:18:01 · charge { 4.47 4.88 7.80 }
+   →   · ramage · reel · depart — ligne retirée (v93), relevé : {'duree': 107, 'images': 6, 'boucle': 1626, 'debut': 18}  98 / 99 
+=== FIN · 03:29:18

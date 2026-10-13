@@ -1,0 +1,214 @@
+[
+{
+"monde": "encre",
+"n": 25,
+"sombre": false,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 3,
+"pire": 75
+},
+"planter": {
+"images": 205,
+"sup20": 9,
+"sup33": 2,
+"pire": 49,
+"exces": 122,
+"moteur_n": 46,
+"moteur_p50": 3,
+"moteur_p95": 4,
+"moteur_max": 9,
+"moteur_somme": 153,
+"autre_pire": 34,
+"autre_quoi": "image | att · function att(){ if(window._evol && window._evol() && window._toileVue && (wi",
+"autre_t": 2340,
+"autres": [
+[
+34,
+2340,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"retirer": {
+"images": 200,
+"sup20": 15,
+"sup33": 4,
+"pire": 52,
+"exces": 219,
+"moteur_n": 39,
+"moteur_p50": 3,
+"moteur_p95": 4,
+"moteur_max": 4,
+"moteur_somme": 125,
+"autre_pire": 40,
+"autre_quoi": "minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de nature prennent la t",
+"autre_t": 102,
+"autres": [
+[
+40,
+102,
+"minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de "
+],
+[
+17,
+1715,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"erreurs": []
+},
+{
+"monde": "touffe",
+"n": 25,
+"sombre": false,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 3,
+"pire": 140
+},
+"planter": {
+"images": 206,
+"sup20": 8,
+"sup33": 2,
+"pire": 39,
+"exces": 93,
+"moteur_n": 47,
+"moteur_p50": 3,
+"moteur_p95": 5,
+"moteur_max": 8,
+"moteur_somme": 160,
+"autre_pire": 25,
+"autre_quoi": "image | att · function att(){ if(window._evol && window._evol() && window._toileVue && (wi",
+"autre_t": 2345,
+"autres": [
+[
+25,
+2345,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"retirer": {
+"images": 182,
+"sup20": 10,
+"sup33": 5,
+"pire": 172,
+"exces": 535,
+"moteur_n": 32,
+"moteur_p50": 3,
+"moteur_p95": 6,
+"moteur_max": 7,
+"moteur_somme": 104,
+"autre_pire": 28,
+"autre_quoi": "minuteur 0 | tranche · function tranche(){ var t0=performance.now(), budget=5; while(i<els",
+"autre_t": 1705,
+"autres": [
+[
+28,
+1705,
+"minuteur 0 | tranche · function tranche(){ var t0=performance.now(), b"
+]
+]
+},
+"erreurs": []
+},
+{
+"monde": "ritournelle",
+"n": 25,
+"sombre": false,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 17,
+"pire": 208
+},
+"planter": {
+"images": 94,
+"sup20": 42,
+"sup33": 31,
+"pire": 167,
+"exces": 2024,
+"moteur_n": 60,
+"moteur_p50": 10,
+"moteur_p95": 93,
+"moteur_max": 140,
+"moteur_somme": 1319,
+"autre_pire": 73,
+"autre_quoi": "image |  · function(){if(window._toileDefer){var _q=window._toileDefer;window._toileDefer=",
+"autre_t": 862,
+"autres": [
+[
+73,
+862,
+"image |  · function(){if(window._toileDefer){var _q=window._toileDefer"
+],
+[
+71,
+2173,
+"minuteur 420 |  · function(){ (window._apresMouvement||function(f){f()"
+],
+[
+57,
+3385,
+"intervalle 250 | regarde · function regarde(){ if(window._tenirAnime) "
+],
+[
+53,
+3209,
+"minuteur 140 | tranche · function tranche(){ var t0=performance.now(),"
+],
+[
+53,
+1586,
+"minuteur 140 | tranche · function tranche(){ var t0=performance.now(),"
+],
+[
+43,
+631,
+"minuteur 140 | tranche · function tranche(){ var t0=performance.now(),"
+]
+]
+},
+"retirer": {
+"images": 206,
+"sup20": 8,
+"sup33": 1,
+"pire": 36,
+"exces": 67,
+"moteur_n": 113,
+"moteur_p50": 6,
+"moteur_p95": 13,
+"moteur_max": 15,
+"moteur_somme": 894,
+"autre_pire": 22,
+"autre_quoi": "image | att · function att(){ if(window._evol && window._evol() && window._toileVue && (wi",
+"autre_t": 2241,
+"autres": [
+[
+22,
+2241,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+],
+[
+14,
+99,
+"minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de "
+]
+]
+},
+"erreurs": []
+}
+]

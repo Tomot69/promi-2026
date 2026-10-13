@@ -3057,6 +3057,11 @@ function creerChamade(env) {
   }
 
   var _dernier = null;   // la géométrie de la dernière image peinte : l'ancre des titres et le toucher la lisent, sans refaire les cœurs
+  /* ⚑ v145 (C-114) — POUR LE BANC DE RENDU SEUL : oublier ce que Chamade garde d'un rendu à l'autre. La FORME d'un cœur est gardée par clé et reprise
+     tant que sa taille ne s'écarte pas de 3 % (`_loc`) : le premier rendu qui la demande fixe la taille de référence, les suivants la mettent à
+     l'échelle. Ce qu'on obtient dépend donc de ce qui a été rendu AVANT (une vignette de fond, une pose précédente) — à l'écran, 3 % ne se voient
+     pas ; au pixel, le banc rendait 2 ou 3 images différentes d'une passe à l'autre. Rien dans l'app n'appelle cette porte. */
+  window._chaOublie = function () { _locs = {}; _geo = {}; _aff = null; _fige = null; _tr = null; _dernier = null; _chCout = 0; _chFin = 0; try { if (_CR && _CR.oublie) _CR.oublie(); if (_CRp && _CRp.oublie) _CRp.oublie(); } catch (e) {} };
   function _trouve(s, now, G) { G = G || _coeurs(now || performance.now()); var k = _cle(s), i;
     for (i = 0; i < G.D.length; i++) if (G.D[i].s === s) return G.D[i];
     for (i = 0; i < G.D.length; i++) if (G.D[i].k === k) return G.D[i];
@@ -6634,10 +6639,17 @@ function _lum(c){
   function l(v){v/=255;return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4);}
   return 0.2126*l(c[0])+0.7152*l(c[1])+0.0722*l(c[2]);
 }
+/* ⚑ v145 (C-112) — LA LARGEUR D'UN TITRE NE SE REMESURE PAS À CHAQUE IMAGE. Sur une Toile remplie (50 paroles), `_labels` mesurait chaque titre
+   et chaque nom à chaque image du mouvement (100 `measureText` par image, et davantage pour un titre rogné lettre à lettre). La largeur d'un
+   texte dans une police donnée ne change pas : elle est gardée (par police et par texte). Mêmes valeurs, mêmes pixels. */
+var _larg={}, _largN=0;
+var _fontCle=null;
+function _mes(gg,txt){ var f=_fontCle||gg.font, M=_larg[f]; if(!M){ if(++_largN>60){ _larg={}; _largN=1; } M=_larg[f]={n:0}; }
+  var w=M[' '+txt]; if(w===undefined){ if(M.n>1500){ M=_larg[f]={n:0}; } w=M[' '+txt]=gg.measureText(txt).width; M.n++; } return w; }
 function _fit(gg,txt,max){
-  if(gg.measureText(txt).width<=max)return txt;
+  if(_mes(gg,txt)<=max)return txt;
   var t=txt;
-  while(t.length>1&&gg.measureText(t+'…').width>max)t=t.slice(0,-1);
+  while(t.length>1&&_mes(gg,t+'…')>max)t=t.slice(0,-1);
   return t+'…';
 }
 function _labels(now){
@@ -6685,15 +6697,15 @@ function _labels(now){
     var fs=Math.max(7.5, Math.min(13, ac*view.s*0.155));
     g.fillStyle=ink;
     if(L.who){
-      g.font='600 '+(fs*0.68).toFixed(1)+'px Atkinson,system-ui,sans-serif';
+      g.font=_fontCle='600 '+(fs*0.68).toFixed(1)+'px Atkinson,system-ui,sans-serif';
       g.globalAlpha=0.72*_lab;
       g.fillText(_fit(g,String(L.who).toUpperCase(),wmax), sx, sy-fs*0.72);
       g.globalAlpha=1;
     }
-    g.font='500 '+fs.toFixed(1)+'px Atkinson,system-ui,sans-serif';
+    g.font=_fontCle='500 '+fs.toFixed(1)+'px Atkinson,system-ui,sans-serif';
     if(_lab<1) g.globalAlpha=_lab;
     g.fillText(_fit(g,L.title,wmax), sx, sy+fs*0.34);
-    g.globalAlpha=1;
+    g.globalAlpha=1; _fontCle=null;
   }
 }
 
@@ -6847,7 +6859,14 @@ var SEMIS_NEUF_MIN=9;
 function _semisCompte(){ var n=0, i; try{ for(i=0;i<promises.length && n<SEMIS_NEUF_MIN;i++){ if(!promises[i].draft) n++; } }catch(_){ return SEMIS_NEUF_MIN; }
   try{ if(n<SEMIS_NEUF_MIN && typeof NUE!=='undefined'){ for(var k in NUE){ if(k!=='soi') n++; } } }catch(_){ }
   return n; }
-function _semisNeuf(){ if(!_NEUFS[theme]) return false; if(_AP || window._semisNeufToujours) return true; return _semisCompte()>=SEMIS_NEUF_MIN; }
+/* ⚑ v145 (Tom, 13 oct. 2026, C-088 — CLOS) — « Toujours ultra dézoomé avec plein de dalles autour, rien ne change. Je préférais presque l'effet
+   arty bien zoomé : remets-le et clôture ce sujet. » SOUS RITOURNELLE, LE CADRAGE D'AVANT C-088 REVIENT TEL QUEL (celui d'E1, commit c8f4571) :
+   la Toile est faite de ses seules paroles DÈS LA PREMIÈRE, vue entière — de grandes coulées, peu de dalles. Les cotes de remplissage de
+   v140 à v144 (55 %, 67,5 %, 85 %…), le semis constant sous neuf paroles, les cellules vides cachées et le recadrage sur la matière ne
+   s'appliquent plus à Ritournelle (ils dépendaient tous de « semis constant ») ; les onze autres mondes de la famille gardent la règle de v139.
+   ⚠ Comme en E1, À UNE SEULE PAROLE Ritournelle ne peint rien (une cellule couvre tout l'écran) : rendu tel quel, signalé à Tom (QUESTIONS). */
+var _NEUF_TOUJOURS={ritournelle:1};
+function _semisNeuf(){ if(!_NEUFS[theme]) return false; if(_AP || window._semisNeufToujours || _NEUF_TOUJOURS[theme]) return true; return _semisCompte()>=SEMIS_NEUF_MIN; }
 /* ⚑ v98 (Tom, 29 sept. : « Ajoute des cellules aux huit anciens. Une parole qui n'apparaît pas est inacceptable — la décision
    v35 valait pour l'aspect, pas pour perdre des paroles. Garde leur semis constant tant qu'il y a de la place, et n'ajoute que
    lorsqu'il est plein. ») — dans un monde ancien, `plantOne` rend null quand il n'y a plus de cellule vide : la parole restait

@@ -1,0 +1,26 @@
+  ✅ Pochade : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Touffe : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Brouillamini : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Halin : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Esquille : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Tesselle : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Braille : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Buvard : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Ramage : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Guingois : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Chantourné : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Volubilis : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Madrure : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Chamade : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Ritournelle : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Bobinette : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Mascaret : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Éclisse : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Taille-douce : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ Houle : toucher une dalle ouvre sa fiche (3 sur 3) — []
+  ✅ aucune erreur de page — []
+  ✅ Ritournelle, 1 parole(s) : la Toile n'a que ses paroles (autant de cellules que de paroles — le cadrage d'avant C-088, v145) — 1 cellule(s) pour 1 parole(s)
+  ✅ Ritournelle, 3 parole(s) : la Toile n'a que ses paroles (autant de cellules que de paroles — le cadrage d'avant C-088, v145) — 3 cellule(s) pour 3 parole(s)
+  ✅ Ritournelle : une image longue (900 ms) entre l'appui et le lever ne fait pas perdre le toucher (3 sur 3) — [('planter un arbre', {'show': True, 'titre': 'planter un arbre'}), ('courir dimanche', {'show': True, 'titre': 'courir dimanche'}), ('nager le mardi', {'show': True, 'titre': 'nager le mardi'})]
+
+redteam_toucher : 24/24

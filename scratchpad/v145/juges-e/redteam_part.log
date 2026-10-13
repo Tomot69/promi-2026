@@ -1,0 +1,57 @@
+OK  la règle existe dans l'app (`_parts`)  
+OK  A · une parole à une seule personne ne change pas : pas de parts, des points, « TRACE POUR TENIR »  parts None · 9 intervalles entre des points · consigne « TRACE POUR TENIR »
+OK  B · planter à deux personnes fait UNE parole  1 → 2 paroles · à « Rachel, Marion »
+OK  B · ceux qui doivent tenir : Rachel et Marion  ['Rachel', 'Marion']
+OK  B · 2 personnes, aucune part : 0 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [79, 31, 52] · fine 2.7 pt [76, 28, 48]
+OK  B · 2 personnes, aucune part : la fiche reste en cours  état « LANCÉ »
+OK  B · 2 personnes, aucune part : les initiales sous chaque part  déclarées ['R', 'M'] · encre sous les parts [161, 306]
+OK  B · la consigne : « À CHACUN DE TRACER SA PART »  À CHACUN DE TRACER SA PART
+OK  B · 2 personnes, Marion a tracé : 1 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [79, 31, 52] · TRACÉE 10.3 pt [17, 77, 46]
+OK  B · 2 personnes, Marion a tracé : la fiche reste en cours  état « LANCÉ »
+OK  B · 2 personnes, Marion a tracé : les initiales sous chaque part  déclarées ['R', 'M'] · encre sous les parts [161, 309]
+OK  B · la consigne nomme celle qui reste : « À RACHEL DE TRACER SA PART »  À RACHEL DE TRACER SA PART
+OK  B · la parole (et donc sa dalle) reste en cours  encours
+OK  B · toucher le trait ouvre la liste des noms, la date pour qui a tracé  [['Rachel', ''], ['Marion', '12 oct.']]
+OK  B · un toucher referme la liste, la fiche est toujours là  
+OK  B · la dernière part tracée rend la parole tenue  ['tenu', True]
+OK  C · 3 personnes, ordre [2, 0, 1], aucune part : 0 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [76, 28, 49] · fine 2.7 pt [64, 18, 38] · fine 3.0 pt [64, 17, 37]
+OK  C · 3 personnes, ordre [2, 0, 1], aucune part : la fiche reste en cours  état « LANCÉ »
+OK  C · 3 personnes, ordre [2, 0, 1], aucune part : les initiales sous chaque part  déclarées ['R', 'M', 'N'] · encre sous les parts [185, 272, 169]
+OK  C · 3 personnes, ordre [2, 0, 1], après Nico : 1 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [76, 28, 49] · fine 2.7 pt [64, 18, 38] · TRACÉE 11.0 pt [17, 77, 46]
+OK  C · 3 personnes, ordre [2, 0, 1], après Nico : la fiche reste en cours  état « LANCÉ »
+OK  C · 3 personnes, ordre [2, 0, 1], après Nico : les initiales sous chaque part  déclarées ['R', 'M', 'N'] · encre sous les parts [185, 272, 169]
+OK  C · 3 personnes, ordre [2, 0, 1], après Rachel : 2 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  TRACÉE 11.0 pt [13, 75, 44] · fine 2.7 pt [64, 18, 38] · TRACÉE 11.0 pt [17, 77, 46]
+OK  C · 3 personnes, ordre [2, 0, 1], après Rachel : la fiche reste en cours  état « LANCÉ »
+OK  C · 3 personnes, ordre [2, 0, 1], après Rachel : les initiales sous chaque part  déclarées ['R', 'M', 'N'] · encre sous les parts [185, 272, 169]
+OK  C · ordre [2, 0, 1] : dans l'Index, la parole n'est pas tenue  Chicheà Rachel, Marion, Nicocourir dimancheLANCÉ
+OK  C · ordre [2, 0, 1] : la troisième part rend la parole tenue  
+OK  C · 3 personnes, ordre [1, 2, 0], aucune part : 0 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [76, 28, 49] · fine 2.7 pt [64, 18, 38] · fine 3.0 pt [64, 17, 37]
+OK  C · 3 personnes, ordre [1, 2, 0], aucune part : la fiche reste en cours  état « LANCÉ »
+OK  C · 3 personnes, ordre [1, 2, 0], aucune part : les initiales sous chaque part  déclarées ['R', 'M', 'N'] · encre sous les parts [185, 272, 169]
+OK  C · 3 personnes, ordre [1, 2, 0], après Marion : 1 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [76, 28, 49] · TRACÉE 10.7 pt [12, 74, 43] · fine 3.0 pt [64, 17, 37]
+OK  C · 3 personnes, ordre [1, 2, 0], après Marion : la fiche reste en cours  état « LANCÉ »
+OK  C · 3 personnes, ordre [1, 2, 0], après Marion : les initiales sous chaque part  déclarées ['R', 'M', 'N'] · encre sous les parts [185, 272, 169]
+OK  C · 3 personnes, ordre [1, 2, 0], après Nico : 2 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [76, 28, 49] · TRACÉE 10.7 pt [12, 74, 43] · TRACÉE 11.0 pt [17, 77, 46]
+OK  C · 3 personnes, ordre [1, 2, 0], après Nico : la fiche reste en cours  état « LANCÉ »
+OK  C · 3 personnes, ordre [1, 2, 0], après Nico : les initiales sous chaque part  déclarées ['R', 'M', 'N'] · encre sous les parts [185, 272, 169]
+OK  C · ordre [1, 2, 0] : dans l'Index, la parole n'est pas tenue  Chicheà Rachel, Marion, Niconager en merLANCÉ
+OK  C · ordre [1, 2, 0] : la troisième part rend la parole tenue  
+OK  D · planter à six personnes fait UNE parole  4 → 5
+OK  D · 6 personnes, aucune part : 0 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 2.7 pt [61, 15, 35] · fine 3.0 pt [79, 30, 51] · fine 3.0 pt [65, 18, 38] · fine 2.3 pt [65, 18, 38] · fine 3.0 pt [88, 38, 59] · fine 3.0 pt [76, 28, 48]
+OK  D · 6 personnes, aucune part : la fiche reste en cours  état « LANCÉ »
+OK  D · 6 personnes, aucune part : le compte « 0 SUR 6 »  déclaré ['0 SUR 6'] · encre au centre 965
+OK  D · 6 personnes, trois parts : 3 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  TRACÉE 10.3 pt [12, 74, 43] · fine 3.0 pt [79, 30, 51] · TRACÉE 11.0 pt [16, 76, 45] · fine 2.3 pt [65, 18, 38] · fine 3.0 pt [88, 38, 59] · TRACÉE 11.3 pt [11, 74, 42]
+OK  D · 6 personnes, trois parts : la fiche reste en cours  état « LANCÉ »
+OK  D · 6 personnes, trois parts : le compte « 3 SUR 6 »  déclaré ['3 SUR 6'] · encre au centre 938
+OK  E · un Chiche reçu avec deux autres : moi, Rachel et Nico doivent tenir  ['moi', 'Rachel', 'Nico']
+OK  E · à moi de tracer, aucune part : 0 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  fine 3.0 pt [76, 28, 49] · fine 2.7 pt [64, 18, 38] · fine 3.0 pt [64, 17, 37]
+OK  E · à moi de tracer, aucune part : la fiche reste en cours  état « LANCÉ »
+OK  E · à moi de tracer, aucune part : les initiales sous chaque part  déclarées ['T', 'R', 'N'] · encre sous les parts [128, 228, 169]
+OK  E · la consigne reste « TRACE POUR TENIR »  TRACE POUR TENIR
+OK  E · mon geste trace MA part, et la parole reste en cours (aucun instant « tenu »)  {'parts': ['moi'], 'status': 'encours', 'instant': False, 'tenue': False}
+OK  E · ma part tracée : 1 part(s) tracée(s) pleines et vertes, les autres fines, continues, à la teinte de la nature  TRACÉE 11.0 pt [13, 75, 44] · fine 2.7 pt [64, 18, 38] · fine 3.0 pt [64, 17, 37]
+OK  E · ma part tracée : la fiche reste en cours  état « LANCÉ »
+OK  E · ma part tracée : les initiales sous chaque part  déclarées ['T', 'R', 'N'] · encre sous les parts [128, 228, 169]
+OK  aucune erreur de page  []
+
+55 / 55

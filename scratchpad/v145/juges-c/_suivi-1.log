@@ -1,0 +1,17 @@
+=== redteam_engagement · 04:35:57 · charge { 2.56 3.51 3.70 }
+   →      R6 · compte         « Plus tard »  redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir » 
+=== redteam_mesure · 04:37:57 · charge { 4.06 3.74 3.76 }
+   → OK  [dark] la page n'a pas défilé  0 / 0  10 / 10 
+=== redteam_gestes · 04:38:58 · charge { 4.23 3.84 3.80 }
+   → OK  C · [onboarding, le trait] aucune main en 6 s sans toucher  {'onb': True, 'trait': True}  27 / 27 
+=== redteam_part · 04:41:43 · charge { 3.42 3.74 3.77 }
+   → OK  aucune erreur de page  []  55 / 55 
+=== redteam_commentaires · 04:43:28 · charge { 3.60 3.76 3.77 }
+   → OK  aucune erreur de page [sombre]  []  26 / 26 
+=== air-figer · 04:45:14 · charge { 3.54 3.62 3.71 }
+   → Référence figée : 68 écrans, 728 paires de textes. 
+=== redteam_fluide · 04:50:20 · charge { 3.11 3.77 3.77 }
+   →  4 / 6 KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6497 images) · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images 
+=== redteam_pleine · 04:54:15 · charge { 2.69 3.33 3.58 }
+   →  38 / 39 KO : D · [ritournelle, planter] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement 
+=== redteam_evol · 04:56:41 · charge { 3.00 3.24 3.50 }

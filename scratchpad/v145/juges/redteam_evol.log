@@ -1,0 +1,34 @@
+OK  1 · [encre] planter : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 3, pire 7 ms (46 images) · 209 images · 4 au-delà de 20 ms · la plus longue 29 ms · rappel le plus long PENDANT le mouvement 8.0 ms à 2061 ms (minuteur 140 | tranche · function tranche(){ var t0=performance.now(),)
+OK  2 · [encre] planter : aucune image au-delà de 80 ms  la plus longue 29 ms
+OK  3 · [encre] planter : le recadrage ne passe pas à chaque image (au plus 6 fois)  0 fois, 0 ms en tout
+OK  1 · [encre] retirer : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 5, pire 5 ms (46 images) · 208 images · 3 au-delà de 20 ms · la plus longue 27 ms · rappel le plus long PENDANT le mouvement 11.0 ms à 1520 ms (minuteur 1500 |  · function(){ (window._apresMouvement||function(f){f()
+OK  2 · [encre] retirer : aucune image au-delà de 80 ms  la plus longue 27 ms
+OK  1 · [touffe] planter : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 6, pire 11 ms (46 images) · 208 images · 5 au-delà de 20 ms · la plus longue 37 ms · rappel le plus long PENDANT le mouvement 8.0 ms à 1621 ms (minuteur 120 | essaie · function essaie(){ var occupe=!!window._tirage)
+OK  2 · [touffe] planter : aucune image au-delà de 80 ms  la plus longue 37 ms
+OK  3 · [touffe] planter : le recadrage ne passe pas à chaque image (au plus 6 fois)  0 fois, 0 ms en tout
+OK  1 · [touffe] retirer : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 5, pire 7 ms (46 images) · 208 images · 2 au-delà de 20 ms · la plus longue 26 ms · rappel le plus long PENDANT le mouvement 9.0 ms à 1514 ms (minuteur 1500 |  · function(){ (window._apresMouvement||function(f){f()
+OK  2 · [touffe] retirer : aucune image au-delà de 80 ms  la plus longue 26 ms
+OK  1 · [mosaique] planter : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 6, pire 8 ms (46 images) · 209 images · 5 au-delà de 20 ms · la plus longue 30 ms · rappel le plus long PENDANT le mouvement 6.0 ms à 1626 ms (minuteur 120 | essaie · function essaie(){ var occupe=!!window._tirage)
+OK  2 · [mosaique] planter : aucune image au-delà de 80 ms  la plus longue 30 ms
+OK  3 · [mosaique] planter : le recadrage ne passe pas à chaque image (au plus 6 fois)  0 fois, 0 ms en tout
+OK  1 · [mosaique] retirer : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 8, pire 10 ms (45 images) · 207 images · 7 au-delà de 20 ms · la plus longue 26 ms · rappel le plus long PENDANT le mouvement 7.0 ms à 1516 ms (minuteur 1500 |  · function(){ (window._apresMouvement||function(f){f()
+OK  2 · [mosaique] retirer : aucune image au-delà de 80 ms  la plus longue 26 ms
+OK  1 · [ritournelle] planter : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 6, pire 10 ms (113 images) · 210 images · 9 au-delà de 20 ms · la plus longue 28 ms · rappel le plus long PENDANT le mouvement 11.0 ms à 2212 ms (minuteur 140 | tranche · function tranche(){ var t0=performance.now(),)
+OK  2 · [ritournelle] planter : aucune image au-delà de 80 ms  la plus longue 28 ms
+OK  3 · [ritournelle] planter : le recadrage ne passe pas à chaque image (au plus 6 fois)  0 fois, 0 ms en tout
+OK  1 · [ritournelle] retirer : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 4, pire 7 ms (113 images) · 208 images · 3 au-delà de 20 ms · la plus longue 23 ms · rappel le plus long PENDANT le mouvement 9.0 ms à 1511 ms (minuteur 1500 |  · function(){ (window._apresMouvement||function(f){f()
+OK  2 · [ritournelle] retirer : aucune image au-delà de 80 ms  la plus longue 23 ms
+OK  1 · [brouillamini] planter : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 7, pire 9 ms (46 images) · 209 images · 5 au-delà de 20 ms · la plus longue 33 ms · rappel le plus long PENDANT le mouvement 7.0 ms à 729 ms (image |  · function(){if(window._toileDefer){var _q=window._toileDefer)
+OK  2 · [brouillamini] planter : aucune image au-delà de 80 ms  la plus longue 33 ms
+OK  3 · [brouillamini] planter : le recadrage ne passe pas à chaque image (au plus 6 fois)  0 fois, 0 ms en tout
+OK  1 · [brouillamini] retirer : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 6, pire 7 ms (29 images) · 210 images · 9 au-delà de 20 ms · la plus longue 30 ms · rappel le plus long PENDANT le mouvement 13.0 ms à 1515 ms (minuteur 1500 |  · function(){ (window._apresMouvement||function(f){f()
+OK  2 · [brouillamini] retirer : aucune image au-delà de 80 ms  la plus longue 30 ms
+OK  4 · [Pelote, caresse lente] l'écouteur du doigt ne recalcule plus un poil (aucun pointermove au-delà de 3 ms)  0 appel(s) de 1,5 ms ou plus · le plus long 0.0 ms
+OK  5 · [Pelote, caresse lente] l'inscription tient entre deux images (tâche ≤ 12 ms, au plus une par 60 ms, boucle ≤ 8 ms)  16 inscription(s) de 1,5 ms ou plus, la plus longue 12.0 ms · boucle au pire 4.0 ms · 152 images, 2 au-delà de 20 ms, la plus longue 21 ms
+OK  6 · [Pelote, caresse lente] la trace se forme sous le doigt : des segments sont inscrits avant le lever  0 segment(s) avant le geste, 16 au lever
+OK  4 · [Pelote, caresse vive] l'écouteur du doigt ne recalcule plus un poil (aucun pointermove au-delà de 3 ms)  0 appel(s) de 1,5 ms ou plus · le plus long 0.0 ms
+OK  5 · [Pelote, caresse vive] l'inscription tient entre deux images (tâche ≤ 12 ms, au plus une par 60 ms, boucle ≤ 8 ms)  8 inscription(s) de 1,5 ms ou plus, la plus longue 4.0 ms · boucle au pire 2.0 ms · 33 images, 0 au-delà de 20 ms, la plus longue 19 ms
+OK  6 · [Pelote, caresse vive] la trace se forme sous le doigt : des segments sont inscrits avant le lever  16 segment(s) avant le geste, 27 au lever
+OK  aucune erreur de page  []
+
+32 / 32

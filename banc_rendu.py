@@ -42,6 +42,10 @@ AMORCE = """(()=>{ let a=%d>>>0; window.__amorce=function(s){ a=s>>>0; };
   Math.random=function(){ a=(a+0x6D2B79F5)>>>0; let t=a; t=Math.imul(t^(t>>>15),t|1);
   t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; };
   try{ localStorage.setItem('promi_onb','1'); }catch(e){}
+  /* ⚑ v145 (C-114) — LA VIE AU REPOS EST COUPÉE PENDANT LE BANC. Depuis v126 une ou deux dalles bougent 1 à 2 s toutes les 5 à 15 s ; son minuteur, armé
+     au démarrage, tombait à un moment quelconque du banc. La plupart des mondes rendent ensuite l'image d'avant au pixel (v127) ; Chamade, dont le
+     mouvement est écrit dans le peintre (« le cœur bat », v128), était pris en plein battement : 0, 5 ou 8 images différentes d'une passe à l'autre. */
+  window._vivantOff=true;
   /* les minuteurs RÉELS posés pendant le démarrage sont notés : quand le banc prend la main, il les reprend en temps piloté */
   const rST=window.setTimeout, rSI=window.setInterval, rCT=window.clearTimeout, rCI=window.clearInterval; window.__reels=new Map(); let n=0;
   window.setTimeout=function(cb,ms,...a){ const k=++n; const id=rST(function(){ window.__reels.delete(id); if(typeof cb==='function') cb(...a); },ms); window.__reels.set(id,{k,cb,ms:+ms||0,a,rep:0}); return id; };
@@ -79,7 +83,12 @@ POSE = """(a)=>{ const [monde,graine,neufs]=a;
      plantée. Le banc juge le rendu d'une Toile NEUVE sous une graine : il oublie les places avant chaque pose (sans cela Pochade, Touffe, Halin,
      Brouillamini et Esquille différaient de la référence ; prouvé : place désactivée, 280/280 au pixel). Original : sauvegardes/banc_rendu-avant-v142.py */
   const oublie=()=>{ try{ promises.forEach(p=>{ delete p.place; }); }catch(e){} try{ window.NUEPLACE={}; localStorage.removeItem('promi_nueplace'); }catch(e){} };
-  oublie(); Toile.setTheme(autre); oublie(); window.__amorce(graine); Toile.setTheme(monde); return Toile.getTheme(); }"""
+  /* ⚑ v145 (C-114) — CHAMADE GARDE LA FORME DE SES CŒURS D'UN RENDU À L'AUTRE (`_loc` : reprise tant que la taille ne s'écarte pas de 3 %) : ce que le banc
+     obtenait dépendait de ce qui avait été rendu avant — la pose précédente, une vignette de fond partie pendant le démarrage. Mesuré (quatre passes,
+     deux poses chacune) : sans l'oubli, 3 résultats différents à la seconde pose ; avec, le même à chaque passe. `_chaOublie` est une porte du moteur
+     pour le banc seul (rien dans l'app ne l'appelle). La PREMIÈRE pose d'une page varie encore (un reste du démarrage en temps réel, non nommé) :
+     le banc ne retient un monde que quand deux poses de suite rendent la même chose — c'est la pose répétée qu'il garde. */
+  oublie(); Toile.setTheme(autre); oublie(); window.__amorce(graine); try{ window._chaOublie&&window._chaOublie(); }catch(e){} Toile.setTheme(monde); return Toile.getTheme(); }"""
 
 RENDU = """(a)=>{ const [monde,T,KS,PAR]=a; const out={};
   {
@@ -113,6 +122,7 @@ def passe(url, mondes_voulus=None):
         # garde un état d'un monde à l'autre ; posé seul, il ne partirait pas du même endroit que dans la passe entière
         garder = set(mondes_voulus) if mondes_voulus else None
         if mondes_voulus: mondes = mondes[:max(mondes.index(m) for m in mondes_voulus if m in mondes) + 1]
+        if mondes_voulus and '--sans-precedents' in sys.argv: mondes = [m for m in mondes if m in mondes_voulus]   # v145 (C-114) : pour isoler ce qu'un monde précédent laisse derrière lui
         pg.evaluate("()=>{ try{ closeAll(); }catch(e){} try{ setPremium(true); }catch(e){} }")
         pg.evaluate(PILOTE)   # AVANT de toucher aux mondes : sinon leurs caches se bâtissent sur le temps réel (vu sur Chamade)
         neufs = pg.evaluate("()=>{ const r=[]; for(const m of %s){ Toile.setTheme(m); if(Toile.semisNeuf()) r.push(m); } return r; }" % json.dumps(mondes))

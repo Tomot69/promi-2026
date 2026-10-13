@@ -1,0 +1,15 @@
+OK  1 · [touffe] planter : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 6, pire 17 ms (43 images) · 205 images · 9 au-delà de 20 ms · la plus longue 75 ms · rappel le plus long PENDANT le mouvement 12.0 ms à 1621 ms (minuteur 120 | essaie · function essaie(){ var occupe=!!window._tirage)
+OK  2 · [touffe] planter : aucune image au-delà de 80 ms  la plus longue 75 ms
+OK  3 · [touffe] planter : le recadrage ne passe pas à chaque image (au plus 6 fois)  0 fois, 0 ms en tout
+OK  1 · [touffe] retirer : aucun rappel au-delà de 20 ms de travail pendant le mouvement  moteur : p95 13, pire 18 ms (33 images) · 196 images · 7 au-delà de 20 ms · la plus longue 117 ms · rappel le plus long PENDANT le mouvement 9.0 ms à 1523 ms (minuteur 1500 |  · function(){ (window._apresMouvement||function(f){f()
+KO  2 · [touffe] retirer : aucune image au-delà de 80 ms  la plus longue 117 ms
+OK  4 · [Pelote, caresse lente] l'écouteur du doigt ne recalcule plus un poil (aucun pointermove au-delà de 3 ms)  0 appel(s) de 1,5 ms ou plus · le plus long 0.0 ms
+OK  5 · [Pelote, caresse lente] l'inscription tient entre deux images (tâche ≤ 12 ms, au plus une par 60 ms, boucle ≤ 8 ms)  16 inscription(s) de 1,5 ms ou plus, la plus longue 12.0 ms · boucle au pire 4.0 ms · 150 images, 18 au-delà de 20 ms, la plus longue 36 ms
+OK  6 · [Pelote, caresse lente] la trace se forme sous le doigt : des segments sont inscrits avant le lever  0 segment(s) avant le geste, 16 au lever
+OK  4 · [Pelote, caresse vive] l'écouteur du doigt ne recalcule plus un poil (aucun pointermove au-delà de 3 ms)  0 appel(s) de 1,5 ms ou plus · le plus long 0.0 ms
+OK  5 · [Pelote, caresse vive] l'inscription tient entre deux images (tâche ≤ 12 ms, au plus une par 60 ms, boucle ≤ 8 ms)  8 inscription(s) de 1,5 ms ou plus, la plus longue 4.0 ms · boucle au pire 4.0 ms · 35 images, 3 au-delà de 20 ms, la plus longue 30 ms
+OK  6 · [Pelote, caresse vive] la trace se forme sous le doigt : des segments sont inscrits avant le lever  16 segment(s) avant le geste, 27 au lever
+OK  aucune erreur de page  []
+
+11 / 12
+KO : 2 · [touffe] retirer : aucune image au-delà de 80 ms

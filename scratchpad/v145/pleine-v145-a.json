@@ -1,0 +1,223 @@
+[
+{
+"monde": "encre",
+"n": 10,
+"sombre": false,
+"ok": [
+10,
+11,
+10
+],
+"repos": {
+"sup20": 9,
+"pire": 43
+},
+"planter": {
+"images": 207,
+"sup20": 10,
+"sup33": 2,
+"pire": 44,
+"exces": 96,
+"moteur_n": 46,
+"moteur_p50": 3,
+"moteur_p95": 6,
+"moteur_max": 9,
+"moteur_somme": 145,
+"autre_pire": 27,
+"autre_quoi": "image | att · function att(){ if(window._evol && window._evol() && window._toileVue && (wi",
+"autre_t": 2356,
+"autres": [
+[
+27,
+2356,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"retirer": {
+"images": 207,
+"sup20": 7,
+"sup33": 1,
+"pire": 35,
+"exces": 64,
+"moteur_n": 45,
+"moteur_p50": 3,
+"moteur_p95": 3,
+"moteur_max": 4,
+"moteur_somme": 115,
+"autre_pire": 12,
+"autre_quoi": "image | att · function att(){ if(window._evol && window._evol() && window._toileVue && (wi",
+"autre_t": 1672,
+"autres": []
+},
+"erreurs": []
+},
+{
+"monde": "touffe",
+"n": 10,
+"sombre": false,
+"ok": [
+10,
+11,
+10
+],
+"repos": {
+"sup20": 3,
+"pire": 88
+},
+"planter": {
+"images": 155,
+"sup20": 21,
+"sup33": 11,
+"pire": 196,
+"exces": 1087,
+"moteur_n": 49,
+"moteur_p50": 3,
+"moteur_p95": 5,
+"moteur_max": 18,
+"moteur_somme": 176,
+"autre_pire": 170,
+"autre_quoi": "minuteur 0 | tranche · function tranche(){ var t0=performance.now(), budget=5; while(i<els",
+"autre_t": 2833,
+"autres": [
+[
+170,
+2833,
+"minuteur 0 | tranche · function tranche(){ var t0=performance.now(), b"
+],
+[
+143,
+2516,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+],
+[
+51,
+2750,
+"minuteur 0 | tranche · function tranche(){ var t0=performance.now(), b"
+],
+[
+35,
+2471,
+"minuteur 140 | tranche · function tranche(){ var t0=performance.now(),"
+],
+[
+18,
+2808,
+"minuteur 0 | tranche · function tranche(){ var t0=performance.now(), b"
+],
+[
+15,
+2065,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"retirer": {
+"images": 141,
+"sup20": 16,
+"sup33": 9,
+"pire": 292,
+"exces": 1325,
+"moteur_n": 31,
+"moteur_p50": 3,
+"moteur_p95": 10,
+"moteur_max": 10,
+"moteur_somme": 123,
+"autre_pire": 221,
+"autre_quoi": "minuteur 420 |  · function(){ fond(j); }",
+"autre_t": 5,
+"autres": [
+[
+221,
+5,
+"minuteur 420 |  · function(){ fond(j); }"
+],
+[
+126,
+831,
+"minuteur 350 | frame · function frame(){ var all=document.querySelecto"
+],
+[
+76,
+2132,
+"minuteur 0 | tranche · function tranche(){ var t0=performance.now(), b"
+],
+[
+14,
+2098,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"erreurs": []
+},
+{
+"monde": "mosaique",
+"n": 10,
+"sombre": false,
+"ok": [
+10,
+11,
+10
+],
+"repos": {
+"sup20": 12,
+"pire": 279
+},
+"planter": {
+"images": 208,
+"sup20": 9,
+"sup33": 1,
+"pire": 43,
+"exces": 78,
+"moteur_n": 46,
+"moteur_p50": 6,
+"moteur_p95": 9,
+"moteur_max": 11,
+"moteur_somme": 287,
+"autre_pire": 26,
+"autre_quoi": "image | att · function att(){ if(window._evol && window._evol() && window._toileVue && (wi",
+"autre_t": 2332,
+"autres": [
+[
+26,
+2332,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"retirer": {
+"images": 180,
+"sup20": 15,
+"sup33": 6,
+"pire": 81,
+"exces": 303,
+"moteur_n": 38,
+"moteur_p50": 7,
+"moteur_p95": 23,
+"moteur_max": 42,
+"moteur_somme": 332,
+"autre_pire": 246,
+"autre_quoi": "minuteur 420 |  · function(){ fond(j); }",
+"autre_t": 5,
+"autres": [
+[
+246,
+5,
+"minuteur 420 |  · function(){ fond(j); }"
+],
+[
+31,
+2039,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+],
+[
+13,
+1248,
+"minuteur 120 | essaie · function essaie(){ var occupe=!!window._tirage"
+]
+]
+},
+"erreurs": []
+}
+]

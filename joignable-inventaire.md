@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 430 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 295 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 439 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -120,7 +120,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Partager | `#shShareBtn` | natif | 282, 789 | 168 × 62 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer«✕ FERMER»` | écouteur | 321, 56 | 91 × 13 | oui |  |
 | Peaufiner | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
-| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTsamedi 24un jouren »` | écouteur | 195, 222 | 342 × 64 | oui |  |
+| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTdimanche 25un joure»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«DANS UN CERCLEaucuneAucu»` | écouteur | 195, 302 | 342 × 64 | oui |  |
 | Peaufiner | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner | `#dNote` | natif | 195, 426 | 292 × 56 | oui |  |
@@ -134,7 +134,7 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Chiche | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«À QUI JE LANCEMarionMMar»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVECMarionMMarionNNicoRR»` | écouteur | 195, 302 | 342 × 64 | oui |  |
-| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTjeudi 15un jouren l»` | écouteur | 195, 382 | 342 × 64 | oui |  |
+| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTvendredi 16un joure»` | écouteur | 195, 382 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 430 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner Chiche | `#dNote` | natif | 195, 506 | 292 × 56 | oui |  |
@@ -210,6 +210,8 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | chiche lancé | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | chiche lancé | `div#dAura.aura-band>div.aura-track>div.kring«Marion»` | on… | 171, 427 | 70 × 83 | oui |  |
 | chiche lancé | `div#dAura.aura-band>div.aura-track>div.kring«Rachel»` | on… | 255, 427 | 70 × 83 | oui |  |
+| chiche lancé | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
+| chiche lancé | `div#cm5Ligne.cm5>button.cm5-va«Envoyer»` | natif | 331, 720 | 44 × 44 | oui |  |
 | chiche lancé | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | chiche lancé | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | fiche chiche | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
@@ -222,6 +224,8 @@ Source : `app.html`. 291 éléments interactifs relevés sur 36 écrans (mode cl
 | fiche en cours | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 221 | 34 × 34 | oui |  |
 | fiche en cours | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
 | fiche en cours | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
+| fiche en cours | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
+| fiche en cours | `div#cm5Ligne.cm5>button.cm5-va«Envoyer»` | natif | 331, 720 | 44 × 44 | oui |  |
 | fiche en cours | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | fiche en cours | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | fiche tenue | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |

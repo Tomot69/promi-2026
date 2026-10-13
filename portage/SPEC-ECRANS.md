@@ -376,6 +376,33 @@ Tête : le titre tapé (sinon « Promi » / « Chiche » / « Cercle ») +
 - **Hors ligne** : je dessine, mes éléments partent à la reconnexion et se posent au-dessus (ordre d'arrivée).
 - **Le partage** : l'image est le dessin entier, photos importées comprises (v140, Q435) — donc avec ce que les autres y ont posé : **À TRANCHER**.
 
+### Fiche **à plusieurs** — la part de chacun (v145, C-115 ; `lot-V145-PARTS`)
+
+Quand la parole engage plusieurs personnes (SPEC-DONNEES §1.8), le trait de la fiche se lit ainsi :
+- la **première moitié** (0 → 195) est pleine, comme toujours ;
+- la **seconde moitié** (195 → 390) est divisée en autant de **parts** que de personnes qui doivent tenir, séparées de 14 pt ;
+- une part **tracée** est pleine, épaisse comme le trait (10 pt), à la couleur de l'état tenu (la crête `#0B4A2A`) ;
+- une part **non tracée** est un trait fin (2,5 pt), continu, dans la teinte de la nature — **jamais de pointillés** (la loi des points) ;
+- le chevron ne paraît que si MA part reste à tracer ;
+- jusqu'à **4 personnes** : l'initiale de chacune sous sa part (Gilbert 700, 12 px, capitales ; deux lettres si deux prénoms commencent pareil) ;
+  au-delà : un compte, « 3 SUR 6 », sous la seconde moitié, couché le long du trait ;
+- la consigne : « trace pour tenir » si ma part reste ; sinon « à Rachel de tracer sa part » (une personne) ou « à chacun de tracer sa part » ;
+- **toucher la seconde moitié du trait** ouvre la liste des noms : chaque prénom, et la date de sa part (« 11 oct. ») ou rien ;
+- la fiche ne prend l'état « tenu » (instant, terre, mention TENUE) qu'à la **dernière** part.
+
+VoiceOver : le canevas du trait porte « Le trait. Rachel n’a pas encore tracé sa part, Marion a tracé sa part, … » ; la liste : « Qui a tracé sa part ».
+
+### La ligne « Un mot… » (v145, C-116 ; `lot-V145-COMM`)
+
+Sur toute fiche **reçue** (Promi ou Chiche qu'on me fait), sur une parole en cours (là où vivait le champ « écris un mot »), et sur toute fiche qui porte déjà des commentaires :
+- en bas de fiche, au-dessus de Peaufiner, **une ligne toujours visible** : 342 × 56 à y 692, contour de 3 px à l'encre du corps, rayon 28,
+  le texte provisoire « Un mot… » (⚠ texte à écrire par Tom) ;
+- la toucher ouvre la saisie (le clavier monte au geste) ; Entrée ou la flèche envoie ;
+- le dernier commentaire tient sur une ligne au-dessus (y 664) ; les commentaires se lisent sous le trait, **du plus ancien au plus récent**,
+  avec « PRÉNOM · date » puis le texte ;
+- ni compteur de non-lus, ni pastille, ni relance.
+- ⚠ **Pas sur la fiche d'un Cercle** dans ce lot : « + Planter dans le Cercle » y occupe le bas de la fiche (v141, C-096).
+
 ### États vides et d'erreur
 - Parole sans échéance : la ligne d'état ne porte que le mot (« EN COURS »).
 - Titre très long : coupé à trois lignes avec « … » (affichage seul).

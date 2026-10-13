@@ -1,0 +1,19 @@
+   QUI passe 3 · tâche de 46 ms à 2764 ms : TimerFire 46 ms · FunctionCall 42 ms ?@19971
+   QUI passe 8 · tâche de 20 ms à 2023 ms : FireAnimationFrame 16 ms · FunctionCall 13 ms img@19995 · UpdateLayoutTree 5 ms
+   QUI passe 8 · tâche de 48 ms à 2763 ms : TimerFire 48 ms · FunctionCall 44 ms ?@19971
+   QUI passe 9 · tâche de 39 ms à 2761 ms : TimerFire 38 ms · FunctionCall 34 ms ?@19971
+   QUI passe 16 · tâche de 22 ms à 1521 ms : MajorGC 21 ms · V8.GC_MARK_COMPACTOR 21 ms
+   passe 16 : 326 images · la plus longue 28.5 ms à 1514 ms · au-delà de 20 ms : [(1515, 28.5)] · « referme » à 16 ms, « après » à 2040 ms
+   QUI passe 17 · tâche de 43 ms à 2767 ms : TimerFire 43 ms · FunctionCall 38 ms ?@19971
+   QUI passe 20 · tâche de 23 ms à 2025 ms : FireAnimationFrame 18 ms · FunctionCall 14 ms img@19995 · UpdateLayoutTree 5 ms
+   passe 20 : 325 images · la plus longue 20.9 ms à 2025 ms · au-delà de 20 ms : [(2025, 20.9)] · « referme » à 14 ms, « après » à 2041 ms
+1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6499 images) KO  2 image(s) au-delà · la plus longue 28.5 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               OK  p50 2.9 · p95 5.5 ms
+3 · la durée : « juste après » paraît 2 000 ms (± 80) après « le trait se referme », et l'app déclare cette valeur OK  de 2015 à 2027 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  20 sur 20
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images KO  la plus longue : 48.2 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 48.5 ms — les passes de tout le document et la pose complète)
+
+4 / 6
+KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6499 images) · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images

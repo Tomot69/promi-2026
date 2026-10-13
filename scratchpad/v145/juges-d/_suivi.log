@@ -1,0 +1,19 @@
+=== redteam_toucher · 05:41:05 · charge { 2.25 2.94 3.15 }
+   →   ✅ Ritournelle : une image longue (900 ms) entre l'appui et le lever ne fait pas perdre le toucher (3 sur 3) — [('planter un arbre', {'show': True, 'titre': 'planter un arbre'}), ('courir dimanche', {'show': True, 'titre': 'courir dimanche'}), ('nager le mardi', {'show': True, 'titre': 'nager l
+=== redteam_ritournelle · 05:45:31 · charge { 4.17 3.45 3.31 }
+   → OK  aucune erreur de page  []  24 / 24 
+=== banc_rendu · 05:48:01 · charge { 3.03 3.33 3.29 }
+   →  280 image(s) comparée(s) · 0 différente(s) · erreurs JS : 0 ✅ AU PIXEL. 
+=== redteam_reactif · 05:49:47 · charge { 3.60 3.40 3.31 }
+   →   ✅ aucune erreur de page  redteam_reactif : 31/31 
+=== redteam_deplace · 05:51:02 · charge { 3.04 3.27 3.27 }
+   → OK  ritournelle · aucune erreur de page  []  16/18 
+=== redteam_onb_sorties · 05:52:52 · charge { 2.98 3.17 3.22 }
+   →      R6 · trait          aucun « Plus tard »      R6 · fin            aucun « Plus tard »      R6 · compte         « Plus tard » 
+=== redteam_decisions · 05:53:22 · charge { 2.66 3.07 3.19 }
+   → Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état)  89 / 89 
+=== redteam_vide · 05:54:42 · charge { 3.02 3.06 3.17 }
+   → aucune erreur JS                               OK    61/61 
+=== redteam_couleurs_ref · 05:58:33 · charge { 3.77 3.76 3.46 }
+   → canevas non peints d'un côté (comptés, non jugés) : 1 — Nuée défilée[d] vide côté app  ✅ — 0 écart(s) de couleur avec la référence v118 
+=== FIN · 06:10:00

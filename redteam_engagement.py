@@ -174,7 +174,10 @@ with sync_playwright() as p:
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(600)
     avant = set(pg.evaluate("()=>Object.keys(localStorage)"))
     tenus = 0
-    for titre in ('faire les crêpes', 'nager le mardi', 'courir dimanche'):
+    # ⚑ v145 (C-115, la règle de la part) : « courir dimanche » est un Chiche lancé à Marion avec Rachel — ce sont ELLES qui doivent tenir, mon tracé
+    # ne le tient plus (la fiche ne passe à tenu qu'à la dernière part). R5 garde son objet (trois « tenir », aucune clé nouvelle) : la troisième
+    # parole est une des miennes. Original : sauvegardes/redteam_engagement-avant-v145.py
+    for titre in ('faire les crêpes', 'nager le mardi', 'arroser les tomates'):
         pg.evaluate("(t)=>{ try{closeAll()}catch(e){} openDetail(promises.find(q=>q.title===t).id); }", titre); pg.wait_for_timeout(1800)
         pg.evaluate("()=>{ const b=document.querySelector('#segStatus button[data-st=tenu]'); if(b) b.click(); }")
         try: pg.wait_for_function("()=>!window._tenirAnime", timeout=9000)

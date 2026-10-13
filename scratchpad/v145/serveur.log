@@ -1,0 +1,4 @@
+Promi · commit 57dbd1a · Cache-Control: no-store · écoute sur 0.0.0.0:8752
+  sur ce Mac  : http://127.0.0.1:8752/app.html
+  sur l'iPhone (même Wi-Fi) : http://192.168.1.133:8752/app.html
+  Le serveur s'arrête avec le Mac (extinction, fermeture de session) : relancer « python3 serveur.py ».

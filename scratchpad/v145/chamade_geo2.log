@@ -1,0 +1,13 @@
+0 [(20, '2fab7ea', '49552b7d'), (20, '27dc8e8d', '2cd0bea5')]
+1 [(20, '69a4a6ba', 'f2db4770'), (20, '27dc8e8d', '2cd0bea5')]
+2 [(20, '573b564d', '82fd4bce'), (20, '27dc8e8d', '2cd0bea5')]
+3 [(20, '27dc8e8d', '2cd0bea5'), (20, '27dc8e8d', '2cd0bea5')]
+passe 0 essai 0 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 8 ['toile-sombre', 'toile-clair', 'dalle-chiche-k0.5', 'dalle-chiche-k1'] · vive==apres False
+passe 0 essai 1 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 0 [] · vive==apres False
+passe 1 essai 0 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 11 ['toile-sombre', 'toile-clair', 'dalle-chiche-k0.5', 'dalle-chiche-k1'] · vive==apres False
+passe 1 essai 1 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 0 [] · vive==apres False
+passe 2 essai 0 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 8 ['toile-sombre', 'toile-clair', 'dalle-tenu-k0.5', 'dalle-tenu-k1'] · vive==apres False
+passe 2 essai 1 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 0 [] · vive==apres False
+passe 3 essai 0 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 0 [] · vive==apres False
+passe 3 essai 1 : géométrie vive ≠ réf sur 0 cœurs [] · images ≠ 0 [] · vive==apres False
+FIN

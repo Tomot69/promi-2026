@@ -29,6 +29,17 @@ def contexte(b, sombre=False, stockage=None, gestes_vus=True, onb=True, guide=Tr
     for k, v in (stockage or {}).items(): s += "localStorage.setItem(%r,%r);" % (k, v)
     s += "}}catch(e){}"
     ctx.add_init_script(s); return ctx
+def toile_pleine(ctx, n=25):
+    """⚑ v145 (C-112, R-B) — LA TOILE DE TOM EST PLEINE. Relit, comme un téléphone à l'ouverture, une Toile de n paroles (10, 25 ou 50) plantées par
+    l'app elle-même et gardées dans banc-etats/etat-n.json (tout le stockage local ; bâties par scratchpad/v145/etats.py). À appeler après
+    `contexte()` et avant `ouvre()`. Le juge de v144 plantait trois paroles sur une Toile vide : il n'a pas vu ce qui saccadait chez Tom."""
+    import json
+    st = json.load(io.open('banc-etats/etat-%d.json' % n, encoding='utf-8')); st.pop('promi_theme', None)
+    ctx.add_init_script("try{ if(!sessionStorage.getItem('__etat')){ sessionStorage.setItem('__etat','1'); var E=%s; for(var k in E) localStorage.setItem(k,E[k]); } }catch(e){}" % json.dumps(st))
+def charge():
+    """la charge de la machine (moyenne sur une minute) : au-delà de 4 sur ce Mac, une mesure de cadence ne vaut rien (une autre session y lance parfois un simulateur)"""
+    import os
+    return os.getloadavg()[0]
 def ouvre(ctx, fichier='app.html', attente=6500, q=''):
     pg = ctx.new_page(); pg.__dict__['erreurs'] = []; pg.on('pageerror', lambda e: pg.__dict__['erreurs'].append(str(e)[:200]))
     pg.goto('http://127.0.0.1:8752/' + fichier + q); pg.wait_for_timeout(attente); return pg
@@ -65,6 +76,22 @@ def plante(pg, titre, qui='moi', nature=0, attente=2600):
     pg.evaluate("a=>{document.getElementById('fTitle').value=a[0];document.getElementById('fWho').value=a[1];window._csEnLair=true;window._csDueISO=null}", [titre, qui])
     pg.evaluate("()=>document.getElementById('addPromi').click()"); pg.wait_for_timeout(attente)
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500)
+def plante_doigt(pg, titre, qui='moi', nature=0, attente=2600):
+    """⚑ v145 — planter PAR LE VRAI CHEMIN, AU DOIGT : le + de l'accueil, la pilule de la nature (0 Promi, 1 Chiche), le titre, le bouton.
+    `plante()` passe par un clic scripté sur la tuile de la page + : après un Chiche, la phrase GARDE le Chiche (mesuré en v145 : 46 Chiche sur
+    50 paroles « Promi ») — la pilule, elle, attend que la page + porte la nature demandée. Rend la nature réellement plantée (True = Chiche)."""
+    pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(350)
+    tap_sel(pg, '#createBtn'); pg.wait_for_timeout(650)
+    k = ['promi', 'chiche', 'nuee'][nature]
+    tap_sel(pg, '.acc-pil[data-k=%s]' % k)
+    for _ in range(40):
+        pg.wait_for_timeout(120)
+        if pg.evaluate("k=>{ var s=document.getElementById('createSheet'); return !!(s && s.classList.contains('pp-'+k) && !s.classList.contains('pp-choix') && !s.classList.contains('acc-passe')); }", k): break
+    pg.wait_for_timeout(500)
+    pg.evaluate("a=>{document.getElementById('fTitle').value=a[0];document.getElementById('fWho').value=a[1];window._csEnLair=true;window._csDueISO=null}", [titre, qui])
+    pg.evaluate("()=>document.getElementById('addPromi').click()"); pg.wait_for_timeout(attente)
+    pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(400)
+    return pg.evaluate("()=>{ var p=promises[promises.length-1]; return p ? !!p.chiche : null; }")
 def capture(pg, chemin=None, appareil=True):
     d = dev(pg); kw = {'clip': {'x': d[0], 'y': d[1], 'width': d[2], 'height': d[3]}} if appareil else {}
     b = pg.screenshot(**kw)

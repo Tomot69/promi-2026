@@ -1,0 +1,30 @@
+  ✅ « prénom » : le texte est celui d'avant v140, mot pour mot                                                   
+  ✅ « prénom » : aucun « Plus tard » (décision de Tom, v144)                                                     None
+  ✅ « prénom » : l'étape « principe » n'existe plus                                                              principe False · _e2 undefined
+  ✅ « prénom » : aucune dalle derrière le texte (aucun pixel plus clair que le fond dans la boîte de la phrase)  0.00 % de pixels de cellule sur 25404
+  ✅ « prénom saisi » : le texte est celui d'avant v140, mot pour mot                                             
+  ✅ « prénom saisi » : aucun « Plus tard » (décision de Tom, v144)                                               None
+  ✅ « prénom saisi » : l'étape « principe » n'existe plus                                                        principe False · _e2 undefined
+  ✅ « parole » : le texte est celui d'avant v140, mot pour mot                                                   
+  ✅ « parole » : aucun « Plus tard » (décision de Tom, v144)                                                     None
+  ✅ « parole » : l'étape « principe » n'existe plus                                                              principe False · _e2 undefined
+  ✅ « trait » : le texte est celui d'avant v140, mot pour mot                                                    
+  ✅ « trait » : aucun « Plus tard » (décision de Tom, v144)                                                      None
+  ✅ « trait » : l'étape « principe » n'existe plus                                                               principe False · _e2 undefined
+  ✅ le mot de trace de l'onboarding est à 19 px (gardé de v140 : « plus grand »)                                 19px
+  ✅ aucune main fantôme sur le trait de l'onboarding, 4 s sans toucher (C-110 : elle ne paraît que sur une fiche à tenir) main : None
+  ✅ « fin » : le texte est celui d'avant v140, mot pour mot                                                      
+  ✅ « fin » : aucun « Plus tard » (décision de Tom, v144)                                                        None
+  ✅ « fin » : l'étape « principe » n'existe plus                                                                 principe False · _e2 undefined
+  ✅ « compte » : le texte est celui d'avant v140, mot pour mot                                                   
+  ✅ « compte » : le panneau du compte garde son « Plus tard » (le refus du compte)                               Plus tard
+  ✅ « compte » : l'étape « principe » n'existe plus                                                              principe False · _e2 undefined
+  ✅ R6, EXCEPTION NOMMÉE (Tom, v144) — aucun « Plus tard » à aucune des 5 étapes du parcours ; le compte garde le sien avec « Plus tard » : aucune · exception déclarée par l'app : True
+
+  ✅  22 / 22
+     R6 · prénom         aucun « Plus tard »
+     R6 · prénom saisi   aucun « Plus tard »
+     R6 · parole         aucun « Plus tard »
+     R6 · trait          aucun « Plus tard »
+     R6 · fin            aucun « Plus tard »
+     R6 · compte         « Plus tard »

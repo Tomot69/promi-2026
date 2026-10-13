@@ -1,0 +1,44 @@
+OK  · [encre] la Toile porte 25 paroles, la plantation en ajoute une  25 → 26
+OK  A · [encre, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1600 ms
+OK  B · [encre, planter] la passe de teinte du Fil ne tourne pas (Fil fermé)  0 appel(s)
+··  D · [encre, planter] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 5.0 ms à 711 ms (image |  · function(){if(window._toileDefer){var _q=window._)
+··  E · [encre, planter] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 0 image(s) au-delà de 33,4 ms (la plus longue 31 ms) · 7 au-delà de 20 ms sur 94
+OK  C · [encre] le Fil, ouvert ensuite, porte la parole plantée, sa dalle peinte  {'ouvert': True, 'la': True, 'bandeau': True, 'canevas': True, 'peint': 14005}
+OK  C · [encre] l'Index, ouvert ensuite, porte la parole plantée  {'n': 26, 'la': True}
+OK  · [encre] le retrait rend 25 paroles  25
+OK  A · [encre, retirer] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1600 ms
+OK  B · [encre, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé)  0 appel(s)
+OK  D · [encre, retirer] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement   le plus long 7.0 ms à 1509 ms (minuteur 1500 |  · function(){ (window._apresMouvement||func)
+OK  E · [encre, retirer] au plus 3 images au-delà de 33.4 ms pendant le mouvement  0 image(s) au-delà de 33,4 ms (la plus longue 25 ms) · 4 au-delà de 20 ms sur 95
+OK  aucune erreur de page [encre]  []
+    (charge de la machine : 4.0 → 3.9 → 3.9 → 4.0)
+OK  · [touffe] la Toile porte 25 paroles, la plantation en ajoute une  25 → 26
+OK  A · [touffe, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1600 ms
+OK  B · [touffe, planter] la passe de teinte du Fil ne tourne pas (Fil fermé)  0 appel(s)
+··  D · [touffe, planter] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 4.0 ms à 696 ms (écouteur transitionend | _te · function(e){if(e&&e.propertyN)
+··  E · [touffe, planter] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 0 image(s) au-delà de 33,4 ms (la plus longue 26 ms) · 2 au-delà de 20 ms sur 95
+OK  C · [touffe] le Fil, ouvert ensuite, porte la parole plantée, sa dalle peinte  {'ouvert': True, 'la': True, 'bandeau': True, 'canevas': True, 'peint': 14005}
+OK  C · [touffe] l'Index, ouvert ensuite, porte la parole plantée  {'n': 26, 'la': True}
+OK  · [touffe] le retrait rend 25 paroles  25
+OK  A · [touffe, retirer] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1600 ms
+OK  B · [touffe, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé)  0 appel(s)
+··  D · [touffe, retirer] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 6.0 ms à 1509 ms (minuteur 1500 |  · function(){ (window._apresMouvement||func)
+··  E · [touffe, retirer] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 4 image(s) au-delà de 33,4 ms (la plus longue 48 ms) · 17 au-delà de 20 ms sur 85
+OK  aucune erreur de page [touffe]  []
+    (charge de la machine : 4.0 → 4.1 → 5.0 → 4.9)
+OK  · [ritournelle] la Toile porte 25 paroles, la plantation en ajoute une  25 → 26
+OK  A · [ritournelle, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 3229 ms
+OK  B · [ritournelle, planter] la passe de teinte du Fil ne tourne pas (Fil fermé)  0 appel(s)
+··  D · [ritournelle, planter] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 31.0 ms à 2930 ms (image | att · function att(){ if(window._evol && window._evo)
+··  E · [ritournelle, planter] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 1 image(s) au-delà de 33,4 ms (la plus longue 64 ms) · 11 au-delà de 20 ms sur 191
+OK  C · [ritournelle] le Fil, ouvert ensuite, porte la parole plantée, sa dalle peinte  {'ouvert': True, 'la': True, 'bandeau': True, 'canevas': True, 'peint': 14005}
+OK  C · [ritournelle] l'Index, ouvert ensuite, porte la parole plantée  {'n': 26, 'la': True}
+OK  · [ritournelle] le retrait rend 25 paroles  25
+OK  A · [ritournelle, retirer] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1929 ms
+OK  B · [ritournelle, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé)  0 appel(s)
+··  D · [ritournelle, retirer] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 8.0 ms à 1508 ms (minuteur 1500 |  · function(){ (window._apresMouvement||func)
+··  E · [ritournelle, retirer] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 7 image(s) au-delà de 33,4 ms (la plus longue 47 ms) · 26 au-delà de 20 ms sur 96
+OK  aucune erreur de page [ritournelle]  []
+    (charge de la machine : 4.9 → 4.4 → 4.2 → 4.2)
+
+29 / 29 · 10 contrôle(s) de durée NON JUGÉS (machine chargée) : à repasser au calme

@@ -1,131 +1,89 @@
 #!/usr/bin/env python3
 """
-redteam_ritournelle.py — RITOURNELLE, CE QU'ON VOIT AU DÉPART (v143, Tom, 12 oct. 2026 — C-088, RÉCIDIVE). ⚑ v144 (Tom, le même jour) : « avec peu de
-paroles, encore un peu plus zoomé » — les cibles à 1, 2 et 3 paroles sont remontées (original de v143 : sauvegardes/redteam_ritournelle-avant-v144.py).
-Réécrit en v143 ; l'original de v142 :
-sauvegardes/redteam_ritournelle-avant-v143.py (« de 1 à 3 paroles, aucune cellule vide, même en partie » — obtenu en ne peignant plus les
-cellules vides : les premières dalles prenaient tout l'écran, et la Toile sans parole devenait un aplat, noir en sombre).
+redteam_ritournelle.py — RITOURNELLE : LE CADRAGE D'AVANT C-088, TEL QUEL (v145, Tom, 13 oct. 2026 — C-088, CLOS).
 
-LES CIBLES DE TOM, EN DUR, dans la zone visible entre le plateau et la barre (y 100 → 710, 390 pt de large) :
-  · 1 parole : sa dalle entière, centrée, entre 65 et 70 % de la largeur (253,5 à 273 pt), avec un peu de Toile autour — des bords de cellules
-    vides, pas une cellule vide entière ;
-  · 2 et 3 paroles : toutes entières, ensemble entre 80 et 90 % de la largeur (312 à 351 pt), un peu de Toile autour ;
-    ⚠ deux dalles l'une AU-DESSUS de l'autre ne peuvent pas faire 80 % de large sans sortir de la zone : l'ensemble fait alors entre 80 et 90 %
-    de la HAUTEUR de la zone (485 à 545 pt) — c'est la même cible sur l'autre axe, et le juge dit lequel il a jugé ;
-  · 4 paroles : toutes entières, deux ou trois cellules vides entières au plus ;
-  · 6 paroles : peu de vides, proportionnellement (cinq cellules vides entières au plus) ;
-  · sans parole : la Toile est PEINTE (des cellules vides partout), en clair et en sombre — jamais un aplat.
-Par le banc « comme Tom » (WebKit, 390 × 844 ×3, Toile vide, paroles plantées par le +, app ROUVERTE avant chaque mesure). Le verdict vient de la
-CAPTURE : une dalle est une tache de bleu Promi ; une cellule vide est une tache qui se détache du fond (la couleur la plus fréquente de la
-zone) et ne porte pas de bleu ; elle est « entière » si sa boîte ne touche aucun bord de la zone.
-Captures annotées (cotes) : planche-v144/rit-<fichier>-<n>.png.     Usage : python3 redteam_ritournelle.py [fichier.html]
+« Toujours ultra dézoomé avec plein de dalles autour, rien ne change. Je préférais presque l'effet arty bien zoomé : remets-le et clôture ce sujet. »
+Décision : les cotes de remplissage de v140 à v144 (55 %, 67,5 %, 85 %…) sont ABANDONNÉES. Sous Ritournelle la Toile est faite de ses seules
+paroles DÈS LA PREMIÈRE, vue entière : peu de dalles, de grandes coulées — le cadrage de la version E1 (commit c8f4571, la dernière avant v139).
+Réécrit au niveau de cette décision ; l'original de v144 : sauvegardes/redteam_ritournelle-avant-v145.py.
+
+Par le banc « comme Tom » (WebKit, 390 × 844 ×3, Toile vide, paroles plantées par le +). À 1, 2, 3, 4 et 6 paroles :
+  A · la Toile n'a QUE ses paroles : autant de graines que de paroles, aucune cellule vide (`Toile.semisNeuf()` vrai) ;
+  B · la vue est la Toile entière (zoom 1, aucun décalage) — aucun recadrage sur les dalles ;
+  C · les graines sont celles d'E1, relevées sur le commit c8f4571 par le même chemin et portées EN DUR (± 3 pt : E1 lui-même varie d'un point
+      d'une passe à l'autre, le relâchement ne converge pas au pixel) ;
+  D · à partir de deux paroles, la matière couvre la zone visible (y 102 → 708) : de grandes formes, au moins 55 % de la zone hors du fond
+      (lu sur la capture ; E1 : 72 à 100 %) ;
+  E · toucher une dalle ouvre sa fiche (le correctif de v139 tient : l'heure des deux ÉVÉNEMENTS, pas celle du traitement).
+⚠ CONSTAT, affiché et non jugé : À UNE SEULE PAROLE Ritournelle ne peint rien (une cellule couvre tout l'écran) — c'était déjà vrai en E1, c'est
+  rendu tel quel, et c'est signalé à Tom (QUESTIONS, v145).
+Avec `--ref=8761` (la version E1 servie sur ce port) : les graines sont AUSSI comparées à celles qu'E1 rend dans la même passe.
+Rouge sur v144 (semis constant sous neuf paroles, vue cadrée sur la matière).     Usage : python3 redteam_ritournelle.py [fichier.html] [--ref=port] [--port=8752]
 """
 import sys, io
 sys.path.insert(0, '.')
-from banc_tom import *
+import banc_tom as B
 from playwright.sync_api import sync_playwright
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image
 F = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
+arg = lambda k, d: next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--' + k + '=')), d)
+PORT, REF = arg('port', '8752'), arg('ref', '')
 Y0, Y1 = 102, 708
-ZH = Y1 - Y0
-VIDES_ENTIERES_MAX = {1: 0, 2: 2, 3: 2, 4: 3, 6: 5}
+TITRES = ['rendre le livre', 'écrire à Lou', 'arroser le ficus', 'courir dimanche', 'appeler mamie', 'finir la maquette']
+# les graines d'E1 (commit c8f4571), relevées par ce même chemin le 13 oct. 2026 : x, y en points de la Toile (390 × 844)
+E1 = {1: [(339, 143)], 2: [(339, 143), (51, 220)], 3: [(339, 143), (51, 145), (51, 600)], 4: [(339, 143), (51, 143), (51, 600), (339, 717)]}
+TOL = 3
 res = []
 def juge(nom, cond, detail=''):
     res.append((nom, bool(cond))); print('%s  %s  %s' % ('OK' if cond else 'KO', nom, detail), flush=True)
-def bleu(c): return abs(c[0] - 130) < 34 and abs(c[1] - 174) < 34 and abs(c[2] - 248) < 30
-def composantes(px, test, pas=2):
-    vu = {}; out = []
-    for y in range(Y0, Y1, pas):
-        for x in range(0, 390, pas):
-            if (x, y) in vu or not test(px[x, y]): continue
-            pile = [(x, y)]; vu[(x, y)] = 1; b = [x, x, y, y]; n = 0
-            while pile:
-                cx, cy = pile.pop(); n += 1
-                if cx < b[0]: b[0] = cx
-                if cx > b[1]: b[1] = cx
-                if cy < b[2]: b[2] = cy
-                if cy > b[3]: b[3] = cy
-                for dx, dy in ((pas, 0), (-pas, 0), (0, pas), (0, -pas)):
-                    q = (cx + dx, cy + dy)
-                    if 0 <= q[0] < 390 and Y0 <= q[1] < Y1 and q not in vu and test(px[q[0], q[1]]): vu[q] = 1; pile.append(q)
-            out.append((b, n * pas * pas))
-    return out
-def lit(im):
-    """rend (dalles, cellules vides, cellules vides entières) — des boîtes [x0, x1, y0, y1] en points de l'appareil"""
-    px = im.load(); H = {}
+def passe(b, port, fichier, n_max=6):
+    """plante de 1 à n_max paroles sous Ritournelle ; rend, par nombre de paroles : graines, vue, semis, capture"""
+    ctx = B.contexte(b); pg = ctx.new_page(); pg.__dict__['erreurs'] = []; pg.on('pageerror', lambda e: pg.__dict__['erreurs'].append(str(e)[:200]))
+    pg.goto('http://127.0.0.1:%s/%s' % (port, fichier)); pg.wait_for_timeout(6500)
+    pg.evaluate("()=>{ try{ Toile.setTheme('ritournelle'); }catch(e){} }"); pg.wait_for_timeout(1500); out = {}
+    for i in range(n_max):
+        B.plante(pg, TITRES[i]); pg.wait_for_timeout(5500)
+        e = pg.evaluate("()=>{ var v=Toile.vue(); return {g:Toile_graines(), vue:[v.s,v.ox,v.oy], neuf:(Toile.semisNeuf?Toile.semisNeuf():null), n:promises.filter(p=>!p.draft).length}; }")
+        e['im'] = B.image(pg); out[i + 1] = e
+    return pg, ctx, out
+def matiere(im):
+    """la part de la zone visible qui n'est pas le fond de la Toile (la couleur la plus fréquente de la capture d'une Toile nue : #DFCAA4)"""
+    px = im.load(); n = t = 0
     for y in range(Y0, Y1, 3):
-        for x in range(0, 390, 3): c = px[x, y]; k = (c[0] // 6, c[1] // 6, c[2] // 6); H[k] = H.get(k, 0) + 1
-    k = max(H, key=H.get); fond = (k[0] * 6 + 3, k[1] * 6 + 3, k[2] * 6 + 3)
-    D = [b for b, n in composantes(px, bleu) if n >= 600]
-    # un titre qui déborde de son cœur traverse l'anneau bleu et le coupe en deux taches : deux taches superposées, séparées par autre chose que
-    # le FOND (le titre, le cœur crème), sont la même dalle — deux dalles voisines, elles, sont séparées par le fond
-    est_fond = lambda c: abs(c[0] - fond[0]) + abs(c[1] - fond[1]) + abs(c[2] - fond[2]) <= 16
-    fini = False
-    while not fini:
-        fini = True
-        for i in range(len(D)):
-            for j in range(i + 1, len(D)):
-                a_, b_ = D[i], D[j]; ox0 = max(a_[0], b_[0]); ox1 = min(a_[1], b_[1])
-                if ox1 - ox0 < 0.6 * min(a_[1] - a_[0], b_[1] - b_[0]): continue
-                haut, bas = (a_, b_) if a_[2] <= b_[2] else (b_, a_); gap = bas[2] - haut[3]
-                if gap > 26 or gap <= 0: continue          # deux boîtes qui se chevauchent en hauteur sont deux dalles voisines, jamais les moitiés d'une dalle coupée par son titre
-                if any(est_fond(px[int(ox0 + (ox1 - ox0) * q), y]) for q in (0.25, 0.5, 0.75) for y in range(haut[3] + 1, bas[2])): continue
-                D[i] = [min(a_[0], b_[0]), max(a_[1], b_[1]), min(a_[2], b_[2]), max(a_[3], b_[3])]; del D[j]; fini = False; break
-            if not fini: break
-    def vide(c): return (not bleu(c)) and abs(c[0] - fond[0]) + abs(c[1] - fond[1]) + abs(c[2] - fond[2]) > 16
-    dedans = lambda b: any(b[0] >= d[0] and b[1] <= d[1] and b[2] >= d[2] and b[3] <= d[3] for d in D)
-    V = [b for b, n in composantes(px, vide) if n >= 500 and not dedans(b)]
-    # une cellule « entière » fait au moins 56 pt de côté : plus petite, c'est le CŒUR d'une cellule dont le pourtour a la couleur du fond
-    # (mesuré : 46 × 40 pt — une cellule de Ritournelle fait 80 pt et plus, même à six paroles)
-    E = [b for b in V if b[0] > 1 and b[1] < 388 and b[2] > Y0 and b[3] < Y1 - 2 and (b[1] - b[0]) >= 56 and (b[3] - b[2]) >= 56]
-    return D, V, E, fond
-def annote(pg, chemin, D, V, E, texte):
-    im = Image.open(io.BytesIO(capture(pg))).convert('RGB'); k = im.width / 390.0; g = ImageDraw.Draw(im)
-    try: f = ImageFont.truetype('/System/Library/Fonts/Supplemental/Arial Bold.ttf', int(11 * k))
-    except Exception: f = None
-    g.line([(0, 100 * k), (im.width, 100 * k)], fill=(221, 77, 35), width=2); g.line([(0, 710 * k), (im.width, 710 * k)], fill=(221, 77, 35), width=2)
-    for b in E: g.rectangle([b[0] * k, b[2] * k, b[1] * k, b[3] * k], outline=(221, 77, 35), width=3)
-    if D:
-        x0 = min(d[0] for d in D); x1 = max(d[1] for d in D); y0 = min(d[2] for d in D); y1 = max(d[3] for d in D)
-        g.rectangle([x0 * k, y0 * k, x1 * k, y1 * k], outline=(32, 25, 8), width=3)
-        g.rectangle([x0 * k, (y1 + 4) * k, (x0 + 250) * k, (y1 + 20) * k], fill=(247, 240, 222)); g.text(((x0 + 3) * k, (y1 + 5) * k), texte, fill=(32, 25, 8), font=f)
-    im.save(chemin)
-def verdict(n, pg, quand=''):
-    D, V, E, fond = lit(image(pg)); nom = '%d parole(s)%s' % (n, quand)
-    ent = len(D) == n and all(d[0] > 1 and d[1] < 388 and d[2] > Y0 and d[3] < Y1 - 2 for d in D)
-    juge('%s : on voit %d dalle(s), entière(s), entre le plateau et la barre' % (nom, n), ent, '%d dalle(s) : %s' % (len(D), D))
-    if not D: return
-    x0 = min(d[0] for d in D); x1 = max(d[1] for d in D); y0 = min(d[2] for d in D); y1 = max(d[3] for d in D); w = x1 - x0; h = y1 - y0; cx = (x0 + x1) / 2; cy = (y0 + y1) / 2
-    txt = '%d × %d pt · %.0f %% de la largeur · %d vide(s) entière(s)' % (w, h, w / 3.9, len(E))
-    if n == 1:
-        juge('%s : sa dalle fait entre 65 et 70 %% de la largeur (253,5 à 273 pt)' % nom, 253.5 <= w <= 273, 'largeur peinte %d pt (%.0f %%)' % (w, w / 3.9))
-        juge('%s : elle est centrée (à 20 pt près en largeur, 40 en hauteur de la zone)' % nom, abs(cx - 195) <= 20 and abs(cy - (Y0 + Y1) / 2) <= 40, 'centre (%.0f, %.0f) pour (195, %d)' % (cx, cy, (Y0 + Y1) / 2))
-    elif n in (2, 3):
-        enL = 312 <= w <= 351; enH = 0.80 * ZH <= h <= 0.90 * ZH
-        juge('%s : ensemble entre 80 et 90 %% de la largeur — ou, empilées, de la hauteur de la zone' % nom, (enL and h <= 0.90 * ZH) or (enH and w <= 351), 'ensemble %d × %d pt : %.0f %% de la largeur, %.0f %% de la hauteur de la zone — jugé sur %s' % (w, h, w / 3.9, 100.0 * h / ZH, 'la largeur' if enL else 'la hauteur'))
-    if n in (1, 2, 3):
-        juge('%s : un peu de Toile autour (au moins deux cellules vides visibles en partie)' % nom, len(V) >= 2, '%d cellule(s) vide(s) visibles, dont %d entière(s)' % (len(V), len(E)))
-    juge('%s : %s' % (nom, 'aucune cellule vide ENTIÈRE' if VIDES_ENTIERES_MAX[n] == 0 else 'au plus %d cellules vides entières' % VIDES_ENTIERES_MAX[n]), len(E) <= VIDES_ENTIERES_MAX[n], '%d entière(s) : %s' % (len(E), E[:6]))
-    annote(pg, 'planche-v144/rit-%s-%d%s.png' % (F.replace('.html', ''), n, '-rouverte' if quand else ''), D, V, E, txt)
-TITRES = ['boire un verre', 'appeler Mamie', 'courir dimanche', 'ranger le garage', 'écrire à Paul', 'lire un livre', 'faire les crêpes', 'planter un arbre', 'réparer le vélo']
+        for x in range(0, 390, 3):
+            c = px[x, y]; t += 1
+            if abs(c[0] - 223) + abs(c[1] - 202) + abs(c[2] - 164) > 30: n += 1
+    return n / float(t)
 with sync_playwright() as p:
     b = p.webkit.launch()
-    # sans parole : la Toile est peinte, dans les deux thèmes
-    for sombre in (False, True):
-        ctx = contexte(b, sombre=sombre); pg = ouvre(ctx, F)
-        pg.evaluate("()=>{try{setPremium(true)}catch(e){} Toile.setTheme('ritournelle')}"); pg.wait_for_timeout(2500)
-        D, V, E, fond = lit(image(pg))
-        juge('sans parole [%s] : la Toile est peinte (au moins huit cellules vides visibles), jamais un aplat' % ('sombre' if sombre else 'clair'), len(V) >= 8, '%d cellule(s) vide(s) · fond %s' % (len(V), fond))
-        capture(pg, 'planche-v144/rit-%s-0-%s.png' % (F.replace('.html', ''), 'sombre' if sombre else 'clair')); ctx.close()
-    ctx = contexte(b); pg = ouvre(ctx, F)
-    pg.evaluate("()=>{try{setPremium(true)}catch(e){} Toile.setTheme('ritournelle')}"); pg.wait_for_timeout(1500)
-    for i, t in enumerate(TITRES):
-        plante(pg, t); pg.wait_for_timeout(3200); n = i + 1
-        if n in VIDES_ENTIERES_MAX:
-            verdict(n, pg)
-            pg.reload(); pg.wait_for_timeout(7500); verdict(n, pg, ' (app rouverte)')
-        if n == 9: pg.reload(); pg.wait_for_timeout(7500); capture(pg, 'planche-v144/rit-%s-9.png' % F.replace('.html', ''))
-    juge('aucune erreur de page', not pg.__dict__['erreurs'], pg.__dict__['erreurs'][:2])
-    ctx.close(); b.close()
-ok = sum(1 for _, c in res if c)
-print('\n%d / %d' % (ok, len(res))); sys.exit(0 if ok == len(res) else 1)
+    pg, ctx, R = passe(b, PORT, F)
+    ref = None
+    if REF:
+        pr, cr, ref = passe(b, REF, 'app.html', 4); cr.close()
+    for n in (1, 2, 3, 4, 6):
+        e = R[n]; G = [(g[1], g[2]) for g in e['g']]; kinds = [g[3] for g in e['g']]
+        juge('A · %d parole(s) : la Toile n\'a que ses paroles (autant de graines que de paroles, aucune cellule vide)' % n, e['n'] == n and len(G) == n and e['neuf'] is True and all(k != 'gray' for k in kinds), '%d graine(s) pour %d parole(s) · semis de la famille : %s' % (len(G), e['n'], e['neuf']))
+        juge('B · %d parole(s) : la vue est la Toile entière (zoom 1, sans décalage)' % n, abs(e['vue'][0] - 1) < 0.01 and abs(e['vue'][1]) < 1 and abs(e['vue'][2]) < 1, 'vue %s' % [round(v, 2) for v in e['vue']])
+        if n in E1:
+            ec = max(max(abs(G[i][0] - E1[n][i][0]), abs(G[i][1] - E1[n][i][1])) for i in range(n)) if len(G) == n else 999
+            juge('C · %d parole(s) : les graines sont celles d\'E1 (± %d pt)' % (n, TOL), ec <= TOL, 'graines %s · E1 %s · écart %s pt' % (G, E1[n], ec))
+            if ref:
+                Gr = [(g[1], g[2]) for g in ref[n]['g']]; ec2 = max(max(abs(G[i][0] - Gr[i][0]), abs(G[i][1] - Gr[i][1])) for i in range(n)) if len(G) == len(Gr) == n else 999
+                juge('C bis · %d parole(s) : mêmes graines que la version E1 servie à côté, dans la même passe (± %d pt)' % (n, TOL), ec2 <= TOL, 'E1 servie %s · écart %s pt' % (Gr, ec2))
+        m = matiere(e['im'])
+        if n >= 2: juge('D · %d paroles : de grandes formes — la matière couvre au moins 55 %% de la zone visible' % n, m >= 0.55, '%.0f %% de la zone hors du fond' % (m * 100))
+        else: print('··  CONSTAT (non jugé) · 1 parole : %.0f %% de la zone porte de la matière — comme en E1, Ritournelle ne peint rien à une seule parole' % (m * 100), flush=True)
+    # E · toucher une dalle ouvre sa fiche : au point de la graine de chaque parole (hors du plateau et de la barre)
+    ouvertes = 0; essais = 0
+    for g in R[6]['g']:
+        x, y = g[1], g[2]
+        if not (120 < y < 690 and 12 < x < 378): continue
+        essais += 1; pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500); B.tap(pg, x, y); pg.wait_for_timeout(1400)
+        if pg.evaluate("()=>{ var d=document.getElementById('detailPoster'); return !!(d && d.classList.contains('show')); }"): ouvertes += 1
+    pg.evaluate("()=>{ try{closeAll()}catch(e){} }")
+    juge('E · toucher une dalle ouvre sa fiche (au point de chaque graine visible)', essais >= 2 and ouvertes == essais, '%d fiche(s) ouverte(s) sur %d toucher(s)' % (ouvertes, essais))
+    juge('aucune erreur de page', not pg.erreurs, str(pg.erreurs[:2]))
+    b.close()
+ok = sum(1 for r in res if r[1]); print('\n%d / %d' % (ok, len(res)))
+if ok < len(res): print('KO :', ' · '.join(r[0] for r in res if not r[1])[:900])
+sys.exit(0 if ok == len(res) else 1)

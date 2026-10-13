@@ -1,0 +1,11 @@
+  chamade      stable     5.8 s  T-sombre:2cd0be T-clair:27dc8e promi-k0.5:1758ca promi-k1:b912bb promi-k2:79ea9a chiche-k0.5:192447 chiche-k1:8b7951 chiche-k2:535217 tenu-k0.5:5c890a tenu-k1:71459e tenu-k2:8e9d99 cercle-k0.5:e3fbf6 cercle-k1:7d98fb cercle-k2:8c9c15
+passe 0 stable True ['1758ca76', '1924471', '27dc8e8d']
+  chamade      stable     5.8 s  T-sombre:2cd0be T-clair:27dc8e promi-k0.5:1758ca promi-k1:b912bb promi-k2:79ea9a chiche-k0.5:192447 chiche-k1:8b7951 chiche-k2:535217 tenu-k0.5:5c890a tenu-k1:71459e tenu-k2:8e9d99 cercle-k0.5:e3fbf6 cercle-k1:7d98fb cercle-k2:8c9c15
+passe 1 stable True ['1758ca76', '1924471', '27dc8e8d']
+  chamade      stable     5.6 s  T-sombre:2cd0be T-clair:27dc8e promi-k0.5:1758ca promi-k1:b912bb promi-k2:79ea9a chiche-k0.5:192447 chiche-k1:8b7951 chiche-k2:535217 tenu-k0.5:5c890a tenu-k1:71459e tenu-k2:8e9d99 cercle-k0.5:e3fbf6 cercle-k1:7d98fb cercle-k2:8c9c15
+passe 2 stable True ['1758ca76', '1924471', '27dc8e8d']
+  chamade      stable     5.6 s  T-sombre:2cd0be T-clair:27dc8e promi-k0.5:1758ca promi-k1:b912bb promi-k2:79ea9a chiche-k0.5:192447 chiche-k1:8b7951 chiche-k2:535217 tenu-k0.5:5c890a tenu-k1:71459e tenu-k2:8e9d99 cercle-k0.5:e3fbf6 cercle-k1:7d98fb cercle-k2:8c9c15
+passe 3 stable True ['1758ca76', '1924471', '27dc8e8d']
+  chamade      stable     5.6 s  T-sombre:2cd0be T-clair:27dc8e promi-k0.5:1758ca promi-k1:b912bb promi-k2:79ea9a chiche-k0.5:192447 chiche-k1:8b7951 chiche-k2:535217 tenu-k0.5:5c890a tenu-k1:71459e tenu-k2:8e9d99 cercle-k0.5:e3fbf6 cercle-k1:7d98fb cercle-k2:8c9c15
+passe 4 stable True ['1758ca76', '1924471', '27dc8e8d']
+5 PASSES : IDENTIQUES · stables [True, True, True, True, True]

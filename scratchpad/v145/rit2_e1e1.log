@@ -1,0 +1,12 @@
+e1 1 graines [[144, 339, 143, 'promi']] · même version, 3 s plus tard : 0 px
+e1 2 graines [[144, 339, 143, 'promi'], [145, 51, 220, 'promi']] · même version, 3 s plus tard : 0 px
+e1 3 graines [[144, 339, 143, 'promi'], [145, 51, 145, 'promi'], [146, 51, 600, 'promi']] · même version, 3 s plus tard : 0 px
+e1 4 graines [[144, 339, 143, 'promi'], [145, 51, 143, 'promi'], [146, 51, 600, 'promi'], [147, 339, 717, 'promi']] · même version, 3 s plus tard : 0 px
+v145 1 graines [[144, 339, 143, 'promi']] · même version, 3 s plus tard : 0 px
+v145 2 graines [[144, 339, 143, 'promi'], [145, 51, 220, 'promi']] · même version, 3 s plus tard : 0 px
+v145 3 graines [[144, 339, 143, 'promi'], [145, 51, 145, 'promi'], [146, 51, 600, 'promi']] · même version, 3 s plus tard : 0 px
+v145 4 graines [[144, 339, 143, 'promi'], [145, 51, 143, 'promi'], [146, 51, 600, 'promi'], [147, 339, 717, 'promi']] · même version, 3 s plus tard : 0 px
+1 parole(s) : E1 contre E1 (deux passes) : 0 px au-delà de 8 niveaux ; graines identiques : True
+2 parole(s) : E1 contre E1 (deux passes) : 2104 px au-delà de 8 niveaux ; graines identiques : True
+3 parole(s) : E1 contre E1 (deux passes) : 10289 px au-delà de 8 niveaux ; graines identiques : True
+4 parole(s) : E1 contre E1 (deux passes) : 19499 px au-delà de 8 niveaux ; graines identiques : True

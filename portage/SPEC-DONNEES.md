@@ -109,7 +109,8 @@ const P=(t,w,d,i,s,n,fr)=>({id:nid++,title:t,who:w,due:d,intensity:i,status:s,nu
 | `trait` | chaîne | le PINCEAU du trait : un des douze noms (§1.6). Absent = `'Plein'`. | marqué à la plantation (`app.html:25079–25093`) ; Peaufiner « LE TRAIT » (`_pinceauCible`, `app.html:25374`) |
 | `trace` | tableau `[{x,y}…]` | les points du geste qui a tenu la parole, en coordonnées du canevas du geste. | fin du geste (`app.html:4768`) |
 | `note` | chaîne | le mot joint à la parole | page + `#fNote` (`app.html:3192`), `#dNote` (`app.html:3312`), gardé de côté (`app.html:13612`) |
-| `comments` | tableau `[{t, d, by}]` | commentaires : texte, date ISO, auteur (`USER.name` ou `'moi'`) | `app.html:3315–3317` |
+| `comments` | tableau `[{t, d, by}]` | commentaires : texte, date ISO, auteur (`USER.name` ou `'moi'`) | `app.html:3315–3317` ; **v145 : la ligne « Un mot… » de la fiche (`lot-V145-COMM`) — voir §1.9** |
+| `parts` | objet `{nom: date ISO}` | **v145 (C-115) — LA PART DE CHACUN.** Qui a tracé sa part d'une parole qui engage plusieurs personnes, et quand. La clé est le prénom (`'moi'` pour soi). Absent = personne n'a encore tracé. `status` ne devient `'tenu'` qu'à la dernière part. Voir §1.8. | `lot-V145-PARTS` (`window._parts.trace`) |
 | `files` | tableau `[{name, type, size, by}]` | pièces jointes (noms seulement dans le prototype) | page + (`app.html:3195`), fiche (`app.html:9267`) ; forme : `app.html:9120` |
 | `relances` | entier | nombre de relances envoyées | `#actRelance` (`app.html:3313`) |
 | `urg` | entier | (ancien, **MASQUÉ PAR DÉCISION** — « Urgent supprimé », CLAUDE.md §9 ; « urgent » est un terme banni §2). Encore écrit à la plantation (`app.html:3192`). **Ne pas porter.** | — |
@@ -237,6 +238,45 @@ un gardé de côté repris → `p.trait` de ce gardé ; une création en cours �
 > **ATTEND FIREBASE.** Le bouton exact qui l'appelle n'a pas été relevé (cherché : la définition seule).
 
 ---
+
+### 1.8 À plusieurs : la règle de la part (Tom et chef de chantier, 13 oct. 2026, v145 — C-115)
+
+**La règle.** Quand une parole engage plusieurs personnes, la seconde moitié du trait est divisée en autant de parts que de personnes qui
+doivent tenir. Chacun trace la sienne. La parole ne passe à « tenu » que lorsque toutes les parts sont tracées ; avant, elle reste en cours
+pour tout le monde — sa fiche, sa dalle sur la Toile, sa carte dans l'Index et dans le Fil. Une parole à une seule personne ne change pas.
+
+**Une parole à plusieurs destinataires est UNE parole** (v145) : `who` porte les prénoms séparés par `', '`. Avant v145 la page + plantait une
+parole par destinataire ; ce n'est plus le cas.
+
+**Qui doit tenir** — se lit sur la parole (`window._parts.tenants(p)`), comme la phrase de la fiche :
+
+| La parole | Ceux qui doivent tenir |
+|---|---|
+| Chiche lancé (`chiche`, `from` = moi) | les personnes de `who` et de `avec` (une seule liste) ; à soi : moi |
+| Chiche reçu (`chiche`, `from` ≠ moi) | moi, et les personnes de `avec` |
+| Promi demandée (`req`) | les personnes de `who` |
+| Promi reçue (`from` ≠ moi) | la personne de `from` |
+| Promi (je promets) | moi — même à plusieurs destinataires, même dans un Cercle |
+
+**Les données.** `parts = {nom: date ISO}`. La date est celle du tracé ; elle s'affiche dans la liste des noms (« 11 oct. »).
+
+**Le modèle serveur (à construire avec Firebase).** Une sous-collection ou un champ de carte par parole : `parts/{uid} = {quand: horodatage serveur}`.
+- **Chacun n'écrit que SA part** : la règle refuse toute écriture de `parts/{uid}` par un autre que `uid`, et toute écriture par quelqu'un qui
+  n'est pas dans la liste de ceux qui doivent tenir.
+- **Une part ne se défait pas** (« on ne défait pas une parole tenue ») : création seule, ni mise à jour ni suppression.
+- **`status: 'tenu'` n'est jamais écrit par un appareil** : il se déduit (toutes les parts présentes) — une fonction serveur, ou une lecture
+  dérivée côté client ; ainsi deux appareils ne peuvent pas se contredire.
+- La liste de ceux qui doivent tenir est figée à la plantation (un identifiant de personne par part, pas un prénom).
+
+⚠ **Dans le prototype il n'y a pas de réseau** : la part d'une autre personne ne peut pas arriver seule. `?parts=1` permet, dans la liste des
+noms, de tracer la part d'une personne en touchant son nom — pour jouer tous les ordres. **Ne pas porter ce paramètre.**
+
+### 1.9 Les commentaires (v145 — C-116)
+
+`comments = [{t, d, by}]` — texte, date ISO, auteur. Ils vivent sur la parole et sont sauvegardés avec elle (`promi_state`). **Aucun compteur de
+non-lus, aucune pastille, aucune relance** n'y est attaché (grille anti-coercition, CLAUDE.md §12). Ils s'affichent du plus ancien au plus
+récent, avec le prénom et la date. Côté serveur : une sous-collection `comments` par parole, écriture par les personnes de la parole
+seulement, ajout seul (ni modification ni suppression dans ce lot — à décider par Tom).
 
 ## 2. Le Chiche — ce qui lui est propre
 
@@ -636,6 +676,8 @@ resynchronise depuis les paroles (`Toile.sync(ids)`), et « un semis est déterm
 | **Notifications** | page ouverte seulement | envoi app fermée ; « Ce qu'on me lance » (§9.3) |
 | **Achats** | drapeaux en mémoire | StoreKit + droit d'accès serveur, essai, restauration (§10) |
 | **Commentaires, relances, pièces jointes** | locaux, `by` = un prénom | partagés entre les personnes de la parole |
+| **LA PART DE CHACUN** (v145, C-115) | `p.parts = {prénom: date}` écrit localement ; `?parts=1` pour jouer la part d'un autre | une part par personne (`parts/{uid}`), écrite par elle seule, jamais défaite ; « tenu » déduit de la présence de toutes les parts (§1.8) |
+| **Une parole à plusieurs destinataires** (v145) | `who` = prénoms séparés par `', '` | une liste d'identifiants de personnes |
 
 ---
 

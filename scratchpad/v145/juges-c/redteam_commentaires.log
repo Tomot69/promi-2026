@@ -1,0 +1,28 @@
+OK  A · [clair] Promi reçu, à tenir : la ligne est là, à sa place, au doigt, « Un mot… »  {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  F · [clair] l'ancien champ est retiré, la ligne ne touche ni la ligne d'état ni la barre  ancien champ : none · état jusqu'à 638.8 · ligne {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  B · [clair] RÉCEPTION : le commentaire reçu paraît au-dessus de la ligne (auteur, date, début)  {'x': 24, 'y': 664, 'w': 342, 'h': 20, 't': 'Marion · 11 oct. Promis, j’y serai. Tu gardes une place ?'}
+OK  B · [clair] ni compteur ni pastille : la ligne ne porte aucun chiffre, le Fil ne gagne aucun non-lu  ligne « Un mot… » · non-lus du Fil 0 → 0
+OK  C · [clair] toucher la ligne ouvre la saisie (le champ a le curseur) et le fil des commentaires sous le trait  saisie True · fil {'x': 0, 'y': 324, 'w': 390, 'h': 358, 't': 'Marion · 11 oct.Promis, j’y serai. Tu gardes une place ?'} · 1 commentaire(s)
+OK  D · [clair] ENVOI par Entrée : ajouté en dernier, signé, daté ; le champ est vidé ; la parole le garde  [['Marion · 11 oct.', 'Promis, j’y serai. Tu gardes une place ?'], ['Tom · aujourd’hui', 'Oui, au premier rang']]
+OK  D · [clair] ENVOI par la flèche  [['Tom · aujourd’hui', 'À samedi']]
+OK  E · [clair] ORDRE : du plus ancien au plus récent, chacun avec son nom et sa date  ['Marion · 9 oct. — Je prends les billets', 'Marion · 11 oct. — Promis, j’y serai. Tu ga', 'Tom · aujourd’hui — Oui, au premier rang', 'Tom · aujourd’hui — À samedi']
+OK  G · [clair] toucher la bande referme la saisie, la fiche reste, le dernier mot est au-dessus de la ligne  fiche True · saisie False · dernier {'x': 24, 'y': 664, 'w': 342, 'h': 20, 't': 'Tom · aujourd’hui À samedi'}
+OK  A · [clair] Chiche reçu, lancé : la ligne est là  {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  A · [clair] Promi reçu, tenu : la ligne est là  {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  H · [clair] une parole à soi, à tenir, sans commentaire : pas de ligne (inchangé)  None
+OK  aucune erreur de page [clair]  []
+OK  A · [sombre] Promi reçu, à tenir : la ligne est là, à sa place, au doigt, « Un mot… »  {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  F · [sombre] l'ancien champ est retiré, la ligne ne touche ni la ligne d'état ni la barre  ancien champ : none · état jusqu'à 638.8 · ligne {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  B · [sombre] RÉCEPTION : le commentaire reçu paraît au-dessus de la ligne (auteur, date, début)  {'x': 24, 'y': 664, 'w': 342, 'h': 20, 't': 'Marion · 11 oct. Promis, j’y serai. Tu gardes une place ?'}
+OK  B · [sombre] ni compteur ni pastille : la ligne ne porte aucun chiffre, le Fil ne gagne aucun non-lu  ligne « Un mot… » · non-lus du Fil 0 → 0
+OK  C · [sombre] toucher la ligne ouvre la saisie (le champ a le curseur) et le fil des commentaires sous le trait  saisie True · fil {'x': 0, 'y': 324, 'w': 390, 'h': 358, 't': 'Marion · 11 oct.Promis, j’y serai. Tu gardes une place ?'} · 1 commentaire(s)
+OK  D · [sombre] ENVOI par Entrée : ajouté en dernier, signé, daté ; le champ est vidé ; la parole le garde  [['Marion · 11 oct.', 'Promis, j’y serai. Tu gardes une place ?'], ['Tom · aujourd’hui', 'Oui, au premier rang']]
+OK  D · [sombre] ENVOI par la flèche  [['Tom · aujourd’hui', 'À samedi']]
+OK  E · [sombre] ORDRE : du plus ancien au plus récent, chacun avec son nom et sa date  ['Marion · 9 oct. — Je prends les billets', 'Marion · 11 oct. — Promis, j’y serai. Tu ga', 'Tom · aujourd’hui — Oui, au premier rang', 'Tom · aujourd’hui — À samedi']
+OK  G · [sombre] toucher la bande referme la saisie, la fiche reste, le dernier mot est au-dessus de la ligne  fiche True · saisie False · dernier {'x': 24, 'y': 664, 'w': 342, 'h': 20, 't': 'Tom · aujourd’hui À samedi'}
+OK  A · [sombre] Chiche reçu, lancé : la ligne est là  {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  A · [sombre] Promi reçu, tenu : la ligne est là  {'x': 24, 'y': 692, 'w': 342, 'h': 56, 't': 'Un mot…'}
+OK  H · [sombre] une parole à soi, à tenir, sans commentaire : pas de ligne (inchangé)  None
+OK  aucune erreur de page [sombre]  []
+
+26 / 26

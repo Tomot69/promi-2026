@@ -1,0 +1,27 @@
+OK  A · 1 parole(s) : la Toile n'a que ses paroles (autant de graines que de paroles, aucune cellule vide)  1 graine(s) pour 1 parole(s) · semis de la famille : True
+OK  B · 1 parole(s) : la vue est la Toile entière (zoom 1, sans décalage)  vue [1, 0, 0]
+OK  C · 1 parole(s) : les graines sont celles d'E1 (± 3 pt)  graines [(339, 143)] · E1 [(339, 143)] · écart 0 pt
+OK  C bis · 1 parole(s) : mêmes graines que la version E1 servie à côté, dans la même passe (± 3 pt)  E1 servie [(339, 143)] · écart 0 pt
+··  CONSTAT (non jugé) · 1 parole : 0 % de la zone porte de la matière — comme en E1, Ritournelle ne peint rien à une seule parole
+OK  A · 2 parole(s) : la Toile n'a que ses paroles (autant de graines que de paroles, aucune cellule vide)  2 graine(s) pour 2 parole(s) · semis de la famille : True
+OK  B · 2 parole(s) : la vue est la Toile entière (zoom 1, sans décalage)  vue [1, 0, 0]
+OK  C · 2 parole(s) : les graines sont celles d'E1 (± 3 pt)  graines [(339, 143), (51, 220)] · E1 [(339, 143), (51, 220)] · écart 0 pt
+OK  C bis · 2 parole(s) : mêmes graines que la version E1 servie à côté, dans la même passe (± 3 pt)  E1 servie [(339, 143), (51, 219)] · écart 1 pt
+OK  D · 2 paroles : de grandes formes — la matière couvre au moins 55 % de la zone visible  92 % de la zone hors du fond
+OK  A · 3 parole(s) : la Toile n'a que ses paroles (autant de graines que de paroles, aucune cellule vide)  3 graine(s) pour 3 parole(s) · semis de la famille : True
+OK  B · 3 parole(s) : la vue est la Toile entière (zoom 1, sans décalage)  vue [1, 0, 0]
+OK  C · 3 parole(s) : les graines sont celles d'E1 (± 3 pt)  graines [(339, 143), (51, 145), (51, 600)] · E1 [(339, 143), (51, 145), (51, 600)] · écart 0 pt
+OK  C bis · 3 parole(s) : mêmes graines que la version E1 servie à côté, dans la même passe (± 3 pt)  E1 servie [(339, 143), (51, 145), (51, 600)] · écart 0 pt
+OK  D · 3 paroles : de grandes formes — la matière couvre au moins 55 % de la zone visible  86 % de la zone hors du fond
+OK  A · 4 parole(s) : la Toile n'a que ses paroles (autant de graines que de paroles, aucune cellule vide)  4 graine(s) pour 4 parole(s) · semis de la famille : True
+OK  B · 4 parole(s) : la vue est la Toile entière (zoom 1, sans décalage)  vue [1, 0, 0]
+OK  C · 4 parole(s) : les graines sont celles d'E1 (± 3 pt)  graines [(339, 143), (51, 143), (51, 600), (339, 717)] · E1 [(339, 143), (51, 143), (51, 600), (339, 717)] · écart 0 pt
+OK  C bis · 4 parole(s) : mêmes graines que la version E1 servie à côté, dans la même passe (± 3 pt)  E1 servie [(339, 143), (51, 143), (51, 600), (339, 717)] · écart 0 pt
+OK  D · 4 paroles : de grandes formes — la matière couvre au moins 55 % de la zone visible  83 % de la zone hors du fond
+OK  A · 6 parole(s) : la Toile n'a que ses paroles (autant de graines que de paroles, aucune cellule vide)  6 graine(s) pour 6 parole(s) · semis de la famille : True
+OK  B · 6 parole(s) : la vue est la Toile entière (zoom 1, sans décalage)  vue [1, 0, 0]
+OK  D · 6 paroles : de grandes formes — la matière couvre au moins 55 % de la zone visible  77 % de la zone hors du fond
+OK  E · toucher une dalle ouvre sa fiche (au point de chaque graine visible)  4 fiche(s) ouverte(s) sur 4 toucher(s)
+OK  aucune erreur de page  []
+
+24 / 24

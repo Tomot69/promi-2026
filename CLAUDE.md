@@ -14,6 +14,9 @@
 > fichier (ni `Last-Modified` ni `ETag`) : `http.server` laissait Safari garder un fichier « à l'heuristique » (≈ 10 % de son âge —
 > `promi-moteur.js` jusqu'à 2,6 h), l'iPhone montrait un MÉLANGE de versions. `/version.json` rend le commit servi ; l'Aura avec
 > `?mesure=1` l'affiche en tête du relevé (« version : f1fc823 + modifs non commitées »). Même port, écoute sur 0.0.0.0.
+> **⚑ v145 : la page porte SA version** (écrite par le serveur au moment de la servir) : `…/app.html?mesure=1` affiche « v145 · commit » en haut de
+> tous les écrans, l'état de l'appareil, et envoie au Mac les images de chaque plantation (`mesures/appareil.jsonl`). ⚠ Le processus s'appelle
+> `Python` : `pkill -f "python3 serveur.py"` ne le trouve pas — on le tue par `lsof -nP -iTCP:8752 -sTCP:LISTEN -t`.
 > **⚑ v123 : au lancement il affiche l'adresse iPhone en clair** (l'IP du Mac, relue à chaque fois) — et **il s'arrête avec le Mac**
 > (extinction, fermeture de session) : à chaque session, vérifier `lsof -nP -iTCP:8752 -sTCP:LISTEN` et le relancer.
 >
@@ -115,6 +118,111 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
+
+### ⚑ v145 (13 oct. 2026) — RETOURS DE TOM SUR IPHONE (« RIEN NE CHANGE ») : LA VERSION QUE VOIT L'iPHONE, LA TOILE REMPLIE, RITOURNELLE RENDUE À SON CADRAGE D'AVANT. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v139 à v144 (Ritournelle) et v144 (la fluidité de la Toile, C-112).
+> **Validés par Tom sur iPhone : C-110 (la main seulement sur une fiche à tenir, à 3 s), C-113 (la Pelote fluide sous le doigt). Q473, Q474 acceptées.**
+> **⚑ LA RÈGLE DU LOT (R-B) : « LA VÉRITÉ, C'EST L'iPHONE DE TOM. » Quand Tom dit « rien ne change » et que le banc dit « corrigé », le banc a tort.
+> Avant toute discussion on cherche : ① l'iPhone sert-il la nouvelle version ? ② le banc reproduit-il L'ÉTAT de Tom — une Toile PLEINE, son monde,
+> sa palette, son thème ? Les deux ont été sautés : Ritournelle « corrigée » trois fois, la Toile « fluide » deux fois.**
+> **⚑ §1 — LA MARQUE DE VERSION EST ÉCRITE DANS LA PAGE (C-117).** *Ce qui manquait* : `?mesure=1` demandait le commit AU SERVEUR — une page restée
+> en mémoire dans Safari affichait donc le commit du jour sur un code de la veille ; la marque ne prouvait rien. `serveur.py` écrit maintenant,
+> AU MOMENT DE SERVIR `app.html`, le commit (et « + » si l'arbre de travail est modifié) et l'empreinte du moteur dans `window.PROMI_VERSION`
+> (`lot-V145-VERSION`) ; le `<script src>` du moteur prend son empreinte en paramètre (aucun cache ne peut rendre un vieux moteur) et
+> `promi-moteur.js` déclare la sienne (`PROMI_MOTEUR_RECU`) : un mélange se VOIT. Avec `?mesure=1`, une pastille en haut de TOUS les écrans :
+> **« v145 · <commit> »**, puis l'état réel de l'appareil (« 25 paroles · 2 Cercles · encre · signal · clair ») ; sans rien demander, au retour au
+> premier plan, **si le serveur sert un autre commit que celui de la page, la page se RECHARGE**. Il n'y a ni service worker ni manifeste ;
+> chaque réponse porte `Cache-Control: no-store`. **Le lot (`lot:'v145'`) s'écrit à la main dans `lot-V145-VERSION` au début de chaque lot.**
+> **⚑ LA PAGE MESURE SES PROPRES IMAGES ET LES ENVOIE AU MAC.** Avec `?mesure=1`, chaque plantation, retrait ou « tenir » compte les images des
+> 3,6 s qui suivent (au-delà de 20 ms, de 33,4 ms, la plus longue), l'affiche sur la pastille et l'envoie à `serveur.py` (`POST /mesure` →
+> `mesures/appareil.jsonl`, hors du dépôt). **La fluidité se lit sur le vrai téléphone, sans inspecteur ni réglage : c'est LA preuve de C-112.**
+> **⚑ §2 — LA TOILE REMPLIE (C-112, RÉCIDIVE).** *Pourquoi le juge de v144 était vert* : `redteam_evol` plante TROIS paroles sur une Toile vide.
+> Sur une Toile de 25 paroles relue de la sauvegarde (`banc_tom.toile_pleine`, `banc-etats/etat-10|25|50.json`) : à chaque plantation, `syncAll`
+> repeignait les vignettes du Fil et de l'Index FERMÉS (`peintMinis`) ; **la dalle qui grandit change de cellule à chaque image, sa vignette
+> n'est donc jamais « prête »** : elle était rendue de nouveau à chaque passage (37 à 66 ms), et le passage se redemandait à chaque image tant
+> que la Toile bougeait — 25 passages, 48 rendus, 1,2 s de travail pendant l'apparition ; puis `_teinterFil` relisait les 25 canevas d'une
+> traite (jusqu'à 780 ms sous Ritournelle). Et ces vignettes-là ne sont même jamais montrées (le Fil ouvert est rebâti par `lot-S4`).
+> *Corrigé* : ① `syncAll` ne refait vignettes et teintes QUE pour la liste qu'on voit (une liste fermée se rebâtit à son ouverture) ; ② un
+> passage de vignettes attend la fin du mouvement (`window._minisAttend`, sur `_evol()`), ses reprises ne repassent que sur ce qui reste, une
+> dalle par tâche, jamais sous un doigt ; ③ la largeur d'un titre de la Toile n'est plus remesurée à chaque image (`_mes`, mêmes valeurs). ④ la passe
+> de lisibilité attend 400 ms APRÈS la fin du mouvement (4,2 s au plus ; un toucher la laisse passer tout de suite) : la vue se recadre encore
+> quand la dalle est posée, et sous Ritournelle la passe (23 ms) tombait dans ce recadrage.
+> *La règle* : **un juge de fluidité tourne sur une Toile REMPLIE, relue de la sauvegarde ; et ce qu'on ne voit pas ne se peint pas pendant
+> qu'on regarde autre chose.** Juge : **`redteam_pleine.py`** (les COMPTES de rendus pendant le mouvement — ils ne dépendent pas de la charge
+> de la machine — puis les durées, jugées seulement au calme ; rouge sur v144).
+> ⚠ **RESTE OUVERT (Q476)** : sur une Toile presque vide (trois paroles), sous Touffe, une image de 108 à 117 ms au RETRAIT, une passe sur deux
+> (`redteam_evol` 31/32 ces passes-là) : la Toile se repeint entière, le coût est dans le tracé (aucun rappel au-delà de 18 ms). À 25 et 50 paroles
+> le retrait sous Touffe est passé de 34–35 images longues à 5–6. En sombre, Ritournelle et Brouillamini peignent encore lourd à 25–50 paroles.
+> ⚠ **CE MAC EST PARTAGÉ** : une autre session (projet ENTRE) y lance `swift test` et un simulateur iPhone 17 — c'est « le simulateur qui se
+> rallumait » de v144. **On ne l'éteint pas** ; une mesure de cadence attend le calme (`banc_tom.charge()` < 4) ou se déclare « non jugée ».
+> ⚠ **`banc_tom.plante()` (clic scripté sur la tuile) GARDE LE CHICHE après un Chiche** : 46 Chiche sur 50 paroles « Promi ». Pour une Toile de
+> plusieurs natures : **`banc_tom.plante_doigt()`** (le +, puis la pilule de la nature — le vrai chemin).
+> **⚑ §3 — RITOURNELLE : LE CADRAGE D'AVANT C-088 REVIENT TEL QUEL, ET C-088 EST CLOS.** (Tom : « Je préférais presque l'effet arty bien zoomé :
+> remets-le et clôture ce sujet. ») Les cotes de remplissage de v140 à v144 (55 %, 67,5 %, 85 %), le semis constant sous neuf paroles, les
+> cellules vides cachées et le cadrage sur la matière **ne valent plus pour Ritournelle** : sa Toile est faite de ses seules paroles DÈS LA
+> PREMIÈRE, vue entière — le cadrage d'E1 (commit `c8f4571`). Dans le moteur : `_NEUF_TOUJOURS={ritournelle:1}` (une ligne ; tout le code de
+> v140–v144 dépendait de « semis constant », il devient inerte pour elle). **Les onze autres mondes de la famille gardent la règle de v139**
+> (semis constant sous `SEMIS_NEUF_MIN` = 9). Preuve : mêmes graines qu'E1 servie à côté (± 1 pt — E1 lui-même varie d'un point d'une passe à
+> l'autre), écart de pixels dans le bruit d'E1 contre E1 ; planche `planche-v145/PLANCHE-ritournelle-e1-v145.png`. Juge :
+> **`redteam_ritournelle.py` réécrit** (original : `sauvegardes/redteam_ritournelle-avant-v145.py`). ⚠ **À UNE SEULE PAROLE, Ritournelle ne
+> peint RIEN** (une cellule couvre l'écran) : c'était vrai en E1, c'est rendu tel quel, et signalé à Tom (Q480). **On ne revient plus sur ce
+> cadrage sauf si Tom le demande.**
+> ⚠ **CONSÉQUENCE : SOUS RITOURNELLE, DÉPLACER UNE DALLE (C-101) NE TIENT PLUS À MOINS DE NEUF PAROLES** — dans une Toile faite de ses seules paroles les
+> cellules se partagent l'écran et reprennent leur équilibre (`redteam_deplace` 16/18 : les deux contrôles de Ritournelle). À dix paroles, code de
+> v144 : la dalle finit à 97 pt du doigt sous Ritournelle, 34 sous Esquille, 8 sous Pochade — **le juge de v142 ne plantait que trois paroles : il n'a
+> jamais jugé « déplacer » dans un vrai semis neuf.** Non corrigé, signalé à Tom (Q496).
+> **⚑ §6 — À PLUSIEURS : LA RÈGLE DE LA PART (C-115, `lot-V145-PARTS`, `window._parts`).** Quand une parole engage PLUSIEURS personnes, la seconde
+> moitié du trait est divisée en autant de parts que de personnes qui doivent tenir (14 pt entre deux). **Une part tracée est pleine, à la
+> couleur de l'état tenu (la crête `#0B4A2A`) ; une part non tracée est un trait FIN (2,5 pt), continu, dans la teinte de la nature — jamais de
+> pointillés.** La fiche — et sa dalle, sa carte d'Index, son bandeau du Fil — **ne passe à « tenu » qu'à la DERNIÈRE part**. Jusqu'à quatre
+> personnes : l'initiale de chacune sous sa part ; au-delà : « 3 SUR 6 », couché le long du trait. Toucher la seconde moitié du trait ouvre la
+> liste des noms, avec la date de chaque part. **Une parole à une seule personne ne change pas.** La consigne reprend les phrases de v144 :
+> « trace pour tenir » si MA part reste, sinon « à Rachel de tracer sa part » / « à chacun de tracer sa part ». La main fantôme ne paraît à
+> plusieurs que si ma part reste à tracer. **Qui doit tenir (`_parts.tenants`)** : Chiche lancé → ceux à qui on le lance et ceux avec qui on le
+> fait ; Chiche reçu → moi et ceux avec qui on me le lance ; Promi demandée → ceux à qui on la demande ; Promi reçue → celui qui me la promet ;
+> Promi que je fais → moi, même à plusieurs destinataires, même dans un Cercle. Données : **`p.parts = {nom: date ISO}`**.
+> **⚑ PLANTER À PLUSIEURS = UNE SEULE PAROLE** (`who` = les prénoms séparés par `', '`) : la page + en plantait une PAR destinataire.
+> ⚠ Le prototype n'a pas de réseau : **`?parts=1`** permet, dans la liste des noms, de tracer la part d'un autre en touchant son nom.
+> Juge : **`redteam_part.py`** (55 : deux, trois et cinq personnes, tous les ordres, la couleur lue sur l'image, l'Index, la sauvegarde ;
+> `--sonde` 8/11 ; 2/8 sur v144). ⚠ Trois pièges du juge : sous l'onde le canevas est TRANSPARENT (on lit l'alpha, pas une couleur de fond) ; une
+> initiale se trouve juste sous sa part (la fenêtre de lecture reste à ± 7,5 pt de l'axe) ; le geste a besoin de `tenue=380`, comme `redteam_trait`.
+> **⚑ §7 — LA LIGNE « UN MOT… » (C-116, `lot-V145-COMM`, `window._comm`).** *L'état des lieux de v144* : les commentaires existaient (`p.comments`)
+> mais le champ « écris un mot » de la fiche ne répondait pas au toucher, un commentaire s'y superposait à son auteur, la liste n'était
+> affichée nulle part, et une parole reçue « à tenir » ou tenue n'avait aucune ligne. *Posé* : sur toute fiche Promi ou Chiche REÇUE, sur une
+> parole en cours, et dès qu'un commentaire existe — **une ligne en bas de la fiche, toujours visible (342 × 56 à y 692, contour 3 px à l'encre
+> du corps), qui ouvre la saisie au toucher** ; au-dessus, le dernier commentaire sur une ligne ; la ligne touchée, les commentaires se lisent
+> sous le trait, du plus ancien au plus récent, « PRÉNOM · date » puis le texte. **Ni compteur, ni pastille, ni relance (§12).** Le texte
+> « Un mot… » est PROVISOIRE (texte à écrire par Tom). ⚠ **Pas sur la fiche d'un Cercle** (« + Planter dans le Cercle » y tient le bas, C-096).
+> Juge : **`redteam_commentaires.py`** (26 ; `--sonde` 6/26 ; 2/8 sur v144). ⚠ Quatre pièges payés : `#dpMain` (frère suivant, z-index 2)
+> recouvrait la ligne → z-index 3 ; un `display` posé en ligne ne se cache que par la VISIBILITÉ ; le contour prenait la couleur d'état
+> (orange sur « à tenir ») → toujours l'encre du corps (C-053) ; les couleurs d'une fiche se gardent dans une `WeakMap`, jamais sur la parole.
+> **⚑ §4, §5 — TENIR (C-118) ET LE GUIDE (C-094) : DEUX PAGES DE VARIANTES, RIEN N'EST INTÉGRÉ.** (R-D : « design d'abord, jouable sur l'iPhone, Tom
+> choisit ».) **`promi-tenir-variantes.html`** — A « La marée », B « Le fil », C « Le double » ; Promi et Chiche, clair et sombre, ×1 et ×¼ ;
+> la fiche y est REDESSINÉE dans un canevas depuis les cotes relevées sur l'app (`variantes/tenir-donnees.js`, `scratchpad/v145/donnees_tenir.py`)
+> et la vraie dalle du moteur (une image rendue à sa taille). **`promi-guide-variantes.html`** — A « Les nappes », B « La buée », C « Le
+> courant ». *La technique du guide, à garder* : **aucun `backdrop-filter`** ; l'accueil est flouté À L'AVANCE à trois intensités (2,4 · 4,8 ·
+> 9,6 pt) ; une matière (des formes à bord doux) est dessinée à chaque image dans un canevas à la résolution 1 et sert de MASQUE aux trois
+> images : la zone nette est l'ABSENCE de matière, il n'y a donc ni sur-intensité là où deux zones se recouvrent, ni disque plus clair. Au
+> banc WebKit : le dessin coûte 0 à 1 ms par image. Les deux pages envoient leur mesure d'images au Mac (`/mesure`). **L'app joue encore
+> l'instant de v144 et le guide de v144.**
+> **⚑ §8 — CHAMADE AU BANC DE RENDU (C-114), LA CAUSE.** La FORME d'un cœur est gardée par clé et reprise tant que sa taille ne s'écarte pas de
+> 3 % (`_loc`) : le premier rendu qui la demande fixe la taille de référence, les suivants la mettent à l'échelle. Ce que le banc obtenait
+> dépendait donc de ce qui avait été rendu AVANT (la pose précédente, une vignette de fond partie pendant le démarrage) — 2 ou 3 résultats
+> d'une passe à l'autre, alors que les graines, la clé de la Toile, le hasard et la géométrie vive étaient identiques. `window._chaOublie`
+> (porte du moteur pour le banc seul) vide ces mémoires avant chaque pose ; `window._vivantOff` coupe la vie au repos pendant le banc.
+> **Cinq passes de suite : identiques.** La référence de Chamade est REFIGÉE (14 images, elle seule : 11 différaient — Toile ≈ 3 000 pixels,
+> dalles 1 à 3 912 ; les 266 autres images sont au pixel). *Écarté en chemin* : les graines, la vie au repos seule, le budget de coût
+> (`_chCout`), les mondes précédents. ⚠ La PREMIÈRE pose d'une page varie encore quand Chamade est le premier monde posé (un reste du
+> démarrage en temps réel, non nommé) ; le banc ne retient un monde qu'après deux poses identiques. *La règle* : **un cache à tolérance rend
+> un rendu dépendant de son passé — un banc au pixel le vide avant de mesurer.**
+> **C-102 (`redteam_fluide`) : EXPLIQUÉ, NON TRAITÉ.** v144 et v145 passés l'un après l'autre sur le même banc : 4/6 et 4/6 puis 5/6 — ce lot n'y change rien.
+> ① une tâche de 36 à 56 ms à ≈ 2,76 s après le lever, 4 fois sur 20 : un morceau de la pose de la fiche tenue (`_tenirMorceaux`), quand plus rien ne
+> bouge ; ② 0 à 2 images de 21 à 28 ms sur ≈ 6 500 (première image de l'instant, ou passage à « juste après »). `--qui` nomme les tâches. L'instant en
+> trois états sera remplacé par la variante choisie (C-118) : la règle des 20 ms se rejuge à l'intégration.
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v145.py`) : `redteam_ritournelle` (réécrit) ·
+> `redteam_toucher` (Ritournelle : autant de cellules que de paroles) · `redteam_engagement` R5 (la troisième parole tenue est une des miennes :
+> « courir dimanche », lancé à deux, n'est plus tenu par mon seul tracé) · `banc_rendu` (Chamade refigé, `_chaOublie`, `_vivantOff`).
+> ⚠ **Un `<script id="lot-…">` posé avant un `<style>` sans id lui VOLE l'attribution de `redteam_volume`** (208 « volumes nouveaux » : la
+> dette est rangée par lot) : `lot-V145-VERSION` est posé juste avant `lot-TOKENS-css`.
 
 ### ⚑ v144 (12 oct. 2026) — RETOURS DE TOM SUR IPHONE : LA FLUIDITÉ (LA TOILE QUI ÉVOLUE, LA PELOTE SOUS LE DOIGT), LA MAIN SEULEMENT SUR UNE FICHE À TENIR, RITOURNELLE PLUS PRÈS, TENIR PLUS LENT, LE GUIDE. (Décisions Tom.) Ce bloc CORRIGE v143 (le guide, Ritournelle, la main, la trace) et E1 (l'inventaire des gestes), E0 (R6).
 > **Validés par Tom sur iPhone : le partage de la Toile (C-105), la barre (C-106), le trait de 60 pt (C-107), la trace de la Pelote. Q466, Q468, Q470 acceptées.
@@ -2569,6 +2677,9 @@ python3 redteam_couleurs_ref.py # v121 — LES COULEURS SONT CELLES DE v118 (com
                                #   à la place de la seiche). ≈ 15 min, SEUL, simulateur éteint.
 python3 redteam_plein.py       # 75 — v120, LA PELOTE EST PLEINE : alpha 255 en retrait de 4 % de D, deux thèmes, chaque palier, quatre palettes,
                                #   trois densités ; la silhouette n'a pas bougé. Rougit sur app-avant-v120 (36 rouges).
+python3 redteam_pleine.py      # v145 (C-112, RÉCIDIVE) : une Toile de 25 paroles relue de la sauvegarde (banc_tom.toile_pleine) — planter puis retirer : les COMPTES de rendus de vignettes pendant le mouvement (indépendants de la charge), le Fil et l'Index à jour ensuite ; les durées ne sont jugées qu'au calme (charge < 4). --port=8762 : rouge sur v144 (20/29).
+python3 redteam_part.py        # 55 — v145 (C-115) : la règle de la part — 2, 3 et 5 personnes, tous les ordres ; part tracée pleine et verte, non tracée fine à la teinte de la nature (lu sur l'image), tenue seulement à la dernière ; initiales, « k SUR n », la liste au toucher du trait, la sauvegarde, l'Index. --sonde : il rougit. 2/8 sur v144.
+python3 redteam_commentaires.py # 26 — v145 (C-116) : la ligne « Un mot… » sur une fiche reçue, joignable au doigt, la saisie, l'envoi, l'ordre du plus ancien au plus récent avec nom et date, la sauvegarde, aucun compteur ; clair et sombre. --sonde : il rougit. 2/8 sur v144.
 python3 redteam_evol.py        # v144 (C-112, C-113) : la Toile quand une dalle arrive ou part (cinq mondes, planter puis retirer) et la Pelote sous le doigt — le travail de chaque rappel pendant le mouvement (≤ 20 ms), le recadrage qui ne passe plus à chaque image, l'écouteur du doigt qui ne recalcule plus un poil. --mondes=. Rouge sur v143.
 python3 redteam_barre.py       # 7 — v143 (C-106) : cinquante touchers au vrai doigt sur ce qu'on voit de chaque entrée de la barre, chacun ouvre sa page ; les zones voisines ne se chevauchent pas. --n=20. Rouge sur v142 (STUDIO 17 sur 25).
 python3 redteam_trait.py       # 11 — v143 (C-107) : un trait ne compte qu'à 60 pt — 30 pt refusé, doigt posé refusé, 70 pt lent et 70 pt rapide acceptés, pour tenir et pour planter ; la main montre plus de 60 pt. Rouge sur v142.

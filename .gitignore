@@ -88,3 +88,12 @@ planche-v141/
 planche-v142/
 planche-v143/
 planche-v144/
+
+# ── v145 · ce que les appareils envoient avec ?mesure=1 (serveur.py, /mesure) ─────────
+/mesures/
+planche-v145/
+# v145 · copies de commits anciens servies à côté (E1, v144) et extraction régénérable
+/scratchpad/v145/ref-*/
+/scratchpad/v145/extrait/
+/scratchpad/v145/etats/
+/scratchpad/v145/etats2/

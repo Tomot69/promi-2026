@@ -1,0 +1,12 @@
+   passe 18 : 325 images · la plus longue 26.7 ms à 61 ms · au-delà de 20 ms : [(61, 26.7)] · « referme » à 14 ms, « après » à 2036 ms
+   passe 20 : 324 images · la plus longue 21.3 ms à 42 ms · au-delà de 20 ms : [(43, 21.3)] · « referme » à 16 ms, « après » à 2036 ms
+1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6497 images) KO  2 image(s) au-delà · la plus longue 26.7 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               OK  p50 3.5 · p95 5.6 ms
+3 · la durée : « juste après » paraît 2 000 ms (± 80) après « le trait se referme », et l'app déclare cette valeur OK  de 2014 à 2026 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  20 sur 20
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images KO  la plus longue : 53.3 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 58.3 ms — les passes de tout le document et la pose complète)
+
+4 / 6
+KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6497 images) · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images

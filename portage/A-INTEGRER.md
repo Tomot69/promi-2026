@@ -92,3 +92,24 @@
 - **Partage** : une parole seule = une colonne, case à 56 % de la largeur, centre à 44 % de la hauteur.
 - **Accueil** : bouton recadrer à quatre coins, 12 pt au-dessus de la barre.
 
+## v145 (13 oct. 2026)
+
+- **La part de chacun (C-115)** — reporté dans SPEC-DONNEES §1.2, §1.8, §12 et SPEC-ECRANS §4 (« Fiche à plusieurs »). À reporter encore :
+  SPEC-GESTE (tracer SA part est le même geste que tenir : 60 pt d'avancée ; il ne tient la parole qu'à la dernière part), TESTS
+  (`redteam_part.py` : 55 contrôles, tous les ordres à 2, 3 et 5 personnes), TEXTES.json (les consignes « à X de tracer sa part » /
+  « à chacun de tracer sa part » existent déjà depuis v144 ; le compte « k SUR n » est neuf).
+- **Une parole à plusieurs destinataires est une seule parole** — la page + n'en plante plus une par personne (SPEC-DONNEES §1.8).
+- **La ligne « Un mot… » (C-116)** — reporté dans SPEC-DONNEES §1.9 et SPEC-ECRANS §4. TEXTES : « Un mot… » est PROVISOIRE (texte à écrire
+  par Tom, QUESTIONS.md). TESTS : `redteam_commentaires.py`.
+- **Ritournelle (C-088, clos)** — sa Toile est faite de ses seules paroles dès la première (SPEC-RENDU : `_NEUF_TOUJOURS={ritournelle:1}`) ;
+  les onze autres mondes de la famille gardent le semis constant sous neuf paroles.
+- **La marque de version (C-117)** — propre au prototype (`serveur.py`, `lot-V145-VERSION`) ; dans l'app Swift, le numéro de build d'Xcode en
+  tient lieu. **Ne pas porter** `?mesure=1` ni l'envoi des mesures.
+- **Ce qu'on ne voit pas ne se peint pas pendant qu'on regarde autre chose (C-112)** — règle de rendu à garder en Swift : les vignettes d'une
+  liste fermée ne se recalculent pas pendant un mouvement de la Toile.
+- **Chamade (C-114)** — la forme d'un cœur est gardée et reprise à 3 % près de sa taille : le rendu dépend de ce qui a été rendu avant. Pour
+  comparer au pixel, le banc vide ce cache avant chaque pose (`window._chaOublie`). En Swift : calculer la forme à sa taille exacte, ou vider
+  le cache avant un rendu de référence.
+- **Tenir (C-118) et le guide (C-094)** — NON INTÉGRÉS : deux pages de variantes (`promi-tenir-variantes.html`, `promi-guide-variantes.html`)
+  attendent le choix de Tom. SPEC-ECRANS §5 (l'instant) et la section du guide décrivent encore v144.
+

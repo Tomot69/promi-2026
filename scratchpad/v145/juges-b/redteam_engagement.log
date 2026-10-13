@@ -1,0 +1,25 @@
+     R1 · liste interdite : tâche · to-do · objectif · valider · urgent · score · brouillon · Orbite · la sphère · Belle parole · En replanter un · Dire un mot · badge · série · streak · niveau · classement · points (récompense) · bravo · félicitations · record · échéance
+     R1 · « échéance » : l'app ne l'affiche sur aucun écran parcouru → il RESTE dans la liste (A4)
+OK  R1 · lexique : aucun mot interdit (34 écrans, 823 textes, 8 chaîne(s) du chantier) 
+OK  R1 · `TEXTES_ENGAGEMENT` existe (un seul objet, règle 6)           8 chaîne(s)
+     A3 · exempté (impératif voulu par Tom, v143) : guide.studio : « Choisis d’abord le monde qui te ressemble, au Studio. »
+OK  R1 · A3 : aucun texte du chantier à l'impératif (8 chaîne(s))      
+OK  R2 · absence et temps : rien dans `TEXTES_ENGAGEMENT` (8 chaîne(s)) 
+OK  R3 · aucun chiffre sur la Pelote (dans son cadre)                  dans le cadre : [] · cadre [296, 296]
+     R3 · à savoir : ailleurs sur l'écran de l'Aura, des textes portent un chiffre → ['5', '5', '1']
+--  R4 · invariance du moment « tenir »                                INACTIF AVANT E3
+OK  R7 · âge invisible (Toile : 8 textes ; fiche à tenir : 22)         
+KO  R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche tenus 2/3 · clés nouvelles : ['geste_vu_chiche'] · hors liste : []
+OK  A2 · armé : la main fantôme est à l'écran sur la fiche à tenir, elle porte `data-eng` main True · 2 élément(s) `data-eng`
+OK  A2 · aucune transparence ni fondu (2 élément(s) `data-eng`, tracés compris) 
+OK  aucune erreur de page (écrans parcourus)                           []
+OK  R6 · EXCEPTION NOMMÉE (Tom, v144) : l'onboarding et le guide n'ont plus de « Plus tard » — aucun à aucune étape, le compte garde le sien R6 OK · exception nommée (Tom, v144 : « le parcours est court, on ne le passe pas ») · exception déclarée · 6 étapes · avec « Plus tard » : aucune
+     R6 · prénom         aucun « Plus tard »
+     R6 · prénom saisi   aucun « Plus tard »
+     R6 · parole         aucun « Plus tard »
+     R6 · trait          aucun « Plus tard »
+     R6 · fin            aucun « Plus tard »
+     R6 · compte         « Plus tard »
+
+redteam_engagement : 10/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+ROUGE : R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche

@@ -1,0 +1,45 @@
+OK  · [encre] la Toile porte 25 paroles, la plantation en ajoute une  25 → 26
+KO  A · [encre, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  23 rendu(s) de dalle (783 ms en tout) · 16 passage(s) de vignettes qui rendent · mouvement fini à 1660 ms
+KO  B · [encre, planter] la passe de teinte du Fil ne tourne pas (Fil fermé)  1 appel(s)
+··  D · [encre, planter] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 84.0 ms à 857 ms (minuteur 0 |  · function(){ try{ if(!_r || _r===document || )
+··  E · [encre, planter] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 16 image(s) au-delà de 33,4 ms (la plus longue 92 ms) · 17 au-delà de 20 ms sur 61
+OK  C · [encre] le Fil, ouvert ensuite, porte la parole plantée, sa dalle peinte  {'ouvert': True, 'la': True, 'bandeau': True, 'canevas': True, 'peint': 14005}
+OK  C · [encre] l'Index, ouvert ensuite, porte la parole plantée  {'n': 26, 'la': True}
+OK  · [encre] le retrait rend 25 paroles  25
+OK  A · [encre, retirer] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1600 ms
+KO  B · [encre, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé)  1 appel(s)
+··  D · [encre, retirer] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 5.0 ms à 1509 ms (minuteur 1500 |  · function(){ (window._apresMouvement||func)
+··  E · [encre, retirer] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 0 image(s) au-delà de 33,4 ms (la plus longue 21 ms) · 1 au-delà de 20 ms sur 96
+OK  aucune erreur de page [encre]  []
+    (charge de la machine : 4.2 → 4.3 → 4.2 → 4.5)
+OK  · [touffe] la Toile porte 25 paroles, la plantation en ajoute une  25 → 26
+KO  A · [touffe, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  12 rendu(s) de dalle (909 ms en tout) · 12 passage(s) de vignettes qui rendent · mouvement fini à 1750 ms
+KO  B · [touffe, planter] la passe de teinte du Fil ne tourne pas (Fil fermé)  1 appel(s)
+··  D · [touffe, planter] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 116.0 ms à 848 ms (minuteur 0 |  · function(){ try{ if(!_r || _r===document || )
+··  E · [touffe, planter] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 12 image(s) au-delà de 33,4 ms (la plus longue 143 ms) · 16 au-delà de 20 ms sur 58
+OK  C · [touffe] le Fil, ouvert ensuite, porte la parole plantée, sa dalle peinte  {'ouvert': True, 'la': True, 'bandeau': True, 'canevas': True, 'peint': 14005}
+OK  C · [touffe] l'Index, ouvert ensuite, porte la parole plantée  {'n': 26, 'la': True}
+OK  · [touffe] le retrait rend 25 paroles  25
+OK  A · [touffe, retirer] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1600 ms
+KO  B · [touffe, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé)  1 appel(s)
+··  D · [touffe, retirer] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 8.0 ms à 1508 ms (minuteur 1500 |  · function(){ (window._apresMouvement||func)
+··  E · [touffe, retirer] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 0 image(s) au-delà de 33,4 ms (la plus longue 26 ms) · 3 au-delà de 20 ms sur 95
+OK  aucune erreur de page [touffe]  []
+    (charge de la machine : 4.5 → 4.0 → 4.0 → 4.0)
+OK  · [ritournelle] la Toile porte 25 paroles, la plantation en ajoute une  25 → 26
+KO  A · [ritournelle, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  78 rendu(s) de dalle (1801 ms en tout) · 39 passage(s) de vignettes qui rendent · mouvement fini à 3226 ms
+KO  B · [ritournelle, planter] la passe de teinte du Fil ne tourne pas (Fil fermé)  1 appel(s)
+··  D · [ritournelle, planter] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement  NON JUGÉ, machine chargée · le plus long 58.0 ms à 1242 ms (minuteur 0 |  · function(){ try{ if(!_r || _r===document || )
+··  E · [ritournelle, planter] au plus 3 images au-delà de 33.4 ms pendant le mouvement  NON JUGÉ, machine chargée · 40 image(s) au-delà de 33,4 ms (la plus longue 86 ms) · 43 au-delà de 20 ms sur 89
+OK  C · [ritournelle] le Fil, ouvert ensuite, porte la parole plantée, sa dalle peinte  {'ouvert': True, 'la': True, 'bandeau': True, 'canevas': True, 'peint': 14005}
+OK  C · [ritournelle] l'Index, ouvert ensuite, porte la parole plantée  {'n': 26, 'la': True}
+OK  · [ritournelle] le retrait rend 25 paroles  25
+OK  A · [ritournelle, retirer] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend  0 rendu(s) de dalle (0 ms en tout) · 0 passage(s) de vignettes qui rendent · mouvement fini à 1935 ms
+KO  B · [ritournelle, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé)  1 appel(s)
+OK  D · [ritournelle, retirer] aucun rappel hors du moteur au-delà de 20 ms pendant le mouvement   le plus long 7.0 ms à 1660 ms (minuteur 140 | tranche · function tranche(){ var t0=performa)
+OK  E · [ritournelle, retirer] au plus 3 images au-delà de 33.4 ms pendant le mouvement  0 image(s) au-delà de 33,4 ms (la plus longue 29 ms) · 7 au-delà de 20 ms sur 114
+OK  aucune erreur de page [ritournelle]  []
+    (charge de la machine : 4.0 → 4.1 → 3.9 → 3.6)
+
+20 / 29 · 10 contrôle(s) de durée NON JUGÉS (machine chargée) : à repasser au calme
+KO : A · [encre, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend · B · [encre, planter] la passe de teinte du Fil ne tourne pas (Fil fermé) · B · [encre, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé) · A · [touffe, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend · B · [touffe, planter] la passe de teinte du Fil ne tourne pas (Fil fermé) · B · [touffe, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé) · A · [ritournelle, planter] pendant le mouvement, aucun rendu de dalle hors du moteur, aucun passage de vignettes qui rend · B · [ritournelle, planter] la passe de teinte du Fil ne tourne pas (Fil fermé) · B · [ritournelle, retirer] la passe de teinte du Fil ne tourne pas (Fil fermé)

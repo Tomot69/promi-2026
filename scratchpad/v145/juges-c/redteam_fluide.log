@@ -1,0 +1,16 @@
+   QUI passe 1 · tâche de 56 ms à 2757 ms : TimerFire 56 ms · FunctionCall 52 ms ?@20083
+   QUI passe 3 · tâche de 42 ms à 2761 ms : TimerFire 42 ms · FunctionCall 37 ms ?@20083
+   QUI passe 5 · tâche de 20 ms à 2024 ms : FireAnimationFrame 16 ms · FunctionCall 13 ms img@20107 · UpdateLayoutTree 5 ms
+   QUI passe 12 · tâche de 40 ms à 2757 ms : TimerFire 40 ms · FunctionCall 36 ms ?@20083
+   QUI passe 14 · tâche de 51 ms à 2763 ms : TimerFire 51 ms · FunctionCall 46 ms ?@20083
+   QUI passe 20 · tâche de 20 ms à 2024 ms : FireAnimationFrame 16 ms · FunctionCall 12 ms img@20107 · UpdateLayoutTree 5 ms
+1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6494 images) OK  0 image(s) au-delà · la plus longue 18.7 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               OK  p50 3.4 · p95 5.6 ms
+3 · la durée : « juste après » paraît 2 000 ms (± 80) après « le trait se referme », et l'app déclare cette valeur OK  de 2012 à 2027 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  20 sur 20
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images KO  la plus longue : 56.0 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 56.3 ms — les passes de tout le document et la pose complète)
+
+5 / 6
+KO : 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images

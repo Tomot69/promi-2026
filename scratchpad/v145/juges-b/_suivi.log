@@ -1,0 +1,41 @@
+=== redteam_part · 03:53:12 · charge { 2.09 2.12 3.02 }
+   → OK  aucune erreur de page  []  55 / 55 
+=== redteam_commentaires · 03:54:57 · charge { 3.81 2.73 3.15 }
+   → OK  aucune erreur de page [sombre]  []  26 / 26 
+=== redteam_gens · 03:56:43 · charge { 4.53 3.38 3.36 }
+   → [sombre] Fiche · Peaufiner · À QUI · « + ajouter quelqu'un » visible et vivant (déborde : True) OK    38/38 
+=== redteam_phrase_fiche · 04:00:03 · charge { 4.11 3.85 3.57 }
+   →   ✅ [dark] élision : aucune erreur de page — []  redteam_phrase_fiche : 74/74 
+=== releve-S1-fiches · 04:04:19 · charge { 3.84 4.20 3.81 }
+   →   ✗ COL  light chiche_duo      ['dptQui', 'dptTitre', 342, 8]    ❌  38 écarts restants. 
+=== redteam_ecrans · 04:04:44 · charge { 4.20 4.26 3.85 }
+   → aucune erreur JS [clair]                       OK    152/152 
+=== redteam_vide · 04:06:14 · charge { 4.04 4.16 3.84 }
+   → aucune erreur JS                               OK    61/61 
+=== redteam_lexique · 04:10:05 · charge { 4.59 4.58 4.10 }
+   →    · point i  redteam_lexique : 3/3 
+=== redteam_joignable · 04:15:06 · charge { 3.75 4.13 4.04 }
+   → aucun gestionnaire en attribut on…=""                      OK  0  5 / 5 
+=== redteam_trait · 04:17:21 · charge { 3.93 4.23 4.10 }
+   → OK  aucune erreur de page  []  11/11 
+=== redteam_engagement · 04:18:41 · charge { 3.45 4.00 4.02 }
+   →  redteam_engagement : 10/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir » ROUGE : R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche 
+=== redteam_decisions · 04:20:37 · charge { 3.51 3.96 4.00 }
+   → Peaufiner [dark] « Supprimer ce Promi »      décidé #F7F0DE  rendu #F7F0DE  OK   (v132 (C-053) : jamais l'orange d'état)  89 / 89 
+=== redteam_volume · 04:21:57 · charge { 4.18 4.10 4.05 }
+   →   ✗ NOUVEAU VOLUME : app.html | lot-V145-VERSION | ;isolation:isolate;background:linear-gradient(152deg,var(--c-bleu46) 0   ✗ NOUVEAU VOLUME : app.html | lot-V145-VERSION | r:var(--c-blanc100)!important;text-shadow:0 1px 10px rgba(var(--c-mauv ❌ 208 volume(s) nouveau(x) 
+=== redteam_registre · 04:22:02 · charge { 4.41 4.14 4.07 }
+   →  6 / 6 chantiers non validés : 112 
+=== redteam_tokens · 04:22:07 · charge { 4.06 4.08 4.04 }
+   →   ✓ l'extension Swift porte le niveau « libelle »  46/46 
+=== redteam_reactif · 04:22:12 · charge { 4.13 4.09 4.05 }
+   →   ✅ aucune erreur de page  redteam_reactif : 31/31 
+=== redteam_mesure · 04:23:27 · charge { 3.95 4.00 4.01 }
+   → OK  [dark] la page n'a pas défilé  0 / 0  10 / 10 
+=== redteam_flash · 04:24:27 · charge { 3.17 3.79 3.94 }
+   →   ✅ C2 · planter nuee : la page + coupe et ne se remontre pas (fermée à 1893 ms)  32/32 
+=== redteam_flash_etat · 04:26:28 · charge { 2.90 3.55 3.82 }
+   → aucune erreur de page                                                      OK    10 / 10 
+=== redteam_air · 04:29:38 · charge { 3.28 3.49 3.73 }
+   →    fiche en cours [light]     #dptQuand«EN COURS · DEPUIS LE»    → .dpm-rep«écris un mot»    Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer 
+=== FIN · 04:34:54

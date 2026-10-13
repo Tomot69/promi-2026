@@ -1,0 +1,507 @@
+[
+{
+"charge": [
+2.9,
+4.7
+],
+"monde": "encre",
+"n": 25,
+"sombre": true,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 3,
+"pire": 60
+},
+"planter": {
+"images": 145,
+"sup20": 28,
+"sup33": 26,
+"pire": 84,
+"exces": 1122,
+"moteur_n": 15,
+"moteur_p50": 3,
+"moteur_p95": 8,
+"moteur_max": 8,
+"moteur_somme": 53,
+"autre_pire": 70,
+"autre_quoi": "minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.contains(_r)) window.",
+"autre_t": 1137,
+"autres": [
+[
+70,
+1137,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+68,
+713,
+"image |  · function(){if(window._toileDefer){var _q=window._toileDefer"
+],
+[
+66,
+856,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+60,
+1064,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+58,
+792,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+57,
+949,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+]
+]
+},
+"retirer": {
+"images": 131,
+"sup20": 25,
+"sup33": 25,
+"pire": 209,
+"exces": 1323,
+"moteur_n": 10,
+"moteur_p50": 3,
+"moteur_p95": 4,
+"moteur_max": 4,
+"moteur_somme": 31,
+"autre_pire": 141,
+"autre_quoi": "minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.contains(_r)) window.",
+"autre_t": 120,
+"autres": [
+[
+141,
+120,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+91,
+538,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+73,
+1690,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+70,
+1618,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+70,
+786,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+69,
+930,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+]
+]
+},
+"erreurs": []
+},
+{
+"charge": [
+4.4,
+4.3
+],
+"monde": "touffe",
+"n": 25,
+"sombre": true,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 4,
+"pire": 84
+},
+"planter": {
+"images": 74,
+"sup20": 28,
+"sup33": 27,
+"pire": 150,
+"exces": 2333,
+"moteur_n": 12,
+"moteur_p50": 3,
+"moteur_p95": 10,
+"moteur_max": 10,
+"moteur_somme": 50,
+"autre_pire": 136,
+"autre_quoi": "minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.contains(_r)) window.",
+"autre_t": 1222,
+"autres": [
+[
+136,
+1222,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+123,
+814,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+121,
+1935,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+121,
+1086,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+115,
+1498,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+109,
+3116,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+]
+]
+},
+"retirer": {
+"images": 206,
+"sup20": 5,
+"sup33": 1,
+"pire": 36,
+"exces": 70,
+"moteur_n": 47,
+"moteur_p50": 4,
+"moteur_p95": 5,
+"moteur_max": 8,
+"moteur_somme": 186,
+"autre_pire": 25,
+"autre_quoi": "minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de nature prennent la t",
+"autre_t": 105,
+"autres": [
+[
+25,
+105,
+"minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de "
+],
+[
+19,
+1688,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"erreurs": []
+},
+{
+"charge": [
+4.3,
+3.8
+],
+"monde": "mosaique",
+"n": 25,
+"sombre": true,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 4,
+"pire": 59
+},
+"planter": {
+"images": 158,
+"sup20": 29,
+"sup33": 24,
+"pire": 81,
+"exces": 939,
+"moteur_n": 16,
+"moteur_p50": 6,
+"moteur_p95": 11,
+"moteur_max": 11,
+"moteur_somme": 99,
+"autre_pire": 54,
+"autre_quoi": "minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.contains(_r)) window.",
+"autre_t": 1432,
+"autres": [
+[
+54,
+1432,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+52,
+1613,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+49,
+1144,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+48,
+1871,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+48,
+1013,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+48,
+769,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+]
+]
+},
+"retirer": {
+"images": 160,
+"sup20": 27,
+"sup33": 24,
+"pire": 67,
+"exces": 885,
+"moteur_n": 15,
+"moteur_p50": 5,
+"moteur_p95": 7,
+"moteur_max": 7,
+"moteur_somme": 81,
+"autre_pire": 59,
+"autre_quoi": "minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.contains(_r)) window.",
+"autre_t": 727,
+"autres": [
+[
+59,
+727,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+55,
+345,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+55,
+136,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+50,
+793,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+50,
+76,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+49,
+1096,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+]
+]
+},
+"erreurs": []
+},
+{
+"charge": [
+3.8,
+4.1
+],
+"monde": "ritournelle",
+"n": 25,
+"sombre": true,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 3,
+"pire": 238
+},
+"planter": {
+"images": 99,
+"sup20": 48,
+"sup33": 45,
+"pire": 92,
+"exces": 1977,
+"moteur_n": 50,
+"moteur_p50": 5,
+"moteur_p95": 11,
+"moteur_max": 13,
+"moteur_somme": 291,
+"autre_pire": 60,
+"autre_quoi": "minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.contains(_r)) window.",
+"autre_t": 2794,
+"autres": [
+[
+60,
+2794,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+56,
+944,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+55,
+3212,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+55,
+783,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+54,
+2621,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+54,
+1307,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+]
+]
+},
+"retirer": {
+"images": 203,
+"sup20": 8,
+"sup33": 2,
+"pire": 51,
+"exces": 114,
+"moteur_n": 110,
+"moteur_p50": 6,
+"moteur_p95": 13,
+"moteur_max": 15,
+"moteur_somme": 840,
+"autre_pire": 22,
+"autre_quoi": "minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de nature prennent la t",
+"autre_t": 123,
+"autres": [
+[
+22,
+123,
+"minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de "
+],
+[
+19,
+2243,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+]
+]
+},
+"erreurs": []
+},
+{
+"charge": [
+4.1,
+4.4
+],
+"monde": "brouillamini",
+"n": 25,
+"sombre": true,
+"ok": [
+25,
+26,
+25
+],
+"repos": {
+"sup20": 4,
+"pire": 66
+},
+"planter": {
+"images": 138,
+"sup20": 38,
+"sup33": 33,
+"pire": 94,
+"exces": 1315,
+"moteur_n": 38,
+"moteur_p50": 5,
+"moteur_p95": 16,
+"moteur_max": 17,
+"moteur_somme": 224,
+"autre_pire": 52,
+"autre_quoi": "minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.contains(_r)) window.",
+"autre_t": 2378,
+"autres": [
+[
+52,
+2378,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+51,
+1445,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+48,
+1169,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+47,
+726,
+"image |  · function(){if(window._toileDefer){var _q=window._toileDefer"
+],
+[
+46,
+2112,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+],
+[
+45,
+1327,
+"minuteur 0 |  · function(){ try{ if(!_r || _r===document || document.c"
+]
+]
+},
+"retirer": {
+"images": 206,
+"sup20": 5,
+"sup33": 1,
+"pire": 41,
+"exces": 64,
+"moteur_n": 98,
+"moteur_p50": 6,
+"moteur_p95": 9,
+"moteur_max": 9,
+"moteur_somme": 575,
+"autre_pire": 27,
+"autre_quoi": "image | att · function att(){ if(window._evol && window._evol() && window._toileVue && (wi",
+"autre_t": 1966,
+"autres": [
+[
+27,
+1966,
+"image | att · function att(){ if(window._evol && window._evol() && win"
+],
+[
+20,
+103,
+"minuteur 80 |  · function(){try{ /* seules les bandes SANS couleur de "
+]
+]
+},
+"erreurs": []
+}
+]

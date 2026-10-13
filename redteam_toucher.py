@@ -89,7 +89,12 @@ with sync_playwright() as p:
             boite=[min(xs),max(xs),min(ys),max(ys)] if xs else None; part=100.0*nb*4/(390*844.0)
             entier=bool(boite) and boite[0]>=4 and boite[1]<=385 and boite[2]>=110 and boite[3]<=700
             pres=(n!=1) or part>=6.0
-            ok('Ritournelle, %d parole(s) : la matière des dalles est entière à l\'écran (entre le plateau et la barre), vue de près, et la Toile compte au moins neuf cellules'%n, len(o['G'])==n and entier and pres and part<50 and o['total']>=9, '%d dalle(s), %d cellule(s) ; la matière des paroles tient dans %s ; elle couvre %.0f %% de l\'écran'%(len(o['G']),o['total'],boite,part))
+            # ⚑ v145 (Tom, 13 oct. 2026, C-088 — CLOS) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_toucher-avant-v145.py,
+            # « la matière des dalles est entière à l'écran, vue de près, et la Toile compte au moins neuf cellules »). La décision qui le remplace :
+            # « Je préférais presque l'effet arty bien zoomé : remets-le et clôture ce sujet » — sous Ritournelle la Toile est faite de ses seules
+            # paroles dès la première (le cadrage d'E1) : autant de cellules que de paroles, aucune cellule vide. Le cadrage lui-même est jugé par
+            # redteam_ritournelle.py ; ici on vérifie seulement que l'état d'un compte qui débute est bien celui-là.
+            ok('Ritournelle, %d parole(s) : la Toile n\'a que ses paroles (autant de cellules que de paroles — le cadrage d\'avant C-088, v145)'%n, o['total']==n, '%d cellule(s) pour %d parole(s)'%(o['total'],n))
             c2.close()
     b.close()
     if not sel or 'ritournelle' in sel:
