@@ -827,7 +827,14 @@ function creerMondes(env) {
      en train de pousser. Tout est tiré de la clé de la Toile et du numéro de la transition : jamais de hasard.
      Rien n'est gardé d'une image à l'autre : le moteur tient le moment (`env.trans`), la géométrie se recalcule. */
   var RIT_PULL = 460, RIT_TAU = 260, RIT_PER = 760, RIT_LAG = 85;
-  var RIT_BANDE = 0.34, RIT_MIN = 2, RIT_MAX = 5, RIT_PART = 0.34;   // v63 : une coulée occupe de 66 % à 100 % de sa cellule   // v63 : la largeur d'une strate, en unité de matière ; bornes du nombre de strates
+  var RIT_BANDE = 0.34, RIT_MIN = 2, RIT_MAX = 5, RIT_PART = 0.34;
+  var RIT_CADRE = [-0.015, 0.105, 1.015, 0.848];   /* la zone visible (plateau → barre) prolongée de 6 pt sous le plateau, de 6 pt sous la barre et de 6 pt au-delà des bords */
+  /* v146 (C-088) — « les dalles de paroles couvrent au moins 75 % de l'écran » : une coulée occupait de 66 à 100 % de sa cellule (RIT_PART, v63) — avec
+     la coulée bornée par le cadre, la zone n'était couverte qu'à 69–72 % dès cinq paroles. Sur la Toile, jusqu'à neuf paroles, la part ne descend plus
+     que jusqu'à 90 % ; ensuite elle s'ouvre de 2,4 points par parole et retrouve 66 % à dix-neuf (aucun saut d'une parole à la suivante).
+     Étalonné (scratchpad/v146/rit_cal.py, 1 à 15 paroles) : de 1 à 9, 89 à 100 % de chaque coulée à l'écran, 81 à 90 % de la zone couverte ; de 10 à 15,
+     84 à 88 % et 76 à 85 %. */
+  function _ritPart(n) { var a = window._ritPartMin != null ? window._ritPartMin : 0.10; return n <= 9 ? a : Math.min(RIT_PART, a + (n - 9) * (RIT_PART - a) / 10); }   /* v146 (C-088) : le cadre des coulées sur la Toile, en fraction de W et de H (étalonné, voir Rrit) */   // v63 : une coulée occupe de 66 % à 100 % de sa cellule   // v63 : la largeur d'une strate, en unité de matière ; bornes du nombre de strates
   function _ritA(t) {
     if (t <= 0) return 0;
     if (t < RIT_PULL) { var u = 1 - t / RIT_PULL; return 1 - u * u * u; }
@@ -852,7 +859,16 @@ function creerMondes(env) {
     var ix = _idx(), P = ix.P, NA = 144;
     if (!P.length) return;
     var sp = _uGlobal(ix) * SP_U, RMAX = sp * 2.4;
-    if (!env.trans && env.cible == null && env.vive) window._ritComp = [];
+    /* ⚑ v146 (Tom, 14 oct. 2026, C-088 rouvert) — « À 1 dalle, la Toile est vide, il y a juste un texte qui flotte. À 3 dalles, on ne voit même pas
+       10 % de chaque dalle. » Mesuré (scratchpad/v146/rit_mesure.py, vrai chemin) : de 2 à 12 paroles, 3 à 40 % de chaque coulée à l'écran — sur une
+       Toile faite de ses seules paroles, les cellules du bord ne sont bornées que par RMAX (2,4 écarts) : leurs coulées partent loin hors de l'écran.
+       Et une parole seule n'a aucune voisine : sa coulée n'était pas peinte du tout (`if (!vois.length) continue`).
+       Sur la Toile (pas une dalle seule), chaque coulée bute maintenant contre un CADRE : la zone visible, prolongée un peu sous le plateau et
+       sous la barre (`RIT_CADRE`, en fraction de la Toile) — elle s'y arrondit comme une dalle seule contre ses bords (v34). Le dessin des
+       coulées (strates, harmoniques, part de la cellule) ne change pas. */
+    var CADRE = (env.cible == null && env.W && env.H) ? (window._ritCadre || RIT_CADRE) : null, CX0 = 0, CY0 = 0, CX1 = 0, CY1 = 0;
+    if (CADRE) { CX0 = env.W * CADRE[0]; CY0 = env.H * CADRE[1]; CX1 = env.W * CADRE[2]; CY1 = env.H * CADRE[3]; RMAX = Math.max(RMAX, Math.hypot(CX1 - CX0, CY1 - CY0)); }
+    if (!env.trans && env.cible == null && env.vive) { window._ritComp = []; window._ritFormes = []; }   /* v146 (C-088) : les contours des coulées, publiés (un juge les lit) */
     /* ⚑ v142 (Tom, 11 oct. 2026, C-088) — sous neuf paroles, on ne montre que les dalles et QUELQUES cellules vides (aucune jusqu'à trois
        paroles) : les plus proches des paroles. Les autres ne sont pas peintes — elles bornent toujours les coulées (le semis ne change pas). */
     var CACH = (env.cible == null && env.vive && !env.trans) ? (env.videsCaches || null) : null;
@@ -882,7 +898,7 @@ function creerMondes(env) {
       if (VUS && p.s.kind === 'gray' && VUS.indexOf(p.s) < 0) continue;   /* v142 : une cellule vide qu'on ne montre pas */
       if (CACH && p.s.kind === 'gray' && CACH.indexOf(p.s) >= 0) continue;   /* v143 : une cellule vide qui tiendrait entière dans la zone, jusqu'à trois paroles */
       if (p.x < x0 - RMAX || p.x > x1 + RMAX || p.y < y0 - RMAX || p.y > y1 + RMAX) continue;
-      var vois = ix.near(p, 10); if (!vois.length) continue;
+      var vois = ix.near(p, 10); if (!vois.length && !CADRE) continue;
       var HD = [];
       for (var v = 0; v < vois.length; v++) {
         var q = vois[v].p, dq = vois[v].d; if (dq <= 0) continue;
@@ -898,6 +914,7 @@ function creerMondes(env) {
       // v34 : une dalle SEULE bute aussi contre les bords de la Toile — sa coulée s'y arrondit au lieu d'être coupée net
       // au bord du canevas (vu sur « + Nuée »). Sur la Toile, rien ne change : c'est l'écran qui la rogne.
       if (env.cible != null && env.bords) { var BT = env.bords; HD.push(-1, 0, p.x - BT[0], 1, 0, BT[2] - p.x, 0, -1, p.y - BT[1], 0, 1, BT[3] - p.y); }
+      if (CADRE) HD.push(-1, 0, p.x - CX0, 1, 0, CX1 - p.x, 0, -1, p.y - CY0, 0, 1, CY1 - p.y);   /* v146 : le cadre de la Toile — une graine posée hors du cadre (sous la barre) garde sa coulée DANS le cadre, là où sa cellule y entre */
       // rayon de la cellule depuis un point (ox, oy), dans la direction a
       var ray = function (ox, oy, ca, sa) {
         var r = RMAX, ex = ox - p.x, ey = oy - p.y;
@@ -939,7 +956,7 @@ function creerMondes(env) {
          centre en grandissant quand la coulée grandit) : rien ne saute pendant une plantation. */
       /* la PART de sa cellule qu'occupe la coulée, tirée de sa clé : grandir les POIDS du moteur rapprochait les dalles (mesuré : 15
          paires à moins de 40 px à 40 paroles, contre 7) ; déborder de la cellule serait coupé net sur la fiche (dalle contenue). */
-      var pk = 1 - RIT_PART * Math.pow(_lcg(p.k ^ 0x51e)(), 1.3); for (a = 0; a < NA; a++) sm[a] *= pk;
+      var pk = 1 - (CADRE ? _ritPart(P.length) : RIT_PART) * Math.pow(_lcg(p.k ^ 0x51e)(), 1.3); for (a = 0; a < NA; a++) sm[a] *= pk;   /* v146 : sur la Toile, la part se resserre tant qu'il y a peu de paroles (voir _ritPart) */
       var rmoy = 0; for (a = 0; a < NA; a++) rmoy += sm[a]; rmoy /= NA;
       var uB = (typeof env.uMat === 'number' && env.uMat > 0 ? env.uMat : sp) * RIT_BANDE;
       rings = rmoy / uB + (rj - 0.5); rings = rings < RIT_MIN ? RIT_MIN : rings > RIT_MAX ? RIT_MAX : rings;
@@ -953,6 +970,7 @@ function creerMondes(env) {
       if (BT2 && p.s.kind !== 'gray' && p.s.part == null) { var bx0 = 1e9, by0 = 1e9, bx1 = -1e9, by1 = -1e9;
         for (a = 0; a < NA; a++) { var qx = cx + cs[a] * sm[a], qy = cy + sn[a] * sm[a]; if (qx < bx0) bx0 = qx; if (qx > bx1) bx1 = qx; if (qy < by0) by0 = qy; if (qy > by1) by1 = qy; }
         BT2.push({ s: p.s, sx: p.x, sy: p.y, x0: bx0, y0: by0, x1: bx1, y1: by1 }); }
+      if (window._ritFormes && !FG && env.cible == null && !env.trans && env.vive && p.s.kind !== 'gray' && p.s.part == null) { var PF = []; for (a = 0; a < NA; a += 3) PF.push(+(cx + cs[a] * sm[a]).toFixed(1), +(cy + sn[a] * sm[a]).toFixed(1)); window._ritFormes.push({ pid: p.s.pid, pts: PF }); }
       var RP = _rampe(p.s, now);
       // v43 : une dalle PARTIE (`part`, posé par le moteur) se retire dans sa cellule, du bord vers le centre
       // v44 : sur la Toile vivante, une coulée qui ARRIVE naît de rien (elle apparaissait d'un coup à 12 % de sa cellule)
@@ -6050,6 +6068,19 @@ function _ecDans(s){ var m=avg()*0.7; for(var i=0;i<_ecZ.length;i++){ var r=_ecZ
 function _replie(s,now){ s.part=now; s.rT0=now; s.rW0=s.w; s.wt=s.wFin=_repliW(); s.wAt=0; }
 /* v76 — Éclisse et Touffe ne pavent pas : ils posent des éclats, des fleurs, AUTOUR de la graine, sans lire le poids. Leur repli est
    une échelle tirée du poids : 1 dès qu'il est positif, 0 quand la cellule est repliée — elle rétrécit au départ, regrandit à l'arrivée. */
+/* ⚑ v146 (Tom, 14 oct. 2026, C-123) — LES VOISINES DE L'ONBOARDING NAISSENT UNE À UNE, ET PARTENT DE MÊME. « Les dalles colorées ne doivent pas
+   arriver toutes d'un coup. Apparition : une à une ou par petits groupes ; les voisines se déforment pour faire place. Disparition : vive, avec le
+   même effet organique. Interdit : flou, dégradé, fondu, tout ce qui arrive ou part d'un coup. » Une voisine a son heure de naissance (`vt0`) :
+   elle POUSSE de sa taille repliée à la sienne en 520 ms, en dépassant d'un rien (8 %) avant de se poser ; pendant qu'elle pousse, les cellules
+   autour s'écartent d'elle puis reviennent (une bosse). Au départ (`vf0`), elle se replie en 380 ms, et ses voisines reviennent de même. */
+var _VL=(function(){ try{ return Math.max(1, Math.min(8, parseFloat((/[?&]onbLent=([\d.]+)/.exec(location.search)||[])[1])||1)); }catch(_){ return 1; } })();   /* v146 : `?onbLent=4`, la vidéo ralentie de Tom */
+function _voisPousse01(u){ var c1=1.4, c3=c1+1, v=u-1; return 1+c3*v*v*v+c1*v*v; }
+function _voisF(s,now,rf){ if(s.vf0){ var f=(now-s.vf0)/(380*_VL); if(f<=0) return s.voisine; if(f>=1){ s.voisine=0; s.vf0=0; s.gc=null; return rf; } return rf+(s.voisine-rf)*(1-f*f*(3-2*f)); }
+  var u=(now-(s.vt0||0))/(520*_VL); if(u<=0) return rf; if(u>=1) return s.voisine; return rf+(s.voisine-rf)*_voisPousse01(u); }
+function _voisAnim(now){ var L=[]; for(var i=0;i<seeds.length;i++){ var s=seeds[i]; if(!s.voisine) continue; var b=0;
+    if(s.vf0){ var f=(now-s.vf0)/(380*_VL); if(f>0&&f<1) b=Math.sin(Math.PI*f); } else if(s.vt0){ var u=(now-s.vt0)/(520*_VL); if(u>0&&u<1) b=Math.sin(Math.PI*Math.min(1,u*1.15)); }
+    if(b>0.001) L.push([s.x,s.y,b,s]); } return L; }
+function _voisPousse(s,L,sp){ var dx=0, dy=0, R=sp*1.7, A=sp*0.11; for(var i=0;i<L.length;i++){ var v=L[i]; if(v[3]===s) continue; var ex=s.x-v[0], ey=s.y-v[1], d=Math.sqrt(ex*ex+ey*ey); if(d<1||d>R) continue; var k=A*v[2]*(1-d/R); dx+=ex/d*k; dy+=ey/d*k; } return [dx,dy]; }
 function _repliF(s){ var w=(s.w!=null?s.w:0); if(w>=0) return 1; return Math.max(0,Math.min(1,1-w/_repliW())); }
 /* ⚑ v66 — LE FOND DE LA TOILE VIVANTE, un seul propriétaire : `frame()` le peint, et un monde qui « découpe » en papier (Ramage,
    Mascaret) le REPREND par `env.papier`, recalé dans son repère (la vue) — un aplat ferait des traits d'une autre teinte sur le dégradé. */
@@ -6064,6 +6095,17 @@ function _fondVif(gg,xa,ya,xb,yb){ return _fondVifDesc(xa,ya,xb,yb).a; }
    formule) avec les poids FINAUX jusqu'à l'équilibre : un monde qui préfère se recomposer une fois plutôt que suivre le glissé
    (Esquille) lit ces places par `env.finale`. Calculé une fois par transition. */
 var _finC=null;
+/* ⚑ v146 (C-088) — DEUX PAROLES SUR UNE MÊME GRAINE. Sous Ritournelle, les bornes du semis repoussaient deux graines dans le même coin et elles y restaient
+   confondues (le relâchement ne pousse que des graines distinctes ; en mode local, les graines éloignées ne bougent pas) : une seule coulée, deux titres
+   l'un sur l'autre (« rendre le livre » et « finir la maquette », « arroser le ficus » et « appeler mamie », mesurés de 6 à 12 paroles). Après le
+   relâchement, deux graines plus proches que 0,42 écart moyen s'écartent l'une de l'autre, dans les bornes — sous Ritournelle seulement. */
+function _ecarte(P){ if(theme!=='ritournelle'||P.length<2) return; var dmin=avg()*0.42, Bn=_bornes();
+  for(var ps=0;ps<16;ps++){ var bouge=false;
+    for(var i=0;i<P.length;i++) for(var j=i+1;j<P.length;j++){ var a=P[i], b=P[j], dx=b.x-a.x, dy=b.y-a.y, d=Math.sqrt(dx*dx+dy*dy); if(d>=dmin) continue;
+      var ux, uy; if(d<0.01){ var an=(((a.k*7919)^(b.k*104729))%628)/100; ux=Math.cos(an); uy=Math.sin(an); } else { ux=dx/d; uy=dy/d; }
+      var pu=(dmin-d)/2+0.5;
+      a.x=Math.max(Bn[0],Math.min(Bn[1],a.x-ux*pu)); a.y=Math.max(Bn[2],Math.min(Bn[3],a.y-uy*pu)); b.x=Math.max(Bn[0],Math.min(Bn[1],b.x+ux*pu)); b.y=Math.max(Bn[2],Math.min(Bn[3],b.y+uy*pu)); bouge=true; }
+    if(!bouge) break; } }
 function _semisFinal(){ var h=2166136261, _lc=_relaxLocal();
   /* ⚑ v54 (Bobinette) — pendant une transition locale, l'état final se calcule UNE FOIS (par transition, sur le poids d'arrivée) :
      les graines y vont (relax pose leurs cibles dessus) et la trame s'y lit — la Toile s'arrête exactement là où la trame
@@ -6079,10 +6121,11 @@ function _semisFinal(){ var h=2166136261, _lc=_relaxLocal();
   var S2=seeds.filter(function(s){ return s.part==null; }).map(function(s){ var w=(s.wAt&&s.wFin!=null)?s.wFin:(s.wt!=null?s.wt:s.w); var q=_fp&&_fp.get(s); return {s:s,x:q?q[0]:s.x,y:q?q[1]:s.y,w:w}; });   /* une dalle qui part ne compte plus */
   var ac=avg();
   for(var it=0;it<50;it++){ var mx=0, T=[];
-    for(var i=0;i<S2.length;i++){ var a=S2[i],fx=0,fy=0; for(var j=0;j<S2.length;j++){ if(j===i)continue; var o=S2[j],dx=a.x-o.x,dy=a.y-o.y,d=Math.sqrt(dx*dx+dy*dy),wr=ac*(0.92+a.w*0.026+o.w*0.026); if(d<wr&&d>0.01){ var f=(wr-d)/d*0.16; fx+=dx*f; fy+=dy*f; } }
+    for(var i=0;i<S2.length;i++){ var a=S2[i],fx=0,fy=0; for(var j=0;j<S2.length;j++){ if(j===i)continue; var o=S2[j],dx=a.x-o.x,dy=a.y-o.y,d=Math.sqrt(dx*dx+dy*dy),wr=ac*(0.92+a.w*0.026+o.w*0.026); if(d<wr&&d>0.01){ var f=(wr-d)/d*0.16; fx+=dx*f; fy+=dy*f; } else if(d<=0.01){ /* v146 (C-088) : deux graines confondues se séparent (voir relax) */ var _an=((((a.s.pid!=null?a.s.pid:i)*7919)^((o.s.pid!=null?o.s.pid:j)*104729))%628)/100, _sg=(i<j?1:-1); fx+=Math.cos(_an)*wr*0.08*_sg; fy+=Math.sin(_an)*wr*0.08*_sg; } }
       var _B=_bornes(); T.push([Math.max(_B[0],Math.min(_B[1],a.x+fx)),Math.max(_B[2],Math.min(_B[3],a.y+fy))]); }
     for(i=0;i<S2.length;i++){ if(_lc&&Math.hypot(S2[i].s.x-_lc.x,S2[i].s.y-_lc.y)>_lc.r) continue; mx=Math.max(mx,Math.abs(T[i][0]-S2[i].x)+Math.abs(T[i][1]-S2[i].y)); S2[i].x=T[i][0]; S2[i].y=T[i][1]; }
     if(mx<0.05) break; }
+  if(theme==='ritournelle'){ S2.forEach(function(q,i){ q.k=(q.s.pid!=null?q.s.pid:i)+1; }); _ecarte(S2); }
   var m=new Map(); S2.forEach(function(q){ m.set(q.s,[q.x,q.y]); }); _finC={h:h,hl:(_lc?hl:null),len:seeds.length,m:m}; if(!_lc) _finPrev=m; return m; }
 function _transPose(kind,x,y){ _trans={t0:performance.now(), kind:kind, x:x, y:y, n:++_transN}; if(_qT0 && performance.now()-_qT0<150) _qT0=0; }
 /* ⚑ v60 (rythme) — LE MOMENT DE L'ARRIVÉE EST PROTÉGÉ. Les passes qui corrigent l'interface après un clic (polices, plateau,
@@ -6220,7 +6263,7 @@ function autoView(){
   var col=seeds.filter(function(s){return s.kind!=='gray'||s.compagnon;});   /* v97 : les deux cellules compagnes de Halin se cadrent avec la parole */
   if(!col.length){ vTarget={s:1,ox:0,oy:0}; return; }
   /* ⚑ v34 — sans cellule vide, la Toile EST ses promesses : on la montre entière, il n'y a rien à cadrer */
-  if(col.length===seeds.length){ var s0=_zDef(col.length); vTarget={s:s0,ox:(W-W*s0)/2,oy:(H-H*s0)/2}; return; }   /* v46 : plus il y a de dalles, plus la vue recule */
+  if(col.length===seeds.length){ var s0=(theme==='ritournelle')?1:_zDef(col.length); vTarget={s:s0,ox:(W-W*s0)/2,oy:(H-H*s0)/2}; return; }   /* v146 (C-088) : Ritournelle, la Toile entière à l'échelle 1 (ses coulées butent contre le cadre de la zone visible) */   /* v46 : plus il y a de dalles, plus la vue recule */
   var n=col.length;
   if(n>=20){ var s1=_zDef(n); vTarget={s:s1,ox:(W-W*s1)/2,oy:(H-H*s1)/2}; return; }   /* Toile bien remplie : Toile entière, et elle recule à mesure qu'elle se remplit (v46) */
   /* bounding-box de TOUTES les dalles colorees -> on les cadre toutes a l'ecran */
@@ -6281,8 +6324,9 @@ function _relaxLocal(){ if(!_rg('relaxLocal')||!_trans||_trans.x==null) return n
    chassait une graine jusqu'au cran de 6 px du bord : mesuré (384, 6), sous le plateau du titre. Le CENTRE d'une dalle (son œil, son
    titre) reste désormais dans la zone utile : 13 % de la largeur sur les côtés (la demi-largeur d'un titre), 17 % de la hauteur en haut
    (sous le plateau), 15 % en bas (la barre). Les cellules vont toujours jusqu'au bord. Les huit anciens (semis constant) gardent le cran d'origine. */
-function _bornes(){ if(!_semisNeuf()||(window._apImage&&!(window._apercuClair||{})[theme])) return [6,W-6,6,H-6];   /* v92 : un aperçu en grille (Madrure) couvre tout le canevas, comme les anciens mondes — pas de marges */ var mx=W*0.13, mt=H*0.17, mb=H*0.15; return [mx,W-mx,mt,H-mb]; }
-function relax(){var ac=avg(),_dx=!!(RD[theme]&&RD[theme].douce),_lc=_relaxLocal();if(_lc){var _fm=_semisFinal();for(var _fi=0;_fi<seeds.length;_fi++){var _fs=seeds[_fi],_fp=_fm.get(_fs);if(_fp){_fs.tx=_fp[0];_fs.ty=_fp[1];}else{_fs.tx=_fs.x;_fs.ty=_fs.y;}}return;}/* ⚑ v54 (Halin) : une dalle qui part ne pousse plus personne — ses voisines visent tout de suite leur place finale, en même temps qu'elle se retire */for(var i=0;i<seeds.length;i++){var s=seeds[i],fx=0,fy=0;if(_dx&&s.part!=null){s.tx=s.x;s.ty=s.y;continue;}if(_lc&&Math.hypot(s.x-_lc.x,s.y-_lc.y)>_lc.r){s.tx=s.x;s.ty=s.y;continue;}for(var j=0;j<seeds.length;j++){if(j===i)continue;var o=seeds[j];if(_dx&&o.part!=null)continue;var dx=s.x-o.x,dy=s.y-o.y,d=Math.sqrt(dx*dx+dy*dy);var w=ac*(0.92+s.w*0.026+o.w*0.026);if(d<w&&d>0.01){var f=(w-d)/d*0.16;fx+=dx*f;fy+=dy*f;}}var _B=_bornes();s.tx=Math.max(_B[0],Math.min(_B[1],s.x+fx));s.ty=Math.max(_B[2],Math.min(_B[3],s.y+fy));}
+function _bornes(){ if(!_semisNeuf()||(window._apImage&&!(window._apercuClair||{})[theme])) return [6,W-6,6,H-6];   /* v92 : un aperçu en grille (Madrure) couvre tout le canevas, comme les anciens mondes — pas de marges */ var mx=W*0.13, mt=H*0.17, mb=(theme==='ritournelle')?H*0.21:H*0.15; return [mx,W-mx,mt,H-mb]; }   /* v146 (C-088, Q449) : sous Ritournelle aucune graine sous la barre (y ≤ 667) — une graine à 717 n'avait qu'une lisière de cellule au-dessus d'elle : sa coulée, 0 % à l'écran */
+function relax(){var ac=avg(),_dx=!!(RD[theme]&&RD[theme].douce),_lc=_relaxLocal();if(_lc){var _fm=_semisFinal();for(var _fi=0;_fi<seeds.length;_fi++){var _fs=seeds[_fi],_fp=_fm.get(_fs);if(_fp){_fs.tx=_fp[0];_fs.ty=_fp[1];}else{_fs.tx=_fs.x;_fs.ty=_fs.y;}}return;}/* ⚑ v54 (Halin) : une dalle qui part ne pousse plus personne — ses voisines visent tout de suite leur place finale, en même temps qu'elle se retire */for(var i=0;i<seeds.length;i++){var s=seeds[i],fx=0,fy=0;if(_dx&&s.part!=null){s.tx=s.x;s.ty=s.y;continue;}if(_lc&&Math.hypot(s.x-_lc.x,s.y-_lc.y)>_lc.r){s.tx=s.x;s.ty=s.y;continue;}for(var j=0;j<seeds.length;j++){if(j===i)continue;var o=seeds[j];if(_dx&&o.part!=null)continue;var dx=s.x-o.x,dy=s.y-o.y,d=Math.sqrt(dx*dx+dy*dy);var w=ac*(0.92+s.w*0.026+o.w*0.026);if(d<w&&d>0.01){var f=(w-d)/d*0.16;fx+=dx*f;fy+=dy*f;}else if(d<=0.01){/* v146 (C-088) : deux graines CONFONDUES (repoussées dans le même coin par les bornes) ne se séparaient jamais — une seule coulée, deux titres l'un sur l'autre. Elles partent en sens opposés, dans une direction tirée de leurs numéros */var _an=((((s.pid!=null?s.pid:i)*7919)^((o.pid!=null?o.pid:j)*104729))%628)/100,_sg=(i<j?1:-1);fx+=Math.cos(_an)*w*0.08*_sg;fy+=Math.sin(_an)*w*0.08*_sg;}}var _B=_bornes();s.tx=Math.max(_B[0],Math.min(_B[1],s.x+fx));s.ty=Math.max(_B[2],Math.min(_B[3],s.y+fy));}
+if(theme==='ritournelle'){ var _P=seeds.filter(function(q){ return q.part==null; }).map(function(q,k){ return {x:q.tx,y:q.ty,k:(q.pid!=null?q.pid:k)+1,s:q}; }); _ecarte(_P); _P.forEach(function(q){ q.s.tx=q.x; q.s.ty=q.y; }); }   /* v146 (C-088) : deux graines ne se confondent plus (voir _ecarte) */
 }
 /* ⚑ v53 (Tom, 25 sept. 2026) — LE VERT DE CÉLÉBRATION EST ABANDONNÉ, PARTOUT. « Une dalle qui naît est déjà un événement : la
    Toile bouge, une forme apparaît. Une couleur par-dessus souligne ce qui se voit déjà. La célébration, c'est le mouvement
@@ -6499,7 +6543,7 @@ function RgraDirect(now,x0,y0,x1,y1){g.lineCap='round';g.lineJoin='round';var HS
 function Rgra(now,x0,y0,x1,y1){if(window._perfAncien)return RgraDirect(now,x0,y0,x1,y1);g.lineCap='round';g.lineJoin='round';var HS=8*UK,SS=5*UK,ac=avg(),_G=_grilleProp(),_GX=_G&&_G.X,_GY=_G&&_G.Y,_GW=_G&&_G.Wt,_der=-1,_lx=null,_ly=0;for(var ci=0;ci<seeds.length;ci++){var s=seeds[ci];if(s.x<x0-100||s.x>x1+100||s.y<y0-100||s.y>y1+100)continue;if(_cibleDalle!=null&&(s.pid!==_cibleDalle||s.kind==='gray'))continue;   /* v130 : SES hachures */var R=ac*1.85+s.w,an=s.ang,dx=Math.cos(an),dy=Math.sin(an),px=-dy,py=dx,c=cOf(s,now),cl=(s.kind!=='gray');g.strokeStyle='rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')';g.lineWidth=(cl?2:1.05)*UK;for(var off=-R;off<=R;off+=HS){var ox=s.x+px*off,oy=s.y+py*off,run=false;for(var t=-R;t<=R;t+=SS){var qx=ox+dx*t,qy=oy+dy*t,bd=1e18,bi=0,ins=qx>=x0-2&&qx<=x1+2&&qy>=y0-2&&qy<=y1+2;if(ins){if(_G){var _ex=qx-_GX[ci],_ey=qy-_GY[ci],_dc=Math.sqrt(_ex*_ex+_ey*_ey)-_GW[ci],_ecarte=false;if(_der>=0&&_der!==ci){var _fx=qx-_GX[_der],_fy=qy-_GY[_der],_dl=Math.sqrt(_fx*_fx+_fy*_fy)-_GW[_der];_ecarte=(_dl<_dc||(_dl===_dc&&_der<ci));}if(_ecarte)ins=false;else{bi=_G.prop(qx,qy).bi;_der=bi;ins=(bi===ci);}}else{for(var k=0;k<seeds.length;k++){var _kx=seeds[k].px==null?seeds[k].x:seeds[k].px,_ky=seeds[k].py==null?seeds[k].y:seeds[k].py,ex=qx-_kx,ey=qy-_ky,d=Math.sqrt(ex*ex+ey*ey)-seeds[k].w;if(d<bd){bd=d;bi=k;}}ins=(bi===ci);}}if(ins&&!run){run=true;g.beginPath();g.moveTo(qx,qy);_lx=null;}else if(ins){_lx=qx;_ly=qy;}else if(run){if(_lx!==null)g.lineTo(_lx,_ly);g.stroke();run=false;}}if(run){if(_lx!==null)g.lineTo(_lx,_ly);g.stroke();}}}}   /* v38 : une hachure est une DROITE — ses points intermédiaires, alignés, n'ajoutaient que des sommets au traceur ; on va du premier au dernier */
 function Rmos(now,x0,y0,x1,y1){var _vv=(g.canvas&&g.canvas.id==='toileCv')?view.s:1,_gx=(g.canvas&&g.canvas.id==='toileCv')?view.ox:0,_gy=(g.canvas&&g.canvas.id==='toileCv')?view.oy:0;   /* ⚑ v46 : la grille est celle de la Toile, à la taille du zoom */
   var T=11*UK*_vv,_G=_grilleProp();g.setTransform(DPR,0,0,DPR,0,0);var _sy0=_gy-Math.ceil(_gy/T)*T,_sx0=_gx-Math.ceil(_gx/T)*T;for(var sy=_sy0;sy<H;sy+=T){for(var sx=_sx0;sx<W;sx+=T){var lx=(sx+T/2-view.ox)/view.s,ly=(sy+T/2-view.oy)/view.s;if(lx<0||lx>W||ly<0||ly>H)continue;var bi=0;if(_G){bi=_G.prop(lx,ly).bi;}else{var bd=1e18,bi=0;for(var k=0;k<seeds.length;k++){var _kx=seeds[k].px==null?seeds[k].x:seeds[k].px,_ky=seeds[k].py==null?seeds[k].y:seeds[k].py,dx=lx-_kx,dy=ly-_ky,d=Math.sqrt(dx*dx+dy*dy)-seeds[k].w;if(d<bd){bd=d;bi=k;}}}if(_cibleDalle!=null&&(seeds[bi].pid!==_cibleDalle||seeds[bi].kind==='gray'))continue;   /* v130 : SES tesselles */var c=cOf(seeds[bi],now);g.fillStyle='rgb('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+')';g.fillRect(sx+UK*_vv,sy+UK*_vv,T-2*UK*_vv,T-2*UK*_vv);}}}
-function Renc(now,x0,y0,x1,y1){g.setTransform(DPR,0,0,DPR,0,0);var sp=Math.sqrt(W*H/Math.max(1,seeds.length));for(var k=0;k<seeds.length;k++){var s=seeds[k];var _sx=(s.px!=null?s.px:s.x),_sy=(s.py!=null?s.py:s.y);var px=_sx*view.s+view.ox,py=_sy*view.s+view.oy;var rad=sp*0.6*view.s;if(px<-rad*2.5||px>W+rad*2.5||py<-rad*2.5||py>H+rad*2.5)continue;var _rf=_repliF(s);if(s.voisine&&s.kind==='gray')_rf=s.voisine;   /* v127 : une voisine de l'onboarding — une cellule vide, dépliée à sa taille */if(_rf<0.02)continue;var c=cOf(s,now);g.save();g.translate(px,py);if(_rf<0.999)g.scale(_rf,_rf);   /* v76 : le repli */if(s.drot)g.rotate(s.drot);if(s.dsx)g.scale(s.dsx,s.dsy);g.fillStyle='rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+',.9)';var sd=((k+1)*2654435761)>>>0,rnd=function(){sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};for(var b=0;b<9;b++){var _ex=(rnd()-.5)*rad*1.2,_ey=(rnd()-.5)*rad,_rx=rad*(.32+rnd()*.42),_ry=rad*(.16+rnd()*.32),_ea=rnd()*3.14;if(s.dw){var _wp=s.ph+b*1.7;_ex+=Math.sin(now*0.006+_wp)*rad*0.22*s.dw;_ey+=Math.cos(now*0.0072+_wp)*rad*0.18*s.dw;_rx*=1+Math.sin(now*0.0085+_wp)*0.26*s.dw;_ry*=1+Math.cos(now*0.0079+_wp)*0.26*s.dw;_ea+=Math.sin(now*0.005+_wp)*0.6*s.dw;}g.beginPath();g.ellipse(_ex,_ey,_rx,_ry,_ea,0,6.3);g.fill();}g.restore();}}
+function Renc(now,x0,y0,x1,y1){g.setTransform(DPR,0,0,DPR,0,0);var sp=Math.sqrt(W*H/Math.max(1,seeds.length));var _VA=_voisAnim(now);for(var k=0;k<seeds.length;k++){var s=seeds[k];var _sx=(s.px!=null?s.px:s.x),_sy=(s.py!=null?s.py:s.y);var px=_sx*view.s+view.ox,py=_sy*view.s+view.oy;if(_VA.length){var _pq=_voisPousse(s,_VA,sp);px+=_pq[0]*view.s;py+=_pq[1]*view.s;}var rad=sp*0.6*view.s;if(px<-rad*2.5||px>W+rad*2.5||py<-rad*2.5||py>H+rad*2.5)continue;var _rf=_repliF(s);if(s.voisine&&s.kind==='gray')_rf=_voisF(s,now,_rf);   /* v146 (C-123) : elle pousse à son heure */   /* v127 : une voisine de l'onboarding — une cellule vide, dépliée à sa taille */if(_rf<0.02)continue;var c=cOf(s,now);g.save();g.translate(px,py);if(Math.abs(_rf-1)>0.001)g.scale(_rf,_rf);   /* v76 : le repli */if(s.drot)g.rotate(s.drot);if(s.dsx)g.scale(s.dsx,s.dsy);g.fillStyle='rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+',.9)';var sd=((k+1)*2654435761)>>>0,rnd=function(){sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};for(var b=0;b<9;b++){var _ex=(rnd()-.5)*rad*1.2,_ey=(rnd()-.5)*rad,_rx=rad*(.32+rnd()*.42),_ry=rad*(.16+rnd()*.32),_ea=rnd()*3.14;if(s.dw){var _wp=s.ph+b*1.7;_ex+=Math.sin(now*0.006+_wp)*rad*0.22*s.dw;_ey+=Math.cos(now*0.0072+_wp)*rad*0.18*s.dw;_rx*=1+Math.sin(now*0.0085+_wp)*0.26*s.dw;_ry*=1+Math.cos(now*0.0079+_wp)*0.26*s.dw;_ea+=Math.sin(now*0.005+_wp)*0.6*s.dw;}g.beginPath();g.ellipse(_ex,_ey,_rx,_ry,_ea,0,6.3);g.fill();}g.restore();}}
 /* assainissement (30 sept.) : Rblok retiré — le monde Éclats n'existait plus au Studio (Q102) */
 
 function Rterr(now,x0,y0,x1,y1){if(!(g.canvas&&g.canvas.id==='toileCv'))g.setTransform(DPR,0,0,DPR,0,0);   /* ⚑ v46 : sur la Toile vivante, la vue (le zoom) est gardée */var sp=Math.sqrt(W*H/Math.max(1,seeds.length));for(var k=0;k<seeds.length;k++){var s=seeds[k];var _rf=_repliF(s);if(_rf<0.02)continue;var c=cOf(s,now);var _sx=(s.px!=null?s.px:s.x),_sy=(s.py!=null?s.py:s.y);var sd=((k+1)*2654435761)>>>0;var rr=function(){sd=(sd*1103515245+12345)&0x7fffffff;return sd/0x7fffffff;};g.fillStyle="rgb("+(c[0]|0)+","+(c[1]|0)+","+(c[2]|0)+")";for(var e=0;e<7;e++){var a=rr()*6.2832,rd=rr()*sp*0.46*_rf;var ex=_sx+Math.cos(a)*rd,ey=_sy+Math.sin(a)*rd;var w2=sp*(0.11+rr()*0.19)*_rf,h2=sp*(0.08+rr()*0.15)*_rf;   /* v76 : _rf, le repli */g.save();g.translate(ex,ey);g.rotate(rr()*3.1416);g.beginPath();var sides=4+((rr()*3)|0);for(var s2=0;s2<sides;s2++){var an=s2/sides*6.2832;var px=Math.cos(an)*w2*(0.7+rr()*0.5),py=Math.sin(an)*h2*(0.7+rr()*0.5);s2?g.lineTo(px,py):g.moveTo(px,py);}g.closePath();g.fill();g.restore();}}}
@@ -7028,6 +7072,10 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
   paintOrder:null,
   /* la forme EXACTE de la dalle d'un Promi, ramenée dans un carré de côté `box`
      (l'Index montre ainsi la même dalle que la Toile, pas un pictogramme) */
+  /* v146 (C-124, 11.5) : le haut des voisines de l'onboarding À LEUR TAILLE FINALE, en points de l'écran (la vue visée) — le message se pose au-dessus */
+  /* v146 (C-123) : l'état de chaque voisine — sa part dépliée (0 → 1), pour un juge */
+  voisinesEtat:function(){ var now=performance.now(), L=[]; for(var i=0;i<seeds.length;i++){ var s=seeds[i]; if(!s.voisine) continue; var rf=_repliF(s), f=(_voisF(s,now,rf)-rf)/Math.max(1e-6,s.voisine-rf); L.push(Math.round(f*1000)/1000); } return L; },
+  voisinesBande:function(){ var v=vTarget||view, sp=Math.sqrt(W*H/Math.max(1,seeds.length)), y0=1e9, y1=-1e9; for(var i=0;i<seeds.length;i++){ var s=seeds[i]; if(!s.voisine||s.vf0) continue; var r=sp*0.6*v.s*s.voisine*1.3, yy=s.y*v.s+v.oy; if(yy-r<y0) y0=yy-r; if(yy+r>y1) y1=yy+r; } return y0<1e9?[y0,y1]:null; },
   dalleAbs:function(pid){
     var s=null;for(var i=0;i<seeds.length;i++){if(seeds[i].pid===pid&&seeds[i].kind!=='gray'){s=seeds[i];break;}}
     if(!s)return null;var poly=null;try{poly=_cellPoly(s);}catch(e){}
@@ -7073,7 +7121,10 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
      paroles poussait la dalle principale de 10 pt) ; le peintre les déplie à leur taille et leur donne une teinte de la palette.
      `Toile.voisines(0)` les rend au vide. ⚠ Seul Pochade (le monde du premier lancement) les peint. */
   voisines:function(n, o){ o=o||{}; var P=null, i;
-    for(i=0;i<seeds.length;i++){ if(seeds[i].voisine){ seeds[i].voisine=0; seeds[i].gc=null; } }
+    if(!n && o.vif){ var t0=performance.now()+(o.depart||0), kk=0, Lv=seeds.filter(function(q){ return q.voisine; });   /* v146 (C-123) : elles partent une à une */
+      Lv.sort(function(u,v){ return (v.vt0||0)-(u.vt0||0); }); Lv.forEach(function(q){ q.vf0=t0+(kk++)*(o.pas||85); });
+      lastChange=t0+kk*(o.pas||85)+420; kick(); return Lv.length; }
+    for(i=0;i<seeds.length;i++){ if(seeds[i].voisine){ seeds[i].voisine=0; seeds[i].vf0=0; seeds[i].gc=null; } }
     if(!n){ lastChange=performance.now(); kick(); return 0; }
     for(i=0;i<seeds.length;i++){ var q=seeds[i]; if(q.kind!=='gray'&&q.kind!=='nuee'&&q.pid!=null&&q.part==null) P=q; }
     if(!P) return 0;
@@ -7083,8 +7134,8 @@ var nueeCells={};window.Toile={vivant:{journal:function(){ return _vivJ.slice();
     /* les plus proches de la parole, d'abord : ce sont elles qu'on voit autour d'elle */
     C.sort(function(u,v){ return Math.hypot(u.x-P.x,u.y-P.y)-Math.hypot(v.x-P.x,v.y-P.y); });
     var pris=C.slice(0, Math.min(n, C.length)), now=performance.now(), nat=o.natures||[1,2], np=Math.max(1,PAL.length);
-    pris.forEach(function(g,k){ g.voisine=(o.taille||0.62); g.vnat=nat[k%nat.length]; g.vci=(((P.ci|0)+1+k)%np); g.vt0=now; g.vcol=!!o.couleur;   /* v128 (Tom) : « Les voisines ne sont pas colorées : personne ne l'a demandé. Ce sont des cellules vides, rendues exactement comme les cellules vides de la vraie Toile. » — la teinte ne vient que sur demande (`couleur`), et l'onboarding ne la demande pas */ });
-    lastChange=now; kick(); return pris.length; },
+    pris.forEach(function(g,k){ g.voisine=(o.taille||0.62); g.vnat=nat[k%nat.length]; g.vci=(((P.ci|0)+1+k)%np); g.vt0=now+((o.depart||0)+k*(o.pas||0))*_VL; g.vf0=0; g.vcol=!!o.couleur;   /* v128 (Tom) : « Les voisines ne sont pas colorées : personne ne l'a demandé. Ce sont des cellules vides, rendues exactement comme les cellules vides de la vraie Toile. » — la teinte ne vient que sur demande (`couleur`), et l'onboarding ne la demande pas */ });
+    lastChange=now+((o.depart||0)+pris.length*(o.pas||0)+560)*_VL; kick(); return pris.length; },   /* v146 : la boucle tourne jusqu'à la dernière naissance */
   plantOne:function(dejaPosee){
     var gris=[];
     for(var i=0;i<seeds.length;i++)if(seeds[i].kind==='gray')gris.push(seeds[i]);
@@ -7654,8 +7705,15 @@ window.Toile.renderTo=function(cv,ech,clair,o){ var _vu=!!(o&&o.vue);
 window.Toile.fondToile=function(clair){ return (clair!=null?clair:isLightM())
   ? (window._shAllColored?'#DDD2B8':'#F1ECD9') : '#050302'; };   /* v116 : l'encre de seiche */
 window.Toile.repaint=function(pcv){var c=pcv&&pcv.__c;if(!c)return;if(c.vif)return;   /* v75 : l'aperçu vivant se peint dans sa boucle */var _g=g,_W=W,_H=H,_s=seeds,_t=theme,_v={s:view.s,ox:view.ox,oy:view.oy};try{g=pcv.getContext('2d');W=c.pw;H=c.ph;seeds=c.seeds;theme=c.th;view={s:1,ox:0,oy:0};var dpr=pcv.width/c.pw;g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,c.pw,c.ph);g.fillStyle=window.Toile.fondToile();g.fillRect(0,0,c.pw,c.ph);RD[c.th](performance.now(),0,0,c.pw,c.ph);}catch(e){}g=_g;W=_W;H=_H;seeds=_s;theme=_t;view=_v;};
-window.Toile.reGray=function(){seeds.forEach(function(s){s.gray=grays()[(_alea()*5)|0];s.gc=null;});lastChange=performance.now();kick();};
-window.Toile.reGrayStudio=function(pcv){var c=pcv&&pcv.__c;if(!c)return;c.seeds.forEach(function(s){s.gray=grays()[(_alea()*5)|0];s.gc=null;});window.Toile.repaint(pcv);};
+/* ⚑ v146 (C-131, Tom : « c'est EXACTEMENT la même Toile en clair et en sombre (mêmes dalles, même disposition, mêmes formes, mêmes tailles, mêmes
+   graines). Seules les couleurs du thème changent. ») — au changement de thème, le gris de chaque cellule vide était RETIRÉ AU HASARD parmi les
+   cinq du thème : la Toile gardait ses graines, mais le motif de ses cellules vides (laquelle est la plus claire, laquelle la plus sombre)
+   changeait à chaque bascule, sur l'accueil comme au Studio. Chaque cellule garde maintenant son RANG : le n-ième gris du thème qu'on quitte
+   devient le n-ième gris du thème où l'on entre. Juge : redteam_clair_sombre (A, D). */
+function _grisRang(s){ var L=[GLIGHT], k, i, j; for(k in TH){ if(TH[k]&&TH[k].g) L.push(TH[k].g); } for(i=0;i<L.length;i++){ j=L[i].indexOf(s.gray); if(j>=0) return j; } return (s.gi!=null)?s.gi:((_alea()*5)|0); }
+window.Toile.reGray=function(){var G=grays();seeds.forEach(function(s){var j=_grisRang(s);s.gi=j;s.gray=G[j%G.length];s.gc=null;});lastChange=performance.now();kick();};
+window.Toile.reGrayStudio=function(pcv){var c=pcv&&pcv.__c;if(!c)return;var G=grays();c.seeds.forEach(function(s){var j=_grisRang(s);s.gi=j;s.gray=G[j%G.length];s.gc=null;});window.Toile.repaint(pcv);};
+window.Toile_grisRangs=function(pcv){ var L=(pcv&&pcv.__c)?pcv.__c.seeds:seeds; return L.map(function(s){ return (s.kind==='gray')?_grisRang(s):-1; }); };   /* v146 : un pointeur pour le juge */
 window.Toile.curWorld=function(){return theme;};
 window.Toile.taille=function(){return {w:W,h:H};};   /* v34 · lecture seule */
 window.Toile.semisNeuf=function(){ return _semisDe==='neuf'; };   /* v35 · la famille du semis EN PLACE */
@@ -8096,6 +8154,12 @@ function _tireDebut(){ _tireT=0; if(!_tireP || _AP) return; var L=ptrs[_tireP.id
   _pan=null; _inert=null; vTarget=null; window._dalleTiree=(s.pid!=null?s.pid:s.nuee); window._tMouv=performance.now();
   try{ if(navigator.vibrate) navigator.vibrate(8); }catch(_){ } lastChange=performance.now(); kick(); }
 var _tireId=null;
+/* ⚑ v146 (chef de chantier, Q496) — « On garde le cadrage de Ritournelle et on répare le déplacement sans y toucher. Si c'est impossible, le déplacement est
+   désactivé dans ce cas, sans message. » Sous Ritournelle une coulée se centre sur SA CELLULE (bornée par ses voisines et le cadre), pas sur sa graine :
+   poser la graine sous le doigt ne pose pas la dalle sous le doigt (mesuré : 97 pt d'écart à dix paroles en v144, 109 pt ici), et l'y forcer changerait le
+   cadrage. L'appui long n'attrape donc rien sous Ritournelle ; le toucher bref ouvre toujours la fiche ; aucun message. */
+var _TIRE_NON={ritournelle:1};
+window.Toile_tireNon=_TIRE_NON;
 function _tireBouge(L){ if(!_tire) return; var t=_toileXY(L), B=_tireBornes();
   _tire.x=Math.max(B[0], Math.min(B[1], t.x+_tire.dx)); _tire.y=Math.max(B[2], Math.min(B[3], t.y+_tire.dy));
   _tirePince(); relax(); _tirePince(); window._tMouv=performance.now(); lastChange=performance.now(); kick(); }
@@ -8115,7 +8179,7 @@ host.addEventListener('pointerdown',function(e){e.stopPropagation();try{host.set
   ptrs[e.pointerId]=_loc(e);var k=Object.keys(ptrs);
   if(k.length===2){ _tireFin(true); var a=ptrs[k[0]],b=ptrs[k[1]];pinch={d:Math.hypot(a.x-b.x,a.y-b.y)||1,s:view.s,cx:(a.x+b.x)/2,cy:(a.y+b.y)/2,ox:view.ox,oy:view.oy};_pan=null;}
   else if(k.length===1){_pan={ox:view.ox,oy:view.oy,h:[[ptrs[k[0]].t,ptrs[k[0]].x,ptrs[k[0]].y]]};
-    clearTimeout(_tireT); _tireId=e.pointerId; _tireP={id:e.pointerId, x:ptrs[k[0]].x, y:ptrs[k[0]].y}; _tireT=setTimeout(_tireDebut, TIRE_MS); }   /* v142 (C-101) : 0,8 s sans bouger → la dalle est attrapée */
+    clearTimeout(_tireT); _tireId=e.pointerId; _tireP={id:e.pointerId, x:ptrs[k[0]].x, y:ptrs[k[0]].y}; if(!_TIRE_NON[theme]) _tireT=setTimeout(_tireDebut, TIRE_MS); }   /* v146 (Q496) : pas sous Ritournelle */   /* v142 (C-101) : 0,8 s sans bouger → la dalle est attrapée */
   kick();});
 host.addEventListener('pointermove',function(e){if(!ptrs[e.pointerId])return;e.stopPropagation();var pr=ptrs[e.pointerId],L=_loc(e);ptrs[e.pointerId]=L;var k=Object.keys(ptrs);
   if(_tire){ if(k.length===1){ _tireBouge(L); try{ e.preventDefault(); }catch(_){ } } return; }   /* v142 : la dalle suit le doigt — la Toile ne défile pas */

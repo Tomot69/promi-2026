@@ -73,6 +73,11 @@ for th in ('light', 'dark'):
     D.append(('Index', th, 'carte_etat', CREME if th == 'dark' else None, 'v16 (Q290) : état sur fond sombre en crème'))
     D.append(('Index', th, 'cartes_etats', CREME if th == 'dark' else None, 'v16 (Q290) : les libellés des cartes À TENIR, EN COURS, LANCÉ, sur le corps sombre, en crème — « à tenir » compris'))
 D = [d for d in D if d[3]]
+# ⚑ v146 (Tom, 14 oct. 2026, C-132) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_decisions-avant-v146.py) : « Toutes les fiches (Promi #0E78F2,
+#   Chiche #7C3F58, Cercle #5D4978) prennent en mode clair exactement leur version sombre » — planter, tenir, tenue, reçue, à plusieurs ; la page +
+#   et le Peaufiner sont la fiche. En clair, une décision d'une fiche est donc sa décision du sombre ; l'Index (une page) garde les siennes.
+FICHE_ECRANS = {'Promi à tenir', 'Promi en cours', 'Promi tenue', 'Chiche lancé', 'Chiche tenu à deux', 'Cercle', 'page +'}
+D = [d for d in D if not (d[1] == 'light' and d[0] in FICHE_ECRANS)] + [(d[0], 'light', d[2], d[3], 'v146 (C-132) : en clair, la fiche est sa version sombre · ' + d[4]) for d in D if d[1] == 'dark' and d[0] in FICHE_ECRANS]
 
 S = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'scratchpad', 'v122', 'zones.py'), encoding='utf-8').read()
 Z = re.search(r'Z=r"""(.*?)"""', S, re.S).group(1)
@@ -115,13 +120,13 @@ with sync_playwright() as p:
         R[('page +', th)] = {k: hexa(v) for k, v in pg.evaluate("()=>{const s=document.getElementById('createSheet'); const cv=document.getElementById('csTrameCv'); let ch=null; try{const d=(function(){ const W=cv.width, H=cv.height, D=cv.getContext('2d').getImageData(0,0,W,H).data, h={}; let n=0; for(let i=0;i<D.length;i+=4*7){ if(D[i+3]<250) continue; n++; const k=D[i]+','+D[i+1]+','+D[i+2]; h[k]=(h[k]||0)+1; } let b=null,m=0; for(const k in h) if(h[k]>m){ m=h[k]; b=k; } const dc=(cv.getAttribute('data-champ')||'').replace('#',''); if(/^[0-9a-fA-F]{6}$/.test(dc)){ const q=[parseInt(dc.slice(0,2),16),parseInt(dc.slice(2,4),16),parseInt(dc.slice(4,6),16)].join(','); if((h[q]||0) >= n*0.003) b=q; } return b?b.split(',').map(Number):null; })(); if(d) ch='rgb('+d[0]+', '+d[1]+', '+d[2]+')';}catch(e){} return {corps:getComputedStyle(s).backgroundColor, champ:ch};}").items()}
         pg.evaluate("()=>{closeAll(); setView('toile'); ouvrirIndex(); window._s4Trois=false; if(window._s4Index)_s4Index();}"); pg.wait_for_timeout(3000)
         R[('Index', th)] = {k: hexa(v) for k, v in pg.evaluate("()=>{const s=document.getElementById('indexSheet'); const c=document.querySelector('#indexList .s4-carte'); const et=c&&c.querySelector('.s4-et'); const nl=c&&c.querySelector('.s4-natlab'); const H=v=>{const n=(v.match(/\\d+/g)||[]).slice(0,3).map(x=>(+x).toString(16).padStart(2,'0')).join('').toUpperCase(); return '#'+n;}; const toutes=[...new Set([...document.querySelectorAll('#indexList .s4-carte')].filter(c=>{const t=c.querySelector('.s4-et'); return t&&/^(À TENIR|EN COURS|LANCÉ)/.test(t.textContent.trim());}).flatMap(c=>[...c.querySelectorAll('.s4-et,.s4-eb')]).map(e=>H(getComputedStyle(e).color)))].join(' ');   /* les cartes À TENIR, EN COURS, LANCÉ — les états ; une Nuée, un gardé de côté portent leur nature, une tenue l'amande ou la crème panneau */ return {fond:getComputedStyle(s).backgroundColor, carte_etat:et?getComputedStyle(et).color:null, carte_libelle:nl?getComputedStyle(nl).color:null, cartes_etats:toutes};}").items()}
-        if th == 'dark':
+        if True:   # v146 (C-132) : la page + est sombre dans les deux thèmes
             pg.evaluate("()=>{closeAll(); document.getElementById('createBtn').click(); var n=0; (function essai(){ var cs=document.getElementById('createSheet'); var x=[...document.querySelectorAll('#createSheet .tile')][0]; if(cs&&cs.classList.contains('pp-choix')&&x){ x.click(); } if(++n<6) setTimeout(essai,350); })();}"); pg.wait_for_timeout(3500)
-            for sel, nom in (('#csPhrase .ph-li', 'page + [dark] phrase'), ('#csPhrase .ph-hint', 'page + [dark] consigne')):
+            for sel, nom in (('#csPhrase .ph-li', 'page + [%s] phrase' % th), ('#csPhrase .ph-hint', 'page + [%s] consigne' % th)):
                 V132.append(((nom, hexa(pg.evaluate("(s)=>{const e=document.querySelector(s); return e?getComputedStyle(e).color:null}", sel))), '#F4EEFF', 'v132 (C-054), v134 (C-050) : le lilas éclairci à 4,5:1'))
         pg.evaluate("()=>{closeAll(); const p=promises.filter(q=>q.title==='nager le mardi')[0]; openDetail(p.id);}"); pg.wait_for_timeout(1800)
         pg.evaluate("()=>{const x=document.querySelector('#dpDetails .dpd-tog');if(x)x.click();}"); pg.wait_for_timeout(1500)
-        V132.append((('Peaufiner [%s] « Supprimer ce Promi »' % th, hexa(pg.evaluate("()=>{const e=document.querySelector('#detailPoster .s2-reg.v16-danger .s2-lab'); return e?getComputedStyle(e).color:null}"))), CREME if th == 'dark' else ENCRE, 'v132 (C-053) : jamais l\'orange d\'état'))
+        V132.append((('Peaufiner [%s] « Supprimer ce Promi »' % th, hexa(pg.evaluate("()=>{const e=document.querySelector('#detailPoster .s2-reg.v16-danger .s2-lab'); return e?getComputedStyle(e).color:null}"))), CREME, 'v132 (C-053) : jamais l\'orange d\'état · v146 (C-132) : le Peaufiner est sombre dans les deux thèmes, crème'))
         pg.evaluate("()=>closeAll()"); pg.wait_for_timeout(400)
         # l'anneau : ses arcs ne portent que les trois états (Q262, v8c « trois arcs ») — les couleurs franches, à ΔE près
         a = (R[('Promi à tenir', th)].get('anneau') or '').split()

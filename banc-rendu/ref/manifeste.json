@@ -1279,13 +1279,13 @@
      "fichier": "ritournelle__toile-sombre.png",
      "w": 390,
      "h": 844,
-     "fnv": "4eddbd31"
+     "fnv": "7b5689bd"
     },
     "toile-clair": {
      "fichier": "ritournelle__toile-clair.png",
      "w": 390,
      "h": 844,
-     "fnv": "ff3c09f6"
+     "fnv": "59a680f4"
     },
     "dalle-promi-k0.5": {
      "fichier": "ritournelle__dalle-promi-k0.5.png",
@@ -1308,20 +1308,20 @@
     "dalle-chiche-k0.5": {
      "fichier": "ritournelle__dalle-chiche-k0.5.png",
      "w": 81,
-     "h": 106,
-     "fnv": "1f023418"
+     "h": 104,
+     "fnv": "c096c5cf"
     },
     "dalle-chiche-k1": {
      "fichier": "ritournelle__dalle-chiche-k1.png",
-     "w": 161,
-     "h": 210,
-     "fnv": "314f2803"
+     "w": 163,
+     "h": 206,
+     "fnv": "f23231f1"
     },
     "dalle-chiche-k2": {
      "fichier": "ritournelle__dalle-chiche-k2.png",
-     "w": 322,
-     "h": 418,
-     "fnv": "5afef8a2"
+     "w": 324,
+     "h": 412,
+     "fnv": "786eb19e"
     },
     "dalle-tenu-k0.5": {
      "fichier": "ritournelle__dalle-tenu-k0.5.png",
@@ -1344,20 +1344,20 @@
     "dalle-cercle-k0.5": {
      "fichier": "ritournelle__dalle-cercle-k0.5.png",
      "w": 116,
-     "h": 182,
-     "fnv": "7d447e4b"
+     "h": 214,
+     "fnv": "63449f8c"
     },
     "dalle-cercle-k1": {
      "fichier": "ritournelle__dalle-cercle-k1.png",
      "w": 231,
-     "h": 363,
-     "fnv": "ea4ca75"
+     "h": 428,
+     "fnv": "7bf5cb39"
     },
     "dalle-cercle-k2": {
      "fichier": "ritournelle__dalle-cercle-k2.png",
-     "w": 460,
-     "h": 725,
-     "fnv": "4ed35804"
+     "w": 461,
+     "h": 854,
+     "fnv": "7eca9ac9"
     }
    }
   },

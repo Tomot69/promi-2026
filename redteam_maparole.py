@@ -55,11 +55,14 @@ def _sans_comm(m): return '\n' * m.group(0).count('\n')
 NUE = re.sub(r'/\*.*?\*/', _sans_comm, S, flags=re.S)
 NUE = re.sub(r'(?m)^\s*//.*$', '', NUE)
 lignes = NUE.split('\n')
-hors = [(i + 1, l.strip()[:90]) for i, l in enumerate(lignes) if HEX.search(l) and not re.search(r'--c-orange-maparole(-corps|-cobalt)?\s*:\s*#(FB4C0D|FF7A55|FED0C3)', l, re.I)]
+# ⚑ v146 (Tom, §5) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_maparole-avant-v146.py) : « l'orange #FB4C0D marque les points de départ d'une
+#   action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait) ». La même valeur a donc un SECOND rôle, NOMMÉ :
+#   le jeton `--c-orange-depart` (et sa porte `window._orangeDepart`). Il est admis à la source, et à l'écran sur ces trois points de départ seulement.
+hors = [(i + 1, l.strip()[:90]) for i, l in enumerate(lignes) if HEX.search(l) and not re.search(r'--c-orange-maparole(-corps|-cobalt)?\s*:\s*#(FB4C0D|FF7A55|FED0C3)', l, re.I) and not re.search(r'--c-orange-depart\s*:\s*#FB4C0D|_orangeDepart|orangeDepart', l, re.I)]
 t('A · #FB4C0D et #FF7A55 n\'existent que dans le bloc des jetons', not hors, '; '.join('l.%d %s' % h for h in hors[:3]) or '')
 t('A · le moteur n\'en porte aucun', not HEX.search(M), '')
 lec = re.findall(r'([^{}]{0,120})\{[^{}]*var\(--c-orange-maparole(?:-corps)?\)', NUE)
-t('A · les jetons ne sont lus que par #murPhrase (qui pose --orange-maparole)', bool(lec) and all(re.search(r'#murPhrase(\.sur-corps(\.sur-cobalt)?)?\s*$', s.strip()) for s in lec), ' | '.join(s.strip()[-60:] for s in lec))
+t('A · les jetons ne sont lus que par #murPhrase (qui pose --orange-maparole ; v146 : son jumeau `:where(…)` de la fiche sombre compris)', bool(lec) and all(re.search(r'#murPhrase(\.sur-corps(\.sur-cobalt)?)?(:where\([^)]*\))?\s*$', s.strip()) for s in lec), ' | '.join(s.strip()[-60:] for s in lec))
 lec2 = re.findall(r'([^{}]{0,120})\{[^{}]*var\(--orange-maparole\)', NUE)
 t('A · --orange-maparole n\'est lu que par « #murPhrase .mp »', bool(lec2) and all(s.strip().endswith('#murPhrase .mp') for s in lec2), ' | '.join(s.strip()[-60:] for s in lec2))
 
@@ -77,11 +80,12 @@ SCAN = r"""(OR)=>{ const dv=document.getElementById('device').getBoundingClientR
     if(r.right<dv.left||r.left>dv.right||r.bottom<dv.top||r.top>dv.bottom) continue;
     const cs=getComputedStyle(e); if(cs.display==='none'||cs.visibility==='hidden'||+cs.opacity<0.05) continue;
     if(e.closest('#murPhrase')) continue;
+    if(e.closest('#createBtn, .gn-plus')) continue;   /* v146 (§5) : le + de l'accueil, le + qui valide un nom — des points de départ */
     const v=[cs.color,cs.webkitTextFillColor,cs.backgroundColor,cs.borderTopColor,cs.borderBottomColor,cs.borderLeftColor,cs.borderRightColor,cs.outlineColor,cs.fill,cs.stroke,cs.boxShadow,cs.textShadow,cs.backgroundImage].join(' | ');
     for(const o of OR) if(v.indexOf(o)>=0){ out.push((e.id||e.className||e.tagName).toString().slice(0,40)+' ← '+o); break; }
     if(e.tagName==='CANVAS'&&e.width>4){ try{ const d=e.getContext('2d').getImageData(0,0,e.width,e.height).data; let n=0;
       for(let i=0;i<d.length;i+=4){ if(d[i+3]>250&&((d[i]===251&&d[i+1]===76&&d[i+2]===13)||(d[i]===255&&d[i+1]===122&&d[i+2]===85))) n++; }
-      if(n>20) out.push('canevas '+(e.id||e.className)+' : '+n+' pixels'); }catch(_){} } }
+      if(n>20 && !e.hasAttribute('data-depart') && !/^(onbTrait|tenirCv)$/.test(e.id||'')) out.push('canevas '+(e.id||e.className)+' : '+n+' pixels'); }catch(_){} } }   /* v146 (C-133) : le départ de la flèche, sur un canevas qui le déclare */
   return out; }"""
 ETAT = """()=>{const p=document.getElementById('murPhrase'); if(!p) return null; const m=p.querySelector('.mp'), s=getComputedStyle(p);
   return {leve:p.classList.contains('leve'), texte:p.textContent, mp:m?getComputedStyle(m).color:null, mpf:m?getComputedStyle(m).webkitTextFillColor:null, reste:s.color}}"""
@@ -109,8 +113,10 @@ with sync_playwright() as p:
         c = pg.evaluate("()=>{const e=document.querySelector('#detailPoster .s2-cercle:not(.v16-seul)');if(!e)return null;const q=e.getBoundingClientRect();return [q.left+q.width/2,q.top+q.height/2]}")
         if c: pg.touchscreen.tap(*c); pg.wait_for_timeout(800)
         e = pg.evaluate(ETAT) or {}
-        attendu = ORANGE[2] if th == 'dark' else ORANGE[0]
-        t('C · [%s] sur le Peaufiner : « Ma Parole ! » en %s' % (th, '#FED0C3 (corps bleu d\'un Promi)' if th == 'dark' else '#FB4C0D'), bool(e.get('leve')) and e.get('mp') == attendu and e.get('mpf') == attendu, '%r · mp %s · reste %s' % ((e.get('texte') or '')[:40], e.get('mp'), e.get('reste')))
+        # ⚑ v146 (Tom, C-132) : le Peaufiner d'une fiche est SOMBRE dans les deux modes — le corps bleu d'un Promi est #0E78F2 en clair aussi :
+        #   « Ma Parole ! » y prend en clair la valeur qu'il a en sombre (#FED0C3 ; #FB4C0D y faisait 1,23:1). Original : sauvegardes/redteam_maparole-avant-v146.py
+        attendu = ORANGE[2]
+        t('C · [%s] sur le Peaufiner : « Ma Parole ! » en %s' % (th, '#FED0C3 (corps bleu d\'un Promi, sombre dans les deux modes)'), bool(e.get('leve')) and e.get('mp') == attendu and e.get('mpf') == attendu, '%r · mp %s · reste %s' % ((e.get('texte') or '')[:40], e.get('mp'), e.get('reste')))
         t('C · [%s] le reste de la phrase n\'est pas l\'orange de Ma Parole !' % th, e.get('reste') not in ORANGE, str(e.get('reste')))
         # D (v133) · dans les dix-huit phrases, l'orange ne porte que les mots décidés
         pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); faux = []

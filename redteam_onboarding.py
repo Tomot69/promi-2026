@@ -29,9 +29,11 @@ le fenêtrage 430 × 932 donne `#device` exactement 390 × 844 (§8, le comparat
 Usage :  python3 redteam_onboarding.py
 """
 # ⚑ v129 (Tom, C-006) — LE TEXTE DE LA DERNIÈRE DIAPOSITIVE EST FIGÉ, EN DUR (original du juge : sauvegardes/redteam_onboarding-avant-v129.py)
-TEXTE_FIN = ['C’est planté.', 'Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.',
-             'Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.',
-             'Le reste se découvre en traçant. La suite t’appartient.']
+# ⚑ v146 (Tom, 11.4) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_onboarding-avant-v146.py) : « C'est planté. » devient « Promi planté ! » ;
+#   le message ne montre d'abord que le titre et la phrase de ton ; le reste vient au PREMIER toucher (lignes courtes), le second mène au compte.
+TEXTE_FIN = ['Promi planté !', 'Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.']
+TEXTE_RESTE = ['Primo, un Promi, c’est ta parole donnée.', 'Deuxio, un Chiche, c’est un coup de culot.', 'Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.',
+               'Le reste se découvre en traçant.', 'La suite t’appartient.']
 DEUXIO_ANGLE = 3.0
 
 import io, json, re, sys, time
@@ -185,6 +187,13 @@ def contraste(pg):
     return bas
 
 
+def revele(pg, cdp, x, y):
+    """v146 (11.4) : le premier toucher fait venir le reste du message ; on attend qu'il soit là"""
+    toucher(cdp, x, y)
+    for _ in range(60):
+        if pg.evaluate("()=>{ const v=document.getElementById('onbV'); return !v || v.getAttribute('data-onb-reste')==='fini' || !document.getElementById('onbReste'); }"): break
+        pg.wait_for_timeout(150)
+    pg.wait_for_timeout(300)
 def toucher(cdp, x, y):
     cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': x, 'y': y}]})
     cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
@@ -366,21 +375,29 @@ def un_theme(pw, theme):
             #   Promi reste jusqu'au toucher, ou au moins quatre secondes, et il dit : Le reste se découvre à ton
             #   rythme. » Ce juge attendait le panneau du compte SANS toucher. Original : sauvegardes/redteam_onboarding-avant-v21.py
             pg.wait_for_timeout(2800)          # 2,6 s déjà passées depuis le trait : on est à 5,4 s
-            fin = pg.evaluate("()=>{const f=document.getElementById('onbFin');return f?{vu:getComputedStyle(f).display!=='none'&&+getComputedStyle(f).opacity>0.5,t:f.innerText}:null}")
+            fin = pg.evaluate("()=>{const f=document.getElementById('onbFin');return f?{vu:getComputedStyle(f).display!=='none'&&+getComputedStyle(f).opacity>0.5,t:f.textContent}:null}")   # v146 : les mots-clés sont en PromiLate, CAPITALES À L'AFFICHAGE (text-transform) — on lit les mots écrits, pas leur rendu
             if not fin or not fin['vu']:
                 ko('O20 le message reste (4 s, puis le toucher)', 'le message n\'est plus là 5,4 s après le trait')
-            elif any(m not in (fin['t'] or '').replace('\u00a0', ' ') for m in TEXTE_FIN):
-                ko('O20 le message reste (4 s, puis le toucher)', 'le message ne dit pas le texte figé en v129 : ' + ' / '.join(m for m in TEXTE_FIN if m not in (fin['t'] or '').replace('\u00a0', ' ')))
+            elif any(m not in re.sub(r'\s+', ' ', (fin['t'] or '')) for m in TEXTE_FIN):     # v146 (11.3) : les mots sont coupés en lignes courtes — on compare les mots, pas les retours à la ligne
+                ko('O20 le message reste (4 s, puis le toucher)', 'le message ne dit pas le texte figé en v146 : ' + ' / '.join(m for m in TEXTE_FIN if m not in re.sub(r'\s+', ' ', (fin['t'] or ''))))
             if pg.evaluate(POIGNEE, '[data-onb="plus-tard"]'):
                 ko('O20 le message reste (4 s, puis le toucher)', 'le panneau du compte est venu sans toucher')
             ok('O20 le message reste (4 s, puis le toucher)')
+            # v146 (11.4) : le premier toucher fait venir le reste — mot pour mot, en lignes courtes
+            d0 = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height*0.45}}")
+            revele(pg, cdp, d0['x'], d0['y'])
+            r_ = re.sub(r'\s+', ' ', pg.evaluate("()=>{const f=document.getElementById('onbFin');return f?[...f.querySelectorAll('.onbv-titre,.onbv-ton,.onbv-l')].filter(e=>getComputedStyle(e).display!=='none'&&getComputedStyle(e).visibility!=='hidden').map(e=>e.textContent).join(' '):''}"))   # les lignes VISIBLES, leurs mots écrits
+            if any(m not in r_ for m in TEXTE_RESTE): ko('O20 le message reste (4 s, puis le toucher)', 'au premier toucher, le reste ne dit pas : ' + ' / '.join(m for m in TEXTE_RESTE if m not in r_))
             # ⚑ v129 (Tom) — « Deuxio » : le seul mot penché, de 3° (± 0,5) ; aucune autre inclinaison sur la diapositive (ni transformation, ni italique)
             dx = pg.evaluate("""()=>{ const f=document.getElementById('onbFin'); if(!f) return null; const out={deux:null, autres:[]};
               [...f.querySelectorAll('*')].forEach(e=>{ const cs=getComputedStyle(e), tr=cs.transform, it=cs.fontStyle; let ang=0;
                 if(tr&&tr!=='none'){ const m=tr.match(/matrix\\(([^)]+)\\)/); if(m){ const v=m[1].split(',').map(parseFloat); ang=Math.atan2(v[2], v[3])*180/Math.PI; if(Math.abs(v[1])>1e-4||Math.abs(v[0]-1)>1e-4||Math.abs(v[3]-1)>1e-4) ang=999; } else ang=999; }
-                if(e.classList.contains('onbv-deux')) out.deux={mot:e.textContent, ang:ang, it:it, police:cs.fontFamily.split(',')[0], poids:cs.fontWeight, couleur:cs.color, pPolice:getComputedStyle(e.parentElement).fontFamily.split(',')[0], pPoids:getComputedStyle(e.parentElement).fontWeight, pCouleur:getComputedStyle(e.parentElement).color};
+                if(e.classList.contains('onbv-k')&&!e.classList.contains('onbv-deux')&&/Primo|Tertio/.test(e.textContent)) (out.pairs=out.pairs||[]).push({police:cs.fontFamily.split(',')[0], poids:cs.fontWeight, couleur:cs.color});
+                if(e.classList.contains('onbv-deux')) out.deux={mot:e.textContent, ang:ang, it:it, police:cs.fontFamily.split(',')[0], poids:cs.fontWeight, couleur:cs.color, pPolice:null, pPoids:null, pCouleur:null};
                 else if(ang!==0 || (it!=='normal')) out.autres.push((e.textContent||'').slice(0,14)+' '+ang.toFixed(1)+'° '+it); }); return out; }""")
             d2 = (dx or {}).get('deux')
+            if d2 and dx.get('pairs'): d2['pPolice'], d2['pPoids'], d2['pCouleur'] = dx['pairs'][0]['police'], dx['pairs'][0]['poids'], dx['pairs'][0]['couleur']   # v146 (11.3) : ses pairs, Primo et Tertio
+            if d2: d2['mot'] = d2['mot'].strip().rstrip(',')
             if not d2 or d2['mot'] != 'Deuxio': ko('O22 « Deuxio » est penché de 3°, et lui seul', 'le mot penché est introuvable : %s' % d2)
             elif abs(abs(d2['ang']) - DEUXIO_ANGLE) > 0.5 or d2['ang'] > 0: ko('O22 « Deuxio » est penché de 3°, et lui seul', 'angle %.2f° (décidé : %.0f° ± 0,5, vers la droite)' % (d2['ang'], DEUXIO_ANGLE))
             elif d2['it'] != 'normal' or d2['police'] != d2['pPolice'] or d2['poids'] != d2['pPoids'] or d2['couleur'] != d2['pCouleur']: ko('O22 « Deuxio » est penché de 3°, et lui seul', 'police, graisse ou couleur différentes du texte : %s' % d2)
@@ -510,6 +527,7 @@ def un_theme(pw, theme):
                 else:
                     tracer(cdp, z2); pg.wait_for_timeout(6800)   # 1,9 s de message + 4 s d'attente
                     dd2 = pg.evaluate(CENTRE)
+                    revele(pg, cdp, dd2['x'], dd2['y'])   # v146 (11.4) : le premier toucher, le reste ; le second, le compte
                     toucher(cdp, dd2['x'], dd2['y']); pg.wait_for_timeout(1500)
                     pt2 = pg.evaluate(POIGNEE, '[data-onb="plus-tard"]')
                     if not pt2:

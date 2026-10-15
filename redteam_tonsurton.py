@@ -286,8 +286,10 @@ with sync_playwright() as p:
             #   (relevé : à « referme », le canevas peint #8FE08F). Original : sauvegardes/redteam_tonsurton-avant-assainissement.py
             ch = pg.evaluate("""()=>{const dp=document.getElementById('detailPoster');
               const e=window._ficheEcran(dp,cur); return e.natCol;}""")
-            r = mesure('dpTrameCv', 300, 44,
-                       champ=hexrgb('#8FE08F' if nom == 'referme' else ch))
+            # ⚑ v146 (Tom, C-118, la marée) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_tonsurton-avant-v146.py) : « le champ garde la
+            #   couleur de sa nature » ; à « le trait se referme » c'est le TRAIT qui passe à l'amande #8FE08F (relevé : data-trait 300,36,#8FE08F,
+            #   champ #82AEF8). Le champ de l'instant est donc la nature dans les trois états.
+            r = mesure('dpTrameCv', 300, 44, champ=hexrgb(ch))
             t('l\'instant · %-8s [%s]' % (nom, th), r and r.get('d'),
               '%s sur %s' % (r.get('hexTrait'), r.get('hexChamp')) if r else '',
               paire=((r or {}).get('hexChamp'), (r or {}).get('hexTrait')))

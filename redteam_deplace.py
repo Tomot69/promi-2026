@@ -57,6 +57,17 @@ with sync_playwright() as p:
         capture(pg, 'planche-v142/deplace-%s-%s-2apres.png' % (F.replace('.html', ''), m))
         G2 = pg.evaluate(OU); e2 = pg.evaluate(ETAT)
         ou = G2.get(a); dist = math.hypot(ou[0] - x1, ou[1] - y1) if ou else 999
+        if m == 'ritournelle':
+            # ⚑ v146 (chef de chantier, Q496) — CONTRAT RÉÉCRIT pour Ritournelle (original : sauvegardes/redteam_deplace-avant-v146.py) : « on garde le cadrage
+            #   de Ritournelle et on répare le déplacement sans y toucher ; si c'est impossible, le déplacement est désactivé dans ce cas, sans message ».
+            #   Une coulée se centre sur sa cellule, pas sur sa graine : impossible sans toucher au cadrage — l'appui long n'attrape rien, la dalle reste.
+            reste = ou and math.hypot(ou[0] - x0, ou[1] - y0) <= 20
+            msg = pg.evaluate("()=>[...document.querySelectorAll('.toast,[role=alert],[role=status]')].filter(e=>e.getBoundingClientRect().width>0&&e.textContent.trim()).length")
+            juge('%s · Q496 · l\'appui long n\'attrape rien, la dalle reste à sa place, aucune fiche, aucun message (déplacement désactivé sous Ritournelle)' % m, n1 == 0 and reste and not e2['fiche'] and msg == 0 and pg.evaluate("()=>!!(window.Toile_tireNon&&Toile_tireNon.ritournelle)"),
+                  'attrapée %s · départ (%.0f, %.0f) → %s · fiche %s · messages %s' % (n1, x0, y0, ou and [round(v) for v in ou[:2]], e2['fiche'], msg))
+            tap(pg, ou[0], ou[1]); pg.wait_for_timeout(1500); e5 = pg.evaluate(ETAT)
+            juge('%s · Q496 · un toucher bref ouvre toujours la fiche' % m, e5['fiche'])
+            juge('%s · aucune erreur de page' % m, not pg.__dict__['erreurs'], pg.__dict__['erreurs'][:2]); ctx.close(); continue
         juge('%s · 1 · appui 0,95 s puis glissé : la dalle est attrapée pendant le geste' % m, n1 >= 3, 'images « attrapée » : %s' % n1)
         juge('%s · 1 · elle finit sous le doigt (≤ 50 pt du lâcher), à plus de 60 pt de son départ' % m, dist <= 50 and ou and math.hypot(ou[0] - x0, ou[1] - y0) >= 60, 'départ (%.0f, %.0f) · lâcher (%.0f, %.0f) · dalle %s' % (x0, y0, x1, y1, ou and [round(v) for v in ou[:2]]))
         juge('%s · 2 · aucune fiche ne s\'ouvre ; les deux autres paroles sont toujours là' % m, not e2['fiche'] and all(q in G2 for q in pids[:3]), 'fiche %s · paroles %d' % (e2['fiche'], len(G2)))

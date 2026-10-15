@@ -10,11 +10,11 @@ La règle, portée EN DUR ici :
   · une part tracée est PLEINE (l'épaisseur du trait, 10 pt) à la couleur de l'état tenu #0B4A2A ; une part non tracée est un trait FIN (2,5 pt)
     dans la teinte de la nature, CONTINU (aucun point : la loi des points) ;
   · la fiche et la dalle restent EN COURS tant que toutes les parts ne sont pas tracées ; la dernière part tracée rend la parole tenue ;
-  · jusqu'à 4 personnes : les initiales sous chaque part ; au-delà : un compte « k SUR n » ;
+  · jusqu'à 4 personnes : les initiales sous les parts TRACÉES seulement (v146, Q487) ; au-delà : un compte « k SUR n » ;
   · toucher le trait ouvre la liste des noms, avec la date de ceux qui ont tracé ;
   · une parole à une seule personne ne change pas (chevron et points, « TRACE POUR TENIR », pas de parts).
-Par banc_tom (WebKit, 390 × 844 @3x, Toile vide, plantation par le + et la pilule de nature ; les personnes passent par `newWhoSel`, ce que posent les
-pastilles). 2, 3 et 6 personnes, deux ordres de tracé. Le verdict vient du CANEVAS de la fiche (l'épaisseur et la couleur du trait, colonne par
+Par banc_tom (WebKit, 390 × 844 @3x, Toile vide). ⚑ v146 : les paroles à plusieurs sont plantées PAR LE VRAI CHEMIN — le +, la pilule, « à qui »,
+chaque prénom ÉCRIT dans la zone en pointillés et validé (le « + », puis Retour), puis le trait. 2, 3 et 6 personnes, deux ordres de tracé. Le verdict vient du CANEVAS de la fiche (l'épaisseur et la couleur du trait, colonne par
 colonne) ; `data-parts` ne sert qu'à savoir où regarder. La part d'une autre personne arrive par `_parts.arrive` (le prototype n'a pas de réseau).
 `--sonde` coupe le peintre des parts : le juge rougit.     Usage : python3 redteam_part.py [fichier.html] [--port=8752] [--sonde]
 """
@@ -48,15 +48,31 @@ def ouvre_fiche(pg, pid):
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(900); pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600)
 def proche(c, ref, tol=70): return bool(c) and abs(c[0] - ref[0]) + abs(c[1] - ref[1]) + abs(c[2] - ref[2]) <= tol
 def plante_a(pg, titre, gens, nature=1):
-    """planter à plusieurs par le vrai chemin (le +, la pilule) ; les personnes choisies sont posées comme le font les pastilles (`newWhoSel`)"""
+    """⚑ v146 (Tom, C-122 : « Rejoue ensuite redteam_part sur ce vrai chemin ») — planter à plusieurs PAR LE VRAI CHEMIN, AU DOIGT : le +, la
+    pilule de la nature, le mot « à qui » de la phrase, la zone en pointillés où l'on ÉCRIT chaque prénom (validé au « + », puis à Retour, en
+    alternance), puis le TRAIT (80 pt ; la règle en demande 60). Avant v146 les personnes étaient posées par `newWhoSel` et la parole plantée
+    par un clic scripté : l'ajout d'une personne, cassé sur l'iPhone, n'était jamais joué. Original : sauvegardes/redteam_part-avant-v146.py"""
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(350); B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(650)
     k = ['promi', 'chiche'][nature]; B.tap_sel(pg, '.acc-pil[data-k=%s]' % k)
     for _ in range(40):
         pg.wait_for_timeout(120)
         if pg.evaluate("k=>{ var s=document.getElementById('createSheet'); return !!(s && s.classList.contains('pp-'+k) && !s.classList.contains('pp-choix') && !s.classList.contains('acc-passe')); }", k): break
-    pg.wait_for_timeout(500)
-    pg.evaluate("a=>{ document.getElementById('fTitle').value=a[0]; window.newWhoSel=a[1].slice(); document.getElementById('fWho').value=a[1].join(', ')||'moi'; window._csEnLair=true; window._csDueISO=null; }", [titre, gens])
-    n0 = pg.evaluate("()=>promises.length"); pg.evaluate("()=>document.getElementById('addPromi').click()"); pg.wait_for_timeout(2600)
+    pg.wait_for_timeout(600)
+    if nature == 0: B.tap_sel(pg, '#csPhrase [data-ph=sens]'); pg.wait_for_timeout(900)
+    B.tap_sel(pg, '#csPhrase [data-ph=qui]'); pg.wait_for_timeout(1000)
+    B.tap_sel(pg, '#createSheet .gn > .ph-add'); pg.wait_for_timeout(250)
+    for i, n in enumerate(gens):
+        pg.keyboard.type(n, delay=25); pg.wait_for_timeout(300)
+        if i % 2 == 0: B.tap_sel(pg, '#createSheet .gn > .ph-add .gn-plus')
+        else: pg.keyboard.press('Enter')
+        pg.wait_for_timeout(750)
+    pg.evaluate("()=>{ try{ document.activeElement && document.activeElement.blur(); }catch(e){} }"); pg.wait_for_timeout(400)
+    pg.evaluate("a=>{ document.getElementById('fTitle').value=a; try{ if(window._phrase){ _phrase.titre=a; } }catch(e){} window._csEnLair=true; window._csDueISO=null; }", titre); pg.wait_for_timeout(300)
+    n0 = pg.evaluate("()=>promises.length")
+    z = pg.evaluate("()=>{ const c=document.getElementById('planterZone'); if(!c) return null; const r=c.getBoundingClientRect(), d=document.getElementById('device').getBoundingClientRect(), k=d.width/390; return r.width>20?[(r.left-d.left)/k,(r.top-d.top)/k,r.width/k,r.height/k]:null }")
+    if z:
+        y = z[1] + z[3] * 0.45; B.glisse(pg, [[40 + 80 * i / 10.0, y] for i in range(11)], pas=60)
+    pg.wait_for_timeout(3400)
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500)
     return n0, pg.evaluate("()=>promises.length"), pg.evaluate("()=>{ var p=promises[promises.length-1]; return {id:p.id, who:p.who, chiche:!!p.chiche, status:p.status}; }")
 def etat_fiche(pg, nom, n, faites, natcol, initiales=None):
@@ -73,7 +89,11 @@ def etat_fiche(pg, nom, n, faites, natcol, initiales=None):
     tenue = 'f-tenue' in L['cls'] or 'TENU' in L['quand'].upper()
     juge('%s : la fiche reste en cours' % nom, not tenue, 'état « %s »' % L['quand'])
     if n <= 4:
-        juge('%s : les initiales sous chaque part' % nom, (initiales is None or P['textes'] == initiales) and all(m['encre'] > 12 for m in L['mesures']), 'déclarées %s · encre sous les parts %s' % (P['textes'], [m['encre'] for m in L['mesures']]))
+        # ⚑ v146 (chef de chantier, Q487) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_part-avant-v146b.py) : « sur la fiche, initiales seulement sous les
+        #   parts TRACÉES ; les parts non tracées restent anonymes (grille, question 3) ». Sous une part tracée : son initiale, de l'encre ; sous une part non tracée : rien.
+        att = [(initiales[i] if initiales is not None else None) if i in faites else '' for i in range(n)]
+        juge('%s : les initiales sous les parts TRACÉES seulement, rien sous les autres (Q487)' % nom, all((P['textes'][i] == att[i] if att[i] is not None else P['textes'][i] != '') for i in range(n)) and all((m['encre'] > 12) if i in faites else (m['encre'] <= 4) for i, m in enumerate(L['mesures'])),
+             'déclarées %s · encre sous les parts %s' % (P['textes'], [m['encre'] for m in L['mesures']]))
     else:
         juge('%s : le compte « %d SUR %d »' % (nom, len(faites), n), P['textes'] == ['%d SUR %d' % (len(faites), n)] and L['centre'] > 40, 'déclaré %s · encre au centre %s' % (P['textes'], L['centre']))
     return L
@@ -148,7 +168,7 @@ with sync_playwright() as p:
     except Exception as ex:
         juge('le juge va au bout (la règle de la part répond partout)', False, str(ex).replace('\n', ' ')[:260])
     juge('aucune erreur de page', not pg.erreurs, pg.erreurs[:2])
-    B.capture(pg, 'scratchpad/v145/part-derniere.png')
+    B.capture(pg, 'scratchpad/v146/part-derniere.png')
     b.close()
 ok = sum(1 for r in res if r[1]); print('\n%d / %d' % (ok, len(res)))
 if ok < len(res): print('KO :', ' · '.join(r[0] for r in res if not r[1])[:1200])

@@ -1,0 +1,27 @@
+OK  A · 1 parole(s) : la Toile relue de la sauvegarde porte ses paroles  1
+OK  A · 1 parole(s) : dans les 20 mondes, clair → sombre → clair ne change ni une graine, ni un poids, ni la vue, ni une boîte, ni un point de la carte du toucher, ni le rang du gris d'une cellule vide  69 graines sous Pochade, 1 sous Ritournelle
+OK  A · 1 parole(s) : aucune erreur de page  []
+OK  A · 5 parole(s) : la Toile relue de la sauvegarde porte ses paroles  5
+OK  A · 5 parole(s) : dans les 20 mondes, clair → sombre → clair ne change ni une graine, ni un poids, ni la vue, ni une boîte, ni un point de la carte du toucher, ni le rang du gris d'une cellule vide  69 graines sous Pochade, 5 sous Ritournelle
+OK  C · une dalle rendue seule a la même silhouette en clair et en sombre, dans les 20 mondes (3 paroles chacun)  recouvrement le plus faible 1.0000
+OK  F · après un aller-retour clair → sombre → clair, la Toile est la même IMAGE (cellules vides comprises), en clair comme en sombre  part de pixels changés, au pire : 0.00 %
+OK  A · 5 parole(s) : aucune erreur de page  []
+OK  A · 25 parole(s) : la Toile relue de la sauvegarde porte ses paroles  25
+OK  A · 25 parole(s) : dans les 20 mondes, clair → sombre → clair ne change ni une graine, ni un poids, ni la vue, ni une boîte, ni un point de la carte du toucher, ni le rang du gris d'une cellule vide  69 graines sous Pochade, 25 sous Ritournelle
+OK  E · Partager : la Toile qu'on y partage est celle de l'accueil, en clair comme en sombre  Partager ouvert True · accueil/partage {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0} · clair/sombre {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  D · le Studio : à la bascule du thème, sa Toile garde ses graines, ses dalles et le rang de gris de chaque cellule vide  {'n': 72, 'graines': True, 'gris': True, 'publie': True, 'monde': 'encre'}
+OK  A · 25 parole(s) : aucune erreur de page  []
+OK  A · 50 parole(s) : la Toile relue de la sauvegarde porte ses paroles  50
+OK  A · 50 parole(s) : dans les 20 mondes, clair → sombre → clair ne change ni une graine, ni un poids, ni la vue, ni une boîte, ni un point de la carte du toucher, ni le rang du gris d'une cellule vide  69 graines sous Pochade, 50 sous Ritournelle
+OK  A · 50 parole(s) : aucune erreur de page  []
+OK  B · 1 parole(s), Pochade : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  B · 1 parole(s), Ritournelle : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  B · 5 parole(s), Pochade : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  B · 5 parole(s), Ritournelle : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  B · 25 parole(s), Pochade : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  B · 25 parole(s), Ritournelle : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  B · 50 parole(s), Pochade : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0}
+OK  B · 50 parole(s), Ritournelle : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0, 'boites': 0, 'carte': 0, 'gris': 0}
+
+24 / 24
+FIN

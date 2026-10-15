@@ -97,3 +97,10 @@ planche-v145/
 /scratchpad/v145/extrait/
 /scratchpad/v145/etats/
 /scratchpad/v145/etats2/
+# v146 · les images et vidéos ne sont pas versionnées ; le tableau du clair et du sombre (C-131) l'est
+/planche-v146/*
+!/planche-v146/*.md
+# v146 · copies intermédiaires de l app et du moteur, journaux de juges (régénérables)
+/scratchpad/v146/app-avant-*.html
+/scratchpad/v146/moteur-avant-*.js
+/scratchpad/v146/juges/

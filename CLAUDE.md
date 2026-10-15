@@ -82,7 +82,7 @@ de tâches est à rejeter, même si elle est fonctionnellement pratique.
 | **Fil** | le flux d'activité | |
 | **Aura** | l'écran de progression et d'analyse | anciennement « Karma » |
 | **Studio** | le sélecteur de monde graphique | |
-| **Ma Parole !** | l'abonnement payant — **anciennement « Le Cercle »** (v106) | « Avec Ma Parole ! » · « Tu es Membre Ma Parole ! » · « Retourne ta Toile » · bouton « Bon, allez d'accord ». Espace insécable avant « ! ». Clés internes inchangées (`ouvreCercle`, `.s2-cercle`, `isPremium`) |
+| **Ma Parole !** | l'abonnement payant — **anciennement « Le Cercle »** (v106) ; **« Promi planté ! » est la seconde exception nommée au « ! »** (v146) | « Avec Ma Parole ! » · « Tu es Membre Ma Parole ! » · « Retourne ta Toile » · bouton « Bon, allez d'accord ». Espace insécable avant « ! ». Clés internes inchangées (`ouvreCercle`, `.s2-cercle`, `isPremium`) |
 | **Peaufiner** | le tiroir de réglages, en bas de chaque fiche | |
 | **Index** | la liste complète des Promi | |
 | **Pelote** | la boule de l'Aura — le sol, les îles, la fourrure | **« sphère » et « Orbite » sont morts** |
@@ -108,6 +108,16 @@ pour un mot manquant.
 
 ---
 
+## 2 bis. LA RÈGLE DE TÊTE DU DESIGN (Tom, 14 oct. 2026 — C-130). Elle passe avant toutes les règles de design qui suivent.
+
+> **« RIEN DE CHEAP, RIEN DE BORING, TOUT ARTY. Chaque transition, chaque texte, chaque apparition est dessiné. Est refusé d'office : tout ce qui
+> « arrive d'un coup » ; le flou, le dégradé ou le fondu comme moyen d'apparition ; toute forme géométrique parfaite qui se translate ; tout texte noir
+> sur blanc sans hiérarchie. JAMAIS de contour ni de liseré autour des lettres, nulle part. Avant de livrer, une question : est-ce qu'un illustrateur le
+> signerait ? »**
+> Le vocabulaire posé en v146 pour l'appliquer : **les flaques** (`variantes/flaques.js` — une matière qui naît dans des creux tirés au hasard, grossit,
+> se rejoint, se vide ; bord net, aucun dégradé) ; **le tracé des lettres** (`variantes/trace-lettres.js`, C-125, à brancher après l'accord de Tom) ;
+> **la découpe** d'une ligne de texte de gauche à droite, au rythme du tracé, en attendant lui.
+
 ## 3. Les couleurs — la règle des trois tons
 
 Un écran de fiche porte **toujours trois couleurs distinctes** :
@@ -118,6 +128,77 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
+
+### ⚑ v146 (14 oct. 2026) — RETOURS DE TOM SUR v145 : LE GUIDE EN FLAQUES, LES FICHES SOMBRES EN CLAIR, TENIR EN MARÉE, RITOURNELLE À 75 %, L'ONBOARDING, LES NOMS, AUCUN EMOJI. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v136 et v141 (le corps clair des fiches), v145 (Ritournelle, le guide, tenir, les initiales des parts, « Un mot… » absent d'un Cercle), v140 (Enregistrer sur l'accueil).
+> **Validé par Tom : C-117 (la marque de version).**
+> **⚑ C-130, LA RÈGLE DE TÊTE DU DESIGN : voir le §2 bis.**
+> **⚑ L'ORANGE `#FB4C0D` (jeton `--c-orange-depart`, Swift `orangeDepart`) MARQUE LES POINTS DE DÉPART D'UNE ACTION, ET RIEN D'AUTRE : le + de l'accueil
+> (son signe seul), le + qui valide un nom, le départ de la flèche du trait (le chevron, sur TOUTES les fiches, deux thèmes, tous les pinceaux ; page +,
+> onboarding). La même valeur reste celle de « Ma Parole ! » dans les murs (`--orange-maparole`) : deux jetons, deux rôles.**
+> **⚑ EXCEPTION NOMMÉE AU « ! » : « Promi planté ! »** (fin de l'onboarding, 11.4), à côté de « Ma Parole ! ». Espace insécable avant « ! ».
+> **⚑ §8 (C-132, C-133) — TOUTES LES FICHES PRENNENT EN CLAIR EXACTEMENT LEUR VERSION SOMBRE** (Promi `#0E78F2`, Chiche `#7C3F58`, Cercle `#5D4978`) : planter,
+> tenir, tenue, reçue, à plusieurs ; la page + et le Peaufiner sont la fiche. **« En clair, le corps des fiches est la crème `#F7F0DE` » (v136, v141) est
+> MORT.** Où ça vit : `lot-V146-THEME` (`_ficheClair()` rend toujours faux, `_clairPour(el)`, `_enSombre(f)`), les sélecteurs `.light` ont reçu
+> `:not(:where(#detailPoster…,#createSheet…,.th-sombre…))` et les sélecteurs du sombre un jumeau `.light … :where(…)` (outil `scratchpad/v146/p8_theme_css.py`,
+> 647 et 426 sélecteurs), 37 variables reposées sur la fiche (`lot-V146-FICHE-SOMBRE-css`). Juge : **`redteam_fiches_theme.py`** (81 ; 22/79 sur v145).
+> ⚠ **Une règle `.light` écrite après v146 doit porter ce `:not(:where(…))` si elle ne vaut pas pour la fiche.**
+> **⚑ §1 (C-122) — AJOUTER UNE PERSONNE : la zone en pointillés EST le champ** (un champ caché `#gnSaisie` garde le clavier ; plus d'encart) ; un « + » orange,
+> gras, haut comme une capitale du texte saisi, paraît au premier caractère et valide (Retour aussi) ; la ligne reste au-dessus du clavier (`visualViewport`).
+> Juge : **`redteam_ajout_personne.py`** (122 ; 27/102 sur v145).
+> **⚑ §2 (C-131) — LA MÊME TOILE EN CLAIR ET EN SOMBRE.** Cause trouvée : `reGray` / `reGrayStudio` retiraient les gris AU HASARD au changement de thème
+> (le rang du gris est maintenant gardé, `_grisRang`). Le moodboard H est statique (43 paires identiques) ; la dalle différente que Tom a vue venait de la
+> page des variantes de tenir de v145 (deux sessions). Juge : **`redteam_clair_sombre.py`** (24, tableau `planche-v146/clair-sombre.md`).
+> **⚑ §3 (C-135) — LA PELOTE PARAÎT DANS L'IMAGE OÙ L'AURA S'OUVRE** : tout est préparé au repos (atlas, semis, ton, dalles des îles, îles, carte graphique) ;
+> mesuré 1 436 ms → 108 ms à la première ouverture, 324–564 → 39 ms ensuite. Juge : **`redteam_aura_latence.py`**.
+> **⚑ §4 (C-094, 2e RÉCIDIVE) — LE GUIDE EST FAIT DE FLAQUES.** *Cause* : « la demande portait sur une matière vivante, aléatoire et ciblée ; la livraison a été
+> une découpe géométrique trop large qui se déplace ». L'accueil est flouté À L'AVANCE (`Flaques.floute`, 4,8) ; un masque dessiné à chaque image (relief tiré
+> au hasard, niveau d'eau, contour net) : la couverture 1,4 s, l'entourage légèrement imparfait serré sur le Studio (puis le +), 0,7 s, qui se referme sur
+> lui-même — jamais de translation —, la fin en flaques qui se vident. La phrase : 34 px, sans contour, mots-clés en PromiLate (« monde », « Studio » ;
+> « commence »), en clair #291547 et #0E78F2. `lot-V141-GUIDE` réécrit ; vue au quart : `promi-guide-variantes.html?flaques=1`. Juge : **`redteam_guide.py`
+> réécrit** (60). ⚠ L'entourage (10 ms de calcul) se prépare AVANT la couverture, et l'étape passe à l'image suivante : sinon une image de 15 à 21 ms.
+> **⚑ §5–§7** : le + de l'accueil, son signe en orange ; « Enregistrer la Toile » retiré de l'accueil (on enregistre par Partager) ; les noms sous les icônes
+> de l'accueil en `#022140` en clair (en sombre : la crème, `#022140` y ferait 1,27:1 — Q).
+> **⚑ §9 (C-134) — PEAUFINER RESTE OUVERT.** Un choix s'applique sur place ; on sort par un glissement vers le bas (la fiche se découvre au-dessus du panneau) ;
+> plus jamais la Toile depuis Peaufiner : `lot-V146-PEAUFINER` refuse une fermeture générale née d'un geste dans Peaufiner (4 s), sauf supprimer / dissoudre ;
+> chaque refus est gardé et part au Mac avec `?mesure=1` (le chemin de Tom n'a PAS été reproduit au banc). Juge : **`redteam_peaufiner.py`** (19 ; 13/19 sur v145).
+> **⚑ §10 (C-088 rouvert) — RITOURNELLE : DE 1 À 9 PAROLES, CHAQUE COULÉE VISIBLE À 75 % ET LES COULÉES COUVRENT 75 % DE L'ÉCRAN** : chaque coulée bute contre
+> un cadre (`RIT_CADRE`, la zone plateau → barre et 6 pt autour), une parole seule est peinte (le bug du « texte qui flotte »), la part d'une coulée se
+> resserre jusqu'à neuf paroles puis s'ouvre progressivement (`_ritPart`), vue à l'échelle 1, aucune graine sous la barre, deux graines ne se confondent
+> plus (`_ecarte`). Juge : **`redteam_ritournelle.py` réécrit** (63, 1 à 15 paroles). **Q496 : sous Ritournelle, l'appui long ne déplace plus une dalle**
+> (`_TIRE_NON`) — une coulée se centre sur sa cellule, la poser sous le doigt changerait le cadrage.
+> **⚑ §11 (C-123, C-124) — L'ONBOARDING** : à « Promi planté ! », la Toile d'avant se retire en flaques et les voisines naissent une à une (le moteur :
+> `vt0`, `_voisF` — elles poussent, les cellules autour s'écartent) ; les textes grossis (28 px, 80 % de la phrase), violet `#291547` en clair ; le message
+> de fin en lignes courtes, mots-clés en PromiLate, au-dessus des dalles ; le reste vient au toucher (découpe provisoire ; `?trace=1` : le tracé). §12 :
+> « trace pour planter » en `#00341A` en clair. Juge : **`redteam_onboarding_texte.py`** (42).
+> **⚑ §14 (C-118) — TENIR EN MARÉE** (`lot-V146-MAREE`) : le trait vert s'épaissit et devient le haut d'une nappe du même vert, qui descend EN FLAQUES jusqu'à
+> la barre (640 ms), porte « Parole tenue. » à l'encre, puis remonte en flaques à 2 s ; le champ garde sa nature, la dalle sa taille. `?mareeLent=4`.
+> ⚠ La couche ajoutée à `#detailPoster` doit se déclarer visible en `!important` (le crible). Juge : **`redteam_tenir.py`** (28).
+> **⚑ §15 (C-128, C-116) — LES NOMS** (`window._noms`) : entier s'il tient, sinon 6 lettres et « . », prolongé jusqu'à la lettre qui distingue ; un nom se
+> touche (au GESTE : la fiche ne produit pas de `click` au doigt). Les mots : texte = nom = 16 px, visage rond sans cerclage, date sobre. **Q487 : initiales
+> sous les parts TRACÉES seulement. Q486 : dans un Cercle, chaque membre engagé (`avec`) a sa part.** « Un mot… » aussi sur la fiche d'un Cercle, au-dessus
+> de « + Planter dans le Cercle » (`promi_cercle_mots`). **La règle vaut aussi pour la phrase de la fiche (les noms s'y touchent), le sur-titre des cartes de
+> l'Index et la ligne du Fil (`_noms.texte` : coupés seulement s'ils ne tiennent pas ; les noms des cartes ne se touchent pas, Q512).** Juges : **`redteam_noms.py`**
+> (21), `redteam_commentaires` (28), `redteam_part` (55).
+> **⚑ §16 (C-129) — AUCUN EMOJI** : filtrés à l'entrée, au collage et à l'enregistrement, sans message (`lot-V146-EMOJI`, `window._sansEmoji`). Juge : **`redteam_emoji.py`**.
+> **⚑ TROUVÉ EN FIN DE LOT, PAR LA SÉRIE (corrigé, juges posés) :** ① **la ligne « Un mot… » d'un Cercle vit DANS le bloc collant de « + Planter »** (`#cmCale`,
+> `_comm.pose(…, {dans})`) : posée dans la fiche qui défile, elle partait avec le fil et recouvrait ses cartes (pris par `redteam_joignable`) ; **un Cercle
+> sans parole n'a pas la ligne** (16 pt seulement : elle recouvrait l'état et poussait « + Planter » sous le bandeau ; Q511) ; **le nom d'un Cercle n'est
+> jamais abrégé** (la règle des noms vaut pour les pseudos). Juges : `redteam_cercle_tom` (+2), `redteam_noms` (+2). ② **Le bandeau Peaufiner n'est pas un
+> mur** : le test du mur acceptait « tout ce qui est dans la même fiche » — une rangée réservée passée sous le bandeau faisait monter une phrase au toucher
+> du bandeau et, la toute première fois, l'offre s'ouvrait seule. Juge : `redteam_peaufiner` F (+2). ③ **Le garde de C-134 refuse aussi un `closeAll` de
+> SCRIPT** dans les 4 s d'un geste fait dans Peaufiner : **un juge qui ferme tout après Peaufiner appelle d'abord `window._peaufSortie()`** (sinon la fiche
+> suivante s'ouvre sous un Peaufiner resté ouvert — `redteam_fiches_theme`, `redteam_gens` y ont perdu des contrôles). ④ **Le résolveur d'état de la
+> fiche (`_ficheEcran`) sert aussi les CARTES** (Index, Fil, fiche d'une personne, par une « fausse fiche » sans nœud) : depuis C-132 il répondait
+> « sombre » pour elles aussi — en clair, leurs libellés d'état sortaient à l'encre au lieu de l'orange et du violet (pris par `redteam_couleurs_ref`).
+> Il ne force le sombre que pour un vrai nœud (la fiche, la page +). ⑤ **Le « + » qui valide un nom ne prend plus le focus** : le champ le perdait
+> 30 ms à chaque toucher (clavier qui clignote, lettres perdues) — `redteam_ajout_personne` (+ « le champ ne perd jamais le focus »).
+> ⑥ **La préparation de la Pelote au repos (C-135) suit la règle des tâches de fond de v143 : jamais dans les 6 s qui suivent « tenir »** — elle
+> repartait ~3,2 s après le lever, par étapes de 240 à 306 ms (un toucher y attendait 0,3 s ; `redteam_fluide` 5 : 306–491 ms → 30 ms).
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v146.py`) : `redteam_onboarding` (le texte de 11.4, les
+> mots-clés en PromiLate, deux touchers), `redteam_onb_sorties`, `redteam_maparole` (C : le corps sombre en clair aussi), `redteam_murs`, `redteam_tonsurton`
+> (à « referme » le champ garde sa nature, le trait passe à l'amande), `redteam_couleurs_ref` (E13 : en clair les fiches et la page + se comparent à la
+> référence sombre ; E14 : l'orange du départ ; E15 : les noms de la barre), `redteam_volume`, `redteam_decisions`, `redteam_guide`, `redteam_ritournelle`,
+> `redteam_deplace`, `redteam_cercle_tom`, `redteam_gens`. `banc_rendu` refigé pour Ritournelle seul (§10) : les 266 autres images au pixel.
 
 ### ⚑ v145 (13 oct. 2026) — RETOURS DE TOM SUR IPHONE (« RIEN NE CHANGE ») : LA VERSION QUE VOIT L'iPHONE, LA TOILE REMPLIE, RITOURNELLE RENDUE À SON CADRAGE D'AVANT. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v139 à v144 (Ritournelle) et v144 (la fluidité de la Toile, C-112).
 > **Validés par Tom sur iPhone : C-110 (la main seulement sur une fiche à tenir, à 3 s), C-113 (la Pelote fluide sous le doigt). Q473, Q474 acceptées.**

@@ -278,6 +278,20 @@ non-lus, aucune pastille, aucune relance** n'y est attaché (grille anti-coercit
 récent, avec le prénom et la date. Côté serveur : une sous-collection `comments` par parole, écriture par les personnes de la parole
 seulement, ajout seul (ni modification ni suppression dans ce lot — à décider par Tom).
 
+### 1.10 Les noms, les mots d'un Cercle, aucun emoji (v146 — C-128, C-116, C-129, §17)
+
+- **Un nom affiché** (partout sauf le sélecteur des personnes) : entier s'il tient dans la place de l'endroit ; sinon 6 lettres et « . » ; si un autre nom présent
+  partage le même début, on prolonge jusqu'au premier caractère qui les distingue (Christo. / Christi.). Toucher un nom ouvre la fiche de la personne. Rien n'est
+  stocké : c'est une règle d'affichage (`window._noms` dans le prototype).
+- **La date d'un mot** : « à l'instant » (< 1 min), « il y a N min » (< 1 h), « il y a N h » (le même jour), « hier », puis « 12 oct. » ; au-delà d'un an, l'année.
+- **Les mots d'un Cercle** : une liste par Cercle, `{t, d, by}` comme les commentaires d'une parole (prototype : `promi_cercle_mots`, par clé de Cercle). Firebase :
+  `cercles/{id}/mots/{motId}`, lisibles et écrits par les membres seuls.
+- **Q486 · qui tient sa part dans un Cercle** : chaque membre ENGAGÉ dans la parole (`avec`) et moi. **Q487** : la fiche ne montre l'initiale que sous une part TRACÉE.
+- **Aucun emoji** : à la saisie (Swift : filtrer dans `TextField`/`TextEditor` à chaque changement, sans message) et à l'écriture (règles Firebase : refuser une
+  chaîne qui contient l'un de ces caractères). La liste : `\p{Extended_Pictographic}`, `\p{Emoji_Modifier}` (teintes de peau), `\p{Regional_Indicator}`
+  (drapeaux), U+200D (ZWJ), U+FE0E, U+FE0F (sélecteurs), U+20E3 et la touche entière `[0-9#*]\uFE0F?\u20E3`, U+E0020–U+E007F (étiquettes). Champs : le titre,
+  le nom d'une personne, le prénom, un mot, la note, le nom d'un Cercle.
+
 ## 2. Le Chiche — ce qui lui est propre
 
 Un Chiche est une parole (`§1`) avec `chiche:true`, `phraseSens:'chiche'`, `who` = **qui je défie**, `avec` = **avec qui** (facultatif).

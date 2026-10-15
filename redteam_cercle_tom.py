@@ -27,7 +27,8 @@ def juge(nom, cond, detail=''):
 HIT = """(kind)=>{ let sx=0,sy=0,n=0; for(let y=110;y<700;y+=4)for(let x=4;x<386;x+=4){const h=Toile.hit(x,y); if(h&&(kind==='nuee'?h.kind==='nuee':h.pid!=null)){sx+=x;sy+=y;n++;}} return n?[sx/n,sy/n,n]:null; }"""
 COTES = """()=>{ const dv=document.getElementById('device').getBoundingClientRect(),k=dv.width/390; const R=e=>{ if(!e) return null; const r=e.getBoundingClientRect(); return [(r.top-dv.top)/k,(r.bottom-dv.top)/k]; };
   const cartes=[...document.querySelectorAll('#dpNueeFil .nf-item')].map(R);
-  return {bandeau:R(document.getElementById('dpdTog')), bouton:R(document.getElementById('nfAdd')), cartes:cartes, n:cartes.length, scroll:document.getElementById('detailPoster').scrollTop}; }"""
+  const L=document.getElementById('cm5Ligne'); let au=null; if(L){ const q=L.getBoundingClientRect(), h=document.elementFromPoint(q.left+60, q.top+q.height/2); au=!!(h&&L.contains(h)); }
+  return {bandeau:R(document.getElementById('dpdTog')), bouton:R(document.getElementById('nfAdd')), ligne:R(L), ligneAuDoigt:au, cartes:cartes, n:cartes.length, scroll:document.getElementById('detailPoster').scrollTop}; }"""
 STYLE = """(sel)=>{ const e=[...document.querySelectorAll(sel)].find(x=>x.getBoundingClientRect().height>0); if(!e) return null; const c=getComputedStyle(e), p=e.parentElement, cp=getComputedStyle(p), a=getComputedStyle(p,'::before'), dv=document.getElementById('device').getBoundingClientRect(),k=dv.width/390, r=e.getBoundingClientRect(), rp=p.getBoundingClientRect();
   const al=s=>{ const m=/rgba?\\(([^)]+)\\)/.exec(s); if(!m) return 1; const t=m[1].split(','); return t.length>3?parseFloat(t[3]):1; };
   return {taille:c.fontSize, graisse:c.fontWeight, chasse:c.letterSpacing, casse:c.textTransform, police:c.fontFamily.split(',')[0], couleur:c.color, contourVisible:(parseFloat(cp.borderTopWidth)>0&&al(cp.borderTopColor)>0.02), fondVisible:al(cp.backgroundColor)>0.02, corbeille:a.width+' '+a.backgroundColor, centre:Math.round(((r.left+r.right)/2-(rp.left+rp.right)/2)/k), texte:e.textContent.trim().toUpperCase()}; }"""
@@ -72,6 +73,10 @@ with sync_playwright() as p:
         d = pg.evaluate(COTES)
         if '--planche' in sys.argv: capture(pg, 'planche-v142/cercle-%s-%s-defile.png' % (F.replace('.html', ''), th))
         juge('[%s] le fil défilé : le bandeau reste à 760 → 844 et le bouton 12 pt au-dessus' % th, d['bandeau'] and pres(d['bandeau'][0], 760) and pres(d['bandeau'][1], 844) and d['bouton'] and pres(d['bandeau'][0] - d['bouton'][1], 12), 'défilement %s · bandeau %s · bouton %s' % (d['scroll'], d['bandeau'] and [round(v, 1) for v in d['bandeau']], d['bouton'] and [round(v, 1) for v in d['bouton']]))
+        # v146 (§17, chef de chantier) : la ligne « Un mot… » d'un Cercle se tient 8 pt au-dessus de « + Planter dans le Cercle », au repos ET fil défilé
+        # (posée dans la fiche qui défile, elle partait avec le fil et recouvrait ses cartes — pris par redteam_joignable)
+        juge('[%s] fil long, au repos : la ligne « Un mot… » est 8 pt au-dessus de « + Planter », 56 pt de haut, au doigt' % th, c.get('ligne') and c['bouton'] and pres(c['bouton'][0] - c['ligne'][1], 8) and pres(c['ligne'][1] - c['ligne'][0], 56) and c.get('ligneAuDoigt'), 'ligne %s · bouton %s · au doigt %s' % (c.get('ligne') and [round(v, 1) for v in c['ligne']], c['bouton'] and [round(v, 1) for v in c['bouton']], c.get('ligneAuDoigt')))
+        juge('[%s] fil défilé de 260 pt : la ligne « Un mot… » reste 8 pt au-dessus de « + Planter », au doigt' % th, d.get('ligne') and d['bouton'] and pres(d['bouton'][0] - d['ligne'][1], 8) and d.get('ligneAuDoigt'), 'ligne %s · bouton %s · défilement %s' % (d.get('ligne') and [round(v, 1) for v in d['ligne']], d['bouton'] and [round(v, 1) for v in d['bouton']], round(d['scroll'])))
         # « Dissoudre le Cercle » : le dessin de « Supprimer ce Promi »
         tap(pg, 150, 802); pg.wait_for_timeout(2200); pg.evaluate(BAS); pg.wait_for_timeout(1000)
         ds = pg.evaluate(STYLE, '#npDiss .np-lab')

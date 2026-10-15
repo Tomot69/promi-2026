@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Promi — le tracé des lettres</title>
+<!-- promi-trace-lettres.html — LA PAGE DE DÉMONSTRATION DU TRACÉ DES LETTRES (C-125). Rien n'est branché dans l'app : Tom juge ici, sur son iPhone.
+     Le module : variantes/trace-lettres.js ; les chemins : variantes/trace-chemins-gilbert.js (engendrés par scratchpad/v146/trace/chemins.py).
+     Les faces sont celles de l'app (variantes/polices.css). Interface sobre : ni dégradé, ni ombre, ni opacité. -->
+<link rel="stylesheet" href="variantes/polices.css">
+<style>
+:root{--fond:#F7F0DE;--encre:#291547;--pale:#E4D7BB;--sourd:#6E6350}
+body.sombre{--fond:#050302;--encre:#F7F0DE;--pale:#2B2420;--sourd:#A2947C}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--fond);color:var(--encre);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%}
+body{font-family:Atkinson,system-ui,sans-serif;font-size:14px;line-height:20px}
+#page{width:100%;max-width:390px;margin:0 auto;padding:28px 24px 190px}
+h1,h2,.lab{font-family:Gilbert,system-ui,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.02em;margin:0}
+h1{font-size:22px;line-height:28px}
+h2{font-size:15px;line-height:20px;margin:44px 0 6px}
+.note{margin:6px 0 14px;color:var(--sourd)}
+.cadre{position:relative;display:block;width:100%;border:2px solid var(--encre);border-radius:30px;background:none;color:inherit;padding:0;margin:0;font:inherit;text-align:left;cursor:pointer;overflow:hidden}
+/* la scène : les textes de l'onboarding, à leurs cotes (bloc de 342 de large, ici 338 dans le cadre) */
+#scene{height:424px}
+#scBloc{position:absolute;left:18px;top:26px;width:302px}
+#scTitre{font-family:Gilbert;font-weight:700;font-size:35px;letter-spacing:-1.05px;line-height:44px;min-height:44px}
+.sc-p{font-family:Gilbert;font-weight:700;font-size:16px;letter-spacing:.01em;line-height:23px;margin-top:20px}
+#scP1{margin-top:33px}
+#scGuide{position:absolute;left:18px;top:128px;width:302px;font-family:Gilbert;font-weight:700;font-size:30px;line-height:1.16;text-align:center}
+.invite{position:absolute;left:0;right:0;bottom:16px;margin:0;text-align:center;font-family:Gilbert;font-weight:700;font-size:12px;letter-spacing:.04em;color:var(--sourd);text-transform:uppercase;pointer-events:none}
+.etat{margin:10px 0 0;font-family:Gilbert;font-weight:700;font-size:12px;letter-spacing:.04em;text-transform:uppercase;color:var(--sourd);min-height:20px}
+/* les deux loupes : départ en haut, départ en bas */
+.loupes{display:flex;gap:12px}
+.loupe{position:relative;flex:1 1 0;min-width:0;height:252px;border:2px solid var(--encre);border-radius:30px;background:none;color:inherit;padding:0;margin:0;font:inherit;cursor:pointer;overflow:hidden;text-align:center}
+.loupe .lab{position:absolute;left:0;right:0;top:12px;font-size:11px;line-height:14px}
+.lp-zone{position:absolute;left:0;right:0;top:30px;height:176px}
+.lp-fantome,.lp-glyphe{position:absolute;left:0;top:0;width:100%;height:176px;font-family:Gilbert;font-weight:700;font-size:118px;line-height:176px;text-align:center;white-space:nowrap}
+.lp-fantome{color:var(--pale);display:none}
+body.chemins .lp-fantome{display:block}
+.lp-chemin{position:absolute;left:0;top:0;width:100%;height:176px;pointer-events:none;z-index:3;display:none}
+body.chemins .lp-chemin{display:block}
+.lp-info{position:absolute;left:8px;right:8px;bottom:10px;font-family:Gilbert;font-weight:700;font-size:10.5px;line-height:13px;letter-spacing:.03em;text-transform:uppercase;color:var(--sourd);min-height:26px}
+.loupe.sans .lp-glyphe,.loupe.sans .lp-fantome{color:var(--pale)}
+.legende{margin:10px 0 0;color:var(--sourd);display:none}
+body.chemins .legende{display:block}
+/* la grille des glyphes : 46 × 48 pt par case */
+#grille{display:grid;grid-template-columns:repeat(7,1fr);gap:4px 3px;margin-top:16px}
+#grille button{height:48px;min-width:44px;border:2px solid var(--pale);border-radius:24px;background:none;color:var(--encre);font-family:Gilbert;font-weight:700;font-size:22px;line-height:1;padding:0;margin:0;cursor:pointer}
+#grille button[aria-pressed=true]{border-color:var(--encre);background:var(--encre);color:var(--fond)}
+#grille .sep{grid-column:1/-1;height:6px}
+#tout{padding:18px 16px 40px;font-family:Gilbert;font-weight:700;font-size:27px;line-height:40px;min-height:404px}
+#toutTx{position:relative;display:block;word-break:break-all}
+footer{margin-top:44px;color:var(--sourd);font-size:12.5px;line-height:18px}
+footer p{margin:0 0 8px}
+/* la barre des réglages, sous le pouce */
+#barre{position:fixed;left:0;right:0;bottom:0;background:var(--fond);border-top:2px solid var(--encre);padding:8px 10px calc(8px + env(safe-area-inset-bottom));z-index:10}
+#barre .rang{display:flex;gap:6px;max-width:370px;margin:0 auto}
+#barre .rang + .rang{margin-top:6px}
+#barre .nom{flex:0 0 62px;align-self:center;font-family:Gilbert;font-weight:700;font-size:10.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--sourd)}
+#barre button{flex:1 1 0;min-width:44px;height:44px;border:2px solid var(--encre);border-radius:22px;background:none;color:var(--encre);font-family:Gilbert;font-weight:700;font-size:13px;letter-spacing:.02em;text-transform:uppercase;padding:0;margin:0;cursor:pointer;white-space:nowrap}
+#barre button[aria-pressed=true]{background:var(--encre);color:var(--fond)}
+#barre button.large{flex:1.5 1 0}
+</style>
+</head>
+<body class="clair">
+<div id="page">
+  <header>
+    <h1>Le tracé des lettres</h1>
+    <p class="note">Aucun texte n’apparaît d’un bloc. Chaque lettre se trace le long de sa ligne médiane ; le front est une coupe nette, perpendiculaire au chemin. Les réglages sont en bas de l’écran.</p>
+    <p class="note" id="noteReduire" hidden>« Réduire les animations » est actif sur cet appareil : dans l’app, le texte serait posé d’un coup. Cette page trace quand même.</p>
+  </header>
+
+  <section aria-labelledby="t1">
+    <h2 id="t1">Les textes</h2>
+    <p class="note">Toucher le cadre trace le passage suivant : l’écran de fin de l’onboarding, puis les deux phrases du guide.</p>
+    <div class="cadre" id="scene" role="button" tabindex="0" aria-label="Tracer le passage suivant">
+      <div id="scBloc">
+        <div id="scTitre"></div>
+        <div class="sc-p" id="scP1"></div>
+        <div class="sc-p" id="scP2"></div>
+        <div class="sc-p" id="scP3"></div>
+      </div>
+      <div id="scGuide"></div>
+      <p class="invite" id="scInvite">Toucher pour tracer</p>
+    </div>
+    <p class="etat" id="scEtat" aria-live="polite"></p>
+  </section>
+
+  <section aria-labelledby="t2">
+    <h2 id="t2">Un glyphe, de près</h2>
+    <p class="note">Toucher une loupe trace le glyphe, cinq fois plus lentement que le texte. Une lettre commence du côté où la précédente a fini : chaque glyphe a donc deux tracés, quand sa forme le permet.</p>
+    <div class="loupes">
+      <button type="button" class="loupe" data-v="h" aria-label="Tracer, départ en haut">
+        <span class="lab">Départ en haut</span>
+        <span class="lp-zone"><span class="lp-fantome" aria-hidden="true"></span><span class="lp-glyphe"></span><canvas class="lp-chemin" aria-hidden="true"></canvas></span>
+        <span class="lp-info"></span>
+      </button>
+      <button type="button" class="loupe" data-v="b" aria-label="Tracer, départ en bas">
+        <span class="lab">Départ en bas</span>
+        <span class="lp-zone"><span class="lp-fantome" aria-hidden="true"></span><span class="lp-glyphe"></span><canvas class="lp-chemin" aria-hidden="true"></canvas></span>
+        <span class="lp-info"></span>
+      </button>
+    </div>
+    <p class="legende">Rond : le départ. Carré : l’arrivée. Les chiffres : l’ordre des traits, chacun avec sa pointe. Tirets : un repassage sur une partie déjà tracée (invisible, un instant). Pointillés : un saut d’un morceau à l’autre (invisible).</p>
+    <div id="grille" role="group" aria-label="Choisir un glyphe"></div>
+  </section>
+
+  <section aria-labelledby="t3">
+    <h2 id="t3">Tout l’alphabet</h2>
+    <p class="note">Toucher le cadre trace tous les glyphes à la suite.</p>
+    <div class="cadre" id="tout" role="button" tabindex="0" aria-label="Tracer tout l’alphabet"><span id="toutTx"></span></div>
+    <p class="etat" id="toutEtat" aria-live="polite"></p>
+  </section>
+
+  <footer>
+    <p id="mesure"></p>
+    <p>Gilbert Bold — Type With Pride (Ogilvy &amp; Mather), CC BY-SA 4.0. Ses glyphes ne sont pas redessinés : ils sont dévoilés.</p>
+  </footer>
+</div>
+
+<nav id="barre" aria-label="Réglages">
+  <div class="rang"><span class="nom">Vitesse</span>
+    <button type="button" data-vitesse="1" aria-pressed="true">×1</button>
+    <button type="button" data-vitesse="0.25" aria-pressed="false">×0,25</button>
+    <button type="button" data-vitesse="0.05" aria-pressed="false">×0,05</button>
+    <button type="button" class="large" id="bChemins" aria-pressed="false">Chemins</button>
+  </div>
+  <div class="rang"><span class="nom">Car. / s</span>
+    <button type="button" data-cps="40" aria-pressed="false">40</button>
+    <button type="button" data-cps="50" aria-pressed="true">50</button>
+    <button type="button" data-cps="60" aria-pressed="false">60</button>
+    <button type="button" class="large" id="bSombre" aria-pressed="false">Sombre</button>
+  </div>
+</nav>
+
+<script src="variantes/trace-chemins-gilbert.js"></script>
+<script src="variantes/trace-lettres.js"></script>
+<script>
+(function () {
+  'use strict';
+  var $ = function (i) { return document.getElementById(i); };
+  var E = { vitesse: 1, cps: 50, chemins: false };
+  var NAT = { Promi: '#82AEF8', Chiche: '#FFB8D2', Cercle: '#C9A8F5' };
+  function nat(m) { return { t: m, couleur: NAT[m] }; }
+  /* les textes de l'app, au caractère près (apostrophes courbes, espace insécable avant « ! ») */
+  var PASSAGES = window.PASSAGES = [
+    { cible: 'scTitre', nom: 'le titre', segs: [{ t: 'Promi planté !' }] },
+    { cible: 'scP1', nom: 'le premier paragraphe', segs: [{ t: 'Ton premier ' }, nat('Promi'), { t: ', ta première dalle sur ta Toile. Plus qu’à le tenir.' }] },
+    { cible: 'scP2', nom: 'le deuxième paragraphe', segs: [{ t: 'Primo, un ' }, nat('Promi'), { t: ', c’est ta parole donnée. Deuxio, un ' }, nat('Chiche'), { t: ', c’est un coup de culot. Tertio, un ' }, nat('Cercle'), { t: ', c’est tout cela à la fois, mais à plusieurs.' }] },
+    { cible: 'scP3', nom: 'le troisième paragraphe', segs: [{ t: 'Le reste se découvre en traçant. La suite t’appartient.' }] },
+    { cible: 'scGuide', nom: 'le guide, phrase du Studio', efface: true, segs: [{ t: 'Choisis d’abord le monde qui te ressemble, au Studio.' }] },
+    { cible: 'scGuide', nom: 'le guide, phrase du +', efface: true, segs: [{ t: 'Promi, Chiche ou Cercle : tout commence par ce +.' }] }
+  ];
+  var ALPHABET = window.ALPHABET = ['abcdefghijklmnopqrstuvwxyz', 'ABCDEFGHIJKLMNOPQRSTUVWXYZ', 'éèêëàâçùûôîï', '0123456789', '.,\'’!?«»…:+'];
+  function opts(plus) { var o = { cps: E.cps, vitesse: E.vitesse, respecteReduire: false }; for (var k in (plus || {})) o[k] = plus[k]; return o; }
+  function fr(n, d) { return n.toFixed(d == null ? 1 : d).replace('.', ','); }
+  function mesure() {
+    var m = TraceLettres.mesures, q = function (a, p) { if (!a.length) return 0; var s = a.slice().sort(function (x, y) { return x - y; }); return s[Math.min(s.length - 1, Math.floor(s.length * p))]; };
+    if (!m.image.length) return;
+    $('mesure').textContent = 'Mesuré sur cet appareil — préparation d’un glyphe : ' + fr(q(m.prep, 0.5)) + ' ms (pire ' + fr(q(m.prep, 1)) + ') ; travail par image : ' + fr(q(m.image, 0.5)) + ' ms (pire ' + fr(q(m.image, 1)) + '), sur ' + m.image.length + ' images.';
+  }
+
+  /* ── la scène ── */
+  var etape = 0, enCours = null;
+  function effaceScene() { ['scTitre', 'scP1', 'scP2', 'scP3', 'scGuide'].forEach(function (i) { TraceLettres.poseTout($(i)); $(i).textContent = ''; }); }
+  function suivant() {
+    if (enCours) { enCours.finir(); enCours = null; }
+    if (etape >= PASSAGES.length) { etape = 0; effaceScene(); }
+    var P = PASSAGES[etape]; if (P.efface || etape === 0) effaceScene();
+    $('scInvite').hidden = true;
+    var c = enCours = TraceLettres.trace($(P.cible), P.segs, opts()), n = etape; etape++;
+    c.pret.then(function () { if (enCours === c) $('scEtat').textContent = P.nom + ' — ' + c.glyphes.length + ' lettres en ' + fr(c.duree / 1000, 2) + ' s'; });
+    c.fin.then(function () { if (enCours === c) { enCours = null; $('scInvite').hidden = false; $('scInvite').textContent = n + 1 < PASSAGES.length ? 'Toucher pour la suite' : 'Toucher pour reprendre au début'; } mesure(); });
+  }
+  $('scene').addEventListener('click', suivant);
+  $('scene').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); suivant(); } });
+
+  /* ── les loupes ── */
+  var choisi = 'h', loupes = [].slice.call(document.querySelectorAll('.loupe')), LOUPE = 5;   /* la loupe trace cinq fois plus lentement que le texte */
+  function cotes(c) { return c === 'h' ? 'haut' : 'bas'; }
+  function peintChemin(L) {
+    var cv = L.querySelector('.lp-chemin'), gl = L.querySelector('.lp-glyphe'), v = L.getAttribute('data-v'), zone = L.querySelector('.lp-zone');
+    var dpr = window.devicePixelRatio || 1, w = zone.clientWidth, h = zone.clientHeight; cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    var g = cv.getContext('2d'); g.clearRect(0, 0, cv.width, cv.height);
+    if (!E.chemins || L.classList.contains('sans')) return;
+    /* où le navigateur a posé le glyphe : on le demande au module (mesure seule, rien n'est tracé) */
+    var vis = gl.style.visibility, c = TraceLettres.trace(gl, null, { manuel: true, depart: v, respecteReduire: false });
+    c.pret.then(function () { var q = c.glyphes[0]; c.stop(); gl.style.visibility = vis; if (!q || !q.ech) return;
+      TraceLettres.dessineChemin(g, 'Gilbert', choisi, v, q.x * dpr, q.y * dpr, q.ech * dpr, { epaisseur: 1.6 * dpr, repassage: getComputedStyle(document.body).getPropertyValue('--sourd').trim() }); });
+  }
+  function majLoupe(L) {
+    var v = L.getAttribute('data-v'), pc = TraceLettres.parcours('Gilbert', choisi, v), gl = L.querySelector('.lp-glyphe'), info = L.querySelector('.lp-info');
+    TraceLettres.poseTout(gl); gl.textContent = choisi; L.querySelector('.lp-fantome').textContent = choisi;
+    var existe = !!(pc && pc.variante === v); L.classList.toggle('sans', !existe);
+    gl.style.visibility = (E.chemins && existe) ? 'hidden' : 'visible';
+    if (!pc) info.textContent = 'pas de chemin pour ce glyphe';
+    else if (!existe) info.textContent = 'pas de tracé depuis le ' + cotes(v) + ' : il finirait à gauche';
+    else info.textContent = cotes(pc.cote) + ' → ' + cotes(pc.fin) + ' · ' + pc.traits.length + (pc.traits.length > 1 ? ' traits' : ' trait') + (pc.repasse > 1 ? ' · repassage ' + Math.round(100 * pc.repasse / pc.longueur) + ' %' : '') + (pc.sauts.length ? ' · ' + pc.sauts.length + (pc.sauts.length > 1 ? ' sauts' : ' saut') : '');
+    peintChemin(L);
+  }
+  function joue(L) {
+    if (L.classList.contains('sans')) return;
+    var gl = L.querySelector('.lp-glyphe'); gl.style.visibility = 'visible';
+    TraceLettres.trace(gl, null, opts({ depart: L.getAttribute('data-v'), vitesse: E.vitesse / LOUPE })).fin.then(mesure);
+  }
+  loupes.forEach(function (L) { L.addEventListener('click', function () { joue(L); }); });
+  function choisit(car) {
+    choisi = car; [].forEach.call($('grille').querySelectorAll('button'), function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-c') === car ? 'true' : 'false'); });
+    loupes.forEach(majLoupe);
+  }
+  ALPHABET.forEach(function (ligne, i) {
+    if (i) { var s = document.createElement('span'); s.className = 'sep'; $('grille').appendChild(s); }
+    Array.from(ligne).forEach(function (car) {
+      var b = document.createElement('button'); b.type = 'button'; b.textContent = car; b.setAttribute('data-c', car); b.setAttribute('aria-pressed', 'false'); b.setAttribute('aria-label', 'Le glyphe ' + car);
+      b.addEventListener('click', function () { choisit(car); loupes.forEach(function (L, k) { setTimeout(function () { joue(L); }, 60 + k * 30); }); });
+      $('grille').appendChild(b);
+    });
+  });
+
+  /* ── tout l'alphabet ── */
+  var toutSegs = []; ALPHABET.forEach(function (l, i) { toutSegs.push({ t: (i ? '\n' : '') + Array.from(l).join(i === 4 ? ' ' : '') }); });
+  var toutCtl = null;
+  function traceTout() {
+    if (toutCtl) { toutCtl.finir(); toutCtl = null; }
+    var c = toutCtl = TraceLettres.trace($('toutTx'), toutSegs, opts());
+    c.pret.then(function () { $('toutEtat').textContent = c.glyphes.length + ' glyphes en ' + fr(c.duree / 1000, 2) + ' s'; });
+    c.fin.then(function () { if (toutCtl === c) toutCtl = null; mesure(); });
+  }
+  $('tout').addEventListener('click', traceTout);
+  $('tout').addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); traceTout(); } });
+  TraceLettres.trace($('toutTx'), toutSegs, { toutDeSuite: true });
+
+  /* ── les réglages ── */
+  function presse(sel, attr, val) { [].forEach.call(document.querySelectorAll(sel), function (b) { b.setAttribute('aria-pressed', b.getAttribute(attr) === String(val) ? 'true' : 'false'); }); }
+  [].forEach.call(document.querySelectorAll('[data-vitesse]'), function (b) { b.addEventListener('click', function () { E.vitesse = parseFloat(b.getAttribute('data-vitesse')); presse('[data-vitesse]', 'data-vitesse', b.getAttribute('data-vitesse')); }); });
+  [].forEach.call(document.querySelectorAll('[data-cps]'), function (b) { b.addEventListener('click', function () { E.cps = parseFloat(b.getAttribute('data-cps')); presse('[data-cps]', 'data-cps', b.getAttribute('data-cps')); }); });
+  $('bChemins').addEventListener('click', function () { E.chemins = !E.chemins; document.body.classList.toggle('chemins', E.chemins); this.setAttribute('aria-pressed', E.chemins ? 'true' : 'false'); loupes.forEach(majLoupe); });
+  $('bSombre').addEventListener('click', function () { var s = !document.body.classList.contains('sombre'); document.body.classList.toggle('sombre', s); document.body.classList.toggle('clair', !s); this.setAttribute('aria-pressed', s ? 'true' : 'false'); loupes.forEach(peintChemin); });
+
+  /* ?sombre=1, ?chemins=1, ?vitesse=0.05, ?cps=40, ?glyphe=h : pour ouvrir la page dans un état donné */
+  var q = new URLSearchParams(location.search);
+  if (q.get('vitesse')) { E.vitesse = parseFloat(q.get('vitesse')) || 1; presse('[data-vitesse]', 'data-vitesse', q.get('vitesse')); }
+  if (q.get('cps')) { E.cps = parseFloat(q.get('cps')) || 50; presse('[data-cps]', 'data-cps', q.get('cps')); }
+  if (q.get('sombre') === '1') $('bSombre').click();
+  if (TraceLettres.reduit()) $('noteReduire').hidden = false;
+  (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(function () { choisit(q.get('glyphe') || 'h'); if (q.get('chemins') === '1') $('bChemins').click(); });
+  window._demo = { E: E, suivant: suivant, choisit: choisit, joue: joue, loupes: loupes };
+})();
+</script>
+</body>
+</html>

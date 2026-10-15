@@ -30,7 +30,7 @@ html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;
 </head>
 <body>
 <div id="haut">
-  <button data-v="A" aria-label="Variante A">A</button><button data-v="B" aria-label="Variante B">B</button><button data-v="C" aria-label="Variante C">C</button>
+  <button data-v="A" aria-label="Variante A">A</button>
   <span class="sep"></span>
   <button id="bNat" aria-label="Promi ou Chiche">Promi</button><button id="bTh" aria-label="Clair ou sombre">Clair</button><button id="bLent" aria-label="Vitesse">×1</button>
   <span class="sep"></span>
@@ -54,30 +54,8 @@ html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;
     <dt>La dalle, les Noyaux, la ligne « Un mot… »</dt><dd>La dalle grandit en continu. Les Noyaux prennent leurs arcs de fiche tenue sous la marée. La ligne « Un mot… » est emportée par elle.</dd>
   </dl>
 
-  <h2>B · Le fil</h2>
-  <p>Rien ne change de couleur par nappe : tout est mécanique. Le trait est un fil ; quand il se ferme, une secousse le parcourt, il prend le poids de la fiche et descend, et les lignes suspendues à lui suivent, l'une après l'autre. Les mots tournent sur eux-mêmes comme des volets.</p>
-  <dl>
-    <dt>Le trait</dt><dd>Une bosse part du point de jonction et court vers les deux bouts ; derrière elle le trait est amande. Puis il descend de 14 points avec un léger rebond, comme un fil qui prend une charge.</dd>
-    <dt>Le fond</dt><dd>En clair il ne change pas. En sombre, la terre descend derrière le trait comme un store, bord droit, jusqu'à la barre.</dd>
-    <dt>La phrase (le nom)</dt><dd>Suspendue au trait, elle descend avec lui, en retard d'un dixième de seconde, puis tourne une fois sur son axe : elle revient verte.</dd>
-    <dt>Le titre</dt><dd>Il suit le fil, sans tourner : il ne change que de place et d'un cran de taille, dans le même élan.</dd>
-    <dt>La ligne d'état (la date)</dt><dd>« EN COURS » tourne sur son axe comme un volet d'affichage ; au retour le volet porte « TENUE · À L'INSTANT ».</dd>
-    <dt>« Parole tenue. »</dt><dd>Le volet de la consigne tourne et la porte. Deux secondes plus tard il se referme en un filet, qui se rétracte vers son milieu.</dd>
-    <dt>La dalle, les Noyaux, la ligne « Un mot… »</dt><dd>La dalle grandit avec un rebond. Les Noyaux tournent et reviennent avec leurs arcs. La ligne « Un mot… » se referme en un filet qui se rétracte.</dd>
-  </dl>
-
-  <h2>C · Le double</h2>
-  <p>La célébration décidée — une seconde dalle, amande, sous la première — devient le moteur. Le double sort de sous la dalle, grandit jusqu'à remplir le champ, puis rentre. Sous le trait, c'est le geste qui continue : un bord passe de gauche à droite, dans le sens où le doigt a tracé, et réécrit la fiche.</p>
-  <dl>
-    <dt>Le trait</dt><dd>Là où le double le recouvre, il passe à l'encre ; là où le double se retire, il reste amande. Il descend de 14 points pendant le retrait.</dd>
-    <dt>Le fond</dt><dd>Le champ devient amande par la forme même de la dalle, qui grandit ; le corps ne bouge pas en clair. En sombre, le bord qui passe laisse la terre à sa gauche.</dd>
-    <dt>La phrase (le nom)</dt><dd>Le bord la traverse : à sa gauche elle est verte, à sa droite encore à sa couleur d'avant. Elle glisse vers sa place pendant ce temps.</dd>
-    <dt>Le titre</dt><dd>Il glisse à sa place et perd un cran de taille pendant que le bord passe sur lui ; son encre ne change pas.</dd>
-    <dt>La ligne d'état (la date)</dt><dd>« TENUE · À L'INSTANT » est écrit par le bord par-dessus « EN COURS », de gauche à droite.</dd>
-    <dt>« Parole tenue. »</dt><dd>Le bord l'écrit par-dessus la consigne. Un second passage, deux secondes plus tard, l'efface de gauche à droite.</dd>
-    <dt>La dalle, les Noyaux, la ligne « Un mot… »</dt><dd>La dalle grandit au-dessus de son double, puis prend sa taille de fiche tenue quand il rentre. Les Noyaux changent d'arcs au passage du bord ; la ligne « Un mot… » est effacée par lui.</dd>
-  </dl>
-
+  <h2>v146 · La variante A, corrigée, vit dans l'app</h2>
+  <p>Tom a choisi A (« La marée ») avec quatre corrections : plus de liseré, de filet ni de jour sous le trait ; le trait est le fond du bas ; le trait et le vert sont une seule matière ; le vert descend <b>en flaques</b>, vite. Elle est intégrée à l'app (Promi et Chiche, sur la fiche sombre commune) : ouvrir <a href="app.html?mareeLent=4">app.html?mareeLent=4</a> pour la voir au quart de sa vitesse, <a href="app.html">app.html</a> à vitesse réelle. Les variantes B (« Le fil ») et C (« Le double ») sont retirées (v146) ; cette page garde A telle que v145 l'avait dessinée, pour mémoire.</p>
   <h2>Ce que la page ne reprend pas</h2>
   <p>Le bouton photo de la bande, la barre Peaufiner (immobile ici) et la main fantôme. La fiche tenue montrée à la fin est celle que l'app montre « juste après » aujourd'hui. La durée de « Parole tenue. » est celle qui est validée : deux secondes.</p>
   <h2>Mesure sur cet appareil</h2>
@@ -86,7 +64,7 @@ html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;
 <script src="variantes/tenir-donnees.js"></script>
 <script>
 (function(){ 'use strict';
-var Q=new URLSearchParams(location.search), E={v:(Q.get('v')||'A').toUpperCase(), nat:Q.get('nat')||'promi', th:Q.get('th')||'clair', lent:Q.get('lent')?4:1};
+var Q=new URLSearchParams(location.search), E={v:'A', nat:Q.get('nat')||'promi', th:Q.get('th')||'clair', lent:Q.get('lent')?4:1};
 var cv=document.getElementById('toile'), g=cv.getContext('2d'), W=390, H=844, K=1, D=null, IMG={}, SIL=null, BANDE=null, bg=null;
 var AMANDE='#8FE08F', ENCRE='#201908', CREME='#F7F0DE', TAU=Math.PI*2;
 var EP=10, RP=6, ESP=18, MID=195;                          /* le trait : 10 pt ; les points à tracer : Ø 12, tous les 18 ; le milieu */
@@ -190,39 +168,7 @@ var VARIANTES={
     P.passes=[{look:monte?'A':'B', m:monte?m:1, clip:function(){ sousOnde(front, H); }, consigne:monte}, {look:'M', m:monte?m:1, clip:function(){ entreOndes(haut, front); }, parole:{col:ENCRE}, sauf:/^(dpMsg|span@dpMsg)/}];
     P.fin=t>=2200; return P; },
 
-  /* B · LE FIL — une secousse, le poids de la fiche, des volets qui tournent */
-  B:function(t){ var P=depart(), v=MID/400, xr=Math.min(MID, v*t), tA=D.etats.avant.trait, tB=D.etats.tenue.trait;
-    P.trait.segs.push({x0:MID-xr, x1:MID+xr, col:AMANDE}); if(t<520) P.bosse={d:xr, h:9*(1-entree(t/520)), s:20};
-    var sp=ressort((t-260)/1000, 11, 0.38); P.base=lerp(tA.base, tB.base, sp); P.dalle=boite(D.dalle.A, D.dalle.B, ressort((t-260)/1000, 9.5, 0.46));
-    function volet(t0){ var u=(t-t0)/300; return u<=0?{sy:1,look:'A'}:(u>=1?{sy:1,look:'B'}:{sy:Math.abs(Math.cos(Math.PI*u)), look:u<0.5?'A':'B'}); }
-    function pend(dl){ return ressort((t-260-dl)/1000, 10, 0.42); }
-    ORD.forEach(function(k){ if(!estCorps(k)) return; var o={};
-      if(CL_NOY.test(k)){ var w=volet(430); o={m:pend(60), sy:w.sy, look:w.look}; }
-      else if(k==='dptQui'){ var w2=volet(520); o={m:pend(120), sy:w2.sy, look:w2.look}; }
-      else if(k==='dptTitre'){ o={m:pend(170), sy:1, look:t<430?'A':'B'}; if(A[k]&&B[k]&&A[k].f[6]!==B[k].f[6]){ var w3=volet(580); o.sy=w3.sy; o.look=w3.look; } }
-      else if(k==='dptQuand'){ var w4=volet(650); o={m:pend(220), sy:w4.sy, look:w4.look}; }
-      else if(k==='dpMsg'||k==='span@dpMsg'){ var c=borne((t-700)/150), r2=io((t-850)/230); o={m:0, sy:Math.cos(Math.PI/2*c), sx:1-r2, look:'A', filet:(c>=1&&r2<1)?A.dpMsg.bd[1]:null, fleche:c<0.5}; if(k!=='dpMsg') o.filet=null; }
-      else o={m:pend(100), look:'A'};
-      P.el[k]=o; });
-    P.passes=[{parElement:true}];
-    var c1=(t-300)/300; P.consigne={sy:c1<=0?1:(c1<0.5?Math.abs(Math.cos(Math.PI*c1)):0)};
-    var encre=(E.th==='sombre')?CREME:ENCRE, f=borne((t-2050)/150), rf=io((t-2200)/230);
-    if(c1>=0.5) P.parole={col:encre, sy:(c1<1?Math.abs(Math.cos(Math.PI*c1)):1)*Math.cos(Math.PI/2*f), sx:1-rf};
-    if(E.th==='sombre'){ var hb=onde(P.base,P.amp), yb=lerp(P.base+60, 800, sortie((t-260)/700)); if(t>260) P.champs.push({col:D.etats.tenue.corps, clip:function(){ g.beginPath(); chemin(hb,0,W); g.lineTo(W,yb); g.lineTo(0,yb); g.closePath(); }}); }
-    P.fin=t>=2450; return P; },
-
-  /* C · LE DOUBLE — la seconde dalle, amande, remplit le champ ; le geste continue et réécrit la fiche de gauche à droite */
-  C:function(t){ var P=depart(), tA=D.etats.avant.trait, tB=D.etats.tenue.trait, ret=t>=1500;
-    var e1=io((t-40)/220), e2=1-io((t-1960)/220), grand=io((t-40)/560), s=ret?lerp(9,1,io((t-1500)/480)):lerp(1,9,entree((t-240)/420));
-    var u=io((t-1500)/620); P.base=lerp(tA.base,tB.base,u); P.dalle=ret?boite(D.dalle.I,D.dalle.B,u):boite(D.dalle.A,D.dalle.I,grand);
-    var q={s:s, ox:14*e1*e2, oy:12*e1*e2}; if(t>40&&t<2180) P.double=q;
-    P.trait.segs=[{x0:0,x1:W,col:ret?AMANDE:tA.col}]; if(P.double) P.trait.encreSous=q;
-    var xe=W*io((t-250)/620), xe2=W*io((t-1780)/460), m=io((t-300)/720);
-    function gauche(x){ return function(){ g.beginPath(); g.rect(0,0,x,H); }; } function droite(x){ return function(){ g.beginPath(); g.rect(x,0,W-x,H); }; }
-    if(E.th==='sombre'&&xe>0.5) P.champs.push({col:D.etats.tenue.corps, clip:gauche(xe)});
-    var encre=(E.th==='sombre')?CREME:ENCRE;
-    P.passes=[{look:'A', m:m, clip:droite(xe), consigne:true}, {look:'B', m:m, clip:(function(){ var c=gauche(xe); return c; })(), parole:(xe2<W-0.5)?{col:encre, clip:function(){ g.beginPath(); g.rect(Math.max(0,xe2),0,Math.max(0,xe-xe2),H); }}:null}];
-    P.fin=t>=2300; return P; }
+  /* B et C : retirées en v146 (Tom a choisi A) — sauvegardes/promi-tenir-variantes-avant-v146.html */
 };
 
 function dessine(P){ g.setTransform(K,0,0,K,0,0); g.clearRect(0,0,W,H);

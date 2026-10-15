@@ -219,11 +219,25 @@ with sync_playwright() as p:
     # E8 — les écrans qui montrent le corps sombre d'un Promi (fiche Promi non tenue, son Peaufiner, un gardé de côté, la page + d'un Promi,
     #      l'instant, qui part d'une fiche à tenir) ; les mêmes noms qu'en tête de redteam_air
     E8_ECRANS = ('fiche à tenir', 'fiche en cours', 'gardé de côté', 'page +', 'Peaufiner', "l'instant arrive", "l'instant referme", "l'instant après")
+    # E13 (v146, Tom, 14 oct. 2026, C-132) : « les fiches et la page + sont en version sombre dans les deux modes ». En CLAIR, ces écrans-là se
+    #   comparent à la référence SOMBRE (avec les exceptions du sombre) — et à rien d'autre ; tout le reste de l'app garde son clair.
+    #   Original : sauvegardes/redteam_couleurs_ref-avant-v146.py
+    CHROME = re.compile(r'^(#device|#acc\w*|#filDot|#shareBtn|#settingsBtn|#studioBtn|#souffleBtn|#indexBtn|#filBtn|#createBtn|#enrToile)\b')
+    SOMBRES_V146 = ('fiche tenue', 'fiche à tenir', 'fiche en cours', 'fiche chiche', 'chiche lancé', 'gardé de côté', 'page +', 'Peaufiner', 'Nuée', 'Nuée vide',
+                    'Peaufiner Nuée', "l'instant arrive", "l'instant referme", "l'instant après", 'page + Chiche', 'page + Nuée', 'Peaufiner Chiche', 'Nuée défilée', 'Nuée vide défilée')
     def compare_tout(A, B):
         global ecarts, orphelins, compares, cv_ecarts, exceptions, non_peints
-        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; non_peints = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0, 'E6': 0, 'E7': 0, 'E8': 0, 'E9': 0}
+        ecarts = []; orphelins = 0; compares = 0; cv_ecarts = []; non_peints = []; exceptions = {'E1': 0, 'E3': 0, 'E4': 0, 'E5': 0, 'E6': 0, 'E7': 0, 'E8': 0, 'E9': 0, 'E13': 0}
         for cle in A:
             if cle[0] == '__dalles': compare_dalles(cle[1], A[cle], B.get(cle, {})); continue
+            if cle[1] == 'light' and cle[0] in SOMBRES_V146:
+                # ce qui est SOUS la fiche (l'accueil : son plateau, sa barre, le fond de l'appareil) n'est pas la fiche : il garde le clair
+                a, rs, rc = A[cle], B.get((cle[0], 'dark'), {'n': {}, 'c': {}}), B.get(cle, {'n': {}, 'c': {}})
+                fi = {'n': {k: v for k, v in a['n'].items() if not CHROME.search(k)}, 'c': {k: v for k, v in a['c'].items() if not CHROME.search(k)}}
+                ch = {'n': {k: v for k, v in a['n'].items() if CHROME.search(k)}, 'c': {k: v for k, v in a['c'].items() if CHROME.search(k)}}
+                exceptions['E13'] += 1; compare_un((cle[0], 'dark', 'clair'), fi, rs)
+                if ch['n'] and rc['n']: compare_un(cle, ch, rc)
+                continue
             compare_un(cle, A[cle], B.get(cle, {'n': {}, 'c': {}}))
 
     def compare_dalles(th, a, r):
@@ -254,6 +268,11 @@ with sync_playwright() as p:
                     if pr_ in ('color', 'tfill') and 'dptTrace' in k and va == 'rgb(247, 240, 222)' and vr == 'rgb(243, 231, 209)': exceptions['E6'] += 1; continue
                     if pr_ in ('color', 'tfill') and cle[1] == 'dark' and re.search(r's4-(et|eb|nom)\b', k) and va == 'rgb(247, 240, 222)' and vr == 'rgb(221, 77, 35)': exceptions['E6'] += 1; continue
                     if pr_ in ('tshadow', 'shadow', 'bgi') and va is None and VIOLATIONS.search(k): exceptions['E5'] += 1; continue
+                    # E14 (v146, chef de chantier, C-121) : « le signe + passe en orange #FB4C0D, en clair et en sombre. Le signe seul, sans fond ni cercle. »
+                    if pr_ in ('stroke', 'fill', 'color', 'tfill') and va == 'rgb(251, 76, 13)' and re.search(r'^#createBtn\b', k): exceptions['E14'] = exceptions.get('E14', 0) + 1; continue
+                    # E15 (v146, chef de chantier, C-120) : « Studio, Aura, Index et Fil, sous les icônes, prennent le bleu FONCÉ du I clignotant de PROMI » — EN CLAIR
+                    #   seulement (en sombre, #022140 sur la barre fait 1,2:1 : non appliqué)
+                    if cle[1] == 'light' and pr_ in ('color', 'tfill') and va == 'rgb(2, 33, 64)' and re.search(r'^#(studio|souffle|index|fil)Btn > span\.l\b', k): exceptions['E15'] = exceptions.get('E15', 0) + 1; continue
                     if pr_ == 'bgi' and cle[1] == 'dark' and 'auPeloteOmbre' in k and va and va.startswith('radial-gradient(') and re.search(r'rgba\(247, 240, 222, 0\.10[456]\d*\)', va) and va.count('rgba(') == 2 and 'rgba(247, 240, 222, 0)' in va: exceptions['E7'] += 1; continue
                     if cle[1] == 'dark' and cle[0] in E8_ECRANS and va and vr:
                         if '51, 83, 130' in vr and va == vr.replace('51, 83, 130', '14, 120, 242'): exceptions['E8'] += 1; continue          # le corps, et lui seul (v131 : le cobalt ; l'encre de Tropical est retirée)
@@ -297,15 +316,22 @@ with sync_playwright() as p:
                     continue
                 for col in c['dom']:
                     m = min([dE(col[:3], x[:3]) for x in q['dom']] or [99])
+                    # E14 (v146, C-133) : « le départ de la flèche du trait passe en orange #FB4C0D, sur toutes les fiches » — dans le canevas du trait seulement
+                    if m > 2.5 and re.search(r'tenirCv|csTrameCv|ppTrait', k) and dE(col[:3], (251, 76, 13)) <= 40: exceptions['E14'] = exceptions.get('E14', 0) + 1; continue
+                    # E16 (v146, Tom, C-118 — la marée) : « le champ garde la couleur de sa nature » à « le trait se referme » — la référence y peignait le
+                    #   champ en amande. Sur ce seul écran et ce seul canevas : le bleu de la nature (ΔE ≤ 3 de #82AEF8), et la dalle, gardée à sa taille, à ΔE ≤ 10.
+                    if m > 2.5 and cle[0] == "l'instant referme" and k == 'dpTrameCv' and (dE(col[:3], (130, 174, 248)) <= 3 or m <= 10): exceptions['E16'] = exceptions.get('E16', 0) + 1; continue
                     if m > 2.5:
                         cv_ecarts.append((cle, k, 'canevas', 'rgb(%d, %d, %d) %.0f %%' % (col[0], col[1], col[2], 100 * col[3]), 'au plus près ΔE %.1f' % m))
 
 
     compare_tout(A, B)
     suspects = sorted(set(e[0] for e in ecarts + cv_ecarts if e[0][0] != 'dalles seules'))
-    for (nom, th) in suspects:
-        A[(nom, th)] = frais(APP, nom, th); B[(nom, th)] = frais(REF, nom, th)
-    if suspects: print('%d écran(s) repris sur une page fraîche : %s' % (len(suspects), ', '.join('%s[%s]' % (n, t[0]) for n, t in suspects)))
+    for s_ in suspects:
+        nom, th = s_[0], s_[1]
+        if len(s_) > 2: A[(nom, 'light')] = frais(APP, nom, 'light'); B[(nom, 'dark')] = frais(REF, nom, 'dark')   # E13 : le clair de l'app contre le sombre de la référence
+        else: A[(nom, th)] = frais(APP, nom, th); B[(nom, th)] = frais(REF, nom, th)
+    if suspects: print('%d écran(s) repris sur une page fraîche : %s' % (len(suspects), ', '.join('%s[%s]' % (s_[0], 'c→réf. sombre' if len(s_) > 2 else s_[1][0]) for s_ in suspects)))
     compare_tout(A, B)
     b.close()
 
@@ -326,9 +352,13 @@ for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)
 print('%d propriétés comparées · %d écrans × 2 thèmes · %d nœuds sans vis-à-vis (listés, non jugés)' % (compares, len(ECRANS) if not SEUL else len(SEUL), orphelins))
 print('E11 fiche tenue en clair sur la crème (v136, C-059) : %d' % exceptions.get('E11', 0))
 print('E12 le crème des fiches en clair, #EAD9B9 (v139, C-084) : %d' % exceptions.get('E12', 0))
+print('E14 l\'orange du départ d\'une action : le + de l\'accueil, la flèche du trait (v146, C-121, C-133) : %d' % exceptions.get('E14', 0))
+print('E16 à « referme », le champ garde sa nature (v146, C-118) : %d' % exceptions.get('E16', 0))
+print('E15 les noms de la barre au bleu foncé du I, en clair (v146, C-120) : %d' % exceptions.get('E15', 0))
+print('E13 fiches et page + en sombre dans les deux modes (v146, C-132) : %d écran(s) clairs comparés à la référence sombre' % exceptions.get('E13', 0))
 print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 cobalt, corps sombre Promi (v131) %d · E9 lilas éclairci et libellé de suppression (v132) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8'], exceptions['E9']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
-    ec = sorted(set('%s[%s]' % (e[0][0], e[0][1][0]) for e in L))
+    ec = sorted(set('%s[%s]' % (e[0][0], 'c→s' if len(e[0]) > 2 else e[0][1][0]) for e in L))
     print('  ✗ %-8s réf %-34s → app %-34s ×%d   %s' % (pr_, vr[:34], va[:34], len(L), ', '.join(ec[:6]) + (' …' if len(ec) > 6 else '')))
     if LISTE:
         for e in L[:12]: print('        %s [%s] · %s' % (e[0][0], e[0][1], e[1][:90]))

@@ -80,7 +80,7 @@ VISE = {'ajout': 'ajoute', 'croix': 'retire', 'ajouter': '« + ajouter » visibl
 
 
 def ouvre_page(pg, tuile, cle):
-    pg.evaluate("()=>{if(window.closeAll)closeAll();}"); pg.wait_for_timeout(500)
+    pg.evaluate("()=>{ if(window._peaufSortie) window._peaufSortie(); if(window.closeAll) closeAll(); }")   # v146 (C-134) : Peaufiner refuse une fermeture générale juste après un geste en lui — le juge déclare sa sortie; pg.wait_for_timeout(500)
     pg.evaluate("()=>document.getElementById('createBtn').click()"); pg.wait_for_timeout(900)
     # la tuile se choisit ici à la SOURIS : ce contrôle ne juge pas l'écran des choix (défaut noté à part, AUDIT-ACCUEIL)
     pg.evaluate("(i)=>{const t=[...document.querySelectorAll('#createSheet .tile')][i]; if(t) t.click();}", tuile)
@@ -93,7 +93,7 @@ def ouvre_page(pg, tuile, cle):
 
 
 def ouvre_fiche(pg, pid, lab):
-    pg.evaluate("()=>{if(window.closeAll)closeAll();}"); pg.wait_for_timeout(500)
+    pg.evaluate("()=>{ if(window._peaufSortie) window._peaufSortie(); if(window.closeAll) closeAll(); }")   # v146 (C-134) : Peaufiner refuse une fermeture générale juste après un geste en lui — le juge déclare sa sortie; pg.wait_for_timeout(500)
     pg.evaluate("(i)=>openDetail(i)", pid); pg.wait_for_timeout(1500)
     pg.evaluate("()=>{const t=document.getElementById('dpdTog'); if(t) t.click();}"); pg.wait_for_timeout(1000)
     pg.evaluate("""(l)=>{const r=[...document.querySelectorAll('#dpdCorps .s2-reg')].find(r=>((r.querySelector('.s2-lab')||{}).textContent||'').trim()===l);
@@ -169,7 +169,10 @@ def contrats(pg, cdp, nom, ouvrir, page_plus, seuls=None):
             if bon:
                 pa = pg.evaluate(CENTRE, [GN, ':scope > .ph-add'])
                 if pa: doigt(cdp, pa); pg.wait_for_timeout(700)
-                ouvre = pg.evaluate("(sel)=>!!document.querySelector('.gn > .gn-barre input')", GN)
+                # ⚑ v146 (Tom, C-122) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_gens-avant-v146.py) : « + ajouter quelqu'un » n'ouvre plus un
+                #   second encart (`.gn-barre`) ; on écrit DANS la zone en pointillés. « Vivant » = la zone passe en écriture et une entrée a le focus.
+                ouvre = pg.evaluate("(sel)=>{ const z=document.querySelector('.gn > .ph-add.gn-edit'), a=document.activeElement; return !!(z && a && a.tagName==='INPUT' && !document.querySelector('.gn > .gn-barre')); }", GN)
+                pg.evaluate("()=>{ try{ window._gensSaisie && window._gensSaisie.ferme(); }catch(e){} }")
             pris['ajouter'] = not (bon and ouvre)
             t('%s · « + ajouter quelqu\'un » visible et vivant (déborde : %s)' % (nom, e.get('defile')), bon and ouvre,
               '%s · menu d\'ajout %s' % (' '.join(vus), ouvre))

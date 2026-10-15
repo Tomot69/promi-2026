@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+⚑ v146 (Tom, 14 oct. 2026, 11.4) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_onb_sorties-avant-v146.py) : « C'est planté. » devient
+  « Promi planté ! » ; le message ne montre d'abord que le titre et la phrase de ton, le reste vient au premier toucher, le second mène au compte.
 ⚑ v144 (Tom, 12 oct. 2026) — « “Plus tard” retiré, du guide comme de l'onboarding, par décision de Tom : le parcours est court, on ne le passe pas.
   Exception nommée dans redteam_engagement (R6) et dans CLAUDE.md. » Et la main fantôme ne paraît plus sur le trait de l'onboarding (C-110).
   Ce juge vérifie donc : les textes d'avant v140 mot pour mot, AUCUN « Plus tard » à aucune étape (le panneau du compte garde le sien : c'est le
@@ -28,7 +30,8 @@ TEXTES = {   # relevés sur la version d'avant v140 — mot pour mot
  'prénom saisi': 'PromiToi, c’est Camille ?→',
  'parole': 'PromiCamille, donc.Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.',
  'trait': 'PromiCamille, donc.Je me promets de marcher une heurePetite ou grande promesse, elle compte.trace pour planter',
- 'fin': 'C’est planté.Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Le reste se découvre en traçant. La suite t’appartient.',
+ 'fin': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.',   # ⚑ v146 (Tom, 11.4) : « C'est planté. » → « Promi planté ! » ; le reste vient au toucher
+ 'fin-reste': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée.Deuxio, un Chiche, c’est un coup de culot.Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Le reste se découvre en traçant.La suite t’appartient.',
  'compte': 'Garder ta ToilePour la retrouver sur un autre téléphone.Continuer avec AppleContinuer avec GooglePlus tardEn continuant, tu acceptes les Conditions et la Politique de confidentialité.',
 }
 PRINCIPE = ['Promi garde ta parole', 'Une promesse s’écrit en une phrase', 'd’un trait du doigt', 'un second trait le dit', 'Une toute petite pour commencer', 'C’est parti']   # les textes de l'étape retirée
@@ -101,7 +104,11 @@ with sync_playwright() as p:
         pg.wait_for_timeout(2500); s = pg.evaluate(SORTIE)
         juge('aucune main fantôme sur le trait de l\'onboarding, 4 s sans toucher (C-110 : elle ne paraît que sur une fiche à tenir)', not s['main'] and not s['mainNoeud'], 'main : %s' % s['main'])
     trace(pg, cdp); pg.wait_for_timeout(6400); etape(pg, 'fin')
-    d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height*0.36];}"); toucher(cdp, pg, d[0], d[1]); pg.wait_for_timeout(1000)
+    d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height*0.36];}"); toucher(cdp, pg, d[0], d[1])   # v146 (11.4) : le reste vient au toucher
+    for _ in range(60):
+        if pg.evaluate("()=>{ const v=document.getElementById('onbV'); return !v || v.getAttribute('data-onb-reste')==='fini'; }"): break
+        pg.wait_for_timeout(150)
+    pg.wait_for_timeout(300); etape(pg, 'fin-reste'); toucher(cdp, pg, d[0], d[1]); pg.wait_for_timeout(1000)
     etape(pg, 'compte'); decl = bool(pg.evaluate("()=>!!(window.TEXTES_ENGAGEMENT&&TEXTES_ENGAGEMENT.sansPlusTard)")); ctx.close()
     avec = [n for n, c, _ in sorties if c and n != 'compte']; compte_ok = any(n == 'compte' and c for n, c, _ in sorties)
     juge('R6, EXCEPTION NOMMÉE (Tom, v144) — aucun « Plus tard » à aucune des %d étapes du parcours ; le compte garde le sien' % (len(sorties) - 1), len(sorties) >= 6 and not avec and compte_ok and decl, 'avec « Plus tard » : %s · exception déclarée par l\'app : %s' % (avec or 'aucune', decl))

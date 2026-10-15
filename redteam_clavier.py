@@ -13,6 +13,9 @@ Rougi : python3 redteam_clavier.py sauvegardes/app-avant-v114.html
 INJOIGNABLES (l'ancien « à qui », la note par #dpaJoint, le champ visé par #dpsCom/#dpsJoint, le commentaire par #dpbCom, le pseudo
 de l'ancien onboarding). Leur code est RETIRÉ ; le juge exige les TROIS champs qui restent, et tout différé nouveau rougit toujours.
 Original : sauvegardes/redteam_clavier-avant-v118.py
+⚑ v146 (Tom, C-122) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION : « + ajouter quelqu'un » n'ouvre plus un second champ ; on écrit dans la
+zone en pointillés, une entrée invisible garde le clavier. Son focus est exigé SYNCHRONE, à l'ouverture (`saOuvre`) comme après une
+validation (`saValide`), et SANS aucun différé de secours (il n'y en a plus). Original : sauvegardes/redteam_clavier-avant-v146.py
 """
 import io, os, re, sys
 ICI=os.path.dirname(os.path.abspath(__file__))
@@ -22,8 +25,10 @@ S=io.open(F,encoding='utf-8').read()
 EXIGES={
   'nueeNomIn':'le nom du Cercle (v114)',
   'draftTitreIn':'la page + d\'un gardé de côté — le titre (30 ms)',
-  "inp.focus(); }catch(_){} }, 30)":'les gens — « + ajouter quelqu\'un » (30 ms)',
 }
+# v146 — les fonctions dont le focus est exigé DANS le geste, sans différé : (début de la fonction, son nom lisible)
+SYNCHRONES=[('  function saOuvre(host, cfg){', "les gens — la zone « + ajouter quelqu'un » (à l'ouverture)"),
+            ('  function saValide(){', "les gens — la zone « + ajouter quelqu'un » (après une validation : le clavier reste)")]
 # un bloc DIFFÉRÉ : setTimeout(function(){ … }, n) ou requestAnimationFrame(function(){ … }) dont le corps (≤ 200 car.) appelle focus()
 BLOC=re.compile(r"(setTimeout|requestAnimationFrame)\(\s*function\s*\(\)\s*\{(.{0,200}?)\}\s*(?:,\s*(\d+))?\s*\)", re.S)
 diff=[]
@@ -44,6 +49,14 @@ for pos,ctx,corps,ms in diff:
     nom=next((v for k,v in EXIGES.items() if k in ctx), None)
     if nom: print('  ✗ %s — focalisé APRÈS le geste · l.%d' % (nom, lig)); ok=False
     else: print('  ✗ DIFFÉRÉ NOUVEAU · l.%d · %s' % (lig, re.sub(r'\s+',' ',ctx[-160:]))); ok=False
+for deb,nom in SYNCHRONES:
+    i=S.find(deb)
+    if i<0: print('  ✗ non retrouvé :', nom); ok=False; continue
+    j=S.find('\n  function ', i+10); corps=S[i:j if j>0 else i+3000]
+    direct=re.search(r"\.focus\(\{preventScroll:true\}\)", corps) is not None
+    differe=any('.focus(' in m.group(2) for m in BLOC.finditer(corps))
+    if direct and not differe: print('  ✓ %s — dans le geste, sans différé' % nom); vus.add(nom)
+    else: print('  ✗ %s — focus direct %s, différé %s' % (nom, direct, differe)); ok=False
 manque=[v for v in EXIGES.values() if v not in vus]
 for m in manque:
     if not any(m in x for x in []): pass

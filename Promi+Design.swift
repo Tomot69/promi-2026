@@ -386,6 +386,7 @@ extension Color {
         static let orangeMaParole = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — les mots « Ma Parole ! » des murs, et rien d'autre
         static let orangeMaParoleCorps = Color(red: 1.0000, green: 0.4784, blue: 0.3333)   // #FF7A55 — les mêmes, sur les corps sombres de Peaufiner (Chiche, Cercle)
         static let orangeMaParoleCobalt = Color(red: 0.9961, green: 0.8157, blue: 0.7647)   // #FED0C3 — le même orange, éclairci à 3:1 sur le corps bleu #0E78F2 d'un Promi (v134)
+        static let orangeDepart = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — v146 (Tom) : l'orange marque le POINT DE DÉPART d'une action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait)
         static let orange61 = Color(red: 0.9098, green: 0.4392, blue: 0.2353)   // #E8703C
         static let orange62 = Color(red: 0.8784, green: 0.4706, blue: 0.4275)   // #E0786D
         static let orange64 = Color(red: 0.8392, green: 0.5412, blue: 0.3098)   // #D68A4F

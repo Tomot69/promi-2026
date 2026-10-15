@@ -8628,3 +8628,44 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Q494 — À SAVOIR** : `releve-S1-fiches` rend 38 écarts — il les rend aussi sur v144 (taille de la consigne passée à 19 px en v140, couleurs de v122 et v136…) : ce juge n'est plus dans la série depuis plusieurs lots et n'a pas été remis à niveau ici. `redteam_air` : référence REFIGÉE (les paires de « écris un mot », remplacé par la ligne ; la consigne du Chiche lancé à deux ; huit paires de dates du Peaufiner qui changent avec le jour). Aucune paire resserrée.
 - **Q495 — À SAVOIR (C-102, expliqué, non traité)** : `redteam_fluide` reste à 4 ou 5 sur 6, et v144 passé sur le même banc au même moment donne 4 sur 6 : ce lot n'y change rien. Ce qui tombe : ① une tâche de 36 à 56 ms à ≈ 2,76 s après le lever, 4 fois sur 20 — un morceau de la pose de la fiche tenue, quand plus rien ne bouge ; ② 0 à 2 images de 21 à 28 ms sur ≈ 6 500. L'instant actuel (trois états) sera remplacé par la variante de « tenir » que tu choisiras (C-118) : la règle des 20 ms se rejugera à l'intégration.
 - **Q496 — À SAVOIR (C-088 × C-101), CONSÉQUENCE DU RETOUR AU CADRAGE D'ORIGINE** : sous Ritournelle, DÉPLACER une dalle ne tient plus à moins de neuf paroles — la dalle ne finit pas sous le doigt et revient vers sa place au rechargement (`redteam_deplace` 16/18 : les deux contrôles de Ritournelle). Cause : dans une Toile « faite de ses seules paroles », les cellules se partagent tout l'écran et reprennent leur équilibre ; le cadrage d'origine date d'avant « déplacer une dalle » (v142). Mesuré aussi à dix paroles, où le code est celui de v144 : sous Ritournelle la dalle finit à 97 pt du doigt (Esquille : 34 pt ; Pochade : 8 pt) — la faiblesse existait déjà à partir de neuf paroles, le juge de v142 ne plantait que trois paroles. Non corrigé : tu as demandé le cadrage « tel quel ». À toi de dire si déplacer doit marcher sous Ritournelle.
+
+## v146 — retours de Tom sur v145 (14 oct. 2026)
+
+- **Q497 — À TRANCHER PAR TOM (C-127)** : le brief du lot passe de C-126 à C-128 ; le numéro C-127 est gardé au registre sans demande. Une demande manquait-elle ?
+- **Q498 — TEXTE À ÉCRIRE PAR TOM (11.6)** : sous « La suite t’appartient. », il n'y a plus rien ; la phrase voisine est « Le reste se découvre en traçant. »
+  (elle vient juste avant, dans le même paragraphe d'origine). C'est elle que je comprends comme « pas claire » : elle reste mot pour mot, en attendant ton texte.
+  Si tu visais une autre phrase, dis laquelle.
+- **Q499 — À VALIDER (11.7)** : les mots-clés du guide en PromiLate et en bleu Promi — « monde » et « Studio » dans la phrase du Studio, « commence » dans celle du +
+  (le mot qui nomme l'action). Promi, Chiche, Cercle gardent leur couleur.
+- **Q500 — À VALIDER (§7, C-120)** : les noms sous les icônes de l'accueil sont en `#022140` en CLAIR (14,3:1). En SOMBRE ils restent crème : `#022140` y ferait
+  1,27:1 (illisible) ; la planche `planche-v146/PLANCHE-5-accueil.png` montre les deux. Un bleu clair (`#82AEF8`, 9,2:1) serait possible en sombre si tu le veux.
+- **Q501 — À SAVOIR (§9, C-134)** : au banc, aucun choix de Peaufiner ne refermait Peaufiner (échéance, date précise, trait, à-qui, couleur, Ma Parole !, sur la fiche
+  comme sur la page +). Le chemin de ton iPhone n'est donc pas nommé. La règle est posée (toute fermeture générale née d'un geste dans Peaufiner est refusée),
+  et chaque refus est noté avec sa pile : avec `?mesure=1`, il part au Mac (`mesures/appareil.jsonl`). Si tu revois la fiche se fermer, ouvre l'app avec `?mesure=1`.
+- **Q502 — À SAVOIR (§10, Q496)** : sous Ritournelle, déplacer une dalle est DÉSACTIVÉ (l'appui long n'attrape rien, sans message ; le toucher bref ouvre la fiche).
+  Raison mesurée : une coulée se centre sur sa cellule, pas sur sa graine — la poser sous le doigt demanderait de changer le cadrage, que tu as gardé.
+- **Q503 — À VALIDER (§10, C-088)** : pour tenir 75 % de chaque coulée visible et 75 % de l'écran couvert, chaque coulée de la Toile bute contre la zone plateau → barre
+  (6 pt de plus autour) : elle s'y arrondit au lieu d'être coupée par le bord de l'écran. Jusqu'à neuf paroles, une coulée occupe 90 à 100 % de sa cellule
+  (66 à 100 % avant), puis l'écart revient à celui d'avant à dix-neuf. Aucune graine sous la barre ; deux graines ne se confondent plus. Planche 1 à 15 :
+  `planche-v146/PLANCHE-10-ritournelle-1-15.png`.
+- **Q504 — À VALIDER (11.4, §13)** : le reste du message de fin vient au toucher. Le tracé des lettres n'est pas branché (§13 : tu vois d'abord la page) : en attendant,
+  chaque ligne se DÉCOUVRE de gauche à droite, au rythme du tracé (50 caractères par seconde). `?trace=1` montre le vrai tracé en place. Un second toucher mène au compte.
+- **Q505 — À SAVOIR (11.5)** : la première parole de l'onboarding prend maintenant la cellule la plus proche du bas de la Toile (tirée au hasard, elle tombait parfois au
+  milieu, et le message la recouvrait). Le message se pose au-dessus des dalles avec au moins 18 pt d'air ; s'il ne tient pas, son texte se resserre jusqu'à 80 %.
+- **Q506 — À VALIDER (§14, C-118)** : la marée en flaques dure 2,5 s du début à la fin (descente 0,65 s, « Parole tenue. » posé, remontée à 2 s). Le trait
+  s'épaissit (12 → 46 pt) et devient le haut de la nappe : c'est ce qui supprime le jour sous ses creux. Vue au quart : `app.html?mareeLent=4`.
+- **Q507 — À SAVOIR (§14)** : un Cercle n'a pas de geste « tenir » (on tient une parole dans sa propre fiche) : la marée vaut pour les fiches Promi et Chiche,
+  y compris une parole plantée dans un Cercle.
+- **Q508 — À SAVOIR (§15, C-128)** : la règle des noms est posée sur les mots (commentaires), la liste des parts, les Noyaux des fiches et de l'Aura,
+  la phrase de la fiche (les noms y tiennent : entiers, et ils se touchent → la fiche de la personne), le sur-titre des cartes de l'Index et la ligne du Fil
+  (coupés selon la règle quand ils ne tiennent pas). Les initiales des parts restent des initiales.
+- **Q509 — À SAVOIR (§16, C-129)** : les emojis ne sont ni insérés ni enregistrés, sans message. Swift et Firebase : la même liste (portage/SPEC-DONNEES §1.10).
+- **Q510 — À VALIDER (C-130 × Q457)** : la règle de tête dit « jamais de contour autour des lettres, nulle part ». La phrase des murs posée sur la Toile floutée
+  du Studio avait des lettres CERNÉES (v142, Q457 validée) : le contour est retiré. Si elle se lit mal sur certains mondes, il faudra un autre moyen (pas un encart).
+- **Q511 — À VALIDER (§17, C-116)** : sur la fiche d'un Cercle, la ligne « Un mot… » vit dans le bloc collant de « + Planter dans le Cercle » : elle reste 8 pt
+  au-dessus de l'entrée quand on fait défiler le fil (posée dans la fiche, elle partait avec lui et recouvrait les cartes — pris par redteam_joignable).
+  **Un Cercle SANS parole n'a pas la ligne** : entre « encore aucune parole » et « + Planter » il n'y a que 16 pt ; elle aurait recouvert l'état, et sa place
+  poussait « + Planter » sous le bandeau. Elle paraît avec la première parole. Le nom d'un Cercle n'est jamais abrégé (la règle des noms vaut pour les pseudos).
+- **Q512 — À TRANCHER PAR TOM (§15, C-128)** : « toucher un nom mène à la fiche de la personne ». Sur une carte de l'Index et un bandeau du Fil, TOUTE la carte
+  ouvre déjà la fiche de la parole : un nom touchable y ferait deux portes l'une dans l'autre (sur un téléphone, on touche l'une en visant l'autre). Les noms
+  des cartes suivent la règle d'écriture, mais ne se touchent pas. Veux-tu qu'ils se touchent quand même ?

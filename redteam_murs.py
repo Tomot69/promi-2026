@@ -106,7 +106,9 @@ with sync_playwright() as p:
         #   (§3) : l'encre #201908 sur le corps Tropical (valeur en dur), la crème sur un fond sombre, l'encre en clair.
         TROPICAL = 'rgb(138, 203, 232)'
         fond_mur = pg.evaluate("""()=>{let n=document.querySelector('#detailPoster .s2-cercle:not(.v16-seul)'); while(n&&n.nodeType===1){const b=getComputedStyle(n).backgroundColor, m=b.match(/[\\d.]+/g); if(m&&(m.length<4||+m[3]>0.85)) return 'rgb('+m[0]+', '+m[1]+', '+m[2]+')'; n=n.parentNode;} return null}""")
-        attendue = 'rgb(32, 25, 8)' if (th == 'light' or fond_mur == TROPICAL) else ENCRE[th]
+        # ⚑ v146 (C-132) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_murs-avant-v146.py) : le Peaufiner (ici, celui d'une fiche Promi) est SOMBRE
+        #   dans les deux thèmes ; la phrase y suit ce qui est peint sous elle — la crème en clair comme en sombre.
+        attendue = 'rgb(32, 25, 8)' if fond_mur == TROPICAL else ENCRE['dark']
         ok9 = bool(f) and f['fond'] in ('rgba(0, 0, 0, 0)', 'transparent') and f['bord'] in ('0px',) and f['ombre'] in ('none',) and f['lignes'] <= 3 and f['taille'] == f['tailleMP'] and f['couleur'] == attendue and f['dansMur']
         t('9 · la phrase posée sur le flou : centrée dans le mur, sans fond ni trait, ≤ 3 lignes, une taille, %s' % ('encre' if attendue == 'rgb(32, 25, 8)' else 'crème'), ok9, str(f) + ' · fond du mur ' + str(fond_mur))
         # ⚑ CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (§7) — v120, Tom, 2 oct. 2026 : « les mots orange des phrases des murs passent à
@@ -121,10 +123,10 @@ with sync_playwright() as p:
         # ⚑ v121 (Tom) : « #FB4C0D partout, sauf sur les trois corps sombres de Peaufiner : là, ce même orange éclairci jusqu'à 3:1 » → #FF7A55
         # ⚑ v131 (Tom, 5 oct. 2026) : sur le corps cobalt #273CEB d'un Promi, « même teinte OKLCH que #FB4C0D, éclaircie jusqu'à 3:1 » → #FF8664
         #   (3,02:1 ; #FF7A55 n'y fait que 2,79:1). La phrase est mesurée sur le Peaufiner d'une fiche PROMI : c'est cette valeur, en dur.
-        MUR_ORANGE = 'rgb(254, 208, 195)' if th != 'light' else 'rgb(251, 76, 13)'
+        MUR_ORANGE = 'rgb(254, 208, 195)'   # v146 (C-132) : le corps cobalt du Peaufiner, dans les deux thèmes
         kmp = _k(col['mp'], col['fond']) if col['mp'] else 0
         ok7 = col['mp'] == MUR_ORANGE and abs(lum(col['texte']) - lum(col['fond'])) >= DLUM and kmp >= 3.0
-        t('7 · « Ma Parole ! » en #FB4C0D, à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),
+        t('7 · « Ma Parole ! » en #FED0C3 sur le corps cobalt du Peaufiner (deux thèmes, v146), à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),
           'texte %s · Ma Parole %s · fond %s · phrase Δlum %.0f · Ma Parole %.2f : 1' % (col['texte'], col['mp'], col['fond'], abs(lum(col['texte']) - lum(col['fond'])), kmp))
         pg.wait_for_timeout(LECTURE_MAX + 1000); e4b = pg.evaluate(ETAT)
         t('3c · après le temps de lecture, la phrase s\'efface seule (sans ouvrir l\'offre)', not e4b['leve'] and not e4b['offre'], 'levée %s · offre %s' % (e4b['leve'], e4b['offre']))

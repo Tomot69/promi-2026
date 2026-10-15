@@ -1,0 +1,2 @@
+/* v146 — les boîtes des cibles du guide sur l'accueil, relevées sur l'app (scratchpad/v146/accueil_captures.py). */
+window.ACCUEIL_BOITES={"clair": {"studio": [43.5, 734.5, 53, 51], "plus": [159, 724, 72, 72], "aura": [105.09, 734.5, 37.81, 51], "index": [243.88, 734.5, 44.23, 51], "barre": [24, 710, 342, 100]}, "sombre": {"studio": [43.5, 734.5, 53, 51], "plus": [159, 724, 72, 72], "aura": [105.09, 734.5, 37.81, 51], "index": [243.88, 734.5, 44.23, 51], "barre": [24, 710, 342, 100]}};

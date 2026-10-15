@@ -13,13 +13,15 @@ Par banc_tom (WebKit, 390 × 844 @3x), au vrai toucher, en clair et en sombre :
   B · RÉCEPTION : un commentaire qui arrive paraît au-dessus de la ligne (auteur, date, début), sans chiffre ni pastille, et le Fil ne gagne aucun non-lu ;
   C · toucher la ligne ouvre la SAISIE (le champ a le curseur) et le fil des commentaires sous le trait ;
   D · ENVOI : le texte tapé puis Entrée (et par la flèche) est ajouté, signé, daté, en dernier ; le champ est vidé ; la parole le garde ;
-  E · ORDRE : du plus ancien au plus récent, quel que soit l'ordre d'arrivée ; chaque commentaire porte nom et date ;
+  E · ORDRE : du plus ancien au plus récent, quel que soit l'ordre d'arrivée ; chaque commentaire porte nom et date (v146 : la date sobre — « à l'instant »,
+      « il y a 5 min », « hier », « 12 oct. ») ;
+  F · (v146, C-116, C-128) le texte à la taille des noms ; le visage petit, rond, sans cerclage ; le nom se touche (il mène à la fiche de la personne) ;
   F · rien ne se superpose : l'ancien champ « écris un mot » est retiré, la ligne, le dernier mot et la ligne d'état ne se recouvrent pas ;
   G · toucher la bande referme la saisie, la fiche reste ;
   H · ce qui ne change pas : une parole à soi « à tenir », sans commentaire, n'a pas de ligne.
 `--sonde` retire la zone : le juge rougit. Rouge sur v144 (--port=8762).     Usage : python3 redteam_commentaires.py [fichier.html] [--port=8752] [--sonde]
 """
-import sys; sys.path.insert(0, '.')
+import re, sys; sys.path.insert(0, '.')
 from playwright.sync_api import sync_playwright
 import banc_tom as B
 arg = lambda k, d: next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--' + k + '=')), d)
@@ -34,7 +36,7 @@ ET = r"""()=>{ var dv=document.getElementById('device').getBoundingClientRect(),
   if(l){ var q=l.getBoundingClientRect(), e=document.elementFromPoint(q.left+60, q.top+q.height/2); au=!!(e && l.contains(e)); }
   var dq=document.getElementById('dptQuand'), qq=dq?dq.getBoundingClientRect():null, co=document.getElementById('dpCorps');
   return {ligne:r('cm5Ligne'), dernier:r('cm5Dernier'), fil:r('cm5Fil'), auDoigt:au, saisie:!!(s && a===s), valeur:s?s.value:null, motVu:l?(function(){ var m=l.querySelector('.cm5-mot'); return m&&getComputedStyle(m).display!=='none'?m.textContent:''; })():null,
-    uns:[...document.querySelectorAll('#cm5Fil .cm5-un')].map(e=>[e.children[0].textContent, e.children[1].textContent]), etatBas:qq?+((qq.bottom-dv.top)/k).toFixed(1):null, ancien:co?getComputedStyle(co).display:null,
+    uns:[...document.querySelectorAll('#cm5Fil .cm5-un')].map(e=>{ const c=e.querySelector(':scope > div'); return [c?c.children[0].textContent:'', c?c.children[1].textContent:'']; }), etatBas:qq?+((qq.bottom-dv.top)/k).toFixed(1):null, ancien:co?getComputedStyle(co).display:null,
     comm:(typeof cur!=='undefined'&&cur&&cur.comments||[]).map(c=>[c.by,c.t]), fiche:document.getElementById('detailPoster').classList.contains('show'), nonlus:(typeof FEED!=='undefined')?FEED.filter(f=>f.unread).length:null}; }"""
 def fiche(pg, pid):
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(900); pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600)
@@ -65,12 +67,15 @@ with sync_playwright() as p:
             juge('C · [%s] toucher la ligne ouvre la saisie (le champ a le curseur) et le fil des commentaires sous le trait' % th, e.get('saisie') and bool(e.get('fil')) and e['fil']['y'] > 300 and len(e.get('uns', [])) == 1, 'saisie %s · fil %s · %d commentaire(s)' % (e.get('saisie'), e.get('fil'), len(e.get('uns', []))))
             # D · envoi, par Entrée puis par la flèche
             pg.keyboard.type('Oui, au premier rang'); pg.keyboard.press('Enter'); pg.wait_for_timeout(700); e = pg.evaluate(ET)
-            juge('D · [%s] ENVOI par Entrée : ajouté en dernier, signé, daté ; le champ est vidé ; la parole le garde' % th, len(e.get('uns', [])) == 2 and 'Oui, au premier rang' in e['uns'][-1][1] and 'TOM' in e['uns'][-1][0].upper() and 'aujourd' in e['uns'][-1][0].lower() and e.get('valeur') == '' and e['comm'][-1][1] == 'Oui, au premier rang', e.get('uns'))
+            juge('D · [%s] ENVOI par Entrée : ajouté en dernier, signé, daté ; le champ est vidé ; la parole le garde' % th, len(e.get('uns', [])) == 2 and 'Oui, au premier rang' in e['uns'][-1][1] and 'TOM' in e['uns'][-1][0].upper() and ('instant' in e['uns'][-1][0].lower() or 'il y a' in e['uns'][-1][0].lower()) and e.get('valeur') == '' and e['comm'][-1][1] == 'Oui, au premier rang', e.get('uns'))
             pg.keyboard.type('À samedi'); B.tap_sel(pg, '#cm5Ligne .cm5-va'); pg.wait_for_timeout(700); e = pg.evaluate(ET)
             juge('D · [%s] ENVOI par la flèche' % th, len(e.get('uns', [])) == 3 and e['uns'][-1][1] == 'À samedi', e.get('uns', [])[-1:])
             # E · l'ordre : un commentaire plus ancien arrive après coup
             pg.evaluate("id=>_comm.arrive(promises.find(p=>p.id===id),{t:'Je prends les billets',by:'Marion',d:'2026-10-09T08:00:00.000Z'})", p1); pg.wait_for_timeout(600); e = pg.evaluate(ET)
-            juge('E · [%s] ORDRE : du plus ancien au plus récent, chacun avec son nom et sa date' % th, [u[1] for u in e.get('uns', [])] == ['Je prends les billets', 'Promis, j’y serai. Tu gardes une place ?', 'Oui, au premier rang', 'À samedi'] and all('·' in u[0] for u in e['uns']), [u[0] + ' — ' + u[1][:24] for u in e.get('uns', [])])
+            juge('E · [%s] ORDRE : du plus ancien au plus récent, chacun avec son nom et sa date' % th, [u[1] for u in e.get('uns', [])] == ['Je prends les billets', 'Promis, j’y serai. Tu gardes une place ?', 'Oui, au premier rang', 'À samedi'] and all(re.search(r'(instant|il y a|hier|\d+ \w+\.)', u[0]) for u in e['uns']), [u[0] + ' — ' + u[1][:24] for u in e.get('uns', [])])
+            st = pg.evaluate("()=>{ const u=document.querySelector('#cm5Fil .cm5-un'); if(!u) return null; const c=u.querySelector(':scope > div'), nm=c.children[0].querySelector('.nom-lien'), tx=c.children[1], v=u.querySelector('.cm5-vis'); const S=x=>getComputedStyle(x); return {fsNom:nm?parseFloat(S(nm).fontSize):0, fsTxt:parseFloat(S(tx).fontSize), r:v?S(v).borderRadius:'', bord:v?S(v).borderTopWidth:'', ombre:v?S(v).boxShadow:'', contour:v?S(v).outlineStyle:'', w:v?v.getBoundingClientRect().width:0, lien:!!nm}; }")
+            juge('F · [%s] v146 (C-116) : le texte d\'un mot a la taille des noms ; (C-128) le visage est petit, rond, à gauche, SANS cerclage ni bord ni ombre ; le nom se touche' % th,
+                 bool(st) and st['fsNom'] == st['fsTxt'] >= 16 and (st['r'] in ('50%', '9999px') or ('px' in st['r'] and float(st['r'].replace('px', '')) >= st['w'] / 2 - 0.5)) and st['bord'] in ('0px', '') and st['ombre'] in ('none', '') and st['lien'], st)
             B.capture(pg, 'scratchpad/v145/comm-ouvert-%s.png' % th)
             # G · toucher la bande referme la saisie, la fiche reste
             B.tap(pg, 195, 170); pg.wait_for_timeout(900); e = pg.evaluate(ET)

@@ -1,0 +1,26 @@
+<!doctype html><meta charset="utf-8"><title>flaques — essai</title>
+<style>body{margin:0;background:#333;font:12px sans-serif;color:#fff} .c{display:inline-block;position:relative;width:390px;height:844px;margin:6px;vertical-align:top;overflow:hidden;border-radius:30px}
+.c img{position:absolute;left:0;top:0;width:390px;height:844px} .c canvas{position:absolute;left:0;top:0;width:390px;height:844px} .c b{position:absolute;left:8px;top:6px;background:#000;padding:2px 6px;border-radius:6px;z-index:3}</style>
+<div id="z"></div>
+<script src="../../variantes/flaques.js"></script>
+<script>
+(async function(){
+  const q=new URLSearchParams(location.search), th=q.get('th')||'clair', graine=+(q.get('g')||11);
+  const img=new Image(); img.src='../../variantes/accueil-'+th+'.png'; await img.decode();
+  const base=document.createElement('canvas'); base.width=390; base.height=844; base.getContext('2d').drawImage(img,0,0,390,844);
+  const t0=performance.now(); const flou=Flaques.floute(base, 4.8); window.__floute=performance.now()-t0;
+  const etats=(q.get('e')||'c0.06,c0.16,c0.3,c0.45,c0.6,c0.75,c0.9,c1,n0.15,n0.35,n0.6,n0.85,n1,p0.3,p0.7,p1').split(',');
+  const ST=[43.5,744,53,42], PL=[159,724,72,72];
+  window.__ms=[];
+  for(const e of etats){
+    const d=document.createElement('div'); d.className='c'; d.innerHTML='<img src="'+img.src+'"><canvas></canvas><b>'+e+'</b>'; document.getElementById('z').appendChild(d);
+    const cv=d.querySelector('canvas'), S=Flaques.Scene(cv,{l:390,h:844,densite:2,flou:flou,graine:graine});
+    const k=e[0], u=+e.slice(1);
+    if(k==='c'){ S.couvre(u); }
+    else if(k==='n'){ S.couvre(1); S.cible(ST, 4.5, 3); S.net(u); }
+    else if(k==='p'){ S.couvre(1); S.cible(PL, 5, 5, {carre:2.15, irregulier:0.03}); S.net(u); }
+    const r=S.peint(); window.__ms.push([e, +r.ms.toFixed(2), r.bords]);
+  }
+  window.__pret=true;
+})();
+</script>

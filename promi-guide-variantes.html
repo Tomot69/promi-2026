@@ -3,23 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>Promi — le guide : trois variantes</title>
+<title>Promi — le guide : les flaques</title>
 <link rel="stylesheet" href="variantes/polices.css">
 <style>
-/* ⚑ v145 (C-094, RÉCIDIVE — Tom, 13 oct. 2026) : « des zones de flou abstraites qui changent et évoluent du Studio au +, pas un rond net qui se
-   déplace ». Page de variantes, jouable au doigt ; rien n'est intégré dans l'app. LA TECHNIQUE (la même pour les trois) : aucun `backdrop-filter`.
-   L'accueil est flouté UNE FOIS, à trois forces (2,4 · 4,8 · 9,6 pt) ; à chaque image, la MATIÈRE — des taches à bord doux, qui dérivent, se
-   déforment, se rejoignent et se séparent — est dessinée dans un canevas et découpe ces trois images. La zone lisible n'est pas une forme : c'est
-   là où il n'y a pas de matière. Le flou est là dès la première image ; deux taches qui se recouvrent ne floutent pas davantage. */
+/* ⚑ v146 (C-094, 2e RÉCIDIVE — Tom, 14 oct. 2026) — LE GUIDE : DES FLAQUES. Les variantes A, B et C de v145 sont RETIRÉES de cette page
+   (sauvegardes/promi-guide-variantes-avant-v146.html). C'est le guide de l'app, avec les mêmes durées (variantes/flaques.js, `Flaques.GUIDE`),
+   rejouable ici au quart de sa vitesse : promi-guide-variantes.html?flaques=1.
+   « De l'eau qui monterait par en dessous dans du sable, vue du dessous. Des flaques naissent dans les creux, au hasard. Elles grossissent,
+   leurs contours sont abstraits, elles se touchent quand elles sont pleines. » Aucune forme parfaite, aucune translation, rien d'un coup,
+   aucun contour sur les lettres. L'accueil est flouté à l'avance (une fois) ; chaque image dessine le contour du niveau de l'eau. */
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;font-family:Atkinson,system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
-#haut{position:fixed;left:0;right:0;top:0;height:48px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 6px;z-index:5;background:#050302}
-#haut button{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;height:32px;min-width:32px;padding:0 9px;border-radius:16px;border:2px solid #F7F0DE;background:#050302;color:#F7F0DE;-webkit-text-fill-color:#F7F0DE;cursor:pointer;white-space:nowrap}
+#haut{position:fixed;left:0;right:0;top:0;height:48px;display:flex;align-items:center;justify-content:center;gap:6px;padding:0 6px;z-index:5;background:#050302}
+#haut button{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;height:32px;min-width:34px;padding:0 10px;border-radius:16px;border:2px solid #F7F0DE;background:#050302;color:#F7F0DE;-webkit-text-fill-color:#F7F0DE;cursor:pointer}
 #haut button.on{background:#F7F0DE;color:#201908;-webkit-text-fill-color:#201908}
 #haut .sep{width:4px;flex:none}
 #cadre{position:fixed;left:0;right:0;top:48px;bottom:0;display:flex;align-items:center;justify-content:center}
-#scene{position:relative;overflow:hidden;background:#050302;touch-action:none}
-#scene img,#scene canvas{position:absolute;left:0;top:0;width:100%;height:100%;display:block;pointer-events:none}
+#scene{position:relative;overflow:hidden;background:#050302;touch-action:none;border-radius:22px}
+#app{position:absolute;left:0;top:0;width:390px;height:844px;transform-origin:0 0}
+#app img,#app canvas{position:absolute;left:0;top:0;width:390px;height:844px;display:block;pointer-events:none}
+/* la phrase (§11.7) : plus grosse, AUCUN contour ; les mots-clés en PromiLate et en couleur. En clair : #291547, mots-clés #0E78F2, les
+   natures dans leur couleur. En sombre : la crème d'aujourd'hui. */
+#phrase{position:absolute;left:30px;width:330px;margin:0;padding:0;text-align:center;font-family:Gilbert,system-ui,sans-serif;font-weight:700;font-size:34px;line-height:1.14;
+  color:#F7F0DE;-webkit-text-fill-color:#F7F0DE;pointer-events:none;text-wrap:balance}
+#scene.clair #phrase{color:#291547;-webkit-text-fill-color:#291547}
+#phrase .cle{font-family:PromiLate,Gilbert,system-ui,sans-serif;font-weight:400;font-size:.86em;text-transform:uppercase;letter-spacing:.01em}
+#scene.clair #phrase .cle{color:#0E78F2;-webkit-text-fill-color:#0E78F2}
+#scene.clair #phrase .n-promi{color:#0E78F2;-webkit-text-fill-color:#0E78F2}
+/* les teintes de nature de l'onboarding en clair (teinte gardée, 5:1 sur le fond de la Toile — lues dans l'app) */
+#scene.clair #phrase .n-chiche{color:#783C55;-webkit-text-fill-color:#783C55}
+#scene.clair #phrase .n-cercle{color:#614185;-webkit-text-fill-color:#614185}
 #notes{position:fixed;left:0;right:0;top:48px;bottom:0;background:#F7F0DE;color:#201908;overflow:auto;-webkit-overflow-scrolling:touch;padding:22px 20px 60px;display:none;z-index:4;-webkit-user-select:text;user-select:text}
 #notes.vu{display:block}
 #notes h1{font:400 27px/1.1 PromiLate,Gilbert,system-ui;margin:0 0 6px;text-transform:uppercase}
@@ -30,166 +43,91 @@ html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;
 </head>
 <body>
 <div id="haut">
-  <button data-v="A" aria-label="Variante A">A</button><button data-v="B" aria-label="Variante B">B</button><button data-v="C" aria-label="Variante C">C</button>
-  <span class="sep"></span>
-  <button id="bTh" aria-label="Clair ou sombre">Clair</button><button id="bLent" aria-label="Vitesse">×1</button>
+  <button id="bLent" aria-label="Vitesse">×¼</button><button id="bTh" aria-label="Clair ou sombre">Clair</button><button id="bTr" aria-label="Lettres tracées">Tracé</button>
   <span class="sep"></span>
   <button id="bRe" aria-label="Rejouer">Rejouer</button><button id="bNotes" aria-label="Notes">Notes</button>
 </div>
-<div id="cadre"><div id="scene" aria-label="L'accueil de Promi sous le guide. Toucher l'entrée Studio, puis le +."><img id="net" alt=""><canvas id="flou"></canvas><canvas id="dessus"></canvas></div></div>
+<div id="cadre"><div id="scene" class="clair" aria-label="L'accueil de Promi sous le guide."><div id="app"><img id="net" alt=""><canvas id="eau"></canvas><div id="phrase"></div></div></div></div>
 <div id="notes">
-  <h1>Le guide, trois variantes</h1>
-  <p>Le guide ne floute plus tout l'écran pour y percer un rond. Le flou est une matière : plusieurs zones de formes libres et de forces différentes, qui dérivent, se déforment, se rejoignent et se séparent sans arrêt. Ce qu'on lit — l'entrée du Studio, puis le + — n'est pas une forme découpée : c'est l'endroit que la matière laisse libre. Pour passer du Studio au +, rien ne glisse d'un point à l'autre : la matière se réorganise, en 1,5 à 2,5 s.</p>
-  <p>Jouer : au départ l'accueil est entièrement sous la matière (c'est ce qu'on voit à l'instant où l'onboarding se retire : aucune image nette avant le flou). Toucher l'entrée du Studio — ou ailleurs — fait passer au +. Toucher le + retire le guide. Le Studio est à sa taille ; le + grandit de 10 % ; il n'y a pas de « Plus tard ». Les deux phrases sont celles de l'app.</p>
-  <p>La phrase n'est plus au milieu de l'écran : elle se pose à côté de ce qu'elle désigne, ligne après ligne, découverte par un bord qui passe (aucun fondu) ; elle garde son cerne à la couleur du fond pour se lire sur n'importe quelle Toile.</p>
-
-  <h2>A · Les nappes</h2>
-  <p>Six grandes nappes, lentes. Chacune est faite de trois taches qui tournent les unes autour des autres : son bord change en permanence. Elles s'écartent de ce qu'il faut lire ; pour passer au +, elles contournent, une à une, avec un léger retard entre elles.</p>
-  <h2>B · La buée</h2>
-  <p>Une vingtaine de petites cellules qui respirent, comme une buée sur une vitre. Près de ce qu'il faut lire, elles s'évaporent ; ailleurs elles s'épaississent. Pour passer au +, la buée revient sur le Studio cellule après cellule pendant qu'elle se lève autour du +, comme une onde qui traverse l'écran.</p>
-  <h2>C · Le courant</h2>
-  <p>Sept longues traînées qui coulent en biais à travers l'écran, sans jamais s'arrêter. Ce qu'il faut lire est une île que le courant contourne. Pour passer au +, l'île du Studio est recouverte et une autre se forme autour du + : le courant change de lit.</p>
-
-  <h2>La technique, et ce qu'elle coûte</h2>
-  <p>Aucun <code>backdrop-filter</code>. L'accueil au repos est flouté une fois à trois forces — 2,4, 4,8 (le flou des murs) et 9,6 points — et gardé en trois images. À chaque image, la matière est dessinée dans un petit canevas (une tache à bord doux par dessin, quelques dizaines par image) et sert de découpe à ces trois images, posées l'une sur l'autre de la plus faible à la plus forte. Ce que cela règle : le flou est visible dès la première image dans Safari ; deux zones qui se recouvrent ne se cumulent pas (la plus forte gagne, sans dépasser sa force) ; il n'y a pas de disque plus clair autour du +, puisque rien n'est découpé autour de lui.</p>
-  <p>Dans l'app, l'accueil serait flouté de la même façon au moment où le guide s'arme (la Toile est un canevas ; le plateau et la barre sont repeints depuis leurs cotes). La Toile ne bouge pas pendant le guide : ses mouvements de repos attendent déjà qu'aucun écran ne la couvre.</p>
+  <h1>Le guide : les flaques</h1>
+  <p>L'eau monte par en dessous dans le sable. Un relief est tiré au hasard à chaque étape : une dizaine de creux, semés loin les uns des autres, chacun avec sa profondeur, sa largeur, son allongement ; le terrain entre eux est froissé. Le niveau monte : les flaques naissent au fond des creux l'une après l'autre, grossissent, se touchent par leurs cols, puis couvrent l'écran. Le bord d'une flaque est une ligne nette ; dedans, l'accueil flouté (4,8 points, le flou des murs).</p>
+  <p>La phrase paraît quand tout est couvert. Puis la zone nette s'ouvre sur l'icône du Studio et son mot, par les mêmes flaques, plus petites, qui naissent dedans ; sa forme finale est un entourage à peine irrégulier, serré : on ne voit ni l'Aura ni le contour de la barre. Elle se referme sur elle-même par le même effet à l'envers. Même chose sur le +, seul. À la fin, les flaques se vident.</p>
+  <p>Ici la séquence s'enchaîne seule ; dans l'app, chaque zone attend le toucher. « ×¼ » joue au quart de la vitesse, « ×1 » à la vitesse de l'app. « Tracé » : les lettres de la phrase se tracent (le module de promi-trace-lettres.html — il n'est pas encore branché dans l'app).</p>
+  <h2>Les durées (à régler avec Tom)</h2>
+  <p id="durees"></p>
   <h2>Mesure sur cet appareil</h2>
-  <div class="mes" id="mes">Jouer une variante jusqu'au bout : le temps de dessin par image et les images de plus de 20 ms s'écrivent ici, et sont envoyés au Mac.</div>
+  <div class="mes" id="mes">Jouer la séquence jusqu'au bout : le temps de dessin par image et les images de plus de 20 ms s'écrivent ici, et sont envoyés au Mac.</div>
 </div>
+<script src="variantes/flaques.js"></script>
+<script src="variantes/accueil-boites.js"></script>
+<script src="variantes/trace-chemins-gilbert.js"></script>
+<script src="variantes/trace-lettres.js"></script>
 <script>
 (function(){ 'use strict';
-var Q=new URLSearchParams(location.search), E={v:(Q.get('v')||'A').toUpperCase(), th:Q.get('th')||'clair', lent:Q.get('lent')?4:1};
-var W=390, H=844, TAU=Math.PI*2, sc=document.getElementById('scene'), net=document.getElementById('net'), cf=document.getElementById('flou'), cd=document.getElementById('dessus');
-var gf=cf.getContext('2d'), gd=cd.getContext('2d'), QF=1, KD=1;            /* le canevas de matière : 1 pixel par point (le flou n'a pas de détail plus fin) */
-var FORCES=[2.4,4.8,9.6], FL=[null,null,null], NET=null, M=[], SPR=null;
-var STUDIO={x:70,y:760,r:64,e:34}, PLUS={x:195,y:760,r:88,e:48};   /* r : le rayon du foyer laissé libre ; e : la distance à laquelle la matière se tient */                    /* les deux foyers : l'entrée du Studio (icône et mot), le + et son anneau */
-var TXT={studio:['Choisis d’abord','le monde qui te ressemble,','au Studio.'], plus:['Promi, Chiche ou Cercle :','tout commence par ce +.']};   /* les phrases de l'app, mot pour mot (TEXTES_ENGAGEMENT.guide) */
-function borne(u){ return u<0?0:(u>1?1:u); } function io(u){ u=borne(u); return u*u*(3-2*u); } function sortie(u){ u=borne(u); return 1-(1-u)*(1-u)*(1-u); } function lerp(a,b,u){ return a+(b-a)*u; }
-function alea(n){ var s=n*9301+49297; return function(){ s=(s*1103515245+12345)&0x7fffffff; return s/0x7fffffff; }; }
-
-/* ───────── les images : l'accueil net, et flouté à trois forces ───────── */
-var pret=0;
-function charge(){ pret=0; var base='variantes/accueil-'+E.th;
-  net.src=base+'.png'; NET=new Image(); NET.onload=function(){ pret++; demande(); }; NET.src=base+'.png';
-  FORCES.forEach(function(f,i){ var im=new Image(); im.onload=function(){ pret++; demande(); }; im.src=base+'-flou'+(i+1)+'.jpg'; FL[i]=im; }); }
-function sprite(){ var c=document.createElement('canvas'); c.width=c.height=128; var x=c.getContext('2d'), gr=x.createRadialGradient(64,64,0,64,64,64);
-  for(var i=0;i<=20;i++){ var u=i/20, a=u<0.42?1:1-io((u-0.42)/0.58); gr.addColorStop(u,'rgba(0,0,0,'+a.toFixed(3)+')'); } x.fillStyle=gr; x.fillRect(0,0,128,128); return c; }   /* une tache : pleine au cœur, bord doux — jamais un bord net */
-
-/* ───────── la matière : chaque variante rend, pour un instant, une liste de taches {x,y,rx,ry,a,c} (c : force, de 0 à 3) ───────── */
-/* l'état du guide : pS et pP (présence du foyer Studio et du foyer +, de 0 à 1), ouv (0 : tout l'écran est sous la matière ; 1 : elle a pris sa forme), fin (elle se retire) */
-function ecarte(p, F, R, pres, bord){ if(pres<=0) return; var dx=p.x-F.x, dy=p.y-F.y, d=Math.sqrt(dx*dx+dy*dy)||0.001, min=R+bord; if(d>=min) return; var k=(min-d)*pres; p.x+=dx/d*k; p.y+=dy/d*k; }
-var VARIANTES={
-  /* A · LES NAPPES — six grandes zones lentes, chacune de trois taches qui tournent : leur bord change sans arrêt ; elles s'écartent du foyer */
-  A:{ init:function(){ var r=alea(7), L=[]; /* huit grandes nappes, et quatre plus petites sur la barre : ce qui n'est pas à lire y est sous la matière aussi */
-      [[86,150,2.6],[304,118,1.5],[212,318,1.9],[74,486,1.1],[318,512,2.8],[214,640,1.7],[36,300,0.9],[356,330,1.2],[146,772,2.6,62],[306,768,2.2,74],[24,826,1.5,56],[236,836,1.7,54]].forEach(function(n,i){
-        L.push({ax:n[0], ay:n[1], c:n[2], R:n[3]?n[3]+r()*14:112+r()*44, dA:(n[3]?9:20)+r()*(n[3]?8:16), dB:(n[3]?7:16)+r()*(n[3]?7:16), w1:TAU/(7+r()*5), w2:TAU/(8+r()*6), f1:r()*TAU, f2:r()*TAU, sub:[0,1,2].map(function(j){ return {d:(n[3]?16:34)+r()*(n[3]?12:26), w:TAU/(9+r()*9)*(r()<0.5?-1:1), f:r()*TAU+j*2.1, e:0.62+r()*0.3, k:0.56+r()*0.2}; }), ret:Math.min(0.5, 0.04+i*0.045)}); }); return L; },
-      taches:function(Z, t, S){ var out=[], gros=lerp(2.1,1,S.ouv);
-        Z.forEach(function(z){ var cx=z.ax+z.dA*Math.sin(z.w1*t+z.f1), cy=z.ay+z.dB*Math.cos(z.w2*t+z.f2);
-          z.sub.forEach(function(s){ var a=s.w*t+s.f, p={x:cx+s.d*Math.cos(a), y:cy+s.d*Math.sin(a)*0.8}, rr=z.R*s.k*gros;
-            ecarte(p, STUDIO, STUDIO.e, io((S.pS-z.ret)/(1-z.ret*0.6)), rr*0.52); ecarte(p, PLUS, PLUS.e, io((S.pP-z.ret)/(1-z.ret*0.6)), rr*0.52);
-            out.push({x:p.x, y:p.y, rx:rr, ry:rr*s.e, a:a*0.6, c:z.c, o:1-io((S.fin-z.ret*0.5)/(1-z.ret*0.5))}); }); });
-        return out; } },
-  /* B · LA BUÉE — une vingtaine de cellules qui respirent ; près du foyer elles s'évaporent, ailleurs elles s'épaississent */
-  B:{ init:function(){ var r=alea(23), L=[], i, j; for(j=0;j<6;j++) for(i=0;i<4;i++){ L.push({ax:48+i*98+(j%2?40:0)+(r()-0.5)*34, ay:70+j*142+(r()-0.5)*40, R:74+r()*26, w:TAU/(2.6+r()*2.4), f:r()*TAU, wx:TAU/(6+r()*6), fx:r()*TAU, e:0.74+r()*0.24, a:r()*TAU}); } return L; },
-      taches:function(Z, t, S){ var out=[], gros=lerp(1.7,1,S.ouv);
-        Z.forEach(function(z){ var x=z.ax+12*Math.sin(z.wx*t+z.fx), y=z.ay+10*Math.cos(z.wx*0.8*t+z.fx*1.7), rr=z.R*(1+0.2*Math.sin(z.w*t+z.f))*gros;
-          var dS=Math.hypot(x-STUDIO.x,y-STUDIO.y), dP=Math.hypot(x-PLUS.x,y-PLUS.y);
-          /* l'évaporation gagne de proche en proche : une cellule cède quand la présence du foyer dépasse son rang (sa distance) */
-          function leve(d, pres, F){ var rang=borne((d-F.e)/260), u=io((pres*1.35-rang)/0.35); return d<F.e+rr*0.5 ? u : 0; }
-          var vS=leve(dS,S.pS,STUDIO), vP=leve(dP,S.pP,PLUS), v=Math.max(vS,vP), w0=1-Math.max(S.pS,S.pP);
-          function force(d){ return lerp(0.9, 2.9, borne((d-90)/330)); }      /* plus on est loin de ce qu'il faut lire, plus la buée est épaisse */
-          var c=(force(dS)*S.pS+force(dP)*S.pP+2.2*w0)/(S.pS+S.pP+w0); c=lerp(2.4, c, S.ouv);
-          out.push({x:x, y:y, rx:rr*(1-v), ry:rr*z.e*(1-v), a:z.a, c:c, o:1-io((S.fin*1.5-(y/H)*0.5))}); });
-        return out; } },
-  /* C · LE COURANT — de longues traînées qui coulent en biais ; le foyer est une île que le courant contourne */
-  C:{ init:function(){ var r=alea(41), L=[], i; for(i=0;i<10;i++){ L.push({s0:r(), lat:-432+i*96+(r()-0.5)*30, v:17+r()*13, L:150+r()*80, h:50+r()*26, c:[2.7,1.3,2.0,1.0,2.9,1.6,1.1,2.2,1.4,2.5][i], f:r()*TAU, ret:0.05+r()*0.3}); } return L; },
-      taches:function(Z, t, S){ var out=[], gros=lerp(3.1,1,S.ouv), an=-0.5, ux=Math.cos(an), uy=Math.sin(an), nx=-uy, ny=ux, P=1150;
-        Z.forEach(function(z){ var s=((z.s0*P+z.v*t)%P)-P/2, cx=195+ux*s+nx*z.lat, cy=422+uy*s+ny*z.lat, k;
-          for(k=-1;k<=1;k++){ var p={x:cx+ux*k*z.L*0.52, y:cy+uy*k*z.L*0.52+7*Math.sin(t*0.9+z.f+k)}, hh=z.h*(1+0.16*Math.sin(t*0.7+z.f*2+k*1.3))*gros;
-            ecarte(p, STUDIO, STUDIO.e, io((S.pS-z.ret)/(1-z.ret)), hh*0.78); ecarte(p, PLUS, PLUS.e, io((S.pP-z.ret)/(1-z.ret)), hh*0.78);
-            out.push({x:p.x, y:p.y, rx:z.L*0.56*lerp(2.0,1,S.ouv), ry:hh, a:an, c:z.c, o:1-io((S.fin-z.ret*0.6)/(1-z.ret*0.6))}); } });
-        return out; } }
-};
-
-/* LA PHRASE SE POSE SUR LA MATIÈRE : une nappe forte vient sous elle un peu avant elle, et se retire avec elle (elle grandit et rétrécit, jamais un fondu).
-   Sans elle, la phrase tombait par endroits sur une Toile nette : les titres des dalles se mêlaient à ses lettres. */
-function sousPhrase(T, S){ function nappe(cx, cy, larg, haut, p){ if(p<=0.01) return; var k=io(Math.min(1, p*1.5)), i; for(i=-1;i<=1;i++){ var w=0.5+0.07*Math.sin(S.t*0.8+i*2.3);
-      T.push({x:cx+i*larg*0.3+6*Math.sin(S.t*0.6+i), y:cy+5*Math.cos(S.t*0.5+i*1.7), rx:larg*w, ry:haut*(0.95+0.08*Math.cos(S.t*0.7+i)), a:0.05*Math.sin(S.t*0.4+i), c:2.9, o:k}); } }
-  nappe(165, 640, 300, 86, Math.max(S.phS, 0)); nappe(195, 652, 300, 70, Math.max(S.phP, 0));
-  /* CE QUI N'EST PAS À LIRE EST SOUS LA MATIÈRE : quand le foyer est sur le Studio, de la matière tient sur le + ; quand il passe au +, elle se referme sur le
-     Studio (trois taches qui grandissent depuis ses bords). Sans elle, le Studio restait net à côté du + : deux choses à lire au lieu d'une. */
-  [[STUDIO, 1-S.pS, 44], [PLUS, 1-S.pP, 52]].forEach(function(q, n){ var F=q[0], k=io(q[1]); if(k<=0.01) return; for(var j=0;j<3;j++){ var a=S.t*0.45+j*2.09+n*1.3;
-      T.push({x:F.x+Math.cos(a)*10, y:F.y+Math.sin(a)*8, rx:q[2]*(1.05+0.12*Math.sin(S.t*0.9+j)), ry:q[2]*(0.9+0.1*Math.cos(S.t*1.1+j*1.4)), a:a, c:2.5, o:k}); } }); }
-
-/* ───────── dessiner ───────── */
-function masque(L, T, S){ var m=M[L], x=m.getContext('2d'); x.setTransform(QF,0,0,QF,0,0); x.globalCompositeOperation='source-over'; x.globalAlpha=1; x.clearRect(0,0,W,H);
-  var i; for(i=0;i<T.length;i++){ var b=T[i], op=borne(b.c-L), kt=(b.o==null?1:borne(b.o)); if(op<=0.004||kt<=0.004||b.rx*kt<1||b.ry*kt<1) continue;   /* à la fin les taches RÉTRÉCISSENT (`o` est une taille) : jamais un fondu */
-    /* une zone forte porte autour d'elle une frange plus faible : la tache est dessinée plus large dans les couches du dessous */
-    var el=1+0.24*Math.max(0, Math.min(2, b.c-1-L)); x.globalAlpha=op; x.setTransform(QF,0,0,QF,0,0); x.translate(b.x,b.y); x.rotate(b.a); x.scale(b.rx*el*kt/64, b.ry*el*kt/64); x.drawImage(SPR,-64,-64); }
-  /* le foyer est libre de toute matière : un trou à bord doux, irrégulier (trois taches qui battent), qui se forme et se défait avec la présence du foyer */
-  x.globalCompositeOperation='destination-out';
-  [[STUDIO,S.pS],[PLUS,S.pP]].forEach(function(fp, n){ var F=fp[0], p=io(fp[1]); if(p<=0.01) return; for(var j=0;j<3;j++){ var a=S.t*0.5+j*2.1+n, rr=F.r*(0.92+0.1*Math.sin(S.t*1.3+j*1.7))*p;
-      x.globalAlpha=1; x.setTransform(QF,0,0,QF,0,0); x.translate(F.x+Math.cos(a)*F.r*0.2, F.y+Math.sin(a)*F.r*0.16); x.rotate(a); x.scale(rr*1.16/64, rr*0.98/64); x.drawImage(SPR,-64,-64); } });
-  x.globalCompositeOperation='source-in'; x.globalAlpha=1; x.setTransform(1,0,0,1,0,0); x.drawImage(FL[L], 0,0, m.width, m.height); }
-function phrase(lignes, x, yBas, alig, u, sens){ /* les lignes, découvertes l'une après l'autre par un bord qui passe ; u : 0 → 1 ; sens : 1 écrire, -1 effacer */
-  var fs=25, lh=30, n=lignes.length, clair=(E.th==='clair'), encre=clair?'#201908':'#F7F0DE', fond=clair?'#F7F0DE':'#050302';
-  gd.font='700 '+fs+'px Gilbert, system-ui, sans-serif'; gd.textBaseline='alphabetic'; gd.lineJoin='round'; gd.lineCap='round'; gd.textAlign=alig;
-  lignes.forEach(function(l, i){ var p=borne(u*(n*0.55+0.45)-i*0.55)/0.45; p=io(borne(p)); if(p<=0.001) return; var y=yBas-(n-1-i)*lh, w=gd.measureText(l).width, x0=(alig==='center')?x-w/2:x;
-    gd.save(); gd.beginPath(); if(sens>0) gd.rect(x0-12, y-fs-8, (w+24)*p, lh+12); else gd.rect(x0-12+(w+24)*(1-p), y-fs-8, (w+24)*p, lh+12); gd.clip();
-    gd.strokeStyle=fond; gd.lineWidth=9; gd.strokeText(l, x, y); gd.fillStyle=encre; gd.fillText(l, x, y); gd.restore(); }); }
-function dessine(T, S){ var L; gf.setTransform(1,0,0,1,0,0); gf.clearRect(0,0,cf.width,cf.height);
-  for(L=0;L<3;L++){ masque(L,T,S); gf.drawImage(M[L],0,0); }
-  gd.setTransform(KD,0,0,KD,0,0); gd.clearRect(0,0,W,H);
-  /* le + grandit de 10 % (validé) : la même image nette, agrandie autour de son centre — il est dans une zone sans matière, rien n'est découpé autour */
-  if(S.plusEch>1.001 && NET){ var r=41, e=S.plusEch, k=NET.naturalWidth/W; gd.save(); gd.beginPath(); gd.arc(PLUS.x,PLUS.y,r*e,0,TAU); gd.clip(); gd.drawImage(NET, (PLUS.x-r)*k,(PLUS.y-r)*k,2*r*k,2*r*k, PLUS.x-r*e, PLUS.y-r*e, 2*r*e, 2*r*e); gd.restore(); }
-  if(S.phS>0.001) phrase(TXT.studio, 28, 676, 'left', S.phS, S.phSsens);
-  if(S.phP>0.001) phrase(TXT.plus, 195, 672, 'center', S.phP, S.phPsens); }
-
-/* ───────── l'horloge du guide ───────── */
-var Z=null, t0=0, etape='studio', tEtape=0, tFin=0, prevu=false, dessins=[], F=[], tDebut=0;
-function etat(now){ var t=(now-t0)/1000/E.lent, S={t:t, fin:0, plusEch:1, phS:0, phP:0, phSsens:1, phPsens:1};
-  S.ouv=io(t/1.7);                                   /* de l'écran entier sous la matière à la matière en zones : 1,7 s */
-  var pS=io((t-0.25)/1.35), pP=0;
-  if(etape!=='studio'){ var u=(now-tEtape)/1000/E.lent; pS=pS*(1-io(u/1.5)); pP=io((u-0.35)/1.65);   /* du Studio au + : 2 s — le foyer du Studio se referme pendant que celui du + s'ouvre, avec 0,35 s de retard */
-    S.phS=1-io(u/0.45); S.phSsens=-1; S.phP=io((u-1.25)/0.7); S.plusEch=1+0.10*io((u-0.5)/1.3); }
-  else { S.phS=io((t-1.05)/0.85); }
-  if(etape==='fin'){ var f=(now-tFin)/1000/E.lent; S.fin=io(f/0.55); pP=pP*(1-io(f/0.5)); S.phP=Math.min(S.phP, 1-io(f/0.3)); S.phPsens=-1; S.plusEch=1+0.10*(1-io(f/0.4)); S.fini=f>0.6; }
-  S.pS=pS; S.pP=pP; return S; }
-function image1(now){ prevu=false; if(etape==='parti'||etape==='fige') return; if(pret<4||!SPR){ demande(); return; } F.push(now); if(F.length>900) F.shift();
-  var S=etat(now); if(S.fini){ gf.setTransform(1,0,0,1,0,0); gf.clearRect(0,0,cf.width,cf.height); gd.setTransform(1,0,0,1,0,0); gd.clearRect(0,0,cd.width,cd.height); if(etape==='fin'){ etape='parti'; mesure(); } return; }
-  var a=performance.now(), T=VARIANTES[E.v].taches(Z, S.t, S); sousPhrase(T, S); dessine(T, S); dessins.push(performance.now()-a); if(dessins.length>900) dessins.shift();
-  demande(); }
-function demande(){ if(prevu) return; prevu=true; requestAnimationFrame(image1); }
-function rejoue(){ Z=VARIANTES[E.v].init(); etape='studio'; t0=performance.now(); tDebut=t0; dessins=[]; F=[]; demande(); }
-function avance(){ if(etape==='studio'){ if((performance.now()-t0)/E.lent<900) return; etape='plus'; tEtape=performance.now(); } }
-function finit(){ if(etape==='plus'){ if((performance.now()-tEtape)/E.lent<1200) return; etape='fin'; tFin=performance.now(); } }
-sc.addEventListener('pointerdown', function(e){ var r=sc.getBoundingClientRect(), x=(e.clientX-r.left)*W/r.width, y=(e.clientY-r.top)*H/r.height;
-  if(etape==='studio') avance(); else if(etape==='plus') finit(); else if(etape==='parti') rejoue(); e.preventDefault(); });   /* (x, y gardés pour un banc : toucher l'entrée du Studio ou ailleurs fait avancer, comme dans l'app) */
-function mesure(){ try{ var I=[], i, s20=0, s33=0, pire=0; for(i=0;i<F.length-1;i++){ var d=F[i+1]-F[i]; I.push(d); if(d>20) s20++; if(d>33.4) s33++; if(d>pire) pire=d; }
-    var ds=dessins.slice().sort(function(a,b){ return a-b; }), p50=ds[Math.floor(ds.length/2)]||0, p95=ds[Math.floor(ds.length*0.95)]||0;
-    var R={quoi:'guide-variante', v:E.v, th:E.th, lent:E.lent, images:I.length, sup20:s20, sup33:s33, pire:Math.round(pire), dessin_p50:+p50.toFixed(2), dessin_p95:+p95.toFixed(2), dessin_max:+(ds[ds.length-1]||0).toFixed(2), ecran:[screen.width,screen.height,window.devicePixelRatio,innerWidth,innerHeight], ua:navigator.userAgent, quand:new Date().toISOString()};
-    document.getElementById('mes').textContent='Variante '+E.v+' · '+E.th+(E.lent>1?' · ralentie':'')+'\n'+I.length+' images · '+s20+' au-delà de 20 ms · '+s33+' au-delà de 33 ms · la plus longue '+Math.round(pire)+' ms\ndessin de la matière : médiane '+p50.toFixed(1)+' ms · 95 % sous '+p95.toFixed(1)+' ms · au pire '+(ds[ds.length-1]||0).toFixed(1)+' ms';
-    window._mesureDerniere=R; fetch('mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(R),keepalive:true}).catch(function(){}); }catch(_){ } }
-
-/* ───────── la page ───────── */
-function taille(){ var c=document.getElementById('cadre').getBoundingClientRect(), s=Math.min(c.width/W, c.height/H), dpr=Math.min(3, window.devicePixelRatio||1);
-  sc.style.width=(W*s)+'px'; sc.style.height=(H*s)+'px'; sc.style.borderRadius=(22*s)+'px'; KD=s*dpr; cd.width=Math.round(W*KD); cd.height=Math.round(H*KD);
-  cf.width=Math.round(W*QF); cf.height=Math.round(H*QF); M=[0,1,2].map(function(){ var m=document.createElement('canvas'); m.width=cf.width; m.height=cf.height; return m; }); demande(); }
-function boutons(){ [].forEach.call(document.querySelectorAll('#haut button[data-v]'), function(b){ b.classList.toggle('on', b.getAttribute('data-v')===E.v); });
-  document.getElementById('bTh').textContent=(E.th==='clair')?'Clair':'Sombre'; document.getElementById('bLent').textContent=(E.lent>1)?'×¼':'×1'; document.getElementById('bLent').classList.toggle('on', E.lent>1); }
-[].forEach.call(document.querySelectorAll('#haut button[data-v]'), function(b){ b.addEventListener('click', function(){ E.v=b.getAttribute('data-v'); document.getElementById('notes').classList.remove('vu'); boutons(); rejoue(); }); });
-document.getElementById('bTh').addEventListener('click', function(){ E.th=(E.th==='clair')?'sombre':'clair'; charge(); boutons(); rejoue(); });
-document.getElementById('bLent').addEventListener('click', function(){ E.lent=(E.lent>1)?1:4; boutons(); });
-document.getElementById('bRe').addEventListener('click', function(){ document.getElementById('notes').classList.remove('vu'); rejoue(); });
-document.getElementById('bNotes').addEventListener('click', function(){ document.getElementById('notes').classList.toggle('vu'); });
-window.addEventListener('resize', taille);
-/* pour un banc : avancer sans doigt, figer un instant */
-window._avance=function(){ if(etape==='studio'){ etape='plus'; tEtape=performance.now(); } else if(etape==='plus'){ etape='fin'; tFin=performance.now(); } demande(); };
-window._etat=function(){ return {etape:etape, v:E.v, th:E.th, pret:pret, dessins:dessins.length}; };
-window._fige=function(v, et, ms){ E.v=v; boutons(); Z=VARIANTES[v].init(); var now=performance.now(); etape=et; if(et==='studio'){ t0=now-ms; } else { t0=now-9000; tEtape=now-ms; } var S=etat(now), T=VARIANTES[v].taches(Z,S.t,S); sousPhrase(T,S); dessine(T,S); etape='fige'; return T.length; };
-SPR=sprite(); charge(); boutons(); taille();
-try{ document.fonts.load('700 25px Gilbert','Choisis').then(function(){ demande(); }); }catch(_){ }
-rejoue();
+  var Q=new URLSearchParams(location.search), G=Flaques.GUIDE;
+  var lent=(Q.get('flaques')==='1' || Q.get('lent')==='1') && Q.get('lent')!=='0', clair=Q.get('th')!=='sombre', trace=Q.get('trace')!=='0';
+  var $=function(i){ return document.getElementById(i); }, scene=$('scene'), app=$('app'), net=$('net'), cv=$('eau'), ph=$('phrase');
+  var TXT={ studio:[{t:'Choisis d’abord le '},{t:'monde',c:'cle'},{t:' qui te ressemble, au '},{t:'Studio',c:'cle'},{t:'.'}],
+            plus:[{t:'Promi',c:'n-promi'},{t:', '},{t:'Chiche',c:'n-chiche'},{t:' ou '},{t:'Cercle',c:'n-cercle'},{t:' : tout '},{t:'commence',c:'cle'},{t:' par ce +.'}] };
+  function taille(){ var c=$('cadre').getBoundingClientRect(), k=Math.min(c.width/390, c.height/844); scene.style.width=(390*k)+'px'; scene.style.height=(844*k)+'px'; app.style.transform='scale('+k+')'; }
+  window.addEventListener('resize', taille); taille();
+  var S=null, flous={}, jeu=0, mesure=null;
+  function charge(th){ return new Promise(function(ok){ if(flous[th]) return ok(flous[th]); var im=new Image(); im.onload=function(){
+      var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(im,0,0,390,844); var t=performance.now(); var f=Flaques.floute(c, G.FLOU); flous[th]={net:im.src, flou:f, ms:performance.now()-t}; ok(flous[th]); };
+    im.src='variantes/accueil-'+th+'.png'; }); }
+  function html(seg){ return seg.map(function(s){ var e=s.t.replace(/&/g,'&amp;').replace(/</g,'&lt;'); return s.c?'<span class="'+s.c+'">'+e+'</span>':e; }).join(''); }
+  function attends(ms, id){ return new Promise(function(ok){ var t0=performance.now(), v=lent?0.25:1; (function f(){ if(id!==jeu) return ok(false); if((performance.now()-t0)*v>=ms) return ok(true); requestAnimationFrame(f); })(); }); }
+  /* une animation : u de a à b en `ms` (au rythme choisi) ; chaque image est mesurée */
+  function joue(ms, a, b, pose, id){ return new Promise(function(ok){ var t0=performance.now(), v=lent?0.25:1, av=t0;
+    (function f(){ if(id!==jeu) return ok(false); var now=performance.now(), u=Math.min(1,(now-t0)*v/ms); pose(a+(b-a)*u); var r=S.peint();
+      if(mesure){ mesure.n++; mesure.ms.push(r.ms); var d=now-av; if(d>20) mesure.l++; if(d>mesure.pire) mesure.pire=d; } av=now;
+      if(u<1) requestAnimationFrame(f); else ok(true); })(); }); }
+  function ecrit(quoi, id){ ph.innerHTML=html(TXT[quoi]); ph.style.visibility='visible'; var h=ph.offsetHeight||80; ph.style.top=Math.round(372-h/2)+'px';
+    if(!trace || !window.TraceLettres) return Promise.resolve(true);
+    try{ var c=TraceLettres.trace(ph, null, {cps:50, vitesse:lent?0.25:1, depart:'h', respecteReduire:false}); return c.fin.then(function(){ return id===jeu; }); }catch(e){ return Promise.resolve(true); } }
+  function efface(){ try{ if(window.TraceLettres) TraceLettres.poseTout(ph); }catch(e){} ph.style.visibility='hidden'; ph.innerHTML=''; }
+  function boite(nom){ var B=(window.ACCUEIL_BOITES||{})[clair?'clair':'sombre']||{}; return B[nom]; }
+  async function sequence(){ var id=++jeu; efface(); mesure={n:0, l:0, pire:0, ms:[]};
+    var th=clair?'clair':'sombre', F=await charge(th); if(id!==jeu) return;
+    scene.className=clair?'clair':'sombre'; net.src=F.net;
+    S=Flaques.Scene(cv, {l:390, h:844, densite:Math.min(3, Math.max(2, Math.round(window.devicePixelRatio||2))), flou:F.flou, graine:(Date.now()&0xffffff)|1, creux:G.CREUX, rayon:G.RAYON});
+    S.couvre(0); S.peint();
+    if(!await attends(G.ATTENTE, id)) return;
+    if(!await joue(G.COUVRE, 0, 1, function(u){ S.couvre(u); }, id)) return;                      /* 4.1 la couverture */
+    if(!await ecrit('studio', id)) return;                                                          /* 4.2 la phrase */
+    S.cible(Flaques.avecAir(boite('studio'), G.AIR_STUDIO), G.MARGE_STUDIO, (Date.now()&0xffff)|1, {creux:4});
+    if(!await joue(G.OUVRE, 0, 1, function(u){ S.net(u); }, id)) return;                          /* 4.3 le Studio */
+    if(!await attends(1500, id)) return;
+    if(!await joue(G.FERME, 1, 0, function(u){ S.net(u); }, id)) return;                          /* 4.4 il se referme sur lui-même */
+    efface(); S.sansCible(); S.peint();
+    if(!await attends(200, id)) return;
+    if(!await ecrit('plus', id)) return;
+    S.cible(boite('plus'), G.MARGE_PLUS, (Date.now()&0xffff)|3, {creux:4, carre:2.15, irregulier:0.03});
+    if(!await joue(G.OUVRE, 0, 1, function(u){ S.net(u); }, id)) return;                          /* 4.5 le + */
+    if(!await attends(1500, id)) return;
+    if(!await joue(G.FERME, 1, 0, function(u){ S.net(u); }, id)) return;
+    efface(); S.sansCible(); S.tire(true);
+    if(!await joue(G.RETIRE, 1, 0, function(u){ S.couvre(u); }, id)) return;                     /* 4.6 les flaques se vident */
+    var m=mesure, tri=m.ms.slice().sort(function(a,b){ return a-b; }), p50=tri[(tri.length*0.5)|0]||0, p95=tri[(tri.length*0.95)|0]||0;
+    var R={quoi:'guide-flaques', images:m.n, sup20:m.l, pire:Math.round(m.pire), dessin_p50:+p50.toFixed(2), dessin_p95:+p95.toFixed(2), flou_ms:Math.round(F.ms), lent:lent, theme:th, trace:trace,
+           ecran:[screen.width, screen.height, window.devicePixelRatio, innerWidth, innerHeight], ua:navigator.userAgent, quand:new Date().toISOString(), version:'v146 · page du guide'};
+    $('mes').textContent='Dernière séquence ('+(lent?'×¼':'×1')+', '+th+') : '+m.n+' images, '+m.l+' au-delà de 20 ms, la plus longue '+Math.round(m.pire)+' ms.\nDessin d\'une image : médiane '+p50.toFixed(1)+' ms, 95 % sous '+p95.toFixed(1)+' ms. L\'accueil flouté d\'avance en '+Math.round(F.ms)+' ms.';
+    window._mesureDerniere=R; try{ fetch('mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(R),keepalive:true}).catch(function(){}); }catch(_){ }
+    if(await attends(1400, id)) sequence(); }
+  function boutons(){ $('bLent').textContent=lent?'×¼':'×1'; $('bTh').textContent=clair?'Clair':'Sombre'; $('bTr').classList.toggle('on', trace); }
+  $('bLent').onclick=function(){ lent=!lent; boutons(); sequence(); };
+  $('bTh').onclick=function(){ clair=!clair; boutons(); sequence(); };
+  $('bTr').onclick=function(){ trace=!trace; boutons(); sequence(); };
+  $('bRe').onclick=function(){ $('notes').classList.remove('vu'); sequence(); };
+  $('bNotes').onclick=function(){ $('notes').classList.toggle('vu'); };
+  $('durees').textContent='Attente avant le départ : '+G.ATTENTE+' ms · couverture : '+G.COUVRE+' ms · ouverture d\'une zone nette : '+G.OUVRE+' ms · fermeture : '+G.FERME+' ms · retrait final : '+G.RETIRE+' ms · flou : '+String(G.FLOU).replace('.',',')+' pt · marge de l\'entourage : '+String(G.MARGE_STUDIO).replace('.',',')+' pt (Studio), '+G.MARGE_PLUS+' pt (le +).';
+  /* pour les captures : ?fige=couvre:0.4 | net:studio:0.6 | net:plus:1 — un état arrêté, sans horloge */
+  window._guidePage={ fige:async function(quoi, u, cible){ jeu++; efface(); var th=clair?'clair':'sombre', F=await charge(th); scene.className=th; net.src=F.net;
+      S=Flaques.Scene(cv, {l:390, h:844, densite:2, flou:F.flou, graine:+(Q.get('g')||4242), creux:G.CREUX, rayon:G.RAYON});
+      if(quoi==='couvre'){ S.couvre(u); } else { S.couvre(1); ph.innerHTML=html(TXT[cible]); ph.style.visibility='visible'; ph.style.top=Math.round(372-(ph.offsetHeight||80)/2)+'px';
+        if(cible==='studio') S.cible(Flaques.avecAir(boite('studio'), G.AIR_STUDIO), G.MARGE_STUDIO, 7, {creux:4}); else S.cible(boite('plus'), G.MARGE_PLUS, 9, {creux:4, carre:2.15, irregulier:0.03}); S.net(u); }
+      return S.peint(); }, theme:function(c){ clair=c; boutons(); } };
+  boutons(); document.fonts && document.fonts.ready ? document.fonts.ready.then(function(){ if(!Q.get('fige')) sequence(); }) : sequence();
 })();
 </script>
 </body>

@@ -1,0 +1,10 @@
+OK  A · 5 parole(s) : la Toile relue de la sauvegarde porte ses paroles  5
+KO  A · 5 parole(s) : dans les 3 mondes, clair → sombre → clair ne change ni une graine, ni un poids, ni la vue, ni une boîte, ni un point de la carte du toucher  encre {'graines': 3.0, 'vue': 0.0, 'boites': 0, 'carte': 0} · touffe {'graines': 3.0, 'vue': 0.0, 'boites': 0, 'carte': 0} · ritournelle {'graines': 3.0, 'vue': 0.0, 'boites': 0, 'carte': 0}
+OK  C · une dalle rendue seule a la même silhouette en clair et en sombre, dans les 3 mondes (3 paroles chacun)  recouvrement le plus faible 1.0000
+OK  A · 5 parole(s) : aucune erreur de page  []
+KO  B · 5 parole(s), Pochade : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 3.0, 'vue': 0.0, 'boites': 0, 'carte': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0}
+KO  B · 5 parole(s), Ritournelle : l'app ouverte en sombre montre la Toile de l'app ouverte en clair  clair/sombre {'graines': 3.0, 'vue': 0.0, 'boites': 0, 'carte': 0} · témoin clair/clair {'graines': 0.0, 'vue': 0.0, 'boites': 0, 'carte': 0}
+
+3 / 6
+KO : A · 5 parole(s) : dans les 3 mondes, clair → sombre → clair ne change ni une graine, ni un poids, ni la vue, ni une boîte, ni un point de la carte du toucher · B · 5 parole(s), Pochade : l'app ouverte en sombre montre la Toile de l'app ouverte en clair · B · 5 parole(s), Ritournelle : l'app ouverte en sombre montre la Toile de l'app ouverte en clair
+FIN
