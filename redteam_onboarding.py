@@ -460,36 +460,17 @@ def un_theme(pw, theme):
                 ko('O18 un rechargement ne relance pas, le Promi reste', 'le Promi planté a disparu')
             ok('O18 un rechargement ne relance pas, le Promi reste')
 
-            # ⚑ E1 (Tom, 10 oct. 2026, C-074) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_onboarding-avant-e1.py).
-            #   ENGAGEMENT.md, E1 point 4 : « le point d'entrée existant de obReplay devient “Revoir les gestes” et efface les drapeaux
-            #   geste_vu_*. Ne pas créer d'autre entrée. » La rangée `#replayOnb` ne relance donc PLUS la présentation : au doigt, elle
-            #   efface les drapeaux des gestes, l'onboarding ne revient pas, le Promi planté reste. (Le nom du contrat est gardé.)
-            pg.evaluate("()=>{try{closeAll()}catch(e){}; localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_essai','1'); document.getElementById('settingsScreen').classList.add('show');}")
-            pg.wait_for_timeout(700)
-            pg.evaluate("()=>{const r=document.getElementById('replayOnb'); if(r) r.scrollIntoView({block:'center'});}")
-            pg.wait_for_timeout(900)
-            r = pg.evaluate("()=>{const e=document.getElementById('replayOnb'); if(!e) return null; const r=e.getBoundingClientRect(); return {x:r.left+r.width/2,y:r.top+r.height/2,t:e.textContent};}")
-            if not r:
-                ko('O19 « Revoir la présentation » relance', '#replayOnb absent des Réglages')
-            else:
-                if 'Revoir les gestes' not in (r['t'] or ''): ko('O19 « Revoir la présentation » relance', 'la rangée ne dit pas « Revoir les gestes » : %r' % r['t'])
-                toucher(cdp, r['x'], r['y']); pg.wait_for_timeout(1500)
-                o = pg.evaluate(ONB); e = pg.evaluate(ETAT)
-                if o.get('vu') and not o.get('gone'):
-                    ko('O19 « Revoir la présentation » relance', 'la présentation est revenue : la rangée ne doit plus la relancer (E1)')
-                if pg.evaluate("()=>Object.keys(localStorage).some(k=>k.indexOf('geste_vu_')===0)"):
-                    ko('O19 « Revoir la présentation » relance', 'les drapeaux geste_vu_* ne sont pas effacés')
-                if not any(p_['title'] == PAROLE for p_ in e['promis']):
-                    ko('O19 « Revoir la présentation » relance', 'le Promi planté a disparu')
-            # ⚑ v139 (Tom, 9 oct. 2026, Q426) — « Garde les deux rangées, “Revoir la présentation” et “Revoir les gestes”. » La rangée de la
-            #   présentation est revenue (`#replayPres`), au-dessus de celle des gestes : au doigt, elle relance la présentation.
-            #   (Original : sauvegardes/redteam_onboarding-avant-v139.py.)
+            # ⚑ v147 (Tom, 15 oct. 2026, C-139) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_onboarding-avant-v147.py).
+            #   La main fantôme est supprimée avec ses réglages : la rangée « Revoir les gestes » n'existe plus, `#replayOnb` reprend son rôle
+            #   d'origine, « Revoir la présentation » — une seule rangée. Au doigt, elle relance la présentation ; aucun drapeau geste_vu_* ne reste.
             pg.evaluate("()=>{try{closeAll()}catch(e){}; document.getElementById('settingsScreen').classList.add('show');}"); pg.wait_for_timeout(700)
-            pg.evaluate("()=>{const r=document.getElementById('replayPres'); if(r) r.scrollIntoView({block:'center'});}"); pg.wait_for_timeout(900)
-            r2 = pg.evaluate("()=>{const e=document.getElementById('replayPres'); if(!e) return null; const r=e.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {x:r.left+r.width/2,y:r.top+r.height/2,t:e.textContent,sous:!!(h&&e.contains(h))};}")
-            if not r2: ko('O19 « Revoir la présentation » relance', '#replayPres absent des Réglages (v139 : les deux rangées)')
+            pg.evaluate("()=>{const r=document.getElementById('replayOnb'); if(r) r.scrollIntoView({block:'center'});}"); pg.wait_for_timeout(900)
+            r2 = pg.evaluate("()=>{const e=document.getElementById('replayOnb'); if(!e) return null; const r=e.getBoundingClientRect(), h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {x:r.left+r.width/2,y:r.top+r.height/2,t:e.textContent,sous:!!(h&&e.contains(h)),deux:document.querySelectorAll('#replayPres').length}}")
+            if not r2: ko('O19 « Revoir la présentation » relance', '#replayOnb absent des Réglages')
             else:
                 if 'Revoir la présentation' not in (r2['t'] or '') or not r2['sous']: ko('O19 « Revoir la présentation » relance', 'la rangée de la présentation : %r' % r2)
+                if r2['deux']: ko('O19 « Revoir la présentation » relance', 'une seconde rangée #replayPres existe encore')
+                if pg.evaluate("()=>Object.keys(localStorage).some(k=>k.indexOf('geste_vu_')===0||k==='geste_v')"): ko('O19 « Revoir la présentation » relance', 'des drapeaux de la main fantôme restent au stockage')
                 toucher(cdp, r2['x'], r2['y']); pg.wait_for_timeout(1800)
                 o = pg.evaluate(ONB)
                 if not (o.get('vu') and not o.get('gone')): ko('O19 « Revoir la présentation » relance', 'la rangée « Revoir la présentation » ne relance pas la présentation')

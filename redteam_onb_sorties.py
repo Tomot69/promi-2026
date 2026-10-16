@@ -28,8 +28,10 @@ URL = 'http://127.0.0.1:8752/' + F
 TEXTES = {   # relevés sur la version d'avant v140 — mot pour mot
  'prénom': 'PromiToi, c’est ton prénom ?',
  'prénom saisi': 'PromiToi, c’est Camille ?→',
- 'parole': 'PromiCamille, donc.Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.',
- 'trait': 'PromiCamille, donc.Je me promets de marcher une heurePetite ou grande promesse, elle compte.trace pour planter',
+ # ⚑ v147 (Tom, 15 oct. 2026, C-124 §4.2) — « Tom enrichit subtilement cette page » : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » (mot pour mot ;
+ #   original : sauvegardes/redteam_onb_sorties-avant-v147.py)
+ 'parole': 'PromiCamille, donc. Enchanté.Quid d’un Promi à toi-même ?Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.',
+ 'trait': 'PromiCamille, donc. Enchanté.Quid d’un Promi à toi-même ?Je me promets de marcher une heurePetite ou grande promesse, elle compte.trace pour planter',
  'fin': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.',   # ⚑ v146 (Tom, 11.4) : « C'est planté. » → « Promi planté ! » ; le reste vient au toucher
  'fin-reste': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée.Deuxio, un Chiche, c’est un coup de culot.Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Le reste se découvre en traçant.La suite t’appartient.',
  'compte': 'Garder ta ToilePour la retrouver sur un autre téléphone.Continuer avec AppleContinuer avec GooglePlus tardEn continuant, tu acceptes les Conditions et la Politique de confidentialité.',
@@ -70,7 +72,12 @@ def trace(pg, cdp):
     for i in range(1, 25):
         u = i / 24.0; cdp.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'x': x0 + (x1 - x0) * u, 'y': y0 + (y1 - y0) * u - 14 * z['k'] * (1 - abs(2 * u - 1))}]}); pg.wait_for_timeout(22)
     cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []}); return True
+TRACE_FINI = "()=>![...document.querySelectorAll('#onbV .onbv-a')].some(e=>getComputedStyle(e).display!=='none' && (e.style.visibility==='hidden' || (e.style.clipPath && e.style.clipPath!=='none')))"
 def etape(pg, nom, textes=True):
+    # v147 (C-125) : les textes s'écrivent par le tracé des lettres — on lit la page quand ils sont écrits (6 s au plus)
+    for _ in range(40):
+        if pg.evaluate(TRACE_FINI): break
+        pg.wait_for_timeout(150)
     t = pg.evaluate(TX); s = pg.evaluate(SORTIE); so = s['compte'] if nom == 'compte' else s['tard']
     sorties.append((nom, bool(so), so and so['t']))
     if textes:

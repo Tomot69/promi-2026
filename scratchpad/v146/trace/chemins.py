@@ -29,6 +29,8 @@ ICI = os.path.dirname(os.path.abspath(__file__)); RACINE = os.path.normpath(os.p
 POLICES = {
     'gilbert': dict(nom='Gilbert', fichier=os.path.join(ICI, 'police', 'Gilbert-Bold Preview5.otf'), sortie='trace-chemins-gilbert.js'),
     'promilate': dict(nom='PromiLate', fichier=os.path.join(RACINE, 'Polices Promi', 'PromiLate-Regular.otf'), sortie='trace-chemins-promilate.js'),
+    # v147 (C-138) : le texte de l'onboarding et du guide passe en Atkinson — la graisse 500, celle du texte (une ligne médiane par famille)
+    'atkinson': dict(nom='Atkinson', fichier=os.path.join(ICI, 'police', 'Atkinson-500.otf'), sortie='trace-chemins-atkinson.js'),
 }
 # ── les poids du parcours (en « cadratins de repassage ») ──
 W_RET = 1.0      # un cadratin de repassage
@@ -555,7 +557,7 @@ def variantes(ms, boite, mi, EM):
 #   'h' / 'b' : le parcours imposé, une liste de pas : entier signé = arête (1-basée, signe = sens : +3 de a vers b, −3 de b vers a),
 #               telle que la planche la numérote ; 'r' = repassage (le chemin est recalculé), 's' = saut.
 #   'sans'    : 'h' ou 'b' — la variante n'existe pas pour ce glyphe (exception à R3, avec sa raison dans 'pourquoi').
-CORRECTIONS = {'gilbert': {
+CORRECTIONS = {'atkinson': {}, 'gilbert': {
     'z': {'sans': 'b', 'pourquoi': "depuis le bas, le z ne finit à droite qu'au prix d'un repassage de 71 % : il n'a qu'un tracé, depuis le haut"},
     'Z': {'sans': 'b', 'pourquoi': "comme le z"},
     'J': {'sans': 'h', 'pourquoi': "depuis le haut, le J finit en bas à gauche (sa crosse) : il n'a qu'un tracé, depuis la crosse", 'bras': {2: 180}},
@@ -668,6 +670,7 @@ def principal():
     xh = getattr(police['OS/2'], 'sxHeight', 0) or 0.5 * upm; mi = int(round(xh / 2))
     seul = arg('seul'); t0 = time.time(); glyphes = {}
     codes = sorted(cm) if not seul else [ord(c) for c in seul]
+    if cle == 'atkinson' and not seul: codes = [c for c in codes if c < 0x180 or c in (0x2018, 0x2019, 0x201C, 0x201D, 0x2026, 0x2013, 0x2014, 0x20AC)]   # v147 : le latin du produit
     for code in codes:
         ch = chr(code)
         if ch.isspace() or code < 33 or code == 0xAD: continue

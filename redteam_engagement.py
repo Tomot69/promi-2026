@@ -52,7 +52,7 @@ BLANCHE_CLES = [  # R5 : ce qui peut naître dans le stockage pendant trois « t
  ('promi_fil_vu', "le dernier passage au Fil"), ('promi_pelote_vue', "le tirage de couleur de la Pelote à la dernière ouverture"),
  ('promi_pelote_palier', "le palier de densité appliqué"), ('promi_debut', "la date de première ouverture"),
  ('promi_graine', "la graine du visage"), ('promi_theme', "le thème choisi"), ('promi_sig', "la signature de partage"), ('promi_sigdemo', "idem, jeu de démonstration"),
- ('geste_vu_', "les drapeaux de E1 (un geste déjà montré)"), ('promi_devoile', "E2bis (v140) : ce qui est déjà apparu dans la barre — des drapeaux de PREMIÈRE FOIS (index, aura, studio, fil), jamais un compte"), ('promi_e2', "E2 (v140) : l'étape en cours du premier parcours, retirée à sa fin"), ('ob_fini', "le drapeau de fin de E2"), ('promi_onb', "le verrou de l'onboarding")]
+ ('promi_devoile', "E2bis (v140) : ce qui est déjà apparu dans la barre — des drapeaux de PREMIÈRE FOIS (index, aura, studio, fil), jamais un compte"), ('promi_e2', "E2 (v140) : l'étape en cours du premier parcours, retirée à sa fin"), ('ob_fini', "le drapeau de fin de E2"), ('promi_onb', "le verrou de l'onboarding")]
 HORIZONS = r"^(?:demain|aujourd['’]hui|ce soir|un jour|cette semaine|\d+ ?jours?|dans \d+ ?j(?:ours)?|lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)(?: \d+)?$"   # R7 : un horizon, pas un âge
 R7_MOTIF = r"il y a|depuis \d|\d+ ?j(?:ours)?%s" % Rb
 HORIZON_DANS = re.compile(r"(?:dans|d['’]ici|sous) \d+ ?j(?:ours?)?%s" % Rb, re.I)   # liste blanche de R7 : « dans N jours » regarde devant, ce n'est pas un âge
@@ -142,18 +142,21 @@ with sync_playwright() as p:
     # ── R7
     pg.evaluate("()=>{ try{closeAll()}catch(e){} document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); }"); pg.wait_for_timeout(900)
     toile = pg.evaluate(TEXTES)
-    pg.evaluate("()=>{ try{ GesteFantome.oublierTout(); }catch(e){} openDetail(promises.find(q=>q.title==='faire les crêpes').id); }"); pg.wait_for_timeout(600)   # les drapeaux remis : la main reviendra sur cette fiche (A2)
+    pg.evaluate("()=>{ openDetail(promises.find(q=>q.title==='faire les crêpes').id); }"); pg.wait_for_timeout(600)
     pg.wait_for_timeout(300)
     if SONDE: pg.evaluate("()=>{ document.getElementById('dptQuand').textContent='il y a 3 jours'; }")
     fiche = pg.evaluate(TEXTES)
-    # ── A2 — ⚑ E1 : ARMÉ SUR LA MAIN FANTÔME. La fiche à tenir est ouverte (R7 vient de la lire) et personne ne touche : la main paraît après 600 ms.
-    #   On la juge PENDANT qu'elle est à l'écran — elle, ses ancêtres, et chacun de ses tracés.
-    for _i in range(12):
-        if pg.evaluate("()=>!!document.getElementById('gesteFantome')"): break
-        pg.wait_for_timeout(250)
-    main_la = pg.evaluate("()=>{ const c=document.getElementById('gesteFantome'); return !!(c && c.getAttribute('data-eng') && c.querySelector('[data-main]')); }")
-    if SONDE: pg.evaluate("()=>{ const d=document.createElement('div'); d.setAttribute('data-eng','sonde'); d.textContent='sonde'; d.style.cssText='position:absolute;left:20px;top:300px;opacity:.6;transition:opacity .3s'; document.getElementById('device').appendChild(d); }")
-    a2 = pg.evaluate(r"""()=>{ const E=[...document.querySelectorAll('[data-eng]')], f=[];
+
+    r7 = []
+    for ou, ds in (('Toile', toile), ('fiche à tenir', fiche)):
+        for d in ds:
+            if re.match(HORIZONS, d.strip(), re.I): continue
+            sans_horizon = re.sub(HORIZON_DANS, ' ', d)          # « À TENIR · DANS 2 JOURS » dit un horizon : on le retire, puis on juge ce qui reste
+            if re.search(R7_MOTIF, sans_horizon, re.I): r7.append('%s : « %s »' % (ou, d[:50]))
+    t('R7 · âge invisible (Toile : %d textes ; fiche à tenir : %d)' % (len(toile), len(fiche)), len(fiche) > 3 and not r7, ' | '.join(r7[:6]))
+    # ── R5 (⚑ v147, C-139 : A2 n'est plus armé sur la main fantôme, supprimée — il l'est sur la ligne « Parole tenue. » / « Défi relevé. »
+    #   de l'instant de tenir, `data-eng="tenir"`, lue pendant qu'elle est à l'écran, au troisième « tenir ».)
+    A2Q = r"""()=>{ const E=[...document.querySelectorAll('[data-eng]')], f=[];
       E.forEach(e=>{ const nom=e.getAttribute('data-eng')||e.tagName;
         for(let q=e;q&&q.nodeType===1&&q!==document.documentElement;q=q.parentElement){ if(+getComputedStyle(q).opacity<1){ f.push(nom+' : opacité '+getComputedStyle(q).opacity+(q===e?'':' (ancêtre)')); break; } }
         const c=getComputedStyle(e), tp=(c.transitionProperty||''), td=(c.transitionDuration||'0s').split(',').some(x=>parseFloat(x)>0);
@@ -162,15 +165,8 @@ with sync_playwright() as p:
         const col=(c.color.match(/[\d.]+/g)||[]); if(col.length===4 && +col[3]<1) f.push(nom+' : texte à demi transparent '+c.color);
         [...e.querySelectorAll('*')].forEach(d=>{ const s=getComputedStyle(d); if(+s.opacity<1) f.push(nom+' : un tracé à opacité '+s.opacity); if((s.transitionDuration||'0s').split(',').some(x=>parseFloat(x)>0)) f.push(nom+' : un tracé en fondu'); if(s.animationName&&s.animationName!=='none') f.push(nom+' : un tracé animé en CSS');
           ['fill','stroke'].forEach(a=>{ const v=d.getAttribute(a); if(v&&/rgba\(|transparent/.test(v)) f.push(nom+' : '+a+' '+v); const o=d.getAttribute('opacity')||d.getAttribute(a+'-opacity'); if(o&&+o<1) f.push(nom+' : '+a+'-opacity '+o); }); }); });
-      return {n:E.length, f:f}; }""")
-    r7 = []
-    for ou, ds in (('Toile', toile), ('fiche à tenir', fiche)):
-        for d in ds:
-            if re.match(HORIZONS, d.strip(), re.I): continue
-            sans_horizon = re.sub(HORIZON_DANS, ' ', d)          # « À TENIR · DANS 2 JOURS » dit un horizon : on le retire, puis on juge ce qui reste
-            if re.search(R7_MOTIF, sans_horizon, re.I): r7.append('%s : « %s »' % (ou, d[:50]))
-    t('R7 · âge invisible (Toile : %d textes ; fiche à tenir : %d)' % (len(toile), len(fiche)), len(fiche) > 3 and not r7, ' | '.join(r7[:6]))
-    # ── R5
+      return {n:E.length, f:f}; }"""
+    a2 = None; arme = False
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(600)
     avant = set(pg.evaluate("()=>Object.keys(localStorage)"))
     tenus = 0
@@ -180,6 +176,13 @@ with sync_playwright() as p:
     for titre in ('faire les crêpes', 'nager le mardi', 'arroser les tomates'):
         pg.evaluate("(t)=>{ try{closeAll()}catch(e){} openDetail(promises.find(q=>q.title===t).id); }", titre); pg.wait_for_timeout(1800)
         pg.evaluate("()=>{ const b=document.querySelector('#segStatus button[data-st=tenu]'); if(b) b.click(); }")
+        if titre == 'arroser les tomates':
+            for _i in range(16):
+                pg.wait_for_timeout(100)
+                # ⚑ v147 — depuis la marée (v146, C-118) la ligne est peinte DANS la nappe (`#tenirMaree`, rôle image, son libellé) : on l'y lit
+                if pg.evaluate("()=>[...document.querySelectorAll('[data-eng=tenir]')].some(e=>{ const r=e.getBoundingClientRect(), c=getComputedStyle(e); return r.width>4 && c.visibility!=='hidden' && c.display!=='none' && (e.textContent||e.getAttribute('aria-label')||'').trim(); })"): arme = True; break
+            if SONDE: pg.evaluate("()=>{ const d=document.createElement('div'); d.setAttribute('data-eng','sonde'); d.textContent='sonde'; d.style.cssText='position:absolute;left:20px;top:300px;opacity:.6;transition:opacity .3s'; document.getElementById('device').appendChild(d); }")
+            a2 = pg.evaluate(A2Q)
         try: pg.wait_for_function("()=>!window._tenirAnime", timeout=9000)
         except Exception: pass
         pg.wait_for_timeout(1200)
@@ -189,7 +192,8 @@ with sync_playwright() as p:
     apres = set(pg.evaluate("()=>Object.keys(localStorage)"))
     neuves = sorted(apres - avant); hors = [k for k in neuves if not any(k == c or (c.endswith('_') and k.startswith(c)) for c, _ in BLANCHE_CLES)]
     t('R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche', tenus == 3 and not hors, 'tenus %d/3 · clés nouvelles : %s · hors liste : %s' % (tenus, neuves, hors))
-    t('A2 · armé : la main fantôme est à l\'écran sur la fiche à tenir, elle porte `data-eng`', main_la or SONDE, 'main %s · %d élément(s) `data-eng`' % (main_la, a2['n']))
+    a2 = a2 or {'n': 0, 'f': ['A2 non lu']}
+    t('A2 · armé : la ligne de l\'instant de tenir est à l\'écran et porte `data-eng`', arme or SONDE, 'ligne vue %s · %d élément(s) `data-eng`' % (arme, a2['n']))
     t('A2 · aucune transparence ni fondu (%d élément(s) `data-eng`, tracés compris)' % a2['n'], a2['n'] > 0 and not a2['f'], ' | '.join(a2['f'][:6]))
     t('aucune erreur de page (écrans parcourus)', not er, er[:3])
     ctx.close()

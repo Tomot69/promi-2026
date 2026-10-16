@@ -10044,6 +10044,15 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v145 | À plusieurs : la part de chacun (C-115) | `redteam_part` 55/55 ; `planche-v145/PLANCHE-parts-clair.png` | `…/app.html?parts=1` : lancer un Chiche à deux ou trois personnes ; ouvrir sa fiche — les parts fines, les initiales ; toucher la seconde moitié du trait, toucher un nom : sa part devient pleine et verte ; la fiche ne passe à tenu qu'à la dernière (Q485 à Q487, Q490) |
 | v145 | La ligne « Un mot… » (C-116) | `redteam_commentaires` 26/26 ; `planche-v145/PLANCHE-un-mot-clair.png` | ouvrir une parole en cours : la ligne en bas ; la toucher, écrire, envoyer ; rouvrir la fiche : le mot est là, daté (Q488, Q489) |
 | v145 | Tenir : trois variantes à choisir (C-118) | `promi-tenir-variantes.html` | `http://192.168.1.133:8752/promi-tenir-variantes.html` : tracer le trait sous A, B, C, en Promi et en Chiche, clair et sombre ; laquelle ? (Q491) |
+| v147 | L'invitation à tracer : deux variantes à choisir (C-139) | `redteam_sans_main` 10/10 (plus aucune main) | `…/promi-invite-variantes.html` : A, B, clair et sombre — choisir |
+| v147 | Le premier lancement : la Toile vide reste vide, puis naît cellule par cellule (C-136, C-141) | `redteam_toile_vide` 30/30, `redteam_transitions_onb` 22/22 | effacer les données du site, ouvrir l'app ; au ralenti : `?onbLent=4` |
+| v147 | L'onboarding : les mots, l'échelle, le tracé des lettres, « Promi planté ! » (C-124, C-125, C-138) | `redteam_onboarding_texte` 42/42, `redteam_echelle_onboarding` 8/8, `redteam_trace_lettres` 14/14 | le parcours entier, clair et sombre ; `?trace=0` pour comparer sans le tracé |
+| v147 | La sortie de l'onboarding : la page descend derrière la barre, le plateau descend, la barre monte (C-141) | `redteam_transitions_onb` T2–T4 | toucher « Plus tard » au compte ; `?onbLent=4` |
+| v147 | Le guide en vraies flaques, la zone nette serrée (C-094) | `redteam_guide` 81/81 + 2 (WebKit) | `…/app.html?guide=1` ; au quart : `…/promi-guide-variantes.html?flaques=1` |
+| v147 | Tenir : un rideau (C-118) | `redteam_tenir` 24/24 | tenir une parole ; au ralenti : `?mareeLent=4` |
+| v147 | Commenter depuis la fiche, le nombre de mots (C-116) | `redteam_commentaires` 28/28 | une fiche : toucher « Un mot… », écrire, revenir |
+| v147 | Le menu du + agrandi (C-142) | `redteam_menu_plus` 14/14 | le + de l'accueil ; avec le texte agrandi de Safari (aA) |
+| v147 | Le trait sur le champ et le corps (C-140) | `redteam_contraste_trait` (rouge : Q513, Q514) | les fiches Chiche et Cercle, clair et sombre |
 | v146 | Ajouter une personne (C-122) | `redteam_ajout_personne` 122/122 | page + et fiche : toucher la zone en pointillés, taper un nom, le + orange, puis Retour ; le clavier ne cache rien |
 | v146 | Le guide en flaques (C-094) | `redteam_guide` 60/60 ; `planche-v146/PLANCHE-4-guide-app-clair.png` | `…/app.html?guide=1` ; au quart : `…/promi-guide-variantes.html?flaques=1` |
 | v146 | Les fiches sombres en clair, le départ orange (C-132, C-133) | `redteam_fiches_theme` | en clair : ouvrir une fiche Promi, Chiche, Cercle, la page + |

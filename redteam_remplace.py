@@ -39,7 +39,7 @@ with sync_playwright() as p:
     for th in ('light', 'dark'):
         T = 'clair' if th == 'light' else 'sombre'
         ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=2)
-        ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_theme','%s');localStorage.setItem('promi_rappel_n','9');['tenir','chiche','planter','pelote','noyau','fil','studio-monde','studio-couleur','bande','dessin'].forEach(function(k){localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_'+k,'1')});}catch(e){}" % th)
+        ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_theme','%s');localStorage.setItem('promi_rappel_n','9');}catch(e){}" % th)
         pg = ctx.new_page(); er = []; pg.on('pageerror', lambda e: er.append(str(e)[:140]))
         pg.goto('http://127.0.0.1:8752/' + FICHIER); pg.wait_for_timeout(6500)
         pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';}}")

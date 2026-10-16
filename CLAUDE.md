@@ -129,6 +129,68 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v147 (15–16 oct. 2026) — RETOURS iPHONE DE TOM SUR v146 : LA MAIN SUPPRIMÉE, LA TOILE VIDE, LE TRAIT DU CERCLE, L'ONBOARDING (TEXTES, ÉCHELLE, COULEURS, TRANSITIONS, TRACÉ), LE GUIDE EN VRAIES FLAQUES, TENIR EN RIDEAU, COMMENTER DEPUIS LA FICHE, LE MENU DU +. (Décisions Tom.) Ce bloc CORRIGE v146 (§4 le guide, §11 l'onboarding, §14 tenir), v145 §7 (« ni compteur »), v144 et E1 (la main).
+> **Validés par Tom : C-112, C-115, C-122, C-132, C-133, C-134.** **C-137 (plus jamais de vidéo) : en tête du §7.**
+> **⚑ C-139 — LA MAIN EST SUPPRIMÉE PARTOUT** (« une main n'est pas dans la direction artistique ») : `lot-E1-GESTES` est retiré (code, réglages, drapeaux
+> `geste_vu_*`, `redteam_gestes`) ; « Revoir les gestes » des Réglages rejoue la présentation. L'invitation à tracer qui la remplacera : deux variantes à
+> choisir, RIEN D'INTÉGRÉ — **`promi-invite-variantes.html`** (A « Le fil qui s'allume », B « Le départ qui avance » ; `variantes/invite-etat.js`).
+> Juge : **`redteam_sans_main.py`** (aucune main nulle part, ni nœud, ni code, ni clé).
+> **⚑ C-136 — LA TOILE VIDE COLORÉE AU CHARGEMENT, LA CAUSE** : un minuteur de 420 ms de l'onboarding d'AVANT v20 (`obFill(OB_FILL_AUTH)`, « toute la Toile
+> colorée ») partait encore et coloriait les 69 cellules ; si le jeu de démonstration était posé, l'insertion progressive survivait au vidage. Le minuteur
+> est retiré ; **sur un vrai téléphone sans sauvegarde, le jeu de démonstration ne se pose plus du tout** (il ne sert qu'aux bancs, `navigator.webdriver`).
+> Juge : **`redteam_toile_vide.py`** (30 chargements).
+> **⚑ C-140 — LE TRAIT DU CERCLE, DU CHICHE, DU PROMI** : la teinte du trait sur un champ (`NATTRAIT`) passe au plus sombre de sa nature (Promi `#022140`,
+> Chiche `#130208`, Cercle `#0A0415`) ; les cartes et le Cercle DÉCLARENT leur trait (`data-trait`). Juge : **`redteam_contraste_trait.py`** (3:1 contre le
+> champ ET contre le corps). ⚠ **ROUGE PAR DÉCISION À PRENDRE** : aucune couleur ne tient 3:1 à la fois sur le champ pastel et sur les corps sombres
+> (`#5D4978`, `#7C3F58`, `#0E78F2`) — mesuré, détail en QUESTIONS ; et l'orange « à tenir » `#DD4D23` porte l'ÉTAT (§3) : il n'est pas changé.
+> **⚑ C-124 — L'ONBOARDING, LES MOTS DE TOM** : « [Prénom], donc. Enchanté. » · « Quid d'un Promi à toi-même ? » · « Petite ou grande promesse, elle compte. » ;
+> la ligne du prénom reste à sa hauteur, ce qui suit descend de 16 à 24 pt. « Promi planté ! » : le bloc arrive plus bas et plus espacé puis MONTE à sa place
+> (1,1 s) ; son texte en Atkinson, +12,5 % (24 → 27 pt), ne recouvre plus les dalles du bas ; dans CE texte seulement, Promi, Chiche, Cercle en gras (couleur gardée).
+> **⚑ C-138 — UNE SEULE ÉCHELLE POUR L'ONBOARDING ET LE GUIDE** (`lot-V147-ECHELLE-css`, variables `--ech-*` ; « si tu grossis une page, tu grossis celles
+> d'avant et d'après ») — un RÔLE = une taille, sur toutes les pages :
+> ```
+> titre        PromiLate 52 pt — « PROMI » de « Promi planté ! » ; sa suite « planté ! » 42 pt
+> phrase       Gilbert 35 pt / 66 — la phrase de promesse (« Toi, c'est … ? », « Je me promets de … »)
+> texte        Atkinson 500, 27 pt / 32 — « [Prénom], donc. Enchanté. », « Quid… », « Petite ou grande… », la phrase de ton de la fin, la phrase du guide
+> liste        Atkinson 500, 24 pt / 28 — les lignes de la fin (Primo…)
+> mot-clé      PromiLate 27 pt — Primo, Deuxio, Tertio ; « monde », « Studio », « commence » ; 32 pt pour « La suite t'appartient. »
+> consigne     PromiLate 19 pt — « trace pour planter »
+> ```
+> ⚠ La phrase du guide passe de 34 à 27 pt (la même échelle) — Q. Le texte de l'onboarding passe de Gilbert (v127) à Atkinson (le brief : « texte en Atkinson »).
+> Juge : **`redteam_echelle_onboarding.py`** (même rôle = même taille, page par page).
+> **⚑ C-126 — LA PAGE DU PREMIER PROMI, EN CLAIR, À LA LETTRE** : tout le départ de la flèche (chevron et traîne) en orange `#FB4C0D`, « trace pour planter » en
+> `#00341A`, les points non tracés en noir `#000000` ; le sombre ne change pas.
+> **⚑ C-141 — LES TRANSITIONS DE L'ONBOARDING** (`lot-V147-TRANSITIONS`, `_voileCellules`, `Toile_cellules` et `Toile_voisinesEtat` — lecture seule) :
+> ① l'arrivée sur le prénom : le fond de la Toile plein, puis la Toile NAÎT cellule par cellule depuis le milieu (1,1 s, quand le démarrage a fini — trois
+> images de moins de 25 ms), puis le mot-marque et « Toi, c'est … ? » s'écrivent ; ② les voisines se résorbent une à une (85 ms d'écart) PENDANT que ③ la page
+> descend d'un bloc et passe derrière la barre qui monte (plus rien n'est masqué en une image) et ④ le plateau descend, la barre monte (0,8 s, des aplats), la
+> vue reprend son cadrage pendant ce temps ; puis le guide (0,6 s de calme). Juge : **`redteam_transitions_onb.py`** (image par image ; ⚠ les durées ne se
+> jugent qu'au calme, C-137).
+> **⚑ C-125 — LE TRACÉ DES LETTRES EST BRANCHÉ PAR DÉFAUT** sur tous les textes de l'onboarding et du guide (`?trace=0` le coupe). Défauts corrigés (dents du g,
+> fente du é, barres du t et du f, bosses des fûts). **La carte d'une lettre se calcule dans un Worker** (le fil principal ne fait que dessiner la lettre ;
+> la plume attend sa lettre si elle n'est pas prête) ; suréchantillonnage ×2 au plus ; un cache par lettre. Mesuré au banc (27 pt ×3) : une image de 143 à
+> 194 ms PAR LETTRE avant, 8 ms au plus après (WebKit). Polices tracées : Gilbert, PromiLate, Atkinson (`variantes/trace-chemins-*.js`).
+> **⚑ C-094, 3e RÉCIDIVE — LE GUIDE EN VRAIES FLAQUES.** *La cause* : le juge de v146 demandait une zone « légèrement imparfaite » (recouvrement 0,90 à 0,988 avec
+> une ellipse) — un rond à peine bosselé : c'est le rond que Tom a vu ; rien ne comptait les germes, les naissances, les ponts, ni ne bornait la zone. *Posé*
+> (`variantes/flaques.js`) : des MÉTABALLES à noyau borné — 12 à 20 germes au hasard, naissances étalées sur les 40 premiers %, vitesses différentes, bord ondulé
+> de 15 à 25 % qui change en grandissant, un pont qui naît entre deux flaques voisines avant qu'elles se touchent ; le temps est remappé pour que l'eau monte
+> régulièrement (le noyau en 1/d² couvrait tout à mi-chemin, puis plus rien) ; 38 → 4 ms de calcul par image. La zone nette : 4 à 6 flaques nées DANS la boîte,
+> une marge de 6 à 10 pt (lobes francs), plafonnée à droite du Studio avant l'Aura, ronde autour du + (son bouton est rond), toujours 5 pt en deçà du contour
+> arrondi de la barre ; elle respire ; elle se referme à l'envers. La phrase monte de 60 pt ; « monde » en rose `#FFB8D2` ; « Studio » lettre à
+> lettre aux quatre tons d'Ingénu dans l'ordre (bleu, rose, lilas, crème dalle). ⚠ **En clair ces couleurs, posées telles quelles, ne se lisent pas sur
+> l'accueil flouté (rose 1,01:1, crème 1,26:1)** : le §7 du brief dit « tu ne la changes pas, tu me montres une capture » — Q. Juge : **`redteam_guide.py`
+> complété** (germes, naissances, ponts, marge, le contour de la barre par sa FORME, aucun pixel net hors zone, respiration ; la cadence au calme seulement).
+> **⚑ C-118 — TENIR : UN RIDEAU** (`lot-V146-MAREE`) : une seule nappe qui descend, au front irrégulier dessiné, plus des flaques séparées ; le reste de v146
+> tient (~2 s, rien entre le trait et le vert, à plat). Juge : `redteam_tenir.py`.
+> **⚑ C-116 — COMMENTER DEPUIS LA FICHE** : la ligne « Un mot… » est sur TOUTE fiche Promi et Chiche (et celle d'un Cercle, Q511), sans encart (un filet sous
+> elle quand elle est ouverte) ; **le nombre de mots paraît s'il y en a, discret, sans pastille** (« 2 mots » ; corrige v145 « ni compteur ») ; dans Peaufiner,
+> COMMENTAIRES est tout en haut, juste après le trait. Juge : `redteam_commentaires.py` (B et H réécrits).
+> **⚑ C-142 — LE MENU DU +** : encarts 338 × 68 (× 1,09), pas 81, texte 24, aide 14 (deux lignes égales si elle ne tient pas — `text-wrap:balance`), Promi,
+> Chiche, Cercle en PromiLate 25 en capitales. Juge : **`redteam_menu_plus.py`** (14 ; 6/14 sur v146 ; texte agrandi d'iOS simulé par les TAILLES, pas par un zoom).
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v147.py`) : `redteam_guide`, `redteam_commentaires` (B, H),
+> `redteam_part` (le juge attend le clavier et le « + » posé — sous charge il tapait dans le vide), `redteam_tenir` (C), `redteam_trait`, `redteam_engagement`,
+> `redteam_onboarding`, `redteam_onb_sorties` ; `redteam_gestes` est RETIRÉ avec la main.
+
 ### ⚑ v146 (14 oct. 2026) — RETOURS DE TOM SUR v145 : LE GUIDE EN FLAQUES, LES FICHES SOMBRES EN CLAIR, TENIR EN MARÉE, RITOURNELLE À 75 %, L'ONBOARDING, LES NOMS, AUCUN EMOJI. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v136 et v141 (le corps clair des fiches), v145 (Ritournelle, le guide, tenir, les initiales des parts, « Un mot… » absent d'un Cercle), v140 (Enregistrer sur l'accueil).
 > **Validé par Tom : C-117 (la marque de version).**
 > **⚑ C-130, LA RÈGLE DE TÊTE DU DESIGN : voir le §2 bis.**
@@ -2594,6 +2656,16 @@ texte lisible.
 ---
 
 ## 7. Méthode de patch — obligatoire
+
+> ### ⚑ C-137 — RÈGLE PERMANENTE : PLUS JAMAIS DE VIDÉO (Tom, 15 oct. 2026, v147). Elle passe avant toute autre règle de travail.
+> - **Aucune vidéo, aucun enregistrement ralenti, aucun GIF.** Ni dans les rapports, ni dans les lots, **même si un ancien brief en demande** :
+>   cette règle les remplace (les vidéos demandées par les blocs v145 et v146 sont mortes).
+> - **Tom regarde le mouvement lui-même sur son iPhone**, par les paramètres de ralenti (`?flaques=1`, `?mareeLent=4`, le curseur de vitesse de
+>   `promi-trace-lettres.html`, etc.). **Le rapport donne le lien et le paramètre, rien d'autre.**
+> - **Captures fixes : seulement quand une preuve ne peut pas se dire en chiffres. Trois au plus par lot, jamais une planche de huit images.**
+> - **Un seul rapport, dans la réponse.** Pas de .md joint qui le répète.
+> - **Mesures de cadence : seulement quand la charge du Mac est sous 4** (`sysctl -n vm.loadavg`). Au-dessus, on les reporte et on le dit en une ligne.
+> - Les tailles et les espacements se donnent en pt.
 
 ### Avant toute modification
 

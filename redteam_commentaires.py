@@ -18,7 +18,8 @@ Par banc_tom (WebKit, 390 × 844 @3x), au vrai toucher, en clair et en sombre :
   F · (v146, C-116, C-128) le texte à la taille des noms ; le visage petit, rond, sans cerclage ; le nom se touche (il mène à la fiche de la personne) ;
   F · rien ne se superpose : l'ancien champ « écris un mot » est retiré, la ligne, le dernier mot et la ligne d'état ne se recouvrent pas ;
   G · toucher la bande referme la saisie, la fiche reste ;
-  H · ce qui ne change pas : une parole à soi « à tenir », sans commentaire, n'a pas de ligne.
+  H · (v147, §12.1) une parole à soi « à tenir », sans commentaire, a la ligne aussi — sans chiffre.
+  (v147, §12.1) B : le nombre de mots paraît dès qu'il y en a un, discret, sans pastille.
 `--sonde` retire la zone : le juge rougit. Rouge sur v144 (--port=8762).     Usage : python3 redteam_commentaires.py [fichier.html] [--port=8752] [--sonde]
 """
 import re, sys; sys.path.insert(0, '.')
@@ -37,6 +38,7 @@ ET = r"""()=>{ var dv=document.getElementById('device').getBoundingClientRect(),
   var dq=document.getElementById('dptQuand'), qq=dq?dq.getBoundingClientRect():null, co=document.getElementById('dpCorps');
   return {ligne:r('cm5Ligne'), dernier:r('cm5Dernier'), fil:r('cm5Fil'), auDoigt:au, saisie:!!(s && a===s), valeur:s?s.value:null, motVu:l?(function(){ var m=l.querySelector('.cm5-mot'); return m&&getComputedStyle(m).display!=='none'?m.textContent:''; })():null,
     uns:[...document.querySelectorAll('#cm5Fil .cm5-un')].map(e=>{ const c=e.querySelector(':scope > div'); return [c?c.children[0].textContent:'', c?c.children[1].textContent:'']; }), etatBas:qq?+((qq.bottom-dv.top)/k).toFixed(1):null, ancien:co?getComputedStyle(co).display:null,
+    nb:l?(function(){ var n=l.querySelector('.cm5-nb'); if(!n) return null; var cs=getComputedStyle(n); if(cs.display==='none'||!n.textContent.trim()) return null; var bg=cs.backgroundColor; return {t:n.textContent.trim(), fond:bg, rayon:cs.borderRadius, bord:cs.borderTopWidth, fs:parseFloat(cs.fontSize)}; })():null,
     comm:(typeof cur!=='undefined'&&cur&&cur.comments||[]).map(c=>[c.by,c.t]), fiche:document.getElementById('detailPoster').classList.contains('show'), nonlus:(typeof FEED!=='undefined')?FEED.filter(f=>f.unread).length:null}; }"""
 def fiche(pg, pid):
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(900); pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600)
@@ -57,11 +59,17 @@ with sync_playwright() as p:
             juge('A · [%s] Promi reçu, à tenir : la ligne est là, à sa place, au doigt, « %s »' % (th, TEXTE), ligne_ok(e), e.get('ligne'))
             juge('F · [%s] l\'ancien champ est retiré, la ligne ne touche ni la ligne d\'état ni la barre' % th, e.get('ancien') == 'none' and bool(e.get('ligne')) and e['etatBas'] is not None and e['etatBas'] + 8 <= e['ligne']['y'] and e['ligne']['y'] + e['ligne']['h'] + 11 <= 760, 'ancien champ : %s · état jusqu\'à %s · ligne %s' % (e.get('ancien'), e.get('etatBas'), e.get('ligne')))
             # B · réception
-            nl0 = e.get('nonlus')
+            nl0 = e.get('nonlus'); nb0 = e.get('nb'); ligne0 = (e.get('ligne') or {}).get('t', '')
             pg.evaluate("id=>_comm.arrive(promises.find(p=>p.id===id),{t:'Promis, j’y serai. Tu gardes une place ?',by:'Marion',d:'2026-10-11T18:00:00.000Z'})", p1); pg.wait_for_timeout(700); e = pg.evaluate(ET)
             d = e.get('dernier') or {}
             juge('B · [%s] RÉCEPTION : le commentaire reçu paraît au-dessus de la ligne (auteur, date, début)' % th, bool(d) and 'MARION' in d.get('t', '').upper() and '11 oct.' in d.get('t', '') and 'Promis' in d.get('t', '') and d['y'] + d['h'] <= e['ligne']['y'] and e['etatBas'] <= d['y'], d)
-            juge('B · [%s] ni compteur ni pastille : la ligne ne porte aucun chiffre, le Fil ne gagne aucun non-lu' % th, not any(ch.isdigit() for ch in (e['ligne'] or {}).get('t', '')) and e.get('nonlus') == nl0, 'ligne « %s » · non-lus du Fil %s → %s' % ((e['ligne'] or {}).get('t'), nl0, e.get('nonlus')))
+            # ⚑ v147 (Tom, §12.1 : « Le nombre de commentaires ne paraît que s'il y en a, discrètement, sans pastille ») — CONTRAT RÉÉCRIT
+            #   (original : sauvegardes/redteam_commentaires-avant-v147.py, « la ligne ne porte aucun chiffre ») : avant le premier mot, aucun chiffre ;
+            #   après, le nombre est là, petit (≤ 15 px), SANS pastille (aucun fond, aucun rayon, aucun bord) ; et le Fil ne gagne toujours aucun non-lu.
+            nb = e.get('nb') or {}
+            juge('B · [%s] le nombre paraît dès qu\'il y a un mot, discret, sans pastille ; avant, aucun chiffre ; le Fil ne gagne aucun non-lu' % th,
+                 nb0 is None and not any(ch.isdigit() for ch in ligne0) and nb.get('t', '').startswith('1 ') and nb.get('fs', 99) <= 15 and nb.get('fond') in ('rgba(0, 0, 0, 0)', 'transparent') and nb.get('rayon') in ('0px', '') and nb.get('bord') in ('0px', '') and e.get('nonlus') == nl0,
+                 'avant : « %s », compte %s · après : %s · non-lus du Fil %s → %s' % (ligne0, nb0, nb, nl0, e.get('nonlus')))
             # C · toucher la ligne ouvre la saisie
             B.tap_sel(pg, '#cm5Ligne'); pg.wait_for_timeout(900); e = pg.evaluate(ET)
             juge('C · [%s] toucher la ligne ouvre la saisie (le champ a le curseur) et le fil des commentaires sous le trait' % th, e.get('saisie') and bool(e.get('fil')) and e['fil']['y'] > 300 and len(e.get('uns', [])) == 1, 'saisie %s · fil %s · %d commentaire(s)' % (e.get('saisie'), e.get('fil'), len(e.get('uns', []))))
@@ -88,7 +96,10 @@ with sync_playwright() as p:
             juge('A · [%s] Promi reçu, tenu : la ligne est là' % th, ligne_ok(e), e.get('ligne'))
             # H · ce qui ne change pas
             B.plante_doigt(pg, 'arroser le ficus', 'moi', 0); p4 = pg.evaluate("()=>{ var p=promises[promises.length-1]; p.status='rate'; return p.id; }"); fiche(pg, p4); e = pg.evaluate(ET)
-            juge('H · [%s] une parole à soi, à tenir, sans commentaire : pas de ligne (inchangé)' % th, not e.get('ligne'), e.get('ligne'))
+            # ⚑ v147 (Tom, §12.1 : « Sur la fiche d'un Promi, d'un Chiche ou d'un Cercle, dès la vue principale […] on peut commenter ») — CONTRAT
+            #   RÉÉCRIT (original : « une parole à soi, à tenir, sans commentaire : pas de ligne ») : la ligne est sur TOUTE fiche, sans chiffre tant
+            #   qu'aucun mot n'est écrit.
+            juge('H · [%s] une parole à soi, à tenir, sans commentaire : la ligne est là, sans chiffre (§12.1)' % th, ligne_ok(e) and e.get('nb') is None and not any(ch.isdigit() for ch in (e.get('ligne') or {}).get('t', '')), (e.get('ligne'), e.get('nb')))
         except Exception as ex:
             juge('le juge va au bout [%s]' % th, False, str(ex).replace('\n', ' ')[:260])
         juge('aucune erreur de page [%s]' % th, not pg.erreurs, pg.erreurs[:2]); ctx.close()

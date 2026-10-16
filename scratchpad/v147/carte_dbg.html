@@ -1,0 +1,17 @@
+<!DOCTYPE html><html><head><meta charset="utf-8"><link rel="stylesheet" href="../../variantes/polices.css"></head><body style="margin:0;background:#fff">
+<canvas id="o" width="1200" height="400"></canvas>
+<script src="../../variantes/trace-chemins-gilbert.js"></script><script src="../../variantes/trace-lettres.js"></script>
+<script>
+window.dbg=function(car){ return document.fonts.load('700 300px Gilbert').then(function(){
+  var c=document.createElement('canvas'), w=360, h=360; c.width=w; c.height=h; var g=c.getContext('2d'); g.font='700 300px Gilbert'; g.fillStyle='#000'; g.textBaseline='alphabetic'; g.fillText(car, 40, 280);
+  var d=g.getImageData(0,0,w,h).data, A=new Uint8ClampedArray(w*h); for(var p=0;p<w*h;p++) A[p]=d[4*p+3];
+  var G=TraceLettres.glyphe('Gilbert',car), pc=TraceLettres.parcours('Gilbert',car), u=g.measureText(car).width/G.a;
+  var traits=pc.traits.map(function(t){ return {R:t.R*u, b0:t.b0, b1:t.b1, pts:t.pts.map(function(q){ return [40+q[0]*u, 280-q[1]*u]; })}; });
+  var moves=[], acc=0; pc.ordre.forEach(function(st){ if(st[0]==='r') acc+=st[1]*u; else if(st[0]==='t'){ moves.push(acc); acc=0; } });
+  TraceLettres._debug=true; var r=TraceLettres._carte(A,w,h,traits,moves), D=TraceLettres._derniere;
+  var o=document.getElementById('o').getContext('2d'), im=o.createImageData(w,h), cols=[[230,40,40],[40,160,40],[40,60,230],[200,160,0],[160,0,200],[0,170,170],[120,120,120]];
+  for(p=0;p<w*h;p++){ if(!A[p]) { im.data[4*p+3]=0; continue; } var k=D.own[p], c0=k>=0?cols[k%7]:[0,0,0], f=(Math.floor(r.T[p]/12)%2)?0.45:1; im.data[4*p]=c0[0]*f; im.data[4*p+1]=c0[1]*f; im.data[4*p+2]=c0[2]*f; im.data[4*p+3]=255; }
+  var off=(window.__n=(window.__n||0)); o.putImageData(im, off*380, 0); window.__n++;
+  return {upm:G.upm, traits:traits.map(function(t){ return {b0:t.b0,b1:t.b1,n:t.pts.length,a:t.pts[0].map(Math.round),b:t.pts[t.pts.length-1].map(Math.round),R:Math.round(t.R), prolonge:t.prolonge, in0:t.in0, in1:t.in1, droit:t.droit}; })}; }); };
+window.pret=true;
+</script></body></html>

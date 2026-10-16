@@ -61,11 +61,30 @@ def plante_a(pg, titre, gens, nature=1):
     if nature == 0: B.tap_sel(pg, '#csPhrase [data-ph=sens]'); pg.wait_for_timeout(900)
     B.tap_sel(pg, '#csPhrase [data-ph=qui]'); pg.wait_for_timeout(1000)
     B.tap_sel(pg, '#createSheet .gn > .ph-add'); pg.wait_for_timeout(250)
+    # ⚑ v147 — L'INSTRUMENT ATTEND LE CLAVIER, COMME UN DOIGT (§8, « un instrument qui ralentit avec la machine ») : machine chargée (charge 11 à 20,
+    #   une autre session), le clavier partait avant que la zone ait pris le focus, et les lettres tombaient dans le vide (« à Nico » seul, au
+    #   second passage C). Sur l'iPhone on tape quand le clavier est là. On attend donc le focus avant d'écrire, et le nom dans la liste après
+    #   l'avoir validé — aucune reprise : si le nom n'y est pas, le juge le dira.
     for i, n in enumerate(gens):
+        for _ in range(30):
+            if pg.evaluate("()=>document.activeElement && document.activeElement.id==='gnSaisie'"): break
+            pg.wait_for_timeout(100)
         pg.keyboard.type(n, delay=25); pg.wait_for_timeout(300)
-        if i % 2 == 0: B.tap_sel(pg, '#createSheet .gn > .ph-add .gn-plus')
+        if i % 2 == 0:
+            # le doigt touche le « + » qu'il VOIT : on attend qu'il soit posé (deux relevés identiques à 120 ms) — sous charge il glissait encore
+            # quand le juge touchait, et le toucher tombait sur « Moi » (qui vide la liste)
+            q = None
+            for _ in range(25):
+                r = pg.evaluate("()=>{ var e=document.querySelector('#createSheet .gn > .ph-add .gn-plus'); if(!e) return null; var b=e.getBoundingClientRect(); return b.width>2?[Math.round(b.left),Math.round(b.top)]:null; }")
+                if r and r == q: break
+                q = r; pg.wait_for_timeout(120)
+            B.tap_sel(pg, '#createSheet .gn > .ph-add .gn-plus')
         else: pg.keyboard.press('Enter')
-        pg.wait_for_timeout(750)
+        for _ in range(20):
+            pg.wait_for_timeout(100)
+            if pg.evaluate("n=>{ try{ return newWhoSel.indexOf(n)>=0; }catch(e){ return true; } }", n): break
+        pg.wait_for_timeout(400)
+        if '--dbg' in sys.argv: print('   dbg', n, pg.evaluate("()=>({sel:JSON.stringify(newWhoSel), act:document.activeElement&&document.activeElement.id, ph:(document.getElementById('csPhrase')||{}).textContent.slice(0,80)})"))
     pg.evaluate("()=>{ try{ document.activeElement && document.activeElement.blur(); }catch(e){} }"); pg.wait_for_timeout(400)
     pg.evaluate("a=>{ document.getElementById('fTitle').value=a; try{ if(window._phrase){ _phrase.titre=a; } }catch(e){} window._csEnLair=true; window._csDueISO=null; }", titre); pg.wait_for_timeout(300)
     n0 = pg.evaluate("()=>promises.length")

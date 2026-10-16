@@ -10,7 +10,7 @@ Comme Tom (banc_tom : WebKit, 390 × 844 ×3, doigt, Toile vide, paroles planté
   TENIR  (sur la fiche)  : 30 pt → refusé, la parole n'est pas tenue, le trait est revenu ; un doigt POSÉ 1,2 s sans avancer → refusé ;
                            70 pt lent (1 s) → tenue ; 70 pt rapide (0,12 s) → tenue ;
   PLANTER (sur la page +) : 30 pt → rien n'est planté, la page + reste ; 70 pt lent → planté ; 70 pt rapide → planté ;
-  la règle déclarée vaut 60 ; la main fantôme montre un geste de plus de 60 pt.
+  la règle déclarée vaut 60. (v147 : le contrôle de la main fantôme est retiré avec elle, C-139.)
 Le verdict se lit sur l'ÉTAT RÉEL (le statut de la parole, le nombre de paroles), jamais sur ce que le geste déclare.
 Preuve : rouge sur v142 (python3 redteam_trait.py zz-av143.html).
 """
@@ -66,16 +66,8 @@ with sync_playwright() as p:
     trait(pg, 'tenirZone', 200, 70, 12); pg.wait_for_timeout(3500); s = pg.evaluate(ST)
     juge('TENIR · 70 pt rapide (0,12 s) : la parole est tenue', ok and s['statuts'][1] == 'tenu', 'fiche %s · statut %s · geste %s' % (ok, s['statuts'][1], s['d']))
     juge('la règle déclarée vaut 60 pt', s['regle'] == 60, s['regle'])
-    # ── la main fantôme montre un geste de plus de 60 pt ──
-    ctx2 = contexte(b, gestes_vus=False); pg2 = ouvre(ctx2, F); plante(pg2, 'arroser le figuier'); pg2.wait_for_timeout(800)
-    G = pg2.evaluate(OU); a = list(G)[0]; tap(pg2, G[a][0], G[a][1])
-    L = []
-    for i in range(80):   # v144 (C-110) : la main ne paraît plus qu'à 3 s — on la suit jusqu'à 9,6 s
-        pg2.wait_for_timeout(120)
-        v = pg2.evaluate("()=>{ const g=document.getElementById('gesteFantome'); if(!g||!g.children.length) return null; const m=g.querySelector('svg > g')||g.firstElementChild;   /* la main est le groupe déplacé dans le calque */ const r=m.getBoundingClientRect(), d=document.getElementById('device').getBoundingClientRect(); return (r.left+r.width/2-d.left)/(d.width/390); }")
-        if v is not None: L.append(v)
-    juge('la main fantôme paraît sur la fiche à tenir, et son geste couvre plus de 60 pt', len(L) >= 5 and max(L) - min(L) > 60, '%d relevés · de x %.0f à x %.0f' % (len(L), min(L) if L else 0, max(L) if L else 0))
-    juge('aucune erreur de page', not pg.__dict__['erreurs'] and not pg2.__dict__['erreurs'], (pg.__dict__['erreurs'] + pg2.__dict__['erreurs'])[:2])
-    ctx.close(); ctx2.close(); b.close()
+    # v147 (C-139) : la main fantôme est supprimée — son contrôle (« elle montre plus de 60 pt ») est retiré avec elle.
+    juge('aucune erreur de page', not pg.__dict__['erreurs'], pg.__dict__['erreurs'][:2])
+    ctx.close(); b.close()
 n = sum(1 for _, c in res if c); print('\n%d/%d' % (n, len(res)))
 if n < len(res): sys.exit(1)

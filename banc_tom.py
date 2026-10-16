@@ -17,15 +17,13 @@ Ce que ce banc change face aux juges d'avant, et pourquoi (mesuré en v142) :
 """
 import io
 UA = 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.5 Mobile/15E148 Safari/604.1'
-GESTES = ['tenir', 'chiche', 'planter', 'pelote', 'noyau', 'fil', 'studio-monde', 'studio-couleur', 'bande', 'dessin']
-def contexte(b, sombre=False, stockage=None, gestes_vus=True, onb=True, guide=True, vw=390, vh=844, dsf=3):
+def contexte(b, sombre=False, stockage=None, onb=True, guide=True, vw=390, vh=844, dsf=3):
     ctx = b.new_context(viewport={'width': vw, 'height': vh}, device_scale_factor=dsf, has_touch=True, is_mobile=True, user_agent=UA, color_scheme='dark' if sombre else 'light')
     s = "try{Object.defineProperty(Navigator.prototype,'webdriver',{get:function(){return false},configurable:true});}catch(e){}"
     s += "try{if(!sessionStorage.getItem('__amorce')){sessionStorage.setItem('__amorce','1');"
     if onb: s += "localStorage.setItem('promi_onb','1');"
     if guide: s += "localStorage.setItem('promi_guide','1');"
     s += "localStorage.setItem('promi_rappel_n','9');localStorage.setItem('promi_theme','%s');" % ('dark' if sombre else 'light')
-    if gestes_vus: s += "%s.forEach(function(k){localStorage.setItem('geste_v','143');localStorage.setItem('geste_vu_'+k,'1')});" % repr(GESTES)
     for k, v in (stockage or {}).items(): s += "localStorage.setItem(%r,%r);" % (k, v)
     s += "}}catch(e){}"
     ctx.add_init_script(s); return ctx

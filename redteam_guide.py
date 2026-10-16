@@ -1,5 +1,20 @@
 #!/usr/bin/env python3
 """
+⚑ v147 (Tom, 15 oct. 2026 — C-094, 3e RÉCIDIVE) — COMPLÉTÉ (original : sauvegardes/redteam_guide-avant-v147.py). La cause de la récidive : le juge
+de v146 vérifiait que l'eau faisait des FLAQUES (plusieurs morceaux) et que la zone nette était « légèrement imparfaite » (recouvrement avec une
+ellipse 0,90 à 0,988) — il demandait donc un rond, à peine bosselé : c'est le rond que Tom a vu. Rien ne comptait les germes, ne regardait les
+naissances, les ponts entre deux flaques, ni ne bornait la zone à la boîte de l'icône et de son mot. Les décisions de v147, EN DUR (§10) :
+  10.1 12 à 20 germes ; naissances étalées sur les 40 premiers % (aucune après) ; vitesses différentes ; bord ondulé de 15 à 25 % du rayon qui change
+       en grandissant ; un PONT se forme entre deux flaques qui s'approchent (des pixels mouillés qu'aucune flaque seule ne couvre, entre deux centres) ;
+       jamais un front unique (≥ 4 morceaux à 20 % du temps) ;
+  10.2 le Studio : 4 à 6 flaques nettes naissent DANS la boîte de l'icône et de son mot (à 20 % de l'ouverture : plusieurs morceaux, tous dans la
+       boîte) ; forme finale : la boîte entière, une marge de 6 à 10 pt (aucun pixel net au-delà de 10 pt, nulle part sur l'écran), des lobes ; elle
+       RESPIRE tant qu'elle est ouverte ; elle se referme sur elle-même (4.4, inchangé) ; 10.3 le + : pareil ;
+  10.4 la phrase monte de 60 pt (centrée à 312) ; « monde » en rose #FFB8D2 ; « Studio » : chaque lettre d'une couleur de la palette de base
+       (Ingénu : bleu, rose, lilas, crème dalle), dans son ordre ; aucun contour ; les lettres se tracent (§9) ; C-138 : le texte du guide est dans
+       l'échelle de l'onboarding (Atkinson 500, 27 pt ; v146 : 34).
+La cadence (« d'une image à la suivante la couverture avance de 9 % au plus ») n'est jugée que machine au calme (charge < 4, C-137).
+
 redteam_guide.py — LE GUIDE D'ACCUEIL : DES FLAQUES (v146, Tom, 14 oct. 2026 — C-094, 2e RÉCIDIVE). RÉÉCRIT ; l'original de v144 :
 sauvegardes/redteam_guide-avant-v146.py (six formes à bord doux qui grandissent, une loupe ronde qui glisse du Studio au +).
 
@@ -39,6 +54,10 @@ PH_PLUS = 'Promi, Chiche ou Cercle : tout commence par ce +.'
 CLES = {'studio': ['monde', 'Studio'], 'plus': ['commence']}                   # §11.7, en dur
 ATTENTE, COUVRE, OUVRE, FERME, RETIRE = 600, 1400, 700, 700, 1200             # ms — les durées décidées (couverture 1,2 à 1,6 s ; zone 0,6 à 0,8 s)
 VIOLET, BLEU, CREME = (41, 21, 71), (14, 120, 242), (247, 240, 222)           # #291547 · #0E78F2 · #F7F0DE
+ROSE = (255, 184, 210)                                                          # v147 §10.4 : « monde » en rose #FFB8D2
+PALB = [(130, 174, 248), (255, 184, 210), (201, 168, 245), (239, 227, 199)]    # la palette de base (Ingénu), dans son ordre — « Studio », lettre à lettre
+TAILLE_TEXTE, MARGE_MIN, MARGE_MAX, CENTRE_PH = 27, 6.0, 10.0, 312              # C-138 ; §10.2 ; §10.4 (372 − 60)
+CHARGE = float(os.popen('sysctl -n vm.loadavg').read().split()[1]) if os.path.exists('/usr/sbin/sysctl') else 0.0
 os.makedirs('planche-v146', exist_ok=True)
 res = []
 def juge(nom, cond, detail=''):
@@ -52,8 +71,10 @@ ETAT = """()=>{ const g=document.getElementById('guide'), p=document.getElementB
   function vu(el){ let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9; el.querySelectorAll('svg, .l').forEach(e=>{ const q=e.getBoundingClientRect(); if(q.width<2) return; x0=Math.min(x0,q.left); y0=Math.min(y0,q.top); x1=Math.max(x1,q.right); y1=Math.max(y1,q.bottom); }); return [(x0-D.left)/k,(y0-D.top)/k,(x1-x0)/k,(y1-y0)/k]; }
   const ba=document.querySelector('#device .acc-barre');
   const mots=p?[...p.querySelectorAll('.gd-cle, .gd-nat')].map(e=>{ const c=getComputedStyle(e); return {t:e.textContent, cl:e.className, pol:c.fontFamily.split(',')[0].replace(/["']/g,'').trim(), col:c.color, tt:c.textTransform}; }):[];
+  const lettres=p?[...p.querySelectorAll('.gd-studio .gd-l')].map(e=>[e.textContent, getComputedStyle(e).color]):[];
+  const phPoids=p?getComputedStyle(p).fontWeight:null;
   return {guide:g?g.getAttribute('data-guide'):null, entier:!!(g&&g.getAttribute('data-entier')), eau:!!document.getElementById('guideEau'),
-    phrase:p?p.textContent:null, phraseVue:p?cs(p).visibility:null, phraseB:B(p), phraseCol:p?cs(p).color:null, phraseFs:p?parseFloat(cs(p).fontSize):null, phrasePol:p?cs(p).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, mots:mots,
+    lettres:lettres, phPoids:phPoids, phrase:p?p.textContent:null, phraseVue:p?cs(p).visibility:null, phraseB:B(p), phraseCol:p?cs(p).color:null, phraseFs:p?parseFloat(cs(p).fontSize):null, phrasePol:p?cs(p).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, mots:mots,
     tard:t?t.textContent:null, tous:tous, devant:acc, e:(window._guide?window._guide.etat():null), regle:(window._guide?window._guide.regle:null), vu:localStorage.getItem('promi_guide'),
     studioVu:vu(document.getElementById('studioBtn')), auraVu:vu(document.getElementById('souffleBtn')), indexVu:vu(document.getElementById('indexBtn')), plusB:B(document.getElementById('createBtn')), barre:B(ba),
     studio:(()=>{const s=document.getElementById('studioScreen'); const h=document.elementFromPoint(D.left+D.width/2, D.top+D.height*0.6); return !!(s&&h&&s.contains(h));})(),
@@ -143,16 +164,24 @@ def a2(e, T):
     fautes = [t for t in e['tous'] if t['eng'] is None or t['op'] != 1 or (t['trd'] not in ('0s', '') and t['trp'] not in ('none', '')) or t['an'] != 'none' or t['bf'] != 'none']
     juge('[%s] A2 : tout nœud du guide porte data-eng, opacité 1, aucune transition, aucune animation, aucun flou CSS' % T, len(e['tous']) >= 3 and not fautes, '%d nœuds · %s' % (len(e['tous']), fautes[:2]))
 def phrase(e, T, quoi):
-    """4.2 et §11.7 : la phrase, mot pour mot, sans contour, plus grosse ; ses mots-clés en PromiLate ; les couleurs du clair, la crème du sombre"""
+    """10.4, C-138 et §11.7 : la phrase, mot pour mot, sans contour, 60 pt plus haut, dans l'échelle (Atkinson 500, 27 pt) ; ses mots-clés en
+    PromiLate ; « monde » rose, « Studio » aux couleurs de la palette de base dans son ordre ; ailleurs les couleurs du clair, la crème du sombre"""
     ph = PH_STUDIO if quoi == 'studio' else PH_PLUS; clair = e['clair']
-    juge('[%s] %s · la phrase, mot pour mot, visible, au milieu de l\'écran' % (T, quoi), e['phrase'] == ph and e['phraseVue'] == 'visible' and e['phraseB'] and abs((e['phraseB'][1] + e['phraseB'][3] / 2) - 372) <= 40, '« %s » %s' % (e['phrase'], e['phraseB']))
+    juge('[%s] %s · la phrase, mot pour mot, visible, 60 pt plus haut qu\'en v146 (centrée à %d ± 40)' % (T, quoi, CENTRE_PH), e['phrase'] == ph and e['phraseVue'] == 'visible' and e['phraseB'] and abs((e['phraseB'][1] + e['phraseB'][3] / 2) - CENTRE_PH) <= 40, '« %s » %s' % (e['phrase'], e['phraseB']))
     cont = [t for t in e['tous'] if t['eng'] == 'guide-phrase' and ((t['sh'] not in ('none', '')) or (t['st'] not in ('0px', '', None)))]
-    juge('[%s] %s · AUCUN contour ni ombre sur les lettres ; la phrase est plus grosse (≥ 34 px, 30 avant)' % (T, quoi), not cont and (e['phraseFs'] or 0) >= 34, 'taille %s · contours %s' % (e['phraseFs'], cont[:1]))
+    juge('[%s] %s · AUCUN contour ni ombre sur les lettres ; l\'échelle de l\'onboarding (C-138) : Atkinson 500, %d pt' % (T, quoi, TAILLE_TEXTE), not cont and abs((e['phraseFs'] or 0) - TAILLE_TEXTE) <= 0.5 and e['phrasePol'] == 'Atkinson' and str(e['phPoids']) == '500', 'taille %s · %s %s · contours %s' % (e['phraseFs'], e['phrasePol'], e['phPoids'], cont[:1]))
+    juge('[%s] %s · les lettres se TRACENT (§9) : le module du tracé est branché sur la phrase' % (T, quoi), bool((e['e'] or {}).get('trace')), (e['e'] or {}).get('trace'))
     cles = [m for m in e['mots'] if 'gd-cle' in m['cl']]; nats = [m for m in e['mots'] if 'gd-nat' in m['cl']]
     juge('[%s] %s · les mots-clés %s sont en PromiLate, en capitales' % (T, quoi, CLES[quoi]), [m['t'] for m in cles] == CLES[quoi] and all(m['pol'] == 'PromiLate' and m['tt'] == 'uppercase' for m in cles), [(m['t'], m['pol']) for m in cles])
-    if clair:
+    if quoi == 'studio':
+        mo = [m for m in cles if m['t'] == 'monde']; L = e.get('lettres') or []
+        att = [PALB[i % 4] for i in range(6)]
+        juge('[%s] studio · 10.4 : « monde » en rose #FFB8D2 ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — les valeurs de Tom, sans retouche' % T,
+             bool(mo) and proche(mo[0]['col'], ROSE, 6) and ''.join(l[0] for l in L) == 'Studio' and all(proche(L[i][1], att[i], 6) for i in range(6)), 'monde %s · lettres %s' % (mo[0]['col'] if mo else None, L))
+        juge('[%s] studio · le reste du texte : %s' % (T, '#291547' if clair else 'la crème'), proche(e['phraseCol'], VIOLET if clair else CREME), e['phraseCol'])
+    elif clair:
         juge('[%s] %s · en clair : le texte en #291547, les mots-clés en #0E78F2' % (T, quoi), proche(e['phraseCol'], VIOLET) and all(proche(m['col'], BLEU) for m in cles), '%s · %s' % (e['phraseCol'], [m['col'] for m in cles]))
-        if quoi == 'plus': juge('[%s] plus · en clair : Promi, Chiche, Cercle dans leur couleur (trois teintes, aucune n\'est celle du texte)' % T, [m['t'] for m in nats] == ['Promi', 'Chiche', 'Cercle'] and len(set(m['col'] for m in nats)) == 3 and proche(nats[0]['col'], BLEU) and not any(proche(m['col'], VIOLET, 12) for m in nats), [(m['t'], m['col']) for m in nats])
+        juge('[%s] plus · en clair : Promi, Chiche, Cercle dans leur couleur (trois teintes, aucune n\'est celle du texte)' % T, [m['t'] for m in nats] == ['Promi', 'Chiche', 'Cercle'] and len(set(m['col'] for m in nats)) == 3 and proche(nats[0]['col'], BLEU) and not any(proche(m['col'], VIOLET, 12) for m in nats), [(m['t'], m['col']) for m in nats])
     else:
         juge('[%s] %s · en sombre : la crème, pour toute la phrase' % (T, quoi), proche(e['phraseCol'], CREME) and all(proche(m['col'], CREME) for m in e['mots']), '%s · %s' % (e['phraseCol'], [m['col'] for m in e['mots']][:3]))
 def zone(pg, e, T, quoi, nette=None):
@@ -165,18 +194,49 @@ def zone(pg, e, T, quoi, nette=None):
     if not M: juge('[%s] %s · la zone nette est ouverte' % (T, quoi), False, 'aucun trou'); return None
     c = M[0]; ys, xs = np.where(c); x0, x1, y0, y1 = bx + xs.min() / 3.0, bx + (xs.max() + 1) / 3.0, by + ys.min() / 3.0, by + (ys.max() + 1) / 3.0
     cb = e['studioVu'] if quoi == 'studio' else e['plusB']
-    contient = x0 <= cb[0] + 0.7 and y0 <= cb[1] + 0.7 and x1 >= cb[0] + cb[2] - 0.7 and y1 >= cb[1] + cb[3] - 0.7
+    rond = quoi == 'plus'   # v147 : le + est un disque dans son anneau (72 pt) — sa « boîte », c'est ce disque
+    if rond:
+        Yc, Xc = np.mgrid[0:c.shape[0], 0:c.shape[1]]; dd = np.sqrt((bx + (Xc + 0.5) / 3.0 - (cb[0] + cb[2] / 2)) ** 2 + (by + (Yc + 0.5) / 3.0 - (cb[1] + cb[3] / 2)) ** 2)
+        contient = bool(c[dd <= min(cb[2], cb[3]) / 2 - 0.7].all())
+    else:
+        contient = x0 <= cb[0] + 0.7 and y0 <= cb[1] + 0.7 and x1 >= cb[0] + cb[2] - 0.7 and y1 >= cb[1] + cb[3] - 0.7
     juge('[%s] %s · la zone nette, un seul morceau, contient toute la cible (%s)' % (T, quoi, 'l\'icône et son mot' if quoi == 'studio' else 'le +'), len(M) == 1 and contient, 'zone x %.1f–%.1f, y %.1f–%.1f · cible %s' % (x0, x1, y0, y1, [round(v, 1) for v in cb]))
     ba = e['barre']; voisins = [e['auraVu']] + ([e['indexVu']] if quoi == 'plus' else [])
     hors_voisins = all(x1 <= v[0] - 0.5 or x0 >= v[0] + v[2] + 0.5 for v in voisins)
     dans_barre = x0 >= ba[0] + 3 and x1 <= ba[0] + ba[2] - 3 and y0 >= ba[1] + 3 and y1 <= ba[1] + ba[3] - 3
     juge('[%s] %s · on ne voit NI l\'Aura%s NI le contour de la barre : la zone s\'arrête avant' % (T, quoi, ' ni l\'Index' if quoi == 'plus' else ''), hors_voisins and dans_barre, 'zone x %.1f–%.1f · Aura à %.1f · barre %s' % (x0, x1, e['auraVu'][0], [round(v, 1) for v in ba]))
-    iou, sd, var = ellipse(c)
-    juge('[%s] %s · sa forme est un entourage LÉGÈREMENT imparfait : ni cercle ni ellipse parfaits (recouvrement avec l\'ellipse de mêmes moments ≤ 0,988 ; une vraie ellipse de cette taille : ≥ 0,995), ni déchiqueté (≥ 0,90, et un bord lisse : ≤ 1,2 %% d\'une direction à la voisine)' % (T, quoi),
-         0.90 <= iou <= 0.988 and var <= 0.012 and sd <= 0.09, 'recouvrement %.3f · écart-type du rayon %.3f · variation voisine %.4f' % (iou, sd, var))
+    # ⚑ v147 §10.2 — (4.5 : la zone du + commence à 140 au plus tôt — 150 en v146, quand sa marge était de 5 pt ; aujourd'hui 6 à 10 : 149)
+    # ⚑ v147 §10.2 — CONTRAT RÉÉCRIT (original : « un entourage LÉGÈREMENT imparfait : recouvrement avec l'ellipse 0,90 à 0,988 » — il demandait un rond) :
+    #   la marge, lue sur chaque pixel du bord de la zone, est la distance à la boîte de l'icône et de son mot : de 6 à 10 pt (± 0,7 : la lecture à 1/3 pt) ;
+    #   des LOBES : d'une direction à l'autre (72 secteurs autour du centre), la marge moyenne varie d'au moins 8 % du rayon moyen de la zone.
+    H_, W_ = c.shape; bord = c & ~(np.roll(c, 1, 0) & np.roll(c, -1, 0) & np.roll(c, 1, 1) & np.roll(c, -1, 1))
+    by_, bx_ = np.where(bord); px_ = bx + (bx_ + 0.5) / 3.0; py_ = by + (by_ + 0.5) / 3.0
+    ddx = np.maximum(0, np.maximum(cb[0] - px_, px_ - (cb[0] + cb[2]))); ddy = np.maximum(0, np.maximum(cb[1] - py_, py_ - (cb[1] + cb[3]))); mg = np.sqrt(ddx * ddx + ddy * ddy)
+    if rond: mg = np.maximum(0, np.sqrt((px_ - (cb[0] + cb[2] / 2)) ** 2 + (py_ - (cb[1] + cb[3] / 2)) ** 2) - min(cb[2], cb[3]) / 2)
+    ccx, ccy = cb[0] + cb[2] / 2, cb[1] + cb[3] / 2; ang = np.arctan2(py_ - ccy, px_ - ccx); rr = np.sqrt((px_ - ccx) ** 2 + (py_ - ccy) ** 2)
+    sect = [mg[(ang >= -np.pi + k * np.pi / 36) & (ang < -np.pi + (k + 1) * np.pi / 36)] for k in range(72)]; moy = [float(q.mean()) for q in sect if len(q)]
+    lobes = (max(moy) - min(moy)) / float(rr.mean()) if moy else 0
+    # la barre telle qu'on la voit : un rectangle aux bouts arrondis (rayon = sa demi-hauteur) — distance signée au contour, négative dedans
+    ba = e['barre']; rb = ba[3] / 2.0
+    def sdb(X, Y):
+        qx = np.abs(X - (ba[0] + ba[2] / 2)) - (ba[2] / 2 - rb); qy = np.abs(Y - (ba[1] + ba[3] / 2)) - (ba[3] / 2 - rb)
+        return np.sqrt(np.maximum(qx, 0) ** 2 + np.maximum(qy, 0) ** 2) + np.minimum(np.maximum(qx, qy), 0) - rb
+    sdbord = sdb(px_, py_); libre = sdbord < -6.0      # là où la barre ne contraint pas la zone
+    juge('[%s] %s · 10.2 : rien du contour de la barre n\'est découvert — la zone reste à 2,5 pt au moins en deçà de son trait (sa forme arrondie, pas sa boîte)' % (T, quoi), float(sdbord.max()) <= -2.5, 'au plus près : %.1f pt du contour' % -float(sdbord.max()))
+    mgl = mg[libre] if libre.any() else mg
+    juge('[%s] %s · 10.2 : autour de la boîte, une marge de 6 à 10 pt partout où la barre ne la borne pas (lue sur chaque pixel du bord)' % (T, quoi), len(mgl) > 40 and float(mgl.min()) >= MARGE_MIN - 0.7 and float(mg.max()) <= MARGE_MAX + 0.7, 'marge %.1f à %.1f pt (%d %% du bord borné par la barre, marge %.1f au plus bas)' % (float(mgl.min()), float(mg.max()), round(100 * (1 - libre.mean())), float(mg.min())))
+    juge('[%s] %s · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 %% de sa taille : la marge varie d\'au moins 8 %% du rayon moyen d\'un secteur à l\'autre) — pas un rond' % (T, quoi), 0.08 <= lobes <= 0.15, 'lobes %.1f %% du rayon moyen (%.1f pt) · marge par secteur %.1f–%.1f' % (lobes * 100, float(rr.mean()), min(moy) if moy else 0, max(moy) if moy else 0))
+    # aucun pixel net hors de la zone, sur TOUT l'écran : la boîte + 10 pt (+ 0,7 de lecture)
+    mT, _ = eau(pg, 780, 1688)
+    if mT is not None:
+        Y, X = np.where(~mT); qx = (X + 0.5) / 2.0; qy = (Y + 0.5) / 2.0
+        ex_ = np.maximum(0, np.maximum(cb[0] - qx, qx - (cb[0] + cb[2]))); ey_ = np.maximum(0, np.maximum(cb[1] - qy, qy - (cb[1] + cb[3]))); dq = np.sqrt(ex_ * ex_ + ey_ * ey_)
+        if rond: dq = np.maximum(0, np.sqrt((qx - (cb[0] + cb[2] / 2)) ** 2 + (qy - (cb[1] + cb[3] / 2)) ** 2) - min(cb[2], cb[3]) / 2)
+        hors = int((dq > MARGE_MAX + 0.7).sum())
+        juge('[%s] %s · 10.2 : AUCUN pixel net hors de la boîte + 10 pt, sur tout l\'écran' % (T, quoi), hors == 0, '%d case(s) nette(s) au-delà (½ pt)' % hors)
     if nette is not None:
         apres = image(pg); ex0, ey0, ex1, ey1 = cb[0] + 2, cb[1] + 2, cb[0] + cb[2] - 2, cb[1] + cb[3] - 2
-        en, ea = energie(nette, ex0, ey0, ex1, ey1), energie(apres, ex0, ey0, ex1, ey1); Z = ((30, 44, 360, 96), (30, 110, 360, 280), (30, 470, 360, 690)); f0, f1 = sum(energie(nette, *z) for z in Z), sum(energie(apres, *z) for z in Z)
+        en, ea = energie(nette, ex0, ey0, ex1, ey1), energie(apres, ex0, ey0, ex1, ey1); Z = ((30, 44, 360, 96), (30, 110, 360, 235), (30, 400, 360, 690)); f0, f1 = sum(energie(nette, *z) for z in Z), sum(energie(apres, *z) for z in Z)   # v147 : la phrase est à 247–377 (Studio), 264–361 (+); f0, f1 = sum(energie(nette, *z) for z in Z), sum(energie(apres, *z) for z in Z)
         juge('[%s] %s · sur l\'image : la cible est NETTE (≥ 85 %% de ses contours), le reste de l\'écran est FLOU (≤ 45 %%)' % (T, quoi), en > 0 and ea >= 0.85 * en and f1 <= 0.45 * f0, 'cible %.2f → %.2f · plateau et Toile hors de la phrase %.2f → %.2f' % (en, ea, f0, f1))
     return {'cx': (x0 + x1) / 2, 'cy': (y0 + y1) / 2, 'aire': float(c.sum()) / 9.0}
 def couverture(pg, T):
@@ -199,6 +259,52 @@ def couverture(pg, T):
     bord = [float(e2.mean()) / max(1e-6, float(m.mean()) + float(e2.mean())) for m, e2 in zip(M[1:6], entre[1:6])]
     juge('[%s] 4.1 · le bord d\'une flaque est une LIGNE : aucune zone à demi transparente (≤ 2 %% de l\'eau entre-deux, le lissage du trait)' % T, max(bord) <= 0.02, ' · '.join('%.2f %%' % (b * 100) for b in bord))
     return M
+PONTS = """(u)=>{ const S=_guide.scene(), cv=document.getElementById('guideEau'); if(!S||!S.G||!cv) return null; const d=cv.width/390, W=cv.width, im=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data, tau=u*3.2;
+  const mouille=(x,y)=>{ const i=((Math.floor(y*d))*W+Math.floor(x*d))*4+3; return im[i]>200; };
+  const ua=Flaques.avance?Flaques.avance(u):u, B=S.G.map(g=>({g:g, r:Flaques.rayonA(g,ua)})).filter(b=>b.r>0.5);
+  const dans=(b,x,y)=>{ const dx=x-b.g.x, dy=y-b.g.y, dd=Math.sqrt(dx*dx+dy*dy)||1e-3; return dd <= b.r*(1+b.g.A*Flaques.onde(b.g.H,dx/dd,dy/dd,tau+b.g.t*7)); };
+  let ponts=0, separes=0, ex=[];
+  for(let a=0;a<B.length;a++) for(let b=a+1;b<B.length;b++){ const A=B[a], C=B[b], L=Math.hypot(A.g.x-C.g.x, A.g.y-C.g.y); if(L>2.6*(A.r+C.r)) continue;
+    let gap=0, sec=0;
+    for(let k=1;k<160;k++){ const t=k/160, x=A.g.x+(C.g.x-A.g.x)*t, y=A.g.y+(C.g.y-A.g.y)*t; if(x<0||y<0||x>=390||y>=844) continue;
+      if(B.some(q=>dans(q,x,y))) continue; gap++; if(!mouille(x,y)) sec++; }
+    const lg=gap*L/160; if(lg<1.5) continue;
+    if(sec===0){ ponts++; if(ex.length<3) ex.push(Math.round(lg*10)/10); } else separes++; }
+  return {n:B.length, ponts:ponts, separes:separes, ex:ex}; }"""
+def germes_et_ponts(pg, T):
+    """10.1, lu sur la scène du guide (les germes qu'elle DÉCLARE) puis sur le canevas (les ponts) : 12 à 20 germes, naissances étalées sur les 40
+    premiers %, vitesses différentes, bord ondulé de 15 à 25 % du rayon ; un pont = un écart entre deux flaques qu'aucune flaque seule ne couvre,
+    et que l'eau du canevas couvre pourtant (les deux flaques se rejoignent avant de se toucher)"""
+    pg.evaluate("(ms)=>{ _guide.figeA(ms); }", 0.05 * COUVRE); pg.wait_for_timeout(120)
+    G = pg.evaluate("()=>{ const S=_guide.scene(); return S&&S.G?S.G.map(g=>[g.x,g.y,g.t,g.v,g.rmax,g.A,(g.H||[]).map(h=>h.w)]):null; }")
+    if not G: juge('[%s] 10.1 · la scène déclare ses germes' % T, False); return
+    t = sorted(g[2] for g in G); v = [g[3] for g in G]; A = [g[5] for g in G]
+    juge('[%s] 10.1 · 12 à 20 germes, à des places tirées au hasard' % T, 12 <= len(G) <= 20, '%d germes' % len(G))
+    juge('[%s] 10.1 · naissances ÉTALÉES sur les 40 premiers %% de la durée (aucune après, pas toutes ensemble)' % T, t[-1] <= 0.4 + 1e-6 and t[-1] - t[0] >= 0.3 and len(set(round(x, 3) for x in t)) >= len(t) - 1, 'de %.2f à %.2f' % (t[0], t[-1]))
+    juge('[%s] 10.1 · des vitesses DIFFÉRENTES (la plus rapide ≥ 1,3 × la plus lente)' % T, max(v) / max(1e-6, min(v)) >= 1.3, 'vitesses %.2f à %.2f' % (min(v), max(v)))
+    juge('[%s] 10.1 · le bord de chaque flaque ondule de 15 à 25 %% de son rayon, et l\'onde change pendant qu\'elle grandit' % T, all(0.15 - 1e-6 <= a <= 0.25 + 1e-6 for a in A) and all(any(abs(w) > 0.05 for w in g[6]) for g in G), 'amplitudes %.2f à %.2f' % (min(A), max(A)))
+    nb = []; P = 0
+    for u in (0.2, 0.3, 0.4, 0.5, 0.6):
+        pg.evaluate("(ms)=>{ _guide.figeA(ms); }", u * COUVRE); pg.wait_for_timeout(120); r = pg.evaluate(PONTS, u)
+        if r: nb.append((u, r['ponts'], r['separes'], r['ex'])); P += r['ponts']
+    juge('[%s] 10.1 · des PONTS : entre deux flaques qui s\'approchent, l\'eau couvre l\'écart avant qu\'elles se touchent (≥ 2 sur la couverture)' % T, P >= 2, ' · '.join('%d %%: %d pont(s), %d écart(s) secs %s' % (u * 100, a, b_, ex) for u, a, b_, ex in nb))
+def zone_naissance(pg, T, quoi):
+    """10.2 et 10.3 : 4 à 6 flaques nettes naissent DANS la boîte ; à 20 % de l'ouverture la zone est faite de plusieurs morceaux"""
+    pg.evaluate("(a)=>_guide.figeNet(a[0], a[1])", [quoi, int(OUVRE * 0.2)]); pg.wait_for_timeout(200)
+    Z = pg.evaluate("()=>{ const S=_guide.scene(); return S&&S.Z?{G:S.Z.G.map(g=>[g.x,g.y,g.t]), b:S.Z.boite}:null; }")
+    if not Z: juge('[%s] %s · la zone déclare ses flaques' % (T, quoi), False); return
+    b = Z['b']; dedans = all(b[0] <= g[0] <= b[0] + b[2] and b[1] <= g[1] <= b[1] + b[3] for g in Z['G'])
+    cx, cy = b[0] + b[2] / 2, b[1] + b[3] / 2; m, _ = eau(pg, 390, 390, (cx - 65, cy - 65, 130, 130)); Mx = morceaux(~m, 8) if m is not None else []
+    juge('[%s] %s · 10.2 : 4 à 6 flaques nettes naissent DANS la boîte de l\'icône%s ; à 20 %% de l\'ouverture, plusieurs morceaux' % (T, quoi, ' et de son mot' if quoi == 'studio' else ''), 4 <= len(Z['G']) <= 6 and dedans and len(Mx) >= 2, '%d flaques · dans la boîte %s · morceaux à 20 %% : %d' % (len(Z['G']), dedans, len(Mx)))
+    pg.evaluate("(a)=>_guide.figeNet(a[0], a[1])", [quoi, OUVRE]); pg.wait_for_timeout(150)
+def respiration(pg, T, quoi, e):
+    """10.2 : tant qu'elle est ouverte, la zone respire très légèrement (elle change, à peine) — lue deux fois à 1,2 s d'écart"""
+    tr = (e['e'] or {}).get('trou')
+    if not tr: return
+    bx_, by_ = tr['x'] - 65, tr['y'] - 65; m1, _ = eau(pg, 390, 390, (bx_, by_, 130, 130)); pg.wait_for_timeout(1200); m2, _ = eau(pg, 390, 390, (bx_, by_, 130, 130))
+    if m1 is None or m2 is None: return
+    a, b_ = ~m1, ~m2; iou = float((a & b_).sum()) / float(max(1, (a | b_).sum()))
+    juge('[%s] %s · 10.2 : ouverte, la zone RESPIRE très légèrement (deux lectures à 1,2 s : elle a bougé, à peine — recouvrement 0,85 à 0,995)' % (T, quoi), 0.85 <= iou <= 0.995, 'recouvrement %.3f' % iou)
 def ouvre(b, th, reduit=False, vierge=True):
     ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=3, has_touch=True, reduced_motion=('reduce' if reduit else 'no-preference'))
     ctx.add_init_script("try{ if(!localStorage.getItem('promi_theme')) localStorage.setItem('promi_theme','%s'); %s }catch(e){}" % (th, '' if vierge else "localStorage.setItem('promi_onb','1'); localStorage.setItem('promi_guide','1'); localStorage.setItem('promi_rappel_n','9');"))
@@ -286,18 +392,23 @@ def premier_lancement(b, th):
         pg.wait_for_timeout(20)
     e = attend(pg, 'studio', 9000); pg.wait_for_timeout(OUVRE + 250); g = pg.evaluate("()=>window.__g"); e = pg.evaluate(ETAT)
     calme = (g['tG'] - g['bouge']) / 1000.0 if g['tG'] else None
-    juge('[%s] LE MOMENT : l\'eau commence 0,6 s après que l\'accueil est posé (0,55 à 1,2 s : onboarding refermé, Toile au repos, aucun doigt)' % T, calme is not None and 0.55 <= calme <= 1.2, 'calme avant le guide : %s s' % (None if calme is None else round(calme, 2)))
+    if CHARGE >= 4: print('      (non jugé : « le moment » est une durée tenue par des minuteurs ; charge du Mac %.1f ≥ 4 — C-137. Relevé : %s s)' % (CHARGE, None if calme is None else round(calme, 2)))
+    else: juge('[%s] LE MOMENT : l\'eau commence 0,6 s après que l\'accueil est posé (0,55 à 1,2 s : onboarding refermé, Toile au repos, aucun doigt)' % T, calme is not None and 0.55 <= calme <= 1.2, 'calme avant le guide : %s s' % (None if calme is None else round(calme, 2)))
     duree = (g['tEnt'] - g['tDep']) / 1000.0 if g['tEnt'] and g['tDep'] else None
-    juge('[%s] 4.1 · la couverture dure 1,2 à 1,6 s (réglée à 1,4)' % T, duree is not None and 1.2 <= duree <= 1.75 and (e['regle'] or {}).get('COUVRE') == COUVRE, 'mesurée %s s · réglée %s ms' % (None if duree is None else round(duree, 2), (e['regle'] or {}).get('COUVRE')))
+    if CHARGE >= 4: print('      (non jugé : la durée de la couverture se lit image par image ; charge du Mac %.1f ≥ 4 — C-137. Relevé : %s s, réglée %s ms)' % (CHARGE, None if duree is None else round(duree, 2), (e['regle'] or {}).get('COUVRE')))
+    juge('[%s] 4.1 · la couverture est RÉGLÉE à 1,4 s' % T, (e['regle'] or {}).get('COUVRE') == COUVRE, (e['regle'] or {}).get('COUVRE'))
+    if CHARGE < 4: juge('[%s] 4.1 · la couverture dure 1,2 à 1,6 s (réglée à 1,4)' % T, duree is not None and 1.2 <= duree <= 1.75 and (e['regle'] or {}).get('COUVRE') == COUVRE, 'mesurée %s s · réglée %s ms' % (None if duree is None else round(duree, 2), (e['regle'] or {}).get('COUVRE')))
     C = [c for c in g['couv'] if 0 < c[1] < 1]; pas = [b_[1] - a_[1] for a_, b_ in zip(C, C[1:])]
-    juge('[%s] 4.1 · rien n\'arrive d\'un coup : d\'une image à la suivante la couverture avance de 9 %% au plus, jamais en arrière' % T, len(C) >= 25 and max(pas) <= 0.09 and min(pas) >= -1e-6, '%d images · plus grand pas %.1f %% · plus petit %.2f %%' % (len(C), max(pas or [0]) * 100, min(pas or [0]) * 100))
-    juge('[%s] 4.1 · en direct : l\'eau est vue en plusieurs flaques, et ce qui est mouillé le reste d\'un relevé au suivant' % T, len(vus) >= 3 and max(len(morceaux(m, 6)) for _, m in vus[:4]) >= 3 and all(float((a & b_).sum()) / max(1, float(a.sum())) >= 0.99 for (_, a), (_, b_) in zip(vus, vus[1:])),
+    if CHARGE >= 4: print('      (non jugé : « la couverture avance de 9 %% au plus par image » est une mesure de cadence ; charge du Mac %.1f ≥ 4 — C-137. Relevé : %d images, plus grand pas %.1f %%)' % (CHARGE, len(C), 100 * max(pas or [0])))
+    else: juge('[%s] 4.1 · rien n\'arrive d\'un coup : d\'une image à la suivante la couverture avance de 9 %% au plus, jamais en arrière' % T, len(C) >= 25 and max(pas) <= 0.09 and min(pas) >= -1e-6, '%d images · plus grand pas %.1f %% · plus petit %.2f %%' % (len(C), max(pas or [0]) * 100, min(pas or [0]) * 100))
+    if CHARGE >= 4: print('      (non jugé : le relevé en direct dépend de la cadence du juge ; charge du Mac %.1f ≥ 4 — C-137 ; les flaques et ce qui reste mouillé sont jugés sur les états arrêtés, plus bas)' % CHARGE)
+    else: juge('[%s] 4.1 · en direct : l\'eau est vue en plusieurs flaques, et ce qui est mouillé le reste d\'un relevé au suivant' % T, len(vus) >= 3 and max(len(morceaux(m, 6)) for _, m in vus[:4]) >= 3 and all(float((a & b_).sum()) / max(1, float(a.sum())) >= 0.99 for (_, a), (_, b_) in zip(vus, vus[1:])),
          '%d relevés · morceaux %s' % (len(vus), [len(morceaux(m, 6)) for _, m in vus[:6]]))
     cap(pg, '1-studio-%s' % T)
     phrase(e, T, 'studio')
     juge('[%s] A3 : l\'impératif de la phrase du Studio est une exception NOMMÉE (TEXTES_ENGAGEMENT.imperatifVoulu) ; l\'autre phrase n\'en a pas' % T, PH_STUDIO in (e['voulu'] or []) and (e['textes'] or {}).get('plus') == PH_PLUS and not re.search(r'\b(Choisis|Touche|Trace|Plante|Tiens|Va|Ouvre)\b', PH_PLUS), '%s' % e['voulu'])
     juge('[%s] « Plus tard » n\'existe pas : ni dans le guide, ni à aucune image de l\'onboarding (exception nommée de R6)' % T, e['tard'] is None and g['tards'] == 0 and pg.evaluate("()=>!!(window.TEXTES_ENGAGEMENT&&TEXTES_ENGAGEMENT.sansPlusTard)&&!TEXTES_ENGAGEMENT.guide.plusTard"), 'vu à %s image(s)' % g['tards'])
-    a2(e, T); z1 = zone(pg, e, T, 'studio', nette)
+    a2(e, T); z1 = zone(pg, e, T, 'studio', nette); respiration(pg, T, 'studio', pg.evaluate(ETAT))
     # toucher le Studio → le Studio ; y faire un CHOIX (un autre monde) ; le refermer
     x, y = pt(pg, e['e']['trou']['x'], e['e']['trou']['y']); toucher(cdp, pg, x, y); pg.wait_for_timeout(2800); e3 = pg.evaluate(ETAT)
     juge('[%s] toucher le Studio net ouvre le Studio PAR-DESSUS le guide : l\'eau reste posée dessous, sans phrase' % T, e3['studio'] and e3['eau'] and e3['phrase'] is None and e3['e']['etat'] == 'au-studio', 'Studio %s · état %s · phrase %s' % (e3['studio'], e3['e']['etat'], e3['phrase']))
@@ -346,7 +457,7 @@ def chemins(b):
     juge('4.4 · la zone du Studio DISPARAÎT SUR ELLE-MÊME : elle rétrécit sans jamais regrossir et ne sort jamais de sa propre empreinte (± 1,5 pt), jusqu\'à rien', len(S) >= 8 and dedans and retrecit and bool(i_vide),
          '%d images · empreinte x %.1f–%.1f · la plus à droite ensuite %.1f · surface %d → %d cases' % (len(S), b0[3] if b0 else 0, b0[4] if b0 else 0, max([z[4] for z in S] or [0]), S[0][1] if S else 0, S[-1][1] if S else 0))
     juge('4.5 · AUCUNE TRANSLATION du Studio au + : jamais une zone nette à cheval entre les deux ni deux zones à la fois ; la zone du Studio est entièrement refermée (une image sans aucune zone) avant que celle du + ne s\'ouvre, à sa place',
-         not deux and len(i_vide) >= 1 and len(P) >= 8 and all(z[4] <= 120 for z in S) and all(z[3] >= 150 for z in P), 'images à cheval : %d · sans zone : %d · Studio %d · + %d (x %.1f–%.1f)' % (len(deux), len(i_vide), len(S), len(P), min([z[3] for z in P] or [0]), max([z[4] for z in P] or [0])))
+         not deux and len(i_vide) >= 1 and len(P) >= 8 and all(z[4] <= 120 for z in S) and all(z[3] >= 140 for z in P), 'images à cheval : %d · sans zone : %d · Studio %d · + %d (x %.1f–%.1f)' % (len(deux), len(i_vide), len(S), len(P), min([z[3] for z in P] or [0]), max([z[4] for z in P] or [0])))
     aires = [z[1] for z in P]
     juge('4.5 · la zone du + s\'ouvre EN FLAQUES : elle grandit d\'image en image (elle ne paraît pas d\'un coup : premier relevé ≤ 35 % de sa taille finale)', len(aires) >= 8 and aires[0] <= 0.35 * max(aires) and all(b_ >= a_ * 0.97 for a_, b_ in zip(aires, aires[1:])), 'premier %d · final %d cases' % (aires[0] if aires else 0, max(aires or [0])))
     # 4.3 à mi-ouverture : ni vide ni pleine, et pas un disque qui enfle (plusieurs morceaux, ou une forme échancrée)
@@ -371,7 +482,7 @@ def chemins(b):
         pg.evaluate("()=>{ _guide.montre('studio', true); }"); pg.wait_for_timeout(1300); pg.evaluate("(ms)=>{ _guide.figeA(ms); }", 0.3 * COUVRE); pg.wait_for_timeout(150); m, _ = eau(pg, 98, 211); L.append(m); pg.evaluate("()=>{ _guide.finir(); }"); pg.wait_for_timeout(300)
     rec = float((L[0] & L[1]).sum()) / float(max(1, (L[0] | L[1]).sum())) if L[0] is not None and L[1] is not None else 1
     juge('4.1 · AU HASARD : deux lancements ne donnent pas les mêmes flaques (recouvrement ≤ 0,6 à 30 % du temps)', rec <= 0.6, 'recouvrement %.2f' % rec)
-    M = couverture(pg, 'clair'); ctx.close()
+    M = couverture(pg, 'clair'); germes_et_ponts(pg, 'clair'); pg.evaluate("()=>{ _guide.figeA(%d); }" % COUVRE); pg.wait_for_timeout(150); zone_naissance(pg, 'clair', 'studio'); zone_naissance(pg, 'clair', 'plus'); ctx.close()
     # Réduire les animations
     ctx, pg, cdp = rejoue(b, 'light', True); t0 = time.time(); L = []
     while time.time() - t0 < 8:
@@ -389,13 +500,35 @@ def cadence(b, th):
     b.start_tracing(page=pg, categories=['toplevel', 'devtools.timeline', 'disabled-by-default-devtools.timeline', 'blink.user_timing'])
     pg.evaluate("()=>{ _guide.montre('studio'); }"); pg.wait_for_timeout(COUVRE + OUVRE + 900)
     tr = json.loads(b.stop_tracing().decode('utf-8')); W = images(tr, 'lever', (COUVRE + OUVRE + 200) * 1000) or []; pire = max(W) if W else None; W2 = sorted(W)
-    juge('[%s] pendant la couverture et l\'ouverture de la zone, aucune image au-delà de 16,7 ms de travail du fil principal' % T, bool(W) and len(W) >= 40 and pire <= 16.7, '%d images · pire %s ms · p95 %s ms · flou d\'avance %s ms' % (len(W), None if pire is None else round(pire, 1), round(W2[int(len(W2) * .95)], 1) if W2 else None, pg.evaluate("()=>_guide.etat().flouMs")))
+    if CHARGE >= 4: print('      (non jugé : cadence, charge du Mac %.1f ≥ 4 — C-137 ; relevé : %d images, pire %s ms)' % (CHARGE, len(W), None if pire is None else round(pire, 1)))
+    else: juge('[%s] pendant la couverture et l\'ouverture de la zone, aucune image au-delà de 16,7 ms de travail du fil principal' % T, bool(W) and len(W) >= 40 and pire <= 16.7, '%d images · pire %s ms · p95 %s ms · flou d\'avance %s ms' % (len(W), None if pire is None else round(pire, 1), round(W2[int(len(W2) * .95)], 1) if W2 else None, pg.evaluate("()=>_guide.etat().flouMs")))
     if pire and pire > 16.7: print('      ce qui dépasse :', longues(tr, 'lever', (COUVRE + OUVRE + 200) * 1000))
     if th == 'dark':
         e = pret(pg, 'studio'); phrase(e, T, 'studio'); zone(pg, e, T, 'studio'); x, y = pt(pg, 195, 230); toucher(cdp, pg, x, y); e2 = pret(pg, 'plus', 6000); phrase(e2, T, 'plus'); zone(pg, e2, T, 'plus'); cap(pg, 'plus-sombre')
     ctx.close()
 
+def barre_webkit(p):
+    """⚑ v147 — le contour de la barre, COMME TOM LE VOIT (WebKit, 390 × 844 ×3, banc_tom) : le défaut vu sur la capture (un bout du trait de la barre
+    découvert au coin de la zone du Studio) n'existait qu'en WebKit — en Chromium les boîtes du texte diffèrent et la zone restait à 3 pt du trait"""
+    sys.path.insert(0, '.'); import banc_tom as BT
+    bw = p.webkit.launch()
+    for quoi in ('studio', 'plus'):
+        ctx = BT.contexte(bw); pg = ctx.new_page(); pg.goto(URL); pg.wait_for_timeout(7000)
+        pg.evaluate("(q)=>{ try{ setTheme('light'); }catch(e){} _guide.montre(q, true); }", quoi); pg.wait_for_timeout(1500)
+        r = pg.evaluate("""()=>{ const cv=document.getElementById('guideEau'), ba=document.querySelector('#device .acc-barre'); if(!cv||!ba) return null;
+            const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, b=ba.getBoundingClientRect(), B=[(b.left-D.left)/k,(b.top-D.top)/k,b.width/k,b.height/k], rb=Math.min(B[3]/2, parseFloat(getComputedStyle(ba).borderTopLeftRadius)||B[3]/2);
+            const d=cv.width/390, x0=Math.floor(B[0]*d), y0=Math.floor(B[1]*d), w=Math.ceil(B[2]*d), h=Math.ceil(B[3]*d), px=cv.getContext('2d').getImageData(x0,y0,w,h).data; let pire=-1e9, n=0;
+            for(let j=0;j<h;j++) for(let i=0;i<w;i++){ if(px[(j*w+i)*4+3]>40) continue; const X=(x0+i+0.5)/d, Y=(y0+j+0.5)/d; const qx=Math.abs(X-(B[0]+B[2]/2))-(B[2]/2-rb), qy=Math.abs(Y-(B[1]+B[3]/2))-(B[3]/2-rb);
+              const sd=Math.sqrt(Math.max(qx,0)**2+Math.max(qy,0)**2)+Math.min(Math.max(qx,qy),0)-rb; n++; if(sd>pire) pire=sd; }
+            return {pire:pire, n:n}; }""")
+        juge('[WebKit] %s · rien du contour de la barre n\'est découvert (la zone nette reste à 2,5 pt au moins en deçà de son trait arrondi)' % quoi, bool(r) and r['n'] > 50 and r['pire'] <= -2.5, r)
+        ctx.close()
+    bw.close()
+
 with sync_playwright() as p:
+    if '--barre' in sys.argv:
+        barre_webkit(p); ok = sum(1 for _, c in res if c); print('\n  %d / %d' % (ok, len(res))); sys.exit(0 if ok == len(res) else 1)
+    barre_webkit(p)
     b = p.chromium.launch(args=['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'])
     if '--cadence' in sys.argv:
         for _ in range(3): cadence(b, 'light'); cadence(b, 'dark')

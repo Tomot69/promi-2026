@@ -49,12 +49,27 @@
    ④ le texte se lit de gauche à droite ; un `transform` posé sur un mot À L'INTÉRIEUR de la cible (le « Deuxio » penché) n'est pas suivi. */
 (function (racine) {
   'use strict';
-  var TL = { version: 1, defauts: { cps: 50, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [] } };
+  var TL = { version: 1, defauts: { cps: 50, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [], cache: 0 }, _cache: {}, _cacheN: 0 };
   var REPASSAGE = 0.1;      /* un repassage dure le dixième du temps qu'il aurait pris tracé : « un instant » */
   var PIVOT = 0.5;          /* à un sommet de la ligne, le front pivote : le temps du pivot, en part de l'arc extérieur */
   var doc = racine.document;
 
   function donnees(nom) { var T = racine.TraceLettresChemins || {}; return T[nom] || null; }
+  /* l'ouvrier : ce même fichier, chargé dans un Worker, n'y fait que des cartes */
+  var SRC = (doc && doc.currentScript && doc.currentScript.src) || null; TL._nId = 0; TL._attente = {};
+  function ouvrier() {
+    if (TL._ouvrier !== undefined) return TL._ouvrier;
+    TL._ouvrier = null;
+    try {
+      if (!SRC || !racine.Worker || !racine.Blob || !racine.URL || TL.sansOuvrier) return null;
+      var code = 'importScripts(' + JSON.stringify(SRC) + ');onmessage=function(e){var d=e.data,r=self.TraceLettres._carte(d.A,d.w,d.h,d.traits,d.moves);postMessage({id:d.id,T:r.T,D:r.D},[r.T.buffer]);};';
+      var w = new racine.Worker(racine.URL.createObjectURL(new racine.Blob([code], { type: 'application/javascript' })));
+      w.onmessage = function (e) { var f = TL._attente[e.data.id]; delete TL._attente[e.data.id]; if (f) f(e.data.T, e.data.D); };
+      w.onerror = function () { TL._ouvrier = null; var at = TL._attente; TL._attente = {}; Object.keys(at).forEach(function (k) { try { at[k](null); } catch (e) { } }); };
+      TL._ouvrier = w;
+    } catch (e) { TL._ouvrier = null; }
+    return TL._ouvrier;
+  }
   function famille(ff) { return String(ff || '').split(',')[0].replace(/["']/g, '').trim(); }
   TL.glyphe = function (police, car) { var D = donnees(police); return D && D.g[car] || null; };
   TL.reduit = function () { try { return !!(racine.matchMedia && racine.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
@@ -96,7 +111,40 @@
      rend {T: Float32Array (temps de chaque pixel, en pixels de chemin), D: durée totale} */
   function carte(A, w, h, traits, moves) {
     var n = w * h, T = new Float32Array(n), own = new Int16Array(n), Tl = new Float32Array(n), k, i, x, y, p;
-    for (p = 0; p < n; p++) { own[p] = -1; Tl[p] = Infinity; }
+    /* ⚑ v147 (Tom, C-125 : « les barres du t et du f ») — UNE BARRE QUI TRAVERSE UN FÛT. Le chemin d'une barre droite part de l'axe du fût (un
+       embranchement, « j ») ; la part de la barre qui dépasse DE L'AUTRE CÔTÉ du fût n'avait aucun chemin : ses pixels prenaient l'instant de leurs
+       voisins du fût et paraissaient d'un coup, en morceau, pendant que le fût descendait. On la rend à sa barre : depuis l'embranchement, on suit
+       l'encre vers l'extérieur ; si elle continue au-delà d'une demi-largeur de fût (1,12 R + 2 px), la barre est prolongée jusqu'au bord de l'encre et ce
+       bout devient libre. Seulement pour une barre DROITE (une courbe qui rejoint une panse ne traverse rien). */
+    function encre(px, py) { var xi = Math.floor(px), yi = Math.floor(py); return xi >= 0 && yi >= 0 && xi < w && yi < h && A[yi * w + xi] > 127; }
+    function suit(px, py, dx, dy, max) { var L = 0; while (L < max && encre(px + dx * (L + 0.5), py + dy * (L + 0.5))) L += 0.5; return L; }
+    traits.forEach(function (t) {
+      var P = t.pts, m = P.length - 1; if (m < 1) return;
+      var a0 = P[0], b0 = P[m], Lk = Math.hypot(b0[0] - a0[0], b0[1] - a0[1]), ec = 0, j;
+      for (j = 1; j < m && Lk > 0; j++) ec = Math.max(ec, Math.abs((P[j][0] - a0[0]) * (b0[1] - a0[1]) - (P[j][1] - a0[1]) * (b0[0] - a0[0])) / Lk);
+      if (!(Lk > 0 && ec < 0.6)) return;
+      var dx = (b0[0] - a0[0]) / Lk, dy = (b0[1] - a0[1]) / Lk, L;
+      /* le bout prolongé doit être une BARRE : près de son extrémité, l'encre en travers fait la largeur du trait (pas un autre trait traversé de
+         biais — la barre penchée du « e » rejoint la panse, elle ne la traverse pas) */
+      function barre(px, py) { var e = suit(px, py, -dy, dx, 6 * t.R) + suit(px, py, dy, -dx, 6 * t.R); return e <= 2 * t.R + 4; }
+      if (Math.abs(dy) > 0.17) return;   /* une barre HORIZONTALE seulement (celles du « t » et du « f ») — la barre penchée du « e » rejoint sa panse */
+      if (t.b0 === 'j') { L = suit(a0[0], a0[1], -dx, -dy, 8 * t.R); if (L > 1.12 * t.R + 2 && barre(a0[0] - dx * (L - 2), a0[1] - dy * (L - 2))) { P.unshift([a0[0] - dx * (L - 0.5), a0[1] - dy * (L - 0.5)]); t.b0 = 'l'; t.prolonge = (t.prolonge || 0) + L; } }
+      if (t.b1 === 'j') { L = suit(b0[0], b0[1], dx, dy, 8 * t.R); if (L > 1.12 * t.R + 2 && barre(b0[0] + dx * (L - 2), b0[1] + dy * (L - 2))) { P.push([b0[0] + dx * (L - 0.5), b0[1] + dy * (L - 0.5)]); t.b1 = 'l'; t.prolonge = (t.prolonge || 0) + L; } }
+    });
+    var faible = new Uint8Array(n), Dl = new Float32Array(n);   /* v147 : un pixel pris par le BOUT LIBRE d'un trait, là où ce bout court DANS un autre trait */
+    for (p = 0; p < n; p++) { own[p] = -1; Tl[p] = Infinity; Dl[p] = Infinity; }
+    /* ⚑ v147 (C-125 : « les dents du g ») — la ligne d'un trait COURBE est adoucie (deux passes de Chaikin, extrémités gardées) : le chemin tiré du
+       squelette de la police a des coudes (la fin de la panse du « g » file d'un coup vers la jonction) ; la bande d'un trait suit ses segments,
+       et chaque coude faisait une marche dans son bord. */
+    traits.forEach(function (t) { var P = t.pts; if (P.length < 3) return;
+      var a0 = P[0], b0 = P[P.length - 1], Lk = Math.hypot(b0[0] - a0[0], b0[1] - a0[1]), ec = 0, j;
+      for (j = 1; j < P.length - 1 && Lk > 0; j++) ec = Math.max(ec, Math.abs((P[j][0] - a0[0]) * (b0[1] - a0[1]) - (P[j][1] - a0[1]) * (b0[0] - a0[0])) / Lk);
+      if (Lk > 0 && ec < 0.6) return;
+      for (var pas = 0; pas < 2; pas++) { var Q = [P[0]]; for (j = 0; j < P.length - 1; j++) { var u0 = P[j], u1 = P[j + 1];
+          if (j > 0) Q.push([0.75 * u0[0] + 0.25 * u1[0], 0.75 * u0[1] + 0.25 * u1[1]]);
+          if (j < P.length - 2) Q.push([0.25 * u0[0] + 0.75 * u1[0], 0.25 * u0[1] + 0.75 * u1[1]]); }
+        Q.push(P[P.length - 1]); P = Q; }
+      t.pts = P; });
     var S = [];    /* par trait : segments {x,y,dx,dy,len,s,delta} */
     for (k = 0; k < traits.length; k++) {
       var P = traits[k].pts, segs = [], s = 0, m = P.length - 1;
@@ -119,6 +167,17 @@
       for (i = 1; i < Pk.length - 1 && Lk > 0; i++) ec = Math.max(ec, Math.abs((Pk[i][0] - a0[0]) * (b0[1] - a0[1]) - (Pk[i][1] - a0[1]) * (b0[0] - a0[0])) / Lk);
       traits[k].droit = Lk > 0 && ec < 0.6; mins.push(Infinity); maxs.push(-Infinity);
     }
+    /* ⚑ v147 (C-125) — la longueur d'un BOUT (libre, ou un embranchement) qui court DANS un autre trait : depuis l'extrémité, tant que la ligne du trait reste à moins
+       d'une demi-largeur (+1) de la ligne d'un autre trait. Ces pixels-là reviennent à l'autre trait (voir plus bas). */
+    function dSeg(px, py, Q) { var best = Infinity, ii; for (ii = 0; ii < Q.length - 1; ii++) { var ax = Q[ii][0], ay = Q[ii][1], bx = Q[ii + 1][0], by = Q[ii + 1][1], vx = bx - ax, vy = by - ay, l2 = vx * vx + vy * vy, tt = l2 > 0 ? Math.max(0, Math.min(1, ((px - ax) * vx + (py - ay) * vy) / l2)) : 0, ddx = px - ax - vx * tt, ddy = py - ay - vy * tt, dd = ddx * ddx + ddy * ddy; if (dd < best) best = dd; } return Math.sqrt(best); }
+    function dedans(kk2, deb) { var Pt = traits[kk2].pts, Q = deb ? Pt : Pt.slice().reverse(), s0 = 0, ii, jj;
+      for (ii = 0; ii < Q.length - 1; ii++) { var sx = Q[ii][0], sy = Q[ii][1], vx = Q[ii + 1][0] - sx, vy = Q[ii + 1][1] - sy, ll = Math.hypot(vx, vy);
+        for (var st = 0; st < ll; st += 1) { var px = sx + vx * st / ll, py = sy + vy * st / ll, dans = false;
+          for (jj = 0; jj < traits.length && !dans; jj++) if (jj !== kk2 && dSeg(px, py, traits[jj].pts) <= traits[jj].R + 1) dans = true;
+          if (!dans) return s0 + st; }
+        s0 += ll; }
+      return s0; }
+    for (k = 0; k < traits.length; k++) { traits[k].in0 = (traits[k].b0 || 'l') !== 'c' ? dedans(k, true) : 0; traits[k].in1 = (traits[k].b1 || 'l') !== 'c' ? dedans(k, false) : 0; }   /* un bout libre ou un embranchement ; jamais un coin */
     for (k = 0; k < traits.length; k++) if (traits[k].droit) rang.push(k);
     for (k = 0; k < traits.length; k++) if (!traits[k].droit) rang.push(k);
     for (kk = 0; kk < rang.length; kk++) {
@@ -135,21 +194,54 @@
         var g2 = i < ns - 1 ? segs2[i + 1] : null;
         for (y = y0; y <= y1; y++) {
           for (x = x0; x <= x1; x++) {
-            p = y * w + x; if (!A[p]) continue; var o = own[p]; if (o !== -1 && o !== k) continue;
+            p = y * w + x; if (!A[p]) continue; var o = own[p]; if (o !== -1 && o !== k && !faible[p] && (traits[o].droit || traits[k].droit)) continue;
             var rx = x + 0.5 - g.x, ry = y + 0.5 - g.y, u = rx * g.dx + ry * g.dy, lat = ry * g.dx - rx * g.dy, cand = Infinity;
             if (lat <= Rp && lat >= -Rp && u >= 0 && u <= g.len) cand = g.s + u;
+            var dl = Math.abs(lat);
             if (cand === Infinity && i === 0 && cap0 > 0 && u < 0) { var us = rx * d0[0] + ry * d0[1], ls = ry * d0[0] - rx * d0[1]; if (us < 0 && us >= -cap0 && ls <= Rp && ls >= -Rp) cand = g.s + us; }
             if (cand === Infinity && i === ns - 1 && cap1 > 0 && u > g.len) { var ex2 = x + 0.5 - ex, ey2 = y + 0.5 - ey, ue = ex2 * d1[0] + ey2 * d1[1], le = ey2 * d1[0] - ex2 * d1[1]; if (ue > 0 && ue <= cap1 && le <= Rp && le >= -Rp) cand = g.s + g.len + ue; }
             if (g2 && u > g.len && cand === Infinity) {
               var qx = x + 0.5 - g2.x, qy = y + 0.5 - g2.y, u2 = qx * g2.dx + qy * g2.dy;
               if (u2 < 0 && qx * qx + qy * qy <= Rp * Rp) { var a = u - g.len, b = -u2; cand = g.s + g.len + g.delta * (a / (a + b + 1e-9)); }
             }
-            if (cand < Tl[p]) { Tl[p] = cand; own[p] = k; }
+            /* ⚑ v147 (Tom, C-125 : « la fente au départ du é ») — LE BOUT LIBRE D'UN TRAIT CÈDE au milieu d'un autre. La barre du « e » part, libre,
+               DANS le trait de la panse : elle passait la première et prenait ce morceau de panse, qui paraissait avec elle, fendu de biais. Un pixel
+               pris par un bout libre, là où ce bout court DANS un autre trait (`in0`, `in1`), revient au trait qui le traverse en plein. */
+            if (cand !== Infinity) {
+              var fin0 = segs2[ns - 1].s + segs2[ns - 1].len, bout = (traits[k].in0 > 0 && cand < traits[k].in0) || (traits[k].in1 > 0 && fin0 - cand < traits[k].in1);
+              /* ⚑ v147 (C-125 : « les dents du g ») — entre deux traits COURBES qui se recouvrent (la fin de la panse et le départ de son autre moitié,
+                 à la jonction de la queue du « g »), le pixel va au trait dont la LIGNE est la plus proche : la frontière suit la bissectrice des
+                 deux lignes, une courbe lisse. L'ordre du tracé la découpait selon les rectangles des segments du chemin — en dents. Un fût garde sa
+                 priorité (règle du trait droit). */
+              if (o !== -1 && o !== k) { if ((faible[p] && !bout) || (!traits[o].droit && !traits[k].droit && dl < Dl[p] - 0.5 && !bout)) { Tl[p] = cand; own[p] = k; faible[p] = 0; Dl[p] = dl; } }
+              else if (cand < Tl[p]) { Tl[p] = cand; own[p] = k; faible[p] = bout ? 1 : 0; Dl[p] = dl; }
+            }
           }
         }
       }
       for (p = 0; p < n; p++) if (own[p] === k) { if (Tl[p] < tmin) tmin = Tl[p]; if (Tl[p] > tmax) tmax = Tl[p]; }
       mins[k] = tmin; maxs[k] = tmax;
+    }
+    /* ⚑ v147 (Tom, C-125 : « les dents du g ») — LES TRAITS COURBES SE PARTAGENT L'ENCRE PAR LA LIGNE LA PLUS PROCHE. Avant, chaque trait ne prenait
+       que la bande de ses segments (une demi-largeur de part et d'autre) : là où un chemin coupe en biais vers un embranchement (la fin de la panse
+       du « g », qui file vers la jonction de la queue), le bord du trait n'était pas couvert — ces pixels allaient au trait suivant, qui passe plus
+       tard, et la panse se dessinait avec des dents. Tout pixel d'encre qu'AUCUNE bande ne couvre va au trait
+       courbe dont la ligne est la plus proche ; son instant est celui du point de cette ligne où il se projette. La frontière entre deux traits
+       est alors la bissectrice de leurs lignes : une courbe lisse. */
+    var courbes = []; for (k = 0; k < traits.length; k++) if (!traits[k].droit && S[k].length) courbes.push(k);
+    if (courbes.length) {
+      for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
+        p = y * w + x; if (!A[p]) continue; var o2 = own[p]; if (o2 >= 0 && !faible[p]) continue;   /* seulement l'encre qu'aucune bande ne couvre (et les bouts qui cèdent) : là où deux bandes se recouvrent, l'ordre du tracé tient */
+        var px2 = x + 0.5, py2 = y + 0.5, best = Infinity, bk = -1, bt = 0, ci, si;
+        for (ci = 0; ci < courbes.length; ci++) { var kc = courbes[ci], sg = S[kc];
+          for (si = 0; si < sg.length; si++) { var G = sg[si], rx2 = px2 - G.x, ry2 = py2 - G.y, uu = rx2 * G.dx + ry2 * G.dy, ul = uu < 0 ? 0 : (uu > G.len ? G.len : uu), ex3 = rx2 - G.dx * ul, ey3 = ry2 - G.dy * ul, dd2 = ex3 * ex3 + ey3 * ey3;
+            if (dd2 < best) { best = dd2; bk = kc; bt = G.s + ul + (uu < 0 && si === 0 ? uu : 0) + (uu > G.len && si === sg.length - 1 ? uu - G.len : 0); } } }
+        if (bk < 0) continue;
+        if (o2 >= 0 && !traits[o2].droit && o2 !== bk && Math.sqrt(best) > Dl[p] - 0.5) continue;   /* à distance égale, l'ordre d'avant */
+        if (o2 === bk) continue;
+        own[p] = bk; Tl[p] = bt; Dl[p] = Math.sqrt(best); faible[p] = 0;
+      }
+      for (k = 0; k < traits.length; k++) { var tn = Infinity, tx = -Infinity; for (p = 0; p < n; p++) if (own[p] === k) { if (Tl[p] < tn) tn = Tl[p]; if (Tl[p] > tx) tx = Tl[p]; } mins[k] = tn; maxs[k] = tx; }
     }
     /* la suite des traits : chacun part quand le précédent a fini ; un repassage ne dure qu'un instant, un saut rien */
     var cur = 0, dep = [];
@@ -161,28 +253,55 @@
     for (p = 0; p < n; p++) T[p] = own[p] >= 0 ? dep[own[p]] + Tl[p] : -1;
     /* ce qui reste (le creux d'un embranchement, un empattement, la frange d'un bord) prend l'instant de son voisin déjà servi, de proche en proche :
        ni trou qui se boucherait plus tard, ni pixel isolé qui paraîtrait avant les autres */
-    var reste = [], suiv, encore = true, garde = 0, vx, vy, q2, mt, mg2, gen = new Uint16Array(n);
+    var reste = [], suiv, encore = true, garde = 0, vx, vy, q2, mt, mg2, gen = new Uint16Array(n), tr = new Int16Array(n);
+    for (p = 0; p < n; p++) tr[p] = own[p];
     for (p = 0; p < n; p++) if (A[p] && own[p] === -1) reste.push(p);
+    /* ⚑ v147 (Tom, C-125 : « une bosse sur les fûts ») — un pixel resté prend l'instant du TRAIT LE PLUS PROCHE parmi ses voisins servis (la
+       distance à la ligne de chaque trait) : la frange du bord d'un fût suit le fût, le creux d'un embranchement suit l'arche qui en sort. Avant, il
+       prenait l'instant le plus précoce de ses voisins : le creux de l'arche du « h » paraissait avec le fût (une bosse), et la frange d'un fût
+       près d'une barre prenait l'instant de la barre. */
     while (reste.length && encore && garde++ < 400) {
       suiv = []; encore = false; var poses = [];
       for (i = 0; i < reste.length; i++) {
-        p = reste[i]; x = p % w; y = (p - x) / w; mt = Infinity; mg2 = 65535;
-        /* le voisin servi le plus DIRECTEMENT par un trait (et non par un autre pixel resté) : sinon un instant précoce filerait le long d'un bord */
+        p = reste[i]; x = p % w; y = (p - x) / w; mg2 = 65535; var kb = -1, db = Infinity; mt = -Infinity;
         for (vy = -1; vy <= 1; vy++) for (vx = -1; vx <= 1; vx++) { if (!vx && !vy) continue; var xx2 = x + vx, yy2 = y + vy; if (xx2 < 0 || yy2 < 0 || xx2 >= w || yy2 >= h) continue; q2 = yy2 * w + xx2;
-          if (A[q2] && own[q2] !== -1 && (gen[q2] < mg2 || (gen[q2] === mg2 && T[q2] < mt))) { mg2 = gen[q2]; mt = T[q2]; } }
-        if (mt < Infinity) { poses.push(p, mt, mg2 + 1); encore = true; } else suiv.push(p);
+          if (A[q2] && own[q2] !== -1 && gen[q2] < mg2) mg2 = gen[q2]; }
+        if (mg2 === 65535) { suiv.push(p); continue; }
+        for (vy = -1; vy <= 1; vy++) for (vx = -1; vx <= 1; vx++) { if (!vx && !vy) continue; var xx3 = x + vx, yy3 = y + vy; if (xx3 < 0 || yy3 < 0 || xx3 >= w || yy3 >= h) continue; q2 = yy3 * w + xx3;
+          if (!(A[q2] && own[q2] !== -1 && gen[q2] === mg2) || tr[q2] < 0) continue;
+          var kq = tr[q2], dq = kq === kb ? db : dSeg(x + 0.5, y + 0.5, traits[kq].pts);
+          if (dq < db - 1e-6 || (kq === kb && T[q2] > mt)) { if (kq !== kb) mt = -Infinity; kb = kq; db = dq; if (T[q2] > mt) mt = T[q2]; } }
+        if (kb < 0) { for (vy = -1; vy <= 1; vy++) for (vx = -1; vx <= 1; vx++) { var xx4 = x + vx, yy4 = y + vy; if (xx4 < 0 || yy4 < 0 || xx4 >= w || yy4 >= h) continue; q2 = yy4 * w + xx4; if (A[q2] && own[q2] !== -1 && gen[q2] === mg2 && T[q2] > mt) mt = T[q2]; } }
+        poses.push(p, mt, mg2 + 1, kb); encore = true;
       }
-      for (i = 0; i < poses.length; i += 3) { T[poses[i]] = poses[i + 1]; own[poses[i]] = -2; gen[poses[i]] = poses[i + 2]; }
+      for (i = 0; i < poses.length; i += 4) { T[poses[i]] = poses[i + 1]; own[poses[i]] = -2; gen[poses[i]] = poses[i + 2]; tr[poses[i]] = poses[i + 3]; }
       reste = suiv;
     }
     for (i = 0; i < reste.length; i++) { T[reste[i]] = 0; own[reste[i]] = -2; }
+    /* ⚑ v147 (C-125 : « les dents du g ») — la frange servie de proche en proche peut ALTERNER entre deux traits également proches (le creux de la
+       jonction panse / queue du « g ») : une dent sur deux paraissait avec l'un, l'autre avec l'autre. Deux passes de VOTE : un pixel de frange prend
+       le trait le plus représenté autour de lui, et l'instant le plus tardif de ce trait parmi ses voisins. */
+    for (var vote = 0; vote < 2; vote++) {
+      var nvT = new Float32Array(T), nvR = new Int16Array(tr);
+      for (p = 0; p < n; p++) { if (!A[p] || own[p] !== -2) continue; x = p % w; y = (p - x) / w; var cpt = {}, bestK = -1, bestN = 0;
+        for (vy = -1; vy <= 1; vy++) for (vx = -1; vx <= 1; vx++) { if (!vx && !vy) continue; var x5 = x + vx, y5 = y + vy; if (x5 < 0 || y5 < 0 || x5 >= w || y5 >= h) continue; q2 = y5 * w + x5; if (!A[q2] || tr[q2] < 0) continue; cpt[tr[q2]] = (cpt[tr[q2]] || 0) + 1; }
+        for (var kv in cpt) if (cpt[kv] > bestN) { bestN = cpt[kv]; bestK = +kv; }
+        if (bestK < 0 || bestK === tr[p]) continue; var tm = -Infinity;
+        for (vy = -1; vy <= 1; vy++) for (vx = -1; vx <= 1; vx++) { if (!vx && !vy) continue; var x6 = x + vx, y6 = y + vy; if (x6 < 0 || y6 < 0 || x6 >= w || y6 >= h) continue; q2 = y6 * w + x6; if (A[q2] && tr[q2] === bestK && T[q2] > tm) tm = T[q2]; }
+        nvR[p] = bestK; nvT[p] = tm; }
+      T.set(nvT); tr.set(nvR);
+    }
     /* un filtre médian (3 × 3, deux fois) sur la carte : plus une dent ni un pixel isolé à la frontière de deux traits — le front reste une marche */
-    var v9 = new Float32Array(9), T2 = new Float32Array(n), tour, q, c9, a9, b9, t9;
+    /* ⚑ v147 (Tom, C-125 : « une bosse sur les fûts ») — la médiane ne prend que les voisins DU MÊME TRAIT : près d'un embranchement, les pixels
+       de l'arche du « h » (ou de la barre du « f ») prenaient l'instant, plus précoce, du fût voisin, et paraissaient avec lui — une bosse. */
+    var rf = 1;
+    var v9 = new Float32Array((2 * rf + 1) * (2 * rf + 1)), T2 = new Float32Array(n), tour, q, c9, a9, b9, t9;
     for (tour = 0; tour < 2; tour++) {
       for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
         p = y * w + x; if (!A[p]) { T2[p] = T[p]; continue; }
         c9 = 0;
-        for (b9 = -1; b9 <= 1; b9++) { var yy = y + b9; if (yy < 0 || yy >= h) continue; for (a9 = -1; a9 <= 1; a9++) { var xx = x + a9; if (xx < 0 || xx >= w) continue; q = yy * w + xx; if (A[q]) v9[c9++] = T[q]; } }
+        var op = tr[p];
+        for (b9 = -rf; b9 <= rf; b9++) { var yy = y + b9; if (yy < 0 || yy >= h) continue; for (a9 = -rf; a9 <= rf; a9++) { var xx = x + a9; if (xx < 0 || xx >= w) continue; q = yy * w + xx; if (A[q] && (op < 0 || tr[q] === op || tr[q] < 0)) v9[c9++] = T[q]; } }
         for (a9 = 1; a9 < c9; a9++) { t9 = v9[a9]; b9 = a9 - 1; while (b9 >= 0 && v9[b9] > t9) { v9[b9 + 1] = v9[b9]; b9--; } v9[b9 + 1] = t9; }
         T2[p] = c9 >= 5 ? v9[(c9 - 1) >> 1] : T[p];   /* la médiane basse : au bord, une rangée ne prend pas l'instant de la suivante */
       }
@@ -231,7 +350,7 @@
     ctl.fin = new Promise(function (r) { resFin = r; }); ctl.pret = new Promise(function (r) { resPret = r; });
     cible.__trace = ctl;
     if (contenu != null) remplit(cible, contenu);
-    var cv = null, G = [], L = [], total = 0, t0 = 0, ig = 0, jd = 0, tPrec = -1, clipAvant = null;
+    var cv = null, G = [], L = [], total = 0, t0 = 0, ig = 0, jd = 0, tPrec = -1, clipAvant = null, tAbs = 0, tPlume = 0;
     var ctx, fin, fctx, brouillon, bctx, s = 1, dpr = 1, kech = 1, er = null, cr = null;
 
     function decoupe(v) { cible.style.setProperty('-webkit-clip-path', v, 'important'); cible.style.setProperty('clip-path', v, 'important'); }
@@ -271,7 +390,7 @@
       if (mort) return;
       try { mesure(); } catch (e) { if (racine.console) racine.console.error('TraceLettres', e); termine(true); return; }
       resPret(ctl); if (!G.length) { termine(false); return; }
-      if (!o.manuel) { try { prepare(G[0]); } catch (e) { } /* le premier glyphe est prêt AVANT que l'horloge parte */ t0 = racine.performance.now(); raf = racine.requestAnimationFrame(image); }
+      if (!o.manuel) { try { demande(G[0]); } catch (e) { } /* la première lettre est demandée AVANT que l'horloge parte ; la plume l'attend */ t0 = racine.performance.now(); tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); }
     });
 
     function mesure() {
@@ -360,33 +479,84 @@
       ctl.duree = total;
     }
 
-    function prepare(g) {
-      /* le glyphe réel, rendu une fois ; sa carte de temps */
-      var d0 = racine.performance.now();
+    /* ⚑ v147 — LA CARTE D'UNE LETTRE SE CALCULE HORS DU FIL PRINCIPAL. Mesuré au banc (27 pt ×3, la phrase du Studio) : une carte coûtait 9 à 204 ms
+       (WebKit), calculée au moment où le front atteignait la lettre — une image de 143 à 194 ms par lettre dans le guide. Le fil principal ne fait plus
+       que DESSINER la lettre (le texte réel, puis à 2× pour la carte : 1 à 2 ms) ; la carte part à un Worker (`ouvrier`), qui la rend ; la plume
+       attend sa lettre si elle n'est pas prête (elle marque un temps, l'image n'est jamais bloquée). Une carte déjà faite (même lettre, taille,
+       couleur, décalage sous le pixel) est reprise du cache. Sans Worker (ou en mode `manuel`, les juges), le calcul reste sur place. */
+    function cleDe(g) { return g.spec + '|' + g.car + '|' + g.coul + '|' + s.toFixed(3) + '|' + g.w + 'x' + g.h + '|' + Math.round(((g.gx - g.X0) % 1) * 4) + ',' + Math.round(((g.gy - g.Y0) % 1) * 4); }
+    function depuisCache(g) { var C0 = TL._cache[cleDe(g)]; if (!C0) return false;
+      g.im = new ImageData(new Uint8ClampedArray(C0.im), g.w, g.h); g.A = C0.A; g.T = C0.T; g.T1 = C0.T1; g.sup = C0.sup; g.D = C0.D; g.pret = true; g.attente = false; TL.mesures.cache++; return true; }
+    function rendGlyphe(g) {
+      /* le glyphe réel, rendu une fois (son image à 1×, son encre à `sup`×) ; les chemins de ses traits, à la même échelle */
       bctx.setTransform(1, 0, 0, 1, 0, 0); bctx.clearRect(0, 0, g.w, g.h);
       bctx.setTransform(s, 0, 0, s, g.gx - g.X0, g.gy - g.Y0); bctx.font = g.spec; bctx.fillStyle = g.coul; bctx.textBaseline = 'alphabetic'; bctx.fillText(g.car, 0, 0);
       bctx.setTransform(1, 0, 0, 1, 0, 0);
       var im = bctx.getImageData(0, 0, g.w, g.h), d = im.data, n = g.w * g.h, A = new Uint8ClampedArray(n), p;
       for (p = 0; p < n; p++) A[p] = d[4 * p + 3];
-      var traits, moves = [], u = g.sc * s, ox = g.gx - g.X0, oy = g.gy - g.Y0;
+      /* ⚑ v147 (Tom, C-125 : « dents du g, fente au départ du é, barres du t et du f, bosse sur les fûts ») — LA CARTE DE TEMPS SE CALCULE EN
+         SURÉCHANTILLONNÉ (×2 au plus, `TL.supMax` : à ×4 une lettre coûtait 48 ms en médiane, 204 au pire). Chaque pixel de l'appareil garde
+         l'instant de son premier et de son dernier sous-pixel d'encre : le front le traverse en anticrénelage. */
+      var traits, moves = [], u = g.sc * s, ox = g.gx - g.X0, oy = g.gy - g.Y0, Rmax = 0;
+      if (g.pc) g.pc.traits.forEach(function (t) { Rmax = Math.max(Rmax, t.R * u); });
+      var sup = g.pc ? Math.max(1, Math.min(TL.supMax || 2, Math.ceil((TL.supDemi || 16) / Math.max(1, Rmax)))) : 1, W2 = g.w * sup, H2 = g.h * sup, A2 = A;
+      if (sup > 1) {
+        if (!TL._sur) { TL._sur = doc.createElement('canvas'); TL._surCtx = TL._sur.getContext('2d', { willReadFrequently: true }); }
+        var sc2 = TL._sur, x2 = TL._surCtx; if (sc2.width < W2) sc2.width = W2; if (sc2.height < H2) sc2.height = H2;
+        x2.setTransform(1, 0, 0, 1, 0, 0); x2.clearRect(0, 0, W2, H2);
+        x2.setTransform(s * sup, 0, 0, s * sup, (g.gx - g.X0) * sup, (g.gy - g.Y0) * sup); x2.font = g.spec; x2.fillStyle = '#000'; x2.textBaseline = 'alphabetic'; x2.fillText(g.car, 0, 0);
+        x2.setTransform(1, 0, 0, 1, 0, 0);
+        var d2 = x2.getImageData(0, 0, W2, H2).data; A2 = new Uint8ClampedArray(W2 * H2); for (p = 0; p < W2 * H2; p++) A2[p] = d2[4 * p + 3];
+      }
       if (g.pc) {
-        traits = g.pc.traits.map(function (t) { return { R: Math.max(t.R * u, 0.75), b0: t.b0, b1: t.b1, pts: t.pts.map(function (q) { return [ox + q[0] * u, oy - q[1] * u]; }) }; });
-        var acc = 0; g.pc.ordre.forEach(function (st) { if (st[0] === 'r') acc += st[1] * u; else if (st[0] === 't') { moves.push(acc); acc = 0; } });
+        traits = g.pc.traits.map(function (t) { return { R: Math.max(t.R * u * sup, 0.75), b0: t.b0, b1: t.b1, pts: t.pts.map(function (q) { return [(ox + q[0] * u) * sup, (oy - q[1] * u) * sup]; }) }; });
+        var acc = 0; g.pc.ordre.forEach(function (st) { if (st[0] === 'r') acc += st[1] * u * sup; else if (st[0] === 't') { moves.push(acc); acc = 0; } });
       } else { traits = [{ R: g.h, pts: [[1, g.h / 2], [g.w - 1, g.h / 2]] }]; moves = [0]; }
-      var c = carte(A, g.w, g.h, traits, moves);
-      g.im = im; g.A = A; g.T = c.T; g.D = c.D; g.pret = true;
+      return { im: im, A: A, A2: A2, W2: W2, H2: H2, sup: sup, traits: traits, moves: moves, cle: cleDe(g) };
+    }
+    function finit(g, R, T, D) {
+      var n = g.w * g.h, T0 = new Float32Array(n), T1 = new Float32Array(n), A = R.A, A2 = R.A2, W2 = R.W2, sup = R.sup, p;
+      if (sup === 1) { T0.set(T); T1.set(T); }
+      else {
+        var xx, yy, a2, b2, mn, mx, qq;
+        for (yy = 0; yy < g.h; yy++) for (xx = 0; xx < g.w; xx++) { p = yy * g.w + xx; if (!A[p]) continue; mn = Infinity; mx = -Infinity;
+          for (b2 = 0; b2 < sup; b2++) for (a2 = 0; a2 < sup; a2++) { qq = (yy * sup + b2) * W2 + xx * sup + a2; if (A2[qq]) { var tv = T[qq]; if (tv < mn) mn = tv; if (tv > mx) mx = tv; } }
+          if (mn === Infinity) { mn = mx = D; } T0[p] = mn; T1[p] = mx; }
+      }
+      g.im = R.im; g.A = A; g.T = T0; g.T1 = T1; g.sup = sup; g.D = D; g.pret = true; g.attente = false;
+      if (TL._cacheN > 600) { TL._cache = {}; TL._cacheN = 0; }
+      TL._cache[R.cle] = { im: new Uint8ClampedArray(R.im.data), A: A, T: T0, T1: T1, sup: sup, D: D }; TL._cacheN++;
+      if (TL._debug) (TL._bas = TL._bas || []).push({ car: g.car, w: g.w, h: g.h, T0: T0, T1: T1, D: D, sup: sup, A: A });
+    }
+    function prepare(g) {
+      /* sur place (le mode manuel, ou sans Worker) */
+      var d0 = racine.performance.now();
+      if (depuisCache(g)) return;
+      var R = rendGlyphe(g), c = carte(R.A2, R.W2, R.H2, R.traits, R.moves); finit(g, R, c.T, c.D);
+      TL.mesures.prep.push(racine.performance.now() - d0); if (TL.mesures.prep.length > 4000) TL.mesures.prep.splice(0, 2000);
+    }
+    function demande(g) {
+      /* hors du fil principal : on dessine la lettre ici, sa carte se calcule dans le Worker */
+      if (g.pret || g.attente) return;
+      if (depuisCache(g)) return;
+      var w = o.manuel ? null : ouvrier();
+      if (!w) { prepare(g); return; }
+      var d0 = racine.performance.now(), R = rendGlyphe(g), id = ++TL._nId; g.attente = true;
+      TL._attente[id] = function (T, D) { if (mort) return; if (!T) { g.attente = false; try { prepare(g); } catch (e) { } return; } finit(g, R, T, D); };
+      try { w.postMessage({ id: id, A: R.A2, w: R.W2, h: R.H2, traits: R.traits, moves: R.moves }); } catch (e) { delete TL._attente[id]; g.attente = false; prepare(g); return; }
       TL.mesures.prep.push(racine.performance.now() - d0); if (TL.mesures.prep.length > 4000) TL.mesures.prep.splice(0, 2000);
     }
     function pose(g) {
       /* le glyphe fini, dans le canevas, en attendant que le texte réel le prenne */
       fctx.setTransform(s, 0, 0, s, g.gx, g.gy); fctx.font = g.spec; fctx.fillStyle = g.coul; fctx.textBaseline = 'alphabetic'; fctx.fillText(g.car, 0, 0); fctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(g.X0, g.Y0, g.w, g.h); ctx.drawImage(fin, g.X0, g.Y0, g.w, g.h, g.X0, g.Y0, g.w, g.h);
-      g.im = g.A = g.T = null; g.pret = false;
+      g.im = g.A = g.T = g.T1 = null; g.pret = false;
     }
     function partiel(g, frac) {
       if (!g.pret) prepare(g);
-      var t = -0.5 + frac * (g.D + 1), d = g.im.data, A = g.A, T = g.T, n = g.w * g.h, p, m, a;
-      for (p = 0; p < n; p++) { a = A[p]; if (!a) continue; m = t - T[p] + 0.5; d[4 * p + 3] = m <= 0 ? 0 : (m >= 1 ? a : Math.round(a * m)); }
+      var sp = g.sup || 1, t = -0.5 * sp + frac * (g.D + sp), d = g.im.data, A = g.A, T = g.T, T1 = g.T1 || g.T, n = g.w * g.h, p, m, a;
+      /* le front traverse le pixel entre l'instant de son premier et celui de son dernier sous-pixel d'encre (un pixel d'anticrénelage) */
+      for (p = 0; p < n; p++) { a = A[p]; if (!a) continue; m = (t - T[p] + 0.5 * sp) / (T1[p] - T[p] + sp); d[4 * p + 3] = m <= 0 ? 0 : (m >= 1 ? a : Math.round(a * m)); }
       bctx.putImageData(g.im, 0, 0);
       ctx.clearRect(g.X0, g.Y0, g.w, g.h); ctx.drawImage(fin, g.X0, g.Y0, g.w, g.h, g.X0, g.Y0, g.w, g.h); ctx.drawImage(brouillon, 0, 0, g.w, g.h, g.X0, g.Y0, g.w, g.h);
     }
@@ -398,7 +568,7 @@
         var nx = G[j + 1];
         if (!nx || nx.ligne !== G[j].ligne) { m = j; coupe = -1; break; }
         dmax = -Infinity; for (var q = j; q >= 0 && G[q].ligne === G[j].ligne; q--) dmax = Math.max(dmax, G[q].e1);
-        var c = Math.floor(nx.e0) - 1; if (c >= Math.ceil(dmax) + 1) { m = j; coupe = c; break; }
+        var c = Math.floor(nx.e0) - 2; if (c >= Math.ceil(dmax) + 2) { m = j; coupe = c; break; }   /* v147 (C-125) : deux pixels de marge de chaque côté — à un pixel, la colonne d'anticrénelage du fût SUIVANT paraissait avant lui (un fil sur toute sa hauteur) */
       }
       if (m < 0) return;
       jd = m + 1;
@@ -419,8 +589,17 @@
       if (ig < G.length && t > G[ig].t0) partiel(G[ig], (t - G[ig].t0) / G[ig].d);
     }
     function image(maintenant) {
-      if (mort) return; var d0 = racine.performance.now(), t = maintenant - t0; if (t < 0) t = 0;
-      rend(t); TL.mesures.image.push(racine.performance.now() - d0); if (TL.mesures.image.length > 8000) TL.mesures.image.splice(0, 4000);
+      if (mort) return; var d0 = racine.performance.now();
+      /* le temps de la plume : il avance du temps de l'image, SAUF si la lettre où il arrive n'a pas encore sa carte — la plume marque un temps */
+      var dt = tAbs ? Math.min(100, maintenant - tAbs) : 0; tAbs = maintenant;
+      var t = tPlume + dt;
+      for (var jx = ig; jx < G.length && G[jx].t0 < t; jx++) if (!G[jx].pret) { demande(G[jx]); if (!G[jx].pret) { t = Math.max(tPlume, G[jx].t0); break; } }
+      tPlume = t;
+      rend(t);
+      /* ⚑ v147 — D'AVANCE : le temps qui reste dans l'image (jusqu'à 7 ms de travail) prépare les lettres qui viennent — la lettre suivante n'attend
+         plus sa carte au moment où le front l'atteint (une image de 143 à 194 ms à chaque lettre, au banc, avant). */
+      for (var ja = ig, na = 0; ja < G.length && na < 14 && racine.performance.now() - d0 < 6; ja++, na++) if (!G[ja].pret && !G[ja].attente) { try { demande(G[ja]); } catch (e) { } }
+      TL.mesures.image.push(racine.performance.now() - d0); if (TL.mesures.image.length > 8000) TL.mesures.image.splice(0, 4000);
       if (t >= total) { termine(false); return; }
       raf = racine.requestAnimationFrame(image);
     }

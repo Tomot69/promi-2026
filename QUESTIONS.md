@@ -8669,3 +8669,37 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
 - **Q512 — À TRANCHER PAR TOM (§15, C-128)** : « toucher un nom mène à la fiche de la personne ». Sur une carte de l'Index et un bandeau du Fil, TOUTE la carte
   ouvre déjà la fiche de la parole : un nom touchable y ferait deux portes l'une dans l'autre (sur un téléphone, on touche l'une en visant l'autre). Les noms
   des cartes suivent la règle d'écriture, mais ne se touchent pas. Veux-tu qu'ils se touchent quand même ?
+
+### v147 (15–16 oct. 2026) — retours iPhone de Tom sur v146
+
+- **Q513 — À TRANCHER (§3, C-140)** : « le trait se détache de CHACUN des deux fonds à 3:1 » est IMPOSSIBLE avec les fonds que tu as fixés pour le Chiche
+  (`#FFB8D2` / `#7C3F58`) et le Cercle (`#C9A8F5` / `#5D4978`) : aucune couleur ne tient 3:1 face aux deux à la fois — le meilleur possible est 2,71 et 2,69,
+  atteint par un trait presque noir (`#130208`, `#0A0415` : posés). Pour 3:1, le corps du bas doit s'éclaircir d'un cran, même teinte : **Chiche `#874861`,
+  Cercle `#675382`** (le texte crème y garde 5,9:1). Proposition : ces deux corps. (Le Promi passe : `#022140` fait 7,2 et 3,9:1.)
+- **Q514 — À TRANCHER (§3, C-140)** : la partie tracée d'une parole « à tenir » est à l'orange d'état `#DD4D23` : 1,81:1 sur le bleu du champ, 1,03:1 sur le
+  cobalt `#0E78F2` (la même clarté). L'orange porte l'ÉTAT (§3) et Q216 juge un trait en ΔE (126 sur le cobalt). Non changé. Proposition : garder l'orange.
+- **Q515 — À SAVOIR (§3, C-140)** : sur la carte d'un gardé de côté, les points du trait avaient la couleur du CHAMP (`#82AEF8` sur `#82AEF8`, 1,00:1) : ils
+  prennent la teinte sombre de la nature (`#022140`), comme tout trait posé sur un champ (§2.1 bis).
+- **Q516 — À VALIDER (§6, C-138)** : l'échelle unique donne au TEXTE 27 pt partout : la phrase du guide passe de 34 à 27 pt (même rôle que « Petite ou grande
+  promesse… »). Monter tout le texte à 34 ne tiendrait pas sur les pages du prénom et de la fin. Proposition : 27.
+- **Q517 — À VALIDER (§6, C-138)** : le texte de l'onboarding passe de Gilbert (ta décision de v127) à Atkinson 500 (ton brief : « texte en Atkinson »).
+- **Q518 — À TRANCHER (§10.4)** : en CLAIR, « monde » en rose `#FFB8D2` fait 1,01:1 sur l'accueil flouté, et les lettres de « Studio » 1,26 à 1,40:1 (le D
+  crème dalle ne se voit presque pas) — posés tels quels, comme tu le demandes au §7 ; capture `planche-v147/3-guide-studio-clair.png`. Proposition : en clair
+  seulement, chaque couleur garde sa teinte et s'assombrit jusqu'à 3:1 (la règle de v125) : rose `#9E5F77`, bleu `#4971B6`, lilas `#8363AA`, crème `#7C7158`.
+- **Q519 — À VALIDER (§10.2)** : « une marge de 6 à 10 pt » et « des lobes de 8 à 15 % de sa taille » se tiennent à peine : la bande de 4 pt donne au plus
+  8 à 10 % du rayon moyen de la zone (mesuré : 8 à 9 %). La zone suit donc la boîte : un rectangle aux bords ondulés autour du Studio, un rond lobé autour
+  du + (son bouton est rond). Au coin du Studio, le bout arrondi de la barre passe à moins de 6 pt de la boîte : la zone y reste 5 pt en deçà du trait de
+  la barre (sinon on le voyait, capture WebKit), sa marge y descend sous 6 pt. Proposition : accepter ; ou une marge de 2 à 10 pt (lobes ≈ 15 %).
+- **Q520 — À SAVOIR (§9, C-125)** : la carte de chaque lettre se calcule dans un Worker ; si une lettre n'est pas prête quand la plume l'atteint, la plume
+  marque un temps (au banc : la phrase du Studio en 1,2 à 1,9 s au lieu de 1,0 s la première fois ; les lettres déjà vues sont en cache). L'image ne
+  s'arrête plus (8 ms au plus, contre 143 à 194 ms par lettre).
+- **Q521 — À SAVOIR (§8, C-141)** : à l'étape du compte, le mot-marque de l'onboarding n'est plus à l'écran : c'est celui du plateau qui descend avec lui.
+  Le panneau du compte glissait déjà (0,45 s) ; ce qui restait de la page disparaissait en une image : il descend maintenant derrière la barre qui monte.
+- **Q522 — À VALIDER (§13, C-142)** : Promi, Chiche, Cercle du menu du + en PromiLate CAPITALES (la règle des mots-clés en PromiLate), 25 pt (+4 % du texte) ;
+  l'aide passe sur deux lignes égales quand elle ne tient pas (« un groupe, / un projet », « à quelqu'un, / ou à toi »). Capture avant / après jointe.
+- **Q523 — À SAVOIR (§12, C-116)** : un Cercle sans parole n'a toujours pas la ligne « Un mot… » (Q511 : 16 pt de place) ; dans Peaufiner, COMMENTAIRES est
+  en tête : « + Planter dans le Cercle » n'est plus juste dessous.
+- **Q524 — À SAVOIR (§7, C-126)** : le brief écrit « Tracer pour planter » ; le libellé reste « trace pour planter » (ton mot de v141, C-095) — seule sa couleur
+  change (`#00341A`). Proposition : garder.
+- **Q525 — À SAVOIR (C-118, trouvé par la série)** : la nappe de « tenir » porte la ligne « Parole tenue. » peinte dedans ; elle était marquée invisible pour
+  VoiceOver et le nœud texte était caché : VoiceOver ne la lisait plus depuis v146. La nappe a maintenant un libellé (« Parole tenue. » / « Défi relevé. »).

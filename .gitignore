@@ -104,3 +104,10 @@ planche-v145/
 /scratchpad/v146/app-avant-*.html
 /scratchpad/v146/moteur-avant-*.js
 /scratchpad/v146/juges/
+/scratchpad/v147/app-avant-*.html
+/scratchpad/v147/moteur-avant-*.js
+/scratchpad/v147/*.log
+/scratchpad/v147/*.png
+/planche-v147/*
+!/planche-v147/*.md
+/scratchpad/v146/trace/*.log

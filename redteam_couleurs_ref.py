@@ -188,6 +188,7 @@ def releve(pg, url):
 # E3 — l'orange des mots des murs (§4) : la seule encre qui peut différer, et seulement vers cette valeur
 VIOLATIONS = __import__('re').compile(r'closeb|dptNat|sh-bt|sh-bf|shWordmark|buyMonth|buyYear|pc-eclat')   # E5, nominatif (#shWordmark EST le .sh-bt du badge)
 MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(254, 208, 195)')   # v133 : #FF9F84 sur le bleu provisoire #1A52F0 (C-050)
+V147_TRAIT = {'rgb(2, 33, 64)', 'rgb(19, 2, 8)', 'rgb(10, 4, 21)'}   # v147 (C-140) : NATTRAIT
 _ANC_MUR_ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(255, 134, 100)')   # #FB4C0D, et #FF7A55 sur les corps sombres de Peaufiner (v121 §4)
 
 with sync_playwright() as p:
@@ -268,6 +269,13 @@ with sync_playwright() as p:
                     if pr_ in ('color', 'tfill') and 'dptTrace' in k and va == 'rgb(247, 240, 222)' and vr == 'rgb(243, 231, 209)': exceptions['E6'] += 1; continue
                     if pr_ in ('color', 'tfill') and cle[1] == 'dark' and re.search(r's4-(et|eb|nom)\b', k) and va == 'rgb(247, 240, 222)' and vr == 'rgb(221, 77, 35)': exceptions['E6'] += 1; continue
                     if pr_ in ('tshadow', 'shadow', 'bgi') and va is None and VIOLATIONS.search(k): exceptions['E5'] += 1; continue
+                    # E17 (v147, Tom, 15 oct. 2026, C-140) : « le trait se détache de chacun des deux fonds » — le trait posé sur un champ prend la teinte la
+                    #   plus sombre de sa nature (`NATTRAIT` : Promi #022140, Chiche #130208, Cercle #0A0415 ; avant #3D0F23, #43291C/#291547), les points du
+                    #   gardé de côté aussi (avant : la couleur du champ). Ces trois valeurs, et elles seules, dans un tracé (fill, stroke).
+                    if pr_ in ('fill', 'stroke') and va in V147_TRAIT: exceptions['E17'] = exceptions.get('E17', 0) + 1; continue
+                    # E18 (v147, Q290 / v122) : « en sombre, l'état d'une carte est crème DÈS LA PREMIÈRE IMAGE » — posé à la source (la passe de lisibilité,
+                    #   qui attend la fin du mouvement depuis v145, le repeignait 1 à 4 s après l'ouverture : la référence lisait la valeur d'avant elle)
+                    if pr_ in ('color', 'tfill') and cle[1] == 'dark' and re.search(r's4-et\b', k) and va == 'rgb(247, 240, 222)' and vr == 'rgb(228, 215, 187)': exceptions['E18'] = exceptions.get('E18', 0) + 1; continue
                     # E14 (v146, chef de chantier, C-121) : « le signe + passe en orange #FB4C0D, en clair et en sombre. Le signe seul, sans fond ni cercle. »
                     if pr_ in ('stroke', 'fill', 'color', 'tfill') and va == 'rgb(251, 76, 13)' and re.search(r'^#createBtn\b', k): exceptions['E14'] = exceptions.get('E14', 0) + 1; continue
                     # E15 (v146, chef de chantier, C-120) : « Studio, Aura, Index et Fil, sous les icônes, prennent le bleu FONCÉ du I clignotant de PROMI » — EN CLAIR
@@ -321,6 +329,8 @@ with sync_playwright() as p:
                     # E16 (v146, Tom, C-118 — la marée) : « le champ garde la couleur de sa nature » à « le trait se referme » — la référence y peignait le
                     #   champ en amande. Sur ce seul écran et ce seul canevas : le bleu de la nature (ΔE ≤ 3 de #82AEF8), et la dalle, gardée à sa taille, à ΔE ≤ 10.
                     if m > 2.5 and cle[0] == "l'instant referme" and k == 'dpTrameCv' and (dE(col[:3], (130, 174, 248)) <= 3 or m <= 10): exceptions['E16'] = exceptions.get('E16', 0) + 1; continue
+                    # E17 (v147, C-140) : dans un canevas, le trait à la teinte la plus sombre de sa nature (ΔE ≤ 3 de l'une des trois valeurs)
+                    if m > 2.5 and any(dE(col[:3], t_) <= 3 for t_ in ((2, 33, 64), (19, 2, 8), (10, 4, 21))): exceptions['E17'] = exceptions.get('E17', 0) + 1; continue
                     if m > 2.5:
                         cv_ecarts.append((cle, k, 'canevas', 'rgb(%d, %d, %d) %.0f %%' % (col[0], col[1], col[2], 100 * col[3]), 'au plus près ΔE %.1f' % m))
 
@@ -355,6 +365,8 @@ print('E12 le crème des fiches en clair, #EAD9B9 (v139, C-084) : %d' % exceptio
 print('E14 l\'orange du départ d\'une action : le + de l\'accueil, la flèche du trait (v146, C-121, C-133) : %d' % exceptions.get('E14', 0))
 print('E16 à « referme », le champ garde sa nature (v146, C-118) : %d' % exceptions.get('E16', 0))
 print('E15 les noms de la barre au bleu foncé du I, en clair (v146, C-120) : %d' % exceptions.get('E15', 0))
+print('E17 le trait à la teinte la plus sombre de sa nature, le gardé de côté compris (v147, C-140) : %d' % exceptions.get('E17', 0))
+print('E18 l\'état des cartes crème dès la première image, en sombre (v147, Q290) : %d' % exceptions.get('E18', 0))
 print('E13 fiches et page + en sombre dans les deux modes (v146, C-132) : %d écran(s) clairs comparés à la référence sombre' % exceptions.get('E13', 0))
 print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 cobalt, corps sombre Promi (v131) %d · E9 lilas éclairci et libellé de suppression (v132) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8'], exceptions['E9']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):
