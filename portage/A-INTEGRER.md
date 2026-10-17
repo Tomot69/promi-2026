@@ -113,3 +113,21 @@
 - **Tenir (C-118) et le guide (C-094)** — NON INTÉGRÉS : deux pages de variantes (`promi-tenir-variantes.html`, `promi-guide-variantes.html`)
   attendent le choix de Tom. SPEC-ECRANS §5 (l'instant) et la section du guide décrivent encore v144.
 
+
+## v148 (16 oct. 2026) — clôture de la série
+
+- **Validés par Tom** : C-088 (Ritournelle), C-094 (le guide en flaques), C-116 (les commentaires), C-129 (aucun emoji), C-135 (la Pelote tout de suite),
+  C-142 (le menu du +), et l'arrivée douce des encarts de l'onboarding. Le paragraphe précédent « Tenir (C-118) et le guide (C-094) — NON INTÉGRÉS » est
+  périmé : le guide en flaques est intégré (v146–v147) et validé ; tenir est le rideau (v147), à vitesse constante (v148).
+- **Les transitions de l'onboarding en flaques (C-141)** — un seul langage (`_passageFlaques` : une couverture qui se troue en flaques, ou la page suivante qui
+  naît en flaques par-dessus) ; aucun balayage, aucun fondu, aucun glissement. SPEC-RENDU : le moteur des flaques (`variantes/flaques.js`) est le même que le guide.
+- **« Promi planté ! » pas à pas (C-124)** — quatre touchers (trois paragraphes, puis le compte) ; le texte remonte et les dalles descendent du même
+  mouvement. SPEC-ECRANS (l'onboarding) et TESTS à reporter.
+- **Les cartes de l'Index et du Fil construites comme la fiche, dans les deux thèmes (C-147)** — SPEC-ECRANS §(Index, Fil) à reporter ; JETONS : les corps de
+  fiche servent aussi aux cartes.
+- **« Garder de côté » actif seulement après un changement (C-149)** — reporté dans SPEC-DONNEES §4 ; les aides « se retourne » sont retirées (TEXTES.json :
+  champ `retire`, SPEC-ECRANS).
+- **Le ruban amande (C-148)** et **les ronds de signature retirés (C-143)** — SPEC-GESTE à reporter : plus de points de guidage, plus de rectangle au seuil.
+- **L'ordre du guide (C-146)** — au lancement le Studio ; toucher ailleurs = le rappel (la même phrase) ; le + seulement après le Studio ; reprise au
+  lancement suivant tant que le Studio n'a pas été ouvert (`promi_guide` = « studio »). SPEC-DONNEES §9.4 à reporter.
+- **Les exceptions au « ! »** — « Ma Parole ! », « Promi planté ! », « Parole tenue ! », « Défi relevé ! » (TEXTES).

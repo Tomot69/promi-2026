@@ -1,0 +1,5 @@
+redteam_barre.py                   code   0 ·   451 s · charge 12.9→12.4 · 7/7
+redteam_partage_toile.py           code   1 ·   208 s · charge 12.4→11.0 · 26/27
+redteam_flash_etat.py              code   0 ·   210 s · charge 11.0→11.8 · 10 / 10
+redteam_air.py                     code   1 ·   352 s · charge 11.8→14.9 · Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+FIN DES REPRISES

@@ -26,8 +26,12 @@ with sync_playwright() as p:
     def change(nom, js, attente=900):
         a=pg.evaluate(SNAP); pg.evaluate(js); pg.wait_for_timeout(attente); c=pg.evaluate(SNAP)
         t(nom, a!=c, 'image inchangee')
-    change("Sombre -> Clair change l'image","()=>document.querySelector('#shTheme button[data-t=light]').click()")
-    change("Clair -> Sombre change l'image","()=>document.querySelector('#shTheme button[data-t=dark]').click()")
+    # ⚑ v148 — CONTRAT RÉÉCRIT au niveau de C-105 (v143, validé par Tom en v144 : « l'image partagée de la Toile est la Toile affichée — la vue, le fond,
+    #   le monde, LE THÈME DE L'APP ») : les boutons de thème du partage (#shTheme) ne sont plus à l'écran ; c'est le thème de l'app qui change l'image.
+    #   Original : sauvegardes/redteam3-avant-v148.py.
+    # le premier lancement est en CLAIR (v118) : on passe d'abord au sombre
+    change("Clair -> Sombre change l'image","()=>{ setTheme('dark'); shareRender(); }", 1400)
+    change("Sombre -> Clair change l'image","()=>{ setTheme('light'); shareRender(); }", 1400)
     change("QR active change l'image","()=>document.getElementById('shQrTog').click()")
     change("QR desactive change l'image","()=>document.getElementById('shQrTog').click()")
     change("format Carre change l'image","()=>document.querySelector('#shFormats .sh-fmt[data-fmt=square]').click()")

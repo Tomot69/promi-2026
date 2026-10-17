@@ -109,5 +109,11 @@ planche-v145/
 /scratchpad/v147/*.log
 /scratchpad/v147/*.png
 /planche-v147/*
+/planche-v148/*
+!/planche-v148/*.md
+/scratchpad/v148/*.log
+/scratchpad/v148/*.png
+/scratchpad/v148/*.out
+/scratchpad/v148/serie/
 !/planche-v147/*.md
 /scratchpad/v146/trace/*.log

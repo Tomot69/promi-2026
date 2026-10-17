@@ -9914,7 +9914,35 @@ le défaut est **antérieur** au grossissement (4/12 encore coupés à 15 px).
 - **v145 (13 oct.)** — retours de Tom (« rien ne change ») : la marque de version écrite DANS la page par le serveur, la page qui mesure ses images et les envoie au Mac (C-117) ; la Toile REMPLIE — les vignettes du Fil et de l'Index fermés ne se repeignent plus pendant qu'elle bouge (C-112 ; `redteam_pleine`, `banc_tom.toile_pleine`) ; Ritournelle rendue à son cadrage d'avant C-088, clos ; à plusieurs, la règle de la part (`lot-V145-PARTS`, `p.parts`, une seule parole pour plusieurs destinataires ; `redteam_part`) (C-115) ; la ligne « Un mot… » des fiches reçues (`lot-V145-COMM` ; `redteam_commentaires`) (C-116) ; deux pages de variantes à choisir, rien d'intégré : tenir (C-118) et le guide (C-094) ; Chamade stable au banc de rendu (cache de formes vidé avant chaque pose, référence refigée pour lui seul) (C-114).
 - **v146 (14 oct.)** — retours de Tom sur v145 : ajouter une personne (C-122) ; la même Toile en clair et en sombre (C-131 : le rang des gris gardé) ; la Pelote dans l'image où l'Aura s'ouvre (C-135) ; le guide en FLAQUES (C-094, 2e récidive) ; le + orange, Enregistrer retiré de l'accueil, les noms des icônes (C-119 à C-121) ; en clair, les fiches sont leur version sombre, le départ de la flèche orange (C-132, C-133) ; Peaufiner reste ouvert (C-134) ; Ritournelle à 75 % (C-088) ; l'onboarding : voisines une à une, textes, « Promi planté ! » (C-123, C-124, C-126) ; le tracé des lettres, page à montrer (C-125) ; tenir en marée (C-118) ; les noms, visages, dates (C-128, C-116) ; aucun emoji (C-129) ; la règle de tête C-130. **Trouvé en fin de lot par la série, corrigé** : la ligne « Un mot… » d'un Cercle partait avec le fil (elle vit dans le bloc collant de « + Planter ») ; un Cercle vide n'a pas la ligne ; le nom d'un Cercle n'est pas abrégé ; le bandeau Peaufiner n'est plus un mur ; en clair les cartes de l'Index, du Fil et d'une personne retrouvent leurs couleurs d'état (le résolveur de la fiche répondait « sombre » pour elles) ; le « + » qui valide un nom ne prend plus le focus ; la règle des noms posée aussi dans la phrase de la fiche, l'Index et le Fil. La préparation de la Pelote attend 6 s après « tenir ». **Ouvert** : C-136 (une Toile vide sort colorée au chargement, 1 fois sur 6, déjà en v145).
 
-## ⚑ À VALIDER SUR IPHONE — liste tenue à jour (ouverte en v123)
+## ⚑ À VALIDER SUR IPHONE — CE QUI ATTEND VRAIMENT TOM (refaite à la clôture de la série, v148, 16 oct. 2026)
+
+Validé par Tom et retiré de la liste : C-083, C-088, C-094, C-105, C-106, C-107, C-112, C-113, C-115, C-116, C-117, C-122, C-129, C-132, C-133, C-134, C-135, C-142,
+l'arrivée douce des encarts. Abandonnés : C-108, C-109, C-110 (la main). Adresse : `http://<IP du Mac>:8752/app.html` (`ipconfig getifaddr en0`).
+
+| Chantier | Quoi | Preuve au banc | Ce que Tom regarde |
+|---|---|---|---|
+| C-143 | Plus de ronds orange de signature | `redteam_ronds` 40/40 (WebKit) | une fiche à tenir, la page + : seul le chevron orange au départ |
+| C-144 | « Parole tenue ! », « Défi relevé ! », centrés | `redteam_tenir` | tenir un Promi, un Chiche |
+| C-118 | Le rideau descend au même rythme d'un bout à l'autre | `redteam_tenir` G, H (jugés au calme) | tenir ; au ralenti : `?mareeLent=4` |
+| C-148 | Le ruban amande qui suit le trait | `redteam_ruban` 36/36 ; capture au rapport | tracer sur une fiche, sur la page + |
+| C-147 | Les cartes de l'Index et du Fil comme la fiche, deux thèmes | `redteam_decisions`, `redteam_couleurs_ref` E19 | l'Index, le Fil, le fil d'un Cercle, en clair |
+| C-149 | « se retourne » retiré ; « garder de côté » actif seulement après un changement | `redteam_garder` 40/40 | la page + vide (garder inactif), puis ajouter une personne |
+| C-124 | « Promi planté ! » pas à pas ; l'Atkinson −7 % | `redteam_onboarding_texte` 46/46, `redteam_echelle_onboarding` 10/10 | effacer les données du site, refaire l'onboarding ; au ralenti : `?onbLent=4` |
+| C-141 | Les transitions de l'onboarding en flaques | `redteam_transitions_onb` 23/23 par thème | le même parcours, jusqu'à l'accueil |
+| C-145 | Les phrases du guide : en gras, plus grandes, « monde » lilas | `redteam_guide`, `redteam_echelle_onboarding` | `…/app.html?guide=1` |
+| C-146 | L'ordre du guide : le rappel au Studio, jamais le + avant lui | `redteam_ordre_guide` 26/26 | `?guide=1`, toucher ailleurs plusieurs fois, puis le Studio, le refermer |
+| C-139 | L'invitation à tracer : choisir A ou B | page de variantes | `…/promi-invite-variantes.html` |
+| C-140, Q513, Q514, Q528 | Le trait sur le champ et le corps (contraste) | `redteam_contraste_trait` (rouge par décision) | les fiches et cartes Chiche et Cercle — trancher |
+| C-123, C-125, C-126, C-138 | Les voisines, le tracé des lettres, la page du premier Promi, l'échelle | `redteam_onboarding_texte`, `redteam_trace_lettres` 14/14 | l'onboarding entier |
+| C-136 | La Toile vide reste vide au premier lancement | `redteam_toile_vide` | effacer les données, ouvrir l'app |
+| C-119, C-120, C-121 | Enregistrer retiré de l'accueil ; les noms de la barre ; le + orange | `redteam_couleurs_ref` E14, E15 | l'accueil, clair et sombre |
+| C-128, C-131 | Les noms ; la même Toile en clair et en sombre | `redteam_noms`, `redteam_clair_sombre` | une fiche reçue ; changer de thème |
+| C-101, C-096, C-100 | Déplacer une dalle ; la fiche d'un Cercle ; les murs du Studio | `redteam_deplace`, `redteam_cercle_tom`, `redteam_studio_tom` | voir l'historique de la liste ci-dessous |
+| C-085, C-086, C-091, C-097, C-098, C-099, C-104 | Photo, dessin, Enregistrer, partager une parole, tourner, recadrer, supprimer le compte | leurs juges | voir l'historique de la liste ci-dessous |
+| C-102, C-111 | Tenir, au lever ; la durée de l'instant | `redteam_fluide` (cadence au calme) | tenir trois paroles de suite |
+
+### Historique de la liste (v123 → v147), gardée telle quelle
+
 
 Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item reste ici jusqu'à ce que Tom l'ait vu sur l'appareil.
 

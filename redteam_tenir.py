@@ -14,6 +14,8 @@ couverte, la forme du bord) et sur la capture (le champ, la fiche à la fin).
   D · ni fondu, ni transparence : sur la couche, ≤ 2 % des pixels peints sont entre 10 et 245 d'opacité (le lissage du bord) ;
   E · la durée : la descente finie en 0,5 à 1,0 s ; de la marée qui paraît à la marée partie, 2,1 à 2,8 s (« environ 2 s ») ;
   F · le champ garde la couleur de sa nature pendant tout l'instant (plus de champ amande) — rien ne saute au passage à « juste après ».
+  H · (v148, C-144) « Parole tenue ! » / « Défi relevé ! », centrée.
+  G · (v148, C-118) le vert descend au MÊME rythme d'un bout à l'autre : aucun arrêt, pas réguliers, départ immédiat (lu sur les pixels, image par image).
 Preuve (§7) : `--fichier=zz-avant-v146.html` — il rougit (aucune couche).
 """
 import sys; sys.path.insert(0, '.')
@@ -29,7 +31,13 @@ ZONE = "(id)=>{ const c=document.getElementById(id); if(!c) return null; const r
 SONDE = """()=>{ window.__mr=[]; window.__t0=0; window._mareeReleve=function(g, cv, t, u, T, N){
     const k=cv.width/390, d=g.getImageData(0,0,cv.width,cv.height).data, W=cv.width; let n=0, mid=0, tot=0, bas=[], sous=0, sousN=0;
     let trous=0; for(let x=4; x<390; x+=8){ const ty=T.y(x)+6; let lo=-1, fin=false, trou=false; for(let y=Math.ceil(ty); y<760; y+=3){ const a=d[((Math.round(y*k))*W+Math.round(x*k))*4+3]; tot++; if(a>200 && fin) trou=true; if(a<=200 && lo>0) fin=true; if(a>200){ n++; lo=y; } else if(a>10) mid++; if(y<ty+24){ sousN++; if(a>200) sous++; } } bas.push(lo); if(trou) trous++; }
-    window.__mr.push({t:Math.round(t), u:+u.toFixed(3), part:n/Math.max(1,tot), mid:mid/Math.max(1,n+mid), bas:bas, sous:sous/Math.max(1,sousN), trous:trous}); }; }"""
+    /* v148 (C-144) : la phrase de validation, lue dans la nappe pleine — l'étendue horizontale de l'encre sur sa ligne */
+    if(u>0.95 && !window.__phr){ const it=document.getElementById('instTenue'), D=document.getElementById('device').getBoundingClientRect(), kk=D.width/390, r=it.getBoundingClientRect(); const y1=(r.top-D.top)/kk, y2=(r.bottom-D.top)/kk; let xa=1e9, xb=-1;
+      for(let yy=Math.ceil(y1); yy<y2; yy+=2) for(let xx=0; xx<390; xx+=1){ const q=((Math.round(yy*k))*W+Math.round(xx*k))*4; if(d[q+3]>200 && d[q]<60 && d[q+1]<50 && d[q+2]<40){ if(xx<xa) xa=xx; if(xx>xb) xb=xx; } }
+      window.__phr={xa:xa, xb:xb, txt:cv.getAttribute('aria-label')||''}; }
+    /* v148 : le FRONT du rideau — dans les colonnes où il est sorti de sous le trait (plus bas que le bord du trait + 9 pt), la médiane de son bas */
+    const fr=[]; for(let i=0, x=4; x<390; x+=8, i++){ if(bas[i]>0 && bas[i]-T.y(x)>9) fr.push(bas[i]); } fr.sort((a,b)=>a-b);
+    window.__mr.push({t:Math.round(t), tf:t, u:+u.toFixed(3), part:n/Math.max(1,tot), mid:mid/Math.max(1,n+mid), bas:bas, sous:sous/Math.max(1,sousN), trous:trous, fr:fr.length?fr[fr.length>>1]:null, nfr:fr.length, yc:(function(){ let m=1e9; for(let x=0;x<=390;x+=4) m=Math.min(m,T.y(x)); return m+6; })()}); }; }"""
 CHAMP = "()=>{ const d=document.getElementById('device').getBoundingClientRect(), k=d.width/390; return [d.left+30*k, d.top+150*k]; }"
 def un(b, th, nature):
     T = '%s, %s' % ('clair' if th == 'light' else 'sombre', nature); print('\n── %s' % T)
@@ -69,6 +77,40 @@ def un(b, th, nature):
     if CHARGE >= 4: print('      (non jugé : durées, charge du Mac %.1f ≥ 4 — C-137 ; relevé : pleine à %s ms, instant %s ms)' % (CHARGE, t_plein, duree))
     else: juge('[%s] E · la descente finie en 0,5 à 1,0 s ; l\'instant (de la marée qui paraît à la marée partie) dure 2,1 à 2,8 s — « environ 2 s »' % T, t_plein is not None and 500 <= t_plein <= 1000 and duree is not None and 2100 <= duree <= 2800, 'pleine à %s ms · durée %s ms · paraît %s ms après le lever' % (t_plein, duree, (t_on - lev) if t_on is not None else None))
     champs = [f[4] for f in FI if f[4] and f[0] >= lev]; c0 = champs[0] if champs else (0, 0, 0); ecart = max([sum(abs(c[i] - c0[i]) for i in range(3)) for c in champs] or [999])
+    # ⚑ v148 (Tom, C-118) — G · « le vert qui descend saccade au début : on dirait qu'il s'arrête puis repart ; il doit descendre d'un bout à l'autre
+    #   au MÊME rythme ». Lu sur les PIXELS de la couche, image par image : la profondeur du front sous le trait (médiane des colonnes) en fonction
+    #   du temps de l'image. Pendant la descente (de la première image où le front bouge jusqu'à 30 pt de la barre) : aucune fenêtre de 50 ms où
+    #   le front avance de moins du quart de ce qu'il devrait (un arrêt) ; chaque pas entre deux images à 0,4–2,2 × la vitesse médiane ; le front
+    #   bouge dès les 60 premières ms. Les intervalles entre images (≤ 34 ms) ne se jugent qu'au calme (C-137).
+    # le front lu à l'heure de L'IMAGE (t, pris au début du dessin — la sonde, lourde, n'entre pas dans la mesure), dans les colonnes où il est sorti
+    Dd = [r for r in R if r['t'] < 1500 and r.get('fr') is not None and r.get('nfr', 0) >= 3]
+    if len(Dd) >= 4:
+        mv = [r for r in Dd if r['fr'] < 760 - 30]
+        dbt = Dd[0]
+        vs = [((b_['fr'] - a['fr']) / max(1e-3, b_['tf'] - a['tf'])) for a, b_ in zip(mv, mv[1:]) if b_['tf'] - a['tf'] > 2]
+        vm = sorted(vs)[len(vs) // 2] if vs else 0
+        arret = 0
+        for i, a in enumerate(mv):
+            for b_ in mv[i + 1:]:
+                if b_['tf'] - a['tf'] >= 50:
+                    if (b_['fr'] - a['fr']) < 0.25 * vm * (b_['tf'] - a['tf']): arret += 1
+                    break
+        hors = [round(v / vm, 2) for v in vs if vm and not (0.4 <= v / vm <= 2.2)]
+        intervalles = [round(b_['tf'] - a['tf']) for a, b_ in zip(mv, mv[1:])]
+        # le départ : la droite du front (moindres carrés) ramenée au bord du trait sous les crêtes — l'instant où il a quitté le trait
+        n_ = len(mv); mt = sum(r['tf'] for r in mv) / n_; mf = sum(r['fr'] for r in mv) / n_
+        pente = sum((r['tf'] - mt) * (r['fr'] - mf) for r in mv) / max(1e-6, sum((r['tf'] - mt) ** 2 for r in mv)); a0 = mf - pente * mt
+        tdep = (mv[0]['yc'] - a0) / max(1e-6, pente)
+        juge('[%s] G · le vert descend au même rythme d\'un bout à l\'autre : aucun arrêt (fenêtres de 50 ms), chaque pas à 0,4–2,2 × la vitesse médiane, parti du trait dès la première image (−25 à +25 ms)' % T,
+             vs and arret == 0 and not hors and -25 <= tdep <= 25,
+             'vitesse médiane %.2f pt/ms · arrêts %d · pas hors bornes %s · parti du trait à %.0f ms · %d images (la première relevée à %s ms)' % (vm, arret, hors[:6], tdep, len(mv), dbt['t']))
+        print('      (relevé, non jugé : intervalles entre images pendant la descente, au pire %s ms — la sonde lit toute la couche à chaque image et les allonge ; charge %.1f)' % (max(intervalles or [0]), CHARGE))
+    else:
+        juge('[%s] G · le vert descend au même rythme d\'un bout à l\'autre' % T, False, 'trop peu d\'images relevées (%d)' % len(Dd))
+    ph = pg.evaluate("()=>window.__phr||null"); att = '\u00a0!'
+    attendu = ('Défi relevé' if nature == 'chiche' else 'Parole tenue') + att
+    juge('[%s] H · (v148, C-144) la phrase de validation finit par « ! » et elle est centrée (le milieu de son encre à ± 5 pt du milieu de l\'écran)' % T,
+         bool(ph) and ph['txt'] == attendu and ph['xb'] > ph['xa'] and abs((ph['xa'] + ph['xb']) / 2 - 195) <= 5, ph)
     juge('[%s] F · le champ garde sa couleur de nature pendant tout l\'instant (plus de champ amande, rien ne saute à 2 s)' % T, ecart <= 18 and not (abs(c0[0] - 143) + abs(c0[1] - 224) + abs(c0[2] - 143) < 30), 'champ %s · écart maximal %d sur %d images (lu dans le canevas de la fiche)' % (tuple(c0), ecart, len(champs)))
     capture(pg, 'planche-v146/tenir-fin-%s-%s.png' % ('clair' if th == 'light' else 'sombre', nature))
     juge('[%s] aucune erreur de page' % T, not pg.__dict__['erreurs'], pg.__dict__['erreurs'][:2]); ctx.close()

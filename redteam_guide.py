@@ -33,8 +33,9 @@ LA DÉCISION, EN DUR (le brief de Tom, §4) :
   4.4 elle DISPARAÎT SUR ELLE-MÊME (elle rétrécit sur place : son centre ne bouge pas) ;
   4.5 LE + — pareil, sur le + seul ; entre le Studio et le +, il y a un instant SANS zone nette (aucune translation de l'un à l'autre) ;
   4.6 LA FIN — les flaques se vident (plusieurs morceaux à mi-retrait), puis il ne reste rien.
-  Les chemins (inchangés) : le moment (0,6 s de calme) ; le Studio touché s'ouvre par-dessus ; refermé → l'étape du + ; toucher ailleurs fait
-  avancer ; toucher le + ouvre les trois natures ; une seule fois ; « Réduire les animations » : tout est posé sans mouvement ; aucun
+  Les chemins : le moment (0,6 s de calme) ; le Studio touché s'ouvre par-dessus ; refermé → l'étape du + ; ⚑ v148 (C-146) : toucher ailleurs à
+  l'étape du Studio montre le RAPPEL (la phrase du Studio écrite de nouveau) et n'avance JAMAIS vers le + (l'ordre : `redteam_ordre_guide.py`) ;
+  la zone du Studio se referme sur elle-même quand le Studio a été refermé ; toucher le + ouvre les trois natures ; une seule fois ; « Réduire les animations » : tout est posé sans mouvement ; aucun
   « Plus tard » ; A2 (ni opacité ni transition) ; aucune image au-delà de 16,7 ms de travail du fil principal.
 Le premier chemin part d'un STOCKAGE VIERGE et joue l'onboarding entier au doigt (CDP, Chromium avec le vrai GPU), à 390 × 844 ×3.
 Preuve (§7) : sur la version d'avant (`--fichier=zz-avant-v146.html`) le juge rougit dès 4.1 (il n'y a pas d'eau).
@@ -54,9 +55,10 @@ PH_PLUS = 'Promi, Chiche ou Cercle : tout commence par ce +.'
 CLES = {'studio': ['monde', 'Studio'], 'plus': ['commence']}                   # §11.7, en dur
 ATTENTE, COUVRE, OUVRE, FERME, RETIRE = 600, 1400, 700, 700, 1200             # ms — les durées décidées (couverture 1,2 à 1,6 s ; zone 0,6 à 0,8 s)
 VIOLET, BLEU, CREME = (41, 21, 71), (14, 120, 242), (247, 240, 222)           # #291547 · #0E78F2 · #F7F0DE
-ROSE = (255, 184, 210)                                                          # v147 §10.4 : « monde » en rose #FFB8D2
+MONDE = {True: (131, 99, 170), False: (201, 168, 245)}                         # ⚑ v148 (Tom, C-145) : « monde » #8363AA en clair, #C9A8F5 en sombre (v147 : rose #FFB8D2, illisible)
 PALB = [(130, 174, 248), (255, 184, 210), (201, 168, 245), (239, 227, 199)]    # la palette de base (Ingénu), dans son ordre — « Studio », lettre à lettre
-TAILLE_TEXTE, MARGE_MIN, MARGE_MAX, CENTRE_PH = 27, 6.0, 10.0, 312              # C-138 ; §10.2 ; §10.4 (372 − 60)
+TAILLE_TEXTE, MARGE_MIN, MARGE_MAX, CENTRE_PH = 29, 6.0, 10.0, 312              # ⚑ v148 (C-145) : 29 pt (27 × 1,07 — « +6 à 8 % ») ; §10.2 ; §10.4 (372 − 60)
+INTERLIGNE = (1.40, 1.50)                                                       # ⚑ v148 (C-145) : « l'interligne passe de 1,35 à environ 1,45 »
 CHARGE = float(os.popen('sysctl -n vm.loadavg').read().split()[1]) if os.path.exists('/usr/sbin/sysctl') else 0.0
 os.makedirs('planche-v146', exist_ok=True)
 res = []
@@ -74,7 +76,7 @@ ETAT = """()=>{ const g=document.getElementById('guide'), p=document.getElementB
   const lettres=p?[...p.querySelectorAll('.gd-studio .gd-l')].map(e=>[e.textContent, getComputedStyle(e).color]):[];
   const phPoids=p?getComputedStyle(p).fontWeight:null;
   return {guide:g?g.getAttribute('data-guide'):null, entier:!!(g&&g.getAttribute('data-entier')), eau:!!document.getElementById('guideEau'),
-    lettres:lettres, phPoids:phPoids, phrase:p?p.textContent:null, phraseVue:p?cs(p).visibility:null, phraseB:B(p), phraseCol:p?cs(p).color:null, phraseFs:p?parseFloat(cs(p).fontSize):null, phrasePol:p?cs(p).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, mots:mots,
+    lettres:lettres, phPoids:phPoids, phrase:p?p.textContent:null, phraseVue:p?cs(p).visibility:null, phraseB:B(p), phraseCol:p?cs(p).color:null, phraseFs:p?parseFloat(cs(p).fontSize):null, phraseLh:p?parseFloat(cs(p).lineHeight):null, phrasePol:p?cs(p).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, mots:mots,
     tard:t?t.textContent:null, tous:tous, devant:acc, e:(window._guide?window._guide.etat():null), regle:(window._guide?window._guide.regle:null), vu:localStorage.getItem('promi_guide'),
     studioVu:vu(document.getElementById('studioBtn')), auraVu:vu(document.getElementById('souffleBtn')), indexVu:vu(document.getElementById('indexBtn')), plusB:B(document.getElementById('createBtn')), barre:B(ba),
     studio:(()=>{const s=document.getElementById('studioScreen'); const h=document.elementFromPoint(D.left+D.width/2, D.top+D.height*0.6); return !!(s&&h&&s.contains(h));})(),
@@ -169,15 +171,16 @@ def phrase(e, T, quoi):
     ph = PH_STUDIO if quoi == 'studio' else PH_PLUS; clair = e['clair']
     juge('[%s] %s · la phrase, mot pour mot, visible, 60 pt plus haut qu\'en v146 (centrée à %d ± 40)' % (T, quoi, CENTRE_PH), e['phrase'] == ph and e['phraseVue'] == 'visible' and e['phraseB'] and abs((e['phraseB'][1] + e['phraseB'][3] / 2) - CENTRE_PH) <= 40, '« %s » %s' % (e['phrase'], e['phraseB']))
     cont = [t for t in e['tous'] if t['eng'] == 'guide-phrase' and ((t['sh'] not in ('none', '')) or (t['st'] not in ('0px', '', None)))]
-    juge('[%s] %s · AUCUN contour ni ombre sur les lettres ; l\'échelle de l\'onboarding (C-138) : Atkinson 500, %d pt' % (T, quoi, TAILLE_TEXTE), not cont and abs((e['phraseFs'] or 0) - TAILLE_TEXTE) <= 0.5 and e['phrasePol'] == 'Atkinson' and str(e['phPoids']) == '500', 'taille %s · %s %s · contours %s' % (e['phraseFs'], e['phrasePol'], e['phPoids'], cont[:1]))
+    il = (e.get('phraseLh') or 0) / max(1.0, e['phraseFs'] or 1)
+    juge('[%s] %s · AUCUN contour ni ombre sur les lettres ; ⚑ v148 (C-145) : EN GRAS (Atkinson 700), %d pt, interligne %.2f à %.2f' % (T, quoi, TAILLE_TEXTE, INTERLIGNE[0], INTERLIGNE[1]), not cont and abs((e['phraseFs'] or 0) - TAILLE_TEXTE) <= 0.5 and e['phrasePol'] == 'Atkinson' and str(e['phPoids']) == '700' and INTERLIGNE[0] <= il <= INTERLIGNE[1], 'taille %s · %s %s · interligne %.2f · contours %s' % (e['phraseFs'], e['phrasePol'], e['phPoids'], il, cont[:1]))
     juge('[%s] %s · les lettres se TRACENT (§9) : le module du tracé est branché sur la phrase' % (T, quoi), bool((e['e'] or {}).get('trace')), (e['e'] or {}).get('trace'))
     cles = [m for m in e['mots'] if 'gd-cle' in m['cl']]; nats = [m for m in e['mots'] if 'gd-nat' in m['cl']]
     juge('[%s] %s · les mots-clés %s sont en PromiLate, en capitales' % (T, quoi, CLES[quoi]), [m['t'] for m in cles] == CLES[quoi] and all(m['pol'] == 'PromiLate' and m['tt'] == 'uppercase' for m in cles), [(m['t'], m['pol']) for m in cles])
     if quoi == 'studio':
         mo = [m for m in cles if m['t'] == 'monde']; L = e.get('lettres') or []
         att = [PALB[i % 4] for i in range(6)]
-        juge('[%s] studio · 10.4 : « monde » en rose #FFB8D2 ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — les valeurs de Tom, sans retouche' % T,
-             bool(mo) and proche(mo[0]['col'], ROSE, 6) and ''.join(l[0] for l in L) == 'Studio' and all(proche(L[i][1], att[i], 6) for i in range(6)), 'monde %s · lettres %s' % (mo[0]['col'] if mo else None, L))
+        juge('[%s] studio · ⚑ v148 (C-145) : « monde » en lilas violet (%s) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — les valeurs de Tom, sans retouche' % (T, '#8363AA' if clair else '#C9A8F5'),
+             bool(mo) and proche(mo[0]['col'], MONDE[bool(clair)], 6) and ''.join(l[0] for l in L) == 'Studio' and all(proche(L[i][1], att[i], 6) for i in range(6)), 'monde %s · lettres %s' % (mo[0]['col'] if mo else None, L))
         juge('[%s] studio · le reste du texte : %s' % (T, '#291547' if clair else 'la crème'), proche(e['phraseCol'], VIOLET if clair else CREME), e['phraseCol'])
     elif clair:
         juge('[%s] %s · en clair : le texte en #291547, les mots-clés en #0E78F2' % (T, quoi), proche(e['phraseCol'], VIOLET) and all(proche(m['col'], BLEU) for m in cles), '%s · %s' % (e['phraseCol'], [m['col'] for m in cles]))
@@ -328,10 +331,13 @@ def trait(pg, cdp, compte=True):
         u = i / 24.0; cdp.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'x': x0 + (x1 - x0) * u, 'y': y0 + (y1 - y0) * u - 14 * z['k'] * (1 - abs(2 * u - 1))}]}); pg.wait_for_timeout(22)
     cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
     pg.wait_for_timeout(1900 + 4000 + 500)
-    x, y = pt(pg, 195, 300); toucher(cdp, pg, x, y)          # v146 (11.4) : le premier toucher fait venir le reste du message…
-    for _ in range(60):
+    x, y = pt(pg, 195, 300)
+    for _f in range(5):   # ⚑ v148 (C-124 §9) : « Promi planté ! » pas à pas — un toucher par paragraphe (trois), puis le compte
         if pg.evaluate("()=>{ const v=document.getElementById('onbV'); return !v || v.getAttribute('data-onb-reste')==='fini' || !document.getElementById('onbReste'); }"): break
-        pg.wait_for_timeout(150)
+        toucher(cdp, pg, x, y)
+        for _ in range(80):
+            if pg.evaluate("()=>{ const v=document.getElementById('onbV'); if(!v) return true; const r=v.getAttribute('data-onb-reste'); if(r==='fini'||!document.getElementById('onbReste')) return true; const f=window._onbFinPas&&_onbFinPas(); return !f || (!f.enCours && r!==null && String(f.pas)===r); }"): break
+            pg.wait_for_timeout(150)
     pg.wait_for_timeout(300); toucher(cdp, pg, x, y); pg.wait_for_timeout(900)          # … le second mène au compte
     if compte:
         c = centre(pg, '.onbv-compte .tard')
@@ -435,19 +441,29 @@ def rejoue(b, th, reduit=False):
     ctx, pg, cdp = ouvre(b, th, reduit, vierge=False); pg.evaluate("()=>{ localStorage.removeItem('promi_guide'); _guide.attend(true); }"); return ctx, pg, cdp
 def pret(pg, quoi, maxi=12000):
     e = attend(pg, quoi, maxi); pg.wait_for_timeout(OUVRE + 250); return pg.evaluate(ETAT)
+def au_studio(pg, cdp, e):
+    """⚑ v148 (C-146) : l'étape du + ne vient qu'après le Studio — on le touche (il s'ouvre par-dessus le guide), sans le refermer"""
+    x, y = pt(pg, e['e']['trou']['x'], e['e']['trou']['y']); toucher(cdp, pg, x, y); pg.wait_for_timeout(2800)
+def ferme_studio(pg, cdp):
+    c = centre(pg, '#studioScreen .closeb')
+    if c: toucher(cdp, pg, c[0], c[1])
 def chemins(b):
     print('\n── les autres chemins (le guide rejoué)')
     # 2 · Studio refermé SANS choix
     ctx, pg, cdp = rejoue(b, 'light'); e = pret(pg, 'studio'); x, y = pt(pg, e['e']['trou']['x'], e['e']['trou']['y']); toucher(cdp, pg, x, y); pg.wait_for_timeout(2800)
     c = centre(pg, '#studioScreen .closeb'); toucher(cdp, pg, c[0], c[1]) if c else None; e2 = attend(pg, 'plus', 12000)
     juge('CHEMIN 2 — Studio refermé sans choix : l\'étape du + arrive', e['guide'] == 'studio' and e2['guide'] == 'plus' and e2['phrase'] == PH_PLUS, 'guide %s → %s' % (e['guide'], e2['guide'])); ctx.close()
-    # 3 · toucher ailleurs pendant l'étape du Studio : 4.4 la zone se referme SUR ELLE-MÊME, puis celle du + s'ouvre — rien ne glisse
+    # 3 · ⚑ v148 (C-146) : toucher ailleurs pendant l'étape du Studio montre le RAPPEL (la phrase du Studio écrite de nouveau) — l'étape ne change pas ;
+    #     puis le Studio ouvert et refermé : 4.4 sa zone se referme SUR ELLE-MÊME, puis celle du + s'ouvre — rien ne glisse
     ctx, pg, cdp = rejoue(b, 'light'); e = pret(pg, 'studio'); tr = e['e']['trou']
+    x, y = pt(pg, 195, 230); toucher(cdp, pg, x, y); pg.wait_for_timeout(900); er_ = pg.evaluate(ETAT)
+    juge('CHEMIN 3 — toucher ailleurs pendant l\'étape du Studio : le rappel (la phrase du Studio, mot pour mot) ; l\'étape ne change pas, jamais celle du +', e['guide'] == 'studio' and er_['guide'] == 'studio' and er_['phrase'] == PH_STUDIO and er_['eau'], 'guide %s → %s · « %s »' % (e['guide'], er_['guide'], er_['phrase']))
+    au_studio(pg, cdp, er_)
     pg.evaluate("""(a)=>{ window.__z=[]; const [l,h]=a; const cv=document.getElementById('guideEau'), d=cv.width/390, c=document.createElement('canvas'); c.width=l; c.height=h; const x=c.getContext('2d',{willReadFrequently:true});
         (function f(){ const g=document.getElementById('guide'); if(!g) return; try{ x.clearRect(0,0,l,h); x.drawImage(cv, 24*d, 700*d, 342*d, 120*d, 0, 0, l, h); const p=x.getImageData(0,0,l,h).data; let n=0, sx=0, x0=1e9, x1=-1, y0=1e9, y1=-1; for(let i=0;i<l*h;i++){ if(p[i*4+3]<128){ const X=i%l, Y=(i/l)|0; n++; sx+=X; if(X<x0)x0=X; if(X>x1)x1=X; if(Y<y0)y0=Y; if(Y>y1)y1=Y; } }
           const kx=342/l, ky=120/h; window.__z.push([Math.round(performance.now()), n, n?24+sx/n*kx:0, n?24+x0*kx:0, n?24+(x1+1)*kx:0, n?700+y0*ky:0, n?700+(y1+1)*ky:0, g.getAttribute('data-guide')||'']); }catch(e){} requestAnimationFrame(f); })(); }""", [342, 120])
-    x, y = pt(pg, 195, 230); toucher(cdp, pg, x, y); pg.wait_for_timeout(300); em = pg.evaluate(ETAT); e2 = pret(pg, 'plus', 5000); Z = pg.evaluate("()=>window.__z")
-    juge('CHEMIN 3 — toucher ailleurs pendant l\'étape du Studio : sa zone se referme (aucune phrase pendant), puis l\'étape du + arrive ; l\'eau reste', e['guide'] == 'studio' and em['guide'] == 'vers-plus' and em['phrase'] is None and e2['guide'] == 'plus' and e2['phrase'] == PH_PLUS and e2['eau'], 'guide %s → %s → %s' % (e['guide'], em['guide'], e2['guide']))
+    ferme_studio(pg, cdp); pg.wait_for_timeout(700); em = pg.evaluate(ETAT); e2 = pret(pg, 'plus', 8000); Z = pg.evaluate("()=>window.__z")
+    juge('CHEMIN 3 — puis le Studio refermé : sa zone se referme (aucune phrase pendant), puis l\'étape du + arrive ; l\'eau reste', em['guide'] in ('vers-plus', 'au-studio') and em['phrase'] is None and e2['guide'] == 'plus' and e2['phrase'] == PH_PLUS and e2['eau'], 'guide %s → %s' % (em['guide'], e2['guide']))
     A = [z for z in Z if z[1] > 0]; i_vide = [k for k, z in enumerate(Z) if z[1] == 0]
     S = [z for z in (Z[:i_vide[0]] if i_vide else Z) if z[1] > 0]; P = [z for z in (Z[i_vide[-1]:] if i_vide else []) if z[1] > 0]
     deux = [z for z in A if z[3] < 120 and z[4] > 150]                                 # une zone à cheval sur le Studio et le + : une translation, ou deux zones à la fois
@@ -467,7 +483,7 @@ def chemins(b):
     juge('4.3 · à mi-ouverture la zone nette est faite de FLAQUES : ni vide ni pleine (15 à 85 %), en plusieurs morceaux ou échancrée (recouvrement avec une ellipse ≤ 0,9)', bool(Mx) and 0.15 <= float(t.sum()) / max(1.0, plein) <= 0.85 and (len(Mx) >= 2 or io_mi <= 0.9), 'part %.0f %% · %d morceau(x) · ellipse %.2f' % (100 * float(t.sum()) / max(1.0, plein), len(Mx), io_mi))
     pg.evaluate("()=>{ _guide.finir(); }"); pg.wait_for_timeout(200); ctx.close()
     # 4.6 · à l'étape du +, toucher ailleurs : la zone se referme, puis les flaques se vident
-    ctx, pg, cdp = rejoue(b, 'light'); e = pret(pg, 'studio'); x, y = pt(pg, 195, 230); toucher(cdp, pg, x, y); e2 = pret(pg, 'plus', 6000); toucher(cdp, pg, x, y)
+    ctx, pg, cdp = rejoue(b, 'light'); e = pret(pg, 'studio'); au_studio(pg, cdp, e); ferme_studio(pg, cdp); e2 = pret(pg, 'plus', 8000); x, y = pt(pg, 195, 230); toucher(cdp, pg, x, y)
     R = []; t0 = time.time()
     while time.time() - t0 < (FERME + RETIRE) / 1000.0 + 1.2:
         m, _ = eau(pg, 98, 211)
@@ -504,7 +520,7 @@ def cadence(b, th):
     else: juge('[%s] pendant la couverture et l\'ouverture de la zone, aucune image au-delà de 16,7 ms de travail du fil principal' % T, bool(W) and len(W) >= 40 and pire <= 16.7, '%d images · pire %s ms · p95 %s ms · flou d\'avance %s ms' % (len(W), None if pire is None else round(pire, 1), round(W2[int(len(W2) * .95)], 1) if W2 else None, pg.evaluate("()=>_guide.etat().flouMs")))
     if pire and pire > 16.7: print('      ce qui dépasse :', longues(tr, 'lever', (COUVRE + OUVRE + 200) * 1000))
     if th == 'dark':
-        e = pret(pg, 'studio'); phrase(e, T, 'studio'); zone(pg, e, T, 'studio'); x, y = pt(pg, 195, 230); toucher(cdp, pg, x, y); e2 = pret(pg, 'plus', 6000); phrase(e2, T, 'plus'); zone(pg, e2, T, 'plus'); cap(pg, 'plus-sombre')
+        e = pret(pg, 'studio'); phrase(e, T, 'studio'); zone(pg, e, T, 'studio'); au_studio(pg, cdp, e); ferme_studio(pg, cdp); e2 = pret(pg, 'plus', 8000); phrase(e2, T, 'plus'); zone(pg, e2, T, 'plus'); cap(pg, 'plus-sombre')
     ctx.close()
 
 def barre_webkit(p):

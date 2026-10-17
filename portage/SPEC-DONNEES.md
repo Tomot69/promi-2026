@@ -241,6 +241,8 @@ un gardé de côté repris → `p.trait` de ce gardé ; une création en cours �
 
 ### 1.8 À plusieurs : la règle de la part (Tom et chef de chantier, 13 oct. 2026, v145 — C-115)
 
+**Validée par Tom sur iPhone (v147, 15 oct. 2026).** v148 : les cartes de l'Index et du Fil sont construites comme la fiche (C-147) — la part se lit de même sur elles.
+
 **La règle.** Quand une parole engage plusieurs personnes, la seconde moitié du trait est divisée en autant de parts que de personnes qui
 doivent tenir. Chacun trace la sienne. La parole ne passe à « tenu » que lorsque toutes les parts sont tracées ; avant, elle reste en cours
 pour tout le monde — sa fiche, sa dalle sur la Toile, sa carte dans l'Index et dans le Fil. Une parole à une seule personne ne change pas.
@@ -277,6 +279,9 @@ noms, de tracer la part d'une personne en touchant son nom — pour jouer tous l
 non-lus, aucune pastille, aucune relance** n'y est attaché (grille anti-coercition, CLAUDE.md §12). Ils s'affichent du plus ancien au plus
 récent, avec le prénom et la date. Côté serveur : une sous-collection `comments` par parole, écriture par les personnes de la parole
 seulement, ajout seul (ni modification ni suppression dans ce lot — à décider par Tom).
+**v147 (C-116, validé par Tom en v148)** : la ligne « Un mot… » est sur TOUTE fiche Promi et Chiche (et celle d'un Cercle qui a une parole), sans encart ;
+le NOMBRE de mots paraît s'il y en a, discret (« 2 mots »), sans pastille — c'est un compte affiché, pas un compteur de non-lus ; dans Peaufiner,
+COMMENTAIRES est la première rubrique après le trait. Rien de plus n'est stocké (le nombre se lit sur `comments.length`).
 
 ### 1.10 Les noms, les mots d'un Cercle, aucun emoji (v146 — C-128, C-116, C-129, §17)
 
@@ -287,7 +292,7 @@ seulement, ajout seul (ni modification ni suppression dans ce lot — à décide
 - **Les mots d'un Cercle** : une liste par Cercle, `{t, d, by}` comme les commentaires d'une parole (prototype : `promi_cercle_mots`, par clé de Cercle). Firebase :
   `cercles/{id}/mots/{motId}`, lisibles et écrits par les membres seuls.
 - **Q486 · qui tient sa part dans un Cercle** : chaque membre ENGAGÉ dans la parole (`avec`) et moi. **Q487** : la fiche ne montre l'initiale que sous une part TRACÉE.
-- **Aucun emoji** : à la saisie (Swift : filtrer dans `TextField`/`TextEditor` à chaque changement, sans message) et à l'écriture (règles Firebase : refuser une
+- **Aucun emoji (validé par Tom en v148)** : à la saisie (Swift : filtrer dans `TextField`/`TextEditor` à chaque changement, sans message) et à l'écriture (règles Firebase : refuser une
   chaîne qui contient l'un de ces caractères). La liste : `\p{Extended_Pictographic}`, `\p{Emoji_Modifier}` (teintes de peau), `\p{Regional_Indicator}`
   (drapeaux), U+200D (ZWJ), U+FE0E, U+FE0F (sélecteurs), U+20E3 et la touche entière `[0-9#*]\uFE0F?\u20E3`, U+E0020–U+E007F (étiquettes). Champs : le titre,
   le nom d'une personne, le prénom, un mot, la note, le nom d'un Cercle.
@@ -365,6 +370,13 @@ Champs propres : `dk` (`'solo'` hors Cercle · `'innuee'` dans un Cercle existan
 
 ⚠ Planter par reprise **crée un nouvel `id`** : `dalle`, `monde`, `photo`, `dessin`, `trait` du gardé ne sont pas recopiés par ce chemin
 (le pinceau est relu via `_ppGardeP`, `app.html:25378`). **⚠ TROU T12** : ce qui doit survivre à la conversion n'est écrit nulle part.
+
+**⚑ v148 (Tom, 16 oct. 2026, C-149) — « GARDER DE CÔTÉ » N'AGIT QUE SI LA PAGE A CHANGÉ.** Le lien est toujours visible dans la page + ; il est ACTIF
+seulement quand la page diffère de ce qu'elle était à son ouverture : une personne ajoutée, ou une modification (le titre, le sens, le quand, une photo, un
+dessin, un champ). Avant, il ne fait rien (inactif : non souligné, sa teinte rapprochée du corps, `aria-disabled`). Dans le prototype la page se SIGNE à son
+ouverture (`window._garderEtat` : la phrase, les champs, les personnes choisies, la nature) et se relit à chaque saisie et à chaque toucher. Swift : comparer
+l'état de la page + à celui de son ouverture (une valeur `Equatable`), pas un drapeau « modifié » posé à la main. Le gardé de côté se retrouve tel quel à la
+reprise (`redteam_garder` H, I). Les phrases « se retourne » de la page + sont retirées (C-149, `TEXTES.md`).
 
 ---
 

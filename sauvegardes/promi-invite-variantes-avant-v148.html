@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Promi — inviter à tracer : deux variantes</title>
+<link rel="stylesheet" href="variantes/polices.css">
+<style>
+/* ⚑ v147 (C-139, Tom, 15 oct. 2026) — « Supprime la main PARTOUT. Il faut un autre système pour inviter à tracer : beau, doux, intégré, subtil, fluide. »
+   Page de variantes, jouable sur l'iPhone ; RIEN N'EST INTÉGRÉ DANS L'APP avant le choix de Tom.
+   La fiche est la VRAIE : l'app tourne dans le cadre, sur un stockage EN MÉMOIRE (une Toile de dix paroles, variantes/invite-etat.js) — rien n'est
+   écrit dans le vrai stockage du téléphone. L'invitation est peinte par CETTE page, par-dessus le trait de la fiche, aux places exactes que le
+   peintre de l'app déclare (`data-trait`). Ni fondu, ni transparence : une couleur change d'un coup. */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;font-family:Atkinson,system-ui,sans-serif;-webkit-font-smoothing:antialiased;-webkit-user-select:none;user-select:none}
+#haut{position:fixed;left:0;right:0;top:0;height:48px;display:flex;align-items:center;justify-content:center;gap:5px;padding:0 6px;z-index:5;background:#050302}
+#haut button{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;height:32px;min-width:32px;padding:0 9px;border-radius:16px;border:2px solid #F7F0DE;background:#050302;color:#F7F0DE;-webkit-text-fill-color:#F7F0DE;cursor:pointer}
+#haut button.on{background:#F7F0DE;color:#201908;-webkit-text-fill-color:#201908}
+#haut .sep{width:4px;flex:none}
+#cadre{position:fixed;left:0;right:0;top:48px;bottom:0}
+#app{position:absolute;left:0;top:0;width:100%;height:100%;border:0;display:block;background:#050302}
+#charge{position:absolute;left:0;right:0;top:46%;text-align:center;font:700 13px/1 Gilbert,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#F7F0DE;display:none}
+#charge.vu{display:block}
+#notes{position:fixed;left:0;right:0;top:48px;bottom:0;background:#F7F0DE;color:#201908;overflow:auto;-webkit-overflow-scrolling:touch;padding:22px 20px 60px;display:none;z-index:4;-webkit-user-select:text;user-select:text}
+#notes.vu{display:block}
+#notes h1{font:400 27px/1.1 PromiLate,Gilbert,system-ui;margin:0 0 6px;text-transform:uppercase}
+#notes h2{font:700 20px/1.15 Gilbert,system-ui;text-transform:uppercase;margin:30px 0 6px}
+#notes p{font:400 15px/1.45 Atkinson,system-ui;margin:0 0 10px;max-width:620px}
+#notes dl{margin:10px 0 0;max-width:620px}
+#notes dt{font:700 13px/1.2 Gilbert,system-ui;text-transform:uppercase;letter-spacing:.04em;margin:12px 0 2px}
+#notes dd{font:400 15px/1.42 Atkinson,system-ui;margin:0}
+#notes .mes{font:400 13px/1.4 Atkinson,system-ui;border:2px solid #201908;border-radius:16px;padding:10px 14px;max-width:620px;margin-top:8px;white-space:pre-wrap}
+</style>
+</head>
+<body>
+<div id="haut">
+  <button data-v="A" aria-label="Variante A, le fil qui s'allume">A</button><button data-v="B" aria-label="Variante B, le départ qui avance">B</button>
+  <span class="sep"></span>
+  <button id="bNat" aria-label="Promi ou Chiche">Promi</button><button id="bTh" aria-label="Clair ou sombre">Clair</button><button id="bLent" aria-label="Vitesse">×1</button>
+  <span class="sep"></span>
+  <button id="bRe" aria-label="Rejouer">Rejouer</button><button id="bNotes" aria-label="Notes">Notes</button>
+</div>
+<div id="cadre"><iframe id="app" title="La fiche d'une parole à tenir"></iframe><div id="charge">La fiche se prépare…</div></div>
+<div id="notes">
+  <h1>Inviter à tracer</h1>
+  <p>La main fantôme est supprimée de l'app. Deux façons d'inviter à tracer, sur la vraie fiche : rien d'autre ne bouge, ni fondu ni transparence, et un toucher n'importe où arrête l'invitation. Rien n'est intégré dans l'app avant ton choix.</p>
+  <p>Jouer : choisir A ou B, puis ne plus toucher l'écran. L'invitation commence après 3 s sans toucher. « Rejouer » rouvre la fiche. « ×¼ » ralentit quatre fois, pour regarder. Le trait se trace aussi pour de vrai.</p>
+  <h2>A · Le fil qui s'allume</h2>
+  <dl>
+    <dt>Quand</dt><dd>Après 3 s sans toucher. Deux passages au plus, espacés de 5 s. Ensuite, plus rien.</dd>
+    <dt>Ce qui bouge</dt><dd>Les dix points du trait non tracé passent en orange un à un, du départ de la flèche jusqu'au bout, puis reprennent leur couleur. Trois points sont orange à la fois ; un passage dure 1,2 s.</dd>
+    <dt>Le reste</dt><dd>Immobile : la flèche, la moitié tracée, le texte, la dalle.</dd>
+  </dl>
+  <h2>B · Le départ qui avance</h2>
+  <dl>
+    <dt>Quand</dt><dd>Après 3 s sans toucher. Deux fois au plus, espacées de 5 s.</dd>
+    <dt>Ce qui bouge</dt><dd>Le chevron orange du départ glisse de 9 pt le long du chemin, la moitié tracée s'allonge avec lui, puis il revient à sa place. Aller 0,45 s, pause 0,12 s, retour 0,45 s, courbe douce, sans rebond.</dd>
+    <dt>Le reste</dt><dd>Immobile : les points, le texte, la dalle.</dd>
+  </dl>
+  <h2>Ce que la page ne fait pas</h2>
+  <p>Elle ne touche pas au stockage de ton téléphone : l'app du cadre tourne sur une Toile de dix paroles, en mémoire. Le trait est peint par l'app ; l'invitation est peinte par la page, aux places que le peintre de l'app déclare.</p>
+  <h2>Mesure sur cet appareil</h2>
+  <div class="mes" id="mes">Le nombre d'images de plus de 20 ms pendant une invitation s'écrit ici, et il est envoyé au Mac.</div>
+</div>
+<script src="variantes/invite-etat.js"></script>
+<script>
+(function(){ 'use strict';
+var Q=new URLSearchParams(location.search), E={v:(Q.get('v')==='B'?'B':'A'), nat:Q.get('nat')||'promi', th:Q.get('th')||'clair', lent:Q.get('lent')?4:1};
+var TITRE={promi:'écrire à Lou', chiche:'courir dimanche'};
+var ifr=document.getElementById('app'), W=390, MID=195, ESP=18, ATTENTE=3000, ECART=5000, PASSES=2, D_B=9;
+var INV=null, gen=0;
+
+/* ───── un stockage EN MÉMOIRE pour l'app du cadre : rien n'est écrit dans le vrai stockage du téléphone ───── */
+function memoire(seed){ var M={}; for(var k in seed) M[k]=String(seed[k]);
+  var api={getItem:function(k){ return Object.prototype.hasOwnProperty.call(M,k)?M[k]:null; }, setItem:function(k,v){ M[k]=String(v); }, removeItem:function(k){ delete M[k]; },
+    clear:function(){ for(var k in M) delete M[k]; }, key:function(i){ return Object.keys(M)[i]||null; }};
+  return new Proxy(M, {get:function(t,p){ if(p==='length') return Object.keys(M).length; if(api.hasOwnProperty(p)) return api[p]; return Object.prototype.hasOwnProperty.call(M,p)?M[p]:undefined; },
+    set:function(t,p,v){ M[p]=String(v); return true; }, ownKeys:function(){ return Object.keys(M); }, getOwnPropertyDescriptor:function(t,p){ return Object.prototype.hasOwnProperty.call(M,p)?{value:M[p],enumerable:true,configurable:true,writable:true}:undefined; },
+    has:function(t,p){ return api.hasOwnProperty(p)||Object.prototype.hasOwnProperty.call(M,p); }, deleteProperty:function(t,p){ delete M[p]; return true; }}); }
+
+var HTML=null;
+function construit(){ var g0=++gen; arrete(); document.getElementById('charge').classList.add('vu');
+  (HTML?Promise.resolve(HTML):fetch('app.html',{cache:'no-store'}).then(function(r){ return r.text(); })).then(function(h){ if(g0!==gen) return; HTML=h;
+    var base=location.href.replace(/[?#].*$/,'').replace(/[^\/]*$/,'');
+    var h2=h.replace(/<head([^>]*)>/i, '<head$1><base href="'+base+'">');
+    var neuf=document.createElement('iframe'); neuf.id='app'; neuf.title=ifr.title; ifr.parentNode.replaceChild(neuf, ifr); ifr=neuf;
+    var w=ifr.contentWindow, seed=Object.assign({}, window.INVITE_ETAT||{}, {promi_theme:(E.th==='clair'?'light':'dark'), promi_onb:'1', promi_guide:'1', promi_rappel_n:'9'});
+    try{ Object.defineProperty(w,'localStorage',{value:memoire(seed),configurable:true}); Object.defineProperty(w,'sessionStorage',{value:memoire({}),configurable:true}); }catch(_){ }
+    var d=w.document; d.open(); d.write(h2); d.close();
+    var n=0, t=setInterval(function(){ if(g0!==gen){ clearInterval(t); return; } n++;
+      var ok=false; try{ var pr=paroles(w); ok=!!(w.Toile && w.openDetail && w._onde && pr && pr.length && w.document.getElementById('detailPoster')); }catch(_){ }
+      if(ok && n>12){ clearInterval(t); setTimeout(function(){ if(g0===gen) ouvre(); }, 900); }
+      if(n>200) clearInterval(t); }, 150);
+  }); }
+function W_(){ return ifr.contentWindow; }
+/* ⚠ `promises` est un `let` global de l'app : il n'est pas sur `window` (piège de v20) */
+function paroles(w){ try{ return w.eval('typeof promises!=="undefined"?promises:null'); }catch(_){ return null; } }
+function ouvre(){ var w=W_(); arrete(); try{ w._peaufSortie && w._peaufSortie(); w.closeAll(); }catch(_){ }
+  setTimeout(function(){ try{ var p=(paroles(w)||[]).filter(function(q){ return q.title===TITRE[E.nat]; })[0]; if(p){ p.status='encours'; w.openDetail(p.id); } }catch(_){ }
+    document.getElementById('charge').classList.remove('vu');
+    setTimeout(function(){ arme(); }, 700); }, 450); }
+
+/* ───── l'invitation ───── */
+function io(u){ u=u<0?0:(u>1?1:u); return u*u*(3-2*u); }
+function arrete(){ if(!INV) return; INV.fini=true; clearTimeout(INV.tm); try{ cancelAnimationFrame(INV.raf); }catch(_){ } try{ if(INV.ov && INV.ov.parentNode) INV.ov.parentNode.removeChild(INV.ov); }catch(_){ }
+  try{ INV.ecoute.forEach(function(x){ x[0].removeEventListener(x[1], x[2], true); }); }catch(_){ } INV=null; }
+function arme(){ var w=W_(), d=w.document, dp=d.getElementById('detailPoster'), cv=d.getElementById('dpTrameCv'); arrete();
+  if(!dp || !cv || !dp.classList.contains('show')) return;
+  var t=(cv.getAttribute('data-trait')||'').split(','); if(t.length<3) return;
+  var base=+t[0], amp=+t[1], col=t[2], y=w._onde.onde(base, amp), rp=(w._e2PointR||6), kx=cv.width/W, cs=w.getComputedStyle(cv);
+  var ov=d.createElement('canvas'); ov.id='invCv'; ov.setAttribute('aria-hidden','true'); ov.width=cv.width; ov.height=cv.height;
+  ['position','left','top','width','height','transform','transform-origin','margin-left','margin-top'].forEach(function(p){ ov.style.setProperty(p, cs.getPropertyValue(p), 'important'); });
+  ov.style.setProperty('z-index', String((parseInt(cs.zIndex,10)||0)+1), 'important'); ov.style.setProperty('pointer-events','none','important');
+  ov.style.setProperty('display','block','important'); ov.style.setProperty('visibility','visible','important'); ov.style.setProperty('max-width','none','important'); ov.style.setProperty('opacity','1','important');
+  cv.parentNode.insertBefore(ov, cv.nextSibling);
+  var g=ov.getContext('2d'); g.setTransform(kx,0,0,kx,0,0);
+  var P=[]; for(var x=MID+ESP; x<W-4.5; x+=ESP) P.push(x);
+  /* B : les couleurs exactes sous le chevron — le champ lu SUR le canevas du trait, le corps lu sous lui (le canevas y est transparent) */
+  var champ=null, corps=w.getComputedStyle(dp).backgroundColor;
+  try{ var px=cv.getContext('2d').getImageData(Math.round((MID+9)*kx), Math.round((y(MID+9)-13)*kx), 1, 1).data; champ='rgb('+px[0]+','+px[1]+','+px[2]+')'; }catch(_){ champ=cv.getAttribute('data-champ')||'#82AEF8'; }
+  var I=INV={ov:ov, fini:false, passes:0, ecoute:[], F:[]};
+  function stop(){ if(INV===I) arrete(); }
+  ['pointerdown','touchstart','keydown','wheel'].forEach(function(n){ var f=function(){ stop(); }; d.addEventListener(n, f, true); I.ecoute.push([d,n,f]); });
+  function efface(){ g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,ov.width,ov.height); g.setTransform(kx,0,0,kx,0,0); }
+  function imageA(t){ /* un passage : 1 200 ms ; le point i est orange de i·Δ à i·Δ + 300 ms (trois à la fois) */
+    var L=300, Dt=(1200-L)/Math.max(1,P.length-1); efface(); g.fillStyle=(w._orangeDepart?w._orangeDepart():'#FB4C0D');
+    for(var i=0;i<P.length;i++){ if(t>=i*Dt && t<i*Dt+L){ g.beginPath(); g.arc(P[i], y(P[i]), rp+0.35, 0, 6.2832); g.fill(); } }
+    return t<1200; }
+  function imageB(t){ /* aller 450 ms, pause 120, retour 450 : courbe douce, sans rebond */
+    var dd=(t<450)?D_B*io(t/450):(t<570?D_B:D_B*(1-io((t-570)/450))); efface();
+    if(t>=1020) return false;
+    var x0=MID-26, x1=MID+D_B+24, y0=999, y1=-999; for(var x=x0;x<=x1;x+=1){ var v=y(x); if(v<y0) y0=v; if(v>y1) y1=v; } y0-=16; y1+=16;
+    g.save(); g.beginPath(); g.rect(x0, y0, x1-x0, y1-y0); g.clip();
+    g.fillStyle=champ; g.fillRect(x0, y0, x1-x0, y1-y0);                                   /* le champ, au-dessus de l'onde */
+    g.beginPath(); g.moveTo(x0, y(x0)); for(var x2=x0+1;x2<=x1;x2+=1) g.lineTo(x2, y(x2)); g.lineTo(x1, y1+2); g.lineTo(x0, y1+2); g.closePath(); g.fillStyle=corps; g.fill();   /* le corps, sous elle */
+    g.strokeStyle=col; g.lineWidth=10; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); w._onde.chemin(g, y, x0-12, MID+dd); g.stroke();   /* la moitié tracée, jusqu'au chevron */
+    g.fillStyle=col; for(var i=0;i<P.length;i++){ if(P[i]-rp<x1){ g.beginPath(); g.arc(P[i], y(P[i]), rp, 0, 6.2832); g.fill(); } }
+    w._onde.chevron(g, y, MID+dd, col, 10, true);
+    g.restore(); return true; }
+  function passe(){ if(I.fini) return; I.passes++; var t0=performance.now(), der=t0;
+    function f(now){ if(I.fini) return; I.F.push(now-der); der=now; var t=(now-t0)/E.lent, en=(E.v==='A')?imageA(t):imageB(t);
+      if(en){ I.raf=requestAnimationFrame(f); return; }
+      efface(); mesure(I);
+      if(I.passes<PASSES) I.tm=setTimeout(passe, ECART*(E.lent>1?2:1)); }
+    I.raf=requestAnimationFrame(f); }
+  I.tm=setTimeout(passe, ATTENTE); }
+function mesure(I){ try{ var s20=0, s33=0, pire=0; I.F.slice(1).forEach(function(d){ if(d>20) s20++; if(d>33.4) s33++; if(d>pire) pire=d; });
+  var R={quoi:'invite-variante', v:E.v, nat:E.nat, th:E.th, lent:E.lent, passe:I.passes, images:I.F.length, sup20:s20, sup33:s33, pire:Math.round(pire), ecran:[screen.width,screen.height,window.devicePixelRatio,innerWidth,innerHeight], ua:navigator.userAgent, quand:new Date().toISOString()};
+  document.getElementById('mes').textContent='Variante '+E.v+' · '+E.nat+' · '+E.th+(E.lent>1?' · ralentie':'')+' · passage '+I.passes+'\n'+I.F.length+' images · '+s20+' au-delà de 20 ms · '+s33+' au-delà de 33 ms · la plus longue '+Math.round(pire)+' ms';
+  I.F=[]; fetch('mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(R),keepalive:true}).catch(function(){}); }catch(_){ } }
+
+/* ───── la page ───── */
+function boutons(){ [].forEach.call(document.querySelectorAll('#haut button[data-v]'), function(b){ b.classList.toggle('on', b.getAttribute('data-v')===E.v); });
+  document.getElementById('bNat').textContent=(E.nat==='promi')?'Promi':'Chiche'; document.getElementById('bTh').textContent=(E.th==='clair')?'Clair':'Sombre';
+  document.getElementById('bLent').textContent=(E.lent>1)?'×¼':'×1'; document.getElementById('bLent').classList.toggle('on', E.lent>1); }
+[].forEach.call(document.querySelectorAll('#haut button[data-v]'), function(b){ b.addEventListener('click', function(){ E.v=b.getAttribute('data-v'); document.getElementById('notes').classList.remove('vu'); boutons(); ouvre(); }); });
+document.getElementById('bNat').addEventListener('click', function(){ E.nat=(E.nat==='promi')?'chiche':'promi'; boutons(); ouvre(); });
+document.getElementById('bTh').addEventListener('click', function(){ E.th=(E.th==='clair')?'sombre':'clair'; boutons(); construit(); });
+document.getElementById('bLent').addEventListener('click', function(){ E.lent=(E.lent>1)?1:4; boutons(); ouvre(); });
+document.getElementById('bRe').addEventListener('click', function(){ document.getElementById('notes').classList.remove('vu'); ouvre(); });
+document.getElementById('bNotes').addEventListener('click', function(){ document.getElementById('notes').classList.toggle('vu'); });
+/* pour un banc */
+window._invite={etat:function(){ return INV?{passes:INV.passes, fini:INV.fini}:null; }, ouvre:ouvre, v:function(v){ E.v=v; boutons(); }, cadre:function(){ return ifr; }, regle:{ATTENTE:ATTENTE, ECART:ECART, PASSES:PASSES, D_B:D_B}};
+boutons(); construit();
+})();
+</script>
+</body>
+</html>

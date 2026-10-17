@@ -79,8 +79,8 @@ PIEGE = r"""
   const P = CanvasRenderingContext2D.prototype;
   const ligne = () => {                       // première ligne d'app.html dans la pile, hors de ce piège
     const st = (new Error()).stack.split('\n');
-    for (const f of st) { const mm = f.match(/promi-moteur[^\/:]*\.js:(\d+):\d+/); if (mm) return 1000000 + (+mm[1]);   // assainissement : le moteur vit dans promi-moteur.js
-      const m = f.match(/app[^\/:]*\.html:(\d+):\d+/) || f.match(/sonde-[a-z]+\.html:(\d+):\d+/);
+    for (const f of st) { const mm = f.match(/promi-moteur[^\/:]*\.js(?:\?[^:\s]*)?:(\d+):\d+/);   /* v148 : depuis v145 le serveur sert `promi-moteur.js?e=<empreinte>` — sans la requête, le moteur n'était plus reconnu */ if (mm) return 1000000 + (+mm[1]);   // assainissement : le moteur vit dans promi-moteur.js
+      const m = f.match(/app[^\/:]*\.html(?:\?[^:\s]*)?:(\d+):\d+/) || f.match(/sonde-[a-z]+\.html:(\d+):\d+/);
       if (m) return +m[1]; }
     return 0;
   };
@@ -172,7 +172,7 @@ PIEGE = r"""
           const pileA = String((new Error()).stack || '');
           // ⚑ v68 — le RÉCHAUFFAGE (`rechauffe`, v59) repeint en tâche de fond, pendant n'importe quel écran, des dalles d'AUTRES écrans
           // dans le monde courant : ce n'est pas un peintre de l'Aura (la règle v50 : l'exception suit le peintre). Original : sauvegardes/redteam_decoupe-avant-v68.py.
-          const aura = (String((window.__decoupe || {}).ecran || '').indexOf('Aura') >= 0 && !/rechauffe/.test(pileA)) || /peintMoisson|Object\.pelote|batIles/.test(pileA);
+          const aura = (String((window.__decoupe || {}).ecran || '').indexOf('Aura') >= 0 && !/rechauffe/.test(pileA)) || /peintMoisson|Object\.pelote|batIles|dalleLisible/.test(pileA);   /* v148 : `dalleLisible` (les îles de la Pelote) — appelé aussi par la préparation au repos de l'Aura (C-135, v146), pendant n'importe quel écran */
           let q = null; for (const x of promises) { if (x.id === pid) { q = x; break; } }
           const M = cv.__dalleInfo.monde, C = aura ? (q && q.monde) : avant;
           if (C && (C.m !== M.m || C.p !== M.p || (+C.h || 0) !== (+M.h || 0)))

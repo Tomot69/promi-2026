@@ -34,7 +34,7 @@ with sync_playwright() as p:
         juge('les dates : « à l’instant », « il y a 5 min », « il y a 3 h », « hier », « 2 oct. », et l\'année au-delà d\'un an', D == att, D)
     # sur l'écran : une fiche avec des mots de Christophe et de Christine, un nom long
     pg.evaluate("""()=>{ const q=promises.filter(x=>!x.draft)[0]; window.__q=q.id; q.comments=[]; const now=Date.now();
-      q.comments.push({t:'On fait ça ensemble ?', by:'Christophe', d:new Date(now-86400000*1.5).toISOString()}); q.comments.push({t:'Avec plaisir', by:'Christine', d:new Date(now-4*60000).toISOString()});
+      q.comments.push({t:'On fait ça ensemble ?', by:'Christophe', d:new Date(now-86400000).toISOString()});   /* v148 : 24 h, toujours « hier » — 36 h ne l'était qu'après midi */ q.comments.push({t:'Avec plaisir', by:'Christine', d:new Date(now-4*60000).toISOString()});
       q.comments.push({t:'Je réserve.', by:'Bartholomew', d:new Date(now-40000).toISOString()}); openDetail(q.id); }""")
     pg.wait_for_timeout(2600); tap_sel(pg, '#cm5Ligne'); pg.wait_for_timeout(1200)
     E = pg.evaluate("()=>[...document.querySelectorAll('#cm5Fil .cm5-un')].map(u=>{ const n=u.querySelector('.nom-lien'); const c=u.querySelector(':scope > div'); return {nom:n?n.textContent:null, data:n?n.getAttribute('data-nom'):null, tete:c?c.children[0].textContent:''}; })")

@@ -32,7 +32,7 @@ TEXTES = {   # relevés sur la version d'avant v140 — mot pour mot
  #   original : sauvegardes/redteam_onb_sorties-avant-v147.py)
  'parole': 'PromiCamille, donc. Enchanté.Quid d’un Promi à toi-même ?Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.',
  'trait': 'PromiCamille, donc. Enchanté.Quid d’un Promi à toi-même ?Je me promets de marcher une heurePetite ou grande promesse, elle compte.trace pour planter',
- 'fin': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.',   # ⚑ v146 (Tom, 11.4) : « C'est planté. » → « Promi planté ! » ; le reste vient au toucher
+ 'fin': 'Promi planté !',   # ⚑ v148 (Tom, C-124 §9.1) : « au départ, le titre seul » ; chaque toucher fait venir un paragraphe (v146 : le titre et le premier paragraphe ensemble)
  'fin-reste': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée.Deuxio, un Chiche, c’est un coup de culot.Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Le reste se découvre en traçant.La suite t’appartient.',
  'compte': 'Garder ta ToilePour la retrouver sur un autre téléphone.Continuer avec AppleContinuer avec GooglePlus tardEn continuant, tu acceptes les Conditions et la Politique de confidentialité.',
 }
@@ -111,10 +111,13 @@ with sync_playwright() as p:
         pg.wait_for_timeout(2500); s = pg.evaluate(SORTIE)
         juge('aucune main fantôme sur le trait de l\'onboarding, 4 s sans toucher (C-110 : elle ne paraît que sur une fiche à tenir)', not s['main'] and not s['mainNoeud'], 'main : %s' % s['main'])
     trace(pg, cdp); pg.wait_for_timeout(6400); etape(pg, 'fin')
-    d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height*0.36];}"); toucher(cdp, pg, d[0], d[1])   # v146 (11.4) : le reste vient au toucher
-    for _ in range(60):
-        if pg.evaluate("()=>{ const v=document.getElementById('onbV'); return !v || v.getAttribute('data-onb-reste')==='fini'; }"): break
-        pg.wait_for_timeout(150)
+    d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height*0.36];}")
+    for _f in range(5):   # ⚑ v148 (C-124 §9) : « Promi planté ! » pas à pas — un toucher par paragraphe (trois), puis le compte
+        if pg.evaluate("()=>{ const v=document.getElementById('onbV'); return !v || v.getAttribute('data-onb-reste')==='fini' || !document.getElementById('onbReste'); }"): break
+        toucher(cdp, pg, d[0], d[1])
+        for _ in range(80):
+            if pg.evaluate("()=>{ const v=document.getElementById('onbV'); if(!v) return true; const r=v.getAttribute('data-onb-reste'); if(r==='fini'||!document.getElementById('onbReste')) return true; const f=window._onbFinPas&&_onbFinPas(); return !f || (!f.enCours && r!==null && String(f.pas)===r); }"): break
+            pg.wait_for_timeout(150)
     pg.wait_for_timeout(300); etape(pg, 'fin-reste'); toucher(cdp, pg, d[0], d[1]); pg.wait_for_timeout(1000)
     etape(pg, 'compte'); decl = bool(pg.evaluate("()=>!!(window.TEXTES_ENGAGEMENT&&TEXTES_ENGAGEMENT.sansPlusTard)")); ctx.close()
     avec = [n for n, c, _ in sorties if c and n != 'compte']; compte_ok = any(n == 'compte' and c for n, c, _ in sorties)

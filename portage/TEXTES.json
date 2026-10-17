@@ -618,22 +618,26 @@
    "fr": "Je me promets se retourne — touche‑le",
    "ou": "page + Promi à soi · aide sous la phrase vide",
    "source": "app.html:17666 (lot-S3-page-plus)",
-   "note": "trait d’union insécable U+2011 dans « touche‑le »"
+   "note": "trait d’union insécable U+2011 dans « touche‑le »",
+   "retire": "v148 (Tom, 16 oct. 2026, C-149) : « Un Chiche se lance, il ne se retourne pas » et le « se retourne » de « Je me promets » sont supprimés partout — l’aide n’est plus affichée"
   },
   "plus.aide.autre": {
    "fr": "Je promets se retourne — touche‑le",
    "ou": "page + Promi à quelqu’un · aide",
-   "source": "app.html:17665 (lot-S3-page-plus)"
+   "source": "app.html:17665 (lot-S3-page-plus)",
+   "retire": "v148 (Tom, 16 oct. 2026, C-149) : « Un Chiche se lance, il ne se retourne pas » et le « se retourne » de « Je me promets » sont supprimés partout — l’aide n’est plus affichée"
   },
   "plus.aide.demander": {
    "fr": "promets-moi se retourne — touche‑le",
    "ou": "page + Promi demandé · aide",
-   "source": "app.html:17663 (lot-S3-page-plus)"
+   "source": "app.html:17663 (lot-S3-page-plus)",
+   "retire": "v148 (Tom, 16 oct. 2026, C-149) : « Un Chiche se lance, il ne se retourne pas » et le « se retourne » de « Je me promets » sont supprimés partout — l’aide n’est plus affichée"
   },
   "plus.aide.chiche": {
    "fr": "un Chiche se lance, il ne se retourne pas",
    "ou": "page + Chiche · aide",
-   "source": "app.html:17661 (lot-S3-page-plus)"
+   "source": "app.html:17661 (lot-S3-page-plus)",
+   "retire": "v148 (Tom, 16 oct. 2026, C-149) : « Un Chiche se lance, il ne se retourne pas » et le « se retourne » de « Je me promets » sont supprimés partout — l’aide n’est plus affichée"
   },
   "plus.garder": {
    "fr": "garder de côté",

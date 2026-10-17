@@ -1,0 +1,139 @@
+redteam_volume.py                  code   0 ·     1 s · charge 7.9→7.9 · ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+redteam_registre.py                code   0 ·     1 s · charge 7.9→7.9 · chantiers non validés : 133
+redteam_tokens.py                  code   0 ·     1 s · charge 7.9→7.9 · 46/46
+redteam_ecrans.py                  code   0 ·   151 s · charge 7.9→65.9 · 152/152
+redteam_joignable.py               code   1 ·   223 s · charge 7.9→77.2 · 4 / 5
+redteam_ruban.py                   code   0 ·   161 s · charge 77.2→42.5 · ✅  36 / 36
+redteam_tenir.py                   code   0 ·    99 s · charge 42.5→16.3 · ✅  32 / 32
+redteam_ronds.py                   code   0 ·   377 s · charge 65.9→20.2 · ✅  40 / 40
+redteam_garder.py                  code   0 ·   138 s · charge 16.3→13.9 · 40 / 40
+redteam_engagement.py              code   0 ·   128 s · charge 20.2→11.8 · redteam_engagement : 11/11 au vert · 1 inactif(s) : R4 · invariance du moment « tenir »
+redteam_verrou_onboarding.py       code   0 ·    48 s · charge 13.9→10.9 · verrou de l'onboarding : 9/9
+redteam_trace_lettres.py           code   0 ·    47 s · charge 10.9→11.3 · 14 / 14
+redteam_onboarding_texte.py        code   1 ·    66 s · charge 11.8→10.7 · ❌  28 / 42
+redteam.py                         code   0 ·    24 s · charge 10.7→15.6 · 15/15
+redteam2.py                        code   0 ·    25 s · charge 15.6→21.9 · 10/10
+redteam_sans_main.py               code   0 ·    87 s · charge 11.3→21.3 · 10 / 10
+redteam3.py                        code   0 ·    38 s · charge 21.9→20.6 · 16/18
+redteam_accueil.py                 code   0 ·   180 s · charge 21.3→20.7 · 22/22
+redteam_ajout_personne.py          code   1 ·   121 s · charge 20.7→25.3 · KO : D · fiche · Peaufiner « À QUI » · 1 de plus : clavier retiré, la zone reprend « + ajouter quelqu’un » et rien ne reste décalé
+redteam_ajouter.py                 code   1 ·    50 s · charge 25.3→25.9 · ❌ des profils passent sous « + ajouter quelqu'un »
+redteam_air.py                     code   1 ·   378 s · charge 20.6→22.9 · Si un texte a changé PAR DÉCISION, refige : python3 redteam_air.py --figer
+redteam_apercus.py                 code   0 ·    76 s · charge 25.9→15.9 · ✅  10/10
+redteam_aura_latence.py            code   1 ·    55 s · charge 22.9→14.4 · KO : 2 · ouverture n° 1 : la Pelote est dans l'image même où l'Aura paraît, ≤ 120 ms après le clic
+redteam_aveugle.py                 code   0 ·    77 s · charge 15.9→17.1 · 26/26
+redteam_barre.py                   code   1 ·   459 s · charge 14.4→13.8 · 6/7
+redteam_bouton.py                  code   0 ·   271 s · charge 13.8→10.8 · 33 / 33
+redteam_cadre.py                   code   0 ·    42 s · charge 10.8→8.3 · 22 / 22
+redteam_bord.py                    code   0 ·   761 s · charge 17.1→13.1 · 24/24
+redteam_cercle_couleur.py          code   1 ·    94 s · charge 8.3→10.6 · 32/34
+redteam_cercle_tom.py              code   1 ·   202 s · charge 13.1→64.2 · 18 / 20
+redteam_champ.py                   code   0 ·   165 s · charge 10.6→64.2 · 32/32
+redteam_champs.py                  code   0 ·    52 s · charge 64.2→51.7 · 22/22
+redteam_clavier.py                 code   0 ·     0 s · charge 51.7→51.7 · ✅ le clavier s'ouvre au geste — 4 champs
+redteam_commentaires.py            code   0 ·   112 s · charge 51.7→16.4 · 28 / 28
+redteam_contour.py                 code   0 ·    34 s · charge 16.4→10.7 · ✅ rien ne dépasse du contour
+redteam_corps.py                   code   0 ·   262 s · charge 10.7→16.5 · 33 / 33
+redteam_dalle_figee.py             code   0 ·    92 s · charge 16.5→12.3 · 4/4
+redteam_decoupe.py                 code   1 ·   334 s · charge 12.3→14.4 · ✅  G2 : 50 écran(s) × monde × thème jugés, 0 en défaut
+redteam_demande.py                 code   0 ·    16 s · charge 14.4→11.5 · 19/19
+redteam_clair_sombre.py            code   1 ·   994 s · charge 64.2→11.4 · KO : B · 25 parole(s), Pochade : l'app ouverte en sombre montre la Toile de l'app ouverte en clair · B · 50 parole(s), Pochade : l'app ouverte en sombre montre 
+redteam_dessin.py                  code   1 ·   134 s · charge 11.4→22.9 · ROUGE : I · [light] la phrase des murs monte sur la zone, devant le mode, « Ma Parole ! » dans son orange
+redteam_dessin_photo.py            code   1 ·    35 s · charge 22.9→31.9 · KO : 7 · le partage du dessin emporte la photo importée (une composition), et le trait
+redteam_deplace.py                 code   0 ·   291 s · charge 11.5→35.8 · 40/40
+redteam_emoji.py                   code   0 ·    50 s · charge 31.9→31.5 · ✅  11 / 11
+redteam_enfonce.py                 code   1 ·    49 s · charge 31.5→34.4 · KO : B · la vitesse d'enfoncement décroît (fenêtres de 150 ms)
+redteam_enchaine.py                code   0 ·    91 s · charge 35.8→27.8 · 24/24
+redteam_entier.py                  code   0 ·    93 s · charge 34.4→22.2 · redteam_entier : 44/44
+redteam_evol.py                    code   1 ·   298 s · charge 27.8→73.4 · KO : 2 · [encre] planter : aucune image au-delà de 80 ms · 1 · [touffe] planter : aucun rappel au-delà de 20 ms de travail pendant le mouvement · 2 · [touffe] p
+redteam_fiches_theme.py            code   1 ·   432 s · charge 22.2→46.8 · KO : A · page + Cercle : la matière (la dalle) est la même dans les deux thèmes — même boîte, même couleur moyenne (≤ 4 niveaux), ≤ 6 % de ses pixels · A · page
+redteam_filets.py                  code   0 ·   235 s · charge 73.4→51.2 · filet du trait : 14/14
+redteam_flash.py                   code   1 ·   145 s · charge 46.8→45.0 · 31/32
+redteam_flash_etat.py              code   1 ·   238 s · charge 51.2→37.2 · KO : 2 · [sombre] la capture à la première image : aucun pixel orange sur eux
+redteam_fonctions.py               code   0 ·   103 s · charge 37.2→102.2 · 22/22
+redteam_formes.py                  code   1 ·    22 s · charge 102.2→96.1 · · Index · carte 4 « LANCÉ » [light] · le trait est peint
+redteam_fourrure.py                code   0 ·    50 s · charge 96.1→53.0 · 9 / 9
+redteam_fluide.py                  code   1 ·   304 s · charge 45.0→55.5 · KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 5588 images) · 3 · la durée : « juste après » paraît 2 000 ms (± 80) après « le
+redteam_garder_toile.py            code   0 ·   141 s · charge 53.0→18.6 · 29 / 29
+redteam_geste.py                   code   0 ·    46 s · charge 18.6→22.0 · 12/12
+redteam_gens.py                    code   0 ·   202 s · charge 55.5→29.3 · 38/38
+redteam_halo.py                    code   0 ·    44 s · charge 22.0→27.4 · 12/12
+redteam_kaki.py                    code   1 ·   127 s · charge 29.3→8.8 · ❌ DU KAKI — 15 coupable(s)
+redteam_lexique.py                 code   0 ·   304 s · charge 27.4→10.9 · redteam_lexique : 3/3
+redteam_maparole.py                code   0 ·   240 s · charge 8.8→21.7 · 14 / 14
+redteam_menu_plus.py               code   1 ·    39 s · charge 21.7→20.0 · 13 / 14
+redteam_mesure.py                  code   0 ·    63 s · charge 20.0→16.8 · 10 / 10
+redteam_motmarque.py               code   0 ·    46 s · charge 16.8→9.6 · 4 / 4
+redteam_murs.py                    code   0 ·   129 s · charge 9.6→9.1 · 28/28
+redteam_marges.py                  code   1 ·   363 s · charge 10.9→8.0 · ❌ 20 défaut(s)
+redteam_noms.py                    code   1 ·    50 s · charge 8.0→16.5 · ❌  20 / 21
+redteam_notifs.py                  code   0 ·    91 s · charge 16.5→10.1 · 36/36
+redteam_murs_toucher.py            code   0 ·   376 s · charge 9.1→6.8 · 8 / 8
+redteam_nuee.py                    code   1 ·   227 s · charge 10.1→18.6 · ❌  24 écran(s) · 28 écart(s)
+redteam_nuee_entree.py             code   0 ·    49 s · charge 18.6→16.0 · 24/24
+redteam_nuee_dalle.py              code   1 ·   107 s · charge 6.8→15.7 · 35/38
+redteam_nuit.py                    code   1 ·    69 s · charge 16.0→17.8 · KO : 1 · premier lancement : Zzz ACTIVÉ · 2 · au changement d'écran : sombre DE NUIT · 2 · la bascule se fait sans fondu · 2 · le lever passé SOUS LES YEUX : ri
+redteam_origine.py                 code   1 ·    72 s · charge 15.7→28.4 · KO : [webkit] promi · truculent · origine à ΔE 128.6 → la couleur d'ORIGINE · [webkit] chiche · irascible · origine à ΔE 63.7 → la couleur d'ORIGINE · [webkit] 
+redteam_palettes.py                code   0 ·   182 s · charge 17.8→16.5 · redteam_palettes : 58/58
+redteam_part.py                    code   1 ·   182 s · charge 28.4→15.1 · KO : C · 3 personnes, ordre [2, 0, 1], aucune part : le trait porte 3 parts · C · 3 personnes, ordre [2, 0, 1], après Nico : le trait porte 3 parts · C · 3 pers
+redteam_partage_dessin.py          code   0 ·   106 s · charge 16.5→9.3 · 34/34
+redteam_partage_fiche.py           code   0 ·   268 s · charge 15.1→44.6 · ✅ le rond Partager d'une fiche partage son Folio
+redteam_partage_toile.py           code   1 ·   227 s · charge 9.3→28.1 · 26/27
+redteam_pastilles.py               code   0 ·    58 s · charge 44.6→23.6 · 12/12
+redteam_pelote_doigt.py            code   1 ·    29 s · charge 23.6→16.1 · KO : 1 · [passe 1] pendant qu'on caresse la Pelote : image p95 ≤ 22 ms
+redteam_peaufiner.py               code   0 ·    81 s · charge 28.1→16.4 · ✅  21 / 21
+redteam_photo.py                   code   1 ·    39 s · charge 16.4→23.2 · · Chiche · entête lisible sur photo sombre
+redteam_pelote_partage.py          code   0 ·    75 s · charge 16.1→24.1 · 42/42
+redteam_phrase.py                  code   0 ·    17 s · charge 24.1→20.1 · 6/6
+redteam_photo_menu.py              code   0 ·    61 s · charge 23.2→13.0 · ✅ le bouton photo propose ses deux choix, et la dalle d'origine se tient partout
+redteam_pilules.py                 code   0 ·    11 s · charge 13.0→11.6 · ✅ les pilules se lisent
+redteam_plein.py                   code   0 ·   106 s · charge 11.6→12.3 · 49 / 49
+redteam_phrase_fiche.py            code   0 ·   279 s · charge 20.1→26.1 · redteam_phrase_fiche : 74/74
+redteam_pleine.py                  code   0 ·   150 s · charge 12.3→23.1 · 27 / 27 · 12 contrôle(s) de durée NON JUGÉS (machine chargée) : à repasser au calme
+redteam_polices.py                 code   0 ·    45 s · charge 26.1→18.8 · 0 couple(s) absent(s) · 0 élément(s)
+redteam_reactif.py                 code   1 ·    34 s · charge 18.8→14.2 · playwright._impl._errors.TimeoutError: Page.wait_for_function: Timeout 3000ms exceeded.
+redteam_ramage_onde.py             code   1 ·    57 s · charge 23.1→19.4 · 8 / 9
+redteam_reperage.py                code   0 ·    40 s · charge 19.4→14.5 · 16/16
+redteam_remplace.py                code   0 ·    64 s · charge 14.2→12.6 · 18/18
+redteam_ritournelle.py             code   0 ·   240 s · charge 12.6→9.8 · 63 / 63
+redteam_retour.py                  code   1 ·   532 s · charge 14.5→26.9 · KO : [mosaique] les mouvements sont joués (7 demandés) et des pixels changent pendant
+redteam_souffle.py                 code   1 ·    70 s · charge 26.9→28.4 · ❌ le souffle ne tient pas sa loi
+redteam_studio_geste.py            code   0 ·    43 s · charge 28.4→21.8 · 22/22
+redteam_studio_mur.py              code   0 ·   100 s · charge 21.8→11.3 · 9/9
+redteam_rythme.py                  code   1 ·   709 s · charge 9.8→9.4 · 91 / 99
+redteam_studio_tom.py              code   1 ·   276 s · charge 11.3→10.7 · 12 / 14
+redteam_suggestions.py             code   0 ·    53 s · charge 9.4→10.7 · ✅ tirage sans remise
+redteam_titres_longs.py            code   0 ·   107 s · charge 10.7→12.0 · 14/14
+redteam_toile.py                   code   0 ·    75 s · charge 12.0→13.6 · 18/18
+redteam_superpo.py                 code   0 ·   325 s · charge 10.7→7.9 · recouvrements de texte : 4
+redteam_tonsurton.py               code   0 ·    59 s · charge 7.9→9.9 · 26/26
+redteam_toile_vide.py              code   0 ·   328 s · charge 13.6→9.1 · 30 / 30
+redteam_tourne.py                  code   0 ·    30 s · charge 9.1→10.3 · 8 / 8
+redteam_trace.py                   code   0 ·   110 s · charge 10.3→8.7 · 17/17
+redteam_toucher.py                 code   0 ·   270 s · charge 9.9→8.2 · redteam_toucher : 24/24
+redteam_trait.py                   code   1 ·    56 s · charge 8.7→8.4 · 9/10
+redteam_verbe.py                   code   0 ·    34 s · charge 8.4→12.3 · 6/6
+redteam_tuiles.py                  code   1 ·   153 s · charge 8.2→178.2 · - waiting for locator("#createSheet .tile[data-kind=nuee]").first
+redteam_vide.py                    code   0 ·   330 s · charge 12.3→69.7 · 61/61
+redteam_zone.py                    code   0 ·   309 s · charge 69.7→13.9 · 12 / 12
+redteam_zoom.py                    code   0 ·    96 s · charge 13.9→40.5 · 16/16
+releve-S1-fiches.py                code   1 ·    38 s · charge 40.5→25.8 · ❌  56 écarts restants.
+releve-S2-peaufiner.py             code   0 ·    24 s · charge 25.8→19.1 · ❌  position 58 · style 91 · collisions 0 · hors cadre 0 · peinture 0
+releve-S3-page-plus.py             code   0 ·   101 s · charge 19.1→30.2 · écrans mesurés : 28 cadres (14 écrans × 2 thèmes) sur les 34 de l'inventaire
+releve-S4-index-fil.py             code   1 ·    23 s · charge 30.2→21.1 · ❌  45 ÉCARTS
+releve-S5-instant.py               code   1 ·    27 s · charge 21.1→19.2 · ❌  35 ÉCARTS
+releve-aura.py                     code   1 ·   209 s · charge 19.2→11.8 · ❌  1 ÉCARTS
+releve-design.py                   code   0 ·    36 s · charge 11.8→11.1 · ✅  AUCUN ÉCART. Le design est intact.
+releve-moodboard-H.py              code   0 ·     4 s · charge 11.1→10.6 · [SECTION 9  ]  0 cadres  · NON COUVERT (app pas encore ou hors périmètre lot 0)
+releve-moodboard.py                code   1 ·    16 s · charge 10.6→9.8 · • carte3-sous — app '.tile[data-kind=draft] .hsub' introuvable
+banc_rendu.py                      code   0 ·   118 s · charge 9.8→9.7 · ✅ AU PIXEL.
+redteam_contraste_trait.py         code   1 ·   386 s · charge 9.7→8.3 · 20 / 248
+redteam_decisions.py               code   0 ·    86 s · charge 8.3→6.1 · 102 / 102
+redteam_echelle_onboarding.py      code   0 ·    81 s · charge 6.1→31.4 · 10 / 10
+redteam_guide.py                   code   1 ·   234 s · charge 31.4→8.6 · ❌  82 / 84
+redteam_onb_sorties.py             code   0 ·    35 s · charge 8.6→8.6 · R6 · compte         « Plus tard »
+redteam_onboarding.py              code   0 ·   153 s · charge 8.6→6.9 · ✅  46 / 46 contrats tenus
+redteam_ordre_guide.py             code   0 ·   136 s · charge 6.9→6.4 · ✅  26 / 26
+redteam_transitions_onb.py         code   0 ·    86 s · charge 6.4→4.9 · ✅  46 / 46
+redteam_vivant.py                  code   1 ·  3125 s · charge 178.2→26.0 · KO : [mosaique] jamais plus de 15 s (+ les lectures) sans mouvement · [mosaique] un mouvement dure 1 à 2 s · [mosaique] rien d'autre ne bouge sur la Toile au re
+FIN DE LA SÉRIE

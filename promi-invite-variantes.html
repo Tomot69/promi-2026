@@ -18,7 +18,12 @@ html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;
 #haut button.on{background:#F7F0DE;color:#201908;-webkit-text-fill-color:#201908}
 #haut .sep{width:4px;flex:none}
 #cadre{position:fixed;left:0;right:0;top:48px;bottom:0}
-#app{position:absolute;left:0;top:0;width:100%;height:100%;border:0;display:block;background:#050302}
+#app{position:absolute;left:0;top:0;width:100%;height:100%;border:0;display:block;background:#050302;pointer-events:none}
+/* ⚑ v148 (Tom, C-139) : « sur les deux, j'ai vu le vert descendre » — la page montrait la VALIDATION. La fiche du cadre ne se trace plus : elle
+   ne reçoit aucun doigt (pointer-events:none) ; un toucher sur la page rejoue l'invitation. L'invitation tourne en boucle, A et B nettement
+   différents : A, ce sont les POINTS du chemin qui s'allument ; B, c'est la FLÈCHE qui avance et trace devant elle. */
+#etiq{position:fixed;left:0;right:0;bottom:18px;text-align:center;font:700 13px/1.2 Gilbert,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#F7F0DE;z-index:3;pointer-events:none}
+#etiq span{display:inline-block;background:#050302;padding:8px 14px;border-radius:18px}
 #charge{position:absolute;left:0;right:0;top:46%;text-align:center;font:700 13px/1 Gilbert,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#F7F0DE;display:none}
 #charge.vu{display:block}
 #notes{position:fixed;left:0;right:0;top:48px;bottom:0;background:#F7F0DE;color:#201908;overflow:auto;-webkit-overflow-scrolling:touch;padding:22px 20px 60px;display:none;z-index:4;-webkit-user-select:text;user-select:text}
@@ -41,20 +46,21 @@ html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;
   <button id="bRe" aria-label="Rejouer">Rejouer</button><button id="bNotes" aria-label="Notes">Notes</button>
 </div>
 <div id="cadre"><iframe id="app" title="La fiche d'une parole à tenir"></iframe><div id="charge">La fiche se prépare…</div></div>
+<div id="etiq"><span id="etiqTx">A · les points s'allument</span></div>
 <div id="notes">
   <h1>Inviter à tracer</h1>
   <p>La main fantôme est supprimée de l'app. Deux façons d'inviter à tracer, sur la vraie fiche : rien d'autre ne bouge, ni fondu ni transparence, et un toucher n'importe où arrête l'invitation. Rien n'est intégré dans l'app avant ton choix.</p>
-  <p>Jouer : choisir A ou B, puis ne plus toucher l'écran. L'invitation commence après 3 s sans toucher. « Rejouer » rouvre la fiche. « ×¼ » ralentit quatre fois, pour regarder. Le trait se trace aussi pour de vrai.</p>
+  <p>Jouer : choisir A ou B. L'invitation commence presque tout de suite et revient en boucle. Ici le trait NE SE TRACE PAS : la page ne montre que l'invitation (pas la validation). Un toucher sur la fiche la rejoue. « ×¼ » ralentit quatre fois, pour regarder.</p>
   <h2>A · Le fil qui s'allume</h2>
   <dl>
-    <dt>Quand</dt><dd>Après 3 s sans toucher. Deux passages au plus, espacés de 5 s. Ensuite, plus rien.</dd>
-    <dt>Ce qui bouge</dt><dd>Les dix points du trait non tracé passent en orange un à un, du départ de la flèche jusqu'au bout, puis reprennent leur couleur. Trois points sont orange à la fois ; un passage dure 1,2 s.</dd>
+    <dt>Quand</dt><dd>Dans l'app : après 3 s sans toucher, deux passages au plus. Ici : en boucle, pour regarder.</dd>
+    <dt>Ce qui bouge</dt><dd>Seulement les POINTS du trait non tracé : ils s'allument en orange un à un, du départ de la flèche jusqu'au bout, et grossissent de moitié en passant — une vague qui court sur le chemin. Trois points allumés à la fois ; un passage dure 1,4 s. La flèche ne bouge pas.</dd>
     <dt>Le reste</dt><dd>Immobile : la flèche, la moitié tracée, le texte, la dalle.</dd>
   </dl>
   <h2>B · Le départ qui avance</h2>
   <dl>
-    <dt>Quand</dt><dd>Après 3 s sans toucher. Deux fois au plus, espacées de 5 s.</dd>
-    <dt>Ce qui bouge</dt><dd>Le chevron orange du départ glisse de 9 pt le long du chemin, la moitié tracée s'allonge avec lui, puis il revient à sa place. Aller 0,45 s, pause 0,12 s, retour 0,45 s, courbe douce, sans rebond.</dd>
+    <dt>Quand</dt><dd>Dans l'app : après 3 s sans toucher, deux fois au plus. Ici : en boucle, pour regarder.</dd>
+    <dt>Ce qui bouge</dt><dd>Seulement la FLÈCHE : le chevron orange avance de 44 pt sur le chemin en traçant devant lui (la moitié tracée s'allonge et recouvre les points), marque un temps, puis revient à sa place. Aller 0,6 s, pause 0,25 s, retour 0,5 s, courbe douce, sans rebond. Les points ne changent pas de couleur.</dd>
     <dt>Le reste</dt><dd>Immobile : les points, le texte, la dalle.</dd>
   </dl>
   <h2>Ce que la page ne fait pas</h2>
@@ -67,7 +73,7 @@ html,body{margin:0;height:100%;background:#050302;color:#F7F0DE;overflow:hidden;
 (function(){ 'use strict';
 var Q=new URLSearchParams(location.search), E={v:(Q.get('v')==='B'?'B':'A'), nat:Q.get('nat')||'promi', th:Q.get('th')||'clair', lent:Q.get('lent')?4:1};
 var TITRE={promi:'écrire à Lou', chiche:'courir dimanche'};
-var ifr=document.getElementById('app'), W=390, MID=195, ESP=18, ATTENTE=3000, ECART=5000, PASSES=2, D_B=9;
+var ifr=document.getElementById('app'), W=390, MID=195, ESP=18, ATTENTE=900, ECART=1600, PASSES=1e9, D_B=44;   /* v148 : en boucle ici (l'app : 3 s, deux passages) ; B avance de 44 pt, plus de 9 */
 var INV=null, gen=0;
 
 /* ───── un stockage EN MÉMOIRE pour l'app du cadre : rien n'est écrit dans le vrai stockage du téléphone ───── */
@@ -120,21 +126,21 @@ function arme(){ var w=W_(), d=w.document, dp=d.getElementById('detailPoster'), 
   try{ var px=cv.getContext('2d').getImageData(Math.round((MID+9)*kx), Math.round((y(MID+9)-13)*kx), 1, 1).data; champ='rgb('+px[0]+','+px[1]+','+px[2]+')'; }catch(_){ champ=cv.getAttribute('data-champ')||'#82AEF8'; }
   var I=INV={ov:ov, fini:false, passes:0, ecoute:[], F:[]};
   function stop(){ if(INV===I) arrete(); }
-  ['pointerdown','touchstart','keydown','wheel'].forEach(function(n){ var f=function(){ stop(); }; d.addEventListener(n, f, true); I.ecoute.push([d,n,f]); });
+  /* v148 : la fiche ne reçoit plus le doigt ; un toucher sur la page REJOUE l'invitation (rien ne se trace, rien ne se valide) */
   function efface(){ g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,ov.width,ov.height); g.setTransform(kx,0,0,kx,0,0); }
   function imageA(t){ /* un passage : 1 200 ms ; le point i est orange de i·Δ à i·Δ + 300 ms (trois à la fois) */
-    var L=300, Dt=(1200-L)/Math.max(1,P.length-1); efface(); g.fillStyle=(w._orangeDepart?w._orangeDepart():'#FB4C0D');
-    for(var i=0;i<P.length;i++){ if(t>=i*Dt && t<i*Dt+L){ g.beginPath(); g.arc(P[i], y(P[i]), rp+0.35, 0, 6.2832); g.fill(); } }
-    return t<1200; }
+    var L=380, Dt=(1400-L)/Math.max(1,P.length-1); efface(); g.fillStyle=(w._orangeDepart?w._orangeDepart():'#FB4C0D');
+    for(var i=0;i<P.length;i++){ if(t>=i*Dt && t<i*Dt+L){ var u=(t-i*Dt)/L, gr=1+0.5*Math.sin(Math.PI*u); g.beginPath(); g.arc(P[i], y(P[i]), rp*gr+0.35, 0, 6.2832); g.fill(); } }
+    return t<1400; }
   function imageB(t){ /* aller 450 ms, pause 120, retour 450 : courbe douce, sans rebond */
-    var dd=(t<450)?D_B*io(t/450):(t<570?D_B:D_B*(1-io((t-570)/450))); efface();
-    if(t>=1020) return false;
+    var dd=(t<600)?D_B*io(t/600):(t<850?D_B:D_B*(1-io((t-850)/500))); efface();
+    if(t>=1350) return false;
     var x0=MID-26, x1=MID+D_B+24, y0=999, y1=-999; for(var x=x0;x<=x1;x+=1){ var v=y(x); if(v<y0) y0=v; if(v>y1) y1=v; } y0-=16; y1+=16;
     g.save(); g.beginPath(); g.rect(x0, y0, x1-x0, y1-y0); g.clip();
     g.fillStyle=champ; g.fillRect(x0, y0, x1-x0, y1-y0);                                   /* le champ, au-dessus de l'onde */
     g.beginPath(); g.moveTo(x0, y(x0)); for(var x2=x0+1;x2<=x1;x2+=1) g.lineTo(x2, y(x2)); g.lineTo(x1, y1+2); g.lineTo(x0, y1+2); g.closePath(); g.fillStyle=corps; g.fill();   /* le corps, sous elle */
     g.strokeStyle=col; g.lineWidth=10; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); w._onde.chemin(g, y, x0-12, MID+dd); g.stroke();   /* la moitié tracée, jusqu'au chevron */
-    g.fillStyle=col; for(var i=0;i<P.length;i++){ if(P[i]-rp<x1){ g.beginPath(); g.arc(P[i], y(P[i]), rp, 0, 6.2832); g.fill(); } }
+    g.fillStyle=col; for(var i=0;i<P.length;i++){ if(P[i]-rp<x1 && P[i]>MID+dd+8){ g.beginPath(); g.arc(P[i], y(P[i]), rp, 0, 6.2832); g.fill(); } }
     w._onde.chevron(g, y, MID+dd, col, 10, true);
     g.restore(); return true; }
   function passe(){ if(I.fini) return; I.passes++; var t0=performance.now(), der=t0;
@@ -152,13 +158,15 @@ function mesure(I){ try{ var s20=0, s33=0, pire=0; I.F.slice(1).forEach(function
 /* ───── la page ───── */
 function boutons(){ [].forEach.call(document.querySelectorAll('#haut button[data-v]'), function(b){ b.classList.toggle('on', b.getAttribute('data-v')===E.v); });
   document.getElementById('bNat').textContent=(E.nat==='promi')?'Promi':'Chiche'; document.getElementById('bTh').textContent=(E.th==='clair')?'Clair':'Sombre';
-  document.getElementById('bLent').textContent=(E.lent>1)?'×¼':'×1'; document.getElementById('bLent').classList.toggle('on', E.lent>1); }
+  document.getElementById('bLent').textContent=(E.lent>1)?'×¼':'×1'; document.getElementById('bLent').classList.toggle('on', E.lent>1);
+  document.getElementById('etiqTx').textContent=(E.v==='A')?'A · les points s\u2019allument':'B · la flèche avance'; }
 [].forEach.call(document.querySelectorAll('#haut button[data-v]'), function(b){ b.addEventListener('click', function(){ E.v=b.getAttribute('data-v'); document.getElementById('notes').classList.remove('vu'); boutons(); ouvre(); }); });
 document.getElementById('bNat').addEventListener('click', function(){ E.nat=(E.nat==='promi')?'chiche':'promi'; boutons(); ouvre(); });
 document.getElementById('bTh').addEventListener('click', function(){ E.th=(E.th==='clair')?'sombre':'clair'; boutons(); construit(); });
 document.getElementById('bLent').addEventListener('click', function(){ E.lent=(E.lent>1)?1:4; boutons(); ouvre(); });
 document.getElementById('bRe').addEventListener('click', function(){ document.getElementById('notes').classList.remove('vu'); ouvre(); });
 document.getElementById('bNotes').addEventListener('click', function(){ document.getElementById('notes').classList.toggle('vu'); });
+document.getElementById('cadre').addEventListener('pointerdown', function(){ try{ arme(); }catch(_){ } });
 /* pour un banc */
 window._invite={etat:function(){ return INV?{passes:INV.passes, fini:INV.fini}:null; }, ouvre:ouvre, v:function(v){ E.v=v; boutons(); }, cadre:function(){ return ifr; }, regle:{ATTENTE:ATTENTE, ECART:ECART, PASSES:PASSES, D_B:D_B}};
 boutons(); construit();

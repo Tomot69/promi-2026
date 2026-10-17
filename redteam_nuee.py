@@ -217,7 +217,9 @@ PEINT = """(a)=>{
   for(let x=20;x<W-20;x+=4){ for(let d=-5;d<=5;d++){ const p=lire(x,y(x)+d); if(!p) continue;
     /* ⚑ REPRIS LE 21 SEPT. (§7) : v7, 20 sept. — le brun encre #43291C prend le rôle d'encre sur
        le lilas (NATTRAIT.nuee). Version d'avant : sauvegardes/redteam_nuee-avant-onboarding.py */
-    if(Math.abs(p[0]-0x43)+Math.abs(p[1]-0x29)+Math.abs(p[2]-0x1C)<40){ trait++; break; } } }
+    /* ⚑ v148 — REPRIS (§7) au niveau de C-140 (v147, Tom : « le trait se détache de chacun des deux fonds ») : le trait d'un Cercle prend la
+       teinte la plus sombre de sa nature, #0A0415 (NATTRAIT.nuee ; #43291C avant). Version d'avant : sauvegardes/redteam_nuee-avant-v148.py */
+    if(Math.abs(p[0]-0x0A)+Math.abs(p[1]-0x04)+Math.abs(p[2]-0x15)<40){ trait++; break; } } }
   return {champ:champ, matiere:matiere, vide:vide, sansMatiere:sansMatiere, trait:trait,
           hautChamp:lire(20,20)};}"""
 
@@ -347,6 +349,14 @@ def reference_peaufiner(b):
     for sel in ('#npDesc', '#npMemb', '#npFich', '#npComm'):
         if sel in ref:
             ref[sel] = dict(ref[sel], y=ref[sel]['y'] + 134)
+    # ⚑ v148 — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (§7) : C-116 (v147, Tom) « dans Peaufiner, COMMENTAIRES est tout en haut, juste après le
+    #    trait ». COMMENTAIRES prend la place de la première carte (DESCRIPTION) ; les trois autres descendent de la carte des commentaires et de
+    #    son écart (104 + 16 = 120). EN DUR, au pixel. Version d'avant : sauvegardes/redteam_nuee-avant-v148.py
+    if '#npDesc' in ref and '#npComm' in ref:
+        y0 = ref['#npDesc']['y']
+        for sel in ('#npDesc', '#npMemb', '#npFich'):
+            if sel in ref: ref[sel] = dict(ref[sel], y=ref[sel]['y'] + 120)
+        ref['#npComm'] = dict(ref['#npComm'], y=y0)
     # ⚑ CONTRÔLE MIS À JOUR AU NIVEAU DE LA DÉCISION (§7) — 13 septembre 2026. Tom : « donne-lui [à la Nuée] son bloc du
     #    Cercle, avec la rangée LA COULEUR ». Le bloc (384) se pose en page 2 sous « Planter » (46 + 68 + 16 = 130), et DISSOUDRE
     #    passe dessous à l'écart de la fiche entre le bloc et SUPPRIMER (104) : 130 + 384 + 104 = 618, soit +494 sur le cadre 86.

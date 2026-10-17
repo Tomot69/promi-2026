@@ -16,6 +16,8 @@ Le parcours entier au doigt (CDP), stockage vierge, 390 × 844, en CLAIR puis en
         sur plusieurs images) ; la Toile d'avant se retire sans saut (sur l'image : aucune image ne change plus de 40 % de l'écran) ;
   C-126 la page du premier trait, en clair : « trace pour planter » en #00341A ; le départ de la flèche en orange (des pixels #FB4C0D au départ du trait).
 Preuve (§7) : `--fichier=zz-avant-v146.html` — il rougit (11.1, 11.4, 11.5, C-126).
+⚑ v148 (Tom, C-124 §8 et §9) — remis au niveau des décisions : le texte à 25 pt (−7 %) ; « Promi planté ! » SEUL au départ, plus bas ; un toucher par
+paragraphe (trois), le bloc remonte à chaque pas ; à la fin son haut ≤ 90 et 12 pt de fond sous lui. Original : sauvegardes/redteam_onboarding_texte-avant-v148.py.
 """
 import io, sys, re
 sys.path.insert(0, '.')
@@ -67,7 +69,9 @@ def parcours(b, th):
     prenom(pg, cdp); parole(pg); s = pg.evaluate(ST, ['onbDit', 'onbPh', 'onbSous']); ph = s.get('onbPh', {}).get('fs', 0)
     for i, nom in (('onbDit', '« Prénom, donc. »'), ('onbSous', '« Petite ou grande promesse… »')):
         e = s.get(i); r = e['fs'] / ph if e and ph else 0
-        juge('[%s] 11.1 · %s : %.0f %% de la phrase de promesse (75 à 85 %%), la phrase reste à 35 px' % (T, nom, r * 100), 0.75 <= r <= 0.85 and ph == 35, '%s px / %s px' % (e and e['fs'], ph))
+        # ⚑ v148 (Tom, C-124 §8) — CONTRAT RÉÉCRIT : « les textes Atkinson de la page du premier Promi réduits de 6 à 8 % » : 25 pt (27 en v147, 75–85 % de la
+        #   phrase en v146) ; la phrase de promesse reste à 35. Original : sauvegardes/redteam_onboarding_texte-avant-v148.py
+        juge('[%s] 11.1 · %s : 25 pt (v148 : −7 %%, %.0f %% de la phrase), la phrase reste à 35 px' % (T, nom, r * 100), e and abs(e['fs'] - 25) <= 0.2 and ph == 35, '%s px / %s px' % (e and e['fs'], ph))
         juge('[%s] 11.1 · %s : %s' % (T, nom, 'en violet #291547' if th == 'light' else 'la crème d\'aujourd\'hui'), e and pres(rgb(e['col']), VIOLET if th == 'light' else CREME), e and e['col'])
     if s.get('onbDit') and s.get('onbPh'):
         bd = s['onbDit']['b']; juge('[%s] 11.1 · « Prénom, donc. » ne touche pas la phrase (au moins 8 pt d\'air)' % T, bd[1] + bd[3] + 8 <= s['onbPh']['b'][1], 'bas %.0f · phrase à %.0f' % (bd[1] + bd[3], s['onbPh']['b'][1]))
@@ -101,7 +105,7 @@ def parcours(b, th):
     if not f0: juge('[%s] le message de fin existe' % T, False); ctx.close(); return
     juge('[%s] 11.4 · le titre est « Promi planté ! » (espace insécable avant « ! »)' % T, (f0['titre'] or '') == 'Promi planté !' or (f0['titre'] or '') == 'Promi planté !', repr(f0['titre']))
     juge('[%s] 11.4 · « Promi » en PromiLate, %s' % (T, '#0E78F2' if th == 'light' else 'le bleu de la nature'), f0['pm'] and f0['pm']['f'] == 'PromiLate' and (pres(rgb(f0['pm']['col']), BLEU) if th == 'light' else not pres(rgb(f0['pm']['col']), BLEU, 40)), f0['pm'])
-    juge('[%s] 11.4 · avant le toucher : le titre et la phrase de ton, RIEN d\'autre' % T, f0['tonVu'] and not any(l['vu'] for l in f0['lignes']), '%d ligne(s) visibles' % sum(1 for l in f0['lignes'] if l['vu']))
+    juge('[%s] 11.4 · ⚑ v148 (C-124 §9.1) : avant le toucher, le titre SEUL — ni la phrase de ton, ni aucune ligne' % T, not f0['tonVu'] and not any(l['vu'] for l in f0['lignes']), 'ton %s · %d ligne(s) visibles' % (f0['tonVu'], sum(1 for l in f0['lignes'] if l['vu'])))
     juge('[%s] 11.2 · plus gros : titre ≥ 40 px, phrase de ton ≥ 19 px, lignes ≥ 16,5 px (35 · 16 · 16 avant)' % T, f0['titreFs'] >= 40 * 0.8 - 0.1 and f0['tonFs'] >= 19 and min([l['fs'] for l in f0['lignes']] or [0]) >= 16.5,
          'titre %.1f · ton %.1f · lignes %.1f (échelle du bloc)' % (f0['titreFs'], f0['tonFs'], min([l['fs'] for l in f0['lignes']] or [0])))
     if th == 'light':
@@ -115,14 +119,24 @@ def parcours(b, th):
     nouveau = re.sub(r'\s+', ' ', AVANT_FIN.replace('C’est planté.', 'Promi planté !')).replace('. ', '.').replace(' ', '')
     lu = re.sub(r'\s+', ' ', f0['texte'].replace(' ', ' ')).replace('. ', '.').replace(' ', '')
     juge('[%s] 11.3 · aucun mot de Tom changé hors 11.4 (le texte entier, espaces ramenés)' % T, lu == nouveau, '' if lu == nouveau else 'lu : %s' % f0['texte'][:160])
-    juge('[%s] 11.5 · le bloc remonte d\'au moins 60 pt (son haut ≤ 90 ; 150 avant)' % T, f0['haut'] <= 90.5, 'haut %.0f' % f0['haut'])
-    d = dev(pg); toucher(cdp, pg, d[0] + 195 * d[2], d[1] + 260 * d[2]); pg.wait_for_timeout(6500); f1 = pg.evaluate(FIN); im = image(pg); px = im.load(); ban = 0; tot = 0
+    juge('[%s] 11.5 · ⚑ v148 (C-124 §9.1) : au départ, le titre seul est PLUS BAS qu\'en v147 (son haut > 90)' % T, f0['haut'] > 90.5, 'haut %.0f' % f0['haut'])
+    d = dev(pg); vus = []
+    for k_ in range(3):   # ⚑ v148 (C-124 §9.2–9.4) : un toucher, un paragraphe
+        toucher(cdp, pg, d[0] + 195 * d[2], d[1] + 120 * d[2])
+        for _ in range(80):
+            pg.wait_for_timeout(150); e_ = pg.evaluate("()=>(window._onbFinPas&&_onbFinPas())||{pas:0,enCours:true}")
+            if e_['pas'] >= k_ + 1 and not e_['enCours']: break
+        pg.wait_for_timeout(400); fk = pg.evaluate(FIN); vus.append((fk['tonVu'], sum(1 for l in fk['lignes'] if l['vu']), round(fk['haut'])))
+    juge('[%s] 11.4 · ⚑ v148 (C-124 §9.2) : chaque toucher fait paraître UN paragraphe — la phrase de ton, puis Primo · Deuxio · Tertio, puis la fin ; le bloc remonte à chaque pas' % T,
+         len(vus) == 3 and vus[0][0] and vus[0][1] == 0 and 0 < vus[1][1] < vus[2][1] and vus[0][2] >= vus[1][2] >= vus[2][2], 'après chaque toucher (ton, lignes, haut) : %s' % vus)
+    f1 = pg.evaluate(FIN); im = image(pg); px = im.load(); ban = 0; tot = 0
+    juge('[%s] 11.5 · à la fin, le bloc a remonté (son haut ≤ 90)' % T, f1['haut'] <= 90.5, 'haut %.0f' % f1['haut'])
     for y in range(int(f1['bas']) + 2, int(f1['bas']) + 14):
         for x in range(12, 378, 3):
             c = px[int(d[0] + x * d[2]), int(d[1] + y * d[2])]; tot += 1
             fond = (223, 202, 164) if th == 'light' else (5, 3, 2)
             if sum(abs(c[i] - fond[i]) for i in range(3)) > 30: ban += 1
-    juge('[%s] 11.4 · au toucher, le reste paraît (toutes les lignes)' % T, all(l['vu'] for l in f1['lignes']), '%d sur %d' % (sum(1 for l in f1['lignes'] if l['vu']), len(f1['lignes'])))
+    juge('[%s] 11.4 · après trois touchers, tout est là (toutes les lignes)' % T, all(l['vu'] for l in f1['lignes']), '%d sur %d' % (sum(1 for l in f1['lignes'] if l['vu']), len(f1['lignes'])))
     juge('[%s] 11.5 · le bloc passe AU-DESSUS des dalles : sur l\'image, 12 pt sous lui ne portent que le fond de la Toile' % T, tot and ban <= tot * 0.02, '%d pixels hors du fond sur %d (bas du bloc %.0f)' % (ban, tot, f1['bas']))
     c = pg.evaluate(CONT); juge('[%s] aucun contour ni ombre sur aucune lettre de l\'onboarding' % T, not c, c)
     im.save('planche-v146/onboarding-fin-%s.png' % T)

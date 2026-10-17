@@ -249,7 +249,9 @@ def main():
             #   le « tenu » plein #00341A (un état a UNE valeur, 22 sept.). Valeurs décidées, EN DUR (§7).
             #   Version d'avant : sauvegardes/redteam_formes-avant-v41.py
             COL = {'TENUE': '#0B4A2A', 'TENU À DEUX': '#0B4A2A', 'RELEVÉ': '#00341A',
-                   'À TENIR': '#DD4D23', 'EN COURS': '#022140', 'LANCÉ': '#3D0F23'}
+                   'À TENIR': '#DD4D23', 'EN COURS': '#022140', 'LANCÉ': '#130208'}
+            # ⚑ v148 — remis au niveau de C-140 (v147, Tom : « le trait se détache de chacun des deux fonds ») : le trait posé sur un champ prend la
+            #   teinte LA PLUS SOMBRE de sa nature (`NATTRAIT`) — le Chiche #130208 (#3D0F23 avant). Original : sauvegardes/redteam_formes-avant-v148.py
             for c in cartes[:5]:
                 col = COL.get(c['etat'])
                 if not col:

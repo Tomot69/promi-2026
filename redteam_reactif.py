@@ -17,7 +17,7 @@ T='parole du juge'; CERCLE='potager'
 # ⚑ v131 (Tom, 5 oct. 2026, C-052) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_reactif-avant-v131.py). La règle d'avant (Q187) : trois
 #   dalles, six dès cinq tenues, les plus récentes d'abord. La décision qui la remplace : « la liste montre TOUTES les paroles tenues, dans
 #   l'ordre chronologique, l'Aura défilant. Plus de limite à 3 ou 6. » La parole qu'on vient de tenir est donc la DERNIÈRE.
-ANIME_MAX = 3000                                       # l'amande (1 000 ms, v124) puis « juste après » : la fiche couvre l'Aura ; borne en dur
+ANIME_MAX = 6000                                       # ⚑ v148 : un DÉLAI d'attente, pas un seuil — l'instant « tenir » dure 2,7 s depuis C-111 (v144 ; 1 s en v124) ; borne en dur
 LIRE=r"""()=>{ const moi=p=>p&&!p.draft&&!p.req&&(!p.from||p.from==='moi');
   const sc=(id)=>{const e=document.getElementById(id); return !!e&&(e.classList.contains('show')||e.classList.contains('in'));};
   let ordre=[]; try{ ordre=JSON.parse(localStorage.getItem('promi_pelote_ordre')||'[]'); }catch(e){}

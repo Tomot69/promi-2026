@@ -64,8 +64,10 @@ with sync_playwright() as p:
         juge('[%s] le Studio est ouvert depuis l\'accueil, en gratuit, sur un monde de Ma Parole ! (Toile floutée)' % th, 'world-locked' in z['cls'] and 'blur' in (z['flouToile'] or ''), z['flouToile'])
         if z['panneau'] and z['achat']:
             cap = ('planche-v142/mur-%s-%s-toile.png' % (F.replace('.html', ''), th)) if '--planche' in sys.argv else None
-            lis = vingt('[%s] la Toile floutée' % th, pg, [0, 108, 390, z['achat'][1] - 6], lambda e: e['cerne'] >= 8.5 and not e['nom'], cap)
-            juge('[%s] la Toile floutée : la phrase reste lisible (cernée du fond du mode, le nom du monde effacé)' % th, lis)
+            # ⚑ v148 — CONTRAT RÉÉCRIT au niveau de C-130 (v146, Tom : « JAMAIS de contour ni de liseré autour des lettres, nulle part ») : la phrase
+            #   n'est plus cernée (le trait de 9 px de v142 est retiré, Q510) ; le nom du monde s'efface toujours. Original : sauvegardes/redteam_studio_tom-avant-v148.py
+            lis = vingt('[%s] la Toile floutée' % th, pg, [0, 108, 390, z['achat'][1] - 6], lambda e: e['cerne'] < 0.5 and not e['nom'], cap)
+            juge('[%s] la Toile floutée : la phrase, sans aucun contour (C-130), le nom du monde effacé' % th, lis)
             cap = ('planche-v142/mur-%s-%s-panneau.png' % (F.replace('.html', ''), th)) if '--planche' in sys.argv else None
             lis = vingt('[%s] le panneau du bas' % th, pg, z['panneau'], lambda e: not e['bandes'], cap)
             juge('[%s] le panneau du bas : la phrase reste lisible (seule sur le panneau)' % th, lis)

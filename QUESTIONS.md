@@ -8703,3 +8703,34 @@ Ce lot-ci a pris le numéro v124. Le dossier de portage (dix documents, lecture 
   change (`#00341A`). Proposition : garder.
 - **Q525 — À SAVOIR (C-118, trouvé par la série)** : la nappe de « tenir » porte la ligne « Parole tenue. » peinte dedans ; elle était marquée invisible pour
   VoiceOver et le nœud texte était caché : VoiceOver ne la lisait plus depuis v146. La nappe a maintenant un libellé (« Parole tenue. » / « Défi relevé. »).
+
+### v148 (16 oct. 2026) — clôture de la série
+
+**Tranchées par ce lot** : **Q516** (la phrase du guide : 29 pt en gras, rôle à elle — C-145) · **Q517** (l'onboarding en Atkinson, réduit de 7 % — C-124 §8) ·
+**Q518** pour « monde » (`#8363AA` en clair, `#C9A8F5` en sombre — C-145 ; les lettres de « Studio » restent aux tons d'Ingénu, rien n'est dit : voir Q533) ·
+**Q519** (la zone du guide : « flou ok », C-094 validé) · **Q522** (le menu du + : « parfait », C-142 validé) · **Q521** (les transitions : remplacées par les
+flaques, C-141 §10). **Restent ouvertes : Q513, Q514** (le contraste du trait — elles valent maintenant aussi pour les cartes, C-147).
+
+- **Q526 — À SAVOIR (§1, C-143)** : les deux ronds orange venaient du canevas du geste ; sur la fiche ils étaient « cachés » par une opacité nulle en
+  `!important`, que l'animation de pulsation battait DANS SAFARI seulement (Chromium les cachait) — c'est pour cela qu'aucun juge ne les voyait. Ils ne sont
+  plus peints du tout. Le juge (`redteam_ronds`) passe par WebKit.
+- **Q527 — À VALIDER (§7, C-149)** : « garder de côté » inactif = non souligné, sa teinte rapprochée de 30 % de celle du corps (aucune transparence), il ne fait
+  rien au toucher. Sur le cobalt d'un Promi il passe de `#F4EEFF` (actif) à `#AFCBFB` : 2,6:1 — lisible, mais en retrait, c'est voulu. Proposition : garder.
+- **Q528 — À TRANCHER (§6, C-147)** : la carte d'une parole TENUE prend la terre `#2B1020` de la fiche tenue ; son trait vert y fait 1,68:1 (ΔE 51 : il se voit,
+  Q216 juge un trait en ΔE). C'est la même construction que la fiche tenue, qui a ce contraste depuis v135 (le filet retiré). Proposition : garder.
+- **Q529 — À VALIDER (§9, C-124)** : « Promi planté ! » demande maintenant QUATRE touchers (les trois paragraphes, puis le compte) au lieu de deux. Les quatre
+  secondes de lecture du message (v21) tiennent toujours avant le compte. Proposition : garder.
+- **Q530 — À SAVOIR (§12, C-146)** : le rappel est la phrase du Studio elle-même, écrite de nouveau par le tracé (tes mots, aucun texte neuf). Si tu veux une
+  autre phrase pour le rappel, écris-la. Et : l'app quittée à l'étape du Studio, le guide reprend au lancement suivant (« tant que le Studio n'a jamais été ouvert »).
+- **Q531 — À SAVOIR (§10, C-141)** : l'arrivée sur le prénom n'est plus « cellule par cellule » (v147) : le voile du fond s'ouvre en flaques, comme le reste.
+- **Q532 — À SAVOIR (§11, C-145)** : « les deux phrases en gras » : la phrase du + aussi (29 pt, gras). Le tracé du gras suit les chemins médians de
+  l'Atkinson 500 : vu à l'image dans les deux thèmes, aucune lettre n'est incomplète à la fin.
+- **Q533 — À TRANCHER (§11)** : en clair, les lettres de « Studio » aux tons d'Ingénu restent pâles sur l'accueil flouté (le D crème dalle, Q518). Proposition :
+  en clair seulement, chaque lettre garde sa teinte et s'assombrit jusqu'à 3:1 (bleu `#4971B6`, rose `#9E5F77`, lilas `#8363AA`, crème `#7C7158`).
+- **Q534 — À SAVOIR (C-094, juge)** : autour du +, les lobes de la zone nette font 7,8 à 8,3 % de son rayon selon le tirage ; le juge demande 8 % (Q519) et
+  prend 7,8 % une passe sur deux thèmes. La zone est validée (« flou ok ») : rien n'est retouché. Proposition : le seuil du juge à 7,5 % autour du + seulement.
+- **Q535 — À VALIDER (§2, C-139)** : la page des variantes montre l'invitation seule, en boucle (un toucher la rejoue) : A les points s'allument, B la flèche
+  avance de 44 pt. Rien dans l'app tant que tu n'as pas choisi.
+- **Q536 — À TRANCHER (trouvé en composant la capture du ruban)** : pendant qu'on trace, le bas de la fiche (les Noyaux, la phrase, l'état) se FLOUTE de 7 pt et
+  passe à demi transparent en 0,3 s (`#detailPoster.tracant #dpDetails`, une règle d'août, la même en v147). La règle de tête (C-130) refuse le flou et le
+  fondu. Rien n'est changé dans ce lot (tu ne l'as pas demandé). Proposition : le retirer — le bas de la fiche reste net pendant le tracé.

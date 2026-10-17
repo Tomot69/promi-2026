@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 299 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 442 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 302 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 443 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -123,7 +123,7 @@ Source : `app.html`. 299 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer«✕ FERMER»` | écouteur | 321, 56 | 91 × 13 | oui |  |
 | Peaufiner | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner | `#dCommentInput` | natif | 195, 249 | 292 × 23 | oui |  |
-| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTmercredi 28un joure»` | écouteur | 195, 356 | 342 × 64 | oui |  |
+| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTjeudi 29un jouren l»` | écouteur | 195, 356 | 342 × 64 | oui |  |
 | Peaufiner | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 430 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«DANS UN CERCLEaucuneAucu»` | écouteur | 195, 436 | 342 × 64 | oui |  |
@@ -139,7 +139,7 @@ Source : `app.html`. 299 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Chiche | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVECMarionMMarionNNicoRR»` | écouteur | 195, 422 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 430 | 342 × 64 | NON | mur flouté (pointer-events:none) |
-| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTlundi 19un jouren l»` | écouteur | 195, 502 | 342 × 64 | oui |  |
+| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTmardi 20un jouren l»` | écouteur | 195, 502 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg.v16-danger«SUPPRIMER CE CHICHE»` | écouteur | 195, 598 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `#dNote` | natif | 195, 626 | 292 × 56 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg.s2-vis2«PIÈCES JOINTES0 fichierv»` | écouteur | 195, 730 | 342 × 92 | oui |  |
@@ -165,7 +165,7 @@ Source : `app.html`. 299 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 645 | 78 × 44 | oui |  |
 | Peaufiner gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 645 | 78 × 44 | oui |  |
 | Peaufiner gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 645 | 78 × 44 | oui |  |
-| Peaufiner gardé de côté | `div#createSheet.sheet.trame>div.pp-garder«garder de côté»` | écouteur | 78, 716 | 107 × 16 | oui |  |
+| Peaufiner gardé de côté | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 78, 716 | 107 × 16 | oui |  |
 | Peaufiner gardé de côté | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Politique | `div#legalScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | écouteur | 296, 70 | 84 × 18 | oui |  |
 | Réglages | `div#settingsScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
@@ -249,7 +249,7 @@ Source : `app.html`. 299 éléments interactifs relevés sur 36 écrans (mode cl
 | gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 645 | 78 × 44 | oui |  |
 | gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 645 | 78 × 44 | oui |  |
 | gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 645 | 78 × 44 | oui |  |
-| gardé de côté | `div#createSheet.sheet.trame>div.pp-garder«garder de côté»` | écouteur | 78, 716 | 107 × 16 | oui |  |
+| gardé de côté | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 78, 716 | 107 × 16 | oui |  |
 | gardé de côté | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | l'instant après | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
 | l'instant après | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
@@ -284,10 +284,11 @@ Source : `app.html`. 299 éléments interactifs relevés sur 36 écrans (mode cl
 | page + | `#planterZone` | écouteur | 195, 280 | 390 × 118 | oui |  |
 | page + | `div#csPhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-b«Je me promets»` | on… | 171, 420 | 293 × 60 | oui |  |
 | page + | `div#csPhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«me coucherle jour même»` | on… | 187, 492 | 211 × 57 | oui |  |
-| page + | `div#csPinceauRail.pc-rail>button.pc-t.on«Plein»` | natif | 63, 707 | 78 × 44 | oui |  |
-| page + | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 707 | 78 × 44 | oui |  |
-| page + | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 707 | 78 × 44 | oui |  |
-| page + | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 707 | 78 × 44 | oui |  |
+| page + | `div#csPinceauRail.pc-rail>button.pc-t.on«Plein»` | natif | 63, 650 | 78 × 44 | oui |  |
+| page + | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 650 | 78 × 44 | oui |  |
+| page + | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 650 | 78 × 44 | oui |  |
+| page + | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 650 | 78 × 44 | oui |  |
+| page + | `div#createSheet.sheet.trame>div.pp-garder«garder de côté»` | natif | 78, 716 | 107 × 16 | oui |  |
 | page + | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | page + Chiche | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |
 | page + Chiche | `div#createSheet.sheet.trame>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 151 | 34 × 34 | oui |  |
@@ -296,20 +297,22 @@ Source : `app.html`. 299 éléments interactifs relevés sur 36 écrans (mode cl
 | page + Chiche | `div#csPhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-b.ph-b-fixe«Chiche»` | on… | 82, 416 | 116 × 52 | oui |  |
 | page + Chiche | `div#csPhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«dire oui pourune fois»` | on… | 170, 480 | 194 × 49 | oui |  |
 | page + Chiche | `div#csPhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«qui en est ?»` | on… | 188, 608 | 181 × 49 | oui |  |
-| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t.on«Plein»` | natif | 63, 727 | 78 × 44 | oui |  |
-| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 727 | 78 × 44 | oui |  |
-| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 727 | 78 × 44 | oui |  |
-| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 727 | 78 × 44 | oui |  |
+| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t.on«Plein»` | natif | 63, 670 | 78 × 44 | oui |  |
+| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 670 | 78 × 44 | oui |  |
+| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 670 | 78 × 44 | oui |  |
+| page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 670 | 78 × 44 | oui |  |
+| page + Chiche | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 78, 716 | 107 × 16 | oui |  |
 | page + Chiche | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | page + Nuée | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |
 | page + Nuée | `div#createSheet.sheet.trame>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 183 | 34 × 34 | oui |  |
 | page + Nuée | `#planterZoneN` | écouteur | 195, 248 | 390 × 118 | oui |  |
 | page + Nuée | `div#nueePhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«Week-endà Marseille»` | on… | 238, 455 | 184 × 54 | oui |  |
 | page + Nuée | `div#nueePhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«tout le monde»` | on… | 223, 593 | 231 × 54 | oui |  |
-| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t.on«Plein»` | natif | 63, 690 | 78 × 44 | oui |  |
-| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 690 | 78 × 44 | oui |  |
-| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 690 | 78 × 44 | oui |  |
-| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 690 | 78 × 44 | oui |  |
+| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t.on«Plein»` | natif | 63, 664 | 78 × 44 | oui |  |
+| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 664 | 78 × 44 | oui |  |
+| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 664 | 78 × 44 | oui |  |
+| page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 664 | 78 × 44 | oui |  |
+| page + Nuée | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 78, 716 | 107 × 16 | oui |  |
 | page + Nuée | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | personne | `div#personSheet.sheet.tuto-fond>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
 | personne | `div#psCartes.ps-cartes>div.s4-grille>div.s4-carte«Promià Rachelfaire les c»` | on… | 77, 462 | 106 × 133 | oui |  |

@@ -189,10 +189,12 @@ def contraste(pg):
 
 def revele(pg, cdp, x, y):
     """v146 (11.4) : le premier toucher fait venir le reste du message ; on attend qu'il soit là"""
-    toucher(cdp, x, y)
-    for _ in range(60):
+    for _f in range(5):   # ⚑ v148 (C-124 §9) : « Promi planté ! » pas à pas — un toucher par paragraphe (trois), puis le compte
         if pg.evaluate("()=>{ const v=document.getElementById('onbV'); return !v || v.getAttribute('data-onb-reste')==='fini' || !document.getElementById('onbReste'); }"): break
-        pg.wait_for_timeout(150)
+        toucher(cdp, x, y)
+        for _ in range(80):
+            if pg.evaluate("()=>{ const v=document.getElementById('onbV'); if(!v) return true; const r=v.getAttribute('data-onb-reste'); if(r==='fini'||!document.getElementById('onbReste')) return true; const f=window._onbFinPas&&_onbFinPas(); return !f || (!f.enCours && r!==null && String(f.pas)===r); }"): break
+            pg.wait_for_timeout(150)
     pg.wait_for_timeout(300)
 def toucher(cdp, x, y):
     cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': x, 'y': y}]})
