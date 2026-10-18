@@ -129,6 +129,40 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v150 (18 oct. 2026) — PETIT LOT : LA VAGUE DE CRÉATION EN ORANGE, LE MOT DU TRAIT DES PAGES +, « GARDER DE CÔTÉ » 4 pt PLUS BAS, LA PHRASE DU CHICHE ET DU CERCLE, LA FIN DE L'ONBOARDING, LA FLÈCHE SOMBRE. (Décisions Tom.) Ce bloc CORRIGE v149 (C-154 la couleur, C-149 la cote, C-124 la phrase de fin) et v147 (C-126 en sombre).
+> **Validés par Tom : C-153, C-145, C-155, C-156 ; C-154 sauf la couleur ; le reste de l'onboarding. Q537, Q538, Q541, Q543 : appliquées telles quelles
+> (pas de mot-marque sur « Promi planté ! » ni au compte ; les trois couleurs du clair ; 520 + 320 ms ; rien de changé au contraste).**
+> **⚑ « EN COURS » ET « À TENIR », CE QUE FAIT LE CODE (réponse à Tom, rien n'est changé)** : toute parole plantée entre `status:'encours'` ; elle passe
+> SEULE à `'rate'` (« à tenir ») quand son échéance est dépassée (`due < 0`), au lancement de l'app (`echeancesDepassees`, 3,4 s) ; REPORTER (le Fil)
+> la remet en cours ; tenir la fait tenue ; le sélecteur d'état de la fiche est caché (0 × 0). ⚠ **Le prototype ne recompte pas les jours** (`due` reste
+> celui de la plantation) : hors jeu de démonstration, une parole n'y devient jamais « à tenir » — à porter dans Swift (une date, pas un compte).
+> **⚑ C-154 — LA VAGUE DE CRÉATION (le ruban de la page +) PREND L'ORANGE DE « À TENIR », `#DD4D23`** (Tom : « une parole créée passe à tenir ») ;
+> jamais l'orange d'action `#FB4C0D`. La fiche garde l'amande. Juge : `redteam_ruban` B.
+> **⚑ C-157 — PAGES + SEULEMENT : le mot du trait de la page + d'un Promi (« trace pour planter », « trace ta moitié ») et d'un Chiche (« trace pour
+> lancer ») descend de 7,5 pt et va 3 pt à droite** (aligné sur la queue de la flèche, sans la toucher) ; le Cercle ne bouge pas ; **les fiches sont
+> identiques au pixel à v149**. Juge : **`redteam_pages_plus.py`** (v149 servie à côté, hasard semé).
+> **⚑ C-149 — « GARDER DE CÔTÉ » À 712 pt (708 + 4)** dans les trois pages + ; l'inclinaison (5,5°) est validée.
+> **⚑ C-158 — LA PHRASE DE LA PAGE + D'UN CHICHE REMONTE DE 10 pt ; CELLE D'UN CERCLE SE POSE EXACTEMENT SUR ELLE** (l'encre de la première ligne à
+> la même hauteur, même boîte : −41 pt — un Cercle a par défaut une ligne de moins, ses cotes sont 32 pt plus bas). **Le rail du pinceau ne bouge pas** :
+> il se place comme si ni la phrase (`_ppDyPhrase`) ni « garder de côté » (−4) n'avaient bougé.
+> **⚑ LA BASCULE DES LIGNES (trouvée en composant la capture, corrigée)** : la taille de la phrase dépend du nombre de lignes (34 à quatre, 30 à cinq) et
+> le nombre de lignes de la taille ; pour certaines phrases tirées (« faire le Mont Blanc »), 34 donne cinq lignes et 30 en donne quatre — la passe
+> recommencée basculait encore, et le mot du trait restait à la cote de l'autre composition, sur les points (v149 : 1 ouverture sur 8 ; v150 avant
+> correction : 3 sur 8). Une troisième passe garde la taille et repose tout (`cotes.__fige`). *La règle* : **une mise en page qui dépend d'un résultat
+> qui dépend d'elle se FIGE à la deuxième bascule, elle ne recommence pas.** Juge : `redteam_pages_plus` (dix ouvertures).
+> **⚑ C-124 — « Tout le monde promet. Toi, tu tiens parole. »**, alignée à DROITE, en deux lignes égales (`text-wrap:balance` : « … promet. / Toi, tu
+> tiens parole. ») ; **« La suite t'appartient. » CENTRÉE**. Juge : `redteam_onb_mots`.
+> **⚑ C-126 — EN SOMBRE AUSSI, TOUTE LA FLÈCHE DU PREMIER PROMI (la traîne, l'amorce, la part tracée) EN `#FB4C0D`** ; les points non tracés gardent la
+> couleur du mode. Juge : `redteam_onboarding_texte` (aucun pixel crème au départ du trait, en sombre).
+> ⚠ **`redteam_air` n'est pas refigé** (série complète au prochain lot, v151) : l'air est intact sauf 16 paires resserrées, toutes demandées — le mot du
+> trait vers la phrase (Promi 58 → 50,5 ; Chiche 59 → 41,5 ; **Cercle 58 → 17 pt**) et « garder de côté » vers la barre (58,8 → 54,8) ; 64 paires de v149
+> toujours non retrouvées (C-149 à droite, C-151, dates). Sous la charge du Mac (17 à 1 019, la session ENTRE) : `redteam_couleurs_ref` (1 écart sur
+> « l'instant après », identique sur v149 au banc direct), `redteam_decisions` (le champ du Cercle, 102/102 rejoué seul) et `redteam_joignable` (le
+> Cercle défilé, comme en v149) ont rougi une fois.
+> **Contrats de test remis au niveau** (originaux : `sauvegardes/*-avant-v150.py`) : `redteam_ruban` (B : `#DD4D23`), `redteam_garder` (J : 712),
+> `redteam_onb_mots`, `redteam_onboarding_texte`, `redteam_onboarding`, `redteam_onb_sorties` (la phrase de fin), `redteam_validation` (la durée du
+> haut du ruban jugée au calme seulement).
+
 ### ⚑ v149 (18 oct. 2026) — RETOURS iPHONE DE TOM SUR v148 : LE I QUI CLIGNOTE DANS L'ONBOARDING, LES NATURES EN GRAS, « TOUT LE MONDE PROMET. TOI, TU TIENS. », LES PHRASES DU GUIDE PLUS HAUT, LA VAGUE DE CRÉATION À LA COULEUR DE L'ÉTAT, L'ANIMATION DANS L'IMAGE QUI SUIT LE LEVER, LA VALIDATION À PLUSIEURS, « GARDER DE CÔTÉ » À DROITE. (Décisions Tom.) Ce bloc CORRIGE v148 (C-149 « garder de côté », C-145 la place des phrases, C-148 le ruban à la validation, C-124 les natures) et v147 (C-118 le départ du rideau).
 > **Validés par Tom : C-141, C-143, C-144, C-146, C-147, C-148. C-139 clos sans invitation animée (le chevron orange suffit). Tranchées : Q513 (le trait du Chiche
 > et du Cercle à 2,5:1, fonds inchangés — `redteam_contraste_trait`, `SEUIL_NAT`), Q533 (en clair, les lettres de « Studio » à la teinte d'Ingénu assombrie
@@ -3027,6 +3061,8 @@ python3 redteam_validation.py  # 25 — v149 (C-155, C-156) : du lever à la fic
 python3 redteam_onb_mots.py    # 44 — v149 (C-153, C-124, C-145) : le I qui clignote (même code que l'accueil), Promi/Chiche/Cercle (couleur, gras) à chaque page, la ligne
                                #   « Tout le monde promet. Toi, tu tiens. », la phrase du guide sans recouvrement — clair et sombre, vrai parcours. 15/42 sur v148.
 python3 redteam_titres_cartes.py # 10 — v149 (C-151) : un titre de deux lignes d'une carte d'Index n'est ni rogné ni collé à l'état, le plus petit pas qui tient. 6/10 sur v148.
+python3 redteam_pages_plus.py  # 35 — v150 (C-157, C-158, C-149) : les pages + contre v149 servie à côté (hasard semé) — le mot du trait, la phrase, le rail,
+                               #   « garder de côté » ; les fiches identiques au pixel ; la bascule des lignes sur dix ouvertures. Rouge sur v149.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;

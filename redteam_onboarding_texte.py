@@ -15,6 +15,7 @@ Le parcours entier au doigt (CDP), stockage vierge, 390 × 844, en CLAIR puis en
   C-123 à « Promi planté ! », les voisines NAISSENT une à une (relevé du moteur image par image : chacune à son heure, ≥ 100 ms d'écart, chacune pousse
         sur plusieurs images) ; la Toile d'avant se retire sans saut (sur l'image : aucune image ne change plus de 40 % de l'écran) ;
   C-126 la page du premier trait, en clair : « trace pour planter » en #00341A ; le départ de la flèche en orange (des pixels #FB4C0D au départ du trait).
+        ⚑ v150 : en sombre aussi, toute la flèche (la traîne comprise) en orange — aucun pixel crème au départ du trait (original : sauvegardes/*-avant-v150.py).
 Preuve (§7) : `--fichier=zz-avant-v146.html` — il rougit (11.1, 11.4, 11.5, C-126).
 ⚑ v148 (Tom, C-124 §8 et §9) — remis au niveau des décisions : le texte à 25 pt (−7 %) ; « Promi planté ! » SEUL au départ, plus bas ; un toucher par
 paragraphe (trois), le bloc remonte à chaque pas ; à la fin son haut ≤ 90 et 12 pt de fond sous lui. Original : sauvegardes/redteam_onboarding_texte-avant-v148.py.
@@ -29,7 +30,7 @@ F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')
 URL = 'http://127.0.0.1:8752/' + F
 VIOLET, BLEU, CREME = (41, 21, 71), (14, 120, 242), (247, 240, 222)
 # ⚑ v149 (Tom, C-124) : la ligne de fin devient « Tout le monde promet. Toi, tu tiens. » ; la couleur des natures (11.2) suit la règle de v149 (original : sauvegardes/redteam_onboarding_texte-avant-v149.py)
-AVANT_FIN = 'C’est planté.Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Tout le monde promet. Toi, tu tiens. La suite t’appartient.'
+AVANT_FIN = 'C’est planté.Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Tout le monde promet. Toi, tu tiens parole. La suite t’appartient.'
 res = []
 def juge(nom, c, d=''):
     res.append(bool(c)); print('  %s %-110s %s' % ('✅' if c else '❌', nom, str(d)[:230]), flush=True)
@@ -85,6 +86,16 @@ def parcours(b, th):
                 c = px[x, y]
                 if abs(c[0] - 251) + abs(c[1] - 76) + abs(c[2] - 13) < 60: n += 1
         juge('[clair] C-126 · le départ de la flèche est orange #FB4C0D (lu sur l\'image, au départ du trait)', n >= 6, '%d pixels orange' % n)
+    else:
+        # ⚑ v150 (Tom, C-126) : « en mode SOMBRE, toute la flèche, trait compris, passe en orange #FB4C0D, comme en mode clair » — au départ du trait
+        #   (de 2 à 36 pt : la traîne et l'amorce, avant le chevron), des pixels orange et AUCUN pixel crème (v149 : la traîne était crème)
+        im = image(pg); z = pg.evaluate("()=>{const c=document.getElementById('onbTrait'); const r=c.getBoundingClientRect(); return [r.left,r.top,r.width,r.height];}"); px = im.load(); n = 0; cr = 0; k_ = z[2] / 390.0
+        for y in range(int(z[1]), int(z[1] + z[3]), 2):
+            for x in range(int(z[0] + 2 * k_), int(z[0] + 36 * k_), 2):
+                c = px[x, y]
+                if abs(c[0] - 251) + abs(c[1] - 76) + abs(c[2] - 13) < 60: n += 1
+                if abs(c[0] - 247) + abs(c[1] - 240) + abs(c[2] - 222) < 60: cr += 1
+        juge('[sombre] C-126 · v150 : toute la flèche en orange #FB4C0D, la traîne comprise (aucun pixel crème au départ du trait)', n >= 6 and cr == 0, '%d pixels orange · %d crème' % (n, cr))
     pg.evaluate("()=>{ window.__vo=[]; const t0=performance.now(); (function f(){ try{ if(window.Toile&&Toile.voisinesEtat) window.__vo.push([Math.round(performance.now()-t0), Toile.voisinesEtat()]); }catch(e){} if(performance.now()-t0<6000) requestAnimationFrame(f); })(); }")
     trace(pg, cdp); d = dev(pg); ims = []
     for i in range(30): ims.append(image(pg)); pg.wait_for_timeout(110)

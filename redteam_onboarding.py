@@ -34,7 +34,7 @@ Usage :  python3 redteam_onboarding.py
 TEXTE_FIN = ['Promi planté !', 'Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.']
 # ⚑ v149 (Tom, C-124) : « Tout le monde promet. Toi, tu tiens. » remplace « Le reste se découvre en traçant. » (original : sauvegardes/redteam_onboarding-avant-v149.py)
 TEXTE_RESTE = ['Primo, un Promi, c’est ta parole donnée.', 'Deuxio, un Chiche, c’est un coup de culot.', 'Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.',
-               'Tout le monde promet. Toi, tu tiens.', 'La suite t’appartient.']
+               'Tout le monde promet. Toi, tu tiens parole.', 'La suite t’appartient.']
 DEUXIO_ANGLE = 3.0
 
 import io, json, re, sys, time

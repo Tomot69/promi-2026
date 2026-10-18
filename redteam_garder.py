@@ -14,6 +14,7 @@ redteam_garder.py — « GARDER DE CÔTÉ » GARDE (v119, Tom, Q370). Au DOIGT, 
   ou une modification. » G ne lit plus le soulignement (actif = la classe et la teinte du lien) ; J · à droite (son bord droit à 24 pt du bord, à sa
   cote 708 ± 2), jamais souligné, penché de 5 à 6° (lu sur la transformation calculée) ; K · toujours visible : aussi pendant un tracé (doigt posé).
   Original : sauvegardes/redteam_garder-avant-v149.py.
+  ⚑ v150 (Tom, C-149) : « Garder de côté » 4 pt plus bas (0,6 mm) — sa cote passe de 708 à 712 ; l'inclinaison ne change pas. Original : *-avant-v150.py.
 Preuve (§7) : sur une copie de `sauvegardes/app-avant-v119.html` à la racine (APP=…), C et D ROUGISSENT (v118 fermait la page sans rien garder).
 """
 import os, sys
@@ -72,7 +73,7 @@ def passe(b, moteur, avec_qui):
     act = pg.evaluate("()=>{const g=document.querySelector('#createSheet .pp-garder'); return g?{inactif:g.classList.contains('inactif'), aria:g.getAttribute('aria-disabled'), souligne:getComputedStyle(g).textDecorationLine}:null; }")
     t(tag + ' G · une modification faite : le lien est ACTIF (ni inactif ni aria-disabled)', bool(act) and not act['inactif'] and act['aria'] != 'true', str(act))
     geo = pg.evaluate(GEO)
-    t(tag + ' J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 708 ± 2), jamais souligné, penché de 5 à 6°', bool(geo) and abs(geo['droite'] - 366) <= 1.5 and abs(geo['haut'] - 708) <= 2 and geo['souligne'] == 'none' and 5 <= geo['penche'] <= 6, str(geo))
+    t(tag + ' J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 712 ± 0,5, v150), jamais souligné, penché de 5 à 6°', bool(geo) and abs(geo['droite'] - 366) <= 1.5 and abs(geo['haut'] - 712) <= 0.5 and geo['souligne'] == 'none' and 5 <= geo['penche'] <= 6, str(geo))
     tient = pg.evaluate(TIENT_COURS)
     t(tag + ' K · toujours visible : pendant un tracé (doigt posé, page en cours de geste), le lien reste à sa place', bool(tient) and tient['cours'] and tient['vu'] and abs(tient['droite'] - 366) <= 1.5, str(tient))
     lien = pg.evaluate("()=>{const g=document.querySelector('#createSheet .pp-garder'); if(!g) return null; const r=g.getBoundingClientRect(); if(!r.width) return {vu:false}; const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {vu:true, joignable:h===g||g.contains(h), mot:g.textContent}}")

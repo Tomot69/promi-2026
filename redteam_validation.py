@@ -78,7 +78,7 @@ def rideau(R, T):
     juge('%s 7.1 · un seul mouvement : le front ne remonte jamais, et ne s\'arrête jamais deux images de suite avant la barre' % T, (max(recul) if recul else 0) <= 0.6 and arrets == 0, 'recul max %.1f pt · arrêts %d · %d images jusqu\'à la barre' % (max(recul) if recul else 0, arrets, arr))
     hauts = [(t, f[0]) for t, f in avec]; h0 = hauts[0][1]; hfin = min(h for _, h in hauts[-5:]) if len(hauts) > 5 else hauts[-1][1]
     pose = next((t for t, h in hauts if h >= hfin - 0.6), None); monte = max([hauts[i][1] - hauts[i + 1][1] for i in range(len(hauts) - 1)] or [0])
-    juge('%s 7.1 · le haut de la matière redescend sur le trait en moins de 160 ms, sans jamais remonter' % T, pose is not None and pose <= 160 and monte <= 0.6, 'haut %.1f → %.1f pt en %s ms · remontée max %.1f' % (h0, hfin, None if pose is None else round(pose), monte))
+    juge('%s 7.1 · le haut de la matière redescend sur le trait %s, sans jamais remonter' % (T, 'en moins de 160 ms' if CHARGE < 4 else '(la durée n\'est jugée qu\'au calme, C-137 ; ici : avant 1 s)'), pose is not None and pose <= (160 if CHARGE < 4 else 1000) and monte <= 0.6, 'haut %.1f → %.1f pt en %s ms · remontée max %.1f' % (h0, hfin, None if pose is None else round(pose), monte))
     plus_ruban = next((r[0] for r in L if not r[5]), None)
     juge('%s 7.1 · le ruban s\'en va sous le rideau (avant 300 ms)' % T, plus_ruban is not None and plus_ruban <= 300, plus_ruban)
     if CHARGE < 4:

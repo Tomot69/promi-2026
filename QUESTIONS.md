@@ -8754,3 +8754,13 @@ invitation animée (le chevron orange suffit).**
   la dernière part d'un AUTRE le rejoue, une fois, à ma première ouverture (`p.vuTenue`, portage/SPEC-DONNEES §1.11).
 - **Q543 — À TRANCHER (C-140, trouvé par la série)** : sur une carte du Fil d'un Chiche à plusieurs, la part tracée (`#00341A`) ne fait que 1,77:1 sur le corps
   du Chiche (`#7C3F58`) — sous les 2,5:1 de Q513 ; et quelques pinceaux d'une fiche Chiche (Peigné, Tressé) ont un trait de la couleur du corps. Rien n'est changé.
+
+### v150 (18 oct. 2026) — petit lot, retours iPhone de Tom sur v149
+**Validés : C-153, C-145, C-155, C-156, C-154 (sauf la couleur), le reste de l'onboarding. Appliquées telles quelles : Q537 (pas de mot-marque sur
+« Promi planté ! » ni au compte), Q538 (les trois couleurs du clair), Q541 (520 + 320 ms), Q543 (rien de changé au contraste).**
+- **Q544 — À SAVOIR (§0)** : le prototype ne recompte pas les jours — `due` reste le nombre de jours donné à la plantation ; une parole n'y passe donc
+  jamais seule « à tenir » (hors jeu de démonstration). Dans Swift, l'échéance doit être une DATE, comparée à aujourd'hui à chaque ouverture.
+- **Q545 — À SAVOIR (C-157)** : sur la page + d'un Promi adressé à quelqu'un, le mot dit « trace ta moitié » (v141) ; il descend et se décale comme
+  « trace pour planter » (c'est le même mot, à la même place).
+- **Q546 — À SAVOIR (C-124)** : « Tout le monde promet. Toi, tu tiens parole. » ne tient pas sur une ligne (352 pt) : alignée à droite, elle se coupe
+  en deux lignes égales, entre les deux phrases (`text-wrap:balance`), au lieu de « … Toi, tu / tiens parole. ».

@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v149', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v150', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -17939,7 +17939,11 @@ var CREMEETAT='#F7F0DE';
           ? ((e.ouvert || _aSoi) ? 'trace pour planter' : 'trace ta moitié')
           : 'trace pour lancer';
         if(tr.getAttribute('data-mot') !== _mt){ tr.textContent = _mt; tr.setAttribute('data-mot', _mt); tr.removeAttribute('aria-label'); }
-        pose(tr, {left:'82px', top:(e.ouvert ? 184 : (e.boite - 60))+'px'});   /* v116 : 236 − 52 */
+        /* ⚑ v150 (Tom, C-157) — PAGES + SEULEMENT (les fiches ne bougent pas) : dans la page + du Promi et du Chiche, le mot du trait (« trace pour
+           planter », « trace ta moitié », « trace pour lancer ») descend de 7,5 pt (« 6 à 9 pt ») pour s'aligner sur la flèche, et se décale de 3 pt
+           vers la droite pour ne pas la toucher. Le Cercle n'est pas nommé : il ne bouge pas. */
+        var _mdx = (e.nat === 'nuee') ? 0 : 3, _mdy = (e.nat === 'nuee') ? 0 : 7.5;
+        pose(tr, {left:(82 + _mdx)+'px', top:((e.ouvert ? 184 : (e.boite - 60)) + _mdy)+'px'});   /* v116 : 236 − 52 */
       }
       cs.classList.toggle('pp-cours', e.etat === 'cours' || e.etat === 'signe');
       cs.classList.toggle('pp-garde', !!e.garde && !e.ouvert);
@@ -17953,6 +17957,7 @@ var CREMEETAT='#F7F0DE';
            pendant une plantation. Rien n'a changé depuis la dernière fois (même phrase, mêmes styles, même état, même largeur,
            polices chargées) → on garde le résultat. */
         var _cleP = [e.nat, e.ouvert?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', txt.style.cssText, txt.innerHTML].join('§');
+        if(cotes.__fige) txt.__phCle = _cleP;   /* v150 : la bascule est figée — on garde la taille de la passe précédente, on ne fait que reposer */
         if(txt.__phCle !== _cleP){
         /* §2.8 — `taille = min(estimation, mesure)`. (Décision Tom, 18 août 2026 ;
            la « correction du §2.8 » qui remplaçait l'estimation par la mesure est ANNULÉE
@@ -18124,9 +18129,26 @@ var CREMEETAT='#F7F0DE';
         /* ⚑ v22 — LA COUPE CHANGE LE NOMBRE DE LIGNES APRÈS QUE LES COTES ONT ÉTÉ CALCULÉES (`e.nl`) : la phrase et le mot du
            trait restaient alors 32 px trop bas, selon l'ordre des passes (pris par releve-S3, par intermittence). On
            recalcule les cotes une fois, tout de suite, sur le vrai nombre de lignes. */
-        if(!cotes.__encore && lignes(e.nat) !== e.nl){ cotes.__encore = true; try{ cotes(); } finally { cotes.__encore = false; } return; }
+        /* ⚑ v150 (trouvé en composant la capture de la page + d'un Chiche) — LA BASCULE. La taille dépend du nombre de lignes (34 à quatre, 30 à cinq) et
+           le nombre de lignes de la taille : pour certaines phrases (« de te mettre à la salsa »), 34 donne cinq lignes et 30 en donne quatre. La passe
+           recommencée basculait donc encore, et la page + restait avec le mot du trait et le trait d'un nombre de lignes, la phrase de l'autre — le mot
+           venait chevaucher les points (mesuré : 3 ouvertures sur 8 en v150, 1 sur 8 en v149). Une troisième passe garde la taille de la deuxième et
+           repose tout pour le nombre de lignes qu'elle donne ; les passes suivantes retrouvent la même clé et ne retaillent plus. */
+        if(lignes(e.nat) !== e.nl){
+          if(!cotes.__encore){ cotes.__encore = true; try{ cotes(); } finally { cotes.__encore = false; }
+            if(cotes.__bascule){ cotes.__bascule = false; cotes.__encore = true; cotes.__fige = true; try{ cotes(); } finally { cotes.__encore = false; cotes.__fige = false; } }
+            return; }
+          else if(!cotes.__fige){ cotes.__bascule = true; }
+        }
         /* la phrase descend de 30 px pendant le geste (424 → 454, §5 cadres 29-30) */
-        pose(ph, {top:(e.ouvert ? 228 : (e.boite + (e.etat==='plate' ? 6 : 36)))+'px'});   /* v116 : 280 − 52 */
+        /* ⚑ v150 (Tom, C-158) — « page + du Chiche : seule la phrase remonte de 10 pt ; le choix du trait et “Garder de côté” ne bougent pas. Page + du
+           Cercle : sa phrase prend EXACTEMENT la même hauteur et le même placement que celle du Chiche après ce déplacement. » La page + d'un Cercle a,
+           par défaut, une ligne de moins que celle d'un Chiche (4 contre 5) : toutes ses cotes sont 32 pt plus bas. Sa phrase remonte donc de 41 pt —
+           la ligne (32), les 10 du Chiche, moins 1 pt pour que l'ENCRE de la première ligne (34 pt, 6,5 sous la boîte) tombe sur celle du Chiche
+           (30 pt, 7,5 sous la boîte). Hors d'un choix ouvert seulement. Le rail du pinceau lit ce décalage et garde sa place (`_ppDyPhrase`). */
+        var _dyP = e.ouvert ? 0 : ((e.nat === 'chiche') ? -10 : ((e.nat === 'nuee') ? -41 : 0));
+        window._ppDyPhrase = _dyP;
+        pose(ph, {top:(e.ouvert ? 228 : (e.boite + (e.etat==='plate' ? 6 : 36) + _dyP))+'px'});   /* v116 : 280 − 52 */
       }
       /* la ligne d'aide : sa cote est absolue (24 / 574). On la laisse DANS la phrase et on
          la décale — la déplacer sur le cadre en laissait une copie à chaque rendu (compté
@@ -25631,9 +25653,12 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
         if(vu(x)) dessus = Math.max(dessus, bas(x) - INK_AIDE); });
       var gm = cs.querySelector('.pp-garde-mot');
       if(vu(gm)) dessus = Math.max(dessus, bas(gm) - INK_MOT);
+      /* ⚑ v150 (C-158, C-149) : la phrase d'un Chiche ou d'un Cercle remonte (`_ppDyPhrase`) et « garder de côté » descend de 4 pt — le rail, lui,
+         ne bouge pas (« le choix du trait ne bouge pas ») : il se place comme si ni l'une ni l'autre n'avaient bougé. */
+      dessus -= (window._ppDyPhrase || 0);
       var dessous = 760;
       var gl = cs.querySelector('.pp-garder');
-      if(vu(gl)) dessous = hautDe(gl) + INK_LIEN;
+      if(vu(gl)) dessous = hautDe(gl) + INK_LIEN - 4;
       /* ⚑ v148 (trouvé par redteam_flash) : « garder de côté » est visible dès l'ouverture (C-149) et se cache le temps d'un tracé (`pp-cours`) ;
          le rail se plaçait à mi-chemin de lui, puis de 760 pendant le tracé — il sautait d'une place à l'autre (un flash). Pendant le tracé il
          garde la place que le lien lui donne : sa cote est fixe (708, lot de la page +). */
@@ -37452,6 +37477,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #onbV#onbV .onbv-fin .onbv-reste{margin-top:calc(18px*var(--onbe))}
 #onbV#onbV .onbv-fin .onbv-l-fin{margin-top:calc(12px*var(--onbe))}
 #onbV#onbV .onbv-fin .onbv-l-der{margin-top:calc(9px*var(--onbe))}   /* v148 (C-124 §9.5) : « LA SUITE T'APPARTIENT » descend de 9 pt — plus d'air au-dessus de lui */
+/* ⚑ v150 (Tom, C-124) : « Tout le monde promet. Toi, tu tiens parole. » alignée à DROITE ; « La suite t'appartient. » CENTRÉE */
+#onbV#onbV .onbv-fin .onbv-l-fin{text-align:right;text-wrap:balance}   /* deux lignes égales : la coupe tombe entre les deux phrases (« … promet. / Toi, … »), pas entre « tu » et « tiens » */
+#onbV#onbV .onbv-fin .onbv-l-der{text-align:center}
 #onbV#onbV .onbv-fin .onbv-titre{white-space:nowrap}
 #onbV#onbV .onbv-fin .onbv-k{font-size:calc(var(--ech-cle)*var(--onbe))}
 #onbV#onbV .onbv-fin .onbv-l-der .onbv-k{font-size:calc(var(--ech-cle-fin)*var(--onbe))}
@@ -37680,7 +37708,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
           '<div class="onbv-l"><b class="onbv-k">Primo,</b> un '+nat('Promi')+', c’est ta parole donnée.</div>'+
           '<div class="onbv-l"><b class="onbv-k onbv-deux">Deuxio,</b> un '+nat('Chiche')+', c’est un coup de culot.</div>'+
           '<div class="onbv-l"><b class="onbv-k">Tertio,</b> un '+nat('Cercle')+', c’est tout cela à la fois, mais à plusieurs.</div>'+
-          '<div class="onbv-l onbv-l-fin">Tout le monde promet. Toi, tu tiens.</div>'+   /* ⚑ v149 (Tom, C-124) : remplace « Le reste se découvre en traçant. », mot pour mot, même place, même rôle (liste) */
+          '<div class="onbv-l onbv-l-fin">Tout le monde promet. Toi, tu tiens parole.</div>'+   /* ⚑ v149 (Tom, C-124) : remplace « Le reste se découvre en traçant. », même place, même rôle (liste) ; ⚑ v150 (Tom) : « … tu tiens parole. », alignée à droite */
           '<div class="onbv-l onbv-l-der"><b class="onbv-k">La suite t’appartient.</b></div>'+
         '</div></div>'+
       '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">'+
@@ -37793,7 +37821,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var y=yOnde(), col=clair()?O.ENCRE:O.CREME;
     /* ⚑ v147 (Tom, C-126 §7, « à la lettre ») — EN CLAIR : tout le début de la flèche (le chevron ET sa traîne, l'amorce effilée et la part tracée) en
        orange #FB4C0D ; les pointillés du trait non tracé en NOIR. En sombre, rien ne change (la crème, le chevron orange). */
-    var ORG=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), cDep=clair()?ORG:col, cPts=clair()?'#000000':col;
+    /* ⚑ v150 (Tom, C-126) : « en mode SOMBRE, toute la flèche, trait compris, passe en orange #FB4C0D, comme en mode clair » — la traîne, l'amorce et
+       la part tracée (elles restaient crème en sombre) ; les points non tracés gardent la couleur du mode (noir en clair, la crème en sombre). */
+    var ORG=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), cDep=ORG, cPts=clair()?'#000000':col;
     g.strokeStyle=cDep; g.fillStyle=cDep; g.lineWidth=EP; g.lineCap='round'; g.lineJoin='round';
     function plein(a,b){ g.strokeStyle=cDep; g.beginPath(); O.chemin(g,y,a,b); g.stroke(); }
     function points(x0){ g.fillStyle=cPts; for(var x=x0;x<W-RR;x+=ESP){ g.beginPath(); g.arc(x,y(x),RR,0,6.2832); g.fill(); } }
@@ -41257,6 +41287,8 @@ window._noms=(function(){
 #device #createSheet.pp .pp-garder,#device #createSheet.pp .pp-garder.inactif{left:auto!important;right:24px!important;text-align:right!important;
   text-decoration:none!important;transform:skewX(-5.5deg)!important;transform-origin:100% 100%!important}
 #device #createSheet.pp.pp-cours .pp-garder{display:block!important}
+/* ⚑ v150 (Tom, C-149) : « Garder de côté » 4 pt plus bas (0,6 mm), dans les pages + du Promi, du Chiche et du Cercle ; l'inclinaison est validée */
+#device #createSheet.pp .pp-garder,#device #createSheet.pp .pp-garder.inactif{top:712px!important}
 </style>
 <script id="lot-V148-RUBAN">
 /* ⚑ v148 (Tom, 16 oct. 2026, C-148) — LE BANDEAU AMANDE DE LA VALIDATION. « Quand on trace pour valider, sur une fiche ou dans la page +, le bandeau
@@ -41281,7 +41313,9 @@ window._noms=(function(){
      haut redescend sur le trait à la vitesse du rideau, puis il s'en va sous lui ; ② ma part, sans être la dernière : seulement la vague sous le trait,
      en amande, pas de rideau — elle reste un instant (`PART_TIENT`), puis se resserre sur le trait à vitesse constante ; ③ sans validation : il se resserre. */
   var ETAT_COL={encours:'#291547', rate:'#DD4D23'}, PART_TIENT=520, PART_RENTRE=320;
-  function couleur(zone){ if(zone.id==='tenirZone') return AM; return ETAT_COL.encours; }
+  /* ⚑ v150 (Tom, C-154) : « la vague de création passe en orange plutôt qu'en violet, parce qu'une parole créée passe à tenir » — la couleur de l'état
+     « à tenir », #DD4D23 ; jamais l'orange d'action #FB4C0D, réservé aux points de départ. */
+  function couleur(zone){ if(zone.id==='tenirZone') return AM; return ETAT_COL.rate; }
   function reduit(){ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function io(u){ u=Math.max(0,Math.min(1,u)); return 1-Math.pow(1-u,3); }
   function geo(zone){

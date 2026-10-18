@@ -12,6 +12,8 @@ redteam_onb_mots.py — v149 (Tom, 18 oct. 2026) : LE I DE PROMI, LES MOTS DES N
           sa couleur (EN DUR en sombre ; en clair : la teinte OKLCH de la nature à 3,0–3,3:1 sur #DFCAA4), sa graisse (700).
   C-124 · « Remplacer « Le reste se découvre en traçant. » par « Tout le monde promet. Toi, tu tiens. » (mot pour mot), même place, même rôle, tracé des
           lettres, l'échelle de C-138. » La ligne, son texte EN DUR, juste avant « La suite t'appartient. », à la taille des autres lignes, tracée.
+⚑ v150 (Tom, C-124) : la phrase devient « Tout le monde promet. Toi, tu tiens parole. », alignée à DROITE (son encre finit au bord droit du bloc
+          de texte, ± 1,5 pt) ; « La suite t'appartient. » est CENTRÉE (le milieu de son encre au milieu du bloc, ± 1,5 pt). Original : *-avant-v150.py.
 Preuve : `--page=zz-av148.html` rougit (couleurs à 5:1, graisse 500 hors de la fin, l'ancienne phrase, le I fixe).
 """
 import io, os, re, sys
@@ -22,7 +24,7 @@ URL = 'http://127.0.0.1:8752/' + next((a.split('=', 1)[1] for a in sys.argv[1:] 
 CHARGE = float(os.popen('sysctl -n vm.loadavg').read().split()[1])
 SOMBRE = {'promi': (130, 174, 248), 'chiche': (255, 184, 210), 'cercle': (201, 168, 245)}   # décision de Tom, en dur
 FOND_CLAIR = (223, 202, 164)
-FIN_LIGNE = 'Tout le monde promet. Toi, tu tiens.'
+FIN_LIGNE = 'Tout le monde promet. Toi, tu tiens parole.'
 res = []
 def juge(nom, c, d=''):
     res.append(bool(c)); print('  %s %-112s %s' % ('✅' if c else '❌', nom, str(d)[:240]), flush=True)
@@ -47,8 +49,10 @@ LIT_I = """async ()=>{ const v=document.getElementById('onbV'); const mm=v&&v.qu
 LIT_NAT = """()=>[...document.querySelectorAll('#onbV .onbv-nat')].filter(e=>{ let v=e; while(v&&v!==document.body){ const c=getComputedStyle(v); if(c.display==='none'||c.visibility==='hidden') return false; v=v.parentElement; } return e.getBoundingClientRect().width>2; })
   .map(e=>{ const c=getComputedStyle(e); return {n:e.getAttribute('data-n'), t:e.textContent, col:c.color, fill:c.webkitTextFillColor, w:+c.fontWeight, f:c.fontFamily.split(',')[0].replace(/["']/g,'').trim(), ou:(e.closest('[id]')||{}).id||''}; })"""
 LIT_FIN = """()=>{ const f=document.getElementById('onbFin'); if(!f) return null; const L=[...f.querySelectorAll('.onbv-l')]; const fin=f.querySelector('.onbv-l-fin'), der=f.querySelector('.onbv-l-der');
-  const fs=e=>parseFloat(getComputedStyle(e).fontSize); return {texte:fin?fin.textContent:null, suivant:fin&&fin.nextElementSibling?fin.nextElementSibling.className:null, der:der?der.textContent:null,
-    fs:fin?fs(fin):0, ff:fin?getComputedStyle(fin).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, autres:L.filter(l=>l!==fin&&l!==der).map(fs), trace:!!(fin&&fin.__tl), vu:fin?getComputedStyle(fin).visibility:null}; }"""
+  const fs=e=>parseFloat(getComputedStyle(e).fontSize);
+  const A=e=>{ if(!e) return null; const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, rg=document.createRange(); rg.selectNodeContents(e); const q=rg.getBoundingClientRect(), b=e.getBoundingClientRect(); return {g:+((q.left-b.left)/k).toFixed(1), d:+((b.right-q.right)/k).toFixed(1), c:+((((q.left+q.right)/2)-((b.left+b.right)/2))/k).toFixed(1)}; };
+  return {texte:fin?fin.textContent:null, suivant:fin&&fin.nextElementSibling?fin.nextElementSibling.className:null, der:der?der.textContent:null,
+    fs:fin?fs(fin):0, alFin:A(fin), alDer:A(der),  ff:fin?getComputedStyle(fin).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, autres:L.filter(l=>l!==fin&&l!==der).map(fs), trace:!!(fin&&fin.__tl), vu:fin?getComputedStyle(fin).visibility:null}; }"""
 RECOUVRE = r"""()=>{ const p=document.getElementById('guidePhrase'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; if(!p) return null; const rg=document.createRange(); rg.selectNodeContents(p);
   const L=[...rg.getClientRects()].filter(q=>q.width>1).map(q=>[(q.left-D.left)/k,(q.top-D.top)/k,(q.right-D.left)/k,(q.bottom-D.top)/k]); const pb=p.getBoundingClientRect();
   const tc=document.getElementById('toileCv'), r=tc.getBoundingClientRect(), s=tc.width/r.width, d=tc.getContext('2d').getImageData(0,0,tc.width,tc.height).data, W=tc.width, H=tc.height;
@@ -125,6 +129,8 @@ with sync_playwright() as p:
         # ── C-124 · la phrase de fin
         print('[%s] C-124 — la ligne de fin' % T)
         juge('[%s] la ligne est « %s », mot pour mot, juste avant « La suite t\'appartient. »' % (T, FIN_LIGNE), bool(F) and F['texte'] == FIN_LIGNE and 'onbv-l-der' in (F['suivant'] or '') and 'appartient' in (F['der'] or ''), F and (F['texte'], F['suivant']))
+        juge('[%s] v150 · « … tu tiens parole. » alignée à DROITE (son encre finit au bord droit du bloc, ± 1,5 pt) ; « La suite t\'appartient. » CENTRÉE (± 1,5 pt)' % T,
+             bool(F) and F['alFin'] and F['alDer'] and abs(F['alFin']['d']) <= 1.5 and F['alFin']['g'] > 5 and abs(F['alDer']['c']) <= 1.5, F and (F['alFin'], F['alDer']))
         juge('[%s] même rôle : Atkinson, à la taille des autres lignes (22,3 pt × l\'échelle), tracée' % T, bool(F) and F['ff'] == 'Atkinson' and F['autres'] and all(abs(F['fs'] - a) < 0.05 for a in F['autres']) and F['trace'] and F['vu'] == 'visible', F)
         # ── C-145 §4.3, sur le vrai premier lancement de CE thème (redteam_guide ne fait le premier lancement qu'en clair)
         juge('[%s] C-145 · le guide (étape du Studio) : sa phrase, centrée à 252 ± 4, ne recouvre aucune dalle colorée, aucune icône, ni la zone nette' % T, bool(GR) and abs(GR['centre'] - 252) <= 4 and GR['tot'] > 200 and GR['dalle'] == 0 and not GR['ico'] and not GR['trou'], GR)
