@@ -15,6 +15,9 @@ sys.path.insert(0, '.')
 from playwright.sync_api import sync_playwright
 from PIL import Image
 SEUIL = 3.0
+# ⚑ v149 (Tom, décision de fin de v148, Q513) : « seuil de 2,5:1 pour le Chiche et le Cercle, sans toucher aux fonds » — le meilleur atteignable avec
+# leurs deux fonds fixés est 2,71 (Chiche) et 2,69 (Cercle). Le Promi garde 3,0. Original : sauvegardes/redteam_contraste_trait-avant-v149.py.
+SEUIL_NAT = {'Chiche': 2.5, 'Cercle': 2.5}
 PAGE = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--page=')), 'app.html')
 VITE = '--vite' in sys.argv
 PINCEAUX = ['Plein'] if VITE else ['Plein', 'Coulé', 'Peigné', 'Sec', 'Tressé', 'Frangé', 'Doublé', 'Fendu', 'Cranté', 'Vrillé', 'Semé', 'Perlé']
@@ -39,7 +42,9 @@ GEO = r"""(sel)=>{ const out=[];
   /* la nature, lue sur la carte (son libellé) ou sur la fiche ; et seuls comptent les points que le DOIGT atteint sur ce canevas (une carte
      cachée sous le plateau, sous une autre, ou hors de l'écran ne se mesure pas) */
   const nat=cv=>{ const c=cv.closest('.s4-carte')||cv.parentNode; const l=c&&c.querySelector&&c.querySelector('.s4-natlab'); if(l) return l.textContent.trim();
-    const dp=cv.closest('#detailPoster'); if(dp) return dp.classList.contains('dp-chiche')?'Chiche':((dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee'))?'Cercle':'Promi'); return '?'; };
+    const dp=cv.closest('#detailPoster'); if(dp) return dp.classList.contains('dp-chiche')?'Chiche':((dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee'))?'Cercle':'Promi');
+    /* v149 (Q513) : la page + porte sa nature dans ses classes (pp-chiche, pp-nuee) ; le chemin de la page + (plus bas) la passe aussi */
+    const cs=cv.closest('#createSheet'); if(cs) return cs.classList.contains('pp-chiche')?'Chiche':(cs.classList.contains('pp-nuee')?'Cercle':'Promi'); return '?'; };
   const vus=(cv,S,v)=>S.filter(s=>{ const pts=v?[[s.h,s.y],[s.b,s.y],[s.x,s.y]]:[[s.x,s.h],[s.x,s.b],[s.x,s.y]];
       return pts.every(p=>{ if(p[0]<0||p[1]<0||p[0]>innerWidth||p[1]>innerHeight) return false; const h=document.elementFromPoint(p[0],p[1]); const c=cv.closest('.s4-carte')||cv.closest('#detailPoster')||cv.closest('#createSheet')||cv.parentNode;
         return !!h && (h===cv || c.contains(h) || h.contains(cv)); }); });
@@ -88,9 +93,10 @@ def juge(ou, img, dpr, g):
         tr = med(T[quoi])
         if not tr: continue
         rc = ratio(tr, champ) if champ else None; rb = ratio(tr, corps) if corps else None
-        bon = (rc is not None and rc >= SEUIL) and (rb is not None and rb >= SEUIL)
+        su = SEUIL_NAT.get(g.get('nat'), SEUIL)
+        bon = (rc is not None and rc >= su) and (rb is not None and rb >= su)
         mx = atteignable(champ, corps) if (champ and corps) else None
-        verdict = 'OK' if bon else ('IMPOSSIBLE' if (mx is not None and mx < SEUIL) else 'KO')
+        verdict = 'OK' if bon else ('IMPOSSIBLE' if (mx is not None and mx < su) else 'KO')
         LIGNES.append((ou, quoi, hexa(tr), hexa(champ), rc, hexa(corps), rb, bon, verdict, mx))
         res.append(bon)
         print('%-10s %-44s %-7s trait %s · champ %s %s · corps %s %s%s' % (verdict, ou, quoi, hexa(tr), hexa(champ), ('%.2f' % rc) if rc else '—', hexa(corps), ('%.2f' % rb) if rb else '—',
@@ -145,6 +151,7 @@ with sync_playwright() as p:
                 const S=[]; for(let x=390*0.11+18*1.3, i=0; x<390-4.5 && i<6; x+=18, i++) S.push({x:r.left+x*k, y:r.top+y(x)*k, demi:6*k, quoi:'points'});
                 [0.04].forEach(f=>{ const x=f*390; S.push({x:r.left+x*k, y:r.top+y(x)*k, demi:5*k, quoi:'tracé'}); });
                 return [{col:'', mode:'points', carte:false, k:k, box:[r.left,r.top,r.width,r.height], S:S.map(s=>Object.assign(s,{h:s.y-(s.demi+6*k), b:s.y+(s.demi+6*k)}))}]; }""")
+            if G: G[0]['nat'] = {'promi': 'Promi', 'chiche': 'Chiche', 'nuee': 'Cercle'}[nat]   # v149 (Q513) : la nature, pour son seuil
             if G: juge('%s · page + %s' % (th, {'promi': 'Promi', 'chiche': 'Chiche', 'nuee': 'Cercle'}[nat]), image(pg), dpr, G[0])
             else: res.append(False); print('KO  page + %s : pas de trait' % nat)
         ctx.close()

@@ -45,7 +45,16 @@ with sync_playwright() as p:
         juge('[%s] 3 · avec le texte agrandi (× 1,15) : rien ne déborde' % th, not any(e['deborde'] or e['dehors'] for e in Z), [(e['k'], e['deborde'], e['dehors']) for e in Z])
         ok = True; det = []
         for k in ('promi', 'chiche', 'nuee'):
-            pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500); B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(800); B.tap_sel(pg, '.acc-pil[data-k=%s]' % k)
+            pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500); B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(800)
+            # ⚑ v149 (C-152) : on touche un encart POSÉ — deux relevés identiques de sa boîte, à 80 ms d'écart (jusqu'à 3 s). Sous charge (8 à 77 en v148)
+            # le menu n'était pas encore posé 800 ms après le + : le doigt tombait à côté de l'encart du Cercle (le dernier à arriver). Original :
+            # sauvegardes/redteam_menu_plus-avant-v149.py.
+            av = None
+            for _ in range(38):
+                bx = pg.evaluate("k=>{ const e=document.querySelector('.acc-pil[data-k='+k+']'); if(!e) return null; const r=e.getBoundingClientRect(), c=getComputedStyle(e); return [Math.round(r.left*2),Math.round(r.top*2),Math.round(r.width*2),c.visibility,c.opacity]; }", k)
+                if bx and bx == av and bx[2] > 0: break
+                av = bx; pg.wait_for_timeout(80)
+            B.tap_sel(pg, '.acc-pil[data-k=%s]' % k)
             v = False
             for _ in range(30):
                 pg.wait_for_timeout(120)

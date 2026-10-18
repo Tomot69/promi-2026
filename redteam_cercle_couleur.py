@@ -149,10 +149,14 @@ with sync_playwright() as p:
             pass
         pg.wait_for_timeout(500)
         att6 = 'rgb(192,255,238)'   # #C0FFEE, en dur — un tirage au hasard ne peut pas tomber dessus
-        c6 = pg.evaluate("()=>{closeAll(); const q=P('juge page plus','moi',5,2,'encours',null); promises.push(q); Toile.addPromi(q.id); return q.id;}")
+        # ⚑ v149 (C-150) : le choix vient d'être fait DANS le Peaufiner de la page + — depuis v146 (C-134) un closeAll de script dans les 4 s d'un geste
+        # fait dans Peaufiner est refusé ; un juge qui ferme tout après Peaufiner appelle d'abord window._peaufSortie() (CLAUDE.md, v146 ③). Sans cela la
+        # page + ne se fermait jamais, et « rouvrir la page + » ne la rouvrait pas : le contrôle suivant rougissait sur le juge, pas sur le produit.
+        c6 = pg.evaluate("()=>{ try{ window._peaufSortie&&window._peaufSortie(); }catch(e){} closeAll(); const q=P('juge page plus','moi',5,2,'encours',null); promises.push(q); Toile.addPromi(q.id); return q.id;}")
         pg.wait_for_timeout(2000)
         col6 = pg.evaluate("(i)=>Toile.colorOf(i)", c6)
         t('[%s] 6 · un code choisi à la page + est celui de la dalle plantée' % T, col6 == att6, '%s attendu %s' % (col6, att6))
+        t('[%s] 6 · la page + est bien FERMÉE avant d\'être rouverte (sinon le contrôle suivant ne juge rien)' % T, not pg.evaluate("()=>document.getElementById('createSheet').classList.contains('show')"), pg.evaluate("()=>document.getElementById('createSheet').className"))
         pg.evaluate("()=>{ window._couleurAPlanter={ci:3,lit:0}; }")
         pg.evaluate(J.SCENE, 'pp_promi_vide'); pg.wait_for_timeout(1400)
         t('[%s] 6 · rouvrir la page + efface le choix en attente' % T, pg.evaluate("()=>window._couleurAPlanter==null"), '')

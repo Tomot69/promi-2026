@@ -28,7 +28,8 @@ exec(open('redteam_onb_sorties.py', encoding='utf-8').read().split('with sync_pl
 F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')   # après l'emprunt : il réécrit F
 URL = 'http://127.0.0.1:8752/' + F
 VIOLET, BLEU, CREME = (41, 21, 71), (14, 120, 242), (247, 240, 222)
-AVANT_FIN = 'C’est planté.Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Le reste se découvre en traçant. La suite t’appartient.'
+# ⚑ v149 (Tom, C-124) : la ligne de fin devient « Tout le monde promet. Toi, tu tiens. » ; la couleur des natures (11.2) suit la règle de v149 (original : sauvegardes/redteam_onboarding_texte-avant-v149.py)
+AVANT_FIN = 'C’est planté.Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Tout le monde promet. Toi, tu tiens. La suite t’appartient.'
 res = []
 def juge(nom, c, d=''):
     res.append(bool(c)); print('  %s %-110s %s' % ('✅' if c else '❌', nom, str(d)[:230]), flush=True)
@@ -112,8 +113,9 @@ def parcours(b, th):
         juge('[clair] 11.2 · le texte en violet #291547 (titre, ton, lignes)', pres(rgb(f0['titreCol']), VIOLET) and pres(rgb(f0['tonCol']), VIOLET) and all(pres(rgb(l['col']), VIOLET) for l in f0['lignes']), '%s · %s' % (f0['titreCol'], f0['tonCol']))
     else:
         juge('[sombre] 11.2 · les couleurs d\'aujourd\'hui : la crème', pres(rgb(f0['titreCol']), CREME) and all(pres(rgb(l['col']), CREME) for l in f0['lignes']), f0['titreCol'])
-    nat = pg.evaluate("()=>{ const c=document.getElementById('device').classList.contains('light'); const fd=c?[223,202,164]:[5,3,2]; const N={promi:[130,174,248],chiche:[255,184,210],cercle:[201,168,245]}; const o={}; for(const k in N){ let v=N[k]; try{ v=window._teinte.ajuste(v, fd, 5); }catch(e){} o[k]='rgb('+v[0]+', '+v[1]+', '+v[2]+')'; } return o; }")
-    juge('[%s] 11.2 · Promi, Chiche, Cercle gardent leur couleur (la teinte de leur nature, comme avant)' % T, f0['nats'] and all(x['col'] == nat.get(x['t'].lower()) for x in f0['nats']), [(x['t'], x['col']) for x in f0['nats']][:4])
+    # ⚑ v149 (Tom, C-124 rouvert) : en sombre la nature EXACTE (#82AEF8, #FFB8D2, #C9A8F5) ; en clair la teinte foncée jusqu'à 3:1 sur #DFCAA4 (avant : 5:1 dans les deux thèmes)
+    nat = pg.evaluate("()=>{ const c=document.getElementById('device').classList.contains('light'); const fd=[223,202,164]; const N={promi:[130,174,248],chiche:[255,184,210],cercle:[201,168,245]}; const o={}; for(const k in N){ let v=N[k]; if(c){ try{ v=window._teinte.ajuste(v, fd, 3); }catch(e){} } o[k]='rgb('+v[0]+', '+v[1]+', '+v[2]+')'; } return o; }")
+    juge('[%s] 11.2 · Promi, Chiche, Cercle prennent la couleur de leur nature (v149 : exacte en sombre, 3:1 en clair)' % T, f0['nats'] and all(x['col'] == nat.get(x['t'].lower()) for x in f0['nats']), [(x['t'], x['col']) for x in f0['nats']][:4])
     juge('[%s] 11.3 · lignes courtes ; mots-clés en PromiLate (Primo, Deuxio, Tertio, La suite t\'appartient.) ; Deuxio penché' % T, len(f0['lignes']) >= 5 and [c['t'] for c in f0['cles']] == ['Primo,', 'Deuxio,', 'Tertio,', 'La suite t’appartient.'] and all(c['f'] == 'PromiLate' for c in f0['cles']) and f0['deux'] not in (None, 'none'),
          '%d lignes · %s · %s' % (len(f0['lignes']), [c['t'] for c in f0['cles']], f0['deux']))
     nouveau = re.sub(r'\s+', ' ', AVANT_FIN.replace('C’est planté.', 'Promi planté !')).replace('. ', '.').replace(' ', '')

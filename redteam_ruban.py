@@ -14,6 +14,9 @@ est posé, une fois le seuil de 60 pt passé (C-107), on lit :
   E · ses bords sont légèrement irréguliers, sans excès : l'écart de chaque bord à l'onde décalée est de 0,4 à 3,5 pt (écart-type)
   F · le mot du trait n'est pas coupé en deux par le ruban : il est soit entier, soit entièrement découpé (clip) pendant que le ruban est là
 Preuve : `--fichier=zz-av147.html` rougit (A, B).
+⚑ v149 (Tom, 18 oct. 2026, C-154) — « La vague de création prend la couleur de l'état dans lequel entre la parole (« à tenir » ou « en cours », selon le
+code). L'amande est réservée à la célébration. » B, sur la page + : le ruban est plein, à la couleur de l'état « en cours » #291547 (toute parole plantée
+entre « en cours ») ; sur la fiche, il reste amande. Original : sauvegardes/redteam_ruban-avant-v149.py. `--fichier=zz-av148.html` rougit (B, page +).
 """
 import sys, math; sys.path.insert(0, '.')
 import banc_tom as B
@@ -24,7 +27,7 @@ res = []
 def juge(nom, ok, d=''):
     res.append(ok); print('  %s %-104s %s' % ('✅' if ok else '❌', nom, str(d)[:200]), flush=True)
 
-LIT = """(a)=>{ const [zid]=a; const z=document.getElementById(zid), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390;
+LIT = """(a)=>{ const [zid, att]=a; const z=document.getElementById(zid), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390;
   const bg=getComputedStyle(z).backgroundColor, al=(bg.match(/[\\d.]+/g)||[0,0,0,0]); const fond=(al.length===4?+al[3]:(bg==='transparent'?0:1));
   const cv=document.getElementById('tenirRuban'); let geo=null;
   if(zid==='tenirZone'){ const v=(document.getElementById('dpTrameCv').getAttribute('data-trait')||'').split(','); geo={base:+v[0], amp:+v[1]}; }
@@ -32,7 +35,7 @@ LIT = """(a)=>{ const [zid]=a; const z=document.getElementById(zid), D=document.
   const y=_onde.onde(geo.base, geo.amp), Y=[]; for(let x=10;x<=380;x+=10) Y.push(y(x));
   if(!cv) return {fond:fond, ruban:false, Y:Y};
   const r=cv.getBoundingClientRect(), top=(r.top-D.top)/k, s=cv.width/(r.width/k), d=cv.getContext('2d').getImageData(0,0,cv.width,cv.height).data, W=cv.width, H=cv.height;
-  let n=0, plein=0, juste=0; for(let i=0;i<d.length;i+=4*3){ if(d[i+3]>8){ n++; if(d[i+3]>=250){ plein++; if(Math.abs(d[i]-143)<=4 && Math.abs(d[i+1]-224)<=4 && Math.abs(d[i+2]-143)<=4) juste++; } } }
+  let n=0, plein=0, juste=0; for(let i=0;i<d.length;i+=4*3){ if(d[i+3]>8){ n++; if(d[i+3]>=250){ plein++; if(Math.abs(d[i]-att[0])<=4 && Math.abs(d[i+1]-att[1])<=4 && Math.abs(d[i+2]-att[2])<=4) juste++; } } }
   const col=[]; for(let x=10;x<=380;x+=10){ const X=Math.round(x*s); let a0=-1, a1=-1; for(let j=0;j<H;j++){ if(d[(j*W+X)*4+3]>128){ if(a0<0) a0=j; a1=j; } } col.push(a0<0?null:[top+a0/s, top+a1/s]); }
   /* le mot du trait */
   const mot=zid==='tenirZone'?document.getElementById('dptTrace'):document.querySelector('#createSheet .pp-trace'); let motEtat=null;
@@ -67,12 +70,13 @@ def un(b, th, ecran, nature):
         pg.wait_for_timeout(80)
         if pg.evaluate("()=>!!(window._ruban && window._ruban.etat().actif) || !!document.querySelector('#tenirZone.atteint,#planterZone.atteint')"): break
     pg.wait_for_timeout(320)
-    r = pg.evaluate(LIT, [zid])
+    att = (143, 224, 143) if zid == 'tenirZone' else (41, 21, 71)   # v149 (C-154) : la fiche, l'amande ; la page +, l'état « en cours »
+    r = pg.evaluate(LIT, [zid, list(att)])
     juge('%s A · plus de rectangle : la zone du geste n\'a aucun fond, ni doigt posé ni seuil passé' % T, r['fond'] == 0 and fond0 == 0, 'alpha du fond %.2f (doigt posé : %.2f)' % (r['fond'], fond0))
     if not r['ruban']:
-        juge('%s B · un ruban amande est peint' % T, False, 'aucun ruban'); ctx.close(); return
+        juge('%s B · un ruban est peint' % T, False, 'aucun ruban'); ctx.close(); return
     pp = r['juste'] / max(1, r['n'])
-    juge('%s B · le ruban est un aplat amande #8FE08F plein (≥ 97 %% des pixels)' % T, pp >= 0.97, '%.1f %% justes, %.1f %% pleins' % (100 * pp, 100 * r['plein'] / max(1, r['n'])))
+    juge('%s B · le ruban est un aplat plein, %s (≥ 97 %% des pixels)' % (T, 'amande #8FE08F (la célébration)' if zid == 'tenirZone' else '#291547 (l\'état « en cours » où entre la parole, C-154)'), pp >= 0.97, '%.1f %% justes, %.1f %% pleins' % (100 * pp, 100 * r['plein'] / max(1, r['n'])))
     C = [(c, y) for c, y in zip(r['col'], r['Y']) if c]
     ep = sorted(c[1] - c[0] for c, y in C); epm = ep[len(ep) // 2] if ep else 0
     juge('%s C · plus fin : épaisseur médiane à 75–85 %% des 118 pt d\'avant' % T, 0.75 * 118 <= epm <= 0.85 * 118, '%.1f pt (%.0f %%)' % (epm, 100 * epm / 118))

@@ -9,21 +9,22 @@ rôle = même police, même taille, sur toutes les pages — et ces tailles sont
   titre        PromiLate 52    (« PROMI » de « Promi planté ! »)
   phrase       Gilbert 35      (« Toi, c'est … ? », « Je me promets de … »)
   texte        Atkinson 25     (« Prénom, donc. Enchanté. », « Quid… », « Petite ou grande promesse… »)
-  liste        Atkinson 22,3   (la phrase de ton, les lignes Primo, Deuxio, Tertio, « Le reste se découvre en traçant. »)
+  liste        Atkinson 22,3   (la phrase de ton, les lignes Primo, Deuxio, Tertio, « Tout le monde promet. Toi, tu tiens. »)
   mot-clé      PromiLate 25    (Primo, Deuxio, Tertio)
   mot de fin   PromiLate 32    (« La suite t'appartient. »)
   consigne     PromiLate 19    (« trace pour planter »)
   guide        Atkinson 29     (la phrase du guide, en gras)
-  guide-clé    PromiLate 29    (« monde », « Studio », « commence »)
+  guide-clé    PromiLate 29    (« monde », « commence »)
+  guide-studio PromiLate 32,2  (« Studio » : ⚑ v149 (Tom, C-145) « grossit de 10 à 12 % » — 29 × 1,11 ; original : sauvegardes/redteam_echelle_onboarding-avant-v149.py)
 """
 import io, sys, re
 sys.path.insert(0, '.')
 from playwright.sync_api import sync_playwright
 exec(open('redteam_onb_sorties.py', encoding='utf-8').read().split('with sync_playwright() as p:')[0].replace("R6 = '--r6' in sys.argv", "R6 = True").replace("res = []; sorties = []", "sorties = []"))
 URL = 'http://127.0.0.1:8752/' + next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--page=')), 'app.html')
-ECHELLE = {'titre': ('PromiLate', 52), 'phrase': ('Gilbert', 35), 'texte': ('Atkinson', 25), 'liste': ('Atkinson', 22.3), 'mot-clé': ('PromiLate', 25), 'mot de fin': ('PromiLate', 32), 'consigne': ('PromiLate', 19), 'guide': ('Atkinson', 29), 'guide-clé': ('PromiLate', 29)}
+ECHELLE = {'titre': ('PromiLate', 52), 'phrase': ('Gilbert', 35), 'texte': ('Atkinson', 25), 'liste': ('Atkinson', 22.3), 'mot-clé': ('PromiLate', 25), 'mot de fin': ('PromiLate', 32), 'consigne': ('PromiLate', 19), 'guide': ('Atkinson', 29), 'guide-clé': ('PromiLate', 29), 'guide-studio': ('PromiLate', 32.2)}
 ROLES = [('#onbPh', 'phrase'), ('#onbDit', 'texte'), ('#onbQuid', 'texte'), ('#onbSous', 'texte'), ('#onbTrace', 'consigne'), ('#onbFin .onbv-pmot', 'titre'), ('#onbFin .onbv-ton', 'liste'),
-         ('#onbFin .onbv-l:not(.onbv-l-der)', 'liste'), ('#onbFin .onbv-l:not(.onbv-l-der) .onbv-k', 'mot-clé'), ('#onbFin .onbv-l-der .onbv-k', 'mot de fin'), ('#guidePhrase', 'guide'), ('#guidePhrase .gd-cle', 'guide-clé')]
+         ('#onbFin .onbv-l:not(.onbv-l-der)', 'liste'), ('#onbFin .onbv-l:not(.onbv-l-der) .onbv-k', 'mot-clé'), ('#onbFin .onbv-l-der .onbv-k', 'mot de fin'), ('#guidePhrase', 'guide'), ('#guidePhrase .gd-cle:not(.gd-studio)', 'guide-clé'), ('#guidePhrase .gd-cle.gd-studio', 'guide-studio')]
 LIT = """(R)=>{ const out=[]; R.forEach(([sel, role])=>{ document.querySelectorAll(sel).forEach(e=>{ let v=e, vu=true; while(v&&v!==document.body){ const c=getComputedStyle(v); if(c.display==='none'){ vu=false; break; } v=v.parentElement; }
   if(!vu||!(e.textContent||'').trim()) return; const c=getComputedStyle(e); out.push({sel:sel, role:role, f:c.fontFamily.split(',')[0].replace(/["']/g,'').trim(), fs:Math.round(parseFloat(c.fontSize)*10)/10, t:(e.textContent||'').trim().slice(0,28)}); }); }); return out; }"""
 res = []; vus = []

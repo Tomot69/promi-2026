@@ -1,5 +1,11 @@
 #!/usr/bin/env python3
 """
+⚑ v149 (Tom, 18 oct. 2026, C-145) — REMIS AU NIVEAU (original : sauvegardes/redteam_guide-avant-v149.py) : « 4.1 la phrase du Studio remonte d'UN cm réel
+— 60 pt ± 4, pas plus ; « Studio » grossit de 10 à 12 %, couleurs inchangées. 4.2 la phrase du + remonte de 60 pt ± 4. 4.3 aucune des deux ne recouvre
+une dalle colorée, une icône ou la zone nette des flaques. » Le centre passe de 312 à 252 (± 4, plus ± 40) ; la taille de « Studio » est 1,10 à 1,12 fois
+celle des autres mots-clés ; le recouvrement est MESURÉ, ligne de texte par ligne : les pixels colorés de la Toile (chroma OKLCH > 0,06, lus sur son
+canevas), les icônes du plateau et de la barre, la boîte de la zone nette. Q533 (tranchée en v149) : en clair les lettres de « Studio » gardent la teinte
+de la palette de base, assombries jusqu'à 3:1 sur le fond (#DFCAA4) ; en sombre, les valeurs de Tom sans retouche.
 ⚑ v147 (Tom, 15 oct. 2026 — C-094, 3e RÉCIDIVE) — COMPLÉTÉ (original : sauvegardes/redteam_guide-avant-v147.py). La cause de la récidive : le juge
 de v146 vérifiait que l'eau faisait des FLAQUES (plusieurs morceaux) et que la zone nette était « légèrement imparfaite » (recouvrement avec une
 ellipse 0,90 à 0,988) — il demandait donc un rond, à peine bosselé : c'est le rond que Tom a vu. Rien ne comptait les germes, ne regardait les
@@ -41,7 +47,7 @@ Le premier chemin part d'un STOCKAGE VIERGE et joue l'onboarding entier au doigt
 Preuve (§7) : sur la version d'avant (`--fichier=zz-avant-v146.html`) le juge rougit dès 4.1 (il n'y a pas d'eau).
 Usage : python3 redteam_guide.py [--fichier=…] [--vite] [--cadence : la cadence seule, trois passes par thème]
 """
-import io, os, re, sys, time, json, base64
+import io, os, re, sys, time, json, base64, math
 from playwright.sync_api import sync_playwright
 from PIL import Image
 import numpy as np
@@ -57,7 +63,7 @@ ATTENTE, COUVRE, OUVRE, FERME, RETIRE = 600, 1400, 700, 700, 1200             # 
 VIOLET, BLEU, CREME = (41, 21, 71), (14, 120, 242), (247, 240, 222)           # #291547 · #0E78F2 · #F7F0DE
 MONDE = {True: (131, 99, 170), False: (201, 168, 245)}                         # ⚑ v148 (Tom, C-145) : « monde » #8363AA en clair, #C9A8F5 en sombre (v147 : rose #FFB8D2, illisible)
 PALB = [(130, 174, 248), (255, 184, 210), (201, 168, 245), (239, 227, 199)]    # la palette de base (Ingénu), dans son ordre — « Studio », lettre à lettre
-TAILLE_TEXTE, MARGE_MIN, MARGE_MAX, CENTRE_PH = 29, 6.0, 10.0, 312              # ⚑ v148 (C-145) : 29 pt (27 × 1,07 — « +6 à 8 % ») ; §10.2 ; §10.4 (372 − 60)
+TAILLE_TEXTE, MARGE_MIN, MARGE_MAX, CENTRE_PH = 29, 6.0, 10.0, 252   # ⚑ v149 (C-145) : 312 → 252 (60 pt ± 4 plus haut)              # ⚑ v148 (C-145) : 29 pt (27 × 1,07 — « +6 à 8 % ») ; §10.2 ; §10.4 (372 − 60)
 INTERLIGNE = (1.40, 1.50)                                                       # ⚑ v148 (C-145) : « l'interligne passe de 1,35 à environ 1,45 »
 CHARGE = float(os.popen('sysctl -n vm.loadavg').read().split()[1]) if os.path.exists('/usr/sbin/sysctl') else 0.0
 os.makedirs('planche-v146', exist_ok=True)
@@ -74,9 +80,9 @@ ETAT = """()=>{ const g=document.getElementById('guide'), p=document.getElementB
   const ba=document.querySelector('#device .acc-barre');
   const mots=p?[...p.querySelectorAll('.gd-cle, .gd-nat')].map(e=>{ const c=getComputedStyle(e); return {t:e.textContent, cl:e.className, pol:c.fontFamily.split(',')[0].replace(/["']/g,'').trim(), col:c.color, tt:c.textTransform}; }):[];
   const lettres=p?[...p.querySelectorAll('.gd-studio .gd-l')].map(e=>[e.textContent, getComputedStyle(e).color]):[];
-  const phPoids=p?getComputedStyle(p).fontWeight:null;
+  const phPoids=p?getComputedStyle(p).fontWeight:null; const stE=p&&p.querySelector('.gd-studio'), clE=p&&p.querySelector('.gd-cle:not(.gd-studio)');
   return {guide:g?g.getAttribute('data-guide'):null, entier:!!(g&&g.getAttribute('data-entier')), eau:!!document.getElementById('guideEau'),
-    lettres:lettres, phPoids:phPoids, phrase:p?p.textContent:null, phraseVue:p?cs(p).visibility:null, phraseB:B(p), phraseCol:p?cs(p).color:null, phraseFs:p?parseFloat(cs(p).fontSize):null, phraseLh:p?parseFloat(cs(p).lineHeight):null, phrasePol:p?cs(p).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, mots:mots,
+    lettres:lettres, phPoids:phPoids, stFs:stE?parseFloat(getComputedStyle(stE).fontSize):null, cleFs:clE?parseFloat(getComputedStyle(clE).fontSize):null, phrase:p?p.textContent:null, phraseVue:p?cs(p).visibility:null, phraseB:B(p), phraseCol:p?cs(p).color:null, phraseFs:p?parseFloat(cs(p).fontSize):null, phraseLh:p?parseFloat(cs(p).lineHeight):null, phrasePol:p?cs(p).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, mots:mots,
     tard:t?t.textContent:null, tous:tous, devant:acc, e:(window._guide?window._guide.etat():null), regle:(window._guide?window._guide.regle:null), vu:localStorage.getItem('promi_guide'),
     studioVu:vu(document.getElementById('studioBtn')), auraVu:vu(document.getElementById('souffleBtn')), indexVu:vu(document.getElementById('indexBtn')), plusB:B(document.getElementById('createBtn')), barre:B(ba),
     studio:(()=>{const s=document.getElementById('studioScreen'); const h=document.elementFromPoint(D.left+D.width/2, D.top+D.height*0.6); return !!(s&&h&&s.contains(h));})(),
@@ -169,7 +175,7 @@ def phrase(e, T, quoi):
     """10.4, C-138 et §11.7 : la phrase, mot pour mot, sans contour, 60 pt plus haut, dans l'échelle (Atkinson 500, 27 pt) ; ses mots-clés en
     PromiLate ; « monde » rose, « Studio » aux couleurs de la palette de base dans son ordre ; ailleurs les couleurs du clair, la crème du sombre"""
     ph = PH_STUDIO if quoi == 'studio' else PH_PLUS; clair = e['clair']
-    juge('[%s] %s · la phrase, mot pour mot, visible, 60 pt plus haut qu\'en v146 (centrée à %d ± 40)' % (T, quoi, CENTRE_PH), e['phrase'] == ph and e['phraseVue'] == 'visible' and e['phraseB'] and abs((e['phraseB'][1] + e['phraseB'][3] / 2) - CENTRE_PH) <= 40, '« %s » %s' % (e['phrase'], e['phraseB']))
+    juge('[%s] %s · la phrase, mot pour mot, visible, ⚑ v149 : encore 60 pt plus haut qu\'en v148 (centrée à %d ± 4 ; v148 : 312)' % (T, quoi, CENTRE_PH), e['phrase'] == ph and e['phraseVue'] == 'visible' and e['phraseB'] and abs((e['phraseB'][1] + e['phraseB'][3] / 2) - CENTRE_PH) <= 4, '« %s » %s' % (e['phrase'], e['phraseB']))
     cont = [t for t in e['tous'] if t['eng'] == 'guide-phrase' and ((t['sh'] not in ('none', '')) or (t['st'] not in ('0px', '', None)))]
     il = (e.get('phraseLh') or 0) / max(1.0, e['phraseFs'] or 1)
     juge('[%s] %s · AUCUN contour ni ombre sur les lettres ; ⚑ v148 (C-145) : EN GRAS (Atkinson 700), %d pt, interligne %.2f à %.2f' % (T, quoi, TAILLE_TEXTE, INTERLIGNE[0], INTERLIGNE[1]), not cont and abs((e['phraseFs'] or 0) - TAILLE_TEXTE) <= 0.5 and e['phrasePol'] == 'Atkinson' and str(e['phPoids']) == '700' and INTERLIGNE[0] <= il <= INTERLIGNE[1], 'taille %s · %s %s · interligne %.2f · contours %s' % (e['phraseFs'], e['phrasePol'], e['phPoids'], il, cont[:1]))
@@ -179,14 +185,47 @@ def phrase(e, T, quoi):
     if quoi == 'studio':
         mo = [m for m in cles if m['t'] == 'monde']; L = e.get('lettres') or []
         att = [PALB[i % 4] for i in range(6)]
-        juge('[%s] studio · ⚑ v148 (C-145) : « monde » en lilas violet (%s) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — les valeurs de Tom, sans retouche' % (T, '#8363AA' if clair else '#C9A8F5'),
-             bool(mo) and proche(mo[0]['col'], MONDE[bool(clair)], 6) and ''.join(l[0] for l in L) == 'Studio' and all(proche(L[i][1], att[i], 6) for i in range(6)), 'monde %s · lettres %s' % (mo[0]['col'] if mo else None, L))
+        if clair:   # ⚑ v149 (Q533) : la teinte de chaque lettre gardée (± 6° OKLCH), assombrie jusqu'à 3:1 sur #DFCAA4
+            ok_l = len(L) == 6 and all(teinte_proche(L[i][1], att[i]) and 2.95 <= ratio_fond(L[i][1]) <= 3.4 for i in range(6))
+        else: ok_l = len(L) == 6 and all(proche(L[i][1], att[i], 6) for i in range(6))
+        juge('[%s] studio · « monde » en lilas violet (%s) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — %s' % (T, '#8363AA' if clair else '#C9A8F5', 'Q533 : la teinte gardée, 3:1 sur le fond' if clair else 'les valeurs de Tom, sans retouche'),
+             bool(mo) and proche(mo[0]['col'], MONDE[bool(clair)], 6) and ''.join(l[0] for l in L) == 'Studio' and ok_l, 'monde %s · lettres %s' % (mo[0]['col'] if mo else None, [(l[0], l[1], round(ratio_fond(l[1]), 2)) for l in L]))
+        juge('[%s] studio · ⚑ v149 (C-145) : « Studio » 10 à 12 %% plus grand que les autres mots-clés' % T, e.get('stFs') and e.get('cleFs') and 1.10 <= e['stFs'] / e['cleFs'] <= 1.12, '%s pt / %s pt' % (e.get('stFs'), e.get('cleFs')))
         juge('[%s] studio · le reste du texte : %s' % (T, '#291547' if clair else 'la crème'), proche(e['phraseCol'], VIOLET if clair else CREME), e['phraseCol'])
     elif clair:
         juge('[%s] %s · en clair : le texte en #291547, les mots-clés en #0E78F2' % (T, quoi), proche(e['phraseCol'], VIOLET) and all(proche(m['col'], BLEU) for m in cles), '%s · %s' % (e['phraseCol'], [m['col'] for m in cles]))
         juge('[%s] plus · en clair : Promi, Chiche, Cercle dans leur couleur (trois teintes, aucune n\'est celle du texte)' % T, [m['t'] for m in nats] == ['Promi', 'Chiche', 'Cercle'] and len(set(m['col'] for m in nats)) == 3 and proche(nats[0]['col'], BLEU) and not any(proche(m['col'], VIOLET, 12) for m in nats), [(m['t'], m['col']) for m in nats])
     else:
         juge('[%s] %s · en sombre : la crème, pour toute la phrase' % (T, quoi), proche(e['phraseCol'], CREME) and all(proche(m['col'], CREME) for m in e['mots']), '%s · %s' % (e['phraseCol'], [m['col'] for m in e['mots']][:3]))
+def lumi(c):
+    f = lambda x: x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4
+    return 0.2126 * f(c[0] / 255) + 0.7152 * f(c[1] / 255) + 0.0722 * f(c[2] / 255)
+def rgb3(s):
+    m = re.findall(r'[\d.]+', s or ''); return tuple(int(float(x)) for x in m[:3]) if len(m) >= 3 else (0, 0, 0)
+def ratio_fond(s):
+    a, b = lumi(rgb3(s) if isinstance(s, str) else s), lumi((223, 202, 164)); return (max(a, b) + 0.05) / (min(a, b) + 0.05)
+def h_oklch(c):
+    l_ = [((x / 255) / 12.92 if (x / 255) <= 0.04045 else (((x / 255) + 0.055) / 1.055) ** 2.4) for x in c]
+    L = (0.4122214708 * l_[0] + 0.5363325363 * l_[1] + 0.0514459929 * l_[2]) ** (1 / 3); M = (0.2119034982 * l_[0] + 0.6806995451 * l_[1] + 0.1073969566 * l_[2]) ** (1 / 3); S_ = (0.0883024619 * l_[0] + 0.2817188376 * l_[1] + 0.6299787005 * l_[2]) ** (1 / 3)
+    return math.degrees(math.atan2(0.0259040371 * L + 0.7827717662 * M - 0.8086757660 * S_, 1.9779984951 * L - 2.4285922050 * M + 0.4505937099 * S_)) % 360
+def teinte_proche(s, c, tol=6):
+    return abs(((h_oklch(rgb3(s)) - h_oklch(c)) + 180) % 360 - 180) <= tol
+RECOUVRE = r"""()=>{ const p=document.getElementById('guidePhrase'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; if(!p) return null; const rg=document.createRange(); rg.selectNodeContents(p);
+  const L=[...rg.getClientRects()].filter(q=>q.width>1).map(q=>[(q.left-D.left)/k,(q.top-D.top)/k,(q.right-D.left)/k,(q.bottom-D.top)/k]);
+  const tc=document.getElementById('toileCv'), r=tc.getBoundingClientRect(), s=tc.width/r.width, d=tc.getContext('2d').getImageData(0,0,tc.width,tc.height).data, W=tc.width, H=tc.height;
+  const lin=x=>{x/=255; return x<=0.04045?x/12.92:Math.pow((x+0.055)/1.055,2.4);};
+  const C=(R,G,B)=>{ const l=[lin(R),lin(G),lin(B)]; let a1=Math.cbrt(0.4122214708*l[0]+0.5363325363*l[1]+0.0514459929*l[2]), a2=Math.cbrt(0.2119034982*l[0]+0.6806995451*l[1]+0.1073969566*l[2]), a3=Math.cbrt(0.0883024619*l[0]+0.2817188376*l[1]+0.6299787005*l[2]);
+    return Math.hypot(1.9779984951*a1-2.4285922050*a2+0.4505937099*a3, 0.0259040371*a1+0.7827717662*a2-0.8086757660*a3); };
+  let dalle=0, tot=0; for(let y=0;y<844;y+=3) for(let x=0;x<390;x+=3){ if(!L.some(l=>x>=l[0]-2&&x<=l[2]+2&&y>=l[1]-2&&y<=l[3]+2)) continue; const X=Math.round(((D.left+x*k)-r.left)*s), Y=Math.round(((D.top+y*k)-r.top)*s); if(X<0||Y<0||X>=W||Y>=H) continue; tot++; const i=(Y*W+X)*4; if(C(d[i],d[i+1],d[i+2])>0.06) dalle++; }
+  const ico=[...document.querySelectorAll('.acc-plat svg, .acc-plat button, .acc-plat .acc-mm, #device .acc-barre svg, #device .acc-barre .l, #createBtn')].map(e=>{const q=e.getBoundingClientRect(); return [(q.left-D.left)/k,(q.top-D.top)/k,(q.right-D.left)/k,(q.bottom-D.top)/k,(e.id||(e.className&&e.className.baseVal)||e.className||e.tagName)+''];}).filter(q=>q[2]-q[0]>2);
+  const X=(a,b)=>!(a[2]+2<=b[0]||b[2]+2<=a[0]||a[3]+2<=b[1]||b[3]+2<=a[1]);
+  const t=(window._guide&&_guide.etat().trou)||null, tz=t?[t.x-t.w/2,t.y-t.h/2,t.x+t.w/2,t.y+t.h/2]:null;
+  return {dalle:dalle, tot:tot, ico:ico.filter(i=>L.some(l=>X(l,i))).map(i=>i[4]), trou:!!tz && L.some(l=>X(l,tz)), lignes:L.length}; }"""
+def recouvre(pg, T, quoi):
+    """⚑ v149 (C-145 §4.3) : la phrase ne recouvre aucune dalle colorée, aucune icône, ni la zone nette"""
+    r = pg.evaluate(RECOUVRE)
+    juge('[%s] %s · ⚑ v149 (C-145) : la phrase ne recouvre aucune dalle colorée (pixels de chroma > 0,06 sous ses lignes), aucune icône, ni la zone nette' % (T, quoi),
+         bool(r) and r['lignes'] >= 1 and r['tot'] > 200 and r['dalle'] == 0 and not r['ico'] and not r['trou'], r)
 def zone(pg, e, T, quoi, nette=None):
     """4.3 / 4.5 : la zone nette, lue sur le canevas à 3 cases par point, dans une boîte de 130 pt autour de la cible"""
     tr = (e['e'] or {}).get('trou')
@@ -239,7 +278,7 @@ def zone(pg, e, T, quoi, nette=None):
         juge('[%s] %s · 10.2 : AUCUN pixel net hors de la boîte + 10 pt, sur tout l\'écran' % (T, quoi), hors == 0, '%d case(s) nette(s) au-delà (½ pt)' % hors)
     if nette is not None:
         apres = image(pg); ex0, ey0, ex1, ey1 = cb[0] + 2, cb[1] + 2, cb[0] + cb[2] - 2, cb[1] + cb[3] - 2
-        en, ea = energie(nette, ex0, ey0, ex1, ey1), energie(apres, ex0, ey0, ex1, ey1); Z = ((30, 44, 360, 96), (30, 110, 360, 235), (30, 400, 360, 690)); f0, f1 = sum(energie(nette, *z) for z in Z), sum(energie(apres, *z) for z in Z)   # v147 : la phrase est à 247–377 (Studio), 264–361 (+); f0, f1 = sum(energie(nette, *z) for z in Z), sum(energie(apres, *z) for z in Z)
+        en, ea = energie(nette, ex0, ey0, ex1, ey1), energie(apres, ex0, ey0, ex1, ey1); Z = ((30, 44, 360, 96), (30, 110, 360, 160), (30, 345, 360, 690)); f0, f1 = sum(energie(nette, *z) for z in Z), sum(energie(apres, *z) for z in Z)   # v147 : la phrase est à 247–377 (Studio), 264–361 (+) ; ⚑ v149 (C-145) : à 168–337 (centre 252), les zones l'évitent; f0, f1 = sum(energie(nette, *z) for z in Z), sum(energie(apres, *z) for z in Z)
         juge('[%s] %s · sur l\'image : la cible est NETTE (≥ 85 %% de ses contours), le reste de l\'écran est FLOU (≤ 45 %%)' % (T, quoi), en > 0 and ea >= 0.85 * en and f1 <= 0.45 * f0, 'cible %.2f → %.2f · plateau et Toile hors de la phrase %.2f → %.2f' % (en, ea, f0, f1))
     return {'cx': (x0 + x1) / 2, 'cy': (y0 + y1) / 2, 'aire': float(c.sum()) / 9.0}
 def couverture(pg, T):
@@ -411,7 +450,7 @@ def premier_lancement(b, th):
     else: juge('[%s] 4.1 · en direct : l\'eau est vue en plusieurs flaques, et ce qui est mouillé le reste d\'un relevé au suivant' % T, len(vus) >= 3 and max(len(morceaux(m, 6)) for _, m in vus[:4]) >= 3 and all(float((a & b_).sum()) / max(1, float(a.sum())) >= 0.99 for (_, a), (_, b_) in zip(vus, vus[1:])),
          '%d relevés · morceaux %s' % (len(vus), [len(morceaux(m, 6)) for _, m in vus[:6]]))
     cap(pg, '1-studio-%s' % T)
-    phrase(e, T, 'studio')
+    phrase(e, T, 'studio'); recouvre(pg, T, 'studio')
     juge('[%s] A3 : l\'impératif de la phrase du Studio est une exception NOMMÉE (TEXTES_ENGAGEMENT.imperatifVoulu) ; l\'autre phrase n\'en a pas' % T, PH_STUDIO in (e['voulu'] or []) and (e['textes'] or {}).get('plus') == PH_PLUS and not re.search(r'\b(Choisis|Touche|Trace|Plante|Tiens|Va|Ouvre)\b', PH_PLUS), '%s' % e['voulu'])
     juge('[%s] « Plus tard » n\'existe pas : ni dans le guide, ni à aucune image de l\'onboarding (exception nommée de R6)' % T, e['tard'] is None and g['tards'] == 0 and pg.evaluate("()=>!!(window.TEXTES_ENGAGEMENT&&TEXTES_ENGAGEMENT.sansPlusTard)&&!TEXTES_ENGAGEMENT.guide.plusTard"), 'vu à %s image(s)' % g['tards'])
     a2(e, T); z1 = zone(pg, e, T, 'studio', nette); respiration(pg, T, 'studio', pg.evaluate(ETAT))
@@ -428,7 +467,7 @@ def premier_lancement(b, th):
     e4 = attend(pg, 'plus', 12000); pg.wait_for_timeout(OUVRE + 250); e4 = pg.evaluate(ETAT); cap(pg, '2-plus-%s' % T)
     juge('[%s] CHEMIN 1 — un choix au Studio (monde %s → %s), Studio refermé : l\'étape du + arrive, sa phrase mot pour mot' % (T, m0, m1), e4['guide'] == 'plus' and e4['phrase'] == PH_PLUS and m1 != m0, 'guide %s · « %s »' % (e4['guide'], e4['phrase']))
     if e4['guide'] == 'plus':
-        phrase(e4, T, 'plus'); zone(pg, e4, T, 'plus')
+        phrase(e4, T, 'plus'); recouvre(pg, T, 'plus'); zone(pg, e4, T, 'plus')
         x, y = pt(pg, e4['e']['trou']['x'], e4['e']['trou']['y']); toucher(cdp, pg, x, y); pg.wait_for_timeout(380); e5 = pg.evaluate(ETAT); mi, _ = eau(pg, 98, 211)
         juge('[%s] toucher le + ouvre les trois natures TOUT DE SUITE ; l\'eau se retire en flaques pendant ce temps (elle n\'a pas disparu d\'un coup)' % T, (e5['choix'] or e5['cs']) and mi is not None and 0.05 < float(mi.mean()) < 0.99, 'natures %s · eau encore %s %%' % (e5['choix'], None if mi is None else round(float(mi.mean()) * 100)))
         pg.wait_for_timeout(RETIRE + 500); e6 = pg.evaluate(ETAT)
@@ -520,7 +559,8 @@ def cadence(b, th):
     else: juge('[%s] pendant la couverture et l\'ouverture de la zone, aucune image au-delà de 16,7 ms de travail du fil principal' % T, bool(W) and len(W) >= 40 and pire <= 16.7, '%d images · pire %s ms · p95 %s ms · flou d\'avance %s ms' % (len(W), None if pire is None else round(pire, 1), round(W2[int(len(W2) * .95)], 1) if W2 else None, pg.evaluate("()=>_guide.etat().flouMs")))
     if pire and pire > 16.7: print('      ce qui dépasse :', longues(tr, 'lever', (COUVRE + OUVRE + 200) * 1000))
     if th == 'dark':
-        e = pret(pg, 'studio'); phrase(e, T, 'studio'); zone(pg, e, T, 'studio'); au_studio(pg, cdp, e); ferme_studio(pg, cdp); e2 = pret(pg, 'plus', 8000); phrase(e2, T, 'plus'); zone(pg, e2, T, 'plus'); cap(pg, 'plus-sombre')
+        # ⚑ v149 : le recouvrement (§4.3) se juge sur le VRAI premier lancement (une parole plantée) ; ce rejeu tourne sur l'état de démonstration (des dizaines de dalles) : relevé, non jugé
+        e = pret(pg, 'studio'); phrase(e, T, 'studio'); print('      (rejeu sur l\'état de démonstration — recouvrement non jugé : %s)' % pg.evaluate(RECOUVRE)); zone(pg, e, T, 'studio'); au_studio(pg, cdp, e); ferme_studio(pg, cdp); e2 = pret(pg, 'plus', 8000); phrase(e2, T, 'plus'); zone(pg, e2, T, 'plus'); cap(pg, 'plus-sombre')
     ctx.close()
 
 def barre_webkit(p):

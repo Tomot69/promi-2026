@@ -10,6 +10,10 @@ redteam_garder.py — « GARDER DE CÔTÉ » GARDE (v119, Tom, Q370). Au DOIGT, 
   D · sans personne choisie, il est gardé « à moi »
   ⚑ v148 (C-149) : E · page vide, le lien est visible et inactif, et son toucher ne fait rien · F · plus aucune phrase « se retourne » ·
   G · une modification faite, il est actif · H · le brouillon est retrouvé dans l'Index · I · une personne ajoutée seule suffit à l'activer
+  ⚑ v149 (Tom, C-149 rouvert) : « à droite ; pas souligné ; légèrement penché, 5 à 6° ; toujours visible ; actif seulement après l'ajout d'une personne
+  ou une modification. » G ne lit plus le soulignement (actif = la classe et la teinte du lien) ; J · à droite (son bord droit à 24 pt du bord, à sa
+  cote 708 ± 2), jamais souligné, penché de 5 à 6° (lu sur la transformation calculée) ; K · toujours visible : aussi pendant un tracé (doigt posé).
+  Original : sauvegardes/redteam_garder-avant-v149.py.
 Preuve (§7) : sur une copie de `sauvegardes/app-avant-v119.html` à la racine (APP=…), C et D ROUGISSENT (v118 fermait la page sans rien garder).
 """
 import os, sys
@@ -26,6 +30,18 @@ def tape(pg, js, attente=800):
     c = centre(pg, js)
     if not c: return False
     pg.touchscreen.tap(c['x'], c['y']); pg.wait_for_timeout(attente); return True
+GEO = """()=>{const g=document.querySelector('#createSheet .pp-garder'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; if(!g) return null;
+  const s=getComputedStyle(g), m=(s.transform||'').match(/matrix\(([^)]+)\)/), c=m?+m[1].split(',')[2]:0;
+  /* la boîte AVANT la transformation : offsetLeft/Top dans la feuille (390 pt), le penché lu sur la matrice (skewX : c = tan θ) */
+  const cs=document.getElementById('createSheet'), R=cs.getBoundingClientRect(), kk=R.width/(cs.offsetWidth||390);
+  return {droite:+((g.offsetLeft+g.offsetWidth)).toFixed(1), haut:+g.offsetTop.toFixed(1), souligne:s.textDecorationLine, penche:+(-Math.atan(c)*180/Math.PI).toFixed(2), vu:s.display!=='none'&&s.visibility!=='hidden'&&g.getBoundingClientRect().width>4};}"""
+TIENT_COURS = """async ()=>{ const z=document.getElementById('planterZone'); if(!z) return null; const r=z.getBoundingClientRect(), x0=r.left+r.width*0.12, y=r.top+r.height*0.45;
+  const T=(x)=>{ const o={identifier:9,target:z,clientX:x,clientY:y,pageX:x,pageY:y,screenX:x,screenY:y,radiusX:11,radiusY:11,force:.5}; try{return new Touch(o);}catch(e){return o;} };
+  const ev=(typ,x)=>{ const t=T(x), L=typ==='touchend'?[]:[t]; let e; try{ e=new TouchEvent(typ,{bubbles:true,cancelable:true,composed:true,touches:L,targetTouches:L,changedTouches:[t]}); if(!e.changedTouches||!e.changedTouches.length) throw 0; }catch(_){ e=new Event(typ,{bubbles:true,cancelable:true}); Object.defineProperty(e,'touches',{value:L}); Object.defineProperty(e,'targetTouches',{value:L}); Object.defineProperty(e,'changedTouches',{value:[t]}); } z.dispatchEvent(e); };
+  const att=ms=>new Promise(r=>setTimeout(r,ms)); ev('touchstart',x0); for(let i=1;i<=3;i++){ await att(40); ev('touchmove',x0+i*6); } await att(260);
+  const cs=document.getElementById('createSheet'), g=cs.querySelector('.pp-garder'), s=getComputedStyle(g);
+  const out={cours:cs.classList.contains('pp-cours'), vu:s.display!=='none'&&s.visibility!=='hidden'&&g.getBoundingClientRect().width>4, droite:+((g.offsetLeft+g.offsetWidth)).toFixed(1)};
+  ev('touchend',x0+18); await att(400); return out; }"""
 def passe(b, moteur, avec_qui):
     tag = '[%s%s]' % (moteur, '' if avec_qui else ', sans personne')
     ctx = b.new_context(viewport={'width': 430, 'height': 932}, has_touch=True)
@@ -53,8 +69,12 @@ def passe(b, moteur, avec_qui):
         pg.touchscreen.tap(215, 180); pg.wait_for_timeout(1100)
         sel = pg.evaluate("()=>JSON.stringify(window.newWhoSel||[])")
         t(tag + ' la personne est choisie au doigt', choisi and QUI in sel, sel)
-    act = pg.evaluate("()=>{const g=document.querySelector('#createSheet .pp-garder'); return g?{inactif:g.classList.contains('inactif'), souligne:getComputedStyle(g).textDecorationLine}:null; }")
-    t(tag + ' G · une modification faite : le lien est ACTIF (souligné)', bool(act) and not act['inactif'] and act['souligne'] == 'underline', str(act))
+    act = pg.evaluate("()=>{const g=document.querySelector('#createSheet .pp-garder'); return g?{inactif:g.classList.contains('inactif'), aria:g.getAttribute('aria-disabled'), souligne:getComputedStyle(g).textDecorationLine}:null; }")
+    t(tag + ' G · une modification faite : le lien est ACTIF (ni inactif ni aria-disabled)', bool(act) and not act['inactif'] and act['aria'] != 'true', str(act))
+    geo = pg.evaluate(GEO)
+    t(tag + ' J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 708 ± 2), jamais souligné, penché de 5 à 6°', bool(geo) and abs(geo['droite'] - 366) <= 1.5 and abs(geo['haut'] - 708) <= 2 and geo['souligne'] == 'none' and 5 <= geo['penche'] <= 6, str(geo))
+    tient = pg.evaluate(TIENT_COURS)
+    t(tag + ' K · toujours visible : pendant un tracé (doigt posé, page en cours de geste), le lien reste à sa place', bool(tient) and tient['cours'] and tient['vu'] and abs(tient['droite'] - 366) <= 1.5, str(tient))
     lien = pg.evaluate("()=>{const g=document.querySelector('#createSheet .pp-garder'); if(!g) return null; const r=g.getBoundingClientRect(); if(!r.width) return {vu:false}; const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {vu:true, joignable:h===g||g.contains(h), mot:g.textContent}}")
     t(tag + ' A · le lien « garder de côté » paraît, et il est joignable', bool(lien) and lien.get('vu') and lien.get('joignable') and lien.get('mot') == 'garder de côté', str(lien))
     tape(pg, "document.querySelector('#createSheet .pp-garder')", 3200)

@@ -16,6 +16,9 @@ couverte, la forme du bord) et sur la capture (le champ, la fiche à la fin).
   F · le champ garde la couleur de sa nature pendant tout l'instant (plus de champ amande) — rien ne saute au passage à « juste après ».
   H · (v148, C-144) « Parole tenue ! » / « Défi relevé ! », centrée.
   G · (v148, C-118) le vert descend au MÊME rythme d'un bout à l'autre : aucun arrêt, pas réguliers, départ immédiat (lu sur les pixels, image par image).
+      ⚑ v149 (Tom, C-156) — REMIS AU NIVEAU (original : sauvegardes/redteam_tenir-avant-v149.py) : « au lever, le rideau part DIRECTEMENT du trait, un seul
+      mouvement ; la vague intermédiaire est supprimée » — le rideau part du BORD BAS DU RUBAN (la matière sous le trait au lever) : le départ se lit
+      contre ce bord (la médiane des colonnes de l'onde + 51 pt), plus contre le bord du trait.
 Preuve (§7) : `--fichier=zz-avant-v146.html` — il rougit (aucune couche).
 """
 import sys; sys.path.insert(0, '.')
@@ -37,7 +40,7 @@ SONDE = """()=>{ window.__mr=[]; window.__t0=0; window._mareeReleve=function(g, 
       window.__phr={xa:xa, xb:xb, txt:cv.getAttribute('aria-label')||''}; }
     /* v148 : le FRONT du rideau — dans les colonnes où il est sorti de sous le trait (plus bas que le bord du trait + 9 pt), la médiane de son bas */
     const fr=[]; for(let i=0, x=4; x<390; x+=8, i++){ if(bas[i]>0 && bas[i]-T.y(x)>9) fr.push(bas[i]); } fr.sort((a,b)=>a-b);
-    window.__mr.push({t:Math.round(t), tf:t, u:+u.toFixed(3), part:n/Math.max(1,tot), mid:mid/Math.max(1,n+mid), bas:bas, sous:sous/Math.max(1,sousN), trous:trous, fr:fr.length?fr[fr.length>>1]:null, nfr:fr.length, yc:(function(){ let m=1e9; for(let x=0;x<=390;x+=4) m=Math.min(m,T.y(x)); return m+6; })()}); }; }"""
+    window.__mr.push({t:Math.round(t), tf:t, u:+u.toFixed(3), part:n/Math.max(1,tot), mid:mid/Math.max(1,n+mid), bas:bas, sous:sous/Math.max(1,sousN), trous:trous, fr:fr.length?fr[fr.length>>1]:null, nfr:fr.length, yr:(function(){ const B=(window._ruban&&_ruban.regle&&_ruban.regle.BAS)||51; const v=[]; for(let x=4;x<390;x+=8) v.push(T.y(x)+B); v.sort((a,b)=>a-b); return v[v.length>>1]; })(), yc:(function(){ let m=1e9; for(let x=0;x<=390;x+=4) m=Math.min(m,T.y(x)); return m+6; })()}); }; }"""
 CHAMP = "()=>{ const d=document.getElementById('device').getBoundingClientRect(), k=d.width/390; return [d.left+30*k, d.top+150*k]; }"
 def un(b, th, nature):
     T = '%s, %s' % ('clair' if th == 'light' else 'sombre', nature); print('\n── %s' % T)
@@ -100,10 +103,10 @@ def un(b, th, nature):
         # le départ : la droite du front (moindres carrés) ramenée au bord du trait sous les crêtes — l'instant où il a quitté le trait
         n_ = len(mv); mt = sum(r['tf'] for r in mv) / n_; mf = sum(r['fr'] for r in mv) / n_
         pente = sum((r['tf'] - mt) * (r['fr'] - mf) for r in mv) / max(1e-6, sum((r['tf'] - mt) ** 2 for r in mv)); a0 = mf - pente * mt
-        tdep = (mv[0]['yc'] - a0) / max(1e-6, pente)
-        juge('[%s] G · le vert descend au même rythme d\'un bout à l\'autre : aucun arrêt (fenêtres de 50 ms), chaque pas à 0,4–2,2 × la vitesse médiane, parti du trait dès la première image (−25 à +25 ms)' % T,
+        tdep = (mv[0]['yr'] - a0) / max(1e-6, pente)   # v149 (C-156) : contre le bord bas du ruban au lever
+        juge('[%s] G · le vert descend au même rythme d\'un bout à l\'autre : aucun arrêt (fenêtres de 50 ms), chaque pas à 0,4–2,2 × la vitesse médiane, parti du bord bas du ruban dès le lever (−25 à +25 ms)' % T,
              vs and arret == 0 and not hors and -25 <= tdep <= 25,
-             'vitesse médiane %.2f pt/ms · arrêts %d · pas hors bornes %s · parti du trait à %.0f ms · %d images (la première relevée à %s ms)' % (vm, arret, hors[:6], tdep, len(mv), dbt['t']))
+             'vitesse médiane %.2f pt/ms · arrêts %d · pas hors bornes %s · parti du ruban à %.0f ms · %d images (la première relevée à %s ms)' % (vm, arret, hors[:6], tdep, len(mv), dbt['t']))
         print('      (relevé, non jugé : intervalles entre images pendant la descente, au pire %s ms — la sonde lit toute la couche à chaque image et les allonge ; charge %.1f)' % (max(intervalles or [0]), CHARGE))
     else:
         juge('[%s] G · le vert descend au même rythme d\'un bout à l\'autre' % T, False, 'trop peu d\'images relevées (%d)' % len(Dd))

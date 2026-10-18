@@ -129,6 +129,65 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v149 (18 oct. 2026) — RETOURS iPHONE DE TOM SUR v148 : LE I QUI CLIGNOTE DANS L'ONBOARDING, LES NATURES EN GRAS, « TOUT LE MONDE PROMET. TOI, TU TIENS. », LES PHRASES DU GUIDE PLUS HAUT, LA VAGUE DE CRÉATION À LA COULEUR DE L'ÉTAT, L'ANIMATION DANS L'IMAGE QUI SUIT LE LEVER, LA VALIDATION À PLUSIEURS, « GARDER DE CÔTÉ » À DROITE. (Décisions Tom.) Ce bloc CORRIGE v148 (C-149 « garder de côté », C-145 la place des phrases, C-148 le ruban à la validation, C-124 les natures) et v147 (C-118 le départ du rideau).
+> **Validés par Tom : C-141, C-143, C-144, C-146, C-147, C-148. C-139 clos sans invitation animée (le chevron orange suffit). Tranchées : Q513 (le trait du Chiche
+> et du Cercle à 2,5:1, fonds inchangés — `redteam_contraste_trait`, `SEUIL_NAT`), Q533 (en clair, les lettres de « Studio » à la teinte d'Ingénu assombrie
+> jusqu'à 3:1), Q536 (plus de flou ni de fondu en bas de fiche pendant le tracé).**
+> **⚑ C-153 — LE I DE PROMI CLIGNOTE DANS L'ONBOARDING** : même animation, même code, même bleu que le I de l'accueil (`promiBlink 1.15s steps(1,end)`), sur
+> chaque page qui porte le mot-marque en haut à gauche (prénom, parole, trait). « Promi planté ! » et le compte n'en portent pas (le titre PROMI, v146) — Q537.
+> **⚑ C-124 — PROMI, CHICHE, CERCLE DANS L'ONBOARDING : EN GRAS PARTOUT (Atkinson 700) ; en sombre EXACTEMENT `#82AEF8` · `#FFB8D2` · `#C9A8F5` ; en clair la
+> teinte foncée jusqu'à 3:1 sur `#DFCAA4` : `#4870B5` (3,08) · `#9D5E77` (3,05) · `#8262A9` (3,07)** (`natCol`, `_teinte.ajuste`). **« Le reste se découvre
+> en traçant. » devient « Tout le monde promet. Toi, tu tiens. »**, mot pour mot, même place, rôle « liste » (22,3 pt), tracé. Juge : **`redteam_onb_mots.py`**
+> (44 ; 15/42 sur v148).
+> **⚑ C-145 — LES DEUX PHRASES DU GUIDE REMONTENT ENCORE DE 60 pt (centre 312 → 252, ± 4) ; « Studio » × 1,11 (29 → 32,2 pt, rôle « guide-studio » de
+> l'échelle), couleurs inchangées ; aucune ne recouvre une dalle colorée, une icône ni la zone nette** — mesuré ligne de texte par ligne sur le vrai premier
+> lancement (la dalle de la première parole est à 369–519 pt ; en v148 la phrase descendait à ≈ 397 et la touchait). Juges : `redteam_guide` (centre ± 4,
+> Studio, recouvrement), `redteam_onb_mots` (le recouvrement en sombre), `redteam_echelle_onboarding`.
+> **⚑ C-154 — LA VAGUE DE CRÉATION (le ruban de la page +) PREND LA COULEUR DE L'ÉTAT OÙ ENTRE LA PAROLE : « en cours », `#291547`** (toute parole plantée
+> entre « en cours » ; `ETAT_COL` du ruban). **L'amande ne peint que la célébration** (la fiche). Juge : `redteam_ruban` B.
+> **⚑ C-155 — LE LEVER DU DOIGT : L'ANIMATION PART DANS L'IMAGE SUIVANTE. *Les causes, mesurées en WebKit* : ① la plantation attendait 440 ms une
+> « signature » (deux ombres) avant de grandir — retirée : la dalle grandit dès l'image suivante, LINÉAIRE (320 ms) ; ② le lever recomposait la page + qui
+> s'en va (`_ppTout`, 26 à 28 ms) et le clic la recomposait encore 60 ms après (`arme` → `tout`, 32 ms) — plus rien ne la recompose pendant `_tirageActive` ;
+> ③ le rideau naissait dans le rappel d'image de l'instant, après lui et deux images longues (premier mouvement ≈ 110 ms après le lever) — il démarre AU LEVER
+> (`_maree.tot()`, appelé par le clic « tenue »), son horloge avec lui, la phrase s'écrit dans la nappe quand l'instant l'a posée (`phrase()`).** Mesuré : le
+> gestionnaire du lever de la page + 31 → 4 ms ; première image 33 → 6 ms ; la Toile reçoit la parole après le départ (+346 ms). *La règle* : **au lever, on
+> part ; ce qui recompose ce qui s'en va ne tourne plus.**
+> **⚑ C-156 — LA VALIDATION** : ① tenue d'un coup (seul ou la dernière part) : **le rideau part du BORD BAS DU RUBAN tel qu'il est peint au lever**
+> (`_ruban.bas()` → `N.S`) — le ruban et le rideau sont une seule matière ; chaque colonne descend à vitesse constante jusqu'au front validé ; le haut du
+> ruban redescend sur le trait À LA VITESSE DU RIDEAU (≈ 75–100 ms), puis le ruban s'en va sous lui. *La cause de la « vague intermédiaire »* : le rideau
+> partait sous le ruban (51 pt) et n'en sortait qu'après ≈ 80 ms, pendant que le haut du ruban redescendait seul. ② ma part, sans être la dernière : seulement
+> la vague amande sous le trait (`PART_TIENT` 520 ms, puis elle se resserre en 320 ms à vitesse constante), aucun rideau, la fiche reste « en cours ».
+> ③ tout le monde a tracé : une entrée dans le Fil, « Chacun a tracé sa part : « … » » (Q539). ④ **`p.vuTenue = {nom: date ISO}`** (`lot-V149-VALIDATION`,
+> `window._vuTenue`) : posé pour celui qui trace la dernière part ; à la PREMIÈRE ouverture de chacun des autres, le rideau descend sous ses yeux
+> (`_maree.revoir`), puis sa clé est écrite ; ensuite la fiche s'ouvre directement tenue (portage/SPEC-DONNEES §1.11). Juge : **`redteam_validation.py`**
+> (25 ; 8/25 sur v148).
+> **⚑ C-149 — « GARDER DE CÔTÉ » : À DROITE (son bord droit à 24 pt, cote 708), JAMAIS SOULIGNÉ, PENCHÉ DE 5,5° (skewX, comme « Deuxio »), visible aussi
+> pendant le tracé ; caché seulement quand un choix de la phrase est ouvert (la liste des personnes le recouvrirait — Q540).** Actif / inactif : v148.
+> Juge : `redteam_garder` J, K (48 ; 39/48 sur v148).
+> **⚑ C-150, C-151, C-152 (trouvés par la série de v148)** : C-150 était le juge (un `closeAll` refusé dans les 4 s d'un geste dans Peaufiner, C-134 :
+> `_peaufSortie()` d'abord) ; **C-151 : les titres de deux lignes des cartes de l'Index rétrécissent jusqu'à tenir au-dessus de l'état** (`_s4TitresAjuste`,
+> le plus petit pas qui tient, la taille décidée de 24 pt comme départ) — juge **`redteam_titres_cartes.py`** (10 ; 6/10 sur v148) ; C-152 était le juge
+> (`redteam_menu_plus` touchait la pilule avant qu'elle soit posée).
+> **⚑ TROUVÉ PAR LA SÉRIE ET EN REGARDANT, CORRIGÉ** : ① **Q536 n'était réglé qu'à moitié** — la règle d'août `#detailPoster.tracant` floute CINQ nœuds
+> (`#dpTrameCv`, `#dpTete`, `#dAura`, `#dpPromiBody`, `#dpDetails`) ; la sonde, en Chromium, n'en avait vu que deux : la phrase et le titre restaient flous
+> au doigt posé en WebKit. Les cinq sont rendus nets (`redteam_validation` Q). ② **`#instTenue` n'existe pas encore au lever** (l'instant le crée une image
+> plus tard) : la nappe partie au lever ne le trouvait jamais et la phrase de validation manquait — elle le cherche à chaque image tant qu'il manque
+> (`redteam_tenir` H). ③ **un drapeau trop large** : sauter la recomposition de la page + tant que `_tirageActive` (levé 1,5 s) laissait une page +
+> rouverte juste après une plantation sans sa mise en page (`redteam_part` C, D) — un drapeau étroit, `_ppPart`, levé au départ, baissé à la coupe.
+> ④ **une transition CSS commence à son point de départ** : la première image après le lever montrait la dalle à l'échelle 1 — la transition part une
+> image en avance (délai −17 ms). ⑤ **à mi-descente le front gardait la forme de l'onde** (11 pt d'écart) : il s'aplanit dans le premier quart vers une
+> ligne partie du point le plus bas du ruban (chaque colonne ne fait que descendre). ⑥ `redteam_contraste_trait` lisait la nature de la page + comme « ? »
+> (seuil 3 au lieu de 2,5). *La règle* : **un état « pendant le geste » se regarde au doigt posé, en WebKit — pas sur une sonde Chromium au repos.**
+> ⚠ **`redteam_air` n'est PAS refigé** (la règle : série complète avant tout refigeage) : l'air est intact sur 774 paires ; 64 paires ne sont plus
+> retrouvées, toutes nées des décisions (« garder de côté » à droite : 32 ; titres des cartes, C-151 : 24) et des dates du Peaufiner (8, C-018).
+> ⚠ **Le Mac a tourné à une charge de 8 à 720 tout le lot** (la session ENTRE : émulateur, simulateur, `parcours`) : aucune cadence jugée ;
+> `redteam_flash` B1/B2, `redteam_trait` « tenir rapide », `redteam_joignable` (Cercle défilé) rougissent par moments sous cette charge — v148 aussi,
+> à la même charge ; à rejouer au calme.
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v149.py`) : `redteam_guide` (centre 252 ± 4, Studio, Q533,
+> le recouvrement ; les zones de netteté évitent la nouvelle place de la phrase), `redteam_ruban` (B : `#291547` à la page +), `redteam_garder` (G sans
+> soulignement, J, K), `redteam_tenir` (G : le départ se lit au bord bas du ruban), `redteam_echelle_onboarding` (« guide-studio »), `redteam_onboarding_texte`, `redteam_onb_sorties`, `redteam_onboarding` (la phrase
+> de fin), `redteam_contraste_trait` (Q513), `redteam_cercle_couleur` (C-150), `redteam_menu_plus` (C-152).
+
 ### ⚑ v148 (16 oct. 2026) — CLÔTURE DE LA SÉRIE : LES RONDS ORANGE RETIRÉS, LA PHRASE DE VALIDATION AU « ! », LE RIDEAU À VITESSE CONSTANTE, LE RUBAN AMANDE, LES CARTES EN CONSTRUCTION DE FICHE, « GARDER DE CÔTÉ », « PROMI PLANTÉ ! » PAS À PAS, LES TRANSITIONS EN FLAQUES, LES PHRASES DU GUIDE, L'ORDRE DU GUIDE. (Décisions Tom.) Ce bloc CORRIGE v147 (l'échelle, C-141 « cellule par cellule », le guide « toucher ailleurs fait avancer », C-118 l'épaississement), v146 (« Promi planté ! » et le reste au toucher, la marée) et v144 (le guide).
 > **Validés par Tom : C-088 (Ritournelle), C-094 (le guide en flaques, « flou ok »), C-116 (les commentaires), C-129 (pas d'emoji), C-135 (la Pelote tout de
 > suite), C-142 (le menu du +, « parfait » : on fige) ; et, dans l'onboarding, le flou et l'arrivée douce des encarts à leur place (« top de top, on garde ») :
@@ -2963,6 +3022,11 @@ python3 redteam_garder.py      # 18 — v119 (Q370), repris en v121 : « garder 
 python3 redteam_ronds.py       # 40 — v148 (C-143) : aucun rond orange de signature (WebKit : l'animation battait l'opacité nulle), le chevron reste, aucune invitation animée (7 s). Rouge sur v147.
 python3 redteam_ruban.py       # 36 — v148 (C-148) : plus de rectangle au seuil ; un ruban amande plein qui suit l'onde, 75–85 % de 118 pt, bords légèrement irréguliers ; le mot jamais coupé. WebKit. Rouge sur v147.
 python3 redteam_ordre_guide.py # 26 — v148 (C-146) : au lancement le Studio ; trois touchers ailleurs = trois rappels (la phrase du Studio réécrite), jamais le + avant le Studio ; reprise au lancement ; Studio refermé avec ou sans changement → le +. Rouge sur v147.
+python3 redteam_validation.py  # 25 — v149 (C-155, C-156) : du lever à la fiche tenue — seul, la dernière part, ma part seule (aucun rideau), tout le monde a tracé (le Fil,
+                               #   « déjà vu »), première et seconde ouverture, rechargement ; la création (la dalle grandit dès l'image suivante) ; Q536 (rien de flou au doigt posé). WebKit. 8/25 sur v148.
+python3 redteam_onb_mots.py    # 44 — v149 (C-153, C-124, C-145) : le I qui clignote (même code que l'accueil), Promi/Chiche/Cercle (couleur, gras) à chaque page, la ligne
+                               #   « Tout le monde promet. Toi, tu tiens. », la phrase du guide sans recouvrement — clair et sombre, vrai parcours. 15/42 sur v148.
+python3 redteam_titres_cartes.py # 10 — v149 (C-151) : un titre de deux lignes d'une carte d'Index n'est ni rogné ni collé à l'état, le plus petit pas qui tient. 6/10 sur v148.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;

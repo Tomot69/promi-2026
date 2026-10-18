@@ -33,7 +33,8 @@ TEXTES = {   # relevés sur la version d'avant v140 — mot pour mot
  'parole': 'PromiCamille, donc. Enchanté.Quid d’un Promi à toi-même ?Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.',
  'trait': 'PromiCamille, donc. Enchanté.Quid d’un Promi à toi-même ?Je me promets de marcher une heurePetite ou grande promesse, elle compte.trace pour planter',
  'fin': 'Promi planté !',   # ⚑ v148 (Tom, C-124 §9.1) : « au départ, le titre seul » ; chaque toucher fait venir un paragraphe (v146 : le titre et le premier paragraphe ensemble)
- 'fin-reste': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée.Deuxio, un Chiche, c’est un coup de culot.Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Le reste se découvre en traçant.La suite t’appartient.',
+ # ⚑ v149 (Tom, C-124) : « Le reste se découvre en traçant. » devient « Tout le monde promet. Toi, tu tiens. » (original : sauvegardes/redteam_onb_sorties-avant-v149.py)
+ 'fin-reste': 'Promi planté !Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.Primo, un Promi, c’est ta parole donnée.Deuxio, un Chiche, c’est un coup de culot.Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.Tout le monde promet. Toi, tu tiens.La suite t’appartient.',
  'compte': 'Garder ta ToilePour la retrouver sur un autre téléphone.Continuer avec AppleContinuer avec GooglePlus tardEn continuant, tu acceptes les Conditions et la Politique de confidentialité.',
 }
 PRINCIPE = ['Promi garde ta parole', 'Une promesse s’écrit en une phrase', 'd’un trait du doigt', 'un second trait le dit', 'Une toute petite pour commencer', 'C’est parti']   # les textes de l'étape retirée

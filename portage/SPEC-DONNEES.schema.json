@@ -435,6 +435,24 @@
         "note": {
           "type": "string"
         },
+        "parts": {
+          "type": "object",
+          "description": "v145 (C-115) : qui a tracé sa part, et quand — {nom: date ISO} ; 'moi' pour soi",
+          "additionalProperties": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "x-source": "lot-V145-PARTS"
+        },
+        "vuTenue": {
+          "type": "object",
+          "description": "v149 (C-156) : qui a vu la parole devenir tenue, et quand — {nom: date ISO} ; absent : rien à rejouer",
+          "additionalProperties": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "x-source": "lot-V149-VALIDATION"
+        },
         "comments": {
           "type": "array",
           "items": {

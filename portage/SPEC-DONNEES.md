@@ -111,6 +111,7 @@ const P=(t,w,d,i,s,n,fr)=>({id:nid++,title:t,who:w,due:d,intensity:i,status:s,nu
 | `note` | chaîne | le mot joint à la parole | page + `#fNote` (`app.html:3192`), `#dNote` (`app.html:3312`), gardé de côté (`app.html:13612`) |
 | `comments` | tableau `[{t, d, by}]` | commentaires : texte, date ISO, auteur (`USER.name` ou `'moi'`) | `app.html:3315–3317` ; **v145 : la ligne « Un mot… » de la fiche (`lot-V145-COMM`) — voir §1.9** |
 | `parts` | objet `{nom: date ISO}` | **v145 (C-115) — LA PART DE CHACUN.** Qui a tracé sa part d'une parole qui engage plusieurs personnes, et quand. La clé est le prénom (`'moi'` pour soi). Absent = personne n'a encore tracé. `status` ne devient `'tenu'` qu'à la dernière part. Voir §1.8. | `lot-V145-PARTS` (`window._parts.trace`) |
+| `vuTenue` | objet `{nom: date ISO}` | **v149 (C-156) — LE « DÉJÀ VU » D'UNE PAROLE TENUE.** Qui a vu la parole devenir tenue, et quand. Posé quand elle devient tenue : la personne qui trace la dernière part l'a vue sous ses yeux. Absent : la parole ne rejoue rien (tenue avant v149, ou tenue seul). Présent sans MA clé : à ma prochaine ouverture le rideau de la validation descend une fois sous mes yeux, puis ma clé est écrite (§1.11). | `lot-V149-VALIDATION` (`window._vuTenue`), la dernière part d'un autre : `_parts.arrive` |
 | `files` | tableau `[{name, type, size, by}]` | pièces jointes (noms seulement dans le prototype) | page + (`app.html:3195`), fiche (`app.html:9267`) ; forme : `app.html:9120` |
 | `relances` | entier | nombre de relances envoyées | `#actRelance` (`app.html:3313`) |
 | `urg` | entier | (ancien, **MASQUÉ PAR DÉCISION** — « Urgent supprimé », CLAUDE.md §9 ; « urgent » est un terme banni §2). Encore écrit à la plantation (`app.html:3192`). **Ne pas porter.** | — |
@@ -296,6 +297,17 @@ COMMENTAIRES est la première rubrique après le trait. Rien de plus n'est stock
   chaîne qui contient l'un de ces caractères). La liste : `\p{Extended_Pictographic}`, `\p{Emoji_Modifier}` (teintes de peau), `\p{Regional_Indicator}`
   (drapeaux), U+200D (ZWJ), U+FE0E, U+FE0F (sélecteurs), U+20E3 et la touche entière `[0-9#*]\uFE0F?\u20E3`, U+E0020–U+E007F (étiquettes). Champs : le titre,
   le nom d'une personne, le prénom, un mot, la note, le nom d'un Cercle.
+
+### 1.11 La validation à plusieurs, vue par chacun (v149 — C-156)
+
+- **Ma part, sans être la dernière** : `parts.moi` est écrit ; la parole reste « en cours » ; à l'écran, seulement la vague amande sous le trait (pas de rideau).
+- **La dernière part** (la mienne ou celle d'un autre) : `status` = 'tenu'. **Une entrée dans le Fil de CHACUN** : « Chacun a tracé sa part : « titre » » (mot à
+  valider, Q539). Swift + Firebase : un événement par participant, écrit par la fonction qui constate la dernière part (jamais par le client d'un autre).
+- **Le « déjà vu »** : `vuTenue = {uid: date ISO}`, une clé par personne, écrite par elle seule. Le dernier à tracer écrit la sienne au même instant que sa part.
+  Chaque autre participant, à sa **première ouverture** de la fiche après ce moment : le rideau descend sous ses yeux, puis la fiche est tenue ; sa clé est écrite
+  À L'OUVERTURE (même s'il referme aussitôt, il ne la revoit pas). Ouvertures suivantes : la fiche s'ouvre directement tenue. Firebase :
+  `paroles/{id}/vuTenue/{uid}`, création seulement, par `uid` lui-même.
+- Une parole tenue sans `vuTenue` (données d'avant v149, ou tenue seul sous ses yeux) ne rejoue rien.
 
 ## 2. Le Chiche — ce qui lui est propre
 
@@ -703,6 +715,7 @@ resynchronise depuis les paroles (`Toile.sync(ids)`), et « un semis est déterm
 | **Achats** | drapeaux en mémoire | StoreKit + droit d'accès serveur, essai, restauration (§10) |
 | **Commentaires, relances, pièces jointes** | locaux, `by` = un prénom | partagés entre les personnes de la parole |
 | **LA PART DE CHACUN** (v145, C-115) | `p.parts = {prénom: date}` écrit localement ; `?parts=1` pour jouer la part d'un autre | une part par personne (`parts/{uid}`), écrite par elle seule, jamais défaite ; « tenu » déduit de la présence de toutes les parts (§1.8) |
+| **LE « DÉJÀ VU » D'UNE PAROLE TENUE** (v149, C-156) | `p.vuTenue = {prénom: date}` écrit localement ; la part d'un autre arrive par `_parts.arrive` | `vuTenue/{uid}` écrit par chacun à sa première ouverture ; l'entrée du Fil « Chacun a tracé sa part » envoyée à chaque participant par le serveur |
 | **Une parole à plusieurs destinataires** (v145) | `who` = prénoms séparés par `', '` | une liste d'identifiants de personnes |
 
 ---

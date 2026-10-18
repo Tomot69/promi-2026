@@ -8734,3 +8734,23 @@ flaques, C-141 §10). **Restent ouvertes : Q513, Q514** (le contraste du trait �
 - **Q536 — À TRANCHER (trouvé en composant la capture du ruban)** : pendant qu'on trace, le bas de la fiche (les Noyaux, la phrase, l'état) se FLOUTE de 7 pt et
   passe à demi transparent en 0,3 s (`#detailPoster.tracant #dpDetails`, une règle d'août, la même en v147). La règle de tête (C-130) refuse le flou et le
   fondu. Rien n'est changé dans ce lot (tu ne l'as pas demandé). Proposition : le retirer — le bas de la fiche reste net pendant le tracé.
+
+### v149 (18 oct. 2026) — retours iPhone de Tom sur v148
+**Tranchées par Tom en tête du lot** : **Q513** — le seuil du trait est 2,5:1 pour le Chiche et le Cercle, sans toucher aux fonds (`redteam_contraste_trait`,
+`SEUIL_NAT`) ; **Q533** — en clair, les lettres de « Studio » gardent la teinte d'Ingénu, assombries jusqu'à 3:1 (`#4971B6`, `#9E5F77`, `#8363AA`, `#7C7158`) ;
+**Q536** — plus de flou ni de fondu en bas de fiche pendant le tracé (`lot-V149-css`). **Validés : C-141, C-143, C-144, C-146, C-147, C-148 ; C-139 clos sans
+invitation animée (le chevron orange suffit).**
+- **Q537 — À TRANCHER (C-153)** : « Promi planté ! » et le panneau du compte n'ont pas de mot-marque en haut à gauche (le grand titre PROMI le remplace depuis
+  v146) : le I clignote sur les trois pages qui le portent (prénom, parole, trait). Faut-il faire paraître le mot-marque sur ces deux pages aussi ?
+- **Q538 — À VALIDER (C-124, « montre-les-moi »)** : en clair, Promi `#4870B5` (3,08:1), Chiche `#9D5E77` (3,05:1), Cercle `#8262A9` (3,07:1) sur le fond
+  `#DFCAA4` — la teinte OKLCH de chaque nature gardée à 0,2–0,4° près ; en sombre, `#82AEF8`, `#FFB8D2`, `#C9A8F5` tels quels. Les trois en gras partout.
+- **Q539 — À VALIDER (mot manquant, C-156 §7.3)** : l'entrée du Fil quand tout le monde a tracé : « Chacun a tracé sa part : « … » » (le plus sobre, dans le
+  lexique de « à chacun de tracer sa part »).
+- **Q540 — À SAVOIR (C-149)** : « garder de côté » est visible partout dans la page +, pendant le tracé compris, SAUF quand un choix de la phrase est ouvert
+  (la liste des personnes descend jusqu'à ≈ 700 pt et le recouvrirait).
+- **Q541 — À VALIDER (C-156 §7.2)** : ma part tracée sans être la dernière — la vague amande sous le trait reste 520 ms, puis se resserre sur le trait en
+  320 ms, à vitesse constante (deux durées que le brief ne donnait pas).
+- **Q542 — À SAVOIR (C-156 §7.4)** : une parole tenue avant v149, ou tenue seul sous ses yeux, ne rejoue jamais le rideau ; seule une parole devenue tenue par
+  la dernière part d'un AUTRE le rejoue, une fois, à ma première ouverture (`p.vuTenue`, portage/SPEC-DONNEES §1.11).
+- **Q543 — À TRANCHER (C-140, trouvé par la série)** : sur une carte du Fil d'un Chiche à plusieurs, la part tracée (`#00341A`) ne fait que 1,77:1 sur le corps
+  du Chiche (`#7C3F58`) — sous les 2,5:1 de Q513 ; et quelques pinceaux d'une fiche Chiche (Peigné, Tressé) ont un trait de la couleur du corps. Rien n'est changé.

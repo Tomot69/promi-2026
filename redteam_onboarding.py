@@ -32,8 +32,9 @@ Usage :  python3 redteam_onboarding.py
 # ⚑ v146 (Tom, 11.4) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_onboarding-avant-v146.py) : « C'est planté. » devient « Promi planté ! » ;
 #   le message ne montre d'abord que le titre et la phrase de ton ; le reste vient au PREMIER toucher (lignes courtes), le second mène au compte.
 TEXTE_FIN = ['Promi planté !', 'Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.']
+# ⚑ v149 (Tom, C-124) : « Tout le monde promet. Toi, tu tiens. » remplace « Le reste se découvre en traçant. » (original : sauvegardes/redteam_onboarding-avant-v149.py)
 TEXTE_RESTE = ['Primo, un Promi, c’est ta parole donnée.', 'Deuxio, un Chiche, c’est un coup de culot.', 'Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.',
-               'Le reste se découvre en traçant.', 'La suite t’appartient.']
+               'Tout le monde promet. Toi, tu tiens.', 'La suite t’appartient.']
 DEUXIO_ANGLE = 3.0
 
 import io, json, re, sys, time
