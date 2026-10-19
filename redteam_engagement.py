@@ -10,7 +10,7 @@ Chromium sans tête, sur le serveur du projet (http://127.0.0.1:8752 — la règ
       Liste blanche explicite, une ligne par exception, avec sa justification.
   R2  ABSENCE ET TEMPS. Sur `TEXTES_ENGAGEMENT` : depuis|longtemps|toujours pas|encore rien|tu n'as|oubli|manqu|retard|hier|reviens|revenu|attend.
   R3  AUCUN CHIFFRE SUR LA PELOTE. Aucun nœud de texte visible portant un chiffre dans le cadre de la Pelote (sa boîte, silhouette comprise).
-  R4  INVARIANCE DU MOMENT TENIR — INACTIF AVANT E3.
+  R4  INVARIANCE DU MOMENT TENIR — ⚑ ACTIF DEPUIS E3 (v153) : `redteam_tenir_e3.py --r4` (A1 : le moment est le rideau validé).
   R5  RIEN NE SE THÉSAURISE. Les clés de `localStorage` avant et après trois « tenir » : aucune clé nouvelle hors liste blanche.
   R6  SORTIE À UN GESTE. À chaque étape de l'onboarding, une sortie visible, activable en un toucher.
   R7  ÂGE INVISIBLE. Sur la Toile et sur une fiche à tenir : aucun texte visible `il y a | depuis N | N j(ours)` (les libellés d'horizon en liste blanche).
@@ -141,7 +141,13 @@ with sync_playwright() as p:
     t('R3 · aucun chiffre sur la Pelote (dans son cadre)', bool(r3) and not r3['dedans'], 'dans le cadre : %s · cadre %s' % (r3 and r3['dedans'], r3 and r3['boite']))
     print('     R3 · à savoir : ailleurs sur l\'écran de l\'Aura, des textes portent un chiffre → %s' % (r3 and r3['hors']))
     # ── R4
-    inactif('R4 · invariance du moment « tenir »', 'INACTIF AVANT E3')
+    # ⚑ E3 (v153, C-077) — R4 EST ACTIF : joué au vrai doigt par `redteam_tenir_e3.py --r4` (deux paroles qui diffèrent sur tout, le rideau lu sur ses
+    #   pixels, deux passes de chacune) ; les durées ne se jugent qu'au calme (C-137) — au-dessus, la forme seule, et le relevé.
+    import subprocess as _sp
+    r4 = _sp.run([sys.executable, 'redteam_tenir_e3.py', '--r4'] + (['--fichier=' + URL.rsplit('/', 1)[-1]] if not URL.endswith('/app.html') else []), capture_output=True, text=True, timeout=900)
+    l4 = [l for l in r4.stdout.splitlines() if l.strip()[:6] in ('OK  R4', 'KO  R4', '--  R4')]
+    t('R4 · invariance du moment « tenir » (redteam_tenir_e3 --r4 : mêmes étapes, mêmes instants à 16 ms près au calme)', r4.returncode == 0 and any(l.startswith('OK') for l in l4), ' | '.join(l[:150] for l in l4))
+    for l in l4: print('     ' + l.strip()[:260])
     # ── R7
     pg.evaluate("()=>{ try{closeAll()}catch(e){} document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); }"); pg.wait_for_timeout(900)
     toile = pg.evaluate(TEXTES)

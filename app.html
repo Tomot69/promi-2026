@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v152', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v153', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -20524,8 +20524,13 @@ var CREMEETAT='#F7F0DE';
     if(!L) L=[function(){ if(window._tenirApres) window._tenirApres(); }, function(){ if(window._repasseSombre) window._repasseSombre(); }];
     window._enFond(L); }
   window._tenirRegle={AMANDE:2000};   /* v144 (C-111) : la durée de l'instant amande, en ms — décidée par Tom (le double de 1 000) */
+  /* ⚑ E3 (v153, ENGAGEMENT.md E3 point 3 avec l'amendement A1, C-077) — « Réduire les animations » : la fiche passe TENUE sans rideau, dans un seul
+     changement d'aplat, sans fondu. Aucun instant (ni « Parole tenue ! » posé deux secondes, ni « juste après ») : le clic « tenue » repeint la fiche
+     ordinaire dans son état tenu, une fois, et c'est tout. */
+  function _reduitTenir(){ try{ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
   window._instantTenue=function(){
     var dp=document.getElementById('detailPoster');
+    if(_reduitTenir()){ window._instant=null; finAnime(); return; }
     if(!dp||!dp.classList.contains('show')){ finAnime(); return; }
     if(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee')){ window._instant=null; finAnime(); return; }
     /* le clic vient de repeindre la fiche dans cet état (l'instant était armé en capture) : on ne repose que si ce n'est pas fait */
@@ -20587,9 +20592,13 @@ var CREMEETAT='#F7F0DE';
     /* v124 : l'instant est armé ICI, en phase de capture — avant que le clic ne repeigne la fiche. Elle se repeint alors directement
        dans l'état « le trait se referme » (la dalle de la fiche tenue ordinaire n'est plus rendue pour être recouverte 40 ms après). */
     try{ var dp=document.getElementById('detailPoster');
-      if(dp && dp.classList.contains('show') && !(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee'))){ window._instant='referme'; window._tenirAnime=true;
+      if(dp && dp.classList.contains('show') && !(dp.classList.contains('dp-nuee')||dp.classList.contains('dp-mode-nuee'))){
+        /* ⚑ E3 (v153) : le moment « tenir » commence — le crochet du retour haptique (vide aujourd'hui ; Core Haptics au portage Swift, C-022) */
+        try{ if(window.promiHaptique) window.promiHaptique('tenir'); }catch(_){}
+        if(_reduitTenir()){ window._instant=null; }   /* E3 point 3 : mouvement réduit — ni instant, ni rideau ; la fiche passe tenue d'un coup */
+        else { window._instant='referme'; window._tenirAnime=true;
         /* ⚑ v149 (Tom, C-155) : le rideau part AU LEVER, son horloge avec lui — l'instant se pose dans l'image suivante, sous lui */
-        try{ if(window._maree && window._maree.tot) window._maree.tot(); }catch(_){}
+        try{ if(window._maree && window._maree.tot) window._maree.tot(); }catch(_){} }
         /* ⚑ v149 (Tom, C-156) : cette personne a VU sa parole devenir tenue — sa prochaine ouverture ne rejoue pas le rideau */
         try{ if(window._vuTenue && typeof cur!=='undefined' && cur) window._vuTenue.marque(cur); }catch(_){} } }catch(_){}
     requestAnimationFrame(function(){ try{ window._instantTenue(); }catch(_){} });
@@ -37484,6 +37493,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 /* ⚑ v150 (Tom, C-124) : « Tout le monde promet. Toi, tu tiens parole. » alignée à DROITE ; « La suite t'appartient. » CENTRÉE */
 #onbV#onbV .onbv-fin .onbv-l-fin{text-align:right;text-wrap:balance}   /* deux lignes égales : la coupe tombe entre les deux phrases (« … promet. / Toi, … »), pas entre « tu » et « tiens » */
 #onbV#onbV .onbv-fin .onbv-l-der{text-align:center}
+/* ⚑ v153 (Tom, C-165) — « Dans « La suite t'appartient. », le mot « T'APPARTIENT. » passe en couleur, en clair comme en sombre : mot-clé bleu, #0E78F2 en
+   clair et #82AEF8 en sombre. Le reste de la phrase ne change pas. » (Q548 tient pour « La suite », crème en sombre.) */
+#device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app{font-style:normal;color:#82AEF8;-webkit-text-fill-color:#82AEF8}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app{color:#0E78F2;-webkit-text-fill-color:#0E78F2}
 #onbV#onbV .onbv-fin .onbv-titre{white-space:nowrap}
 #onbV#onbV .onbv-fin .onbv-k{font-size:calc(var(--ech-cle)*var(--onbe))}
 #onbV#onbV .onbv-fin .onbv-l-der .onbv-k{font-size:calc(var(--ech-cle-fin)*var(--onbe))}
@@ -37713,7 +37726,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
           '<div class="onbv-l"><b class="onbv-k onbv-deux">Deuxio,</b> un '+nat('Chiche')+', c’est un coup de culot.</div>'+
           '<div class="onbv-l"><b class="onbv-k">Tertio,</b> un '+nat('Cercle')+', c’est tout cela à la fois, mais à plusieurs.</div>'+
           '<div class="onbv-l onbv-l-fin">Tout le monde promet. Toi, tu tiens parole.</div>'+   /* ⚑ v149 (Tom, C-124) : remplace « Le reste se découvre en traçant. », même place, même rôle (liste) ; ⚑ v150 (Tom) : « … tu tiens parole. », alignée à droite */
-          '<div class="onbv-l onbv-l-der"><b class="onbv-k">La suite t’appartient.</b></div>'+
+          '<div class="onbv-l onbv-l-der"><b class="onbv-k">La suite <i class="onbv-app">t’appartient.</i></b></div>'+   /* ⚑ v153 (Tom, C-165) : « T'APPARTIENT. » en couleur, mot-clé bleu, #0E78F2 en clair, #82AEF8 en sombre ; le reste de la phrase ne change pas */
         '</div></div>'+
       '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">'+
       /* ⚑ v141 (Tom, 10 oct. 2026, C-075) — gardé de v140 : « un “Plus tard” à chaque étape, mais sans soulignement, et deux fois plus petit ».
@@ -37793,13 +37806,31 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       /* ⚑ E2 (v140, C-075) — après l'identification : l'étape qui dit le principe, puis la VRAIE page + (`lot-E2`). L'écran « parole et trait »
          de l'onboarding, sa plantation simulée et son message de fin ne sont plus joués (tableau garder / supprimer / remplacer : ENGAGEMENT-E2.md). */
       if(window._e2 && window._e2.principe){ etape='principe'; try{ var _bi=document.getElementById('onbIn'); if(_bi) _bi.blur(); }catch(_){} window._e2.principe(rejeu); }
-      else allerParole(true);
+      /* ⚑ v153 (Tom, C-164) — « une fois le prénom validé, le clavier reste ouvert et gêne l'apparition du texte de la page suivante » : à la validation
+         le champ perd le focus (le clavier se ferme) ; la page de la parole ne trace ses textes qu'une fois le clavier ENTIÈREMENT redescendu (fin du
+         redimensionnement de visualViewport, `apresClavier`). La parole se saisit ensuite en touchant la phrase, comme partout. */
+      else { var _bp=document.getElementById('onbIn'); try{ if(_bp) _bp.blur(); }catch(_){} allerParole(false, true); }
     } else if(etape==='parole'){
       if(!parole.trim()){ focus(); return; }
       var i=document.getElementById('onbIn'); if(i) i.blur(); peindrePhrase();
     }
   }
-  function allerParole(garderClavier){
+  /* ⚑ v153 (C-164) — attendre que le clavier soit redescendu : tant que la hauteur visible (visualViewport) est en deçà de la fenêtre, ou qu'elle a bougé
+     dans les 160 dernières ms, on attend ; 1,6 s au plus. Sans clavier ouvert (banc, rejeu), tout de suite. `window._onbClavier` garde les instants
+     (le juge lit : la dernière variation de la hauteur, le premier trait de lettre). */
+  function apresClavier(fn){
+    var vv=window.visualViewport, t0=performance.now(), dernier=t0, fait=false, J=window._onbClavier={blur:t0, resize:[], fin:null};
+    function haut(){ var w=window.visualViewport; return w ? w.height*(w.scale||1) : window.innerHeight; }
+    function ouvert(){ return haut() < window.innerHeight-60; }
+    function fin(){ if(fait) return; fait=true; try{ if(vv) vv.removeEventListener('resize', onR); }catch(_){ } J.fin=performance.now(); fn(); }
+    function onR(){ dernier=performance.now(); J.resize.push([Math.round(dernier-t0), Math.round(haut())]); }
+    if(!vv || !ouvert()) return fin();
+    vv.addEventListener('resize', onR);
+    (function veille(){ if(fait) return; var n=performance.now();
+      if(n-t0>1600 || (!ouvert() && n-dernier>=160)) return fin();
+      requestAnimationFrame(veille); })();
+  }
+  function allerParole(garderClavier, attendreClavier){
     etape='parole'; concept(false);
     /* ⚑ v147 (Tom, 15 oct. 2026, C-124 §4) — « Tom, donc. » RESTE À SA HAUTEUR (184 pt, celle de v146 sur une ligne) ; Tom enrichit la page, mot pour
        mot : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » · « Petite ou grande promesse, elle compte. ». Tout ce qui suit descend
@@ -37809,7 +37840,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var q=document.getElementById('onbQuid'); if(q){ q.innerHTML='Quid d’un '+nat('Promi')+' à <span style="white-space:nowrap">toi-même\u00a0?</span>'; q.style.display='block'; }
     var so=document.getElementById('onbSous'); if(so) so.style.display='block';
     peindrePhrase(); if(garderClavier) focus();
-    traceTextes([d, q, so]);
+    if(attendreClavier){ [d, q, so].forEach(function(e){ if(e && TRACE_ONB && window.TraceLettres && !reduitOnb()) e.style.visibility='hidden'; }); apresClavier(function(){ traceTextes([d, q, so]); }); }
+    else traceTextes([d, q, so]);
   }
 
   /* ── LE TRAIT : celui d'une fiche par défaut — même onde, même chevron, même épaisseur ──
@@ -38029,7 +38061,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function traceTextes(L, apres){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; }); if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ L.forEach(function(e){ e.style.visibility='visible'; }); if(apres) apres(); return; }
     L.forEach(function(e){ e.style.visibility='hidden'; });
     (function un(i){ if(i>=L.length){ if(apres) apres(); return; } var e=L[i]; e.style.visibility='visible';
-      try{ var c=window.TraceLettres.trace(e, null, {cps:50, depart:'h'}); e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ }
+      try{ var c=window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (22 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ }
       un(i+1); })(0); }
   window._onbTraceTextes=traceTextes;
   function decouvre(el, ms, apres){ var t0=performance.now(); el.style.clipPath='inset(0 100% 0 0)'; el.style.visibility='visible';
@@ -40584,7 +40616,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       /* v147 (§10.2 : « aucun élément voisin n'est découvert ») : à droite, la marge s'arrête 0,8 pt avant l'icône de l'Aura */
       try{ var va=vu(au); if(va && va[2]>2) pr=Math.max(6, Math.min(10, va[0]-(bb[0]+bb[2])-0.8)); }catch(_){ }
       return {b:bb, marge:GD.MARGE_STUDIO||5, o:{creux:4, plafond:[10,10,pr,10], dans:dansBarre()}}; }
-    var p=boite(pl); if(p[2]<8) return null; return {b:p, marge:GD.MARGE_PLUS||5, o:{creux:4, rond:1, dans:dansBarre()}}; }   /* v147 : le + est rond — sa zone suit le disque */
+    var p=boite(pl); if(p[2]<8) return null; return {b:p, marge:GD.MARGE_PLUS||5, o:{creux:4, rond:1, dans:dansBarre(), marge0:7, lobe:2.3}}; }   /* v147 : le + est rond — sa zone suit le disque */   /* ⚑ v153 (chef de chantier, Q553, C-163) : « Tom refuse le rond » — autour du +, la marge va de 4 à 10 pt (7 ± 2,3, souffle compris : 4,5 à 9,5) pour des lobes de 9 à 10 % */
   /* la barre, telle qu'on la voit (un rectangle aux bouts arrondis) : la zone nette reste 5 pt en deçà de son contour */
   function dansBarre(){ var ba=document.querySelector('#device .acc-barre'); if(!ba) return null; var b=boite(ba); if(!b || b[2]<20) return null; return {b:b, r:Math.min(b[3]/2, parseFloat(getComputedStyle(ba).borderTopLeftRadius)||b[3]/2), retrait:5}; }
   /* la phrase : les mots de Tom, tels quels ; ses mots-clés et ses noms de nature sont enveloppés, jamais changés */
@@ -40616,7 +40648,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     return out; }
   function posePhrase(g, quoi){ var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.innerHTML=phraseHTML(quoi); [].forEach.call(p.querySelectorAll('*'), function(e){ eng(e,'guide-phrase'); }); g.appendChild(p);
     var h=p.offsetHeight||80; p.style.top=Math.round(372-120-h/2)+'px';   /* v147 (Tom, §10.4) : 1 cm (60 pt) plus haut ; ⚑ v149 (Tom, C-145) : « remonte encore d'UN cm réel, 60 pt ± 4, PAS PLUS » — centre 312 → 252 */
-    if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {cps:50, depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; } }
+    if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; } }
     return p; }
   /* ⚑ v148 (Tom, 16 oct. 2026, C-146) — « Tant que le Studio n'a jamais été ouvert, toucher ailleurs montre la phrase de rappel — choisir son monde — et
      SEULEMENT elle, autant de fois qu'on touche ailleurs. Jamais la phrase du + avant le Studio. » Le rappel : la phrase du Studio (les mots de Tom, tels
@@ -41110,6 +41142,14 @@ window._noms=(function(){
   document.addEventListener('pointerup', function(e){ if(e.pointerType==='touch') return; fin(); }, true);
   window._peaufiner={ouvert:ouvert, refus:function(){ return window._peaufRefus.slice(); }};
 })();
+</script>
+<script id="lot-E3-HAPTIQUE">
+/* ⚑ E3 (v153, ENGAGEMENT.md E3 point 4, C-077 ; C-022) — LE CROCHET DU RETOUR HAPTIQUE. `promiHaptique(nom)` est appelé au DÉBUT du moment, avec son nom :
+   aujourd'hui 'tenir' (au lever du doigt qui ferme le trait, quand le rideau part — et, sous « Réduire les animations », quand la fiche passe tenue).
+   La fonction est VIDE, et elle le reste dans le prototype : Safari iOS n'implémente pas `navigator.vibrate` — sur l'iPhone le prototype ne vibre pas,
+   quel que soit le code. Le motif (intensité, netteté, durée) appartient au chantier haptique (C-022, conversation dédiée) et sera écrit en Core Haptics
+   au portage Swift (`CHHapticEngine`, un motif par nom). Un appel ne doit jamais rien coûter ni rien bloquer. */
+window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics au portage Swift (C-022) */ };
 </script>
 <script id="lot-V146-MAREE">
 /* ⚑ v146 (Tom, 14 oct. 2026, C-118) — TENIR : LA VARIANTE A (« LA MARÉE »), CORRIGÉE, DANS L'APP. « Plus de liseré, de filet, ni de jour ouvert sous le

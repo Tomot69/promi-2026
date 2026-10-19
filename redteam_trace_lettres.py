@@ -23,7 +23,20 @@ Ce que ce juge porte EN DUR :
 Le verdict de ①, ② et ⑥ vient de CAPTURES (WebKit, 390 × 844, échelle 3 — banc_tom) ; celui de ③, ④, ⑤ de la géométrie des chemins que le module
 rend (TraceLettres.parcours), confrontée à la police elle-même (fontTools) — jamais d'une valeur que les données déclarent sur elles-mêmes.
 
+⚑ v153 (Tom, C-125, RÉCIDIVE : « les lettres font pof, elles apparaissent l'une après l'autre ; ce n'est pas le tracé demandé ; AUCUN flou, AUCUN dégradé,
+AUCUNE zone abstraite ») — CE JUGE N'AVAIT RIEN VU, et voici pourquoi : il ne regardait le tracé qu'en PAS À PAS (`va(p)`, 40 étapes) ou en temps réel
+à 50 caractères par seconde sans compter les images ; or à 50 car/s une lettre durait ≈ 20 ms, une image à 60 Hz : elle paraissait d'un coup. Et il ne
+mesurait la forme du front que par « pas de plage d'alpha intermédiaire » — un coin découpé en triangles (le « g » d'Atkinson) y passait. Ajouté :
+  ⑦ LA VITESSE, DANS L'APP (banc comme Tom, le vrai onboarding) : 20 à 25 caractères par seconde (Tom ; défaut 22), mesurée sur l'écran ; `?cps=12` la
+     règle (≈ 12) ;
+  ⑧ PAS DE « POF » : en temps réel, chaque lettre est EN COURS de tracé pendant 30 ms au moins (médiane ≥ 40 ms) — on la voit se constituer ;
+  ⑨ LA GÉOMÉTRIE, image par image, sur o, s, g, en Gilbert ET en Atkinson (les deux polices affichées) — lue sur les pixels du canevas, confrontée au
+     chemin de la lettre (TraceLettres.parcours, lissé comme une plume) : la partie dévoilée est toujours un PRÉFIXE CONTINU du chemin (aucun trou
+     derrière le front, rien d'avance devant), à l'intérieur du glyphe (aucun pixel hors de la lettre) ; le front, à l'intérieur d'un trait, est
+     PERPENDICULAIRE au chemin à ± 10° ; aucune valeur d'alpha intermédiaire hors du bord (un pixel partiel touche toujours l'encre pas encore tracée) ;
+  ⑩ `--captures` : une capture fixe dans l'app, à ×0,05 (`?tlv=0.05`), au milieu d'un « o ».
 `--sonde=fondu` remplace le tracé par un fondu d'opacité, `--sonde=bloc` par une apparition d'un coup : le juge DOIT rougir (② ou ⑥).
+`--fichier=zz-av152.html` (avec le module d'avant : `--module=sauvegardes/trace-lettres-avant-v153.js`) : il DOIT rougir (⑦, ⑧, ⑨).
 Usage : python3 redteam_trace_lettres.py [--port=8752] [--sonde=fondu|bloc] [--captures]
 """
 import sys, io, json, math, zipfile; sys.path.insert(0, '.')
@@ -34,7 +47,10 @@ from fontTools.ttLib import TTFont
 from fontTools.pens.boundsPen import BoundsPen
 import banc_tom as B
 arg = lambda k, d: next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--' + k + '=')), d)
-PORT = arg('port', '8752'); SONDE = arg('sonde', ''); CAPT = '--captures' in sys.argv
+PORT = arg('port', '8752'); SONDE = arg('sonde', ''); CAPT = '--captures' in sys.argv; APP = arg('fichier', 'app.html'); MODULE = arg('module', '')
+CPS_MIN, CPS_MAX = 20.0, 25.0     # ⚑ v153 (Tom, C-125) : « environ 20 à 25 caractères par seconde au départ, réglable » — défaut 22
+EN_COURS_MIN, EN_COURS_MED = 30.0, 40.0   # ms : une lettre est en cours de tracé assez longtemps pour se voir constituer (à 60 Hz : 2 images et plus)
+ANGLE_MAX = 10.0                  # degrés : le front, à l'intérieur d'un trait, perpendiculaire au chemin
 PAGE = 'promi-trace-lettres.html'
 # ── les exceptions NOMMÉES (une exception qui n'est pas ici fait rougir) ──
 IMPOSSIBLE_R2 = {   # le dernier trait ne peut pas finir à droite : la panse se referme sur le fût, à gauche
@@ -97,10 +113,119 @@ def erode(m):
         for dx in (-1, 0, 1): o &= np.roll(np.roll(m, dy, 0), dx, 1)
     return o
 
+NGEO = 36
+GEO = """async a=>{ const [pol,gr,car,N]=a; document.querySelectorAll('#gEl,canvas[data-trace]').forEach(e=>e.remove());
+  const el=document.createElement('div'); el.id='gEl'; el.style.cssText='position:fixed;left:60px;top:60px;width:300px;font:'+gr+' 150px/180px '+pol+';color:#291547;background:none;z-index:60'; el.textContent=car; document.body.appendChild(el);
+  await document.fonts.load(gr+' 150px '+pol); await document.fonts.ready;
+  const C=TraceLettres.trace(el, null, {manuel:true, respecteReduire:false}); await C.pret; const cv=C.canevas; if(!cv||!C.va){ try{C.stop()}catch(e){} el.remove(); return null; }
+  const W=cv.width, H=cv.height, n=W*H, g2=cv.getContext('2d'); const lit=()=>{ const d=g2.getImageData(0,0,W,H).data, o=new Uint8Array(n); for(let i=0;i<n;i++) o[i]=d[4*i+3]; return o; };
+  C.va(0.99999); const ref=lit(); const R=new Uint8Array(n).fill(255), isl=new Uint8Array(n), age=new Uint8Array(n); let hors=0, loin=0, part=0, ilots=0, ilotMax=0;
+  for(let i=1;i<N;i++){ C.va(i/N); const cur=lit(); let pi=0; const unr=new Uint8Array(n);
+    for(let p=0;p<n;p++){ if(ref[p]>127 && cur[p]<=10) unr[p]=1; if(cur[p]>ref[p]+10) hors++; if(ref[p]>200 && cur[p]>=ref[p]-10 && R[p]===255) R[p]=i; }
+    /* un pixel partiel est AU BORD du dévoilement s'il touche (à 2 px) un pixel d'encre vierge ou MOINS teint que lui ; un point gris entouré de pixels
+       pleins ne l'est pas */
+    let li=0; for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const p=y*W+x; if(!(ref[p]>0 && cur[p]>10 && cur[p]<ref[p]-10)) continue; pi++; let v=false; const rp=cur[p]/ref[p];
+      for(let dy=-2;dy<=2&&!v;dy++) for(let dx=-2;dx<=2&&!v;dx++){ const xx=x+dx, yy=y+dy; if(xx<0||yy<0||xx>=W||yy>=H) continue; const q=yy*W+xx; if(unr[q] || (ref[q]>127 && cur[q]/ref[q] < rp-0.05)) v=true; } if(!v) li++; }
+    loin=Math.max(loin,li); part=Math.max(part,pi);
+    /* les ÎLOTS : des morceaux d'encre pas encore tracée, petits (12 px à 1,5 % de la lettre) et séparés du reste, pendant qu'il en reste plus de 10 %
+       — un éclat qui attend la fin pendant que la lettre avance (le coin du « g » d'Atkinson, v152) */
+    let nu=0, tot=0; for(let p=0;p<n;p++){ if(ref[p]>200){ tot++; if(cur[p]<=10) nu++; } }
+    if(nu>0.10*tot){ const lab=new Int32Array(n), st=[]; let nl=0;
+      for(let p0=0;p0<n;p0++){ if(lab[p0]||!(ref[p0]>200&&cur[p0]<=10)) continue; nl++; let sz=0; st.push(p0); lab[p0]=nl;
+        while(st.length){ const p=st.pop(); sz++; const x=p%W, y=(p-x)/W; for(let dy=-1;dy<=1;dy++) for(let dx=-1;dx<=1;dx++){ const xx=x+dx, yy=y+dy; if(xx<0||yy<0||xx>=W||yy>=H) continue; const q=yy*W+xx; if(!lab[q] && ref[q]>200 && cur[q]<=10){ lab[q]=nl; st.push(q); } } }
+        if(sz>=12 && sz<=0.015*tot){ for(let p=0;p<n;p++) if(lab[p]===nl) isl[p]=1; } } }
+    /* un ÉCLAT est un îlot qui RESTE en arrière : le même pixel isolé trois images de suite (le bout d'un trait juste devant le front ne dure qu'une image) */
+    for(let p=0;p<n;p++){ age[p]=isl[p]?age[p]+1:0; if(age[p]>=3){ ilots++; ilotMax=Math.max(ilotMax, age[p]); } isl[p]=0; } }
+  const b64=u=>{ let s=''; for(let i=0;i<u.length;i+=8192) s+=String.fromCharCode.apply(null, u.subarray(i,i+8192)); return btoa(s); };
+  const cr=cv.getBoundingClientRect(), er=el.getBoundingClientRect(), d=devicePixelRatio, gl=C.glyphes[0], gx=(er.left+gl.x-cr.left)*d, gy=(er.top+gl.y-cr.top)*d, u=gl.ech*d;
+  const pc=TraceLettres.parcours(pol, car, gl.variante); C.stop(); el.remove();
+  return {w:W, h:H, N:N, ref:b64(ref), R:b64(R), hors, loin, part, ilots, ilotMax, traits:pc.traits.map(t=>({R:t.R*u, pts:t.pts.map(q=>[gx+q[0]*u, gy-q[1]*u])}))}; }"""
+ENREG = """()=>{ window.__TL=[]; window.__CTL=[]; const T=window.TraceLettres; const tr=T.trace; T.trace=function(c){ const ctl=tr.apply(this, arguments); const k=window.__CTL.push(ctl)-1;
+    const txt=(c.textContent||''); const r={id:c.id||'', k:k, ctl:true, n:[...txt].filter(x=>x.trim()).length, esp:(txt.trim().match(/\\s+/g)||[]).length, images:[]}; window.__TL.push(r);
+    ctl.pret.then(()=>{ r.debut=performance.now(); (function f(){ if(ctl.fini){ r.fin=r.fin||performance.now(); return; } const e=ctl.etat(); r.images.push([performance.now(), e.glyphe]); requestAnimationFrame(f); })(); });
+    ctl.fin.then(()=>{ r.fin=performance.now(); }); return ctl; }; }"""
+def b64u8(s, w, h):
+    import base64
+    return np.frombuffer(base64.b64decode(s), np.uint8).reshape(h, w).astype(float)
+def chaikin(P):
+    a0, b0 = P[0], P[-1]; Lk = math.hypot(b0[0] - a0[0], b0[1] - a0[1]); ec = 0
+    for q in P[1:-1]:
+        if Lk > 0: ec = max(ec, abs((q[0] - a0[0]) * (b0[1] - a0[1]) - (q[1] - a0[1]) * (b0[0] - a0[0])) / Lk)
+    if len(P) < 3 or (Lk > 0 and ec < 0.6): return P
+    for _ in range(2):
+        Q = [P[0]]
+        for j in range(len(P) - 1):
+            u0, u1 = P[j], P[j + 1]
+            if j > 0: Q.append([0.75 * u0[0] + 0.25 * u1[0], 0.75 * u0[1] + 0.25 * u1[1]])
+            if j < len(P) - 2: Q.append([0.25 * u0[0] + 0.75 * u1[0], 0.25 * u0[1] + 0.75 * u1[1]])
+        Q.append(P[-1]); P = Q
+    return P
+def projette(T, w, h):
+    ys, xs = np.mgrid[0:h, 0:w]; px = xs + 0.5; py = ys + 0.5
+    best = np.full((h, w), np.inf); S_ = np.zeros((h, w)); K = np.full((h, w), -1); s0 = 0.0; bornes = []
+    for k, t in enumerate(T):
+        P = t['pts']; acc = 0.0
+        for i in range(len(P) - 1):
+            ax, ay = P[i]; bx, by = P[i + 1]; vx, vy = bx - ax, by - ay; L = math.hypot(vx, vy)
+            if L < 1e-9: continue
+            u = np.clip(((px - ax) * vx + (py - ay) * vy) / (L * L), 0, 1); dx = px - (ax + u * vx); dy = py - (ay + u * vy); d2 = dx * dx + dy * dy
+            m = d2 < best; best[m] = d2[m]; S_[m] = s0 + acc + u[m] * L; K[m] = k; acc += L
+        bornes.append((s0, s0 + acc)); s0 += acc
+    return S_, np.sqrt(best), K, bornes
+def point(P, s):
+    acc = 0.0
+    for i in range(len(P) - 1):
+        L = math.hypot(P[i + 1][0] - P[i][0], P[i + 1][1] - P[i][1])
+        if acc + L >= s and L > 0: u = (s - acc) / L; return (P[i][0] + u * (P[i + 1][0] - P[i][0]), P[i][1] + u * (P[i + 1][1] - P[i][1]))
+        acc += L
+    return tuple(P[-1])
+def geo_analyse(r):
+    """la géométrie du tracé d'une lettre, lue sur les pixels : préfixe du chemin, alpha franc, front perpendiculaire (à l'intérieur des traits)"""
+    w, h, N = r['w'], r['h'], r['N']; ref = b64u8(r['ref'], w, h); R = b64u8(r['R'], w, h); T = r['traits']
+    for t in T: t['pts'] = chaikin(t['pts'])
+    S_, dist, K, bornes = projette(T, w, h); Rm = max(t['R'] for t in T)
+    autre = np.full((h, w), np.inf)
+    if len(T) > 1:
+        for kk in range(len(T)):
+            _, dx_, _, _ = projette([t for j, t in enumerate(T) if j != kk], w, h); m_ = (K == kk); autre[m_] = dx_[m_]
+    ys, xs = np.mgrid[0:h, 0:w]; amb = np.zeros((h, w), bool)
+    for t in T:
+        for q in (t['pts'][0], t['pts'][-1]): amb |= np.hypot(xs + 0.5 - q[0], ys + 0.5 - q[1]) < 2.6 * t['R'] + 3   # la zone d'un bout (un coin, une tête de fût que le chemin ne parcourt pas) : la règle du coin, pas celle du préfixe
+    core = ref > 200; out = {'ilots': r['ilots'], 'ilotMax': r['ilotMax'], 'hors': r['hors'], 'loin': r['loin'], 'partiels': r['part'], 'trous': 0, 'avance': 0, 'pas': 0, 'angles': []}
+    for i in range(1, N):
+        rev = core & (R <= i); unr = core & (R > i)
+        if rev.sum() < 30 or unr.sum() < 30: continue
+        out['pas'] += 1; tol = Rm + 3; zone = core & ~amb & (dist < Rm * 1.6)
+        Sz = S_[zone]; Rz = rev[zone]; o_ = np.argsort(Sz); lab = Rz[o_]
+        err = np.concatenate([[0], np.cumsum(~lab)]) + np.concatenate([np.cumsum(lab[::-1])[::-1], [0]]); j = int(np.argmin(err))
+        sf = float(Sz[o_][min(j, len(o_) - 1)]) if len(o_) else 0
+        out['trous'] = max(out['trous'], int((zone & ~rev & (S_ < sf - tol)).sum())); out['avance'] = max(out['avance'], int((zone & rev & (S_ > sf + tol)).sum()))
+        for k, (a, b2) in enumerate(bornes):
+            if not (a <= sf <= b2): continue
+            Rk = T[k]['R']
+            if min(sf - a, b2 - sf) < 2.5 * Rk: break
+            p0 = point(T[k]['pts'], max(0, sf - a - Rk)); p1 = point(T[k]['pts'], min(b2 - a, sf - a + Rk)); tx, ty = p1[0] - p0[0], p1[1] - p0[1]; tl = math.hypot(tx, ty) or 1; tx /= tl; ty /= tl
+            pad = np.pad(unr, 1); vu = np.zeros_like(unr)
+            for dy in (0, 1, 2):
+                for dx in (0, 1, 2): vu |= pad[dy:dy + h, dx:dx + w]
+            bord = rev & vu & (np.abs(S_ - sf) <= tol) & (K == k) & (autre > Rk * 2.5)
+            yy, xx = np.nonzero(bord)
+            if len(xx) < max(6, 0.8 * Rk): break
+            sc = float(np.median(S_[bord]))   # la tangente se prend LÀ OÙ EST le front (son milieu sur le chemin), pas à l'abscisse de la coupe
+            if min(sc - a, b2 - sc) < 2.5 * Rk: break
+            p0 = point(T[k]['pts'], max(0, sc - a - Rk)); pm = point(T[k]['pts'], sc - a); p1 = point(T[k]['pts'], min(b2 - a, sc - a + Rk)); tx, ty = p1[0] - p0[0], p1[1] - p0[1]; tl = math.hypot(tx, ty) or 1; tx /= tl; ty /= tl
+            # hors des COUDES : là où le chemin tourne de plus de 20° sur une largeur de trait, le front PIVOTE en éventail (la règle du module) — on ne le mesure pas
+            ua = math.atan2(pm[1] - p0[1], pm[0] - p0[0]); ub = math.atan2(p1[1] - pm[1], p1[0] - pm[0]); dv = abs((math.degrees(ub - ua) + 180) % 360 - 180)
+            if dv > 20: out['coudes'] = out.get('coudes', 0) + 1; break
+            pts = np.stack([xx, yy], 1).astype(float); pts -= pts.mean(0); _, _, vt = np.linalg.svd(pts, full_matrices=False); d = vt[0]
+            out['angles'].append(round(90 - math.degrees(math.acos(min(1, abs(d[0] * tx + d[1] * ty)))), 1)); break
+    return out
+
 with sync_playwright() as p:
     b = p.webkit.launch(); ctx = B.contexte(b); pg = ctx.new_page(); err = []
     pg.on('pageerror', lambda e: err.append(str(e)[:200]))
     pg.goto('http://127.0.0.1:%s/%s' % (PORT, PAGE)); pg.wait_for_timeout(1500)
+    if MODULE: pg.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, MODULE)); pg.wait_for_timeout(300); print('— MODULE « %s » —' % MODULE)
     if SONDE: pg.evaluate(SONDES[SONDE]); print('— SONDE « %s » : le tracé est remplacé par une version fautive —' % SONDE)
     P = pg.evaluate("()=>PASSAGES.map(p=>p.segs)"); ALPHA = pg.evaluate("()=>ALPHABET.join('')")
     T, P2, G1 = P[0], P[2], P[4]
@@ -198,6 +323,66 @@ with sync_playwright() as p:
                                                                    (' — FAUTES : ' + ' ; '.join(faux[:6])) if faux else '', (' — SANS CHEMIN : ' + ' '.join(sorted(set(sans_chemin)))) if sans_chemin else ''))
     un_seul = sorted(c for c in ALPHA if len(PC.get(c, {})) == 1)
     juge('④ R3 — les glyphes à un seul tracé sont ceux que ce juge nomme', all(c in UN_SEUL_TRACE for c in un_seul), 'un seul tracé : %s ; finissent du côté opposé au départ : %d tracés sur %d' % (' '.join(un_seul), oppose, nvar))
+
+    # ── ⑨ v153 : la géométrie, image par image, o · s · g en Gilbert et en Atkinson ──
+    pg.add_script_tag(url='http://127.0.0.1:%s/variantes/trace-chemins-atkinson.js' % PORT); pg.wait_for_timeout(300)
+    if MODULE: pg.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, MODULE)); pg.wait_for_timeout(300)
+    if SONDE: pg.evaluate(SONDES[SONDE])
+    pg.evaluate("()=>{ const s=document.getElementById('jScene'); if(s) s.remove(); }")
+    GEOS = []
+    for pol, gr, car in [('Gilbert', '700', 'o'), ('Gilbert', '700', 's'), ('Gilbert', '700', 'g'), ('Atkinson', '500', 'o'), ('Atkinson', '500', 's'), ('Atkinson', '500', 'g')]:
+        r = pg.evaluate(GEO, [pol, gr, car, NGEO])
+        if not r: juge('⑨ %s « %s » : le tracé se mesure (canevas de tracé présent)' % (pol, car), False, 'aucun canevas : le tracé n\'a pas eu lieu'); continue
+        GEOS.append((pol, car, geo_analyse(r)))
+    for pol, car, o in GEOS:
+        juge('⑨ %s « %s » — préfixe continu du chemin : rien hors de la lettre, aucun trou derrière le front, rien d\'avance devant' % (pol, car),
+             o['hors'] == 0 and o['trous'] <= 30 and o['avance'] <= 30 and o['pas'] >= NGEO // 2, 'pixels hors de la lettre %d ; trou derrière le front %d px ; avance %d px (au pire, sur %d images)' % (o['hors'], o['trous'], o['avance'], o['pas']))
+        juge('⑨ %s « %s » — aucun éclat : pas d\'îlot d\'encre non tracée, petit et isolé, laissé en arrière (3 images et plus) pendant que la lettre avance' % (pol, car), o['ilots'] == 0, '%d pixel(s)·image(s) laissés en arrière trois images ou plus ; le plus long : %d images' % (o['ilots'], o['ilotMax']))
+        juge('⑨ %s « %s » — aucune valeur d\'alpha intermédiaire hors du bord (un pixel partiel touche l\'encre non tracée)' % (pol, car), o['loin'] <= 3, 'pixels partiels loin du bord : %d au pire (partiels par image : %d au plus)' % (o['loin'], o['partiels']))
+        A = o['angles']
+        juge('⑨ %s « %s » — le front, à l\'intérieur d\'un trait, est perpendiculaire au chemin (± %d°)' % (pol, car, ANGLE_MAX), len(A) >= 5 and max(map(abs, A)) <= ANGLE_MAX,
+             '%d mesures ; écart au perpendiculaire : médiane %.1f°, pire %.1f° (%d images dans un coude, non mesurées)' % (len(A), float(np.median(np.abs(A))) if A else -1, max(map(abs, A)) if A else -1, o.get('coudes', 0)))
+
+    # ── ⑦ ⑧ v153 : la vitesse et le « pof », DANS L'APP, en temps réel (banc comme Tom, le vrai onboarding) ──
+    def onboarding_reel(q=''):
+        ctx2 = B.contexte(b, onb=False, guide=False); pg2 = B.ouvre(ctx2, APP, attente=7000, q=q)
+        if MODULE: pg2.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, MODULE)); pg2.wait_for_timeout(200)
+        pg2.evaluate(ENREG)
+        B.tap_sel(pg2, '#onbPh'); pg2.wait_for_timeout(500); pg2.keyboard.type('Camille', delay=30); pg2.keyboard.press('Enter')
+        for _ in range(60):
+            pg2.wait_for_timeout(250)
+            if pg2.evaluate("()=>window.__TL.filter(r=>r.fin).length>=3"): break
+        L = pg2.evaluate("()=>window.__TL"); ctx2.close(); return L
+    L = onboarding_reel()
+    tot_l = sum(r['n'] for r in L if r.get('fin')); tot_e = sum(r['esp'] for r in L if r.get('fin')); tot_t = sum(r['fin'] - r['debut'] for r in L if r.get('fin'))
+    cps = (tot_l + 0.4 * tot_e) / max(tot_t / 1000.0, 1e-3)
+    juge('⑦ la vitesse, mesurée sur l\'écran (« Camille, donc. », « Quid… », « Petite ou grande… ») : %d à %d caractères par seconde' % (CPS_MIN, CPS_MAX), CPS_MIN <= cps <= CPS_MAX,
+         '%.1f car/s (%d lettres, %d espaces, %.2f s ; charge %.1f)' % (cps, tot_l, tot_e, tot_t / 1000.0, B.charge()))
+    fen = []
+    for r in L:
+        F_ = r.get('images') or []
+        for i in range(r['n']):
+            t_in = [t for t, g in F_ if g == i]
+            t_out = [t for t, g in F_ if g > i]
+            if t_in and t_out: fen.append(t_out[0] - t_in[0])
+    fen.sort(); med = fen[len(fen) // 2] if fen else 0; court = sum(1 for x in fen if x < EN_COURS_MIN)
+    juge('⑧ pas de « pof » : chaque lettre est en cours de tracé assez longtemps pour se voir constituer (≥ %d ms, médiane ≥ %d ms)' % (EN_COURS_MIN, EN_COURS_MED),
+         len(fen) >= 20 and med >= EN_COURS_MED and court <= 0.2 * len(fen), '%d lettres vues ; médiane %.0f ms ; %d sous %d ms (les lettres courtes : i, l, la ponctuation) ; charge %.1f' % (len(fen), med, court, EN_COURS_MIN, B.charge()))
+    L2 = onboarding_reel('?cps=12')
+    t2 = sum(r['fin'] - r['debut'] for r in L2 if r.get('fin')); n2 = sum(r['n'] + 0.4 * r['esp'] for r in L2 if r.get('fin')); cps2 = n2 / max(t2 / 1000.0, 1e-3)
+    juge('⑦ la vitesse se règle : `?cps=12` → environ 12 caractères par seconde', 10.5 <= cps2 <= 13.5, '%.1f car/s' % cps2)
+    if CAPT:
+        ctx3 = B.contexte(b, onb=False, guide=False); pg3 = B.ouvre(ctx3, APP, attente=7000, q='?tlv=0.05')
+        pg3.wait_for_function("()=>!document.querySelector('canvas[data-trace]') && !!document.getElementById('onbPh') && getComputedStyle(document.getElementById('onbPh')).visibility==='visible'", timeout=90000); pg3.wait_for_timeout(300)   # à ×0,05 la page du prénom se trace vingt fois plus lentement
+        pg3.evaluate(ENREG); B.tap_sel(pg3, '#onbPh'); pg3.wait_for_timeout(500); pg3.keyboard.type('Camille', delay=30); pg3.keyboard.press('Enter')
+        for _ in range(400):
+            pg3.wait_for_timeout(60)
+            e = pg3.evaluate("()=>{ const r=window.__TL.find(x=>x.id==='onbDit'); if(!r||!r.ctl) return null; const c=window.__CTL[r.k]; return c?c.etat():null; }")
+            if e and e['glyphe'] == 9: break   # « Camille, donc. » : le « o » de « donc » (la dixième lettre, les espaces ne comptent pas)
+        pg3.wait_for_timeout(500)
+        r = pg3.evaluate("()=>{ const e=document.getElementById('onbDit'); const g=document.createRange(); g.selectNodeContents(e); const q=g.getBoundingClientRect(); return [q.left, q.top, q.width, q.height]; }")
+        pg3.screenshot(path='scratchpad/v153/trace-o-x005.png', clip={'x': r[0] + r[2] * 0.55, 'y': r[1] - 2, 'width': r[2] * 0.3, 'height': r[3] + 4}); ctx3.close()
+        print('INFO  capture : scratchpad/v153/trace-o-x005.png (×0,05, le « o » de « donc » en cours)')
 
     # ── le coût (information) : un tracé en temps réel à ×1, ce que le module mesure lui-même ──
     pose(False)

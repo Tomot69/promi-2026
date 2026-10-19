@@ -26,8 +26,11 @@ F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')
 ENCRE_CLAIR = {(41, 21, 71), (32, 25, 8)}
 CREME, SEICHE = (247, 240, 222), (5, 3, 2)
 PASTILLE = ('onbv-pm', 'onbv-pb', 'onbv-suite')
-EXCEPTIONS = {'trace pour planter': 'Tom, v151 C-126 §5', 'La suite t’appartient.': 'Q548, v152'}
-EN_DUR = {('guide-plus', 'Promi'): (130, 174, 248), ('guide-plus', 'Chiche'): (255, 184, 210), ('guide-plus', 'Cercle'): (201, 168, 245), ('guide-plus', 'commence'): (130, 174, 248)}
+# ⚑ v153 (Tom, C-165) : « T'APPARTIENT. » passe en couleur, #0E78F2 en clair, #82AEF8 en sombre ; « La suite » garde la crème en sombre (Q548)
+#   (original : sauvegardes/redteam_mots_sombre-avant-v153.py)
+EXCEPTIONS = {'trace pour planter': 'Tom, v151 C-126 §5', 'La suite': 'Q548, v152 (C-165 : seul « t’appartient. » se colore)'}
+EN_DUR_CLAIR = {('fin', 't’appartient.'): (14, 120, 242)}
+EN_DUR = {('fin', 't’appartient.'): (130, 174, 248), ('guide-plus', 'Promi'): (130, 174, 248), ('guide-plus', 'Chiche'): (255, 184, 210), ('guide-plus', 'Cercle'): (201, 168, 245), ('guide-plus', 'commence'): (130, 174, 248)}
 res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:200]), flush=True)
@@ -56,6 +59,7 @@ def onboarding(pg):
     B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(400); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(300)
     pages['prénom'] = pg.evaluate(COL, '#onbV')
     pg.keyboard.press('Enter'); pg.wait_for_timeout(5000); pages['parole'] = pg.evaluate(COL, '#onbV')
+    B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(400)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
     pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(5000); pages['trait'] = pg.evaluate(COL, '#onbV')
     z = pg.evaluate("()=>{ const c=document.getElementById('onbTrait'); if(!c) return null; const r=c.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return {l:(r.left-D.left)/k, t:(r.top-D.top)/k, k:r.width/390/k, dep:c.getAttribute('data-depart'), arr:c.getAttribute('data-arrivee')}; }")
     if z and z['dep']:
@@ -63,7 +67,15 @@ def onboarding(pg):
         x0, y0, x1, y1 = z['l'] + a[0] * z['k'], z['t'] + a[1] * z['k'], z['l'] + (e[0] + 6) * z['k'], z['t'] + e[1] * z['k']
         B.glisse(pg, [[x0 + (x1 - x0) * i / 24, y0 + (y1 - y0) * i / 24 - 14 * (1 - abs(2 * i / 24 - 1))] for i in range(25)], pas=24, tenue=90)
         pg.wait_for_timeout(5600)
-        for _ in range(3): B.tap(pg, 195, 300); pg.wait_for_timeout(4000)
+        for _ in range(3):
+            B.tap(pg, 195, 300); pg.wait_for_timeout(1500)
+            # ⚑ v153 (C-125) : le tracé est plus lent (22 car/s) — on attend que le paragraphe soit ÉCRIT avant le toucher suivant (20 s au plus)
+            try: pg.wait_for_function("()=>!document.querySelector('#onbV canvas[data-trace]')", timeout=20000)
+            except Exception: pass
+            pg.wait_for_timeout(2500)
+        try: pg.wait_for_function("()=>!document.querySelector('#onbV canvas[data-trace]')", timeout=20000)
+        except Exception: pass
+        pg.wait_for_timeout(600)
         pages['fin'] = pg.evaluate(COL, '#onbV')
     return pages
 def guide(pg, et):
@@ -104,6 +116,7 @@ for page in REL['clair']:
             juge('%s · « %s » : exception nommée (%s), crème en sombre' % (page, t, EXCEPTIONS[t]), sc == CREME, 'clair %s · sombre %s' % (c, sc)); continue
         r = ratio(sc, f) if f else 0
         att = EN_DUR.get((page, t))
+        if (page, t) in EN_DUR_CLAIR: juge('%s · « %s » en clair : %s (en dur, C-165)' % (page, t, EN_DUR_CLAIR[(page, t)]), c == EN_DUR_CLAIR[(page, t)], 'clair %s' % (c,))
         ok = sc not in (CREME, SEICHE) and r >= 3 and (att is None or sc == att)
         juge('%s · « %s » coloré en clair %s → coloré en sombre%s, ≥ 3:1' % (page, t, c, ' %s (en dur)' % (att,) if att else ''), ok, 'sombre %s · fond %s · %.2f:1' % (sc, f, r))
 juge('aucune erreur de page', not [x for x in err if 'version.json' not in x], str(err[:2]))

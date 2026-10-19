@@ -21,7 +21,7 @@
        contenu  null : on trace ce que l'élément contient déjà, avec ses styles (couleurs, polices, tailles des nœuds enfants)
                 'une chaîne' : elle remplace le contenu (« \n » = retour à la ligne)
                 [ {t:'Primo, un '}, {t:'Promi', couleur:'#82AEF8'}, {t:' …', police:'PromiLate', classe:'x', style:'…'} ] : des segments
-       options  cps          caractères par seconde (50 ; Tom : 40 à 60)
+       options  cps          caractères par seconde (22 ; v153, Tom : 20 à 25 au départ, réglable ; `?cps=` dans l'adresse)
                 vitesse      multiplicateur (1 ; 0.25 et 0.05 pour regarder au ralenti)
                 depart       'h' | 'b' : le côté où commence la toute première lettre (R3 ; 'h')
                 espace       la pause d'une espace, en caractères (0.4)
@@ -49,7 +49,13 @@
    ④ le texte se lit de gauche à droite ; un `transform` posé sur un mot À L'INTÉRIEUR de la cible (le « Deuxio » penché) n'est pas suivi. */
 (function (racine) {
   'use strict';
-  var TL = { version: 1, defauts: { cps: 50, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [], cache: 0 }, _cache: {}, _cacheN: 0 };
+  var TL = { version: 2, defauts: { cps: 22, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [], cache: 0 }, _cache: {}, _cacheN: 0 };
+  /* ⚑ v153 (Tom, C-125, récidive : « les lettres font pof ») — LA CAUSE, mesurée au banc WebKit : le module traçait bien (chemins trouvés pour Gilbert,
+     Atkinson et PromiLate, cartes calculées dans le Worker), mais à 50 caractères par seconde une lettre durait ≈ 20 ms — à peine plus d'une image à
+     60 Hz : elle paraissait d'un coup, puis la suivante. Tom : « PLUS LENT, 20 à 25 caractères par seconde au départ, réglable ». Défaut : 22.
+     `?cps=N` (5 à 80) règle la vitesse de toute la page ; `?tlv=0.05` la ralentit (×0,05 : pour regarder une lettre se constituer). Jamais mémorisés. */
+  try { var _q = (racine.location && racine.location.search) || '', _m = /[?&]cps=([\d.]+)/.exec(_q), _v = /[?&]tlv=([\d.]+)/.exec(_q);
+    if (_m && +_m[1] > 0) TL.defauts.cps = Math.max(5, Math.min(80, +_m[1])); if (_v && +_v[1] > 0) TL.defauts.vitesse = Math.max(0.01, Math.min(4, +_v[1])); } catch (e) { }
   var REPASSAGE = 0.1;      /* un repassage dure le dixième du temps qu'il aurait pris tracé : « un instant » */
   var PIVOT = 0.5;          /* à un sommet de la ligne, le front pivote : le temps du pivot, en part de l'arc extérieur */
   var doc = racine.document;
@@ -131,7 +137,7 @@
       if (t.b0 === 'j') { L = suit(a0[0], a0[1], -dx, -dy, 8 * t.R); if (L > 1.12 * t.R + 2 && barre(a0[0] - dx * (L - 2), a0[1] - dy * (L - 2))) { P.unshift([a0[0] - dx * (L - 0.5), a0[1] - dy * (L - 0.5)]); t.b0 = 'l'; t.prolonge = (t.prolonge || 0) + L; } }
       if (t.b1 === 'j') { L = suit(b0[0], b0[1], dx, dy, 8 * t.R); if (L > 1.12 * t.R + 2 && barre(b0[0] + dx * (L - 2), b0[1] + dy * (L - 2))) { P.push([b0[0] + dx * (L - 0.5), b0[1] + dy * (L - 0.5)]); t.b1 = 'l'; t.prolonge = (t.prolonge || 0) + L; } }
     });
-    var faible = new Uint8Array(n), Dl = new Float32Array(n);   /* v147 : un pixel pris par le BOUT LIBRE d'un trait, là où ce bout court DANS un autre trait */
+    var faible = new Uint8Array(n), Dl = new Float32Array(n), parBout = new Uint8Array(n);   /* v153 : 1 = pris par l'extension du BOUT d'un trait (pas dans sa longueur) */   /* v147 : un pixel pris par le BOUT LIBRE d'un trait, là où ce bout court DANS un autre trait */
     for (p = 0; p < n; p++) { own[p] = -1; Tl[p] = Infinity; Dl[p] = Infinity; }
     /* ⚑ v147 (C-125 : « les dents du g ») — la ligne d'un trait COURBE est adoucie (deux passes de Chaikin, extrémités gardées) : le chemin tiré du
        squelette de la police a des coudes (la fin de la panse du « g » file d'un coup vers la jonction) ; la bande d'un trait suit ses segments,
@@ -145,6 +151,27 @@
           if (j < P.length - 2) Q.push([0.25 * u0[0] + 0.75 * u1[0], 0.25 * u0[1] + 0.75 * u1[1]]); }
         Q.push(P[P.length - 1]); P = Q; }
       t.pts = P; });
+    /* ⚑ v153 (Tom, C-125 : « aucune zone abstraite ») — LES COINS FRANCS. Deux traits qui se rejoignent par un bout en faisant un ANGLE (plus de 40°
+       entre leurs directions : le fût et la panse du « g » d'Atkinson, en haut à droite) ne se partagent plus l'encre par la bissectrice de leurs lignes
+       — elle coupait le coin en triangles, l'un paraissant avec le premier trait, l'autre avec le dernier, comme des éclats. Près d'un coin franc, le
+       trait tracé LE PREMIER garde toute sa largeur (le coin naît avec lui, d'une coupe nette) ; l'autre s'arrête sur son bord. Une jonction DOUCE
+       (deux traits qui se continuent : la panse et la queue du « g » de Gilbert) garde la bissectrice. */
+    var coins = [];
+    (function () { var a, b, ea, eb;
+      function dirAu(t, fin) { var P = t.pts, m = P.length - 1, i0 = fin ? m : 0, i1 = fin ? Math.max(0, m - 1) : Math.min(m, 1), dx = P[i0][0] - P[i1][0], dy = P[i0][1] - P[i1][1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; }
+      /* seulement une FERMETURE : un trait qui vient finir là où un trait d'avant a COMMENCÉ (la panse du « g » qui revient au haut du fût). Au tournant
+         d'un trait vers le suivant (la fin de l'un, le départ de l'autre : « m », « x », « k »), la coupe en onglet est celle d'une plume qui tourne : elle tient. */
+      for (a = 0; a < traits.length; a++) for (b = a + 1; b < traits.length; b++) for (ea = 0; ea < 1; ea++) for (eb = 1; eb < 2; eb++) {
+        var Pa = traits[a].pts, Pb = traits[b].pts; if (Pa.length < 2 || Pb.length < 2) continue;
+        var qa = ea ? Pa[Pa.length - 1] : Pa[0], qb = eb ? Pb[Pb.length - 1] : Pb[0];
+        if (Math.hypot(qa[0] - qb[0], qa[1] - qb[1]) > 2 + 0.15 * Math.min(traits[a].R, traits[b].R)) continue;
+        var da = dirAu(traits[a], ea), db = dirAu(traits[b], eb), c = Math.abs(da[0] * db[0] + da[1] * db[1]);
+        if (c > Math.cos(40 * Math.PI / 180)) continue;   /* une jonction douce : la bissectrice tient */
+        coins.push({ x: (qa[0] + qb[0]) / 2, y: (qa[1] + qb[1]) / 2, r: 2.6 * Math.max(traits[a].R, traits[b].R) + 2, a: a, b: b });   /* la tête entière d'un fût (deux demi-largeurs, et sa marge) */
+      } })();
+    /* (un trait DROIT garde sa règle : il l'emporte toujours — le fût du « a » de Gilbert ; la règle du coin ne vaut qu'entre deux traits courbes) */
+    function premierAuCoin(p1, p2, px, py) { if (traits[p1].droit || traits[p2].droit) return -1; for (var ci = 0; ci < coins.length; ci++) { var C = coins[ci]; if (((C.a === p1 && C.b === p2) || (C.a === p2 && C.b === p1)) && Math.hypot(px - C.x, py - C.y) <= C.r) return Math.min(p1, p2); } return -1; }
+    function coinDe(px, py) { for (var ci = 0; ci < coins.length; ci++) { var C = coins[ci]; if (traits[C.a].droit || traits[C.b].droit) continue; if (Math.hypot(px - C.x, py - C.y) <= C.r) return C; } return null; }
     var S = [];    /* par trait : segments {x,y,dx,dy,len,s,delta} */
     for (k = 0; k < traits.length; k++) {
       var P = traits[k].pts, segs = [], s = 0, m = P.length - 1;
@@ -178,8 +205,20 @@
         s0 += ll; }
       return s0; }
     for (k = 0; k < traits.length; k++) { traits[k].in0 = (traits[k].b0 || 'l') !== 'c' ? dedans(k, true) : 0; traits[k].in1 = (traits[k].b1 || 'l') !== 'c' ? dedans(k, false) : 0; }   /* un bout libre ou un embranchement ; jamais un coin */
-    for (k = 0; k < traits.length; k++) if (traits[k].droit) rang.push(k);
-    for (k = 0; k < traits.length; k++) if (!traits[k].droit) rang.push(k);
+    /* ⚑ v153 (Tom, C-125 : « aucune zone abstraite ») — LES ERGOTS. Un trait droit plus court que 1,6 largeur, accolé par un bout au trait courbe qui le
+       suit (au départ) ou qui le précède (à la fin), n'est pas un geste : c'est le chemin qui rejoint le coin d'un bout biseauté (le départ du « s »
+       d'Atkinson, le bout de la queue de son « g »). Tracé à part, il paraissait en bloc, et la pointe du biseau après lui. Son encre PROLONGE le trait
+       voisin : elle se dévoile par le même front (la passe de la ligne la plus proche, avec le prolongement du bout). */
+    function memePoint(p1, p2, Rr) { return Math.hypot(p1[0] - p2[0], p1[1] - p2[1]) <= 2 + 0.15 * Rr; }
+    for (k = 0; k < traits.length; k++) { var tk = traits[k], Lk2 = 0; if (!tk.droit || tk.pts.length < 2) continue;
+      for (i = 1; i < tk.pts.length; i++) Lk2 += Math.hypot(tk.pts[i][0] - tk.pts[i - 1][0], tk.pts[i][1] - tk.pts[i - 1][1]);
+      if (Lk2 >= 1.6 * tk.R) continue;
+      var suiv2 = traits[k + 1], prec2 = traits[k - 1];
+      var auDepart = suiv2 && !suiv2.droit && memePoint(tk.pts[tk.pts.length - 1], suiv2.pts[0], tk.R) && !(prec2 && memePoint(prec2.pts[prec2.pts.length - 1], tk.pts[0], tk.R));
+      var aLaFin = prec2 && !prec2.droit && memePoint(tk.pts[0], prec2.pts[prec2.pts.length - 1], tk.R) && !(suiv2 && memePoint(tk.pts[tk.pts.length - 1], suiv2.pts[0], tk.R));
+      if (auDepart || aLaFin) tk.ergot = 1; }   /* (au départ : rien n'y arrive ; à la fin : rien n'en repart — sinon c'est un vrai tronçon du geste) */
+    for (k = 0; k < traits.length; k++) if (traits[k].droit && !traits[k].ergot) rang.push(k);
+    for (k = 0; k < traits.length; k++) if (!traits[k].droit && !traits[k].ergot) rang.push(k);
     for (kk = 0; kk < rang.length; kk++) {
       k = rang[kk];
       var segs2 = S[k], R = traits[k].R, Rp = traits[k].droit ? R + 0.8 : R + 0.6, ns = segs2.length, tmin = Infinity, tmax = -Infinity;
@@ -194,12 +233,13 @@
         var g2 = i < ns - 1 ? segs2[i + 1] : null;
         for (y = y0; y <= y1; y++) {
           for (x = x0; x <= x1; x++) {
-            p = y * w + x; if (!A[p]) continue; var o = own[p]; if (o !== -1 && o !== k && !faible[p] && (traits[o].droit || traits[k].droit)) continue;
+            p = y * w + x; if (!A[p]) continue; var o = own[p]; if (o !== -1 && o !== k && !faible[p] && (traits[o].droit || traits[k].droit) && !(coins.length && premierAuCoin(o, k, x + 0.5, y + 0.5) === k)) continue;
             var rx = x + 0.5 - g.x, ry = y + 0.5 - g.y, u = rx * g.dx + ry * g.dy, lat = ry * g.dx - rx * g.dy, cand = Infinity;
             if (lat <= Rp && lat >= -Rp && u >= 0 && u <= g.len) cand = g.s + u;
             var dl = Math.abs(lat);
-            if (cand === Infinity && i === 0 && cap0 > 0 && u < 0) { var us = rx * d0[0] + ry * d0[1], ls = ry * d0[0] - rx * d0[1]; if (us < 0 && us >= -cap0 && ls <= Rp && ls >= -Rp) cand = g.s + us; }
-            if (cand === Infinity && i === ns - 1 && cap1 > 0 && u > g.len) { var ex2 = x + 0.5 - ex, ey2 = y + 0.5 - ey, ue = ex2 * d1[0] + ey2 * d1[1], le = ey2 * d1[0] - ex2 * d1[1]; if (ue > 0 && ue <= cap1 && le <= Rp && le >= -Rp) cand = g.s + g.len + ue; }
+            var parCap = false;
+            if (cand === Infinity && i === 0 && cap0 > 0 && u < 0) { var us = rx * d0[0] + ry * d0[1], ls = ry * d0[0] - rx * d0[1]; if (us < 0 && us >= -cap0 && ls <= Rp && ls >= -Rp) cand = g.s + us; parCap = true; }
+            if (cand === Infinity && i === ns - 1 && cap1 > 0 && u > g.len) { var ex2 = x + 0.5 - ex, ey2 = y + 0.5 - ey, ue = ex2 * d1[0] + ey2 * d1[1], le = ey2 * d1[0] - ex2 * d1[1]; if (ue > 0 && ue <= cap1 && le <= Rp && le >= -Rp) cand = g.s + g.len + ue; parCap = true; }
             if (g2 && u > g.len && cand === Infinity) {
               var qx = x + 0.5 - g2.x, qy = y + 0.5 - g2.y, u2 = qx * g2.dx + qy * g2.dy;
               if (u2 < 0 && qx * qx + qy * qy <= Rp * Rp) { var a = u - g.len, b = -u2; cand = g.s + g.len + g.delta * (a / (a + b + 1e-9)); }
@@ -213,8 +253,11 @@
                  à la jonction de la queue du « g »), le pixel va au trait dont la LIGNE est la plus proche : la frontière suit la bissectrice des
                  deux lignes, une courbe lisse. L'ordre du tracé la découpait selon les rectangles des segments du chemin — en dents. Un fût garde sa
                  priorité (règle du trait droit). */
-              if (o !== -1 && o !== k) { if ((faible[p] && !bout) || (!traits[o].droit && !traits[k].droit && dl < Dl[p] - 0.5 && !bout)) { Tl[p] = cand; own[p] = k; faible[p] = 0; Dl[p] = dl; } }
-              else if (cand < Tl[p]) { Tl[p] = cand; own[p] = k; faible[p] = bout ? 1 : 0; Dl[p] = dl; }
+              var pc0 = (o !== -1 && o !== k) ? premierAuCoin(o, k, x + 0.5, y + 0.5) : -1;
+              /* v153 : au coin franc, l'encre que les deux traits couvrent va au premier tracé (la tête du fût du « g » d'Atkinson naît avec lui) */
+              if (pc0 >= 0) { if (pc0 === k) { Tl[p] = cand; own[p] = k; faible[p] = 0; Dl[p] = dl; parBout[p] = parCap ? 1 : 0; } }
+              else if (o !== -1 && o !== k) { if ((faible[p] && !bout) || (!traits[o].droit && !traits[k].droit && dl < Dl[p] - 0.5 && !bout)) { Tl[p] = cand; own[p] = k; faible[p] = 0; Dl[p] = dl; } }
+              else if (cand < Tl[p]) { Tl[p] = cand; own[p] = k; faible[p] = bout ? 1 : 0; Dl[p] = dl; parBout[p] = parCap ? 1 : 0; }
             }
           }
         }
@@ -228,6 +271,20 @@
        tard, et la panse se dessinait avec des dents. Tout pixel d'encre qu'AUCUNE bande ne couvre va au trait
        courbe dont la ligne est la plus proche ; son instant est celui du point de cette ligne où il se projette. La frontière entre deux traits
        est alors la bissectrice de leurs lignes : une courbe lisse. */
+    /* v153 — au coin franc, l'encre qui PROLONGE le départ du premier tracé (au-delà de son bout, dans sa largeur) lui revient, quel que soit le trait
+       qui l'a prise : la tête biseautée d'un fût se dévoile avec lui, d'une coupe plate, avant son corps */
+    coins.forEach(function (C) { var kf = Math.min(C.a, C.b), sg = S[kf]; if (!sg || !sg.length || traits[kf].b0 !== 'c' || traits[C.a].droit || traits[C.b].droit) return;
+      var G0 = sg[0]; if (Math.hypot(G0.x - C.x, G0.y - C.y) > 2 + 0.15 * traits[kf].R) return;
+      /* de quel côté de sa ligne arrive l'autre trait : de ce côté la tête s'arrête à une demi-largeur (+1,5) ; de l'autre, son bord d'anticrénelage compris (+3) */
+      var ko = C.a === kf ? C.b : C.a, Po = traits[ko].pts, cxo = 0, cyo = 0; Po.forEach(function (q) { cxo += q[0]; cyo += q[1]; }); cxo /= Po.length; cyo /= Po.length;
+      var cote0 = ((cyo - G0.y) * G0.dx - (cxo - G0.x) * G0.dy) >= 0 ? 1 : -1;
+      var xa = Math.max(0, Math.floor(C.x - C.r)), xb = Math.min(w - 1, Math.ceil(C.x + C.r)), ya = Math.max(0, Math.floor(C.y - C.r)), yb = Math.min(h - 1, Math.ceil(C.y + C.r)), xx, yy, q;
+      for (yy = ya; yy <= yb; yy++) for (xx = xa; xx <= xb; xx++) { q = yy * w + xx; if (!A[q]) continue;
+        var u0 = (xx + 0.5 - G0.x) * G0.dx + (yy + 0.5 - G0.y) * G0.dy, ls0 = (yy + 0.5 - G0.y) * G0.dx - (xx + 0.5 - G0.x) * G0.dy, l0 = Math.abs(ls0);
+        var lim0 = traits[kf].R + ((ls0 >= 0 ? 1 : -1) === cote0 ? 1.5 : 4.5), dansC = Math.hypot(xx + 0.5 - C.x, yy + 0.5 - C.y) <= C.r;
+        if (u0 < 0 && l0 <= lim0 && dansC) { own[q] = kf; Tl[q] = u0; Dl[q] = l0; faible[q] = 0; }
+        else if (u0 >= 0 && u0 <= G0.len && own[q] === ko && (ls0 >= 0 ? 1 : -1) !== cote0 && l0 <= lim0 && dansC) { own[q] = kf; Tl[q] = G0.s + u0; Dl[q] = l0; faible[q] = 0; } } });   /* le bord du fût, du côté opposé */
+    for (k = 0; k < traits.length; k++) { var tn0 = Infinity, tx0 = -Infinity; for (p = 0; p < n; p++) if (own[p] === k) { if (Tl[p] < tn0) tn0 = Tl[p]; if (Tl[p] > tx0) tx0 = Tl[p]; } if (tn0 < Infinity) { mins[k] = tn0; maxs[k] = tx0; } }
     var courbes = []; for (k = 0; k < traits.length; k++) if (!traits[k].droit && S[k].length) courbes.push(k);
     if (courbes.length) {
       for (y = 0; y < h; y++) for (x = 0; x < w; x++) {
@@ -237,6 +294,15 @@
           for (si = 0; si < sg.length; si++) { var G = sg[si], rx2 = px2 - G.x, ry2 = py2 - G.y, uu = rx2 * G.dx + ry2 * G.dy, ul = uu < 0 ? 0 : (uu > G.len ? G.len : uu), ex3 = rx2 - G.dx * ul, ey3 = ry2 - G.dy * ul, dd2 = ex3 * ex3 + ey3 * ey3;
             if (dd2 < best) { best = dd2; bk = kc; bt = G.s + ul + (uu < 0 && si === 0 ? uu : 0) + (uu > G.len && si === sg.length - 1 ? uu - G.len : 0); } } }
         if (bk < 0) continue;
+        var Cc = coins.length ? coinDe(px2, py2) : null;
+        if (Cc) { var kf = Math.min(Cc.a, Cc.b), sgf = S[kf];   /* v153 : au coin franc, l'encre libre va au premier tracé, à l'instant de sa projection */
+          if (sgf && sgf.length) { var bf = Infinity, tf = 0; for (si = 0; si < sgf.length; si++) { var Gf = sgf[si], rxf = px2 - Gf.x, ryf = py2 - Gf.y, uf = rxf * Gf.dx + ryf * Gf.dy, ulf = uf < 0 ? 0 : (uf > Gf.len ? Gf.len : uf), exf = rxf - Gf.dx * ulf, eyf = ryf - Gf.dy * ulf, df = exf * exf + eyf * eyf;
+              if (df < bf) { bf = df; tf = Gf.s + ulf + (uf < 0 && si === 0 ? uf : 0) + (uf > Gf.len && si === sgf.length - 1 ? uf - Gf.len : 0); } }
+            /* dans le corps du premier tracé : à moins de 1,25 R de sa ligne — ou de son PROLONGEMENT avant son départ (la tête biseautée d'un fût, que
+               le chemin ne parcourt pas : elle se dévoile d'une coupe plate juste avant lui) */
+            var G0 = sgf[0], u0 = (px2 - G0.x) * G0.dx + (py2 - G0.y) * G0.dy, l0 = Math.abs((py2 - G0.y) * G0.dx - (px2 - G0.x) * G0.dy);
+            var dCorps = (u0 < 0 && traits[kf].b0 === 'c') ? l0 : Math.sqrt(bf);
+            if (dCorps <= ((u0 < 0 && traits[kf].b0 === 'c') ? traits[kf].R + 1.5 : 1.25 * traits[kf].R + 1)) { if (u0 < 0 && traits[kf].b0 === 'c') tf = u0; if (o2 !== kf) { own[p] = kf; Tl[p] = tf; Dl[p] = Math.sqrt(bf); faible[p] = 0; } continue; } } }   /* dans le corps du premier tracé seulement ; ailleurs, la ligne la plus proche */
         if (o2 >= 0 && !traits[o2].droit && o2 !== bk && Math.sqrt(best) > Dl[p] - 0.5) continue;   /* à distance égale, l'ordre d'avant */
         if (o2 === bk) continue;
         own[p] = bk; Tl[p] = bt; Dl[p] = Math.sqrt(best); faible[p] = 0;
@@ -308,7 +374,7 @@
       T.set(T2);
     }
     for (p = 0; p < n; p++) if (!A[p]) T[p] = 0;
-    if (TL._debug) TL._derniere = { T: T, own: own, w: w, h: h, dep: dep, mins: mins, maxs: maxs, droits: traits.map(function (t) { return t.droit; }) };
+    if (TL._debug) TL._derniere = { T: T, own: own, w: w, h: h, dep: dep, mins: mins, maxs: maxs, droits: traits.map(function (t) { return t.droit; }), coins: coins, bouts: traits.map(function (t) { var P = t.pts; return [P[0], P[1], P[P.length - 2], P[P.length - 1], t.R]; }) };
     return { T: T, D: Math.max(cur, 1) };
   }
   TL._carte = carte;
@@ -344,7 +410,7 @@
 
   var VIDE = 'polygon(0px 0px,0px 0px,0px 0px)';
   TL.trace = function (cible, contenu, options) {
-    var o = options || {}, cps = (o.cps || TL.defauts.cps) * (o.vitesse || TL.defauts.vitesse), esp = o.espace == null ? TL.defauts.espace : o.espace;
+    var o = options || {}, cps = (o.cps || TL.defauts.cps) * (o.vitesse || TL.defauts.vitesse),   /* v153 : l'app ne passe plus `cps` — la vitesse décidée vit ici (22, ou `?cps=`) */ esp = o.espace == null ? TL.defauts.espace : o.espace;
     if (cible.__trace) cible.__trace.stop();
     var ctl = { glyphes: [], duree: 0, canevas: null, fini: false }, resFin, resPret, raf = 0, mort = false;
     ctl.fin = new Promise(function (r) { resFin = r; }); ctl.pret = new Promise(function (r) { resPret = r; });
@@ -523,6 +589,12 @@
           for (b2 = 0; b2 < sup; b2++) for (a2 = 0; a2 < sup; a2++) { qq = (yy * sup + b2) * W2 + xx * sup + a2; if (A2[qq]) { var tv = T[qq]; if (tv < mn) mn = tv; if (tv > mx) mx = tv; } }
           if (mn === Infinity) { mn = mx = D; } T0[p] = mn; T1[p] = mx; }
       }
+      /* ⚑ v153 (C-125) — UN PIXEL NE SE TEINT PAS APRÈS TOUS SES VOISINS : un pixel de bord dont l'instant dépasse celui de tous ses voisins d'encre
+         (une frange servie par un trait plus tardif) paraissait seul, plus tard, un point qui s'allume loin du front. Il prend l'instant de ses voisins. */
+      (function () { var w = g.w, hh = g.h, xx, yy, q, M; var T0b = new Float32Array(T0);
+        for (yy = 0; yy < hh; yy++) for (xx = 0; xx < w; xx++) { p = yy * w + xx; if (!A[p]) continue; M = -Infinity;
+          for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; var x2 = xx + dx, y2 = yy + dy; if (x2 < 0 || y2 < 0 || x2 >= w || y2 >= hh) continue; q = y2 * w + x2; if (A[q] && T0b[q] > M) M = T0b[q]; }
+          if (M > -Infinity && T0b[p] > M + 2 * sup) { T0[p] = M; if (T1[p] < M) T1[p] = M; } } })();
       g.im = R.im; g.A = A; g.T = T0; g.T1 = T1; g.sup = sup; g.D = D; g.pret = true; g.attente = false;
       if (TL._cacheN > 600) { TL._cache = {}; TL._cacheN = 0; }
       TL._cache[R.cle] = { im: new Uint8ClampedArray(R.im.data), A: A, T: T0, T1: T1, sup: sup, D: D }; TL._cacheN++;
@@ -556,7 +628,10 @@
       if (!g.pret) prepare(g);
       var sp = g.sup || 1, t = -0.5 * sp + frac * (g.D + sp), d = g.im.data, A = g.A, T = g.T, T1 = g.T1 || g.T, n = g.w * g.h, p, m, a;
       /* le front traverse le pixel entre l'instant de son premier et celui de son dernier sous-pixel d'encre (un pixel d'anticrénelage) */
-      for (p = 0; p < n; p++) { a = A[p]; if (!a) continue; m = (t - T[p] + 0.5 * sp) / (T1[p] - T[p] + sp); d[4 * p + 3] = m <= 0 ? 0 : (m >= 1 ? a : Math.round(a * m)); }
+      /* ⚑ v153 (Tom, C-125 : « aucune opacité intermédiaire hors l'anticrénelage d'un pixel ») — la rampe d'un pixel est BORNÉE à deux sous-pixels de
+         chemin : un pixel dont les sous-pixels appartiennent à deux traits (une jonction) restait à demi teint tout le temps qui sépare ces deux
+         traits — un point gris, loin du front. Il se teint maintenant au passage du front, en entier. */
+      for (p = 0; p < n; p++) { a = A[p]; if (!a) continue; m = (t - T[p] + 0.5 * sp) / (Math.min(T1[p] - T[p], 2 * sp) + sp); d[4 * p + 3] = m <= 0 ? 0 : (m >= 1 ? a : Math.round(a * m)); }
       bctx.putImageData(g.im, 0, 0);
       ctx.clearRect(g.X0, g.Y0, g.w, g.h); ctx.drawImage(fin, g.X0, g.Y0, g.w, g.h, g.X0, g.Y0, g.w, g.h); ctx.drawImage(brouillon, 0, 0, g.w, g.h, g.X0, g.Y0, g.w, g.h);
     }

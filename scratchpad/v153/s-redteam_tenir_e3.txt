@@ -1,0 +1,16 @@
+   A : {'titre': 3, 'qui': 'moi', 'nuee': None, 'due': None, 'st': 'encours'}
+   B : {'titre': 30, 'qui': 'Rachel', 'nuee': 'famille', 'due': 1, 'st': 'encours'}
+   A : départ 16 · descente finie 661 · repos 2559 ms · 145 images · forme True · statut tenu
+   A : départ 15 · descente finie 654 · repos 2561 ms · 146 images · forme True · statut tenu
+   B : départ 15 · descente finie 656 · repos 2556 ms · 137 images · forme True · statut tenu
+   B : départ 15 · descente finie 672 · repos 2560 ms · 145 images · forme True · statut tenu
+OK  R4 · les deux paroles diffèrent bien sur tout (à soi / à Rachel · un jour / demain · 3 / 30 mots · sans / dans un Cercle) {'titre': 3, 'qui': 'moi', 'nuee': None, 'due': None, 'st': 'encours'} · {'titre': 30, 'qui': 'Rachel', 'nuee': 'famille', 'due': 1, 'st': 'encours'}
+OK  R4 · la même séquence pour les deux : le rideau part, descend jusqu'à la barre sans remonter, remonte, s'en va ; la parole est tenue 
+--  R4 · durées NON JUGÉES (charge du Mac 12.8 ≥ 4, C-137) — relevé : écarts A/B : départ 0 · descente 7 · repos 2 ms ; mouvement (lever → barre) A 657 / B 664 ms
+OK  H · promiHaptique('tenir') est appelé une fois, au lever, avant la première image du rideau          appels ['tenir'] · lever → appel 0 ms
+OK  RM · mouvement réduit : la parole est tenue, sans rideau ni instant (aucune couche, aucun « juste après ») statut tenu · images avec rideau 0 · états vus ['f-encours||EN COURS', 'f-tenue||TENUE']
+OK  RM · un seul changement de l'aspect de la fiche, sans fondu (aucune opacité qui varie, aucune animation en cours) changements 1 · fondus [] · animations au pire 0 · 24 images · aplats fixes à demi-opacité : ['closeb', 'dpd-part', 'kr-c', 'ph-photo-btn']
+OK  RM · le crochet haptique est appelé aussi (le moment a lieu, sans mouvement)                         ['tenir']
+--  LT · tâches longues NON JUGÉES (charge du Mac 12.8 ≥ 4, C-137)
+
+6 / 6   (charge 12.8)

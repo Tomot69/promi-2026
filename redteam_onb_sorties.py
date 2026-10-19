@@ -63,7 +63,12 @@ def ouvre(b):
 def prenom(pg, cdp):
     c = centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(300)
 def parole(pg): pg.keyboard.press('Enter'); pg.wait_for_timeout(900)
-def saisie(pg): pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(900)
+def saisie(pg, cdp=None):
+    # ⚑ v153 (Tom, C-164) : le prénom validé ferme le clavier — on touche la phrase pour saisir la parole, comme sur l'iPhone
+    if not pg.evaluate("()=>{ const a=document.activeElement; return !!(a && a.id==='onbIn'); }"):
+        c = centre(pg, '[data-onb="parole"]') or centre(pg, '#onbPh')
+        if c: pg.touchscreen.tap(c[0], c[1]); pg.wait_for_timeout(350)
+    pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(900)
 def trace(pg, cdp):
     z = pg.evaluate("()=>{const c=document.getElementById('onbTrait'); if(!c) return null; const r=c.getBoundingClientRect(); return {l:r.left,t:r.top,k:r.width/390,dep:c.getAttribute('data-depart'),arr:c.getAttribute('data-arrivee')};}")
     if not z or not z['dep']: return False

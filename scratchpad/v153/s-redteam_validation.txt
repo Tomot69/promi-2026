@@ -1,0 +1,35 @@
+charge 16.5
+  ✅ [Q] Q536 · pendant le tracé (doigt posé), rien de la fiche ne se floute ni ne devient transparent                      tracant True · []
+A · une parole à moi seul
+  ✅ [A] la première image après le lever montre déjà la matière, et le rideau est posé                                     première image +9 ms · rideau True
+  ✅ [A] 7.1 · le front descend DÈS la première image (aucune attente sous le ruban : la vague intermédiaire n'existe plus) front 353.3 → 370.0 pt
+  ✅ [A] 7.1 · un seul mouvement : le front ne remonte jamais, et ne s'arrête jamais deux images de suite avant la barre    recul max -6.3 pt · arrêts 0 · 36 images jusqu'à la barre
+  ✅ [A] 7.1 · le haut de la matière redescend sur le trait (la durée n'est jugée qu'au calme, C-137 ; ici : avant 1 s), sans jamais remonter haut 260.0 → 296.0 pt en 102 ms · remontée max 0.0
+  ✅ [A] 7.1 · le ruban s'en va sous le rideau (avant 300 ms)                                                               102
+  ·  [A] délai (9 ms) et vitesse : non jugés, charge 16.5 (C-137)
+  ✅ [A] la parole est tenue ; « déjà vu » posé pour moi                                                                    {'st': 'tenu', 'vu': {'moi': '2026-10-19T22:41:50.578Z'}}
+B · la dernière part (Rachel a tracé avant, fiche fermée)
+  ✅ [B] la première image après le lever montre déjà la matière, et le rideau est posé                                     première image +17 ms · rideau True
+  ✅ [B] 7.1 · le front descend DÈS la première image (aucune attente sous le ruban : la vague intermédiaire n'existe plus) front 354.3 → 373.0 pt
+  ✅ [B] 7.1 · un seul mouvement : le front ne remonte jamais, et ne s'arrête jamais deux images de suite avant la barre    recul max -6.0 pt · arrêts 0 · 36 images jusqu'à la barre
+  ✅ [B] 7.1 · le haut de la matière redescend sur le trait (la durée n'est jugée qu'au calme, C-137 ; ici : avant 1 s), sans jamais remonter haut 258.7 → 296.0 pt en 114 ms · remontée max 0.0
+  ✅ [B] 7.1 · le ruban s'en va sous le rideau (avant 300 ms)                                                               114
+  ·  [B] délai (17 ms) et vitesse : non jugés, charge 16.5 (C-137)
+  ✅ [B] avant : en cours ; après mon trait : tenue, toutes les parts écrites                                               ('encours', {'st': 'tenu', 'parts': {'Rachel': '2026-10-19T22:42:02.016Z', 'moi': '2026-10-19T22:42:07.120Z'}})
+C · ma part, pas la dernière (Rachel et Nico n'ont pas tracé)
+  ✅ [C] 7.2 · aucun rideau, jamais (2 s après le lever)                                                                    86 images · rideau vu False
+  ✅ [C] 7.2 · la vague amande SOUS le trait est là après le lever (120 à 420 ms)                                           bas de la vague [352, 352, 352, 352, 352] pt · trait base [286, 36]
+  ✅ [C] 7.2 · puis elle se resserre sur le trait et s'en va (la durée n'est jugée qu'au calme, C-137 ; ici : avant 3 s)    921
+  ✅ [C] 7.2 · la parole reste en cours ; ma part est écrite                                                                {'st': 'encours', 'parts': {'moi': '2026-10-19T22:42:15.145Z'}}
+  ✅ [D] 7.3 · tout le monde a tracé : la parole est tenue, une entrée « Chacun a tracé sa part » dans le Fil               ['Chacun a tracé sa part : «\xa0traverser la baie à la nage\xa0»']
+  ✅ [D] 7.4 · « déjà vu » : celui qui a tracé la dernière part (Nico), pas moi                                             {'Nico': '2026-10-19T22:42:18.199Z'}
+  ✅ [D] 7.4 · première ouverture : le rideau descend sous les yeux, puis la fiche tenue ; « déjà vu » posé pour moi        rideau True · {'st': 'tenu', 'vu': {'Nico': '2026-10-19T22:42:18.199Z', 'moi': '2026-10-19T22:42:19.931Z'}, 'dp': True}
+  ✅ [D] 7.4 · seconde ouverture : AUCUN rideau, la fiche s'ouvre directement tenue                                         rideau False · {'st': 'tenu', 'vu': {'Nico': '2026-10-19T22:42:18.199Z', 'moi': '2026-10-19T22:42:19.931Z'}, 'dp': True}
+  ✅ [D] 7.4 · après un rechargement : AUCUN rideau, la fiche s'ouvre directement tenue                                     rideau False · {'st': 'tenu', 'vu': {'Nico': '2026-10-19T22:42:18.199Z', 'moi': '2026-10-19T22:42:19.931Z'}, 'dp': True}
+E · la création (page +)
+  ✅ [E] C-155 · la première image après le lever montre la dalle qui GRANDIT (aucune attente)                              échelle 1.31875 à +18 ms
+  ✅ [E] elle grandit à chaque image jusqu'à la coupe                                                                       18 images · [0.39, 0.3, 0.28, 0.36, 0.28, 0.32, 0.34, 0.3, 0.28, 0.3]
+  ✅ [E] C-155 · le travail lourd après le départ : la Toile reçoit la parole après que la dalle a commencé à grandir       Toile.addPromi à +351 ms · première image +18 ms
+  ·  [E] délai (18 ms) et vitesse : non jugés, charge 16.5 (C-137)
+
+  ✅  25 / 25

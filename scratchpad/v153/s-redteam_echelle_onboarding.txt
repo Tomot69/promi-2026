@@ -1,0 +1,13 @@
+OK  « titre » : PromiLate 52 pt sur toutes ses pages (fin)  [('PromiLate', 52)]
+OK  « phrase » : Gilbert 35 pt sur toutes ses pages (parole, prénom, trait)  [('Gilbert', 35)]
+OK  « texte » : Atkinson 25 pt sur toutes ses pages (trait)  [('Atkinson', 25)]
+OK  « liste » : Atkinson 22.3 pt sur toutes ses pages (fin)  [('Atkinson', 22.3)]
+OK  « mot-clé » : PromiLate 25 pt sur toutes ses pages (fin)  [('PromiLate', 25)]
+OK  « mot de fin » : PromiLate 32 pt sur toutes ses pages (fin)  [('PromiLate', 32)]
+OK  « consigne » : PromiLate 19 pt sur toutes ses pages (trait)  [('PromiLate', 19)]
+OK  « guide » : Atkinson 29 pt sur toutes ses pages (guide)  [('Atkinson', 29)]
+OK  « guide-clé » : PromiLate 29 pt sur toutes ses pages (guide)  [('PromiLate', 29)]
+OK  « guide-studio » : PromiLate 32.2 pt sur toutes ses pages (guide)  [('PromiLate', 32.2)]
+OK  les cinq pages ont été lues (prénom, parole, trait, fin, guide)  []
+
+11 / 11

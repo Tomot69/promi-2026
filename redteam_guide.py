@@ -63,6 +63,7 @@ ATTENTE, COUVRE, OUVRE, FERME, RETIRE = 600, 1400, 700, 700, 1200             # 
 VIOLET, BLEU, CREME = (41, 21, 71), (14, 120, 242), (247, 240, 222)           # #291547 · #0E78F2 · #F7F0DE
 MONDE = {True: (131, 99, 170), False: (201, 168, 245)}                         # ⚑ v148 (Tom, C-145) : « monde » #8363AA en clair, #C9A8F5 en sombre (v147 : rose #FFB8D2, illisible)
 PALB = [(130, 174, 248), (255, 184, 210), (201, 168, 245), (239, 227, 199)]    # la palette de base (Ingénu), dans son ordre — « Studio », lettre à lettre
+MARGE_MIN_PLUS = 4.0   # ⚑ v153 (Q553, C-163)
 TAILLE_TEXTE, MARGE_MIN, MARGE_MAX, CENTRE_PH = 29, 6.0, 10.0, 252   # ⚑ v149 (C-145) : 312 → 252 (60 pt ± 4 plus haut)              # ⚑ v148 (C-145) : 29 pt (27 × 1,07 — « +6 à 8 % ») ; §10.2 ; §10.4 (372 − 60)
 INTERLIGNE = (1.40, 1.50)                                                       # ⚑ v148 (C-145) : « l'interligne passe de 1,35 à environ 1,45 »
 CHARGE = float(os.popen('sysctl -n vm.loadavg').read().split()[1]) if os.path.exists('/usr/sbin/sysctl') else 0.0
@@ -271,7 +272,9 @@ def zone(pg, e, T, quoi, nette=None):
     sdbord = sdb(px_, py_); libre = sdbord < -6.0      # là où la barre ne contraint pas la zone
     juge('[%s] %s · 10.2 : rien du contour de la barre n\'est découvert — la zone reste à 2,5 pt au moins en deçà de son trait (sa forme arrondie, pas sa boîte)' % (T, quoi), float(sdbord.max()) <= -2.5, 'au plus près : %.1f pt du contour' % -float(sdbord.max()))
     mgl = mg[libre] if libre.any() else mg
-    juge('[%s] %s · 10.2 : autour de la boîte, une marge de 6 à 10 pt partout où la barre ne la borne pas (lue sur chaque pixel du bord)' % (T, quoi), len(mgl) > 40 and float(mgl.min()) >= MARGE_MIN - 0.7 and float(mg.max()) <= MARGE_MAX + 0.7, 'marge %.1f à %.1f pt (%d %% du bord borné par la barre, marge %.1f au plus bas)' % (float(mgl.min()), float(mg.max()), round(100 * (1 - libre.mean())), float(mg.min())))
+    # ⚑ v153 (chef de chantier, Q553, C-163) : « Tom refuse le rond » — autour du + la marge va de 4 à 10 pt (au lieu de 6 à 10), pour des lobes de 9 à 10 %
+    mmin = MARGE_MIN_PLUS if rond else MARGE_MIN
+    juge('[%s] %s · 10.2 : autour de la boîte, une marge de %d à 10 pt partout où la barre ne la borne pas (lue sur chaque pixel du bord)' % (T, quoi, mmin), len(mgl) > 40 and float(mgl.min()) >= mmin - 0.7 and float(mg.max()) <= MARGE_MAX + 0.7, 'marge %.1f à %.1f pt (%d %% du bord borné par la barre, marge %.1f au plus bas)' % (float(mgl.min()), float(mg.max()), round(100 * (1 - libre.mean())), float(mg.min())))
     juge('[%s] %s · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 %% de sa taille : la marge varie d\'au moins 8 %% du rayon moyen d\'un secteur à l\'autre) — pas un rond' % (T, quoi), 0.08 <= lobes <= 0.15, 'lobes %.1f %% du rayon moyen (%.1f pt) · marge par secteur %.1f–%.1f' % (lobes * 100, float(rr.mean()), min(moy) if moy else 0, max(moy) if moy else 0))
     # aucun pixel net hors de la zone, sur TOUT l'écran : la boîte + 10 pt (+ 0,7 de lecture)
     mT, _ = eau(pg, 780, 1688)
@@ -363,6 +366,7 @@ def ouvre(b, th, reduit=False, vierge=True):
 def onboarding(pg, cdp, compte=True):
     """le parcours d'origine, au doigt : prénom → parole → trait → message de fin → compte (« Plus tard ») → l'accueil"""
     c = centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(700)
+    c = centre(pg, '[data-onb="parole"]') or centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
     pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(700)
     return trait(pg, cdp, compte)
 def trait(pg, cdp, compte=True):

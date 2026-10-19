@@ -1,0 +1,12 @@
+  ❌ A · premier lancement : le parcours va jusqu'à « Promi planté ! »                                
+  ✅ A · Toile vide · le texte de « Promi planté ! »                                                  Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.
+  ❌ A · Toile vide · le reste ne change pas : le titre, Primo · Deuxio · Tertio, la fin — trois touchers Promi planté ! · 1 visibles · pas 0
+  ❌ B · le rejeu part des Réglages (« Revoir la présentation », au doigt) sur une Toile de 0 dalle   rangée vue : True
+  ❌ B · Toile d'une dalle · le texte de « Promi planté ! »                                           Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.
+  ❌ B · Toile d'une dalle · le reste ne change pas : le titre, Primo · Deuxio · Tertio, la fin — trois touchers Promi planté ! · 1 visibles · pas 0
+  ❌ C · le rejeu sur une Toile de 10 paroles                                                         
+  ❌ C · Toile de dix dalles · le texte de « Promi planté ! »                                         Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.
+  ❌ C · Toile de dix dalles · le reste ne change pas : le titre, Primo · Deuxio · Tertio, la fin — trois touchers Promi planté ! · 1 visibles · pas 0
+  ✅ aucune erreur de page                                                                            []
+
+  ❌  2 / 10

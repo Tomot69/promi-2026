@@ -1,0 +1,37 @@
+  ✅ prénom · les deux thèmes portent les mêmes mots, dans le même ordre                                  6 / 6
+  ✅ prénom · « i » coloré en clair (2, 33, 64) → coloré en sombre, ≥ 3:1                                 sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ parole · les deux thèmes portent les mêmes mots, dans le même ordre                                  12 / 12
+  ✅ parole · « i » coloré en clair (2, 33, 64) → coloré en sombre, ≥ 3:1                                 sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ parole · « Promi » coloré en clair (72, 112, 181) → coloré en sombre, ≥ 3:1                          sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ trait · les deux thèmes portent les mêmes mots, dans le même ordre                                   12 / 12
+  ✅ trait · « i » coloré en clair (2, 33, 64) → coloré en sombre, ≥ 3:1                                  sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ trait · « Promi » coloré en clair (72, 112, 181) → coloré en sombre, ≥ 3:1                           sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ trait · « trace pour planter » : exception nommée (Tom, v151 C-126 §5), crème en sombre              clair (0, 52, 26) · sombre (247, 240, 222)
+  ✅ fin · les deux thèmes portent les mêmes mots, dans le même ordre                                     20 / 20
+  ✅ fin · « Promi » coloré en clair (14, 120, 242) → coloré en sombre, ≥ 3:1                             sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ fin · « Promi » coloré en clair (72, 112, 181) → coloré en sombre, ≥ 3:1                             sombre (130, 174, 248) · fond (12, 10, 9) · 8.80:1
+  ✅ fin · « Primo, » coloré en clair (14, 120, 242) → coloré en sombre, ≥ 3:1                            sombre (14, 120, 242) · fond (11, 9, 8) · 4.72:1
+  ✅ fin · « Promi » coloré en clair (72, 112, 181) → coloré en sombre, ≥ 3:1                             sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ fin · « Deuxio, » coloré en clair (14, 120, 242) → coloré en sombre, ≥ 3:1                           sombre (14, 120, 242) · fond (11, 9, 8) · 4.72:1
+  ✅ fin · « Chiche » coloré en clair (157, 94, 119) → coloré en sombre, ≥ 3:1                            sombre (255, 184, 210) · fond (11, 9, 8) · 12.34:1
+  ✅ fin · « Tertio, » coloré en clair (14, 120, 242) → coloré en sombre, ≥ 3:1                           sombre (14, 120, 242) · fond (11, 9, 8) · 4.72:1
+  ✅ fin · « Cercle » coloré en clair (130, 98, 169) → coloré en sombre, ≥ 3:1                            sombre (201, 168, 245) · fond (11, 9, 8) · 9.84:1
+  ✅ fin · « La suite » : exception nommée (Q548, v152 (C-165 : seul « t’appartient. » se colore)), crème en sombre clair (14, 120, 242) · sombre (247, 240, 222)
+  ✅ fin · « t’appartient. » en clair : (14, 120, 242) (en dur, C-165)                                    clair (14, 120, 242)
+  ✅ fin · « t’appartient. » coloré en clair (14, 120, 242) → coloré en sombre (130, 174, 248) (en dur), ≥ 3:1 sombre (130, 174, 248) · fond (11, 9, 8) · 8.86:1
+  ✅ guide-studio · les deux thèmes portent les mêmes mots, dans le même ordre                            10 / 10
+  ✅ guide-studio · « monde » coloré en clair (131, 99, 170) → coloré en sombre, ≥ 3:1                    sombre (201, 168, 245) · fond (5, 3, 2) · 10.20:1
+  ✅ guide-studio · « S » coloré en clair (73, 113, 182) → coloré en sombre, ≥ 3:1                        sombre (130, 174, 248) · fond (5, 3, 2) · 9.17:1
+  ✅ guide-studio · « t » coloré en clair (158, 95, 119) → coloré en sombre, ≥ 3:1                        sombre (255, 184, 210) · fond (5, 3, 2) · 12.78:1
+  ✅ guide-studio · « u » coloré en clair (131, 99, 170) → coloré en sombre, ≥ 3:1                        sombre (201, 168, 245) · fond (34, 27, 25) · 8.40:1
+  ✅ guide-studio · « d » coloré en clair (124, 113, 88) → coloré en sombre, ≥ 3:1                        sombre (239, 227, 199) · fond (34, 27, 25) · 13.30:1
+  ✅ guide-studio · « i » coloré en clair (73, 113, 182) → coloré en sombre, ≥ 3:1                        sombre (130, 174, 248) · fond (9, 6, 3) · 9.01:1
+  ✅ guide-studio · « o » coloré en clair (158, 95, 119) → coloré en sombre, ≥ 3:1                        sombre (255, 184, 210) · fond (9, 6, 3) · 12.55:1
+  ✅ guide-plus · les deux thèmes portent les mêmes mots, dans le même ordre                              8 / 8
+  ✅ guide-plus · « Promi » coloré en clair (14, 120, 242) → coloré en sombre (130, 174, 248) (en dur), ≥ 3:1 sombre (130, 174, 248) · fond (13, 7, 4) · 8.92:1
+  ✅ guide-plus · « Chiche » coloré en clair (120, 60, 85) → coloré en sombre (255, 184, 210) (en dur), ≥ 3:1 sombre (255, 184, 210) · fond (14, 7, 6) · 12.40:1
+  ✅ guide-plus · « Cercle » coloré en clair (97, 65, 133) → coloré en sombre (201, 168, 245) (en dur), ≥ 3:1 sombre (201, 168, 245) · fond (10, 6, 3) · 10.00:1
+  ✅ guide-plus · « commence » coloré en clair (14, 120, 242) → coloré en sombre (130, 174, 248) (en dur), ≥ 3:1 sombre (130, 174, 248) · fond (5, 3, 2) · 9.17:1
+  ✅ aucune erreur de page                                                                                []
+
+  ✅  35 / 35

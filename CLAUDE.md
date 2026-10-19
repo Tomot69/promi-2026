@@ -129,6 +129,28 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v153 (20 oct. 2026) — LE CLAVIER APRÈS LE PRÉNOM, LE TRACÉ DES LETTRES (RÉCIDIVE), « T'APPARTIENT. » EN COULEUR, L'ENTOURAGE DU +, PUIS E3. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v147 (C-125 : 40 à 60 car/s) et v151–v152 (Q548 pour « t'appartient. »).
+> **⚑ C-164 — LE PRÉNOM VALIDÉ, LE CLAVIER SE FERME** (le champ perd le focus) ; la page de la parole ne trace ses textes qu'une fois le clavier
+> ENTIÈREMENT redescendu (`apresClavier` : la hauteur de `visualViewport` revenue et stable 160 ms ; 1,6 s au plus ; sans clavier, rien n'attend). La
+> parole se saisit en touchant la phrase (Q557). ⚠ **Un juge d'onboarding qui tape la parole touche d'abord la phrase** (`[data-onb="parole"]`) : sans
+> cela il tape dans le vide. Juge : **`redteam_clavier_onb.py`** (clavier simulé : `visualViewport` descend et remonte comme sur iOS ; 6/6 ; 3/6 sur v152).
+> **⚑ C-125, RÉCIDIVE — LE TRACÉ DES LETTRES À 22 CARACTÈRES PAR SECONDE** (Tom : « 20 à 25 au départ, réglable ») : `?cps=N` (5 à 80) la règle, `?tlv=0.05`
+> la ralentit pour regarder — jamais mémorisés ; la vitesse vit dans le module (`TL.defauts.cps`), l'app ne la passe plus. *La cause du « pof »* : le module
+> traçait bien, mais à 50 car/s une lettre durait ≈ 20 ms, une image à 60 Hz. *Et les éclats* : au coin haut-droit du « g » d'Atkinson (la panse revient au
+> fût tracé d'abord), la bissectrice coupait l'encre en triangles — à une FERMETURE en angle (> 40°) entre deux traits COURBES, le premier tracé garde
+> toute sa largeur et sa tête biseautée se dévoile d'une coupe plate avant lui ; un trait droit garde sa priorité ; un TOURNANT (fin d'un trait, départ
+> du suivant) garde la coupe en onglet. La rampe d'opacité d'un pixel est bornée à deux sous-pixels de chemin. Toutes les autres lettres des deux polices :
+> identiques au pixel à v152 (planches `scratchpad/v153/planche-*.png`). *La règle* : **un tracé se juge en temps réel sur l'écran (combien de temps
+> chaque lettre est EN COURS), pas seulement pas à pas ; et un coin se regarde lettre par lettre.** Juge : `redteam_trace_lettres` ⑦ à ⑩.
+> **⚑ C-165 — « T'APPARTIENT. » EN COULEUR** : `#0E78F2` en clair, `#82AEF8` en sombre (`.onbv-app`) ; « La suite » ne change pas (crème en sombre, Q548).
+> **⚑ C-163 (Q553) — AUTOUR DU +, LA ZONE NETTE DU GUIDE VA DE 4 À 10 pt** (7 ± 3 ; « Tom refuse le rond ») ; le Studio garde 6 à 10.
+> **⚑ E3 (C-077, A1 prime)** : le moment « tenir » est le rideau validé. **R4 est ACTIF** (`redteam_tenir_e3 --r4`, appelé par `redteam_engagement`) : deux
+> paroles qui diffèrent sur tout donnent la même séquence, lue sur les pixels du rideau ; la borne de 1 000 ms vaut pour le MOUVEMENT (lever → rideau à la
+> barre ≈ 670 ms), l'instant posé garde ses 2 s (Q554). **`window.promiHaptique(nom)`** (`lot-E3-HAPTIQUE`) : vide, appelé avec 'tenir' au lever ; Safari
+> iOS ne vibre pas, Core Haptics au portage (C-022). **« Réduire les animations » : la fiche passe TENUE d'un coup — ni rideau, ni instant, ni fondu.**
+> Tâches longues pendant la séquence : jugées au calme seulement. **PUIS POINT D'ARRÊT : Tom fait repasser ses deux testeurs ; rien ne démarre avant son
+> retour, pas d'E4.**
+
 ### ⚑ v152 (19 oct. 2026) — DERNIERS RETOURS DE TOM, CLÔTURE DE LA SÉRIE : « ENCHANTÉ » RETIRÉ, LES MOTS COLORÉS EN SOMBRE. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v151 (l'échelle : la ligne « texte ») et v147 (C-124 §4, la première ligne de la page du prénom).
 > **Validés par Tom (« tout a l'air ok ») : C-154, C-157, C-149, C-159, C-160 ; C-124 et C-126 pour le reste. Q547 : l'orange du libellé gardé partout
 > (vu et validé). Q549 close. Décisions du chef de chantier : Q548 (« La suite t'appartient. » reste crème en sombre), Q550 (« félicitations » dans la
@@ -3158,6 +3180,8 @@ python3 redteam_pages_plus.py  # 35 — v150 (C-157, C-158, C-149) : les pages +
                                #   « garder de côté » ; les fiches identiques au pixel ; la bascule des lignes sur dix ouvertures. Rouge sur v149.
 python3 redteam_echeance.py    # 11 — v151 (C-160) : l'échéance est une date — planter « 5 j », ?jour=+30 → « à tenir » ; REPORTER au doigt depuis le Fil → « en cours » ;
                                #   tracer → « tenue » ; le retour au premier plan recompte ; « un jour » jamais « à tenir » ; ?jour jamais mémorisé. WebKit. 4/11 sur v150.
+python3 redteam_clavier_onb.py  # 6 — v153 (C-164) : clavier simulé (visualViewport descend/remonte comme sur iOS) — après le prénom, plus de focus ; le premier tracé APRÈS le clavier redescendu ; sans clavier, rien n'attend. 3/6 sur v152.
+python3 redteam_tenir_e3.py    # 6 — v153 (E3, C-077) : R4 (deux paroles qui diffèrent sur tout, même séquence lue sur les pixels du rideau ; durées au calme), le crochet promiHaptique, « Réduire les animations » (tenue d'un coup, sans fondu), tâches longues (au calme). --r4 pour redteam_engagement. 2/6 sur v152.
 python3 redteam_mots_sombre.py  # 33 — v152 (C-162) : tout mot coloré en clair dans l'onboarding et le guide l'est aussi en sombre, ≥ 3:1 sur le fond lu sur l'image ; inventaire relevé ; deux exceptions nommées. WebKit. 29/33 sur v151.
 python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.

@@ -1,0 +1,53 @@
+
+── clair
+  ✅ [clair] 11.1 · « Prénom, donc. » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px             25 px / 35 px
+  ✅ [clair] 11.1 · « Prénom, donc. » : en violet #291547                                                           rgb(41, 21, 71)
+  ✅ [clair] 11.1 · « Petite ou grande promesse… » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px 25 px / 35 px
+  ✅ [clair] 11.1 · « Petite ou grande promesse… » : en violet #291547                                              rgb(41, 21, 71)
+  ✅ [clair] 11.1 · « Prénom, donc. » ne touche pas la phrase (au moins 8 pt d'air)                                 bas 216 · phrase à 327
+  ✅ [clair] C-126 · « trace pour planter » (PromiLate) en vert foncé #00341A                                       rgb(0, 52, 26)
+  ✅ [clair] C-126 · le départ de la flèche est orange #FB4C0D (lu sur l'image, au départ du trait)                 137 pixels orange
+  ✅ [clair] C-123 · à « Promi planté ! » : rien n'arrive d'un coup — aucune image ne change plus de 40 % de l'écran (la Toile d'avant se retire en flaques) la plus grande différence entre deux images : 12 %
+  ✅ [clair] C-123 · les voisines naissent une à une : 4 voisines, chacune à son heure (≥ 100 ms d'écart) et chacune pousse sur plusieurs images (≥ 150 ms jusqu'à sa taille, puis elle dépasse d'un rien et se pose : 520 ms) — relevé du moteur, image par image naissances à [3723, 3856, 4001, 4134] ms · poussées de [195, 196, 200] ms
+  ✅ [clair] 11.4 · le titre est « Promi planté ! » (espace insécable avant « ! »)                                  'Promi planté\xa0!'
+  ✅ [clair] 11.4 · « Promi » en PromiLate, #0E78F2                                                                 {'f': 'PromiLate', 'col': 'rgb(14, 120, 242)'}
+  ✅ [clair] 11.4 · ⚑ v148 (C-124 §9.1) : avant le toucher, le titre SEUL — ni la phrase de ton, ni aucune ligne    ton False · 0 ligne(s) visibles
+  ✅ [clair] 11.2 · plus gros : titre ≥ 40 px, phrase de ton ≥ 19 px, lignes ≥ 16,5 px (35 · 16 · 16 avant)         titre 42.0 · ton 22.3 · lignes 22.3 (échelle du bloc)
+  ✅ [clair] 11.2 · le texte en violet #291547 (titre, ton, lignes)                                                 rgb(41, 21, 71) · rgb(41, 21, 71)
+  ✅ [clair] 11.2 · Promi, Chiche, Cercle prennent la couleur de leur nature (v149 : exacte en sombre, 3:1 en clair) [('Promi', 'rgb(72, 112, 181)'), ('Promi', 'rgb(72, 112, 181)'), ('Chiche', 'rgb(157, 94, 119)'), ('Cercle', 'rgb(130, 98, 169)')]
+  ✅ [clair] 11.3 · lignes courtes ; mots-clés en PromiLate (Primo, Deuxio, Tertio, La suite t'appartient.) ; Deuxio penché 5 lignes · ['Primo,', 'Deuxio,', 'Tertio,', 'La suite t’appartient.'] · matrix(1, 0, -0.0524078, 1, 0, 0)
+  ✅ [clair] 11.3 · aucun mot de Tom changé hors 11.4 (le texte entier, espaces ramenés)                            
+  ✅ [clair] 11.5 · ⚑ v148 (C-124 §9.1) : au départ, le titre seul est PLUS BAS qu'en v147 (son haut > 90)          haut 186
+  ✅ [clair] 11.4 · ⚑ v148 (C-124 §9.2) : chaque toucher fait paraître UN paragraphe — la phrase de ton, puis Primo · Deuxio · Tertio, puis la fin ; le bloc remonte à chaque pas après chaque toucher (ton, lignes, haut) : [(True, 0, 153), (True, 3, 57), (True, 5, 36)]
+  ✅ [clair] 11.5 · à la fin, le bloc a remonté (son haut ≤ 90)                                                     haut 36
+  ✅ [clair] 11.4 · après trois touchers, tout est là (toutes les lignes)                                           5 sur 5
+  ✅ [clair] 11.5 · le bloc passe AU-DESSUS des dalles : sur l'image, 12 pt sous lui ne portent que le fond de la Toile 0 pixels hors du fond sur 1464 (bas du bloc 542)
+  ✅ [clair] aucun contour ni ombre sur aucune lettre de l'onboarding                                               []
+  ✅ [clair] aucune erreur de page                                                                                  []
+
+── sombre
+  ✅ [sombre] 11.1 · « Prénom, donc. » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px            25 px / 35 px
+  ✅ [sombre] 11.1 · « Prénom, donc. » : la crème d'aujourd'hui                                                     rgb(247, 240, 222)
+  ✅ [sombre] 11.1 · « Petite ou grande promesse… » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px 25 px / 35 px
+  ✅ [sombre] 11.1 · « Petite ou grande promesse… » : la crème d'aujourd'hui                                        rgb(247, 240, 222)
+  ✅ [sombre] 11.1 · « Prénom, donc. » ne touche pas la phrase (au moins 8 pt d'air)                                bas 216 · phrase à 327
+  ✅ [sombre] C-126 · v150 : toute la flèche en orange #FB4C0D, la traîne comprise (aucun pixel crème au départ du trait) 91 pixels orange · 0 crème
+  ✅ [sombre] C-123 · à « Promi planté ! » : rien n'arrive d'un coup — aucune image ne change plus de 40 % de l'écran (la Toile d'avant se retire en flaques) la plus grande différence entre deux images : 8 %
+  ✅ [sombre] C-123 · les voisines naissent une à une : 4 voisines, chacune à son heure (≥ 100 ms d'écart) et chacune pousse sur plusieurs images (≥ 150 ms jusqu'à sa taille, puis elle dépasse d'un rien et se pose : 520 ms) — relevé du moteur, image par image naissances à [3484, 3618, 3768, 3901] ms · poussées de [200, 200, 201] ms
+  ✅ [sombre] 11.4 · le titre est « Promi planté ! » (espace insécable avant « ! »)                                 'Promi planté\xa0!'
+  ✅ [sombre] 11.4 · « Promi » en PromiLate, le bleu de la nature                                                   {'f': 'PromiLate', 'col': 'rgb(130, 174, 248)'}
+  ✅ [sombre] 11.4 · ⚑ v148 (C-124 §9.1) : avant le toucher, le titre SEUL — ni la phrase de ton, ni aucune ligne   ton False · 0 ligne(s) visibles
+  ✅ [sombre] 11.2 · plus gros : titre ≥ 40 px, phrase de ton ≥ 19 px, lignes ≥ 16,5 px (35 · 16 · 16 avant)        titre 42.0 · ton 22.3 · lignes 22.3 (échelle du bloc)
+  ✅ [sombre] 11.2 · les couleurs d'aujourd'hui : la crème                                                          rgb(247, 240, 222)
+  ✅ [sombre] 11.2 · Promi, Chiche, Cercle prennent la couleur de leur nature (v149 : exacte en sombre, 3:1 en clair) [('Promi', 'rgb(130, 174, 248)'), ('Promi', 'rgb(130, 174, 248)'), ('Chiche', 'rgb(255, 184, 210)'), ('Cercle', 'rgb(201, 168, 245)')]
+  ✅ [sombre] 11.3 · lignes courtes ; mots-clés en PromiLate (Primo, Deuxio, Tertio, La suite t'appartient.) ; Deuxio penché 5 lignes · ['Primo,', 'Deuxio,', 'Tertio,', 'La suite t’appartient.'] · matrix(1, 0, -0.0524078, 1, 0, 0)
+  ✅ [sombre] 11.3 · aucun mot de Tom changé hors 11.4 (le texte entier, espaces ramenés)                           
+  ✅ [sombre] 11.5 · ⚑ v148 (C-124 §9.1) : au départ, le titre seul est PLUS BAS qu'en v147 (son haut > 90)         haut 186
+  ✅ [sombre] 11.4 · ⚑ v148 (C-124 §9.2) : chaque toucher fait paraître UN paragraphe — la phrase de ton, puis Primo · Deuxio · Tertio, puis la fin ; le bloc remonte à chaque pas après chaque toucher (ton, lignes, haut) : [(True, 0, 153), (True, 3, 57), (True, 5, 36)]
+  ✅ [sombre] 11.5 · à la fin, le bloc a remonté (son haut ≤ 90)                                                    haut 36
+  ✅ [sombre] 11.4 · après trois touchers, tout est là (toutes les lignes)                                          5 sur 5
+  ✅ [sombre] 11.5 · le bloc passe AU-DESSUS des dalles : sur l'image, 12 pt sous lui ne portent que le fond de la Toile 0 pixels hors du fond sur 1464 (bas du bloc 542)
+  ✅ [sombre] aucun contour ni ombre sur aucune lettre de l'onboarding                                              []
+  ✅ [sombre] aucune erreur de page                                                                                 []
+
+  ✅  47 / 47

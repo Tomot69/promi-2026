@@ -164,6 +164,7 @@ def passe(b, th):
     # ── T2 · le trait du premier Promi naît en flaques
     c = centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(300)
     pg.keyboard.press('Enter'); pg.wait_for_timeout(900); attend(pg)
+    c = centre(pg, '[data-onb="parole"]'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
     pg.evaluate("()=>{ window.__T.length=0; }"); pg.keyboard.type('marcher une heure', delay=25); pg.wait_for_timeout(1400)
     S = pg.evaluate("()=>window.__T")
     i_tr = next((i for i, s in enumerate(S) if s.get('trait')), None)

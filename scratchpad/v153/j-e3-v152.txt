@@ -1,0 +1,16 @@
+   A : {'titre': 3, 'qui': 'moi', 'nuee': None, 'due': None, 'st': 'encours'}
+   B : {'titre': 30, 'qui': 'Rachel', 'nuee': 'famille', 'due': 1, 'st': 'encours'}
+   A : départ 14 · descente finie 658 · repos 2570 ms · 147 images · forme True · statut tenu
+   A : départ 54 · descente finie 659 · repos 2565 ms · 110 images · forme True · statut tenu
+   B : départ 15 · descente finie 661 · repos 2563 ms · 145 images · forme True · statut tenu
+   B : départ 47 · descente finie 668 · repos 2571 ms · 110 images · forme True · statut tenu
+OK  R4 · les deux paroles diffèrent bien sur tout (à soi / à Rachel · un jour / demain · 3 / 30 mots · sans / dans un Cercle) {'titre': 3, 'qui': 'moi', 'nuee': None, 'due': None, 'st': 'encours'} · {'titre': 30, 'qui': 'Rachel', 'nuee': 'famille', 'due': 1, 'st': 'encours'}
+OK  R4 · la même séquence pour les deux : le rideau part, descend jusqu'à la barre sans remonter, remonte, s'en va ; la parole est tenue 
+--  R4 · durées NON JUGÉES (charge du Mac 12.3 ≥ 4, C-137) — relevé : écarts A/B : départ 3 · descente 6 · repos 0 ms ; mouvement (lever → barre) A 658 / B 664 ms
+KO  H · promiHaptique('tenir') est appelé une fois, au lever, avant la première image du rideau          appels [] · lever → appel — ms
+KO  RM · mouvement réduit : la parole est tenue, sans rideau ni instant (aucune couche, aucun « juste après ») statut tenu · images avec rideau 0 · états vus ['f-encours|referme|EN COURS', 'f-encours||EN COURS', 'f-tenue inst-apres|apres|TENUE', 'f-tenue inst-apres|apres|TENUE · À L’INSTANT']
+KO  RM · un seul changement de l'aspect de la fiche, sans fondu (aucune opacité qui varie, aucune animation en cours) changements 6 · fondus [] · animations au pire 0 · 170 images · aplats fixes à demi-opacité : ['[object SVGAnimatedString]', 'closeb', 'dpd-part', 'kr-c', 'ph-photo-btn']
+KO  RM · le crochet haptique est appelé aussi (le moment a lieu, sans mouvement)                         []
+--  LT · tâches longues NON JUGÉES (charge du Mac 12.3 ≥ 4, C-137)
+
+2 / 6   (charge 12.3)

@@ -1,0 +1,107 @@
+  ✅ [WebKit] studio · rien du contour de la barre n'est découvert (la zone nette reste à 2,5 pt au moins en deçà de son trait arrondi) {'pire': -5.215801955998472, 'n': 17407}
+  ✅ [WebKit] plus · rien du contour de la barre n'est découvert (la zone nette reste à 2,5 pt au moins en deçà de son trait arrondi) {'pire': -5.250041043614431, 'n': 23495}
+
+── premier lancement, clair : onboarding entier, choix au Studio
+  ✅ [clair] à l'arrivée sur l'accueil rien n'est flou, la barre est complète                                               guide None
+      (non jugé : « le moment » est une durée tenue par des minuteurs ; charge du Mac 14.4 ≥ 4 — C-137. Relevé : 1.63 s)
+      (non jugé : la durée de la couverture se lit image par image ; charge du Mac 14.4 ≥ 4 — C-137. Relevé : 0.87 s, réglée 1400 ms)
+  ✅ [clair] 4.1 · la couverture est RÉGLÉE à 1,4 s                                                                         1400
+      (non jugé : « la couverture avance de 9 % au plus par image » est une mesure de cadence ; charge du Mac 14.4 ≥ 4 — C-137. Relevé : 50 images, plus grand pas 2.8 %)
+      (non jugé : le relevé en direct dépend de la cadence du juge ; charge du Mac 14.4 ≥ 4 — C-137 ; les flaques et ce qui reste mouillé sont jugés sur les états arrêtés, plus bas)
+  ✅ [clair] studio · la phrase, mot pour mot, visible, ⚑ v149 : encore 60 pt plus haut qu'en v148 (centrée à 252 ± 4 ; v148 : 312) « Choisis d’abord le monde qui te ressemble, au Studio. » [30, 168, 330, 169]
+  ✅ [clair] studio · AUCUN contour ni ombre sur les lettres ; ⚑ v148 (C-145) : EN GRAS (Atkinson 700), 29 pt, interligne 1.40 à 1.50 taille 29 · Atkinson 700 · interligne 1.45 · contours []
+  ✅ [clair] studio · les lettres se TRACENT (§9) : le module du tracé est branché sur la phrase                            True
+  ✅ [clair] studio · les mots-clés ['monde', 'Studio'] sont en PromiLate, en capitales                                     [('monde', 'PromiLate'), ('Studio', 'PromiLate')]
+  ✅ [clair] studio · « monde » en lilas violet (#8363AA) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — Q533 : la teinte gardée, 3:1 sur le fond monde rgb(131, 99, 170) · lettres [('S', 'rgb(73, 113, 182)', 3.04), ('t', 'rgb(158, 95, 119)', 3.01), ('u', 'rgb(131, 99, 170)', 3.03), ('d', 'rgb(124, 113, 88)', 3.01), ('i', 'rgb(73, 113, 182)', 3.04), ('o', 'rgb(158, 95, 119)', 3.01)]
+  ✅ [clair] studio · ⚑ v149 (C-145) : « Studio » 10 à 12 % plus grand que les autres mots-clés                             32.19 pt / 29 pt
+  ✅ [clair] studio · le reste du texte : #291547                                                                           rgb(41, 21, 71)
+  ✅ [clair] studio · ⚑ v149 (C-145) : la phrase ne recouvre aucune dalle colorée (pixels de chroma > 0,06 sous ses lignes), aucune icône, ni la zone nette {'dalle': 0, 'tot': 4156, 'ico': [], 'trou': False, 'lignes': 20}
+  ✅ [clair] A3 : l'impératif de la phrase du Studio est une exception NOMMÉE (TEXTES_ENGAGEMENT.imperatifVoulu) ; l'autre phrase n'en a pas ['Choisis d’abord le monde qui te ressemble, au Studio.']
+  ✅ [clair] « Plus tard » n'existe pas : ni dans le guide, ni à aucune image de l'onboarding (exception nommée de R6)      vu à 0 image(s)
+  ✅ [clair] A2 : tout nœud du guide porte data-eng, opacité 1, aucune transition, aucune animation, aucun flou CSS         13 nœuds · []
+  ✅ [clair] studio · la zone nette, un seul morceau, contient toute la cible (l'icône et son mot)                          zone x 34.0–104.3, y 724.3–795.3 · cible [43.5, 734.5, 53.0, 51.0]
+  ✅ [clair] studio · on ne voit NI l'Aura NI le contour de la barre : la zone s'arrête avant                               zone x 34.0–104.3 · Aura à 105.1 · barre [24, 710, 342, 100]
+  ✅ [clair] studio · 10.2 : rien du contour de la barre n'est découvert — la zone reste à 2,5 pt au moins en deçà de son trait (sa forme arrondie, pas sa boîte) au plus près : 4.6 pt du contour
+  ✅ [clair] studio · 10.2 : autour de la boîte, une marge de 6 à 10 pt partout où la barre ne la borne pas (lue sur chaque pixel du bord) marge 6.3 à 10.0 pt (14 % du bord borné par la barre, marge 5.1 au plus bas)
+  ✅ [clair] studio · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 12.2 % du rayon moyen (38.1 pt) · marge par secteur 5.3–10.0
+  ✅ [clair] studio · 10.2 : AUCUN pixel net hors de la boîte + 10 pt, sur tout l'écran                                     0 case(s) nette(s) au-delà (½ pt)
+  ✅ [clair] studio · sur l'image : la cible est NETTE (≥ 85 % de ses contours), le reste de l'écran est FLOU (≤ 45 %)      cible 10.31 → 10.31 · plateau et Toile hors de la phrase 4.44 → 1.49
+  ✅ [clair] studio · 10.2 : ouverte, la zone RESPIRE très légèrement (deux lectures à 1,2 s : elle a bougé, à peine — recouvrement 0,85 à 0,995) recouvrement 0.972
+  ✅ [clair] toucher le Studio net ouvre le Studio PAR-DESSUS le guide : l'eau reste posée dessous, sans phrase             Studio True · état au-studio · phrase None
+  ✅ [clair] CHEMIN 1 — un choix au Studio (monde encre → touffe), Studio refermé : l'étape du + arrive, sa phrase mot pour mot guide plus · « Promi, Chiche ou Cercle : tout commence par ce +. »
+  ✅ [clair] plus · la phrase, mot pour mot, visible, ⚑ v149 : encore 60 pt plus haut qu'en v148 (centrée à 252 ± 4 ; v148 : 312) « Promi, Chiche ou Cercle : tout commence par ce +. » [30, 168, 330, 169]
+  ✅ [clair] plus · AUCUN contour ni ombre sur les lettres ; ⚑ v148 (C-145) : EN GRAS (Atkinson 700), 29 pt, interligne 1.40 à 1.50 taille 29 · Atkinson 700 · interligne 1.45 · contours []
+  ✅ [clair] plus · les lettres se TRACENT (§9) : le module du tracé est branché sur la phrase                              True
+  ✅ [clair] plus · les mots-clés ['commence'] sont en PromiLate, en capitales                                              [('commence', 'PromiLate')]
+  ✅ [clair] plus · en clair : le texte en #291547, les mots-clés en #0E78F2                                                rgb(41, 21, 71) · ['rgb(14, 120, 242)']
+  ✅ [clair] plus · en clair : Promi, Chiche, Cercle dans leur couleur (trois teintes, aucune n'est celle du texte)         [('Promi', 'rgb(14, 120, 242)'), ('Chiche', 'rgb(120, 60, 85)'), ('Cercle', 'rgb(97, 65, 133)')]
+  ✅ [clair] plus · ⚑ v149 (C-145) : la phrase ne recouvre aucune dalle colorée (pixels de chroma > 0,06 sous ses lignes), aucune icône, ni la zone nette {'dalle': 0, 'tot': 3654, 'ico': [], 'trou': False, 'lignes': 12}
+  ✅ [clair] plus · la zone nette, un seul morceau, contient toute la cible (le +)                                          zone x 151.0–236.3, y 716.0–804.0 · cible [159, 724, 72, 72]
+  ✅ [clair] plus · on ne voit NI l'Aura ni l'Index NI le contour de la barre : la zone s'arrête avant                      zone x 151.0–236.3 · Aura à 105.1 · barre [24, 710, 342, 100]
+  ✅ [clair] plus · 10.2 : rien du contour de la barre n'est découvert — la zone reste à 2,5 pt au moins en deçà de son trait (sa forme arrondie, pas sa boîte) au plus près : 6.2 pt du contour
+  ✅ [clair] plus · 10.2 : autour de la boîte, une marge de 4 à 10 pt partout où la barre ne la borne pas (lue sur chaque pixel du bord) marge 4.4 à 10.5 pt (0 % du bord borné par la barre, marge 4.4 au plus bas)
+  ✅ [clair] plus · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 12.6 % du rayon moyen (43.3 pt) · marge par secteur 4.6–10.1
+  ✅ [clair] plus · 10.2 : AUCUN pixel net hors de la boîte + 10 pt, sur tout l'écran                                       0 case(s) nette(s) au-delà (½ pt)
+  ✅ [clair] toucher le + ouvre les trois natures TOUT DE SUITE ; l'eau se retire en flaques pendant ce temps (elle n'a pas disparu d'un coup) natures True · eau encore 70 %
+  ✅ [clair] puis il ne reste rien : le guide est retiré, vu une fois                                                       guide None
+  ✅ [clair] une seule fois : après un rechargement, ni onboarding ni guide                                                 guide None · devant accueil
+  ✅ [clair] aucune erreur de page                                                                                          []
+
+── la cadence, clair
+      (non jugé : cadence, charge du Mac 14.4 ≥ 4 — C-137 ; relevé : 278 images, pire 25.1 ms)
+      ce qui dépasse : ['1414 ms : FireAnimationFrame 25 ms @:']
+
+── les autres chemins (le guide rejoué)
+  ✅ CHEMIN 2 — Studio refermé sans choix : l'étape du + arrive                                                             guide studio → plus
+  ✅ CHEMIN 3 — toucher ailleurs pendant l'étape du Studio : le rappel (la phrase du Studio, mot pour mot) ; l'étape ne change pas, jamais celle du + guide studio → studio · « Choisis d’abord le monde qui te ressemble, au Studio. »
+  ✅ CHEMIN 3 — puis le Studio refermé : sa zone se referme (aucune phrase pendant), puis l'étape du + arrive ; l'eau reste guide au-studio → plus
+  ✅ 4.4 · la zone du Studio DISPARAÎT SUR ELLE-MÊME : elle rétrécit sans jamais regrossir et ne sort jamais de sa propre empreinte (± 1,5 pt), jusqu'à rien 134 images · empreinte x 35.0–104.0 · la plus à droite ensuite 104.0 · surface 4370 → 1 cases
+  ✅ 4.5 · AUCUNE TRANSLATION du Studio au + : jamais une zone nette à cheval entre les deux ni deux zones à la fois ; la zone du Studio est entièrement refermée (une image sans aucune zone) avant que celle du + ne s'ouvre, à sa place images à cheval : 0 · sans zone : 5 · Studio 134 · + 60 (x 150.0–241.0)
+  ✅ 4.5 · la zone du + s'ouvre EN FLAQUES : elle grandit d'image en image (elle ne paraît pas d'un coup : premier relevé ≤ 35 % de sa taille finale) premier 2 · final 6080 cases
+  ✅ 4.3 · à mi-ouverture la zone nette est faite de FLAQUES : ni vide ni pleine (15 à 85 %), en plusieurs morceaux ou échancrée (recouvrement avec une ellipse ≤ 0,9) part 51 % · 1 morceau(x) · ellipse 0.63
+  ✅ 4.6 · LA FIN : les flaques se VIDENT — l'eau baisse sans jamais remonter, en plusieurs morceaux à mi-retrait (≥ 3), puis il ne reste rien et le guide ne se reforme pas 11 relevés · eau [100, 77, 20, 0] % · morceaux à mi-retrait [2, 4, 7] · guide None
+  ✅ 4.1 · AU HASARD : deux lancements ne donnent pas les mêmes flaques (recouvrement ≤ 0,6 à 30 % du temps)                recouvrement 0.05
+  ✅ [clair] 4.1 · la surface mouillée monte d'un bout à l'autre : rien à 8 % du temps ou presque, tout à la fin, sans palier 2 % · 10 % · 24 % · 41 % · 67 % · 92 % · 99 % · 100 %
+  ✅ [clair] 4.1 · des FLAQUES : au début plusieurs, séparées (≥ 4 à 20 % du temps) ; elles se rejoignent (moins de morceaux ensuite) ; une seule nappe à la fin morceaux : [6, 11, 12, 9, 4, 1, 1, 1]
+  ✅ [clair] 4.1 · rien ne se déplace : ce qui est mouillé le reste (≥ 99,5 % d'une étape à la suivante)                    100.0 % · 100.0 % · 100.0 % · 100.0 % · 100.0 % · 100.0 % · 100.0 %
+  ✅ [clair] 4.1 · aucune flaque n'est un disque ni une ellipse (recouvrement avec l'ellipse de mêmes moments < 0,96 pour chacune, ≤ 0,92 en médiane ; une vraie ellipse de cette taille : ≥ 0,97) 0.68 · 0.71 · 0.86 · 0.88 · 0.89 · 0.89 · 0.89 · 0.89 · 0.90 · 0.90
+  ✅ [clair] 4.1 · le bord d'une flaque est une LIGNE : aucune zone à demi transparente (≤ 2 % de l'eau entre-deux, le lissage du trait) 1.25 % · 1.14 % · 0.76 % · 0.42 % · 0.10 %
+  ✅ [clair] 10.1 · 12 à 20 germes, à des places tirées au hasard                                                           16 germes
+  ✅ [clair] 10.1 · naissances ÉTALÉES sur les 40 premiers % de la durée (aucune après, pas toutes ensemble)                de 0.00 à 0.37
+  ✅ [clair] 10.1 · des vitesses DIFFÉRENTES (la plus rapide ≥ 1,3 × la plus lente)                                         vitesses 0.68 à 1.33
+  ✅ [clair] 10.1 · le bord de chaque flaque ondule de 15 à 25 % de son rayon, et l'onde change pendant qu'elle grandit     amplitudes 0.15 à 0.25
+  ✅ [clair] 10.1 · des PONTS : entre deux flaques qui s'approchent, l'eau couvre l'écart avant qu'elles se touchent (≥ 2 sur la couverture) 20 %: 0 pont(s), 5 écart(s) secs [] · 30 %: 0 pont(s), 13 écart(s) secs [] · 40 %: 2 pont(s), 26 écart(s) secs [22, 13.9] · 50 %: 6 pont(s), 40 écart(s) secs [1.6, 5.8, 30.9] · 60 %: 11 pont(s), 43 écart(s) secs [23.5, 34.2, 29.9]
+  ✅ [clair] studio · 10.2 : 4 à 6 flaques nettes naissent DANS la boîte de l'icône et de son mot ; à 20 % de l'ouverture, plusieurs morceaux 5 flaques · dans la boîte True · morceaux à 20 % : 2
+  ✅ [clair] plus · 10.2 : 4 à 6 flaques nettes naissent DANS la boîte de l'icône ; à 20 % de l'ouverture, plusieurs morceaux 4 flaques · dans la boîte True · morceaux à 20 % : 2
+  ✅ Réduire les animations : l'eau est posée sans mouvement (couverture entière et zone ouverte dès le premier relevé)     [(True, 1, 1), (True, 1, 1), (True, 1, 1)]
+
+── la cadence, sombre
+      (non jugé : cadence, charge du Mac 14.4 ≥ 4 — C-137 ; relevé : 277 images, pire 33.9 ms)
+      ce qui dépasse : ['648 ms : FireAnimationFrame 14 ms @:', '648 ms : FunctionCall 14 ms f@app.html:40671', '666 ms : FireAnimationFrame 17 ms @:', '666 ms : FunctionCall 17 ms f@app.html:40671', '1431 ms : FireAnimationFrame 33 ms @:']
+  ✅ [sombre] studio · la phrase, mot pour mot, visible, ⚑ v149 : encore 60 pt plus haut qu'en v148 (centrée à 252 ± 4 ; v148 : 312) « Choisis d’abord le monde qui te ressemble, au Studio. » [30, 168, 330, 169]
+  ✅ [sombre] studio · AUCUN contour ni ombre sur les lettres ; ⚑ v148 (C-145) : EN GRAS (Atkinson 700), 29 pt, interligne 1.40 à 1.50 taille 29 · Atkinson 700 · interligne 1.45 · contours []
+  ✅ [sombre] studio · les lettres se TRACENT (§9) : le module du tracé est branché sur la phrase                           True
+  ✅ [sombre] studio · les mots-clés ['monde', 'Studio'] sont en PromiLate, en capitales                                    [('monde', 'PromiLate'), ('Studio', 'PromiLate')]
+  ✅ [sombre] studio · « monde » en lilas violet (#C9A8F5) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — les valeurs de Tom, sans retouche monde rgb(201, 168, 245) · lettres [('S', 'rgb(130, 174, 248)', 1.4), ('t', 'rgb(255, 184, 210)', 1.01), ('u', 'rgb(201, 168, 245)', 1.26), ('d', 'rgb(239, 227, 199)', 1.26), ('i', 'rgb(130, 174, 248)', 1.4), ('o', 'rgb(255, 184, 210)', 1.01)]
+  ✅ [sombre] studio · ⚑ v149 (C-145) : « Studio » 10 à 12 % plus grand que les autres mots-clés                            32.19 pt / 29 pt
+  ✅ [sombre] studio · le reste du texte : la crème                                                                         rgb(247, 240, 222)
+      (rejeu sur l'état de démonstration — recouvrement non jugé : {'dalle': 682, 'tot': 4156, 'ico': [], 'trou': False, 'lignes': 20})
+  ✅ [sombre] studio · la zone nette, un seul morceau, contient toute la cible (l'icône et son mot)                         zone x 34.0–104.3, y 724.3–795.3 · cible [43.5, 734.5, 53.0, 51.0]
+  ✅ [sombre] studio · on ne voit NI l'Aura NI le contour de la barre : la zone s'arrête avant                              zone x 34.0–104.3 · Aura à 105.1 · barre [24, 710, 342, 100]
+  ✅ [sombre] studio · 10.2 : rien du contour de la barre n'est découvert — la zone reste à 2,5 pt au moins en deçà de son trait (sa forme arrondie, pas sa boîte) au plus près : 4.5 pt du contour
+  ✅ [sombre] studio · 10.2 : autour de la boîte, une marge de 6 à 10 pt partout où la barre ne la borne pas (lue sur chaque pixel du bord) marge 6.7 à 10.1 pt (13 % du bord borné par la barre, marge 5.1 au plus bas)
+  ✅ [sombre] studio · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 11.9 % du rayon moyen (38.4 pt) · marge par secteur 5.3–9.9
+  ✅ [sombre] studio · 10.2 : AUCUN pixel net hors de la boîte + 10 pt, sur tout l'écran                                    0 case(s) nette(s) au-delà (½ pt)
+  ✅ [sombre] plus · la phrase, mot pour mot, visible, ⚑ v149 : encore 60 pt plus haut qu'en v148 (centrée à 252 ± 4 ; v148 : 312) « Promi, Chiche ou Cercle : tout commence par ce +. » [30, 168, 330, 169]
+  ✅ [sombre] plus · AUCUN contour ni ombre sur les lettres ; ⚑ v148 (C-145) : EN GRAS (Atkinson 700), 29 pt, interligne 1.40 à 1.50 taille 29 · Atkinson 700 · interligne 1.45 · contours []
+  ✅ [sombre] plus · les lettres se TRACENT (§9) : le module du tracé est branché sur la phrase                             True
+  ✅ [sombre] plus · les mots-clés ['commence'] sont en PromiLate, en capitales                                             [('commence', 'PromiLate')]
+  ✅ [sombre] plus · en sombre (C-162) : le texte en crème, « commence » et Promi #82AEF8, Chiche #FFB8D2, Cercle #C9A8F5   rgb(247, 240, 222) · [('Promi', 'rgb(130, 174, 248)'), ('Chiche', 'rgb(255, 184, 210)'), ('Cercle', 'rgb(201, 168, 245)'), ('commence', 'rgb(130, 174, 248)')]
+  ✅ [sombre] plus · la zone nette, un seul morceau, contient toute la cible (le +)                                         zone x 151.0–238.3, y 718.0–805.0 · cible [159, 724, 72, 72]
+  ✅ [sombre] plus · on ne voit NI l'Aura ni l'Index NI le contour de la barre : la zone s'arrête avant                     zone x 151.0–238.3 · Aura à 105.1 · barre [24, 710, 342, 100]
+  ✅ [sombre] plus · 10.2 : rien du contour de la barre n'est découvert — la zone reste à 2,5 pt au moins en deçà de son trait (sa forme arrondie, pas sa boîte) au plus près : 5.2 pt du contour
+  ✅ [sombre] plus · 10.2 : autour de la boîte, une marge de 4 à 10 pt partout où la barre ne la borne pas (lue sur chaque pixel du bord) marge 3.9 à 10.4 pt (5 % du bord borné par la barre, marge 3.9 au plus bas)
+  ✅ [sombre] plus · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 14.0 % du rayon moyen (42.8 pt) · marge par secteur 4.2–10.1
+  ✅ [sombre] plus · 10.2 : AUCUN pixel net hors de la boîte + 10 pt, sur tout l'écran                                      0 case(s) nette(s) au-delà (½ pt)
+
+  ✅  88 / 88

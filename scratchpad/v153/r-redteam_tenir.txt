@@ -1,0 +1,50 @@
+
+── clair, promi
+  ✅ [clair, promi] A · la marée paraît et part ; la fiche reste ouverte du début à la fin, aucun autre écran ; la parole est tenue 103 images relevées · statut tenu
+  ✅ [clair, promi] B · une seule matière : sous le trait (son bord → 24 pt dessous) tout est couvert dès que la nappe descend (u ≥ 0,15) la moindre couverture sous le trait : 100.0 %
+  ✅ [clair, promi] C · un rideau d'un seul tenant vers le bas : la part couverte monte sans redescendre ; aucune colonne n'a de trou (couverte du trait au front, pas de flaque séparée) ; le front ondule à peine (écart des bas de 1 à 6 pt) ; il atteint la barre monotone True · colonnes trouées (au pire) 0 · écart à mi-descente 3.1 pt · part maximale 100 %
+  ✅ [clair, promi] D · ni fondu ni transparence : ≤ 2 % de pixels à demi opaques (le lissage du bord), sur chaque image où la nappe couvre ≥ 10 % (une nappe naissante a plus de bord que de surface) au plus 0.39 % sur 97 images
+      (non jugé : durées, charge du Mac 4.8 ≥ 4 — C-137 ; relevé : pleine à 667 ms, instant 2496 ms)
+  ❌ [clair, promi] G · le vert descend au même rythme d'un bout à l'autre : aucun arrêt (fenêtres de 50 ms), chaque pas à 0,4–2,2 × la vitesse médiane, parti du bord bas du ruban dès le lever (−25 à +25 ms) vitesse médiane 0.61 pt/ms · arrêts 0 · pas hors bornes [] · parti du ruban à -27 ms · 19 images (la première relevée à 23 ms)
+      (relevé, non jugé : intervalles entre images pendant la descente, au pire 78 ms — la sonde lit toute la couche à chaque image et les allonge ; charge 4.8)
+  ✅ [clair, promi] H · (v148, C-144) la phrase de validation finit par « ! » et elle est centrée (le milieu de son encre à ± 5 pt du milieu de l'écran) {'xa': 75, 'xb': 314, 'txt': 'Parole tenue\xa0!'}
+  ✅ [clair, promi] F · le champ garde sa couleur de nature pendant tout l'instant (plus de champ amande, rien ne saute à 2 s) champ (130, 174, 248) · écart maximal 0 sur 154 images (lu dans le canevas de la fiche)
+  ✅ [clair, promi] aucune erreur de page                                                                             []
+
+── clair, chiche
+  ✅ [clair, chiche] A · la marée paraît et part ; la fiche reste ouverte du début à la fin, aucun autre écran ; la parole est tenue 109 images relevées · statut tenu
+  ✅ [clair, chiche] B · une seule matière : sous le trait (son bord → 24 pt dessous) tout est couvert dès que la nappe descend (u ≥ 0,15) la moindre couverture sous le trait : 100.0 %
+  ✅ [clair, chiche] C · un rideau d'un seul tenant vers le bas : la part couverte monte sans redescendre ; aucune colonne n'a de trou (couverte du trait au front, pas de flaque séparée) ; le front ondule à peine (écart des bas de 1 à 6 pt) ; il atteint la barre monotone True · colonnes trouées (au pire) 0 · écart à mi-descente 3.6 pt · part maximale 100 %
+  ✅ [clair, chiche] D · ni fondu ni transparence : ≤ 2 % de pixels à demi opaques (le lissage du bord), sur chaque image où la nappe couvre ≥ 10 % (une nappe naissante a plus de bord que de surface) au plus 0.60 % sur 101 images
+      (non jugé : durées, charge du Mac 4.8 ≥ 4 — C-137 ; relevé : pleine à 669 ms, instant 2522 ms)
+  ❌ [clair, chiche] G · le vert descend au même rythme d'un bout à l'autre : aucun arrêt (fenêtres de 50 ms), chaque pas à 0,4–2,2 × la vitesse médiane, parti du bord bas du ruban dès le lever (−25 à +25 ms) vitesse médiane 0.61 pt/ms · arrêts 0 · pas hors bornes [] · parti du ruban à -26 ms · 22 images (la première relevée à 2 ms)
+      (relevé, non jugé : intervalles entre images pendant la descente, au pire 57 ms — la sonde lit toute la couche à chaque image et les allonge ; charge 4.8)
+  ✅ [clair, chiche] H · (v148, C-144) la phrase de validation finit par « ! » et elle est centrée (le milieu de son encre à ± 5 pt du milieu de l'écran) {'xa': 88, 'xb': 300, 'txt': 'Défi relevé\xa0!'}
+  ✅ [clair, chiche] F · le champ garde sa couleur de nature pendant tout l'instant (plus de champ amande, rien ne saute à 2 s) champ (255, 184, 210) · écart maximal 0 sur 155 images (lu dans le canevas de la fiche)
+  ✅ [clair, chiche] aucune erreur de page                                                                            []
+
+── sombre, promi
+  ✅ [sombre, promi] A · la marée paraît et part ; la fiche reste ouverte du début à la fin, aucun autre écran ; la parole est tenue 93 images relevées · statut tenu
+  ✅ [sombre, promi] B · une seule matière : sous le trait (son bord → 24 pt dessous) tout est couvert dès que la nappe descend (u ≥ 0,15) la moindre couverture sous le trait : 100.0 %
+  ✅ [sombre, promi] C · un rideau d'un seul tenant vers le bas : la part couverte monte sans redescendre ; aucune colonne n'a de trou (couverte du trait au front, pas de flaque séparée) ; le front ondule à peine (écart des bas de 1 à 6 pt) ; il atteint la barre monotone True · colonnes trouées (au pire) 0 · écart à mi-descente 3.6 pt · part maximale 100 %
+  ✅ [sombre, promi] D · ni fondu ni transparence : ≤ 2 % de pixels à demi opaques (le lissage du bord), sur chaque image où la nappe couvre ≥ 10 % (une nappe naissante a plus de bord que de surface) au plus 0.75 % sur 87 images
+      (non jugé : durées, charge du Mac 4.8 ≥ 4 — C-137 ; relevé : pleine à 665 ms, instant 2509 ms)
+  ❌ [sombre, promi] G · le vert descend au même rythme d'un bout à l'autre : aucun arrêt (fenêtres de 50 ms), chaque pas à 0,4–2,2 × la vitesse médiane, parti du bord bas du ruban dès le lever (−25 à +25 ms) vitesse médiane 0.60 pt/ms · arrêts 0 · pas hors bornes [] · parti du ruban à -26 ms · 18 images (la première relevée à 5 ms)
+      (relevé, non jugé : intervalles entre images pendant la descente, au pire 79 ms — la sonde lit toute la couche à chaque image et les allonge ; charge 4.8)
+  ✅ [sombre, promi] H · (v148, C-144) la phrase de validation finit par « ! » et elle est centrée (le milieu de son encre à ± 5 pt du milieu de l'écran) {'xa': 75, 'xb': 314, 'txt': 'Parole tenue\xa0!'}
+  ✅ [sombre, promi] F · le champ garde sa couleur de nature pendant tout l'instant (plus de champ amande, rien ne saute à 2 s) champ (130, 174, 248) · écart maximal 0 sur 129 images (lu dans le canevas de la fiche)
+  ✅ [sombre, promi] aucune erreur de page                                                                            []
+
+── sombre, chiche
+  ✅ [sombre, chiche] A · la marée paraît et part ; la fiche reste ouverte du début à la fin, aucun autre écran ; la parole est tenue 110 images relevées · statut tenu
+  ✅ [sombre, chiche] B · une seule matière : sous le trait (son bord → 24 pt dessous) tout est couvert dès que la nappe descend (u ≥ 0,15) la moindre couverture sous le trait : 100.0 %
+  ✅ [sombre, chiche] C · un rideau d'un seul tenant vers le bas : la part couverte monte sans redescendre ; aucune colonne n'a de trou (couverte du trait au front, pas de flaque séparée) ; le front ondule à peine (écart des bas de 1 à 6 pt) ; il atteint la barre monotone True · colonnes trouées (au pire) 0 · écart à mi-descente 3.1 pt · part maximale 100 %
+  ✅ [sombre, chiche] D · ni fondu ni transparence : ≤ 2 % de pixels à demi opaques (le lissage du bord), sur chaque image où la nappe couvre ≥ 10 % (une nappe naissante a plus de bord que de surface) au plus 0.82 % sur 103 images
+      (non jugé : durées, charge du Mac 4.8 ≥ 4 — C-137 ; relevé : pleine à 661 ms, instant 2493 ms)
+  ❌ [sombre, chiche] G · le vert descend au même rythme d'un bout à l'autre : aucun arrêt (fenêtres de 50 ms), chaque pas à 0,4–2,2 × la vitesse médiane, parti du bord bas du ruban dès le lever (−25 à +25 ms) vitesse médiane 0.60 pt/ms · arrêts 0 · pas hors bornes [] · parti du ruban à -30 ms · 24 images (la première relevée à 2 ms)
+      (relevé, non jugé : intervalles entre images pendant la descente, au pire 49 ms — la sonde lit toute la couche à chaque image et les allonge ; charge 4.8)
+  ✅ [sombre, chiche] H · (v148, C-144) la phrase de validation finit par « ! » et elle est centrée (le milieu de son encre à ± 5 pt du milieu de l'écran) {'xa': 88, 'xb': 300, 'txt': 'Défi relevé\xa0!'}
+  ✅ [sombre, chiche] F · le champ garde sa couleur de nature pendant tout l'instant (plus de champ amande, rien ne saute à 2 s) champ (255, 184, 210) · écart maximal 0 sur 159 images (lu dans le canevas de la fiche)
+  ✅ [sombre, chiche] aucune erreur de page                                                                           []
+
+  ❌  28 / 32

@@ -1,0 +1,13 @@
+  ✅ le prénom de l'onboarding · au clavier : le texte reste, les emojis n'entrent pas                              'marcher  une  heure '
+  ✅ le prénom de l'onboarding · au collage : le texte reste, les emojis (famille, drapeau, cœur, étincelles) n'entrent pas 'lire  Proust  ce  soir '
+  ✅ le prénom de l'onboarding · aucun message                                                                      
+  ✅ la page + (le titre de la phrase) · au clavier : le texte reste, les emojis n'entrent pas                      'marcher  une  heure '
+  ✅ la page + (le titre de la phrase) · au collage : le texte reste, les emojis (famille, drapeau, cœur, étincelles) n'entrent pas 'lire  Proust  ce  soir '
+  ✅ la page + (le titre de la phrase) · aucun message                                                              
+  ✅ un commentaire · au clavier : le texte reste, les emojis n'entrent pas                                         'marcher  une  heure '
+  ✅ un commentaire · au collage : le texte reste, les emojis (famille, drapeau, cœur, étincelles) n'entrent pas    'lire  Proust  ce  soir '
+  ✅ un commentaire · aucun message                                                                                 
+  ✅ à l'enregistrement : aucun emoji dans la sauvegarde (le titre, le nom, le commentaire envoyé)                  trouvés [] · taille 939
+  ✅ aucune erreur de page                                                                                          []
+
+  ✅  11 / 11

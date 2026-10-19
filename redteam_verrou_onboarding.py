@@ -36,7 +36,7 @@ with sync_playwright() as p:
     z = pg.evaluate(POIGNEE, '[data-onb="trait"]')
     if z and z.get('dep'): tracer(cdp, z); pg.wait_for_timeout(6600)   # le message de fin reste au moins quatre secondes (v21) avant d'accepter le toucher
     dd = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height*0.45}}")
-    for _ in range(14):
+    for _ in range(40):   # ⚑ v153 (C-125) : à 22 car/s la fin de l'onboarding s'écrit plus lentement — on lui laisse 40 passages (14 avant)
         pt = pg.evaluate(POIGNEE, '[data-onb="plus-tard"]')
         if pt: toucher(cdp, pt['x'], pt['y']); pg.wait_for_timeout(1200); break
         if not pg.evaluate(VU): break

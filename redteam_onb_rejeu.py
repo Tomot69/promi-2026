@@ -35,6 +35,8 @@ def parcours(pg, prenom=None):
         B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(400); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(300); pg.keyboard.press('Enter'); pg.wait_for_timeout(1600)
     elif pg.evaluate("()=>{ const a=document.activeElement; return !(a && a.id==='onbIn'); }"):   # au rejeu le champ a déjà la main (le clavier est ouvert)
         B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(500)
+    if pg.evaluate("()=>{ const a=document.activeElement; return !(a && a.id==='onbIn'); }"):   # ⚑ v153 (C-164) : le prénom validé ferme le clavier — on touche la phrase
+        B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500)
     pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(4500)
     z = pg.evaluate("()=>{ const c=document.getElementById('onbTrait'); if(!c) return null; const r=c.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return {l:(r.left-D.left)/k, t:(r.top-D.top)/k, k:r.width/390/k, dep:c.getAttribute('data-depart'), arr:c.getAttribute('data-arrivee')}; }")
     if not z or not z['dep'] or not z['arr']: return False
@@ -43,6 +45,10 @@ def parcours(pg, prenom=None):
     B.glisse(pg, [[x0 + (x1 - x0) * i / 24, y0 + (y1 - y0) * i / 24 - 14 * (1 - abs(2 * i / 24 - 1))] for i in range(25)], pas=24, tenue=90)
     pg.wait_for_timeout(5600)
     for _ in range(3): B.tap(pg, 195, 300); pg.wait_for_timeout(3800)
+    # ⚑ v153 (C-125) : le tracé est plus lent (22 car/s) — on attend que les paragraphes soient écrits (30 s au plus)
+    try: pg.wait_for_function("()=>{ const v=document.getElementById('onbV'); return !document.querySelector('#onbV canvas[data-trace]') && (!v || v.getAttribute('data-onb-reste')!=='1' && v.getAttribute('data-onb-reste')!=='2'); }", timeout=30000)
+    except Exception: pass
+    pg.wait_for_timeout(1500)
     return True
 def termine(pg):
     """le quatrième toucher mène au compte ; « Plus tard » referme l'onboarding (le parcours est fait)"""

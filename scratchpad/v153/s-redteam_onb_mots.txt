@@ -1,0 +1,74 @@
+[clair] C-153 — le I de PROMI, 8 pages
+  ✅ [clair] le mot-marque est en haut à gauche sur les pages du prénom, de la parole et du trait (prénom, parole, trait) 
+  ✅ [clair] « prénom » : le I clignote du même code que l'accueil (promiBlink 1.15s steps(1))                        accueil : {'anim': 'promiBlink', 'dur': '1.15s', 'tf': 'steps(1)', 'it': 'infinite', 'col': 'rgb(2, 33, 64)'}
+  ✅ [clair] « prénom » : même bleu que le I de l'accueil, à l'écran, opacités 1 et 0,6                               rgb(2, 33, 64) (accueil rgb(2, 33, 64)) · vu True · dessus True (I) · [0.6, 1]
+  ✅ [clair] « parole » : le I clignote du même code que l'accueil (promiBlink 1.15s steps(1))                        accueil : {'anim': 'promiBlink', 'dur': '1.15s', 'tf': 'steps(1)', 'it': 'infinite', 'col': 'rgb(2, 33, 64)'}
+  ✅ [clair] « parole » : même bleu que le I de l'accueil, à l'écran, opacités 1 et 0,6                               rgb(2, 33, 64) (accueil rgb(2, 33, 64)) · vu True · dessus True (I) · [1, 0.6]
+  ✅ [clair] « trait » : le I clignote du même code que l'accueil (promiBlink 1.15s steps(1))                         accueil : {'anim': 'promiBlink', 'dur': '1.15s', 'tf': 'steps(1)', 'it': 'infinite', 'col': 'rgb(2, 33, 64)'}
+  ✅ [clair] « trait » : même bleu que le I de l'accueil, à l'écran, opacités 1 et 0,6                                rgb(2, 33, 64) (accueil rgb(2, 33, 64)) · vu True · dessus True (I) · [1, 0.6]
+  ·  « fin · titre » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « fin · pas 1 » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « fin · pas 2 » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « fin · pas 3 » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « compte » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  rythme mesuré : non jugé (charge 11.8, C-137) — [1155, 1152, 1151]
+[clair] C-124 — Promi, Chiche, Cercle : 11 occurrences
+  ✅ [clair] les mots des natures paraissent sur plusieurs pages (fin · pas 1, fin · pas 2, fin · pas 3, parole, trait) 11
+  ✅ [clair] « parole » · Promi (onbQuid) : sa couleur (3.08:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS      rgb(72, 112, 181) · Promi · Atkinson 700
+  ✅ [clair] « trait » · Promi (onbQuid) : sa couleur (3.08:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS       rgb(72, 112, 181) · Promi · Atkinson 700
+  ✅ [clair] « fin · pas 1 » · Promi (onbFin) : sa couleur (3.08:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS  rgb(72, 112, 181) · Promi · Atkinson 700
+  ✅ [clair] « fin · pas 2 » · Promi (onbFin) : sa couleur (3.08:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS  rgb(72, 112, 181) · Promi · Atkinson 700
+  ✅ [clair] « fin · pas 2 » · Promi (onbReste) : sa couleur (3.08:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS rgb(72, 112, 181) · Promi · Atkinson 700
+  ✅ [clair] « fin · pas 2 » · Chiche (onbReste) : sa couleur (3.05:1 sur #DFCAA4, teinte à 0.4° de la nature), en GRAS rgb(157, 94, 119) · Chiche · Atkinson 700
+  ✅ [clair] « fin · pas 2 » · Cercle (onbReste) : sa couleur (3.07:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS rgb(130, 98, 169) · Cercle · Atkinson 700
+  ✅ [clair] « fin · pas 3 » · Promi (onbFin) : sa couleur (3.08:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS  rgb(72, 112, 181) · Promi · Atkinson 700
+  ✅ [clair] « fin · pas 3 » · Promi (onbReste) : sa couleur (3.08:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS rgb(72, 112, 181) · Promi · Atkinson 700
+  ✅ [clair] « fin · pas 3 » · Chiche (onbReste) : sa couleur (3.05:1 sur #DFCAA4, teinte à 0.4° de la nature), en GRAS rgb(157, 94, 119) · Chiche · Atkinson 700
+  ✅ [clair] « fin · pas 3 » · Cercle (onbReste) : sa couleur (3.07:1 sur #DFCAA4, teinte à 0.2° de la nature), en GRAS rgb(130, 98, 169) · Cercle · Atkinson 700
+[clair] C-124 — la ligne de fin
+  ✅ [clair] la ligne est « Tout le monde promet. Toi, tu tiens parole. », mot pour mot, juste avant « La suite t'appartient. » ('Tout le monde promet. Toi, tu tiens parole.', 'onbv-l onbv-l-der')
+  ✅ [clair] v150 · « … tu tiens parole. » alignée à DROITE (son encre finit au bord droit du bloc, ± 1,5 pt) ; « La suite t'appartient. » CENTRÉE (± 1,5 pt) ({'g': 95.5, 'd': 0, 'c': 47.7}, {'g': 16.6, 'd': 16.6, 'c': -0.0})
+[clair] v151 — C-126 §5, C-124 §6 §7
+  ✅ [clair] C-126 §5 · le clair ne change pas : « trace pour planter » en #00341A                                    rgb(0, 52, 26)
+  ✅ [clair] C-124 §6 · Primo, Deuxio, Tertio dans le bleu du clair #0E78F2                                           ['rgb(14, 120, 242)', 'rgb(14, 120, 242)', 'rgb(14, 120, 242)'] · 2.60:1
+  ✅ [clair] C-124 §7 · « La suite t'appartient. » 6 à 12 pt plus bas qu'en v150 (écart des lignes : 0,0 pt en v150, en dur), toujours centrée (9, {'g': 16.6, 'd': 16.6, 'c': -0.0})
+  ✅ [clair] même rôle : Atkinson, à la taille des autres lignes (22,3 pt × l'échelle), tracée                        {'ecart': 9, 'kc': [['Primo,', 'rgb(14, 120, 242)'], ['Deuxio,', 'rgb(14, 120, 242)'], ['Tertio,', 'rgb(14, 120, 242)']], 'kb': [[30.791996002197266, 211.14198303222656, 128.31966018676758, 239.13198852539062], [30.156341552734375, 268.9879
+  ✅ [clair] C-145 · le guide (étape du Studio) : sa phrase, centrée à 252 ± 4, ne recouvre aucune dalle colorée, aucune icône, ni la zone nette {'centre': 252.5, 'dalle': 0, 'tot': 4156, 'ico': [], 'trou': False, 'lignes': 20}
+[sombre] C-153 — le I de PROMI, 8 pages
+  ✅ [sombre] le mot-marque est en haut à gauche sur les pages du prénom, de la parole et du trait (prénom, parole, trait) 
+  ✅ [sombre] « prénom » : le I clignote du même code que l'accueil (promiBlink 1.15s steps(1))                       accueil : {'anim': 'promiBlink', 'dur': '1.15s', 'tf': 'steps(1)', 'it': 'infinite', 'col': 'rgb(130, 174, 248)'}
+  ✅ [sombre] « prénom » : même bleu que le I de l'accueil, à l'écran, opacités 1 et 0,6                              rgb(130, 174, 248) (accueil rgb(130, 174, 248)) · vu True · dessus True (I) · [0.6, 1]
+  ✅ [sombre] « parole » : le I clignote du même code que l'accueil (promiBlink 1.15s steps(1))                       accueil : {'anim': 'promiBlink', 'dur': '1.15s', 'tf': 'steps(1)', 'it': 'infinite', 'col': 'rgb(130, 174, 248)'}
+  ✅ [sombre] « parole » : même bleu que le I de l'accueil, à l'écran, opacités 1 et 0,6                              rgb(130, 174, 248) (accueil rgb(130, 174, 248)) · vu True · dessus True (I) · [0.6, 1]
+  ✅ [sombre] « trait » : le I clignote du même code que l'accueil (promiBlink 1.15s steps(1))                        accueil : {'anim': 'promiBlink', 'dur': '1.15s', 'tf': 'steps(1)', 'it': 'infinite', 'col': 'rgb(130, 174, 248)'}
+  ✅ [sombre] « trait » : même bleu que le I de l'accueil, à l'écran, opacités 1 et 0,6                               rgb(130, 174, 248) (accueil rgb(130, 174, 248)) · vu True · dessus True (I) · [1, 0.6]
+  ·  « fin · titre » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « fin · pas 1 » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « fin · pas 2 » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « fin · pas 3 » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  « compte » : pas de mot-marque en haut à gauche sur cette page (le titre PROMI le remplace, v146) — question à Tom
+  ·  rythme mesuré : non jugé (charge 11.8, C-137) — [1150, 1152, 1153]
+[sombre] C-124 — Promi, Chiche, Cercle : 11 occurrences
+  ✅ [sombre] les mots des natures paraissent sur plusieurs pages (fin · pas 1, fin · pas 2, fin · pas 3, parole, trait) 11
+  ✅ [sombre] « parole » · Promi (onbQuid) : sa couleur (exactement (130, 174, 248)), en GRAS                         rgb(130, 174, 248) · Promi · Atkinson 700
+  ✅ [sombre] « trait » · Promi (onbQuid) : sa couleur (exactement (130, 174, 248)), en GRAS                          rgb(130, 174, 248) · Promi · Atkinson 700
+  ✅ [sombre] « fin · pas 1 » · Promi (onbFin) : sa couleur (exactement (130, 174, 248)), en GRAS                     rgb(130, 174, 248) · Promi · Atkinson 700
+  ✅ [sombre] « fin · pas 2 » · Promi (onbFin) : sa couleur (exactement (130, 174, 248)), en GRAS                     rgb(130, 174, 248) · Promi · Atkinson 700
+  ✅ [sombre] « fin · pas 2 » · Promi (onbReste) : sa couleur (exactement (130, 174, 248)), en GRAS                   rgb(130, 174, 248) · Promi · Atkinson 700
+  ✅ [sombre] « fin · pas 2 » · Chiche (onbReste) : sa couleur (exactement (255, 184, 210)), en GRAS                  rgb(255, 184, 210) · Chiche · Atkinson 700
+  ✅ [sombre] « fin · pas 2 » · Cercle (onbReste) : sa couleur (exactement (201, 168, 245)), en GRAS                  rgb(201, 168, 245) · Cercle · Atkinson 700
+  ✅ [sombre] « fin · pas 3 » · Promi (onbFin) : sa couleur (exactement (130, 174, 248)), en GRAS                     rgb(130, 174, 248) · Promi · Atkinson 700
+  ✅ [sombre] « fin · pas 3 » · Promi (onbReste) : sa couleur (exactement (130, 174, 248)), en GRAS                   rgb(130, 174, 248) · Promi · Atkinson 700
+  ✅ [sombre] « fin · pas 3 » · Chiche (onbReste) : sa couleur (exactement (255, 184, 210)), en GRAS                  rgb(255, 184, 210) · Chiche · Atkinson 700
+  ✅ [sombre] « fin · pas 3 » · Cercle (onbReste) : sa couleur (exactement (201, 168, 245)), en GRAS                  rgb(201, 168, 245) · Cercle · Atkinson 700
+[sombre] C-124 — la ligne de fin
+  ✅ [sombre] la ligne est « Tout le monde promet. Toi, tu tiens parole. », mot pour mot, juste avant « La suite t'appartient. » ('Tout le monde promet. Toi, tu tiens parole.', 'onbv-l onbv-l-der')
+  ✅ [sombre] v150 · « … tu tiens parole. » alignée à DROITE (son encre finit au bord droit du bloc, ± 1,5 pt) ; « La suite t'appartient. » CENTRÉE (± 1,5 pt) ({'g': 95.5, 'd': 0, 'c': 47.7}, {'g': 16.6, 'd': 16.6, 'c': -0.0})
+[sombre] v151 — C-126 §5, C-124 §6 §7
+  ✅ [sombre] C-126 §5 · « trace pour planter » en crème #F7F0DE, ≥ 4,5:1 sur son fond réel ((11, 9, 8))              rgb(247, 240, 222) · 17.48:1
+  ✅ [sombre] C-124 §6 · Primo, Deuxio, Tertio dans le bleu du clair #0E78F2, ≥ 3:1 sur le fond réel ((11, 9, 8))     ['rgb(14, 120, 242)', 'rgb(14, 120, 242)', 'rgb(14, 120, 242)'] · 4.72:1
+  ✅ [sombre] C-124 §7 · « La suite t'appartient. » 6 à 12 pt plus bas qu'en v150 (écart des lignes : 0,0 pt en v150, en dur), toujours centrée (9, {'g': 16.6, 'd': 16.6, 'c': -0.0})
+  ✅ [sombre] même rôle : Atkinson, à la taille des autres lignes (22,3 pt × l'échelle), tracée                       {'ecart': 9, 'kc': [['Primo,', 'rgb(14, 120, 242)'], ['Deuxio,', 'rgb(14, 120, 242)'], ['Tertio,', 'rgb(14, 120, 242)']], 'kb': [[30.791996002197266, 211.14198303222656, 128.31966018676758, 239.13198852539062], [30.156341552734375, 268.9879
+  ✅ [sombre] C-145 · le guide (étape du Studio) : sa phrase, centrée à 252 ± 4, ne recouvre aucune dalle colorée, aucune icône, ni la zone nette {'centre': 252.5, 'dalle': 0, 'tot': 4156, 'ico': [], 'trou': False, 'lignes': 20}
+
+  ✅  52 / 52

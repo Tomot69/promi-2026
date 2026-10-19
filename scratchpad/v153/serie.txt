@@ -1,0 +1,24 @@
+redteam_guide rc=0 250s charge=30.62 ::   ✅  88 / 88
+redteam_clavier_onb rc=0 33s charge=19.69 ::   ✅  6 / 6
+redteam_mots_sombre rc=1 143s charge=13.52 ::   ❌  28 / 32
+redteam_onb_sorties rc=0 43s charge=11.75 ::   ✅  25 / 25
+redteam_onb_mots rc=0 113s charge=13.74 ::   ✅  52 / 52
+redteam_onboarding_texte rc=0 89s charge=13.44 ::   ✅  47 / 47
+redteam_echelle_onboarding rc=0 93s charge=12.20 :: 11 / 11
+redteam_transitions_onb rc=0 113s charge=16.72 ::   ✅  46 / 46
+redteam_onb_rejeu rc=1 76s charge=16.07 ::   ❌  2 / 10
+redteam_onboarding rc=0 183s charge=23.98 ::   ✅  46 / 46 contrats tenus
+redteam_verrou_onboarding rc=1 56s charge=20.33 :: verrou de l'onboarding : 4/9
+redteam_ordre_guide rc=0 144s charge=14.83 ::   ✅  26 / 26
+redteam_emoji rc=0 44s charge=10.86 ::   ✅  11 / 11
+redteam_tenir rc=1 100s charge=16.49 ::   ❌  30 / 32
+redteam_validation rc=0 96s charge=12.83 ::   ✅  25 / 25
+redteam_tenir_e3 rc=0 114s charge=19.36 :: 6 / 6   (charge 12.8)
+redteam_engagement rc=0 268s charge=109.32 :: redteam_engagement : 12/12 au vert · 0 inactif(s) : 
+redteam_registre rc=0 1s charge=109.32 :: 6 / 6
+redteam_couleurs_ref rc=0 731s charge=10.47 :: 
+redteam_decisions rc=0 87s charge=7.70 :: 102 / 102
+redteam_joignable rc=0 138s charge=6.92 :: 5 / 5
+redteam_ecrans rc=0 96s charge=8.62 :: 152/152
+redteam_volume rc=0 1s charge=8.62 :: 
+FINI

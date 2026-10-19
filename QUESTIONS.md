@@ -8789,3 +8789,18 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   Deuxio, Tertio restent au bleu `#0E78F2` en sombre (validé en v151, 4,7:1) plutôt que `#82AEF8`.
 - **Q553 — À TRANCHER (C-163)** : autour du +, la zone nette du guide est « ronde, son bouton est rond » (v147), et le juge demande des lobes de 8 à 15 % ;
   mesuré 7,8 à 8,0 % à chaque passage, v151 comme v152. Garder la règle des lobes autour du + (on creuse la forme), ou l'en exempter (la rondeur prime) ?
+
+### v153 (20 oct. 2026) — le clavier après le prénom, le tracé des lettres (récidive), « t'appartient. », l'entourage du +, puis E3
+**Tranchée : Q553 (chef de chantier : « Tom refuse le rond » — autour du +, la marge va de 4 à 10 pt).**
+- **Q554 — À TRANCHER (E3, R4)** : ENGAGEMENT.md borne la séquence « tenir » à 1 000 ms ; avec A1, la séquence est le rideau validé (C-111, C-118), qui
+  reste posé 2 s puis remonte : ≈ 2,6 s du lever au repos. *Proposition* : la borne de 1 000 ms vaut pour le MOUVEMENT (du lever au rideau à la barre :
+  660–680 ms mesurés) ; l'instant posé garde ses 2 s validées. Appliqué ainsi dans `redteam_tenir_e3`.
+- **Q555 — À SAVOIR (C-165)** : en clair, toute la ligne « La suite t'appartient. » était déjà au cobalt `#0E78F2` : « t'appartient. » y garde ce bleu,
+  le changement ne se voit qu'en sombre (`#82AEF8`, « La suite » reste crème, Q548). *Proposition* : rien de plus.
+- **Q556 — À VALIDER (C-125)** : le tracé à 22 caractères par seconde (une lettre ≈ 45 ms, trois images) ; réglable par l'adresse : `?cps=18`, `?cps=25`… ;
+  `?tlv=0.05` le montre au vingtième pour regarder une lettre se constituer. *Proposition* : Tom essaie 18, 22, 25 sur l'iPhone et donne le chiffre.
+- **Q557 — À SAVOIR (C-164)** : le prénom validé, le clavier se ferme ; pour écrire la parole on touche la phrase (« Je me promets de … ») — un toucher de
+  plus qu'en v152. *Proposition* : garder (c'est ce que demande « le clavier se ferme »).
+- **Q558 — À SAVOIR (C-125)** : dans un coude serré du chemin (le chemin tourne de plus de 20° sur une largeur de trait : le « s » de Gilbert), le front
+  PIVOTE en éventail autour de l'intérieur du coude, comme une plume — il n'y est pas « perpendiculaire » au sens d'une ligne droite ; le juge mesure ± 10°
+  hors des coudes (médianes 1 à 5°).
