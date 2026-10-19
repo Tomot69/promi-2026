@@ -1,0 +1,160 @@
+# Série v152 (19 oct. 2026) — la charge du Mac n'est jamais descendue sous 4 (autre session : émulateur Android, simulateur iOS ; jusqu'à 700 après un redémarrage).
+# Passés (un à la fois) : les juges des chantiers touchés et les sentinelles. Les autres : NON JUGÉ (charge), ligne par ligne.
+
+banc_rendu.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam2.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam3.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_accueil.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_air.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_ajout_personne.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_ajouter.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_apercus.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_aura_latence.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_aveugle.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_barre.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_bord.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_bouton.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_cadre.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_cercle_couleur.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_cercle_tom.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_champ.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_champs.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_clair_sombre.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_clavier.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_commentaires.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_contour.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_contraste_trait.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_corps.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_couleurs_ref.py code 0 · 870 s · charge 5.86→72.02 · ✅ — 0 écart(s) de couleur avec la référence v118
+redteam_dalle_figee.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_decisions.py code 0 · 107 s · charge 72.02→34.35 ·
+redteam_decoupe.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_demande.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_deplace.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_dessin.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_dessin_photo.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_echeance.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_echelle_onboarding.py code 0 · 77 s · charge 10.50→5.69 ·
+redteam_ecrans.py code 0 · 99 s · charge 18.26→15.76 ·
+redteam_emoji.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_enchaine.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_enfonce.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_engagement.py code 0 · 133 s · charge 7.52→9.30 ·
+redteam_entier.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_evol.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_fiches_theme.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_filets.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_flash.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_flash_etat.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_fluide.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_fonctions.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_formes.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_fourrure.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_garder.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_garder_toile.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_gens.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_geste.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_guide.py code 1 · 231 s · charge 9.52→6.96 ·   ❌  86 / 88
+redteam_halo.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_joignable.py code 0 · 156 s · charge 34.35→18.26 ·
+redteam_kaki.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_lexique.py code 0 · 310 s · charge 8.63→6.29 ·
+redteam_maparole.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_marges.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_menu_plus.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_mesure.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_motmarque.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_mots_sombre.py code 0 · 148 s · charge 302.32→51.52 ·   ✅  33 / 33
+redteam_murs.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_murs_toucher.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_noms.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_notifs.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_nuee.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_nuee_dalle.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_nuee_entree.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_nuit.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_onb_mots.py code 0 · 91 s · charge 30.60→10.38 ·   ✅  52 / 52
+redteam_onb_rejeu.py code 0 · 128 s · charge 10.38→10.50 ·   ✅  10 / 10
+redteam_onb_sorties.py code 0 · 35 s · charge 51.52→30.60 ·   ✅  25 / 25
+redteam_onboarding.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_onboarding_texte.py code 1 · 74 s · charge 5.69→9.52 ·   ❌  46 / 47
+redteam_ordre_guide.py code 0 · 142 s · charge 6.96→7.52 ·   ✅  26 / 26
+redteam_origine.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_pages_plus.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_palettes.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_part.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_partage_dessin.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_partage_fiche.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_partage_toile.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_pastilles.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_peaufiner.py code 0 · 75 s · charge 6.29→5.86 ·   ✅  21 / 21
+redteam_pelote_doigt.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_pelote_partage.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_photo.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_photo_menu.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_phrase.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_phrase_fiche.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_pilules.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_plein.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_pleine.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_polices.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_ramage_onde.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_reactif.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_registre.py code 0 · 0 s · charge 5.86→5.86 ·
+redteam_remplace.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_reperage.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_retour.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_ritournelle.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_ronds.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_ruban.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_rythme.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_sans_main.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_souffle.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_studio_geste.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_studio_mur.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_studio_tom.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_suggestions.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_superpo.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_tenir.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_titres_cartes.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_titres_longs.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_toile.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_toile_vide.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_tokens.py code 0 · 1 s · charge 5.86→5.86 ·
+redteam_tonsurton.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_toucher.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_tourne.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_trace.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_trace_lettres.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_trait.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_transitions_onb.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_tuiles.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_validation.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_verbe.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_verrou_onboarding.py code 0 · 47 s · charge 9.30→8.63 ·
+redteam_vide.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_vivant.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_volume.py code 0 · 0 s · charge 5.86→5.86 · ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+redteam_zone.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+redteam_zoom.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-S1-fiches.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-S2-peaufiner.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-S3-page-plus.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-S4-index-fil.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-S5-instant.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-aura.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-design.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-moodboard-H.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+releve-moodboard.py · NON JUGÉ (charge ≥ 4 pendant tout le lot ; non touché par v152)
+
+Ajouts (scratchpad/v152/suite.txt) :
+guide app.html · charge 10.57 ·   ❌ [sombre] plus · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 8.0 % du rayon moyen (44.2 pt) · marge par secteur 6.4–9.9|  ❌  87 / 88|
+guide zz-av151.html · charge 7.68 ·   ❌ [sombre] plus · en sombre (C-162) : le texte en crème, « commence » et Promi #82AEF8, Chiche #FFB8D2, Cercle #C9A8F5   rgb(247, 240, 222) · [('Promi', 'rgb(247, 240, 222)'), ('Chiche', 'rgb(247, 240, 222)'), ('Cercle', 'rgb(247, 240, 222)'), ('commence', 'rgb(247, 240, 222)')]|  ❌ [sombre] plus · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 7.9 % du rayon moyen (44.5 pt) · marge par secteur 6.2–9.7|  ❌  86 / 88|
+peaufiner zz-av150.html #1 · charge 8.98 ·   ✅  21 / 21|
+peaufiner app.html #1 · charge 7.50 ·   ✅  21 / 21|
+peaufiner zz-av150.html #2 · charge 7.21 ·   ✅  21 / 21|
+peaufiner app.html #2 · charge 8.50 ·   ✅  21 / 21|
+peaufiner zz-av150.html #3 · charge 11.47 ·   ✅  21 / 21|
+peaufiner app.html #3 · charge 18.21 ·   ✅  21 / 21|
+FIN

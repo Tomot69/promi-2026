@@ -1,0 +1,9 @@
+guide app.html · charge 10.57 ·   ❌ [sombre] plus · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 8.0 % du rayon moyen (44.2 pt) · marge par secteur 6.4–9.9|  ❌  87 / 88|
+guide zz-av151.html · charge 7.68 ·   ❌ [sombre] plus · en sombre (C-162) : le texte en crème, « commence » et Promi #82AEF8, Chiche #FFB8D2, Cercle #C9A8F5   rgb(247, 240, 222) · [('Promi', 'rgb(247, 240, 222)'), ('Chiche', 'rgb(247, 240, 222)'), ('Cercle', 'rgb(247, 240, 222)'), ('commence', 'rgb(247, 240, 222)')]|  ❌ [sombre] plus · 10.2 : la forme garde des LOBES irréguliers (de 8 à 15 % de sa taille : la marge varie d'au moins 8 % du rayon moyen d'un secteur à l'autre) — pas un rond lobes 7.9 % du rayon moyen (44.5 pt) · marge par secteur 6.2–9.7|  ❌  86 / 88|
+peaufiner zz-av150.html #1 · charge 8.98 ·   ✅  21 / 21|
+peaufiner app.html #1 · charge 7.50 ·   ✅  21 / 21|
+peaufiner zz-av150.html #2 · charge 7.21 ·   ✅  21 / 21|
+peaufiner app.html #2 · charge 8.50 ·   ✅  21 / 21|
+peaufiner zz-av150.html #3 · charge 11.47 ·   ✅  21 / 21|
+peaufiner app.html #3 · charge 18.21 ·   ✅  21 / 21|
+FIN

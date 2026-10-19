@@ -8779,3 +8779,13 @@ dès maintenant — C-160), Q545 (oui, « trace ta moitié » suit), Q546 (oui, 
   exception NOMMÉE (cette phrase-là, mot pour mot). Une « dalle » avant la plantation = une parole non gardée de côté, ou un Cercle nommé.
 - **Q551 — À SAVOIR (C-160)** : REPORTER depuis une échéance passée compte depuis aujourd'hui (« +3 j » = dans trois jours) et la parole redevient « en
   cours » — avant, « +3 j » ajoutait trois jours à un retard (−25 → −22) et la parole restait « à tenir ». `?jour=+N` avance aujourd'hui pour la page.
+
+### v152 (19 oct. 2026) — derniers retours de Tom, clôture de la série
+**Validés par Tom (« tout a l'air ok ») : C-154, C-157, C-149, C-159, C-160, C-124 et C-126 pour le reste. Tranchées : Q547 (l'orange gardé partout,
+vu et validé), Q549 (close), Q548 (« La suite t'appartient. » reste crème en sombre — chef de chantier), Q550 (« félicitations » dans la phrase de Tom
+seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER compte depuis aujourd'hui quand l'échéance est passée — chef de chantier).**
+- **Q552 — À SAVOIR (C-162)** : la règle « tout mot coloré en clair est coloré en sombre » garde deux exceptions NOMMÉES, toutes deux des décisions
+  écrites : « trace pour planter » (crème en sombre, demandé par Tom en v151, C-126 §5) et « La suite t'appartient. » (crème en sombre, Q548). Primo,
+  Deuxio, Tertio restent au bleu `#0E78F2` en sombre (validé en v151, 4,7:1) plutôt que `#82AEF8`.
+- **Q553 — À TRANCHER (C-163)** : autour du +, la zone nette du guide est « ronde, son bouton est rond » (v147), et le juge demande des lobes de 8 à 15 % ;
+  mesuré 7,8 à 8,0 % à chaque passage, v151 comme v152. Garder la règle des lobes autour du + (on creuse la forme), ou l'en exempter (la rondeur prime) ?

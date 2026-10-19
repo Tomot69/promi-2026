@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v151', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v152', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -37805,7 +37805,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        mot : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » · « Petite ou grande promesse, elle compte. ». Tout ce qui suit descend
        pour respirer (`placer` : 16 pt sous « Enchanté. », la phrase 32 pt sous la question — 12 avant —, « Petite ou grande promesse » 40 pt sous la
        phrase — 20 avant). Les trois textes s'écrivent par le tracé des lettres (§9), l'un après l'autre. */
-    var d=document.getElementById('onbDit'); if(d){ d.textContent=(prenom||(window.USER&&USER.name)||'')+', donc. Enchanté.'; d.style.top=DIT_TOP+'px'; }
+    var d=document.getElementById('onbDit'); if(d){ d.textContent=(prenom||(window.USER&&USER.name)||'')+', donc.'; /* ⚑ v152 (Tom, C-124 §1) : « Enchanté. » supprimé — « [Prénom], donc. », même place */ d.style.top=DIT_TOP+'px'; }
     var q=document.getElementById('onbQuid'); if(q){ q.innerHTML='Quid d’un '+nat('Promi')+' à <span style="white-space:nowrap">toi-même\u00a0?</span>'; q.style.display='block'; }
     var so=document.getElementById('onbSous'); if(so) so.style.display='block';
     peindrePhrase(); if(garderClavier) focus();
@@ -40598,6 +40598,8 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       if(!pris){ out+=esc(t.charAt(i)); i++; continue; }
       if(pris in NAT){ var col='';
         if(clairA){ if(pris==='Promi') col='var(--c-cobalt50)'; else { var c=NAT[pris]; try{ c=window._teinte.ajuste(c, [223,202,164], 5); }catch(_){ } col='rgb('+c[0]+', '+c[1]+', '+c[2]+')'; } }
+        /* ⚑ v152 (Tom, C-162) : « tout mot coloré en clair est coloré aussi en sombre » — chaque nature prend sa variante claire de la palette */
+        else col={Promi:'#82AEF8', Chiche:'#FFB8D2', Cercle:'#C9A8F5'}[pris];
         out+='<i class="gd-nat" data-n="'+pris.toLowerCase()+'"'+(col?' style="color:'+col+';-webkit-text-fill-color:'+col+'"':'')+'>'+esc(pris)+'</i>'; }
       /* ⚑ v147 (Tom, C-094 §10.4) — « monde » en rose #FFB8D2 ; « Studio » : chaque lettre d'une couleur différente de la palette de base (Ingénu),
          dans son ordre — bleu, rose, lilas, crème dalle, puis bleu, rose (six lettres, quatre tons : deux voisines ne se ressemblent jamais). LES VALEURS
@@ -40609,7 +40611,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       /* ⚑ v149 (Tom, décision de fin de v148, Q533) : « en clair, les lettres de « Studio » assombries jusqu'à 3:1 » — chaque lettre garde sa teinte,
          sa clarté descend jusqu'à 3:1 sur le fond de la Toile en clair (#DFCAA4) : bleu #4971B6, rose #9E5F77, lilas #8363AA, crème #7C7158. Le sombre ne change pas. */
       else if(pris==='Studio'){ out+='<i class="gd-cle gd-studio">'; for(var li=0; li<pris.length; li++){ var cl=clairA?['#4971B6','#9E5F77','#8363AA','#7C7158'][li%4]:teinte(PAL[li%4]); out+='<i class="gd-l" style="font-style:normal;color:'+cl+';-webkit-text-fill-color:'+cl+'">'+esc(pris.charAt(li))+'</i>'; } out+='</i>'; }
-      else out+='<i class="gd-cle">'+esc(pris)+'</i>';
+      else out+='<i class="gd-cle"'+(clairA?'':' style="color:#82AEF8;-webkit-text-fill-color:#82AEF8"')+'>'+esc(pris)+'</i>';   /* ⚑ v152 (Tom, C-162) : « commence », bleu en clair (cobalt), bleu clair #82AEF8 en sombre */
       i+=pris.length; }
     return out; }
   function posePhrase(g, quoi){ var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.innerHTML=phraseHTML(quoi); [].forEach.call(p.querySelectorAll('*'), function(e){ eng(e,'guide-phrase'); }); g.appendChild(p);

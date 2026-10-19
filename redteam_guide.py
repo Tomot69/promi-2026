@@ -196,7 +196,12 @@ def phrase(e, T, quoi):
         juge('[%s] %s · en clair : le texte en #291547, les mots-clés en #0E78F2' % (T, quoi), proche(e['phraseCol'], VIOLET) and all(proche(m['col'], BLEU) for m in cles), '%s · %s' % (e['phraseCol'], [m['col'] for m in cles]))
         juge('[%s] plus · en clair : Promi, Chiche, Cercle dans leur couleur (trois teintes, aucune n\'est celle du texte)' % T, [m['t'] for m in nats] == ['Promi', 'Chiche', 'Cercle'] and len(set(m['col'] for m in nats)) == 3 and proche(nats[0]['col'], BLEU) and not any(proche(m['col'], VIOLET, 12) for m in nats), [(m['t'], m['col']) for m in nats])
     else:
-        juge('[%s] %s · en sombre : la crème, pour toute la phrase' % (T, quoi), proche(e['phraseCol'], CREME) and all(proche(m['col'], CREME) for m in e['mots']), '%s · %s' % (e['phraseCol'], [m['col'] for m in e['mots']][:3]))
+        # ⚑ v152 (Tom, C-162) : « tout mot coloré en clair est coloré aussi en sombre » — le texte reste crème ; « commence » et Promi en #82AEF8,
+        #   Chiche #FFB8D2, Cercle #C9A8F5 (en dur). Original : sauvegardes/redteam_guide-avant-v152.py (« la crème, pour toute la phrase »).
+        SOMBRE_MOTS = {'commence': (130, 174, 248), 'Promi': (130, 174, 248), 'Chiche': (255, 184, 210), 'Cercle': (201, 168, 245)}
+        juge('[%s] %s · en sombre (C-162) : le texte en crème, « commence » et Promi #82AEF8, Chiche #FFB8D2, Cercle #C9A8F5' % (T, quoi),
+             proche(e['phraseCol'], CREME) and len(e['mots']) >= 4 and all(proche(m['col'], SOMBRE_MOTS[m['t']]) for m in e['mots'] if m['t'] in SOMBRE_MOTS)
+             and all(m['t'] in SOMBRE_MOTS for m in e['mots']), '%s · %s' % (e['phraseCol'], [(m['t'], m['col']) for m in e['mots']]))
 def lumi(c):
     f = lambda x: x / 12.92 if x <= 0.03928 else ((x + 0.055) / 1.055) ** 2.4
     return 0.2126 * f(c[0] / 255) + 0.7152 * f(c[1] / 255) + 0.0722 * f(c[2] / 255)

@@ -1,0 +1,20 @@
+redteam_mots_sombre.py code 0 · 148 s · charge 302.32→51.52 ·   ✅  33 / 33
+redteam_onb_sorties.py code 0 · 35 s · charge 51.52→30.60 ·   ✅  25 / 25
+redteam_onb_mots.py code 0 · 91 s · charge 30.60→10.38 ·   ✅  52 / 52
+redteam_onb_rejeu.py code 0 · 128 s · charge 10.38→10.50 ·   ✅  10 / 10
+redteam_echelle_onboarding.py code 0 · 77 s · charge 10.50→5.69 · 
+redteam_onboarding_texte.py code 1 · 74 s · charge 5.69→9.52 ·   ❌  46 / 47
+redteam_guide.py code 1 · 231 s · charge 9.52→6.96 ·   ❌  86 / 88
+redteam_ordre_guide.py code 0 · 142 s · charge 6.96→7.52 ·   ✅  26 / 26
+redteam_engagement.py code 0 · 133 s · charge 7.52→9.30 · 
+redteam_verrou_onboarding.py code 0 · 47 s · charge 9.30→8.63 · 
+redteam_lexique.py code 0 · 310 s · charge 8.63→6.29 · 
+redteam_peaufiner.py code 0 · 75 s · charge 6.29→5.86 ·   ✅  21 / 21
+redteam_registre.py code 0 · 0 s · charge 5.86→5.86 · 
+redteam_tokens.py code 0 · 1 s · charge 5.86→5.86 · 
+redteam_volume.py code 0 · 0 s · charge 5.86→5.86 · ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+redteam_couleurs_ref.py code 0 · 870 s · charge 5.86→72.02 · ✅ — 0 écart(s) de couleur avec la référence v118
+redteam_decisions.py code 0 · 107 s · charge 72.02→34.35 · 
+redteam_joignable.py code 0 · 156 s · charge 34.35→18.26 · 
+redteam_ecrans.py code 0 · 99 s · charge 18.26→15.76 · 
+FIN

@@ -187,6 +187,7 @@ Aura ─► aide (i) · Partager (Ma Pelote) · fiche d'une personne (un Noyau) 
   c'est tout cela à la fois, mais à plusieurs. » ; ③ « Tout le monde promet. Toi, tu tiens parole. » (alignée à droite, deux lignes égales) puis
   « La suite t'appartient. » (centrée, 18 pt au-dessus d'elle) ; un quatrième toucher mène au compte. Au premier lancement la Toile est vidée : texte
   d'origine. Primo, Deuxio, Tertio en `#0E78F2` dans les deux thèmes ; l'échelle : CLAUDE.md, bloc v151.
+- **⚑ v152 — LES MOTS COLORÉS EN SOMBRE (C-162)** : tout mot coloré en clair, dans l'onboarding comme dans les phrases du guide, l'est aussi en sombre, dans sa variante claire (≥ 3:1) : bleu `#82AEF8`, rose `#FFB8D2`, lilas `#C9A8F5`. Dans la phrase du + du guide : Promi, Chiche, Cercle et « commence ». Exceptions nommées : « trace pour planter » et « La suite t'appartient. », crème en sombre. La page du prénom : « {Prénom}, donc. » (« Enchanté. » retiré).
 - **Dernière diapositive, mot pour mot (v129, texte FIGÉ)** *(historique — remplacé par le paragraphe ci-dessus)* :
   1. « C’est planté. »
   2. « Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir. »

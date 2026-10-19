@@ -129,6 +129,33 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v152 (19 oct. 2026) — DERNIERS RETOURS DE TOM, CLÔTURE DE LA SÉRIE : « ENCHANTÉ » RETIRÉ, LES MOTS COLORÉS EN SOMBRE. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v151 (l'échelle : la ligne « texte ») et v147 (C-124 §4, la première ligne de la page du prénom).
+> **Validés par Tom (« tout a l'air ok ») : C-154, C-157, C-149, C-159, C-160 ; C-124 et C-126 pour le reste. Q547 : l'orange du libellé gardé partout
+> (vu et validé). Q549 close. Décisions du chef de chantier : Q548 (« La suite t'appartient. » reste crème en sombre), Q550 (« félicitations » dans la
+> phrase de Tom seulement, exception nommée), Q551 (REPORTER compte depuis aujourd'hui quand l'échéance est passée).**
+> **⚑ C-124 §1 — LA PAGE DU PRÉNOM : « [Prénom], donc. »**, mot pour mot ; « Enchanté. » est supprimé ; la ligne ne bouge pas (184 pt), « Quid d'un Promi à
+> toi-même ? » et « Petite ou grande promesse, elle compte. » ne changent pas. Juge : `redteam_onb_sorties` (textes en dur).
+> **⚑ C-162 — LA RÈGLE (Tom) : TOUT MOT COLORÉ EN CLAIR EST COLORÉ AUSSI EN SOMBRE, dans l'onboarding comme dans les phrases du guide — même rôle, même
+> famille de couleur. En sombre, chaque couleur prend sa variante claire de la palette, au moins 3:1 sur le fond sombre : bleu → `#82AEF8`, rose →
+> `#FFB8D2`, lilas → `#C9A8F5` ; les lettres de « Studio » leurs équivalents clairs.** L'inventaire, relevé page par page, clair contre sombre : seuls
+> quatre mots sortaient crème, tous dans la phrase du + du guide — Promi, Chiche, Cercle et « commence » (`phraseHTML` ne les colorait qu'en clair) ; ils
+> prennent `#82AEF8` · `#FFB8D2` · `#C9A8F5` · `#82AEF8`. Déjà colorés : les natures de l'onboarding, le I de PROMI, « PROMI » de « Promi planté ! »,
+> Primo · Deuxio · Tertio (`#0E78F2`, 4,7:1 — validé en v151, gardé), « monde », les lettres de « Studio ». **Deux exceptions NOMMÉES, des décisions
+> écrites : « trace pour planter » (crème en sombre, Tom v151 C-126 §5) et « La suite t'appartient. » (crème en sombre, Q548).** Un mot ajouté demain
+> à l'onboarding ou au guide tombe sous la règle. Juge : **`redteam_mots_sombre.py`** (inventaire RELEVÉ, pas écrit ; le contraste sur le fond lu sur
+> l'image ; 33 ; 29/33 sur v151).
+> **L'échelle de v151 vaut, sauf la ligne « texte » : « [Prénom], donc. » (sans « Enchanté. »).**
+> **⚑ C-161 — `redteam_peaufiner` intermittent sur v151 : EXPLIQUÉ PAR LA CHARGE.** Le diff v150 → v151 ne touche pas Peaufiner ; rejoué sous la même
+> charge, v152 7/7 verts (charge 6 à 18) et v150 3/3 en alternance ; les trois rouges de v151 étaient trois délais différents, sous une charge de 34 à 83.
+> Pas jugé au calme (la charge n'est jamais descendue sous 4 pendant ce lot).
+> **⚑ LA SÉRIE DE v152 — NON JUGÉE AU CALME** : le Mac a redémarré pendant le lot et l'autre session (émulateur Android, simulateur iOS) a tenu la charge
+> entre 6 et 700. Passés un à un : les juges des chantiers touchés et les sentinelles (19 + `redteam_guide` deux fois + `redteam_peaufiner` six fois) — verts,
+> sauf `redteam_onboarding_texte` C-123 (une durée, non jugée) et `redteam_guide` 10.2 (les lobes de la zone du +, 7,8–8,0 % pour 8 %, sur v151 aussi :
+> C-163, ouvert). Les 127 autres juges : **NON JUGÉ**, ligne par ligne dans `scratchpad/v152/serie-complete.txt`. **`redteam_air` : non jugé, pas refigé.**
+> **Contrat de test remis au niveau** (original : `sauvegardes/redteam_guide-avant-v152.py`) : `redteam_guide` — « en sombre, la crème pour toute la
+> phrase » devient la règle de C-162 (texte crème ; « commence » et Promi `#82AEF8`, Chiche `#FFB8D2`, Cercle `#C9A8F5`, en dur) ; rouge sur v151.
+> **Archive : `sauvegardes/app-cloture-v152.html`.**
+
 ### ⚑ v151 (18 oct. 2026) — RETOURS iPHONE DE TOM SUR v150, PUIS CLÔTURE DE LA SÉRIE : LA VAGUE REVIENT AU VIOLET, L'ÉCHÉANCE EST UNE DATE, LE LIBELLÉ DU DÉPART EN ORANGE, « GARDER DE CÔTÉ » À 718, L'ONBOARDING EN SOMBRE, LE REJEU DE L'ONBOARDING. (Décisions Tom.) Ce bloc CORRIGE v150 (C-154 la couleur, C-149 la cote, §0 « le prototype ne recompte pas les jours ») et v146/v148 (la règle de l'orange).
 > **Validés par Tom : C-158 (les phrases des pages + du Chiche et du Cercle, les 17 pt du Cercle compris), C-126 (la flèche orange en sombre), la fin de
 > l'onboarding (deux lignes alignées à droite). Q545 : oui, « trace ta moitié » suit « trace pour planter ». Q546 : oui, deux lignes alignées à droite.**
@@ -3131,6 +3158,7 @@ python3 redteam_pages_plus.py  # 35 — v150 (C-157, C-158, C-149) : les pages +
                                #   « garder de côté » ; les fiches identiques au pixel ; la bascule des lignes sur dix ouvertures. Rouge sur v149.
 python3 redteam_echeance.py    # 11 — v151 (C-160) : l'échéance est une date — planter « 5 j », ?jour=+30 → « à tenir » ; REPORTER au doigt depuis le Fil → « en cours » ;
                                #   tracer → « tenue » ; le retour au premier plan recompte ; « un jour » jamais « à tenir » ; ?jour jamais mémorisé. WebKit. 4/11 sur v150.
+python3 redteam_mots_sombre.py  # 33 — v152 (C-162) : tout mot coloré en clair dans l'onboarding et le guide l'est aussi en sombre, ≥ 3:1 sur le fond lu sur l'image ; inventaire relevé ; deux exceptions nommées. WebKit. 29/33 sur v151.
 python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
