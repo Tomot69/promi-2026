@@ -8764,3 +8764,18 @@ invitation animée (le chevron orange suffit).**
   « trace pour planter » (c'est le même mot, à la même place).
 - **Q546 — À SAVOIR (C-124)** : « Tout le monde promet. Toi, tu tiens parole. » ne tient pas sur une ligne (352 pt) : alignée à droite, elle se coupe
   en deux lignes égales, entre les deux phrases (`text-wrap:balance`), au lieu de « … Toi, tu / tiens parole. ».
+
+### v151 (18 oct. 2026) — retours iPhone de Tom sur v150, puis clôture de la série
+**Validés : C-158 (les 17 pt du Cercle compris), C-126 (la flèche orange en sombre), la fin de l'onboarding. Tranchées : Q544 (l'échéance est une date,
+dès maintenant — C-160), Q545 (oui, « trace ta moitié » suit), Q546 (oui, deux lignes alignées à droite).**
+- **Q547 — À VALIDER (C-157)** : le libellé « trace pour … » des pages + en orange `#FB4C0D` fait **1,23:1** sur le corps du Promi `#0E78F2` et 2,27:1 sur
+  ceux du Chiche et du Cercle (la règle du texte : 4,5:1). Appliqué tel que décidé ; à regarder sur l'iPhone, surtout la page + d'un Promi.
+- **Q548 — À TRANCHER (C-124 §6)** : en sombre, Primo, Deuxio, Tertio sont passés au bleu `#0E78F2` ; « La suite t'appartient. » porte la même classe de
+  mot-clé (cobalt en clair) mais n'était pas nommé : il garde la crème en sombre. Le passer aussi au bleu ?
+- **Q549 — À SAVOIR (C-126 §5)** : en sombre, « trace pour planter » de l'onboarding était DÉJÀ crème en v150 (mesuré en WebKit et en Chromium, 17,5:1
+  sur le fond `#0B0908`) ; rien n'a changé. Si Tom le voit vert sur l'iPhone : une capture, et dire comment l'onboarding a été lancé (premier lancement,
+  ou « Revoir la présentation » ; thème de l'app).
+- **Q550 — À SAVOIR (C-159)** : « félicitations » était dans la liste interdite de R1 (chantier d'engagement, E0) ; la phrase de Tom l'emploie : c'est une
+  exception NOMMÉE (cette phrase-là, mot pour mot). Une « dalle » avant la plantation = une parole non gardée de côté, ou un Cercle nommé.
+- **Q551 — À SAVOIR (C-160)** : REPORTER depuis une échéance passée compte depuis aujourd'hui (« +3 j » = dans trois jours) et la parole redevient « en
+  cours » — avant, « +3 j » ajoutait trois jours à un retard (−25 → −22) et la parole restait « à tenir ». `?jour=+N` avance aujourd'hui pour la page.

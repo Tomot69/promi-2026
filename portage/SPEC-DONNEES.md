@@ -88,7 +88,7 @@ const P=(t,w,d,i,s,n,fr)=>({id:nid++,title:t,who:w,due:d,intensity:i,status:s,nu
 | `id` | entier | `nid++`, `nid` part de 100 et est sauvegardé (`app.html:2912`, `7644`). ⚠ Les ids du jeu de démonstration changent d'un chargement à l'autre (CLAUDE.md §4, chantier 71) : **jamais une clé stable**. | `P()` |
 | `title` | chaîne | la phrase de la parole | `P()` ; renommage `#dRenameOk` (`app.html:3808`, `9271`) |
 | `who` | chaîne | **à qui** : `'moi'` / `'Moi'` (soi), un prénom, plusieurs prénoms joints par `', '` (`app.html:32663`), ou `'le groupe'` (parole d'un Cercle à membres, `app.html:3196`). Défaut `'moi'`. | `P()` ; Peaufiner « À QUI » (`_gensFiche`, `app.html:32651–32664`) ; `#dWhoInput` (ancien, `app.html:3311`) |
-| `due` | nombre ou `null` | **un nombre de JOURS**, relatif (1 demain · 5 · 14 · 30) ; `null` = « un jour » ou « en l'air ». Voir §1.4. | `P()` ; liste d'échéance (`app.html:16194–16199`) ; reports (`app.html:3044`, `6922`, `3791`) |
+| `due` | nombre ou `null` | **un nombre de JOURS**, relatif (1 demain · 5 · 14 · 30) ; `null` = « un jour » ou « en l'air ». Voir §1.4. **⚑ v151 (C-160) : une CONSÉQUENCE de `ech` (§1.12), recomptée chaque jour.** | `P()` ; liste d'échéance (`app.html:16194–16199`) ; reports (`app.html:3044`, `6922`, `3791`) |
 | `intensity` | entier 1–3 | importance : 1 `light`, 2 `normal` (défaut), 3 `high` (`app.html:3192`). Réglage de Ma Parole ! (ETAT §6). | `P()` ; `#segImp` (`app.html:3792`) |
 | `status` | énuméré | `'encours'` · `'tenu'` · `'rate'` — voir §1.5 | voir transitions |
 | `nuee` | chaîne, `null` ou `undefined` | la clé du Cercle qui porte la parole (une clé de `NUE`) ; absent = hors Cercle. `'soi'` est une clé réservée (« Moi-même », `app.html:2968`). | `P()` ; `#dNueeChips` (`app.html:3754`) ; dissolution (`app.html:3662`, `9248`) |
@@ -175,6 +175,7 @@ Liste unique (`ECHEANCE`, `app.html:16163–16171`, décision Tom S3/Q28) :
 Choisir une échéance chiffrée sur la fiche remet `status='encours'` (`app.html:16199`).
 ⚠ La fabrique des gardés de côté traduit « un jour » par **30** (`quandToDue`, `app.html:13598`) — contradiction avec `null`.
 
+> **⚑ v151 (Tom, C-160, Q544) — T3 EST FERMÉ : l'échéance est une DATE (§1.12).** Ce qui suit décrit l'état d'avant.
 > **⚠ TROU T3** — `due` est un **nombre de jours sans date de référence, et rien ne le décrémente** (cherché : `due--`, `due-=`).
 > `echeancesDepassees()` bascule `encours → rate` quand `due < 0` (`app.html:4090–4100`), ce qui ne peut arriver que par les données de
 > démonstration. Seul le lot des notifications reconstruit un jour J (`rap.base + due × 24 h`, `app.html:37309`). **En Swift : stocker une
@@ -308,6 +309,19 @@ COMMENTAIRES est la première rubrique après le trait. Rien de plus n'est stock
   À L'OUVERTURE (même s'il referme aussitôt, il ne la revoit pas). Ouvertures suivantes : la fiche s'ouvre directement tenue. Firebase :
   `paroles/{id}/vuTenue/{uid}`, création seulement, par `uid` lui-même.
 - Une parole tenue sans `vuTenue` (données d'avant v149, ou tenue seul sous ses yeux) ne rejoue rien.
+
+### 1.12 L'échéance est une date (v151 — C-160, Q544)
+
+- **Donnée** : `ech = {iso:'AAAA-MM-JJ', due}` — `iso` est le JOUR de l'échéance (date locale, sans heure) ; `due` est le nombre de jours qui restait au dernier
+  recompte. **Swift : une `Date` (le jour, fuseau de l'appareil)** ; « un jour » et « en l'air » : pas de date (et `enLair` distingue les deux).
+- **Écrire une échéance** (page +, Peaufiner, REPORTER, une date choisie au calendrier) : le jour = aujourd'hui + N, ou le jour choisi (`dueISO`, qui EST l'échéance).
+- **Lire** : `due` = jour de l'échéance − aujourd'hui, en jours (arrondi : les changements d'heure ne comptent pas). **Recompté au lancement et à chaque
+  retour au premier plan** (Swift : `scenePhase == .active`, et au changement de jour, `NSCalendarDayChanged`).
+- **« À tenir »** : une parole `encours` (pas gardée de côté, pas une demande) dont le jour est passé (`due < 0`) passe `rate` — jamais l'inverse sans geste.
+- **REPORTER** (le Fil, la carte de la Toile ; le choix d'une échéance dans Peaufiner) : depuis une échéance passée on compte depuis aujourd'hui
+  (« +3 j » = dans trois jours, pas « trois jours de moins en retard ») et la parole redevient `encours`.
+- Prototype : `lot-V151-ECHEANCE`, `window._echeance` ; `?jour=+N` avance aujourd'hui de N jours pour la page (jamais mémorisé) — l'essai sans attendre.
+  Juge : `redteam_echeance.py`.
 
 ## 2. Le Chiche — ce qui lui est propre
 
@@ -726,7 +740,7 @@ resynchronise depuis les paroles (`Toile.sync(ids)`), et « un semis est déterm
 |---|---|---|
 | T1 | `ht` (hauteur de trait figée à la plantation) n'est posée que sur le jeu de démonstration ; règle d'engendrement absente | `\.ht\s*=`, `NUEHT` |
 | T2 | Aucune date de plantation ni de tenue ; `leJour` est un mot de démonstration ; l'ordre des tenues = ordre d'apparition (`promi_pelote_ordre`) | `tenuLe`, `keptAt`, `cree`, `created` |
-| T3 | `due` = jours relatifs sans date de référence, jamais décrémenté ; « à tenir » automatique inatteignable hors démonstration ; « un jour » vaut `null` ou 30 selon le chemin | `due--`, `due-=`, `quandToDue` |
+| T3 | **FERMÉ en v151 (C-160, §1.12)** — `due` = jours relatifs sans date de référence, jamais décrémenté ; « à tenir » automatique inatteignable hors démonstration ; « un jour » vaut `null` ou 30 selon le chemin | `due--`, `due-=`, `quandToDue` |
 | T4 | Défaire une parole tenue (`tenu → encours`) : seulement l'ancien `#segStatus`, aucune décision | `\.status\s*=` (6 écritures) |
 | T5 | La moitié de trait de l'autre : aucun champ | `moitie`, `trace` |
 | T6 | Pinceaux « à 0,50 € » : aucun état d'achat, absents de l'offre | `_PINCEAU_META`, `acquis` |

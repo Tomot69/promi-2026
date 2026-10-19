@@ -35,6 +35,8 @@ Les exceptions sont NOMMÉES ici, en dur (§7) — rien d'autre n'est toléré :
   E11 v136 (Tom, 7 oct. 2026, C-059) : en clair, la fiche tenue (Promi et Chiche) et son Peaufiner : terre → crème, crème → encre, amande → #00341A.
       v136 (C-071) : le halo et l'ombre de la Pelote sont SUPPRIMÉS — E7 ne trouve plus son nœud (0), le nœud est listé « sans vis-à-vis ».
   E12 v139 (Tom, 9 oct. 2026, C-084) : en clair, le corps et l'encart des fiches #F7F0DE → #EAD9B9 ; les cartes du fil d'un Cercle #E9D8B7 → #F7F0DE.
+  E20 v151 (Tom, 18 oct. 2026, C-157) : le mot du trait des pages + (« trace pour planter », « trace ta moitié », « trace pour lancer ») en orange
+      #FB4C0D, clair et sombre — sur `.pp-trace` seulement (la fiche, `#dptTrace`, ne bouge pas). Original : sauvegardes/redteam_couleurs_ref-avant-v151.py.
   E19 v148 (Tom, 16 oct. 2026, C-147) : les cartes de l'Index, du Fil et du fil d'un Cercle prennent la construction de la fiche (corps #0E78F2, #7C3F58,
       #5D4978, terre d'une tenue, état crème, « TENUE » amande), dans les deux thèmes — sur une carte seulement, vers ces couleurs seulement.
   E7  v123 §2 : en sombre, l'ombre de la Pelote est une ellipse CRÈME (`#auPeloteOmbre`, dégradé radial crème 0,105) — sur ce nœud-là,
@@ -283,6 +285,9 @@ with sync_playwright() as p:
                     #   du Fil et du Fil des Cercles, même construction que la fiche, dans les deux thèmes » — sur une CARTE (`.s4-…`, `.nf-item`), et seulement
                     #   vers les couleurs de cette construction : les trois corps, la terre d'une tenue, la crème, l'amande, le lilas, les traits sombres de nature.
                     if pr_ in ('color', 'tfill', 'bg', 'bT', 'bB', 'bL', 'bR', 'fill', 'stroke') and re.search(r's4-|nf-item', k) and va in CARTE_V148: exceptions['E19'] = exceptions.get('E19', 0) + 1; continue
+                    # E20 (v151, Tom, 18 oct. 2026, C-157) : « dans les pages + du Promi et du Chiche, TRACE POUR PLANTER / TRACE POUR LANCER passe en orange
+                    #   #FB4C0D, comme la flèche, en clair et en sombre » (le Cercle porte le même texte : même traitement) — le mot du trait de la page +, et lui seul.
+                    if pr_ in ('color', 'tfill') and va == 'rgb(251, 76, 13)' and re.search(r'pp-trace\b', k) and not re.search(r'dptTrace', k): exceptions['E20'] = exceptions.get('E20', 0) + 1; continue
                     # E14 (v146, chef de chantier, C-121) : « le signe + passe en orange #FB4C0D, en clair et en sombre. Le signe seul, sans fond ni cercle. »
                     if pr_ in ('stroke', 'fill', 'color', 'tfill') and va == 'rgb(251, 76, 13)' and re.search(r'^#createBtn\b', k): exceptions['E14'] = exceptions.get('E14', 0) + 1; continue
                     # E15 (v146, chef de chantier, C-120) : « Studio, Aura, Index et Fil, sous les icônes, prennent le bleu FONCÉ du I clignotant de PROMI » — EN CLAIR
@@ -375,6 +380,7 @@ print('E15 les noms de la barre au bleu foncé du I, en clair (v146, C-120) : %d
 print('E17 le trait à la teinte la plus sombre de sa nature, le gardé de côté compris (v147, C-140) : %d' % exceptions.get('E17', 0))
 print('E18 l\'état des cartes crème dès la première image, en sombre (v147, Q290) : %d' % exceptions.get('E18', 0))
 print('E19 les cartes de l\'Index, du Fil et du fil d\'un Cercle prennent la construction de la fiche, deux thèmes (v148, C-147) : %d' % exceptions.get('E19', 0))
+print('E20 le mot du trait des pages + en orange #FB4C0D, deux thèmes (v151, C-157) : %d' % exceptions.get('E20', 0))
 print('E13 fiches et page + en sombre dans les deux modes (v146, C-132) : %d écran(s) clairs comparés à la référence sombre' % exceptions.get('E13', 0))
 print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 cobalt, corps sombre Promi (v131) %d · E9 lilas éclairci et libellé de suppression (v132) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8'], exceptions['E9']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):

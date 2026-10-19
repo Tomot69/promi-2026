@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v150', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v151', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -3168,7 +3168,7 @@ function openCell(id){
 }
 if($('#ccKeep'))$('#ccKeep').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();const p=promises.find(x=>x.id===ccId);if(p){p.status='tenu';p.draft=false;var _rg=p.recur?regenRecur(p):false;if(typeof feedAdd==='function')feedAdd('kept','Tu as tenu « '+p.title+' »',{pid:p.id});if(_rg&&typeof relayout==='function')relayout();else render();if(typeof caption==='function')caption();_keptCount++;if(_keptCount===2||_keptCount===5){toast('Belle série — partage ton Noyau','Partager',function(){if(typeof openSealShare==='function')openSealShare();});}}closeCard();};
 if($('#ccPush'))$('#ccPush').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();var a=$('#ccActs');if(a)a.style.display='none';var o=$('#ccPushOpts');if(o)o.style.display='flex';};
-$$('#ccPushOpts button').forEach(function(b){b.onclick=function(e){if(e&&e.stopPropagation)e.stopPropagation();var p=promises.find(x=>x.id===ccId);if(p){p.due=(p.due||0)+(+b.getAttribute('data-d'));if(typeof feedAdd==='function')feedAdd('added','« '+p.title+' » reportée de '+b.textContent.trim(),{pid:p.id});render();if(typeof caption==='function')caption();}closeCard();};});
+$$('#ccPushOpts button').forEach(function(b){b.onclick=function(e){if(e&&e.stopPropagation)e.stopPropagation();var p=promises.find(x=>x.id===ccId);if(p){p.due=Math.max(0,p.due||0)+(+b.getAttribute('data-d'));if(p.status==='rate')p.status='encours';if(typeof feedAdd==='function')feedAdd('added','« '+p.title+' » reportée de '+b.textContent.trim(),{pid:p.id});render();if(typeof caption==='function')caption();}closeCard();};});
 if($('#ccManage'))$('#ccManage').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();const id=ccId;closeCard();openDetail(id);};
 function miniCell(p){
   /* la dalle de l'Index est la MÊME que sur la Toile : même découpe, même couleur.
@@ -3909,7 +3909,7 @@ const p=cur;if(!p)return;const r=$('#mgRename');if(r)r.style.display='none';cons
    /* due null SANS enLair = « un jour » (promesse sans date, Décision Tom) : la fiche dit
       le MÊME mot que le sélecteur — aucun écart entre ce qu'on choisit et ce qu'on relit. */
    else if(p.due==null){_dueTxt='un jour';}
-   else{try{var _dd=new Date();_dd.setHours(0,0,0,0);_dd.setDate(_dd.getDate()+Math.round(+p.due));_dueTxt='avant '+window._dateQuand(_dd);}catch(_de){_dueTxt='un jour';}}
+   else{try{var _dd=(window._echeance&&window._echeance.date(p))||null;if(!_dd){_dd=new Date();_dd.setHours(0,0,0,0);_dd.setDate(_dd.getDate()+Math.round(+p.due));}_dueTxt='avant '+window._dateQuand(_dd);}catch(_de){_dueTxt='un jour';}}   /* v151 (C-160) : la date de l'échéance quand elle est connue */
    $('#dDue').textContent=_dueTxt;}
   $$('#segStatus button').forEach(b=>b.classList.toggle('on',b.dataset.st===p.status));var _wi=$('#dWhoInput');if(_wi)_wi.value=p.who||'';var _dn=$('#dNote');if(_dn)_dn.value=p.note||'';var _rb=$('#actRelance');if(_rb){var _tg=(p.from&&p.from!=='moi')?p.from:((p.who&&p.who!=='moi'&&p.who!=='le groupe')?p.who:null);if(_tg&&p.status==='encours'){_rb.style.display='';_rb.textContent='Relancer '+_tg+(p.relances?' · relancé ×'+p.relances:'');}else{_rb.style.display='none';}}var _dc=$('#dComments');if(_dc){var _cm=p.comments||[];_dc.innerHTML=_cm.length?_cm.map(function(c){var _by=c.by||'moi';var _me=(_by==='moi'||(typeof USER!=='undefined'&&USER.name&&_by===USER.name));return '<div class="mg-cm'+(_me?' mine':'')+'"><div class="mg-cm-by">'+_esc(_me?'Moi':_by)+'</div><div class="mg-cm-t">'+_esc(c.t)+'</div><div class="mg-cm-d">'+_esc(_cdate(c.d))+'</div></div>';}).join(''):'<div class="mg-cm-empty">rien pour l\'instant</div>';var _dnc=$('#dNueeChips');if(_dnc&&typeof NUE!=='undefined'){var _hk='<div class="chip'+(p.nuee?'':' on')+'" data-dnuee="">Aucune</div>';Object.keys(NUE).forEach(function(k){_hk+='<div class="chip'+(p.nuee===k?' on':'')+'" data-dnuee="'+k+'">'+_esc(NUE[k]||k)+'</div>';});_dnc.innerHTML=_hk;$$('#dNueeChips .chip').forEach(function(c){c.onclick=function(){p.nuee=c.dataset.dnuee||undefined;$$('#dNueeChips .chip').forEach(function(x){x.classList.toggle('on',x===c);});try{if(window.syncAll)window.syncAll();if(typeof queueSave==='function')queueSave();}catch(e){}renderDetail();};});}var _cf=$('#dConfirm');if(_cf){var _cw=(p.who&&p.who!=='moi'&&p.who!=='le groupe')?p.who:null;var _cfrom=(p.from&&p.from!=='moi')?p.from:null;if(_cfrom){_cf.textContent='c\u2019est toi qui confirmes \u2014 '+_cfrom+' te l\u2019a promis';}else if(_cw){_cf.textContent=(p.status==='encours')?('quand ce sera fait, '+_cw+' pourra le confirmer'):('d\u00e9clar\u00e9 par toi \u00b7 '+_cw+' peut confirmer');}else{_cf.textContent='promesse \u00e0 toi-m\u00eame \u2014 tu es seul juge';}}var _vz=$('#dFilVis');if(_vz){var _w=(p.nuee&&p.nuee!=='soi')?('les membres de '+((typeof NUE!=='undefined'&&NUE[p.nuee])||p.nuee)):((p.from&&p.from!=='moi')?p.from:((p.who&&p.who!=='moi'&&p.who!=='le groupe')?p.who:null));_vz.textContent=_w?('visible par '+_w+' · vous pouvez répondre'):'privé — personne d\'autre ne le voit';}}
   $$('#segImp button').forEach(b=>b.classList.toggle('on',+b.dataset.v===p.intensity));
@@ -6429,11 +6429,11 @@ window.motDuTemps=function(p){try{
   if(j<=0) return {mot:"aujourd'hui",vif:false,col:''};
   if(j===1) return {mot:'demain',vif:false,col:''};
   if(j<=7){
-    var d=new Date(Date.now()+j*86400000);
+    var d=window._echeance?window._echeance.aujourdhui():new Date(); d.setDate(d.getDate()+j);   /* v151 (C-160) : aujourd'hui, ?jour compris */
     var J=['dimanche','lundi','mardi','mercredi','jeudi','vendredi','samedi'];
     return {mot:J[d.getDay()],vif:false,col:''};}
   if(j<=60){
-    var d2=new Date(Date.now()+j*86400000);
+    var d2=window._echeance?window._echeance.aujourdhui():new Date(); d2.setDate(d2.getDate()+j);
     var M=['janvier','février','mars','avril','mai','juin','juillet','août',
            'septembre','octobre','novembre','décembre'];
     return {mot:d2.getDate()+' '+M[d2.getMonth()],vif:false,col:''};}
@@ -25658,7 +25658,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
       dessus -= (window._ppDyPhrase || 0);
       var dessous = 760;
       var gl = cs.querySelector('.pp-garder');
-      if(vu(gl)) dessous = hautDe(gl) + INK_LIEN - 4;
+      if(vu(gl)) dessous = hautDe(gl) + INK_LIEN - 10;   /* v151 (C-149) : 4 + 6 pt — le rail ne bouge toujours pas */
       /* ⚑ v148 (trouvé par redteam_flash) : « garder de côté » est visible dès l'ouverture (C-149) et se cache le temps d'un tracé (`pp-cours`) ;
          le rail se plaçait à mi-chemin de lui, puis de 760 pendant le tracé — il sautait d'une place à l'autre (un flash). Pendant le tracé il
          garde la place que le lien lui donne : sa cote est fixe (708, lot de la page +). */
@@ -37445,6 +37445,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #device.light #onbV .onbv-fin .onbv-titre,#device.light #onbV .onbv-fin .onbv-ton,#device.light #onbV .onbv-fin .onbv-l{color:var(--c-mauve12);-webkit-text-fill-color:var(--c-mauve12)}
 #device.light #onbV .onbv-fin .onbv-pmot{color:var(--c-cobalt50);-webkit-text-fill-color:var(--c-cobalt50)}
 #device.light #onbV .onbv-fin .onbv-k{color:var(--c-cobalt50);-webkit-text-fill-color:var(--c-cobalt50)}
+/* ⚑ v151 (Tom, C-124 §6) — « en sombre, Primo, Deuxio et Tertio sont blancs, et ça fait triste » : le même bleu qu'en clair, #0E78F2 (4,7:1 sur le fond
+   réel #0B0908, au-dessus de 3:1 — le bleu Promi n'est pas nécessaire). « La suite t'appartient. », nommé à part, garde la crème. */
+#device:not(.light) #onbV .onbv-fin .onbv-l:not(.onbv-l-der) .onbv-k{color:var(--c-cobalt50);-webkit-text-fill-color:var(--c-cobalt50)}
 #onbV .onbv-fin,#onbV .onbv-fin *,#onbV .onbv-dit,#onbV .onbv-sous{text-shadow:none!important;-webkit-text-stroke:0!important}
 /* ⚑ v146 (Tom, C-126) — la page du premier Promi, en clair : « trace pour planter » (PromiLate) en vert foncé #00341A. Elle a SON fond clair (la Toile
    de l'onboarding), pas la fiche : la demande s'applique telle quelle. La flèche part en orange (C-133) ; le trait non tracé reste à l'encre de l'app. */
@@ -37476,7 +37479,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #onbV#onbV .onbv-fin{left:19px!important;width:352px!important}
 #onbV#onbV .onbv-fin .onbv-reste{margin-top:calc(18px*var(--onbe))}
 #onbV#onbV .onbv-fin .onbv-l-fin{margin-top:calc(12px*var(--onbe))}
-#onbV#onbV .onbv-fin .onbv-l-der{margin-top:calc(9px*var(--onbe))}   /* v148 (C-124 §9.5) : « LA SUITE T'APPARTIENT » descend de 9 pt — plus d'air au-dessus de lui */
+#onbV#onbV .onbv-fin .onbv-l-der{margin-top:calc(9px*var(--onbe))}
+#onbV#onbV#onbV .onbv-fin .onbv-l-der{margin-top:calc(9px*var(--onbe) + 9px)}   /* ⚑ v151 (Tom, C-124 §7) : encore 9 pt plus bas (« de 6 à 12 pt ») — toujours centrée */   /* v148 (C-124 §9.5) : « LA SUITE T'APPARTIENT » descend de 9 pt — plus d'air au-dessus de lui */
 /* ⚑ v150 (Tom, C-124) : « Tout le monde promet. Toi, tu tiens parole. » alignée à DROITE ; « La suite t'appartient. » CENTRÉE */
 #onbV#onbV .onbv-fin .onbv-l-fin{text-align:right;text-wrap:balance}   /* deux lignes égales : la coupe tombe entre les deux phrases (« … promet. / Toi, … »), pas entre « tu » et « tiens » */
 #onbV#onbV .onbv-fin .onbv-l-der{text-align:center}
@@ -37871,6 +37875,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       /* ⚑ v146 (C-124, 11.5) : la première parole prend la cellule la plus proche du bas de la Toile (42 % de la largeur, 74 % de la hauteur) — tirée au
          hasard, elle tombait parfois dans le haut ou au milieu : le recadrage ne pouvait plus l'amener sous le message, qui la recouvrait. Sa place est gardée. */
       np.place=[0.42, 0.74];
+      /* ⚑ v151 (Tom, C-159) — REJOUER L'ONBOARDING : « dès que la Toile compte au moins une dalle avant cette plantation » (une parole, ou un Cercle :
+         `sync` plante une dalle par Cercle nommé), la parole n'est plus la première — le texte de Tom, mot pour mot. Au premier lancement la Toile est
+         vide (`obResetData`) : le texte d'origine. Le reste de la chorégraphie ne change pas. */
+      try{ var _avant=promises.filter(function(p){ return !p.draft; }).length; try{ for(var _nk in NUE){ if(_nk!=='soi') _avant++; } }catch(_n){ }
+        window._onbNouvelle=_avant>0; var _ton=v.querySelector('#onbFin .onbv-ton');
+        if(_ton && _avant>0){ _ton.textContent='Une nouvelle dalle sur ta Toile, félicitations. Plus qu’à le tenir.'; _ton.setAttribute('data-onb-ton','nouvelle'); }
+        else if(_ton) _ton.setAttribute('data-onb-ton','premier'); }catch(_){ }
       promises.push(np);
       var ids=promises.filter(function(p){return !p.draft;}).map(function(p){return p.id;});
       if(window.Toile&&Toile.sync) Toile.sync(ids);
@@ -41289,6 +41300,8 @@ window._noms=(function(){
 #device #createSheet.pp.pp-cours .pp-garder{display:block!important}
 /* ⚑ v150 (Tom, C-149) : « Garder de côté » 4 pt plus bas (0,6 mm), dans les pages + du Promi, du Chiche et du Cercle ; l'inclinaison est validée */
 #device #createSheet.pp .pp-garder,#device #createSheet.pp .pp-garder.inactif{top:712px!important}
+/* ⚑ v151 (Tom, C-149) : « Garder de côté » encore 1 mm (6 pt) plus bas — 718 ; inclinaison inchangée ; le rail du pinceau ne bouge pas */
+#device #createSheet.pp .pp-garder,#device #createSheet.pp .pp-garder.inactif{top:718px!important}
 </style>
 <script id="lot-V148-RUBAN">
 /* ⚑ v148 (Tom, 16 oct. 2026, C-148) — LE BANDEAU AMANDE DE LA VALIDATION. « Quand on trace pour valider, sur une fiche ou dans la page +, le bandeau
@@ -41313,9 +41326,9 @@ window._noms=(function(){
      haut redescend sur le trait à la vitesse du rideau, puis il s'en va sous lui ; ② ma part, sans être la dernière : seulement la vague sous le trait,
      en amande, pas de rideau — elle reste un instant (`PART_TIENT`), puis se resserre sur le trait à vitesse constante ; ③ sans validation : il se resserre. */
   var ETAT_COL={encours:'#291547', rate:'#DD4D23'}, PART_TIENT=520, PART_RENTRE=320;
-  /* ⚑ v150 (Tom, C-154) : « la vague de création passe en orange plutôt qu'en violet, parce qu'une parole créée passe à tenir » — la couleur de l'état
-     « à tenir », #DD4D23 ; jamais l'orange d'action #FB4C0D, réservé aux points de départ. */
-  function couleur(zone){ if(zone.id==='tenirZone') return AM; return ETAT_COL.rate; }
+  /* ⚑ v151 (Tom, C-154) : « une parole créée est « en cours » : la vague prend la couleur de l'état réel, #291547 » — l'orange de v150 reposait sur une
+     prémisse fausse (une parole ne passe « à tenir » que son échéance dépassée, C-160). Jamais l'orange d'action #FB4C0D. */
+  function couleur(zone){ if(zone.id==='tenirZone') return AM; return ETAT_COL.encours; }
   function reduit(){ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   function io(u){ u=Math.max(0,Math.min(1,u)); return 1-Math.pow(1-u,3); }
   function geo(zone){
@@ -41464,6 +41477,75 @@ window._noms=(function(){
   try{ var _ls=localStorage.setItem.bind(localStorage); localStorage.setItem=function(k, v){ if(k==='promi_prenom' || k==='promi_cercle_mots') v=nettoie(String(v)); return _ls(k, v); }; }catch(_){ }
 })();
 </script>
+<script id="lot-V151-ECHEANCE">
+/* ⚑ v151 (Tom, C-160, Q544) — « L'ÉCHÉANCE COMPTE ENFIN LES JOURS. » L'échéance d'une parole est une DATE (`p.ech.iso`, « AAAA-MM-JJ »), comparée à
+   aujourd'hui ; `p.due` (le nombre de jours qui reste, lu par tous les écrans) n'est plus qu'une conséquence, recomptée au lancement et à chaque
+   retour au premier plan. Une parole « en cours » dont l'échéance est passée (due < 0) et qui n'est pas tenue passe « à tenir » (`echeancesDepassees`).
+   · Ce qui ÉCRIT une échéance (la page +, Peaufiner, REPORTER) continue d'écrire `p.due` en jours depuis aujourd'hui : on le voit à l'enregistrement
+     et au recompte (`p.ech.due` ≠ `p.due`) et la date se pose alors — aucun écrivain n'a été réécrit. Une date choisie au calendrier (`p.dueISO`)
+     EST l'échéance.
+   · `?jour=+N` avance aujourd'hui de N jours, pour cette page seulement (jamais mémorisé) : l'essai sans attendre.
+   · REPORTER depuis une échéance passée compte depuis aujourd'hui (« +1 j » = demain), et la parole redevient « en cours ».
+   Données : `p.ech = {iso, due}` (portage/SPEC-DONNEES §1.12 — dans Swift, une Date). */
+(function(){
+  var DECAL = 0;
+  try{ var m = /[?&]jour=([+-]?\d+)/.exec(location.search); if(m) DECAL = parseInt(m[1], 10) || 0; }catch(_){}
+  function auj(){ var d = new Date(); d.setHours(0,0,0,0); if(DECAL) d.setDate(d.getDate() + DECAL); return d; }
+  function iso(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function date(s){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s||''); return m ? new Date(+m[1], +m[2]-1, +m[3]) : null; }
+  function ecart(d){ return Math.round((d - auj()) / 864e5); }
+  function liste(){ try{ return (typeof promises !== 'undefined' && promises) ? promises : []; }catch(_){ return []; } }
+  /* note : une échéance écrite depuis le dernier passage devient une date ; rien d'autre ne bouge */
+  function note(p){
+    if(!p || p.draft) return;
+    if(p.dueISO && (!p.ech || p.ech.iso !== p.dueISO)){ var dq = date(p.dueISO); if(dq){ p.ech = {iso:p.dueISO, due:ecart(dq)}; p.due = p.ech.due; return; } }
+    if(p.ech && p.ech.due === p.due) return;
+    if(p.due === undefined || p.due === null || isNaN(+p.due)){ if(p.ech && p.dueISO === p.ech.iso) delete p.dueISO; delete p.ech; return; }
+    var d = auj(); d.setDate(d.getDate() + Math.round(+p.due));
+    if(p.ech && p.dueISO === p.ech.iso) delete p.dueISO;   /* la date choisie a été changée par un autre choix (REPORTER, « 5 jours »…) */
+    p.ech = {iso:iso(d), due:Math.round(+p.due)}; p.due = p.ech.due;
+  }
+  function noteTout(){ liste().forEach(note); }
+  /* recompte : chaque échéance comparée à aujourd'hui */
+  function recompte(){
+    var k = 0;
+    liste().forEach(function(p){
+      note(p); if(!p.ech) return;
+      var d = date(p.ech.iso); if(!d) return;
+      var j = ecart(d); if(j !== p.due){ p.due = j; k++; } p.ech.due = j;
+    });
+    return k;
+  }
+  window._echeance = {aujourdhui:auj, decalage:function(){ return DECAL; }, iso:iso, note:noteTout, recompte:recompte,
+                      date:function(p){ return (p && p.ech) ? date(p.ech.iso) : null; }};
+  /* à l'enregistrement : la date suit ce qu'on vient d'écrire */
+  var s0 = window.saveState;
+  if(typeof s0 === 'function' && !s0.__ech){ window.saveState = function(){ try{ noteTout(); }catch(_){ } return s0.apply(this, arguments); };
+    window.saveState.__ech = 1; try{ saveState = window.saveState; }catch(_){ } }
+  /* le passage « à tenir » recompte d'abord */
+  var d0 = window.echeancesDepassees;
+  if(typeof d0 === 'function' && !d0.__ech){ window.echeancesDepassees = function(){ try{ recompte(); }catch(_){ } return d0.apply(this, arguments); };
+    window.echeancesDepassees.__ech = 1; }
+  /* REPORTER (le Fil, la carte de la Toile) : depuis une échéance passée on compte depuis aujourd'hui, et la parole redevient « en cours » */
+  var f0 = window._fpost;
+  if(typeof f0 === 'function' && !f0.__ech){
+    window._fpost = function(fid, d){
+      try{ var f = (typeof FEED !== 'undefined') ? FEED.find(function(x){ return x.id === fid; }) : null;
+        var p = (f && f.pid) ? liste().find(function(x){ return x.id === f.pid; }) : null;
+        if(p){ recompte(); if(p.due != null && +p.due < 0) p.due = 0; if(p.status === 'rate') p.status = 'encours'; } }catch(_){ }
+      var r = f0.apply(this, arguments);
+      try{ noteTout(); if(window.saveState) saveState(); if(window.syncAll) syncAll(); }catch(_){ }
+      return r; };
+    window._fpost.__ech = 1; try{ _fpost = window._fpost; }catch(_){ } }
+  /* au lancement, puis à chaque retour au premier plan */
+  try{ recompte(); }catch(_){ }
+  function retour(){ if(document.visibilityState && document.visibilityState !== 'visible') return;
+    try{ var k = recompte(); var n = window.echeancesDepassees ? echeancesDepassees() : 0;
+      if(k && !n){ if(window.saveState) saveState(); if(window.syncAll) syncAll(); } }catch(_){ } }
+  document.addEventListener('visibilitychange', retour);
+  window.addEventListener('pageshow', function(e){ if(e && e.persisted) retour(); });
+})();
+</script>
 <style id="lot-V146-MURS-css">
 /* ⚑ v146 (C-132) — la phrase des murs est posée HORS de la fiche (dans #device) : les règles « fiche sombre » ne l'atteignent pas. Posée sur un corps de
    Peaufiner — sombre dans les deux thèmes depuis v146 —, elle prend en clair les couleurs qu'elle a en sombre : la crème, et l'orange de Ma Parole ! éclairci
@@ -41473,6 +41555,14 @@ window._noms=(function(){
 /* ⚑ v146 (Tom, C-130) — « JAMAIS de contour ni de liseré autour des lettres, nulle part. » Les lettres de la phrase posée sur la Toile floutée du Studio
    n'ont plus le trait plein qui les cernait (v142, Q457) : la règle de tête l'emporte (Q510). */
 #device #murPhrase.sur-toile, #device #murPhrase.sur-toile *{-webkit-text-stroke:0!important;paint-order:normal!important}
+</style>
+<style id="lot-V151-css">
+/* ⚑ v151 (Tom, C-157) — « dans les pages + du Promi et du Chiche, TRACE POUR PLANTER / TRACE POUR LANCER passe en orange #FB4C0D, comme la flèche, en
+   clair et en sombre » ; la page + d'un Cercle porte le même texte (« trace pour lancer ») : même traitement ; « trace ta moitié » suit (Q545). La règle
+   de l'orange s'étend : le départ d'une action ET son libellé. Pendant le geste aussi (plus de terracotta au doigt posé : un seul orange). LES FICHES
+   NE BOUGENT PAS (#dptTrace). ⚠ Mesuré, par décision : 1,23:1 sur le corps du Promi #0E78F2, 2,27:1 sur ceux du Chiche et du Cercle. */
+#device#device#device#device#device#device #createSheet .pp-trace,
+#device#device#device#device#device#device #createSheet.pp.pp-cours .pp-trace{color:var(--c-orange-depart)!important;-webkit-text-fill-color:var(--c-orange-depart)!important}
 </style>
 </body>
 

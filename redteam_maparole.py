@@ -58,6 +58,7 @@ lignes = NUE.split('\n')
 # ⚑ v146 (Tom, §5) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_maparole-avant-v146.py) : « l'orange #FB4C0D marque les points de départ d'une
 #   action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait) ». La même valeur a donc un SECOND rôle, NOMMÉ :
 #   le jeton `--c-orange-depart` (et sa porte `window._orangeDepart`). Il est admis à la source, et à l'écran sur ces trois points de départ seulement.
+# ⚑ v151 (Tom, C-157) : « le départ d'une action ET son libellé » — le mot du trait des pages + (`.pp-trace`) aussi (original : *-avant-v151.py).
 hors = [(i + 1, l.strip()[:90]) for i, l in enumerate(lignes) if HEX.search(l) and not re.search(r'--c-orange-maparole(-corps|-cobalt)?\s*:\s*#(FB4C0D|FF7A55|FED0C3)', l, re.I) and not re.search(r'--c-orange-depart\s*:\s*#FB4C0D|_orangeDepart|orangeDepart', l, re.I)]
 t('A · #FB4C0D et #FF7A55 n\'existent que dans le bloc des jetons', not hors, '; '.join('l.%d %s' % h for h in hors[:3]) or '')
 t('A · le moteur n\'en porte aucun', not HEX.search(M), '')
@@ -81,6 +82,7 @@ SCAN = r"""(OR)=>{ const dv=document.getElementById('device').getBoundingClientR
     const cs=getComputedStyle(e); if(cs.display==='none'||cs.visibility==='hidden'||+cs.opacity<0.05) continue;
     if(e.closest('#murPhrase')) continue;
     if(e.closest('#createBtn, .gn-plus')) continue;   /* v146 (§5) : le + de l'accueil, le + qui valide un nom — des points de départ */
+    if(e.closest('#createSheet .pp-trace')) continue;   /* v151 (Tom, C-157) : la règle de l'orange s'étend — le départ d'une action ET son libellé : le mot du trait des pages + */
     const v=[cs.color,cs.webkitTextFillColor,cs.backgroundColor,cs.borderTopColor,cs.borderBottomColor,cs.borderLeftColor,cs.borderRightColor,cs.outlineColor,cs.fill,cs.stroke,cs.boxShadow,cs.textShadow,cs.backgroundImage].join(' | ');
     for(const o of OR) if(v.indexOf(o)>=0){ out.push((e.id||e.className||e.tagName).toString().slice(0,40)+' ← '+o); break; }
     if(e.tagName==='CANVAS'&&e.width>4){ try{ const d=e.getContext('2d').getImageData(0,0,e.width,e.height).data; let n=0;

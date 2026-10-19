@@ -317,15 +317,16 @@
    "casse": "capitales à l’écran (phrases du trait, PromiLate)"
   },
   "onb.fin.titre": {
-   "fr": "C’est planté.",
+   "fr": "Promi planté !",
    "ou": "onboarding · dernière diapositive, § 1",
-   "source": "app.html:36332 (lot-ONB-V20)"
+   "source": "app.html:36332 (lot-ONB-V20)",
+   "note": "v146 : « PROMI » en PromiLate 52, couleur de la nature ; exception nommée au « ! »"
   },
   "onb.fin.p1": {
    "fr": "Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir.",
    "ou": "onboarding · dernière diapositive, § 2",
    "source": "app.html:36332 (lot-ONB-V20)",
-   "note": "« Promi » en couleur de sa nature"
+   "note": "« Promi » en couleur de sa nature ; au rejeu sur une Toile qui a déjà des dalles : onb.fin.p1.rejeu (v151, C-159)"
   },
   "onb.fin.p2": {
    "fr": "Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs.",
@@ -3489,6 +3490,12 @@
     "bouton": "Je promets"
    },
    "etat": "à confirmer (peut-être morte)"
+  },
+  "onb.fin.p1.rejeu": {
+   "fr": "Une nouvelle dalle sur ta Toile, félicitations. Plus qu’à le tenir.",
+   "ou": "onboarding · « Promi planté ! », ① — au rejeu, si la Toile comptait au moins une dalle avant cette plantation",
+   "source": "app.html, lot-ONB-V20 · planter() (v151, C-159)",
+   "note": "texte de Tom, mot pour mot ; « félicitations » : exception nommée à R1"
   }
  }
 }

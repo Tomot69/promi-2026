@@ -180,7 +180,14 @@ Aura ─► aide (i) · Partager (Ma Pelote) · fiche d'une personne (un Noyau) 
 ### Textes exacts
 - Étape 1 : « Toi, c’est » · exemple « ton prénom » · «  ? ».
 - Étape 2 : « {Prénom}, donc. » · « Je me promets » · « de » / « d’ » · exemple « ne plus dire “je commence lundi” » · « Petite ou grande promesse, elle compte. » · « trace pour planter » (affiché en capitales).
-- **Dernière diapositive, mot pour mot (v129, texte FIGÉ)** :
+- **⚑ v151 — LA DERNIÈRE DIAPOSITIVE AUJOURD'HUI (« Promi planté ! », pas à pas, v148–v151)** : « PROMI planté ! » seul ; puis, un toucher chacun :
+  ① « Ton premier Promi, ta première dalle sur ta Toile. Plus qu'à le tenir. » — **ou, si la Toile comptait au moins une dalle avant cette plantation
+  (rejeu de l'onboarding : une parole non gardée de côté, ou un Cercle), le texte de Tom, mot pour mot : « Une nouvelle dalle sur ta Toile, félicitations.
+  Plus qu'à le tenir. »** (C-159) ; ② « Primo, un Promi, c'est ta parole donnée. » · « Deuxio, un Chiche, c'est un coup de culot. » · « Tertio, un Cercle,
+  c'est tout cela à la fois, mais à plusieurs. » ; ③ « Tout le monde promet. Toi, tu tiens parole. » (alignée à droite, deux lignes égales) puis
+  « La suite t'appartient. » (centrée, 18 pt au-dessus d'elle) ; un quatrième toucher mène au compte. Au premier lancement la Toile est vidée : texte
+  d'origine. Primo, Deuxio, Tertio en `#0E78F2` dans les deux thèmes ; l'échelle : CLAUDE.md, bloc v151.
+- **Dernière diapositive, mot pour mot (v129, texte FIGÉ)** *(historique — remplacé par le paragraphe ci-dessus)* :
   1. « C’est planté. »
   2. « Ton premier Promi, ta première dalle sur ta Toile. Plus qu’à le tenir. »
   3. « Primo, un Promi, c’est ta parole donnée. Deuxio, un Chiche, c’est un coup de culot. Tertio, un Cercle, c’est tout cela à la fois, mais à plusieurs. »

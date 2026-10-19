@@ -1,0 +1,69 @@
+<script id="lot-V151-ECHEANCE">
+/* ⚑ v151 (Tom, C-160, Q544) — « L'ÉCHÉANCE COMPTE ENFIN LES JOURS. » L'échéance d'une parole est une DATE (`p.ech.iso`, « AAAA-MM-JJ »), comparée à
+   aujourd'hui ; `p.due` (le nombre de jours qui reste, lu par tous les écrans) n'est plus qu'une conséquence, recomptée au lancement et à chaque
+   retour au premier plan. Une parole « en cours » dont l'échéance est passée (due < 0) et qui n'est pas tenue passe « à tenir » (`echeancesDepassees`).
+   · Ce qui ÉCRIT une échéance (la page +, Peaufiner, REPORTER) continue d'écrire `p.due` en jours depuis aujourd'hui : on le voit à l'enregistrement
+     et au recompte (`p.ech.due` ≠ `p.due`) et la date se pose alors — aucun écrivain n'a été réécrit. Une date choisie au calendrier (`p.dueISO`)
+     EST l'échéance.
+   · `?jour=+N` avance aujourd'hui de N jours, pour cette page seulement (jamais mémorisé) : l'essai sans attendre.
+   · REPORTER depuis une échéance passée compte depuis aujourd'hui (« +1 j » = demain), et la parole redevient « en cours ».
+   Données : `p.ech = {iso, due}` (portage/SPEC-DONNEES §1.12 — dans Swift, une Date). */
+(function(){
+  var DECAL = 0;
+  try{ var m = /[?&]jour=([+-]?\d+)/.exec(location.search); if(m) DECAL = parseInt(m[1], 10) || 0; }catch(_){}
+  function auj(){ var d = new Date(); d.setHours(0,0,0,0); if(DECAL) d.setDate(d.getDate() + DECAL); return d; }
+  function iso(d){ return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0'); }
+  function date(s){ var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(s||''); return m ? new Date(+m[1], +m[2]-1, +m[3]) : null; }
+  function ecart(d){ return Math.round((d - auj()) / 864e5); }
+  function liste(){ try{ return (typeof promises !== 'undefined' && promises) ? promises : []; }catch(_){ return []; } }
+  /* note : une échéance écrite depuis le dernier passage devient une date ; rien d'autre ne bouge */
+  function note(p){
+    if(!p || p.draft) return;
+    if(p.dueISO && (!p.ech || p.ech.iso !== p.dueISO)){ var dq = date(p.dueISO); if(dq){ p.ech = {iso:p.dueISO, due:ecart(dq)}; p.due = p.ech.due; return; } }
+    if(p.ech && p.ech.due === p.due) return;
+    if(p.due === undefined || p.due === null || isNaN(+p.due)){ if(p.ech && p.dueISO === p.ech.iso) delete p.dueISO; delete p.ech; return; }
+    var d = auj(); d.setDate(d.getDate() + Math.round(+p.due));
+    if(p.ech && p.dueISO === p.ech.iso) delete p.dueISO;   /* la date choisie a été changée par un autre choix (REPORTER, « 5 jours »…) */
+    p.ech = {iso:iso(d), due:Math.round(+p.due)}; p.due = p.ech.due;
+  }
+  function noteTout(){ liste().forEach(note); }
+  /* recompte : chaque échéance comparée à aujourd'hui */
+  function recompte(){
+    var k = 0;
+    liste().forEach(function(p){
+      note(p); if(!p.ech) return;
+      var d = date(p.ech.iso); if(!d) return;
+      var j = ecart(d); if(j !== p.due){ p.due = j; k++; } p.ech.due = j;
+    });
+    return k;
+  }
+  window._echeance = {aujourdhui:auj, decalage:function(){ return DECAL; }, iso:iso, note:noteTout, recompte:recompte,
+                      date:function(p){ return (p && p.ech) ? date(p.ech.iso) : null; }};
+  /* à l'enregistrement : la date suit ce qu'on vient d'écrire */
+  var s0 = window.saveState;
+  if(typeof s0 === 'function' && !s0.__ech){ window.saveState = function(){ try{ noteTout(); }catch(_){ } return s0.apply(this, arguments); };
+    window.saveState.__ech = 1; try{ saveState = window.saveState; }catch(_){ } }
+  /* le passage « à tenir » recompte d'abord */
+  var d0 = window.echeancesDepassees;
+  if(typeof d0 === 'function' && !d0.__ech){ window.echeancesDepassees = function(){ try{ recompte(); }catch(_){ } return d0.apply(this, arguments); };
+    window.echeancesDepassees.__ech = 1; }
+  /* REPORTER (le Fil, la carte de la Toile) : depuis une échéance passée on compte depuis aujourd'hui, et la parole redevient « en cours » */
+  var f0 = window._fpost;
+  if(typeof f0 === 'function' && !f0.__ech){
+    window._fpost = function(fid, d){
+      try{ var f = (typeof FEED !== 'undefined') ? FEED.find(function(x){ return x.id === fid; }) : null;
+        var p = (f && f.pid) ? liste().find(function(x){ return x.id === f.pid; }) : null;
+        if(p){ recompte(); if(p.due != null && +p.due < 0) p.due = 0; if(p.status === 'rate') p.status = 'encours'; } }catch(_){ }
+      var r = f0.apply(this, arguments);
+      try{ noteTout(); if(window.saveState) saveState(); if(window.syncAll) syncAll(); }catch(_){ }
+      return r; };
+    window._fpost.__ech = 1; try{ _fpost = window._fpost; }catch(_){ } }
+  /* au lancement, puis à chaque retour au premier plan */
+  try{ recompte(); }catch(_){ }
+  function retour(){ if(document.visibilityState && document.visibilityState !== 'visible') return;
+    try{ var k = recompte(); var n = window.echeancesDepassees ? echeancesDepassees() : 0;
+      if(k && !n){ if(window.saveState) saveState(); if(window.syncAll) syncAll(); } }catch(_){ } }
+  document.addEventListener('visibilitychange', retour);
+  window.addEventListener('pageshow', function(e){ if(e && e.persisted) retour(); });
+})();
+</script>

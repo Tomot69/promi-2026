@@ -37,7 +37,10 @@ INTERDITS = [  # (mot affiché, motif)
  ('bravo', 'bravos?'), ('félicitations', 'félicitations?'), ('record', 'records?')]
 ECHEANCE = ('échéance', 'échéances?')            # A4 : retiré de la liste si l'app l'emploie — on le CONSTATE, on ne le suppose pas
 # ── LA LISTE BLANCHE DE R1 : (mot, ce que le texte doit contenir, justification) — une ligne par exception
-BLANCHE_R1 = []
+BLANCHE_R1 = [  # ⚑ v151 (Tom, C-159) : « Une nouvelle dalle sur ta Toile, félicitations. Plus qu'à le tenir. » — le texte de Tom, mot pour mot, au rejeu
+                #   de l'onboarding sur une Toile qui a déjà des dalles. Cette phrase-là et aucune autre (original : sauvegardes/redteam_engagement-avant-v151.py).
+ ('félicitations', 'Une nouvelle dalle sur ta Toile, félicitations.', "texte de Tom, mot pour mot (v151, C-159) — exception nommée"),
+]
 R2_MOTIF = r"depuis|longtemps|toujours pas|encore rien|tu n['’]as|oubli|manqu|retard|hier|reviens|revenu|attend"
 # ── A3 : l'impératif. Un verbe en tête de phrase (ou après une virgule, « puis », « et ») à la 2e personne ou à la 1re du pluriel, ou un
 #    verbe suivi d'un pronom à trait d'union (« fais-le », « dis-la », « allons-y »).

@@ -9,6 +9,9 @@ redteam_pages_plus.py — v150 (Tom, 18 oct. 2026) : LES PAGES +, AU POINT, CONT
             l'appareil, au-dessus de ses coins arrondis du bas (800 pt ; la barre Peaufiner comprise) et à un niveau près : v149 contre ELLE-MÊME diffère
             de 9 à 12 pixels, d'un seul niveau, sur la colonne du bord et dans les coins (le bruit du rendu).
   C-149 · « Garder de côté » 4 pt plus bas (± 0,5), dans les trois pages + ; l'inclinaison ne change pas.
+          ⚑ v151 (Tom) : « encore 1 mm (6 pt) plus bas » — 10 pt plus bas que v149 (± 0,5).
+  C-157 · ⚑ v151 (Tom) : « TRACE POUR PLANTER / TRACE POUR LANCER passe en orange #FB4C0D, comme la flèche, en clair et en sombre » — les trois pages +
+          (le Cercle porte le même texte) ; les fiches ne bougent pas (le contrôle au pixel ci-dessus). Original : sauvegardes/redteam_pages_plus-avant-v151.py.
   C-158 · « Page + du Chiche : seule la phrase remonte de 10 pt ; le choix du trait et « Garder de côté » ne bougent pas. Page + du Cercle : sa phrase prend
           EXACTEMENT la même hauteur et le même placement que celle du Chiche après ce déplacement. »
           → la phrase du Chiche : −10 pt (± 0,5) ; le rail du pinceau : inchangé (± 0,5) ; le trait (la base de l'onde) : inchangé ;
@@ -38,7 +41,7 @@ LIT = r"""()=>{ const D=document.getElementById('device').getBoundingClientRect(
   let l1=null; if(tx){ const rg=document.createRange(); rg.selectNodeContents(tx); const q=[...rg.getClientRects()].filter(r=>r.width>1).sort((a,b)=>a.top-b.top)[0]; if(q) l1=[(q.left-D.left)/k, (q.top-D.top)/k]; }
   const g=cs.querySelector('.pp-garder'), m=g?(getComputedStyle(g).transform.match(/matrix\(([^)]+)\)/)):null;
   return {texte:tx?tx.textContent:null, l1:l1, boite:bx(ph), trace:bx(cs.querySelector('.pp-trace')), rail:bx(document.getElementById('csPinceau')), garder:g?[g.offsetLeft, g.offsetTop]:null,
-    penche:m?+(-Math.atan(+m[1].split(',')[2])*180/Math.PI).toFixed(2):0, base:(window._ppEcran&&_ppEcran())?_ppEcran().base:null}; }"""
+    penche:m?+(-Math.atan(+m[1].split(',')[2])*180/Math.PI).toFixed(2):0, col:(cs.querySelector('.pp-trace')?getComputedStyle(cs.querySelector('.pp-trace')).webkitTextFillColor:null), base:(window._ppEcran&&_ppEcran())?_ppEcran().base:null}; }"""
 def page_plus(b, fichier, nat, sombre):
     ctx = B.contexte(b, sombre=sombre); ctx.add_init_script(SEME); pg = B.ouvre(ctx, fichier)
     B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=%s]' % nat); pg.wait_for_timeout(2800)
@@ -54,8 +57,13 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     for sombre in (False, True):
         T = 'sombre' if sombre else 'clair'
-        A = {n: page_plus(b, REF, n, sombre) for n in ('promi', 'chiche', 'nuee')}
-        N = {n: page_plus(b, F, n, sombre) for n in ('promi', 'chiche', 'nuee')}
+        A, N = {}, {}
+        for n_ in ('promi', 'chiche', 'nuee'):
+            # ⚑ v151 : la phrase est tirée au hasard, et le hasard semé ne suffit pas (le nombre de tirages avant l'ouverture dépend des images) — on
+            #   rouvre les deux pages (quatre fois au plus) jusqu'à deux compositions comparables (même base de l'onde = autant de lignes)
+            for _ in range(4):
+                A[n_], N[n_] = page_plus(b, REF, n_, sombre), page_plus(b, F, n_, sombre)
+                if A[n_]['base'] is not None and A[n_]['base'] == N[n_]['base']: break
         for n, nom in (('promi', 'Promi'), ('chiche', 'Chiche'), ('nuee', 'Cercle')):
             a, c = A[n], N[n]
             if not (a['trace'] and c['trace'] and a['l1'] and c['l1'] and a['rail'] and c['rail'] and a['garder'] and c['garder']):
@@ -66,7 +74,8 @@ with sync_playwright() as p:
             if n == 'nuee': juge('[%s] C-157 · page + Cercle : le mot du trait ne bouge pas' % T, abs(dy) <= 0.5 and abs(dx) <= 0.5, 'Δy %.1f · Δx %.1f' % (dy, dx))
             else: juge('[%s] C-157 · page + %s : « %s » descend de 6 à 9 pt et va 3 pt à droite' % (T, nom, (c.get('texte') and '') or 'le mot du trait'), 6 <= dy <= 9 and abs(dx - 3) <= 0.5, 'Δy %.1f · Δx %.1f' % (dy, dx))
             gy = c['garder'][1] - a['garder'][1]
-            juge('[%s] C-149 · page + %s : « garder de côté » 4 pt plus bas, même place à droite, même inclinaison' % (T, nom), abs(gy - 4) <= 0.5 and abs(c['garder'][0] - a['garder'][0]) <= 0.5 and abs(c['penche'] - a['penche']) < 0.05, 'Δy %.1f · penché %s°' % (gy, c['penche']))
+            juge('[%s] C-149 · page + %s : « garder de côté » 10 pt plus bas (4 + 6), même place à droite, même inclinaison' % (T, nom), abs(gy - 10) <= 0.5 and abs(c['garder'][0] - a['garder'][0]) <= 0.5 and abs(c['penche'] - a['penche']) < 0.05, 'Δy %.1f · penché %s°' % (gy, c['penche']))
+            juge('[%s] C-157 · page + %s : « %s » en orange #FB4C0D' % (T, nom, ((c.get('texte') or '') and '') or 'le mot du trait'), c.get('col') == 'rgb(251, 76, 13)', str(c.get('col')))
             ry = c['rail'][1] - a['rail'][1]
             juge('[%s] C-158 · page + %s : le choix du trait (le rail du pinceau) ne bouge pas' % (T, nom), abs(ry) <= 0.5, 'Δy %.1f' % ry)
             py = c['l1'][1] - a['l1'][1]

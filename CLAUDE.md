@@ -129,6 +129,72 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v151 (18 oct. 2026) — RETOURS iPHONE DE TOM SUR v150, PUIS CLÔTURE DE LA SÉRIE : LA VAGUE REVIENT AU VIOLET, L'ÉCHÉANCE EST UNE DATE, LE LIBELLÉ DU DÉPART EN ORANGE, « GARDER DE CÔTÉ » À 718, L'ONBOARDING EN SOMBRE, LE REJEU DE L'ONBOARDING. (Décisions Tom.) Ce bloc CORRIGE v150 (C-154 la couleur, C-149 la cote, §0 « le prototype ne recompte pas les jours ») et v146/v148 (la règle de l'orange).
+> **Validés par Tom : C-158 (les phrases des pages + du Chiche et du Cercle, les 17 pt du Cercle compris), C-126 (la flèche orange en sombre), la fin de
+> l'onboarding (deux lignes alignées à droite). Q545 : oui, « trace ta moitié » suit « trace pour planter ». Q546 : oui, deux lignes alignées à droite.**
+> **⚑ C-154 — LA VAGUE DE CRÉATION REVIENT AU VIOLET `#291547`** : une parole créée est « en cours » (l'orange de v150 reposait sur une prémisse fausse).
+> **⚑ C-160 (Q544) — L'ÉCHÉANCE EST UNE DATE, COMPARÉE À AUJOURD'HUI** (`lot-V151-ECHEANCE`, `window._echeance`) : `p.ech = {iso:'AAAA-MM-JJ', due}` ;
+> `p.due` (les jours qui restent, lu par tous les écrans) n'en est plus que la conséquence, recomptée au lancement et à chaque retour au premier plan
+> (`visibilitychange`, `pageshow`) ; une parole « en cours » dont l'échéance est passée passe « à tenir » (`echeancesDepassees`, qui recompte d'abord).
+> Les écrivains d'échéance (page +, Peaufiner, REPORTER) n'ont pas été réécrits : ils écrivent toujours `due` en jours depuis aujourd'hui, et la date se
+> pose à l'enregistrement (`saveState` enveloppé) dès que `due` diffère de `p.ech.due` ; une date choisie au calendrier (`dueISO`) EST l'échéance.
+> **REPORTER depuis une échéance passée compte depuis aujourd'hui** (« +3 j » = dans trois jours) **et la parole redevient « en cours »** (`_fpost`
+> enveloppé, la carte de la Toile `#ccPushOpts` aussi). **`?jour=+N`** avance aujourd'hui de N jours pour la page, jamais mémorisé. Une parole sans date
+> (« un jour », « en l'air ») ne passe jamais « à tenir ». Juge : **`redteam_echeance.py`** (11 ; 4/11 sur v150). Swift : une `Date` (portage/SPEC-DONNEES §1.12).
+> ⚠ La vérification de version (v145) recharge, au retour au premier plan, une page dont le commit diffère du serveur (arbre de travail modifié pendant
+> un lot) : sa requête annulée remonte comme une « erreur de page » en WebKit — ce n'est pas une faute de la page (les juges l'écartent nommément).
+> **⚑ C-157 — LE MOT DU TRAIT DES PAGES + EN ORANGE `#FB4C0D`** (« trace pour planter », « trace ta moitié », « trace pour lancer » ; le Cercle porte le
+> même texte : même traitement), clair et sombre, au repos comme pendant le geste (le terracotta du doigt posé est retiré : un seul orange). **Les fiches
+> ne bougent pas** (`#dptTrace`). ⚠ **Mesuré, par décision : 1,23:1 sur le corps du Promi `#0E78F2`, 2,27:1 sur ceux du Chiche et du Cercle** (Q547).
+> **⚑ LA RÈGLE DE L'ORANGE, ÉTENDUE (Tom, v151) : `#FB4C0D` (`--c-orange-depart`) marque LE DÉPART D'UNE ACTION ET SON LIBELLÉ, et rien d'autre** —
+> le signe + de l'accueil, le + qui valide un nom, le départ de la flèche du trait (fiches, pages +, onboarding), et le libellé « trace pour … » des
+> pages + ; la même valeur reste celle de « Ma Parole ! » dans les murs (deux jetons, deux rôles). Juges : `redteam_maparole` (le libellé admis),
+> `redteam_couleurs_ref` E20, `redteam_pages_plus`.
+> **⚑ C-149 — « GARDER DE CÔTÉ » À 718 pt** (712 + 6) dans les trois pages + ; l'inclinaison ne change pas ; son encre finit à 22,6 pt de la barre du bas et
+> 22,1 pt du bord droit ; **le rail du pinceau ne bouge toujours pas** (compensation −10).
+> **⚑ C-126 §5 — EN SOMBRE, « TRACE POUR PLANTER » (onboarding) EST CRÈME `#F7F0DE`** : mesuré 17,5:1 sur son fond réel `#0B0908` — **c'était déjà le cas
+> en v150, en WebKit comme en Chromium** (`--onb-ink`) : rien n'a été changé ; le clair garde `#00341A`. Si Tom le voit vert sur l'iPhone, une capture.
+> **⚑ C-124 §6 — EN SOMBRE, PRIMO, DEUXIO, TERTIO DANS LE BLEU DU CLAIR `#0E78F2`** (4,7:1 sur le fond réel : le bleu Promi n'était pas nécessaire) ;
+> « La suite t'appartient. », nommé à part, garde la crème (Q548). **§7 — « La suite t'appartient. » 9 pt plus bas** (18 pt au-dessus d'elle en tout,
+> `calc(9px*var(--onbe) + 9px)`), toujours centrée ; l'air jusqu'aux dalles reste large (123,5 pt mesuré).
+> **⚑ C-159 — REJOUER L'ONBOARDING : LE TEXTE S'ADAPTE.** Dès que la Toile compte au moins une dalle avant cette plantation (une parole non gardée de
+> côté, ou un Cercle nommé : `sync` plante une dalle par Cercle), « Ton premier Promi, ta première dalle sur ta Toile. Plus qu'à le tenir. » devient,
+> mot pour mot : **« Une nouvelle dalle sur ta Toile, félicitations. Plus qu'à le tenir. »** (le titre « PROMI planté ! » ne change pas, ni la chorégraphie).
+> Au premier lancement la Toile est vidée (`obResetData`) : le texte d'origine. Les autres mentions de « premier / première » de l'onboarding : aucune
+> (cette phrase porte les deux). **Exception NOMMÉE à R1 (ENGAGEMENT) : « félicitations », dans cette phrase de Tom et aucune autre** (`BLANCHE_R1`).
+> Juge : **`redteam_onb_rejeu.py`** (10 ; 8/10 sur v150 : B et C rouges).
+> **⚑ LES EXCEPTIONS NOMMÉES AU « ! » — LA LISTE COMPLÈTE, INCHANGÉE : « Ma Parole ! » (v106), « Promi planté ! » (v146), « Parole tenue ! » et « Défi
+> relevé ! » (v148, C-144).** Espace insécable avant « ! ». Partout ailleurs, pas de « ! » (la phrase du rejeu n'en porte pas).
+> **⚑ L'ÉCHELLE TYPOGRAPHIQUE DE L'ONBOARDING ET DU GUIDE — L'ÉTAT DE v151** (v148 + v149 + v150 + v151 ; `--ech-*`) — un RÔLE = une taille :
+> ```
+> titre         PromiLate 52 pt — « PROMI » de « Promi planté ! » (#82AEF8 en sombre) ; sa suite « planté ! » 42 pt
+> phrase        Gilbert 35 pt / 66 — la phrase de promesse (« Toi, c'est … ? », « Je me promets de … »)
+> texte         Atkinson 500, 25 pt / 30 — « [Prénom], donc. Enchanté. », « Quid… », « Petite ou grande promesse, elle compte. »
+> liste         Atkinson 500, 22,3 pt / 26 — « Ton premier Promi… » (au rejeu : « Une nouvelle dalle… »), Primo, Deuxio, Tertio,
+>               « Tout le monde promet. Toi, tu tiens parole. » (alignée à droite, deux lignes égales)
+> natures       Atkinson 700 — Promi, Chiche, Cercle : sombre #82AEF8 · #FFB8D2 · #C9A8F5 ; clair #4870B5 · #9D5E77 · #8262A9 (3:1 sur #DFCAA4)
+> mot-clé       PromiLate 25 pt — Primo, Deuxio (penché 3°), Tertio : #0E78F2 dans les deux thèmes (v151)
+> mot de fin    PromiLate 32 pt — « La suite t'appartient. », centrée, 18 pt au-dessus d'elle (9 v148 + 9 v151) ; cobalt en clair, crème en sombre
+> consigne      PromiLate 19 pt — « trace pour planter » : #00341A en clair, crème en sombre
+> guide         Atkinson 700, 29 pt / 42 — les deux phrases du guide ; leurs mots-clés (« monde », « commence ») en PromiLate 29 pt
+> guide-studio  PromiLate 32,2 pt — « Studio » (× 1,11, v149), lettre à lettre aux tons d'Ingénu
+> ```
+> Juge : `redteam_echelle_onboarding`. Couleurs et cotes de v151 : `redteam_onb_mots` (52 ; §6 et §7 rouges sur v150).
+> **⚑ LA SÉRIE COMPLÈTE DE CLÔTURE (18–19 oct., 20 h 31 → 3 h 11, 145 juges, un à la fois, `scratchpad/v151/serie.txt`)** : **115 verts, 30 rouges, tous
+> classés.** ① Rejoués seuls : verts sur v151 ou même rouge sur v150 — `ajout_personne` D, `clair_sombre` B (le témoin clair/clair diffère aussi),
+> `deplace` (Bobinette), `origine`, `part`, `partage_toile`, `ritournelle` F, `validation` C : la charge (5 à 184, la session ENTRE). ② Des durées sous une
+> charge ≥ 4, **NON JUGÉES** (C-137) : `aura_latence`, `evol`, `fluide` (C-102), `pelote_doigt`, `rythme`, `souffle`, `tenir` G ; `guide` : un tirage de
+> flaques trop rond (lobes 7,8 % pour 8 %), pris à ce passage. ③ Connus ou par décision, comme en v148 : `contraste_trait` (Q514, Q528 ; 98/248 verts,
+> 20 en v148), `dessin` I, `dessin_photo` 7, `kaki` (C-017), `nuit` (Zzz coupé), `photo`, `ramage_onde` (C-009), `vivant` (Tesselle), `releve-S1`/`S4`/`S5`/
+> `moodboard` (S4 : 39 écarts, 45 en v148). ④ **Non attribué : `redteam_peaufiner`, 3 rouges sur 8 en v151, 0 sur 6 en v150 (C-161, ouvert).**
+> **`redteam_air` : NON JUGÉ, PAS REFIGÉ** — il a tourné sous une charge de 10,8 → 6,3 ; 64 paires de la référence toujours non retrouvées (les mêmes qu'en
+> v149 : « garder de côté » à droite, C-151, les dates), aucune paire resserrée sur ses écrans. `banc_rendu` : au pixel.
+> **Archive avant Swift : `sauvegardes/app-cloture-v151.html`** (l'app à la clôture de la série ; son moteur est celui du commit).
+> **Contrats de test remis au niveau** (originaux : `sauvegardes/*-avant-v151.py`) : `redteam_ruban` (B : `#291547`), `redteam_garder` (J : 718),
+> `redteam_pages_plus` (C-149 : 10 pt sous v149 ; C-157 : l'orange ; il rouvre les deux pages jusqu'à deux compositions comparables — le hasard semé ne
+> suffisait pas), `redteam_onb_mots` (§5, §6, §7), `redteam_couleurs_ref` (E20), `redteam_maparole` (le libellé du départ), `redteam_engagement` (R1 : la
+> phrase de Tom).
+
 ### ⚑ v150 (18 oct. 2026) — PETIT LOT : LA VAGUE DE CRÉATION EN ORANGE, LE MOT DU TRAIT DES PAGES +, « GARDER DE CÔTÉ » 4 pt PLUS BAS, LA PHRASE DU CHICHE ET DU CERCLE, LA FIN DE L'ONBOARDING, LA FLÈCHE SOMBRE. (Décisions Tom.) Ce bloc CORRIGE v149 (C-154 la couleur, C-149 la cote, C-124 la phrase de fin) et v147 (C-126 en sombre).
 > **Validés par Tom : C-153, C-145, C-155, C-156 ; C-154 sauf la couleur ; le reste de l'onboarding. Q537, Q538, Q541, Q543 : appliquées telles quelles
 > (pas de mot-marque sur « Promi planté ! » ni au compte ; les trois couleurs du clair ; 520 + 320 ms ; rien de changé au contraste).**
@@ -3063,6 +3129,10 @@ python3 redteam_onb_mots.py    # 44 — v149 (C-153, C-124, C-145) : le I qui cl
 python3 redteam_titres_cartes.py # 10 — v149 (C-151) : un titre de deux lignes d'une carte d'Index n'est ni rogné ni collé à l'état, le plus petit pas qui tient. 6/10 sur v148.
 python3 redteam_pages_plus.py  # 35 — v150 (C-157, C-158, C-149) : les pages + contre v149 servie à côté (hasard semé) — le mot du trait, la phrase, le rail,
                                #   « garder de côté » ; les fiches identiques au pixel ; la bascule des lignes sur dix ouvertures. Rouge sur v149.
+python3 redteam_echeance.py    # 11 — v151 (C-160) : l'échéance est une date — planter « 5 j », ?jour=+30 → « à tenir » ; REPORTER au doigt depuis le Fil → « en cours » ;
+                               #   tracer → « tenue » ; le retour au premier plan recompte ; « un jour » jamais « à tenir » ; ?jour jamais mémorisé. WebKit. 4/11 sur v150.
+python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
+                               #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;

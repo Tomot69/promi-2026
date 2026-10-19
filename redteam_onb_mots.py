@@ -14,11 +14,16 @@ redteam_onb_mots.py — v149 (Tom, 18 oct. 2026) : LE I DE PROMI, LES MOTS DES N
           lettres, l'échelle de C-138. » La ligne, son texte EN DUR, juste avant « La suite t'appartient. », à la taille des autres lignes, tracée.
 ⚑ v150 (Tom, C-124) : la phrase devient « Tout le monde promet. Toi, tu tiens parole. », alignée à DROITE (son encre finit au bord droit du bloc
           de texte, ± 1,5 pt) ; « La suite t'appartient. » est CENTRÉE (le milieu de son encre au milieu du bloc, ± 1,5 pt). Original : *-avant-v150.py.
+  ⚑ v151 (Tom) : C-126 §5 — en sombre « trace pour planter » en crème #F7F0DE, ≥ 4,5:1 sur son fond réel (lu sur l'image) ; le clair garde #00341A.
+          C-124 §6 — en sombre Primo, Deuxio, Tertio dans le bleu du clair #0E78F2, ≥ 3:1 sur le fond réel. §7 — « La suite t'appartient. » 6 à 12 pt
+          plus bas qu'en v150 (l'écart des deux dernières lignes : 0,0 pt en v150, en dur), toujours centrée. `--page=zz-av150.html` rougit (§6, §7 ;
+          §5 était déjà vrai en v150). Original : *-avant-v151.py.
 Preuve : `--page=zz-av148.html` rougit (couleurs à 5:1, graisse 500 hors de la fin, l'ancienne phrase, le I fixe).
 """
 import io, os, re, sys
 sys.path.insert(0, '.')
 from playwright.sync_api import sync_playwright
+from PIL import Image
 exec(open('redteam_onb_sorties.py', encoding='utf-8').read().split('with sync_playwright() as p:')[0].replace("R6 = '--r6' in sys.argv", "R6 = True").replace("res = []; sorties = []", "sorties = []"))
 URL = 'http://127.0.0.1:8752/' + next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--page=')), 'app.html')
 CHARGE = float(os.popen('sysctl -n vm.loadavg').read().split()[1])
@@ -39,6 +44,16 @@ def oklch_h(c):
     L, M, S = L ** (1 / 3), M ** (1 / 3), S ** (1 / 3)
     a = 1.9779984951 * L - 2.4285922050 * M + 0.4505937099 * S; b = 0.0259040371 * L + 0.7827717662 * M - 0.8086757660 * S
     import math; return math.degrees(math.atan2(b, a)) % 360
+def fond(im, b, m=6):
+    from collections import Counter
+    s = im.width / 390.0 if im.width < 500 else im.width / 390.0
+    s = 1.0
+    x0, y0, x1, y1 = [int(v) for v in b]; C = Counter()
+    for y in range(max(0, y0 - m), min(im.height, y1 + m)):
+        for x in range(max(0, x0 - m), min(im.width, x1 + m)):
+            if x0 <= x < x1 and y0 <= y < y1: continue
+            C[im.getpixel((x, y))] += 1
+    return C.most_common(1)[0][0]
 LIT_I = """async ()=>{ const v=document.getElementById('onbV'); const mm=v&&v.querySelector('.onbv-mm'), i=mm&&mm.querySelector('i'); if(!i) return {absent:true};
   const hh=document.getElementById('onbHaut'); if(hh && getComputedStyle(hh).display==='none') return {sansMarque:true};
   const s=getComputedStyle(i), r=i.getBoundingClientRect(); let vu=true, e=i; while(e&&e!==document.body){ const c=getComputedStyle(e); if(c.display==='none'||c.visibility==='hidden'||+c.opacity<0.5){ vu=false; break; } e=e.parentElement; }
@@ -51,7 +66,11 @@ LIT_NAT = """()=>[...document.querySelectorAll('#onbV .onbv-nat')].filter(e=>{ l
 LIT_FIN = """()=>{ const f=document.getElementById('onbFin'); if(!f) return null; const L=[...f.querySelectorAll('.onbv-l')]; const fin=f.querySelector('.onbv-l-fin'), der=f.querySelector('.onbv-l-der');
   const fs=e=>parseFloat(getComputedStyle(e).fontSize);
   const A=e=>{ if(!e) return null; const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, rg=document.createRange(); rg.selectNodeContents(e); const q=rg.getBoundingClientRect(), b=e.getBoundingClientRect(); return {g:+((q.left-b.left)/k).toFixed(1), d:+((b.right-q.right)/k).toFixed(1), c:+((((q.left+q.right)/2)-((b.left+b.right)/2))/k).toFixed(1)}; };
-  return {texte:fin?fin.textContent:null, suivant:fin&&fin.nextElementSibling?fin.nextElementSibling.className:null, der:der?der.textContent:null,
+  const D2=document.getElementById('device').getBoundingClientRect(), k2=D2.width/390, rb=e=>{ const rg=document.createRange(); rg.selectNodeContents(e); return rg.getBoundingClientRect(); };
+  const ecart=(fin&&der)?+((rb(der).top-rb(fin).bottom)/k2).toFixed(1):null;
+  const kc=[...f.querySelectorAll('.onbv-l:not(.onbv-l-der) .onbv-k')].map(e=>[e.textContent.trim(), getComputedStyle(e).webkitTextFillColor]);
+  const kb=[...f.querySelectorAll('.onbv-l:not(.onbv-l-der) .onbv-k')].map(e=>{ const q=e.getBoundingClientRect(); return [q.left,q.top,q.right,q.bottom]; });
+  return {ecart:ecart, kc:kc, kb:kb, dercol:der?getComputedStyle(der.querySelector('.onbv-k')||der).webkitTextFillColor:null, texte:fin?fin.textContent:null, suivant:fin&&fin.nextElementSibling?fin.nextElementSibling.className:null, der:der?der.textContent:null,
     fs:fin?fs(fin):0, alFin:A(fin), alDer:A(der),  ff:fin?getComputedStyle(fin).fontFamily.split(',')[0].replace(/["']/g,'').trim():null, autres:L.filter(l=>l!==fin&&l!==der).map(fs), trace:!!(fin&&fin.__tl), vu:fin?getComputedStyle(fin).visibility:null}; }"""
 RECOUVRE = r"""()=>{ const p=document.getElementById('guidePhrase'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; if(!p) return null; const rg=document.createRange(); rg.selectNodeContents(p);
   const L=[...rg.getClientRects()].filter(q=>q.width>1).map(q=>[(q.left-D.left)/k,(q.top-D.top)/k,(q.right-D.left)/k,(q.bottom-D.top)/k]); const pb=p.getBoundingClientRect();
@@ -82,6 +101,8 @@ with sync_playwright() as p:
             attend_trace(); r = pg.evaluate(LIT_I); r['page'] = page; I.append(r)
             for n in pg.evaluate(LIT_NAT): n['page'] = page; NAT.append(n)
         releve('prénom'); prenom(pg, cdp); parole(pg); pg.wait_for_timeout(1500); releve('parole'); saisie(pg); pg.wait_for_timeout(600); releve('trait')
+        TRC = pg.evaluate("()=>{ const e=document.getElementById('onbTrace'); if(!e) return null; const q=e.getBoundingClientRect(); return {col:getComputedStyle(e).webkitTextFillColor, b:[q.left,q.top,q.right,q.bottom]}; }")
+        TRC_IM = Image.open(io.BytesIO(pg.screenshot())).convert('RGB')
         trace(pg, cdp); pg.wait_for_timeout(5200); releve('fin · titre')
         d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left,r.top,r.width/390];}")
         x, y = d[0] + 195 * d[2], d[1] + 260 * d[2]
@@ -91,7 +112,7 @@ with sync_playwright() as p:
                 if pg.evaluate("()=>{ const f=window._onbFinPas&&_onbFinPas(); return !f || (!f.enCours && f.pas>=%d); }" % pas): break
                 pg.wait_for_timeout(150)
             pg.wait_for_timeout(500); releve('fin · pas %d' % pas)
-        F = pg.evaluate(LIT_FIN)
+        F = pg.evaluate(LIT_FIN); FIN_IM = Image.open(io.BytesIO(pg.screenshot())).convert('RGB')
         toucher(cdp, pg, x, y); pg.wait_for_timeout(1800)
         if pg.evaluate("()=>!!document.querySelector('.onbv-compte')"): releve('compte')
         pg.evaluate("()=>{ const t=document.querySelector('.onbv-compte .tard'); if(t) t.click(); }"); pg.wait_for_timeout(3500)
@@ -131,6 +152,20 @@ with sync_playwright() as p:
         juge('[%s] la ligne est « %s », mot pour mot, juste avant « La suite t\'appartient. »' % (T, FIN_LIGNE), bool(F) and F['texte'] == FIN_LIGNE and 'onbv-l-der' in (F['suivant'] or '') and 'appartient' in (F['der'] or ''), F and (F['texte'], F['suivant']))
         juge('[%s] v150 · « … tu tiens parole. » alignée à DROITE (son encre finit au bord droit du bloc, ± 1,5 pt) ; « La suite t\'appartient. » CENTRÉE (± 1,5 pt)' % T,
              bool(F) and F['alFin'] and F['alDer'] and abs(F['alFin']['d']) <= 1.5 and F['alFin']['g'] > 5 and abs(F['alDer']['c']) <= 1.5, F and (F['alFin'], F['alDer']))
+        # ── v151 (Tom) : §5 « trace pour planter » en sombre, §6 Primo · Deuxio · Tertio en sombre, §7 « La suite t'appartient. » plus bas
+        print('[%s] v151 — C-126 §5, C-124 §6 §7' % T)
+        if TRC:
+            c = rgb(TRC['col']); fd = fond(TRC_IM, TRC['b'])
+            if th == 'dark': juge('[sombre] C-126 §5 · « trace pour planter » en crème #F7F0DE, ≥ 4,5:1 sur son fond réel (%s)' % (fd,), c == (247, 240, 222) and ratio(c, fd) >= 4.5, '%s · %.2f:1' % (TRC['col'], ratio(c, fd)))
+            else: juge('[clair] C-126 §5 · le clair ne change pas : « trace pour planter » en #00341A', c == (0, 52, 26), TRC['col'])
+        else: juge('[%s] C-126 §5 · « trace pour planter » se lit' % T, False)
+        if F and F['kc']:
+            cs_ = [rgb(x[1]) for x in F['kc']]; fd = fond(FIN_IM, F['kb'][0])
+            juge('[%s] C-124 §6 · Primo, Deuxio, Tertio dans le bleu du clair #0E78F2%s' % (T, ', ≥ 3:1 sur le fond réel (%s)' % (fd,) if th == 'dark' else ''),
+                 len(cs_) == 3 and all(x == (14, 120, 242) for x in cs_) and (th != 'dark' or ratio(cs_[0], fd) >= 3), '%s · %.2f:1' % ([x[1] for x in F['kc']], ratio(cs_[0], fd) if cs_ else 0))
+        else: juge('[%s] C-124 §6 · Primo, Deuxio, Tertio se lisent' % T, False)
+        juge('[%s] C-124 §7 · « La suite t\'appartient. » 6 à 12 pt plus bas qu\'en v150 (écart des lignes : 0,0 pt en v150, en dur), toujours centrée' % T,
+             bool(F) and F['ecart'] is not None and 6 <= F['ecart'] - 0.0 <= 12 and F['alDer'] and abs(F['alDer']['c']) <= 1.5, F and (F['ecart'], F['alDer']))
         juge('[%s] même rôle : Atkinson, à la taille des autres lignes (22,3 pt × l\'échelle), tracée' % T, bool(F) and F['ff'] == 'Atkinson' and F['autres'] and all(abs(F['fs'] - a) < 0.05 for a in F['autres']) and F['trace'] and F['vu'] == 'visible', F)
         # ── C-145 §4.3, sur le vrai premier lancement de CE thème (redteam_guide ne fait le premier lancement qu'en clair)
         juge('[%s] C-145 · le guide (étape du Studio) : sa phrase, centrée à 252 ± 4, ne recouvre aucune dalle colorée, aucune icône, ni la zone nette' % T, bool(GR) and abs(GR['centre'] - 252) <= 4 and GR['tot'] > 200 and GR['dalle'] == 0 and not GR['ico'] and not GR['trou'], GR)

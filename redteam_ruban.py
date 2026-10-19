@@ -18,7 +18,9 @@ Preuve : `--fichier=zz-av147.html` rougit (A, B).
 code). L'amande est réservée à la célébration. » B, sur la page + : le ruban est plein, à la couleur de l'état « en cours » #291547 (toute parole plantée
 entre « en cours ») ; sur la fiche, il reste amande. Original : sauvegardes/redteam_ruban-avant-v149.py. `--fichier=zz-av148.html` rougit (B, page +).
 ⚑ v150 (Tom, C-154) — « la vague de création passe en orange, la couleur de l'état « à tenir », #DD4D23 ; ce n'est pas l'orange d'action #FB4C0D ».
-B, sur la page + : #DD4D23. Original : sauvegardes/redteam_ruban-avant-v150.py. `--fichier=zz-av149.html` rougit (B, page +).
+B, sur la page + : #DD4D23. Original : sauvegardes/redteam_ruban-avant-v150.py.
+⚑ v151 (Tom, C-154) — « une parole créée est « en cours » : la vague prend la couleur de l'état réel, #291547 » (l'orange de v150 reposait sur une
+prémisse fausse). B, sur la page + : #291547. Original : sauvegardes/redteam_ruban-avant-v151.py. `--fichier=zz-av150.html` rougit (B, page +). `--fichier=zz-av149.html` rougit (B, page +).
 """
 import sys, math; sys.path.insert(0, '.')
 import banc_tom as B
@@ -72,13 +74,13 @@ def un(b, th, ecran, nature):
         pg.wait_for_timeout(80)
         if pg.evaluate("()=>!!(window._ruban && window._ruban.etat().actif) || !!document.querySelector('#tenirZone.atteint,#planterZone.atteint')"): break
     pg.wait_for_timeout(320)
-    att = (143, 224, 143) if zid == 'tenirZone' else (221, 77, 35)   # v150 (C-154) : la fiche, l'amande ; la page +, l'état « à tenir » (#DD4D23, jamais #FB4C0D)
+    att = (143, 224, 143) if zid == 'tenirZone' else (41, 21, 71)   # v151 (C-154) : la fiche, l'amande ; la page +, l'état « en cours » où entre la parole (#291547, jamais #FB4C0D)
     r = pg.evaluate(LIT, [zid, list(att)])
     juge('%s A · plus de rectangle : la zone du geste n\'a aucun fond, ni doigt posé ni seuil passé' % T, r['fond'] == 0 and fond0 == 0, 'alpha du fond %.2f (doigt posé : %.2f)' % (r['fond'], fond0))
     if not r['ruban']:
         juge('%s B · un ruban est peint' % T, False, 'aucun ruban'); ctx.close(); return
     pp = r['juste'] / max(1, r['n'])
-    juge('%s B · le ruban est un aplat plein, %s (≥ 97 %% des pixels)' % (T, 'amande #8FE08F (la célébration)' if zid == 'tenirZone' else '#DD4D23 (l\'état « à tenir », C-154 v150)'), pp >= 0.97, '%.1f %% justes, %.1f %% pleins' % (100 * pp, 100 * r['plein'] / max(1, r['n'])))
+    juge('%s B · le ruban est un aplat plein, %s (≥ 97 %% des pixels)' % (T, 'amande #8FE08F (la célébration)' if zid == 'tenirZone' else '#291547 (l\'état « en cours », C-154 v151)'), pp >= 0.97, '%.1f %% justes, %.1f %% pleins' % (100 * pp, 100 * r['plein'] / max(1, r['n'])))
     C = [(c, y) for c, y in zip(r['col'], r['Y']) if c]
     ep = sorted(c[1] - c[0] for c, y in C); epm = ep[len(ep) // 2] if ep else 0
     juge('%s C · plus fin : épaisseur médiane à 75–85 %% des 118 pt d\'avant' % T, 0.75 * 118 <= epm <= 0.85 * 118, '%.1f pt (%.0f %%)' % (epm, 100 * epm / 118))
