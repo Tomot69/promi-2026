@@ -1,0 +1,10 @@
+── avec un clavier simulé (visualViewport)
+  ✅ A · après Retour, le champ n'a plus le focus : le clavier se ferme                                       
+  ✅ B · le premier tracé de « Camille, donc. » commence APRÈS le clavier redescendu                          clavier redescendu à +326 ms ; premier tracé à +496 ms
+  ✅ C · pendant que le clavier redescend, aucun texte de la page suivante n'est visible                      19 images relevées pendant la descente, 0 avec du texte
+  ✅ E · la parole se saisit en touchant la phrase                                                            focus True · phrase « Je me promets de marcher une heure »
+  ✅ aucune erreur de page                                                                                    []
+── sans clavier (le banc nu)
+  ✅ D · sans clavier, le tracé part sans attendre (≤ 250 ms après Retour)                                    premier tracé à +10 ms
+
+  ✅  6 / 6

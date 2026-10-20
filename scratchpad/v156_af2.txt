@@ -1,0 +1,60 @@
+   glisse 0 None
+   glisse 1 None
+   glisse 2 None
+   glisse 3 None
+   glisse 4 None
+   glisse 5 None
+   glisse 6 None
+   glisse 7 None
+  ✅ [ramage] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 53.4 · monde ramage|signal / affiché ramage|signal
+  ✅ [ramage] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                        flaques 0 → 1 (106 images) · voile rgba(0, 0, 0, 0)
+  ✅ [ramage] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                     préparé 0 ms après le toucher (le doigt posé), 6 ms avant l'ouverture
+  ✅ [ramage] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant      écart au Studio 0 · à l'accueil 53.1
+   après le second : {'vu': '', 'panneaux': 0, 'studio': 'screen s-studio st-plat stp-clair show'}
+   après : {'vu': '', 'lock': False, 'compte': 'plus-tard', 'own': '{"ramage":true}'} [195, 720.0934753417969]
+   glisse 0 None
+  ✅ [guingois] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 41.9 · monde guingois|signal / affiché guingois|signal
+  ✅ [guingois] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                      flaques 0 → 1 (104 images) · voile rgba(0, 0, 0, 0)
+  ✅ [guingois] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                   préparé 0 ms après le toucher (le doigt posé), 5 ms avant l'ouverture
+  ✅ [guingois] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant    écart au Studio 0 · à l'accueil 33.6
+   après le second : {'vu': '', 'panneaux': 0, 'studio': 'screen s-studio st-plat stp-clair show'}
+   après : {'vu': '', 'lock': False, 'compte': 'plus-tard', 'own': '{"ramage":true,"guingois":true}'} [195, 720.0934753417969]
+   glisse 0 None
+  ✅ [chantourne] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 51.0 · monde chantourne|signal / affiché chantourne|signal
+  ✅ [chantourne] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                    flaques 0 → 1 (110 images) · voile rgba(0, 0, 0, 0)
+  ✅ [chantourne] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                 préparé -1 ms après le toucher (le doigt posé), 5 ms avant l'ouverture
+  ✅ [chantourne] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant  écart au Studio 0 · à l'accueil 54.6
+   après le second : {'vu': '', 'panneaux': 0, 'studio': 'screen s-studio st-plat stp-clair show'}
+   après : {'vu': '', 'lock': False, 'compte': 'plus-tard', 'own': '{"ramage":true,"guingois":true,"chantourne":true}'} [195, 720.0934753417969]
+   glisse 0 None
+  ✅ [volubilis] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 63.6 · monde volubilis|signal / affiché volubilis|signal
+  ✅ [volubilis] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                     flaques 0 → 1 (109 images) · voile rgba(0, 0, 0, 0)
+  ✅ [volubilis] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                  préparé -1 ms après le toucher (le doigt posé), 5 ms avant l'ouverture
+   après : {'vu': 'vu sur-studio', 'lock': False, 'compte': 'plus-tard', 'own': '{"ramage":true,"guingois":true,"chantourne":true,"volubilis":true}'} [195, 720.0934753417969]
+   glisse 0 None
+   glisse 1 None
+   glisse 2 None
+   glisse 3 None
+   glisse 4 None
+   glisse 5 None
+   glisse 6 None
+   glisse 7 None
+   glisse 8 None
+   glisse 9 None
+   glisse 10 None
+   glisse 11 None
+   glisse 12 None
+   glisse 13 None
+   glisse 14 None
+   glisse 15 None
+   glisse 16 None
+   glisse 17 None
+   glisse 18 None
+   glisse 19 None
+   glisse 20 None
+   glisse 21 None
+   glisse 22 None
+   glisse 23 None
+  ❌ aucune erreur de page (4 mondes : ramage, guingois, chantourne, volubilis)                               []
+
+  ❌  15 / 16

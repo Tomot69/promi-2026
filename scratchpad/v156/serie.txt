@@ -1,0 +1,28 @@
+redteam_achat_fond | charge 9.50 | 180 s | KO 0 |   ✅  49 / 49
+redteam_deverrouille | charge 16.11 | 159 s | KO 0 |   ✅  25 / 25
+redteam_depart_orange | charge 18.27 | 180 s | KO 0 |   ✅  34 / 34
+redteam_guide | charge 11.78 | 220 s | KO 0 |   ✅  88 / 88
+redteam_guide_fond | charge 8.94 | 93 s | KO 0 |   ✅  12 / 12
+redteam_ordre_guide | charge 15.07 | 142 s | KO 0 |   ✅  26 / 26
+redteam_transitions_onb | charge 13.11 | 92 s | KO 0 |   ✅  46 / 46
+redteam_onboarding_texte | charge 10.88 | 78 s | KO 0 |   ✅  47 / 47
+redteam_onboarding | charge 9.83 | 172 s | KO 0 |   ✅  46 / 46 contrats tenus
+redteam_onb_sorties | charge 15.26 | 36 s | KO 0 |   ✅  25 / 25
+redteam_onb_mots | charge 10.28 | 96 s | KO 0 |   ✅  52 / 52
+redteam_clavier_onb | charge 8.88 | 38 s | KO 0 |   ✅  6 / 6
+redteam_onb_rejeu | charge 9.73 | 137 s | KO 0 |   ✅  10 / 10
+redteam_mots_sombre | charge 14.10 | 185 s | KO 0 |   ✅  36 / 36
+redteam_tenir | charge 93.67 | 98 s | KO 4 |   ❌  29 / 32
+redteam_fluide | charge 26.78 | 290 s | KO 1 | 3 / 6
+redteam_studio_geste | charge 22.65 | 47 s | KO 0 | 22/22
+redteam_palettes | charge 23.53 | 182 s | KO 0 | 
+redteam_studio_tom | charge 14.39 | 307 s | KO 0 | 14 / 14
+redteam_murs_toucher | charge 313.19 | 438 s | KO 0 | 8 / 8
+redteam_engagement | charge 22.11 | 279 s | KO 0 | redteam_engagement : 12/12 au vert · 0 inactif(s) : 
+redteam_volume | charge 41.22 | 1 s | KO 0 | ✅ AUCUN VOLUME, NULLE PART — hors l’ombre de la Pelote
+redteam_registre | charge 41.22 | 1 s | KO 0 | 6 / 6
+redteam_decisions | charge 41.22 | 108 s | KO 0 | 102 / 102
+redteam_joignable | charge 106.60 | 190 s | KO 0 | 5 / 5
+redteam_ecrans | charge 74.19 | 111 s | KO 0 | 152/152
+redteam_couleurs_ref | charge 51.20 | 949 s | KO 0 | ✅ — 0 écart(s) de couleur avec la référence v118
+FIN

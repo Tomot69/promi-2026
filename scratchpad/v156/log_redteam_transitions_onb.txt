@@ -1,0 +1,56 @@
+
+── clair
+  ✅ [clair] T1 · à la première image le voile couvre la page (≥ 95 %), rien de la Toile ne paraît encore             plein 100 % · ouvert 0 %
+      (non jugé en direct : cadence, charge du Mac 13.1 ≥ 4 — C-137 ; relevé : 49 pas, plus grand 7 %, 1.00 s)
+  ✅ [clair] T1 · le voile ne se referme jamais                                                                       plus grand recul 0.0 %
+  ✅ [clair] T1 · ni fondu ni dégradé : aucun pixel à demi transparent dans le voile (≤ 3 %, le lissage du bord des flaques) 1.2 % au plus
+  ✅ [clair] T1 · le mot-marque et « Toi, c'est … ? » n'arrivent qu'APRÈS la Toile, par le tracé (une découpe), jamais d'un coup 0 image(s) avec du texte entier avant la fin du voile · tracé vu True
+  ✅ [clair] T1 · le voile joué image par image (20 ms) s'ouvre progressivement : ≥ 12 pas, jamais plus de 20 % d'un coup, jamais en arrière, de 0 à 100 %, sans demi-teinte 53 pas · plus grand 3 % · de 0 à 100 % · demi-teintes 0.9 %
+  ✅ [clair] T1 · EN FLAQUES : quand 8 à 45 % sont ouverts, plusieurs trous séparés (≥ 3) — des flaques nées à divers endroits, pas un front qui s'ouvre trous séparés au plus : 10 ([(8, 5), (10, 6), (12, 7), (14, 7), (16, 7), (18, 7), (20, 7), (22, 7)])
+  ✅ [clair] T2 · à l'image où le trait paraît, il est COUVERT (l'image de la Toile, ≥ 85 %) — rien n'arrive d'un coup [{'m': 'ouvre', 'u': 0, 'cl': 'passage-flaques', 'r': [0, 642, 390, 166], 'c': 1}]
+  ✅ [clair] T2 · puis la couverture s'ouvre en flaques jusqu'au bout, sans jamais se refermer                        43 images · de 100 à 0 % · u final 0.99
+  ✅ [clair] T3 · la page du trait est recouverte EN FLAQUES (un passage qui naît de presque rien et couvre tout, sans reculer) 75 images · de 0 à 100 %
+  ✅ [clair] T3 · la page n'est retirée que sous la couverture (≥ 85 % couvert à cet instant)                         retirée à l'image 138
+  ✅ [clair] T3 · pas de fondu : la page reste opaque jusqu'à ce qu'elle soit couverte                                []
+  ✅ [clair] T4 · PLUS DE BALAYAGE : « Promi planté ! » n'est jamais découpé d'un bord                                []
+  ✅ [clair] T4 · « Promi planté ! » est recouvert EN FLAQUES avant de partir (≥ 85 % couvert, sans reculer)          40 images · au plus 100 %
+  ✅ [clair] T4 · le panneau du compte naît EN FLAQUES à sa place : couvert à sa première image (≥ 85 %)              [{'m': 'ouvre', 'u': 0, 'cl': 'passage-flaques', 'r': [20, 464, 350, 361], 'c': 1}]
+  ✅ [clair] T4 · puis la couverture s'ouvre en flaques jusqu'au bout, sans jamais se refermer                        50 images · u final 0.99
+  ✅ [clair] T4 · le panneau ne glisse pas : il est à sa place dès sa première image (± 1 pt)                         468 → 468
+  ✅ [clair] T5 · le panneau du compte est recouvert EN FLAQUES avant de partir (≥ 85 %, sans reculer)                32 images · au plus 100 %
+  ✅ [clair] T5 · puis l'écran entier s'ouvre EN FLAQUES sur l'accueil (couvert à sa première image, ouvert jusqu'au bout, sans reculer) 42 images · de 100 à 0 % · u final 0.98
+  ✅ [clair] T5 · les voisines sont parties SOUS la couverture : dès que l'accueil paraît, il n'en reste aucune       28 image(s) · voisines [0, 0, 0, 0]
+  ✅ [clair] T5 · rien ne disparaît d'un coup : ce qui reste de la page passe derrière la barre (≤ 35 % de sa surface par image, ≤ 5 % avant d'être masqué) aucun bloc à l'écran
+  ✅ [clair] T5 · ni fondu ni dégradé : aucun nœud de l'onboarding à demi transparent pendant la sortie               0 nœud(s) au pire
+  ✅ [clair] T6 · (validé, inchangé) le plateau descend et la barre monte par aplats : ≥ 15 images, sans revenir en arrière, jusqu'à leur place 49 / 49 images · plateau -150 → -0 · barre 150 → 0
+      (non jugé : durées, charge du Mac 13.1 ≥ 4 — C-137 ; relevé : arrivée des encarts à 1537 ms du toucher, dernier mouvement à 2587 ms, guide à 3086 ms)
+  ✅ [clair] aucune erreur de page (ni de la sonde)                                                                   ([], None)
+
+── sombre
+  ✅ [sombre] T1 · à la première image le voile couvre la page (≥ 95 %), rien de la Toile ne paraît encore            plein 100 % · ouvert 0 %
+      (non jugé en direct : cadence, charge du Mac 13.1 ≥ 4 — C-137 ; relevé : 59 pas, plus grand 4 %, 1.03 s)
+  ✅ [sombre] T1 · le voile ne se referme jamais                                                                      plus grand recul 0.0 %
+  ✅ [sombre] T1 · ni fondu ni dégradé : aucun pixel à demi transparent dans le voile (≤ 3 %, le lissage du bord des flaques) 1.4 % au plus
+  ✅ [sombre] T1 · le mot-marque et « Toi, c'est … ? » n'arrivent qu'APRÈS la Toile, par le tracé (une découpe), jamais d'un coup 0 image(s) avec du texte entier avant la fin du voile · tracé vu True
+  ✅ [sombre] T1 · le voile joué image par image (20 ms) s'ouvre progressivement : ≥ 12 pas, jamais plus de 20 % d'un coup, jamais en arrière, de 0 à 100 %, sans demi-teinte 53 pas · plus grand 3 % · de 0 à 100 % · demi-teintes 0.9 %
+  ✅ [sombre] T1 · EN FLAQUES : quand 8 à 45 % sont ouverts, plusieurs trous séparés (≥ 3) — des flaques nées à divers endroits, pas un front qui s'ouvre trous séparés au plus : 10 ([(8, 5), (10, 6), (12, 7), (14, 7), (16, 7), (18, 7), (20, 7), (22, 7)])
+  ✅ [sombre] T2 · à l'image où le trait paraît, il est COUVERT (l'image de la Toile, ≥ 85 %) — rien n'arrive d'un coup [{'m': 'ouvre', 'u': 0, 'cl': 'passage-flaques', 'r': [0, 642, 390, 166], 'c': 1}]
+  ✅ [sombre] T2 · puis la couverture s'ouvre en flaques jusqu'au bout, sans jamais se refermer                       43 images · de 100 à 0 % · u final 1.00
+  ✅ [sombre] T3 · la page du trait est recouverte EN FLAQUES (un passage qui naît de presque rien et couvre tout, sans reculer) 75 images · de 0 à 100 %
+  ✅ [sombre] T3 · la page n'est retirée que sous la couverture (≥ 85 % couvert à cet instant)                        retirée à l'image 134
+  ✅ [sombre] T3 · pas de fondu : la page reste opaque jusqu'à ce qu'elle soit couverte                               []
+  ✅ [sombre] T4 · PLUS DE BALAYAGE : « Promi planté ! » n'est jamais découpé d'un bord                               []
+  ✅ [sombre] T4 · « Promi planté ! » est recouvert EN FLAQUES avant de partir (≥ 85 % couvert, sans reculer)         41 images · au plus 100 %
+  ✅ [sombre] T4 · le panneau du compte naît EN FLAQUES à sa place : couvert à sa première image (≥ 85 %)             [{'m': 'ouvre', 'u': 0, 'cl': 'passage-flaques', 'r': [20, 464, 350, 361], 'c': 1}]
+  ✅ [sombre] T4 · puis la couverture s'ouvre en flaques jusqu'au bout, sans jamais se refermer                       50 images · u final 0.99
+  ✅ [sombre] T4 · le panneau ne glisse pas : il est à sa place dès sa première image (± 1 pt)                        468 → 468
+  ✅ [sombre] T5 · le panneau du compte est recouvert EN FLAQUES avant de partir (≥ 85 %, sans reculer)               32 images · au plus 100 %
+  ✅ [sombre] T5 · puis l'écran entier s'ouvre EN FLAQUES sur l'accueil (couvert à sa première image, ouvert jusqu'au bout, sans reculer) 39 images · de 100 à 1 % · u final 0.98
+  ✅ [sombre] T5 · les voisines sont parties SOUS la couverture : dès que l'accueil paraît, il n'en reste aucune      27 image(s) · voisines [0, 0, 0, 0]
+  ✅ [sombre] T5 · rien ne disparaît d'un coup : ce qui reste de la page passe derrière la barre (≤ 35 % de sa surface par image, ≤ 5 % avant d'être masqué) aucun bloc à l'écran
+  ✅ [sombre] T5 · ni fondu ni dégradé : aucun nœud de l'onboarding à demi transparent pendant la sortie              0 nœud(s) au pire
+  ✅ [sombre] T6 · (validé, inchangé) le plateau descend et la barre monte par aplats : ≥ 15 images, sans revenir en arrière, jusqu'à leur place 50 / 50 images · plateau -150 → -0 · barre 150 → 0
+      (non jugé : durées, charge du Mac 13.1 ≥ 4 — C-137 ; relevé : arrivée des encarts à 1544 ms du toucher, dernier mouvement à 2726 ms, guide à 3098 ms)
+  ✅ [sombre] aucune erreur de page (ni de la sonde)                                                                  ([], None)
+
+  ✅  46 / 46

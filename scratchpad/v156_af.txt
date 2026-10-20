@@ -1,0 +1,51 @@
+  ✅ [ramage] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 53.4 · monde ramage|signal / affiché ramage|signal
+  ✅ [ramage] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                        flaques 0 → 1 (62 images) · voile rgba(0, 0, 0, 0)
+  ✅ [ramage] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                     préparé 0 ms après le toucher (le doigt posé), 176 ms avant l'ouverture
+  ✅ [ramage] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant      écart au Studio 0 · à l'accueil 53.1
+  ✅ [guingois] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 43.8 · monde guingois|signal / affiché guingois|signal
+  ✅ [guingois] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                      flaques 0 → 1 (42 images) · voile rgba(0, 0, 0, 0)
+  ✅ [guingois] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                   préparé 0 ms après le toucher (le doigt posé), 13 ms avant l'ouverture
+  ✅ [guingois] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant    écart au Studio 0 · à l'accueil 33.5
+  ✅ [chantourne] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 50.5 · monde chantourne|signal / affiché chantourne|signal
+  ✅ [chantourne] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                    flaques 0 → 1 (46 images) · voile rgba(0, 0, 0, 0)
+  ✅ [chantourne] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                 préparé 0 ms après le toucher (le doigt posé), 6 ms avant l'ouverture
+  ✅ [chantourne] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant  écart au Studio 0 · à l'accueil 57.2
+  ✅ [volubilis] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 63.1 · monde volubilis|signal / affiché volubilis|signal
+  ✅ [volubilis] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                     flaques 0 → 1 (55 images) · voile rgba(0, 0, 0, 0)
+  ✅ [volubilis] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                  préparé 0 ms après le toucher (le doigt posé), 4 ms avant l'ouverture
+  ✅ [volubilis] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant   écart au Studio 0 · à l'accueil 65.1
+  ✅ [madrure] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 57.0 · monde madrure|signal / affiché madrure|signal
+  ✅ [madrure] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                       flaques 0 → 1 (65 images) · voile rgba(0, 0, 0, 0)
+  ✅ [madrure] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                    préparé -1 ms après le toucher (le doigt posé), 6 ms avant l'ouverture
+  ✅ [madrure] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant     écart au Studio 0 · à l'accueil 22.1
+  ✅ [chamade] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 69.7 · monde chamade|signal / affiché chamade|signal
+  ✅ [chamade] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                       flaques 0 → 1 (63 images) · voile rgba(0, 0, 0, 0)
+  ✅ [chamade] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                    préparé 0 ms après le toucher (le doigt posé), 5 ms avant l'ouverture
+  ✅ [chamade] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant     écart au Studio 0 · à l'accueil 69.7
+  ✅ [ritournelle] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 29.5 · monde ritournelle|signal / affiché ritournelle|signal
+  ✅ [ritournelle] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                   flaques 0 → 1 (61 images) · voile rgba(0, 0, 0, 0)
+  ✅ [ritournelle] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                préparé 0 ms après le toucher (le doigt posé), 9 ms avant l'ouverture
+  ✅ [ritournelle] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant écart au Studio 0 · à l'accueil 35.3
+  ✅ [bobinette] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 35.7 · monde bobinette|signal / affiché bobinette|signal
+  ✅ [bobinette] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                     flaques 0 → 1 (55 images) · voile rgba(0, 0, 0, 0)
+  ✅ [bobinette] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                  préparé 0 ms après le toucher (le doigt posé), 6 ms avant l'ouverture
+  ✅ [bobinette] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant   écart au Studio 0 · à l'accueil 24.9
+  ✅ [mascaret] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 40.3 · monde mascaret|signal / affiché mascaret|signal
+  ✅ [mascaret] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                      flaques 0 → 1 (41 images) · voile rgba(0, 0, 0, 0)
+  ✅ [mascaret] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                   préparé -1 ms après le toucher (le doigt posé), 12 ms avant l'ouverture
+  ✅ [mascaret] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant    écart au Studio 0 · à l'accueil 58.1
+  ✅ [terrazzo] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 75.0 · monde terrazzo|signal / affiché terrazzo|signal
+  ✅ [terrazzo] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                      flaques 0 → 1 (64 images) · voile rgba(0, 0, 0, 0)
+  ✅ [terrazzo] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                   préparé 0 ms après le toucher (le doigt posé), 8 ms avant l'ouverture
+  ✅ [terrazzo] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant    écart au Studio 0 · à l'accueil 32.5
+  ✅ [gravure] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 30.0 · monde gravure|signal / affiché gravure|signal
+  ✅ [gravure] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                       flaques 0 → 1 (65 images) · voile rgba(0, 0, 0, 0)
+  ✅ [gravure] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                    préparé 0 ms après le toucher (le doigt posé), 6 ms avant l'ouverture
+  ✅ [gravure] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant     écart au Studio 0 · à l'accueil 31.3
+  ✅ [sillons] A · le fond de l'encart est la Toile du Studio floutée (monde et couleur affichés), loin de la Toile de l'accueil écart au Studio 0 · à l'accueil 31.1 · monde sillons|signal / affiché sillons|signal
+  ✅ [sillons] B · ce flou paraît en flaques (0 → 1, gardé sous le panneau), sans voile                       flaques 0 → 1 (63 images) · voile rgba(0, 0, 0, 0)
+  ✅ [sillons] C · préparé AVANT l'ouverture, au toucher (sa durée non jugée : charge ≥ 4)                    préparé 0 ms après le toucher (le doigt posé), 4 ms avant l'ouverture
+  ✅ [sillons] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant     écart au Studio 0 · à l'accueil 30.7
+  ✅ aucune erreur de page (12 mondes : ramage, guingois, chantourne, volubilis, madrure, chamade, ritournelle, bobinette, mascaret, terrazzo, gravure, sillons) []
+
+  ✅  49 / 49

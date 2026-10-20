@@ -1,0 +1,36 @@
+  ✅ [clair] F · fiche Promi à soi : la pointe ET le trait de départ (au milieu) sont orange                      pointe 223 px · trait 248 px · départ à 195, 302 pt
+  ✅ [clair] F · fiche Promi à Rachel : la pointe ET le trait de départ (au milieu) sont orange                   pointe 223 px · trait 248 px · départ à 195, 302 pt
+  ✅ [clair] F · fiche Promi à tenir : la pointe ET le trait de départ (au milieu) sont orange                    pointe 228 px · trait 258 px · départ à 195, 302 pt
+  ✅ [clair] F · fiche Chiche lancé : la pointe ET le trait de départ (au milieu) sont orange                     pointe 228 px · trait 258 px · départ à 195, 302 pt
+  ✅ [clair] N · sur une fiche, rien ne clignote hors du I                                                        []
+  ✅ [clair] P · page + Promi au repos : la pointe ET le trait de départ sont orange                              pointe 150 px · trait 195 px
+  ✅ [clair] P · page + Promi : « trace pour planter » en #FB4C0D                                                 ['trace pour planter', 'rgb(251, 76, 13)', 'rgb(251, 76, 13)']
+  ✅ [clair] P · page + Chiche au repos : la pointe ET le trait de départ sont orange                             pointe 157 px · trait 199 px
+  ✅ [clair] P · page + Chiche : « trace pour lancer » en #FB4C0D                                                 ['trace pour lancer', 'rgb(251, 76, 13)', 'rgb(251, 76, 13)']
+  ✅ [clair] P · page + Cercle au repos : la pointe ET le trait de départ sont orange                             pointe 154 px · trait 197 px
+  ✅ [clair] P · page + Cercle : « trace pour lancer » en #FB4C0D                                                 ['trace pour lancer', 'rgb(251, 76, 13)', 'rgb(251, 76, 13)']
+  ✅ [clair] N · sur une page +, rien ne clignote hors du I                                                       []
+  ✅ [sombre] F · fiche Promi à soi : la pointe ET le trait de départ (au milieu) sont orange                     pointe 223 px · trait 248 px · départ à 195, 302 pt
+  ✅ [sombre] F · fiche Promi à Rachel : la pointe ET le trait de départ (au milieu) sont orange                  pointe 223 px · trait 248 px · départ à 195, 302 pt
+  ✅ [sombre] F · fiche Promi à tenir : la pointe ET le trait de départ (au milieu) sont orange                   pointe 228 px · trait 258 px · départ à 195, 302 pt
+  ✅ [sombre] F · fiche Chiche lancé : la pointe ET le trait de départ (au milieu) sont orange                    pointe 228 px · trait 258 px · départ à 195, 302 pt
+  ✅ [sombre] N · sur une fiche, rien ne clignote hors du I                                                       []
+  ✅ [sombre] P · page + Promi au repos : la pointe ET le trait de départ sont orange                             pointe 150 px · trait 195 px
+  ✅ [sombre] P · page + Promi : « trace pour planter » en #FB4C0D                                                ['trace pour planter', 'rgb(251, 76, 13)', 'rgb(251, 76, 13)']
+  ✅ [sombre] P · page + Chiche au repos : la pointe ET le trait de départ sont orange                            pointe 156 px · trait 197 px
+  ✅ [sombre] P · page + Chiche : « trace pour lancer » en #FB4C0D                                                ['trace pour lancer', 'rgb(251, 76, 13)', 'rgb(251, 76, 13)']
+  ✅ [sombre] P · page + Cercle au repos : la pointe ET le trait de départ sont orange                            pointe 154 px · trait 197 px
+  ✅ [sombre] P · page + Cercle : « trace pour lancer » en #FB4C0D                                                ['trace pour lancer', 'rgb(251, 76, 13)', 'rgb(251, 76, 13)']
+  ✅ [sombre] N · sur une page +, rien ne clignote hors du I                                                      []
+  ✅ [clair] O · « trace pour planter » et la flèche paraissent 1 500 ± 50 ms après la validation du prénom (v156) [1530] ms
+  ✅ [clair] O · le départ clignote avec l'animation du I (promiBlink, 1,15 s), en phase avec lui                 {'vis': 'block', 'anim': True, 'dur': 1150, 'iAnim': True, 'phase': 1150}
+  ✅ [clair] O · à la phase pleine, la pointe ET le trait de départ sont orange                                   pointe 152 px · trait 193 px
+  ✅ [clair] O · touché une fois, le départ ne clignote plus : orange fixe                                        {'anim': False, 'op': '1', 'cls': 'onbv-a onbv-trait onbv-dep'} · pointe 152 px · trait 193 px
+  ✅ [sombre] O · « trace pour planter » et la flèche paraissent 1 500 ± 50 ms après la validation du prénom (v156) [1519] ms
+  ✅ [sombre] O · le départ clignote avec l'animation du I (promiBlink, 1,15 s), en phase avec lui                {'vis': 'block', 'anim': True, 'dur': 1150, 'iAnim': True, 'phase': 0}
+  ✅ [sombre] O · à la phase pleine, la pointe ET le trait de départ sont orange                                  pointe 150 px · trait 192 px
+  ✅ [sombre] O · touché une fois, le départ ne clignote plus : orange fixe                                       {'anim': False, 'op': '1', 'cls': 'onbv-a onbv-trait onbv-dep'} · pointe 150 px · trait 192 px
+  ✅ [clair, réduire les animations] O · rien ne clignote : ni le départ, ni le I de PROMI                        {'vis': 'block', 'anim': False, 'dur': None, 'iAnim': False, 'phase': None}
+  ✅ [clair, réduire les animations] O · à la phase pleine, la pointe ET le trait de départ sont orange           pointe 152 px · trait 192 px
+
+  ✅  34 / 34

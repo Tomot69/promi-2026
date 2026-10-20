@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v155', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v156', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -37315,6 +37315,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    l'Index (196 → 232) et 47 dans le Fil (168 → 215). Le Fil prend l'air de l'Index : 168 + 36 = 204. */
 #device#device#device #feedView.s4 > #feedList,#device#device#device #feedView #feedList{top:204px!important}
 </style>
+<style id="lot-V156-TOAST-css">
+/* ⚑ v156 (C-171, trouvé en jugeant C-170) — le toast « Design débloqué ✓ » (bas 98 pt) se posait EXACTEMENT sur « Plus tard » de l'encart « Garder ton
+   achat », qui paraît juste après l'achat : pendant 3,2 s le toucher tombait sur le texte du toast, et le bouton ne répondait pas. Le texte d'un toast ne
+   prend plus le doigt ; ses boutons d'action, s'il en a, le prennent toujours. */
+#_toast{pointer-events:none!important}
+#_toast button{pointer-events:auto!important}
+</style>
 <style id="lot-V155-CURSEUR-css">
 /* ⚑ v155 (Tom, C-168) — « la dalle qu'on fait glisser sur la jauge des couleurs est difficile à attraper » : sa ZONE TACTILE fait 56 × 56 pt, centrée sur
    la dalle (30 × 30), sans rien changer à son dessin ; un pseudo-élément transparent, qui appartient à la dalle (le toucher remonte à la jauge). Mesuré :
@@ -37454,6 +37461,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #accRappelCompte{position:absolute;inset:0;z-index:320;display:none;background:rgba(var(--c-noir01-2-rgb),.5);--onb-ink:var(--c-creme95);--onb-inv:var(--c-brun09);--onb-fond:var(--c-brun03)}
 #device.light #accRappelCompte:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){--onb-ink:var(--c-brun09);--onb-inv:var(--c-creme95);--onb-fond:var(--c-creme95)}
 #accRappelCompte.vu{display:block}
+#accRappelCompte.sur-studio{background:transparent}   /* v156 (C-170) : devant le Studio, le fond est la Toile du Studio floutée, en flaques — plus de voile */
 </style>
 <style id="lot-V146-ONB-css">
 /* ⚑ v146 (Tom, 14 oct. 2026, C-124) — LES TEXTES DE L'ONBOARDING. Les TAILLES et la mise en page valent dans les deux modes ; les COULEURS en clair seulement
@@ -37823,7 +37831,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var tr=document.getElementById('onbTrait'), tt=document.getElementById('onbTrace');
     /* ⚑ v155 (Tom, C-169 §4.4) — « trace pour planter » et la flèche paraissent 1 s APRÈS la validation du prénom (le temps que le clavier disparaisse et
        que l'animation d'arrivée attire l'œil), qu'une parole soit écrite ou non ; avant v155 ils attendaient la première lettre de la parole. */
-    var voir = etape!=='prenom' && !fini && (!!parole.trim() || (tParole>0 && performance.now()-tParole>=990)), avant = !!(tr && tr.style.display==='block');
+    var voir = etape!=='prenom' && !fini && (!!parole.trim() || (tParole>0 && performance.now()-tParole>=1490)), avant = !!(tr && tr.style.display==='block');
     if(tr) tr.style.display = voir ? 'block' : 'none';
     var _dp=document.getElementById('onbDepart'); if(_dp){ _dp.style.display = voir ? 'block' : 'none'; if(voir && !avant) departBlink(_dp); }
     if(voir && !avant){ try{ (window._onbApparition=window._onbApparition||[]).push(Math.round(performance.now()-tParole)); }catch(_){ } }
@@ -37867,7 +37875,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   }
   function allerParole(garderClavier, attendreClavier){
     etape='parole'; concept(false);
-    tParole=performance.now(); departTouche=false; minuteurs.push(setTimeout(function(){ if(etape!=='prenom' && !fini) placer(); }, 1000));   /* v155 (C-169 §4.4) */
+    tParole=performance.now(); departTouche=false; minuteurs.push(setTimeout(function(){ if(etape!=='prenom' && !fini) placer(); }, 1500));   /* v155 (C-169 §4.4) ; ⚑ v156 (Tom) : 1,5 s */
     /* ⚑ v147 (Tom, 15 oct. 2026, C-124 §4) — « Tom, donc. » RESTE À SA HAUTEUR (184 pt, celle de v146 sur une ligne) ; Tom enrichit la page, mot pour
        mot : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » · « Petite ou grande promesse, elle compte. ». Tout ce qui suit descend
        pour respirer (`placer` : 16 pt sous « Enchanté. », la phrase 32 pt sous la question — 12 avant —, « Petite ou grande promesse » 40 pt sous la
@@ -38097,6 +38105,19 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function reduitOnb(){ try{ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
   function LENT_ONB(){ return Math.max(1, parseFloat((/[?&]onbLent=([\d.]+)/.exec(location.search)||[])[1])||1); }   /* `?onbLent=4` : tout l'onboarding au quart */
   /* v148 (C-141) : l'image de la Toile telle qu'elle est (le canevas du moteur, aux cotes de l'appareil) — la couverture d'un passage en flaques */
+  /* ⚑ v156 (Tom, C-170 rouvert, Q564) — « Dans l'encart qui paraît avant l'achat, il y a un flou abstrait, et SOUS ce flou on voit l'ANCIENNE Toile. »
+     LA CAUSE : l'encart naissait en flaques à partir de `imageToile()`, la copie de la Toile de l'ACCUEIL (`#toileCv`) — sous le Studio elle n'est pas
+     repeinte (`frame()` saute tant que le Studio porte `.show`, la cause de C-170) : c'était l'image du monde d'avant. Et le flou n'était qu'un voile.
+     Ouvert devant le Studio, l'encart floute LA TOILE QU'ON REGARDE (`#stBg` : le monde et la couleur affichés), préparée dès que le doigt se pose sur
+     « Adopte ce design » (`touchstart`, `pointerdown`), et ce flou paraît EN FLAQUES (le langage du guide, C-094) ; il s'en va de même. */
+  function studioDevant(){ var st=document.getElementById('studioScreen'); if(!st || !st.classList.contains('show')) return false; var D=dev.getBoundingClientRect(), L=document.elementsFromPoint(D.left+D.width/2, D.top+D.height*0.4);
+    for(var i=0;i<L.length;i++){ var e=L[i]; if(e.closest && e.closest('#accRappelCompte')) continue; return st.contains(e); } return false; }
+  function prepareFondStudio(){ try{ var bg=document.getElementById('stBg'); if(!bg || !bg.width || !window.Flaques || !Flaques.floute || !studioDevant()) return null;
+      var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg, 0, 0, 390, 844);
+      var m=(window.Toile&&Toile.mondeCourant)?Toile.mondeCourant():{}; var f={net:c, flou:Flaques.floute(c, 4.8), t:performance.now(), monde:(document.getElementById('studioScreen').getAttribute('data-stp-monde')||m.m||'')+'|'+(m.p||'')};
+      window._fondAchat=f; return f; }catch(_){ return null; } }
+  ['touchstart','pointerdown'].forEach(function(n){ document.addEventListener(n, function(e){ var b=e.target && e.target.closest && e.target.closest('#stLockBuy'); if(b) prepareFondStudio(); }, {capture:true, passive:true}); });
+  function fondStudio(){ var f=window._fondAchat; if(f && performance.now()-f.t<800) return f; if(!studioDevant()) return null; return prepareFondStudio(); }
   function imageToile(){ try{ var tc=document.getElementById('toileCv'); if(!tc||!tc.width) return null; var c=document.createElement('canvas'); c.width=tc.width; c.height=tc.height; c.getContext('2d').drawImage(tc,0,0); return c; }catch(_){ return null; } }
   function rectDe(e, marge){ var D=dev.getBoundingClientRect(), s=k(), q=e.getBoundingClientRect(), m=marge||0; return [Math.max(0,(q.left-D.left)/s-m), Math.max(0,(q.top-D.top)/s-m), Math.min(390,(q.width/s)+2*m), Math.min(844,(q.height/s)+2*m)]; }
   /* les textes d'une page s'écrivent l'un après l'autre ; un texte déjà écrit ne se réécrit pas ; sans le module : posés tels quels */
@@ -38134,7 +38155,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        celles du flou, remplacent l'écran : la page suivante naît en flaques et recouvre l'ancienne. » Le message de fin ne se découpe plus de droite à
        gauche (le balayage) : la Toile qui est derrière lui le RECOUVRE EN FLAQUES (650 ms) ; dans le même temps le panneau du compte NAÎT en flaques à sa
        place (il ne glisse plus du bas). */
-    var fin=document.getElementById('onbFin'), imF=imageToile(), vF=document.getElementById('onbV');
+    var FS=fondStudio(), fin=document.getElementById('onbFin'), imF=FS?FS.flou:imageToile(), vF=document.getElementById('onbV');
     if(fin && fin.style.display!=='none'){ if(imF && vF && !reduitOnb()){ window._passageFlaques(vF, {mode:'couvre', devant:true, rect:rectDe(fin, 10), image:imF, duree:650, lent:LENT_ONB(), fin:function(c){ fin.style.display='none'; if(c && c.canevas.parentNode) c.canevas.remove(); }}); } else fin.style.display='none'; }
     var _ot=document.getElementById('onbTard'); if(_ot) _ot.style.display='none';   /* v141 : le panneau du compte porte SON « Plus tard » */
     var p=document.createElement('div'); p.className='onbv-compte';
@@ -38143,6 +38164,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       '<div class="pil" data-k="google">Continuer avec Google</div>'+
       '<div class="tard" data-onb="plus-tard" role="button">'+(o.tard||'Plus tard')+'</div>'+
       '<div class="legal">En continuant, tu acceptes les <u>Conditions</u> et la <u>Politique de confidentialité</u>.</div>';
+    var fondC=null;
+    if(FS){ hote.classList.add('sur-studio'); hote.setAttribute('data-fond', FS.monde); window._fondAchatPose=FS;
+      /* le flou de la Toile du Studio paraît EN FLAQUES derrière le panneau (et le reste là, sous lui, tant qu'il est ouvert) */
+      try{ fondC=window._passageFlaques(hote, {mode:'couvre', rect:[0,0,390,844], image:FS.flou, duree:1100, garde:true}); if(fondC && fondC.canevas){ fondC.canevas.id='achatFond'; } }catch(_){ fondC=null; } }
     hote.appendChild(p);
     /* v148 (C-141 §10.1) : le panneau naît en flaques à sa place — l'image de la Toile le couvre d'abord, puis s'ouvre en flaques (le panneau paraît par elles) */
     try{ if(imF && !reduitOnb()) window._passageFlaques(hote, {mode:'ouvre', devant:true, z:30, rect:rectDe(p, 4), image:imF, duree:800, lent:LENT_ONB()}); }catch(_){ }
@@ -38151,9 +38176,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(k){ LS.s('promi_compte','demande-'+k); try{ if(window.promiConnexion) window.promiConnexion(k); }catch(_){} }
       else LS.s('promi_compte', LS.g('promi_compte')||'plus-tard');
       /* v148 (C-141 §10.2) : il ne glisse plus vers le bas — la Toile le RECOUVRE en flaques (500 ms), puis il est retiré */
-      var imP=imageToile();
-      if(imP && !reduitOnb()){ window._passageFlaques(hote, {mode:'couvre', devant:true, z:30, rect:rectDe(p, 4), image:imP, duree:500, lent:LENT_ONB(), fin:function(c){ if(p.parentNode) p.remove(); if(c && c.canevas.parentNode) c.canevas.remove(); apres&&apres(k); }}); }
-      else { if(p.parentNode) p.remove(); apres&&apres(k); } }
+      var imP=FS?FS.flou:imageToile();
+      function sansFond(){ if(!FS) return; hote.classList.remove('sur-studio'); hote.removeAttribute('data-fond');
+        /* le flou s'en va en flaques : une couverture du même flou se pose (image 0, aucun saut), l'ancienne part, puis elle s'ouvre sur le Studio */
+        try{ if(!reduitOnb()) window._passageFlaques(document.getElementById('studioScreen')||hote, {mode:'ouvre', devant:true, rect:[0,0,390,844], image:FS.flou, duree:700}); }catch(_){ }
+        if(fondC && fondC.canevas && fondC.canevas.parentNode) fondC.canevas.remove(); }
+      if(imP && !reduitOnb()){ window._passageFlaques(hote, {mode:'couvre', devant:true, z:30, rect:rectDe(p, 4), image:imP, duree:500, lent:LENT_ONB(), fin:function(c){ if(p.parentNode) p.remove(); if(c && c.canevas.parentNode) c.canevas.remove(); sansFond(); apres&&apres(k); }}); }
+      else { if(p.parentNode) p.remove(); sansFond(); apres&&apres(k); } }
     p.querySelector('.tard').addEventListener('click', function(e){ e.stopPropagation(); ferme(null); });
     [].forEach.call(p.querySelectorAll('.pil'), function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); ferme(b.getAttribute('data-k')); }); });
     return p;
@@ -40593,7 +40622,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function $(i){ return document.getElementById(i); }
   var dev=$('device'); if(!dev) return;
   var F=window.Flaques, GD=(F&&F.GUIDE)||{};
-  var CLE='promi_guide', ATTENTE=(GD.ATTENTE||600)-250, COUVRE=GD.COUVRE||1400, OUVRE=GD.OUVRE||700, FERME=GD.FERME||700, RETIRE=GD.RETIRE||1200, FLOU=GD.FLOU||4.8, RETOUR=450;   /* ⚑ v155 (Tom, C-094) : le flou de la phrase du Studio commence 250 ms plus tôt (600 → 350 ms de calme) ; le reste de la séquence garde ses durées */
+  var CLE='promi_guide', ATTENTE=(GD.ATTENTE||600)-350, COUVRE=GD.COUVRE||1400, OUVRE=GD.OUVRE||700, FERME=GD.FERME||700, RETIRE=GD.RETIRE||1200, FLOU=GD.FLOU||4.8, RETOUR=450;   /* ⚑ v155 (Tom, C-094) : le flou de la phrase du Studio commence 250 ms plus tôt (600 → 350 ms de calme) ; ⚑ v156 (Tom) : encore 100 ms plus tôt (250 ms) ; le reste de la séquence garde ses durées */
   var LS={g:function(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, s:function(k,v){ try{ localStorage.setItem(k,v); }catch(_){ } }};
   function reduit(){ try{ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
   function onbOuvert(){ var o=$('promiOnb'); return !!($('onbV') || (o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none')); }

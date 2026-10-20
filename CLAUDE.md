@@ -129,6 +129,19 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v156 (21 oct. 2026) — RETOURS iPHONE DE TOM SUR v155 : LE FLOU DU STUDIO ENCORE PLUS TÔT, LA FLÈCHE À 1,5 s, L'ENCART D'ACHAT SUR LA TOILE DU STUDIO. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v155 (C-094 : 350 ms ; C-169 : 1 s).
+> **Validés par Tom : C-167, C-168, C-169 sur les fiches. Q562, Q563 acceptées (chef de chantier).**
+> **⚑ C-094 — LE FLOU DE LA PHRASE DU STUDIO : 250 ms DE CALME** (600 → 350 → 250 ; `ATTENTE = GD.ATTENTE − 350`). Juges : `redteam_guide` (0,20 à 0,85 s), `redteam_transitions_onb` T6.
+> **⚑ C-169 — DANS L'ONBOARDING, LA FLÈCHE ET « TRACE POUR PLANTER » PARAISSENT 1,5 s APRÈS LA VALIDATION DU PRÉNOM** (1 s en v155) ; rien d'autre ne change.
+> Juge : `redteam_depart_orange` (1 500 ± 50 ms).
+> **⚑ C-170 (rouvert, Q564) — L'ENCART D'ACHAT FLOUTE LA TOILE DU STUDIO.** *La cause* : l'encart « Avant d'acheter » naissait en flaques depuis `imageToile()`, la copie de la
+> Toile de l'ACCUEIL — sous le Studio elle n'est pas repeinte (la cause de v155) : l'ancienne Toile ; son « flou » n'était qu'un voile. *Aujourd'hui* : devant le Studio, l'encart
+> floute `#stBg` (le monde et la couleur affichés, `Flaques.floute` 4,8), préparé au doigt posé sur « Adopte ce design » ; ce flou paraît EN FLAQUES (1,1 s, gardé sous le panneau,
+> `#achatFond`) et s'en va de même ; le second encart (« Garder ton achat ») floute le Studio de son instant. Juge : **`redteam_achat_fond.py`** (49 ; les douze mondes payants).
+> **⚑ C-171 (trouvé en jugeant) — LE TOAST NE PREND PLUS LE DOIGT** : « Design débloqué ✓ » se posait sur « Plus tard » du second encart (3,2 s sans réponse) ; le texte d'un
+> toast laisse passer le toucher, ses boutons le prennent (`lot-V156-TOAST-css`).
+> **Contrats remis au niveau** (originaux : `sauvegardes/*-avant-v156.py`) : `redteam_guide`, `redteam_transitions_onb` (T2 : 2,7 s ; T6), `redteam_depart_orange`.
+
 ### ⚑ v155 (21 oct. 2026) — RETOURS iPHONE DE TOM SUR v154 : LE FLOU DU STUDIO PLUS TÔT, LE VERT À 2,15 s, LA ZONE DU CURSEUR DE COULEUR, LE DÉPART ORANGE ET CLIGNOTANT, PLUS RIEN NE CLIGNOTE SOUS « RÉDUIRE LES ANIMATIONS », LE DÉVERROUILLAGE SANS IMAGE PÉRIMÉE. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v154 (C-167 : 2 400 ms) et v144–v148 (le guide : 0,6 s de calme).
 > **Validés par Tom : C-166, la réduction des animations (v154 §4), la mention (v154 §5). C-125 : Tom le juge au prochain lot — on n'y touche pas.**
 > **⚑ C-094 — LE FLOU DE LA PHRASE DU STUDIO COMMENCE 250 ms PLUS TÔT** : 350 ms de calme au lieu de 600 (`ATTENTE = GD.ATTENTE − 250`) ; le reste de la séquence
@@ -3251,6 +3264,8 @@ python3 redteam_depart_orange.py # 34 — v155 (C-169, Q561) : pointe ET trait d
                                #   la flèche 1 000 ± 50 ms après le prénom ; le départ clignote avec le I (promiBlink, en phase) jusqu'au premier toucher ; rien ailleurs ; réduit : fixe.
 python3 redteam_deverrouille.py  # 25 — v155 (C-170) : les douze mondes payants déverrouillés au doigt sur une Toile pleine : passage en flaques, aucun flou intermédiaire ;
                                #   la Toile de l'accueil déjà dans le nouveau monde à la fermeture du Studio, jamais l'image d'avant. --n=.
+python3 redteam_achat_fond.py  # 49 — v156 (C-170, C-171) : l'encart d'achat ouvert depuis les douze mondes payants du Studio floute la Toile du Studio (pas l'accueil), en flaques,
+                               #   préparé au toucher ; le second encart aussi ; « Plus tard » répond. Rouge sur v155.
 python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).

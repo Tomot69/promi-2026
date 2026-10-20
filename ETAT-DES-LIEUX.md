@@ -9920,6 +9920,7 @@ le défaut est **antérieur** au grossissement (4/12 encore coupés à 15 px).
 - **v153 (20 oct.)** — le prénom validé ferme le clavier, le texte suivant attend qu'il soit redescendu (C-164) ; le tracé des lettres à 22 car/s, réglable (`?cps=`, `?tlv=`), le coin du « g » et les ergots d'Atkinson sans éclats (C-125, récidive) ; « t'appartient. » en bleu (C-165) ; l'entourage du + de 4 à 10 pt (C-163) ; E3 : R4 actif, `promiHaptique`, tenir sans mouvement sous « Réduire les animations » (C-077). Puis POINT D'ARRÊT (les testeurs de Tom).
 - **v154 (20 oct.)** — retours iPhone sur v153 : le tracé des lettres à 40 car/s, chaque lettre 70 à 90 ms, trois au plus en même temps, de gauche à droite ; l'onde (R3) retirée (C-125) ; au retour du Studio, le fond flouté du guide est celui du nouveau monde, préparé sous le Studio (C-166) ; le vert de « Parole tenue ! » 400 ms de plus, un toucher le fait remonter (C-167) ; « Réduire les animations » : l'anneau du + et la carte « Ma Parole ! » s'arrêtent aussi. Validés : C-164, C-163, la réduction des animations, Q554, Q557.
 - **v155 (21 oct.)** — retours iPhone sur v154 : le flou du Studio 250 ms plus tôt (C-094) ; le vert de « Parole tenue ! » à 2,15 s, la phrase vérifiée centrée (C-167) ; la zone tactile du curseur de couleur à 56 × 56 pt (C-168) ; le départ du trait orange partout, clignotant dans l'onboarding, la flèche 1 s après le prénom (C-169) ; « Réduire les animations » : rien ne clignote (Q561) ; déverrouiller un monde payant : plus d'ancienne Toile, un passage en flaques (C-170). Validés : C-166, la réduction des animations, la mention.
+- **v156 (21 oct.)** — retours iPhone sur v155 : le flou du Studio encore 100 ms plus tôt (C-094) ; la flèche de l'onboarding à 1,5 s (C-169) ; l'encart d'achat floute la Toile du Studio, en flaques, plus l'ancienne Toile de l'accueil (C-170) ; le toast ne prend plus le toucher de « Plus tard » (C-171). Validés : C-167, C-168, C-169 sur les fiches ; Q562, Q563 acceptées.
 
 ## ⚑ À VALIDER SUR IPHONE — CE QUI ATTEND VRAIMENT TOM (refaite à la clôture de la série, v148, 16 oct. 2026 ; mise à jour v149, 18 oct.)
 
@@ -9928,10 +9929,9 @@ l'arrivée douce des encarts ; **v149 : C-141, C-143, C-144, C-146, C-147, C-148
 
 | Chantier | Quoi | Preuve au banc | Ce que Tom regarde |
 |---|---|---|---|
+| C-170 | **v156 : l'encart d'achat (« Avant d'acheter ») floute la Toile du Studio, en flaques — plus l'ancienne Toile** | `redteam_achat_fond` 49/49 | au Studio, « Adopte ce design » sans compte |
+| C-171 | **v156 : le toast « Design débloqué ✓ » ne bloque plus « Plus tard »** | `redteam_achat_fond` | acheter sans compte, puis « Plus tard » tout de suite |
 | C-169 | **v155 : le départ du trait orange (pointe et trait), partout ; dans l'onboarding il clignote avec le I jusqu'au premier toucher ; la flèche paraît 1 s après le prénom** | `redteam_depart_orange` 34/34 | effacer les données du site, refaire l'onboarding ; une fiche, une page + |
-| C-170 | **v155 : déverrouiller un monde payant — un passage en flaques, plus jamais l'ancienne Toile** | `redteam_deverrouille` 25/25 | au Studio, adopter un monde payant, puis refermer le Studio |
-| C-168 | **v155 : la dalle de la jauge des couleurs s'attrape (zone de 56 × 56 pt)** | `redteam_curseur_couleur` 12/12 | Studio, palettes, attraper la dalle un peu à côté |
-| C-167 | **v155 : le vert de « Parole tenue ! » à 2,15 s ; la phrase est centrée (vérifié)** | `redteam_tenir_presse`, `redteam_centre_validation` | tenir une parole |
 | C-125 | **v154 : le tracé des lettres — 40 car/s, trois lettres au plus en même temps, de gauche à droite, plus d'onde** | `redteam_trace_lettres` ④ ⑦–⑪ | l'onboarding ; `?cps=36`, `?cps=44` pour régler ; `?tlv=0.05` au ralenti |
 | C-165 | **v153 : « t'appartient. » en bleu (visible en sombre)** | `redteam_mots_sombre` | « Promi planté ! » jusqu'au dernier toucher, en sombre |
 | C-077 | **v153 : E3 — tenir sous « Réduire les animations » (Réglages iOS › Accessibilité) : la fiche passe tenue d'un coup** | `redteam_tenir_e3` | tenir une parole, mouvement réduit activé puis non |

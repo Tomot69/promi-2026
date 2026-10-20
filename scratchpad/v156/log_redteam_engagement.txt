@@ -1,0 +1,28 @@
+     R1 · liste interdite : tâche · to-do · objectif · valider · urgent · score · brouillon · Orbite · la sphère · Belle parole · En replanter un · Dire un mot · badge · série · streak · niveau · classement · points (récompense) · bravo · félicitations · record · échéance
+     R1 · « échéance » : l'app ne l'affiche sur aucun écran parcouru → il RESTE dans la liste (A4)
+OK  R1 · lexique : aucun mot interdit (34 écrans, 815 textes, 5 chaîne(s) du chantier) 
+OK  R1 · `TEXTES_ENGAGEMENT` existe (un seul objet, règle 6)           5 chaîne(s)
+     A3 · exempté (impératif voulu par Tom, v143) : guide.studio : « Choisis d’abord le monde qui te ressemble, au Studio. »
+OK  R1 · A3 : aucun texte du chantier à l'impératif (5 chaîne(s))      
+OK  R2 · absence et temps : rien dans `TEXTES_ENGAGEMENT` (5 chaîne(s)) 
+OK  R3 · aucun chiffre sur la Pelote (dans son cadre)                  dans le cadre : [] · cadre [296, 296]
+     R3 · à savoir : ailleurs sur l'écran de l'Aura, des textes portent un chiffre → ['5', '5', '1']
+OK  R4 · invariance du moment « tenir » (redteam_tenir_e3 --r4 : mêmes étapes, mêmes instants à 16 ms près au calme) OK  R4 · les deux paroles diffèrent bien sur tout (à soi / à Rachel · un jour / demain · 3 / 30 mots · sans / dans un Cercle) {'titre': 3, 'qui': 'moi | OK  R4 · la même séquence pour les deux : le rideau part, descend jusqu'à la barre sans remonter, remonte, s'en va ; la parole est tenue  | --  R4 · durées NON JUGÉES (charge du
+     OK  R4 · les deux paroles diffèrent bien sur tout (à soi / à Rachel · un jour / demain · 3 / 30 mots · sans / dans un Cercle) {'titre': 3, 'qui': 'moi', 'nuee': None, 'due': None, 'st': 'encours'} · {'titre': 30, 'qui': 'Rachel', 'nuee': 'famille', 'due': 1, '
+     OK  R4 · la même séquence pour les deux : le rideau part, descend jusqu'à la barre sans remonter, remonte, s'en va ; la parole est tenue
+     --  R4 · durées NON JUGÉES (charge du Mac 44.2 ≥ 4, C-137) — relevé : écarts A/B : départ 4 · descente 18 · repos 3 ms ; mouvement (lever → barre) A 658 / B 676 ms
+OK  R7 · âge invisible (Toile : 7 textes ; fiche à tenir : 23)         
+OK  R5 · rien ne se thésaurise : trois « tenir », aucune clé nouvelle hors liste blanche tenus 3/3 · clés nouvelles : [] · hors liste : []
+OK  A2 · armé : la ligne de l'instant de tenir est à l'écran et porte `data-eng` ligne vue True · 2 élément(s) `data-eng`
+OK  A2 · aucune transparence ni fondu (2 élément(s) `data-eng`, tracés compris) 
+OK  aucune erreur de page (écrans parcourus)                           []
+OK  R6 · EXCEPTION NOMMÉE (Tom, v144) : l'onboarding et le guide n'ont plus de « Plus tard » — aucun à aucune étape, le compte garde le sien R6 OK · exception nommée (Tom, v144 : « le parcours est court, on ne le passe pas ») · exception déclarée · 7 étapes · avec « Plus tard » : aucune
+     R6 · prénom         aucun « Plus tard »
+     R6 · prénom saisi   aucun « Plus tard »
+     R6 · parole         aucun « Plus tard »
+     R6 · trait          aucun « Plus tard »
+     R6 · fin            aucun « Plus tard »
+     R6 · fin-reste      aucun « Plus tard »
+     R6 · compte         « Plus tard »
+
+redteam_engagement : 12/12 au vert · 0 inactif(s) : 

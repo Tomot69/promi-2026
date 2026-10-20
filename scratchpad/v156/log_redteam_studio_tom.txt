@@ -1,0 +1,16 @@
+OK  [clair] le Studio est ouvert depuis l'accueil, en gratuit, sur un monde de Ma Parole ! (Toile floutée)  blur(1.4px)
+OK  [clair] la Toile floutée : la phrase sur le flou touché, dès le premier toucher — 20 sur 20  zone 108 → 467
+OK  [clair] la Toile floutée : la phrase, sans aucun contour (C-130), le nom du monde effacé  
+OK  [clair] le panneau du bas : la phrase sur le flou touché, dès le premier toucher — 20 sur 20  zone 566 → 819
+OK  [clair] le panneau du bas : la phrase reste lisible (seule sur le panneau)  
+OK  [clair] le panneau des palettes : la phrase sur le flou touché, dès le premier toucher — 20 sur 20  zone 537 → 819
+OK  [clair] le panneau des palettes : la phrase reste lisible (seule sur le panneau)  
+OK  [sombre] le Studio est ouvert depuis l'accueil, en gratuit, sur un monde de Ma Parole ! (Toile floutée)  blur(1.4px)
+OK  [sombre] la Toile floutée : la phrase sur le flou touché, dès le premier toucher — 20 sur 20  zone 108 → 467
+OK  [sombre] la Toile floutée : la phrase, sans aucun contour (C-130), le nom du monde effacé  
+OK  [sombre] le panneau du bas : la phrase sur le flou touché, dès le premier toucher — 20 sur 20  zone 566 → 819
+OK  [sombre] le panneau du bas : la phrase reste lisible (seule sur le panneau)  
+OK  [sombre] le panneau des palettes : la phrase sur le flou touché, dès le premier toucher — 20 sur 20  zone 537 → 819
+OK  [sombre] le panneau des palettes : la phrase reste lisible (seule sur le panneau)  
+
+14 / 14

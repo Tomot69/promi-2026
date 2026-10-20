@@ -1,0 +1,32 @@
+
+── clair
+  ✅ [clair] A · au lancement : le flou, l'étape du Studio, sa phrase mot pour mot                                        étape studio · « Choisis d’abord le monde qui te ressemble, au Studio. »
+  ✅ [clair] B · toucher ailleurs n°1 (la Toile) : l'étape reste celle du Studio, la phrase du Studio est écrite DE NOUVEAU, mot pour mot ; rien ne s'ouvre étape studio · nœud neuf True · rappels 1 · « Choisis d’abord le monde qui te ressemble, au Studio. » · natures False
+  ✅ [clair] B · toucher ailleurs n°2 (le bas de la Toile) : l'étape reste celle du Studio, la phrase du Studio est écrite DE NOUVEAU, mot pour mot ; rien ne s'ouvre étape studio · nœud neuf True · rappels 2 · « Choisis d’abord le monde qui te ressemble, au Studio. » · natures False
+  ✅ [clair] B · toucher ailleurs n°3 (la place du + sous le flou) : l'étape reste celle du Studio, la phrase du Studio est écrite DE NOUVEAU, mot pour mot ; rien ne s'ouvre étape studio · nœud neuf True · rappels 3 · « Choisis d’abord le monde qui te ressemble, au Studio. » · natures False
+  ✅ [clair] B · après les trois touchers, toujours l'étape du Studio et sa phrase (le guide ne s'en va pas)              étape studio
+  ✅ [clair] F · pendant les trois touchers, la phrase du + n'a jamais paru, pas une image                                0 image(s)
+  ✅ [clair] C · l'app relancée sans que le Studio ait été ouvert : le flou du Studio revient, sa phrase                  étape studio · mémoire « studio »
+  ✅ [clair] D · le Studio touché s'ouvre ; refermé SANS changement : le flou reste, l'étape du + et sa phrase mot pour mot Studio ouvert True · monde encre → encre · étape plus · « Promi, Chiche ou Cercle : tout commence par ce +. »
+  ✅ [clair] F · la phrase du + n'a JAMAIS été vue avant que le Studio soit ouvert (depuis la relance)                    0 image(s)
+  ✅ [clair] G · le + touché ouvre les natures ; relancée, l'app ne remontre plus le guide                                natures True · guide après relance None · mémoire « 1 »
+  ✅ [clair] aucune erreur de page                                                                                        []
+  ✅ [clair] E · le Studio refermé APRÈS un changement de monde (encre → touffe) : le flou reste, l'étape du + et sa phrase étape plus · « Promi, Chiche ou Cercle : tout commence par ce +. »
+  ✅ [clair] F · (ce lancement) la phrase du + n'a jamais été vue avant le Studio                                         0 image(s)
+
+── sombre
+  ✅ [sombre] A · au lancement : le flou, l'étape du Studio, sa phrase mot pour mot                                       étape studio · « Choisis d’abord le monde qui te ressemble, au Studio. »
+  ✅ [sombre] B · toucher ailleurs n°1 (la Toile) : l'étape reste celle du Studio, la phrase du Studio est écrite DE NOUVEAU, mot pour mot ; rien ne s'ouvre étape studio · nœud neuf True · rappels 1 · « Choisis d’abord le monde qui te ressemble, au Studio. » · natures False
+  ✅ [sombre] B · toucher ailleurs n°2 (le bas de la Toile) : l'étape reste celle du Studio, la phrase du Studio est écrite DE NOUVEAU, mot pour mot ; rien ne s'ouvre étape studio · nœud neuf True · rappels 2 · « Choisis d’abord le monde qui te ressemble, au Studio. » · natures False
+  ✅ [sombre] B · toucher ailleurs n°3 (la place du + sous le flou) : l'étape reste celle du Studio, la phrase du Studio est écrite DE NOUVEAU, mot pour mot ; rien ne s'ouvre étape studio · nœud neuf True · rappels 3 · « Choisis d’abord le monde qui te ressemble, au Studio. » · natures False
+  ✅ [sombre] B · après les trois touchers, toujours l'étape du Studio et sa phrase (le guide ne s'en va pas)             étape studio
+  ✅ [sombre] F · pendant les trois touchers, la phrase du + n'a jamais paru, pas une image                               0 image(s)
+  ✅ [sombre] C · l'app relancée sans que le Studio ait été ouvert : le flou du Studio revient, sa phrase                 étape studio · mémoire « studio »
+  ✅ [sombre] D · le Studio touché s'ouvre ; refermé SANS changement : le flou reste, l'étape du + et sa phrase mot pour mot Studio ouvert True · monde encre → encre · étape plus · « Promi, Chiche ou Cercle : tout commence par ce +. »
+  ✅ [sombre] F · la phrase du + n'a JAMAIS été vue avant que le Studio soit ouvert (depuis la relance)                   0 image(s)
+  ✅ [sombre] G · le + touché ouvre les natures ; relancée, l'app ne remontre plus le guide                               natures True · guide après relance None · mémoire « 1 »
+  ✅ [sombre] aucune erreur de page                                                                                       []
+  ✅ [sombre] E · le Studio refermé APRÈS un changement de monde (encre → touffe) : le flou reste, l'étape du + et sa phrase étape plus · « Promi, Chiche ou Cercle : tout commence par ce +. »
+  ✅ [sombre] F · (ce lancement) la phrase du + n'a jamais été vue avant le Studio                                        0 image(s)
+
+  ✅  26 / 26

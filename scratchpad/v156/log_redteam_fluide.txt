@@ -1,0 +1,23 @@
+   passe  1 : 340 images · la plus longue 22.5 ms à 2183 ms · au-delà de 20 ms : [(2183, 22.5)] · « referme » à 25 ms, « après » à 2199 ms
+   passe  2 : 323 images · la plus longue 63.5 ms à 344 ms · au-delà de 20 ms : [(167, 51.2), (231, 28.3), (344, 63.5), (2605, 46.0)] · « referme » à 23 ms, « après » à 2190 ms
+   passe  4 : 336 images · la plus longue 37.9 ms à 140 ms · au-delà de 20 ms : [(95, 35.0), (140, 37.9)] · « referme » à 22 ms, « après » à 2179 ms
+   passe  5 : 298 images · la plus longue 60.1 ms à 554 ms · au-delà de 20 ms : [(11, 30.4), (44, 32.0), (132, 26.2), (245, 28.8), (279, 30.7), (349, 42.3)] · « referme » à 37 ms, « après » à 2192 ms
+   passe  6 : 341 images · la plus longue 48.2 ms à 635 ms · au-delà de 20 ms : [(515, 23.1), (635, 48.2)] · « referme » à 21 ms, « après » à 2188 ms
+   passe 11 : 343 images · la plus longue 23.3 ms à 2174 ms · au-delà de 20 ms : [(2174, 23.3)] · « referme » à 25 ms, « après » à 2193 ms
+   passe 12 : 253 images · la plus longue 170.0 ms à 610 ms · au-delà de 20 ms : [(17, 21.2), (122, 41.2), (168, 40.2), (268, 30.3), (310, 26.3), (355, 87.9)] · « referme » à 34 ms, « après » à 2196 ms
+   passe 13 : 312 images · la plus longue 66.3 ms à 503 ms · au-delà de 20 ms : [(-4, 56.8), (53, 48.6), (412, 24.8), (504, 66.3), (600, 29.8), (641, 32.3)] · « referme » à 85 ms, « après » à 2241 ms
+   passe 14 : 320 images · la plus longue 86.4 ms à 2807 ms · au-delà de 20 ms : [(14, 23.2), (358, 24.0), (932, 71.5), (1191, 20.5), (1236, 32.8), (2174, 27.2)] · « referme » à 32 ms, « après » à 2198 ms
+   passe 15 : 325 images · la plus longue 39.4 ms à 1587 ms · au-delà de 20 ms : [(-3, 24.9), (22, 23.1), (1588, 39.4), (1630, 38.7), (2189, 29.1), (2221, 39.0)] · « referme » à 39 ms, « après » à 2213 ms
+   passe 17 : 327 images · la plus longue 53.9 ms à 2391 ms · au-delà de 20 ms : [(1992, 35.0), (2176, 23.5), (2264, 30.2), (2315, 20.2), (2391, 53.9)] · « referme » à 21 ms, « après » à 2195 ms
+   passe 19 : 31 images · la plus longue 199.2 ms à 572 ms · au-delà de 20 ms : [(199, 67.0), (285, 24.1), (310, 167.4), (478, 26.4), (536, 36.0), (573, 199.2)] · « referme » à 244 ms, « après » à 4987 ms
+   passe 20 : 275 images · la plus longue 130.6 ms à 2187 ms · au-delà de 20 ms : [(14, 21.4), (172, 29.4), (201, 31.8), (240, 59.9), (318, 20.0), (339, 43.7)] · « referme » à 31 ms, « après » à 2314 ms
+1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6213 images) KO  103 image(s) au-delà · la plus longue 199.2 ms
+2 · p95 du travail par image ≤ 16,7 ms                                               OK  p50 3.3 · p95 12.5 ms
+3 · la durée : « juste après » paraît 2 150 ms (± 80, v155 C-167) après « le trait se referme », et l'app déclare cette valeur KO  de 2155 à 4743 ms
+4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois      OK  20 sur 20
+5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images KO  la plus longue : 255.1 ms
+aucune erreur de page                                                                OK  
+   (après l'animation, relevé : la plus longue image de travail 251.6 ms — les passes de tout le document et la pose complète)
+
+3 / 6
+KO : 1 · aucune image de l'animation au-delà de 20 ms de travail (20 animations, 6213 images) · 3 · la durée : « juste après » paraît 2 150 ms (± 80, v155 C-167) après « le trait se referme », et l'app déclare cette valeur · 5 · après l'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n'attend jamais plus de deux images
