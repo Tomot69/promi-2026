@@ -129,6 +129,34 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v154 (20 oct. 2026) — RETOURS iPHONE DE TOM SUR v153 : LE TRACÉ À 40 CAR/S SANS ONDE, LE FOND DU GUIDE APRÈS LE STUDIO, LE VERT 400 ms DE PLUS, « RÉDUIRE LES ANIMATIONS » PARTOUT. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v153 (C-125 : 22 car/s, une lettre à la fois, R3) et v144 (C-111 : l'amande à 2 000 ms).
+> **Validés par Tom : C-164, C-163, la réduction des animations (C-077), Q554, Q557.**
+> **⚑ C-125 — LE DÉBIT ET LA DURÉE D'UNE LETTRE SONT SÉPARÉS** (`variantes/trace-lettres.js`) : une lettre PART tous les 1000/cps ms — **40 car/s par
+> défaut** (`?cps=` le règle ; une espace compte 0,4 ; `?tlv=0.05` ralentit tout) ; chacune se trace en **70 à 90 ms** selon la longueur de son chemin
+> (au moins quatre images à 60 Hz ; jamais plus de 3 × 1000/cps − 1) ; **au plus trois lettres en cours, strictement de gauche à droite**, la suivante
+> commence avant la fin de la précédente, jamais avant elle (`etat().actives`). **L'« onde » que Tom voyait était la règle R3** (chaque lettre partait là
+> où la précédente avait fini, en alternant haut et bas) : **R3 EST RETIRÉE**, chaque lettre prend son tracé naturel (« h » quand elle l'a). La finition de
+> v153 (bout plat, coins, ergots, alpha borné) ne bouge pas. Juge : `redteam_trace_lettres` (46 : ④ aucune onde ; ⑪ le temps de plume, pas à pas d'1 ms,
+> et sur les pixels trois fronts séparés ; ⑦ ⑧ le débit et les images par lettre À L'ÉCRAN — jugés sous une charge de 4 seulement ; 38/46 avec le module de
+> v153). Capture ×0,05 : `scratchpad/v154/trace-x005.png`.
+> **⚑ C-166 — AU RETOUR DU STUDIO, LE FOND FLOUTÉ DU GUIDE EST CELUI DE LA TOILE RÉELLE.** Il était pris une fois, au lancement du guide. Sous le Studio,
+> dès que le monde ou la palette ont changé et ne bougent plus depuis 900 ms (aucun doigt depuis 600 ms), la Toile est **rendue par le moteur** dans la vue
+> de l'écran (`Toile.renderTo(…, {vue:true})`) — **sous le Studio, le canevas de l'accueil (`#toileCv`) n'est PAS repeint : le relire donne l'ancien
+> monde** — puis floutée dans un Worker (le flou de `Flaques.floute`, à l'identique) ; l'étape du + attend ce fond (1,95 s au plus). Sans changement, rien
+> n'est recalculé : le fond est le même au pixel. ⚠ **Sous le Studio la Toile tourne toujours (`Toile_state().running` reste vrai : elle porte ses
+> aperçus)** — un garde « la Toile posée » n'y passe jamais. `window._guideFlou`. Juge : **`redteam_guide_fond.py`** (12 ; 8/12 sur v153).
+> **⚑ C-167 — LE VERT DE « PAROLE TENUE ! » RESTE 400 ms DE PLUS** (`_tenirRegle.AMANDE` 2 000 → **2 400**), pour toutes les phrases de validation (Promi,
+> Chiche, la part, le rideau rejoué). **Décision du chef de chantier : un toucher n'importe où pendant ce temps fait remonter le vert tout de suite et mène
+> à la fiche tenue** (`window._tenirVite`) — lu 300 ms après le lever et tant que le vert n'a pas commencé de remonter ; **le toucher est AVALÉ** (rien
+> dessous ne s'ouvre ; Q560). Sans toucher, le retour se fait seul. R4 (l'invariance) reste vert. Juge : **`redteam_tenir_presse.py`** (7 ; 1/7 sur v153).
+> Contrats remis au niveau (originaux : `sauvegardes/*-avant-v154.py`) : `redteam_fluide` (2 400 ms, l'animation jusqu'à 3 100), `redteam_tenir` E (2,5 à 3,2 s).
+> **⚑ §4 — « RÉDUIRE LES ANIMATIONS » : PROMI SUIT LE RÉGLAGE DE L'iPHONE POUR TOUTE L'APP, SANS INTERRUPTEUR.** Vérifié : guide, onboarding (ni tracé ni
+> passage en flaques), tenir (E3), la vie au repos, le souffle de la Pelote. **Deux mouvements y échappaient — l'anneau du + qui tourne (`heroSpin`) et les
+> nappes de la carte « Ma Parole ! » (`cercleBlobs`) : posés sur `::before` / `::after`, que la règle générale `*{animation:none!important}` NE TOUCHE PAS**
+> (`*` ne sélectionne pas les pseudo-éléments) — arrêtés par `lot-V154-REDUIT-css`. Le I de PROMI clignote encore : ce n'est pas un mouvement (Q561).
+> **§5 (réponse à Tom, rien changé) — « Mention sur un dessin partagé »** : l'image d'un dessin partagé porte en bas à gauche le logo « Promi » et, au-dessus,
+> la nature (« PROMI », « CHICHE », « CERCLE ») ; désactivée, la nature disparaît de l'image, le logo reste toujours (v137, C-068).
+
 ### ⚑ v153 (20 oct. 2026) — LE CLAVIER APRÈS LE PRÉNOM, LE TRACÉ DES LETTRES (RÉCIDIVE), « T'APPARTIENT. » EN COULEUR, L'ENTOURAGE DU +, PUIS E3. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v147 (C-125 : 40 à 60 car/s) et v151–v152 (Q548 pour « t'appartient. »).
 > **⚑ C-164 — LE PRÉNOM VALIDÉ, LE CLAVIER SE FERME** (le champ perd le focus) ; la page de la parole ne trace ses textes qu'une fois le clavier
 > ENTIÈREMENT redescendu (`apresClavier` : la hauteur de `visualViewport` revenue et stable 160 ms ; 1,6 s au plus ; sans clavier, rien n'attend). La
@@ -3183,6 +3211,10 @@ python3 redteam_echeance.py    # 11 — v151 (C-160) : l'échéance est une date
 python3 redteam_clavier_onb.py  # 6 — v153 (C-164) : clavier simulé (visualViewport descend/remonte comme sur iOS) — après le prénom, plus de focus ; le premier tracé APRÈS le clavier redescendu ; sans clavier, rien n'attend. 3/6 sur v152.
 python3 redteam_tenir_e3.py    # 6 — v153 (E3, C-077) : R4 (deux paroles qui diffèrent sur tout, même séquence lue sur les pixels du rideau ; durées au calme), le crochet promiHaptique, « Réduire les animations » (tenue d'un coup, sans fondu), tâches longues (au calme). --r4 pour redteam_engagement. 2/6 sur v152.
 python3 redteam_mots_sombre.py  # 33 — v152 (C-162) : tout mot coloré en clair dans l'onboarding et le guide l'est aussi en sombre, ≥ 3:1 sur le fond lu sur l'image ; inventaire relevé ; deux exceptions nommées. WebKit. 29/33 sur v151.
+python3 redteam_guide_fond.py  # 12 — v154 (C-166) : au retour du Studio (monde et palette changés au doigt), le fond flouté du guide = la Toile réelle
+                               #   (≤ 0,2 % à plus de 6 niveaux), préparé SOUS le Studio ; sans changement, le même au pixel. WebKit. 8/12 sur v153.
+python3 redteam_tenir_presse.py # 7 — v154 (C-167) : le vert remonte 2,25–2,7 s après le lever ; un toucher à 1,3 s le fait remonter tout de suite, avalé
+                               #   (Peaufiner ne s'ouvre pas) ; un toucher à 100 ms ne presse rien. Lu sur les pixels du rideau. 1/7 sur v153.
 python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).

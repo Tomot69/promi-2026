@@ -37,6 +37,17 @@ mesurait la forme du front que par « pas de plage d'alpha intermédiaire » —
   ⑩ `--captures` : une capture fixe dans l'app, à ×0,05 (`?tlv=0.05`), au milieu d'un « o ».
 `--sonde=fondu` remplace le tracé par un fondu d'opacité, `--sonde=bloc` par une apparition d'un coup : le juge DOIT rougir (② ou ⑥).
 `--fichier=zz-av152.html` (avec le module d'avant : `--module=sauvegardes/trace-lettres-avant-v153.js`) : il DOIT rougir (⑦, ⑧, ⑨).
+⚑ v154 (Tom, C-125) — « à 22 car/s on s'endort ; à 50 c'était presque juste, mais une lettre durait une image et sautait. Juste un peu plus lent
+qu'à 50 ; le débit et la durée d'une lettre séparés ; au plus trois lettres en cours, de gauche à droite ; AUCUNE onde. » Ce juge porte EN DUR :
+  ④ AUCUNE ONDE (remplace R3, retiré par Tom) : chaque lettre prend son tracé naturel — la variante qui part du haut quand le glyphe l'a —, quelle que
+     soit la lettre d'avant ; le côté du départ est RECALCULÉ ici depuis la géométrie ;
+  ⑪ EN TEMPS DE PLUME, pas à pas à la milliseconde (ne dépend pas de la charge) : le débit des départs 38 à 42 caractères par seconde (une espace compte
+     0,4) ; chaque lettre en cours de 60 à 90 ms ; au plus 3 lettres en cours ; elles partent strictement dans l'ordre, de gauche à droite sur une ligne ;
+     ET sur les pixels : au moment où le module dit trois lettres en cours, le canevas montre trois lettres partiellement tracées ;
+  ⑦ le débit À L'ÉCRAN (le vrai onboarding, horloge du navigateur) : 38 à 42 ; ⑧ chaque lettre en cours sur 4 images au moins — ces deux-là sont des
+     cadences : jugées sous une charge de 4 seulement (C-137), sinon « non jugé » avec la valeur ;
+  ⑩ `--captures` : une capture fixe dans l'app, à ×0,05, quand deux ou trois lettres sont en cours.
+`--module=sauvegardes/trace-lettres-avant-v154.js` : il DOIT rougir (④, ⑪).
 Usage : python3 redteam_trace_lettres.py [--port=8752] [--sonde=fondu|bloc] [--captures]
 """
 import sys, io, json, math, zipfile; sys.path.insert(0, '.')
@@ -48,7 +59,8 @@ from fontTools.pens.boundsPen import BoundsPen
 import banc_tom as B
 arg = lambda k, d: next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--' + k + '=')), d)
 PORT = arg('port', '8752'); SONDE = arg('sonde', ''); CAPT = '--captures' in sys.argv; APP = arg('fichier', 'app.html'); MODULE = arg('module', '')
-CPS_MIN, CPS_MAX = 20.0, 25.0     # ⚑ v153 (Tom, C-125) : « environ 20 à 25 caractères par seconde au départ, réglable » — défaut 22
+CPS_MIN, CPS_MAX = 38.0, 42.0     # ⚑ v154 (Tom, C-125) : « juste un peu plus lent qu'à 50 » — 38 à 42, départ à 40 (v153 : 20 à 25)
+DUREE_MIN, DUREE_MAX, ACTIVES_MAX, IMAGES_MIN = 60.0, 90.0, 3, 4   # ⚑ v154 : une lettre en cours 60 à 90 ms, au moins 4 images ; 3 lettres en cours au plus
 EN_COURS_MIN, EN_COURS_MED = 30.0, 40.0   # ms : une lettre est en cours de tracé assez longtemps pour se voir constituer (à 60 Hz : 2 images et plus)
 ANGLE_MAX = 10.0                  # degrés : le front, à l'intérieur d'un trait, perpendiculaire au chemin
 PAGE = 'promi-trace-lettres.html'
@@ -142,7 +154,7 @@ GEO = """async a=>{ const [pol,gr,car,N]=a; document.querySelectorAll('#gEl,canv
   return {w:W, h:H, N:N, ref:b64(ref), R:b64(R), hors, loin, part, ilots, ilotMax, traits:pc.traits.map(t=>({R:t.R*u, pts:t.pts.map(q=>[gx+q[0]*u, gy-q[1]*u])}))}; }"""
 ENREG = """()=>{ window.__TL=[]; window.__CTL=[]; const T=window.TraceLettres; const tr=T.trace; T.trace=function(c){ const ctl=tr.apply(this, arguments); const k=window.__CTL.push(ctl)-1;
     const txt=(c.textContent||''); const r={id:c.id||'', k:k, ctl:true, n:[...txt].filter(x=>x.trim()).length, esp:(txt.trim().match(/\\s+/g)||[]).length, images:[]}; window.__TL.push(r);
-    ctl.pret.then(()=>{ r.debut=performance.now(); (function f(){ if(ctl.fini){ r.fin=r.fin||performance.now(); return; } const e=ctl.etat(); r.images.push([performance.now(), e.glyphe]); requestAnimationFrame(f); })(); });
+    ctl.pret.then(()=>{ r.debut=performance.now(); (function f(){ if(ctl.fini){ r.fin=r.fin||performance.now(); return; } const e=ctl.etat(); r.images.push([performance.now(), e.actives || [e.glyphe]]); requestAnimationFrame(f); })(); });
     ctl.fin.then(()=>{ r.fin=performance.now(); }); return ctl; }; }"""
 def b64u8(s, w, h):
     import base64
@@ -303,24 +315,35 @@ with sync_playwright() as p:
          'médiane %.0f %% sur %d tracés ; sans repassage : %d ; les pires : %s' % (med * 100, len(ratios), sum(1 for r in ratios if r[0] < 0.005), ' · '.join('%s/%s %.0f %%' % (c, v, r * 100) for r, c, v in ratios[:8])))
     # ④ R3 sur les six textes, le côté recalculé ici
     pose(False); G = pg.evaluate("""async P=>{ const out=[]; for(const s of P){ const el=document.getElementById('jP'); const c=TraceLettres.trace(el, s, {manuel:true, respecteReduire:false}); await c.pret; out.push(c.glyphes.map(g=>[g.car, g.variante])); c.stop(); } return out; }""", P)
-    trans = 0; ok = 0; exc = {}; faux = []; sans_chemin = []
+    # ⚑ v154 — ④ AUCUNE ONDE : chaque lettre part de son tracé naturel (« h » quand le glyphe l'a), le départ recalculé ici depuis la géométrie
+    trans = 0; faux = []; sans_chemin = []; bas = 0
     for texte in G:
-        prec = 'h'
         for car, v in texte:
-            if v is None or car not in PC or v not in PC[car]:
-                d = pg.evaluate("a=>{ const p=TraceLettres.parcours('Gilbert', a[0], a[1]||'h'); return p?{dep:p.depart, arr:p.arrivee}:null; }", [car, v])
-                if d is None: sans_chemin.append(car); continue
-            else: d = PC[car][v]
-            bo = boite(car); dep = cote(d['dep'][1], bo); trans += 1
-            if dep == prec: ok += 1
-            else:
-                a_lautre = pg.evaluate("a=>{ const g=TraceLettres.glyphe('Gilbert', a[0]); return !!(g && g[a[1]]); }", [car, prec])
-                if a_lautre or car not in UN_SEUL_TRACE: faux.append('%s (attendu %s, parti %s)' % (car, prec, dep))
-                else: exc[car] = exc.get(car, 0) + 1
-            prec = cote(d['arr'][1], bo)
-    juge('④ R3 — dans les six textes, chaque lettre commence du côté où la précédente a fini (hors glyphes à un seul tracé, nommés)', not faux and not sans_chemin and trans > 250,
-         '%d lettres, %d dans la règle, %d exceptions : %s%s%s' % (trans, ok, sum(exc.values()), ' · '.join('%s ×%d (%s)' % (c, n, UN_SEUL_TRACE[c]) for c, n in sorted(exc.items(), key=lambda x: -x[1])),
-                                                                   (' — FAUTES : ' + ' ; '.join(faux[:6])) if faux else '', (' — SANS CHEMIN : ' + ' '.join(sorted(set(sans_chemin)))) if sans_chemin else ''))
+            if v is None: sans_chemin.append(car); continue
+            d = PC[car][v] if (car in PC and v in PC[car]) else pg.evaluate("a=>{ const p=TraceLettres.parcours('Gilbert', a[0], a[1]); return p?{dep:p.depart, arr:p.arrivee}:null; }", [car, v])
+            if d is None: sans_chemin.append(car); continue
+            trans += 1; a_h = car in PC and 'h' in PC[car]
+            if a_h and v != 'h': faux.append('%s (variante %s)' % (car, v))
+            if v != 'h': bas += 1
+    juge('④ AUCUNE ONDE (v154) — dans les six textes, chaque lettre prend son tracé naturel (« h » quand elle l\'a), quelle que soit la précédente', not faux and not sans_chemin and trans > 250,
+         '%d lettres ; %d sans variante « h » (elles n\'en ont pas d\'autre)%s%s' % (trans, bas, (' — FAUTES : ' + ' ; '.join(faux[:6])) if faux else '', (' — SANS CHEMIN : ' + ' '.join(sorted(set(sans_chemin)))) if sans_chemin else ''))
+    # ⚑ v154 — ⑪ EN TEMPS DE PLUME, pas à pas à la milliseconde (indépendant de la charge), puis sur les pixels
+    pose(False)
+    PL = pg.evaluate("""async a=>{ const el=document.getElementById('jP'); const c=TraceLettres.trace(el, a, {manuel:true, respecteReduire:false}); await c.pret; const D=c.duree; const dep={}, fin={}; let max=0, t3=null;
+        for(let t=0;t<=D+2;t+=1){ c.va(Math.min(1,t/D)); const e=c.etat(), A=e.actives||(e.glyphe<e.total?[e.glyphe]:[]); if(A.length>max) max=A.length; if(t3===null && A.length===3) t3=t; A.forEach(j=>{ if(!(j in dep)) dep[j]=t; fin[j]=t; }); }
+        let pix=null; if(t3!==null){ const cv=document.querySelector('canvas[data-trace]'); if(cv){ const cx=cv.getContext('2d'); c.va(0); c.va((t3+4)/D); const n3=c.etat().actives.length; const A=cx.getImageData(0,0,cv.width,cv.height).data; c.va((t3+7)/D); const Bq=cx.getImageData(0,0,cv.width,cv.height).data;
+          const col=new Array(cv.width).fill(0); for(let i=3;i<A.length;i+=4) if(Math.abs(A[i]-Bq[i])>8) col[((i-3)/4)%cv.width]++;
+          let runs=0, gap=99; for(let x=0;x<cv.width;x++){ if(col[x]>0){ if(gap>3) runs++; gap=0; } else gap++; } pix={actives:n3, fronts:runs}; } }
+        const txt=el.textContent; const gl=c.glyphes.map(g=>[g.car, g.x, g.y]); c.stop(); return {D, dep, fin, max, t3, pix, gl, esp:(txt.trim().match(/\\s+/g)||[]).length}; }""", P2)
+    js = sorted(int(k) for k in PL['dep']); dep = [PL['dep'][str(j)] for j in js]; dur = [PL['fin'][str(j)] - PL['dep'][str(j)] + 1 for j in js]
+    rate = (len(js) - 1 + 0.4 * PL['esp']) / max((dep[-1] - dep[0]) / 1000.0, 1e-3) if len(js) > 1 else 0
+    juge('⑪ temps de plume — le débit des départs : %d à %d caractères par seconde (une espace compte 0,4)' % (CPS_MIN, CPS_MAX), CPS_MIN <= rate <= CPS_MAX and len(js) >= 15, '%.1f car/s (%d lettres, %d espaces)' % (rate, len(js), PL['esp']))
+    juge('⑪ temps de plume — chaque lettre est en cours de %d à %d ms' % (DUREE_MIN, DUREE_MAX), dur and min(dur) >= DUREE_MIN and max(dur) <= DUREE_MAX, 'de %d à %d ms (médiane %d)' % (min(dur), max(dur), sorted(dur)[len(dur) // 2]) if dur else 'aucune')
+    juge('⑪ temps de plume — au plus %d lettres en cours, et trois à la fois au fil du tracé' % ACTIVES_MAX, PL['max'] == ACTIVES_MAX, 'au plus %d en même temps' % PL['max'])
+    juge('⑪ sur les pixels — quand le module dit trois lettres en cours, le canevas montre trois fronts qui avancent (trois zones qui changent, séparées)', bool(PL['pix']) and PL['pix']['actives'] == 3 and PL['pix']['fronts'] == 3, str(PL['pix']))
+    gl = PL['gl']; desordre = [j for a, j in zip(js, js[1:]) if not (PL['dep'][str(j)] > PL['dep'][str(a)] and (abs(gl[j][2] - gl[a][2]) > 1 or gl[j][1] > gl[a][1]))]
+    juge('⑪ temps de plume — les lettres partent strictement dans l\'ordre, de gauche à droite sur une ligne ; la suivante avant la fin de la précédente, jamais avant elle', not desordre and all(PL['dep'][str(j)] < PL['fin'][str(a)] for a, j in zip(js, js[1:]) if abs(gl[j][2] - gl[a][2]) <= 1),
+         'hors d\'ordre : %s' % desordre[:6] if desordre else '%d départs dans l\'ordre' % len(js))
     un_seul = sorted(c for c in ALPHA if len(PC.get(c, {})) == 1)
     juge('④ R3 — les glyphes à un seul tracé sont ceux que ce juge nomme', all(c in UN_SEUL_TRACE for c in un_seul), 'un seul tracé : %s ; finissent du côté opposé au départ : %d tracés sur %d' % (' '.join(un_seul), oppose, nvar))
 
@@ -354,35 +377,41 @@ with sync_playwright() as p:
             if pg2.evaluate("()=>window.__TL.filter(r=>r.fin).length>=3"): break
         L = pg2.evaluate("()=>window.__TL"); ctx2.close(); return L
     L = onboarding_reel()
-    tot_l = sum(r['n'] for r in L if r.get('fin')); tot_e = sum(r['esp'] for r in L if r.get('fin')); tot_t = sum(r['fin'] - r['debut'] for r in L if r.get('fin'))
-    cps = (tot_l + 0.4 * tot_e) / max(tot_t / 1000.0, 1e-3)
-    juge('⑦ la vitesse, mesurée sur l\'écran (« Camille, donc. », « Quid… », « Petite ou grande… ») : %d à %d caractères par seconde' % (CPS_MIN, CPS_MAX), CPS_MIN <= cps <= CPS_MAX,
-         '%.1f car/s (%d lettres, %d espaces, %.2f s ; charge %.1f)' % (cps, tot_l, tot_e, tot_t / 1000.0, B.charge()))
-    fen = []
+    CALME = B.charge() < 4
+    def debit(LL):
+        n = 0; dt = 0.0
+        for r in LL:
+            st = {}
+            for t, a in (r.get('images') or []):
+                for j in a: st.setdefault(j, t)
+            if len(st) > 1: ks = sorted(st); n += len(ks) - 1 + 0.4 * r['esp']; dt += st[ks[-1]] - st[ks[0]]
+        return n / max(dt / 1000.0, 1e-3)
+    cps = debit(L); ch = B.charge()
+    juge('⑦ le débit À L\'ÉCRAN (le vrai onboarding : « Camille, donc. », « Quid… », « Petite ou grande… ») : %d à %d caractères par seconde%s' % (CPS_MIN, CPS_MAX, '' if CALME else ' — NON JUGÉ (charge ≥ 4)'), CALME is False or CPS_MIN <= cps <= CPS_MAX,
+         '%.1f car/s ; charge %.1f' % (cps, ch))
+    imgs = []
     for r in L:
-        F_ = r.get('images') or []
-        for i in range(r['n']):
-            t_in = [t for t, g in F_ if g == i]
-            t_out = [t for t, g in F_ if g > i]
-            if t_in and t_out: fen.append(t_out[0] - t_in[0])
-    fen.sort(); med = fen[len(fen) // 2] if fen else 0; court = sum(1 for x in fen if x < EN_COURS_MIN)
-    juge('⑧ pas de « pof » : chaque lettre est en cours de tracé assez longtemps pour se voir constituer (≥ %d ms, médiane ≥ %d ms)' % (EN_COURS_MIN, EN_COURS_MED),
-         len(fen) >= 20 and med >= EN_COURS_MED and court <= 0.2 * len(fen), '%d lettres vues ; médiane %.0f ms ; %d sous %d ms (les lettres courtes : i, l, la ponctuation) ; charge %.1f' % (len(fen), med, court, EN_COURS_MIN, B.charge()))
+        for j in range(r['n']):
+            k = sum(1 for t, a in (r.get('images') or []) if j in a)
+            if k: imgs.append(k)
+    imgs.sort(); peu = sum(1 for x in imgs if x < IMAGES_MIN)
+    juge('⑧ chaque lettre est en cours sur %d images au moins, à l\'écran%s' % (IMAGES_MIN, '' if CALME else ' — NON JUGÉ (charge ≥ 4)'), CALME is False or (len(imgs) >= 20 and peu == 0),
+         '%d lettres ; images par lettre : min %d, médiane %d ; %d sous %d ; charge %.1f' % (len(imgs), imgs[0] if imgs else 0, imgs[len(imgs) // 2] if imgs else 0, peu, IMAGES_MIN, ch))
     L2 = onboarding_reel('?cps=12')
-    t2 = sum(r['fin'] - r['debut'] for r in L2 if r.get('fin')); n2 = sum(r['n'] + 0.4 * r['esp'] for r in L2 if r.get('fin')); cps2 = n2 / max(t2 / 1000.0, 1e-3)
-    juge('⑦ la vitesse se règle : `?cps=12` → environ 12 caractères par seconde', 10.5 <= cps2 <= 13.5, '%.1f car/s' % cps2)
+    cps2 = debit(L2)
+    juge('⑦ le débit se règle : `?cps=12` → environ 12 caractères par seconde', 10.5 <= cps2 <= 13.5, '%.1f car/s' % cps2)
     if CAPT:
         ctx3 = B.contexte(b, onb=False, guide=False); pg3 = B.ouvre(ctx3, APP, attente=7000, q='?tlv=0.05')
         pg3.wait_for_function("()=>!document.querySelector('canvas[data-trace]') && !!document.getElementById('onbPh') && getComputedStyle(document.getElementById('onbPh')).visibility==='visible'", timeout=90000); pg3.wait_for_timeout(300)   # à ×0,05 la page du prénom se trace vingt fois plus lentement
         pg3.evaluate(ENREG); B.tap_sel(pg3, '#onbPh'); pg3.wait_for_timeout(500); pg3.keyboard.type('Camille', delay=30); pg3.keyboard.press('Enter')
-        for _ in range(400):
-            pg3.wait_for_timeout(60)
-            e = pg3.evaluate("()=>{ const r=window.__TL.find(x=>x.id==='onbDit'); if(!r||!r.ctl) return null; const c=window.__CTL[r.k]; return c?c.etat():null; }")
-            if e and e['glyphe'] == 9: break   # « Camille, donc. » : le « o » de « donc » (la dixième lettre, les espaces ne comptent pas)
-        pg3.wait_for_timeout(500)
-        r = pg3.evaluate("()=>{ const e=document.getElementById('onbDit'); const g=document.createRange(); g.selectNodeContents(e); const q=g.getBoundingClientRect(); return [q.left, q.top, q.width, q.height]; }")
-        pg3.screenshot(path='scratchpad/v153/trace-o-x005.png', clip={'x': r[0] + r[2] * 0.55, 'y': r[1] - 2, 'width': r[2] * 0.3, 'height': r[3] + 4}); ctx3.close()
-        print('INFO  capture : scratchpad/v153/trace-o-x005.png (×0,05, le « o » de « donc » en cours)')
+        info = None
+        for _ in range(600):
+            pg3.wait_for_timeout(50)
+            info = pg3.evaluate("()=>{ const r=window.__TL.find(x=>x.id==='onbDit'); if(!r) return null; const c=window.__CTL[r.k]; if(!c||c.fini) return null; const e=c.etat(); if((e.actives||[]).length<3) return null; return {a:e.actives, g:e.actives.map(j=>c.glyphes[j].car)}; }")
+            if info: break
+        e = pg3.evaluate("()=>{ const cv=document.querySelector('canvas[data-trace]'); const q=(cv||document.getElementById('onbDit')).getBoundingClientRect(); return [q.left, q.top, q.width, q.height]; }")
+        pg3.screenshot(path='scratchpad/v154/trace-x005.png', clip={'x': e[0], 'y': e[1], 'width': e[2], 'height': e[3]}); ctx3.close()
+        print('INFO  capture : scratchpad/v154/trace-x005.png (×0,05, « Camille, donc. », lettres en cours : %s)' % (info and ' · '.join(info['g'])))
 
     # ── le coût (information) : un tracé en temps réel à ×1, ce que le module mesure lui-même ──
     pose(False)

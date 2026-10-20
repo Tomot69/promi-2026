@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v153', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v154', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -20523,7 +20523,9 @@ var CREMEETAT='#F7F0DE';
     var L=null; try{ if(window._tenirMorceaux) L=window._tenirMorceaux(); }catch(_){}
     if(!L) L=[function(){ if(window._tenirApres) window._tenirApres(); }, function(){ if(window._repasseSombre) window._repasseSombre(); }];
     window._enFond(L); }
-  window._tenirRegle={AMANDE:2000};   /* v144 (C-111) : la durée de l'instant amande, en ms — décidée par Tom (le double de 1 000) */
+  window._tenirRegle={AMANDE:2400};   /* v144 (C-111) : la durée de l'instant amande, en ms — décidée par Tom (le double de 1 000) ; ⚑ v154 (Tom, C-167) : 400 ms de plus
+     avant que le vert remonte (2 000 → 2 400), pour toutes les phrases de validation. Un toucher n'importe où pendant ce temps (`window._tenirVite`, posé par
+     lot-V146-MAREE) fait remonter le vert tout de suite et mène à la fiche tenue ; sans toucher, le retour se fait seul. */
   /* ⚑ E3 (v153, ENGAGEMENT.md E3 point 3 avec l'amendement A1, C-077) — « Réduire les animations » : la fiche passe TENUE sans rideau, dans un seul
      changement d'aplat, sans fondu. Aucun instant (ni « Parole tenue ! » posé deux secondes, ni « juste après ») : le clic « tenue » repeint la fiche
      ordinaire dans son état tenu, une fois, et c'est tout. */
@@ -20545,22 +20547,23 @@ var CREMEETAT='#F7F0DE';
     /* ⚑ v144 (Tom, 12 oct. 2026, C-111) — « LE MOMENT TENIR : PLUS LENT. L'étape “tenu” part trop vite : la mention et l'état tenu restent posés environ
        deux fois plus longtemps avant la suite, avec la même fluidité, sans saut. » L'instant amande (« Parole tenue. » / « Défi relevé. ») dure
        2 000 ms (1 000 avant), pour un Promi comme pour un Chiche ; « juste après » vient ensuite, et la pose complète 700 ms plus tard, comme avant. */
-    var DUR=(window._tenirRegle||{}).AMANDE||2000;
-    var t0=performance.now(), apres=false, vu={};
+    var DUR=(window._tenirRegle||{}).AMANDE||2400;
+    var t0=performance.now(), apres=false, vu={}, tA=DUR;   /* v154 (C-167) : tA — l'heure (relative) où vient « juste après » : DUR, ou le toucher qui presse */
     (function img(){
       var t=performance.now()-t0;
       if(!window._instant){ finAnime(); return; }
       /* §4.5 — la dalle n'a pas pu être peinte (monde pas prêt) : on la redemande, aux mêmes instants qu'avant, mais seulement alors */
-      [60,200,600].forEach(function(ms){ var k=(apres?'a':'r')+ms, dt=apres?t-DUR:t;
+      [60,200,600].forEach(function(ms){ var k=(apres?'a':'r')+ms, dt=apres?t-tA:t;
         if(dt>=ms && !vu[k]){ vu[k]=1; if(!window._instDalle) rejoue(); } });
       /* le CONTENU de la fiche (les Noyaux du nouvel état) se remplit dans une image calme de la seconde d'amande — rien ne bouge alors
          à l'écran — pour que « juste après » trouve ses Noyaux justes ; la pose complète, elle, attend la fin (`_tenirApres`) */
       if(!vu.base && t>=320 && !apres){ vu.base=1; try{ if(window._tenirCorps){ window._tenirCorps(); window._tenirCorpsFait=true; } }catch(_){}
         try{ if(window._instant==='referme') cache(document.getElementById('dAura')); }catch(_){} }   /* le contenu seul (titre, Noyaux du nouvel état), sans la pose ; les Noyaux restent cachés jusqu'à « juste après » */
-      if(!apres && t>=DUR){ apres=true; if(window._instant==='referme'){ window._instant='apres'; window._instDalle=false;
+      var presse=!!(window._tenirVite && window._tenirVite>=t0);
+      if(!apres && (t>=DUR || presse)){ apres=true; tA=Math.min(t, DUR); if(window._instant==='referme'){ window._instant='apres'; window._instDalle=false;
           /* v143 (C-102) : les cotes dans cette image, le trait dans la suivante (les deux ensemble : 12 à 15 ms + 5 de mise en page, une image de 20 à 23 ms) */
           try{ if(window._ficheCotes) _ficheCotes(); }catch(_){} requestAnimationFrame(function(){ try{ if(window._instant && window._ficheTrait) _ficheTrait(); }catch(_){} }); } }
-      if(t<DUR+700) requestAnimationFrame(img); else finAnime();
+      if(t<(apres?tA:DUR)+700) requestAnimationFrame(img); else finAnime();
     })();
     setTimeout(finAnime, DUR+2000);            /* garde-fou : rien ne reste suspendu si l'affichage s'arrête (onglet caché) */
   };
@@ -38061,7 +38064,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function traceTextes(L, apres){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; }); if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ L.forEach(function(e){ e.style.visibility='visible'; }); if(apres) apres(); return; }
     L.forEach(function(e){ e.style.visibility='hidden'; });
     (function un(i){ if(i>=L.length){ if(apres) apres(); return; } var e=L[i]; e.style.visibility='visible';
-      try{ var c=window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (22 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ }
+      try{ var c=window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (v154 : 40 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ }
       un(i+1); })(0); }
   window._onbTraceTextes=traceTextes;
   function decouvre(el, ms, apres){ var t0=performance.now(); el.style.clipPath='inset(0 100% 0 0)'; el.style.visibility='visible';
@@ -40575,7 +40578,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
      La Toile est recopiée de son canevas. Le plateau, la barre (et le rappel du compte s'il est là) sont repeints nœud par nœud : fond,
      contour, coins, pseudo-éléments (l'anneau et le disque du +), dessins, textes — à leurs cotes et à leurs styles CALCULÉS. Tout sera
      flouté à 4,8 pt : c'est une image de fond, jamais ce qu'on lit (ce qu'on lit, c'est l'accueil vrai, par le trou). */
-  function accueilImage(){
+  function accueilImage(rendu){   /* v154 (C-166) : `rendu` — la Toile rendue par le moteur, vue de l'écran (Toile.renderTo), pas relue sur son canevas : sous le Studio, le canevas de l'accueil n'est pas repeint */
     var c=document.createElement('canvas'); c.width=390; c.height=844; var x=c.getContext('2d'), D=dev.getBoundingClientRect(), kk=k(), P=[];
     function R(e){ var q=e.getBoundingClientRect(); return [(q.left-D.left)/kk,(q.top-D.top)/kk,q.width/kk,q.height/kk]; }
     function opaque(col){ var m=/rgba?\(([^)]+)\)/.exec(col||''); if(!m) return false; var p=m[1].split(','); return p.length<4 || parseFloat(p[3])>0.02; }
@@ -40602,7 +40605,9 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       caisse(cs, b); pseudo(e, '::before', b); pseudo(e, '::after', b);
       for(var ch=e.firstChild; ch; ch=ch.nextSibling){ if(ch.nodeType===3) texte(ch, cs); else if(ch.nodeType===1) noeud(ch); } }
     try{ x.fillStyle=(window.Toile&&Toile.fondToile)?Toile.fondToile():(getComputedStyle(dev).backgroundColor||'#000'); x.fillRect(0,0,390,844); }catch(_){ }
-    try{ var tc=$('toileCv'); if(tc && tc.width){ var tb=R(tc); x.drawImage(tc, tb[0], tb[1], tb[2], tb[3]); } }catch(_){ }
+    try{ var tc=$('toileCv'); if(tc && tc.width){ var tb=R(tc), src=tc;
+      if(rendu && window.Toile && Toile.renderTo){ var rc=document.createElement('canvas'); if(Toile.renderTo(rc, tc.width/Math.max(1,tb[2]), null, {vue:true})) src=rc; }
+      x.drawImage(src, tb[0], tb[1], tb[2], tb[3]); } }catch(_){ }
     [$('accPlat'), document.querySelector('#device .acc-barre'), $('accRappel'), $('accRappelCompte')].forEach(function(e){ if(e){ try{ noeud(e); }catch(_){ } } });
     return Promise.all(P).then(function(){ return c; });
   }
@@ -40691,7 +40696,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     tPose=performance.now(); g.setAttribute('data-pose', ''+Math.round(tPose));
     accueilImage().then(function(net0){ if(id!==jeu || !$('guide')) return; var t0=performance.now(), flou=F.floute(net0, FLOU); g.setAttribute('data-flou-ms', ''+Math.round(performance.now()-t0));
       SC=F.Scene(cv, {l:390, h:844, densite:2, flou:flou, graine:((Date.now()&0xffffff)|1), creux:GD.CREUX||10, rayon:GD.RAYON||150});
-      g.__flou=flou; g.__net=net0;
+      g.__flou=flou; g.__net=net0; SIG0=sigToile(); g.setAttribute('data-flou-sig', SIG0);   /* v154 (C-166) : ce que montre le fond flouté */
       if(reduit() || sansRevelation){ couv(1); SC.peint(); g.setAttribute('data-entier','1'); etape(quoi, true); return; }
       preCible(quoi);                                                 /* l'entourage du premier arrêt, calculé ici : rien ne bouge encore */
       etat='couvre'; g.setAttribute('data-depart', ''+Math.round(performance.now()));
@@ -40704,6 +40709,36 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     return true; }
   /* le Studio touché : il s'ouvre PAR-DESSUS le guide (l'eau reste posée dessous) ; au retour sur l'accueil, sa zone se referme et celle du + s'ouvre */
   function versStudio(){ LS.s(CLE,'1'); var g=$('guide'); deshabille(); trou=null; etat='au-studio'; tVu=performance.now(); vuStudio=false; tAcc=0; if(g) g.setAttribute('data-guide','au-studio'); try{ $('studioBtn').click(); }catch(_){ } }
+  /* ⚑ v154 (Tom, C-166) — « APRÈS LE STUDIO, LE FOND MONTRE LE NOUVEAU MONDE ». Le fond flouté était l'image de l'accueil prise au lancement du guide :
+     au retour du Studio, la phrase du + paraissait sur l'ANCIEN monde. Pendant que le Studio est ouvert PAR-DESSUS le guide, dès que le monde, la
+     palette, la teinte ou le thème ont changé et que la Toile est posée, l'image de l'accueil est reprise (la Toile réelle) et floutée HORS DU FIL
+     PRINCIPAL (un Worker, le même flou que `Flaques.floute`, au niveau près) ; elle remplace l'ancienne sous le Studio, avant qu'il se referme. L'étape
+     du + attend qu'elle soit posée. Rien n'a changé : rien n'est recalculé, le fond reste celui d'avant, au pixel. */
+  var SIG0=null, refait=false, OUVF=null;
+  function sigToile(){ try{ var m=Toile.mondeCourant()||{}; return [m.m, m.p, m.h, dev.classList.contains('light')?'clair':'sombre'].join('|'); }catch(_){ return ''; } }
+  function ouvrierFlou(){ if(OUVF!==null) return OUVF;
+    try{ var src='onmessage=function(e){var a=e.data.a,w=e.data.w,h=e.data.h,r=e.data.r,b=new Uint8ClampedArray(a.length),n=2*r+1;'+
+      'function H(s,d){for(var y=0;y<h;y++){var o=y*w*4,R0=0,G0=0,B0=0,A0=0,x,k;for(k=-r;k<=r;k++){var q=o+Math.max(0,Math.min(w-1,k))*4;R0+=s[q];G0+=s[q+1];B0+=s[q+2];A0+=s[q+3];}'+
+      'for(x=0;x<w;x++){var p=o+x*4;d[p]=R0/n;d[p+1]=G0/n;d[p+2]=B0/n;d[p+3]=A0/n;var E=o+Math.min(w-1,x+r+1)*4,f=o+Math.max(0,x-r)*4;R0+=s[E]-s[f];G0+=s[E+1]-s[f+1];B0+=s[E+2]-s[f+2];A0+=s[E+3]-s[f+3];}}}'+
+      'function V(s,d){for(var x=0;x<w;x++){var R0=0,G0=0,B0=0,A0=0,y,k;for(k=-r;k<=r;k++){var q=(Math.max(0,Math.min(h-1,k))*w+x)*4;R0+=s[q];G0+=s[q+1];B0+=s[q+2];A0+=s[q+3];}'+
+      'for(y=0;y<h;y++){var p=(y*w+x)*4;d[p]=R0/n;d[p+1]=G0/n;d[p+2]=B0/n;d[p+3]=A0/n;var E=(Math.min(h-1,y+r+1)*w+x)*4,f=(Math.max(0,y-r)*w+x)*4;R0+=s[E]-s[f];G0+=s[E+1]-s[f+1];B0+=s[E+2]-s[f+2];A0+=s[E+3]-s[f+3];}}}'+
+      'for(var t=0;t<3;t++){H(a,b);V(b,a);}postMessage({a:a},[a.buffer]);};';
+      OUVF=new Worker(URL.createObjectURL(new Blob([src],{type:'text/javascript'}))); }catch(_){ OUVF=false; } return OUVF; }
+  function flouHors(net, sigma){ return new Promise(function(ok){ var w=net.width, h=net.height, W=Math.sqrt(12*sigma*sigma/3+1), r=Math.max(1,Math.round((W-1)/2)), o=ouvrierFlou();
+    if(!o){ ok(F.floute(net, sigma)); return; }
+    var im=net.getContext('2d').getImageData(0,0,w,h);
+    o.onmessage=function(e){ var c=document.createElement('canvas'); c.width=w; c.height=h; var cx=c.getContext('2d'), im2=cx.createImageData(w,h); im2.data.set(e.data.a); cx.putImageData(im2,0,0); ok(c); };
+    o.onerror=function(){ OUVF=false; ok(F.floute(net, sigma)); };
+    o.postMessage({a:im.data, w:w, h:h, r:r}, [im.data.buffer]); }); }
+  var sigVu=null, tSig=0;
+  function majFlou(){ if(refait || !SC) return; var s=sigToile(); if(!s || s===SIG0) return;
+    var now=performance.now(); if(s!==sigVu){ sigVu=s; tSig=now; return; } if(now-tSig<900 || doigt || now-tDoigt<600) return;   /* sous le Studio la Toile tourne toujours (elle porte ses aperçus) : on attend que le monde choisi ait fini d'arriver — 900 ms sans autre changement */
+    refait=true; var j0=jeu;
+    accueilImage(true).then(function(net0){ return flouHors(net0, FLOU).then(function(fl){ return [net0, fl]; }); }).then(function(r){ refait=false; var g=$('guide');
+      if(j0!==jeu || !g || !SC) return; if(sigToile()!==s) return;   /* changé encore entre-temps : le prochain passage refait */
+      SC.flou=r[1]; g.__flou=r[1]; g.__net=r[0]; SIG0=s; g.setAttribute('data-flou-sig', s); g.setAttribute('data-flou-refait', String((+g.getAttribute('data-flou-refait')||0)+1)); SC.peint(); })
+      .catch(function(){ refait=false; }); }
+  window._guideFlou={ sig:sigToile, maj:majFlou, attend:function(){ return refait || (SC && sigToile()!==SIG0); } };
   /* le + touché : les trois natures s'ouvrent, et les flaques se vident (la zone du + reste nette jusqu'au bout) */
   function versPlus(){ attente=null; var g=$('guide'); deshabille(); etat='part'; if(g){ g.style.pointerEvents='none'; g.setAttribute('data-guide','part'); }
     try{ var ch=$('accChoix'); if(ch) ch.classList.add('ouvert'); else $('createBtn').click(); }catch(_){ }
@@ -40720,9 +40755,9 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   setInterval(function(){ var now=performance.now();
     if(attente){ if(!attente.rejeu && LS.g(CLE)==='1'){ attente=null; return; }
       if(accueil() && calme()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ attente=null; tAcc=0; LS.s(CLE,'studio'); montre('studio'); } } else tAcc=0; return; }
-    if(etat==='au-studio'){ var a=accueil();
+    if(etat==='au-studio'){ var a=accueil(); majFlou();   /* v154 (C-166) */
       if(!a){ vuStudio=true; tAcc=0; }
-      else if(vuStudio || now-tVu>6000){ if(calme()){ if(!tAcc) tAcc=now; if(now-tAcc>=RETOUR){ tAcc=0; if(!versLePlus()){ retire(); etat=null; } } } else tAcc=0; } }   /* le Studio refermé, avec ou sans choix (6 s : un Studio qui ne s'ouvrirait pas) */
+      else if(vuStudio || now-tVu>6000){ if(calme()){ if(!tAcc) tAcc=now; var neuf=!(refait || (SC && sigToile()!==SIG0)) || now-tAcc>=RETOUR+1500; if(now-tAcc>=RETOUR && neuf){ tAcc=0; if(!versLePlus()){ retire(); etat=null; } } } else tAcc=0; } }   /* le Studio refermé, avec ou sans choix (6 s : un Studio qui ne s'ouvrirait pas) */
     else if(etat==='studio' || etat==='plus' || etat==='vers-plus' || etat==='couvre'){
       if(!accueil()){ retire(); etat=null; } } }, 60);
   /* `?guide=1` le rejoue à l'ouverture ; `&gfige=800` arrête la couverture à cet instant ; `&getape=plus` montre la seconde étape ;
@@ -41151,6 +41186,18 @@ window._noms=(function(){
    au portage Swift (`CHHapticEngine`, un motif par nom). Un appel ne doit jamais rien coûter ni rien bloquer. */
 window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics au portage Swift (C-022) */ };
 </script>
+<style id="lot-V154-REDUIT-css">
+/* ⚑ v154 (Tom, §4) — « RÉDUIRE LES ANIMATIONS » : PROMI SUIT LE RÉGLAGE DE L'iPHONE, POUR TOUTE L'APP, SANS INTERRUPTEUR. La règle générale
+   (`*{animation:none!important}`, ligne ~1483) est battue par deux mouvements posés plus tard en `!important` à deux id : l'anneau du + qui tourne
+   (heroSpin, 48 et 100 s) et les nappes de la carte « Ma Parole ! » (cercleBlobs). Ils s'arrêtent ici, à trois id. Le I qui clignote n'est pas un
+   mouvement : il reste. ⚠ `*` ne touche pas les pseudo-éléments : un mouvement posé sur `::before` / `::after` passait sous la règle générale. */
+@media (prefers-reduced-motion:reduce){
+  #device#device .acc-barre #createBtn::before, #device#device #createBtn.dhero::before, #device#device #createBtn.dhero::after,
+  #createBtn#createBtn#createBtn::before, #createBtn#createBtn#createBtn::after,
+  #device#device#device .set-cercle, #device#device#device .set-cercle *, #device#device#device .set-cercle::before, #device#device#device .set-cercle::after,
+  .set-cercle.set-cercle::after, .pplus-card.pplus-card::after, .karma-cercle.karma-cercle::after{animation:none!important}
+}
+</style>
 <script id="lot-V146-MAREE">
 /* ⚑ v146 (Tom, 14 oct. 2026, C-118) — TENIR : LA VARIANTE A (« LA MARÉE »), CORRIGÉE, DANS L'APP. « Plus de liseré, de filet, ni de jour ouvert sous le
    trait. Le trait EST le fond du bas en mode célébration. Aucune séparation entre le trait et le vert de même couleur : c'est une seule matière. Ce qui
@@ -41180,7 +41227,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   var VERT='#8FE08F', ENCRE='#201908', BAR=760, DESC=[0,700], MONTE=560, EP=12, M=null, N=null, NG=0, BORD=7, CV0=null;
   /* `?mareeLent=4` : tout l'instant au quart de sa vitesse (la vidéo ralentie pour Tom) */
   var LENT=Math.max(1, Math.min(8, parseFloat((/[?&]mareeLent=([\d.]+)/.exec(location.search)||[])[1])||1));
-  if(LENT>1){ DESC=[DESC[0]*LENT, DESC[1]*LENT]; MONTE*=LENT; try{ window._tenirRegle=window._tenirRegle||{}; window._tenirRegle.AMANDE=2000*LENT; }catch(_){ } }
+  if(LENT>1){ DESC=[DESC[0]*LENT, DESC[1]*LENT]; MONTE*=LENT; try{ window._tenirRegle=window._tenirRegle||{}; window._tenirRegle.AMANDE=2400*LENT; }catch(_){ } }
   function reduit(){ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   window._mareeOn=function(){ return !reduit(); };
   function trait(){ try{ var c=document.getElementById('dpTrameCv'), v=(c.getAttribute('data-trait')||'').split(','), b=parseFloat(v[0]), a=parseFloat(v[1]); if(!(b>0)) return null; return {base:b, amp:a, y:window._onde.onde(b, a)}; }catch(_){ return null; } }
@@ -41251,11 +41298,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     for(var xm=392; xm>=-2; xm-=4) MONT.push(T.y(Math.max(0,Math.min(390,xm)))+EP/2-N.y0);
     if(!DEP) DEP=MONT.slice();
     var vMoy=0; DEP.forEach(function(s){ vMoy+=(N.FIN-s); }); vMoy=vMoy/DEP.length/DESC[1];   /* la vitesse du front, en pt/ms */
-    M={cv:cv, it:it, v:vMoy, t0:t0, phrase:phrase, stop:function(){ fin=true; if(cv.parentNode) cv.remove(); if(it) it.style.removeProperty('visibility'); M=null; }};
+    M={cv:cv, it:it, v:vMoy, t0:t0, phrase:phrase, monte:function(){ return !!monte0; }, stop:function(){ fin=true; if(cv.parentNode) cv.remove(); if(it) it.style.removeProperty('visibility'); M=null; }};
     (function f(maintenant){ if(fin) return; if(!document.getElementById('tenirMaree')){ M&&M.stop(); return; }
       if(!t0 && maintenant){ t0=performance.now(); if(M) M.t0=t0; }
       if(!mot && !opts.mot){ if(!it) it=document.getElementById('instTenue'); if(it && it.textContent && dp.classList.contains('inst-referme')) phrase(); }   /* v149 : l'instant crée et pose la ligne une image après le lever */
-      var t=t0?performance.now()-t0:0, apres=((!revoir && (window._instant==='apres' || window._instant==null)) || (performance.now()-tPose)>=((window._tenirRegle||{}).AMANDE||2000));   /* la remontée part à 2 s de la pose, à sa propre horloge */
+      var t=t0?performance.now()-t0:0, apres=((!revoir && (window._instant==='apres' || window._instant==null)) || (performance.now()-tPose)>=((window._tenirRegle||{}).AMANDE||2400) || (window._tenirVite && window._tenirVite>=tPose));   /* v154 (C-167) : 2 400 ms, ou le toucher qui presse */   /* la remontée part à 2 s de la pose, à sa propre horloge */
       if(apres && !monte0) monte0=performance.now();
       var u = monte0 ? 1-io((performance.now()-monte0)/MONTE) : Math.max(0, Math.min(1, (t-DESC[0])/DESC[1]));   /* v148 : vitesse constante, d'un bout à l'autre */
       g.clearRect(0,0,390,844);
@@ -41274,6 +41321,17 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   var _it=window._instantTenue;
   if(typeof _it==='function' && !_it.__maree){ window._instantTenue=function(){ var r=_it.apply(this, arguments); try{ if(window._instant==='referme'){ if(M && M.phrase) M.phrase(); else demarre(); } }catch(_){ } return r; }; window._instantTenue.__maree=1; }
   var _ca=window.closeAll; if(typeof _ca==='function' && !_ca.__maree){ window.closeAll=function(){ try{ if(M) M.stop(); }catch(_){ } return _ca.apply(this, arguments); }; window.closeAll.__maree=1; }
+  /* ⚑ v154 (Tom, C-167, décision du chef de chantier) — PENDANT QUE LE VERT EST POSÉ, UN TOUCHER N'IMPORTE OÙ LE FAIT REMONTER TOUT DE SUITE et mène à la
+     fiche tenue. Le toucher est AVALÉ (il ne touche rien dessous : ni Peaufiner, ni ✕, ni la bande) ; il n'est lu que 300 ms après le lever (le clic du
+     lever lui-même passe avant) et tant que le vert n'a pas commencé de remonter. Sans toucher : rien ne change, le retour se fait seul à 2 400 ms. */
+  (function(){ var aval=0;
+    function actif(){ if(!M || !M.t0) return false; var n=performance.now(); return (n-M.t0>=300) && !(window._tenirVite && window._tenirVite>=M.t0) && !M.monte(); }
+    function presse(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); return; }
+      if(!actif()) return; window._tenirVite=performance.now(); aval=performance.now(); e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); }
+    function suite(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); } }
+    ['touchstart','pointerdown','mousedown'].forEach(function(n){ document.addEventListener(n, presse, {capture:true, passive:false}); });
+    ['touchend','pointerup','mouseup','click'].forEach(function(n){ document.addEventListener(n, suite, {capture:true, passive:false}); });
+  })();
   window._maree={etat:function(){ return M?{actif:true, t0:M.t0, v:M.v}:{actif:false}; }, prepare:prepare, regle:{VERT:VERT, DESC:DESC, MONTE:MONTE, BAR:BAR},
     /* v149 : au lever (le clic « tenue ») — l'horloge part du lever */
     tot:function(){ try{ demarre(performance.now()); }catch(_){ } },

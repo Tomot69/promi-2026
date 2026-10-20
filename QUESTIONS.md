@@ -8792,15 +8792,21 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 
 ### v153 (20 oct. 2026) — le clavier après le prénom, le tracé des lettres (récidive), « t'appartient. », l'entourage du +, puis E3
 **Tranchée : Q553 (chef de chantier : « Tom refuse le rond » — autour du +, la marge va de 4 à 10 pt).**
-- **Q554 — À TRANCHER (E3, R4)** : ENGAGEMENT.md borne la séquence « tenir » à 1 000 ms ; avec A1, la séquence est le rideau validé (C-111, C-118), qui
+- **Q554 — VALIDÉE PAR TOM (v154) · À TRANCHER (E3, R4)** : ENGAGEMENT.md borne la séquence « tenir » à 1 000 ms ; avec A1, la séquence est le rideau validé (C-111, C-118), qui
   reste posé 2 s puis remonte : ≈ 2,6 s du lever au repos. *Proposition* : la borne de 1 000 ms vaut pour le MOUVEMENT (du lever au rideau à la barre :
   660–680 ms mesurés) ; l'instant posé garde ses 2 s validées. Appliqué ainsi dans `redteam_tenir_e3`.
 - **Q555 — À SAVOIR (C-165)** : en clair, toute la ligne « La suite t'appartient. » était déjà au cobalt `#0E78F2` : « t'appartient. » y garde ce bleu,
   le changement ne se voit qu'en sombre (`#82AEF8`, « La suite » reste crème, Q548). *Proposition* : rien de plus.
-- **Q556 — À VALIDER (C-125)** : le tracé à 22 caractères par seconde (une lettre ≈ 45 ms, trois images) ; réglable par l'adresse : `?cps=18`, `?cps=25`… ;
+- **Q556 — DÉPASSÉE (v154 : Tom, « trop lent » → 40 car/s)** : le tracé à 22 caractères par seconde (une lettre ≈ 45 ms, trois images) ; réglable par l'adresse : `?cps=18`, `?cps=25`… ;
   `?tlv=0.05` le montre au vingtième pour regarder une lettre se constituer. *Proposition* : Tom essaie 18, 22, 25 sur l'iPhone et donne le chiffre.
-- **Q557 — À SAVOIR (C-164)** : le prénom validé, le clavier se ferme ; pour écrire la parole on touche la phrase (« Je me promets de … ») — un toucher de
+- **Q557 — VALIDÉE PAR TOM (v154) · À SAVOIR (C-164)** : le prénom validé, le clavier se ferme ; pour écrire la parole on touche la phrase (« Je me promets de … ») — un toucher de
   plus qu'en v152. *Proposition* : garder (c'est ce que demande « le clavier se ferme »).
 - **Q558 — À SAVOIR (C-125)** : dans un coude serré du chemin (le chemin tourne de plus de 20° sur une largeur de trait : le « s » de Gilbert), le front
   PIVOTE en éventail autour de l'intérieur du coude, comme une plume — il n'y est pas « perpendiculaire » au sens d'une ligne droite ; le juge mesure ± 10°
   hors des coudes (médianes 1 à 5°).
+- **Q559 — À SAVOIR (C-125, v154)** : l'« onde » que Tom voyait était la règle R3 du module (chaque lettre partait là où la précédente avait fini, d'où
+  un tracé qui alternait haut et bas) ; R3 est retirée : chaque lettre prend son tracé naturel (« h » quand elle l'a). *Proposition* : rien de plus.
+- **Q560 — À SAVOIR (C-167, v154)** : le toucher qui fait remonter le vert est AVALÉ — il n'ouvre rien de ce qui est dessous (Peaufiner, ✕, la bande) ;
+  il n'est lu que 300 ms après le lever (le geste qui finit ne presse rien). *Proposition* : garder.
+- **Q561 — À SAVOIR (§4, v154)** : sous « Réduire les animations », le I de PROMI clignote encore (un clignotement n'est pas un mouvement) ; tout le
+  reste est immobile. *Proposition* : garder ; si Tom veut l'arrêter aussi, une ligne.

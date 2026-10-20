@@ -19,7 +19,7 @@ l'animation — « aucun travail lourd pendant l'animation, il passe avant ou ap
 Vingt fois : on rouvre une parole à tenir, on trace le geste à la souris (CDP), on lève.
   1 · aucune image de l'animation au-delà de 20 ms de travail (sur les vingt) ;
   2 · p95 du travail par image ≤ 16,7 ms ;
-  3 · la durée est celle que Tom a décidée : « juste après » paraît 2 000 ms (± 80) après « le trait se referme » ;
+  3 · la durée est celle que Tom a décidée : « juste après » paraît 2 400 ms (± 80, v154 C-167) après « le trait se referme » ;
   4 · le dessin est celui d'avant : les deux états paraissent (champ amande puis nature), la parole est tenue.
 Preuve (§7) : sur `sauvegardes/app-avant-v124.html` il ROUGIT (images de 400 à 580 ms).
 """
@@ -28,8 +28,8 @@ from playwright.sync_api import sync_playwright
 
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
 N = int(next((a.split('=')[1] for a in sys.argv if a.startswith('--n=')), 20))
-SEUIL, P95, DUREE = 20.0, 16.7, 2700.0   # ⚑ v144 (Tom, C-111) : l'instant amande dure 2 000 ms (1 000 avant) — l'animation va du lever à 2 700 ms
-AMANDE_DECIDE, FIN_RELEVE = 2000, 4500
+SEUIL, P95, DUREE = 20.0, 16.7, 3100.0   # ⚑ v154 (Tom, C-167) : 2 400 ms d'amande, l'animation va du lever à 3 100 ms · ⚑ v144 (Tom, C-111) : l'instant amande dure 2 000 ms (1 000 avant) — l'animation va du lever à 2 700 ms
+AMANDE_DECIDE, FIN_RELEVE = 2400, 4900
 # ⚑ v125 (Tom, Q379) : « le travail remis après "tenir" part en tâche de fond, découpée, pour qu'un toucher à cet instant ne soit
 # jamais retenu ». De la fin de l'animation à 3,5 s après le lever : aucune TÂCHE du fil principal au-delà de deux images (33,4 ms).
 TACHE_APRES = 33.4
@@ -141,7 +141,7 @@ with sync_playwright() as p:
     n_long = sum(1 for w in toutes if w > SEUIL)
     t('1 · aucune image de l\'animation au-delà de 20 ms de travail (%d animations, %d images)' % (N, len(toutes)), bool(toutes) and n_long == 0, '%d image(s) au-delà · la plus longue %.1f ms' % (n_long, max(pires or [0])))
     t('2 · p95 du travail par image ≤ 16,7 ms', bool(toutes) and p95 <= P95, 'p50 %.1f · p95 %.1f ms' % (p50, p95))
-    t('3 · la durée : « juste après » paraît 2 000 ms (± 80) après « le trait se referme », et l\'app déclare cette valeur', len(apres_t) == N and all(abs(x - AMANDE_DECIDE) <= 80 for x in apres_t) and pg.evaluate("()=>(window._tenirRegle||{}).AMANDE") == AMANDE_DECIDE, '%s' % ('de %d à %d ms' % (min(apres_t), max(apres_t)) if apres_t else 'non relevée'))
+    t('3 · la durée : « juste après » paraît 2 400 ms (± 80, v154 C-167) après « le trait se referme », et l\'app déclare cette valeur', len(apres_t) == N and all(abs(x - AMANDE_DECIDE) <= 80 for x in apres_t) and pg.evaluate("()=>(window._tenirRegle||{}).AMANDE") == AMANDE_DECIDE, '%s' % ('de %d à %d ms' % (min(apres_t), max(apres_t)) if apres_t else 'non relevée'))
     t('4 · le dessin : les deux états paraissent et la parole est tenue, à chaque fois', etats == N, '%d sur %d' % (etats, N))
     t('5 · après l\'animation (1,7 s → 3,5 s) : aucune tâche au-delà de 33,4 ms — un toucher n\'attend jamais plus de deux images', tache_max > 0 and tache_max <= TACHE_APRES, 'la plus longue : %.1f ms' % tache_max)
     t('aucune erreur de page', not er, '; '.join(er[:2]))

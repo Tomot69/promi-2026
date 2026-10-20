@@ -13,7 +13,12 @@
      · à un bout libre le trait part de rien, sur le bord de l'encre ; à un coin il va jusqu'au bord extérieur ; à un embranchement il s'arrête
        sur la ligne de l'autre trait ; à un sommet de la ligne le front pivote ;
      · un repassage (invisible) dure le dixième de sa longueur, un saut ne dure rien.
-   Un seul glyphe s'anime à la fois, dans un canevas ; dès qu'il est fini, c'est le TEXTE RÉEL qui le montre (la découpe du texte avance).
+   ⚑ v154 (Tom, C-125) — LE DÉBIT ET LA DURÉE D'UNE LETTRE SONT SÉPARÉS : les lettres PARTENT au débit (`cps`, 40 par seconde : une toutes les 25 ms) ;
+   chacune DURE de 70 ms à ce qu'il faut pour que jamais plus de TROIS lettres ne soient en cours ensemble (74 ms à 40 car/s ; 90 au plus) — au moins
+   quatre images à 60 Hz : on la voit se constituer. Elles partent strictement de gauche à droite ; la suivante commence avant que la précédente ait
+   fini, jamais avant elle. AUCUNE ONDE : chaque lettre prend son tracé naturel (la variante qui part du haut), quelle que soit la précédente — le
+   chaînage haut / bas d'une lettre à l'autre (R3, v146) faisait onduler le mot. Les lettres en cours vivent dans le canevas ; dès qu'une lettre est
+   finie, c'est le TEXTE RÉEL qui la montre (la découpe du texte avance).
 
    ── L'API ──
    TraceLettres.trace(cible, contenu, options) → controle
@@ -21,7 +26,7 @@
        contenu  null : on trace ce que l'élément contient déjà, avec ses styles (couleurs, polices, tailles des nœuds enfants)
                 'une chaîne' : elle remplace le contenu (« \n » = retour à la ligne)
                 [ {t:'Primo, un '}, {t:'Promi', couleur:'#82AEF8'}, {t:' …', police:'PromiLate', classe:'x', style:'…'} ] : des segments
-       options  cps          caractères par seconde (22 ; v153, Tom : 20 à 25 au départ, réglable ; `?cps=` dans l'adresse)
+       options  cps          caractères par seconde — le DÉBIT des départs (40 ; v154, Tom : 38 à 42 ; `?cps=` dans l'adresse)
                 vitesse      multiplicateur (1 ; 0.25 et 0.05 pour regarder au ralenti)
                 depart       'h' | 'b' : le côté où commence la toute première lettre (R3 ; 'h')
                 espace       la pause d'une espace, en caractères (0.4)
@@ -49,7 +54,7 @@
    ④ le texte se lit de gauche à droite ; un `transform` posé sur un mot À L'INTÉRIEUR de la cible (le « Deuxio » penché) n'est pas suivi. */
 (function (racine) {
   'use strict';
-  var TL = { version: 2, defauts: { cps: 22, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [], cache: 0 }, _cache: {}, _cacheN: 0 };
+  var TL = { version: 2, defauts: { cps: 40, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [], cache: 0 }, _cache: {}, _cacheN: 0 };
   /* ⚑ v153 (Tom, C-125, récidive : « les lettres font pof ») — LA CAUSE, mesurée au banc WebKit : le module traçait bien (chemins trouvés pour Gilbert,
      Atkinson et PromiLate, cartes calculées dans le Worker), mais à 50 caractères par seconde une lettre durait ≈ 20 ms — à peine plus d'une image à
      60 Hz : elle paraissait d'un coup, puis la suivante. Tom : « PLUS LENT, 20 à 25 caractères par seconde au départ, réglable ». Défaut : 22.
@@ -410,7 +415,7 @@
 
   var VIDE = 'polygon(0px 0px,0px 0px,0px 0px)';
   TL.trace = function (cible, contenu, options) {
-    var o = options || {}, cps = (o.cps || TL.defauts.cps) * (o.vitesse || TL.defauts.vitesse),   /* v153 : l'app ne passe plus `cps` — la vitesse décidée vit ici (22, ou `?cps=`) */ esp = o.espace == null ? TL.defauts.espace : o.espace;
+    var o = options || {}, cps = (o.cps || TL.defauts.cps), vit = (o.vitesse || TL.defauts.vitesse),   /* v153 : l'app ne passe plus `cps` — la vitesse décidée vit ici (40, ou `?cps=`) ; v154 : `vit` ralentit tout le temps (débit ET durée) */ esp = o.espace == null ? TL.defauts.espace : o.espace;
     if (cible.__trace) cible.__trace.stop();
     var ctl = { glyphes: [], duree: 0, canevas: null, fini: false }, resFin, resPret, raf = 0, mort = false;
     ctl.fin = new Promise(function (r) { resFin = r; }); ctl.pret = new Promise(function (r) { resPret = r; });
@@ -494,7 +499,7 @@
           B.cars.forEach(function (c) {
             if (c.blanc) { if (G.length) G[G.length - 1].pause += esp; return; }
             var aff = c.c, x = X0 + c.a, y = BASE, gd = D && D.g[aff], V = null, sc, av = c.av;
-            if (gd) { V = gd[cote] ? cote : (gd.h ? 'h' : (gd.b ? 'b' : null)); }
+            if (gd) { V = gd.h ? 'h' : (gd.b ? 'b' : null); }   /* ⚑ v154 (C-125, « aucune onde ») : le tracé naturel de chaque lettre, sans chaînage haut / bas */
             var inst = { car: aff, x: x, y: y, spec: spec, coul: st.color, pause: 0, police: fam, fs: fs, av: av, var: V, exception: !!(gd && V && V !== cote), demande: cote };
             if (gd && V) {
               sc = (gd.a > 0 ? av / gd.a : fs / D.upm); inst.sc = sc; inst.g = gd; inst.fin = gd[V].f; cote = gd[V].f; var u = sc * k;
@@ -539,9 +544,11 @@
       L.forEach(function (l, i) { l.y0 = i === 0 ? 0 : Math.floor(((L[i - 1].bas + l.haut) / 2 - cr.top) * dpr); }); L.forEach(function (l, i) { l.y1 = i + 1 < L.length ? L[i + 1].y0 : H; });
       brouillon.width = bw; brouillon.height = bh;
       /* 5 · la durée : N caractères à cps par seconde, à vitesse de plume constante ; une espace = une courte pause */
-      var somme = 0; G.forEach(function (g) { somme += g.l; });
-      var v = somme / (G.length / cps) / 1000;   /* longueur par ms */
-      total = 0; G.forEach(function (g) { g.t0 = total; g.d = g.l / v; total += g.d + g.pause * 1000 / cps; });
+      /* ⚑ v154 (Tom, C-125) — le DÉBIT (un départ toutes les 1000 / cps ms) et la DURÉE d'une lettre (70 ms au moins, 3 intervalles moins 1 ms au plus,
+         90 ms au plus : jamais plus de trois lettres en cours) sont séparés ; une lettre plus longue dure un peu plus, dans cette fourchette. */
+      var I = 1000 / cps, dMax = Math.min(TL.dureeMax || 90, 3 * I - 1), dMin = Math.min(TL.dureeMin || 70, dMax), lmax = 0, tt = 0;
+      G.forEach(function (g) { lmax = Math.max(lmax, g.l); });
+      total = 0; G.forEach(function (g) { g.t0 = tt / vit; g.d = (dMin + (dMax - dMin) * (lmax > 0 ? g.l / lmax : 1)) / vit; total = Math.max(total, g.t0 + g.d); tt += I + g.pause * I; });
       ctl.duree = total;
     }
 
@@ -633,7 +640,7 @@
          traits — un point gris, loin du front. Il se teint maintenant au passage du front, en entier. */
       for (p = 0; p < n; p++) { a = A[p]; if (!a) continue; m = (t - T[p] + 0.5 * sp) / (Math.min(T1[p] - T[p], 2 * sp) + sp); d[4 * p + 3] = m <= 0 ? 0 : (m >= 1 ? a : Math.round(a * m)); }
       bctx.putImageData(g.im, 0, 0);
-      ctx.clearRect(g.X0, g.Y0, g.w, g.h); ctx.drawImage(fin, g.X0, g.Y0, g.w, g.h, g.X0, g.Y0, g.w, g.h); ctx.drawImage(brouillon, 0, 0, g.w, g.h, g.X0, g.Y0, g.w, g.h);
+      ctx.drawImage(brouillon, 0, 0, g.w, g.h, g.X0, g.Y0, g.w, g.h);   /* v154 : le fond (les lettres finies) est reposé une fois pour toutes les lettres en cours (`rend`) */
     }
     function front() {
       /* LE TEXTE RÉEL PREND LES GLYPHES FINIS : dès qu'une coupe verticale franche existe entre le dernier glyphe fini et le suivant,
@@ -661,7 +668,17 @@
       var avant = ig;
       while (ig < G.length && t >= G[ig].t0 + G[ig].d) { pose(G[ig]); ig++; }
       if (ig !== avant) front();
-      if (ig < G.length && t > G[ig].t0) partiel(G[ig], (t - G[ig].t0) / G[ig].d);
+      /* ⚑ v154 — LES LETTRES EN COURS (trois au plus), de gauche à droite : leur zone est reposée depuis les lettres finies, puis chacune y est
+         dessinée à son point, par-dessus (deux boîtes voisines se recouvrent : une lettre ne doit jamais effacer sa voisine) */
+      var act = []; for (var ja = ig; ja < G.length && t > G[ja].t0; ja++) act.push(ja);
+      ctl._actives = act;
+      if (act.length) {
+        var ux0 = Infinity, uy0 = Infinity, ux1 = -Infinity, uy1 = -Infinity;
+        act.forEach(function (j) { var g = G[j]; ux0 = Math.min(ux0, g.X0); uy0 = Math.min(uy0, g.Y0); ux1 = Math.max(ux1, g.X0 + g.w); uy1 = Math.max(uy1, g.Y0 + g.h); });
+        ux0 = Math.max(0, ux0); uy0 = Math.max(0, uy0); ux1 = Math.min(cv.width, ux1); uy1 = Math.min(cv.height, uy1);
+        ctx.clearRect(ux0, uy0, ux1 - ux0, uy1 - uy0); ctx.drawImage(fin, ux0, uy0, ux1 - ux0, uy1 - uy0, ux0, uy0, ux1 - ux0, uy1 - uy0);
+        act.forEach(function (j) { partiel(G[j], Math.min(1, (t - G[j].t0) / G[j].d)); });
+      }
     }
     function image(maintenant) {
       if (mort) return; var d0 = racine.performance.now();
@@ -679,7 +696,7 @@
       raf = racine.requestAnimationFrame(image);
     }
     ctl.va = function (p) { rend(Math.max(0, Math.min(1, p)) * total + (p >= 1 ? 1 : 0)); };
-    ctl.etat = function () { return { glyphe: ig, texteReel: jd, total: G.length }; };
+    ctl.etat = function () { return { glyphe: ig, texteReel: jd, total: G.length, actives: (ctl._actives || []).slice(), t: tPrec }; };   /* v154 : les lettres en cours (indices) */
     return ctl;
   };
 

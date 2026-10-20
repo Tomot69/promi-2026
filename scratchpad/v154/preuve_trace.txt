@@ -1,0 +1,50 @@
+— MODULE « sauvegardes/trace-lettres-avant-v154.js » —
+OK  ① clair — tracé pas à pas mené au bout : la dernière image est le texte statique, au pixel près  pixels différents : 0 au dernier pas, 0 après la fin ; 121223 pixels d'encre
+OK  ① clair — au dernier pas le canevas ne montre plus rien et la découpe est levée  [3, 'none|none|none']
+OK  ① clair — tracé en temps réel : la dernière image est le texte statique, il ne reste aucun canevas  pixels différents : 0 ; canevas restants : 0
+OK  ① sombre — tracé pas à pas mené au bout : la dernière image est le texte statique, au pixel près  pixels différents : 0 au dernier pas, 0 après la fin ; 121581 pixels d'encre
+OK  ① sombre — au dernier pas le canevas ne montre plus rien et la découpe est levée  [3, 'none|none|none']
+OK  ② aucune opacité intermédiaire hors du front : sur 39 images en cours de tracé, les pixels de couverture partielle ne forment aucune plage  plus grande plage : 0 pixels (témoin, le texte statique : 0) ; plus grand liséré : 16303 pixels (anticrénelage des contours et du front) ; images réellement à mi-tracé : 39
+OK  ⑥ pas à pas : le texte part de rien et ne recule jamais  départ 0, fin 121223 sur 121223 pixels ; plus petite étape +2123
+OK  ⑥ pas à pas : jamais tout d'un coup — aucune des 40 étapes n'apporte plus de 15 % du texte  plus grande étape : 3.0 % ; étapes qui apportent de l'encre : 40 sur 40
+OK  ⑥ temps réel (×0,25) : l'encre croît de capture en capture, sans à-coup  pixels dévoilés : [0, 11773, 22791, 35328, 44307, 48920, 54537, 59766, 65454, 70678, 76481, 81633, 87466, 93152]
+OK  les 85 glyphes de l'alphabet de la page ont un chemin  sans chemin : 
+OK  ③ R2 — chaque glyphe finit à droite ; les seules exceptions sont celles que ce juge nomme (3 7 D P b p)  finissent à gauche : 3 (h : 0.00, b : 0.03) · 7 (h : 0.30) · D (h : 0.22, b : 0.22) · P (h : 0.24, b : 0.24) · b (h : 0.14, b : 0.14) · p (h : 0.14, b : 0.14)
+OK  ⑤ R1 — repassage : aucun tracé au-delà de 70 % de sa longueur, médiane ≤ 25 %  médiane 0 % sur 153 tracés ; sans repassage : 92 ; les pires : L/b 65 % · r/h 64 % · W/b 62 % · u/b 62 % · w/b 61 % · 5/h 60 % · U/b 60 % · k/b 53 %
+KO  ④ AUCUNE ONDE (v154) — dans les six textes, chaque lettre prend son tracé naturel (« h » quand elle l'a), quelle que soit la précédente  323 lettres ; 167 sans variante « h » (elles n'en ont pas d'autre) — FAUTES : i (variante b) ; l (variante b) ; t (variante b) ; ! (variante b) ; o (variante b) ; n (variante b)
+KO  ⑪ temps de plume — le débit des départs : 38 à 42 caractères par seconde (une espace compte 0,4)  21.9 car/s (121 lettres, 26 espaces)
+KO  ⑪ temps de plume — chaque lettre est en cours de 60 à 90 ms  de 6 à 102 ms (médiane 50)
+KO  ⑪ temps de plume — au plus 3 lettres en cours, et trois à la fois au fil du tracé  au plus 1 en même temps
+KO  ⑪ sur les pixels — quand le module dit trois lettres en cours, le canevas montre trois fronts qui avancent (trois zones qui changent, séparées)  None
+KO  ⑪ temps de plume — les lettres partent strictement dans l'ordre, de gauche à droite sur une ligne ; la suivante avant la fin de la précédente, jamais avant elle  121 départs dans l'ordre
+OK  ④ R3 — les glyphes à un seul tracé sont ceux que ce juge nomme  un seul tracé : ' , . 1 2 6 7 8 A J Q S Z s z ’ … ; finissent du côté opposé au départ : 102 tracés sur 153
+OK  ⑨ Gilbert « o » — préfixe continu du chemin : rien hors de la lettre, aucun trou derrière le front, rien d'avance devant  pixels hors de la lettre 0 ; trou derrière le front 0 px ; avance 0 px (au pire, sur 35 images)
+OK  ⑨ Gilbert « o » — aucun éclat : pas d'îlot d'encre non tracée, petit et isolé, laissé en arrière (3 images et plus) pendant que la lettre avance  0 pixel(s)·image(s) laissés en arrière trois images ou plus ; le plus long : 0 images
+OK  ⑨ Gilbert « o » — aucune valeur d'alpha intermédiaire hors du bord (un pixel partiel touche l'encre non tracée)  pixels partiels loin du bord : 0 au pire (partiels par image : 59 au plus)
+OK  ⑨ Gilbert « o » — le front, à l'intérieur d'un trait, est perpendiculaire au chemin (± 10°)  10 mesures ; écart au perpendiculaire : médiane 2.6°, pire 4.1° (15 images dans un coude, non mesurées)
+OK  ⑨ Gilbert « s » — préfixe continu du chemin : rien hors de la lettre, aucun trou derrière le front, rien d'avance devant  pixels hors de la lettre 0 ; trou derrière le front 0 px ; avance 0 px (au pire, sur 35 images)
+OK  ⑨ Gilbert « s » — aucun éclat : pas d'îlot d'encre non tracée, petit et isolé, laissé en arrière (3 images et plus) pendant que la lettre avance  0 pixel(s)·image(s) laissés en arrière trois images ou plus ; le plus long : 0 images
+OK  ⑨ Gilbert « s » — aucune valeur d'alpha intermédiaire hors du bord (un pixel partiel touche l'encre non tracée)  pixels partiels loin du bord : 1 au pire (partiels par image : 65 au plus)
+OK  ⑨ Gilbert « s » — le front, à l'intérieur d'un trait, est perpendiculaire au chemin (± 10°)  6 mesures ; écart au perpendiculaire : médiane 1.1°, pire 2.7° (20 images dans un coude, non mesurées)
+OK  ⑨ Gilbert « g » — préfixe continu du chemin : rien hors de la lettre, aucun trou derrière le front, rien d'avance devant  pixels hors de la lettre 0 ; trou derrière le front 0 px ; avance 0 px (au pire, sur 35 images)
+OK  ⑨ Gilbert « g » — aucun éclat : pas d'îlot d'encre non tracée, petit et isolé, laissé en arrière (3 images et plus) pendant que la lettre avance  0 pixel(s)·image(s) laissés en arrière trois images ou plus ; le plus long : 0 images
+OK  ⑨ Gilbert « g » — aucune valeur d'alpha intermédiaire hors du bord (un pixel partiel touche l'encre non tracée)  pixels partiels loin du bord : 0 au pire (partiels par image : 84 au plus)
+OK  ⑨ Gilbert « g » — le front, à l'intérieur d'un trait, est perpendiculaire au chemin (± 10°)  9 mesures ; écart au perpendiculaire : médiane 2.3°, pire 4.8° (10 images dans un coude, non mesurées)
+OK  ⑨ Atkinson « o » — préfixe continu du chemin : rien hors de la lettre, aucun trou derrière le front, rien d'avance devant  pixels hors de la lettre 0 ; trou derrière le front 0 px ; avance 0 px (au pire, sur 35 images)
+OK  ⑨ Atkinson « o » — aucun éclat : pas d'îlot d'encre non tracée, petit et isolé, laissé en arrière (3 images et plus) pendant que la lettre avance  0 pixel(s)·image(s) laissés en arrière trois images ou plus ; le plus long : 0 images
+OK  ⑨ Atkinson « o » — aucune valeur d'alpha intermédiaire hors du bord (un pixel partiel touche l'encre non tracée)  pixels partiels loin du bord : 0 au pire (partiels par image : 59 au plus)
+OK  ⑨ Atkinson « o » — le front, à l'intérieur d'un trait, est perpendiculaire au chemin (± 10°)  29 mesures ; écart au perpendiculaire : médiane 0.8°, pire 3.1° (0 images dans un coude, non mesurées)
+OK  ⑨ Atkinson « s » — préfixe continu du chemin : rien hors de la lettre, aucun trou derrière le front, rien d'avance devant  pixels hors de la lettre 0 ; trou derrière le front 0 px ; avance 0 px (au pire, sur 35 images)
+OK  ⑨ Atkinson « s » — aucun éclat : pas d'îlot d'encre non tracée, petit et isolé, laissé en arrière (3 images et plus) pendant que la lettre avance  0 pixel(s)·image(s) laissés en arrière trois images ou plus ; le plus long : 0 images
+OK  ⑨ Atkinson « s » — aucune valeur d'alpha intermédiaire hors du bord (un pixel partiel touche l'encre non tracée)  pixels partiels loin du bord : 0 au pire (partiels par image : 53 au plus)
+OK  ⑨ Atkinson « s » — le front, à l'intérieur d'un trait, est perpendiculaire au chemin (± 10°)  14 mesures ; écart au perpendiculaire : médiane 1.2°, pire 3.4° (14 images dans un coude, non mesurées)
+OK  ⑨ Atkinson « g » — préfixe continu du chemin : rien hors de la lettre, aucun trou derrière le front, rien d'avance devant  pixels hors de la lettre 0 ; trou derrière le front 0 px ; avance 0 px (au pire, sur 35 images)
+OK  ⑨ Atkinson « g » — aucun éclat : pas d'îlot d'encre non tracée, petit et isolé, laissé en arrière (3 images et plus) pendant que la lettre avance  0 pixel(s)·image(s) laissés en arrière trois images ou plus ; le plus long : 0 images
+OK  ⑨ Atkinson « g » — aucune valeur d'alpha intermédiaire hors du bord (un pixel partiel touche l'encre non tracée)  pixels partiels loin du bord : 0 au pire (partiels par image : 54 au plus)
+OK  ⑨ Atkinson « g » — le front, à l'intérieur d'un trait, est perpendiculaire au chemin (± 10°)  13 mesures ; écart au perpendiculaire : médiane 2.0°, pire 7.8° (6 images dans un coude, non mesurées)
+KO  ⑦ le débit À L'ÉCRAN (le vrai onboarding : « Camille, donc. », « Quid… », « Petite ou grande… ») : 38 à 42 caractères par seconde  20.4 car/s ; charge 3.9
+KO  ⑧ chaque lettre est en cours sur 4 images au moins, à l'écran  67 lettres ; images par lettre : min 1, médiane 3 ; 45 sous 4 ; charge 3.9
+OK  ⑦ le débit se règle : `?cps=12` → environ 12 caractères par seconde  11.5 car/s
+INFO  coût (WebKit, ce Mac, charge 3.4) : {"duree": 6025, "prevue": 5973, "lettres": 121, "images": 358, "image_p50": 0, "image_p95": 3, "image_max": 6, "prep_n": 83, "prep_p50": 1, "prep_max": 4}
+
+38 / 46
