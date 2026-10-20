@@ -78,9 +78,9 @@ Source : `app.html`. 302 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 422 | 342 × 79 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 480 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 492 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 535 | 342 × 94 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 571 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 583 | 342 × 79 | oui |  |
 | Nuée | `#cm5Ligne` | natif | 195, 650 | 342 × 56 | oui |  |
 | Nuée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |

@@ -1,0 +1,14 @@
+  ✅ A · à ± 27 pt du centre de la dalle (quatre côtés, quatre coins), le doigt tombe sur la dalle            ['st3thumb', 'st3thumb', 'st3thumb', 'st3thumb', 'st3thumb', 'st3thumb', 'st3thumb', 'st3thumb']
+  ✅ D · le dessin ne change pas : la dalle fait 30 × 30 pt                                                   30.0 × 30.0
+  ✅ B · attrapée à 20 pt au-dessus puis glissée de 60 pt : aucun saut au toucher (le premier pas : 5 pt ± 2), elle suit le doigt (+60 ± 4 au dernier pas), la teinte change saut au toucher 0.0 pt · déplacement 60.0 pt · teinte 180 → 330.0070729992055
+  ✅ B · attrapée à 20 pt au-dessous puis glissée de 60 pt : aucun saut au toucher (le premier pas : 5 pt ± 2), elle suit le doigt (+60 ± 4 au dernier pas), la teinte change saut au toucher 0.0 pt · déplacement 60.0 pt · teinte 180 → 332.0508624046933
+  ✅ B · attrapée à 20 pt à gauche puis glissée de 60 pt : aucun saut au toucher (le premier pas : 5 pt ± 2), elle suit le doigt (+60 ± 4 au dernier pas), la teinte change saut au toucher 0.0 pt · déplacement 60.0 pt · teinte 180 → 330.0070729992056
+  ✅ B · attrapée à 20 pt à droite puis glissée de 60 pt : aucun saut au toucher (le premier pas : 5 pt ± 2), elle suit le doigt (+60 ± 4 au dernier pas), la teinte change saut au toucher 0.0 pt · déplacement 60.0 pt · teinte 180 → 331.0715466478975
+  ✅ B · attrapée à 20 pt en diagonale puis glissée de 60 pt : aucun saut au toucher (le premier pas : 5 pt ± 2), elle suit le doigt (+60 ± 4 au dernier pas), la teinte change saut au toucher 0.0 pt · déplacement 60.0 pt · teinte 180 → 330.0070729992055
+  ✅ E · le bouton noir et blanc répond au toucher (il s'allume)                                              true
+  ✅ C · noir et blanc allumé : attrapée à 20 pt au-dessus et glissée de 60 pt, elle suit (+60 ± 4) et dose le gris déplacement 60.0 pt · gris 0.5 → 0.7222222294702
+  ✅ E · une pastille de la dernière rangée (touchée à 3 pt de son bas) change la palette                     signal → fantasque (visée fantasque)
+  ✅ E · le nom de la palette, à gauche de la zone, n'est pas pris par la dalle                               st3pn
+  ✅ aucune erreur de page                                                                                    []
+
+  ✅  12 / 12

@@ -1,0 +1,13 @@
+redteam_transitions_onb.py | charge 6.33 | KO 0 |   ✅  46 / 46
+redteam_onboarding_texte.py | charge 7.20 | KO 0 |   ✅  47 / 47
+redteam_onboarding.py | charge 4.33 | KO 0 |   ✅  46 / 46 contrats tenus
+redteam_onb_sorties.py | charge 7.84 | KO 0 |   ✅  25 / 25
+redteam_pages_plus.py | charge 9.36 | KO 0 |   ✅  41 / 41
+redteam_murs_toucher.py | charge 7.38 | KO 0 | 8 / 8
+redteam_murs_toucher.py zz-av154.html | charge 7.01 | KO 0 | 8 / 8
+redteam_contraste_trait.py --page=zz-av154.html | charge 5.28 | KO 134 | 98 / 248
+KO         clair · fiche Promi · Plein                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Plein                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Coulé                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Coulé                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+FIN

@@ -1,0 +1,14 @@
+  ✅ [clair] A · Studio ouvert puis refermé SANS changement : l'étape du + ; le fond flouté est le même au pixel, aucun recalcul Studio True · étape plus · empreinte 4232884362 → 4232884362 · recalculs 0
+  ✅ [clair] aucune erreur de page                                                                                  []
+  ✅ [clair] B · monde et palette changés au Studio, refermé : l'étape du + ; le fond flouté est celui de la Toile RÉELLE (≤ 0,2 % des valeurs à plus de 6 niveaux ; l'ancien fond : 50 fois plus), il a changé monde {"m":"encre","p":"signal","h":0} → {"m":"touffe","p":"hurluberlu","h":0} · comparé à l'accueil flouté maintenant : {'max': 1, 'hors': 0, 'part': 0, 'taille': True} · l'ancien fond : {'max': 158, 'hors': 718028, 'part': 0.5453487665572974, 'taille': True}
+  ✅ [clair] B · le fond neuf était posé SOUS le Studio, avant sa fermeture                                         recalculs avant la fermeture : 2 · signature touffe|hurluberlu|0|clair
+  ✅ [clair] C · la fermeture du Studio, image par image : aucune image au-delà de 50 ms — NON JUGÉ (charge ≥ 4)    images > 50 ms : [] ; charge 10.0
+  ✅ [clair] aucune erreur de page                                                                                  []
+  ✅ [sombre] A · Studio ouvert puis refermé SANS changement : l'étape du + ; le fond flouté est le même au pixel, aucun recalcul Studio True · étape plus · empreinte 2821668369 → 2821668369 · recalculs 0
+  ✅ [sombre] aucune erreur de page                                                                                 []
+  ✅ [sombre] B · monde et palette changés au Studio, refermé : l'étape du + ; le fond flouté est celui de la Toile RÉELLE (≤ 0,2 % des valeurs à plus de 6 niveaux ; l'ancien fond : 50 fois plus), il a changé monde {"m":"encre","p":"signal","h":0} → {"m":"touffe","p":"hurluberlu","h":0} · comparé à l'accueil flouté maintenant : {'max': 1, 'hors': 0, 'part': 0, 'taille': True} · l'ancien fond : {'max': 173, 'hors': 636920, 'part': 0.4837465062583546, 'taille': True}
+  ✅ [sombre] B · le fond neuf était posé SOUS le Studio, avant sa fermeture                                        recalculs avant la fermeture : 2 · signature touffe|hurluberlu|0|sombre
+  ✅ [sombre] C · la fermeture du Studio, image par image : aucune image au-delà de 50 ms — NON JUGÉ (charge ≥ 4)   images > 50 ms : [51] ; charge 12.3
+  ✅ [sombre] aucune erreur de page                                                                                 []
+
+  ✅  12 / 12

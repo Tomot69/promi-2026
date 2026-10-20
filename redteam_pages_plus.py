@@ -87,8 +87,22 @@ with sync_playwright() as p:
         for nature, nom in ((0, 'Promi'), (1, 'Chiche')):
             ia, ta = fiche(b, REF, nature, sombre); ic, tc = fiche(b, F, nature, sombre)
             bb = ImageChops.difference(ia, ic).getbbox() if ia.size == ic.size else (0, 0, 1, 1)
-            n_ = sum(1 for px in ImageChops.difference(ia, ic).convert('L').getdata() if px > 1) if ia.size == ic.size else -1
-            juge('[%s] C-157 · la fiche %s n\'a pas bougé : du haut de l\'onde au bas de l\'écran, identique au pixel à v149' % (T, nom), ta == tc and n_ == 0, 'trait %s/%s · %d pixel(s) différents %s' % (ta, tc, n_, bb or ''))
+            # ⚑ v155 (Tom, C-169 §4.2) : sur une fiche à moitié tracée, le départ de la seconde moitié (les 43 pt du trait avant la pointe du milieu) est
+            #   ORANGE — c'est la seule différence admise, nommément : la bande du trait de 140 à 200 pt ; ailleurs, identique au pixel (original :
+            #   sauvegardes/redteam_pages_plus-avant-v155.py)
+            k_ = ia.size[0] / 384.0; zx0, zx1 = int((140 - 3) * k_), int((200 - 3) * k_); zy1 = int((2 * ta[1] + 30) * k_) if ta and ta[1] else 0
+            n_, nz, org = 0, 0, 0
+            if ia.size == ic.size:
+                D_ = ImageChops.difference(ia, ic).convert('L'); W_ = ia.size[0]; pc = ic.load()
+                for i_, px in enumerate(D_.getdata()):
+                    if px <= 1: continue
+                    x_, y_ = i_ % W_, i_ // W_
+                    if zx0 <= x_ <= zx1 and y_ <= zy1:
+                        nz += 1; q_ = pc[x_, y_]
+                        if abs(q_[0] - 251) + abs(q_[1] - 76) + abs(q_[2] - 13) < 120: org += 1
+                    else: n_ += 1
+            else: n_ = -1
+            juge('[%s] C-157 · la fiche %s n\'a pas bougé : du haut de l\'onde au bas de l\'écran, identique au pixel à v149 — hors du départ orange de la seconde moitié (C-169)' % (T, nom), ta == tc and n_ == 0 and nz > 0 and org >= nz * 0.4, 'trait %s/%s · %d pixel(s) différents hors du départ · %d dans le départ (%d orange) %s' % (ta, tc, n_, nz, org, bb or ''))
     # la bascule : dix ouvertures, phrase tirée au hasard (sans semer)
     faux = []
     for i in range(10):

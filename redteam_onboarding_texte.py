@@ -78,6 +78,9 @@ def parcours(b, th):
     if s.get('onbDit') and s.get('onbPh'):
         bd = s['onbDit']['b']; juge('[%s] 11.1 · « Prénom, donc. » ne touche pas la phrase (au moins 8 pt d\'air)' % T, bd[1] + bd[3] + 8 <= s['onbPh']['b'][1], 'bas %.0f · phrase à %.0f' % (bd[1] + bd[3], s['onbPh']['b'][1]))
     saisie(pg); tr = pg.evaluate(ST, ['onbTrace']).get('onbTrace')
+    for _ in range(40):   # ⚑ v155 (C-169) : le départ clignote (promiBlink : opacité 1 puis 0,6) — on le lit à la phase pleine
+        if pg.evaluate("()=>{ const d=document.getElementById('onbDepart'); return !d || getComputedStyle(d).opacity==='1'; }"): break
+        pg.wait_for_timeout(40)
     if th == 'light':
         juge('[clair] C-126 · « trace pour planter » (PromiLate) en vert foncé #00341A', tr and tr['f'] == 'PromiLate' and pres(rgb(tr['col']), (0, 52, 26)), tr and tr['col'])
         im = image(pg); d = dev(pg); z = pg.evaluate("()=>{const c=document.getElementById('onbTrait'); const r=c.getBoundingClientRect(); return [r.left,r.top,r.width,r.height];}"); px = im.load(); n = 0

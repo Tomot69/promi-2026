@@ -8808,5 +8808,12 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   un tracé qui alternait haut et bas) ; R3 est retirée : chaque lettre prend son tracé naturel (« h » quand elle l'a). *Proposition* : rien de plus.
 - **Q560 — À SAVOIR (C-167, v154)** : le toucher qui fait remonter le vert est AVALÉ — il n'ouvre rien de ce qui est dessous (Peaufiner, ✕, la bande) ;
   il n'est lu que 300 ms après le lever (le geste qui finit ne presse rien). *Proposition* : garder.
-- **Q561 — À SAVOIR (§4, v154)** : sous « Réduire les animations », le I de PROMI clignote encore (un clignotement n'est pas un mouvement) ; tout le
+- **Q561 — TRANCHÉE (chef de chantier, v155 : avec « Réduire les animations », plus rien ne clignote — le I de PROMI et le départ de l'onboarding restent fixes)** · À SAVOIR (§4, v154) : sous « Réduire les animations », le I de PROMI clignote encore (un clignotement n'est pas un mouvement) ; tout le
   reste est immobile. *Proposition* : garder ; si Tom veut l'arrêter aussi, une ligne.
+- **Q562 — À VALIDER (C-169, v155)** : la flèche de l'onboarding paraît 1 s après le prénom, avant que la parole soit écrite ; tracée sans parole, elle ne
+  plante rien : la saisie de la phrase s'ouvre (le clavier monte). *Proposition* : garder (on ne plante pas une parole vide).
+- **Q563 — À VALIDER (C-169 §4.2, v155)** : « le trait de départ » de la seconde moitié, sur une fiche à moitié tracée, est pris comme les 43 derniers pt
+  du trait tracé avant la pointe du milieu — la longueur de l'amorce visible à gauche (0,11 de la largeur), à l'épaisseur du trait. *Proposition* : Tom
+  regarde une fiche plantée et dit si la longueur lui va.
+- **Q564 — À SAVOIR (C-170, v155)** : au banc, l'ancienne Toile était celle de l'ACCUEIL, découverte par le Studio qui glisse en se refermant (0,5 s) ;
+  « l'encart du bas » n'a pas été vu tel quel. Corrigé à la source. *Proposition* : si Tom la revoit sur l'iPhone, une capture de l'instant.

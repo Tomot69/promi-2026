@@ -1,0 +1,38 @@
+  ✅ [clair, fiche Promi] A · plus de rectangle : la zone du geste n'a aucun fond, ni doigt posé ni seuil passé alpha du fond 0.00 (doigt posé : 0.00)
+  ✅ [clair, fiche Promi] B · le ruban est un aplat plein, amande #8FE08F (la célébration) (≥ 97 % des pixels) 99.2 % justes, 99.2 % pleins
+  ✅ [clair, fiche Promi] C · plus fin : épaisseur médiane à 75–85 % des 118 pt d'avant                       93.3 pt (79 %)
+  ✅ [clair, fiche Promi] D · il suit la courbe du trait : écart-type du milieu autour de l'onde ≤ 4 pt       0.8 pt (l'onde elle-même : 15.6 pt)
+  ✅ [clair, fiche Promi] E · bords légèrement irréguliers, sans excès (0,4 à 3,5 pt autour de l'onde décalée) haut 1.29 · bas 1.27 pt
+  ✅ [clair, fiche Promi] F · le mot du trait n'est pas coupé en deux : entier ou entièrement découpé         {'pc': 100, 'part': 0.3178294573643411, 'vis': True}
+  ✅ [clair, fiche Chiche] A · plus de rectangle : la zone du geste n'a aucun fond, ni doigt posé ni seuil passé alpha du fond 0.00 (doigt posé : 0.00)
+  ✅ [clair, fiche Chiche] B · le ruban est un aplat plein, amande #8FE08F (la célébration) (≥ 97 % des pixels) 99.2 % justes, 99.2 % pleins
+  ✅ [clair, fiche Chiche] C · plus fin : épaisseur médiane à 75–85 % des 118 pt d'avant                      94.0 pt (80 %)
+  ✅ [clair, fiche Chiche] D · il suit la courbe du trait : écart-type du milieu autour de l'onde ≤ 4 pt      0.7 pt (l'onde elle-même : 15.6 pt)
+  ✅ [clair, fiche Chiche] E · bords légèrement irréguliers, sans excès (0,4 à 3,5 pt autour de l'onde décalée) haut 1.17 · bas 1.39 pt
+  ✅ [clair, fiche Chiche] F · le mot du trait n'est pas coupé en deux : entier ou entièrement découpé        {'pc': 100, 'part': 0.16010733452593917, 'vis': True}
+  ✅ [clair, page + Promi] A · plus de rectangle : la zone du geste n'a aucun fond, ni doigt posé ni seuil passé alpha du fond 0.00 (doigt posé : 0.00)
+  ✅ [clair, page + Promi] B · le ruban est un aplat plein, #291547 (l'état « en cours », C-154 v151) (≥ 97 % des pixels) 99.2 % justes, 99.2 % pleins
+  ✅ [clair, page + Promi] C · plus fin : épaisseur médiane à 75–85 % des 118 pt d'avant                      94.7 pt (80 %)
+  ✅ [clair, page + Promi] D · il suit la courbe du trait : écart-type du milieu autour de l'onde ≤ 4 pt      1.0 pt (l'onde elle-même : 15.6 pt)
+  ✅ [clair, page + Promi] E · bords légèrement irréguliers, sans excès (0,4 à 3,5 pt autour de l'onde décalée) haut 1.34 · bas 1.28 pt
+  ✅ [clair, page + Promi] F · le mot du trait n'est pas coupé en deux : entier ou entièrement découpé        {'pc': 100, 'part': 0.4824561403508772, 'vis': True}
+  ✅ [sombre, fiche Promi] A · plus de rectangle : la zone du geste n'a aucun fond, ni doigt posé ni seuil passé alpha du fond 0.00 (doigt posé : 0.00)
+  ✅ [sombre, fiche Promi] B · le ruban est un aplat plein, amande #8FE08F (la célébration) (≥ 97 % des pixels) 99.2 % justes, 99.2 % pleins
+  ✅ [sombre, fiche Promi] C · plus fin : épaisseur médiane à 75–85 % des 118 pt d'avant                      95.3 pt (81 %)
+  ✅ [sombre, fiche Promi] D · il suit la courbe du trait : écart-type du milieu autour de l'onde ≤ 4 pt      0.3 pt (l'onde elle-même : 15.6 pt)
+  ✅ [sombre, fiche Promi] E · bords légèrement irréguliers, sans excès (0,4 à 3,5 pt autour de l'onde décalée) haut 1.27 · bas 1.32 pt
+  ✅ [sombre, fiche Promi] F · le mot du trait n'est pas coupé en deux : entier ou entièrement découpé        {'pc': 100, 'part': 0.31007751937984496, 'vis': True}
+  ✅ [sombre, fiche Chiche] A · plus de rectangle : la zone du geste n'a aucun fond, ni doigt posé ni seuil passé alpha du fond 0.00 (doigt posé : 0.00)
+  ✅ [sombre, fiche Chiche] B · le ruban est un aplat plein, amande #8FE08F (la célébration) (≥ 97 % des pixels) 99.2 % justes, 99.2 % pleins
+  ✅ [sombre, fiche Chiche] C · plus fin : épaisseur médiane à 75–85 % des 118 pt d'avant                     94.7 pt (80 %)
+  ✅ [sombre, fiche Chiche] D · il suit la courbe du trait : écart-type du milieu autour de l'onde ≤ 4 pt     0.7 pt (l'onde elle-même : 15.6 pt)
+  ✅ [sombre, fiche Chiche] E · bords légèrement irréguliers, sans excès (0,4 à 3,5 pt autour de l'onde décalée) haut 1.32 · bas 1.30 pt
+  ✅ [sombre, fiche Chiche] F · le mot du trait n'est pas coupé en deux : entier ou entièrement découpé       {'pc': 100, 'part': 0.1556350626118068, 'vis': True}
+  ✅ [sombre, page + Promi] A · plus de rectangle : la zone du geste n'a aucun fond, ni doigt posé ni seuil passé alpha du fond 0.00 (doigt posé : 0.00)
+  ✅ [sombre, page + Promi] B · le ruban est un aplat plein, #291547 (l'état « en cours », C-154 v151) (≥ 97 % des pixels) 99.2 % justes, 99.2 % pleins
+  ✅ [sombre, page + Promi] C · plus fin : épaisseur médiane à 75–85 % des 118 pt d'avant                     92.7 pt (79 %)
+  ✅ [sombre, page + Promi] D · il suit la courbe du trait : écart-type du milieu autour de l'onde ≤ 4 pt     0.9 pt (l'onde elle-même : 15.6 pt)
+  ✅ [sombre, page + Promi] E · bords légèrement irréguliers, sans excès (0,4 à 3,5 pt autour de l'onde décalée) haut 1.41 · bas 1.28 pt
+  ✅ [sombre, page + Promi] F · le mot du trait n'est pas coupé en deux : entier ou entièrement découpé       {'pc': 100, 'part': 0.5131578947368421, 'vis': True}
+
+  ✅  36 / 36

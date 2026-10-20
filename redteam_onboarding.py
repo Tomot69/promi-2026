@@ -227,9 +227,10 @@ def peint(pg, z):
       const cv=z&&(z.tagName==='CANVAS'?z:z.querySelector('canvas')); if(!cv||!cv.width) return [false,false];
       const g=cv.getContext('2d'); const r=cv.getBoundingClientRect(), zr=z.getBoundingClientRect();
       const k=cv.width/r.width;
+      const dep=document.getElementById('onbDepart'), gd=(dep&&dep.width===cv.width)?dep.getContext('2d'):null;   /* ⚑ v155 (C-169) : le départ est peint sur sa couche, posée sur le trait */
       const lit=(s)=>{ const [x,y]=s.split(',').map(Number); const D=document.getElementById('device').getBoundingClientRect(), s2=D.width/390;
         const X=(zr.left+x*s2-r.left)*k, Y=(zr.top+y*s2-r.top)*k; let n=0;
-        for(let dx=-6;dx<=6;dx+=3) for(let dy=-6;dy<=6;dy+=3){ const d=g.getImageData(Math.round(X+dx*k),Math.round(Y+dy*k),1,1).data; if(d[3]>40) n++; }
+        for(let dx=-6;dx<=6;dx+=3) for(let dy=-6;dy<=6;dy+=3){ const d=g.getImageData(Math.round(X+dx*k),Math.round(Y+dy*k),1,1).data; const e=gd?gd.getImageData(Math.round(X+dx*k),Math.round(Y+dy*k),1,1).data:[0,0,0,0]; if(d[3]>40||e[3]>40) n++; }
         return n>0; };
       return [lit(a[0]), lit(a[1])]; }""", [z['dep'], z['arr']])
 

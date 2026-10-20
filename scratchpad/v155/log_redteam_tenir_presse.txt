@@ -1,0 +1,9 @@
+  ✅ D · l'app déclare 2 150 ms (v155) pour le vert posé (`_tenirRegle.AMANDE`)                                       2150
+  ✅ A · Promi sans toucher : le vert commence de remonter 2 000 à 2 450 ms après le lever ; la parole est tenue      remontée à 2301 ms · rideau parti à 2716 ms · statut tenu · front au plus bas 760
+  ✅ A · Chiche sans toucher : le vert commence de remonter 2 000 à 2 450 ms après le lever ; la parole est tenue     remontée à 2296 ms · rideau parti à 2701 ms · statut tenu · front au plus bas 760
+  ✅ B · un toucher (sur la barre Peaufiner) à 1,3 s : le vert remonte dans les 250 ms, la parole est tenue, la remontée et le rideau parti ≥ 700 ms plus tôt toucher à 1316 ms · remontée à 1490 ms · rideau parti à 1919 ms (sans toucher : 2716)
+  ✅ B · le toucher est avalé : Peaufiner ne s'ouvre pas, la fiche tenue reste ouverte                                fiche ouverte True · Peaufiner False
+  ✅ C · un toucher 100 ms après le lever ne presse rien : la remontée garde son heure (2 000 à 2 450 ms)             toucher à 89 ms · remontée à 2296 ms
+  ✅ aucune erreur de page                                                                                            []
+
+  ✅  7 / 7

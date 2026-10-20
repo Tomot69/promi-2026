@@ -1,0 +1,43 @@
+  ✅ [clair] page + Promi : même trait (base 280, autant de lignes) qu'en v149 — la comparaison vaut                  ('Je me promets ✦de me coucherle', 'Je me promets ✦de me coucherle', 280, 280)
+  ✅ [clair] C-157 · page + Promi : « le mot du trait » descend de 6 à 9 pt et va 3 pt à droite                       Δy 7.5 · Δx 3.0
+  ✅ [clair] C-149 · page + Promi : « garder de côté » 10 pt plus bas (4 + 6), même place à droite, même inclinaison  Δy 10.0 · penché 5.5°
+  ✅ [clair] C-157 · page + Promi : « le mot du trait » en orange #FB4C0D                                             rgb(251, 76, 13)
+  ✅ [clair] C-158 · page + Promi : le choix du trait (le rail du pinceau) ne bouge pas                               Δy 0.0
+  ✅ [clair] page + Promi : la phrase ne bouge pas                                                                    Δy 0.0
+  ✅ [clair] page + Chiche : même trait (base 216, autant de lignes) qu'en v149 — la comparaison vaut                 ('à qui ose ?Chiche ✦de te baign', 'à qui ose ?Chiche ✦de te baign', 216, 216)
+  ✅ [clair] C-157 · page + Chiche : « le mot du trait » descend de 6 à 9 pt et va 3 pt à droite                      Δy 7.5 · Δx 3.0
+  ✅ [clair] C-149 · page + Chiche : « garder de côté » 10 pt plus bas (4 + 6), même place à droite, même inclinaison Δy 10.0 · penché 5.5°
+  ✅ [clair] C-157 · page + Chiche : « le mot du trait » en orange #FB4C0D                                            rgb(251, 76, 13)
+  ✅ [clair] C-158 · page + Chiche : le choix du trait (le rail du pinceau) ne bouge pas                              Δy 0.0
+  ✅ [clair] C-158 · page + Chiche : la phrase remonte de 10 pt                                                       Δy -10.0
+  ✅ [clair] page + Cercle : même trait (base 248, autant de lignes) qu'en v149 — la comparaison vaut                 ('Je lance un Cerclenommé Week-e', 'Je lance un Cerclenommé Week-e', 248, 248)
+  ✅ [clair] C-157 · page + Cercle : le mot du trait ne bouge pas                                                     Δy 0.0 · Δx 0.0
+  ✅ [clair] C-149 · page + Cercle : « garder de côté » 10 pt plus bas (4 + 6), même place à droite, même inclinaison Δy 10.0 · penché 5.5°
+  ✅ [clair] C-157 · page + Cercle : « le mot du trait » en orange #FB4C0D                                            rgb(251, 76, 13)
+  ✅ [clair] C-158 · page + Cercle : le choix du trait (le rail du pinceau) ne bouge pas                              Δy 0.0
+  ✅ [clair] C-158 · page + Cercle : sa phrase EXACTEMENT à la hauteur et au placement de celle du Chiche (l'encre de la première ligne) encre : Cercle 315.5 · Chiche 315.5 · boîte à gauche 24.0 / 24.0
+  ❌ [clair] C-157 · la fiche Promi n'a pas bougé : du haut de l'onde au bas de l'écran, identique au pixel à v149    trait [286, 36]/[286, 36] · 3874 pixel(s) différents (403, 127, 541, 183)
+  ❌ [clair] C-157 · la fiche Chiche n'a pas bougé : du haut de l'onde au bas de l'écran, identique au pixel à v149   trait [286, 36]/[286, 36] · 3869 pixel(s) différents (403, 127, 541, 183)
+  ✅ [sombre] page + Promi : même trait (base 280, autant de lignes) qu'en v149 — la comparaison vaut                 ('Je me promets ✦de me coucherle', 'Je me promets ✦de me coucherle', 280, 280)
+  ✅ [sombre] C-157 · page + Promi : « le mot du trait » descend de 6 à 9 pt et va 3 pt à droite                      Δy 7.5 · Δx 3.0
+  ✅ [sombre] C-149 · page + Promi : « garder de côté » 10 pt plus bas (4 + 6), même place à droite, même inclinaison Δy 10.0 · penché 5.5°
+  ✅ [sombre] C-157 · page + Promi : « le mot du trait » en orange #FB4C0D                                            rgb(251, 76, 13)
+  ✅ [sombre] C-158 · page + Promi : le choix du trait (le rail du pinceau) ne bouge pas                              Δy 0.0
+  ✅ [sombre] page + Promi : la phrase ne bouge pas                                                                   Δy 0.0
+  ✅ [sombre] page + Chiche : même trait (base 216, autant de lignes) qu'en v149 — la comparaison vaut                ('à qui ose ?Chiche ✦de te baign', 'à qui ose ?Chiche ✦de te baign', 216, 216)
+  ✅ [sombre] C-157 · page + Chiche : « le mot du trait » descend de 6 à 9 pt et va 3 pt à droite                     Δy 7.5 · Δx 3.0
+  ✅ [sombre] C-149 · page + Chiche : « garder de côté » 10 pt plus bas (4 + 6), même place à droite, même inclinaison Δy 10.0 · penché 5.5°
+  ✅ [sombre] C-157 · page + Chiche : « le mot du trait » en orange #FB4C0D                                           rgb(251, 76, 13)
+  ✅ [sombre] C-158 · page + Chiche : le choix du trait (le rail du pinceau) ne bouge pas                             Δy 0.0
+  ✅ [sombre] C-158 · page + Chiche : la phrase remonte de 10 pt                                                      Δy -10.0
+  ✅ [sombre] page + Cercle : même trait (base 248, autant de lignes) qu'en v149 — la comparaison vaut                ('Je lance un Cerclenommé Week-e', 'Je lance un Cerclenommé Week-e', 248, 248)
+  ✅ [sombre] C-157 · page + Cercle : le mot du trait ne bouge pas                                                    Δy 0.0 · Δx 0.0
+  ✅ [sombre] C-149 · page + Cercle : « garder de côté » 10 pt plus bas (4 + 6), même place à droite, même inclinaison Δy 10.0 · penché 5.5°
+  ✅ [sombre] C-157 · page + Cercle : « le mot du trait » en orange #FB4C0D                                           rgb(251, 76, 13)
+  ✅ [sombre] C-158 · page + Cercle : le choix du trait (le rail du pinceau) ne bouge pas                             Δy 0.0
+  ✅ [sombre] C-158 · page + Cercle : sa phrase EXACTEMENT à la hauteur et au placement de celle du Chiche (l'encre de la première ligne) encre : Cercle 315.5 · Chiche 315.5 · boîte à gauche 24.0 / 24.0
+  ❌ [sombre] C-157 · la fiche Promi n'a pas bougé : du haut de l'onde au bas de l'écran, identique au pixel à v149   trait [286, 36]/[286, 36] · 3874 pixel(s) différents (403, 127, 541, 183)
+  ❌ [sombre] C-157 · la fiche Chiche n'a pas bougé : du haut de l'onde au bas de l'écran, identique au pixel à v149  trait [286, 36]/[286, 36] · 3869 pixel(s) différents (403, 127, 541, 183)
+  ✅ la bascule : sur 10 ouvertures de la page + d'un Chiche, le mot du trait et la phrase sont posés pour le nombre de lignes réel 0 faux []
+
+  ❌  37 / 41

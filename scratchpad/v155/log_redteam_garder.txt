@@ -1,0 +1,50 @@
+[webkit] E · page vide : le lien est VISIBLE et INACTIF (non souligné, aria-disabled) OK  {'vu': True, 'inactif': True, 'aria': 'true', 'souligne': 'none'}
+[webkit] E · page vide : le toucher ne fait rien (la page reste, aucun gardé de côté) OK  
+[webkit] F · plus aucune phrase « se retourne » (C-149)                OK  []
+[webkit] la personne est choisie au doigt                              OK  ["Rachel"]
+[webkit] G · une modification faite : le lien est ACTIF (ni inactif ni aria-disabled) OK  {'inactif': False, 'aria': 'false', 'souligne': 'none'}
+[webkit] J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 718 ± 0,5, v151), jamais souligné, penché de 5 à 6° OK  {'droite': 366, 'haut': 718, 'souligne': 'none', 'penche': 5.5, 'vu': True}
+[webkit] K · toujours visible : pendant un tracé (doigt posé, page en cours de geste), le lien reste à sa place OK  {'cours': True, 'vu': True, 'droite': 366}
+[webkit] A · le lien « garder de côté » paraît, et il est joignable    OK  {'vu': True, 'joignable': True, 'mot': 'garder de côté'}
+[webkit] B · la page + se ferme                                        OK  
+[webkit] C · un gardé de côté de plus, avec le titre de la phrase      OK  1 → 2 · ['appeler Mamie', 'aller voir la mer']
+[webkit] C · avec la personne de la phrase                             OK  Rachel
+[webkit] H · le brouillon est retrouvé : sa carte est dans l'Index     OK  ['Promigardé de côtéaller voir la merGARDÉ DE CÔTÉ']
+[webkit, sans personne] E · page vide : le lien est VISIBLE et INACTIF (non souligné, aria-disabled) OK  {'vu': True, 'inactif': True, 'aria': 'true', 'souligne': 'none'}
+[webkit, sans personne] E · page vide : le toucher ne fait rien (la page reste, aucun gardé de côté) OK  
+[webkit, sans personne] F · plus aucune phrase « se retourne » (C-149) OK  []
+[webkit, sans personne] G · une modification faite : le lien est ACTIF (ni inactif ni aria-disabled) OK  {'inactif': False, 'aria': 'false', 'souligne': 'none'}
+[webkit, sans personne] J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 718 ± 0,5, v151), jamais souligné, penché de 5 à 6° OK  {'droite': 366, 'haut': 718, 'souligne': 'none', 'penche': 5.5, 'vu': True}
+[webkit, sans personne] K · toujours visible : pendant un tracé (doigt posé, page en cours de geste), le lien reste à sa place OK  {'cours': True, 'vu': True, 'droite': 366}
+[webkit, sans personne] A · le lien « garder de côté » paraît, et il est joignable OK  {'vu': True, 'joignable': True, 'mot': 'garder de côté'}
+[webkit, sans personne] B · la page + se ferme                         OK  
+[webkit, sans personne] C · un gardé de côté de plus, avec le titre de la phrase OK  1 → 2 · ['appeler Mamie', 'aller voir la mer']
+[webkit, sans personne] D · sans personne choisie : gardé « à moi »    OK  moi
+[webkit, sans personne] H · le brouillon est retrouvé : sa carte est dans l'Index OK  ['Promigardé de côtéaller voir la merGARDÉ DE CÔTÉ']
+[webkit, une personne seule] I · une personne ajoutée, sans rien d'autre : le lien est actif OK  {'vu': True, 'inactif': False}
+[chromium] E · page vide : le lien est VISIBLE et INACTIF (non souligné, aria-disabled) OK  {'vu': True, 'inactif': True, 'aria': 'true', 'souligne': 'none'}
+[chromium] E · page vide : le toucher ne fait rien (la page reste, aucun gardé de côté) OK  
+[chromium] F · plus aucune phrase « se retourne » (C-149)              OK  []
+[chromium] la personne est choisie au doigt                            OK  ["Rachel"]
+[chromium] G · une modification faite : le lien est ACTIF (ni inactif ni aria-disabled) OK  {'inactif': False, 'aria': 'false', 'souligne': 'none'}
+[chromium] J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 718 ± 0,5, v151), jamais souligné, penché de 5 à 6° OK  {'droite': 366, 'haut': 718, 'souligne': 'none', 'penche': 5.5, 'vu': True}
+[chromium] K · toujours visible : pendant un tracé (doigt posé, page en cours de geste), le lien reste à sa place OK  {'cours': True, 'vu': True, 'droite': 366}
+[chromium] A · le lien « garder de côté » paraît, et il est joignable  OK  {'vu': True, 'joignable': True, 'mot': 'garder de côté'}
+[chromium] B · la page + se ferme                                      OK  
+[chromium] C · un gardé de côté de plus, avec le titre de la phrase    OK  1 → 2 · ['appeler Mamie', 'aller voir la mer']
+[chromium] C · avec la personne de la phrase                           OK  Rachel
+[chromium] H · le brouillon est retrouvé : sa carte est dans l'Index   OK  ['Promigardé de côtéaller voir la merGARDÉ DE CÔTÉ']
+[chromium, sans personne] E · page vide : le lien est VISIBLE et INACTIF (non souligné, aria-disabled) OK  {'vu': True, 'inactif': True, 'aria': 'true', 'souligne': 'none'}
+[chromium, sans personne] E · page vide : le toucher ne fait rien (la page reste, aucun gardé de côté) OK  
+[chromium, sans personne] F · plus aucune phrase « se retourne » (C-149) OK  []
+[chromium, sans personne] G · une modification faite : le lien est ACTIF (ni inactif ni aria-disabled) OK  {'inactif': False, 'aria': 'false', 'souligne': 'none'}
+[chromium, sans personne] J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 718 ± 0,5, v151), jamais souligné, penché de 5 à 6° OK  {'droite': 366, 'haut': 718, 'souligne': 'none', 'penche': 5.5, 'vu': True}
+[chromium, sans personne] K · toujours visible : pendant un tracé (doigt posé, page en cours de geste), le lien reste à sa place OK  {'cours': True, 'vu': True, 'droite': 366}
+[chromium, sans personne] A · le lien « garder de côté » paraît, et il est joignable OK  {'vu': True, 'joignable': True, 'mot': 'garder de côté'}
+[chromium, sans personne] B · la page + se ferme                       OK  
+[chromium, sans personne] C · un gardé de côté de plus, avec le titre de la phrase OK  1 → 2 · ['appeler Mamie', 'aller voir la mer']
+[chromium, sans personne] D · sans personne choisie : gardé « à moi »  OK  moi
+[chromium, sans personne] H · le brouillon est retrouvé : sa carte est dans l'Index OK  ['Promigardé de côtéaller voir la merGARDÉ DE CÔTÉ']
+[chromium, une personne seule] I · une personne ajoutée, sans rien d'autre : le lien est actif OK  {'vu': True, 'inactif': False}
+
+48 / 48

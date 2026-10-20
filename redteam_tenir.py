@@ -12,7 +12,7 @@ couverte, la forme du bord) et sur la capture (le champ, la fiche à la fin).
   C · (v147) un rideau d'un seul tenant : la part couverte monte sans jamais redescendre ; aucune colonne trouée ; le front ondule à peine (1 à 6 pt) — avant : en flaques (les bas
       des colonnes s'écartent de ≥ 8 pt) ; la nappe atteint la barre ;
   D · ni fondu, ni transparence : sur la couche, ≤ 2 % des pixels peints sont entre 10 et 245 d'opacité (le lissage du bord) ;
-  E · la durée : la descente finie en 0,5 à 1,0 s ; de la marée qui paraît à la marée partie, 2,5 à 3,2 s (« environ 2 s » ; v154, C-167 : + 400 ms) ;
+  E · la durée : la descente finie en 0,5 à 1,0 s ; de la marée qui paraît à la marée partie, 2,25 à 2,95 s (« environ 2 s » ; v155, C-167 : 2 150 ms d'amande) ;
   F · le champ garde la couleur de sa nature pendant tout l'instant (plus de champ amande) — rien ne saute au passage à « juste après ».
   H · (v148, C-144) « Parole tenue ! » / « Défi relevé ! », centrée.
   G · (v148, C-118) le vert descend au MÊME rythme d'un bout à l'autre : aucun arrêt, pas réguliers, départ immédiat (lu sur les pixels, image par image).
@@ -78,7 +78,7 @@ def un(b, th, nature):
     t_plein = next((r['t'] for r in R if r['part'] >= 0.97), None)
     duree = (t_off + lev - t_on) if (t_off is not None and t_on is not None) else None
     if CHARGE >= 4: print('      (non jugé : durées, charge du Mac %.1f ≥ 4 — C-137 ; relevé : pleine à %s ms, instant %s ms)' % (CHARGE, t_plein, duree))
-    else: juge('[%s] E · la descente finie en 0,5 à 1,0 s ; l\'instant (de la marée qui paraît à la marée partie) dure 2,5 à 3,2 s — « environ 2 s », + 400 ms (v154, C-167)' % T, t_plein is not None and 500 <= t_plein <= 1000 and duree is not None and 2500 <= duree <= 3200, 'pleine à %s ms · durée %s ms · paraît %s ms après le lever' % (t_plein, duree, (t_on - lev) if t_on is not None else None))
+    else: juge('[%s] E · la descente finie en 0,5 à 1,0 s ; l\'instant (de la marée qui paraît à la marée partie) dure 2,25 à 2,95 s — « environ 2 s », 2 150 ms d\'amande (v155, C-167)' % T, t_plein is not None and 500 <= t_plein <= 1000 and duree is not None and 2250 <= duree <= 2950, 'pleine à %s ms · durée %s ms · paraît %s ms après le lever' % (t_plein, duree, (t_on - lev) if t_on is not None else None))
     champs = [f[4] for f in FI if f[4] and f[0] >= lev]; c0 = champs[0] if champs else (0, 0, 0); ecart = max([sum(abs(c[i] - c0[i]) for i in range(3)) for c in champs] or [999])
     # ⚑ v148 (Tom, C-118) — G · « le vert qui descend saccade au début : on dirait qu'il s'arrête puis repart ; il doit descendre d'un bout à l'autre
     #   au MÊME rythme ». Lu sur les PIXELS de la couche, image par image : la profondeur du front sous le trait (médiane des colonnes) en fonction

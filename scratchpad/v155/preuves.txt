@@ -1,0 +1,16 @@
+== redteam_depart_orange
+  ❌ [sombre] P · page + Cercle au repos : la pointe ET le trait de départ sont orange                            pointe 137 px · trait 0 px
+  ❌ [clair] O · « trace pour planter » et la flèche paraissent 1 000 ± 50 ms après la validation du prénom       [] ms
+  ❌ [clair] O · le départ clignote avec l'animation du I (promiBlink, 1,15 s), en phase avec lui                 {'vis': None, 'anim': False, 'dur': None, 'iAnim': True, 'phase': None}
+  ❌ [clair] O · à la phase pleine, la pointe ET le trait de départ sont orange                                   None
+== redteam_deverrouille
+  ❌ [gravure] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue None (monde gravure|signal) · écart à l'avant : au plus
+  ❌ [sillons] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire   flaques [] → [] (0 images) · flous intermédiaires []
+  ❌ [sillons] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue None (monde sillons|signal) · écart à l'avant : au plus
+  ❌  1 / 25
+== redteam_tenir_presse
+  ❌ A · Promi sans toucher : le vert commence de remonter 2 000 à 2 450 ms après le lever ; la parole est tenue      remontée à 2541 ms · rideau parti à 2973 ms · statut tenu · front au plu
+  ❌ A · Chiche sans toucher : le vert commence de remonter 2 000 à 2 450 ms après le lever ; la parole est tenue     remontée à 2536 ms · rideau parti à 2956 ms · statut tenu · front au plu
+  ❌ C · un toucher 100 ms après le lever ne presse rien : la remontée garde son heure (2 000 à 2 450 ms)             toucher à 91 ms · remontée à 2532 ms
+  ❌  3 / 7
+FIN

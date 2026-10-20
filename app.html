@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v154', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v155', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -6877,8 +6877,8 @@ function buildStudio(){
     var applyH=function(t){t=Math.max(0,Math.min(1,t));th.style.left=(t*100)+'%';th.style.setProperty('--hc','hsl('+Math.round(t*360)+',72%,54%)');try{window.Toile.setHue(t*360);window.Toile.repaint(bgc);}catch(e){}};
     var tX=function(cx){var r=sp.getBoundingClientRect();return Math.max(0,Math.min(1,(cx-r.left)/r.width));};
     var coast=function(){if(_dg){_rf=null;return;}_p+=_v;_v*=0.92;if(_p<0){_p=0;_v=0;}if(_p>1){_p=1;_v=0;}applyH(_p);if(Math.abs(_v)>0.0006){_rf=requestAnimationFrame(coast);}else{_rf=null;}};
-    sp.addEventListener('pointerdown',function(e){_dg=true;if(_rf){cancelAnimationFrame(_rf);_rf=null;}try{sp.setPointerCapture(e.pointerId);}catch(x){}_p=tX(e.clientX);_v=0;applyH(_p);});
-    sp.addEventListener('pointermove',function(e){if(!_dg)return;var t=tX(e.clientX);_v=_v*0.5+(t-_p)*0.5;_p=t;applyH(_p);});
+    var _o=0;sp.addEventListener('pointerdown',function(e){_dg=true;if(_rf){cancelAnimationFrame(_rf);_rf=null;}try{sp.setPointerCapture(e.pointerId);}catch(x){}var _t0=tX(e.clientX);_o=(th.contains(e.target)?_t0-(parseFloat(th.style.left)||0)/100:0);_p=Math.max(0,Math.min(1,_t0-_o));_v=0;applyH(_p);});   /* v155 (C-168) : la dalle attrapée dans sa zone (56 × 56) ne saute pas sous le doigt — on garde l'écart */
+    sp.addEventListener('pointermove',function(e){if(!_dg)return;var t=Math.max(0,Math.min(1,tX(e.clientX)-_o));_v=_v*0.5+(t-_p)*0.5;_p=t;applyH(_p);});
     var _end=function(){if(!_dg)return;_dg=false;if(!_rf)_rf=requestAnimationFrame(coast);};
     sp.addEventListener('pointerup',_end);sp.addEventListener('pointercancel',_end);}
   /* le panneau vient d'être reconstruit : on replace l'encart une fois la mise en page faite */
@@ -8766,7 +8766,7 @@ function apply(){[].forEach.call(document.querySelectorAll(".tuto-fond,#createSh
 if(document.readyState!=="loading")apply();else document.addEventListener("DOMContentLoaded",apply);
 try{var mo=new MutationObserver(function(muts){muts.forEach(function(m){[].forEach.call(m.addedNodes,function(n){if(n.nodeType!==1)return;if(n.classList&&(n.classList.contains("tuto-fond")||n.id==="createSheet"))setEl(n);if(n.querySelectorAll)[].forEach.call(n.querySelectorAll(".tuto-fond,#createSheet"),setEl);});});});mo.observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();</script>
-<script>(function(){try{var b=document.getElementById("stLockBuy");if(b){b.addEventListener("click",function(e){e.stopPropagation();var w=window._lockedWorld;if(w&&typeof _ownedDesigns!=="undefined"){_ownedDesigns[w]=true;var st=document.getElementById("studioScreen");if(st)st.classList.remove("world-locked");try{if(window.Toile&&window.Toile.setTheme)window.Toile.setTheme(w);if(typeof state!=="undefined"&&state)state.structure=w;if(typeof render==="function")render();}catch(_){}try{if(typeof toast==="function")toast("Design d\u00e9bloqu\u00e9 \u2713");}catch(_){}}});}document.addEventListener("click",function(e){var l=e.target&&e.target.closest?e.target.closest(".adv-lock[data-cercle]"):null;if(l){e.stopPropagation();var dv=document.getElementById("device");if(dv&&dv.classList.contains("premium"))return;var pl=document.getElementById("plusScreen");if(pl)pl.classList.add("show");try{if(typeof buildCercleHero==="function")buildCercleHero();}catch(_){}}} ,true);}catch(e){}})();</script>
+<script>(function(){try{var b=document.getElementById("stLockBuy");if(b){b.addEventListener("click",function(e){e.stopPropagation();var w=window._lockedWorld;if(w&&typeof _ownedDesigns!=="undefined"){_ownedDesigns[w]=true;var st=document.getElementById("studioScreen");var _dv=false;try{if(window._deverrouille)_dv=window._deverrouille(w);}catch(_d){}if(st)st.classList.remove("world-locked");try{if(!_dv&&window.Toile&&window.Toile.setTheme)window.Toile.setTheme(w);if(typeof state!=="undefined"&&state)state.structure=w;if(typeof render==="function")render();}catch(_){}try{if(typeof toast==="function")toast("Design d\u00e9bloqu\u00e9 \u2713");}catch(_){}}});}document.addEventListener("click",function(e){var l=e.target&&e.target.closest?e.target.closest(".adv-lock[data-cercle]"):null;if(l){e.stopPropagation();var dv=document.getElementById("device");if(dv&&dv.classList.contains("premium"))return;var pl=document.getElementById("plusScreen");if(pl)pl.classList.add("show");try{if(typeof buildCercleHero==="function")buildCercleHero();}catch(_){}}} ,true);}catch(e){}})();</script>
 <script>(function(){try{var st=document.getElementById("shTheme");if(st){[].forEach.call(st.querySelectorAll("button"),function(b){b.addEventListener("click",function(){if(typeof _sealDark!=="undefined")_sealDark=(b.getAttribute("data-t")==="dark");try{var _ss=document.getElementById("shareScreen");if(_ss)_ss.classList.toggle("sh-lightwm",!_sealDark);}catch(_){}[].forEach.call(st.querySelectorAll("button"),function(x){x.classList.toggle("on",x===b);});try{var _so=document.querySelectorAll("#sealTheme button");[].forEach.call(_so,function(y){y.classList.toggle("on",y.getAttribute("data-t")===(_sealDark?"dark":"light"));});}catch(_){}try{if(typeof shareRender==="function")shareRender();}catch(e){}});});}}catch(e){}})();</script>
 <script>function _paintBuyBg(){try{var cv=document.getElementById("stBuyBg");if(!cv)return;var b=cv.parentNode;var w=b.clientWidth||300,h=b.clientHeight||50;if(!w||!h)return;var dpr=Math.min(2,window.devicePixelRatio||1);cv.width=w*dpr;cv.height=h*dpr;var g=cv.getContext("2d");if(!g)return;g.setTransform(dpr,0,0,dpr,0,0);g.fillStyle="#132235";g.fillRect(0,0,w,h);var pal=(typeof SIGNAL!=="undefined"?SIGNAL:[[201,168,245],[130,174,248],[221,77,35],[41,21,71]]);var blobs=[[0.14,0.5,pal[0],0.6],[0.44,0.32,pal[1],0.55],[0.8,0.62,pal[2],0.5],[0.62,0.8,pal[3],0.42]];blobs.forEach(function(bl){var cx=bl[0]*w,cy=bl[1]*h,r=Math.max(w,h)*0.62,c=bl[2];var gr=g.createRadialGradient(cx,cy,0,cx,cy,r);gr.addColorStop(0,"rgba("+c[0]+","+c[1]+","+c[2]+","+bl[3]+")");gr.addColorStop(1,"rgba("+c[0]+","+c[1]+","+c[2]+",0)");g.fillStyle=gr;g.fillRect(0,0,w,h);});try{if(typeof _grain==="function")_grain(g,w,h,0.5);}catch(e){}}catch(e){}}</script>
 <script>(function(){try{document.addEventListener("click",function(e){var t=e.target&&e.target.closest?e.target.closest(".more-toggle"):null;if(t){var box=t.nextElementSibling;if(box&&box.classList.contains("more-opts")){var op=box.classList.toggle("open");t.classList.toggle("open",op);}}});}catch(e){}})();</script>
@@ -15252,8 +15252,13 @@ var CREMEETAT='#F7F0DE';
        points, sinon ils sortiraient dans la teinte du dernier remplissage. */
     var _pin='Plein';
     try{ _pin = window.promiPinceau ? window.promiPinceau(p) : 'Plein'; }catch(_){}
-    function mat(a,b){ return _pin!=='Plein' && window._matiereTrait &&
-      window._matiereTrait(g, _pin, e.base, e.amp, a, b, col); }
+    function mat(a,b,cc){ return _pin!=='Plein' && window._matiereTrait &&
+      window._matiereTrait(g, _pin, e.base, e.amp, a, b, cc||col); }
+    /* ⚑ v155 (Tom, C-169 §4.1, §4.2) — LE DÉPART DE LA FLÈCHE EST ORANGE, la pointe ET le trait de départ : l'amorce effilée à gauche (rien n'est tracé)
+       et, sur une fiche à moitié tracée, les derniers 43 pt du trait avant la pointe du milieu (la longueur de l'amorce visible, 0,11 de la largeur) —
+       le départ de la seconde moitié (Q563). Le pinceau garde sa matière, il prend l'orange. */
+    var ORG_D=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), L_DEP=W*0.11;
+    function pleinDep(a,b){ if(mat(a,b,ORG_D)) return; var _ss=g.strokeStyle; g.strokeStyle=ORG_D; g.beginPath(); chemin(g,y,a,b); g.stroke(); g.strokeStyle=_ss; }
     function plein(a,b){ if(mat(a,b)) return; g.beginPath(); chemin(g,y,a,b); g.stroke(); }
     function points(x0){ g.fillStyle=col;
       /* ⚑ E2 (v140, Tom, C-075) — « “TRACE POUR TENIR” et le trait plus visibles […] : plus grands, en grandissant vers le haut, sans déplacer
@@ -15327,13 +15332,13 @@ var CREMEETAT='#F7F0DE';
     else if(e.mode==='duo'){ plein(0,mid-4); plein(mid+4,W); }
     else if(e.mode==='points'){ var cx=W*0.11;
       /* ⚑ 23 sept. — le trait ne sort plus PAR la pointe du chevron (Q267) */
-      if(!mat(-W*0.03, cx-ep*0.15)){ ruban(g,y,-W*0.03, cx-ep*0.15, ep*2.2, ep*0.15); g.fill(); }
+      if(!mat(-W*0.03, cx-ep*0.15, ORG_D)){ var _fs=g.fillStyle; g.fillStyle=ORG_D; ruban(g,y,-W*0.03, cx-ep*0.15, ep*2.2, ep*0.15); g.fill(); g.fillStyle=_fs; }   /* v155 (C-169) : l'amorce, orange */
       chevron(g,y,cx,col,ep,cv); points(cx+esp*1.3); }
     /* ⚑ v145 (C-115) — À PLUSIEURS, LA SECONDE MOITIÉ EST DIVISÉE EN PARTS (`lot-V145-PARTS`) : le peintre des parts prend la main quand la parole engage
        plusieurs personnes ; sinon rien ne change (une parole à une seule personne garde son chevron et ses points). */
     else if((function(){ try{ return !!(window._partsPeint && window._partsPeint({g:g, y:y, W:W, mid:mid, ep:ep, esp:esp, col:col, cv:cv, p:p, e:e, chemin:chemin, chevron:chevron,
         plein:plein, pleinC:function(a,b,cc){ var _o=col, _s=g.strokeStyle; col=cc; g.strokeStyle=cc; try{ plein(a,b); }finally{ col=_o; g.strokeStyle=_s; } }})); }catch(_){ return false; } })()){ }
-    else { try{ cv.removeAttribute('data-parts'); }catch(_){ } plein(0,mid); chevron(g,y,mid,col,ep,cv); points(mid+esp); }
+    else { try{ cv.removeAttribute('data-parts'); }catch(_){ } plein(0,mid); pleinDep(Math.max(0,mid-L_DEP), mid-ep*0.15); chevron(g,y,mid,col,ep,cv); points(mid+esp); }   /* v155 (C-169 §4.2) : le départ de la seconde moitié, orange */
     /* ⚑ LE PEINTRE DÉCLARE SA COMPOSITION (doctrine du §7). Un contrôle qui veut savoir de
        quelle couleur est la ligne doit l'échantillonner sur le canevas — et pour cela
        connaître L'ONDE. `releve-S5` la codait en dur (base 300, amplitude 44) : dès que
@@ -17778,17 +17783,21 @@ var CREMEETAT='#F7F0DE';
           g.stroke(); }
         g.restore();
         g.strokeStyle = col; g.fillStyle = col; g.lineWidth = ep; g.lineCap = 'round'; g.lineJoin = 'round'; }
+      /* ⚑ v155 (Tom, C-169 §4.1, §4.3) — LE DÉPART EST ORANGE, la pointe ET le trait de départ : l'amorce au repos et le trait que le doigt tire
+         (la part tracée pendant le geste, comme dans l'onboarding) ; une fois signé, le trait reprend sa couleur. */
+      var _cD = (e.etat === 'signe') ? col : (window._orangeDepart ? window._orangeDepart() : '#FB4C0D');
       var _pin = (window.promiPinceau ? window.promiPinceau(null) : 'Plein'), _fait = false;
       if(_pin !== 'Plein' && window._matiereTrait)
         _fait = window._matiereTrait(g, _pin, e.base, e.amp, -W*0.03,
-                  (e.etat === 'plate') ? _bout : cx, col);
-      if(!_fait){
+                  (e.etat === 'plate') ? _bout : cx, _cD);
+      if(!_fait){ var _ss0 = g.strokeStyle, _fs0 = g.fillStyle; g.strokeStyle = _cD; g.fillStyle = _cD;
         if(e.etat === 'cours' || e.etat === 'signe'){
           g.beginPath(); O.chemin(g, y, 0, cx); g.stroke();
         } else {
           O.ruban(g, y, -W*0.03, _bout, ep*2.2, ep*0.15); g.fill();
         }
-      }
+        g.strokeStyle = _ss0; g.fillStyle = _fs0; }
+      g.strokeStyle = col; g.fillStyle = col;
       /* le trait entier d'une Nuée donnée : plus rien ne manque, donc ni chevron ni points. */
       if(!(ENTIER && e.etat === 'signe')){
         O.chevron(g, y, cx, col, ep, cv);   /* v146 (C-133) : le départ, orange */
@@ -20523,7 +20532,7 @@ var CREMEETAT='#F7F0DE';
     var L=null; try{ if(window._tenirMorceaux) L=window._tenirMorceaux(); }catch(_){}
     if(!L) L=[function(){ if(window._tenirApres) window._tenirApres(); }, function(){ if(window._repasseSombre) window._repasseSombre(); }];
     window._enFond(L); }
-  window._tenirRegle={AMANDE:2400};   /* v144 (C-111) : la durée de l'instant amande, en ms — décidée par Tom (le double de 1 000) ; ⚑ v154 (Tom, C-167) : 400 ms de plus
+  window._tenirRegle={AMANDE:2150};   /* ⚑ v155 (Tom, C-167) : 2 400 → 2 150 ms */   /* v144 (C-111) : la durée de l'instant amande, en ms — décidée par Tom (le double de 1 000) ; ⚑ v154 (Tom, C-167) : 400 ms de plus
      avant que le vert remonte (2 000 → 2 400), pour toutes les phrases de validation. Un toucher n'importe où pendant ce temps (`window._tenirVite`, posé par
      lot-V146-MAREE) fait remonter le vert tout de suite et mène à la fiche tenue ; sans toucher, le retour se fait seul. */
   /* ⚑ E3 (v153, ENGAGEMENT.md E3 point 3 avec l'amendement A1, C-077) — « Réduire les animations » : la fiche passe TENUE sans rideau, dans un seul
@@ -20547,7 +20556,7 @@ var CREMEETAT='#F7F0DE';
     /* ⚑ v144 (Tom, 12 oct. 2026, C-111) — « LE MOMENT TENIR : PLUS LENT. L'étape “tenu” part trop vite : la mention et l'état tenu restent posés environ
        deux fois plus longtemps avant la suite, avec la même fluidité, sans saut. » L'instant amande (« Parole tenue. » / « Défi relevé. ») dure
        2 000 ms (1 000 avant), pour un Promi comme pour un Chiche ; « juste après » vient ensuite, et la pose complète 700 ms plus tard, comme avant. */
-    var DUR=(window._tenirRegle||{}).AMANDE||2400;
+    var DUR=(window._tenirRegle||{}).AMANDE||2150;
     var t0=performance.now(), apres=false, vu={}, tA=DUR;   /* v154 (C-167) : tA — l'heure (relative) où vient « juste après » : DUR, ou le toucher qui presse */
     (function img(){
       var t=performance.now()-t0;
@@ -34983,9 +34992,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   /* le doigt sur la jauge, bouton allumé : il dose le noir et blanc, et la teinte n'est pas touchée */
   var tient=null;
   function x2j(sp,cx){ var r=sp.getBoundingClientRect(); return Math.max(0,Math.min(1,(cx-r.left)/Math.max(1,r.width))); }
-  function regle(sp,cx){ nb.j=x2j(sp,cx); LSs('promi_nb_j', String(nb.j)); jauge(); redessine(); }
+  var ecart=0;   /* v155 (C-168) : la dalle attrapée dans sa zone ne saute pas sous le doigt */
+  function regle(sp,cx){ nb.j=Math.max(0,Math.min(1,x2j(sp,cx)-ecart)); LSs('promi_nb_j', String(nb.j)); jauge(); redessine(); }
   document.addEventListener('pointerdown', function(e){ if(!nb.on) return; var sp=e.target&&e.target.closest&&e.target.closest('#st3spec'); if(!sp) return;
-    e.stopImmediatePropagation(); tient=e.pointerId; try{ sp.setPointerCapture(e.pointerId); }catch(_){ } regle(sp,e.clientX); }, true);
+    e.stopImmediatePropagation(); tient=e.pointerId; try{ sp.setPointerCapture(e.pointerId); }catch(_){ } var th=document.getElementById('st3thumb'); ecart=(th&&th.contains(e.target))?x2j(sp,e.clientX)-nb.j:0; regle(sp,e.clientX); }, true);
   document.addEventListener('pointermove', function(e){ if(tient==null||e.pointerId!==tient) return; var sp=document.getElementById('st3spec'); if(!sp) return; e.stopImmediatePropagation(); regle(sp,e.clientX); }, true);
   ['pointerup','pointercancel'].forEach(function(t){ document.addEventListener(t, function(e){ if(tient==null||e.pointerId!==tient) return; tient=null; e.stopImmediatePropagation(); }, true); });
   function armer(){ pose(); try{ new MutationObserver(function(){ var pl=document.getElementById('stpPals'); if(pl&&!pl.querySelector('.stp-nb')) pose(); else { var sp=document.getElementById('st3spec'); if(sp&&sp.classList.contains('nb')!==nb.on) jauge(); } }).observe(document.body,{childList:true,subtree:true}); }catch(_){ } }
@@ -37305,6 +37315,14 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    l'Index (196 → 232) et 47 dans le Fil (168 → 215). Le Fil prend l'air de l'Index : 168 + 36 = 204. */
 #device#device#device #feedView.s4 > #feedList,#device#device#device #feedView #feedList{top:204px!important}
 </style>
+<style id="lot-V155-CURSEUR-css">
+/* ⚑ v155 (Tom, C-168) — « la dalle qu'on fait glisser sur la jauge des couleurs est difficile à attraper » : sa ZONE TACTILE fait 56 × 56 pt, centrée sur
+   la dalle (30 × 30), sans rien changer à son dessin ; un pseudo-élément transparent, qui appartient à la dalle (le toucher remonte à la jauge). Mesuré :
+   aucun élément touchable dans cette zone (la dernière rangée de pastilles finit à 737 pt, la zone commence à 754 ; le nom de la palette ne se touche pas) ;
+   elle reste dans l'encart (24 → 366, 478 → 820). */
+#studioScreen #st3thumb::before{content:''!important;position:absolute!important;left:50%!important;top:50%!important;width:56px!important;height:56px!important;
+  transform:translate(-50%,-50%)!important;background:transparent!important;border:0!important;display:block!important;pointer-events:auto!important}
+</style>
 <style id="lot-V20-STUDIO-AURA-css">
 /* ⚑ v20 (Tom, 22 sept.) — 1 · le curseur de la jauge des palettes devient UNE DALLE DU MONDE
    SÉLECTIONNÉ, simple (une seule couleur), sombre en mode clair, claire en mode sombre. Plus de cible. */
@@ -37392,6 +37410,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   color:var(--onb-inv);-webkit-text-fill-color:var(--onb-inv);font-family:var(--f-libelle);font-size:24px;line-height:48px;text-align:center;cursor:pointer}
 #onbV .onbv-trace{left:82px;font-family:var(--f-marque);font-size:15px;line-height:15px;letter-spacing:.6px;text-transform:uppercase;white-space:nowrap;color:var(--onb-ink);-webkit-text-fill-color:var(--onb-ink)}
 #onbV .onbv-trait{left:0;width:390px;height:118px;display:block}
+#onbV .onbv-dep{pointer-events:none}   /* v155 (C-169) : la couche du départ, posée sur le trait ; le doigt va au trait */
+@media (prefers-reduced-motion:no-preference){#onbV #onbDepart.clignote{animation:promiBlink 1.15s steps(1,end) infinite}}
 #onbV .onbv-fin{left:24px;width:342px}
 #onbV .onbv-fin b{display:block;font-family:var(--f-libelle);font-weight:700;font-size:35px;letter-spacing:-1.05px;line-height:44px;color:var(--onb-ink);-webkit-text-fill-color:var(--onb-ink)}
 #onbV .onbv-fin span{display:block;margin-top:10px;font-family:var(--f-texte);font-size:16px;line-height:22px;color:var(--onb-ink);-webkit-text-fill-color:var(--onb-ink)}
@@ -37671,6 +37691,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 
   var reserveDonnees=null, parNous=false;
   var O=null, etape=null, rejeu=false, prenom='', parole='', fini=false, prog=0, actif=false, minuteurs=[], voisines=false, sansGuide=false;
+  var tParole=0, departTouche=false;   /* ⚑ v155 (Tom, C-169) : l'heure de la validation du prénom ; le premier toucher sur le trait (le départ cesse de clignoter) */
   var W=390, BASE=70, AMP=36, ZONE_Y=590, EP=10, RR=4.5, ESP=18, MID=195, CX=W*0.11, DIT_TOP=184;
   var PH_PRENOM='ton prénom', PH_PAROLE='ne plus dire “je commence lundi”';
   function T(f,ms){ minuteurs.push(setTimeout(f,ms)); }
@@ -37718,6 +37739,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         '<div class="onbv-a onbv-suite" id="onbSuite" data-onb="suite" role="button" aria-label="Suite">→</div>'+
         '<div class="onbv-a onbv-trace" id="onbTrace" style="display:none;top:'+(ZONE_Y-34)+'px">trace pour planter</div>'+
         '<canvas class="onbv-a onbv-trait" id="onbTrait" data-onb="trait" style="display:none;top:'+ZONE_Y+'px" aria-label="Trace pour planter"></canvas>'+
+        '<canvas class="onbv-a onbv-trait onbv-dep" id="onbDepart" aria-hidden="true" style="display:none;top:'+ZONE_Y+'px"></canvas>'+
       '</div>'+
       /* ⚑ v146 (Tom, 14 oct. 2026, C-124) — 11.4 : « C'est planté. » devient « Promi planté ! » (exception nommée au « ! », comme « Ma Parole ! ») ;
          « Promi » en gros, en bleu Promi ; dessous, la phrase qui donne le ton ; puis rien d'autre : le reste vient au toucher (§13). 11.3 : les mots de
@@ -37775,6 +37797,12 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     }
     placer();
   }
+  /* ⚑ v155 (Tom, C-169 §4.4, §4.5 ; Q561) — le départ clignote AU RYTHME DU I DE PROMI : même animation (`promiBlink 1.15s steps(1,end)`), calée sur la
+     phase du I quand il clignote ; seulement dans l'onboarding, seulement jusqu'au premier toucher sur le trait ; « Réduire les animations » : fixe. */
+  function departBlink(el){ if(departTouche || reduitOnb()){ el.classList.remove('clignote'); return; }
+    var dl=0; try{ var i=document.querySelector('#onbV .onbv-mm i'), A=i&&i.getAnimations?i.getAnimations():[]; var a=A.filter(function(x){ return x.animationName==='promiBlink'; })[0];
+      if(a && a.currentTime!=null) dl=-(a.currentTime%1150); }catch(_){ }
+    el.style.animationDelay=dl+'ms'; el.classList.add('clignote'); }
   /* les cotes sous la phrase se DÉRIVENT de son bas réel (§8 : un texte qui passe à la ligne) */
   function placer(){
     var ph=document.getElementById('onbPh'); if(!ph) return;
@@ -37788,13 +37816,17 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(so){ so.style.top=(bas+ecart)+'px'; }
     /* le trait descend s'il le faut (une phrase de trois lignes) : 50 pt sous « Petite ou grande promesse », jamais sous 686 */
     var zy=Math.max(590, Math.min(686, Math.round((sv?bas+ecart+so.offsetHeight:bas)+50+34)));
-    if(zy!==ZONE_Y){ ZONE_Y=zy; var _tz=document.getElementById('onbTrait'), _tt=document.getElementById('onbTrace'); if(_tz) _tz.style.top=ZONE_Y+'px'; if(_tt) _tt.style.top=(ZONE_Y-34)+'px'; }
+    if(zy!==ZONE_Y){ ZONE_Y=zy; var _tz=document.getElementById('onbTrait'), _tt=document.getElementById('onbTrace'), _td=document.getElementById('onbDepart'); if(_tz) _tz.style.top=ZONE_Y+'px'; if(_td) _td.style.top=ZONE_Y+'px'; if(_tt) _tt.style.top=(ZONE_Y-34)+'px'; }
     if(su){ su.style.top=(sv ? bas+ecart+so.offsetHeight+16 : bas+14)+'px';
       var plein = etape==='prenom' ? !!prenom.trim() : (!!parole.trim() && aFocus());
       su.style.display = (etape==='trait'||!plein) ? 'none' : 'block'; }
     var tr=document.getElementById('onbTrait'), tt=document.getElementById('onbTrace');
-    var voir = etape!=='prenom' && !!parole.trim() && !fini, avant = !!(tr && tr.style.display==='block');
+    /* ⚑ v155 (Tom, C-169 §4.4) — « trace pour planter » et la flèche paraissent 1 s APRÈS la validation du prénom (le temps que le clavier disparaisse et
+       que l'animation d'arrivée attire l'œil), qu'une parole soit écrite ou non ; avant v155 ils attendaient la première lettre de la parole. */
+    var voir = etape!=='prenom' && !fini && (!!parole.trim() || (tParole>0 && performance.now()-tParole>=990)), avant = !!(tr && tr.style.display==='block');
     if(tr) tr.style.display = voir ? 'block' : 'none';
+    var _dp=document.getElementById('onbDepart'); if(_dp){ _dp.style.display = voir ? 'block' : 'none'; if(voir && !avant) departBlink(_dp); }
+    if(voir && !avant){ try{ (window._onbApparition=window._onbApparition||[]).push(Math.round(performance.now()-tParole)); }catch(_){ } }
     if(tt) tt.style.display = voir ? 'block' : 'none';
     if(voir) peindreTrait();
     /* ⚑ v148 (C-141 §10.3) — « rien n'arrive d'un coup » : le trait et « trace pour planter » paraissaient en une image à la première lettre. Ils
@@ -37835,6 +37867,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   }
   function allerParole(garderClavier, attendreClavier){
     etape='parole'; concept(false);
+    tParole=performance.now(); departTouche=false; minuteurs.push(setTimeout(function(){ if(etape!=='prenom' && !fini) placer(); }, 1000));   /* v155 (C-169 §4.4) */
     /* ⚑ v147 (Tom, 15 oct. 2026, C-124 §4) — « Tom, donc. » RESTE À SA HAUTEUR (184 pt, celle de v146 sur une ligne) ; Tom enrichit la page, mot pour
        mot : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » · « Petite ou grande promesse, elle compte. ». Tout ce qui suit descend
        pour respirer (`placer` : 16 pt sous « Enchanté. », la phrase 32 pt sous la question — 12 avant —, « Petite ou grande promesse » 40 pt sous la
@@ -37863,9 +37896,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     /* ⚑ v150 (Tom, C-126) : « en mode SOMBRE, toute la flèche, trait compris, passe en orange #FB4C0D, comme en mode clair » — la traîne, l'amorce et
        la part tracée (elles restaient crème en sombre) ; les points non tracés gardent la couleur du mode (noir en clair, la crème en sombre). */
     var ORG=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), cDep=ORG, cPts=clair()?'#000000':col;
+    /* ⚑ v155 (Tom, C-169 §4.4) — LE DÉPART (la traîne, la part tracée, la pointe) est peint sur SA couche (`#onbDepart`, posée sur le trait, sans toucher) :
+       c'est elle qui clignote, avec l'animation même du I de PROMI (`promiBlink`), jusqu'au premier toucher sur le trait ; les points restent ici. */
+    var cvD=document.getElementById('onbDepart'), gt=g;
+    if(cvD){ if(cvD.width!==W*dpr){ cvD.width=W*dpr; cvD.height=118*dpr; } var gD=cvD.getContext('2d'); gD.setTransform(dpr,0,0,dpr,0,0); gD.clearRect(0,0,W,118); g=gD; }
     g.strokeStyle=cDep; g.fillStyle=cDep; g.lineWidth=EP; g.lineCap='round'; g.lineJoin='round';
     function plein(a,b){ g.strokeStyle=cDep; g.beginPath(); O.chemin(g,y,a,b); g.stroke(); }
-    function points(x0){ g.fillStyle=cPts; for(var x=x0;x<W-RR;x+=ESP){ g.beginPath(); g.arc(x,y(x),RR,0,6.2832); g.fill(); } }
+    function points(x0){ gt.fillStyle=cPts; for(var x=x0;x<W-RR;x+=ESP){ gt.beginPath(); gt.arc(x,y(x),RR,0,6.2832); gt.fill(); } }
     var x=Math.max(CX, Math.min(MID, prog));
     if(x<=CX+0.5){ g.fillStyle=cDep; O.ruban(g,y,-W*0.03, CX-EP*0.15, EP*2.2, EP*0.15); g.fill(); O.chevron(g,y,CX,cDep,EP,true); points(CX+ESP*1.3); }   /* v146 (C-133, C-126) : le départ de la flèche, orange */
     else { plein(0,x); O.chevron(g,y,x,cDep,EP,true); points(x+ESP); }
@@ -37876,6 +37913,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     function loc(e){ var r=cv.getBoundingClientRect(), s=r.width/W; return {x:(e.clientX-r.left)/s, y:(e.clientY-r.top)/s}; }
     cv.addEventListener('pointerdown', function(e){
       if(fini||etape==='prenom') return;
+      if(!departTouche){ departTouche=true; var _d=document.getElementById('onbDepart'); if(_d) _d.classList.remove('clignote'); }   /* v155 (C-169) : au premier toucher sur le trait, le départ reste orange, fixe */
+      if(!parole.trim()){ focus(); e.preventDefault(); return; }   /* v155 : le trait paraît avant la parole ; tracé sans parole, il ouvre la saisie de la phrase (rien n'est planté sans mots — Q562) */
       var i=document.getElementById('onbIn'); if(i&&aFocus()) i.blur();
       var p=loc(e), y=yOnde();
       if(p.x>W*0.3 || Math.abs(p.y-y(p.x))>48) return;
@@ -40554,7 +40593,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function $(i){ return document.getElementById(i); }
   var dev=$('device'); if(!dev) return;
   var F=window.Flaques, GD=(F&&F.GUIDE)||{};
-  var CLE='promi_guide', ATTENTE=GD.ATTENTE||600, COUVRE=GD.COUVRE||1400, OUVRE=GD.OUVRE||700, FERME=GD.FERME||700, RETIRE=GD.RETIRE||1200, FLOU=GD.FLOU||4.8, RETOUR=450;
+  var CLE='promi_guide', ATTENTE=(GD.ATTENTE||600)-250, COUVRE=GD.COUVRE||1400, OUVRE=GD.OUVRE||700, FERME=GD.FERME||700, RETIRE=GD.RETIRE||1200, FLOU=GD.FLOU||4.8, RETOUR=450;   /* ⚑ v155 (Tom, C-094) : le flou de la phrase du Studio commence 250 ms plus tôt (600 → 350 ms de calme) ; le reste de la séquence garde ses durées */
   var LS={g:function(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, s:function(k,v){ try{ localStorage.setItem(k,v); }catch(_){ } }};
   function reduit(){ try{ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
   function onbOuvert(){ var o=$('promiOnb'); return !!($('onbV') || (o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none')); }
@@ -40959,7 +40998,7 @@ window._noms=(function(){
     for(i=0;i<S.n;i++){ var a=x0+i*(L+ECART), b=(i===S.n-1)?W+ep:a+L, f=faite(p,S.T[i]); X.push([a, Math.min(b,W)]);
       if(f){ c.pleinC(a+ep/2, (i===S.n-1)?b:b-ep/2, tenu); }             /* tracée : pleine, à la couleur de l'état tenu (les bouts ronds tombent sur les bords de la part) */
       else { g.save(); g.strokeStyle=c.col; g.lineWidth=FIN; g.lineCap='round'; g.beginPath(); c.chemin(g, y, a+FIN/2, (i===S.n-1)?W:b-FIN/2); g.stroke(); g.restore(); } }   /* pas encore : un trait fin, la teinte de la nature */
-    if(S.moi && !S.moiFait) c.chevron(g,y,mid,c.col,ep,c.cv||true);   /* v146 (C-133) : le départ, orange */                  /* c'est à moi de tracer : le chevron reste */
+    if(S.moi && !S.moiFait){ try{ var _oD=(window._orangeDepart?window._orangeDepart():'#FB4C0D'); c.pleinC(Math.max(0,mid-W*0.11), mid-ep*0.15, _oD); }catch(_){ } c.chevron(g,y,mid,c.col,ep,c.cv||true); }   /* v155 (C-169 §4.2) : le trait de départ de ma part, orange, avec la pointe */   /* v146 (C-133) : le départ, orange */                  /* c'est à moi de tracer : le chevron reste */
     /* qui : les initiales sous chaque part (jusqu'à quatre), sinon le compte */
     g.save(); g.font='700 12px Gilbert, system-ui, sans-serif'; g.textAlign='center'; g.textBaseline='alphabetic';
     var encre=(c.e && c.e.colTexte) || (clair?'#201908':'#F7F0DE'), vert=clair?(O.TENU||'#00341A'):(O.AMANDE||'#8FE08F');
@@ -41194,10 +41233,53 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 @media (prefers-reduced-motion:reduce){
   #device#device .acc-barre #createBtn::before, #device#device #createBtn.dhero::before, #device#device #createBtn.dhero::after,
   #createBtn#createBtn#createBtn::before, #createBtn#createBtn#createBtn::after,
+  /* ⚑ v155 (chef de chantier, Q561) — « avec Réduire les animations, plus rien ne clignote » : le I de PROMI (accueil, onboarding, titres d'écran, Partager)
+     reste fixe ; ses règles portaient `promiBlink` en `!important` à deux id, hors de toute condition — elles battaient la règle générale. */
+  #device#device#device .acc-mm i, #device#device#device .acc-mm.acc-mm i, #onbV#onbV#onbV .onbv-mm i, #onbV#onbV#onbV .onbv-mm.onbv-mm i, #promiOnb#promiOnb#promiOnb .ii,
+  #device#device#device #settingsScreen .scr-ti .ti-x, #settingsScreen#settingsScreen#settingsScreen h1 .hi, #settingsScreen#settingsScreen#settingsScreen h1 .uvi,
+  #device#device#device .s-set h1 .blink, #settingsScreen#settingsScreen#settingsScreen h1.scr-ti .ti-x.blink, #shareScreen#shareScreen#shareScreen h2.scr-t .ti-x.blink,
+  #device#device#device .blink, #device#device#device .hi.blink, #device#device#device .ti-x.blink, #device#device#device .uvi.blink,
+  #onbV#onbV#onbV #onbDepart, #device#device#device #onbDepart{animation:none!important}
   #device#device#device .set-cercle, #device#device#device .set-cercle *, #device#device#device .set-cercle::before, #device#device#device .set-cercle::after,
   .set-cercle.set-cercle::after, .pplus-card.pplus-card::after, .karma-cercle.karma-cercle::after{animation:none!important}
 }
 </style>
+<script id="lot-V155-DEVERROUILLE">
+/* ⚑ v155 (Tom, C-170) — « Quand on déverrouille un monde payant, pendant le court chargement, une ANCIENNE Toile apparaît. Le passage au nouveau monde se fait
+   de façon fluide, dans le langage des transitions de l'app, sans fondu. Jamais une image périmée. »
+   LA CAUSE (mesurée au banc WebKit, Toile de 25 paroles, les douze mondes payants) : sous le Studio, la boucle de la Toile ne peint pas (`frame()` saute
+   tant que `#studioScreen` porte `.show`). `Toile.setTheme(monde)` change le monde, mais le canevas de l'accueil (`#toileCv`) GARDE L'IMAGE DE L'ANCIEN
+   MONDE jusqu'à la première image peinte après la fermeture — 0,5 s plus tard (Ramage) ; pendant que le Studio glisse pour se refermer, c'est elle qu'il
+   découvre. Et le flou du verrou se retirait par un FONDU de filtre (`transition:filter .34s`, de 1,4 à 0 px), à l'écart du langage de l'app.
+   LA CORRECTION, À LA SOURCE : ① dès que le monde ou la palette changent pendant que le Studio couvre l'accueil, la Toile de l'accueil est RENDUE dans le
+   nouvel état par le moteur (`Toile.renderTo`, la vue de l'écran) — à la fin du passage d'un déverrouillage, sinon au moment où le Studio se referme ;
+   ② au déverrouillage, l'aperçu flouté du monde devient une couverture qui s'ouvre EN FLAQUES (`_passageFlaques`, 700 ms) sur le monde net : plus de fondu. */
+(function(){
+  var T=window.Toile; if(!T || !T.setTheme || T.setTheme.__v155) return;
+  var perime=false, prevu=0;
+  function studioDevant(){ var s=document.getElementById('studioScreen'), D=document.getElementById('device'); if(!s||!D||!s.classList.contains('show')) return false;
+    var r=D.getBoundingClientRect(), e=document.elementFromPoint(r.left+r.width/2, r.top+r.height*0.4); return !!(e && s.contains(e)); }
+  function rend(){ prevu=0; if(!perime) return; perime=false; var c=document.getElementById('toileCv'); if(!c || !T.renderTo) return;
+    try{ var ok=T.renderTo(c, c.width/390, null, {vue:true}); window._accueilRendu=(window._accueilRendu||0)+1; window._accueilRenduMonde=(T.mondeCourant?T.mondeCourant().m+'|'+T.mondeCourant().p:''); if(!ok) perime=true; }catch(_){ } }
+  function planifie(){ perime=true; }   /* le rendu attend : la fin du passage d'un déverrouillage, ou la fermeture du Studio (jamais pendant qu'on y feuillette les mondes : l'aperçu saccaderait) */
+  function enveloppe(nom){ var f=T[nom]; if(typeof f!=='function') return; T[nom]=function(){ var av=null; try{ var m=T.mondeCourant(); av=m.m+'|'+m.p; }catch(_){ }
+      var r=f.apply(this, arguments); try{ var m2=T.mondeCourant(); if(m2.m+'|'+m2.p!==av && studioDevant()) planifie(); }catch(_){ } return r; }; T[nom].__v155=1; }
+  enveloppe('setTheme'); enveloppe('setPalette');
+  var attente=null;   /* le monde déverrouillé, appliqué à la Toile à la fin du passage (sous Volubilis, `setTheme` bloque l'app 2 s : fait au toucher, il figeait le passage) */
+  function applique(){ if(!attente) return; var w=attente; attente=null; try{ T.setTheme(w); }catch(_){ } if(perime) rend(); }
+  var ca=window.closeAll; if(typeof ca==='function' && !ca.__v155){ window.closeAll=function(){ applique(); if(perime){ clearTimeout(prevu); rend(); } return ca.apply(this, arguments); }; window.closeAll.__v155=1; }
+  window._accueilPerime=function(){ return perime; };
+  /* ② le passage au monde déverrouillé */
+  window._deverrouille=function(w){ var st=document.getElementById('studioScreen'), bg=document.getElementById('stBg'); if(!st||!bg||!bg.width||!w) return false; attente=w;
+    var reduit=false; try{ reduit=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
+    bg.style.setProperty('transition','none','important');   /* le flou du verrou ne se retire plus par un fondu : la transition est coupée, et la classe qui porte le flou part tout de suite */
+    st.classList.remove('stp-verrou'); setTimeout(function(){ bg.style.removeProperty('transition'); }, 900);
+    if(reduit || !window._passageFlaques){ setTimeout(applique, 60); return true; }
+    try{ var im=document.createElement('canvas'); im.width=bg.width; im.height=bg.height; var g=im.getContext('2d'); g.filter='blur('+(1.4*bg.width/390)+'px)'; g.drawImage(bg,0,0); g.filter='none';
+      var ctl=window._passageFlaques(st, {mode:'ouvre', apres:bg, rect:[0,0,390,844], image:im, duree:700, fin:function(){ setTimeout(applique, 60); }});
+      if(ctl && ctl.canevas){ ctl.canevas.id='stDeverrou'; ctl.canevas.style.setProperty('border-radius','36px'); } else setTimeout(applique, 60); window._deverrouT=performance.now(); }catch(_){ setTimeout(applique, 60); } return true; };
+})();
+</script>
 <script id="lot-V146-MAREE">
 /* ⚑ v146 (Tom, 14 oct. 2026, C-118) — TENIR : LA VARIANTE A (« LA MARÉE »), CORRIGÉE, DANS L'APP. « Plus de liseré, de filet, ni de jour ouvert sous le
    trait. Le trait EST le fond du bas en mode célébration. Aucune séparation entre le trait et le vert de même couleur : c'est une seule matière. Ce qui
@@ -41227,7 +41309,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   var VERT='#8FE08F', ENCRE='#201908', BAR=760, DESC=[0,700], MONTE=560, EP=12, M=null, N=null, NG=0, BORD=7, CV0=null;
   /* `?mareeLent=4` : tout l'instant au quart de sa vitesse (la vidéo ralentie pour Tom) */
   var LENT=Math.max(1, Math.min(8, parseFloat((/[?&]mareeLent=([\d.]+)/.exec(location.search)||[])[1])||1));
-  if(LENT>1){ DESC=[DESC[0]*LENT, DESC[1]*LENT]; MONTE*=LENT; try{ window._tenirRegle=window._tenirRegle||{}; window._tenirRegle.AMANDE=2400*LENT; }catch(_){ } }
+  if(LENT>1){ DESC=[DESC[0]*LENT, DESC[1]*LENT]; MONTE*=LENT; try{ window._tenirRegle=window._tenirRegle||{}; window._tenirRegle.AMANDE=2150*LENT; }catch(_){ } }
   function reduit(){ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
   window._mareeOn=function(){ return !reduit(); };
   function trait(){ try{ var c=document.getElementById('dpTrameCv'), v=(c.getAttribute('data-trait')||'').split(','), b=parseFloat(v[0]), a=parseFloat(v[1]); if(!(b>0)) return null; return {base:b, amp:a, y:window._onde.onde(b, a)}; }catch(_){ return null; } }
@@ -41302,7 +41384,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     (function f(maintenant){ if(fin) return; if(!document.getElementById('tenirMaree')){ M&&M.stop(); return; }
       if(!t0 && maintenant){ t0=performance.now(); if(M) M.t0=t0; }
       if(!mot && !opts.mot){ if(!it) it=document.getElementById('instTenue'); if(it && it.textContent && dp.classList.contains('inst-referme')) phrase(); }   /* v149 : l'instant crée et pose la ligne une image après le lever */
-      var t=t0?performance.now()-t0:0, apres=((!revoir && (window._instant==='apres' || window._instant==null)) || (performance.now()-tPose)>=((window._tenirRegle||{}).AMANDE||2400) || (window._tenirVite && window._tenirVite>=tPose));   /* v154 (C-167) : 2 400 ms, ou le toucher qui presse */   /* la remontée part à 2 s de la pose, à sa propre horloge */
+      var t=t0?performance.now()-t0:0, apres=((!revoir && (window._instant==='apres' || window._instant==null)) || (performance.now()-tPose)>=((window._tenirRegle||{}).AMANDE||2150) || (window._tenirVite && window._tenirVite>=tPose));   /* v154 (C-167) : 2 400 ms, ou le toucher qui presse */   /* la remontée part à 2 s de la pose, à sa propre horloge */
       if(apres && !monte0) monte0=performance.now();
       var u = monte0 ? 1-io((performance.now()-monte0)/MONTE) : Math.max(0, Math.min(1, (t-DESC[0])/DESC[1]));   /* v148 : vitesse constante, d'un bout à l'autre */
       g.clearRect(0,0,390,844);

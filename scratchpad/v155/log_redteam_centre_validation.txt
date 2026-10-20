@@ -1,0 +1,10 @@
+  ✅ [clair, promi] « Parole tenue ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt          encre de 74.3 à 315.0 pt → centre 194.67 pt (écart -0.33) · 26391 pixels
+  ✅ [clair, chiche] « Défi relevé ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt          encre de 88.0 à 301.0 pt → centre 194.50 pt (écart -0.50) · 24045 pixels
+  ✅ [clair, cercle] « Parole tenue ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt         encre de 74.3 à 315.0 pt → centre 194.67 pt (écart -0.33) · 26391 pixels
+  ✅ [sombre, promi] « Parole tenue ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt         encre de 74.3 à 315.0 pt → centre 194.67 pt (écart -0.33) · 26391 pixels
+  ✅ [sombre, chiche] « Défi relevé ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt         encre de 88.0 à 301.0 pt → centre 194.50 pt (écart -0.50) · 24045 pixels
+  ✅ [sombre, cercle] « Parole tenue ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt        encre de 74.3 à 315.0 pt → centre 194.67 pt (écart -0.33) · 26391 pixels
+  ✅ [clair, promi, Safari 390 × 664] « Parole tenue ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt encre de 74.3 à 315.0 pt → centre 194.67 pt (écart -0.33) · 26391 pixels
+  ✅ [sombre, chiche, Safari 390 × 664] « Défi relevé ! » : centre de l'encre = centre de l'écran (195 pt) à ± 1 pt encre de 88.0 à 301.0 pt → centre 194.50 pt (écart -0.50) · 24045 pixels
+
+  ✅  8 / 8

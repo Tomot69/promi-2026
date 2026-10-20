@@ -30,7 +30,8 @@ TEXTES = {   # relevés sur la version d'avant v140 — mot pour mot
  'prénom saisi': 'PromiToi, c’est Camille ?→',
  # ⚑ v147 (Tom, 15 oct. 2026, C-124 §4.2) — « Tom enrichit subtilement cette page » : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » (mot pour mot ;
  #   original : sauvegardes/redteam_onb_sorties-avant-v147.py)
- 'parole': 'PromiCamille, donc.Quid d’un Promi à toi-même ?Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.',
+ # ⚑ v155 (Tom, C-169 §4.4) : « trace pour planter » paraît 1 s après le prénom, avant la parole (original : sauvegardes/redteam_onb_sorties-avant-v155.py)
+ 'parole': 'PromiCamille, donc.Quid d’un Promi à toi-même ?Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.trace pour planter',
  'trait': 'PromiCamille, donc.Quid d’un Promi à toi-même ?Je me promets de marcher une heurePetite ou grande promesse, elle compte.trace pour planter',
  'fin': 'Promi planté !',   # ⚑ v148 (Tom, C-124 §9.1) : « au départ, le titre seul » ; chaque toucher fait venir un paragraphe (v146 : le titre et le premier paragraphe ensemble)
  # ⚑ v149 (Tom, C-124) : « Le reste se découvre en traçant. » devient « Tout le monde promet. Toi, tu tiens. » (original : sauvegardes/redteam_onb_sorties-avant-v149.py)

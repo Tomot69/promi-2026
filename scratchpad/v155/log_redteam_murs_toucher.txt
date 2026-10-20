@@ -1,0 +1,10 @@
+OK  [le Studio, panneau] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 253 pt)  
+OK  [le Studio, palettes ouvertes] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 342 pt)  
+OK  [le Peaufiner d'une fiche] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 384 pt)  
+KO  [le Peaufiner de la page +] la phrase dès le premier toucher : 19 sur 20 (zone floutée 342 × 384 pt)  ratés : (279 ; 511) sous le doigt : s2-cercle < s2-liste < dpd-corps
+OK  [l'Aura] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 89 pt)  
+OK  [l'aide de l'Aura] la phrase dès le premier toucher : 20 sur 20 (zone floutée 346 × 281 pt)  
+OK  [les notifications] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 165 pt)  
+OK  [les couleurs du dessin] la phrase dès le premier toucher : 20 sur 20 (zone floutée 342 × 114 pt)  
+
+7 / 8

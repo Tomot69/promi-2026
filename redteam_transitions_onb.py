@@ -14,7 +14,7 @@ il naît en flaques par-dessus) ; on lit sa part couverte à chaque image.
   T1 · l'arrivée sur le prénom : le voile couvre tout à la première image, s'ouvre sans jamais se refermer, sans demi-teinte ; EN FLAQUES (rejoué
        image par image : ≥ 12 pas, jamais plus de 20 % d'un coup, et dès le premier quart PLUSIEURS trous séparés — des flaques nées à différents
        endroits, pas des cellules qui s'ouvrent depuis le milieu) ; les textes n'arrivent qu'après, par le tracé ;
-  T2 · le trait du premier Promi : il naît en flaques à la première lettre (un passage « ouvre » sur lui, qui part couvert et s'ouvre) ;
+  T2 · le trait du premier Promi : il naît en flaques 1 s après le prénom (v155, C-169 ; avant : à la première lettre) — un passage « ouvre » sur lui, qui part couvert et s'ouvre ;
   T3 · la page du trait part : un passage « couvre » la recouvre (de presque rien à tout) ; aucun nœud à demi transparent (pas de fondu) ;
   T4 · de « Promi planté ! » au compte : PLUS DE BALAYAGE (le message n'est jamais découpé d'un bord) ; il est recouvert en flaques ; le panneau du
        compte naît en flaques à sa place (il ne glisse pas) ;
@@ -163,12 +163,13 @@ def passe(b, th):
     else: juge('[%s] T1 · le voile s\'ouvre en flaques (_passageFlaques)' % T, False, 'pas de passage en flaques dans la page')
     # ── T2 · le trait du premier Promi naît en flaques
     c = centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(300)
-    pg.keyboard.press('Enter'); pg.wait_for_timeout(900); attend(pg)
+    # ⚑ v155 (Tom, C-169 §4.4) : le trait et « trace pour planter » paraissent 1 s APRÈS la validation du prénom (plus à la première lettre de la parole)
+    pg.evaluate("()=>{ window.__T.length=0; }"); pg.keyboard.press('Enter'); pg.wait_for_timeout(2200)
+    S = pg.evaluate("()=>window.__T"); attend(pg)
     c = centre(pg, '[data-onb="parole"]'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
-    pg.evaluate("()=>{ window.__T.length=0; }"); pg.keyboard.type('marcher une heure', delay=25); pg.wait_for_timeout(1400)
-    S = pg.evaluate("()=>window.__T")
+    pg.keyboard.type('marcher une heure', delay=25); pg.wait_for_timeout(1400)
     i_tr = next((i for i, s in enumerate(S) if s.get('trait')), None)
-    if i_tr is None: juge('[%s] T2 · le trait paraît à la première lettre' % T, False, 'pas de trait')
+    if i_tr is None: juge('[%s] T2 · le trait paraît 1 s après le prénom (v155)' % T, False, 'pas de trait')
     else:
         P0 = [q for q in (S[i_tr].get('pass') or []) if q['m'] == 'ouvre' and q['r'][1] > 250]
         juge('[%s] T2 · à l\'image où le trait paraît, il est COUVERT (l\'image de la Toile, ≥ 85 %%) — rien n\'arrive d\'un coup' % T, bool(P0) and P0[0]['c'] is not None and P0[0]['c'] >= 0.85, P0[:1])
@@ -251,7 +252,7 @@ def passe(b, th):
     t_calme = max([s['t'] for s in S if (s['onb'] or s.get('bouge')) and (t_g is None or s['t'] < t_g)] or [0])
     if CHARGE >= 4: print('      (non jugé : durées, charge du Mac %.1f ≥ 4 — C-137 ; relevé : arrivée des encarts à %s ms du toucher, dernier mouvement à %s ms, guide à %s ms)' % (CHARGE, None if deb is None else deb - t_tap, t_calme - t_tap, None if t_g is None else t_g - t_tap))
     else:
-        juge('[%s] T6 · puis le guide : 0,4 à 1,2 s après que plus rien ne bouge (la décision de v144 : 0,6 s)' % T, t_g is not None and 0.4 <= (t_g - t_calme) / 1000.0 <= 1.2, 'dernier mouvement à %s ms · guide à %s ms' % (t_calme - t_tap, None if t_g is None else t_g - t_tap))
+        juge('[%s] T6 · puis le guide : 0,15 à 0,95 s après que plus rien ne bouge (v144 : 0,6 s ; v155, C-094 : 0,35 s)' % T, t_g is not None and 0.15 <= (t_g - t_calme) / 1000.0 <= 0.95, 'dernier mouvement à %s ms · guide à %s ms' % (t_calme - t_tap, None if t_g is None else t_g - t_tap))
         juge('[%s] enchaînement · du toucher au guide, pas de temps mort : 4,5 s au plus (le panneau recouvert, l\'écran qui s\'ouvre, les encarts, le calme)' % T, t_g is not None and (t_g - t_tap) <= 4500, '%s ms' % (None if t_g is None else t_g - t_tap))
     err = pg.evaluate("()=>window.__Terr||null")
     juge('[%s] aucune erreur de page (ni de la sonde)' % T, not er and not err, (er[:2], err))

@@ -4,8 +4,8 @@
 « Après validation, le vert avec "Parole tenue !" reste 400 ms de plus avant de remonter. Même chose pour toutes les phrases de validation. » Décision du
 chef de chantier : un toucher n'importe où pendant ce temps fait remonter le vert tout de suite et mène à la fiche tenue (sans toucher, le retour se fait
 seul). Banc comme Tom (WebKit 390 × 844 ×3, le trait tracé au doigt), lu sur les PIXELS du rideau (le front, image par image) :
-  D · l'app déclare 2 400 ms (`_tenirRegle.AMANDE`)
-  A · Promi (« Parole tenue ! ») et Chiche (« Défi relevé ! »), sans toucher : le vert commence de remonter 2 250 à 2 700 ms après le lever (v153 : ≈ 2 000)
+  D · l'app déclare 2 150 ms (v155) (`_tenirRegle.AMANDE`)
+  A · Promi (« Parole tenue ! ») et Chiche (« Défi relevé ! »), sans toucher : le vert commence de remonter 2 000 à 2 450 ms après le lever (v153 : ≈ 2 000)
   B · un toucher sur la barre Peaufiner 1 300 ms après le lever : le vert commence de remonter dans les 150 ms ; la parole est tenue ; le rideau parti au
       moins 700 ms plus tôt que sans toucher ; le toucher est AVALÉ (Peaufiner ne s'ouvre pas, la fiche reste ouverte)
   C · un toucher 100 ms après le lever (le geste qui finit) ne presse rien : la remontée garde son heure
@@ -58,20 +58,20 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     ctx = B.contexte(b); pg = B.ouvre(ctx, F)
     am = pg.evaluate("()=>(window._tenirRegle||{}).AMANDE"); ctx.close(); ER = []
-    juge('D · l\'app déclare 2 400 ms pour le vert posé (`_tenirRegle.AMANDE`)', am == 2400, am)
+    juge('D · l\'app déclare 2 150 ms (v155) pour le vert posé (`_tenirRegle.AMANDE`)', am == 2150, am)
     seul = {}
     for chiche in (False, True):
         nom = 'Chiche' if chiche else 'Promi'
         m = tenir(b, chiche); seul[nom] = m; ER += m['er']
-        juge('A · %s sans toucher : le vert commence de remonter 2 250 à 2 700 ms après le lever ; la parole est tenue' % nom,
-             m['monte'] is not None and 2250 <= m['monte'] <= 2700 and m['st'] == 'tenu', 'remontée à %s ms · rideau parti à %s ms · statut %s · front au plus bas %s' % (m['monte'] and round(m['monte']), m['repos'] and round(m['repos']), m['st'], m['bas'] and round(m['bas'])))
+        juge('A · %s sans toucher : le vert commence de remonter 2 000 à 2 450 ms après le lever ; la parole est tenue' % nom,
+             m['monte'] is not None and 2000 <= m['monte'] <= 2450 and m['st'] == 'tenu', 'remontée à %s ms · rideau parti à %s ms · statut %s · front au plus bas %s' % (m['monte'] and round(m['monte']), m['repos'] and round(m['repos']), m['st'], m['bas'] and round(m['bas'])))
     m = tenir(b, False, touche=1300); ER += m['er']
     juge('B · un toucher (sur la barre Peaufiner) à 1,3 s : le vert remonte dans les 250 ms, la parole est tenue, la remontée et le rideau parti ≥ 700 ms plus tôt',
          m['monte'] is not None and m['tt'] is not None and 0 <= m['monte'] - m['tt'] <= 250 and m['st'] == 'tenu' and m['repos'] is not None and seul['Promi']['repos'] and seul['Promi']['repos'] - m['repos'] >= 700 and seul['Promi']['monte'] and seul['Promi']['monte'] - m['monte'] >= 700,
          'toucher à %s ms · remontée à %s ms · rideau parti à %s ms (sans toucher : %s)' % (m['tt'] and round(m['tt']), m['monte'] and round(m['monte']), m['repos'] and round(m['repos']), seul['Promi']['repos'] and round(seul['Promi']['repos'])))
     juge('B · le toucher est avalé : Peaufiner ne s\'ouvre pas, la fiche tenue reste ouverte', m['ouvert'] and not m['peauf'], 'fiche ouverte %s · Peaufiner %s' % (m['ouvert'], m['peauf']))
     m = tenir(b, False, touche=100); ER += m['er']
-    juge('C · un toucher 100 ms après le lever ne presse rien : la remontée garde son heure (2 250 à 2 700 ms)', m['monte'] is not None and 2250 <= m['monte'] <= 2700, 'toucher à %s ms · remontée à %s ms' % (m['tt'] and round(m['tt']), m['monte'] and round(m['monte'])))
+    juge('C · un toucher 100 ms après le lever ne presse rien : la remontée garde son heure (2 000 à 2 450 ms)', m['monte'] is not None and 2000 <= m['monte'] <= 2450, 'toucher à %s ms · remontée à %s ms' % (m['tt'] and round(m['tt']), m['monte'] and round(m['monte'])))
     juge('aucune erreur de page', not ER, ER[:2])
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))

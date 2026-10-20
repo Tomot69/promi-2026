@@ -129,6 +129,36 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v155 (21 oct. 2026) — RETOURS iPHONE DE TOM SUR v154 : LE FLOU DU STUDIO PLUS TÔT, LE VERT À 2,15 s, LA ZONE DU CURSEUR DE COULEUR, LE DÉPART ORANGE ET CLIGNOTANT, PLUS RIEN NE CLIGNOTE SOUS « RÉDUIRE LES ANIMATIONS », LE DÉVERROUILLAGE SANS IMAGE PÉRIMÉE. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v154 (C-167 : 2 400 ms) et v144–v148 (le guide : 0,6 s de calme).
+> **Validés par Tom : C-166, la réduction des animations (v154 §4), la mention (v154 §5). C-125 : Tom le juge au prochain lot — on n'y touche pas.**
+> **⚑ C-094 — LE FLOU DE LA PHRASE DU STUDIO COMMENCE 250 ms PLUS TÔT** : 350 ms de calme au lieu de 600 (`ATTENTE = GD.ATTENTE − 250`) ; le reste de la séquence
+> garde ses durées. Juges remis au niveau : `redteam_guide` (le moment, 0,30 à 0,95 s), `redteam_transitions_onb` T6 (0,15 à 0,95 s).
+> **⚑ C-167 — LE VERT À 2 150 ms** (`_tenirRegle.AMANDE`), le toucher qui le fait remonter reste. **La phrase de validation est déjà centrée** : son encre, lue sur
+> les pixels de la nappe, a son centre à 194,5–194,7 pt pour 195 (Promi, Chiche, un Promi d'un Cercle ; clair, sombre ; dans la hauteur visible de Safari) —
+> rien changé. Juges : `redteam_tenir_presse` (2 000–2 450 ms), **`redteam_centre_validation.py`** (± 1 pt, 8/8) ; `redteam_fluide`, `redteam_tenir` E remis au niveau.
+> **⚑ C-168 — LA DALLE DE LA JAUGE DES COULEURS S'ATTRAPE** : sa zone tactile fait 56 × 56 pt (un pseudo-élément transparent de la dalle, `lot-V155-CURSEUR-css`),
+> son dessin ne change pas ; attrapée dans sa zone, elle ne saute plus sous le doigt (l'écart est gardé, en teinte comme en noir et blanc). Aucun élément
+> touchable n'y tombe (dernière rangée de pastilles à 737 pt, la zone commence à 754). Juge : **`redteam_curseur_couleur.py`** (12 ; 3/12 sur v154).
+> **⚑ C-169 — LE DÉPART DU TRAIT EST ORANGE `#FB4C0D`, LA POINTE ET LE TRAIT DE DÉPART**, partout, deux thèmes, tous pinceaux : l'amorce (fiche, page +) ; sur une fiche
+> à moitié tracée, les 43 derniers pt du trait avant la pointe du milieu (Q563) ; ma part à plusieurs ; sur la page +, la part tirée pendant le geste (signée,
+> elle reprend sa couleur). **Onboarding** : « trace pour planter » et la flèche paraissent **1 s après Retour sur le prénom**, avant la parole (tracée sans parole :
+> la saisie s'ouvre, Q562) ; le départ est peint sur SA couche (`#onbDepart`, sans toucher) qui porte **l'animation même du I, `promiBlink`, calée sur sa phase**,
+> jusqu'au premier toucher sur le trait, puis orange fixe. **Le clignotement n'existe que dans l'onboarding** (chef de chantier). ⚠ Un juge qui LIT l'orange du départ
+> de l'onboarding attend la phase pleine (opacité 1). Juge : **`redteam_depart_orange.py`** (34).
+> **⚑ Q561 (chef de chantier) — « RÉDUIRE LES ANIMATIONS » : PLUS RIEN NE CLIGNOTE** : le I de PROMI (accueil, onboarding, titres) et le départ de l'onboarding restent
+> fixes. Les règles du I portaient `promiBlink` en `!important` à deux id, hors condition : `lot-V154-REDUIT-css` les coupe à trois id.
+> **⚑ C-170 — DÉVERROUILLER UN MONDE PAYANT : JAMAIS UNE IMAGE PÉRIMÉE.** *La cause, mesurée* : sous le Studio, la boucle de la Toile ne peint pas (`frame()` saute tant que
+> `#studioScreen` porte `.show`) ; `setTheme` changeait le monde mais `#toileCv` gardait l'IMAGE DE L'ANCIEN MONDE jusqu'à la première image après la fermeture (0,5 s) —
+> le Studio qui glisse la découvrait ; et le flou du verrou partait par un fondu de filtre (1,4 → 0 px en 0,34 s). *Corrigé à la source* (`lot-V155-DEVERROUILLE`) :
+> tout changement de monde ou de palette sous le Studio rend la Toile de l'accueil par le moteur (`Toile.renderTo`, vue de l'écran), à la fin du passage ou au plus
+> tard quand le Studio se referme — jamais pendant qu'on feuillette (l'aperçu saccaderait) ; au déverrouillage, l'aperçu flouté s'ouvre EN FLAQUES (700 ms) sur le monde
+> net ; le `setTheme` attend la fin du passage (sous Volubilis il bloque 2 s). *La règle* : **une surface qui ne se peint pas quand elle est couverte garde une image
+> périmée ; elle se rend AVANT d'être découverte.** Juge : **`redteam_deverrouille.py`** (25 : les douze mondes payants).
+> **Contrats de test remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v155.py`) : `redteam_guide` et `redteam_transitions_onb` (C-094 : le
+> moment 350 ms ; T2 : la flèche naît 1 s après le prénom), `redteam_tenir` E, `redteam_fluide`, `redteam_tenir_presse` (2 150 ms), `redteam_onboarding` O7 (le départ se lit
+> aussi sur sa couche `#onbDepart`), `redteam_onboarding_texte` (l'orange du départ lu à la phase pleine), `redteam_onb_sorties` (« trace pour planter » sur la page
+> de la parole), `redteam_pages_plus` (la fiche identique à v149 HORS du départ orange de la seconde moitié, 140 → 200 pt, qui doit y être orange).
+
 ### ⚑ v154 (20 oct. 2026) — RETOURS iPHONE DE TOM SUR v153 : LE TRACÉ À 40 CAR/S SANS ONDE, LE FOND DU GUIDE APRÈS LE STUDIO, LE VERT 400 ms DE PLUS, « RÉDUIRE LES ANIMATIONS » PARTOUT. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v153 (C-125 : 22 car/s, une lettre à la fois, R3) et v144 (C-111 : l'amande à 2 000 ms).
 > **Validés par Tom : C-164, C-163, la réduction des animations (C-077), Q554, Q557.**
 > **⚑ C-125 — LE DÉBIT ET LA DURÉE D'UNE LETTRE SONT SÉPARÉS** (`variantes/trace-lettres.js`) : une lettre PART tous les 1000/cps ms — **40 car/s par
@@ -3215,6 +3245,12 @@ python3 redteam_guide_fond.py  # 12 — v154 (C-166) : au retour du Studio (mond
                                #   (≤ 0,2 % à plus de 6 niveaux), préparé SOUS le Studio ; sans changement, le même au pixel. WebKit. 8/12 sur v153.
 python3 redteam_tenir_presse.py # 7 — v154 (C-167) : le vert remonte 2,25–2,7 s après le lever ; un toucher à 1,3 s le fait remonter tout de suite, avalé
                                #   (Peaufiner ne s'ouvre pas) ; un toucher à 100 ms ne presse rien. Lu sur les pixels du rideau. 1/7 sur v153.
+python3 redteam_centre_validation.py # 8 — v155 (C-167) : la phrase de validation, lue sur les pixels de la nappe, centrée à ± 1 pt (Promi, Chiche, Cercle ; clair, sombre ; Safari réduit).
+python3 redteam_curseur_couleur.py # 12 — v155 (C-168) : la dalle de la jauge s'attrape à 20 pt de son centre (cinq directions, sans saut), en noir et blanc aussi ; les voisins répondent. 3/12 sur v154.
+python3 redteam_depart_orange.py # 34 — v155 (C-169, Q561) : pointe ET trait de départ orange sur les fiches à moitié tracées, les pages + (trois natures, deux thèmes) et l'onboarding ;
+                               #   la flèche 1 000 ± 50 ms après le prénom ; le départ clignote avec le I (promiBlink, en phase) jusqu'au premier toucher ; rien ailleurs ; réduit : fixe.
+python3 redteam_deverrouille.py  # 25 — v155 (C-170) : les douze mondes payants déverrouillés au doigt sur une Toile pleine : passage en flaques, aucun flou intermédiaire ;
+                               #   la Toile de l'accueil déjà dans le nouveau monde à la fermeture du Studio, jamais l'image d'avant. --n=.
 python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).

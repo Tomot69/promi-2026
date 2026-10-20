@@ -1,0 +1,27 @@
+  ✅ [ramage] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire    flaques 0.0 → 0.97 (41 images) · flous intermédiaires []
+  ✅ [ramage] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue ramage|signal (monde ramage|signal) · écart à l'avant : au plus près 67.7, avant → après 67.7 (76 images)
+  ✅ [guingois] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire  flaques 0.0 → 1.0 (43 images) · flous intermédiaires []
+  ✅ [guingois] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue guingois|signal (monde guingois|signal) · écart à l'avant : au plus près 73.3, avant → après 73.3 (76 images)
+  ✅ [chantourne] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire flaques 0.0 → 0.99 (42 images) · flous intermédiaires []
+  ✅ [chantourne] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue chantourne|signal (monde chantourne|signal) · écart à l'avant : au plus près 73.7, avant → après 73.9 (64 images)
+  ✅ [volubilis] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire flaques 0.0 → 0.98 (42 images) · flous intermédiaires []
+  ✅ [volubilis] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue volubilis|signal (monde volubilis|signal) · écart à l'avant : au plus près 77.4, avant → après 77.4 (74 images)
+  ✅ [madrure] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire   flaques 0.0 → 0.99 (41 images) · flous intermédiaires []
+  ✅ [madrure] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue madrure|signal (monde madrure|signal) · écart à l'avant : au plus près 67.0, avant → après 67.2 (67 images)
+  ✅ [chamade] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire   flaques 0.0 → 0.98 (41 images) · flous intermédiaires []
+  ✅ [chamade] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue chamade|signal (monde chamade|signal) · écart à l'avant : au plus près 98.2, avant → après 98.2 (60 images)
+  ✅ [ritournelle] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire flaques 0.0 → 0.97 (31 images) · flous intermédiaires []
+  ✅ [ritournelle] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue ritournelle|signal (monde ritournelle|signal) · écart à l'avant : au plus près 93.8, avant → après 94.6 (48 images)
+  ✅ [bobinette] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire flaques 0.0 → 0.97 (19 images) · flous intermédiaires []
+  ✅ [bobinette] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue bobinette|signal (monde bobinette|signal) · écart à l'avant : au plus près 32.1, avant → après 32.1 (63 images)
+  ✅ [mascaret] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire  flaques 0.0 → 0.99 (41 images) · flous intermédiaires []
+  ✅ [mascaret] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue mascaret|signal (monde mascaret|signal) · écart à l'avant : au plus près 65.4, avant → après 66.0 (64 images)
+  ✅ [terrazzo] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire  flaques 0.0 → 0.98 (41 images) · flous intermédiaires []
+  ✅ [terrazzo] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue terrazzo|signal (monde terrazzo|signal) · écart à l'avant : au plus près 64.5, avant → après 64.7 (53 images)
+  ✅ [gravure] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire   flaques 0.0 → 0.99 (39 images) · flous intermédiaires []
+  ✅ [gravure] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue gravure|signal (monde gravure|signal) · écart à l'avant : au plus près 14.7, avant → après 14.7 (58 images)
+  ✅ [sillons] A · le passage s'ouvre en flaques (0 → 1) ; le flou ne passe par aucune valeur intermédiaire   flaques 0.0 → 0.99 (28 images) · flous intermédiaires []
+  ✅ [sillons] B · à la fermeture du Studio, la Toile de l'accueil est déjà dans le monde déverrouillé ; jamais l'image d'avant rendue sillons|signal (monde sillons|signal) · écart à l'avant : au plus près 12.3, avant → après 12.3 (50 images)
+  ✅ aucune erreur de page (12 mondes payants déverrouillés : ramage, guingois, chantourne, volubilis, madrure, chamade, ritournelle, bobinette, mascaret, terrazzo, gravure, sillons) []
+
+  ✅  25 / 25

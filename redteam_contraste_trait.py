@@ -54,7 +54,7 @@ GEO = r"""(sel)=>{ const out=[];
   const y=x=>{ const u=Math.max(0,Math.min(1,x/larg)); return base-amp*0.34*u-amp*0.62*Math.sin(2*Math.PI*per*u); };
   const ep=carte?+t[6]:10, rr=carte?+t[7]:6, esp=carte?+t[8]:18, mid=W/2, mode=t[3];
   const S=[];   /* {x, y, demi, quoi} en points de la page */
-  const xs0=mode==='complet'?[0.12,0.3,0.5,0.7,0.88]:(mode==='points'?[]:[0.08,0.2,0.32,0.42]);
+  const xs0=mode==='complet'?[0.12,0.3,0.5,0.7,0.88]:(mode==='points'?[]:[0.08,0.2,0.32,0.36]);   /* ⚑ v155 (C-169) : 0,42 tombait dans le départ ORANGE de la seconde moitié (0,38 → 0,5), décidé — jugé par redteam_depart_orange ; le quatrième échantillon passe à 0,36 */
   xs0.forEach(f=>{ const x=f*W; S.push({x:r.left+x*k, y:r.top+y(x)*k, demi:ep/2*k, quoi:'tracé'}); });
   if(mode!=='complet'&&mode!=='duo'&&!cv.getAttribute('data-parts')){ const x0=(mode==='points')?W*0.11+esp*1.3:mid+esp; for(let x=x0, i=0; x<W-rr && i<6; x+=esp, i++) S.push({x:r.left+x*k, y:r.top+y(x)*k, demi:rr*k, quoi:'points'}); }
   /* le champ et le corps au même x, 6 pt au-delà du bord du trait — et dans la boîte du canevas */
@@ -149,7 +149,8 @@ with sync_playwright() as p:
             G = pg.evaluate("""()=>{ const cv=document.getElementById('csTrameCv'); if(!cv||!window._ppEcran) return []; const e=window._ppEcran(); if(!e) return []; cv.setAttribute('data-trait-j', '1');
                 const r=cv.getBoundingClientRect(), k=r.width/390, y=x=>{ const u=Math.max(0,Math.min(1,x/390)); return e.base-e.amp*0.34*u-e.amp*0.62*Math.sin(2*Math.PI*1.5*u); };
                 const S=[]; for(let x=390*0.11+18*1.3, i=0; x<390-4.5 && i<6; x+=18, i++) S.push({x:r.left+x*k, y:r.top+y(x)*k, demi:6*k, quoi:'points'});
-                [0.04].forEach(f=>{ const x=f*390; S.push({x:r.left+x*k, y:r.top+y(x)*k, demi:5*k, quoi:'tracé'}); });
+                /* ⚑ v155 (C-169) : au repos, le « tracé » de la page + est l'amorce — le DÉPART, orange #FB4C0D par décision (exception nommée au 3:1, comme le libellé,
+                   Q547) ; il est jugé par redteam_depart_orange. On ne lit plus que les points. (original : sauvegardes/redteam_contraste_trait-avant-v155.py) */
                 return [{col:'', mode:'points', carte:false, k:k, box:[r.left,r.top,r.width,r.height], S:S.map(s=>Object.assign(s,{h:s.y-(s.demi+6*k), b:s.y+(s.demi+6*k)}))}]; }""")
             if G: G[0]['nat'] = {'promi': 'Promi', 'chiche': 'Chiche', 'nuee': 'Cercle'}[nat]   # v149 (Q513) : la nature, pour son seuil
             if G: juge('%s · page + %s' % (th, {'promi': 'Promi', 'chiche': 'Chiche', 'nuee': 'Cercle'}[nat]), image(pg), dpr, G[0])

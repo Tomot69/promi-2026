@@ -59,7 +59,7 @@ URL = 'http://127.0.0.1:8752/' + F
 PH_STUDIO = 'Choisis d’abord le monde qui te ressemble, au Studio.'      # les mots de Tom, en dur
 PH_PLUS = 'Promi, Chiche ou Cercle : tout commence par ce +.'
 CLES = {'studio': ['monde', 'Studio'], 'plus': ['commence']}                   # §11.7, en dur
-ATTENTE, COUVRE, OUVRE, FERME, RETIRE = 600, 1400, 700, 700, 1200             # ms — les durées décidées (couverture 1,2 à 1,6 s ; zone 0,6 à 0,8 s)
+ATTENTE, COUVRE, OUVRE, FERME, RETIRE = 350, 1400, 700, 700, 1200   # ⚑ v155 (C-094) : 600 → 350 (« 250 ms plus tôt »)             # ms — les durées décidées (couverture 1,2 à 1,6 s ; zone 0,6 à 0,8 s)
 VIOLET, BLEU, CREME = (41, 21, 71), (14, 120, 242), (247, 240, 222)           # #291547 · #0E78F2 · #F7F0DE
 MONDE = {True: (131, 99, 170), False: (201, 168, 245)}                         # ⚑ v148 (Tom, C-145) : « monde » #8363AA en clair, #C9A8F5 en sombre (v147 : rose #FFB8D2, illisible)
 PALB = [(130, 174, 248), (255, 184, 210), (201, 168, 245), (239, 227, 199)]    # la palette de base (Ingénu), dans son ordre — « Studio », lettre à lettre
@@ -447,7 +447,7 @@ def premier_lancement(b, th):
     e = attend(pg, 'studio', 9000); pg.wait_for_timeout(OUVRE + 250); g = pg.evaluate("()=>window.__g"); e = pg.evaluate(ETAT)
     calme = (g['tG'] - g['bouge']) / 1000.0 if g['tG'] else None
     if CHARGE >= 4: print('      (non jugé : « le moment » est une durée tenue par des minuteurs ; charge du Mac %.1f ≥ 4 — C-137. Relevé : %s s)' % (CHARGE, None if calme is None else round(calme, 2)))
-    else: juge('[%s] LE MOMENT : l\'eau commence 0,6 s après que l\'accueil est posé (0,55 à 1,2 s : onboarding refermé, Toile au repos, aucun doigt)' % T, calme is not None and 0.55 <= calme <= 1.2, 'calme avant le guide : %s s' % (None if calme is None else round(calme, 2)))
+    else: juge('[%s] LE MOMENT : l\'eau commence 0,35 s après que l\'accueil est posé (v155 : 250 ms plus tôt ; 0,30 à 0,95 s : onboarding refermé, Toile au repos, aucun doigt)' % T, calme is not None and 0.30 <= calme <= 0.95, 'calme avant le guide : %s s' % (None if calme is None else round(calme, 2)))
     duree = (g['tEnt'] - g['tDep']) / 1000.0 if g['tEnt'] and g['tDep'] else None
     if CHARGE >= 4: print('      (non jugé : la durée de la couverture se lit image par image ; charge du Mac %.1f ≥ 4 — C-137. Relevé : %s s, réglée %s ms)' % (CHARGE, None if duree is None else round(duree, 2), (e['regle'] or {}).get('COUVRE')))
     juge('[%s] 4.1 · la couverture est RÉGLÉE à 1,4 s' % T, (e['regle'] or {}).get('COUVRE') == COUVRE, (e['regle'] or {}).get('COUVRE'))

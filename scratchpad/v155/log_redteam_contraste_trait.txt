@@ -1,0 +1,250 @@
+KO         clair · fiche Promi · Plein                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Plein                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Coulé                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Coulé                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Peigné                 tracé   trait #8278D9 · champ #82AEF8 1.66 · corps #0E78F2 1.13
+KO         clair · fiche Promi · Peigné                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Sec                    tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Sec                    points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Tressé                 tracé   trait #DD89F4 · champ #82AEF8 1.04 · corps #0E78F2 1.80
+KO         clair · fiche Promi · Tressé                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Frangé                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Frangé                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Doublé                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Doublé                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Fendu                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Fendu                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Cranté                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Cranté                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Vrillé                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Vrillé                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Semé                   tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Semé                   points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Perlé                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi · Perlé                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Plein              tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Plein              points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Coulé              tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Coulé              points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Peigné             tracé   trait #8278D9 · champ #82AEF8 1.66 · corps #0E78F2 1.13
+KO         clair · fiche Promi (2) · Peigné             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Sec                tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Sec                points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Tressé             tracé   trait #DD89F4 · champ #82AEF8 1.04 · corps #0E78F2 1.80
+KO         clair · fiche Promi (2) · Tressé             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Frangé             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Frangé             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Doublé             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Doublé             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Fendu              tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Fendu              points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Cranté             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Cranté             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Vrillé             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Vrillé             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Semé               tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Semé               points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Perlé              tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · fiche Promi (2) · Perlé              points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         clair · fiche Chiche · Plein                 tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · fiche Chiche · Coulé                 tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         clair · fiche Chiche · Peigné                tracé   trait #7C3F58 · champ #FFB8D2 4.81 · corps #7C3F58 1.00
+OK         clair · fiche Chiche · Sec                   tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         clair · fiche Chiche · Tressé                tracé   trait #A76780 · champ #FFB8D2 2.66 · corps #7C3F58 1.81
+OK         clair · fiche Chiche · Frangé                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         clair · fiche Chiche · Doublé                tracé   trait #130208 · champ #1C0910 1.05 · corps #7C3F58 2.61
+OK         clair · fiche Chiche · Fendu                 tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · fiche Chiche · Cranté                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · fiche Chiche · Vrillé                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · fiche Chiche · Semé                  tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · fiche Chiche · Perlé                 tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · fiche Cercle · Plein                 tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Coulé                 tracé   trait #0A0415 · champ #89ADF8 9.03 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Peigné                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Sec                   tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Tressé                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Frangé                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Doublé                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Fendu                 tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Cranté                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Vrillé                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Semé                  tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         clair · fiche Cercle · Perlé                 tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+IMPOSSIBLE clair · carte Index · Promi                  tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+KO         clair · carte Index · Promi                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · carte Index · Promi                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         clair · carte Index · Cercle                 tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         clair · carte Index · Chiche                 tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · carte Index · Chiche                 points  trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         clair · carte Index · Promi                  tracé   trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         clair · carte Index · Promi                  points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+KO         clair · carte Index · Chiche                 tracé   trait #0B4A2A · champ #FFB8D2 6.43 · corps #2B1020 1.69
+IMPOSSIBLE clair · carte Index · Promi                  tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+OK         clair · carte Index · Promi                  tracé   trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         clair · carte Index · Promi                  points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+IMPOSSIBLE clair · carte Index · Promi                  tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+KO         clair · carte Index · Promi                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · carte Index · Promi                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         clair · carte Index · Cercle                 tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         clair · carte Index · Promi                  points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+IMPOSSIBLE clair · carte Index · Promi                  tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+OK         clair · carte Index · Promi                  tracé   trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         clair · carte Index · Promi                  points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+IMPOSSIBLE clair · carte Index · Promi                  tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+KO         clair · carte Index · Promi                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         clair · carte Index · Promi                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         clair · carte Index · Cercle                 tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         clair · carte Index · Promi                  points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         clair · carte Fil · Chiche                   tracé   trait #130208 · champ #FDB7D0 12.37 · corps #7B3F58 2.59
+OK         clair · carte Fil · Chiche                   points  trait #130208 · champ #FDB7D0 12.37 · corps #7B3F58 2.59
+IMPOSSIBLE clair · carte Fil · Promi                    tracé   trait #0B492A · champ #80ACF6 4.57 · corps #2B1020 1.67 · au mieux 2.76 avec ces deux fonds
+OK         clair · carte Fil · Cercle                   tracé   trait #0A0415 · champ #C7A6F3 9.78 · corps #5C4877 2.54
+KO         clair · carte Fil · Promi                    tracé   trait #DC4C23 · champ #81ADF6 1.81 · corps #0E77F0 1.04
+KO         clair · carte Fil · Promi                    points  trait #DB4D23 · champ #81ADF6 1.81 · corps #0E77F0 1.04
+KO         clair · carte Fil · Chiche                   tracé   trait #00341A · champ #FDB6D0 8.48 · corps #7B3F57 1.79
+OK         clair · carte Fil · Chiche                   tracé   trait #130208 · champ #FDB7D0 12.37 · corps #7B3F57 2.59
+OK         clair · carte Fil · Chiche                   points  trait #130208 · champ #FDB7D0 12.37 · corps #7B3F57 2.59
+IMPOSSIBLE clair · carte Fil · Promi                    tracé   trait #0B4A2A · champ #81ADF6 4.56 · corps #2B1020 1.69 · au mieux 2.78 avec ces deux fonds
+OK         clair · carte Fil · Cercle                   tracé   trait #0A0415 · champ #C8A7F3 9.87 · corps #5C4878 2.55
+KO         clair · carte Fil · Promi                    tracé   trait #DB4D23 · champ #81ADF6 1.81 · corps #0E77F0 1.04
+KO         clair · carte Fil · Promi                    points  trait #DB4C23 · champ #81ADF6 1.82 · corps #0E77F0 1.03
+KO         clair · carte Fil · Chiche                   tracé   trait #00341A · champ #FEB7D0 8.56 · corps #7B3E58 1.77
+OK         clair · carte Fil · Chiche                   tracé   trait #130208 · champ #FDB7D0 12.37 · corps #7B3F57 2.59
+OK         clair · carte Fil · Chiche                   points  trait #130208 · champ #FDB7D0 12.37 · corps #7B3F57 2.59
+IMPOSSIBLE clair · carte Fil · Promi                    tracé   trait #0B4A2A · champ #81ADF6 4.56 · corps #2B1020 1.69 · au mieux 2.78 avec ces deux fonds
+OK         clair · carte Fil · Cercle                   tracé   trait #0A0415 · champ #C8A7F3 9.87 · corps #5C4878 2.55
+KO         clair · carte Fil · Promi                    tracé   trait #DB4D23 · champ #81ADF6 1.81 · corps #0E77F0 1.04
+KO         clair · carte Fil · Promi                    points  trait #DB4C23 · champ #81ADF6 1.82 · corps #0E77F0 1.03
+KO         clair · carte Fil · Chiche                   tracé   trait #00341A · champ #FEB7D0 8.56 · corps #7B3E58 1.77
+KO         clair · page + Promi                         tracé   trait #FB4C0D · champ #82AEF8 1.52 · corps #0E78F2 1.23
+OK         clair · page + Promi                         points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+KO         clair · page + Chiche                        tracé   trait #FB4C0D · champ #FFB8D2 2.12 · corps #7C3F58 2.27
+OK         clair · page + Chiche                        points  trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         clair · page + Cercle                        tracé   trait #FB4C0D · champ #C9A8F5 1.69 · corps #5D4978 2.28
+OK         clair · page + Cercle                        points  trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+KO         sombre · fiche Promi · Plein                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Plein                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Coulé                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Coulé                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Peigné                tracé   trait #8278D9 · champ #82AEF8 1.66 · corps #0E78F2 1.13
+KO         sombre · fiche Promi · Peigné                points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Sec                   tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Sec                   points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Tressé                tracé   trait #DD89F4 · champ #82AEF8 1.04 · corps #0E78F2 1.80
+KO         sombre · fiche Promi · Tressé                points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Frangé                tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Frangé                points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Doublé                tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Doublé                points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Fendu                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Fendu                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Cranté                tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Cranté                points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Vrillé                tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Vrillé                points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Semé                  tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Semé                  points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Perlé                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi · Perlé                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Plein             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Plein             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Coulé             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Coulé             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Peigné            tracé   trait #8278D9 · champ #82AEF8 1.66 · corps #0E78F2 1.13
+KO         sombre · fiche Promi (2) · Peigné            points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Sec               tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Sec               points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Tressé            tracé   trait #DD89F4 · champ #82AEF8 1.04 · corps #0E78F2 1.80
+KO         sombre · fiche Promi (2) · Tressé            points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Frangé            tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Frangé            points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Doublé            tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Doublé            points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Fendu             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Fendu             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Cranté            tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Cranté            points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Vrillé            tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Vrillé            points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Semé              tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Semé              points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Perlé             tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · fiche Promi (2) · Perlé             points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         sombre · fiche Chiche · Plein                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · fiche Chiche · Coulé                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         sombre · fiche Chiche · Peigné               tracé   trait #7C3F58 · champ #FFB8D2 4.81 · corps #7C3F58 1.00
+OK         sombre · fiche Chiche · Sec                  tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         sombre · fiche Chiche · Tressé               tracé   trait #A76780 · champ #FFB8D2 2.66 · corps #7C3F58 1.81
+OK         sombre · fiche Chiche · Frangé               tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         sombre · fiche Chiche · Doublé               tracé   trait #130208 · champ #1C0910 1.05 · corps #7C3F58 2.61
+OK         sombre · fiche Chiche · Fendu                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · fiche Chiche · Cranté               tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · fiche Chiche · Vrillé               tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · fiche Chiche · Semé                 tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · fiche Chiche · Perlé                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · fiche Cercle · Plein                tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Coulé                tracé   trait #0A0415 · champ #89ADF8 9.03 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Peigné               tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Sec                  tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Tressé               tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Frangé               tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Doublé               tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Fendu                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Cranté               tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Vrillé               tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Semé                 tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+OK         sombre · fiche Cercle · Perlé                tracé   trait #0A0415 · champ #82AEF9 9.00 · corps #5D4978 2.58
+IMPOSSIBLE sombre · carte Index · Promi                 tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+KO         sombre · carte Index · Promi                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · carte Index · Promi                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         sombre · carte Index · Cercle                tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         sombre · carte Index · Chiche                tracé   trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · carte Index · Chiche                points  trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+OK         sombre · carte Index · Promi                 tracé   trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         sombre · carte Index · Promi                 points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+KO         sombre · carte Index · Chiche                tracé   trait #0B4A2A · champ #FFB8D2 6.43 · corps #2B1020 1.69
+IMPOSSIBLE sombre · carte Index · Promi                 tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+OK         sombre · carte Index · Promi                 tracé   trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         sombre · carte Index · Promi                 points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+IMPOSSIBLE sombre · carte Index · Promi                 tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+KO         sombre · carte Index · Promi                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · carte Index · Promi                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         sombre · carte Index · Cercle                tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         sombre · carte Index · Promi                 points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+IMPOSSIBLE sombre · carte Index · Promi                 tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+OK         sombre · carte Index · Promi                 tracé   trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         sombre · carte Index · Promi                 points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+IMPOSSIBLE sombre · carte Index · Promi                 tracé   trait #0B4A2A · champ #82AEF8 4.62 · corps #2B1020 1.69 · au mieux 2.80 avec ces deux fonds
+KO         sombre · carte Index · Promi                 tracé   trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+KO         sombre · carte Index · Promi                 points  trait #DD4D23 · champ #82AEF8 1.81 · corps #0E78F2 1.03
+OK         sombre · carte Index · Cercle                tracé   trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+OK         sombre · carte Index · Promi                 points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+OK         sombre · carte Fil · Chiche                  tracé   trait #19080E · champ #FFBAD3 12.21 · corps #7F445C 2.66
+OK         sombre · carte Fil · Chiche                  points  trait #19090F · champ #FFBAD3 12.15 · corps #7F445C 2.65
+IMPOSSIBLE sombre · carte Fil · Promi                   tracé   trait #114E2F · champ #86B0F8 4.45 · corps #321727 1.67 · au mieux 2.73 avec ces deux fonds
+OK         sombre · carte Fil · Cercle                  tracé   trait #100A1B · champ #CBAAF5 9.81 · corps #624E7C 2.68
+KO         sombre · carte Fil · Promi                   tracé   trait #DE5128 · champ #85B0F8 1.80 · corps #147BF2 1.03
+KO         sombre · carte Fil · Promi                   points  trait #DE5228 · champ #85B0F8 1.79 · corps #147BF2 1.04
+KO         sombre · carte Fil · Chiche                  tracé   trait #06391F · champ #FFBAD3 8.19 · corps #80445D 1.80
+OK         sombre · carte Fil · Chiche                  tracé   trait #19080E · champ #FFBAD3 12.21 · corps #80445D 2.68
+OK         sombre · carte Fil · Chiche                  points  trait #19090F · champ #FFBAD3 12.15 · corps #80445D 2.67
+IMPOSSIBLE sombre · carte Fil · Promi                   tracé   trait #114E2F · champ #85B0F8 4.44 · corps #311728 1.68 · au mieux 2.73 avec ces deux fonds
+OK         sombre · carte Fil · Cercle                  tracé   trait #100A1B · champ #CAAAF5 9.78 · corps #614E7D 2.68
+KO         sombre · carte Fil · Promi                   tracé   trait #DE5128 · champ #85B0F8 1.80 · corps #157CF2 1.02
+KO         sombre · carte Fil · Promi                   points  trait #DE5129 · champ #85B0F8 1.80 · corps #157CF2 1.02
+KO         sombre · carte Fil · Chiche                  tracé   trait #06391F · champ #FFBAD3 8.19 · corps #80435D 1.78
+OK         sombre · carte Fil · Chiche                  tracé   trait #19080E · champ #FFBAD3 12.21 · corps #80445D 2.68
+OK         sombre · carte Fil · Chiche                  points  trait #19090F · champ #FFBAD3 12.15 · corps #80445D 2.67
+IMPOSSIBLE sombre · carte Fil · Promi                   tracé   trait #114E2F · champ #85B0F8 4.44 · corps #311728 1.68 · au mieux 2.73 avec ces deux fonds
+OK         sombre · carte Fil · Cercle                  tracé   trait #100A1B · champ #CAAAF5 9.78 · corps #614E7D 2.68
+KO         sombre · carte Fil · Promi                   tracé   trait #DE5128 · champ #85B0F8 1.80 · corps #157CF2 1.02
+KO         sombre · carte Fil · Promi                   points  trait #DE5129 · champ #85B0F8 1.80 · corps #157CF2 1.02
+KO         sombre · carte Fil · Chiche                  tracé   trait #06391F · champ #FFBAD3 8.19 · corps #80435D 1.78
+KO         sombre · page + Promi                        tracé   trait #FB4C0D · champ #82AEF8 1.52 · corps #0E78F2 1.23
+OK         sombre · page + Promi                        points  trait #022140 · champ #82AEF8 7.23 · corps #0E78F2 3.85
+KO         sombre · page + Chiche                       tracé   trait #FB4C0D · champ #FFB8D2 2.12 · corps #7C3F58 2.27
+OK         sombre · page + Chiche                       points  trait #130208 · champ #FFB8D2 12.54 · corps #7C3F58 2.61
+KO         sombre · page + Cercle                       tracé   trait #FB4C0D · champ #C9A8F5 1.69 · corps #5D4978 2.28
+OK         sombre · page + Cercle                       points  trait #0A0415 · champ #C9A8F5 9.99 · corps #5D4978 2.58
+
+92 / 248
