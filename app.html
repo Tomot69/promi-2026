@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v157', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v158', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -6874,12 +6874,15 @@ function buildStudio(){
   try{wr.style.touchAction='pan-y';}catch(e){}
   $$('#studioBody .st3-p').forEach(function(b){b.onclick=function(){try{window.Toile.setPalette(b.dataset.p);}catch(e){}try{var _pn=document.getElementById('st3pn');if(_pn&&pals[b.dataset.p])_pn.textContent=pals[b.dataset.p].name;}catch(e){}var bg2=document.getElementById('stBg');if(bg2&&bg2.__c){window.Toile.repaint(bg2);[].forEach.call(document.querySelectorAll('.st3-p'),function(x){x.classList.toggle('on',x===b);});}else{buildStudio();}};});
   var sp=$('#st3spec'),th=$('#st3thumb');if(sp){var bgc=document.getElementById('stBg');var _p=0,_v=0,_dg=false,_rf=null;
-    var applyH=function(t){t=Math.max(0,Math.min(1,t));th.style.left=(t*100)+'%';th.style.setProperty('--hc','hsl('+Math.round(t*360)+',72%,54%)');try{window.Toile.setHue(t*360);window.Toile.repaint(bgc);}catch(e){}};
+    /* ⚑ v158 (Tom, C-175) — « le Studio saccade ». La dalle de la jauge suit le doigt à chaque mouvement ; la TEINTE (qui refait l'aperçu du monde) ne
+       s'applique qu'une fois par image — sur l'iPhone le doigt donne jusqu'à 120 mouvements par seconde, Safari ne les regroupe pas : la teinte était
+       appliquée (setHue, puis un rendu de l'app) à chacun. */
+    var _hT=null,_hR=0,applyH=function(t){t=Math.max(0,Math.min(1,t));th.style.left=(t*100)+'%';th.style.setProperty('--hc','hsl('+Math.round(t*360)+',72%,54%)');_hT=t;if(_hR)return;_hR=requestAnimationFrame(function(){_hR=0;var u=_hT;try{window.Toile.setHue(u*360);window.Toile.repaint(bgc);}catch(e){}});};
     var tX=function(cx){var r=sp.getBoundingClientRect();return Math.max(0,Math.min(1,(cx-r.left)/r.width));};
     var coast=function(){if(_dg){_rf=null;return;}_p+=_v;_v*=0.92;if(_p<0){_p=0;_v=0;}if(_p>1){_p=1;_v=0;}applyH(_p);if(Math.abs(_v)>0.0006){_rf=requestAnimationFrame(coast);}else{_rf=null;}};
-    var _o=0;sp.addEventListener('pointerdown',function(e){_dg=true;if(_rf){cancelAnimationFrame(_rf);_rf=null;}try{sp.setPointerCapture(e.pointerId);}catch(x){}var _t0=tX(e.clientX);_o=(th.contains(e.target)?_t0-(parseFloat(th.style.left)||0)/100:0);_p=Math.max(0,Math.min(1,_t0-_o));_v=0;applyH(_p);});   /* v155 (C-168) : la dalle attrapée dans sa zone (56 × 56) ne saute pas sous le doigt — on garde l'écart */
+    var _o=0;sp.addEventListener('pointerdown',function(e){_dg=true;window._jaugeTenue=true;if(_rf){cancelAnimationFrame(_rf);_rf=null;}try{sp.setPointerCapture(e.pointerId);}catch(x){}var _t0=tX(e.clientX);_o=(th.contains(e.target)?_t0-(parseFloat(th.style.left)||0)/100:0);_p=Math.max(0,Math.min(1,_t0-_o));_v=0;applyH(_p);});   /* v155 (C-168) : la dalle attrapée dans sa zone (56 × 56) ne saute pas sous le doigt — on garde l'écart */
     sp.addEventListener('pointermove',function(e){if(!_dg)return;var t=Math.max(0,Math.min(1,tX(e.clientX)-_o));_v=_v*0.5+(t-_p)*0.5;_p=t;applyH(_p);});
-    var _end=function(){if(!_dg)return;_dg=false;if(!_rf)_rf=requestAnimationFrame(coast);};
+    var _end=function(){if(!_dg)return;_dg=false;window._jaugeTenue=false;if(!_rf)_rf=requestAnimationFrame(coast);};
     sp.addEventListener('pointerup',_end);sp.addEventListener('pointercancel',_end);}
   /* le panneau vient d'être reconstruit : on replace l'encart une fois la mise en page faite */
   try{requestAnimationFrame(function(){requestAnimationFrame(_placeLockCard);});setTimeout(_placeLockCard,120);}catch(e){}
@@ -8867,6 +8870,22 @@ function promiTrame(cvId,hostId,opt){try{
  if(opt.tint){try{g.save();g.setTransform(1,0,0,1,0,0);g.globalCompositeOperation='source-atop';g.globalAlpha=0.8;g.fillStyle=opt.tint;g.fillRect(0,0,cv.width,cv.height);g.restore();}catch(e){}}
 }catch(e){}}
 window.promiTrame=promiTrame;
+/* ⚑ v158 (Tom, C-175) — « le Studio saccade (Mascaret…) ». Chaque cran de la jauge des couleurs change la teinte (`Toile.setHue`), qui fait repeindre
+   les TRAMES DE TOUS LES ÉCRANS (`onPaletteChange` : l'Aura, l'Index, le Cercle, la fiche…), chacune avec ses dalles rendues — sous Mascaret 20 à 37 ms
+   l'une, plusieurs par cran, pour des écrans CACHÉS derrière le Studio. Tant que le Studio est ouvert, la trame d'un autre écran attend : elle est gardée
+   (la dernière demande de chaque canevas) et repeinte quand le Studio est refermé, une par tâche, sans doigt posé. Ce qu'on ne voit pas ne se peint pas
+   pendant qu'on regarde autre chose. */
+(function(){ var _pt=window.promiTrame, file={}, minut=0, tDoigt=0;
+  ['pointerdown','touchstart','pointermove','touchmove'].forEach(function(n){ document.addEventListener(n, function(){ tDoigt=performance.now(); }, {capture:true, passive:true}); });
+  function studioOuvert(){ try{ var st=document.getElementById('studioScreen'), dv=document.getElementById('device'); if(!st || !st.classList.contains('show')) return false; var r=st.getBoundingClientRect(), D=dv.getBoundingClientRect(); return r.top<D.bottom-1 && r.bottom>D.top+1; }catch(_){ return false; } }
+  function vide(){ minut=0; if(studioOuvert() || performance.now()-tDoigt<600){ minut=setTimeout(vide, 300); return; } var k=Object.keys(file)[0]; if(!k) return; var a=file[k]; delete file[k]; try{ a[0].apply(a[1], a[2]); }catch(_){ } if(Object.keys(file).length) minut=setTimeout(vide, 60); }
+  window.promiTrame=function(cvId, scrId){ if(scrId!=='studioScreen' && studioOuvert()){ file[cvId]=[_pt, window, [].slice.call(arguments)]; if(!minut) minut=setTimeout(vide, 300); return; } return _pt.apply(this, arguments); };
+  /* le moteur appelle les trames des écrans par leur nom (`window.auTrame`…) : ce sont elles qu'on garde ; celle du Studio passe */
+  function garde(nom){ var f=window[nom]; if(typeof f!=='function' || f.__garde) return; var g=function(){ if(studioOuvert()){ file[nom]=[f, this, [].slice.call(arguments)]; if(!minut) minut=setTimeout(vide, 300); return; } return f.apply(this, arguments); }; g.__garde=1; window[nom]=g; }
+  function tout(){ ['auTrame','ixTrame','shTrame','dpRefresh','esRefresh','fdRefresh','_trameReglages'].forEach(garde); }
+  tout(); setTimeout(tout, 0); setTimeout(tout, 2000);
+  window._trameAttente=function(){ return Object.keys(file); };
+})();
 function ixTrame(){promiTrame("ixTrameCv","indexSheet",{cut:0,size:0.52,y:0.40});}
 window.ixTrame=ixTrame;
 function auTrame(){promiTrame("auTrameCv","auraScreen",{cut:0,size:0.52,y:0.40,courant:1});}   /* v68 : le décor de l'Aura suit le Studio (v34 : seules la Pelote et « Ce que tu as tenu » gardent la plantation) — il le DÉCLARE */
@@ -37355,7 +37374,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 </style>
 <script id="lot-V20-STUDIO-AURA">
 (function(){
-  var cle='';
+  var cle='', memo={}, tDoigt=0;   /* ⚑ v158 (C-175) : la silhouette gardée par monde ; refaite seulement au calme */
+  ['pointerdown','touchstart','pointermove','touchmove','pointerup','touchend'].forEach(function(n){ document.addEventListener(n, function(){ tDoigt=performance.now(); }, {capture:true, passive:true}); });
   function peindre(){
     try{
       var sc=document.getElementById('studioScreen'); if(!sc||!sc.classList.contains('show')) return;
@@ -37364,11 +37384,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(!pr.length) return;                               /* sans dalle sur la Toile, le curseur d'avant reste */
       var clair=document.getElementById('device').classList.contains('light');
       var M=Toile.mondeCourant?Toile.mondeCourant():{};
-      var k=[M.m,M.p,M.h,clair,pr[0].id].join('|');
+      var k=[M.m,clair,pr[0].id].join('|');   /* ⚑ v158 (C-175) : la silhouette ne dépend ni de la teinte ni de la palette (elle est repeinte à l'encre) — elle n'est plus refaite à chaque cran de la jauge (sous Touffe : 533 ms par rendu) */
+      if(cv && window._jaugeTenue) return;   /* pendant qu'on fait glisser la jauge, rien ne se refait */
       var cv=th.querySelector('canvas');
       if(cv && cle===k) return;
       /* ⚑ v29 — la silhouette est rendue par le moteur à 64 px, posée 1:1 (redteam_decoupe) */
-      var src=window._rendDalle?window._rendDalle(pr[0].id, 64, 64, {courant:1}):null;   /* v30 · le curseur du Studio : le monde courant, exprès */
+      /* ⚑ v158 (Tom, C-175) — « le Studio saccade » : à l'arrivée sur un monde, cette silhouette était refaite DANS le passage d'un monde à l'autre, d'un
+         seul bloc — 535 ms sous Ramage, 1 570 ms sous Volubilis. Elle est gardée par monde, et refaite seulement quand le Studio est au calme (aucun doigt
+         depuis 1,2 s) ; d'ici là la dalle d'avant reste. */
+      var src=memo[k]||null;
+      if(!src){ if(performance.now()-tDoigt<1200) return; src=window._rendDalle?window._rendDalle(pr[0].id, 64, 64, {courant:1}):null; if(src) memo[k]=src; }   /* v30 · le curseur du Studio : le monde courant, exprès */
       if(!src) return;
       if(!cv){ cv=document.createElement('canvas'); th.appendChild(cv); }
       cv.width=72; cv.height=72; var g=cv.getContext('2d'); g.clearRect(0,0,72,72);
@@ -37663,7 +37688,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var g=cv.getContext('2d'), dur=(o.duree||1100)*(o.lent||1); cv.setAttribute('data-mode', ouvre?'ouvre':'couvre');
     function image(t){ var u=Math.max(0, Math.min(1, t/dur)); SC.couvre(u); SC.peint(); cv.setAttribute('data-u', u.toFixed(3));
       if(ouvre){ g.setTransform(1,0,0,1,0,0); g.globalCompositeOperation='source-over'; g.clearRect(0,0,cv.width,cv.height); if(u<1){ g.drawImage(couv, 0, 0, cv.width, cv.height); g.globalCompositeOperation='destination-out'; g.drawImage(masque, 0, 0); g.globalCompositeOperation='source-over'; } } }
-    var ctl={canevas:cv, arrete:false, image:image, duree:dur, mode:ouvre?'ouvre':'couvre'};
+    var ctl={canevas:cv, arrete:false, image:image, duree:dur, mode:ouvre?'ouvre':'couvre'}; cv.__ctl=ctl; if(o.image && o.image.__flou) cv.setAttribute('data-flou','1'); else cv.removeAttribute('data-flou');   /* v158 (C-170) : un passage qui porte une image floutée le dit */
     function fini(){ if(ouvre && !o.garde && cv.parentNode) cv.remove(); if(o.fin) o.fin(ctl); }
     function go(){ if(reduit){ image(dur); fini(); return; } var t0=performance.now(); (function f(){ if(ctl.arrete) return; var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else fini(); })(); }
     image(0); if(o.attend){ ctl.lance=go; return ctl; }
@@ -37834,7 +37859,18 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(zy!==ZONE_Y){ ZONE_Y=zy; var _tz=document.getElementById('onbTrait'), _tt=document.getElementById('onbTrace'), _td=document.getElementById('onbDepart'); if(_tz) _tz.style.top=ZONE_Y+'px'; if(_td) _td.style.top=ZONE_Y+'px'; if(_tt) _tt.style.top=(ZONE_Y-34)+'px'; }
     if(su){ su.style.top=(sv ? bas+ecart+so.offsetHeight+16 : bas+14)+'px';
       var plein = etape==='prenom' ? !!prenom.trim() : (!!parole.trim() && aFocus());
-      su.style.display = (etape==='trait'||!plein) ? 'none' : 'block'; }
+      su.style.display = (etape==='trait'||!plein) ? 'none' : 'block';
+      /* ⚑ v158 (Tom, C-176, Q567) — « clavier ouvert, le bouton → recouvre la fin de “trace pour planter” ; le texte reste entier et lisible ». Le bouton ne
+         tenait pas dans les 46 pt entre « Petite ou grande promesse » et la consigne : il prend la place LIBRE la plus proche de la sienne (sa colonne, à
+         droite), lue sur les LIGNES réelles des textes de la page (la phrase, « Petite ou grande promesse », la consigne), 6 pt d'air autour ; le texte ne bouge pas. */
+      if(su.style.display==='block'){ try{ var V0=document.getElementById('onbV'), Dv=V0.getBoundingClientRect(), kk=(Dv.width/390)||1, lignes=[];
+          ['onbPh','onbSous','onbTrace','onbDit','onbQuid'].forEach(function(id){ var e=document.getElementById(id); if(!e || e.style.display==='none' || getComputedStyle(e).display==='none') return; var rg=document.createRange(); rg.selectNodeContents(e);
+            [].forEach.call(rg.getClientRects(), function(q){ if(q.width>1) lignes.push([(q.left-Dv.left)/kk, (q.top-Dv.top)/kk, (q.right-Dv.left)/kk, (q.bottom-Dv.top)/kk]); }); });
+          var H=52, M=6, voulu=parseFloat(su.style.top)||0, tt=document.getElementById('onbTrace'), plafond=ZONE_Y-38, sol=ZONE_Y-38+19;   /* jamais sous la consigne : le trait est dessous */
+          function libre(x0, t){ for(var i=0;i<lignes.length;i++){ var l=lignes[i]; if(l[2]>x0-M && l[0]<x0+H+M && l[3]>t-M && l[1]<t+H+M) return false; } return t+H<=sol; }
+          var best=null, col=314; for(var d=0; d<=260 && best===null; d++){ if(libre(314, voulu-d)) best=voulu-d; else if(libre(314, voulu+d)) best=voulu+d; }
+          if(best===null){ col=24; for(var d2=0; d2<=260 && best===null; d2++){ if(libre(24, plafond-d2)) best=plafond-d2; } }   /* la colonne de droite pleine : à gauche de la consigne */
+          if(best!==null){ su.style.top=best+'px'; su.style.left=col+'px'; } su.setAttribute('data-libre', best===null?'0':'1'); }catch(_){ } } }
     var tr=document.getElementById('onbTrait'), tt=document.getElementById('onbTrace');
     /* ⚑ v155 (Tom, C-169 §4.4) — « trace pour planter » et la flèche paraissent 1 s APRÈS la validation du prénom (le temps que le clavier disparaisse et
        que l'animation d'arrivée attire l'œil), qu'une parole soit écrite ou non ; avant v155 ils attendaient la première lettre de la parole. */
@@ -38121,13 +38157,21 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     for(var i=0;i<L.length;i++){ var e=L[i]; if(e.closest && e.closest('#accRappelCompte')) continue; return st.contains(e); } return false; }
   function prepareFondStudio(){ try{ var bg=document.getElementById('stBg'); if(!bg || !bg.width || !window.Flaques || !Flaques.floute || !studioDevant()) return null;
       var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg, 0, 0, 390, 844);
-      var m=(window.Toile&&Toile.mondeCourant)?Toile.mondeCourant():{}; var f={net:c, flou:Flaques.floute(c, 4.8), t:performance.now(), monde:(document.getElementById('studioScreen').getAttribute('data-stp-monde')||m.m||'')+'|'+(m.p||'')};
+      var m=(window.Toile&&Toile.mondeCourant)?Toile.mondeCourant():{}; var _fl=Flaques.floute(c, 4.8); try{ _fl.__flou=1; }catch(_){ } var f={net:c, flou:_fl, t:performance.now(), monde:(document.getElementById('studioScreen').getAttribute('data-stp-monde')||m.m||'')+'|'+(m.p||'')};
       window._fondAchat=f; return f; }catch(_){ return null; } }
   ['touchstart','pointerdown'].forEach(function(n){ document.addEventListener(n, function(e){ var b=e.target && e.target.closest && e.target.closest('#stLockBuy'); if(b) prepareFondStudio(); }, {capture:true, passive:true}); });
   /* ⚑ v157 (Tom, C-170 suite) — « Après l'achat, le design est déjà débloqué : derrière le second encart (“Garder ton achat”), le Studio est NET, sans flou
      ni voile. On voit le monde débloqué à travers l'encart. » Le second encart ne pose plus de fond : l'hôte reste transparent, et le panneau naît (et part)
      en flaques sur l'image NETTE du Studio de cet instant — aucun pixel flouté, même pendant le passage. Le premier encart garde son flou en flaques. */
-  function netStudio(){ try{ var bg=document.getElementById('stBg'); if(!bg || !bg.width || !studioDevant()) return null; var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg, 0, 0, 390, 844); return {net:c}; }catch(_){ return null; } }
+  /* ⚑ v158 (Tom, C-170 RÉCIDIVE) — « après l'achat, sur “Garder ton achat”, il voit ENCORE la Toile floutée ». Le Studio net n'était pris que si un SONDAGE
+     (un point à 40 % de l'écran) tombait sur le Studio ; sinon le second encart reprenait, sans rien dire, le FOND FLOUTÉ du premier (`fondStudio`). Le Studio
+     ouvert suffit maintenant ; et pour le second encart, jamais de fond flouté, quoi qu'il arrive. */
+  /* v158 (C-170) — LES COUCHES FLOUTÉES DE L'ACHAT S'EN VONT AVANT LE SECOND ENCART : le fond du premier encart (`#achatFond`), une sortie en flaques
+     encore en cours, le flou du verrou ; chacune est retirée, rien ne reste sur aucune couche. */
+  function purgeFlou(){ try{ [].forEach.call(document.querySelectorAll('#achatFond, canvas.passage-flaques[data-flou]'), function(c){ if(c.parentNode) c.parentNode.removeChild(c); });   /* retirée de l'écran ; le passage, lui, va à son terme (le déverrouillage change de monde à sa fin) */
+      var st=document.getElementById('studioScreen'); if(st) st.classList.remove('stp-verrou'); window._fondAchat=null; window._fondAchatPose=null; }catch(_){ } }
+  window._purgeFlouAchat=purgeFlou;
+  function netStudio(){ try{ var bg=document.getElementById('stBg'), st=document.getElementById('studioScreen'); if(!bg || !bg.width || !st || !st.classList.contains('show')) return null; var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg, 0, 0, 390, 844); return {net:c}; }catch(_){ return null; } }
   function fondStudio(){ var f=window._fondAchat; if(f && performance.now()-f.t<800) return f; if(!studioDevant()) return null; return prepareFondStudio(); }
   function imageToile(){ try{ var tc=document.getElementById('toileCv'); if(!tc||!tc.width) return null; var c=document.createElement('canvas'); c.width=tc.width; c.height=tc.height; c.getContext('2d').drawImage(tc,0,0); return c; }catch(_){ return null; } }
   function rectDe(e, marge){ var D=dev.getBoundingClientRect(), s=k(), q=e.getBoundingClientRect(), m=marge||0; return [Math.max(0,(q.left-D.left)/s-m), Math.max(0,(q.top-D.top)/s-m), Math.min(390,(q.width/s)+2*m), Math.min(844,(q.height/s)+2*m)]; }
@@ -38166,7 +38210,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        celles du flou, remplacent l'écran : la page suivante naît en flaques et recouvre l'ancienne. » Le message de fin ne se découpe plus de droite à
        gauche (le balayage) : la Toile qui est derrière lui le RECOUVRE EN FLAQUES (650 ms) ; dans le même temps le panneau du compte NAÎT en flaques à sa
        place (il ne glisse plus du bas). */
-    var FN=o.net?netStudio():null, FS=FN?null:fondStudio(), fin=document.getElementById('onbFin'), imF=FS?FS.flou:(FN?FN.net:imageToile()), vF=document.getElementById('onbV');
+    if(o.net) purgeFlou();   /* v158 (C-170) : plus aucune couche floutée sur l'écran quand le second encart s'ouvre */
+    var FN=o.net?(netStudio()||{net:imageToile()}):null, FS=o.net?null:fondStudio(), fin=document.getElementById('onbFin'), imF=FS?FS.flou:(FN?FN.net:imageToile()), vF=document.getElementById('onbV');
     if(fin && fin.style.display!=='none'){ if(imF && vF && !reduitOnb()){ window._passageFlaques(vF, {mode:'couvre', devant:true, rect:rectDe(fin, 10), image:imF, duree:650, lent:LENT_ONB(), fin:function(c){ fin.style.display='none'; if(c && c.canevas.parentNode) c.canevas.remove(); }}); } else fin.style.display='none'; }
     var _ot=document.getElementById('onbTard'); if(_ot) _ot.style.display='none';   /* v141 : le panneau du compte porte SON « Plus tard » */
     var p=document.createElement('div'); p.className='onbv-compte';
@@ -41327,7 +41372,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     bg.style.setProperty('transition','none','important');   /* le flou du verrou ne se retire plus par un fondu : la transition est coupée, et la classe qui porte le flou part tout de suite */
     st.classList.remove('stp-verrou'); setTimeout(function(){ bg.style.removeProperty('transition'); }, 900);
     if(reduit || !window._passageFlaques){ setTimeout(applique, 60); return true; }
-    try{ var im=document.createElement('canvas'); im.width=bg.width; im.height=bg.height; var g=im.getContext('2d'); g.filter='blur('+(1.4*bg.width/390)+'px)'; g.drawImage(bg,0,0); g.filter='none';
+    try{ var im=document.createElement('canvas'); im.width=bg.width; im.height=bg.height; var g=im.getContext('2d'); g.filter='blur('+(1.4*bg.width/390)+'px)'; g.drawImage(bg,0,0); g.filter='none'; im.__flou=1;
       var ctl=window._passageFlaques(st, {mode:'ouvre', apres:bg, rect:[0,0,390,844], image:im, duree:700, fin:function(){ setTimeout(applique, 60); }});
       if(ctl && ctl.canevas){ ctl.canevas.id='stDeverrou'; ctl.canevas.style.setProperty('border-radius','36px'); } else setTimeout(applique, 60); window._deverrouT=performance.now(); }catch(_){ setTimeout(applique, 60); } return true; };
 })();
@@ -41842,8 +41887,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var rg=document.createRange(); rg.selectNodeContents(e); var R=rg.getClientRects(); var r=R.length?R[0]:e.getBoundingClientRect();
     var tot=(m.fa+m.fd)||1.2, base=m.fa? r.top+r.height*(m.fa/tot) : r.top+r.height*0.78, kk=k();
     var col=c.webkitTextFillColor && !/^(currentcolor)?$/i.test(c.webkitTextFillColor) && c.webkitTextFillColor!=='rgba(0, 0, 0, 0)' ? c.webkitTextFillColor : c.color;
-    return {cap:m.cap*fs, base:base, col:col, gauche:r.left, fam:fam, fs:fs}; }
+    return {cap:m.cap*fs*kk, base:base, col:col, gauche:r.left, fam:fam, fs:fs}; }   /* v158 : la capitale en pixels d'ÉCRAN, comme la ligne de base */
   var FAM=null;
+  function tailleX(){ try{ var h=document.querySelector('#indexSheet .scr-ti'), x=h&&h.querySelector('.ti-x'), v=parseFloat((x&&x.style.getPropertyValue('font-size'))||(h&&h.style.getPropertyValue('font-size'))||''); if(v>10) return v;
+      if(h && h.closest('.show')) { v=parseFloat(getComputedStyle(x||h).fontSize); if(v>10) return v; } }catch(_){ } return 35; }
+  window._tailleX=tailleX;
   function famX(){ if(FAM) return FAM; var v=getComputedStyle(document.documentElement).getPropertyValue('--f-marque').trim(); FAM=v||'PromiLate'; return FAM; }
   function pose(x){ var rx=vu(x); if(!rx) return; var kk=k(), D=dev.getBoundingClientRect();
     /* le glyphe vit dans SON span (posé en absolu à la cote calculée) : le texte reste « X », la ligne ne dépend plus des règles de chaque écran */
@@ -41854,12 +41902,15 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(!x.getAttribute('aria-label')) x.setAttribute('aria-label','Fermer'); if(!x.getAttribute('role') && x.tagName!=='BUTTON') x.setAttribute('role','button');
     var R=rangee(x, rx), ti=titre(x, rx, R), T=ti?lit(ti):null;
     var mX=metr(famX(), '400', 'normal'); if(!mX.xh) return;
-    /* la hauteur de capitale du titre ; sans titre (la photo en entier), celle d'un titre d'écran : PromiLate 27 */
-    var cap=T?T.cap:(metr(famX(),'400','normal').cap*27*kk), fs=cap/mX.xh/kk;
+    /* ⚑ v158 (Tom, C-173 récidive) — « le MÊME X partout, à la taille EXACTE du X de “INDEX” ; seule sa position change ». LA CAUSE de v157 : la taille
+       était calculée page par page (cap du titre ÷ hauteur du X ÷ échelle) et DIVISÉE PAR L'ÉCHELLE de l'appareil alors que la capitale était déjà en
+       pixels CSS — dans Safari (appareil réduit à ≈ 0,8) le X sortait 22 à 27 % trop gros ; le juge tournait à l'échelle 1, où l'erreur vaut zéro.
+       Aujourd'hui : une seule taille, celle du titre de l'Index (35 px, lue sur lui), en pixels CSS — jamais convertie. */
+    var fs=tailleX(), cap=T?T.cap:mX.xh*fs*kk;
     var rb=R.bar?R.bar.getBoundingClientRect():(ti?ti.parentElement.getBoundingClientRect():rx);
     var cx, cy;
     g.font='400 100px '+famX(); var lx=fs*kk*g.measureText('X').width/100;
-    if(T){ var ins=T.gauche-rb.left; cx=rb.right-ins-lx/2; cy=T.base-cap/2; }
+    if(T){ var ins=T.gauche-rb.left; cx=rb.right-ins-lx/2; cy=T.base-T.cap/2; }   /* centré sur les capitales du titre de la barre */
     else { cx=rx.left+rx.width/2; cy=rx.top+rx.height/2; }
     var op=x.offsetParent || x.parentElement, ro=op.getBoundingClientRect();
     var left=(cx-ro.left)/kk-op.clientLeft+op.scrollLeft-22, top=(cy-ro.top)/kk-op.clientTop+op.scrollTop-22;

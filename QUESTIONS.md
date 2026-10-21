@@ -8817,12 +8817,22 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   regarde une fiche plantée et dit si la longueur lui va.
 - **Q564 — TRAITÉE (v156 : Tom l'a revue — l'encart d'achat ; voir C-170) · À SAVOIR (C-170, v155)** : au banc, l'ancienne Toile était celle de l'ACCUEIL, découverte par le Studio qui glisse en se refermant (0,5 s) ;
   « l'encart du bas » n'a pas été vu tel quel. Corrigé à la source. *Proposition* : si Tom la revoit sur l'iPhone, une capture de l'instant.
-- **Q565 — À VALIDER (C-173, v157)** : « le X en PromiLate, EN GRAS » — PromiLate n'a qu'une graisse (400). Un gras synthétique est interdit (§6 : une graisse
+- **Q565 — ACCEPTÉE (Tom, v158) · À VALIDER (C-173, v157)** : « le X en PromiLate, EN GRAS » — PromiLate n'a qu'une graisse (400). Un gras synthétique est interdit (§6 : une graisse
   absente casse en Swift) et un contour autour de la lettre aussi (C-130). La croix est en PromiLate 400, à la hauteur de capitale du titre. *Proposition* :
   si Tom la veut plus forte, une graisse dessinée de PromiLate (un fichier de police), ou un X un peu plus grand que la capitale.
 - **Q566 — À SAVOIR (C-172, v157)** : le chemin exact où le + du guide paraissait par-dessus le Studio ouvert n'a pas été reproduit au banc (WebKit :
   glissements de monde, palettes, achat avec et sans compte, mouvement réduit). La cause écrite est la faiblesse du test (un point sondé et la Toile au
   repos, jamais l'état du Studio), corrigée à la source. *Proposition* : si Tom le revoit, une capture et le geste fait juste avant.
-- **Q567 — À SAVOIR (trouvé en jugeant C-174, v157 ; identique sur v156)** : sur la page de la parole, tant que le clavier est ouvert et la phrase écrite,
+- **Q567 — TRAITÉE (v158 : C-176) · À SAVOIR (trouvé en jugeant C-174, v157 ; identique sur v156)** : sur la page de la parole, tant que le clavier est ouvert et la phrase écrite,
   le bouton → (« la suite », 314–366 pt) recouvre la fin de « trace pour planter » (82–370 pt, à 600 pt). Rien n'a été changé. *Proposition* : le → au-dessus
   de la consigne, ou la consigne plus courte à droite — à trancher par Tom.
+- **Q568 — À TRANCHER (trouvé en jugeant C-176, v158 ; identique sur v156)** : dans l'onboarding, une parole de cinq lignes (« appeler ma grand-mère chaque
+  dimanche avant le déjeuner sans faute ») fait déborder la page : « Petite ou grande promesse » passe sur le trait, la consigne se serre contre la phrase,
+  et le bouton → n'a plus de place libre (il reste sur le trait). *Propositions* : réduire la phrase au-delà de trois lignes, comme sur la page + (34 → 30) ;
+  ou retirer « Petite ou grande promesse » quand la parole dépasse trois lignes.
+- **Q569 — À SAVOIR (C-175, v158)** : deux restes, non corrigés : ① à l'arrivée sur Volubilis au Studio, le moteur repeint le monde d'un bloc (`repaintWorld`,
+  jusqu'à 720 ms) — c'est le code de la Toile, je n'y touche pas sans demande ; ② sous Touffe, glisser la jauge reste lourd (p95 ≈ 100 ms sous une charge de
+  17) sans que le temps se lise dans le JavaScript (peinture ?) — à mesurer au calme. *Proposition* : un lot « moteur » pour les deux, si Tom le veut.
+- **Q570 — À SAVOIR (C-170, v158)** : le chemin exact qui faisait paraître le flou chez Tom n'a pas été reproduit au banc (WebKit, 390 × 692, réduit à 0,79,
+  clair, mouvement réduit, deux mondes, changement de monde ralenti exprès à 2 s). La cause corrigée est celle que le code permettait : un sondage qui, s'il
+  échouait, retombait sur le voile noir et la Toile de l'accueil. *Proposition* : si Tom revoit un fond terne, une capture.

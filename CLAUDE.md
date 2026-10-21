@@ -129,6 +129,28 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v158 (21 oct. 2026) — RETOURS iPHONE DE TOM SUR v157 : LE X À LA TAILLE DU X D'« INDEX », PLUS AUCUN FLOU SUR « GARDER TON ACHAT », LE STUDIO SANS SACCADE SOUS LA JAUGE, LE → QUI NE RECOUVRE PLUS LA CONSIGNE. (Décisions Tom.) Ce bloc CORRIGE v157 (C-173 : la taille du X calculée page par page).
+> **Validés par Tom : C-172, C-174, C-171. Q565 acceptée (PromiLate n'a qu'une graisse). Le point d'arrêt tient : pas d'E4.**
+> **⚑ C-173, RÉCIDIVE — LE MÊME X PARTOUT, À LA TAILLE EXACTE DU X DE « INDEX »** (35 px, lue sur le titre de l'Index, `window._tailleX`), PromiLate, la couleur
+> de rôle du titre de sa barre, seule la place change (à droite, centré sur les capitales du titre), zone de 44 × 44. *La cause* : v157 calculait la taille page
+> par page et la DIVISAIT PAR L'ÉCHELLE de l'appareil alors que la capitale était déjà en pixels CSS — dans Safari (≈ 0,8) le X sortait 22 à 27 % trop gros ; le
+> juge tournait à l'échelle 1. *Les règles* : **une taille de texte se pose en pixels CSS, jamais divisée par l'échelle de l'appareil ; un juge de taille tourne
+> AUSSI à l'échelle de Safari (330 × 714 : ≈ 0,79) ; une capture d'élément se cale sur des pixels entiers (WebKit rééchantillonne un cadre fractionnaire).**
+> Juge : `redteam_croix` réécrit (original `sauvegardes/redteam_croix-avant-v158.py`).
+> **⚑ C-170, RÉCIDIVE — « GARDER TON ACHAT » : PLUS AUCUN FLOU NI VOILE.** *La cause trouvée dans le code* (le chemin de l'iPhone n'est pas reproduit, Q570) : le
+> Studio net n'était pris que si un sondage (un point à 40 % de la hauteur) tombait sur le Studio ; sinon l'encart retombait, sans rien dire, sur le voile noir à
+> 50 % de son hôte et sur l'image de la Toile de l'ACCUEIL. *Corrigé* : le Studio ouvert suffit ; jamais de fond flouté ni de voile pour le second encart ; à son
+> ouverture, `purgeFlou` retire toute couche floutée de l'achat (un passage en flaques qui porte une image floutée le DÉCLARE : `data-flou`). *La règle* (la même
+> que C-172) : **un état se demande à son propriétaire, il ne se devine pas à un point sondé — et un repli ne retombe jamais sur ce qu'on vient d'interdire.**
+> Juge : **`redteam_achat_net.py`** (15 ; D pose exprès la situation qui trompait v157 : rouge sur v157).
+> **⚑ C-175 — LE STUDIO SACCADE** : trois causes, toutes du travail fait pendant le geste : la teinte appliquée à chaque mouvement du doigt (→ une fois par image) ;
+> les trames des écrans CACHÉS derrière le Studio repeintes à chaque cran de teinte (→ elles attendent la fermeture du Studio, une par tâche, sans doigt) ; la
+> dalle de la jauge refaite à chaque cran et à chaque arrivée sur un monde (→ gardée par monde, refaite au calme). **Non jugé au calme** (charge 10 à 128).
+> Restes : `repaintWorld` du moteur (720 ms à l'arrivée sur Volubilis), Touffe sous la jauge (Q569). Juge : **`redteam_studio_saccade.py`** (comptes de travail,
+> durées au calme ; rouge sur v157).
+> **⚑ C-176 (Q567) — LE BOUTON → DE L'ONBOARDING prend la place libre la plus proche** (lue sur les lignes réelles des textes, 6 pt d'air), jamais sous la consigne ;
+> le texte ne bouge pas. Une parole de cinq lignes fait déborder la page entière (déjà en v156) : Q568. Juge : **`redteam_suite_libelle.py`**.
+
 ### ⚑ v157 (21 oct. 2026) — REPRISE APRÈS v154–v156 : LE STUDIO NET DERRIÈRE LE SECOND ENCART, « DESIGN DÉBLOQUÉ » EN AMANDE, LE + DU GUIDE APRÈS LE STUDIO FERMÉ, UN SEUL « X », LA FLÈCHE DE L'ONBOARDING × 2. (Décisions Tom.) Ce bloc CORRIGE v156 (C-170 : « le second encart floute le Studio de son instant »).
 > **Validés par Tom : C-094 (le moment du flou du Studio), C-169 (la flèche à 1,5 s), C-170 (le fond de l'encart d'achat), C-167, C-168. Le point d'arrêt tient : pas d'E4.**
 > **⚑ C-170 (suite) — APRÈS L'ACHAT, LE STUDIO EST NET DERRIÈRE LE SECOND ENCART** (« Garder ton achat ») : aucun fond, aucun voile ; le panneau naît et part en
@@ -3288,6 +3310,9 @@ python3 redteam_depart_orange.py # 34 — v155 (C-169, Q561) : pointe ET trait d
                                #   la flèche 1 000 ± 50 ms après le prénom ; le départ clignote avec le I (promiBlink, en phase) jusqu'au premier toucher ; rien ailleurs ; réduit : fixe.
 python3 redteam_deverrouille.py  # 25 — v155 (C-170) : les douze mondes payants déverrouillés au doigt sur une Toile pleine : passage en flaques, aucun flou intermédiaire ;
                                #   la Toile de l'accueil déjà dans le nouveau monde à la fermeture du Studio, jamais l'image d'avant. --n=.
+python3 redteam_achat_net.py   # 15 — v158 (C-170) : le vrai chemin d'achat sans compte, fenêtre de Safari ; aucune couche floutée ni voile au second encart, son entrée nette, la netteté locale de l'écran ; D : la situation qui trompait v157 (rouge sur v157).
+python3 redteam_studio_saccade.py # 18 — v158 (C-175) : la jauge du Studio sous Mascaret, Touffe, Madrure, Houle — le travail compté pendant le glissé (teinte ≤ 1/image, aucune trame cachée, la dalle de la jauge) ; durées au calme. Rouge sur v157.
+python3 redteam_suite_libelle.py # 21 — v158 (C-176) : le → de l'onboarding ne touche aucune ligne de texte, clavier ouvert et fermé ; les pages + ; la parole de cinq lignes rouge par décision (Q568).
 python3 redteam_guide_studio.py # 7 — v157 (C-172) : deux designs choisis au Studio, aucune image du + tant qu'il est ouvert ; refermé, le + arrive ; la situation qui trompait le sondage, posée exprès. C rougit sur v156.
 python3 redteam_croix.py       # 269 — v157 (C-173) : 34 écrans × 2 thèmes — aucun « FERMER » ; l'encre du X (lue sur l'image) = capitale du titre ± 1 pt ; sa couleur ; zone 44 × 44 prise à ses coins. ≈ 7 min.
 python3 redteam_fleche_onb.py  # 12 — v157 (C-174) : contre v156 servie à côté — le haut de l'encre au même pt, hauteur × 2, rien de touché, le départ clignote à 1,5 s.
