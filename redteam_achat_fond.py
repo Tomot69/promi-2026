@@ -11,6 +11,14 @@ Banc comme Tom (WebKit 390 × 844 ×3, une Toile de 25 paroles, AUCUN compte : l
   B · ce flou paraît EN FLAQUES (une couverture qui va de 0 à 1, gardée sous le panneau) ; plus de voile
   C · il est préparé AVANT l'ouverture (au toucher) ; la préparation coûte au plus 40 ms — sa durée n'est jugée qu'au calme
 Preuve : `--fichier=zz-av155.html` rougit (A, B).
+⚑ v157 (Tom, C-170 suite) — « Après l'achat, le design est déjà débloqué : derrière le second encart (« Garder ton achat »), le Studio est NET, sans flou ni
+voile. Le premier encart garde son flou en flaques. Juge : second encart ouvert ; le fond est identique au pixel au Studio net. » Contrat remis au niveau
+(original : sauvegardes/redteam_achat_fond-avant-v157.py, qui exigeait le Studio flouté derrière le second encart) :
+  D · le second encart : aucun fond posé (ni `#achatFond`, ni canevas, ni voile, ni flou d'arrière-plan) ; hors du panneau, l'écran avec l'encart est
+      IDENTIQUE AU PIXEL à l'écran sans lui (même image, l'encart caché le temps d'une capture, le Studio figé entre les deux) ;
+  E · pendant sa naissance en flaques, aucun pixel flouté : l'image des flaques est celle du Studio net.
+  F · le toast « Design débloqué ✓ » en amande #8FE08F (C-171), contraste mesuré sur son fond.
+Preuve : `--fichier=zz-av156.html` rougit (D, E, F).
 """
 import sys; sys.path.insert(0, '.')
 import banc_tom as B
@@ -44,7 +52,7 @@ with sync_playwright() as p:
             B.glisse(pg, B.droite([300, 330], [80, 330], 10), pas=18); pg.wait_for_timeout(1500); w = None
         if not w: break
         vus.append(w)
-        pg.evaluate("""()=>{ window.__snaps=window.__snaps||[]; if(!window.__oc){ const oc=window._onbCompte; window.__oc=1; window._onbCompte=function(){ try{ window.__tOuv=performance.now(); const bg=document.getElementById('stBg'), c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg,0,0,390,844); window.__snaps.push(c); }catch(e){} return oc.apply(this, arguments); }; } }""")
+        pg.evaluate("""()=>{ window.__snaps=window.__snaps||[]; if(!window.__oc){ const oc=window._onbCompte; window.__oc=1; window._onbCompte=function(){ try{ const o=arguments[2]; if(o && /Garder/.test(o.lab||'')){ window.__armeSecond=1; window.__passN=0; window.__passFlou=0; } }catch(e){} try{ window.__tOuv=performance.now(); const bg=document.getElementById('stBg'), c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg,0,0,390,844); window.__snaps.push(c); }catch(e){} return oc.apply(this, arguments); }; } }""")
         pg.evaluate("""()=>{ window.__u=[]; window.__tTouche=0; document.addEventListener('touchstart', ()=>{ if(!window.__tTouche) window.__tTouche=performance.now(); }, {capture:true, once:true});
           (function f(){ const c=document.getElementById('achatFond'); if(c) window.__u.push(+c.getAttribute('data-u')); if(window.__u.length<600 && !(window.__u.length && window.__u[window.__u.length-1]>=1)) requestAnimationFrame(f); })(); }""")
         c = pg.evaluate("()=>{const r=document.getElementById('stLockBuy').getBoundingClientRect(); return [r.left+r.width/2,r.top+r.height/2];}")
@@ -60,17 +68,42 @@ with sync_playwright() as p:
         # « Acheter sans compte » : l'encart part ; on passe au monde suivant
         t = pg.evaluate("()=>{ const e=document.querySelector('#accRappelCompte .tard'); if(!e) return null; const r=e.getBoundingClientRect(); return [r.left+r.width/2, r.top+r.height/2]; }")
         if t: pg.touchscreen.tap(t[0], t[1])
+        pg.evaluate("""()=>{ window.__passN=0; window.__passFlou=0; if(!window.__pf){ window.__pf=1; const pf=window._passageFlaques; window._passageFlaques=function(h,o){ try{ const im=o&&o.image;
+            if(window.__armeSecond && im){ window.__passN++; const f=window._fondAchat; if((f && im===f.flou) || (im.__flou)) window.__passFlou++; } }catch(e){} return pf.apply(this, arguments); };
+            const fl=Flaques.floute; Flaques.floute=function(){ const r=fl.apply(this, arguments); try{ r.__flou=1; }catch(e){} return r; }; } window.__armeSecond=0; }""")
         VU = "()=>{ const h=document.getElementById('accRappelCompte'); return !!(h && h.classList.contains('vu') && h.querySelector('.onbv-compte .lab') && /Garder ton achat/.test(h.querySelector('.onbv-compte .lab').textContent)); }"
         for _ in range(60):   # le second encart paraît ≈ 0,9 s après la fermeture du premier (plus sous charge)
             pg.wait_for_timeout(100)
             if pg.evaluate(VU): break
+        ts = pg.evaluate("""()=>{ const t=document.getElementById('_toast'), s=t&&t.querySelector('span'); if(!s) return null; const c=getComputedStyle(s), f=getComputedStyle(t);
+            function L(rgb){ const v=rgb.match(/[\\d.]+/g).slice(0,3).map(x=>{ x=+x/255; return x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4); }); return .2126*v[0]+.7152*v[1]+.0722*v[2]; }
+            const a=L(c.color), b=L(f.backgroundColor); return {tx:s.textContent, col:c.color, fill:c.webkitTextFillColor, fond:f.backgroundColor, ct:(Math.max(a,b)+.05)/(Math.min(a,b)+.05)}; }""")
+        juge('[%s] F · « Design débloqué ✓ » en amande #8FE08F (C-171), au moins 3:1 sur son fond' % w, bool(ts) and 'bloqu' in ts['tx'] and ts['col'] == 'rgb(143, 224, 143)' and ts['fill'] == 'rgb(143, 224, 143)' and ts['ct'] >= 3,
+             ts and '%s · %s sur %s · %.2f:1' % (ts['tx'], ts['col'], ts['fond'], ts['ct']))
         pg.wait_for_timeout(1200)
         # le second moment (« Garder ton achat », juste après) : son fond aussi est le Studio de cet instant ; « Plus tard »
         m2 = pg.evaluate(MESURE)
         if m2['sur'] or pg.evaluate("()=>document.getElementById('accRappelCompte').classList.contains('vu')"):
             pg.wait_for_timeout(600); m2 = pg.evaluate(MESURE)
-            juge('[%s] A · le second encart (« Garder ton achat ») floute aussi la Toile du Studio de cet instant' % w, m2.get('eStudio') is not None and m2['eStudio'] <= 12 and m2['eAccueil'] >= 2 * max(1, m2['eStudio']),
-                 'écart au Studio %s · à l\'accueil %s' % (m2.get('eStudio') and round(m2['eStudio'], 1), m2.get('eAccueil') and round(m2['eAccueil'], 1)))
+            d = pg.evaluate("""()=>{ const h=document.getElementById('accRappelCompte'), cs=getComputedStyle(h), p=h.querySelector('.onbv-compte'), r=p.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect();
+                return {fond:!!document.getElementById('achatFond'), cv:h.querySelectorAll('canvas').length, voile:cs.backgroundColor, bf:(cs.backdropFilter||cs.webkitBackdropFilter||'none'), filtre:cs.filter,
+                        haut:(r.top-D.top), D:[D.left, D.top, D.width, D.height], flou:(window.__passFlou||0), passages:(window.__passN||0)}; }""")
+            # l'écran avec l'encart, puis sans lui (caché le temps d'une capture), le Studio figé entre les deux (aucune image ne passe)
+            haut = max(40, d['haut'] * d['D'][2] / 390 - 6); clip = {'x': d['D'][0], 'y': d['D'][1], 'width': d['D'][2], 'height': haut}
+            pg.evaluate("()=>{ window.__raf=window.requestAnimationFrame; window.requestAnimationFrame=function(){ return 0; }; }"); pg.wait_for_timeout(250)   # le Studio figé : plus aucune image
+            img1 = pg.screenshot(clip=clip); pg.evaluate("()=>{ document.getElementById('accRappelCompte').style.setProperty('display','none','important'); }")
+            img2 = pg.screenshot(clip=clip); pg.evaluate("()=>{ document.getElementById('accRappelCompte').style.removeProperty('display'); }")
+            img3 = pg.screenshot(clip=clip); pg.evaluate("()=>{ window.requestAnimationFrame=window.__raf; }")
+            def diff(a, b):
+                from PIL import Image, ImageChops; import io as _io
+                A = Image.open(_io.BytesIO(a)).convert('RGB'); Bm = Image.open(_io.BytesIO(b)).convert('RGB'); dd = ImageChops.difference(A, Bm).getdata()
+                n = sum(1 for px in dd if max(px) > 0); return n, A.size[0] * A.size[1]
+            n12, tot = diff(img1, img2); n13, _ = diff(img1, img3)
+            juge('[%s] D · le second encart (« Garder ton achat ») : le Studio NET derrière lui — aucun fond posé, identique au pixel à l\'écran sans l\'encart' % w,
+                 not d['fond'] and d['cv'] == 0 and d['voile'] in ('rgba(0, 0, 0, 0)', 'transparent') and d['bf'] in ('none', '') and n12 == 0,
+                 '#achatFond %s · canevas %d · voile %s · flou d\'arrière-plan %s · %d px différents sur %d au-dessus du panneau (bruit du Studio : %d)' % (d['fond'], d['cv'], d['voile'], d['bf'], n12, tot, n13))
+            juge('[%s] E · le second encart naît en flaques sur l\'image nette : aucun pixel flouté pendant le passage' % w, d['passages'] >= 1 and d['flou'] == 0,
+                 '%d passage(s) pendant son ouverture, dont %d sur une image floutée' % (d['passages'], d['flou']))
             t = pg.evaluate("()=>{ const e=document.querySelector('#accRappelCompte .tard'); if(!e) return null; const r=e.getBoundingClientRect(); return [r.left+r.width/2, r.top+r.height/2]; }")
             if t: pg.touchscreen.tap(t[0], t[1])
             for _ in range(40):

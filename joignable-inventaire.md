@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 443 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 302 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 443 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -22,13 +22,13 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 
 | Écran | Élément | Par | x, y | l × h | Joignable | Cause |
 |---|---|---|---|---|---|---|
-| Aura | `div#auraScreen.screen.s-karma>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
-| Aura | `#auraInfoBtn` | natif | 218, 78 | 20 × 20 | oui |  |
+| Aura | `div#auraScreen.screen.s-karma>div.enh>div.closeb.x157«Fermer»` | natif | 322, 73 | 44 × 44 | oui |  |
+| Aura | `#auraInfoBtn` | natif | 249, 80 | 20 × 20 | oui |  |
 | Aura | `div#auCadre.au-cadre.au-voile>div.au-bo>div.au-prise«»` | écouteur | 195, 254 | 296 × 296 | oui |  |
 | Aura | `#auPartage` | natif | 195, 465 | 342 × 60 | oui |  |
 | Aura | `div#auCadre.au-cadre.au-voile>div.au-nx«ToiAdrienMarionNicoRache»` | écouteur | 207, 636 | 366 × 107 | oui |  |
-| Conditions | `div#legalScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | écouteur | 296, 70 | 84 × 18 | oui |  |
-| Fil | `#fdClose` | on… | 296, 70 | 84 × 18 | oui |  |
+| Conditions | `div#legalScreen.screen.s-set>div.enh>div.closeb.x157«Fermer»` | natif | 324, 68 | 44 × 44 | oui |  |
+| Fil | `#fdClose` | natif | 324, 70 | 44 × 44 | oui |  |
 | Fil | `#fdSearch` | natif | 174, 142 | 208 × 24 | oui |  |
 | Fil | `#fdTriBtn` | natif | 340, 142 | 52 × 52 | oui |  |
 | Fil | `div#feedList>div.s4-grille>div.s4-carte«ChicheMarion te lance un»` | on… | 195, 268 | 358 × 128 | oui |  |
@@ -39,7 +39,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Fil | `div#feedList>div.s4-grille>div.s4-carte«Promià Rachelfaire les c»` | on… | 195, 688 | 358 × 128 | oui |  |
 | Fil | `div#feedList>div.s4-grille>div.s4-carte«CercleRachel t’invite à »` | on… | 195, 736 | 358 × 128 | oui |  |
 | Fil | `div#feedList>div.s4-grille>div.s4-carte«ChicheMarion a relevécou»` | on… | 195, 828 | 358 × 128 | oui |  |
-| Index 2 | `div#indexSheet.sheet.trame>div.enh>div.closeb«✕ Fermer»` | on… | 296, 84 | 84 × 18 | oui |  |
+| Index 2 | `div#indexSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 316, 82 | 44 × 44 | oui |  |
 | Index 2 | `#ixSearch` | natif | 174, 170 | 208 × 24 | oui |  |
 | Index 2 | `#ixTriBtn` | natif | 340, 170 | 52 × 52 | oui |  |
 | Index 2 | `div#indexList>div.s4-grille>div.s4-carte«Promià moiplanter un arb»` | on… | 107, 331 | 165 × 198 | oui |  |
@@ -54,7 +54,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Index 2 | `div#indexList>div.s4-grille>div.s4-carte«Promigardé de côtéappele»` | on… | 284, 729 | 165 × 198 | oui |  |
 | Index 2 | `div#indexList>div.s4-grille>div.s4-carte«Promià moinager le mardi»` | on… | 107, 751 | 165 × 198 | oui |  |
 | Index 2 | `div#indexList>div.s4-grille>div.s4-carte«Chicheà Marionle grand p»` | on… | 284, 751 | 165 × 198 | oui |  |
-| Index 3 | `div#indexSheet.sheet.trame>div.enh>div.closeb«✕ Fermer»` | on… | 296, 84 | 84 × 18 | oui |  |
+| Index 3 | `div#indexSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 316, 82 | 44 × 44 | oui |  |
 | Index 3 | `#ixSearch` | natif | 174, 170 | 208 × 24 | oui |  |
 | Index 3 | `#ixTriBtn` | natif | 340, 170 | 52 × 52 | oui |  |
 | Index 3 | `div#indexList>div.s4-grille>div.s4-carte«Promià moiplanter un arb»` | on… | 77, 299 | 106 × 133 | oui |  |
@@ -69,7 +69,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Index 3 | `div#indexList>div.s4-grille>div.s4-carte«Promide Marionvenir dima»` | on… | 77, 734 | 106 × 133 | oui |  |
 | Index 3 | `div#indexList>div.s4-grille>div.s4-carte«Cerclepersol'atelier du »` | on… | 195, 734 | 106 × 133 | oui |  |
 | Index 3 | `div#indexList>div.s4-grille>div.s4-carte«Promigardé de côtéappele»` | on… | 313, 734 | 106 × 133 | oui |  |
-| Nuée | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| Nuée | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | Nuée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 108 | 34 × 34 | oui |  |
 | Nuée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 422 | 342 × 94 | oui |  |
@@ -85,42 +85,42 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| Nuée défilée | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
-| Nuée défilée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 108 | 34 × 34 | oui |  |
+| Nuée défilée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 10 | 34 × 34 | oui |  |
+| Nuée défilée | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
+| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 234 | 342 × 94 | oui |  |
+| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 340 | 342 × 94 | oui |  |
 | Nuée défilée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
-| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirreprendre l'arros»` | on… | 195, 422 | 342 × 94 | oui |  |
-| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUrécupérer les plants»` | on… | 195, 422 | 342 × 94 | oui |  |
-| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 422 | 342 × 94 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 422 | 342 × 79 | oui |  |
-| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 480 | 342 × 79 | oui |  |
-| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 535 | 342 × 94 | oui |  |
-| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 571 | 342 × 79 | oui |  |
+| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUrécupérer les plants»` | on… | 195, 446 | 342 × 94 | oui |  |
+| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 462 | 342 × 79 | oui |  |
+| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«CHICHE RELEVÉvider le co»` | on… | 195, 552 | 342 × 94 | oui |  |
+| Nuée défilée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 553 | 342 × 79 | oui |  |
 | Nuée défilée | `#cm5Ligne` | natif | 195, 650 | 342 × 56 | oui |  |
 | Nuée défilée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée défilée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée défilée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| Nuée vide | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| Nuée vide | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | Nuée vide | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 306 | 34 × 34 | oui |  |
 | Nuée vide | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Nuée vide | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée vide | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée vide | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| Nuée vide défilée | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
-| Nuée vide défilée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 306 | 34 × 34 | oui |  |
+| Nuée vide défilée | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 10 | 34 × 34 | oui |  |
+| Nuée vide défilée | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
+| Nuée vide défilée | `#nfAdd` | natif | 195, 218 | 342 × 62 | oui |  |
 | Nuée vide défilée | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
-| Nuée vide défilée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée vide défilée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Nuée vide défilée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| Partager | `div#shareScreen.screen.s-share>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
+| Partager | `div#shareScreen.screen.s-share>div.enh>div.closeb.x157«Fermer»` | natif | 322, 71 | 44 × 44 | oui |  |
 | Partager | `#shWrap` | écouteur | 195, 393 | 316 × 562 | oui |  |
 | Partager | `#shareScreen` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Partager | `#shBadge` | natif | 85, 656 | 71 × 17 | oui |  |
 | Partager | `#shcPeaufiner` | on… | 195, 717 | 342 × 62 | oui |  |
 | Partager | `#shInviteBtn` | natif | 108, 789 | 168 × 62 | oui |  |
 | Partager | `#shShareBtn` | natif | 282, 789 | 168 × 62 | oui |  |
-| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer«✕ FERMER»` | écouteur | 321, 56 | 91 × 13 | oui |  |
+| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer.x157«Fermer»` | natif | 353, 55 | 44 × 44 | oui |  |
 | Peaufiner | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner | `#dCommentInput` | natif | 195, 249 | 292 × 23 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTlundi 2un jouren l’»` | écouteur | 195, 356 | 342 × 64 | oui |  |
@@ -132,7 +132,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg.s2-vis2«PIÈCES JOINTES0 fichierp»` | écouteur | 195, 664 | 342 × 92 | oui |  |
 | Peaufiner | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Peaufiner | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer«✕ FERMER»` | écouteur | 321, 56 | 91 × 13 | oui |  |
+| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer.x157«Fermer»` | natif | 353, 55 | 44 × 44 | oui |  |
 | Peaufiner Chiche | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `#dCommentInput` | natif | 195, 242 | 292 × 23 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«À QUI JE LANCEMarionMMar»` | écouteur | 195, 342 | 342 × 64 | oui |  |
@@ -145,7 +145,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg.s2-vis2«PIÈCES JOINTES0 fichierv»` | écouteur | 195, 730 | 342 × 92 | oui |  |
 | Peaufiner Chiche | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Peaufiner Chiche | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| Peaufiner Nuée | `#npFermer` | écouteur | 321, 56 | 91 × 19 | oui |  |
+| Peaufiner Nuée | `#npFermer` | natif | 353, 56 | 44 × 44 | oui |  |
 | Peaufiner Nuée | `div#npTrait.np-carte>div.pc-glisse>div.pc-rail>button.pc-t.on«Plein»` | natif | 87, 182 | 78 × 44 | oui |  |
 | Peaufiner Nuée | `div#npTrait.np-carte>div.pc-glisse>div.pc-rail>button.pc-t«Coulé»` | natif | 175, 182 | 78 × 44 | oui |  |
 | Peaufiner Nuée | `div#npTrait.np-carte>div.pc-glisse>div.pc-rail>button.pc-t«Peigné»` | natif | 263, 182 | 78 × 44 | oui |  |
@@ -157,7 +157,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Nuée | `#nfAdd` | natif | 195, 703 | 342 × 62 | oui |  |
 | Peaufiner Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | Peaufiner Nuée | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| Peaufiner gardé de côté | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |
+| Peaufiner gardé de côté | `div#createSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 325, 71 | 44 × 44 | oui |  |
 | Peaufiner gardé de côté | `#planterZone` | écouteur | 195, 312 | 390 × 118 | oui |  |
 | Peaufiner gardé de côté | `div#csPhrase.pp-phrase>div.ph-txt>span.ph-b«Je me promets»` | on… | 171, 452 | 293 × 60 | oui |  |
 | Peaufiner gardé de côté | `div#csPhrase.pp-phrase>div.ph-txt>span.ph-m«appeler Mamie»` | on… | 194, 524 | 263 × 51 | oui |  |
@@ -167,8 +167,8 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 645 | 78 × 44 | oui |  |
 | Peaufiner gardé de côté | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 313, 726 | 109 × 16 | oui |  |
 | Peaufiner gardé de côté | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
-| Politique | `div#legalScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | écouteur | 296, 70 | 84 × 18 | oui |  |
-| Réglages | `div#settingsScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
+| Politique | `div#legalScreen.screen.s-set>div.enh>div.closeb.x157«Fermer»` | natif | 324, 68 | 44 × 44 | oui |  |
+| Réglages | `div#settingsScreen.screen.s-set>div.enh>div.closeb.x157«Fermer»` | natif | 323, 71 | 44 × 44 | oui |  |
 | Réglages | `#setAva` | on… | 195, 218 | 78 × 78 | oui |  |
 | Réglages | `#setNameInput` | natif | 189, 287 | 45 × 35 | oui |  |
 | Réglages | `#openPlusTop` | on… | 195, 379 | 342 × 90 | oui |  |
@@ -185,12 +185,12 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | Réglages | `#setInvite` | natif | 195, 664 | 342 × 64 | oui |  |
 | Réglages | `#setMention` | natif | 195, 742 | 342 × 64 | oui |  |
 | Réglages | `#delAccount` | natif | 195, 758 | 342 × 64 | oui |  |
-| Studio | `div#stpHaut>div.closeb«✕ Fermer»` | on… | 293, 70 | 91 × 19 | oui |  |
+| Studio | `div#stpHaut>div.closeb.x157«Fermer»` | natif | 326, 70 | 44 × 44 | oui |  |
 | Studio | `#studioScreen` | écouteur | 195, 422 | 422 × 876 | oui |  |
 | Studio | `div#stpTons>div.stp-ton«»` | on… | 75, 620 | 54 × 54 | oui |  |
 | Studio | `div#stpVue>div.stp-d«»` | on… | 81, 724 | 44 × 44 | oui |  |
 | Studio | `div#stpVue>div.stp-d.on«»` | on… | 145, 724 | 44 × 44 | oui |  |
-| Vie privée | `div#privScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
+| Vie privée | `div#privScreen.screen.s-set>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | Vie privée | `#pvExport` | on… | 195, 525 | 342 × 54 | oui |  |
 | Vie privée | `#pvReset` | on… | 195, 585 | 342 × 54 | oui |  |
 | accueil | `#shareBtn` | on… | 284, 70 | 44 × 44 | oui |  |
@@ -203,8 +203,8 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | accueil | `#createBtn` | on… | 195, 760 | 72 × 72 | oui |  |
 | accueil | `#indexBtn` | natif | 266, 760 | 54 × 51 | oui |  |
 | accueil | `#filBtn` | écouteur | 320, 760 | 54 × 51 | oui |  |
-| aide de l'Aura | `div#auraHelp.screen.tuto-fond>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
-| chiche lancé | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| aide de l'Aura | `div#auraHelp.screen.tuto-fond>div.enh>div.closeb.x157«Fermer»` | natif | 324, 72 | 44 × 44 | oui |  |
+| chiche lancé | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | chiche lancé | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 221 | 34 × 34 | oui |  |
 | chiche lancé | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
 | chiche lancé | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
@@ -213,27 +213,27 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | chiche lancé | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | chiche lancé | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | chiche lancé | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| fiche chiche | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| fiche chiche | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | fiche chiche | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 331 | 34 × 34 | oui |  |
 | fiche chiche | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | fiche chiche | `div#dAura.aura-band>div.aura-track>div.kring«Marion»` | on… | 171, 495 | 70 × 83 | oui |  |
 | fiche chiche | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | fiche chiche | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | fiche chiche | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| fiche en cours | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| fiche en cours | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | fiche en cours | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 221 | 34 × 34 | oui |  |
 | fiche en cours | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
 | fiche en cours | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | fiche en cours | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | fiche en cours | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | fiche en cours | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| fiche tenue | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| fiche tenue | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | fiche tenue | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 335 | 34 × 34 | oui |  |
 | fiche tenue | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | fiche tenue | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | fiche tenue | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | fiche tenue | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| fiche à tenir | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| fiche à tenir | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | fiche à tenir | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 221 | 34 × 34 | oui |  |
 | fiche à tenir | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
 | fiche à tenir | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
@@ -241,7 +241,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | fiche à tenir | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | fiche à tenir | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | fiche à tenir | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| gardé de côté | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |
+| gardé de côté | `div#createSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 325, 71 | 44 × 44 | oui |  |
 | gardé de côté | `#planterZone` | écouteur | 195, 312 | 390 × 118 | oui |  |
 | gardé de côté | `div#csPhrase.pp-phrase>div.ph-txt>span.ph-b«Je me promets»` | on… | 171, 452 | 293 × 60 | oui |  |
 | gardé de côté | `div#csPhrase.pp-phrase>div.ph-txt>span.ph-m«appeler Mamie»` | on… | 194, 524 | 263 × 51 | oui |  |
@@ -251,32 +251,26 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | gardé de côté | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 645 | 78 × 44 | oui |  |
 | gardé de côté | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 313, 726 | 109 × 16 | oui |  |
 | gardé de côté | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
-| l'instant après | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
-| l'instant après | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 221 | 34 × 34 | oui |  |
-| l'instant après | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
+| l'instant après | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | l'instant après | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
-| l'instant après | `div#dAura.aura-band>div.aura-track>div.kring«Rachel»` | on… | 171, 427 | 70 × 83 | oui |  |
+| l'instant après | `div#dAura.aura-band>div.aura-track>div.kring«Rachel»` | on… | 171, 439 | 70 × 83 | oui |  |
 | l'instant après | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | l'instant après | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | l'instant après | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| l'instant arrive | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| l'instant arrive | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | l'instant arrive | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | l'instant arrive | `div#dAura.aura-band>div.aura-track>div.kring«Rachel»` | on… | 171, 483 | 70 × 83 | oui |  |
 | l'instant arrive | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | l'instant arrive | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | l'instant arrive | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| l'instant referme | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
-| l'instant referme | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 221 | 34 × 34 | oui |  |
-| l'instant referme | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
+| l'instant referme | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | l'instant referme | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
-| l'instant referme | `div#dAura.aura-band>div.aura-track>div.kring«Rachel»` | on… | 171, 427 | 70 × 83 | oui |  |
-| l'instant referme | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | l'instant referme | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | l'instant referme | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| le Cercle | `div#plusScreen.screen.s-plus>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
+| le Cercle | `div#plusScreen.screen.s-plus>div.enh>div.closeb.x157«Fermer»` | natif | 326, 71 | 44 × 44 | oui |  |
 | le Cercle | `#buyMonth` | natif | 195, 709 | 346 × 58 | oui |  |
 | le Cercle | `#buyYear` | natif | 195, 778 | 346 × 44 | oui |  |
-| menu photo | `div#detailPoster.poster.mgmt>div.enh>div.closeb«FERMER»` | on… | 298, 70 | 80 × 12 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 324, 70 | 44 × 44 | oui |  |
 | menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«Dessiner»` | natif | 277, 262 | 94 × 33 | oui |  |
 | menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«Importer une photo»` | natif | 238, 299 | 171 × 33 | oui |  |
 | menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Dessiner sur ce Cercle»` | natif | 349, 335 | 34 × 34 | oui |  |
@@ -285,7 +279,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | menu photo | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | menu photo | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | menu photo | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
-| page + | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |
+| page + | `div#createSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 325, 71 | 44 × 44 | oui |  |
 | page + | `div#createSheet.sheet.trame>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 215 | 34 × 34 | oui |  |
 | page + | `#planterZone` | écouteur | 195, 280 | 390 × 118 | oui |  |
 | page + | `div#csPhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-b«Je me promets»` | on… | 171, 420 | 293 × 60 | oui |  |
@@ -296,7 +290,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | page + | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 650 | 78 × 44 | oui |  |
 | page + | `div#createSheet.sheet.trame>div.pp-garder«garder de côté»` | natif | 313, 726 | 109 × 16 | oui |  |
 | page + | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
-| page + Chiche | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |
+| page + Chiche | `div#createSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 325, 71 | 44 × 44 | oui |  |
 | page + Chiche | `div#createSheet.sheet.trame>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 151 | 34 × 34 | oui |  |
 | page + Chiche | `#planterZone` | écouteur | 195, 216 | 390 × 118 | oui |  |
 | page + Chiche | `div#csPhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«qui ose ?»` | on… | 128, 342 | 150 × 49 | oui |  |
@@ -309,7 +303,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | page + Chiche | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 670 | 78 × 44 | oui |  |
 | page + Chiche | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 313, 726 | 109 × 16 | oui |  |
 | page + Chiche | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
-| page + Nuée | `div#createSheet.sheet.trame>div.enh>div.closeb«FERMER»` | on… | 297, 70 | 83 × 34 | oui |  |
+| page + Nuée | `div#createSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 325, 71 | 44 × 44 | oui |  |
 | page + Nuée | `div#createSheet.sheet.trame>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 183 | 34 × 34 | oui |  |
 | page + Nuée | `#planterZoneN` | écouteur | 195, 248 | 390 × 118 | oui |  |
 | page + Nuée | `div#nueePhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«Week-endà Marseille»` | on… | 238, 414 | 184 × 54 | oui |  |
@@ -320,7 +314,7 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Sec»` | natif | 327, 664 | 78 × 44 | oui |  |
 | page + Nuée | `div#createSheet.sheet.trame>div.pp-garder.inactif«garder de côté»` | natif | 313, 726 | 109 × 16 | oui |  |
 | page + Nuée | `#csBotBar` | écouteur | 195, 802 | 390 × 84 | oui |  |
-| personne | `div#personSheet.sheet.tuto-fond>div.enh>div.closeb«✕ Fermer»` | on… | 296, 70 | 84 × 18 | oui |  |
+| personne | `div#personSheet.sheet.tuto-fond>div.enh>div.closeb.x157«Fermer»` | natif | 322, 72 | 44 × 44 | oui |  |
 | personne | `div#psCartes.ps-cartes>div.s4-grille>div.s4-carte«Promià Rachelfaire les c»` | on… | 77, 462 | 106 × 133 | oui |  |
 | personne | `div#psCartes.ps-cartes>div.s4-grille>div.s4-carte«Chicheà Marioncourir dim»` | on… | 195, 462 | 106 × 133 | oui |  |
 | personne | `div#psCartes.ps-cartes>div.s4-grille>div.s4-carte«Promiau groupereprendre »` | on… | 313, 462 | 106 × 133 | oui |  |
@@ -328,5 +322,5 @@ Source : `app.html`. 308 éléments interactifs relevés sur 36 écrans (mode cl
 | personne | `div#psCartes.ps-cartes>div.s4-grille>div.s4-carte«Promide Rachelt'apprendr»` | on… | 195, 607 | 106 × 133 | oui |  |
 | personne | `div#psCadre>div.ps-col>div.ps-pile>div.ps-bt«+ Planter un Promi»` | natif | 108, 791 | 167 × 62 | oui |  |
 | personne | `div#psCadre>div.ps-col>div.ps-pile>div.ps-bt«+ Lancer un Chiche»` | natif | 283, 791 | 167 × 62 | oui |  |
-| À propos | `div#aboutScreen.screen.s-set>div.enh>div.closeb«✕ Fermer»` | écouteur | 296, 70 | 84 × 18 | oui |  |
+| À propos | `div#aboutScreen.screen.s-set>div.enh>div.closeb.x157«Fermer»` | natif | 324, 68 | 44 × 44 | oui |  |
 | À propos | `div.v16-corps>div.v16-cr>p.v16-petit>a«creativecommons.org/lice»` | natif | 351, 492 | 30 × 19 | oui |  |

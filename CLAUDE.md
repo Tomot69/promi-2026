@@ -129,6 +129,30 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v157 (21 oct. 2026) — REPRISE APRÈS v154–v156 : LE STUDIO NET DERRIÈRE LE SECOND ENCART, « DESIGN DÉBLOQUÉ » EN AMANDE, LE + DU GUIDE APRÈS LE STUDIO FERMÉ, UN SEUL « X », LA FLÈCHE DE L'ONBOARDING × 2. (Décisions Tom.) Ce bloc CORRIGE v156 (C-170 : « le second encart floute le Studio de son instant »).
+> **Validés par Tom : C-094 (le moment du flou du Studio), C-169 (la flèche à 1,5 s), C-170 (le fond de l'encart d'achat), C-167, C-168. Le point d'arrêt tient : pas d'E4.**
+> **⚑ C-170 (suite) — APRÈS L'ACHAT, LE STUDIO EST NET DERRIÈRE LE SECOND ENCART** (« Garder ton achat ») : aucun fond, aucun voile ; le panneau naît et part en
+> flaques sur l'image NETTE du Studio (`netStudio`, option `net` de `_onbCompte`). Le premier encart garde son flou en flaques. Juge : `redteam_achat_fond` D, E
+> (l'écran avec l'encart = l'écran sans lui, au pixel, au-dessus du panneau, le Studio figé ; original : `sauvegardes/redteam_achat_fond-avant-v157.py`).
+> **⚑ C-171 — « Design débloqué ✓ » EN AMANDE `#8FE08F`** (la célébration ; 10,2:1 sur le fond du toast `#281F10`). Juge : `redteam_achat_fond` F.
+> **⚑ C-172 — LE + DU GUIDE N'ARRIVE QU'APRÈS LE STUDIO FERMÉ.** *La cause* : le guide décidait « de retour sur l'accueil » par un sondage — un point de l'écran (45 %
+> de la hauteur) qui ne tombe sur aucun écran, et la Toile au repos ; rien ne demandait si le Studio était fermé. Le chemin de l'iPhone n'a pas été reproduit
+> (Q566). *La correction* : `studioFerme()` dans `lot-V141-GUIDE` — jamais l'accueil tant que le Studio porte `.show` ou n'est pas sorti de l'écran. *La règle* :
+> **un état se demande à son propriétaire (le Studio est-il fermé ?), il ne se devine pas à un point sondé.** Juge : **`redteam_guide_studio.py`** (7 ; C rougit sur v156).
+> **⚑ C-173 — PARTOUT, « × FERMER » EST UN SEUL « X »** : PromiLate (400 : une seule graisse, Q565), hauteur = la hauteur de capitale du titre de sa barre (± 1 pt),
+> couleur du titre, pleine opacité, zone de 44 × 44 pt centrée sur l'encre, en face du titre. **Un seul propriétaire : `lot-V157-CROIX`** (le glyphe vit dans son
+> `span.x157-g`, posé en absolu ; une veille de 400 ms repose la croix si un autre propriétaire réécrit son style — le Peaufiner — ou si le titre change de taille ;
+> `aria-label="Fermer"`). ⚠ **`lot-POLICES` réécrit le style en ligne du `span` à chaque passage** (même police, même graisse : sans conflit) — un juge qui efface la
+> croix le fait par une règle de VISIBILITÉ, pas par sa couleur en ligne. Juge : **`redteam_croix.py`** (34 écrans × 2 thèmes : aucun « FERMER », l'encre du X lue
+> sur l'image contre la capitale du titre, la couleur, la zone prise à ses quatre coins).
+> **⚑ C-174 — LA FLÈCHE DU PREMIER PROMI × 2, VERS LE BAS** : épaisseur, chevron, points (rayon et pas) et amplitude × 2 ; la base de l'onde reposée pour que le
+> haut de l'encre reste au même pixel (671,5 pt) ; le canevas 118 → 236 ; rien n'est dessous. Juge : **`redteam_fleche_onb.py`** (12 ; v156 servie à côté ; rougit sur v156).
+> **Trouvé, non changé (Q567, identique sur v156)** : clavier ouvert, le bouton → recouvre la fin de « trace pour planter ».
+> **Contrats remis au niveau** (originaux : `sauvegardes/*-avant-v157.py`) : `redteam_achat_fond` (le second encart : le Studio net, plus le flou), `redteam_onboarding`
+> O7 (la zone du trait de l'onboarding 236 pt, plus 118). **La flaque qui fait naître ce trait s'arrête au bas de l'écran** (sinon elle prenait l'image de la Toile
+> au-delà, vide : `redteam_transitions_onb` T2). `redteam_tenir` G et `redteam_fluide` : **non jugés** (charge jamais sous 4 pendant le lot ; 671 au pire — l'émulateur
+> d'une autre session).
+
 ### ⚑ v156 (21 oct. 2026) — RETOURS iPHONE DE TOM SUR v155 : LE FLOU DU STUDIO ENCORE PLUS TÔT, LA FLÈCHE À 1,5 s, L'ENCART D'ACHAT SUR LA TOILE DU STUDIO. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v155 (C-094 : 350 ms ; C-169 : 1 s).
 > **Validés par Tom : C-167, C-168, C-169 sur les fiches. Q562, Q563 acceptées (chef de chantier).**
 > **⚑ C-094 — LE FLOU DE LA PHRASE DU STUDIO : 250 ms DE CALME** (600 → 350 → 250 ; `ATTENTE = GD.ATTENTE − 350`). Juges : `redteam_guide` (0,20 à 0,85 s), `redteam_transitions_onb` T6.
@@ -3264,7 +3288,10 @@ python3 redteam_depart_orange.py # 34 — v155 (C-169, Q561) : pointe ET trait d
                                #   la flèche 1 000 ± 50 ms après le prénom ; le départ clignote avec le I (promiBlink, en phase) jusqu'au premier toucher ; rien ailleurs ; réduit : fixe.
 python3 redteam_deverrouille.py  # 25 — v155 (C-170) : les douze mondes payants déverrouillés au doigt sur une Toile pleine : passage en flaques, aucun flou intermédiaire ;
                                #   la Toile de l'accueil déjà dans le nouveau monde à la fermeture du Studio, jamais l'image d'avant. --n=.
-python3 redteam_achat_fond.py  # 49 — v156 (C-170, C-171) : l'encart d'achat ouvert depuis les douze mondes payants du Studio floute la Toile du Studio (pas l'accueil), en flaques,
+python3 redteam_guide_studio.py # 7 — v157 (C-172) : deux designs choisis au Studio, aucune image du + tant qu'il est ouvert ; refermé, le + arrive ; la situation qui trompait le sondage, posée exprès. C rougit sur v156.
+python3 redteam_croix.py       # 269 — v157 (C-173) : 34 écrans × 2 thèmes — aucun « FERMER » ; l'encre du X (lue sur l'image) = capitale du titre ± 1 pt ; sa couleur ; zone 44 × 44 prise à ses coins. ≈ 7 min.
+python3 redteam_fleche_onb.py  # 12 — v157 (C-174) : contre v156 servie à côté — le haut de l'encre au même pt, hauteur × 2, rien de touché, le départ clignote à 1,5 s.
+python3 redteam_achat_fond.py  # 49 (v157 : + D, E le second encart sur le Studio NET ; F « Design débloqué » en amande) — v156 (C-170, C-171) : l'encart d'achat ouvert depuis les douze mondes payants du Studio floute la Toile du Studio (pas l'accueil), en flaques,
                                #   préparé au toucher ; le second encart aussi ; « Plus tard » répond. Rouge sur v155.
 python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.

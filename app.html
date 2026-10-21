@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v156', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v157', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2677,7 +2677,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
 
     <div class="stage" id="stage"><div id="toile"></div><canvas id="toileCv" class="toilecv"></canvas><div class="toile-empty" id="toileEmpty"><svg class="te-ghosts" viewBox="0 0 200 200" aria-hidden="true"><path class="te-g te-g1" d="M40 34 Q80 24 94 56 Q102 90 66 98 Q30 102 26 68 Q22 40 40 34Z"/><path class="te-g te-g2" d="M120 62 Q160 56 166 92 Q170 126 132 132 Q100 134 100 100 Q100 70 120 62Z"/><path class="te-g te-g3" d="M58 122 Q96 116 106 148 Q110 178 74 182 Q42 184 40 152 Q40 128 58 122Z"/></svg><div class="te-mark">Prom<span class="te-i">i</span></div><div class="te-t">Ta Toile n’attend que toi</div><div class="te-s">Plante ton premier Promi — touche le <b>+</b><span class="te-nudge">chaque parole tenue devient une dalle</span></div></div><div class="sidelabel eb" id="sidelabel">LA&nbsp;TOILE</div></div>
 
-    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">✕ Fermer</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i>•</i></div><div class="ix-mi" data-fdtri="personne">Par personne<i>•</i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i>•</i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i>•</i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i>•</i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i>•</i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i>•</i></div><div class="ix-mi" data-fdfilt="atenir">À tenir<i>•</i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i>•</i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i>•</i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i>•</i></div></div></div><div class="ix-sort" id="fdSort"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button></div><div id="feedList"></div></div>
+    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">X</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i>•</i></div><div class="ix-mi" data-fdtri="personne">Par personne<i>•</i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i>•</i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i>•</i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i>•</i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i>•</i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i>•</i></div><div class="ix-mi" data-fdfilt="atenir">À tenir<i>•</i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i>•</i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i>•</i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i>•</i></div></div></div><div class="ix-sort" id="fdSort"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button></div><div id="feedList"></div></div>
     <div class="stage-fade-t"></div><div class="stage-fade-b"></div>
     <div class="footer">
       <div class="cap" id="cap">six Promi vivants</div>
@@ -2695,7 +2695,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
     <div class="sheet" id="createSheet"><canvas id="csTrameCv" aria-hidden="true"></canvas>
       <div class="grip"></div>
       <div class="cs-top">
-        <div class="closeb" data-close><svg width="13" height="13" viewBox="0 0 13 13" aria-hidden="true"><path d="M2.5 2.5 L10.5 10.5 M10.5 2.5 L2.5 10.5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg><span class="cb-mot">FERMER</span></div>
+        <div class="closeb" data-close><span class="cb-mot">X</span></div>
         <div class="cs-mark">Promi</div>
         <div class="cs-grappe-wrap"><div class="ix-hair"></div><div id="csGrappe" class="cs-grappe" aria-hidden="true"></div></div>
       </div>
@@ -2730,7 +2730,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
         </div>
       </div>
       
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <div class="sh-top"><h2 class="scr-t" style="margin:0">Partage<span class="ti-x blink">r</span></h2>
       <div class="sh-brand2" style="display:none">Mon <span class="sig">Prom<span class="uvi2">i</span></span></div>
       
@@ -2757,18 +2757,18 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       </div>
       <div class="sh-scope-ov" id="shScopeOv">
         <div class="sh-scope-panel">
-          <div class="sh-scope-head"><span>Afficher · masquer</span><button id="shScopeClose" aria-label="Fermer">✕ Fermer</button></div>
+          <div class="sh-scope-head"><span>Afficher · masquer</span><button id="shScopeClose" aria-label="Fermer">X</button></div>
           <div class="sh-scope-list" id="shScope"></div>
         </div>
       </div>
       <div class="sh-actions"><button class="sh-share sh-invite" id="shInviteBtn">✦&nbsp;&nbsp;Inviter sur Promi</button><button class="sh-share" id="shShareBtn">↗&nbsp;&nbsp;Partager</button></div><div class="sh-invite-note" id="shInviteNote" hidden></div></div></div><div class="sh-bot"><div class="sh-foot"><div class="sh-fmtx"><span class="sh-ic" id="shTrayBtn">⋯</span><span id="shFmtTxt">Plein écran · 9:19,5</span></div><button class="sh-go" id="shGo" aria-label="Partager">↗</button></div>
       </div>
     </div>
-    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>✕ Fermer</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i>•</i></div><div class="ix-mi" data-tri="tenir">À tenir en premier<i>•</i></div><div class="ix-mi" data-tri="personne">Par personne<i>•</i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i>•</i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i>•</i></div><div class="ix-mi" data-filt="suspens">En suspens<i>•</i></div><div class="ix-mi" data-filt="manquees">Manquées<i>•</i></div><div class="ix-mi" data-filt="promi">Promi<i>•</i></div><div class="ix-mi" data-filt="nuees">Cercles<i>•</i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i>•</i></div><div class="ix-mi" data-filt="demandes">Demandes<i>•</i></div><div class="ix-mg">QUADRILLAGE</div><div class="ix-mi on" data-cols="2">Deux par ligne<i>•</i></div><div class="ix-mi" data-cols="3">Trois par ligne<i>•</i></div><div class="ix-mi" data-cols="4">Quatre par ligne<i>•</i></div></div></div><div id="indexList"></div></div>
+    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i>•</i></div><div class="ix-mi" data-tri="tenir">À tenir en premier<i>•</i></div><div class="ix-mi" data-tri="personne">Par personne<i>•</i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i>•</i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i>•</i></div><div class="ix-mi" data-filt="suspens">En suspens<i>•</i></div><div class="ix-mi" data-filt="manquees">Manquées<i>•</i></div><div class="ix-mi" data-filt="promi">Promi<i>•</i></div><div class="ix-mi" data-filt="nuees">Cercles<i>•</i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i>•</i></div><div class="ix-mi" data-filt="demandes">Demandes<i>•</i></div><div class="ix-mg">QUADRILLAGE</div><div class="ix-mi on" data-cols="2">Deux par ligne<i>•</i></div><div class="ix-mi" data-cols="3">Trois par ligne<i>•</i></div><div class="ix-mi" data-cols="4">Quatre par ligne<i>•</i></div></div></div><div id="indexList"></div></div>
 
     <!-- v104 (Tom, 30 sept. 2026) : « Arranger la Toile » supprimé — la pastille, l'icône, la fonction, la feuille. « On n'en veut pas. » -->
 
-    <div class="poster mgmt tuto-fond" id="detailPoster"><canvas id="dpTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M6 6 L18 18 M18 6 L6 18"/></svg><span>FERMER</span></div><div class="dp-type" id="dpType"></div>
+    <div class="poster mgmt tuto-fond" id="detailPoster"><canvas id="dpTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close><span>X</span></div><div class="dp-type" id="dpType"></div>
       <div class="grip"></div>
       <div class="mg-head"><div class="mg-glyph" id="dForm"></div><div class="mg-tt"><div class="mg-title" id="dTitle" title="toucher pour renommer"><span id="dTitleTxt"></span><span class="mg-pen" aria-hidden="true">✎</span></div><div class="mg-meta" id="dMeta"></div></div></div>
       <div class="mg-rename" id="mgRename" style="display:none"><input id="dRenameInput" type="text" autocomplete="off"/><button id="dRenameOk" data-requis="dRenameInput">OK</button></div>
@@ -2817,7 +2817,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
 
     <div class="screen s-karma tuto-fond tf-aura" id="auraScreen">
       <canvas id="auTrameCv"></canvas>
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <h2 class="scr-t" style="margin-bottom:4px">L’aura <span class="aura-info" id="auraInfoBtn" role="button" aria-label="À propos de l'Aura">i</span></h2><div class="keyebrow eb">ta parole dans le temps</div><div class="k-intro"><span class="lbl-free">ton harmonie envers les autres</span><span class="lbl-prem">l’harmonie, des deux côtés</span></div><div class="demo-tg" id="demoTg"><button data-p="0" class="on">Aperçu gratuit</button><button data-p="1">Aperçu membre</button></div>
       <div class="ring-leg" id="ringLeg"><span><i class="rl-in"></i>au centre · <b>ce que je tiens</b></span><span><i class="rl-out"></i>l'anneau · <b>ce qu'on me tient</b></span></div><div id="auraSeal"></div><div class="klegend"><span><i style="background:#00341A"></i>tenues</span><span><i style="background:#291547"></i>en cours</span><span><i style="background:#DD4D23"></i>à tenir</span></div><div class="kcount" id="kCount"></div><div class="khead"><div class="kbig kbig-sep" style="display:none"><span id="kPct">0</span><span class="kpc">%</span></div><div class="kdelta" id="kDelta"></div></div>
       <div class="klabel eb" style="display:none">de ta parole tenue</div>
@@ -2846,7 +2846,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
     </div>
 
 <div class="screen tuto-fond tf-aura" id="auraHelp">
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <h2 class="scr-t ah-head">L’aura</h2>
       <div class="keyebrow eb ah-sub">ce que chaque élément raconte</div>
       <div class="klegend ah-legend"><span><i style="background:#00341A"></i>TENU</span><span><i style="background:#291547"></i>EN COURS</span><span><i style="background:#DD4D23"></i>À TENIR</span></div>
@@ -2854,7 +2854,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
     </div>
 
     <div class="screen s-set tuto-fond tf-set" id="langScreen">
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <h2 class="scr-t">La <span class="it">langue</span></h2>
       <div class="sub" style="margin:8px 0 22px">Promi te parle dans la langue que tu choisis.</div>
       <div class="scards" id="langList"></div>
@@ -2864,7 +2864,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
     </div>
 
     <div class="screen s-set fond" id="privScreen">
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <h2 class="scr-t">Vie privée</h2>
       <div class="sub" style="margin:8px 0 22px">Privé par défaut. Partagé seulement quand tu le choisis.</div>
       <div class="scards">
@@ -2883,7 +2883,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
 
     <div class="screen s-set tuto-fond tf-set" id="settingsScreen">
       <canvas id="stTrameCv" aria-hidden="true"></canvas>
-      <div class="closeb" data-close>✕ Fermer</div><h1 class="scr-ti">Réglage<span class="ti-x blink">s</span></h1>
+      <div class="closeb" data-close>X</div><h1 class="scr-ti">Réglage<span class="ti-x blink">s</span></h1>
       <div class="grouplab">Toi</div><div class="prof-card"><div class="prof-ava-wrap"><div class="prof-ava" id="setAva" title="Toucher pour changer la photo"></div><span class="prof-cam" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4.5 8.5h3L9 6.5h6l1.5 2h3v10.5h-15z"/><circle cx="12" cy="13.2" r="3"/></svg></span><button class="prof-del" id="setDelPhoto" title="Retirer la photo" style="display:none">✕</button></div><div class="prof-name-row"><input class="prof-name-input" id="setNameInput" value="Tom" spellcheck="false" maxlength="24"><span class="prof-pen" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19.5 8.5l-4-4L4 16z"/></svg></span></div><input type="file" id="setPhotoInput" accept="image/*" style="display:none"></div>
       <div class="set-cercle" id="openPlusTop"><div class="sc-tx"><div class="sc-t">Ma Parole&nbsp;!</div><div class="sc-s"><span style="color:#A77CF7">débloque tout Promi</span> · <span style="color:#E08370">essai 14 jours</span></div></div><div class="sc-go">›</div></div>
       <div class="scard" id="openStudio2"><span class="k">Le Studio</span><span class="v ac">visuels & humeurs ›</span></div>
@@ -2899,12 +2899,12 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
     </div>
 
     <div class="screen s-studio" id="studioScreen"><canvas class="st-bg" id="stBg"></canvas><div class="st-scrim-t"></div><div class="st-scrim"></div><div class="st-lock" id="stLock"><button class="st-lock-buy" id="stLockBuy"><canvas class="st-buy-bg" id="stBuyBg" aria-hidden="true"></canvas><span class="st-buy-tx" id="stBuyTx">Adopte ce design — 2 €</span><span class="st-buy-arr">›</span></button><div class="st-lock-card set-cercle" id="stLockCta" role="button"><div class="sc-tx"><div class="sc-t">Ou débloque-les tous</div><div class="sc-s">Avec Ma Parole !</div></div><div class="sc-go">›</div></div></div>
-      <div class="closeb" data-close>✕ Fermer</div><h2>Le <span class="it sig">Studio</span></h2>
+      <div class="closeb" data-close>X</div><h2>Le <span class="it sig">Studio</span></h2>
       <div class="studio-toggles studio-grp"><div class="thtoggle" id="thToggle"><button data-th="dark" class="on">◐&nbsp;Sombre</button><button data-th="light">◑&nbsp;Clair</button></div><div class="thtoggle" id="txToggle"><button data-tx="off" class="on">Sans&nbsp;texte</button><button data-tx="on">Avec&nbsp;texte</button></div></div>
       <div id="studioBody"></div>
     </div>
     <div class="screen s-plus tuto-fond" id="plusScreen">
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <canvas class="pl-hero" id="plHeroCv" width="688" height="344"></canvas>
       <div class="pl-eb">Ma Parole !</div>
       <div class="pl-h">Essaie tout,<br><span class="i">sans t'engager.</span></div>
@@ -2921,19 +2921,19 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="pl-note" style="margin-top:8px;opacity:.7">ou un design à l'unité — 2&nbsp;€</div>
     </div>
     <div class="screen s-feed fond" id="feedScreen">
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <h1>Fil d'<span class="uvi">actu</span></h1>
       <div class="sub">l'activité de tes proches</div>
     </div>
     
     <div class="screen s-preview" id="previewScreen">
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <div class="pvfull" id="pvFull"></div>
       <div class="pvcap"><div class="pveb eb">structure × humeur</div><div class="pvtt" id="pvTitle"></div><div class="pvmm" id="pvMood"></div></div>
       <button class="cta" id="pvApply">Appliquer cette Toile</button>
     </div>
-    <div class="sheet tuto-fond" id="essaimSheet"><canvas id="esTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>✕ Fermer</div><div class="grip"></div><h2 id="esTitle">Cercle</h2><div class="sub">renomme ou dissous ce Cercle</div><div class="field"><label>Nom du Cercle</label><input id="esName" type="text" autocomplete="off"/></div><button class="cta" id="esAddPromi" style="margin-top:12px">+ Ajouter un Promi au Cercle</button><button class="cta" id="esShareInvite" style="margin-top:12px">↗&nbsp;&nbsp;Inviter sur Promi</button><div class="aura-fold" id="esAuraFold" style="display:none"><button type="button" class="aura-toggle" id="esAuraBtn">Aura du Cercle</button><div class="aura-band" id="esAura" hidden></div></div><div class="grouplab">Cercle · membres</div><div id="esMembers"></div><div class="esinv" style="margin:8px 0 2px"><input id="esInvite" placeholder="inviter un prénom"/><button type="button" class="dpf-plus" id="esInviteAdd">Ajouter</button></div><div class="grouplab">Promesses du Cercle</div><div id="esList"></div><button id="esDissolve">Dissoudre le Cercle</button></div>
-    <div class="sheet tuto-fond" id="personSheet"><div class="closeb" data-close>✕ Fermer</div>
+    <div class="sheet tuto-fond" id="essaimSheet"><canvas id="esTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><div class="grip"></div><h2 id="esTitle">Cercle</h2><div class="sub">renomme ou dissous ce Cercle</div><div class="field"><label>Nom du Cercle</label><input id="esName" type="text" autocomplete="off"/></div><button class="cta" id="esAddPromi" style="margin-top:12px">+ Ajouter un Promi au Cercle</button><button class="cta" id="esShareInvite" style="margin-top:12px">↗&nbsp;&nbsp;Inviter sur Promi</button><div class="aura-fold" id="esAuraFold" style="display:none"><button type="button" class="aura-toggle" id="esAuraBtn">Aura du Cercle</button><div class="aura-band" id="esAura" hidden></div></div><div class="grouplab">Cercle · membres</div><div id="esMembers"></div><div class="esinv" style="margin:8px 0 2px"><input id="esInvite" placeholder="inviter un prénom"/><button type="button" class="dpf-plus" id="esInviteAdd">Ajouter</button></div><div class="grouplab">Promesses du Cercle</div><div id="esList"></div><button id="esDissolve">Dissoudre le Cercle</button></div>
+    <div class="sheet tuto-fond" id="personSheet"><div class="closeb" data-close>X</div>
       <div class="grip"></div>
       <div class="ps-head"><span class="ps-ava" id="psAva">·</span><div style="flex:1"><h2 id="psName" style="margin:0">Personne</h2><div class="sub" id="psSub"></div></div></div>
       <div id="psMirror"></div>
@@ -2941,7 +2941,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div id="psList"></div>
     </div>
     <div class="seal-ov" id="sealOv">
-      <div class="closeb" data-close>✕ Fermer</div>
+      <div class="closeb" data-close>X</div>
       <h2 class="scr-t" style="margin:0 0 16px">Mon <span class="sig">Prom<span class="uvi2">i</span></span></h2>
       <div class="seal-ov-card">
         <div class="seal-ov-opts">
@@ -2975,7 +2975,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
     window._onbCompte(null, function(k){
       feu=true; try{ t.click(); } finally { feu=false; }
       if(!k) setTimeout(function(){ if(sansCompte()) window._onbCompte(null, null, {
-        lab:'Garder ton achat', tx:'Il est sur ce téléphone seulement. Garde ta Toile pour ne pas le perdre.' }); }, 900);
+        lab:'Garder ton achat', tx:'Il est sur ce téléphone seulement. Garde ta Toile pour ne pas le perdre.', net:true }); }, 900);   /* v157 (C-170) : derrière lui, le Studio NET */
     }, { lab:'Avant d’acheter', tx:'Sans compte, ton achat reste sur ce téléphone : si tu en changes ou supprimes l’app, il est perdu.', tard:'Acheter sans compte' });
   }, true);
 })();
@@ -8766,7 +8766,7 @@ function apply(){[].forEach.call(document.querySelectorAll(".tuto-fond,#createSh
 if(document.readyState!=="loading")apply();else document.addEventListener("DOMContentLoaded",apply);
 try{var mo=new MutationObserver(function(muts){muts.forEach(function(m){[].forEach.call(m.addedNodes,function(n){if(n.nodeType!==1)return;if(n.classList&&(n.classList.contains("tuto-fond")||n.id==="createSheet"))setEl(n);if(n.querySelectorAll)[].forEach.call(n.querySelectorAll(".tuto-fond,#createSheet"),setEl);});});});mo.observe(document.body,{childList:true,subtree:true});}catch(e){}
 })();</script>
-<script>(function(){try{var b=document.getElementById("stLockBuy");if(b){b.addEventListener("click",function(e){e.stopPropagation();var w=window._lockedWorld;if(w&&typeof _ownedDesigns!=="undefined"){_ownedDesigns[w]=true;var st=document.getElementById("studioScreen");var _dv=false;try{if(window._deverrouille)_dv=window._deverrouille(w);}catch(_d){}if(st)st.classList.remove("world-locked");try{if(!_dv&&window.Toile&&window.Toile.setTheme)window.Toile.setTheme(w);if(typeof state!=="undefined"&&state)state.structure=w;if(typeof render==="function")render();}catch(_){}try{if(typeof toast==="function")toast("Design d\u00e9bloqu\u00e9 \u2713");}catch(_){}}});}document.addEventListener("click",function(e){var l=e.target&&e.target.closest?e.target.closest(".adv-lock[data-cercle]"):null;if(l){e.stopPropagation();var dv=document.getElementById("device");if(dv&&dv.classList.contains("premium"))return;var pl=document.getElementById("plusScreen");if(pl)pl.classList.add("show");try{if(typeof buildCercleHero==="function")buildCercleHero();}catch(_){}}} ,true);}catch(e){}})();</script>
+<script>(function(){try{var b=document.getElementById("stLockBuy");if(b){b.addEventListener("click",function(e){e.stopPropagation();var w=window._lockedWorld;if(w&&typeof _ownedDesigns!=="undefined"){_ownedDesigns[w]=true;var st=document.getElementById("studioScreen");var _dv=false;try{if(window._deverrouille)_dv=window._deverrouille(w);}catch(_d){}if(st)st.classList.remove("world-locked");try{if(!_dv&&window.Toile&&window.Toile.setTheme)window.Toile.setTheme(w);if(typeof state!=="undefined"&&state)state.structure=w;if(typeof render==="function")render();}catch(_){}try{if(typeof toast==="function"){toast("Design d\u00e9bloqu\u00e9 \u2713");/* v157 (Tom, C-171) : en amande, la c\u00e9l\u00e9bration (10,2:1 sur le fond du toast) */var _tt=document.getElementById("_toast"),_ts=_tt&&_tt.querySelector("span");if(_ts){_ts.style.setProperty("color","var(--c-menthe82)","important");_ts.style.setProperty("-webkit-text-fill-color","var(--c-menthe82)","important");_ts.setAttribute("data-celebre","1");}}}catch(_){}}});}document.addEventListener("click",function(e){var l=e.target&&e.target.closest?e.target.closest(".adv-lock[data-cercle]"):null;if(l){e.stopPropagation();var dv=document.getElementById("device");if(dv&&dv.classList.contains("premium"))return;var pl=document.getElementById("plusScreen");if(pl)pl.classList.add("show");try{if(typeof buildCercleHero==="function")buildCercleHero();}catch(_){}}} ,true);}catch(e){}})();</script>
 <script>(function(){try{var st=document.getElementById("shTheme");if(st){[].forEach.call(st.querySelectorAll("button"),function(b){b.addEventListener("click",function(){if(typeof _sealDark!=="undefined")_sealDark=(b.getAttribute("data-t")==="dark");try{var _ss=document.getElementById("shareScreen");if(_ss)_ss.classList.toggle("sh-lightwm",!_sealDark);}catch(_){}[].forEach.call(st.querySelectorAll("button"),function(x){x.classList.toggle("on",x===b);});try{var _so=document.querySelectorAll("#sealTheme button");[].forEach.call(_so,function(y){y.classList.toggle("on",y.getAttribute("data-t")===(_sealDark?"dark":"light"));});}catch(_){}try{if(typeof shareRender==="function")shareRender();}catch(e){}});});}}catch(e){}})();</script>
 <script>function _paintBuyBg(){try{var cv=document.getElementById("stBuyBg");if(!cv)return;var b=cv.parentNode;var w=b.clientWidth||300,h=b.clientHeight||50;if(!w||!h)return;var dpr=Math.min(2,window.devicePixelRatio||1);cv.width=w*dpr;cv.height=h*dpr;var g=cv.getContext("2d");if(!g)return;g.setTransform(dpr,0,0,dpr,0,0);g.fillStyle="#132235";g.fillRect(0,0,w,h);var pal=(typeof SIGNAL!=="undefined"?SIGNAL:[[201,168,245],[130,174,248],[221,77,35],[41,21,71]]);var blobs=[[0.14,0.5,pal[0],0.6],[0.44,0.32,pal[1],0.55],[0.8,0.62,pal[2],0.5],[0.62,0.8,pal[3],0.42]];blobs.forEach(function(bl){var cx=bl[0]*w,cy=bl[1]*h,r=Math.max(w,h)*0.62,c=bl[2];var gr=g.createRadialGradient(cx,cy,0,cx,cy,r);gr.addColorStop(0,"rgba("+c[0]+","+c[1]+","+c[2]+","+bl[3]+")");gr.addColorStop(1,"rgba("+c[0]+","+c[1]+","+c[2]+",0)");g.fillStyle=gr;g.fillRect(0,0,w,h);});try{if(typeof _grain==="function")_grain(g,w,h,0.5);}catch(e){}}catch(e){}}</script>
 <script>(function(){try{document.addEventListener("click",function(e){var t=e.target&&e.target.closest?e.target.closest(".more-toggle"):null;if(t){var box=t.nextElementSibling;if(box&&box.classList.contains("more-opts")){var op=box.classList.toggle("open");t.classList.toggle("open",op);}}});}catch(e){}})();</script>
@@ -12740,7 +12740,7 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
     /* 2 · FERMER = croix svg + mot */
     var cb=dp.querySelector('.closeb');
     if(cb && !cb.querySelector('svg'))
-      cb.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round"><path d="M6 6 L18 18 M18 6 L6 18"/></svg><span>FERMER</span>';
+      cb.innerHTML='<span>X</span>';
     /* 3 · Peaufiner en span 17/800 */
     var tog=document.getElementById('dpdTog');
     if(tog && !tog.querySelector('.dpd-mot')){
@@ -16755,7 +16755,7 @@ var CREMEETAT='#F7F0DE';
   function tete(titre, grand){
     var t = el('div','s2-tete'+(grand?' s2-tete-gd':''));
     var a = el('div','s2-titre'); a.textContent = titre||'';
-    var f = el('div','s2-fermer'); f.textContent = '✕ FERMER';
+    var f = el('div','s2-fermer'); f.textContent = 'X';   /* v157 (Tom, C-173) : un seul « X », sans mot */
     f.addEventListener('click', function(ev){ ev.stopPropagation();
       var c=document.querySelector('#detailPoster>.closeb'); if(c) c.click(); }, true);
     t.appendChild(a); t.appendChild(f);
@@ -18421,7 +18421,7 @@ var CREMEETAT='#F7F0DE';
     var B = window._s2Briques;
     var t = B.el('div','s2-tete');
     var a = B.el('div','s2-titre'); a.textContent = titre || '';
-    var f = B.el('div','s2-fermer'); f.textContent = '\u2715 FERMER';
+    var f = B.el('div','s2-fermer'); f.textContent = 'X';   /* v157 (C-173) */
     /* ✕ FERMER ferme la page +, comme partout ailleurs sur cet écran */
     f.addEventListener('click', function(ev){ ev.stopPropagation();
       var c = cs.querySelector('.closeb'); if(c) c.click(); }, true);
@@ -21269,7 +21269,7 @@ var CREMEETAT='#F7F0DE';
     if(document.getElementById(PLAN[0].id)) return;
     var h = '<div class="np-tete" id="npTete">'
           +   '<span id="npNom"></span>'
-          +   '<span id="npFermer">\u2715 FERMER</span>'
+          +   '<span id="npFermer">X</span>'
           + '</div>';
     PLAN.forEach(function(b){
       h += '<div class="np-carte" id="' + b.id + '">'
@@ -21467,7 +21467,7 @@ var CREMEETAT='#F7F0DE';
     var ferm = document.getElementById('npFermer');
     /* ⚑ LE MÊME ✕ FERMER QUE LE PEAUFINER D'UNE FICHE (13 sept. 2026) : il sortait en Apfel 16 avec deux espaces
        insécables, plus large de 25 px que celui d'un Promi. */
-    if(ferm && ferm.textContent !== '\u2715 FERMER') ferm.textContent = '\u2715 FERMER';
+    if(ferm && ferm.textContent !== 'X') ferm.textContent = 'X';   /* v157 (C-173) */
     if(ferm) pose(ferm, {visibility:'visible', 'font-family':'var(--f-texte)',
                          'font-weight':'500', 'font-size':'13px', 'letter-spacing':'.20em', 'white-space':'nowrap',
                          cursor:'pointer', color:encre, '-webkit-text-fill-color':encre});
@@ -23365,7 +23365,7 @@ var CREMEETAT='#F7F0DE';
     var tr=document.createElement('div'); tr.id='shcTrait'; cd.appendChild(tr);
 
     var ti=document.createElement('div'); ti.id='shcTitre';
-    ti.innerHTML='<div class="t">Partage<span class="ti-x blink">r</span></div><div class="f">✕ FERMER</div>';   /* v39 (Tom) : le « r » clignote comme le « s » de Réglages et le « i » de Promi */
+    ti.innerHTML='<div class="t">Partage<span class="ti-x blink">r</span></div><div class="f">X</div>';   /* v39 (Tom) : le « r » clignote comme le « s » de Réglages et le « i » de Promi */
     ti.querySelector('.f').onclick=function(){
       var c=document.querySelector('#shareScreen>.closeb');
       if(c) c.click(); else sc.classList.remove('show');
@@ -37045,7 +37045,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(!s){
       var priv=$i('privScreen'); if(!priv) return null;
       s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id=id;
-      s.innerHTML='<div class="closeb" data-close>✕ Fermer</div><h2 class="scr-t"></h2><div class="v16-corps"></div>';
+      s.innerHTML='<div class="closeb" data-close>X</div><h2 class="scr-t"></h2><div class="v16-corps"></div>';
       priv.parentNode.insertBefore(s, priv.nextSibling);
       s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show');
         var st=$i('settingsScreen'); if(st) st.classList.add('show'); });
@@ -37416,7 +37416,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #onbV .onbv-suite{left:314px;width:52px;height:52px;box-sizing:border-box;border-radius:26px;border:2px solid var(--onb-ink);background:var(--onb-ink);
   color:var(--onb-inv);-webkit-text-fill-color:var(--onb-inv);font-family:var(--f-libelle);font-size:24px;line-height:48px;text-align:center;cursor:pointer}
 #onbV .onbv-trace{left:82px;font-family:var(--f-marque);font-size:15px;line-height:15px;letter-spacing:.6px;text-transform:uppercase;white-space:nowrap;color:var(--onb-ink);-webkit-text-fill-color:var(--onb-ink)}
-#onbV .onbv-trait{left:0;width:390px;height:118px;display:block}
+#onbV .onbv-trait{left:0;width:390px;height:236px;display:block}   /* v157 (C-174) : le trait × 2, il grandit vers le bas */
 #onbV .onbv-dep{pointer-events:none}   /* v155 (C-169) : la couche du départ, posée sur le trait ; le doigt va au trait */
 @media (prefers-reduced-motion:no-preference){#onbV #onbDepart.clignote{animation:promiBlink 1.15s steps(1,end) infinite}}
 #onbV .onbv-fin{left:24px;width:342px}
@@ -37700,7 +37700,14 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   var reserveDonnees=null, parNous=false;
   var O=null, etape=null, rejeu=false, prenom='', parole='', fini=false, prog=0, actif=false, minuteurs=[], voisines=false, sansGuide=false;
   var tParole=0, departTouche=false;   /* ⚑ v155 (Tom, C-169) : l'heure de la validation du prénom ; le premier toucher sur le trait (le départ cesse de clignoter) */
-  var W=390, BASE=70, AMP=36, ZONE_Y=590, EP=10, RR=4.5, ESP=18, MID=195, CX=W*0.11, DIT_TOP=184;
+  var W=390, BASE=70, AMP=36, ZONE_Y=590, EP=10, RR=4.5, ESP=18, MID=195, CX=W*0.11, DIT_TOP=184, HT=118;
+  /* ⚑ v157 (Tom, C-174) — « La flèche, le trait et les points deux fois plus grands, en grandissant vers le BAS : le haut reste exactement à sa place. »
+     Épaisseur, chevron, points (rayon et pas) et amplitude de l'onde × 2 ; la largeur reste celle de l'écran. Le haut de l'encre au repos (le point le
+     plus haut, près de la crête de droite) est calculé sur les anciennes cotes, puis la base de l'onde est reposée pour que le nouveau haut tombe au même
+     pixel ; le canevas grandit vers le bas (118 → 236). */
+  (function(){ var E=2, ON=function(b,a){ var m=a*0.34, s=a*0.62; return function(x){ var t=Math.max(0,Math.min(1,x/W)); return b-m*t-s*Math.sin(2*Math.PI*1.5*t); }; };
+    function haut(b,a,rr,esp){ var y=ON(b,a), h=1e9; for(var x=CX+esp*1.3; x<W-rr; x+=esp) h=Math.min(h, y(x)-rr); return h; }
+    var h0=haut(BASE,AMP,RR,ESP); AMP*=E; EP*=E; RR*=E; ESP*=E; var h1=haut(BASE,AMP,RR,ESP); BASE+=h0-h1; HT=118*E; window._onbTraitCotes={base:BASE, amp:AMP, ep:EP, rr:RR, esp:ESP, haut:h0, ht:HT}; })();
   var PH_PRENOM='ton prénom', PH_PAROLE='ne plus dire “je commence lundi”';
   function T(f,ms){ minuteurs.push(setTimeout(f,ms)); }
   /* ⚑ v125 (Tom) — LES MOTS EN COULEUR. « Promi, Chiche et Cercle prennent la couleur de leur nature, avec la même règle qu'au §4
@@ -37839,7 +37846,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(voir) peindreTrait();
     /* ⚑ v148 (C-141 §10.3) — « rien n'arrive d'un coup » : le trait et « trace pour planter » paraissaient en une image à la première lettre. Ils
        naissent EN FLAQUES : l'image de la Toile qui était là les couvre, et s'ouvre en flaques (700 ms). */
-    if(voir && !avant && tr && !reduitOnb()){ try{ var ve=document.getElementById('onbV'), im=imageToile(); if(ve && im){ var a=rectDe(tt||tr, 6), b=rectDe(tr, 4), y0=Math.min(a[1], b[1]), y1=Math.max(a[1]+a[3], b[1]+b[3]);
+    if(voir && !avant && tr && !reduitOnb()){ try{ var ve=document.getElementById('onbV'), im=imageToile(); if(ve && im){ var a=rectDe(tt||tr, 6), b=rectDe(tr, 4), y0=Math.min(a[1], b[1]), y1=Math.min(844, Math.max(a[1]+a[3], b[1]+b[3]));   /* v157 (C-174) : le trait × 2 dépasse le bas de l'écran — la flaque s'arrête à l'écran */
       window._passageFlaques(ve, {mode:'ouvre', devant:true, rect:[0, y0, 390, y1-y0], image:im, duree:700, lent:LENT_ONB()}); } }catch(_){ } }
   }
   function suite(){
@@ -37896,8 +37903,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function peindreTrait(){
     var cv=document.getElementById('onbTrait'); if(!cv||!window._onde) return;
     O=window._onde; var dpr=2;
-    if(cv.width!==W*dpr){ cv.width=W*dpr; cv.height=118*dpr; }
-    var g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,118);
+    if(cv.width!==W*dpr || cv.height!==HT*dpr){ cv.width=W*dpr; cv.height=HT*dpr; }
+    var g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.clearRect(0,0,W,HT);
     var y=yOnde(), col=clair()?O.ENCRE:O.CREME;
     /* ⚑ v147 (Tom, C-126 §7, « à la lettre ») — EN CLAIR : tout le début de la flèche (le chevron ET sa traîne, l'amorce effilée et la part tracée) en
        orange #FB4C0D ; les pointillés du trait non tracé en NOIR. En sombre, rien ne change (la crème, le chevron orange). */
@@ -37907,7 +37914,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     /* ⚑ v155 (Tom, C-169 §4.4) — LE DÉPART (la traîne, la part tracée, la pointe) est peint sur SA couche (`#onbDepart`, posée sur le trait, sans toucher) :
        c'est elle qui clignote, avec l'animation même du I de PROMI (`promiBlink`), jusqu'au premier toucher sur le trait ; les points restent ici. */
     var cvD=document.getElementById('onbDepart'), gt=g;
-    if(cvD){ if(cvD.width!==W*dpr){ cvD.width=W*dpr; cvD.height=118*dpr; } var gD=cvD.getContext('2d'); gD.setTransform(dpr,0,0,dpr,0,0); gD.clearRect(0,0,W,118); g=gD; }
+    if(cvD){ if(cvD.width!==W*dpr || cvD.height!==HT*dpr){ cvD.width=W*dpr; cvD.height=HT*dpr; } var gD=cvD.getContext('2d'); gD.setTransform(dpr,0,0,dpr,0,0); gD.clearRect(0,0,W,HT); g=gD; }
     g.strokeStyle=cDep; g.fillStyle=cDep; g.lineWidth=EP; g.lineCap='round'; g.lineJoin='round';
     function plein(a,b){ g.strokeStyle=cDep; g.beginPath(); O.chemin(g,y,a,b); g.stroke(); }
     function points(x0){ gt.fillStyle=cPts; for(var x=x0;x<W-RR;x+=ESP){ gt.beginPath(); gt.arc(x,y(x),RR,0,6.2832); gt.fill(); } }
@@ -38117,6 +38124,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var m=(window.Toile&&Toile.mondeCourant)?Toile.mondeCourant():{}; var f={net:c, flou:Flaques.floute(c, 4.8), t:performance.now(), monde:(document.getElementById('studioScreen').getAttribute('data-stp-monde')||m.m||'')+'|'+(m.p||'')};
       window._fondAchat=f; return f; }catch(_){ return null; } }
   ['touchstart','pointerdown'].forEach(function(n){ document.addEventListener(n, function(e){ var b=e.target && e.target.closest && e.target.closest('#stLockBuy'); if(b) prepareFondStudio(); }, {capture:true, passive:true}); });
+  /* ⚑ v157 (Tom, C-170 suite) — « Après l'achat, le design est déjà débloqué : derrière le second encart (“Garder ton achat”), le Studio est NET, sans flou
+     ni voile. On voit le monde débloqué à travers l'encart. » Le second encart ne pose plus de fond : l'hôte reste transparent, et le panneau naît (et part)
+     en flaques sur l'image NETTE du Studio de cet instant — aucun pixel flouté, même pendant le passage. Le premier encart garde son flou en flaques. */
+  function netStudio(){ try{ var bg=document.getElementById('stBg'); if(!bg || !bg.width || !studioDevant()) return null; var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg, 0, 0, 390, 844); return {net:c}; }catch(_){ return null; } }
   function fondStudio(){ var f=window._fondAchat; if(f && performance.now()-f.t<800) return f; if(!studioDevant()) return null; return prepareFondStudio(); }
   function imageToile(){ try{ var tc=document.getElementById('toileCv'); if(!tc||!tc.width) return null; var c=document.createElement('canvas'); c.width=tc.width; c.height=tc.height; c.getContext('2d').drawImage(tc,0,0); return c; }catch(_){ return null; } }
   function rectDe(e, marge){ var D=dev.getBoundingClientRect(), s=k(), q=e.getBoundingClientRect(), m=marge||0; return [Math.max(0,(q.left-D.left)/s-m), Math.max(0,(q.top-D.top)/s-m), Math.min(390,(q.width/s)+2*m), Math.min(844,(q.height/s)+2*m)]; }
@@ -38155,7 +38166,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        celles du flou, remplacent l'écran : la page suivante naît en flaques et recouvre l'ancienne. » Le message de fin ne se découpe plus de droite à
        gauche (le balayage) : la Toile qui est derrière lui le RECOUVRE EN FLAQUES (650 ms) ; dans le même temps le panneau du compte NAÎT en flaques à sa
        place (il ne glisse plus du bas). */
-    var FS=fondStudio(), fin=document.getElementById('onbFin'), imF=FS?FS.flou:imageToile(), vF=document.getElementById('onbV');
+    var FN=o.net?netStudio():null, FS=FN?null:fondStudio(), fin=document.getElementById('onbFin'), imF=FS?FS.flou:(FN?FN.net:imageToile()), vF=document.getElementById('onbV');
     if(fin && fin.style.display!=='none'){ if(imF && vF && !reduitOnb()){ window._passageFlaques(vF, {mode:'couvre', devant:true, rect:rectDe(fin, 10), image:imF, duree:650, lent:LENT_ONB(), fin:function(c){ fin.style.display='none'; if(c && c.canevas.parentNode) c.canevas.remove(); }}); } else fin.style.display='none'; }
     var _ot=document.getElementById('onbTard'); if(_ot) _ot.style.display='none';   /* v141 : le panneau du compte porte SON « Plus tard » */
     var p=document.createElement('div'); p.className='onbv-compte';
@@ -38168,6 +38179,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(FS){ hote.classList.add('sur-studio'); hote.setAttribute('data-fond', FS.monde); window._fondAchatPose=FS;
       /* le flou de la Toile du Studio paraît EN FLAQUES derrière le panneau (et le reste là, sous lui, tant qu'il est ouvert) */
       try{ fondC=window._passageFlaques(hote, {mode:'couvre', rect:[0,0,390,844], image:FS.flou, duree:1100, garde:true}); if(fondC && fondC.canevas){ fondC.canevas.id='achatFond'; } }catch(_){ fondC=null; } }
+    if(FN){ hote.classList.add('sur-studio'); hote.setAttribute('data-net','1'); window._fondAchatPose=null; }   /* v157 (C-170) : le Studio net, rien dessous */
     hote.appendChild(p);
     /* v148 (C-141 §10.1) : le panneau naît en flaques à sa place — l'image de la Toile le couvre d'abord, puis s'ouvre en flaques (le panneau paraît par elles) */
     try{ if(imF && !reduitOnb()) window._passageFlaques(hote, {mode:'ouvre', devant:true, z:30, rect:rectDe(p, 4), image:imF, duree:800, lent:LENT_ONB()}); }catch(_){ }
@@ -38176,8 +38188,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(k){ LS.s('promi_compte','demande-'+k); try{ if(window.promiConnexion) window.promiConnexion(k); }catch(_){} }
       else LS.s('promi_compte', LS.g('promi_compte')||'plus-tard');
       /* v148 (C-141 §10.2) : il ne glisse plus vers le bas — la Toile le RECOUVRE en flaques (500 ms), puis il est retiré */
-      var imP=FS?FS.flou:imageToile();
-      function sansFond(){ if(!FS) return; hote.classList.remove('sur-studio'); hote.removeAttribute('data-fond');
+      var imP=FS?FS.flou:(FN?(netStudio()||FN).net:imageToile());
+      function sansFond(){ if(FN){ hote.classList.remove('sur-studio'); hote.removeAttribute('data-net'); } if(!FS) return; hote.classList.remove('sur-studio'); hote.removeAttribute('data-fond');
         /* le flou s'en va en flaques : une couverture du même flou se pose (image 0, aucun saut), l'ancienne part, puis elle s'ouvre sur le Studio */
         try{ if(!reduitOnb()) window._passageFlaques(document.getElementById('studioScreen')||hote, {mode:'ouvre', devant:true, rect:[0,0,390,844], image:FS.flou, duree:700}); }catch(_){ }
         if(fondC && fondC.canevas && fondC.canevas.parentNode) fondC.canevas.remove(); }
@@ -39203,7 +39215,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function page(){ var s=document.getElementById('notifScreen');
     if(!s){ var priv=document.getElementById('privScreen'); if(!priv) return null;
       s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id='notifScreen';
-      s.innerHTML='<div class="closeb" data-close>✕ Fermer</div><h2 class="scr-t">Notifications</h2><div class="v16-corps nt-corps"></div>';
+      s.innerHTML='<div class="closeb" data-close>X</div><h2 class="scr-t">Notifications</h2><div class="v16-corps nt-corps"></div>';
       priv.parentNode.insertBefore(s, priv.nextSibling);
       s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show');
         var st=document.getElementById('settingsScreen'); if(st) st.classList.add('show'); });
@@ -39735,7 +39747,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(typeof cur!=='undefined' && cur && cur.photo) return {src:cur.photo, quoi:'photo'}; }catch(_){ } return null; }
   function vue(){ var v=document.getElementById('entierVue'); if(v) return v; var d=dev(); if(!d) return null;
     v=document.createElement('div'); v.id='entierVue'; v.setAttribute('role','dialog'); v.setAttribute('aria-modal','true');
-    v.innerHTML='<img alt=""><button type="button" class="ev-x" aria-label="Fermer">✕ Fermer</button><button type="button" class="ev-garde enr-btn" data-v139="enregistrer" aria-label="Enregistrer"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true" data-symbole="enregistrer"><path d="M16 7 L16 20 M16 20 L11.5 15.5 M16 20 L20.5 15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 19 L8.5 25 L23.5 25 L23.5 19" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>';   /* v140 (C-091) : une icône seule, la même partout ; VoiceOver « Enregistrer » */
+    v.innerHTML='<img alt=""><button type="button" class="ev-x" aria-label="Fermer">X</button><button type="button" class="ev-garde enr-btn" data-v139="enregistrer" aria-label="Enregistrer"><svg viewBox="0 0 32 32" fill="none" aria-hidden="true" data-symbole="enregistrer"><path d="M16 7 L16 20 M16 20 L11.5 15.5 M16 20 L20.5 15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 19 L8.5 25 L23.5 25 L23.5 19" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg></button>';   /* v140 (C-091) : une icône seule, la même partout ; VoiceOver « Enregistrer » */
     d.appendChild(v); return v; }
   function ouverte(){ var v=document.getElementById('entierVue'); return !!(v && v.classList.contains('ouv')); }
   function ferme(){ var v=document.getElementById('entierVue'); if(!v || !v.classList.contains('ouv')) return false;
@@ -40626,7 +40638,18 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   var LS={g:function(k){ try{ return localStorage.getItem(k); }catch(_){ return null; } }, s:function(k,v){ try{ localStorage.setItem(k,v); }catch(_){ } }};
   function reduit(){ try{ return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }catch(_){ return false; } }
   function onbOuvert(){ var o=$('promiOnb'); return !!($('onbV') || (o && !o.classList.contains('gone') && getComputedStyle(o).display!=='none')); }
-  function accueil(){ try{ if(onbOuvert()) return false; var r=dev.getBoundingClientRect(), E=document.elementsFromPoint(r.left+r.width/2, r.top+r.height*0.45);
+  /* ⚑ v157 (Tom, C-172) — « Quand on choisit un design au Studio, le flou et le + apparaissent par-dessus le Studio encore ouvert. » LA CAUSE : le guide
+     décidait « de retour sur l'accueil » par un SONDAGE — un point de l'écran (le milieu, à 45 % de la hauteur) qui ne tombe sur aucun écran, et la Toile
+     au repos ; rien ne demandait si le Studio était fermé. Dès qu'un instant réunit les deux sous le Studio ouvert (sa Toile qui se pose entre deux images
+     d'aperçu, un calque qui laisse passer le point), l'étape du + part par-dessus lui. Au banc (WebKit, glissements de monde, palettes, achat avec et sans
+     compte, mouvement réduit) cet instant n'a pas été reproduit : le chemin exact de l'iPhone n'est pas nommé. LA CORRECTION, à la source : l'accueil
+     n'est jamais vu tant que le Studio est ouvert — il a perdu `.show` ET il a fini de glisser hors de l'écran (`studioFerme`) ; le + compte son calme
+     à partir de là. */
+  function studioFerme(){ try{ var st=document.getElementById('studioScreen'); if(!st) return true; if(st.classList.contains('show')) return false;
+      var c=getComputedStyle(st); if(c.display==='none' || c.visibility==='hidden' || +c.opacity<0.01) return true;
+      var r=st.getBoundingClientRect(), D=dev.getBoundingClientRect(); return r.top>=D.bottom-1 || r.bottom<=D.top+1 || r.left>=D.right-1 || r.right<=D.left+1; }catch(_){ return true; } }
+  window._guideStudioFerme=studioFerme;
+  function accueil(){ try{ if(onbOuvert() || !studioFerme()) return false; var r=dev.getBoundingClientRect(), E=document.elementsFromPoint(r.left+r.width/2, r.top+r.height*0.45);
       for(var i=0;i<E.length;i++){ var h=E[i]; if(h.closest && h.closest('#guide')) continue; return !(h.closest && h.closest('.screen, .sheet, .poster, #feedView, #entierVue, #dessinMode, #accRappelCompte')); } return false; }catch(_){ return false; } }
   /* l'accueil est POSÉ : la Toile ne tourne plus, aucune parole n'arrive ni ne part, aucun doigt à l'instant */
   var tDoigt=0, doigt=0; ['pointerdown','touchstart','touchmove','touchend','pointerup','wheel','keydown'].forEach(function(n){ document.addEventListener(n,function(e){ tDoigt=performance.now(); if(n==='touchstart'||n==='pointerdown') doigt=1; if(n==='touchend'||n==='pointerup') doigt=0; },{capture:true,passive:true}); });
@@ -41775,6 +41798,101 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 #device#device#device#device#device#device #createSheet .pp-trace,
 #device#device#device#device#device#device #createSheet.pp.pp-cours .pp-trace{color:var(--c-orange-depart)!important;-webkit-text-fill-color:var(--c-orange-depart)!important}
 </style>
+<style id="lot-V157-CROIX-css">
+/* ⚑ v157 (Tom, C-173) — « Partout, “× FERMER” devient un seul “X”, sans mot. » Les anciennes croix dessinées (svg, `::before` « ✕ ») se retirent ; le mot
+   est remplacé à la source par « X ». Le dessin (police, taille, couleur, place, zone de toucher) est posé par `lot-V157-CROIX`, d'après le titre de la barre. */
+#device .closeb::before,#device .closeb::after,.frame .closeb::before,.frame .closeb::after{content:none!important;display:none!important}
+#device .closeb svg,.frame .closeb svg{display:none!important}
+#device .x157,.frame .x157{font-family:var(--f-marque)!important;font-weight:400!important;font-style:normal!important;font-synthesis:none!important;
+  letter-spacing:0!important;text-transform:none!important;text-align:center!important;white-space:nowrap!important;
+  -webkit-text-stroke:0!important;text-shadow:none!important;box-sizing:border-box!important;cursor:pointer;justify-content:center!important;gap:0!important}
+#device .x157 > span,.frame .x157 > span{font:inherit!important;letter-spacing:0!important;text-transform:none!important;color:inherit!important;-webkit-text-fill-color:inherit!important;margin:0!important;padding:0!important}
+#device .x157 > .x157-g,.frame .x157 > .x157-g{position:absolute!important;left:0!important;width:44px!important;display:block!important;text-align:center!important;white-space:nowrap!important;pointer-events:none}
+</style>
+<script id="lot-V157-CROIX">
+/* ⚑ v157 (Tom, C-173) — « Partout, “× FERMER” devient un seul “X”, sans mot. Il est toujours en PromiLate, en gras. Sa hauteur = la hauteur de capitale du titre
+   à sa gauche sur la même barre (PromiLate, Gilbert ou Atkinson selon la page), ± 1 pt. Sa couleur = celle de ce titre. Sa zone tactile : au moins 44 × 44 pt,
+   centrée sur lui. » UN SEUL PROPRIÉTAIRE pour la croix : à chaque écran qui s'ouvre, pour chaque fermeture visible, on lit le titre de la même rangée
+   (le plus grand texte à sa gauche), sa hauteur de capitale (un canevas hors du document, la police calculée), sa ligne de base et sa couleur ; la croix
+   prend la taille de PromiLate qui donne CETTE hauteur à son « X », la couleur du titre, et une boîte de 44 × 44 centrée sur le glyphe, posée en face du
+   titre (son bord droit à la même distance du bord de la barre que le titre du bord gauche), centrée sur la hauteur de ses capitales.
+   ⚠ « En gras » : PromiLate n'a qu'une graisse (400) — un gras synthétique est interdit (§6 : une graisse absente casse en Swift) et un contour autour de la
+   lettre aussi (C-130) : la croix est en PromiLate 400 (Q565). */
+(function(){
+  var dev=document.getElementById('device'); if(!dev) return;
+  var SEL='.closeb, .s2-fermer, #npFermer, .ev-x, #shScopeClose', MES={}, cv=document.createElement('canvas'), g=cv.getContext('2d');
+  function k(){ return (dev.getBoundingClientRect().width/390)||1; }
+  function metr(fam, wt, st){ var key=st+'|'+wt+'|'+fam; if(MES[key]) return MES[key]; g.font=st+' '+wt+' 100px '+fam; var h=g.measureText('H'), x=g.measureText('X');
+    var r={cap:(h.actualBoundingBoxAscent||70)/100, xh:((x.actualBoundingBoxAscent||70)+(x.actualBoundingBoxDescent||0))/100, xa:(x.actualBoundingBoxAscent||70)/100,
+      fa:(h.fontBoundingBoxAscent||0)/100, fd:(h.fontBoundingBoxDescent||0)/100};
+    if(document.fonts && document.fonts.check && !document.fonts.check(st+' '+wt+' 100px '+fam)) return r; MES[key]=r; return r; }
+  function vu(e){ if(!e || !e.isConnected) return null; var r=e.getBoundingClientRect(); if(r.width<1 || r.height<1) return null; var D=dev.getBoundingClientRect();
+    if(r.right<D.left || r.left>D.right || r.bottom<D.top || r.top>D.bottom) return null;
+    for(var q=e; q && q.nodeType===1; q=q.parentElement){ var c=getComputedStyle(q); if(c.display==='none' || c.visibility==='hidden' || +c.opacity<0.05) return null; } return r; }
+  function texte(e){ var s=''; for(var n=e.firstChild; n; n=n.nextSibling) if(n.nodeType===3) s+=n.nodeValue; return s.trim(); }
+  /* le titre : dans le même écran, le plus grand texte à gauche de la croix, sur sa rangée */
+  /* la rangée : la barre (le plateau) quand la croix y vit, sinon sa propre hauteur ± 34 pt */
+  function rangee(x, rx){ var bar=x.closest('.enh, #stpHaut'), kk=k(); if(bar){ var rb=bar.getBoundingClientRect(); if(rb.height>=30*kk && rb.height<=140*kk) return {bar:bar, haut:rb.top, bas:rb.bottom, droite:rb.right, gauche:rb.left}; }
+    var c=rx.top+rx.height/2; return {bar:null, haut:c-34*kk, bas:c+34*kk, droite:null, gauche:null}; }
+  function titre(x, rx, R){ var ecran=x.closest('.screen, .sheet, .poster, #feedView, #entierVue, .feedview') || x.parentElement, best=null, bf=0, rgx=new RegExp('^X$');
+    var L=ecran.querySelectorAll('h1, h2, h3, div, span, b, strong, i, em'); for(var i=0;i<L.length;i++){ var e=L[i]; if(e===x || x.contains(e) || e.contains(x) || e.matches(SEL)) continue; var t=texte(e); if(!t || rgx.test(t)) continue;
+      var r=e.getBoundingClientRect(), m=r.top+r.height/2; if(r.width<2 || r.right>rx.left+2 || m<R.haut || m>R.bas) continue; if(!vu(e)) continue;
+      var f=parseFloat(getComputedStyle(e).fontSize)||0; if(f>bf){ bf=f; best=e; } } return best; }
+  function lit(e){ var c=getComputedStyle(e), fam=c.fontFamily, wt=c.fontWeight, st=c.fontStyle, fs=parseFloat(c.fontSize)||16, m=metr(fam, wt, st);
+    var rg=document.createRange(); rg.selectNodeContents(e); var R=rg.getClientRects(); var r=R.length?R[0]:e.getBoundingClientRect();
+    var tot=(m.fa+m.fd)||1.2, base=m.fa? r.top+r.height*(m.fa/tot) : r.top+r.height*0.78, kk=k();
+    var col=c.webkitTextFillColor && !/^(currentcolor)?$/i.test(c.webkitTextFillColor) && c.webkitTextFillColor!=='rgba(0, 0, 0, 0)' ? c.webkitTextFillColor : c.color;
+    return {cap:m.cap*fs, base:base, col:col, gauche:r.left, fam:fam, fs:fs}; }
+  var FAM=null;
+  function famX(){ if(FAM) return FAM; var v=getComputedStyle(document.documentElement).getPropertyValue('--f-marque').trim(); FAM=v||'PromiLate'; return FAM; }
+  function pose(x){ var rx=vu(x); if(!rx) return; var kk=k(), D=dev.getBoundingClientRect();
+    /* le glyphe vit dans SON span (posé en absolu à la cote calculée) : le texte reste « X », la ligne ne dépend plus des règles de chaque écran */
+    var sp=x.querySelector(':scope > .x157-g') || x.querySelector(':scope > span');
+    if(!sp){ sp=document.createElement('span'); x.textContent=''; x.appendChild(sp); }
+    if(!sp.classList.contains('x157-g')) sp.classList.add('x157-g'); if(sp.textContent!=='X') sp.textContent='X';
+    [].slice.call(x.childNodes).forEach(function(n){ if(n!==sp && (n.nodeType!==3 || /\S/.test(n.nodeValue))) x.removeChild(n); });
+    if(!x.getAttribute('aria-label')) x.setAttribute('aria-label','Fermer'); if(!x.getAttribute('role') && x.tagName!=='BUTTON') x.setAttribute('role','button');
+    var R=rangee(x, rx), ti=titre(x, rx, R), T=ti?lit(ti):null;
+    var mX=metr(famX(), '400', 'normal'); if(!mX.xh) return;
+    /* la hauteur de capitale du titre ; sans titre (la photo en entier), celle d'un titre d'écran : PromiLate 27 */
+    var cap=T?T.cap:(metr(famX(),'400','normal').cap*27*kk), fs=cap/mX.xh/kk;
+    var rb=R.bar?R.bar.getBoundingClientRect():(ti?ti.parentElement.getBoundingClientRect():rx);
+    var cx, cy;
+    g.font='400 100px '+famX(); var lx=fs*kk*g.measureText('X').width/100;
+    if(T){ var ins=T.gauche-rb.left; cx=rb.right-ins-lx/2; cy=T.base-cap/2; }
+    else { cx=rx.left+rx.width/2; cy=rx.top+rx.height/2; }
+    var op=x.offsetParent || x.parentElement, ro=op.getBoundingClientRect();
+    var left=(cx-ro.left)/kk-op.clientLeft+op.scrollLeft-22, top=(cy-ro.top)/kk-op.clientTop+op.scrollTop-22;
+    /* la ligne : le centre du « X » (ses capitales) au milieu de la boîte de 44 */
+    var fa=mX.fa||0.93, fd=mX.fd||0.27, lh=(fa+fd)*fs, gt=22-fa*fs+(mX.xa-(mX.xh-mX.xa))*fs/2;   /* la ligne fait la zone du texte : ligne de base = haut + fa·fs ; le milieu de l'encre du X à 22 */
+    var V={position:'absolute', left:left.toFixed(2)+'px', top:top.toFixed(2)+'px', right:'auto', bottom:'auto', width:'44px', height:'44px', 'min-width':'44px', 'max-width':'none',
+      margin:'0', padding:'0', transform:'none', 'font-family':famX(), 'font-weight':'400', 'font-style':'normal', 'font-size':fs.toFixed(2)+'px', 'line-height':'1', color:(T?T.col:getComputedStyle(x).color), '-webkit-text-fill-color':(T?T.col:getComputedStyle(x).color),
+      'z-index':'40', overflow:'visible', 'text-align':'center', 'letter-spacing':'0', 'text-transform':'none', 'font-weight':'400'};
+    var change=false; for(var p in V){ var cur=x.style.getPropertyValue(p), pr=x.style.getPropertyPriority(p);
+      if(p==='left' || p==='top' || p==='font-size' || p==='line-height'){ if(pr==='important' && Math.abs(parseFloat(cur)-parseFloat(V[p]))<0.3) continue; }
+      else if(pr==='important' && cur===V[p]) continue;
+      x.style.setProperty(p, V[p], 'important'); change=true; }
+    var GS={top:gt.toFixed(2)+'px', 'font-family':famX(), 'font-size':fs.toFixed(2)+'px', 'line-height':lh.toFixed(2)+'px', 'font-weight':'400', 'letter-spacing':'0', color:V.color, '-webkit-text-fill-color':V.color};
+    for(var q in GS){ if(sp.style.getPropertyValue(q)!==GS[q] || sp.style.getPropertyPriority(q)!=='important'){ sp.style.setProperty(q, GS[q], 'important'); change=true; } }
+    var op0=+getComputedStyle(x).opacity; if(op0>=0.5 && op0<1){ x.style.setProperty('opacity','1','important'); change=true; }   /* « la couleur du titre » : l'ancien mot était adouci à .78 ; un écran qui CACHE la croix (opacité 0) garde la main */
+    if(getComputedStyle(x).display==='inline') x.style.setProperty('display','inline-block');   /* jamais en `important` : une règle qui la cache garde le dernier mot */
+    x.classList.add('x157'); x.__x157s=x.style.cssText+'|'+sp.style.cssText; x.__x157t=ti?{el:ti, sig:sigTitre(ti)}:null; x.setAttribute('data-x157', JSON.stringify({cap:+(cap/kk).toFixed(2), titre:T?(ti.textContent||'').trim().slice(0,24):null, fam:T?T.fam.split(',')[0]:null, col:T?T.col:null}));
+    return change; }
+  function sigTitre(e){ var r=e.getBoundingClientRect(); return getComputedStyle(e).fontSize+'|'+Math.round(r.left*2)+'|'+Math.round(r.top*2); }
+  function passe(){ var L=document.querySelectorAll(SEL); for(var i=0;i<L.length;i++){ try{ pose(L[i]); }catch(_){ } } }
+  window._croix={passe:passe};
+  var prevu=0; function demande(){ if(prevu && performance.now()-prevu<300) return; prevu=performance.now(); requestAnimationFrame(function(){ prevu=0; passe(); });   /* une image perdue ne bloque jamais la passe (300 ms) */ [120, 400, 900, 1600].forEach(function(t){ setTimeout(function(){ requestAnimationFrame(passe); }, t); }); }
+  try{ new MutationObserver(function(M){ for(var i=0;i<M.length;i++){ var t=M[i].target; if(t && t.classList && (t.classList.contains('show') !== !!t.__x157show)){ t.__x157show=t.classList.contains('show'); demande(); return; } if(M[i].type==='childList'){ demande(); return; } } })
+      .observe(document.body, {subtree:true, attributes:true, attributeFilter:['class'], childList:false}); }catch(_){ }
+  ['click','touchend'].forEach(function(n){ document.addEventListener(n, function(){ setTimeout(demande, 30); }, {capture:true, passive:true}); });
+  /* la veille : une croix visible pas encore posée, ou dont un autre propriétaire a réécrit le style (le Peaufiner repose son entête), est reposée */
+  setInterval(function(){ if(window._tenirAnime) return; var L=document.querySelectorAll(SEL), D=dev.getBoundingClientRect(); for(var i=0;i<L.length;i++){ var x=L[i]; if(!x.offsetParent) continue;
+    var rq=x.getBoundingClientRect(); if(rq.width<1 || rq.bottom<D.top || rq.top>D.bottom || rq.right<D.left || rq.left>D.right) continue;   /* une feuille fermée (glissée hors de l'écran) n'est pas regardée */
+    var sp=x.querySelector(':scope > .x157-g'), t=x.__x157t; if(!x.classList.contains('x157') || !sp || x.__x157s!==x.style.cssText+'|'+sp.style.cssText || (t && (!t.el.isConnected || t.sig!==sigTitre(t.el))) || (!t && x.closest('.enh, #stpHaut'))){ passe(); return; } } }, 400);   /* sans titre trouvé (l'écran arrivait encore), on le cherche de nouveau */
+  try{ document.fonts.ready.then(function(){ MES={}; demande(); }); }catch(_){ } setTimeout(demande, 600);
+})();
+</script>
+
 </body>
 
 </html>

@@ -8817,3 +8817,12 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   regarde une fiche plantée et dit si la longueur lui va.
 - **Q564 — TRAITÉE (v156 : Tom l'a revue — l'encart d'achat ; voir C-170) · À SAVOIR (C-170, v155)** : au banc, l'ancienne Toile était celle de l'ACCUEIL, découverte par le Studio qui glisse en se refermant (0,5 s) ;
   « l'encart du bas » n'a pas été vu tel quel. Corrigé à la source. *Proposition* : si Tom la revoit sur l'iPhone, une capture de l'instant.
+- **Q565 — À VALIDER (C-173, v157)** : « le X en PromiLate, EN GRAS » — PromiLate n'a qu'une graisse (400). Un gras synthétique est interdit (§6 : une graisse
+  absente casse en Swift) et un contour autour de la lettre aussi (C-130). La croix est en PromiLate 400, à la hauteur de capitale du titre. *Proposition* :
+  si Tom la veut plus forte, une graisse dessinée de PromiLate (un fichier de police), ou un X un peu plus grand que la capitale.
+- **Q566 — À SAVOIR (C-172, v157)** : le chemin exact où le + du guide paraissait par-dessus le Studio ouvert n'a pas été reproduit au banc (WebKit :
+  glissements de monde, palettes, achat avec et sans compte, mouvement réduit). La cause écrite est la faiblesse du test (un point sondé et la Toile au
+  repos, jamais l'état du Studio), corrigée à la source. *Proposition* : si Tom le revoit, une capture et le geste fait juste avant.
+- **Q567 — À SAVOIR (trouvé en jugeant C-174, v157 ; identique sur v156)** : sur la page de la parole, tant que le clavier est ouvert et la phrase écrite,
+  le bouton → (« la suite », 314–366 pt) recouvre la fin de « trace pour planter » (82–370 pt, à 600 pt). Rien n'a été changé. *Proposition* : le → au-dessus
+  de la consigne, ou la consigne plus courte à droite — à trancher par Tom.

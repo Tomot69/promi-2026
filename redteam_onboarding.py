@@ -45,6 +45,7 @@ import os
 URL = os.environ.get("APP_ONB", "http://127.0.0.1:8752/app.html")
 SEUIL_LUM = 42                  # §3 — du texte sur un fond
 GESTE_H = 118                   # §5 — le geste, 118 px de haut
+GESTE_H_ONB = 236               # ⚑ v157 (Tom, C-174) : le trait du premier Promi deux fois plus grand, vers le bas — sa zone 118 → 236 (original : sauvegardes/redteam_onboarding-avant-v157.py)
 BANNIS = ['tâche', 'to-do', 'objectif', 'valider', 'urgent', 'score', 'brouillon', 'orbite', 'sphère',
           'échéance']            # §2
 DIAPOS = ['deux vues', 'choisis un style', 'signal', 'ton noyau grandit', 'harmonie']   # les étapes jetées
@@ -342,8 +343,8 @@ def un_theme(pw, theme):
                      'O18 un rechargement ne relance pas, le Promi reste', 'O19 « Revoir la présentation » relance',
                      C21, C22)
         else:
-            if abs(z['h'] - GESTE_H) > 3:
-                ko('O7 la zone du trait (§5)', 'hauteur %.1f au lieu de %d' % (z['h'], GESTE_H))
+            if abs(z['h'] - GESTE_H_ONB) > 3:
+                ko('O7 la zone du trait (§5)', 'hauteur %.1f au lieu de %d' % (z['h'], GESTE_H_ONB))
             a, bb = peint(pg, z)
             if not a or not bb:
                 ko('O7 la zone du trait (§5)', 'point de départ peint : %s · point d\'arrivée peint : %s' % (a, bb))
