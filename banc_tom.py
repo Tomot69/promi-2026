@@ -34,6 +34,29 @@ def toile_pleine(ctx, n=25):
     import json
     st = json.load(io.open('banc-etats/etat-%d.json' % n, encoding='utf-8')); st.pop('promi_theme', None)
     ctx.add_init_script("try{ if(!sessionStorage.getItem('__etat')){ sessionStorage.setItem('__etat','1'); var E=%s; for(var k in E) localStorage.setItem(k,E[k]); } }catch(e){}" % json.dumps(st))
+def etat_tom(chemin=None):
+    """⚑ v160 (C-179) — le dernier état exporté par l'iPhone de Tom (`?export=1` → etats/tom-<date>.json), ou celui qu'on nomme ; None s'il n'y en a pas."""
+    import json, glob, os
+    if not chemin:
+        L = sorted(glob.glob('etats/tom-*.json'))
+        if not L: return None
+        chemin = L[-1]
+    d = json.load(io.open(chemin, encoding='utf-8')); d['_fichier'] = os.path.basename(chemin); return d
+def contexte_tom(b, chemin=None, echelle=None, sombre=None):
+    """⚑ v160 (C-179, A2) — rejouer EXACTEMENT l'état de Tom : tout son localStorage, sa fenêtre (largeur, hauteur), sa densité, son thème. `echelle=1`
+    force une fenêtre de 430 × 932 (l'appareil à l'échelle 1) avec le même stockage. Rend (contexte, état) ; (None, None) sans état exporté."""
+    import json
+    d = etat_tom(chemin)
+    if not d: return None, None
+    e = d.get('ecran') or {}; ls = dict(d.get('ls') or {})
+    vw, vh = int(e.get('largeur') or 390), int(e.get('hauteur') or 664)
+    if echelle == 1: vw, vh = 430, 932
+    th = ls.get('promi_theme'); sb = (th == 'dark') if sombre is None else sombre
+    ctx = b.new_context(viewport={'width': vw, 'height': vh}, device_scale_factor=float(e.get('dpr') or 3), has_touch=True, is_mobile=True, user_agent=UA,
+                        color_scheme='dark' if (e.get('schema') == 'dark') else 'light', reduced_motion='reduce' if e.get('reduit') else 'no-preference')
+    s = "try{Object.defineProperty(Navigator.prototype,'webdriver',{get:function(){return false},configurable:true});}catch(e){}"
+    s += "try{ if(!sessionStorage.getItem('__etatTom')){ sessionStorage.setItem('__etatTom','1'); localStorage.clear(); var E=%s; for(var k in E) localStorage.setItem(k,E[k]); } }catch(e){}" % json.dumps(ls)
+    ctx.add_init_script(s); return ctx, d
 def charge():
     """la charge de la machine (moyenne sur une minute) : au-delà de 4 sur ce Mac, une mesure de cadence ne vaut rien (une autre session y lance parfois un simulateur)"""
     import os

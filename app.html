@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v159', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v160a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2609,6 +2609,26 @@ window._clairPour=function(el){ try{ if(el && el.closest && el.closest('#detailP
 window._orangeDepart=function(){ if(window._orangeDepart._v) return window._orangeDepart._v; var v=''; try{ v=getComputedStyle(document.documentElement).getPropertyValue('--c-orange-depart').trim(); }catch(_){}
   return (window._orangeDepart._v=(v||'#FB4C0D')); };
 window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOverride=false; try{ return f(); } finally { window._shThemeOverride=(av===undefined?null:av); } };
+</script>
+<script id="lot-V160-EXPORT">
+/* ⚑ v160 (Tom, C-179) — EXPORTER L'ÉTAT RÉEL DE TOM VERS LE MAC. Avec `?export=1`, à l'ouverture (l'app posée : 4 s), la page envoie au serveur du Mac
+   qui la sert (`POST /export`, le réseau local seulement : l'adresse servie doit être privée — 192.168.x, 10.x, 172.16–31.x ou 127.0.0.1) une copie
+   complète de ses données (tout le localStorage) et de l'écran (fenêtre, appareil, échelle, densité, visualViewport, thème, mouvement réduit). Le serveur
+   la garde dans etats/tom-<date>.json, hors git ; `banc_tom.contexte_tom` la rejoue. Rien d'autre ne change ; sans le paramètre, rien n'est envoyé. */
+(function(){ try{ if(!/[?&]export=1\b/.test(location.search)) return;
+  var h=location.hostname; if(!(/^(127\.|10\.|192\.168\.)/.test(h) || /^172\.(1[6-9]|2\d|3[01])\./.test(h))) return;
+  function envoie(){ try{ var ls={}, i, k; for(i=0;i<localStorage.length;i++){ k=localStorage.key(i); ls[k]=localStorage.getItem(k); }
+      var dv=document.getElementById('device'), r=dv?dv.getBoundingClientRect():null, vv=window.visualViewport;
+      var d={ quand:new Date().toISOString(), version:(window.PROMI_VERSION||null), ua:navigator.userAgent, ls:ls,
+        ecran:{ largeur:innerWidth, hauteur:innerHeight, dpr:devicePixelRatio, ecranL:screen.width, ecranH:screen.height,
+          appareil:r?[r.left,r.top,r.width,r.height]:null, echelle:r?r.width/390:null, vv:vv?[vv.width,vv.height,vv.scale,vv.offsetTop]:null,
+          theme:(dv&&dv.classList.contains('light'))?'clair':'sombre', schema:(matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light',
+          reduit:!!(matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) },
+        toile:(function(){ try{ var c=window.Toile_cellules&&Toile_cellules(); return c?{vue:c.view, W:c.W, H:c.H, n:c.c.length, colorees:c.c.filter(function(q){ return q.kind!=='gray'; }).length, monde:Toile.getTheme()}:null; }catch(_){ return null; } })() };
+      fetch('/export', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(function(x){ return x.json(); }).then(function(j){
+        try{ if(typeof toast==='function') toast('État envoyé au Mac'); }catch(_){ } window._exportFait=j; }).catch(function(){ window._exportFait=false; }); }catch(_){ } }
+  window.addEventListener('load', function(){ setTimeout(envoie, 4000); });
+}catch(_){ } })();
 </script>
 <style id="lot-TOKENS-css">
 /* ⚑ LE JEU DE COULEURS ET DE POLICES — source unique (Tom, 16 septembre 2026).
@@ -41418,39 +41438,6 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     try{ var im=document.createElement('canvas'); im.width=bg.width; im.height=bg.height; var g=im.getContext('2d'); g.filter='blur('+(1.4*bg.width/390)+'px)'; g.drawImage(bg,0,0); g.filter='none'; im.__flou=1;
       var ctl=window._passageFlaques(st, {mode:'ouvre', apres:bg, rect:[0,0,390,844], image:im, duree:700, fin:function(){ setTimeout(applique, 60); }});
       if(ctl && ctl.canevas){ ctl.canevas.id='stDeverrou'; ctl.canevas.style.setProperty('border-radius','36px'); } else setTimeout(applique, 60); window._deverrouT=performance.now(); }catch(_){ setTimeout(applique, 60); } return true; };
-})();
-</script>
-<script id="lot-V159-VUE">
-/* ⚑ v159 (Tom, C-177) — « Sous certains mondes (Éclisse…), les dalles colorées s'empilent ; parfois on ouvre une page, on revient à la Toile, et
-   elles ne sont plus à leur position. » CE QUI A ÉTÉ TROUVÉ (banc comme Tom, WebKit) : les GRAINES ne bougent jamais (20 mondes × 5 et 25 paroles ×
-   toutes les pages ouvertes puis fermées, au point près) — c'est la VUE (le zoom et le cadrage) qui change. Le cadrage automatique (`autoView`) n'est
-   recalculé qu'à une plantation, un retrait ou un recadrage ; un changement de monde au Studio le laisse tel quel (v46 : « changer de monde laisse la vue
-   où la main l'a mise »). Mais quand la vue n'est PAS celle de la main, elle garde alors la CIBLE calculée pour un autre monde : sous peu de paroles, les
-   mondes « faits de leurs seules paroles » (Bobinette, Mascaret, Ritournelle…) se cadrent serré (zoom jusqu'à 3,6 à 7) ; revenu sur Éclisse, la Toile
-   glisse vers CE cadrage-là à la fermeture du Studio — mesuré : Éclisse à 5 paroles, vue 1,19 au départ, 1,68 après être passé par Bobinette et
-   Ritournelle ; les dalles plus grosses, serrées et décalées de 267 pt. Présent tel quel en v152 (aucun lot de v153 à v158 ne l'a introduit).
-   LA CORRECTION, hors du moteur : après chaque changement de monde, si la vue n'est pas celle de la main (`_vueMain`), la cible est recalculée pour le
-   monde affiché ; la vue posée par la main reste la sienne. Juge : redteam_toile_stable (rouge sur v158). */
-(function(){ var T=window.Toile; if(!T || !T.setTheme || T.setTheme.__v159) return;
-  /* le GENRE de cadrage d'un monde (les règles d'`autoView`) : Ritournelle ; un monde « fait de ses seules paroles » cadré serré (moins de neuf paroles) ou
-     en semis neuf ; un ancien monde. Entre deux mondes du même genre, la cible est déjà la bonne : on n'y touche pas (pas un point ne bouge). */
-  var NEUFS={esquille:1,bobinette:1,ritournelle:1,madrure:1,halin:1,brouillamini:1,chamade:1,volubilis:1,guingois:1,chantourne:1,mascaret:1,ramage:1};
-  function genre(){ try{ var t=T.getTheme(); if(t==='ritournelle') return 'rit'; if(!NEUFS[t]) return 'ancien'+(t==='halin'?'h':''); return (T.semisNeuf&&T.semisNeuf())?'neuf':'serre'; }catch(_){ return ''; } }
-  /* la cible se recalcule PENDANT que les graines se posent (une Toile ressemée, ou le lancement : leurs places bougent encore une seconde) et une dernière
-     fois quand elles sont posées : la vue suit leur mouvement, elle ne glisse pas après coup. Jamais sous le Studio (la Toile n'y est pas peinte), jamais
-     sur une vue posée par la main. */
-  var suivre=0, tS=0;
-  function recadre(){ if(!window._vueMain && typeof window.Toile_autoView==='function'){ window._recadreDemande=true; window.Toile_autoView(); } }
-  function studio(){ var s=document.getElementById('studioScreen'); return !!(s && s.classList.contains('show')); }
-  function suit(){ if(!suivre) return; try{ if(window._vueMain || performance.now()-tS>12000){ suivre=0; return; }
-      if(studio()) tS=performance.now();   /* le compte part de la fermeture du Studio */
-      else { var st=window.Toile_state&&Toile_state(); recadre(); if(st && !st.running && performance.now()-tS>1200){ suivre=0; return; } } }catch(_){ suivre=0; return; }
-    setTimeout(suit, 120); }
-  function aSuivre(){ tS=performance.now(); if(!suivre){ suivre=1; setTimeout(suit, 120); } }
-  var f=T.setTheme; T.setTheme=function(){ var g0=genre(), r=f.apply(this, arguments);
-    try{ if(genre()!==g0 && !window._vueMain){ recadre(); aSuivre(); } }catch(_){ } return r; };
-  T.setTheme.__v159=1;
-  aSuivre();   /* au lancement, la cible était calculée pendant que les graines se posaient (zoom 1,1905 au lieu de 1,1988 une fois posées : 1,9 pt) */
 })();
 </script>
 <script id="lot-V146-MAREE">

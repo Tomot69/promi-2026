@@ -15,6 +15,7 @@ non commités — le relevé `?mesure=1` de l'Aura l'affiche, pour que Tom véri
 Lancement (port 8752, en dur dans tous les outils ; écoute sur 0.0.0.0 pour l'iPhone) :
     python3 serveur.py
 """
+import time
 import http.server, socketserver, subprocess, json, os, sys, re, hashlib
 
 PORT = 8752
@@ -108,6 +109,24 @@ class SansCache(http.server.SimpleHTTPRequestHandler):
     def do_POST(self):
         # v145 (C-112, R-B) — `/mesure` : ce que la page a mesuré SUR L'APPAREIL (avec `?mesure=1` : les images d'une plantation, d'un retrait,
         # d'un « tenir » ; ou une page de variantes) est gardé, une ligne par envoi, dans mesures/appareil.jsonl — avec l'adresse de l'appareil.
+        # v160 (Tom, C-179) — `/export` : avec `?export=1`, la page envoie une copie complète de ses données (localStorage) et de l'écran (largeur,
+        # hauteur, échelle, thème) ; elle est gardée dans etats/tom-<date>.json (hors git), pour que le banc rejoue EXACTEMENT l'état de Tom.
+        # Réseau local seulement : une adresse qui n'est pas privée est refusée.
+        if self.path.split('?')[0] == '/export':
+            ip = self.client_address[0]
+            prive = ip.startswith(('127.', '10.', '192.168.', '::1', '::ffff:127.', '::ffff:192.168.', '::ffff:10.')) or any(ip.startswith('172.%d.' % k) or ip.startswith('::ffff:172.%d.' % k) for k in range(16, 32))
+            if not prive:
+                self.send_response(403); self.end_headers(); return
+            try:
+                n = min(int(self.headers.get('Content-Length') or 0), 20000000); corps = self.rfile.read(n).decode('utf-8', 'replace')
+                d = json.loads(corps); d['_de'] = ip; d['_recu'] = time.strftime('%Y-%m-%d %H:%M:%S')
+                os.makedirs(os.path.join(ICI, 'etats'), exist_ok=True)
+                nom = 'tom-%s.json' % time.strftime('%Y%m%d-%H%M%S')
+                with open(os.path.join(ICI, 'etats', nom), 'w', encoding='utf-8') as f: json.dump(d, f, ensure_ascii=False)
+                self._envoie(json.dumps({'ok': True, 'fichier': nom}).encode('utf-8'), 'application/json')
+            except Exception as e:
+                self.send_response(400); self.end_headers()
+            return
         if self.path.split('?')[0] != '/mesure':
             self.send_response(404); self.end_headers(); return
         try:

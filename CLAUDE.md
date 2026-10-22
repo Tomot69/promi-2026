@@ -3,6 +3,23 @@
 > Ce fichier est relu à chaque session. Il fait autorité sur tout le reste.
 > Si une consigne de l'utilisateur contredit ce fichier, **demander avant d'agir**.
 
+> ## ⚑ PORTE DE QUALITÉ — RÈGLE PERMANENTE (Tom, 22 oct. 2026, C-178). ELLE S'APPLIQUE À CHAQUE LOT ET PASSE AVANT TOUT LE RESTE.
+> *Pourquoi* : v159 a AGGRAVÉ la Toile sur l'iPhone de Tom (dès l'ouverture, les dalles écrasées et superposées). « Un lot qui casse ce qui marchait
+> n'est pas livré. »
+> **Un lot n'est « livré » que si les six conditions sont remplies. Sinon : écrire « NON LIVRÉ » et pourquoi, ne PAS commiter sur main, et demander.**
+> - **A1 · NON-RÉGRESSION.** Avant de commiter, servir la version précédente à côté (`git show <hash>:app.html > zz-vNNN.html`) et comparer, sur les
+>   mêmes chemins, tout ce que le lot peut toucher. Tout ce qui était bon avant l'est encore, au pixel ou à la mesure. Une seule régression = non livré.
+> - **A2 · L'ÉTAT RÉEL DE TOM.** Le banc rejoue AUSSI l'état exporté de Tom (`?export=1` → `etats/tom-*.json`, `banc_tom.contexte_tom`), pas seulement
+>   des jeux de test. Un défaut que Tom voit et que le banc ne voit pas : le banc a tort.
+> - **A3 · ÉCHELLE DE SAFARI.** Toute mesure de mise en page à l'échelle 1 ET à l'échelle 0,79 (Safari iPhone : fenêtre 330 × 714 ou 390 × 692).
+> - **A4 · MISE EN PAGE.** Pour tout élément d'interface touché, mesures à l'appui, clair et sombre, clavier ouvert et fermé, contenu court et long :
+>   rien ne déborde de son cadre ni de l'écran, aucun texte coupé ou caché ; aucun recouvrement ; les espacements de l'échelle (aucun inventé, aucune
+>   ligne qui saute) ; un texte remplit sa largeur : aucune ligne anormalement courte, sauf la dernière.
+> - **A5 · PÉRIMÈTRE.** On ne touche que ce que le lot demande. Tout ce que Tom a déclaré bon est GELÉ. Si une correction exige de toucher autre chose :
+>   s'arrêter et demander.
+> - **A6 · HONNÊTETÉ.** Un point non reproduit, non mesuré ou non jugé est écrit comme tel, jamais « réglé ».
+> Le rapport de chaque lot commence par le tableau A1 à A6, « tenu » ou « non tenu ».
+
 > ## ⚑ À CHAQUE NOUVELLE SESSION, AVANT TOUTE AUTRE CHOSE
 > **Relancer le serveur et donner les trois adresses complètes, en tête du premier
 > message, sans que Tom ait à le demander.**
