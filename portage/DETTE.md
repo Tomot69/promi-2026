@@ -130,6 +130,7 @@
 | E-15 | **Les documents nomment « Nuée » ce que l'app affiche « Cercle »**, et « le Cercle » ce qu'elle affiche « Ma Parole ! » (blocs d'avant le 30 sept.) | CLAUDE.md, tête | Le dossier de portage écrit au lexique d'aujourd'hui |
 | E-16 | **Le corps du Cercle sombre `#5D4978`** : « valeur posée par v113, pas une citation de Tom », puis « validé » (v123) | CLAUDE.md v122, v123 | Rien |
 | E-17 | **L'achat d'un design** : « 2 € » dans l'app depuis v118 ; les blocs d'avant écrivent 1 € | CLAUDE.md v118 | 2 € |
+| E-18 | **Le Studio, deux lourdeurs du moteur, non traitées dans le prototype (Q569, Tom v159)** : ① à l'arrivée sur Volubilis, `repaintWorld` peint le monde d'un bloc (jusqu'à 720 ms) ; ② sous Touffe, glisser la jauge des couleurs reste lourd (p95 ≈ 100 ms sous charge), le temps ne se lit pas dans le JavaScript (la peinture). Aussi : la silhouette de la jauge de Ramage et de Volubilis (0,5 à 1,6 s d'un bloc) n'est pas préparée au repos | CLAUDE.md v158–v159 ; C-175 ; `redteam_studio_saccade` | En Swift : construire le monde d'arrivée hors du fil principal (préparé pendant le glissé, posé à l'arrivée) ; mesurer Touffe sous la jauge avec Instruments (Core Animation) avant de choisir ; préparer les silhouettes de la jauge en tâche de fond |
 
 ---
 

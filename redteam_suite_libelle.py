@@ -10,8 +10,8 @@ comme dans redteam_clavier_onb), clair et sombre, une parole courte et une parol
       « Petite ou grande promesse » — 4 pt d'air au moins ; il ne descend jamais sous la consigne (le trait est dessous) ; « trace pour planter » est entier ;
   B · clavier refermé : de même ;
   C · les pages + (Promi, Chiche, Cercle) : aucun bouton → ni autre bouton ne recouvre le libellé « trace pour … », clavier ouvert sur la phrase.
-⚠ Une parole de cinq lignes fait déborder la page (déjà en v156) : « Petite ou grande promesse » passe sur le trait et le → n'a plus de place libre —
-  ROUGE PAR DÉCISION À PRENDRE (Q568) ; la courte et la moyenne (trois lignes) sont jugées.
+  D · ⚑ v159 (chef de chantier, Q568) : au-delà de trois lignes la parole se réduit (comme sur la page +) : elle tient en trois lignes, « Petite ou grande
+      promesse » reste, au-dessus de la consigne, rien ne passe sur le trait. Une parole de cinq lignes est jugée (rouge sur v158 : 5 lignes à 35 px).
 Preuve : `--fichier=zz-av157.html` rougit (A).
 """
 import sys; sys.path.insert(0, '.')
@@ -36,6 +36,10 @@ MESURE = """(o)=>{ const D=document.getElementById('device').getBoundingClientRe
   const touche=[]; bt.forEach(b=>L.forEach(l=>{ if(b[3]>l[1]-4 && b[1]<l[3]+4 && b[4]>l[2]-4 && b[2]<l[4]+4) touche.push(b[0]+' / '+l[0]+' '+l.slice(1).map(v=>Math.round(v)).join(',')); }));
   const lb=tr?(tr.getBoundingClientRect().bottom-D.top)/k:844; const dessous=bt.filter(b=>b[4]>lb+0.5).map(b=>b[0]);
   return {dessous:dessous, touche:touche, boutons:bt.map(b=>b[0]+' '+b.slice(1).map(v=>Math.round(v)).join(',')), entier:entier, n:L.length}; }"""
+GEOM = """()=>{ const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; const ph=document.getElementById('onbPh'), so=document.getElementById('onbSous'), tt=document.getElementById('onbTrace'), tr=document.getElementById('onbTrait');
+  const cs=getComputedStyle(ph), lh=parseFloat(cs.lineHeight), r=ph.getBoundingClientRect(), y=q=>(q-D.top)/k; const rs=so&&getComputedStyle(so).display!=='none'?so.getBoundingClientRect():null;
+  const rg=document.createRange(); rg.selectNodeContents(ph); const tops=[...rg.getClientRects()].filter(q=>q.width>1).map(q=>q.top+q.height/2).sort((a,b)=>a-b); let L=0, der=-1e9; tops.forEach(t=>{ if(t-der>lh*k/2){ L++; der=t; } });
+  return {lignes:Math.max(L, Math.round(r.height/lh)), fs:cs.fontSize, phBas:y(r.bottom), sous:!!rs, sousHaut:rs?y(rs.top):0, sousBas:rs?y(rs.bottom):0, traceHaut:y(tt.getBoundingClientRect().top), trait:y(tr.getBoundingClientRect().top)}; }"""
 ONB = {'textes': ['#onbTrace', '#onbPh', '#onbSous', '#onbDit', '#onbQuid'], 'boutons': ['#onbSuite'], 'libelle': '#onbTrace'}
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -49,6 +53,10 @@ with sync_playwright() as p:
             m = pg.evaluate(MESURE, ONB); kb = pg.evaluate("()=>window.visualViewport.height")
             juge('[%s] A · clavier ouvert (%d pt visibles) : le bouton → ne touche aucune ligne de texte ; « trace pour planter » entier' % (T, kb), m['boutons'] and not m['touche'] and m['entier'] and not m['dessous'],
                  'bouton %s · touché : %s · entier %s · sous la consigne (sur le trait) : %s · %d lignes' % (m['boutons'], m['touche'][:3], m['entier'], m['dessous'], m['n']))
+            g = pg.evaluate(GEOM)
+            juge('[%s] D · la parole tient en trois lignes au plus (Q568) ; « Petite ou grande promesse » reste, au-dessus de la consigne ; rien sur le trait' % T,
+                 g['lignes'] <= 3 and g['sous'] and g['sousBas'] <= g['traceHaut'] - 4 and g['phBas'] <= g['sousHaut'],
+                 '%d lignes à %s px · phrase → %.1f · « Petite… » %.1f → %.1f · consigne %.1f · trait %.1f' % (g['lignes'], g['fs'], g['phBas'], g['sousHaut'], g['sousBas'], g['traceHaut'], g['trait']))
             pg.evaluate("()=>{ const i=document.getElementById('onbIn'); if(i) i.blur(); }"); pg.wait_for_timeout(900)
             m = pg.evaluate(MESURE, ONB)
             juge('[%s] B · clavier refermé : de même' % T, not m['touche'] and m['entier'] is not False, 'bouton %s · touché : %s · entier %s' % (m['boutons'], m['touche'][:3], m['entier']))

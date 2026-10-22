@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v158', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v159', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2976,7 +2976,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       feu=true; try{ t.click(); } finally { feu=false; }
       if(!k) setTimeout(function(){ if(sansCompte()) window._onbCompte(null, null, {
         lab:'Garder ton achat', tx:'Il est sur ce téléphone seulement. Garde ta Toile pour ne pas le perdre.', net:true }); }, 900);   /* v157 (C-170) : derrière lui, le Studio NET */
-    }, { lab:'Avant d’acheter', tx:'Sans compte, ton achat reste sur ce téléphone : si tu en changes ou supprimes l’app, il est perdu.', tard:'Acheter sans compte' });
+    }, { lab:'Avant d’acheter', tx:'Sans compte, ton achat reste sur ce téléphone : si tu en changes ou supprimes l’app, il est perdu.', tard:'Acheter sans compte', achat:true });   /* v159 (C-170) : cet encart est celui de la VALIDATION du paiement */
   }, true);
 })();
 </script>
@@ -37384,7 +37384,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(!pr.length) return;                               /* sans dalle sur la Toile, le curseur d'avant reste */
       var clair=document.getElementById('device').classList.contains('light');
       var M=Toile.mondeCourant?Toile.mondeCourant():{};
-      var k=[M.m,clair,pr[0].id].join('|');   /* ⚑ v158 (C-175) : la silhouette ne dépend ni de la teinte ni de la palette (elle est repeinte à l'encre) — elle n'est plus refaite à chaque cran de la jauge (sous Touffe : 533 ms par rendu) */
+      var k=[M.m,clair,pr[0].id,(Toile.semisNeuf&&Toile.semisNeuf())?1:0].join('|');   /* v159 : et la famille du semis en place (la forme d'une dalle en dépend) */   /* ⚑ v158 (C-175) : la silhouette ne dépend ni de la teinte ni de la palette (elle est repeinte à l'encre) — elle n'est plus refaite à chaque cran de la jauge (sous Touffe : 533 ms par rendu) */
       if(cv && window._jaugeTenue) return;   /* pendant qu'on fait glisser la jauge, rien ne se refait */
       var cv=th.querySelector('canvas');
       if(cv && cle===k) return;
@@ -37405,6 +37405,29 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     }catch(_){}
   }
   setInterval(peindre, 400);
+  /* ⚑ v159 (Tom, C-175 suite : « c'est mieux, mais ça saccade encore un peu ») — mesuré au Studio (25 paroles, dix mondes glissés) : la silhouette de la
+     jauge, refaite 1,2 s après l'arrivée sur un monde, est UN bloc de 50 à 490 ms (Ramage, Touffe…) — pendant que l'aperçu vivant du monde bouge : un
+     accroc à chaque monde visité. Elle est maintenant PRÉPARÉE AU REPOS, sur l'accueil, avant d'ouvrir le Studio : une silhouette par tâche, pour chaque
+     monde de la même famille de semis que la Toile, seulement quand l'accueil est posé (aucun toucher depuis 3 s, aucune page ouverte, rien de « tenir »
+     en cours ni fini depuis moins de 6 s, la Toile au repos) — la règle des tâches de fond (v143). Au Studio, elle est alors déjà là. */
+  var ORDRE=['encre','touffe','brouillamini','halin','esquille','mosaique','braille','pixel','ramage','guingois','chantourne','volubilis','madrure','chamade','ritournelle','bobinette','mascaret','terrazzo','gravure','sillons'];
+  var NEUFS={esquille:1,bobinette:1,ritournelle:1,madrure:1,halin:1,brouillamini:1,chamade:1,volubilis:1,guingois:1,chantourne:1,mascaret:1,ramage:1};
+  var LOURDS={volubilis:1, ramage:1};   /* leur dalle seule coûte 0,5 à 1,6 s d'un bloc (Q569, le moteur) : pas sur l'accueil, où un toucher l'attendrait */
+  function famille(m, n){ return (NEUFS[m] && (m==='ritournelle' || n>=9))?1:0; }
+  function accueilPose(){ try{ if(performance.now()-tDoigt<3000) return false; if(window._tenirAnime || window._instant || (window._tenirFinT && performance.now()-window._tenirFinT<6000)) return false;
+      if(window._evolRecente && window._evolRecente(4000)) return false; if(document.hidden) return false;
+      var st=window.Toile_state&&Toile_state(); if(st && st.running) return false; var cv=document.getElementById('toileCv'); if(!cv) return false; var r=cv.getBoundingClientRect(); if(!r.width) return false;
+      var e=document.elementFromPoint(r.left+r.width/2, r.top+r.height*0.45); return !!(e && e.id==='toileCv'); }catch(_){ return false; } }
+  function prepare(){ try{ if(!accueilPose() || !window._rendDalle || !window.Toile || !Toile.dalleAbs) return;
+      var pr=(typeof promises!=='undefined'?promises:[]).filter(function(p){return !p.draft && Toile.dalleAbs(p.id);}); if(!pr.length) return;
+      var clair=document.getElementById('device').classList.contains('light'), fam=(Toile.semisNeuf&&Toile.semisNeuf())?1:0, n=0;
+      try{ n=Toile_cellules().c.filter(function(c){ return c.kind!=='gray'; }).length; }catch(_){ }
+      var M=Toile.mondeCourant?Toile.mondeCourant():{}, P=M.p, H=M.h;
+      for(var i=0;i<ORDRE.length;i++){ var m=ORDRE[i]; if(famille(m, n)!==fam) continue; var k=[m,clair,pr[0].id,fam].join('|'); if(k in memo || LOURDS[m]) continue;
+        var src=window._rendDalle(pr[0].id, 64, 64, {monde:{m:m, p:P, h:H}}); if(src) memo[k]=src; else memo[k]=null; window._silhouettesPretes=(window._silhouettesPretes||0)+1; return; }   /* une seule par tâche */
+    }catch(_){ } }
+  setInterval(prepare, 700);
+  window._silhouettes=function(){ return Object.keys(memo).filter(function(k){ return !!memo[k]; }); };
 })();
 </script>
 <style id="lot-COUPE-V20-css">
@@ -37486,7 +37509,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #accRappelCompte{position:absolute;inset:0;z-index:320;display:none;background:rgba(var(--c-noir01-2-rgb),.5);--onb-ink:var(--c-creme95);--onb-inv:var(--c-brun09);--onb-fond:var(--c-brun03)}
 #device.light #accRappelCompte:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){--onb-ink:var(--c-brun09);--onb-inv:var(--c-creme95);--onb-fond:var(--c-creme95)}
 #accRappelCompte.vu{display:block}
-#accRappelCompte.sur-studio{background:transparent}   /* v156 (C-170) : devant le Studio, le fond est la Toile du Studio floutée, en flaques — plus de voile */
+#accRappelCompte.sur-studio{background:transparent}
+#accRappelCompte.achat-valide{background:transparent}   /* v159 (C-170) : dès la validation du paiement, aucun voile */   /* v156 (C-170) : devant le Studio, le fond est la Toile du Studio floutée, en flaques — plus de voile */
 </style>
 <style id="lot-V146-ONB-css">
 /* ⚑ v146 (Tom, 14 oct. 2026, C-124) — LES TEXTES DE L'ONBOARDING. Les TAILLES et la mise en page valent dans les deux modes ; les COULEURS en clair seulement
@@ -37846,6 +37870,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   /* les cotes sous la phrase se DÉRIVENT de son bas réel (§8 : un texte qui passe à la ligne) */
   function placer(){
     var ph=document.getElementById('onbPh'); if(!ph) return;
+    /* ⚑ v159 (chef de chantier, Q568) — au-delà de TROIS lignes, la parole se réduit, comme sur la page + (34 → 30) : un pas de 1 px à la fois, jusqu'à
+       tenir en trois lignes (22 px au plus bas) ; l'interligne et la chasse suivent la taille (66 / 35, −1,05 / 35). « Petite ou grande promesse » reste ;
+       rien ne passe sur le trait, et le → garde sa place libre. Jamais sur le prénom. */
+    try{ ph.style.removeProperty('font-size'); ph.style.removeProperty('line-height'); ph.style.removeProperty('letter-spacing');
+      if(etape!=='prenom'){ var _fs=35; while(_fs>22 && Math.round(ph.offsetHeight/(66*_fs/35))>3){ _fs-=1;
+          ph.style.setProperty('font-size', _fs+'px'); ph.style.setProperty('line-height', (66*_fs/35).toFixed(2)+'px'); ph.style.setProperty('letter-spacing', (-1.05*_fs/35).toFixed(3)+'px'); }
+        ph.setAttribute('data-taille', _fs); } }catch(_){ }
     /* v147 (C-124 §4) : sous la question « Quid… », la phrase descend (32 pt d'air) ; « Petite ou grande promesse » à 40 pt d'elle */
     var qd=document.getElementById('onbQuid'), dd=document.getElementById('onbDit'), qv=qd && qd.style.display!=='none' && etape!=='prenom';
     if(qv){ qd.style.top=(DIT_TOP+dd.offsetHeight+16)+'px'; ph.style.top=(DIT_TOP+dd.offsetHeight+16+qd.offsetHeight+32)+'px'; } else ph.style.top='';
@@ -38171,6 +38202,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function purgeFlou(){ try{ [].forEach.call(document.querySelectorAll('#achatFond, canvas.passage-flaques[data-flou]'), function(c){ if(c.parentNode) c.parentNode.removeChild(c); });   /* retirée de l'écran ; le passage, lui, va à son terme (le déverrouillage change de monde à sa fin) */
       var st=document.getElementById('studioScreen'); if(st) st.classList.remove('stp-verrou'); window._fondAchat=null; window._fondAchatPose=null; }catch(_){ } }
   window._purgeFlouAchat=purgeFlou;
+  /* ⚑ v159 (Tom, C-170 complément) — « À partir de l'écran de validation du paiement, TOUT ce qui est derrière est net, sur tous les écrans qui suivent, pas
+     seulement sur “Garder ton achat”. Avant la validation, le flou en flaques reste. » Dans le prototype, la validation est le toucher qui achète, sur
+     l'encart « Avant d'acheter » (« Acheter sans compte », ou un compte). À cet instant : les couches floutées de l'achat s'en vont (`purgeFlou`), le
+     verrou du monde tombe (plus de flou sur la Toile du Studio ni sur son panneau), l'hôte des encarts n'a plus de voile ; l'encart sort en flaques sur
+     l'image NETTE ; le déverrouillage ne passe plus par l'aperçu flouté. Juge : redteam_achat_valide. */
+  function valideAchat(){ try{ window._achatValideT=performance.now(); purgeFlou(); var st=document.getElementById('studioScreen');
+      if(st && st.classList.contains('show')){ var bg=document.getElementById('stBg'); if(bg){ bg.style.setProperty('transition','none','important'); setTimeout(function(){ bg.style.removeProperty('transition'); }, 900); }   /* le flou du verrou part d'un coup : pas de fondu de filtre */
+        st.classList.remove('world-locked'); st.classList.remove('stp-verrou'); }
+      var h=document.getElementById('accRappelCompte'); if(h) h.classList.add('achat-valide'); }catch(_){ } }
+  window._valideAchat=valideAchat;
   function netStudio(){ try{ var bg=document.getElementById('stBg'), st=document.getElementById('studioScreen'); if(!bg || !bg.width || !st || !st.classList.contains('show')) return null; var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg, 0, 0, 390, 844); return {net:c}; }catch(_){ return null; } }
   function fondStudio(){ var f=window._fondAchat; if(f && performance.now()-f.t<800) return f; if(!studioDevant()) return null; return prepareFondStudio(); }
   function imageToile(){ try{ var tc=document.getElementById('toileCv'); if(!tc||!tc.width) return null; var c=document.createElement('canvas'); c.width=tc.width; c.height=tc.height; c.getContext('2d').drawImage(tc,0,0); return c; }catch(_){ return null; } }
@@ -38211,6 +38252,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        gauche (le balayage) : la Toile qui est derrière lui le RECOUVRE EN FLAQUES (650 ms) ; dans le même temps le panneau du compte NAÎT en flaques à sa
        place (il ne glisse plus du bas). */
     if(o.net) purgeFlou();   /* v158 (C-170) : plus aucune couche floutée sur l'écran quand le second encart s'ouvre */
+    if(!o.net && !o.achat) hote.classList.remove('achat-valide');
     var FN=o.net?(netStudio()||{net:imageToile()}):null, FS=o.net?null:fondStudio(), fin=document.getElementById('onbFin'), imF=FS?FS.flou:(FN?FN.net:imageToile()), vF=document.getElementById('onbV');
     if(fin && fin.style.display!=='none'){ if(imF && vF && !reduitOnb()){ window._passageFlaques(vF, {mode:'couvre', devant:true, rect:rectDe(fin, 10), image:imF, duree:650, lent:LENT_ONB(), fin:function(c){ fin.style.display='none'; if(c && c.canevas.parentNode) c.canevas.remove(); }}); } else fin.style.display='none'; }
     var _ot=document.getElementById('onbTard'); if(_ot) _ot.style.display='none';   /* v141 : le panneau du compte porte SON « Plus tard » */
@@ -38230,6 +38272,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     try{ if(imF && !reduitOnb()) window._passageFlaques(hote, {mode:'ouvre', devant:true, z:30, rect:rectDe(p, 4), image:imF, duree:800, lent:LENT_ONB()}); }catch(_){ }
     var clos=false;
     function ferme(k){ if(clos) return; clos=true;
+      if(o.achat){ valideAchat(); FS=null; FN=netStudio()||{net:imageToile()}; }   /* v159 (C-170) : le toucher qui achète — dès lui, tout ce qui est derrière est NET */
       if(k){ LS.s('promi_compte','demande-'+k); try{ if(window.promiConnexion) window.promiConnexion(k); }catch(_){} }
       else LS.s('promi_compte', LS.g('promi_compte')||'plus-tard');
       /* v148 (C-141 §10.2) : il ne glisse plus vers le bas — la Toile le RECOUVRE en flaques (500 ms), puis il est retiré */
@@ -41371,10 +41414,43 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var reduit=false; try{ reduit=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
     bg.style.setProperty('transition','none','important');   /* le flou du verrou ne se retire plus par un fondu : la transition est coupée, et la classe qui porte le flou part tout de suite */
     st.classList.remove('stp-verrou'); setTimeout(function(){ bg.style.removeProperty('transition'); }, 900);
-    if(reduit || !window._passageFlaques){ setTimeout(applique, 60); return true; }
+    if(reduit || !window._passageFlaques || (window._achatValideT && performance.now()-window._achatValideT<15000)){ setTimeout(applique, 60); return true; }   /* v159 (C-170) : après la validation du paiement, plus d'aperçu flouté — le monde est déjà net */
     try{ var im=document.createElement('canvas'); im.width=bg.width; im.height=bg.height; var g=im.getContext('2d'); g.filter='blur('+(1.4*bg.width/390)+'px)'; g.drawImage(bg,0,0); g.filter='none'; im.__flou=1;
       var ctl=window._passageFlaques(st, {mode:'ouvre', apres:bg, rect:[0,0,390,844], image:im, duree:700, fin:function(){ setTimeout(applique, 60); }});
       if(ctl && ctl.canevas){ ctl.canevas.id='stDeverrou'; ctl.canevas.style.setProperty('border-radius','36px'); } else setTimeout(applique, 60); window._deverrouT=performance.now(); }catch(_){ setTimeout(applique, 60); } return true; };
+})();
+</script>
+<script id="lot-V159-VUE">
+/* ⚑ v159 (Tom, C-177) — « Sous certains mondes (Éclisse…), les dalles colorées s'empilent ; parfois on ouvre une page, on revient à la Toile, et
+   elles ne sont plus à leur position. » CE QUI A ÉTÉ TROUVÉ (banc comme Tom, WebKit) : les GRAINES ne bougent jamais (20 mondes × 5 et 25 paroles ×
+   toutes les pages ouvertes puis fermées, au point près) — c'est la VUE (le zoom et le cadrage) qui change. Le cadrage automatique (`autoView`) n'est
+   recalculé qu'à une plantation, un retrait ou un recadrage ; un changement de monde au Studio le laisse tel quel (v46 : « changer de monde laisse la vue
+   où la main l'a mise »). Mais quand la vue n'est PAS celle de la main, elle garde alors la CIBLE calculée pour un autre monde : sous peu de paroles, les
+   mondes « faits de leurs seules paroles » (Bobinette, Mascaret, Ritournelle…) se cadrent serré (zoom jusqu'à 3,6 à 7) ; revenu sur Éclisse, la Toile
+   glisse vers CE cadrage-là à la fermeture du Studio — mesuré : Éclisse à 5 paroles, vue 1,19 au départ, 1,68 après être passé par Bobinette et
+   Ritournelle ; les dalles plus grosses, serrées et décalées de 267 pt. Présent tel quel en v152 (aucun lot de v153 à v158 ne l'a introduit).
+   LA CORRECTION, hors du moteur : après chaque changement de monde, si la vue n'est pas celle de la main (`_vueMain`), la cible est recalculée pour le
+   monde affiché ; la vue posée par la main reste la sienne. Juge : redteam_toile_stable (rouge sur v158). */
+(function(){ var T=window.Toile; if(!T || !T.setTheme || T.setTheme.__v159) return;
+  /* le GENRE de cadrage d'un monde (les règles d'`autoView`) : Ritournelle ; un monde « fait de ses seules paroles » cadré serré (moins de neuf paroles) ou
+     en semis neuf ; un ancien monde. Entre deux mondes du même genre, la cible est déjà la bonne : on n'y touche pas (pas un point ne bouge). */
+  var NEUFS={esquille:1,bobinette:1,ritournelle:1,madrure:1,halin:1,brouillamini:1,chamade:1,volubilis:1,guingois:1,chantourne:1,mascaret:1,ramage:1};
+  function genre(){ try{ var t=T.getTheme(); if(t==='ritournelle') return 'rit'; if(!NEUFS[t]) return 'ancien'+(t==='halin'?'h':''); return (T.semisNeuf&&T.semisNeuf())?'neuf':'serre'; }catch(_){ return ''; } }
+  /* la cible se recalcule PENDANT que les graines se posent (une Toile ressemée, ou le lancement : leurs places bougent encore une seconde) et une dernière
+     fois quand elles sont posées : la vue suit leur mouvement, elle ne glisse pas après coup. Jamais sous le Studio (la Toile n'y est pas peinte), jamais
+     sur une vue posée par la main. */
+  var suivre=0, tS=0;
+  function recadre(){ if(!window._vueMain && typeof window.Toile_autoView==='function'){ window._recadreDemande=true; window.Toile_autoView(); } }
+  function studio(){ var s=document.getElementById('studioScreen'); return !!(s && s.classList.contains('show')); }
+  function suit(){ if(!suivre) return; try{ if(window._vueMain || performance.now()-tS>12000){ suivre=0; return; }
+      if(studio()) tS=performance.now();   /* le compte part de la fermeture du Studio */
+      else { var st=window.Toile_state&&Toile_state(); recadre(); if(st && !st.running && performance.now()-tS>1200){ suivre=0; return; } } }catch(_){ suivre=0; return; }
+    setTimeout(suit, 120); }
+  function aSuivre(){ tS=performance.now(); if(!suivre){ suivre=1; setTimeout(suit, 120); } }
+  var f=T.setTheme; T.setTheme=function(){ var g0=genre(), r=f.apply(this, arguments);
+    try{ if(genre()!==g0 && !window._vueMain){ recadre(); aSuivre(); } }catch(_){ } return r; };
+  T.setTheme.__v159=1;
+  aSuivre();   /* au lancement, la cible était calculée pendant que les graines se posaient (zoom 1,1905 au lieu de 1,1988 une fois posées : 1,9 pt) */
 })();
 </script>
 <script id="lot-V146-MAREE">

@@ -129,6 +129,31 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v159 (22 oct. 2026) — LES DALLES QUI « NE SONT PLUS À LEUR PLACE » (LA VUE D'UN AUTRE MONDE), NET DÈS LA VALIDATION DU PAIEMENT, LA SILHOUETTE DE LA JAUGE PRÉPARÉE AU REPOS, LA PAROLE LONGUE DE L'ONBOARDING. (Décisions Tom et chef de chantier.)
+> **Validés par Tom : C-173, C-176, C-170 (« Garder ton achat »). Q568 tranchée (chef de chantier). Q569 reportée à Swift (portage/DETTE.md E-18). Le point d'arrêt tient : pas d'E4.**
+> **⚑ C-177 — CE QUI BOUGE EN REVENANT À LA TOILE EST LA VUE, PAS LES DALLES.** Mesuré (banc comme Tom, 20 mondes × 5 et 25 paroles × sept pages) : les
+> graines ne bougent jamais. Un changement de monde au Studio ne recalculait pas le cadrage automatique : la Toile glissait, à la fermeture, vers la CIBLE
+> d'un autre monde (les mondes « faits de leurs seules paroles » se cadrent serré à moins de neuf paroles) — Éclisse à 5 paroles après Bobinette et
+> Ritournelle : zoom 1,19 → 1,68, les dalles décalées de 112 à 267 pt. Présent tel quel en v152 (le moteur n'a pas changé depuis v147). *Corrigé hors du
+> moteur* (`lot-V159-VUE`) : quand le GENRE de cadrage change (ancien · serré · semis neuf · Ritournelle) et que la vue n'est pas celle de la main
+> (`_vueMain`), la cible est recalculée, puis suivie pendant que les graines se posent (jamais sous le Studio) ; au lancement aussi (la cible était prise
+> avant que les graines soient posées : 1,9 pt). *La règle* : **une cible de vue calculée pour un monde n'est jamais gardée pour un autre ; un juge de
+> géométrie compare la Toile À L'ÉCRAN (graine × vue), pas les seules graines.** « S'empilent » tel quel : non reproduit (Q571). Juge :
+> **`redteam_toile_stable.py`** (sept pages, dont le Studio en aller-retour qui croise les familles de semis ; 1 pt à l'écran ; rouge sur v158 : 112 pt).
+> **⚑ C-177, LA SECONDE CAUSE EST DANS LE MOTEUR — NON CORRIGÉE (Q573)** : à neuf paroles et plus, un aller-retour au Studio qui traverse les deux familles de
+> semis ressème la Toile ; chaque parole reprend `p.place` (une seule place, réécrite par l'autre famille, datée de la plantation), puis le relâchement la
+> pose ailleurs : Ramage à 25 paroles, 15 à 56 pt (v158 aussi). Une place par famille notée hors du moteur ne ramène qu'à 15 pt (le relâchement ne revient
+> pas au même point) : essai retiré. `redteam_toile_stable` peut y rougir par intermittence (80/80 à la passe complète de v159 ; pris trois fois sur Ramage en cours de lot).
+> **⚑ C-170 (complément) — DÈS LA VALIDATION DU PAIEMENT, TOUT EST NET** (le toucher qui achète, sur « Avant d'acheter ») : `valideAchat` (les couches
+> floutées partent, le verrou du monde tombe d'un coup — sans fondu de filtre —, l'hôte des encarts n'a plus de voile, l'encart sort sur l'image nette,
+> le déverrouillage ne passe plus par l'aperçu flouté). Avant : le flou en flaques reste. Juge : **`redteam_achat_valide.py`** (10 ; rouge sur v158).
+> **⚑ C-175 (suite)** : la silhouette de la jauge (un bloc de 50 à 490 ms 1,2 s après l'arrivée sur un monde, pendant que l'aperçu bouge) est PRÉPARÉE AU
+> REPOS sur l'accueil, une par tâche (la règle des tâches de fond de v143), pour les mondes de la famille de semis en place — Ramage et Volubilis jamais
+> (Q569). Non jugé au calme. Juge : `redteam_studio_saccade` E.
+> **⚑ Q568 — AU-DELÀ DE TROIS LIGNES, LA PAROLE DE L'ONBOARDING SE RÉDUIT** (35 px, un pas d'1 px à la fois, 22 au plus bas ; l'interligne et la chasse
+> suivent) ; « Petite ou grande promesse » reste ; rien sur le trait ; le → garde sa place libre. Juge : `redteam_suite_libelle` D (rouge sur v158 : la
+> parole moyenne passait déjà à quatre lignes et « Petite… » recouvrait la consigne). Q572 : la parole de cinq lignes descend à 23 px.
+
 ### ⚑ v158 (21 oct. 2026) — RETOURS iPHONE DE TOM SUR v157 : LE X À LA TAILLE DU X D'« INDEX », PLUS AUCUN FLOU SUR « GARDER TON ACHAT », LE STUDIO SANS SACCADE SOUS LA JAUGE, LE → QUI NE RECOUVRE PLUS LA CONSIGNE. (Décisions Tom.) Ce bloc CORRIGE v157 (C-173 : la taille du X calculée page par page).
 > **Validés par Tom : C-172, C-174, C-171. Q565 acceptée (PromiLate n'a qu'une graisse). Le point d'arrêt tient : pas d'E4.**
 > **⚑ C-173, RÉCIDIVE — LE MÊME X PARTOUT, À LA TAILLE EXACTE DU X DE « INDEX »** (35 px, lue sur le titre de l'Index, `window._tailleX`), PromiLate, la couleur

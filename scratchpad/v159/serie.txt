@@ -1,0 +1,58 @@
+== redteam_echelle_onboarding { 12.60 24.14 27.31 }
+11 / 11
+== redteam_onb_sorties { 60.02 37.35 32.05 }
+  ✅  25 / 25
+== redteam_clavier_onb { 97.31 49.53 36.75 }
+  ✅  6 / 6
+== redteam_onboarding { 66.40 47.46 36.53 }
+  ✅  46 / 46 contrats tenus
+== redteam_onboarding_texte { 119.76 67.33 46.12 }
+  ✅ [clair] 11.1 · « Prénom, donc. » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px             25 px / 35 px
+  ✅ [clair] 11.1 · « Petite ou grande promesse… » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px 25 px / 35 px
+  ✅ [sombre] 11.1 · « Prénom, donc. » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px            25 px / 35 px
+  ✅ [sombre] 11.1 · « Petite ou grande promesse… » : 25 pt (v148 : −7 %, 71 % de la phrase), la phrase reste à 35 px 25 px / 35 px
+  ✅  47 / 47
+== redteam_ritournelle { 54.42 59.79 45.40 }
+63 / 63
+== redteam_guide { 14.25 36.60 38.89 }
+  ✅ [clair] studio · ⚑ v149 (C-145) : « Studio » 10 à 12 % plus grand que les autres mots-clés                             32.19 pt / 29 pt
+  ✅ [sombre] studio · ⚑ v149 (C-145) : « Studio » 10 à 12 % plus grand que les autres mots-clés                            32.19 pt / 29 pt
+  ✅  88 / 88
+== redteam_guide_studio { 269.31 119.64 71.00 }
+  ✅  7 / 7
+== redteam_guide_fond { 98.75 103.41 69.92 }
+  ✅ [clair] C · la fermeture du Studio, image par image : aucune image au-delà de 50 ms — NON JUGÉ (charge ≥ 4)    images > 50 ms : [216, 233, 105, 142, 76, 51, 247, 159, 94, 53, 65, 62] ; charge 84.4
+  ✅ [sombre] C · la fermeture du Studio, image par image : aucune image au-delà de 50 ms — NON JUGÉ (charge ≥ 4)   images > 50 ms : [111] ; charge 157.3
+  ✅  12 / 12
+== redteam_deplace { 157.33 116.33 78.42 }
+== redteam_toucher { 20.85 67.65 68.50 }
+  ❌ Brouillamini : toucher une dalle ouvre sa fiche (2 sur 3) — [('faire les crêpes', {'show': False, 'titre': 'planter un arbre', 'cur': 125}, 'dptTitre')]
+  ❌ Madrure : toucher une dalle ouvre sa fiche (2 sur 3) — [('nager le mardi', {'show': False, 'titre': 'courir dimanche', 'cur': 127}, 'dpMain')]
+  ❌ Chamade : toucher une dalle ouvre sa fiche (2 sur 3) — [('vider le composteur à deux', {'show': False, 'titre': "reprendre l'arrosage automatique", 'cur': 131}, 'dptTitre')]
+  ❌ Éclisse : toucher une dalle ouvre sa fiche (2 sur 3) — [('courir dimanche', {'show': False, 'titre': 'faire les crêpes', 'cur': 126}, 'dpMain')]
+== redteam_zoom { 33.06 56.00 63.36 }
+== redteam_accueil { 14.13 44.12 58.10 }
+== redteam_couleurs_ref { 562.21 203.39 115.00 }
+== redteam_decisions { 49.13 49.55 68.90 }
+102 / 102
+== redteam_joignable { 40.55 46.69 65.44 }
+5 / 5
+== redteam_ecrans { 48.27 56.10 66.13 }
+le selecteur Toile / Index est retire [sombre] OK  
+le selecteur Toile / Index est retire [clair]  OK  
+== redteam_volume { 37.34 49.20 62.15 }
+== redteam_registre { 37.34 49.20 62.15 }
+6 / 6
+== redteam_decoupe { 37.34 49.20 62.15 }
+== redteam_flash { 43.94 59.73 62.68 }
+  ❌ B1 · + → nuee : aucun flash au premier plan (39 images)  — #createSheet>#csBotBar à 5257 ms, 384 ms
+== redteam_croix { 92.99 61.62 62.18 }
+  ✅ [d 0.79] personne           C · sa couleur = celle du titre, à pleine opacité                rgb(247, 240, 222) / titre rgb(247, 240, 222) · opacité 1
+  ✅ [d 0.79] aide de l'Aura     C · sa couleur = celle du titre, à pleine opacité                rgb(247, 240, 222) / titre rgb(247, 240, 222) · opacité 1
+  ✅ [d 0.79] page + Chiche      C · sa couleur = celle du titre, à pleine opacité                rgb(247, 240, 222) / titre rgb(247, 240, 222) · opacité 1
+  ✅ [d 0.79] page + Nuée        C · sa couleur = celle du titre, à pleine opacité                rgb(247, 240, 222) / titre rgb(247, 240, 222) · opacité 1
+  ✅ [d 0.79] Peaufiner Chiche   C · sa couleur = celle du titre, à pleine opacité                rgb(247, 240, 222) / titre rgb(247, 240, 222) · opacité 1
+  ✅ [d 0.79] Nuée défilée       C · sa couleur = celle du titre, à pleine opacité                rgb(247, 240, 222) / titre rgb(247, 240, 222) · opacité 1
+  ✅ [d 0.79] Nuée vide défilée  C · sa couleur = celle du titre, à pleine opacité                rgb(247, 240, 222) / titre rgb(247, 240, 222) · opacité 1
+  ✅  537 / 537
+FIN

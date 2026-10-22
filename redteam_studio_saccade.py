@@ -57,6 +57,17 @@ with sync_playwright() as p:
     pg.evaluate("()=>{ window.__C.trames={}; window.__on=true; const c=document.querySelector('#studioScreen .closeb'); if(c) c.click(); }"); pg.wait_for_timeout(4000)
     apres = pg.evaluate("()=>{ window.__on=false; return [window.__C.trames, window._trameAttente?window._trameAttente():null]; }")
     juge('B · le Studio refermé, les trames gardées sont repeintes, il n\'en reste aucune en attente', apres[1] == [] or apres[1] is None, 'repeintes : %s · en attente : %s' % (apres[0], apres[1]))
-    er = [x for x in pg.erreurs if 'version.json' not in x]; juge('aucune erreur de page', not er, er[:2]); b.close()
+    er = [x for x in pg.erreurs if 'version.json' not in x]; juge('aucune erreur de page', not er, er[:2])
+    # E · ⚑ v159 (C-175 suite) : la silhouette de la jauge est préparée au repos sur l'accueil — au Studio, d'un monde à l'autre (même famille de semis),
+    #     elle n'est plus rendue (un bloc de 50 à 490 ms pendant que l'aperçu bouge)
+    ctx = B.contexte(b); B.toile_pleine(ctx, 5)
+    ctx.add_init_script("window.__RD=0; window.__RDon=false; (function w(){ if(window._rendDalle && !window._rendDalle.__w){ const f=window._rendDalle; const g=function(id,a,b2,o){ if(window.__RDon && a===64 && b2===64) window.__RD++; return f.apply(this,arguments); }; g.__w=1; Object.keys(f).forEach(k=>g[k]=f[k]); window._rendDalle=g; } setTimeout(w,100); })();")
+    pg = B.ouvre(ctx, F); pg.wait_for_timeout(16000)
+    pg.evaluate("()=>{ try{ setPremium(true); }catch(e){} window.__RDon=true; document.getElementById('studioBtn').click(); }"); pg.wait_for_timeout(2500); vus = []
+    for i in range(7):
+        B.glisse(pg, B.droite([300, 420], [90, 420], 10), pas=16); pg.wait_for_timeout(1700); vus.append(pg.evaluate("()=>Toile.getTheme()"))
+    n = pg.evaluate("()=>window.__RD")
+    juge('E · accueil posé 16 s, puis sept mondes au Studio (%s) : la silhouette de la jauge n\'est jamais rendue au Studio' % ','.join(vus), n == 0, '%d rendus de 64 px au Studio' % n)
+    b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
 sys.exit(0 if ok == len(res) else 1)
