@@ -146,6 +146,28 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v160c (23 oct. 2026) — Q574 (LE STUDIO REND LA VUE), C-180 (LA PAROLE LONGUE), C-175 (RAMAGE AU STUDIO). (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v160 (C-180 « non livré ») et v159 (`lot-V159-VUE`, reposé en partie).
+> **Validé par Tom : C-177 (« plus aucune dalle superposée »).** Q574, Q576 tranchées ; Q573, Q575 (et Q577) : un lot « moteur » à part, après les testeurs — **on ne touche
+> pas au moteur d'ici là.**
+> **⚑ Q574 — `lot-V159-VUE` REPOSÉ, SA PARTIE « STUDIO » SEULE, ET UNE SESSION DU STUDIO** : le Studio ouvert, la vue est TENUE — `window._vueMain` et
+> `window._recadreDemande` sont des ACCESSEURS (la synchronisation d'un ressemis écrivait « vue libre, recadrage demandé » et recadrait aussitôt pour le monde
+> traversé) ; refermé, elle est rendue : même genre de cadrage qu'à l'ouverture → la vue d'avant, au point près ; un autre genre choisi → recadrée et suivie
+> (v159). Hors du Studio, plus aucun recadrage au changement de monde (reposé tel quel, il suivait les changements de monde du banc de rendu : 81 images
+> sur 280). ⚠ Recadrer parce que les GRAINES ont bougé (le ressemis, Q573) est faux : Esquille à 1 parole sautait de 202 pt (5 → 1,173). Mesuré : plus aucun saut
+> de vue après le Studio (Terrazzo : 55 à 112 pt avant) ; `redteam_toile_stable` M 85/100, les 15 rouges = Q573 (graines à 0,9–1,3 pt) et Q575.
+> **⚑ C-180 — LA PAROLE LONGUE** (`composeParole`, onboarding) : composée ligne par ligne dans un cadre fixe (342 pt) — coupe aux espaces, chaque ligne remplie
+> (seule la dernière courte), un mot trop long coupé à la largeur, chaque ligne `white-space:nowrap` ; la même coupe clavier ouvert et fermé ; > 3 lignes →
+> 35 → 22 px ; à 22 px autant de lignes que la place au-dessus de « Petite ou grande promesse » et du trait ; au-delà, COUPE PROPRE : « Je me promets d’appeler
+> … » puis la fin de la parole (la parole entière est gardée). **Q576 : le champ n'a plus de limite** (80 avant, un reste). Juge **`redteam_parole_longue`**
+> (144 ; rouge sur v159 : 42/72).
+> **⚑ C-175 (B2) — RAMAGE AU STUDIO** : sa silhouette de jauge est un bloc de 237 à 308 ms (son premier rendu de la séance) qui tombait pendant l'arrivée ; elle
+> attend 3 s sans toucher (la préparer sur l'accueil au repos, essayé : son premier rendu laisse un état dans le moteur, le banc de rendu changeait sous Guingois — retiré). Arrivée : 246 ms (au calme, v160b) → 22 à 65 ms ; le bloc tombe
+> sur un Studio immobile. Juge **`redteam_studio_arrivee`** (rouge sur v160b). **Guingois, Mascaret, Chantourné : NON CORRIGÉS** — le coût est l'image de
+> l'aperçu (moteur) ; repeindre une image sur deux n'a rien gagné (le moteur rattrape le temps écoulé : chaque image coûte plus) — essai retiré (Q577).
+> ⚠ Volubilis (gelé) : 2,9 s d'un bloc à l'arrivée ; Tesselle : une image de 200 ms au repos — signalés, non touchés.
+> ⚠ **Halin à 1 parole au mauvais cadrage (1,163)** : 0 sur 24 isolé, 3 fois sur 4 dans les longues séries, en v160b comme en v160c — non jugé au calme (charge
+> 5,7 à 10,3), cause non nommée, rien corrigé.
+
 ### ⚑ v160 (23 oct. 2026) — C-177 : LES DALLES ENTASSÉES ÉTAIENT DANS LES DONNÉES DE TOM ; UNE COURSE AU LANCEMENT ; L'EXPORT DE L'ÉTAT ; LA PORTE DE QUALITÉ. (Décisions Tom.) Ce bloc CORRIGE v159 (`lot-V159-VUE` est RETIRÉ depuis v160a) et v146 (C-124, la place de la parole de l'onboarding).
 > **⚑ C-179 — `?export=1`** : à l'ouverture, l'app envoie au serveur du Mac (réseau local seulement) tout son stockage et l'écran → `etats/tom-<date>.json`
 > (hors git) ; `banc_tom.contexte_tom(b, chemin)` le rejoue (sa fenêtre, sa densité, son thème ; `echelle=1` pour 430 × 932). ⚠ Le serveur s'arrête avec le

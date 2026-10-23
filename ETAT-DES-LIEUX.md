@@ -10105,3 +10105,4 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v144 | Un Chiche à plusieurs (C-108, Q465) | — | lancer un Chiche à une personne puis à deux : « À RACHEL DE TRACER SA PART », « À CHACUN DE TRACER SA PART » |
 
 | v160b | Les dalles entassées (C-177) : réparées à l'ouverture | — | ouvrir `http://192.168.1.128:8752/app.html` : tes sept dalles séparées, les mêmes à chaque réouverture |
+| v160c | La parole longue de l'onboarding (C-180) ; le Studio rend la vue (Q574) ; Ramage au Studio (C-175) | — | Réglages → « Revoir la présentation », écrire une très longue parole ; au Studio, aller-retour depuis Terrazzo ; arriver sur Ramage |

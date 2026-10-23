@@ -37450,7 +37450,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
          seul bloc — 535 ms sous Ramage, 1 570 ms sous Volubilis. Elle est gardée par monde, et refaite seulement quand le Studio est au calme (aucun doigt
          depuis 1,2 s) ; d'ici là la dalle d'avant reste. */
       var src=memo[k]||null;
-      if(!src){ if(performance.now()-tDoigt<1200) return; src=window._rendDalle?window._rendDalle(pr[0].id, 64, 64, {courant:1}):null; if(src) memo[k]=src; }   /* v30 · le curseur du Studio : le monde courant, exprès */
+      /* ⚑ v160c (Tom, C-175, B2 : « Ramage saccade beaucoup ») — sous Ramage ce rendu est UN bloc de 237 à 308 ms (son premier rendu de la séance), et il
+         tombait 1,2 s après le dernier toucher, pendant l'arrivée : l'accroc. Pour Ramage il attend 3 s sans aucun toucher — il tombe sur un Studio immobile,
+         sans doigt. Les autres mondes : inchangés (1,2 s). */
+      if(!src){ if(performance.now()-tDoigt<(M.m==='ramage'?3000:1200)) return; src=window._rendDalle?window._rendDalle(pr[0].id, 64, 64, {courant:1}):null; if(src) memo[k]=src; }   /* v30 · le curseur du Studio : le monde courant, exprès */
       if(!src) return;
       if(!cv){ cv=document.createElement('canvas'); th.appendChild(cv); }
       cv.width=72; cv.height=72; var g=cv.getContext('2d'); g.clearRect(0,0,72,72);
@@ -37470,6 +37473,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   var ORDRE=['encre','touffe','brouillamini','halin','esquille','mosaique','braille','pixel','ramage','guingois','chantourne','volubilis','madrure','chamade','ritournelle','bobinette','mascaret','terrazzo','gravure','sillons'];
   var NEUFS={esquille:1,bobinette:1,ritournelle:1,madrure:1,halin:1,brouillamini:1,chamade:1,volubilis:1,guingois:1,chantourne:1,mascaret:1,ramage:1};
   var LOURDS={volubilis:1, ramage:1};   /* leur dalle seule coûte 0,5 à 1,6 s d'un bloc (Q569, le moteur) : pas sur l'accueil, où un toucher l'attendrait */
+  /* ⚑ v160c (C-175, B2) — essayé : préparer aussi Ramage ici, après 8 s sans toucher. RETIRÉ : son premier rendu laisse un état dans le moteur, et le banc
+     de rendu changeait sous Guingois (14 images sur 280). Ramage attend au Studio (3 s sans toucher, plus haut). */
   function famille(m, n){ return (NEUFS[m] && (m==='ritournelle' || n>=9))?1:0; }
   function accueilPose(){ try{ if(performance.now()-tDoigt<3000) return false; if(window._tenirAnime || window._instant || (window._tenirFinT && performance.now()-window._tenirFinT<6000)) return false;
       if(window._evolRecente && window._evolRecente(4000)) return false; if(document.hidden) return false;
@@ -37895,7 +37900,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     terminer(); }
   function focus(){ var i=document.getElementById('onbIn'); if(!i) return;
     i.value = etape==='prenom' ? prenom : parole;
-    i.maxLength = etape==='prenom' ? 24 : 80;
+    if(etape==='prenom') i.maxLength=24; else i.removeAttribute('maxlength');   /* ⚑ v160c (Q576) : la parole n'a plus de limite (80 avant, un reste sans décision) */
     i.setAttribute('autocapitalize', etape==='prenom' ? 'words' : 'none');
     try{ i.focus({preventScroll:true}); }catch(_){ i.focus(); } }
   function aFocus(){ return document.activeElement===document.getElementById('onbIn'); }
@@ -37924,16 +37929,57 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var dl=0; try{ var i=document.querySelector('#onbV .onbv-mm i'), A=i&&i.getAnimations?i.getAnimations():[]; var a=A.filter(function(x){ return x.animationName==='promiBlink'; })[0];
       if(a && a.currentTime!=null) dl=-(a.currentTime%1150); }catch(_){ }
     el.style.animationDelay=dl+'ms'; el.classList.add('clignote'); }
+    /* ⚑ v160c (Tom, C-180 ; Q568, Q572, Q576) — « La parole longue : pendant l'écriture, à la 3e ligne, la 2e devient très courte et la 3e sort de l'écran ;
+       en touchant ailleurs, la 1re devient courte, la 2e sort, la suite disparaît. » LA PAROLE N'EST PLUS COUPÉE PAR LE NAVIGATEUR : elle est composée
+       ici, ligne par ligne, dans un cadre de largeur FIXE (la colonne de texte de la page, 342 pt) — coupe aux espaces, chaque ligne remplie au maximum
+       (seule la dernière peut être courte), un mot plus long que la largeur coupé à la largeur ; chaque ligne est un bloc qui ne se coupe plus
+       (`white-space:nowrap`) : aucun caractère ne peut en sortir. Le curseur garde sa place, visible ou non : la coupe est la MÊME clavier ouvert et clavier
+       fermé. Au-delà de trois lignes, la taille descend d'1 px à la fois (35 → 22 px), la coupe recalculée à chaque palier ; à 22 px, autant de lignes que
+       la place laisse au-dessus de « Petite ou grande promesse » et du trait ; au-delà encore (Q576 : le champ n'a plus de limite), une COUPE PROPRE, au
+       mot : « Je me promets de » et le premier mot (l'élision lui appartient), « … », puis la FIN de la parole — ce qu'on est en train d'écrire reste sous les yeux ; la parole entière est gardée.
+       Les mesures sont celles du navigateur (chaque mot posé une fois dans un bloc de mesure caché, aux styles de la phrase). */
+    function composeParole(ph){
+      var f=aFocus(), pre=(window._promiElide(parole)==='d’')?'d’':'de ', MOTS=parole.trim().split(/\s+/), W=ph.clientWidth||342, PAD=24, CAR=5, ELL='…';
+      function k(){ return (ph.getBoundingClientRect().width/(ph.offsetWidth||1))||1; }
+      function mesure(fs){
+        ph.style.setProperty('font-size', fs+'px'); ph.style.setProperty('line-height', (66*fs/35).toFixed(2)+'px'); ph.style.setProperty('letter-spacing', (-1.05*fs/35).toFixed(3)+'px');
+        var m=document.createElement('div'); m.style.cssText='position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap;pointer-events:none';
+        var h='<span class="onbv-pb">Je me promets</span><span data-m="pre">\u00a0'+esc(pre.replace(' ','\u00a0'))+'</span><span data-m="esp">x x</span><span data-m="xx">xx</span><span data-m="ell">'+ELL+'</span>';
+        MOTS.forEach(function(w, i){ h+='<span data-m="w'+i+'">'+esc(w)+'</span>'; });
+        m.innerHTML=h; ph.appendChild(m); var kk=k();
+        var r={pb:m.firstChild.getBoundingClientRect().width/kk, w:[]};
+        [].forEach.call(m.querySelectorAll('[data-m]'), function(e){ var n=e.getAttribute('data-m'), v=e.getBoundingClientRect().width/kk; if(n.charAt(0)==='w') r.w[+n.slice(1)]=v; else r[n]=v; });
+        r.esp=r.esp-r.xx; m.remove(); return r; }
+      function largeur(t){ var m=document.createElement('span'); m.style.cssText='position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap'; m.textContent=t; ph.appendChild(m);
+        var v=m.getBoundingClientRect().width/k(); m.remove(); return v; }
+      function decoupe(w, place){   /* un mot plus long que la place : coupé au dernier caractère qui tient */
+        var m=document.createElement('span'); m.style.cssText='position:absolute;left:0;top:0;visibility:hidden;white-space:nowrap'; ph.appendChild(m);
+        var kk=k(), n=1; for(var j=1;j<=w.length;j++){ m.textContent=w.slice(0,j); if(m.getBoundingClientRect().width/kk<=place) n=j; else break; } m.remove(); return Math.max(1,n); }
+      /* les lignes, depuis le mot d0 (une coupe propre : « … » en tête de la parole) */
+      function compose(r, d0){ var L=[], cur=[], x=r.pb+r.pre, debut=true, i=0, M=MOTS.slice(d0), larg=r.w.slice(d0);
+        if(d0>0){ M=[MOTS[0], ELL].concat(M); larg=[r.w[0], r.ell].concat(larg); }   /* le premier mot reste (l'élision « d’ » lui appartient), puis « … », puis la fin */
+        function ferme(){ L.push({tete:debut, mots:cur}); cur=[]; debut=false; x=0; }
+        while(i<M.length){ var w=M[i], lw=larg[i]+(i===M.length-1?CAR:0), besoin=cur.length?(r.esp+lw):(PAD+lw);
+          if(x+besoin<=W){ cur.push(w); x+=besoin; i++; continue; }
+          if(cur.length || debut){ ferme(); continue; }
+          var n=decoupe(w, W-PAD-(i===M.length-1?CAR:0)); cur.push(w.slice(0,n)); M[i]=w.slice(n); larg[i]=largeur(M[i]); ferme(); }
+        if(cur.length || debut) ferme(); return L; }
+      /* la place à 22 px : de son haut jusqu'au-dessus de « Petite ou grande promesse », le trait au plus bas (686) — les cotes de placer() */
+      function maxLignes(fs){ try{ var qd=document.getElementById('onbQuid'), dd=document.getElementById('onbDit'), so=document.getElementById('onbSous'), qv=qd && qd.style.display!=='none';
+          var haut=qv?(DIT_TOP+dd.offsetHeight+16+qd.offsetHeight+32):228, ecart=qv?40:20, soH=(so&&so.style.display!=='none')?so.offsetHeight:0;
+          return Math.max(3, Math.floor((686-84-soH-ecart-haut)/(66*fs/35))); }catch(_){ return 3; } }
+      var fs=35, r=mesure(fs), L=compose(r, 0); while(L.length>3 && fs>22){ fs--; r=mesure(fs); L=compose(r, 0); }
+      var ML=maxLignes(fs), d0=0; if(L.length>ML){ d0=1; while(L.length>ML && d0<MOTS.length-1){ d0++; L=compose(r, d0); } }
+      var h=''; L.forEach(function(l, j){ var der=(j===L.length-1);
+        h+='<span class="onbv-ligne" style="display:block;white-space:nowrap">'+(l.tete?'<span class="onbv-pb">Je me promets</span>\u00a0'+esc(pre.replace(' ','\u00a0')):'')+
+          (l.mots.length?'<span class="onbv-pm" data-onb="parole">'+esc(l.mots.join(' '))+(der?'<span class="onbv-car"'+(f?'':' style="visibility:hidden"')+'></span>':'')+'</span>':'')+'</span>'; });
+      ph.innerHTML=h; ph.setAttribute('data-taille', fs); ph.setAttribute('data-lignes', L.length); ph.setAttribute('data-coupe', d0); }
   /* les cotes sous la phrase se DÉRIVENT de son bas réel (§8 : un texte qui passe à la ligne) */
   function placer(){
     var ph=document.getElementById('onbPh'); if(!ph) return;
-    /* ⚑ v159 (chef de chantier, Q568) — au-delà de TROIS lignes, la parole se réduit, comme sur la page + (34 → 30) : un pas de 1 px à la fois, jusqu'à
-       tenir en trois lignes (22 px au plus bas) ; l'interligne et la chasse suivent la taille (66 / 35, −1,05 / 35). « Petite ou grande promesse » reste ;
-       rien ne passe sur le trait, et le → garde sa place libre. Jamais sur le prénom. */
-    try{ ph.style.removeProperty('font-size'); ph.style.removeProperty('line-height'); ph.style.removeProperty('letter-spacing');
-      if(etape!=='prenom'){ var _fs=35; while(_fs>22 && Math.round(ph.offsetHeight/(66*_fs/35))>3){ _fs-=1;
-          ph.style.setProperty('font-size', _fs+'px'); ph.style.setProperty('line-height', (66*_fs/35).toFixed(2)+'px'); ph.style.setProperty('letter-spacing', (-1.05*_fs/35).toFixed(3)+'px'); }
-        ph.setAttribute('data-taille', _fs); } }catch(_){ }
+    /* v159 (Q568) remplacé en v160c (C-180) par la composition ligne par ligne (composeParole, ci-dessus). */
+    try{ ph.style.removeProperty('font-size'); ph.style.removeProperty('line-height'); ph.style.removeProperty('letter-spacing'); ph.removeAttribute('data-lignes'); ph.removeAttribute('data-coupe');
+      if(etape!=='prenom' && parole.trim()) composeParole(ph); }catch(_){ }
     /* v147 (C-124 §4) : sous la question « Quid… », la phrase descend (32 pt d'air) ; « Petite ou grande promesse » à 40 pt d'elle */
     var qd=document.getElementById('onbQuid'), dd=document.getElementById('onbDit'), qv=qd && qd.style.display!=='none' && etape!=='prenom';
     if(qv){ qd.style.top=(DIT_TOP+dd.offsetHeight+16)+'px'; ph.style.top=(DIT_TOP+dd.offsetHeight+16+qd.offsetHeight+32)+'px'; } else ph.style.top='';
@@ -41479,6 +41525,63 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     try{ var im=document.createElement('canvas'); im.width=bg.width; im.height=bg.height; var g=im.getContext('2d'); g.filter='blur('+(1.4*bg.width/390)+'px)'; g.drawImage(bg,0,0); g.filter='none'; im.__flou=1;
       var ctl=window._passageFlaques(st, {mode:'ouvre', apres:bg, rect:[0,0,390,844], image:im, duree:700, fin:function(){ setTimeout(applique, 60); }});
       if(ctl && ctl.canevas){ ctl.canevas.id='stDeverrou'; ctl.canevas.style.setProperty('border-radius','36px'); } else setTimeout(applique, 60); window._deverrouT=performance.now(); }catch(_){ setTimeout(applique, 60); } return true; };
+})();
+</script>
+<script id="lot-V159-VUE">
+/* ⚑ v160c (chef de chantier, Q574) — REPOSÉ, SA PARTIE « STUDIO » SEULE : retiré en v160a (on croyait qu'il avait aggravé la Toile ; c'étaient les données,
+   C-177, v160b). Sans lui, sous Terrazzo, un aller-retour au Studio par des mondes « faits de leurs seules paroles » laissait la vue au cadrage d'un
+   autre monde (zoom 1,998 → 5 à 1 parole, 1,191 → 1,677 à 5 : 55 à 112 pt ; `redteam_toile_stable` M). Le texte d'origine suit, inchangé. */
+/* ⚑ v159 (Tom, C-177) — « Sous certains mondes (Éclisse…), les dalles colorées s'empilent ; parfois on ouvre une page, on revient à la Toile, et
+   elles ne sont plus à leur position. » CE QUI A ÉTÉ TROUVÉ (banc comme Tom, WebKit) : les GRAINES ne bougent jamais (20 mondes × 5 et 25 paroles ×
+   toutes les pages ouvertes puis fermées, au point près) — c'est la VUE (le zoom et le cadrage) qui change. Le cadrage automatique (`autoView`) n'est
+   recalculé qu'à une plantation, un retrait ou un recadrage ; un changement de monde au Studio le laisse tel quel (v46 : « changer de monde laisse la vue
+   où la main l'a mise »). Mais quand la vue n'est PAS celle de la main, elle garde alors la CIBLE calculée pour un autre monde : sous peu de paroles, les
+   mondes « faits de leurs seules paroles » (Bobinette, Mascaret, Ritournelle…) se cadrent serré (zoom jusqu'à 3,6 à 7) ; revenu sur Éclisse, la Toile
+   glisse vers CE cadrage-là à la fermeture du Studio — mesuré : Éclisse à 5 paroles, vue 1,19 au départ, 1,68 après être passé par Bobinette et
+   Ritournelle ; les dalles plus grosses, serrées et décalées de 267 pt. Présent tel quel en v152 (aucun lot de v153 à v158 ne l'a introduit).
+   LA CORRECTION, hors du moteur : après chaque changement de monde, si la vue n'est pas celle de la main (`_vueMain`), la cible est recalculée pour le
+   monde affiché ; la vue posée par la main reste la sienne. Juge : redteam_toile_stable (rouge sur v158). */
+(function(){ var T=window.Toile; if(!T || !T.setTheme || T.setTheme.__v159) return;
+  /* le GENRE de cadrage d'un monde (les règles d'`autoView`) : Ritournelle ; un monde « fait de ses seules paroles » cadré serré (moins de neuf paroles) ou
+     en semis neuf ; un ancien monde. Entre deux mondes du même genre, la cible est déjà la bonne : on n'y touche pas (pas un point ne bouge). */
+  var NEUFS={esquille:1,bobinette:1,ritournelle:1,madrure:1,halin:1,brouillamini:1,chamade:1,volubilis:1,guingois:1,chantourne:1,mascaret:1,ramage:1};
+  function genre(){ try{ var t=T.getTheme(); if(t==='ritournelle') return 'rit'; if(!NEUFS[t]) return 'ancien'+(t==='halin'?'h':''); return (T.semisNeuf&&T.semisNeuf())?'neuf':'serre'; }catch(_){ return ''; } }
+  /* la cible se recalcule PENDANT que les graines se posent (une Toile ressemée, ou le lancement : leurs places bougent encore une seconde) et une dernière
+     fois quand elles sont posées : la vue suit leur mouvement, elle ne glisse pas après coup. Jamais sous le Studio (la Toile n'y est pas peinte), jamais
+     sur une vue posée par la main. */
+  var suivre=0, tS=0;
+  function recadre(){ if(!window._vueMain && typeof window.Toile_autoView==='function'){ window._recadreDemande=true; window.Toile_autoView(); } }
+  function studio(){ var s=document.getElementById('studioScreen'); return !!(s && s.classList.contains('show')); }
+  function suit(){ if(!suivre) return; try{ if(window._vueMain || performance.now()-tS>12000){ suivre=0; return; }
+      if(studio()) tS=performance.now();   /* le compte part de la fermeture du Studio */
+      else { var st=window.Toile_state&&Toile_state(); recadre(); if(st && !st.running && performance.now()-tS>1200){ suivre=0; return; } } }catch(_){ suivre=0; return; }
+    setTimeout(suit, 120); }
+  function aSuivre(){ tS=performance.now(); if(!suivre){ suivre=1; setTimeout(suit, 120); } }
+  /* ⚑ v160c (Q574) — LA SESSION DU STUDIO. Reposé tel quel, ce lot recadrait au retour une vue qui n'avait pas à l'être : revenu au monde du départ
+     (Terrazzo → trois mondes → Terrazzo), le cadrage était recalculé sur la Toile posée (zoom 1,199) alors que l'ouverture l'avait pris au placement (1,191) :
+     1,7 à 2,6 pt (`redteam_toile_stable` M). Ce qui déplaçait la vue d'un autre monde, ce sont les recadrages faits PENDANT la visite (les minuteurs du
+     moteur, sous un monde cadré serré). Désormais : le Studio ouvert, la vue est TENUE (`_vueMain`, que tout recadrage automatique respecte) ; refermé,
+     elle est rendue — et si le genre de cadrage a changé depuis l'ouverture (un autre monde choisi), recadrée et suivie (le comportement de v159) ;
+     sinon elle est exactement celle d'avant le Studio. Une vue posée par la main avant le Studio reste la sienne. */
+  var sess=null;
+  function ferme(){ try{ return window._guideStudioFerme ? window._guideStudioFerme() : !studio(); }catch(_){ return !studio(); } }
+  /* la vue TENUE pendant le Studio : un ressemis (un monde d'une autre famille) fait écrire au moteur `_vueMain=false` et `_recadreDemande=true` dans sa
+     synchronisation, qui recadre aussitôt — pour le monde traversé. Ces deux drapeaux sont lus par des accesseurs : pendant la session ils répondent
+     « la vue est à la main » et « aucun recadrage demandé » ; ce que le moteur y écrit est gardé et rendu à la fermeture. */
+  var vm=!!window._vueMain, rd=!!window._recadreDemande;
+  try{ Object.defineProperty(window, '_vueMain', {configurable:true, get:function(){ return sess ? true : vm; }, set:function(v){ vm=!!v; }});
+       Object.defineProperty(window, '_recadreDemande', {configurable:true, get:function(){ return sess ? false : rd; }, set:function(v){ rd=!!v; }}); }catch(_){ }
+  (function session(){ try{ if(!sess && studio() && !ferme()){ sess={main:vm, genre:genre()}; }
+      else if(sess && ferme()){ var s=sess; sess=null; vm=s.main; rd=false;
+        /* un autre genre de cadrage choisi : recadrée et suivie (v159) ; sinon, la vue d'avant le Studio, au point près — même si le ressemis a bougé
+           les graines de quelques points (Q573) : recadrer là déplaçait Esquille de 202 pt (5 → 1,173). */
+        if(!s.main && genre()!==s.genre){ recadre(); aSuivre(); } } }catch(_){ }
+    setTimeout(session, 150); })();
+  /* ⚑ v160c — HORS DU STUDIO, plus rien n'est recadré au changement de monde (la décision : « la partie Studio seulement ») : reposé tel quel, ce
+     recadrage suivait aussi les changements de monde du banc de rendu, relançait le moteur et déplaçait les graines (81 images sur 280 au pixel). */
+  T.setTheme.__v159=1;
+  /* ⚑ v160c (Q574) — la partie « lancement » de v159 (un `aSuivre()` ici, au chargement) n'est PAS reposée : elle déplaçait les cadrages d'ouverture
+     validés (Pochade 5 : 1,191 → 1,199). Le lancement est réglé à part, en v160b (la synchronisation attend le monde relu). */
 })();
 </script>
 <script id="lot-V146-MAREE">

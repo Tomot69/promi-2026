@@ -8856,3 +8856,8 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q576 — QUESTION DE TOM (v160b)** : la limite de 80 caractères de la parole de l'onboarding (`i.maxLength`, onboarding seulement ; la page + n'en a
   pas) est là depuis avant le premier commit (1er oct.), sans aucune décision écrite : un reste, selon toute apparence. *Proposition* : la retirer en même
   temps que C-180 (la composition ligne par ligne tient la longueur), à valider.
+- **Q574 — TRANCHÉE (chef de chantier, v160c)** : la partie « Studio » de v159 est reposée, sans sa partie lancement ; le Studio tient la vue pendant la
+  visite et la rend au retour (même genre de cadrage : la vue d'avant, au point près ; un autre genre choisi : recadrée, comme v159).
+- **Q576 — TRANCHÉE (chef de chantier, v160c)** : la limite de 80 caractères est retirée ; une parole de toute longueur tient (coupe propre au-delà de la place).
+- **Q577 — À TRANCHER (C-175, v160c)** : sous Guingois, Mascaret et Chantourné, ce qui saccade au Studio est l'image de l'aperçu elle-même (moteur, 8 à 22 ms par
+  image sous Guingois) ; rien à gagner hors du moteur (mesuré). *Proposition* : l'ajouter au lot « moteur » de Q573 et Q575.
