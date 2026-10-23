@@ -48,7 +48,7 @@ def contexte_tom(b, chemin=None, echelle=None, sombre=None):
     import json
     d = etat_tom(chemin)
     if not d: return None, None
-    e = d.get('ecran') or {}; ls = dict(d.get('ls') or {})
+    e = d.get('ecran') or {}; ls = {k: v for k, v in (d.get('ls') or {}).items() if k not in ('setItem', 'getItem', 'removeItem', 'clear', 'key', 'length')}   # une méthode du stockage enveloppée par l'app se lit comme une clé : on ne la réécrit pas
     vw, vh = int(e.get('largeur') or 390), int(e.get('hauteur') or 664)
     if echelle == 1: vw, vh = 430, 932
     th = ls.get('promi_theme'); sb = (th == 'dark') if sombre is None else sombre
@@ -63,7 +63,7 @@ def charge():
     return os.getloadavg()[0]
 def ouvre(ctx, fichier='app.html', attente=6500, q=''):
     pg = ctx.new_page(); pg.__dict__['erreurs'] = []; pg.on('pageerror', lambda e: pg.__dict__['erreurs'].append(str(e)[:200]))
-    pg.goto('http://127.0.0.1:8752/' + fichier + q); pg.wait_for_timeout(attente); return pg
+    pg.goto('http://127.0.0.1:8752/' + fichier + q, timeout=180000); pg.wait_for_timeout(attente); return pg
 def dev(pg): return pg.evaluate("()=>{var r=document.getElementById('device').getBoundingClientRect();return [r.left,r.top,r.width,r.height,r.width/390]}")
 def pt(pg, x, y):
     """un point donné en cotes de l'appareil (390 × 844) → en pixels de la fenêtre"""

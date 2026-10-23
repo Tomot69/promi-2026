@@ -8846,3 +8846,13 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   relâchement). Ce n'est corrigeable que dans le moteur. *Proposition* : un lot « moteur » sur demande de Tom — garder une place par famille de semis, notée
   là où la graine est POSÉE (pas à la plantation), et ne pas relâcher une graine qui reprend sa place exacte.
 
+- **Q574 — À TRANCHER (C-177, v160b ; présent en v158 et v160a)** : sous un ancien monde (Terrazzo), un aller-retour au Studio par des mondes « faits de
+  leurs seules paroles » laisse la vue au cadrage d'un autre monde (zoom 1,998 → 5 à 1 parole, 1,191 → 1,677 à 5 : dalles décalées de 55 à 112 pt). La
+  correction de v159 (`lot-V159-VUE`) le réglait et a été retirée en v160a sur ta demande. *Proposition* : en reposer SEULEMENT la partie Studio (le
+  cadrage repris quand le genre de cadrage change, Studio fermé), sans sa partie lancement — à valider avant.
+- **Q575 — À TRANCHER (C-177, v160b ; présent en v160a)** : à 50 paroles, sous les douze mondes « faits de leurs seules paroles », deux dalles sont
+  posées à 0,1 à 0,2 pt l'une de l'autre dès l'ouverture (l'une cache l'autre). Les places enregistrées sont saines (la paire la plus proche est à 25 pt) :
+  c'est le placement du moteur en semis neuf. *Proposition* : un lot « moteur » sur demande, avec Q573.
+- **Q576 — QUESTION DE TOM (v160b)** : la limite de 80 caractères de la parole de l'onboarding (`i.maxLength`, onboarding seulement ; la page + n'en a
+  pas) est là depuis avant le premier commit (1er oct.), sans aucune décision écrite : un reste, selon toute apparence. *Proposition* : la retirer en même
+  temps que C-180 (la composition ligne par ligne tient la longueur), à valider.

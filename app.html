@@ -2537,7 +2537,7 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v160a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v160b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -3104,6 +3104,31 @@ window._dalleDeCle=function(p){
   for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619)>>>0; }
   return {ci:h%4, lit:0};
 };
+/* ⚑ v160 (Tom, C-177) — « LES DALLES SONT ENTASSÉES DÈS L'OUVERTURE, ET ÇA PERSISTE. » LA CAUSE EST DANS LES DONNÉES : depuis v146 (C-124),
+   la parole de l'onboarding recevait en dur la place [0.42, 0.74] ; l'onboarding rejoué (Réglages, C-159) la redonnait à chaque nouvelle parole.
+   Mesuré sur l'état exporté de Tom (etats/tom-20261023-125022.json) : six paroles sur sept à [0.42, 0.74], et le moteur rend chacune « à la cellule
+   vide la plus proche de sa place » — six dalles collées, l'écart mini 1,3 à 5,5 pt dans toutes les versions de v152 à v160a.
+   `_reparePlaces` (hors du moteur) : une place hors de [0, 1], non finie ou à (0, 0) est EFFACÉE ; deux places de la même famille de semis à moins
+   de 0,003 l'une de l'autre (≈ 1 pt) : la plus ancienne parole garde la sienne, les autres sont effacées. Le moteur choisit alors une cellule et
+   écrit la place lui-même (`_placeNote`). Appelée sur l'état relu (loadState) et avant chaque enregistrement (saveState) ; les Cercles
+   (`promi_nueplace`) aussi. Une Toile saine n'est jamais touchée : rien n'y est effacé. `window._placesReparees` (lecture, pour les juges). */
+window._placeValide=function(v){ return !!(Array.isArray(v) && v.length>=2 && v.length<=3 && typeof v[0]==='number' && typeof v[1]==='number' && isFinite(v[0]) && isFinite(v[1]) && v[0]>=0 && v[0]<=1 && v[1]>=0 && v[1]<=1
+  && !(v[0]===0 && v[1]===0) && (v.length<3 || v[2]===0 || v[2]===1)); };
+window._reparePlaces=function(ecrireCercles){
+  var vues=[], eff=[];
+  function proche(v){ var f=(v[2]||0); for(var i=0;i<vues.length;i++){ var u=vues[i]; if((u[2]||0)===f && Math.abs(u[0]-v[0])<0.003 && Math.abs(u[1]-v[1])<0.003) return true; } return false; }
+  try{ (promises||[]).slice().sort(function(a,b){ return (a.id||0)-(b.id||0); }).forEach(function(p){ if(!p || p.place==null) return;
+      if(!window._placeValide(p.place)){ eff.push([p.id,JSON.stringify(p.place),'invalide']); delete p.place; return; }
+      if(p.draft) return;
+      if(proche(p.place)){ eff.push([p.id,JSON.stringify(p.place),'déjà prise']); delete p.place; return; }
+      vues.push(p.place); }); }catch(_){ }
+  try{ var raw=localStorage.getItem('promi_nueplace'), N=raw?JSON.parse(raw):null, ch=false;
+    if(N && typeof N==='object'){ Object.keys(N).sort().forEach(function(k){ var v=N[k];
+        if(!window._placeValide(v)){ eff.push(['cercle:'+k,JSON.stringify(v),'invalide']); delete N[k]; ch=true; return; }
+        if(proche(v)){ eff.push(['cercle:'+k,JSON.stringify(v),'déjà prise']); delete N[k]; ch=true; return; } vues.push(v); });
+      if(ch){ try{ localStorage.setItem('promi_nueplace', JSON.stringify(N)); }catch(_){ } if(window.NUEPLACE && ecrireCercles!==false){ Object.keys(window.NUEPLACE).forEach(function(k){ if(!(k in N)) delete window.NUEPLACE[k]; }); } } } }catch(_){ }
+  if(eff.length){ var R=window._placesReparees||(window._placesReparees={n:0,detail:[]}); R.n+=eff.length; R.detail=R.detail.concat(eff).slice(-40); }
+  return eff.length; };
 window._figeDallesManquantes=function(){
   var n=0;
   try{ (promises||[]).forEach(function(p){ if(p&&!p.dalle){ p.dalle=window._dalleDeCle(p); n++; } }); }catch(e){}
@@ -7872,11 +7897,11 @@ wrap.addEventListener('pointerup',up);wrap.addEventListener('pointercancel',up);
 if($('#shShareBtn'))$('#shShareBtn').onclick=shareExport;
 
 /* ===== PERSISTANCE LOCALE ===== */
-function saveState(){try{if(typeof promises==='undefined')return;var d={v:1,promises:promises,NUE:NUE,NUEEMEM:NUEEMEM,NUEDALLE:(window.NUEDALLE||{}),PEOPLE:PEOPLE,FEED:FEED,feedReacted:feedReacted,shareHidden:shareHidden,state:{mood:state.mood,structure:state.structure,sort:state.sort,labels:state.labels},nid:nid,fid:_fid,notifOn:notifOn};localStorage.setItem('promi_state',JSON.stringify(d));try{if(typeof updateSaveStatus==='function')updateSaveStatus(true);}catch(_){}}catch(e){}}
+function saveState(){try{if(typeof promises==='undefined')return;try{if(window._reparePlaces)window._reparePlaces();}catch(_r){}var d={v:1,promises:promises,NUE:NUE,NUEEMEM:NUEEMEM,NUEDALLE:(window.NUEDALLE||{}),PEOPLE:PEOPLE,FEED:FEED,feedReacted:feedReacted,shareHidden:shareHidden,state:{mood:state.mood,structure:state.structure,sort:state.sort,labels:state.labels},nid:nid,fid:_fid,notifOn:notifOn};localStorage.setItem('promi_state',JSON.stringify(d));try{if(typeof updateSaveStatus==='function')updateSaveStatus(true);}catch(_){}}catch(e){}}
 function storageWorks(){try{localStorage.setItem('promi_t','1');localStorage.removeItem('promi_t');return true;}catch(e){return false;}}
 function updateSaveStatus(saved){var el=$('#saveStatus');if(!el)return;if(!storageWorks()){el.textContent='indisponible ici';el.style.color='var(--rate)';return;}if(saved){var d=new Date();el.textContent='enregistré '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}else{el.textContent='active ✓';}el.style.color='var(--tenu,#A4D294)';}
 var _saveT=null;function queueSave(){try{clearTimeout(_saveT);}catch(e){}try{_saveT=setTimeout(saveState,400);}catch(e){try{saveState();}catch(_){}}}
-function loadState(){try{var raw=localStorage.getItem('promi_state');if(!raw)return false;var d=JSON.parse(raw);if(!d||d.v!==1||!Array.isArray(d.promises)||(!d.promises.length&&localStorage.getItem('promi_onb')!=='1'))return false;/* v94 : un utilisateur venu de l'onboarding peut n'avoir aucune parole — sa sauvegarde vide vaut, jamais le jeu de démonstration */promises=d.promises;/* une sauvegarde ANTERIEURE au lot du monde fige n'a pas de champ `monde` : ses Promi prennent le monde courant, fige maintenant (decision Tom). La passe est idempotente et ne touche que ce qui manque. */try{if(window._figeMondesManquants)window._figeMondesManquants();}catch(e){}try{if(window._figeDallesManquantes)window._figeDallesManquantes();}catch(e){}if(d.NUE&&typeof NUE==='object'){Object.keys(NUE).forEach(function(k){delete NUE[k];});Object.assign(NUE,d.NUE);}if(d.NUEEMEM)NUEEMEM=d.NUEEMEM;if(d.NUEDALLE)window.NUEDALLE=d.NUEDALLE;if(Array.isArray(d.PEOPLE))PEOPLE=d.PEOPLE;if(Array.isArray(d.FEED))FEED=d.FEED;if(d.feedReacted)feedReacted=d.feedReacted;if(d.shareHidden)shareHidden=d.shareHidden;if(d.state){state.mood=d.state.mood||state.mood;state.structure=d.state.structure||state.structure;state.sort=d.state.sort||state.sort;state.labels=!!d.state.labels;}if(typeof d.nid==='number')nid=d.nid;if(typeof d.fid==='number')_fid=d.fid;if(typeof d.notifOn==='boolean'){notifOn=d.notifOn;var _nt=$('#notifTog');if(_nt)_nt.classList.toggle('off',!notifOn);}return true;}catch(e){return false;}}
+function loadState(){try{var raw=localStorage.getItem('promi_state');if(!raw)return false;var d=JSON.parse(raw);if(!d||d.v!==1||!Array.isArray(d.promises)||(!d.promises.length&&localStorage.getItem('promi_onb')!=='1'))return false;/* v94 : un utilisateur venu de l'onboarding peut n'avoir aucune parole — sa sauvegarde vide vaut, jamais le jeu de démonstration */promises=d.promises;try{if(window._reparePlaces)window._reparePlaces();}catch(e){}/* une sauvegarde ANTERIEURE au lot du monde fige n'a pas de champ `monde` : ses Promi prennent le monde courant, fige maintenant (decision Tom). La passe est idempotente et ne touche que ce qui manque. */try{if(window._figeMondesManquants)window._figeMondesManquants();}catch(e){}try{if(window._figeDallesManquantes)window._figeDallesManquantes();}catch(e){}if(d.NUE&&typeof NUE==='object'){Object.keys(NUE).forEach(function(k){delete NUE[k];});Object.assign(NUE,d.NUE);}if(d.NUEEMEM)NUEEMEM=d.NUEEMEM;if(d.NUEDALLE)window.NUEDALLE=d.NUEDALLE;if(Array.isArray(d.PEOPLE))PEOPLE=d.PEOPLE;if(Array.isArray(d.FEED))FEED=d.FEED;if(d.feedReacted)feedReacted=d.feedReacted;if(d.shareHidden)shareHidden=d.shareHidden;if(d.state){state.mood=d.state.mood||state.mood;state.structure=d.state.structure||state.structure;state.sort=d.state.sort||state.sort;state.labels=!!d.state.labels;}if(typeof d.nid==='number')nid=d.nid;if(typeof d.fid==='number')_fid=d.fid;if(typeof d.notifOn==='boolean'){notifOn=d.notifOn;var _nt=$('#notifTog');if(_nt)_nt.classList.toggle('off',!notifOn);}return true;}catch(e){return false;}}
 try{var _ld=loadState();window._etatRelu=!!_ld;if(_ld){seeded=false;(function(){function _sync(){try{if(window.Toile&&window.Toile.curWorld){var _w=window.Toile.curWorld();if(_w&&typeof state!=='undefined'&&state)state.structure=_w;}else{setTimeout(_sync,120);}}catch(e){}}setTimeout(_sync,60);})();if(window.syncAll)window.syncAll();try{kick();}catch(e){}try{caption();}catch(e){}}if(!_ld){try{seedFeed();}catch(e){}}/* ⚑ v94 (Tom, iPhone : « un seul Promi à l'onboarding, et le Fil est déjà plein ») — le Fil de démonstration ne se sème QUE sur une page sans sauvegarde ; un Fil sauvegardé vide est le vrai Fil d'un nouvel utilisateur */try{if(typeof updateFeedDot==='function')updateFeedDot();if(typeof buildFeed==='function')buildFeed();}catch(e){}}catch(e){}
 try{setInterval(saveState,1500);window.addEventListener('pagehide',saveState);window.addEventListener('beforeunload',saveState);document.addEventListener('visibilitychange',function(){if(document.hidden)saveState();});}catch(e){}
 try{updateSaveStatus(false);}catch(e){}
@@ -8502,7 +8527,17 @@ setInterval(function(){
   if(done){
     if(ov)ov.classList.add('gone');
     /* la Toile porte exactement les Promi réels — 1 Promi = 1 dalle, reliée */
-    setTimeout(function(){
+    /* ⚑ v160 (Tom, C-177) — « les dalles ne sont plus à leur place d'une ouverture à l'autre ». CE MINUTEUR (320 ms) ET LE MONDE RELU FAISAIENT
+       LA COURSE : le monde enregistré est appliqué par `lot-V71-REOUVERTURE`, 30 000 lignes plus bas ; quand la page met plus de 320 ms à se lire
+       (une première ouverture, un téléphone plus lent), les paroles étaient placées et cadrées dans le monde par défaut, puis le monde changeait sans
+       recadrage (même famille de semis). Mesuré (banc comme Tom, Halin, 1 parole) : `sync` à 1 426 ms puis `setTheme` à 1 529 ms → zoom 1,998 ; dans
+       l'ordre inverse → zoom 5 ; Mascaret, Ramage, Chamade, Bobinette à 5 paroles : 1,191 ou 1,677 selon l'ouverture (les dalles décalées de 267 pt).
+       La synchronisation (toujours à 320 ms) attend maintenant que le monde enregistré soit appliqué (`window._studioRelu`, posé par lot-V71 ; 3 s au
+       plus) : l'ordre est toujours celui du bon cas, et rien d'autre ne change. */
+    var _attendMonde=(function _attendMonde(n){ var _ms=null; try{ _ms=localStorage.getItem('promi_studio'); }catch(_){}
+      if(_ms && !window._studioRelu && n<60){ setTimeout(function(){ _attendMonde(n+1); }, 50); return; }
+      _synchroLancement(); })   /* appelée à 320 ms, comme avant : le délai d'origine ne change pour personne */;
+    var _synchroLancement=function(){
       try{
         if(!window.Toile||!window.Toile.sync)return;
         var ids=promises.filter(function(p){return !p.draft;}).map(function(p){return p.id;});
@@ -8511,7 +8546,9 @@ setInterval(function(){
         if(!window._etatRelu && !navigator.webdriver) ids=[];
         window.Toile.sync(ids);
       }catch(e){}
-    },320);
+    };
+    setTimeout(function(){ _attendMonde(0); },320);
+
     /* utilisateur qui revient : on lui rend le thème qu'il avait */
     /* le thème est appliqué APRÈS l'init de l'app (qui repose ses valeurs par défaut).
        Sans choix mémorisé, l'app s'ouvre en CLAIR. */
@@ -38051,6 +38088,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       /* ⚑ v146 (C-124, 11.5) : la première parole prend la cellule la plus proche du bas de la Toile (42 % de la largeur, 74 % de la hauteur) — tirée au
          hasard, elle tombait parfois dans le haut ou au milieu : le recadrage ne pouvait plus l'amener sous le message, qui la recouvrait. Sa place est gardée. */
       np.place=[0.42, 0.74];
+      /* ⚑ v160 (C-177) — la place n'est donnée que si aucune autre dalle n'y est déjà (l'onboarding rejoué la redonnait à chaque parole : entassées).
+         Prise : rien n'est posé, le moteur choisit une cellule et note la place lui-même. */
+      try{ if(promises.some(function(q){ var v=q&&!q.draft&&q.place; return v && (v[2]||0)===0 && Math.abs(v[0]-0.42)<0.06 && Math.abs(v[1]-0.74)<0.06; })) delete np.place; }catch(_){ }
       /* ⚑ v151 (Tom, C-159) — REJOUER L'ONBOARDING : « dès que la Toile compte au moins une dalle avant cette plantation » (une parole, ou un Cercle :
          `sync` plante une dalle par Cercle nommé), la parole n'est plus la première — le texte de Tom, mot pour mot. Au premier lancement la Toile est
          vide (`obResetData`) : le texte d'origine. Le reste de la chorégraphie ne change pas. */
@@ -38685,6 +38725,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   pret=true; if(s) ecrit();
 })();
 </script>
+
 <style id="lot-V95-ACCUEIL-css">
 /* ⚑ v95 (Tom, 28 sept. : « Le + de l'accueil passe en bleu Promi et devient plus épais. Il est noir aujourd'hui, ça fait formulaire. Rien
    d'autre ne change ») — le disque prend le bleu Promi dans les deux thèmes ; la croix passe à l'encre (§3 : sur un champ pastel, le crème

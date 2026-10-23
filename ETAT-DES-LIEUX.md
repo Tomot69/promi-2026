@@ -10104,3 +10104,4 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v145 | Le guide : trois variantes à choisir (C-094) | `promi-guide-variantes.html` | `http://192.168.1.133:8752/promi-guide-variantes.html` : A, B, C, clair et sombre ; toucher l'entrée nette pour passer du Studio au + ; laquelle ? est-ce fluide dans Safari ? (Q492) |
 | v144 | Un Chiche à plusieurs (C-108, Q465) | — | lancer un Chiche à une personne puis à deux : « À RACHEL DE TRACER SA PART », « À CHACUN DE TRACER SA PART » |
 
+| v160b | Les dalles entassées (C-177) : réparées à l'ouverture | — | ouvrir `http://192.168.1.128:8752/app.html` : tes sept dalles séparées, les mêmes à chaque réouverture |

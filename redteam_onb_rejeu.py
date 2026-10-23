@@ -10,7 +10,10 @@ Banc comme Tom (WebKit, 390 × 844, échelle 3, doigt, webdriver masqué) :
   C · rejeu, Toile de dix paroles relue de la sauvegarde (banc-etats/etat-10.json) : le texte de Tom
   D · dans les trois cas, le reste ne change pas : le titre « PROMI planté ! », Primo · Deuxio · Tertio, « Tout le monde promet. Toi, tu tiens
       parole. », « La suite t'appartient. » — mot pour mot, trois touchers
-Textes en dur. Preuve : `--fichier=zz-av150.html` rougit (B, C).
+  E · ⚑ v160 (C-177) — LES PLACES : au premier lancement la parole garde la place de v146 ([0.42, 0.74], rien ne change) ; au rejeu, la parole
+      neuve ne la reçoit plus quand une dalle l'a déjà (l'onboarding rejoué la redonnait à chaque parole : chez Tom, six dalles entassées) — aucune
+      place prise deux fois, aucune hors de [0, 1].
+Textes en dur. Preuve : `--fichier=zz-av150.html` rougit (B, C) ; `--fichier=zz-v160a.html` rougit (E, au rejeu).
 """
 import sys; sys.path.insert(0, '.')
 import banc_tom as B
@@ -59,6 +62,12 @@ def verdict(cas, r, attendu):
     juge('%s · le reste ne change pas : le titre, Primo · Deuxio · Tertio, la fin — trois touchers' % cas,
          r and r['titre'] == TITRE and r['reste'] == RESTE and r['vus'] == 6, '%s · %s visibles · pas %s%s' % ((r or {}).get('titre'), (r or {}).get('vus'), (r or {}).get('pas'),
          '' if (r and r['reste'] == RESTE) else ' · lu : %s' % ((r or {}).get('reste'),)))
+PLACES = "()=>{ var S=JSON.parse(localStorage.getItem('promi_state')||'{}'); return (S.promises||[]).filter(p=>!p.draft).map(p=>p.place==null?null:p.place); }"
+def places_distinctes(pl):
+    v = [x for x in pl if x is not None]
+    bad = [x for x in v if not (isinstance(x, list) and 2 <= len(x) <= 3 and all(isinstance(t, (int, float)) for t in x[:2]) and 0 <= x[0] <= 1 and 0 <= x[1] <= 1)]
+    dup = [(a, b) for i, a in enumerate(v) for b in v[i+1:] if (a[2] if len(a) > 2 else 0) == (b[2] if len(b) > 2 else 0) and abs(a[0]-b[0]) < 0.003 and abs(a[1]-b[1]) < 0.003]
+    return not bad and not dup, 'places %s · invalides %s · prises deux fois %s' % (pl, bad, dup)
 def rejeu(pg):
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(400)
     pg.evaluate("()=>{ const b=document.getElementById('settingsBtn')||document.querySelector('[data-open=settings]'); if(b) b.click(); else if(window.ouvrirReglages) ouvrirReglages(); }"); pg.wait_for_timeout(1500)
@@ -75,13 +84,17 @@ with sync_playwright() as p:
     ok = parcours(pg, True); r = pg.evaluate(LIT)
     juge('A · premier lancement : le parcours va jusqu\'à « Promi planté ! »', ok and r is not None)
     verdict('A · Toile vide', r, PREMIER)
-    termine(pg)
+    termine(pg); pg.wait_for_timeout(1200)
+    pl = pg.evaluate(PLACES)
+    juge('E · premier lancement : la parole garde la place de v146, [0.42, 0.74] (rien ne change)', pl == [[0.42, 0.74]], pl)
     # B — le rejeu sur une Toile d'une dalle (la parole qu'on vient de planter)
     pg.goto('http://127.0.0.1:8752/' + F); pg.wait_for_timeout(7000)
     n = pg.evaluate("()=>promises.filter(p=>!p.draft).length")
     vu = rejeu(pg); ok = parcours(pg); r = pg.evaluate(LIT)
     juge('B · le rejeu part des Réglages (« Revoir la présentation », au doigt) sur une Toile de %d dalle' % n, vu and ok and n == 1, 'rangée vue : %s' % vu)
     verdict('B · Toile d\'une dalle', r, NOUVELLE)
+    termine(pg); pg.wait_for_timeout(2500); ok, d = places_distinctes(pg.evaluate(PLACES))
+    juge('E · au rejeu, la parole neuve ne reprend pas la place déjà prise : aucune place prise deux fois', ok, d)
     err = list(pg.erreurs); ctx.close()
     # C — le rejeu sur une Toile de dix paroles relue de la sauvegarde
     ctx = B.contexte(b); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F, attente=7000)

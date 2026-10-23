@@ -146,6 +146,31 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v160 (23 oct. 2026) — C-177 : LES DALLES ENTASSÉES ÉTAIENT DANS LES DONNÉES DE TOM ; UNE COURSE AU LANCEMENT ; L'EXPORT DE L'ÉTAT ; LA PORTE DE QUALITÉ. (Décisions Tom.) Ce bloc CORRIGE v159 (`lot-V159-VUE` est RETIRÉ depuis v160a) et v146 (C-124, la place de la parole de l'onboarding).
+> **⚑ C-179 — `?export=1`** : à l'ouverture, l'app envoie au serveur du Mac (réseau local seulement) tout son stockage et l'écran → `etats/tom-<date>.json`
+> (hors git) ; `banc_tom.contexte_tom(b, chemin)` le rejoue (sa fenêtre, sa densité, son thème ; `echelle=1` pour 430 × 932). ⚠ Le serveur s'arrête avec le
+> Mac : un envoi fait pendant qu'il est arrêté se perd (le message « État envoyé au Mac » paraît quand même) ; ⚠ le dernier fichier n'est pas toujours le bon
+> (un onglet vide exporte une Toile vide) : le juge prend le dernier QUI PORTE DES PAROLES.
+> **⚑ C-177 — LA CAUSE ÉTAIT DANS LES DONNÉES.** Sur l'état de Tom : six paroles sur sept à la MÊME place, [0.42, 0.74], écrite en dur par l'onboarding depuis
+> v146 et redonnée à chaque parole par l'onboarding rejoué ; le moteur rend chaque parole « à la cellule vide la plus proche de sa place » → six dalles collées
+> (écart mini 1,3 à 5,5 pt) dans les neuf versions de v152 à v160a. *Corrigé hors du moteur* : `window._reparePlaces` (à la relecture de l'état et avant chaque
+> enregistrement ; aussi `promi_nueplace`) efface une place hors de [0, 1], non numérique ou à (0, 0), et, entre deux places de la même famille à moins de
+> 0,003, garde celle de la plus ancienne parole ; le moteur en choisit une autre et la note lui-même. L'onboarding ne donne [0.42, 0.74] que si aucune dalle
+> ne l'a déjà (premier lancement : inchangé). *La règle* : **une valeur enregistrée se vérifie avant d'être écrite et à la relecture ; quand un défaut survit à
+> l'annulation du code, on cherche dans les données, pas dans le code.**
+> **⚑ C-177 — LA SECONDE CAUSE, UNE COURSE AU LANCEMENT** : les paroles sont synchronisées par un minuteur de 320 ms (`app.html` ≈ l. 8505) et le monde relu
+> par `lot-V71-REOUVERTURE` (30 000 lignes plus bas) ; quand la page met plus de 320 ms à se lire, les paroles sont cadrées dans le monde par défaut, puis le monde
+> change sans recadrage : sous les douze mondes « faits de leurs seules paroles », la vue d'ouverture tirait au hasard entre deux cadrages (v160a : 3 à 4 fois
+> sur 8 le mauvais ; dalles déplacées jusqu'à 267 pt d'une ouverture à l'autre). La synchronisation (toujours à 320 ms) attend le monde relu (`_studioRelu`,
+> 3 s au plus). Les huit anciens mondes et Ritournelle : identiques à v160a ; Esquille sort son cadrage serré (v160a : toujours celui du monde par défaut).
+> ⚠ Non expliqué : 1 fois sur 28, Halin à 1 parole sort à 1,163. ⚠ **Un recadrage « quand la Toile se pose » est FAUX** (essayé, retiré) : `autoView` n'est
+> pas le même au placement et au repos (Pochade 5 : 1,191 → 1,199 ; Halin : ses cellules compagnes) — il déplaçait des cadrages validés.
+> **⚠ Une Toile chargée en temps réel n'est pas comparable au pixel** d'un fichier à l'autre : un simple commentaire ajouté (aucun code) change l'image une
+> fois sur deux à 25 paroles. Au pixel : `banc_rendu` (horloge pilotée). Juges : **`redteam_toile_stable` étendu** (T l'état de Tom à deux échelles, X données
+> abîmées, S Toile saine, M 20 mondes × {1, 5, 9, 25, 50} ; T 0/6 sur v160a), `redteam_onb_rejeu` E (rouge sur v160a).
+> **⚑ C-180 (B3) — LA PAROLE LONGUE DE L'ONBOARDING EST COMPOSÉE LIGNE PAR LIGNE** (`composeParole`) : en cours, non livré dans ce lot. Le champ garde 80
+> caractères au plus (existant, sans décision écrite).
+
 ### ⚑ v159 (22 oct. 2026) — LES DALLES QUI « NE SONT PLUS À LEUR PLACE » (LA VUE D'UN AUTRE MONDE), NET DÈS LA VALIDATION DU PAIEMENT, LA SILHOUETTE DE LA JAUGE PRÉPARÉE AU REPOS, LA PAROLE LONGUE DE L'ONBOARDING. (Décisions Tom et chef de chantier.)
 > **Validés par Tom : C-173, C-176, C-170 (« Garder ton achat »). Q568 tranchée (chef de chantier). Q569 reportée à Swift (portage/DETTE.md E-18). Le point d'arrêt tient : pas d'E4.**
 > **⚑ C-177 — CE QUI BOUGE EN REVENANT À LA TOILE EST LA VUE, PAS LES DALLES.** Mesuré (banc comme Tom, 20 mondes × 5 et 25 paroles × sept pages) : les
