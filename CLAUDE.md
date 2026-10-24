@@ -206,6 +206,15 @@ la nature, la ligne dit l'état.)*
 > **⚑ C-180 (B3) — LA PAROLE LONGUE DE L'ONBOARDING EST COMPOSÉE LIGNE PAR LIGNE** (`composeParole`) : en cours, non livré dans ce lot. Le champ garde 80
 > caractères au plus (existant, sans décision écrite).
 
+### ⚑ v162b (24 oct. 2026) — LOT MOTEUR, AUTORISATION EXCEPTIONNELLE DE TOM : RAMAGE SANS ROSACE, LE STUDIO AU DOIGT. (Décisions Tom.)
+> **⚑ C-187 — RAMAGE N'EST PLUS UNE ROSACE** (`_parure`, Ramage seul ; le Worker du film en reçoit le texte) : chaque œil tire de SA clé une forme (trois
+> harmoniques), un tourbillon (plumes courbes, sens et force tirés), des bandes décalées, un cœur ovale irrégulier (angle d'or ± 0,03, rayon, taille et nombre
+> de feuilles variés). Déterministe : la même Toile d'une ouverture à l'autre. Banc de rendu : 14 images de Ramage changent, les 266 autres au pixel (la
+> référence de Ramage n'est PAS refigée : Tom juge d'abord). Avant : `sauvegardes/promi-moteur-avant-v162b.js`.
+> **⚑ C-175 (Q577) — LE DOIGT SUR LE STUDIO** (`_apDoigt`, posé par l'app sur `#studioScreen`, levé 400 ms après) : sous Ramage, Mascaret, Chantourné,
+> Guingois (`_AP_GESTE`), aucun événement NEUF de l'aperçu et aucune préparation de Ramage pendant le geste. Gain partiel, mesuré à charge égale (non calme) ;
+> la cause restante est nommée (la scène d'une transition d'aperçu est reconstruite à chaque image, jamais gardée — Q580). **Non réglé.**
+
 ### ⚑ v162a (24 oct. 2026) — L'ONDE RÉGLABLE, LE TRAIT × 1,05, LA PHRASE DU CERCLE, « GARDER DE CÔTÉ » QUI GARDE, LE FOND DU TRI, LE GUIDE APRÈS LE STUDIO, L'AUDIT DES BOUTONS. (Décisions Tom.)
 > **Validés par Tom : C-180, C-174 (la taille de la flèche), Esquille, Éclisse, le tracé des lettres hors onboarding. C-182 : Tom valide de nouveau son premier
 > Promi — cause inconnue, aucune correction ; le relevé d'erreurs ne vit plus que derrière `?diag=1`.**

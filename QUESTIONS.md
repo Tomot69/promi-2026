@@ -8866,3 +8866,6 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q579 — À TRANCHER (C-149, v162)** : il n'existe pas d'écran « Tout ce que j'ai gardé de côté ». Les gardés de côté sont dans l'Index (cartes en pointillés
   « GARDÉ DE CÔTÉ », en fin de liste) et se trient par ⇅ → « Gardés de côté ». *Proposition* : toucher le message « gardé de côté — dans l'Index » ouvre
   l'Index filtré sur eux. (Attente de Tom : rien n'est posé.)
+- **Q580 — À TRANCHER (C-175, v162b)** : la saccade restante au Studio sous Guingois, Mascaret, Chantourné est la reconstruction de la scène pendant une
+  transition de l'aperçu (jamais gardée en cache), et sous Ramage un coût hors de l'aperçu (images de 22–27 ms, l'aperçu ≈ 0). *Proposition* : garder en
+  cache les scènes d'une transition d'aperçu (elles se rejouent à l'identique d'un tour à l'autre) — un lot moteur à part, banc de rendu à l'appui.

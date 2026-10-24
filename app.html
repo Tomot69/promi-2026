@@ -23073,7 +23073,15 @@ var CREMEETAT='#F7F0DE';
      pendant un mouvement elle retardait une image sur deux — Madrure avançait en dents de scie (mesuré : 15 · 8,6 · 13 · 3,9 · 12,7
      niveaux d'une image à l'autre ; sans elle, une montée lisse). */
   var _prepPh=null, _prepT0=0;
-  function prepare(bg,t,tDeb){ if(!t.apercuPrepare||!bg.__c) return;
+  /* ⚑ v162 (Tom, C-175, Q577) — LE DOIGT SUR LE STUDIO : sous Ramage, Mascaret, Chantourné et Guingois, rien ne se prépare et aucun événement neuf de
+     l'aperçu ne part tant qu'un doigt est posé (le moteur lit `_apDoigt`) ; tout reprend 400 ms après le lever. Sous Ramage, la préparation de
+     l'événement suivant prenait jusqu'à 30 ms de CHAQUE image, doigt posé ou non. Ce qui est peint ne change pas : seul le travail pendant le geste baisse. */
+  var GESTE={ramage:1,mascaret:1,chantourne:1,guingois:1}, _apLeve=0;
+  (function(){ var st=document.getElementById('studioScreen'); if(!st) return;
+    var pose=function(){ clearTimeout(_apLeve); window._apDoigt=true; }, leve=function(){ clearTimeout(_apLeve); _apLeve=setTimeout(function(){ window._apDoigt=false; }, 400); };
+    ['touchstart','pointerdown'].forEach(function(n){ st.addEventListener(n, pose, {capture:true, passive:true}); });
+    ['touchend','touchcancel','pointerup','pointercancel'].forEach(function(n){ st.addEventListener(n, leve, {capture:true, passive:true}); }); })();
+  function prepare(bg,t,tDeb){ if(!t.apercuPrepare||!bg.__c) return; if(window._apDoigt&&GESTE[bg.__c.th]) return;
     /* v89 : Ramage affiché et immobile — il prépare l'événement tiré d'avance (une image lente sur un aperçu immobile ne se voit pas) */
     if(bg.__c.th==='ramage'&&t.apercuPrepareProchain){ var cy0=bg.__c.cy, lim=window._ramBouge?12:(cy0&&cy0.prem&&cy0.n===1)?34:30;   /* v91 : la lecture du film ne coûte qu'une image posée — le prochain se prépare AUSSI pendant la pousse */   /* v90 : l'aperçu est immobile pendant cette préparation — 24 ms ne se voient pas */   /* v90 : le premier événement attend, rien ne bouge — un budget plus large */
       var r2=lim-(performance.now()-tDeb); if(r2>2) t.apercuPrepareProchain(bg,Math.min(lim-2,r2)); return; }
