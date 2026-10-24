@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 302 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 443 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 302 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 445 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -306,8 +306,8 @@ Source : `app.html`. 302 éléments interactifs relevés sur 36 écrans (mode cl
 | page + Nuée | `div#createSheet.sheet.trame>div.enh>div.closeb.x157«Fermer»` | natif | 322, 71 | 44 × 44 | oui |  |
 | page + Nuée | `div#createSheet.sheet.trame>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 183 | 34 × 34 | oui |  |
 | page + Nuée | `#planterZoneN` | écouteur | 195, 248 | 390 × 118 | oui |  |
-| page + Nuée | `div#nueePhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«Week-endà Marseille»` | on… | 238, 414 | 184 × 54 | oui |  |
-| page + Nuée | `div#nueePhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«tout le monde»` | on… | 223, 552 | 231 × 54 | oui |  |
+| page + Nuée | `div#nueePhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«Week-endà Marseille»` | on… | 238, 424 | 184 × 54 | oui |  |
+| page + Nuée | `div#nueePhrase.pp-phrase>div.ph-txt.ph-coupe>span.ph-m.ph-vide«tout le monde»` | on… | 223, 562 | 231 × 54 | oui |  |
 | page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t.on«Plein»` | natif | 63, 664 | 78 × 44 | oui |  |
 | page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Coulé»` | natif | 151, 664 | 78 × 44 | oui |  |
 | page + Nuée | `div#csPinceauRail.pc-rail>button.pc-t«Peigné»` | natif | 239, 664 | 78 × 44 | oui |  |

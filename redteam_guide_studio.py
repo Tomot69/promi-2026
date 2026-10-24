@@ -73,7 +73,8 @@ with sync_playwright() as p:
         juge('[%s] A · deux designs choisis au Studio (%s → %s → %s) : tant que le Studio est ouvert, ni étape du +, ni sa phrase, ni son +' % (T, a1[0][7:30], a1[1][7:30], a2[1][7:30]),
              len(ouv) > 100 and not mauvais and a1[0] != a1[1] and a2[0] != a2[1], '%d images le Studio ouvert, %d avec le + ou sa phrase · états vus : %s' % (len(ouv), len(mauvais), sorted(set(x['etat'] or '-' for x in ouv))))
         ferme(pg); L = pg.evaluate("()=>window.__g")
-        p1 = next((x for x in L if x['etat'] in ('vers-plus', 'plus')), None); fin_st = max([x['t'] for x in L if x['ouvert']] or [0])
+        # ⚑ v162 (C-166) : « vers-plus » (le flou qui quitte le Studio) commence dans le dernier 15 % de sa course — l'étape du + (sa zone, sa phrase) vient toujours APRÈS (C-172)
+        p1 = next((x for x in L if x['etat'] == 'plus' or x['plus']), None); fin_st = max([x['t'] for x in L if x['ouvert']] or [0])
         dern = L[-1] if L else {}
         juge('[%s] B · Studio refermé : l\'étape du + arrive sur l\'accueil, après que le Studio a fini de sortir de l\'écran' % T,
              p1 is not None and p1['t'] > fin_st and dern.get('etat') == 'plus' and dern.get('plus') and not dern.get('ouvert'),

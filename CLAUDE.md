@@ -206,6 +206,30 @@ la nature, la ligne dit l'état.)*
 > **⚑ C-180 (B3) — LA PAROLE LONGUE DE L'ONBOARDING EST COMPOSÉE LIGNE PAR LIGNE** (`composeParole`) : en cours, non livré dans ce lot. Le champ garde 80
 > caractères au plus (existant, sans décision écrite).
 
+### ⚑ v162a (24 oct. 2026) — L'ONDE RÉGLABLE, LE TRAIT × 1,05, LA PHRASE DU CERCLE, « GARDER DE CÔTÉ » QUI GARDE, LE FOND DU TRI, LE GUIDE APRÈS LE STUDIO, L'AUDIT DES BOUTONS. (Décisions Tom.)
+> **Validés par Tom : C-180, C-174 (la taille de la flèche), Esquille, Éclisse, le tracé des lettres hors onboarding. C-182 : Tom valide de nouveau son premier
+> Promi — cause inconnue, aucune correction ; le relevé d'erreurs ne vit plus que derrière `?diag=1`.**
+> **⚑ C-174 — `?onde=0…1`** règle l'amplitude de l'onde du premier Promi (onboarding seul), défaut 0,5 ; le haut de l'encre ne bouge pas. Tom choisit.
+> **⚑ C-184 — LE TRAIT × 1,05, ET RIEN D'AUTRE** (`lot-V162-TRAIT`, `window._TRAIT_K`) : épaisseur, points, pointe et flèche d'invite des pages +, des fiches,
+> de l'instant et du trait d'un Cercle ; l'onboarding inchangé. Juge : **`redteam_trait_105.py`** (les valeurs de dessin piégées, rapport 1,05 ± 0,005).
+> **⚑ C-183 — LA PHRASE DE LA PAGE + DU CERCLE 10 pt PLUS BAS** (`_dyP` −31) ; elle ne touche ni « garder de côté » ni la barre (`redteam_pages_plus`).
+> **⚑ C-149, RÉCIDIVE — « GARDER DE CÔTÉ » GARDE L'ÉTAT ENTIER DE LA PAGE +** (`lot-V162-GARDER`) : la cause, l'ancien chemin `#addDraft` (titre seul, ni nature,
+> ni personnes, ni Cercle ; sans titre, rien). Le gardé de côté est dans l'Index (« GARDÉ DE CÔTÉ »), sa carte rouvre la page + dans sa nature et son état
+> (`p.brouillon`). Il n'existe pas d'écran « Tout ce que j'ai gardé de côté » (Q579). **Trouvé en jugeant (dès v152) : un second rendu de la phrase d'un Chiche
+> vidait son titre (« Chiche de … ») — la coupe ne vide plus jamais un titre.** Juge : **`redteam_garder_reprise.py`** (3 natures, avec et sans personnes, l'app
+> rouverte ; rouge sur v161).
+> **⚑ C-185 — LE TRI DU FIL ET DE L'INDEX (⇅, que Tom appelle « Réglages ») NE FAIT PLUS PASSER LE FOND AU BRUN** : `.ix-menu::before` posait l'encre du mode
+> à 60 % sur toute la page, et le panneau une ombre portée (un volume) — retirés. Juge : **`redteam_tri_fond.py`**. Q578 : l'Index ne referme pas ce menu au
+> toucher hors du panneau (déjà en v161).
+> **⚑ C-166, RÉCIDIVE — LE GUIDE APRÈS LE STUDIO, SUR LE CHEMIN DE L'ONBOARDING** : la signature du fond est la Toile réelle (graines et vue) ; sous le Studio,
+> le moteur ne prépare le fond qu'à la vue × 1 (**`Toile.renderTo(…, {vue:true})` ne porte pas un zoom ≠ 1 sous plusieurs mondes — moteur, non corrigé** ; or
+> après « Promi planté ! » la vue est à × 2) ; dès que le Studio commence à se refermer, l'écran réel est copié et flouté ; le flou commence à quitter le
+> Studio dans son dernier 15 % de course, l'étape du + attend qu'il soit sorti (C-172), 240 + 400 ms. Juge : **`redteam_guide_retour.py`** (rouge sur v161).
+> **⚑ C-186 — `AUDIT-BOUTONS.md`** : écran par écran, rien changé.
+> **⚑ C-181 (v161b-2 §3) — LA VEILLE AUX VRAIS BORDS** : elle couvre la fenêtre visible (`visualViewport`, zones sûres), le logo rebondit à son ENCRE
+> (140 × 27 pt × l'échelle), le fond est celui de la Toile du thème, chaque couleur tient 3:1 (sinon ajustée, l'amande aussi) ; coins 0,3 à 0,5 % du temps,
+> aux trois fenêtres (430 × 932, 330 × 714, 390 × 651). Juge : `redteam_veille` (33).
+
 ### ⚑ v159 (22 oct. 2026) — LES DALLES QUI « NE SONT PLUS À LEUR PLACE » (LA VUE D'UN AUTRE MONDE), NET DÈS LA VALIDATION DU PAIEMENT, LA SILHOUETTE DE LA JAUGE PRÉPARÉE AU REPOS, LA PAROLE LONGUE DE L'ONBOARDING. (Décisions Tom et chef de chantier.)
 > **Validés par Tom : C-173, C-176, C-170 (« Garder ton achat »). Q568 tranchée (chef de chantier). Q569 reportée à Swift (portage/DETTE.md E-18). Le point d'arrêt tient : pas d'E4.**
 > **⚑ C-177 — CE QUI BOUGE EN REVENANT À LA TOILE EST LA VUE, PAS LES DALLES.** Mesuré (banc comme Tom, 20 mondes × 5 et 25 paroles × sept pages) : les

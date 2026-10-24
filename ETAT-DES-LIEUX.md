@@ -10106,3 +10106,4 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 
 | v160b | Les dalles entassées (C-177) : réparées à l'ouverture | — | ouvrir `http://192.168.1.128:8752/app.html` : tes sept dalles séparées, les mêmes à chaque réouverture |
 | v160c | La parole longue de l'onboarding (C-180) ; le Studio rend la vue (Q574) ; Ramage au Studio (C-175) | — | Réglages → « Revoir la présentation », écrire une très longue parole ; au Studio, aller-retour depuis Terrazzo ; arriver sur Ramage |
+| v162a | L'onde réglable, le trait × 1,05, la phrase du Cercle, « garder de côté » qui garde, le fond du tri, le guide après le Studio, l'audit des boutons | — | `http://192.168.1.128:8752/app.html?onde=0.5` (données effacées) ; garder un Chiche avec Marion, rouvrir l'app, Index → sa carte |

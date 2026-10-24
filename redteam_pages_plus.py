@@ -41,7 +41,7 @@ LIT = r"""()=>{ const D=document.getElementById('device').getBoundingClientRect(
   let l1=null; if(tx){ const rg=document.createRange(); rg.selectNodeContents(tx); const q=[...rg.getClientRects()].filter(r=>r.width>1).sort((a,b)=>a.top-b.top)[0]; if(q) l1=[(q.left-D.left)/k, (q.top-D.top)/k]; }
   const g=cs.querySelector('.pp-garder'), m=g?(getComputedStyle(g).transform.match(/matrix\(([^)]+)\)/)):null;
   return {texte:tx?tx.textContent:null, l1:l1, boite:bx(ph), trace:bx(cs.querySelector('.pp-trace')), rail:bx(document.getElementById('csPinceau')), garder:g?[g.offsetLeft, g.offsetTop]:null,
-    penche:m?+(-Math.atan(+m[1].split(',')[2])*180/Math.PI).toFixed(2):0, col:(cs.querySelector('.pp-trace')?getComputedStyle(cs.querySelector('.pp-trace')).webkitTextFillColor:null), base:(window._ppEcran&&_ppEcran())?_ppEcran().base:null}; }"""
+    penche:m?+(-Math.atan(+m[1].split(',')[2])*180/Math.PI).toFixed(2):0, ink:(function(e){ if(!e) return null; const rg=document.createRange(); rg.selectNodeContents(e); const q=[...rg.getClientRects()].filter(r=>r.width>1); return q.length?[Math.min(...q.map(r=>r.top)), Math.max(...q.map(r=>r.bottom))].map(v=>(v-D.top)/k):null; })(ph), garder_ink:(function(e){ if(!e) return null; const rg=document.createRange(); rg.selectNodeContents(e); const q=[...rg.getClientRects()].filter(r=>r.width>1); return q.length?[Math.min(...q.map(r=>r.top)), Math.max(...q.map(r=>r.bottom))].map(v=>(v-D.top)/k):null; })(g), barre:(function(){ const e=document.getElementById('csBotBar'); return e?(e.getBoundingClientRect().top-D.top)/k:null; })(), col:(cs.querySelector('.pp-trace')?getComputedStyle(cs.querySelector('.pp-trace')).webkitTextFillColor:null), base:(window._ppEcran&&_ppEcran())?_ppEcran().base:null}; }"""
 def page_plus(b, fichier, nat, sombre):
     ctx = B.contexte(b, sombre=sombre); ctx.add_init_script(SEME); pg = B.ouvre(ctx, fichier)
     B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=%s]' % nat); pg.wait_for_timeout(2800)
@@ -49,7 +49,7 @@ def page_plus(b, fichier, nat, sombre):
 def fiche(b, fichier, nature, sombre):
     ctx = B.contexte(b, sombre=sombre); ctx.add_init_script(SEME); pg = B.ouvre(ctx, fichier)
     B.plante(pg, 'rendre le livre', qui='Marion', nature=nature)
-    pg.evaluate("()=>{ closeAll(); openDetail(promises[promises.length-1].id); }"); pg.wait_for_timeout(3200)
+    pg.evaluate("()=>{ window._TRAIT_K=1; closeAll(); openDetail(promises[promises.length-1].id); }"); pg.wait_for_timeout(3200)   # ⚑ v162 (C-184) : le trait × 1,05 est voulu (son juge : redteam_trait_105) — ici on le neutralise pour juger tout le reste contre v149
     t = pg.evaluate("()=>{ const v=(document.getElementById('dpTrameCv').getAttribute('data-trait')||'').split(','); return [+v[0], +v[1]]; }")
     im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB'); d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left,r.top,r.width/390];}")
     ctx.close(); y0 = int((d[1] + (t[0] - t[1] - 8) * d[2]) * 3); x0 = int((d[0] + 3 * d[2]) * 3); return im.crop((x0, y0, x0 + int(384 * d[2] * 3), int((d[1] + 800 * d[2]) * 3))), t   # au-dessus des coins arrondis du bas de l'appareil (rayon ≈ 44 pt : leur lissage varie d'un rendu à l'autre)
@@ -83,7 +83,11 @@ with sync_playwright() as p:
             elif n == 'promi': juge('[%s] page + Promi : la phrase ne bouge pas' % T, abs(py) <= 0.5, 'Δy %.1f' % py)
         if N['nuee']['l1'] and N['chiche']['l1']:
             dl = N['nuee']['l1'][1] - N['chiche']['l1'][1]
-            juge('[%s] C-158 · page + Cercle : sa phrase EXACTEMENT à la hauteur et au placement de celle du Chiche (l\'encre de la première ligne)' % T, abs(dl) <= 0.5 and N['nuee']['boite'] and N['chiche']['boite'] and abs(N['nuee']['boite'][0] - N['chiche']['boite'][0]) <= 0.5 and abs(N['nuee']['boite'][2] - N['chiche']['boite'][2]) <= 0.5, 'encre : Cercle %.1f · Chiche %.1f · boîte à gauche %.1f / %.1f' % (N['nuee']['l1'][1], N['chiche']['l1'][1], N['nuee']['boite'][0], N['chiche']['boite'][0]))
+            # ⚑ v162 (Tom, C-183) : la phrase du Cercle descend de 10 pt — elle est maintenant 10 pt SOUS celle du Chiche (C-158 : à la même hauteur)
+            juge('[%s] C-183 · page + Cercle : sa phrase 10 pt plus bas que celle du Chiche (l\'encre de la première ligne), même placement à gauche' % T, abs(dl - 10) <= 0.5 and N['nuee']['boite'] and N['chiche']['boite'] and abs(N['nuee']['boite'][0] - N['chiche']['boite'][0]) <= 0.5, 'Δy %.1f' % dl)
+            ink = N['nuee'].get('ink'); gd = N['nuee'].get('garder_ink'); bar = N['nuee'].get('barre')
+            juge('[%s] C-183 · page + Cercle : la phrase ne touche ni « Garder de côté » ni la barre du bas' % T, ink and gd and bar and ink[1] < gd[0] and ink[1] < bar,
+                 'bas de la phrase %s · « Garder de côté » %s (espace %.1f pt) · barre %s (espace %.1f pt)' % (ink and ink[1], gd and gd[0], (gd[0] - ink[1]) if ink and gd else 0, bar, (bar - ink[1]) if ink and bar else 0))
         for nature, nom in ((0, 'Promi'), (1, 'Chiche')):
             ia, ta = fiche(b, REF, nature, sombre); ic, tc = fiche(b, F, nature, sombre)
             bb = ImageChops.difference(ia, ic).getbbox() if ia.size == ic.size else (0, 0, 1, 1)

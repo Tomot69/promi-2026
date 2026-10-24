@@ -509,9 +509,10 @@ def chemins(b):
     au_studio(pg, cdp, er_)
     pg.evaluate("""(a)=>{ window.__z=[]; const [l,h]=a; const cv=document.getElementById('guideEau'), d=cv.width/390, c=document.createElement('canvas'); c.width=l; c.height=h; const x=c.getContext('2d',{willReadFrequently:true});
         (function f(){ const g=document.getElementById('guide'); if(!g) return; try{ x.clearRect(0,0,l,h); x.drawImage(cv, 24*d, 700*d, 342*d, 120*d, 0, 0, l, h); const p=x.getImageData(0,0,l,h).data; let n=0, sx=0, x0=1e9, x1=-1, y0=1e9, y1=-1; for(let i=0;i<l*h;i++){ if(p[i*4+3]<128){ const X=i%l, Y=(i/l)|0; n++; sx+=X; if(X<x0)x0=X; if(X>x1)x1=X; if(Y<y0)y0=Y; if(Y>y1)y1=Y; } }
-          const kx=342/l, ky=120/h; window.__z.push([Math.round(performance.now()), n, n?24+sx/n*kx:0, n?24+x0*kx:0, n?24+(x1+1)*kx:0, n?700+y0*ky:0, n?700+(y1+1)*ky:0, g.getAttribute('data-guide')||'']); }catch(e){} requestAnimationFrame(f); })(); }""", [342, 120])
+          const kx=342/l, ky=120/h; window.__z.push([Math.round(performance.now()), n, n?24+sx/n*kx:0, n?24+x0*kx:0, n?24+(x1+1)*kx:0, n?700+y0*ky:0, n?700+(y1+1)*ky:0, g.getAttribute('data-guide')||'', !!document.getElementById('guidePhrase')]); }catch(e){} requestAnimationFrame(f); })(); }""", [342, 120])
     ferme_studio(pg, cdp); pg.wait_for_timeout(700); em = pg.evaluate(ETAT); e2 = pret(pg, 'plus', 8000); Z = pg.evaluate("()=>window.__z")
-    juge('CHEMIN 3 — puis le Studio refermé : sa zone se referme (aucune phrase pendant), puis l\'étape du + arrive ; l\'eau reste', em['guide'] in ('vers-plus', 'au-studio') and em['phrase'] is None and e2['guide'] == 'plus' and e2['phrase'] == PH_PLUS and e2['eau'], 'guide %s → %s' % (em['guide'], e2['guide']))
+    vp = [z for z in Z if len(z) > 8 and z[7] == 'vers-plus']   # ⚑ v162 (C-166) : le passage est plus court (240 + 400 ms) — on le lit image par image, plus à 700 ms
+    juge('CHEMIN 3 — puis le Studio refermé : sa zone se referme (aucune phrase pendant), puis l\'étape du + arrive ; l\'eau reste', len(vp) >= 3 and not any(z[8] for z in vp) and e2['guide'] == 'plus' and e2['phrase'] == PH_PLUS and e2['eau'], 'guide %s → %s' % (em['guide'], e2['guide']))
     A = [z for z in Z if z[1] > 0]; i_vide = [k for k, z in enumerate(Z) if z[1] == 0]
     S = [z for z in (Z[:i_vide[0]] if i_vide else Z) if z[1] > 0]; P = [z for z in (Z[i_vide[-1]:] if i_vide else []) if z[1] > 0]
     deux = [z for z in A if z[3] < 120 and z[4] > 150]                                 # une zone à cheval sur le Studio et le + : une translation, ou deux zones à la fois

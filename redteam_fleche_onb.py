@@ -31,19 +31,23 @@ LIT = """()=>{ const D=document.getElementById('device').getBoundingClientRect()
   const T=['onbTrace','onbPh','onbSous','onbDit','onbQuid'].map(i=>{ const e=document.getElementById(i); if(!e||getComputedStyle(e).display==='none') return null; const r=e.getBoundingClientRect(); return [i,(r.left-D.left)/k,(r.top-D.top)/k,(r.right-D.left)/k,(r.bottom-D.top)/k]; }).filter(Boolean);
   const dep=document.getElementById('onbDepart');
   return {top:top, bot:bot, h:bot-top, pt:larg[0]||0, textes:T, clig:!!(dep&&dep.classList.contains('clignote')), anim:dep?getComputedStyle(dep).animationName:'', app:(window._onbApparition||[]).slice()}; }"""
-def mesure(b, fichier, sombre):
+def mesure(b, fichier, sombre, q=''):
     ctx = B.contexte(b, onb=False, guide=False)
     if sombre: ctx.add_init_script("try{localStorage.setItem('promi_theme','dark')}catch(e){}")
-    pg = B.ouvre(ctx, fichier, attente=7000)
+    pg = B.ouvre(ctx, fichier, attente=7000, q=q)
     B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(5200)
     B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500); pg.keyboard.type('marcher une heure', delay=20); pg.wait_for_timeout(600)
     pg.evaluate("()=>{ const i=document.getElementById('onbIn'); if(i) i.blur(); }"); pg.wait_for_timeout(1800)
-    m = pg.evaluate(LIT); er = [e for e in pg.erreurs if 'version.json' not in e]; ctx.close(); return m, er
+    m = pg.evaluate(LIT); m['cotes'] = pg.evaluate("()=>window._onbTraitCotes||null"); er = [e for e in pg.erreurs if 'version.json' not in e]; ctx.close(); return m, er
 with sync_playwright() as p:
     b = p.webkit.launch()
     for sombre in (False, True):
         T = 'sombre' if sombre else 'clair'
-        r, _ = mesure(b, REF, sombre); n, er = mesure(b, F, sombre)
+        r, _ = mesure(b, REF, sombre); n, er = mesure(b, F, sombre, '?onde=1')   # ⚑ v162 (C-174 suite) : le contrat de v157 (× 2) se juge à ?onde=1 ; le défaut (0,5) plus bas
+        d, er2 = mesure(b, F, sombre); er = er + er2
+        juge('[%s] E · v162, par défaut : l\'amplitude de l\'onde = la moitié de v157 (36 pt pour 72), le haut de l\'encre au même pt, l\'épaisseur × 2' % T,
+             d['cotes'] and abs(d['cotes']['amp'] - 36) < 0.01 and abs(d['top'] - r['top']) <= 1.0 and abs(d['pt'] / r['pt'] - 2) <= 0.08 and d['bot'] < n['bot'],
+             'amplitude %s · haut %.2f (v156 %.2f) · épaisseur × %.3f · bas %.1f (onde 1 : %.1f)' % ((d['cotes'] or {}).get('amp'), d['top'], r['top'], d['pt'] / r['pt'] if r['pt'] else 0, d['bot'], n['bot']))
         juge('[%s] A · le haut de l\'encre de la flèche = celui de v156 ± 1 pt' % T, abs(n['top'] - r['top']) <= 1.0, 'v156 %.2f · maintenant %.2f pt' % (r['top'], n['top']))
         q = n['h'] / r['h'] if r['h'] else 0
         juge('[%s] B · la hauteur de l\'encre × 2 ± 2 %%' % T, abs(q - 2) <= 0.04, 'v156 %.1f pt · maintenant %.1f pt · × %.3f' % (r['h'], n['h'], q))

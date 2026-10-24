@@ -8861,3 +8861,8 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q576 — TRANCHÉE (chef de chantier, v160c)** : la limite de 80 caractères est retirée ; une parole de toute longueur tient (coupe propre au-delà de la place).
 - **Q577 — À TRANCHER (C-175, v160c)** : sous Guingois, Mascaret et Chantourné, ce qui saccade au Studio est l'image de l'aperçu elle-même (moteur, 8 à 22 ms par
   image sous Guingois) ; rien à gagner hors du moteur (mesuré). *Proposition* : l'ajouter au lot « moteur » de Q573 et Q575.
+- **Q578 — À TRANCHER (C-185, trouvé en jugeant, v162)** : dans l'Index, un toucher hors du panneau de tri (⇅) ne le referme pas (dans le Fil, si) — déjà en
+  v161, hors du lot : rien changé. *Proposition* : le refermer comme dans le Fil.
+- **Q579 — À TRANCHER (C-149, v162)** : il n'existe pas d'écran « Tout ce que j'ai gardé de côté ». Les gardés de côté sont dans l'Index (cartes en pointillés
+  « GARDÉ DE CÔTÉ », en fin de liste) et se trient par ⇅ → « Gardés de côté ». *Proposition* : toucher le message « gardé de côté — dans l'Index » ouvre
+  l'Index filtré sur eux. (Attente de Tom : rien n'est posé.)
