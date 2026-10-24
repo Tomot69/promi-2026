@@ -1507,3 +1507,17 @@ Un bandeau : le message + le bouton « Annuler » ; il reste **5 s**. « Annu
 | 30 | Dessin | Loi des largeurs ; icônes ; nombre et ordre des teintes ; validation de Tom au doigt en attente. |
 | 31 | Confirmations | Dessin du toast, de la confirmation, du bandeau « Annuler » ; suite de « Supprimer ton compte » ; origine de « Promi planté sur la Toile ». |
 | 32 | hors liste | Écrans d'origine présents dans le code et **non atteints** : l'écran des trois tuiles de la page +, « Fil d'actu » (`#feedScreen`), l'aperçu « Appliquer cette Toile » (`#previewScreen`), l'ancienne feuille de Cercle (`#essaimSheet`), « Mon Promi » (`#sealOv`), la carte de cellule (« Tenue · Reporter · Gérer › », `#cellCard`). Aucun n'est décrit ici : ne pas les porter sans décision. |
+
+## La veille (v161, C-181)
+
+- **Quand** : après 60 s sans aucun toucher, sur n'importe quel écran, sauf pendant une saisie (clavier ouvert) et pendant un geste en cours. Un toucher n'importe
+  où la quitte et rend l'écran exact d'avant ; ce toucher n'actionne rien dessous.
+- **Ce qu'on voit** : fond plein `#050302` ; le logo PROMI (PromiLate), seul, dans une boîte de 140 × 40 pt (l'encre, 140 × 27, centrée), sans clignotement ;
+  il glisse en diagonale à 60 pt/s et rebondit sur les quatre bords des zones sûres (59 pt en haut, 34 en bas, 8 sur les côtés) ; à chaque rebond la couleur
+  suivante de la palette du Studio (jamais deux fois la même d'affilée ; un ton sous 3:1 sur le fond est sauté) ; au coin exact (les deux bords à 2 pt près)
+  le vert amande `#8FE08F` ; l'angle tiré à chaque rebond, 45° ± 2 à 3° ; aucun coin dans la première minute ni dans la minute qui suit un coin ; mesuré
+  sur 30 × 2 h : un coin toutes les 16,6 min. Entrée et sortie en flaques. « Réduire les animations » : le logo fixe au centre, sans flaques.
+- **Écran allumé** : en Swift, `UIApplication.shared.isIdleTimerDisabled = true` tant que Promi est au premier plan ; relâché après 10 min de veille ; sans
+  limite seulement quand l'iPhone est branché (`UIDevice.current.batteryState` = `.charging` ou `.full`). Le prototype le fait par le Screen Wake Lock de
+  Safari (demandé au premier toucher, redemandé au retour au premier plan).
+- Source : `app.html`, `lot-V161-VEILLE` ; juge `redteam_veille.py`.

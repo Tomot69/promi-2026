@@ -146,6 +146,19 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v161 (24 oct. 2026) — LA VEILLE (C-181). (Décision Tom.)
+> **`lot-V161-VEILLE`** (en fin de page) : après 60 s sans aucun toucher (`?veille=N` pour les juges), sauf pendant une saisie (un champ a la main) ou un geste
+> (un doigt posé) : fond plein `#050302`, PROMI seul (PromiLate, une boîte de 140 × 40 pt : l'encre 140 × 27 centrée — c'est la boîte qui rebondit), 60 pt/s,
+> rebonds sur les zones sûres (59 · 34 · 8 pt), la couleur suivante de la palette du Studio à chaque rebond (un ton sous 3:1 sur le fond sauté), l'amande
+> `#8FE08F` au coin exact (2 pt), l'angle 45° ± 2 à 3° tiré à chaque rebond ; aucun coin dans la première minute ni dans la minute qui suit un coin
+> (`?coin=1` en force un entre 60 et 90 s). La trajectoire est calculée par ÉVÉNEMENTS (le prochain bord) — la même fonction sert l'écran et
+> `window._veilleSimule` : 30 × 2 h, un coin toutes les 16,6 min, aucun avant 108 s. Le logo est un canevas peint UNE fois par couleur, déplacé par
+> `transform` (jamais `fillText` dans la boucle). Entrée et sortie en flaques (`_passageFlaques` couvre / ouvre). Un toucher la quitte, rend l'écran exact et
+> n'actionne rien (propagation arrêtée, le clic qui suit avalé 800 ms). Wake Lock : demandé au premier toucher, redemandé au retour au premier plan, relâché
+> à 10 min de veille ; Swift : `isIdleTimerDisabled` (portage/SPEC-ECRANS). « Réduire les animations » : le logo fixe au centre.
+> ⚠ **LA VEILLE EST COUPÉE SUR LES BANCS** (navigateur piloté, ou `promi_veille_off` posé par `banc_tom`) sauf `?veille=` : un juge qui reste plus de 60 s
+> sans toucher ne la voit jamais. Juge **`redteam_veille`** (16 ; rouge sur v160c).
+
 ### ⚑ v160c (23 oct. 2026) — Q574 (LE STUDIO REND LA VUE), C-180 (LA PAROLE LONGUE), C-175 (RAMAGE AU STUDIO). (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v160 (C-180 « non livré ») et v159 (`lot-V159-VUE`, reposé en partie).
 > **Validé par Tom : C-177 (« plus aucune dalle superposée »).** Q574, Q576 tranchées ; Q573, Q575 (et Q577) : un lot « moteur » à part, après les testeurs — **on ne touche
 > pas au moteur d'ici là.**
@@ -3410,6 +3423,9 @@ python3 redteam_achat_fond.py  # 49 (v157 : + D, E le second encart sur le Studi
 python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding (Réglages, au doigt) sur une Toile d'une et de dix dalles dit le texte de Tom ; Toile vide → le texte
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
+python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_parole_longue.py # 144 — v160c (C-180) : la parole longue de l'onboarding, 1 à 6 lignes, 40 lettres, 260 et 500 caractères, deux échelles, deux thèmes, clavier ouvert et fermé. Rouge sur v159.
+python3 redteam_studio_arrivee.py # 3 — v160c (C-175) : à l'arrivée sur Ramage, aucun rendu de la silhouette ; elle vient au calme ; Pochade inchangé. Rouge sur v160b.
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la
                                #   silhouette ; sommet à 4,6 s et retour à 10,6 s APRÈS LA PREMIÈRE IMAGE (horloge réelle) ;
                                #   immobile avec Réduire les animations. Rougit sur app-avant-v117b.

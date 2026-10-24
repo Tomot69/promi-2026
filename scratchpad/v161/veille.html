@@ -1,0 +1,115 @@
+<script id="lot-V161-VEILLE">
+/* ⚑ v161 (Tom, C-181) — LA VEILLE. « Après 60 s sans aucun toucher, sur n'importe quel écran (sauf pendant une saisie et pendant un geste), un fond plein
+   #050302 et le logo PROMI seul, ≈ 140 × 40 pt, qui glisse en diagonale à 60 pt/s et rebondit sur les quatre bords (zones sûres de l'iPhone) ; à chaque
+   rebond la couleur suivante de la palette du Studio, jamais deux fois la même d'affilée ; au coin exact (les deux bords à 2 pt près) le vert amande
+   #8FE08F, la seule fois où il le prend ; l'angle varie de ± 2 à 3° autour de 45° à chaque rebond ; aucun coin dans la première minute ; entrée et
+   sortie en flaques ; un toucher n'importe où la quitte et ramène à l'écran exact, sans rien actionner dessous ; l'écran reste allumé (Wake Lock)
+   jusqu'à 10 min de veille. »
+   · LE LOGO est un petit canevas peint UNE fois par couleur (jamais `fillText` dans la boucle d'images) et déplacé par `transform` : ses bords sont ceux
+     de son ENCRE (mesurée), c'est l'encre qui touche les bords. Pas de clignotement du I (ce n'est pas le mot-marque : un dessin fixe).
+   · LA TRAJECTOIRE se calcule par ÉVÉNEMENTS (le prochain bord touché), la même fonction sert l'écran et la simulation (`window._veilleSimule`) : un coin
+     est le rebond où l'autre bord est à 2 pt au plus. À chaque rebond l'angle est tiré (45° ± 2 à 3°, dans le quadrant du rebond) ; si le prochain
+     rebond serait un coin avant 60 s de veille (ou moins de 60 s après le coin précédent : sans cela ils venaient par grappes, la trajectoire repassant
+     sur elle-même), l'angle est tiré de nouveau.
+   · LES ZONES SÛRES (pt de l'appareil 390 × 844) : 59 en haut (l'île), 34 en bas (la barre d'accueil), 8 sur les côtés (le coin arrondi de l'écran).
+   · Un ton de la palette qui ne se lit pas sur #050302 (moins de 3:1) est sauté : sous une palette sombre le logo disparaîtrait.
+   Réglages pour les juges : `?veille=5` (le délai, en s), `?coin=1` (un coin forcé entre 60 et 90 s de veille) ; `window._veilleRegle`, `window._veille()`.
+   Swift (portage/) : `UIApplication.shared.isIdleTimerDisabled`, sans limite seulement quand l'iPhone est branché. */
+(function(){
+  var Q=new URLSearchParams(location.search);
+  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||60))*1000, VITESSE:60, VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
+    HAUT:59, BAS:34, COTE:8, W:390, H:844, AMANDE:'#8FE08F', FOND:'#050302', COIN_FORCE:Q.get('coin')==='1'};
+  var dernier=performance.now(), doigts=0, actif=null, verrou=null, etatVerrou='aucun', avale=0;
+  function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function saisie(){ var a=document.activeElement; return !!(a && (a.tagName==='INPUT' || a.tagName==='TEXTAREA' || a.isContentEditable)); }
+
+  /* ── LA TRAJECTOIRE : une fonction pure, partagée par l'écran et la simulation ── */
+  function hasard(g){ var a=g>>>0; return function(){ a=(a+0x6D2B79F5)>>>0; var t=a; t=Math.imul(t^(t>>>15),t|1); t^=t+Math.imul(t^(t>>>7),t|61); return ((t^(t>>>14))>>>0)/4294967296; }; }
+  function bornes(w, h){ return {x0:R.COTE, x1:R.W-R.COTE-w, y0:R.HAUT, y1:R.H-R.BAS-h}; }
+  /* le prochain rebond depuis (x, y) dans la direction (dx, dy), vitesse V : {t, x, y, mur:'x'|'y'|'coin'} */
+  function prochain(s, B){ var tx=s.dx>0?(B.x1-s.x)/(s.dx*R.VITESSE):(s.dx<0?(B.x0-s.x)/(s.dx*R.VITESSE):Infinity), ty=s.dy>0?(B.y1-s.y)/(s.dy*R.VITESSE):(s.dy<0?(B.y0-s.y)/(s.dy*R.VITESSE):Infinity);
+    var t=Math.min(tx, ty), x=s.x+s.dx*R.VITESSE*t, y=s.y+s.dy*R.VITESSE*t, mur=tx<ty?'x':'y';
+    var reste=tx<ty ? Math.min(Math.abs(y-B.y0), Math.abs(y-B.y1)) : Math.min(Math.abs(x-B.x0), Math.abs(x-B.x1));
+    if(reste<=R.TOL) mur='coin'; return {t:Math.max(0,t), x:x, y:y, mur:mur}; }
+  function direction(sx, sy, deg){ var a=deg*Math.PI/180; return [sx*Math.cos(a), sy*Math.sin(a)]; }
+  /* après un rebond (ou au départ) : l'angle tiré, 45° ± 2 à 3° ; un coin avant 60 s est refusé ; `?coin=1` le vise entre 60 et 90 s */
+  function oriente(s, B, ecoule, alea){
+    var sx=s.dx>=0?1:-1, sy=s.dy>=0?1:-1;
+    if(R.COIN_FORCE && !s.coinVise && ecoule>=40000){ var cx=sx>0?B.x1:B.x0, cy=sy>0?B.y1:B.y0, ddx=cx-s.x, ddy=cy-s.y, d=Math.hypot(ddx, ddy), arr=ecoule+d/R.VITESSE*1000;
+      if(arr>=60000 && arr<=90000 && d>1){ s.dx=ddx/d; s.dy=ddy/d; s.coinVise=true; return; } }
+    for(var essai=0; essai<40; essai++){ var dev=(alea()<0.5?-1:1)*(2+alea()); var v=direction(sx, sy, 45+dev); s.dx=v[0]; s.dy=v[1];
+      var n=prochain(s, B), quand=ecoule+n.t*1000; if(n.mur!=='coin' || (quand>=R.SANS_COIN && quand-(s.dernierCoin==null?-1e9:s.dernierCoin)>=R.SANS_COIN)) return; }
+    var v2=direction(sx, sy, 41); s.dx=v2[0]; s.dy=v2[1]; }
+  function rebondit(s, n, B){ s.x=n.x; s.y=n.y;
+    if(n.mur==='coin' && B){ s.x=s.dx>0?B.x1:B.x0; s.y=s.dy>0?B.y1:B.y0; }   /* au coin, posé EXACTEMENT sur les deux bords : sinon il repartait à 1 pt d'un bord, et le rebond suivant était un coin de plus */
+    if(n.mur==='x'||n.mur==='coin') s.dx=-s.dx; if(n.mur==='y'||n.mur==='coin') s.dy=-s.dy; }
+  /* la simulation : `duree` s de trajectoire, sans écran — les coins et leurs instants */
+  window._veilleSimule=function(duree, graine, w, h){ w=w||R.LARG; h=h||40; var B=bornes(w,h), al=hasard(graine||1), s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:Math.SQRT1_2}, t=0, coins=[], rebonds=0;
+    oriente(s, B, 0, al); while(true){ var n=prochain(s, B); if(t+n.t>duree) break; t+=n.t; rebondit(s, n, B); rebonds++; if(n.mur==='coin'){ coins.push(+t.toFixed(1)); s.dernierCoin=t*1000; } oriente(s, B, t*1000, al); }
+    return {coins:coins, rebonds:rebonds, duree:duree}; };
+
+  /* ── L'ÉCRAN ── */
+  function tons(){ var L=[]; try{ (window.Toile && Toile.cols ? Toile.cols() : []).forEach(function(c){ var h='#'+c.slice(0,3).map(function(v){ return ('0'+Math.round(v).toString(16)).slice(-2); }).join('');
+      if(lisible(h)) L.push(h); }); }catch(_){ } if(!L.length) L=['#F7F0DE']; return L; }
+  function lum(h){ var v=[1,3,5].map(function(i){ var c=parseInt(h.substr(i,2),16)/255; return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); }); return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2]; }
+  function lisible(h){ return (lum(h)+0.05)/(lum(R.FOND)+0.05)>=3; }
+  function logo(coul){ /* le canevas du logo, à la taille de son ENCRE */
+    var dpr=Math.min(3, window.devicePixelRatio||2), m=document.createElement('canvas').getContext('2d'), fs=40;
+    m.font='400 '+fs+'px PromiLate'; var q=m.measureText('PROMI'), lw=q.actualBoundingBoxLeft+q.actualBoundingBoxRight; fs=fs*R.LARG/Math.max(1,lw);
+    m.font='400 '+fs+'px PromiLate'; q=m.measureText('PROMI');
+    var w=q.actualBoundingBoxLeft+q.actualBoundingBoxRight, h=q.actualBoundingBoxAscent+q.actualBoundingBoxDescent, cv=document.createElement('canvas');
+    cv.width=Math.ceil(w*dpr); cv.height=Math.ceil(h*dpr); var g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.font='400 '+fs+'px PromiLate'; g.fillStyle=coul;
+    g.fillText('PROMI', q.actualBoundingBoxLeft, q.actualBoundingBoxAscent);
+    cv.style.cssText='position:absolute;left:0;top:0;width:'+w+'px;height:'+h+'px;pointer-events:none;will-change:transform'; cv.__w=w; cv.__h=h; return cv; }
+  function hote(){ return document.getElementById('device'); }
+  function demarre(){ if(actif) return; var D=hote(); if(!D) return;
+    var couche=document.createElement('div'); couche.id='promiVeille'; couche.setAttribute('aria-label','Veille'); couche.setAttribute('role','presentation');
+    couche.style.cssText='position:absolute;left:0;top:0;width:'+R.W+'px;height:'+R.H+'px;background:'+R.FOND+';z-index:2147483000;overflow:hidden;visibility:hidden;touch-action:none';
+    D.appendChild(couche);
+    var T=tons(), V=actif={couche:couche, t0:performance.now(), tons:T, i:0, couleurs:[], coins:[], rebonds:0, reduit:reduit(), passage:null, fini:false, al:hasard((Date.now()^0x5bd1e995)>>>0)};
+    V.logo=logo(T[0]); couche.appendChild(V.logo); V.couleurs.push(T[0]); V.couleur=T[0];
+    var B=V.B=bornes(V.logo.__w, V.logo.__h); V.s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:-Math.SQRT1_2};
+    if(V.al()<0.5) V.s.dx=-V.s.dx; oriente(V.s, B, 0, V.al); V.n=prochain(V.s, B); V.tn=0;
+    pose(V);
+    /* l'entrée en flaques : le fond naît par-dessus l'écran, puis la couche le remplace */
+    var fin=function(){ if(V.fini) return; couche.style.visibility='visible'; if(V.passage && V.passage.canevas) V.passage.canevas.remove(); V.passage=null; V.tEntree=performance.now(); boucle(); };
+    if(V.reduit || !window._passageFlaques) fin();
+    else V.passage=window._passageFlaques(D, {mode:'couvre', couleur:R.FOND, duree:1100, devant:true, z:2147482999, fin:fin});
+    if(!V.passage && !V.reduit) fin(); }
+  function pose(V){ V.logo.style.transform='translate('+V.s.x.toFixed(2)+'px,'+V.s.y.toFixed(2)+'px)'; }
+  function boucle(){ var V=actif; if(!V || V.fini) return; var t=performance.now(), ec=t-V.t0;
+    if(V.reduit){ var B=V.B; V.s.x=(B.x0+B.x1)/2; V.s.y=(B.y0+B.y1)/2; pose(V); }
+    else { if(V.tp==null) V.tp=t; var dt=Math.min(0.1, (t-V.tp)/1000); V.tp=t;
+      while(dt>0){ if(dt<V.n.t-V.tn){ V.s.x+=V.s.dx*R.VITESSE*dt; V.s.y+=V.s.dy*R.VITESSE*dt; V.tn+=dt; dt=0; }
+        else { dt-=(V.n.t-V.tn); rebondit(V.s, V.n, V.B); V.rebonds++; var coin=V.n.mur==='coin';
+          var c; if(coin){ c=R.AMANDE; V.coins.push(Math.round(ec)); V.s.dernierCoin=ec; } else { V.i=(V.i+1)%V.tons.length; c=V.tons[V.i]; if(c===V.couleur && V.tons.length>1){ V.i=(V.i+1)%V.tons.length; c=V.tons[V.i]; } }
+          if(c!==V.couleur){ var nl=logo(c); V.couche.replaceChild(nl, V.logo); V.logo=nl; V.couleur=c; } V.couleurs.push(c);
+          oriente(V.s, V.B, ec, V.al); V.n=prochain(V.s, V.B); V.tn=0; } }
+      pose(V); }
+    if(ec>=R.VERROU && etatVerrou==='actif') relache();
+    requestAnimationFrame(boucle); }
+  function quitte(){ var V=actif; if(!V) return; V.fini=true; actif=null; dernier=performance.now(); var D=hote();
+    if(V.passage){ V.passage.arrete=true; if(V.passage.canevas) V.passage.canevas.remove(); }
+    V.couche.remove();
+    if(!V.reduit && window._passageFlaques && D) window._passageFlaques(D, {mode:'ouvre', couleur:R.FOND, duree:900, devant:true, z:2147482999});
+    window._veilleDerniere={duree:Math.round(performance.now()-V.t0), couleurs:V.couleurs, coins:V.coins, rebonds:V.rebonds};
+    demande(); }
+  /* ── LE VERROU DE L'ÉCRAN (Screen Wake Lock) ── */
+  function demande(){ try{ if(!navigator.wakeLock || verrou || document.visibilityState!=='visible') return; navigator.wakeLock.request('screen').then(function(v){ verrou=v; etatVerrou='actif';
+      v.addEventListener && v.addEventListener('release', function(){ if(verrou===v){ verrou=null; if(etatVerrou==='actif') etatVerrou='perdu'; } }); }, function(){ etatVerrou='refusé'; }); }catch(_){ } }
+  function relache(){ try{ var v=verrou; verrou=null; etatVerrou='relâché'; if(v && v.release) v.release(); }catch(_){ } }
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible' && !(actif && performance.now()-actif.t0>=R.VERROU)) demande(); });
+  /* ── LE TOUCHER : il retarde la veille ; pendant elle, il la quitte et n'actionne rien dessous ── */
+  function touche(e){ dernier=performance.now();
+    if(actif || performance.now()<avale){ if(actif){ avale=performance.now()+800; quitte(); } try{ e.preventDefault(); }catch(_){ } e.stopImmediatePropagation(); e.stopPropagation(); return; } }
+  ['pointerdown','touchstart','mousedown'].forEach(function(n){ window.addEventListener(n, function(e){ if(n==='pointerdown' && !actif) doigts++; if(n==='pointerdown' && !verrou) demande(); touche(e); }, {capture:true, passive:false}); });
+  ['pointerup','pointercancel'].forEach(function(n){ window.addEventListener(n, function(e){ doigts=Math.max(0, doigts-1); dernier=performance.now(); if(performance.now()<avale){ e.stopImmediatePropagation(); } }, {capture:true}); });
+  ['touchend','touchmove','mouseup','click','keydown','wheel','pointermove'].forEach(function(n){ window.addEventListener(n, function(e){ if(n==='pointermove' && !e.buttons && e.pointerType==='mouse') return; dernier=performance.now();
+      if(performance.now()<avale || actif){ if(n!=='pointermove'){ try{ e.preventDefault(); }catch(_){ } e.stopImmediatePropagation(); e.stopPropagation(); } } }, {capture:true, passive:false}); });
+  document.addEventListener('input', function(){ dernier=performance.now(); }, true);
+  setInterval(function(){ if(actif) return; if(doigts>0 || saisie() || document.visibilityState!=='visible'){ dernier=performance.now(); return; }
+    if(performance.now()-dernier>=R.DELAI) demarre(); }, 250);
+  window._veille=function(){ var V=actif; return {active:!!V, depuis:V?Math.round(performance.now()-V.t0):0, couleurs:V?V.couleurs.slice():[], coins:V?V.coins.slice():[], rebonds:V?V.rebonds:0,
+    logo:V?[V.s.x, V.s.y, V.logo.__w, V.logo.__h]:null, bornes:V?V.B:null, verrou:etatVerrou, couleur:V?V.couleur:null, tons:V?V.tons.slice():null, derniere:window._veilleDerniere||null}; };
+})();
+</script>
