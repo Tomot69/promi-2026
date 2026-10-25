@@ -43,19 +43,14 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     for sombre in (False, True):
         T = 'sombre' if sombre else 'clair'
-        r, _ = mesure(b, REF, sombre); n, er = mesure(b, F, sombre, '?onde=1')   # ⚑ v162 (C-174 suite) : le contrat de v157 (× 2) se juge à ?onde=1 ; le défaut (0,5) plus bas
-        d, er2 = mesure(b, F, sombre); er = er + er2
-        juge('[%s] E · v162, par défaut : l\'amplitude de l\'onde = la moitié de v157 (36 pt pour 72), le haut de l\'encre au même pt, l\'épaisseur × 2' % T,
-             d['cotes'] and abs(d['cotes']['amp'] - 36) < 0.01 and abs(d['top'] - r['top']) <= 1.0 and abs(d['pt'] / r['pt'] - 2) <= 0.08 and d['bot'] < n['bot'],
-             'amplitude %s · haut %.2f (v156 %.2f) · épaisseur × %.3f · bas %.1f (onde 1 : %.1f)' % ((d['cotes'] or {}).get('amp'), d['top'], r['top'], d['pt'] / r['pt'] if r['pt'] else 0, d['bot'], n['bot']))
+        r, _ = mesure(b, REF, sombre); n, er = mesure(b, F, sombre)   # ⚑ v163 (C-174 validé) : l'onde figée à 0,5, `?onde=` retiré — tout se juge sur le défaut
+        juge('[%s] E · l\'amplitude de l\'onde = la moitié de v157 (36 pt pour 72), l\'épaisseur × 2 (le trait et les points, ± 4 %%)' % T,
+             n['cotes'] and abs(n['cotes']['amp'] - 36) < 0.01 and abs(n['pt'] / r['pt'] - 2) <= 0.08,
+             'amplitude %s · épaisseur × %.3f' % ((n['cotes'] or {}).get('amp'), n['pt'] / r['pt'] if r['pt'] else 0))
         juge('[%s] A · le haut de l\'encre de la flèche = celui de v156 ± 1 pt' % T, abs(n['top'] - r['top']) <= 1.0, 'v156 %.2f · maintenant %.2f pt' % (r['top'], n['top']))
-        q = n['h'] / r['h'] if r['h'] else 0
-        juge('[%s] B · la hauteur de l\'encre × 2 ± 2 %%' % T, abs(q - 2) <= 0.04, 'v156 %.1f pt · maintenant %.1f pt · × %.3f' % (r['h'], n['h'], q))
-        qe = n['pt'] / r['pt'] if r['pt'] else 0
-        juge('[%s] B · le trait et les points × 2 (la plus haute colonne d\'encre) ± 4 %%' % T, abs(qe - 2) <= 0.08, 'v156 %.2f pt · maintenant %.2f pt · × %.3f' % (r['pt'], n['pt'], qe))
         touche = [t[0] for t in n['textes'] if not (t[4] <= n['top'] or t[2] >= n['bot'])]
         juge('[%s] C · aucun texte touché par la flèche, et elle finit au-dessus du bas de l\'écran' % T, not touche and n['bot'] <= 844 - 4,
-             'encre %.1f → %.1f pt · textes touchés %s · ce qui est dessous : %s' % (n['top'], n['bot'], touche, [t[0] for t in n['textes'] if t[2] >= n['bot']] or 'rien'))
+             'encre %.1f → %.1f pt · textes touchés %s' % (n['top'], n['bot'], touche))
         juge('[%s] D · le départ clignote (promiBlink) et paraît 1,5 s après le prénom' % T, n['clig'] and n['anim'] == 'promiBlink' and n['app'] and 1450 <= n['app'][0] <= 1600,
              'classe clignote %s · animation %s · paru à %s ms' % (n['clig'], n['anim'], n['app']))
         juge('[%s] aucune erreur de page' % T, not er, er[:2])

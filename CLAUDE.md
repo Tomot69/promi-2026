@@ -146,6 +146,34 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v163a (25 oct. 2026) — « T'APPARTIENT. » LETTRE À LETTRE, LE TRAIT RÉGLABLE, LA VEILLE AUX BORDS, LE GARDÉ DE CÔTÉ VISIBLE, LE SYMBOLE « RECADRER », LE MENU DE TRI QUI SE REFERME. (Décisions Tom.)
+> **Validés par Tom (v162) : C-174 (l'onde à 0,5 : `?onde=` est retiré, figé), C-183, C-166, C-149 (garder de côté), C-185, C-175 sous Chantourné, Guingois, Mascaret (gelés).**
+> **⚑ C-165 — « T'APPARTIENT. » : UNE COULEUR PAR LETTRE**, dans l'ordre de la palette de base (comme « Studio » au guide) — sombre `#82AEF8` · `#FFB8D2` · `#C9A8F5` ·
+> `#EFE3C7` ; clair `#476FB4` · `#9B5D75` · `#8161A8` · `#796E55` (≥ 3:1 sur le VRAI fond de l'onboarding `#DEC8A3`, pas le `#DFCAA4` du guide) ; la ponctuation garde le ton
+> de la lettre d'avant ; « La suite » ne change pas. Juge : **`redteam_appartient.py`** (lettre par lettre, deux échelles ; rouge sur v162). `redteam_mots_sombre` confie
+> ces lettres à ce juge (son « fond » tombait sur la lettre voisine).
+> **⚑ C-184 (récidive) — `?trait=<facteur>`** (par rapport à la taille d'avant v162), **défaut 1,15** : trait, points, pointe, flèche d'invite des pages +, des fiches, de
+> l'instant et d'un Cercle ; pas l'onboarding. **Le mot du trait et tout ce qui est dessous descendent du même pas** (fiche `e.dyTrait` = ⌈22·(K − 1,05)⌉/2 ; pages +
+> `--pp-dyt` = ⌈14·(K − 1,05)⌉/2 pt : la phrase, le rail du pinceau, « garder de côté » à 718 + ce pas) — l'air flèche → mot ≥ v162. Juge : **`redteam_trait_k.py`**
+> (A les épaisseurs piégées, B l'air lu sur l'image, C aucun recouvrement neuf ni débordement, à 430 × 932 et 330 × 714 ; D l'onboarding au pixel).
+> Contrats remis : `redteam_garder` J (718 + le pas), `redteam_pages_plus` (servi sous `?trait=1`) — originaux `sauvegardes/*-avant-v163.py`. **Tom choisit 1,10 · 1,15 · 1,20, puis on fige.**
+> **⚑ C-181 §3 — LA VEILLE** : l'encre du logo se lit sur les **pixels peints** (plus `measureText`, dont la boîte dépassait l'encre : 1,3 pt au banc) ; entrée et sortie en
+> flaques **350 ms**. ⚠ Au banc (390 × 651, 430 × 932, 330 × 714) l'encre touche les quatre bords à 0,3 pt : le défaut de l'iPhone n'est PAS reproduit, la cause écrite
+> est probable, non prouvée. Juge : **`redteam_veille_bords.py`** (15 ; rouge sur v162).
+> **⚑ C-149 suite — LE GARDÉ DE CÔTÉ DANS L'INDEX** : pointillé de **3 pt**, `#291547` en clair, `#A77CF7` en sombre (la couleur de la nature s'y confondait avec le
+> champ) ; le champ reste plein. **Q579** : toucher « gardé de côté — dans l'Index » ouvre l'Index filtré (`ixFiltre='brouillons'`). Juge : **`redteam_garde_index.py`** ;
+> `redteam_couleurs_ref` E21.
+> **⚑ C-188 — LE SYMBOLE « RECADRER »** (`lot-V163-RECADRE`) : plus d'encart ni de fond — les quatre coins, **22 pt d'encre** (svg 29), encre du mode, zone de **44 pt**
+> invisible, en bas à droite (encre à 12 pt de la barre, bord droit à 24 pt) ; il **naît en flaques** (300 ms) quand la vue bouge sous la main, **part en flaques** après
+> **4 s** sans toucher, revient au déplacement suivant ; recadré, il part ; le double toucher reste. Juge : **`redteam_recadre_bouton.py`** (16). Le symbole : capture, Tom juge.
+> **⚑ Q578 — LE MENU DE TRI** : au doigt, WebKit ne fabrique un `click` que sur un nœud « cliquable » ; le fond du menu de l'Index (et ses options !) n'avaient aucun
+> écouteur : un écouteur VIDE posé sur `#ixMenu`/`#fdMenu` les rend cliquables, l'écouteur d'origine décide ; un toucher dans le panneau ne referme plus rien (Fil
+> compris). Juge : **`redteam_menu_tri.py`** (8 ; 4/8 sur v162). *La règle* : **un écouteur délégué au document ne reçoit pas de clic au doigt sur un nœud qui n'en a pas.**
+> **⚑ C-175 (§6) — RAMAGE AU STUDIO : NON RÉGLÉ.** Q580 ne vise pas Ramage (son aperçu ≈ 0) ; sous le doigt p95 18 ms ; à l'arrivée, le seul bloc est la silhouette de
+> la jauge (231 à 519 ms, 3 s après) — Q581. Mesuré sous une charge de 15 à 30 : non jugé au calme.
+> ⚠ **Les glissés de `banc_tom` sont des TouchEvent créés en JavaScript : ils ne font défiler AUCUN conteneur** (sur aucune version) — un juge de défilement lit le
+> débordement, `touch-action` et `scrollLeft` ; le geste réel se regarde sur l'iPhone.
+
 ### ⚑ v161 (24 oct. 2026) — LA VEILLE (C-181). (Décision Tom.)
 > **`lot-V161-VEILLE`** (en fin de page) : après 60 s sans aucun toucher (`?veille=N` pour les juges), sauf pendant une saisie (un champ a la main) ou un geste
 > (un doigt posé) : fond plein `#050302`, PROMI seul (PromiLate, une boîte de 140 × 40 pt : l'encre 140 × 27 centrée — c'est la boîte qui rebondit), 60 pt/s,
@@ -3457,6 +3485,12 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_trait_k.py      # v163a (C-184) : `?trait=` 1,10 · 1,15 · 1,20 et le défaut — épaisseurs × K/1,05, l'air flèche → mot ≥ v162 (lu sur l'image), aucun recouvrement neuf, 430 × 932 et 330 × 714 ; l'onboarding au pixel. ≈ 20 min.
+python3 redteam_veille_bords.py # 15 — v163a (C-181) : l'encre du logo au bord visible ± 1 pt, quatre bords, trois fenêtres ; flaques 350 ms. Rouge sur v162.
+python3 redteam_garde_index.py  # 6 — v163a (C-149, Q579) : le pointillé 3 pt #291547 / #A77CF7 lu sur l'image ; le message ouvre l'Index filtré. Rouge sur v162.
+python3 redteam_recadre_bouton.py # 16 — v163a (C-188) : le symbole seul, 22 pt, sa place, sa zone de 44, naissance et départ en flaques, 4 s, le double toucher.
+python3 redteam_menu_tri.py     # 8 — v163a (Q578) : un toucher hors du menu ⇅ le referme (Index et Fil), dans le panneau non, une option agit. 4/8 sur v162.
+python3 redteam_appartient.py   # 12 — v163a (C-165) : « t'appartient. » lettre par lettre, chaque couleur ΔE ≤ 12 et ≥ 3:1, deux thèmes, deux échelles. Rouge sur v162.
 python3 redteam_parole_longue.py # 144 — v160c (C-180) : la parole longue de l'onboarding, 1 à 6 lignes, 40 lettres, 260 et 500 caractères, deux échelles, deux thèmes, clavier ouvert et fermé. Rouge sur v159.
 python3 redteam_studio_arrivee.py # 3 — v160c (C-175) : à l'arrivée sur Ramage, aucun rendu de la silhouette ; elle vient au calme ; Pochade inchangé. Rouge sur v160b.
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la

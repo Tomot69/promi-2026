@@ -16,6 +16,8 @@ redteam_garder.py — « GARDER DE CÔTÉ » GARDE (v119, Tom, Q370). Au DOIGT, 
   Original : sauvegardes/redteam_garder-avant-v149.py.
   ⚑ v150 (Tom, C-149) : « Garder de côté » 4 pt plus bas (0,6 mm) — sa cote passe de 708 à 712 ; l'inclinaison ne change pas. Original : *-avant-v150.py.
   ⚑ v151 (Tom, C-149) : « encore 1 mm plus bas » — 718 (712 + 6) ; l'inclinaison ne change pas. Original : *-avant-v151.py.
+  ⚑ v163 (Tom, C-184) : le trait grandit (`?trait=`, défaut 1,15) et tout ce qui est sous son mot descend du même pas (`--pp-dyt`, ⌈14·(K − 1,05)⌉/2 pt) :
+  la cote est 718 + ce pas (719 au défaut). Original : *-avant-v163.py.
 Preuve (§7) : sur une copie de `sauvegardes/app-avant-v119.html` à la racine (APP=…), C et D ROUGISSENT (v118 fermait la page sans rien garder).
 """
 import os, sys
@@ -74,7 +76,9 @@ def passe(b, moteur, avec_qui):
     act = pg.evaluate("()=>{const g=document.querySelector('#createSheet .pp-garder'); return g?{inactif:g.classList.contains('inactif'), aria:g.getAttribute('aria-disabled'), souligne:getComputedStyle(g).textDecorationLine}:null; }")
     t(tag + ' G · une modification faite : le lien est ACTIF (ni inactif ni aria-disabled)', bool(act) and not act['inactif'] and act['aria'] != 'true', str(act))
     geo = pg.evaluate(GEO)
-    t(tag + ' J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 718 ± 0,5, v151), jamais souligné, penché de 5 à 6°', bool(geo) and abs(geo['droite'] - 366) <= 1.5 and abs(geo['haut'] - 718) <= 0.5 and geo['souligne'] == 'none' and 5 <= geo['penche'] <= 6, str(geo))
+    if geo is not None:   # v163 : le pas du trait (la formule décidée, en dur ; K lu sur la page — 1,15 au défaut)
+        import math as _m; _K = pg.evaluate("()=>window._TRAIT_K||1"); geo['dyt'] = _m.ceil(14 * max(0, _K - 1.05) - 1e-9) / 2
+    t(tag + ' J · à droite (bord droit à 366 ± 1,5 pt), à sa cote (haut 718 + le pas du trait ± 0,5, v151 · v163), jamais souligné, penché de 5 à 6°', bool(geo) and abs(geo['droite'] - 366) <= 1.5 and abs(geo['haut'] - (718 + geo.get('dyt', 0))) <= 0.5 and geo['souligne'] == 'none' and 5 <= geo['penche'] <= 6, str(geo))
     tient = pg.evaluate(TIENT_COURS)
     t(tag + ' K · toujours visible : pendant un tracé (doigt posé, page en cours de geste), le lien reste à sa place', bool(tient) and tient['cours'] and tient['vu'] and abs(tient['droite'] - 366) <= 1.5, str(tient))
     lien = pg.evaluate("()=>{const g=document.querySelector('#createSheet .pp-garder'); if(!g) return null; const r=g.getBoundingClientRect(); if(!r.width) return {vu:false}; const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {vu:true, joignable:h===g||g.contains(h), mot:g.textContent}}")

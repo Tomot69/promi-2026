@@ -8861,11 +8861,16 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q576 — TRANCHÉE (chef de chantier, v160c)** : la limite de 80 caractères est retirée ; une parole de toute longueur tient (coupe propre au-delà de la place).
 - **Q577 — À TRANCHER (C-175, v160c)** : sous Guingois, Mascaret et Chantourné, ce qui saccade au Studio est l'image de l'aperçu elle-même (moteur, 8 à 22 ms par
   image sous Guingois) ; rien à gagner hors du moteur (mesuré). *Proposition* : l'ajouter au lot « moteur » de Q573 et Q575.
-- **Q578 — À TRANCHER (C-185, trouvé en jugeant, v162)** : dans l'Index, un toucher hors du panneau de tri (⇅) ne le referme pas (dans le Fil, si) — déjà en
+- **Q578 — TRANCHÉE (Tom, v163 §7 : « un toucher hors du menu de tri le referme, dans l'Index comme dans le Fil ») — FAIT v163a : la cause, au doigt WebKit ne fabrique de clic que sur un nœud « cliquable » ; le fond du menu de l'Index n'avait aucun écouteur à lui (ses options non plus : elles ne répondaient pas au doigt). Un écouteur vide le rend cliquable ; un toucher dans le panneau ne referme plus rien (Fil compris). redteam_menu_tri 8/8.** (C-185, trouvé en jugeant, v162) : dans l'Index, un toucher hors du panneau de tri (⇅) ne le referme pas (dans le Fil, si) — déjà en
   v161, hors du lot : rien changé. *Proposition* : le refermer comme dans le Fil.
-- **Q579 — À TRANCHER (C-149, v162)** : il n'existe pas d'écran « Tout ce que j'ai gardé de côté ». Les gardés de côté sont dans l'Index (cartes en pointillés
+- **Q579 — TRANCHÉE (Tom, v163 §4 : approuvée) — FAIT v163a : toucher « gardé de côté — dans l'Index » ouvre l'Index filtré sur les gardés de côté (redteam_garde_index C).** (C-149, v162) : il n'existe pas d'écran « Tout ce que j'ai gardé de côté ». Les gardés de côté sont dans l'Index (cartes en pointillés
   « GARDÉ DE CÔTÉ », en fin de liste) et se trient par ⇅ → « Gardés de côté ». *Proposition* : toucher le message « gardé de côté — dans l'Index » ouvre
   l'Index filtré sur eux. (Attente de Tom : rien n'est posé.)
-- **Q580 — À TRANCHER (C-175, v162b)** : la saccade restante au Studio sous Guingois, Mascaret, Chantourné est la reconstruction de la scène pendant une
+- **Q580 — APPLIQUÉE À RAMAGE ? NON (v163 §6)** : Q580 vise les scènes d'aperçu de Guingois, Mascaret, Chantourné (validés par Tom, gelés) ; sous Ramage l'aperçu ne coûte presque rien — voir Q581. (C-175, v162b) : la saccade restante au Studio sous Guingois, Mascaret, Chantourné est la reconstruction de la scène pendant une
   transition de l'aperçu (jamais gardée en cache), et sous Ramage un coût hors de l'aperçu (images de 22–27 ms, l'aperçu ≈ 0). *Proposition* : garder en
   cache les scènes d'une transition d'aperçu (elles se rejouent à l'identique d'un tour à l'autre) — un lot moteur à part, banc de rendu à l'appui.
+- **Q581 — À TRANCHER (C-175, v163a §6)** : au Studio sous Ramage, le seul accroc mesuré est le premier rendu de la silhouette de la jauge (la dalle de la
+  première parole sous Ramage), un bloc de 231 à 519 ms selon la charge, 3 s après l'arrivée (v160c le pousse là, sur un Studio immobile) ; sous le doigt,
+  p95 18 ms. *Deux voies* : (a) la préparer sur l'accueil au repos — essayé en v160c, son premier rendu laisse un état dans le moteur (banc de rendu changé
+  sous Guingois) : il faudrait trouver cet état (lot moteur) ; (b) la rendre dans un Worker (lot moteur). La garder en image d'une ouverture à l'autre
+  serait une découpe (interdit, C-048). Rien n'est changé.

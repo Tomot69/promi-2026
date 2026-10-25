@@ -29,8 +29,8 @@ PASTILLE = ('onbv-pm', 'onbv-pb', 'onbv-suite')
 # ⚑ v153 (Tom, C-165) : « T'APPARTIENT. » passe en couleur, #0E78F2 en clair, #82AEF8 en sombre ; « La suite » garde la crème en sombre (Q548)
 #   (original : sauvegardes/redteam_mots_sombre-avant-v153.py)
 EXCEPTIONS = {'trace pour planter': 'Tom, v151 C-126 §5', 'La suite': 'Q548, v152 (C-165 : seul « t’appartient. » se colore)'}
-EN_DUR_CLAIR = {('fin', 't’appartient.'): (14, 120, 242)}
-EN_DUR = {('fin', 't’appartient.'): (130, 174, 248), ('guide-plus', 'Promi'): (130, 174, 248), ('guide-plus', 'Chiche'): (255, 184, 210), ('guide-plus', 'Cercle'): (201, 168, 245), ('guide-plus', 'commence'): (130, 174, 248)}
+EN_DUR_CLAIR = {}   # ⚑ v163 (C-165) : « t’appartient. » est multicolore — jugé lettre par lettre par redteam_appartient
+EN_DUR = {('guide-plus', 'Promi'): (130, 174, 248), ('guide-plus', 'Chiche'): (255, 184, 210), ('guide-plus', 'Cercle'): (201, 168, 245), ('guide-plus', 'commence'): (130, 174, 248)}
 res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:200]), flush=True)
@@ -109,6 +109,7 @@ for page in REL['clair']:
     for i, (t, c, k, bx) in enumerate(C):
         c = rgb(c)
         if c in ENCRE_CLAIR or any(x in k.split() for x in PASTILLE): continue
+        if 'onbv-al' in k.split(): continue   # ⚑ v163 (C-165) : les lettres de « t’appartient. » (une couleur par lettre) — jugées lettre par lettre, sur leur vrai fond, par redteam_appartient (ici le « fond » d'une lettre tombe sur sa voisine)
         s = S[i] if i < len(S) and S[i][0] == t else next((x for x in S if x[0] == t), None)
         if not s: juge('%s · « %s » existe en sombre' % (page, t), False); continue
         sc = rgb(s[1]); f = (FONDS.get(page) or [None] * len(S))[S.index(s)] if page in FONDS else FOND_ONB

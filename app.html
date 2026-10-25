@@ -2535,7 +2535,9 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
 #createSheet .chips.scroll{margin-top:1px}
 #createSheet .cta{margin-top:4px;padding:16px;border-radius:16px}
 </style>
-<script id="lot-V162-TRAIT">/* ⚑ v162 (Tom, C-184) — « le trait 5 % plus gros, pas plus » : les pages +, les fiches, le trait d'un Cercle (pas l'onboarding, validé). */ window._TRAIT_K=1.05;</script>
+<script id="lot-V162-TRAIT">/* ⚑ v162 (Tom, C-184) — le trait des pages +, des fiches et d'un Cercle (pas l'onboarding, validé), par rapport à AVANT v162.
+   ⚑ v163 (récidive : « +5 % ne se voit pas ») : `?trait=<facteur>` pour choisir (1,10 · 1,15 · 1,20), défaut 1,15 ; jamais mémorisé. */
+window._TRAIT_K=1.15; try{ var _tq=new URLSearchParams(location.search).get('trait'); if(_tq && isFinite(+_tq)) window._TRAIT_K=Math.max(1, Math.min(1.5, +_tq)); }catch(_){ }</script>
 <script id="lot-V145-VERSION">
 /* ⚑ v145 (C-117) — LA VERSION QUE VOIT L'iPHONE. La marque est écrite DANS la page au moment où le serveur la sert (`serveur.py` remplace
    les deux jetons ci-dessous) : elle dit la version de CETTE page, pas celle que le serveur servirait maintenant. Avant, `?mesure=1`
@@ -4396,6 +4398,7 @@ document.addEventListener('click',function(e){
     var b2=document.getElementById('ixTriBtn'); if(b2)b2.classList.remove('on');
     e.stopPropagation(); return;}
   var mo=document.getElementById('ixMenu');
+  if(t.closest&&t.closest('#ixMenu .ix-menu-p')){ e.stopPropagation(); return; }   /* v163 (Q578) : un toucher DANS le panneau, hors d'une option, ne le referme pas */
   if(mo&&mo.classList.contains('on')){
     mo.classList.remove('on');
     var bb=document.getElementById('ixTriBtn'); if(bb)bb.classList.remove('on');}
@@ -4523,6 +4526,7 @@ document.addEventListener('click',function(e){
     var b2=document.getElementById('fdTriBtn'); if(b2)b2.classList.remove('on');
     e.stopPropagation(); return;}
   var mo=document.getElementById('fdMenu');
+  if(t.closest&&t.closest('#fdMenu .ix-menu-p')){ e.stopPropagation(); return; }   /* v163 (Q578) : un toucher DANS le panneau, hors d'une option, ne le referme pas */
   if(mo&&mo.classList.contains('on')){mo.classList.remove('on');
     var bb=document.getElementById('fdTriBtn'); if(bb)bb.classList.remove('on');}
 },true);
@@ -15103,11 +15107,14 @@ var CREMEETAT='#F7F0DE';
        d'atteindre le geste, rien ne lui est volé. */
     e.yBas = e.base + 0.45 * e.amp;      /* le point bas de l'onde, exact */
     e.yEncre = e.yBas + 5;               /* + la demi-épaisseur : le bas de l'encre du trait */
-    if(e.noyaux===false){ e.yTrace = Math.round(e.yEncre + 25); e.yQui = e.yTrace + 36; }
-    else if(e.trace){ e.yTrace = Math.round(e.yEncre + 25);   /* 26 d'encre sous LE TRACÉ */
+    /* ⚑ v163 (Tom, C-184) : le trait grandit au-delà de × 1,05 (`?trait=`) ; son chevron s'approche du mot (−10,7 pt d'air par unité, mesuré).
+       Le mot, et tout ce qui est dessous, descendent d'autant (au demi-point supérieur) : l'air de v162 est gardé, rien d'autre ne bouge. */
+    e.dyTrait = Math.ceil(22 * Math.max(0, (window._TRAIT_K||1) - 1.05)) / 2;
+    if(e.noyaux===false){ e.yTrace = Math.round(e.yEncre + 25) + e.dyTrait; e.yQui = e.yTrace + 36; }
+    else if(e.trace){ e.yTrace = Math.round(e.yEncre + 25) + e.dyTrait;   /* 26 d'encre sous LE TRACÉ */
                       e.yNoyau = e.yTrace + 44;             /* 19 px de texte + 26 d'air */
                       e.yQui   = e.yNoyau + 128 + Math.round(window._encreSup(14).bas + window._encreSup(e.quiFs).haut); }   /* 102 de disques + 26 d'air — ⚑ v102 : + ce que l'agrandissement ajoute à l'encre du nom des Noyaux et de l'à-qui */
-    else { e.yNoyau = Math.round(e.yEncre + 27); /* sans mot du geste, les disques suivent */
+    else { e.yNoyau = Math.round(e.yEncre + 27) + e.dyTrait; /* sans mot du geste, les disques suivent — v163 : du même pas */
            e.yQui   = e.yNoyau + 128 + Math.round(window._encreSup(14).bas + window._encreSup(e.quiFs).haut); }
     /* ⚠ L'AIR NE SE FIGE PAS, IL SE CALCULE — décision Tom, 29 août 2026 (soir).
        « Tu as grossi les textes sans reprendre les écarts. » Le 30 du §5 n'est pas un espace :
@@ -17998,6 +18005,10 @@ var CREMEETAT='#F7F0DE';
       /* LE MOT DE TRACE — les mots sont ceux de l'inventaire, un par nature */
       var tr = cs.querySelector('.pp-trace');
       if(!tr){ tr = document.createElement('div'); tr.className = 'pp-trace'; cs.appendChild(tr); }
+      /* ⚑ v163 (Tom, C-184) : au-delà de × 1,05 (`?trait=`), les points grossis s'approchent du mot (−7,1 pt d'air par unité, mesuré) : le mot,
+         la phrase, le rail et « garder de côté » descendent d'autant, au demi-point supérieur (`--pp-dyt`) — l'air de v162 est gardé. */
+      var _dt = Math.ceil(14 * Math.max(0, (window._TRAIT_K||1) - 1.05)) / 2;
+      if(cs.style.getPropertyValue('--pp-dyt') !== _dt+'px') cs.style.setProperty('--pp-dyt', _dt+'px');
       /* ══ Q35 · UN SEUL MOT, JAMAIS DEUX (décision Tom) ══
          AU REPOS le mot dit « trace pour planter » pour un Promi et « trace pour lancer »
          pour un Chiche comme pour une Nuée. IL NE CHANGE PAS D'UN CADRE À L'AUTRE :
@@ -18009,10 +18020,10 @@ var CREMEETAT='#F7F0DE';
          s'il y a une date, « UN JOUR » ou « EN L'AIR » sinon. */
       if(e.etat === 'cours'){
         tr.textContent = 'continue \u2192';
-        pose(tr, {left:'160px', top:(e.boite - 46)+'px'});
+        pose(tr, {left:'160px', top:(e.boite - 46 + _dt)+'px'});
       } else if(e.etat === 'signe'){
         tr.textContent = motSigne();
-        pose(tr, {left:'180px', top:(e.boite - 46)+'px'});
+        pose(tr, {left:'180px', top:(e.boite - 46 + _dt)+'px'});
       } else {
         /* ⚠ LE CADRE 2 DIT « TRACE TA MOITIÉ », pas « trace pour planter ». Vu au duo, deux
            thèmes. Les deux mots existent au moodboard et ne disent pas la même chose : sur
@@ -18035,7 +18046,7 @@ var CREMEETAT='#F7F0DE';
            planter », « trace ta moitié », « trace pour lancer ») descend de 7,5 pt (« 6 à 9 pt ») pour s'aligner sur la flèche, et se décale de 3 pt
            vers la droite pour ne pas la toucher. Le Cercle n'est pas nommé : il ne bouge pas. */
         var _mdx = (e.nat === 'nuee') ? 0 : 3, _mdy = (e.nat === 'nuee') ? 0 : 7.5;
-        pose(tr, {left:(82 + _mdx)+'px', top:((e.ouvert ? 184 : (e.boite - 60)) + _mdy)+'px'});   /* v116 : 236 − 52 */
+        pose(tr, {left:(82 + _mdx)+'px', top:((e.ouvert ? 184 : (e.boite - 60)) + _mdy + _dt)+'px'});   /* v116 : 236 − 52 */
       }
       cs.classList.toggle('pp-cours', e.etat === 'cours' || e.etat === 'signe');
       cs.classList.toggle('pp-garde', !!e.garde && !e.ouvert);
@@ -18252,7 +18263,7 @@ var CREMEETAT='#F7F0DE';
            −41 → −31 ; elle ne touche ni « Garder de côté » ni la barre (mesuré à l'encre). Le rail du pinceau lit ce décalage : il ne bouge pas. */
         var _dyP = e.ouvert ? 0 : ((e.nat === 'chiche') ? -10 : ((e.nat === 'nuee') ? -31 : 0));
         window._ppDyPhrase = _dyP;
-        pose(ph, {top:(e.ouvert ? 228 : (e.boite + (e.etat==='plate' ? 6 : 36) + _dyP))+'px'});   /* v116 : 280 − 52 */
+        pose(ph, {top:((e.ouvert ? 228 : (e.boite + (e.etat==='plate' ? 6 : 36) + _dyP)) + _dt)+'px'});   /* v163 : + _dt */   /* v116 : 280 − 52 */
       }
       /* la ligne d'aide : sa cote est absolue (24 / 574). On la laisse DANS la phrase et on
          la décale — la déplacer sur le cadre en laissait une copie à chaque rendu (compté
@@ -19823,7 +19834,10 @@ var CREMEETAT='#F7F0DE';
          entoure « l'atelier du samedi » du même pointillé, en mauve. */
       var _gardeC = (p && p.draft) ||
         false;   /* Q213 : le pointillé d'un gardé de côté ne vaut plus pour une Nuée vide */
-      if(_gardeC){ d.style.outline='2px dashed '+e.natCol; d.style.outlineOffset='-2px'; }
+      /* ⚑ v163 (Tom, C-149 suite) : « la carte d'un gardé de côté se reconnaît au premier coup d'œil » — un pointillé de 3 pt, le violet « en cours »
+         #291547 en clair, son clair #A77CF7 en sombre (la couleur de la nature s'y confondait avec le champ) ; aucun aplat, aucune transparence. */
+      if(_gardeC){ var _cl=false; try{ _cl=document.getElementById('device').classList.contains('light'); }catch(_){ }
+        d.style.outline='3px dashed '+(_cl?'#291547':'#A77CF7'); d.style.outlineOffset='-3px'; d.setAttribute('data-garde-trait', _cl?'#291547':'#A77CF7'); }
       var yEb=Math.round(g2.boite-DY_EB), yTi=yEb+DY_TI;
       d.innerHTML='<canvas></canvas>'+'<div class="s4-natlab" style="position:absolute;left:10px;top:10px;z-index:3;height:22px;padding:0 9px;border-radius:11px;background:#F7F0DE;color:'+window._nt(e.natCol)+';-webkit-text-fill-color:'+window._nt(e.natCol)+';font-family:var(--f-marque);font-weight:400;font-synthesis:none;font-size:13px;line-height:22px;letter-spacing:0">'+({'#FFB8D2':'Chiche','#C9A8F5':'Cercle'}[String(e.natCol).toUpperCase()]||'Promi')+'</div>'   /* ⚑ Q213 : la nature se LIT, le code couleur ne suffit pas */
         +'<div class="s4-eb" style="left:'+PADX+'px;top:'+yEb+'px;width:'+TXW+'px;font-size:'+FEB+'px;'
@@ -25786,7 +25800,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
       /* ⚑ v148 (trouvé par redteam_flash) : « garder de côté » est visible dès l'ouverture (C-149) et se cache le temps d'un tracé (`pp-cours`) ;
          le rail se plaçait à mi-chemin de lui, puis de 760 pendant le tracé — il sautait d'une place à l'autre (un flash). Pendant le tracé il
          garde la place que le lien lui donne : sa cote est fixe (708, lot de la page +). */
-      else if(gl && cs.classList.contains('pp-cours') && !cs.classList.contains('pp-ouvert')) dessous = 708 + INK_LIEN;
+      else if(gl && cs.classList.contains('pp-cours') && !cs.classList.contains('pp-ouvert')) dessous = 708 + INK_LIEN + (parseFloat(cs.style.getPropertyValue('--pp-dyt'))||0);   /* v163 : du pas du trait */
       if(k && dessus > 0) haut = Math.round((dessus + (dessous - dessus - PHT)/2)*4)/4;
     }catch(_){}
     var geo = haut + '|' + PHT;
@@ -34280,6 +34294,71 @@ window._petiteToile=function(g,A,Lr,ids){ try{
   setTimeout(poser, 400); setInterval(function(){ try{ window._majRecadre(); }catch(_){} }, 300);
 })();
 </script>
+<style id="lot-V163-RECADRE-css">
+/* ⚑ v163 (Tom, C-188) — LE BOUTON « RECADRER » DE L'ACCUEIL : plus d'encart, plus de fond — le symbole seul (les quatre coins d'un cadre, C-099), à l'encre
+   du mode, 22 pt d'encre, dans une zone de toucher invisible de 44 pt ; en bas à droite, juste au-dessus de la barre (le symbole finit à 12 pt d'elle, son bord
+   droit sur la marge de 24 pt du plateau). */
+#device#device .acc-recadre#accRecadre{left:333px!important;top:665px!important;width:44px!important;height:44px!important;border:0!important;border-radius:0!important;
+  background:transparent!important;box-shadow:none!important;color:var(--c-creme95)!important;padding:0!important}
+#device#device.light .acc-recadre#accRecadre:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){color:var(--c-brun09)!important;background:transparent!important}
+#device#device .acc-recadre#accRecadre svg{width:29px!important;height:29px!important}   /* l'ENCRE des quatre coins fait 22 pt (le dessin occupe 16 des 24 unités) */
+#device#device .acc-recadre#accRecadre svg path{stroke-width:1.655px!important}   /* le trait reste de 2 pt (la grammaire des icônes) */
+#device#device .acc-recadre#accRecadre.rc-cache svg{visibility:hidden!important}
+#device#device .acc-recadre#accRecadre .passage-flaques{pointer-events:none!important}
+</style>
+<script id="lot-V163-RECADRE">
+/* ⚑ v163 (Tom, C-188) — « Il paraît quand on a déplacé ou zoomé la vue, et disparaît de lui-même après 4 s sans toucher, en flaques rapides (≈ 300 ms),
+   jamais d'un coup. Il revient au déplacement suivant. Le double toucher pour recadrer reste. »
+   · présent (`.vu`) : la vue est celle de la main (`_vueMain`) et l'accueil est à l'écran — comme avant (`lot-ZOOM`) ;
+   · il NAÎT en flaques (le symbole paraît par des flaques qui grandissent, 300 ms) quand la vue bouge sous la main ; 4 s sans toucher ni mouvement de vue,
+     il PART en flaques (des trous naissent dans le symbole, 300 ms) ; le doigt qui bouge la vue de nouveau le fait renaître ;
+   · recadré (la vue n'est plus celle de la main), il part en flaques ; un écran qui s'ouvre par-dessus le cache (il est couvert : rien ne se voit). */
+(function(){
+  var DUREE=300, ATTENTE=4000, etat='absent', tDernier=0, sig='', ctl=null;
+  var P=['M4 9V5.5A1.5 1.5 0 0 1 5.5 4H9','M15 4h3.5A1.5 1.5 0 0 1 20 5.5V9','M20 15v3.5a1.5 1.5 0 0 1-1.5 1.5H15','M9 20H5.5A1.5 1.5 0 0 1 4 18.5V15'];
+  function couleur(r){ try{ return getComputedStyle(r).color; }catch(_){ return '#F7F0DE'; } }
+  /* l'image du symbole, aux cotes que `_passageFlaques` lit (une largeur d'appareil 390, la zone de 44 pt en haut à gauche) */
+  function image(r){ var d=Math.max(2, Math.min(3, window.devicePixelRatio||2)), cv=document.createElement('canvas'); cv.width=Math.round(390*d); cv.height=Math.round(44*d);
+    var g=cv.getContext('2d'); g.setTransform(d*29/24, 0, 0, d*29/24, d*7.5, d*7.5); g.strokeStyle=couleur(r); g.lineWidth=1.655; g.lineCap='round'; g.lineJoin='round';
+    P.forEach(function(s){ try{ g.stroke(new Path2D(s)); }catch(_){ } }); return cv; }
+  function arrete(){ if(ctl){ ctl.arrete=true; if(ctl.canevas && ctl.canevas.parentNode) ctl.canevas.remove(); ctl=null; } }
+  function nait(r){ arrete(); etat='nait'; r.classList.add('vu'); r.classList.add('rc-cache');
+    if(!window._passageFlaques){ r.classList.remove('rc-cache'); etat='la'; return; }
+    ctl=window._passageFlaques(r, {mode:'couvre', image:image(r), rect:[0,0,44,44], duree:DUREE, devant:true, z:1, fin:function(c){ if(etat!=='nait') return; r.classList.remove('rc-cache'); if(c && c.canevas && c.canevas.parentNode) c.canevas.remove(); ctl=null; etat='la'; }});
+    if(!ctl){ r.classList.remove('rc-cache'); etat='la'; } }
+  function part(r, coupe){ arrete(); if(coupe || !window._passageFlaques || etat==='nait'){ r.classList.remove('vu'); r.classList.remove('rc-cache'); etat='absent'; return; }
+    etat='part'; r.classList.add('rc-cache');
+    ctl=window._passageFlaques(r, {mode:'ouvre', image:image(r), rect:[0,0,44,44], duree:DUREE, devant:true, z:1, fin:function(){ if(etat!=='part') return; ctl=null; r.classList.remove('vu'); r.classList.remove('rc-cache'); etat='absent'; }});
+    if(!ctl){ r.classList.remove('vu'); r.classList.remove('rc-cache'); etat='absent'; } }
+  function vueSig(){ try{ var v=window.Toile_vueLue(); return v.s.toFixed(3)+'|'+v.ox.toFixed(1)+'|'+v.oy.toFixed(1); }catch(_){ return ''; } }
+  window._majRecadre=function(){ var r=document.getElementById('accRecadre'); if(!r) return;
+    var ecran=!!document.querySelector('#device .screen.show, #device .sheet.show, #device .poster.show, .frame .screen.show');
+    var fil=false; try{ fil=document.getElementById('feedView').classList.contains('in'); }catch(_){ }
+    var main=!!window._vueMain, s=vueSig(), bouge=(s!==sig); sig=s; var t=performance.now();
+    if(ecran || fil){ if(etat!=='absent') part(r, true); return; }
+    if(!main){ if(etat==='la' || etat==='nait') part(r, false); return; }
+    if(bouge){ tDernier=t; if(etat==='absent' || etat==='part') nait(r); return; }
+    if(etat==='la' && t-tDernier>=ATTENTE) part(r, false); };
+  /* un toucher sur l'accueil retient le symbole (« 4 s sans toucher ») */
+  ['pointerdown','touchstart'].forEach(function(n){ window.addEventListener(n, function(){ tDernier=performance.now(); }, {capture:true, passive:true}); });
+  setInterval(function(){ try{ window._majRecadre(); }catch(_){ } }, 120);
+  window._recadreEtat=function(){ return {etat:etat, depuis:Math.round(performance.now()-tDernier)}; };
+})();
+</script>
+<style id="lot-V163-MENU-TRI-css">
+/* ⚑ v163 (Tom, Q578) — « un toucher hors du menu de tri le referme, dans l'Index comme dans le Fil ». LA CAUSE (mesurée, WebKit) : au doigt, le navigateur
+   ne fabrique un `click` que sur un nœud qu'il juge « cliquable » (un écouteur de clic à lui, ou un curseur de lien) ; le fond du menu de l'Index et ses
+   options n'en avaient pas — seul le document écoute, en capture : aucun clic, le menu restait ouvert, et ses options ne répondaient pas au doigt (déjà en
+   v162). Le curseur de lien ne suffit pas au banc : c'est l'écouteur vide posé sur le menu (plus bas) qui le rend cliquable ; le clic arrive, l'écouteur
+   d'origine décide (une option agit, le fond referme ; un toucher dans le panneau, hors d'une option, ne referme plus rien — dans le Fil non plus). */
+#ixMenu, #ixMenu .ix-mi, #ixMenu .ix-menu-p, #fdMenu, #fdMenu .ix-mi, #fdMenu .ix-menu-p{cursor:pointer}
+</style>
+<script id="lot-V163-MENU-TRI">
+/* v163 (Q578) : et un écouteur de clic VIDE sur chaque menu — c'est ce qui rend un nœud « cliquable » pour WebKit au doigt ; il ne décide rien (l'écouteur
+   d'origine, sur le document, reste le seul propriétaire de l'ouverture et de la fermeture). */
+(function(){ function pose(){ ['ixMenu','fdMenu'].forEach(function(id){ var m=document.getElementById(id); if(m && !m.__clic){ m.__clic=1; m.addEventListener('click', function(){ }); } }); }
+  if(document.readyState!=='loading') pose(); else document.addEventListener('DOMContentLoaded', pose); setTimeout(pose, 1500); })();
+</script>
 <style id="lot-CERCLE-COULEUR-css">
 /* ⚑ LE BLOC TIENT À CINQ (Tom, 13 sept. 2026) — cinq réglages de 64 espacés de 16 : 5 × 64 + 4 × 16 = 384.
    L'encart (90) reste CENTRÉ sur le bloc : (384 − 90) ÷ 2 = 147 (il était à 108 = (304 − 90) ÷ 2).
@@ -37424,6 +37503,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    prend plus le doigt ; ses boutons d'action, s'il en a, le prennent toujours. */
 #_toast{pointer-events:none!important}
 #_toast button{pointer-events:auto!important}
+#_toast .toast-lien{pointer-events:auto!important;cursor:pointer}   /* v163 (Q579) : « gardé de côté — dans l'Index » se touche, il ouvre l'Index filtré */
 </style>
 <style id="lot-V155-CURSEUR-css">
 /* ⚑ v155 (Tom, C-168) — « la dalle qu'on fait glisser sur la jauge des couleurs est difficile à attraper » : sa ZONE TACTILE fait 56 × 56 pt, centrée sur
@@ -37666,6 +37746,15 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    clair et #82AEF8 en sombre. Le reste de la phrase ne change pas. » (Q548 tient pour « La suite », crème en sombre.) */
 #device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app{font-style:normal;color:#82AEF8;-webkit-text-fill-color:#82AEF8}
 #device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app{color:#0E78F2;-webkit-text-fill-color:#0E78F2}
+/* ⚑ v163 (C-165) : les tons de « Studio » du guide — en sombre la palette de base (Ingénu) ; en clair les mêmes teintes, assombries (OKLCH, la clarté seule) jusqu'à 3,05:1 sur le fond réel de l'onboarding #DEC8A3 (celles du guide font 2,96–2,98 ici) */
+#device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a0{font-style:normal;color:#82AEF8;-webkit-text-fill-color:#82AEF8}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a0{color:#476FB4;-webkit-text-fill-color:#476FB4}
+#device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a1{font-style:normal;color:#FFB8D2;-webkit-text-fill-color:#FFB8D2}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a1{color:#9B5D75;-webkit-text-fill-color:#9B5D75}
+#device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a2{font-style:normal;color:#C9A8F5;-webkit-text-fill-color:#C9A8F5}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a2{color:#8161A8;-webkit-text-fill-color:#8161A8}
+#device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a3{font-style:normal;color:#EFE3C7;-webkit-text-fill-color:#EFE3C7}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a3{color:#796E55;-webkit-text-fill-color:#796E55}
 #onbV#onbV .onbv-fin .onbv-titre{white-space:nowrap}
 #onbV#onbV .onbv-fin .onbv-k{font-size:calc(var(--ech-cle)*var(--onbe))}
 #onbV#onbV .onbv-fin .onbv-l-der .onbv-k{font-size:calc(var(--ech-cle-fin)*var(--onbe))}
@@ -37853,7 +37942,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       return h; }
     /* ⚑ v162 (Tom, C-174 suite : « l'onde est encore trop ondulée ; la taille est bonne, n'y touche pas ») — l'AMPLITUDE seule est multipliée par `?onde=`
        (0 : un trait droit · 1 : l'amplitude de v157), 0,5 par défaut, pour l'onboarding seulement ; la base est reposée de même : le haut reste au même pixel. */
-    var K=0.5; try{ var _q=new URLSearchParams(location.search).get('onde'); if(_q!=null && _q!=='' && isFinite(+_q)) K=Math.max(0, Math.min(1, +_q)); }catch(_){ }
+    var K=0.5;   /* ⚑ v163 (Tom, C-174 validé) : l'amplitude de l'onde à 0,5, FIGÉE — `?onde=` est retiré */
     var h0=haut(BASE,AMP,RR,ESP,EP); AMP*=E*K; EP*=E; RR*=E; ESP*=E; var h1=haut(BASE,AMP,RR,ESP,EP); BASE+=h0-h1; HT=118*E; window._onbTraitCotes={base:BASE, amp:AMP, ep:EP, rr:RR, esp:ESP, haut:h0, ht:HT, onde:K}; })();
   var PH_PRENOM='ton prénom', PH_PAROLE='ne plus dire “je commence lundi”';
   function T(f,ms){ minuteurs.push(setTimeout(f,ms)); }
@@ -37913,7 +38002,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
           '<div class="onbv-l"><b class="onbv-k onbv-deux">Deuxio,</b> un '+nat('Chiche')+', c’est un coup de culot.</div>'+
           '<div class="onbv-l"><b class="onbv-k">Tertio,</b> un '+nat('Cercle')+', c’est tout cela à la fois, mais à plusieurs.</div>'+
           '<div class="onbv-l onbv-l-fin">Tout le monde promet. Toi, tu tiens parole.</div>'+   /* ⚑ v149 (Tom, C-124) : remplace « Le reste se découvre en traçant. », même place, même rôle (liste) ; ⚑ v150 (Tom) : « … tu tiens parole. », alignée à droite */
-          '<div class="onbv-l onbv-l-der"><b class="onbv-k">La suite <i class="onbv-app">t’appartient.</i></b></div>'+   /* ⚑ v153 (Tom, C-165) : « T'APPARTIENT. » en couleur, mot-clé bleu, #0E78F2 en clair, #82AEF8 en sombre ; le reste de la phrase ne change pas */
+          '<div class="onbv-l onbv-l-der"><b class="onbv-k">La suite <i class="onbv-app"><i class="onbv-al onbv-a0">t</i><i class="onbv-al onbv-a0">’</i><i class="onbv-al onbv-a1">a</i><i class="onbv-al onbv-a2">p</i><i class="onbv-al onbv-a3">p</i><i class="onbv-al onbv-a0">a</i><i class="onbv-al onbv-a1">r</i><i class="onbv-al onbv-a2">t</i><i class="onbv-al onbv-a3">i</i><i class="onbv-al onbv-a0">e</i><i class="onbv-al onbv-a1">n</i><i class="onbv-al onbv-a2">t</i><i class="onbv-al onbv-a2">.</i></i></b></div>'+   /* ⚑ v163 (Tom, C-165 suite) : « T'APPARTIENT. » une lettre par ton de la palette de base, dans son ordre, comme « Studio » du guide (la ponctuation garde le ton de la lettre d'avant) */   /* ⚑ v153 (Tom, C-165) : « T'APPARTIENT. » en couleur, mot-clé bleu, #0E78F2 en clair, #82AEF8 en sombre ; le reste de la phrase ne change pas */
         '</div></div>'+
       '<input class="onbv-a onbv-in" id="onbIn" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="done">'+
       /* ⚑ v141 (Tom, 10 oct. 2026, C-075) — gardé de v140 : « un “Plus tard” à chaque étape, mais sans soulignement, et deux fois plus petit ».
@@ -41860,6 +41949,13 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     p.brouillon=E;
     try{ if(typeof feedAdd==='function') feedAdd('added','Tu as gardé « '+p.title+' » de côté',{pid:p.id}); }catch(_){ }
     try{ if(typeof toast==='function') toast('gardé de côté — dans l’Index'); }catch(_){ }
+    /* ⚑ v163 (Tom, Q579 approuvée) : toucher ce message ouvre l'Index déjà filtré sur les gardés de côté (le filtre « Gardés de côté » du menu ⇅). */
+    try{ var _tt=document.getElementById('_toast'), _sp=_tt && _tt.querySelector('span');
+      if(_sp){ _sp.className='toast-lien'; _sp.setAttribute('role','button'); _sp.setAttribute('aria-label','Voir les gardés de côté dans l’Index');
+        var _va=function(ev){ try{ ev.preventDefault(); ev.stopPropagation(); }catch(_){ } if(_tt.parentNode) _tt.remove();
+          window.ixFiltre='brouillons'; try{ document.querySelectorAll('#ixMenu .ix-mi[data-filt]').forEach(function(x){ x.classList.toggle('on', x.dataset.filt==='brouillons'); }); }catch(_){ }
+          try{ if(window.quitteVues) quitteVues(); window.ouvrirIndex(); }catch(_){ } };
+        _sp.addEventListener('click', _va); } }catch(_){ }
     window._brouillonRepris=null; window._ppGarde=false;
     try{ if(typeof closeAll==='function') closeAll(); }catch(_){ }
     try{ if(typeof saveState==='function') saveState(); if(window.syncAll) window.syncAll(); }catch(_){ }
@@ -41925,7 +42021,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 /* ⚑ v150 (Tom, C-149) : « Garder de côté » 4 pt plus bas (0,6 mm), dans les pages + du Promi, du Chiche et du Cercle ; l'inclinaison est validée */
 #device #createSheet.pp .pp-garder,#device #createSheet.pp .pp-garder.inactif{top:712px!important}
 /* ⚑ v151 (Tom, C-149) : « Garder de côté » encore 1 mm (6 pt) plus bas — 718 ; inclinaison inchangée ; le rail du pinceau ne bouge pas */
-#device #createSheet.pp .pp-garder,#device #createSheet.pp .pp-garder.inactif{top:718px!important}
+#device #createSheet.pp .pp-garder,#device #createSheet.pp .pp-garder.inactif{top:calc(718px + var(--pp-dyt, 0px))!important}   /* v163 (C-184) : du pas du trait */
 </style>
 <script id="lot-V148-RUBAN">
 /* ⚑ v148 (Tom, 16 oct. 2026, C-148) — LE BANDEAU AMANDE DE LA VALIDATION. « Quand on trace pour valider, sur une fiche ou dans la page +, le bandeau
@@ -42343,7 +42439,9 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    les points de l'app sont convertis à l'échelle de l'appareil (la largeur de `#device` sur 390). LE FOND est celui de la Toile du thème (`_fondToileVif`,
    le même pour les vingt mondes aujourd'hui : #DFCAA4 en clair, #050302 en sombre) ; une couleur de la palette sous 3:1 sur lui est sautée — et s'il en reste
    moins de deux (en clair, aucun ton d'Ingénu n'atteint 3:1), les tons de la palette, teinte gardée, sont amenés à 3:1 (`_teinte.ajuste`, v125). LES COINS :
-   la règle « pas de coin dans la minute qui suit un coin » est retirée ; reste « aucun coin dans la première minute » ; le reste est le seul hasard de l'angle. */
+   la règle « pas de coin dans la minute qui suit un coin » est retirée ; reste « aucun coin dans la première minute » ; le reste est le seul hasard de l'angle.
+   ⚑ v163 (Tom, C-181 §3) — « le logo doit toucher les bords haut et bas VISIBLES » : l'encre est lue sur les pixels peints (plus `measureText`, dont la
+   boîte dépasse l'encre) ; l'entrée et la sortie en flaques passent à 350 ms chacune (1 100 et 900 avant). */
 (function(){
   var Q=new URLSearchParams(location.search);
   var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||60))*1000, VITESSE:60, VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
@@ -42382,7 +42480,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     oriente(s, B, 0, al); while(true){ var n=prochain(s, B); if(t+n.t>duree) break; t+=n.t; rebondit(s, n, B); rebonds++; if(n.mur==='coin') coins.push(+t.toFixed(1)); oriente(s, B, t*1000, al); }
     return {coins:coins, rebonds:rebonds, duree:duree, bornes:B}; };
   /* ── LA ZONE VISIBLE : ses bords réels, en px de l'écran ── */
-  var encre={r:26.72/140};   /* le rapport hauteur / largeur de l'encre de PROMI (mesuré au premier logo) */
+  var encre={r:26.72/140, boites:{}};   /* le rapport hauteur / largeur de l'encre de PROMI (mesuré au premier logo) */
   function insets(){ try{ var p=document.createElement('div'); p.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
       document.body.appendChild(p); var c=getComputedStyle(p), r=[c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(function(v){ return parseFloat(v)||0; }); p.remove(); return r; }catch(_){ return [0,0,0,0]; } }
   function cadre(){ var vv=window.visualViewport, D=document.getElementById('device'), k=1; try{ var r=D.getBoundingClientRect(); if(r.width>10) k=r.width/390; }catch(_){ }
@@ -42398,13 +42496,26 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(!L.length) L=[contraste('#F7F0DE', F)>=3?'#F7F0DE':'#201908']; return L; }
   function lum(h){ var v=[1,3,5].map(function(i){ var c=parseInt(h.substr(i,2),16)/255; return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); }); return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2]; }
   function contraste(a, b){ var x=lum(a), y=lum(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
-  function logo(coul, k){ /* le canevas du logo, à la taille de son ENCRE : 140 pt de large, à l'échelle de l'appareil */
+  function logo(coul, k, fsF){ /* le canevas du logo, à la taille de son ENCRE : 140 pt de large, à l'échelle de l'appareil */
     var dpr=Math.min(3, window.devicePixelRatio||2), m=document.createElement('canvas').getContext('2d'), fs=40, L=R.LARG*k;
-    m.font='400 '+fs+'px PromiLate'; var q=m.measureText('PROMI'), lw=q.actualBoundingBoxLeft+q.actualBoundingBoxRight; fs=fs*L/Math.max(1,lw);
+    m.font='400 '+fs+'px PromiLate'; var q=m.measureText('PROMI'), lw=q.actualBoundingBoxLeft+q.actualBoundingBoxRight; fs=fsF||fs*L/Math.max(1,lw);
     m.font='400 '+fs+'px PromiLate'; q=m.measureText('PROMI');
-    var w=q.actualBoundingBoxLeft+q.actualBoundingBoxRight, h=q.actualBoundingBoxAscent+q.actualBoundingBoxDescent, cv=document.createElement('canvas'); encre.r=h/Math.max(1,w);
+    /* ⚑ v163 (Tom, C-181 §3.1) : L'ENCRE SE LIT SUR LES PIXELS PEINTS, plus sur `measureText` — sa boîte (approches, ascendante et descendante de la
+       police) dépasse l'encre réelle : au banc 1,3 pt à gauche, et rien ne garantit qu'elle soit la même dans le Safari de l'iPhone. On peint le mot
+       une fois, large, on cherche ses pixels, et le canevas du logo est recadré sur eux : c'est l'ENCRE qui touche les bords. Mémorisé par taille. */
+    var cle=fs.toFixed(3)+'|'+dpr, E=encre.boites[cle];
+    if(!E){ var mg=Math.ceil(fs*0.5), tw=Math.ceil((q.actualBoundingBoxLeft+q.actualBoundingBoxRight)*dpr+2*mg*dpr), th=Math.ceil((q.actualBoundingBoxAscent+q.actualBoundingBoxDescent)*dpr+2*mg*dpr);
+      var tc=document.createElement('canvas'); tc.width=tw; tc.height=th; var tg=tc.getContext('2d'); tg.setTransform(dpr,0,0,dpr,0,0); tg.font='400 '+fs+'px PromiLate'; tg.fillStyle='#000';
+      var ox=mg+q.actualBoundingBoxLeft, oy=mg+q.actualBoundingBoxAscent; tg.fillText('PROMI', ox, oy);
+      var d=null; try{ d=tg.getImageData(0,0,tw,th).data; }catch(_){ }
+      var x0=tw, y0=th, x1=-1, y1=-1;
+      if(d){ for(var yy=0; yy<th; yy++) for(var xx=0; xx<tw; xx++){ if(d[(yy*tw+xx)*4+3]>24){ if(xx<x0) x0=xx; if(xx>x1) x1=xx; if(yy<y0) y0=yy; if(yy>y1) y1=yy; } } }
+      if(x1<0){ x0=mg*dpr; y0=mg*dpr; x1=tw-mg*dpr; y1=th-mg*dpr; }
+      E=encre.boites[cle]={dx:ox-x0/dpr, dy:oy-y0/dpr, w:(x1-x0+1)/dpr, h:(y1-y0+1)/dpr}; }
+    if(!fsF && Math.abs(E.w-L)>0.3) return logo(coul, k, fs*L/E.w);   /* l'encre lue : 140 pt de large, exactement */
+    var w=E.w, h=E.h, cv=document.createElement('canvas'); encre.r=h/Math.max(1,w);
     cv.width=Math.ceil(w*dpr); cv.height=Math.ceil(h*dpr); var g=cv.getContext('2d'); g.setTransform(dpr,0,0,dpr,0,0); g.font='400 '+fs+'px PromiLate'; g.fillStyle=coul;
-    g.fillText('PROMI', q.actualBoundingBoxLeft, q.actualBoundingBoxAscent);
+    g.fillText('PROMI', E.dx, E.dy);
     cv.style.cssText='position:absolute;left:0;top:0;width:'+w+'px;height:'+h+'px;pointer-events:none;will-change:transform'; cv.__w=w; cv.__h=h; return cv; }
   function place(couche, C){ couche.style.left=C.left+'px'; couche.style.top=C.top+'px'; couche.style.width=C.width+'px'; couche.style.height=C.height+'px'; }
   function demarre(){ if(actif) return; if(!document.body) return;
@@ -42420,7 +42531,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     /* l'entrée en flaques : le fond naît par-dessus l'écran, dans la couche ; puis le fond est la couche */
     var fin=function(){ if(V.fini) return; couche.style.background=F; V.logo.style.visibility='visible'; if(V.passage && V.passage.canevas) V.passage.canevas.remove(); V.passage=null; V.tEntree=performance.now(); boucle(); };
     if(V.reduit || !window._passageFlaques) fin();
-    else V.passage=window._passageFlaques(couche, {mode:'couvre', couleur:F, duree:1100, devant:true, z:0, fin:fin});
+    else V.passage=window._passageFlaques(couche, {mode:'couvre', couleur:F, duree:350, devant:true, z:0, fin:fin});
     if(!V.passage && !V.reduit) fin(); }
   /* la zone visible change (barres de Safari, orientation, clavier) : la couche et ses bords suivent, le logo reste dedans */
   function relit(){ var V=actif; if(!V || V.fini) return; var C=cadre(); V.C=C; place(V.couche, C);
@@ -42443,7 +42554,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(V.passage){ V.passage.arrete=true; if(V.passage.canevas) V.passage.canevas.remove(); }
     V.couche.remove();
     if(!V.reduit && window._passageFlaques && document.body){ var C=cadre(), h=document.createElement('div'); h.style.cssText='position:fixed;z-index:2147483000;pointer-events:none;margin:0;padding:0;overflow:hidden'; place(h, C); document.body.appendChild(h);
-      window._passageFlaques(h, {mode:'ouvre', couleur:V.fond, duree:900, devant:true, z:0, fin:function(){ h.remove(); }}); setTimeout(function(){ if(h.parentNode) h.remove(); }, 2500); }
+      window._passageFlaques(h, {mode:'ouvre', couleur:V.fond, duree:350, devant:true, z:0, fin:function(){ h.remove(); }}); setTimeout(function(){ if(h.parentNode) h.remove(); }, 2500); }
     window._veilleDerniere={duree:Math.round(performance.now()-V.t0), couleurs:V.couleurs, coins:V.coins, rebonds:V.rebonds};
     demande(); }
   /* ── LE VERROU DE L'ÉCRAN (Screen Wake Lock) ── */

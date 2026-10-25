@@ -8,6 +8,8 @@ redteam_pages_plus.py — v150 (Tom, 18 oct. 2026) : LES PAGES +, AU POINT, CONT
           → les fiches (Promi, Chiche) : sous le haut de l'onde, l'image est IDENTIQUE AU PIXEL à v149 (même hasard, même heure) — hors des 3 pt du bord de
             l'appareil, au-dessus de ses coins arrondis du bas (800 pt ; la barre Peaufiner comprise) et à un niveau près : v149 contre ELLE-MÊME diffère
             de 9 à 12 pixels, d'un seul niveau, sur la colonne du bord et dans les coins (le bruit du rendu).
+  ⚑ v163 (C-184) : la version jugée est servie sous `?trait=1` — le trait plus épais et ce qui descend sous son mot (le pas du trait) sont jugés par
+          redteam_trait_k ; ici tout le reste se compare à v149. Original : *-avant-v163.py.
   C-149 · « Garder de côté » 4 pt plus bas (± 0,5), dans les trois pages + ; l'inclinaison ne change pas.
           ⚑ v151 (Tom) : « encore 1 mm (6 pt) plus bas » — 10 pt plus bas que v149 (± 0,5).
   C-157 · ⚑ v151 (Tom) : « TRACE POUR PLANTER / TRACE POUR LANCER passe en orange #FB4C0D, comme la flèche, en clair et en sombre » — les trois pages +
@@ -43,11 +45,11 @@ LIT = r"""()=>{ const D=document.getElementById('device').getBoundingClientRect(
   return {texte:tx?tx.textContent:null, l1:l1, boite:bx(ph), trace:bx(cs.querySelector('.pp-trace')), rail:bx(document.getElementById('csPinceau')), garder:g?[g.offsetLeft, g.offsetTop]:null,
     penche:m?+(-Math.atan(+m[1].split(',')[2])*180/Math.PI).toFixed(2):0, ink:(function(e){ if(!e) return null; const rg=document.createRange(); rg.selectNodeContents(e); const q=[...rg.getClientRects()].filter(r=>r.width>1); return q.length?[Math.min(...q.map(r=>r.top)), Math.max(...q.map(r=>r.bottom))].map(v=>(v-D.top)/k):null; })(ph), garder_ink:(function(e){ if(!e) return null; const rg=document.createRange(); rg.selectNodeContents(e); const q=[...rg.getClientRects()].filter(r=>r.width>1); return q.length?[Math.min(...q.map(r=>r.top)), Math.max(...q.map(r=>r.bottom))].map(v=>(v-D.top)/k):null; })(g), barre:(function(){ const e=document.getElementById('csBotBar'); return e?(e.getBoundingClientRect().top-D.top)/k:null; })(), col:(cs.querySelector('.pp-trace')?getComputedStyle(cs.querySelector('.pp-trace')).webkitTextFillColor:null), base:(window._ppEcran&&_ppEcran())?_ppEcran().base:null}; }"""
 def page_plus(b, fichier, nat, sombre):
-    ctx = B.contexte(b, sombre=sombre); ctx.add_init_script(SEME); pg = B.ouvre(ctx, fichier)
+    ctx = B.contexte(b, sombre=sombre); ctx.add_init_script(SEME); pg = B.ouvre(ctx, fichier, q=('?trait=1' if fichier == F else ''))   # ⚑ v163 (C-184) : le trait neutralisé (son pas, et ce qui descend sous lui, sont jugés par redteam_trait_k)
     B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=%s]' % nat); pg.wait_for_timeout(2800)
     r = pg.evaluate(LIT); ctx.close(); return r
 def fiche(b, fichier, nature, sombre):
-    ctx = B.contexte(b, sombre=sombre); ctx.add_init_script(SEME); pg = B.ouvre(ctx, fichier)
+    ctx = B.contexte(b, sombre=sombre); ctx.add_init_script(SEME); pg = B.ouvre(ctx, fichier, q=('?trait=1' if fichier == F else ''))   # ⚑ v163 (C-184) : le trait neutralisé (son pas, et ce qui descend sous lui, sont jugés par redteam_trait_k)
     B.plante(pg, 'rendre le livre', qui='Marion', nature=nature)
     pg.evaluate("()=>{ window._TRAIT_K=1; closeAll(); openDetail(promises[promises.length-1].id); }"); pg.wait_for_timeout(3200)   # ⚑ v162 (C-184) : le trait × 1,05 est voulu (son juge : redteam_trait_105) — ici on le neutralise pour juger tout le reste contre v149
     t = pg.evaluate("()=>{ const v=(document.getElementById('dpTrameCv').getAttribute('data-trait')||'').split(','); return [+v[0], +v[1]]; }")
@@ -110,7 +112,7 @@ with sync_playwright() as p:
     # la bascule : dix ouvertures, phrase tirée au hasard (sans semer)
     faux = []
     for i in range(10):
-        ctx = B.contexte(b); pg = B.ouvre(ctx, F)
+        ctx = B.contexte(b); pg = B.ouvre(ctx, F, q='?trait=1')   # v163 : le trait neutralisé
         B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=chiche]'); pg.wait_for_timeout(3500)
         r = pg.evaluate("""()=>{ const e=_ppEcran(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, tr=document.querySelector('#createSheet .pp-trace'), ph=document.getElementById('csPhrase');
           return [e.nl, e.base, +((tr.getBoundingClientRect().top-D.top)/k).toFixed(1), +((ph.getBoundingClientRect().top-D.top)/k).toFixed(1)]; }""")
