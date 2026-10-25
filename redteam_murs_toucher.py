@@ -44,10 +44,14 @@ with sync_playwright() as p:
         cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': x, 'y': y}]}); pg.wait_for_timeout(ms // 2)
         if d: cdp.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'x': x + dx * 0.5, 'y': y + dy * 0.5}]}); pg.wait_for_timeout(8); cdp.send('Input.dispatchTouchEvent', {'type': 'touchMove', 'touchPoints': [{'x': x + dx, 'y': y + dy}]})
         pg.wait_for_timeout(ms // 2); cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
-    def vingt(nom, pg, cdp, sels, prepare=None):
+    LIBRE = """([x,y,sels])=>{ if(!sels) return false; for(const q of sels){ const e=document.querySelector(q); if(!e) continue; const r=e.getBoundingClientRect(); if(r.width>2 && x>=r.left-4 && x<=r.right+4 && y>=r.top-4 && y<=r.bottom+4) return true; } return false; }"""
+    def vingt(nom, pg, cdp, sels, prepare=None, libres=None):
+        # ⚑ v163b (C-198) : sur un monde payant, Sombre/Clair, Avec/Sans texte (et leurs mots) et les barrettes ne sont plus des murs — un toucher
+        #    qui tombe sur eux ne fait paraître NI phrase NI offre (ils agissent) ; tout autre toucher du panneau reste exigé, 20 sur 20.
+        #    Original : sauvegardes/redteam_murs_toucher-avant-v163b.py
         z = pg.evaluate(ZONE, sels)
         if not z: juge('[%s] la zone floutée est à l\'écran' % nom, False, 'aucune zone floutée trouvée pour %s' % sels); return
-        bons = 0; rates = []
+        bons = 0; rates = []; nlib = 0; libok = 0; librates = []; nflou = 0
         for i in range(N):
             if prepare: prepare()
             z = pg.evaluate(ZONE, sels) or z
@@ -59,12 +63,20 @@ with sync_playwright() as p:
                 if not pg.evaluate("([x,y])=>[[0,0],[0,-20],[0,20],[-20,0],[20,0]].some(d=>{const h=document.elementFromPoint(x+d[0],y+d[1]); return !!(h&&h.closest&&h.closest('button,#stLockBuy,#stLockCta'));})", [x, y]): break
                 y += 12
             if '--dbg' in sys.argv: print(i, round(x), round(y), pg.evaluate("([x,y])=>document.elementsFromPoint(x,y).slice(0,3).map(e=>e.id||(''+e.className).slice(0,18)||e.tagName).join(' < ')", [x, y]))
+            lib = pg.evaluate(LIBRE, [x, y, libres])
+            _a = i * 2.39996; _d = (i % 4) * 2.3; xf, yf = x + _d * math.cos(_a), y + _d * math.sin(_a)   # là où le doigt se lève (doigt() glisse de 0 à 7 pt)
+            if libres and lib != pg.evaluate(LIBRE, [xf, yf, libres]): nflou += 1; continue   # posé dans une zone, levé dans l'autre : ni l'un ni l'autre ne juge
             doigt(pg, cdp, x, y, i); pg.wait_for_timeout(650)
             e = pg.evaluate(LEVE)
-            if e['leve'] and not e['offre']: bons += 1
+            if lib:
+                nlib += 1
+                if not e['leve'] and not e['offre']: libok += 1
+                else: librates.append('(%d ; %d)%s' % (x, y, ' offre' if e['offre'] else ' phrase'))
+            elif e['leve'] and not e['offre']: bons += 1
             else: rates.append('(%d ; %d)%s sous le doigt : %s' % (x, y, ' offre' if e['offre'] else '', pg.evaluate("([x,y])=>document.elementsFromPoint(x,y).slice(0,3).map(e=>e.id||(''+e.className).slice(0,18)||e.tagName).join(' < ')", [x, y])))
             pg.evaluate("()=>{ try{ _murBaisse(); }catch(e){} const c=document.querySelector('#plusScreen.show .closeb'); if(c) c.click(); }"); pg.wait_for_timeout(420)
-        juge('[%s] la phrase dès le premier toucher : %d sur %d (zone floutée %d × %d pt)' % (nom, bons, N, w, h), bons == N, ('ratés : ' + ' '.join(rates[:8])) if rates else '')
+        juge('[%s] la phrase dès le premier toucher : %d sur %d (zone floutée %d × %d pt)' % (nom, bons, N - nlib - nflou, w, h), bons == N - nlib - nflou and N - nlib - nflou >= 4, ('ratés : ' + ' '.join(rates[:8])) if rates else '')
+        if libres: juge('[%s] sur les réglages libres (C-198), ni phrase ni offre : %d sur %d' % (nom, libok, nlib), nlib >= 3 and libok == nlib, ' '.join(librates[:6]))
     def studio(pals):
         ctx, pg, cdp = session(); pg.evaluate("()=>document.getElementById('studioBtn').click()"); pg.wait_for_timeout(6000)
         d = pg.evaluate("()=>document.getElementById('device').getBoundingClientRect().toJSON()")
@@ -76,7 +88,7 @@ with sync_playwright() as p:
             cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []}); pg.wait_for_timeout(1500)
             if 'world-locked' in pg.evaluate("()=>document.getElementById('studioScreen').className"): break
         pg.wait_for_timeout(2500)
-        vingt('le Studio, palettes ouvertes' if pals else 'le Studio, panneau', pg, cdp, ['#studioScreen #stpPals'] if pals else ['!#studioScreen #stpBas'])   # le panneau entier : ses bandes floutées ET ce qui les sépare
+        vingt('le Studio, palettes ouvertes' if pals else 'le Studio, panneau', pg, cdp, ['#studioScreen #stpPals'] if pals else ['!#studioScreen #stpBas'], libres=None if pals else ['#studioScreen #stpVue', '#studioScreen #stpLab', '#studioScreen #stpDots'])   # le panneau entier : ses bandes floutées ET ce qui les sépare
         ctx.close()
     def fiche():
         ctx, pg, cdp = session()

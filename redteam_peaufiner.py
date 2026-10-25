@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """
+⚑ v163b (C-197) : les pastilles de l'échéance sont « demain · 1 sem. · 1 mois · une date… · un jour » partout ; le juge choisit dans ces mots
+(original : sauvegardes/redteam_peaufiner-avant-v163b.py) — même intention, même sévérité.
 redteam_peaufiner.py — PEAUFINER RESTE OUVERT (v146, Tom, 14 oct. 2026 — C-134).
 « Un choix dans Peaufiner s'applique sur place. Peaufiner reste ouvert […]. On en sort par un glissement du haut vers le bas de l'écran.
   Peaufiner redescend dans son bandeau normal en bas, et on revient à la fiche (ou à la page +). Plus JAMAIS de retour à la Toile depuis Peaufiner. »
@@ -50,7 +52,7 @@ with sync_playwright() as p:
     T = pg.evaluate("()=>{ const q=promises.filter(q=>!q.done&&q.who&&q.who!=='moi'&&!q.nuee&&q.kind!=='chiche')[0]; return q&&q.title; }")
     print('── A · la fiche « %s », plusieurs choix d\'affilée, au doigt' % T); fiche(pg, T); e0 = pg.evaluate(ET)
     juge('A · Peaufiner s\'ouvre sur la fiche', e0['fiche'] and e0['peauf'], e0)
-    for lab, t, lit in (('AVANT', 'demain', lambda v: v['due'] == 1), ('AVANT', '2 semaines', lambda v: v['due'] == 14), ('AVANT', 'en l’air', lambda v: v['enLair'])):
+    for lab, t, lit in (('AVANT', 'demain', lambda v: v['due'] == 1), ('AVANT', '1 sem.', lambda v: v['due'] == 7), ('AVANT', '1 mois', lambda v: v['due'] == 30)):
         ok = choisit(pg, '#detailPoster', lab, t); e = pg.evaluate(ET); v = pg.evaluate(P, T)
         juge('A · « %s » → « %s » : appliqué sur place, Peaufiner reste ouvert sur la même fiche, pas la Toile' % (lab, t), ok and lit(v) and e['peauf'] and e['fiche'] and e['cur'] == T and not e['toile'], '%s · %s' % (v, e['vus']))
     pc0 = pg.evaluate("()=>{ const a=[...document.querySelectorAll('#detailPoster .pc-n')]; return a.map(x=>x.textContent.trim()); }")
@@ -78,7 +80,7 @@ with sync_playwright() as p:
     print('── D · la sonde du chemin inconnu')
     B.tap_sel(pg, '#dpDetails .dpd-tog'); pg.wait_for_timeout(1000)
     pg.evaluate("()=>{ document.addEventListener('click', e=>{ if(e.target.closest && e.target.closest('#detailPoster .s2-ech')){ closeAll(); setTimeout(()=>closeAll(), 1000); } }, true); }")
-    ok = choisit(pg, '#detailPoster', 'AVANT', '5 jours'); pg.wait_for_timeout(1200); e = pg.evaluate(ET); R = pg.evaluate("()=>window._peaufRefus||[]")
+    ok = choisit(pg, '#detailPoster', 'AVANT', '1 sem.'); pg.wait_for_timeout(1200); e = pg.evaluate(ET); R = pg.evaluate("()=>window._peaufRefus||[]")
     juge('D · un choix dont le geste mène à une fermeture générale (sur le coup et 1 s après) : Peaufiner reste ouvert sur la fiche', ok and e['peauf'] and e['fiche'] and not e['toile'], e['vus'])
     juge('D · chaque refus est gardé avec sa pile (et part au Mac avec ?mesure=1)', len(R) >= 2 and all(r.get('pile') for r in R[-2:]), '%d refus · %s' % (len(R), (R[-1]['pile'][:120] if R else '')))
     # F · le bandeau n'est pas un mur : une rangée réservée qui passe SOUS le bandeau ne répond pas au doigt qui touche le bandeau
@@ -116,7 +118,7 @@ with sync_playwright() as p:
     print('── B · la page +, plusieurs choix d\'affilée, avec Ma Parole !')
     ctx = B.contexte(b); B.toile_pleine(ctx, 25); pg = B.ouvre(ctx, F); pg.evaluate("()=>setPremium(true)"); page(pg); e0 = pg.evaluate(ET)
     juge('B · Peaufiner s\'ouvre sur la page +', e0['plus'] and e0['ppeauf'], e0['vus'])
-    for lab, t in (('AVANT', '2 j'), ('AVANT', '5 j'), ('LA COULEUR', 'couleur 2')):
+    for lab, t in (('AVANT', '1 sem.'), ('AVANT', '1 mois'), ('LA COULEUR', 'couleur 2')):
         ok = choisit(pg, '#createSheet', lab, t); e = pg.evaluate(ET)
         lu = pg.evaluate("(t)=>{ const e=[...document.querySelectorAll('#createSheet .s2-reg .chip, #createSheet .s2-reg .cc-ton')].find(x=>(x.getAttribute('aria-label')||x.textContent||'').trim()===t); return e?(e.classList.contains('on')||e.getAttribute('aria-pressed')==='true'||e.classList.contains('choisi')||e.classList.contains('sel')):null; }", t)
         juge('B · « %s » → « %s » : appliqué (le choix est marqué), Peaufiner reste ouvert sur la page +, pas la Toile' % (lab, t), ok and lu and e['plus'] and e['ppeauf'] and not e['toile'], 'marqué %s · %s' % (lu, e['vus']))

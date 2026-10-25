@@ -27,7 +27,9 @@ REL = """([x,y])=>{ const D=document.getElementById('device').getBoundingClientR
   let fl=false; for(let e=document.elementFromPoint(D.left+x,D.top+y); e&&e.id!=='device'; e=e.parentElement){ const f=getComputedStyle(e).filter; if(f&&f.indexOf('blur')>=0&&e.id!=='stBg'){ fl=true; break; } }
   if(!fl){ st.querySelectorAll('#stpTons,#stpLab,#stpVue,#stpDots,#stpPals').forEach(e=>{ const f=getComputedStyle(e).filter, r=e.getBoundingClientRect(); if(f&&f.indexOf('blur')>=0&&D.left+x>=r.left&&D.left+x<=r.right&&D.top+y>=r.top-2&&D.top+y<=r.bottom+2) fl=true; }); }
   const m=document.getElementById('murPhrase'); let ph=null; if(m&&m.classList.contains('leve')){ const r=m.getBoundingClientRect(); ph=[r.top-D.top, r.bottom-D.top]; }
-  return {zone:u, phrase:ph, flou:fl, offre:!!document.querySelector('#plusScreen.show, #cercleScreen.show')}; }"""
+  const pb=st.querySelector('#stpBas'), lb=st.querySelector('#stpLab'), qp=pb&&pb.getBoundingClientRect(), ql=lb&&lb.getBoundingClientRect();
+  const libre=(qp&&ql&&ql.height>2&&!st.classList.contains('stp-pals'))?[qp.top-D.top, ql.top-D.top]:null;
+  return {zone:u, phrase:ph, flou:fl, libre:libre, offre:!!document.querySelector('#plusScreen.show, #cercleScreen.show')}; }"""
 with sync_playwright() as p:
     b = p.chromium.launch(args=['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist'])
     def session(pals):
@@ -56,8 +58,20 @@ with sync_playwright() as p:
             pg.wait_for_function("()=>{const m=document.getElementById('murPhrase'); return !m||!m.classList.contains('leve')}", timeout=15000); pg.wait_for_timeout(400)
             tap(x, y); pg.wait_for_timeout(700)
             r = pg.evaluate(REL, [x, y]); z = r['zone']; ph = r['phrase']
-            juge('[%s] la phrase paraît, entière sur le panneau flouté' % nom, bool(ph) and bool(z) and ph[0] >= z[0] - 6 and ph[1] <= z[1] + 6 and r['flou'] and not r['offre'],
-                 'phrase %s · panneau flouté %s · point flouté %s' % (ph and [round(v) for v in ph], z and [round(v) for v in z], r['flou']))
+            # ⚑ v163b (C-198) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_studio_mur-avant-v163b.py). « Au Studio,
+            #   Sombre/Clair et Avec/Sans texte sortent du mur ; les barrettes restent actives sur un monde payant. » Sur eux : ni phrase, ni offre,
+            #   ni flou. Sur les tons (le panneau qui reste flouté) : la phrase, entière, entre le haut du panneau et le haut des réglages libres —
+            #   jamais sur eux. Palettes ouvertes : inchangé (leur panneau est le mur).
+            if nom in ('les libellés', 'les disques', 'les barrettes'):
+                juge('[%s] réglage libre (C-198) : ni phrase, ni offre, ni flou' % nom, not ph and not r['offre'] and not r['flou'],
+                     'phrase %s · point flouté %s' % (ph and [round(v) for v in ph], r['flou']))
+            elif r['libre']:
+                L = r['libre']
+                juge('[%s] la phrase paraît, entière sur le panneau, au-dessus des réglages libres' % nom, bool(ph) and bool(z) and ph[0] >= L[0] - 0.5 and ph[1] <= L[1] + 0.5 and ph[1] >= z[0] and r['flou'] and not r['offre'],
+                     'phrase %s · panneau → réglages libres %s · tons flous %s · point flouté %s' % (ph and [round(v) for v in ph], [round(v) for v in L], z and [round(v) for v in z], r['flou']))
+            else:
+                juge('[%s] la phrase paraît, entière sur le panneau flouté' % nom, bool(ph) and bool(z) and ph[0] >= z[0] - 6 and ph[1] <= z[1] + 6 and r['flou'] and not r['offre'],
+                     'phrase %s · panneau flouté %s · point flouté %s' % (ph and [round(v) for v in ph], z and [round(v) for v in z], r['flou']))
         ctx.close()
     b.close()
 print('\n%d/%d' % (ok, ok + len(ko)))

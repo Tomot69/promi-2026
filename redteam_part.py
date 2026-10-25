@@ -23,7 +23,10 @@ from playwright.sync_api import sync_playwright
 import banc_tom as B
 arg = lambda k, d: next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--' + k + '=')), d)
 F = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html'); PORT = arg('port', '8752'); SONDE = '--sonde' in sys.argv
-EP, FIN, TENU = 10.0, 2.5, (11, 74, 42)          # l'épaisseur du trait, celle d'une part non tracée, la couleur de l'état tenu (#0B4A2A)
+# ⚑ v163b — CONTRAT REMIS AU NIVEAU DE C-184 (v163a, Tom : « ?trait=<facteur> par rapport à la taille d'avant v162, défaut 1,15 ») : le trait d'avant
+#   v162 faisait 10 pt, il en fait 10 × 1,15 = 11,5. EN DUR (§7), et le juge vérifie que l'app déclare 1,15. Original : sauvegardes/redteam_part-avant-v163b.py
+K_DECIDE = 1.15
+EP, FIN, TENU = 10.0 * K_DECIDE, 2.5, (11, 74, 42)          # l'épaisseur du trait, celle d'une part non tracée, la couleur de l'état tenu (#0B4A2A)
 res = []
 def juge(nom, cond, detail=''):
     res.append((nom, bool(cond))); print('%s  %s  %s' % ('OK' if cond else 'KO', nom, str(detail)[:330]), flush=True)
@@ -97,6 +100,8 @@ def plante_a(pg, titre, gens, nature=1):
 def etat_fiche(pg, nom, n, faites, natcol, initiales=None):
     """la fiche ouverte : n parts, celles de `faites` pleines et vertes, les autres fines et à la teinte de la nature ; en cours tant qu'il en reste"""
     L = pg.evaluate(LIT); P = (L or {}).get('parts')
+    kd = pg.evaluate("()=>window._TRAIT_K")
+    if kd is not None and abs(kd - K_DECIDE) > 0.001: juge('%s : l\'app déclare le trait à × %s (décidé : × %s)' % (nom, kd, K_DECIDE), False)
     if not P or len(L['mesures']) != n:
         juge('%s : le trait porte %d parts' % (nom, n), False, 'data-parts %s' % (P,)); return L
     bons = True; det = []

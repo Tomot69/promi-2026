@@ -607,9 +607,9 @@
   padding:13px 16px;border-radius:999px;font-size:16px;font-weight:600;
   letter-spacing:-.02em;cursor:pointer;color:var(--on-surf)}
 #indexSheet .ix-mi.on,#feedView .ix-mi.on{background:var(--on-surf);color:var(--surf)}
-#indexSheet .ix-mi i,#feedView .ix-mi i{font-style:normal;font-size:20px;line-height:1;
-  color:currentColor;opacity:0}
-#indexSheet .ix-mi.on i,#feedView .ix-mi.on i{opacity:.7}
+#indexSheet .ix-mi i,#feedView .ix-mi i{font-style:normal;display:block;width:14px;height:4px;border-radius:2px;flex:none;
+  background:currentColor;visibility:hidden}   /* v163b (C-191) : le repère de l'option choisie est une barrette (14 × 4, comme la pagination du Studio), plus un point */
+#indexSheet .ix-mi.on i,#feedView .ix-mi.on i{visibility:visible}
 #indexSheet .ix-sort{margin:0 0 4px}
 #indexSheet .ix-sort button{background:transparent;border:1px solid rgba(var(--c-ton54-rgb),.34);color:var(--surf-sub);border-radius:999.0px;padding:8px 16px;font-size:13px}
 #indexSheet .ix-sort button.on{background:var(--on-surf);color:var(--surf);border-color:var(--on-surf)}
@@ -963,8 +963,7 @@ canvas.bul.mini-dalle{width:30px;height:30px;display:block}
   color:var(--on-surf);display:grid;place-items:center;font-weight:700;
   -webkit-text-stroke:1px currentColor;line-height:1}
 .device.light #feedView .ix-bar .ix-tri:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){border-color:rgba(var(--c-bleu45-rgb),.3)}
-/* les anciennes pastilles de tri disparaissent */
-#feedView #fdSort{display:none!important}
+/* v163b (C-191) : les anciennes pastilles de tri (#fdSort) sont retirées du document */
 /* le selecteur reste : c'est le JS qui le masque, seulement dans le Fil. */
 /* les bandes vont bord a bord, sans marge laterale */
 #feedView{padding-left:0!important;padding-right:0!important}
@@ -2705,7 +2704,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
 
     <div class="stage" id="stage"><div id="toile"></div><canvas id="toileCv" class="toilecv"></canvas><div class="toile-empty" id="toileEmpty"><svg class="te-ghosts" viewBox="0 0 200 200" aria-hidden="true"><path class="te-g te-g1" d="M40 34 Q80 24 94 56 Q102 90 66 98 Q30 102 26 68 Q22 40 40 34Z"/><path class="te-g te-g2" d="M120 62 Q160 56 166 92 Q170 126 132 132 Q100 134 100 100 Q100 70 120 62Z"/><path class="te-g te-g3" d="M58 122 Q96 116 106 148 Q110 178 74 182 Q42 184 40 152 Q40 128 58 122Z"/></svg><div class="te-mark">Prom<span class="te-i">i</span></div><div class="te-t">Ta Toile n’attend que toi</div><div class="te-s">Plante ton premier Promi — touche le <b>+</b><span class="te-nudge">chaque parole tenue devient une dalle</span></div></div><div class="sidelabel eb" id="sidelabel">LA&nbsp;TOILE</div></div>
 
-    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">X</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i>•</i></div><div class="ix-mi" data-fdtri="personne">Par personne<i>•</i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i>•</i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i>•</i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i>•</i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i>•</i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i>•</i></div><div class="ix-mi" data-fdfilt="atenir">À tenir<i>•</i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i>•</i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i>•</i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i>•</i></div></div></div><div class="ix-sort" id="fdSort"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button></div><div id="feedList"></div></div>
+    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">X</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i></i></div><div class="ix-mi" data-fdtri="personne">Par personne<i></i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i></i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i></i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i></i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i></i></div><div class="ix-mi" data-fdfilt="atenir">À tenir<i></i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i></i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i></i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i></i></div></div></div><div id="feedList"></div></div>
     <div class="stage-fade-t"></div><div class="stage-fade-b"></div>
     <div class="footer">
       <div class="cap" id="cap">six Promi vivants</div>
@@ -2732,7 +2731,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
         <div class="cs-sens" id="csSens"><div class="cs-row"><button class="on" data-sens="faire"><span class="cs-dl" data-d="a"></span>Je promets</button><button data-sens="demander"><span class="cs-dl" data-d="b"></span>Promets-moi</button></div><div class="cs-rail"></div></div>
         <div class="field"><label id="csLabTitre">Le Promi</label><input id="fTitle" placeholder="ce que tu promets…"></div>
         <div class="field"><div class="mg-lab dpf-lab" id="csLabQui"><span id="csLabQuiTxt">Pour qui</span><span class="mg-vis">une ou plusieurs personnes</span><button type="button" class="dpf-plus" data-addwho="fWho|whoChips">+</button></div><input id="fWho" placeholder="un prénom…"><div class="chips scroll" id="whoChips" style="margin-top:10px"></div></div>
-        <div class="field f-nuee"><label>Dans un Cercle</label><div class="chips scroll" id="nueeChips"></div></div><div class="more-toggle" id="promiMoreBtn"><span>Peaufiner</span><span class="mt-chev">▾</span></div><div id="promiExtra" class="peauf-reglages" style="display:none"><div class="field"><label>Quand</label><div class="chips" id="dueChips"><div class="chip" data-d="2">2 j</div><div class="chip" data-d="5">5 j</div><div class="chip" data-d="14">2 sem</div><div class="chip" data-d="40">+ tard</div></div></div><div class="f-duo"><div class="field"><label>Important&nbsp;?</label><div class="impseg" id="impSeg"><div class="is" data-imp="light">·</div><div class="is on" data-imp="normal">··</div><div class="is" data-imp="high">···</div></div></div><!-- « Urgent ? » retiré du formulaire : concept abandonné (décision Tom). --></div><div class="mg-lab">Note <span class="mg-vis">privée · visible par toi seul</span></div><div class="mg-note"><textarea id="fNote" rows="2" placeholder="ajoute un mot, un contexte…"></textarea></div><div class="mg-lab dpf-lab">Pièces jointes <span class="mg-vis">tout fichier · privé</span><button type="button" class="dpf-plus" id="csPlus">+</button></div><div id="csFiles" class="dpf-wrap"></div><div class="more-opts open" id="promiMore">
+        <div class="field f-nuee"><label>Dans un Cercle</label><div class="chips scroll" id="nueeChips"></div></div><div class="more-toggle" id="promiMoreBtn"><span>Peaufiner</span><span class="mt-chev">▾</span></div><div id="promiExtra" class="peauf-reglages" style="display:none"><div class="field"><label>Quand</label><div class="chips" id="dueChips"><div class="chip" data-d="1">demain</div><div class="chip" data-d="7">1 sem.</div><div class="chip" data-d="30">1 mois</div><div class="chip" data-pick="1">une date…</div><div class="chip" data-jour="1">un jour</div><input type="date" class="due-datein" aria-label="Choisir une date" style="position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0"></div></div><div class="f-duo"><div class="field"><label>Important&nbsp;?</label><div class="impseg" id="impSeg"><div class="is" data-imp="light">·</div><div class="is on" data-imp="normal">··</div><div class="is" data-imp="high">···</div></div></div><!-- « Urgent ? » retiré du formulaire : concept abandonné (décision Tom). --></div><div class="mg-lab">Note <span class="mg-vis">privée · visible par toi seul</span></div><div class="mg-note"><textarea id="fNote" rows="2" placeholder="ajoute un mot, un contexte…"></textarea></div><div class="mg-lab dpf-lab">Pièces jointes <span class="mg-vis">tout fichier · privé</span><button type="button" class="dpf-plus" id="csPlus">+</button></div><div id="csFiles" class="dpf-wrap"></div><div class="more-opts open" id="promiMore">
         </div>
         </div><div class="tenir cs-tenir" id="planterZone" aria-label="Trace pour planter"><canvas id="planterCv"></canvas><div class="tenir-lab" id="planterLab">glisse pour planter →</div><div class="tenir-alt" id="planterAlt">bouton</div></div><button type="button" class="garde-cote" id="gcPromi" data-gc="promi" style="display:none"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12a1 1 0 0 1 1 1v16l-7-3.4L5 20V4a1 1 0 0 1 1-1z"/></svg><span>garder de côté</span></button><button class="cta" id="addPromi">Planter le Promi</button>
       </div>
@@ -2789,10 +2788,10 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
           <div class="sh-scope-list" id="shScope"></div>
         </div>
       </div>
-      <div class="sh-actions"><button class="sh-share sh-invite" id="shInviteBtn">✦&nbsp;&nbsp;Inviter sur Promi</button><button class="sh-share" id="shShareBtn">↗&nbsp;&nbsp;Partager</button></div><div class="sh-invite-note" id="shInviteNote" hidden></div></div></div><div class="sh-bot"><div class="sh-foot"><div class="sh-fmtx"><span class="sh-ic" id="shTrayBtn">⋯</span><span id="shFmtTxt">Plein écran · 9:19,5</span></div><button class="sh-go" id="shGo" aria-label="Partager">↗</button></div>
+      <div class="sh-actions"><button class="sh-share sh-invite" id="shInviteBtn">Inviter</button><button class="sh-share" id="shShareBtn">↗&nbsp;&nbsp;Partager</button></div><div class="sh-invite-note" id="shInviteNote" hidden></div></div></div><div class="sh-bot"><div class="sh-foot"><div class="sh-fmtx"><span class="sh-ic" id="shTrayBtn">⋯</span><span id="shFmtTxt">Plein écran · 9:19,5</span></div><button class="sh-go" id="shGo" aria-label="Partager">↗</button></div>
       </div>
     </div>
-    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i>•</i></div><div class="ix-mi" data-tri="tenir">À tenir en premier<i>•</i></div><div class="ix-mi" data-tri="personne">Par personne<i>•</i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i>•</i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i>•</i></div><div class="ix-mi" data-filt="suspens">En suspens<i>•</i></div><div class="ix-mi" data-filt="manquees">Manquées<i>•</i></div><div class="ix-mi" data-filt="promi">Promi<i>•</i></div><div class="ix-mi" data-filt="nuees">Cercles<i>•</i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i>•</i></div><div class="ix-mi" data-filt="demandes">Demandes<i>•</i></div><div class="ix-mg">QUADRILLAGE</div><div class="ix-mi on" data-cols="2">Deux par ligne<i>•</i></div><div class="ix-mi" data-cols="3">Trois par ligne<i>•</i></div><div class="ix-mi" data-cols="4">Quatre par ligne<i>•</i></div></div></div><div id="indexList"></div></div>
+    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i></i></div><div class="ix-mi" data-tri="tenir">À tenir en premier<i></i></div><div class="ix-mi" data-tri="personne">Par personne<i></i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i></i></div><div class="ix-mi" data-filt="suspens">En suspens<i></i></div><div class="ix-mi" data-filt="manquees">À tenir<i></i></div><div class="ix-mi" data-filt="promi">Promi<i></i></div><div class="ix-mi" data-filt="nuees">Cercles<i></i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i></i></div><div class="ix-mi" data-filt="demandes">Demandes<i></i></div></div></div><div id="indexList"></div></div>
 
     <!-- v104 (Tom, 30 sept. 2026) : « Arranger la Toile » supprimé — la pastille, l'icône, la fonction, la feuille. « On n'en veut pas. » -->
 
@@ -2902,7 +2901,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
         <div class="scard"><span class="k">Compte</span><span class="v">seulement si tu partages</span></div>
         <div class="scard"><span class="k">Traceurs</span><span class="v">aucun</span></div>
         <div class="scard" id="pvExport"><span class="k">Exporter mes données</span><span class="v ac">copier ›</span></div>
-        <div class="scard" id="pvReset"><span class="k">Tout effacer</span><span class="v ac" style="color:var(--rate)">effacer ›</span></div>
+        <!-- v163b (C-195) : « Tout effacer » vit aux Réglages, une seule fois -->
       </div>
       <div style="font-size:12px;color:var(--gsub);margin-top:22px;line-height:1.6">
         Tes Promi perso restent sur ton téléphone. Ce que tu déposes dans un Cercle est partagé avec ses membres — rien d'autre ne sort.
@@ -2914,16 +2913,15 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="closeb" data-close>X</div><h1 class="scr-ti">Réglage<span class="ti-x blink">s</span></h1>
       <div class="grouplab">Toi</div><div class="prof-card"><div class="prof-ava-wrap"><div class="prof-ava" id="setAva" title="Toucher pour changer la photo"></div><span class="prof-cam" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4.5 8.5h3L9 6.5h6l1.5 2h3v10.5h-15z"/><circle cx="12" cy="13.2" r="3"/></svg></span><button class="prof-del" id="setDelPhoto" title="Retirer la photo" style="display:none">✕</button></div><div class="prof-name-row"><input class="prof-name-input" id="setNameInput" value="Tom" spellcheck="false" maxlength="24"><span class="prof-pen" aria-hidden="true"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19.5 8.5l-4-4L4 16z"/></svg></span></div><input type="file" id="setPhotoInput" accept="image/*" style="display:none"></div>
       <div class="set-cercle" id="openPlusTop"><div class="sc-tx"><div class="sc-t">Ma Parole&nbsp;!</div><div class="sc-s"><span style="color:#A77CF7">débloque tout Promi</span> · <span style="color:#E08370">essai 14 jours</span></div></div><div class="sc-go">›</div></div>
-      <div class="scard" id="openStudio2"><span class="k">Le Studio</span><span class="v ac">visuels & humeurs ›</span></div>
+      <!-- v163b (C-197) : « Le Studio · visuels & humeurs » retirée des Réglages — le Studio s'ouvre par la barre -->
       
-      <div class="scard" id="replayOnb"><span class="k">Revoir la présentation</span><span class="v ac">rejouer ›</span></div><div class="scard" id="resetApp"><span class="k">Réinitialiser (test)</span><span class="v ac">toile vide + 1 Cercle ›</span></div>
-      <div class="grouplab">Partager</div><div class="scard" id="setInvite" role="button"><span class="k">Inviter sur Promi</span><span class="v ac">›</span></div><div class="grouplab">App</div><div class="scard" id="langCard" hidden style="display:none"><span class="k">Langue</span><span class="v ac" id="langV">Français ›</span></div><div class="scard" id="notifCard" role="switch" aria-checked="false"><span class="k">Notifications</span><span class="v"><span class="toggle off" id="notifTog"></span></span></div><div class="scard" id="privCard"><span class="k">Confidentialité</span><span class="v ac">privé &amp; partagé ›</span></div>
-      <div class="grouplab">Données</div><div class="scard"><span class="k">Sauvegarde locale</span><span class="v" id="saveStatus">vérification…</span></div><div class="scard" id="resetData"><span class="k">Réinitialiser mes données</span><span class="v ac" id="resetV">effacer ›</span></div>
+      <div class="scard" id="replayOnb"><span class="k">Revoir la présentation</span><span class="v ac">rejouer ›</span></div><!-- v163b (C-199) : « Réinitialiser (test) » (masqué) retiré -->
+      <div class="grouplab">Partager</div><div class="scard" id="setInvite" role="button"><span class="k">Inviter</span><span class="v ac">›</span></div><div class="grouplab">App</div><div class="scard" id="langCard" hidden style="display:none"><span class="k">Langue</span><span class="v ac" id="langV">Français ›</span></div><div class="scard" id="notifCard" role="switch" aria-checked="false"><span class="k">Notifications</span><span class="v"><span class="toggle off" id="notifTog"></span></span></div><div class="scard" id="privCard"><span class="k">Confidentialité</span><span class="v ac">privé &amp; partagé ›</span></div>
+      <div class="grouplab">Données</div><div class="scard"><span class="k">Sauvegarde locale</span><span class="v" id="saveStatus">vérification…</span></div><div class="scard" id="resetData" role="button"><span class="k">Tout effacer</span><span class="v ac" id="resetV">›</span></div>
       <div class="grouplab">Compte</div><div class="scard" id="compteCard" role="button"><span class="k">Garder ta Toile</span><span class="v ac">›</span></div><div class="scard" id="logoutCard" role="button"><span class="k">Se déconnecter</span><span class="v ac">›</span></div>
       <div class="grouplab">Légal</div><div class="scard" id="cguCard" role="button"><span class="k">Conditions d’utilisation</span><span class="v ac">›</span></div><div class="scard" id="polCard" role="button"><span class="k">Politique de confidentialité</span><span class="v ac">›</span></div><div class="scard" id="aboutCard" role="button"><span class="k">À propos</span><span class="v ac">›</span></div>
       <div style="font-size:13px;color:#7B7163;margin-top:22px;line-height:1.6">Tes Promi perso restent sur ton appareil.<br>Privé par défaut, partagé quand tu le choisis. Pas de pub.</div>
-      <!-- ⚑ v142 (Tom, 11 oct. 2026, C-104) : « Supprimer mon compte passe en dernière ligne, tout en bas des Réglages. » -->
-      <div class="scard v16-danger" id="delAccount" role="button"><span class="k">Supprimer mon compte</span></div>
+      <!-- ⚑ v163b (Tom, C-195) : « Supprimer mon compte » est fusionné dans « Tout effacer » (ils faisaient exactement la même chose) -->
     </div>
 
     <div class="screen s-studio" id="studioScreen"><canvas class="st-bg" id="stBg"></canvas><div class="st-scrim-t"></div><div class="st-scrim"></div><div class="st-lock" id="stLock"><button class="st-lock-buy" id="stLockBuy"><canvas class="st-buy-bg" id="stBuyBg" aria-hidden="true"></canvas><span class="st-buy-tx" id="stBuyTx">Adopte ce design — 2 €</span><span class="st-buy-arr">›</span></button><div class="st-lock-card set-cercle" id="stLockCta" role="button"><div class="sc-tx"><div class="sc-t">Ou débloque-les tous</div><div class="sc-s">Avec Ma Parole !</div></div><div class="sc-go">›</div></div></div>
@@ -3001,6 +2999,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
     if(feu||!sansCompte()||!window._onbCompte) return;
     ev.preventDefault(); ev.stopImmediatePropagation();
     window._onbCompte(null, function(k){
+      if(k==='__non') return;   /* v163b (C-190) : « Plus tard » ou un toucher dehors — rien n'est acheté */
       feu=true; try{ t.click(); } finally { feu=false; }
       if(!k) setTimeout(function(){ if(sansCompte()) window._onbCompte(null, null, {
         lab:'Garder ton achat', tx:'Il est sur ce téléphone seulement. Garde ta Toile pour ne pas le perdre.', net:true }); }, 900);   /* v157 (C-170) : derrière lui, le Studio NET */
@@ -3219,7 +3218,7 @@ function openCell(id){
   {let _m=p.draft?'brouillon':p.status==='tenu'?'tenue':p.status==='rate'?'à tenir':(p.enLair?'en l’air':(p.due==null?'en l’air':(p.due<=1?'échéance demain':'échéance dans '+p.due+' j')));if(p.recur)_m+=' · ↻ '+({daily:'quotidien',weekly:'hebdo',monthly:'mensuel'}[p.recur]||p.recur);if(p.remind)_m+=' · ⏰ '+p.remind;$('#ccM').textContent=_m;var _cn=$('#ccNote');if(_cn){_cn.textContent=p.note||'';_cn.style.display=p.note?'block':'none';}}
   ccId=id;closeAll();var _a=$('#ccActs');if(_a)_a.style.display='';var _o=$('#ccPushOpts');if(_o)_o.style.display='none';$('#cellCard').classList.add('show');scrim.classList.add('show');
 }
-if($('#ccKeep'))$('#ccKeep').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();const p=promises.find(x=>x.id===ccId);if(p){p.status='tenu';p.draft=false;var _rg=p.recur?regenRecur(p):false;if(typeof feedAdd==='function')feedAdd('kept','Tu as tenu « '+p.title+' »',{pid:p.id});if(_rg&&typeof relayout==='function')relayout();else render();if(typeof caption==='function')caption();_keptCount++;if(_keptCount===2||_keptCount===5){toast('Belle série — partage ton Noyau','Partager',function(){if(typeof openSealShare==='function')openSealShare();});}}closeCard();};
+if($('#ccKeep'))$('#ccKeep').onclick=function(e){ if(e&&e.stopPropagation)e.stopPropagation(); closeCard(); };   /* v163b (C-189) : la carte de la Toile (`openCell`, que plus rien n'ouvre) ne tient plus une parole d'un toucher, sans message de compte — une parole se tient par le trait */
 if($('#ccPush'))$('#ccPush').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();var a=$('#ccActs');if(a)a.style.display='none';var o=$('#ccPushOpts');if(o)o.style.display='flex';};
 $$('#ccPushOpts button').forEach(function(b){b.onclick=function(e){if(e&&e.stopPropagation)e.stopPropagation();var p=promises.find(x=>x.id===ccId);if(p){p.due=Math.max(0,p.due||0)+(+b.getAttribute('data-d'));if(p.status==='rate')p.status='encours';if(typeof feedAdd==='function')feedAdd('added','« '+p.title+' » reportée de '+b.textContent.trim(),{pid:p.id});render();if(typeof caption==='function')caption();}closeCard();};});
 if($('#ccManage'))$('#ccManage').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();const id=ccId;closeCard();openDetail(id);};
@@ -3360,14 +3359,25 @@ var _ownedDesigns={};var isPremium=false;function setPremium(v){isPremium=v;$('#
   }}catch(e){}var _op=$('#openPlusTop');if(_op&&v){var _t=_op.querySelector('.sc-t'),_s=_op.querySelector('.sc-s'),_g=_op.querySelector('.sc-go');if(_t)_t.textContent='Tu es Membre Ma Parole !';if(_s)_s.textContent='tout Promi débloqué · merci';if(_g)_g.style.display='none';}try{buildAura();document.querySelectorAll('#auraScreen .kr-c').forEach(function(cv){try{drawKRing(cv);}catch(e){}});drawSpks();}catch(e){}}
 $$('#demoTg button').forEach(function(bt){bt.onclick=function(){$$('#demoTg button').forEach(function(x){x.classList.remove('on');});bt.classList.add('on');setPremium(bt.dataset.p==='1');};});
 ['#buyMonth','#buyYear'].forEach(function(id){var bt=$(id);if(bt)bt.onclick=function(){setPremium(true);$$('#demoTg button').forEach(function(x){x.classList.toggle('on',x.dataset.p==='1');});$('#plusScreen').classList.remove('show');if(typeof toast==='function')toast('Tu es Membre Ma Parole ! \u2713 \u00b7 tout Promi d\u00e9bloqu\u00e9');$('#souffleBtn').onclick();};});
-$('#openStudio2').onclick=()=>{try{if(window._onbTerminer)window._onbTerminer();}catch(_){}$('#settingsScreen').classList.remove('show');buildStudio();$('#studioScreen').classList.add('show');};
+if($('#openStudio2'))$('#openStudio2').onclick=()=>{try{if(window._onbTerminer)window._onbTerminer();}catch(_){}$('#settingsScreen').classList.remove('show');buildStudio();$('#studioScreen').classList.add('show');};
 
 let due=null;   /* Décision Tom : sans choix explicite, une promesse n'a PAS d'échéance
                    (due=null) — jamais « à tenir » tant qu'on n'a pas posé de date. */
 let createKind='promi';
 let selNuee=null;
 /* selection des dalles geree par initCreatePlus (carousel) */
-$('#dueChips').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;$$('#dueChips .chip').forEach(x=>x.classList.remove('on'));c.classList.add('on');due=+c.dataset.d;};
+$('#dueChips').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;
+  /* ⚑ v163b (C-197) : les mots de la phrase ; « une date… » ouvre le calendrier ; « un jour » rend l'échéance (aucune date) ; la phrase suit */
+  var P=window._phrase||{}, mots={1:'demain',7:'1 sem.',30:'1 mois'};
+  function marque(x){ $$('#dueChips .chip').forEach(y=>y.classList.toggle('on', y===x)); }
+  if(c.dataset.jour){ marque(c); due=null; window._csEnLair=false; window._csDueISO=null; P.quand='un jour'; }
+  else if(c.dataset.pick){ var di=$('#dueChips .due-datein'); if(!di) return; var t0=new Date(); t0.setHours(0,0,0,0);
+    di.min=t0.getFullYear()+'-'+String(t0.getMonth()+1).padStart(2,'0')+'-'+String(t0.getDate()).padStart(2,'0');
+    di.onchange=function(){ if(!di.value) return; var pk=new Date(di.value+'T00:00:00'), d=Math.max(0, Math.round((pk-t0)/86400000)); due=d; window._csEnLair=false; window._csDueISO=di.value;
+      P.quand=window._dateQuand?window._dateQuand(pk, d):(pk.getDate()+''); marque(c); try{ if(window._phraseRendu) _phraseRendu(); }catch(_){ } };
+    try{ di.showPicker ? di.showPicker() : di.focus(); }catch(_){ try{ di.focus(); }catch(__){ } } return; }
+  else { marque(c); due=+c.dataset.d; window._csEnLair=false; window._csDueISO=null; if(mots[due]) P.quand=mots[due]; }
+  try{ if(window._phraseRendu) _phraseRendu(); }catch(_){ } };
 window.printTirage=function(btnId,closeFn){try{window._tirageActive=true;window._ppPart=true;/* v149 (C-155) : la page + s'en va — rien ne la recompose jusqu'à la coupe (`_ppPart`, levé au départ, baissé à la coupe) */var _dc=document.getElementById('csTrameCv');var _cs=document.getElementById('createSheet');var _k=_cs?(_cs.getAttribute('data-kind')||'promi'):'promi';var _tc={promi:'#82AEF8',nuee:'#E6D8FA',draft:'#DD4D23'}[_k]||'#82AEF8';var _fired=false,_fin=function(){if(_fired)return;_fired=true;window._ppPart=false;/* v103 (Tom : « retire ce qui apparaît une fraction de seconde ») : la dalle a couvert l'écran — ON COUPE. La page + disparaissait en glissant après avoir repris son aspect d'avant (la dalle remise à sa taille, ~100 ms), puis son plateau traînait seul sur la Toile. Elle se cache d'un coup ; elle se remontre une fois hors de l'écran. */if(_cs){_cs.classList.add('cs-coupe');setTimeout(function(){_cs.classList.remove('cs-coupe');},900);}if(_dc){_dc.style.transition='none';_dc.style.transform='none';_dc.style.filter='none';_dc.style.backgroundColor='';_dc.style.transformOrigin='';_dc.style.willChange='auto';}if(closeFn){try{closeFn();}catch(_){}}};if(_dc){_dc.style.willChange='transform,filter,background-color';_dc.style.transformOrigin='68% 40%';_dc.style.transition='none';_dc.style.transform='scale(1)';_dc.style.backgroundColor='transparent';_dc.style.filter='none';void _dc.offsetWidth;/* ⚑ v149 (Tom, C-155) : « si le trait est complet au lever, l'animation part DANS L'IMAGE SUIVANTE, sans attente de confirmation ». La signature (deux ombres orange et bleue, 440 ms) faisait attendre la dalle presque une demi-seconde après le lever : elle est retirée. La dalle grandit dès l'image suivante, À VITESSE CONSTANTE (linéaire), jusqu'à couvrir l'écran, puis on coupe. */_dc.style.transition='transform .32s linear -17ms,background-color .32s linear -17ms';/* une image d'avance : la première image peinte montre déjà la dalle qui grandit (une transition CSS commence à son point de départ) */_dc.style.transform='scale(7)';_dc.style.backgroundColor=_tc;var _te=function(e){if(e&&e.propertyName&&e.propertyName!=='transform')return;_dc.removeEventListener('transitionend',_te);_fin();};_dc.addEventListener('transitionend',_te);setTimeout(_fin,400);setTimeout(function(){_dc.style.transition='';_dc.style.transform='none';_dc.style.filter='none';_dc.style.backgroundColor='';_dc.style.transformOrigin='';_dc.style.willChange='auto';window._tirageActive=false;},1500);}else{_fin();}if(btnId){var _bp=document.getElementById(btnId);if(_bp){_bp.style.transition='transform .2s ease';_bp.style.transform='scale(.98)';setTimeout(function(){_bp.style.transform='';},220);}}}catch(e){window._ppPart=false;if(closeFn){try{closeFn();}catch(_){}}}};
 $('#addPromi').onclick=()=>{if(!window.promiRequis($('#fTitle')))return;const t=$('#fTitle').value.trim();try{if(window.printTirage)window.printTirage('addPromi',function(){var _cs=document.getElementById('createSheet');if(_cs)_cs.style.transition='none';closeAll();requestAnimationFrame(function(){requestAnimationFrame(function(){if(window._toileDefer){var _q=window._toileDefer;window._toileDefer=null;_q.forEach(function(fn){try{fn();}catch(_){}});}relayout();caption();if(window.syncAll)window.syncAll();});});if(_cs)setTimeout(function(){_cs.style.transition='';},80);});}catch(e){}var _impEl=document.querySelector('#impSeg .is.on');var _impV=_impEl?({light:1,normal:2,high:3}[_impEl.dataset.imp]||2):2;var _urgEl=document.querySelector('#urgSeg .is.on');var _urgV=_urgEl?(+_urgEl.dataset.urg||2):2;var _nEl=document.getElementById('fNote');var _nV=_nEl?_nEl.value.trim():'';var _recips=(typeof window.newWhoSel!=='undefined'&&window.newWhoSel&&window.newWhoSel.length)?window.newWhoSel.slice():[];if(!_recips.length){var _typed=$('#fWho')&&$('#fWho').value.trim();if(_typed&&_typed.toLowerCase()!=='moi'&&_typed.indexOf(',')<0)_recips=[_typed];}if(!_recips.length)_recips=['moi'];if(_recips.length>1)_recips=_recips.filter(function(r){return r&&r!=='moi';});/* ⚑ v145 (C-115) — À PLUSIEURS, UNE SEULE PAROLE : « Marion et Rachel, vous êtes pas chiches de… » est UNE fiche, UNE dalle, dont chacun trace sa part. Avant : une parole par personne (« 3 Promi plantés »). */if(_recips.length>1)_recips=[_recips.join(', ')];var _made=[];_recips.forEach(function(w){const np=P(t,w,due,_impV,'encours',selNuee||undefined);np.urg=_urgV;if(_nV)np.note=_nV;try{if(window._csDueISO)np.dueISO=window._csDueISO;}catch(_dz){}try{if(window._csEnLair){np.enLair=true;np.due=null;}}catch(_el){}try{var _wl=window.csWhoList?window.csWhoList('whoChips'):[];if(_wl.length)np.aussi=_wl.slice();}catch(_w){}try{if(window.csSens){np.phraseSens=window.csSens();
   if(np.phraseSens==='demander'){ np.req=true; np.reqEtat='attente'; np.reqLe=Date.now(); }
@@ -3487,7 +3497,7 @@ if($('#ixSearch'))$('#ixSearch').oninput=function(e){ixQuery=e.target.value;buil
 if($('#ixSort'))$$('#ixSort button').forEach(function(b){b.onclick=function(){ixSortMode=b.dataset.s;$$('#ixSort button').forEach(function(x){x.classList.toggle('on',x===b);});buildIndex();};});
 var fdQuery='';var fdSortMode='recent';
 if($('#fdSearch'))$('#fdSearch').oninput=function(e){fdQuery=e.target.value;buildFeed();};
-if($('#fdSort'))$$('#fdSort button').forEach(function(b){b.onclick=function(){fdSortMode=b.dataset.s;$$('#fdSort button').forEach(function(x){x.classList.toggle('on',x===b);});buildFeed();};});
+/* v163b (C-191) : les pastilles cachées #fdSort sont retirées — le tri du Fil vit dans son menu ⇅ */
 if($('#dWhoInput'))$('#dWhoInput').onchange=function(){if(cur){cur.who=($('#dWhoInput').value.trim()||'moi');render();caption();if(window.syncAll)window.syncAll();}};
 if($('#dNote'))$('#dNote').oninput=function(){if(cur){cur.note=$('#dNote').value;if(typeof queueSave==='function')queueSave();}};
 if($('#actRelance'))$('#actRelance').onclick=function(){if(!cur)return;var tg=(cur.from&&cur.from!=='moi')?cur.from:cur.who;cur.relances=(cur.relances||0)+1;if(typeof feedAdd==='function')feedAdd('relance','Tu as relancé '+tg+' sur « '+cur.title+' »',{pid:cur.id});renderDetail();if(typeof queueSave==='function')queueSave();};
@@ -4479,20 +4489,31 @@ window._teinterTenues=function(){try{
 window.fdFiltre='tous';
 /* le filtre du Fil agit sur les bandes deja construites : plus simple et
    plus sur que de dupliquer la logique de buildFeed(). */
-window._filtrerFil=function(){try{
-  var f=window.fdFiltre||'tous';
-  document.querySelectorAll('#feedList .fd-item').forEach(function(el){
-    var ok=true, c=el.className;
-    if(f==='agir')      ok=/fd-act/.test(c);
-    else if(f==='tenues')   ok=/fd-tenue/.test(c);
-    else if(f==='demandes') ok=/fd-act/.test(c);
-    else if(f==='atenir')   ok=/fd-terra/.test(c);
-    else if(f==='nuees')    ok=/fd-nuee/.test(c);
-    else if(f==='moi')      ok=/Tu as|Ton Promi/.test(el.textContent||'');
-    else if(f==='proches')  ok=!/Tu as|Ton Promi/.test(el.textContent||'');
-    el.style.display = ok ? '' : 'none';
-  });
-}catch(e){}};
+/* ⚑ v163b (Tom, C-191 ; AUDIT-BOUTONS 15) — le filtre et le tri du Fil cherchaient des `.fd-item` affichés, que le Fil d'aujourd'hui (les cartes de
+   `lot-S4`) a remplacés : ils ne faisaient rien. Ils agissent maintenant sur la liste dont les cartes sont bâties (`_s4Fil` → `_filTrieFiltre`). */
+window._filtrerFil=function(){ try{ if(window._s4Fil) window._s4Fil(); }catch(e){} };
+window._filTrieFiltre=function(items){ try{
+  var f=window.fdFiltre||'tous', mode=(typeof fdSortMode!=='undefined'?fdSortMode:'recent')||'recent';
+  function lu(it){ var fid=it.getAttribute('data-fid'), pid=it.getAttribute('data-pid'), ev=null, p=null;
+    try{ if(fid!=null) ev=(FEED||[]).filter(function(x){ return x.id===+fid; })[0]||null; }catch(_){ }
+    try{ var q=pid||(ev&&ev.pid); if(q!=null) p=promises.filter(function(x){ return x.id===+q; })[0]||null; }catch(_){ }
+    return {it:it, ev:ev, p:p, c:it.className||'', tx:it.textContent||'', nk:it.getAttribute('data-nuee')||(p&&p.nuee)||''}; }
+  var L=items.map(lu);
+  var ok={
+    agir:function(o){ return /fd-act/.test(o.c) || !!o.it.querySelector('[data-tracer],[data-releve],[data-rejoindre],[data-post]'); },
+    tenues:function(o){ return /fd-tenue/.test(o.c) || !!(o.p && o.p.status==='tenu' && o.ev && o.ev.type==='kept'); },
+    demandes:function(o){ return !!(o.p && o.p.req) || !!(o.ev && /demand/i.test(o.ev.type||'')); },
+    atenir:function(o){ return !!(o.p && o.p.status==='rate'); },   /* (`fd-terra` est la terre d'une parole TENUE : il ne dit pas « à tenir ») */
+    nuees:function(o){ return !!o.nk; },
+    moi:function(o){ return /Tu as|Ton Promi/.test(o.tx); },
+    proches:function(o){ return !/Tu as|Ton Promi/.test(o.tx); } }[f];
+  if(ok) L=L.filter(ok);
+  var cle=null;
+  if(mode==='personne') cle=function(o){ var w=(o.ev&&o.ev.from)||(o.p&&o.p.who)||''; w=(''+w).toLowerCase(); return (!w||w==='moi')?'\uffff':w; };
+  else if(mode==='nuee') cle=function(o){ var n=o.nk?((typeof NUE!=='undefined'&&NUE[o.nk])||o.nk):''; return n?(''+n).toLowerCase():'\uffff'; };
+  if(cle){ L=L.map(function(o,i){ return [cle(o), i, o]; }).sort(function(a,b){ return a[0]<b[0]?-1:(a[0]>b[0]?1:a[1]-b[1]); }).map(function(x){ return x[2]; }); }
+  return L.map(function(o){ return o.it; });
+}catch(e){ return items; } };
 /* Le selecteur ne clignote plus : un observateur suit l'affichage du Fil
    et bascule au moment exact du changement, sans delai. */
 window._majSelFil=function(){try{
@@ -4520,6 +4541,7 @@ document.addEventListener('click',function(e){
     document.querySelectorAll('#fdMenu .ix-mi'+grp).forEach(function(x){
       x.classList.toggle('on', x===it);});
     if(it.dataset.fdfilt)window.fdFiltre=it.dataset.fdfilt;
+    if(it.dataset.fdtri) window.fdSortMode=it.dataset.fdtri;   /* v163b (C-191) : TRIER pose ENFIN le tri que le Fil lit (`_filTrieFiltre`) */
     try{buildFeed();}catch(_){}
     try{ if(window._filtrerFil)setTimeout(_filtrerFil,60); }catch(_){}
     var m2=document.getElementById('fdMenu'); if(m2)m2.classList.remove('on');
@@ -5678,7 +5700,7 @@ window._phraseChoix = function(cle, el){ try{
     x.classList.toggle('ph-on', x === el); });
   var P = window._phrase;
   var titre = { qui:'\u00c0 QUI', titre:'TU PROMETS QUOI', quand:'AVANT QUAND', nuee:'DANS QUEL CERCLE', avec:'QUI EN EST' }[cle] || '';
-  if(cle === 'qui' && P.sens === 'chiche') titre = 'QUI TU D\u00c9FIES';
+  if(cle === 'qui' && P.sens === 'chiche') titre = 'QUI OSE ?';   /* v163b (C-197) : un mot par rôle — « qui ose ? » partout */
   var h = '<div class="ph-lab">' + titre + '</div>';
 
   if(cle === 'nuee'){
@@ -5725,14 +5747,15 @@ window._phraseChoix = function(cle, el){ try{
       /* TROIS formes d'échéance, pas deux : « un jour » (une promesse, sans date fixe) ·
          « en l'air » (une envie, plus légère qu'une promesse, SANS échéance) · une date
          précise. « un jour » reste le placeholder gris par défaut ET une option. */
-      opts = ['un jour', 'en l’air', 'demain', '5 jours', '2 semaines', 'ce mois-ci'];
+      opts = ['demain', '1 sem.', '1 mois'];   /* ⚑ v163b (Tom, C-197) : « demain · 1 sem. · 1 mois · une date… · un jour » partout (« un jour » : sans date, en dernier, pour y revenir) */
     }
     h += '<div class="ph-opts">' + opts.map(function(o){
       return '<button type="button" class="ph-o' + (P[cle] === o ? ' on' : '')
         + '" data-v="' + o + '">' + o + '</button>';
     }).join('')
     /* « quand » : une DATE PRÉCISE — le sélecteur natif s'ouvre d'un geste (« avant mardi 12 »). */
-    + (cle === 'quand' ? '<button type="button" class="ph-o ph-date" data-datepick="1">une date précise…</button>' : '')
+    + (cle === 'quand' ? '<button type="button" class="ph-o ph-date" data-datepick="1">une date…</button>'
+                          + '<button type="button" class="ph-o' + (P[cle] === 'un jour' ? ' on' : '') + '" data-v="un jour">un jour</button>' : '')
     + '</div>'
     + (cle === 'quand' ? '<input type="date" id="phDateIn" class="ph-datein" aria-label="Choisir une date" style="position:absolute;left:16px;bottom:14px;opacity:0;width:120px;height:34px;border:0;pointer-events:none">' : '');
   }
@@ -5858,7 +5881,7 @@ window._phraseChoix = function(cle, el){ try{
             /* on ACTIVE la pastille #dueChips correspondante — par data-d, JAMAIS par le
                libellé affiché (piège documenté). Phrase et Peaufiner restent synchro. */
             try{ window._csEnLair = false; }catch(_){}
-            var chipD = { 'demain':2, '5 jours':5, '2 semaines':14, 'ce mois-ci':40 }[b.dataset.v];
+            var chipD = { 'demain':1, '1 sem.':7, '1 mois':30 }[b.dataset.v];   /* v163b (C-197) : « demain » = 1 jour, partout */
             if(chipD != null){
               try{ due = chipD; }catch(_){}
               try{ document.querySelectorAll('#dueChips .chip,#dfDueChips .chip').forEach(function(c){ c.classList.toggle('on', +c.dataset.d===chipD); }); }catch(_){}
@@ -6029,11 +6052,7 @@ window._fichePose = function(){ try{
     /* deux gestes en tete du fil : planter, et partager la Nuee. */
     var h = '<div class="nf-tete">'
           + '<button class="nf-add" id="nfAdd"><span class="nf-plus"><svg viewBox="0 0 32 32" width="22" height="22" aria-hidden="true"><path d="M16 6 V26 M6 16 H26" stroke="#291547" stroke-width="3.6" stroke-linecap="round"/></svg></span>Planter dans le Cercle</button>'   /* ⚑ Q213 : le verbe dit qu'on crée une parole, la Nuée dit où */
-          + '<button class="nf-part" id="nfPart" aria-label="Partager le Cercle">'
-          + '<svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" '
-          + 'stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">'
-          + '<path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/>'
-          + '<path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg></button>'
+          /* v163b (C-199) : « Partager le Cercle » (#nfPart), absent de l'écran, est retiré — le rond Partager de la barre Peaufiner partage le Cercle */
           + '</div>';
     if(lst.length){
       h += '<div class="nf-liste">';
@@ -6093,16 +6112,7 @@ window._fichePose = function(){ try{
       var b = document.getElementById('nqAddPromi');
       if(b) b.click();
     };
-    /* partager la Nuee : la page de partage, avec ses Promi au lieu de la Toile */
-    var bp2 = document.getElementById('nfPart');
-    if(bp2) bp2.onclick = function(){
-      try{
-        window._partageNuee = cleN;
-        if(window.ouvrirPartage) ouvrirPartage();
-        else { var s = document.getElementById('shareSheet') || document.getElementById('partageScreen');
-               if(s) s.classList.add('show'); }
-      }catch(_){}
-    };
+    /* v163b (C-199) : l'écouteur de « Partager le Cercle » (#nfPart) part avec son nœud */
     /* le clic ouvre la fiche du Promi : « ouvrirPromi » n'existe pas,
        on passe par le chemin de l'Index. */
     fil.querySelectorAll('.nf-item').forEach(function(it){
@@ -6688,7 +6698,7 @@ function drawDisquesCanvas(g,W,yTop,slotH){var arr=((typeof karmaCircle==='funct
 function qrGen(text,ecl){var EXP=new Array(256),LOG=new Array(256);for(var i=0,x=1;i<256;i++){EXP[i]=x;LOG[x]=i;x<<=1;if(x&0x100)x^=0x11D;}function gmul(a,b){return (a===0||b===0)?0:EXP[(LOG[a]+LOG[b])%255];}function rsGen(deg){var p=[1];for(var i=0;i<deg;i++){var np=new Array(p.length+1).fill(0);for(var j=0;j<p.length;j++){np[j]^=gmul(p[j],1);np[j+1]^=gmul(p[j],EXP[i]);}p=np;}return p;}function rsEnc(data,ecLen){var gen=rsGen(ecLen);var res=new Array(ecLen).fill(0);for(var i=0;i<data.length;i++){var f=data[i]^res[0];res.shift();res.push(0);if(f!==0)for(var j=0;j<ecLen;j++)res[j]^=gmul(gen[j+1],f);}return res;}var ECBLK={L:[[0],[7,1,19,0,0],[10,1,34,0,0],[15,1,55,0,0],[20,1,80,0,0],[26,1,108,0,0],[18,2,68,0,0],[20,2,78,0,0],[24,2,97,0,0],[30,2,116,0,0],[18,2,68,2,69]],M:[[0],[10,1,16,0,0],[16,1,28,0,0],[26,1,44,0,0],[18,2,32,0,0],[24,2,43,0,0],[16,4,27,0,0],[18,4,31,0,0],[22,2,38,2,39],[22,3,36,2,37],[26,4,43,1,44]],Q:[[0],[13,1,13,0,0],[22,1,22,0,0],[18,2,17,0,0],[26,2,24,0,0],[18,2,15,2,16],[24,4,19,0,0],[18,2,14,4,15],[22,4,18,2,19],[20,4,16,4,17],[24,6,19,2,20]],H:[[0],[17,1,9,0,0],[28,1,16,0,0],[22,2,13,0,0],[16,4,9,0,0],[22,2,11,2,12],[28,4,15,0,0],[26,4,13,1,14],[26,4,14,2,15],[24,4,12,4,13],[28,6,15,2,16]]};var bytes=[];for(var i=0;i<text.length;i++){var c=text.charCodeAt(i);if(c<128)bytes.push(c);else if(c<2048){bytes.push(192|(c>>6),128|(c&63));}else{bytes.push(224|(c>>12),128|((c>>6)&63),128|(c&63));}}var ver=0,ecb;for(var v=1;v<=10;v++){ecb=ECBLK[ecl][v];var dataCW=ecb[1]*ecb[2]+ecb[3]*ecb[4];var cci=(v<10)?8:16;var need=Math.ceil((4+cci+bytes.length*8)/8);if(need<=dataCW){ver=v;break;}}if(!ver)throw new Error('too long');ecb=ECBLK[ecl][ver];var dataCW=ecb[1]*ecb[2]+ecb[3]*ecb[4];var bits=[];function put(val,len){for(var i=len-1;i>=0;i--)bits.push((val>>i)&1);}put(4,4);put(bytes.length,(ver<10)?8:16);for(var i=0;i<bytes.length;i++)put(bytes[i],8);var cap=dataCW*8;if(bits.length+4<=cap)put(0,4);while(bits.length%8!==0)bits.push(0);while(bits.length<cap){put(236,8);if(bits.length<cap)put(17,8);}var dcw=[];for(var i=0;i<bits.length;i+=8){var b=0;for(var j=0;j<8;j++)b=(b<<1)|bits[i+j];dcw.push(b);}var blocks=[],ecLen=ecb[0];var idx=0;var struct=[];for(var i=0;i<ecb[1];i++)struct.push(ecb[2]);for(var i=0;i<ecb[3];i++)struct.push(ecb[4]);for(var i=0;i<struct.length;i++){var d=dcw.slice(idx,idx+struct[i]);idx+=struct[i];blocks.push({d:d,e:rsEnc(d,ecLen)});}var maxD=Math.max.apply(null,struct);var finalCW=[];for(var i=0;i<maxD;i++)for(var b=0;b<blocks.length;b++)if(i<blocks[b].d.length)finalCW.push(blocks[b].d[i]);for(var i=0;i<ecLen;i++)for(var b=0;b<blocks.length;b++)finalCW.push(blocks[b].e[i]);var size=17+ver*4;var mod=[],rsv=[];for(var i=0;i<size;i++){mod.push(new Array(size).fill(0));rsv.push(new Array(size).fill(0));}function place(r,c,vv){mod[r][c]=vv?1:0;rsv[r][c]=1;}function finder(r,c){for(var i=-1;i<=7;i++)for(var j=-1;j<=7;j++){var rr=r+i,cc=c+j;if(rr<0||rr>=size||cc<0||cc>=size)continue;var vv=(i>=0&&i<=6&&(j===0||j===6))||(j>=0&&j<=6&&(i===0||i===6))||(i>=2&&i<=4&&j>=2&&j<=4);place(rr,cc,vv);}}finder(0,0);finder(0,size-7);finder(size-7,0);for(var i=8;i<size-8;i++){place(6,i,i%2===0);place(i,6,i%2===0);}var AP=[[],[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50]];var aps=AP[ver];for(var a=0;a<aps.length;a++)for(var b=0;b<aps.length;b++){var r=aps[a],c=aps[b];if(rsv[r][c])continue;for(var i=-2;i<=2;i++)for(var j=-2;j<=2;j++){var vv=Math.max(Math.abs(i),Math.abs(j));place(r+i,c+j,vv!==1);}}place(size-8,8,1);for(var i=0;i<9;i++){rsv[8][i]=1;rsv[i][8]=1;}for(var i=0;i<8;i++){rsv[8][size-1-i]=1;rsv[size-1-i][8]=1;}function mask(m,r,c){switch(m){case 0:return (r+c)%2===0;case 1:return r%2===0;case 2:return c%3===0;case 3:return (r+c)%3===0;case 4:return (Math.floor(r/2)+Math.floor(c/3))%2===0;case 5:return (r*c)%2+(r*c)%3===0;case 6:return ((r*c)%2+(r*c)%3)%2===0;case 7:return ((r+c)%2+(r*c)%3)%2===0;}}function buildFmt(m){var ecbits={L:1,M:0,Q:3,H:2}[ecl];var data=(ecbits<<3)|m;var rem=data;for(var i=0;i<10;i++)rem=(rem<<1)^(((rem>>9)&1)?0x537:0);var fmt=((data<<10)|(rem&0x3FF))^0x5412;return fmt;}var best=null,bestPen=1e9,bestM=0;for(var mm=0;mm<8;mm++){var t=[];for(var i=0;i<size;i++)t.push(mod[i].slice());var bi=0,dir=-1;for(var col=size-1;col>0;col-=2){if(col===6)col--;for(var k=0;k<size;k++){for(var cc2=0;cc2<2;cc2++){var c=col-cc2;var r=(dir<0)?(size-1-k):k;if(rsv[r][c])continue;var dark=0;if(bi<finalCW.length*8){dark=(finalCW[bi>>3]>>(7-(bi&7)))&1;bi++;}if(mask(mm,r,c))dark^=1;t[r][c]=dark;}}dir=-dir;}var fmt=buildFmt(mm);for(var i=0;i<15;i++){var b=(fmt>>i)&1;if(i<6)t[i][8]=b;else if(i<8)t[i+1][8]=b;else if(i===8)t[8][7]=b;else t[8][14-i]=b;if(i<8)t[8][size-1-i]=b;else t[size-15+i][8]=b;}var pen=0;for(var r=0;r<size;r++){var run=1;for(var c=1;c<size;c++){if(t[r][c]===t[r][c-1])run++;else{if(run>=5)pen+=run-2;run=1;}}if(run>=5)pen+=run-2;}for(var c=0;c<size;c++){var run=1;for(var r=1;r<size;r++){if(t[r][c]===t[r-1][c])run++;else{if(run>=5)pen+=run-2;run=1;}}if(run>=5)pen+=run-2;}if(pen<bestPen){bestPen=pen;best=t;bestM=mm;}}return {size:size,mod:best,ver:ver};}
 var _sealQRc=null;function _sealQR(){if(_sealQRc===null){try{_sealQRc=qrGen('https://promi.app','L');}catch(e){_sealQRc=false;}}return _sealQRc||null;}
 function buildCercleHero(){var el=document.getElementById('plHero');if(!el)return;var W=380,H=196;var cols=['#82AEF8','#C9A8F5','#82AEF8','#DD4D23','#82AEF8'];var svg='<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="xMidYMid slice" style="width:100%;height:100%;display:block"><defs><radialGradient id="plg" cx="50%" cy="42%" r="62%"><stop offset="0%" stop-color="#82AEF8" stop-opacity="0.30"/><stop offset="60%" stop-color="#82AEF8" stop-opacity="0.06"/><stop offset="100%" stop-color="#82AEF8" stop-opacity="0"/></radialGradient></defs><rect width="'+W+'" height="'+H+'" fill="url(#plg)"/>';try{var pts=[],seed=11;var rnd=function(){seed=(seed*9301+49297)%233280;return seed/233280;};for(var i=0;i<15;i++)pts.push([8+rnd()*(W-16),8+rnd()*(H-16)]);var vc=(typeof voronoiP==='function')?voronoiP(pts,[[0,0],[W,0],[W,H],[0,H]]):[];vc.forEach(function(cc){if(cc&&cc.length>=3){var d='M'+cc[0][0].toFixed(1)+' '+cc[0][1].toFixed(1);for(var q=1;q<cc.length;q++)d+=' L'+cc[q][0].toFixed(1)+' '+cc[q][1].toFixed(1);d+=' Z';svg+='<path d="'+d+'" fill="none" stroke="#291547" stroke-width="0.7" opacity="0.12"/>';}});}catch(e){}for(var k=0;k<5;k++){var y0=H*0.34+k*H*0.085;var col=cols[k%cols.length];var d='M0 '+y0.toFixed(1);for(var x=0;x<=W;x+=16){var yy=y0+Math.sin(x*0.028+k*0.9)*11*Math.sin(x*0.007+k*0.6);d+=' L'+x+' '+yy.toFixed(1);}svg+='<path d="'+d+'" fill="none" stroke="'+col+'" stroke-width="1.7" opacity="'+(0.55-k*0.07).toFixed(2)+'" stroke-linecap="round"/>';}svg+='</svg>';el.innerHTML=svg;}
-var _premium=false,_keptCount=0,_kpersOpen=false;function toast(msg,l1,f1,l2,f2,l3,f3){try{var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:absolute;left:50%;bottom:98px;transform:translateX(-50%);z-index:400;background:#281F10;color:#E4D7BB;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px 16px;font-family:var(--f-texte);font-size:13px;line-height:1.3;box-shadow:0 10px 34px rgba(0,0,0,.45);display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:88%';document.body.appendChild(t);}t.innerHTML='';var sp=document.createElement('span');sp.textContent=msg;sp.style.flex='1 1 auto';t.appendChild(sp);function mk(lb,fn){var b=document.createElement('button');b.textContent=lb;b.style.cssText='background:#82AEF8;color:#fff;border:0;border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap';b.onclick=function(){try{fn();}catch(e){}if(t)t.remove();};t.appendChild(b);}var act=false;if(l1&&f1){mk(l1,f1);act=true;}if(l2&&f2){mk(l2,f2);act=true;}if(l3&&f3){mk(l3,f3);act=true;}clearTimeout(t._to);t._to=setTimeout(function(){if(t&&t.parentNode)t.remove();},act?7000:3200);}catch(e){}}
+var _premium=false,_kpersOpen=false;function toast(msg,l1,f1,l2,f2,l3,f3){try{var t=document.getElementById('_toast');if(!t){t=document.createElement('div');t.id='_toast';t.style.cssText='position:absolute;left:50%;bottom:98px;transform:translateX(-50%);z-index:400;background:#281F10;color:#E4D7BB;border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:12px 16px;font-family:var(--f-texte);font-size:13px;line-height:1.3;box-shadow:0 10px 34px rgba(0,0,0,.45);display:flex;flex-wrap:wrap;align-items:center;gap:8px;max-width:88%';document.body.appendChild(t);}t.innerHTML='';var sp=document.createElement('span');sp.textContent=msg;sp.style.flex='1 1 auto';t.appendChild(sp);function mk(lb,fn){var b=document.createElement('button');b.textContent=lb;b.style.cssText='background:#82AEF8;color:#fff;border:0;border-radius:10px;padding:8px 12px;font-family:inherit;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap';b.onclick=function(){try{fn();}catch(e){}if(t)t.remove();};t.appendChild(b);}var act=false;if(l1&&f1){mk(l1,f1);act=true;}if(l2&&f2){mk(l2,f2);act=true;}if(l3&&f3){mk(l3,f3);act=true;}clearTimeout(t._to);t._to=setTimeout(function(){if(t&&t.parentNode)t.remove();},act?7000:3200);}catch(e){}}
 function renderSeal(fmt){try{if(fmt)_sealFmt=fmt;var f=SEAL_FMTS[_sealFmt]||SEAL_FMTS.square;var _asp=(typeof _sealAspectOverride==='number'&&_sealAspectOverride>0)?_sealAspectOverride:f.a;var W=1080,H=Math.round(W/_asp);_INK=_sealDark?'#E4D7BB':'#231C0E';_SUB=_sealDark?'#A2947C':'#716C66';_HAIR=_sealDark?'rgba(255,255,255,.30)':'rgba(0,0,0,.34)';var parts=[];if(_sealParts.noyau)parts.push('noyau');if(_sealParts.pelote)parts.push('pelote');if(_sealParts.prometteurs)parts.push('prometteurs');if(_sealParts.disques)parts.push('disques');if(!parts.length)parts=['noyau'];var cv=document.createElement('canvas');cv.width=W;cv.height=H;var g=cv.getContext('2d');var _base=_sealDark?'#1F1605':'#EDE3CE';g.fillStyle=_base;g.fillRect(0,0,W,H);try{var _wantL=(typeof _sealDark!=='undefined')?!_sealDark:null;var _devL=(function(){var d=document.getElementById('device');return !!(d&&d.classList.contains('light'));})();var _match=(_wantL===null)||(_wantL===_devL);var _liveT=document.getElementById('toileCv');if(_match&&_liveT&&_liveT.width>0){g.save();g.globalAlpha=0.96;var _sw=_liveT.width,_sh=_liveT.height,_scv=Math.max(W/_sw,H/_sh),_dw=_sw*_scv,_dh=_sh*_scv;g.drawImage(_liveT,0,0,_sw,_sh,(W-_dw)/2,(H-_dh)/2,_dw,_dh);g.restore();}else if(window.Toile&&window.Toile.preview){var _tcS=renderSeal._tc||(renderSeal._tc=document.createElement('canvas'));_tcS.width=W;_tcS.height=H;var _stoS=window._shThemeOverride;if(_wantL!==null)window._shThemeOverride=_wantL;var _wS=(window.Toile.curWorld?window.Toile.curWorld():(typeof theme!=='undefined'?theme:'encre'));window.Toile.preview(_tcS,_wS,W,H);window._shThemeOverride=(_stoS===undefined?null:_stoS);g.save();g.globalAlpha=0.96;g.drawImage(_tcS,0,0,W,H);g.restore();}}catch(e){}g.textAlign='center';g.textBaseline='alphabetic';g.fillStyle=_INK;g.font='700 '+Math.round(W*0.048)+'px Gilbert,system-ui,sans-serif';g.fillText('Ma parole',W/2,H*0.088);if(_sealShowBalance){var _soi=promises.filter(function(p){return !p.draft&&(!p.who||p.who==='moi');}).length,_aut=promises.filter(function(p){return !p.draft;}).length-_soi,_tt=_soi+_aut;if(_tt>0){var _bw=W*0.72,_bx=(W-_bw)/2,_by=H*0.775,_bh=Math.max(9,W*0.03),_r=_bh/2,_f=_soi/_tt,_bg=g.createLinearGradient(_bx,0,_bx+_bw,0);_bg.addColorStop(0,'#C9A8F5');_bg.addColorStop(Math.max(0,_f-0.09),'#C9A8F5');_bg.addColorStop(Math.min(1,_f+0.09),'#82AEF8');_bg.addColorStop(1,'#82AEF8');g.beginPath();g.moveTo(_bx+_r,_by);g.arcTo(_bx+_bw,_by,_bx+_bw,_by+_bh,_r);g.arcTo(_bx+_bw,_by+_bh,_bx,_by+_bh,_r);g.arcTo(_bx,_by+_bh,_bx,_by,_r);g.arcTo(_bx,_by,_bx+_bw,_by,_r);g.closePath();g.fillStyle=_bg;g.fill();g.font='500 '+Math.round(W*0.02)+'px Atkinson,system-ui,sans-serif';g.fillStyle=_SUB;g.textBaseline='alphabetic';g.textAlign='left';g.fillText('Toi',_bx+2,_by-W*0.016);g.textAlign='right';g.fillText('les autres',_bx+_bw-2,_by-W*0.016);g.textAlign='center';}}var pair=(_sealFmt==='square'||_sealFmt==='post')&&_sealParts.noyau&&_sealParts.pelote;var rows;if(pair){rows=[['noyau','pelote']];if(_sealParts.prometteurs)rows.push(['prometteurs']);if(_sealParts.disques)rows.push(['disques']);}else{rows=parts.map(function(p){return [p];});}function _w(row){if(row.length===2)return 2.7;var p=row[0];if(p==='noyau'||p==='pelote')return 2.7;if(p==='prometteurs')return 1.15;return 1.1;}var top=H*0.145,bot=H-H*0.2,avail=bot-top;var ws=rows.map(_w);var tW=ws.reduce(function(a,b){return a+b;},0);var elemB=avail*0.8;var hs=ws.map(function(w){return elemB*w/tW;});var gw=[];for(var _g=0;_g<=rows.length;_g++)gw.push(1);for(var _g2=1;_g2<rows.length;_g2++){if(rows[_g2-1][0]==='prometteurs'&&rows[_g2][0]==='disques')gw[_g2]=0.3;}var gapB=avail-elemB;var tGW=gw.reduce(function(a,b){return a+b;},0);var y=top+gw[0]/tGW*gapB;rows.forEach(function(row,i){var eh=hs[i];var cyc=y+eh/2;if(row.length===2){var D=Math.min(eh*0.92,W*0.4);drawEmblem(g,W*0.28,cyc,D/234);drawRayonsRetires(g,W*0.72,cyc,D*0.92);}else{var part=row[0];if(part==='noyau'){var Dn=Math.min(eh*0.9,W*0.62);drawEmblem(g,W/2,cyc,Dn/234);}else if(part==='pelote'){var Do=Math.min(eh*0.9,W*0.62);drawRayonsRetires(g,W/2,cyc,Do*0.92);}else if(part==='prometteurs'){drawPartnersCanvas(g,W,y,eh);}else{drawDisquesCanvas(g,W,y,eh);}}y+=eh+gw[i+1]/tGW*gapB;});try{var _wmC=(typeof wmPos!=='undefined'?wmPos:0);var _qrRight=(_wmC!==2);var cell=Math.round(W*0.006);var _qr=_sealQR();var qs=_qr?cell*_qr.size:0;var qy=H-qs-Math.round(W*0.065);
 if(_shShowQR!==false&&_qr){var qp=cell*3;var qx=_qrRight?(W-qs-Math.round(W*0.065)):Math.round(W*0.065);g.fillStyle=(_sealDark?'#F1E8D5':'#ffffff');g.fillRect(qx-qp,qy-qp,qs+qp*2,qs+qp*2);g.fillStyle='#1C1402';for(var _qr2=0;_qr2<_qr.size;_qr2++){for(var _qc=0;_qc<_qr.size;_qc++){if(_qr.mod[_qr2][_qc])g.fillRect(qx+_qc*cell,qy+_qr2*cell,cell,cell);}}}
 var _cy=qy+qs*0.4;g.textBaseline='alphabetic';g.textAlign='left';/* ⚑ 23 SEPTEMBRE 2026 (Tom) — EN BAS À GAUCHE, LE MOT-MARQUE, ET RIEN D'AUTRE.
@@ -7119,16 +7129,14 @@ function buildFeed(){var el=$('#feedList');if(!el)return;var _q=(typeof fdQuery!
       +'<div class="fd-acc g1" data-rejoindre="'+f.id+'">REJOINDRE</div></div>';}
     else if(f.type==='moitie'&&window._filAttend&&window._filAttend(f)){h+='<div class="fd-acts fd-geste">'
       +'<div class="fd-acc g1" data-tracer="'+f.id+'">TRACER</div></div>';}
-    /* un Promi depasse se tient DEPUIS le Fil : le geste est la, pas dans une
-       liste a cocher. On ne valide pas une tache, on tient sa parole. */
+    /* ⚑ v163b (Tom, C-189 — AUDIT-BOUTONS 15, point 1) : une parole se tient PAR LE TRAIT, jamais d'un toucher. L'acte TENIR (qui la passait à « tenu »
+       sans trait ni parts) est retiré : TRACER ouvre la fiche, où l'on trace. La réaction ✧ (un mot banni, R1) est retirée avec son code. */
     else if(p && !p.draft && !p.req && p.status==='rate'){
       h+='<div class="fd-acts fd-geste">'
-        +'<div class="fd-acc g1" data-keep="'+f.id+'">TENIR</div>'
-        +'<div class="fd-dec g2" data-post="'+f.id+'">REPORTER</div></div>';}else if(f.type==='kept'||f.type==='added'||f.type==='accepted'||f.type==='joined'){var on=feedReacted[f.id];h+='<div class="fd-react'+(on?' on':'')+'" data-react="'+f.id+'">'+(on?'✦':'✧')+' bravo</div>';}if(p)h+='<div class="cm-block" data-cmb="'+p.id+'"></div>';h+='</div></div>';});el.innerHTML=h;$$('#feedList [data-keep]').forEach(function(b){b.onclick=function(e){
-    e.stopPropagation(); feedKeep(+b.dataset.keep);
-    try{if(window.syncAll)syncAll();}catch(_){}};});$$('#feedList [data-post]').forEach(function(b){b.onclick=function(e){
+        +'<div class="fd-acc g1" data-tracer="'+f.id+'">TRACER</div>'
+        +'<div class="fd-dec g2" data-post="'+f.id+'">REPORTER</div></div>';}if(p)h+='<div class="cm-block" data-cmb="'+p.id+'"></div>';h+='</div></div>';});el.innerHTML=h;$$('#feedList [data-post]').forEach(function(b){b.onclick=function(e){
     e.stopPropagation(); feedPostpone(+b.dataset.post);
-    try{if(window.syncAll)syncAll();}catch(_){}};});$$('#feedList [data-react]').forEach(function(b){b.onclick=function(){var id=+b.dataset.react;feedReacted[id]=!feedReacted[id];buildFeed();};});$$('#feedList [data-releve]').forEach(function(b){b.onclick=function(e){e.stopPropagation();feedReleve(+b.dataset.releve);try{if(window.syncAll)syncAll();}catch(_){}};});_cmRender($('#feedList'));
+    try{if(window.syncAll)syncAll();}catch(_){}};});$$('#feedList [data-releve]').forEach(function(b){b.onclick=function(e){e.stopPropagation();feedReleve(+b.dataset.releve);try{if(window.syncAll)syncAll();}catch(_){}};});_cmRender($('#feedList'));
   /* les dalles doivent etre peintes avant qu'on lise leur couleur */
   try{ if(window.peintMinis)peintMinis($('#feedList')); }catch(_){}
   try{ if(window._teinterFil) requestAnimationFrame(function(){
@@ -7141,7 +7149,7 @@ function buildFeed(){var el=$('#feedList');if(!el)return;var _q=(typeof fdQuery!
   if(k&&typeof openEssaim==='function'){try{if(typeof closeAll==='function')closeAll();}catch(_){}openEssaim(k);}
 });});
 $$('#feedList .fd-open[data-pid]').forEach(function(it){it.addEventListener('click',function(e){if(e.target.closest('.fd-acts')||e.target.closest('.fd-react')||e.target.closest('button'))return;var pid=+it.getAttribute('data-pid');if(pid&&typeof openDetail==='function'){try{if(typeof closeAll==='function')closeAll();}catch(_){}openDetail(pid);}});});}
-function feedKeep(fid){var f=FEED.find(function(x){return x.id===fid;});if(!f)return;var p=f.pid?promises.find(function(x){return x.id===f.pid;}):null;if(p){p.status='tenu';p.pending=false;p.accepted=true;p.draft=false;}f.type='kept';f.text='Tu as tenu : \u00ab '+(p?p.title:'un Promi')+' \u00bb';if(typeof relayout==='function')relayout();else render();if(typeof caption==='function')caption();buildFeed();if(typeof updateFeedDot==='function')updateFeedDot();_keptCount++;if(_keptCount===2||_keptCount===5){toast('Belle s\u00e9rie \u2014 partage ton Noyau','Partager',function(){if(typeof openSealShare==='function')openSealShare();});}}
+/* v163b (C-189) : feedKeep (« tenir » d'un toucher depuis le Fil) et son message du 2e et du 5e tenu sont retirés — une parole se tient par le trait. */
 function feedReleve(fid){var f=FEED.find(function(x){return x.id===fid;});if(!f)return;
   /* relever un Chiche : le d\u00e9fi devient tien. On plante un vrai Chiche (il appara\u00eet
      dans l'Index et sur la Toile, dalle du monde), et la ligne du Fil bascule en
@@ -7156,7 +7164,7 @@ function feedReleve(fid){var f=FEED.find(function(x){return x.id===fid;});if(!f)
   f.type='chiche_releve'; f.text='Tu as relev\u00e9 le chiche de '+(who||'quelqu\u2019un')+(titre?' : \u00ab '+titre+' \u00bb':''); f.unread=false;
   if(typeof relayout==='function')relayout();else render();if(typeof caption==='function')caption();
   buildFeed();if(typeof updateFeedDot==='function')updateFeedDot();try{if(window._majAnneauPlus)_majAnneauPlus();}catch(_){}}
-function feedPostpone(fid){toast('Reporter\u2026','+1 j',function(){_fpost(fid,1);},'+3 j',function(){_fpost(fid,3);},'+1 sem',function(){_fpost(fid,7);});}
+function feedPostpone(fid){toast('Reporter\u2026','demain',function(){_fpost(fid,1);},'1 sem.',function(){_fpost(fid,7);},'1 mois',function(){_fpost(fid,30);});}   /* v163b (C-197) : les mots de l'échéance, partout */
 function _fpost(fid,d){var f=FEED.find(function(x){return x.id===fid;});if(!f)return;var p=f.pid?promises.find(function(x){return x.id===f.pid;}):null;if(p){p.pending=false;p.accepted=true;p.due=(p.due||0)+d;}f.type='added';var lab=d===1?'+1 j':(d===7?'+1 sem':'+'+d+' j');f.text='Tu as report\u00e9 : \u00ab '+(p?p.title:'un Promi')+' \u00bb ('+lab+')';if(typeof relayout==='function')relayout();else render();if(typeof caption==='function')caption();buildFeed();if(typeof updateFeedDot==='function')updateFeedDot();}
 
 
@@ -7175,18 +7183,7 @@ var _mainView='toile';function drawCercleHero(){var c=document.getElementById('p
  g.lineCap='round';var hist=['t','t','e','t','r','t','t','t','e','t','r','t','t','e','t','r','t','t'];for(var i=0;i<hist.length;i++){var a=-Math.PI/2+i/hist.length*6.2832;var col=hist[i]==='t'?'#C9A8F5':(hist[i]==='r'?'#DD4D23':'#82AEF8');var r0=R+R*0.15,r1=r0+(hist[i]==='t'?R*0.16:R*0.11);g.strokeStyle=col;g.globalAlpha=hist[i]==='e'?.42:.92;g.lineWidth=hist[i]==='e'?R*0.02:R*0.032;g.beginPath();g.moveTo(cx+r0*Math.cos(a),cy+r0*Math.sin(a));g.lineTo(cx+r1*Math.cos(a),cy+r1*Math.sin(a));g.stroke();}g.globalAlpha=1;
  try{var im=g.getImageData(0,0,W,H),d=im.data;for(var j=0;j<d.length;j+=4){var nz=(Math.random()-0.5)*18;d[j]+=nz;d[j+1]+=nz;d[j+2]+=nz;}g.putImageData(im,0,0);}catch(e){}
 }
-/* une entrée du Fil ouvre le Promi dont elle parle (les boutons Tenir/Reporter
-   et les réactions gardent la priorité) */
-(function(){
-  var fv=document.getElementById('feedView'); if(!fv)return;
-  fv.addEventListener('click',function(e){
-    if(e.target.closest('button')||e.target.closest('.fd-react'))return;
-    var it=e.target.closest('.fd-item[data-pid]'); if(!it)return;
-    var id=+it.getAttribute('data-pid');
-    var p=promises.find(function(x){return x.id===id;});
-    if(p&&typeof openDetail==='function')openDetail(id);
-  });
-})();
+/* v163b (C-199, AUDIT-BOUTONS 15) : l'écouteur qui ouvrait une fiche sur un `.fd-item` est retiré — le Fil d'aujourd'hui est fait de cartes (`lot-S4`), qui ont le leur */
 function setView(v){var st=$('#stage'),fv=$('#feedView');if(!st||!fv)return;if(v==='fil'){fv.style.display='';buildFeed();fv.classList.remove('in');void fv.offsetWidth;requestAnimationFrame(function(){fv.classList.add('in');});setTimeout(function(){if(_mainView==='fil')st.style.display='none';},380);/* v89 (Q347) : plus de remise à zéro à l'ouverture */if(typeof updateFeedDot==='function')updateFeedDot();fv.scrollTop=0;try{var _d=document.getElementById('device');if(_d)_d.classList.add('v-fil');}catch(e){}try{requestAnimationFrame(function(){if(window.fdRefresh)window.fdRefresh();});}catch(e){}}else{fv.classList.remove('in');st.style.display='';setTimeout(function(){if(_mainView!=='fil')fv.style.display='none';},380);try{var _d2=document.getElementById('device');if(_d2)_d2.classList.remove('v-fil');}catch(e){}
     /* de retour sur la Toile : on la remesure et on la repeint */
     try{requestAnimationFrame(function(){if(window.Toile_resize)window.Toile_resize();});}catch(e){}
@@ -8986,6 +8983,9 @@ window.auTrame=auTrame;
   if(!el)return true; var v=(el.value||"").trim(); if(v){el.classList.remove("req-vide");return true;}
   el.classList.remove("req-vide"); void el.offsetWidth; el.classList.add("req-vide");
   try{if(navigator.vibrate)navigator.vibrate(12);}catch(_v){}
+  /* ⚑ v163b (Tom, C-199 ; AUDIT-BOUTONS 2) : sur la page +, le titre ou le nom manquant OUVRE LA SAISIE de la phrase (comme l'onboarding) — le champ d'origine est caché */
+  try{ var _cs=document.getElementById('createSheet'); if(_cs && _cs.classList.contains('show') && (el.id==='fTitle' || el.id==='nName')){
+      var _m=_cs.querySelector(el.id==='nName' ? '#nueePhrase .ph-m[data-np="nom"]' : '#csPhrase .ph-m[data-ph="titre"]'); if(_m){ _m.click(); return false; } } }catch(_o){}
   try{el.focus({preventScroll:false});}catch(_f){}
   return false;
  }catch(e){return true;}};
@@ -9183,14 +9183,7 @@ try{if(document.fonts&&document.fonts.load){
    maj("#shNySizeRow button[data-ns]",sz); if(window.shareRender)shareRender();return;}
   if(t.closest("#shNyPct")){var b=T("shNyPct");window.shChiffre=!window.shChiffre;
    b.classList.toggle("on",window.shChiffre); if(window.shareRender)shareRender();return;}
-  if(t.closest("#shBadge")||t.closest("#shWordmark")){
-   var s3=T("shareScreen"); if(!s3)return;
-   var sg2=!s3.classList.contains("sh-sig");
-   s3.classList.toggle("sh-sig",sg2);
-   maj("#shWmRow button",T(sg2?"shWmSig":"shWmBri"));
-   /* le % suit le mot-marque : il faut repeindre */
-   try{if(window.shareRender)shareRender();}catch(_){}
-   e.preventDefault(); e.stopPropagation(); return;}
+  /* v163b (C-199) : la bascule cachée du mot-marque (« Signature », retirée par Tom) n'existe plus */
   if(t.closest("#shWmBri")||t.closest("#shWmSig")){
    var sg=!!t.closest("#shWmSig"); maj("#shWmRow button",T(sg?"shWmSig":"shWmBri"));
    var s2=T("shareScreen"); if(s2)s2.classList.toggle("sh-sig",sg);
@@ -9198,8 +9191,7 @@ try{if(document.fonts&&document.fonts.load){
    return;}
   if(t.closest("#shTxOn")||t.closest("#shTxOff")){
    var on=!!t.closest("#shTxOn"); maj("#shTxRow button",T(on?"shTxOn":"shTxOff"));
-   window.shLabels=on;
-   try{if(typeof state!=="undefined")state.labels=on;}catch(_){}
+   window.shLabels=on;   /* v163b (C-199) : le choix du partage ne change plus le réglage de la Toile et du Studio (state.labels) */
    if(window.shareRender)shareRender();return;}
  });
  /* la ligne des Reglages ouvre le meme flux que le bouton du tiroir */
@@ -14106,7 +14098,7 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
     if(gcP) gcP.style.display=(k==='promi' && phraseHasContent() && !_rep) ? 'inline-flex' : 'none';
     if(gcN) gcN.style.display=(k==='nuee' && nueeHasContent() && !_rep) ? 'inline-flex' : 'none';
   }catch(e){} };
-  function quandToDue(q){ return {'demain':1,'5 jours':5,'2 semaines':14,'ce mois-ci':30,'un jour':30}[q]||30; }
+  function quandToDue(q){ return {'demain':1,'1 sem.':7,'1 mois':30,'5 jours':5,'2 semaines':14,'ce mois-ci':30,'un jour':30}[q]||30; }   /* v163b : les mots d'aujourd'hui, et ceux d'avant (gardés de côté anciens) */
   window._gardeCote=function(kind){ try{
     var np, titre='';
     if(kind==='nuee'){
@@ -14151,7 +14143,7 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
       try{ window.newNueeMembers=(p.nueeMembers||[]).slice(); }catch(_){}
       var nn=document.getElementById('nName'); if(nn) nn.value=p.title||'';
     } else {
-      var dueQ={1:'demain',5:'5 jours',14:'2 semaines',30:'ce mois-ci'}[p.due]||'un jour';
+      var dueQ={1:'demain',7:'1 sem.',30:'1 mois'}[p.due]||'un jour';   /* v163b (C-197) */
       window._phrase={sens:(p.phraseSens||'faire'),qui:(p.who&&p.who!=='moi'&&p.who!=='le groupe')?p.who:'Moi',titre:(p.title||''),quand:dueQ};
       var ft=document.getElementById('fTitle'); if(ft) ft.value=p.title||'';
       var fn=document.getElementById('fNote'); if(fn) fn.value=p.note||'';
@@ -16753,14 +16745,13 @@ var CREMEETAT='#F7F0DE';
          valeurs distinctes : `enLair` est un drapeau séparé. Jamais fusionnées.
        · Sans choix explicite, AUCUNE pastille n'est active.
        · La liaison passe par data-q / data-d, JAMAIS par le libellé (CLAUDE.md §8). */
+  /* ⚑ v163b (Tom, C-197) : « demain · 1 sem. · 1 mois · une date… · un jour » — les mots de la phrase et du Fil ; « un jour » rend l'échéance (sans date) */
   var ECHEANCE = [
-    {q:'jour',  mot:'un jour',            due:null, enLair:false},
-    {q:'lair',  mot:'en l\u2019air',       due:null, enLair:true},
     {d:1,       mot:'demain'},
-    {d:5,       mot:'5 jours'},
-    {d:14,      mot:'2 semaines'},
-    {d:30,      mot:'ce mois-ci'},
-    {pick:1,    mot:'une date pr\u00e9cise\u2026'}
+    {d:7,       mot:'1 sem.'},
+    {d:30,      mot:'1 mois'},
+    {pick:1,    mot:'une date\u2026'},
+    {q:'jour',  mot:'un jour',            due:null, enLair:false}
   ];
   function echeanceControle(){
     var box = document.getElementById('mgDueChips'); if(!box) return null;
@@ -16782,9 +16773,15 @@ var CREMEETAT='#F7F0DE';
       b.addEventListener('click', function(ev){
         ev.stopPropagation();
         var o = ECHEANCE[i]; if(!o || !p) return;
-        if(o.pick){ try{ var pk=document.querySelector('#csChoix [data-datepick], .ph-date');
-          if(pk){ pk.click(); return; } }catch(_){}
+        if(o.pick){   /* v163b (C-197) : sur une fiche, le calendrier (avant : il cherchait celui de la page +, absent — rien ne s'ouvrait) */
+          var di=box.querySelector('.due-datein'); if(!di){ di=document.createElement('input'); di.type='date'; di.className='due-datein'; di.setAttribute('aria-label','Choisir une date');
+            di.style.cssText='position:absolute;width:1px;height:1px;opacity:0;pointer-events:none;border:0'; box.appendChild(di); }
+          var t0=new Date(); t0.setHours(0,0,0,0); di.min=t0.getFullYear()+'-'+String(t0.getMonth()+1).padStart(2,'0')+'-'+String(t0.getDate()).padStart(2,'0');
+          di.onchange=function(){ if(!di.value || !p) return; var pk=new Date(di.value+'T00:00:00'); p.due=Math.max(0, Math.round((pk-t0)/86400000)); p.dueISO=di.value; p.enLair=false; p.dueChoisi=true; p.status='encours';
+            try{ if(window.syncAll) syncAll(); if(typeof queueSave==='function') queueSave(); }catch(_){} try{ renderDetail(); }catch(_){} try{ render(); }catch(_){} };
+          try{ di.showPicker ? di.showPicker() : di.focus(); }catch(_){ try{ di.focus(); }catch(__){} }
           return; }
+        if(p.dueISO && !o.pick) p.dueISO=null;
         p.due = (o.d!=null) ? o.d : null;
         p.enLair = !!o.enLair;
         p.dueChoisi = true;
@@ -16845,8 +16842,8 @@ var CREMEETAT='#F7F0DE';
     var t = el('div','s2-tete'+(grand?' s2-tete-gd':''));
     var a = el('div','s2-titre'); a.textContent = titre||'';
     var f = el('div','s2-fermer'); f.textContent = 'X';   /* v157 (Tom, C-173) : un seul « X », sans mot */
-    f.addEventListener('click', function(ev){ ev.stopPropagation();
-      var c=document.querySelector('#detailPoster>.closeb'); if(c) c.click(); }, true);
+    /* ⚑ v163b (Tom, C-193, C-134) : le X de Peaufiner ferme PEAUFINER SEUL — la fiche reste (avant : il fermait toute la fiche, retour à la Toile) */
+    f.addEventListener('click', function(ev){ ev.stopPropagation(); try{ if(window._peaufSortie) window._peaufSortie(); }catch(_){ } ouvre(false); }, true);
     t.appendChild(a); t.appendChild(f);
     return t;
   }
@@ -16893,8 +16890,7 @@ var CREMEETAT='#F7F0DE';
       var nf = 0; try{ nf = (document.getElementById('dpFilesNuee')||{}).childElementCount||0; }catch(_){}
       liste.appendChild(reg('PIÈCES JOINTES', nf+' fichier'+(nf>1?'s':''),
         {cls:'s2-vis2', vis:'visibles par le Cercle', hote:emprunte('dpFilesNuee')}));
-      liste.appendChild(zone('COMMENTAIRES', invite(emprunte('dCommentInput'),'écris un mot…'),
-                             'visibles par les membres du Cercle', true));
+      /* v163b (C-192) : COMMENTAIRES retiré — on commente par la ligne « Un mot… » */
       liste.appendChild(bouton('Planter un Promi dans le Cercle', false, function(){
         var b=document.getElementById('nqAddPromi'); if(b) b.click(); }));
       liste.appendChild(reg('DISSOUDRE LE CERCLE', '→', {act:function(){
@@ -16906,13 +16902,14 @@ var CREMEETAT='#F7F0DE';
     /* ⚑ v147 (Tom, C-116 §12.2) — « Dans Peaufiner, “Commentaire” passe tout en haut, juste après le choix du trait. » (le rail du trait se pose juste après
        la tête, `lot-PINCEAU` : il passe donc devant) */
     var cv0 = qui ? ('visible par '+qui+', qui peut y répondre') : 'privé — personne d’autre ne le voit';
-    liste.appendChild(zone('COMMENTAIRES', invite(emprunte('dCommentInput'),'écris un mot…'), cv0, chiche));
+    /* v163b (C-192) : COMMENTAIRES retiré du Peaufiner — la ligne « Un mot… » de la fiche est le seul endroit pour commenter (§13) */
     /* 1 · à qui */
     /* ⚑ UN PROMI « JE ME PROMETS » EST À SOI PAR DÉFINITION : pas de réglage « à qui » (Tom, 13 sept. 2026).
        Ailleurs, « à qui » et « avec » ouvrent le choix des personnes (lot-GENS) : on ajoute, on retire. */
     var aSoi = !chiche && !p.req && (!p.who || /^moi$/i.test(p.who));
     var _gh = function(k){ return window._gensFiche ? window._gensFiche(k) : emprunte('dWhoInput'); };
-    if(!aSoi) liste.appendChild(reg(chiche?'À QUI JE LANCE':'À QUI', (p.who||'moi'),
+    var _recu = !!p.from && !/^moi$/i.test(String(p.from).trim());   /* v163b (C-192) : sur un Chiche REÇU, « À QUI JE LANCE » n'a pas de sens — je ne l'ai pas lancé */
+    if(!aSoi && !(chiche && _recu)) liste.appendChild(reg(chiche?'QUI OSE ?':'À QUI', (p.who||'moi'),   /* v163b (C-197) : « qui ose ? » partout */
       {hote:_gh('who')}));
     /* 2 · le compagnon d'un Chiche — vide, il prend le contour pointillé (§3.3) */
     if(chiche) liste.appendChild(reg('AVEC', (p.avec||'personne'),
@@ -16931,8 +16928,12 @@ var CREMEETAT='#F7F0DE';
     liste.appendChild(zone('NOTE', emprunte('dNote'), mv));
     /* 6 · les pièces jointes */
     var nf2 = 0; try{ nf2 = (p.files&&p.files.length)||0; }catch(_){}
+    /* v163b (C-192 ; AUDIT-BOUTONS 10) : le message dit « appuie sur + » — le + est maintenant DANS la rangée ouverte (il ouvre le choix de fichiers) */
+    var _pj = el('div','s2-pj'), _pjp = el('button','s2-pj-plus'); _pjp.type='button'; _pjp.textContent='+'; _pjp.setAttribute('aria-label','Joindre un fichier');
+    _pjp.addEventListener('click', function(ev){ ev.stopPropagation(); var b=document.getElementById('dpPlusPromi'); if(b) b.click(); });
+    _pj.appendChild(_pjp); var _pjl = emprunte('dpFilesPromi'); if(_pjl) _pj.appendChild(_pjl);
     liste.appendChild(reg('PIÈCES JOINTES', nf2+' fichier'+(nf2>1?'s':''),
-      {cls:'s2-vis2', vis:mvs, hote:emprunte('dpFilesPromi')}));
+      {cls:'s2-vis2', vis:mvs, hote:_pj}));
     /* 7 · les commentaires — v147 : en tête de la liste (voir plus haut) */
     /* 8 · relancer — n'existe que sur la fiche, jamais sur la page + (§6) */
     var rb = document.getElementById('actRelance');
@@ -18528,9 +18529,8 @@ var CREMEETAT='#F7F0DE';
     var t = B.el('div','s2-tete');
     var a = B.el('div','s2-titre'); a.textContent = titre || '';
     var f = B.el('div','s2-fermer'); f.textContent = 'X';   /* v157 (C-173) */
-    /* ✕ FERMER ferme la page +, comme partout ailleurs sur cet écran */
-    f.addEventListener('click', function(ev){ ev.stopPropagation();
-      var c = cs.querySelector('.closeb'); if(c) c.click(); }, true);
+    /* ⚑ v163b (Tom, C-193, C-134) : le X de Peaufiner ferme Peaufiner seul — la page + et sa phrase restent */
+    f.addEventListener('click', function(ev){ ev.stopPropagation(); peaufOuvre(false); }, true);
     t.appendChild(a); t.appendChild(f);
     return t;
   }
@@ -18578,9 +18578,7 @@ var CREMEETAT='#F7F0DE';
              mem = L.length ? (L.slice(0,2).join(' \u00b7 ') + (L.length>2?(' \u00b7 +'+(L.length-2)):''))
                             : 'personne encore'; }catch(_){ mem='personne encore'; }
         liste.appendChild(B.reg('MEMBRES', mem, {hote:(window._gensPage ? window._gensPage('nuee') : B.emprunte('nMembers'))}));
-        liste.appendChild(B.reg('INVITER', '\u2192', {hote:B.emprunte('nInvite')}));
-        var np = 0; try{ np = (document.getElementById('nFirstList')||{}).childElementCount||0; }catch(_){}
-        liste.appendChild(B.reg('LES PROMI DU CERCLE', np+' Promi', {hote:B.emprunte('nFirst')}));
+        /* v163b (C-192) : INVITER et LES PROMI DU CERCLE sont retirés (le champ de « Les Promi » n'ajoutait rien ; « + ajouter quelqu'un » invite) */
         liste.setAttribute('data-pp-sig', _sig);
         return;
       }
@@ -18592,9 +18590,7 @@ var CREMEETAT='#F7F0DE';
       /* 1 · à qui */
       /* ⚑ « JE ME PROMETS » EST À SOI : pas de « à qui » (Tom, 13 sept. 2026). Les personnes passent par lot-GENS. */
       var _soi = !chiche && P.sens === 'faire' && !P.faireAutre && /^(moi)?$/i.test(String(P.qui||'').trim());
-      if(!_soi) liste.appendChild(B.reg(chiche?'\u00c0 QUI JE LANCE':'\u00c0 QUI', aQui(), {hote:(window._gensPage ? window._gensPage('qui') : B.emprunte('fWho'))}));
-      /* 2 · le compagnon d'un Chiche — vide, il prend le contour pointillé (§3.3) */
-      if(chiche) liste.appendChild(B.reg('AVEC', (P.avec||'personne'), {cls:(P.avec?'':'s2-vide'), hote:(window._gensPage ? window._gensPage('avec') : null)}));
+      /* v163b (C-192) : À QUI et AVEC sont retirés du Peaufiner de la page + — la phrase porte les personnes (« qui ? », « qui ose ? », « qui en est ? ») */
       /* 3 · l'échéance — le contrôle de l'app, déplacé et non recréé */
       liste.appendChild(B.reg('AVANT', motEcheance(), {hote:B.emprunte('dueChips')}));
       /* 4 · la Nuée — un Chiche n'en a pas dans l'inventaire */
@@ -19913,6 +19909,7 @@ var CREMEETAT='#F7F0DE';
     if(!fv||!li) return;
     var items=[].slice.call(li.querySelectorAll('.fd-item'));
     if(!items.length) return;
+    if(window._filTrieFiltre) items=window._filTrieFiltre(items);   /* v163b (C-191) : le tri et le filtre du menu ⇅ */
     var l=light();
     var W=358, H=128, X=16, PAS=140, CX=143;
     var gr=document.createElement('div');
@@ -19922,15 +19919,13 @@ var CREMEETAT='#F7F0DE';
       var tx=it.querySelector('.fd-tx'), tt=it.querySelector('.fd-t');
       /* ⚠ LES ACTIONS DU FIL SE RELÈVENT ET SE REPOSENT — ELLES NE SE PERDENT PAS.
          Le Fil est le SEUL endroit d'où l'on tient une parole sans ouvrir de fiche. */
-      var actes=[].slice.call(it.querySelectorAll('[data-keep],[data-post],[data-releve],[data-react],[data-rejoindre],[data-tracer]'))
+      var actes=[].slice.call(it.querySelectorAll('[data-post],[data-releve],[data-rejoindre],[data-tracer]'))   /* v163b (C-189) : ni « keep » ni « react » */
         .map(function(a){
-          var q = a.hasAttribute('data-keep') ? 'keep'
-                : a.hasAttribute('data-post') ? 'post'
+          var q = a.hasAttribute('data-post') ? 'post'
                 : a.hasAttribute('data-releve') ? 'releve'
-                : a.hasAttribute('data-rejoindre') ? 'rejoindre'
-                : a.hasAttribute('data-tracer') ? 'tracer' : 'react';
+                : a.hasAttribute('data-rejoindre') ? 'rejoindre' : 'tracer';
           return {quoi:q, fid:+(a.getAttribute('data-'+q)||0),
-                  mot:(a.textContent||'').trim(), fort:a.classList.contains('fd-acc')||q==='keep'||q==='releve'||q==='rejoindre'||q==='tracer'};});
+                  mot:(a.textContent||'').trim(), fort:a.classList.contains('fd-acc')||q==='releve'||q==='rejoindre'||q==='tracer'};});
       return {pid:pid?+pid:null, nk:nk, actes:actes, fid:(it.getAttribute('data-fid')!=null?+it.getAttribute('data-fid'):null), nonvu:it.classList.contains('unread'), type:it.getAttribute('data-type')||'',
               texte:tx?(tx.textContent||'').trim():'', quand:tt?(tt.textContent||'').trim():''};
     });
@@ -20024,6 +20019,7 @@ var CREMEETAT='#F7F0DE';
       gr.appendChild(d);
       /* ⚑ v89 (Q347) — la pastille « pas encore vu » : elle s'efface quand on OUVRE CETTE CARTE, jamais quand on ouvre le Fil */
       d.setAttribute('data-nonvu', F.nonvu ? '1' : '0');   /* la pastille (`_pastillesAttente`) le lit */
+      if(F.pid!=null) d.setAttribute('data-pid', F.pid); if(F.nk) d.setAttribute('data-nuee', F.nk);   /* v163b (C-191) : la carte dit de quelle parole elle parle (un pointeur pour les juges, comme l'Index) */
       /* ⚑ 23 SEPTEMBRE 2026, second tour (Tom) — « RENDS-LUI SA TAILLE D'ORIGINE, REMONTE-LE,
          ET AU-DELÀ DE DEUX LIGNES COUPE AVEC DES POINTS DE SUITE. JAMAIS DE RÉDUCTION DE TAILLE. »
          Au tour précédent je rétrécissais le titre (18 et 22 px au lieu de 24) : c'était l'inverse
@@ -20118,12 +20114,10 @@ var CREMEETAT='#F7F0DE';
           t.onclick=function(ev){ ev.stopPropagation();
             window._filGeste = null;   /* l'ajout se referme dès qu'il a servi */
             try{
-              if(A.quoi==='keep') feedKeep(A.fid);
-              else if(A.quoi==='post') feedPostpone(A.fid);
+              if(A.quoi==='post') feedPostpone(A.fid);
               else if(A.quoi==='releve') feedReleve(A.fid);
               else if(A.quoi==='rejoindre'){ if(window.filRejoindre) filRejoindre(A.fid); }
               else if(A.quoi==='tracer'){ if(window.filTracer) filTracer(A.fid); }
-              else if(A.quoi==='react'){ feedReacted[A.fid]=!feedReacted[A.fid]; buildFeed(); }
               if(window.syncAll) syncAll();
             }catch(_){}
           };
@@ -21339,10 +21333,10 @@ var CREMEETAT='#F7F0DE';
   var PLAN = [
     /* ⚑ v147 (Tom, C-116 §12.2) : « Commentaire » juste après le trait — les cartes suivantes descendent d'autant, la page 1 finit toujours à 656 */
     {id:'npTrait', y:110, h:118, lab:'LE TRAIT',       val:'trait',        ph:null, bas:null},
-    {id:'npComm',  y:244, h:104, lab:'COMMENTAIRES',   val:null,           ph:'écris un mot…', bas:'visibles par les membres du Cercle'},
-    {id:'npDesc',  y:364, h:104, lab:'DESCRIPTION',    val:null,           ph:'présente le Cercle, son but…', bas:'visible par tous les membres'},
-    {id:'npMemb',  y:484, h:64,  lab:'MEMBRES',        val:'membres',      ph:null, bas:null},
-    {id:'npFich',  y:564, h:92,  lab:'PIÈCES JOINTES', val:'fichiers',     ph:null, bas:'visibles par le Cercle'},
+    /* ⚑ v163b (Tom, C-192) : COMMENTAIRES retiré (la ligne « Un mot… » du Cercle est le seul endroit) — les cartes remontent de 120 (104 + 16) */
+    {id:'npDesc',  y:244, h:104, lab:'DESCRIPTION',    val:null,           ph:'présente le Cercle, son but…', bas:'visible par tous les membres'},
+    {id:'npMemb',  y:364, h:64,  lab:'MEMBRES',        val:'membres',      ph:null, bas:null},
+    {id:'npFich',  y:444, h:92,  lab:'PIÈCES JOINTES', val:'fichiers',     ph:null, bas:'visibles par le Cercle'},
     {id:'npDiss',  y:PAGE+124, h:64, lab:'DISSOUDRE LE CERCLE', val:'→',    ph:null, bas:null}
   ];
 
@@ -21358,6 +21352,7 @@ var CREMEETAT='#F7F0DE';
         ? (m.slice(0,2).join(' · ') + ' · +' + (m.length-1)) : m.join(' · ');
       var n = 0;
       promises.forEach(function(q){ if(q.nuee === cle && q.files && q.files.length) n += q.files.length; });
+      try{ if(typeof NUEFILES !== 'undefined' && NUEFILES[cle]) n += NUEFILES[cle].length; }catch(_){ }   /* v163b (C-192) : et celles du Cercle */
       out.fichiers = n ? (n + ' fichier' + (n>1?'s':'')) : 'aucun fichier';
     }catch(_){ }
     return out;
@@ -21398,9 +21393,9 @@ var CREMEETAT='#F7F0DE';
       ev.stopPropagation(); window._npGensOuvert = !window._npGensOuvert;
       try{ if(window._ficheTout) _ficheTout(); else window._nueePeaufiner(); }catch(_){} }, true);
     var f = document.getElementById('npFermer');
+    /* ⚑ v163b (Tom, C-193, C-134) : le X du Peaufiner d'un Cercle ferme Peaufiner seul — la fiche du Cercle reste */
     if(f) f.addEventListener('click', function(ev){ ev.stopPropagation();
-      var cb = document.querySelector('#detailPoster>.closeb');
-      if(cb) cb.click(); else if(window.closeAll) closeAll(); });
+      try{ if(window._peaufSortie) window._peaufSortie(); }catch(_){ } try{ if(window._s2Ouvre) window._s2Ouvre(false); }catch(_){ } });
   }
 
   /* ⚑ LE PEAUFINER D'UNE NUÉE NE SURVIT PAS À LA FICHE SUIVANTE.
@@ -21693,7 +21688,7 @@ var CREMEETAT='#F7F0DE';
       /* ⚑ v141 (Tom, 10 oct. 2026, C-096) : « Dans Peaufiner, l'encart “+ Planter dans le Cercle” prend le même + que dans la fiche, et se place
          juste sous Commentaires ; le reste remonte. » COMMENTAIRES finit à 656 : le bouton est à 672 (16 d'écart, comme entre les cartes),
          342 × 62 au trait de 2, son + dans son rond, à gauche — le bouton de la fiche. (Avant : en page 2, à 806, 348 × 68, sans le rond.) */
-      pose(nfAdd, {visibility:'visible', display:'flex', position:'absolute', left:'24px', top:(672+gensH)+'px',
+      pose(nfAdd, {visibility:'visible', display:'flex', position:'absolute', left:'24px', top:(552+gensH)+'px',   /* v163b (C-192) : 672 − 120, COMMENTAIRES retiré */
                    /* 348 × 68 hors tout, et non 342 × 62 : le bloc du cadre 86 porte
                       `width:342 + border:3` SANS `box-sizing:border-box` — les cartes, elles,
                       l'ont. Le bouton est donc 6 px plus large que DISSOUDRE dans la planche.
@@ -21706,7 +21701,7 @@ var CREMEETAT='#F7F0DE';
                    'font-size':'18px', color:CREME, '-webkit-text-fill-color':CREME});
       /* ⚑ Q213 : le mot vit dans le bouton lui-même, « Planter dans la Nuée » — on ne le réécrit plus */
     }
-    if(nfAdd && nfAdd.getAttribute('data-np-pris') === '1') pose(nfAdd, {top:(672+gensH)+'px'});
+    if(nfAdd && nfAdd.getAttribute('data-np-pris') === '1') pose(nfAdd, {top:(552+gensH)+'px'});   /* v163b (C-192) */
     if(pied) pose(pied, {height:(2*PAGE+gensH)+'px'});
     /* ⚑ v99 — LA CARTE « LE TRAIT » SE GARNIT ICI, QUAND ELLE EST POSÉE. Son garnisseur ne passait qu'à heure fixe après un clic
        (100 · 320 · 700 ms) : en WebKit la carte naît plus tard, et elle restait vide jusqu'au clic suivant (mesuré : 0 pastille à
@@ -23459,7 +23454,7 @@ var CREMEETAT='#F7F0DE';
 
   var PLAN=[
     ['LE SUJET','#shMode'],
-    ['LE FORMAT','#shFormats','#shCustom'],
+    ['LE FORMAT','#shFormats'],   /* v163b (C-199) : « Définir » (largeur et hauteur au pas de 120) retiré */
     ['LE FOND DE L’IMAGE','#shTheme'],
     ['LE MOT-MARQUE','#shWmRow'],
     ['LE QR','#shWmQr'],
@@ -23514,11 +23509,7 @@ var CREMEETAT='#F7F0DE';
       if(e.target&&e.target.closest&&e.target.closest('#shcBarre,#shWrap,.shc-reg')) {y0=null;return;}
       y0=e.clientY; fait=false;
     },true);
-    sc.addEventListener('pointermove',function(e){
-      if(y0==null||fait) return;
-      var dy=e.clientY-y0;
-      if(Math.abs(dy)>34){ fait=true; tire(dy<0); }
-    },true);
+    /* v163b (C-199) : le glissé vertical (qui basculait `sh-haut`, ignoré en plein écran) est retiré : un geste mort */
     sc.addEventListener('pointerup',function(){y0=null;fait=false;},true);
     return sc;
   }
@@ -25807,7 +25798,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
     if(r.getAttribute('data-geo') === geo) return r;   /* on compare avant d'agir (§8) */
     r.setAttribute('data-geo', geo);
     ['position:absolute','left:0px','top:'+haut+'px','width:390px','height:'+PHT+'px',
-     'max-width:none','margin:0','padding:0','overflow:hidden','z-index:6'
+     'max-width:none','margin:0','padding:0','overflow-x:auto','overflow-y:hidden','z-index:6'   /* v163b (C-196) : le rail GLISSE — les douze traits s'atteignent */
     ].forEach(function(d){ var i=d.indexOf(':');
       r.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
     return r;
@@ -25878,6 +25869,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
   document.addEventListener('click', function(ev){
     var b = ev.target && ev.target.closest && ev.target.closest('#csPinceau .pc-t');
     if(!b) return;
+    if(b.classList.contains('pc-mur')){ ev.preventDefault(); ev.stopPropagation(); return; }   /* v163b (C-196) : un trait de Ma Parole ! ne s'applique pas sans elle — le mur répond */
     ev.preventDefault(); ev.stopPropagation();
     window._ppPinceau = b.getAttribute('data-t');
     var r = document.getElementById('csPinceau'); if(r) r.removeAttribute('data-sig');
@@ -25961,7 +25953,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
   display:block!important}
 #device #detailPoster #dpTraitReg .pc-ap svg{display:block!important}
 /* la rangée qui glisse, dépliée sous la ligne — même grammaire qu'à la page + */
-#device #detailPoster #dpTraitReg .pc-glisse{width:298px!important;overflow-x:hidden!important;
+#device #detailPoster #dpTraitReg .pc-glisse{width:298px!important;overflow-x:auto!important;   /* v163b (C-196) : il glisse */
   overflow-y:hidden!important;height:44px!important}
 #device #detailPoster #dpTraitReg .pc-rail{display:flex!important;gap:10px!important;
   align-items:center!important;width:max-content!important;height:44px!important;
@@ -26048,7 +26040,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
     if(r.getAttribute('data-sig') === sig) return;   /* on compare avant d'agir (§8) */
     r.setAttribute('data-sig', sig);
 
-    r.querySelector('.s2-val').textContent = nom + (libre ? '' : ' — 0,50 €');
+    r.querySelector('.s2-val').textContent = nom;
     r.querySelector('.pc-ap').innerHTML =
       (window._pinceauEchantillon ? window._pinceauEchantillon(nom, 96) : '');
     try{ r.querySelector('.pc-ap svg').style.color = teinte; }catch(_){}
@@ -26072,6 +26064,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
   document.addEventListener('click', function(ev){
     var b = ev.target && ev.target.closest && ev.target.closest('#dpTraitReg .pc-t');
     if(!b) return;
+    if(b.classList.contains('pc-mur')){ ev.preventDefault(); ev.stopPropagation(); return; }   /* v163b (C-196) : un trait de Ma Parole ! ne s'applique pas sans elle — le mur répond */
     ev.preventDefault(); ev.stopPropagation();
     var c = courant(); if(!c) return;
     c.ecrire(b.getAttribute('data-t'));
@@ -26129,7 +26122,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
   top:19px!important;margin:0!important;text-align:right!important}
 #device #detailPoster #npTrait .pc-glisse{position:absolute!important;left:22px!important;
   bottom:14px!important;width:298px!important;height:44px!important;
-  overflow-x:hidden!important;overflow-y:hidden!important}
+  overflow-x:auto!important;overflow-y:hidden!important}   /* v163b (C-196) : il glisse */
 #device #detailPoster #npTrait .pc-rail{display:flex!important;gap:10px!important;
   align-items:center!important;width:max-content!important;height:44px!important;
   margin:0!important;padding:0!important}
@@ -26216,7 +26209,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
     c.setAttribute('data-sig', sig);
     var v = c.querySelector('.np-val');
     var libre = META.some(function(m){ return m[0]===nom && m[1]; });
-    if(v) v.textContent = nom + (libre ? '' : ' — 0,50 €');
+    if(v) v.textContent = nom;
     var r = c.querySelector('.pc-glisse');
     if(!r){ r = document.createElement('div'); r.className='pc-glisse';
             r.setAttribute('data-glisse','1');
@@ -26239,6 +26232,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
   document.addEventListener('click', function(ev){
     var b = ev.target && ev.target.closest && ev.target.closest('#npTrait .pc-t');
     if(!b) return;
+    if(b.classList.contains('pc-mur')){ ev.preventDefault(); ev.stopPropagation(); return; }   /* v163b (C-196) : un trait de Ma Parole ! ne s'applique pas sans elle — le mur répond */
     ev.preventDefault(); ev.stopPropagation();
     var k = null; try{ k = curNuee; }catch(_){}
     if(k) NUEE[k] = b.getAttribute('data-t');
@@ -34254,7 +34248,7 @@ window._petiteToile=function(g,A,Lr,ids){ try{
     var t=n+' parole'+(n>1?'s':'')+' · '+m+' Cercle'+(m>1?'s':''); if(el.textContent!==t) el.textContent=t; }catch(_){} }
   window._accLigne=ligne;
   try{ var _cap=window.caption; if(typeof caption==='function'){ var w=function(){ var r=_cap.apply(this,arguments); ligne(); return r; }; window.caption=w; } }catch(_){}
-  setInterval(ligne, 1500);
+  /* v163b (C-199) : `#accLigne` est masqué — son minuteur (toutes les 1,5 s) ne tourne plus ; la ligne se met à jour par `caption` */
   if(document.readyState!=='loading') poser(); else document.addEventListener('DOMContentLoaded', poser);
   [300,1200].forEach(function(t){ setTimeout(poser,t); });
   try{ (window._rangeurs=window._rangeurs||[]).push(function(){ var ch=document.getElementById('accChoix'); if(ch) ch.classList.remove('ouvert'); }); }catch(_){}
@@ -34358,6 +34352,105 @@ window._petiteToile=function(g,A,Lr,ids){ try{
    d'origine, sur le document, reste le seul propriétaire de l'ouverture et de la fermeture). */
 (function(){ function pose(){ ['ixMenu','fdMenu'].forEach(function(id){ var m=document.getElementById(id); if(m && !m.__clic){ m.__clic=1; m.addEventListener('click', function(){ }); } }); }
   if(document.readyState!=='loading') pose(); else document.addEventListener('DOMContentLoaded', pose); setTimeout(pose, 1500); })();
+</script>
+<style id="lot-V163B-PEAUF-css">
+/* v163b (C-192) : le + des pièces jointes d'un Promi, dans la rangée ouverte — 44 pt, trait 2 à l'encre du corps (la grammaire des contours) */
+#device #detailPoster .s2-pj{display:flex;flex-direction:column;gap:10px}
+#device #detailPoster .s2-pj-plus{width:44px;height:44px;border-radius:22px;box-sizing:border-box;border:2px solid currentColor;background:transparent;color:inherit;
+  -webkit-text-fill-color:currentColor;font-family:var(--f-libelle);font-weight:700;font-size:24px;line-height:1;padding:0;cursor:pointer;align-self:flex-start}
+</style>
+<script id="lot-V163B-PEAUF">
+/* ⚑ v163b (Tom, C-192 ; AUDIT-BOUTONS 10, point 4) — DISSOUDRE LE CERCLE et PIÈCES JOINTES du Peaufiner d'un Cercle n'avaient aucun gestionnaire. Branchés au
+   GESTE (appui puis lever sans glisser) : le Peaufiner ne produit pas toujours de clic au doigt (v104). Dissoudre passe par la feuille de confirmation
+   (`_v16Conf`) puis l'annulation de 5 s (`_nqDissolve`, enveloppé : « « X » dissous » — un Cercle, au masculin) . */
+(function(){
+  var d=null, fait=0;
+  function agit(id){ var nk=(typeof curNuee!=='undefined')?curNuee:null; if(!nk) return;
+    if(id==='npDiss'){ var nm=(typeof NUE!=='undefined'&&NUE[nk])||nk;
+      if(window._v16Conf) window._v16Conf({titre:'Dissoudre « '+nm+' » ?', texte:'Ses Promi restent, hors du Cercle.', oui:'Dissoudre', non:'Garder',
+        faire:function(){ try{ window._nqDissolve(nk, false); }catch(_){ } try{ if(window._peaufSortie) window._peaufSortie(); }catch(_){ } try{ closeAll(); }catch(_){ } try{ if(window.syncAll) syncAll(); }catch(_){ } }}); }
+    else if(id==='npFich'){ var b=document.getElementById('dpPlusNuee'); if(b && b.onclick) b.onclick(); } }
+  document.addEventListener('pointerdown', function(e){ var c=e.target && e.target.closest && e.target.closest('#npDiss, #npFich'); d=c?{x:e.clientX, y:e.clientY, t:performance.now(), id:c.id}:null; }, true);
+  document.addEventListener('pointerup', function(e){ var a=d; d=null; if(!a) return; if(Math.hypot(e.clientX-a.x, e.clientY-a.y)>10 || performance.now()-a.t>600) return; fait=performance.now(); agit(a.id); }, true);
+  document.addEventListener('click', function(e){ var c=e.target && e.target.closest && e.target.closest('#npDiss, #npFich'); if(!c) return; if(performance.now()-fait<700) return; agit(c.id); }, true);
+})();
+</script>
+<style id="lot-V163B-PINCEAU-css">
+/* ⚑ v163b (Tom, C-196) : le rail se fait glisser au doigt (aucune barre de défilement) ; un trait de Ma Parole ! est un MUR — flouté à 4,8 px comme les
+   autres, sans pointillé ni prix */
+#device #createSheet #csPinceau,#device #detailPoster #dpTraitReg .pc-glisse,#device #detailPoster #npTrait .pc-glisse{-webkit-overflow-scrolling:touch;
+  overscroll-behavior-x:contain;touch-action:pan-x;scrollbar-width:none}
+#device #createSheet #csPinceau::-webkit-scrollbar,#device #detailPoster .pc-glisse::-webkit-scrollbar{display:none}
+#device .pc-t.pc-mur{filter:blur(4.8px)!important;border-style:solid!important}
+#device #createSheet.pp #csPinceau .pc-rail{padding-right:24px!important}   /* au bout du défilement, le dernier trait garde la marge de 24 pt, comme le premier */
+</style>
+<script id="lot-V163B-PINCEAU">
+/* v163b (C-196) : après chaque rangée peinte, ses traits payants deviennent des murs tant qu'on n'est pas membre de Ma Parole ! */
+(function(){
+  function paye(){ try{ return !!(isPremium || document.getElementById('device').classList.contains('premium')); }catch(_){ return false; } }
+  function libres(){ var o={}; (window._PINCEAU_META||[]).forEach(function(m){ o[m[0]]=!!m[1]; }); return o; }
+  function marque(){ var L=libres(), p=paye();
+    document.querySelectorAll('#csPinceau .pc-t, #dpTraitReg .pc-t, #npTrait .pc-t').forEach(function(b){ var mur=!p && L[b.getAttribute('data-t')]===false && !b.classList.contains('on');
+      if(b.classList.contains('pc-mur')!==mur) b.classList.toggle('pc-mur', mur); }); }
+  var att=0; new MutationObserver(function(){ if(att) return; att=requestAnimationFrame(function(){ att=0; marque(); }); }).observe(document.documentElement, {childList:true, subtree:true});   /* une passe par image au plus */
+  setInterval(marque, 1000); window._pinceauMurs=marque;
+})();
+</script>
+<style id="lot-V163B-STUDIO-LIBRE-css">
+/* ⚑ v163b (Tom, C-198 ; AUDIT-BOUTONS 18) — sur un monde de Ma Parole !, Sombre/Clair et Avec/Sans texte (le thème de l'app, ses mots sur la Toile) sont des
+   réglages GRATUITS : ils sortent du mur (nets, touchables) ; les barrettes de pagination restent actives (on peut quitter un monde payant par elles). */
+#studioScreen.st-plat.stp-verrou #stpVue,#studioScreen.st-plat.stp-verrou #stpLab,#studioScreen.st-plat.stp-verrou #stpDots{filter:none!important;pointer-events:auto!important}
+</style>
+<style id="lot-V163B-PETITES-css">
+/* ⚑ v163b (Tom, C-199) — petites corrections.
+   · le « Chiche » de la phrase ne fait rien : il ne ressemble plus à un bouton (même boîte, même place : la composition de la phrase ne bouge pas) */
+#device #createSheet.pp.pp-chiche #csPhrase .ph-b.ph-b-fixe{background:transparent!important;box-shadow:none!important;cursor:default!important;color:inherit!important;-webkit-text-fill-color:currentColor!important}
+/* · des zones de toucher de 44 pt (le dessin ne change pas) : « ← Retour » et le noir et blanc du Studio, l'œil du dessin */
+#studioScreen .stp-retour,#studioScreen .stp-nb,#device .dz-oeil{overflow:visible!important}
+#studioScreen .stp-retour::after,#studioScreen .stp-nb::after,#device .dz-oeil::after{content:'';position:absolute;left:50%;top:50%;width:max(100%, 44px);height:44px;transform:translate(-50%,-50%);border-radius:22px;background:transparent}
+/* · les pastilles du menu photo : chacune prend 44 pt de toucher, centrés sur elle, sans se recouvrir (11,5 pt entre deux pastilles de 33,8) */
+#device .ph-photo-menu.dz-compact{gap:11.5px!important}
+#device .ph-photo-menu.dz-compact button{position:relative!important;overflow:visible!important}
+#device .ph-photo-menu.dz-compact button::after{content:'';position:absolute;left:0;right:0;top:50%;height:44px;transform:translateY(-50%)}
+/* · le prénom des Réglages : 44 pt de haut */
+#device #settingsScreen #setNameInput,.frame #settingsScreen #setNameInput{min-height:44px!important;box-sizing:border-box!important}
+/* · contours pleins de 2 pt (la grammaire des contours), sans flou : le bouton photo, l'œil du dessin, les rangées des Notifications */
+#device .ph-photo-btn,.ph-photo-btn{border:2px solid var(--c-creme95)!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+#device .dz-oeil{border-width:2px!important;border-style:solid!important}
+#notifScreen .nt-row{border-width:2px!important}
+</style>
+<script id="lot-V163B-PETITES">
+/* ⚑ v163b (Tom, C-199) — petites corrections (le reste vit dans les lots qu'elles corrigent). */
+(function(){
+  /* 4 · le libellé VoiceOver du bouton photo : « Dessiner sur ce Cercle » sur la fiche d'un Cercle, « Photo » ailleurs — reposé à chaque ouverture
+     (le nœud est partagé : le libellé du Cercle restait sur la fiche suivante) */
+  function libelle(){ try{ var dp=document.getElementById('detailPoster'); if(!dp || !dp.classList.contains('show')) return;
+      var cercle=dp.classList.contains('dp-nuee') || dp.classList.contains('dp-mode-nuee');
+      dp.querySelectorAll('.ph-photo-btn').forEach(function(b){ var v=cercle ? 'Dessiner sur ce Cercle' : 'Photo'; if(b.getAttribute('aria-label')!==v) b.setAttribute('aria-label', v); }); }catch(_){ } }
+  setInterval(libelle, 400);
+  /* les rangées des Notifications : rayon = hauteur ÷ 2 (au-delà de 94,5 pt : 30, la règle du §5) */
+  function rangees(){ try{ document.querySelectorAll('#notifScreen .nt-row').forEach(function(r){ var h=r.offsetHeight; if(!h) return; var v=(h>94.5?30:h/2)+'px'; if(r.style.getPropertyValue('border-radius')!==v) r.style.setProperty('border-radius', v, 'important'); }); }catch(_){ } }
+  setInterval(rangees, 700);
+  /* 5 · « Le fond de l'image » n'a pas d'effet sur Ma Toile (elle suit le thème de l'app depuis v143) : la rangée ne paraît pas pour ce sujet */
+  function fond(){ try{ var t=document.getElementById('shTheme'); if(!t) return; var r=t.closest('[data-reg]')||t.parentElement; var toile=(typeof shareMode!=='undefined' ? shareMode : window.shareMode)==='toile';
+      var v=toile?'none':''; if(r && r.style.display!==v){ if(v) r.style.setProperty('display','none','important'); else r.style.removeProperty('display'); } }catch(_){ }
+    /* « Définir » (largeur et hauteur au pas de 120) : retiré, et son libellé avec lui */
+    try{ var c=document.getElementById('shCustom'); if(c && c.style.getPropertyValue('display')!=='none'){ c.style.setProperty('display','none','important'); var l=c.previousElementSibling; if(l && /D.finir/.test(l.textContent)) l.style.setProperty('display','none','important'); } }catch(_){ } }
+  setInterval(fond, 300);
+  /* 6 · « Supprimer » dans le Peaufiner d'un gardé de côté rouvert — la feuille de confirmation, puis 5 s pour annuler */
+  function supprimer(){ try{ var cs=document.getElementById('createSheet'); if(!cs || !cs.classList.contains('pp-peauf')) return;
+      var rid=window._brouillonRepris; var liste=cs.querySelector('.s2-liste') || cs.querySelector(':scope > .dpd-corps'); if(!liste) return;
+      var deja=liste.querySelector('.v163-suppr'); if(rid==null){ if(deja) deja.remove(); return; } if(deja) return;
+      var B=window._s2Briques; if(!B || !B.reg) return;
+      var r=B.reg('SUPPRIMER CE GARDÉ DE CÔTÉ', '', {act:function(){ var p=(promises||[]).filter(function(q){ return q.id===rid; })[0]; if(!p || !window._v16Conf) return;
+          window._v16Conf({titre:'Supprimer ce gardé de côté ?', texte:'« '+(p.title||'sans titre')+' » sera retiré de l’Index.', oui:'Supprimer', non:'Garder', faire:function(){
+            var i=promises.indexOf(p); if(i<0) return; promises.splice(i,1); window._brouillonRepris=null; window._ppGarde=false;
+            try{ if(typeof saveState==='function') saveState(); if(window.syncAll) syncAll(); }catch(_){ }
+            try{ if(window._peaufSortie) _peaufSortie(); closeAll(); }catch(_){ }
+            try{ if(window._v16Annulable) window._v16Annulable('Gardé de côté supprimé', function(){ promises.splice(Math.min(i, promises.length), 0, p); try{ if(typeof saveState==='function') saveState(); if(window.syncAll) syncAll(); }catch(_){ } }); }catch(_){ } }}); }});
+      r.classList.add('v163-suppr','v16-danger-non'); r.setAttribute('role','button'); liste.appendChild(r); }catch(_){ } }
+  setInterval(supprimer, 500);
+})();
 </script>
 <style id="lot-CERCLE-COULEUR-css">
 /* ⚑ LE BLOC TIENT À CINQ (Tom, 13 sept. 2026) — cinq réglages de 64 espacés de 16 : 5 × 64 + 4 × 16 = 384.
@@ -34523,7 +34616,7 @@ window._petiteToile=function(g,A,Lr,ids){ try{
    Au Cercle payé, LA COULEUR ouverte grandit : DISSOUDRE se place sous la hauteur RENDUE du bloc. Ce n'est pas la boucle du §8
    (une cote mesurée sur elle-même) : DISSOUDRE ne change rien à la hauteur du bloc. Fermé, le bloc vaut 384 par sa règle. */
 (function(){
-  var PAGE=760, TOP=672+62+16, ECART=104, BLOC=384;   /* v141 (C-096) : « le reste remonte » — le bloc suit le bouton, posé sous COMMENTAIRES (672 + 62 + 16 = 750 ; 890 avant) */
+  var PAGE=760, TOP=552+62+16, ECART=104, BLOC=384;   /* v163b (C-192) : « + Planter » remonté de 120 (COMMENTAIRES retiré) */   /* v141 (C-096) : « le reste remonte » — le bloc suit le bouton, posé sous COMMENTAIRES (672 + 62 + 16 = 750 ; 890 avant) */
   function P(e,k,v){ if(!e) return; if(e.style.getPropertyValue(k)===v && e.style.getPropertyPriority(k)==='important') return;
     e.style.setProperty(k,v,'important'); var l=(e.getAttribute('data-pose')||'').split(' ').filter(Boolean);
     if(l.indexOf(k)<0){ l.push(k); e.setAttribute('data-pose', l.join(' ')); } }
@@ -36861,7 +36954,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 .v16-conf-b{display:flex;gap:6px}
 .v16-conf-b button{flex:1 1 0;height:62px;border-radius:31px;border:2px solid currentColor;background:transparent;color:inherit;-webkit-text-fill-color:currentColor;
   font-family:var(--f-libelle);font-weight:700;font-size:18px;cursor:pointer}
-.v16-conf-b .v16-oui{background:var(--c-orange53);border-color:var(--c-orange53);color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95)}
+.v16-conf-b .v16-oui{background:currentColor;border-color:currentColor}   /* ⚑ v163b (Tom, C-195) : l'action prend l'ENCRE DU MODE, pleine, en gras — plus l'orange d'état #DD4D23 */
+.v16-conf-b .v16-oui{-webkit-text-fill-color:var(--c-creme95)}
+#device:not(.light) .v16-conf-b .v16-oui,#device.light .v16-conf-p:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *) .v16-oui{-webkit-text-fill-color:var(--c-brun09)}
 .v16-toast{position:absolute;left:24px;right:24px;bottom:112px;z-index:940;display:flex;align-items:center;gap:12px;
   min-height:60px;box-sizing:border-box;padding:0 8px 0 24px;border-radius:30px;border:2px solid var(--c-creme95);
   background:var(--c-brun09);color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95);
@@ -37273,6 +37368,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         try{ if(typeof queueSave==='function') queueSave(); }catch(_){} }; }
     /* ⚑ v23 · le groupe Compte a deux visages : sans compte on peut en garder un, avec compte on en sort. */
     var _fait = (typeof window._onbCompteFait==='function') ? window._onbCompteFait() : false;
+    if((c=$i('logoutCard'))){ if(_fait){ if(c.style.getPropertyValue('display')) c.style.removeProperty('display'); } else if(c.style.getPropertyValue('display')!=='none') c.style.setProperty('display','none','important'); }   /* v163b (C-195) : « Se déconnecter » seulement s'il y a un compte */
     if((c=$i('compteCard'))){ c.style.display = _fait ? 'none' : '';
       if(!c._v16){ c._v16=1; c.addEventListener('click',function(e){ e.stopPropagation();
         try{ if(window._onbCompte) window._onbCompte(); }catch(_){} }); } }
@@ -37284,9 +37380,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if((c=$i('polCard')) && !c._v16){ c._v16=1; c.addEventListener('click',function(e){ e.stopPropagation(); window._v16Legal('pol'); }); }
     if((c=$i('aboutCard')) && !c._v16){ c._v16=1; c.addEventListener('click',function(e){ e.stopPropagation(); window._v16APropos(); }); }
     /* « Réinitialiser mes données » et « Tout effacer » : on laisse quelques secondes pour annuler */
-    if((c=$i('resetData')) && !c._v16){ c._v16=1; var o=c.onclick;
-      c.onclick=function(){ conf({titre:'Réinitialiser tes données ?', texte:'Tous tes Promi seront effacés de cet appareil.', oui:'Effacer', non:'Garder',
-        faire:function(){ differe('Données effacées', function(){ try{ _resetArm=true; }catch(_){} try{ o && o.call(c); }catch(_){} }); }}); }; }
+    /* ⚑ v163b (Tom, C-195) : UNE rangée « Tout effacer » — la feuille, puis 5 s pour annuler, puis tout le stockage de l'appareil est vidé et l'app repart */
+    if((c=$i('resetData')) && !c._v16){ c._v16=1;
+      c.onclick=function(){ conf({titre:'Tout effacer ?', texte:'Tes Promi, tes Cercles et tes réglages seront effacés de cet appareil.', oui:'Effacer', non:'Garder',
+        faire:function(){ differe('Tout est effacé', function(){ try{ localStorage.clear(); }catch(_){} location.reload(); }); }}); }; }
     if((c=$i('pvReset')) && !c._v16){ c._v16=1;
       c.onclick=function(){ conf({titre:'Tout effacer ?', texte:'Tous tes Promi seront effacés de cet appareil.', oui:'Effacer', non:'Garder',
         faire:function(){ differe('Tout est effacé', function(){ try{ localStorage.clear(); }catch(_){} location.reload(); }); }}); }; }
@@ -37297,7 +37394,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       c.onclick=function(e){ var ph=USER.photo, sd=USER.seed; try{ od && od.call(c,e); }catch(_){}
         annulable('Photo retirée', function(){ USER.photo=ph; USER.seed=sd; try{ renderProfile(); _refreshAvatars(); }catch(_){} }); }; }
     var sv=$i('saveStatus'); if(sv && sv.parentNode && !sv.parentNode.classList.contains('v16-pile')) sv.parentNode.classList.add('v16-pile');
-    var rd=$i('resetData'); if(rd && !rd.classList.contains('v16-danger')) rd.classList.add('v16-danger');
+    /* v163b (C-195) : « Tout effacer » n'est plus peint de l'orange d'état */
     var pc=$i('privCard'); if(pc){ var k=pc.querySelector('.k'); if(k && k.textContent!=='Vie privée') k.textContent='Vie privée'; }
     var ni=$i('setNameInput'); if(ni && !ni._v16){ ni._v16=1; ni.addEventListener('input',tailleNom); ni.addEventListener('blur',function(){ setTimeout(tailleNom,0); }); }
   }
@@ -37306,7 +37403,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var f=window._nqDissolve; if(typeof f!=='function' || f._v16) return;
     var g=function(key,del){ var s=instantane(), nm=''; try{ nm=NUE[key]||key; }catch(_){}
       var r=f.apply(this,arguments);
-      annulable('« '+nm+' » dissoute', function(){ restaure(s); });
+      annulable('« '+nm+' » dissous', function(){ restaure(s); });   /* v163b (C-192) : un Cercle, masculin */
       return r; };
     g._v16=1; window._nqDissolve=g;
   }
@@ -37656,6 +37753,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 .onbv-compte .pil.pleine{background:var(--onb-ink);color:var(--onb-inv);-webkit-text-fill-color:var(--onb-inv)}
 .onbv-compte .pil svg{width:18px;height:18px}
 .onbv-compte .tard{text-align:center;font-family:var(--f-libelle);font-weight:700;font-size:15px;text-transform:uppercase;letter-spacing:.02em;margin-top:16px;padding:6px 0;cursor:pointer}
+.onbv-compte .tard + .tard-non{margin-top:4px}   /* v163b (C-190) : « Plus tard » sous « Acheter sans compte », le même dessin */
 .onbv-compte .legal{text-align:center;font-family:var(--f-texte);font-size:12px;line-height:17px;margin-top:8px}
 .onbv-compte .legal u{text-decoration:none;border-bottom:1px solid currentColor;white-space:nowrap}
 /* le rappel du compte, plus tard — un bandeau discret sous le plateau (pas une notification) */
@@ -38492,6 +38590,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       '<div class="pil pleine" data-k="apple"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.36 12.9c-.02-2.2 1.8-3.26 1.88-3.31-1.02-1.5-2.62-1.7-3.19-1.72-1.36-.14-2.65.8-3.34.8-.68 0-1.75-.78-2.88-.76-1.48.02-2.85.86-3.61 2.19-1.54 2.67-.4 6.62 1.1 8.79.73 1.06 1.6 2.25 2.74 2.21 1.1-.04 1.52-.71 2.85-.71 1.33 0 1.7.71 2.87.69 1.18-.02 1.93-1.08 2.66-2.14.84-1.23 1.18-2.42 1.2-2.48-.03-.01-2.3-.88-2.32-3.49zM14.2 6.4c.6-.73 1.01-1.75.9-2.76-.87.03-1.92.58-2.54 1.31-.56.64-1.05 1.67-.92 2.66.97.07 1.96-.49 2.56-1.21z"/></svg>Continuer avec Apple</div>'+
       '<div class="pil" data-k="google">Continuer avec Google</div>'+
       '<div class="tard" data-onb="plus-tard" role="button">'+(o.tard||'Plus tard')+'</div>'+
+      (o.achat ? '<div class="tard tard-non" data-onb="renonce" role="button">Plus tard</div>' : '')+   /* v163b (C-190) : « Avant d'acheter » a sa sortie qui n'achète pas */
       '<div class="legal">En continuant, tu acceptes les <u>Conditions</u> et la <u>Politique de confidentialité</u>.</div>';
     var fondC=null;
     if(FS){ hote.classList.add('sur-studio'); hote.setAttribute('data-fond', FS.monde); window._fondAchatPose=FS;
@@ -38501,10 +38600,14 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     hote.appendChild(p);
     /* v148 (C-141 §10.1) : le panneau naît en flaques à sa place — l'image de la Toile le couvre d'abord, puis s'ouvre en flaques (le panneau paraît par elles) */
     try{ if(imF && !reduitOnb()) window._passageFlaques(hote, {mode:'ouvre', devant:true, z:30, rect:rectDe(p, 4), image:imF, duree:800, lent:LENT_ONB()}); }catch(_){ }
-    var clos=false;
-    function ferme(k){ if(clos) return; clos=true;
-      if(o.achat){ valideAchat(); FS=null; FN=netStudio()||{net:imageToile()}; }   /* v159 (C-170) : le toucher qui achète — dès lui, tout ce qui est derrière est NET */
-      if(k){ LS.s('promi_compte','demande-'+k); try{ if(window.promiConnexion) window.promiConnexion(k); }catch(_){} }
+    var clos=false, nonAchat=null;
+    function ferme(k){ if(clos) return; clos=true; if(nonAchat){ hote.removeEventListener('click', nonAchat, true); nonAchat=null; }
+      /* ⚑ v163b (Tom, C-190) : « Plus tard » et le toucher dehors RENONCENT (k = '__non') — rien n'est acheté, le flou du Studio part en flaques, le monde
+         reste verrouillé ; aucun choix de compte n'est noté */
+      var renonce=(k==='__non');
+      if(o.achat && !renonce){ valideAchat(); FS=null; FN=netStudio()||{net:imageToile()}; }   /* v159 (C-170) : le toucher qui achète — dès lui, tout ce qui est derrière est NET */
+      if(renonce){ }
+      else if(k){ LS.s('promi_compte','demande-'+k); try{ if(window.promiConnexion) window.promiConnexion(k); }catch(_){} }
       else LS.s('promi_compte', LS.g('promi_compte')||'plus-tard');
       /* v148 (C-141 §10.2) : il ne glisse plus vers le bas — la Toile le RECOUVRE en flaques (500 ms), puis il est retiré */
       var imP=FS?FS.flou:(FN?(netStudio()||FN).net:imageToile());
@@ -38515,6 +38618,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(imP && !reduitOnb()){ window._passageFlaques(hote, {mode:'couvre', devant:true, z:30, rect:rectDe(p, 4), image:imP, duree:500, lent:LENT_ONB(), fin:function(c){ if(p.parentNode) p.remove(); if(c && c.canevas.parentNode) c.canevas.remove(); sansFond(); apres&&apres(k); }}); }
       else { if(p.parentNode) p.remove(); sansFond(); apres&&apres(k); } }
     p.querySelector('.tard').addEventListener('click', function(e){ e.stopPropagation(); ferme(null); });
+    var _non=p.querySelector('.tard-non'); if(_non) _non.addEventListener('click', function(e){ e.stopPropagation(); ferme('__non'); });
+    /* v163b (C-190) : un toucher hors de l'encart d'achat le ferme sans acheter (après 400 ms : le toucher qui l'a ouvert ne compte pas) */
+    if(o.achat){ var _t0=performance.now(); nonAchat=function(e){ if(performance.now()-_t0<400) return; if(p.contains(e.target)) return; e.stopPropagation(); e.preventDefault(); ferme('__non'); }; hote.addEventListener('click', nonAchat, true); }
     [].forEach.call(p.querySelectorAll('.pil'), function(b){ b.addEventListener('click', function(e){ e.stopPropagation(); ferme(b.getAttribute('data-k')); }); });
     return p;
   }
@@ -39239,6 +39345,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     add('#auraHelp .ah-locked');
     add('#notifScreen .nt-mur');   /* v109 : la mémoire des paroles en l'air et le choix de l'heure */
     add('#dessinMode.ouv .dz-couleurs.dz-mur');   /* v133 (C-061) : les teintes du dessin */
+    add('#csPinceau .pc-t.pc-mur'); add('#dpTraitReg .pc-t.pc-mur'); add('#npTrait .pc-t.pc-mur');   /* v163b (C-196) : les traits de Ma Parole ! */
     var st=document.getElementById('studioScreen');
     /* ⚑ v140 (Tom, 10 oct. 2026, C-092) — le panneau des palettes ouvert sur un monde de Ma Parole ! : c'est LUI le mur (il recouvre les
        quatre zones, qui restaient pourtant les murs : la phrase se posait sur des pastilles nettes). Il est flouté comme elles. */
@@ -39256,7 +39363,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
          simulateur iPhone). Les juges ne touchaient que le panneau. Elle est un mur, la DERNIÈRE de la liste (le panneau passe d'abord). */
       var _tb=st.querySelector('#stBg'); if(_tb&&vu(_tb)){ var _fb=getComputedStyle(_tb).filter; if(_fb&&_fb.indexOf('blur')>=0) L.push(_tb); } }
     return L; }
-  function dans(x,y){ var L=murs(); for(var i=0;i<L.length;i++){ var r=L[i].getBoundingClientRect(); if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom){
+  function libreStudio(x,y){ var st=document.getElementById('studioScreen'); if(!st || !st.classList.contains('show')) return false;   /* v163b (C-198) : les réglages gratuits du Studio */
+    if(st.classList.contains('stp-pals')){ var _pp=st.querySelector('#stpPals'), _pr=_pp&&_pp.getBoundingClientRect(); if(_pr && _pr.height>2 && x>=_pr.left && x<=_pr.right && y>=_pr.top && y<=_pr.bottom) return false; }   /* le panneau des palettes les recouvre */
+    var L=['#stpVue','#stpLab','#stpDots']; for(var i=0;i<L.length;i++){ var e=st.querySelector(L[i]); if(!e) continue; var r=e.getBoundingClientRect(); if(r.width>2 && x>=r.left-4 && x<=r.right+4 && y>=r.top-4 && y<=r.bottom+4) return true; } return false; }
+  function dans(x,y){ if(libreStudio(x,y)) return null; var L=murs(); for(var i=0;i<L.length;i++){ var r=L[i].getBoundingClientRect(); if(x>=r.left&&x<=r.right&&y>=r.top&&y<=r.bottom){
       /* v142 : la Toile floutée du Studio couvre tout l'écran — le plateau, le bouton d'achat et les panneaux posés dessus ne sont pas elle */
       if(L[i].id==='stBg'){ var hb=document.elementFromPoint(x,y); if(!hb) continue; if(hb.closest && hb.closest('button,a,[role=button],#stLockBuy,#stLockCta,#stpBas,#stpPals,.closeb,.enh,.st-plat-h,#stpPlat')) continue;
         var dvb=document.getElementById('device').getBoundingClientRect(), kb=(dvb.width/390)||1, yb=(y-dvb.top)/kb; if(yb<104) continue;   /* le plateau (40 → 100) */
@@ -39295,7 +39405,12 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       r={left:D.left, right:D.right, top:D.top+104*k, bottom:D.top+(_yb-8)*k}; }
     else if(mur && mur.closest && mur.closest('#studioScreen')){ var _LS=murs().filter(function(e){ return e.id!=='stBg' && e.closest && e.closest('#studioScreen'); });
       if(_LS.length){ var _u={left:1e9, top:1e9, right:-1e9, bottom:-1e9}; _LS.forEach(function(e){ var q=e.getBoundingClientRect(); if(q.width<2) return; _u.left=Math.min(_u.left,q.left); _u.top=Math.min(_u.top,q.top); _u.right=Math.max(_u.right,q.right); _u.bottom=Math.max(_u.bottom,q.bottom); });
-        if(_u.right>_u.left) r=_u; } }
+        if(_u.right>_u.left) r=_u; }
+      /* ⚑ v163b (C-198) : sur un monde payant, Sombre/Clair, Avec/Sans texte et les barrettes ne sont plus des murs (nets, touchables) — la phrase se pose
+         sur la part floutée du panneau, AU-DESSUS d'eux (jamais sur eux) ; palettes ouvertes, leur panneau les recouvre : rien ne change. */
+      var _stL=document.getElementById('studioScreen');
+      if(_stL && !_stL.classList.contains('stp-pals')){ var _lb=_stL.querySelector('#stpLab'), _qb=_lb&&_lb.getBoundingClientRect();
+        if(_qb && _qb.height>2 && _qb.top>r.top+40) r={left:r.left, right:r.right, top:r.top, bottom:_qb.top-4}; } }
     var x0=Math.max(r.left,D.left), x1=Math.min(r.right,D.right), y0=Math.max(r.top,D.top), y1=Math.min(r.bottom,D.bottom);
     if(!(x1-x0>60 && y1-y0>40)){ x0=D.left; x1=D.right; y0=D.top; y1=D.bottom; }
     var w=Math.min(342, (x1-x0)/k-24), cx=((x0+x1)/2-D.left)/k, cy=((y0+y1)/2-D.top)/k;
@@ -39350,6 +39465,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      Le clic qui peut suivre (souris, ou clic synthétisé ailleurs) est AVALÉ s'il tombe sous 700 ms. */
   var d0=null, avaleJusque=0;
   function agit(x,y,ev){
+    /* ⚑ v163b (Tom, C-198) : pendant une phrase, toucher un X le laisse FERMER (la phrase se baisse) — il n'ouvre jamais l'offre */
+    if(leve){ try{ var _hx=document.elementFromPoint(x,y); if(_hx && _hx.closest && _hx.closest('.closeb, [data-close], .s2-fermer, #npFermer, .ev-x, .x157-g')){ baisse(); return false; } }catch(_){ } }
     if(leve){ var ps=document.getElementById('plusScreen'); if(ps&&ps.classList.contains('show')){ baisse(); return false; }
       if(performance.now()-tMontee<450) return true;   /* le toucher qui l'a fait paraître ne l'emporte pas */
       offre(); return true; }
@@ -39646,7 +39763,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       x.onclick=function(ev){ ev.stopPropagation(); fn(); }; m.appendChild(x); return x; }
     /* les mots (Tom, v118, Q366 tranchée) : « Importer une image » · « La dalle d’origine » · « La dalle du Studio » · « Retirer la photo » */
     /* v133 (Tom, C-060) : « Importer une image » devient « Importer une photo » */
-    item('Importer une photo', false, function(){ try{ inp.click(); }catch(_){} ferme(); });
+    var _csN=b.closest && b.closest('#createSheet'), _nueeP=!!(_csN && _csN.getAttribute('data-kind')==='nuee');   /* v163b (C-199) : un Cercle ne porte pas de photo */
+    if(!_nueeP && !p._cercle) item('Importer une photo', false, function(){ try{ inp.click(); }catch(_){} ferme(); });
     if(p.monde && p.monde.m)
       item(p.dalleOrigine ? 'La dalle du Studio' : 'La dalle d’origine', false, function(){
         p.dalleOrigine=!p.dalleOrigine; if(p.photo) p.photo=null; ferme();
@@ -40404,7 +40522,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     [].forEach.call(r.querySelectorAll('.dz-deploi'), function(e){ e.remove(); });
     var yR=H-P.SECU_BAS-P.MARGE_BAS-P.RANGEE_H; z.style.top=yR+'px'; z.style.height=P.RANGEE_H+'px';
     if(!r.querySelector('.dz-quitter')){ var qx=document.createElement('button'); qx.type='button'; qx.className='dz-quitter'; qx.setAttribute('aria-label','Quitter le dessin');
-      qx.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19"/></svg>';
+      qx.textContent='X';   /* v163b (C-199) : le X unique de C-173 (PromiLate, à la taille du X d'« INDEX » : lot-V157-CROIX), plus une croix dessinée */
       qx.addEventListener('click', function(ev){ ev.stopPropagation(); sort(false); }); r.appendChild(qx); }
     function b(cls, x, w, html, label, fn, on, off){ var e=document.createElement('button'); e.type='button'; e.className=cls+(on?' on':''); e.style.left=x+'px'; e.style.top='0px'; if(w) e.style.width=w+'px';
       e.innerHTML=html; e.setAttribute('aria-label', label); if(on!=null && cls==='dz-o') e.setAttribute('aria-pressed', on?'true':'false'); if(off){ e.disabled=true; e.setAttribute('aria-disabled','true'); }
@@ -42306,7 +42424,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    lettre aussi (C-130) : la croix est en PromiLate 400 (Q565). */
 (function(){
   var dev=document.getElementById('device'); if(!dev) return;
-  var SEL='.closeb, .s2-fermer, #npFermer, .ev-x, #shScopeClose', MES={}, cv=document.createElement('canvas'), g=cv.getContext('2d');
+  var SEL='.closeb, .s2-fermer, #npFermer, .ev-x, #shScopeClose, .dz-quitter', MES={}, cv=document.createElement('canvas'), g=cv.getContext('2d');
   function k(){ return (dev.getBoundingClientRect().width/390)||1; }
   function metr(fam, wt, st){ var key=st+'|'+wt+'|'+fam; if(MES[key]) return MES[key]; g.font=st+' '+wt+' 100px '+fam; var h=g.measureText('H'), x=g.measureText('X');
     var r={cap:(h.actualBoundingBoxAscent||70)/100, xh:((x.actualBoundingBoxAscent||70)+(x.actualBoundingBoxDescent||0))/100, xa:(x.actualBoundingBoxAscent||70)/100,
@@ -42574,6 +42692,73 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(performance.now()-dernier>=R.DELAI) demarre(); }, 250);
   window._veille=function(){ var V=actif; return {doigts:doigts, saisie:saisie(), calme:Math.round(performance.now()-dernier), coupee:COUPEE, delai:R.DELAI, visible:document.visibilityState, active:!!V, depuis:V?Math.round(performance.now()-V.t0):0, couleurs:V?V.couleurs.slice():[], coins:V?V.coins.slice():[], rebonds:V?V.rebonds:0,
     logo:V?[V.s.x, V.s.y, V.logo.__w, V.logo.__h]:null, bornes:V?V.B:null, cadre:V?V.C:null, fond:V?V.fond:null, amande:V?V.amande:null, verrou:etatVerrou, couleur:V?V.couleur:null, tons:V?V.tons.slice():null, derniere:window._veilleDerniere||null}; };
+})();
+</script>
+<script id="lot-V163B-PILE">
+/* ⚑ v163b (Tom, C-193 ; AUDIT-BOUTONS, point 5) — « FERMER RAMÈNE D'OÙ L'ON VIENT. Une seule pile d'écrans, hors du moteur. »
+   · L'ORIGINE se lit AU DOIGT, au moment où il se pose : l'écran qu'on voit (sous le centre de l'appareil, `elementFromPoint` — ni `.show`, que le Studio,
+     l'Aura et les Réglages ne perdent jamais, §8, ni l'ordre des enveloppes d'`openDetail`, que d'autres lots posent) : l'Index, le Fil, la fiche d'une
+     personne, une fiche (Promi, Chiche, Cercle), les Réglages, l'Aura. Rien (l'accueil) : la pile est vidée.
+   · Une DESTINATION qui s'ouvre dans la seconde qui suit ce toucher (une fiche, un Cercle, une personne, Partager, Ma Parole !, Vie privée, un gardé de côté
+     rouvert) empile {origine, destination}.
+   · Son X (`.closeb`, `[data-close]`) la ferme comme avant ; puis la pile rend l'écran d'origine, par sa propre porte (`ouvrirIndex`, le Fil, `openPerson`,
+     `openDetail`, `openNueeDetail`, les Réglages, l'Aura), l'Index et le Fil à leur défilement. Toute autre façon de partir (la barre, le voile) laisse la
+     pile se vider au prochain écran ouvert depuis l'accueil.
+   · La page + d'un gardé de côté qui se ferme remet ses drapeaux de reprise à zéro (`_brouillonRepris`, `_ppGarde`). */
+(function(){
+  var pile=[], geste=null, retour=false, D=function(){ return document.getElementById('device'); };
+  function lit(){ try{ var d=D(), r=d.getBoundingClientRect(), k=r.width/390, e=document.elementFromPoint(r.left+195*k, r.top+422*k);
+      var s=e && e.closest ? e.closest('#personSheet, #detailPoster, #createSheet, #indexSheet, #feedView, #settingsScreen, #auraScreen, #shareScreen, #plusScreen, #privScreen, .screen, .sheet, .poster') : null;
+      if(!s) return null;   /* l'accueil */
+      if(s.id==='personSheet') return {k:'personne', nom:window.__pileNom||null};
+      if(s.id==='detailPoster'){ if(typeof curNuee!=='undefined' && curNuee && (s.classList.contains('dp-nuee') || s.classList.contains('dp-mode-nuee'))) return {k:'cercle', cle:curNuee}; if(typeof cur!=='undefined' && cur && !cur.draft) return {k:'fiche', id:cur.id}; return {k:null, id:s.id}; }
+      if(s.id==='indexSheet'){ var il=document.getElementById('indexList'); return {k:'index', sc:il?il.scrollTop:0}; }
+      if(s.id==='feedView'){ var fl=document.getElementById('feedList'), fv=document.getElementById('feedView'); return {k:'fil', sc:(fv?fv.scrollTop:0)||(fl?fl.scrollTop:0)}; }
+      if(s.id==='settingsScreen') return {k:'reglages'};
+      if(s.id==='auraScreen') return {k:'aura'};
+      return {k:null, id:s.id}; }catch(_){ return null; } }   /* un écran qui n'est pas une origine (Partager, Vie privée…) : ni rendu, ni vidé */
+  document.addEventListener('pointerdown', function(){ if(retour) return; geste={o:lit(), t:performance.now()}; if(!geste.o) pile.length=0; }, true);   /* un doigt sur l'accueil : plus rien à rendre */
+  /* une carte du fil d'un Cercle ouvre sa fiche par son propre chemin (sans `openDetail`) : on empile au toucher */
+  document.addEventListener('click', function(e){ var c=e.target && e.target.closest && e.target.closest('#dpNueeFil .nf-item'); if(!c || retour) return; ouvre('detailPoster'); }, true);   /* un doigt sur l'accueil : plus rien à rendre */
+  /* ⚑ trouvé en jugeant (déjà en v162) : au doigt, une cellule « Tenu ensemble » de la fiche d'une personne (`.ps-c`) ne produit pas de clic — elle
+     n'ouvrait rien. Elle répond au GESTE (appui puis lever sans glisser), par son propre gestionnaire ; un clic qui suivrait n'ouvre rien deux fois. */
+  var pd=null, porte=0;
+  document.addEventListener('pointerdown', function(e){ var c=e.target && e.target.closest && e.target.closest('#personSheet .ps-c'); pd=c?{c:c, x:e.clientX, y:e.clientY, t:performance.now()}:null; }, true);
+  document.addEventListener('pointerup', function(e){ var a=pd; pd=null; if(!a) return; if(Math.hypot(e.clientX-a.x, e.clientY-a.y)>10 || performance.now()-a.t>600) return;
+    setTimeout(function(){ if(porte && performance.now()-porte<400) return; porte=performance.now(); try{ if(a.c.onclick) a.c.onclick({target:a.c, stopPropagation:function(){}, preventDefault:function(){}}); else a.c.click(); }catch(_){ } }, 80); }, true);
+  document.addEventListener('click', function(e){ var c=e.target && e.target.closest && e.target.closest('#personSheet .ps-c'); if(!c) return; if(porte && performance.now()-porte<700){ e.stopImmediatePropagation(); e.preventDefault(); return; } porte=performance.now(); }, true);
+  function rend(o){ retour=true;
+    try{
+      if(o.k==='index'){ if(window.quitteVues) quitteVues(); window.ouvrirIndex(); setTimeout(function(){ var il=document.getElementById('indexList'); if(il) il.scrollTop=o.sc||0; }, 460); }
+      else if(o.k==='fil'){ var fb=document.getElementById('filBtn'); if(fb && fb.onclick) fb.onclick(); else if(window.setView) setView('fil'); setTimeout(function(){ var fv=document.getElementById('feedView'); if(fv) fv.scrollTop=o.sc||0; }, 460); }
+      else if(o.k==='personne' && o.nom){ window.openPerson(o.nom); }
+      else if(o.k==='fiche'){ window.openDetail(o.id); }
+      else if(o.k==='cercle'){ window.openNueeDetail(o.cle); }
+      else if(o.k==='reglages'){ var sb=document.getElementById('settingsBtn'); if(sb && sb.onclick) sb.onclick(); }
+      else if(o.k==='aura'){ var ab=document.getElementById('souffleBtn'); if(ab && ab.onclick) ab.onclick(); }
+    }catch(_){ }
+    setTimeout(function(){ retour=false; }, 700); }
+  function ouvre(dest){ if(retour) return; var g=geste; geste=null;
+    if(!g || performance.now()-g.t>1200){ var h0=pile[pile.length-1]; if(!(h0 && performance.now()-h0.t<1500)) pile.length=0; return; }   /* une porte ouverte par un script : plus rien à rendre (jamais une entrée périmée) — sauf la même porte rappelée par une enveloppe, juste après le toucher */
+    if(!g.o){ pile.length=0; return; }   /* depuis l'accueil : rien à rendre */
+    if(!g.o.k) return;   /* depuis un écran qui n'est pas une origine : rien à empiler */
+    pile.push({o:g.o, dest:dest, t:performance.now()}); if(pile.length>12) pile.shift(); }
+  function enveloppe(nom, dest){ var f=window[nom]; if(typeof f!=='function' || f.__pile) return; var g=function(){ var d=(typeof dest==='function')?dest.apply(this, arguments):dest; ouvre(d); if(nom==='openPerson') window.__pileNom=arguments[0]; return f.apply(this, arguments); }; g.__pile=1; window[nom]=g; }
+  function branche(){
+    enveloppe('openDetail', function(id){ try{ var p=promises.filter(function(q){ return q.id===id; })[0]; return (p && p.draft) ? 'createSheet' : 'detailPoster'; }catch(_){ return 'detailPoster'; } });
+    enveloppe('openNueeDetail', 'detailPoster'); enveloppe('openPerson', 'personSheet'); enveloppe('openShare', 'shareScreen'); enveloppe('ouvreCercle', 'plusScreen');
+    var pc=document.getElementById('privCard'); if(pc && pc.onclick && !pc.onclick.__pile){ var o=pc.onclick; pc.onclick=function(){ ouvre('privScreen'); return o.apply(this, arguments); }; pc.onclick.__pile=1; } }
+  window.addEventListener('load', function(){ setTimeout(branche, 600); setTimeout(branche, 2500); });
+  setInterval(branche, 3000);   /* une porte ré-enveloppée par un autre lot après nous : on la reprend (la pile reste dehors du moteur) */
+  /* le X : après son propre travail (une tâche plus tard), la pile rend l'origine si c'est bien l'écran qu'on a ouvert qui vient de se fermer */
+  document.addEventListener('click', function(e){ var x=e.target && e.target.closest && e.target.closest('.closeb, [data-close]'); if(!x) return;
+    var s=x.closest('.screen, .sheet, .poster, .seal-ov'); if(!s) return; var id=s.id;
+    setTimeout(function(){ var h=pile[pile.length-1]; if(!h || h.dest!==id) return; if(s.classList.contains('show')) return; pile.pop(); rend(h.o); }, 0); }, true);
+  /* la page + d'un gardé de côté qui se ferme : ses drapeaux de reprise reviennent à zéro (rouverte ensuite depuis une personne ou un Cercle, elle n'est
+     plus en reprise) — jamais avant la plantation : `#addPromi` lit le drapeau dans son clic, avant que la page se ferme */
+  try{ var cs=document.getElementById('createSheet'), ouv=false; if(cs) new MutationObserver(function(){ var o=cs.classList.contains('show'); if(o===ouv) return; ouv=o;
+      if(!o) setTimeout(function(){ if(!cs.classList.contains('show')){ window._brouillonRepris=null; window._ppGarde=false; } }, 0); }).observe(cs, {attributes:true, attributeFilter:['class']}); }catch(_){ }
+  window._pile=function(){ return pile.map(function(h){ return {o:h.o, dest:h.dest}; }); };
 })();
 </script>
 </body>

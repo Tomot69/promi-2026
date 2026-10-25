@@ -146,6 +146,50 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
 
+### ⚑ v163b (25 oct. 2026) — LES CORRECTIONS DE L'AUDIT DES BOUTONS (AUDIT-BOUTONS.md, C-186). (Décisions du chef de chantier.)
+> Chaque point cite le numéro de l'audit ; ce que l'audit marquait « non vérifié » a été joué au doigt avant d'être touché.
+> **⚑ C-189 (audit 15, point 1) — UNE PAROLE NE SE TIENT QUE PAR LE TRAIT.** L'acte TENIR du Fil est retiré (TRACER ouvre la fiche, REPORTER reste) ; `feedKeep`, son
+> message du 2e et du 5e tenu et la réaction ✧ sont retirés avec leur code ; la carte de la Toile (`openCell`, jamais appelée) ne tient plus rien. **Les seuls chemins
+> qui écrivent « tenu »** : le sélecteur d'état de la fiche (`#segStatus`, que seul le trait actionne) et la dernière part tracée (`lot-V145-PARTS`). Juge : **`redteam_tenu_trait.py`**.
+> **Ce point CORRIGE le §5 (« un ajout validé, hors inventaire — le Fil, le seul endroit d'où l'on tient une parole sans ouvrir une fiche ») : l'appui
+> maintenu déplie toujours la rangée du bandeau, mais elle porte TRACER (qui ouvre la fiche) et REPORTER.** `redteam_fonctions` remis au niveau (original en sauvegarde).
+> **⚑ C-190 (audit 27, point 2)** : « Avant d'acheter » porte « Plus tard » (`.tard-non`, le dessin de « Garder ton achat ») et se ferme au toucher dehors — sans
+> rien acheter (`ferme('__non')` : ni `valideAchat`, ni second encart). Juge : **`redteam_avant_acheter.py`**.
+> **⚑ C-191 (audit 14, 15, point 3) — LES MENUS ⇅** : le Fil trie (`fdSortMode` posé par TRIER) et filtre (`_filTrieFiltre`, sur les cartes de `_s4Fil`, qui portent
+> maintenant `data-pid`) ; `#fdSort` retiré ; QUADRILLAGE retiré de l'Index (le pincement reste) ; « Manquées » → « À tenir » ; le repère de l'option choisie est une
+> barrette (14 × 4, comme la pagination du Studio). ⚠ `fd-terra` est la terre d'une parole TENUE : il ne dit pas « à tenir ». Juge : **`redteam_tri_menus.py`**.
+> Le bouton ⇅ : deux propositions en capture (le mot « TRIER », trois traits qui raccourcissent) — Tom choisit (Q582).
+> **⚑ C-192 (audit 5, 8, 10, point 4) — PEAUFINER** : DISSOUDRE LE CERCLE et PIÈCES JOINTES d'un Cercle branchés au GESTE (`lot-V163B-PEAUF` ; feuille « Dissoudre … ? »,
+> annulation, « « X » dissous ») ; le + des pièces jointes d'un Promi DANS la rangée (44 pt) ; COMMENTAIRES retiré partout (les cartes du Cercle remontent de 120 :
+> DESCRIPTION 244, MEMBRES 364, PIÈCES JOINTES 444, « + Planter » 552, le bloc Ma Parole ! 630) ; INVITER, LES PROMI DU CERCLE, À QUI, AVEC retirés du Peaufiner de la
+> page + (la phrase les porte) ; « À QUI JE LANCE » absent sur un Chiche reçu. Juge : **`redteam_peauf_rangees.py`**.
+> **⚑ C-193 (audit, point 5) — FERMER RAMÈNE D'OÙ L'ON VIENT** (`lot-V163B-PILE`, hors du moteur) : l'ORIGINE se lit au doigt, à `pointerdown` — l'écran sous le centre
+> de l'appareil (ni `.show`, ni l'ordre des enveloppes d'`openDetail`) ; une destination ouverte dans la seconde empile {origine, destination} ; son X (`.closeb`,
+> `[data-close]`) la ferme puis rend l'origine par sa propre porte (l'Index et le Fil à leur défilement). Un doigt sur l'accueil, ou une porte ouverte par script,
+> vide la pile. Le X de Peaufiner ferme Peaufiner seul (`ouvre(false)`, `_s2Ouvre(false)`, `peaufOuvre(false)`). La page + qui se ferme remet `_brouillonRepris` et
+> `_ppGarde` à zéro. Trouvé (déjà en v162) : les cellules « Tenu ensemble » d'une personne ne s'ouvraient pas au doigt — elles répondent au geste. Juge :
+> **`redteam_pile_retour.py`** (« redteam_retour » est le juge de C-028). ⚠ Un juge qui touche une carte du fil d'un Cercle attend la pose : le fil change de
+> géométrie après un défilement et « + Planter » colle sur la carte.
+> **⚑ C-194 (audit 7, 9, 10, point 6)** : la ligne « Un mot… » est le seul endroit pour commenter ; un seul magasin pour un Cercle (`promi_cercle_mots`) — l'autre chemin
+> (COMMENTAIRES, `_addComment`, `cur` nul sur un Cercle) n'a jamais rien enregistré : rien à migrer.
+> **⚑ C-195 (audit 20, 21, 27, point 7)** : UN « Tout effacer » aux Réglages (feuille, 5 s pour annuler, `localStorage.clear()`) ; « Se déconnecter » seulement avec un
+> compte (posé en `!important` : une règle des Réglages l'emportait) ; l'action des feuilles de confirmation à l'encre du mode, pleine, en gras. Juge : **`redteam_tout_effacer.py`**.
+> **⚑ C-196 (audit 2, 10, 31, point 8)** : le rail du pinceau défile (page +, Peaufiner d'une fiche, d'un Cercle ; `touch-action:pan-x`, marge de 24 au bout) ; un trait
+> de Ma Parole ! est un MUR (`.pc-mur`, flou 4,8 px, dans `murs()`) : plus de « — 0,50 € », plus de pointillé, plus d'application sans payer. Juge : **`redteam_pinceau_rail.py`**.
+> ⚠ Les glissés de `banc_tom` ne font défiler aucun conteneur et WebKit mobile n'a pas de molette : le juge lit le débordement, `touch-action` et `scrollLeft`.
+> **⚑ C-197 (audit 3, 5, 10, 15, 19, 20, point 9) — UN MOT PAR RÔLE** : l'échéance « demain · 1 sem. · 1 mois · une date… · un jour » (la phrase, `#dueChips`, `ECHEANCE`
+> de la fiche — le calendrier s'y ouvre enfin —, REPORTER du Fil : demain · 1 sem. · 1 mois) ; « demain » = 1 jour partout ; « qui ose ? » ; « Inviter » ; la rangée
+> « Le Studio » des Réglages retirée. **C-198 (audit 18, 31, point 10)** : pendant une phrase de mur, le X ferme, jamais l'offre ; au Studio, Sombre/Clair et
+> Avec/Sans texte sortent du mur, les barrettes restent actives. **C-199** : petites corrections (voir CHANTIERS). Juge : **`redteam_audit_v163.py`**.
+> ⚠ **Sur le panneau du Studio, le mur n'est plus que la part floutée : la phrase se pose au-dessus des réglages libres** (du haut du panneau au haut de
+> `#stpLab`, 576 → 646 pt mesuré), jamais sur eux ; palettes ouvertes, leur panneau les recouvre (`libreStudio` répond non sur lui — trouvé en jugeant :
+> 10 touchers sur 20 sans phrase). ⚠ La dette de la loi des points s'est vue : « · ·· ··· » (Q410, v135) était hors de l'écran ; COMMENTAIRES retiré, la
+> liste remonte de 120 et la montre — inscrite dans `lexique-dette.json` avec sa source, rien d'inventé (Q583).
+> **Contrats remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v163b.py`) : `redteam_echeance`, `redteam_peaufiner` (les pastilles de
+> C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
+> `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
+> l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
 ### ⚑ v163a (25 oct. 2026) — « T'APPARTIENT. » LETTRE À LETTRE, LE TRAIT RÉGLABLE, LA VEILLE AUX BORDS, LE GARDÉ DE CÔTÉ VISIBLE, LE SYMBOLE « RECADRER », LE MENU DE TRI QUI SE REFERME. (Décisions Tom.)
 > **Validés par Tom (v162) : C-174 (l'onde à 0,5 : `?onde=` est retiré, figé), C-183, C-166, C-149 (garder de côté), C-185, C-175 sous Chantourné, Guingois, Mascaret (gelés).**
 > **⚑ C-165 — « T'APPARTIENT. » : UNE COULEUR PAR LETTRE**, dans l'ordre de la palette de base (comme « Studio » au guide) — sombre `#82AEF8` · `#FFB8D2` · `#C9A8F5` ·
@@ -3491,6 +3535,14 @@ python3 redteam_garde_index.py  # 6 — v163a (C-149, Q579) : le pointillé 3 pt
 python3 redteam_recadre_bouton.py # 16 — v163a (C-188) : le symbole seul, 22 pt, sa place, sa zone de 44, naissance et départ en flaques, 4 s, le double toucher.
 python3 redteam_menu_tri.py     # 8 — v163a (Q578) : un toucher hors du menu ⇅ le referme (Index et Fil), dans le panneau non, une option agit. 4/8 sur v162.
 python3 redteam_appartient.py   # 12 — v163a (C-165) : « t'appartient. » lettre par lettre, chaque couleur ΔE ≤ 12 et ≥ 3:1, deux thèmes, deux échelles. Rouge sur v162.
+python3 redteam_tenu_trait.py   # 7 — v163b (C-189) : une parole ne se tient que par le trait — aucun TENIR au Fil, aucune réaction ✧, les seuls écrivains de « tenu ».
+python3 redteam_avant_acheter.py # 4 — v163b (C-190) : « Avant d'acheter » a « Plus tard » et se ferme au toucher dehors, sans rien acheter.
+python3 redteam_tri_menus.py    # 7 — v163b (C-191) : le Fil trie et filtre au doigt, plus de #fdSort ni de QUADRILLAGE, « À tenir », le repère en barrette. 2/7 sur v162.
+python3 redteam_peauf_rangees.py # 12 — v163b (C-192) : Dissoudre et Pièces jointes branchés au doigt, COMMENTAIRES et les rangées en double retirés.
+python3 redteam_pile_retour.py  # 10 — v163b (C-193) : le X rend l'écran d'où l'on vient (Index, Fil, personne, Cercle, Réglages, Aura), Peaufiner seul. 1/10 sur v162.
+python3 redteam_tout_effacer.py # 10 — v163b (C-195) : un « Tout effacer » (feuille, 5 s), « Se déconnecter » avec un compte seulement, l'action à l'encre.
+python3 redteam_pinceau_rail.py # 8 — v163b (C-196) : le rail défile (débordement, pan-x, scrollLeft), les traits payants sont un mur.
+python3 redteam_audit_v163.py   # 24 — v163b (C-194, C-197, C-198, C-199) : les mots d'un rôle, les murs du Studio, les petites corrections de l'audit. 1/24 sur v162.
 python3 redteam_parole_longue.py # 144 — v160c (C-180) : la parole longue de l'onboarding, 1 à 6 lignes, 40 lettres, 260 et 500 caractères, deux échelles, deux thèmes, clavier ouvert et fermé. Rouge sur v159.
 python3 redteam_studio_arrivee.py # 3 — v160c (C-175) : à l'arrivée sur Ramage, aucun rendu de la silhouette ; elle vient au calme ; Pochade inchangé. Rouge sur v160b.
 python3 redteam_souffle.py     # v117 (Q364 → A) : la Pelote respire par la lumière du velours — rien ne change au-delà de la

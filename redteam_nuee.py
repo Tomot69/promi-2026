@@ -303,7 +303,7 @@ PF_P1 = [
     ('DESCRIPTION',            '#npDesc'),
     ('MEMBRES',                '#npMemb'),
     ('PIÈCES JOINTES',         '#npFich'),
-    ('COMMENTAIRES',           '#npComm'),
+    # v163b (C-192) : COMMENTAIRES est retiré du Peaufiner d'un Cercle — la ligne « Un mot… » est le seul endroit pour commenter (C-194)
 ]
 PF_P2 = [
     ('Planter un Promi dans',  '#nfAdd'),
@@ -371,6 +371,16 @@ def reference_peaufiner(b):
         ref['#nfAdd'] = dict(ref['#nfAdd'], y=-88, w=342, h=62)
     if '#npDiss' in ref:
         ref['#npDiss'] = dict(ref['#npDiss'], y=478)
+    # ⚑ v163b (25 oct. 2026, C-192 — corrections de l'audit, chef de chantier) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (original :
+    #    sauvegardes/redteam_nuee-avant-v163b.py). « COMMENTAIRES retiré du Peaufiner » : la carte de v148 (104 + 16 = 120) part, les trois
+    #    cartes remontent de 120 (DESCRIPTION 244 · MEMBRES 364 · PIÈCES JOINTES 444), « + Planter » de même (672 → 552, soit −208 en page 2),
+    #    DISSOUDRE aussi (478 → 358). EN DUR, au pixel, comme avant.
+    #    (les trois cartes : le +120 de v148 ne s'applique plus, il dépend de la carte COMMENTAIRES, retirée de PF_MAP)
+    if '#nfAdd' in ref:
+        ref['#nfAdd'] = dict(ref['#nfAdd'], y=-208)
+    if '#npDiss' in ref:
+        ref['#npDiss'] = dict(ref['#npDiss'], y=358)
+    ref.pop('#npComm', None)
     return ref
 
 

@@ -8874,3 +8874,10 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   p95 18 ms. *Deux voies* : (a) la préparer sur l'accueil au repos — essayé en v160c, son premier rendu laisse un état dans le moteur (banc de rendu changé
   sous Guingois) : il faudrait trouver cet état (lot moteur) ; (b) la rendre dans un Worker (lot moteur). La garder en image d'une ouverture à l'autre
   serait une découpe (interdit, C-048). Rien n'est changé.
+- **Q582 — À TRANCHER (C-191, v163b §10)** : le bouton ⇅ du tri (Index et Fil) — deux propositions en capture (`scratchpad/v163/tri-variantes.png`) :
+  A, le mot « TRIER » dans une pilule ; B, trois traits qui raccourcissent. Rien n'est changé dans l'app tant que Tom n'a pas choisi.
+- **Q583 — À TRANCHER (C-197, v163b §16)** : « en l'air » n'est plus un choix d'échéance (« demain · 1 sem. · 1 mois · une date… · un jour »), mais le mot
+  vit encore pour les paroles déjà marquées « en l'air » : « LA MÉMOIRE · réveille tes « en l'air » » (bloc Ma Parole ! du Peaufiner) et « Mes paroles
+  en l'air » (Notifications, qui ne relancent que ces paroles-là). Les renommer « un jour » changerait ce qu'elles font (elles viseraient toutes les
+  paroles sans date) : rien n'est changé. *Proposition* : à l'ouverture, une parole « en l'air » devient « un jour » ; puis ces deux libellés disent
+  « un jour ». Et Q410 est revenue au juge : la valeur « · ·· ··· » de « C'EST IMPORTANT ? » est maintenant à l'écran (la liste a remonté de 120).

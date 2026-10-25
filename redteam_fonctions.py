@@ -13,7 +13,7 @@ Chaque ligne dit : le geste, et ce qui doit en résulter DANS LA DONNÉE.
 
 Usage :  python3 redteam_fonctions.py [--verbose]
 """
-import sys
+import sys, re
 from playwright.sync_api import sync_playwright
 
 APP = "http://127.0.0.1:8752/app.html"
@@ -104,17 +104,13 @@ with sync_playwright() as p:
     t('on tient sa parole au geste, depuis la fiche',
       pg.evaluate("(i)=>promises.find(p=>p.id===i).status", pid) == 'tenu')
 
-    print('\n── tenir depuis le FIL, sans ouvrir de fiche ──')
-    # ⚠ CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (CLAUDE.md §7) — 20 août 2026, Q75.
-    #   Règle encodée : « le Fil est le seul endroit d'où l'on tient une parole sans ouvrir
-    #   une fiche ». Elle est INTACTE. Ce qui a changé, c'est OÙ le geste vit :
-    #   le cadre 76 montre cinq bandeaux NUS — aucune rangée « TENIR · REPORTER » au repos.
-    #   Décision Tom : la fonction reste, en AJOUT VALIDÉ HORS INVENTAIRE — le repos est
-    #   celui du cadre, et le geste apparaît AU BESOIN, sur un appui maintenu.
-    #   Le contrat vise donc le GESTE, plus le repos ; et il agit sur un bandeau DÉSIGNÉ,
-    #   dont il vérifie l'état AVANT et APRÈS — l'ancien cliquait « le premier bouton
-    #   trouvé », qui pouvait appartenir à une parole déjà tenue : il ne mesurait rien.
-    #   Version d'origine : sauvegardes/redteam_fonctions-avant-jeu-planche.py
+    print('\n── le FIL : TRACER mène à la fiche, rien ne s\'y tient ──')
+    # ⚑ v163b (25 oct. 2026, C-189 — audit 15, point 1) — CONTRAT RÉÉCRIT AU NIVEAU DE LA DÉCISION (CLAUDE.md §7).
+    #   La règle encodée depuis le 20 août (Q75) : « le Fil est le seul endroit d'où l'on tient une parole sans ouvrir une fiche ».
+    #   LA DÉCISION QUI LA REMPLACE (brief v163, §8) : « supprimer TENIR du Fil — une parole ne se tient que par le trait ». Le geste
+    #   du Fil reste (l'appui maintenu déplie la rangée, le repos est celui du cadre 76), mais son acte fort est TRACER, qui ouvre la
+    #   fiche, et RIEN dans le Fil n'écrit « tenu ». Même intention (le geste agit sur un bandeau DÉSIGNÉ, l'état lu avant et après).
+    #   Version d'avant : sauvegardes/redteam_fonctions-avant-v163b.py
     raz()
     pg.evaluate("()=>{setView('fil');}"); pg.wait_for_timeout(1900)
 
@@ -123,46 +119,40 @@ with sync_playwright() as p:
         .filter(e=>e.getBoundingClientRect().width>4).length === 0"""),
       '%s rangée(s) au repos' % pg.evaluate("()=>document.querySelectorAll('#feedList .s4-actes').length"))
 
-    # ON DÉSIGNE LE BANDEAU QUI PORTE « TENIR ». La composition du Fil est publiée par
-    # l'app (`window._filComp`) : les `.fd-item` d'où viennent les actes sont détruits par
-    # la passe qui bâtit la grille, et au repos aucune rangée n'est à l'écran — on ne peut
-    # donc pas les lire dans le DOM. C'est le principe du §7 : on lit la composition.
     cible = pg.evaluate("""()=>{const C=window._filComp||[];
-      for(const F of C){ if(!F.actes.some(a=>a.quoi==='keep')) continue;
-        const p=promises.find(q=>q.id===F.pid); if(!p||p.draft) continue;
+      for(const F of C){ if(!F.actes.some(a=>a.quoi==='tracer')) continue;
+        const p=promises.find(q=>q.id===F.pid); if(!p||p.draft||p.status==='tenu') continue;
         return {i:F.rang, pid:F.pid, titre:p.title, statut:p.status||''}; }
       return null;}""")
-    t('le Fil sait quel bandeau porte « TENIR »', bool(cible), str(cible))
-    if cible and cible['statut'] == 'tenu':
-        # la parole est déjà tenue : on la remet à tenir, sans fabriquer d'événement.
-        pg.evaluate("(i)=>{const p=promises.find(q=>q.id===i); p.status='rate'; if(window.buildFeed)buildFeed();}",
-                    cible['pid'])
-        pg.wait_for_timeout(1200)
+    t('le Fil sait quel bandeau porte « TRACER »', bool(cible), str(cible))
+    t('aucun bandeau du Fil ne porte plus « TENIR » ni de réaction',
+      pg.evaluate("()=>!(window._filComp||[]).some(F=>F.actes.some(a=>a.quoi==='keep'||a.quoi==='react'))"), '')
 
-    # L'APPUI MAINTENU — le geste que la décision a posé.
-    r = pg.evaluate("""(i)=>{const c=[...document.querySelectorAll('#feedList .s4-carte')][i];
-      if(!c) return null; const b=c.getBoundingClientRect(); return {x:b.left+40,y:b.top+b.height/2};}""",
-      cible['i'])
+    r = None
+    if cible:
+        r = pg.evaluate("""(i)=>{const c=[...document.querySelectorAll('#feedList .s4-carte')][i];
+          if(!c) return null; c.scrollIntoView({block:'center'}); const b=c.getBoundingClientRect(); return {x:b.left+40,y:b.top+b.height/2};}""",
+          cible['i'])
     if r:
+        pg.wait_for_timeout(500)
+        r = pg.evaluate("""(i)=>{const c=[...document.querySelectorAll('#feedList .s4-carte')][i]; const b=c.getBoundingClientRect(); return {x:b.left+40,y:b.top+b.height/2};}""", cible['i'])
         pg.mouse.move(r['x'], r['y']); pg.mouse.down(); pg.wait_for_timeout(750); pg.mouse.up()
         pg.wait_for_timeout(900)
-    n = pg.evaluate("""()=>[...document.querySelectorAll('#feedList [data-keep],#feedList .fd-acc,#feedList .s4-acte.fort')]
-      .filter(e=>e.getBoundingClientRect().width>4).length""")
-    t('l\'appui maintenu fait paraître le geste « TENIR »', n > 0, '%d bouton(s)' % n)
-    m = pg.evaluate("""()=>[...document.querySelectorAll('#feedList [data-post],#feedList .fd-dec,#feedList .s4-acte:not(.fort)')]
-      .filter(e=>e.getBoundingClientRect().width>4).length""")
-    t('l\'appui maintenu fait paraître « REPORTER »', m > 0, '%d bouton(s)' % m)
-
-    if n > 0:
+    VIS = """()=>[...document.querySelectorAll('#feedList .s4-acte')].filter(e=>e.getBoundingClientRect().width>4).map(e=>(e.textContent||'').trim())"""
+    actes = pg.evaluate(VIS)
+    t('l\'appui maintenu fait paraître « TRACER » et « REPORTER », jamais « TENIR »',
+      any(re.search('TRACER', a, re.I) for a in actes) and any(re.search('REPORTER', a, re.I) for a in actes) and not any(re.search(r'\bTENIR\b', a, re.I) for a in actes), str(actes))
+    if cible and any(re.search('TRACER', a, re.I) for a in actes):
         av = pg.evaluate("(i)=>(promises.find(p=>p.id===i)||{}).status", cible['pid'])
-        pg.evaluate("""()=>{const b=[...document.querySelectorAll('#feedList [data-keep],#feedList .fd-acc,#feedList .s4-acte.fort')]
-          .filter(e=>e.getBoundingClientRect().width>4)[0]; if(b)b.click();}""")
-        pg.wait_for_timeout(1400)
+        pg.evaluate("""()=>{const b=[...document.querySelectorAll('#feedList .s4-acte')].filter(e=>e.getBoundingClientRect().width>4).find(e=>/TRACER/i.test(e.textContent||'')); if(b)b.click();}""")
+        pg.wait_for_timeout(2400)
         ap = pg.evaluate("(i)=>(promises.find(p=>p.id===i)||{}).status", cible['pid'])
-        t('« TENIR » depuis le Fil tient vraiment la parole',
-          ap == 'tenu' and av != 'tenu', '« %s » : %s → %s' % (cible['titre'], av, ap))
+        fiche = pg.evaluate("(i)=>{const d=document.getElementById('detailPoster'); return !!(d&&d.classList.contains('show')&&typeof cur!=='undefined'&&cur&&cur.id===i);}", cible['pid'])
+        t('« TRACER » ouvre la fiche de cette parole, sans la tenir', fiche and ap == av and ap != 'tenu', '« %s » : %s → %s · fiche %s' % (cible['titre'], av, ap, fiche))
     else:
-        t('« TENIR » depuis le Fil tient vraiment la parole', False, 'aucun bouton après l\'appui')
+        t('« TRACER » ouvre la fiche de cette parole, sans la tenir', False, 'aucun « TRACER » après l\'appui')
+    try: pg.evaluate("()=>{try{closeAll()}catch(e){}}"); pg.wait_for_timeout(500)
+    except Exception: pass
 
     # ── 3 · CHERCHER ET TRIER ───────────────────────────────────────────────────────
     print('\n── chercher, trier ──')

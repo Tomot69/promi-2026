@@ -27,6 +27,7 @@
    · Les conteneurs : on ne garde que la feuille du dessus qui porte des mots, sinon on
      mesurerait un bloc contre son propre enfant.
 """
+# v163b (C-197) : la rangée « Le Studio » des Réglages (#openStudio2) est retirée — le Studio s'ouvre par la barre (#studioBtn) quand elle manque.
 import sys, json, os
 from playwright.sync_api import sync_playwright
 
@@ -64,7 +65,7 @@ ECRANS = [
  #   Quinze écrans de plus, ouverts par LEURS VRAIS BOUTONS quand ils en ont. Inatteignables dans l'app aujourd'hui (aucune
  #   entrée) : la langue, « Arranger la Toile ». Original : sauvegardes/redteam_air-avant-v102.py
  ('accueil',       "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show'));}"),
- ('Studio',        "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); const b=document.getElementById('openStudio2'); if(b) b.click();}"),
+ ('Studio',        "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); const b=document.getElementById('openStudio2'); if(b) b.click(); else { const s=document.getElementById('studioBtn'); if(s) s.click(); }}"),
  ('Partager',      "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); document.getElementById('shareBtn').click();}"),
  ('le Cercle',     "()=>{closeAll(); document.getElementById('settingsBtn').click(); setTimeout(()=>{const b=document.getElementById('openPlusTop'); if(b) b.click();},500);}"),
  ('Vie privée',    "()=>{closeAll(); document.getElementById('settingsBtn').click(); setTimeout(()=>{const b=document.getElementById('privCard'); if(b) b.click();},500);}"),

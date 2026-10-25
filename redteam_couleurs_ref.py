@@ -35,6 +35,7 @@ Les exceptions sont NOMMÉES ici, en dur (§7) — rien d'autre n'est toléré :
   E11 v136 (Tom, 7 oct. 2026, C-059) : en clair, la fiche tenue (Promi et Chiche) et son Peaufiner : terre → crème, crème → encre, amande → #00341A.
       v136 (C-071) : le halo et l'ombre de la Pelote sont SUPPRIMÉS — E7 ne trouve plus son nœud (0), le nœud est listé « sans vis-à-vis ».
   E12 v139 (Tom, 9 oct. 2026, C-084) : en clair, le corps et l'encart des fiches #F7F0DE → #EAD9B9 ; les cartes du fil d'un Cercle #E9D8B7 → #F7F0DE.
+  E22 v163b (C-199) : le contour du bouton photo, plein (2 pt, crème). E23 v163b (C-199) : la pastille « Chiche » de la phrase, sans fond.
   E21 v163 (Tom, 25 oct. 2026, C-149 suite) : le pointillé d'une carte d'Index d'un gardé de côté — 3 pt, #291547 en clair, #A77CF7 en sombre.
   E20 v151 (Tom, 18 oct. 2026, C-157) : le mot du trait des pages + (« trace pour planter », « trace ta moitié », « trace pour lancer ») en orange
       #FB4C0D, clair et sombre — sur `.pp-trace` seulement (la fiche, `#dptTrace`, ne bouge pas). Original : sauvegardes/redteam_couleurs_ref-avant-v151.py.
@@ -50,6 +51,7 @@ nomme par le TEXTE de sa ligne, plus par son rang (la mini-dalle instable de v12
   python3 redteam_couleurs_ref.py --liste    → détaille chaque écart
 Preuve (§7) : `APP=http://127.0.0.1:8752/<copie de sauvegardes/app-avant-v121.html>` ROUGIT (les pages sombres au brun).
 """
+# v163b (C-197) : la rangée « Le Studio » des Réglages (#openStudio2) est retirée — le Studio s'ouvre par la barre (#studioBtn) quand elle manque.
 import os, re, sys, io, json, math, shutil, subprocess
 from playwright.sync_api import sync_playwright
 
@@ -71,7 +73,7 @@ REF = 'http://127.0.0.1:8752/zz-ref-v118.html'
 src = io.open(os.path.join(ICI, 'redteam_air.py'), encoding='utf-8').read()
 ECRANS = [(m.group(1), m.group(2)) for m in re.finditer(r"^ \((?:'|\")(.+?)(?:'|\"),\s*\"(\(\)=>\{.*\})\"\),?\s*$", src, re.M)]
 ECRANS.append(('mur · Réglages', "()=>{closeAll(); document.getElementById('settingsBtn').click(); setTimeout(()=>{ try{ var m=document.querySelector('#settingsScreen .s2-cercle, #settingsScreen [data-mur]'); if(m && window._murMonte) window._murMonte(m); }catch(e){} },700);}"))
-ECRANS.append(('panneau des palettes', "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); const b=document.getElementById('openStudio2'); if(b) b.click(); setTimeout(()=>{const t=document.querySelector('#studioScreen .stp-ton'); if(t) t.click();},1200);}"))
+ECRANS.append(('panneau des palettes', "()=>{closeAll(); document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); const b=document.getElementById('openStudio2'); if(b) b.click(); else { const s=document.getElementById('studioBtn'); if(s) s.click(); } setTimeout(()=>{const t=document.querySelector('#studioScreen .stp-ton'); if(t) t.click();},1200);}"))
 def _plus(i):
     return "()=>{closeAll(); document.getElementById('createBtn').click(); var n=0; (function essai(){ var cs=document.getElementById('createSheet'); var x=[...document.querySelectorAll('#createSheet .tile')][%d]; if(cs&&cs.classList.contains('pp-choix')&&x){ x.click(); } if(++n<6) setTimeout(essai,350); })();}" % i
 _DEF = "()=>{closeAll(); openEssaim('%s'); var n=0; (function essai(){ try{ if(window._nueeDefile) window._nueeDefile(true); }catch(e){} if(++n<6) setTimeout(essai,400); })();}"
@@ -292,6 +294,10 @@ with sync_playwright() as p:
                     # E21 (v163, Tom, 25 oct. 2026, C-149 suite) : « la carte d'Index d'un gardé de côté se reconnaît au premier coup d'œil : un contour pointillé de 3 pt,
                     #   le violet « en cours » #291547 en clair (sa variante claire en sombre) » — le pointillé (`outline`) d'une carte d'Index, et lui seul.
                     if pr_ == 'outline' and va in ('rgb(41, 21, 71)', 'rgb(167, 124, 247)') and re.search(r's4-carte', k): exceptions['E21'] = exceptions.get('E21', 0) + 1; continue
+                    # E22 (v163b, C-199, audit — chef de chantier) : « contours pleins de 2 pt pour le bouton photo » — la crème à 42 % devient la crème pleine, sur le bouton photo seul.
+                    if pr_ in ('bT', 'bB', 'bL', 'bR') and va == 'rgb(247, 240, 222)' and re.search(r'ph-photo-btn', k): exceptions['E22'] = exceptions.get('E22', 0) + 1; continue
+                    # E23 (v163b, C-199) : « le Chiche de la phrase ne ressemble plus à un bouton » — la pastille du verbe d'un Chiche (`.ph-b-fixe`) perd son fond.
+                    if pr_ == 'bg' and va is None and re.search(r'ph-b-fixe', k): exceptions['E23'] = exceptions.get('E23', 0) + 1; continue
                     # E14 (v146, chef de chantier, C-121) : « le signe + passe en orange #FB4C0D, en clair et en sombre. Le signe seul, sans fond ni cercle. »
                     if pr_ in ('stroke', 'fill', 'color', 'tfill') and va == 'rgb(251, 76, 13)' and re.search(r'^#createBtn\b', k): exceptions['E14'] = exceptions.get('E14', 0) + 1; continue
                     # E15 (v146, chef de chantier, C-120) : « Studio, Aura, Index et Fil, sous les icônes, prennent le bleu FONCÉ du I clignotant de PROMI » — EN CLAIR
@@ -386,6 +392,8 @@ print('E18 l\'état des cartes crème dès la première image, en sombre (v147, 
 print('E19 les cartes de l\'Index, du Fil et du fil d\'un Cercle prennent la construction de la fiche, deux thèmes (v148, C-147) : %d' % exceptions.get('E19', 0))
 print('E20 le mot du trait des pages + en orange #FB4C0D, deux thèmes (v151, C-157) : %d' % exceptions.get('E20', 0))
 print('E21 le pointillé d\'un gardé de côté, #291547 en clair, #A77CF7 en sombre (v163, C-149) : %d' % exceptions.get('E21', 0))
+print('E22 le contour plein de 2 pt du bouton photo (v163b, C-199) : %d' % exceptions.get('E22', 0))
+print('E23 le « Chiche » de la phrase sans fond (v163b, C-199) : %d' % exceptions.get('E23', 0))
 print('E13 fiches et page + en sombre dans les deux modes (v146, C-132) : %d écran(s) clairs comparés à la référence sombre' % exceptions.get('E13', 0))
 print('exceptions nommées : E1 Toile entière %d canevas · E3 orange des murs %d · E4 Pelote et halo %d · E5 violations retirées %d · E6 trace crème (Q374) %d · E7 ombre crème en sombre %d · E8 cobalt, corps sombre Promi (v131) %d · E9 lilas éclairci et libellé de suppression (v132) %d' % (exceptions['E1'], exceptions['E3'], exceptions['E4'], exceptions['E5'], exceptions['E6'], exceptions['E7'], exceptions['E8'], exceptions['E9']))
 for (pr_, vr, va), L in sorted(par.items(), key=lambda x: -len(x[1])):

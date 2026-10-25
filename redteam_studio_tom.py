@@ -30,7 +30,7 @@ def juge(nom, cond, detail=''):
 ETAT = """()=>{ const m=document.getElementById('murPhrase'), dv=document.getElementById('device').getBoundingClientRect(),k=dv.width/390; const r=m&&m.getBoundingClientRect(); const c=m?getComputedStyle(m):null;
   const vis=s=>[...document.querySelectorAll(s)].some(e=>{const q=getComputedStyle(e); return q.visibility!=='hidden'&&q.display!=='none'&&e.getBoundingClientRect().height>1;});
   return {leve:!!(m&&m.classList.contains('leve')), offre:!!document.querySelector('#plusScreen.show'), cy:r?(r.top+r.height/2-dv.top)/k:null, cx:r?(r.left+r.width/2-dv.left)/k:null,
-    cerne:c?parseFloat(c.webkitTextStrokeWidth||'0'):0, bandes:vis('#stpTons, #stpVue, #stpLab'), nom:vis('#studioScreen .stp-m'), pastilles:vis('#stpPals .st3-p'), texte:m?m.textContent:''}; }"""
+    cerne:c?parseFloat(c.webkitTextStrokeWidth||'0'):0, bandes:vis('#stpTons'), bas:r?(r.bottom-dv.top)/k:null, libreHaut:(()=>{const e=document.querySelector('#studioScreen #stpLab'); const q=e&&e.getBoundingClientRect(); return q&&q.height>2?(q.top-dv.top)/k:null;})(), nom:vis('#studioScreen .stp-m'), pastilles:vis('#stpPals .st3-p'), texte:m?m.textContent:''}; }"""
 ZONES = """()=>{ const dv=document.getElementById('device').getBoundingClientRect(),k=dv.width/390; const R=s=>{const e=document.querySelector(s); if(!e) return null; const r=e.getBoundingClientRect(), c=getComputedStyle(e); if(r.height<8||c.display==='none'||c.visibility==='hidden') return null; return [(r.left-dv.left)/k,(r.top-dv.top)/k,(r.right-dv.left)/k,(r.bottom-dv.top)/k];};
   const fl=s=>{const e=document.querySelector(s); return e?getComputedStyle(e).filter:''};
   return {panneau:R('#studioScreen #stpBas'), pals:R('#studioScreen #stpPals'), achat:R('#stLockBuy'), flouToile:fl('#stBg'), cls:document.getElementById('studioScreen').className}; }"""
@@ -43,18 +43,26 @@ def studio(b, sombre, pals):
         glisse(pg, droite((320, 300), (80, 300), 10), pas=16); pg.wait_for_timeout(1600)
         if 'world-locked' in pg.evaluate("()=>document.getElementById('studioScreen').className"): break
     pg.wait_for_timeout(2500); return ctx, pg
-def vingt(nom, pg, zone, attendu, cap=None):
-    x0, y0, x1, y1 = zone; bons = 0; rates = []; lis = True; e = None
+LIBRE = """([x,y])=>{ const dv=document.getElementById('device').getBoundingClientRect(),k=dv.width/390; const X=dv.left+x*k, Y=dv.top+y*k;
+  for(const q of ['#studioScreen #stpVue','#studioScreen #stpLab','#studioScreen #stpDots']){ const e=document.querySelector(q); if(!e) continue; const r=e.getBoundingClientRect(); if(r.width>2 && X>=r.left-4*k && X<=r.right+4*k && Y>=r.top-4*k && Y<=r.bottom+4*k) return true; } return false; }"""
+def vingt(nom, pg, zone, attendu, cap=None, libres=False):
+    # ⚑ v163b (C-198) : sur un monde payant, Sombre/Clair, Avec/Sans texte et les barrettes sortent du mur — un toucher sur eux ne fait paraître
+    #    ni phrase ni offre ; tout autre toucher garde l'exigence. Original : sauvegardes/redteam_studio_tom-avant-v163b.py
+    x0, y0, x1, y1 = zone; bons = 0; rates = []; lis = True; e = None; nlib = 0; libok = 0
     for i in range(N):
         x = x0 + 14 + (x1 - x0 - 28) * ((i % 5) + 0.5) / 5.0; y = y0 + 10 + (y1 - y0 - 20) * ((i // 5) + 0.5) / 4.0
+        lib = libres and pg.evaluate(LIBRE, [x, y])
         tap(pg, x, y); pg.wait_for_timeout(650); e = pg.evaluate(ETAT)
         dedans = e['cy'] is not None and y0 - 2 <= e['cy'] <= y1 + 2
-        if e['leve'] and not e['offre'] and dedans: bons += 1
-        else: rates.append('(%d ; %d)%s%s' % (x, y, ' offre' if e['offre'] else '', '' if e['leve'] else ' rien') + ('' if dedans or not e['leve'] else ' phrase à y %s' % (e['cy'] and round(e['cy']))))
+        if lib:
+            nlib += 1; libok += (not e['leve'] and not e['offre'])
+        elif e['leve'] and not e['offre'] and dedans: bons += 1
+        elif not lib: rates.append('(%d ; %d)%s%s' % (x, y, ' offre' if e['offre'] else '', '' if e['leve'] else ' rien') + ('' if dedans or not e['leve'] else ' phrase à y %s' % (e['cy'] and round(e['cy']))))
         if e['leve'] and not attendu(e): lis = False
         if cap and i == 7: capture(pg, cap)
         pg.evaluate(BAISSE); pg.wait_for_timeout(420)
-    juge('%s : la phrase sur le flou touché, dès le premier toucher — %d sur %d' % (nom, bons, N), bons == N, ('ratés : ' + ' '.join(rates[:8])) if rates else 'zone %d → %d' % (y0, y1))
+    juge('%s : la phrase sur le flou touché, dès le premier toucher — %d sur %d' % (nom, bons, N - nlib), bons == N - nlib and N - nlib >= 4, ('ratés : ' + ' '.join(rates[:8])) if rates else 'zone %d → %d' % (y0, y1))
+    if libres: juge('%s : sur Sombre/Clair, Avec/Sans texte et les barrettes (C-198), ni phrase ni offre — %d sur %d' % (nom, libok, nlib), nlib >= 3 and libok == nlib)
     return lis
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -69,8 +77,8 @@ with sync_playwright() as p:
             lis = vingt('[%s] la Toile floutée' % th, pg, [0, 108, 390, z['achat'][1] - 6], lambda e: e['cerne'] < 0.5 and not e['nom'], cap)
             juge('[%s] la Toile floutée : la phrase, sans aucun contour (C-130), le nom du monde effacé' % th, lis)
             cap = ('planche-v142/mur-%s-%s-panneau.png' % (F.replace('.html', ''), th)) if '--planche' in sys.argv else None
-            lis = vingt('[%s] le panneau du bas' % th, pg, z['panneau'], lambda e: not e['bandes'], cap)
-            juge('[%s] le panneau du bas : la phrase reste lisible (seule sur le panneau)' % th, lis)
+            lis = vingt('[%s] le panneau du bas' % th, pg, z['panneau'], lambda e: not e['bandes'] and (e['libreHaut'] is None or (e['bas'] or 0) <= e['libreHaut'] + 0.5), cap, libres=True)
+            juge('[%s] le panneau du bas : la phrase reste lisible (les tons retirés) et ne recouvre pas les réglages libres (C-198)' % th, lis)
         else: juge('[%s] le panneau et le bouton d\'achat sont à l\'écran' % th, False, str(z))
         ctx.close()
         ctx, pg = studio(b, sombre, True); z = pg.evaluate(ZONES)

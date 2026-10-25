@@ -5,9 +5,9 @@ n'est pas tenue passe « à tenir ». Recalcul au lancement et à chaque retour 
 la parole est « à tenir » ; REPORTER la remet « en cours » ; tracer la rend « tenue ». »
 
 Banc comme Tom (WebKit, 390 × 844, échelle 3, doigt, Toile vide, webdriver masqué) :
-  A · planter « 5 j » par la page + : l'échéance est une DATE, aujourd'hui + 5 (AAAA-MM-JJ), la parole « en cours »
-  B · ?jour=+30, rechargement : la parole est « à tenir » (statut, mot, carte de l'Index), 25 jours dépassés
-  C · le Fil : l'appui maintenu sur son bandeau fait paraître REPORTER ; REPORTER « +3 j » → « en cours », échéance au 3e jour après aujourd'hui
+  A · planter « 1 sem. » par la page + : l'échéance est une DATE, aujourd'hui + 7 (AAAA-MM-JJ), la parole « en cours » (v163b, C-197 : « demain · 1 sem. · 1 mois »)
+  B · ?jour=+30, rechargement : la parole est « à tenir » (statut, mot, carte de l'Index), 23 jours dépassés
+  C · le Fil : l'appui maintenu sur son bandeau fait paraître REPORTER ; REPORTER « 1 sem. » → « en cours », échéance au 7e jour après aujourd'hui
   D · rechargé encore à ?jour=+30 : toujours « en cours », la date gardée
   E · tracer sur sa fiche la rend « tenue »
   F · le retour au premier plan recompte : une échéance passée pendant que l'app dormait la fait « à tenir » (visibilitychange)
@@ -37,20 +37,20 @@ def plante(pg, titre, d):
 
 with sync_playwright() as p:
     b = p.webkit.launch(); ctx = B.contexte(b); pg = B.ouvre(ctx, F)
-    plante(pg, 'rendre le livre', 5); plante(pg, 'apprendre le piano', None)
+    plante(pg, 'rendre le livre', 7); plante(pg, 'apprendre le piano', None)
     e = pg.evaluate(ETAT, 'rendre le livre')
-    juge('A · planter « 5 j » : l\'échéance est une date, aujourd\'hui + 5, la parole « en cours »',
-         e and e['status'] == 'encours' and e['iso'] == jour(5) and e['due'] == 5, str(e))
+    juge('A · planter « 1 sem. » : l\'échéance est une date, aujourd\'hui + 7, la parole « en cours »',
+         e and e['status'] == 'encours' and e['iso'] == jour(7) and e['due'] == 7, str(e))
 
     pg.goto(URL + '?jour=+30'); pg.wait_for_timeout(6800)
     e = pg.evaluate(ETAT, 'rendre le livre')
-    juge('B · ?jour=+30 : la parole est « à tenir » (statut et mot), 25 jours dépassés',
-         e and e['status'] == 'rate' and e['mot'] == 'à tenir' and e['due'] == -25, str(e))
+    juge('B · ?jour=+30 : la parole est « à tenir » (statut et mot), 23 jours dépassés',
+         e and e['status'] == 'rate' and e['mot'] == 'à tenir' and e['due'] == -23, str(e))
     pg.evaluate("()=>{ try{closeAll()}catch(e){} try{ ouvrirIndex(); }catch(e){} }"); pg.wait_for_timeout(2200)
     carte = pg.evaluate("t=>{ const c=[...document.querySelectorAll('#indexList .s4-carte')].find(c=>(c.textContent||'').indexOf(t)>=0); return c ? (c.textContent||'').replace(/\\s+/g,' ').trim() : null; }", 'rendre le livre')
     juge('B · la carte de l\'Index dit « À TENIR »', carte and 'tenir' in carte.lower(), (carte or '—')[:90])
 
-    # C · le Fil, au doigt : l'appui maintenu, REPORTER, « +3 j »
+    # C · le Fil, au doigt : l'appui maintenu, REPORTER, « 1 sem. »
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500)
     B.tap_sel(pg, '#filBtn'); pg.wait_for_timeout(2200)
     rang = pg.evaluate("i=>{ const C=window._filComp||[]; const F=C.find(F=>F.pid===i); return F ? F.rang : null; }", e['id'] if e else -1)
@@ -65,16 +65,16 @@ with sync_playwright() as p:
     if vu:
         q = pg.evaluate("()=>{ const e=[...document.querySelectorAll('#feedList [data-post],#feedList .fd-dec,#feedList .s4-acte:not(.fort)')].find(e=>e.getBoundingClientRect().width>4 && /REPORTER/i.test(e.textContent||'')); const b=e.getBoundingClientRect(); return [b.left+b.width/2, b.top+b.height/2]; }")
         pg.touchscreen.tap(q[0], q[1]); pg.wait_for_timeout(700)
-        q = pg.evaluate("()=>{ const t=document.getElementById('_toast'); if(!t) return null; const e=[...t.querySelectorAll('*')].find(x=>(x.textContent||'').trim()==='+3 j' && x.children.length===0); if(!e) return null; const b=e.getBoundingClientRect(); return [b.left+b.width/2, b.top+b.height/2]; }")
+        q = pg.evaluate("()=>{ const t=document.getElementById('_toast'); if(!t) return null; const e=[...t.querySelectorAll('*')].find(x=>(x.textContent||'').trim()==='1 sem.' && x.children.length===0); if(!e) return null; const b=e.getBoundingClientRect(); return [b.left+b.width/2, b.top+b.height/2]; }")
         if q: pg.touchscreen.tap(q[0], q[1]); pg.wait_for_timeout(900)
-        else: print('     (pas de « +3 j » dans le toast)')
+        else: print('     (pas de « 1 sem. » dans le toast)')
     e = pg.evaluate(ETAT, 'rendre le livre')
-    juge('C · REPORTER « +3 j » la remet « en cours », échéance au 3e jour après aujourd\'hui (+30)',
-         e and e['status'] == 'encours' and e['due'] == 3 and e['iso'] == jour(33), str(e))
+    juge('C · REPORTER « 1 sem. » la remet « en cours », échéance au 7e jour après aujourd\'hui (+30)',
+         e and e['status'] == 'encours' and e['due'] == 7 and e['iso'] == jour(37), str(e))
 
     pg.goto(URL + '?jour=+30'); pg.wait_for_timeout(6800)
     e = pg.evaluate(ETAT, 'rendre le livre')
-    juge('D · rechargée à ?jour=+30 : toujours « en cours », la date gardée', e and e['status'] == 'encours' and e['iso'] == jour(33) and e['due'] == 3, str(e))
+    juge('D · rechargée à ?jour=+30 : toujours « en cours », la date gardée', e and e['status'] == 'encours' and e['iso'] == jour(37) and e['due'] == 7, str(e))
 
     # E · tracer sur sa fiche
     pg.evaluate("()=>{ try{ if(window._peaufSortie) _peaufSortie(); closeAll(); }catch(e){} }"); pg.wait_for_timeout(600)
@@ -88,7 +88,7 @@ with sync_playwright() as p:
 
     # F · le retour au premier plan recompte (une échéance passée pendant que l'app dormait)
     pg.evaluate("()=>{ try{ if(window._peaufSortie) _peaufSortie(); closeAll(); }catch(e){} }"); pg.wait_for_timeout(600)
-    plante(pg, 'arroser les tomates', 2)
+    plante(pg, 'arroser les tomates', 1)
     av = pg.evaluate(ETAT, 'arroser les tomates')
     pg.evaluate("""()=>{ const p=promises.find(x=>x.title==='arroser les tomates'); if(!p||!p.ech) return;
       const d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()+30-3); p.ech.iso=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
