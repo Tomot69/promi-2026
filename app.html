@@ -2536,7 +2536,11 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
 </style>
 <script id="lot-V162-TRAIT">/* ⚑ v162 (Tom, C-184) — le trait des pages +, des fiches et d'un Cercle (pas l'onboarding, validé), par rapport à AVANT v162.
    ⚑ v163 (récidive : « +5 % ne se voit pas ») : `?trait=<facteur>` pour choisir (1,10 · 1,15 · 1,20), défaut 1,15 ; jamais mémorisé. */
-window._TRAIT_K=1.15; try{ var _tq=new URLSearchParams(location.search).get('trait'); if(_tq && isFinite(+_tq)) window._TRAIT_K=Math.max(1, Math.min(1.5, +_tq)); }catch(_){ }</script>
+window._TRAIT_K=1.15; try{ var _tq=new URLSearchParams(location.search).get('trait'); if(_tq && isFinite(+_tq)) window._TRAIT_K=Math.max(1, Math.min(2, +_tq)); }catch(_){ }
+/* ⚑ v164 (Tom : « aucune différence entre 1,10, 1,15 et 1,20 » ; le trait faisait 11 · 11,5 · 12 pt — un demi-point d'un palier à l'autre) : paliers proposés
+   1,3 · 1,5 · 1,8, le plafond passe à 2. Les POINTS de la moitié non tracée ne grossissent plus (« déjà limite un poil trop gros ») : ils gardent leur taille
+   d'aujourd'hui, × 1,15 au plus (`_TRAIT_PTS`, sous 1,15 ils suivent le facteur) — le plein, le ruban de départ, la pointe et la flèche suivent le facteur. */
+window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suivent le facteur jusqu'à leur taille d'aujourd'hui, jamais au-delà (Tom : « déjà limite un poil trop gros ») */</script>
 <script id="lot-V145-VERSION">
 /* ⚑ v145 (C-117) — LA VERSION QUE VOIT L'iPHONE. La marque est écrite DANS la page au moment où le serveur la sert (`serveur.py` remplace
    les deux jetons ci-dessous) : elle dit la version de CETTE page, pas celle que le serveur servirait maintenant. Avant, `?mesure=1`
@@ -2544,7 +2548,7 @@ window._TRAIT_K=1.15; try{ var _tq=new URLSearchParams(location.search).get('tra
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v161', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v164a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -15101,7 +15105,7 @@ var CREMEETAT='#F7F0DE';
     e.yEncre = e.yBas + 5;               /* + la demi-épaisseur : le bas de l'encre du trait */
     /* ⚑ v163 (Tom, C-184) : le trait grandit au-delà de × 1,05 (`?trait=`) ; son chevron s'approche du mot (−10,7 pt d'air par unité, mesuré).
        Le mot, et tout ce qui est dessous, descendent d'autant (au demi-point supérieur) : l'air de v162 est gardé, rien d'autre ne bouge. */
-    e.dyTrait = Math.ceil(22 * Math.max(0, (window._TRAIT_K||1) - 1.05)) / 2;
+    e.dyTrait = Math.ceil(28 * Math.max(0, (window._TRAIT_K||1) - 1.05)) / 2;   /* v164 : 28 (22 en v163a) — mesuré à 1,3 · 1,5 · 1,8, le trait de la fiche épaissit de 13 pt par unité ; à 1,15 le pas reste 1,5 */
     if(e.noyaux===false){ e.yTrace = Math.round(e.yEncre + 25) + e.dyTrait; e.yQui = e.yTrace + 36; }
     else if(e.trace){ e.yTrace = Math.round(e.yEncre + 25) + e.dyTrait;   /* 26 d'encre sous LE TRACÉ */
                       e.yNoyau = e.yTrace + 44;             /* 19 px de texte + 26 d'air */
@@ -15321,7 +15325,7 @@ var CREMEETAT='#F7F0DE';
 
     /* 3 · LA LIGNE (§2.6) : ma moitié 0→195 · complet 0→390 · duo 0→191 et 199→390 ·
          rien de tracé = amorce effilée puis des points. Points = cercles Ø9 tous les 18 px. */
-    var col=e.col, ep=10*window._TRAIT_K, rr=4.5*window._TRAIT_K, esp=18, mid=W/2;   /* v162 (C-184) : × 1,05 — le trait, la pointe, les points ; l'espacement ne change pas */
+    var col=e.col, ep=10*window._TRAIT_K, rr=4.5*window._TRAIT_PTS, esp=18, mid=W/2;   /* v164 : les points à × 1,15 au plus */   /* v162 (C-184) : × 1,05 — le trait, la pointe, les points ; l'espacement ne change pas */
     g.strokeStyle=col; g.fillStyle=col; g.lineWidth=ep; g.lineCap='round'; g.lineJoin='round';
     /* ⚑ LE PINCEAU — la matière du trait de CETTE promesse (Q128), jamais un réglage
        global. Elle remplace le PLEIN et l'AMORCE ; la courbe ne bouge pas. Les douze
@@ -15345,7 +15349,7 @@ var CREMEETAT='#F7F0DE';
       /* ⚑ E2 (v140, Tom, C-075) — « “TRACE POUR TENIR” et le trait plus visibles […] : plus grands, en grandissant vers le haut, sans déplacer
          ce qui est en dessous. » Les points de la moitié À TRACER passent de Ø 9 à Ø 12 quand la fiche attend un trait ; leur bas ne bouge
          pas (le centre monte de 1,5). Le plein, lui, garde l'épaisseur de son pinceau. */
-      var rp=e.trace?(window._e2PointR||6)*window._TRAIT_K:rr;   /* v162 (C-184) : × 1,05 */
+      var rp=e.trace?(window._e2PointR||6)*window._TRAIT_PTS:rr;   /* v162 (C-184) : × 1,05 */
       for(var x=x0;x<W-rr;x+=esp){ g.beginPath(); g.arc(x,y(x),rp,0,6.2832); g.fill(); } }   /* v141 (C-095) : « les points sont placés exactement sur ce trajet » — leur centre est SUR l'onde (v140 les remontait de 1,5) */
     /* ⚑ 23 SEPTEMBRE 2026 (Tom) — UN FILET CRÈME SOUS LE TRAIT D'UNE PAROLE TENUE.
        « Sous le trait vert on ne voit pas la différence entre le vert sombre et le pourpre
@@ -17827,7 +17831,7 @@ var CREMEETAT='#F7F0DE';
          chevron marque la frontière — c'est le même trait, à une coupe près. */
       /* §2.1 bis et §4 : `c = CLAIR[nat] si etat == "plate", TERRA sinon`. Dès que le
          doigt trace, LE TRAIT ENTIER passe en terracotta — le plein comme les points. */
-      var col = (e.etat === 'plate') ? (O.NATTRAIT||O.NATCLAIR)[e.nat] : O.TERRA, ep = 10*window._TRAIT_K, rr = 4.5*window._TRAIT_K, esp = 18;   /* v162 (C-184) : × 1,05 */
+      var col = (e.etat === 'plate') ? (O.NATTRAIT||O.NATCLAIR)[e.nat] : O.TERRA, ep = 10*window._TRAIT_K, rr = 4.5*window._TRAIT_PTS, esp = 18;   /* v164 : les points fixes */   /* v162 (C-184) : × 1,05 */
       /* ═══ UNE NUÉE SE LANCE EN TRAÇANT LE TRAIT ENTIER (décision Tom, 19 août 2026) ═══
          Pas une moitié : 0 → 390, le MODE COMPLET du §2.6 — celui d'une parole tenue.
          Une Nuée n'est promise à personne ; personne ne vient à sa rencontre, donc une
@@ -17891,7 +17895,7 @@ var CREMEETAT='#F7F0DE';
       /* le trait entier d'une Nuée donnée : plus rien ne manque, donc ni chevron ni points. */
       if(!(ENTIER && e.etat === 'signe')){
         O.chevron(g, y, cx, col, ep, cv);   /* v146 (C-133) : le départ, orange */
-        var rp=(window._e2PointR||6)*window._TRAIT_K;   /* E2 (v140) : les points à tracer, Ø 12, grandis vers le haut — comme sur la fiche ; v162 (C-184) : × 1,05 */
+        var rp=(window._e2PointR||6)*window._TRAIT_PTS;   /* E2 (v140) : les points à tracer, Ø 12, grandis vers le haut — comme sur la fiche ; v162 (C-184) : × 1,05 */
         for(var x=cx+esp*1.3; x<W-rr; x+=esp){ g.beginPath(); g.arc(x,y(x),rp,0,6.2832); g.fill(); }   /* v141 : centrés sur l'onde */
       }
       /* 4 · LA FLÈCHE D'INVITE (§2.4). Le code de référence du §4 ne la dessine que sur
@@ -20440,7 +20444,7 @@ var CREMEETAT='#F7F0DE';
     }
 
     /* 3 · LA LIGNE (§2.6). */
-    var ep=10*window._TRAIT_K, rr=4.5*window._TRAIT_K, esp=18, mid=W/2;   /* v162 (C-184) : × 1,05 */
+    var ep=10*window._TRAIT_K, rr=4.5*window._TRAIT_PTS, esp=18, mid=W/2;   /* v162 (C-184) ; v164 : les points fixes */
     g.lineWidth=ep; g.lineCap='round'; g.lineJoin='round';
     /* ⚑ LE PINCEAU SUR LA FICHE — la matière remplace le plein, jamais la COURBE.
        Le trait de `p` est celui qu'on lui a donné, à la page + ou dans Peaufiner : jamais
@@ -20923,11 +20927,28 @@ var CREMEETAT='#F7F0DE';
       if(dev && (window._clairPour?window._clairPour(b):dev.classList.contains('light')) && !aPhoto)
         b.style.setProperty('color', '#201908', 'important'); }catch(_){}
     /* la cote : l'onde au droit du bouton (x = 366 − 17 = 349), moins l'écart. */
-    var y=O.onde(base,amp);
-    b.style.setProperty('top', Math.round(y(349) - ECART) + 'px', 'important');
+    b.setAttribute('data-onde', base+','+amp);
+    b.style.setProperty('top', hautBouton(base, amp) + 'px', 'important');
     b.style.setProperty('left', (W - 24 - 34) + 'px', 'important');
     b.style.setProperty('right', 'auto', 'important');
   }
+  /* ⚑ v164 (Tom, C-201) — « l'icône pour changer la photo ou le dessin est maintenant posée SUR les pointillés du trait ». Deux causes : ① le haut était
+     l'onde AU MILIEU du bouton moins un écart fixe — l'onde monte ou descend sous ses 34 pt, et le trait s'épaissit avec `?trait=` ; ② le bouton n'était
+     reposé qu'avec le trait d'une passe : quand la page + se recompose (mesuré à 0,79 : l'onde remonte de 32 pt), il restait à l'ancienne cote, 23 pt dans
+     les pointillés. Le haut est maintenant le plus bas des deux : la cote d'avant (52 au-dessus de l'onde, sous son point), et ce qu'il faut pour que le
+     bas du bouton passe au-dessus du trait sur TOUTE sa largeur (l'onde la plus haute de 332 à 366, moins la demi-épaisseur du trait — le plein × K ou un
+     point —, moins 8 pt d'air) ; et il est reposé à chaque image où l'onde déclarée a changé sous lui. */
+  function hautBouton(base, amp){ var y=O.onde(base,amp), K=window._TRAIT_K||1, P=window._TRAIT_PTS||1, h=Math.max(5*K, 6*P, 4.5*P), m=1e9;
+    for(var x=W-24-34-2; x<=W-24+2; x+=2) m=Math.min(m, y(x));
+    return Math.round(Math.min(y(349) - ECART, m - h - 8 - 34)); }
+  window._hautBoutonPhoto=hautBouton;
+  (function suit(){ try{ ['createSheet','detailPoster'].forEach(function(id){ var h=document.getElementById(id); if(!h || !h.classList.contains('show')) return;
+        var b=h.querySelector(':scope > .ph-photo-nid .ph-photo-btn'); if(!b || b.offsetParent===null) return; var e=null;
+        if(id==='createSheet' && window._ppEcran){ var E=window._ppEcran(); if(E) e=[E.base, E.amp]; }
+        else { var c=h.querySelector('#dpTrameCv'), t=c&&c.getAttribute('data-trait'); if(t){ var a=t.split(','); e=[+a[0], +a[1]]; } }
+        if(!e || !isFinite(e[0])) return; var s=e.join(','); if(b.getAttribute('data-onde')===s) return;
+        b.setAttribute('data-onde', s); b.style.setProperty('top', hautBouton(e[0], e[1]) + 'px', 'important'); }); }catch(_){ }
+    requestAnimationFrame(suit); })();
   window._photoBouton=poseBouton;
 
   /* ═══ Q53 · LA PHOTO DANS UNE LISTE ═══
@@ -42759,6 +42780,39 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   try{ var cs=document.getElementById('createSheet'), ouv=false; if(cs) new MutationObserver(function(){ var o=cs.classList.contains('show'); if(o===ouv) return; ouv=o;
       if(!o) setTimeout(function(){ if(!cs.classList.contains('show')){ window._brouillonRepris=null; window._ppGarde=false; } }, 0); }).observe(cs, {attributes:true, attributeFilter:['class']}); }catch(_){ }
   window._pile=function(){ return pile.map(function(h){ return {o:h.o, dest:h.dest}; }); };
+})();
+</script>
+<script id="lot-V164-TRAIT-MESURE">
+/* ⚑ v164 (Tom : « vérifie d'abord que ?trait= s'applique vraiment sur l'iPhone ») — avec `?mesure=1`, sur une page + ou une fiche, une ligne en bas de l'écran :
+   le facteur APPLIQUÉ (`_TRAIT_K`), ce que les peintres reçoivent (plein 10 × K, points, flèche 4,5 × K), et l'épaisseur LUE SUR LES PIXELS du trait à l'écran —
+   le plein là où il est tracé (x 100 pt), sinon le ruban de départ à son bord gauche (x 8 pt, où il fait ≈ 2 × le plein). Rien sans `?mesure=1`. */
+(function(){ if(!/[?&]mesure=1(?:&|$)/.test(location.search)) return;
+  var el=null;
+  function f1(v){ return (Math.round(v*10)/10).toString().replace('.', ','); }
+  function lit(cv, base, amp, x){ try{ var O=window._onde, dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390, C=cv.getBoundingClientRect();
+      var sx=cv.width/C.width, sy=cv.height/C.height, y=O.onde(base,amp)(x), px=Math.round((x*k+dv.left-C.left)*sx), yc=Math.round((y*k+dv.top-C.top)*sy), R=Math.round(40*k*sy);
+      var d=cv.getContext('2d').getImageData(px, yc-R, 1, 2*R+1).data, c=R*4, r0=d[c], g0=d[c+1], b0=d[c+2];
+      if(d[c+3]<200) return null; var top=R, bas=R;
+      function pareil(i){ return d[i*4+3]>128 && Math.abs(d[i*4]-r0)+Math.abs(d[i*4+1]-g0)+Math.abs(d[i*4+2]-b0)<90; }
+      while(top>0 && pareil(top-1)) top--; while(bas<2*R && pareil(bas+1)) bas++;
+      return (bas-top+1)/sy/k; }catch(_){ return null; } }
+  function pose(){ var d=document.getElementById('device'); if(!d) return;
+    if(!el){ el=document.createElement('div'); el.id='traitMesure'; el.setAttribute('aria-hidden','true'); d.appendChild(el); }
+    var clair=d.classList.contains('light'), K=window._TRAIT_K||1, P=window._TRAIT_PTS||1, cs=document.getElementById('createSheet'), dp=document.getElementById('detailPoster'), txt='';
+    var cv=null, base=null, amp=null, mode='';
+    if(cs && cs.classList.contains('show') && window._ppEcran){ var E=window._ppEcran(); cv=document.getElementById('csTrameCv'); if(E){ base=E.base; amp=E.amp; mode='points'; } }
+    else if(dp && dp.classList.contains('show')){ cv=document.getElementById('dpTrameCv'); var t=cv&&cv.getAttribute('data-trait'); if(t){ var a=t.split(','); base=+a[0]; amp=+a[1]; mode=a[3]||''; } }
+    if(cv && base!=null){
+      var plein = (mode && mode!=='points') ? lit(cv, base, amp, 100) : null, ruban = lit(cv, base, amp, 8);
+      txt='trait × '+String(Math.round(K*100)/100).replace('.', ',')+' appliqué · plein '+f1(10*K)+' pt · points Ø '+f1(9*P)+' pt · flèche '+f1(4.5*K)+' pt — lu : '
+        +(plein ? 'plein '+f1(plein)+' pt' : 'ruban de départ '+(ruban?f1(ruban)+' pt':'—'));
+    }
+    var css='position:absolute;left:50%;bottom:6px;transform:translateX(-50%);z-index:2147483000;pointer-events:none;white-space:nowrap;'
+      +'font:500 11px/1 var(--f-texte);padding:5px 9px;border-radius:10px;background:'+(clair?'#201908':'#F7F0DE')+';color:'+(clair?'#F7F0DE':'#201908')+';-webkit-text-fill-color:'+(clair?'#F7F0DE':'#201908')+';display:'+(txt?'block':'none');
+    if(el.getAttribute('data-css')!==css){ el.setAttribute('style',css); el.setAttribute('data-css',css); }
+    if(el.textContent!==txt) el.textContent=txt;
+    window._traitMesure=txt; }
+  setInterval(pose, 700);
 })();
 </script>
 </body>

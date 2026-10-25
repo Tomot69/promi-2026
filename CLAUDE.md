@@ -190,6 +190,19 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v164a (25 oct. 2026) — LE TRAIT : DES PALIERS QUI SE VOIENT ; LE BOUTON PHOTO NE TOUCHE PLUS LE TRAIT. (Décisions Tom.) Ce bloc CORRIGE v163a (C-184 : 1,10 · 1,15 · 1,20).
+> **⚑ C-184 — « AUCUNE DIFFÉRENCE ENTRE 1,10, 1,15 ET 1,20 »** : le facteur s'APPLIQUAIT (lu au pixel avec `?mesure=1`, `lot-V164-TRAIT-MESURE` : au bas de l'écran,
+> le facteur, l'épaisseur déclarée et l'épaisseur LUE sur le canevas) — les trois traits faisaient 11 · 11,5 · 12 pt : l'écart ne se voyait pas. **Paliers
+> `?trait=1.3` · `1.5` · `1.8`** (plafond 2), défaut 1,15 en attendant le choix de Tom : trait plein 13 · 15 · 18 pt (lu 13,7 · 16 · 19), ruban de départ lu
+> 21,7 · 25 · 30, flèche d'invite 5,9 · 6,8 · 8,1 pt. **Les points du trait non tracé ne grossissent plus** (Tom : « déjà limite un poil trop gros ») : × 1,15 au plus,
+> Ø 10,4 pt (`window._TRAIT_PTS` = min(K ; 1,15) : sous 1,15 ils suivent le facteur, `?trait=1` rend ceux d'avant v162). Le mot du trait et ce qui est dessous descendent du même pas — sur la fiche ⌈28·(K − 1,05)⌉/2 (22 en v163a :
+> mesuré, il manquait 0,3 à 1,7 pt d'air flèche → mot aux paliers neufs ; à 1,15 le pas reste 1,5) ; pages + inchangé. Juge : `redteam_trait_k` (paliers neufs).
+> **⚑ C-201 — LE BOUTON PHOTO (changer la photo ou le dessin) ÉTAIT POSÉ SUR LES POINTILLÉS.** *Deux causes* : ① il se plaçait à un écart fixe d'UN point de l'onde
+> (x 349), alors que l'onde monte ou descend sous lui et que le trait épaissit ; ② il n'était pas reposé quand la page + se recompose (mesuré à 0,79 : l'onde
+> remontée de 32 pt, le bouton resté 23 pt dans les pointillés). *Corrigé* (`poseBouton`, `window._hautBoutonPhoto`) : sa cote est le plus haut de l'onde sous
+> toute sa largeur, moins l'épaisseur du trait au facteur appliqué, moins 8 pt d'air, moins sa zone de toucher ; une veille par image le repose dès que l'onde de
+> l'écran change. Juge : **`redteam_photo_trait.py`** (3 pages + et 4 fiches × 4 facteurs × 2 échelles ; l'encre du trait LUE sur le canevas sous le bouton, ≥ 1 pt d'air).
+
 ### ⚑ v163a (25 oct. 2026) — « T'APPARTIENT. » LETTRE À LETTRE, LE TRAIT RÉGLABLE, LA VEILLE AUX BORDS, LE GARDÉ DE CÔTÉ VISIBLE, LE SYMBOLE « RECADRER », LE MENU DE TRI QUI SE REFERME. (Décisions Tom.)
 > **Validés par Tom (v162) : C-174 (l'onde à 0,5 : `?onde=` est retiré, figé), C-183, C-166, C-149 (garder de côté), C-185, C-175 sous Chantourné, Guingois, Mascaret (gelés).**
 > **⚑ C-165 — « T'APPARTIENT. » : UNE COULEUR PAR LETTRE**, dans l'ordre de la palette de base (comme « Studio » au guide) — sombre `#82AEF8` · `#FFB8D2` · `#C9A8F5` ·
@@ -197,7 +210,7 @@ la nature, la ligne dit l'état.)*
 > de la lettre d'avant ; « La suite » ne change pas. Juge : **`redteam_appartient.py`** (lettre par lettre, deux échelles ; rouge sur v162). `redteam_mots_sombre` confie
 > ces lettres à ce juge (son « fond » tombait sur la lettre voisine).
 > **⚑ C-184 (récidive) — `?trait=<facteur>`** (par rapport à la taille d'avant v162), **défaut 1,15** : trait, points, pointe, flèche d'invite des pages +, des fiches, de
-> l'instant et d'un Cercle ; pas l'onboarding. **Le mot du trait et tout ce qui est dessous descendent du même pas** (fiche `e.dyTrait` = ⌈22·(K − 1,05)⌉/2 ; pages +
+> l'instant et d'un Cercle ; pas l'onboarding. **Le mot du trait et tout ce qui est dessous descendent du même pas** (fiche `e.dyTrait` = ⌈22·(K − 1,05)⌉/2 — v164 : ⌈28·(K − 1,05)⌉/2 ; pages +
 > `--pp-dyt` = ⌈14·(K − 1,05)⌉/2 pt : la phrase, le rail du pinceau, « garder de côté » à 718 + ce pas) — l'air flèche → mot ≥ v162. Juge : **`redteam_trait_k.py`**
 > (A les épaisseurs piégées, B l'air lu sur l'image, C aucun recouvrement neuf ni débordement, à 430 × 932 et 330 × 714 ; D l'onboarding au pixel).
 > Contrats remis : `redteam_garder` J (718 + le pas), `redteam_pages_plus` (servi sous `?trait=1`) — originaux `sauvegardes/*-avant-v163.py`. **Tom choisit 1,10 · 1,15 · 1,20, puis on fige.**
@@ -3529,7 +3542,8 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
-python3 redteam_trait_k.py      # v163a (C-184) : `?trait=` 1,10 · 1,15 · 1,20 et le défaut — épaisseurs × K/1,05, l'air flèche → mot ≥ v162 (lu sur l'image), aucun recouvrement neuf, 430 × 932 et 330 × 714 ; l'onboarding au pixel. ≈ 20 min.
+python3 redteam_photo_trait.py  # 56 — v164a (C-201) : le bouton photo et sa zone de toucher au-dessus de l'encre du trait (lue sur le canevas), 3 pages + et 4 fiches, ×1,15 à ×1,8, échelles 1 et 0,79.
+python3 redteam_trait_k.py      # v164a (C-184) : `?trait=` 1,3 · 1,5 · 1,8 et le défaut (v163a : 1,10 · 1,15 · 1,20) — épaisseurs × K/1,05, l'air flèche → mot ≥ v162 (lu sur l'image), aucun recouvrement neuf, 430 × 932 et 330 × 714 ; l'onboarding au pixel. ≈ 20 min.
 python3 redteam_veille_bords.py # 15 — v163a (C-181) : l'encre du logo au bord visible ± 1 pt, quatre bords, trois fenêtres ; flaques 350 ms. Rouge sur v162.
 python3 redteam_garde_index.py  # 6 — v163a (C-149, Q579) : le pointillé 3 pt #291547 / #A77CF7 lu sur l'image ; le message ouvre l'Index filtré. Rouge sur v162.
 python3 redteam_recadre_bouton.py # 16 — v163a (C-188) : le symbole seul, 22 pt, sa place, sa zone de 44, naissance et départ en flaques, 4 s, le double toucher.

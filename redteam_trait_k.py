@@ -20,7 +20,7 @@ from playwright.sync_api import sync_playwright
 from PIL import Image
 F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')
 REF = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--ref=')), 'zz-v162.html')
-KS = [None, '1.10', '1.15', '1.20']
+KS = [None, '1.3', '1.5', '1.8']   # ⚑ v164 (Tom : « aucune différence entre 1,10, 1,15 et 1,20 ») — des paliers nettement visibles
 if any(a.startswith('--k=') for a in sys.argv[1:]): KS = [next(a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--k='))]
 FEN = [(430, 932), (330, 714)]
 res = []
@@ -104,17 +104,19 @@ with sync_playwright() as p:
             for s in SCENES:
                 va, ea, ta = refs[s]; vn, en, tn = scene(b, F, q, vw, vh, s)
                 if vw == FEN[0][0] and not s.endswith(':ouvert'):
-                    att = sorted(set((t, round(v * kf / 1.05, 4)) for t, v in va))
+                    # ⚑ v164 : les POINTS (les arcs, R) ne grossissent plus — ils restent à × 1,15 (Tom : « déjà limite un poil trop gros ») ; le plein, le
+                    #   ruban, la pointe et la flèche (les épaisseurs, L) suivent K. Original : sauvegardes/redteam_trait_k-avant-v164.py
+                    att = sorted(set((t, round(v * (kf if t == 'L' else 1.15) / 1.05, 4)) for t, v in va))
                     ok = bool(va) and len(vn) == len(att) and all(x[0] == y[0] and abs(x[1] - y[1]) <= 0.005 * x[1] for x, y in zip(att, vn))
-                    juge('[%s %s] A · épaisseurs et rayons du trait = v162 × %.3f' % (nom, s, kf / 1.05), ok, 'v162 %s · ici %s' % (va, vn))
+                    juge('[%s %s] A · épaisseurs du trait = v162 × %.3f, les points à × 1,15 fixes' % (nom, s, kf / 1.05), ok, 'v162 %s · ici %s' % (va, vn))
                 if s != 'fiche-cercle':
                     juge('[%s %s %d×%d] B · air trait → mot ≥ v162' % (nom, s, vw, vh), ea is not None and en is not None and en >= ea - 0.3, 'v162 %s · ici %s pt' % (ea, en))
                 nv = recouvre(tn) - recouvre(ta); hn = sorted(set(hors(tn)) - set(hors(ta)))
                 juge('[%s %s %d×%d] C · aucun recouvrement neuf, rien hors de l\'écran' % (nom, s, vw, vh), not nv and not hn, 'recouvre %s · hors %s' % (sorted(nv), hn))
     oa = trait_onb(b, REF, ''); on = trait_onb(b, F, '')
     juge('D · l\'onboarding : le trait identique au pixel à v162 (défaut)', oa == on, 'v162 %s · ici %s' % (oa, on))
-    on2 = trait_onb(b, F, '?trait=1.20')
-    juge('D · l\'onboarding : identique aussi sous ?trait=1.20', oa == on2, 'v162 %s · ici %s' % (oa, on2))
+    on2 = trait_onb(b, F, '?trait=1.8')
+    juge('D · l\'onboarding : identique aussi sous ?trait=1.8', oa == on2, 'v162 %s · ici %s' % (oa, on2))
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
 sys.exit(0 if ok == len(res) else 1)

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """redteam_trait_105.py — ⚑ v162 (Tom, C-184) : LE TRAIT 5 % PLUS GROS, PAS PLUS.
 
+⚠ REMPLACÉ depuis v163a par `redteam_trait_k.py` (le facteur réglable, défaut 1,15) : ce juge porte ×1,05 et rougit par décision. Gardé pour l'histoire.
+
 « Dans les trois pages + et sur toutes les fiches : le trait (pointillé et continu), la flèche et sa pointe grossissent de 5 % exactement ; aussi le trait
 validé ou lancé d'un Cercle ; rien d'autre ne change ; l'onboarding n'est pas concerné. » Le juge PIÈGE les appels de dessin sur le canevas du trait (l'épaisseur
 au moment de chaque `stroke`, le rayon de chaque `arc` rempli), sur la version d'avant servie à côté (`--ref=zz-v161.html`) et sur celle-ci, écran par écran :

@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 343 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 455 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 342 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 455 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -211,11 +211,7 @@ Source : `app.html`. 343 éléments interactifs relevés sur 36 écrans (mode cl
 | accueil | `#createBtn` | on… | 195, 760 | 72 × 72 | oui |  |
 | accueil | `#indexBtn` | natif | 266, 760 | 54 × 51 | oui |  |
 | accueil | `#filBtn` | écouteur | 320, 760 | 54 × 51 | oui |  |
-| aide de l'Aura | `div#auraScreen.screen.s-karma>div.enh>div.closeb.x157«Fermer»` | natif | 322, 73 | 44 × 44 | oui |  |
-| aide de l'Aura | `#auraInfoBtn` | natif | 249, 80 | 20 × 20 | oui |  |
-| aide de l'Aura | `div#auCadre.au-cadre.au-voile>div.au-bo>div.au-prise«»` | écouteur | 195, 254 | 296 × 296 | oui |  |
-| aide de l'Aura | `#auPartage` | natif | 195, 465 | 342 × 60 | oui |  |
-| aide de l'Aura | `div#auCadre.au-cadre.au-voile>div.au-nx«ToiAdrienMarionNicoRache»` | écouteur | 207, 636 | 366 × 107 | oui |  |
+| aide de l'Aura | `div#auraHelp.screen.tuto-fond>div.enh>div.closeb.x157«Fermer»` | natif | 322, 72 | 44 × 44 | oui |  |
 | chiche lancé | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 322, 70 | 44 × 44 | oui |  |
 | chiche lancé | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 221 | 34 × 34 | oui |  |
 | chiche lancé | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
@@ -291,7 +287,10 @@ Source : `app.html`. 343 éléments interactifs relevés sur 36 écrans (mode cl
 | le Cercle | `#buyMonth` | natif | 195, 709 | 346 × 58 | oui |  |
 | le Cercle | `#buyYear` | natif | 195, 778 | 346 × 44 | oui |  |
 | menu photo | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 322, 70 | 44 × 44 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«Dessiner»` | natif | 277, 262 | 94 × 33 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«Importer une photo»` | natif | 238, 299 | 171 × 33 | oui |  |
 | menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 335 | 34 × 34 | oui |  |
+| menu photo | `div#detailPoster.poster.mgmt>div.ph-photo-nid>div.ph-photo-menu.dz-compact>button«La dalle d’origine»` | natif | 243, 336 | 162 × 33 | oui |  |
 | menu photo | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | menu photo | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | menu photo | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
