@@ -8884,8 +8884,11 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q584 — À ÉCRIRE PAR TOM (C-200 ⑥, v164b)** : le texte de la Toile vide. « Plante ton premier Promi — touche le + » est retiré (un impératif, AUDIT-BOUTONS 33).
   Restent « Ta Toile n’attend que toi » et « chaque parole tenue devient une dalle ». ⚠ Mesuré : ce bloc (`#toileEmpty`) est masqué (`display:none`) sur
   l'accueil d'aujourd'hui, Toile vide comprise — il ne paraît nulle part ; ton texte dira aussi s'il doit reparaître.
-- **Q585 — TROUVÉ, NON CORRIGÉ (hors du lot v164b, A5)** : à l'échelle de Safari (0,79), le titre « Partager » sort tantôt à 32, tantôt à 35 px (la boucle
+- **Q585 — TRANCHÉE (Tom, v165) ET CORRIGÉE : la place du X dans la clé de l'ajustement, le titre 4 pt avant la zone du X ; Partager stable à 32 px** · TROUVÉ en v164b : à l'échelle de Safari (0,79), le titre « Partager » sort tantôt à 32, tantôt à 35 px (la boucle
   `ajusteTitres` part de 35 et lit la place au moment de sa passe) — mesuré sur v164a comme sur v164b (6 ouvertures chacun : 1 et 2 fois à 32). À 35 px son « r »
   clignotant entre d'1 pt dans la zone de toucher du X : `redteam_croix` B, D le prennent par intermittence (rouges sur v164b à trois passes, vert sur v164a à
   une). *Proposition* : la boucle compte le « r » et l'air jusqu'à la zone de 44 pt du X, pas seulement jusqu'à son encre.
+- **Q586 — À VALIDER (C-203, v165)** : « mots-clés en PromiLate et en couleur selon l'échelle » — la couleur n'est pas dite : « Toile » prend le bleu de
+  « commence » (cobalt en clair, #82AEF8 en sombre), « partage-la » le lilas de « monde » (#8363AA en clair, #C9A8F5 en sombre).
+- **Q584 — v165 : rien à faire (Tom)** : la Toile vide reste sans texte jusqu'au sien.
 

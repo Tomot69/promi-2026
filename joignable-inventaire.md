@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 340 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 452 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 344 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 456 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -77,9 +77,9 @@ Source : `app.html`. 340 éléments interactifs relevés sur 36 écrans (mode cl
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUarroser tous les soi»` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-ocre«à tenirsemer les radisà »` | on… | 195, 422 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursarroser les toma»` | on… | 195, 422 | 342 × 79 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 480 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en courstailler la vigne»` | on… | 195, 492 | 342 × 79 | oui |  |
 | Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-menthe«TENUmonter la serre avan»` | on… | 195, 535 | 342 × 94 | oui |  |
-| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 571 | 342 × 79 | oui |  |
+| Nuée | `div#dpNueeFil>div.nf-liste>div.nf-item.nf-cours«en coursramasser les cou»` | on… | 195, 583 | 342 × 79 | oui |  |
 | Nuée | `#cm5Ligne` | natif | 195, 650 | 342 × 56 | oui |  |
 | Nuée | `#nfAdd` | natif | 195, 717 | 342 × 62 | oui |  |
 | Nuée | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
@@ -278,7 +278,11 @@ Source : `app.html`. 340 éléments interactifs relevés sur 36 écrans (mode cl
 | l'instant arrive | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | l'instant arrive | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | l'instant referme | `div#detailPoster.poster.mgmt>div.enh>div.closeb.x157«Fermer»` | natif | 322, 70 | 44 × 44 | oui |  |
+| l'instant referme | `div#detailPoster.poster.mgmt>div.ph-photo-nid>button.ph-photo-btn«Photo»` | natif | 349, 221 | 34 × 34 | oui |  |
+| l'instant referme | `#tenirZone` | écouteur | 195, 303 | 390 × 118 | oui |  |
 | l'instant referme | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
+| l'instant referme | `div#dAura.aura-band>div.aura-track>div.kring«Rachel»` | on… | 171, 431 | 70 × 83 | oui |  |
+| l'instant referme | `#cm5Ligne` | natif | 195, 720 | 342 × 56 | oui |  |
 | l'instant referme | `#dpdTog` | écouteur | 195, 802 | 390 × 84 | oui |  |
 | l'instant referme | `div#dpdTog.dpd-tog>span.dpd-part«Partager»` | on… | 343, 802 | 46 × 46 | oui |  |
 | le Cercle | `div#plusScreen.screen.s-plus>div.enh>div.closeb.x157«Fermer»` | natif | 322, 71 | 44 × 44 | oui |  |

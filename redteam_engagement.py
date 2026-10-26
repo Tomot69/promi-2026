@@ -121,7 +121,8 @@ with sync_playwright() as p:
     t('R1 · `TEXTES_ENGAGEMENT` existe (un seul objet, règle 6)', existe, '%d chaîne(s)' % len(T_ENG))
     # ⚑ v143 (Tom, 12 oct. 2026, C-094) — UNE EXCEPTION NOMMÉE À A3, EN DUR : « Choisis d’abord le monde qui te ressemble, au Studio. » — « c'est un
     #   impératif voulu par Tom ». Cette phrase-là, mot pour mot, et aucune autre (original : sauvegardes/redteam_engagement-avant-v143.py).
-    VOULU = ('Choisis d\u2019abord le monde qui te ressemble, au Studio.',)
+    VOULU = ('Choisis d\u2019abord le monde qui te ressemble, au Studio.',
+             '\u00c9toffe ta Toile, et partage-la\u00a0!')   # ⚑ v165 (Tom, C-203) : la phrase de clôture du guide, l'autre impératif voulu (exception nommée)
     imp = sorted({'%s : « %s »' % (k, v[:60]) for k, v in T_ENG if (IMP_TETE.search(v) or IMP_TRAIT.search(v)) and v not in VOULU})
     for k, v in T_ENG:
         if v in VOULU and not k.startswith('imperatifVoulu'): print('     A3 · exempté (impératif voulu par Tom, v143) : %s : « %s »' % (k, v))

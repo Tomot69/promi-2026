@@ -2550,7 +2550,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v164b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v165', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -25463,7 +25463,13 @@ var CREMEETAT='#F7F0DE';
       /* ⚑ v59 (latences) — même texte, même plateau, même police, et la taille posée la dernière fois est toujours là : le
          titre est déjà ajusté. Sans ce garde, chaque passe (huit par ouverture d'écran) repartait de la taille de départ puis
          rétrécissait pas à pas — une mise en page forcée à chaque pas, sur tous les titres, écrans fermés compris. */
-      var _cleT = ((document.fonts&&document.fonts.status)||'')+'|'+t.textContent+'|'+b.clientWidth+'|'+(b.closest('.screen,.sheet,.poster')||{}).id+'|'+getComputedStyle(t).fontFamily;
+      /* ⚑ v165 (Tom, Q585) — « le titre Partager sort tantôt à 32, tantôt à 35 px ». LA CAUSE : la place se mesurait sur la largeur de `.closeb` lue À CET
+         INSTANT ; selon qu'elle était lue avant ou après que son propriétaire (lot-V157-CROIX) l'ait posée en zone de 44 pt, le titre rétrécissait plus
+         ou moins — et une fois ajusté il ne se remesurait plus (la clé ne portait pas le X). Même à 35, la place ne voyait pas la ZONE du X : « Partager »
+         la mordait d'1 pt. AUJOURD'HUI : la place du X entre dans la clé (le titre se réajuste quand le X est posé), et le titre s'arrête 4 pt avant la
+         zone de toucher du X. Les autres titres sont inchangés (mesuré). */
+      var _cbx=b.querySelector('.closeb'), _cbr=_cbx?_cbx.getBoundingClientRect():null;
+      var _cleT = ((document.fonts&&document.fonts.status)||'')+'|'+t.textContent+'|'+b.clientWidth+'|'+(b.closest('.screen,.sheet,.poster')||{}).id+'|'+getComputedStyle(t).fontFamily+'|'+(_cbr?Math.round(_cbr.left-r.left)+','+Math.round(_cbr.width):'');
       if(t.__ajCle === _cleT && t.style.getPropertyValue('font-size') === t.__ajFs) return;
       /* ⚑ v36 (Tom : « INDEX plus gros, comme les autres ») — LA PLACE SE MESURE DANS L'UNITÉ DU TITRE. `scrollWidth` est
          en pixels de mise en page ; `getBoundingClientRect` suit la mise à l'échelle de l'appareil. Dès que l'app est
@@ -25501,6 +25507,7 @@ var CREMEETAT='#F7F0DE';
       var _v20 = !!b.closest('#shareScreen,#settingsScreen,#indexSheet,#auraScreen') && !t.classList.contains('cs-mark')
                  && /^\s*["']?PromiLate/i.test(getComputedStyle(t).fontFamily);
       if(_v20){ fs=35; if(cb) dispo+=2; }   /* air 16 : à 12, « Réglages » venait à 8 px du ✕ à l'œil */
+      if(cb){ var _tl=(t.getBoundingClientRect().left-r.left)/kE, _zl=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl>_tl+40) dispo=Math.min(dispo, _zl-_tl-4); }   /* v165 (Q585) : 4 pt avant la zone de toucher du X */
       /* ⚠ EN `important`, sinon la règle d'origine du titre reprend la main : un style
          en ligne SANS important perd contre un `!important` de feuille. */
       t.style.setProperty('font-size',fs+'px','important');
@@ -34227,6 +34234,19 @@ window._petiteToile=function(g,A,Lr,ids){ try{
     }
     if(ch && ch.classList.contains('ouvert') && !(ev.target.closest && ev.target.closest('#accChoix'))) ch.classList.remove('ouvert');
   }, true);
+  /* ⚑ v165 (C-203, chemin b) — AU DOIGT, TOUCHER AILLEURS NE REFERMAIT PAS LES NATURES : WebKit ne fabrique pas de `click` sur un nœud sans écouteur
+     (la Toile vide ; la règle de Q578). On lit le geste lui-même : appui puis lever sans glisser (< 10 pt, < 600 ms), hors du menu et du + — le `click`
+     qui suivrait passe par le même chemin, sans effet de plus. */
+  var _gch=null;
+  function _gDeb(x, y){ _gch={x:x, y:y, t:performance.now()}; }
+  function _gFin(x, y, t){ var g=_gch; _gch=null; var ch=document.getElementById('accChoix'); if(!g || !ch || !ch.classList.contains('ouvert')) return;
+    if(Math.hypot(x-g.x, y-g.y)>10 || performance.now()-g.t>600) return;
+    if(t && t.closest && (t.closest('#accChoix') || t.closest('#createBtn'))) return;
+    ch.classList.remove('ouvert'); }
+  window.addEventListener('pointerdown', function(ev){ if(ev.pointerType!=='touch') _gDeb(ev.clientX, ev.clientY); }, true);
+  window.addEventListener('pointerup', function(ev){ if(ev.pointerType!=='touch') _gFin(ev.clientX, ev.clientY, ev.target); }, true);
+  window.addEventListener('touchstart', function(ev){ var q=ev.changedTouches&&ev.changedTouches[0]; if(q) _gDeb(q.clientX, q.clientY); }, {capture:true, passive:true});
+  window.addEventListener('touchend', function(ev){ var q=ev.changedTouches&&ev.changedTouches[0]; if(q) _gFin(q.clientX, q.clientY, document.elementFromPoint(q.clientX, q.clientY)||ev.target); }, {capture:true, passive:true});
   /* la ligne : « N paroles · N Nuées » — la même que l'Index (Q213) */
   function ligne(){ try{ var el=document.getElementById('accLigne'); if(!el) return;
     var n=promises.filter(function(p){return !p.req&&!p.draft;}).length, m=(typeof NUE!=='undefined')?Object.keys(NUE).length:0;
@@ -41064,10 +41084,13 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   var T=window.TEXTES_ENGAGEMENT=window.TEXTES_ENGAGEMENT||{};
   /* TEXTE — Tom (lot v143) */
   T.guide={ studio:'Choisis d’abord le monde qui te ressemble, au Studio.',
-            plus:'Promi, Chiche ou Cercle : tout commence par ce +.' };
+            plus:'Promi, Chiche ou Cercle : tout commence par ce +.',
+            /* ⚑ v165 (Tom, C-203) — LA CLÔTURE, mot pour mot : deux impératifs et un « ! » voulus (exceptions nommées, comme la phrase du Studio) */
+            partage:'Étoffe ta Toile, et partage-la\u00a0!',
+            reste:'Le reste s’explore à ton rythme.' };
   /* §11.7 — les mots-clés (PromiLate, en couleur) : « Studio » et « monde » dans la phrase du Studio ; le mot qui nomme l'action dans celle du + */
-  var CLES={ studio:['monde','Studio'], plus:['commence'] };   /* les mots-clés du guide (11.7) — une liste de mots, pas un texte : hors de TEXTES_ENGAGEMENT (le juge A3 y lit des phrases) */
-  T.imperatifVoulu=(T.imperatifVoulu||[]).concat([T.guide.studio]);   /* A3 : l'exception nommée, lue par redteam_engagement et redteam_guide */
+  var CLES={ studio:['monde','Studio'], plus:['commence'], partage:['Toile','partage-la'], reste:[] };   /* les mots-clés du guide (11.7) — une liste de mots, pas un texte : hors de TEXTES_ENGAGEMENT (le juge A3 y lit des phrases) */
+  T.imperatifVoulu=(T.imperatifVoulu||[]).concat([T.guide.studio, T.guide.partage]);   /* v165 : la phrase de clôture, l'autre impératif voulu */   /* A3 : l'exception nommée, lue par redteam_engagement et redteam_guide */
   T.sansPlusTard=true;                                                  /* R6 : l'exception nommée (Tom, v144) */
   function $(i){ return document.getElementById(i); }
   var dev=$('device'); if(!dev) return;
@@ -41142,7 +41165,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   }
 
   /* ── LA SCÈNE ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-  function retire(){ jeu++; try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio','guide-plus'); trou=null; SC=null; uC=0; uN=0;
+  function retire(){ jeu++; try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio','guide-plus','guide-partage'); trou=null; SC=null; uC=0; uN=0;
     if(vivAv!==null){ window._vivantOff=vivAv; vivAv=null; } }
   function deshabille(){ try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; ['guidePhrase','guideCible'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); }
   function cible(quoi){ var st=$('studioBtn'), pl=$('createBtn'); if(!st || !pl) return null;
@@ -41150,8 +41173,14 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       /* v147 (§10.2 : « aucun élément voisin n'est découvert ») : à droite, la marge s'arrête 0,8 pt avant l'icône de l'Aura */
       try{ var va=vu(au); if(va && va[2]>2) pr=Math.max(6, Math.min(10, va[0]-(bb[0]+bb[2])-0.8)); }catch(_){ }
       return {b:bb, marge:GD.MARGE_STUDIO||5, o:{creux:4, plafond:[10,10,pr,10], dans:dansBarre()}}; }
+    if(quoi==='partage'){ var sh=$('shareBtn'); if(!sh) return null; var bs=vu(sh); if(bs[2]<2) return null;
+      /* ⚑ v165 (Tom, C-203) — la zone nette serrée sur l'icône de Partager, aux règles du Studio et du + : 4 à 6 flaques nées dans sa boîte, 4 à 10 pt de
+         marge, aucun voisin découvert — à droite elle s'arrête 0,8 pt avant l'icône des Réglages ; et elle reste 5 pt en deçà du contour du plateau */
+      var pd=10; try{ var rg=vu($('settingsBtn')); if(rg && rg[2]>2) pd=Math.max(4, Math.min(10, rg[0]-(bs[0]+bs[2])-0.8)); }catch(_){ }
+      return {b:bs, marge:GD.MARGE_PLUS||5, o:{creux:4, plafond:[10,10,pd,10], dans:dansPlateau(), marge0:7, lobe:2.3}}; }
     var p=boite(pl); if(p[2]<8) return null; return {b:p, marge:GD.MARGE_PLUS||5, o:{creux:4, rond:1, dans:dansBarre(), marge0:7, lobe:2.3}}; }   /* v147 : le + est rond — sa zone suit le disque */   /* ⚑ v153 (chef de chantier, Q553, C-163) : « Tom refuse le rond » — autour du +, la marge va de 4 à 10 pt (7 ± 2,3, souffle compris : 4,5 à 9,5) pour des lobes de 9 à 10 % */
   /* la barre, telle qu'on la voit (un rectangle aux bouts arrondis) : la zone nette reste 5 pt en deçà de son contour */
+  function dansPlateau(){ var pa=$('accPlat'); if(!pa) return null; var b=boite(pa); if(!b || b[2]<20) return null; return {b:b, r:Math.min(b[3]/2, parseFloat(getComputedStyle(pa).borderTopLeftRadius)||b[3]/2), retrait:5}; }
   function dansBarre(){ var ba=document.querySelector('#device .acc-barre'); if(!ba) return null; var b=boite(ba); if(!b || b[2]<20) return null; return {b:b, r:Math.min(b[3]/2, parseFloat(getComputedStyle(ba).borderTopLeftRadius)||b[3]/2), retrait:5}; }
   /* la phrase : les mots de Tom, tels quels ; ses mots-clés et ses noms de nature sont enveloppés, jamais changés */
   var PAL=[[130,174,248],[255,184,210],[201,168,245],[239,227,199]];   /* la palette de base (Ingénu), dans son ordre : bleu, rose, lilas, crème dalle */
@@ -41173,6 +41202,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
          tu me montres une capture »). Mesuré en clair sur l'accueil flouté : voir QUESTIONS (Q-v147). */
       /* ⚑ v148 (Tom, C-145) : « “monde” en rose est beau, mais illisible. Il passe en lilas violet : #8363AA en clair (la teinte assombrie de Q518),
          #C9A8F5 en sombre. » */
+      else if(pris==='partage-la'){ var cp=clairA?'#8363AA':'#C9A8F5'; out+='<i class="gd-cle gd-partage" style="color:'+cp+';-webkit-text-fill-color:'+cp+'">'+esc(pris)+'</i>'; }   /* v165 (C-203) : la couleur de « monde » (lilas, 3:1 en clair) */
       else if(pris==='monde'){ var cm=clairA?'#8363AA':'#C9A8F5'; out+='<i class="gd-cle gd-monde" style="color:'+cm+';-webkit-text-fill-color:'+cm+'">'+esc(pris)+'</i>'; }
       /* ⚑ v149 (Tom, décision de fin de v148, Q533) : « en clair, les lettres de « Studio » assombries jusqu'à 3:1 » — chaque lettre garde sa teinte,
          sa clarté descend jusqu'à 3:1 sur le fond de la Toile en clair (#DFCAA4) : bleu #4971B6, rose #9E5F77, lilas #8363AA, crème #7C7158. Le sombre ne change pas. */
@@ -41181,7 +41211,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       i+=pris.length; }
     return out; }
   function posePhrase(g, quoi){ var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.innerHTML=phraseHTML(quoi); [].forEach.call(p.querySelectorAll('*'), function(e){ eng(e,'guide-phrase'); }); g.appendChild(p);
-    var h=p.offsetHeight||80; p.style.top=Math.round(372-120-h/2)+'px';   /* v147 (Tom, §10.4) : 1 cm (60 pt) plus haut ; ⚑ v149 (Tom, C-145) : « remonte encore d'UN cm réel, 60 pt ± 4, PAS PLUS » — centre 312 → 252 */
+    var h=p.offsetHeight||80; p.style.top=Math.round((quoi==='reste'?422:372-120)-h/2)+'px';   /* v165 (C-203) : la phrase 2 au centre de l'écran */   /* v147 (Tom, §10.4) : 1 cm (60 pt) plus haut ; ⚑ v149 (Tom, C-145) : « remonte encore d'UN cm réel, 60 pt ± 4, PAS PLUS » — centre 312 → 252 */
     if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; } }
     return p; }
   /* ⚑ v148 (Tom, 16 oct. 2026, C-146) — « Tant que le Studio n'a jamais été ouvert, toucher ailleurs montre la phrase de rappel — choisir son monde — et
@@ -41192,11 +41222,11 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   var PRE=null;
   function preCible(quoi){ PRE=null; var c=cible(quoi); if(!c || !SC) return false; PRE={quoi:quoi, sc:SC, ent:SC.cible(c.b, c.marge, ((Date.now()&0xffff)|1), c.o)}; return true; }
   function habille(g, quoi){ deshabille(); var c=cible(quoi); if(!c) return false; ou=quoi;
-    g.setAttribute('data-guide', quoi); dev.classList.remove('guide-studio','guide-plus'); dev.classList.add('guide-'+quoi);
+    g.setAttribute('data-guide', quoi); dev.classList.remove('guide-studio','guide-plus','guide-partage'); dev.classList.add('guide-'+quoi);
     posePhrase(g, quoi);
     var ent=(PRE && PRE.quoi===quoi && PRE.sc===SC && SC.ent===PRE.ent)?PRE.ent:SC.cible(c.b, c.marge, ((Date.now()&0xffff)|1), c.o), eb=ent.boite; PRE=null;
     trou={x:eb[0]+eb[2]/2, y:eb[1]+eb[3]/2, w:eb[2], h:eb[3], b:c.b};
-    var bt=eng(document.createElement('div'),'guide-cible'); bt.id='guideCible'; bt.setAttribute('role','button'); bt.tabIndex=0; bt.setAttribute('aria-label', quoi==='studio'?'Studio':'Planter');
+    var bt=eng(document.createElement('div'),'guide-cible'); bt.id='guideCible'; bt.setAttribute('role','button'); bt.tabIndex=0; bt.setAttribute('aria-label', quoi==='studio'?'Studio':(quoi==='partage'?'Partager':'Planter'));
     bt.style.cssText='position:absolute;left:'+eb[0].toFixed(1)+'px;top:'+eb[1].toFixed(1)+'px;width:'+eb[2].toFixed(1)+'px;height:'+eb[3].toFixed(1)+'px;border-radius:'+(Math.min(eb[2],eb[3])/2).toFixed(1)+'px;margin:0;padding:0;max-width:none;background:transparent'; g.appendChild(bt);
     return true; }
   /* une animation : u de a à b en `ms` ; chaque image dessine le niveau ; rend une promesse (fausse si le guide a changé entre-temps) */
@@ -41218,10 +41248,14 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     vivAv=!!window._vivantOff; window._vivantOff=true;                 /* la Toile ne bouge pas sous l'image floutée */
     g.addEventListener('click', function(e){ e.stopPropagation(); e.preventDefault(); if(etat==='part' || etat==='prepare' || etat==='couvre' || etat==='vers-plus') return;
       var D2=dev.getBoundingClientRect(), q=k(), x=(e.clientX-D2.left)/q, yy=(e.clientY-D2.top)/q;
-      if(trou && Math.abs(x-trou.x)<=trou.w/2+4 && Math.abs(yy-trou.y)<=trou.h/2+4){ if(etat==='studio') versStudio(); else if(etat==='plus') versPlus(); return; }
+      if(etat==='reste'){ finCloture(); return; }                     /* v165 : la phrase 2 — un toucher n'importe où termine le guide */
+      if(etat==='vers-partage' || etat==='au-partage') return;
+      if(trou && Math.abs(x-trou.x)<=trou.w/2+4 && Math.abs(yy-trou.y)<=trou.h/2+4){ if(etat==='studio') versStudio(); else if(etat==='plus') versPlus(); else if(etat==='partage') versPartage(); return; }
       if(etat==='studio'){ rappel(); return; }                        /* ⚑ v148 (C-146) : toucher ailleurs à l'étape du Studio montre le rappel — jamais l'étape du + (v144 : il y menait) */
+      if(etat==='plus'){ versCloture(); return; }                     /* ⚑ v165 (C-203, chemin c) : toucher ailleurs que le + mène à la clôture (avant : le guide finissait) */
+      if(etat==='partage'){ phraseReste(); return; }                  /* v165 : toucher ailleurs que Partager : la phrase 2 */
       finir(); }, true);
-    g.addEventListener('keydown', function(e){ if(e.key!=='Enter' && e.key!==' ') return; var q=e.target; if(q && q.id==='guideCible'){ e.preventDefault(); if(etat==='studio') versStudio(); else if(etat==='plus') versPlus(); } });
+    g.addEventListener('keydown', function(e){ if(e.key!=='Enter' && e.key!==' ') return; var q=e.target; if(q && q.id==='guideCible'){ e.preventDefault(); if(etat==='studio') versStudio(); else if(etat==='plus') versPlus(); else if(etat==='partage') versPartage(); } });
     tPose=performance.now(); g.setAttribute('data-pose', ''+Math.round(tPose));
     accueilImage().then(function(net0){ if(id!==jeu || !$('guide')) return; var t0=performance.now(), flou=F.floute(net0, FLOU); g.setAttribute('data-flou-ms', ''+Math.round(performance.now()-t0));
       SC=F.Scene(cv, {l:390, h:844, densite:2, flou:flou, graine:((Date.now()&0xffffff)|1), creux:GD.CREUX||10, rayon:GD.RAYON||150});
@@ -41303,9 +41337,35 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function versPlus(){ attente=null; var g=$('guide'); deshabille(); etat='part'; if(g){ g.style.pointerEvents='none'; g.setAttribute('data-guide','part'); }
     try{ var ch=$('accChoix'); if(ch) ch.classList.add('ouvert'); else $('createBtn').click(); }catch(_){ }
     if(!SC){ retire(); etat=null; return; } SC.tire(true); var id=jeu;
+    joue(RETIRE, 1, 0, couv).then(function(){ if(id===jeu){ retire(); etat='apres-plus'; tAcc=0; } }); }   /* ⚑ v165 (C-203, chemins a et b) : la clôture attend le retour sur l'accueil */
+  /* ⚑ v165 (Tom, C-203) — LA CLÔTURE. « Après l'étape du +, le guide se termine par une clôture qui invite à partager. Elle n'est PAS contrainte comme
+     l'étape du Studio. » La phrase 1 arrive dans TOUS les cas : (a) le + touché, quelque chose créé — au retour sur l'accueil, la page + fermée ou la
+     parole plantée ; (b) le + touché, puis ailleurs (le menu se ferme) ; (c) ailleurs que le + — sa zone se referme, celle de Partager s'ouvre. Partager
+     touché : il s'ouvre par-dessus le guide, et à sa fermeture la phrase 2 paraît ; ailleurs : la phrase 2. La phrase 2, au centre, sans zone nette ; un
+     toucher ou 3 s sans toucher, et les flaques se vident : l'accueil reste net. `promi_guide` est à « 1 » depuis le Studio : le guide ne revient plus. */
+  function choixOuvert(){ var ch=$('accChoix'); return !!(ch && ch.classList.contains('ouvert')); }
+  function versCloture(){ var g=$('guide'); if(!g || !SC){ montre('partage'); return; } etat='vers-partage'; g.setAttribute('data-guide','vers-partage'); dev.classList.remove('guide-plus');
+    var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt=$('guideCible'); if(bt) bt.remove(); trou=null; var id=jeu;
+    joue(FERME, uN, 0, net).then(function(ok){ if(!ok || id!==jeu || !SC) return; SC.sansCible(); SC.peint(); preCible('partage'); requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; etape('partage', false); }); }); }
+  function versPartage(){ var g=$('guide'); deshabille(); trou=null; etat='au-partage'; vuPartage=false; if(g) g.setAttribute('data-guide','au-partage'); try{ $('shareBtn').click(); }catch(_){ } guettePartage(); }
+  var vuPartage=false;
+  function guettePartage(){ var id=jeu, t0=performance.now();
+    (function f(){ if(id!==jeu || etat!=='au-partage') return; var a=accueil();
+      if(!a) vuPartage=true;
+      else if(vuPartage || performance.now()-t0>4000){ phraseReste(true); return; }   /* refermé (ou jamais ouvert) : la phrase 2 */
+      requestAnimationFrame(f); })(); }
+  var tReste=0;
+  function phraseReste(retour){ var g=$('guide'); if(!g || !SC){ etat=null; return; } var id=jeu;
+    function pose(){ if(id!==jeu || !$('guide')) return; deshabille(); dev.classList.remove('guide-plus'); etat='reste'; g.setAttribute('data-guide','reste'); posePhrase(g, 'reste'); tReste=performance.now();
+      setTimeout(function(){ if(id===jeu && etat==='reste' && performance.now()-tReste>=2990) finCloture(); }, 3000); }   /* 3 s sans toucher : la fin */
+    if(retour || uN<=0){ net(0); SC.sansCible(); SC.peint(); var bt=$('guideCible'); if(bt) bt.remove(); trou=null; pose(); return; }
+    etat='vers-reste'; var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt2=$('guideCible'); if(bt2) bt2.remove(); trou=null;
+    joue(FERME, uN, 0, net).then(function(ok){ if(!ok || !SC) return; SC.sansCible(); SC.peint(); pose(); }); }
+  function finCloture(){ var g=$('guide'); LS.s(CLE,'1'); if(!g){ etat=null; return; } if(etat==='part') return; etat='part'; deshabille(); g.setAttribute('data-guide','part'); g.setAttribute('data-fin', ''+Math.round(performance.now()));
+    if(!SC || reduit()){ retire(); etat=null; return; } var id=jeu; SC.sansCible(); SC.tire(true);
     joue(RETIRE, 1, 0, couv).then(function(){ if(id===jeu){ retire(); etat=null; } }); }
   /* toucher ailleurs à l'étape du + : sa zone se referme sur elle-même, puis les flaques se vident — le guidage est fini */
-  function finir(){ attente=null; var g=$('guide'); if(!g){ etat=null; return; } if(etat==='part') return; etat='part'; deshabille(); dev.classList.remove('guide-studio','guide-plus'); g.setAttribute('data-guide','part');
+  function finir(){ attente=null; var g=$('guide'); if(!g){ etat=null; return; } if(etat==='part') return; etat='part'; deshabille(); dev.classList.remove('guide-studio','guide-plus','guide-partage'); g.setAttribute('data-guide','part');
     if(!SC || reduit()){ retire(); etat=null; return; } var id=jeu;
     joue(FERME, uN, 0, net).then(function(ok){ if(!ok || !SC) return false; SC.sansCible(); SC.tire(true); return joue(RETIRE, 1, 0, couv); }).then(function(){ if(id===jeu){ retire(); etat=null; } }); }
   /* pour les captures et les juges : un état arrêté (aucune horloge) — la couverture à `ms`, ou la zone nette d'une étape à `ms` */
@@ -41315,10 +41375,12 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   setInterval(function(){ var now=performance.now();
     if(attente){ if(!attente.rejeu && LS.g(CLE)==='1'){ attente=null; return; }
       if(accueil() && calme()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ attente=null; tAcc=0; LS.s(CLE,'studio'); montre('studio'); } } else tAcc=0; return; }
+    if(etat==='apres-plus'){ if(accueil() && calme() && !choixOuvert()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE+150){ tAcc=0; montre('partage'); } } else tAcc=0; return; }   /* v165 (C-203, a et b) */
+    if(etat==='au-partage' || etat==='vers-partage' || etat==='vers-reste') return;
     if(etat==='au-studio'){ var a=accueil(); majFlou();   /* v154 (C-166) */
       if(!a){ vuStudio=true; tAcc=0; }
       else if(vuStudio || now-tVu>6000){ if(calme()){ if(!tAcc) tAcc=now; var neuf=!(refait || (SC && sigToile()!==SIG0)) || now-tAcc>=RETOUR+1500; if(now-tAcc>=RETOUR && neuf){ tAcc=0; if(!versLePlus()){ retire(); etat=null; } } } else tAcc=0; } }   /* le Studio refermé, avec ou sans choix (6 s : un Studio qui ne s'ouvrirait pas) */
-    else if(etat==='studio' || etat==='plus' || etat==='vers-plus' || etat==='couvre'){
+    else if(etat==='studio' || etat==='plus' || etat==='vers-plus' || etat==='couvre' || etat==='partage' || etat==='reste'){
       if((etat==='plus' || etat==='vers-plus') && vuStudio) majFlou();   /* v162 (C-166) : la Toile réelle, jusqu'au bout */
       var glisse=false; try{ var stG=$('studioScreen'); glisse = etat==='vers-plus' && !!stG && !stG.classList.contains('show') && !studioFerme(); }catch(_){ }   /* v162 : le Studio finit de glisser sous un passage déjà commencé */
       if(!glisse && !accueil()){ retire(); etat=null; } } }, 60);
@@ -41330,7 +41392,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   try{ if(LS.g(CLE)==='studio' && LS.g('promi_onb')==='1' && !/[?&](gfige|getape|gnet)=/.test(location.search)) setTimeout(function(){ if(!attente && !etat){ attente={rejeu:true}; tAcc=0; } }, 1200); }catch(_){ }
   try{ var _gf=/[?&]gfige=(\d+)/.exec(location.search), _ge=/[?&]getape=plus/.test(location.search), _gn=/[?&]gnet=(\d+)/.exec(location.search);
     if(_gf||_ge||_gn) setTimeout(function(){ attente=null; montre(_ge?'plus':'studio', true); setTimeout(function(){ if(_gf) fige(+_gf[1]); if(_gn) figeNet(_ge?'plus':'studio', +_gn[1]); }, 900); }, 4200); }catch(_){ }
-  window._guide={ attend:function(rejeu){ attente={rejeu:!!rejeu}; tAcc=0; }, montre:montre, finir:finir, versLePlus:versLePlus, figeA:fige, figeNet:figeNet, image:accueilImage,
+  window._guide={ attend:function(rejeu){ attente={rejeu:!!rejeu}; tAcc=0; }, montre:montre, finir:finir, cloture:versCloture, versLePlus:versLePlus, figeA:fige, figeNet:figeNet, image:accueilImage,
     etat:function(){ var g=$('guide'); return {etat:etat, attente:!!attente, trou:trou, vu:LS.g(CLE), entier:!!(g&&g.getAttribute('data-entier')), couv:uC, net:uN, eau:!!(g&&$('guideEau')), flouMs:g?+(g.getAttribute('data-flou-ms')||0):0,
       creux:SC?SC.R.creux.length:0, relief:SC?[SC.R.nx, SC.R.ny]:null, trace:!!traceCtl}; },
     scene:function(){ return SC; },

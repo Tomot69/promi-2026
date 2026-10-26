@@ -531,8 +531,18 @@ def chemins(b):
     io_mi = ellipse(Mx[0])[0] if Mx else 1
     juge('4.3 · à mi-ouverture la zone nette est faite de FLAQUES : ni vide ni pleine (15 à 85 %), en plusieurs morceaux ou échancrée (recouvrement avec une ellipse ≤ 0,9)', bool(Mx) and 0.15 <= float(t.sum()) / max(1.0, plein) <= 0.85 and (len(Mx) >= 2 or io_mi <= 0.9), 'part %.0f %% · %d morceau(x) · ellipse %.2f' % (100 * float(t.sum()) / max(1.0, plein), len(Mx), io_mi))
     pg.evaluate("()=>{ _guide.finir(); }"); pg.wait_for_timeout(200); ctx.close()
-    # 4.6 · à l'étape du +, toucher ailleurs : la zone se referme, puis les flaques se vident
+    # 4.6 · ⚑ v165 (Tom, C-203) — CONTRAT REMIS (original : sauvegardes/redteam_guide-avant-v165.py, « à l'étape du +, toucher ailleurs : la zone se referme,
+    #   puis les flaques se vident ») : toucher ailleurs mène maintenant à la CLÔTURE (redteam_guide_cloture la juge) ; les flaques se vident à sa fin —
+    #   la phrase 1, un toucher ailleurs (la phrase 2), un toucher : c'est ce vidage-là qui est jugé ici, avec la même exigence.
     ctx, pg, cdp = rejoue(b, 'light'); e = pret(pg, 'studio'); au_studio(pg, cdp, e); ferme_studio(pg, cdp); e2 = pret(pg, 'plus', 8000); x, y = pt(pg, 195, 230); toucher(cdp, pg, x, y)
+    for _ in range(80):
+        if pg.evaluate("()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='partage' && +g.getAttribute('data-net')>=1);}"): break
+        pg.wait_for_timeout(100)
+    x, y = pt(pg, 195, 560); toucher(cdp, pg, x, y)
+    for _ in range(60):
+        if pg.evaluate("()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='reste');}"): break
+        pg.wait_for_timeout(100)
+    pg.wait_for_timeout(500); x, y = pt(pg, 195, 560); toucher(cdp, pg, x, y)
     R = []; t0 = time.time()
     while time.time() - t0 < (FERME + RETIRE) / 1000.0 + 1.2:
         m, _ = eau(pg, 98, 211)

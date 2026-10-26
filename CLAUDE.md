@@ -99,7 +99,7 @@ de tâches est à rejeter, même si elle est fonctionnellement pratique.
 | **Fil** | le flux d'activité | |
 | **Aura** | l'écran de progression et d'analyse | anciennement « Karma » |
 | **Studio** | le sélecteur de monde graphique | |
-| **Ma Parole !** | l'abonnement payant — **anciennement « Le Cercle »** (v106) ; **les exceptions nommées au « ! » : « Ma Parole ! », « Promi planté ! » (v146), « Parole tenue ! » et « Défi relevé ! » (v148, C-144)** | « Avec Ma Parole ! » · « Tu es Membre Ma Parole ! » · « Retourne ta Toile » · bouton « Bon, allez d'accord ». Espace insécable avant « ! ». Clés internes inchangées (`ouvreCercle`, `.s2-cercle`, `isPremium`) |
+| **Ma Parole !** | l'abonnement payant — **anciennement « Le Cercle »** (v106) ; **les exceptions nommées au « ! » : « Ma Parole ! », « Promi planté ! » (v146), « Parole tenue ! » et « Défi relevé ! » (v148, C-144), « Étoffe ta Toile, et partage-la ! » (v165, C-203)** | « Avec Ma Parole ! » · « Tu es Membre Ma Parole ! » · « Retourne ta Toile » · bouton « Bon, allez d'accord ». Espace insécable avant « ! ». Clés internes inchangées (`ouvreCercle`, `.s2-cercle`, `isPremium`) |
 | **Peaufiner** | le tiroir de réglages, en bas de chaque fiche | |
 | **Index** | la liste complète des Promi | |
 | **Pelote** | la boule de l'Aura — le sol, les îles, la fourrure | **« sphère » et « Orbite » sont morts** |
@@ -189,6 +189,26 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v165 (26 oct. 2026) — LA CLÔTURE DU GUIDE ; LE TITRE « PARTAGER » STABLE. (Décisions Tom.)
+> **Validé par Tom : v164b (le trait × 1,3, TRIER, Ramage, C-202, C-200).** L'image isolée de 86 ms sous Ramage : notée, à rejouer au calme.
+> **⚑ C-203 — LA CLÔTURE DU GUIDE** (`lot-V141-GUIDE`) : après l'étape du +, deux phrases de Tom, mot pour mot — **« Étoffe ta Toile, et partage-la ! »** puis
+> **« Le reste s’explore à ton rythme. »** (impératifs et « ! » : EXCEPTIONS NOMMÉES, comme la phrase du Studio — `TEXTES_ENGAGEMENT.imperatifVoulu`,
+> `redteam_engagement` VOULU). **Elle n'est pas contrainte.** La phrase 1 arrive dans tous les cas : (a) le + touché et quelque chose créé — au retour sur
+> l'accueil, la page + fermée ou la parole plantée (état `apres-plus`) ; (b) le + touché puis ailleurs, le menu se ferme ; (c) ailleurs que le + — sa zone se
+> referme, celle de Partager s'ouvre. Flou en flaques sauf autour de l'icône de Partager (`cible('partage')` : marge 4 à 10 pt, s'arrête 0,8 pt avant l'icône des
+> Réglages, 5 pt en deçà du plateau, `dansPlateau`) ; « Toile » au bleu de « commence », « partage-la » au lilas de « monde » (Q586), PromiLate, tracées, aucun
+> contour. Partager touché : il s'ouvre par-dessus le guide, à sa fermeture la phrase 2 ; ailleurs : la phrase 2. La phrase 2 au centre (422 pt), sans zone
+> nette ; un toucher ou 3 s, et les flaques se vident (`finCloture`) ; `promi_guide` « 1 » : le guide ne revient plus. **Trouvé (chemin b) : au doigt, toucher
+> ailleurs ne refermait pas le menu des natures** (WebKit ne fabrique pas de `click` sur la Toile vide, la règle de Q578) — le geste lui-même est lu
+> (`touchend`, `pointerup` hors toucher). Juge : **`redteam_guide_cloture.py`** (130 : les trois chemins, Partager touché ou non, la zone lue sur l'eau,
+> la fin, le lancement suivant ; clair et sombre ; 390 × 844 et 330 × 714). Contrats remis : `redteam_guide` 4.6 (le vidage jugé à la fin de la clôture),
+> `redteam_engagement` (VOULU) — originaux `sauvegardes/*-avant-v165.py`.
+> **⚑ Q585 — LE TITRE « PARTAGER »** : `ajusteTitres` mesurait la place sur la largeur de `.closeb` lue à l'instant — avant ou après que `lot-V157-CROIX` l'ait
+> posée en zone de 44 pt, le titre rétrécissait plus ou moins, puis ne se remesurait plus (la clé ne portait pas le X) : 32 ou 35 px (et Réglages 34 ou 27).
+> La place du X entre dans la clé ; le titre s'arrête 4 pt avant la zone de toucher du X. Mesuré : Partager 32 px, Réglages 34, Index 35, L'aura 35, Fil 31,
+> six ouvertures chacun, aux deux échelles.
+> **Q584** : rien (le texte de la Toile vide attend Tom).
 
 ### ⚑ v164b (25 oct. 2026) — LE TRAIT FIGÉ À × 1,3 ; TRIER ; RAMAGE AU STUDIO ; willReadFrequently ; LES HUIT POINTS DE L'AUDIT. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v164a (les paliers) et v163a (`?trait=`).
 > **⚑ C-184 — FIGÉ** (Tom : « Je garde le palier ×1,3. Fige-le et retire ?trait=. ») : `window._TRAIT_K = 1,3`, plus aucun paramètre d'adresse. Les juges qui comparent à
@@ -3573,6 +3593,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_guide_cloture.py # 130 — v165 (C-203) : la clôture du guide — chemins a, b, c, Partager touché ou non, la zone nette lue sur l'eau, la fin, le lancement suivant ; deux thèmes, deux échelles.
 python3 redteam_v164b.py        # 31 — v164b : TRIER (Index, Fil, deux thèmes) et les huit points de C-200, au doigt. 8/31 sur v164a.
 python3 redteam_ramage_jauge.py  # v164b (Q581) : la silhouette de Ramage prête à l'accueil ; aucun rendu ni image > 50 ms dans les 5 s après l'arrivée (au calme). Rouge sur v164a.
 python3 redteam_photo_trait.py  # 56 — v164a (C-201) : le bouton photo et sa zone de toucher au-dessus de l'encre du trait (lue sur le canevas), 3 pages + et 4 fiches, ×1,15 à ×1,8, échelles 1 et 0,79.
