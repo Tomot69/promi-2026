@@ -10,6 +10,9 @@ Lu SUR L'IMAGE, lettre par lettre (les tons de « Studio » du guide, en dur) :
   C · « La suite » garde sa couleur d'avant (celle de v162, lue sur l'image) ;
 aux échelles 1 (430 × 932) et 0,79 (330 × 714), clair et sombre. Preuve : `--fichier=zz-v162.html` rougit (A).
 """
+# ⚑ v166 (Tom, C-165, C-204) : « chaque lettre prend EXACTEMENT une couleur de la palette par défaut, sans modification, en clair comme en sombre ».
+#   A devient : la couleur RENDUE de chaque lettre (style calculé) égale au code hexadécimal près à sa couleur de palette, et l'encre lue sur l'image à ΔE ≤ 12 ;
+#   B (3:1) est RETIRÉ comme critère — C-204 interdit de dériver une couleur pour le contraste : il est écrit, pour information. Original : sauvegardes/redteam_appartient-avant-v166.py.
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
 from playwright.sync_api import sync_playwright
@@ -18,7 +21,7 @@ F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')
 res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-92s %s' % ('✅' if ok else '❌', nom, str(d)[:230]), flush=True)
-TONS = {False: [0x476FB4, 0x9B5D75, 0x8161A8, 0x796E55], True: [0x82AEF8, 0xFFB8D2, 0xC9A8F5, 0xEFE3C7]}
+TONS = {False: [0x82AEF8, 0xFFB8D2, 0xC9A8F5, 0xEFE3C7], True: [0x82AEF8, 0xFFB8D2, 0xC9A8F5, 0xEFE3C7]}   # la palette par défaut, telle quelle
 def rgb(h): return ((h >> 16) & 255, (h >> 8) & 255, h & 255)
 def lab(c):
     def f(u):
@@ -41,14 +44,14 @@ def trace(pg):
 BOITES = """()=>{ const L=[...document.querySelectorAll('#onbV .onbv-app')]; const app=L[L.length-1]; if(!app) return null;
   const k=[...app.querySelectorAll('.onbv-al')], suite=app.parentNode; const out={lettres:[], suite:null};
   const R=e=>{ const rg=document.createRange(); rg.selectNodeContents(e); const r=rg.getBoundingClientRect(); return [r.left,r.top,r.right,r.bottom]; };
-  if(k.length) k.forEach(e=>out.lettres.push({c:e.textContent, b:R(e)})); else { /* v162 : un seul mot, sans lettres séparées */ const t=app.firstChild; const s=app.textContent;
+  if(k.length) k.forEach(e=>out.lettres.push({c:e.textContent, b:R(e), col:getComputedStyle(e).color, fill:getComputedStyle(e).webkitTextFillColor})); else { /* v162 : un seul mot, sans lettres séparées */ const t=app.firstChild; const s=app.textContent;
     for(let i=0;i<s.length;i++){ const rg=document.createRange(); rg.setStart(t,i); rg.setEnd(t,i+1); const r=rg.getBoundingClientRect(); out.lettres.push({c:s[i], b:[r.left,r.top,r.right,r.bottom]}); } }
   const tn=[...suite.childNodes].find(n=>n.nodeType===3 && /La suite/.test(n.textContent)); if(tn){ const rg=document.createRange(); rg.selectNodeContents(tn); const r=rg.getBoundingClientRect(); out.suite=[r.left,r.top,r.right,r.bottom]; }
   return out; }"""
-def encre(im, b, dsf, fond):
+def encre(im, b, dsf, fond, seuil=25):
     x0, y0, x1, y1 = [int(v * dsf) for v in b]; best, nb = None, 0
     px = [im.getpixel((x, y)) for x in range(x0, max(x0 + 1, x1)) for y in range(y0, max(y0 + 1, y1))]
-    loin = [p for p in px if de(p, fond) > 25]
+    loin = [p for p in px if de(p, fond) > seuil]
     if not loin: return None
     loin.sort(key=lambda p: -de(p, fond)); cut = loin[:max(1, len(loin) // 3)]   # le cœur du trait, pas l'anticrénelage
     return tuple(sorted(c[i] for c in cut)[len(cut) // 2] for i in range(3))
@@ -70,11 +73,15 @@ with sync_playwright() as p:
             # le fond : sous la ligne, à gauche du mot (aucune lettre)
             fb = Bx['lettres'][0]['b']; fond = im.getpixel((int((fb[0] - 8) * dsf), int((fb[1] + fb[3]) / 2 * dsf)))
             att = [rgb(TONS[sombre][i % 4]) for i in range(len(L))]
-            lu = [encre(im, x['b'], dsf, fond) for x in L]
+            lu = [encre(im, x['b'], dsf, fond, min(25, de(a, fond) * 0.5)) for x, a in zip(L, att)]   # v166 : une encre pâle (la crème sur le fond clair) se lit à la moitié de son écart au fond
             ecarts = [round(de(a, l), 1) if l else None for a, l in zip(att, lu)]
-            juge('[%s] A · chaque lettre de « t\'appartient » au ton de la palette, dans l\'ordre (ΔE ≤ 12)' % T, len(L) == 11 and all(e is not None and e <= 12 for e in ecarts), 'ΔE %s' % ecarts)
+            hx = lambda c: '#%02X%02X%02X' % tuple(int(v) for v in c.replace('rgba(', '').replace('rgb(', '').replace(')', '').split(',')[:3]) if c else None
+            rendus = [(hx(x.get('col')), hx(x.get('fill'))) for x in L]; voulus = ['#%06X' % TONS[sombre][i % 4] for i in range(len(L))]
+            juge('[%s] A · chaque lettre de « t\'appartient » EXACTEMENT à sa couleur de palette, dans l\'ordre (style calculé, au hex près)' % T,
+                 len(L) == 11 and all(r == (v, v) for r, v in zip(rendus, voulus)), 'rendu %s' % [r[0] for r in rendus])
+            juge('[%s] A2 · l\'encre lue sur l\'image : ΔE ≤ 12 de sa couleur de palette' % T, len(L) == 11 and all(e is not None and e <= 12 for e in ecarts), 'ΔE %s' % ecarts)
             cs = [round(ctr(l, fond), 2) if l else 0 for l in lu]
-            juge('[%s] B · chaque lettre tient 3:1 sur son fond' % T, all(c >= 3 for c in cs), 'contrastes %s · fond %s' % (cs, fond))
+            print('     (information, C-204 : contraste de chaque lettre sur son fond %s · fond %s)' % (cs, fond))
             su = encre(im, Bx['suite'], dsf, fond) if Bx['suite'] else None
             juge('[%s] C · « La suite » lu sur l\'image' % T, su is not None, 'encre %s' % (su,))
             print('     suite=%s' % (su,))

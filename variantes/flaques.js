@@ -305,23 +305,48 @@
     }
     tire(false);
     S.tire = tire;
+    /* une zone : sa forme à lobes et sa grille (v166 : la même pour la zone de la cible, les zones en plus et le masque de la flèche) */
+    function grille(boite, gr, opt) {
+      var Z = zoneNette(boite, gr, opt || {}), b = Z.boiteMax, pas = 1.25;
+      var x0 = Math.floor(b[0]) - 1, y0 = Math.floor(b[1]) - 1, ll = Math.ceil(b[2]) + 2, hh = Math.ceil(b[3]) + 2, nx = Math.ceil(ll / pas) + 1, ny = Math.ceil(hh / pas) + 1;
+      return { Z: Z, Rn: { nx: nx, ny: ny, creux: Z.G }, Fn: new Float32Array(nx * ny), Fm: new Float32Array(nx * ny), x0: x0, y0: y0, pasN: pas, llN: ll, hhN: hh };
+    }
+    /* le chemin d'une zone ouverte à u : dans sa forme ET dans ses flaques nettes (à l'ouverture complète, la forme seule) */
+    function cheminZone(z, u, p) {
+      var Rn = z.Rn, Fn = z.Fn, Fm = z.Fm, Z = z.Z, jj, ii;
+      if (u < 1) champ(Fm, Rn.nx, Rn.ny, z.x0, z.y0, z.pasN, Z.G, u, S.tau + u * 2.4);
+      for (jj = 0; jj < Rn.ny; jj++) for (ii = 0; ii < Rn.nx; ii++) { var q = jj * Rn.nx + ii, a = -Z.forme(z.x0 + ii * z.pasN, z.y0 + jj * z.pasN, S.tau);
+        Fn[q] = u >= 1 ? a : Math.min(a, Fm[q]); }
+      return contour(p, Fn, Rn.nx, Rn.ny, z.x0, z.y0, z.pasN);
+    }
     S.cible = function (boite, marge, gr, opt) {
       opt = opt || {};
       /* v147 : la zone nette à lobes, ses 4 à 6 flaques (la marge `marge` d'avant n'a plus d'objet : 6 à 10 pt, décidé par Tom) */
-      var Z = zoneNette(boite, gr, opt), b = Z.boiteMax, pas = 1.25;
-      var x0 = Math.floor(b[0]) - 1, y0 = Math.floor(b[1]) - 1, ll = Math.ceil(b[2]) + 2, hh = Math.ceil(b[3]) + 2, nx = Math.ceil(ll / pas) + 1, ny = Math.ceil(hh / pas) + 1;
+      var z = grille(boite, gr, opt), Z = z.Z, b = Z.boiteMax;
       var ent = function (x, y) { return Z.forme(x, y, S.tau) + 1; }; ent.boite = b; ent.zone = Z;
-      S.ent = ent; S.Z = Z; S.Rn = { nx: nx, ny: ny, creux: Z.G }; S.Fn = new Float32Array(nx * ny); S.Fm = new Float32Array(nx * ny); S.x0 = x0; S.y0 = y0; S.pasN = pas; S.llN = ll; S.hhN = hh; S.uN = 0;
+      S.ent = ent; S.Z = Z; S.Rn = z.Rn; S.Fn = z.Fn; S.Fm = z.Fm; S.x0 = z.x0; S.y0 = z.y0; S.pasN = z.pasN; S.llN = z.llN; S.hhN = z.hhN; S.uN = 0; S.zx = []; if (S.fl) efface(S.fl); S.fl = null;
       return ent;
     };
+    /* ⚑ v166 (Tom, C-203 §3.2) — d'AUTRES zones nettes, ouvertes avec la même `net(u)` (les icônes Aura, Fil et Index pendant la dernière phrase) :
+       chacune ses 4 à 6 flaques nées dans sa boîte, ses lobes, sa marge. `S.zones(liste)` les pose sans cible principale. */
+    S.ajoute = function (boite, gr, opt) { var z = grille(boite, gr, opt); (S.zx = S.zx || []).push(z); return z.Z.boiteMax; };
+    S.zones = function (L) { S.ent = null; S.Rn = null; S.Z = null; S.uN = 0; S.zx = []; if (S.fl) efface(S.fl); S.fl = null; (L || []).forEach(function (c, i) { S.ajoute(c.b, c.gr || (i + 1) * 131, c.o); }); };
+    /* ⚑ v166 (Tom, C-203 §2) — LA FLÈCHE : `f.dessine(g)` la peint (en points de l'appareil) sur `f.cv` ; elle paraît EN FLAQUES avec la zone nette
+       (le même `net(u)`, ses flaques nées dans sa boîte `f.boite`) et ne se voit que sous l'eau (elle part avec elle). */
+    /* la flèche n'efface et ne repeint que SA boîte, et seulement quand son état change (un canevas ×3 de l'écran entier, effacé à chaque image, coûtait cher) */
+    function efface(f) { if (!f || !f.cv) return; var gx = f.cv.getContext('2d'), d = f.dens || dens, b = f.boite; gx.setTransform(1, 0, 0, 1, 0, 0);
+      gx.clearRect(Math.floor((b[0] - 6) * d), Math.floor((b[1] - 6) * d), Math.ceil((b[2] + 12) * d), Math.ceil((b[3] + 12) * d)); f.__etat = 'vide'; }
+    S.fleche = function (f) { if (S.fl) efface(S.fl); if (!f) { S.fl = null; return; } f.z = grille(f.boite, f.gr || 977, { marge0: 3, lobe: 1.2, creux: 4 }); f.__etat = null; S.fl = f; };
     /* la zone nette respire tant qu'elle est ouverte : τ en secondes (les lobes tournent, la marge bouge de ±0,8 pt) */
     S.respire = function (tau) { S.tau = tau; };
-    S.sansCible = function () { S.ent = null; S.Rn = null; S.uN = 0; };
+    S.sansCible = function () { S.ent = null; S.Rn = null; S.uN = 0; S.zx = []; if (S.fl) efface(S.fl); S.fl = null; };
     S.couvre = function (u) { S.uC = Math.max(0, Math.min(1, u)); };
     S.net = function (u) { S.uN = Math.max(0, Math.min(1, u)); };
     S.peint = function () {
       var t0 = (racine.performance && performance.now) ? performance.now() : 0, bords = 0, i;
       g.setTransform(1, 0, 0, 1, 0, 0); g.globalCompositeOperation = 'source-over'; g.clearRect(0, 0, cv.width, cv.height);
+      var fl = S.fl, gf = null, etf = !fl ? null : ((S.uC <= 0 || S.uN <= 0) ? 'vide' : ((S.uN >= 1 && S.uC >= 1) ? 'plein' : 'anim'));
+      if (fl && fl.cv && !(etf === 'plein' && fl.__etat === 'plein') && !(etf === 'vide' && fl.__etat === 'vide')) { efface(fl); if (etf !== 'vide') gf = fl.cv.getContext('2d'); fl.__etat = etf; }
       if (S.uC <= 0) return { ms: 0, bords: 0 };
       g.setTransform(dens, 0, 0, dens, 0, 0);
       /* ① l'eau : l'accueil flouté, montré là où le relief est sous le niveau */
@@ -332,15 +357,16 @@
       if (S.flou) g.drawImage(S.flou, 0, 0, l, h); else { g.fillStyle = o.aplat || '#888'; g.fillRect(0, 0, l, h); }
       g.restore();
       /* ② la zone nette : un TROU dans l'eau — dans l'entourage ET sous le niveau « net » (les flaques nettes naissent dedans) */
-      if (S.Rn && S.uN > 0) {
-        var Rn = S.Rn, Fn = S.Fn, Fm = S.Fm, Z = S.Z, trou = new Path2D(), jj, ii;
+      if ((S.Rn || (S.zx && S.zx.length)) && S.uN > 0) {
+        var trou = new Path2D();
         /* dedans de la forme à lobes (−forme) ET dans les flaques nettes (le champ) — à l'ouverture complète, la forme seule */
-        if (S.uN < 1) champ(Fm, Rn.nx, Rn.ny, S.x0, S.y0, S.pasN, Z.G, S.uN, S.tau + S.uN * 2.4);
-        for (jj = 0; jj < Rn.ny; jj++) for (ii = 0; ii < Rn.nx; ii++) { var q = jj * Rn.nx + ii, a = -Z.forme(S.x0 + ii * S.pasN, S.y0 + jj * S.pasN, S.tau);
-          Fn[q] = S.uN >= 1 ? a : Math.min(a, Fm[q]); }
-        bords += contour(trou, Fn, Rn.nx, Rn.ny, S.x0, S.y0, S.pasN);
+        if (S.Rn) bords += cheminZone({ Rn: S.Rn, Fn: S.Fn, Fm: S.Fm, Z: S.Z, x0: S.x0, y0: S.y0, pasN: S.pasN }, S.uN, trou);
+        (S.zx || []).forEach(function (z) { bords += cheminZone(z, S.uN, trou); });
         g.globalCompositeOperation = 'destination-out'; g.fillStyle = '#000'; g.fill(trou); g.globalCompositeOperation = 'source-over';
       }
+      /* la flèche : sur son canevas, sous l'eau seulement, dans ses flaques à u */
+      if (gf && S.uN > 0) { var mf = new Path2D(); if (S.uN < 1) cheminZone(fl.z, S.uN, mf);
+        gf.setTransform(fl.dens || dens, 0, 0, fl.dens || dens, 0, 0); gf.save(); gf.clip(chemin); if (S.uN < 1) gf.clip(mf); try { fl.dessine(gf); } catch (e) { } gf.restore(); }
       return { ms: t0 ? performance.now() - t0 : 0, bords: bords };
     };
     return S;

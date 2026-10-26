@@ -531,6 +531,8 @@ def chemins(b):
     io_mi = ellipse(Mx[0])[0] if Mx else 1
     juge('4.3 · à mi-ouverture la zone nette est faite de FLAQUES : ni vide ni pleine (15 à 85 %), en plusieurs morceaux ou échancrée (recouvrement avec une ellipse ≤ 0,9)', bool(Mx) and 0.15 <= float(t.sum()) / max(1.0, plein) <= 0.85 and (len(Mx) >= 2 or io_mi <= 0.9), 'part %.0f %% · %d morceau(x) · ellipse %.2f' % (100 * float(t.sum()) / max(1.0, plein), len(Mx), io_mi))
     pg.evaluate("()=>{ _guide.finir(); }"); pg.wait_for_timeout(200); ctx.close()
+    # 4.6 · ⚑ v166 (C-203 §3.2) : pendant la phrase 2, les zones nettes d'Aura, Index et Fil restent ouvertes pendant que l'eau se retire — elle part de 97 %
+    #   (le seuil de départ 0,995 → 0,95 ; original : sauvegardes/redteam_guide-avant-v166.py).
     # 4.6 · ⚑ v165 (Tom, C-203) — CONTRAT REMIS (original : sauvegardes/redteam_guide-avant-v165.py, « à l'étape du +, toucher ailleurs : la zone se referme,
     #   puis les flaques se vident ») : toucher ailleurs mène maintenant à la CLÔTURE (redteam_guide_cloture la juge) ; les flaques se vident à sa fin —
     #   la phrase 1, un toucher ailleurs (la phrase 2), un toucher : c'est ce vidage-là qui est jugé ici, avec la même exigence.
@@ -549,7 +551,7 @@ def chemins(b):
         if m is None: break
         R.append((float(m.mean()), len(morceaux(m, 6)))); pg.wait_for_timeout(60)
     e3 = pg.evaluate(ETAT); pg.wait_for_timeout(2500); e4 = pg.evaluate(ETAT); k0 = max(range(len(R)), key=lambda k: R[k][0]) if R else 0; R = R[k0:]; parts = [r[0] for r in R]; mi = [r for r in R if 0.2 < r[0] < 0.8]
-    juge('4.6 · LA FIN : les flaques se VIDENT — l\'eau baisse sans jamais remonter, en plusieurs morceaux à mi-retrait (≥ 3), puis il ne reste rien et le guide ne se reforme pas', len(R) >= 6 and parts[0] >= 0.995 and all(b_ <= a_ + 0.004 for a_, b_ in zip(parts, parts[1:])) and bool(mi) and max(r[1] for r in mi) >= 3 and not e3['guide'] and not e4['guide'] and e4['devant'] == 'accueil',
+    juge('4.6 · LA FIN : les flaques se VIDENT — l\'eau baisse sans jamais remonter, en plusieurs morceaux à mi-retrait (≥ 3), puis il ne reste rien et le guide ne se reforme pas', len(R) >= 6 and parts[0] >= 0.95 and all(b_ <= a_ + 0.004 for a_, b_ in zip(parts, parts[1:])) and bool(mi) and max(r[1] for r in mi) >= 3 and not e3['guide'] and not e4['guide'] and e4['devant'] == 'accueil',
          '%d relevés · eau %s %% · morceaux à mi-retrait %s · guide %s' % (len(R), [round(p_ * 100) for p_ in parts[::3]], [r[1] for r in mi][:6], e4['guide'])); ctx.close()
     # deux lancements : pas les mêmes flaques
     ctx, pg, cdp = ouvre(b, 'light', vierge=False); L = []

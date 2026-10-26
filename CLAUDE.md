@@ -20,6 +20,12 @@
 > - **A6 · HONNÊTETÉ.** Un point non reproduit, non mesuré ou non jugé est écrit comme tel, jamais « réglé ».
 > Le rapport de chaque lot commence par le tableau A1 à A6, « tenu » ou « non tenu ».
 
+> ## ⚑ LES COULEURS DE TOM — RÈGLE PERMANENTE (Tom, 26 oct. 2026, C-204). ELLE PASSE AVANT TOUTE RÈGLE DE CONTRASTE DE CE FICHIER.
+> **Les couleurs de Tom ne se modifient JAMAIS sans sa demande : ni assombries, ni éclaircies, ni dérivées pour le contraste. Quand il dit « la
+> palette par défaut », ce sont EXACTEMENT ses valeurs. Si une couleur paraît trop peu lisible, on le DIT dans le rapport, avec une capture, et
+> on attend : on ne change rien.** (`window._teinte.ajuste` et toute dérivée « jusqu'à 3:1 » ne servent plus à poser une couleur nouvelle sans
+> sa demande ; les dérivées déjà en place sont listées dans le rapport de v166 et attendent sa décision.)
+
 > ## ⚑ À CHAQUE NOUVELLE SESSION, AVANT TOUTE AUTRE CHOSE
 > **Relancer le serveur et donner les trois adresses complètes, en tête du premier
 > message, sans que Tom ait à le demander.**
@@ -189,6 +195,33 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v166 (26 oct. 2026) — RETOURS iPHONE DE TOM SUR v165 : LES COULEURS EXACTES, LA FLÈCHE DU GUIDE, LA PHRASE 2, LA VEILLE SUR L'APP. (Décisions Tom.)
+> **Validés par Tom : C-203 pour le reste, Q585, Q586. C-204 (la règle des couleurs) : en tête de ce fichier.**
+> **⚑ C-165 — « T'APPARTIENT. » AUX COULEURS EXACTES DE LA PALETTE PAR DÉFAUT** : `#82AEF8` · `#FFB8D2` · `#C9A8F5` · `#EFE3C7`, en clair comme en sombre, dans l'ordre ;
+> les dérivées du clair de v163 (`#476FB4` · `#9B5D75` · `#8161A8` · `#796E55`) sont retirées. ⚠ Mesuré, rien changé (C-204) : en clair, sur le fond de l'onboarding
+> `#DEC8A3`, les lettres tiennent 1,0 à 1,4:1 (la crème ne se distingue presque pas). Juge : `redteam_appartient` (A : le style calculé au hex près ; A2 : l'encre lue ;
+> le 3:1 n'est plus un critère, il est écrit ; original en sauvegarde).
+> **⚑ C-203 §2 — UNE FLÈCHE ORANGE VERS CHAQUE ICÔNE** (Studio, +, Partager) : le dessin du départ de la page + au repos (`_onde.ruban` de 2,2 × à 0,15 × l'épaisseur,
+> puis `_onde.chevron`, ep = 10 × `_TRAIT_K`), posé sur l'axe phrase → icône ; l'encre de sa pointe s'arrête au bord de la zone nette ; `#FB4C0D`, fixe. Elle vit
+> sur son canevas (`#guideFleche`, ×3) ; la scène des flaques la peint (`Scene.fleche`) : elle naît en flaques avec `net(u)` et ne se voit que sous l'eau (elle part
+> avec elle). `#guide[data-fleche]` déclare sa pointe et son angle (un pointeur, pas un verdict). Juge : **`redteam_guide_fleche.py`** (80).
+> **⚑ C-203 §3 — LA PHRASE 2** : entièrement en PromiLate (le dessin des mots-clés : capitales), une couleur, l'encre du mode (`#201908` · `#F7F0DE`), à sa place
+> (centre 422 pt) ; PromiLate n'a pas de « À » : composé comme l'É de v35, l'apostrophe de PromiLate retournée en accent grave (Q587). Pendant elle, trois zones
+> nettes en flaques — Aura, Index, Fil — aux règles des autres (`Scene.zones` / `Scene.ajoute` : plusieurs zones ouvertes par le même `net(u)` ; à droite et à
+> gauche, 0,8 pt avant l'icône voisine) ; elles restent ouvertes pendant que l'eau se retire ; pas de flèche. Partager n'est jamais obligatoire (les trois chemins,
+> Partager touché et non). Juge : `redteam_guide_cloture` remis au niveau (original en sauvegarde).
+> **⚑ C-181 §4 — LA VEILLE** : départ après **120 s** (`?veille=` reste) ; **61,2 pt/s** ; ses bords sont ceux de l'APP : `#device` à l'écran, recoupé avec la zone
+> visible et les zones sûres (`cadre()`). *La cause, mesurée sur l'état de Tom (390 × 651)* : l'app y est réduite à 0,7466 (x 49,4 → 340,6, y 10,4 → 640,5) ;
+> la veille couvrait toute la zone visible et rebondissait sur ses bords, hors de l'app sur les quatre côtés ; sur un ordinateur, sur la fenêtre entière. Le fond, le
+> coin, les couleurs : inchangés. Juge : **`redteam_veille_bords.py`** réécrit (l'état de Tom, le cadre simulé 1440 × 900, 430 × 932, 330 × 714 ; le départ à 120 s ; la
+> vitesse lue sur le logo, NON JUGÉE si une image dépasse 100 ms — la boucle borne son pas à 0,1 s ; original en sauvegarde).
+> **`variantes/flaques.js`** : `grille`, `cheminZone` (la zone principale passe par le même chemin, au pixel près), `ajoute`, `zones`, `fleche`.
+> ⚠ **TROUVÉ PAR A1 (v165 servie à côté), CORRIGÉ** : `redteam_guide_retour` C rougissait sur v166 (16/16 sur v165, même charge) — la copie de l'écran prise à la
+> fermeture du Studio différait de 1 % de l'écran final : le canevas de la flèche (×3, 1170 × 2532) était EFFACÉ EN ENTIER à chaque image de la scène, et ce
+> coût décalait la copie pendant que la Toile se posait encore. La flèche n'efface et ne repeint plus que SA boîte, et seulement quand son état change
+> (vide · en flaques · pleine) : 16/16 deux fois. *La règle* : **un canevas de la taille de l'écran ne s'efface pas à chaque image pour un dessin qui n'en occupe
+> qu'un coin.**
 
 ### ⚑ v165 (26 oct. 2026) — LA CLÔTURE DU GUIDE ; LE TITRE « PARTAGER » STABLE. (Décisions Tom.)
 > **Validé par Tom : v164b (le trait × 1,3, TRIER, Ramage, C-202, C-200).** L'image isolée de 86 ms sous Ramage : notée, à rejouer au calme.
@@ -3593,6 +3626,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_guide_fleche.py   # 80 — v166 (C-203 §2) : la flèche orange vers le Studio, le + et Partager — orange, axe vers l'icône ± 10°, aucun recouvrement, pointe au bord de la zone nette, fixe, partie à la phrase 2 ; deux thèmes, deux échelles.
 python3 redteam_guide_cloture.py # 130 — v165 (C-203) : la clôture du guide — chemins a, b, c, Partager touché ou non, la zone nette lue sur l'eau, la fin, le lancement suivant ; deux thèmes, deux échelles.
 python3 redteam_v164b.py        # 31 — v164b : TRIER (Index, Fil, deux thèmes) et les huit points de C-200, au doigt. 8/31 sur v164a.
 python3 redteam_ramage_jauge.py  # v164b (Q581) : la silhouette de Ramage prête à l'accueil ; aucun rendu ni image > 50 ms dans les 5 s après l'arrivée (au calme). Rouge sur v164a.

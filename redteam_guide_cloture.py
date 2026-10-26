@@ -10,6 +10,9 @@ le guide, le flou se retire en flaques. Le guide ne revient plus. »
 
 Banc comme Tom (WebKit, doigt), le vrai guide (Studio ouvert puis refermé, puis l'étape du +), clair et sombre, 390 × 844 (échelle 0,93) et 330 × 714 (≈ 0,79).
 Preuve : `--fichier=zz-v164b.html` rougit (aucune clôture).
+⚑ v166 (Tom, C-203 §3) — contrat remis au niveau (original : sauvegardes/redteam_guide_cloture-avant-v166.py) : la phrase 2 ENTIÈREMENT en PromiLate, d'une
+seule couleur (l'encre du mode), à sa place (422 pt) ; pendant elle, trois zones nettes en flaques — Aura, Index, Fil — et aucune autre, ni flèche ;
+Partager jamais obligatoire : sur chacun des trois chemins, Partager touché ET non touché (selon la combinaison).
 """
 import sys, base64
 sys.path.insert(0, '.')
@@ -54,7 +57,8 @@ PHRASE = """()=>{ const p=document.getElementById('guidePhrase'); if(!p) return 
   const cles=[...p.querySelectorAll('.gd-cle')].map(e=>{ const c=getComputedStyle(e); return {t:e.textContent, f:c.fontFamily.split(',')[0].replace(/["']/g,''), col:c.color}; });
   const corps=getComputedStyle(p), tout=[p,...p.querySelectorAll('*')].map(e=>getComputedStyle(e));
   const contour=tout.some(c=>(c.textShadow&&c.textShadow!=='none') || (c.webkitTextStrokeWidth&&parseFloat(c.webkitTextStrokeWidth)>0));
-  return {t:p.textContent, cles:cles, col:corps.color, contour:contour, cy:(r.top-d.top)/k+r.height/k/2, trace:!!(window._guide&&_guide.etat().trace) || !!p.querySelector('canvas') }; }"""
+  const ar=p.querySelector('[aria-label]'); return {t:ar?ar.getAttribute('aria-label'):p.textContent, cles:cles, fams:[...p.querySelectorAll('.gd-reste, .gd-reste *')].map(e=>getComputedStyle(e).fontFamily.split(',')[0].replace(/["']/g,'')),
+    cols:[...new Set([...p.querySelectorAll('.gd-reste, .gd-reste *')].filter(e=>!e.classList.contains('v35-acc')).map(e=>getComputedStyle(e).color))], fleche:!!document.getElementById('guide')&&document.getElementById('guide').hasAttribute('data-fleche'), col:corps.color, contour:contour, cy:(r.top-d.top)/k+r.height/k/2, trace:!!(window._guide&&_guide.etat().trace) || !!p.querySelector('canvas') }; }"""
 EAU = """(a)=>{ const cv=document.getElementById('guideEau'); if(!cv||!cv.width) return null; const [l,h,bx,by,bw,bh]=a, d=cv.width/390;
   const c=document.createElement('canvas'); c.width=l; c.height=h; const x=c.getContext('2d'); x.imageSmoothingEnabled=false;
   x.drawImage(cv, bx*d, by*d, bw*d, bh*d, 0, 0, l, h); const p=x.getImageData(0,0,l,h).data; let bin='';
@@ -98,6 +102,24 @@ def zone(pg):
     sd = np.sqrt(np.maximum(qx, 0) ** 2 + np.maximum(qy, 0) ** 2) + np.minimum(np.maximum(qx, qy), 0) - r
     libre = sd < -6.0; mgl = mg[libre] if libre.any() else mg
     return {'trous': len(T), 'un': len(M) == 1, 'contient': contient, 'voisin': voisin, 'plateau': round(-float(sd.max()), 1), 'marge': [round(float(mgl.min()), 1), round(float(mg.max()), 1)]}
+ICONES = """()=>{ const d=document.getElementById('device').getBoundingClientRect(), k=d.width/390;
+  const R=s=>{ const n=document.querySelector(s); if(!n) return null; let x0=1e9,y0=1e9,x1=-1e9,y1=-1e9; [...n.querySelectorAll('svg, .l')].forEach(e=>{ const q=e.getBoundingClientRect(); if(q.width<2) return; x0=Math.min(x0,q.left); y0=Math.min(y0,q.top); x1=Math.max(x1,q.right); y1=Math.max(y1,q.bottom); });
+    if(!(x1>x0)){ const q=n.getBoundingClientRect(); x0=q.left; y0=q.top; x1=q.right; y1=q.bottom; } return [(x0-d.left)/k,(y0-d.top)/k,(x1-x0)/k,(y1-y0)/k]; };
+  return {studio:R('#studioBtn'), aura:R('#souffleBtn'), plus:R('#createBtn'), index:R('#indexBtn'), fil:R('#filBtn'), partage:R('#shareBtn')}; }"""
+def zones_reste(pg):
+    """les trous de l'eau, lus sur tout l'écran (3 cases par point) : lesquelles des icônes ils découvrent, et leur marge autour de leur icône"""
+    I = pg.evaluate(ICONES); tout = eau(pg, 1170, 2532, (0, 0, 390, 844))
+    if tout is None: return None
+    T = morceaux(tout != 1, 30); out = {'trous': len(T), 'zones': {}}
+    for c in T:
+        ys, xs = np.where(c); x0, x1, y0, y1 = xs.min() / 3.0, (xs.max() + 1) / 3.0, ys.min() / 3.0, (ys.max() + 1) / 3.0
+        dedans = [n for n, b in I.items() if b and x0 <= b[0] + 0.7 and y0 <= b[1] + 0.7 and x1 >= b[0] + b[2] - 0.7 and y1 >= b[1] + b[3] - 0.7]
+        touche = [n for n, b in I.items() if b and not (x1 <= b[0] + 0.5 or x0 >= b[0] + b[2] - 0.5 or y1 <= b[1] + 0.5 or y0 >= b[1] + b[3] - 0.5) and n not in dedans]
+        nom = dedans[0] if len(dedans) == 1 else '?' + '+'.join(dedans)
+        b = I.get(nom) if nom in I else None; mg = None
+        if b: mg = [round(min(b[0] - x0, b[1] - y0, x1 - b[0] - b[2], y1 - b[1] - b[3]), 1), round(max(b[0] - x0, b[1] - y0, x1 - b[0] - b[2], y1 - b[1] - b[3]), 1)]
+        out['zones'][nom] = {'marge': mg, 'decouvre': touche}
+    return out
 def phrase1(pg, T, ch):
     st = attend(pg, "()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='partage' && +g.getAttribute('data-net')>=1);}", 120)
     juge('[%s · %s] la phrase 1 arrive, sa zone nette ouverte' % (T, ch), bool(st), pg.evaluate(ETAT))
@@ -114,10 +136,18 @@ def phrase1(pg, T, ch):
     return True
 def phrase2(pg, T, ch, attendre_seul):
     st = attend(pg, "()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='reste');}", 120)
+    t0 = pg.evaluate("()=>performance.now()")   # v166 : la phrase arrivée — la lecture des zones prend du temps
     ph = pg.evaluate(PHRASE) or {}; e = pg.evaluate("()=>_guide.etat()")
-    juge('[%s · %s] la phrase 2, mot pour mot, au centre (± 6 pt), sans zone nette' % (T, ch), bool(st) and ph.get('t') == P2 and abs(ph.get('cy', 0) - 422) <= 6 and not e.get('trou') and e.get('net', 1) <= 0.01,
-         {'t': ph.get('t'), 'cy': round(ph.get('cy', 0), 1), 'trou': e.get('trou'), 'net': e.get('net')})
-    t0 = pg.evaluate("()=>performance.now()")
+    juge('[%s · %s] la phrase 2, mot pour mot, au centre (± 6 pt), sans flèche' % (T, ch), bool(st) and ph.get('t') == P2 and abs(ph.get('cy', 0) - 422) <= 6 and not e.get('trou') and not ph.get('fleche'),
+         {'t': ph.get('t'), 'cy': round(ph.get('cy', 0), 1), 'trou': e.get('trou'), 'fleche': ph.get('fleche')})
+    ink = 'rgb(247, 240, 222)' if T.startswith('sombre') else 'rgb(32, 25, 8)'
+    juge('[%s · %s] v166 · la phrase 2 ENTIÈREMENT en PromiLate, d\'une seule couleur : l\'encre du mode' % (T, ch), bool(ph.get('fams')) and all(f == 'PromiLate' for f in ph['fams']) and ph.get('cols') == [ink],
+         {'polices': sorted(set(ph.get('fams') or [])), 'couleurs': ph.get('cols')})
+    op = attend(pg, "()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='reste' && +g.getAttribute('data-net')>=1);}", 40, 60)
+    z = zones_reste(pg) if op else None
+    Zs = (z or {}).get('zones') or {}
+    juge('[%s · %s] v166 · pendant la phrase 2, trois zones nettes — Aura, Index, Fil — et aucune autre ; chacune contient son icône, 3,3 à 10,7 pt de marge, aucun voisin découvert' % (T, ch),
+         bool(z) and z['trous'] == 3 and sorted(Zs) == ['aura', 'fil', 'index'] and all(v['marge'] and v['marge'][0] >= 3.3 and v['marge'][1] <= 10.7 and not v['decouvre'] for v in Zs.values()), z)
     if attendre_seul:
         fin = attend(pg, "()=>!document.getElementById('guide')", 60, 100); t1 = pg.evaluate("()=>performance.now()")
         juge('[%s · %s] 3 s sans toucher : le guide se termine, les flaques se vident' % (T, ch), bool(fin) and 2800 <= t1 - t0 <= 5600, '%.0f ms' % (t1 - t0))
@@ -141,7 +171,8 @@ with sync_playwright() as p:
     _c = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--combo=')), None)
     for sombre, vw, vh, ech in ([COMBOS[int(_c)]] if _c is not None else COMBOS):
         T = '%s %s' % ('sombre' if sombre else 'clair', ech)
-        for ch in ('c', 'a', 'b'):
+        ci = COMBOS.index((sombre, vw, vh, ech))
+        for ich, ch in enumerate(('c', 'a', 'b')):
             ctx, pg, er = page(b, sombre, vw, vh)
             if not jusqu_au_plus(pg):
                 juge('[%s · %s] le guide atteint l\'étape du +' % (T, ch), False, pg.evaluate(ETAT)); ctx.close(); continue
@@ -161,7 +192,7 @@ with sync_playwright() as p:
                 else:
                     tap_pt(pg, 200, 330)                                   # ailleurs : le menu se ferme
             phrase1(pg, T, ch)
-            touche = (ch == 'a') or (ch == 'c' and sombre)
+            touche = (ci + ich) % 2 == 0   # v166 (§3.3) : sur chaque chemin, Partager touché dans deux combinaisons, pas touché dans les deux autres
             if touche:
                 if partager(pg, T, ch): phrase2(pg, T, ch + ' · après Partager', attendre_seul=(ech == '1'))
             else:

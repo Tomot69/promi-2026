@@ -2550,7 +2550,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v165', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v166', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -37857,15 +37857,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
    clair et #82AEF8 en sombre. Le reste de la phrase ne change pas. » (Q548 tient pour « La suite », crème en sombre.) */
 #device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app{font-style:normal;color:#82AEF8;-webkit-text-fill-color:#82AEF8}
 #device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app{color:#0E78F2;-webkit-text-fill-color:#0E78F2}
+/* ⚑ v166 (Tom, C-165, C-204) : « chaque lettre prend EXACTEMENT une couleur de la palette par défaut, sans modification, en clair comme en sombre » — les dérivées du clair de v163 sont retirées. */
 /* ⚑ v163 (C-165) : les tons de « Studio » du guide — en sombre la palette de base (Ingénu) ; en clair les mêmes teintes, assombries (OKLCH, la clarté seule) jusqu'à 3,05:1 sur le fond réel de l'onboarding #DEC8A3 (celles du guide font 2,96–2,98 ici) */
 #device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a0{font-style:normal;color:#82AEF8;-webkit-text-fill-color:#82AEF8}
-#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a0{color:#476FB4;-webkit-text-fill-color:#476FB4}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a0{color:#82AEF8;-webkit-text-fill-color:#82AEF8}
 #device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a1{font-style:normal;color:#FFB8D2;-webkit-text-fill-color:#FFB8D2}
-#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a1{color:#9B5D75;-webkit-text-fill-color:#9B5D75}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a1{color:#FFB8D2;-webkit-text-fill-color:#FFB8D2}
 #device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a2{font-style:normal;color:#C9A8F5;-webkit-text-fill-color:#C9A8F5}
-#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a2{color:#8161A8;-webkit-text-fill-color:#8161A8}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a2{color:#C9A8F5;-webkit-text-fill-color:#C9A8F5}
 #device #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a3{font-style:normal;color:#EFE3C7;-webkit-text-fill-color:#EFE3C7}
-#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a3{color:#796E55;-webkit-text-fill-color:#796E55}
+#device.light #onbV#onbV .onbv-fin .onbv-l-der .onbv-app .onbv-a3{color:#EFE3C7;-webkit-text-fill-color:#EFE3C7}
 #onbV#onbV .onbv-fin .onbv-titre{white-space:nowrap}
 #onbV#onbV .onbv-fin .onbv-k{font-size:calc(var(--ech-cle)*var(--onbe))}
 #onbV#onbV .onbv-fin .onbv-l-der .onbv-k{font-size:calc(var(--ech-cle-fin)*var(--onbe))}
@@ -41045,12 +41046,14 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
    aucune animation CSS (A2). */
 #device #guide{position:absolute;left:0;top:0;width:390px;height:844px;z-index:69;/* SOUS les écrans (70) : le Studio s'ouvre par-dessus */margin:0;padding:0;max-width:none;overflow:hidden;background:transparent}
 #device #guideEau{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;display:block}
+#device #guideFleche{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;display:block}   /* v166 (C-203 §2) : la flèche orange vers l'icône */
 /* la phrase (§11.7, Tom) : plus grosse (34 px, 30 avant), AUCUN contour ; les mots-clés en PromiLate. En clair : le violet #291547, les
    mots-clés en #0E78F2, les natures dans leur couleur (posée en ligne, la règle de l'onboarding) ; en sombre : la crème d'aujourd'hui. */
 #device #guidePhrase{position:absolute;left:30px;width:330px;margin:0;padding:0;max-width:none;text-align:center;text-wrap:balance;pointer-events:none;
   font-family:var(--f-libelle);font-weight:700;font-size:34px;line-height:1.14;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95);text-shadow:none;-webkit-text-stroke:0}
 #device.light #guidePhrase:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){color:var(--c-mauve12);-webkit-text-fill-color:var(--c-mauve12)}
 #device #guidePhrase .gd-cle{font-family:var(--f-marque);font-weight:400;font-size:.86em;text-transform:uppercase;letter-spacing:.01em;font-style:normal}
+#device #guide #guidePhrase .gd-reste .gd-grave{top:-.06em;transform:translateX(-70%) scaleX(-1)}   /* v166 (C-203 §3.1) : l'accent grave de « À », l'apostrophe de PromiLate retournée */
 #device.light #guidePhrase .gd-cle:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){color:var(--c-cobalt50);-webkit-text-fill-color:var(--c-cobalt50)}
 #device #guidePhrase .gd-nat{font-style:normal}
 #device #guide, #device #guide *{transition:none!important;animation:none!important}
@@ -41187,6 +41190,12 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function teinte(c){ return 'rgb('+c[0]+', '+c[1]+', '+c[2]+')'; }
   function phraseHTML(quoi){ var t=T.guide[quoi], clairA=dev.classList.contains('light');
     function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+    /* ⚑ v166 (Tom, C-203 §3.1) — « la phrase 2 passe ENTIÈREMENT en PromiLate, d'une seule couleur unie (l'encre du mode) ; sa place ne change pas ».
+       Le dessin des mots-clés du guide (PromiLate, capitales). PromiLate n'a pas de « À » : composé comme l'É de v35 (la lettre de PromiLate, l'apostrophe de
+       PromiLate en accent au-dessus), l'apostrophe retournée en accent grave (Q587, à valider). */
+    if(quoi==='reste'){ var ink=clairA?'#201908':'#F7F0DE', o2='';
+      for(var j=0;j<t.length;j++){ var ch=t.charAt(j); o2+=(ch==='à'||ch==='À')?'<span class="v35-e gd-agr">A<span class="v35-acc gd-grave" aria-hidden="true">\u2019</span></span>':esc(ch); }
+      return '<i class="gd-cle gd-reste" aria-label="'+esc(t)+'" style="color:'+ink+';-webkit-text-fill-color:'+ink+'">'+o2+'</i>'; }
     var NAT={Promi:null, Chiche:[255,184,210], Cercle:[201,168,245]}, mots=(CLES[quoi]||[]).concat(quoi==='plus'?['Promi','Chiche','Cercle']:[]), out='', i=0;
     while(i<t.length){ var pris=null;
       for(var m=0;m<mots.length;m++){ var w=mots[m]; if(t.substr(i,w.length)===w && !/[A-Za-zÀ-ÿ]/.test(t.charAt(i+w.length)) && !(i>0 && /[A-Za-zÀ-ÿ]/.test(t.charAt(i-1)))){ pris=w; break; } }
@@ -41228,7 +41237,24 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     trou={x:eb[0]+eb[2]/2, y:eb[1]+eb[3]/2, w:eb[2], h:eb[3], b:c.b};
     var bt=eng(document.createElement('div'),'guide-cible'); bt.id='guideCible'; bt.setAttribute('role','button'); bt.tabIndex=0; bt.setAttribute('aria-label', quoi==='studio'?'Studio':(quoi==='partage'?'Partager':'Planter'));
     bt.style.cssText='position:absolute;left:'+eb[0].toFixed(1)+'px;top:'+eb[1].toFixed(1)+'px;width:'+eb[2].toFixed(1)+'px;height:'+eb[3].toFixed(1)+'px;border-radius:'+(Math.min(eb[2],eb[3])/2).toFixed(1)+'px;margin:0;padding:0;max-width:none;background:transparent'; g.appendChild(bt);
+    try{ fleche(g, quoi, c, ent); }catch(_){ }
     return true; }
+  /* ⚑ v166 (Tom, C-203 §2) — « Ajoute la MÊME flèche que celle de la page +, à côté de « TRACE POUR PLANTER » (pointe et trait de départ, même dessin, même
+     épaisseur × 1,3), en orange #FB4C0D. Elle part de la phrase et pointe vers l'icône, sans jamais la toucher ni la recouvrir, à l'intérieur ou au bord de la
+     zone nette. Fixe, sans clignotement. Elle paraît avec la zone nette, et disparaît en flaques avec elle. » Le dessin est celui de la page + au repos
+     (`_onde.ruban` effilé de 2,2 × à 0,15 × l'épaisseur, puis `_onde.chevron`, ep = 10 × _TRAIT_K), posé sur l'axe phrase → icône ; la pointe de son encre
+     s'arrête au bord de la zone nette. La scène la peint (`SC.fleche`) : elle naît en flaques avec `net(u)` et part avec l'eau. */
+  function fleche(g, quoi, c, ent){ var cf=$('guideFleche'), O=window._onde; if(!SC || !SC.fleche) return; if(!cf || !O || !O.ruban || !O.chevron || quoi==='reste'){ SC.fleche(null); g.removeAttribute('data-fleche'); return; }
+    var p=$('guidePhrase'), py=p?(parseFloat(p.style.top)||0)+(p.offsetHeight||80)/2:252, px=195, b=c.b, cx=b[0]+b[2]/2, cy=b[1]+b[3]/2;
+    var dx=cx-px, dy=cy-py, L=Math.sqrt(dx*dx+dy*dy)||1, ux=dx/L, uy=dy/L, Z=ent.zone, s0=0;
+    for(var s=0; s<L; s+=0.5){ if(Z.forme(cx-ux*s, cy-uy*s, 0)>0){ s0=s; break; } }   /* le bord de la zone nette, en remontant de l'icône vers la phrase */
+    var K=window._TRAIT_K||1.3, ep=10*K, kk=ep/10, tx=cx-ux*s0, ty=cy-uy*s0, ox=tx-ux*9*kk, oy=ty-uy*9*kk, ang=Math.atan2(uy,ux), Wd=O.W||390;
+    var A=-Wd*0.14, col=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), yz=function(){ return 0; };
+    var X=[], Y=[]; [[A,-ep*1.1],[A,ep*1.1],[9*kk,-11*kk],[9*kk,11*kk]].forEach(function(q){ X.push(ox+q[0]*ux-q[1]*uy); Y.push(oy+q[0]*uy+q[1]*ux); });
+    var x0=Math.min.apply(null,X), x1=Math.max.apply(null,X), y0=Math.min.apply(null,Y), y1=Math.max.apply(null,Y);
+    SC.fleche({cv:cf, dens:3, boite:[x0, y0, x1-x0, y1-y0], gr:((Date.now()&0xffff)|1)*3+7, dessine:function(gc){ gc.save(); gc.translate(ox, oy); gc.rotate(ang);
+      gc.fillStyle=col; O.ruban(gc, yz, A, -ep*0.15, ep*2.2, ep*0.15); gc.fill(); O.chevron(gc, yz, 0, col, ep, true); gc.restore(); }});
+    g.setAttribute('data-fleche', JSON.stringify({pointe:[+tx.toFixed(1), +ty.toFixed(1)], angle:+(ang*57.2958).toFixed(1), cible:[+cx.toFixed(1), +cy.toFixed(1)], boite:[+x0.toFixed(1), +y0.toFixed(1), +(x1-x0).toFixed(1), +(y1-y0).toFixed(1)]})); }
   /* une animation : u de a à b en `ms` ; chaque image dessine le niveau ; rend une promesse (fausse si le guide a changé entre-temps) */
   function joue(ms, a, b, pose){ var id=jeu; window._tEvol=performance.now();
     return new Promise(function(ok){ if(reduit() || ms<=0){ pose(b); if(SC) SC.peint(); return ok(id===jeu); }
@@ -41245,6 +41271,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function montre(quoi, sansRevelation){ retire(); if(!F || !F.Scene) { etat=null; return false; } var id=++jeu; etat='prepare'; window._tEvol=performance.now()+400;
     var g=eng(document.createElement('div'),'guide'); g.id='guide'; dev.appendChild(g);
     var cv=eng(document.createElement('canvas'),'guide-eau'); cv.id='guideEau'; cv.setAttribute('aria-hidden','true'); g.appendChild(cv);
+    var cf=eng(document.createElement('canvas'),'guide-fleche'); cf.id='guideFleche'; cf.setAttribute('aria-hidden','true'); cf.width=390*3; cf.height=844*3; g.appendChild(cf);
     vivAv=!!window._vivantOff; window._vivantOff=true;                 /* la Toile ne bouge pas sous l'image floutée */
     g.addEventListener('click', function(e){ e.stopPropagation(); e.preventDefault(); if(etat==='part' || etat==='prepare' || etat==='couvre' || etat==='vers-plus') return;
       var D2=dev.getBoundingClientRect(), q=k(), x=(e.clientX-D2.left)/q, yy=(e.clientY-D2.top)/q;
@@ -41356,13 +41383,24 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       requestAnimationFrame(f); })(); }
   var tReste=0;
   function phraseReste(retour){ var g=$('guide'); if(!g || !SC){ etat=null; return; } var id=jeu;
-    function pose(){ if(id!==jeu || !$('guide')) return; deshabille(); dev.classList.remove('guide-plus'); etat='reste'; g.setAttribute('data-guide','reste'); posePhrase(g, 'reste'); tReste=performance.now();
+    function pose(){ if(id!==jeu || !$('guide')) return; deshabille(); dev.classList.remove('guide-plus'); etat='reste'; g.setAttribute('data-guide','reste'); g.removeAttribute('data-fleche'); posePhrase(g, 'reste'); tReste=performance.now();
+      /* ⚑ v166 (Tom, C-203 §3.2) — « pendant cette phrase, le flou couvre tout l'écran SAUF les icônes Aura, Fil et Index, qui restent nettes (zones en
+         flaques, mêmes règles que les autres zones nettes). Pas de flèche. » */
+      try{ var Zs=zonesReste(); if(Zs.length){ SC.zones(Zs); net(0); joue(OUVRE, 0, 1, net).then(function(ok){ if(ok) respire('reste'); }); } }catch(_){ }
       setTimeout(function(){ if(id===jeu && etat==='reste' && performance.now()-tReste>=2990) finCloture(); }, 3000); }   /* 3 s sans toucher : la fin */
     if(retour || uN<=0){ net(0); SC.sansCible(); SC.peint(); var bt=$('guideCible'); if(bt) bt.remove(); trou=null; pose(); return; }
     etat='vers-reste'; var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt2=$('guideCible'); if(bt2) bt2.remove(); trou=null;
     joue(FERME, uN, 0, net).then(function(ok){ if(!ok || !SC) return; SC.sansCible(); SC.peint(); pose(); }); }
+  /* les trois zones de la phrase 2 : chacune serrée sur son icône et son mot, 4 à 10 pt de marge, et jamais au-delà de 0,8 pt avant l'icône voisine */
+  function zonesReste(){ var B=function(id){ var e=$(id); if(!e) return null; var b=(id==='createBtn')?boite(e):vu(e); return (b && b[2]>2)?b:null; };
+    var ord=['studioBtn','souffleBtn','createBtn','indexBtn','filBtn'].map(B), L=[], gr=((Date.now()&0xffff)|1);
+    [1,3,4].forEach(function(i, n){ var b=ord[i]; if(!b) return; var pl=[10,10,10,10], ga=ord[i-1], dr=ord[i+1];
+      var net2=function(j){ return j===1 || j===3 || j===4; };   /* une voisine nette elle aussi : chacune s'arrête à la moitié de l'écart (Index et Fil : 17,9 pt — sinon les deux zones se rejoignent) */
+      if(ga) pl[0]=Math.max(1, Math.min(10, net2(i-1) ? (b[0]-(ga[0]+ga[2]))/2-0.5 : b[0]-(ga[0]+ga[2])-0.8)); if(dr) pl[2]=Math.max(1, Math.min(10, net2(i+1) ? (dr[0]-(b[0]+b[2]))/2-0.5 : dr[0]-(b[0]+b[2])-0.8));
+      L.push({b:b, gr:gr*(n+2)+n*131, o:{creux:4, plafond:pl, dans:dansBarre(), marge0:7, lobe:2.3}}); });
+    return L; }
   function finCloture(){ var g=$('guide'); LS.s(CLE,'1'); if(!g){ etat=null; return; } if(etat==='part') return; etat='part'; deshabille(); g.setAttribute('data-guide','part'); g.setAttribute('data-fin', ''+Math.round(performance.now()));
-    if(!SC || reduit()){ retire(); etat=null; return; } var id=jeu; SC.sansCible(); SC.tire(true);
+    if(!SC || reduit()){ retire(); etat=null; return; } var id=jeu; SC.tire(true);   /* v166 : les zones nettes de la phrase 2 restent ouvertes pendant que l'eau se retire */
     joue(RETIRE, 1, 0, couv).then(function(){ if(id===jeu){ retire(); etat=null; } }); }
   /* toucher ailleurs à l'étape du + : sa zone se referme sur elle-même, puis les flaques se vident — le guidage est fini */
   function finir(){ attente=null; var g=$('guide'); if(!g){ etat=null; return; } if(etat==='part') return; etat='part'; deshabille(); dev.classList.remove('guide-studio','guide-plus','guide-partage'); g.setAttribute('data-guide','part');
@@ -42624,7 +42662,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    boîte dépasse l'encre) ; l'entrée et la sortie en flaques passent à 350 ms chacune (1 100 et 900 avant). */
 (function(){
   var Q=new URLSearchParams(location.search);
-  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||60))*1000, VITESSE:60, VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
+  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||120))*1000, VITESSE:61.2,   /* ⚑ v166 (Tom, C-181 §4.1, §4.2) : après 120 s sans toucher (60 avant) ; +2 % de vitesse (60 → 61,2 pt/s) */
+     VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y
      recouvrirait l'écran et fausserait leurs mesures. Elle n'y paraît que si on la demande (`?veille=`). Sur un téléphone, rien de cela ne joue. */
@@ -42663,8 +42702,16 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   var encre={r:26.72/140, boites:{}};   /* le rapport hauteur / largeur de l'encre de PROMI (mesuré au premier logo) */
   function insets(){ try{ var p=document.createElement('div'); p.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
       document.body.appendChild(p); var c=getComputedStyle(p), r=[c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(function(v){ return parseFloat(v)||0; }); p.remove(); return r; }catch(_){ return [0,0,0,0]; } }
-  function cadre(){ var vv=window.visualViewport, D=document.getElementById('device'), k=1; try{ var r=D.getBoundingClientRect(); if(r.width>10) k=r.width/390; }catch(_){ }
-    return {left:vv?vv.offsetLeft:0, top:vv?vv.offsetTop:0, width:vv?vv.width:innerWidth, height:vv?vv.height:innerHeight, k:k, ins:insets()}; }
+  /* ⚑ v166 (Tom, C-181 §4.3) — « ses bords sont ceux de l'ÉCRAN DE L'APP, pas de la page du navigateur : sur iPhone l'écran visible ; sur ordinateur, dans le
+     cadre du téléphone simulé, les bords de CE cadre, jamais les marges de la page autour. Le logo rebondit sur le conteneur racine de l'app. » LA CAUSE, mesurée
+     sur l'état de Tom (390 × 651, Safari) : l'app (`#device`, réduite à 0,7466 dans `.frame`) occupe x 49,4 → 340,6, y 10,4 → 640,5 ; la veille couvrait la
+     zone visible ENTIÈRE (visualViewport 390 × 651) et rebondissait sur ses bords — hors de l'app sur les quatre côtés (en bas 10,5 pt sous l'app) ; sur un
+     ordinateur, sur la fenêtre entière, loin du cadre. Le cadre est maintenant `#device` À L'ÉCRAN, recoupé avec la zone visible et les zones sûres. */
+  function cadre(){ var vv=window.visualViewport, D=document.getElementById('device'), k=1, r=null; try{ r=D.getBoundingClientRect(); if(r.width>10) k=r.width/390; }catch(_){ }
+    var ins=insets(), vl=(vv?vv.offsetLeft:0), vt=(vv?vv.offsetTop:0), vw=(vv?vv.width:innerWidth), vh=(vv?vv.height:innerHeight);
+    var x0=vl+ins[3], y0=vt+ins[0], x1=vl+vw-ins[1], y1=vt+vh-ins[2];
+    if(r && r.width>10 && r.height>10){ x0=Math.max(x0, r.left); y0=Math.max(y0, r.top); x1=Math.min(x1, r.right); y1=Math.min(y1, r.bottom); }
+    return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[0,0,0,0]}; }
   function bornesDe(C, w, h){ return {x0:C.ins[3], x1:C.width-C.ins[1]-w, y0:C.ins[0], y1:C.height-C.ins[2]-h, v:R.VITESSE*C.k, tol:R.TOL*C.k}; }
   /* ── L'ÉCRAN ── */
   function fond(){ try{ return window._fondToileVif ? window._fondToileVif() : '#050302'; }catch(_){ return '#050302'; } }

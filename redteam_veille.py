@@ -7,7 +7,8 @@ Banc comme Tom (WebKit, 390 × 844 ×3, doigt, Toile de 5 paroles), `?veille=5` 
       carte de l'Index, n'ouvre rien ; la Toile identique avant et après (graines et vue) ;
   C · une couleur différente à chaque rebond, prise dans la palette du Studio (jamais deux fois la même d'affilée) ;
   D · le vert amande #8FE08F au coin, et seulement au coin ; aucun coin avant 60 s de veille (`?coin=1` : le coin forcé tombe entre 60 et 90 s) ;
-  E · ⚑ v162 : le logo rebondit sur les BORDS RÉELS de la zone visible (`visualViewport`, moins les zones sûres du système), c'est son ENCRE (140 × 27 pt
+  E · ⚑ v166 (C-181 §4.3) : les bords sont ceux de l'APP (#device à l'écran ∩ la zone visible moins les zones sûres) ; original : sauvegardes/redteam_veille-avant-v166.py.
+      (v162 : le logo rebondit sur les BORDS RÉELS de la zone visible (`visualViewport`, moins les zones sûres du système), c'est son ENCRE (140 × 27 pt
       à l'échelle de l'appareil) qui les touche ; toujours entièrement dedans (relevé toutes les 100 ms) — aux fenêtres 430 × 932 (échelle 1), 330 × 714
       (0,79) et 390 × 651 (celle de l'export de Tom) ;
   K · ⚑ v162 : le fond est celui de la Toile du thème (`_fondToileVif`), en clair et en sombre ; chaque couleur prise par le logo tient 3:1 sur lui ;
@@ -100,12 +101,12 @@ with sync_playwright() as p:
                 if x0 < Bn['x0'] - 0.5 or y0 < Bn['y0'] - 0.5 or x0 > Bn['x1'] + 0.5 or y0 > Bn['y1'] + 0.5: hors.append((round(x0, 1), round(y0, 1)))
             pg.wait_for_timeout(100)
         v = pg.evaluate(V) or {'couleurs':[], 'tons':[], 'rebonds':0, 'verrou':None, 'cadre':None, 'bornes':None, 'logo':None, 'fond':None}
-        reel = pg.evaluate("()=>{ const vv=visualViewport; const p=document.createElement('div'); p.style.cssText='position:fixed;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'; document.body.appendChild(p); const c=getComputedStyle(p); const r=[vv.width, vv.height, parseFloat(c.paddingTop)||0, parseFloat(c.paddingRight)||0, parseFloat(c.paddingBottom)||0, parseFloat(c.paddingLeft)||0, document.getElementById('device').getBoundingClientRect().width/390]; p.remove(); const l=document.getElementById('promiVeille'); return r.concat([l?getComputedStyle(l).backgroundColor:null, window._fondToileVif?_fondToileVif():null]); }")
+        reel = pg.evaluate("()=>{ const vv=visualViewport; const p=document.createElement('div'); p.style.cssText='position:fixed;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)'; document.body.appendChild(p); const c=getComputedStyle(p); const I=[parseFloat(c.paddingTop)||0, parseFloat(c.paddingRight)||0, parseFloat(c.paddingBottom)||0, parseFloat(c.paddingLeft)||0], D=document.getElementById('device').getBoundingClientRect(); const x0=Math.max(D.left, vv.offsetLeft+I[3]), y0=Math.max(D.top, vv.offsetTop+I[0]), x1=Math.min(D.right, vv.offsetLeft+vv.width-I[1]), y1=Math.min(D.bottom, vv.offsetTop+vv.height-I[2]); const r=[x1-x0, y1-y0, 0, 0, 0, 0, D.width/390]; p.remove(); const l=document.getElementById('promiVeille'); return r.concat([l?getComputedStyle(l).backgroundColor:null, window._fondToileVif?_fondToileVif():null]); }")
         Bn = v['bornes'] or {}; lg = v['logo'] or [0, 0, 0, 0]; k = reel[6]
         bords = Bn and abs(Bn['x0'] - reel[5]) < 0.5 and abs(Bn['y0'] - reel[2]) < 0.5 and abs(Bn['x1'] + lg[2] - (reel[0] - reel[3])) < 0.5 and abs(Bn['y1'] + lg[3] - (reel[1] - reel[4])) < 0.5
         encre = abs(lg[2] - 140 * k) < 0.6 and 24 * k < lg[3] < 30 * k
         xs = [q[0] for q in pos]; touche = bool(xs) and (min(xs) - Bn.get('x0', 0) < 1.5 or Bn.get('x1', 0) - max(xs) < 1.5)
-        juge('[%s] E · les bords sont ceux de la zone visible (%.0f × %.0f px, zones sûres %s), l\'encre (%.1f × %.1f px = 140 pt à l\'échelle %.3f) les touche, jamais dehors' % (E, reel[0], reel[1], reel[2:6], lg[2], lg[3], k),
+        juge('[%s] E · v166 : les bords sont ceux de l\'APP à l\'écran (%.0f × %.0f px, zones sûres déjà retirées %s), l\'encre (%.1f × %.1f px = 140 pt à l\'échelle %.3f) les touche, jamais dehors' % (E, reel[0], reel[1], reel[2:6], lg[2], lg[3], k),
              pos and not hors and bords and encre and touche, 'bornes %s · hors %s · bord touché %s' % ({q: round(Bn[q], 1) for q in ('x0', 'x1', 'y0', 'y1')} if Bn else None, hors[:3], touche))
         def ctr(a, bb):
             def L(h): return sum(c * w for c, w in zip([((int(h[i:i+2], 16) / 255) / 12.92 if int(h[i:i+2], 16) / 255 <= 0.03928 else ((int(h[i:i+2], 16) / 255 + 0.055) / 1.055) ** 2.4) for i in (1, 3, 5)], [0.2126, 0.7152, 0.0722]))
