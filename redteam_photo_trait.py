@@ -15,7 +15,7 @@ import sys; sys.path.insert(0, '.')
 import banc_tom as B
 from playwright.sync_api import sync_playwright
 F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')
-KS = ['1.15', '1.3', '1.5', '1.8']
+KS = ['1.3']   # ⚑ v164b : ×1,3 figé, `?trait=` retiré — le défaut seul
 FEN = [('1', 430, 932), ('0,79', 330, 714)]
 res = []
 def juge(nom, ok, d=''):
@@ -76,13 +76,13 @@ with sync_playwright() as p:
         for ech in ((None, 1) if L else ()):
             for K in KS:
                 ctx, d = B.contexte_tom(b, L[-1], echelle=ech); pg = ctx.new_page()
-                pg.goto('http://127.0.0.1:8752/' + F + '?trait=' + K, timeout=180000); pg.wait_for_timeout(7000)
+                pg.goto('http://127.0.0.1:8752/' + F, timeout=180000); pg.wait_for_timeout(7000)
                 ecrans(pg, 'Tom %s · %s · ×%s' % (L[-1].split('/')[-1], ('%s × %s' % (d['ecran'].get('largeur'), d['ecran'].get('hauteur'))) if ech is None else 'échelle 1', K))
                 ctx.close()
     else:
       for ech, vw, vh in FEN:
         for K in KS:
-            ctx = B.contexte(b, vw=vw, vh=vh); B.toile_pleine(ctx, 5); pg = B.ouvre(ctx, F, q='?trait=' + K)
+            ctx = B.contexte(b, vw=vw, vh=vh); B.toile_pleine(ctx, 5); pg = B.ouvre(ctx, F, q='')
             pg.evaluate("()=>{ const k='jardin'; NUE[k]='Les jardiniers'; NUEEMEM[k]=['Marion']; NUECREATOR[k]='moi'; promises.filter(q=>!q.draft&&!q.chiche).slice(0,2).forEach(q=>{ q.nuee=k; }); saveState(); syncAll(); }"); pg.wait_for_timeout(500)
             ecrans(pg, '%s · ×%s' % (ech, K))
             ctx.close()

@@ -8869,15 +8869,23 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q580 — APPLIQUÉE À RAMAGE ? NON (v163 §6)** : Q580 vise les scènes d'aperçu de Guingois, Mascaret, Chantourné (validés par Tom, gelés) ; sous Ramage l'aperçu ne coûte presque rien — voir Q581. (C-175, v162b) : la saccade restante au Studio sous Guingois, Mascaret, Chantourné est la reconstruction de la scène pendant une
   transition de l'aperçu (jamais gardée en cache), et sous Ramage un coût hors de l'aperçu (images de 22–27 ms, l'aperçu ≈ 0). *Proposition* : garder en
   cache les scènes d'une transition d'aperçu (elles se rejouent à l'identique d'un tour à l'autre) — un lot moteur à part, banc de rendu à l'appui.
-- **Q581 — À TRANCHER (C-175, v163a §6)** : au Studio sous Ramage, le seul accroc mesuré est le premier rendu de la silhouette de la jauge (la dalle de la
+- **Q581 — TRANCHÉE (chef de chantier, 25 oct. : préparée à l'avance, au repos, hors moteur ; aucun bloc > 50 ms dans les 5 s ; « réglé » au calme) — FAITE v164b** · (C-175, v163a §6) : au Studio sous Ramage, le seul accroc mesuré est le premier rendu de la silhouette de la jauge (la dalle de la
   première parole sous Ramage), un bloc de 231 à 519 ms selon la charge, 3 s après l'arrivée (v160c le pousse là, sur un Studio immobile) ; sous le doigt,
   p95 18 ms. *Deux voies* : (a) la préparer sur l'accueil au repos — essayé en v160c, son premier rendu laisse un état dans le moteur (banc de rendu changé
   sous Guingois) : il faudrait trouver cet état (lot moteur) ; (b) la rendre dans un Worker (lot moteur). La garder en image d'une ouverture à l'autre
   serait une découpe (interdit, C-048). Rien n'est changé.
-- **Q582 — À TRANCHER (C-191, v163b §10)** : le bouton ⇅ du tri (Index et Fil) — deux propositions en capture (`scratchpad/v163/tri-variantes.png`) :
+- **Q582 — TRANCHÉE (Tom, 25 oct. : A, le mot « TRIER » seul, petites capitales, encre du mode, zone de 44 pt invisible, Index et Fil) — FAITE v164b** · (C-191, v163b §10) : le bouton ⇅ du tri (Index et Fil) — deux propositions en capture (`scratchpad/v163/tri-variantes.png`) :
   A, le mot « TRIER » dans une pilule ; B, trois traits qui raccourcissent. Rien n'est changé dans l'app tant que Tom n'a pas choisi.
-- **Q583 — À TRANCHER (C-197, v163b §16)** : « en l'air » n'est plus un choix d'échéance (« demain · 1 sem. · 1 mois · une date… · un jour »), mais le mot
+- **Q583 — TRANCHÉE (Tom, 25 oct. : « en l'air » reste tel quel dans La Mémoire et les Notifications) — rien changé** · (C-197, v163b §16) : « en l'air » n'est plus un choix d'échéance (« demain · 1 sem. · 1 mois · une date… · un jour »), mais le mot
   vit encore pour les paroles déjà marquées « en l'air » : « LA MÉMOIRE · réveille tes « en l'air » » (bloc Ma Parole ! du Peaufiner) et « Mes paroles
   en l'air » (Notifications, qui ne relancent que ces paroles-là). Les renommer « un jour » changerait ce qu'elles font (elles viseraient toutes les
   paroles sans date) : rien n'est changé. *Proposition* : à l'ouverture, une parole « en l'air » devient « un jour » ; puis ces deux libellés disent
   « un jour ». Et Q410 est revenue au juge : la valeur « · ·· ··· » de « C'EST IMPORTANT ? » est maintenant à l'écran (la liste a remonté de 120).
+- **Q584 — À ÉCRIRE PAR TOM (C-200 ⑥, v164b)** : le texte de la Toile vide. « Plante ton premier Promi — touche le + » est retiré (un impératif, AUDIT-BOUTONS 33).
+  Restent « Ta Toile n’attend que toi » et « chaque parole tenue devient une dalle ». ⚠ Mesuré : ce bloc (`#toileEmpty`) est masqué (`display:none`) sur
+  l'accueil d'aujourd'hui, Toile vide comprise — il ne paraît nulle part ; ton texte dira aussi s'il doit reparaître.
+- **Q585 — TROUVÉ, NON CORRIGÉ (hors du lot v164b, A5)** : à l'échelle de Safari (0,79), le titre « Partager » sort tantôt à 32, tantôt à 35 px (la boucle
+  `ajusteTitres` part de 35 et lit la place au moment de sa passe) — mesuré sur v164a comme sur v164b (6 ouvertures chacun : 1 et 2 fois à 32). À 35 px son « r »
+  clignotant entre d'1 pt dans la zone de toucher du X : `redteam_croix` B, D le prennent par intermittence (rouges sur v164b à trois passes, vert sur v164a à
+  une). *Proposition* : la boucle compte le « r » et l'air jusqu'à la zone de 44 pt du X, pas seulement jusqu'à son encre.
+

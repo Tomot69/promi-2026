@@ -190,6 +190,37 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v164b (25 oct. 2026) — LE TRAIT FIGÉ À × 1,3 ; TRIER ; RAMAGE AU STUDIO ; willReadFrequently ; LES HUIT POINTS DE L'AUDIT. (Décisions Tom et chef de chantier.) Ce bloc CORRIGE v164a (les paliers) et v163a (`?trait=`).
+> **⚑ C-184 — FIGÉ** (Tom : « Je garde le palier ×1,3. Fige-le et retire ?trait=. ») : `window._TRAIT_K = 1,3`, plus aucun paramètre d'adresse. Les juges qui comparent à
+> une version d'avant (v149, v162) posent `window.__TRAIT_BANC` par un script d'amorce (`redteam_pages_plus`), rien d'autre ne le pose. Points × 1,15 (min(K ; 1,15)).
+> Contrats remis (originaux `sauvegardes/*-avant-v164b.py`) : `redteam_trait_k` (le défaut seul, ×1,3), `redteam_photo_trait`, `redteam_part` (K 1,3), `redteam_pages_plus`.
+> **⚑ C-191 (Q582 → A) — TRIER** (`lot-V164B-TRIER-css`) : dans l'Index et le Fil, le mot « TRIER » seul, Gilbert 15 pt (la police des libellés, qui n'a que des capitales),
+> à l'encre du mode (`#201908` clair, crème sombre), ni contour, ni fond, ni ombre, ouvert ou fermé ; la zone de toucher est le créneau de 52 × 52 pt (≥ 44), invisible.
+> **⚑ C-175 (Q581) — RAMAGE AU STUDIO** : la silhouette de la jauge de Ramage est préparée à l'ACCUEIL, au repos (`lot-V20-STUDIO-AURA`, `prepare`) — après 8 s sans toucher
+> ET 8 s sans changement de monde ni de palette (sans la seconde condition, le banc de rendu, à temps piloté, changeait Guingois : 14 images ; dans une page normale, mesuré,
+> un rendu de Ramage ne change ni graines, ni cellules, ni une dalle de Guingois — la cause au banc n'est pas nommée). Hors de la même famille de semis (un ancien monde →
+> Ramage ressème la Toile), elle ne peut pas être prête : au Studio elle attend 5,2 s de calme, hors des 5 s qui suivent l'arrivée. Volubilis reste gelé.
+> Juge : **`redteam_ramage_jauge.py`** (D Mascaret, T l'état de Tom, E Pochade ; aucun rendu ni image > 50 ms dans les 5 s, au calme ; v164a rouge : 260 à 714 ms à 3,3 s).
+> **⚑ C-202 — willReadFrequently, hors moteur** : les deux sites de l'app que Chrome signalait — les mini-dalles (`peintMinis`, relues par `_teinteDalle`) prennent l'option
+> (rendu identique, mesuré au pixel en WebKit et Chromium) ; l'atlas des poils de la Pelote (`atlasAlpha`) NON : l'option y CHANGE le tracé des traits (mesuré, deux
+> moteurs) — on y dessine comme avant, chaque tampon est recopié 1:1 dans un canevas fait pour être relu (copie exacte, mesurée). Le troisième avertissement vient du moteur
+> (les canevas de `dalleTrame`) : non touché.
+> **⚑ Q583** : « en l'air » reste tel quel (La Mémoire, Notifications).
+> **⚑ C-200 — LES HUIT POINTS DE L'AUDIT** : ① le bandeau « Garder ta Toile » s'arrête au deuxième « Plus tard » (`promi_rappel_non`, `promi_rappel_fin` ; les refus d'avant
+> comptent), la rangée des Réglages reste ; ② « RELANCER [nom] » retiré (la rangée du Peaufiner, `#actRelance`, son écriture « Tu as relancé… » dans le Fil) ;
+> ③ Notifications : « de temps en temps, un mot » ; ④ le mot « Promi » de l'accueil n'ouvre plus Ma Parole ! (`lot-V12-js`, la porte n'est plus posée) ; ⑤ « ou 5,99 € par
+> mois » retiré (C-090) ; ⑥ « Plante ton premier Promi — touche le + » retiré de la Toile vide, Q584 (ton texte) — ⚠ ce bloc est masqué sur l'accueil d'aujourd'hui ;
+> ⑦ « Mention sur un dessin partagé » quitte les Réglages pour le panneau du Partage (« MENTION SUR UN DESSIN PARTAGÉ : Affichée · Masquée », `#shMentionRow`, même
+> réglage `promi_dessin_mention`) ; ⑧ l'écran « La langue » (caché) et son code supprimés. Juge : **`redteam_v164b.py`** (31, au doigt ; 8/31 sur v164a).
+> Contrat remis : `redteam_partage_dessin` C (la rangée dans le Partage ; original en sauvegarde).
+> Contrat remis aussi : `redteam_decoupe` H (la préparation des silhouettes — `silhouettesAuRepos` — sort par son peintre ; elle rougissait déjà sur v164a,
+> le juge n'était pas dans les séries récentes ; sonde : une dalle peinte dans un autre monde par un autre chemin est prise).
+> **Série (un à la fois ; charge 3 à 158, l'autre session) — rouges classés** : `redteam_croix` (Partager à 0,79, intermittent préexistant : Q585) ; `toile_stable` T
+> (une réouverture à 2,5–9,8 pt sous forte charge, v164a de même) ; `notifs` 7 (l'heure de passage : à 23 h le rappel de la veille est passé — 36/36 rejoué), 2a/2c
+> une fois (36/36 rejoué deux fois) ; `tokens` (20 couleurs, 2 polices en dur — identiques sur v163b et v164a) ; `dessin` I (depuis v147). Ramage au Studio, sur
+> l'état de Tom : une image de 86 ms une fois sur cinq passages (charge 3,5), non reproduite au calme (trois sondes : aucune image > 34 ms ; le juge : 29 ms) —
+> NON NOMMÉE.
+
 ### ⚑ v164a (25 oct. 2026) — LE TRAIT : DES PALIERS QUI SE VOIENT ; LE BOUTON PHOTO NE TOUCHE PLUS LE TRAIT. (Décisions Tom.) Ce bloc CORRIGE v163a (C-184 : 1,10 · 1,15 · 1,20).
 > **⚑ C-184 — « AUCUNE DIFFÉRENCE ENTRE 1,10, 1,15 ET 1,20 »** : le facteur s'APPLIQUAIT (lu au pixel avec `?mesure=1`, `lot-V164-TRAIT-MESURE` : au bas de l'écran,
 > le facteur, l'épaisseur déclarée et l'épaisseur LUE sur le canevas) — les trois traits faisaient 11 · 11,5 · 12 pt : l'écart ne se voyait pas. **Paliers
@@ -3542,6 +3573,8 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_v164b.py        # 31 — v164b : TRIER (Index, Fil, deux thèmes) et les huit points de C-200, au doigt. 8/31 sur v164a.
+python3 redteam_ramage_jauge.py  # v164b (Q581) : la silhouette de Ramage prête à l'accueil ; aucun rendu ni image > 50 ms dans les 5 s après l'arrivée (au calme). Rouge sur v164a.
 python3 redteam_photo_trait.py  # 56 — v164a (C-201) : le bouton photo et sa zone de toucher au-dessus de l'encre du trait (lue sur le canevas), 3 pages + et 4 fiches, ×1,15 à ×1,8, échelles 1 et 0,79.
 python3 redteam_trait_k.py      # v164a (C-184) : `?trait=` 1,3 · 1,5 · 1,8 et le défaut (v163a : 1,10 · 1,15 · 1,20) — épaisseurs × K/1,05, l'air flèche → mot ≥ v162 (lu sur l'image), aucun recouvrement neuf, 430 × 932 et 330 × 714 ; l'onboarding au pixel. ≈ 20 min.
 python3 redteam_veille_bords.py # 15 — v163a (C-181) : l'encre du logo au bord visible ± 1 pt, quatre bords, trois fenêtres ; flaques 350 ms. Rouge sur v162.

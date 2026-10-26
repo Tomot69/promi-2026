@@ -2536,7 +2536,9 @@ body:has(.promi-onb:not(.gone)) .sidelabel{display:none!important}
 </style>
 <script id="lot-V162-TRAIT">/* ⚑ v162 (Tom, C-184) — le trait des pages +, des fiches et d'un Cercle (pas l'onboarding, validé), par rapport à AVANT v162.
    ⚑ v163 (récidive : « +5 % ne se voit pas ») : `?trait=<facteur>` pour choisir (1,10 · 1,15 · 1,20), défaut 1,15 ; jamais mémorisé. */
-window._TRAIT_K=1.15; try{ var _tq=new URLSearchParams(location.search).get('trait'); if(_tq && isFinite(+_tq)) window._TRAIT_K=Math.max(1, Math.min(2, +_tq)); }catch(_){ }
+/* ⚑ v164b (Tom, 25 oct. 2026 : « Je garde le palier ×1,3. Fige-le et retire ?trait=. ») — FIGÉ. Plus aucun paramètre d'adresse. Les juges qui comparent à une
+   version d'avant (v149, v162) posent `window.__TRAIT_BANC` par un script d'amorce, avant la page : rien d'autre ne le pose. */
+window._TRAIT_K=1.3; try{ if(typeof window.__TRAIT_BANC==='number' && isFinite(window.__TRAIT_BANC)) window._TRAIT_K=window.__TRAIT_BANC; }catch(_){ }
 /* ⚑ v164 (Tom : « aucune différence entre 1,10, 1,15 et 1,20 » ; le trait faisait 11 · 11,5 · 12 pt — un demi-point d'un palier à l'autre) : paliers proposés
    1,3 · 1,5 · 1,8, le plafond passe à 2. Les POINTS de la moitié non tracée ne grossissent plus (« déjà limite un poil trop gros ») : ils gardent leur taille
    d'aujourd'hui, × 1,15 au plus (`_TRAIT_PTS`, sous 1,15 ils suivent le facteur) — le plein, le ruban de départ, la pointe et la flèche suivent le facteur. */
@@ -2548,7 +2550,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v164a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v164b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2706,9 +2708,9 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       </div>
     </div>
 
-    <div class="stage" id="stage"><div id="toile"></div><canvas id="toileCv" class="toilecv"></canvas><div class="toile-empty" id="toileEmpty"><svg class="te-ghosts" viewBox="0 0 200 200" aria-hidden="true"><path class="te-g te-g1" d="M40 34 Q80 24 94 56 Q102 90 66 98 Q30 102 26 68 Q22 40 40 34Z"/><path class="te-g te-g2" d="M120 62 Q160 56 166 92 Q170 126 132 132 Q100 134 100 100 Q100 70 120 62Z"/><path class="te-g te-g3" d="M58 122 Q96 116 106 148 Q110 178 74 182 Q42 184 40 152 Q40 128 58 122Z"/></svg><div class="te-mark">Prom<span class="te-i">i</span></div><div class="te-t">Ta Toile n’attend que toi</div><div class="te-s">Plante ton premier Promi — touche le <b>+</b><span class="te-nudge">chaque parole tenue devient une dalle</span></div></div><div class="sidelabel eb" id="sidelabel">LA&nbsp;TOILE</div></div>
+    <div class="stage" id="stage"><div id="toile"></div><canvas id="toileCv" class="toilecv"></canvas><div class="toile-empty" id="toileEmpty"><svg class="te-ghosts" viewBox="0 0 200 200" aria-hidden="true"><path class="te-g te-g1" d="M40 34 Q80 24 94 56 Q102 90 66 98 Q30 102 26 68 Q22 40 40 34Z"/><path class="te-g te-g2" d="M120 62 Q160 56 166 92 Q170 126 132 132 Q100 134 100 100 Q100 70 120 62Z"/><path class="te-g te-g3" d="M58 122 Q96 116 106 148 Q110 178 74 182 Q42 184 40 152 Q40 128 58 122Z"/></svg><div class="te-mark">Prom<span class="te-i">i</span></div><div class="te-t">Ta Toile n’attend que toi</div><div class="te-s"><!-- v164b (Tom, C-200 ⑥) : « Plante ton premier Promi — touche le + » retiré ; le texte de Tom attendu (Q584) --><span class="te-nudge">chaque parole tenue devient une dalle</span></div></div><div class="sidelabel eb" id="sidelabel">LA&nbsp;TOILE</div></div>
 
-    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">X</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i></i></div><div class="ix-mi" data-fdtri="personne">Par personne<i></i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i></i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i></i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i></i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i></i></div><div class="ix-mi" data-fdfilt="atenir">À tenir<i></i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i></i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i></i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i></i></div></div></div><div id="feedList"></div></div>
+    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">X</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">Trier</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i></i></div><div class="ix-mi" data-fdtri="personne">Par personne<i></i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i></i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i></i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i></i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i></i></div><div class="ix-mi" data-fdfilt="atenir">À tenir<i></i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i></i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i></i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i></i></div></div></div><div id="feedList"></div></div>
     <div class="stage-fade-t"></div><div class="stage-fade-b"></div>
     <div class="footer">
       <div class="cap" id="cap">six Promi vivants</div>
@@ -2795,7 +2797,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="sh-actions"><button class="sh-share sh-invite" id="shInviteBtn">Inviter</button><button class="sh-share" id="shShareBtn">↗&nbsp;&nbsp;Partager</button></div><div class="sh-invite-note" id="shInviteNote" hidden></div></div></div><div class="sh-bot"><div class="sh-foot"><div class="sh-fmtx"><span class="sh-ic" id="shTrayBtn">⋯</span><span id="shFmtTxt">Plein écran · 9:19,5</span></div><button class="sh-go" id="shGo" aria-label="Partager">↗</button></div>
       </div>
     </div>
-    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i></i></div><div class="ix-mi" data-tri="tenir">À tenir en premier<i></i></div><div class="ix-mi" data-tri="personne">Par personne<i></i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i></i></div><div class="ix-mi" data-filt="suspens">En suspens<i></i></div><div class="ix-mi" data-filt="manquees">À tenir<i></i></div><div class="ix-mi" data-filt="promi">Promi<i></i></div><div class="ix-mi" data-filt="nuees">Cercles<i></i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i></i></div><div class="ix-mi" data-filt="demandes">Demandes<i></i></div></div></div><div id="indexList"></div></div>
+    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">Trier</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i></i></div><div class="ix-mi" data-tri="tenir">À tenir en premier<i></i></div><div class="ix-mi" data-tri="personne">Par personne<i></i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i></i></div><div class="ix-mi" data-filt="suspens">En suspens<i></i></div><div class="ix-mi" data-filt="manquees">À tenir<i></i></div><div class="ix-mi" data-filt="promi">Promi<i></i></div><div class="ix-mi" data-filt="nuees">Cercles<i></i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i></i></div><div class="ix-mi" data-filt="demandes">Demandes<i></i></div></div></div><div id="indexList"></div></div>
 
     <!-- v104 (Tom, 30 sept. 2026) : « Arranger la Toile » supprimé — la pastille, l'icône, la fonction, la feuille. « On n'en veut pas. » -->
 
@@ -2839,7 +2841,6 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="seg" id="segRecur"><button data-r="none">Aucune</button><button data-r="daily">Quotidien</button><button data-r="weekly">Hebdo</button><button data-r="monthly">Mensuel</button></div>
       <div class="mg-lab">Rappel · <span id="dRemind">aucun</span></div>
       <div class="mgchips" id="remindRow"><input id="remindTime" type="time" value="07:00"><button data-rem="on">activer</button><button data-rem="off">retirer</button></div></div><div class="adv-lock" data-cercle><span class="adv-pill">✦ Récurrence &amp; rappels · Ma Parole !</span></div></div>
-      <button class="cta" id="actRelance" style="display:none;margin-top:2px">Relancer</button>
       <button class="cta mg-draft-cta" id="actPlanter">Planter</button>
       <div class="mgacts seg"><button id="actDraft">Garder de côté</button><button id="actDel" class="danger">Supprimer</button></div></div>
     </div>
@@ -2884,15 +2885,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="ah-list"><div class="ah-sect"><span class="ah-badge free">En gratuit</span></div><div class="ah-card"><div class="ah-ill i1"><svg viewBox="0 0 48 48"><defs><linearGradient id="ahn" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C9A8F5"/><stop offset="55%" stop-color="#82AEF8"/><stop offset="100%" stop-color="#82AEF8"/></linearGradient></defs><circle cx="24" cy="24" r="14" fill="none" stroke="url(#ahn)" stroke-width="5"/></svg></div><div class="ah-tx"><div class="ah-t">Le Noyau &amp; l’Aura</div><div class="ah-s">L’anneau central, c’est ton harmonie <b>envers les autres</b>. Le grand chiffre — <b>ton % de parole tenue</b> — et sa tendance résument où tu en es.</div></div></div><div class="ah-card"><div class="ah-ill i2"><svg viewBox="0 0 48 48"><defs><linearGradient id="ahj" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#C9A8F5"/><stop offset="50%" stop-color="#82AEF8"/><stop offset="100%" stop-color="#DD4D23"/></linearGradient></defs><rect x="7" y="21" width="34" height="6" rx="3" fill="url(#ahj)"/><circle cx="29" cy="24" r="6.5" fill="#fff"/><circle cx="29" cy="24" r="4" fill="#82AEF8"/></svg></div><div class="ah-tx"><div class="ah-t">La jauge d’équilibre</div><div class="ah-s">La barre <b>toi → les autres</b> : à quel point tu honores ce que tu promets. Le curseur penche vers ton point fort.</div></div></div><div class="ah-card"><div class="ah-ill i3"><svg viewBox="0 0 48 48"><circle cx="24" cy="20" r="8" fill="#82AEF8"/><circle cx="14" cy="30" r="5.5" fill="#C9A8F5"/><circle cx="34" cy="30" r="5.5" fill="#DD4D23"/><path d="M24 28v6M18 30l5 4M30 30l-5 4" stroke="#fff" stroke-width="1.6" opacity=".5" fill="none"/></svg></div><div class="ah-tx"><div class="ah-t">Ton meilleur Cercle</div><div class="ah-s">Le Cercle que tu honores le mieux ressort en premier — celui où ta parole tient le plus.</div></div></div><div class="ah-card"><div class="ah-ill i4"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="6" fill="#82AEF8"/><circle cx="12" cy="15" r="4.5" fill="#C9A8F5"/><circle cx="36" cy="16" r="5" fill="#DD4D23"/><circle cx="13" cy="34" r="4" fill="#291547"/><circle cx="35" cy="33" r="4.5" fill="#C9A8F5" opacity=".75"/></svg></div><div class="ah-tx"><div class="ah-t">Les disques</div><div class="ah-s">Un disque par personne à qui tu promets — <span style="color:#C9A8F5">mauve</span>, <span style="color:#82AEF8">bleu</span>, <span style="color:#DD4D23">terracotta</span> selon le Cercle. En gratuit : ta parole <b>envers elle</b>.</div></div></div><div class="ah-card"><div class="ah-ill i5"><svg viewBox="0 0 48 48"><polyline points="6,32 16,22 23,27 33,12 42,17" fill="none" stroke="#82AEF8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><rect x="8" y="36" width="6" height="6" rx="1.6" fill="#C9A8F5"/><rect x="19" y="34" width="6" height="8" rx="1.6" fill="#DD4D23"/><rect x="30" y="31" width="6" height="11" rx="1.6" fill="#291547"/></svg></div><div class="ah-tx"><div class="ah-t">Les graphs</div><div class="ah-s">Trois lectures : <b>Évolution</b> (ta constance dans le temps), <b>Composition</b> (tenu / en cours / à tenir), <b>Répartition</b> (par personne).</div></div></div><div class="ah-card"><div class="ah-ill i6"><svg viewBox="0 0 48 48" fill="none" stroke="#82AEF8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M24 30V10"/><path d="M17 17l7-7 7 7"/><path d="M14 24v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V24"/></svg></div><div class="ah-tx"><div class="ah-t">Partager ma Pelote</div><div class="ah-s">Exporte une belle image de ta Pelote — abstraite, et à toi.</div></div></div><div class="ah-sect"><span class="ah-badge prem">Avec Ma Parole !</span></div><div class="ah-cercle-cta set-cercle" id="ahCercleCta" role="button"><div class="sc-tx"><div class="sc-t">Vois la parole qu'on te tient</div><div class="sc-s">en douceur · et ce qui circule entre toi et les autres</div></div><div class="sc-go">›</div></div><div class="ah-locked" id="ahLocked"><div class="ah-card"><div class="ah-ill i11"><svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="16" fill="none" stroke="#82AEF8" stroke-width="1.4" opacity=".4"/><circle cx="24" cy="24" r="7" fill="none" stroke="url(#ahn2)" stroke-width="4"/><defs><linearGradient id="ahn2" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#C9A8F5"/><stop offset="100%" stop-color="#82AEF8"/></linearGradient></defs><circle cx="40" cy="24" r="3.2" fill="#DD4D23"/><circle cx="10" cy="17" r="2.8" fill="#C9A8F5"/><circle cx="15" cy="35" r="2.6" fill="#291547"/></svg></div><div class="ah-tx"><div class="ah-t">Le double Noyau</div><div class="ah-s">Avec Ma Parole !, ton Noyau s’entoure de <b>tes proches</b>, chacun à sa place. Ta parole se lit alors <b>dans les deux sens</b> — l’harmonie qu’on construit ensemble.</div></div></div><div class="ah-card"><div class="ah-ill i12"><svg viewBox="0 0 48 48"><path d="M24 40s-13-7.5-13-17a7 7 0 0 1 13-3 7 7 0 0 1 13 3c0 9.5-13 17-13 17z" fill="none" stroke="#DD4D23" stroke-width="2.6" stroke-linejoin="round"/><circle cx="18" cy="21" r="2.4" fill="#82AEF8"/><circle cx="30" cy="21" r="2.4" fill="#C9A8F5"/></svg></div><div class="ah-tx"><div class="ah-t">Tes proches et toi</div><div class="ah-s"><b>Les promesses tenues qui te lient à eux</b> : les paroles honorées <b>ensemble</b> — la trace vivante de cette harmonie.</div></div></div><div class="ah-card"><div class="ah-ill i7"><svg viewBox="0 0 48 48"><circle cx="16" cy="24" r="7" fill="#82AEF8"/><circle cx="32" cy="24" r="7" fill="#DD4D23"/><path d="M20 24h8" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg></div><div class="ah-tx"><div class="ah-t">L’équilibre du lien</div><div class="ah-s">L’harmonie du lien, ressentie <b>des deux côtés</b> : ce que tu tiens pour tes proches et ce qu’ils tiennent pour toi. Un lien qui respire quand les deux avancent.</div></div></div><div class="ah-card"><div class="ah-ill i8"><svg viewBox="0 0 48 48"><circle cx="15" cy="16" r="5.5" fill="#82AEF8"/><circle cx="24" cy="16" r="3.5" fill="#82AEF8" opacity=".5"/><circle cx="15" cy="32" r="5.5" fill="#DD4D23"/><circle cx="24" cy="32" r="3.5" fill="#DD4D23" opacity=".5"/><circle cx="37" cy="24" r="5.5" fill="#C9A8F5"/><circle cx="44" cy="24" r="3" fill="#C9A8F5" opacity=".5"/></svg></div><div class="ah-tx"><div class="ah-t">Les disques par personne</div><div class="ah-s">Chaque proche a alors <b>deux disques</b> — ta parole envers elle et la sienne envers toi, réunies. La trace douce d’un lien qui tient à deux. Touche pour déplier.</div></div></div><div class="ah-card"><div class="ah-ill i9"><svg viewBox="0 0 48 48"><polyline points="6,20 14,14 22,18 30,10 42,14" fill="none" stroke="#82AEF8" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><polyline points="6,34 14,30 22,33 30,26 42,30" fill="none" stroke="#DD4D23" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" opacity=".85"/><circle cx="6" cy="20" r="2.2" fill="#C9A8F5"/><circle cx="6" cy="34" r="2.2" fill="#C9A8F5"/></svg></div><div class="ah-tx"><div class="ah-t">Les graphs par Cercle</div><div class="ah-s">Les mêmes lectures (Évolution, Composition, Répartition) mais <b>déclinées Cercle par Cercle</b> — tu compares où ta parole tient le mieux.</div></div></div><div class="ah-card"><div class="ah-ill i10"><svg viewBox="0 0 48 48"><defs><linearGradient id="ahc" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#82AEF8"/><stop offset="50%" stop-color="#C9A8F5"/><stop offset="100%" stop-color="#DD4D23"/></linearGradient></defs><circle cx="24" cy="24" r="15" fill="none" stroke="url(#ahc)" stroke-width="4"/><circle cx="24" cy="24" r="6" fill="url(#ahc)"/></svg></div><div class="ah-tx"><div class="ah-t">Cercles illimités &amp; designs</div><div class="ah-s">Crée autant de Cercles que tu veux et ouvre les designs signature de la Toile.</div></div></div></div></div></div>
     </div>
 
-    <div class="screen s-set tuto-fond tf-set" id="langScreen">
-      <div class="closeb" data-close>X</div>
-      <h2 class="scr-t">La <span class="it">langue</span></h2>
-      <div class="sub" style="margin:8px 0 22px">Promi te parle dans la langue que tu choisis.</div>
-      <div class="scards" id="langList"></div>
-      <div style="font-size:12px;color:var(--gsub);margin-top:22px;line-height:1.6">
-        Le vocabulaire de Promi — Promi, Toile, Cercle, Fil, Aura — ne se traduit pas :<br>c'est le même partout.
-      </div>
-    </div>
+    <!-- ⚑ v164b (Tom, C-200 ⑧) : l'écran « La langue » (caché, sans entrée) est supprimé avec son code. -->
 
     <div class="screen s-set fond" id="privScreen">
       <div class="closeb" data-close>X</div>
@@ -2920,7 +2913,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <!-- v163b (C-197) : « Le Studio · visuels & humeurs » retirée des Réglages — le Studio s'ouvre par la barre -->
       
       <div class="scard" id="replayOnb"><span class="k">Revoir la présentation</span><span class="v ac">rejouer ›</span></div><!-- v163b (C-199) : « Réinitialiser (test) » (masqué) retiré -->
-      <div class="grouplab">Partager</div><div class="scard" id="setInvite" role="button"><span class="k">Inviter</span><span class="v ac">›</span></div><div class="grouplab">App</div><div class="scard" id="langCard" hidden style="display:none"><span class="k">Langue</span><span class="v ac" id="langV">Français ›</span></div><div class="scard" id="notifCard" role="switch" aria-checked="false"><span class="k">Notifications</span><span class="v"><span class="toggle off" id="notifTog"></span></span></div><div class="scard" id="privCard"><span class="k">Confidentialité</span><span class="v ac">privé &amp; partagé ›</span></div>
+      <div class="grouplab">Partager</div><div class="scard" id="setInvite" role="button"><span class="k">Inviter</span><span class="v ac">›</span></div><div class="grouplab">App</div><div class="scard" id="notifCard" role="switch" aria-checked="false"><span class="k">Notifications</span><span class="v"><span class="toggle off" id="notifTog"></span></span></div><div class="scard" id="privCard"><span class="k">Confidentialité</span><span class="v ac">privé &amp; partagé ›</span></div>
       <div class="grouplab">Données</div><div class="scard"><span class="k">Sauvegarde locale</span><span class="v" id="saveStatus">vérification…</span></div><div class="scard" id="resetData" role="button"><span class="k">Tout effacer</span><span class="v ac" id="resetV">›</span></div>
       <div class="grouplab">Compte</div><div class="scard" id="compteCard" role="button"><span class="k">Garder ta Toile</span><span class="v ac">›</span></div><div class="scard" id="logoutCard" role="button"><span class="k">Se déconnecter</span><span class="v ac">›</span></div>
       <div class="grouplab">Légal</div><div class="scard" id="cguCard" role="button"><span class="k">Conditions d’utilisation</span><span class="v ac">›</span></div><div class="scard" id="polCard" role="button"><span class="k">Politique de confidentialité</span><span class="v ac">›</span></div><div class="scard" id="aboutCard" role="button"><span class="k">À propos</span><span class="v ac">›</span></div>
@@ -3426,33 +3419,7 @@ if($('#esInvite'))$('#esInvite').addEventListener('keydown',function(e){if(e.key
 if($('#replayOnb'))$('#resetApp')&&($('#resetApp').onclick=()=>{try{promises.length=0;for(var _k in NUE){delete NUE[_k];}NUE['soi']='Moi-même';NUEEMEM={};try{if(typeof NUEFILES!=='undefined')NUEFILES={};}catch(_e){}if(window.Toile&&window.Toile.sync)window.Toile.sync([]);if(typeof relayout==='function')relayout();if(typeof render==='function')render();if(typeof buildIndex==='function')buildIndex();if(typeof buildFeed==='function')buildFeed();if(typeof buildAura==='function')buildAura();if(typeof caption==='function')caption();if(typeof closeAll==='function')closeAll();if(typeof replayIntro==='function')replayIntro();if(typeof toast==='function')toast('App réinitialisée');}catch(e){}});
 $('#replayOnb').onclick=()=>{window._tutoSeen=false;$('#settingsScreen').classList.remove('show');replayIntro();};
 
-/* --- LA LANGUE --- */
-var LANGS=[['fr','Français'],['en','English'],['es','Español'],['de','Deutsch'],['it','Italiano'],['pt','Português']];
-var _lang=(function(){try{return localStorage.getItem('promi_lang')||'fr';}catch(e){return 'fr';}})();
-function buildLang(){
-  var el=$('#langList'); if(!el)return;
-  el.innerHTML=LANGS.map(function(L){
-    var on=(L[0]===_lang);
-    return '<div class="scard" data-lang="'+L[0]+'"><span class="k">'+L[1]+'</span>'+
-           '<span class="v ac">'+(on?'✓':'')+'</span></div>';
-  }).join('');
-  $$('#langList .scard').forEach(function(c){
-    c.onclick=function(){
-      _lang=c.getAttribute('data-lang');
-      try{localStorage.setItem('promi_lang',_lang);}catch(e){}
-      var nom=(LANGS.find(function(L){return L[0]===_lang;})||LANGS[0])[1];
-      var v=$('#langV'); if(v)v.textContent=nom+' ›';
-      buildLang();
-      if(_lang!=='fr'&&typeof toast==='function')toast(nom+' arrive bientôt · Promi reste en français');
-    };
-  });
-}
-if($('#langCard'))$('#langCard').onclick=function(){
-  buildLang();
-  $('#settingsScreen').classList.remove('show');
-  $('#langScreen').classList.add('show');
-};
-(function(){var nom=(LANGS.find(function(L){return L[0]===_lang;})||LANGS[0])[1];var v=$('#langV');if(v)v.textContent=nom+' ›';})();
+/* --- LA LANGUE --- ⚑ v164b (Tom, C-200 ⑧) : SUPPRIMÉE (LANGS, buildLang, #langCard, #langScreen). La clé `promi_lang` n'est plus lue. */
 
 /* --- LA CONFIDENTIALITÉ --- */
 if($('#privCard'))$('#privCard').onclick=function(){
@@ -3504,7 +3471,7 @@ if($('#fdSearch'))$('#fdSearch').oninput=function(e){fdQuery=e.target.value;buil
 /* v163b (C-191) : les pastilles cachées #fdSort sont retirées — le tri du Fil vit dans son menu ⇅ */
 if($('#dWhoInput'))$('#dWhoInput').onchange=function(){if(cur){cur.who=($('#dWhoInput').value.trim()||'moi');render();caption();if(window.syncAll)window.syncAll();}};
 if($('#dNote'))$('#dNote').oninput=function(){if(cur){cur.note=$('#dNote').value;if(typeof queueSave==='function')queueSave();}};
-if($('#actRelance'))$('#actRelance').onclick=function(){if(!cur)return;var tg=(cur.from&&cur.from!=='moi')?cur.from:cur.who;cur.relances=(cur.relances||0)+1;if(typeof feedAdd==='function')feedAdd('relance','Tu as relancé '+tg+' sur « '+cur.title+' »',{pid:cur.id});renderDetail();if(typeof queueSave==='function')queueSave();};
+/* ⚑ v164b (Tom, C-200 ②) — « RELANCER [nom] » est retiré : le bouton #actRelance, son écriture dans le Fil (« Tu as relancé… ») et sa rangée du Peaufiner. */
 function _cmWho(p){return (p.nuee&&p.nuee!=='soi')?((typeof NUE!=='undefined'&&NUE[p.nuee])||p.nuee):((p.from&&p.from!=='moi')?p.from:((p.who&&p.who!=='moi'&&p.who!=='le groupe')?p.who:null));}
 function _cmRender(root){try{root=root||document;[].forEach.call(root.querySelectorAll('.cm-block[data-cmb]'),function(box){var pid=+box.getAttribute('data-cmb');var p=promises.filter(function(x){return x.id===pid;})[0];if(!p)return;function draw(){var cm=p.comments||[];var who=_cmWho(p);var all=box.getAttribute('data-all')==='1';var show=all?cm:cm.slice(-2);var h=(!all&&cm.length>2)?'<div class="cm-more">voir les '+cm.length+' commentaires</div>':'';h+=show.map(function(c){var by=c.by||'moi';var me=(by==='moi'||(typeof USER!=='undefined'&&USER.name&&by===USER.name));return '<div class="cm-i'+(me?' mine':'')+'"><span class="cm-by">'+_esc(me?'Moi':by)+'</span> '+_esc(c.t)+'</div>';}).join('');h+='<div class="cm-add"><input placeholder="\u00e9crire un commentaire\u2026" autocomplete="off"><button type="button">+</button></div>';if(who)h+='<div class="cm-vis">visible par '+_esc(who)+'</div>';box.innerHTML=h;var inp=box.querySelector('.cm-add input'),btn=box.querySelector('.cm-add button'),mr=box.querySelector('.cm-more');if(mr)mr.onclick=function(e){e.stopPropagation();box.setAttribute('data-all','1');draw();};function send(){var v=inp.value.trim();if(!v)return;if(!p.comments)p.comments=[];p.comments.push({t:v,d:new Date().toISOString(),by:(typeof USER!=='undefined'&&USER.name)?USER.name:'moi'});inp.value='';draw();try{if(typeof queueSave==='function')queueSave();}catch(e){}try{var rw=box.previousElementSibling;var bd=rw&&rw.querySelector?rw.querySelector('.ix-cm b'):null;if(bd)bd.textContent=p.comments.length;}catch(e){}}btn.onclick=function(e){e.stopPropagation();send();};inp.onclick=function(e){e.stopPropagation();};inp.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();send();}});}draw();});}catch(e){}}
 function _cmInline(pid,row){try{if(!row)return;var nx=row.nextElementSibling;if(nx&&nx.classList&&nx.classList.contains('cm-inline')){nx.remove();return;}[].forEach.call(document.querySelectorAll('.cm-inline'),function(x){x.remove();});var p=promises.filter(function(x){return x.id===pid;})[0];if(!p)return;var box=document.createElement('div');box.className='cm-inline';function draw(){var cm=p.comments||[];var who=(p.nuee&&p.nuee!=='soi')?((typeof NUE!=='undefined'&&NUE[p.nuee])||p.nuee):((p.from&&p.from!=='moi')?p.from:((p.who&&p.who!=='moi'&&p.who!=='le groupe')?p.who:null));box.innerHTML='<div class="cm-vis">'+(who?('visible par '+_esc(who)+' \u00b7 chacun peut r\u00e9pondre'):'priv\u00e9 \u2014 personne d\'autre ne le voit')+'</div>'+(cm.length?cm.map(function(c){var by=c.by||'moi';var me=(by==='moi'||(typeof USER!=='undefined'&&USER.name&&by===USER.name));return '<div class="cm-i'+(me?' mine':'')+'"><span class="cm-by">'+_esc(me?'Moi':by)+'</span> '+_esc(c.t)+'</div>';}).join(''):'<div class="cm-empty">aucun commentaire</div>')+'<div class="cm-add"><input placeholder="\u00e9crire un commentaire\u2026" autocomplete="off"><button type="button">+</button></div>';var inp=box.querySelector('input'),btn=box.querySelector('button');function send(){var v=inp.value.trim();if(!v)return;if(!p.comments)p.comments=[];p.comments.push({t:v,d:new Date().toISOString(),by:(typeof USER!=='undefined'&&USER.name)?USER.name:'moi'});inp.value='';draw();try{if(typeof queueSave==='function')queueSave();}catch(e){}try{var bd=row.querySelector('.ix-cm b');if(bd)bd.textContent=p.comments.length;}catch(e){}}btn.onclick=function(e){e.stopPropagation();send();};inp.onclick=function(e){e.stopPropagation();};inp.addEventListener('keydown',function(e){e.stopPropagation();if(e.key==='Enter'){e.preventDefault();send();}});}draw();row.parentNode.insertBefore(box,row.nextSibling);}catch(e){}}
@@ -3639,7 +3606,7 @@ function peintMinis(root){ try{
     var id=+cv.getAttribute('data-mini'); if(!id) return;
     if(window._rendDalle && (_suite ? _rendus>=1 : window._budgetTache()>40) && !window._rendDalle(id, cv.width, cv.height, {siPret:1})){ _reste=true; _encore.push(cv); return; }
     if(_suite && window._rendDalle && !window._rendDalle(id, cv.width, cv.height, {siPret:1})) _rendus++;
-    var g=cv.getContext('2d'); if(!g) return;
+    var g=cv.getContext('2d',{willReadFrequently:true}); if(!g) return;   /* v164b (C-202) : relue par _teinteDalle — Chrome le demandait */
     /* ⚑ v29 — rendue À SA TAILLE et posée 1:1 (redteam_decoupe) : plus d'agrandissement d'une dalle à k = 1 */
     g.save(); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,cv.width,cv.height);
     var _pd=window._poseDalle?window._poseDalle(g,id,0,0,cv.width,cv.height):null; g.restore();
@@ -16939,14 +16906,7 @@ var CREMEETAT='#F7F0DE';
     liste.appendChild(reg('PIÈCES JOINTES', nf2+' fichier'+(nf2>1?'s':''),
       {cls:'s2-vis2', vis:mvs, hote:_pj}));
     /* 7 · les commentaires — v147 : en tête de la liste (voir plus haut) */
-    /* 8 · relancer — n'existe que sur la fiche, jamais sur la page + (§6) */
-    var rb = document.getElementById('actRelance');
-    /* la relance vise LA PERSONNE, jamais la Nuée : c'est la cible que l'app calcule déjà
-       pour #actRelance. « RELANCER FAMILLE » était un contresens (constaté en capture). */
-    var pers = (p.from && p.from!=='moi') ? p.from
-             : ((p.who && p.who!=='moi' && p.who!=='le groupe') ? p.who : null);
-    if(rb && rb.style.display!=='none' && pers)
-      liste.appendChild(reg('RELANCER '+pers.toUpperCase(), '→', {act:function(){ rb.click(); }}));
+    /* 8 · relancer — ⚑ v164b (Tom, C-200 ②) : RETIRÉ (« RELANCER [nom] » et son écriture dans le Fil) */
     /* 9 · le bloc du Cercle */
     liste.appendChild(cercle());
     /* 10 · supprimer */
@@ -23775,7 +23735,7 @@ var CREMEETAT='#F7F0DE';
     ['#indexSheet',     'h2.scr-ti'],
     ['#arrangeSheet',   'h2'],
     ['#auraHelp',       'h2.ah-head'],
-    ['#langScreen',     'h2'],
+    /* v164b : '#langScreen' retiré (C-200 ⑧) */
 
     /* ── SECONDE MOITIÉ ────────────────────────────────────────────────────────
        ⚠ TROIS ÉCRANS SUR SEPT, ET C'EST DÉLIBÉRÉ. Les quatre autres n'ont pas la
@@ -27369,12 +27329,16 @@ function atlasAlpha(dessin, tailles, ORI, NIV, a0, a1, tour, NV){
   var PL=tour?TAU:Math.PI;
   var S=80, cv=document.createElement('canvas'); cv.width=S; cv.height=S;
   var g=cv.getContext('2d'), A=[];
+  /* ⚑ v164b (C-202) — chaque tampon est relu : Chrome demandait `willReadFrequently`. Posé sur CE canevas, il change le tracé des traits (mesuré, WebKit et
+     Chromium : les tampons diffèrent) — on y dessine donc comme avant, et chaque tampon est recopié 1:1 dans un canevas fait pour être relu (copie exacte au
+     pixel, mesurée dans les deux moteurs). */
+  var cl=document.createElement('canvas'); cl.width=S; cl.height=S; var gl=cl.getContext('2d',{willReadFrequently:true});
   for(var s=0;s<tailles.length;s++) for(var r=0;r<ORI*NV;r++){
     g.clearRect(0,0,S,S);
     g.save(); g.translate(S/2,S/2); g.rotate(((r/NV)|0)*PL/ORI);
     g.fillStyle='#fff'; g.strokeStyle='#fff'; g.lineCap='round';
     dessin(g, tailles[s], r%NV); g.restore();
-    var d=g.getImageData(0,0,S,S).data;
+    gl.clearRect(0,0,S,S); gl.drawImage(cv,0,0); var d=gl.getImageData(0,0,S,S).data;
     var x1=S,y1=S,x2=-1,y2=-1;
     for(var y=0;y<S;y++)for(var x=0;x<S;x++) if(d[(y*S+x)*4+3]>3){
       if(x<x1)x1=x; if(x>x2)x2=x; if(y<y1)y1=y; if(y>y2)y2=y; }
@@ -33410,7 +33374,7 @@ function bati(){
       var lb=el('span','pc-lb'); lb.textContent='Essayer 14 jours'; var go=el('span','pc-go'); go.textContent='›';
       mo.appendChild(ec); mo.appendChild(lb); mo.appendChild(go); CAD.appendChild(mo); }
     if(yr){ yr.textContent=''; var yl=el('span'); yl.textContent=MOTS.option; yr.appendChild(yl); CAD.appendChild(yr); }
-    var mo2=el('div','pc-mois'); mo2.textContent=MOTS.mois; CAD.appendChild(mo2);   /* ⚑ v108 (Tom) : « c'est elle qui rend les 39 € attractifs » — discrète, sous les deux boutons */
+    /* ⚑ v164b (Tom, C-200 ⑤) : « ou 5,99 € par mois » est retiré (le prix : C-090) */   /* ⚑ v108 (Tom) : « c'est elle qui rend les 39 € attractifs » — discrète, sous les deux boutons */
     var lg=el('div','pc-legal'); lg.textContent=MOTS.legal; CAD.appendChild(lg);
     s.appendChild(CAD); return true;
   }
@@ -36167,7 +36131,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 /* ── 2 · « PROMI » SUR L'ACCUEIL OUVRE LE CERCLE ──────────────────────────
    Le mot-marque devient une porte : il lui faut la main, et une cible qu'un doigt
    atteint. Rien ne bouge à l'œil — ni sa place, ni sa taille, ni sa couleur. */
-.acc-plat .acc-mm{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.acc-plat .acc-mm{-webkit-tap-highlight-color:transparent}   /* v164b (C-200 ④) : plus une porte */
 
 /* ── 3 · LE TITRE DE L'ÉCRAN DU CERCLE ──────────────────────────────
    Tom : « « LE CERCLE », en majuscules, dans la police des titres — ni Atkinson, ni
@@ -36189,6 +36153,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 (function(){
   /* ── 2 · la porte ── */
   function porte(){
+    /* ⚑ v164b (Tom, C-200 ④) : le mot « Promi » de l'accueil n'ouvre plus Ma Parole ! — la porte n'est plus posée. */
+    return;
     var mm=document.querySelector('.acc-plat .acc-mm');
     if(!mm || mm.getAttribute('data-porte')==='cercle') return;
     mm.setAttribute('data-porte','cercle');
@@ -37678,7 +37644,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       /* ⚑ v160c (Tom, C-175, B2 : « Ramage saccade beaucoup ») — sous Ramage ce rendu est UN bloc de 237 à 308 ms (son premier rendu de la séance), et il
          tombait 1,2 s après le dernier toucher, pendant l'arrivée : l'accroc. Pour Ramage il attend 3 s sans aucun toucher — il tombe sur un Studio immobile,
          sans doigt. Les autres mondes : inchangés (1,2 s). */
-      if(!src){ if(performance.now()-tDoigt<(M.m==='ramage'?3000:1200)) return; src=window._rendDalle?window._rendDalle(pr[0].id, 64, 64, {courant:1}):null; if(src) memo[k]=src; }   /* v30 · le curseur du Studio : le monde courant, exprès */
+      if(!src){ if(performance.now()-tDoigt<(M.m==='ramage'?5200:1200)) return;   /* ⚑ v164b (Q581) : Ramage non préparé à l'accueil (une autre famille de semis) — 5,2 s de calme, hors des 5 s qui suivent l'arrivée */ src=window._rendDalle?window._rendDalle(pr[0].id, 64, 64, {courant:1}):null; if(src) memo[k]=src; }   /* v30 · le curseur du Studio : le monde courant, exprès */
       if(!src) return;
       if(!cv){ cv=document.createElement('canvas'); th.appendChild(cv); }
       cv.width=72; cv.height=72; var g=cv.getContext('2d'); g.clearRect(0,0,72,72);
@@ -37697,7 +37663,11 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      en cours ni fini depuis moins de 6 s, la Toile au repos) — la règle des tâches de fond (v143). Au Studio, elle est alors déjà là. */
   var ORDRE=['encre','touffe','brouillamini','halin','esquille','mosaique','braille','pixel','ramage','guingois','chantourne','volubilis','madrure','chamade','ritournelle','bobinette','mascaret','terrazzo','gravure','sillons'];
   var NEUFS={esquille:1,bobinette:1,ritournelle:1,madrure:1,halin:1,brouillamini:1,chamade:1,volubilis:1,guingois:1,chantourne:1,mascaret:1,ramage:1};
-  var LOURDS={volubilis:1, ramage:1};   /* leur dalle seule coûte 0,5 à 1,6 s d'un bloc (Q569, le moteur) : pas sur l'accueil, où un toucher l'attendrait */
+  var LOURDS={volubilis:1};   /* ⚑ v164b (Tom, Q581 : « la silhouette de la jauge est préparée à l'avance, au repos, hors moteur ») — Ramage est préparé ici, comme les autres, mais
+     après un repos plus long (REPOS_LOURD) : son premier rendu est un bloc de 0,2 à 0,5 s, il tombe sur un accueil immobile depuis 8 s. Volubilis reste gelé. */
+  var REPOS_LOURD={ramage:8000}, mondeVu='', tMonde=0;   /* ⚠ au banc de rendu (temps piloté, un monde posé toutes les 4 s) la préparer pendant la pose
+     des mondes changeait Guingois (14 images) ; dans une page normale, mesuré, un rendu de Ramage ne change ni les graines, ni les cellules, ni une dalle
+     de Guingois rendue avant puis après — la cause au banc n'est pas nommée. D'où la seconde condition : le monde courant inchangé depuis 8 s. */   /* leur dalle seule coûte 0,5 à 1,6 s d'un bloc (Q569, le moteur) : pas sur l'accueil, où un toucher l'attendrait */
   /* ⚑ v160c (C-175, B2) — essayé : préparer aussi Ramage ici, après 8 s sans toucher. RETIRÉ : son premier rendu laisse un état dans le moteur, et le banc
      de rendu changeait sous Guingois (14 images sur 280). Ramage attend au Studio (3 s sans toucher, plus haut). */
   function famille(m, n){ return (NEUFS[m] && (m==='ritournelle' || n>=9))?1:0; }
@@ -37705,15 +37675,17 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(window._evolRecente && window._evolRecente(4000)) return false; if(document.hidden) return false;
       var st=window.Toile_state&&Toile_state(); if(st && st.running) return false; var cv=document.getElementById('toileCv'); if(!cv) return false; var r=cv.getBoundingClientRect(); if(!r.width) return false;
       var e=document.elementFromPoint(r.left+r.width/2, r.top+r.height*0.45); return !!(e && e.id==='toileCv'); }catch(_){ return false; } }
-  function prepare(){ try{ if(!accueilPose() || !window._rendDalle || !window.Toile || !Toile.dalleAbs) return;
+  /* v164b : la fonction porte un nom à elle (redteam_decoupe H l'exempte nommément : elle rend, au repos, la dalle d'un monde que le Studio MONTRERA, affichée seulement là) */
+  function silhouettesAuRepos(){ try{ if(!accueilPose() || !window._rendDalle || !window.Toile || !Toile.dalleAbs) return;
       var pr=(typeof promises!=='undefined'?promises:[]).filter(function(p){return !p.draft && Toile.dalleAbs(p.id);}); if(!pr.length) return;
       var clair=document.getElementById('device').classList.contains('light'), fam=(Toile.semisNeuf&&Toile.semisNeuf())?1:0, n=0;
       try{ n=Toile_cellules().c.filter(function(c){ return c.kind!=='gray'; }).length; }catch(_){ }
-      var M=Toile.mondeCourant?Toile.mondeCourant():{}, P=M.p, H=M.h;
-      for(var i=0;i<ORDRE.length;i++){ var m=ORDRE[i]; if(famille(m, n)!==fam) continue; var k=[m,clair,pr[0].id,fam].join('|'); if(k in memo || LOURDS[m]) continue;
+      var M=Toile.mondeCourant?Toile.mondeCourant():{}, P=M.p, H=M.h, mk=[M.m,P,H,clair,fam].join('|');
+      if(mk!==mondeVu){ mondeVu=mk; tMonde=performance.now(); }   /* v164b : un monde lourd attend aussi que le monde et la palette n'aient pas bougé depuis 8 s */
+      for(var i=0;i<ORDRE.length;i++){ var m=ORDRE[i]; if(famille(m, n)!==fam) continue; var k=[m,clair,pr[0].id,fam].join('|'); if(k in memo || LOURDS[m]) continue; if(REPOS_LOURD[m] && (performance.now()-tDoigt<REPOS_LOURD[m] || performance.now()-tMonde<REPOS_LOURD[m])) continue;
         var src=window._rendDalle(pr[0].id, 64, 64, {monde:{m:m, p:P, h:H}}); if(src) memo[k]=src; else memo[k]=null; window._silhouettesPretes=(window._silhouettesPretes||0)+1; return; }   /* une seule par tâche */
     }catch(_){ } }
-  setInterval(prepare, 700);
+  setInterval(silhouettesAuRepos, 700);
   window._silhouettes=function(){ return Object.keys(memo).filter(function(k){ return !!memo[k]; }); };
 })();
 </script>
@@ -38824,6 +38796,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     try{
       if(LS.g('promi_onb')!=='1') return;
       if(window._onbCompteFait()) return;
+      if(LS.g('promi_rappel_fin')==='1') return;   /* ⚑ v164b (Tom, C-200 ①) : après le deuxième « Plus tard », le bandeau ne revient plus — « Garder ta Toile » reste aux Réglages */
       var n=nParoles(), d0=+(LS.g('promi_debut')||0), fois=+(LS.g('promi_rappel_n')||0);
       if(LS.g('promi_rappel_vu')==='1' && !fois){ fois=1; LS.s('promi_rappel_n','1'); LS.s('promi_rappel_p',''+n); LS.s('promi_rappel_t',''+Date.now()); }   /* l'ancien « vu » compte pour un refus */
       if(!fois){ if(!(n>=3 || (d0 && Date.now()-d0 >= 2*864e5))) return; }
@@ -38837,6 +38810,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         b.addEventListener('click', function(e){ var r=e.target.closest&&e.target.closest('[data-r]'); if(!r) return;
           b.classList.remove('vu');
           LS.s('promi_rappel_n',''+((+(LS.g('promi_rappel_n')||0))+1)); LS.s('promi_rappel_p',''+nParoles()); LS.s('promi_rappel_t',''+Date.now());
+          if(r.getAttribute('data-r')==='non'){ var nn=LS.g('promi_rappel_non'); nn=(nn==null||nn==='')?Math.max(0,(+(LS.g('promi_rappel_n')||0))-1):+nn; nn++;   /* les refus d'avant v164b comptent */
+            LS.s('promi_rappel_non',''+nn); if(nn>=2) LS.s('promi_rappel_fin','1'); }
           if(r.getAttribute('data-r')==='oui') window._onbCompte();
           });
       }
@@ -39666,7 +39641,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function remplit(s){ var o=lit(), c=s.querySelector('.v16-corps');
     c.innerHTML=row('', 'Mes paroles datées', 'un petit mot la veille', tog(o.datees), 'data-nt="datees" role="switch" aria-checked="'+o.datees+'"')
       +'<div class="nt-mur">'
-      +row('', 'Mes paroles en l’air', 'de temps en temps, une douce relance', tog(o.lair && paye()), 'data-nt="lair" role="switch" aria-checked="'+(o.lair&&paye())+'"')
+      +row('', 'Mes paroles en l’air', 'de temps en temps, un mot'   /* ⚑ v164b (Tom, C-200 ③) */, tog(o.lair && paye()), 'data-nt="lair" role="switch" aria-checked="'+(o.lair&&paye())+'"')
       +row('', 'L’heure', '', '<span class="nt-v">'+heureMot(paye()?o.heure:19)+'</span>', 'data-nt="heure" role="button"')
       +'</div>'
       +row('nt-bientot', 'Ce qu’on me lance', 'Chiches, invitations, réponses · bientôt', tog(false), 'aria-disabled="true"'); }
@@ -40818,20 +40793,24 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
 (function(){
   var K='promi_dessin_mention';
   window._dessinMention=function(){ try{ return localStorage.getItem(K)!=='0'; }catch(_){ return true; } };
-  function maj(c){ var v=c.querySelector('.v'), on=window._dessinMention(); if(v) v.textContent=(on?'affichée':'masquée')+' ›'; c.setAttribute('aria-pressed', on?'true':'false'); c.setAttribute('aria-label','Mention sur un dessin partagé, '+(on?'affichée':'masquée')); }
-  function pose(){ var inv=document.getElementById('setInvite'); if(!inv || document.getElementById('setMention')) return !!inv;
-    var c=document.createElement('div'); c.className='scard'; c.id='setMention'; c.setAttribute('role','button'); c.tabIndex=0;
-    c.innerHTML='<span class="k">Mention sur un dessin partagé</span><span class="v ac"></span>';
-    inv.parentNode.insertBefore(c, inv.nextSibling); maj(c);
-    /* aux Réglages, un toucher ne produit pas toujours de `click` (mesuré en WebKit, v137) : on lit le geste — appui, lever sans glisser —, pour tous les pointeurs ; le `click` qui suivrait est dédoublonné */
-    var G=null, tF=0;
-    function bascule(){ if(performance.now()-tF<500) return; tF=performance.now(); try{ localStorage.setItem(K, window._dessinMention()?'0':'1'); }catch(_){ } maj(c); }
-    c.addEventListener('pointerdown', function(e){ G={x:e.clientX, y:e.clientY, t:performance.now()}; });
-    c.addEventListener('pointerup', function(e){ var g=G; G=null; if(!g || Math.hypot(e.clientX-g.x, e.clientY-g.y)>10 || performance.now()-g.t>600) return; bascule(); });
-    c.addEventListener('click', bascule);
-    c.addEventListener('keydown', function(e){ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); bascule(); } });
+  /* ⚑ v164b (Tom, C-200 ⑦) — LA RANGÉE QUITTE LES RÉGLAGES POUR LE PARTAGE : une rangée du panneau « Peaufiner » du partage, faite comme ses voisines
+     (« LE TEXTE DES DALLES » : un libellé, deux pastilles), après elles ; les mots de Q416 (validés v138) : « Mention sur un dessin partagé », « Affichée »,
+     « Masquée ». Le choix reste le même réglage, mémorisé (`promi_dessin_mention`) ; changé pendant un partage, l'aperçu se refait. */
+  function maj(r){ var on=window._dessinMention(); var a=r.querySelector('#shMentionOn'), b=r.querySelector('#shMentionOff');
+    if(a){ a.classList.toggle('on', on); a.setAttribute('aria-pressed', on?'true':'false'); } if(b){ b.classList.toggle('on', !on); b.setAttribute('aria-pressed', on?'false':'true'); } }
+  function pose(){ var pi=document.getElementById('shcPile'); if(!pi) return false; if(document.getElementById('shMentionRow')) return true;
+    var c=document.createElement('div'); c.className='shc-reg'; c.setAttribute('data-reg','mention');
+    c.innerHTML='<div class="l">MENTION SUR UN DESSIN PARTAGÉ</div><div class="sh-mode sh-row-tx" id="shMentionRow"><button id="shMentionOn" type="button">Affichée</button><button id="shMentionOff" type="button">Masquée</button></div>';
+    var note=document.getElementById('shcNote'); if(note && note.parentNode===pi) pi.insertBefore(c, note); else pi.appendChild(c);
+    maj(c); var tF=0;
+    function choisit(on){ if(performance.now()-tF<400) return; tF=performance.now(); try{ localStorage.setItem(K, on?'1':'0'); }catch(_){ } maj(c);
+      try{ if(window.shareToile) shareToile._key=null; if(window.shareRender) shareRender(); }catch(_){ } }
+    [['#shMentionOn',true],['#shMentionOff',false]].forEach(function(x){ var bt=c.querySelector(x[0]), G=null;
+      bt.addEventListener('pointerdown', function(e){ G={x:e.clientX, y:e.clientY, t:performance.now()}; });
+      bt.addEventListener('pointerup', function(e){ var g=G; G=null; if(!g || Math.hypot(e.clientX-g.x, e.clientY-g.y)>10 || performance.now()-g.t>600) return; choisit(x[1]); });
+      bt.addEventListener('click', function(e){ e.stopPropagation(); choisit(x[1]); }); });
     return true; }
-  if(!pose()){ var n=0, t=setInterval(function(){ if(pose() || ++n>40) clearInterval(t); }, 250); }
+  var n=0, t=setInterval(function(){ if(pose() || ++n>240) clearInterval(t); }, 500);
 })();
 </script>
 <script id="lot-V136-PHRASE">
@@ -42815,6 +42794,22 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   setInterval(pose, 700);
 })();
 </script>
+<style id="lot-V164B-TRIER-css">
+/* ⚑ v164b (Tom, Q582 → A : « le mot TRIER, mais sans pilule ni encart autour : le mot seul, en petites capitales, à l'encre du mode, avec une zone de
+   toucher de 44 pt invisible. Même chose dans l'Index et le Fil. ») — le bouton garde sa place (le créneau de 52 pt à droite de la recherche, ≥ 44 pt :
+   c'est la zone qu'on touche) ; ni contour, ni fond, ni ombre, ouvert ou fermé ; le mot en Gilbert (la police des libellés, qui n'a que des capitales),
+   15 pt, à l'encre du mode. */
+#device #indexSheet #ixTriBtn,#device #feedView #fdTriBtn,#device #indexSheet.s4 #ixTriBtn,#device #feedView.s4 #fdTriBtn,
+.frame #indexSheet #ixTriBtn,.frame #feedView #fdTriBtn{
+  width:52px!important;height:52px!important;min-width:44px!important;min-height:44px!important;padding:0!important;
+  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important;
+  font-family:var(--f-libelle)!important;font-weight:700!important;font-size:15px!important;letter-spacing:.04em!important;line-height:1!important;
+  text-transform:uppercase!important;display:flex!important;align-items:center!important;justify-content:center!important;
+  color:var(--c-creme95)!important;-webkit-text-fill-color:var(--c-creme95)!important}
+#device.light #indexSheet #ixTriBtn,#device.light #feedView #fdTriBtn,.frame.light #indexSheet #ixTriBtn,.frame.light #feedView #fdTriBtn{
+  color:var(--c-brun09)!important;-webkit-text-fill-color:var(--c-brun09)!important}
+#device #indexSheet #ixTriBtn.on,#device #feedView #fdTriBtn.on,.frame #indexSheet #ixTriBtn.on,.frame #feedView #fdTriBtn.on{background:transparent!important;border:0!important}
+</style>
 </body>
 
 </html>

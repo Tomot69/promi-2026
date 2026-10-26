@@ -72,14 +72,15 @@ with sync_playwright() as p:
             if CAP and e.get('url') and nat == 'PROMI' and th == 'light':
                 import base64; open('planche-v137/partage-dessin-avec-mention.png', 'wb').write(base64.b64decode(e['url'].split(',')[1]))
             if nat == 'PROMI':
-                # C · le réglage, au doigt, dans les Réglages
-                ferme(pg); pg.evaluate("()=>{ const s=document.getElementById('settingsBtn')||document.querySelector('[data-open=\"settings\"]'); if(s) s.click(); else if(window.openSettings) openSettings(); }"); pg.wait_for_timeout(1500)
-                pg.evaluate("()=>{const e=document.getElementById('setMention'); if(e) e.scrollIntoView({block:'center'}); }"); pg.wait_for_timeout(900)
-                bb = pg.evaluate("()=>{const e=document.getElementById('setMention'); if(!e) return null; const r=e.getBoundingClientRect(); const c=document.elementFromPoint(r.x+r.width/2, r.y+r.height/2); return {x:r.x+r.width/2,y:r.y+r.height/2,ok:!!(c&&(c===e||e.contains(c))),txt:e.textContent}}")
-                t('[%s] C · la rangée « Mention sur un dessin partagé » est aux Réglages, joignable' % T, bool(bb and bb['ok'] and 'affichée' in bb['txt']), bb)
+                # C · le réglage, au doigt — ⚑ v164b (Tom, C-200 ⑦) : il a quitté les Réglages pour le panneau du Partage
+                ferme(pg); pg.evaluate("()=>openDetail(promises.find(q=>q.title==='faire les crêpes').id)"); pg.wait_for_timeout(2200); partage(pg)
+                pg.evaluate("()=>{ const f=document.getElementById('shcPeaufiner'); if(f) f.click(); }"); pg.wait_for_timeout(1500)
+                pg.evaluate("()=>{const e=document.getElementById('shMentionRow'); if(e) e.scrollIntoView({block:'center'}); }"); pg.wait_for_timeout(900)
+                bb = pg.evaluate("()=>{const e=document.getElementById('shMentionOff'); if(!e) return null; const r=e.getBoundingClientRect(); const c=document.elementFromPoint(r.x+r.width/2, r.y+r.height/2); return {x:r.x+r.width/2, y:r.y+r.height/2, ok:c===e||e.contains(c), txt:(document.getElementById('shMentionOn').classList.contains('on')?'affichée':'masquée'), regl:!!document.getElementById('setMention')}}")
+                t('[%s] C · la rangée « Mention sur un dessin partagé » est dans le panneau du Partage (plus aux Réglages), joignable' % T, bool(bb and bb['ok'] and bb['txt'] == 'affichée' and not bb['regl']), bb)
                 if bb: pg.touchscreen.tap(bb['x'], bb['y']); pg.wait_for_timeout(500)
-                st = pg.evaluate("()=>({k:localStorage.getItem('promi_dessin_mention'), txt:(document.getElementById('setMention')||{}).textContent})")
-                t('[%s] C · un toucher la masque, c\'est mémorisé' % T, st['k'] == '0' and 'masquée' in (st['txt'] or ''), st)
+                st = pg.evaluate("()=>({k:localStorage.getItem('promi_dessin_mention'), off:(document.getElementById('shMentionOff')||{classList:{contains:()=>false}}).classList.contains('on')})")
+                t('[%s] C · un toucher la masque, c\'est mémorisé' % T, st['k'] == '0' and st['off'], st)
                 ferme(pg); pg.evaluate("()=>openDetail(promises.find(q=>q.title==='faire les crêpes').id)"); pg.wait_for_timeout(2200)
                 o = partage(pg); e2 = pg.evaluate(EXPORT) or {}; f2 = e2.get('ft', [])
                 t('[%s] C · mention masquée : le dessin et le logo, rien d\'autre' % T, o and e2.get('fond', 0) > 0.5 and len(logo(f2)) == 1 and len(f2) == 1, [f['s'] for f in f2])

@@ -20,7 +20,7 @@ from playwright.sync_api import sync_playwright
 from PIL import Image
 F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')
 REF = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--ref=')), 'zz-v162.html')
-KS = [None, '1.3', '1.5', '1.8']   # ⚑ v164 (Tom : « aucune différence entre 1,10, 1,15 et 1,20 ») — des paliers nettement visibles
+KS = [None]   # ⚑ v164b (Tom : « Je garde le palier ×1,3. Fige-le et retire ?trait=. ») — le défaut seul, ×1,3 décidé.  Avant : ⚑ v164 (Tom : « aucune différence entre 1,10, 1,15 et 1,20 ») — des paliers nettement visibles
 if any(a.startswith('--k=') for a in sys.argv[1:]): KS = [next(a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--k='))]
 FEN = [(430, 932), (330, 714)]
 res = []
@@ -100,7 +100,7 @@ with sync_playwright() as p:
     for vw, vh in FEN:
         refs = {s: scene(b, REF, '', vw, vh, s) for s in SCENES}
         for K in KS:
-            q = '' if K is None else '?trait=' + K; kf = 1.15 if K is None else float(K); nom = 'défaut' if K is None else K
+            q = ''; kf = 1.3 if K is None else float(K); nom = 'défaut' if K is None else K
             for s in SCENES:
                 va, ea, ta = refs[s]; vn, en, tn = scene(b, F, q, vw, vh, s)
                 if vw == FEN[0][0] and not s.endswith(':ouvert'):
@@ -115,8 +115,6 @@ with sync_playwright() as p:
                 juge('[%s %s %d×%d] C · aucun recouvrement neuf, rien hors de l\'écran' % (nom, s, vw, vh), not nv and not hn, 'recouvre %s · hors %s' % (sorted(nv), hn))
     oa = trait_onb(b, REF, ''); on = trait_onb(b, F, '')
     juge('D · l\'onboarding : le trait identique au pixel à v162 (défaut)', oa == on, 'v162 %s · ici %s' % (oa, on))
-    on2 = trait_onb(b, F, '?trait=1.8')
-    juge('D · l\'onboarding : identique aussi sous ?trait=1.8', oa == on2, 'v162 %s · ici %s' % (oa, on2))
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
 sys.exit(0 if ok == len(res) else 1)

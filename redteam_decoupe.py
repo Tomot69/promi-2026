@@ -173,9 +173,12 @@ PIEGE = r"""
           // ⚑ v68 — le RÉCHAUFFAGE (`rechauffe`, v59) repeint en tâche de fond, pendant n'importe quel écran, des dalles d'AUTRES écrans
           // dans le monde courant : ce n'est pas un peintre de l'Aura (la règle v50 : l'exception suit le peintre). Original : sauvegardes/redteam_decoupe-avant-v68.py.
           const aura = (String((window.__decoupe || {}).ecran || '').indexOf('Aura') >= 0 && !/rechauffe/.test(pileA)) || /peintMoisson|Object\.pelote|batIles|dalleLisible/.test(pileA);   /* v148 : `dalleLisible` (les îles de la Pelote) — appelé aussi par la préparation au repos de l'Aura (C-135, v146), pendant n'importe quel écran */
+          // ⚑ v164b (Q581) — LA PRÉPARATION DES SILHOUETTES DE LA JAUGE (`silhouettesAuRepos`, v159 ; Ramage depuis v164b) rend, au repos sur l'accueil, la dalle
+          // d'un monde que le Studio MONTRERA ; elle n'est affichée qu'au Studio, sur ce monde-là : elle suit le Studio. Le moteur ne lui permet pas de le déclarer
+          // (`courant` y remplace le monde demandé) : elle sort par son PEINTRE, comme l'Aura. Original : sauvegardes/redteam_decoupe-avant-v164b.py.
           let q = null; for (const x of promises) { if (x.id === pid) { q = x; break; } }
           const M = cv.__dalleInfo.monde, C = aura ? (q && q.monde) : avant;
-          if (C && (C.m !== M.m || C.p !== M.p || (+C.h || 0) !== (+M.h || 0)))
+          if (C && !/silhouettesAuRepos/.test(pileA) && (C.m !== M.m || C.p !== M.p || (+C.h || 0) !== (+M.h || 0)))
             note('H·monde', ligne(), {m:'MONDE', cible:(aura ? 'plantation ' : 'Studio ') + [C.m, C.p, +C.h || 0].join('/') + ' · peinte ' + [M.m, M.p, +M.h || 0].join('/')});
       } } catch(_){}
       try { if (cv && (nom !== 'dalleTrame' || r)) { cv[PEINT[nom]] = 1; if (nom === 'dalleTrame') { cv.__toile = 0; cv.__porte = 0; } } } catch(_){}
