@@ -196,6 +196,24 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v168 (27 oct. 2026) — LA FLÈCHE DU GUIDE EN GOUTTE (C-205, variante C). (Décisions Tom.) Ce bloc CORRIGE v167 (la forme de la flèche du guide).
+> **Validés par Tom : C-181 (la veille repart à 60 s), C-203 §2 (la phrase 2 au cobalt).**
+> **⚑ C-205 — LE DÉPART DE LA PAGE + EST LA RÉFÉRENCE, ET IL NE CHANGE PAS** (Tom : « ça reste, et c'est la référence ») : le ruban orange qui part épais du bord
+> gauche (22,7 pt visibles au bord) et s'effile en 1,95 pt sous le chevron. **Les fiches ne changent pas non plus** (le trait, le départ de la seconde moitié, le trait
+> tenu : v167 au pixel). **Seules les flèches du guide** (Studio, +, Partager) prennent la forme C : **la goutte** — le profil de l'amorce de la page + étiré sur le
+> corps de la flèche, fermé côté queue en goutte (elle naît fine et s'arrondit sur ses 28 premiers pour cent) : 17,6 pt au plus large, à 17 pt de la queue ; 11,4 pt
+> à 45 pt ; 6,4 pt à 65 pt ; puis la pointe (`_onde.chevron`). Rien d'autre ne change : 96,3 pt d'encre, la courbe douce (5 pt), la place (la pointe 1 pt dans la
+> zone nette), l'orange, le clignotement calé sur le I (fixe en mouvement réduit), en flaques avec la zone. ⚠ Le brief disait « le plus large = l'épaisseur du trait »
+> et « plus fin au départ » : la forme que Tom a désignée l'emporte (22,7 pt au bord). Page de variantes : `promi-fleches-variantes.html` (fonds réels, sans la couche
+> du trait, `variantes/fleches/`). Juge : `redteam_guide_fleche` G remis au niveau (la goutte ; original en sauvegarde ; rouge sur v167 : 81/93). Preuve A1 :
+> `scratchpad/v168/a1.py` — fiches et pages + à v167 servie à côté, au pixel, deux thèmes, deux échelles (la dalle muette, le hasard réamorcé à l'ouverture de la
+> page + : sans cela la phrase suggérée change et toute la page avec).
+> ⚠ **TROUVÉ PAR LA SÉRIE : `redteam_volume` rougissait depuis v167 (208 « volumes nouveaux », tous anciens)** — `lot-V167-DOIGTS`, posé en tête de `<head>`, volait
+> l'attribution du `<style>` sans id qui le suit (le piège de v145 : un `<script id>` avant un `<style>` sans id). Le script ne peut pas bouger (il doit passer avant
+> tout écouteur) : le juge rend « (hors bloc) » après un script posé AVANT tout bloc nommé (original : `sauvegardes/redteam_volume-avant-v168.py`) ; vert sur v167
+> et v168, la sonde rougit. ⚠ `redteam_guide` : trois rouges de cadence (une image de 29 à 34 ms) — la même pire image sur v167 servie à côté, sous la même charge
+> (4,1 à 5,9) : NON JUGÉ (C-137).
+
 ### ⚑ v167 (27 oct. 2026) — RETOURS iPHONE DE TOM SUR v166 : LA FLÈCHE DU GUIDE REFAITE, LA PHRASE 2 AU COBALT, LA VEILLE QUI NE PARTAIT PAS. (Décisions Tom.) Ce bloc CORRIGE v166 (la flèche, la couleur de la phrase 2, la veille à 120 s).
 > **Validés par Tom : C-203 pour le reste (zones nettes, phrase 2, Partager facultatif). Q587 accepté pour l'instant : le « À » composé — Tom redessine lui-même
 > PromiLate, il devra y dessiner le « À ». C-204 (la liste des couleurs dérivées) et Q588 (« t'appartient. » en clair) : Tom tranche après ses testeurs — RIEN TOUCHÉ.**

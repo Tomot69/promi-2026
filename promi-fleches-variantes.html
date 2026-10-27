@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Promi — le trait et ses flèches : trois variantes</title>
+<link rel="stylesheet" href="variantes/polices.css">
+<style>
+/* ⚑ v168 (C-205, Tom, 27 oct. 2026) — « Le trait et ses flèches : une seule famille de formes. » Page de variantes, jouable sur l'iPhone ; RIEN N'EST
+   INTÉGRÉ DANS L'APP avant le choix de Tom.
+   Les fonds sont les VRAIS écrans de l'app (v167, WebKit, 390 × 844 @3x), capturés sans la couche du trait (`variantes/fleches/*-fond.jpg`) ; la
+   couche du trait est repeinte ici, à 1:1, avec les fonctions de l'app recopiées (`_onde` : onde, chemin, ruban, chevron) et les cotes que l'app a
+   publiées pour chaque écran (`variantes/fleches/cotes.js`). « Aujourd'hui » montre la capture de l'app telle quelle. */
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--fond:#F7F0DE;--encre:#201908;--doux:#6E6350;--barre:#EFE3C7}
+:root[data-theme="sombre"]{--fond:#050302;--encre:#F7F0DE;--doux:#A2947C;--barre:#1A1410}
+html,body{margin:0;background:var(--fond);color:var(--encre);font-family:Atkinson,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+#haut{position:sticky;top:0;z-index:5;background:var(--fond);padding:8px 8px 6px;display:flex;flex-wrap:wrap;justify-content:center;gap:5px}
+#haut button{font:700 12px/1 Gilbert,system-ui,sans-serif;letter-spacing:.05em;text-transform:uppercase;color:var(--encre);background:transparent;
+  border:2px solid var(--encre);border-radius:17px;height:34px;padding:0 11px;cursor:pointer}
+#haut button.on{background:var(--encre);color:var(--fond)}
+#haut .sep{width:8px}
+#note{max-width:390px;margin:4px auto 10px;padding:0 16px;font-size:15px;line-height:1.35}
+#note b{font-family:Gilbert,system-ui,sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:.04em;font-size:14px}
+#liste{max-width:390px;margin:0 auto;padding-bottom:40px}
+.bloc{margin:0 0 18px}
+.lab{font:700 12px/1.2 Gilbert,system-ui,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:var(--doux);padding:0 16px 6px}
+.cadre{position:relative;width:100%;max-width:390px;overflow:hidden;margin:0 auto}
+.cadre img{display:block;width:100%;height:auto}
+.cadre canvas{position:absolute;left:0;top:0;width:100%;height:100%}
+@media (prefers-reduced-motion:no-preference){ .cadre canvas.clignote{animation:promiBlink 1.15s steps(1,end) infinite} }
+@keyframes promiBlink{0%,54%{opacity:1}55%,100%{opacity:.6}}
+</style>
+</head>
+<body>
+<div id="haut">
+  <button data-v="T">Aujourd'hui</button><button data-v="A" class="on">A</button><button data-v="B">B</button><button data-v="C">C</button>
+  <span class="sep"></span>
+  <button data-th="clair" class="on">Clair</button><button data-th="sombre">Sombre</button>
+  <span class="sep"></span>
+  <button data-cmp="1">Comparer</button>
+</div>
+<div id="note"></div>
+<div id="liste"></div>
+<script src="variantes/fleches/cotes.js"></script>
+<script>
+(function(){
+var W=390, K=1.3, EP=10*K, ORANGE='#FB4C0D', PTS=1.15, RR=4.5*PTS, ESP=18;
+/* ── recopiées de l'app (`_onde`, app.html ≈ l. 14846) ── */
+function onde(base,amp,per,larg){ if(per==null) per=1.5; if(!larg) larg=W; var mont=amp*0.34, a=amp*0.62;
+  return function(x){ var t=Math.max(0,Math.min(1,x/larg)); return base - mont*t - a*Math.sin(2*Math.PI*per*t); }; }
+function pente(y){ return function(x){ return y(x+0.5)-y(x-0.5); }; }
+function chemin(g,y,x0,x1){ var seg=W/6, xs=[x0], k=Math.ceil(x0/seg)*seg, d=pente(y), i;
+  while(k<x1-0.5){ xs.push(k); k+=seg; } xs.push(x1); g.moveTo(xs[0],y(xs[0]));
+  for(i=0;i<xs.length-1;i++){ var a=xs[i],b=xs[i+1],h=(b-a)/3; g.bezierCurveTo(a+h, y(a)+d(a)*h, b-h, y(b)-d(b)*h, b, y(b)); } }
+function ruban(g,y,x0,x1,e0,e1){ var n=44, haut=[], bas=[], d=pente(y), i;
+  for(i=0;i<=n;i++){ var x=x0+(x1-x0)*i/n, e=(e0+(e1-e0)*(i/n))/2, dd=d(x), L=Math.sqrt(1+dd*dd); haut.push([x-dd/L*e, y(x)+e/L]); bas.push([x+dd/L*e, y(x)-e/L]); }
+  g.beginPath(); g.moveTo(haut[0][0],haut[0][1]); for(i=1;i<haut.length;i++) g.lineTo(haut[i][0],haut[i][1]); for(i=bas.length-1;i>=0;i--) g.lineTo(bas[i][0],bas[i][1]); g.closePath(); }
+function chevron(g,y,cx,col,ep){ var ang=Math.atan2(y(cx+8)-y(cx-8),16), k=ep/10; g.save(); g.translate(cx,y(cx)); g.rotate(ang);
+  g.beginPath(); g.moveTo(-7*k,-10*k); g.lineTo(6*k,0); g.lineTo(-7*k,10*k); g.lineWidth=6*k; g.lineCap='round'; g.lineJoin='round'; g.strokeStyle=col; g.stroke(); g.restore(); }
+/* la flèche d'invite de la page + (§2.4, app.html ≈ l. 17931) — telle quelle, elle n'est pas un départ */
+function invite(g, base, chev, col){ var ax=chev+32, ay=base+46, bx=chev+10, by=base+14, c1x=ax-10, c1y=ay-4, c2x=bx+3, c2y=by+12;
+  g.save(); g.strokeStyle=col; g.lineWidth=4.5*K; g.lineCap='round'; g.lineJoin='round';
+  var vx=bx-c2x, vy=by-c2y, L=Math.hypot(vx,vy)||1; vx/=L; vy/=L;
+  g.beginPath(); g.moveTo(ax,ay); g.bezierCurveTo(c1x,c1y,c2x,c2y,bx-vx*2.25*K,by-vy*2.25*K); g.stroke();
+  function aile(deg){ var r=deg*Math.PI/180; return [bx-(vx*Math.cos(r)-vy*Math.sin(r))*13*K, by-(vx*Math.sin(r)+vy*Math.cos(r))*13*K]; }
+  var g1=aile(-32), g2=aile(32); g.beginPath(); g.moveTo(g1[0],g1[1]); g.lineTo(bx,by); g.lineTo(g2[0],g2[1]); g.stroke(); g.restore(); }
+
+/* ── LA FAMILLE ── (v168, Tom : « le départ de la page + reste, et c'est la référence »)
+   LA RÉFÉRENCE : l'amorce de la page + au repos, telle quelle — `ruban(g,y,−W·0,03, cx−ep·0,15, ep·2,2, ep·0,15)` puis le chevron. Ce qu'on en VOIT
+   (le bord de l'écran la coupe à x 0) : 41 pt de long, 22,7 pt de large au bord, 1,95 pt sous la pointe. Les variantes ne touchent pas la page + ;
+   elles disent comment cette même forme passe là où sa queue se voit : la fiche à moitié tracée et le guide. */
+var RL=W*0.11-EP*0.15, R0=EP*2.2+(EP*0.15-EP*2.2)*(W*0.03/(W*0.03+RL)), R1=EP*0.15;   /* 40,95 pt · 22,7 → 1,95 */
+function wRef(u){ return R0+(R1-R0)*u; }
+function bombe(u){ return Math.pow(Math.sin(Math.min(1,u/0.28)*Math.PI/2),0.5); }
+var VAR={
+  A:{nom:'A · la même, bout rond', L:RL, queue:'rond', coupe:false,
+     ligne:"Exactement ce qu'on voit sur la page + (22,7 → 2 pt sur 41 pt) ; sa grosse extrémité, que le bord de l'écran cache sur la page +, est fermée par un bout rond. Sur la fiche, le trait tracé entre dans la flèche et s'y arrête.",
+     w:wRef, off:function(){ return 0; }},
+  B:{nom:'B · la même, en goutte', L:RL, queue:'fine', coupe:false,
+     ligne:"La même forme, mais sa grosse extrémité se referme en goutte : elle naît fine, s'arrondit en 11 pt jusqu'à sa largeur, puis s'effile comme sur la page +. Sur la fiche, le trait tracé entre dans la goutte et s'y arrête.",
+     w:function(u){ return wRef(u)*bombe(u); }, off:function(){ return 0; }},
+  C:{nom:'C · la goutte, détachée', L:RL, queue:'fine', coupe:true,
+     ligne:"La goutte de B, mais sur la fiche le trait tracé s'arrête 5 pt avant elle : la flèche est posée seule, au bout de ce qui est tracé, comme sur la page + où rien n'est tracé.",
+     w:function(u){ return wRef(u)*bombe(u); }, off:function(){ return 0; }}
+};
+/* le corps, en points : bords décalés perpendiculairement à l'épine (comme `ruban`), largeur w(u), u = 0 à la queue, 1 à la pointe */
+function corps(g, y, xq, xb, V){ var n=72, haut=[], bas=[], d=pente(y), i;
+  for(i=0;i<=n;i++){ var u=i/n, x=xq+(xb-xq)*u, e=V.w(u)/2, o=V.off(u), dd=d(x), L=Math.sqrt(1+dd*dd), nx=-dd/L, ny=1/L, cx=x+nx*o, cy=y(x)+ny*o;
+    haut.push([cx+nx*e, cy+ny*e]); bas.push([cx-nx*e, cy-ny*e]); }
+  g.beginPath(); g.moveTo(haut[0][0],haut[0][1]); for(i=1;i<haut.length;i++) g.lineTo(haut[i][0],haut[i][1]);
+  for(i=bas.length-1;i>=0;i--) g.lineTo(bas[i][0],bas[i][1]); g.closePath(); g.fill();
+  var x0=xq, d0=d(x0), L0=Math.sqrt(1+d0*d0), o0=V.off(0), qx=x0+(-d0/L0)*o0, qy=y(x0)+(1/L0)*o0;
+  if(V.queue==='rond'){ g.beginPath(); g.arc(qx,qy,V.w(0)/2,0,6.2832); g.fill(); }
+  }
+/* une flèche de départ sur l'onde : sa pointe (le chevron) en `cx`, sa queue L pt avant la base du V */
+function depart(g, y, cx, V){ var xb=cx-EP*0.15, xq=xb-V.L; g.fillStyle=ORANGE; corps(g, y, xq, xb, V); chevron(g, y, cx, ORANGE, EP); return xq; }
+
+/* ── LES CONTEXTES ── (cotes publiées par l'app, `cotes.js`) */
+var CTX=[
+  {k:'plus', lab:"1 · Page + d'un Promi — rien n'est tracé"},
+  {k:'moitie-promi', lab:'2 · Fiche Promi à moitié tracée — en attente du « tenir »'},
+  {k:'moitie-chiche', lab:'2 · Fiche Chiche à moitié tracée — en attente du « tenir »'},
+  {k:'tenu', lab:'3 · Fiche tenue — le trait entier'},
+  {k:'guide', lab:'4 · Guide — la flèche vers le Studio (elle clignote, comme le I de PROMI)'}];
+function points(g, y, x0, col, rp){ g.fillStyle=col; for(var x=x0; x<W-RR; x+=ESP){ g.beginPath(); g.arc(x,y(x),rp,0,6.2832); g.fill(); } }
+function peint(g, k, c, v){ var y, col=c.col, V=VAR[v];
+  g.lineCap='round'; g.lineJoin='round'; g.lineWidth=EP;
+  if(k==='plus'){ y=onde(c.base,c.amp); var cx=W*0.11;
+    g.fillStyle=ORANGE; ruban(g,y,-W*0.03,cx-EP*0.15,EP*2.2,EP*0.15); g.fill(); chevron(g,y,cx,ORANGE,EP);   /* la référence : identique dans toutes les variantes */
+    points(g,y,cx+ESP*1.3,col,(c.e2||6)*PTS); invite(g,c.base,cx,col); return; }
+  if(k==='moitie-promi' || k==='moitie-chiche'){ y=onde(c.base,c.amp); var mid=W/2;
+    g.strokeStyle=col;
+    if(v==='T'){ g.beginPath(); chemin(g,y,0,mid); g.stroke(); g.strokeStyle=ORANGE; g.beginPath(); chemin(g,y,mid-W*0.11,mid-EP*0.15); g.stroke(); chevron(g,y,mid,ORANGE,EP); }
+    else { var xb=mid-EP*0.15, xq=xb-V.L, u13=(R0-EP)/(R0-R1), fin=V.coupe ? xq-5-EP/2 : xq+(xb-xq)*u13-EP/2;   /* le trait tracé s'arrête là où la flèche a sa largeur (13 pt) : son bout rond est sous elle */
+      g.beginPath(); chemin(g,y,0,fin); g.stroke(); depart(g,y,mid,V); }
+    points(g,y,mid+ESP,col,(c.e2||6)*PTS); return; }
+  if(k==='tenu'){ y=onde(c.base,c.amp); g.strokeStyle=col; g.beginPath(); chemin(g,y,0,W); g.stroke(); return; } }
+/* la flèche du guide : le repère de l'app (app.html ≈ l. 41265) — origine 9 × k avant la pointe, axe vers l'icône, épine parabolique de 5 pt */
+function peintGuide(g, c, v){ var kk=EP/10, a=c.angle*Math.PI/180, ux=Math.cos(a), uy=Math.sin(a), ox=c.pointe[0]-ux*9*kk, oy=c.pointe[1]-uy*9*kk,
+  A=-(96.3-9*kk-EP/2), SAG=5, yz=function(x){ var u=x/A; return SAG*u*u; };
+  g.save(); g.translate(ox,oy); g.rotate(a); g.lineCap='round'; g.lineJoin='round';
+  if(v==='T'){ g.strokeStyle=ORANGE; g.lineWidth=EP; g.beginPath(); chemin(g,yz,A,-2*kk); g.stroke(); chevron(g,yz,0,ORANGE,EP); }
+  else { var V=VAR[v], xb=-EP*0.15, xq=-(96.3-9*kk); if(V.queue==='rond') xq+=R0/2;   /* la longueur du guide de v167 (96,3 pt d'encre), le même profil étiré */ g.fillStyle=ORANGE; corps(g,yz,xq,xb,V); chevron(g,yz,0,ORANGE,EP); }
+  g.restore(); }
+
+var etat={v:'A', th:'clair', cmp:false};
+try{ var q=new URLSearchParams(location.search); if(q.get('v')) etat.v=q.get('v'); if(q.get('th')) etat.th=q.get('th'); if(q.get('cmp')) etat.cmp=true; if(q.get('redessin')) etat.redessin=true; }catch(_){}
+function cadre(k, v){ var th=etat.th==='sombre'?'s':'c', c=FLECHES_COTES[th+'-'+k], d=document.createElement('div'); d.className='cadre';
+  var vraie=(v==='T' && etat.vraie && !etat.redessin), im=new Image(); im.src='variantes/fleches/'+th+'-'+k+'-'+(vraie ? 'avant' : 'fond')+'.jpg'; im.alt=''; d.appendChild(im);
+  var cv=document.createElement('canvas'), R=3; cv.width=W*R; cv.height=c.h*R; d.appendChild(cv);
+  var g=cv.getContext('2d'); g.setTransform(R,0,0,R,0,-c.top*R);
+  if(vraie){ /* la capture de l'app : rien à repeindre */ } else if(k==='guide'){ cv.className='clignote'; peintGuide(g,c,v); } else peint(g,k,c,v);
+  d.setAttribute('data-ctx',k); d.setAttribute('data-v',v); return d; }
+function rend(){ document.documentElement.setAttribute('data-theme', etat.th);
+  document.querySelectorAll('#haut [data-v]').forEach(function(b){ b.classList.toggle('on', !etat.cmp && b.getAttribute('data-v')===etat.v); });
+  document.querySelectorAll('#haut [data-th]').forEach(function(b){ b.classList.toggle('on', b.getAttribute('data-th')===etat.th); });
+  document.querySelector('#haut [data-cmp]').classList.toggle('on', etat.cmp);
+  var N=document.getElementById('note'), Ls=document.getElementById('liste'); Ls.innerHTML='';
+  if(etat.cmp){ N.innerHTML="<b>Comparer</b> — chaque écran, quatre fois : aujourd'hui (la capture de l'app), puis A, B, C.";
+    CTX.forEach(function(x){ var bl=document.createElement('div'); bl.className='bloc';
+      ['T','A','B','C'].forEach(function(v){ var l=document.createElement('div'); l.className='lab'; l.textContent=x.lab.split(' — ')[0]+' · '+(v==='T'?"aujourd'hui":VAR[v].nom); bl.appendChild(l); etat.vraie=true; bl.appendChild(cadre(x.k,v)); etat.vraie=false; });
+      Ls.appendChild(bl); }); return; }
+  N.innerHTML = etat.v==='T' ? "<b>Aujourd'hui</b> — l'app telle qu'elle est (v167), capturée." : '<b>'+VAR[etat.v].nom+'</b> — '+VAR[etat.v].ligne+" La page + ne change pas : c'est la référence.";
+  CTX.forEach(function(x){ var bl=document.createElement('div'); bl.className='bloc'; var l=document.createElement('div'); l.className='lab'; l.textContent=x.lab; bl.appendChild(l);
+    etat.vraie=(etat.v==='T'); bl.appendChild(cadre(x.k, etat.v)); etat.vraie=false; Ls.appendChild(bl); }); }
+document.getElementById('haut').addEventListener('click', function(e){ var b=e.target.closest('button'); if(!b) return;
+  if(b.hasAttribute('data-v')){ etat.v=b.getAttribute('data-v'); etat.cmp=false; }
+  if(b.hasAttribute('data-th')) etat.th=b.getAttribute('data-th');
+  if(b.hasAttribute('data-cmp')) etat.cmp=!etat.cmp;
+  rend(); });
+window._fleches={peint:peint, peintGuide:peintGuide, VAR:VAR, etat:etat, rend:rend};
+rend();
+})();
+</script>
+</body>
+</html>

@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v167', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v168', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -41272,10 +41272,18 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
        (`_onde.chevron`) ; 30 pt plus longue que v166 (encre 66,3 → 96,3 pt) ; le bout arrière ROND, comme un trait qui commence ; le corps en courbe douce et
        régulière (5 pt de flèche, une parabole tangente à l'axe à la pointe : elle vise toujours l'icône). */
     var A=-(96.3-9*kk-ep/2), SAG=5, col=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), yz=function(x){ var u=x/A; return SAG*u*u; }, RC=ep/2;
-    var X=[], Y=[]; [[A-RC,-RC-SAG],[A-RC,RC+SAG],[9*kk,-11*kk],[9*kk,11*kk]].forEach(function(q){ X.push(ox+q[0]*ux-q[1]*uy); Y.push(oy+q[0]*uy+q[1]*ux); });
+    /* ⚑ v168 (Tom, C-205, variante C) — « la goutte, née fine, qui s'arrondit puis s'effile vers la pointe de la page + » : le PROFIL de l'amorce de la page +
+       au repos (le ruban de `_ficheTrait`/page + : ep·2,2 → ep·0,15 ; ce qu'on en voit au bord de l'écran, 22,7 pt, s'effile en 1,95 pt sous le V), étiré sur le
+       corps de la flèche et fermé côté queue en goutte (elle naît fine et s'arrondit sur ses 28 premiers pour cent). Rien d'autre ne change : 96,3 pt d'encre,
+       la courbe douce (SAG), la pointe (`_onde.chevron`), l'orange, la place, le clignotement. Les fiches et la page + ne sont pas touchées. */
+    var XQ=-(96.3-9*kk), XB=-ep*0.15, RL0=Wd*0.11-ep*0.15, R0=ep*2.2+(ep*0.15-ep*2.2)*(Wd*0.03/(Wd*0.03+RL0)), R1=ep*0.15;
+    var lg=function(u){ return (R0+(R1-R0)*u)*Math.pow(Math.sin(Math.min(1,u/0.28)*Math.PI/2),0.5); };
+    var X=[], Y=[]; [[XQ,-R0/2-SAG],[XQ,R0/2+SAG],[9*kk,-11*kk],[9*kk,11*kk]].forEach(function(q){ X.push(ox+q[0]*ux-q[1]*uy); Y.push(oy+q[0]*uy+q[1]*ux); });
     var x0=Math.min.apply(null,X), x1=Math.max.apply(null,X), y0=Math.min.apply(null,Y), y1=Math.max.apply(null,Y);
     SC.fleche({cv:cf, dens:3, boite:[x0, y0, x1-x0, y1-y0], gr:((Date.now()&0xffff)|1)*3+7, dessine:function(gc){ gc.save(); gc.translate(ox, oy); gc.rotate(ang);
-      gc.strokeStyle=col; gc.lineWidth=ep; gc.lineCap='round'; gc.lineJoin='round'; gc.beginPath(); O.chemin(gc, yz, A, -2*kk); gc.stroke();   /* le trait plein, bout rond : il s'arrête sous les branches du V */
+      gc.fillStyle=col; var nG=72, hG=[], bG=[], iG; for(iG=0;iG<=nG;iG++){ var uG=iG/nG, xG=XQ+(XB-XQ)*uG, eG=lg(uG)/2, dG=yz(xG+0.5)-yz(xG-0.5), LG=Math.sqrt(1+dG*dG);
+        hG.push([xG-dG/LG*eG, yz(xG)+eG/LG]); bG.push([xG+dG/LG*eG, yz(xG)-eG/LG]); }
+      gc.beginPath(); gc.moveTo(hG[0][0],hG[0][1]); for(iG=1;iG<hG.length;iG++) gc.lineTo(hG[iG][0],hG[iG][1]); for(iG=bG.length-1;iG>=0;iG--) gc.lineTo(bG[iG][0],bG[iG][1]); gc.closePath(); gc.fill();   /* v168 : la goutte ; elle finit sous les branches du V */
       O.chevron(gc, yz, 0, col, ep, true); gc.restore(); }});
     /* ⚑ v167 (Tom, C-203 §1) — « elle CLIGNOTE en orange, au même rythme et avec le même code que le I de PROMI » : `promiBlink` (1,15 s, steps), calée sur la
        phase du I de l'accueil (`.acc-mm i`), comme le départ de l'onboarding (C-169). « Réduire les animations » : fixe. */

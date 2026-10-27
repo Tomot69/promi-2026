@@ -56,7 +56,15 @@ def floue(val):
         if len(n)>=3 and float(n[2])>0: return True
     return False
 def blocs(S):
-    return [(m.start(), m.group(1)) for m in re.finditer(r"<(?:style|script)[^>]*\bid=\"([^\"]+)\"", S)]
+    """⚑ v168 : un bloc <script id> s'arrête à sa balise de fin — ce qui suit retrouve le nom d'avant lui. Sans cela, `lot-V167-DOIGTS` (posé en tête de
+    <head> : il doit passer avant tout écouteur) volait le <style> sans id qui le suit (208 « volumes nouveaux », tous anciens : le piège de v145)."""
+    out=[]
+    for m in re.finditer(r"<(style|script)[^>]*\bid=\"([^\"]+)\"", S):
+        out.append((m.start(), m.group(2)))
+        if m.group(1)=='script' and len(out)==1:   # seulement un script posé AVANT tout bloc nommé (la tête de <head>) : la dette d'après reste rangée comme avant
+            f=S.find('</script>', m.end())
+            if f>0: out.append((f, '(hors bloc)'))
+    out.sort(key=lambda x:x[0]); return out
 def occ(nom, S):
     B=blocs(S) if nom.endswith('.html') else []
     out=[]
