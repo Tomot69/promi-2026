@@ -196,6 +196,34 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v167 (27 oct. 2026) — RETOURS iPHONE DE TOM SUR v166 : LA FLÈCHE DU GUIDE REFAITE, LA PHRASE 2 AU COBALT, LA VEILLE QUI NE PARTAIT PAS. (Décisions Tom.) Ce bloc CORRIGE v166 (la flèche, la couleur de la phrase 2, la veille à 120 s).
+> **Validés par Tom : C-203 pour le reste (zones nettes, phrase 2, Partager facultatif). Q587 accepté pour l'instant : le « À » composé — Tom redessine lui-même
+> PromiLate, il devra y dessiner le « À ». C-204 (la liste des couleurs dérivées) et Q588 (« t'appartient. » en clair) : Tom tranche après ses testeurs — RIEN TOUCHÉ.**
+> **⚑ C-203 §1 — LA FLÈCHE DU GUIDE EST LE DÉBUT DE TRAIT DE LA PAGE + D'UN NOUVEAU PROMI** (Tom : « moches, trop courtes, s'arrêtent net, la fin plate est laide ») :
+> le trait plein du tracé en cours (épaisseur 10 × `_TRAIT_K` = 13 pt, bouts ronds) et la pointe `_onde.chevron` ; **30 pt plus longue qu'en v166** (l'encre fait 96,3 pt
+> de la queue à la pointe) ; **le bout arrière est ARRONDI** (le bout rond du trait, comme un trait qui commence ; plus de ruban effilé) ; **le corps est légèrement
+> courbe** (une parabole régulière de 5 pt de flèche sur la corde, `chemin` sur y(x)) ; **elle CLIGNOTE en orange `#FB4C0D`, au rythme et par le code du I de PROMI**
+> (`promiBlink 1.15s steps(1,end)`, la classe `.clignote` sur `#guideFleche`, son `currentTime` recopié sur celui de l'animation du I de l'accueil : même phase —
+> un délai négatif ne la calait pas, mesuré 750 à 920 ms d'écart) ; fixe sous « Réduire les animations ». La pointe se pose 1 pt EN DEDANS du bord de la zone nette
+> (la zone respire de ± 0,8 pt : à 0 elle sortait de 2,3 pt). Le reste de v166 tient (vers l'icône, rien de recouvert, en flaques avec la zone). **Exception NOMMÉE
+> de A2 : le canevas de la flèche ne porte plus `data-eng` — c'est le seul élément du guide qui s'anime, par décision de Tom.** Juge : `redteam_guide_fleche.py`
+> remis au niveau (93 : la longueur, le bout rond, la courbure, le clignotement en phase avec le I, rien recouvert ; fixe en mouvement réduit ; original en sauvegarde).
+> **⚑ C-203 §2 — LA PHRASE 2 « Le reste s'explore à ton rythme. » : entièrement PromiLate, UNE couleur, le cobalt `#0E78F2`** (la couleur des mots-clés du guide),
+> dans les deux thèmes ; sa place ne change pas (centre 422 pt). Juge : `redteam_guide_cloture` remis au niveau (original en sauvegarde).
+> **⚑ C-181 §3 — LA VEILLE NE PARTAIT PAS SUR L'iPHONE. LE DÉLAI REPASSE À 60 s.** *La cause, reproduite sur l'état de Tom (WebKit, vrai chemin)* : la veille comptait les
+> doigts posés par ses propres écouteurs `pointerdown` / `pointerup` ; or le gestionnaire des murs de Ma Parole ! (`lot-V104-MURS`), posé AVANT elle sur `window` en
+> capture, appelle `stopImmediatePropagation()` sur le `pointerup` d'un toucher sur un mur (le Peaufiner d'une fiche, l'Aura, les Réglages…) : la veille ne voyait
+> jamais le doigt se lever, elle le croyait posé POUR TOUJOURS et ne partait plus de la séance. *Corrigé* : un compteur de doigts posé TOUT EN HAUT de la page
+> (`lot-V167-DOIGTS`, dans `<head>`, `window.__doigts`) — ses écouteurs passent avant tout autre ; il se vide aussi au `touchend` sans doigt restant, au `mouseup`
+> et quand la page passe en arrière-plan ; la veille lit ce compteur (`_veille().doigts` ; `doigtsVeille` garde l'ancien, pour comparer). Aucun faux toucher fabriqué par
+> l'app n'a été trouvé (les évènements non fiables tracés : aucun). *La règle* : **un compteur d'état du doigt se pose AVANT tout écouteur qui peut arrêter la
+> propagation — sinon le premier `stopImmediatePropagation` le fige.** ⚠ Les touchers de `banc_tom` ne produisent AUCUN évènement de pointeur : un juge de ce défaut
+> envoie de vrais `PointerEvent`. Juge : **`redteam_veille_depart.py`** (l'état de Tom, WebKit, veille rétablie, sans `?veille` : départ à 60 s ± 1 s après le dernier
+> toucher sur cinq écrans — l'accueil, une fiche et un mur de son Peaufiner, l'Index, le Fil, l'Aura ; rouge sur v166). Contrat remis : `redteam_veille_bords` C (60 s).
+> **Contrats remis au niveau des décisions de ce lot** (originaux : `sauvegardes/*-avant-v167.py`) : `redteam_guide_fleche` (la forme, le clignotement), `redteam_guide_cloture`
+> (la phrase 2 au cobalt), `redteam_veille_bords` C (60 s), `redteam_guide` A2 (la flèche, exception nommée, `promiBlink` seul). Preuves sur v166 servie à côté : `redteam_veille_depart` 0/5,
+> `redteam_guide_fleche` 69/93.
+
 ### ⚑ v166 (26 oct. 2026) — RETOURS iPHONE DE TOM SUR v165 : LES COULEURS EXACTES, LA FLÈCHE DU GUIDE, LA PHRASE 2, LA VEILLE SUR L'APP. (Décisions Tom.)
 > **Validés par Tom : C-203 pour le reste, Q585, Q586. C-204 (la règle des couleurs) : en tête de ce fichier.**
 > **⚑ C-165 — « T'APPARTIENT. » AUX COULEURS EXACTES DE LA PALETTE PAR DÉFAUT** : `#82AEF8` · `#FFB8D2` · `#C9A8F5` · `#EFE3C7`, en clair comme en sombre, dans l'ordre ;
@@ -3627,6 +3655,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
 python3 redteam_guide_fleche.py   # 80 — v166 (C-203 §2) : la flèche orange vers le Studio, le + et Partager — orange, axe vers l'icône ± 10°, aucun recouvrement, pointe au bord de la zone nette, fixe, partie à la phrase 2 ; deux thèmes, deux échelles.
+python3 redteam_veille_depart.py # 5 — v167 (C-181 §3) : l'état de Tom, WebKit, sans ?veille : la veille part à 60 s ± 1 s après le dernier toucher (vrais PointerEvent) sur l'accueil, une fiche + un mur du Peaufiner, l'Index, le Fil, l'Aura. Rouge sur v166.
 python3 redteam_guide_cloture.py # 130 — v165 (C-203) : la clôture du guide — chemins a, b, c, Partager touché ou non, la zone nette lue sur l'eau, la fin, le lancement suivant ; deux thèmes, deux échelles.
 python3 redteam_v164b.py        # 31 — v164b : TRIER (Index, Fil, deux thèmes) et les huit points de C-200, au doigt. 8/31 sur v164a.
 python3 redteam_ramage_jauge.py  # v164b (Q581) : la silhouette de Ramage prête à l'accueil ; aucun rendu ni image > 50 ms dans les 5 s après l'arrivée (au calme). Rouge sur v164a.

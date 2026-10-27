@@ -3,6 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script id="lot-V167-DOIGTS">/* ⚑ v167 (Tom, C-181 §3) — « au bout de 2 minutes, la veille n'arrive pas » (iPhone). LA CAUSE, reproduite sur l'état de Tom en WebKit avec de vrais
+   évènements de pointeur : le mur de Ma Parole ! (lot-V104-MURS) écoute `pointerup` sur `window` en capture et l'ARRÊTE (`stopImmediatePropagation`) quand on
+   touche un mur ; il est inscrit avant la veille (en fin de page) — la veille ne voyait jamais ce lever, son compte de doigts restait à 1 POUR TOUJOURS, et elle
+   ne partait plus (un doigt « posé »). Les bancs ne pouvaient pas le voir : les touchers de banc_tom ne fabriquent aucun évènement de pointeur. Ce compteur est le
+   PREMIER écouteur de la page : aucun autre ne peut lui retirer un lever. Il compte les doigts posés par leur identifiant ; un toucher fini (plus aucun doigt), un
+   lever de souris, la page cachée les rendent tous. */
+(function(){ var D=window.__doigts={ids:{}, n:0, t:performance.now()};
+  function maj(){ D.n=Object.keys(D.ids).length; D.t=performance.now(); }
+  function vide(type){ for(var k in D.ids){ if(!type || D.ids[k]===type) delete D.ids[k]; } maj(); }
+  addEventListener('pointerdown', function(e){ D.ids[e.pointerId]=e.pointerType||'?'; maj(); }, true);
+  addEventListener('pointerup', function(e){ delete D.ids[e.pointerId]; maj(); }, true);
+  addEventListener('pointercancel', function(e){ delete D.ids[e.pointerId]; maj(); }, true);
+  addEventListener('touchend', function(e){ if(!e.touches || !e.touches.length) vide('touch'); else D.t=performance.now(); }, {capture:true, passive:true});
+  addEventListener('touchcancel', function(e){ if(!e.touches || !e.touches.length) vide('touch'); }, {capture:true, passive:true});
+  addEventListener('mouseup', function(){ vide('mouse'); }, true);
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState!=='visible') vide(); }, true);
+})();</script>
 <title>Promi — v5</title>
 
 
@@ -2550,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v166', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v167', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -41047,6 +41064,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
 #device #guide{position:absolute;left:0;top:0;width:390px;height:844px;z-index:69;/* SOUS les écrans (70) : le Studio s'ouvre par-dessus */margin:0;padding:0;max-width:none;overflow:hidden;background:transparent}
 #device #guideEau{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;display:block}
 #device #guideFleche{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;display:block}   /* v166 (C-203 §2) : la flèche orange vers l'icône */
+@media (prefers-reduced-motion:no-preference){#device#device #guide #guideFleche.clignote{animation:promiBlink 1.15s steps(1,end) infinite!important}}   /* v167 (C-203 §1) : le clignotement du I de PROMI ; réduit : fixe */
 /* la phrase (§11.7, Tom) : plus grosse (34 px, 30 avant), AUCUN contour ; les mots-clés en PromiLate. En clair : le violet #291547, les
    mots-clés en #0E78F2, les natures dans leur couleur (posée en ligne, la règle de l'onboarding) ; en sombre : la crème d'aujourd'hui. */
 #device #guidePhrase{position:absolute;left:30px;width:330px;margin:0;padding:0;max-width:none;text-align:center;text-wrap:balance;pointer-events:none;
@@ -41193,7 +41211,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     /* ⚑ v166 (Tom, C-203 §3.1) — « la phrase 2 passe ENTIÈREMENT en PromiLate, d'une seule couleur unie (l'encre du mode) ; sa place ne change pas ».
        Le dessin des mots-clés du guide (PromiLate, capitales). PromiLate n'a pas de « À » : composé comme l'É de v35 (la lettre de PromiLate, l'apostrophe de
        PromiLate en accent au-dessus), l'apostrophe retournée en accent grave (Q587, à valider). */
-    if(quoi==='reste'){ var ink=clairA?'#201908':'#F7F0DE', o2='';
+    if(quoi==='reste'){ var ink='#0E78F2', o2='';   /* ⚑ v167 (Tom, C-203 §2) : « d'une seule couleur : le cobalt #0E78F2, celui des mots-clés du guide » — dans les deux thèmes (v166 : l'encre du mode) */
       for(var j=0;j<t.length;j++){ var ch=t.charAt(j); o2+=(ch==='à'||ch==='À')?'<span class="v35-e gd-agr">A<span class="v35-acc gd-grave" aria-hidden="true">\u2019</span></span>':esc(ch); }
       return '<i class="gd-cle gd-reste" aria-label="'+esc(t)+'" style="color:'+ink+';-webkit-text-fill-color:'+ink+'">'+o2+'</i>'; }
     var NAT={Promi:null, Chiche:[255,184,210], Cercle:[201,168,245]}, mots=(CLES[quoi]||[]).concat(quoi==='plus'?['Promi','Chiche','Cercle']:[]), out='', i=0;
@@ -41247,13 +41265,24 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function fleche(g, quoi, c, ent){ var cf=$('guideFleche'), O=window._onde; if(!SC || !SC.fleche) return; if(!cf || !O || !O.ruban || !O.chevron || quoi==='reste'){ SC.fleche(null); g.removeAttribute('data-fleche'); return; }
     var p=$('guidePhrase'), py=p?(parseFloat(p.style.top)||0)+(p.offsetHeight||80)/2:252, px=195, b=c.b, cx=b[0]+b[2]/2, cy=b[1]+b[3]/2;
     var dx=cx-px, dy=cy-py, L=Math.sqrt(dx*dx+dy*dy)||1, ux=dx/L, uy=dy/L, Z=ent.zone, s0=0;
-    for(var s=0; s<L; s+=0.5){ if(Z.forme(cx-ux*s, cy-uy*s, 0)>0){ s0=s; break; } }   /* le bord de la zone nette, en remontant de l'icône vers la phrase */
+    for(var s=0; s<L; s+=0.5){ if(Z.forme(cx-ux*s, cy-uy*s, 0)>0){ s0=Math.max(0, s-1); break; } }   /* v167 : la pointe 1 pt EN DEDANS du bord (la zone respire de ± 0,8 pt) */   /* le bord de la zone nette, en remontant de l'icône vers la phrase */
     var K=window._TRAIT_K||1.3, ep=10*K, kk=ep/10, tx=cx-ux*s0, ty=cy-uy*s0, ox=tx-ux*9*kk, oy=ty-uy*9*kk, ang=Math.atan2(uy,ux), Wd=O.W||390;
-    var A=-Wd*0.14, col=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), yz=function(){ return 0; };
-    var X=[], Y=[]; [[A,-ep*1.1],[A,ep*1.1],[9*kk,-11*kk],[9*kk,11*kk]].forEach(function(q){ X.push(ox+q[0]*ux-q[1]*uy); Y.push(oy+q[0]*uy+q[1]*ux); });
+    /* ⚑ v167 (Tom, C-203 §1) — « trop courtes, elles s'arrêtent net, la fin plate est laide ; elle reprend EXACTEMENT le dessin du début de trait de la page +,
+       même trait, même pointe, × 1,3 » : le TRAIT de la page + quand le doigt le tire (`_onde.chemin`, plein, épaisseur 10 × _TRAIT_K, bouts ronds) et sa pointe
+       (`_onde.chevron`) ; 30 pt plus longue que v166 (encre 66,3 → 96,3 pt) ; le bout arrière ROND, comme un trait qui commence ; le corps en courbe douce et
+       régulière (5 pt de flèche, une parabole tangente à l'axe à la pointe : elle vise toujours l'icône). */
+    var A=-(96.3-9*kk-ep/2), SAG=5, col=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), yz=function(x){ var u=x/A; return SAG*u*u; }, RC=ep/2;
+    var X=[], Y=[]; [[A-RC,-RC-SAG],[A-RC,RC+SAG],[9*kk,-11*kk],[9*kk,11*kk]].forEach(function(q){ X.push(ox+q[0]*ux-q[1]*uy); Y.push(oy+q[0]*uy+q[1]*ux); });
     var x0=Math.min.apply(null,X), x1=Math.max.apply(null,X), y0=Math.min.apply(null,Y), y1=Math.max.apply(null,Y);
     SC.fleche({cv:cf, dens:3, boite:[x0, y0, x1-x0, y1-y0], gr:((Date.now()&0xffff)|1)*3+7, dessine:function(gc){ gc.save(); gc.translate(ox, oy); gc.rotate(ang);
-      gc.fillStyle=col; O.ruban(gc, yz, A, -ep*0.15, ep*2.2, ep*0.15); gc.fill(); O.chevron(gc, yz, 0, col, ep, true); gc.restore(); }});
+      gc.strokeStyle=col; gc.lineWidth=ep; gc.lineCap='round'; gc.lineJoin='round'; gc.beginPath(); O.chemin(gc, yz, A, -2*kk); gc.stroke();   /* le trait plein, bout rond : il s'arrête sous les branches du V */
+      O.chevron(gc, yz, 0, col, ep, true); gc.restore(); }});
+    /* ⚑ v167 (Tom, C-203 §1) — « elle CLIGNOTE en orange, au même rythme et avec le même code que le I de PROMI » : `promiBlink` (1,15 s, steps), calée sur la
+       phase du I de l'accueil (`.acc-mm i`), comme le départ de l'onboarding (C-169). « Réduire les animations » : fixe. */
+    try{ var I=document.querySelector('#device .acc-mm i'), An=(I && I.getAnimations)?I.getAnimations().filter(function(a){ return a.animationName==='promiBlink'; })[0]:null, dl=0;
+      cf.style.animationDelay='0ms'; cf.classList.add('clignote');
+      /* la phase : le temps de l'animation du I, recopié sur celle de la flèche (un délai négatif ne cale pas la phase réelle : mesuré, 750 à 920 ms d'écart) */
+      var Af=cf.getAnimations?cf.getAnimations().filter(function(a){ return a.animationName==='promiBlink'; })[0]:null; if(Af && An && An.currentTime!=null) Af.currentTime=An.currentTime; }catch(_){ }
     g.setAttribute('data-fleche', JSON.stringify({pointe:[+tx.toFixed(1), +ty.toFixed(1)], angle:+(ang*57.2958).toFixed(1), cible:[+cx.toFixed(1), +cy.toFixed(1)], boite:[+x0.toFixed(1), +y0.toFixed(1), +(x1-x0).toFixed(1), +(y1-y0).toFixed(1)]})); }
   /* une animation : u de a à b en `ms` ; chaque image dessine le niveau ; rend une promesse (fausse si le guide a changé entre-temps) */
   function joue(ms, a, b, pose){ var id=jeu; window._tEvol=performance.now();
@@ -41271,7 +41300,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function montre(quoi, sansRevelation){ retire(); if(!F || !F.Scene) { etat=null; return false; } var id=++jeu; etat='prepare'; window._tEvol=performance.now()+400;
     var g=eng(document.createElement('div'),'guide'); g.id='guide'; dev.appendChild(g);
     var cv=eng(document.createElement('canvas'),'guide-eau'); cv.id='guideEau'; cv.setAttribute('aria-hidden','true'); g.appendChild(cv);
-    var cf=eng(document.createElement('canvas'),'guide-fleche'); cf.id='guideFleche'; cf.setAttribute('aria-hidden','true'); cf.width=390*3; cf.height=844*3; g.appendChild(cf);
+    var cf=document.createElement('canvas'); cf.id='guideFleche';   /* v167 : sans data-eng — elle clignote, comme le I (décision de Tom, exception nommée de A2) */ cf.setAttribute('aria-hidden','true'); cf.width=390*3; cf.height=844*3; g.appendChild(cf);
     vivAv=!!window._vivantOff; window._vivantOff=true;                 /* la Toile ne bouge pas sous l'image floutée */
     g.addEventListener('click', function(e){ e.stopPropagation(); e.preventDefault(); if(etat==='part' || etat==='prepare' || etat==='couvre' || etat==='vers-plus') return;
       var D2=dev.getBoundingClientRect(), q=k(), x=(e.clientX-D2.left)/q, yy=(e.clientY-D2.top)/q;
@@ -42662,7 +42691,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    boîte dépasse l'encre) ; l'entrée et la sortie en flaques passent à 350 ms chacune (1 100 et 900 avant). */
 (function(){
   var Q=new URLSearchParams(location.search);
-  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||120))*1000, VITESSE:61.2,   /* ⚑ v166 (Tom, C-181 §4.1, §4.2) : après 120 s sans toucher (60 avant) ; +2 % de vitesse (60 → 61,2 pt/s) */
+  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||60))*1000, VITESSE:61.2,   /* ⚑ v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
      VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y
@@ -42797,9 +42826,10 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   ['touchend','touchmove','mouseup','click','keydown','wheel','pointermove'].forEach(function(n){ window.addEventListener(n, function(e){ if(n==='pointermove' && !e.buttons && e.pointerType==='mouse') return; dernier=performance.now();
       if(performance.now()<avale || actif){ if(n!=='pointermove'){ try{ e.preventDefault(); }catch(_){ } e.stopImmediatePropagation(); e.stopPropagation(); } } }, {capture:true, passive:n==='click'||n==='keydown'?false:true}); });
   document.addEventListener('input', function(){ dernier=performance.now(); }, true);
-  setInterval(function(){ if(actif || COUPEE) return; if(doigts>0 || saisie() || document.visibilityState!=='visible'){ dernier=performance.now(); return; }
+  function nDoigts(){ var D=window.__doigts; return D ? D.n : doigts; }   /* v167 (C-181 §3) : le compteur posé en tête de page — aucun écouteur ne peut lui avaler un lever */
+  setInterval(function(){ if(actif || COUPEE) return; try{ if(window.__doigts && window.__doigts.t>dernier) dernier=window.__doigts.t; }catch(_){ } if(nDoigts()>0 || saisie() || document.visibilityState!=='visible'){ dernier=performance.now(); return; }
     if(performance.now()-dernier>=R.DELAI) demarre(); }, 250);
-  window._veille=function(){ var V=actif; return {doigts:doigts, saisie:saisie(), calme:Math.round(performance.now()-dernier), coupee:COUPEE, delai:R.DELAI, visible:document.visibilityState, active:!!V, depuis:V?Math.round(performance.now()-V.t0):0, couleurs:V?V.couleurs.slice():[], coins:V?V.coins.slice():[], rebonds:V?V.rebonds:0,
+  window._veille=function(){ var V=actif; return {doigts:nDoigts(), doigtsVeille:doigts, saisie:saisie(), calme:Math.round(performance.now()-dernier), coupee:COUPEE, delai:R.DELAI, visible:document.visibilityState, active:!!V, depuis:V?Math.round(performance.now()-V.t0):0, couleurs:V?V.couleurs.slice():[], coins:V?V.coins.slice():[], rebonds:V?V.rebonds:0,
     logo:V?[V.s.x, V.s.y, V.logo.__w, V.logo.__h]:null, bornes:V?V.B:null, cadre:V?V.C:null, fond:V?V.fond:null, amande:V?V.amande:null, verrou:etatVerrou, couleur:V?V.couleur:null, tons:V?V.tons.slice():null, derniere:window._veilleDerniere||null}; };
 })();
 </script>

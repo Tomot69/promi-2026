@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""redteam_veille_bords.py — ⚑ v166 (Tom, C-181 §4) : LA VEILLE REBONDIT SUR L'ÉCRAN DE L'APP ; ELLE PART À 120 s ; 61,2 pt/s.
+"""redteam_veille_bords.py — ⚑ v166 (Tom, C-181 §4) : LA VEILLE REBONDIT SUR L'ÉCRAN DE L'APP ; ELLE PART À 120 s ; 61,2 pt/s. ⚑ v167 (Tom, C-181 §3) : le délai repasse à 60 s (original : sauvegardes/redteam_veille_bords-avant-v167.py).
 
 « Ses bords sont ceux de l'ÉCRAN DE L'APP, pas de la page du navigateur : sur iPhone l'écran visible ; sur ordinateur, quand l'app est montrée dans un cadre de
 téléphone simulé, les bords de CE cadre, jamais les marges de la page autour. Le logo rebondit sur le conteneur racine de l'app. Vérifie sur mon état, à
@@ -99,7 +99,7 @@ with sync_playwright() as p:
         ctx = B.contexte(b); ctx.add_init_script("try{ localStorage.removeItem('promi_veille_off'); }catch(e){}")
         pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + F, timeout=180000)
         R = pg.evaluate("()=>window._veilleRegle && [_veilleRegle.DELAI, _veilleRegle.VITESSE]")
-        juge('C · la règle déclarée : 120 s, 61,2 pt/s', R == [120000, 61.2], R)
+        juge('C · la règle déclarée : 60 s (v167 ; 120 en v166), 61,2 pt/s', R == [60000, 61.2], R)
         t0 = None; dep = None; tf = time.time() + 140
         while time.time() < tf:
             v = pg.evaluate("()=>{ const v=_veille(); return [v.active, v.calme, v.coupee]; }")
@@ -107,7 +107,7 @@ with sync_playwright() as p:
             if v[0]: dep = v[1] if dep is None else dep; break
             pg.wait_for_timeout(500)
         cal = pg.evaluate("()=>{ const v=_veille(); return v.depuis; }")
-        juge('C · sans toucher, elle part à 120 s (± 1,5 s), pas avant', dep is not None and 119500 <= (dep - cal) <= 121500, 'calme au départ %s ms (depuis %s ms)' % (dep, cal))
+        juge('C · sans toucher, elle part à 60 s (± 1,5 s), pas avant (v167, Tom, C-181 §3)', dep is not None and 59500 <= (dep - cal) <= 61500, 'calme au départ %s ms (depuis %s ms)' % (dep, cal))
         ctx.close()
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))

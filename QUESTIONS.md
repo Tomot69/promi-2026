@@ -8892,8 +8892,8 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   « commence » (cobalt en clair, #82AEF8 en sombre), « partage-la » le lilas de « monde » (#8363AA en clair, #C9A8F5 en sombre).
 - **Q584 — v165 : rien à faire (Tom)** : la Toile vide reste sans texte jusqu'au sien.
 - **Q586 — VALIDÉE (Tom, v166)** : « Toile » au bleu de « commence », « partage-la » au lilas de « monde ».
-- **Q587 — À VALIDER (C-203 §3.1, v166)** : PromiLate n'a pas de « À » : composé comme l'É de v35 — le A de PromiLate, l'apostrophe de PromiLate retournée en accent grave
+- **Q587 — ACCEPTÉ POUR L'INSTANT (Tom, v167)** — Tom redessine lui-même PromiLate : il devra y dessiner le « À » (le composé de v166 tient d'ici là). (C-203 §3.1, v166) : PromiLate n'a pas de « À » : composé comme l'É de v35 — le A de PromiLate, l'apostrophe de PromiLate retournée en accent grave
   au-dessus. Le point final de la phrase tombe sur Gilbert (PromiLate n'a pas de « . », comme partout ailleurs).
 - **Q588 — À REGARDER (C-204, v166, rien changé)** : « t'appartient. » en clair, aux couleurs exactes de la palette sur le fond de l'onboarding `#DEC8A3` : contraste 1,0 à
   1,4:1 ; les deux « crème » `#EFE3C7` ne se distinguent presque pas du fond. Capture dans le rapport de v166.
-
+- **v167** : rien de neuf à trancher. Q588 et la liste des couleurs dérivées (C-204) : Tom tranche après ses testeurs, rien touché. La phrase 2 au cobalt sur le flou : capture jointe au rapport.

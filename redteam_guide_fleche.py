@@ -14,8 +14,11 @@ l'étape de Partager, un toucher ailleurs, la phrase 2. Tout se LIT sur le canev
   D · sa pointe est au bord de la zone nette (≤ 2 pt d'un point net) ;
   E · elle est fixe : deux lectures à 700 ms, la même encre au pixel près (± 0,5 %) ;
   F · elle part avec la zone : à la phrase 2, plus aucune encre ;
-  G · son épaisseur : la queue fait 2,2 × 13 pt (28,6 ± 1,5) — le dessin de la page + à × 1,3.
-Preuve : `--fichier=zz-v165.html` rougit (aucune flèche).
+  G · ⚑ v167 (Tom, C-203 §1) : le TRAIT de la page + — un trait plein de 13 pt (± 1,5 ; × 1,3), le bout arrière ROND (à 1,2 pt de son bout, l'encre fait moins
+      de 60 % du trait), le corps en courbe douce (3 à 8 pt d'écart à la corde), 96,3 pt de long (± 2 : v166 + 30) ;
+  H · elle CLIGNOTE avec le I de PROMI : `promiBlink`, même durée, même phase (± 40 ms) ; avec « Réduire les animations », aucune animation.
+Contrat remis au niveau de v167 (original : sauvegardes/redteam_guide_fleche-avant-v167.py — G jugeait la queue large de v166).
+Preuve : `--fichier=zz-v165.html` rougit (aucune flèche) ; `--fichier=zz-v166.html` rougit (G, H).
 """
 import sys, types; sys.path.insert(0, '.')
 src = open('redteam_guide_cloture.py', encoding='utf-8').read().split('with sync_playwright() as p:')[0]
@@ -44,12 +47,21 @@ LIT = """(quoi)=>{ const cv=document.getElementById('guideFleche'); if(!cv||!cv.
   /* la largeur de la queue : l'étendue de l'encre en travers de l'axe, près du bout de la queue */
   let qm=1e9; for(let y=0;y<H;y++) for(let x=0;x<W;x++){ if(px[(y*W+x)*4+3]<128) continue; const X=(x+0.5)/d, Y=(y+0.5)/d, q=(X-mx)*ux+(Y-my)*uy; if(q<qm) qm=q; }
   let lo=1e9, hi=-1e9; for(let y=0;y<H;y++) for(let x=0;x<W;x++){ if(px[(y*W+x)*4+3]<128) continue; const X=(x+0.5)/d, Y=(y+0.5)/d, q=(X-mx)*ux+(Y-my)*uy; if(q<qm+1.2){ const t=-(X-mx)*uy+(Y-my)*ux; lo=Math.min(lo,t); hi=Math.max(hi,t); } }
+  /* v167 : l'encre le long de l'axe — sa longueur, la largeur près du bout arrière, la courbure (l'écart du milieu de l'encre à la corde) */
+  let qM=-1e9, wB=[1e9,-1e9], wC=[1e9,-1e9], tr={};
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){ if(px[(y*W+x)*4+3]<128) continue; const X=(x+0.5)/d, Y=(y+0.5)/d, q=(X-mx)*ux+(Y-my)*uy, t=-(X-mx)*uy+(Y-my)*ux; if(q>qM) qM=q;
+    if(q<qm+1.2){ wB[0]=Math.min(wB[0],t); wB[1]=Math.max(wB[1],t); } if(q>qm+20 && q<qm+21){ wC[0]=Math.min(wC[0],t); wC[1]=Math.max(wC[1],t); }
+    const b=Math.round(q); if(!tr[b]) tr[b]=[1e9,-1e9]; tr[b][0]=Math.min(tr[b][0],t); tr[b][1]=Math.max(tr[b][1],t); }
+  const mil=Object.keys(tr).map(Number).filter(b=>b>qm+8 && b<qM-16).sort((a,b)=>a-b).map(b=>[b,(tr[b][0]+tr[b][1])/2]);
+  let fl=0; if(mil.length>2){ const a=mil[0], z=mil[mil.length-1]; mil.forEach(p=>{ const e=Math.abs(p[1]-(a[1]+(z[1]-a[1])*(p[0]-a[0])/(z[0]-a[0]))); if(e>fl) fl=e; }); }
+  const An=(cv.getAnimations?cv.getAnimations():[]).filter(a=>a.animationName==='promiBlink')[0], I=document.querySelector('#device .acc-mm i'), AI=I&&I.getAnimations?I.getAnimations().filter(a=>a.animationName==='promiBlink')[0]:null;
+  const cl={fl:!!An, dur:An?An.effect.getTiming().duration:null, phase:(An&&AI)?(()=>{ const P=x=>{ const c=x.effect.getComputedTiming(); return (c.currentIteration+c.progress)*1150; }; return Math.round(((P(An)-P(AI))%1150+1150)%1150); })():null};
   const vx=cx-mx, vy=cy-my, ang=Math.acos(Math.max(-1,Math.min(1,(ux*vx+uy*vy)/Math.sqrt(vx*vx+vy*vy))))*57.2958;
   C.sort((p,q)=>p[0]-q[0]); const med=C.length?C[C.length>>1]:null;
   /* la pointe au bord de la zone nette : un point de l'eau transparent (net) à 2 pt au plus */
   const ev=document.getElementById('guideEau'); let dz=null; if(ev && tip){ const de=ev.width/390, e=ev.getContext('2d').getImageData(Math.max(0,Math.round((tip[0]-6)*de)), Math.max(0,Math.round((tip[1]-6)*de)), Math.round(12*de), Math.round(12*de)), w=Math.round(12*de);
     for(let j=0;j<w;j++) for(let i=0;i<w;i++){ if(e.data[(j*w+i)*4+3]<60){ const X=(Math.max(0,Math.round((tip[0]-6)*de))+i+0.5)/de, Y=(Math.max(0,Math.round((tip[1]-6)*de))+j+0.5)/de, dd=Math.hypot(X-tip[0],Y-tip[1]); if(dz===null||dd<dz) dz=dd; } } }
-  return {n:n, boite:[x0,y0,x1,y1].map(v=>Math.round(v*10)/10), ang:Math.round(ang*10)/10, surIc:surIc, surPh:surPh, med:med, tip:tip&&tip.map(v=>Math.round(v*10)/10), dz:dz===null?null:Math.round(dz*10)/10, queue:Math.round((hi-lo)*10)/10, icone:ic&&ic.map(v=>Math.round(v*10)/10)}; }"""
+  return {n:n, boite:[x0,y0,x1,y1].map(v=>Math.round(v*10)/10), ang:Math.round(ang*10)/10, surIc:surIc, surPh:surPh, med:med, tip:tip&&tip.map(v=>Math.round(v*10)/10), dz:dz===null?null:Math.round(dz*10)/10, queue:Math.round((hi-lo)*10)/10, long:Math.round((qM-qm)*10)/10, bout:Math.round((wB[1]-wB[0])*10)/10, corps:Math.round((wC[1]-wC[0])*10)/10, courbe:Math.round(fl*10)/10, cl:cl, icone:ic&&ic.map(v=>Math.round(v*10)/10)}; }"""
 def etape(pg, T, quoi):
     a = pg.evaluate(LIT, quoi); pg.wait_for_timeout(700); b = pg.evaluate(LIT, quoi)
     juge('[%s · %s] A · la flèche est là, orange #FB4C0D' % (T, quoi), a.get('n', 0) > 300 and a.get('med') and sum(abs(x - y) for x, y in zip(a['med'], (251, 76, 13))) <= 12, {'n': a.get('n'), 'coeur': a.get('med')})
@@ -59,7 +71,10 @@ def etape(pg, T, quoi):
     juge('[%s · %s] C · aucune encre sur l\'icône, ni sur la phrase, ni hors de l\'écran' % (T, quoi), a['surIc'] == 0 and a['surPh'] == 0 and dedans, {'sur icône': a['surIc'], 'sur phrase': a['surPh'], 'boîte': bx, 'icône': a['icone']})
     juge('[%s · %s] D · sa pointe au bord de la zone nette (≤ 2 pt)' % (T, quoi), a['dz'] is not None and a['dz'] <= 2, {'pointe': a['tip'], 'au net': a['dz']})
     juge('[%s · %s] E · fixe : la même encre à 700 ms (± 0,5 %%)' % (T, quoi), abs(b.get('n', 0) - a['n']) <= 0.005 * a['n'] and b.get('boite') == a['boite'], {'n': [a['n'], b.get('n')], 'boîte': [a['boite'], b.get('boite')]})
-    juge('[%s · %s] G · la queue : 28,6 pt (± 1,5) — le dessin de la page + à × 1,3' % (T, quoi), abs(a['queue'] - 28.6) <= 1.5, '%s pt' % a['queue'])
+    juge('[%s · %s] G · le trait de la page + : 13 pt (± 1,5), bout arrière rond, corps courbe (3 à 8 pt), 96,3 pt de long (± 2)' % (T, quoi),
+         abs(a['corps'] - 13) <= 1.5 and a['bout'] < 0.6 * 13 and 3 <= a['courbe'] <= 8 and abs(a['long'] - 96.3) <= 2, {'trait': a['corps'], 'bout': a['bout'], 'courbe': a['courbe'], 'longueur': a['long']})
+    c = a['cl']; ph = c.get('phase')
+    juge('[%s · %s] H · elle clignote avec le I de PROMI (promiBlink, 1 150 ms, même phase ± 40 ms)' % (T, quoi), c.get('fl') and c.get('dur') == 1150 and ph is not None and min(ph, 1150 - ph) <= 40, c)
 with sync_playwright() as p:
     b = p.webkit.launch()
     for sombre, vw, vh, ech in ((False, 390, 844, '1'), (True, 390, 844, '1'), (False, 330, 714, '0,79'), (True, 330, 714, '0,79')):
@@ -83,6 +98,15 @@ with sync_playwright() as p:
         else: juge('[%s] la phrase 2' % T, False)
         juge('[%s] aucune erreur de page' % T, not [x for x in er if 'version.json' not in x], er[:2])
         ctx.close()
+    # « Réduire les animations » : la flèche est là, et ne clignote pas
+    ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=3, has_touch=True, is_mobile=True, reduced_motion='reduce')
+    ctx.add_init_script("try{ if(!sessionStorage.getItem('__ini')){ sessionStorage.setItem('__ini','1'); localStorage.setItem('promi_theme','light'); localStorage.setItem('promi_onb','1'); localStorage.setItem('promi_rappel_n','9'); localStorage.setItem('promi_veille_off','1'); } }catch(e){} try{Object.defineProperty(Navigator.prototype,'webdriver',{get:function(){return false},configurable:true});}catch(e){}")
+    pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + m.F, timeout=180000); pg.wait_for_timeout(6500)
+    pg.evaluate("()=>{var o=document.getElementById('promiOnb'); if(o){o.classList.add('gone');o.style.display='none';} try{closeAll()}catch(e){} _guide.attend(false); }")
+    ok_ = m.attend(pg, "()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='studio' && +g.getAttribute('data-net')>=1);}", 170)
+    r = pg.evaluate(LIT, 'studio') if ok_ else {}
+    juge('[réduit] H · « Réduire les animations » : la flèche est là, fixe (aucune animation)', r.get('n', 0) > 300 and not (r.get('cl') or {}).get('fl'), {'n': r.get('n'), 'cl': r.get('cl')})
+    ctx.close()
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
 sys.exit(0 if ok == len(res) else 1)

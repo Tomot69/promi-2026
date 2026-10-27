@@ -11,7 +11,7 @@ le guide, le flou se retire en flaques. Le guide ne revient plus. »
 Banc comme Tom (WebKit, doigt), le vrai guide (Studio ouvert puis refermé, puis l'étape du +), clair et sombre, 390 × 844 (échelle 0,93) et 330 × 714 (≈ 0,79).
 Preuve : `--fichier=zz-v164b.html` rougit (aucune clôture).
 ⚑ v166 (Tom, C-203 §3) — contrat remis au niveau (original : sauvegardes/redteam_guide_cloture-avant-v166.py) : la phrase 2 ENTIÈREMENT en PromiLate, d'une
-seule couleur (l'encre du mode), à sa place (422 pt) ; pendant elle, trois zones nettes en flaques — Aura, Index, Fil — et aucune autre, ni flèche ;
+seule couleur (v167 : le cobalt #0E78F2 ; v166 : l'encre du mode), à sa place (422 pt) ; pendant elle, trois zones nettes en flaques — Aura, Index, Fil — et aucune autre, ni flèche ;
 Partager jamais obligatoire : sur chacun des trois chemins, Partager touché ET non touché (selon la combinaison).
 """
 import sys, base64
@@ -140,8 +140,8 @@ def phrase2(pg, T, ch, attendre_seul):
     ph = pg.evaluate(PHRASE) or {}; e = pg.evaluate("()=>_guide.etat()")
     juge('[%s · %s] la phrase 2, mot pour mot, au centre (± 6 pt), sans flèche' % (T, ch), bool(st) and ph.get('t') == P2 and abs(ph.get('cy', 0) - 422) <= 6 and not e.get('trou') and not ph.get('fleche'),
          {'t': ph.get('t'), 'cy': round(ph.get('cy', 0), 1), 'trou': e.get('trou'), 'fleche': ph.get('fleche')})
-    ink = 'rgb(247, 240, 222)' if T.startswith('sombre') else 'rgb(32, 25, 8)'
-    juge('[%s · %s] v166 · la phrase 2 ENTIÈREMENT en PromiLate, d\'une seule couleur : l\'encre du mode' % (T, ch), bool(ph.get('fams')) and all(f == 'PromiLate' for f in ph['fams']) and ph.get('cols') == [ink],
+    ink = 'rgb(14, 120, 242)'   # ⚑ v167 (Tom, C-203 §2) : le cobalt #0E78F2, la couleur des mots-clés du guide, dans les deux thèmes (v166 : l'encre du mode)
+    juge('[%s · %s] v167 · la phrase 2 ENTIÈREMENT en PromiLate, d\'une seule couleur : le cobalt #0E78F2' % (T, ch), bool(ph.get('fams')) and all(f == 'PromiLate' for f in ph['fams']) and ph.get('cols') == [ink],
          {'polices': sorted(set(ph.get('fams') or [])), 'couleurs': ph.get('cols')})
     op = attend(pg, "()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='reste' && +g.getAttribute('data-net')>=1);}", 40, 60)
     z = zones_reste(pg) if op else None

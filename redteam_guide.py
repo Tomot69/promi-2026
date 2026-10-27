@@ -170,7 +170,10 @@ SONDE = """window.__g={bouge:0,tG:0,tDep:0,tEnt:0,tards:0,couv:[],net:[],dt:[]};
 def cap(pg, nom):
     d = pg.evaluate(DEV); pg.screenshot(path='planche-v146/guide-%s.png' % nom, clip={'x': d[0], 'y': d[1], 'width': d[2], 'height': d[3]})
 def a2(e, T):
-    fautes = [t for t in e['tous'] if t['eng'] is None or t['op'] != 1 or (t['trd'] not in ('0s', '') and t['trp'] not in ('none', '')) or t['an'] != 'none' or t['bf'] != 'none']
+    # ⚑ v167 (Tom, C-203 §1) : EXCEPTION NOMMÉE de A2 — la flèche du guide (#guideFleche) clignote avec le I de PROMI (promiBlink, et rien d'autre), sans data-eng
+    fl = [t for t in e['tous'] if t['id'] == 'guideFleche']
+    juge('[%s] v167 · la flèche du guide : seule exception de A2, promiBlink seul, aucune transition ni flou' % T, all(t['an'] in ('promiBlink', 'none') and t['op'] in (1, 0.6) and (t['trd'] in ('0s', '') or t['trp'] in ('none', '')) and t['bf'] == 'none' for t in fl), fl[:1])
+    fautes = [t for t in e['tous'] if t['id'] != 'guideFleche'] ; fautes = [t for t in fautes if t['eng'] is None or t['op'] != 1 or (t['trd'] not in ('0s', '') and t['trp'] not in ('none', '')) or t['an'] != 'none' or t['bf'] != 'none']
     juge('[%s] A2 : tout nœud du guide porte data-eng, opacité 1, aucune transition, aucune animation, aucun flou CSS' % T, len(e['tous']) >= 3 and not fautes, '%d nœuds · %s' % (len(e['tous']), fautes[:2]))
 def phrase(e, T, quoi):
     """10.4, C-138 et §11.7 : la phrase, mot pour mot, sans contour, 60 pt plus haut, dans l'échelle (Atkinson 500, 27 pt) ; ses mots-clés en
