@@ -16,11 +16,14 @@ l'étape de Partager, un toucher ailleurs, la phrase 2. Tout se LIT sur le canev
   F · elle part avec la zone : à la phrase 2, plus aucune encre ;
   G · ⚑ v168 (Tom, C-205, variante C) : LA GOUTTE — née fine (à 1,2 pt de la queue, moins de 45 % de sa plus grande largeur : 6,4 pt dessinés), elle s'arrondit jusqu'à sa plus grande largeur
       (17,6 pt décidés : 16 à 19,5) dans le premier tiers, puis s'effile vers la pointe de la page + (11,4 pt à 45 pt de la queue : 9 à 14 ; 6,4 pt à 65 pt :
-      4 à 9) ; le corps en courbe douce (3 à 8 pt d'écart à la corde), 96,3 pt de long (± 2) — inchangés depuis v167 ;
+      4 à 9) ; 96,3 pt de long (± 2) ;
+      ⚑ v168b (Tom, C-205) : « encore trop rectilignes » — le corps suit UN SEUL ARC : la ligne médiane de l'encre du CORPS (la pointe exclue), ajustée par une parabole, a une flèche de
+      4 à 6 pt sur la longueur de l'encre (l'écart de l'arc à sa corde), sans S ni vague (aucun point à plus de 0,8 pt de la parabole), et elle bombe DU MÊME CÔTÉ
+      pour les trois flèches (le signe de la courbure, dans le sens queue → pointe) ;
   H · elle CLIGNOTE avec le I de PROMI : `promiBlink`, même durée, même phase (± 40 ms) ; avec « Réduire les animations », aucune animation.
-Contrat remis au niveau de v168 (original : sauvegardes/redteam_guide_fleche-avant-v168.py — G jugeait le trait plein à bout rond de v167 ;
-v167 : sauvegardes/redteam_guide_fleche-avant-v167.py).
-Preuve : `--fichier=zz-v165.html` rougit (aucune flèche) ; `--fichier=zz-v166.html` rougit (G, H) ; `--fichier=zz-v167.html` rougit (G).
+Contrat remis au niveau de v168b (original : sauvegardes/redteam_guide_fleche-avant-v168b.py — la courbe se jugeait à la corde, 3 à 8 pt, sans vérifier
+l'arc ; v168 : sauvegardes/redteam_guide_fleche-avant-v168.py ; v167 : sauvegardes/redteam_guide_fleche-avant-v167.py).
+Preuve : `--fichier=zz-v165.html` rougit (aucune flèche) ; `--fichier=zz-v166.html` rougit (G, H) ; `--fichier=zz-v167.html` rougit (G) ; `--fichier=zz-v168.html` rougit (G : la flèche de l'arc).
 """
 import sys, types; sys.path.insert(0, '.')
 src = open('redteam_guide_cloture.py', encoding='utf-8').read().split('with sync_playwright() as p:')[0]
@@ -29,6 +32,7 @@ m = types.ModuleType('g'); exec(compile(src, 'g', 'exec'), m.__dict__)
 from playwright.sync_api import sync_playwright
 m.F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')
 res = []
+SENS = {}
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:260]), flush=True)
 LIT = """(quoi)=>{ const cv=document.getElementById('guideFleche'); if(!cv||!cv.width) return {n:0, absent:true}; const d=cv.width/390, W=cv.width, H=cv.height;
@@ -54,8 +58,14 @@ LIT = """(quoi)=>{ const cv=document.getElementById('guideFleche'); if(!cv||!cv.
   for(let y=0;y<H;y++) for(let x=0;x<W;x++){ if(px[(y*W+x)*4+3]<128) continue; const X=(x+0.5)/d, Y=(y+0.5)/d, q=(X-mx)*ux+(Y-my)*uy, t=-(X-mx)*uy+(Y-my)*ux; if(q>qM) qM=q;
     if(q<qm+1.2){ wB[0]=Math.min(wB[0],t); wB[1]=Math.max(wB[1],t); } if(q>qm+20 && q<qm+21){ wC[0]=Math.min(wC[0],t); wC[1]=Math.max(wC[1],t); }
     const b=Math.round(q); if(!tr[b]) tr[b]=[1e9,-1e9]; tr[b][0]=Math.min(tr[b][0],t); tr[b][1]=Math.max(tr[b][1],t); }
-  const larg=b=>{ const r=tr[Math.round(qm+b)]; return r?Math.round((r[1]-r[0])*10)/10:null; }; let wmax=0, qmax=null; Object.keys(tr).map(Number).forEach(b=>{ if(b-qm>=0 && b-qm<=70){ const w=tr[b][1]-tr[b][0]; if(w>wmax){ wmax=w; qmax=b-qm; } } });
+  const larg=b=>{ const r=tr[Math.round(qm+b)]; return r?Math.round((r[1]-r[0])*10)/10:null; }; let wmax=0, qmax=null; Object.keys(tr).map(Number).forEach(b=>{ if(b-qm>=0 && b<qM-28){   /* v168b : le corps seul, avant la pointe */ const w=tr[b][1]-tr[b][0]; if(w>wmax){ wmax=w; qmax=b-qm; } } });
   const mil=Object.keys(tr).map(Number).filter(b=>b>qm+8 && b<qM-16).sort((a,b)=>a-b).map(b=>[b,(tr[b][0]+tr[b][1])/2]);
+  /* v168b : l'arc — une parabole t = c0 + c1·q + c2·q² ajustée sur la ligne médiane ; sa flèche sur la longueur de l'encre, c2·L²/4 ; le plus grand écart à elle */
+  let arc=null, res=null, sens=null; const corpsM=Object.keys(tr).map(Number).filter(b=>b>qm+3 && b<qM-28).sort((a,b)=>a-b).map(b=>[b,(tr[b][0]+tr[b][1])/2]);   /* le corps seul : la pointe (24,7 pt) n'entre pas dans l'arc */
+  if(corpsM.length>5){ let S0=0,S1=0,S2=0,S3=0,S4=0,T0=0,T1=0,T2=0; corpsM.forEach(p=>{ const q=p[0]-qm, t=p[1]; S0++; S1+=q; S2+=q*q; S3+=q*q*q; S4+=q*q*q*q; T0+=t; T1+=t*q; T2+=t*q*q; });
+    const M=[[S0,S1,S2,T0],[S1,S2,S3,T1],[S2,S3,S4,T2]]; for(let i=0;i<3;i++){ for(let j=i+1;j<3;j++){ const f=M[j][i]/M[i][i]; for(let k=i;k<4;k++) M[j][k]-=f*M[i][k]; } }
+    const c2=M[2][3]/M[2][2], c1=(M[1][3]-M[1][2]*c2)/M[1][1], c0=(M[0][3]-M[0][1]*c1-M[0][2]*c2)/M[0][0]; const L=qM-qm;
+    arc=Math.abs(c2)*L*L/4; sens=Math.sign(c2); res=0; corpsM.forEach(p=>{ const q=p[0]-qm, e=Math.abs(p[1]-(c0+c1*q+c2*q*q)); if(e>res) res=e; }); }
   let fl=0; if(mil.length>2){ const a=mil[0], z=mil[mil.length-1]; mil.forEach(p=>{ const e=Math.abs(p[1]-(a[1]+(z[1]-a[1])*(p[0]-a[0])/(z[0]-a[0]))); if(e>fl) fl=e; }); }
   const An=(cv.getAnimations?cv.getAnimations():[]).filter(a=>a.animationName==='promiBlink')[0], I=document.querySelector('#device .acc-mm i'), AI=I&&I.getAnimations?I.getAnimations().filter(a=>a.animationName==='promiBlink')[0]:null;
   const cl={fl:!!An, dur:An?An.effect.getTiming().duration:null, phase:(An&&AI)?(()=>{ const P=x=>{ const c=x.effect.getComputedTiming(); return (c.currentIteration+c.progress)*1150; }; return Math.round(((P(An)-P(AI))%1150+1150)%1150); })():null};
@@ -64,7 +74,7 @@ LIT = """(quoi)=>{ const cv=document.getElementById('guideFleche'); if(!cv||!cv.
   /* la pointe au bord de la zone nette : un point de l'eau transparent (net) à 2 pt au plus */
   const ev=document.getElementById('guideEau'); let dz=null; if(ev && tip){ const de=ev.width/390, e=ev.getContext('2d').getImageData(Math.max(0,Math.round((tip[0]-6)*de)), Math.max(0,Math.round((tip[1]-6)*de)), Math.round(12*de), Math.round(12*de)), w=Math.round(12*de);
     for(let j=0;j<w;j++) for(let i=0;i<w;i++){ if(e.data[(j*w+i)*4+3]<60){ const X=(Math.max(0,Math.round((tip[0]-6)*de))+i+0.5)/de, Y=(Math.max(0,Math.round((tip[1]-6)*de))+j+0.5)/de, dd=Math.hypot(X-tip[0],Y-tip[1]); if(dz===null||dd<dz) dz=dd; } } }
-  return {n:n, boite:[x0,y0,x1,y1].map(v=>Math.round(v*10)/10), ang:Math.round(ang*10)/10, surIc:surIc, surPh:surPh, med:med, tip:tip&&tip.map(v=>Math.round(v*10)/10), dz:dz===null?null:Math.round(dz*10)/10, queue:Math.round((hi-lo)*10)/10, long:Math.round((qM-qm)*10)/10, bout:Math.round((wB[1]-wB[0])*10)/10, corps:Math.round((wC[1]-wC[0])*10)/10, courbe:Math.round(fl*10)/10, wmax:Math.round(wmax*10)/10, qmax:qmax===null?null:Math.round(qmax*10)/10, w45:larg(45), w65:larg(65), cl:cl, icone:ic&&ic.map(v=>Math.round(v*10)/10)}; }"""
+  return {n:n, boite:[x0,y0,x1,y1].map(v=>Math.round(v*10)/10), ang:Math.round(ang*10)/10, surIc:surIc, surPh:surPh, med:med, tip:tip&&tip.map(v=>Math.round(v*10)/10), dz:dz===null?null:Math.round(dz*10)/10, queue:Math.round((hi-lo)*10)/10, long:Math.round((qM-qm)*10)/10, bout:Math.round((wB[1]-wB[0])*10)/10, corps:Math.round((wC[1]-wC[0])*10)/10, courbe:Math.round(fl*10)/10, arc:arc===null?null:Math.round(arc*10)/10, res:res===null?null:Math.round(res*10)/10, sens:sens, wmax:Math.round(wmax*10)/10, qmax:qmax===null?null:Math.round(qmax*10)/10, w45:larg(45), w65:larg(65), cl:cl, icone:ic&&ic.map(v=>Math.round(v*10)/10)}; }"""
 def etape(pg, T, quoi):
     a = pg.evaluate(LIT, quoi); pg.wait_for_timeout(700); b = pg.evaluate(LIT, quoi)
     juge('[%s · %s] A · la flèche est là, orange #FB4C0D' % (T, quoi), a.get('n', 0) > 300 and a.get('med') and sum(abs(x - y) for x, y in zip(a['med'], (251, 76, 13))) <= 12, {'n': a.get('n'), 'coeur': a.get('med')})
@@ -76,8 +86,11 @@ def etape(pg, T, quoi):
     juge('[%s · %s] E · fixe : la même encre à 700 ms (± 0,5 %%)' % (T, quoi), abs(b.get('n', 0) - a['n']) <= 0.005 * a['n'] and b.get('boite') == a['boite'], {'n': [a['n'], b.get('n')], 'boîte': [a['boite'], b.get('boite')]})
     juge('[%s · %s] G · la goutte : née fine (< 45 %% du max), 16 à 19,5 pt dans le premier tiers, puis s\'effile (45 pt : 9–14 ; 65 pt : 4–9), courbe 3 à 8, 96,3 pt (± 2)' % (T, quoi),
          a['bout'] < 0.45 * a['wmax'] and 16 <= a['wmax'] <= 19.5 and a['qmax'] is not None and a['qmax'] <= a['long'] / 3 and a['w45'] is not None and 9 <= a['w45'] <= 14
-         and a['w65'] is not None and 4 <= a['w65'] <= 9 and 3 <= a['courbe'] <= 8 and abs(a['long'] - 96.3) <= 2,
-         {'bout': a['bout'], 'max': [a['wmax'], a['qmax']], '45': a['w45'], '65': a['w65'], 'courbe': a['courbe'], 'longueur': a['long']})
+         and a['w65'] is not None and 4 <= a['w65'] <= 9 and abs(a['long'] - 96.3) <= 2,
+         {'bout': a['bout'], 'max': [a['wmax'], a['qmax']], '45': a['w45'], '65': a['w65'], 'longueur': a['long']})
+    juge('[%s · %s] G2 · un seul arc : flèche 4 à 6 pt sur la longueur, aucun point à plus de 0,8 pt de l\'arc' % (T, quoi),
+         a['arc'] is not None and 4 <= a['arc'] <= 6 and a['res'] is not None and a['res'] <= 0.8, {'flèche': a['arc'], 'écart à l\'arc': a['res'], 'sens': a['sens']})
+    SENS.setdefault(T, []).append(a['sens'])
     c = a['cl']; ph = c.get('phase')
     juge('[%s · %s] H · elle clignote avec le I de PROMI (promiBlink, 1 150 ms, même phase ± 40 ms)' % (T, quoi), c.get('fl') and c.get('dur') == 1150 and ph is not None and min(ph, 1150 - ph) <= 40, c)
 with sync_playwright() as p:
@@ -101,6 +114,7 @@ with sync_playwright() as p:
         if m.attend(pg, "()=>{const g=document.getElementById('guide'); return !!(g && g.getAttribute('data-guide')==='reste' && +g.getAttribute('data-net')>=1);}", 80):
             f = pg.evaluate(LIT, 'partage'); juge('[%s] F · à la phrase 2, plus aucune flèche' % T, f.get('n', 0) == 0, f.get('n'))
         else: juge('[%s] la phrase 2' % T, False)
+        juge('[%s] G3 · les trois flèches bombent du même côté' % T, len(SENS.get(T, [])) == 3 and len(set(SENS[T])) == 1 and SENS[T][0] != 0, SENS.get(T))
         juge('[%s] aucune erreur de page' % T, not [x for x in er if 'version.json' not in x], er[:2])
         ctx.close()
     # « Réduire les animations » : la flèche est là, et ne clignote pas

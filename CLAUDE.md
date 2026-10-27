@@ -196,6 +196,16 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v168b (28 oct. 2026) — LES FLÈCHES DU GUIDE EN UN SEUL ARC (C-205, dernière retouche). (Décision Tom.) Ce bloc CORRIGE v168 (la courbe du guide).
+> **Tom : « la goutte est bonne, mais les flèches paraissent encore trop rectilignes ; une correction ultra légère ».** *Mesuré* : en v167–v168 l'épine était une parabole
+> TANGENTE à l'axe à la pointe — l'encre ne bombait que de 1,3 à 1,6 pt sur sa corde. *Aujourd'hui* : UN SEUL ARC (une parabole symétrique sur l'épine, sans S ni vague)
+> qui bombe de **4,7 à 4,9 pt** sur les 96,3 pt d'encre (lu sur la ligne médiane de l'encre du corps ; décidé 4 à 6), **du même côté pour les trois** (celui de l'amorce de
+> la page +, qui tourne vers la droite en avançant) ; la corde à −4,9° et la pointe à +7,4° de l'icône (l'axe de l'encre la vise à 3,7–3,9°). La pointe au même point ;
+> longueur, goutte, orange, clignotement, place : inchangés. Juge : `redteam_guide_fleche` G2 (l'arc ajusté : flèche 4 à 6, écart ≤ 0,8 pt), G3 (le même côté) ; la plus
+> grande largeur de la goutte se lit sur le corps seul (avant la pointe, que l'arc tourne) — 109/109 ; rouge sur v168 (97/109, G2). Original en sauvegarde.
+> ⚠ **TROUVÉ, NON CORRIGÉ (A5)** : à l'échelle 0,79, la ligne d'état d'une fiche (« LANCÉ », « EN COURS ») sort, selon la passe, à deux hauteurs qui diffèrent de 2 pt —
+> v167 contre elle-même comme v168b contre elle-même (1 passe sur 2 ou 3) : un aléa de mise en page antérieur à ce lot, à nommer dans un lot à part.
+
 ### ⚑ v168 (27 oct. 2026) — LA FLÈCHE DU GUIDE EN GOUTTE (C-205, variante C). (Décisions Tom.) Ce bloc CORRIGE v167 (la forme de la flèche du guide).
 > **Validés par Tom : C-181 (la veille repart à 60 s), C-203 §2 (la phrase 2 au cobalt).**
 > **⚑ C-205 — LE DÉPART DE LA PAGE + EST LA RÉFÉRENCE, ET IL NE CHANGE PAS** (Tom : « ça reste, et c'est la référence ») : le ruban orange qui part épais du bord

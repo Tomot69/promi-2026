@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v168', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v168b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -41278,9 +41278,15 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
        la courbe douce (SAG), la pointe (`_onde.chevron`), l'orange, la place, le clignotement. Les fiches et la page + ne sont pas touchées. */
     var XQ=-(96.3-9*kk), XB=-ep*0.15, RL0=Wd*0.11-ep*0.15, R0=ep*2.2+(ep*0.15-ep*2.2)*(Wd*0.03/(Wd*0.03+RL0)), R1=ep*0.15;
     var lg=function(u){ return (R0+(R1-R0)*u)*Math.pow(Math.sin(Math.min(1,u/0.28)*Math.PI/2),0.5); };
-    var X=[], Y=[]; [[XQ,-R0/2-SAG],[XQ,R0/2+SAG],[9*kk,-11*kk],[9*kk,11*kk]].forEach(function(q){ X.push(ox+q[0]*ux-q[1]*uy); Y.push(oy+q[0]*uy+q[1]*ux); });
+    /* ⚑ v168b (Tom, C-205) — « encore trop rectilignes ; une correction ultra légère » : le corps suit UN SEUL ARC régulier (une parabole, sans S ni vague) dont la
+       flèche fait 5 pt sur les 96,3 pt d'encre (4 à 6 décidés : lue sur la ligne médiane de l'encre, ≈ 4,8 ; l'épine qui la porte bombe de 4,6 pt sur sa corde), bombé du même côté pour les trois flèches — celui de l'amorce de la page +, qui tourne vers la droite
+       en avançant. La corde et la pointe se partagent l'écart (corde −4,9°, pointe +7,4°) : l'axe de l'encre et la pointe visent toujours l'icône (± 10°). La pointe reste au même point (1 pt dans la zone nette). */
+    var C2=4*6/(96.3*96.3), TH=Math.atan(C2*(-XQ)), PH=ang-TH*0.4, TA=ang+TH*0.6;
+    yz=function(x){ return C2*x*(x-XQ); };
+    ox=tx-Math.cos(TA)*9*kk; oy=ty-Math.sin(TA)*9*kk;
+    var X=[], Y=[], cP=Math.cos(PH), sP=Math.sin(PH); [[XQ-R0/2,-R0/2],[XQ-R0/2,R0/2],[XQ/2,-R0/2-C2*XQ*XQ/4],[XQ/2,R0/2],[12*kk,-14*kk],[12*kk,14*kk]].forEach(function(q){ X.push(ox+q[0]*cP-q[1]*sP); Y.push(oy+q[0]*sP+q[1]*cP); });
     var x0=Math.min.apply(null,X), x1=Math.max.apply(null,X), y0=Math.min.apply(null,Y), y1=Math.max.apply(null,Y);
-    SC.fleche({cv:cf, dens:3, boite:[x0, y0, x1-x0, y1-y0], gr:((Date.now()&0xffff)|1)*3+7, dessine:function(gc){ gc.save(); gc.translate(ox, oy); gc.rotate(ang);
+    SC.fleche({cv:cf, dens:3, boite:[x0, y0, x1-x0, y1-y0], gr:((Date.now()&0xffff)|1)*3+7, dessine:function(gc){ gc.save(); gc.translate(ox, oy); gc.rotate(PH);
       gc.fillStyle=col; var nG=72, hG=[], bG=[], iG; for(iG=0;iG<=nG;iG++){ var uG=iG/nG, xG=XQ+(XB-XQ)*uG, eG=lg(uG)/2, dG=yz(xG+0.5)-yz(xG-0.5), LG=Math.sqrt(1+dG*dG);
         hG.push([xG-dG/LG*eG, yz(xG)+eG/LG]); bG.push([xG+dG/LG*eG, yz(xG)-eG/LG]); }
       gc.beginPath(); gc.moveTo(hG[0][0],hG[0][1]); for(iG=1;iG<hG.length;iG++) gc.lineTo(hG[iG][0],hG[iG][1]); for(iG=bG.length-1;iG>=0;iG--) gc.lineTo(bG[iG][0],bG[iG][1]); gc.closePath(); gc.fill();   /* v168 : la goutte ; elle finit sous les branches du V */
