@@ -189,10 +189,10 @@ def phrase(e, T, quoi):
     if quoi == 'studio':
         mo = [m for m in cles if m['t'] == 'monde']; L = e.get('lettres') or []
         att = [PALB[i % 4] for i in range(6)]
-        if clair:   # ⚑ v149 (Q533) : la teinte de chaque lettre gardée (± 6° OKLCH), assombrie jusqu'à 3:1 sur #DFCAA4
-            ok_l = len(L) == 6 and all(teinte_proche(L[i][1], att[i]) and 2.95 <= ratio_fond(L[i][1]) <= 3.4 for i in range(6))
-        else: ok_l = len(L) == 6 and all(proche(L[i][1], att[i], 6) for i in range(6))
-        juge('[%s] studio · « monde » en lilas violet (%s) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — %s' % (T, '#8363AA' if clair else '#C9A8F5', 'Q533 : la teinte gardée, 3:1 sur le fond' if clair else 'les valeurs de Tom, sans retouche'),
+        # ⚑ v169 (Tom, C-204 §1) : les lettres aux couleurs EXACTES de la palette, en clair comme en sombre (v149, Q533 : assombries jusqu'à 3:1 —
+        #   original : sauvegardes/redteam_guide-avant-v169.py). À l'hexadécimal près : redteam_couleurs_exactes.
+        ok_l = len(L) == 6 and all(proche(L[i][1], att[i], 0) for i in range(6))
+        juge('[%s] studio · « monde » en lilas violet (%s) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — %s' % (T, '#8363AA' if clair else '#C9A8F5', 'les valeurs de Tom, sans retouche (C-204, v169)'),
              bool(mo) and proche(mo[0]['col'], MONDE[bool(clair)], 6) and ''.join(l[0] for l in L) == 'Studio' and ok_l, 'monde %s · lettres %s' % (mo[0]['col'] if mo else None, [(l[0], l[1], round(ratio_fond(l[1]), 2)) for l in L]))
         juge('[%s] studio · ⚑ v149 (C-145) : « Studio » 10 à 12 %% plus grand que les autres mots-clés' % T, e.get('stFs') and e.get('cleFs') and 1.10 <= e['stFs'] / e['cleFs'] <= 1.12, '%s pt / %s pt' % (e.get('stFs'), e.get('cleFs')))
         juge('[%s] studio · le reste du texte : %s' % (T, '#291547' if clair else 'la crème'), proche(e['phraseCol'], VIOLET if clair else CREME), e['phraseCol'])

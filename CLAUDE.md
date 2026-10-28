@@ -196,6 +196,16 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v169 (28 oct. 2026) — LES LETTRES DE « STUDIO » AUX COULEURS EXACTES (C-204 §1). (Décision Tom.) Ce bloc CORRIGE v149 (Q533).
+> **Validé par Tom : C-205 (toutes les flèches du guide, Studio compris).**
+> **⚑ Dans la phrase du guide, les six lettres de STUDIO sont EXACTEMENT `#82AEF8` · `#FFB8D2` · `#C9A8F5` · `#EFE3C7` (puis bleu, rose), en clair comme en sombre**
+> (`phraseHTML`, `lot-V141-GUIDE`) ; les dérivées de Q533 (`#4971B6`, `#9E5F77`, `#8363AA`, `#7C7158`) sont retirées. ⚠ Mesuré, rien changé (C-204) : en clair, sur
+> `#DFCAA4`, 1,0 à 1,4:1 — le rose et la crème se distinguent à peine.
+> **L'OPTION (Q589), derrière `?exact=1`, jamais mémorisé** : « monde » et « partage-la » `#C9A8F5`, Promi · Chiche · Cercle de la phrase du + et de l'onboarding
+> `#82AEF8` · `#FFB8D2` · `#C9A8F5`, en clair aussi. Sans le paramètre, ces mots ne bougent pas (C-145, C-124, Promi en cobalt). Tom choisit, puis on fige et on retire.
+> Juge : **`redteam_couleurs_exactes.py`** (à l'hexadécimal près, `color` et `-webkit-text-fill-color`, deux thèmes, échelles 1 et 0,79 ; `--exact` : l'option ;
+> 14/20 sur v168c). Contrat remis : `redteam_guide` (les lettres exactes en clair ; original `sauvegardes/redteam_guide-avant-v169.py`).
+
 ### ⚑ v168c (28 oct. 2026) — LA FLÈCHE DU STUDIO PART DE LA PHRASE (C-205). (Décision Tom.) Ce bloc CORRIGE v168b pour la seule flèche du Studio.
 > **Validées par Tom : les flèches du + et de Partager (v168b).** Studio : « le haut va trop à gauche : ça n'a pas de sens par rapport à la place de la phrase ». La flèche
 > du Studio SEULE tourne autour de sa pointe (12,5°) jusqu'à ce que sa queue soit **20 pt plus à droite**, vers le centre de la phrase ; la pointe ne bouge pas (77,8 ; 728,4),
@@ -3689,6 +3699,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_couleurs_exactes.py # 10 (+10 avec --exact) — v169 (C-204) : les lettres de « Studio » à l'hexadécimal près, deux thèmes, deux échelles ; l'option ?exact=1. 14/20 sur v168c.
 python3 redteam_guide_fleche.py   # 80 — v166 (C-203 §2) : la flèche orange vers le Studio, le + et Partager — orange, axe vers l'icône ± 10°, aucun recouvrement, pointe au bord de la zone nette, fixe, partie à la phrase 2 ; deux thèmes, deux échelles.
 python3 redteam_veille_depart.py # 5 — v167 (C-181 §3) : l'état de Tom, WebKit, sans ?veille : la veille part à 60 s ± 1 s après le dernier toucher (vrais PointerEvent) sur l'accueil, une fiche + un mur du Peaufiner, l'Index, le Fil, l'Aura. Rouge sur v166.
 python3 redteam_guide_cloture.py # 130 — v165 (C-203) : la clôture du guide — chemins a, b, c, Partager touché ou non, la zone nette lue sur l'eau, la fin, le lancement suivant ; deux thèmes, deux échelles.

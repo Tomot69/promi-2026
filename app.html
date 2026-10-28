@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v168c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v169', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -38083,7 +38083,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      mots paraissent dans l'onboarding. » En sombre : la nature telle quelle (la seiche #050302 dessous : 9,0 · 11,6 · 9,1:1). En clair : la teinte
      OKLCH gardée, la clarté seule descend jusqu'à 3:1 sur le fond de la Toile vide (#DFCAA4) — `_teinte.ajuste`. */
   var NATC={promi:[130,174,248], chiche:[255,184,210], cercle:[201,168,245]};
-  function natCol(n){ var c=NATC[n]; if(clair()){ try{ c=window._teinte.ajuste(c, [223,202,164], 3); }catch(_){} }
+  var EXACT=/[?&]exact=1(&|$)/.test(location.search);   /* ⚑ v169 (C-204, l'option, Q589) : `?exact=1` — en clair aussi, la nature exacte (sans lui : C-124) */
+  function natCol(n){ var c=NATC[n]; if(clair() && !EXACT){ try{ c=window._teinte.ajuste(c, [223,202,164], 3); }catch(_){} }
     return 'rgb('+c[0]+', '+c[1]+', '+c[2]+')'; }
   function nat(mot){ var n=mot.toLowerCase(), v=natCol(n); return '<i class="onbv-nat" data-n="'+n+'" style="color:'+v+';-webkit-text-fill-color:'+v+'">'+mot+'</i>'; }
   window._onbNat=function(){ [].forEach.call(document.querySelectorAll('#onbV .onbv-nat'), function(e){ var v=natCol(e.getAttribute('data-n')); e.style.color=v; e.style.webkitTextFillColor=v; }); };
@@ -41206,7 +41207,10 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   /* la phrase : les mots de Tom, tels quels ; ses mots-clés et ses noms de nature sont enveloppés, jamais changés */
   var PAL=[[130,174,248],[255,184,210],[201,168,245],[239,227,199]];   /* la palette de base (Ingénu), dans son ordre : bleu, rose, lilas, crème dalle */
   function teinte(c){ return 'rgb('+c[0]+', '+c[1]+', '+c[2]+')'; }
-  function phraseHTML(quoi){ var t=T.guide[quoi], clairA=dev.classList.contains('light');
+  /* ⚑ v169 (C-204, l'OPTION du lot, Q589) — `?exact=1` : « monde », « partage-la » et Promi, Chiche, Cercle de la phrase du + aux couleurs exactes en clair
+     aussi (#C9A8F5 ; #82AEF8 · #FFB8D2 · #C9A8F5). Sans lui, rien ne change (C-145, C-162). Tom choisit sur l'iPhone, puis on fige et on retire le paramètre. */
+  var EXACT=/[?&]exact=1(&|$)/.test(location.search);
+  function phraseHTML(quoi){ var t=T.guide[quoi], clairA=dev.classList.contains('light'), clairD=clairA && !EXACT;
     function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
     /* ⚑ v166 (Tom, C-203 §3.1) — « la phrase 2 passe ENTIÈREMENT en PromiLate, d'une seule couleur unie (l'encre du mode) ; sa place ne change pas ».
        Le dessin des mots-clés du guide (PromiLate, capitales). PromiLate n'a pas de « À » : composé comme l'É de v35 (la lettre de PromiLate, l'apostrophe de
@@ -41219,7 +41223,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       for(var m=0;m<mots.length;m++){ var w=mots[m]; if(t.substr(i,w.length)===w && !/[A-Za-zÀ-ÿ]/.test(t.charAt(i+w.length)) && !(i>0 && /[A-Za-zÀ-ÿ]/.test(t.charAt(i-1)))){ pris=w; break; } }
       if(!pris){ out+=esc(t.charAt(i)); i++; continue; }
       if(pris in NAT){ var col='';
-        if(clairA){ if(pris==='Promi') col='var(--c-cobalt50)'; else { var c=NAT[pris]; try{ c=window._teinte.ajuste(c, [223,202,164], 5); }catch(_){ } col='rgb('+c[0]+', '+c[1]+', '+c[2]+')'; } }
+        if(clairD){ if(pris==='Promi') col='var(--c-cobalt50)'; else { var c=NAT[pris]; try{ c=window._teinte.ajuste(c, [223,202,164], 5); }catch(_){ } col='rgb('+c[0]+', '+c[1]+', '+c[2]+')'; } }
         /* ⚑ v152 (Tom, C-162) : « tout mot coloré en clair est coloré aussi en sombre » — chaque nature prend sa variante claire de la palette */
         else col={Promi:'#82AEF8', Chiche:'#FFB8D2', Cercle:'#C9A8F5'}[pris];
         out+='<i class="gd-nat" data-n="'+pris.toLowerCase()+'"'+(col?' style="color:'+col+';-webkit-text-fill-color:'+col+'"':'')+'>'+esc(pris)+'</i>'; }
@@ -41229,11 +41233,13 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
          tu me montres une capture »). Mesuré en clair sur l'accueil flouté : voir QUESTIONS (Q-v147). */
       /* ⚑ v148 (Tom, C-145) : « “monde” en rose est beau, mais illisible. Il passe en lilas violet : #8363AA en clair (la teinte assombrie de Q518),
          #C9A8F5 en sombre. » */
-      else if(pris==='partage-la'){ var cp=clairA?'#8363AA':'#C9A8F5'; out+='<i class="gd-cle gd-partage" style="color:'+cp+';-webkit-text-fill-color:'+cp+'">'+esc(pris)+'</i>'; }   /* v165 (C-203) : la couleur de « monde » (lilas, 3:1 en clair) */
-      else if(pris==='monde'){ var cm=clairA?'#8363AA':'#C9A8F5'; out+='<i class="gd-cle gd-monde" style="color:'+cm+';-webkit-text-fill-color:'+cm+'">'+esc(pris)+'</i>'; }
+      else if(pris==='partage-la'){ var cp=clairD?'#8363AA':'#C9A8F5'; out+='<i class="gd-cle gd-partage" style="color:'+cp+';-webkit-text-fill-color:'+cp+'">'+esc(pris)+'</i>'; }   /* v165 (C-203) : la couleur de « monde » (lilas, 3:1 en clair) */
+      else if(pris==='monde'){ var cm=clairD?'#8363AA':'#C9A8F5'; out+='<i class="gd-cle gd-monde" style="color:'+cm+';-webkit-text-fill-color:'+cm+'">'+esc(pris)+'</i>'; }
       /* ⚑ v149 (Tom, décision de fin de v148, Q533) : « en clair, les lettres de « Studio » assombries jusqu'à 3:1 » — chaque lettre garde sa teinte,
          sa clarté descend jusqu'à 3:1 sur le fond de la Toile en clair (#DFCAA4) : bleu #4971B6, rose #9E5F77, lilas #8363AA, crème #7C7158. Le sombre ne change pas. */
-      else if(pris==='Studio'){ out+='<i class="gd-cle gd-studio">'; for(var li=0; li<pris.length; li++){ var cl=clairA?['#4971B6','#9E5F77','#8363AA','#7C7158'][li%4]:teinte(PAL[li%4]); out+='<i class="gd-l" style="font-style:normal;color:'+cl+';-webkit-text-fill-color:'+cl+'">'+esc(pris.charAt(li))+'</i>'; } out+='</i>'; }
+      /* ⚑ v169 (Tom, C-204 §1) — « les lettres de STUDIO reprennent EXACTEMENT les couleurs de la palette par défaut, en clair comme en sombre :
+         #82AEF8, #FFB8D2, #C9A8F5, #EFE3C7, dans l'ordre de la palette » — les dérivées de Q533 (#4971B6, #9E5F77, #8363AA, #7C7158) sont retirées. */
+      else if(pris==='Studio'){ out+='<i class="gd-cle gd-studio">'; for(var li=0; li<pris.length; li++){ var cl=teinte(PAL[li%4]); out+='<i class="gd-l" style="font-style:normal;color:'+cl+';-webkit-text-fill-color:'+cl+'">'+esc(pris.charAt(li))+'</i>'; } out+='</i>'; }
       else out+='<i class="gd-cle"'+(clairA?'':' style="color:#82AEF8;-webkit-text-fill-color:#82AEF8"')+'>'+esc(pris)+'</i>';   /* ⚑ v152 (Tom, C-162) : « commence », bleu en clair (cobalt), bleu clair #82AEF8 en sombre */
       i+=pris.length; }
     return out; }

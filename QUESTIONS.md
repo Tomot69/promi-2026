@@ -8897,3 +8897,8 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q588 — À REGARDER (C-204, v166, rien changé)** : « t'appartient. » en clair, aux couleurs exactes de la palette sur le fond de l'onboarding `#DEC8A3` : contraste 1,0 à
   1,4:1 ; les deux « crème » `#EFE3C7` ne se distinguent presque pas du fond. Capture dans le rapport de v166.
 - **v167** : rien de neuf à trancher. Q588 et la liste des couleurs dérivées (C-204) : Tom tranche après ses testeurs, rien touché. La phrase 2 au cobalt sur le flou : capture jointe au rapport.
+- **v169** : C-205 validé (toutes les flèches du guide). C-204 §1 : les lettres de « Studio » aux couleurs exactes de la palette, clair et sombre.
+- **Q589 — À TRANCHER (C-204, l'option du lot v169)** : « monde », « partage-la », et Promi, Chiche, Cercle de la phrase du + et de l'onboarding aux couleurs exactes
+  en clair aussi. Posé derrière `?exact=1` (jamais mémorisé) ; sans lui, rien ne bouge (C-145, C-124, la phrase du + en cobalt). Mesuré en clair sur `#DFCAA4` :
+  #82AEF8 1,4:1 · #FFB8D2 1,0:1 · #C9A8F5 1,3:1 · #EFE3C7 1,3:1 (les lettres de « Studio », rose et crème, se distinguent à peine — capture au rapport).
+  Proposition : Tom regarde `?exact=1` sur l'iPhone ; s'il le garde, on fige et on retire le paramètre.
