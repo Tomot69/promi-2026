@@ -196,6 +196,13 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v168c (28 oct. 2026) — LA FLÈCHE DU STUDIO PART DE LA PHRASE (C-205). (Décision Tom.) Ce bloc CORRIGE v168b pour la seule flèche du Studio.
+> **Validées par Tom : les flèches du + et de Partager (v168b).** Studio : « le haut va trop à gauche : ça n'a pas de sens par rapport à la place de la phrase ». La flèche
+> du Studio SEULE tourne autour de sa pointe (12,5°) jusqu'à ce que sa queue soit **20 pt plus à droite**, vers le centre de la phrase ; la pointe ne bouge pas (77,8 ; 728,4),
+> l'arc (4,7–4,9 pt, même côté), la goutte, la longueur, l'orange, le clignotement : inchangés. L'axe de l'encre vise l'icône à 1,1–1,4° (`redteam_guide_fleche` B).
+> ⚠ **Mesuré et dit, rien de plus fait** : le CHEVRON seul, prolongé depuis la pointe, s'écarte de 19,8° de la direction du centre de l'icône (7,3° en v168b) — l'arc
+> bombé du même côté et la queue à droite ne laissent pas le choix ; sa ligne passe à 11 pt du centre de l'icône, dans l'icône. Tom juge sur l'iPhone.
+
 ### ⚑ v168b (28 oct. 2026) — LES FLÈCHES DU GUIDE EN UN SEUL ARC (C-205, dernière retouche). (Décision Tom.) Ce bloc CORRIGE v168 (la courbe du guide).
 > **Tom : « la goutte est bonne, mais les flèches paraissent encore trop rectilignes ; une correction ultra légère ».** *Mesuré* : en v167–v168 l'épine était une parabole
 > TANGENTE à l'axe à la pointe — l'encre ne bombait que de 1,3 à 1,6 pt sur sa corde. *Aujourd'hui* : UN SEUL ARC (une parabole symétrique sur l'épine, sans S ni vague)

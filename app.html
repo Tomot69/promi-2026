@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v168b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v168c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -41283,6 +41283,11 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
        en avançant. La corde et la pointe se partagent l'écart (corde −4,9°, pointe +7,4°) : l'axe de l'encre et la pointe visent toujours l'icône (± 10°). La pointe reste au même point (1 pt dans la zone nette). */
     var C2=4*6/(96.3*96.3), TH=Math.atan(C2*(-XQ)), PH=ang-TH*0.4, TA=ang+TH*0.6;
     yz=function(x){ return C2*x*(x-XQ); };
+    /* ⚑ v168c (Tom, C-205) — « sur celle du Studio, le haut va trop à gauche : ça n'a pas de sens par rapport à la place de la phrase ». La flèche du Studio SEULE
+       tourne autour de sa pointe, jusqu'à ce que sa queue soit 20 pt plus à droite (vers le centre de la phrase) ; la pointe ne bouge pas ; l'arc, la goutte, la
+       longueur ne changent pas. Le + et Partager : inchangés. */
+    if(quoi==='studio'){ var qx=function(D){ var t=TA+D, p=PH+D; return (tx-Math.cos(t)*9*kk)+XQ*Math.cos(p); }, q0=qx(0), D=0, sD=(qx(0.01)>q0)?1:-1;
+      while(Math.abs(D)<0.5 && Math.abs(qx(D)-q0)<20) D+=sD*0.002; PH+=D; TA+=D; }
     ox=tx-Math.cos(TA)*9*kk; oy=ty-Math.sin(TA)*9*kk;
     var X=[], Y=[], cP=Math.cos(PH), sP=Math.sin(PH); [[XQ-R0/2,-R0/2],[XQ-R0/2,R0/2],[XQ/2,-R0/2-C2*XQ*XQ/4],[XQ/2,R0/2],[12*kk,-14*kk],[12*kk,14*kk]].forEach(function(q){ X.push(ox+q[0]*cP-q[1]*sP); Y.push(oy+q[0]*sP+q[1]*cP); });
     var x0=Math.min.apply(null,X), x1=Math.max.apply(null,X), y0=Math.min.apply(null,Y), y1=Math.max.apply(null,Y);
