@@ -196,6 +196,30 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v170 (28 oct. 2026) — LE TRACÉ DES LETTRES EN PROMILATE (C-125, suite). (Décisions Tom.) Gilbert et Atkinson (validés) n'ont pas bougé : leurs chemins sont intacts, le module ne change que pour PromiLate (au pixel, `scratchpad/v170/a1.py`).
+> **Validé par Tom : v169b. Q590 accepté : Tom dessinera le « ! » dans PromiLate avec le « À ».**
+> **Le diagnostic, mesuré au ralenti (`?tlv=0.05`) et image par image à la taille de l'app** : ① les CAPITALES de PromiLate (très grasses) avaient des lignes médianes
+> fausses — l'amincissement perdait des traits (le S partait du milieu de l'épine, le G et le L sans leur barre, le M en éclats) : elles sont maintenant DESSINÉES à la
+> main (`scratchpad/v146/trace/squelettes_promilate.py`, A à Z, ancres recentrées, courbes en Catmull-Rom ; un facteur de demi-largeur par lettre `R_K_LETTRE`, par
+> arête `rk` — appliqué APRÈS le redressement, qui rend aux droites leur demi-largeur mesurée) ; ② des ordres imposés (`CORRECTIONS['promilate']`, `ordre`) :
+> A d'un seul trait (jambage gauche, sommet, jambage droit, puis la barre — depuis l'apex, le coin droit du sommet attendait le second jambage : un éclat de 15 images à
+> 29 pt) ; H fût gauche, fût droit, puis la barre ; R fût, panse depuis le haut, jambe ; S en trois tronçons non fusionnés depuis son pied (`separe`) ; ③ LE MODULE
+> (`variantes/trace-lettres.js`, PromiLate seule) : un ACCENT COMPOSÉ (l'apostrophe en absolu au-dessus du E ou du A, v35, v166) était pris pour une LIGNE à part, au-dessus
+> de sa lettre — à la fin du A le canevas effaçait sa moitié haute — et il était dessiné DROIT (il sautait, retourné, à la fin) ; « Deuxio » (penché de 3°) était tracé
+> droit. Aujourd'hui : la transformation d'un élément est retirée le temps de la mesure, puis appliquée au dessin ET au chemin de chaque lettre (`tf`) ; un glyphe posé
+> en absolu appartient à la ligne de sa lettre (`attache`) ; la position d'une lettre composée se lit sur la boîte de son élément (fractionnaire). `ctl.glyphes` porte
+> `mat` et `xo` (pour les juges).
+> **Juge : `redteam_trace_lettres` ⑫** (`--pl` : ⑫ seul) — toutes les lettres des textes PromiLate tracés (`TEXTES_PL`, en dur, avec leurs tailles de l'échelle : 52 ·
+> 42 · 32 · 32,2 · 29 · 25 · 19), plus À et É composés et l'apostrophe, à chaque taille × 1 et à la plus grande et la plus petite × 0,79 : préfixe continu, aucun éclat,
+> aucune valeur intermédiaire loin du front ; le front perpendiculaire sur l'ensemble (3 mesures au moins : PromiLate est gras, ses traits sont presque tous plus
+> courts que 2,5 demi-largeurs) ; ⑫b la dernière image d'une lettre transformée (À, É, Deuxio) ≤ le témoin sans transformation en pixels « grossiers ». **Rouge sur
+> v169b** (`--chemins-pl=sauvegardes/trace-chemins-promilate-avant-v170.js --module=sauvegardes/trace-lettres-avant-v170.js`). ⚠ **Le juge compte À PART « au bout »** :
+> la dernière rangée d'un trait qui finit SUR le bord de la lettre, dans la zone de son bout (la même zone que la règle du coin) — ce qui reste à tracer est dans le pixel
+> lui-même ; partout ailleurs un pixel partiel isolé reste « loin » (≤ 3). C'est une définition, pas un seuil desserré : la même règle vaut pour les deux autres polices.
+> ⚠ **Mesuré, non touché (module, A5)** : à la toute dernière image du tracé, la lettre encore sur le canevas est d'un demi-pixel plus grasse que le texte réel
+> (anticrénelage du canevas) — 103 à 134 pixels « grossiers » sur un mot, IDENTIQUE en Gilbert et en Atkinson ; et le R garde, ≈ 5 ms, un liseré d'un pixel entre sa
+> barre et son fût (Q591).
+
 ### ⚑ v169b (28 oct. 2026) — LA CLÔTURE DU GUIDE SANS ATTENTE ; LA PHRASE 2 PREND UN « ! » ; `?exact=1` RETIRÉ. (Décisions Tom.) Ce bloc CORRIGE v165 (le rythme de la clôture, la phrase 2) et v169 (l'option).
 > **Q589 tranchée (Tom) : seul « Studio » aux couleurs exactes ; `?exact=1` et son code sont RETIRÉS** (« monde », « partage-la », les natures : comme avant v169).
 > **⚑ C-203 §1 — « LA PHRASE DE CLÔTURE ET SON FLOU ARRIVENT TROP TARD ».** *La cause, mesurée sur v169 (WebKit)* : a (la page + refermée) et b (le menu refermé par un

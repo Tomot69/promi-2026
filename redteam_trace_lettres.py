@@ -48,7 +48,16 @@ qu'à 50 ; le débit et la durée d'une lettre séparés ; au plus trois lettres
      cadences : jugées sous une charge de 4 seulement (C-137), sinon « non jugé » avec la valeur ;
   ⑩ `--captures` : une capture fixe dans l'app, à ×0,05, quand deux ou trois lettres sont en cours.
 `--module=sauvegardes/trace-lettres-avant-v154.js` : il DOIT rougir (④, ⑪).
-Usage : python3 redteam_trace_lettres.py [--port=8752] [--sonde=fondu|bloc] [--captures]
+⚑ v170 (Tom, C-125 suite : « en PromiLate, l'apparition des lettres n'est pas fluide ni clean » ; Gilbert et Atkinson validés, on n'y touche pas) — ⑫ PROMILATE :
+  ⑫a toutes les lettres des textes PromiLate tracés (TEXTES_PL, en dur, avec leur taille de l'échelle), plus À et É composés (v35, v166) et l'apostrophe,
+     à leur taille × 1 (la plus grande où elles paraissent) et × 0,79 (la plus petite, réduite comme dans Safari) : les mêmes mesures que ⑨ — préfixe
+     continu, aucun éclat, aucune valeur intermédiaire loin du front ; « au bout » (la dernière rangée d'un trait qui finit SUR le bord de la lettre, dans la
+     zone de son bout : ce qui reste à tracer est dans le pixel lui-même) est compté à part et rapporté ; le front perpendiculaire se mesure sur l'ensemble
+     des lettres (PromiLate est gras : la plupart de ses traits sont plus courts que 2,5 fois leur demi-largeur, ils ne se mesurent pas un à un) ;
+  ⑫b la dernière image du tracé d'une lettre TRANSFORMÉE (l'accent retourné du « À », l'accent de l'« É », « Deuxio » penché) est la lettre telle qu'elle
+     est à l'écran : pas plus de pixels « grossiers » (encre d'un côté, fond de l'autre) que le témoin, un mot sans transformation (« S’EXPLORE ») ;
+  `--chemins-pl=sauvegardes/trace-chemins-promilate-avant-v170.js --module=sauvegardes/trace-lettres-avant-v170.js` (v169b) : il DOIT rougir. `--pl` : ⑫ seul.
+Usage : python3 redteam_trace_lettres.py [--port=8752] [--sonde=fondu|bloc] [--captures] [--pl]
 """
 import sys, io, json, math, zipfile; sys.path.insert(0, '.')
 import numpy as np
@@ -78,6 +87,14 @@ UN_SEUL_TRACE = {   # le glyphe n'a qu'un tracé qui finisse à droite (ou il vi
     '.': 'tout en bas de la ligne', ',': 'tout en bas de la ligne', '…': 'tout en bas de la ligne', "'": 'tout en haut de la ligne', '’': 'tout en haut de la ligne',
 }
 R1_MAX, R1_MEDIANE = 0.70, 0.25
+# ⚑ v170 — les textes PromiLate que l'onboarding et le guide TRACENT, à leur taille de l'échelle (CLAUDE.md, v148–v151 ; en capitales à l'écran)
+TEXTES_PL = [('PROMI', 52), ('PLANTÉ', 42), ('LA SUITE T’APPARTIENT', 32), ('STUDIO', 32.2), ('MONDE COMMENCE TOILE PARTAGE LA', 29),
+             ('LE RESTE S’EXPLORE À TON RYTHME', 29), ('PRIMO DEUXIO TERTIO', 25), ('TRACE POUR PLANTER', 19)]
+ECH_SAFARI = 0.79
+GRAVE = '<span class="v35-e">A<span class="v35-acc" aria-hidden="true" style="top:-.06em;transform:translateX(-70%) scaleX(-1)">\u2019</span></span>'   # le « À » de la phrase 2 (v166)
+AIGU = '<span class="v35-e">E<span class="v35-acc" aria-hidden="true">\u2019</span></span>'   # l'« É » de v35
+PENCHE = '<span style="display:inline-block;transform:skewX(-3deg)">DEUXIO</span>'   # « Deuxio » (C-124)
+CHEMINS_PL = arg('chemins-pl', ''); PL_SEUL = '--pl' in sys.argv
 res = []
 def juge(nom, cond, detail=''):
     res.append((nom, bool(cond))); print('%s  %s  %s' % ('OK' if cond else 'KO', nom, str(detail)[:420]), flush=True)
@@ -126,18 +143,18 @@ def erode(m):
     return o
 
 NGEO = 36
-GEO = """async a=>{ const [pol,gr,car,N]=a; document.querySelectorAll('#gEl,canvas[data-trace]').forEach(e=>e.remove());
-  const el=document.createElement('div'); el.id='gEl'; el.style.cssText='position:fixed;left:60px;top:60px;width:300px;font:'+gr+' 150px/180px '+pol+';color:#291547;background:none;z-index:60'; el.textContent=car; document.body.appendChild(el);
-  await document.fonts.load(gr+' 150px '+pol); await document.fonts.ready;
+GEO = """async a=>{ const [pol,gr,car,N]=a, fz=a[4]||150, html=a[5]||null; document.querySelectorAll('#gEl,canvas[data-trace]').forEach(e=>e.remove());
+  const el=document.createElement('div'); el.id='gEl'; el.style.cssText='position:fixed;left:60px;top:60px;width:300px;font:'+gr+' '+fz+'px/'+(fz*1.2)+'px '+pol+';color:#291547;background:none;z-index:60'; if(html) el.innerHTML=html; else el.textContent=car; document.body.appendChild(el);
+  await document.fonts.load(gr+' '+fz+'px '+pol); await document.fonts.ready;
   const C=TraceLettres.trace(el, null, {manuel:true, respecteReduire:false}); await C.pret; const cv=C.canevas; if(!cv||!C.va){ try{C.stop()}catch(e){} el.remove(); return null; }
   const W=cv.width, H=cv.height, n=W*H, g2=cv.getContext('2d'); const lit=()=>{ const d=g2.getImageData(0,0,W,H).data, o=new Uint8Array(n); for(let i=0;i<n;i++) o[i]=d[4*i+3]; return o; };
-  C.va(0.99999); const ref=lit(); const R=new Uint8Array(n).fill(255), isl=new Uint8Array(n), age=new Uint8Array(n); let hors=0, loin=0, part=0, ilots=0, ilotMax=0;
+  C.va(0.99999); const ref=lit(); const R=new Uint8Array(n).fill(255), isl=new Uint8Array(n), age=new Uint8Array(n); let hors=0, loin=0, part=0, ilots=0, ilotMax=0; const LP=[];
   for(let i=1;i<N;i++){ C.va(i/N); const cur=lit(); let pi=0; const unr=new Uint8Array(n);
     for(let p=0;p<n;p++){ if(ref[p]>127 && cur[p]<=10) unr[p]=1; if(cur[p]>ref[p]+10) hors++; if(ref[p]>200 && cur[p]>=ref[p]-10 && R[p]===255) R[p]=i; }
     /* un pixel partiel est AU BORD du dévoilement s'il touche (à 2 px) un pixel d'encre vierge ou MOINS teint que lui ; un point gris entouré de pixels
        pleins ne l'est pas */
     let li=0; for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const p=y*W+x; if(!(ref[p]>0 && cur[p]>10 && cur[p]<ref[p]-10)) continue; pi++; let v=false; const rp=cur[p]/ref[p];
-      for(let dy=-2;dy<=2&&!v;dy++) for(let dx=-2;dx<=2&&!v;dx++){ const xx=x+dx, yy=y+dy; if(xx<0||yy<0||xx>=W||yy>=H) continue; const q=yy*W+xx; if(unr[q] || (ref[q]>127 && cur[q]/ref[q] < rp-0.05)) v=true; } if(!v) li++; }
+      for(let dy=-2;dy<=2&&!v;dy++) for(let dx=-2;dx<=2&&!v;dx++){ const xx=x+dx, yy=y+dy; if(xx<0||yy<0||xx>=W||yy>=H) continue; const q=yy*W+xx; if(unr[q] || (ref[q]>127 && cur[q]/ref[q] < rp-0.05)) v=true; } if(!v){ li++; if(LP.length<4000){ let bd=false; for(let dy=-2;dy<=2&&!bd;dy++) for(let dx=-2;dx<=2&&!bd;dx++){ const xx=x+dx, yy=y+dy; if(xx<0||yy<0||xx>=W||yy>=H||ref[yy*W+xx]<=127) bd=true; } LP.push([i,x,y,bd?1:0]); } } }
     loin=Math.max(loin,li); part=Math.max(part,pi);
     /* les ÎLOTS : des morceaux d'encre pas encore tracée, petits (12 px à 1,5 % de la lettre) et séparés du reste, pendant qu'il en reste plus de 10 %
        — un éclat qui attend la fin pendant que la lettre avance (le coin du « g » d'Atkinson, v152) */
@@ -149,9 +166,12 @@ GEO = """async a=>{ const [pol,gr,car,N]=a; document.querySelectorAll('#gEl,canv
     /* un ÉCLAT est un îlot qui RESTE en arrière : le même pixel isolé trois images de suite (le bout d'un trait juste devant le front ne dure qu'une image) */
     for(let p=0;p<n;p++){ age[p]=isl[p]?age[p]+1:0; if(age[p]>=3){ ilots++; ilotMax=Math.max(ilotMax, age[p]); } isl[p]=0; } }
   const b64=u=>{ let s=''; for(let i=0;i<u.length;i+=8192) s+=String.fromCharCode.apply(null, u.subarray(i,i+8192)); return btoa(s); };
-  const cr=cv.getBoundingClientRect(), er=el.getBoundingClientRect(), d=devicePixelRatio, gl=C.glyphes[0], gx=(er.left+gl.x-cr.left)*d, gy=(er.top+gl.y-cr.top)*d, u=gl.ech*d;
-  const pc=TraceLettres.parcours(pol, car, gl.variante); C.stop(); el.remove();
-  return {w:W, h:H, N:N, ref:b64(ref), R:b64(R), hors, loin, part, ilots, ilotMax, traits:pc.traits.map(t=>({R:t.R*u, pts:t.pts.map(q=>[gx+q[0]*u, gy-q[1]*u])}))}; }"""
+  const cr=cv.getBoundingClientRect(), er=el.getBoundingClientRect(), d=devicePixelRatio, TR=[];
+  /* v170 : les traits de TOUS les glyphes (un « À » composé en a deux), sous la matrice de leur élément (l'accent retourné) */
+  C.glyphes.forEach(gl=>{ if(!gl.ech) return; const pc=TraceLettres.parcours(pol, gl.car, gl.variante); if(!pc) return; const M=gl.mat||[1,0,0,1], o2=gl.xo||[gl.x,gl.y], gx=(er.left+o2[0]-cr.left)*d, gy=(er.top+o2[1]-cr.top)*d, u=gl.ech*d;
+    pc.traits.forEach(t=>TR.push({R:t.R*u, pts:t.pts.map(q=>[gx+(M[0]*q[0]-M[2]*q[1])*u, gy+(M[1]*q[0]-M[3]*q[1])*u])})); });
+  C.stop(); el.remove();
+  return {w:W, h:H, N:N, ref:b64(ref), R:b64(R), hors, loin, part, ilots, ilotMax, LP, traits:TR}; }"""
 ENREG = """()=>{ window.__TL=[]; window.__CTL=[]; const T=window.TraceLettres; const tr=T.trace; T.trace=function(c){ const ctl=tr.apply(this, arguments); const k=window.__CTL.push(ctl)-1;
     const txt=(c.textContent||''); const r={id:c.id||'', k:k, ctl:true, n:[...txt].filter(x=>x.trim()).length, esp:(txt.trim().match(/\\s+/g)||[]).length, images:[]}; window.__TL.push(r);
     ctl.pret.then(()=>{ r.debut=performance.now(); (function f(){ if(ctl.fini){ r.fin=r.fin||performance.now(); return; } const e=ctl.etat(); r.images.push([performance.now(), e.actives || [e.glyphe]]); requestAnimationFrame(f); })(); });
@@ -204,6 +224,14 @@ def geo_analyse(r):
     for t in T:
         for q in (t['pts'][0], t['pts'][-1]): amb |= np.hypot(xs + 0.5 - q[0], ys + 0.5 - q[1]) < 2.6 * t['R'] + 3   # la zone d'un bout (un coin, une tête de fût que le chemin ne parcourt pas) : la règle du coin, pas celle du préfixe
     core = ref > 200; out = {'ilots': r['ilots'], 'ilotMax': r['ilotMax'], 'hors': r['hors'], 'loin': r['loin'], 'partiels': r['part'], 'trous': 0, 'avance': 0, 'pas': 0, 'angles': []}
+    # ⚑ v170 — LE BOUT D'UN TRAIT QUI FINIT SUR LE BORD DE LA LETTRE : la dernière rangée du front est à demi teinte une image, et ce qui reste à tracer
+    # est DANS ce pixel (au-delà, le bord) — elle n'a pas de voisin non tracé. Elle est comptée à part (« au bout »), seulement si elle est À LA FOIS dans la
+    # zone d'un bout de trait (la même que la règle du coin, `amb`) ET à 2 px du bord de la lettre ; partout ailleurs, un pixel partiel isolé reste « loin ».
+    if r.get('LP') is not None:
+        par = {}
+        for i_, x_, y_, bd in r['LP']:
+            k_ = 'bout' if (bd and amb[y_, x_]) else 'loin'; par.setdefault(i_, {'bout': 0, 'loin': 0})[k_] += 1
+        out['loin'] = max([v['loin'] for v in par.values()] or [0]); out['bout'] = max([v['bout'] for v in par.values()] or [0])
     for i in range(1, N):
         rev = core & (R <= i); unr = core & (R > i)
         if rev.sum() < 30 or unr.sum() < 30: continue
@@ -233,8 +261,66 @@ def geo_analyse(r):
             out['angles'].append(round(90 - math.degrees(math.acos(min(1, abs(d[0] * tx + d[1] * ty)))), 1)); break
     return out
 
+def section_pl(b, err):
+    """⑫ (v170) : PromiLate"""
+    # ── ⑫ v170 : PROMILATE — chaque lettre des textes tracés, À, É, l'apostrophe, aux échelles 1 et 0,79 ; la dernière image d'une lettre transformée ──
+    ctxp = B.contexte(b); pgp = ctxp.new_page(); pgp.on('pageerror', lambda e: err.append(str(e)[:200]))
+    pgp.goto('http://127.0.0.1:%s/%s' % (PORT, APP)); pgp.wait_for_timeout(7000)
+    pgp.evaluate("()=>{ try{closeAll()}catch(e){} var o=document.getElementById('promiOnb'); if(o){o.classList.add('gone');o.style.display='none';} }")
+    if CHEMINS_PL: pgp.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, CHEMINS_PL)); print('— CHEMINS PROMILATE « %s » —' % CHEMINS_PL)
+    if MODULE: pgp.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, MODULE))
+    pgp.wait_for_timeout(300)
+    if SONDE: pgp.evaluate(SONDES[SONDE])
+    tailles = {}
+    for t, fz in TEXTES_PL:
+        for c in t.replace(' ', ''): tailles.setdefault(c, []).append(fz)
+    CAS_PL = []
+    for c in sorted(tailles):
+        if c in 'ÀÉ': continue
+        for fz in sorted(set(round(v) for v in tailles[c])): CAS_PL.append((c, c, fz, 1.0))   # chaque taille où la lettre paraît, × 1
+        for fz in sorted({max(tailles[c]), min(tailles[c])}): CAS_PL.append((c, c, fz, ECH_SAFARI))   # la plus grande et la plus petite, × 0,79
+    for nom, html, fz in (('À', GRAVE, 29), ('É', AIGU, 42)):
+        CAS_PL.append((nom, html, fz, 1.0)); CAS_PL.append((nom, html, fz, ECH_SAFARI))
+    angles_pl, mesures_pl = [], 0
+    for nom, html, fz, ech in CAS_PL:
+        r = pgp.evaluate(GEO, ['PromiLate', '400', nom if html == nom else 'A', NGEO, round(fz * ech, 2), None if html == nom else html])
+        lib = '⑫a PromiLate « %s » à %.1f pt (× %s)' % (nom, fz * ech, '1' if ech == 1 else '0,79')
+        if not r: juge(lib + ' : le tracé se mesure', False, 'aucun canevas'); continue
+        o = geo_analyse(r); compose = html != nom; angles_pl += [] if compose else o['angles']; mesures_pl += 1
+        # une lettre COMPOSÉE (À, É) est deux glyphes : le préfixe se mesure sur la lettre seule (A, E, plus haut) — ici, l'ensemble : rien hors de la lettre,
+        # aucun éclat, aucune valeur intermédiaire loin du front. L'apostrophe est petite : à 23 pt elle n'a que 17 images où mesurer (12 au moins).
+        pmin = 12 if nom == '’' else NGEO // 2
+        juge(lib + (' — rien hors de la lettre, aucun éclat, aucune valeur intermédiaire loin du front' if compose else ' — préfixe continu, aucun éclat, aucune valeur intermédiaire loin du front'),
+             o['hors'] == 0 and (compose or (o['trous'] <= 30 and o['avance'] <= 30)) and o['ilots'] == 0 and o['loin'] <= 3 and o['pas'] >= pmin,
+             'hors %d ; trou %d ; avance %d ; éclats %d (le plus long %d images) ; loin %d ; au bout %s ; %d images' % (o['hors'], o['trous'], o['avance'], o['ilots'], o['ilotMax'], o['loin'], o.get('bout', '?'), o['pas']))
+    # PromiLate est gras : un trait n'est mesurable que s'il dépasse 2,5 fois sa demi-largeur de part et d'autre du front (le S, le G, la diagonale du N…) ;
+    # on exige 3 mesures sur l'ensemble (Gilbert et Atkinson : 5 par lettre), toutes à ± 10°
+    juge('⑫a PromiLate — le front, à l\'intérieur d\'un trait, est perpendiculaire au chemin (± %d°), sur l\'ensemble des lettres (3 mesures au moins)' % ANGLE_MAX, len(angles_pl) >= 3 and max(map(abs, angles_pl)) <= ANGLE_MAX,
+         '%d mesures sur %d tracés ; pire %.1f° (les autres traits sont plus courts que 2,5 demi-largeurs : non mesurables un à un)' % (len(angles_pl), mesures_pl, max(map(abs, angles_pl)) if angles_pl else -1))
+    FINJS = """async a=>{ const [html,fz,f]=a; document.querySelectorAll('#gEl,canvas[data-trace]').forEach(e=>e.remove()); const el=document.createElement('div'); el.id='gEl';
+      el.style.cssText='position:fixed;left:40px;top:60px;width:340px;font:400 '+fz+'px/1.3 PromiLate;color:#291547;z-index:60'; el.innerHTML=html; document.body.appendChild(el);
+      await document.fonts.load('400 '+fz+'px PromiLate'); window.__CF=null; if(f<0) return 1; const C=TraceLettres.trace(el,null,{manuel:true,respecteReduire:false}); await C.pret; C.va(f); window.__CF=C; return 1; }"""
+    pgp.add_style_tag(content='#device{visibility:hidden!important} body{background:#fff!important}')
+    clipf = {'x': 30, 'y': 30, 'width': 360, 'height': 130}
+    def grossiers(html, fz):
+        cap = lambda: np.asarray(Image.open(io.BytesIO(pgp.screenshot(clip=clipf))).convert('L')).astype(int)
+        pgp.evaluate(FINJS, [html, fz, -1]); pgp.wait_for_timeout(150); a = cap()
+        pgp.evaluate(FINJS, [html, fz, 0.99999]); pgp.wait_for_timeout(150); c = cap()
+        pgp.evaluate("()=>{ if(window.__CF) window.__CF.finir(); }"); pgp.wait_for_timeout(150); d = cap()
+        return int((((a < 100) & (c > 200)) | ((a > 200) & (c < 100))).sum()), int((np.abs(a - d) > 0).sum())
+    for ech in (1.0, ECH_SAFARI):
+        tem, _ = grossiers('S’EXPLORE', round(29 * ech, 2))
+        for nom, html, fz in (('À', GRAVE, 29), ('É', AIGU, 42), ('Deuxio penché', PENCHE, 25)):
+            g_, fin_ = grossiers(html, round(fz * ech, 2))
+            juge('⑫b « %s » à %.1f pt — la dernière image du tracé est la lettre telle qu\'elle est à l\'écran (transformation comprise), puis le texte réel au pixel' % (nom, fz * ech),
+                 g_ <= tem * 1.2 + 10 and fin_ == 0, 'pixels grossiers %d (témoin sans transformation : %d) ; après la fin : %d pixel(s) différent(s)' % (g_, tem, fin_))
+    ctxp.close()
+
+
 with sync_playwright() as p:
     b = p.webkit.launch(); ctx = B.contexte(b); pg = ctx.new_page(); err = []
+    if PL_SEUL:
+        section_pl(b, err); b.close(); n_ok = sum(1 for _, c in res if c); print('\n%d / %d' % (n_ok, len(res))); sys.exit(0 if n_ok == len(res) else 1)
     pg.on('pageerror', lambda e: err.append(str(e)[:200]))
     pg.goto('http://127.0.0.1:%s/%s' % (PORT, PAGE)); pg.wait_for_timeout(1500)
     if MODULE: pg.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, MODULE)); pg.wait_for_timeout(300); print('— MODULE « %s » —' % MODULE)
@@ -365,6 +451,8 @@ with sync_playwright() as p:
         A = o['angles']
         juge('⑨ %s « %s » — le front, à l\'intérieur d\'un trait, est perpendiculaire au chemin (± %d°)' % (pol, car, ANGLE_MAX), len(A) >= 5 and max(map(abs, A)) <= ANGLE_MAX,
              '%d mesures ; écart au perpendiculaire : médiane %.1f°, pire %.1f° (%d images dans un coude, non mesurées)' % (len(A), float(np.median(np.abs(A))) if A else -1, max(map(abs, A)) if A else -1, o.get('coudes', 0)))
+
+    section_pl(b, err)
 
     # ── ⑦ ⑧ v153 : la vitesse et le « pof », DANS L'APP, en temps réel (banc comme Tom, le vrai onboarding) ──
     def onboarding_reel(q=''):

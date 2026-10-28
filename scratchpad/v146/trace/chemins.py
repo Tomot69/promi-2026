@@ -566,7 +566,17 @@ CORRECTIONS = {'atkinson': {}, 'gilbert': {
     '2': {'sans': 'b', 'pourquoi': "depuis le bas, le 2 ne finit à droite qu'au prix d'un repassage de 76 %"},
     '?': {'bras': {2: -90}},
     'S': {'sans': 'h', 'pourquoi': "comme le s : depuis le haut il finit en bas à gauche", 'retire': [2]},
-}, 'promilate': {}}
+}, 'promilate': {
+    'R': {'ordre': {'h': ([[0, -3, -2, -1], [2], [0, 4, 5], [1, -5], [0, 6]], 'b')},
+          'pourquoi': "v170 : fût de haut en bas, la panse depuis le haut jusqu'au fût, puis la jambe — le parcours passait la barre avant la panse : le creux sous la panse se dévoilait en dents de scie"},
+    'A': {'ordre': {'b': ([[0, 1, 2, 3, 4], [2], [0, 5]], 'b')}, 'sans': 'h',
+          'pourquoi': "v170 : un seul trait, jambage gauche, sommet, jambage droit, puis la barre — depuis l'apex, les deux jambages partaient séparément et le coin droit du sommet attendait le second (un éclat de 15 images à 29 pt)"},
+    'H': {'ordre': {'h': ([[0, -2, -1], [2], [0, -4, -3], [2], [0, 5]], 'b')},
+          'pourquoi': "v170 : fût gauche, fût droit, puis la barre — le parcours remontait le fût droit jusqu'au bord du haut (sa dernière rangée restait à demi teinte)"},
+    # v170 (C-125) : le S de PromiLate en trois tronçons (l'épine est deux fois plus fine que les panses) ; depuis le haut, le parcours partait du
+    # milieu (le départ de l'épine) avec un repassage : il n'a qu'un tracé, depuis son pied, d'un seul geste jusqu'à sa tête
+    'S': {'sans': 'h', 'pourquoi': "depuis le haut, le S de PromiLate partait du milieu de l'épine ; il n'a qu'un tracé, depuis son pied", 'separe': True},
+}}
 
 # ───────────────────────────── assemblage et écriture ─────────────────────────────
 def assemble(ms, var, mi):
@@ -586,7 +596,7 @@ def assemble(ms, var, mi):
             if trait is not None and dern is not None:
                 ed, sd = dern; pd = ms[k].aretes[ed]['pts'] if sd == 0 else ms[k].aretes[ed]['pts'][::-1]; pn = e['pts'] if sn == 0 else e['pts'][::-1]
                 u = S.tangente(pd, 1, min(S.longueur(pd) * 0.5, 30)); v = -S.tangente(pn, 0, min(S.longueur(pn) * 0.5, 30))
-                fondu = math.degrees(math.acos(max(-1, min(1, float(u @ v))))) < ANGLE_FONDU
+                fondu = math.degrees(math.acos(max(-1, min(1, float(u @ v))))) < ANGLE_FONDU and not getattr(m, 'separe', False)   # v170 : chaque tronçon garde sa largeur
             if fondu: trait.append(ref)
             else: trait = [0, ref]; pas.append(trait)
             dern = (i, sn)
@@ -601,8 +611,12 @@ def poly_ref(ms, ref):
     raise KeyError(ref)
 
 def analyse(police, ch, nom, mi, EM, corr):
-    ms, boite, R = morceaux(police, nom)
+    # v170 (C-125) : les capitales de PromiLate ont leur ligne médiane DESSINÉE (squelettes_promilate.py) — l'amincissement perdait des traits
+    if getattr(police, '_dessins', None) and ch in police._dessins.DESSINS: ms, boite, R = police._dessins.morceaux(police, nom, ch, sys.modules[__name__])
+    else: ms, boite, R = morceaux(police, nom)
     if not ms: return None
+    if corr.get('separe'):
+        for m in ms: m.separe = True   # v170 : les tronçons ne fusionnent pas en un trait (un trait n'a qu'une largeur : la plus grande)
     if corr.get('retire'):
         # retirer des arêtes (numérotées comme sur la planche) : une barbe que l'amincissement a laissée au bout d'un trait coupé en biais
         k = 0
@@ -628,7 +642,7 @@ def analyse(police, ch, nom, mi, EM, corr):
     vs = variantes(ms, boite, mi, EM)
     if corr.get('sans') in vs and len([k for k in vs if k in 'hb']) == 2:
         v0 = vs.pop(corr['sans']); v0['retire'] = corr.get('pourquoi', ''); vs.setdefault('sans', {})[corr['sans']] = v0
-    return dict(ms=ms, boite=boite, R=R, vs=vs, cts=S.contours(police, nom))
+    return dict(ms=ms, boite=boite, R=R, vs=vs, cts=S.contours(police, nom), ordre=corr.get('ordre'))
 
 def ecrit(cle, glyphes, upm, mi, sortie):
     P = POLICES[cle]; lignes = []
@@ -642,6 +656,8 @@ def ecrit(cle, glyphes, upm, mi, sortie):
         for V in ('h', 'b'):
             if V not in g['vs']: continue
             var = g['vs'][V]; pas, anneaux = assemble(ms, var, mi)
+            if g.get('ordre') and V in g['ordre']:   # v170 : un ordre imposé (les pas, le côté de fin) — quand celui du parcours finit un fût sur un bord droit
+                vtxt.append('%s:{f:"%s",t:%s}' % (V, g['ordre'][V][1], json.dumps(g['ordre'][V][0], separators=(',', ':')))); continue
             # un anneau a sa propre polyligne par variante : on l'ajoute aux arêtes
             for i, q in enumerate(anneaux):
                 R = max(e['R'] for m in ms for e in m.aretes if e['boucle']) if any(e['boucle'] for m in ms for e in m.aretes) else g['R']
@@ -667,6 +683,8 @@ def principal():
     cle = next((a for a in sys.argv[1:] if not a.startswith('--')), 'gilbert'); P = POLICES[cle]
     arg = lambda k, d=None: next((a.split('=', 1)[1] for a in sys.argv if a.startswith('--' + k + '=')), d)
     police = TTFont(P['fichier']); cm = police.getBestCmap(); upm = police['head'].unitsPerEm
+    if cle == 'promilate':
+        import squelettes_promilate; police._dessins = squelettes_promilate
     xh = getattr(police['OS/2'], 'sxHeight', 0) or 0.5 * upm; mi = int(round(xh / 2))
     seul = arg('seul'); t0 = time.time(); glyphes = {}
     codes = sorted(cm) if not seul else [ord(c) for c in seul]

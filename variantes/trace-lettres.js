@@ -450,7 +450,7 @@
       while ((nd = w.nextNode())) {
         var par = nd.parentNode, st = null, i;
         for (i = 0; i < memo.length; i++) if (memo[i][0] === par) st = memo[i][1];
-        if (!st) { var c = racine.getComputedStyle(par); st = { color: (c.webkitTextFillColor && c.webkitTextFillColor !== 'currentcolor' ? c.webkitTextFillColor : c.color), fontFamily: c.fontFamily, fontSize: c.fontSize, fontWeight: c.fontWeight, fontStyle: c.fontStyle, tt: c.textTransform, ls: c.letterSpacing }; memo.push([par, st]); }
+        if (!st) { var c = racine.getComputedStyle(par); st = { color: (c.webkitTextFillColor && c.webkitTextFillColor !== 'currentcolor' ? c.webkitTextFillColor : c.color), fontFamily: c.fontFamily, fontSize: c.fontSize, fontWeight: c.fontWeight, fontStyle: c.fontStyle, tt: c.textTransform, ls: c.letterSpacing, attache: c.position === 'absolute' }; memo.push([par, st]); }
         noeuds.push(nd); styles.push(st);
       }
     })();
@@ -470,6 +470,17 @@
       dpr = racine.devicePixelRatio || 1; s = dpr * kech;
       var mctx = doc.createElement('canvas').getContext('2d'), rg = doc.createRange(), cote = o.depart === 'b' ? 'b' : 'h', k = kech;
       var xmin = Infinity, ymin = Infinity, xmax = -Infinity, ymax = -Infinity, ni, i;
+      /* ⚑ v170 (C-125, PromiLate seule) — UNE LETTRE DONT L'ÉLÉMENT EST TRANSFORMÉ (l'accent composé du « À », retourné et déplacé ; l'accent de l'« É » ; « Deuxio »,
+         penché de 3°) : le module la mesurait transformée et la DESSINAIT droite — elle sautait à sa forme à la fin du tracé. La transformation est retirée le
+         temps de la mesure, puis appliquée au dessin de la lettre ET à son chemin (`tf` : la matrice, son origine, en pixels de la fenêtre). Une lettre posée en
+         absolu (un accent) appartient à la ligne de sa lettre (`attache`). Gilbert et Atkinson (validés) ne passent pas par là. */
+      var TRF = [], defaits = [];
+      noeuds.forEach(function (nd, j) { TRF[j] = null; if (famille(styles[j].fontFamily) !== 'PromiLate') return; var e = nd.parentNode;
+        while (e && e !== cible && e.nodeType === 1) { var cs = racine.getComputedStyle(e); if (cs.transform && cs.transform !== 'none') { TRF[j] = { el: e, m: cs.transform, o: cs.transformOrigin }; break; } e = e.parentNode; } });
+      TRF.forEach(function (t) { if (t && !t.el.__tlDefait) { t.el.__tlDefait = [t.el.style.getPropertyValue('transform'), t.el.style.getPropertyPriority('transform')]; t.el.style.setProperty('transform', 'none', 'important'); defaits.push(t.el); } });
+      TRF.forEach(function (t) { if (!t) return; var r = t.el.getBoundingClientRect(), mm = /^matrix\(([^)]+)\)/.exec(t.m), v = mm ? mm[1].split(',').map(parseFloat) : [1, 0, 0, 1, 0, 0], oo = t.o.split(' ').map(parseFloat);
+        t.tf = [v[0], v[1], v[2], v[3], r.left + (oo[0] || 0) * kech, r.top + (oo[1] || 0) * kech, v[4] * kech, v[5] * kech]; });
+      function versFenetre(tf, x, y) { var dx = x - tf[4], dy = y - tf[5]; return [tf[4] + tf[0] * dx + tf[2] * dy + tf[6], tf[5] + tf[1] * dx + tf[3] * dy + tf[7]]; }
       for (ni = 0; ni < noeuds.length; ni++) {
         var nd = noeuds[ni], st = styles[ni], txt = nd.nodeValue, fam = famille(st.fontFamily), D = donnees(fam), fs = parseFloat(st.fontSize) || 16;
         var spec = st.fontStyle + ' ' + st.fontWeight + ' ' + fs + 'px ' + st.fontFamily, asc = null, ls = parseFloat(st.ls) || 0;
@@ -495,12 +506,16 @@
           }
           var X0 = (lo <= hi) ? (lo + hi) / 2 : B.cars[0].L, r3 = Math.round(X0 * dpr) / dpr;
           if (lo <= hi && r3 >= lo - 0.02 && r3 <= hi + 0.02) X0 = r3;            /* une boîte commence presque toujours sur un pixel de l'appareil */
+          /* ⚑ v170 (PromiLate) : le premier texte d'un élément en bloc en ligne ou posé en absolu (une lettre composée, un accent) commence au bord de cet élément,
+             que WebKit rend en fraction de pixel — le rectangle d'un caractère seul, arrondi, laissait la lettre 1 à 2 pixels de l'appareil à côté */
+          var pe = nd.parentNode, pcs = (fam === 'PromiLate' && B === boites[0] && pe && pe !== cible && pe.firstChild === nd) ? racine.getComputedStyle(pe) : null;
+          if (pcs && (pcs.display === 'inline-block' || pcs.position === 'absolute')) X0 = pe.getBoundingClientRect().left + ((parseFloat(pcs.borderLeftWidth) || 0) + (parseFloat(pcs.paddingLeft) || 0)) * kech;
           var BASE = B.top + asc * k;
           B.cars.forEach(function (c) {
             if (c.blanc) { if (G.length) G[G.length - 1].pause += esp; return; }
             var aff = c.c, x = X0 + c.a, y = BASE, gd = D && D.g[aff], V = null, sc, av = c.av;
             if (gd) { V = gd.h ? 'h' : (gd.b ? 'b' : null); }   /* ⚑ v154 (C-125, « aucune onde ») : le tracé naturel de chaque lettre, sans chaînage haut / bas */
-            var inst = { car: aff, x: x, y: y, spec: spec, coul: st.color, pause: 0, police: fam, fs: fs, av: av, var: V, exception: !!(gd && V && V !== cote), demande: cote };
+            var inst = { car: aff, x: x, y: y, spec: spec, coul: st.color, pause: 0, police: fam, fs: fs, av: av, var: V, exception: !!(gd && V && V !== cote), demande: cote, attache: !!st.attache && fam === 'PromiLate', tf: TRF[ni] ? TRF[ni].tf : null };
             if (gd && V) {
               sc = (gd.a > 0 ? av / gd.a : fs / D.upm); inst.sc = sc; inst.g = gd; inst.fin = gd[V].f; cote = gd[V].f; var u = sc * k;
               inst.bx0 = x + gd.bo[0] * u; inst.bx1 = x + gd.bo[2] * u; inst.by0 = y - gd.bo[3] * u; inst.by1 = y - gd.bo[1] * u;
@@ -510,15 +525,18 @@
               var mt = mctx.measureText(aff), ga = mt.actualBoundingBoxLeft || 0, dr = mt.actualBoundingBoxRight || av, ha = mt.actualBoundingBoxAscent || fs * 0.8, ba = mt.actualBoundingBoxDescent || fs * 0.25;
               inst.bx0 = x - ga * k; inst.bx1 = x + dr * k; inst.by0 = y - ha * k; inst.by1 = y + ba * k; inst.l = Math.max(0.2, (dr + ga) / fs); inst.sc = 0; inst.fin = cote;
             }
+            if (inst.tf) { var cx = [], cy = []; [[inst.bx0, inst.by0], [inst.bx1, inst.by0], [inst.bx0, inst.by1], [inst.bx1, inst.by1]].forEach(function (q) { var w2 = versFenetre(inst.tf, q[0], q[1]); cx.push(w2[0]); cy.push(w2[1]); });
+              inst.bx0 = Math.min.apply(null, cx); inst.bx1 = Math.max.apply(null, cx); inst.by0 = Math.min.apply(null, cy); inst.by1 = Math.max.apply(null, cy); inst.xo = versFenetre(inst.tf, x, y); }
             xmin = Math.min(xmin, inst.bx0); xmax = Math.max(xmax, inst.bx1); ymin = Math.min(ymin, inst.by0); ymax = Math.max(ymax, inst.by1);
             G.push(inst);
           });
         });
       }
-      ctl.glyphes = G.map(function (g) { return { car: g.car, variante: g.var, demande: g.demande, fin: g.fin, exception: g.exception, x: (g.x - er.left) / k, y: (g.y - er.top) / k, ech: g.sc, police: g.police }; });
+      defaits.forEach(function (el) { var a = el.__tlDefait; if (a[0]) el.style.setProperty('transform', a[0], a[1]); else el.style.removeProperty('transform'); delete el.__tlDefait; });
+      ctl.glyphes = G.map(function (g) { return { car: g.car, variante: g.var, demande: g.demande, fin: g.fin, exception: g.exception, x: (g.x - er.left) / k, y: (g.y - er.top) / k, ech: g.sc, police: g.police, mat: g.tf ? g.tf.slice(0, 4) : null, xo: g.xo ? [(g.xo[0] - er.left) / k, (g.xo[1] - er.top) / k] : null }; });
       if (!G.length) { ctl.duree = 0; return; }
       /* 3 · les lignes (pour la découpe du texte réel) */
-      G.forEach(function (g) { var l = L.length ? L[L.length - 1] : null; if (!l || Math.abs(g.y - l.y) > 1) { l = { y: g.y, haut: Infinity, bas: -Infinity, n: 0 }; L.push(l); } g.ligne = L.length - 1; l.haut = Math.min(l.haut, g.by0); l.bas = Math.max(l.bas, g.by1); l.n++; });
+      G.forEach(function (g) { var l = L.length ? L[L.length - 1] : null; if (!l || (Math.abs(g.y - l.y) > 1 && !g.attache)) { l = { y: g.y, haut: Infinity, bas: -Infinity, n: 0 }; L.push(l); } g.ligne = L.length - 1; l.haut = Math.min(l.haut, g.by0); l.bas = Math.max(l.bas, g.by1); l.n++; });
       /* 4 · le canevas : un FRÈRE de la cible (il n'est pas découpé avec elle), calé sur un pixel entier de la fenêtre */
       /* sa taille est un nombre ENTIER de pixels CSS : sinon le navigateur arrondit sa boîte (au 1/64) et rééchantillonne l'image — un flou d'une rangée */
       var mg = 3, W = Math.round((Math.ceil((xmax - xmin) / k) + 2 * mg + 2) * s), H = Math.round((Math.ceil((ymax - ymin) / k) + 2 * mg + 2) * s);
@@ -536,7 +554,8 @@
       brouillon = doc.createElement('canvas'); bctx = brouillon.getContext('2d', { willReadFrequently: true });
       var bw = 8, bh = 8;
       G.forEach(function (g) {
-        g.gx = (g.x - cr.left) * dpr; g.gy = (g.y - cr.top) * dpr;
+        g.gx = ((g.xo ? g.xo[0] : g.x) - cr.left) * dpr; g.gy = ((g.xo ? g.xo[1] : g.y) - cr.top) * dpr;
+        g.M = g.tf ? [g.tf[0], g.tf[1], g.tf[2], g.tf[3]] : [1, 0, 0, 1];
         g.e0 = (g.bx0 - cr.left) * dpr; g.e1 = (g.bx1 - cr.left) * dpr;                       /* l'encre, en pixels du canevas */
         g.X0 = Math.floor(g.e0) - 2; g.Y0 = Math.floor((g.by0 - cr.top) * dpr) - 2; g.w = Math.ceil(g.e1) + 2 - g.X0; g.h = Math.ceil((g.by1 - cr.top) * dpr) + 2 - g.Y0;
         bw = Math.max(bw, g.w); bh = Math.max(bh, g.h);
@@ -557,13 +576,14 @@
        que DESSINER la lettre (le texte réel, puis à 2× pour la carte : 1 à 2 ms) ; la carte part à un Worker (`ouvrier`), qui la rend ; la plume
        attend sa lettre si elle n'est pas prête (elle marque un temps, l'image n'est jamais bloquée). Une carte déjà faite (même lettre, taille,
        couleur, décalage sous le pixel) est reprise du cache. Sans Worker (ou en mode `manuel`, les juges), le calcul reste sur place. */
-    function cleDe(g) { return g.spec + '|' + g.car + '|' + g.coul + '|' + s.toFixed(3) + '|' + g.w + 'x' + g.h + '|' + Math.round(((g.gx - g.X0) % 1) * 4) + ',' + Math.round(((g.gy - g.Y0) % 1) * 4); }
+    function cleDe(g) { return g.spec + '|' + g.car + (g.tf ? '|' + g.M.map(function (v) { return v.toFixed(4); }).join(',') : '') + '|' + g.coul + '|' + s.toFixed(3) + '|' + g.w + 'x' + g.h + '|' + Math.round(((g.gx - g.X0) % 1) * 4) + ',' + Math.round(((g.gy - g.Y0) % 1) * 4); }
     function depuisCache(g) { var C0 = TL._cache[cleDe(g)]; if (!C0) return false;
       g.im = new ImageData(new Uint8ClampedArray(C0.im), g.w, g.h); g.A = C0.A; g.T = C0.T; g.T1 = C0.T1; g.sup = C0.sup; g.D = C0.D; g.pret = true; g.attente = false; TL.mesures.cache++; return true; }
     function rendGlyphe(g) {
       /* le glyphe réel, rendu une fois (son image à 1×, son encre à `sup`×) ; les chemins de ses traits, à la même échelle */
       bctx.setTransform(1, 0, 0, 1, 0, 0); bctx.clearRect(0, 0, g.w, g.h);
-      bctx.setTransform(s, 0, 0, s, g.gx - g.X0, g.gy - g.Y0); bctx.font = g.spec; bctx.fillStyle = g.coul; bctx.textBaseline = 'alphabetic'; bctx.fillText(g.car, 0, 0);
+      var M = g.M;
+      bctx.setTransform(s * M[0], s * M[1], s * M[2], s * M[3], g.gx - g.X0, g.gy - g.Y0); bctx.font = g.spec; bctx.fillStyle = g.coul; bctx.textBaseline = 'alphabetic'; bctx.fillText(g.car, 0, 0);
       bctx.setTransform(1, 0, 0, 1, 0, 0);
       var im = bctx.getImageData(0, 0, g.w, g.h), d = im.data, n = g.w * g.h, A = new Uint8ClampedArray(n), p;
       for (p = 0; p < n; p++) A[p] = d[4 * p + 3];
@@ -577,12 +597,12 @@
         if (!TL._sur) { TL._sur = doc.createElement('canvas'); TL._surCtx = TL._sur.getContext('2d', { willReadFrequently: true }); }
         var sc2 = TL._sur, x2 = TL._surCtx; if (sc2.width < W2) sc2.width = W2; if (sc2.height < H2) sc2.height = H2;
         x2.setTransform(1, 0, 0, 1, 0, 0); x2.clearRect(0, 0, W2, H2);
-        x2.setTransform(s * sup, 0, 0, s * sup, (g.gx - g.X0) * sup, (g.gy - g.Y0) * sup); x2.font = g.spec; x2.fillStyle = '#000'; x2.textBaseline = 'alphabetic'; x2.fillText(g.car, 0, 0);
+        x2.setTransform(s * sup * M[0], s * sup * M[1], s * sup * M[2], s * sup * M[3], (g.gx - g.X0) * sup, (g.gy - g.Y0) * sup); x2.font = g.spec; x2.fillStyle = '#000'; x2.textBaseline = 'alphabetic'; x2.fillText(g.car, 0, 0);
         x2.setTransform(1, 0, 0, 1, 0, 0);
         var d2 = x2.getImageData(0, 0, W2, H2).data; A2 = new Uint8ClampedArray(W2 * H2); for (p = 0; p < W2 * H2; p++) A2[p] = d2[4 * p + 3];
       }
       if (g.pc) {
-        traits = g.pc.traits.map(function (t) { return { R: Math.max(t.R * u * sup, 0.75), b0: t.b0, b1: t.b1, pts: t.pts.map(function (q) { return [(ox + q[0] * u) * sup, (oy - q[1] * u) * sup]; }) }; });
+        traits = g.pc.traits.map(function (t) { return { R: Math.max(t.R * u * sup, 0.75), b0: t.b0, b1: t.b1, pts: t.pts.map(function (q) { return [(ox + (M[0] * q[0] - M[2] * q[1]) * u) * sup, (oy + (M[1] * q[0] - M[3] * q[1]) * u) * sup]; }) }; });
         var acc = 0; g.pc.ordre.forEach(function (st) { if (st[0] === 'r') acc += st[1] * u * sup; else if (st[0] === 't') { moves.push(acc); acc = 0; } });
       } else { traits = [{ R: g.h, pts: [[1, g.h / 2], [g.w - 1, g.h / 2]] }]; moves = [0]; }
       return { im: im, A: A, A2: A2, W2: W2, H2: H2, sup: sup, traits: traits, moves: moves, cle: cleDe(g) };
@@ -627,7 +647,7 @@
     }
     function pose(g) {
       /* le glyphe fini, dans le canevas, en attendant que le texte réel le prenne */
-      fctx.setTransform(s, 0, 0, s, g.gx, g.gy); fctx.font = g.spec; fctx.fillStyle = g.coul; fctx.textBaseline = 'alphabetic'; fctx.fillText(g.car, 0, 0); fctx.setTransform(1, 0, 0, 1, 0, 0);
+      fctx.setTransform(s * g.M[0], s * g.M[1], s * g.M[2], s * g.M[3], g.gx, g.gy); fctx.font = g.spec; fctx.fillStyle = g.coul; fctx.textBaseline = 'alphabetic'; fctx.fillText(g.car, 0, 0); fctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(g.X0, g.Y0, g.w, g.h); ctx.drawImage(fin, g.X0, g.Y0, g.w, g.h, g.X0, g.Y0, g.w, g.h);
       g.im = g.A = g.T = g.T1 = null; g.pret = false;
     }

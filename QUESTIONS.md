@@ -8904,3 +8904,6 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   Proposition : Tom regarde `?exact=1` sur l'iPhone ; s'il le garde, on fige et on retire le paramètre.
 - **Q590 — À REGARDER (C-203 §2, v169b, rien changé)** : PromiLate n'a ni « ! » ni « . » ; le « ! » de « Le reste s'explore à ton rythme ! » tombe sur Gilbert (plus fin
   que les capitales de PromiLate), comme le « . » d'avant. Proposition : Tom le dessine dans PromiLate avec le « À » (Q587).
+- **Q591 — À REGARDER (C-125, v170, rien changé : module commun aux trois polices)** : à la toute dernière image d'un tracé, la lettre encore sur le canevas est
+  d'un demi-pixel plus grasse que le texte réel qui la remplace (anticrénelage du canevas ; identique en Gilbert et en Atkinson, validées) ; le R de PromiLate garde
+  ≈ 5 ms un liseré d'un pixel entre sa barre et son fût. Proposition : Tom regarde au ralenti (`?tlv=0.05`) sur l'iPhone ; s'il le voit, un lot à part sur le module.
