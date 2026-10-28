@@ -21,7 +21,7 @@ import banc_tom as B
 from playwright.sync_api import sync_playwright
 F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')
 P1 = 'Étoffe ta Toile, et partage-la !'        # les textes de Tom, EN DUR (l'espace insécable devant « ! », la règle du produit)
-P2 = 'Le reste s’explore à ton rythme.'
+P2 = 'Le reste s’explore à ton rythme\u00a0!'   # ⚑ v169b (Tom, C-203 §2) : le « ! », exception nommée (avant : « . » — sauvegardes/redteam_guide_cloture-avant-v169b.py)
 res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-104s %s' % ('✅' if ok else '❌', nom, str(d)[:230]), flush=True)

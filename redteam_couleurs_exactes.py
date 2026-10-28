@@ -17,7 +17,7 @@ from playwright.sync_api import sync_playwright
 F = 'app.html'
 for a in sys.argv[1:]:
     if a.startswith('--fichier='): F = a.split('=', 1)[1]
-OPTION = '--exact' in sys.argv
+OPTION = False   # ⚑ v169b (Tom, Q589) : l'option `?exact=1` est retirée de l'app ; le bloc `--exact` reste pour l'histoire, il ne tourne plus
 PAL = ['#82AEF8', '#FFB8D2', '#C9A8F5', '#EFE3C7']                 # la palette par défaut (Ingénu), dans son ordre — les valeurs de Tom
 STUDIO = [PAL[i % 4] for i in range(6)]                            # S t u d i o
 NAT = {'promi': '#82AEF8', 'chiche': '#FFB8D2', 'cercle': '#C9A8F5'}

@@ -105,7 +105,7 @@ de tâches est à rejeter, même si elle est fonctionnellement pratique.
 | **Fil** | le flux d'activité | |
 | **Aura** | l'écran de progression et d'analyse | anciennement « Karma » |
 | **Studio** | le sélecteur de monde graphique | |
-| **Ma Parole !** | l'abonnement payant — **anciennement « Le Cercle »** (v106) ; **les exceptions nommées au « ! » : « Ma Parole ! », « Promi planté ! » (v146), « Parole tenue ! » et « Défi relevé ! » (v148, C-144), « Étoffe ta Toile, et partage-la ! » (v165, C-203)** | « Avec Ma Parole ! » · « Tu es Membre Ma Parole ! » · « Retourne ta Toile » · bouton « Bon, allez d'accord ». Espace insécable avant « ! ». Clés internes inchangées (`ouvreCercle`, `.s2-cercle`, `isPremium`) |
+| **Ma Parole !** | l'abonnement payant — **anciennement « Le Cercle »** (v106) ; **les exceptions nommées au « ! » : « Ma Parole ! », « Promi planté ! » (v146), « Parole tenue ! » et « Défi relevé ! » (v148, C-144), « Étoffe ta Toile, et partage-la ! » (v165, C-203), « Le reste s'explore à ton rythme ! » (v169b, C-203)** | « Avec Ma Parole ! » · « Tu es Membre Ma Parole ! » · « Retourne ta Toile » · bouton « Bon, allez d'accord ». Espace insécable avant « ! ». Clés internes inchangées (`ouvreCercle`, `.s2-cercle`, `isPremium`) |
 | **Peaufiner** | le tiroir de réglages, en bas de chaque fiche | |
 | **Index** | la liste complète des Promi | |
 | **Pelote** | la boule de l'Aura — le sol, les îles, la fourrure | **« sphère » et « Orbite » sont morts** |
@@ -195,6 +195,23 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v169b (28 oct. 2026) — LA CLÔTURE DU GUIDE SANS ATTENTE ; LA PHRASE 2 PREND UN « ! » ; `?exact=1` RETIRÉ. (Décisions Tom.) Ce bloc CORRIGE v165 (le rythme de la clôture, la phrase 2) et v169 (l'option).
+> **Q589 tranchée (Tom) : seul « Studio » aux couleurs exactes ; `?exact=1` et son code sont RETIRÉS** (« monde », « partage-la », les natures : comme avant v169).
+> **⚑ C-203 §1 — « LA PHRASE DE CLÔTURE ET SON FLOU ARRIVENT TROP TARD ».** *La cause, mesurée sur v169 (WebKit)* : a (la page + refermée) et b (le menu refermé par un
+> toucher ailleurs) — une minuterie de 60 ms attendait que l'eau de l'étape du + ait fini de se retirer (1,2 s), puis une Toile AU REPOS (`calme()`), puis 400 ms,
+> puis refaisait l'image de l'accueil et son flou sur le fil principal, puis 1,4 s de couverture et 0,7 s d'ouverture : flou à 0,85–1,5 s, zone de Partager à
+> 3,0–3,6 s ; c (toucher ailleurs que le +) : 0,7 s de fermeture puis 0,7 s d'ouverture (1,46 s). *Aujourd'hui* (`guetteRetour`, `revenu`, `cloture`, `montee`) :
+> le retour se lit À L'IMAGE (la page + sortie de l'écran, le menu refermé ; une nature touchée attend que la page + ait paru) ; on n'attend plus le calme — l'image
+> floutée de l'étape du + est reprise telle quelle (`CACHE`), et si la Toile a changé (une parole plantée), `majFlou` la refait hors du fil dès qu'elle est posée ;
+> le menu refermé PENDANT que l'eau se retire : l'eau remonte d'où elle en est ; l'eau monte en 400 ms (`COUVRE_C`), la zone de Partager et sa flèche s'ouvrent en
+> 360 ms (`OUVRE_C`) dès 62 % de la montée, une seule boucle, une peinture par image ; l'entourage se calcule après la première image de l'eau ; c : 240 + 360 ms.
+> **Cible de Tom, en dur : le flou commence ≤ 100 ms après le déclencheur, la zone nette de Partager avec sa flèche ouverte ≤ 800 ms.** Mesuré (charge 7 à 13 :
+> NON JUGÉ AU CALME, C-137) : flou 8 à 74 ms, zone 391 à 760 ms, sur c, a (X), a+ (plantée), b, b' (menu refermé pendant le retrait), échelles 1 et 0,79. Juge :
+> **`redteam_cloture_delai.py`** (rouge sur v169 : 10/24). ⚠ Deux rouges isolés pris sous une charge de 13 à 25 (105, 237 et 920 ms), non reproduits ensuite.
+> **⚑ C-203 §2 — LA PHRASE 2 : « Le reste s'explore à ton rythme ! »**, mot pour mot, espace insécable avant « ! » — EXCEPTION NOMMÉE au « ! ». PromiLate, cobalt, place
+> inchangés. ⚠ PromiLate n'a pas de « ! » (ni de « . ») : il tombe sur Gilbert, comme le point d'avant (Q590). Contrat remis : `redteam_guide_cloture` (P2 ;
+> original en sauvegarde).
 
 ### ⚑ v169 (28 oct. 2026) — LES LETTRES DE « STUDIO » AUX COULEURS EXACTES (C-204 §1). (Décision Tom.) Ce bloc CORRIGE v149 (Q533).
 > **Validé par Tom : C-205 (toutes les flèches du guide, Studio compris).**
@@ -3699,7 +3716,8 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
-python3 redteam_couleurs_exactes.py # 10 (+10 avec --exact) — v169 (C-204) : les lettres de « Studio » à l'hexadécimal près, deux thèmes, deux échelles ; l'option ?exact=1. 14/20 sur v168c.
+python3 redteam_cloture_delai.py   # 30 — v169b (C-203 §1) : la clôture du guide sur cinq chemins (c, a, a planté, b, b'), deux échelles : flou ≤ 100 ms, zone de Partager et flèche ≤ 800 ms, lus image par image dans la page. 10/24 sur v169. Durées : au calme seulement.
+python3 redteam_couleurs_exactes.py # 10 (+10 avec --exact, retiré en v169b) — v169 (C-204) : les lettres de « Studio » à l'hexadécimal près, deux thèmes, deux échelles ; l'option ?exact=1. 14/20 sur v168c.
 python3 redteam_guide_fleche.py   # 80 — v166 (C-203 §2) : la flèche orange vers le Studio, le + et Partager — orange, axe vers l'icône ± 10°, aucun recouvrement, pointe au bord de la zone nette, fixe, partie à la phrase 2 ; deux thèmes, deux échelles.
 python3 redteam_veille_depart.py # 5 — v167 (C-181 §3) : l'état de Tom, WebKit, sans ?veille : la veille part à 60 s ± 1 s après le dernier toucher (vrais PointerEvent) sur l'accueil, une fiche + un mur du Peaufiner, l'Index, le Fil, l'Aura. Rouge sur v166.
 python3 redteam_guide_cloture.py # 130 — v165 (C-203) : la clôture du guide — chemins a, b, c, Partager touché ou non, la zone nette lue sur l'eau, la fin, le lancement suivant ; deux thèmes, deux échelles.
