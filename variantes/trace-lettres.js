@@ -98,9 +98,9 @@
     var V = g[v] ? v : (g.h ? 'h' : 'b'), var_ = g[V]; if (!var_) return null;
     var out = { variante: V, fin: var_.f, traits: [], repassages: [], sauts: [], ordre: [], mi: D.mi, upm: D.upm, boite: g.bo, chasse: g.a }, dern = null;
     var_.t.forEach(function (pas) {
-      var k = pas[0], pts = [], R = 0, j, a;
-      for (j = 1; j < pas.length; j++) { a = arete(g, pas[j]); R = Math.max(R, a.R); pts = pts.concat(j > 1 ? a.pts.slice(1) : a.pts); }
-      if (k === 0) { if (out.sauteAvant && dern) out.sauts.push([dern, pts[0]]); out.sauteAvant = false; out.traits.push({ pts: pts, R: R, L: longueur(pts) }); out.ordre.push(['t', out.traits.length - 1]); dern = pts[pts.length - 1]; }
+      var k = pas[0], pts = [], R = 0, j, a, rs = [], q;
+      for (j = 1; j < pas.length; j++) { a = arete(g, pas[j]); R = Math.max(R, a.R); pts = pts.concat(j > 1 ? a.pts.slice(1) : a.pts); for (q = 1; q < a.pts.length; q++) rs.push(a.R); }
+      if (k === 0) { if (out.sauteAvant && dern) out.sauts.push([dern, pts[0]]); out.sauteAvant = false; out.traits.push({ pts: pts, R: R, L: longueur(pts), rs: rs }); out.ordre.push(['t', out.traits.length - 1]); dern = pts[pts.length - 1]; }
       else if (k === 1) { out.repassages.push(pts); out.ordre.push(['r', longueur(pts)]); }
       else { out.sauteAvant = true; out.ordre.push(['s', 0]); }
     });
@@ -110,6 +110,9 @@
     var bouts = []; g.e.forEach(function (e) { var n = (e.length - 1) >> 1; bouts.push([e[1], e[2]], [e[2 * n - 1], e[2 * n]]); });
     function nature(p) { var c = 0, i; for (i = 0; i < bouts.length; i++) if (Math.abs(bouts[i][0] - p[0]) <= 1.5 && Math.abs(bouts[i][1] - p[1]) <= 1.5) c++; return c <= 1 ? 'l' : (c === 2 ? 'c' : 'j'); }
     out.traits.forEach(function (t) { var a = t.pts[0], b = t.pts[t.pts.length - 1]; t.ferme = Math.abs(a[0] - b[0]) <= 1.5 && Math.abs(a[1] - b[1]) <= 1.5 && t.pts.length > 3; t.b0 = t.ferme ? 'f' : nature(a); t.b1 = t.ferme ? 'f' : nature(b); });
+    /* ⚑ v170b — un bout que les données disent FIXE (`nx`) : il ne se prolonge pas (la barre du A finit juste après son contre-poinçon) */
+    (g.nx || []).forEach(function (q) { var e = g.e[q[0] - 1], n = (e.length - 1) >> 1, p = q[1] ? [e[2 * n - 1], e[2 * n]] : [e[1], e[2]];
+      out.traits.forEach(function (t) { var a = t.pts[0], b = t.pts[t.pts.length - 1]; if (Math.abs(a[0] - p[0]) <= 1.5 && Math.abs(a[1] - p[1]) <= 1.5) t.b0 = 'x'; if (Math.abs(b[0] - p[0]) <= 1.5 && Math.abs(b[1] - p[1]) <= 1.5) t.b1 = 'x'; }); });
     out.depart = out.traits.length ? out.traits[0].pts[0] : null;
     var d = out.traits.length ? out.traits[out.traits.length - 1].pts : null; out.arrivee = d ? d[d.length - 1] : null;
     out.cote = out.depart ? (out.depart[1] >= D.mi ? 'h' : 'b') : V;
@@ -424,7 +427,15 @@
     var cv = null, G = [], L = [], total = 0, t0 = 0, ig = 0, jd = 0, tPrec = -1, clipAvant = null, tAbs = 0, tPlume = 0;
     var ctx, fin, fctx, brouillon, bctx, s = 1, dpr = 1, kech = 1, er = null, cr = null;
 
-    function decoupe(v) { cible.style.setProperty('-webkit-clip-path', v, 'important'); cible.style.setProperty('clip-path', v, 'important'); }
+    function pose_(v) { cible.style.setProperty('-webkit-clip-path', v, 'important'); cible.style.setProperty('clip-path', v, 'important'); }
+    /* ⚑ v170b (Tom, C-125 : « en PromiLate, pixelisé et cassé aux jonctions ») — UNE LETTRE DE PROMILATE NE PASSE PLUS PAR LE CANEVAS. C'est le TEXTE RÉEL qui
+       se dévoile, par une découpe VECTORIELLE (`clip-path: path()`) : chaque trait tracé est une bande le long de son chemin, à bout plat là où il avance,
+       raccordée aux jonctions (biseaux, disques aux angles vifs), prolongée au-delà de ses bouts ; toutes les bandes sont UN SEUL chemin (règle nonzero) :
+       leurs recouvrements n'ont ni couture ni marche, et le contour du glyphe — celui du texte lui-même — coupe tout ce qui dépasse. La résolution est celle
+       de l'écran (le navigateur rastérise le texte et la découpe), et la dernière image est le texte, au pixel. Avant : une carte de temps pixel par pixel
+       (des marches d'un pixel entre deux traits, des dents aux jonctions) et un glyphe redessiné sur le canevas, un demi-pixel plus gras. */
+    var vect = false, basePts = null;
+    function decoupe(v, pts) { if (!vect) { pose_(v); return; } basePts = v === 'none' ? 'none' : (pts || null); appliquer(); }
     function range() {
       if (cv && cv.parentNode) cv.parentNode.removeChild(cv); cv = null;
       if (clipAvant) {
@@ -506,6 +517,9 @@
           }
           var X0 = (lo <= hi) ? (lo + hi) / 2 : B.cars[0].L, r3 = Math.round(X0 * dpr) / dpr;
           if (lo <= hi && r3 >= lo - 0.02 && r3 <= hi + 0.02) X0 = r3;            /* une boîte commence presque toujours sur un pixel de l'appareil */
+          /* ⚑ v170b (PromiLate) : les rectangles de WebKit sont FRACTIONNAIRES (mesuré : 63,833) — le bord exact est `lo`, pas le milieu d'un intervalle d'un pixel
+             (jusqu'à un demi-pixel CSS de trop à droite : la découpe vectorielle manquait la frange gauche des lettres) */
+          if (fam === 'PromiLate' && lo <= hi + 0.01) X0 = lo;
           /* ⚑ v170 (PromiLate) : le premier texte d'un élément en bloc en ligne ou posé en absolu (une lettre composée, un accent) commence au bord de cet élément,
              que WebKit rend en fraction de pixel — le rectangle d'un caractère seul, arrondi, laissait la lettre 1 à 2 pixels de l'appareil à côté */
           var pe = nd.parentNode, pcs = (fam === 'PromiLate' && B === boites[0] && pe && pe !== cible && pe.firstChild === nd) ? racine.getComputedStyle(pe) : null;
@@ -527,6 +541,7 @@
             }
             if (inst.tf) { var cx = [], cy = []; [[inst.bx0, inst.by0], [inst.bx1, inst.by0], [inst.bx0, inst.by1], [inst.bx1, inst.by1]].forEach(function (q) { var w2 = versFenetre(inst.tf, q[0], q[1]); cx.push(w2[0]); cy.push(w2[1]); });
               inst.bx0 = Math.min.apply(null, cx); inst.bx1 = Math.max.apply(null, cx); inst.by0 = Math.min.apply(null, cy); inst.by1 = Math.max.apply(null, cy); inst.xo = versFenetre(inst.tf, x, y); }
+            if (fam === 'PromiLate' && inst.pc && TL.vecteur !== false) { inst.vect = true; vect = true; prepVect(inst); }
             xmin = Math.min(xmin, inst.bx0); xmax = Math.max(xmax, inst.bx1); ymin = Math.min(ymin, inst.by0); ymax = Math.max(ymax, inst.by1);
             G.push(inst);
           });
@@ -560,6 +575,7 @@
         g.X0 = Math.floor(g.e0) - 2; g.Y0 = Math.floor((g.by0 - cr.top) * dpr) - 2; g.w = Math.ceil(g.e1) + 2 - g.X0; g.h = Math.ceil((g.by1 - cr.top) * dpr) + 2 - g.Y0;
         bw = Math.max(bw, g.w); bh = Math.max(bh, g.h);
       });
+      G.forEach(function (g) { if (g.vect) restes(g); });   /* v170b : ce qu'aucune bande ne couvre */
       L.forEach(function (l, i) { l.y0 = i === 0 ? 0 : Math.floor(((L[i - 1].bas + l.haut) / 2 - cr.top) * dpr); }); L.forEach(function (l, i) { l.y1 = i + 1 < L.length ? L[i + 1].y0 : H; });
       brouillon.width = bw; brouillon.height = bh;
       /* 5 · la durée : N caractères à cps par seconde, à vitesse de plume constante ; une espace = une courte pause */
@@ -637,6 +653,7 @@
     function demande(g) {
       /* hors du fil principal : on dessine la lettre ici, sa carte se calcule dans le Worker */
       if (g.pret || g.attente) return;
+      if (g.vect) { g.pret = true; return; }
       if (depuisCache(g)) return;
       var w = o.manuel ? null : ouvrier();
       if (!w) { prepare(g); return; }
@@ -645,13 +662,181 @@
       try { w.postMessage({ id: id, A: R.A2, w: R.W2, h: R.H2, traits: R.traits, moves: R.moves }); } catch (e) { delete TL._attente[id]; g.attente = false; prepare(g); return; }
       TL.mesures.prep.push(racine.performance.now() - d0); if (TL.mesures.prep.length > 4000) TL.mesures.prep.splice(0, 2000);
     }
+    /* ── v170b : le dévoilement vectoriel d'une lettre de PromiLate ── */
+    var VK = 1.0, VPAD = 0.6;   /* la demi-largeur d'une bande : celle du trait (lue sur la police) + 1,2 px CSS ; le contour du glyphe coupe le surplus */
+    function prepVect(g) {
+      var pc = g.pc, steps = [], tot = 0, ordre = [];
+      /* ⚑ v170b — des traits qui SE SUIVENT (le bout de l'un est le départ du suivant, sans repassage ni saut : les tronçons du S) sont UN SEUL trait vectoriel :
+         raccordés en onglet, sans couture ni coin pincé entre deux bouts */
+      pc.ordre.forEach(function (st) {
+        if (st[0] === 't') { var t = pc.traits[st[1]], last = ordre.length ? ordre[ordre.length - 1] : null;
+          if (last && last.t && !last.ferme && !t.ferme) { var e = last.pts[last.pts.length - 1], s0 = t.pts[0];
+            if (Math.abs(e[0] - s0[0]) <= 1.5 && Math.abs(e[1] - s0[1]) <= 1.5) { last.pts = last.pts.concat(t.pts.slice(1)); last.rs = last.rs.concat(t.rs || t.pts.slice(1).map(function () { return t.R; })); last.b1 = t.b1; last.R = Math.max(last.R, t.R); return; } }
+          ordre.push({ t: true, pts: t.pts.slice(), rs: (t.rs || t.pts.slice(1).map(function () { return t.R; })).slice(), b0: t.b0, b1: t.b1, R: t.R, ferme: t.ferme }); }
+        else ordre.push(st); });
+      ordre.forEach(function (st) {
+        if (st[0] === 'r') { tot += st[1] * REPASSAGE; return; }
+        if (!st.t) return;
+        var t = st, P = t.pts.slice(), n = P.length; if (n < 2) return;
+        var rs = (t.rs && t.rs.length === n - 1) ? t.rs.slice() : P.slice(1).map(function () { return t.R; });
+        rs = rs.map(function (r) { return r * VK + VPAD / g.sc; });
+        /* un trait DROIT (tous ses tronçons alignés) a une seule largeur, la plus grande : mesurée près d'un bout, elle était plus étroite (le haut du fût du D) */
+        (function () { var d0x = P[n - 1][0] - P[0][0], d0y = P[n - 1][1] - P[0][1], dl = Math.hypot(d0x, d0y), ok = dl > 0;
+          for (var q = 1; ok && q < n - 1; q++) ok = Math.abs((P[q][0] - P[0][0]) * d0y - (P[q][1] - P[0][1]) * d0x) / dl < 3;
+          if (ok) { var mx = Math.max.apply(null, rs); rs = rs.map(function () { return mx; }); } })();
+        var Pfin = P[n - 1].slice();
+        function dirv(a, b) { var dx = b[0] - a[0], dy = b[1] - a[1], l = Math.hypot(dx, dy) || 1; return [dx / l, dy / l]; }
+        /* les bouts : un bout libre se prolonge de 1,6 demi-largeur (un bout coupé en biais, un empattement), un coin ou un embranchement d'une demi-largeur
+           (le coin extérieur) ; le front y passe aussi, au même pas — rien ne paraît d'un bloc */
+        function ext(b) { return b === 'l' ? 1.6 : (b === 'c' ? 1.0 : 0); }   /* un bout libre : une demi-largeur (au-delà, le prolongement traversait le vide jusqu'à l'encre voisine — le milieu du S) ; ses coins sont des restes, datés avec leurs voisins */   /* un embranchement (« j ») : l'autre trait le couvre déjà — prolonger y dévoilerait ce trait avant lui */
+        var e0 = ext(t.b0) * rs[0], e1 = ext(t.b1) * rs[rs.length - 1];
+        var d0 = dirv(P[1], P[0]), d1 = dirv(P[n - 2], P[n - 1]);
+        if (e0 > 0) { P.unshift([P[0][0] + d0[0] * e0, P[0][1] + d0[1] * e0]); rs.unshift(rs[0]); }
+        if (e1 > 0) { P.push([P[P.length - 1][0] + d1[0] * e1, P[P.length - 1][1] + d1[1] * e1]); rs.push(rs[rs.length - 1]); }
+        var Sx = [0]; for (var i = 1; i < P.length; i++) Sx.push(Sx[i - 1] + Math.hypot(P[i][0] - P[i - 1][0], P[i][1] - P[i - 1][1]));
+        steps.push({ P: P, rs: rs, S: Sx, t0: tot, L: Sx[Sx.length - 1], Lfin: Sx[Sx.length - 1] - e1, fin: Pfin, b1: t.b1, ferme: !!t.ferme }); tot += Sx[Sx.length - 1];
+      });
+      /* ⚑ v170b — UN FRONT QUI ARRIVE SUR UN TRAIT DÉJÀ TRACÉ y arrive PARALLÈLE à lui : dans sa dernière longueur (1,5 demi-largeur), la coupe pivote vers la
+         direction du trait qu'il rejoint. Perpendiculaire à son chemin jusqu'au bout, un front en biais laissait un mince coin d'encre pincé juste avant de toucher. */
+      steps.forEach(function (st, k) { if (st.b1 !== 'j' && st.b1 !== 'c') return; var best = 4, dir = null, rc = 0;
+        for (var j = 0; j < k; j++) { var Q = steps[j].P; for (var i = 0; i + 1 < Q.length; i++) { var ax = Q[i][0], ay = Q[i][1], bx = Q[i + 1][0] - ax, by = Q[i + 1][1] - ay, l2 = bx * bx + by * by; if (!l2) continue;
+          var u = Math.max(0, Math.min(1, ((st.fin[0] - ax) * bx + (st.fin[1] - ay) * by) / l2)), d = Math.hypot(ax + bx * u - st.fin[0], ay + by * u - st.fin[1]); if (d < best) { best = d; var ln = Math.sqrt(l2); dir = [bx / ln, by / ln]; rc = steps[j].rs[i]; } } }
+        st.cible = dir; st.rcible = rc; });
+      /* un anneau (le O) se referme sur son propre départ : même règle — la coupe y est déjà parallèle, l'écart final est franchi d'un coup */
+      steps.forEach(function (st) { if (!st.ferme) return; var P = st.P, dx = P[1][0] - P[0][0], dy = P[1][1] - P[0][1], dl = Math.hypot(dx, dy) || 1; st.cible = [dy / dl, -dx / dl]; st.rcible = 0; st.fin = P[0].slice(); });
+      g.vs = { steps: steps, tot: Math.max(tot, 1e-6) }; g.sv = 0; g.pret = true; g.vfull = null;
+      if (TL._debug) (TL._vs = TL._vs || []).push({ car: g.car, steps: steps.map(function (s) { return { t0: s.t0, L: s.L, Lfin: s.Lfin, b1: s.b1, cible: s.cible, rc: s.rcible, n: s.P.length, r0: s.rs[0] }; }) });
+    }
+    function nb(v) { return (Math.round(v * 100) / 100).toString(); }
+    function poly(Q) {   /* un polygone, toujours dans le même sens (sinon la règle nonzero creuserait un recouvrement) */
+      var a = 0, i, n = Q.length; for (i = 0; i < n; i++) { var p = Q[i], q = Q[(i + 1) % n]; a += p[0] * q[1] - q[0] * p[1]; }
+      if (a < 0) Q = Q.slice().reverse();
+      var s = 'M' + nb(Q[0][0]) + ' ' + nb(Q[0][1]); for (i = 1; i < n; i++) s += 'L' + nb(Q[i][0]) + ' ' + nb(Q[i][1]); return s + 'Z';
+    }
+    function masqueVect(g, sv) {
+      if (sv >= g.vs.tot && g.vfull) return g.vfull;
+      var O = g.xo || [g.x, g.y], M = g.tf ? g.tf : [1, 0, 0, 1], ox = (O[0] - er.left) / kech, oy = (O[1] - er.top) / kech, sc = g.sc, out = '';
+      function L_(p) { return [ox + (M[0] * p[0] - M[2] * p[1]) * sc, oy + (M[1] * p[0] - M[3] * p[1]) * sc]; }
+      g.vs.steps.forEach(function (st) {
+        var l = sv - st.t0; if (l <= 0) return; if (l > st.L) l = st.L;
+        var P = st.P, S = st.S, rs = st.rs, i, n = P.length, U = [];
+        /* l'écart qui reste entre un front et le trait qu'il rejoint : sous 6 pixels de l'appareil, il est franchi d'un coup (en temps réel un front avance d'une
+           vingtaine de pixels par image) — sinon un filet d'encre pincé entre les deux */
+        if (st.cible && l < st.Lfin) {   /* l'écart se mesure aux deux COINS du front (sur un anneau, deux rayons : il est plus étroit près du contre-poinçon) */
+          var k5 = dpr * kech * sc, i5 = 0; while (i5 + 2 < n && S[i5 + 1] <= l) i5++;
+          var p5 = P[i5], q5 = P[i5 + 1], l5 = (S[i5 + 1] - S[i5]) || 1, f5 = Math.max(0, Math.min(1, (l - S[i5]) / l5)), ux5 = (q5[0] - p5[0]) / l5, uy5 = (q5[1] - p5[1]) / l5,
+              ex5 = p5[0] + (q5[0] - p5[0]) * f5, ey5 = p5[1] + (q5[1] - p5[1]) * f5, r5 = rs[i5];
+          var nt = [-st.cible[1], st.cible[0]]; if (nt[0] * ux5 + nt[1] * uy5 < 0) nt = [-nt[0], -nt[1]];
+          var tex = st.fin[0] - nt[0] * st.rcible, tey = st.fin[1] - nt[1] * st.rcible;
+          var g1 = (tex - (ex5 - uy5 * r5)) * nt[0] + (tey - (ey5 + ux5 * r5)) * nt[1], g2 = (tex - (ex5 + uy5 * r5)) * nt[0] + (tey - (ey5 - ux5 * r5)) * nt[1];
+          if (l > 0.5 * st.Lfin && Math.min(g1, g2) < 6 / k5 && Math.min(g1, g2) > -6 / k5) l = Math.max(l, st.Lfin); }   /* en fin de trait seulement, les deux coins devant la ligne */
+        /* ⚑ v170b — LE FRONT SUR UNE LIMITE DE PIXEL : un trait qui avance à l'horizontale ou à la verticale (presque tous ceux de PromiLate) pose son front
+           exactement entre deux pixels de l'appareil — une rangée est dévoilée entière ou pas du tout. Sans cela, la dernière rangée d'un trait qui arrive sur
+           un bord ou sur un trait déjà tracé restait une image à demi teinte. */
+        if (l < st.L) { var iq = 0; while (iq + 2 < n && S[iq + 1] <= l) iq++;
+          var qx = P[iq + 1][0] - P[iq][0], qy = P[iq + 1][1] - P[iq][1], qn = Math.hypot(qx, qy);
+          if (qn > 1e-9) { qx /= qn; qy /= qn; var vx = (M[0] * qx - M[2] * qy) * sc, vy = (M[1] * qx - M[3] * qy) * sc, vn = Math.hypot(vx, vy), fq = (l - S[iq]) / qn,
+              fx = P[iq][0] + (P[iq + 1][0] - P[iq][0]) * fq, fy = P[iq][1] + (P[iq + 1][1] - P[iq][1]) * fq, FL = L_([fx, fy]), k3 = dpr * kech;
+            if (Math.abs(vx) > 0.985 * vn) { var dxw = (er.left + FL[0] * kech) * dpr; l += (Math.round(dxw) - dxw) / k3 / vx; }
+            else if (Math.abs(vy) > 0.985 * vn) { var dyw = (er.top + FL[1] * kech) * dpr; l += (Math.round(dyw) - dyw) / k3 / vy; }
+            if (l > st.L) l = st.L; if (l <= 0) return; } }
+        for (i = 0; i + 1 < n; i++) { var ddx = P[i + 1][0] - P[i][0], ddy = P[i + 1][1] - P[i][1], ll = Math.hypot(ddx, ddy); U.push(ll > 1e-9 ? [ddx / ll, ddy / ll] : null); }
+        /* la coupe à un sommet : sur la BISSECTRICE (un onglet) — deux tronçons voisins partagent leur coupe, ni marche ni fente ; un angle vif (> 90°) garde
+           des bouts perpendiculaires et reçoit un disque */
+        function tang(j) { var a0 = U[j - 1], b0 = U[j]; if (!a0 || !b0) return a0 || b0; var c0 = a0[0] * b0[0] + a0[1] * b0[1]; if (c0 < 0.5) return null;   /* un angle vif (> 60°) : pas d'onglet — la règle du coin */ var tx = a0[0] + b0[0], ty = a0[1] + b0[1], tl = Math.hypot(tx, ty); return [tx / tl, ty / tl]; }
+        function coupe(p, t, u, r) { var c0 = Math.max(0.5, t[0] * u[0] + t[1] * u[1]), m = r / c0, nx = -t[1] * m, ny = t[0] * m; return [[p[0] + nx, p[1] + ny], [p[0] - nx, p[1] - ny]]; }
+        for (i = 0; i + 1 < n; i++) {
+          if (S[i] >= l) break;
+          var u = U[i]; if (!u) continue;
+          var a = P[i], b = P[i + 1], r = rs[i], ln = S[i + 1] - S[i], f = Math.min(1, (l - S[i]) / ln), fin = f >= 1;
+          var e = fin ? b : [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f];
+          var ta = i > 0 ? tang(i) : u, tb = (fin && i + 2 < n) ? tang(i + 1) : u;
+          if (!fin && st.cible) { var Z = 2.4 * r, wz = (l - (st.Lfin - Z)) / Z;   /* la coupe du front pivote vers le trait rejoint */
+            if (wz > 0) { wz = Math.min(1, wz); var cn = [-st.cible[1], st.cible[0]]; if (cn[0] * u[0] + cn[1] * u[1] < 0) cn = [-cn[0], -cn[1]];
+              var tx2 = u[0] * (1 - wz) + cn[0] * wz, ty2 = u[1] * (1 - wz) + cn[1] * wz, tl2 = Math.hypot(tx2, ty2); if (tl2 > 1e-6) tb = [tx2 / tl2, ty2 / tl2]; } }
+          /* les tronçons se RECOUVRENT d'un demi-pixel (sauf au front qui avance) : deux bords exactement communs laissent une couture à l'anticrénelage */
+          /* au sommet d'un angle vif, le tronçon fini se prolonge d'une demi-largeur (le coin extérieur), jamais au-delà du front */
+          var vif = fin && i + 2 < n && !tang(i + 1), ev = 0.6 / sc, ev2 = fin ? Math.min(vif ? r : ev, l - S[i + 1]) : 0, a2 = [a[0] - u[0] * ev, a[1] - u[1] * ev], e2 = ev2 > 0 ? [e[0] + u[0] * ev2, e[1] + u[1] * ev2] : e;   /* jamais au-delà du front */
+          var A0 = coupe(a2, ta || u, u, r), B0 = coupe(e2, tb || u, u, r);
+          var Q = [L_(A0[0]), L_(B0[0]), L_(B0[1]), L_(A0[1])];
+          /* un tronçon horizontal ou vertical : ses bords LATÉRAUX aussi sur la grille de l'appareil, vers l'extérieur (sinon, à l'intérieur de l'encre, la
+             colonne d'anticrénelage du bord d'une bande restait à demi teinte quand un autre trait venait la rejoindre) */
+          var wx = (M[0] * u[0] - M[2] * u[1]), wy = (M[1] * u[0] - M[3] * u[1]), wn = Math.hypot(wx, wy), k4 = dpr * kech;
+          var ta_ = ta || u, tb_ = tb || u;
+          if (wn > 0 && ta_[0] * u[0] + ta_[1] * u[1] > 0.9999 && tb_[0] * u[0] + tb_[1] * u[1] > 0.9999) {
+            function grX(v, haut) { var d = (er.left + v * kech) * dpr; return ((haut ? Math.ceil(d) : Math.floor(d)) / dpr - er.left) / kech; }
+            function grY(v, haut) { var d = (er.top + v * kech) * dpr; return ((haut ? Math.ceil(d) : Math.floor(d)) / dpr - er.top) / kech; }
+            if (Math.abs(wy) > 0.985 * wn) { var xa = Math.min(Q[0][0], Q[1][0], Q[2][0], Q[3][0]), xb = Math.max(Q[0][0], Q[1][0], Q[2][0], Q[3][0]), xm = (xa + xb) / 2,
+                xa2 = grX(xa, false), xb2 = grX(xb, true);
+              Q.forEach(function (q) { q[0] = q[0] < xm ? xa2 : xb2; });
+              if (fin) { var yfe = grY(Q[1][1], wy > 0); Q[1][1] = Q[2][1] = yfe; } }   /* le bout d'un tronçon passé (son prolongement au coin) aussi sur la grille */
+            else if (Math.abs(wx) > 0.985 * wn) { var ya = Math.min(Q[0][1], Q[1][1], Q[2][1], Q[3][1]), yb = Math.max(Q[0][1], Q[1][1], Q[2][1], Q[3][1]), ym = (ya + yb) / 2,
+                ya2 = grY(ya, false), yb2 = grY(yb, true);
+              Q.forEach(function (q) { q[1] = q[1] < ym ? ya2 : yb2; });
+              if (fin) { var xfe = grX(Q[1][0], wx > 0); Q[1][0] = Q[2][0] = xfe; } }
+          }
+          out += poly(Q);
+        }
+      });
+      if (g.vl) for (var q = 0; q < g.vl.length && g.vl[q][0] <= sv; q++) out += g.vl[q][1];
+      if (sv >= g.vs.tot) g.vfull = out;
+      return out;
+    }
+    /* ⚑ v170b — CE QU'AUCUNE BANDE NE COUVRE (un coin, la frange d'un bord, un empattement) : rendu hors écran à la résolution de l'appareil, chaque pixel
+       d'encre resté hors des bandes prend l'instant du point de chemin le plus proche et se dévoile à cet instant — un carré d'un pixel et demi dans la même
+       découpe. À la fin, toute l'encre est dévoilée : la dernière image est le texte. */
+    function restes(g) {
+      try {
+        g.vl = null;
+        var s0 = dpr * kech, O = g.xo || [g.x, g.y], M = g.tf ? g.tf : [1, 0, 0, 1], ox = (O[0] - er.left) / kech, oy = (O[1] - er.top) / kech;
+        /* la grille hors écran est CELLE DE L'ÉCRAN : son premier pixel tombe sur un pixel de l'appareil */
+        var lx0 = (Math.floor((g.bx0 - 2 * kech) * dpr) / dpr - er.left) / kech, ly0 = (Math.floor((g.by0 - 2 * kech) * dpr) / dpr - er.top) / kech, W2 = Math.ceil(((g.bx1 - g.bx0) / kech + 4) * s0), H2 = Math.ceil(((g.by1 - g.by0) / kech + 4) * s0);
+        if (W2 < 2 || H2 < 2 || W2 * H2 > 4e6) return;
+        var c1 = doc.createElement('canvas'), c2 = doc.createElement('canvas'); c1.width = c2.width = W2; c1.height = c2.height = H2;
+        var x1 = c1.getContext('2d', { willReadFrequently: true }), x2 = c2.getContext('2d', { willReadFrequently: true });
+        x1.setTransform(s0 * M[0], s0 * M[1], s0 * M[2], s0 * M[3], (ox - lx0) * s0, (oy - ly0) * s0); x1.font = g.spec; x1.fillStyle = '#000'; x1.textBaseline = 'alphabetic'; x1.fillText(g.car, 0, 0);
+        var plein = g.vfull; g.vfull = null; var bandes = masqueVect(g, g.vs.tot); g.vfull = null;
+        x2.setTransform(s0, 0, 0, s0, -lx0 * s0, -ly0 * s0); x2.fillStyle = '#000'; x2.fill(new racine.Path2D(bandes));
+        var a1 = x1.getImageData(0, 0, W2, H2).data, a2 = x2.getImageData(0, 0, W2, H2).data, L = [], p, x, y;
+        /* les chemins en coordonnées locales, pour l'instant de chaque reste */
+        var segs = []; g.vs.steps.forEach(function (st) { var P = st.P.map(function (q) { return [ox + (M[0] * q[0] - M[2] * q[1]) * g.sc, oy + (M[1] * q[0] - M[3] * q[1]) * g.sc]; }); for (var i = 0; i + 1 < P.length; i++) segs.push([P[i], P[i + 1], st.t0 + st.S[i], st.S[i + 1] - st.S[i], st.t0 + st.L, st.rs[i] * g.sc]); });
+        function proj(lx, ly, k) { var A = segs[k][0], Bq = segs[k][1], dx = Bq[0] - A[0], dy = Bq[1] - A[1], l2 = dx * dx + dy * dy, u = l2 > 0 ? Math.max(0, Math.min(1, ((lx - A[0]) * dx + (ly - A[1]) * dy) / l2)) : 0, ex = A[0] + dx * u - lx, ey = A[1] + dy * u - ly;
+          return [Math.sqrt(ex * ex + ey * ey), Math.min(segs[k][4], segs[k][2] + segs[k][3] * u)]; }
+        /* l'instant où un pixel COUVERT se dévoile : le plus tôt parmi les bandes qui le contiennent */
+        var memo = {}; function tCouvert(x, y) { var key = x + ',' + y; if (key in memo) return memo[key]; var lx = lx0 + (x + 0.5) / s0, ly = ly0 + (y + 0.5) / s0, t = Infinity;
+          for (var k = 0; k < segs.length; k++) { var pr = proj(lx, ly, k); if (pr[0] <= segs[k][5] + 0.5 / s0 && pr[1] < t) t = pr[1]; } return (memo[key] = t); }
+        /* ⚑ un RESTE se dévoile avec la bande qui le borde : à l'instant le plus tôt de ses voisins couverts (deux pixels autour) — daté par le point de chemin le plus
+           proche, un reste au coin d'un contre-poinçon attendait la fin de la panse et restait pincé entre deux traits dévoilés */
+        var cote = 1 / s0;   /* un pixel de l'appareil, exactement (la grille est celle de l'écran) : un carré plus grand teindrait ses voisins à demi */
+        for (y = 0; y < H2; y++) for (x = 0; x < W2; x++) { p = (y * W2 + x) * 4 + 3; if (a1[p] < 8 || a2[p] >= 255) continue;
+          var bt = -Infinity, dy2, dx2, rr;
+          /* le plus TARD de ses voisins couverts immédiats (un reste coincé entre deux traits paraît avec le second : daté par le premier, il faisait un point
+             isolé dans le second) ; sans voisin immédiat, le plus tôt à deux pixels */
+          for (rr = 1; rr <= 2 && bt === -Infinity; rr++) for (dy2 = -rr; dy2 <= rr; dy2++) for (dx2 = -rr; dx2 <= rr; dx2++) { var xx = x + dx2, yy = y + dy2; if (xx < 0 || yy < 0 || xx >= W2 || yy >= H2) continue; if (a2[(yy * W2 + xx) * 4 + 3] < 255) continue; var tq = tCouvert(xx, yy); if (tq !== Infinity && tq > bt) bt = tq; }
+          if (bt === -Infinity) bt = Infinity;
+          if (bt === Infinity) { var lx = lx0 + (x + 0.5) / s0, ly = ly0 + (y + 0.5) / s0, bd = Infinity; for (var k = 0; k < segs.length; k++) { var pr = proj(lx, ly, k); if (pr[0] < bd) { bd = pr[0]; bt = pr[1]; } } }
+          L.push([bt, lx0 + x / s0, ly0 + y / s0]); }
+        L.sort(function (a, b) { return a[0] - b[0]; });
+        if (TL._debug) (TL._restes = TL._restes || []).push({ car: g.car, n: L.length, tot: g.vs.tot, tmax: L.length ? L[L.length - 1][0] : 0, c1: c1.toDataURL(), c2: c2.toDataURL() });
+        g.vl = L.map(function (q) { return [q[0], 'M' + nb(q[1]) + ' ' + nb(q[2]) + 'h' + nb(cote) + 'v' + nb(cote) + 'h' + nb(-cote) + 'Z']; });
+      } catch (e) { g.vl = null; }
+    }
+    function appliquer() {
+      if (!vect) return;
+      if (basePts === 'none') { pose_('none'); return; }
+      var d = basePts ? poly(basePts) : '';
+      for (var j = jd; j < G.length; j++) { var g = G[j]; if (g.vect && g.sv > 0) d += masqueVect(g, g.sv); }
+      pose_('path("' + (d || 'M-9999 -9999L-9998 -9999L-9998 -9998Z') + '")');
+    }
     function pose(g) {
+      if (g.vect) { g.sv = g.vs.tot; return; }
       /* le glyphe fini, dans le canevas, en attendant que le texte réel le prenne */
       fctx.setTransform(s * g.M[0], s * g.M[1], s * g.M[2], s * g.M[3], g.gx, g.gy); fctx.font = g.spec; fctx.fillStyle = g.coul; fctx.textBaseline = 'alphabetic'; fctx.fillText(g.car, 0, 0); fctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.clearRect(g.X0, g.Y0, g.w, g.h); ctx.drawImage(fin, g.X0, g.Y0, g.w, g.h, g.X0, g.Y0, g.w, g.h);
       g.im = g.A = g.T = g.T1 = null; g.pret = false;
     }
     function partiel(g, frac) {
+      if (g.vect) { g.sv = frac * g.vs.tot; return; }
       if (!g.pret) prepare(g);
       var sp = g.sup || 1, t = -0.5 * sp + frac * (g.D + sp), d = g.im.data, A = g.A, T = g.T, T1 = g.T1 || g.T, n = g.w * g.h, p, m, a;
       /* le front traverse le pixel entre l'instant de son premier et celui de son dernier sous-pixel d'encre (un pixel d'anticrénelage) */
@@ -678,12 +863,13 @@
       var l = L[G[jd].ligne], xc = coupe < 0 ? -1 : coupe, M = 4000;
       function lx(v) { return ((cr.left + v / dpr) - er.left) / kech; } function ly(v) { return ((cr.top + v / dpr) - er.top) / kech; }
       var X = xc < 0 ? -M : lx(xc), Y0 = G[jd].ligne === 0 ? -M : ly(l.y0), Y1 = G[jd].ligne === L.length - 1 ? M : ly(l.y1);
-      decoupe('polygon(' + (-M) + 'px ' + (-M) + 'px,' + M + 'px ' + (-M) + 'px,' + M + 'px ' + Y0 + 'px,' + X + 'px ' + Y0 + 'px,' + X + 'px ' + Y1 + 'px,' + (-M) + 'px ' + Y1 + 'px)');
+      decoupe('polygon(' + (-M) + 'px ' + (-M) + 'px,' + M + 'px ' + (-M) + 'px,' + M + 'px ' + Y0 + 'px,' + X + 'px ' + Y0 + 'px,' + X + 'px ' + Y1 + 'px,' + (-M) + 'px ' + Y1 + 'px)',
+        [[-M, -M], [M, -M], [M, Y0], [X, Y0], [X, Y1], [-M, Y1]]);
       [ctx, fctx].forEach(function (g2) { if (l.y0 > 0) g2.clearRect(0, 0, cv.width, l.y0); if (xc > 0) g2.clearRect(0, l.y0, xc, l.y1 - l.y0); });
     }
     function rend(t) {
       if (!cv) return;
-      if (t < tPrec) { ctx.clearRect(0, 0, cv.width, cv.height); fctx.clearRect(0, 0, fin.width, fin.height); G.forEach(function (g) { g.pret = false; }); ig = 0; jd = 0; decoupe(VIDE); }
+      if (t < tPrec) { ctx.clearRect(0, 0, cv.width, cv.height); fctx.clearRect(0, 0, fin.width, fin.height); G.forEach(function (g) { if (g.vect) g.sv = 0; else g.pret = false; }); ig = 0; jd = 0; decoupe(VIDE); }
       tPrec = t;
       var avant = ig;
       while (ig < G.length && t >= G[ig].t0 + G[ig].d) { pose(G[ig]); ig++; }
@@ -699,6 +885,7 @@
         ctx.clearRect(ux0, uy0, ux1 - ux0, uy1 - uy0); ctx.drawImage(fin, ux0, uy0, ux1 - ux0, uy1 - uy0, ux0, uy0, ux1 - ux0, uy1 - uy0);
         act.forEach(function (j) { partiel(G[j], Math.min(1, (t - G[j].t0) / G[j].d)); });
       }
+      if (vect) appliquer();
     }
     function image(maintenant) {
       if (mort) return; var d0 = racine.performance.now();

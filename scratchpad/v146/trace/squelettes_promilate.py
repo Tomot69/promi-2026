@@ -22,11 +22,18 @@ import squelette as S
 # nœud : (x, y) ; arête : [a, [points intermédiaires], b] ; 'courbes' : indices d'arêtes à recentrer (les autres sont des droites) ;
 # 'boucle' : une arête fermée sans nœud (l'anneau du O)
 RK_M = 1.0
+RK_ANNEAU = 1.3
 RK_H = 1.1
-RK_A = 0.95
+RK_A = 0.65
+RK_JA = 1.3
 DESSINS = {
- 'A': dict(n=dict(L0=(196, -8), R0=(822, -8), BL=(299, 245), BR=(741, 245), AP=(530, 640)),
-           e=[['L0', [], 'BL'], ['BL', [(344, 375)], 'AP'], ['AP', [(706, 375)], 'BR'], ['BR', [], 'R0'], ['BL', [], 'BR']], rk={4: RK_A}),
+ 'A': dict(n=dict(L0=(196, -8), R0=(822, -8), BL=(276, 240), BR=(752, 240), AP=(530, 640), Bd=(610, 240)),
+           # v170b : la barre centrée sur l'encre qu'elle seule couvre — de l'encoche du bas (y 151) au bas du contre-poinçon (y 328) ; `brut` : pas de
+           # redressement (il la remontait à y 286 : elle dépassait le contre-poinçon et manquait le bas)
+           # la barre finit juste après le contre-poinçon (x 610), sans prolongement (`fixe`, `nx`) : jusqu'à l'axe du jambage droit, elle dévoilait ce jambage
+           # avant lui et touchait en biseau le bord du jambage gauche (une pointe pincée)
+           e=[['L0', [], 'BL'], ['BL', [(344, 375)], 'AP'], ['AP', [(706, 375)], 'BR'], ['BR', [], 'R0'], ['BL', [], 'Bd']], rk={0: RK_JA, 1: RK_JA, 2: RK_JA, 3: RK_JA, 4: RK_A}, brut=True,
+           fixe=('Bd',), nx=[[5, 1]]),
  'B': dict(n=dict(Sb=(184, 97), Sm=(184, 388), St=(184, 631)),   # sans bouts de fût : les coins du haut et du bas se prolongent jusqu'au bord
            e=[['St', [], 'Sm'], ['Sm', [], 'Sb'],
               ['St', [(400, 632), (540, 615), (585, 560), (570, 450), (420, 392)], 'Sm'],
@@ -165,7 +172,8 @@ def morceaux(police, nom, ch, chemins):
     if 'boucle' in D:
         A_ = ancres(D['boucle'], cyc=True)
         q = _catmull(A_ + [A_[0]], 4.0)[:-1]
-        m.aretes.append(dict(a=None, b=None, pts=q, R=R_de(q), boucle=True, blob=False, droit=False, L=S.longueur(np.concatenate([q, q[:1]]))))
+        # v170b : l'anneau prend le facteur de sa lettre (sa bande couvre l'anneau d'encre entier ; le surplus tombe dans le contre-poinçon ou dehors)
+        m.aretes.append(dict(a=None, b=None, pts=q, R=R_de(q) * R_K_LETTRE.get(ch, RK_ANNEAU), boucle=True, blob=False, droit=False, L=S.longueur(np.concatenate([q, q[:1]]))))
         return [m], boite, m.aretes[0]['R']
     noms = list(D['n']); idx = {k: i for i, k in enumerate(noms)}
     m.noeuds = [np.array(D['n'][k], float) for k in noms]
@@ -185,7 +193,7 @@ def morceaux(police, nom, ch, chemins):
         m.aretes.append(dict(a=idx[a], b=idx[b], pts=q, R=0.0, boucle=False, blob=False))
     # les bouts libres : au centre du trait (perpendiculairement), puis jusqu'au bord le long de la direction d'arrivée
     for k in noms:
-        if deg[k] != 1: continue
+        if deg[k] != 1 or k in D.get('fixe', ()): continue
         n_ = idx[k]
         for e in m.aretes:
             if e['a'] == n_ or e['b'] == n_:
@@ -206,7 +214,9 @@ def morceaux(police, nom, ch, chemins):
     # les droites : chemins.redresse (exactes, recentrées) ; les courbes restent telles quelles (« fige »)
     for i, e in enumerate(m.aretes):
         if i in courbes: e['fige'] = True
-    chemins.redresse(m, bord, Rg)
+    if D.get('brut'):   # v170b : le dessin tel quel (pas de redressement : il déplace les nœuds partagés)
+        for e in m.aretes: e['droit'] = len(e['pts']) == 2; e['fige'] = True; e['L'] = S.longueur(e['pts'])
+    else: chemins.redresse(m, bord, Rg)
     for i_, f in rk.items(): m.aretes[i_]['R'] *= f   # après le redressement : une droite y reprend sa demi-largeur mesurée
     for i in courbes:
         e = m.aretes[i]; e['pts'] = S.rdp(e['pts'], 0.6); e['pts'][0] = m.noeuds[e['a']]; e['pts'][-1] = m.noeuds[e['b']]

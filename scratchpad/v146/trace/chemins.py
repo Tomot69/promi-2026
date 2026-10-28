@@ -567,10 +567,10 @@ CORRECTIONS = {'atkinson': {}, 'gilbert': {
     '?': {'bras': {2: -90}},
     'S': {'sans': 'h', 'pourquoi': "comme le s : depuis le haut il finit en bas à gauche", 'retire': [2]},
 }, 'promilate': {
-    'R': {'ordre': {'h': ([[0, -3, -2, -1], [2], [0, 4, 5], [1, -5], [0, 6]], 'b')},
-          'pourquoi': "v170 : fût de haut en bas, la panse depuis le haut jusqu'au fût, puis la jambe — le parcours passait la barre avant la panse : le creux sous la panse se dévoilait en dents de scie"},
-    'A': {'ordre': {'b': ([[0, 1, 2, 3, 4], [2], [0, 5]], 'b')}, 'sans': 'h',
-          'pourquoi': "v170 : un seul trait, jambage gauche, sommet, jambage droit, puis la barre — depuis l'apex, les deux jambages partaient séparément et le coin droit du sommet attendait le second (un éclat de 15 images à 29 pt)"},
+    'R': {'ordre': {'h': ([[0, -3, -2, -1], [1, 1], [0, -5, -4], [1, 4], [0, 6]], 'b')},
+          'pourquoi': "v170b : fût de haut en bas, la barre, la panse depuis la barre jusqu'en haut, puis la jambe — la barre en dernier laissait une fente entre le fût et la panse (v170 : la panse d'abord)"},
+    'A': {'ordre': {'b': ([[0, 1, 2], [1, -2], [0, 5], [2], [0, 3, 4]], 'b')}, 'sans': 'h',
+          'pourquoi': "v170 : v170b : jambage gauche jusqu'au sommet, la barre, puis le jambage droit — la barre couvre le triangle d'encre sous le contre-poinçon avant que le second jambage le pince (v170 : un seul trait puis la barre, et ce triangle restait une fente)"},
     'H': {'ordre': {'h': ([[0, -2, -1], [2], [0, -4, -3], [2], [0, 5]], 'b')},
           'pourquoi': "v170 : fût gauche, fût droit, puis la barre — le parcours remontait le fût droit jusqu'au bord du haut (sa dernière rangée restait à demi teinte)"},
     # v170 (C-125) : le S de PromiLate en trois tronçons (l'épine est deux fois plus fine que les panses) ; depuis le haut, le parcours partait du
@@ -642,7 +642,8 @@ def analyse(police, ch, nom, mi, EM, corr):
     vs = variantes(ms, boite, mi, EM)
     if corr.get('sans') in vs and len([k for k in vs if k in 'hb']) == 2:
         v0 = vs.pop(corr['sans']); v0['retire'] = corr.get('pourquoi', ''); vs.setdefault('sans', {})[corr['sans']] = v0
-    return dict(ms=ms, boite=boite, R=R, vs=vs, cts=S.contours(police, nom), ordre=corr.get('ordre'))
+    nx = police._dessins.DESSINS[ch].get('nx') if getattr(police, '_dessins', None) and ch in police._dessins.DESSINS else None
+    return dict(ms=ms, boite=boite, R=R, vs=vs, cts=S.contours(police, nom), ordre=corr.get('ordre'), nx=nx)
 
 def ecrit(cle, glyphes, upm, mi, sortie):
     P = POLICES[cle]; lignes = []
@@ -667,7 +668,8 @@ def ecrit(cle, glyphes, upm, mi, sortie):
                         if p[j] == ('A', i): p[j] = idx
             fin = var['sols'][-1]['fin']
             vtxt.append('%s:{f:"%s",t:%s}' % (V, cote(fin[1], seuil(g['boite'], mi)), json.dumps(pas, separators=(',', ':'))))
-        lignes.append('%s:{a:%s,bo:[%s],e:[%s],%s}' % (json.dumps(ch, ensure_ascii=False), nb(g['av']), ','.join(nb(v) for v in g['boite']), ','.join(ar), ','.join(vtxt)))
+        nx = g.get('nx')   # v170b : les bouts d'arête qui ne se prolongent pas ([arête, 0 début | 1 fin])
+        lignes.append('%s:{a:%s,bo:[%s],e:[%s],%s%s}' % (json.dumps(ch, ensure_ascii=False), nb(g['av']), ','.join(nb(v) for v in g['boite']), ','.join(ar), ','.join(vtxt), (',nx:' + json.dumps(nx, separators=(',', ':'))) if nx else ''))
     txt = ("/* trace-chemins-%s.js — LES CHEMINS DU TRACÉ DES LETTRES pour la police %s (C-125).\n"
            "   ENGENDRÉ par scratchpad/v146/trace/chemins.py — on corrige le générateur (ou sa table CORRECTIONS), jamais ce fichier.\n"
            "   Par glyphe : a = chasse ; bo = boîte d'encre [x0,y0,x1,y1] ; e = arêtes de la ligne médiane [demi-largeur, x,y, x,y, …] (unités de police,\n"

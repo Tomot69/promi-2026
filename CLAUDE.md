@@ -196,6 +196,34 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v170b (28–29 oct. 2026) — PROMILATE, RÉCIDIVE : « PIXELISÉ ET CASSÉ AUX JONCTIONS ». (Décisions Tom.) Ce bloc CORRIGE v170 (le rendu de PromiLate, la définition « au bout » du juge, Q591).
+> **La cause, mesurée à la fenêtre de Tom (390 × 651, l'app à 0,7466) et à 0,79, en WebKit** : ① **pas la résolution** — le canevas était déjà à la taille de l'écran
+> (618 pixels pour 617,97 attendus ; idem à 0,933 et 0,79) ; le « pixelisé » venait de la CARTE DE TEMPS pixel par pixel : entre deux traits, une frontière en marches
+> d'un pixel, des dents aux jonctions ; ② **le glyphe était REDESSINÉ sur le canevas**, un demi-pixel plus gras que le texte (« hors de la lettre » jusqu'à 6 043 pixels
+> sur un R) : à la fin, le texte réel le remplaçait — un saut ; ③ l'origine d'une lettre était placée au MILIEU d'un intervalle d'un pixel (le module supposait des
+> rectangles WebKit arrondis : ils sont fractionnaires, mesuré 63,833) — jusqu'à un demi-pixel CSS de décalage.
+> **Aujourd'hui (`variantes/trace-lettres.js`, PromiLate seule ; Gilbert et Atkinson identiques au pixel, `scratchpad/v170/a1b.py`)** : une lettre de PromiLate
+> ne passe plus par le canevas ; **le TEXTE RÉEL se dévoile par une découpe VECTORIELLE** (`clip-path: path()`, anticrénelée à la résolution de l'appareil —
+> mesuré : 231 niveaux sur un bord oblique, échelles 1 et 0,7466) : chaque trait est une bande le long de son chemin, toutes réunies en UN chemin (règle nonzero) ;
+> tronçons coupés sur la bissectrice (onglet), recouvrement d'un demi-pixel (sans couture), angle vif (> 60°) : le premier tronçon prolongé d'une demi-largeur
+> (le coin extérieur) ; des traits qui se suivent sans saut (les tronçons du S) sont un seul trait ; un trait DROIT a une seule largeur ; un embranchement (« j ») ne
+> se prolonge pas, un bout que les données disent fixe non plus (`nx`, la barre du A) ; **un front qui rejoint un trait déjà tracé pivote pour y arriver parallèle,
+> et l'écart final, mesuré à ses deux COINS, est franchi d'un coup sous 6 pixels de l'appareil** (en temps réel un front avance d'une vingtaine de pixels par
+> image) — un anneau (le O) se referme de même sur son départ ; **un front horizontal ou vertical est posé sur une limite de pixel**, ses bords latéraux et le
+> bout d'un tronçon passé aussi (vers l'extérieur) : plus de rangée à demi teinte ; **ce qu'aucune bande ne couvre** (un coin, une frange) est trouvé hors écran,
+> sur la grille de l'écran, au moment de mesurer, et se dévoile pixel par pixel à l'instant le plus TARD de ses voisins couverts. La dernière image est le texte, au
+> pixel. Chemins (`squelettes_promilate.py`, `chemins.py`) : A (barre centrée sur l'encre qu'elle seule couvre, finie après le contre-poinçon, ordre jambage gauche,
+> barre, jambage droit ; `brut` : sans redressement), R (fût, barre, panse, jambe), anneau du O élargi (`RK_ANNEAU`).
+> **Juge `redteam_trace_lettres` ⑫ réécrit** : lu sur l'ÉCRAN (captures : il n'y a plus de canevas), à 390 × 651 (0,7466) et à 0,79, chaque lettre des textes
+> PromiLate à chaque taille où elle paraît, À, É, l'apostrophe, Deuxio penché ; **la règle stricte rétablie (« au bout » de v170 REFUSÉ par Tom)** ; ⑫ creux : de
+> l'encre non dévoilée PINCÉE entre deux parts dévoilées (3 px de part et d'autre) deux pas de suite ; ⑫c résolution (canevas = taille CSS affichée × DPR, calé
+> sur un pixel) ; la dernière image = le texte au pixel. Rouge sur v170 (R, A, À : jusqu'à 6 043 pixels hors de la lettre, 12 à 29 de creux, 481 à 590 d'écart à
+> la fin).
+> ⚠ **NON LIVRÉ (porte de qualité) : ⑫ n'est pas entièrement vert** — restent des creux de 1 à 8 px (A au coin du contre-poinçon, P, R, U, L en 19 pt, X, Y, É,
+> Deuxio), le S (points pâles isolés, un petit rectangle évidé à la jonction de l'épine, front mesuré à 17–21°), un éclat sur le « À » (l'accent, glyphe suivant,
+> compté comme laissé en arrière : le critère est à revoir avec Tom). Commité sur la branche `v170b`, pas sur main. Mesuré : meilleur que v170 sur chaque mesure
+> (S : 6 404 → 0 hors de la lettre, 13 → 5 de creux, 37 → 2 loin, 625 → 0 d'écart à la fin).
+
 ### ⚑ v170 (28 oct. 2026) — LE TRACÉ DES LETTRES EN PROMILATE (C-125, suite). (Décisions Tom.) Gilbert et Atkinson (validés) n'ont pas bougé : leurs chemins sont intacts, le module ne change que pour PromiLate (au pixel, `scratchpad/v170/a1.py`).
 > **Validé par Tom : v169b. Q590 accepté : Tom dessinera le « ! » dans PromiLate avec le « À ».**
 > **Le diagnostic, mesuré au ralenti (`?tlv=0.05`) et image par image à la taille de l'app** : ① les CAPITALES de PromiLate (très grasses) avaient des lignes médianes

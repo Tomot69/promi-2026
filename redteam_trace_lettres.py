@@ -95,6 +95,7 @@ GRAVE = '<span class="v35-e">A<span class="v35-acc" aria-hidden="true" style="to
 AIGU = '<span class="v35-e">E<span class="v35-acc" aria-hidden="true">\u2019</span></span>'   # l'« É » de v35
 PENCHE = '<span style="display:inline-block;transform:skewX(-3deg)">DEUXIO</span>'   # « Deuxio » (C-124)
 CHEMINS_PL = arg('chemins-pl', ''); PL_SEUL = '--pl' in sys.argv
+ECHELLES_PL = [0.7466, 0.79]   # ⚑ v170b : la fenêtre de Tom (390 × 651 : l'app réduite à 0,7466) et l'échelle de Safari de la porte de qualité
 res = []
 def juge(nom, cond, detail=''):
     res.append((nom, bool(cond))); print('%s  %s  %s' % ('OK' if cond else 'KO', nom, str(detail)[:420]), flush=True)
@@ -224,14 +225,7 @@ def geo_analyse(r):
     for t in T:
         for q in (t['pts'][0], t['pts'][-1]): amb |= np.hypot(xs + 0.5 - q[0], ys + 0.5 - q[1]) < 2.6 * t['R'] + 3   # la zone d'un bout (un coin, une tête de fût que le chemin ne parcourt pas) : la règle du coin, pas celle du préfixe
     core = ref > 200; out = {'ilots': r['ilots'], 'ilotMax': r['ilotMax'], 'hors': r['hors'], 'loin': r['loin'], 'partiels': r['part'], 'trous': 0, 'avance': 0, 'pas': 0, 'angles': []}
-    # ⚑ v170 — LE BOUT D'UN TRAIT QUI FINIT SUR LE BORD DE LA LETTRE : la dernière rangée du front est à demi teinte une image, et ce qui reste à tracer
-    # est DANS ce pixel (au-delà, le bord) — elle n'a pas de voisin non tracé. Elle est comptée à part (« au bout »), seulement si elle est À LA FOIS dans la
-    # zone d'un bout de trait (la même que la règle du coin, `amb`) ET à 2 px du bord de la lettre ; partout ailleurs, un pixel partiel isolé reste « loin ».
-    if r.get('LP') is not None:
-        par = {}
-        for i_, x_, y_, bd in r['LP']:
-            k_ = 'bout' if (bd and amb[y_, x_]) else 'loin'; par.setdefault(i_, {'bout': 0, 'loin': 0})[k_] += 1
-        out['loin'] = max([v['loin'] for v in par.values()] or [0]); out['bout'] = max([v['bout'] for v in par.values()] or [0])
+    # ⚑ v170b (Tom) : la définition « au bout » de v170 est REFUSÉE — un pixel partiel qui ne touche pas l'encre non tracée est « loin », partout.
     for i in range(1, N):
         rev = core & (R <= i); unr = core & (R > i)
         if rev.sum() < 30 or unr.sum() < 30: continue
@@ -262,60 +256,120 @@ def geo_analyse(r):
     return out
 
 def section_pl(b, err):
-    """⑫ (v170) : PromiLate"""
-    # ── ⑫ v170 : PROMILATE — chaque lettre des textes tracés, À, É, l'apostrophe, aux échelles 1 et 0,79 ; la dernière image d'une lettre transformée ──
-    ctxp = B.contexte(b); pgp = ctxp.new_page(); pgp.on('pageerror', lambda e: err.append(str(e)[:200]))
-    pgp.goto('http://127.0.0.1:%s/%s' % (PORT, APP)); pgp.wait_for_timeout(7000)
-    pgp.evaluate("()=>{ try{closeAll()}catch(e){} var o=document.getElementById('promiOnb'); if(o){o.classList.add('gone');o.style.display='none';} }")
-    if CHEMINS_PL: pgp.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, CHEMINS_PL)); print('— CHEMINS PROMILATE « %s » —' % CHEMINS_PL)
-    if MODULE: pgp.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, MODULE))
-    pgp.wait_for_timeout(300)
-    if SONDE: pgp.evaluate(SONDES[SONDE])
-    tailles = {}
-    for t, fz in TEXTES_PL:
-        for c in t.replace(' ', ''): tailles.setdefault(c, []).append(fz)
-    CAS_PL = []
-    for c in sorted(tailles):
-        if c in 'ÀÉ': continue
-        for fz in sorted(set(round(v) for v in tailles[c])): CAS_PL.append((c, c, fz, 1.0))   # chaque taille où la lettre paraît, × 1
-        for fz in sorted({max(tailles[c]), min(tailles[c])}): CAS_PL.append((c, c, fz, ECH_SAFARI))   # la plus grande et la plus petite, × 0,79
-    for nom, html, fz in (('À', GRAVE, 29), ('É', AIGU, 42)):
-        CAS_PL.append((nom, html, fz, 1.0)); CAS_PL.append((nom, html, fz, ECH_SAFARI))
-    angles_pl, mesures_pl = [], 0
-    for nom, html, fz, ech in CAS_PL:
-        r = pgp.evaluate(GEO, ['PromiLate', '400', nom if html == nom else 'A', NGEO, round(fz * ech, 2), None if html == nom else html])
-        lib = '⑫a PromiLate « %s » à %.1f pt (× %s)' % (nom, fz * ech, '1' if ech == 1 else '0,79')
-        if not r: juge(lib + ' : le tracé se mesure', False, 'aucun canevas'); continue
-        o = geo_analyse(r); compose = html != nom; angles_pl += [] if compose else o['angles']; mesures_pl += 1
-        # une lettre COMPOSÉE (À, É) est deux glyphes : le préfixe se mesure sur la lettre seule (A, E, plus haut) — ici, l'ensemble : rien hors de la lettre,
-        # aucun éclat, aucune valeur intermédiaire loin du front. L'apostrophe est petite : à 23 pt elle n'a que 17 images où mesurer (12 au moins).
-        pmin = 12 if nom == '’' else NGEO // 2
-        juge(lib + (' — rien hors de la lettre, aucun éclat, aucune valeur intermédiaire loin du front' if compose else ' — préfixe continu, aucun éclat, aucune valeur intermédiaire loin du front'),
-             o['hors'] == 0 and (compose or (o['trous'] <= 30 and o['avance'] <= 30)) and o['ilots'] == 0 and o['loin'] <= 3 and o['pas'] >= pmin,
-             'hors %d ; trou %d ; avance %d ; éclats %d (le plus long %d images) ; loin %d ; au bout %s ; %d images' % (o['hors'], o['trous'], o['avance'], o['ilots'], o['ilotMax'], o['loin'], o.get('bout', '?'), o['pas']))
-    # PromiLate est gras : un trait n'est mesurable que s'il dépasse 2,5 fois sa demi-largeur de part et d'autre du front (le S, le G, la diagonale du N…) ;
-    # on exige 3 mesures sur l'ensemble (Gilbert et Atkinson : 5 par lettre), toutes à ± 10°
-    juge('⑫a PromiLate — le front, à l\'intérieur d\'un trait, est perpendiculaire au chemin (± %d°), sur l\'ensemble des lettres (3 mesures au moins)' % ANGLE_MAX, len(angles_pl) >= 3 and max(map(abs, angles_pl)) <= ANGLE_MAX,
-         '%d mesures sur %d tracés ; pire %.1f° (les autres traits sont plus courts que 2,5 demi-largeurs : non mesurables un à un)' % (len(angles_pl), mesures_pl, max(map(abs, angles_pl)) if angles_pl else -1))
-    FINJS = """async a=>{ const [html,fz,f]=a; document.querySelectorAll('#gEl,canvas[data-trace]').forEach(e=>e.remove()); const el=document.createElement('div'); el.id='gEl';
-      el.style.cssText='position:fixed;left:40px;top:60px;width:340px;font:400 '+fz+'px/1.3 PromiLate;color:#291547;z-index:60'; el.innerHTML=html; document.body.appendChild(el);
-      await document.fonts.load('400 '+fz+'px PromiLate'); window.__CF=null; if(f<0) return 1; const C=TraceLettres.trace(el,null,{manuel:true,respecteReduire:false}); await C.pret; C.va(f); window.__CF=C; return 1; }"""
-    pgp.add_style_tag(content='#device{visibility:hidden!important} body{background:#fff!important}')
-    clipf = {'x': 30, 'y': 30, 'width': 360, 'height': 130}
-    def grossiers(html, fz):
-        cap = lambda: np.asarray(Image.open(io.BytesIO(pgp.screenshot(clip=clipf))).convert('L')).astype(int)
-        pgp.evaluate(FINJS, [html, fz, -1]); pgp.wait_for_timeout(150); a = cap()
-        pgp.evaluate(FINJS, [html, fz, 0.99999]); pgp.wait_for_timeout(150); c = cap()
-        pgp.evaluate("()=>{ if(window.__CF) window.__CF.finir(); }"); pgp.wait_for_timeout(150); d = cap()
-        return int((((a < 100) & (c > 200)) | ((a > 200) & (c < 100))).sum()), int((np.abs(a - d) > 0).sum())
-    for ech in (1.0, ECH_SAFARI):
-        tem, _ = grossiers('S’EXPLORE', round(29 * ech, 2))
-        for nom, html, fz in (('À', GRAVE, 29), ('É', AIGU, 42), ('Deuxio penché', PENCHE, 25)):
-            g_, fin_ = grossiers(html, round(fz * ech, 2))
-            juge('⑫b « %s » à %.1f pt — la dernière image du tracé est la lettre telle qu\'elle est à l\'écran (transformation comprise), puis le texte réel au pixel' % (nom, fz * ech),
-                 g_ <= tem * 1.2 + 10 and fin_ == 0, 'pixels grossiers %d (témoin sans transformation : %d) ; après la fin : %d pixel(s) différent(s)' % (g_, tem, fin_))
-    ctxp.close()
+    """⑫ (v170b) : PromiLate, mesuré sur l'ÉCRAN (captures), à la fenêtre de Tom — 390 × 651, l'app réduite à 0,7466 — et à 0,79, en WebKit.
+    Depuis v170b le tracé de PromiLate dévoile le texte réel par une découpe vectorielle : il n'y a plus de canevas à lire, on lit les pixels de l'écran."""
+    for ech in ECHELLES_PL:
+        ctxp = B.contexte(b, vw=390, vh=651); pgp = ctxp.new_page(); pgp.on('pageerror', lambda e: err.append(str(e)[:200]))
+        pgp.goto('http://127.0.0.1:%s/%s' % (PORT, APP)); pgp.wait_for_timeout(7000)
+        pgp.evaluate("()=>{ try{closeAll()}catch(e){} var o=document.getElementById('promiOnb'); if(o){o.classList.add('gone');o.style.display='none';} }")
+        pgp.add_style_tag(content='#device{visibility:hidden!important} body{background:#fff!important}')
+        if CHEMINS_PL: pgp.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, CHEMINS_PL))
+        if MODULE: pgp.add_script_tag(url='http://127.0.0.1:%s/%s' % (PORT, MODULE))
+        pgp.wait_for_timeout(300)
+        if SONDE: pgp.evaluate(SONDES[SONDE])
+        E = '%s' % ('0,7466 (Tom)' if abs(ech - 0.7466) < 1e-3 else str(ech).replace('.', ','))
+        tailles = {}
+        for t, fz in TEXTES_PL:
+            for c in t.replace(' ', ''): tailles.setdefault(c, set()).add(round(fz))
+        CAS = [(c, c, fz) for c in sorted(tailles) if c not in 'ÀÉ' for fz in sorted(tailles[c])] + [('À', GRAVE, 29), ('É', AIGU, 42), ('Deuxio penché', PENCHE, 25)]
+        angles, nres, pires = [], [], {}
+        for nom, html, fz in CAS:
+            o = geo_ecran(pgp, html, fz, ech)
+            lib = '⑫a PromiLate « %s » à %d pt (échelle %s)' % (nom, fz, E)
+            if not o: juge(lib + ' : le tracé se mesure', False, 'aucune mesure'); continue
+            simple = html == nom
+            angles += o['angles'] if simple else []
+            juge(lib + ' — %s aucun éclat, aucun creux qui reste (fente, entaille, marche), aucune valeur intermédiaire loin du front' % ('préfixe continu,' if simple else 'rien hors de la lettre,'),
+                 o['hors'] == 0 and (not simple or (o['trous'] <= 30 and o['avance'] <= 30)) and o['ilots'] == 0 and o['creux'] == 0 and o['loin'] <= 3 and o['pas'] >= 12,
+                 'hors %d ; trou %d ; avance %d ; éclats %d (le plus long %d images) ; creux qui restent %d px ; loin %d ; %d images' % (o['hors'], o['trous'], o['avance'], o['ilots'], o['ilotMax'], o['creux'], o['loin'], o['pas']))
+            juge(lib + ' — la dernière image du tracé est le texte réel, au pixel', o['fin'] == 0, '%d pixel(s) différent(s) à 99,999 %% du tracé' % o['fin'])
+            nres.append(o['reso'])
+        juge('⑫c résolution (échelle %s) — le canevas du tracé a exactement la taille de l\'écran : largeur et hauteur = taille CSS affichée × DPR, calé sur un pixel de l\'appareil' % E,
+             nres and all(r['ok'] for r in nres), [r for r in nres if not r['ok']][:2] or ('%d tracés, DPR %s' % (len(nres), nres[0]['dpr'] if nres else '?')))
+        juge('⑫a PromiLate (échelle %s) — le front, à l\'intérieur d\'un trait, est perpendiculaire au chemin (± %d°), sur l\'ensemble des lettres (3 mesures au moins)' % (E, ANGLE_MAX),
+             len(angles) >= 3 and max(map(abs, angles)) <= ANGLE_MAX, '%d mesures ; pire %.1f°' % (len(angles), max(map(abs, angles)) if angles else -1))
+        ctxp.close()
 
+GEO_ECRAN = """async a=>{ const [html,fz,ech,f]=a; let w=document.getElementById('gW'); if(!w){ w=document.createElement('div'); w.id='gW'; w.style.cssText='position:fixed;left:20px;top:20px;transform-origin:0 0;z-index:60;background:#fff'; document.body.appendChild(w); }
+  w.style.transform='scale('+ech+')'; if(f==='pose'){ w.innerHTML=''; const el=document.createElement('div'); el.id='gEl'; el.style.cssText='width:300px;font:400 '+fz+'px/1.25 PromiLate;color:#291547;padding:8px 12px'; el.innerHTML=html; w.appendChild(el);
+    await document.fonts.load('400 '+fz+'px PromiLate'); await document.fonts.ready; const r=w.getBoundingClientRect(); return {x:r.x,y:r.y,w:r.width,h:r.height}; }
+  const el=document.getElementById('gEl');
+  if(f==='arme'){ const C=TraceLettres.trace(el,null,{manuel:true,respecteReduire:false}); await C.pret; window.__CG=C; const cv=C.canevas, d=devicePixelRatio;
+    let reso={ok:true,dpr:d}; if(cv){ const q=cv.getBoundingClientRect(); reso={ok: Math.abs(cv.width-q.width*d)<0.6 && Math.abs(cv.height-q.height*d)<0.6 && Math.abs(q.left*d-Math.round(q.left*d))<0.05 && Math.abs(q.top*d-Math.round(q.top*d))<0.05, W:cv.width, w:+(q.width*d).toFixed(2), H:cv.height, h:+(q.height*d).toFixed(2), x:+(q.left*d).toFixed(3), y:+(q.top*d).toFixed(3), dpr:d}; }
+    const er=el.getBoundingClientRect(), k=er.width/el.offsetWidth, TR=[];
+    C.glyphes.forEach(gl=>{ if(!gl.ech) return; const pc=TraceLettres.parcours('PromiLate', gl.car, gl.variante); if(!pc) return; const M=gl.mat||[1,0,0,1], o2=gl.xo||[gl.x,gl.y], gx=(er.left+o2[0]*k)*d, gy=(er.top+o2[1]*k)*d, u=gl.ech*k*d;
+      pc.traits.forEach(t=>TR.push({R:t.R*u, pts:t.pts.map(q=>[gx+(M[0]*q[0]-M[2]*q[1])*u, gy+(M[1]*q[0]-M[3]*q[1])*u])})); });
+    return {reso, TR}; }
+  window.__CG.va(f); return 1; }"""
+
+def geo_ecran(pg, html, fz, ech, N=NGEO):
+    """les mêmes mesures que ⑨, lues sur les CAPTURES de l'écran (l'encre = la couleur du texte sur le blanc), plus les creux qui restent"""
+    r = pg.evaluate(GEO_ECRAN, [html, fz, ech, 'pose']); pg.wait_for_timeout(60)
+    clip = {'x': r['x'], 'y': r['y'], 'width': r['w'], 'height': r['h']}
+    def lit():
+        im = np.asarray(Image.open(io.BytesIO(pg.screenshot(clip=clip))).convert('L')).astype(float)
+        return np.clip((255 - im) / (255 - 24.0) * 255, 0, 255)   # #291547 sur blanc : luminance ≈ 24
+    ref = lit()
+    A = pg.evaluate(GEO_ECRAN, [html, fz, ech, 'arme'])
+    h, w = ref.shape; d = 3.0; X0, Y0 = clip['x'] * d, clip['y'] * d
+    for t in A['TR']: t['pts'] = [[p[0] - X0, p[1] - Y0] for p in t['pts']]
+    Rm = np.full((h, w), 255, np.uint8); age = np.zeros((h, w), np.uint8); pinc = np.zeros((h, w), np.uint8)
+    out = {'hors': 0, 'loin': 0, 'ilots': 0, 'ilotMax': 0, 'creux': 0, 'reso': A['reso']}
+    def composantes(m):
+        """les composantes (8-connexes) d'un masque : une liste de (taille, masque)"""
+        vu = np.zeros_like(m); res_ = []; H_, W_ = m.shape; pts = np.argwhere(m)
+        for y0, x0 in pts:
+            if vu[y0, x0]: continue
+            st = [(y0, x0)]; vu[y0, x0] = True; mem = []
+            while st:
+                y_, x_ = st.pop(); mem.append((y_, x_))
+                for dy_ in (-1, 0, 1):
+                    for dx_ in (-1, 0, 1):
+                        yy, xx = y_ + dy_, x_ + dx_
+                        if 0 <= yy < H_ and 0 <= xx < W_ and m[yy, xx] and not vu[yy, xx]: vu[yy, xx] = True; st.append((yy, xx))
+            res_.append(mem)
+        return res_
+    core = ref > 200; tot = int(core.sum())
+    def dec(m, dx, dy):
+        o = np.zeros_like(m); ys = slice(max(0, dy), h + min(0, dy)); yd = slice(max(0, -dy), h + min(0, -dy)); xs = slice(max(0, dx), w + min(0, dx)); xd = slice(max(0, -dx), w + min(0, -dx)); o[yd, xd] = m[ys, xs]; return o
+    for i in range(1, N):
+        pg.evaluate(GEO_ECRAN, [html, fz, ech, i / N]); cur = lit()
+        out['hors'] += int((cur > ref + 12).sum())
+        if i == N - 1: pass
+        Rm[(core) & (cur >= ref - 10) & (Rm == 255)] = i
+        unr = (ref > 127) & (cur <= 10)
+        part = (ref > 0) & (cur > 10) & (cur < ref - 10); rp = np.where(ref > 0, cur / np.maximum(ref, 1), 0)
+        voisin = np.zeros((h, w), bool)
+        moins = (ref > 127)
+        for dy in range(-2, 3):
+            for dx in range(-2, 3):
+                voisin |= dec(unr, dx, dy) | (dec(moins, dx, dy) & (dec(rp, dx, dy) < rp - 0.05))
+        out['loin'] = max(out['loin'], int((part & ~voisin).sum()))
+        # les éclats : de l'encre non tracée, petite et isolée, laissée en arrière trois images ou plus
+        nu = int((core & (cur <= 10)).sum()); isl = np.zeros((h, w), bool)
+        if nu > 0.10 * tot:
+            for mem in composantes(core & (cur <= 10)):
+                if 12 <= len(mem) <= 0.015 * tot:
+                    for y_, x_ in mem: isl[y_, x_] = True
+        age = np.where(isl, age + 1, 0).astype(np.uint8); out['ilots'] += int((age >= 3).sum()); out['ilotMax'] = max(out['ilotMax'], int(age.max()))
+        # ⚑ v170b — LES CREUX QUI RESTENT : de l'encre non dévoilée PINCÉE entre deux parts déjà dévoilées (à 3 px de part et d'autre, dans une même
+        # direction) — une fente, une entaille, une marche ; le front qui avance n'a d'encre dévoilée que d'un côté. Compté s'il reste deux images de suite
+        # (un front qui referme un écart ne pince un pixel qu'un instant).
+        rev = (ref > 127) & (cur >= ref * 0.9); nd = (ref > 200) & (cur < ref * 0.5); pin = np.zeros((h, w), bool)
+        for dx, dy in ((1, 0), (0, 1), (1, 1), (1, -1)):
+            a1 = np.zeros((h, w), bool); a2 = np.zeros((h, w), bool)
+            for s_ in (1, 2, 3): a1 |= dec(rev, dx * s_, dy * s_); a2 |= dec(rev, -dx * s_, -dy * s_)
+            pin |= nd & a1 & a2
+        pinc = np.where(pin, pinc + 1, 0).astype(np.uint8); out['creux'] = max(out['creux'], int((pinc >= 2).sum()))
+    pg.evaluate(GEO_ECRAN, [html, fz, ech, 0.99999]); fin = lit(); out['fin'] = int((np.abs(fin - ref) > 12).sum())
+    pg.evaluate("()=>{ if(window.__CG){ window.__CG.stop(); window.__CG=null; } }")
+    # le préfixe et l'angle : l'analyse de ⑨, sur la carte des instants lue à l'écran
+    import base64
+    rr = {'w': w, 'h': h, 'N': N, 'ref': base64.b64encode(ref.astype(np.uint8).tobytes()).decode(), 'R': base64.b64encode(Rm.tobytes()).decode(),
+          'hors': out['hors'], 'loin': out['loin'], 'part': 0, 'ilots': out['ilots'], 'ilotMax': out['ilotMax'], 'traits': A['TR']}
+    g = geo_analyse(rr)
+    for k_ in ('trous', 'avance', 'pas', 'angles', 'coudes'): out[k_] = g.get(k_, 0)
+    return out
 
 with sync_playwright() as p:
     b = p.webkit.launch(); ctx = B.contexte(b); pg = ctx.new_page(); err = []

@@ -8907,3 +8907,5 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q591 — À REGARDER (C-125, v170, rien changé : module commun aux trois polices)** : à la toute dernière image d'un tracé, la lettre encore sur le canevas est
   d'un demi-pixel plus grasse que le texte réel qui la remplace (anticrénelage du canevas ; identique en Gilbert et en Atkinson, validées) ; le R de PromiLate garde
   ≈ 5 ms un liseré d'un pixel entre sa barre et son fût. Proposition : Tom regarde au ralenti (`?tlv=0.05`) sur l'iPhone ; s'il le voit, un lot à part sur le module.
+- **Q591 — CLOSE (v170b, Tom : « reprends Q591 »)** : la dernière image d'un tracé PromiLate est le texte réel (dévoilement vectoriel) ; le liseré du R a disparu.
+  Gilbert et Atkinson gardent la dernière image de leur canevas, d'un demi-pixel plus grasse (validés, non touchés).
