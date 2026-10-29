@@ -202,6 +202,29 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v171 (29 oct. 2026) — LA LIGNE D'ÉTAT D'UNE FICHE À LA MÊME PLACE À TOUTES LES ÉCHELLES (C-207) ; L'IMAGE LONGUE DE L'INSTALLATION DU GUIDE (C-208). (Décisions Tom.)
+> **⚑ C-207 — LA CAUSE** : le poseur de la fiche (`_ficheCotes`) divisait ses mesures d'ÉCRAN (`getBoundingClientRect`) par `dp.clientWidth / 390` — une cote de
+> MISE EN PAGE, que la réduction de l'appareil (`transform`) ne touche pas : **1 à toutes les échelles**. À 0,79 la hauteur du titre et son jambage entraient
+> réduits dans la cote de la ligne d'état : **9 pt (« EN COURS ») à 12 pt (« LANCÉ ») plus haut qu'à l'échelle 1, 11 pt sur l'iPhone de Tom** (état exporté,
+> 0,80 : « TENUE » 688 au lieu de 699, « À TENIR » 620 au lieu de 631). *Corrigé* : `window._echDp(el)` = largeur rendue / `offsetWidth` (l'échelle réelle du
+> bloc) remplace `clientWidth/390` dans la pose de la fiche (titre, phrase, ligne d'état) et dans la ligne d'état d'un Cercle. **À l'échelle 1 rien ne change**
+> (`_echDp` y vaut 1 exactement) ; **à 0,79, toute la fiche est maintenant celle de l'échelle 1** (26 nœuds, clair et sombre, ≤ 0,6 pt ; v170d : seule la ligne
+> d'état différait). ⚠ Les « deux hauteurs à 2 pt d'une passe à l'autre » de v168b ne sont PAS reproduites (10 ouvertures sur page fraîche, v170d : stable à
+> 619) ; l'arrondi de ces valeurs réduites en est la cause probable, non prouvée. Juge : **`redteam_etat_fiche.py`** (10 ouvertures au doigt depuis l'Index,
+> chacune sur une page fraîche, échelles 1, 0,79 et l'état de Tom ; même pixel à chaque ouverture, même cote en points 390 d'une échelle à l'autre ; rouge sur
+> v170d : 7/11). ⚠ **Même faute, NON TOUCHÉE (A5)** : la hauteur du fil d'un Cercle (`hD`, sa hauteur minimale) et deux cotes du dessin (`lot-V132-DESSIN`,
+> `sc`, `sc2`) divisent encore par `clientWidth/W` (Q592). *La règle (§8, « deux unités dans une même comparaison »)* : **une mesure d'écran se ramène par
+> l'échelle RENDUE du bloc (`getBoundingClientRect().width / offsetWidth`), jamais par `clientWidth` — qui ne voit pas un `transform`.**
+> **⚑ C-208 — LA CAUSE (trace Chromium, compteurs dans la page ; charge 10 à 140 pendant tout le lot : ordres de grandeur)** : l'image longue tombe juste après la
+> couverture (1,42 s pour 1,4 s) : la PREMIÈRE image de l'ouverture de la zone portait toute l'étape — la phrase bâtie (HTML, une mise en page forcée), la flèche
+> (sa forme, sa grille de flaques), puis, en microtâche, la mise en mesure du tracé de la phrase (plusieurs mises en page) et sa première tranche de lettres
+> (8 ms), et la première peinture de l'eau. *Aujourd'hui (`lot-V141-GUIDE`, `preHabille`)* : la phrase et la flèche de l'étape d'installation sont préparées
+> avant la couverture, là où l'entourage l'était déjà (`preCible`, rien ne bouge encore) — la phrase bâtie, mesurée, posée, puis retirée du document ; la flèche
+> enregistrée dans la scène, qui ne la peint pas tant que la zone n'a pas commencé à s'ouvrir ; à la fin de la couverture la phrase est rendue au document et son
+> tracé lancé dans une image où l'eau est entière et RIEN NE BOUGE, et la zone s'ouvre à l'image suivante. Mesuré à charge égale (12 à 18, trois passes,
+> alternées) : le travail de l'étape dans l'image d'ouverture 7,4–12,3 ms → 3,9–4,9 ms. **Amélioré, NON JUGÉ au calme** (C-137) : la mise en mesure du tracé
+> reste dans une image (statique), le module de tracé n'a pas été touché (A5) ; les étapes du + et de Partager n'ont pas été touchées.
+
 ### ⚑ v170d (29 oct. 2026) — LE TRACÉ SANS CALCUL PENDANT L'AFFICHAGE ; LE PASSAGE DU + À PARTAGER COMME CELUI DU STUDIO AU +. (Décisions Tom.) Ce bloc CORRIGE v170c (l'attente bornée à 150 ms) et v169b (C-203 : l'eau qui se retirait au +).
 > **Validé par Tom : la genèse de PromiLate sur son iPhone (v170c).**
 > **⚑ C-125 — « DES LATENCES DANS LA GENÈSE DES TEXTES, SURTOUT SUR LE FLOU À LA FIN DU GUIDE ; ÇA SACCADE ».** *La cause, mesurée sur l'état de Tom (WebKit, 390 × 651 ;
@@ -3825,6 +3848,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_etat_fiche.py      # 11 — v171 (C-207) : la ligne d'état d'une fiche, 10 ouvertures au doigt depuis l'Index (page fraîche à chaque fois), échelles 1, 0,79 et l'état de Tom : même pixel à chaque ouverture, même cote en pt 390 d'une échelle à l'autre. Rouge sur v170d (7/11). ⚠ Sous forte charge, une fiche touchée peut ne pas s'ouvrir (« ? », v170d aussi) : rejouer.
 python3 redteam_passages.py        # 42 — v170d (C-203) : le passage + → Partager (chemins c, b, a) a les étapes et les durées (± 10 %) du passage Studio → +, l'eau reste, la flèche avec la zone ; deux échelles. Rouge sur v170c.
 python3 redteam_trace_present.py   # 87 — v170c (C-206), À CHAQUE LOT : chaque texte tracé (onboarding, guide) jamais entier à la première image, sa durée à 40 car/s ; quatre ouvriers (normal, absent, muet, lent). Rouge sur v170b.
 python3 redteam_cloture_delai.py   # 30 — v169b (C-203 §1) : la clôture du guide sur cinq chemins (c, a, a planté, b, b'), deux échelles : flou ≤ 100 ms, zone de Partager et flèche ≤ 800 ms, lus image par image dans la page. 10/24 sur v169. Durées : au calme seulement.

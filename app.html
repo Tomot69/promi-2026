@@ -3601,6 +3601,11 @@ window._budgetTache=function(){ var B=window._bdgT||(window._bdgT={t0:0,on:false
 window._echTexte=1.12;
 /* ce que l'agrandissement ajoute à l'ENCRE d'un bloc de Gilbert, au-dessus et au-dessous de sa boîte (mesuré sur les fiches, avant/après
    v96 : titre 42 → 4 et 3 ; à-qui 23 → 2 et 2 ; noms des Noyaux 14 → 1 et 1). Une cote « bloc + air » l'ajoute à son air. */
+/* ⚑ v171 (Tom, C-207) — L'ÉCHELLE D'UN BLOC RENDU. Le poseur de la fiche divisait ses mesures d'écran (`getBoundingClientRect`) par
+   `dp.clientWidth / 390` — or `clientWidth` est une cote de MISE EN PAGE, que la réduction de l'appareil (`transform`) ne touche pas : 1 à
+   toutes les échelles. À 0,79 la hauteur du titre et son jambage entraient donc réduits dans la cote de la ligne d'état : 9 à 12 pt plus
+   haut qu'à l'échelle 1, et l'arrondi de ces valeurs réduites basculait d'une passe à l'autre. Deux unités dans une même comparaison (§8). */
+window._echDp=function(el){ try{ var r=el.getBoundingClientRect(); return (r.width && el.offsetWidth) ? r.width/el.offsetWidth : 1; }catch(e){ return 1; } };
 window._encreSup=function(fs){ var d=(+fs||0)*((window._echTexte||1)-1); return {haut:d*0.8, bas:d*0.62}; };
 function peintMinis(root){ try{
   /* chaque canvas est peint, meme si plusieurs partagent le meme id :
@@ -15534,7 +15539,7 @@ var CREMEETAT='#F7F0DE';
     pose(qui,{top:e.yQui+'px', color:_colQui, '-webkit-text-fill-color':_colQui, 'font-size':e.quiFs+'px'});
     /* v136 (C-069) : la phrase peut tenir sur deux lignes et plus (plusieurs personnes, liste dépliée) — le titre et ce qui le suit
        descendent de ce qu'elle prend en plus d'une ligne (une cote dérivée : bas réel de la phrase, jamais une cote figée, §8) */
-    var _yT=e.yTitre; try{ if(qui && qui.getAttribute('data-phrase')){ qui.style.setProperty('white-space','normal','important'); var _scq=(dp.clientWidth||W)/W, _hq=qui.getBoundingClientRect().height/_scq, _lh1=parseFloat(getComputedStyle(qui).lineHeight)/1||e.quiFs*1.2; if(_hq>_lh1*1.5) _yT=Math.round(e.yTitre+_hq-_lh1); } }catch(_q){}
+    var _yT=e.yTitre; try{ if(qui && qui.getAttribute('data-phrase')){ qui.style.setProperty('white-space','normal','important'); var _scq=window._echDp(dp), _hq=qui.getBoundingClientRect().height/_scq, _lh1=parseFloat(getComputedStyle(qui).lineHeight)/1||e.quiFs*1.2; if(_hq>_lh1*1.5) _yT=Math.round(e.yTitre+_hq-_lh1); } }catch(_q){}
     pose(ti ,{top:_yT+'px', color:encre, '-webkit-text-fill-color':encre, 'font-size':e.titreFs+'px'});
     /* ⚠ UN CRAN, SAUF SI LA LIGNE CASSE. Le cran du 29 août (38 → 42) fait passer « le grand
        plongeoir » à DEUX lignes là où le cadre 56 le tient sur une : « ça doit rester
@@ -15542,7 +15547,7 @@ var CREMEETAT='#F7F0DE';
        une ligne, plancher 38 — la valeur d'avant le cran. Un titre court garde son cran
        entier ; un titre long n'est jamais plus mal loti qu'avant. Même logique que la carte
        d'Index et que la phrase de la page + : « on prend la plus petite des deux ». */
-    if(ti){ var _sc=(dp.clientWidth||W)/W, _fs=e.titreFs;
+    if(ti){ var _sc=window._echDp(dp), _fs=e.titreFs;
       while(_fs > 38 && ti.getBoundingClientRect().height/_sc > _fs*1.35){
         _fs -= 1; pose(ti, {'font-size':_fs+'px'}); }
       /* ⚑ v46 (Tom) — UN TITRE LONG TIENT SUR DEUX LIGNES, TROIS AU PLUS, PUIS POINTS DE SUITE. Au plancher de 38 il
@@ -15561,7 +15566,7 @@ var CREMEETAT='#F7F0DE';
           ti.textContent = _long.slice(0, _lo).replace(/\s+$/, '') + '\u2026'; }
       }
       e.titreFs = _fs; }
-    var hTitre = ti ? Math.round(ti.getBoundingClientRect().height/((dp.clientWidth||W)/W)) : Math.round(e.titreFs*1.02);
+    var hTitre = ti ? Math.round(ti.getBoundingClientRect().height/(window._echDp(dp))) : Math.round(e.titreFs*1.02);
     /* ⚠ ET ON NE RESSERRE PAS SOUS LE TITRE. J'avais ramené cet écart de 30 à 26 d'encre
        « pour harmoniser » — mais Tom a dit « en cours est TROP PROCHE de la ligne du
        dessus » : le corriger en le rapprochant encore aurait été le contraire de ce qui
@@ -15574,7 +15579,7 @@ var CREMEETAT='#F7F0DE';
        JAMBAGE de la dernière ligne (34,5 sans jambage, 21 à 26 avec un g, un p, un q). La cote partait de la
        BOÎTE du titre. On descend donc l'état de la profondeur d'encre de la dernière ligne sous sa ligne de
        base : l'air à l'encre est le même pour tous les titres. */
-    try{ var _jb = (ti && window._jambageDernier) ? window._jambageDernier(ti) : 0; yEtat += Math.round(_jb/((dp.clientWidth||W)/W)) + Math.ceil(window._encreSup(e.titreFs).bas); }catch(_j){}   /* ⚑ v102 : jambage ou pas, l'encre du titre descend de ce que l'agrandissement (v96) lui ajoute — 26,3 était l'air d'avant */
+    try{ var _jb = (ti && window._jambageDernier) ? window._jambageDernier(ti) : 0; yEtat += Math.round(_jb/(window._echDp(dp))) + Math.ceil(window._encreSup(e.titreFs).bas); }catch(_j){}   /* ⚑ v102 : jambage ou pas, l'encre du titre descend de ce que l'agrandissement (v96) lui ajoute — 26,3 était l'air d'avant */
     /* et l'accent d'une capitale (« À », « É ») monte l'encre de la ligne d'état : on le compte aussi */
     try{ if(qd && window._accentHaut) yEtat += Math.round(window._accentHaut(qd, e.etatFs||13.5)); }catch(_a){}
     /* ⚑ v18 (Tom) : la mention TENU est en AMANDE — « TENUE », « TENU À DEUX · 3 AOÛT » (v6 : l'amande porte la
@@ -15583,7 +15588,7 @@ var CREMEETAT='#F7F0DE';
     var _colQd = (p && p.status==='tenu') ? ((window._ficheClair?window._ficheClair():false) ? '#00341A' : '#8FE08F') : e.colTexte;   /* v136 (Tom, C-059) : en clair, sur la crème, la mention TENU est au vert d'état — l'amande y est illisible */
     pose(qd,{top:yEtat+'px', color:_colQd, '-webkit-text-fill-color':_colQd,
              'font-size':(e.etatFs||13.5)+'px'});
-    e.yEtat=yEtat; e.hEtat = qd ? Math.round(qd.getBoundingClientRect().height/((dp.clientWidth||W)/W)) : 15;
+    e.yEtat=yEtat; e.hEtat = qd ? Math.round(qd.getBoundingClientRect().height/(window._echDp(dp))) : 15;
 
     /* la zone de message. Trois cas, et trois seulement, dans l'inventaire :
        · « en cours » → LE CHAMP (§3.7) 342×66 rayon 33 contour 3, à état + 42 ;
@@ -16007,7 +16012,7 @@ var CREMEETAT='#F7F0DE';
     }
     pose(qui,{top:yQui+'px', color:colTexte, '-webkit-text-fill-color':colTexte, 'font-size':'19px'});
     pose(ti ,{top:yTitre+'px', color:encre, '-webkit-text-fill-color':encre, 'font-size':'38px'});
-    var sc2=(dp.clientWidth||W)/W;
+    var sc2=window._echDp(dp);   /* v171 (C-207) : l'échelle de l'écran, jamais clientWidth (toujours 390) */
     var hT = ti ? Math.round(ti.getBoundingClientRect().height/sc2) : 39;
     /* §12 · la méta d'une Nuée est à TITRE + 65, une valeur de l'inventaire, pas une mesure :
        730−665 · 644−579 · 558−493 · 472−407 · 446−381 — 65 sur les vingt écrans. Mesurée
@@ -41250,7 +41255,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function batiPhrase(g, quoi){ var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.innerHTML=phraseHTML(quoi); [].forEach.call(p.querySelectorAll('*'), function(e){ eng(e,'guide-phrase'); }); g.appendChild(p);
     var h=p.offsetHeight||80; p.style.top=Math.round((quoi==='reste'?422:372-120)-h/2)+'px';   /* v165 (C-203) : la phrase 2 au centre de l'écran */   /* v147 (Tom, §10.4) : 1 cm (60 pt) plus haut ; ⚑ v149 (Tom, C-145) : « remonte encore d'UN cm réel, 60 pt ± 4, PAS PLUS » — centre 312 → 252 */
     return p; }
-  function posePhrase(g, quoi){ var p=batiPhrase(g, quoi);
+  function posePhrase(g, quoi, pret){ var p=pret?g.appendChild(pret):batiPhrase(g, quoi);
     if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; try{ if(window._diagErreur) window._diagErreur('guide-trace', _); }catch(__){ } }
       if(quoi==='studio' && traceCtl && traceCtl.fin && !prepare_){ prepare_=1; traceCtl.fin.then(function(){ setTimeout(prepareSuite, 250); }); } }
     return p; }
@@ -41275,13 +41280,25 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function preCible(quoi){ PRE=null; var c=cible(quoi); if(!c || !SC) return false; PRE={quoi:quoi, sc:SC, ent:SC.cible(c.b, c.marge, ((Date.now()&0xffff)|1), c.o)}; return true; }
   function habille(g, quoi){ deshabille(); var c=cible(quoi); if(!c) return false; ou=quoi;
     g.setAttribute('data-guide', quoi); dev.classList.remove('guide-studio','guide-plus','guide-partage'); dev.classList.add('guide-'+quoi);
-    posePhrase(g, quoi);
-    var ent=(PRE && PRE.quoi===quoi && PRE.sc===SC && SC.ent===PRE.ent)?PRE.ent:SC.cible(c.b, c.marge, ((Date.now()&0xffff)|1), c.o), eb=ent.boite; PRE=null;
+    var H=(PREH && PREH.quoi===quoi && PREH.sc===SC && SC.ent===PREH.ent && SC.fl===PREH.fl && PREH.clair===dev.classList.contains('light'))?PREH:null; PREH=null; habille.prep=!!H;   /* v171 (C-208) : préparé avant la couverture */
+    posePhrase(g, quoi, H?H.p:null);
+    var ent=H?H.ent:(PRE && PRE.quoi===quoi && PRE.sc===SC && SC.ent===PRE.ent)?PRE.ent:SC.cible(c.b, c.marge, ((Date.now()&0xffff)|1), c.o), eb=ent.boite; PRE=null;
     trou={x:eb[0]+eb[2]/2, y:eb[1]+eb[3]/2, w:eb[2], h:eb[3], b:c.b};
     var bt=eng(document.createElement('div'),'guide-cible'); bt.id='guideCible'; bt.setAttribute('role','button'); bt.tabIndex=0; bt.setAttribute('aria-label', quoi==='studio'?'Studio':(quoi==='partage'?'Partager':'Planter'));
     bt.style.cssText='position:absolute;left:'+eb[0].toFixed(1)+'px;top:'+eb[1].toFixed(1)+'px;width:'+eb[2].toFixed(1)+'px;height:'+eb[3].toFixed(1)+'px;border-radius:'+(Math.min(eb[2],eb[3])/2).toFixed(1)+'px;margin:0;padding:0;max-width:none;background:transparent'; g.appendChild(bt);
-    try{ fleche(g, quoi, c, ent); }catch(_){ }
+    if(!H){ try{ fleche(g, quoi, c, ent); }catch(_){ } }
     return true; }
+  /* ⚑ v171 (Tom, C-208) — « UNE IMAGE DE 33 ms PENDANT QUE LE FLOU S'INSTALLE ». LA CAUSE, mesurée (trace Chromium, compteurs dans la page) : la première image
+     de l'ouverture de la zone portait toute l'étape d'un bloc — la phrase bâtie (son HTML, une mise en page forcée pour la poser : 3 à 11 ms), sa mise en
+     tracé, la flèche (sa forme, sa grille de flaques : 3 à 8 ms), puis le style et la mise en page de ces nœuds neufs, en plus de la première peinture de
+     l'eau. AUJOURD'HUI la phrase et la flèche de la PREMIÈRE étape sont préparées là où l'entourage l'est déjà (`preCible`) : avant la couverture, quand rien
+     ne bouge encore. La phrase est bâtie, mesurée et posée à sa place, puis retirée du document (il n'y a rien de neuf à l'écran pendant la couverture) ; la
+     flèche est enregistrée dans la scène, qui ne la peint pas tant que la zone nette n'a pas commencé à s'ouvrir (`net` = 0 : « vide »). L'image d'ouverture
+     n'a plus qu'à rendre la phrase au document et à lancer son tracé. Le rendu est le même : la même fonction bâtit la phrase, la même dessine la flèche. */
+  var PREH=null;
+  function preHabille(g, quoi){ PREH=null; try{ var c=cible(quoi); if(!c || !SC || !PRE || PRE.quoi!==quoi || PRE.sc!==SC || SC.ent!==PRE.ent) return;
+      var p=batiPhrase(g, quoi); fleche(g, quoi, c, PRE.ent); if(p.parentNode) p.parentNode.removeChild(p);
+      PREH={quoi:quoi, sc:SC, ent:PRE.ent, fl:SC.fl, p:p, clair:dev.classList.contains('light')}; }catch(_){ PREH=null; var q=$('guidePhrase'); if(q) q.remove(); } }
   /* ⚑ v166 (Tom, C-203 §2) — « Ajoute la MÊME flèche que celle de la page +, à côté de « TRACE POUR PLANTER » (pointe et trait de départ, même dessin, même
      épaisseur × 1,3), en orange #FB4C0D. Elle part de la phrase et pointe vers l'icône, sans jamais la toucher ni la recouvrir, à l'intérieur ou au bord de la
      zone nette. Fixe, sans clignotement. Elle paraît avec la zone nette, et disparaît en flaques avec elle. » Le dessin est celui de la page + au repos
@@ -41337,7 +41354,10 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   /* une étape : sa phrase, puis sa zone nette qui s'ouvre en flaques */
   function etape(quoi, pose, ouvre){ var g=$('guide'); if(!g || !SC) return Promise.resolve(false); if(!habille(g, quoi)){ retire(); etat=null; return Promise.resolve(false); }
     etat=quoi; net(0); if(pose){ net(1); SC.peint(); respire(quoi); return Promise.resolve(true); }
-    return joue(ouvre||OUVRE, 0, 1, net).then(function(ok){ if(ok) respire(quoi); return ok; }); }
+    /* v171 (C-208) : à l'installation, la phrase rendue et son tracé lancé (sa mesure, ses premières lettres) dans une image où l'eau est entière et rien ne
+       bouge ; la zone commence à s'ouvrir à l'image suivante — jamais dans la même image que ce travail */
+    var j0=jeu, attend=habille.prep?new Promise(function(r){ requestAnimationFrame(function(){ r(j0===jeu); }); }):Promise.resolve(true);
+    return attend.then(function(ok0){ if(!ok0 || !SC) return false; return joue(ouvre||OUVRE, 0, 1, net).then(function(ok){ if(ok) respire(quoi); return ok; }); }); }
   /* ⚑ v147 (Tom, §10.2) — la zone ouverte RESPIRE, très légèrement : ses lobes tournent, sa marge bouge de ±0,8 pt (6 à 10 pt) — une image sur deux */
   function respire(quoi){ if(reduit() || !SC || !SC.respire) return; var id=jeu, t0=performance.now(), n=0;
     (function f(){ if(id!==jeu || etat!==quoi || !SC || uN<1) return; if((n++)%2===0){ SC.respire((performance.now()-t0)/1000); SC.peint(); } requestAnimationFrame(f); })(); }
@@ -41364,6 +41384,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       if(reduit() || sansRevelation){ couv(1); SC.peint(); g.setAttribute('data-entier','1'); etape(quoi, true); return; }
       if(vite){ etat='couvre'; g.setAttribute('data-depart', ''+Math.round(performance.now())); montee(g, 0, quoi, true); return; }   /* v169b : l'eau d'abord, l'entourage à l'image suivante */
       preCible(quoi);                                                 /* l'entourage du premier arrêt, calculé ici : rien ne bouge encore */
+      preHabille(g, quoi);                                            /* v171 (C-208) : sa phrase et sa flèche aussi */
       etat='couvre'; g.setAttribute('data-depart', ''+Math.round(performance.now()));
       joue(COUVRE, 0, 1, couv).then(function(ok){ if(!ok) return; g.setAttribute('data-entier','1'); var j2=jeu; requestAnimationFrame(function(){ if(j2!==jeu || !$('guide')) return; etape(quoi, false); }); }); });
     return true; }

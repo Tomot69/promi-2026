@@ -8909,3 +8909,6 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   ≈ 5 ms un liseré d'un pixel entre sa barre et son fût. Proposition : Tom regarde au ralenti (`?tlv=0.05`) sur l'iPhone ; s'il le voit, un lot à part sur le module.
 - **Q591 — CLOSE (v170b, Tom : « reprends Q591 »)** : la dernière image d'un tracé PromiLate est le texte réel (dévoilement vectoriel) ; le liseré du R a disparu.
   Gilbert et Atkinson gardent la dernière image de leur canevas, d'un demi-pixel plus grasse (validés, non touchés).
+- **Q592 — À REGARDER (C-207, v171, rien changé — A5)** : la même faute d'unité (une mesure d'écran ramenée par `clientWidth/390`, qui vaut 1 à toutes les échelles)
+  vit encore à deux endroits : la hauteur minimale du fil d'un Cercle (`hD`, `#dpMain`) et deux cotes du dessin (`lot-V132-DESSIN`, `sc`, `sc2`). À 0,79 elles sortent
+  réduites. Proposition : un lot à part, la même correction (`_echDp`), A1 sur la fiche d'un Cercle et le mode dessin aux deux échelles.
