@@ -187,7 +187,10 @@ with sync_playwright() as p:
                 if ch == 'a':
                     tap_sel(pg, '.acc-pil[data-k=promi]'); pg.wait_for_timeout(2500)
                     cs = pg.evaluate("()=>document.getElementById('createSheet').classList.contains('show')")
-                    juge('[%s · %s] une page + ouverte : pas de clôture par-dessus' % (T, ch), cs and not pg.evaluate("()=>!!document.getElementById('guide')"))
+                    # ⚑ v170d (Tom, C-203) — CONTRAT REMIS (original : sauvegardes/redteam_guide_cloture-avant-v170d.py, « le guide est retiré ») : l'eau reste sous la page +,
+                    #   comme sous le Studio ; ce qui compte : AUCUNE clôture par-dessus — ni phrase, ni étape de Partager tant que la page + est ouverte.
+                    gp = pg.evaluate("()=>{const g=document.getElementById('guide'); return g?[g.getAttribute('data-guide'), !!document.getElementById('guidePhrase')]:null;}")
+                    juge('[%s · %s] une page + ouverte : pas de clôture par-dessus (le guide attend, sans phrase, sous la page +)' % (T, ch), cs and (gp is None or (gp[0] == 'part' and not gp[1])), gp)
                     pg.evaluate("()=>{ try{ closeAll(); }catch(e){} }")   # la page + fermée
                 else:
                     tap_pt(pg, 200, 330)                                   # ailleurs : le menu se ferme

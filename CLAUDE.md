@@ -202,6 +202,37 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v170d (29 oct. 2026) — LE TRACÉ SANS CALCUL PENDANT L'AFFICHAGE ; LE PASSAGE DU + À PARTAGER COMME CELUI DU STUDIO AU +. (Décisions Tom.) Ce bloc CORRIGE v170c (l'attente bornée à 150 ms) et v169b (C-203 : l'eau qui se retirait au +).
+> **Validé par Tom : la genèse de PromiLate sur son iPhone (v170c).**
+> **⚑ C-125 — « DES LATENCES DANS LA GENÈSE DES TEXTES, SURTOUT SUR LE FLOU À LA FIN DU GUIDE ; ÇA SACCADE ».** *La cause, mesurée sur l'état de Tom (WebKit, 390 × 651 ;
+> charge 17 à 280, ordres de grandeur seulement)* : les lettres se calculaient PENDANT le dévoilement — la carte d'une lettre (Gilbert, Atkinson), les restes d'une
+> lettre de PromiLate (jusqu'à 533 ms sur le fil, recalculés à CHAQUE tracé), et le repli de v170c (au-delà de 150 ms d'attente, le calcul sur place) : jusqu'à
+> 785 ms de travail par image, et des dévoilements de 2,7 à 4,1 s pour 0,8 à 1,25 s prévus. ⚠ Le relevé `?diag=1` de l'iPhone de Tom n'est PAS reçu : la cause sur
+> SON appareil reste à lire (le relevé porte maintenant, par texte, la durée prévue, la durée réelle, l'attente avant le premier trait, les images de plus de 20 ms).
+> **Aujourd'hui (`variantes/trace-lettres.js`)** : ① AUCUN CALCUL PENDANT L'AFFICHAGE — toutes les lettres d'un texte sont prêtes AVANT que la plume parte (`preRoll` :
+> reprises du cache, sinon calculées le texte encore caché, une lettre par tranche de 8 ms, l'ouvrier pour le reste) ; ② les RESTES d'une lettre de PromiLate sont
+> gardés (`TL._cacheR` : la lettre, sa police, sa transformation, l'échelle, la place de son origine DANS un pixel de l'appareil) ; ③ `preparer` : la même mesure et
+> les mêmes calculs qu'un tracé, sans rien montrer ni toucher à l'élément (`immediat` : mesuré et retiré dans la même tâche) ; ④ l'ouvrier naît et passe son essai
+> au chargement ; une réponse tardive remplit quand même le cache. **App** : les phrases du guide (+, Partager, phrase 2) sont préparées à LEUR place dès que la phrase
+> du Studio est écrite (`prepareSuite`, `batiPhrase`) ; les textes de la page de la parole pendant que le clavier descend ; les lignes de « Promi planté ! » pendant
+> qu'on lit le titre ; `traceTextes` prépare toute la page avant le premier trait (`prepareTextes`). Mesuré (état de Tom) : dévoilements 1 269 / 1 250, 1 153 / 1 135,
+> 825 / 805 ms ; travail du tracé par image p95 7 à 17 ms (785 avant). **Préparés SUR L'APPAREIL, au chargement des pages — PAS livrés dans app.html** : une carte et des
+> restes dépendent de la densité de l'écran, de l'échelle (0,7466 chez Tom, 0,79, 0,93…), de la place de la lettre dans un pixel et du rendu des polices par
+> l'appareil — livrés figés, ils ne seraient pas identiques au pixel au rendu validé. Le rendu ne change pas : cache contre calcul, image par image, 12/12
+> (`scratchpad/v170c/a1d.py`). ⑤ **LA DÉCOUPE POSÉE À CHAQUE IMAGE EST REGROUPÉE** : les carrés d'un pixel déjà dévoilés (les restes) sont réunis EN RANGÉES
+> (`rangees`) et une lettre finie dont la boîte ne touche l'encre d'aucune lettre en cours se dévoile par sa boîte — sur l'état de Tom, la découpe des phrases du +,
+> de Partager et de la phrase 2 passe de 130–178 Ko à 5–6 Ko, le travail du tracé par image de p95 25–32 ms à 2–3 ms. **Aux mêmes pixels** : contre v170b servi à
+> côté, chaque image lue à l'écran, trois polices, deux échelles, 14/14 (`a1f.py`) ; regroupé contre non regroupé, 10/10 (`a1e.py`) ; `TL.rangees = false`,
+> `TL.boites = false` rendent l'ancien chemin. Cadences : NON JUGÉES (charge 6 à 280 pendant tout le lot).
+> **⚑ C-203 — LE PASSAGE DU + À PARTAGER EST CELUI DU STUDIO AU +.** *Mesuré côte à côte* : Studio → + : la phrase part, l'eau RESTE, la zone du Studio se referme (240 ms),
+> deux images, la zone du + s'ouvre (400 ms) avec sa flèche ; + → Partager (v169b) : chemin c 240 + 360 ms ; chemins a et b : le + touché, l'eau SE RETIRAIT (1,2 s),
+> puis REMONTAIT (400 ms) au retour avant la zone de Partager (360 ms). *Aujourd'hui* : le + touché fait comme le Studio touché — la phrase part, l'eau reste, le menu des
+> natures s'ouvre PAR-DESSUS le flou (`guide-menu` : z-index 70, comme le Studio) ; au retour (menu refermé, page + refermée, parole plantée) et sur le chemin c, la même
+> suite que `versLePlus` (`passeVers` : FERME_R 240, deux images, OUVRE_R 400, le fond suit la Toile réelle). Le flou est déjà là au déclencheur (v169b tenu).
+> Juge : **`redteam_passages.py`** (42 : Studio → + mesuré dans la même page, puis c, b, a — l'eau ne bouge pas, une fermeture puis une ouverture d'un mouvement, la flèche
+> avec la zone, les durées ± 10 %, deux échelles ; rouge sur v170c : 28/36). Juge `redteam_trace_present` complété (la durée prévue suit 40 car/s ; au calme : le
+> dévoilement ± 10 %, aucune image > 20 ms, travail du tracé ≤ 8 ms par image ; les préparations ne sont pas des textes affichés).
+
 ### ⚑ v170c (29 oct. 2026) — RÉGRESSION BLOQUANTE : SUR L'iPHONE, LES TEXTES APPARAISSAIENT D'UN COUP. (Décisions Tom.) Ce bloc CORRIGE v170b (le calcul des restes dans l'ouvrier).
 > **La cause, relevée dans Safari iOS 26.1 (simulateur iPhone 16e, v170b telle quelle, `?diag=1`)** : la plume ATTENDAIT l'ouvrier (Worker) sans limite — le mot « Promi » de
 > l'onboarding a mis 27,7 s à paraître pour 0,17 s prévues (19 images) ; en WebKit de Playwright l'ouvrier répond vite et rien ne se voyait. Un texte qui attend, puis que
@@ -3794,6 +3825,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_passages.py        # 42 — v170d (C-203) : le passage + → Partager (chemins c, b, a) a les étapes et les durées (± 10 %) du passage Studio → +, l'eau reste, la flèche avec la zone ; deux échelles. Rouge sur v170c.
 python3 redteam_trace_present.py   # 87 — v170c (C-206), À CHAQUE LOT : chaque texte tracé (onboarding, guide) jamais entier à la première image, sa durée à 40 car/s ; quatre ouvriers (normal, absent, muet, lent). Rouge sur v170b.
 python3 redteam_cloture_delai.py   # 30 — v169b (C-203 §1) : la clôture du guide sur cinq chemins (c, a, a planté, b, b'), deux échelles : flou ≤ 100 ms, zone de Partager et flèche ≤ 800 ms, lus image par image dans la page. 10/24 sur v169. Durées : au calme seulement.
 python3 redteam_couleurs_exactes.py # 10 (+10 avec --exact, retiré en v169b) — v169 (C-204) : les lettres de « Studio » à l'hexadécimal près, deux thèmes, deux échelles ; l'option ?exact=1. 14/20 sur v168c.

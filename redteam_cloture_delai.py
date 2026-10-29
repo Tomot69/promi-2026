@@ -72,7 +72,11 @@ def delais(J, t0, chemin):
     av = [r for r in J if r[0] <= tr]; ap = [r for r in J if r[0] > tr]
     prev = av[-1][2] if av else -1
     flou = None
+    # ⚑ v170d (Tom, C-203 : « le passage du + à Partager exactement comme celui du Studio au + ») — l'eau ne se retire plus quand on touche le + : au
+    #   déclencheur le flou est DÉJÀ là (couverture ≥ 0,99) — il « commence » à 0 ms. Original : sauvegardes/redteam_cloture_delai-avant-v170d.py
+    if chemin != 'c' and prev >= 0.99: flou = 0.0
     for r in ap:
+        if flou is not None: break
         if (chemin == 'c' and r[1] not in ('plus',)) or (chemin != 'c' and r[2] > max(prev, 0) + 0.001): flou = r[0] - tr; break
         prev = r[2] if r[2] >= 0 else prev
     zone = next((r[0] - tr for r in ap if r[1] == 'partage' and r[3] >= 0.999 and r[4]), None)

@@ -173,7 +173,8 @@ GEO = """async a=>{ const [pol,gr,car,N]=a, fz=a[4]||150, html=a[5]||null; docum
     pc.traits.forEach(t=>TR.push({R:t.R*u, pts:t.pts.map(q=>[gx+(M[0]*q[0]-M[2]*q[1])*u, gy+(M[1]*q[0]-M[3]*q[1])*u])})); });
   C.stop(); el.remove();
   return {w:W, h:H, N:N, ref:b64(ref), R:b64(R), hors, loin, part, ilots, ilotMax, LP, traits:TR}; }"""
-ENREG = """()=>{ window.__TL=[]; window.__CTL=[]; const T=window.TraceLettres; const tr=T.trace; T.trace=function(c){ const ctl=tr.apply(this, arguments); const k=window.__CTL.push(ctl)-1;
+ENREG = """()=>{ window.__TL=[]; window.__CTL=[]; const T=window.TraceLettres; const tr=T.trace; T.trace=function(c, ct, o){ if(o && o.preparer) return tr.apply(this, arguments);   /* v170d : une préparation d'avance ne montre rien — ce n'est pas un texte tracé */
+    const ctl=tr.apply(this, arguments); const k=window.__CTL.push(ctl)-1;
     const txt=(c.textContent||''); const r={id:c.id||'', k:k, ctl:true, n:[...txt].filter(x=>x.trim()).length, esp:(txt.trim().match(/\\s+/g)||[]).length, images:[]}; window.__TL.push(r);
     ctl.pret.then(()=>{ r.debut=performance.now(); (function f(){ if(ctl.fini){ r.fin=r.fin||performance.now(); return; } const e=ctl.etat(); r.images.push([performance.now(), e.actives || [e.glyphe]]); requestAnimationFrame(f); })(); });
     ctl.fin.then(()=>{ r.fin=performance.now(); }); return ctl; }; }"""

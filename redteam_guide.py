@@ -481,9 +481,11 @@ def premier_lancement(b, th):
     if e4['guide'] == 'plus':
         phrase(e4, T, 'plus'); recouvre(pg, T, 'plus'); zone(pg, e4, T, 'plus')
         x, y = pt(pg, e4['e']['trou']['x'], e4['e']['trou']['y']); toucher(cdp, pg, x, y); pg.wait_for_timeout(380); e5 = pg.evaluate(ETAT); mi, _ = eau(pg, 98, 211)
-        juge('[%s] toucher le + ouvre les trois natures TOUT DE SUITE ; l\'eau se retire en flaques pendant ce temps (elle n\'a pas disparu d\'un coup)' % T, (e5['choix'] or e5['cs']) and mi is not None and 0.05 < float(mi.mean()) < 0.99, 'natures %s · eau encore %s %%' % (e5['choix'], None if mi is None else round(float(mi.mean()) * 100)))
+        # ⚑ v170d (Tom, C-203 : « le passage du + à Partager, EXACTEMENT comme celui du Studio au + ») — CONTRAT REMIS (original : sauvegardes/redteam_guide-avant-v170d.py,
+        #   « l'eau se retire en flaques, puis il ne reste rien ») : le + touché fait comme le Studio touché — les natures s'ouvrent PAR-DESSUS le flou, l'eau reste, sans phrase.
+        juge('[%s] toucher le + ouvre les trois natures TOUT DE SUITE, par-dessus le flou : l\'eau reste posée dessous, sans phrase (comme au Studio)' % T, (e5['choix'] or e5['cs']) and e5['eau'] and e5['phrase'] is None, 'natures %s · eau %s · phrase %s' % (e5['choix'], e5['eau'], e5['phrase']))
         pg.wait_for_timeout(RETIRE + 500); e6 = pg.evaluate(ETAT)
-        juge('[%s] puis il ne reste rien : le guide est retiré, vu une fois' % T, not e6['guide'] and not e6['eau'] and e6['vu'] == '1', 'guide %s' % e6['guide'])
+        juge('[%s] le menu ouvert, le guide attend le retour sur l\'accueil (l\'eau toujours là, aucune phrase par-dessus le menu), vu une fois' % T, e6['guide'] == 'part' and e6['eau'] and e6['phrase'] is None and e6['vu'] == '1', 'guide %s · eau %s' % (e6['guide'], e6['eau']))
     pg.reload(); pg.wait_for_timeout(8500); e7 = pg.evaluate(ETAT)
     juge('[%s] une seule fois : après un rechargement, ni onboarding ni guide' % T, not e7['guide'] and not e7['onb'], 'guide %s · devant %s' % (e7['guide'], e7['devant']))
     juge('[%s] aucune erreur de page' % T, not pg.__dict__['er'], pg.__dict__['er'][:2]); ctx.close()

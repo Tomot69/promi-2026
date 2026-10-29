@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v170c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v170d', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -38315,7 +38315,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var q=document.getElementById('onbQuid'); if(q){ q.innerHTML='Quid d’un '+nat('Promi')+' à <span style="white-space:nowrap">toi-même\u00a0?</span>'; q.style.display='block'; }
     var so=document.getElementById('onbSous'); if(so) so.style.display='block';
     peindrePhrase(); if(garderClavier) focus();
-    if(attendreClavier){ [d, q, so].forEach(function(e){ if(e && TRACE_ONB && window.TraceLettres && !reduitOnb()) e.style.visibility='hidden'; }); apresClavier(function(){ traceTextes([d, q, so]); }); }
+    if(attendreClavier){ [d, q, so].forEach(function(e){ if(e && TRACE_ONB && window.TraceLettres && !reduitOnb()) e.style.visibility='hidden'; }); prepareTextes([d, q, so]); apresClavier(function(){ traceTextes([d, q, so]); }); }   /* v170d (C-125) : préparés pendant que le clavier descend */
     else traceTextes([d, q, so]);
   }
 
@@ -38579,9 +38579,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   /* les textes d'une page s'écrivent l'un après l'autre ; un texte déjà écrit ne se réécrit pas ; sans le module : posés tels quels */
   function traceTextes(L, apres){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; }); if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ L.forEach(function(e){ e.style.visibility='visible'; }); if(apres) apres(); return; }
     L.forEach(function(e){ e.style.visibility='hidden'; });
+    /* ⚑ v170d (C-125) — AUCUN CALCUL PENDANT L'AFFICHAGE : tous les textes de la page sont préparés (à leur place, sans rien montrer) AVANT que le premier s'écrive ;
+       déjà préparés plus tôt (`prepareTextes`), ils sont repris du cache tout de suite */
+    prepareTextes(L, function(){
     (function un(i){ if(i>=L.length){ if(apres) apres(); return; } var e=L[i]; e.style.visibility='visible';
       try{ var c=window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (v154 : 40 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ try{ if(window._diagErreur) window._diagErreur('traceTextes', _); }catch(__){ } }
-      un(i+1); })(0); }
+      un(i+1); })(0); }); }
+  /* préparer une liste de textes, l'un après l'autre (la page n'en montre rien) ; `apres` quand tous sont prêts */
+  function prepareTextes(L, apres){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; });
+    if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ if(apres) apres(); return; }
+    (function prep(j){ if(j>=L.length){ if(apres) apres(); return; } try{ var c=window.TraceLettres.trace(L[j], null, {preparer:true}); c.fin.then(function(){ prep(j+1); }); }catch(_){ prep(j+1); } })(0); }
   window._onbTraceTextes=traceTextes;
   function decouvre(el, ms, apres){ var t0=performance.now(); el.style.clipPath='inset(0 100% 0 0)'; el.style.visibility='visible';
     (function f(){ var u=Math.min(1,(performance.now()-t0)/ms); el.style.clipPath='inset(-6px '+((1-u)*100).toFixed(2)+'% -6px -6px)'; if(u<1) requestAnimationFrame(f); else { el.style.clipPath=''; if(apres) apres(); } })(); }
@@ -38599,7 +38606,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   var FIN_BAS0=64, FIN_ECART0=22, FIN_MONTE=1100;   /* v147 — v148 : plus de montée du bloc entier ; le titre paraît seul, à sa place de départ */
   function finMontre(fin){ fin.style.opacity='1';
     var t=fin.querySelector('.onbv-titre'), r0=reduitOnb();
-    if(TRACE_ONB && window.TraceLettres && !r0){ traceTextes([t]); }
+    if(TRACE_ONB && window.TraceLettres && !r0){ traceTextes([t], function(){ var r=fin.querySelector('#onbReste'); if(r) prepareTextes([].slice.call(r.querySelectorAll('.onbv-l'))); }); }   /* v170d : les lignes qui viendront au toucher se préparent pendant qu'on lit */
     else { decouvre(t, 420); } }
 
   /* ── LE COMPTE, APRÈS LE TRAIT — « Garder ta Toile » (mots validés par Tom) ──
@@ -41062,6 +41069,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
    l'accueil flouté à l'avance là où il y a de l'eau ; la zone nette est un trou dans l'eau, par où l'on voit l'accueil VRAI. Aucune transition,
    aucune animation CSS (A2). */
 #device #guide{position:absolute;left:0;top:0;width:390px;height:844px;z-index:69;/* SOUS les écrans (70) : le Studio s'ouvre par-dessus */margin:0;padding:0;max-width:none;overflow:hidden;background:transparent}
+#device.guide-menu #accChoix{z-index:70!important}   /* v170d (C-203) : le menu des natures s'ouvre PAR-DESSUS le flou du guide, comme le Studio */
 #device #guideEau{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;display:block}
 #device #guideFleche{position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;display:block}   /* v166 (C-203 §2) : la flèche orange vers l'icône */
 @media (prefers-reduced-motion:no-preference){#device#device #guide #guideFleche.clignote{animation:promiBlink 1.15s steps(1,end) infinite!important}}   /* v167 (C-203 §1) : le clignotement du I de PROMI ; réduit : fixe */
@@ -41186,7 +41194,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   }
 
   /* ── LA SCÈNE ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
-  function retire(){ jeu++; try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio','guide-plus','guide-partage'); trou=null; SC=null; uC=0; uN=0;
+  function retire(){ jeu++; try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio','guide-plus','guide-partage','guide-menu'); trou=null; SC=null; uC=0; uN=0;
     if(vivAv!==null){ window._vivantOff=vivAv; vivAv=null; } }
   function deshabille(){ try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; ['guidePhrase','guideCible'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); }
   function cible(quoi){ var st=$('studioBtn'), pl=$('createBtn'); if(!st || !pl) return null;
@@ -41239,10 +41247,25 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       else out+='<i class="gd-cle"'+(clairA?'':' style="color:#82AEF8;-webkit-text-fill-color:#82AEF8"')+'>'+esc(pris)+'</i>';   /* ⚑ v152 (Tom, C-162) : « commence », bleu en clair (cobalt), bleu clair #82AEF8 en sombre */
       i+=pris.length; }
     return out; }
-  function posePhrase(g, quoi){ var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.innerHTML=phraseHTML(quoi); [].forEach.call(p.querySelectorAll('*'), function(e){ eng(e,'guide-phrase'); }); g.appendChild(p);
+  function batiPhrase(g, quoi){ var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.innerHTML=phraseHTML(quoi); [].forEach.call(p.querySelectorAll('*'), function(e){ eng(e,'guide-phrase'); }); g.appendChild(p);
     var h=p.offsetHeight||80; p.style.top=Math.round((quoi==='reste'?422:372-120)-h/2)+'px';   /* v165 (C-203) : la phrase 2 au centre de l'écran */   /* v147 (Tom, §10.4) : 1 cm (60 pt) plus haut ; ⚑ v149 (Tom, C-145) : « remonte encore d'UN cm réel, 60 pt ± 4, PAS PLUS » — centre 312 → 252 */
-    if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; try{ if(window._diagErreur) window._diagErreur('guide-trace', _); }catch(__){ } } }
     return p; }
+  function posePhrase(g, quoi){ var p=batiPhrase(g, quoi);
+    if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; try{ if(window._diagErreur) window._diagErreur('guide-trace', _); }catch(__){ } }
+      if(quoi==='studio' && traceCtl && traceCtl.fin && !prepare_){ prepare_=1; traceCtl.fin.then(function(){ setTimeout(prepareSuite, 250); }); } }
+    return p; }
+  /* ⚑ v170d (Tom, C-125 : « des latences dans la genèse des textes, surtout dans les phrases sur le flou à la fin du guide ; ça saccade ») — LES PHRASES QUI VIENNENT
+     SONT PRÉPARÉES D'AVANCE. Dès que la phrase du Studio est écrite, celles du +, de Partager et la phrase 2 sont bâties à LEUR place (la même fonction, le même
+     calage au pixel), mesurées et retirées dans la même tâche (`immediat`), puis leurs lettres se calculent en fond : quand elles paraissent, il n'y a plus rien
+     à calculer (le module reprend tout de son cache). Une phrase à la fois. */
+  var prepare_=0;
+  function prepareSuite(){ var L=['plus','partage','reste'];
+    (function un(i){ var g=$('guide'); if(i>=L.length || !g || !window.TraceLettres || reduit()) return; var p=null;   /* le conteneur du guide est rebâti à chaque étape : on prend celui du moment */
+      try{ p=batiPhrase(g, L[i]); /* même id que la vraie (les règles du guide le visent) : il ne vit que le temps de la mesure, dans cette tâche */
+        var c=window.TraceLettres.trace(p, null, {preparer:true, immediat:true, retire:function(){ if(p&&p.parentNode) p.parentNode.removeChild(p); }});
+        if(p&&p.parentNode) p.parentNode.removeChild(p);
+        c.fin.then(function(){ setTimeout(function(){ un(i+1); }, 120); }); }
+      catch(_){ if(p&&p.parentNode) p.parentNode.removeChild(p); } })(0); }
   /* ⚑ v148 (Tom, 16 oct. 2026, C-146) — « Tant que le Studio n'a jamais été ouvert, toucher ailleurs montre la phrase de rappel — choisir son monde — et
      SEULEMENT elle, autant de fois qu'on touche ailleurs. Jamais la phrase du + avant le Studio. » Le rappel : la phrase du Studio (les mots de Tom, tels
      quels) se retire et s'écrit de nouveau, par le tracé ; la zone nette du Studio reste ouverte. */
@@ -41413,11 +41436,24 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       .catch(function(){ refait=false; }); }
   window._guideFlou={ sig:sigToile, maj:majFlou, attend:function(){ return refait || (SC && sigToile()!==SIG0); } };
   /* le + touché : les trois natures s'ouvrent, et les flaques se vident (la zone du + reste nette jusqu'au bout) */
-  function versPlus(){ attente=null; var g=$('guide'); deshabille(); etat='part'; if(g){ g.style.pointerEvents='none'; g.setAttribute('data-guide','part'); }
+  /* ⚑ v170d (Tom, C-203) — « LE PASSAGE DU + À PARTAGER, EXACTEMENT COMME CELUI DU STUDIO AU + ». Le + touché fait comme le Studio touché : la phrase part,
+     l'eau RESTE (avant : elle se retirait en 1,2 s, puis remontait en 0,4 s au retour) ; le menu des natures s'ouvre PAR-DESSUS le flou, comme le Studio
+     (`guide-menu` : il passe au-dessus de la couche du guide) ; au retour sur l'accueil (le menu refermé, la page + refermée ou la parole plantée), la zone
+     du + se referme en flaques et celle de Partager s'ouvre — la même suite que `versLePlus` (`passeVers`). */
+  function versPlus(){ attente=null; var g=$('guide'); deshabille(); trou=null; etat='part'; if(g){ g.style.pointerEvents='none'; g.setAttribute('data-guide','part'); }
+    dev.classList.add('guide-menu');
     try{ var ch=$('accChoix'); if(ch) ch.classList.add('ouvert'); else $('createBtn').click(); }catch(_){ }
-    if(!SC){ retire(); etat=null; return; } CACHE=g?{flou:g.__flou, net:g.__net, sig:SIG0}:null; vidPlus=true; SC.tire(true); var id=jeu;
-    joue(RETIRE, 1, 0, couv).then(function(){ if(id===jeu){ retire(); vidPlus=false; etat='apres-plus'; tAcc=0; } });   /* ⚑ v165 (C-203, chemins a et b) : la clôture attend le retour sur l'accueil */
+    if(!SC){ retire(); etat=null; return; } CACHE=null; vidPlus=true;
     guetteRetour(); }
+  /* la même suite que du Studio au + : la phrase part, la zone d'avant se referme (FERME_R), le flou suit la Toile réelle, l'entourage se prépare, la zone
+     suivante s'ouvre (OUVRE_R) avec sa phrase */
+  function passeVers(quoi, depuis){ var g=$('guide'); if(!g || !SC) return false; dev.classList.remove('guide-menu'); etat='vers-'+quoi; g.style.pointerEvents=''; g.setAttribute('data-guide','vers-'+quoi);
+    dev.classList.remove('guide-'+depuis); g.setAttribute('data-vers-'+quoi, ''+Math.round(performance.now()));
+    var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt=$('guideCible'); if(bt) bt.remove(); trou=null; var id=jeu;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(id===jeu) majFlou(true); }); });   /* la Toile a pu changer (une parole plantée) : le fond suit, comme au retour du Studio */
+    joue(FERME_R, uN, 0, net).then(function(ok){ if(!ok || id!==jeu || !SC) return; SC.sansCible(); SC.peint();
+      requestAnimationFrame(function(){ if(id!==jeu || !$('guide') || !SC) return; preCible(quoi); requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; etape(quoi, false, OUVRE_R); }); }); });
+    return true; }
   /* ⚑ v169b (Tom, C-203 §1) — « la phrase de clôture et le flou qui l'annonce arrivent avec une latence inutile ». LA CAUSE, mesurée (v169, WebKit) : au
      retour sur l'accueil (a : la page + refermée ; b : le menu refermé par un toucher ailleurs), la veille (une minuterie de 60 ms) attendait que l'eau
      de l'étape du + ait fini de se retirer (1,2 s), puis une Toile AU REPOS (`calme()` : après une plantation elle bouge encore plus d'une seconde), puis
@@ -41447,17 +41483,15 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       SC.peint(); if(pre && ++n===2 && !habil) preCible(quoi);   /* après la première image de l'eau : l'entourage ne la retarde pas */
       if(t<Tc || t<tN+OUVRE_C) requestAnimationFrame(f); else respire(quoi); })(); }
   function cloture(){ var g=$('guide');
-    if(g && SC && etat==='part' && vidPlus){ vidPlus=false; CACHE=null; jeu++; etat='vers-partage'; g.style.pointerEvents=''; g.setAttribute('data-guide','vers-partage'); SC.sansCible(); preCible('partage'); montee(g, uC, 'partage'); return; }
-    vidPlus=false; if(etat!=='apres-plus') return; montre('partage', false, true); }
+    if(g && SC && etat==='part' && vidPlus){ vidPlus=false; CACHE=null; jeu++; passeVers('partage', 'plus'); return; }
+    vidPlus=false; dev.classList.remove('guide-menu'); if(etat!=='apres-plus') return; montre('partage', false, true); }
   /* ⚑ v165 (Tom, C-203) — LA CLÔTURE. « Après l'étape du +, le guide se termine par une clôture qui invite à partager. Elle n'est PAS contrainte comme
      l'étape du Studio. » La phrase 1 arrive dans TOUS les cas : (a) le + touché, quelque chose créé — au retour sur l'accueil, la page + fermée ou la
      parole plantée ; (b) le + touché, puis ailleurs (le menu se ferme) ; (c) ailleurs que le + — sa zone se referme, celle de Partager s'ouvre. Partager
      touché : il s'ouvre par-dessus le guide, et à sa fermeture la phrase 2 paraît ; ailleurs : la phrase 2. La phrase 2, au centre, sans zone nette ; un
      toucher ou 3 s sans toucher, et les flaques se vident : l'accueil reste net. `promi_guide` est à « 1 » depuis le Studio : le guide ne revient plus. */
   function choixOuvert(){ var ch=$('accChoix'); return !!(ch && ch.classList.contains('ouvert')); }
-  function versCloture(){ var g=$('guide'); if(!g || !SC){ montre('partage'); return; } etat='vers-partage'; g.setAttribute('data-guide','vers-partage'); dev.classList.remove('guide-plus');
-    var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt=$('guideCible'); if(bt) bt.remove(); trou=null; var id=jeu;
-    joue(FERME_R, uN, 0, net).then(function(ok){ if(!ok || id!==jeu || !SC) return; SC.sansCible(); SC.peint(); preCible('partage'); requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; etape('partage', false, OUVRE_C); }); }); }   /* v169b (C-203 §1) : 240 + 360 ms (700 + 700) */
+  function versCloture(){ var g=$('guide'); if(!g || !SC){ montre('partage'); return; } passeVers('partage', 'plus'); }   /* v170d (C-203) : la suite du Studio au + (240 + 400 ms) */
   function versPartage(){ var g=$('guide'); deshabille(); trou=null; etat='au-partage'; vuPartage=false; if(g) g.setAttribute('data-guide','au-partage'); try{ $('shareBtn').click(); }catch(_){ } guettePartage(); }
   var vuPartage=false;
   function guettePartage(){ var id=jeu, t0=performance.now();

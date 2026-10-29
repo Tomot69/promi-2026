@@ -54,7 +54,7 @@
    ④ le texte se lit de gauche à droite ; un `transform` posé sur un mot À L'INTÉRIEUR de la cible (le « Deuxio » penché) n'est pas suivi. */
 (function (racine) {
   'use strict';
-  var TL = { version: 2, defauts: { cps: 40, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [], cache: 0 }, _cache: {}, _cacheN: 0 };
+  var TL = { version: 2, defauts: { cps: 40, vitesse: 1, depart: 'h', espace: 0.4 }, mesures: { prep: [], image: [], cache: 0, cacheR: 0, restes: [], appl: [], preroll: [] }, _cache: {}, _cacheN: 0, _cacheR: {}, _cacheRN: 0 };
   /* ⚑ v153 (Tom, C-125, récidive : « les lettres font pof ») — LA CAUSE, mesurée au banc WebKit : le module traçait bien (chemins trouvés pour Gilbert,
      Atkinson et PromiLate, cartes calculées dans le Worker), mais à 50 caractères par seconde une lettre durait ≈ 20 ms — à peine plus d'une image à
      60 Hz : elle paraissait d'un coup, puis la suivante. Tom : « PLUS LENT, 20 à 25 caractères par seconde au départ, réglable ». Défaut : 22.
@@ -122,6 +122,8 @@
   }
   /* l'essai ne se lance qu'au premier besoin, et le fil principal calcule en attendant : `ouvrier()` rend null tant que l'ouvrier n'est pas prouvé */
   function ouvrierPret() { if (TL._ouvrier === undefined) ouvrier(); return TL._ouvrier || null; }
+  /* v170d : l'ouvrier naît et passe son essai au chargement, hors de tout tracé (il est prouvé avant le premier texte) */
+  if (doc && racine.setTimeout) racine.setTimeout(function () { try { ouvrier(); } catch (e) { } }, 1200);
   function famille(ff) { return String(ff || '').split(',')[0].replace(/["']/g, '').trim(); }
   TL.glyphe = function (police, car) { var D = donnees(police); return D && D.g[car] || null; };
   TL.reduit = function () { try { return !!(racine.matchMedia && racine.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
@@ -541,10 +543,13 @@
   var VIDE = 'polygon(0px 0px,0px 0px,0px 0px)';
   TL.trace = function (cible, contenu, options) {
     var o = options || {}, cps = (o.cps || TL.defauts.cps), vit = (o.vitesse || TL.defauts.vitesse),   /* v153 : l'app ne passe plus `cps` — la vitesse décidée vit ici (40, ou `?cps=`) ; v154 : `vit` ralentit tout le temps (débit ET durée) */ esp = o.espace == null ? TL.defauts.espace : o.espace;
-    if (cible.__trace) cible.__trace.stop();
+    /* ⚑ v170d — `preparer` : la même mesure et les mêmes calculs qu'un tracé, sans RIEN montrer ni toucher à l'élément (ni découpe, ni canevas laissé) :
+       les caches se remplissent, le tracé qui suivra au même endroit n'aura plus rien à calculer */
+    var prep = !!o.preparer;
+    if (cible.__trace && !prep) cible.__trace.stop();
     var ctl = { glyphes: [], duree: 0, canevas: null, fini: false }, resFin, resPret, raf = 0, mort = false;
     ctl.fin = new Promise(function (r) { resFin = r; }); ctl.pret = new Promise(function (r) { resPret = r; });
-    cible.__trace = ctl;
+    if (!prep) cible.__trace = ctl;
     if (contenu != null) remplit(cible, contenu);
     var cv = null, G = [], L = [], total = 0, t0 = 0, ig = 0, jd = 0, tPrec = -1, clipAvant = null, tAbs = 0, tPlume = 0;
     var ctx, fin, fctx, brouillon, bctx, s = 1, dpr = 1, kech = 1, er = null, cr = null;
@@ -567,20 +572,23 @@
       }
       if (cible.__trace === ctl) delete cible.__trace;
     }
-    var tDepart = racine.performance.now();
+    var tDepart = racine.performance.now(), tDebut = 0, nLong = 0, imMax = 0;
     function texteDe() { return String(cible.textContent || '').replace(/\s+/g, ' ').slice(0, 40); }
     function termine(interrompu) {
       if (ctl.fini) return; ctl.fini = true; mort = true; if (raf) racine.cancelAnimationFrame(raf);
       /* v170c : chaque fin est notée — un tracé fini bien avant sa durée prévue est une APPARITION D'UN COUP, la régression de v170b */
-      signale('trace-fin', { texte: texteDe(), lettres: G.length, prevu: Math.round(total), reel: Math.round(racine.performance.now() - tDepart), plume: Math.round(tPlume), interrompu: !!interrompu, ouvrier: TL.ouvrierEtat || '—', vect: vect, reduit: !!termine.reduit });
+      if (prep) { signale('prepare', { texte: texteDe(), lettres: G.length, ms: Math.round(racine.performance.now() - tDepart) }); range(); resPret(ctl); resFin({ interrompu: !!interrompu }); return; }
+      var tF = racine.performance.now(); ctl.mesure = { attente: tDebut ? Math.round(tDebut - tDepart) : null, reel: tDebut ? Math.round(tF - tDebut) : null, prevu: Math.round(total) };
+      ctl.mesure.longues = nLong; ctl.mesure.pire = Math.round(imMax);
+      signale('trace-fin', { texte: texteDe(), lettres: G.length, prevu: Math.round(total), reel: tDebut ? Math.round(tF - tDebut) : null, attente: tDebut ? Math.round(tDebut - tDepart) : null, imagesLongues: nLong, pireImage: Math.round(imMax), plume: Math.round(tPlume), interrompu: !!interrompu, ouvrier: TL.ouvrierEtat || '—', vect: vect, reduit: !!termine.reduit });
       range(); var r = { interrompu: !!interrompu }; if (o.surFin) { try { o.surFin(r); } catch (e) { } } resPret(ctl); resFin(r);
     }
     ctl.stop = function () { termine(true); }; ctl.finir = function () { termine(false); };
 
     if (o.toutDeSuite || (o.respecteReduire !== false && TL.reduit())) { termine.reduit = true; Promise.resolve().then(function () { termine(false); }); return ctl; }
     /* le texte réel est là, mis en page, mais rien n'en paraît : il est DÉCOUPÉ (clip-path), pas rendu transparent — ce qui est dévoilé est le vrai texte */
-    clipAvant = [cible.style.getPropertyValue('clip-path'), cible.style.getPropertyPriority('clip-path'), cible.style.getPropertyValue('-webkit-clip-path'), cible.style.getPropertyPriority('-webkit-clip-path')];
-    decoupe(VIDE);
+    if (!prep) { clipAvant = [cible.style.getPropertyValue('clip-path'), cible.style.getPropertyPriority('clip-path'), cible.style.getPropertyValue('-webkit-clip-path'), cible.style.getPropertyPriority('-webkit-clip-path')];
+      decoupe(VIDE); }
     var styles = [], noeuds = [];
     (function () {
       var w = doc.createTreeWalker(cible, 4 /* SHOW_TEXT */, null), nd, memo = [];
@@ -593,13 +601,32 @@
     })();
     var polices = {}; styles.forEach(function (st) { polices[st.fontStyle + ' ' + st.fontWeight + ' ' + st.fontSize + ' ' + st.fontFamily] = 1; });
     var attente = [];
-    try { if (doc.fonts && doc.fonts.load) Object.keys(polices).forEach(function (f) { attente.push(doc.fonts.load(f).catch(function () { })); }); } catch (e) { }
-    Promise.all(attente).then(function () { return doc.fonts && doc.fonts.ready; }).catch(function () { }).then(function () {
+    function apresPolices() {
       if (mort) return;
       try { mesure(); } catch (e) { if (racine.console) racine.console.error('TraceLettres', e); signale('mesure-erreur', { texte: texteDe(), msg: String(e && e.message || e), pile: String(e && e.stack || '').slice(0, 500) }); termine(true); return; }
+      if (prep) { range(); if (o.retire) { try { o.retire(); } catch (e) { } } if (!G.length) { termine(false); return; } preRoll(function () { termine(false); }); return; }
       resPret(ctl); if (!G.length) { termine(false); return; }
-      if (!o.manuel) { try { demande(G[0]); } catch (e) { } /* la première lettre est demandée AVANT que l'horloge parte ; la plume l'attend */ t0 = racine.performance.now(); tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); }
-    });
+      /* ⚑ v170d (Tom, C-125) — AUCUN CALCUL PENDANT L'AFFICHAGE : toutes les lettres sont prêtes AVANT que la plume parte (reprises du cache quand le texte a
+         été préparé d'avance ; sinon calculées ici, le texte encore caché). Pendant le dévoilement, la page ne fait plus que poser la découpe. */
+      if (!o.manuel) preRoll(function () { if (mort) return; tDebut = racine.performance.now(); t0 = tDebut; tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); });
+    }
+    if (prep && o.immediat) { apresPolices(); return ctl; }   /* l'appelant a déjà ses polices : la mesure se fait tout de suite (l'élément peut être retiré aussitôt) */
+    try { if (doc.fonts && doc.fonts.load) Object.keys(polices).forEach(function (f) { attente.push(doc.fonts.load(f).catch(function () { })); }); } catch (e) { }
+    Promise.all(attente).then(function () { return doc.fonts && doc.fonts.ready; }).catch(function () { }).then(apresPolices);
+    /* toutes les lettres prêtes : une lettre au plus par tranche de 8 ms sur le fil (le reste à l'ouvrier) ; un ouvrier qui ne rend rien en 4 s est remplacé */
+    function preRoll(fin) {
+      var p0 = racine.performance.now();
+      (function tour() {
+        if (mort) return;
+        var d0 = racine.performance.now(), reste = 0, j, g;
+        for (j = 0; j < G.length; j++) { g = G[j]; if (g.pret) continue;
+          if (!g.attente && racine.performance.now() - d0 < 8) { try { demande(g); } catch (e) { g.pret = true; } }
+          if (!g.pret) reste++; }
+        if (!reste) { TL.mesures.preroll.push(racine.performance.now() - p0); if (TL.mesures.preroll.length > 400) TL.mesures.preroll.splice(0, 200); fin(); return; }
+        if (racine.performance.now() - p0 > 4000) for (j = 0; j < G.length; j++) { g = G[j]; if (!g.pret && g.attente && g.surPlace) { signale('ouvrier-lent', { car: g.car, ms: Math.round(racine.performance.now() - p0) }); try { g.surPlace(); } catch (e) { g.pret = true; g.attente = false; } break; } }
+        racine.setTimeout(tour, 4);
+      })();
+    }
 
     function mesure() {
       /* tout se mesure en pixels de la FENÊTRE (ce que rend getClientRects) ; kech = l'échelle d'un ancêtre transformé (1 hors de l'app réduite) */
@@ -786,7 +813,7 @@
       var d0 = racine.performance.now(), R = rendGlyphe(g), id = ++TL._nId; g.attente = true;
       /* v170c : si l'ouvrier tarde, la plume fait le MÊME calcul sur place (`surPlace`) — sa réponse, arrivée ensuite, est ignorée */
       g.surPlace = function () { if (g.pret) return; delete TL._attente[id]; var c = carte(R.A2, R.W2, R.H2, R.traits, R.moves); finit(g, R, c.T, c.D); };
-      TL._attente[id] = function (T, D) { if (mort || g.pret) return; if (!T) { g.attente = false; try { g.surPlace(); } catch (e) { } return; } finit(g, R, T, D); };
+      TL._attente[id] = function (T, D) { if (g.pret) return; if (mort) { if (T) try { finit(g, R, T, D); } catch (e) { } return; } if (!T) { g.attente = false; try { g.surPlace(); } catch (e) { } return; } finit(g, R, T, D); };
       try { w.postMessage({ id: id, A: R.A2, w: R.W2, h: R.H2, traits: R.traits, moves: R.moves }); } catch (e) { delete TL._attente[id]; g.attente = false; prepare(g); return; }
       TL.mesures.prep.push(racine.performance.now() - d0); if (TL.mesures.prep.length > 4000) TL.mesures.prep.splice(0, 2000);
     }
@@ -871,6 +898,12 @@
       if (a < 0) Q = Q.slice().reverse();
       var s = 'M' + nb(Q[0][0]) + ' ' + nb(Q[0][1]); for (i = 1; i < n; i++) s += 'L' + nb(Q[i][0]) + ' ' + nb(Q[i][1]); return s + 'Z';
     }
+    function rangees(V, n) {   /* les n premiers carrés (dans l'ordre du temps), en rangées */
+      var R = {}, q, k, c = V.cote, out = ''; for (q = 0; q < n; q++) { k = V.ky[q]; (R[k] || (R[k] = [])).push(V.xs[q]); }
+      for (k in R) { var X = R[k].sort(function (u, v) { return u - v; }), y = (+k) / V.s0, i = 0;
+        while (i < X.length) { var x0 = X[i], x1 = x0; i++; while (i < X.length && X[i] - x1 <= c * 1.001) { if (X[i] > x1) x1 = X[i]; i++; }
+          out += 'M' + nb(x0) + ' ' + nb(y) + 'h' + nb(x1 - x0 + c) + 'v' + nb(c) + 'h' + nb(-(x1 - x0 + c)) + 'Z'; } }
+      return out; }
     function masqueVect(g, sv) {
       if (sv >= g.vs.tot && g.vfull) return g.vfull;
       var O = g.xo || [g.x, g.y], M = g.tf ? g.tf : [1, 0, 0, 1], ox = (O[0] - er.left) / kech, oy = (O[1] - er.top) / kech, sc = g.sc, out = '';
@@ -941,7 +974,9 @@
           out += poly(Q, BX);
         }
       });
-      if (g.vl) for (var q = 0; q < g.vl.length && g.vl[q][0] <= sv; q++) out += g.vl[q][1];
+      if (g.vl) { var q, nv = 0; while (nv < g.vl.length && g.vl[nv][0] <= sv) nv++;
+        if (TL.rangees !== false && g.vq) { if (nv !== g.vqN) { g.vqN = nv; g.vqS = rangees(g.vq, nv); } out += g.vqS; }
+        else for (q = 0; q < nv; q++) out += g.vl[q][1]; }
       if (sv >= g.vs.tot) g.vfull = out;
       return out;
     }
@@ -950,8 +985,25 @@
        découpe. À la fin, toute l'encre est dévoilée : la dernière image est le texte. */
     function restes(g, sync) {
       try {
-        g.vl = null;
+        g.vl = null; g.vq = null;
         var s0 = dpr * kech, O = g.xo || [g.x, g.y], M = g.tf ? g.tf : [1, 0, 0, 1], ox = (O[0] - er.left) / kech, oy = (O[1] - er.top) / kech;
+        var cote = 1 / s0;   /* un pixel de l'appareil, exactement (la grille est celle de l'écran) : un carré plus grand teindrait ses voisins à demi */
+        function pose5(F) { var L = [], q; for (q = 0; q + 2 < F.length; q += 3) L.push([F[q], 'M' + nb(F[q + 1]) + ' ' + nb(F[q + 2]) + 'h' + nb(cote) + 'v' + nb(cote) + 'h' + nb(-cote) + 'Z']); g.vl = L;
+          /* ⚑ v170d (C-125) — pour la découpe, les carrés dévoilés sont regroupés EN RANGÉES (les carrés côte à côte d'une même ligne de pixels : un rectangle) — un
+             chemin plusieurs fois plus court à poser à chaque image, aux mêmes pixels (vérifié au pixel, `scratchpad/v170c/a1e.py`) */
+          var n = F.length / 3 | 0, ky = new Int32Array(n), xs = new Float64Array(n); for (q = 0; q < n; q++) { ky[q] = Math.round(F[3 * q + 2] * s0); xs[q] = F[3 * q + 1]; }
+          g.vq = { ky: ky, xs: xs, cote: cote, s0: s0 }; g.vqN = -1; g.vqS = ''; }
+        /* ⚑ v170d (Tom, C-125 : « ça saccade sur l'iPhone ») — LES RESTES D'UNE LETTRE SE CALCULENT UNE FOIS. Ils ne dépendent que de la lettre, de sa police, de sa
+           transformation, de l'échelle de l'écran et de la place de son origine DANS UN PIXEL de l'appareil : la même lettre au même calage reprend le résultat,
+           décalé de sa place (au pixel : la grille est la même). Avant, chaque tracé recalculait chaque lettre (mesuré jusqu'à 533 ms sur le fil principal). */
+        function fr(v) { return (v - Math.floor(v)).toFixed(4); }
+        var cleR = 'R|' + g.spec + '|' + g.car + '|' + M.map(function (v) { return (+v).toFixed(5); }).join(',') + '|' + s0.toFixed(5) + '|' + fr(O[0] * dpr) + '|' + fr(O[1] * dpr) + '|' + (TL._sansCap ? 1 : 0) + (TL._sansPince ? 1 : 0);
+        function garde(F) { if (!F || TL._debug) return; var Fc = new Float64Array(F.length); for (var q = 0; q + 2 < F.length; q += 3) { Fc[q] = F[q]; Fc[q + 1] = F[q + 1] - ox; Fc[q + 2] = F[q + 2] - oy; }
+          if (TL._cacheRN > 1200) { TL._cacheR = {}; TL._cacheRN = 0; } TL._cacheR[cleR] = { F: Fc, cp: g.vs.steps.map(function (st) { return st.cp; }) }; TL._cacheRN++; }
+        var CR = TL._debug ? null : TL._cacheR[cleR];
+        if (CR) { g.vs.steps.forEach(function (st, k) { st.cp = CR.cp[k]; }); g.vfull = null;
+          var F2 = new Float64Array(CR.F.length); for (var q2 = 0; q2 + 2 < F2.length; q2 += 3) { F2[q2] = CR.F[q2]; F2[q2 + 1] = CR.F[q2 + 1] + ox; F2[q2 + 2] = CR.F[q2 + 2] + oy; }
+          pose5(F2); g.pret = true; g.attente = false; TL.mesures.cacheR++; return; }
         /* la grille hors écran est CELLE DE L'ÉCRAN : son premier pixel tombe sur un pixel de l'appareil */
         var lx0 = (Math.floor((g.bx0 - 2 * kech) * dpr) / dpr - er.left) / kech, ly0 = (Math.floor((g.by0 - 2 * kech) * dpr) / dpr - er.top) / kech, W2 = Math.ceil(((g.bx1 - g.bx0) / kech + 4) * s0), H2 = Math.ceil(((g.by1 - g.by0) / kech + 4) * s0);
         if (W2 < 2 || H2 < 2 || W2 * H2 > 4e6) return;
@@ -982,17 +1034,15 @@
           steps.push({ b1: st.b1, ck: st.ck, t0: st.t0, Lfin: st.LfinT, r0: st.rs[0] });
           for (var i = 0; i + 1 < P.length; i++) segs.push([P[i][0], P[i][1], P[i + 1][0], P[i + 1][1], st.t0 + st.St[i], st.St[i + 1] - st.St[i], st.t0 + st.Lt, st.rs[i] * g.sc, si_]); });
         var D = { kind: 'restes', sansPince: !!TL._sansPince, W: W2, H: H2, A: a1, REC: REC.map(function (q) { return { Q: q.Q, a: q.a, b: q.b, t: q.t, ln: q.ln, s: q.s }; }), segs: segs, steps: steps, s0: s0, lx0: lx0, ly0: ly0, tot: g.vs.tot, sc: g.sc };
-        var cote = 1 / s0;   /* un pixel de l'appareil, exactement (la grille est celle de l'écran) : un carré plus grand teindrait ses voisins à demi */
-        function pose5(F) { var L = []; for (var q = 0; q + 2 < F.length; q += 3) L.push([F[q], 'M' + nb(F[q + 1]) + ' ' + nb(F[q + 2]) + 'h' + nb(cote) + 'v' + nb(cote) + 'h' + nb(-cote) + 'Z']); g.vl = L; }
         /* ⚑ v170b — LE CALCUL PAR PIXEL SE FAIT HORS DU FIL PRINCIPAL (dans l'ouvrier des cartes) : sur le fil, il bloquait 450 à 770 ms au départ d'une phrase */
         var w = (o.manuel || sync) ? null : ouvrierPret();
         if (w) { var id = ++TL._nId; g.pret = false; g.attente = true;
-          g.surPlace = function () { if (g.pret) return; delete TL._attente[id]; try { pose5(restesCalc(D)); } catch (e) { g.vl = null; } g.attente = false; g.pret = true; };
-          TL._attente[id] = function (F) { if (mort || g.pret) return; if (!F) { g.surPlace(); return; } pose5(F); g.attente = false; g.pret = true; };
+          g.surPlace = function () { if (g.pret) return; delete TL._attente[id]; try { var F0 = restesCalc(D); garde(F0); pose5(F0); } catch (e) { g.vl = null; } g.attente = false; g.pret = true; };
+          TL._attente[id] = function (F) { if (F) garde(F); if (mort || g.pret) return; if (!F) { g.surPlace(); return; } pose5(F); g.attente = false; g.pret = true; };
           /* ⚑ v170c : on envoie une COPIE de l'encre (avant, son tampon était transféré : si l'ouvrier échouait, le repli calculait sur un tableau vide) */
           var Dw = {}; for (var kw in D) Dw[kw] = D[kw]; Dw.A = new Uint8Array(a1); Dw.id = id;
           try { w.postMessage(Dw, [Dw.A.buffer]); return; } catch (e) { delete TL._attente[id]; g.attente = false; g.pret = true; signale('ouvrier-envoi', { msg: String(e && e.message || e) }); } }
-        if (TL._debug) D.dbg = true; pose5(restesCalc(D)); g.pret = true;
+        if (TL._debug) D.dbg = true; var r0 = racine.performance.now(), F1 = restesCalc(D); garde(F1); pose5(F1); g.pret = true; TL.mesures.restes.push(['fil', g.car, racine.performance.now() - r0]);
         if (TL._debug && D.out) (TL._Tmap = TL._Tmap || []).push({ car: g.car, X0: Math.floor((g.bx0 - 2 * kech) * dpr), Y0: Math.floor((g.by0 - 2 * kech) * dpr), W: W2, H: H2, tot: g.vs.tot, o: D.out, tX: tX, tY: tY, oyabs: (O[1]) * dpr, oxabs: O[0] * dpr });
       } catch (e) { g.vl = null; g.pret = true; g.attente = false; signale('restes-erreur', { car: g.car, msg: String(e && e.message || e), pile: String(e && e.stack || '').slice(0, 400) }); }
     }
@@ -1000,8 +1050,21 @@
       if (!vect) return;
       if (basePts === 'none') { pose_('none'); return; }
       var d = basePts ? poly(basePts) : '';
-      for (var j = jd; j < G.length; j++) { var g = G[j]; if (g.vect && g.sv > 0) d += masqueVect(g, g.sv); }
+      var a0 = racine.performance.now();
+      /* ⚑ v170d (C-125) — UNE LETTRE FINIE SE DÉVOILE PAR SA BOÎTE : son masque (des bandes et des centaines de carrés d'un pixel) couvre toute son encre ; quand
+         sa boîte ne touche l'encre d'aucune lettre pas encore finie, sa boîte entière dévoile exactement les mêmes pixels — et la découpe posée à chaque image
+         passe de 50–180 Ko à quelques Ko. (`TL.boites = false` : l'ancien chemin, pour comparer.) */
+      var mB = 1.5 / (dpr * kech), ouverts = [], j;
+      function bx_(g) { return [(g.bx0 - er.left) / kech - mB, (g.by0 - er.top) / kech - mB, (g.bx1 - er.left) / kech + mB, (g.by1 - er.top) / kech + mB]; }
+      if (TL.boites !== false) for (j = jd; j < G.length; j++) { var gq = G[j]; if (!(gq.vect && gq.sv >= gq.vs.tot)) ouverts.push(bx_(gq)); }
+      for (j = jd; j < G.length; j++) { var g = G[j]; if (!(g.vect && g.sv > 0)) continue;
+        if (TL.boites !== false && g.sv >= g.vs.tot) { var b = bx_(g), libre = true;
+          for (var k = 0; k < ouverts.length && libre; k++) { var o = ouverts[k]; if (!(o[2] <= b[0] || o[0] >= b[2] || o[3] <= b[1] || o[1] >= b[3])) libre = false; }
+          if (libre) { d += poly([[b[0], b[1]], [b[2], b[1]], [b[2], b[3]], [b[0], b[3]]]); continue; } }
+        d += masqueVect(g, g.sv); }
+      var a1 = racine.performance.now();
       pose_('path("' + (d || 'M-9999 -9999L-9998 -9999L-9998 -9998Z') + '")');
+      TL.mesures.appl.push([a1 - a0, racine.performance.now() - a1, d.length]); if (TL.mesures.appl.length > 4000) TL.mesures.appl.splice(0, 2000);
     }
     function pose(g) {
       if (g.vect) { if (g.vr) { g.vr = false; restes(g, true); } g.sv = g.vs.tot; return; }
@@ -1065,7 +1128,7 @@
     function image(maintenant) {
       if (mort) return; var d0 = racine.performance.now();
       /* le temps de la plume : il avance du temps de l'image, SAUF si la lettre où il arrive n'a pas encore sa carte — la plume marque un temps */
-      var dt = tAbs ? Math.min(100, maintenant - tAbs) : 0; tAbs = maintenant;
+      var dt = tAbs ? Math.min(100, maintenant - tAbs) : 0; if (tAbs) { var di = maintenant - tAbs; if (di > 20) nLong++; if (di > imMax) imMax = di; } tAbs = maintenant;
       var t = tPlume + dt;
       for (var jx = ig; jx < G.length && G[jx].t0 < t; jx++) if (!G[jx].pret) { demande(G[jx]); var gx = G[jx];
         /* ⚑ v170c (C-206) — LA PLUME N'ATTEND JAMAIS L'OUVRIER PLUS DE 150 ms : au-delà, la lettre se calcule ici, tout de suite. En v170b elle l'attendait sans

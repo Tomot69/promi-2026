@@ -35,11 +35,14 @@ INIT = {
           " self_.postMessage=function(m,t){ w.postMessage(m,t); }; self_.terminate=function(){ w.terminate(); }; }; }catch(e){}",
 }
 SONDE = r"""(()=>{ window.__S=[]; let T=null;
-  function arme(v){ if(!v||v.__s) return; v.__s=1; const tr=v.trace; v.trace=function(c){ const t0=performance.now(), ctl=tr.apply(this,arguments);
-    const tx=String(c.textContent||'').replace(/\s+/g,' ').trim(), r={tx:tx, t0:t0, im:0, part:0, vis:null, prem:null, el:c}; __S.push(r);
+  function arme(v){ if(!v||v.__s) return; v.__s=1; const tr=v.trace; v.trace=function(c, ct, o){ if(o && o.preparer) return tr.apply(this,arguments);   /* une préparation d'avance ne montre rien : ce n'est pas un texte affiché */
+    const c0=(c.style.getPropertyValue('clip-path')||'none').replace(/\s+/g,''), t0=performance.now(), ctl=tr.apply(this,arguments);   /* la découpe d'avant le tracé (l'onboarding en pose une) : le module la rend à la fin */
+    const tx=String(c.textContent||'').replace(/\s+/g,' ').trim(), r={tx:tx, t0:t0, im:0, part:0, vis:null, prem:null, deb:null, ctl:ctl, i0:v.mesures.image.length, img:[]}; __S.push(r); let tp=0;
     function vu(){ const cp=c.style.getPropertyValue('clip-path')||c.style.getPropertyValue('-webkit-clip-path')||'none';
-      const cv=c.parentNode?[...c.parentNode.querySelectorAll(':scope > canvas[data-trace]')]:[]; return (cp==='none'||cp==='') && !cv.length && c.style.visibility!=='hidden'; }
-    (function f(){ const v=vu(); if(r.prem===null) r.prem=v; r.im++; if(!v) r.part++; else if(r.vis===null) r.vis=Math.round(performance.now()-t0);
+      const cvL=!!(ctl.canevas && ctl.canevas.parentNode); const k=cp.replace(/\s+/g,''); return (k==='none'||k===''||(ctl.fini&&k===c0)) && !cvL && c.style.visibility!=='hidden'; }   /* le canevas de CE tracé (les textes d'une page sont frères : le canevas du suivant n'est pas le sien) */
+    function vide(){ const cp=(c.style.getPropertyValue('clip-path')||'').replace(/\s+/g,''); return cp.indexOf('0px0px,0px0px')>=0 || cp.indexOf('M-9999')>=0; }
+    (function f(){ const n=performance.now(), vv=vu(); if(r.prem===null) r.prem=vv; r.im++; if(r.deb===null && !vv && !vide()) r.deb=n-t0; if(r.deb!==null && r.vis===null && tp) r.img.push(n-tp); tp=n;
+      if(!vv) r.part++; else if(r.vis===null){ r.vis=Math.round(n-t0); r.i1=v.mesures.image.length; }
       if(r.vis===null && performance.now()-t0<20000) requestAnimationFrame(f); })();
     return ctl; }; }
   Object.defineProperty(window,'TraceLettres',{configurable:true,get(){return T;},set(v){T=v; arme(v);}}); })();"""
@@ -50,7 +53,7 @@ def attendu(tx):
     n = len([c for c in tx if not c.isspace()]); s = len([c for c in tx if c.isspace()])
     return max(0, (n - 1) + ESPACE * s) * (1000.0 / CPS) + DMIN
 
-def lis(pg): return pg.evaluate("()=>__S.map(r=>({tx:r.tx, vis:r.vis, prem:r.prem, part:r.part, im:r.im, age:Math.round(performance.now()-r.t0)}))")
+def lis(pg): return pg.evaluate("()=>__S.map(r=>({tx:r.tx, vis:r.vis, prem:r.prem, part:r.part, im:r.im, age:Math.round(performance.now()-r.t0), deb:r.deb, duree:r.ctl&&r.ctl.duree, mod:r.ctl&&r.ctl.mesure, travail:(r.i1!=null?TraceLettres.mesures.image.slice(r.i0,r.i1):[]).reduce((a,x)=>Math.max(a,x),0), pire:r.img.reduce((a,x)=>Math.max(a,x),0)}))")
 def attends_fin(pg, n0, lim=22000):
     for _ in range(lim // 200):
         S = lis(pg)
@@ -68,6 +71,16 @@ def verifie(T, S, deja):
             # C-137 : un dépassement modéré sous une forte charge n'est pas jugé (il se rejoue au calme) — un texte qui ne paraît JAMAIS, lui, rougit toujours
             print('  ⚠ [%s] « %s » : %s ms pour %d ms attendus — NON JUGÉ (charge %.0f)' % (T, r['tx'][:34], v, A, ch), flush=True); continue
         juge('[%s] « %s » : paraît en entier entre 0,7 et 2,5 × le tracé à 40 car/s (+1,5 s)' % (T, r['tx'][:34]), ok, '%s ms pour %d ms attendus' % (v, A))
+        # ⚑ v170d (Tom, C-125) : le DÉVOILEMENT (du premier trait au texte entier) dure la durée prévue à ± 10 % ; aucune image du tracé au-delà de 20 ms, aucun calcul
+        #   de tracé pendant le dévoilement (le travail du module par image ≤ 8 ms). Au calme seulement (C-137) ; sinon NON JUGÉ. Le mode `normal` seul.
+        if T.split(' ')[0] == 'normal' and v is not None and r['duree'] and r.get('mod') and r['mod'].get('attente') is not None:
+            # le départ de la plume : l'instant que le module déclare (un POINTEUR) ; la fin : le texte entier À L'ÉCRAN (la découpe retirée, le canevas parti)
+            reel = v - r['mod']['attente']; D = r['duree']
+            juge('[%s] « %s » : la durée prévue suit la décision (40 car/s : de %d à %d ms)' % (T, r['tx'][:34], A, A + 25), A - 1 <= D <= A + 25, '%d ms' % D)
+            if ch > 4: print('  ⚠ [%s] « %s » : dévoilement %d ms pour %d prévus, pire image %d ms, travail du tracé %.1f ms — NON JUGÉ (charge %.0f)' % (T, r['tx'][:34], reel, D, r['pire'], r['travail'], ch), flush=True)
+            else:
+                juge('[%s] « %s » : le dévoilement dure la durée prévue ± 10 %%' % (T, r['tx'][:34]), abs(reel - D) <= 0.10 * D + 17, '%d ms pour %d ms' % (reel, D))
+                juge('[%s] « %s » : aucune image du tracé au-delà de 20 ms, travail du tracé ≤ 8 ms par image' % (T, r['tx'][:34]), r['pire'] <= 20 and r['travail'] <= 8, 'pire image %d ms · travail %.1f ms' % (r['pire'], r['travail']))
 
 with sync_playwright() as p:
     b = p.webkit.launch()
