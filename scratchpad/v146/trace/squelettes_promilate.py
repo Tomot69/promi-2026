@@ -23,14 +23,15 @@ import squelette as S
 # 'boucle' : une arête fermée sans nœud (l'anneau du O)
 RK_M = 1.0
 RK_ANNEAU = 1.3
+RK_SP = 1.0
 RK_H = 1.1
 RK_A = 0.65
 RK_JA = 1.3
 DESSINS = {
- 'A': dict(n=dict(L0=(196, -8), R0=(822, -8), BL=(276, 240), BR=(752, 240), AP=(530, 640), Bd=(610, 240)),
+ 'A': dict(n=dict(L0=(196, -8), R0=(822, -8), BL=(276, 240), BR=(752, 240), AP=(530, 640), Bd=(560, 240)),
            # v170b : la barre centrée sur l'encre qu'elle seule couvre — de l'encoche du bas (y 151) au bas du contre-poinçon (y 328) ; `brut` : pas de
            # redressement (il la remontait à y 286 : elle dépassait le contre-poinçon et manquait le bas)
-           # la barre finit juste après le contre-poinçon (x 610), sans prolongement (`fixe`, `nx`) : jusqu'à l'axe du jambage droit, elle dévoilait ce jambage
+           # la barre finit au bord du contre-poinçon (x 560), sans prolongement (`fixe`, `nx`) : jusqu'à l'axe du jambage droit, elle dévoilait ce jambage
            # avant lui et touchait en biseau le bord du jambage gauche (une pointe pincée)
            e=[['L0', [], 'BL'], ['BL', [(344, 375)], 'AP'], ['AP', [(706, 375)], 'BR'], ['BR', [], 'R0'], ['BL', [], 'Bd']], rk={0: RK_JA, 1: RK_JA, 2: RK_JA, 3: RK_JA, 4: RK_A}, brut=True,
            fixe=('Bd',), nx=[[5, 1]]),
@@ -73,7 +74,7 @@ DESSINS = {
               ['T', [(420, 593), (565, 565), (621, 470), (590, 370)], 'X'], ['X', [], 'Mi'], ['X', [(587, 125)], 'DN']], courbes=[3]),
  'S': dict(n=dict(T=(745, 520), A=(255, 440), C=(640, 300), B=(60, 195)),   # trois tronçons : l'épine est deux fois plus fine que les panses
            e=[['T', [(625, 562), (470, 598), (330, 585), (225, 510)], 'A'], ['A', [(320, 395), (425, 367), (525, 338)], 'C'],
-              ['C', [(705, 215), (650, 110), (525, 93), (425, 102), (325, 114), (175, 155)], 'B']], courbes=[0, 1, 2]),
+              ['C', [(705, 215), (650, 110), (525, 93), (425, 102), (325, 114), (175, 155)], 'B']], courbes=[0, 1, 2], rk={0: RK_SP, 2: RK_SP}, brut=True),   # v170b : brut — le redressement déplaçait C et faisait un crochet (un angle vif)
  'T': dict(n=dict(BL=(46, 552), J=(464, 552), BR=(882, 552), S0=(464, -5)),
            e=[['BL', [], 'J'], ['J', [], 'BR'], ['J', [], 'S0']]),
  'U': dict(n=dict(L=(200, 705), R=(577, 705)),
@@ -83,7 +84,7 @@ DESSINS = {
  'W': dict(n=dict(L=(190, 699), V1=(443, 30), P=(653, 600), V2=(858, 30), R=(1115, 699)),
            e=[['L', [(263, 425)], 'V1'], ['V1', [], 'P'], ['P', [], 'V2'], ['V2', [(1036, 425)], 'R']]),
  'X': dict(n=dict(C=(455, 380), TL=(199, 699), TR=(705, 699), BL=(195, -21), BR=(703, -21)),
-           e=[['TL', [], 'C'], ['C', [], 'BR'], ['TR', [], 'C'], ['C', [], 'BL']], rk={0: 1.1, 1: 1.1, 2: 1.1, 3: 1.1}),
+           e=[['TL', [], 'C'], ['C', [], 'BR'], ['TR', [], 'C'], ['C', [], 'BL']], rk={0: 1.5, 1: 1.5, 2: 1.5, 3: 1.5}),
  'Y': dict(n=dict(TL=(205, 700), TR=(700, 700), J=(446, 300), S0=(446, -12)),
            e=[['TL', [], 'J'], ['TR', [], 'J'], ['J', [], 'S0']]),
  'Z': dict(n=dict(TL=(64, 598), TR=(655, 598), BL=(258, 105), BR=(874, 105)),
@@ -95,7 +96,7 @@ import os
 # par un voisin tardif et attendaient, isolées (des éclats). Mesuré lettre par lettre (scratchpad/v170/diag-R100.txt, diag-R115.txt) : × 1,15 règle
 # G, H, L, M, R, W, Z ; il dégrade B, K, X, F, qui gardent × 1.
 R_K = float(os.environ.get('R_K', '1.15'))
-R_K_LETTRE = {'B': 1.0, 'K': 1.0, 'X': 1.0, 'F': 1.0, 'S': 1.0}
+R_K_LETTRE = {'B': 1.0, 'K': 1.0, 'X': 1.0, 'F': 1.0, 'S': 1.0, 'U': 1.0}
 
 def _catmull(P, pas=4.0):
     """une courbe lisse passant par les points (Catmull-Rom centripète simplifiée), rééchantillonnée"""

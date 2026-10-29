@@ -299,8 +299,11 @@ GEO_ECRAN = """async a=>{ const [html,fz,ech,f]=a; let w=document.getElementById
     const er=el.getBoundingClientRect(), k=er.width/el.offsetWidth, TR=[];
     C.glyphes.forEach(gl=>{ if(!gl.ech) return; const pc=TraceLettres.parcours('PromiLate', gl.car, gl.variante); if(!pc) return; const M=gl.mat||[1,0,0,1], o2=gl.xo||[gl.x,gl.y], gx=(er.left+o2[0]*k)*d, gy=(er.top+o2[1]*k)*d, u=gl.ech*k*d;
       pc.traits.forEach(t=>TR.push({R:t.R*u, pts:t.pts.map(q=>[gx+(M[0]*q[0]-M[2]*q[1])*u, gy+(M[1]*q[0]-M[3]*q[1])*u])})); });
-    return {reso, TR}; }
-  window.__CG.va(f); return 1; }"""
+    /* v170b : la boîte d'encre de chaque glyphe (pour savoir, à chaque pas, quelles lettres ont commencé) */
+    const GB=C.glyphes.map(gl=>{ if(!gl.ech) return null; const pc=TraceLettres.parcours('PromiLate', gl.car, gl.variante); if(!pc) return null; const M=gl.mat||[1,0,0,1], o2=gl.xo||[gl.x,gl.y], gx=(er.left+o2[0]*k)*d, gy=(er.top+o2[1]*k)*d, u=gl.ech*k*d, b=pc.boite;
+      const P=[[b[0],b[1]],[b[2],b[1]],[b[0],b[3]],[b[2],b[3]]].map(q=>[gx+(M[0]*q[0]-M[2]*q[1])*u, gy+(M[1]*q[0]-M[3]*q[1])*u]); return [Math.min(...P.map(q=>q[0])), Math.min(...P.map(q=>q[1])), Math.max(...P.map(q=>q[0])), Math.max(...P.map(q=>q[1]))]; });
+    return {reso, TR, GB}; }
+  window.__CG.va(f); const e=window.__CG.etat(); return {ig:e.glyphe, act:e.actives||[]}; }"""
 
 def geo_ecran(pg, html, fz, ech, N=NGEO):
     """les mêmes mesures que ⑨, lues sur les CAPTURES de l'écran (l'encre = la couleur du texte sur le blanc), plus les creux qui restent"""
@@ -313,6 +316,7 @@ def geo_ecran(pg, html, fz, ech, N=NGEO):
     A = pg.evaluate(GEO_ECRAN, [html, fz, ech, 'arme'])
     h, w = ref.shape; d = 3.0; X0, Y0 = clip['x'] * d, clip['y'] * d
     for t in A['TR']: t['pts'] = [[p[0] - X0, p[1] - Y0] for p in t['pts']]
+    GB = [None if g is None else [g[0] - X0, g[1] - Y0, g[2] - X0, g[3] - Y0] for g in A.get('GB', [])]
     Rm = np.full((h, w), 255, np.uint8); age = np.zeros((h, w), np.uint8); pinc = np.zeros((h, w), np.uint8)
     out = {'hors': 0, 'loin': 0, 'ilots': 0, 'ilotMax': 0, 'creux': 0, 'reso': A['reso']}
     def composantes(m):
@@ -333,7 +337,8 @@ def geo_ecran(pg, html, fz, ech, N=NGEO):
     def dec(m, dx, dy):
         o = np.zeros_like(m); ys = slice(max(0, dy), h + min(0, dy)); yd = slice(max(0, -dy), h + min(0, -dy)); xs = slice(max(0, dx), w + min(0, dx)); xd = slice(max(0, -dx), w + min(0, -dx)); o[yd, xd] = m[ys, xs]; return o
     for i in range(1, N):
-        pg.evaluate(GEO_ECRAN, [html, fz, ech, i / N]); cur = lit()
+        et = pg.evaluate(GEO_ECRAN, [html, fz, ech, i / N]); cur = lit()
+        commencees = set(range(et['ig'])) | set(et['act']) if isinstance(et, dict) else set(range(len(GB)))
         out['hors'] += int((cur > ref + 12).sum())
         if i == N - 1: pass
         Rm[(core) & (cur >= ref - 10) & (Rm == 255)] = i
@@ -349,6 +354,11 @@ def geo_ecran(pg, html, fz, ech, N=NGEO):
         nu = int((core & (cur <= 10)).sum()); isl = np.zeros((h, w), bool)
         if nu > 0.10 * tot:
             for mem in composantes(core & (cur <= 10)):
+                # ⚑ v170b (Tom) — UNE ENCRE QUI APPARTIENT À UNE LETTRE PAS ENCORE COMMENCÉE (l'accent du « À », glyphe suivant) N'EST PAS UN ÉCLAT LAISSÉ EN ARRIÈRE.
+                cy_ = sum(m[0] for m in mem) / len(mem); cx_ = sum(m[1] for m in mem) / len(mem)
+                dans = lambda g: g is not None and g[0] - 1 <= cx_ <= g[2] + 1 and g[1] - 1 <= cy_ <= g[3] + 1
+                cand = [(abs((g[2] - g[0]) * (g[3] - g[1])), j) for j, g in enumerate(GB) if dans(g)]   # la plus petite boîte qui la contient : sa lettre
+                if cand and min(cand)[1] not in commencees: continue
                 if 12 <= len(mem) <= 0.015 * tot:
                     for y_, x_ in mem: isl[y_, x_] = True
         age = np.where(isl, age + 1, 0).astype(np.uint8); out['ilots'] += int((age >= 3).sum()); out['ilotMax'] = max(out['ilotMax'], int(age.max()))

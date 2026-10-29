@@ -5,7 +5,7 @@ with sync_playwright() as p:
     b=p.webkit.launch(); ctx=B.contexte(b, vw=390, vh=651); pg=ctx.new_page(); pg.goto('http://127.0.0.1:8752/app.html'); pg.wait_for_timeout(6500)
     pg.evaluate("()=>{ try{closeAll()}catch(e){} var o=document.getElementById('promiOnb'); if(o){o.classList.add('gone');o.style.display='none';} }"); pg.add_style_tag(content='#device{visibility:hidden!important} body{background:#fff!important}')
     for m in [x for x in os.environ.get('ADD','').split(',') if x]: pg.add_script_tag(url='http://127.0.0.1:8752/'+m); pg.wait_for_timeout(300)
-    h={'À':GRAVE,'É':AIGU}.get(c,c)
+    h={'À':GRAVE,'É':AIGU,'Deuxio':PENCHE}.get(c,c)
     r=pg.evaluate(GEO_ECRAN,[h,fz,ech,'pose']); clip={'x':r['x'],'y':r['y'],'width':r['w'],'height':r['h']}
     lit=lambda: np.asarray(Image.open(io.BytesIO(pg.screenshot(clip=clip))).convert('L')).astype(int)
     ref=lit(); pg.evaluate(GEO_ECRAN,[h,fz,ech,'arme']); tiles=[]

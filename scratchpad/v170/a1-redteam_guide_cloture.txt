@@ -1,0 +1,86 @@
+  ✅ [clair 1 · c] la phrase 1 arrive, sa zone nette ouverte                                                  {'g': 'partage', 'entier': True, 'net': 1, 'couv': 1}
+  ✅ [clair 1 · c] phrase 1, mot pour mot                                                                     'Étoffe ta Toile, et partage-la\xa0!'
+  ✅ [clair 1 · c] « Toile » et « partage-la » en PromiLate, en couleur (≠ le texte), aucun contour           [{'t': 'Toile', 'f': 'PromiLate', 'col': 'rgb(14, 120, 242)'}, {'t': 'partage-la', 'f': 'PromiLate', 'col': 'rgb(131, 99, 170)'}]
+  ✅ [clair 1 · c] les lettres se tracent                                                                     True
+  ✅ [clair 1 · c] zone nette sur Partager seulement : un seul trou à l'écran, l'icône dedans, 4 à 10 pt de marge, l'icône des Réglages non découverte, 2,5 pt au moins en deçà du plateau {'trous': 1, 'un': True, 'contient': np.True_, 'voisin': False, 'plateau': 6.5, 'marge': [4.6, 9.5]}
+  ✅ [clair 1 · c] Partager touché : Partager s'ouvre                                                         
+  ✅ [clair 1 · c · après Partager] la phrase 2, mot pour mot, au centre (± 6 pt), sans flèche                {'t': 'Le reste s’explore à ton rythme\xa0!', 'cy': 422.7, 'trou': None, 'fleche': False}
+  ✅ [clair 1 · c · après Partager] v167 · la phrase 2 ENTIÈREMENT en PromiLate, d'une seule couleur : le cobalt #0E78F2 {'polices': ['PromiLate'], 'couleurs': ['rgb(14, 120, 242)']}
+  ✅ [clair 1 · c · après Partager] v166 · pendant la phrase 2, trois zones nettes — Aura, Index, Fil — et aucune autre ; chacune contient son icône, 3,3 à 10,7 pt de marge, aucun voisin découvert {'trous': 3, 'zones': {'index': {'marge': [np.float64(8.9), np.float64(9.5)], 'decouvre': []}, 'aura': {'marge': [np.float64(8.1), np.float64(9.5)], 'decouvre': []}, 'fil': {'marge': [np.float64(7.2), np.float64(9.3)], 'decouvre':
+  ✅ [clair 1 · c · après Partager] 3 s sans toucher : le guide se termine, les flaques se vident             4228 ms
+  ✅ [clair 1 · c · après Partager] l'accueil reste net (rien du guide), promi_guide « 1 »                    
+  ✅ [clair 1 · c] au lancement suivant, le guide ne revient pas                                              
+  ✅ [clair 1 · c] aucune erreur de page                                                                      []
+  ✅ [clair 1 · a] le + touché : le menu des natures s'ouvre, le guide se retire                              
+  ✅ [clair 1 · a] une page + ouverte : pas de clôture par-dessus                                             
+  ✅ [clair 1 · a] la phrase 1 arrive, sa zone nette ouverte                                                  {'g': 'partage', 'entier': True, 'net': 1, 'couv': 1}
+  ✅ [clair 1 · a] phrase 1, mot pour mot                                                                     'Étoffe ta Toile, et partage-la\xa0!'
+  ✅ [clair 1 · a] « Toile » et « partage-la » en PromiLate, en couleur (≠ le texte), aucun contour           [{'t': 'Toile', 'f': 'PromiLate', 'col': 'rgb(14, 120, 242)'}, {'t': 'partage-la', 'f': 'PromiLate', 'col': 'rgb(131, 99, 170)'}]
+  ✅ [clair 1 · a] les lettres se tracent                                                                     True
+  ✅ [clair 1 · a] zone nette sur Partager seulement : un seul trou à l'écran, l'icône dedans, 4 à 10 pt de marge, l'icône des Réglages non découverte, 2,5 pt au moins en deçà du plateau {'trous': 1, 'un': True, 'contient': np.True_, 'voisin': False, 'plateau': 6.8, 'marge': [4.6, 9.5]}
+  ✅ [clair 1 · a · ailleurs] la phrase 2, mot pour mot, au centre (± 6 pt), sans flèche                      {'t': 'Le reste s’explore à ton rythme\xa0!', 'cy': 422.7, 'trou': None, 'fleche': False}
+  ✅ [clair 1 · a · ailleurs] v167 · la phrase 2 ENTIÈREMENT en PromiLate, d'une seule couleur : le cobalt #0E78F2 {'polices': ['PromiLate'], 'couleurs': ['rgb(14, 120, 242)']}
+  ✅ [clair 1 · a · ailleurs] v166 · pendant la phrase 2, trois zones nettes — Aura, Index, Fil — et aucune autre ; chacune contient son icône, 3,3 à 10,7 pt de marge, aucun voisin découvert {'trous': 3, 'zones': {'index': {'marge': [np.float64(8.2), np.float64(9.5)], 'decouvre': []}, 'aura': {'marge': [np.float64(8.1), np.float64(9.4)], 'decouvre': []}, 'fil': {'marge': [np.float64(8.7), np.float64(9.5)], 'decouvre':
+  ✅ [clair 1 · a · ailleurs] un toucher : le guide se termine                                                
+  ✅ [clair 1 · a · ailleurs] l'accueil reste net (rien du guide), promi_guide « 1 »                          
+  ✅ [clair 1 · a] aucune erreur de page                                                                      []
+  ✅ [clair 1 · b] le + touché : le menu des natures s'ouvre, le guide se retire                              
+  ✅ [clair 1 · b] la phrase 1 arrive, sa zone nette ouverte                                                  {'g': 'partage', 'entier': True, 'net': 1, 'couv': 1}
+  ✅ [clair 1 · b] phrase 1, mot pour mot                                                                     'Étoffe ta Toile, et partage-la\xa0!'
+  ✅ [clair 1 · b] « Toile » et « partage-la » en PromiLate, en couleur (≠ le texte), aucun contour           [{'t': 'Toile', 'f': 'PromiLate', 'col': 'rgb(14, 120, 242)'}, {'t': 'partage-la', 'f': 'PromiLate', 'col': 'rgb(131, 99, 170)'}]
+  ✅ [clair 1 · b] les lettres se tracent                                                                     True
+  ✅ [clair 1 · b] zone nette sur Partager seulement : un seul trou à l'écran, l'icône dedans, 4 à 10 pt de marge, l'icône des Réglages non découverte, 2,5 pt au moins en deçà du plateau {'trous': 1, 'un': True, 'contient': np.True_, 'voisin': False, 'plateau': 7.2, 'marge': [4.6, 9.5]}
+  ✅ [clair 1 · b] Partager touché : Partager s'ouvre                                                         
+  ✅ [clair 1 · b · après Partager] la phrase 2, mot pour mot, au centre (± 6 pt), sans flèche                {'t': 'Le reste s’explore à ton rythme\xa0!', 'cy': 422.7, 'trou': None, 'fleche': False}
+  ✅ [clair 1 · b · après Partager] v167 · la phrase 2 ENTIÈREMENT en PromiLate, d'une seule couleur : le cobalt #0E78F2 {'polices': ['PromiLate'], 'couleurs': ['rgb(14, 120, 242)']}
+  ✅ [clair 1 · b · après Partager] v166 · pendant la phrase 2, trois zones nettes — Aura, Index, Fil — et aucune autre ; chacune contient son icône, 3,3 à 10,7 pt de marge, aucun voisin découvert {'trous': 3, 'zones': {'index': {'marge': [np.float64(8.2), np.float64(9.5)], 'decouvre': []}, 'aura': {'marge': [np.float64(8.1), np.float64(9.5)], 'decouvre': []}, 'fil': {'marge': [np.float64(8.7), np.float64(9.5)], 'decouvre':
+  ✅ [clair 1 · b · après Partager] 3 s sans toucher : le guide se termine, les flaques se vident             4158 ms
+  ✅ [clair 1 · b · après Partager] l'accueil reste net (rien du guide), promi_guide « 1 »                    
+  ✅ [clair 1 · b] aucune erreur de page                                                                      []
+  ✅ [sombre 1 · c] la phrase 1 arrive, sa zone nette ouverte                                                 {'g': 'partage', 'entier': True, 'net': 1, 'couv': 1}
+  ✅ [sombre 1 · c] phrase 1, mot pour mot                                                                    'Étoffe ta Toile, et partage-la\xa0!'
+  ✅ [sombre 1 · c] « Toile » et « partage-la » en PromiLate, en couleur (≠ le texte), aucun contour          [{'t': 'Toile', 'f': 'PromiLate', 'col': 'rgb(130, 174, 248)'}, {'t': 'partage-la', 'f': 'PromiLate', 'col': 'rgb(201, 168, 245)'}]
+  ✅ [sombre 1 · c] les lettres se tracent                                                                    True
+  ✅ [sombre 1 · c] zone nette sur Partager seulement : un seul trou à l'écran, l'icône dedans, 4 à 10 pt de marge, l'icône des Réglages non découverte, 2,5 pt au moins en deçà du plateau {'trous': 1, 'un': True, 'contient': np.True_, 'voisin': False, 'plateau': 7.2, 'marge': [4.3, 9.7]}
+  ✅ [sombre 1 · c · ailleurs] la phrase 2, mot pour mot, au centre (± 6 pt), sans flèche                     {'t': 'Le reste s’explore à ton rythme\xa0!', 'cy': 422.7, 'trou': None, 'fleche': False}
+  ✅ [sombre 1 · c · ailleurs] v167 · la phrase 2 ENTIÈREMENT en PromiLate, d'une seule couleur : le cobalt #0E78F2 {'polices': ['PromiLate'], 'couleurs': ['rgb(14, 120, 242)']}
+  ✅ [sombre 1 · c · ailleurs] v166 · pendant la phrase 2, trois zones nettes — Aura, Index, Fil — et aucune autre ; chacune contient son icône, 3,3 à 10,7 pt de marge, aucun voisin découvert {'trous': 3, 'zones': {'index': {'marge': [np.float64(8.2), np.float64(9.2)], 'decouvre': []}, 'aura': {'marge': [np.float64(8.1), np.float64(9.5)], 'decouvre': []}, 'fil': {'marge': [np.float64(7.5), np.float64(9.0)], 'decouvre':
+  ✅ [sombre 1 · c · ailleurs] un toucher : le guide se termine                                               
+  ✅ [sombre 1 · c · ailleurs] l'accueil reste net (rien du guide), promi_guide « 1 »                         
+  ✅ [sombre 1 · c] au lancement suivant, le guide ne revient pas                                             
+  ✅ [sombre 1 · c] aucune erreur de page                                                                     []
+  ✅ [sombre 1 · a] le + touché : le menu des natures s'ouvre, le guide se retire                             
+  ✅ [sombre 1 · a] une page + ouverte : pas de clôture par-dessus                                            
+  ✅ [sombre 1 · a] la phrase 1 arrive, sa zone nette ouverte                                                 {'g': 'partage', 'entier': True, 'net': 1, 'couv': 1}
+  ✅ [sombre 1 · a] phrase 1, mot pour mot                                                                    'Étoffe ta Toile, et partage-la\xa0!'
+  ✅ [sombre 1 · a] « Toile » et « partage-la » en PromiLate, en couleur (≠ le texte), aucun contour          [{'t': 'Toile', 'f': 'PromiLate', 'col': 'rgb(130, 174, 248)'}, {'t': 'partage-la', 'f': 'PromiLate', 'col': 'rgb(201, 168, 245)'}]
+  ✅ [sombre 1 · a] les lettres se tracent                                                                    True
+  ✅ [sombre 1 · a] zone nette sur Partager seulement : un seul trou à l'écran, l'icône dedans, 4 à 10 pt de marge, l'icône des Réglages non découverte, 2,5 pt au moins en deçà du plateau {'trous': 1, 'un': True, 'contient': np.True_, 'voisin': False, 'plateau': 6.5, 'marge': [4.8, 9.5]}
+  ✅ [sombre 1 · a] Partager touché : Partager s'ouvre                                                        
+  ✅ [sombre 1 · a · après Partager] la phrase 2, mot pour mot, au centre (± 6 pt), sans flèche               {'t': 'Le reste s’explore à ton rythme\xa0!', 'cy': 422.7, 'trou': None, 'fleche': False}
+  ✅ [sombre 1 · a · après Partager] v167 · la phrase 2 ENTIÈREMENT en PromiLate, d'une seule couleur : le cobalt #0E78F2 {'polices': ['PromiLate'], 'couleurs': ['rgb(14, 120, 242)']}
+  ✅ [sombre 1 · a · après Partager] v166 · pendant la phrase 2, trois zones nettes — Aura, Index, Fil — et aucune autre ; chacune contient son icône, 3,3 à 10,7 pt de marge, aucun voisin découvert {'trous': 3, 'zones': {'index': {'marge': [np.float64(8.5), np.float64(8.9)], 'decouvre': []}, 'aura': {'marge': [np.float64(8.1), np.float64(9.4)], 'decouvre': []}, 'fil': {'marge': [np.float64(8.5), np.float64(9.3)], 'decouvre':
+  ✅ [sombre 1 · a · après Partager] 3 s sans toucher : le guide se termine, les flaques se vident            5051 ms
+  ✅ [sombre 1 · a · après Partager] l'accueil reste net (rien du guide), promi_guide « 1 »                   
+  ✅ [sombre 1 · a] aucune erreur de page                                                                     []
+Traceback (most recent call last):
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_guide_cloture.py", line 176, in <module>
+    ctx, pg, er = page(b, sombre, vw, vh)
+  File "/Users/macbookpro/Documents/IA projetcs/Promi/Promi App/Promi 2026/redteam_guide_cloture.py", line 32, in page
+    pg = ctx.new_page(); er = []; pg.on('pageerror', lambda e: er.append(str(e)[:160])); pg.goto('http://127.0.0.1:8752/' + F, timeout=180000); pg.wait_for_timeout(6500)
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/sync_api/_generated.py", line 9612, in goto
+    self._sync(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_sync_base.py", line 115, in _sync
+    return task.result()
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_page.py", line 557, in goto
+    return await self._main_frame.goto(**locals_to_params(locals()))
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_frame.py", line 156, in goto
+    await self._channel.send(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 69, in send
+    return await self._connection.wrap_api_call(
+  File "/Users/macbookpro/Library/Python/3.9/lib/python/site-packages/playwright/_impl/_connection.py", line 559, in wrap_api_call
+    raise rewrite_error(error, f"{parsed_st['apiName']}: {error}") from None
+playwright._impl._errors.TimeoutError: Page.goto: Timeout 180000ms exceeded.
+Call log:
+  - navigating to "http://127.0.0.1:8752/app.html", waiting until "load"
+

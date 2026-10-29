@@ -567,10 +567,14 @@ CORRECTIONS = {'atkinson': {}, 'gilbert': {
     '?': {'bras': {2: -90}},
     'S': {'sans': 'h', 'pourquoi': "comme le s : depuis le haut il finit en bas à gauche", 'retire': [2]},
 }, 'promilate': {
+    'P': {'ordre': {'h': ([[0, -3, -2, -1], [1, 1, 2], [0, 4]], 'b')},
+          'pourquoi': "v170b : fût de haut en bas, puis la panse depuis le haut jusqu'au fût (comme le D) — depuis le bas, elle laissait un creux au coin du contre-poinçon (19 pt)"},
     'R': {'ordre': {'h': ([[0, -3, -2, -1], [1, 1], [0, -5, -4], [1, 4], [0, 6]], 'b')},
           'pourquoi': "v170b : fût de haut en bas, la barre, la panse depuis la barre jusqu'en haut, puis la jambe — la barre en dernier laissait une fente entre le fût et la panse (v170 : la panse d'abord)"},
     'A': {'ordre': {'b': ([[0, 1, 2], [1, -2], [0, 5], [2], [0, 3, 4]], 'b')}, 'sans': 'h',
           'pourquoi': "v170 : v170b : jambage gauche jusqu'au sommet, la barre, puis le jambage droit — la barre couvre le triangle d'encre sous le contre-poinçon avant que le second jambage le pince (v170 : un seul trait puis la barre, et ce triangle restait une fente)"},
+    'E': {'ordre': {'h': ([[0, -3, 1, 4], [1, -4], [0, 2, 5]], 'b')},
+          'pourquoi': "v170b : la barre du haut, le fût jusqu'au milieu, la barre du milieu, puis le bas du fût et la barre du bas — tracée en dernier, la barre du milieu restait coincée entre les deux autres (à 25 pt, les contre-poinçons font deux pixels)"},
     'H': {'ordre': {'h': ([[0, -2, -1], [2], [0, -4, -3], [2], [0, 5]], 'b')},
           'pourquoi': "v170 : fût gauche, fût droit, puis la barre — le parcours remontait le fût droit jusqu'au bord du haut (sa dernière rangée restait à demi teinte)"},
     # v170 (C-125) : le S de PromiLate en trois tronçons (l'épine est deux fois plus fine que les panses) ; depuis le haut, le parcours partait du

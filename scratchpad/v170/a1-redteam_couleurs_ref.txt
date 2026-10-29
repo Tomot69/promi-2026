@@ -1,0 +1,20 @@
+11 écran(s) repris sur une page fraîche : Nuée[c→réf. sombre], Studio[d], chiche lancé[c→réf. sombre], gardé de côté[c→réf. sombre], l'instant après[d], l'instant après[c→réf. sombre], l'instant referme[d], l'instant referme[c→réf. sombre], page +[d], page +[c→réf. sombre], panneau des palettes[l]
+E10 l'ordre des palettes (Primesautier en tête, v133) : 18
+6022 propriétés comparées · 36 écrans × 2 thèmes · 450 nœuds sans vis-à-vis (listés, non jugés)
+E11 fiche tenue en clair sur la crème (v136, C-059) : 0
+E12 le crème des fiches en clair, #EAD9B9 (v139, C-084) : 0
+E14 l'orange du départ d'une action : le + de l'accueil, la flèche du trait (v146, C-121, C-133) : 78
+E16 à « referme », le champ garde sa nature (v146, C-118) : 4
+E15 les noms de la barre au bleu foncé du I, en clair (v146, C-120) : 140
+E17 le trait à la teinte la plus sombre de sa nature, le gardé de côté compris (v147, C-140) : 42
+E18 l'état des cartes crème dès la première image, en sombre (v147, Q290) : 1
+E19 les cartes de l'Index, du Fil et du fil d'un Cercle prennent la construction de la fiche, deux thèmes (v148, C-147) : 129
+E20 le mot du trait des pages + en orange #FB4C0D, deux thèmes (v151, C-157) : 6
+E21 le pointillé d'un gardé de côté, #291547 en clair, #A77CF7 en sombre (v163, C-149) : 2
+E22 le contour plein de 2 pt du bouton photo (v163b, C-199) : 64
+E23 le « Chiche » de la phrase sans fond (v163b, C-199) : 2
+E13 fiches et page + en sombre dans les deux modes (v146, C-132) : 19 écran(s) clairs comparés à la référence sombre
+exceptions nommées : E1 Toile entière 79 canevas · E3 orange des murs 0 · E4 Pelote et halo 4 · E5 violations retirées 6 · E6 trace crème (Q374) 10 · E7 ombre crème en sombre 2 · E8 cobalt, corps sombre Promi (v131) 15 · E9 lilas éclairci et libellé de suppression (v132) 36
+canevas non peints d'un côté (comptés, non jugés) : 3 — Nuée défilée[d] vide côté app · Nuée défilée[d] vide côté app · Nuée défilée[d] vide côté app
+
+✅ — 0 écart(s) de couleur avec la référence v118

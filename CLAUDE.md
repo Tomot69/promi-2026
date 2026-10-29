@@ -219,10 +219,15 @@ la nature, la ligne dit l'état.)*
 > l'encre non dévoilée PINCÉE entre deux parts dévoilées (3 px de part et d'autre) deux pas de suite ; ⑫c résolution (canevas = taille CSS affichée × DPR, calé
 > sur un pixel) ; la dernière image = le texte au pixel. Rouge sur v170 (R, A, À : jusqu'à 6 043 pixels hors de la lettre, 12 à 29 de creux, 481 à 590 d'écart à
 > la fin).
-> ⚠ **NON LIVRÉ (porte de qualité) : ⑫ n'est pas entièrement vert** — restent des creux de 1 à 8 px (A au coin du contre-poinçon, P, R, U, L en 19 pt, X, Y, É,
-> Deuxio), le S (points pâles isolés, un petit rectangle évidé à la jonction de l'épine, front mesuré à 17–21°), un éclat sur le « À » (l'accent, glyphe suivant,
-> compté comme laissé en arrière : le critère est à revoir avec Tom). Commité sur la branche `v170b`, pas sur main. Mesuré : meilleur que v170 sur chaque mesure
-> (S : 6 404 → 0 hors de la lettre, 13 → 5 de creux, 37 → 2 loin, 625 → 0 d'écart à la fin).
+> **⚑ v170b, SUITE (29 oct.) — ⑫ VERT, LIVRÉ SUR MAIN.** Les restes : ① **les creux** — ce qu'aucune bande ne couvre se date au temps de la bande la plus
+> proche qui le couvre (polygones exacts de la découpe, `restesCalc`), et **aucune encre n'est laissée pincée** entre deux parts dévoilées (relaxation, la règle du juge
+> tenue par construction) ; un trait horizontal ou vertical ne mord plus dans le contre-poinçon (sa demi-largeur bornée par l'encre lue, ≥ 0,6 r) ; un coin suivi
+> d'un trait colinéaire plus tardif devient une jonction ; ② **le S** : demi-largeur de l'épine 1,0 (`RK_SP`), prolongements des bouts libres comptés à 0,2 de leur
+> longueur en temps (`WEXT`) ; ③ **le E à 25 pt** : ordre de plume imposé (`chemins.py`). **Le calcul des restes tourne dans le Worker du module** (pur,
+> `TL._restesCalc`), préparé lettre par lettre (6 ms par image au plus) ; mode manuel : synchrone. ⚑ **Le critère du « À », corrigé (Tom, une ligne) : « Une encre qui
+> appartient à une lettre pas encore commencée (l'accent du « À », glyphe suivant) n'est pas un éclat laissé en arrière. »** Aucune autre règle desserrée.
+> Mesuré : ⑫ sur toutes les lettres × tailles, 0,7466 et 0,79 : 0 rouge ; angles ≥ 3 mesures, pire 3,7° et 4,7° ; juge complet 306/306 ; v170 servi à côté : rouge.
+> Gilbert et Atkinson identiques au pixel (`a1b.py`, 4/4). A2 : l'état de Tom (7 paroles, 390 × 651) — tracés finis, dernière image = le texte.
 
 ### ⚑ v170 (28 oct. 2026) — LE TRACÉ DES LETTRES EN PROMILATE (C-125, suite). (Décisions Tom.) Gilbert et Atkinson (validés) n'ont pas bougé : leurs chemins sont intacts, le module ne change que pour PromiLate (au pixel, `scratchpad/v170/a1.py`).
 > **Validé par Tom : v169b. Q590 accepté : Tom dessinera le « ! » dans PromiLate avec le « À ».**

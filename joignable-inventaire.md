@@ -1,6 +1,6 @@
 # Inventaire de joignabilité — engendré par `redteam_joignable.py`
 
-Source : `app.html`. 340 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 456 gestionnaires lus, 4 fonctions absentes.
+Source : `app.html`. 340 éléments interactifs relevés sur 36 écrans (mode clair, 390 × 844), 2 injoignables distincts ; 458 gestionnaires lus, 4 fonctions absentes.
 
 ## A · Injoignables au rendu
 
@@ -121,7 +121,7 @@ Source : `app.html`. 340 éléments interactifs relevés sur 36 écrans (mode cl
 | Partager | `#shShareBtn` | natif | 282, 789 | 168 × 62 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-tete>div.s2-fermer.x157«Fermer»` | natif | 350, 55 | 44 × 44 | oui |  |
 | Peaufiner | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
-| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTdimanche 8demain1 s»` | écouteur | 195, 222 | 342 × 64 | oui |  |
+| Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTmardi 10demain1 sem»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«DANS UN CERCLEaucuneAucu»` | écouteur | 195, 302 | 342 × 64 | oui |  |
 | Peaufiner | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner | `#dNote` | natif | 195, 426 | 292 × 56 | oui |  |
@@ -134,7 +134,7 @@ Source : `app.html`. 340 éléments interactifs relevés sur 36 écrans (mode cl
 | Peaufiner Chiche | `#dpTraitReg` | écouteur | 195, 142 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«QUI OSE ?MarionMMarionNN»` | écouteur | 195, 222 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVECMarionMMarionNNicoRR»` | écouteur | 195, 302 | 342 × 64 | oui |  |
-| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTvendredi 30demain1 »` | écouteur | 195, 382 | 342 × 64 | oui |  |
+| Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-reg«AVANTdimanche 1demain1 s»` | écouteur | 195, 382 | 342 × 64 | oui |  |
 | Peaufiner Chiche | `#detailPoster` | écouteur | 195, 422 | 390 × 844 | oui |  |
 | Peaufiner Chiche | `div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»` | écouteur | 195, 430 | 342 × 64 | NON | mur flouté (pointer-events:none) |
 | Peaufiner Chiche | `#dNote` | natif | 195, 506 | 292 × 56 | oui |  |

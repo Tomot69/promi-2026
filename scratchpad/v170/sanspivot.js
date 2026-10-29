@@ -1,0 +1,1 @@
+TraceLettres._sansPivot=true;
