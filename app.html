@@ -38580,7 +38580,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function traceTextes(L, apres){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; }); if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ L.forEach(function(e){ e.style.visibility='visible'; }); if(apres) apres(); return; }
     L.forEach(function(e){ e.style.visibility='hidden'; });
     (function un(i){ if(i>=L.length){ if(apres) apres(); return; } var e=L[i]; e.style.visibility='visible';
-      try{ var c=window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (v154 : 40 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ }
+      try{ var c=window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (v154 : 40 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ try{ if(window._diagErreur) window._diagErreur('traceTextes', _); }catch(__){ } }
       un(i+1); })(0); }
   window._onbTraceTextes=traceTextes;
   function decouvre(el, ms, apres){ var t0=performance.now(); el.style.clipPath='inset(0 100% 0 0)'; el.style.visibility='visible';
@@ -41241,7 +41241,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     return out; }
   function posePhrase(g, quoi){ var p=eng(document.createElement('div'),'guide-phrase'); p.id='guidePhrase'; p.innerHTML=phraseHTML(quoi); [].forEach.call(p.querySelectorAll('*'), function(e){ eng(e,'guide-phrase'); }); g.appendChild(p);
     var h=p.offsetHeight||80; p.style.top=Math.round((quoi==='reste'?422:372-120)-h/2)+'px';   /* v165 (C-203) : la phrase 2 au centre de l'écran */   /* v147 (Tom, §10.4) : 1 cm (60 pt) plus haut ; ⚑ v149 (Tom, C-145) : « remonte encore d'UN cm réel, 60 pt ± 4, PAS PLUS » — centre 312 → 252 */
-    if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; } }
+    if(TRACE && window.TraceLettres && !reduit()){ try{ traceCtl=window.TraceLettres.trace(p, null, {depart:'h', attributs:{'data-eng':'guide-phrase'}}); }catch(_){ traceCtl=null; try{ if(window._diagErreur) window._diagErreur('guide-trace', _); }catch(__){ } } }
     return p; }
   /* ⚑ v148 (Tom, 16 oct. 2026, C-146) — « Tant que le Studio n'a jamais été ouvert, toucher ailleurs montre la phrase de rappel — choisir son monde — et
      SEULEMENT elle, autant de fois qu'on touche ailleurs. Jamais la phrase du + avant le Studio. » Le rappel : la phrase du Studio (les mots de Tom, tels
@@ -42696,9 +42696,15 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 (function(){
   var h=location.hostname; if(!new URLSearchParams(location.search).has('diag')) return;   /* v162 (Tom) : seulement derrière ?diag=1, jamais par défaut */
   if(!(h==='localhost' || /^127\.|^10\.|^192\.168\.|^172\.(1[6-9]|2\d|3[01])\./.test(h))) return;
-  var n=0; function envoie(d){ if(n++>40) return; try{ d.quand=new Date().toISOString(); d.version=window.PROMI_VERSION||null; d.ua=navigator.userAgent;
+  var n=0; function envoie(d){ if(n++>200) return; try{ d.quand=new Date().toISOString(); d.version=window.PROMI_VERSION||null; d.ua=navigator.userAgent;
       d.vv=window.visualViewport?[Math.round(visualViewport.width), Math.round(visualViewport.height), Math.round(visualViewport.offsetTop)]:null; d.fen=[innerWidth, innerHeight, scrollX, scrollY];
       fetch('/mesure', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d), keepalive:true}).catch(function(){}); }catch(_){ } }
+  /* ⚑ v170c (Tom, C-206) — LE TRACÉ DES LETTRES : toute erreur de l'ouvrier (Worker), tout abandon, toute fin de tracé, avec sa durée prévue et réelle
+     (une fin bien avant la durée prévue = une apparition d'un coup) ; puis, 12 s après l'ouverture, l'état de l'ouvrier et ce que le navigateur offre. */
+  window.__tlDiag=function(e){ var d={}; for(var k in e) d[k]=e[k]; d.evt=e.quoi; d.quoi='diag-trace'; envoie(d); };
+  setTimeout(function(){ var T=window.TraceLettres; envoie({quoi:'diag-trace-etat', ouvrier:T?(T.ouvrierEtat||'pas encore demandé'):'module absent', journal:T&&T.journal?T.journal.length:null,
+    offre:{Worker:typeof Worker, Blob:typeof Blob, OffscreenCanvas:typeof OffscreenCanvas, Path2D:typeof Path2D, FontFace:typeof FontFace, clipPath:(window.CSS&&CSS.supports)?CSS.supports('clip-path','path("M0 0L1 0L1 1Z")'):null, webkitClipPath:(window.CSS&&CSS.supports)?CSS.supports('-webkit-clip-path','path("M0 0L1 0L1 1Z")'):null},
+    reduit:matchMedia('(prefers-reduced-motion: reduce)').matches}); }, 12000);
   window._diagErreur=function(ou, e){ envoie({quoi:'diag-erreur-avalee', ou:ou, msg:String(e&&e.message||e||''), pile:String(e&&e.stack||'').slice(0,600)}); };   /* ce qu'un `try` avale (planter() de l'onboarding) */
   window.addEventListener('error', function(e){ envoie({quoi:'diag-erreur', msg:String(e.message||''), src:String(e.filename||'').split('/').pop(), ligne:e.lineno, col:e.colno}); });
   window.addEventListener('unhandledrejection', function(e){ envoie({quoi:'diag-erreur', msg:'promesse : '+String(e.reason&&e.reason.message||e.reason||'')}); });
