@@ -26,6 +26,12 @@
 > on attend : on ne change rien.** (`window._teinte.ajuste` et toute dérivée « jusqu'à 3:1 » ne servent plus à poser une couleur nouvelle sans
 > sa demande ; les dérivées déjà en place sont listées dans le rapport de v166 et attendent sa décision.)
 
+> ## ⚑ UNE BASCULE TECHNIQUE A UN REPLI AU MÊME RENDU — RÈGLE PERMANENTE (Tom, 29 oct. 2026, C-206). ELLE S'APPLIQUE À CHAQUE LOT.
+> *Pourquoi* : v170b a déplacé un calcul dans un Worker ; sur l'iPhone de Tom, les textes du tracé ont paru D'UN COUP, et le banc était vert.
+> **Toute bascule technique (un Worker, une fonction neuve du navigateur) a un repli qui garde le MÊME rendu, et elle est vérifiée sur l'iPhone de Tom (ou,
+> à défaut, dans le Safari d'un simulateur iOS) avant d'être livrée.** Le tracé ne retombe jamais sur une apparition d'un coup : seul « Réduire les
+> animations » montre un texte d'un coup. **`redteam_trace_present.py` passe à CHAQUE lot** (WebKit, avec un Worker normal, absent, muet et lent).
+
 > ## ⚑ À CHAQUE NOUVELLE SESSION, AVANT TOUTE AUTRE CHOSE
 > **Relancer le serveur et donner les trois adresses complètes, en tête du premier
 > message, sans que Tom ait à le demander.**
@@ -195,6 +201,21 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v170c (29 oct. 2026) — RÉGRESSION BLOQUANTE : SUR L'iPHONE, LES TEXTES APPARAISSAIENT D'UN COUP. (Décisions Tom.) Ce bloc CORRIGE v170b (le calcul des restes dans l'ouvrier).
+> **La cause, relevée dans Safari iOS 26.1 (simulateur iPhone 16e, v170b telle quelle, `?diag=1`)** : la plume ATTENDAIT l'ouvrier (Worker) sans limite — le mot « Promi » de
+> l'onboarding a mis 27,7 s à paraître pour 0,17 s prévues (19 images) ; en WebKit de Playwright l'ouvrier répond vite et rien ne se voyait. Un texte qui attend, puis que
+> l'app termine (un toucher qui avance le guide ou l'onboarding : `traceCtl.stop()`), paraît d'un coup. Et si l'ouvrier échouait, le repli calculait sur un tableau
+> vide (le tampon de l'encre était TRANSFÉRÉ). ⚠ Le relevé de l'iPhone de Tom lui-même n'est pas encore reçu : la cause sur SON appareil est à confirmer par lui.
+> **Aujourd'hui (`variantes/trace-lettres.js`)** : ① l'ouvrier n'est employé qu'une fois PROUVÉ (un essai — une carte et des restes connus — doit rendre exactement le
+> résultat du fil principal ; erreur, résultat différent ou pas de réponse en 4 s : abandonné) ; en attendant, le fil principal calcule ; ② la plume n'attend jamais
+> l'ouvrier plus de 150 ms (`TL.attenteMax`) : au-delà, le même calcul sur place (`g.surPlace`), une lettre à la fois ; trois lettres lentes : ouvrier abandonné ;
+> ③ l'encre envoyée est une copie ; ④ `TL.journal` note toute erreur, tout abandon et chaque fin de tracé (durée prévue, réelle), relayé au Mac avec `?diag=1`
+> (`window.__tlDiag`, `lot-V161B-DIAG` : `diag-trace`, `diag-trace-etat`). Mesuré dans Safari iOS 26.1 : « Promi » 0,39 s, l'ouvrier prouvé en 0,5 s.
+> **Juge : `redteam_trace_present.py`** (C-206) — chaque texte tracé de l'onboarding (prénom, parole) et du guide (quatre phrases) : jamais entier à la première image,
+> partiel sur ≥ 3 images, entier entre 0,7 et 2,5 × le tracé à 40 car/s (+1,5 s), la phrase du Studio lue À L'IMAGE à 35 % ; quatre ouvriers (normal, absent —
+> Worker et OffscreenCanvas désactivés —, muet, lent de 2 s). Rouge sur v170b (muet : le texte ne paraît jamais ; lent : 5,7 à 15 s). ⚠ Avec l'ouvrier ABSENT, v170b
+> traçait bien en WebKit : la simulation qui la prend est celle d'un ouvrier lent ou muet, celle qu'a montrée Safari iOS.
 
 ### ⚑ v170b (28–29 oct. 2026) — PROMILATE, RÉCIDIVE : « PIXELISÉ ET CASSÉ AUX JONCTIONS ». (Décisions Tom.) Ce bloc CORRIGE v170 (le rendu de PromiLate, la définition « au bout » du juge, Q591).
 > **La cause, mesurée à la fenêtre de Tom (390 × 651, l'app à 0,7466) et à 0,79, en WebKit** : ① **pas la résolution** — le canevas était déjà à la taille de l'écran
@@ -3773,6 +3794,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_trace_present.py   # 87 — v170c (C-206), À CHAQUE LOT : chaque texte tracé (onboarding, guide) jamais entier à la première image, sa durée à 40 car/s ; quatre ouvriers (normal, absent, muet, lent). Rouge sur v170b.
 python3 redteam_cloture_delai.py   # 30 — v169b (C-203 §1) : la clôture du guide sur cinq chemins (c, a, a planté, b, b'), deux échelles : flou ≤ 100 ms, zone de Partager et flèche ≤ 800 ms, lus image par image dans la page. 10/24 sur v169. Durées : au calme seulement.
 python3 redteam_couleurs_exactes.py # 10 (+10 avec --exact, retiré en v169b) — v169 (C-204) : les lettres de « Studio » à l'hexadécimal près, deux thèmes, deux échelles ; l'option ?exact=1. 14/20 sur v168c.
 python3 redteam_guide_fleche.py   # 80 — v166 (C-203 §2) : la flèche orange vers le Studio, le + et Partager — orange, axe vers l'icône ± 10°, aucun recouvrement, pointe au bord de la zone nette, fixe, partie à la phrase 2 ; deux thèmes, deux échelles.
