@@ -8912,3 +8912,4 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q592 — À REGARDER (C-207, v171, rien changé — A5)** : la même faute d'unité (une mesure d'écran ramenée par `clientWidth/390`, qui vaut 1 à toutes les échelles)
   vit encore à deux endroits : la hauteur minimale du fil d'un Cercle (`hD`, `#dpMain`) et deux cotes du dessin (`lot-V132-DESSIN`, `sc`, `sc2`). À 0,79 elles sortent
   réduites. Proposition : un lot à part, la même correction (`_echDp`), A1 sur la fiche d'un Cercle et le mode dessin aux deux échelles.
+- **Q593 — À REGARDER (C-210, étude, rien changé)** : sur le Peaufiner d'un Cercle, toucher un trait payant (`.pc-mur`, 60 pt de large) écrase la phrase du mur sur une colonne d'un mot par ligne, qui déborde du rail. v172 ne touche pas aux murs, mais ce cas n'a pas été rejoué sur v171 ; la phrase devrait se poser sur le panneau, comme au Studio (C-092). À traiter dans un lot à part, après les testeurs.
