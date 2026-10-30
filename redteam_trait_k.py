@@ -71,7 +71,7 @@ def recouvre(L):
 def hors(L):
     return sorted(set(e['t'] for e in L if e['x0'] < -0.5 or e['x1'] > 390.5 or e['y0'] < -0.5 or e['y1'] > 844.5))
 def scene(b, fichier, q, vw, vh, quoi):
-    ctx = B.contexte(b, vw=vw, vh=vh); B.toile_pleine(ctx, 5); ctx.add_init_script(PIEGE); pg = B.ouvre(ctx, fichier, q=q)
+    ctx = B.contexte(b, vw=vw, vh=vh); ctx.add_init_script('window.__INVITE_BANC=1;'); B.toile_pleine(ctx, 5); ctx.add_init_script(PIEGE); pg = B.ouvre(ctx, fichier, q=q)
     if quoi.startswith('plus-'):
         nat = quoi[5:].split(':')[0]
         pg.evaluate("()=>{ window.__on=['csTrameCv','planterCv','csTrait','ppTrait']; window.__T={}; }")

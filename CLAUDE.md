@@ -202,6 +202,31 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v172 (30 oct. 2026) — PAGE + : L'INVITE À TRACER N'ARRIVE QU'UNE FOIS LA PAROLE PRÊTE (C-209). (Décisions Tom.) Ce bloc CORRIGE v146, v151, v155 (le départ orange et « trace pour … » visibles dès l'ouverture de la page +) et le §2.4 (la flèche d'invite au repos).
+> **Tom (avec ses testeurs) : « dès l'ouverture de la page +, la première chose qu'on voit est TRACE POUR … ; on essaie de tracer, ça bloque, on ne comprend pas ».**
+> **L'INVITE = le départ orange (ruban ou matière du pinceau, son liseré en sombre, la pointe), la flèche d'invite courbe (§2.4) et le libellé « trace pour … »**
+> (Tom, au vu de la capture repérée : « masque-la aussi », la flèche courbe). **À l'ouverture de la page +, les trois natures, ils sont MASQUÉS ; les
+> pointillés et tout le reste restent.** Ils paraissent quand la parole est PRÊTE — le minimum du code pour planter ou lancer (`promiRequis`) : Promi et
+> Chiche, la phrase ; Cercle, son nom (Tom écrivait « Chiche : et une personne » ; le code lance un Chiche à soi, Q412 — le code fait foi, Tom d'accord).
+> **Le moment** : jamais pendant la frappe (un champ a la main) ; le clavier refermé et posé (hauteur visible revenue, stable 160 ms) ; la page recomposée ;
+> sinon ≤ 300 ms après l'action qui complète (mesuré 168 à 260 ms). **L'apparition, comme l'onboarding** : le départ et la flèche naissent EN FLAQUES sur
+> l'image d'avant (700 ms, `_passageFlaques` 'ouvre') ; le libellé se TRACE (`TraceLettres`) ; le départ CLIGNOTE (l'animation du I, `promiBlink`, calée
+> sur sa phase) jusqu'au premier toucher du trait, puis orange fixe (fixe aussi en mouvement réduit). **Le retrait** (phrase effacée, nom effacé) : l'image
+> sans invite les recouvre en flaques (300 ms). Tracer avant que ce soit prêt : inchangé (la saisie s'ouvre). **Les fiches ne sont pas concernées.**
+> Où ça vit : `lot-V172-INVITE` (`window._ppInvite`, la veille toutes les 50 ms page + ouverte), le peintre de la page + (`_ppTrait` : départ et flèche
+> seulement la parole prête ; le départ qui clignote sur SA couche `#ppDepart`, mêmes cotes que `#csTrameCv`).
+> ⚠ **Deux pièges payés** : ① **le champ de la page + n'est opaque que jusqu'à l'onde** — une copie de `#csTrameCv` comme couverture laissait transparent
+> tout ce qui est dessous (la flèche, le libellé : ils paraissaient d'un coup) ; la couverture porte le corps de la page (un aplat) puis le champ ;
+> ② **à 0,79, deux canevas réduits séparément par l'appareil ne donnent pas les pixels d'un seul** (30 pixels de bord, ≤ 23 niveaux) : la couche du
+> départ ne le porte QUE pendant qu'il clignote ; fixe, il revient sur le champ — l'état fixe est v171 au pixel (12/12, trois natures, deux thèmes, deux
+> échelles). Juge : **`redteam_invite_page_plus.py`** (111 : ouverture, frappe, apparition lue image par image, clignotement en phase, premier toucher,
+> retrait, mouvement réduit, « tracer avant », une fiche ; rouge sur v171 : 14/55). **Vérifié dans Safari iOS 26.1 (simulateur iPhone 16e)** : clavier ouvert, phrase remplie, rien ; OK touché, le
+> clavier refermé, l'invite paraît. **`window.__INVITE_BANC`** (script d'amorce, jamais posé par l'app, le modèle de `__TRAIT_BANC`) : l'invite posée d'emblée, fixe, comme avant — pour les juges qui
+> comparent à une version d'avant. **Contrats remis au niveau** (originaux `sauvegardes/*-avant-v172.py`) : `redteam_depart_orange`, `redteam_trait_k`, `redteam_pages_plus` (`__INVITE_BANC` ;
+> la fiche de `redteam_pages_plus` jugée à l'échelle 1 — elle rougissait depuis v171 : à 0,933 la ligne d'état de C-207 n'est plus celle de v149). ⚠ `redteam_validation` : 26/31 puis 28/31 sur v171 ET
+> sur v172, à charge égale (3,1 à 3,6), mêmes rouges de cadence : pas ce lot, non jugé au calme.
+> ⚠ `redteam_flash` rougit par intermittence sous charge (≥ 5), sur v172 comme sur v171 servie à côté, à charge égale : B1 Cercle (`#csPinceau` 150 à 171 ms, une image lente), C1 Promi (`.pp-trace` 94 à 574 ms). 32/32 aux autres passes ; pas ce lot, cause non nommée. `redteam_trace_present` « lent » : un rouge de durée sous charge, 21/21 rejoué (v171 22/22).
+
 ### ⚑ v171 (29 oct. 2026) — LA LIGNE D'ÉTAT D'UNE FICHE À LA MÊME PLACE À TOUTES LES ÉCHELLES (C-207) ; L'IMAGE LONGUE DE L'INSTALLATION DU GUIDE (C-208). (Décisions Tom.)
 > **⚑ C-207 — LA CAUSE** : le poseur de la fiche (`_ficheCotes`) divisait ses mesures d'ÉCRAN (`getBoundingClientRect`) par `dp.clientWidth / 390` — une cote de
 > MISE EN PAGE, que la réduction de l'appareil (`transform`) ne touche pas : **1 à toutes les échelles**. À 0,79 la hauteur du titre et son jambage entraient
@@ -3848,6 +3873,7 @@ python3 redteam_onb_rejeu.py   # 10 — v151 (C-159) : le rejeu de l'onboarding 
                                #   d'origine ; le reste de la chorégraphie inchangé (trois touchers). WebKit. 8/10 sur v150.
 python3 redteam_decoupe.py     # ⚑ v148 : il reconnaît le moteur servi avec son empreinte (`promi-moteur.js?v=…`, depuis v145 ses appels retombaient sur une ligne d'app.html) et le peintre des îles de la Pelote (`dalleLisible`, appelé par la préparation au repos de l'Aura, C-135).
 python3 redteam_veille.py      # 16 — v161 (C-181) : la veille — départ (jamais en saisie ni en geste), l'écran exact au retour sans rien actionner, une couleur par rebond, l'amande au coin seul et aucun coin avant 60 s, le logo dans l'écran, le verrou à 10 min, réduire les animations, 30 × 2 h simulées, coupée sur le banc. ≈ 5 min ; --vite.
+python3 redteam_invite_page_plus.py # 111 — v172 (C-209) : la page +, trois natures × deux thèmes × échelles 1 et 0,79 : à l'ouverture ni départ orange, ni flèche courbe, ni libellé (les pointillés oui), rien pendant la frappe, l'apparition en ≤ 300 ms (flaques et tracé lus image par image), le clignotement en phase avec le I jusqu'au premier toucher, le retrait en flaques ; mouvement réduit, « tracer avant », une fiche. Rouge sur v171 (14/55). --vite.
 python3 redteam_etat_fiche.py      # 11 — v171 (C-207) : la ligne d'état d'une fiche, 10 ouvertures au doigt depuis l'Index (page fraîche à chaque fois), échelles 1, 0,79 et l'état de Tom : même pixel à chaque ouverture, même cote en pt 390 d'une échelle à l'autre. Rouge sur v170d (7/11). ⚠ Sous forte charge, une fiche touchée peut ne pas s'ouvrir (« ? », v170d aussi) : rejouer.
 python3 redteam_passages.py        # 42 — v170d (C-203) : le passage + → Partager (chemins c, b, a) a les étapes et les durées (± 10 %) du passage Studio → +, l'eau reste, la flèche avec la zone ; deux échelles. Rouge sur v170c.
 python3 redteam_trace_present.py   # 87 — v170c (C-206), À CHAQUE LOT : chaque texte tracé (onboarding, guide) jamais entier à la première image, sa durée à 40 car/s ; quatre ouvriers (normal, absent, muet, lent). Rouge sur v170b.

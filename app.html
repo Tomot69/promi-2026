@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v170d', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v172', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -17842,7 +17842,15 @@ var CREMEETAT='#F7F0DE';
          fiches, sous le début du trait, à gauche de la flèche : sans lui on ne l'identifie pas sur fond sombre. » Le filet de
          `_ficheTrait` tel quel : 0,8 px, le crème adouci des filets, peint AVANT le trait (il passe dessous, la flèche le
          recouvre), le long de ce qui est TRACÉ seulement. */
-      var _sombre = !(window._clairPour?window._clairPour(cv):document.getElementById('device').classList.contains('light')) && !(window._sansFiletCercle && window._sansFiletCercle(cv));
+      /* ⚑ v172 (Tom, C-209) — « dès l'ouverture de la page +, la première chose qu'on voit est TRACE POUR … ; on essaie de tracer, ça bloque, on ne comprend
+         pas ». AU REPOS, LE DÉPART (son liseré, le ruban ou la matière du pinceau, la pointe) ET LA FLÈCHE D'INVITE NE SE PEIGNENT QUE QUAND LA PAROLE EST
+         PRÊTE (`lot-V172-INVITE`, `window._ppInvite`) ; les pointillés, toujours. Prête, le départ se peint sur SA couche (`#ppDepart`, mêmes cotes que ce
+         canevas), qui clignote avec le I de PROMI jusqu'au premier toucher du trait — comme l'onboarding (C-169). Pendant le geste rien ne change. */
+      var _IV = window._ppInvite, _inv = (e.etat !== 'plate') || !_IV || _IV.voit(), _gM = g, _gD = null;
+      if(e.etat === 'plate' && _IV && _inv) _gD = _IV.couche(cv, largeur, H, sc, dpr);
+      if(e.etat === 'plate' && _IV && !_inv) _IV.couche(cv, largeur, H, sc, dpr);   /* la couche vidée */
+      if(_gD){ g = _gD; g.strokeStyle = col; g.fillStyle = col; g.lineWidth = ep; g.lineCap = 'round'; g.lineJoin = 'round'; g.imageSmoothingEnabled = true; g.imageSmoothingQuality = 'high'; }
+      var _sombre = _inv && !(window._clairPour?window._clairPour(cv):document.getElementById('device').classList.contains('light')) && !(window._sansFiletCercle && window._sansFiletCercle(cv));
       try{ cv.setAttribute('data-filet-trait', _sombre ? '1' : '0'); }catch(_){}
       if(_sombre){ var _f = 0.8, _dy = ep/2 + _f/2, _yb = function(x){ return y(x) + _dy; };
         g.save(); g.strokeStyle = window._FILET_DOUX || '#F7F0DE'; g.lineWidth = _f; g.lineCap = 'butt';
@@ -17863,7 +17871,8 @@ var CREMEETAT='#F7F0DE';
          (la part tracée pendant le geste, comme dans l'onboarding) ; une fois signé, le trait reprend sa couleur. */
       var _cD = (e.etat === 'signe') ? col : (window._orangeDepart ? window._orangeDepart() : '#FB4C0D');
       var _pin = (window.promiPinceau ? window.promiPinceau(null) : 'Plein'), _fait = false;
-      if(_pin !== 'Plein' && window._matiereTrait)
+      if(!_inv) _fait = true;   /* v172 (C-209) : au repos, rien du départ tant que la parole n'est pas prête */
+      if(!_fait && _pin !== 'Plein' && window._matiereTrait)
         _fait = window._matiereTrait(g, _pin, e.base, e.amp, -W*0.03,
                   (e.etat === 'plate') ? _bout : cx, _cD);
       if(!_fait){ var _ss0 = g.strokeStyle, _fs0 = g.fillStyle; g.strokeStyle = _cD; g.fillStyle = _cD;
@@ -17876,7 +17885,8 @@ var CREMEETAT='#F7F0DE';
       g.strokeStyle = col; g.fillStyle = col;
       /* le trait entier d'une Nuée donnée : plus rien ne manque, donc ni chevron ni points. */
       if(!(ENTIER && e.etat === 'signe')){
-        O.chevron(g, y, cx, col, ep, cv);   /* v146 (C-133) : le départ, orange */
+        if(_inv) O.chevron(g, y, cx, col, ep, cv);   /* v146 (C-133) : le départ, orange ; v172 (C-209) : seulement la parole prête */
+        if(_gD){ g = _gM; g.strokeStyle = col; g.fillStyle = col; }   /* v172 : les points restent sur le canevas principal */
         var rp=(window._e2PointR||6)*window._TRAIT_PTS;   /* E2 (v140) : les points à tracer, Ø 12, grandis vers le haut — comme sur la fiche ; v162 (C-184) : × 1,05 */
         for(var x=cx+esp*1.3; x<W-rr; x+=esp){ g.beginPath(); g.arc(x,y(x),rp,0,6.2832); g.fill(); }   /* v141 : centrés sur l'onde */
       }
@@ -17886,7 +17896,8 @@ var CREMEETAT='#F7F0DE';
          peignait aucun. Bézier bombée vers la gauche, épaisseur 4,5, bouts ronds ; la tête
          est calculée sur la tangente RÉELLE en B, deux ailes à ±32°, longueur 13 — jamais
          posée à la main. */
-      if(e.etat === 'plate') fleche(g, e.base, W*0.11, col);
+      if(_gD){ g = _gM; g.strokeStyle = col; g.fillStyle = col; }
+      if(e.etat === 'plate' && _inv) fleche(g, e.base, W*0.11, col);   /* v172 (C-209) : la flèche d'invite, seulement la parole prête */
     }catch(err){}
   }
   /* ═══ LA TEINTE DE LA DALLE (§1.2) — décision Tom, Q30 ═══
@@ -43066,6 +43077,112 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   color:var(--c-brun09)!important;-webkit-text-fill-color:var(--c-brun09)!important}
 #device #indexSheet #ixTriBtn.on,#device #feedView #fdTriBtn.on,.frame #indexSheet #ixTriBtn.on,.frame #feedView #fdTriBtn.on{background:transparent!important;border:0!important}
 </style>
+<style id="lot-V172-INVITE-css">
+/* v172 (C-209) : le libellé « trace pour … » de la page + caché tant que la parole n'est pas prête ; la couche du départ clignote avec le I */
+#device#device#device#device#device#device#device #createSheet.ppi-cache .pp-trace{visibility:hidden!important}
+#device #createSheet #ppDepart{position:absolute!important;left:0!important;top:0!important;max-width:none!important;margin:0!important;padding:0!important;pointer-events:none!important;display:block!important;visibility:visible!important;transform:none!important;filter:none!important}
+@media (prefers-reduced-motion:no-preference){#device #createSheet #ppDepart.clignote{animation:promiBlink 1.15s steps(1,end) infinite}}
+</style>
+<script id="lot-V172-INVITE">
+/* ⚑ v172 (Tom, 30 oct. 2026, C-209) — « Dès l'ouverture de la page +, la première chose qu'on voit est « TRACE POUR … ». Les testeurs essaient de tracer, ça
+   bloque (la parole n'est pas encore remplie), et ils ne comprennent pas. » L'INVITE À TRACER N'ARRIVE QU'UNE FOIS LA PAROLE PRÊTE.
+   · L'invite = le départ orange (le ruban ou la matière du pinceau, son liseré en sombre, la pointe), la flèche d'invite courbe (§2.4) et le libellé
+     « trace pour … ». À l'ouverture de la page +, les trois natures, ils sont MASQUÉS ; les pointillés du trait et tout le reste sont là.
+   · PRÊTE = le minimum qu'exige le code pour planter ou lancer (`promiRequis`, `#addPromi`, `#addNuee`) : un Promi et un Chiche, la phrase (`#fTitle`) ; un
+     Cercle, son nom (`#nName`). (Tom écrivait « un Chiche : la phrase ET une personne défiée » : le code lance aussi un Chiche à soi, Q412 — c'est lui qui fait foi.)
+   · LE MOMENT : jamais pendant la frappe (un champ a la main) ; le clavier refermé et posé (la hauteur visible revenue et stable 160 ms, comme `apresClavier`
+     de l'onboarding) ; la page recomposée (deux relevés identiques de son trait) ; sinon au plus 300 ms après l'action qui complète.
+   · L'APPARITION, comme l'onboarding : le départ et la flèche naissent EN FLAQUES sur l'image d'avant (700 ms, `_passageFlaques` 'ouvre') ; le libellé se
+     TRACE (`TraceLettres`, C-125, C-206) ; le départ CLIGNOTE au rythme du I de PROMI (son animation, calée sur sa phase) jusqu'au premier toucher du trait,
+     puis il reste orange, fixe (fixe aussi sous « Réduire les animations »).
+   · LE RETRAIT (la phrase effacée) : l'image sans invite les recouvre en flaques rapides (300 ms), puis ils sont retirés — jamais d'un coup.
+   · Tracer avant que ce soit prêt : inchangé, tracer sans phrase ouvre la saisie (`promiRequis`, v163b). Les fiches ne sont pas concernées. */
+(function(){
+  var dev=document.getElementById('device'); if(!dev) return;
+  var INV={vis:false, touche:false, sortie:false, ouvert:false, vvT:0, vvH:0, sig:'', sigT:0, tr:null, jeu:0, journal:[]};
+  function $(i){ return document.getElementById(i); }
+  function cs(){ return $('createSheet'); }
+  function ouverte(){ var c=cs(); return !!(c && c.classList.contains('show') && c.classList.contains('pp')); }
+  function nat(){ try{ var e=window._ppEcran?window._ppEcran():null; return e ? e.nat : null; }catch(_){ return null; } }
+  function prete(){ var n=nat(), el=$(n==='nuee'?'nName':'fTitle'); return !!(el && (el.value||'').trim()); }
+  function frappe(){ var a=document.activeElement; if(!a || a===document.body) return false; var t=(a.tagName||'').toUpperCase();
+    return (t==='INPUT' || t==='TEXTAREA' || a.isContentEditable) && dev.contains(a); }
+  function BANC(){ return !!window.__INVITE_BANC; }   /* les juges qui comparent à une version d'avant v172 (v149, v162) : l'invite posée d'emblée, fixe, comme avant — jamais posé par l'app (le modèle de __TRAIT_BANC) */
+  function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function note(q){ try{ INV.journal.push([Math.round(performance.now()), q]); if(INV.journal.length>60) INV.journal.shift(); var c=cs(); if(c) c.setAttribute('data-invite', INV.vis?'1':'0'); }catch(_){ } }
+  /* la couche du départ : mêmes cotes que le champ de la page + ; rendue à chaque peinture du trait (vidée quand l'invite est cachée). Elle ne porte le
+     départ que TANT QU'IL CLIGNOTE : fixe, il est peint sur le champ comme avant v172 (deux couches réduites séparément par l'appareil, à 0,79,
+     diffèrent d'une trentaine de pixels de bord d'un seul canevas). */
+  function couche(cv, largeur, H, sc, dpr){ var c=cs(); if(!c || !cv) return null; var d=$('ppDepart');
+    if(!d){ d=document.createElement('canvas'); d.id='ppDepart'; d.setAttribute('aria-hidden','true'); if(cv.nextSibling) c.insertBefore(d, cv.nextSibling); else c.appendChild(d); }
+    else if(d.previousSibling!==cv){ if(cv.nextSibling) c.insertBefore(d, cv.nextSibling); else c.appendChild(d); }
+    var z=getComputedStyle(cv).zIndex; d.style.setProperty('z-index', (z && z!=='auto') ? z : '0', 'important');
+    var w=Math.round(largeur*dpr), h=Math.round(H*sc*dpr); if(d.width!==w) d.width=w; if(d.height!==h) d.height=h;
+    d.style.setProperty('width', largeur+'px', 'important'); d.style.setProperty('height', (H*sc)+'px', 'important');
+    d.style.setProperty('top', (cv.offsetTop||0)+'px', 'important'); d.style.setProperty('left', (cv.offsetLeft||0)+'px', 'important');
+    var g=d.getContext('2d'); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,d.width,d.height); g.setTransform(dpr*sc,0,0,dpr*sc,0,0);
+    return ((INV.vis || INV.sortie) && !INV.touche && !reduit() && !BANC()) ? g : null; }   /* fixe (touché, mouvement réduit) : le départ revient sur le champ, comme avant v172 */
+  window._ppInvite={ voit:function(){ return BANC() || INV.vis || INV.sortie; }, couche:couche, etat:function(){ return {visible:INV.vis, touche:INV.touche, sortie:INV.sortie, prete:prete(), frappe:frappe(), journal:INV.journal.slice()}; } };
+  /* le clignotement : l'animation même du I de PROMI, calée sur sa phase (comme le départ de l'onboarding et la flèche du guide) */
+  function clignote(on){ var d=$('ppDepart'); if(!d) return; if(!on || INV.touche || reduit()){ d.classList.remove('clignote'); return; }
+    d.classList.add('clignote');
+    function cale(){ try{ if(!d.classList.contains('clignote')) return; var I=document.querySelector('#device .acc-mm i'), An=(I && I.getAnimations)?I.getAnimations().filter(function(a){ return a.animationName==='promiBlink'; })[0]:null,
+        Af=d.getAnimations?d.getAnimations().filter(function(a){ return a.animationName==='promiBlink'; })[0]:null; if(Af && An && An.currentTime!=null) Af.currentTime=An.currentTime; }catch(_){ } }
+    /* la phase recopiée tout de suite, puis une et deux images plus tard : posée avant que l'animation parte, elle prenait 40 à 55 ms de retard */
+    cale(); requestAnimationFrame(function(){ cale(); requestAnimationFrame(cale); }); }
+  function repeint(){ try{ if(window._ppTrait) window._ppTrait(); }catch(_){ } }
+  /* l'image de ce qui est là : le CORPS de la page (un aplat, sous l'onde le champ est transparent — la flèche et le libellé y vivent), puis le champ */
+  function copie(src){ var k=document.createElement('canvas'), ex=src.width/390; k.width=src.width; k.height=Math.max(src.height, Math.round(844*ex)); var g=k.getContext('2d');
+    try{ g.fillStyle=getComputedStyle(cs()).backgroundColor; g.fillRect(0,0,k.width,k.height); }catch(_){ } g.drawImage(src,0,0); return k; }
+  /* le départ et la flèche : du haut de l'onde (x ≤ 110) moins 22 pt jusque sous la flèche (base + 54) */
+  function rectDepart(){ try{ var e=window._ppEcran(), O=window._onde, y=O.onde(e.base, e.amp), m=1e9; for(var x=-12;x<=110;x+=2){ var v=y(x); if(v<m) m=v; }
+      var y0=Math.max(0, m-22), y1=Math.min(e.boite||844, e.base+54); return [0, y0, 112, y1-y0]; }catch(_){ return null; } }
+  function rectLib(){ try{ var t=cs().querySelector('.pp-trace'), H=cs(), D=H.getBoundingClientRect(), k=D.width/(H.offsetWidth||390), r=t.getBoundingClientRect(); if(!r.width) return null;
+      return [Math.max(0,(r.left-D.left)/k-4), Math.max(0,(r.top-D.top)/k-4), r.width/k+8, r.height/k+8]; }catch(_){ return null; } }
+  function libelle(){ var c=cs(); return c ? c.querySelector('.pp-trace') : null; }
+  function montre(){ var c=cs(), cv=$('csTrameCv'); if(!c || !cv || INV.vis) return; var j=++INV.jeu;
+    var avant=copie(cv); INV.vis=true; INV.touche=false; INV.sortie=false; repeint(); note('montre');
+    var t=libelle(); try{ if(t && window.TraceLettres && !reduit()) INV.tr=window.TraceLettres.trace(t, null, {depart:'h'}); }catch(_){ INV.tr=null; }
+    c.classList.remove('ppi-cache'); clignote(true);
+    var r=rectDepart(), d=$('ppDepart');
+    if(r && window._passageFlaques && !reduit()){ try{ window._passageFlaques(c, {mode:'ouvre', rect:r, image:avant, duree:700, apres:d||cv, z:(d?d.style.zIndex:null)||0}); }catch(_){ } } }
+  function retire(){ var c=cs(), cv=$('csTrameCv'); if(!c || !INV.vis) return; var j=++INV.jeu; note('retire');
+    if(!cv || reduit() || !window._passageFlaques){ INV.vis=false; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint(); return; }
+    /* l'image SANS invite (le champ repeint sans elle), puis le champ rendu tel qu'il est : rien ne change à l'écran dans cette tâche */
+    INV.vis=false; INV.sortie=false; repeint(); var apres=copie(cv); INV.sortie=true; repeint(); clignote(false);
+    var fin=0, n=0, lib=libelle(), zl=lib?getComputedStyle(lib).zIndex:'1', z=String(Math.max(2, (parseInt(zl,10)||1)+1));
+    function bout(){ if(++fin<n || j!==INV.jeu) return; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint();
+      [].forEach.call(c.querySelectorAll('canvas.passage-flaques.ppi-sortie'), function(k){ k.remove(); }); }
+    [rectDepart(), rectLib()].forEach(function(r){ if(!r) return; n++;
+      var p=window._passageFlaques(c, {mode:'couvre', rect:r, image:apres, duree:300, devant:true, z:z, fin:bout}); if(p && p.canevas) p.canevas.classList.add('ppi-sortie'); });
+    if(!n){ fin=-1; n=0; bout(); } }
+  function stopTrace(){ try{ if(INV.tr && INV.tr.stop) INV.tr.stop(); }catch(_){ } INV.tr=null; }
+  function cache(){ var c=cs(); INV.vis=false; INV.sortie=false; INV.touche=false; INV.jeu++; stopTrace(); if(c && !BANC()) c.classList.add('ppi-cache'); var d=$('ppDepart'); if(d){ d.classList.remove('clignote'); try{ d.getContext('2d').clearRect(0,0,d.width,d.height); }catch(_){ } } }
+  /* à l'ouverture : caché d'emblée (la classe est posée avant la première image de la page +, dès qu'elle est ouverte ou refermée) */
+  var c0=cs(); if(c0 && !BANC()) c0.classList.add('ppi-cache');
+  var _ca=window.closeAll; if(typeof _ca==='function') window.closeAll=function(){ var r=_ca.apply(this, arguments); try{ cache(); }catch(_){ } return r; };
+  try{ new MutationObserver(function(){ var o=ouverte(); if(o!==INV.ouvert){ INV.ouvert=o; if(!o || !INV.vis) cache(); } }).observe(c0, {attributes:true, attributeFilter:['class']}); }catch(_){ }
+  /* le premier toucher du trait : le départ cesse de clignoter, il reste orange, fixe */
+  function toucher(ev){ try{ var t=ev.target; if(!INV.vis || INV.touche || !t || !t.closest) return; if(t.closest('#planterZone, #planterCv')){ INV.touche=true; clignote(false); repeint(); note('touche'); } }catch(_){ } }
+  document.addEventListener('pointerdown', toucher, true); document.addEventListener('touchstart', toucher, {capture:true, passive:true});
+  /* la veille : toutes les 50 ms, seulement la page + ouverte */
+  setInterval(function(){ try{ if(BANC()){ var cb=cs(); if(cb) cb.classList.remove('ppi-cache'); return; }
+    if(!ouverte()){ if(INV.vis || INV.sortie) cache(); INV.sig=''; return; }
+    var vv=window.visualViewport, h=vv?vv.height:innerHeight, now=performance.now();
+    if(Math.abs(h-INV.vvH)>0.5){ INV.vvH=h; INV.vvT=now; }
+    var e=window._ppEcran?window._ppEcran():null, sig=e?[e.nat, e.base, e.amp, e.etat].join('|'):''; if(sig!==INV.sig){ INV.sig=sig; INV.sigT=now; }
+    var ok=prete();
+    if(!ok){ if(INV.vis) retire(); return; }
+    if(INV.vis || INV.sortie) return;
+    if(frappe()) return;                                                      /* jamais pendant la frappe */
+    if(vv && vv.height < innerHeight - 40) return;                            /* le clavier encore là */
+    if(now - INV.vvT < 160) return;                                           /* il redescend encore */
+    if(now - INV.sigT < 60 || !e || e.etat!=='plate') return;                 /* la page se recompose encore, ou un doigt trace */
+    montre();
+  }catch(_){ } }, 50);
+})();
+</script>
+
 </body>
 
 </html>

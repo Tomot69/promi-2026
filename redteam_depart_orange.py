@@ -46,7 +46,7 @@ with sync_playwright() as p:
     # ── F · fiches
     for sombre in (False, True):
         T = 'sombre' if sombre else 'clair'
-        ctx = B.contexte(b, sombre=sombre); pg = B.ouvre(ctx, F)
+        ctx = B.contexte(b, sombre=sombre); ctx.add_init_script('window.__INVITE_BANC=1;'); pg = B.ouvre(ctx, F)   # ⚑ v172 (C-209) : l'invite de la page + (départ, flèche, « trace pour … ») posée d'emblée comme avant — son apparition est jugée par redteam_invite_page_plus
         B.plante(pg, 'rendre le livre'); B.plante(pg, 'appeler mamie', qui='Rachel'); B.plante(pg, 'courir dimanche', nature=1, qui='Rachel'); B.plante(pg, 'ranger la cave')
         pg.evaluate("()=>{ const p=promises.find(x=>x.title==='ranger la cave'); p.status='rate'; try{ saveState(); syncAll(); }catch(e){} }")
         for titre, nom in (('rendre le livre', 'Promi à soi'), ('appeler mamie', 'Promi à Rachel'), ('ranger la cave', 'Promi à tenir'), ('courir dimanche', 'Chiche lancé')):
