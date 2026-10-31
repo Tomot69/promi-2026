@@ -65,7 +65,7 @@ SCENES = {
              "setTimeout(()=>{const t=[...document.querySelectorAll('#createSheet .tile')][0];if(t)t.click();"
              "setTimeout(()=>{const x=document.querySelector('#createSheet #csBotBar,#createSheet .cbb-lab');if(x)x.click();},600);},600);}",
   'fiche':   "()=>{if(window.closeAll)closeAll();openDetail(promises.filter(p=>!p.draft&&!p.req&&p.status==='encours')[0].id);}",
-  'fiche2':  "()=>{if(window.closeAll)closeAll();openDetail(promises.filter(p=>!p.draft&&!p.req&&p.status==='rate')[0].id);}",
+  'fiche2':  "()=>{if(window.closeAll)closeAll();openDetail(promises.filter(p=>!p.draft&&!p.req&&p.status==='encours')[0].id);}",
   'fiche_peauf':"()=>{if(window.closeAll)closeAll();openDetail(promises.filter(p=>!p.draft&&!p.req)[0].id);"
              "setTimeout(()=>{const x=document.querySelector('#dpDetails .dpd-tog');if(x)x.click();},900);}",
   'index':   "()=>{if(window.closeAll)closeAll();setView('toile');ouvrirIndex();}",

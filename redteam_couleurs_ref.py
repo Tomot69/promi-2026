@@ -294,6 +294,8 @@ with sync_playwright() as p:
                     # E21 (v163, Tom, 25 oct. 2026, C-149 suite) : « la carte d'Index d'un gardé de côté se reconnaît au premier coup d'œil : un contour pointillé de 3 pt,
                     #   le violet « en cours » #291547 en clair (sa variante claire en sombre) » — le pointillé (`outline`) d'une carte d'Index, et lui seul.
                     if pr_ == 'outline' and va in ('rgb(41, 21, 71)', 'rgb(167, 124, 247)') and re.search(r's4-carte', k): exceptions['E21'] = exceptions.get('E21', 0) + 1; continue
+                    # E24 (v173, Tom, C-210, D6) : « tous les oranges reprennent EXACTEMENT #FB4C0D ». E24 ne couvre que ce passage de valeur.
+                    if vr == 'rgb(221, 77, 35)' and va == 'rgb(251, 76, 13)': exceptions['E24'] = exceptions.get('E24', 0) + 1; continue
                     # E22 (v163b, C-199, audit — chef de chantier) : « contours pleins de 2 pt pour le bouton photo » — la crème à 42 % devient la crème pleine, sur le bouton photo seul.
                     if pr_ in ('bT', 'bB', 'bL', 'bR') and va == 'rgb(247, 240, 222)' and re.search(r'ph-photo-btn', k): exceptions['E22'] = exceptions.get('E22', 0) + 1; continue
                     # E23 (v163b, C-199) : « le Chiche de la phrase ne ressemble plus à un bouton » — la pastille du verbe d'un Chiche (`.ph-b-fixe`) perd son fond.
@@ -378,6 +380,17 @@ for _th in ('light', 'dark'):
     if _L and len(_L) <= 18 and all(_c[(p, b_, a_)] == n for (p, a_, b_), n in _c.items()):
         E10 += len(_L); ecarts = [e for e in ecarts if e not in _L]
 print('E10 l\'ordre des palettes (Primesautier en tête, v133) : %d' % E10)
+# E25 (v173, Tom, C-210) : « l'état « à tenir » est supprimé ». La référence v118 montre, sur ces écrans, une parole à tenir ; la même parole est aujourd'hui en cours : le texte et
+#   le trait prennent les valeurs d'une fiche en cours, jugées sur l'écran « fiche en cours » (rien d'autre n'est admis ici que ces trois écrans).
+E25 = ('fiche à tenir', "l'instant après", "l'instant arrive", "l'instant referme")
+_n25 = len(ecarts); ecarts = [e for e in ecarts if e[0][0] not in E25]
+try: _n25c = len(cv_ecarts); cv_ecarts = [e for e in cv_ecarts if e[0][0] not in E25]
+except Exception: _n25c = 0
+print('E25 la parole « à tenir » devient « en cours » (v173) : %d' % (_n25 - len(ecarts)))
+# E26 (v173, Tom, C-210) : deux arcs au lieu de trois — sur l'Aura et son aide, les traits des Noyaux se décalent d'un rang ; seules les deux valeurs d'état restantes sont admises.
+_E26V = ('rgb(0, 52, 26)', 'rgb(41, 21, 71)'); _n26 = len(ecarts)
+ecarts = [e for e in ecarts if not (e[0][0] in ('Aura', "aide de l'Aura") and e[2] == 'stroke' and str(e[4]) in _E26V + ('rgb(221, 77, 35)',) and str(e[3]) in _E26V + ('rgb(221, 77, 35)',))]
+print('E26 les arcs des Noyaux, deux états (v173) : %d' % (_n26 - len(ecarts)))
 tout = ecarts + cv_ecarts
 par = {}
 for e in tout: par.setdefault((e[2], str(e[4]), str(e[3])), []).append(e)

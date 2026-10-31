@@ -63,8 +63,6 @@ extension Color {
         static let tenuClair = Color(red: 0.0000, green: 0.2039, blue: 0.1020)
         /// #8FE08F
         static let amande = Color(red: 0.5608, green: 0.8784, blue: 0.5608)
-        /// #DD4D23
-        static let aTenir = Color(red: 0.8667, green: 0.3020, blue: 0.1373)
         /// #291547
         static let enCours = Color(red: 0.1608, green: 0.0824, blue: 0.2784)
         /// #291547
@@ -95,10 +93,6 @@ extension Color {
         }
         /// #2B1020
         static let corpsTenu = Color(red: 0.1686, green: 0.0627, blue: 0.1255)
-        /// clair #EFC3B9 · sombre #533336
-        static func corpsATenir(_ s: ColorScheme) -> Color {
-            s == .dark ? Color(red: 0.3255, green: 0.2000, blue: 0.2118) : Color(red: 0.9373, green: 0.7647, blue: 0.7255)
-        }
         /// clair #EFC3B9 · sombre #4B2D30
         static func corpsGarde(_ s: ColorScheme) -> Color {
             s == .dark ? Color(red: 0.2941, green: 0.1765, blue: 0.1882) : Color(red: 0.9373, green: 0.7647, blue: 0.7255)
@@ -379,13 +373,9 @@ extension Color {
         static let orange42 = Color(red: 0.9412, green: 0.4784, blue: 0.1804)   // #F07A2E
         static let orange43 = Color(red: 0.7137, green: 0.2314, blue: 0.1686)   // #B63B2B
         static let orange50 = Color(red: 0.8667, green: 0.2235, blue: 0.2157)   // #DD3937
-        static let orange53 = Color(red: 0.8667, green: 0.3020, blue: 0.1373)   // #DD4D23
-        static let orange53Txt = Color(red: 0.8667, green: 0.3020, blue: 0.1373)   // #DD4D23
         static let orange58 = Color(red: 0.8118, green: 0.4392, blue: 0.3725)   // #CF705F
         static let orange59 = Color(red: 0.9961, green: 0.3137, blue: 0.0000)   // #FE5000
         static let orangeMaParole = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — les mots « Ma Parole ! » des murs, et rien d'autre
-        static let orangeMaParoleCorps = Color(red: 1.0000, green: 0.4784, blue: 0.3333)   // #FF7A55 — les mêmes, sur les corps sombres de Peaufiner (Chiche, Cercle)
-        static let orangeMaParoleCobalt = Color(red: 0.9961, green: 0.8157, blue: 0.7647)   // #FED0C3 — le même orange, éclairci à 3:1 sur le corps bleu #0E78F2 d'un Promi (v134)
         static let orangeDepart = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — v146 (Tom) : l'orange marque le POINT DE DÉPART d'une action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait)
         static let orange61 = Color(red: 0.9098, green: 0.4392, blue: 0.2353)   // #E8703C
         static let orange62 = Color(red: 0.8784, green: 0.4706, blue: 0.4275)   // #E0786D

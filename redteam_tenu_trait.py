@@ -36,7 +36,7 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     ctx = B.contexte(b); B.toile_pleine(ctx, 10); ctx.add_init_script(PIEGE); pg = B.ouvre(ctx, F)
     # une parole à tenir, dans le Fil
-    pid = pg.evaluate("()=>{ const p=promises.find(q=>!q.draft && !q.req && !q.chiche && q.status!=='tenu' && !q.nuee); p.status='rate'; p.due=-1; if(typeof feedAdd==='function') feedAdd('added','Ton Promi « '+p.title+' » est à tenir',{pid:p.id}); saveState&&saveState(); syncAll&&syncAll(); return p.id; }")
+    pid = pg.evaluate("()=>{ const p=promises.find(q=>!q.draft && !q.req && !q.chiche && q.status!=='tenu' && !q.nuee); p.due=-1; if(typeof feedAdd==='function') feedAdd('added','Ton Promi « '+p.title+' » est à tenir',{pid:p.id}); saveState&&saveState(); syncAll&&syncAll(); return p.id; }")
     pg.wait_for_timeout(600); pg.evaluate("()=>{ window.__garde=true; }")
     B.tap_sel(pg, '#filBtn'); pg.wait_for_timeout(2600)
     carte = pg.evaluate("id=>{ const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; const c=[...document.querySelectorAll('#feedView .s4-carte')].find(c=>+c.getAttribute('data-pid')===id) || document.querySelector('#feedView .s4-carte'); if(!c) return null; c.scrollIntoView({block:'center'}); const r=c.getBoundingClientRect(); return [(r.left+r.width/2-D.left)/k, (r.top+r.height/2-D.top)/k]; }", pid)

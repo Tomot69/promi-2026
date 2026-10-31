@@ -1,6 +1,6 @@
 # ÉTAT AU 30 SEPTEMBRE 2026 — CE QUI EST VRAI AUJOURD'HUI
 
-> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-28 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version {'lot': 'v168c', 'servi': '559d415+', 'moteur': '10a069f', 'marque': None}). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
+> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-31 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version {'lot': 'v173b', 'servi': 'eb23b9f+', 'moteur': '10a069f', 'marque': None}). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
 > Les valeurs de ce document priment sur tout autre document. `PROMI-SPECIFICATIONS.md`, `PARCOURS.md` et `MOODBOARD-VALEURS.md` sont des **archives** (valeurs antérieures au 16 septembre 2026) : ils disent la géométrie et l'intention d'août, jamais une couleur, une police ni un libellé à porter.
 
 **Ordre des sources, en cas de doute :** ce document → `PROMI-TOKENS.json` (couleurs, polices) → `CONTRAT-MONDE.md` (ce qu'un monde doit faire) → `SPEC-JUGES.md` (les règles que les juges portent) → `CLAUDE.md` (méthode, pièges, décisions datées) → les moodboards (géométrie d'origine) → une mesure de l'app (jamais une référence).
@@ -50,7 +50,6 @@ Un rôle vaut deux valeurs (mode clair · mode sombre). **Une règle CSS emploie
 | `tenu` | `#00341A` | `#00341A` |
 | `tenu-clair` | `#00341A` | `#00341A` |
 | `amande` | `#8FE08F` | `#8FE08F` |
-| `a-tenir` | `#DD4D23` | `#DD4D23` |
 | `en-cours` | `#291547` | `#291547` |
 | `en-cours-clair` | `#291547` | `#291547` |
 | `encre-sur-tenu` | `#00341A` | `#00341A` |
@@ -63,14 +62,13 @@ Un rôle vaut deux valeurs (mode clair · mode sombre). **Une règle CSS emploie
 | `corps-chiche` | `#FFF4FC` | `#7C3F58` |
 | `corps-nuee` | `#EEE4F8` | `#5D4978` |
 | `corps-tenu` | `#2B1020` | `#2B1020` |
-| `corps-a-tenir` | `#EFC3B9` | `#533336` |
 | `corps-garde` | `#EFC3B9` | `#4B2D30` |
 | `blanc` | `#FFFFFF` | `#FFFFFF` |
 | `noir` | `#000000` | `#000000` |
 
 **Les règles qui font lire ces couleurs** (décisions en vigueur) :
 - **Le champ dit la nature, la ligne dit l'état.** Champ : Promi `#82AEF8` · Chiche `#FFB8D2` · Cercle `#C9A8F5` (le lilas est le CHAMP d'un Cercle, le violet `#291547` est ce qu'on pose dessus). Un champ blanc n'existe jamais.
-- **Trois états, trois arcs, jamais plus** : à tenir `#DD4D23` · en cours `#291547` · tenu `#00341A`. Un état suit CE QUI EST PEINT SOUS LUI : sur la terre `#2B1020` d'une fiche tenue, le tenu passe à l'amande `#8FE08F` ; sur un fond clair il reste `#00341A`.
+- **Deux états, deux arcs, jamais plus (v173, C-210)** : en cours `#291547` · tenu `#00341A` ; `#FB4C0D` est le seul orange, il marque ce qui attend un geste. Un état suit CE QUI EST PEINT SOUS LUI : sur la terre `#2B1020` d'une fiche tenue, le tenu passe à l'amande `#8FE08F` ; sur un fond clair il reste `#00341A`.
 - **L'amande `#8FE08F`** ne peint que la célébration (la seconde dalle qui apparaît, se décale, disparaît) et la mention « TENU(E) ».
 - **Tout suit le Studio (monde et palette), sauf l'Aura** (v34) : la Pelote et « Ce que tu as tenu » gardent le monde de plantation. Les ÉTATS ne suivent jamais rien.
 - **Ingénu, la palette par défaut, dit la nature** (v17) : sous Ingénu seulement, un Promi est bleu, un Chiche rose, un Cercle lilas.

@@ -123,10 +123,10 @@ with sync_playwright() as p:
         # ⚑ v121 (Tom) : « #FB4C0D partout, sauf sur les trois corps sombres de Peaufiner : là, ce même orange éclairci jusqu'à 3:1 » → #FF7A55
         # ⚑ v131 (Tom, 5 oct. 2026) : sur le corps cobalt #273CEB d'un Promi, « même teinte OKLCH que #FB4C0D, éclaircie jusqu'à 3:1 » → #FF8664
         #   (3,02:1 ; #FF7A55 n'y fait que 2,79:1). La phrase est mesurée sur le Peaufiner d'une fiche PROMI : c'est cette valeur, en dur.
-        MUR_ORANGE = 'rgb(254, 208, 195)'   # v146 (C-132) : le corps cobalt du Peaufiner, dans les deux thèmes
+        MUR_ORANGE = 'rgb(247, 240, 222)'   # ⚑ v173 (Tom, C-210 D1) : sur le Peaufiner d'un Promi, « Ma Parole ! » s'écrit en crème #F7F0DE
         kmp = _k(col['mp'], col['fond']) if col['mp'] else 0
         ok7 = col['mp'] == MUR_ORANGE and abs(lum(col['texte']) - lum(col['fond'])) >= DLUM and kmp >= 3.0
-        t('7 · « Ma Parole ! » en #FED0C3 sur le corps cobalt du Peaufiner (deux thèmes, v146), à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),
+        t('7 · « Ma Parole ! » en crème sur le corps bleu du Peaufiner (deux thèmes, v146), à 3 : 1 au moins du fond du mur ; la phrase lisible (Δlum ≥ %d)' % DLUM, bool(ok7 and e4['texte'] == PHRASES[2]),
           'texte %s · Ma Parole %s · fond %s · phrase Δlum %.0f · Ma Parole %.2f : 1' % (col['texte'], col['mp'], col['fond'], abs(lum(col['texte']) - lum(col['fond'])), kmp))
         pg.wait_for_timeout(LECTURE_MAX + 1000); e4b = pg.evaluate(ETAT)
         t('3c · après le temps de lecture, la phrase s\'efface seule (sans ouvrir l\'offre)', not e4b['leve'] and not e4b['offre'], 'levée %s · offre %s' % (e4b['leve'], e4b['offre']))

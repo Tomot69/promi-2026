@@ -12,8 +12,8 @@
 >   ne montrent plus forcément. Il est listé parce qu'il est dans la sauvegarde ; **le portage ne le reprend pas sans décision de Tom**.
 >
 > **Lexique (CLAUDE.md §2)** : le code dit `nuee` / `NUE` / `curNuee`, l'écran dit **Cercle** ; le code dit `isPremium` / `.premium` /
-> `ouvreCercle`, l'écran dit **Ma Parole !** ; le code dit `draft`, on dit **gardé de côté** ; le code dit `status:'rate'`, l'écran dit
-> **« à tenir »**. Le code dit `promises` : ce sont les **paroles** (Promi et Chiche).
+> `ouvreCercle`, l'écran dit **Ma Parole !** ; le code dit `draft`, on dit **gardé de côté**. Le code dit `promises` : ce sont les **paroles**
+> (Promi et Chiche). (`status:'rate'`, « à tenir » : retiré en v173, C-210.)
 
 ---
 
@@ -90,7 +90,7 @@ const P=(t,w,d,i,s,n,fr)=>({id:nid++,title:t,who:w,due:d,intensity:i,status:s,nu
 | `who` | chaîne | **à qui** : `'moi'` / `'Moi'` (soi), un prénom, plusieurs prénoms joints par `', '` (`app.html:32663`), ou `'le groupe'` (parole d'un Cercle à membres, `app.html:3196`). Défaut `'moi'`. | `P()` ; Peaufiner « À QUI » (`_gensFiche`, `app.html:32651–32664`) ; `#dWhoInput` (ancien, `app.html:3311`) |
 | `due` | nombre ou `null` | **un nombre de JOURS**, relatif (1 demain · 5 · 14 · 30) ; `null` = « un jour » ou « en l'air ». Voir §1.4. **⚑ v151 (C-160) : une CONSÉQUENCE de `ech` (§1.12), recomptée chaque jour.** | `P()` ; liste d'échéance (`app.html:16194–16199`) ; reports (`app.html:3044`, `6922`, `3791`) |
 | `intensity` | entier 1–3 | importance : 1 `light`, 2 `normal` (défaut), 3 `high` (`app.html:3192`). Réglage de Ma Parole ! (ETAT §6). | `P()` ; `#segImp` (`app.html:3792`) |
-| `status` | énuméré | `'encours'` · `'tenu'` · `'rate'` — voir §1.5 | voir transitions |
+| `status` | énuméré | `'encours'` · `'tenu'` — voir §1.5 | voir transitions |
 | `nuee` | chaîne, `null` ou `undefined` | la clé du Cercle qui porte la parole (une clé de `NUE`) ; absent = hors Cercle. `'soi'` est une clé réservée (« Moi-même », `app.html:2968`). | `P()` ; `#dNueeChips` (`app.html:3754`) ; dissolution (`app.html:3662`, `9248`) |
 | `from` | chaîne | **qui promet** : `'moi'` (défaut) ou le prénom de l'autre (une parole qu'on ME fait : `from:'Rachel', who:'moi'`, `app.html:21292`) | `P()` ; relever un Chiche reçu (`app.html:6914`) |
 | `recur` | `null` ou énuméré | `'daily'` · `'weekly'` · `'monthly'` (`app.html:3665`, `3765`). Défaut `null`. Ma Parole ! (ETAT §6). | `#segRecur` |
@@ -177,15 +177,16 @@ Choisir une échéance chiffrée sur la fiche remet `status='encours'` (`app.htm
 
 > **⚑ v151 (Tom, C-160, Q544) — T3 EST FERMÉ : l'échéance est une DATE (§1.12).** Ce qui suit décrit l'état d'avant.
 > **⚠ TROU T3** — `due` est un **nombre de jours sans date de référence, et rien ne le décrémente** (cherché : `due--`, `due-=`).
-> `echeancesDepassees()` bascule `encours → rate` quand `due < 0` (`app.html:4090–4100`), ce qui ne peut arriver que par les données de
+> `echeancesDepassees()` basculait `encours → rate` (retiré en v173, C-210) quand `due < 0` (`app.html:4090–4100`), ce qui ne peut arriver que par les données de
 > démonstration. Seul le lot des notifications reconstruit un jour J (`rap.base + due × 24 h`, `app.html:37309`). **En Swift : stocker une
 > DATE d'échéance** (plus « un jour » / « en l'air »), et dériver les mots ; à faire valider par Tom.
 
 ### 1.5 États d'une parole et transitions
 
-**`status`** : `'encours'` (en cours) · `'tenu'` (tenu) · `'rate'` (affiché **« à tenir »** — `app.html:2678`, `3764`).
-Il n'existe pas d'état « manqué » à l'écran : « un Promi dont l'échéance est passée bascule seul en "à tenir" : personne ne devrait avoir à le
-déclarer manqué à la main » (`app.html:4088–4089`).
+**`status`** : `'encours'` (en cours) · `'tenu'` (tenu) — **deux états, rien d'autre** (Tom, C-210, v173). Une date passée ne change pas l'état : la parole
+reste `encours`, `due < 0`, et l'écran écrit la date (§1.12). Il n'existe ni état « manqué » ni état « à tenir » (`rate`, retiré en v173).
+**À la relecture d'un état ancien** (`window._migreEtats`, une fois, sans effet ensuite) : `rate` → `encours`, date gardée ; une entrée du Fil
+« « … » est à tenir » (type `missed`) devient « « … » : 12 oct. », de type `added`. Swift n'a aucune donnée de ce genre à reprendre.
 ⚠ `p.status!=='kept'` est testé une fois (`app.html:33784`) mais `'kept'` n'est jamais écrit dans `status` (c'est un type d'événement du Fil).
 
 | De | Vers | Déclencheur (geste · bouton · fonction) | Effets liés | Source |
@@ -193,12 +194,11 @@ déclarer manqué à la main » (`app.html:4088–4089`).
 | — | `encours` | **Planter** : tracer le trait de la page + → `#addPromi` (fabrique `P(t,w,due,imp,'encours',selNuee)`), UNE parole par destinataire choisi | `Toile.addPromi(id)` (ou `addNuee`+`addMember` si Cercle) ; `feedAdd('added',…)` ; `trait` marqué ; photo et dessin du brouillon suivent ; « Je te le rappelle ? » si datée | `app.html:3192–3195`, `25079`, `20271`, `38313–38317`, `37372–37377` |
 | — | `encours` | Premier Promi de l'onboarding (`P(titre,'Moi',7,2,'encours',undefined,'moi')`) | `Toile.sync([id])` | `app.html:8053`, `36457` |
 | — | `encours` | Créer un Cercle : son premier Promi (`#nFirst` ou « premier Promi », `due 7`) | §7 | `app.html:3196` |
-| `encours` / `rate` | `tenu` | **Tracer le trait de la fiche** (`#tenirZone`) : validé si le doigt passe les 2/3 de la largeur, OU geste lent avec > 6 points, OU > 50 % de la largeur parcourue ; la fin du geste garde `cur.trace` puis **clique `#segStatus button[data-st="tenu"]`** | `draft=false` ; `regenRecur` si `recur` ; `feedAdd('kept','Tu as tenu « … »')` ; `syncAll()` ; l'instant de célébration (`_instantTenue`, armé en capture) | `app.html:4747–4774`, `3764`, `19956–19964` |
-| `encours` / `rate` | `tenu` | Carte de la Toile, bouton `#ccKeep` (ancien) | idem | `app.html:3042` |
+| `encours` | `tenu` | **Tracer le trait de la fiche** (`#tenirZone`) : validé si le doigt passe les 2/3 de la largeur, OU geste lent avec > 6 points, OU > 50 % de la largeur parcourue ; la fin du geste garde `cur.trace` puis **clique `#segStatus button[data-st="tenu"]`** | `draft=false` ; `regenRecur` si `recur` ; `feedAdd('kept','Tu as tenu « … »')` ; `syncAll()` ; l'instant de célébration (`_instantTenue`, armé en capture) | `app.html:4747–4774`, `3764`, `19956–19964` |
+| `encours` | `tenu` | Carte de la Toile, bouton `#ccKeep` (ancien) | idem | `app.html:3042` |
 | `encours` (reçue, `pending`) | `tenu` | Fil : « TENIR » sur un bandeau (`feedKeep(fid)`) | `pending=false`, `accepted=true`, `draft=false` ; l'événement devient `kept` | `app.html:6906` |
-| tout | `encours` / `rate` / `tenu` | (ancien) sélecteur d'état `#segStatus` (trois boutons « Tenue · En cours · À tenir ») — masqué sur un gardé de côté et sur un Cercle (`app.html:861`, `11080`) | `rate` → `feedAdd('missed','« … » est à tenir')` | `app.html:2678`, `3764` |
-| `encours` | `rate` | **Automatique** : `echeancesDepassees()` au chargement (+3,4 s) quand `due < 0`, hors `draft` et `req` | `saveState`, `syncAll` | `app.html:4090–4101` |
-| `rate` / autre | `encours` | Choisir une échéance chiffrée sur la fiche (Peaufiner, liste d'échéance) | `due`, `enLair`, `dueChoisi` | `app.html:16194–16199` |
+| tout | `encours` / `tenu` | (ancien) sélecteur d'état `#segStatus` (deux boutons « Tenue · En cours » ; le bouton « À tenir » est retiré en v173, C-210) — masqué sur un gardé de côté et sur un Cercle (`app.html:861`, `11080`) | — | `app.html:2678`, `3764` |
+| autre | `encours` | Choisir une échéance chiffrée sur la fiche (Peaufiner, liste d'échéance) | `due`, `enLair`, `dueChoisi` | `app.html:16194–16199` |
 | `tenu` (avec `recur`) | + une parole neuve `encours` | `regenRecur(p)` : même titre, même `who`, `nuee`, `from`, `recur` ; `due` = 1 / 7 / 30 | `feedAdd('added','↻ « … » régénérée')` | `app.html:3665` |
 | tout | supprimée | Peaufiner « SUPPRIMER CE PROMI / CE CHICHE » → confirmation (« Supprimer » / « Garder ») → `_v16SupprimerPromi` ; **annulable** (« Promi supprimé », `restaure(instantané)`) | `Toile.sync(ids non gardés)` : la dalle part avec l'animation de son monde | `app.html:35813–35824`, `35791–35811`, `35905` |
 
@@ -317,9 +317,11 @@ COMMENTAIRES est la première rubrique après le trait. Rien de plus n'est stock
 - **Écrire une échéance** (page +, Peaufiner, REPORTER, une date choisie au calendrier) : le jour = aujourd'hui + N, ou le jour choisi (`dueISO`, qui EST l'échéance).
 - **Lire** : `due` = jour de l'échéance − aujourd'hui, en jours (arrondi : les changements d'heure ne comptent pas). **Recompté au lancement et à chaque
   retour au premier plan** (Swift : `scenePhase == .active`, et au changement de jour, `NSCalendarDayChanged`).
-- **« À tenir »** : une parole `encours` (pas gardée de côté, pas une demande) dont le jour est passé (`due < 0`) passe `rate` — jamais l'inverse sans geste.
+- **Une date passée** (`due < 0`) : la parole reste `encours` ; `echeancesDepassees()` ne fait plus que recompter (v173, C-210). L'écran écrit la date comme une
+  date, « 12 oct. » (`window._datePassee(p)`, null si la parole est tenue, gardée de côté ou sans date passée) : « EN COURS · 12 OCT. », à l'encre du mode, sans
+  couleur, sans « c'était » (D5). Mêmes boutons au Fil : TRACER · REPORTER.
 - **REPORTER** (le Fil, la carte de la Toile ; le choix d'une échéance dans Peaufiner) : depuis une échéance passée on compte depuis aujourd'hui
-  (« +3 j » = dans trois jours, pas « trois jours de moins en retard ») et la parole redevient `encours`.
+  (« +3 j » = dans trois jours, pas « trois jours de moins en retard »). REPORTER ne change que la date, jamais l'état.
 - Prototype : `lot-V151-ECHEANCE`, `window._echeance` ; `?jour=+N` avance aujourd'hui de N jours pour la page (jamais mémorisé) — l'essai sans attendre.
   Juge : `redteam_echeance.py`.
 
@@ -329,16 +331,17 @@ Un Chiche est une parole (`§1`) avec `chiche:true`, `phraseSens:'chiche'`, `who
 
 **`chicheEtat`** : `'lance'` · `'releve'`. « C'est `chicheEtat` qui dit s'il est relevé, pas l'état de la parole… Relever un chiche, c'est
 l'accepter — c'est un fait du Chiche » (`app.html:15527–15531`). Libellés : `CHICHE LANCÉ` / `CHICHE RELEVÉ`
-(relevé si `chicheEtat==='releve'` OU `status` vaut `tenu` ou `rate`, `app.html:15532–15534`).
+(relevé si `chicheEtat==='releve'` OU `status` vaut `tenu`, `app.html:15532–15534`). **« À RELEVER »** (D2, C-210) : un Chiche reçu (`from` ≠ moi), pas tenu, `chicheEtat` ≠
+`'releve'` (`window._chicheARelever(p)`) — jamais déduit d'une date.
 
 | De | Vers | Déclencheur | Source |
 |---|---|---|---|
 | — | `chiche:true, chicheEtat:'lance', status:'encours'` | Planter depuis la page + « Un Chiche » (tracer pour lancer) ; `avec` recopié de `_phrase.avec` | `app.html:3194` |
 | (événement `chiche_recu` du Fil) | **une parole NEUVE** `chiche:true, phraseSens:'chiche', from:<défieur>, who:<défieur>, due:7, status:'encours'` | Fil : « RELEVER » sur un Chiche reçu — le titre et le défieur sont **lus dans le texte de l'événement** | `app.html:6908–6916` |
 | `lance` | `releve` | **⚠ TROU T9** : aucune fonction ne l'écrit sur un Chiche que j'ai lancé ; seules les données de démonstration portent `'releve'` (`app.html:21239`, `21268`). C'est l'autre qui relève → **ATTEND FIREBASE**. | — |
-| `encours`/`rate` | `tenu` (« TENU À DEUX » si `avec`) | le trait de la fiche, comme un Promi (§1.5) | `app.html:18994` |
+| `encours` | `tenu` (« TENU À DEUX » si `avec`) | le trait de la fiche, comme un Promi (§1.5) | `app.html:18994` |
 
-États d'écran lus dans `app.html:14475–14497` : lancé (« elle tracera sa part si elle ose »), à tenir / relevé (« trace pour tenir »),
+États d'écran lus dans `app.html:14475–14497` : lancé (« elle tracera sa part si elle ose »), à relever / relevé (« trace pour tenir »),
 tenu à deux (mode `duo`).
 
 ---
@@ -592,8 +595,8 @@ Le Fil n'est pas demandé comme entité, mais il porte des **transitions** (rele
 
 Événement : `{id, type, text, pid?, from?, t, unread, fait?, nuee?, nom?, ev?}` — `t` est un MOT (« à l'instant », « hier », « il y a 3 j »),
 pas une date (`app.html:6836`).
-Types rencontrés : `added` · `kept` · `missed` · `nuee` · `relance` · `comment` · `accept` · `joined` · `received` · `chiche_recu` ·
-`chiche_releve` · `invitation` · `moitie` (`app.html:3042–3764`, `4082`, `6837–6846`, `21381–21383`).
+Types rencontrés : `added` · `kept` · `nuee` · `relance` · `comment` · `accept` · `joined` · `received` · `chiche_recu` ·
+`chiche_releve` · `invitation` · `moitie` (`app.html:3042–3764`, `4082`, `6837–6846`, `21381–21383`). `missed` : retiré en v173, C-210 (§1.5).
 `feedReacted` `{idÉvénement: booléen}` : la réaction posée sur un événement (`app.html:6893`). **Ce qui attend un geste de moi**
 (`_filAttend`, `app.html:33780–33785`) : `chiche_recu` ; `received` si la parole est `pending` ; `invitation` non faite ; `moitie` non faite
 et parole non tenue. Le Fil ne montre jamais une parole qui n'existe plus (C-049). ⚠ Le texte est une phrase toute faite stockée — le titre
@@ -740,7 +743,7 @@ resynchronise depuis les paroles (`Toile.sync(ids)`), et « un semis est déterm
 |---|---|---|
 | T1 | `ht` (hauteur de trait figée à la plantation) n'est posée que sur le jeu de démonstration ; règle d'engendrement absente | `\.ht\s*=`, `NUEHT` |
 | T2 | Aucune date de plantation ni de tenue ; `leJour` est un mot de démonstration ; l'ordre des tenues = ordre d'apparition (`promi_pelote_ordre`) | `tenuLe`, `keptAt`, `cree`, `created` |
-| T3 | **FERMÉ en v151 (C-160, §1.12)** — `due` = jours relatifs sans date de référence, jamais décrémenté ; « à tenir » automatique inatteignable hors démonstration ; « un jour » vaut `null` ou 30 selon le chemin | `due--`, `due-=`, `quandToDue` |
+| T3 | **FERMÉ en v151 (C-160, §1.12)** — `due` = jours relatifs sans date de référence, jamais décrémenté ; « à tenir » automatique (retiré en v173, C-210) inatteignable hors démonstration ; « un jour » vaut `null` ou 30 selon le chemin | `due--`, `due-=`, `quandToDue` |
 | T4 | Défaire une parole tenue (`tenu → encours`) : seulement l'ancien `#segStatus`, aucune décision | `\.status\s*=` (6 écritures) |
 | T5 | La moitié de trait de l'autre : aucun champ | `moitie`, `trace` |
 | T6 | Pinceaux « à 0,50 € » : aucun état d'achat, absents de l'offre | `_PINCEAU_META`, `acquis` |

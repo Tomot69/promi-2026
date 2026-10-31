@@ -54,7 +54,7 @@
 | B-03 | **`decoupe-dette.json`** | **0** ligne (24 à la naissance, le 22 sept. ; soldée en v29, le 23 sept.) | Les découpes d'écran sont soldées ; `decoupe-releve.json` compte ce que le MOTEUR fait en lui-même (`getImageData` 1 715, découpes 605, `putImageData` 636) — hors du périmètre du juge jusqu'à G2 | Rien. En Swift : aucune découpe, moteur compris (C-048) |
 | B-04 | **`kaki-coupables.json`** | **14** images coupables (sur 40 Toiles : 20 mondes × 2 thèmes) | De 0,8 % à 10,5 % de pixels kaki : Touffe clair 10,5 % · Guingois clair 7,6 % · Chantourné clair 7,4 % · Houle sombre 6,8 % · Chamade clair 6,0 % · Taille-douce sombre 5,8 % · Mascaret clair 5,4 % · Ramage clair 5,0 % · Braille sombre 3,3 % · Volubilis clair 2,4 % · Bobinette sombre 2,0 % · Touffe sombre 1,1 % · Pochade sombre 0,8 % · Éclisse sombre 0,8 %. ⚠ CLAUDE.md v115 et C-017 parlent de « 34 couleurs coupables » (`planche-sombre/kaki-coupables.png`) : deux comptes de deux natures | **C-017 (OUVERT)** : Tom a dit « on ne touche à aucune palette » (Q360). Décider avant le portage : la règle « jamais de kaki » vaut-elle pour le rendu Swift (les rampes des cellules vides, le fond), ou reste-t-elle une dette acceptée ? |
 | B-05 | **`air-reference.json`** | **686** paires de textes, **68** écrans-thèmes | Une PHOTO des écarts de l'app (à l'encre), pas une décision ; 10 paires ne sont plus retrouvées (8 dates du Peaufiner, 2 du bouton de l'Aura renommé) ; les pertes d'air de v96 sont ASSUMÉES, avec leurs valeurs (CLAUDE.md v102) | **C-018 (OUVERT)**. Pour Swift : Tom valide les écrans, puis on fige une table d'écarts neuve ; celle-ci sert de point de départ |
-| B-06 | **`design-reference.json`** | 6 configurations (clair / sombre × à tenir, tenue, Cercle), 17 à 25 cibles chacune | Photo des propriétés CSS calculées, figée le 30 sept. ; les couleurs n'y sont PAS comparées | Ne pas porter (voir TESTS, `releve-design`) |
+| B-06 | **`design-reference.json`** | 6 configurations (clair / sombre × à tenir — état retiré en v173, C-210 —, tenue, Cercle), 17 à 25 cibles chacune | Photo des propriétés CSS calculées, figée le 30 sept. ; les couleurs n'y sont PAS comparées | Ne pas porter (voir TESTS, `releve-design`) |
 | B-07 | **`releve-S5-instant`** | **13** écarts de dette | ⚠ TROU : la nature des 13 écarts n'est écrite ni dans CHANTIERS.md ni dans CLAUDE.md | **C-019 (OUVERT)** : les nommer avant de porter l'instant |
 | B-08 | **`banc-rendu/ref/`** | 280 images | Refigé en v130 : les 60 images de dalles des cinq mondes à trame ont changé (la correction de C-048), les 220 autres sont au pixel | La référence du portage du moteur. Décider la tolérance natif / WebKit (voir TESTS, TROUS) |
 | B-09 | **`joignable-inventaire.md`** | — | L'inventaire complet des éléments interactifs, écran par écran, écrit par le juge | À reprendre comme liste de contrôle des éléments joignables en Swift |
@@ -98,9 +98,9 @@
 | D-10 | **Madrure** à surveiller sur un vrai iPhone ; construction 104 ms (×1), 483 ms (×4) | OUVERT | C-033 ; Q316, Q322 | Mesure Instruments au premier lot Toile |
 | D-11 | **Le texte crème sur `#0E78F2` : 3,70:1** — les petites mentions sont sous 4,5:1 | Exception NOMMÉE, décidée par Tom | CLAUDE.md v134 | Rien : aucun test ne doit « corriger » ce texte. À signaler à la revue d'accessibilité de l'App Store |
 | D-12 | **La phrase lilas de la page + sur `#0E78F2`** : 4,5:1 hors d'atteinte (le blanc pur fait 4,21:1) ; posée à `#F4EEFF` (3,71:1) | À valider | Q403 | Tom : `#F4EEFF`, `#FBF9FF` (4:1) ou la crème |
-| D-13 | **Le trait « à tenir » `#DD4D23` sur `#0E78F2`** : Δlum 1,7, contraste 1,03:1 ; il se lit par la teinte seule (ΔE 126) | À savoir | Q404 ; Q216 | Tom, sur iPhone : se lit-il ? (daltonisme : aucun écart de clarté) |
-| D-14 | **« Ma Parole ! » en `#FED0C3`** sur ce bleu : « un pêche très pâle » (un quart de la chroma de l'orange) | À voir sur iPhone | Q403 | Tom |
-| D-15 | **Les usages de `#DD4D23` hors état** : « Supprimer mon compte » aux Réglages garde l'orange ; inventaire à faire | OUVERT | C-015 ; Q393 | Tom : une couleur de danger distincte, ou l'encre |
+| D-13 | **Le trait « à tenir » `#DD4D23` sur `#0E78F2`** : Δlum 1,7, contraste 1,03:1 ; il se lit par la teinte seule (ΔE 126) — retiré en v173, C-210 : l'état n'existe plus | Clos | Q404 ; Q216 | — |
+| D-14 | **« Ma Parole ! » en `#FED0C3`** sur ce bleu : « un pêche très pâle » (un quart de la chroma de l'orange) — retiré en v173, C-210 : crème `#F7F0DE` sur le Peaufiner d'un Promi (D1) | Clos | Q403 | — |
+| D-15 | **Les usages de `#DD4D23` hors état** : retirés en v173, C-210 — ce qui attend un geste prend `#FB4C0D` (D6), le seul orange de l'app ; « Supprimer mon compte » est fondu dans « Tout effacer » depuis v163b | Clos pour `#DD4D23` | C-015 ; Q393 | Tom : C-015 reste au registre |
 | D-16 | **Les îles ternies par le corps de la Pelote** | OUVERT | C-013 ; Q377 | Tom, sur iPhone |
 | D-17 | **La Pelote sous le doigt** au bord de sa cible | Fait, en attente | C-029 | Mesure sur appareil |
 | D-18 | **Un iPhone plus court que 844 pt coupe la ligne des chiffres de l'Aura** | Noté | ETAT-DES-LIEUX, liste « à valider sur iPhone » (v123) | Voir MANQUES (tailles d'écran) |
@@ -142,7 +142,7 @@
 | F-02 | **Les 33 rôles `--p-*`** | Déclarés, aucun consommateur dans les règles — voulu : « c'est ce que le portage Swift emploie » | Les employer en Swift, **en vérifiant chacun** : le prototype peint par `--c-*` fixes, un rôle n'a jamais été éprouvé à l'écran |
 | F-03 | **36 jetons `--c-*` sans `var()`** : `--c-bleu35` (`#335382`, mort pour le corps d'un Promi), `--c-seiche21`, `--c-orange59`, `--c-crete27`, `--c-bleu62`, `--c-mauve50`… | Relevé le 6 oct. (353 jetons déclarés, 69 sans consommateur `var()`, dont les 33 rôles) ; certains peuvent être lus en JavaScript | Ne porter dans l'extension Swift que les jetons employés |
 | F-04 | **Les corps clairs `#CFE5FE` · `#FFF4FC` · `#EEE4F8`** | Dans le JSON (`corps-promi.clair`…), mais « ne peignent pas le corps » : le corps clair d'une fiche est la crème `#F7F0DE` | Corriger le JSON avant d'engendrer le Swift, sinon le rôle `corps-promi` est faux en clair |
-| F-05 | **Des noms fossiles** : `--c-cobalt50` vaut `#0E78F2` (plus un cobalt) ; `--c-orange-maparole-cobalt` vaut `#FED0C3` ; `--c-lilas85` vaut `#F4EEFF` ; `--c-menthe*` pour l'amande ; `--c-framboise54` pour le rose | CLAUDE.md v131–v134 ; `PROMI-TOKENS.json` | Renommer par RÔLE dans l'extension Swift (`corpsPromiSombre`, `maParoleSurPromi`…) |
+| F-05 | **Des noms fossiles** : `--c-cobalt50` vaut `#0E78F2` (plus un cobalt) ; `--c-lilas85` vaut `#F4EEFF` ; `--c-menthe*` pour l'amande ; `--c-framboise54` pour le rose | CLAUDE.md v131–v134 ; `PROMI-TOKENS.json` | Renommer par RÔLE dans l'extension Swift (`corpsPromiSombre`, `maParoleSurPromi`…) |
 | F-06 | **`--c-tropical78`** | Cité par CLAUDE.md v130 ; absent du JSON et de `app.html` aujourd'hui | Rien (retiré) |
 | F-07 | **Le vert `#00341A` « surface d'exception, déclarée, pas encore employée »** | Q217 (16 sept.) ; depuis, c'est la valeur de l'état « tenu » | Rien : c'est un état, pas une surface |
 
@@ -162,7 +162,7 @@ Compté par script le 6 oct. : 63 chantiers (C-001 à C-063) — 25 OUVERT, 3 EN
 | C-012 | Le Zzz à réintroduire | Revient-il, et où tient le bouton (Q369) |
 | C-013 | Les îles ternies par le corps de la Pelote | Avis de Tom sur iPhone |
 | C-014 | Les tests iPhone en attente | La liste « à valider sur iPhone » d'ETAT-DES-LIEUX.md |
-| C-015 | Les usages de `#DD4D23` hors état | Inventaire, puis une couleur par usage |
+| C-015 | Les usages de `#DD4D23` hors état (valeur retirée en v173, C-210 : tout orange vaut `#FB4C0D`, D6) | Tom ferme le chantier ou non |
 | C-017 | `redteam_kaki`, rouge de naissance | Corriger les rampes, ou accepter la dette |
 | C-018 | `redteam_air` et les dates | Refiger 10 paires |
 | C-019 | `releve-S5`, 13 écarts | Les nommer, corriger ou refiger |
@@ -262,8 +262,8 @@ Relevé par les mots « OUVERT », « OUVERTE », « À VALIDER », « à valide
 | Q400 | La rangée centrée coûte 12 pt à la surface de dessin (754 → 742) | **À VALIDER** (C-042) | Valider |
 | Q401 | « Douze mondes de plus, les couleurs du dessin » sur deux lignes ; teintes floutées du mur du dessin | **À VALIDER** (C-061) | Valider |
 | Q402 | Le coefficient de variation des tailles ne baisse pas | **OUVERTE** (C-062) | Ce que Tom voit de monotone |
-| Q403 | La phrase lilas ne peut pas atteindre 4,5:1 sur `#0E78F2` | **À VALIDER** (C-050) | `#F4EEFF`, `#FBF9FF` ou la crème ; « Ma Parole ! » en `#FED0C3` |
-| Q404 | Le trait « à tenir » sans écart de clarté sur `#0E78F2` | **À SAVOIR** | Voir sur iPhone |
+| Q403 | La phrase lilas ne peut pas atteindre 4,5:1 sur `#0E78F2` | **À VALIDER** (C-050) | `#F4EEFF`, `#FBF9FF` ou la crème ; « Ma Parole ! » en `#FED0C3` (retiré en v173, C-210 : la crème, D1) |
+| Q404 | Le trait « à tenir » sans écart de clarté sur `#0E78F2` | **SANS OBJET** | Retiré en v173, C-210 |
 
 **Q357 à Q385 (lots v111 à v125)**
 

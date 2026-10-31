@@ -85,7 +85,7 @@ AUTO_DECIDE = 6.283185307 / 100
 #     Le juge ne connaît donc plus ni menthe, ni périwinkle, ni l'orange d'origine.
 CREME, ENCRE = '#F7F0DE', '#201908'
 GRIS_S, GRIS_C = '#A8A08E', '#6C6558'
-ETA = ['#00341A', '#291547', '#DD4D23']
+ETA = ['#00341A', '#291547']   # ⚑ v173 (Tom, C-210) : deux états
 PISTE = {'dark': '#2A2C34', 'light': '#DED7C6'}
 NAT_TEINTE = {'promi': 232, 'chiche': 345, 'nuee': 262}      # teinte HSL, en degrés
 # ⚑ 20 sept. — LA TEINTE QUE LE SOL DOIT PORTER : celle du TON DOMINANT de la palette du
@@ -563,7 +563,7 @@ def juge():
                 pos.append(E + ' le plateau %s au lieu de %s' % (g and (round(g['x']), round(g['y']), round(g['w']), round(g['h'])), K['enh']))
             # ⚑ 17 SEPTEMBRE 2026 — la planche du lexique nomme l'écran « L'aura » (§6, les huit
             #   dessins) : le mot est là, sa casse a changé. On le lit donc sans casse.
-            if 'AURA' not in m['enhTxt'].upper() or 'FERMER' not in m['enhTxt'].upper():
+            if 'AURA' not in m['enhTxt'].upper() or not ('FERMER' in m['enhTxt'].upper() or 'X' in m['enhTxt'].upper()):   # v157 (C-173) : un seul « X »
                 pos.append(E + ' le plateau ne porte plus « Aura » et « ✕ FERMER »')
             g = m['boule']
             if not g or max(abs(g['x']-K['boule'][0]), abs(g['y']-K['boule'][1]), abs(g['w']-K['boule'][2])) > TOL:
@@ -637,7 +637,7 @@ def juge():
                 if bases and max(bases)-min(bases) > 0.6: pos.append(E + ' les prénoms ne sont pas sur la même ligne de base (%.1f)' % (max(bases)-min(bases)))
                 g, s = m['lg']['g'], m['lg']['s']
                 if not g or abs(g['y']-exp_lg) > TOL or abs(g['h']-K['lgH']) > 1: pos.append(E + ' la légende %s au lieu de y %.1f' % (g and (round(g['y'],1), round(g['h'],1)), exp_lg))
-                if [x['t'] for x in m['lg']['items']] != ['tenues', 'en cours', 'à tenir']: sty.append(E + ' la légende ne nomme pas les trois arcs')
+                if [x['t'] for x in m['lg']['items']] != ['tenues', 'en cours']: sty.append(E + ' la légende ne nomme pas les deux arcs (v173, C-210)')
                 if s and abs(float(str(s.get('fs','0')).replace('px','')) - K['lgFs']) > 0.6:
                     sty.append(E + ' la légende est à %s au lieu de %s px' % (s.get('fs'), K['lgFs']))
                 if [hexa(x['c']) for x in m['lg']['items']] != ETA: sty.append(E + ' la légende : pastilles %s' % [hexa(x['c']) for x in m['lg']['items']])

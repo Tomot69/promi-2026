@@ -317,7 +317,7 @@ def batterie(theme):
         #   ni pourcentage, ni autre chiffre. Original : sauvegardes/redteam_ecrans-avant-v95.py
         _cpt = pg.evaluate("()=>[...document.querySelectorAll('#auraScreen .au-cpt span')].map(e=>e.textContent.trim())")
         _hors = [x for x in _tx if '%' in x] + [x for x in _tx if x not in _cpt]
-        t('Aura : trois chiffres sous la légende, aucun autre ni pourcentage'+S, len(_cpt) == 3 and all(c.isdigit() for c in _cpt) and not _hors, str((_cpt, _hors[:3])))
+        t('Aura : deux chiffres sous la légende (v173, C-210), aucun autre ni pourcentage'+S, len(_cpt) == 2 and all(c.isdigit() for c in _cpt) and not _hors, str((_cpt, _hors[:3])))
         _sg = pg.evaluate("""()=>{const o=[];document.querySelectorAll('#auraScreen *').forEach(e=>{
           const r=e.getBoundingClientRect();if(!r.width||!r.height)return;const s=getComputedStyle(e).textShadow||'';
           if(s.indexOf('221, 77, 35')>=0&&s.indexOf('58, 84, 255')>=0)o.push(e.textContent.trim().slice(0,12));});return o;}""")
@@ -344,9 +344,9 @@ def batterie(theme):
           and _g['bt'][1] <= _g['nx'][0] and _g['nx'][1] <= _g['lg'][0]
           and _g['lg'][1] <= _g['mo'][0] and _g['bt'][1] <= 844, str(_g))
         _hc = pg.evaluate("()=>[...document.querySelectorAll('#auraScreen .au-lg span')].map(s=>[s.textContent.trim(),getComputedStyle(s.querySelector('i')).backgroundColor])")
-        t('Aura : la légende nomme trois arcs en trois teintes d état'+S,
-          [x[0] for x in _hc]==['tenues','en cours','à tenir']
-          and [x[1] for x in _hc]==etats_du_theme(theme), str(_hc))
+        t('Aura : la légende nomme deux arcs en deux teintes d état (v173, C-210)'+S,
+          [x[0] for x in _hc]==['tenues','en cours']
+          and [x[1] for x in _hc]==etats_du_theme(theme)[:2], str(_hc))
         _m0 = pg.evaluate("()=>JSON.stringify((window._auraComp||{}).iles||null)")
         pg.evaluate("()=>{try{Toile.setPalette('ocean');}catch(e){} document.querySelectorAll('.screen.show').forEach(s=>s.classList.remove('show')); document.getElementById('souffleBtn').click();}")
         pg.wait_for_timeout(1500)

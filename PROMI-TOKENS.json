@@ -140,10 +140,6 @@
       "clair": "#8FE08F",
       "sombre": "#8FE08F"
     },
-    "a-tenir": {
-      "clair": "#DD4D23",
-      "sombre": "#DD4D23"
-    },
     "en-cours": {
       "clair": "#291547",
       "sombre": "#291547"
@@ -191,10 +187,6 @@
     "corps-tenu": {
       "clair": "#2B1020",
       "sombre": "#2B1020"
-    },
-    "corps-a-tenir": {
-      "clair": "#EFC3B9",
-      "sombre": "#533336"
     },
     "corps-garde": {
       "clair": "#EFC3B9",
@@ -406,8 +398,6 @@
     "--c-creme76-2": "#D4B17F",
     "--c-orange64": "#D68A4F",
     "--c-orange50": "#DD3937",
-    "--c-orange53": "#DD4D23",
-    "--c-orange53-txt": "#DD4D23",
     "--c-mauve90": "#DEDAE6",
     "--c-orange62": "#E0786D",
     "--c-creme87": "#E0D0B2",
@@ -451,8 +441,6 @@
     "--c-creme90-4": "#FCD1C1",
     "--c-orange59": "#FE5000",
     "--c-orange-maparole": "#FB4C0D",
-    "--c-orange-maparole-corps": "#FF7A55",
-    "--c-orange-maparole-cobalt": "#FED0C3",
     "--c-orange-depart": "#FB4C0D",
     "--c-ton82": "#FED0A5",
     "--c-framboise54": "#FFB8D2",

@@ -87,7 +87,7 @@ quand `CLAUDE.md` ou un juge le fixe. Voir le trou T2.
 |---|---|
 | T1 | **Aucune variante « vous » de l'interface.** Le prototype tutoie partout. Seules formes plurielles trouvées : « promettez-moi » (verbe de la page +) et les suggestions « A / B » (« t’emmener voir la mer / vous emmener voir la mer »). |
 | T2 | **La casse AFFICHÉE n'est pas relevée** (aucun navigateur lancé). Pour chaque libellé en bas de casse dans la source, vérifier à l'écran s'il paraît en capitales (`text-transform`) : la barre, les phrases du trait, les titres de l'Aura, « sombre / clair », « avec texte », « Poser », « Trait / Fond », « encore aucune parole ». |
-| T3 | **Les dates relatives n'ont pas de règle.** « DEPUIS LE 4 AVRIL », « 3 AOÛT », « PAS ENCORE RELEVÉ » sont des DONNÉES du jeu de démonstration (`leJour`) ; « il y a 2 h », « hier », « récemment » sont posées à la main dans le Fil. Seules règles écrites : `temps.mots` (échéance → mot) et « À TENIR · DEMAIN / · {n} JOURS » sur une carte. Aucun « DANS 2 JOURS » dans la source. |
+| T3 | **Les dates relatives n'ont pas de règle.** « DEPUIS LE 4 AVRIL », « 3 AOÛT », « PAS ENCORE RELEVÉ » sont des DONNÉES du jeu de démonstration (`leJour`) ; « il y a 2 h », « hier », « récemment » sont posées à la main dans le Fil. Seules règles écrites : `temps.mots` (échéance → mot) et, à date passée, « EN COURS · 12 OCT. » sur une carte et une fiche (`_datePassee`, C-210, D5). Aucun « DANS 2 JOURS » dans la source. |
 | T4 | **VoiceOver est presque vide.** Le prototype ne porte un libellé que sur une vingtaine d'éléments (champ `voiceover`). Rien pour : le + de l'accueil, les cinq entrées de la barre, les cartes de l'Index et du Fil, les Noyaux, la Pelote, les réglages de Peaufiner, les disques du Studio, les pastilles de palette, les dalles. Le Zzz (« Mode nuit, activé / désactivé ») n'est donné que par `CLAUDE.md`. |
 | T5 | **Aucun texte légal** : Conditions d'utilisation et Politique de confidentialité affichent « Bientôt disponible. ». |
 | T6 | **Aucun crédit pour PromiLate** dans À propos ; le texte dit « Les titres sont en Gilbert », écrit avant PromiLate. |
@@ -101,7 +101,7 @@ quand `CLAUDE.md` ou un juge le fixe. Voir le trou T2.
 | T14 | **Descriptions des mondes et des pinceaux** : présentes dans les tables (`studio.mondes.descriptions`, `pinceau.noms`), leur affichage n'est pas établi. Douze mondes sur vingt n'ont de description que dans `STRUCT` (toutes y sont, v33). |
 | T15 | **Le Zzz est COUPÉ** (v120) : son libellé « Zzz » et ses annonces viennent de `CLAUDE.md`, pas du code affiché. |
 | T16 | **Le gardé de côté sur la page +** (`plus.garde.*`) et **les demandes** (`fiche.demande`, « Demandes » des menus de tri) : chemins d'août, vivants ou non — à confirmer. |
-| T17 | **Menus de tri de l'Index et du Fil** : lus dans le HTML statique ; « Manquées », « En suspens », « Demandes », « Mes proches » sont des mots d'août, non recoupés avec un juge. |
+| T17 | **Menus de tri de l'Index et du Fil** : lus dans le HTML statique ; « En suspens », « Demandes », « Mes proches » sont des mots d'août, non recoupés avec un juge. |
 | T18 | **Le mot « Noyau »** survit dans « Belle série — partage ton Noyau » (`fil.serie`) alors que la boule s'appelle la Pelote. |
 
 ## 4 · À CONFIRMER (peut-être morte)

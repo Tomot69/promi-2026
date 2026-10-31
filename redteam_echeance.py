@@ -44,11 +44,11 @@ with sync_playwright() as p:
 
     pg.goto(URL + '?jour=+30'); pg.wait_for_timeout(6800)
     e = pg.evaluate(ETAT, 'rendre le livre')
-    juge('B · ?jour=+30 : la parole est « à tenir » (statut et mot), 23 jours dépassés',
-         e and e['status'] == 'rate' and e['mot'] == 'à tenir' and e['due'] == -23, str(e))
+    juge('B · ?jour=+30 : la parole reste « en cours », sa date s\'affiche comme une date (v173, C-210 D5), 23 jours dépassés',
+         e and e['status'] == 'encours' and e['mot'] != 'à tenir' and 'tenir' not in (e['mot'] or '') and e['due'] == -23, str(e))
     pg.evaluate("()=>{ try{closeAll()}catch(e){} try{ ouvrirIndex(); }catch(e){} }"); pg.wait_for_timeout(2200)
     carte = pg.evaluate("t=>{ const c=[...document.querySelectorAll('#indexList .s4-carte')].find(c=>(c.textContent||'').indexOf(t)>=0); return c ? (c.textContent||'').replace(/\\s+/g,' ').trim() : null; }", 'rendre le livre')
-    juge('B · la carte de l\'Index dit « À TENIR »', carte and 'tenir' in carte.lower(), (carte or '—')[:90])
+    juge('B · la carte de l\'Index dit « EN COURS · <date> »', carte and 'tenir' not in carte.lower() and 'EN COURS ·' in carte, (carte or '—')[:90])
 
     # C · le Fil, au doigt : l'appui maintenu, REPORTER, « 1 sem. »
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500)
@@ -96,8 +96,8 @@ with sync_playwright() as p:
       Object.defineProperty(document,'visibilityState',{configurable:true,get:()=>'visible'}); document.dispatchEvent(new Event('visibilitychange')); }""")
     pg.wait_for_timeout(600)
     ap = pg.evaluate(ETAT, 'arroser les tomates')
-    juge('F · au retour au premier plan, une échéance passée entre-temps fait la parole « à tenir »',
-         av and av['status'] == 'encours' and ap and ap['status'] == 'rate' and ap['due'] == -3, '%s → %s' % (av, ap))
+    juge('F · au retour au premier plan, une échéance passée entre-temps est recomptée, la parole reste « en cours »',
+         av and av['status'] == 'encours' and ap and ap['status'] == 'encours' and ap['due'] == -3, '%s → %s' % (av, ap))
 
     pg.goto(URL + '?jour=+400'); pg.wait_for_timeout(6800)
     e = pg.evaluate(ETAT, 'apprendre le piano')

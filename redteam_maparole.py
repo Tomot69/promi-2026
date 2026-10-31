@@ -22,7 +22,8 @@ from playwright.sync_api import sync_playwright
 ICI = os.path.dirname(os.path.abspath(__file__))
 FICHIER = next((a for a in sys.argv[1:] if not a.startswith('--')), 'app.html')
 SONDE = '--sonde' in sys.argv
-ORANGE = ('rgb(251, 76, 13)', 'rgb(255, 122, 85)', 'rgb(254, 208, 195)')   # v134 : #FED0C3 sur le bleu définitif #0E78F2
+# ⚑ v173 (Tom, C-210, D1, D6) : #FB4C0D est LE seul orange de l'app ; les variantes #FF7A55 et #FED0C3 n'existent plus ; sur le Peaufiner d'un Promi, « Ma Parole ! » en crème #F7F0DE
+ORANGE = ('rgb(255, 122, 85)', 'rgb(254, 208, 195)')   # v134 : #FED0C3 sur le bleu définitif #0E78F2
 # ⚑ v133 (Tom, 6 oct. 2026) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_maparole-avant-v133.py) : ① le corps sombre d'un Promi passe
 #   à #1A52F0 (provisoire, C-050) : l'orange éclairci à 3:1 y est #FED0C3 (il remplace #FF8664) ; ② « le juge de l'orange accepte désormais
 #   les mots listés, et seulement eux, dans les phrases des murs » — la liste est EN DUR ci-dessous (MOTS).
@@ -42,14 +43,14 @@ def t(nom, cond, detail=''):
 
 S = io.open(os.path.join(ICI, FICHIER), encoding='utf-8').read()
 if SONDE:
-    S = S.replace('</head>', '<style id="sonde-maparole">#device .closeb{color:var(--c-orange-maparole)!important;-webkit-text-fill-color:var(--c-orange-maparole)!important}</style></head>', 1)
+    S = S.replace('</head>', '<style id="sonde-maparole">#device .closeb{color:#FF7A55!important;-webkit-text-fill-color:#FF7A55!important}</style></head>', 1)
     print('SONDE : « ✕ FERMER » est peint de l\'orange de Ma Parole !')
 SERVI = 'zz-maparole.html'
 io.open(os.path.join(ICI, SERVI), 'w', encoding='utf-8').write(S)
 M = io.open(os.path.join(ICI, 'promi-moteur.js'), encoding='utf-8').read()
 
 # ── A · la source
-HEX = re.compile(r'#(?:FB4C0D|FF7A55|FED0C3)\b|\b251\s*,\s*76\s*,\s*13\b|\b255\s*,\s*122\s*,\s*85\b|\b254\s*,\s*208\s*,\s*195\b', re.I)
+HEX = re.compile(r'#(?:FF7A55|FED0C3)\b|\b255\s*,\s*122\s*,\s*85\b|\b254\s*,\s*208\s*,\s*195\b', re.I)
 # les commentaires ne peignent rien : on les retire (en gardant les sauts de ligne, pour les numéros) avant de chercher
 def _sans_comm(m): return '\n' * m.group(0).count('\n')
 NUE = re.sub(r'/\*.*?\*/', _sans_comm, S, flags=re.S)
@@ -59,10 +60,10 @@ lignes = NUE.split('\n')
 #   action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait) ». La même valeur a donc un SECOND rôle, NOMMÉ :
 #   le jeton `--c-orange-depart` (et sa porte `window._orangeDepart`). Il est admis à la source, et à l'écran sur ces trois points de départ seulement.
 # ⚑ v151 (Tom, C-157) : « le départ d'une action ET son libellé » — le mot du trait des pages + (`.pp-trace`) aussi (original : *-avant-v151.py).
-hors = [(i + 1, l.strip()[:90]) for i, l in enumerate(lignes) if HEX.search(l) and not re.search(r'--c-orange-maparole(-corps|-cobalt)?\s*:\s*#(FB4C0D|FF7A55|FED0C3)', l, re.I) and not re.search(r'--c-orange-depart\s*:\s*#FB4C0D|_orangeDepart|orangeDepart', l, re.I)]
-t('A · #FB4C0D et #FF7A55 n\'existent que dans le bloc des jetons', not hors, '; '.join('l.%d %s' % h for h in hors[:3]) or '')
+hors = [(i + 1, l.strip()[:90]) for i, l in enumerate(lignes) if HEX.search(l)]
+t('A · #FF7A55 et #FED0C3 n\'existent plus', not hors, '; '.join('l.%d %s' % h for h in hors[:3]) or '')
 t('A · le moteur n\'en porte aucun', not HEX.search(M), '')
-lec = re.findall(r'([^{}]{0,120})\{[^{}]*var\(--c-orange-maparole(?:-corps)?\)', NUE)
+lec = re.findall(r'([^{}]{0,120})\{[^{}]*var\(--c-orange-maparole\)', NUE)
 t('A · les jetons ne sont lus que par #murPhrase (qui pose --orange-maparole ; v146 : son jumeau `:where(…)` de la fiche sombre compris)', bool(lec) and all(re.search(r'#murPhrase(\.sur-corps(\.sur-cobalt)?)?(:where\([^)]*\))?\s*$', s.strip()) for s in lec), ' | '.join(s.strip()[-60:] for s in lec))
 lec2 = re.findall(r'([^{}]{0,120})\{[^{}]*var\(--orange-maparole\)', NUE)
 t('A · --orange-maparole n\'est lu que par « #murPhrase .mp »', bool(lec2) and all(s.strip().endswith('#murPhrase .mp') for s in lec2), ' | '.join(s.strip()[-60:] for s in lec2))
@@ -86,7 +87,7 @@ SCAN = r"""(OR)=>{ const dv=document.getElementById('device').getBoundingClientR
     const v=[cs.color,cs.webkitTextFillColor,cs.backgroundColor,cs.borderTopColor,cs.borderBottomColor,cs.borderLeftColor,cs.borderRightColor,cs.outlineColor,cs.fill,cs.stroke,cs.boxShadow,cs.textShadow,cs.backgroundImage].join(' | ');
     for(const o of OR) if(v.indexOf(o)>=0){ out.push((e.id||e.className||e.tagName).toString().slice(0,40)+' ← '+o); break; }
     if(e.tagName==='CANVAS'&&e.width>4){ try{ const d=e.getContext('2d').getImageData(0,0,e.width,e.height).data; let n=0;
-      for(let i=0;i<d.length;i+=4){ if(d[i+3]>250&&((d[i]===251&&d[i+1]===76&&d[i+2]===13)||(d[i]===255&&d[i+1]===122&&d[i+2]===85))) n++; }
+      for(let i=0;i<d.length;i+=4){ if(d[i+3]>250&&((d[i]===254&&d[i+1]===208&&d[i+2]===195)||(d[i]===255&&d[i+1]===122&&d[i+2]===85))) n++; }
       if(n>20 && !e.hasAttribute('data-depart') && !/^(onbTrait|tenirCv)$/.test(e.id||'')) out.push('canevas '+(e.id||e.className)+' : '+n+' pixels'); }catch(_){} } }   /* v146 (C-133) : le départ de la flèche, sur un canevas qui le déclare */
   return out; }"""
 ETAT = """()=>{const p=document.getElementById('murPhrase'); if(!p) return null; const m=p.querySelector('.mp'), s=getComputedStyle(p);
@@ -107,7 +108,7 @@ with sync_playwright() as p:
                 trouves += ['%s · %s' % (nom, x) for x in pg.evaluate(SCAN, list(ORANGE))]
             except Exception as ex:
                 trouves.append('%s · ERREUR %s' % (nom, str(ex)[:60]))
-        t('B · [%s] aucun nœud ni canevas ne porte #FB4C0D ni #FF7A55 (%d écrans)' % (th, len(ECRANS)), not trouves, '; '.join(trouves[:4]) + (' …(+%d)' % (len(trouves) - 4) if len(trouves) > 4 else ''))
+        t('B · [%s] aucun nœud ni canevas ne porte une variante retirée (%d écrans)' % (th, len(ECRANS)), not trouves, '; '.join(trouves[:4]) + (' …(+%d)' % (len(trouves) - 4) if len(trouves) > 4 else ''))
         # C · la phrase qui porte « Ma Parole ! », montée au doigt sur le Peaufiner d'une fiche
         pg.evaluate("()=>{ try{closeAll()}catch(e){} const PH=window._murPhrases||[]; const i=PH.findIndex(s=>s.indexOf('Ma Parole')>=0); localStorage.setItem('promi_murs', JSON.stringify({n:Math.max(0,i),t:Date.now(),der:Math.max(0,i)-1,decouvert:1})); const p=promises.filter(p=>!p.draft&&!p.req&&!p.nuee)[0]; openDetail(p.id); }"); pg.wait_for_timeout(1300)
         pg.evaluate("()=>{const x=document.querySelector('#dpDetails .dpd-tog');if(x)x.click();}"); pg.wait_for_timeout(1500)
@@ -117,8 +118,8 @@ with sync_playwright() as p:
         e = pg.evaluate(ETAT) or {}
         # ⚑ v146 (Tom, C-132) : le Peaufiner d'une fiche est SOMBRE dans les deux modes — le corps bleu d'un Promi est #0E78F2 en clair aussi :
         #   « Ma Parole ! » y prend en clair la valeur qu'il a en sombre (#FED0C3 ; #FB4C0D y faisait 1,23:1). Original : sauvegardes/redteam_maparole-avant-v146.py
-        attendu = ORANGE[2]
-        t('C · [%s] sur le Peaufiner : « Ma Parole ! » en %s' % (th, '#FED0C3 (corps bleu d\'un Promi, sombre dans les deux modes)'), bool(e.get('leve')) and e.get('mp') == attendu and e.get('mpf') == attendu, '%r · mp %s · reste %s' % ((e.get('texte') or '')[:40], e.get('mp'), e.get('reste')))
+        attendu = 'rgb(247, 240, 222)'   # v173 (D1) : la crème #F7F0DE, à cet endroit seulement
+        t('C · [%s] sur le Peaufiner : « Ma Parole ! » en %s' % (th, 'crème #F7F0DE (corps bleu d\'un Promi, D1)'), bool(e.get('leve')) and e.get('mp') == attendu and e.get('mpf') == attendu, '%r · mp %s · reste %s' % ((e.get('texte') or '')[:40], e.get('mp'), e.get('reste')))
         t('C · [%s] le reste de la phrase n\'est pas l\'orange de Ma Parole !' % th, e.get('reste') not in ORANGE, str(e.get('reste')))
         # D (v133) · dans les dix-huit phrases, l'orange ne porte que les mots décidés
         pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); faux = []
@@ -126,7 +127,7 @@ with sync_playwright() as p:
             pg.evaluate("(i)=>localStorage.setItem('promi_murs',JSON.stringify({n:i,t:Date.now(),der:i-1,decouvert:1}))", i)
             if c: pg.touchscreen.tap(*c); pg.wait_for_timeout(320)
             v = pg.evaluate("""(OR)=>{const p=document.getElementById('murPhrase'); if(!p||!p.classList.contains('leve')) return null; const out=[];
-              const w=document.createTreeWalker(p,NodeFilter.SHOW_TEXT); let n; while(n=w.nextNode()){ if(n.nodeValue&&OR.indexOf(getComputedStyle(n.parentElement).color)>=0) out.push(n.nodeValue); } return out}""", list(ORANGE))
+              const w=document.createTreeWalker(p,NodeFilter.SHOW_TEXT); let n; while(n=w.nextNode()){ if(n.nodeValue&&n.parentElement.classList.contains('mp')) out.push(n.nodeValue); } return out}""", list(ORANGE))
             pg.evaluate("()=>{window._murBaisse&&_murBaisse()}"); pg.wait_for_timeout(120)
             if v != mots: faux.append('%d → %r (décidé %r)' % (i + 1, v, mots))
         t('D · [%s] dans les dix-huit phrases, seuls les mots décidés portent l\'orange' % th, not faux, ' | '.join(faux[:3]))

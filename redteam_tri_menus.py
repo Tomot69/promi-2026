@@ -28,11 +28,9 @@ def option(pg, menu, btn, attr, val):
 with sync_playwright() as p:
     b = p.webkit.launch()
     ctx = B.contexte(b); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F)
-    pg.evaluate("()=>{ const L=promises.filter(q=>!q.draft && !q.nuee && q.status!=='tenu'); const p=L[0]; p.status='rate'; p.due=-1; if(typeof feedAdd==='function') feedAdd('added','Ton Promi « '+p.title+' » est à tenir',{pid:p.id}); saveState&&saveState(); syncAll&&syncAll(); }")
     B.tap_sel(pg, '#filBtn'); pg.wait_for_timeout(2600)
     tous = pg.evaluate(CARTES)
-    option(pg, '#fdMenu', '#fdTriBtn', 'data-fdfilt', 'atenir'); at = pg.evaluate(CARTES)
-    juge('A · Fil, « À tenir » : seules les cartes à tenir', at and all(c['etat'] == 'atenir' for c in at) and len(at) < len(tous), 'avant %d · après %s' % (len(tous), [c['etat'] for c in at]))
+    # ⚑ v173 (C-210) : le filtre « À tenir » est retiré
     option(pg, '#fdMenu', '#fdTriBtn', 'data-fdfilt', 'nuees'); nu = pg.evaluate(CARTES)
     juge('A · Fil, « Cercles » : seules les cartes d\'un Cercle (aucune ici : la Toile du banc n\'a pas d\'événement de Cercle)', all(c['nuee'] or c['etat'] == 'nuee' for c in nu) and len(nu) < len(tous), [(c['etat'], c['nuee']) for c in nu])
     option(pg, '#fdMenu', '#fdTriBtn', 'data-fdfilt', 'tous'); t2 = pg.evaluate(CARTES)
@@ -48,7 +46,7 @@ with sync_playwright() as p:
     okD = all(not v['point'] and v['barres'] and all(x and x[0] > 2 * x[1] and x[1] > 0 and x[2] == 'visible' for x in v['barres']) and v['autres'] == 0 for v in D.values())
     juge('D · le repère de l\'option choisie : une barrette, aucun « • », seulement sur l\'option choisie', okD, D)
     C = pg.evaluate("()=>({fdSort:!!document.getElementById('fdSort'), quad:!!document.querySelector('#ixMenu [data-cols]') || /QUADRILLAGE/.test(document.getElementById('ixMenu').textContent), manq:/Manqu/.test(document.getElementById('ixMenu').textContent+document.getElementById('fdMenu').textContent), atenir:[/À tenir/.test(document.getElementById('ixMenu').textContent), /À tenir/.test(document.getElementById('fdMenu').textContent)]})")
-    juge('C · #fdSort retiré, plus de QUADRILLAGE, plus de « Manquées », « À tenir » dans les deux menus', not C['fdSort'] and not C['quad'] and not C['manq'] and all(C['atenir']), C)
+    juge('C · #fdSort retiré, plus de QUADRILLAGE, plus de « Manquées » ; v173 (C-210) : plus de « À tenir » dans les deux menus', not C['fdSort'] and not C['quad'] and not C['manq'] and not any(C['atenir']), C)
     er = [x for x in pg.erreurs if 'version.json' not in x]
     if er: juge('aucune erreur de page', False, er[:2])
     ctx.close(); b.close()

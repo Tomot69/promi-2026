@@ -43,7 +43,7 @@ Forme d'une règle :
 ### A2 · Rien ne note, rien ne classe
 
 **R-007 · Aucune carte, aucun corps, aucun fond n'est peint d'une couleur d'état : l'état vit dans la ligne.**
-*Vérifier* : sur chaque carte d'Index, bandeau du Fil et fiche, la couleur de fond rendue n'est aucune de `#DD4D23`, `#291547`, `#00341A`. · *Décision* : Tom, direction Horizon ; `CLAUDE.md` §7 (« aucune carte n'est peinte d'une couleur d'état », contrat réécrit le 18 août 2026). · *Juge* : `redteam_ecrans.py`, `redteam_champ.py`
+*Vérifier* : sur chaque carte d'Index, bandeau du Fil et fiche, la couleur de fond rendue n'est aucune de `#291547`, `#00341A`. · *Décision* : Tom, direction Horizon ; `CLAUDE.md` §7 (« aucune carte n'est peinte d'une couleur d'état », contrat réécrit le 18 août 2026). · *Juge* : `redteam_ecrans.py`, `redteam_champ.py`
 
 **R-008 · Dans une liste et sur la Toile, une dalle n'est jamais teintée par sa nature : ce serait un classement par nature.**
 *Vérifier* : Index, Fil, Toile, encart d'un Cercle — la couleur d'une dalle vient du monde et de la palette, pas de `promi/chiche/cercle` (hors Ingénu, R-037). · *Décision* : Tom, 18 août 2026 (Q30) : « exactement ce que le produit refuse » ; `CLAUDE.md` §4. · *Juge* : `redteam_decoupe.py` (famille H), `redteam_reperage.py`
@@ -55,7 +55,7 @@ Forme d'une règle :
 *Vérifier* : aucun élément graphique dont le nombre, la longueur ou la taille augmente à chaque parole tenue (l'option D, « un trait par parole tenue » autour de la Pelote, est exclue définitivement et ne se repropose pas). · *Décision* : Tom, 2 oct. 2026 (v118, Q368). · *Juge* : — · ⚠ Voir la tension T-1 en fin de section.
 
 **R-011 · Aucun chiffre, aucun mot de valeur, aucun agrégat n'est attaché à une personne.**
-*Vérifier* : sous un visage ou un Noyau, ni pourcentage, ni taux, ni mot d'harmonie (« rayonnante », « naissante ») ; rien de tel sur la fiche d'une personne. · *Décision* : règles anti-notation 1 et 4 (`AUDIT-AURA-CERCLE.md` §C) ; `QUESTIONS.md` l.5509-5516 (Tom : la fiche de la personne). · *Juge* : `redteam_ecrans.py` (« seuls les trois chiffres permis », v95)
+*Vérifier* : sous un visage ou un Noyau, ni pourcentage, ni taux, ni mot d'harmonie (« rayonnante », « naissante ») ; rien de tel sur la fiche d'une personne. · *Décision* : règles anti-notation 1 et 4 (`AUDIT-AURA-CERCLE.md` §C) ; `QUESTIONS.md` l.5509-5516 (Tom : la fiche de la personne). · *Juge* : `redteam_ecrans.py` (« seuls les chiffres permis », v95 ; deux depuis v173)
 
 **R-012 · Aucun tri par valeur, aucun superlatif.**
 *Vérifier* : aucune liste ordonnée par taux de parole tenue ; aucune chaîne « meilleur(e) ». · *Décision* : règle anti-notation 5 (`AUDIT-AURA-CERCLE.md` §C). · *Juge* : — · ⚠ `RENOMMAGE-LEXIQUE.md` §4 garde « Ton meilleur Cercle » parmi les chaînes accordées en v106 : à vérifier à l'écran (voir T-2).
@@ -66,8 +66,8 @@ Forme d'une règle :
 **R-014 · Des anneaux, jamais une liste de barres.**
 *Vérifier* : l'Aura ne porte aucune rangée « nom + barre + taux ». · *Décision* : règle anti-notation 7. · *Juge* : —
 
-**R-015 · L'Aura ne porte que trois chiffres — tenues, en cours, à tenir — sous la légende, et aucun pourcentage.**
-*Vérifier* : dans `#auraScreen`, les seuls nombres rendus sont ces trois-là (PromiLate 29, encre de la page) ; aucun « % » ; masqués dans l'Aura vide. · *Décision* : v95 (29 sept. 2026), `ETAT-DES-LIEUX.md:9768-9773`. · *Juge* : `redteam_ecrans.py`, `releve-aura.py` · ⚠ La règle anti-notation 2 dit « un seul chiffre, le tien, global » : voir T-1.
+**R-015 · L'Aura ne porte que deux chiffres — tenues, en cours — sous la légende, et aucun pourcentage.**
+*Vérifier* : dans `#auraScreen`, les seuls nombres rendus sont ces deux-là (PromiLate 29, encre de la page) ; aucun « % » ; masqués dans l'Aura vide. · *Décision* : v95 (29 sept. 2026), `ETAT-DES-LIEUX.md:9768-9773` ; Tom, 30 oct. 2026 (v173, C-210). · *Juge* : `redteam_ecrans.py`, `releve-aura.py` · ⚠ La règle anti-notation 2 dit « un seul chiffre, le tien, global » : voir T-1.
 
 **R-016 · Rien ne recule jamais : aucune grandeur dessinée ne décroît parce que le temps passe.**
 *Vérifier* : aucune distance, aucun rayon, aucune taille liée à une personne ne diminue sans action de l'utilisateur. · *Décision* : 9 sept. 2026, `AUDIT-PELOTE.md` l.60-68 (« un compte à rebours dessiné en rond et pointé vers une personne »). · *Juge* : —
@@ -126,7 +126,7 @@ Forme d'une règle :
 
 ### Tensions à trancher (elles ne sont pas des règles)
 
-- **T-1 · ⚠ TROU.** La règle anti-notation 2 (« un seul chiffre, le tien, global ») et `DECISIONS.md` A1 (« pas de pourcentage, pas de “3 sur 5 tenus” ») ne s'accordent pas avec l'Aura d'aujourd'hui, qui porte trois chiffres (v95), ni avec la liste « Ce que tu as tenu », qui montre toutes les paroles tenues et s'allonge (v131). Aucune décision ne dit laquelle prime.
+- **T-1 · ⚠ TROU.** La règle anti-notation 2 (« un seul chiffre, le tien, global ») et `DECISIONS.md` A1 (« pas de pourcentage, pas de “3 sur 5 tenus” ») ne s'accordent pas avec l'Aura d'aujourd'hui, qui porte deux chiffres (trois de v95 à v172), ni avec la liste « Ce que tu as tenu », qui montre toutes les paroles tenues et s'allonge (v131). Aucune décision ne dit laquelle prime.
 - **T-2 · ⚠ TROU.** « Ton meilleur Cercle » figure dans le relevé v106 ; la règle 5 l'interdit. Non vérifié à l'écran.
 - **T-3 · ⚠ TROU.** Le Fil permet de « REPORTER » (ajout validé, 20 août) : sa compatibilité avec « rien ne reproche » n'est écrite nulle part.
 
@@ -166,8 +166,8 @@ Forme d'une règle :
 **R-042 · Jamais de kaki.**
 *Vérifier* : aucune dalle ni matière vide produite par l'app n'a une couleur en OKLCH h 78-140°, C 0,015-0,10, L 0,20-0,80 — source, rendu des vingt mondes en clair et en sombre. Seule exception : la couleur mère choisie dans la jauge. · *Décision* : Tom, 30 sept. 2026 (v114), bornes v115. · *Juge* : `redteam_kaki.py` (⚠ rouge à la naissance : 34 couleurs coupables recensées, Q360 — « on ne touche à aucune palette »)
 
-**R-043 · Un anneau ne porte que trois arcs : à tenir, en cours, tenu.**
-*Vérifier* : au plus trois arcs, dans `#DD4D23`, `#291547`, `#00341A`, sans opacité ; les deux sens (ce que tu tiens, ce qu'on te tient) sont concaténés avant le calcul des parts, pondérés par le nombre de paroles. · *Décision* : Tom, 22 sept. 2026. · *Juge* : `redteam_decisions.py` (anneau)
+**R-043 · Un anneau ne porte que deux arcs : en cours, tenu.**
+*Vérifier* : au plus deux arcs, dans `#291547`, `#00341A`, sans opacité ; les deux sens (ce que tu tiens, ce qu'on te tient) sont concaténés avant le calcul des parts, pondérés par le nombre de paroles. · *Décision* : Tom, 22 sept. 2026 ; deux arcs : v173 (C-210). · *Juge* : `redteam_decisions.py` (anneau), `redteam_deux_etats.py`
 
 **R-044 · Les jours d'un anneau valent 3 px d'arc, tous égaux, le premier centré sur midi.**
 *Vérifier* : n arcs, n jours ; jour = 3 / r radians par anneau ; aucun fondu entre segments ; un état seul laisse 0,1° ouvert. · *Décision* : Tom, 23 sept. 2026. · *Juge* : —
@@ -175,11 +175,11 @@ Forme d'une règle :
 **R-045 · L'amande `#8FE08F` ne peint que la célébration et la mention « TENU(E) ».**
 *Vérifier* : balayage de tous les écrans ouverts un à un, bornés à l'appareil : aucune surface, aucun arc, aucun autre texte en amande — hors le tenu posé sur la terre `#2B1020`. · *Décision* : Tom, 22 et 23 sept. 2026. · *Juge* : `redteam_decisions.py`
 
-**R-046 · `#DD4D23` est une couleur d'état et ne sert à rien d'autre.**
-*Vérifier* : aucun bouton, aucune alerte, aucune action de suppression en `#DD4D23` (« SUPPRIMER CE PROMI » : crème en sombre, encre en clair). · *Décision* : Tom, 5 oct. 2026 (v132, C-053). · *Juge* : `redteam_decisions.py` · ⚠ C-015 reste ouvert pour les Réglages.
+**R-046 · `#FB4C0D` est le seul orange de l'app.**
+*Vérifier* : ni `#DD4D23`, ni `#FF7A55`, ni `#FED0C3`, ni aucune dérivée ; `#FB4C0D` marque le départ d'une action et ce qui attend un geste (pastille du Fil, « demande », « UNE PAROLE T'ATTEND »). Hors de cette règle : `#F5AC9E`, teinte de la nature Chiche (D3), la rampe de la Pelote (D4), les palettes du Studio (C-204). « SUPPRIMER CE PROMI » reste crème en sombre, encre en clair. · *Décision* : Tom, 30 oct. 2026 (C-210, D6) ; remplace « `#DD4D23` est une couleur d'état » (v132, C-053). · *Juge* : `redteam_deux_etats.py`, `redteam_decisions.py`
 
-**R-047 · L'orange de « Ma Parole ! » n'existe que dans les mots des murs.**
-*Vérifier* : `#FB4C0D`, `#FF7A55`, `#FED0C3` n'apparaissent nulle part ailleurs, ni dans la source ni à l'écran. · *Décision* : Tom, v122. · *Juge* : `redteam_maparole.py`
+**R-047 · « Ma Parole ! » s'écrit en `#FB4C0D` dans les murs, sauf sur le Peaufiner d'un Promi.**
+*Vérifier* : `#FB4C0D` exact partout, corps Chiche et Cercle compris ; crème `#F7F0DE` sur le Peaufiner d'un Promi (fond bleu), à cet endroit seulement. · *Décision* : Tom, v122 ; 30 oct. 2026 (C-210, D1). · *Juge* : `redteam_maparole.py`
 
 **R-048 · Une marque suit ce qui est peint sous elle, pas le thème.**
 *Vérifier* : sur la terre d'une fiche tenue, texte crème et tenu en amande dans les deux thèmes ; sur un champ pastel, texte à l'encre `#201908`. · *Décision* : Tom, 17 et 23 sept. 2026. · *Juge* : `redteam_decisions.py`
@@ -330,7 +330,7 @@ Forme d'une règle :
 | **Index** | la liste des Promi | `#indexSheet` | |
 | **Aura** | l'écran de progression | `#auraScreen` | ex-« Karma » |
 | **Pelote** | la boule de l'Aura | `_aura` | « sphère » et « Orbite » sont morts |
-| **Noyau** | un anneau à trois arcs | `.kring`, `.au-nb` | |
+| **Noyau** | un anneau à deux arcs | `.kring`, `.au-nb` | |
 | **Studio** | le choix du monde et de la palette | `#studioScreen` | |
 | **Peaufiner** | le tiroir de réglages d'une fiche | `.s2-*` | |
 | **Folio** | ce qu'on partage de ses dalles | — | « Mon Folio » |
@@ -387,7 +387,7 @@ Objet de la vérification, sauf mention : **toute chaîne affichée ou lue par V
 
 1. **⚠ TROU : la grille anti-coercition n'est écrite nulle part.** Elle n'est que citée (« la grille l'interdit », v118). La section A est une reconstitution.
 2. **⚠ TROU : les huit règles anti-notation** n'ont pas de texte d'origine ni de date de décision dans les sources lues ; seul le tableau d'audit du 3 sept. 2026 les énonce. La règle 8 (« visible de toi seul ») est contredite par le partage de la Pelote (v114-v124) : non tranché.
-3. **⚠ TROU : T-1** — « un seul chiffre » et « pas de pourcentage » face aux trois chiffres de l'Aura (v95) et à la liste « Ce que tu as tenu » qui s'allonge (v131).
+3. **⚠ TROU : T-1** — « un seul chiffre » et « pas de pourcentage » face aux deux chiffres de l'Aura (trois de v95 à v172) et à la liste « Ce que tu as tenu » qui s'allonge (v131).
 4. **⚠ TROU : T-2** — « Ton meilleur Cercle » (relevé v106) face à « aucun superlatif ».
 5. **⚠ TROU : T-3** — « REPORTER » dans le Fil.
 6. **⚠ TROU : R-005** (« on ne défait pas une parole tenue ») n'est écrite que dans une note du moodboard.

@@ -1126,7 +1126,7 @@
   },
   "trait.tenir": {
    "fr": "trace pour tenir",
-   "ou": "fiche à tenir / en cours · au-dessus du trait",
+   "ou": "fiche en cours · au-dessus du trait",
    "source": "app.html:14491 (lot-S1B-geo)",
    "voiceover": "Trace pour tenir",
    "casse": "capitales à l’écran (phrases du trait : PromiLate 15 px — CLAUDE.md v124) ; la source est en bas de casse"
@@ -1167,14 +1167,15 @@
    "ou": "page + · trait signé, parole en l’air",
    "source": "app.html:17865 (lot-S3-page-plus)"
   },
-  "trait.signe.aTenir": {
-   "fr": "À TENIR · {ÉCHÉANCE}",
+  "trait.signe.enCours": {
+   "fr": "EN COURS · {ÉCHÉANCE}",
    "ou": "page + · trait signé, avec échéance",
    "source": "app.html:17866 (lot-S3-page-plus)",
    "variantes": {
-    "exemple": "À TENIR · DEMAIN"
+    "exemple": "EN COURS · DEMAIN"
    },
-   "gabarit": "À TENIR · {échéance en capitales}"
+   "gabarit": "EN COURS · {échéance en capitales}",
+   "etat": "v173 (C-210, Q595) : une parole plantée entre « en cours »."
   },
   "trait.chicheLance": {
    "fr": "{personne} tracera sa part si elle ose",
@@ -1224,10 +1225,10 @@
    "source": "app.html:12344 (lot7-fiche-js)",
    "variantes": {
     "tenue": "TENUE",
-    "à tenir": "À TENIR"
+    "date passée": "EN COURS · 12 OCT."
    },
    "gabarit": "{ÉTAT} · {SUITE}",
-   "note": "la suite est `leJour` de la parole s’il existe (ex. « DEPUIS LE 4 AVRIL »), sinon, pour « à tenir », le mot du temps (voir temps.*) ; tout en capitales"
+   "note": "la suite est `leJour` de la parole s’il existe (ex. « DEPUIS LE 4 AVRIL »), sinon, à date passée, la date (`_datePassee`, C-210, D5 : à l’encre du mode, sans couleur, sans « c’était ») ; tout en capitales"
   },
   "fiche.etat.chiche": {
    "fr": "LANCÉ",
@@ -1236,10 +1237,10 @@
    "variantes": {
     "tenu seul": "TENUE",
     "tenu à deux": "TENU À DEUX",
-    "relevé, à tenir": "À RELEVER"
+    "reçu, pas encore relevé": "À RELEVER"
    },
    "gabarit": "{ÉTAT} · {SUITE}",
-   "note": "exemples des cadres : « TENU À DEUX · 3 AOÛT », « LANCÉ · PAS ENCORE RELEVÉ »"
+   "note": "exemples des cadres : « TENU À DEUX · 3 AOÛT », « LANCÉ · PAS ENCORE RELEVÉ » ; « À RELEVER » : `_chicheARelever`, Chiche reçu (`from` ≠ moi), `chicheEtat` ≠ 'releve', jamais une date (C-210, D2)"
   },
   "fiche.etat.exemplesSuite": {
    "fr": "depuis le 4 avril",
@@ -1335,7 +1336,7 @@
    "liste": [
     "un jour",
     "tenue",
-    "à tenir",
+    "{jour} {mois abrégé}",
     "aujourd'hui",
     "demain",
     "dimanche",
@@ -1347,7 +1348,7 @@
     "samedi",
     "{jour} {mois}"
    ],
-   "regle": "tenue → « tenue » ; échéance dépassée → « à tenir » ; aucune date → « un jour » ; 0 j → « aujourd'hui » ; 1 j → « demain » ; 2 à 7 j → le jour de la semaine ; 8 à 60 j → « {jour} {mois} » ; au-delà → « un jour »",
+   "regle": "tenue → « tenue » ; échéance dépassée → la date, « 12 oct. », sans couleur (`_datePassee`, C-210, D5) ; aucune date → « un jour » ; 0 j → « aujourd'hui » ; 1 j → « demain » ; 2 à 7 j → le jour de la semaine ; 8 à 60 j → « {jour} {mois} » ; au-delà → « un jour »",
    "note": "« aujourd'hui » porte une apostrophe droite dans la source"
   },
   "temps.filDefaut": {
@@ -1547,11 +1548,10 @@
    "source": "app.html:5755 (script principal)"
   },
   "cercle.fil.etats": {
-   "fr": "à tenir",
+   "fr": "en cours",
    "ou": "fiche d’un Cercle · fil des paroles, mot d’état de chaque carte",
    "source": "app.html:3813 (script principal)",
    "liste": [
-    "à tenir",
     "en cours",
     "TENU",
     "CHICHE LANCÉ",
@@ -1690,7 +1690,6 @@
    "source": "app.html:2642 (HTML statique)",
    "liste": [
     "Récents",
-    "À tenir en premier",
     "Par personne",
     "Par Cercle"
    ]
@@ -1702,13 +1701,12 @@
    "liste": [
     "Tout",
     "En suspens",
-    "Manquées",
     "Promi",
     "Cercles",
     "Gardés de côté",
     "Demandes"
    ],
-   "note": "⚠ « Manquées » et « Demandes » : mots d’août, à valider"
+   "note": "⚠ « Demandes » : mot d’août, à valider"
   },
   "index.tri.quadrillage": {
    "fr": "QUADRILLAGE",
@@ -1754,11 +1752,9 @@
     "tenue": "TENUE",
     "Chiche tenu à deux": "TENU À DEUX",
     "Chiche lancé": "LANCÉ",
-    "à tenir": "À TENIR",
-    "à tenir, demain": "À TENIR · DEMAIN",
-    "à tenir, dans n jours": "À TENIR · {n} JOURS"
+    "date passée": "EN COURS · 12 OCT."
    },
-   "gabarit": "À TENIR · {n} JOURS"
+   "gabarit": "EN COURS · {jour} {MOIS ABRÉGÉ}"
   },
   "carte.cercle.etat": {
    "fr": "{n} PROMI · {t} TENUS",
@@ -1808,7 +1804,6 @@
     "Ce qui attend un geste",
     "Paroles tenues",
     "Demandes",
-    "À tenir",
     "Cercles",
     "Mes Promi",
     "Mes proches"
@@ -1827,7 +1822,7 @@
     "✧ bravo",
     "✦ bravo"
    ],
-   "regle": "parole reçue en attente ou à tenir : TENIR · REPORTER ; Chiche reçu : RELEVER ; invitation à un Cercle : REJOINDRE ; l’autre a tracé sa moitié : TRACER ; événement tenu / planté / rejoint : « ✧ bravo » (devient « ✦ bravo » une fois touché)"
+   "regle": "parole reçue en attente, ou en cours à date passée : TRACER · REPORTER ; Chiche reçu : RELEVER ; invitation à un Cercle : REJOINDRE ; l’autre a tracé sa moitié : TRACER ; événement tenu / planté / rejoint : « ✧ bravo » (devient « ✦ bravo » une fois touché)"
   },
   "fil.reporter": {
    "fr": "Reporter…",
@@ -1865,7 +1860,7 @@
     "Tu as reporté : « {titre} » (+1 j)",
     "Tu as relevé le chiche de {personne} : « {titre} »",
     "« {titre} » reportée de {durée}",
-    "« {titre} » est à tenir",
+    "« {titre} » : {date}",
     "« {titre} » est promis",
     "{personne} te promet : « {titre} »",
     "{personne} a planté : « {titre} »",
@@ -1876,7 +1871,8 @@
     "à {personne} : « {titre} »",
     "à moi : « {titre} »"
    ],
-   "note": "relevés aux appels de `feedAdd` (script principal, lot-JEU-PLANCHE, lot-V89) ; à l’écran, le bandeau sépare l’événement (avant « : ») du titre (entre « »). Variantes de repli : « Quelqu'un », « quelqu’un », « un Promi », « un chiche »"
+   "note": "relevés aux appels de `feedAdd` (script principal, lot-JEU-PLANCHE, lot-V89) ; à l’écran, le bandeau sépare l’événement (avant « : ») du titre (entre « »). Variantes de repli : « Quelqu'un », « quelqu’un », « un Promi », « un chiche »",
+   "note_v173": "« {titre} » : {date} n’existe que par la migration d’une ancienne entrée « … est à tenir » (`_migreEtats`, C-210) ; rien ne l’écrit plus."
   },
   "fil.serie": {
    "fr": "Belle série — partage ton Noyau",
@@ -1917,12 +1913,11 @@
   },
   "aura.legende": {
    "fr": "tenues",
-   "ou": "Aura · légende des trois états, sous les Noyaux (un chiffre sous chacun)",
+   "ou": "Aura · légende des deux états, sous les Noyaux (un chiffre sous chacun)",
    "source": "app.html:29404 (lot-AURA-PELOTE)",
    "liste": [
     "tenues",
-    "en cours",
-    "à tenir"
+    "en cours"
    ]
   },
   "aura.noyau.toi": {
@@ -1969,8 +1964,7 @@
    "source": "app.html:33256 (lot-HUIT)",
    "liste": [
     "TENUES",
-    "EN COURS",
-    "À TENIR"
+    "EN COURS"
    ]
   },
   "aura.aide.badgeGratuit": {
@@ -2000,13 +1994,12 @@
     },
     {
      "titre": "Les Noyaux",
-     "texte": "Toi, puis chaque personne avec qui tu échanges des paroles. L’anneau dit où vous en êtes : tenu, en cours, à tenir.",
+     "texte": "Toi, puis chaque personne avec qui tu échanges des paroles. L’anneau dit où vous en êtes : tenu, en cours.",
      "section": "En gratuit",
      "gras": [
       "Toi",
       "tenu",
-      "en cours",
-      "à tenir"
+      "en cours"
      ]
     },
     {
@@ -2069,8 +2062,7 @@
    "source": "app.html:31076 (lot-PERSONNE-AVEC)",
    "liste": [
     "en cours",
-    "tenues",
-    "à tenir"
+    "tenues"
    ],
    "etat": "à confirmer (peut-être morte)"
   },
@@ -3185,7 +3177,7 @@
     }
    ],
    "regle": "un compteur GLOBAL (toutes zones, par personne) : le 1er mur touché montre la phrase 1, le 2e la 2… jusqu’à la 18 ; ensuite une phrase au hasard, jamais la même deux fois de suite ; après 14 jours sans toucher un mur, le compteur repart à 1. La phrase paraît au centre du mur, sur le flou, seule, 34 px réduite jusqu’à tenir en trois lignes ; elle reste 1,4 s + 60 ms par caractère (entre 3 et 5,5 s) ; la toute première fois l’offre s’ouvre à la fin de la lecture ; pendant qu’elle est là, un toucher n’importe où ouvre l’offre. Abonné : aucun mur, aucune phrase.",
-   "note": "dans chaque phrase, SEULS les mots de `orange` prennent l’orange de Ma Parole ! (#FB4C0D ; sur les corps sombres de Peaufiner #FF7A55, sur le corps d’un Promi sombre une valeur dérivée) ; les espaces avant « ! » et « ? » sont insécables (U+00A0) ; apostrophes typographiques ; la phrase 5 finit par « … »"
+   "note": "dans chaque phrase, SEULS les mots de `orange` prennent l’orange de Ma Parole ! (#FB4C0D exact ; crème #F7F0DE sur le Peaufiner d’un Promi, à cet endroit seulement, C-210, D1) ; les espaces avant « ! » et « ? » sont insécables (U+00A0) ; apostrophes typographiques ; la phrase 5 finit par « … »"
   },
   "dessin.surface.vo": {
    "fr": "La surface de dessin",

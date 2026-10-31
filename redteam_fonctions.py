@@ -92,7 +92,7 @@ with sync_playwright() as p:
     # section précédente vient d'en planter une, et le premier « rate » venu pouvait être
     # d'une nature qui ne porte pas le geste.
     pid = pg.evaluate("""()=>{const p=promises.filter(x=>!x.draft&&!x.req&&!x.chiche)[0];
-      if(p){p.status='rate';} return p?p.id:null;}""")
+      if(p){p.status='encours'; p.due=-1;} return p?p.id:null;}""")
     # la fiche doit être REDESSINÉE après qu'on a changé le statut : `cur` porte l'ancien.
     pg.evaluate("(i)=>{if(window.closeAll)closeAll();openDetail(i);}", pid); pg.wait_for_timeout(1200)
     pg.evaluate("()=>{if(typeof renderDetail==='function')renderDetail();}"); pg.wait_for_timeout(900)
@@ -112,6 +112,8 @@ with sync_playwright() as p:
     #   fiche, et RIEN dans le Fil n'écrit « tenu ». Même intention (le geste agit sur un bandeau DÉSIGNÉ, l'état lu avant et après).
     #   Version d'avant : sauvegardes/redteam_fonctions-avant-v163b.py
     raz()
+    # ⚑ v173 (C-210) : TRACER · REPORTER sont portés par une parole en cours dont la date est passée
+    pg.evaluate("""()=>{ const ids=new Set((typeof FEED!=='undefined'?FEED:[]).map(f=>f.pid)); const p=promises.filter(x=>ids.has(x.id)&&!x.draft&&!x.req&&!x.chiche&&x.status==='encours')[0]; if(p){ p.due=-1; delete p.ech; } if(typeof buildFeed==='function') buildFeed(); }""")
     pg.evaluate("()=>{setView('fil');}"); pg.wait_for_timeout(1900)
 
     t('le Fil au repos est celui du cadre 76 — aucune rangée',
@@ -120,7 +122,7 @@ with sync_playwright() as p:
       '%s rangée(s) au repos' % pg.evaluate("()=>document.querySelectorAll('#feedList .s4-actes').length"))
 
     cible = pg.evaluate("""()=>{const C=window._filComp||[];
-      for(const F of C){ if(!F.actes.some(a=>a.quoi==='tracer')) continue;
+      for(const F of C){ if(!F.actes.some(a=>a.quoi==='tracer')||!F.actes.some(a=>a.quoi==='post')) continue;   /* v173 (C-210) : une parole dont la date est passée */
         const p=promises.find(q=>q.id===F.pid); if(!p||p.draft||p.status==='tenu') continue;
         return {i:F.rang, pid:F.pid, titre:p.title, statut:p.status||''}; }
       return null;}""")

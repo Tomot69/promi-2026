@@ -98,7 +98,7 @@ def main():
     w('**Les règles qui font lire ces couleurs** (décisions en vigueur) :')
     w('- **Le champ dit la nature, la ligne dit l\'état.** Champ : Promi `#82AEF8` · Chiche `#FFB8D2` · Cercle `#C9A8F5` '
       '(le lilas est le CHAMP d\'un Cercle, le violet `#291547` est ce qu\'on pose dessus). Un champ blanc n\'existe jamais.')
-    w('- **Trois états, trois arcs, jamais plus** : à tenir `#DD4D23` · en cours `#291547` · tenu `#00341A`. Un état suit '
+    w('- **Deux états, deux arcs, jamais plus (v173, C-210)** : en cours `#291547` · tenu `#00341A` ; `#FB4C0D` est le seul orange, il marque ce qui attend un geste. Un état suit '
       'CE QUI EST PEINT SOUS LUI : sur la terre `#2B1020` d\'une fiche tenue, le tenu passe à l\'amande `#8FE08F` ; sur un fond clair il reste `#00341A`.')
     w('- **L\'amande `#8FE08F`** ne peint que la célébration (la seconde dalle qui apparaît, se décale, disparaît) et la mention « TENU(E) ».')
     w('- **Tout suit le Studio (monde et palette), sauf l\'Aura** (v34) : la Pelote et « Ce que tu as tenu » gardent le monde de plantation. '

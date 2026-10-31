@@ -7,7 +7,7 @@ from playwright.sync_api import sync_playwright
 #   fonction d'accent, pastilles et états »). La RÈGLE ne bouge pas — « le % porte la double
 #   encre terracotta » ; c'est la VALEUR que le juge reconnaît qui change.
 #   Version d'avant : sauvegardes/redteam_toile-avant-PALETTE-16sept.py
-TERRACOTTA = '#DD4D23'      # était '#F07A2E'
+TERRACOTTA = '#FB4C0D'      # ⚑ v173 (C-210, D6) : le seul orange ; était '#DD4D23', '#F07A2E'
 import os as _os
 _ICI = _os.path.dirname(_os.path.abspath(__file__))
 def _url():

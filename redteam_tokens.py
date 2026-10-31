@@ -49,7 +49,6 @@ DECIDE = {
                                #   « Les trois natures sont des pastels : la Nuée ne peut pas être
                                #    la seule avec un champ sombre. » (Tom)
     # les états — « la ligne dit l'état »
-    'a-tenir'   : '#DD4D23',   # inchangé depuis le 16 septembre
     'tenu'      : '#00341A',   # v7, « champ plein — vert profond »
     'amande'    : '#8FE08F',   # v7, « mention TENU et animation de passage » — et le tenu du mode SOMBRE
     'en-cours'  : '#291547',   # v7, « champ plein — violet Promi, retenu »
@@ -104,7 +103,6 @@ ENCRES = {
     #   Version d'avant : sauvegardes/redteam_tokens-avant-v8d.py
     '--c-menthe67-txt'   : ('#00341A', '#00341A'),
     '--c-mauve63-txt'    : ('#291547', '#291547'),
-    '--c-orange53-txt'   : ('#DD4D23', '#DD4D23'),
 }
 # les six faces que le jeu annonce
 FACES_ATTENDUES = {('gilbert', 700), ('atkinson', 400), ('atkinson', 500), ('atkinson', 700)}
@@ -132,7 +130,6 @@ def controles():
     cas = [('promi', roles['promi']['clair']),
            ('chiche', roles['chiche']['clair']),
            ('nuee', roles['nuee']['clair']),
-           ('a-tenir', roles['a-tenir']['clair']),
            ('tenu', roles['tenu']['clair']),
            ('en-cours', roles['en-cours']['clair']),
            ('fond-clair', roles['fond']['clair']),

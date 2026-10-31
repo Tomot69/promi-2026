@@ -8913,3 +8913,7 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   vit encore à deux endroits : la hauteur minimale du fil d'un Cercle (`hD`, `#dpMain`) et deux cotes du dessin (`lot-V132-DESSIN`, `sc`, `sc2`). À 0,79 elles sortent
   réduites. Proposition : un lot à part, la même correction (`_echDp`), A1 sur la fiche d'un Cercle et le mode dessin aux deux échelles.
 - **Q593 — À REGARDER (C-210, étude, rien changé)** : sur le Peaufiner d'un Cercle, toucher un trait payant (`.pc-mur`, 60 pt de large) écrase la phrase du mur sur une colonne d'un mot par ligne, qui déborde du rail. v172 ne touche pas aux murs, mais ce cas n'a pas été rejoué sur v171 ; la phrase devrait se poser sur le panneau, comme au Studio (C-092). À traiter dans un lot à part, après les testeurs.
+
+- **Q594 — À REGARDER (C-210, v173b, choix du chef de lot)** : l'étude écrivait « EN COURS · DANS 2 JOURS » ; une parole en cours à date future reste « EN COURS » seul, comme en v172 (le lot garde les fiches en cours au pixel) ; seule la date passée s'ajoute (« EN COURS · 12 OCT. »). Si Tom veut le mot du temps sur toute parole en cours : une ligne à changer.
+
+- **Q595 — À VALIDER (C-210, v173b)** : l'événement du Fil « RELEVÉ · À TENIR À DEUX » (jeu de démonstration, cadre 76) devient « RELEVÉ · À DEUX » : mot le plus sobre, faute de mieux. Le mot après signature de la page + « À TENIR · <jour> » devient « EN COURS · <jour> ».

@@ -13,7 +13,8 @@
    "les décisions du 6 oct. 2026 (lot v134) priment sur ce que CLAUDE.md écrit encore"
   ],
   "lecture": "Chaque entrée porte `valeur` (ou `clair`/`sombre`), `decision` (citation courte, date, lot) et `source` (fichier:ligne ou bloc). `null` dans `decision` = aucune décision de Tom retrouvée (voir `trous`).",
-  "cleInterne": "Le Cercle s'appelle `nuee` dans les clés ; l'offre « Ma Parole ! » s'appelle `cercle`/`isPremium` (ETAT §1)."
+  "cleInterne": "Le Cercle s'appelle `nuee` dans les clés ; l'offre « Ma Parole ! » s'appelle `cercle`/`isPremium` (ETAT §1).",
+  "reprise": "v173 (C-210, Tom, 30 oct. 2026) : deux états au lieu de trois, un seul orange. L'état « à tenir » et ses jetons sont retirés de ce document ; ce qui reste nommé l'est comme historique."
  },
  "couleurs": {
   "natures": {
@@ -44,12 +45,6 @@
    }
   },
   "etats": {
-   "aTenir": {
-    "valeur": "#DD4D23",
-    "note": "« À éviter pour du texte » (Δlum 42 sur la crème, 43 sur le brun — au seuil)",
-    "decision": "Tom, 16 sept. 2026 : « l'orange #F07A2E → #DD4D23 » ; Q262 (22 sept.) : un état a UNE valeur, « une fois pour toutes » ; v132 (C-053) : « #DD4D23 est une couleur d'état et ne sert à rien d'autre »",
-    "source": "CLAUDE.md §3 · redteam_decisions.py:17"
-   },
    "enCours": {
     "valeur": "#291547",
     "decision": "Tom, 20 sept. 2026 (v7) : « en cours #291547 » ; Q262 (22 sept.)",
@@ -75,12 +70,11 @@
    "libellesEtatEnSombre": {
     "valeur": "#F7F0DE",
     "role": "à-qui, échéance, « trace pour tenir », libellés d'état des cartes de l'Index, du Fil, d'une personne — en thème sombre",
-    "decision": "v16 (Q290) : les textes d'état sur fond sombre passent crème — « à tenir » compris ; v122 (Q374) : posée à la source dès la première image",
+    "decision": "v16 (Q290) : les textes d'état sur fond sombre passent crème — « à tenir » compris (état retiré en v173, C-210) ; v122 (Q374) : posée à la source dès la première image",
     "source": "redteam_decisions.py:46,60-61 · CLAUDE.md bloc v122"
    },
    "libellesEtatEnClair": {
     "valeur": {
-     "aTenir": "#DD4D23",
      "enCours": "#291547",
      "chicheLance": "#291547"
     },
@@ -97,7 +91,16 @@
     ],
     "decision": "Q262 (22 sept. 2026) : une valeur par état dans les deux thèmes ; « le jaune sort […] il ne doit revenir nulle part » (Tom, 21 sept.)",
     "source": "PROMI-TOKENS.json roles.en-cours-clair = #291547, tenu-clair = #00341A ; ⚠ CLAUDE.md §3 (table « Les couleurs signal ») écrit encore « clair sur fond sombre : #A77CF7 » — voir trous"
-   }
+   },
+   "datePassee": {
+    "valeur": "l'encre du mode, sans couleur",
+    "role": "une date passée s'affiche comme une date : « EN COURS · 12 OCT. », sans « c'était ». La parole reste `encours`, `due < 0` (window._datePassee)",
+    "decision": "Tom, C-210, D5 (v173)",
+    "source": "ETUDE-DEUX-ETATS.md"
+   },
+   "retires": [
+    "#DD4D23 (à tenir, retiré en v173, C-210 : l'état n'existe plus, les usages hors état prennent #FB4C0D, D6)"
+   ]
   },
   "fonds": {
    "pageClair": {
@@ -240,13 +243,6 @@
     "decision": "v130 : « le Peaufiner a SON corps : celui d'une fiche Promi TENUE est [le corps du Promi] alors que la fiche est terre »",
     "source": "CLAUDE.md bloc v130 (piège ②)"
    },
-   "aTenirJeu": {
-    "clair": "#EFC3B9",
-    "sombre": "#533336",
-    "alerte": "rôle déclaré ; aucun aplat d'état ne peint plus un corps (§3 : « plus aucun aplat d'état n'existe ») — voir trous",
-    "decision": null,
-    "source": "PROMI-TOKENS.json roles.corps-a-tenir"
-   },
    "gardeJeu": {
     "clair": "#EFC3B9",
     "sombre": "#4B2D30",
@@ -293,7 +289,7 @@
    "supprimerCePromi": {
     "clair": "#201908",
     "sombre": "#F7F0DE",
-    "decision": "Tom, 5 oct. 2026 (v132, C-053) : « SUPPRIMER CE PROMI passe en crème : le #DD4D23 est une couleur d'état et ne sert à rien d'autre » ; encre en clair (Q393, à valider)",
+    "decision": "Tom, 5 oct. 2026 (v132, C-053) : « SUPPRIMER CE PROMI passe en crème : le #DD4D23 est une couleur d'état et ne sert à rien d'autre » ; encre en clair (Q393, à valider) ; v173 (C-210) : #DD4D23 n'existe plus, la règle tient (ni orange ni couleur d'état)",
     "source": "redteam_decisions.py:110"
    },
    "libelleNatureCarteClair": {
@@ -348,25 +344,32 @@
    }
   },
   "maParole": {
-   "regle": "Jeton à lui seul (--orange-maparole) : ces valeurs n'existent NULLE PART ailleurs que dans les mots orange des phrases des murs (redteam_maparole.py).",
+   "regle": "Dans les phrases des murs, « Ma Parole ! » est en #FB4C0D exact, corps Chiche et Cercle compris ; en crème #F7F0DE sur le Peaufiner d'un Promi, à cet endroit seulement. Aucun orange dérivé : #FB4C0D est le seul orange de l'app (C-210, D1, D6).",
    "defaut": {
     "valeur": "#FB4C0D",
-    "decision": "Tom, v120–v121 : « #FB4C0D partout, sauf sur les trois corps sombres de Peaufiner »",
-    "source": "CLAUDE.md blocs v121, v122 · --c-orange-maparole · QUESTIONS.md:8300"
+    "decision": "Tom, v120–v121 ; 30 oct. 2026 (C-210, D1) : #FB4C0D partout, sauf le Peaufiner d'un Promi",
+    "source": "CLAUDE.md blocs v121, v122 · --c-orange-maparole · ETUDE-DEUX-ETATS.md"
    },
-   "surCorpsSombreChicheEtCercle": {
-    "valeur": "#FF7A55",
-    "decision": "Tom, v121 (Q373) : « ce même orange (même teinte OKLCH) éclairci jusqu'à 3:1 » — 3,02 (Chiche) · 3,04 (Cercle)",
-    "source": "--c-orange-maparole-corps · QUESTIONS.md:8300-8304"
+   "surPeaufinerPromi": {
+    "valeur": "#F7F0DE",
+    "note": "#FB4C0D y ferait 1,23:1 ; crème 3,70:1",
+    "decision": "Tom, 30 oct. 2026 (C-210, D1), à cet endroit seulement",
+    "source": "ETUDE-DEUX-ETATS.md · app.html #murPhrase.sur-cobalt"
    },
-   "surCorpsSombrePromi": {
-    "valeur": "#FED0C3",
-    "alerte": "Q403 : « un pêche très pâle — à voir sur l'iPhone »",
-    "morts": [
-     "#FF8664 (sur #273CEB, v131)"
-    ],
-    "decision": "Tom, 6 oct. 2026 (v134 ; Q399 tranchée : « la méthode est validée — même teinte, éclaircie jusqu'à son seuil ») : 3,01:1 sur #0E78F2",
-    "source": "--c-orange-maparole-cobalt · QUESTIONS.md:8476-8480"
+   "retires": [
+    "#FF7A55 (v121, corps sombres Chiche et Cercle ; retiré en v173, C-210)",
+    "#FED0C3 (v134, corps sombre d'un Promi ; retiré en v173, C-210)",
+    "#FF8664 (sur #273CEB, v131 ; mort)"
+   ],
+   "contrastes173": {
+    "creme": "3,01:1",
+    "seiche": "6,02:1",
+    "barreBrune": "5,10:1",
+    "toileClaire": "2,14:1",
+    "corpsPromi": "1,23:1",
+    "corpsChiche": "2,27:1",
+    "corpsCercle": "2,28:1",
+    "source": "ETUDE-DEUX-ETATS.md §5"
    },
    "contrastesMesuresDefaut": {
     "pageClaire": "3,01:1",
@@ -375,7 +378,7 @@
     "peaufinerPromiClair": "2,65:1",
     "peaufinerCercleClair": "2,78:1",
     "source": "QUESTIONS.md Q373 (v120), l.8294-8297",
-    "alerte": "les deux corps clairs sous 3:1 ne sont pas repris par la décision de v121 — voir trous"
+    "alerte": "mesures de v120, sur des corps clairs d'alors ; les mesures à jour : contrastes173"
    }
   },
   "pelote": {
@@ -451,11 +454,6 @@
   "mesuresSurCorpsSombrePromi": {
    "fond": "#0E78F2",
    "source": "mesures du lot v134 (6 oct. 2026), « rien retouché » · QUESTIONS.md Q404",
-   "aTenir #DD4D23": {
-    "deltaE_CIELAB": 126.2,
-    "deltaLum": 1.7,
-    "contraste": "1,03:1"
-   },
    "enCours #291547": {
     "deltaE_CIELAB": 56.8,
     "contraste": "3,86:1"
@@ -477,38 +475,18 @@
    "phraseLilas #F4EEFF": {
     "contraste": "3,71:1"
    },
-   "maParole #FED0C3": {
-    "contraste": "3,01:1"
-   },
    "blancPur": {
     "contraste": "4,21:1"
+   },
+   "maParole #FB4C0D": {
+    "contraste": "1,23:1",
+    "note": "d'où la crème, D1 (C-210)"
    }
   },
   "decisions": {
    "source": "redteam_decisions.py (tableau D, l.27-61, + anneau l.124-128, + V132 l.107-110), rejoué ici sans navigateur ; arbre de travail v134",
    "lecture": "chaque ligne : écran, thème, zone, valeur décidée, décision",
    "lignes": [
-    {
-     "ecran": "Promi à tenir",
-     "theme": "clair",
-     "zone": "champ",
-     "valeur": "#82AEF8",
-     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "clair",
-     "zone": "plateau",
-     "valeur": "#F7F0DE",
-     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "clair",
-     "zone": "motMarque",
-     "valeur": "#201908",
-     "decision": "17 sept. : le texte du plateau à l'encre en clair"
-    },
     {
      "ecran": "Promi en cours",
      "theme": "clair",
@@ -657,13 +635,6 @@
      "decision": "v8 (21 sept.) : sur la terre, le texte passe crème"
     },
     {
-     "ecran": "Promi à tenir",
-     "theme": "clair",
-     "zone": "aQui",
-     "valeur": "#DD4D23",
-     "decision": "Q262 (22 sept.) : l'état, partout où il paraît"
-    },
-    {
      "ecran": "Promi en cours",
      "theme": "clair",
      "zone": "aQui",
@@ -678,13 +649,6 @@
      "decision": "v29 (Q310) : « LANCÉ » suit la règle des états"
     },
     {
-     "ecran": "Promi à tenir",
-     "theme": "clair",
-     "zone": "echeance",
-     "valeur": "#DD4D23",
-     "decision": "Q262 (22 sept.) : l'état, partout où il paraît"
-    },
-    {
      "ecran": "Promi en cours",
      "theme": "clair",
      "zone": "echeance",
@@ -697,13 +661,6 @@
      "zone": "echeance",
      "valeur": "#291547",
      "decision": "v29 (Q310) : « LANCÉ » suit la règle des états"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "clair",
-     "zone": "trace",
-     "valeur": "#DD4D23",
-     "decision": "Q262 (22 sept.) : l'état, partout où il paraît"
     },
     {
      "ecran": "Promi en cours",
@@ -734,11 +691,11 @@
      "decision": "Q221 (17 sept.) : le compagnon sombre, mode clair"
     },
     {
-     "ecran": "Promi à tenir",
+     "ecran": "Promi en cours",
      "theme": "clair",
      "zone": "anneau",
-     "valeur": "#DD4D23 · #291547 · #00341A (trois arcs, rien d'autre)",
-     "decision": "Q262, v8c : un anneau ne porte que les trois états"
+     "valeur": "#291547 · #00341A (deux arcs, rien d'autre)",
+     "decision": "Q262, v8c ; v173 (C-210) : un anneau ne porte que les deux états"
     },
     {
      "ecran": "Peaufiner",
@@ -746,27 +703,6 @@
      "zone": "« Supprimer ce Promi »",
      "valeur": "#201908",
      "decision": "v132 (C-053) : jamais l'orange d'état"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "champ",
-     "valeur": "#82AEF8",
-     "decision": "17 sept., planche des correspondances ; Q101 (29 août) : jamais blanc"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "plateau",
-     "valeur": "#050302",
-     "decision": "v116 + v121 (seiche dans les pages) · 16 sept. (fond clair)"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "motMarque",
-     "valeur": "#F7F0DE",
-     "decision": "17 sept. : le texte du plateau à l'encre en clair"
     },
     {
      "ecran": "Promi en cours",
@@ -914,13 +850,6 @@
      "zone": "titre",
      "valeur": "#F7F0DE",
      "decision": "v8 (21 sept.) : sur la terre, le texte passe crème"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "corps",
-     "valeur": "#0E78F2",
-     "decision": "v134 (Tom, 6 oct. 2026, C-050) : DÉFINITIF, « Tom a choisi #0E78F2, en connaissance de cause » — remplace #1A52F0 (v133), #273CEB (v131), #8ACBE8 (v130), #335382 (v113, Q358)"
     },
     {
      "ecran": "Promi en cours",
@@ -963,34 +892,6 @@
      "zone": "trace",
      "valeur": "#F7F0DE",
      "decision": "v16 (Q290) : les textes d'état sur fond sombre passent crème"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "titre",
-     "valeur": "#F7F0DE",
-     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "aQui",
-     "valeur": "#F7F0DE",
-     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "echeance",
-     "valeur": "#F7F0DE",
-     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
-    },
-    {
-     "ecran": "Promi à tenir",
-     "theme": "sombre",
-     "zone": "trace",
-     "valeur": "#F7F0DE",
-     "decision": "v131 (Tom, 5 oct. 2026) : « le texte posé sur ce corps redevient crème #F7F0DE » ; v134 : reste crème (3,70:1, exception nommée)"
     },
     {
      "ecran": "Promi en cours",
@@ -1053,14 +954,14 @@
      "theme": "sombre",
      "zone": "cartes_etats",
      "valeur": "#F7F0DE",
-     "decision": "v16 (Q290) : les libellés des cartes À TENIR, EN COURS, LANCÉ, sur le corps sombre, en crème — « à tenir » compris"
+     "decision": "v16 (Q290) : les libellés des cartes À TENIR, EN COURS, LANCÉ, sur le corps sombre, en crème — « à tenir » compris (« à tenir » retiré en v173, C-210)"
     },
     {
-     "ecran": "Promi à tenir",
+     "ecran": "Promi en cours",
      "theme": "sombre",
      "zone": "anneau",
-     "valeur": "#DD4D23 · #291547 · #00341A (trois arcs, rien d'autre)",
-     "decision": "Q262, v8c : un anneau ne porte que les trois états"
+     "valeur": "#291547 · #00341A (deux arcs, rien d'autre)",
+     "decision": "Q262, v8c ; v173 (C-210) : un anneau ne porte que les deux états"
     },
     {
      "ecran": "Peaufiner",
@@ -1084,7 +985,7 @@
      "decision": "v132 (C-054), v134 (C-050)"
     }
    ],
-   "nombre": 85
+   "nombre": 71
   },
   "exceptions": [
    {
@@ -1108,14 +1009,14 @@
     "source": "QUESTIONS.md:8478-8480"
    },
    {
-    "nom": "Le trait « à tenir » sur ce même corps",
-    "ou": "fiche Promi à tenir, sombre",
-    "quoi": "aucun écart de clarté ; il se lit par la teinte ; rien retouché",
-    "valeur": "#DD4D23",
-    "contrasteMesure": "Δlum 1,7 · 1,03:1 · ΔE (CIELAB) 126,2",
-    "decideePar": "À SAVOIR (Q404) — conforme à la règle du trait (ΔE ≥ 15), pas à un critère de clarté",
-    "quand": "v134",
-    "source": "QUESTIONS.md:8481"
+    "nom": "« Ma Parole ! » en crème sur le Peaufiner d'un Promi",
+    "ou": "phrases des murs, Peaufiner d'un Promi, fond bleu #0E78F2",
+    "quoi": "le seul endroit où « Ma Parole ! » n'est pas en #FB4C0D (1,23:1)",
+    "valeur": "#F7F0DE",
+    "contrasteMesure": "3,70:1",
+    "decideePar": "Tom",
+    "quand": "30 oct. 2026, C-210, D1",
+    "source": "ETUDE-DEUX-ETATS.md"
    },
    {
     "nom": "Le filet crème sous le trait d'une fiche tenue",
@@ -1336,10 +1237,6 @@
      "clair": "#8FE08F",
      "sombre": "#8FE08F"
     },
-    "a-tenir": {
-     "clair": "#DD4D23",
-     "sombre": "#DD4D23"
-    },
     "en-cours": {
      "clair": "#291547",
      "sombre": "#291547"
@@ -1387,10 +1284,6 @@
     "corps-tenu": {
      "clair": "#2B1020",
      "sombre": "#2B1020"
-    },
-    "corps-a-tenir": {
-     "clair": "#EFC3B9",
-     "sombre": "#533336"
     },
     "corps-garde": {
      "clair": "#EFC3B9",
@@ -1605,8 +1498,7 @@
     "--c-creme76-2": "#D4B17F",
     "--c-orange64": "#D68A4F",
     "--c-orange50": "#DD3937",
-    "--c-orange53": "#DD4D23",
-    "--c-orange53-txt": "#DD4D23",
+    "--c-orange-depart": "#FB4C0D",
     "--c-mauve90": "#DEDAE6",
     "--c-orange62": "#E0786D",
     "--c-creme87": "#E0D0B2",
@@ -1650,8 +1542,6 @@
     "--c-creme90-4": "#FCD1C1",
     "--c-orange59": "#FE5000",
     "--c-orange-maparole": "#FB4C0D",
-    "--c-orange-maparole-corps": "#FF7A55",
-    "--c-orange-maparole-cobalt": "#FED0C3",
     "--c-ton82": "#FED0A5",
     "--c-framboise54": "#FFB8D2",
     "--c-framboise54-txt": "#FFB8D2",
@@ -1832,7 +1722,7 @@
    },
    "chiffresAura": {
     "valeur": 29,
-    "decision": "v95 : trois chiffres sous la légende, PromiLate 29, à l'encre de la page",
+    "decision": "v95 : les chiffres sous la légende (deux depuis v173, C-210), PromiLate 29, à l'encre de la page",
     "source": "ETAT-DES-LIEUX.md:9768"
    },
    "phraseDesMurs": {
@@ -2009,7 +1899,7 @@
     "epaisseurAnneauFicheTenue": 5
    },
    "alerte": "v113/v114 : plus aucun filet crème autour des disques, sauf la fiche tenue — la portée exacte du filet des anneaux aujourd'hui est à confirmer : voir trous",
-   "decision": "Tom, 22 sept. (trois arcs) ; 23 sept. (« les espaces […] uniformisé partout, net ») ; v18 (filet 1 px bord extérieur)",
+   "decision": "Tom, 22 sept. (trois arcs ; deux depuis v173, C-210) ; 23 sept. (« les espaces […] uniformisé partout, net ») ; v18 (filet 1 px bord extérieur)",
    "source": "CLAUDE.md §3, §5 · ETAT §8"
   },
   "ligneSombreAvecTexte": {
@@ -2710,10 +2600,10 @@
   "niveaux.titre.poids = 600 dans le jeu ; PromiLate n'a que 400. niveaux.meta.opacite = 0,65, sous le plancher de 72 %.",
   "Les sept niveaux de texte ne sont pas câblés dans le prototype : la taille réelle de chaque texte de chaque écran n'est dans aucune source lue ici (à prendre dans le document des écrans).",
   "Couleur de la barre Peaufiner par nature et par thème : CLAUDE.md (17 sept.) dit « corps mauve #291547 » pour un Cercle, C-059 (v133) mesure « à la couleur de la nature » en clair.",
-  "roles.garde-de-cote (#AE3929), corps-a-tenir, corps-garde : rôles déclarés sans décision retrouvée, contraires à « aucun aplat d'état ».",
+  "roles.garde-de-cote (#AE3929), corps-garde : rôles déclarés sans décision retrouvée, contraires à « aucun aplat d'état ».",
   "#F07A2E « accent secondaire, célébration » (17 sept.) : emploi actuel non établi (l'amande seule peint la célébration).",
   "Le filet crème des anneaux posés sur du sombre (v18) face à v113/v114 (« plus aucun filet crème autour des disques », sauf la fiche tenue) : portée actuelle à confirmer.",
-  "« Ma Parole ! » #FB4C0D sur les corps clairs du Peaufiner Promi (2,65:1) et Cercle (2,78:1), mesurés en v120 quand ces corps n'étaient pas crème : à remesurer, non tranché.",
+  "« Ma Parole ! » #FB4C0D sur les corps de Peaufiner : Chiche 2,27:1, Cercle 2,28:1, gardés par décision (C-210, D1) ; sur le Promi, la crème.",
   "Q403 ouverte : la phrase lilas sur #0E78F2 (#F4EEFF, 3,71:1).",
   "Valeurs de repos de l'onde (base, amplitude) par état de fiche, rayon du coin de la Toile, cotes détaillées de l'accueil et de la barre du bas : absentes des sources lues pour ce document.",
   "Les rampes de nature de Q30 (trois teintes par nature, §1.2 de PROMI-SPECIFICATIONS, archive d'août) : valeurs actuelles non relevées.",

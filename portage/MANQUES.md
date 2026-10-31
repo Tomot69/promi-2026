@@ -129,7 +129,7 @@ réglage dans l'app.
 - **La synchronisation et le hors-ligne** : aucune règle de conflit, aucun écran d'attente, d'erreur ou de reprise (ETAT-DES-LIEUX
   cite « erreurs et chargement avec Firebase » comme suite à faire). Planter et tenir hors ligne : permis ? Comment se réconcilie un
   trait donné hors ligne des deux côtés ?
-- **La réciprocité** (« Ce qu'on t'a tenu », les Noyaux, l'anneau à trois arcs « dans les deux sens ») repose aujourd'hui sur des
+- **La réciprocité** (« Ce qu'on t'a tenu », les Noyaux, l'anneau à deux arcs « dans les deux sens ») repose aujourd'hui sur des
   données fabriquées : sa définition sur de vraies données est à écrire.
 - **Plusieurs appareils** pour un même compte ; la migration d'une Toile locale vers un compte créé plus tard (« Garder ta Toile »).
 - **La modération et le blocage** (exigés par l'App Store dès qu'il y a du contenu entre utilisateurs : dessins, photos, messages).
@@ -223,7 +223,7 @@ réglage dans l'app.
   c'est toucher au principe « un geste tracé, pas une case à cocher » — une décision de produit, pas de portage). Idem le zoom, le
   double toucher, l'appui long du Studio, le dessin, la caresse de la Pelote.
 - **Les autres surfaces peintes** : la Pelote et ses îles (chaque île est une parole tenue, qui ouvre sa fiche au toucher), les Noyaux
-  (un anneau à trois arcs : il porte des proportions), les dalles des cartes de l'Index et du Fil, le Folio, un dessin (une liste de traits).
+  (un anneau à deux arcs : il porte des proportions), les dalles des cartes de l'Index et du Fil, le Folio, un dessin (une liste de traits).
 - **Les murs** : un réglage flouté « sans explication » — que dit VoiceOver ? Et la phrase qui monte, puis l'offre qui s'ouvre ?
 - **Ce qui bouge seul** : la vie au repos, le souffle de la Pelote — silencieux pour VoiceOver ? (« Réduire les animations » les fige, c'est décidé.)
 - Les rotors, les intitulés des écrans, l'ordre du focus dans une fiche ; Contrôle de sélection, Contrôle vocal.
@@ -478,7 +478,7 @@ mobile française » (§1). Rien sur une autre langue.
 **Ce que le prototype fait**
 - **Supprimer mon compte** (`_v16SupprimerCompte`) : une confirmation « Supprimer ton compte ? · Tous tes Promi seront effacés de cet
   appareil. · Supprimer / Garder », puis `localStorage.clear()` et rechargement. Il n'y a pas de compte à supprimer : c'est un
-  effacement local. La rangée est en `#DD4D23` (C-015).
+  effacement local. La rangée était en `#DD4D23` (C-015 ; valeur retirée en v173, C-210 ; rangée fondue dans « Tout effacer » en v163b).
 - **Réinitialiser mes données · effacer** ; **Sauvegarde locale · vérification…** ; **Se déconnecter** (point de branchement vide).
 - **Exporter** : rien. Les seules sorties sont des images (le partage : Ma Toile, Mon Folio, la Pelote).
 
@@ -503,7 +503,7 @@ appareil. » Rien d'autre.
 
 ## 16 · L'archive (C-026)
 
-**Ce que le prototype fait** : rien qui s'appelle « archive ». Une parole est à tenir, en cours, tenue, gardée de côté, ou retirée
+**Ce que le prototype fait** : rien qui s'appelle « archive ». Une parole est en cours, tenue, gardée de côté, ou retirée
 (« Supprimer ce Promi »). Une parole tenue reste sur la Toile et dans « Ce que tu as tenu ». Un Cercle se dissout (« DISSOUDRE »).
 
 **Ce qui est décidé** : rien. C-026 : « Avant Swift : archive, VoiceOver de la Toile, StoreKit, Firebase. » — OUVERT (liste de Tom,

@@ -645,8 +645,7 @@
       ],
       "x-etats": {
         "encours": "en cours",
-        "tenu": "tenu",
-        "rate": "affiché « à tenir »"
+        "tenu": "tenu"
       },
       "x-transitions": [
         {
@@ -662,19 +661,13 @@
           "source": "app.html:8053, 36457"
         },
         {
-          "de": [
-            "encours",
-            "rate"
-          ],
+          "de": "encours",
           "vers": "tenu",
           "declencheur": "Tracer le trait de la fiche (#tenirZone) : 2/3 de la largeur atteints, ou geste lent > 6 points, ou > 50 % parcourus ; garde cur.trace puis clique #segStatus button[data-st=tenu] ; draft=false ; regenRecur si recur ; feedAdd('kept') ; instant de célébration (_instantTenue)",
           "source": "app.html:4747-4774, 3764, 19956-19964"
         },
         {
-          "de": [
-            "encours",
-            "rate"
-          ],
+          "de": "encours",
           "vers": "tenu",
           "declencheur": "(ancien) carte de la Toile, bouton #ccKeep",
           "source": "app.html:3042"
@@ -687,15 +680,9 @@
         },
         {
           "de": "*",
-          "vers": "encours|tenu|rate",
+          "vers": "encours|tenu",
           "declencheur": "(ancien) sélecteur d'état #segStatus — TROU T4 pour tenu → encours",
           "source": "app.html:2678, 3764"
-        },
-        {
-          "de": "encours",
-          "vers": "rate",
-          "declencheur": "Automatique : echeancesDepassees() au chargement (+3,4 s) quand due < 0, hors draft et req — TROU T3",
-          "source": "app.html:4090-4101"
         },
         {
           "de": "*",
@@ -728,10 +715,9 @@
       "type": "string",
       "enum": [
         "encours",
-        "tenu",
-        "rate"
+        "tenu"
       ],
-      "description": "encours = en cours ; tenu = tenu ; rate = affiché « à tenir ».",
+      "description": "encours = en cours ; tenu = tenu. Deux états (C-210, v173) : une date passée reste encours, due < 0 ; rate est retiré, migré en encours à la relecture (window._migreEtats).",
       "x-source": "app.html:2678, 3764, 4096"
     },
     "EtatChiche": {
@@ -846,10 +832,7 @@
           "x-attend-firebase": true
         },
         {
-          "de": [
-            "encours",
-            "rate"
-          ],
+          "de": "encours",
           "vers": "tenu (« TENU À DEUX » si avec)",
           "declencheur": "Le trait de la fiche, comme un Promi",
           "source": "app.html:18994"
@@ -1372,7 +1355,6 @@
           "enum": [
             "added",
             "kept",
-            "missed",
             "nuee",
             "relance",
             "comment",

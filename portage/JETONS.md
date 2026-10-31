@@ -23,7 +23,7 @@ Les sections :
 | Section | Contenu |
 |---|---|
 | `couleurs.natures` | le CHAMP : Promi `#82AEF8`, Chiche `#FFB8D2`, Cercle `#C9A8F5` |
-| `couleurs.etats` | la LIGNE : à tenir `#DD4D23`, en cours `#291547`, tenu `#00341A` ; l'amande `#8FE08F` |
+| `couleurs.etats` | la LIGNE : en cours `#291547`, tenu `#00341A` ; l'amande `#8FE08F` (célébration, mention TENU) |
 | `couleurs.fonds` | pages, encre, terre et crête d'une fiche tenue, fond de la Toile |
 | `couleurs.corps` | le corps d'une fiche par nature et par thème |
 | `couleurs.textes` | ce qu'on pose sur un champ, un corps, la terre, le plateau |
@@ -55,7 +55,6 @@ Un écran de fiche porte toujours trois couleurs distinctes : **la dalle** (mond
 | Promi | `#82AEF8` | Tom, 17 sept. 2026, planche des correspondances |
 | Chiche | `#FFB8D2` | idem |
 | Cercle | `#C9A8F5` | idem — « le lilas est le champ, le violet est ce qu'on pose dessus » |
-| à tenir | `#DD4D23` | Tom, 16 sept. ; Q262 (22 sept.) ; v132 : « ne sert à rien d'autre » |
 | en cours | `#291547` | Tom, v7 (20 sept.) ; Q262 |
 | tenu | `#00341A` | Tom, v7 (20 sept.) ; Q262 |
 | tenu sur fond sombre, mention « TENU(E) », célébration | `#8FE08F` | Tom, 22 et 23 sept. |
@@ -80,7 +79,9 @@ Pour le corps sombre d'un Promi, `#1A52F0`, `#273CEB`, `#8ACBE8` et `#335382` so
 Promi `#022140` · Chiche `#3D0F23` · Cercle `#43291C` (valeur du code ; voir Trous). Seuil : ΔE (CIELAB) ≥ 15 sur le champ.
 
 ### « Ma Parole ! »
-`#FB4C0D` partout ; `#FF7A55` sur les corps sombres Chiche et Cercle ; `#FED0C3` sur le corps sombre d'un Promi (3,01:1). Ces trois valeurs n'existent que dans les mots orange des phrases des murs.
+`#FB4C0D` exact partout, corps Chiche et Cercle compris ; crème `#F7F0DE` sur le Peaufiner d'un Promi, à cet endroit seulement (C-210, D1). Aucun orange dérivé : `#FB4C0D` est le seul orange de l'app (D6).
+
+**Retirés en v173 (C-210)** : `--c-orange53`, `--c-orange53-txt`, `--c-orange-maparole-corps`, `--c-orange-maparole-cobalt`, `--p-a-tenir`, `--p-corps-a-tenir` ; Swift `aTenir`, `corpsATenir`, `orange53`, `orange53Txt`, `orangeMaParoleCorps`, `orangeMaParoleCobalt`. `--c-orange-depart-rgb` remplace `--c-orange53-rgb`.
 
 ### Typographie
 Trois polices, cinq faces : **Gilbert 700** (sous-titres, libellés, navigation, en capitales), **Atkinson 400 · 500 · 700** (tout le texte), **PromiLate 400** (titres d'écran, mot-marque, phrases du trait). Rien sous 12 px ; aucune opacité sous 72 % sur un texte à lire. Gilbert : CC BY-SA 4.0, **crédit obligatoire dans « à propos », glyphes non modifiables**. Atkinson : SIL OFL 1.1. Depuis v96, Gilbert et Atkinson sont agrandies de 12 %.
@@ -99,7 +100,7 @@ Chacune est dans `couleurs.exceptions[]` avec sa valeur, son contraste mesuré, 
 |---|---|---|---|---|
 | 1 | Le texte crème sur le corps sombre d'un Promi | fiche et page + d'un Promi, sombre | `#F7F0DE` sur `#0E78F2` · 3,70:1 (petites mentions sous 4,5:1) | Tom, 6 oct. 2026, v134 |
 | 2 | La phrase lilas de la page + sur ce corps | page + d'un Promi, sombre | `#F4EEFF` · 3,71:1 | **non décidée — Q403 ouverte** |
-| 3 | Le trait « à tenir » sur ce corps | fiche Promi à tenir, sombre | `#DD4D23` · Δlum 1,7 · 1,03:1 · ΔE 126,2 | à savoir (Q404), rien retouché |
+| 3 | « Ma Parole ! » en crème | le Peaufiner d'un Promi, fond bleu | `#F7F0DE` sur `#0E78F2` · 3,70:1 (`#FB4C0D` y ferait 1,23:1) | Tom, 30 oct. 2026, C-210, D1 |
 | 4 | Le filet crème sous le trait | la terre d'une fiche tenue, deux thèmes | `rgba(247,240,222,.55)` · crête/terre Δlum 15,7 | Tom, 30 sept., v114 — exigé là, interdit ailleurs |
 | 5 | L'encre neutre de Touffe | monde Touffe, sombre | `#F4F2F0` | Tom, v115 |
 | 6 | La couleur mère face au kaki | la jauge du Studio | seule couleur qui peut être kaki | Tom, 30 sept., v114 |
@@ -128,10 +129,10 @@ Un trou est une valeur absente des sources lues, ou deux sources qui se contredi
 6. **⚠ TROU : deux niveaux de texte du jeu contredisent le §6.** `titre.poids` = 600 (PromiLate n'a que 400) ; `meta.opacite` = 0,65 (plancher : 72 %).
 7. **⚠ TROU : les sept niveaux ne sont pas câblés.** Les jetons `--t-*-taille` ont zéro consommateur (`CLAUDE.md` §8) : la taille réelle de chaque texte de chaque écran n'est pas dans ce document.
 8. **⚠ TROU : la couleur de la barre Peaufiner** par nature et par thème (17 sept. : « corps mauve `#291547` » pour un Cercle ; C-059, v133 : « à la couleur de la nature » en clair).
-9. **⚠ TROU : trois rôles sans décision** — `garde-de-cote` `#AE3929`, `corps-a-tenir`, `corps-garde` — contraires à « plus aucun aplat d'état n'existe ».
+9. **⚠ TROU : deux rôles sans décision** — `garde-de-cote` `#AE3929`, `corps-garde` — contraires à « plus aucun aplat d'état n'existe ».
 10. **⚠ TROU : `#F07A2E`** (« accent secondaire, célébration », 17 sept.) : emploi actuel non établi.
 11. **⚠ TROU : le filet crème des anneaux** posés sur du sombre (v18) face à v113–v114 (« plus aucun filet crème autour des disques », sauf la fiche tenue).
-12. **⚠ TROU : « Ma Parole ! » `#FB4C0D` sur un Peaufiner clair** : 2,65:1 (Promi) et 2,78:1 (Cercle) mesurés en v120 sur des corps qui n'étaient pas crème ; non remesuré, non tranché.
+12. **« Ma Parole ! » `#FB4C0D` sur les corps de Peaufiner** : mesuré à l'étude C-210, Chiche 2,27:1, Cercle 2,28:1, gardés par décision (D1) ; sur le Promi, la crème.
 13. **⚠ TROU : Q403**, la phrase lilas sur `#0E78F2`.
 14. **⚠ TROU : géométrie non relevée ici** — valeurs de repos de l'onde par état de fiche, rayon du coin de la Toile, cotes de l'accueil et de la barre du bas.
 15. **⚠ TROU : les rampes de nature de Q30** (trois teintes par nature) : seules les valeurs d'août existent, dans une archive.

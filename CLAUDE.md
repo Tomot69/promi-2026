@@ -153,7 +153,7 @@ Un écran de fiche porte **toujours trois couleurs distinctes** :
 
 1. **La dalle** — sa couleur propre, issue du monde et de la palette choisis au Studio
 2. **Le champ** — la couleur de la NATURE (Promi, Chiche, Cercle) — jamais l'état
-3. **Le trait** — il porte l'ÉTAT (à tenir, en cours, tenu), et se juge en ΔE sur le champ
+3. **Le trait** — il porte l'ÉTAT (en cours, tenu — v173 : « à tenir » est retiré), et se juge en ΔE sur le champ
 
 *(Repris le 30 sept. 2026 : l'ancienne formulation « le fond = l'état » est morte depuis la direction Horizon — le champ dit
 la nature, la ligne dit l'état.)*
@@ -201,6 +201,15 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v173b (31 oct. 2026) — DEUX ÉTATS AU LIEU DE TROIS, UN SEUL ORANGE (C-210). (Décisions Tom, étude `ETUDE-DEUX-ETATS.md` validée.) Ce bloc CORRIGE v151 (C-160 : une date passée fait passer « à tenir »), v121 à v134 (les variantes de l'orange de Ma Parole !), v122, le §3 et tout bloc daté qui parle de « à tenir » ou de trois arcs.
+> **⚑ IL NE RESTE QUE DEUX ÉTATS : « en cours » `#291547` et « tenu » `#00341A`. `status:'rate'` n'existe plus.** Plus aucun écrivain ; `echeancesDepassees` ne fait plus que recompter. Relecture de l'état : `_migreEtats` rend `rate` → `encours`, date gardée, et reformule une entrée du Fil « … est à tenir » en « … : 12 oct. » (type `added`). Filtres et tri « À tenir » retirés (Index, Fil), le bouton du sélecteur caché aussi. REPORTER ne change plus que la date.
+> **⚑ D5 — UNE DATE PASSÉE S'AFFICHE COMME UNE DATE** (`window._datePassee`) : « 12 OCT. », sans « c'était », sans couleur, à l'encre du mode : « EN COURS · 12 OCT. » sur la fiche et la carte, « LANCÉ · 12 OCT. » sur un Chiche ; `motDuTemps` rend « 12 oct. ». ⚠ **Une parole en cours à date future n'a pas de mot de temps, comme en v172** : l'étude écrivait « EN COURS · DANS 2 JOURS » pour ce que le jeu de démonstration portait en `rate` ; sur un vrai téléphone ce cas n'existait pas, et le lot garde au pixel les fiches en cours (Q594).
+> **⚑ D2 — « À RELEVER » RESTE SUR UN CHICHE REÇU** (`window._chicheARelever` : `from` ≠ moi, pas tenu, `chicheEtat` ≠ 'releve'). **D3** : `#F5AC9E` (nature) ne change pas. **D4** : la rampe de la Pelote ne change pas (`ETATS`, `ETAT_TERRA` gardent leur valeur, elles disent ce qu'il faut ÉVITER).
+> **⚑ LES DISQUES : deux arcs au plus** (Noyaux, anneau du +, anneau des fiches), deux chiffres à l'Aura (R-015). **LA LÉGENDE : des rectangles de la hauteur d'une majuscule de ses mots** : Aura 24 × 15,2 pt, rayon 3 · une personne 16,3 × 10,2 pt, rayon 3 (Gilbert 13 px : l'étude disait 12, lu sur la mauvaise police) · l'aide 13 × 8,2 pt, rayon 2 ; le filet crème reste en sombre (sans lui `#00341A` fait 1,48:1).
+> **⚑ D6 — LA RÈGLE DE L'ORANGE, DÉFINITIVE : `#FB4C0D` EST LE SEUL ORANGE DE L'APP. Il marque ce qui attend un geste** (le départ d'une action et son libellé, la pastille du Fil, « demande », « UNE PAROLE T'ATTEND », « TON PROMI ARRIVE », le héros de l'écran Ma Parole !). Elle remplace « le départ d'une action et rien d'autre » (v146, v151). Jetons retirés : `--c-orange53`, `-txt`, `--c-orange-maparole-corps`, `-cobalt`, `--p-a-tenir`, `--p-corps-a-tenir` (Swift : `aTenir`, `corpsATenir`, `orange53…`, `orangeMaParole…`) ; `--c-orange-depart-rgb` remplace `--c-orange53-rgb`. Les `--c-orange*` des palettes du Studio ne bougent pas (C-204).
+> **⚑ D1 — « MA PAROLE ! » : `#FB4C0D` exact partout, y compris sur les corps Chiche et Cercle (2,27:1, par décision) ; sur le Peaufiner d'un Promi (fond bleu), et là seulement, crème `#F7F0DE`** (`.sur-corps.sur-cobalt`).
+> Juge : **`redteam_deux_etats.py`** (4/18 sur v172).
 
 ### ⚑ v173a (30 oct. 2026) — ONBOARDING, PAGE DE LA PAROLE : L'ORDRE D'APPARITION ; MOINS D'ATTENTE APRÈS « PROMI PLANTÉ ! » (C-211, C-212). (Décisions Tom.) Ce bloc CORRIGE v155 et v156 (C-169 : le trait et « trace pour planter » 1,5 s après le prénom, parole écrite ou non ; Q562 : tracer sans parole ouvre la saisie).
 > **Validés par Tom : les décisions D1 à D6 de l'étude C-210 (`ETUDE-DEUX-ETATS.md`), appliquées en v173b.**
@@ -2478,10 +2487,10 @@ Chaque nature a SA couleur signal. Elle ne dépend jamais du contenu (§4). **Va
 (repris le 30 sept. 2026 ; la source est `PROMI-TOKENS.json`, reproduite dans `ETAT-30-SEPTEMBRE-2026.md` §2) :
 
 ```
-LES NATURES — le CHAMP                    LES ÉTATS — la LIGNE (un anneau : trois arcs, jamais plus)
-bleu      #82AEF8   un Promi              à tenir   #DD4D23   partout
-rose      #FFB8D2   un Chiche             en cours  #291547   (clair sur fond sombre : #A77CF7)
-lilas     #C9A8F5   un Cercle             tenu      #00341A   (sur la terre #2B1020 : l'amande #8FE08F)
+LES NATURES — le CHAMP                    LES ÉTATS — la LIGNE (v173 : deux états, un anneau porte deux arcs au plus)
+bleu      #82AEF8   un Promi              en cours  #291547   (clair sur fond sombre : #A77CF7)
+rose      #FFB8D2   un Chiche             tenu      #00341A   (sur la terre #2B1020 : l'amande #8FE08F)
+lilas     #C9A8F5   un Cercle             orange    #FB4C0D   LE seul orange : ce qui attend un geste (D6, v173)
 violet    #291547   trait et texte posés sur le lilas d'un Cercle
 amande    #8FE08F   la célébration seule (et la mention « TENU(E) »)
 ```
@@ -4527,7 +4536,7 @@ Peut se dégrader : le nombre de dalles animées, les transitions de navigation,
 - **R-012** · Aucun tri par valeur, aucun superlatif.
 - **R-013** · Ce qui se mesure à deux est symétrique : aucun verdict ne désigne un porteur et un porté.
 - **R-014** · Des anneaux, jamais une liste de barres.
-- **R-015** · L'Aura ne porte que trois chiffres — tenues, en cours, à tenir — sous la légende, et aucun pourcentage.
+- **R-015** · L'Aura ne porte que deux chiffres — tenues, en cours (v173, C-210) — sous la légende, et aucun pourcentage.
 - **R-016** · Rien ne recule jamais : aucune grandeur dessinée ne décroît parce que le temps passe.
 - **R-017** · Les mots du Noyau ne sont jamais un reproche, et leur échelle est monotone.
 - **R-018** · Un seul compteur dans l'app : celui du Fil, et il ne redescend que quand on a agi.

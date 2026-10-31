@@ -14,7 +14,7 @@
 1. [L'accueil — la Toile](#1)
 2. [L'onboarding](#2)
 3. [La page + (Promi, Chiche, Cercle)](#3)
-4. [La fiche d'une parole (Promi, Chiche ; à tenir, en cours, tenue ; gardé de côté ; à photo ; avec dessin)](#4)
+4. [La fiche d'une parole (Promi, Chiche ; en cours, tenue ; gardé de côté ; à photo ; avec dessin)](#4)
 5. [L'instant de « tenir »](#5)
 6. [Peaufiner (Promi, Chiche)](#6)
 7. [La fiche d'un Cercle (fil, état défilé, « Planter dans le Cercle ») et son Peaufiner](#7)
@@ -54,7 +54,7 @@
 | **Le geste** | zone de 390 × 118, toujours entière, jamais rognée ni superposée. Le trait est l'onde du produit (voir ci-dessous). | CLAUDE §5 ; `#tenirZone`, `#planterZone` 390 × 118 dans l'inventaire |
 | **L'onde** | une seule formule : `y(t) = base − amp·0,34·t − amp·0,62·sin(2π·1,5·t)`, t = x/390. Amplitude **36** partout ; **16** quand un choix est ouvert sur la page + et sur un Cercle défilé ; loi propre de la carte d'Index (`amp = 13 × largeur/173`, période 1). Épaisseur du trait 10 ; points de rayon 4,5 tous les 18. | `lot-PINCEAU` app.html:24843 ; app.html:17100–17108 ; `lot-ONB-V20` app.html:36294 ; `lot-S4` app.html:18737 |
 | **Grammaire des contours** | trait 2 px, couleur du corps, rayon = hauteur ÷ 2 jusqu'à **94,5** de haut, **30** au-delà. | CLAUDE §5 ; `lot-CERCLE-MUR` (`rayon()`, `SEUIL_PILULE`) app.html:31500 |
-| **Un Noyau** (anneau) | trois arcs au plus : tenu `#00341A` · en cours `#291547` · à tenir `#DD4D23` ; jours de 3 px d'arc ; filet crème 1 px sur le seul bord extérieur quand il est posé sur du sombre. | CLAUDE §3 (22–23 sept.), §5 ; ETAT §8 |
+| **Un Noyau** (anneau) | deux arcs au plus : tenu `#00341A` · en cours `#291547` (un seul état : arc plein) ; jours de 3 px d'arc ; filet crème 1 px sur le seul bord extérieur quand il est posé sur du sombre. | CLAUDE §3 (22–23 sept.), §5 ; ETAT §8 |
 | **Fermer** | `closeAll()` ferme feuilles et fiches ; rien ne survit (masques, styles en ligne, nœuds bâtis). **Le Studio, l'Aura et Partager ne perdent pas leur état « ouvert » de la même façon** (dans le prototype leur classe `.show` reste) : en Swift, ne rien accrocher à « l'écran vient de s'ouvrir » qu'on ne rejoue pas à chaque ouverture. | CLAUDE §8 |
 | **Un toucher** | partout où le prototype lit un « toucher » lui-même : appui puis lever, moins de 10 px de déplacement, moins de 600 ms. | `lot-V104-MURS` app.html:37222 ; `lot-V131-ENTIER` app.html:37941 |
 | **Changement d'écran** | une ouverture, une fermeture, une plantation **coupent** : rien ne paraît une fraction de seconde, pas de fondu d'entrée sur la page +. | CLAUDE §8 (v103) ; `redteam_flash.py` |
@@ -98,7 +98,7 @@ Aura ─► aide (i) · Partager (Ma Pelote) · fiche d'une personne (un Noyau) 
 | Les trois pilules `#accChoix` | bloc x 40 · y 476 · 310 × 210 ; chaque pilule 310 × 62, rayon 31, trait 2 ; hauts à 0 · 74 · 148 dans le bloc | de haut en bas : Cercle (fond `#C9A8F5`, texte `#291547`) · Chiche (fond `#FFB8D2`, texte encre) · Promi (fond `#82AEF8`, texte encre). Titre Gilbert 22 à gauche, sous-titre Atkinson 13 à droite | `lot-ACCUEIL-css` app.html:32852 ; `lot-ACCUEIL` app.html:32899 ; app.html:36875 |
 | Barre `#accBarre` | x 24 · y 716 · 342 × 88 · rayon 44 · trait 2 | cinq entrées, centres en x : 70 · 124 · **195** · 266 · 320 ; y 760 | `lot-ACCUEIL-css` app.html:32825 ; `lot-V95-ACCUEIL-css` app.html:36870 ; inventaire |
 | — STUDIO · AURA · INDEX · FIL | zone 90 × 51, icône 28 + libellé Atkinson 500, 12 px, capitales, interlettrage 0,06 em | | app.html:32827–32836, 36874 |
-| — le **+** `#createBtn` | disque 68, centre (195 ; 760) | disque **bleu Promi** `#82AEF8`, croix à l'encre épaisse (5,6) ; son bord est un anneau à trois arcs (tenu · en cours · à tenir) qui **tourne lentement** (un tour en 48 s) ; le + ne tourne pas | `lot-ACCUEIL-css` app.html:32839–32850 ; `lot-V95-ACCUEIL-css` app.html:36851 |
+| — le **+** `#createBtn` | disque 68, centre (195 ; 760) | disque **bleu Promi** `#82AEF8`, croix à l'encre épaisse (5,6) ; son bord est un anneau à deux arcs (tenu · en cours) qui **tourne lentement** (un tour en 48 s) ; le + ne tourne pas | `lot-ACCUEIL-css` app.html:32839–32850 ; `lot-V95-ACCUEIL-css` app.html:36851 |
 | — pastille du Fil `#filDot` | 10 × 10 sur l'entrée FIL | « pas encore vu » | app.html:32837 |
 
 ### Actions
@@ -258,7 +258,7 @@ Aura ─► aide (i) · Partager (Ma Pelote) · fiche d'une personne (un Noyau) 
 | Toucher la pastille d'une personne (« qui ? », « qui ose ? », « qui en est ? », « avec ») | ouvre le choix des personnes : « Moi » en tête (dans un Cercle : « tout le monde » puis « Moi »), puis les personnes connues (initiale + prénom), puis sur sa propre ligne « + ajouter quelqu’un ». Toucher une personne l'ajoute ; sa croix la retire ; « + ajouter quelqu’un » ouvre un champ « un prénom… » avec les connus filtrés dessous. La liste défile dans son propre espace, le bouton reste dessous (16 d'air), au-dessus de la barre Peaufiner | `lot-GENS` app.html:32418–32480 ; CLAUDE §3 bloc v116 |
 | Toucher « nommé » (Cercle) | champ « LE NOM DU CERCLE » ; Entrée ou sortie du champ valide | app.html:13201–13212 |
 | Toucher un pinceau | le trait prend cette matière ; ce choix appartient à **cette** parole (`p.trait`) | `lot-PINCEAU` app.html:24850 |
-| **Tracer** — Promi et Chiche : **sa moitié** (0 → 195) ; Cercle : **le trait entier** (0 → 390) | pendant le geste : le mot devient « continue → », la consigne et « garder de côté » disparaissent, le trait passe à la couleur « à tenir » ; à la fin : plantation, la page + **coupe**, retour à l'accueil, la dalle arrive sur la Toile avec l'animation de son monde | app.html:17420–17436, 17233–17240 ; CLAUDE §4 (« une Nuée se lance en traçant le trait entier ») ; CLAUDE §8 (v103) |
+| **Tracer** — Promi et Chiche : **sa moitié** (0 → 195) ; Cercle : **le trait entier** (0 → 390) | pendant le geste : le mot devient « continue → », la consigne et « garder de côté » disparaissent, le trait passe à l'orange `#FB4C0D` ; à la fin : plantation, la page + **coupe**, retour à l'accueil, la dalle arrive sur la Toile avec l'animation de son monde | app.html:17420–17436, 17233–17240 ; CLAUDE §4 (« une Nuée se lance en traçant le trait entier ») ; CLAUDE §8 (v103) |
 | Lâcher avant la fin | rien n'est planté | ⚠ seuil exact non relu (voir Trous) |
 | « garder de côté » | garde le titre et la personne de la phrase, ferme, toast « gardé de côté — dans l'Index » | app.html:13595–13619 ; `redteam_garder.py` |
 | Barre Peaufiner | ouvre le Peaufiner de la page + (ci-dessous) | app.html:17970 |
@@ -278,7 +278,7 @@ Tête : le titre tapé (sinon « Promi » / « Chiche » / « Cercle ») +
 - ⚠ TROU : ce que plante un Promi dont l'objet est resté vide (titre vide ? exemple ?) n'a pas été relu.
 
 ### Textes exacts
-- Mots de trace : Promi au repos « trace ta part » ; Promi avec un choix ouvert « trace pour planter » ; Chiche et Cercle « trace pour lancer » ; reprise d'un gardé de côté « trace pour planter » (Promi) / « trace pour lancer » ; pendant le geste « continue → » ; une fois la moitié donnée : « À TENIR · {JOUR} » s'il y a une date, « UN JOUR » ou « EN L’AIR » sinon. (app.html:17408–17436, 17862–17867, 14474)
+- Mots de trace : Promi au repos « trace ta part » ; Promi avec un choix ouvert « trace pour planter » ; Chiche et Cercle « trace pour lancer » ; reprise d'un gardé de côté « trace pour planter » (Promi) / « trace pour lancer » ; pendant le geste « continue → » ; une fois la moitié donnée : « UN JOUR » ou « EN L’AIR » sans date ; avec une date, « EN COURS · {JOUR} » (v173, Q595). (app.html:17408–17436, 17862–17867, 14474)
 - Titres des panneaux de choix (présents dans le code, **non affichés** sur les trois cadres « choix ouvert ») : « À QUI », « TU PROMETS QUOI », « QUI TU DÉFIES », « QUI EN EST », « LE NOM DU CERCLE » (app.html:5449–5451, 16900).
 - Pinceaux, dans l'ordre : **Plein · Coulé · Peigné · Sec** (libres) · Tressé · Frangé · Doublé · Fendu · Cranté · Vrillé · Semé · Perlé (à l'unité : la valeur s'écrit « {nom} — 0,50 € » dans Peaufiner). Descriptions : « le ruban franc, bord net » · « la plume charge et décharge, elle pose des gouttes » · « peigné de barres perpendiculaires » · « le feutre se rompt et s'amenuise » · « deux brins qui se croisent » · « le bas du trait s'effiloche » · « un second trait accompagne le premier » · « le trait s'ouvre en deux lèvres » · « des crans mordus dans le bord haut » · « le ruban se tord » · « le trait se disperse en grains » · « le trait se noue en perles ». (app.html:24814, 25238)
 - **Les suggestions (exemples des pastilles vides)** — `lot-EXEMPLES-V20` (app.html:36024–36046), listes de Tom, mot pour mot. Règle : ouverture 1 → la phrase 1 ; ouverture 2 → la phrase 2 (Chiche : une seule fixe) ; ensuite tirage **sans remise** dans les suivantes, gardé d'une ouverture à l'autre ; un tirage par ouverture de la page +. Une phrase « A / B » porte sa variante plurielle (B).
@@ -304,7 +304,7 @@ Tête : le titre tapé (sinon « Promi » / « Chiche » / « Cercle ») +
 <a id="4"></a>
 ## 4 · La fiche d'une parole
 
-**Nom à l'écran** : mot-marque « PROMI » ou « CHICHE ». **Id interne** : `#detailPoster` (classes `dp-promi`, `dp-chiche`, `f-atenir`, `f-encours`, `f-tenue`, `dp-draft`) ; la parole courante est `cur`.
+**Nom à l'écran** : mot-marque « PROMI » ou « CHICHE ». **Id interne** : `#detailPoster` (classes `dp-promi`, `dp-chiche`, `f-encours`, `f-tenue`, `dp-draft`) ; la parole courante est `cur`.
 
 ### Accès
 - Depuis : une dalle de l'accueil, une carte de l'Index, un bandeau du Fil, une ligne du fil d'un Cercle, une carte de la fiche d'une personne, une île ou une dalle tenue de l'Aura.
@@ -317,31 +317,31 @@ Tête : le titre tapé (sinon « Promi » / « Chiche » / « Cercle ») +
 | **La bande haute** (le champ) | y 0 → l'onde | couleur pleine de la **nature** (`#82AEF8` Promi, `#FFB8D2` Chiche), dans les deux thèmes, quel que soit l'état |
 | Plateau | 24 / 40 / 342 × 60 | mot-marque de la nature ; « FERMER » avec une croix ; texte à l'encre sur le champ pastel |
 | **La dalle** | y **124** ; `dh = min(300, (base − amp) − 124 − 12)` ; largeur `min(320, 1,2 × dh)` ; centrée | vraie dalle du moteur, rendue à sa taille finale, **teintée sur la rampe de la nature** (Q30) ; suit le monde et la palette du Studio (sauf « La dalle d'origine », §23) ; une **photo** ou un **dessin** la remplacent |
-| Bouton photo | rond 34, centre x 349 ; y relevé 221 (à tenir, en cours, Chiche lancé), 331–335 (tenue) | VoiceOver « Photo » |
+| Bouton photo | rond 34, centre x 349 ; y relevé 221 (en cours, Chiche lancé), 331–335 (tenue) | VoiceOver « Photo » |
 | **Le trait** (`#tenirZone`, 390 × 118) | onde `base` / amp 36 ; relevé : zone centrée y 303 pour base 286 | porte l'**état** ; modes : `moitie` (plein 0 → 195, chevron, points), `complet` (plein 0 → 390), `duo`, `points` (gardé de côté) ; matière = le pinceau de la parole |
 | Le mot du geste `#dptTrace` | y `yTrace = ⌊yEncre + 25⌉`, centré ; `yEncre = base + 0,45·amp + 5` | seulement s'il reste quelque chose à tracer |
 | **Les Noyaux** `#dAura` | x 24, y `yNoyau = yTrace + 44` (sans mot du geste : `yEncre + 27`) ; rangée de 342 | « toi » (78) puis les personnes concernées (58) avec leur prénom ; un Promi à soi n'a que « toi » ; relevé : un Noyau de personne = boîte 70 × 83 |
 | **À qui** `#dptQui` | y `yQui = yNoyau + 128` (+ correction d'encre) ; Gilbert 23 (21 en duo) | un seul ton |
 | **Le titre** `#dptTitre` | y `yTitre = yQui + quiFs × 1,10 + 11,9` (à l'encre) ; Gilbert **42**, réduit d'un point à la fois jusqu'à tenir sur une ligne (plancher 38) ; titre long : deux lignes, trois au plus (jusqu'à 24 px), puis points de suite | le texte tapé n'est jamais modifié |
 | **La ligne d'état** `#dptQuand` | y `yTitre + hauteur du titre + 26,3` (+ jambage de la dernière ligne) ; 13,5 px, capitales | « TENUE » en amande `#8FE08F` |
-| Zone de message `#dpCorps` | **en cours** : champ 342 × 66, rayon 33, contour 3, à `état + 13,5 × 1,1 + 28,25` ; **tenue avec note ou commentaire** : carte 342 × 76, rayon 22, à `titre + 23` ; **sinon : rien** (une fiche à tenir n'a pas de zone de message) | invite « écris un mot » (ou « répondre » s'il y a déjà un commentaire) ; en-tête « {AUTEUR}, {QUAND} » ou « TA NOTE » |
+| Zone de message `#dpCorps` | **en cours** : champ 342 × 66, rayon 33, contour 3, à `état + 13,5 × 1,1 + 28,25` ; **tenue avec note ou commentaire** : carte 342 × 76, rayon 22, à `titre + 23` ; **sinon : rien** | invite « écris un mot » (ou « répondre » s'il y a déjà un commentaire) ; en-tête « {AUTEUR}, {QUAND} » ou « TA NOTE » |
 | Barre Peaufiner | y 760 → 844 | « Peaufiner » + rond Partager |
 
 **Les cas** (app.html:14460–14500) :
 | État | base | mode du trait | couleur du trait | couleur des libellés (à-qui, mot du geste, état) | mot du geste | mot d'état |
 |---|---|---|---|---|---|---|
 | **Promi en cours** | 286 | moitié | teinte sombre de la nature (`#022140`) | `#291547` en clair · crème en sombre | « trace pour tenir » | « EN COURS » |
-| **Promi à tenir** (`status:'rate'`) | 286 | moitié | `#DD4D23` | `#DD4D23` en clair · crème en sombre | « trace pour tenir » | « À TENIR » (+ « · {JOUR} ») |
+| **Promi en cours, date passée** (`status:'encours'`, `due < 0` ; l'état « à tenir » est retiré en v173, C-210) | 286 | moitié | teinte sombre de la nature (`#022140`) | comme « en cours » | « trace pour tenir » | « EN COURS · 12 OCT. » (`_datePassee`, D5 : à l'encre du mode, sans couleur, sans « c'était ») |
 | **Promi tenue** | 400 (286 s'il y a une note ou un commentaire) | complet | crête `#0B4A2A` + filet crème dessous | crème ; état en amande | — | « TENUE » (+ « · {JOUR} ») |
 | **Chiche lancé** | 286 | moitié | teinte sombre du Chiche (`#3D0F23`) | comme « en cours » | « {Prénom} tracera sa part si elle ose » | « LANCÉ » |
-| **Chiche à relever** | 286 | moitié | `#DD4D23` | comme « à tenir » | « trace pour tenir » | « À RELEVER » |
+| **Chiche à relever** (reçu, `from` ≠ moi, `chicheEtat` ≠ `'releve'` : `_chicheARelever`, D2) | 286 | moitié | teinte sombre du Chiche (`#3D0F23`) | comme « en cours » | « trace pour tenir » | « À RELEVER » |
 | **Chiche tenu** | 400 / 286 | complet | crête | crème / amande | — | « TENUE » |
 | **Chiche tenu à deux** (`avec`) | 396 | duo | crête | crème / amande | — | « TENU À DEUX » (+ « · 3 AOÛT ») |
 | **Gardé de côté** (rendu de fiche, non atteint au doigt) | 286 | points | couleur de la nature | couleur de la nature | « trace pour planter » / « trace pour lancer » | — ; à-qui = « Gardé de côté » ; pas de Noyaux ; champ de la nature **sans matière** |
 
 **Le corps (sous l'onde)** :
 - clair : **crème `#F7F0DE`** pour les trois natures (CLAUDE §3, correction v122) ; texte à l'encre.
-- sombre : Promi **`#0E78F2`, DÉFINITIF** (v134, décision Tom ; `#1A52F0`, `#273CEB`, `#8ACBE8`, `#335382` sont morts pour ce rôle) ; Chiche `#7C3F58` ; texte crème `#F7F0DE`. **Exception nommée** : sur le bleu d'un Promi le texte crème ne fait que 3,70:1 — par décision, aucune passe de lisibilité ne doit le repeindre. Le trait « à tenir » `#DD4D23` y a la clarté du corps : c'est sa teinte seule qui le sépare (ΔE 126).
+- sombre : Promi **`#0E78F2`, DÉFINITIF** (v134, décision Tom ; `#1A52F0`, `#273CEB`, `#8ACBE8`, `#335382` sont morts pour ce rôle) ; Chiche `#7C3F58` ; texte crème `#F7F0DE`. **Exception nommée** : sur le bleu d'un Promi le texte crème ne fait que 3,70:1 — par décision, aucune passe de lisibilité ne doit le repeindre.
 - **tenue** : la **terre `#2B1020`** dans les deux thèmes ; texte crème, marques d'état en amande ; le filet crème sous le trait y est **exigé**.
 
 **Rythme sous le trait** (app.html:14553–14557) : 26 d'encre entre deux blocs (trait, mot, disques, état, commentaires), 20 dans le bloc de la promesse (à-qui · titre), 30 sous le titre.
@@ -418,7 +418,7 @@ Sur toute fiche **reçue** (Promi ou Chiche qu'on me fait), sur une parole en co
 
 ### Textes exacts
 - À qui : « À moi » · « À {Prénom} » · Chiche avec compagnon tiers : « À {Prénom} · avec {Prénom} » · « Gardé de côté ».
-- État : « EN COURS » · « À TENIR » · « TENUE » · « LANCÉ » · « À RELEVER » · « TENU À DEUX » ; suite « · {JOUR EN CAPITALES} » quand l'app la connaît (échéance : « AUJOURD'HUI », « DEMAIN », un jour de la semaine…).
+- État : « EN COURS » · « TENUE » · « LANCÉ » · « À RELEVER » · « TENU À DEUX » ; suite « · {JOUR EN CAPITALES} » quand l'app la connaît (échéance : « AUJOURD'HUI », « DEMAIN », un jour de la semaine…) ; une date passée s'écrit comme une date : « EN COURS · 12 OCT. », à l'encre du mode, sans couleur (D5). La parole reste `encours`, `due < 0`.
 - Mot du geste : « trace pour tenir » · « {Prénom} tracera sa part si elle ose » (sans prénom : « elle tracera sa part si elle ose »).
 - Message : « écris un mot » · « répondre » · « TA NOTE ».
 - Barre : « Peaufiner » ; VoiceOver du rond : « Partager » ; du bouton photo : « Photo ».
@@ -448,7 +448,7 @@ Sur toute fiche **reçue** (Promi ou Chiche qu'on me fait), sur une parole en co
 ### Éléments — les trois écrans (`lot-S5`, app.html:19602–19660) ; tous : base 300, amplitude 36, boîte 384
 | Écran | Champ | Dalle (x, y, l × h) | Trait | Sous le trait |
 |---|---|---|---|---|
-| **l'autre part arrive** | couleur de la nature | 105, 91, 180 × 150 | orange `#DD4D23` plein 0 → 195 + chevron ; **amande** plein 195 → 268 (l'autre trace) ; points orange dès 213 | mot « l’autre part arrive » à y 388 ; Noyaux à 432 / 442 ; à-qui à 559 (orange) ; titre à 590 |
+| **l'autre part arrive** | couleur de la nature | 105, 91, 180 × 150 | orange `#FB4C0D` plein 0 → 195 + chevron ; **amande** plein 195 → 268 (l'autre trace) ; points orange dès 213 | mot « l’autre part arrive » à y 388 ; Noyaux à 432 / 442 ; à-qui à 559 (orange) ; titre à 590 |
 | **le trait se referme** | **amande `#8FE08F` plein** | 81, 88, 228 × 190 | **encre** plein 0 → 390 | rien (Noyaux cachés) |
 | **juste après** | couleur de la nature | 105, 91, 180 × 150 | **amande** plein 0 → 390 | Noyaux à 388 / 398 ; à-qui à 515 ; titre à 546 ; état à 614 |
 
@@ -457,7 +457,7 @@ Sur toute fiche **reçue** (Promi ou Chiche qu'on me fait), sur une parole en co
 ### Actions / déroulé
 - Le geste se referme → **1 000 ms** d'amande (« le trait se referme »), puis « juste après » ; fin à **1 700 ms** ; la fiche tenue ordinaire se pose ensuite, par morceaux.
 - **La célébration** (CLAUDE §3) : une seconde dalle de la même forme apparaît sous la première, en amande, se décale, puis disparaît. L'amande ne peint que cela et la mention « TENU(E) ».
-- Fluidité exigée : aucune image au-delà de 20 ms de travail pendant l'animation ; les deux dalles de l'instant sont rendues **à l'avance** quand la fiche à tenir est posée ; aucune passe de tout le document pendant l'animation.
+- Fluidité exigée : aucune image au-delà de 20 ms de travail pendant l'animation ; les deux dalles de l'instant sont rendues **à l'avance** quand la fiche pas encore tenue est posée ; aucune passe de tout le document pendant l'animation.
 - Fermer la fiche met fin à l'instant.
 - Après une série : toast « Belle série — partage ton Noyau » avec le bouton « Partager » (app.html:3042, 6906). ⚠ Ce mot (« Noyau ») date d'avant le remplacement par la Pelote au partage (v13) : à valider avant de le porter.
 
@@ -495,7 +495,7 @@ Sur toute fiche **reçue** (Promi ou Chiche qu'on me fait), sur une parole en co
 | 8 | « COMMENTAIRES » | zone 118 (104 sur un Chiche) | invite « écris un mot… » ; ligne du bas « privé — personne d’autre ne le voit » ou « visible par {X}, qui peut y répondre » | saisie |
 | 9 | « RELANCER {PRÉNOM} » — seulement si une relance est possible | 342 × 64 | « → » | relance la personne |
 | 10 | **Le bloc de Ma Parole !** (cinq réglages) | rangées 342 × 64 | « RÉCURRENCE » — « chaque semaine » · « RAPPEL » — « la veille à 19:00 » · « C'EST IMPORTANT ? » — « · ·· ··· » · « LA MÉMOIRE » — « réveille tes « en l’air » » · « LA COULEUR » — le code de la couleur (ex. « #FFB8D2 ») | **au gratuit : floutés à 4,8 px, sans prise, sans encart, sans explication** — c'est un mur (§21). Au payé : nets et réglables |
-| 11 | « SUPPRIMER CE PROMI » / « SUPPRIMER CE CHICHE » | 342 × 64 ; crème en sombre, encre en clair (jamais `#DD4D23`) | — | confirmation (§26) |
+| 11 | « SUPPRIMER CE PROMI » / « SUPPRIMER CE CHICHE » | 342 × 64 ; crème en sombre, encre en clair (jamais d'orange) | — | confirmation (§26) |
 | — | Barre Peaufiner | y 760 → 844 | inchangée | referme |
 
 - « LA COULEUR » (payé) : une des quatre couleurs de la palette de la dalle, ou un code libre ; la dalle la prend sur la Toile (`lot-CERCLE-COULEUR`, app.html:33050).
@@ -545,7 +545,7 @@ Tous les libellés du tableau, plus « ✕ FERMER ». Confirmation de suppress
 | « Avec … » | y = Noyaux + 127 ; Gilbert 19 | « Avec Rachel, Adrien, +3 » (deux nommés, puis le reste **moi compris**) · « Avec toi seulement » |
 | Le titre | y = « Avec » + 35 ; Gilbert 38 | le nom du Cercle, **dans sa casse** (« le potager ») |
 | La méta | y = titre + 68 | « N Promi · M tenu(s) » (+ « · une note », « · N fichier(s) », « · N mot(s) ») ; vide : « encore aucune parole » |
-| **Le fil** `#dpNueeFil` | première ligne à méta + 30 ; cartes 342 de large, 79 de haut (94 avec deux lignes de titre), pas de 12 | une carte par parole : libellé d'état (« à tenir », « en cours », « TENU », « CHICHE RELEVÉ »…), titre, « à {qui} », la vraie dalle à droite ; **toutes** les paroles (pas de coupe) |
+| **Le fil** `#dpNueeFil` | première ligne à méta + 30 ; cartes 342 de large, 79 de haut (94 avec deux lignes de titre), pas de 12 | une carte par parole : libellé d'état (« en cours », « TENU », « CHICHE LANCÉ », « CHICHE RELEVÉ »), titre, « à {qui} », la vraie dalle à droite ; **toutes** les paroles (pas de coupe) |
 | **« Planter dans le Cercle »** `#nfAdd` | pilule 342 × 62, rayon 31, trait 2, fond violet `#291547`, texte crème Gilbert 18 ; un rond crème de 40 portant le + ; **dernière ligne du fil**, 12 sous la dernière carte (16 sous la méta d'un Cercle vide) | |
 | Barre Peaufiner | y 760 → 844 ; elle prend le **corps violet `#291547`** dans les deux thèmes, texte crème | |
 
@@ -591,7 +591,7 @@ app.html:5739–5850 · `lot-S1B-geo` (15120–15460) · `lot-NUEE-BANDE`, `lot-
 
 ### Trous
 - **Amplitude de l'état posé** : le commentaire d'app.html:15132 dit 40 ; la décision du 1er sept. (« l'onde passe à 36 partout », app.html:17100) dit 36 avec deux exceptions qui ne citent pas le Cercle. La valeur réellement posée (`ampPose`) n'a pas été relue.
-- Les libellés d'état des lignes du fil (« à tenir », « en cours », « TENU », « CHICHE RELEVÉ ») sont relevés de l'inventaire ; la table complète des mots et leur casse n'a pas été extraite.
+- Les libellés d'état des lignes du fil (« en cours », « TENU », « CHICHE LANCÉ », « CHICHE RELEVÉ ») sont relevés de l'inventaire ; la table complète des mots et leur casse n'a pas été extraite.
 - Le sélecteur « LA COULEUR » d'un Cercle au payé (`NUEDALLE`) : contrôle non relevé.
 - Le Peaufiner du Cercle ne porte pas les quatre autres réglages de Ma Parole ! (récurrence…) : seul « LA COULEUR » y figure dans l'inventaire.
 
@@ -626,7 +626,7 @@ app.html:5739–5850 · `lot-S1B-geo` (15120–15460) · `lot-NUEE-BANDE`, `lot-
 |---|---|
 | Toucher une carte | fiche de la parole / du Cercle ; gardé de côté → page + |
 | Taper dans la recherche | filtre sur le titre, la personne, le Cercle |
-| « ⇅ » | menu : **TRIER** — « Récents » · « À tenir en premier » · « Par personne » · « Par Cercle » ; **NE MONTRER QUE** — « Tout » · « En suspens » · « Manquées » · « Promi » · « Cercles » · « Gardés de côté » · « Demandes » ; **QUADRILLAGE** — « Deux par ligne » · « Trois par ligne » · « Quatre par ligne » (le choix courant porte un point) |
+| « ⇅ » | menu : **TRIER** — « Récents » · « Par personne » · « Par Cercle » ; **NE MONTRER QUE** — « Tout » · « En suspens » · « Promi » · « Cercles » · « Gardés de côté » · « Demandes » ; **QUADRILLAGE** — « Deux par ligne » · « Trois par ligne » · « Quatre par ligne » (le choix courant porte un point) |
 | « ✕ Fermer » | retour à l'accueil |
 
 - **Ordre au repos : celui de la plantation** (chronologique, neutre — jamais un tri par urgence) ; un Cercle se range à sa première plantation ; les gardés de côté ferment la liste.
@@ -635,7 +635,7 @@ app.html:5739–5850 · `lot-S1B-geo` (15120–15460) · `lot-NUEE-BANDE`, `lot-
 - Rien à montrer (liste vide ou filtre sans résultat) : « Rien ici » / « Touche le **+** pour planter un Promi. »
 
 ### Textes exacts
-« INDEX » · « {N} parole(s) · {M} Cercle(s) » · « Rechercher » · les entrées du menu ci-dessus · « Rien ici » · « Touche le + pour planter un Promi. » · mots du temps d'une carte : « tenue » · « à tenir » · « un jour » · « aujourd'hui » · « demain » · un jour de la semaine (≤ 7 jours) · au-delà : ⚠ voir Trous · états : « TENUE », « TENU À DEUX », « LANCÉ », « À TENIR », « EN COURS », « GARDÉ DE CÔTÉ ».
+« INDEX » · « {N} parole(s) · {M} Cercle(s) » · « Rechercher » · les entrées du menu ci-dessus · « Rien ici » · « Touche le + pour planter un Promi. » · mots du temps d'une carte : « tenue » · une date passée (« 12 oct. », sans couleur) · « un jour » · « aujourd'hui » · « demain » · un jour de la semaine (≤ 7 jours) · au-delà : ⚠ voir Trous · états : « TENUE », « TENU À DEUX », « LANCÉ », « EN COURS » (« EN COURS · 12 OCT. » à date passée), « GARDÉ DE CÔTÉ ».
 
 ### Sources
 app.html:2642 (structure et menu) · app.html:3480–3625 (liste, ordre, compte, vide) · `lot-S4-css`, `lot-S4` (18602–19568) · `lot-REPERAGE` (32750) · `joignable-inventaire.md` (« Index 2 », « Index 3 ») · CLAUDE §8 (`#indexList{top:212px}`) · `redteam_reperage.py`.
@@ -644,7 +644,7 @@ app.html:2642 (structure et menu) · app.html:3480–3625 (liste, ordre, compte,
 - **Quatre par ligne** : taille des cartes non relevée (l'inventaire ne couvre que 2 et 3).
 - Cotes internes d'une carte (place du sur-titre, du titre, de l'état, boîte de la dalle) : dans `peintCarte` (app.html ≈ 18900–19060), non extraites ; les vérifications du document donnent les boîtes du trait : 135 (165 × 198), 97 (106 × 133).
 - `motDuTemps` au-delà de 7 jours (app.html:6260 et suivantes) : non relu.
-- « Manquées » et « En suspens » sont des mots du menu d'origine ; « manquée » n'est pas dans le lexique des états (à tenir · en cours · tenu) — à valider avant de les porter.
+- « En suspens » est un mot du menu d'origine — à valider avant de le porter. (« Manquées », devenu « À tenir » en v163b : retiré en v173, C-210.)
 
 ---
 
@@ -681,7 +681,7 @@ app.html:2642 (structure et menu) · app.html:3480–3625 (liste, ordre, compte,
 | « REJOINDRE » | rejoint un Cercle (invitation) | app.html:6881 |
 | « TRACER » | trace sa moitié | app.html:6883 |
 | « ✧ bravo » / « ✦ bravo » | réaction à un événement d'un proche (bascule) | app.html:6889 |
-| « ⇅ » | menu : **TRIER** — « Récents » · « Par personne » · « Par Cercle » ; **NE MONTRER QUE** — « Tout » · « Ce qui attend un geste » · « Paroles tenues » · « Demandes » · « À tenir » · « Cercles » · « Mes Promi » · « Mes proches » | app.html:2555 |
+| « ⇅ » | menu : **TRIER** — « Récents » · « Par personne » · « Par Cercle » ; **NE MONTRER QUE** — « Tout » · « Ce qui attend un geste » · « Paroles tenues » · « Demandes » · « Cercles » · « Mes Promi » · « Mes proches » | app.html:2555 |
 
 ### États vides et d'erreur
 - Journal vide : « ✦ » · « Rien ne bouge encore » · « les gestes de tes proches / apparaîtront ici ».
@@ -691,7 +691,7 @@ app.html:2642 (structure et menu) · app.html:3480–3625 (liste, ordre, compte,
 ### Textes exacts
 - « FIL » · « Rechercher » · menu ci-dessus · « TENIR » · « REPORTER » · « RELEVER » · « REJOINDRE » · « TRACER » · « bravo ».
 - Événements (jeu de démonstration, formes à porter) : « {Prénom} a relevé » · « à {Prénom} » · « {Prénom} a planté » · « à moi » · « {Prénom} te lance un chiche » · « {Prénom} a tracé sa moitié » · « {Prénom} t’invite à rejoindre « {Cercle} » ».
-- États : « RELEVÉ · À TENIR À DEUX » · « À RELEVER » · « {NOM DU CERCLE} · {N} PROMI » · « {N} PROMI · {M} TENU(S) » · et ceux de l'Index.
+- États : « RELEVÉ · À DEUX » (événement du jeu de démonstration, cadre 76 ; à valider, Q595) · « À RELEVER » · « {NOM DU CERCLE} · {N} PROMI » · « {N} PROMI · {M} TENU(S) » · et ceux de l'Index.
 - Les guillemets « » d'un titre sont insécables.
 
 ### Sources
@@ -721,9 +721,9 @@ app.html:2555 · app.html:6848–6925 (`buildFeed`, gestes) · `lot-S4` (19200�
 | Ombre | 391,22 → 407,45 | ellipse ; encre du mode en clair, **crème** en sombre |
 | « PARTAGER MA PELOTE » | 435,47 → 495,47 ; 342 × 60 | PromiLate 15, capitales ; **couleur du texte : un ton de la palette tiré à chaque ouverture**, ≥ 3:1, jamais celui des poils ni du corps, jamais kaki (la clarté seule est ajustée, jamais de repli sur l'encre) |
 | La phrase | 515,59 → 566,56 (une ligne : jusqu'à 541,07) ; 20,4 px | une des cinq phrases (voir Textes) |
-| **Les Noyaux** | 582,77 → 689,77 ; rangée 366 × 107 qui glisse | « Toi » (78) puis chaque personne (58) avec son prénom ; l'anneau = les trois états de ce qui se promet **entre vous, dans les deux sens, une fois**, pondéré par le nombre de paroles |
-| La légende | 709,05 → 733,30 | « tenues » · « en cours » · « à tenir », chacune avec sa pastille d'état |
-| Les trois chiffres | 752,02 → 782,02 ; PromiLate 29 | un chiffre centré sous chaque entrée de la légende |
+| **Les Noyaux** | 582,77 → 689,77 ; rangée 366 × 107 qui glisse | « Toi » (78) puis chaque personne (58) avec son prénom ; l'anneau = les deux états de ce qui se promet **entre vous, dans les deux sens, une fois**, pondéré par le nombre de paroles |
+| La légende | 709,05 → 733,30 | « tenues » · « en cours », chacune avec un rectangle d'aperçu de la couleur de l'état, de la hauteur d'une majuscule des mots : **24 × 15,2 pt, rayon 3** ; le filet crème intérieur reste |
+| Les deux chiffres | 752,02 → 782,02 ; PromiLate 29 | un chiffre centré sous chaque entrée de la légende |
 | « Ce que tu as tenu » | titre à 800,52 (62 pt d'air sous les chiffres) | **toutes** les paroles tenues, **la plus récente en premier**, en vraies dalles (boîte 105 × 56, trois par rangée) avec leur titre ; l'Aura défile |
 | « Ce qu’on t’a tenu » | à la suite | les trois dernières ; **au gratuit : flouté à 4,8 px** (mur, §21) ; absent s'il n'y a rien |
 
@@ -749,7 +749,7 @@ app.html:2555 · app.html:6848–6925 (`buildFeed`, gestes) · `lot-S4` (19200�
 - Sans carte graphique (WebGL 2 dans le prototype) : le peintre du processeur prend le relais, mêmes poils.
 
 ### Textes exacts
-- « L’AURA » · « PARTAGER MA PELOTE » (VoiceOver « Partager ma Pelote ») · « Toi » · « tenues » · « en cours » · « à tenir » · « Ce que tu as tenu » · « Ce qu’on t’a tenu ».
+- « L’AURA » · « PARTAGER MA PELOTE » (VoiceOver « Partager ma Pelote ») · « Toi » · « tenues » · « en cours » · « Ce que tu as tenu » · « Ce qu’on t’a tenu ».
 - **Les cinq phrases** (choisie par `nombre de paroles tenues modulo 5` : elle change en tenant, jamais au hasard) :
   0. « Rien de ce qui est ici n’a été dit à la légère. »
   1. « Tout ça, tu l’as dit. Et tu l’as fait. »
@@ -764,7 +764,7 @@ app.html:2555 · app.html:6848–6925 (`buildFeed`, gestes) · `lot-S4` (19200�
 ### Trous
 - La géométrie de la grille de « Ce que tu as tenu » (pas horizontal et vertical, place du titre sous la dalle) n'a pas été relevée ; la fiche d'une personne emploie 117 × 101 pour la même cellule (§22) — à ne pas transposer sans vérifier.
 - Les paramètres du toucher de la Pelote (rayon et profondeur de l'empreinte, durée du retour, constantes d'élan `G`) sont dans `lot-AURA-PELOTE` : à prendre dans le document de la Pelote, non extraits ici.
-- La légende écrit « tenues » ; l'aide « TENUES / EN COURS / À TENIR » ; pas de contradiction, casse différente.
+- La légende écrit « tenues » ; l'aide « TENUES / EN COURS » ; pas de contradiction, casse différente.
 
 ---
 
@@ -778,11 +778,11 @@ app.html:2555 · app.html:6848–6925 (`buildFeed`, gestes) · `lot-S4` (19200�
 
 ### Éléments (`lot-HUIT`, app.html:33239–33276)
 1. Plateau : « L’AURA » + « ✕ Fermer ».
-2. Légende : trois pastilles d'état — « TENUES » `#00341A` · « EN COURS » `#291547` · « À TENIR » `#DD4D23`.
+2. Légende : deux rectangles d'aperçu de **13 × 8,2 pt, rayon 2** (la hauteur d'une majuscule des mots) — « TENUES » `#00341A` · « EN COURS » `#291547`.
 3. Étiquette « En gratuit », puis cinq cartes (une icône 48 × 48 + un titre + une phrase) :
    - « La Pelote » — « Chaque parole tenue y devient une île : elle s’étoffe à mesure que tu tiens. Touche une île pour la revoir. »
    - « La phrase » — « Sous la Pelote, quelques mots pour te rappeler ce que tu as déjà tenu. »
-   - « Les Noyaux » — « **Toi**, puis chaque personne avec qui tu échanges des paroles. L’anneau dit où vous en êtes : **tenu**, **en cours**, **à tenir**. »
+   - « Les Noyaux » — « **Toi**, puis chaque personne avec qui tu échanges des paroles. L’anneau dit où vous en êtes : **tenu**, **en cours**. »
    - « Ce que tu as tenu » — « Tes paroles tenues, dans l’ordre où tu les as tenues. Touche-en une pour la revoir. »
    - « Partager ma Pelote » — « Une image à partager : on y voit que tu tiens parole, jamais ce que tu as promis. »
 4. Étiquette « Avec Ma Parole ! » — **masquée au gratuit** ; l'encart « ✦ Ma Parole ! » est **masqué** (v104).
@@ -1217,7 +1217,7 @@ L'autre moitié de la Toile (ce qu'on te tient), la récurrence, le rappel à l'
 - Elle reste **le temps d'être lue** : `1,4 s + 60 ms par caractère`, bornée entre **3 s et 5,5 s**, puis s'efface.
 - **La toute première fois**, l'offre s'ouvre automatiquement à la fin de la lecture. **Ensuite**, tant que la phrase est là, **un toucher n'importe où** ouvre l'offre (pas dans les 450 ms qui suivent son apparition).
 - **Compteur global** (toutes zones) : les dix-huit phrases **dans l'ordre**, puis **au hasard sans répéter la précédente** ; remis à zéro après **14 jours** sans toucher un mur (à valider).
-- **Les mots en orange** : dans chaque phrase, seuls les mots listés prennent l'orange de Ma Parole ! — `#FB4C0D` ; `#FF7A55` sur les corps sombres de Peaufiner d'un Chiche et d'un Cercle ; **`#FED0C3`** sur le corps sombre d'un Promi (`#0E78F2`, v134 : même teinte, éclaircie jusqu'à 3,01:1). « ! » n'apparaît que dans « Ma Parole ! ».
+- **Les mots en orange** : dans chaque phrase, seuls les mots listés prennent l'orange de Ma Parole ! — `#FB4C0D` exact, corps Chiche et Cercle compris (2,27 et 2,28:1, D1) ; **crème `#F7F0DE`** sur le Peaufiner d'un Promi (fond bleu `#0E78F2`), à cet endroit seulement (D1, C-210). Aucun orange dérivé. « ! » n'apparaît que dans « Ma Parole ! ».
 - Au payé : aucun mur, aucune phrase.
 
 ### Les dix-huit phrases, mot pour mot (`TEXTES`, app.html:37116–37134) — entre crochets : les mots en orange
@@ -1262,8 +1262,8 @@ Les mots en orange sont cherchés **dans l'ordre**, chacun après le précédent
 | Élément | Cotes | Détail |
 |---|---|---|
 | Plateau | 24 / 40 / 342 × 60 | le prénom (700) + « ✕ Fermer » |
-| Le Noyau | x 24 · y 124 · Ø 58, trait 6 | piste neutre, trois arcs d'état (tenu · en cours · à tenir) calculés sur **toutes les paroles partagées** (elle est « à qui », « de qui », ou « avec ») ; le visage au centre ; **aucun chiffre** |
-| La légende | x 100 · y 145 | « tenues » · « en cours » · « à tenir » — seulement s'il y a des paroles |
+| Le Noyau | x 24 · y 124 · Ø 58, trait 6 | piste neutre, deux arcs d'état (tenu · en cours) calculés sur **toutes les paroles partagées** (elle est « à qui », « de qui », ou « avec ») ; le visage au centre ; **aucun chiffre** |
+| La légende | x 100 · y 145 | « tenues » · « en cours », chacune avec un rectangle d'aperçu de **16,3 × 10,2 pt, rayon 3** (Gilbert 13 px, capitale 10,2) — seulement s'il y a des paroles |
 | « Tenu ensemble » | titre à y 214 ; cellules à partir de y 244, pas horizontal 117 (x 24 · 141 · 258), pas vertical 101 | une cellule par parole tenue : la vraie dalle (boîte 105 × 56) + son titre ; absent s'il n'y a rien de tenu |
 | « Ce que tu partages avec {Prénom} » | 32 sous le bloc précédent ; titre + 30 | les paroles partagées en **vraies cartes d'Index**, trois par ligne (106 × 133) ; la ligne du bas de chaque carte **n'écrit plus l'état** (le trait le dit) : elle garde le temps quand l'app le sait, et le nom du Cercle de la parole en capitales |
 | Deux boutons | 167 × 62, x 24 et 199 ; y = max(760, bas du contenu + 28) (relevé : centre y 791) | « + Planter un Promi » · « + Lancer un Chiche » |
@@ -1278,7 +1278,7 @@ Les mots en orange sont cherchés **dans l'ordre**, chacun après le précédent
 - Personne sans aucune parole partagée : le Noyau (piste neutre seule), pas de légende, aucun des deux blocs, les deux boutons à y 760.
 
 ### Textes exacts
-« Tenu ensemble » · « Ce que tu partages avec {Prénom} » · « + Planter un Promi » · « + Lancer un Chiche » · « tenues » · « en cours » · « à tenir ».
+« Tenu ensemble » · « Ce que tu partages avec {Prénom} » · « + Planter un Promi » · « + Lancer un Chiche » · « tenues » · « en cours ».
 
 ### Sources
 `lot-FICHE-PERSONNE-CSS`, `lot-FICHE-PERSONNE` (app.html:31080–31285) · `lot-PERSONNE-AVEC` (31066) · `lot-CHEMINS-PERSONNE` (31344) · `joignable-inventaire.md` (« personne »).
@@ -1489,7 +1489,7 @@ Un bandeau : le message + le bouton « Annuler » ; il reste **5 s**. « Annu
 | 12 | Instant | Valeurs de la célébration (seconde dalle amande) ; toast « partage ton Noyau » à valider. |
 | 13 | Peaufiner | Contenu et fonctionnement au payé de RÉCURRENCE, RAPPEL, C'EST IMPORTANT ?, LA MÉMOIRE ; la relance. |
 | 14 | Cercle | Amplitude de l'état posé (40 ou 36) ; table des mots d'état des lignes du fil ; « LA COULEUR » au payé. |
-| 15 | Index | Quatre par ligne ; cotes internes d'une carte ; mots du temps au-delà de 7 jours ; « Manquées », « En suspens » à valider. |
+| 15 | Index | Quatre par ligne ; cotes internes d'une carte ; mots du temps au-delà de 7 jours ; « En suspens » à valider. |
 | 16 | Fil | Correspondance type d'événement → gestes ; règle de la pastille de l'entrée FIL. |
 | 17 | Aura | Grille de « Ce que tu as tenu » ; constantes du toucher de la Pelote. |
 | 18 | Aide de l'Aura | Contradiction : « dans l'ordre où tu les as tenues » contre « la plus récente en premier » (v132). |

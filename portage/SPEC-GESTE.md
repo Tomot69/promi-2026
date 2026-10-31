@@ -46,7 +46,7 @@ onde(base, amp, per = 1,5, larg = 390) :
 
 | Écran | base | amp | mode du trait | Source |
 |---|---|---|---|---|
-| Fiche · en cours / à tenir / Chiche lancé | 286 | 36 | `moitie` | `app.html:14452` |
+| Fiche · en cours / Chiche lancé | 286 | 36 | `moitie` | `app.html:14452` |
 | Fiche · gardé de côté | 286 | 36 | `points` | `app.html:14472-14480` |
 | Fiche · tenue, sans mot | 400 | 36 | `complet` | `app.html:14483-14486` |
 | Fiche · tenue, avec un mot ou des commentaires | 286 | 36 | `complet` | idem |
@@ -91,7 +91,7 @@ en sombre, pour les trois natures (`app.html:17257-17272`). Exception nominative
 (CLAUDE.md §3, bloc v114 « LE FILET DU TRAIT »).
 
 **La couleur du trait** : il porte l'ÉTAT et se juge en **ΔE ≥ 15** sur son champ (CLAUDE.md §3, Q216). Sur un champ plein il
-prend la teinte SOMBRE de sa nature (`NATTRAIT` : Promi `#022140`, Chiche `#3D0F23`, Cercle `#291547`) ; à tenir `#DD4D23` ;
+prend la teinte SOMBRE de sa nature (`NATTRAIT` : Promi `#022140`, Chiche `#3D0F23`, Cercle `#291547`) ;
 tenue, la crête `#0B4A2A` sur la terre (CLAUDE.md §3, « §2.1 bis CORRIGÉ » et bloc du 21 sept.).
 **Le pinceau** (la matière du trait, propre à chaque parole) remplace le plein et l'amorce, jamais la courbe, le chevron ni
 les points (`app.html:14788-14800`).
@@ -126,7 +126,7 @@ Le composant « deux points, un trait » de 118 px (CLAUDE.md §5) reste la gram
 **Ce que le doigt publie pendant le geste :** son abscisse en écran 390 (`window._ppDoigt`), et la page + se repeint
 (`_ppTout`) : **le plein va de 0 au doigt, borné au milieu** pour un Promi et un Chiche (`MI = 195`), **à 390 pour un Cercle**
 (`ENTIER`, `app.html:17235-17241`), le chevron marque la frontière, et **dès que le doigt trace, le trait entier passe en
-`#DD4D23`** (`app.html:17231`). Au repos la couleur est celle de la nature (`NATTRAIT`).
+`#FB4C0D`** (`app.html:17231`). Au repos la couleur est celle de la nature (`NATTRAIT`).
 
 > **Un Cercle se lance en traçant le trait entier** (0 → 390, le mode complet) : il n'est promis à personne, personne ne vient
 > à sa rencontre. Un Promi et un Chiche tracent une moitié (CLAUDE.md §4, « UNE NUÉE SE LANCE EN TRAÇANT LE TRAIT ENTIER »).
@@ -190,7 +190,7 @@ régénère une parole récurrente (`regenRecur`), écrit au Fil (`feedAdd('kept
 
 | Écran | Champ | Trait | Dalle | Mots |
 |---|---|---|---|---|
-| `arrive` — l'autre part arrive | la nature | `#DD4D23` plein 0 → 195, chevron, points ; par-dessus, la moitié de l'autre en amande de 195 jusqu'à `_instantX` (268 sur le cadre) | 180 × 150 à (105, 91) | « l'autre part arrive », centré, y 388 |
+| `arrive` — l'autre part arrive | la nature | `#FB4C0D` plein 0 → 195, chevron, points ; par-dessus, la moitié de l'autre en amande de 195 jusqu'à `_instantX` (268 sur le cadre) | 180 × 150 à (105, 91) | « l'autre part arrive », centré, y 388 |
 | `referme` — le trait se referme | **amande `#8FE08F` pleine** | encre `#201908`, plein 0 → 390 | **228 × 190** à (81, 88) | « tenue. » (Gilbert 64 px, interlettre −0,04 em, y 388) et son mot (20 px, y 479) |
 | `apres` — juste après | la nature | amande, plein 0 → 390 | 180 × 150 à (105, 91) | Noyaux y 388, à-qui y 515, titre y 546, quand y 614 |
 
@@ -207,7 +207,7 @@ garde-fou    3 000 ms : rien ne reste suspendu si l'affichage s'arrête
 reprises     à 60, 200 et 600 ms de chaque écran, SEULEMENT si la dalle n'a pas pu être peinte
 ```
 
-**Les deux dalles de l'instant sont rendues à l'avance** (`prechauffe`, 900 ms après l'ouverture d'une fiche à tenir, jamais
+**Les deux dalles de l'instant sont rendues à l'avance** (`prechauffe`, 900 ms après l'ouverture d'une fiche pas encore tenue, jamais
 pendant un tracé ni une plantation ; 120 ms entre les deux — `app.html:19941-19957`, `19986`).
 **Budget décidé** (`redteam_fluide.py`, CLAUDE.md §3 bloc v124) : aucune image au-delà de **20 ms** de travail du fil principal,
 **p95 ≤ 16,7 ms**, la durée (1 000 ms) et les deux états inchangés. Après l'animation, la plus longue tâche : 22 ms (Q379, v125).
