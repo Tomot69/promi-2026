@@ -369,7 +369,7 @@ def ouvre(b, th, reduit=False, vierge=True):
 def onboarding(pg, cdp, compte=True):
     """le parcours d'origine, au doigt : prénom → parole → trait → message de fin → compte (« Plus tard ») → l'accueil"""
     c = centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(700)
-    c = centre(pg, '[data-onb="parole"]') or centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
+    pg.wait_for_function("()=>!window._onbInvite||!window._onbInvite.etat().ecrit", timeout=12000); c = centre(pg, '[data-onb="parole"]') or centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
     pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(700)
     return trait(pg, cdp, compte)
 def trait(pg, cdp, compte=True):

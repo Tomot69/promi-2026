@@ -31,8 +31,8 @@ with sync_playwright() as p:
         if s: toucher(cdp, s['x'], s['y'])
         else: pg.keyboard.press('Enter')
         pg.wait_for_timeout(1400)
-    q = pg.evaluate(POIGNEE, '[data-onb="parole"]')
-    if q: toucher(cdp, q['x'], q['y']); pg.wait_for_timeout(300); pg.keyboard.type(PAROLE, delay=25); pg.wait_for_timeout(600)
+    pg.wait_for_function("()=>!window._onbInvite||!window._onbInvite.etat().ecrit", timeout=12000); q = pg.evaluate(POIGNEE, '[data-onb="parole"]')
+    if q: toucher(cdp, q['x'], q['y']); pg.wait_for_timeout(300); pg.keyboard.type(PAROLE, delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(900)   # ⚑ v173 (C-211) : le trait paraît à la fermeture du clavier
     z = pg.evaluate(POIGNEE, '[data-onb="trait"]')
     if z and z.get('dep'): tracer(cdp, z); pg.wait_for_timeout(6600)   # le message de fin reste au moins quatre secondes (v21) avant d'accepter le toucher
     dd = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height*0.45}}")

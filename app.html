@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v172', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v173a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -38071,7 +38071,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 
   var reserveDonnees=null, parNous=false;
   var O=null, etape=null, rejeu=false, prenom='', parole='', fini=false, prog=0, actif=false, minuteurs=[], voisines=false, sansGuide=false;
-  var tParole=0, departTouche=false;   /* ⚑ v155 (Tom, C-169) : l'heure de la validation du prénom ; le premier toucher sur le trait (le départ cesse de clignoter) */
+  var departTouche=false;   /* ⚑ v155 (Tom, C-169) : le premier toucher sur le trait (le départ cesse de clignoter) */
+  var pageEnTrace=false, INVO={vis:false, sortie:false, vvH:0, vvT:0, jeu:0, tr:null, veille:0, journal:[]};   /* ⚑ v173 (C-211) : la séquence des textes de la page de la parole ; l'invite à tracer */
   var W=390, BASE=70, AMP=36, ZONE_Y=590, EP=10, RR=4.5, ESP=18, MID=195, CX=W*0.11, DIT_TOP=184, HT=118;
   /* ⚑ v157 (Tom, C-174) — « La flèche, le trait et les points deux fois plus grands, en grandissant vers le BAS : le haut reste exactement à sa place. »
      Épaisseur, chevron, points (rayon et pas) et amplitude de l'onde × 2 ; la largeur reste celle de l'écran. Le haut de l'encre au repos (le point le
@@ -38160,7 +38161,11 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); suite(); } });
     inp.addEventListener('focus', peindrePhrase); inp.addEventListener('blur', peindrePhrase);
     v.querySelector('#onbSuite').addEventListener('click', function(e){ e.stopPropagation(); suite(); });
-    v.addEventListener('click', function(e){ var pm=e.target.closest&&e.target.closest('.onbv-pm,#onbPh,#onbDit'); if(pm && !fini){ focus(); } });
+    v.addEventListener('click', function(e){ var pm=e.target.closest&&e.target.closest('.onbv-pm,#onbPh,#onbDit'), ph0=document.getElementById('onbPh');
+      /* pendant son tracé, la part pas encore écrite de la phrase est découpée : le toucher passe au travers, on le reconnaît à sa boîte */
+      if(!pm && ph0 && etape==='parole' && ph0.style.visibility!=='hidden' && ph0.__trace){ var r0=ph0.getBoundingClientRect(); if(e.clientX>=r0.left && e.clientX<=r0.right && e.clientY>=r0.top && e.clientY<=r0.bottom) pm=ph0; }
+      if(pm && !fini){ if(etape==='prenom' || !ph0 || ph0.style.visibility!=='hidden') focus(); }   /* v173 (C-211) : tant que la phrase n'est pas là, rien à saisir */
+      else if(!fini && etape==='parole' && aFocus() && parole.trim() && !(e.target.closest&&e.target.closest('#onbSuite,#onbIn'))){ var i0=document.getElementById('onbIn'); if(i0) i0.blur(); } });
     var cv=v.querySelector('#onbTrait'); armerTrait(cv);
     return v;
   }
@@ -38185,6 +38190,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   }
   function peindrePhrase(){
     var ph=document.getElementById('onbPh'); if(!ph) return;
+    if(pageEnTrace) return;   /* ⚑ v173 (C-211) : un toucher pendant que la page s'écrit ouvre le clavier, mais la phrase (et ce qui se place sous elle) n'est pas réécrite sous son tracé : repeinte à la fin de la séquence (C-206 : rien d'un coup) */
     if(etape==='prenom'){
       ph.innerHTML='Toi, c’est <span style="white-space:nowrap">'+pastille(prenom.trim()?prenom:'', PH_PRENOM, 'prenom')+' ?</span>';
     } else {
@@ -38196,9 +38202,11 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   /* ⚑ v155 (Tom, C-169 §4.4, §4.5 ; Q561) — le départ clignote AU RYTHME DU I DE PROMI : même animation (`promiBlink 1.15s steps(1,end)`), calée sur la
      phase du I quand il clignote ; seulement dans l'onboarding, seulement jusqu'au premier toucher sur le trait ; « Réduire les animations » : fixe. */
   function departBlink(el){ if(departTouche || reduitOnb()){ el.classList.remove('clignote'); return; }
-    var dl=0; try{ var i=document.querySelector('#onbV .onbv-mm i'), A=i&&i.getAnimations?i.getAnimations():[]; var a=A.filter(function(x){ return x.animationName==='promiBlink'; })[0];
-      if(a && a.currentTime!=null) dl=-(a.currentTime%1150); }catch(_){ }
-    el.style.animationDelay=dl+'ms'; el.classList.add('clignote'); }
+    el.classList.add('clignote');
+    /* ⚑ v173 (C-211) : la phase RECOPIÉE (`currentTime`), comme la page + (C-209) et la flèche du guide (v167) : le délai négatif ne la calait pas, mesuré 316 à 546 ms d'écart avec le I */
+    function cale(){ try{ if(!el.classList.contains('clignote')) return; var i=document.querySelector('#onbV .onbv-mm i'), f=function(n){ return n&&n.getAnimations?n.getAnimations().filter(function(x){ return x.animationName==='promiBlink'; })[0]:null; }, a=f(i), z=f(el);
+        if(a && z && a.currentTime!=null) z.currentTime=a.currentTime; }catch(_){ } }
+    cale(); requestAnimationFrame(function(){ cale(); requestAnimationFrame(cale); }); }
     /* ⚑ v160c (Tom, C-180 ; Q568, Q572, Q576) — « La parole longue : pendant l'écriture, à la 3e ligne, la 2e devient très courte et la 3e sort de l'écran ;
        en touchant ailleurs, la 1re devient courte, la 2e sort, la suite disparaît. » LA PAROLE N'EST PLUS COUPÉE PAR LE NAVIGATEUR : elle est composée
        ici, ligne par ligne, dans un cadre de largeur FIXE (la colonne de texte de la page, 342 pt) — coupe aux espaces, chaque ligne remplie au maximum
@@ -38276,19 +38284,45 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
           if(best===null){ col=24; for(var d2=0; d2<=260 && best===null; d2++){ if(libre(24, plafond-d2)) best=plafond-d2; } }   /* la colonne de droite pleine : à gauche de la consigne */
           if(best!==null){ su.style.top=best+'px'; su.style.left=col+'px'; } su.setAttribute('data-libre', best===null?'0':'1'); }catch(_){ } } }
     var tr=document.getElementById('onbTrait'), tt=document.getElementById('onbTrace');
-    /* ⚑ v155 (Tom, C-169 §4.4) — « trace pour planter » et la flèche paraissent 1 s APRÈS la validation du prénom (le temps que le clavier disparaisse et
-       que l'animation d'arrivée attire l'œil), qu'une parole soit écrite ou non ; avant v155 ils attendaient la première lettre de la parole. */
-    var voir = etape!=='prenom' && !fini && (!!parole.trim() || (tParole>0 && performance.now()-tParole>=1490)), avant = !!(tr && tr.style.display==='block');
+    /* ⚑ v173 (Tom, C-211) — CE BLOC CORRIGE v155 et v156 (C-169 : le trait 1,5 s après le prénom, parole écrite ou non). Le trait, son départ et « trace pour
+       planter » n'existent à l'écran qu'une fois la promesse complétée : `INVO.vis`, posé par la veille de l'invite (voir `veilleInvite`). */
+    var voir = etape!=='prenom' && !fini && (INVO.vis || INVO.sortie), avant = !!(tr && tr.style.display==='block');
     if(tr) tr.style.display = voir ? 'block' : 'none';
     var _dp=document.getElementById('onbDepart'); if(_dp){ _dp.style.display = voir ? 'block' : 'none'; if(voir && !avant) departBlink(_dp); }
-    if(voir && !avant){ try{ (window._onbApparition=window._onbApparition||[]).push(Math.round(performance.now()-tParole)); }catch(_){ } }
     if(tt) tt.style.display = voir ? 'block' : 'none';
     if(voir) peindreTrait();
-    /* ⚑ v148 (C-141 §10.3) — « rien n'arrive d'un coup » : le trait et « trace pour planter » paraissaient en une image à la première lettre. Ils
-       naissent EN FLAQUES : l'image de la Toile qui était là les couvre, et s'ouvre en flaques (700 ms). */
-    if(voir && !avant && tr && !reduitOnb()){ try{ var ve=document.getElementById('onbV'), im=imageToile(); if(ve && im){ var a=rectDe(tt||tr, 6), b=rectDe(tr, 4), y0=Math.min(a[1], b[1]), y1=Math.min(844, Math.max(a[1]+a[3], b[1]+b[3]));   /* v157 (C-174) : le trait × 2 dépasse le bas de l'écran — la flaque s'arrête à l'écran */
+    /* ⚑ v148 (C-141 §10.3) — « rien n'arrive d'un coup » : le trait et son départ naissent EN FLAQUES : l'image de la Toile qui était là les couvre, et s'ouvre en
+       flaques (700 ms). ⚑ v173 (C-211) : « trace pour planter » n'est plus dans la flaque, il se TRACE (`montreInvite`), comme à la page + (C-209). */
+    if(voir && !avant && tr && !reduitOnb()){ try{ var ve=document.getElementById('onbV'), im=imageToile(); if(ve && im){ var b=rectDe(tr, 4), y0=b[1], y1=Math.min(844, b[1]+b[3]);   /* v157 (C-174) : le trait × 2 dépasse le bas de l'écran — la flaque s'arrête à l'écran */
       window._passageFlaques(ve, {mode:'ouvre', devant:true, rect:[0, y0, 390, y1-y0], image:im, duree:700, lent:LENT_ONB()}); } }catch(_){ } }
   }
+  /* ⚑ v173 (Tom, 30 oct. 2026, C-211) — L'INVITE À TRACER DE LA PAGE DE LA PAROLE, LA RÈGLE DE LA PAGE + (C-209) : jamais pendant la frappe ; à la fermeture du clavier
+     (la hauteur visible revenue et stable 160 ms, ≤ 300 ms ensuite) ; le trait et son départ naissent en flaques, le libellé se trace, le départ clignote
+     jusqu'au premier toucher ; la parole effacée : ils repartent en flaques (300 ms). La veille : toutes les 50 ms, seulement sur cette page. */
+  function noteInvite(q){ try{ INVO.journal.push([Math.round(performance.now()), q]); if(INVO.journal.length>40) INVO.journal.shift(); }catch(_){ } }
+  function montreInvite(){ INVO.vis=true; INVO.sortie=false; INVO.jeu++; departTouche=false; noteInvite('montre'); placer();
+    var tt=document.getElementById('onbTrace');
+    if(tt){ tt.style.visibility='visible'; if(TRACE_ONB && window.TraceLettres && !reduitOnb()){ try{ INVO.tr=window.TraceLettres.trace(tt, null, {depart:'h'}); }catch(_){ INVO.tr=null; } } } }
+  function retireInvite(){ var j=++INVO.jeu, ve=document.getElementById('onbV'), tr=document.getElementById('onbTrait'), tt=document.getElementById('onbTrace'), dp=document.getElementById('onbDepart'), im=imageToile(); noteInvite('retire');
+    try{ if(INVO.tr && INVO.tr.stop) INVO.tr.stop(); }catch(_){ } INVO.tr=null;
+    if(dp) dp.classList.remove('clignote');
+    function fini_(){ if(j!==INVO.jeu) return; INVO.vis=false; INVO.sortie=false; placer(); [].forEach.call(document.querySelectorAll('#onbV canvas.passage-flaques.onbi-sortie'), function(k){ k.remove(); }); }
+    INVO.vis=false; INVO.sortie=true;
+    if(reduitOnb() || !ve || !im || !tr || !tt){ INVO.sortie=false; placer(); return; }
+    var n=0, f=0, b=rectDe(tr, 4), a=rectDe(tt, 6);
+    [[0, b[1], 390, Math.min(844, b[1]+b[3])-b[1]], a].forEach(function(r){ n++; var p=window._passageFlaques(ve, {mode:'couvre', devant:true, rect:r, image:im, duree:300, lent:LENT_ONB(), fin:function(){ if(++f>=n) fini_(); }}); if(p && p.canevas) p.canevas.classList.add('onbi-sortie'); }); }
+  function veilleInvite(){ clearTimeout(INVO.veille); INVO.veille=0;
+    if(etape!=='parole' || fini || !document.getElementById('onbV')) return;
+    INVO.veille=setTimeout(veilleInvite, 50);
+    var vv=window.visualViewport, h=vv?vv.height:innerHeight, now=performance.now();
+    if(Math.abs(h-INVO.vvH)>0.5){ INVO.vvH=h; INVO.vvT=now; }
+    if(!parole.trim()){ if(INVO.vis) retireInvite(); return; }
+    if(INVO.vis || INVO.sortie || pageEnTrace) return;
+    if(aFocus()) return;                                  /* jamais pendant la frappe */
+    if(vv && vv.height < innerHeight-40) return;          /* le clavier encore là */
+    if(now-INVO.vvT < 160) return;                        /* il redescend encore */
+    montreInvite(); }
+  window._onbInvite={etat:function(){ return {visible:INVO.vis, sortie:INVO.sortie, ecrit:pageEnTrace, journal:INVO.journal.slice()}; }};
   function suite(){
     if(etape==='prenom'){
       var v=prenom.trim(); if(!v){ focus(); return; }
@@ -38322,7 +38356,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   }
   function allerParole(garderClavier, attendreClavier){
     etape='parole'; concept(false);
-    tParole=performance.now(); departTouche=false; minuteurs.push(setTimeout(function(){ if(etape!=='prenom' && !fini) placer(); }, 1500));   /* v155 (C-169 §4.4) ; ⚑ v156 (Tom) : 1,5 s */
+    departTouche=false; INVO.vis=false; INVO.sortie=false; INVO.jeu++;
     /* ⚑ v147 (Tom, 15 oct. 2026, C-124 §4) — « Tom, donc. » RESTE À SA HAUTEUR (184 pt, celle de v146 sur une ligne) ; Tom enrichit la page, mot pour
        mot : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » · « Petite ou grande promesse, elle compte. ». Tout ce qui suit descend
        pour respirer (`placer` : 16 pt sous « Enchanté. », la phrase 32 pt sous la question — 12 avant —, « Petite ou grande promesse » 40 pt sous la
@@ -38331,8 +38365,21 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var q=document.getElementById('onbQuid'); if(q){ q.innerHTML='Quid d’un '+nat('Promi')+' à <span style="white-space:nowrap">toi-même\u00a0?</span>'; q.style.display='block'; }
     var so=document.getElementById('onbSous'); if(so) so.style.display='block';
     peindrePhrase(); if(garderClavier) focus();
-    if(attendreClavier){ [d, q, so].forEach(function(e){ if(e && TRACE_ONB && window.TraceLettres && !reduitOnb()) e.style.visibility='hidden'; }); prepareTextes([d, q, so]); apresClavier(function(){ traceTextes([d, q, so]); }); }   /* v170d (C-125) : préparés pendant que le clavier descend */
-    else traceTextes([d, q, so]);
+    /* ⚑ v173 (Tom, C-211) — « [Prénom], donc. » et « Quid… » arrivaient APRÈS la phrase de la parole, peinte d'emblée : ce n'est pas le bon ordre. Chaque texte se
+       trace (C-125), l'un après l'autre : [Prénom], donc. · Quid… · la phrase à compléter · « Petite ou grande promesse, elle compte. ». Les places ne changent
+       pas (les textes gardent leur boîte, cachés). Le trait attend la promesse complétée (`veilleInvite`). */
+    var ph=document.getElementById('onbPh'), L=[d, q, ph, so];
+    function pageEcrite(){ pageEnTrace=false; peindrePhrase(); var tt=document.getElementById('onbTrace');
+      /* v170d (C-125) : le libellé du trait se prépare pendant qu'on lit, caché */
+      if(tt && !INVO.vis && etape==='parole' && TRACE_ONB && window.TraceLettres && !reduitOnb()){ tt.style.visibility='hidden'; tt.style.display='block'; prepareTextes([tt], function(){ if(!INVO.vis){ tt.style.display='none'; tt.style.visibility='visible'; } }); } }
+    if(TRACE_ONB && window.TraceLettres && !reduitOnb()) pageEnTrace=true;
+    veilleInvite();
+    /* la plume part sur [Prénom], donc. et Quid… dès qu'ils sont prêts ; la phrase et « Petite ou grande… » se préparent pendant ce temps (C-125 : rien ne se calcule sous la plume ; tout préparer d'abord laissait la page vide 2 s) */
+    var L1=[d, q], L2=[ph, so];
+    function ecrit(){ traceTextes(L1, function(){ traceTextes(L2, pageEcrite); }); if(pageEnTrace) prepareTextes(L2); }
+    if(pageEnTrace) L.forEach(function(e){ if(e) e.style.visibility='hidden'; });
+    if(attendreClavier){ prepareTextes(L1); apresClavier(ecrit); }   /* v170d (C-125) : préparés pendant que le clavier descend */
+    else ecrit();
   }
 
   /* ── LE TRAIT : celui d'une fiche par défaut — même onde, même chevron, même épaisseur ──
@@ -38432,7 +38479,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       /* ⚑ v141 — depuis qu'on ne plante plus sous la barre du bas (Q449), la première dalle n'est plus au bas de l'écran : le message de fin, posé en
          haut, passait dessus (vu à la capture). La vue amène la dalle où elle était (son centre à 647 pt sur 844) ; le cadrage de départ revient à la fin. */
       try{ if(window.Toile && Toile.vueVers) Toile.vueVers(np.id, FIN_C0/844); }catch(_){}   /* v148 (C-124 §9.3) : la dalle et les voisines partent PLUS HAUT, comme avant (647, la cote de v146 ; 738 en v147) ; elles descendent à mesure que le texte paraît */
-      if(!rejeu && window.Toile&&Toile.voisines){ try{ if(Toile.voisines(7, {natures:[1,2,2,1,2,1,2], haut:Math.max(0.5, FIN_C0/844-0.115), marge:-0.2, taille:(window._onbPoids||0.62), depart:2500, pas:140})) voisines=true; }catch(_){} }   /* v146 (C-123) : elles naissent une à une quand la Toile d'avant s'est presque retirée (2,5 s), une toutes les 140 ms — v148 (trouvé par la série) : la zone où on les choisit commence 0,115 écran au-dessus de la parole (0,76 fixe : la parole remontée à 647 n'en laissait que 2) */
+      if(!rejeu && window.Toile&&Toile.voisines){ try{ if(Toile.voisines(7, {natures:[1,2,2,1,2,1,2], haut:Math.max(0.5, FIN_C0/844-0.115), marge:-0.2, taille:(window._onbPoids||0.62), depart:2125, pas:140})) voisines=true; }catch(_){} }   /* v146 (C-123) : elles naissent une à une quand la Toile d'avant s'est presque retirée (2,5 s), une toutes les 140 ms — v148 (trouvé par la série) : la zone où on les choisit commence 0,115 écran au-dessus de la parole (0,76 fixe : la parole remontée à 647 n'en laissait que 2) */
     }catch(e){ try{ if(window._diagErreur) window._diagErreur('planter', e); }catch(_){ } }   /* v162 (C-182) : signalé avec ?diag=1, rien d'autre ne change */
     var D=dev.getBoundingClientRect(), s=k(), cible=null;
     try{ var a=Toile.dalleAbs(np.id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
@@ -38446,15 +38493,18 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       requestAnimationFrame(function(){ requestAnimationFrame(function(){ dc.style.transform='scale(.85)'; }); });
     }
     /* ⚑ v148 (C-141 §10.2) : la page du trait ne part plus en FONDU (`opacity` 0,5 s) — la Toile d'avant (son image figée, `fond`) la recouvre EN FLAQUES */
+    /* ⚑ v173 (Tom, C-212) — « l'attente avant l'apparition des textes est un peu trop longue » : − 15 % sur chaque attente de cette suite (1 900 → 1 615, 950 → 808, 650 → 553,
+       le vol de la dalle 0,9 → 0,765 s : il remplit l'attente et finirait après elle ; dans `finPas` 320 → 272). Les durées de tracé et les passages en flaques ne bougent pas. */
+    var FIN_T=1615;
     var couvreHaut=null;
     T(function(){ var hh=document.getElementById('onbHaut'); if(!hh) return;
       try{ var D0=dev.getBoundingClientRect(), s0=k(), rh=[].reduce.call(hh.querySelectorAll('.onbv-a'), function(a, e){ if(getComputedStyle(e).display==='none') return a; var q=e.getBoundingClientRect(); if(!q.width||!q.height) return a; return [Math.min(a[0],(q.left-D0.left)/s0), Math.min(a[1],(q.top-D0.top)/s0), Math.max(a[2],(q.right-D0.left)/s0), Math.max(a[3],(q.bottom-D0.top)/s0)]; }, [1e9,1e9,-1e9,-1e9]);
         if(rh[0]<1e9 && fond && fond.width){ var y0=Math.max(0, Math.floor(rh[1]-14)), y1=Math.min(844, Math.ceil(rh[3]+14));
           couvreHaut=window._passageFlaques(v, {mode:'couvre', apres:hh, rect:[0, y0, 390, y1-y0], image:fond, duree:620, lent:LENT_ONB(), garde:true, fin:function(){ hh.style.visibility='hidden'; }}); }
-        else hh.style.visibility='hidden'; }catch(_){ hh.style.visibility='hidden'; } }, 650);
+        else hh.style.visibility='hidden'; }catch(_){ hh.style.visibility='hidden'; } }, 553);
     T(function(){ if(!ok||!cible) return;
-      dc.style.transition='left .9s cubic-bezier(.45,0,.2,1),top .9s cubic-bezier(.45,0,.2,1),transform .9s cubic-bezier(.45,0,.2,1)';
-      dc.style.left=(cible.x+cible.w/2-w/2)+'px'; dc.style.top=(cible.y+cible.h/2-h/2)+'px'; dc.style.transform='scale(1)'; }, 950);
+      dc.style.transition='left .765s cubic-bezier(.45,0,.2,1),top .765s cubic-bezier(.45,0,.2,1),transform .765s cubic-bezier(.45,0,.2,1)';
+      dc.style.left=(cible.x+cible.w/2-w/2)+'px'; dc.style.top=(cible.y+cible.h/2-h/2)+'px'; dc.style.transform='scale(1)'; }, 808);
     /* ⚑ v146 (Tom, C-123) — LA TOILE D'AVANT NE DISPARAÎT PLUS D'UN COUP. L'image figée pendant le vol de la dalle s'effaçait en une image : toutes ses
        cellules partaient ensemble. Elle se retire EN FLAQUES (le moteur du guide, `variantes/flaques.js`) : des trous naissent, s'agrandissent, se
        rejoignent, et la Toile vivante paraît dessous — où les voisines naissent une à une. 720 ms ; « Réduire les animations » : retirée d'un coup. */
@@ -38474,7 +38524,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var hh=document.getElementById('onbHaut'); if(hh) hh.style.display='none';
       try{ if(couvreHaut){ couvreHaut.arrete=true; if(couvreHaut.canevas.parentNode) couvreHaut.canevas.remove(); } }catch(_){ }   /* v148 : son image est celle que la Toile d'avant emporte en flaques à cet instant */
       var fin=document.getElementById('onbFin');
-      if(fin){ finPlace(fin, np); finMontre(fin); } }, 1900);
+      if(fin){ finPlace(fin, np); finMontre(fin); } }, FIN_T);
     /* ⚑ v21 (Tom) : le message RESTE — au moins quatre secondes, puis jusqu'au toucher. */
     T(function(){
       var v2=document.getElementById('onbV'); if(!v2) return;
@@ -38484,7 +38534,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         if(rejeu && window._onbCompteFait()){ terminer(); return; } compte(v2, terminer); }
       v2.setAttribute('data-onb-fin','1');
       v2.addEventListener('click', suiteFin, true);
-    }, 1900 + 4000);
+    }, FIN_T + 4000);
     /* v146 (11.4) : le premier toucher fait venir le reste ; le compte attend la fin du reste et les quatre secondes du message (v21) */
     /* ⚑ v148 (Tom, C-124 §9) — LA CHORÉGRAPHIE : au départ, « PROMI planté ! » seul ; chaque toucher fait paraître le paragraphe suivant (tracé) —
        ① « Ton premier Promi… plus qu'à le tenir. », ② Primo, Deuxio, Tertio, ③ « Tout le monde promet. Toi, tu tiens. » (v149 ; avant : « Le reste se découvre en traçant. ») et « La suite t'appartient. » ;
@@ -38496,7 +38546,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         v3.setAttribute('data-onb-reste', String((f3.__pas||0)+1));
         (function suivant(){ finPas(f3, np, function(fini){ if(fini){ r.setAttribute('data-vu','1'); v3.removeEventListener('click', reste, true); v3.setAttribute('data-onb-reste','fini'); return; }
           if(f3.__pasAttend){ f3.__pasAttend=0; v3.setAttribute('data-onb-reste', String((f3.__pas||0)+1)); suivant(); } }); })(); }
-      v3.addEventListener('click', reste, true); }, 1900 + 400);
+      v3.addEventListener('click', reste, true); }, FIN_T + 340);
   }
 
   /* ⚑ v146 (Tom, C-124, 11.5) — « Tout le bloc, de “Promi planté !” jusqu'à “La suite t'appartient.”, remonte d'au moins 1 cm réel (au moins 60 pt). Il
@@ -38544,7 +38594,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     function ecris(){ if(ecrit) return; ecrit=true; traceTextes(G, function(){ fin.__pasEnCours=0; apres&&apres(pas>=3); }); }
     if(r0){ fin.style.top=t.y.toFixed(2)+'px'; fin.__y=t.y; ecris(); return; }
     (function f(){ var dt=(performance.now()-t0)/lent, u=1-Math.exp(-dt/1000*7.5), y=y0+(t.y-y0)*u; fin.style.top=y.toFixed(2)+'px'; fin.__y=y;
-      if(dt>=320) ecris();   /* le paragraphe s'écrit quand la place est presque faite */
+      if(dt>=272) ecris();   /* le paragraphe s'écrit quand la place est presque faite (v173, C-212 : 320 → 272) */
       if(dt<900) requestAnimationFrame(f); else { fin.style.top=t.y.toFixed(2)+'px'; fin.__y=t.y; } })(); }
   window._onbFinPas=function(){ var f=document.getElementById('onbFin'); return f?{pas:f.__pas||0, y:f.__y, c:f.__c, enCours:!!f.__pasEnCours}:null; };
   /* le titre et la phrase de ton paraissent ; le reste attend le toucher. Le tracé des lettres (§13) n'est PAS branché tant que Tom n'a pas vu
@@ -38622,7 +38672,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   var FIN_BAS0=64, FIN_ECART0=22, FIN_MONTE=1100;   /* v147 — v148 : plus de montée du bloc entier ; le titre paraît seul, à sa place de départ */
   function finMontre(fin){ fin.style.opacity='1';
     var t=fin.querySelector('.onbv-titre'), r0=reduitOnb();
-    if(TRACE_ONB && window.TraceLettres && !r0){ traceTextes([t], function(){ var r=fin.querySelector('#onbReste'); if(r) prepareTextes([].slice.call(r.querySelectorAll('.onbv-l'))); }); }   /* v170d : les lignes qui viendront au toucher se préparent pendant qu'on lit */
+    if(TRACE_ONB && window.TraceLettres && !r0){ traceTextes([t], function(){ var r=fin.querySelector('#onbReste'), to=fin.querySelector('.onbv-ton'); if(r) prepareTextes([to].concat([].slice.call(r.querySelectorAll('.onbv-l')))); }); }   /* v170d : les lignes qui viendront au toucher se préparent pendant qu'on lit ; ⚑ v173 (C-212) : le ton aussi — il attendait sa préparation après le toucher, ≈ 200 ms */
     else { decouvre(t, 420); } }
 
   /* ── LE COMPTE, APRÈS LE TRAIT — « Garder ta Toile » (mots validés par Tom) ──
@@ -38737,7 +38787,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   }
 
   function demarrer(estRejeu){
-    minuteurs.forEach(clearTimeout); minuteurs=[];
+    minuteurs.forEach(clearTimeout); minuteurs=[]; pageEnTrace=false; clearTimeout(INVO.veille); INVO.vis=false; INVO.sortie=false;
     rejeu=!!estRejeu; fini=false; prog=0; actif=false; parole=''; sansGuide=false;
     window._tutoSeen=true;
     ov.classList.add('onb-v20'); ov.classList.remove('gone'); ov.style.display='';

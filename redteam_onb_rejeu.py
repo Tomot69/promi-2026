@@ -39,7 +39,7 @@ def parcours(pg, prenom=None):
     elif pg.evaluate("()=>{ const a=document.activeElement; return !(a && a.id==='onbIn'); }"):   # au rejeu le champ a déjà la main (le clavier est ouvert)
         B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(500)
     if pg.evaluate("()=>{ const a=document.activeElement; return !(a && a.id==='onbIn'); }"):   # ⚑ v153 (C-164) : le prénom validé ferme le clavier — on touche la phrase
-        B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500)
+        B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500)
     pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(4500)
     z = pg.evaluate("()=>{ const c=document.getElementById('onbTrait'); if(!c) return null; const r=c.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return {l:(r.left-D.left)/k, t:(r.top-D.top)/k, k:r.width/390/k, dep:c.getAttribute('data-depart'), arr:c.getAttribute('data-arrivee')}; }")
     if not z or not z['dep'] or not z['arr']: return False

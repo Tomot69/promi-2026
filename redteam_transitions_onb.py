@@ -164,10 +164,11 @@ def passe(b, th):
     # ── T2 · le trait du premier Promi naît en flaques
     c = centre(pg, '#onbPh'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(300)
     # ⚑ v155 (Tom, C-169 §4.4) : le trait et « trace pour planter » paraissent 1 s APRÈS la validation du prénom (plus à la première lettre de la parole)
-    pg.evaluate("()=>{ window.__T.length=0; }"); pg.keyboard.press('Enter'); pg.wait_for_timeout(2700)
-    S = pg.evaluate("()=>window.__T"); attend(pg)
+    pg.keyboard.press('Enter'); pg.wait_for_function("()=>!window._onbInvite||!window._onbInvite.etat().ecrit", timeout=12000); 
     c = centre(pg, '[data-onb="parole"]'); toucher(cdp, pg, c[0], c[1]); pg.wait_for_timeout(300)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
-    pg.keyboard.type('marcher une heure', delay=25); pg.wait_for_timeout(1400)
+    # ⚑ v173 (C-211) : le trait paraît la promesse complétée, le clavier refermé (plus 1,5 s après le prénom)
+    pg.keyboard.type('marcher une heure', delay=25); pg.wait_for_timeout(300); pg.evaluate("()=>{ window.__T.length=0; }"); pg.keyboard.press('Enter'); pg.wait_for_timeout(1500)
+    S = pg.evaluate("()=>window.__T"); attend(pg); pg.wait_for_timeout(600)
     i_tr = next((i for i, s in enumerate(S) if s.get('trait')), None)
     if i_tr is None: juge('[%s] T2 · le trait paraît 1 s après le prénom (v155)' % T, False, 'pas de trait')
     else:

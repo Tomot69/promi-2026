@@ -202,6 +202,20 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v173a (30 oct. 2026) — ONBOARDING, PAGE DE LA PAROLE : L'ORDRE D'APPARITION ; MOINS D'ATTENTE APRÈS « PROMI PLANTÉ ! » (C-211, C-212). (Décisions Tom.) Ce bloc CORRIGE v155 et v156 (C-169 : le trait et « trace pour planter » 1,5 s après le prénom, parole écrite ou non ; Q562 : tracer sans parole ouvre la saisie).
+> **Validés par Tom : les décisions D1 à D6 de l'étude C-210 (`ETUDE-DEUX-ETATS.md`), appliquées en v173b.**
+> **⚑ C-211 — L'ORDRE, CHAQUE TEXTE TRACÉ : « [Prénom], donc. » · « Quid d'un Promi à toi-même ? » · la phrase à compléter · « Petite ou grande promesse, elle compte. ».** La phrase était peinte
+> d'emblée ; elle se cache et se trace à son tour (`allerParole`, `traceTextes`). « Petite ou grande promesse » suit la phrase sans attendre la saisie (la consigne de Tom ne réserve l'attente qu'au trait).
+> **« trace pour planter », le trait et son départ n'existent à l'écran qu'une fois la promesse complétée, avec la règle de la page + (C-209)** : `veilleInvite` (toutes les 50 ms, cette page seulement) — jamais pendant la
+> frappe, le clavier refermé et posé (hauteur visible revenue, stable 160 ms), mesuré ≤ 300 ms ensuite ; le trait et le départ naissent en flaques (700 ms), le libellé SE TRACE ; le départ clignote calé sur le I
+> (la phase est RECOPIÉE, `currentTime` : le délai négatif laissait 316 à 546 ms d'écart) jusqu'au premier toucher ; parole effacée : retrait en flaques (300 ms). Les places sont celles de v172 (± 0,5 pt, phrases courte et longue, deux échelles).
+> **Un toucher pendant que la page s'écrit** : avant la phrase, rien ; pendant son tracé, il ouvre le clavier (reconnu à la boîte : la part pas écrite est découpée, le doigt la traverse), mais la phrase n'est pas réécrite sous son tracé (`pageEnTrace`, repeinte à la fin : rien d'un coup, C-206).
+> **Toucher ailleurs, la parole écrite, referme la saisie.** `window._onbInvite.etat()` (lecture, pour les juges) ; `banc_tom.attend_parole(pg)` attend la page écrite.
+> **⚑ C-212 — − 15 % SUR CHAQUE ATTENTE** de la suite du plant : 1 900 → 1 615 ms (`FIN_T`, le titre), 950 → 808, 650 → 553, le vol de la dalle 0,9 → 0,765 s (il remplit l'attente et finirait après elle), les voisines 2 500 → 2 125, l'armement du toucher 400 → 340, et dans `finPas` 320 → 272.
+> Les durées de tracé et les passages en flaques ne bougent pas ; le plancher de 4 s du message (v21) non plus.
+> Juge : **`redteam_onb_ordre.py`** (A à K ; 8/29 sur v172). ⚠ Le clavier simulé des juges (`CLAVIER`) portait 844 en dur : à 430 × 932 la hauteur ne « revenait » jamais et l'invite attendait — `innerHeight`.
+> **Contrats remis au niveau** (originaux `sauvegardes/*-avant-v173.py`) : `redteam_depart_orange`, `redteam_fleche_onb` (plus de 1,5 s), `redteam_onb_sorties` (la page de la parole sans « trace pour planter »), `redteam_onboarding`, `redteam_verrou_onboarding`, `redteam_transitions_onb`, `redteam_guide`, `redteam_suite_libelle` ; tout parcours attend la page écrite et valide sa parole.
+
 ### ⚑ v172 (30 oct. 2026) — PAGE + : L'INVITE À TRACER N'ARRIVE QU'UNE FOIS LA PAROLE PRÊTE (C-209). (Décisions Tom.) Ce bloc CORRIGE v146, v151, v155 (le départ orange et « trace pour … » visibles dès l'ouverture de la page +) et le §2.4 (la flèche d'invite au repos).
 > **Tom (avec ses testeurs) : « dès l'ouverture de la page +, la première chose qu'on voit est TRACE POUR … ; on essaie de tracer, ça bloque, on ne comprend pas ».**
 > **L'INVITE = le départ orange (ruban ou matière du pinceau, son liseré en sombre, la pointe), la flèche d'invite courbe (§2.4) et le libellé « trace pour … »**

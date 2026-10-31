@@ -319,18 +319,19 @@ def un_theme(pw, theme):
         releve('après le prénom'); chrome('après le prénom'); pas_de_compte('après le prénom'); lisible('après le prénom')
 
         # O6 · « Je me promets de » et la parole
+        pg.wait_for_function("()=>!window._onbInvite||!window._onbInvite.etat().ecrit", timeout=12000)   # ⚑ v173 (C-211) : la phrase vient après « Quid… »
         o = pg.evaluate(ONB)
         # ⚠ instrument (22 sept.) : la phrase est répartie en plusieurs nœuds (pastille-verbe, « de »,
         #   pastille) — on lit son texte RENDU entier ; « d’ » est l'élision décidée par Tom.
         if not re.search(r'je me promets d(e|’)', o.get('tout', ''), re.I) and \
            not any(re.search(r'je me promets d(e|’)', t, re.I) for t in o['textes'] + o['places']):
             ko('O6 « Je me promets de » et la parole', '« Je me promets de » n\'est écrit nulle part')
-        q = pg.evaluate(POIGNEE, '[data-onb="parole"]')
+        pg.wait_for_function("()=>!window._onbInvite||!window._onbInvite.etat().ecrit", timeout=12000); q = pg.evaluate(POIGNEE, '[data-onb="parole"]')
         if not q:
             ko('O6 « Je me promets de » et la parole', 'aucun champ [data-onb="parole"] visible')
         else:
             toucher(cdp, q['x'], q['y']); pg.wait_for_timeout(250)
-            pg.keyboard.type(PAROLE, delay=30); pg.wait_for_timeout(400)
+            pg.keyboard.type(PAROLE, delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(900)   # ⚑ v173 (C-211) : le trait paraît à la fermeture du clavier
         ok('O6 « Je me promets de » et la parole')
 
         # O7 · la zone du trait
@@ -501,12 +502,12 @@ def un_theme(pw, theme):
                     pg.keyboard.press('Enter')
                 pg.wait_for_timeout(1100)
             if True:
-                q2 = pg.evaluate(POIGNEE, '[data-onb="parole"]')
+                pg.wait_for_function("()=>!window._onbInvite||!window._onbInvite.etat().ecrit", timeout=12000); q2 = pg.evaluate(POIGNEE, '[data-onb="parole"]')
                 if not q2:
                     ko(C21, "le rejeu n'offre pas le champ de la parole")
                 else:
                     toucher(cdp, q2['x'], q2['y']); pg.wait_for_timeout(250)
-                    pg.keyboard.type(PAROLE, delay=20); pg.wait_for_timeout(600)
+                    pg.keyboard.type(PAROLE, delay=20); pg.keyboard.press('Enter'); pg.wait_for_timeout(900)
                 z2 = pg.evaluate(POIGNEE, '[data-onb="trait"]')
                 if not z2:
                     ko(C21, 'pas de zone de trait au rejeu')

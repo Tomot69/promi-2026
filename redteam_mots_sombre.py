@@ -59,7 +59,7 @@ def onboarding(pg):
     B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(400); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(300)
     pages['prénom'] = pg.evaluate(COL, '#onbV')
     pg.keyboard.press('Enter'); pg.wait_for_timeout(5000); pages['parole'] = pg.evaluate(COL, '#onbV')
-    B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(400)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
+    B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(400)   # ⚑ v153 (C-164) : le clavier est fermé après le prénom
     pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(5000); pages['trait'] = pg.evaluate(COL, '#onbV')
     z = pg.evaluate("()=>{ const c=document.getElementById('onbTrait'); if(!c) return null; const r=c.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return {l:(r.left-D.left)/k, t:(r.top-D.top)/k, k:r.width/390/k, dep:c.getAttribute('data-depart'), arr:c.getAttribute('data-arrivee')}; }")
     if z and z['dep']:

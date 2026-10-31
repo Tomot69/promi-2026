@@ -31,7 +31,7 @@ TEXTES = {   # relevés sur la version d'avant v140 — mot pour mot
  # ⚑ v147 (Tom, 15 oct. 2026, C-124 §4.2) — « Tom enrichit subtilement cette page » : « [Prénom], donc. Enchanté. » · « Quid d’un Promi à toi-même ? » (mot pour mot ;
  #   original : sauvegardes/redteam_onb_sorties-avant-v147.py)
  # ⚑ v155 (Tom, C-169 §4.4) : « trace pour planter » paraît 1 s après le prénom, avant la parole (original : sauvegardes/redteam_onb_sorties-avant-v155.py)
- 'parole': 'PromiCamille, donc.Quid d’un Promi à toi-même ?Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.trace pour planter',
+ 'parole': 'PromiCamille, donc.Quid d’un Promi à toi-même ?Je me promets de ne plus dire “je commence lundi”Petite ou grande promesse, elle compte.',   # ⚑ v173 (C-211) : « trace pour planter » attend la promesse complétée
  'trait': 'PromiCamille, donc.Quid d’un Promi à toi-même ?Je me promets de marcher une heurePetite ou grande promesse, elle compte.trace pour planter',
  'fin': 'Promi planté !',   # ⚑ v148 (Tom, C-124 §9.1) : « au départ, le titre seul » ; chaque toucher fait venir un paragraphe (v146 : le titre et le premier paragraphe ensemble)
  # ⚑ v149 (Tom, C-124) : « Le reste se découvre en traçant. » devient « Tout le monde promet. Toi, tu tiens. » (original : sauvegardes/redteam_onb_sorties-avant-v149.py)
@@ -67,7 +67,7 @@ def parole(pg): pg.keyboard.press('Enter'); pg.wait_for_timeout(900)
 def saisie(pg, cdp=None):
     # ⚑ v153 (Tom, C-164) : le prénom validé ferme le clavier — on touche la phrase pour saisir la parole, comme sur l'iPhone
     if not pg.evaluate("()=>{ const a=document.activeElement; return !!(a && a.id==='onbIn'); }"):
-        c = centre(pg, '[data-onb="parole"]') or centre(pg, '#onbPh')
+        pg.wait_for_function("()=>!window._onbInvite||!window._onbInvite.etat().ecrit", timeout=12000); c = centre(pg, '[data-onb="parole"]') or centre(pg, '#onbPh')
         if c: pg.touchscreen.tap(c[0], c[1]); pg.wait_for_timeout(350)
     pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(900)
 def trace(pg, cdp):

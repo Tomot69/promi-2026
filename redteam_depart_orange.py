@@ -72,9 +72,8 @@ with sync_playwright() as p:
         ctx = B.contexte(b, sombre=sombre, onb=False, guide=False); pg = B.ouvre(ctx, F, attente=7000)
         if reduit: pg.emulate_media(reduced_motion='reduce')
         B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(400)
-        pg.keyboard.press('Enter'); pg.wait_for_timeout(2900)
-        ap = pg.evaluate("()=>window._onbApparition||[]")
-        if not reduit: juge('[%s] O · « trace pour planter » et la flèche paraissent 1 500 ± 50 ms après la validation du prénom (v156)' % T, len(ap) >= 1 and abs(ap[0] - 1500) <= 50, '%s ms' % ap)
+        # ⚑ v173 (C-211) : le trait ne paraît plus 1,5 s après le prénom (v156) mais la promesse complétée, le clavier refermé — jugé par `redteam_onb_ordre`
+        pg.keyboard.press('Enter'); B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(350); pg.keyboard.type('marcher', delay=20); pg.keyboard.press('Enter'); pg.wait_for_timeout(1500)
         st = pg.evaluate("""()=>{ const d=document.getElementById('onbDepart'), i=document.querySelector('#onbV .onbv-mm i'); const A=d?d.getAnimations():[], AI=i?i.getAnimations():[];
           const a=A.find(x=>x.animationName==='promiBlink'), ai=AI.find(x=>x.animationName==='promiBlink');
           return {vis:d?getComputedStyle(d).display:null, anim:!!a, dur:a?a.effect.getTiming().duration:null, iAnim:!!ai, phase:(a&&ai)?Math.round(((a.effect.getComputedTiming().progress-ai.effect.getComputedTiming().progress)*1150%1150+1150)%1150):null}; }""")

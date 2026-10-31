@@ -36,7 +36,7 @@ def mesure(b, fichier, sombre, q=''):
     if sombre: ctx.add_init_script("try{localStorage.setItem('promi_theme','dark')}catch(e){}")
     pg = B.ouvre(ctx, fichier, attente=7000, q=q)
     B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(5200)
-    B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500); pg.keyboard.type('marcher une heure', delay=20); pg.wait_for_timeout(600)
+    B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500); pg.keyboard.type('marcher une heure', delay=20); pg.wait_for_timeout(600)
     pg.evaluate("()=>{ const i=document.getElementById('onbIn'); if(i) i.blur(); }"); pg.wait_for_timeout(1800)
     m = pg.evaluate(LIT); m['cotes'] = pg.evaluate("()=>window._onbTraitCotes||null"); er = [e for e in pg.erreurs if 'version.json' not in e]; ctx.close(); return m, er
 with sync_playwright() as p:
@@ -51,8 +51,8 @@ with sync_playwright() as p:
         touche = [t[0] for t in n['textes'] if not (t[4] <= n['top'] or t[2] >= n['bot'])]
         juge('[%s] C · aucun texte touché par la flèche, et elle finit au-dessus du bas de l\'écran' % T, not touche and n['bot'] <= 844 - 4,
              'encre %.1f → %.1f pt · textes touchés %s' % (n['top'], n['bot'], touche))
-        juge('[%s] D · le départ clignote (promiBlink) et paraît 1,5 s après le prénom' % T, n['clig'] and n['anim'] == 'promiBlink' and n['app'] and 1450 <= n['app'][0] <= 1600,
-             'classe clignote %s · animation %s · paru à %s ms' % (n['clig'], n['anim'], n['app']))
+        juge('[%s] D · le départ clignote (promiBlink)' % T, n['clig'] and n['anim'] == 'promiBlink',   # ⚑ v173 (C-211) : le moment est jugé par redteam_onb_ordre (la promesse complétée, plus 1,5 s après le prénom)
+             'classe clignote %s · animation %s' % (n['clig'], n['anim']))
         juge('[%s] aucune erreur de page' % T, not er, er[:2])
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))

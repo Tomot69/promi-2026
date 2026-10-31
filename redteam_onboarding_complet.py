@@ -43,7 +43,7 @@ with sync_playwright() as p:
                 B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(4200)
                 pp = pg.evaluate("()=>{ const e=document.querySelector('[data-onb=\"parole\"]'); return !!e; }")
                 juge('[%s] A · le prénom validé, la page de la parole paraît' % T, pp)
-                B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(600); pg.keyboard.type(parole, delay=12); pg.wait_for_timeout(800)
+                B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(600); pg.keyboard.type(parole, delay=12); pg.wait_for_timeout(800)
                 val = pg.evaluate("()=>(document.getElementById('onbIn')||{}).value||''")
                 juge('[%s] B · la parole écrite est gardée dans le champ' % T, val == parole, '%d car. sur %d' % (len(val), len(parole)))
                 pg.evaluate("()=>{ const i=document.getElementById('onbIn'); if(i) i.blur(); }"); pg.wait_for_timeout(2200)

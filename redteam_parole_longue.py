@@ -83,7 +83,7 @@ with sync_playwright() as p:
                 T = '%s · %s · %s' % ('échelle 1' if vw == 430 else 'échelle 0,79', 'sombre' if sombre else 'clair', nom)
                 ctx = B.contexte(b, sombre=sombre, onb=False, guide=False, vw=vw, vh=vh); ctx.add_init_script(CLAVIER); pg = B.ouvre(ctx, F, attente=7000)
                 B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(5600)
-                B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(700)
+                B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(700)
                 pires = []; tous = True
                 for i, ch in enumerate(texte):
                     pg.keyboard.type(ch); pg.wait_for_timeout(25)

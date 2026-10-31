@@ -62,7 +62,7 @@ with sync_playwright() as p:
             T = '%s · %s' % ('échelle 1' if vw == 430 else 'échelle 0,79', 'sombre' if sombre else 'clair')
             ctx = B.contexte(b, sombre=sombre, onb=False, guide=False, vw=vw, vh=vh); ctx.add_init_script(CLAVIER); pg = B.ouvre(ctx, F, attente=7000)
             B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(4200)
-            B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(600); pg.keyboard.type('marcher une heure', delay=12); pg.wait_for_timeout(800)
+            B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(600); pg.keyboard.type('marcher une heure', delay=12); pg.wait_for_timeout(800)
             pg.evaluate("()=>{ const i=document.getElementById('onbIn'); if(i) i.blur(); }"); pg.wait_for_timeout(2200); trace(pg); pg.wait_for_timeout(5600)
             for _ in range(3): B.tap(pg, 195, 300); pg.wait_for_timeout(3800)
             pg.wait_for_timeout(2500)

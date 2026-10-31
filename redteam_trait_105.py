@@ -41,7 +41,7 @@ def releve(b, fichier, quoi):
 def trait_onb(b, fichier):
     ctx = B.contexte(b, onb=False, guide=False); pg = B.ouvre(ctx, fichier, q='?onde=1', attente=7000)
     B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(4200)
-    B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500); pg.keyboard.type('marcher une heure', delay=15); pg.evaluate("()=>document.getElementById('onbIn').blur()"); pg.wait_for_timeout(2500)
+    B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500); pg.keyboard.type('marcher une heure', delay=15); pg.evaluate("()=>document.getElementById('onbIn').blur()"); pg.wait_for_timeout(2500)
     d = pg.evaluate("()=>{ const c=document.getElementById('onbTrait'); const g=c.getContext('2d').getImageData(0,0,c.width,c.height).data; let h=2166136261; for(let i=0;i<g.length;i+=1){ h^=g[i]; h=Math.imul(h,16777619)>>>0; } return [c.width,c.height,h]; }")
     ctx.close(); return d
 with sync_playwright() as p:

@@ -51,7 +51,7 @@ def passe(b, sombre, change):
     T = '%s · %s' % ('sombre' if sombre else 'clair', 'monde et palette changés' if change else 'sans changement')
     ctx = B.contexte(b, sombre=sombre, onb=False, guide=False); ctx.add_init_script(CLAVIER); pg = B.ouvre(ctx, F, attente=7000)
     B.tap_sel(pg, '#onbPh'); pg.wait_for_timeout(600); pg.keyboard.type('Camille', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(4200)
-    B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(600); pg.keyboard.type('marcher une heure', delay=12); pg.wait_for_timeout(800)
+    B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(600); pg.keyboard.type('marcher une heure', delay=12); pg.wait_for_timeout(800)
     pg.evaluate("()=>{ const i=document.getElementById('onbIn'); if(i) i.blur(); }"); pg.wait_for_timeout(2200); trace(pg); pg.wait_for_timeout(5600)
     for _ in range(4): B.tap(pg, 195, 300); pg.wait_for_timeout(3800)
     try: B.tap_sel(pg, '.onbv-compte .tard')

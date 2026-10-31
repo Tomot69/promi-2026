@@ -64,6 +64,10 @@ def charge():
 def ouvre(ctx, fichier='app.html', attente=6500, q=''):
     pg = ctx.new_page(); pg.__dict__['erreurs'] = []; pg.on('pageerror', lambda e: pg.__dict__['erreurs'].append(str(e)[:200]))
     pg.goto('http://127.0.0.1:8752/' + fichier + q, timeout=180000); pg.wait_for_timeout(attente); return pg
+def attend_parole(pg, ms=12000):
+    """⚑ v173 (C-211) : la page de la parole s'écrit texte par texte — on attend qu'elle ait fini (les versions d'avant n'attendent pas)"""
+    try: pg.wait_for_function("()=>!window._onbInvite || !window._onbInvite.etat().ecrit", timeout=ms); pg.wait_for_timeout(150)
+    except Exception: pass
 def dev(pg): return pg.evaluate("()=>{var r=document.getElementById('device').getBoundingClientRect();return [r.left,r.top,r.width,r.height,r.width/390]}")
 def pt(pg, x, y):
     """un point donné en cotes de l'appareil (390 × 844) → en pixels de la fenêtre"""

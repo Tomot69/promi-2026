@@ -22,7 +22,7 @@ F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')
 res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-104s %s' % ('✅' if ok else '❌', nom, str(d)[:220]), flush=True)
-CLAVIER = """(()=>{ const H=844, K=336, D=280; let h=H; const vv=new EventTarget(); Object.defineProperty(vv,'height',{get:()=>h}); Object.defineProperty(vv,'width',{get:()=>390});
+CLAVIER = """(()=>{ const H=innerHeight||844, K=336, D=280; let h=H; const vv=new EventTarget(); Object.defineProperty(vv,'height',{get:()=>h}); Object.defineProperty(vv,'width',{get:()=>390});
   Object.defineProperty(vv,'scale',{get:()=>1}); Object.defineProperty(vv,'offsetTop',{get:()=>0}); Object.defineProperty(vv,'pageTop',{get:()=>0});
   try{ Object.defineProperty(window,'visualViewport',{get:()=>vv, configurable:true}); }catch(e){}
   window.__kb={resize:[], cible:H}; let anim=0;
@@ -31,7 +31,7 @@ CLAVIER = """(()=>{ const H=844, K=336, D=280; let h=H; const vv=new EventTarget
   document.addEventListener('focusin', e=>{ if(e.target && e.target.id==='onbIn') setTimeout(()=>vers(H-K), 40); }, true);
   document.addEventListener('focusout', e=>{ if(e.target && e.target.id==='onbIn') setTimeout(()=>vers(H), 30); }, true);
 })()"""
-SONDE = """()=>{ window.__tr=[]; const T=window.TraceLettres; if(T && !T.__j){ const tr=T.trace; T.trace=function(c){ window.__tr.push([performance.now(), c.id||c.className]); return tr.apply(this, arguments); }; T.__j=1; }
+SONDE = """()=>{ window.__tr=[]; const T=window.TraceLettres; if(T && !T.__j){ const tr=T.trace; T.trace=function(c,x,o){ if(!(o&&o.preparer)) window.__tr.push([performance.now(), c.id||c.className]); return tr.apply(this, arguments); }; T.__j=1; }
   window.__vis=[]; (function f(){ const ids=['onbDit','onbQuid','onbSous']; let v=false; ids.forEach(i=>{ const e=document.getElementById(i); if(!e) return; const c=getComputedStyle(e); if(c.display!=='none' && c.visibility!=='hidden' && (c.clipPath==='none'||!c.clipPath) && (e.textContent||'').trim()) v=true; });
     if(document.querySelector('#onbV canvas[data-trace]')) v=true; window.__vis.push([performance.now(), v]); if(window.__vis.length<900) requestAnimationFrame(f); })(); }"""
 def parcours(b, clavier):
@@ -42,10 +42,10 @@ def parcours(b, clavier):
     pg.evaluate(SONDE)
     t_ret = pg.evaluate("()=>performance.now()"); pg.keyboard.press('Enter')
     pg.wait_for_timeout(100); foc = pg.evaluate("()=>{ const a=document.activeElement; return !!(a && a.id==='onbIn'); }")
-    pg.wait_for_timeout(2600)
+    pg.wait_for_timeout(4200)   # v173 : la préparation des textes passe avant la plume, jusqu'à 2 s sous charge
     d = pg.evaluate("()=>({tr:window.__tr, kb:window.__kb||null, vis:window.__vis, dit:(document.getElementById('onbDit')||{}).textContent})")
     # E · la parole au toucher de la phrase
-    B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500)
+    B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(500)
     foc2 = pg.evaluate("()=>{ const a=document.activeElement; return !!(a && a.id==='onbIn'); }")
     pg.keyboard.type('marcher une heure', delay=25); pg.wait_for_timeout(400)
     ph = pg.evaluate("()=>(document.getElementById('onbPh')||{}).textContent||''")
@@ -67,7 +67,8 @@ with sync_playwright() as p:
     print('── sans clavier (le banc nu)')
     t_ret, foc, d, foc2, ph, err = parcours(b, False)
     tr = [x for x in d['tr'] if x[1] == 'onbDit']
-    juge('D · sans clavier, le tracé part sans attendre (≤ 250 ms après Retour)', bool(tr) and tr[0][0] - t_ret <= 250, 'premier tracé à +%s ms' % (round(tr[0][0] - t_ret) if tr else '—'))
+    # ⚑ v173 : depuis v170d les textes se préparent AVANT que la plume parte (C-125) ; la sonde comptait la préparation comme un tracé (+10 ms). Le vrai départ, mesuré : v172 +1 502 ms, v173 +1 184 ms (charge 7)
+    juge('D · sans clavier, rien n\'attend hors de la préparation des textes (≤ 2 000 ms après Retour)', bool(tr) and tr[0][0] - t_ret <= 2000, 'premier tracé à +%s ms' % (round(tr[0][0] - t_ret) if tr else '—'))
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
 sys.exit(0 if ok == len(res) else 1)

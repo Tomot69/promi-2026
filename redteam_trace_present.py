@@ -100,7 +100,7 @@ with sync_playwright() as p:
         pg.wait_for_timeout(400); pg.keyboard.type('Camille', delay=30); pg.wait_for_timeout(200); pg.keyboard.press('Enter'); pg.wait_for_timeout(2500)
         S = attends_fin(pg, n0); verifie(T + ' · parole', S, deja); n0 = len(S)
         if not pg.evaluate("()=>{ const a=document.activeElement; return !!(a && a.id==='onbIn'); }"):
-            B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(400)
+            B.attend_parole(pg); B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(400)
         pg.keyboard.type('marcher une heure', delay=25); pg.keyboard.press('Enter'); pg.wait_for_timeout(2500)
         S = attends_fin(pg, n0); verifie(T + ' · trait', S, deja); n0 = len(S)
         juge('[%s] l\'onboarding a tracé au moins quatre textes' % T, n0 >= 4, '%d textes : %s' % (n0, [r['tx'][:18] for r in S]))
