@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v175b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v176', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -18754,7 +18754,8 @@ var CREMEETAT='#F7F0DE';
    ⚠ Le geste (#planterZone) n'entre dans aucun conteneur de ce bloc — parade #tenirCv.
    ═══════════════════════════════════════════════════════════════════════════════════════ */
 /* ── LA PAGE. Fermée : rien. Ouverte : elle prend l'écran, la barre reste à 760. ── */
-#device #createSheet.pp-peauf .dpd-corps{display:none!important}
+/* ⚑ v176 (C-220) : la règle « fermée » portait `.pp-peauf`, la règle suivante la battait toujours : une fois bâti, le tiroir refermé restait affiché, sans style, sur la page + */
+#device #createSheet:not(.pp-peauf) > .dpd-corps{display:none!important}
 #device #createSheet.pp-peauf .dpd-corps{
   display:block!important;position:absolute!important;left:0!important;top:0!important;
   width:390px!important;height:760px!important;box-sizing:border-box!important;
@@ -38053,8 +38054,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(ouvre){ g.setTransform(1,0,0,1,0,0); g.globalCompositeOperation='source-over'; g.clearRect(0,0,cv.width,cv.height); if(u<1){ g.drawImage(couv, 0, 0, cv.width, cv.height); g.globalCompositeOperation='destination-out'; g.drawImage(masque, 0, 0); g.globalCompositeOperation='source-over'; } } }
     var ctl={canevas:cv, arrete:false, image:image, duree:dur, mode:ouvre?'ouvre':'couvre'}; cv.__ctl=ctl; if(o.image && o.image.__flou) cv.setAttribute('data-flou','1'); else cv.removeAttribute('data-flou');   /* v158 (C-170) : un passage qui porte une image floutée le dit */
     function fini(){ if(ouvre && !o.garde && cv.parentNode) cv.remove(); if(o.fin) o.fin(ctl); }
-    function go(){ if(reduit){ image(dur); fini(); return; } var t0=performance.now(); (function f(){ if(ctl.arrete) return; var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else fini(); })(); }
-    image(0); if(o.attend){ ctl.lance=go; return ctl; }
+    var av=o.avance||0;   /* v176 (C-222) : `avance` (ms) : la première image a déjà ses premiers trous — aucune image d'attente */
+    function go(){ if(reduit){ image(dur); fini(); return; } var t0=performance.now()-av; (function f(){ if(ctl.arrete) return; var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else fini(); })(); }
+    image(av); if(o.attend){ ctl.lance=go; return ctl; }
     requestAnimationFrame(function(){ go(); }); return ctl; };
 })();
 </script>
@@ -41334,7 +41336,8 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
          sa clarté descend jusqu'à 3:1 sur le fond de la Toile en clair (#DFCAA4) : bleu #4971B6, rose #9E5F77, lilas #8363AA, crème #7C7158. Le sombre ne change pas. */
       /* ⚑ v169 (Tom, C-204 §1) — « les lettres de STUDIO reprennent EXACTEMENT les couleurs de la palette par défaut, en clair comme en sombre :
          #82AEF8, #FFB8D2, #C9A8F5, #EFE3C7, dans l'ordre de la palette » — les dérivées de Q533 (#4971B6, #9E5F77, #8363AA, #7C7158) sont retirées. */
-      else if(pris==='Studio'){ out+='<i class="gd-cle gd-studio">'; for(var li=0; li<pris.length; li++){ var cl=teinte(PAL[li%4]); out+='<i class="gd-l" style="font-style:normal;color:'+cl+';-webkit-text-fill-color:'+cl+'">'+esc(pris.charAt(li))+'</i>'; } out+='</i>'; }
+      /* ⚑ v176 (Tom, C-221) : le D de STUDIO (la crème #EFE3C7) ne se voit pas, il passe au rose exact #FFB8D2 (PAL[1]), en clair comme en sombre ; les autres lettres ne changent pas */
+      else if(pris==='Studio'){ out+='<i class="gd-cle gd-studio">'; for(var li=0; li<pris.length; li++){ var cl=teinte(PAL[li===3?1:li%4]); out+='<i class="gd-l" style="font-style:normal;color:'+cl+';-webkit-text-fill-color:'+cl+'">'+esc(pris.charAt(li))+'</i>'; } out+='</i>'; }
       else out+='<i class="gd-cle"'+(clairA?'':' style="color:#82AEF8;-webkit-text-fill-color:#82AEF8"')+'>'+esc(pris)+'</i>';   /* ⚑ v152 (Tom, C-162) : « commence », bleu en clair (cobalt), bleu clair #82AEF8 en sombre */
       i+=pris.length; }
     return out; }
@@ -43241,10 +43244,16 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      la phrase (36 quand elle est prête) — une seule mise en page, mesurée à chaque passe (`mesure`) sur les trois natures. Un choix ouvert garde sa mise en page.
    · PRÊTE : ils redescendent d'un mouvement (480 ms) jusqu'à leur place, puis le trait naît en flaques sur toute sa largeur (les pointillés, le départ, la
      flèche), le libellé se trace, le départ clignote. REDEVENUE INCOMPLÈTE : tout se retire en flaques (300 ms), puis ils remontent.
-   · Le geste ne reçoit plus rien tant que rien n'est à tracer (`ppi-vide`) : un trait invisible ne se trace pas. */
+   · Le geste ne reçoit plus rien tant que rien n'est à tracer (`ppi-vide`) : un trait invisible ne se trace pas.
+   ⚑ v176 (Tom, 1er nov. 2026, C-222) — CE BLOC CORRIGE C-209 ET C-213 SUR UN POINT : « LA GENÈSE PART TOUT DE SUITE », plus d'attente de la fermeture du clavier.
+   · La frappe qui complète le minimum lance la genèse dans l'image suivante (`input` de `#fTitle`, `#nName`, puis une image : pas la veille de 50 ms) ; elle ne se relance pas à chaque lettre.
+   · LE CLAVIER OUVERT, LA PAGE GARDE SA MISE EN PAGE DE SAISIE (`pp-ouvert`, le trait à 144, sa place réservée au-dessus de la phrase) : la descente vers la place finale passerait sous le
+     clavier, elle n'a pas lieu ; le trait naît à sa place et rien ne bouge. La page rejoint sa place finale quand le clavier se ferme, comme tout choix qui se referme.
+   · Fermée pendant que le trait naît : le passage appartient à la mise en page qu'il couvrait, il est retiré et le trait renaît à sa nouvelle place, le libellé continue son tracé (`sigM`).
+   · Sans clavier (une parole reprise) : la descente de C-213, puis le trait. Le retrait ne change pas. */
 (function(){
   var dev=document.getElementById('device'); if(!dev) return;
-  var INV={vis:false, touche:false, sortie:false, ouvert:false, vvT:0, vvH:0, sig:'', sigT:0, tr:null, jeu:0, journal:[], haut:true, desc:0, finA:0};
+  var INV={vis:false, touche:false, sortie:false, ouvert:false, vvT:0, vvH:0, sig:'', sigT:0, tr:null, jeu:0, journal:[], haut:true, desc:0, finA:0, sigM:'', finP:0, prep:''};
   var AIR_VAGUE=28, AIR_RAIL=56, DESCENTE=480;   /* l'air de la colonne, puis son double (`K.AIR`, l'échelle de l'Aura) ; 36 pt sépare le rail de la phrase quand elle est prête */
   function $(i){ return document.getElementById(i); }
   function cs(){ return $('createSheet'); }
@@ -43307,10 +43316,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function libelle(){ var c=cs(); return c ? c.querySelector('.pp-trace') : null; }
   function montre(){ var c=cs(), cv=$('csTrameCv'); if(!c || !cv || INV.vis) return; var j=++INV.jeu;
     var avant=copie(cv); INV.vis=true; INV.touche=false; INV.sortie=false; repeint(); note('montre');
-    var t=libelle(); try{ if(t && window.TraceLettres && !reduit()) INV.tr=window.TraceLettres.trace(t, null, {depart:'h'}); }catch(_){ INV.tr=null; }
+    var e0=window._ppEcran?window._ppEcran():null; INV.sigM=e0?[e0.nat, e0.base, e0.amp, e0.etat].join('|'):''; INV.finP=performance.now()+700;   /* v176 (C-222) : la mise en page que ce passage couvre */
+    var t=libelle(); try{ if(t && window.TraceLettres && !reduit() && !(INV.tr && !INV.tr.fini)) INV.tr=window.TraceLettres.trace(t, null, {depart:'h'}); }catch(_){ INV.tr=null; }
     c.classList.remove('ppi-cache'); clignote(true);
     var r=rectDepart(), d=$('ppDepart');
-    if(r && window._passageFlaques && !reduit()){ try{ window._passageFlaques(c, {mode:'ouvre', rect:r, image:avant, duree:700, apres:d||cv, z:(d?d.style.zIndex:null)||0}); }catch(_){ } } }
+    if(r && window._passageFlaques && !reduit()){ try{ window._passageFlaques(c, {mode:'ouvre', rect:r, image:avant, duree:700, avance:window._ppEcran&&window._ppEcran().ouvert?60:0, apres:d||cv, z:(d?d.style.zIndex:null)||0}); }catch(_){ } } }
   function retire(){ var c=cs(), cv=$('csTrameCv'); if(!c || !INV.vis) return; var j=++INV.jeu; note('retire');
     if(!cv || reduit() || !window._passageFlaques){ INV.vis=false; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint(); bouge(true); return; }
     /* l'image SANS invite (le champ repeint sans elle), puis le champ rendu tel qu'il est : rien ne change à l'écran dans cette tâche */
@@ -43335,8 +43345,10 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   /* le premier toucher du trait : le départ cesse de clignoter, il reste orange, fixe */
   function toucher(ev){ try{ var t=ev.target; if(!INV.vis || INV.touche || !t || !t.closest) return; if(t.closest('#planterZone, #planterCv')){ INV.touche=true; clignote(false); repeint(); note('touche'); } }catch(_){ } }
   document.addEventListener('pointerdown', toucher, true); document.addEventListener('touchstart', toucher, {capture:true, passive:true});
-  /* la veille : toutes les 50 ms, seulement la page + ouverte */
-  setInterval(function(){ try{ if(BANC()){ var cb=cs(); if(cb) cb.classList.remove('ppi-cache','ppa-haut','ppi-vide'); return; }
+  /* v176 (C-222) : la saisie ouverte, le libellé est préparé d'avance à sa place : à la première lettre il n'a plus rien à calculer (C-125) */
+  function prepare(e){ try{ var t=libelle(), s=[e.nat, e.base, t?t.textContent:''].join('|'); if(!t || s===INV.prep || !window.TraceLettres || reduit()) return; INV.prep=s; window.TraceLettres.trace(t, null, {depart:'h', preparer:true}); }catch(_){ } }
+  /* la veille : toutes les 50 ms, seulement la page + ouverte ; v176 (C-222) : et à l'image qui suit chaque frappe */
+  function veille(){ try{ if(BANC()){ var cb=cs(); if(cb) cb.classList.remove('ppi-cache','ppa-haut','ppi-vide'); return; }
     if(!ouverte()){ if(INV.vis || INV.sortie) cache(); INV.sig=''; return; }
     var vv=window.visualViewport, h=vv?vv.height:innerHeight, now=performance.now();
     if(Math.abs(h-INV.vvH)>0.5){ INV.vvH=h; INV.vvT=now; }
@@ -43344,9 +43356,16 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var ok=prete(), c1=cs(); if(c1) c1.classList.toggle('ppi-vide', !ok);
     if(e && (e.ouvert || c1.classList.contains('pp-ouvert'))) INV.ouvT=now;   /* la classe : sous charge elle tombe après l'état */
     if(INV.haut || !ok) mesure();   /* comparée avant d'écrire ; un choix ouvert ne la touche pas */
+    if(!ok && e && e.ouvert) prepare(e);
     if(!ok && (!e || e.etat!=='plate' || window._tirageActive)) return;       /* v175 (C-218) : la parole vient de partir (le trait signé, la page s'en va) : rien à retirer sous les yeux, `cache` rangera */
     if(!ok){ if(INV.vis) retire(); else if(!INV.sortie && !INV.haut) bouge(true); return; }
+    if(INV.vis && now<INV.finP && sig!==INV.sigM && e && e.etat==='plate'){   /* v176 (C-222) : le clavier s'est fermé pendant que le trait naissait : le passage couvrait l'ancienne mise en page, le trait renaît à sa nouvelle place */
+      purge(); INV.vis=false; clignote(false); repeint(); note('renait'); }   /* le libellé, lui, continue son tracé : sa découpe suit l'élément, il ne repart pas */
+    if(INV.vis && !INV.desc && c1.classList.contains('ppa-haut') && e && !e.ouvert) bouge(false);   /* v176 (C-222) : le trait là, la page n'est jamais à sa place « pas prête » */
     if(INV.vis || INV.sortie) return;
+    /* ⚑ v176 (Tom, C-222) : la saisie ouverte, le trait naît tout de suite, à sa place : rien ne descend sous le clavier */
+    if(e && e.ouvert){ if(e.etat!=='plate') return; INV.finA++; INV.desc=0; INV.haut=false; c1.classList.remove('ppa-anim','ppa-haut'); montre(); return; }
+    if(c1.classList.contains('pp-ouvert')) return;                            /* le choix se referme : sa classe tombe après l'état, la page n'est pas encore posée */
     if(frappe()) return;                                                      /* jamais pendant la frappe */
     if(vv && vv.height < innerHeight - 40) return;                            /* le clavier encore là */
     if(now - INV.vvT < 160) return;                                           /* il redescend encore */
@@ -43355,7 +43374,10 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(INV.haut){ bouge(false); return; }                                     /* v174 (C-213) : d'abord les éléments redescendent… */
     if(INV.desc) return;
     montre();                                                                 /* … puis le trait naît */
-  }catch(_){ } }, 50);
+  }catch(_){ } }
+  setInterval(veille, 50);
+  /* v176 (C-222) : le départ dans l'image qui suit la frappe qui complète ; `requestAnimationFrame`, pour que la frappe ait fini de recomposer la phrase */
+  document.addEventListener('input', function(ev){ var t=ev.target; if(t && (t.id==='fTitle' || t.id==='nName') && ouverte() && !INV.vis) requestAnimationFrame(veille); }, true);
 })();
 </script>
 

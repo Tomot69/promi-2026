@@ -10122,3 +10122,4 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v174b | « Adopte ce design pour 4 € / 6 € » (C-216) ; la veille à 90 s (C-181) ; « Soutenir Promi » aux Réglages, provisoire, sans paiement (C-217) — `aeeb479`. |
 | v175a | Page + : le bandeau parasite retiré (C-218 : deux calques de passage survivaient à la plantation) ; la fenêtre ne défile plus dans Safari iOS (`.frame` fixé) — `f7e4ef9`. |
 | v175b | Le texte de l'onboarding part au toucher (C-219 : armé d'avance) ; la phrase du Studio avec sa flèche (C-203) ; la veille à 45 s (C-181) ; « Soutenir Promi » : texte de Tom, Toile de Ma Parole !, cinq montants (C-217) — `50a38a9`. |
+| v176 | Page + : la genèse du trait part à la frappe qui complète le minimum, clavier ouvert, à sa place dans la page de saisie (C-222) ; le D de STUDIO en rose (C-221) ; le tiroir refermé ne reste plus affiché (C-220) — `HASH`. |

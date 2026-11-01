@@ -19,7 +19,7 @@ for a in sys.argv[1:]:
     if a.startswith('--fichier='): F = a.split('=', 1)[1]
 OPTION = False   # ⚑ v169b (Tom, Q589) : l'option `?exact=1` est retirée de l'app ; le bloc `--exact` reste pour l'histoire, il ne tourne plus
 PAL = ['#82AEF8', '#FFB8D2', '#C9A8F5', '#EFE3C7']                 # la palette par défaut (Ingénu), dans son ordre — les valeurs de Tom
-STUDIO = [PAL[i % 4] for i in range(6)]                            # S t u d i o
+STUDIO = ['#82AEF8', '#FFB8D2', '#C9A8F5', '#FFB8D2', '#82AEF8', '#FFB8D2']   # S t u d i o — ⚑ v176 (Tom, C-221) : le D passe du crème #EFE3C7 au rose exact #FFB8D2
 NAT = {'promi': '#82AEF8', 'chiche': '#FFB8D2', 'cercle': '#C9A8F5'}
 AVANT_CLAIR = {'monde': '#8363AA', 'partage-la': '#8363AA'}          # C-145, v165 : sans ?exact=1, rien ne bouge
 res = []

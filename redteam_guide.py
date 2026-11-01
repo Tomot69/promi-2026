@@ -188,11 +188,11 @@ def phrase(e, T, quoi):
     juge('[%s] %s · les mots-clés %s sont en PromiLate, en capitales' % (T, quoi, CLES[quoi]), [m['t'] for m in cles] == CLES[quoi] and all(m['pol'] == 'PromiLate' and m['tt'] == 'uppercase' for m in cles), [(m['t'], m['pol']) for m in cles])
     if quoi == 'studio':
         mo = [m for m in cles if m['t'] == 'monde']; L = e.get('lettres') or []
-        att = [PALB[i % 4] for i in range(6)]
+        att = [PALB[1 if i == 3 else i % 4] for i in range(6)]   # ⚑ v176 (Tom, C-221) : le D ne se voit pas en crème dalle, il passe au rose exact
         # ⚑ v169 (Tom, C-204 §1) : les lettres aux couleurs EXACTES de la palette, en clair comme en sombre (v149, Q533 : assombries jusqu'à 3:1 —
         #   original : sauvegardes/redteam_guide-avant-v169.py). À l'hexadécimal près : redteam_couleurs_exactes.
         ok_l = len(L) == 6 and all(proche(L[i][1], att[i], 0) for i in range(6))
-        juge('[%s] studio · « monde » en lilas violet (%s) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, crème dalle, bleu, rose) — %s' % (T, '#8363AA' if clair else '#C9A8F5', 'les valeurs de Tom, sans retouche (C-204, v169)'),
+        juge('[%s] studio · « monde » en lilas violet (%s) ; « Studio » lettre à lettre aux couleurs de la palette de base, dans son ordre (bleu, rose, lilas, ROSE, bleu, rose : le D, C-221) — %s' % (T, '#8363AA' if clair else '#C9A8F5', 'les valeurs de Tom, sans retouche (C-204, v169)'),
              bool(mo) and proche(mo[0]['col'], MONDE[bool(clair)], 6) and ''.join(l[0] for l in L) == 'Studio' and ok_l, 'monde %s · lettres %s' % (mo[0]['col'] if mo else None, [(l[0], l[1], round(ratio_fond(l[1]), 2)) for l in L]))
         juge('[%s] studio · ⚑ v149 (C-145) : « Studio » 10 à 12 %% plus grand que les autres mots-clés' % T, e.get('stFs') and e.get('cleFs') and 1.10 <= e['stFs'] / e['cleFs'] <= 1.12, '%s pt / %s pt' % (e.get('stFs'), e.get('cleFs')))
         juge('[%s] studio · le reste du texte : %s' % (T, '#291547' if clair else 'la crème'), proche(e['phraseCol'], VIOLET if clair else CREME), e['phraseCol'])
