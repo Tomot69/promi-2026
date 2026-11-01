@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v174b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v175a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2711,6 +2711,12 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
    première image. Et la coupe de la plantation (printTirage) : la page + se cache d'un coup. */
 #device .statusbar,#device .topbar,#device .footer,#device .stage-fade-t,#device .stage-fade-b,#device #sidelabel{display:none!important}
 #device #createSheet.cs-coupe{visibility:hidden!important;opacity:0!important;transition:none!important}   /* l'opacité aussi : un enfant en visibility:visible!important échapperait au seul visibility */
+</style>
+<style id="lot-V175-CADRE-css">
+/* ⚑ v175 (Tom, C-218) — LA PAGE REMONTAIT DE 11 pt (jusqu'à 40) DANS SAFARI iOS, sans revenir. LA CAUSE, lue sur l'appareil : le cadre réduit par `transform` garde sa boîte de mise en page
+   (876 pt à top 50 % : 1 403 pt de document pour une fenêtre de 699) ; à l'ouverture de la page + et à la saisie, Safari défilait donc la FENÊTRE, et il ne la rendait pas. Le cadre est fixé à la
+   fenêtre : il n'y a plus rien à défiler. (Sur `body`, le même remède changeait la teinte des barres de Safari autour de l'app.) Géométrie identique : le bloc englobant est la fenêtre. */
+.frame{position:fixed!important}
 </style>
 </head>
 <body>
@@ -43274,13 +43280,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     /* l'image SANS invite (le champ repeint sans elle), puis le champ rendu tel qu'il est : rien ne change à l'écran dans cette tâche */
     INV.vis=false; INV.sortie=false; repeint(); var apres=copie(cv); INV.sortie=true; repeint(); clignote(false);
     var fin=0, n=0, lib=libelle(), zl=lib?getComputedStyle(lib).zIndex:'1', z=String(Math.max(2, (parseInt(zl,10)||1)+1));
-    function bout(){ if(++fin<n || j!==INV.jeu) return; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint();
-      [].forEach.call(c.querySelectorAll('canvas.passage-flaques.ppi-sortie'), function(k){ k.remove(); }); mesure(); bouge(true); }
+    function bout(){ if(++fin<n) return; if(j!==INV.jeu){ purge(); return; } INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint();
+      purge(); mesure(); bouge(true); }
     [rectDepart(), rectLib()].forEach(function(r){ if(!r) return; n++;
       var p=window._passageFlaques(c, {mode:'couvre', rect:r, image:apres, duree:300, devant:true, z:z, fin:bout}); if(p && p.canevas) p.canevas.classList.add('ppi-sortie'); });
     if(!n){ fin=-1; n=0; bout(); } }
   function stopTrace(){ try{ if(INV.tr && INV.tr.stop) INV.tr.stop(); }catch(_){ } INV.tr=null; }
-  function cache(){ var c=cs(); INV.vis=false; INV.sortie=false; INV.touche=false; INV.jeu++; stopTrace(); INV.haut=true; INV.desc=0; INV.finA++; if(c && !BANC()){ c.classList.remove('ppa-anim'); c.classList.add('ppi-cache','ppa-haut','ppi-vide'); } var d=$('ppDepart'); if(d){ d.classList.remove('clignote'); try{ d.getContext('2d').clearRect(0,0,d.width,d.height); }catch(_){ } } }
+  /* ⚑ v175 (Tom, C-218) — « un bandeau horizontal parasite, de deux couleurs, au-dessus ou en dessous du trait vide ». LA CAUSE : un passage 'couvre' reste à l'écran une fois fini
+     (il attend que l'appelant le retire : c'est l'image d'arrivée). À la plantation la phrase se vide, le retrait part, la page se ferme : `cache()` change le numéro de la passe et
+     `bout` renonçait — les deux calques restaient DANS la page + (l'image de la page d'avant, son champ et son corps, sur 390 pt de large), par-dessus tout, à toutes les ouvertures
+     suivantes, quelle que soit la nature. Un calque de passage appartient à la page ouverte : il s'arrête et se retire avec elle, quel que soit le chemin. */
+  function purge(){ var c=cs(); if(!c) return; [].forEach.call(c.querySelectorAll('canvas.passage-flaques'), function(k){ try{ if(k.__ctl) k.__ctl.arrete=true; }catch(_){ } k.remove(); }); }
+  function cache(){ var c=cs(); purge(); INV.vis=false; INV.sortie=false; INV.touche=false; INV.jeu++; stopTrace(); INV.haut=true; INV.desc=0; INV.finA++; if(c && !BANC()){ c.classList.remove('ppa-anim'); c.classList.add('ppi-cache','ppa-haut','ppi-vide'); } var d=$('ppDepart'); if(d){ d.classList.remove('clignote'); try{ d.getContext('2d').clearRect(0,0,d.width,d.height); }catch(_){ } } }
   /* à l'ouverture : caché d'emblée (la classe est posée avant la première image de la page +, dès qu'elle est ouverte ou refermée) */
   var c0=cs(); if(c0 && !BANC()) c0.classList.add('ppi-cache','ppa-haut','ppi-vide');
   var _ca=window.closeAll; if(typeof _ca==='function') window.closeAll=function(){ var r=_ca.apply(this, arguments); try{ cache(); }catch(_){ } return r; };
@@ -43297,6 +43308,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var ok=prete(), c1=cs(); if(c1) c1.classList.toggle('ppi-vide', !ok);
     if(e && (e.ouvert || c1.classList.contains('pp-ouvert'))) INV.ouvT=now;   /* la classe : sous charge elle tombe après l'état */
     if(INV.haut || !ok) mesure();   /* comparée avant d'écrire ; un choix ouvert ne la touche pas */
+    if(!ok && (!e || e.etat!=='plate' || window._tirageActive)) return;       /* v175 (C-218) : la parole vient de partir (le trait signé, la page s'en va) : rien à retirer sous les yeux, `cache` rangera */
     if(!ok){ if(INV.vis) retire(); else if(!INV.sortie && !INV.haut) bouge(true); return; }
     if(INV.vis || INV.sortie) return;
     if(frappe()) return;                                                      /* jamais pendant la frappe */
