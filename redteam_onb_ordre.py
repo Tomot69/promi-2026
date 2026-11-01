@@ -22,6 +22,9 @@ la visibilité du style rendu image par image, l'encre de la phrase d'une captur
   K · C-212 : du plant au titre, et du toucher au paragraphe, plus courts que v172 servie à côté (attendu : 285 et 48 ms ; médiane de trois, le plant lui-même coûte
       quelques centaines de ms, des deux côtés)
 Preuve : `--fichier=zz-v172.html` rougit (A, B, C, D, E, G, J).
+⚑ v174 (Tom, 31 oct. 2026, corrige C-211) — « “Petite ou grande promesse, elle compte.” n'arrive qu'APRÈS que la promesse est complétée, juste avant “TRACE POUR PLANTER” et le
+trait, avec eux. » A : trois textes (prénom, Quid, phrase) ; C, D : « Petite… » absente, comme le trait ; E : elle se trace pendant que le trait naît, le libellé juste après ;
+G : elle repart avec eux. Places : v173 servie à côté (`zz-v173.html`) ; K retiré (C-212 validé en v173). Rouge sur v173 (`--fichier=zz-v173.html`).
 """
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
@@ -29,7 +32,7 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')
 VITE = '--vite' in sys.argv
-REF = 'zz-v172.html'
+REF = 'zz-v173.html'
 res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:230]), flush=True)
@@ -73,13 +76,13 @@ def premier_parcours(b, fichier, vw, vh, sombre, T):
     # A, B
     q_ok = attend(pg, "()=>(window.__tr||[]).some(x=>x.id==='onbQuid')", 6000)
     encre_q = encre_phrase(pg, pg.evaluate(RECTS)) if q_ok else None
-    attend(pg, "()=>{ const q=(window.__tr||[]).filter(x=>x.id==='onbSous')[0]; return q&&q.t1>0; }", 9000)
+    attend(pg, "()=>{ const q=(window.__tr||[]).filter(x=>x.id==='onbPh')[0]; return q&&q.t1>0; }", 9000)
     r_fin = pg.evaluate(RECTS); encre_fin = encre_phrase(pg, r_fin)
     tr = pg.evaluate("()=>window.__tr"); ims = pg.evaluate("()=>window.__im")
-    O = ['onbDit', 'onbQuid', 'onbPh', 'onbSous']; par = {}
+    O = ['onbDit', 'onbQuid', 'onbPh']; par = {}
     for q in tr: par.setdefault(q['id'], q)
     ordre = [q['id'] for q in tr if q['id'] in O]
-    suite = all(i in par and par[i]['t1'] > 0 for i in O) and all(par[O[j+1]]['t0'] >= par[O[j]]['t1'] - 5 for j in range(3))
+    suite = all(i in par and par[i]['t1'] > 0 for i in O) and all(par[O[j+1]]['t0'] >= par[O[j]]['t1'] - 5 for j in range(2))
     juge('[%s] A · chaque texte se trace, dans l\'ordre, le suivant après la fin du précédent' % T, ordre == O and suite, ordre)
     trop_tot = {}
     for i in O:
@@ -90,8 +93,8 @@ def premier_parcours(b, fichier, vw, vh, sombre, T):
     juge('[%s] B · pendant « Quid », l\'encre de la phrase n\'est pas sur l\'image' % T, encre_q is not None and encre_q < 0.004 and encre_fin > 0.01, 'encre pendant Quid %s · à la fin %.4f' % (encre_q, encre_fin))
     # C
     pg.wait_for_timeout(6000 if not VITE else 2600); ims = pg.evaluate("()=>window.__im")
-    vu = sum(1 for m in ims if m['onbTrait'] or m['onbTrace'] or m['onbDepart'])
-    juge('[%s] C · la promesse pas complétée : ni trait, ni départ, ni libellé' % T, vu == 0, '%d images sur %d avec le trait' % (vu, len(ims)))
+    vu = sum(1 for m in ims if m['onbTrait'] or m['onbTrace'] or m['onbDepart'] or m['onbSous'])
+    juge('[%s] C · la promesse pas complétée : ni « Petite… », ni trait, ni départ, ni libellé' % T, vu == 0, '%d images sur %d avec le trait' % (vu, len(ims)))
     nb0 = pg.evaluate("()=>promises.filter(p=>!p.draft).length")
     B.glisse(pg, B.droite([44, r_fin['onbTrait'][1] + 50], [195, r_fin['onbTrait'][1] + 50], 12), pas=14); pg.wait_for_timeout(500)
     a = pg.evaluate("()=>{ const a=document.activeElement; if(a&&a.id==='onbIn') a.blur(); return 1; }"); pg.wait_for_timeout(300)
@@ -100,18 +103,20 @@ def premier_parcours(b, fichier, vw, vh, sombre, T):
     n0 = pg.evaluate("()=>window.__im.length")
     B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(450); pg.keyboard.type('marcher une heure', delay=45); pg.wait_for_timeout(1200)
     ims = pg.evaluate("n=>window.__im.slice(n)", n0)
-    vu = sum(1 for m in ims if m['onbTrait'] or m['onbTrace'] or m['onbDepart'])
+    vu = sum(1 for m in ims if m['onbTrait'] or m['onbTrace'] or m['onbDepart'] or m['onbSous'])
     juge('[%s] D · pendant la frappe, le clavier ouvert : rien, à aucune image' % T, vu == 0, '%d images sur %d' % (vu, len(ims)))
     # E
     n0 = pg.evaluate("()=>window.__im.length"); tn = pg.evaluate("()=>performance.now()"); pg.keyboard.press('Enter')
     ok = attend(pg, "()=>{ const t=document.getElementById('onbTrait'); return t&&getComputedStyle(t).display!=='none'; }", 3000)
-    pg.wait_for_timeout(120); ph = pg.evaluate(PHASE); pg.wait_for_timeout(1000)
+    pg.wait_for_timeout(120); ph = pg.evaluate(PHASE); pg.wait_for_timeout(2600)
     ims = pg.evaluate("n=>window.__im.slice(n)", n0); kb = pg.evaluate("t=>(window.__kb?window.__kb.resize:[]).filter(x=>x[0]>t).map(x=>x[0])", tn)
     tr2 = [q for q in pg.evaluate("()=>window.__tr") if q['id'] == 'onbTrace']
     t_vu = next((m['t'] for m in ims if m['onbTrait']), None); fin_kb = max(kb) if kb else tn
     juge('[%s] E · après le clavier posé (160 ms), l\'invite paraît ≤ 300 ms ensuite, jamais avant' % T, ok and t_vu is not None and t_vu - fin_kb >= 150 and t_vu - fin_kb <= 160 + 300, 'clavier posé +%s ms · invite +%s ms' % (round(fin_kb - tn), round(t_vu - tn) if t_vu else '—'))
     fl = sum(1 for m in ims if 'ouvre' in (m['fl'] or []))
     juge('[%s] E · le trait et le départ naissent en flaques, le libellé est TRACÉ' % T, fl >= 8 and bool(tr2) and not any(m['onbTrace'] and m['t'] < tr2[0]['t0'] - 40 for m in ims), '%d images de flaques · tracé du libellé %s' % (fl, 'oui' if tr2 else 'non'))
+    so2 = [q for q in pg.evaluate("()=>window.__tr") if q['id'] == 'onbSous']
+    juge('[%s] E · « Petite ou grande promesse » se trace avec le trait, juste avant le libellé' % T, bool(so2) and bool(tr2) and t_vu is not None and abs(so2[0]['t0'] - t_vu) <= 450 and tr2[0]['t0'] >= so2[0]['t0'], '« Petite… » %s · trait %s · libellé %s' % (round(so2[0]['t0'] - tn) if so2 else None, round(t_vu - tn) if t_vu else None, round(tr2[0]['t0'] - tn) if tr2 else None))
     juge('[%s] E · le départ clignote (promiBlink), en phase avec le I' % T, ph['clig'] and ph['anim'] == 'promiBlink' and ph['ecart'] is not None and ph['ecart'] <= 70, ph)
     # I — les places
     r_ic = pg.evaluate(RECTS)
@@ -125,7 +130,7 @@ def premier_parcours(b, fichier, vw, vh, sombre, T):
     B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(450)
     pg.evaluate("()=>{ const i=document.getElementById('onbIn'); i.value=''; i.dispatchEvent(new Event('input',{bubbles:true})); }"); pg.wait_for_timeout(700)
     ims = pg.evaluate("n=>window.__im.slice(n)", n0); co = sum(1 for m in ims if 'couvre' in (m['fl'] or []))
-    juge('[%s] G · la parole effacée : l\'invite repart en flaques, puis plus rien' % T, co >= 5 and not ims[-1]['onbTrait'] and not ims[-1]['onbTrace'] and not ims[-1]['onbDepart'], '%d images de flaques · trait %s' % (co, ims[-1]['onbTrait']))
+    juge('[%s] G · la parole effacée : l\'invite repart en flaques, puis plus rien' % T, co >= 5 and not ims[-1]['onbTrait'] and not ims[-1]['onbTrace'] and not ims[-1]['onbDepart'] and not ims[-1]['onbSous'], '%d images de flaques · trait %s' % (co, ims[-1]['onbTrait']))
     pg.keyboard.type('marcher une heure', delay=25); pg.wait_for_timeout(300); pg.keyboard.press('Enter')
     ok = attend(pg, "()=>{ const t=document.getElementById('onbTrait'); return t&&getComputedStyle(t).display!=='none'; }", 3000); pg.wait_for_timeout(1000)
     ph3 = pg.evaluate(PHASE)
@@ -167,17 +172,14 @@ with sync_playwright() as p:
             for vw, vh, T in ((390, 844, '390 × 844'), (330, 714, '0,79')):
                 a = places(b, REF, vw, vh, ph); c = places(b, F, vw, vh, ph)
                 bad = {i: [round(x - y, 2) for x, y in zip(a[i], c[i])] for i in ['onbDit', 'onbQuid', 'onbPh', 'onbSous', 'onbTrace', 'onbTrait'] if max(abs(x - y) for x, y in zip(a[i], c[i])) > 0.5}
-                juge('[%s, phrase %s] I · les places = celles de v172 (± 0,5 pt)' % (T, nom), not bad, bad or 'toutes')
-    if F != REF:
-        a = attentes(b, REF); c = attentes(b, F); ch = B.charge()
-        juge('K · C-212 : du plant au titre ≈ 285 ms de moins que v172 ; du toucher au paragraphe ≈ 48 ms de moins (charge %.1f)' % ch, a[0] - c[0] >= 130 and a[1] - c[1] >= 15, 'v172 %s · maintenant %s' % (a, c))
+                juge('[%s, phrase %s] I · les places = celles de v173 (± 0,5 pt)' % (T, nom), not bad, bad or 'toutes')
     # J — réduire les animations
     ctx, pg = debut(b, F, 390, 844, reduit=True); pg.keyboard.press('Enter'); pg.wait_for_timeout(1600)
-    v = pg.evaluate("()=>['onbDit','onbQuid','onbPh','onbSous'].map(i=>{ const c=getComputedStyle(document.getElementById(i)); return c.visibility; })"); tr = pg.evaluate("()=>window.__tr.length")
+    v = pg.evaluate("()=>['onbDit','onbQuid','onbPh'].map(i=>{ const c=getComputedStyle(document.getElementById(i)); return c.visibility; })"); tr = pg.evaluate("()=>window.__tr.length")
     t0 = pg.evaluate("()=>getComputedStyle(document.getElementById('onbTrait')).display")
     B.tap_sel(pg, '[data-onb="parole"]'); pg.wait_for_timeout(350); pg.keyboard.type('marcher', delay=20); pg.keyboard.press('Enter'); pg.wait_for_timeout(900)
     ph = pg.evaluate(PHASE); t1 = pg.evaluate("()=>getComputedStyle(document.getElementById('onbTrait')).display")
-    juge('J · réduire les animations : les quatre textes posés, sans tracé ; le trait attend la promesse ; le départ fixe', all(x == 'visible' for x in v) and tr == 0 and t0 == 'none' and t1 == 'block' and not ph['clig'], (v, tr, t0, t1, ph['clig']))
+    juge('J · réduire les animations : les trois textes posés, « Petite… » avec le trait, sans tracé ; le trait attend la promesse ; le départ fixe', all(x == 'visible' for x in v) and tr == 0 and t0 == 'none' and t1 == 'block' and not ph['clig'] and pg.evaluate("()=>getComputedStyle(document.getElementById('onbSous')).visibility") == 'visible', (v, tr, t0, t1, ph['clig']))
     ctx.close(); b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
 sys.exit(0 if ok == len(res) else 1)

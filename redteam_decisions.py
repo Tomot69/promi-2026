@@ -77,6 +77,8 @@ for th in ('light', 'dark'):
     D.append(('Index', th, 'cartes_etats', CREME, 'v16 (Q290) : les libellés des cartes À TENIR, EN COURS, LANCÉ, sur le corps sombre, en crème — « à tenir » compris · v148 (C-147) : les deux thèmes'))
     D.append(('Index', th, 'carte_tenue', AMANDE, '23 sept. (Tom) : « TENUE » se marque en amande sur la terre · v148 (C-147) : la carte tenue est la fiche tenue, dans les deux thèmes'))
 D = [d for d in D if d[3]]
+# ⚑ v174 (Tom, C-214) : « sur les fiches aussi, le libellé TRACE POUR … passe en orange #FB4C0D » (original : sauvegardes/redteam_decisions-avant-v174.py).
+D = [(d[0], d[1], d[2], '#FB4C0D' if d[2] == 'trace' and d[0] in ('Promi à tenir', 'Promi en cours') else d[3], 'v174 (C-214) · ' + d[4] if d[2] == 'trace' and d[0] in ('Promi à tenir', 'Promi en cours') else d[4]) for d in D]
 # ⚑ v146 (Tom, 14 oct. 2026, C-132) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_decisions-avant-v146.py) : « Toutes les fiches (Promi #0E78F2,
 #   Chiche #7C3F58, Cercle #5D4978) prennent en mode clair exactement leur version sombre » — planter, tenir, tenue, reçue, à plusieurs ; la page +
 #   et le Peaufiner sont la fiche. En clair, une décision d'une fiche est donc sa décision du sombre ; l'Index (une page) garde les siennes.

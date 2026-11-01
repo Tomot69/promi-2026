@@ -98,7 +98,7 @@ if SEUL: ETATS = [e for e in ETATS if SEUL.lower() in e[0].lower()]
 
 
 def passe(b, sombre):
-    ctx = B.contexte(b, sombre=sombre); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F); ids = pg.evaluate(PREPARE); pg.wait_for_timeout(900)
+    ctx = B.contexte(b, sombre=sombre); ctx.add_init_script('window.__INVITE_BANC=1;'); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F)   ; ids = pg.evaluate(PREPARE); pg.wait_for_timeout(900)   # ⚑ v172–v174 (C-209, C-213) : la page + sans trait tant qu'elle n'est pas prête ; ce juge compare les thèmes, trait posé
     out = {}
     for nom, genre, cle, nat in ETATS:
         try:

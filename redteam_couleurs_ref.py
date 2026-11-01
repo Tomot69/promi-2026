@@ -387,6 +387,11 @@ _n25 = len(ecarts); ecarts = [e for e in ecarts if e[0][0] not in E25]
 try: _n25c = len(cv_ecarts); cv_ecarts = [e for e in cv_ecarts if e[0][0] not in E25]
 except Exception: _n25c = 0
 print('E25 la parole « à tenir » devient « en cours » (v173) : %d' % (_n25 - len(ecarts)))
+# E27 (v174, Tom, C-214, C-215) : sur une fiche, « trace pour … » et toute la partie tracée, du départ au milieu, sont orange #FB4C0D. Seule cette valeur, sur la seule « fiche en cours ».
+_n27 = len(ecarts + cv_ecarts)
+ecarts = [e for e in ecarts if not (e[0][0] == 'fiche en cours' and 'rgb(251, 76, 13)' in str(e[3]) + str(e[4]))]
+cv_ecarts = [e for e in cv_ecarts if not (e[0][0] == 'fiche en cours' and 'rgb(251, 76, 13)' in str(e[3]) + str(e[4]))]
+print('E27 le libellé et la partie tracée en orange (v174) : %d' % (_n27 - len(ecarts + cv_ecarts)))
 # E26 (v173, Tom, C-210) : deux arcs au lieu de trois — sur l'Aura et son aide, les traits des Noyaux se décalent d'un rang ; seules les deux valeurs d'état restantes sont admises.
 _E26V = ('rgb(0, 52, 26)', 'rgb(41, 21, 71)'); _n26 = len(ecarts)
 ecarts = [e for e in ecarts if not (e[0][0] in ('Aura', "aide de l'Aura") and e[2] == 'stroke' and str(e[4]) in _E26V + ('rgb(221, 77, 35)',) and str(e[3]) in _E26V + ('rgb(221, 77, 35)',))]

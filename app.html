@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v173b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v174a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -5906,6 +5906,10 @@ window._phraseChoix = function(cle, el){ try{
            se plantait « à tout le monde » (le geste corrigeait, l'affichage mentait). */
         try{ var _q = (typeof selNuee!=='undefined' && selNuee) ? 'tout le monde' : 'Moi';
           window._phrase = { sens:'faire', qui:_q, titre:'', quand:'un jour' };
+          /* ⚑ v174 (Tom, C-213) — LA CAUSE, reproduite sur son état exporté : l'ardoise remettait `_phrase` à zéro, pas `#fTitle` ni `#nName`. Un mot tapé, la
+             page refermée par X, puis rouverte : l'écran montrait une suggestion, le champ caché gardait l'ancien mot — la parole était « prête » (l'invite paraissait,
+             toutes natures confondues pour `#fTitle`), et tracer plantait l'ancien mot. Une reprise (gardé de côté) garde les siens. */
+          try{ if(!window._ppGarde && window._brouillonRepris==null){ var _ft=document.getElementById('fTitle'), _nn=document.getElementById('nName'); if(_ft) _ft.value=''; if(_nn && _nn.value){ _nn.value=''; if(window._nueePhraseRendu) window._nueePhraseRendu(); } } }catch(_e){}
           /* v103 — la nature a pu être choisie AVANT cette image (le + de l'accueil ouvre sur une nature) : l'ardoise propre
              d'un Chiche reste un Chiche. Sans ça, le premier toucher de « Un Chiche » ouvrait la phrase d'un Promi, la page +
              recliquait sa tuile 380 ms plus tard, et l'on voyait passer les deux phrases. */
@@ -15315,9 +15319,9 @@ var CREMEETAT='#F7F0DE';
     function mat(a,b,cc){ return _pin!=='Plein' && window._matiereTrait &&
       window._matiereTrait(g, _pin, e.base, e.amp, a, b, cc||col); }
     /* ⚑ v155 (Tom, C-169 §4.1, §4.2) — LE DÉPART DE LA FLÈCHE EST ORANGE, la pointe ET le trait de départ : l'amorce effilée à gauche (rien n'est tracé)
-       et, sur une fiche à moitié tracée, les derniers 43 pt du trait avant la pointe du milieu (la longueur de l'amorce visible, 0,11 de la largeur) —
-       le départ de la seconde moitié (Q563). Le pinceau garde sa matière, il prend l'orange. */
-    var ORG_D=(window._orangeDepart?window._orangeDepart():'#FB4C0D'), L_DEP=W*0.11;
+       et, sur une fiche à moitié tracée, toute la partie tracée (C-215, v174 ; les 43 derniers pt avant, Q563) —
+       le départ de la seconde moitié. Le pinceau garde sa matière, il prend l'orange. */
+    var ORG_D=(window._orangeDepart?window._orangeDepart():'#FB4C0D');
     function pleinDep(a,b){ if(mat(a,b,ORG_D)) return; var _ss=g.strokeStyle; g.strokeStyle=ORG_D; g.beginPath(); chemin(g,y,a,b); g.stroke(); g.strokeStyle=_ss; }
     function plein(a,b){ if(mat(a,b)) return; g.beginPath(); chemin(g,y,a,b); g.stroke(); }
     function points(x0){ g.fillStyle=col;
@@ -15398,7 +15402,7 @@ var CREMEETAT='#F7F0DE';
        plusieurs personnes ; sinon rien ne change (une parole à une seule personne garde son chevron et ses points). */
     else if((function(){ try{ return !!(window._partsPeint && window._partsPeint({g:g, y:y, W:W, mid:mid, ep:ep, esp:esp, col:col, cv:cv, p:p, e:e, chemin:chemin, chevron:chevron,
         plein:plein, pleinC:function(a,b,cc){ var _o=col, _s=g.strokeStyle; col=cc; g.strokeStyle=cc; try{ plein(a,b); }finally{ col=_o; g.strokeStyle=_s; } }})); }catch(_){ return false; } })()){ }
-    else { try{ cv.removeAttribute('data-parts'); }catch(_){ } plein(0,mid); pleinDep(Math.max(0,mid-L_DEP), mid-ep*0.15); chevron(g,y,mid,col,ep,cv); points(mid+esp); }   /* v155 (C-169 §4.2) : le départ de la seconde moitié, orange */
+    else { try{ cv.removeAttribute('data-parts'); }catch(_){ } pleinDep(0, mid-ep*0.15); chevron(g,y,mid,col,ep,cv); points(mid+esp); }   /* v155 (C-169 §4.2) : le départ de la seconde moitié, orange ; ⚑ v174 (Tom, C-215) : TOUTE la partie tracée, du bord gauche au point du milieu (43 pt avant, Q563) */
     /* ⚑ LE PEINTRE DÉCLARE SA COMPOSITION (doctrine du §7). Un contrôle qui veut savoir de
        quelle couleur est la ligne doit l'échantillonner sur le canevas — et pour cela
        connaître L'ONDE. `releve-S5` la codait en dur (base 300, amplitude 44) : dès que
@@ -15493,7 +15497,11 @@ var CREMEETAT='#F7F0DE';
     var tr=document.getElementById('dptTrace');
     if(e.trace){ if(!tr){ tr=document.createElement('div'); tr.id='dptTrace'; main.appendChild(tr); }
       tr.textContent=e.trace;
-      pose(tr,{display:'block', top:e.yTrace+'px', color:e.colTexte, '-webkit-text-fill-color':e.colTexte,
+      /* ⚑ v174 (Tom, C-214) — « sur les fiches, le libellé TRACE POUR … passe en orange #FB4C0D, comme sur la page + » (la règle de l'orange : le départ d'une action et son
+         libellé). Les autres mots de ce créneau — « à Rachel de tracer sa part » — ne sont pas un départ pour celui qui lit : ils gardent l'encre de l'état. */
+      var _dTr=/^trace\b/i.test(e.trace), _cTr=_dTr ? (window._orangeDepart?window._orangeDepart():'#FB4C0D') : e.colTexte;
+      tr.classList.toggle('dpt-depart', _dTr);
+      pose(tr,{display:'block', top:e.yTrace+'px', color:_cTr, '-webkit-text-fill-color':_cTr,
                'text-align': (e.noyaux===false?'left':'center')});
     } else if(tr){ pose(tr,{display:'none'}); }
 
@@ -17830,7 +17838,7 @@ var CREMEETAT='#F7F0DE';
          recouvre), le long de ce qui est TRACÉ seulement. */
       /* ⚑ v172 (Tom, C-209) — « dès l'ouverture de la page +, la première chose qu'on voit est TRACE POUR … ; on essaie de tracer, ça bloque, on ne comprend
          pas ». AU REPOS, LE DÉPART (son liseré, le ruban ou la matière du pinceau, la pointe) ET LA FLÈCHE D'INVITE NE SE PEIGNENT QUE QUAND LA PAROLE EST
-         PRÊTE (`lot-V172-INVITE`, `window._ppInvite`) ; les pointillés, toujours. Prête, le départ se peint sur SA couche (`#ppDepart`, mêmes cotes que ce
+         PRÊTE (`lot-V172-INVITE`, `window._ppInvite`) ; ⚑ v174 (C-213) : LES POINTILLÉS NON PLUS. Prête, le départ se peint sur SA couche (`#ppDepart`, mêmes cotes que ce
          canevas), qui clignote avec le I de PROMI jusqu'au premier toucher du trait — comme l'onboarding (C-169). Pendant le geste rien ne change. */
       var _IV = window._ppInvite, _inv = (e.etat !== 'plate') || !_IV || _IV.voit(), _gM = g, _gD = null;
       if(e.etat === 'plate' && _IV && _inv) _gD = _IV.couche(cv, largeur, H, sc, dpr);
@@ -17874,7 +17882,7 @@ var CREMEETAT='#F7F0DE';
         if(_inv) O.chevron(g, y, cx, col, ep, cv);   /* v146 (C-133) : le départ, orange ; v172 (C-209) : seulement la parole prête */
         if(_gD){ g = _gM; g.strokeStyle = col; g.fillStyle = col; }   /* v172 : les points restent sur le canevas principal */
         var rp=(window._e2PointR||6)*window._TRAIT_PTS;   /* E2 (v140) : les points à tracer, Ø 12, grandis vers le haut — comme sur la fiche ; v162 (C-184) : × 1,05 */
-        for(var x=cx+esp*1.3; x<W-rr; x+=esp){ g.beginPath(); g.arc(x,y(x),rp,0,6.2832); g.fill(); }   /* v141 : centrés sur l'onde */
+        if(_inv) for(var x=cx+esp*1.3; x<W-rr; x+=esp){ g.beginPath(); g.arc(x,y(x),rp,0,6.2832); g.fill(); }   /* v141 : centrés sur l'onde ; v174 (C-213) : la parole prête seulement */
       }
       /* 4 · LA FLÈCHE D'INVITE (§2.4). Le code de référence du §4 ne la dessine que sur
          l'état « plate » — rien n'est tracé — c'est-à-dire la page + au repos. Elle
@@ -25789,6 +25797,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
       /* ⚑ v150 (C-158, C-149) : la phrase d'un Chiche ou d'un Cercle remonte (`_ppDyPhrase`) et « garder de côté » descend de 4 pt — le rail, lui,
          ne bouge pas (« le choix du trait ne bouge pas ») : il se place comme si ni l'une ni l'autre n'avaient bougé. */
       dessus -= (window._ppDyPhrase || 0);
+      dessus -= (window._ppaDy ? window._ppaDy() : 0);   /* v174 (C-213) : la remontée de la page « pas prête » n'est pas sa place : le rail se calcule comme si la phrase n'avait pas bougé */
       var dessous = 760;
       var gl = cs.querySelector('.pp-garder');
       if(vu(gl)) dessous = hautDe(gl) + INK_LIEN - 10;   /* v151 (C-149) : 4 + 6 pt — le rail ne bouge toujours pas */
@@ -36322,6 +36331,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         el.removeAttribute('data-lis'); }
       var cs=getComputedStyle(el);
       if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity<0.05) return;
+      if(el.id==='dptTrace' && el.classList.contains('dpt-depart')) return;   /* ⚑ v174 (Tom, C-214) : l'orange du libellé est une décision, comme à la page + : 1,23:1 sur le corps d'un Promi, dit dans le rapport, on ne le repeint pas */
       var c=col3(cs.webkitTextFillColor||cs.color); if(!c) return;
       var f=fondOpaque(el); if(!f) return;
       if(Math.abs(lum(c)-lum(f)) >= SEUIL) return;         /* il se lit : on n'y touche pas */
@@ -38286,17 +38296,21 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      (la hauteur visible revenue et stable 160 ms, ≤ 300 ms ensuite) ; le trait et son départ naissent en flaques, le libellé se trace, le départ clignote
      jusqu'au premier toucher ; la parole effacée : ils repartent en flaques (300 ms). La veille : toutes les 50 ms, seulement sur cette page. */
   function noteInvite(q){ try{ INVO.journal.push([Math.round(performance.now()), q]); if(INVO.journal.length>40) INVO.journal.shift(); }catch(_){ } }
-  function montreInvite(){ INVO.vis=true; INVO.sortie=false; INVO.jeu++; departTouche=false; noteInvite('montre'); placer();
-    var tt=document.getElementById('onbTrace');
-    if(tt){ tt.style.visibility='visible'; if(TRACE_ONB && window.TraceLettres && !reduitOnb()){ try{ INVO.tr=window.TraceLettres.trace(tt, null, {depart:'h'}); }catch(_){ INVO.tr=null; } } } }
+  function montreInvite(){ INVO.vis=true; INVO.sortie=false; INVO.jeu++; departTouche=false; noteInvite('montre'); var _t0=document.getElementById('onbTrace'); if(_t0) _t0.style.visibility='hidden'; placer();
+    /* v174 (Tom) : « Petite ou grande promesse » se trace d'abord, pendant que le trait naît ; « trace pour planter » juste après */
+    var tt=document.getElementById('onbTrace'), so=document.getElementById('onbSous'), j=INVO.jeu;
+    function un(e, apres){ if(!e) return apres&&apres(); e.style.visibility='visible'; if(!TRACE_ONB || !window.TraceLettres || reduitOnb()) return apres&&apres();
+      try{ var c=window.TraceLettres.trace(e, null, {depart:'h'}); e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ if(apres) apres(); }); return; } }catch(_){ } if(apres) apres(); }
+    un(so, function(){ if(j===INVO.jeu) un(tt); }); }   /* préparés pendant qu'on lisait (`pageEcrite`) : la plume part tout de suite */
   function retireInvite(){ var j=++INVO.jeu, ve=document.getElementById('onbV'), tr=document.getElementById('onbTrait'), tt=document.getElementById('onbTrace'), dp=document.getElementById('onbDepart'), im=imageToile(); noteInvite('retire');
-    try{ if(INVO.tr && INVO.tr.stop) INVO.tr.stop(); }catch(_){ } INVO.tr=null;
+    var so=document.getElementById('onbSous');
+    [so, tt].forEach(function(e){ try{ if(e && e.__tl && e.__tl.stop) e.__tl.stop(); }catch(_){ } });
     if(dp) dp.classList.remove('clignote');
-    function fini_(){ if(j!==INVO.jeu) return; INVO.vis=false; INVO.sortie=false; placer(); [].forEach.call(document.querySelectorAll('#onbV canvas.passage-flaques.onbi-sortie'), function(k){ k.remove(); }); }
+    function fini_(){ if(j!==INVO.jeu) return; INVO.vis=false; INVO.sortie=false; if(so) so.style.visibility='hidden'; placer(); [].forEach.call(document.querySelectorAll('#onbV canvas.passage-flaques.onbi-sortie'), function(k){ k.remove(); }); }
     INVO.vis=false; INVO.sortie=true;
-    if(reduitOnb() || !ve || !im || !tr || !tt){ INVO.sortie=false; placer(); return; }
+    if(reduitOnb() || !ve || !im || !tr || !tt){ INVO.sortie=false; if(so) so.style.visibility='hidden'; placer(); return; }
     var n=0, f=0, b=rectDe(tr, 4), a=rectDe(tt, 6);
-    [[0, b[1], 390, Math.min(844, b[1]+b[3])-b[1]], a].forEach(function(r){ n++; var p=window._passageFlaques(ve, {mode:'couvre', devant:true, rect:r, image:im, duree:300, lent:LENT_ONB(), fin:function(){ if(++f>=n) fini_(); }}); if(p && p.canevas) p.canevas.classList.add('onbi-sortie'); }); }
+    [[0, b[1], 390, Math.min(844, b[1]+b[3])-b[1]], a, so?rectDe(so, 6):null].filter(Boolean).forEach(function(r){ n++; var p=window._passageFlaques(ve, {mode:'couvre', devant:true, rect:r, image:im, duree:300, lent:LENT_ONB(), fin:function(){ if(++f>=n) fini_(); }}); if(p && p.canevas) p.canevas.classList.add('onbi-sortie'); }); }
   function veilleInvite(){ clearTimeout(INVO.veille); INVO.veille=0;
     if(etape!=='parole' || fini || !document.getElementById('onbV')) return;
     INVO.veille=setTimeout(veilleInvite, 50);
@@ -38354,16 +38368,17 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     /* ⚑ v173 (Tom, C-211) — « [Prénom], donc. » et « Quid… » arrivaient APRÈS la phrase de la parole, peinte d'emblée : ce n'est pas le bon ordre. Chaque texte se
        trace (C-125), l'un après l'autre : [Prénom], donc. · Quid… · la phrase à compléter · « Petite ou grande promesse, elle compte. ». Les places ne changent
        pas (les textes gardent leur boîte, cachés). Le trait attend la promesse complétée (`veilleInvite`). */
-    var ph=document.getElementById('onbPh'), L=[d, q, ph, so];
+    var ph=document.getElementById('onbPh'), L=[d, q, ph, so];   /* ⚑ v174 (Tom) : CORRIGE C-211 — « Petite ou grande promesse, elle compte. » n'arrive qu'une fois la promesse complétée, avec le trait (`montreInvite`) ; elle garde sa place, cachée */
     function pageEcrite(){ pageEnTrace=false; peindrePhrase(); var tt=document.getElementById('onbTrace');
       /* v170d (C-125) : le libellé du trait se prépare pendant qu'on lit, caché */
-      if(tt && !INVO.vis && etape==='parole' && TRACE_ONB && window.TraceLettres && !reduitOnb()){ tt.style.visibility='hidden'; tt.style.display='block'; prepareTextes([tt], function(){ if(!INVO.vis){ tt.style.display='none'; tt.style.visibility='visible'; } }); } }
+      if(tt && !INVO.vis && etape==='parole' && TRACE_ONB && window.TraceLettres && !reduitOnb()){ tt.style.visibility='hidden'; tt.style.display='block'; prepareTextes([so, tt], function(){ if(!INVO.vis){ tt.style.display='none'; tt.style.visibility='visible'; } }); } }
     if(TRACE_ONB && window.TraceLettres && !reduitOnb()) pageEnTrace=true;
     veilleInvite();
     /* la plume part sur [Prénom], donc. et Quid… dès qu'ils sont prêts ; la phrase et « Petite ou grande… » se préparent pendant ce temps (C-125 : rien ne se calcule sous la plume ; tout préparer d'abord laissait la page vide 2 s) */
-    var L1=[d, q], L2=[ph, so];
+    var L1=[d, q], L2=[ph];
     function ecrit(){ traceTextes(L1, function(){ traceTextes(L2, pageEcrite); }); if(pageEnTrace) prepareTextes(L2); }
     if(pageEnTrace) L.forEach(function(e){ if(e) e.style.visibility='hidden'; });
+    if(so) so.style.visibility='hidden';
     if(attendreClavier){ prepareTextes(L1); apresClavier(ecrit); }   /* v170d (C-125) : préparés pendant que le clavier descend */
     else ecrit();
   }
@@ -41802,7 +41817,7 @@ window._noms=(function(){
     for(i=0;i<S.n;i++){ var a=x0+i*(L+ECART), b=(i===S.n-1)?W+ep:a+L, f=faite(p,S.T[i]); X.push([a, Math.min(b,W)]);
       if(f){ c.pleinC(a+ep/2, (i===S.n-1)?b:b-ep/2, tenu); }             /* tracée : pleine, à la couleur de l'état tenu (les bouts ronds tombent sur les bords de la part) */
       else { g.save(); g.strokeStyle=c.col; g.lineWidth=FIN; g.lineCap='round'; g.beginPath(); c.chemin(g, y, a+FIN/2, (i===S.n-1)?W:b-FIN/2); g.stroke(); g.restore(); } }   /* pas encore : un trait fin, la teinte de la nature */
-    if(S.moi && !S.moiFait){ try{ var _oD=(window._orangeDepart?window._orangeDepart():'#FB4C0D'); c.pleinC(Math.max(0,mid-W*0.11), mid-ep*0.15, _oD); }catch(_){ } c.chevron(g,y,mid,c.col,ep,c.cv||true); }   /* v155 (C-169 §4.2) : le trait de départ de ma part, orange, avec la pointe */   /* v146 (C-133) : le départ, orange */                  /* c'est à moi de tracer : le chevron reste */
+    if(S.moi && !S.moiFait){ try{ var _oD=(window._orangeDepart?window._orangeDepart():'#FB4C0D'); c.pleinC(0, mid-ep*0.15, _oD); }catch(_){ } c.chevron(g,y,mid,c.col,ep,c.cv||true); }   /* v155 (C-169 §4.2) : le trait de départ de ma part, orange, avec la pointe */   /* v146 (C-133) : le départ, orange */                  /* c'est à moi de tracer : le chevron reste */
     /* qui : les initiales sous chaque part (jusqu'à quatre), sinon le compte */
     g.save(); g.font='700 12px Gilbert, system-ui, sans-serif'; g.textAlign='center'; g.textBaseline='alphabetic';
     var encre=(c.e && c.e.colTexte) || (clair?'#201908':'#F7F0DE'), vert=clair?(O.TENU||'#00341A'):(O.AMANDE||'#8FE08F');
@@ -42682,7 +42697,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    de l'orange s'étend : le départ d'une action ET son libellé. Pendant le geste aussi (plus de terracotta au doigt posé : un seul orange). LES FICHES
    NE BOUGENT PAS (#dptTrace). ⚠ Mesuré, par décision : 1,23:1 sur le corps du Promi #0E78F2, 2,27:1 sur ceux du Chiche et du Cercle. */
 #device#device#device#device#device#device #createSheet .pp-trace,
-#device#device#device#device#device#device #createSheet.pp.pp-cours .pp-trace{color:var(--c-orange-depart)!important;-webkit-text-fill-color:var(--c-orange-depart)!important}
+#device#device#device#device#device#device #createSheet.pp.pp-cours .pp-trace,
+#device#device#device#device#device#device #detailPoster #dptTrace.dpt-depart{color:var(--c-orange-depart)!important;-webkit-text-fill-color:var(--c-orange-depart)!important}   /* v174 (C-214) : les fiches aussi */
 </style>
 <style id="lot-V157-CROIX-css">
 /* ⚑ v157 (Tom, C-173) — « Partout, “× FERMER” devient un seul “X”, sans mot. » Les anciennes croix dessinées (svg, `::before` « ✕ ») se retirent ; le mot
@@ -43111,6 +43127,14 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 <style id="lot-V172-INVITE-css">
 /* v172 (C-209) : le libellé « trace pour … » de la page + caché tant que la parole n'est pas prête ; la couche du départ clignote avec le I */
 #device#device#device#device#device#device#device #createSheet.ppi-cache .pp-trace{visibility:hidden!important}
+/* ⚑ v174 (Tom, C-213) : pas prête, la phrase et le rail REMONTENT (`translate`, jamais `top` : leur place de la page prête reste la leur, au pixel) ; le geste n'a rien à tracer */
+#device#device#device#device#device#device#device #createSheet.ppa-haut:not(.pp-ouvert):not(.pp-cours) #csPhrase,
+#device#device#device#device#device#device#device #createSheet.ppa-haut:not(.pp-ouvert):not(.pp-cours) #nueePhrase{translate:0 var(--ppa-ph, 0px)!important}
+#device#device#device#device#device#device#device #createSheet.ppa-haut:not(.pp-ouvert):not(.pp-cours) #csPinceau{translate:0 var(--ppa-rail, 0px)!important}
+#device#device#device#device#device#device#device #createSheet.ppa-anim #csPhrase,
+#device#device#device#device#device#device#device #createSheet.ppa-anim #nueePhrase,
+#device#device#device#device#device#device#device #createSheet.ppa-anim #csPinceau{transition:translate var(--ppa-duree, 480ms) cubic-bezier(.4,0,.2,1)!important}
+#device#device#device#device#device#device#device #createSheet.ppi-vide:not(.pp-ouvert) #planterZone,#device#device#device#device#device#device#device #createSheet.ppi-vide:not(.pp-ouvert) #planterZoneN{pointer-events:none!important}   /* un choix ouvert : la zone garde son rôle, un toucher le referme */
 #device #createSheet #ppDepart{position:absolute!important;left:0!important;top:0!important;max-width:none!important;margin:0!important;padding:0!important;pointer-events:none!important;display:block!important;visibility:visible!important;transform:none!important;filter:none!important}
 @media (prefers-reduced-motion:no-preference){#device #createSheet #ppDepart.clignote{animation:promiBlink 1.15s steps(1,end) infinite}}
 </style>
@@ -43127,10 +43151,17 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      TRACE (`TraceLettres`, C-125, C-206) ; le départ CLIGNOTE au rythme du I de PROMI (son animation, calée sur sa phase) jusqu'au premier toucher du trait,
      puis il reste orange, fixe (fixe aussi sous « Réduire les animations »).
    · LE RETRAIT (la phrase effacée) : l'image sans invite les recouvre en flaques rapides (300 ms), puis ils sont retirés — jamais d'un coup.
-   · Tracer avant que ce soit prêt : inchangé, tracer sans phrase ouvre la saisie (`promiRequis`, v163b). Les fiches ne sont pas concernées. */
+   · Tracer avant que ce soit prêt : inchangé, tracer sans phrase ouvre la saisie (`promiRequis`, v163b). Les fiches ne sont pas concernées.
+   ⚑ v174 (Tom, 31 oct. 2026, C-213) — CE BLOC CORRIGE C-209 : « à l'ouverture, RIEN du trait n'est visible : ni pointillés, ni départ, ni flèche, ni libellé. »
+   · TANT QUE LA PAROLE N'EST PAS PRÊTE, la phrase et le rail du pinceau REMONTENT (`ppa-haut`) : la phrase à 28 pt sous le bas de la vague, le rail à 56 pt sous
+     la phrase (36 quand elle est prête) — une seule mise en page, mesurée à chaque passe (`mesure`) sur les trois natures. Un choix ouvert garde sa mise en page.
+   · PRÊTE : ils redescendent d'un mouvement (480 ms) jusqu'à leur place, puis le trait naît en flaques sur toute sa largeur (les pointillés, le départ, la
+     flèche), le libellé se trace, le départ clignote. REDEVENUE INCOMPLÈTE : tout se retire en flaques (300 ms), puis ils remontent.
+   · Le geste ne reçoit plus rien tant que rien n'est à tracer (`ppi-vide`) : un trait invisible ne se trace pas. */
 (function(){
   var dev=document.getElementById('device'); if(!dev) return;
-  var INV={vis:false, touche:false, sortie:false, ouvert:false, vvT:0, vvH:0, sig:'', sigT:0, tr:null, jeu:0, journal:[]};
+  var INV={vis:false, touche:false, sortie:false, ouvert:false, vvT:0, vvH:0, sig:'', sigT:0, tr:null, jeu:0, journal:[], haut:true, desc:0, finA:0};
+  var AIR_VAGUE=28, AIR_RAIL=56, DESCENTE=480;   /* l'air de la colonne, puis son double (`K.AIR`, l'échelle de l'Aura) ; 36 pt sépare le rail de la phrase quand elle est prête */
   function $(i){ return document.getElementById(i); }
   function cs(){ return $('createSheet'); }
   function ouverte(){ var c=cs(); return !!(c && c.classList.contains('show') && c.classList.contains('pp')); }
@@ -43153,7 +43184,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     d.style.setProperty('top', (cv.offsetTop||0)+'px', 'important'); d.style.setProperty('left', (cv.offsetLeft||0)+'px', 'important');
     var g=d.getContext('2d'); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,d.width,d.height); g.setTransform(dpr*sc,0,0,dpr*sc,0,0);
     return ((INV.vis || INV.sortie) && !INV.touche && !reduit() && !BANC()) ? g : null; }   /* fixe (touché, mouvement réduit) : le départ revient sur le champ, comme avant v172 */
-  window._ppInvite={ voit:function(){ return BANC() || INV.vis || INV.sortie; }, couche:couche, etat:function(){ return {visible:INV.vis, touche:INV.touche, sortie:INV.sortie, prete:prete(), frappe:frappe(), journal:INV.journal.slice()}; } };
+  window._ppInvite={ voit:function(){ return BANC() || INV.vis || INV.sortie; }, couche:couche, etat:function(){ return {visible:INV.vis, touche:INV.touche, sortie:INV.sortie, prete:prete(), frappe:frappe(), haut:INV.haut, descend:!!INV.desc, journal:INV.journal.slice()}; } };
   /* le clignotement : l'animation même du I de PROMI, calée sur sa phase (comme le départ de l'onboarding et la flèche du guide) */
   function clignote(on){ var d=$('ppDepart'); if(!d) return; if(!on || INV.touche || reduit()){ d.classList.remove('clignote'); return; }
     d.classList.add('clignote');
@@ -43162,12 +43193,31 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     /* la phase recopiée tout de suite, puis une et deux images plus tard : posée avant que l'animation parte, elle prenait 40 à 55 ms de retard */
     cale(); requestAnimationFrame(function(){ cale(); requestAnimationFrame(cale); }); }
   function repeint(){ try{ if(window._ppTrait) window._ppTrait(); }catch(_){ } }
+  function phraseEl(){ var e=window._ppEcran?window._ppEcran():null; return e ? $(e.nat==='nuee'?'nueePhrase':'csPhrase') : null; }
+  function dyDe(el){ try{ var t=getComputedStyle(el).translate; if(!t || t==='none') return 0; var p=t.split(/\s+/); return parseFloat(p[1]||'0')||0; }catch(_){ return 0; } }
+  window._ppaDy=function(){ var p=phraseEl(); return p ? dyDe(p) : 0; };
+  /* les cotes de la page « pas prête », en points 390 ; elles se lisent sur l'encre des créneaux de la phrase, remontée retirée */
+  function mesure(){ try{ var c=cs(), e=window._ppEcran(), O=window._onde, ph=phraseEl(); if(!c || !e || !ph || e.ouvert || e.etat!=='plate') return;
+      var y=O.onde(e.base, e.amp), bas=-1e9; for(var x=0;x<=390;x+=6){ var v=y(x); if(v>bas) bas=v; }
+      var D=c.getBoundingClientRect(), k=D.width/(c.offsetWidth||390), dy=dyDe(ph), h=1e9, b=-1e9;
+      [].forEach.call(ph.querySelectorAll('.ph-txt > .ph-m, .ph-txt > .ph-b'), function(n){ var r=n.getBoundingClientRect(); if(!r.width) return; h=Math.min(h,(r.top-D.top)/k-dy); b=Math.max(b,(r.bottom-D.top)/k-dy); });
+      if(h>1e8) return;
+      var dP=Math.min(0, Math.round((bas+AIR_VAGUE-h)*2)/2), R=$('csPinceau'), dR=dP;
+      if(R && R.style.getPropertyValue('display')!=='none'){ var t=parseFloat(R.style.getPropertyValue('top')); if(t) dR=Math.min(0, Math.round((b+dP+AIR_RAIL-t)*2)/2); }
+      if(c.style.getPropertyValue('--ppa-ph')!==dP+'px') c.style.setProperty('--ppa-ph', dP+'px');
+      if(c.style.getPropertyValue('--ppa-rail')!==dR+'px') c.style.setProperty('--ppa-rail', dR+'px');
+    }catch(_){ } }
+  window._ppaMesure=mesure;
+  function bouge(enHaut, fin){ var c=cs(); if(!c) return; var j=++INV.finA; INV.haut=enHaut;
+    if(reduit()){ c.classList.remove('ppa-anim'); c.classList.toggle('ppa-haut', enHaut); INV.desc=0; if(fin) fin(); return; }
+    c.classList.add('ppa-anim'); void c.offsetWidth; c.classList.toggle('ppa-haut', enHaut); INV.desc=performance.now()+DESCENTE; note(enHaut?'monte':'descend');
+    setTimeout(function(){ if(j!==INV.finA) return; INV.desc=0; c.classList.remove('ppa-anim'); if(fin) fin(); }, DESCENTE+30); }
   /* l'image de ce qui est là : le CORPS de la page (un aplat, sous l'onde le champ est transparent — la flèche et le libellé y vivent), puis le champ */
   function copie(src){ var k=document.createElement('canvas'), ex=src.width/390; k.width=src.width; k.height=Math.max(src.height, Math.round(844*ex)); var g=k.getContext('2d');
     try{ g.fillStyle=getComputedStyle(cs()).backgroundColor; g.fillRect(0,0,k.width,k.height); }catch(_){ } g.drawImage(src,0,0); return k; }
-  /* le départ et la flèche : du haut de l'onde (x ≤ 110) moins 22 pt jusque sous la flèche (base + 54) */
-  function rectDepart(){ try{ var e=window._ppEcran(), O=window._onde, y=O.onde(e.base, e.amp), m=1e9; for(var x=-12;x<=110;x+=2){ var v=y(x); if(v<m) m=v; }
-      var y0=Math.max(0, m-22), y1=Math.min(e.boite||844, e.base+54); return [0, y0, 112, y1-y0]; }catch(_){ return null; } }
+  /* v174 (C-213) : tout le trait, sur la largeur de l'écran — du haut de l'onde moins 22 pt jusque sous la flèche et le creux de l'onde */
+  function rectDepart(){ try{ var e=window._ppEcran(), O=window._onde, y=O.onde(e.base, e.amp), m=1e9, b=-1e9; for(var x=-12;x<=402;x+=4){ var v=y(x); if(v<m) m=v; if(v>b) b=v; }
+      var y0=Math.max(0, m-22), y1=Math.min(e.boite||844, Math.max(e.base+54, b+14)); return [0, y0, 390, y1-y0]; }catch(_){ return null; } }
   function rectLib(){ try{ var t=cs().querySelector('.pp-trace'), H=cs(), D=H.getBoundingClientRect(), k=D.width/(H.offsetWidth||390), r=t.getBoundingClientRect(); if(!r.width) return null;
       return [Math.max(0,(r.left-D.left)/k-4), Math.max(0,(r.top-D.top)/k-4), r.width/k+8, r.height/k+8]; }catch(_){ return null; } }
   function libelle(){ var c=cs(); return c ? c.querySelector('.pp-trace') : null; }
@@ -43178,38 +43228,43 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var r=rectDepart(), d=$('ppDepart');
     if(r && window._passageFlaques && !reduit()){ try{ window._passageFlaques(c, {mode:'ouvre', rect:r, image:avant, duree:700, apres:d||cv, z:(d?d.style.zIndex:null)||0}); }catch(_){ } } }
   function retire(){ var c=cs(), cv=$('csTrameCv'); if(!c || !INV.vis) return; var j=++INV.jeu; note('retire');
-    if(!cv || reduit() || !window._passageFlaques){ INV.vis=false; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint(); return; }
+    if(!cv || reduit() || !window._passageFlaques){ INV.vis=false; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint(); bouge(true); return; }
     /* l'image SANS invite (le champ repeint sans elle), puis le champ rendu tel qu'il est : rien ne change à l'écran dans cette tâche */
     INV.vis=false; INV.sortie=false; repeint(); var apres=copie(cv); INV.sortie=true; repeint(); clignote(false);
     var fin=0, n=0, lib=libelle(), zl=lib?getComputedStyle(lib).zIndex:'1', z=String(Math.max(2, (parseInt(zl,10)||1)+1));
     function bout(){ if(++fin<n || j!==INV.jeu) return; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint();
-      [].forEach.call(c.querySelectorAll('canvas.passage-flaques.ppi-sortie'), function(k){ k.remove(); }); }
+      [].forEach.call(c.querySelectorAll('canvas.passage-flaques.ppi-sortie'), function(k){ k.remove(); }); mesure(); bouge(true); }
     [rectDepart(), rectLib()].forEach(function(r){ if(!r) return; n++;
       var p=window._passageFlaques(c, {mode:'couvre', rect:r, image:apres, duree:300, devant:true, z:z, fin:bout}); if(p && p.canevas) p.canevas.classList.add('ppi-sortie'); });
     if(!n){ fin=-1; n=0; bout(); } }
   function stopTrace(){ try{ if(INV.tr && INV.tr.stop) INV.tr.stop(); }catch(_){ } INV.tr=null; }
-  function cache(){ var c=cs(); INV.vis=false; INV.sortie=false; INV.touche=false; INV.jeu++; stopTrace(); if(c && !BANC()) c.classList.add('ppi-cache'); var d=$('ppDepart'); if(d){ d.classList.remove('clignote'); try{ d.getContext('2d').clearRect(0,0,d.width,d.height); }catch(_){ } } }
+  function cache(){ var c=cs(); INV.vis=false; INV.sortie=false; INV.touche=false; INV.jeu++; stopTrace(); INV.haut=true; INV.desc=0; INV.finA++; if(c && !BANC()){ c.classList.remove('ppa-anim'); c.classList.add('ppi-cache','ppa-haut','ppi-vide'); } var d=$('ppDepart'); if(d){ d.classList.remove('clignote'); try{ d.getContext('2d').clearRect(0,0,d.width,d.height); }catch(_){ } } }
   /* à l'ouverture : caché d'emblée (la classe est posée avant la première image de la page +, dès qu'elle est ouverte ou refermée) */
-  var c0=cs(); if(c0 && !BANC()) c0.classList.add('ppi-cache');
+  var c0=cs(); if(c0 && !BANC()) c0.classList.add('ppi-cache','ppa-haut','ppi-vide');
   var _ca=window.closeAll; if(typeof _ca==='function') window.closeAll=function(){ var r=_ca.apply(this, arguments); try{ cache(); }catch(_){ } return r; };
-  try{ new MutationObserver(function(){ var o=ouverte(); if(o!==INV.ouvert){ INV.ouvert=o; if(!o || !INV.vis) cache(); } }).observe(c0, {attributes:true, attributeFilter:['class']}); }catch(_){ }
+  try{ new MutationObserver(function(){ var o=ouverte(); if(o!==INV.ouvert){ INV.ouvert=o; if(!o || !INV.vis) cache(); } if(o && INV.haut) mesure(); }).observe(c0, {attributes:true, attributeFilter:['class']}); }catch(_){ }   /* v174 : un choix qui se referme (la phrase a changé de lignes) : la cote est reprise avant l'image */
   /* le premier toucher du trait : le départ cesse de clignoter, il reste orange, fixe */
   function toucher(ev){ try{ var t=ev.target; if(!INV.vis || INV.touche || !t || !t.closest) return; if(t.closest('#planterZone, #planterCv')){ INV.touche=true; clignote(false); repeint(); note('touche'); } }catch(_){ } }
   document.addEventListener('pointerdown', toucher, true); document.addEventListener('touchstart', toucher, {capture:true, passive:true});
   /* la veille : toutes les 50 ms, seulement la page + ouverte */
-  setInterval(function(){ try{ if(BANC()){ var cb=cs(); if(cb) cb.classList.remove('ppi-cache'); return; }
+  setInterval(function(){ try{ if(BANC()){ var cb=cs(); if(cb) cb.classList.remove('ppi-cache','ppa-haut','ppi-vide'); return; }
     if(!ouverte()){ if(INV.vis || INV.sortie) cache(); INV.sig=''; return; }
     var vv=window.visualViewport, h=vv?vv.height:innerHeight, now=performance.now();
     if(Math.abs(h-INV.vvH)>0.5){ INV.vvH=h; INV.vvT=now; }
     var e=window._ppEcran?window._ppEcran():null, sig=e?[e.nat, e.base, e.amp, e.etat].join('|'):''; if(sig!==INV.sig){ INV.sig=sig; INV.sigT=now; }
-    var ok=prete();
-    if(!ok){ if(INV.vis) retire(); return; }
+    var ok=prete(), c1=cs(); if(c1) c1.classList.toggle('ppi-vide', !ok);
+    if(e && (e.ouvert || c1.classList.contains('pp-ouvert'))) INV.ouvT=now;   /* la classe : sous charge elle tombe après l'état */
+    if(INV.haut || !ok) mesure();   /* comparée avant d'écrire ; un choix ouvert ne la touche pas */
+    if(!ok){ if(INV.vis) retire(); else if(!INV.sortie && !INV.haut) bouge(true); return; }
     if(INV.vis || INV.sortie) return;
     if(frappe()) return;                                                      /* jamais pendant la frappe */
     if(vv && vv.height < innerHeight - 40) return;                            /* le clavier encore là */
     if(now - INV.vvT < 160) return;                                           /* il redescend encore */
     if(now - INV.sigT < 60 || !e || e.etat!=='plate') return;                 /* la page se recompose encore, ou un doigt trace */
-    montre();
+    if(INV.haut && now-(INV.ouvT||0)<60) return;                              /* le choix vient de se refermer : la page se pose à sa place haute, deux images au moins */
+    if(INV.haut){ bouge(false); return; }                                     /* v174 (C-213) : d'abord les éléments redescendent… */
+    if(INV.desc) return;
+    montre();                                                                 /* … puis le trait naît */
   }catch(_){ } }, 50);
 })();
 </script>

@@ -8917,3 +8917,7 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q594 — À REGARDER (C-210, v173b, choix du chef de lot)** : l'étude écrivait « EN COURS · DANS 2 JOURS » ; une parole en cours à date future reste « EN COURS » seul, comme en v172 (le lot garde les fiches en cours au pixel) ; seule la date passée s'ajoute (« EN COURS · 12 OCT. »). Si Tom veut le mot du temps sur toute parole en cours : une ligne à changer.
 
 - **Q595 — À VALIDER (C-210, v173b)** : l'événement du Fil « RELEVÉ · À TENIR À DEUX » (jeu de démonstration, cadre 76) devient « RELEVÉ · À DEUX » : mot le plus sobre, faute de mieux. Le mot après signature de la page + « À TENIR · <jour> » devient « EN COURS · <jour> ».
+
+- **Q594, Q595 — CLOSES (Tom, lot v174)** : « EN COURS » seul pour une date future ; « EN COURS · <jour> » après la signature ; « RELEVÉ · À DEUX » dans le Fil.
+- **Q596 — À ÉCRIRE PAR TOM (C-217, v174b)** : le texte et les trois montants de « Soutenir Promi » sont provisoires (« Promi est une initiative personnelle. Un don aide à en couvrir les frais. Il ne débloque rien. » ; 2, 5, 10 €).
+- **Q597 — À REGARDER (v174a, rien changé — A5)** : le mot « Chiche » dans la phrase d'un Chiche est noir `#050302` sans fond sur le corps `#7C3F58` (`.ph-b-fixe`, v163b ; identique en v172 et v173). Proposition : la crème du mode, comme le reste du texte fixe de la phrase.

@@ -60,7 +60,7 @@ def oranges(im, places):
     return n
 def un(b, th, ecran, nature):
     T = '[%s, %s %s]' % ('clair' if th == 'light' else 'sombre', ecran, ['Promi', 'Chiche', 'Cercle'][nature])
-    ctx = B.contexte(b, sombre=(th == 'dark')); pg = B.ouvre(ctx, F)
+    ctx = B.contexte(b, sombre=(th == 'dark')); ctx.add_init_script('window.__INVITE_BANC=1;'); pg = B.ouvre(ctx, F)   # ⚑ v172–v174 (C-209, C-213) : le chevron de la page + n'existe qu'une fois la parole prête ; ce juge vise les ronds orange
     if ecran == 'fiche':
         if nature == 1: B.plante_doigt(pg, 'courir dimanche', qui='Marion', nature=1)
         else: B.plante(pg, 'rendre le livre', qui='Marion')

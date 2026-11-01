@@ -108,6 +108,7 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     for th in ('clair', 'sombre'):
         ctx = b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=3, has_touch=True, is_mobile=True)
+        ctx.add_init_script('window.__INVITE_BANC=1;')   # ⚑ v172–v174 (C-209, C-213) : le trait de la page + n'existe qu'une fois la parole prête
         ctx.add_init_script("try{localStorage.setItem('promi_onb','1');localStorage.setItem('promi_guide','1');localStorage.setItem('promi_rappel_n','9');localStorage.setItem('promi_theme','%s');}catch(e){}" % ('light' if th == 'clair' else 'dark'))
         pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + PAGE); pg.wait_for_timeout(7000)
         dpr = 3

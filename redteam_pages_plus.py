@@ -50,12 +50,14 @@ def page_plus(b, fichier, nat, sombre):
     ctx.add_init_script('window.__TRAIT_BANC=1;' if fichier == F else ''); pg = B.ouvre(ctx, fichier)   # ⚑ v163 (C-184) : le trait neutralisé (son pas, et ce qui descend sous lui, sont jugés par redteam_trait_k)
     B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=%s]' % nat); pg.wait_for_timeout(2800)
     r = pg.evaluate(LIT); ctx.close(); return r
+LIBELLE = {}
 def fiche(b, fichier, nature, sombre):
     ctx = B.contexte(b, sombre=sombre, vw=430, vh=932); ctx.add_init_script(SEME); ctx.add_init_script('window.__TRAIT_BANC=1;' if fichier == F else ''); pg = B.ouvre(ctx, fichier)   # ⚑ v163 (C-184) : le trait neutralisé (son pas, et ce qui descend sous lui, sont jugés par redteam_trait_k)
     B.plante(pg, 'rendre le livre', qui='Marion', nature=nature)
     pg.evaluate("()=>{ window._TRAIT_K=1; closeAll(); openDetail(promises[promises.length-1].id); }"); pg.wait_for_timeout(3200)   # ⚑ v162 (C-184) : le trait × 1,05 est voulu (son juge : redteam_trait_105) — ici on le neutralise pour juger tout le reste contre v149
     t = pg.evaluate("()=>{ const v=(document.getElementById('dpTrameCv').getAttribute('data-trait')||'').split(','); return [+v[0], +v[1]]; }")
     im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB'); d = pg.evaluate("()=>{const r=document.getElementById('device').getBoundingClientRect(); return [r.left,r.top,r.width/390];}")
+    LIBELLE[fichier] = pg.evaluate("()=>{const e=document.querySelector('#dptTrace.dpt-depart'); if(!e) return null; const D=document.getElementById('device').getBoundingClientRect(),k=D.width/390,g=document.createRange(); g.selectNodeContents(e); const r=g.getBoundingClientRect(); return [(r.left-D.left)/k,(r.top-D.top)/k,(r.right-D.left)/k,(r.bottom-D.top)/k]}")   # ⚑ v174 (C-214) : sur une fiche à moitié tracée le libellé est au-delà du milieu : son rectangle est admis, lu sur la fiche
     ctx.close(); y0 = int((d[1] + (t[0] - t[1] - 8) * d[2]) * 3); x0 = int((d[0] + 3 * d[2]) * 3); return im.crop((x0, y0, x0 + int(384 * d[2] * 3), int((d[1] + 800 * d[2]) * 3))), t   # au-dessus des coins arrondis du bas de l'appareil (rayon ≈ 44 pt : leur lissage varie d'un rendu à l'autre)
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -98,14 +100,15 @@ with sync_playwright() as p:
             # ⚑ v155 (Tom, C-169 §4.2) : sur une fiche à moitié tracée, le départ de la seconde moitié (les 43 pt du trait avant la pointe du milieu) est
             #   ORANGE — c'est la seule différence admise, nommément : la bande du trait de 140 à 200 pt ; ailleurs, identique au pixel (original :
             #   sauvegardes/redteam_pages_plus-avant-v155.py)
-            k_ = ia.size[0] / 384.0; zx0, zx1 = int((140 - 3) * k_), int((200 - 3) * k_); zy1 = int((2 * ta[1] + 30) * k_) if ta and ta[1] else 0
+            k_ = ia.size[0] / 384.0; zx0, zx1 = 0, int((200 - 3) * k_); zy1 = int((2 * ta[1] + 74) * k_) if ta and ta[1] else 0   # ⚑ v174 (Tom, C-214, C-215) : toute la partie tracée, du départ au milieu, et le libellé « trace pour … » sont orange : la zone admise va de 0 à 200 pt et descend sous le libellé (original : sauvegardes/redteam_pages_plus-avant-v174.py)
             n_, nz, org = 0, 0, 0
             if ia.size == ic.size:
                 D_ = ImageChops.difference(ia, ic).convert('L'); W_ = ia.size[0]; pc = ic.load()
                 for i_, px in enumerate(D_.getdata()):
                     if px <= 1: continue
                     x_, y_ = i_ % W_, i_ // W_
-                    if zx0 <= x_ <= zx1 and y_ <= zy1:
+                    L_ = LIBELLE.get(F); dy_ = ta[0] - ta[1] - 8
+                    if (zx0 <= x_ <= zx1 and y_ <= zy1) or (L_ and (L_[0] - 5) * k_ <= x_ <= (L_[2] - 1) * k_ and (L_[1] - dy_ - 2) * k_ <= y_ <= (L_[3] - dy_ + 2) * k_):
                         nz += 1; q_ = pc[x_, y_]
                         if abs(q_[0] - 251) + abs(q_[1] - 76) + abs(q_[2] - 13) < 120: org += 1
                     else: n_ += 1
@@ -114,7 +117,7 @@ with sync_playwright() as p:
     # la bascule : dix ouvertures, phrase tirée au hasard (sans semer)
     faux = []
     for i in range(10):
-        ctx = B.contexte(b); ctx.add_init_script('window.__TRAIT_BANC=1;'); pg = B.ouvre(ctx, F)   # v163 : le trait neutralisé
+        ctx = B.contexte(b); ctx.add_init_script('window.__TRAIT_BANC=1;window.__INVITE_BANC=1;'); pg = B.ouvre(ctx, F)   # v163 : le trait neutralisé ; v174 (C-213) : la page sans remontée, comme le reste de ce juge
         B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=chiche]'); pg.wait_for_timeout(3500)
         r = pg.evaluate("""()=>{ const e=_ppEcran(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, tr=document.querySelector('#createSheet .pp-trace'), ph=document.getElementById('csPhrase');
           return [e.nl, e.base, +((tr.getBoundingClientRect().top-D.top)/k).toFixed(1), +((ph.getBoundingClientRect().top-D.top)/k).toFixed(1)]; }""")

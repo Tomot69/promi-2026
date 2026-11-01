@@ -1,7 +1,9 @@
 {
  "rendu": {
   "div#dpdCorps.dpd-corps.peauf-reglages>div.s2-liste>div.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»": "mur de Ma Parole ! : réglage flouté du gratuit, sans prise par décision (v104)",
-  "div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»": "mur de Ma Parole ! : réglage flouté du gratuit, sans prise par décision (v104)"
+  "div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»": "mur de Ma Parole ! : réglage flouté du gratuit, sans prise par décision (v104)",
+  "#planterZone": "page + pas encore prête : aucun trait à l'écran, la zone est sans prise par décision (v174, C-213)",
+  "#planterZoneN": "page + pas encore prête : aucun trait à l'écran, la zone est sans prise par décision (v174, C-213)"
  },
  "source": {
   "#fToAll · onchange": "nœud disparu : code mort hors de Q363 — à retirer sur décision",

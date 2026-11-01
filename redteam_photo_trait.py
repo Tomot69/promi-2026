@@ -75,14 +75,14 @@ with sync_playwright() as p:
         if not L: juge("l'état exporté de Tom existe", False, 'aucun')
         for ech in ((None, 1) if L else ()):
             for K in KS:
-                ctx, d = B.contexte_tom(b, L[-1], echelle=ech); pg = ctx.new_page()
+                ctx, d = B.contexte_tom(b, L[-1], echelle=ech); ctx.add_init_script('window.__INVITE_BANC=1;'); pg = ctx.new_page()   # ⚑ v174 (C-213) : la page + n'a plus de trait tant qu'elle n'est pas prête ; le juge du bouton photo garde le trait posé
                 pg.goto('http://127.0.0.1:8752/' + F, timeout=180000); pg.wait_for_timeout(7000)
                 ecrans(pg, 'Tom %s · %s · ×%s' % (L[-1].split('/')[-1], ('%s × %s' % (d['ecran'].get('largeur'), d['ecran'].get('hauteur'))) if ech is None else 'échelle 1', K))
                 ctx.close()
     else:
       for ech, vw, vh in FEN:
         for K in KS:
-            ctx = B.contexte(b, vw=vw, vh=vh); B.toile_pleine(ctx, 5); pg = B.ouvre(ctx, F, q='')
+            ctx = B.contexte(b, vw=vw, vh=vh); ctx.add_init_script('window.__INVITE_BANC=1;'); B.toile_pleine(ctx, 5); pg = B.ouvre(ctx, F, q='')
             pg.evaluate("()=>{ const k='jardin'; NUE[k]='Les jardiniers'; NUEEMEM[k]=['Marion']; NUECREATOR[k]='moi'; promises.filter(q=>!q.draft&&!q.chiche).slice(0,2).forEach(q=>{ q.nuee=k; }); saveState(); syncAll(); }"); pg.wait_for_timeout(500)
             ecrans(pg, '%s · ×%s' % (ech, K))
             ctx.close()

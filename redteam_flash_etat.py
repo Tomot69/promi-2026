@@ -38,6 +38,8 @@ ENCRE = 'rgb(32, 25, 8)'
 # ⚑ v131 (Tom, 5 oct. 2026) — Tropical Breeze est écarté, le corps sombre d'un Promi est le cobalt #273CEB : « le texte posé sur ce corps
 #   redevient crème #F7F0DE, comme avant ». Le contrat revient à la crème (v16, Q290), avec cette source.
 IDS = ['dptQui', 'dptQuand', 'dptTrace']
+# ⚑ v174 (Tom, C-214) : « TRACE POUR … » d'une fiche est orange #FB4C0D, dès la première image ; l'à-qui et l'échéance restent crème (original : sauvegardes/redteam_flash_etat-avant-v174.py).
+DEPART = 'rgb(251, 76, 13)'
 ok = [0]; ko = []
 
 
@@ -84,11 +86,12 @@ with sync_playwright() as p:
         o_img = [(v['t'], k) for v in (r or {}).get('vu', []) for k, c in v['c'].items() if c == ORANGE]
         if o_img: oranges += 1; details.append('ouverture %d : orange de %d à %d ms (%s)' % (i + 1, o_img[0][0], o_img[-1][0], ', '.join(sorted(set(k for _, k in o_img)))))
         pr = (r or {}).get('premiere') or {}
-        if not pr or any(c != CREME for c in pr.get('c', {}).values()): premieres_ko += 1
+        if not pr or any(c != (DEPART if k == 'dptTrace' else CREME) for k, c in pr.get('c', {}).items()): premieres_ko += 1
         # 2 · la capture
         if im:
             px = im.load(); n_or = 0
             for k, (x0, y0, x1, y1) in rects.items():
+                if k == 'dptTrace': continue   # v174 (C-214) : son orange est décidé
                 W, H = im.size
                 for y in range(max(0, int(y0 * 2)), min(H, int(y1 * 2)), 2):
                     for x in range(max(0, int(x0 * 2)), min(W, int(x1 * 2)), 2):
