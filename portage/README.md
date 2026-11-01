@@ -32,7 +32,7 @@ les plus récents corrigent les plus anciens).
 ## Les contradictions trouvées en écrivant le dossier (à trancher avant de coder)
 
 - **La rotation de la Pelote** : `2π/100` dans l'app et dans `releve-aura.py` ; `2π/120` dans `CLAUDE.md` §7 (Q405).
-- **Le prix d'un design** : 2 € au Studio (v118) ; « 1 €, ou 4 pour 3 € » encore sur l'écran de l'offre et dans l'ÉTAT.
+- **Le prix d'un design** : 4 € (Houle, Taille-douce, Éclisse) ou 6 € (les autres mondes payants) — C-216, v174 (2 € en v118) ; « 1 €, ou 4 pour 3 € » encore sur l'écran de l'offre et dans l'ÉTAT.
 - **`ETAT-30-SEPTEMBRE-2026.md` est en retard** sur le bleu (`#0E78F2`) et sur ce prix : c'est pourtant la première source de l'ordre.
 - **Le fond sombre** : `#100D0B` dans le jeu de jetons et dans `Promi+Design.swift` ; seiche `#050302` à l'écran (v116, v121).
 - **Le trait sur le lilas d'un Cercle** : `#43291C` dans le code, `#291547` à deux endroits de `CLAUDE.md`.

@@ -2435,7 +2435,7 @@
    "voiceover": "Noir et blanc"
   },
   "studio.adopter": {
-   "fr": "Adopte ce design — 2 €",
+   "fr": "Adopte ce design pour 4 € · Adopte ce design pour 6 €",
    "ou": "Studio · bouton d’achat d’un monde verrouillé",
    "source": "app.html:22410 (lot-STUDIO-PLATEAUX)"
   },

@@ -37,7 +37,7 @@
 - **Plus aucun filet** (disques, Noyaux, trait, crête ; clair et sombre) : l'exception « terre d'une fiche tenue » de JETONS et de REGLES tombe.
 - **Le bouton photo** porte le cadre traversé d'un trait (SPEC-ECRANS : fiche, page +, Cercle) ; VoiceOver inchangé.
 - **Sur `#0E78F2`** : les libellés lilas du Peaufiner d'une fiche Promi sont `#F4EEFF` (JETONS).
-- **Contradictions du README, tranchées** : Pelote = un tour en 100 s ; fond sombre = seiche `#050302` dans le rôle `fond` ; un design = 2 €
+- **Contradictions du README, tranchées** : Pelote = un tour en 100 s ; fond sombre = seiche `#050302` dans le rôle `fond` ; un design = 2 € alors ; 4 € (Houle, Taille-douce, Éclisse) ou 6 € (les autres mondes payants) — C-216, v174
   (« 4 pour 3 € » retiré) ; aide de l'Aura = « la plus récente en premier » ; À propos = Gilbert pour sous-titres et libellés, PromiLate pour les titres.
 - **Studio** : la pagination des mondes est une rangée de barrettes (10 × 4, la courante 18 × 4), plus des points.
 - **Moteur** : `_AMP_MI` — ampleur à mi-force sous TROIS mondes (Esquille 0,3 · Ritournelle 0,3 · Ramage 0,6 ; SPEC-RENDU §a) ; le banc de rendu est refigé pour eux. Guingois (et Chantourné seul) diffèrent de la référence du banc depuis avant v135 (C-066).
@@ -131,3 +131,4 @@
 - **L'ordre du guide (C-146)** — au lancement le Studio ; toucher ailleurs = le rappel (la même phrase) ; le + seulement après le Studio ; reprise au
   lancement suivant tant que le Studio n'a pas été ouvert (`promi_guide` = « studio »). SPEC-DONNEES §9.4 à reporter.
 - **Les exceptions au « ! »** — « Ma Parole ! », « Promi planté ! », « Parole tenue ! », « Défi relevé ! » (TEXTES).
+- **v174 (31 oct. 2026)** — **C-213, la page + avant que la parole soit prête** : à l'ouverture rien du trait (ni pointillés, ni départ, ni flèche, ni libellé) ; la phrase à 28 pt sous la vague, le rail à 56 pt sous la phrase ; prête (la phrase, ou le nom d'un Cercle ; jamais pendant la frappe ; ≤ 300 ms après la fermeture du clavier) : les éléments redescendent d'un mouvement (480 ms), puis le trait naît ; redevenue incomplète : retrait, remontée ; le geste ne reçoit rien tant que rien n'est à tracer. **Une ardoise vide TOUS les champs lus par le critère** (le prototype gardait `#fTitle`). **Onboarding** : « Petite ou grande promesse, elle compte. » arrive avec le trait, une fois la promesse complétée. **C-214** : « TRACE POUR … » orange sur les fiches. **C-215** : l'orange couvre toute la partie tracée d'une fiche à moitié tracée. **C-216** : les prix. **C-181** : la veille à 90 s. **C-217** : Soutenir Promi (MANQUES).

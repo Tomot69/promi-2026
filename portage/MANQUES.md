@@ -155,7 +155,7 @@ réglage dans l'app.
   Toile », « Chaque parole se peaufine », « Ta Toile change de matière — Douze mondes de plus, les couleurs du dessin ») · **« 39 € /
   AN »**, « soit 3,25 €/mois » · « Sans engagement · résiliable à tout moment » · option « Bon, allez d’accord — 39 € / an » · « ou
   5,99 € par mois ». Les Réglages annoncent « essai 14 jours ».
-- **L'achat d'un design** : au Studio, sur un monde payant, « Adopte ce design — 2 € », et « Ou débloque-les tous · Avec Ma Parole ! ».
+- **L'achat d'un design** : au Studio, sur un monde payant, « Adopte ce design pour 4 € » (Houle, Taille-douce, Éclisse) ou « … pour 6 € » (les autres), et « Ou débloque-les tous · Avec Ma Parole ! ».
 - **Payer sans compte** (`lot-ACHAT-SANS-COMPTE`) : avant, « Avant d’acheter » · « Sans compte, ton achat reste sur ce téléphone : si
   tu en changes ou supprimes l’app, il est perdu. » · « Acheter sans compte » ; juste après, « Garder ton achat » · « Il est sur ce
   téléphone seulement. Garde ta Toile pour ne pas le perdre. »
@@ -165,7 +165,7 @@ réglage dans l'app.
 - L'annuel en avant à 39 €, le mois à 5,99 € en option (Tom, 14 sept. ; v16 ; v74 « AN » en capitales). « L'essai reste le bouton
   principal ; l'adhésion passe sur l'option, avec le prix annuel » (v107). Les mots : CLAUDE.md §2 (« Avec Ma Parole ! », « Tu es Membre
   Ma Parole ! », « Retourne ta Toile », « Bon, allez d’accord »).
-- Un design s'adopte à 2 € (v118 ; 1 € avant). « 4 pour 3 € » est gelé (Q206).
+- Un design s'adopte à 4 € (Houle, Taille-douce, Éclisse) ou 6 € (les autres ; v174, C-216 ; 2 € en v118, 1 € avant). « 4 pour 3 € » est gelé (Q206).
 - Ce que Ma Parole ! ouvre : douze mondes (les huit gratuits : Pochade, Touffe, Brouillamini, Halin, Esquille, Tesselle, Braille,
   Buvard) ; les cinq réglages d'une parole (récurrence, rappel, importance, mémoire, couleur) ; l'autre moitié de la Toile (ce que
   tes proches tiennent envers toi) ; les paroles en l'air et l'heure des notifications ; les couleurs du dessin (v133, C-061).
@@ -178,9 +178,10 @@ réglage dans l'app.
   consommé (StoreKit ne l'offre qu'une fois par groupe d'abonnement) ?
 - **Les produits** : identifiants, groupe d'abonnement, passage du mensuel à l'annuel, prix hors zone euro (le texte « 39 € » et
   « soit 3,25 €/mois » est en dur : StoreKit rend un prix localisé — le « soit … /mois » doit être calculé).
-- **Le design à 2 €** : achat non consommable par monde (douze produits) ? Que devient-il quand on prend Ma Parole ! ensuite, puis
+- **Le design à 4 ou 6 €** : achat non consommable par monde (douze produits) ? Que devient-il quand on prend Ma Parole ! ensuite, puis
   qu'on la quitte ? Peut-on en adopter plusieurs ? La palette est-elle comprise ?
 - **La restauration** : obligatoire pour l'App Store ; ni bouton, ni mot, ni place.
+- **Soutenir Promi (C-217, v174b)** : des achats intégrés CONSOMMABLES (règle Apple 3.1.1, les pourboires), un produit par montant ; aucun lien de paiement externe. Le don ne débloque rien, rien ne se garde ni ne se compte ; la rangée vit aux Réglages seuls, jamais proposée ailleurs, sans relance (grille du §12). Texte et montants à écrire par Tom (Q596).
 - **Payer sans compte** (C-035) : avec StoreKit, un achat est lié à l'identifiant Apple, pas à l'app — il se restaure sur un autre
   téléphone du même identifiant. **Le texte « si tu en changes ou supprimes l'app, il est perdu » est alors faux** tel qu'écrit ; ce
   qui serait perdu, c'est la Toile (locale), pas l'achat. Les deux mots sont à reprendre avec ce fait.
@@ -194,7 +195,7 @@ réglage dans l'app.
 
 **Questions à poser à Tom**
 1. L'essai : 14 jours gratuits puis l'annuel, automatiquement ? Aussi sur le mensuel ?
-2. Le design à 2 € : un achat par monde, gardé pour toujours ? Avec sa palette ?
+2. Le design à 4 ou 6 € : un achat par monde, gardé pour toujours ? Avec sa palette ?
 3. Où vit « Restaurer mes achats » (Réglages, page de l'offre, les deux) et quels mots ?
 4. À la fin de Ma Parole ! : les réglages déjà posés restent-ils (figés), ou s'éteignent-ils ?
 5. « Payer sans compte » : réécrire les deux textes sachant que l'achat suit l'identifiant Apple ?

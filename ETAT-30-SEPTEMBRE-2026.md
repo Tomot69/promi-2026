@@ -1,6 +1,6 @@
 # ÉTAT AU 30 SEPTEMBRE 2026 — CE QUI EST VRAI AUJOURD'HUI
 
-> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-10-31 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version {'lot': 'v173b', 'servi': 'eb23b9f+', 'moteur': '10a069f', 'marque': None}). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
+> **Le document de référence du portage.** Engendré par `etat_generer.py` le 2026-11-01 depuis la source vivante : `PROMI-TOKENS.json` et l'app en marche (version {'lot': 'v174a', 'servi': '3e78448+', 'moteur': '10a069f', 'marque': None}). **Ne pas l'éditer à la main** : on corrige la source, puis on relance.
 > Les valeurs de ce document priment sur tout autre document. `PROMI-SPECIFICATIONS.md`, `PARCOURS.md` et `MOODBOARD-VALEURS.md` sont des **archives** (valeurs antérieures au 16 septembre 2026) : ils disent la géométrie et l'intention d'août, jamais une couleur, une police ni un libellé à porter.
 
 **Ordre des sources, en cas de doute :** ce document → `PROMI-TOKENS.json` (couleurs, polices) → `CONTRAT-MONDE.md` (ce qu'un monde doit faire) → `SPEC-JUGES.md` (les règles que les juges portent) → `CLAUDE.md` (méthode, pièges, décisions datées) → les moodboards (géométrie d'origine) → une mesure de l'app (jamais une référence).
@@ -157,7 +157,7 @@ Palette par défaut : **Ingénu** (clé `signal`). Quatre tons, dans l'ordre de 
 
 ## 6 · Ma Parole ! — l'offre
 
-- **Prix** : 39 € / an (soit 3,25 €/mois) · ou 5,99 € par mois · essai 14 jours · un monde à l'unité 1 €. Sans engagement.
+- **Prix** : 39 € / an (soit 3,25 €/mois) · ou 5,99 € par mois · essai 14 jours · un monde à l'unité 4 € (Houle, Taille-douce, Éclisse) ou 6 €. Sans engagement.
 - **L'écran qui vend** : titre « MA PAROLE ! », sous-titre « Retourne ta Toile », bouton principal « Essayer 14 jours », option « Bon, allez d'accord — 39 € / an », en petit « ou 5,99 € par mois ».
 - **Réglages** : la porte « Ma Parole ! » ouvre l'offre (ce n'est pas un mur) ; au payé « Tu es Membre Ma Parole ! », sans lien.
 - **Ce qu'elle ouvre** : l'autre moitié de la Toile (ce qu'on te tient), la récurrence, le rappel à l'heure choisie, l'importance, la mémoire des paroles en l'air, la couleur de la dalle, douze mondes, les Cercles illimités.

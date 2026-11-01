@@ -695,10 +695,10 @@ remis à zéro après `ABSENCE` = 14 jours (« à valider », `app.html:37135`, 
 
 | De | Vers | Déclencheur | Source |
 |---|---|---|---|
-| monde verrouillé | **acquis** + appliqué (`Toile.setTheme(w)`) | Studio, sur un monde payant : bouton `#stLockBuy` **« Adopte ce design — 2 € »** → `_ownedDesigns[_lockedWorld]=true` | `app.html:2774`, `8567`, `22410` |
+| monde verrouillé | **acquis** + appliqué (`Toile.setTheme(w)`) | Studio, sur un monde payant : bouton `#stLockBuy` **« Adopte ce design pour 4 € » ou « … pour 6 € »** → `_ownedDesigns[_lockedWorld]=true` | `app.html:2774`, `8567`, `22410` |
 | monde payant en usage | **acquis** (gardé) | fin de Ma Parole ! pendant l'usage, ou monde devenu payant depuis (v71/v73, Q339) | `app.html:36831–36844` |
 
-> **⚠ TROU T18** — **le prix d'un design** : `2 €` au Studio (v118, CLAUDE.md), mais l'écran de l'offre écrit encore « un design à l'unité —
+> **⚠ TROU T18** — **le prix d'un design** : `4 €` (Houle, Taille-douce, Éclisse) ou `6 €` au Studio (v174, C-216), mais l'écran de l'offre écrit encore « un design à l'unité —
 > 1 €, ou 4 pour 3 € » (`app.html:2794`) et ETAT §6 « un monde à l'unité 1 € ». Le lot de quatre n'a aucun état. À trancher avant StoreKit.
 > (Voir aussi T6 : les pinceaux à 0,50 €.)
 
@@ -758,7 +758,7 @@ resynchronise depuis les paroles (`Toile.sync(ids)`), et « un semis est déterm
 | T15 | Limite du nombre de Cercles au gratuit : introuvable | `illimit`, `MAX_NUEE`, `limiteNuee` |
 | T16 | Thème par défaut au premier lancement depuis que le Zzz est coupé : non vérifié (pas de navigateur) | `promi_theme`, `app.html:8295` |
 | T17 | `isPremium` non sauvegardé ; ni essai, ni formule, ni échéance d'abonnement | `setPremium(` (7 occurrences) |
-| T18 | Prix d'un design : 2 € (Studio, v118) contre « 1 €, ou 4 pour 3 € » (écran de l'offre) et « 1 € » (ETAT §6) | `€` |
+| T18 | Prix d'un design : 4 ou 6 € (Studio, v174, C-216 ; 2 € en v118) contre « 1 €, ou 4 pour 3 € » (écran de l'offre) et « 1 € » (ETAT §6) | `€` |
 | T19 | Trois noms pour la nature d'un gardé de côté : `dk`, `draftKind`, `kindDraft` ; lequel fait foi (le chemin vivant écrit `dk`) | `dk`, `draftKind`, `kindDraft` |
 | T20 | `aussi` (autres destinataires) : écrit, jamais lu ; `accepted` : écrit, jamais lu | `\.aussi\b`, `\.accepted\b` |
 | T21 | Plusieurs destinataires : la plantation crée UNE parole par personne (`app.html:3192`), mais Peaufiner écrit plusieurs prénoms dans un seul `who` (`', '`, `app.html:32663`) — deux modèles | `_recips`, `l.join` |

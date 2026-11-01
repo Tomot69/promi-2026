@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v174a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v174b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2929,6 +2929,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="set-cercle" id="openPlusTop"><div class="sc-tx"><div class="sc-t">Ma Parole&nbsp;!</div><div class="sc-s"><span style="color:#A77CF7">débloque tout Promi</span> · <span style="color:#E08370">essai 14 jours</span></div></div><div class="sc-go">›</div></div>
       <!-- v163b (C-197) : « Le Studio · visuels & humeurs » retirée des Réglages — le Studio s'ouvre par la barre -->
       
+      <div class="scard" id="soutienCard" role="button"><span class="k">Soutenir Promi</span><span class="v ac">›</span></div><!-- v174 (Tom, C-217) -->
       <div class="scard" id="replayOnb"><span class="k">Revoir la présentation</span><span class="v ac">rejouer ›</span></div><!-- v163b (C-199) : « Réinitialiser (test) » (masqué) retiré -->
       <div class="grouplab">Partager</div><div class="scard" id="setInvite" role="button"><span class="k">Inviter</span><span class="v ac">›</span></div><div class="grouplab">App</div><div class="scard" id="notifCard" role="switch" aria-checked="false"><span class="k">Notifications</span><span class="v"><span class="toggle off" id="notifTog"></span></span></div><div class="scard" id="privCard"><span class="k">Confidentialité</span><span class="v ac">privé &amp; partagé ›</span></div>
       <div class="grouplab">Données</div><div class="scard"><span class="k">Sauvegarde locale</span><span class="v" id="saveStatus">vérification…</span></div><div class="scard" id="resetData" role="button"><span class="k">Tout effacer</span><span class="v ac" id="resetV">›</span></div>
@@ -2958,7 +2959,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
         <button class="pl-buy sec" id="buyYear">ou prendre l'année — 39&nbsp;€</button>
       </div>
       <div class="pl-note">Sans engagement · annulable en 2 taps, à tout moment.</div>
-      <div class="pl-note" style="margin-top:8px;opacity:.7">ou un design à l'unité — 2&nbsp;€</div>
+      <div class="pl-note" style="margin-top:8px;opacity:.7">ou un design à l'unité, pour 4 ou 6&nbsp;€</div>
     </div>
     <div class="screen s-feed fond" id="feedScreen">
       <div class="closeb" data-close>X</div>
@@ -8836,7 +8837,7 @@ try{var mo=new MutationObserver(function(muts){muts.forEach(function(m){[].forEa
 <script>(function(){try{var st=document.getElementById("shTheme");if(st){[].forEach.call(st.querySelectorAll("button"),function(b){b.addEventListener("click",function(){if(typeof _sealDark!=="undefined")_sealDark=(b.getAttribute("data-t")==="dark");try{var _ss=document.getElementById("shareScreen");if(_ss)_ss.classList.toggle("sh-lightwm",!_sealDark);}catch(_){}[].forEach.call(st.querySelectorAll("button"),function(x){x.classList.toggle("on",x===b);});try{var _so=document.querySelectorAll("#sealTheme button");[].forEach.call(_so,function(y){y.classList.toggle("on",y.getAttribute("data-t")===(_sealDark?"dark":"light"));});}catch(_){}try{if(typeof shareRender==="function")shareRender();}catch(e){}});});}}catch(e){}})();</script>
 <script>function _paintBuyBg(){try{var cv=document.getElementById("stBuyBg");if(!cv)return;var b=cv.parentNode;var w=b.clientWidth||300,h=b.clientHeight||50;if(!w||!h)return;var dpr=Math.min(2,window.devicePixelRatio||1);cv.width=w*dpr;cv.height=h*dpr;var g=cv.getContext("2d");if(!g)return;g.setTransform(dpr,0,0,dpr,0,0);g.fillStyle="#132235";g.fillRect(0,0,w,h);var pal=(typeof SIGNAL!=="undefined"?SIGNAL:[[201,168,245],[130,174,248],[251,76,13],[41,21,71]]);var blobs=[[0.14,0.5,pal[0],0.6],[0.44,0.32,pal[1],0.55],[0.8,0.62,pal[2],0.5],[0.62,0.8,pal[3],0.42]];blobs.forEach(function(bl){var cx=bl[0]*w,cy=bl[1]*h,r=Math.max(w,h)*0.62,c=bl[2];var gr=g.createRadialGradient(cx,cy,0,cx,cy,r);gr.addColorStop(0,"rgba("+c[0]+","+c[1]+","+c[2]+","+bl[3]+")");gr.addColorStop(1,"rgba("+c[0]+","+c[1]+","+c[2]+",0)");g.fillStyle=gr;g.fillRect(0,0,w,h);});try{if(typeof _grain==="function")_grain(g,w,h,0.5);}catch(e){}}catch(e){}}</script>
 <script>(function(){try{document.addEventListener("click",function(e){var t=e.target&&e.target.closest?e.target.closest(".more-toggle"):null;if(t){var box=t.nextElementSibling;if(box&&box.classList.contains("more-opts")){var op=box.classList.toggle("open");t.classList.toggle("open",op);}}});}catch(e){}})();</script>
-<script>(function(){try{var ROT=["Adopte ce design — 2 €","Nouvelle trame ? — 2 €","Débloque-le — 2 €"];function rot(){var t=document.getElementById("stBuyTx");if(t)t.textContent=ROT[Math.floor(Math.random()*ROT.length)];}var IO=(typeof IntersectionObserver!=="undefined")?new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle("enc-paused",!e.isIntersecting);});},{threshold:0.01}):null;function init(){try{var sels=["#stLockBuy","#stLockCta",".set-cercle",".pplus-card"],seen=[];sels.forEach(function(sel){[].forEach.call(document.querySelectorAll(sel),function(el){if(seen.indexOf(el)>=0||el.classList.contains("enc-live"))return;seen.push(el);el.classList.add("enc-live");var fx=document.createElement("div");fx.className="enc-fx";fx.setAttribute("aria-hidden","true");fx.innerHTML='<i class="eb eb1"></i><i class="eb eb2"></i><i class="eb eb3"></i><i class="eb eb4"></i><div class="eg"></div>';el.insertBefore(fx,el.firstChild);if(IO)IO.observe(el);});});}catch(e){}}function boot(){init();rot();var ss=document.getElementById("studioScreen");if(ss&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){if(ss.classList.contains("show"))rot();init();}).observe(ss,{attributes:true,attributeFilter:["class"]});}var ps=document.getElementById("plusScreen");if(ps&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){init();}).observe(ps,{attributes:true,attributeFilter:["class"]});}}if(document.readyState!=="loading")boot();else document.addEventListener("DOMContentLoaded",boot);}catch(e){}})();</script>
+<script>(function(){try{var ROT=["Adopte ce design pour 6\u00a0€"];function rot(){var t=document.getElementById("stBuyTx");if(t)t.textContent=ROT[Math.floor(Math.random()*ROT.length)];}var IO=(typeof IntersectionObserver!=="undefined")?new IntersectionObserver(function(es){es.forEach(function(e){e.target.classList.toggle("enc-paused",!e.isIntersecting);});},{threshold:0.01}):null;function init(){try{var sels=["#stLockBuy","#stLockCta",".set-cercle",".pplus-card"],seen=[];sels.forEach(function(sel){[].forEach.call(document.querySelectorAll(sel),function(el){if(seen.indexOf(el)>=0||el.classList.contains("enc-live"))return;seen.push(el);el.classList.add("enc-live");var fx=document.createElement("div");fx.className="enc-fx";fx.setAttribute("aria-hidden","true");fx.innerHTML='<i class="eb eb1"></i><i class="eb eb2"></i><i class="eb eb3"></i><i class="eb eb4"></i><div class="eg"></div>';el.insertBefore(fx,el.firstChild);if(IO)IO.observe(el);});});}catch(e){}}function boot(){init();rot();var ss=document.getElementById("studioScreen");if(ss&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){if(ss.classList.contains("show"))rot();init();}).observe(ss,{attributes:true,attributeFilter:["class"]});}var ps=document.getElementById("plusScreen");if(ps&&typeof MutationObserver!=="undefined"){new MutationObserver(function(){init();}).observe(ps,{attributes:true,attributeFilter:["class"]});}}if(document.readyState!=="loading")boot();else document.addEventListener("DOMContentLoaded",boot);}catch(e){}})();</script>
 <script>(function(){try{document.addEventListener('click',function(e){var b=e.target&&e.target.closest?e.target.closest('#urgSeg .is'):null;if(b){[].forEach.call(document.querySelectorAll('#urgSeg .is'),function(x){x.classList.toggle('on',x===b);});}var i=e.target&&e.target.closest?e.target.closest('#impSeg .is'):null;if(i){[].forEach.call(document.querySelectorAll('#impSeg .is'),function(x){x.classList.toggle('on',x===i);});}});}catch(e){}})();</script>
 
 <script>(function(){
@@ -23209,13 +23210,18 @@ var CREMEETAT='#F7F0DE';
      — 1 € » à la place de « Adopte ce design — 1 € ». On le fige par un observateur QUI
      COMPARE AVANT D'AGIR : sans la comparaison, l'écriture réveille l'observateur, qui
      réécrit, qui se réveille — c'est le piège du MutationObserver qui s'auto-déclenche. */
-  var MOT='Adopte ce design — 2 €';   /* v118 (Tom) : 2 € l'unité */
+  /* ⚑ v174 (Tom, C-216) — « “Adopte ce design - 2 €” peut se lire “moins 2 €”. » Plus de tiret : « Adopte ce design pour 4 € » pour Houle, Taille-douce et Éclisse,
+     « … pour 6 € » pour les autres mondes payants (v118 : 2 € l'unité). Le prix se lit sur le monde du Studio : une table, un seul lecteur. */
+  window._prixDesign=function(w){ return ({sillons:4, gravure:4, terrazzo:4})[w] || 6; };
+  var _prixMot=function(){ return 'Adopte ce design pour '+window._prixDesign(window._lockedWorld)+'\u00a0€'; };
   try{
     var _tx=document.getElementById('stBuyTx');
     if(_tx){
-      var _fige=function(){ if(_tx.textContent!==MOT) _tx.textContent=MOT; };
-      _fige();
+      var _fige=function(){ var M=_prixMot(); if(_tx.textContent!==M) _tx.textContent=M; };
+      _fige(); window._prixFige=_fige;
       new MutationObserver(_fige).observe(_tx,{childList:true,characterData:true,subtree:true});
+      /* le monde verrouillé change sans toucher au texte : le verrou s'ouvre à ce monde */
+      var _lk=document.getElementById('stLock'); if(_lk) new MutationObserver(_fige).observe(_lk,{attributes:true,attributeFilter:['class','style']});
     }
   }catch(_){}
 
@@ -23782,6 +23788,7 @@ var CREMEETAT='#F7F0DE';
     ['#aboutScreen',    'h2.scr-t'],
     ['#legalScreen',    'h2.scr-t'],
     ['#notifScreen',    'h2.scr-t'],   /* v109 */
+    ['#soutienScreen',  'h2.scr-t'],   /* v174 (C-217) */
     ['#essaimSheet',    'h2#esTitle'],
     ['#plusScreen',     '.pl-eb'],
     ['#detailPoster',   '.dpt-nat'],
@@ -42866,7 +42873,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    boîte dépasse l'encre) ; l'entrée et la sortie en flaques passent à 350 ms chacune (1 100 et 900 avant). */
 (function(){
   var Q=new URLSearchParams(location.search);
-  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||60))*1000, VITESSE:61.2,   /* ⚑ v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
+  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||90))*1000, VITESSE:61.2,   /* ⚑ v174 (Tom, C-181) : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
      VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y
@@ -43138,6 +43145,41 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 #device #createSheet #ppDepart{position:absolute!important;left:0!important;top:0!important;max-width:none!important;margin:0!important;padding:0!important;pointer-events:none!important;display:block!important;visibility:visible!important;transform:none!important;filter:none!important}
 @media (prefers-reduced-motion:no-preference){#device #createSheet #ppDepart.clignote{animation:promiBlink 1.15s steps(1,end) infinite}}
 </style>
+<style id="lot-V174-SOUTIEN-css">
+/* ⚑ v174 (Tom, C-217) — l'écran « Soutenir Promi » : le modèle des Notifications (un .screen déborde l'appareil de 16 px à gauche, §8 : 24 + 16). Grammaire des contours : 2 px, rayon = h ÷ 2. */
+.frame #soutienScreen,#device #soutienScreen{background-color:var(--c-brun09)!important;color:var(--c-creme95);padding:0!important;overflow:hidden!important}
+.frame.light #soutienScreen,#device.light #soutienScreen{background-color:var(--c-creme95)!important;color:var(--c-brun09)}
+#soutienScreen .v16-corps.so-corps{left:40px;right:auto;width:342px;top:128px}
+#soutienScreen .so-tx{font-family:var(--f-texte);font-weight:400;font-size:18px;line-height:1.45;margin:0 0 28px}
+#soutienScreen .so-mts{display:flex;gap:16px;margin:0 0 28px}
+#soutienScreen .so-m{flex:1 1 0;min-width:0;height:62px;box-sizing:border-box;border:2px solid currentColor;border-radius:31px;background:transparent;color:inherit;-webkit-text-fill-color:currentColor;
+  font-family:var(--f-libelle);font-weight:700;font-size:22px;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#soutienScreen .so-merci{font-family:var(--f-marque);font-weight:400;font-size:32px;line-height:1.1;min-height:36px;visibility:hidden}
+</style>
+<script id="lot-V174-SOUTIEN">
+/* ⚑ v174 (Tom, 31 oct. 2026, C-217) — « Soutenir Promi » : une rangée des Réglages, après « Ma Parole ! », un écran simple, un texte PROVISOIRE (Tom l'écrira, Q596), trois montants
+   provisoires, un merci après le geste. Le don ne débloque rien. DANS LE PROTOTYPE, AUCUN PAIEMENT : le bouton montre seulement le merci. Rien n'est enregistré, rien ne se
+   compte, rien ne revient : la rangée n'est proposée NULLE PART ailleurs (la grille du §12 ; juge `redteam_soutien`). Swift : des achats intégrés consommables (règle Apple
+   3.1.1), aucun lien de paiement externe — portage/MANQUES.md. */
+(function(){
+  function page(){ var s=document.getElementById('soutienScreen');
+    if(!s){ var priv=document.getElementById('privScreen'); if(!priv) return null;
+      s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id='soutienScreen';
+      s.innerHTML='<div class="closeb" data-close>X</div><h2 class="scr-t">Soutenir Promi</h2><div class="v16-corps so-corps">'
+        +'<p class="so-tx">Promi est une initiative personnelle. Un don aide à en couvrir les frais. Il ne débloque rien.</p>'   /* TEXTE PROVISOIRE — Tom (Q596) */
+        +'<div class="so-mts"><button type="button" class="so-m">2\u00a0€</button><button type="button" class="so-m">5\u00a0€</button><button type="button" class="so-m">10\u00a0€</button></div>'   /* montants provisoires */
+        +'<div class="so-merci" aria-live="polite">Merci.</div></div>';
+      priv.parentNode.insertBefore(s, priv.nextSibling);
+      s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show'); var st=document.getElementById('settingsScreen'); if(st) st.classList.add('show'); });
+      s.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('.so-m'); if(!b) return; var m=s.querySelector('.so-merci'); if(m.style.visibility==='visible') return;
+        var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
+        m.style.visibility='visible'; if(!red && window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } }); }
+    var m0=s.querySelector('.so-merci'); if(m0) m0.style.visibility='hidden';
+    return s; }
+  window._soutienPage=function(){ var s=page(); if(!s) return; var st=document.getElementById('settingsScreen'); if(st) st.classList.remove('show'); s.classList.add('show'); };
+  var c=document.getElementById('soutienCard'); if(c) c.addEventListener('click', function(ev){ ev.stopPropagation(); window._soutienPage(); });
+})();
+</script>
 <script id="lot-V172-INVITE">
 /* ⚑ v172 (Tom, 30 oct. 2026, C-209) — « Dès l'ouverture de la page +, la première chose qu'on voit est « TRACE POUR … ». Les testeurs essaient de tracer, ça
    bloque (la parole n'est pas encore remplie), et ils ne comprennent pas. » L'INVITE À TRACER N'ARRIVE QU'UNE FOIS LA PAROLE PRÊTE.

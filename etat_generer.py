@@ -153,7 +153,7 @@ def main():
     # ── 6 · l'offre
     w('## 6 · Ma Parole ! — l\'offre')
     w('')
-    w('- **Prix** : 39 € / an (soit 3,25 €/mois) · ou 5,99 € par mois · essai 14 jours · un monde à l\'unité 1 €. Sans engagement.')
+    w('- **Prix** : 39 € / an (soit 3,25 €/mois) · ou 5,99 € par mois · essai 14 jours · un monde à l\'unité 4 € (Houle, Taille-douce, Éclisse) ou 6 €. Sans engagement.')
     w('- **L\'écran qui vend** : titre « MA PAROLE ! », sous-titre « Retourne ta Toile », bouton principal « Essayer 14 jours », '
       'option « Bon, allez d\'accord — 39 € / an », en petit « ou 5,99 € par mois ».')
     w('- **Réglages** : la porte « Ma Parole ! » ouvre l\'offre (ce n\'est pas un mur) ; au payé « Tu es Membre Ma Parole ! », sans lien.')

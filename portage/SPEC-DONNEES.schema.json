@@ -1585,7 +1585,7 @@
         },
         "_ownedDesigns": {
           "type": "object",
-          "description": "Mondes acquis à l'unité (« Adopte ce design — 2 € »).",
+          "description": "Mondes acquis à l'unité (« Adopte ce design pour 4 € » ou « … pour 6 € »).",
           "additionalProperties": {
             "const": true
           },
@@ -1623,7 +1623,7 @@
         {
           "de": "design verrouillé",
           "vers": "design acquis et appliqué",
-          "declencheur": "Studio : #stLockBuy « Adopte ce design — 2 € » → _ownedDesigns[monde]=true ; Toile.setTheme",
+          "declencheur": "Studio : #stLockBuy « Adopte ce design pour 4 € » ou « … pour 6 € » → _ownedDesigns[monde]=true ; Toile.setTheme",
           "source": "app.html:2774, 8567",
           "x-attend-firebase": true
         },

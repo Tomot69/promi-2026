@@ -826,7 +826,7 @@ Aucun.
 | — les quatre disques `#stpVue` | y 690 ; disques de 44, trait 2 ; 20 entre deux disques d'une paire, 56 entre les paires | sombre (`#201908`) · clair (`#F7F0DE`) | avec texte (trois barres) · sans texte ; relevé : centres x 81 · 145 pour la première paire, y 724 |
 | — les points des mondes `#stpDots` | y 768 ; 9 px (14 pour le courant) ; rangée de 298 de large (x 46 → 344), écart calculé, 13 au plus | vingt points |
 | L'invite `#stpInv` | x 24 · y 764 · largeur 342 | « ‹ glisse pour changer de monde › » ; **elle meurt dès que le geste a été fait une fois** ; pendant un appui : « reste appuyé pour changer de couleur » |
-| Monde verrouillé | la Toile est floutée à **1,4 px** | bouton « Adopte ce design — 2 € » : x 24 · y 473 · 342 × 62, rayon 31 ; les réglages du plateau du bas deviennent des **murs** ; l'encart « Ou débloque-les tous / Avec Ma Parole ! » est **masqué** (v104) |
+| Monde verrouillé | la Toile est floutée à **1,4 px** | bouton « Adopte ce design pour 4 € » (Houle, Taille-douce, Éclisse) ou « … pour 6 € » (les autres mondes payants ; v174, C-216) : x 24 · y 473 · 342 × 62, rayon 31 ; les réglages du plateau du bas deviennent des **murs** ; l'encart « Ou débloque-les tous / Avec Ma Parole ! » est **masqué** (v104) |
 
 ### Le panneau des palettes (`stp-pals`)
 - S'ouvre en touchant un des quatre tons ; il remplace le contenu du plateau du bas.
@@ -846,7 +846,7 @@ Aucun.
 | « ← Retour » | revient aux disques | `lot-NEUF-POINTS-js`, app.html:33559 |
 | Disques sombre / clair | change le thème de l'app, d'un coup (sans fondu) | app.html:22058 |
 | Disques avec / sans texte | affiche ou non les titres sur les dalles | idem |
-| « Adopte ce design — 2 € » | achète ce monde ; toast « Design débloqué ✓ » | app.html:8567 ; CLAUDE §3 bloc v118 |
+| « Adopte ce design pour 4 € » (Houle, Taille-douce, Éclisse) ou « … pour 6 € » (les autres mondes payants ; v174, C-216) | achète ce monde ; toast « Design débloqué ✓ » | app.html:8567 ; CLAUDE §3 bloc v118 |
 | Toucher un mur (monde verrouillé, gratuit) | la phrase du mur | `lot-V104-MURS` app.html:37144 |
 | « ✕ FERMER » | accueil ; la Toile prend le monde et la palette choisis | — |
 
@@ -858,7 +858,7 @@ Aucun.
 - Monde verrouillé : voir tableau.
 
 ### Textes exacts
-« Le Studio » · « ✕ FERMER » · « en » · « sombre » · « clair » · « avec texte » · « sans texte » · « glisse pour changer de monde » · « reste appuyé pour changer de couleur » (à valider) · « ← Retour » · « Adopte ce design — 2 € » · toast « Design débloqué ✓ » · les vingt noms de mondes et les vingt-quatre noms de palettes (ETAT §4, §5).
+« Le Studio » · « ✕ FERMER » · « en » · « sombre » · « clair » · « avec texte » · « sans texte » · « glisse pour changer de monde » · « reste appuyé pour changer de couleur » (à valider) · « ← Retour » · « Adopte ce design pour 4 € » (Houle, Taille-douce, Éclisse) ou « … pour 6 € » (les autres mondes payants ; v174, C-216) · toast « Design débloqué ✓ » · les vingt noms de mondes et les vingt-quatre noms de palettes (ETAT §4, §5).
 
 ### Sources
 `lot-STUDIO-PLATEAUX-css`, `lot-STUDIO-PLATEAUX` (app.html:21720–22467) · `lot-V7-STUDIO-COULEUR` (34070) · `lot-NEUF-POINTS-js` (33559) · `lot-V10-STUDIO` (34308) · `lot-V12` (34651) · `lot-V71-REOUVERTURE` (36804) · CLAUDE §3 blocs v118, v126, v133, §5 (« un réglage vit là où vit ce qu'il règle ») · `redteam_studio_geste.py`, `redteam_palettes.py`, `redteam_apercus.py`.
@@ -867,7 +867,7 @@ Aucun.
 - Le « Zzz » (mode nuit) devait prendre place au milieu de la ligne des disques : **non posé**, et la fonction est **coupée** (CLAUDE §3 blocs v118, v120). Ne pas le porter.
 - Les cotes du panneau des palettes (place de la grille, taille des pastilles — 40 px selon CLAUDE §3 —, place du nom et de la jauge) n'ont pas été extraites (`lot-V10-STUDIO`, `lot-NEUF-POINTS`).
 - Le décalage de 12 px du plateau du bas (« l'encart du bas du Studio vient s'aligner » sur la barre de Partager, `lot-CINQ-POINTS`, app.html:33840) : valeurs finales non relues — les cotes du tableau sont celles de `lot-STUDIO-PLATEAUX-css`.
-- Le rotateur d'origine alternait trois libellés d'achat ; il est **figé** sur « Adopte ce design — 2 € ». ⚠ `ETAT-30-SEPTEMBRE-2026.md` §6 écrit encore « un monde à l'unité 1 € » : contradiction avec v118 (2 €) — CLAUDE.md prime sur ce point daté.
+- Le rotateur d'origine alternait trois libellés d'achat ; il est **figé** sur « Adopte ce design pour 4 € » (Houle, Taille-douce, Éclisse) ou « … pour 6 € » (les autres mondes payants ; v174, C-216). ⚠ `ETAT-30-SEPTEMBRE-2026.md` §6 écrit encore « un monde à l'unité 1 € » : contradiction avec v118 (2 €) et v174 (4 ou 6 €) — CLAUDE.md prime sur ce point daté.
 - Le parcours de paiement réel (StoreKit) : hors prototype.
 
 ---
@@ -1493,7 +1493,7 @@ Un bandeau : le message + le bouton « Annuler » ; il reste **5 s**. « Annu
 | 16 | Fil | Correspondance type d'événement → gestes ; règle de la pastille de l'entrée FIL. |
 | 17 | Aura | Grille de « Ce que tu as tenu » ; constantes du toucher de la Pelote. |
 | 18 | Aide de l'Aura | Contradiction : « dans l'ordre où tu les as tenues » contre « la plus récente en premier » (v132). |
-| 19 | Studio | Cotes du panneau des palettes ; décalage de 12 px du plateau du bas ; Zzz non posé et coupé ; ETAT §6 dit 1 € l'unité contre 2 € (v118). |
+| 19 | Studio | Cotes du panneau des palettes ; décalage de 12 px du plateau du bas ; Zzz non posé et coupé ; ETAT §6 dit 1 € l'unité ; le prix est 4 ou 6 € (v174). |
 | 20 | Partager | Contenu de « DANS L'IMAGE » ; pied de l'image exportée ; format par défaut ; Folio vide. |
 | 21 | Réglages | « Se déconnecter » et « Supprimer mon compte » sans compte ; positions des rangées. |
 | 22 | Notifications | Heures (8 h, midi) et fréquence de l'en l'air « à valider » dans le code. |
@@ -1510,7 +1510,7 @@ Un bandeau : le message + le bouton « Annuler » ; il reste **5 s**. « Annu
 
 ## La veille (v161, C-181)
 
-- **Quand** : après 60 s sans aucun toucher, sur n'importe quel écran, sauf pendant une saisie (clavier ouvert) et pendant un geste en cours. Un toucher n'importe
+- **Quand** : après 90 s sans aucun toucher (v174), sur n'importe quel écran, sauf pendant une saisie (clavier ouvert) et pendant un geste en cours. Un toucher n'importe
   où la quitte et rend l'écran exact d'avant ; ce toucher n'actionne rien dessous.
 - **Ce qu'on voit** : fond plein `#050302` ; le logo PROMI (PromiLate), seul, dans une boîte de 140 × 40 pt (l'encre, 140 × 27, centrée), sans clignotement ;
   il glisse en diagonale à 60 pt/s et rebondit sur les quatre bords des zones sûres (59 pt en haut, 34 en bas, 8 sur les côtés) ; à chaque rebond la couleur
