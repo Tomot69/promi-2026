@@ -99,7 +99,7 @@ with sync_playwright() as p:
         ctx = B.contexte(b); ctx.add_init_script("try{ localStorage.removeItem('promi_veille_off'); }catch(e){}")
         pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + F, timeout=180000)
         R = pg.evaluate("()=>window._veilleRegle && [_veilleRegle.DELAI, _veilleRegle.VITESSE]")
-        juge('C · la règle déclarée : 90 s (v174, Tom ; 60 en v167), 61,2 pt/s', R == [90000, 61.2], R)
+        juge('C · la règle déclarée : 45 s (v175, Tom ; 90 en v174), 61,2 pt/s', R == [45000, 61.2], R)
         t0 = None; dep = None; tf = time.time() + 140
         while time.time() < tf:
             v = pg.evaluate("()=>{ const v=_veille(); return [v.active, v.calme, v.coupee]; }")
@@ -107,7 +107,7 @@ with sync_playwright() as p:
             if v[0]: dep = v[1] if dep is None else dep; break
             pg.wait_for_timeout(500)
         cal = pg.evaluate("()=>{ const v=_veille(); return v.depuis; }")
-        juge('C · sans toucher, elle part à 90 s (± 1,5 s), pas avant (v174, Tom, C-181)', dep is not None and 89500 <= (dep - cal) <= 91500, 'calme au départ %s ms (depuis %s ms)' % (dep, cal))
+        juge('C · sans toucher, elle part à 45 s (± 1,5 s), pas avant (v175, Tom, C-181)', dep is not None and 44500 <= (dep - cal) <= 46500, 'calme au départ %s ms (depuis %s ms)' % (dep, cal))
         ctx.close()
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))

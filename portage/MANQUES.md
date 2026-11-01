@@ -181,7 +181,7 @@ réglage dans l'app.
 - **Le design à 4 ou 6 €** : achat non consommable par monde (douze produits) ? Que devient-il quand on prend Ma Parole ! ensuite, puis
   qu'on la quitte ? Peut-on en adopter plusieurs ? La palette est-elle comprise ?
 - **La restauration** : obligatoire pour l'App Store ; ni bouton, ni mot, ni place.
-- **Soutenir Promi (C-217, v174b)** : des achats intégrés CONSOMMABLES (règle Apple 3.1.1, les pourboires), un produit par montant ; aucun lien de paiement externe. Le don ne débloque rien, rien ne se garde ni ne se compte ; la rangée vit aux Réglages seuls, jamais proposée ailleurs, sans relance (grille du §12). Texte et montants à écrire par Tom (Q596).
+- **Soutenir Promi (C-217, v174b)** : des achats intégrés CONSOMMABLES (règle Apple 3.1.1, les pourboires), un produit par montant ; aucun lien de paiement externe. Rien ne se garde ni ne se compte ; la rangée vit aux Réglages seuls, jamais proposée ailleurs, sans relance (grille du §12). ⚑ v175 : cinq produits, 5 · 10 · 25 · 50 · 100 €, pas de champ libre : l'App Store n'accepte que des montants fixés à l'avance. Le fond de l'écran est la Toile de « Ma Parole ! », son code réutilisé tel quel.
 - **Payer sans compte** (C-035) : avec StoreKit, un achat est lié à l'identifiant Apple, pas à l'app — il se restaure sur un autre
   téléphone du même identifiant. **Le texte « si tu en changes ou supprimes l'app, il est perdu » est alors faux** tel qu'écrit ; ce
   qui serait perdu, c'est la Toile (locale), pas l'achat. Les deux mots sont à reprendre avec ce fait.

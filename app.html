@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v175a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v175b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -33352,7 +33352,7 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
      découpée sur son polygone, en fondu. Rien n'est rogné. */
   function fondPavage(){ G.setTransform(1,0,0,1,0,0); G.clearRect(0,0,CV.width,CV.height); G.drawImage(OFF,0,0); }
   function image(t){
-    raf=0; var s=ps(); if(!s||!s.classList.contains('show')) return;
+    raf=0; var s=ICI||ps(); if(!s||!s.classList.contains('show')){ if(ICI) rendCV(); return; }
     if(!ouvertA){ ouvertA=t; fondPavage(); }
     var age=t-ouvertA;
     if(age<CASC){
@@ -33431,6 +33431,7 @@ function bati(){
   }
   function demarre(){
     if(!bati()) return;
+    if(ICI){ arrete(); rendCV(); }
     var t0=performance.now(); if(!prepare()) return;
     window._vendToile.ms=Math.round(performance.now()-t0);
     ouvertA=0; posee=false; prochaine=0; mue=null;
@@ -33440,6 +33441,12 @@ function bati(){
   }
   function arrete(){ if(raf){ cancelAnimationFrame(raf); raf=0; } }
   window._vendToileGo=demarre;
+  /* ⚑ v175 (Tom, C-217 §5) — « Soutenir Promi » porte EXACTEMENT cette Toile, même rendu, même code : le même tirage, la même cascade, la même mue, le canevas de cet écran-là à la place de celui-ci, le temps qu'il est ouvert */
+  var ICI=null, CV0=null;
+  function rendCV(){ if(CV0) CV=CV0; CV0=null; ICI=null; }
+  window._vendToileSur=function(cv, ecran){ try{ if(!bati()) return false; arrete(); if(ICI) rendCV(); CV0=CV; CV=cv; ICI=ecran;
+      if(!prepare()){ rendCV(); return false; } ouvertA=0; posee=false; prochaine=0; mue=null; raf=requestAnimationFrame(image); return true; }catch(_){ rendCV(); return false; } };
+  window._vendToileOff=function(){ return OFF; };
   var ouvert=false;
   function veille(){
     var s=ps(); if(!s) return;
@@ -38556,11 +38563,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        Un toucher pendant un pas est gardé pour le suivant. Le quatrième toucher (après les quatre secondes du message, v21) mène au compte. */
     T(function(){ var v3=document.getElementById('onbV'); if(!v3) return; var f3=document.getElementById('onbFin');
       function reste(e){ var r=f3&&f3.querySelector('#onbReste'); if(!f3 || !r || r.getAttribute('data-vu')) return; e.preventDefault(); e.stopImmediatePropagation();
+        if(e.type==='touchend'){ if(e.touches && e.touches.length) return; f3.__tTouche=performance.now(); } else if(performance.now()-(f3.__tTouche||-1e9)<700) return;   /* v175 (C-219) : le toucher se lit au lever du doigt ; le clic qui suit ne compte pas */
+        v3.setAttribute('data-t-toucher', String(performance.now()));
         if(f3.__pasEnCours){ f3.__pasAttend=1; return; }
         v3.setAttribute('data-onb-reste', String((f3.__pas||0)+1));
-        (function suivant(){ finPas(f3, np, function(fini){ if(fini){ r.setAttribute('data-vu','1'); v3.removeEventListener('click', reste, true); v3.setAttribute('data-onb-reste','fini'); return; }
+        (function suivant(){ finPas(f3, np, function(fini){ if(fini){ r.setAttribute('data-vu','1'); v3.removeEventListener('click', reste, true); v3.removeEventListener('touchend', reste, true); v3.setAttribute('data-onb-reste','fini'); return; }
           if(f3.__pasAttend){ f3.__pasAttend=0; v3.setAttribute('data-onb-reste', String((f3.__pas||0)+1)); suivant(); } }); })(); }
-      v3.addEventListener('click', reste, true); }, FIN_T + 340);
+      v3.addEventListener('click', reste, true); v3.addEventListener('touchend', reste, {capture:true, passive:false}); }, FIN_T + 340);
   }
 
   /* ⚑ v146 (Tom, C-124, 11.5) — « Tout le bloc, de “Promi planté !” jusqu'à “La suite t'appartient.”, remonte d'au moins 1 cm réel (au moins 60 pt). Il
@@ -38601,14 +38610,19 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     return {y:y, c:c, bandeHaut:bandeHaut, bas:bas}; }
   function finPas(fin, np, apres){
     var pas=(fin.__pas||0)+1; if(pas>3) return apres&&apres(true);
-    fin.__pasEnCours=1; var t=finCible(fin, np, pas), y0=(fin.__y!=null)?fin.__y:parseFloat(fin.style.top)||FIN_HAUT, r0=reduitOnb(), lent=Math.max(1, parseFloat((/[?&]onbLent=([\d.]+)/.exec(location.search)||[])[1])||1);
+    fin.__pasEnCours=1; var t=finCible(fin, np, pas), y0=(fin.__y!=null)?fin.__y:parseFloat(fin.style.top)||FIN_HAUT, r0=reduitOnb(), kp=(k_()||1)*(window.devicePixelRatio||1);
+    t.y=y0+Math.round((t.y-y0)*kp)/kp; var lent=Math.max(1, parseFloat((/[?&]onbLent=([\d.]+)/.exec(location.search)||[])[1])||1);
     try{ if(window.Toile && Toile.vueVers) Toile.vueVers(np.id, t.c/844); }catch(_){}
     fin.__c=t.c; fin.__pas=pas; fin.setAttribute('data-pas', String(pas));
     var G=finGroupes(fin)[pas]||[], ecrit=false, t0=performance.now();
-    function ecris(){ if(ecrit) return; ecrit=true; traceTextes(G, function(){ fin.__pasEnCours=0; apres&&apres(pas>=3); }); }
+    /* ⚑ v175 (Tom, C-219) — « quand on touche pour faire apparaître le texte suivant, il commence trop tard, et ça bugue un peu ». LES CAUSES : le paragraphe attendait 272 ms que la
+       place soit faite ; le toucher se lisait sur le `click`, après le lever ; et le paragraphe suivant n'était préparé qu'une fois, à la place du premier pas : la place d'une lettre dans
+       un pixel ayant changé, ses restes se recalculaient après le toucher. AUJOURD'HUI son premier texte est ARMÉ dès que le pas d'avant est fini (mesuré à sa place, lettres prêtes, découpe posée), et le toucher ne fait que lâcher la plume (`ctl.lance`) : elle part
+       à l'image suivante. La cote d'arrivée tombe sur un pixel entier depuis la cote de départ : le canevas calé au pixel à l'armement le reste à l'arrivée, rien n'est rééchantillonné. */
+    function ecris(){ if(ecrit) return; ecrit=true; var A=fin.__arme; fin.__arme=null; traceTextes(G, function(){ fin.__pasEnCours=0; if(pas<3) fin.__arme=armeTextes(finGroupes(fin)[pas+1]||[]); else try{ window._guide && window._guide.prepare(); }catch(_){ } apres&&apres(pas>=3); }, A); }
     if(r0){ fin.style.top=t.y.toFixed(2)+'px'; fin.__y=t.y; ecris(); return; }
+    ecris();   /* v175 (C-219) : tout de suite, le bloc se place en même temps */
     (function f(){ var dt=(performance.now()-t0)/lent, u=1-Math.exp(-dt/1000*7.5), y=y0+(t.y-y0)*u; fin.style.top=y.toFixed(2)+'px'; fin.__y=y;
-      if(dt>=272) ecris();   /* le paragraphe s'écrit quand la place est presque faite (v173, C-212 : 320 → 272) */
       if(dt<900) requestAnimationFrame(f); else { fin.style.top=t.y.toFixed(2)+'px'; fin.__y=t.y; } })(); }
   window._onbFinPas=function(){ var f=document.getElementById('onbFin'); return f?{pas:f.__pas||0, y:f.__y, c:f.__c, enCours:!!f.__pasEnCours}:null; };
   /* le titre et la phrase de ton paraissent ; le reste attend le toucher. Le tracé des lettres (§13) n'est PAS branché tant que Tom n'a pas vu
@@ -38657,18 +38671,21 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function imageToile(){ try{ var tc=document.getElementById('toileCv'); if(!tc||!tc.width) return null; var c=document.createElement('canvas'); c.width=tc.width; c.height=tc.height; c.getContext('2d').drawImage(tc,0,0); return c; }catch(_){ return null; } }
   function rectDe(e, marge){ var D=dev.getBoundingClientRect(), s=k(), q=e.getBoundingClientRect(), m=marge||0; return [Math.max(0,(q.left-D.left)/s-m), Math.max(0,(q.top-D.top)/s-m), Math.min(390,(q.width/s)+2*m), Math.min(844,(q.height/s)+2*m)]; }
   /* les textes d'une page s'écrivent l'un après l'autre ; un texte déjà écrit ne se réécrit pas ; sans le module : posés tels quels */
-  function traceTextes(L, apres){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; }); if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ L.forEach(function(e){ e.style.visibility='visible'; }); if(apres) apres(); return; }
+  function traceTextes(L, apres, A){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; }); if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ L.forEach(function(e){ e.style.visibility='visible'; }); if(apres) apres(); return; }
     L.forEach(function(e){ e.style.visibility='hidden'; });
     /* ⚑ v170d (C-125) — AUCUN CALCUL PENDANT L'AFFICHAGE : tous les textes de la page sont préparés (à leur place, sans rien montrer) AVANT que le premier s'écrive ;
        déjà préparés plus tôt (`prepareTextes`), ils sont repris du cache tout de suite */
-    prepareTextes(L, function(){
+    (A && !A.fini ? function(_, f){ f(); } : prepareTextes)(L, function(){   /* v175 (C-219) : un groupe armé est déjà prêt : rien entre le toucher et la plume */
     (function un(i){ if(i>=L.length){ if(apres) apres(); return; } var e=L[i]; e.style.visibility='visible';
-      try{ var c=window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (v154 : 40 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ try{ if(window._diagErreur) window._diagErreur('traceTextes', _); }catch(__){ } }
+      try{ var c=(i===0 && A && !A.fini)?(A.lance(), A):window.TraceLettres.trace(e, null, {depart:'h'})   /* v153 (C-125) : la vitesse est celle du module (v154 : 40 car/s, `?cps=`) */; e.__tl=c; if(c && c.fin && c.fin.then){ c.fin.then(function(){ un(i+1); }); return; } }catch(_){ try{ if(window._diagErreur) window._diagErreur('traceTextes', _); }catch(__){ } }
       un(i+1); })(0); }); }
   /* préparer une liste de textes, l'un après l'autre (la page n'en montre rien) ; `apres` quand tous sont prêts */
   function prepareTextes(L, apres){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; });
     if(!TRACE_ONB || !window.TraceLettres || reduitOnb()){ if(apres) apres(); return; }
     (function prep(j){ if(j>=L.length){ if(apres) apres(); return; } try{ var c=window.TraceLettres.trace(L[j], null, {preparer:true}); c.fin.then(function(){ prep(j+1); }); }catch(_){ prep(j+1); } })(0); }
+  /* v175 (C-219) : armer le premier texte d'un groupe, préparer les suivants */
+  function armeTextes(L){ L=(L||[]).filter(function(e){ return e && e.style.display!=='none'; }); if(!L.length || !TRACE_ONB || !window.TraceLettres || reduitOnb()) return null;
+    var c=null; try{ L[0].style.visibility='hidden'; c=window.TraceLettres.trace(L[0], null, {depart:'h', arme:true}); L[0].__tl=c; }catch(_){ c=null; } prepareTextes(L.slice(1)); return c; }
   window._onbTraceTextes=traceTextes;
   function decouvre(el, ms, apres){ var t0=performance.now(); el.style.clipPath='inset(0 100% 0 0)'; el.style.visibility='visible';
     (function f(){ var u=Math.min(1,(performance.now()-t0)/ms); el.style.clipPath='inset(-6px '+((1-u)*100).toFixed(2)+'% -6px -6px)'; if(u<1) requestAnimationFrame(f); else { el.style.clipPath=''; if(apres) apres(); } })(); }
@@ -38686,7 +38703,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   var FIN_BAS0=64, FIN_ECART0=22, FIN_MONTE=1100;   /* v147 — v148 : plus de montée du bloc entier ; le titre paraît seul, à sa place de départ */
   function finMontre(fin){ fin.style.opacity='1';
     var t=fin.querySelector('.onbv-titre'), r0=reduitOnb();
-    if(TRACE_ONB && window.TraceLettres && !r0){ traceTextes([t], function(){ var r=fin.querySelector('#onbReste'), to=fin.querySelector('.onbv-ton'); if(r) prepareTextes([to].concat([].slice.call(r.querySelectorAll('.onbv-l')))); }); }   /* v170d : les lignes qui viendront au toucher se préparent pendant qu'on lit ; ⚑ v173 (C-212) : le ton aussi — il attendait sa préparation après le toucher, ≈ 200 ms */
+    if(TRACE_ONB && window.TraceLettres && !r0){ traceTextes([t], function(){ var r=fin.querySelector('#onbReste'), to=fin.querySelector('.onbv-ton'); if(r){ fin.__arme=armeTextes([to]); prepareTextes([].slice.call(r.querySelectorAll('.onbv-l'))); } }); }   /* v170d : les lignes qui viendront au toucher se préparent pendant qu'on lit ; ⚑ v173 (C-212) : le ton aussi — il attendait sa préparation après le toucher, ≈ 200 ms */
     else { decouvre(t, 420); } }
 
   /* ── LE COMPTE, APRÈS LE TRAIT — « Garder ta Toile » (mots validés par Tom) ──
@@ -41332,7 +41349,12 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
      SONT PRÉPARÉES D'AVANCE. Dès que la phrase du Studio est écrite, celles du +, de Partager et la phrase 2 sont bâties à LEUR place (la même fonction, le même
      calage au pixel), mesurées et retirées dans la même tâche (`immediat`), puis leurs lettres se calculent en fond : quand elles paraissent, il n'y a plus rien
      à calculer (le module reprend tout de son cache). Une phrase à la fois. */
-  var prepare_=0;
+  var prepare_=0, prepareS=0;
+  /* v175 (C-203) : la phrase du Studio, préparée avant que le guide existe. Elle se bâtit dans un conteneur caché qui ne vit que le temps de la mesure, dans cette tâche, aux mêmes cotes */
+  function prepareStudio(){ if(prepareS || !TRACE || !window.TraceLettres || reduit() || $('guide')) return; prepareS=1; var g=null, p=null;
+    try{ g=eng(document.createElement('div'),'guide'); g.id='guide'; g.style.visibility='hidden'; g.style.pointerEvents='none'; dev.appendChild(g); p=batiPhrase(g, 'studio');
+      window.TraceLettres.trace(p, null, {preparer:true, immediat:true, retire:function(){ if(p&&p.parentNode) p.parentNode.removeChild(p); }}); }catch(_){ }
+    if(g && g.parentNode) g.parentNode.removeChild(g); }
   function prepareSuite(){ var L=['plus','partage','reste'];
     (function un(i){ var g=$('guide'); if(i>=L.length || !g || !window.TraceLettres || reduit()) return; var p=null;   /* le conteneur du guide est rebâti à chaque étape : on prend celui du moment */
       try{ p=batiPhrase(g, L[i]); /* même id que la vraie (les règles du guide le visent) : il ne vit que le temps de la mesure, dans cette tâche */
@@ -41366,7 +41388,12 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
      n'a plus qu'à rendre la phrase au document et à lancer son tracé. Le rendu est le même : la même fonction bâtit la phrase, la même dessine la flèche. */
   var PREH=null;
   function preHabille(g, quoi){ PREH=null; try{ var c=cible(quoi); if(!c || !SC || !PRE || PRE.quoi!==quoi || PRE.sc!==SC || SC.ent!==PRE.ent) return;
-      var p=batiPhrase(g, quoi); fleche(g, quoi, c, PRE.ent); if(p.parentNode) p.parentNode.removeChild(p);
+      var p=batiPhrase(g, quoi); fleche(g, quoi, c, PRE.ent);
+      /* ⚑ v175 (Tom, C-203) — « la phrase du Studio arrive trop tard ; elle doit paraître en même temps que sa flèche, comme celles du + et de Partager ». LA CAUSE, mesurée : les lettres de ces deux
+         phrases sont préparées d'avance (`prepareSuite`), pas celles de la première ; le module les attendait de l'ouvrier jusqu'à 4 s (+ 1 562 ms sur la flèche au banc chargé, + 205 ms pour celles
+         du +). AUJOURD'HUI elle se prépare dès la fin du message de l'onboarding (`prepareStudio`), l'ouvrier a 600 ms au plus, et la zone et la flèche partent avec la plume. */
+      try{ if(TRACE && window.TraceLettres && !reduit()) window.TraceLettres.trace(p, null, {preparer:true, immediat:true, retire:function(){ if(p.parentNode) p.parentNode.removeChild(p); }}); }catch(_){ }
+      if(p.parentNode) p.parentNode.removeChild(p);
       PREH={quoi:quoi, sc:SC, ent:PRE.ent, fl:SC.fl, p:p, clair:dev.classList.contains('light')}; }catch(_){ PREH=null; var q=$('guidePhrase'); if(q) q.remove(); } }
   /* ⚑ v166 (Tom, C-203 §2) — « Ajoute la MÊME flèche que celle de la page +, à côté de « TRACE POUR PLANTER » (pointe et trait de départ, même dessin, même
      épaisseur × 1,3), en orange #FB4C0D. Elle part de la phrase et pointe vers l'icône, sans jamais la toucher ni la recouvrir, à l'intérieur ou au bord de la
@@ -41425,7 +41452,9 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     etat=quoi; net(0); if(pose){ net(1); SC.peint(); respire(quoi); return Promise.resolve(true); }
     /* v171 (C-208) : à l'installation, la phrase rendue et son tracé lancé (sa mesure, ses premières lettres) dans une image où l'eau est entière et rien ne
        bouge ; la zone commence à s'ouvrir à l'image suivante — jamais dans la même image que ce travail */
-    var j0=jeu, attend=habille.prep?new Promise(function(r){ requestAnimationFrame(function(){ r(j0===jeu); }); }):Promise.resolve(true);
+    var j0=jeu, tc=(TRACE && !reduit() && traceCtl && traceCtl.part)?traceCtl:null,
+        attend=tc?Promise.race([tc.part, new Promise(function(r){ setTimeout(r, 1200); })]).then(function(){ return j0===jeu; })   /* v175 (C-203) : la zone et la flèche partent avec la plume, aux trois étapes ; l'eau est là, elle peut attendre ; 1,2 s au plus */
+                 :habille.prep?new Promise(function(r){ requestAnimationFrame(function(){ r(j0===jeu); }); }):Promise.resolve(true);
     return attend.then(function(ok0){ if(!ok0 || !SC) return false; return joue(ouvre||OUVRE, 0, 1, net).then(function(ok){ if(ok) respire(quoi); return ok; }); }); }
   /* ⚑ v147 (Tom, §10.2) — la zone ouverte RESPIRE, très légèrement : ses lobes tournent, sa marge bouge de ±0,8 pt (6 à 10 pt) — une image sur deux */
   function respire(quoi){ if(reduit() || !SC || !SC.respire) return; var id=jeu, t0=performance.now(), n=0;
@@ -41639,7 +41668,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   try{ if(LS.g(CLE)==='studio' && LS.g('promi_onb')==='1' && !/[?&](gfige|getape|gnet)=/.test(location.search)) setTimeout(function(){ if(!attente && !etat){ attente={rejeu:true}; tAcc=0; } }, 1200); }catch(_){ }
   try{ var _gf=/[?&]gfige=(\d+)/.exec(location.search), _ge=/[?&]getape=plus/.test(location.search), _gn=/[?&]gnet=(\d+)/.exec(location.search);
     if(_gf||_ge||_gn) setTimeout(function(){ attente=null; montre(_ge?'plus':'studio', true); setTimeout(function(){ if(_gf) fige(+_gf[1]); if(_gn) figeNet(_ge?'plus':'studio', +_gn[1]); }, 900); }, 4200); }catch(_){ }
-  window._guide={ attend:function(rejeu){ attente={rejeu:!!rejeu}; tAcc=0; }, montre:montre, finir:finir, cloture:versCloture, versLePlus:versLePlus, figeA:fige, figeNet:figeNet, image:accueilImage,
+  window._guide={ attend:function(rejeu){ attente={rejeu:!!rejeu}; tAcc=0; prepareStudio(); }, prepare:prepareStudio, montre:montre, finir:finir, cloture:versCloture, versLePlus:versLePlus, figeA:fige, figeNet:figeNet, image:accueilImage,
     etat:function(){ var g=$('guide'); return {etat:etat, attente:!!attente, trou:trou, vu:LS.g(CLE), entier:!!(g&&g.getAttribute('data-entier')), couv:uC, net:uN, eau:!!(g&&$('guideEau')), flouMs:g?+(g.getAttribute('data-flou-ms')||0):0,
       creux:SC?SC.R.creux.length:0, relief:SC?[SC.R.nx, SC.R.ny]:null, trace:!!traceCtl}; },
     scene:function(){ return SC; },
@@ -42879,7 +42908,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    boîte dépasse l'encre) ; l'entrée et la sortie en flaques passent à 350 ms chacune (1 100 et 900 avant). */
 (function(){
   var Q=new URLSearchParams(location.search);
-  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||90))*1000, VITESSE:61.2,   /* ⚑ v174 (Tom, C-181) : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
+  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||45))*1000, VITESSE:61.2,   /* ⚑ v175 (Tom, C-181) : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
      VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y
@@ -43155,25 +43184,31 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 /* ⚑ v174 (Tom, C-217) — l'écran « Soutenir Promi » : le modèle des Notifications (un .screen déborde l'appareil de 16 px à gauche, §8 : 24 + 16). Grammaire des contours : 2 px, rayon = h ÷ 2. */
 .frame #soutienScreen,#device #soutienScreen{background-color:var(--c-brun09)!important;color:var(--c-creme95);padding:0!important;overflow:hidden!important}
 .frame.light #soutienScreen,#device.light #soutienScreen{background-color:var(--c-creme95)!important;color:var(--c-brun09)}
-#soutienScreen .v16-corps.so-corps{left:40px;right:auto;width:342px;top:128px}
-#soutienScreen .so-tx{font-family:var(--f-texte);font-weight:400;font-size:18px;line-height:1.45;margin:0 0 28px}
-#soutienScreen .so-mts{display:flex;gap:16px;margin:0 0 28px}
-#soutienScreen .so-m{flex:1 1 0;min-width:0;height:62px;box-sizing:border-box;border:2px solid currentColor;border-radius:31px;background:transparent;color:inherit;-webkit-text-fill-color:currentColor;
+/* ⚑ v175 (Tom, C-217 §5) : la Toile de l'écran « Ma Parole ! », mêmes cotes (22 · 116 · 346 × 188, rayon 28 ; + 16 : un .screen déborde l'appareil), même rendu : son canevas recopié 1:1. Cinq montants, deux rangées de trois. */
+#soutienScreen .so-toile{position:absolute;left:38px;top:132px;width:346px;height:188px;border-radius:28px;overflow:hidden;display:block;background:var(--c-creme85-3);box-shadow:0 0 0 2px var(--c-creme85-3)}
+.frame:not(.light) #soutienScreen .so-toile,#device:not(.light) #soutienScreen .so-toile{background:var(--c-mauve17);box-shadow:0 0 0 2px var(--c-mauve17)}
+#soutienScreen.so-sans .so-toile{display:none}
+#soutienScreen .v16-corps.so-corps{left:40px;right:auto;width:342px;top:344px}
+#soutienScreen.so-sans .v16-corps.so-corps{top:128px}
+#soutienScreen .so-tx{font-family:var(--f-texte);font-weight:400;font-size:18px;line-height:1.45;margin:0 0 24px}
+#soutienScreen .so-mts{display:grid;grid-template-columns:repeat(3,1fr);gap:12px 16px;margin:0 0 20px}
+#device#device#device #settingsScreen #soutienCard .k{font-family:var(--f-texte)!important;font-weight:700!important;color:var(--c-bleu45)!important;-webkit-text-fill-color:var(--c-bleu45)!important}   /* §5.1 : gras, le bleu de la palette par défaut (« Ma Parole ! » est lilas), proposé à Tom */
+#soutienScreen .so-m{min-width:0;height:62px;box-sizing:border-box;border:2px solid currentColor;border-radius:31px;background:transparent;color:inherit;-webkit-text-fill-color:currentColor;
   font-family:var(--f-libelle);font-weight:700;font-size:22px;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 #soutienScreen .so-merci{font-family:var(--f-marque);font-weight:400;font-size:32px;line-height:1.1;min-height:36px;visibility:hidden}
 </style>
 <script id="lot-V174-SOUTIEN">
 /* ⚑ v174 (Tom, 31 oct. 2026, C-217) — « Soutenir Promi » : une rangée des Réglages, après « Ma Parole ! », un écran simple, un texte PROVISOIRE (Tom l'écrira, Q596), trois montants
-   provisoires, un merci après le geste. Le don ne débloque rien. DANS LE PROTOTYPE, AUCUN PAIEMENT : le bouton montre seulement le merci. Rien n'est enregistré, rien ne se
+   provisoires, un merci après le geste. ⚑ v175 (Tom, C-217 §5) : le texte de Tom, cinq montants fixés d'avance (l'App Store n'accepte pas de champ libre). DANS LE PROTOTYPE, AUCUN PAIEMENT : le bouton montre seulement le merci. Rien n'est enregistré, rien ne se
    compte, rien ne revient : la rangée n'est proposée NULLE PART ailleurs (la grille du §12 ; juge `redteam_soutien`). Swift : des achats intégrés consommables (règle Apple
    3.1.1), aucun lien de paiement externe — portage/MANQUES.md. */
 (function(){
   function page(){ var s=document.getElementById('soutienScreen');
     if(!s){ var priv=document.getElementById('privScreen'); if(!priv) return null;
       s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id='soutienScreen';
-      s.innerHTML='<div class="closeb" data-close>X</div><h2 class="scr-t">Soutenir Promi</h2><div class="v16-corps so-corps">'
-        +'<p class="so-tx">Promi est une initiative personnelle. Un don aide à en couvrir les frais. Il ne débloque rien.</p>'   /* TEXTE PROVISOIRE — Tom (Q596) */
-        +'<div class="so-mts"><button type="button" class="so-m">2\u00a0€</button><button type="button" class="so-m">5\u00a0€</button><button type="button" class="so-m">10\u00a0€</button></div>'   /* montants provisoires */
+      s.innerHTML='<div class="closeb" data-close>X</div><h2 class="scr-t">Soutenir Promi</h2><canvas class="so-toile" aria-hidden="true"></canvas><div class="v16-corps so-corps">'
+        +'<p class="so-tx">Promi est fait à la main, par une seule personne. Si l’app t’est chère, tu peux l’aider à grandir.</p>'   /* le texte de Tom, mot pour mot (v175) */
+        +'<div class="so-mts">'+[5,10,25,50,100].map(function(n){ return '<button type="button" class="so-m">'+n+'\u00a0€</button>'; }).join('')+'</div>'
         +'<div class="so-merci" aria-live="polite">Merci.</div></div>';
       priv.parentNode.insertBefore(s, priv.nextSibling);
       s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show'); var st=document.getElementById('settingsScreen'); if(st) st.classList.add('show'); });
@@ -43181,6 +43216,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
         var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
         m.style.visibility='visible'; if(!red && window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } }); }
     var m0=s.querySelector('.so-merci'); if(m0) m0.style.visibility='hidden';
+    try{ s.classList.toggle('so-sans', !(window._vendToileSur && window._vendToileSur(s.querySelector('.so-toile'), s))); }catch(_){ s.classList.add('so-sans'); }
     return s; }
   window._soutienPage=function(){ var s=page(); if(!s) return; var st=document.getElementById('settingsScreen'); if(st) st.classList.remove('show'); s.classList.add('show'); };
   var c=document.getElementById('soutienCard'); if(c) c.addEventListener('click', function(ev){ ev.stopPropagation(); window._soutienPage(); });

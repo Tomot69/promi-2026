@@ -1510,7 +1510,7 @@ Un bandeau : le message + le bouton « Annuler » ; il reste **5 s**. « Annu
 
 ## La veille (v161, C-181)
 
-- **Quand** : après 90 s sans aucun toucher (v174), sur n'importe quel écran, sauf pendant une saisie (clavier ouvert) et pendant un geste en cours. Un toucher n'importe
+- **Quand** : après 45 s sans aucun toucher (v175, C-181), sur n'importe quel écran, sauf pendant une saisie (clavier ouvert) et pendant un geste en cours. Un toucher n'importe
   où la quitte et rend l'écran exact d'avant ; ce toucher n'actionne rien dessous.
 - **Ce qu'on voit** : fond plein `#050302` ; le logo PROMI (PromiLate), seul, dans une boîte de 140 × 40 pt (l'encre, 140 × 27, centrée), sans clignotement ;
   il glisse en diagonale à 60 pt/s et rebondit sur les quatre bords des zones sûres (59 pt en haut, 34 en bas, 8 sur les côtés) ; à chaque rebond la couleur

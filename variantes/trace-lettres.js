@@ -547,8 +547,8 @@
        les caches se remplissent, le tracé qui suivra au même endroit n'aura plus rien à calculer */
     var prep = !!o.preparer;
     if (cible.__trace && !prep) cible.__trace.stop();
-    var ctl = { glyphes: [], duree: 0, canevas: null, fini: false }, resFin, resPret, raf = 0, mort = false;
-    ctl.fin = new Promise(function (r) { resFin = r; }); ctl.pret = new Promise(function (r) { resPret = r; });
+    var ctl = { glyphes: [], duree: 0, canevas: null, fini: false }, resFin, resPret, resPart, raf = 0, mort = false;
+    ctl.fin = new Promise(function (r) { resFin = r; }); ctl.pret = new Promise(function (r) { resPret = r; }); ctl.part = new Promise(function (r) { resPart = r; });   /* v175 (C-203) : `part` = toutes les lettres prêtes, la plume part à cette image */
     if (!prep) cible.__trace = ctl;
     if (contenu != null) remplit(cible, contenu);
     var cv = null, G = [], L = [], total = 0, t0 = 0, ig = 0, jd = 0, tPrec = -1, clipAvant = null, tAbs = 0, tPlume = 0;
@@ -575,7 +575,7 @@
     var tDepart = racine.performance.now(), tDebut = 0, nLong = 0, imMax = 0;
     function texteDe() { return String(cible.textContent || '').replace(/\s+/g, ' ').slice(0, 40); }
     function termine(interrompu) {
-      if (ctl.fini) return; ctl.fini = true; mort = true; if (raf) racine.cancelAnimationFrame(raf);
+      if (ctl.fini) return; ctl.fini = true; mort = true; resPart(ctl); if (raf) racine.cancelAnimationFrame(raf);
       /* v170c : chaque fin est notée — un tracé fini bien avant sa durée prévue est une APPARITION D'UN COUP, la régression de v170b */
       if (prep) { signale('prepare', { texte: texteDe(), lettres: G.length, ms: Math.round(racine.performance.now() - tDepart) }); range(); resPret(ctl); resFin({ interrompu: !!interrompu }); return; }
       var tF = racine.performance.now(); ctl.mesure = { attente: tDebut ? Math.round(tDebut - tDepart) : null, reel: tDebut ? Math.round(tF - tDebut) : null, prevu: Math.round(total) };
@@ -608,12 +608,16 @@
       resPret(ctl); if (!G.length) { termine(false); return; }
       /* ⚑ v170d (Tom, C-125) — AUCUN CALCUL PENDANT L'AFFICHAGE : toutes les lettres sont prêtes AVANT que la plume parte (reprises du cache quand le texte a
          été préparé d'avance ; sinon calculées ici, le texte encore caché). Pendant le dévoilement, la page ne fait plus que poser la découpe. */
-      if (!o.manuel) preRoll(function () { if (mort) return; tDebut = racine.performance.now(); t0 = tDebut; tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); });
+      if (!o.manuel) preRoll(function () { if (mort) return; if (o.arme && !lancer) { arme = true; return; } part(); });
     }
+    /* ⚑ v175 (Tom, C-219) — UN TRACÉ ARMÉ (`arme:true`) : tout est fait d'avance (la mesure, les lettres, la découpe), la plume attend `ctl.lance()` et part à l'image suivante, une image de plume déjà faite : de l'encre dès cette image-là */
+    var arme = false, lancer = false;
+    function part() { if (mort) return; resPart(ctl); tDebut = racine.performance.now(); t0 = tDebut; tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); }
+    ctl.lance = function () { lancer = true; if (o.arme) tDepart = racine.performance.now(); if (arme) { arme = false; part(); } };
     if (prep && o.immediat) { apresPolices(); return ctl; }   /* l'appelant a déjà ses polices : la mesure se fait tout de suite (l'élément peut être retiré aussitôt) */
     try { if (doc.fonts && doc.fonts.load) Object.keys(polices).forEach(function (f) { attente.push(doc.fonts.load(f).catch(function () { })); }); } catch (e) { }
     Promise.all(attente).then(function () { return doc.fonts && doc.fonts.ready; }).catch(function () { }).then(apresPolices);
-    /* toutes les lettres prêtes : une lettre au plus par tranche de 8 ms sur le fil (le reste à l'ouvrier) ; un ouvrier qui ne rend rien en 4 s est remplacé */
+    /* toutes les lettres prêtes : une lettre au plus par tranche de 8 ms sur le fil (le reste à l'ouvrier) ; un ouvrier qui ne rend rien en 4 s est remplacé (v175, C-203 : 600 ms pour un texte qu'on attend, jamais pour une préparation) */
     function preRoll(fin) {
       var p0 = racine.performance.now();
       (function tour() {
@@ -623,7 +627,7 @@
           if (!g.attente && racine.performance.now() - d0 < 8) { try { demande(g); } catch (e) { g.pret = true; } }
           if (!g.pret) reste++; }
         if (!reste) { TL.mesures.preroll.push(racine.performance.now() - p0); if (TL.mesures.preroll.length > 400) TL.mesures.preroll.splice(0, 200); fin(); return; }
-        if (racine.performance.now() - p0 > 4000) for (j = 0; j < G.length; j++) { g = G[j]; if (!g.pret && g.attente && g.surPlace) { signale('ouvrier-lent', { car: g.car, ms: Math.round(racine.performance.now() - p0) }); try { g.surPlace(); } catch (e) { g.pret = true; g.attente = false; } break; } }
+        if (racine.performance.now() - p0 > (prep ? 4000 : (TL.attentePre || 600))) for (j = 0; j < G.length; j++) { g = G[j]; if (!g.pret && g.attente && g.surPlace) { signale('ouvrier-lent', { car: g.car, ms: Math.round(racine.performance.now() - p0) }); try { g.surPlace(); } catch (e) { g.pret = true; g.attente = false; } break; } }
         racine.setTimeout(tour, 4);
       })();
     }
@@ -1128,7 +1132,7 @@
     function image(maintenant) {
       if (mort) return; var d0 = racine.performance.now();
       /* le temps de la plume : il avance du temps de l'image, SAUF si la lettre où il arrive n'a pas encore sa carte — la plume marque un temps */
-      var dt = tAbs ? Math.min(100, maintenant - tAbs) : 0; if (tAbs) { var di = maintenant - tAbs; if (di > 20) nLong++; if (di > imMax) imMax = di; } tAbs = maintenant;
+      var dt = tAbs ? Math.min(100, maintenant - tAbs) : (o.arme ? 16.7 : 0); if (tAbs) { var di = maintenant - tAbs; if (di > 20) nLong++; if (di > imMax) imMax = di; } tAbs = maintenant;
       var t = tPlume + dt;
       for (var jx = ig; jx < G.length && G[jx].t0 < t; jx++) if (!G[jx].pret) { demande(G[jx]); var gx = G[jx];
         /* ⚑ v170c (C-206) — LA PLUME N'ATTEND JAMAIS L'OUVRIER PLUS DE 150 ms : au-delà, la lettre se calcule ici, tout de suite. En v170b elle l'attendait sans

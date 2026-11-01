@@ -11,6 +11,10 @@ Banc comme Tom (WebKit, doigt), deux thèmes, échelles 1 et 0,79 :
   D · X rend les Réglages
   E · absente partout ailleurs : le mot n'est sur aucun autre écran (dix écrans, plus 30 s d'accueil) ; source : un seul nœud, un seul ouvreur
 Rouge sur v173 (`--fichier=zz-v173.html`).
+
+⚑ v175 (Tom, C-217 §5) — contrat remis au niveau (original : sauvegardes/redteam_soutien-avant-v175.py) : la rangée en gras, `#82AEF8`, d'une autre couleur que « Ma Parole ! » ;
+le texte de Tom, mot pour mot, rien de « ne débloque rien » ; cinq montants 5 · 10 · 25 · 50 · 100 €, deux rangées de trois, sans défilement, aux deux échelles ;
+T · sur l'état de Tom, la Toile de l'écran est la Toile de l'écran « Ma Parole ! », jouée par sa boucle : mêmes cotes, mêmes pixels que son pavage, le pavage de Ma Parole ! retrouvé ensuite. Rouge sur v174 (`--fichier=zz-v174b.html`).
 """
 import sys, io, re; sys.path.insert(0, '.')
 import banc_tom as B
@@ -19,6 +23,7 @@ F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')
 res = []
 def juge(n, ok, d=''):
     res.append(bool(ok)); print('  %s %-92s %s' % ('✅' if ok else '❌', n, str(d)[:200]), flush=True)
+TEXTE = 'Promi est fait à la main, par une seule personne. Si l’app t’est chère, tu peux l’aider à grandir.'   # le texte de Tom, mot pour mot (v175)
 VU = """(id)=>{ const e=document.getElementById(id); if(!e) return null; const r=e.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return {x:(r.left-D.left)/k,y:(r.top-D.top)/k,w:r.width/k,h:r.height/k,dessus:(document.elementFromPoint(r.left+r.width/2,r.top+r.height/2)||{}).id||''}; }"""
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -32,6 +37,8 @@ with sync_playwright() as p:
             a = pg.evaluate(VU, 'soutienCard'); m = pg.evaluate(VU, 'openPlusTop')
             ordre = pg.evaluate("()=>{ const s=document.getElementById('soutienCard'), m=document.getElementById('openPlusTop'), r=document.getElementById('replayOnb'); return s&&m&&r? [s.getBoundingClientRect().top>=m.getBoundingClientRect().bottom-1, s.getBoundingClientRect().bottom<=r.getBoundingClientRect().top+1] : null; }")
             juge(T + ' A · la rangée, sous « Ma Parole ! », avant la suite, joignable', a and ordre and all(ordre), (a, ordre))
+            st = pg.evaluate("""()=>{ const c=q=>{ const e=document.querySelector(q); if(!e) return null; const s=getComputedStyle(e); return [s.color, s.fontWeight, s.fontFamily.split(',')[0]]; }; return [c('#soutienCard .k'), c('#openPlusTop .k')||c('#openPlusTop')]; }""")
+            juge(T + ' A · la rangée : Atkinson gras, #82AEF8, une autre couleur que « Ma Parole ! »', st[0] and st[0][0] == 'rgb(130, 174, 248)' and int(st[0][1]) >= 700 and 'Atkinson' in st[0][2] and st[1] and st[1][0] != st[0][0], st)
             if not a: ctx.close(); continue
             ls0 = pg.evaluate("()=>JSON.stringify(Object.keys(localStorage).sort())")
             pg.evaluate("()=>document.getElementById('soutienCard').scrollIntoView({block:'center'})"); pg.wait_for_timeout(300)
@@ -40,8 +47,10 @@ with sync_playwright() as p:
                const bt=[...S.querySelectorAll('.so-m')].map(x=>{ const r=x.getBoundingClientRect(); return [x.textContent,(r.left-D.left)/k,(r.right-D.left)/k,r.height/k]; }); const m=S.querySelector('.so-merci'), t=S.querySelector('.scr-t');
                return {bt:bt, tx:S.querySelector('.so-tx').textContent, merci:getComputedStyle(m).visibility, titre:t.textContent, fs:parseFloat(getComputedStyle(t).fontSize), tr:t.getBoundingClientRect().right<=D.right}; }""")
             mt = [x[0].replace(' ', ' ') for x in s['bt']] if s else None
-            juge(T + ' B · l\'écran : trois montants, dans l\'appareil (24 pt de marge), le merci absent', s and mt == ['2 €', '5 €', '10 €'] and min(x[1] for x in s['bt']) >= 23.5 and max(x[2] for x in s['bt']) <= 366.5 and all(abs(x[3] - 62) < 1 for x in s['bt']) and s['merci'] == 'hidden', s)
-            juge(T + ' B · le texte dit que le don ne débloque rien', s and 'ne débloque rien' in s['tx'], s and s['tx'])
+            juge(T + ' B · l\'écran : cinq montants, dans l\'appareil (24 pt de marge), le merci absent', s and mt == ['5 €', '10 €', '25 €', '50 €', '100 €'] and min(x[1] for x in s['bt']) >= 23.5 and max(x[2] for x in s['bt']) <= 366.5 and all(abs(x[3] - 62) < 1 for x in s['bt']) and s['merci'] == 'hidden', s)
+            juge(T + ' B · le texte de Tom, mot pour mot, et rien d\'autre', s and s['tx'] == TEXTE and 'débloque' not in s['tx'], s and s['tx'])
+            g = pg.evaluate("""()=>{ const S=document.getElementById('soutienScreen'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; const b=[...S.querySelectorAll('.so-m')].map(x=>x.getBoundingClientRect()); const m=S.querySelector('.so-merci').getBoundingClientRect(); return {rangs:[...new Set(b.map(r=>Math.round((r.top-D.top)/k)))], col:[b.slice(0,3).length, b[3]?b.filter(r=>Math.abs(r.top-b[3].top)<2).length:0], m:(m.bottom-D.top)/k, dep:S.scrollHeight-S.clientHeight, W:Math.max(...b.map(r=>r.width))/k, ph:!!b[4]&&b[4].bottom<=D.bottom}; }""")
+            juge(T + ' B · deux rangées (trois puis deux), rien à défiler, le merci dans l\'écran', len(g['rangs']) == 2 and g['col'] == [3, 2] and g['dep'] <= 0 and g['m'] <= 790 and g['ph'], g)
             B.tap_sel(pg, '#soutienScreen .so-m:nth-child(2)'); pg.wait_for_timeout(1000)
             mc = pg.evaluate("()=>{ const m=document.querySelector('#soutienScreen .so-merci'); return getComputedStyle(m).visibility; }")
             juge(T + ' B · le geste : le merci paraît', mc == 'visible', mc)
@@ -53,6 +62,24 @@ with sync_playwright() as p:
             juge(T + ' C · rouvert, le merci n\'y est plus (rien ne se garde)', pg.evaluate("()=>getComputedStyle(document.querySelector('#soutienScreen .so-merci')).visibility") == 'hidden')
             pg.evaluate("()=>{ try{ window._peaufSortie&&_peaufSortie(); closeAll(); }catch(e){} }"); pg.wait_for_timeout(700)
             ctx.close()
+    # T · la Toile de l'écran « Ma Parole ! », sur l'état de Tom
+    for sombre_t, nomt in ((False, 'clair'), (True, 'sombre')):
+        ctx, et = B.contexte_tom(b, 'etats/tom-20261023-125022.json', sombre=sombre_t)
+        pg = B.ouvre(ctx, F)
+        pg.evaluate("()=>document.getElementById('settingsBtn').click()"); pg.wait_for_timeout(1500)
+        pg.evaluate("()=>document.getElementById('soutienCard').click()"); pg.wait_for_timeout(2400)
+        r = pg.evaluate("""()=>{ const c=document.querySelector('#soutienScreen .so-toile'); if(!c||!c.width||getComputedStyle(c).display==='none') return null; const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, R=c.getBoundingClientRect();
+          const s=window._vendToileOff&&_vendToileOff(); if(!s) return {pas:1}; const A=c.getContext('2d').getImageData(0,0,c.width,c.height).data, B=s.getContext('2d').getImageData(0,0,s.width,s.height).data; let dif=0, teintes=new Set();
+          for(let i=0;i<A.length;i+=4){ if(A[i]!==B[i]||A[i+1]!==B[i+1]||A[i+2]!==B[i+2]) dif++; if(i%4000===0) teintes.add((A[i]>>4)+','+(A[i+1]>>4)+','+(A[i+2]>>4)); }
+          return {box:[(R.left-D.left)/k,(R.top-D.top)/k,R.width/k,R.height/k], dim:[c.width,c.height,s.width,s.height], dif:dif, teintes:teintes.size}; }""")
+        print('   Toile :', r, flush=True)
+        pg.evaluate("()=>document.querySelector('#soutienScreen .closeb').click()"); pg.wait_for_timeout(800)
+        pg.evaluate("()=>{ try{ closeAll(); }catch(e){} if(window.ouvreCercle) ouvreCercle(); }"); pg.wait_for_timeout(2600)
+        mp = pg.evaluate("()=>{ const c=document.querySelector('#plusScreen .pc-toile canvas'); if(!c||!c.width) return null; const d=c.getContext('2d').getImageData(0,0,c.width,c.height).data; let n=0; for(let i=3;i<d.length;i+=4000) if(d[i]>10) n++; return n; }")
+        juge('[%s] T · l\'écran « Ma Parole ! » garde sa Toile après celui-ci' % nomt, mp, mp)
+        juge('[%s] T · la Toile : les cotes de l\'écran « Ma Parole ! » (22 · 116 · 346 × 188)' % nomt, r and r.get('box') and abs(r['box'][0] - 22) < 1 and abs(r['box'][1] - 116) < 1 and abs(r['box'][2] - 346) < 1 and abs(r['box'][3] - 188) < 1, r and r.get('box'))
+        juge('[%s] T · la même Toile, au pixel, en couleur (≥ 8 teintes)' % nomt, r and r.get('dif') == 0 and r['dim'][:2] == r['dim'][2:] and r['teintes'] >= 8, r)
+        ctx.close()
     # E · absente ailleurs
     ctx = B.contexte(b, False, vw=430, vh=932); pg = B.ouvre(ctx, F); ailleurs = []
     def vu(nom):
