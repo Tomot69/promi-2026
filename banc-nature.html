@@ -1,0 +1,30 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banc nature</title>
+<!-- v177 (C-224, C-223) : dans Safari iOS, l'app dans un cadre — un Cercle ouvert puis fermé par son X, puis un Promi, un Chiche, un Cercle : chaque trait (le vrai fin()) plante sa nature ;
+     et sur la page + d'un Cercle, le premier toucher du trait arrête le clignotement. Le relevé part au Mac (/mesure). -->
+<style>body{margin:0;background:#201908;color:#F7F0DE;font:14px system-ui}#f{position:fixed;left:0;top:0;width:100%;height:100%;border:0}#s{position:fixed;left:0;bottom:0;right:0;background:#201908;padding:4px 8px;z-index:9}</style>
+<div id="s">…</div><iframe id="f" src="about:blank"></iframe>
+<script>
+(async function(){
+const S=document.getElementById('s'), F=document.getElementById('f'), wait=ms=>new Promise(r=>setTimeout(r,ms));
+for(const[k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1']]) localStorage.setItem(k,v); localStorage.removeItem('promi_state');
+const l=new Promise(r=>{F.onload=r;}); F.src='app.html?n='+Date.now(); await l;
+let w; for(let i=0;i<600;i++){ await wait(100); try{ w=F.contentWindow; if(w.document.readyState==='complete'&&w._ppEcran&&w.Toile) break; }catch(e){} } await wait(1500); const d=w.document, out=[];
+async function ouvre(nat){ d.querySelector('#accChoix .acc-pil[data-k='+nat+']').click(); await wait(3000); }
+async function saisit(nat,t){ d.querySelector(nat==='nuee'?'#nueePhrase .ph-m[data-np="nom"]':'#csPhrase .ph-m[data-ph="titre"]').click(); await wait(600); const i=d.getElementById(nat==='nuee'?'nueeNomIn':'phIn'); i.value=t; i.dispatchEvent(new w.Event('input',{bubbles:true})); await wait(300); i.blur(); await wait(2000); }
+function trace(nat){ const z=d.getElementById(nat==='nuee'?'planterZoneN':'planterZone'), c=z.querySelector('canvas'), r=c.getBoundingClientRect(), y=r.top+r.height/2, x0=r.left+20; const ev=(n,x)=>new w.MouseEvent(n,{bubbles:true,cancelable:true,clientX:x,clientY:y,view:w});
+  z.dispatchEvent(ev('mousedown',x0)); for(let i=1;i<=12;i++) w.dispatchEvent(ev('mousemove',x0+i*14)); w.dispatchEvent(ev('mouseup',x0+168)); }
+try{
+  S.textContent='Cercle, puis X'; await ouvre('nuee'); await saisit('nuee','x'); d.querySelector('#createSheet .closeb').click(); await wait(1500);
+  for(const [nat,t] of [['promi','nager'],['chiche','sauter']]){ S.textContent=nat; await ouvre(nat); await saisit(nat,t); trace(nat); await wait(4500);
+    const p=w.eval('promises').find(q=>q.title===t); out.push({nat, plantee:!!p, chiche:!!(p&&p.chiche), kind:d.getElementById('createSheet').getAttribute('data-kind'), trait:w._traitDernier}); }
+  S.textContent='Cercle'; await ouvre('nuee'); await saisit('nuee','Les voisins');
+  const dp=d.getElementById('ppDepart'), c0=!!(dp&&dp.classList.contains('clignote')); const cv=d.getElementById('planterZoneN').querySelector('canvas'), rr=cv.getBoundingClientRect();
+  const o={bubbles:true,clientX:rr.left+rr.width*0.8,clientY:rr.top+rr.height/2,pointerType:'touch',isPrimary:true}; cv.dispatchEvent(new w.PointerEvent('pointerdown',o)); cv.dispatchEvent(new w.PointerEvent('pointerup',o)); await wait(600);
+  const c1=!!(dp&&dp.classList.contains('clignote')); trace('nuee'); await wait(4500);
+  out.push({nat:'nuee', clignoteAvant:c0, clignoteApres:c1, plantee:Object.values(w.eval('NUE')).indexOf('Les voisins')>=0});
+}catch(e){ out.push({err:String(e).slice(0,120)}); }
+try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quoi:'nature-ios',res:out,ua:navigator.userAgent.slice(0,40)})}); }catch(e){}
+S.textContent='FINI '+JSON.stringify(out).slice(0,200);
+})();
+</script>

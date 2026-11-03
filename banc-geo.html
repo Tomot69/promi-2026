@@ -1,0 +1,22 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banc cotes</title>
+<!-- v177 : les cotes de la page + d'un Promi pas encore prête (phrase, rail, « garder de côté »), dans Safari iOS, sur deux versions servies côte à côte ; phrase suggérée imposée (?ex=11). Relevé au Mac. -->
+<style>body{margin:0;background:#201908;color:#F7F0DE;font:14px system-ui}#f{position:fixed;left:0;top:0;width:100%;height:100%;border:0}#s{position:fixed;left:0;bottom:0;right:0;background:#201908;padding:4px 8px;z-index:9}</style>
+<div id="s">…</div><iframe id="f" src="about:blank"></iframe>
+<script>
+(async function(){
+const S=document.getElementById('s'), F=document.getElementById('f'), wait=ms=>new Promise(r=>setTimeout(r,ms)), Q=new URLSearchParams(location.search), EX=+(Q.get('ex')||11);
+for(const[k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1']]) localStorage.setItem(k,v);
+const res=[];
+for(const f of ['zz-v176.html','app.html']) for(let k=0;k<2;k++){ S.textContent=f+' '+k; localStorage.setItem('promi_ex_soi','2'); localStorage.setItem('promi_ex_sac_soi',JSON.stringify([EX])); localStorage.removeItem('promi_state');
+  try{ const l=new Promise(r=>{F.onload=r;}); F.src=f+'?g='+Date.now(); await l; let w; for(let i=0;i<600;i++){ await wait(100); try{ w=F.contentWindow; if(w.document.readyState==='complete'&&w._ppEcran&&w.Toile) break; }catch(e){} } await wait(1500);
+    const d=w.document; d.querySelector('#accChoix .acc-pil[data-k=promi]').click(); await wait(4000);
+    const D=d.getElementById('device').getBoundingClientRect(), K=D.width/390, h=n=>{ if(!n) return null; const r=n.getBoundingClientRect(); return [+((r.top-D.top)/K).toFixed(1),+((r.bottom-D.top)/K).toFixed(1)]; }, c=d.getElementById('createSheet');
+    const ph=d.getElementById('csPhrase'), R=d.getElementById('csPinceau'), g=c.querySelector('.pp-garder'), lignes=new Set([...ph.querySelectorAll('*')].filter(n=>n.children.length===0&&n.textContent.trim()).map(n=>Math.round(n.getBoundingClientRect().top))).size;
+    res.push({quoi:'geo-ios',f,k,K:+K.toFixed(3),phrase:ph.innerText.replace(/\s+/g,' ').slice(0,60),ph:h(ph),rail:h(R),garder:h(g),lignes,cl:c.className.split(' ').filter(x=>/ppa|ppi|pp-ouvert/.test(x)).join(' ')});
+  }catch(e){ res.push({quoi:'geo-ios',f,k,err:String(e).slice(0,100)}); }
+  try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(res[res.length-1])}); }catch(e){} }
+try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quoi:'geo-ios-fin'})}); }catch(e){}
+S.textContent='FINI';
+})();
+</script>

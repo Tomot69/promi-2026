@@ -1,0 +1,38 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banc durable</title>
+<!-- v177 (C-226) : le banc de `redteam_plantation_durable.py`. L'app dans un cadre : planter par le vrai geste (fin() du trait), recharger 0, 100 ou 500 ms après, regarder si la parole est là.
+     Tourne à l'identique en WebKit (juge) et dans Safari iOS (openurl) : ?n=20&port=1 envoie le bilan au Mac (/mesure). `second` : un autre onglet de l'app reste ouvert (un second cadre). -->
+<style>body{margin:0;background:#201908;color:#F7F0DE;font:14px system-ui}#f{position:fixed;left:0;top:0;width:100%;height:100%;border:0}#s{position:fixed;left:0;bottom:0;right:0;background:#201908;padding:4px 8px;z-index:9}#o{position:fixed;left:-500px;top:0;width:390px;height:844px;border:0}</style>
+<div id="s">…</div><iframe id="f" src="about:blank"></iframe>
+<script>
+(async function(){
+const Q=new URLSearchParams(location.search), N=+(Q.get('n')||20), APP=Q.get('app')||'app.html', SEUL=Q.get('cas')||'', S=document.getElementById('s'), F=document.getElementById('f');
+const wait=ms=>new Promise(r=>setTimeout(r,ms));
+const ini=()=>{ for(const[k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1']]) localStorage.setItem(k,v); };
+const pret=async f=>{ for(let i=0;i<600;i++){ await wait(100); try{ const w=f.contentWindow; if(w&&w.document&&w.document.readyState==='complete'&&w._ppEcran&&w.Toile&&w.eval('typeof promises')==='object') { await wait(500); return w; } }catch(e){} } throw new Error('pas prêt'); };
+const charge=async(f,u)=>{ const l=new Promise(r=>{f.onload=r;}); f.src=u; await l; return pret(f); };
+async function ouvre(w,nat){ const d=w.document, p=d.querySelector('#accChoix .acc-pil[data-k='+nat+']'); p.click(); for(let i=0;i<80;i++){ await wait(50); const c=d.getElementById('createSheet'); if(c.classList.contains('show')&&c.classList.contains('pp-'+nat)&&!c.classList.contains('acc-passe')) break; } await wait(650); }
+async function saisit(w,nat,t,ferme){ const d=w.document, m=d.querySelector(nat==='nuee'?'#nueePhrase .ph-m[data-np="nom"]':'#csPhrase .ph-m[data-ph="titre"]'); m.click(); await wait(250); const i=d.getElementById(nat==='nuee'?'nueeNomIn':'phIn'); i.value=t; if(i.oninput) i.oninput(); await wait(150); if(ferme){ i.blur(); await wait(750); } }
+function trace(w,nat,d){ const D=w.document, z=D.getElementById(nat==='nuee'?'planterZoneN':'planterZone'), c=z.querySelector('canvas'), r=c.getBoundingClientRect(), y=r.top+r.height/2, x0=r.left+20; const ev=(n,x)=>new w.MouseEvent(n,{bubbles:true,cancelable:true,clientX:x,clientY:y,view:w});
+  z.dispatchEvent(ev('mousedown',x0)); for(let i=1;i<=12;i++) w.dispatchEvent(ev('mousemove',x0+i*14)); w.dispatchEvent(ev('mouseup',x0+168));
+  return { ok:(w._traitDernier||{}).ok }; }
+async function essai(c,i){ const t='p'+Date.now().toString(36)+i; ini(); localStorage.removeItem('promi_state'); let o=null;
+  if(c.second){ o=document.getElementById('o')||Object.assign(document.createElement('iframe'),{id:'o'}); if(!o.parentNode) document.body.appendChild(o); await charge(o,APP+'?autre='+i); }
+  let w=await charge(F,APP+'?d='+i+'&t='+Date.now()); await ouvre(w,c.nat); await saisit(w,c.nat,t,c.ferme);
+  const g=trace(w,c.nat,c.d); const dans=(localStorage.getItem('promi_state')||'').indexOf(t)>=0; const avant={autre:!!w._etatAutre, base:w._etatBase===localStorage.getItem('promi_state'), mem:w.eval(c.nat==='nuee'?'Object.values(NUE)':'promises.map(function(p){return p.title})').indexOf(t)>=0};
+  const l=new Promise(r=>{F.onload=r;}); if(c.d===0) w.location.reload(); else { await wait(c.d); w.location.reload(); }
+  await l; w=await pret(F); if(c.second) await wait(1700);
+  const lu=w.eval(c.nat==='nuee'?'Object.values(NUE)':'promises.map(function(p){return p.title})'), la=lu.indexOf(t)>=0, st=(localStorage.getItem('promi_state')||'').indexOf(t)>=0;
+  if(!(la&&st)){ let s=null; try{ const P=JSON.parse(localStorage.getItem('promi_state')); s={n:P.promises.length, titres:P.promises.map(p=>p.title).slice(-4), nue:Object.values(P.NUE||{}).slice(-3)}; }catch(e){ s=String(e).slice(0,60); }
+    try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quoi:'durable-perte',cas:c.nat+(c.ferme?' fermé':' ouvert')+' '+c.d+(c.second?' second':''),t,la,st,avant,mem:lu.slice(-4),stock:s,ua:navigator.userAgent.slice(0,40)})}); }catch(e){} }
+  if(o){ o.src='about:blank'; await wait(100); } return {la:la&&st, dans:dans, geste:g.ok}; }
+const CAS=[]; for(const nat of ['promi','chiche','nuee']) for(const ferme of [false,true]) for(const d of [0,100,500]) CAS.push({nat,ferme,d,n:N}); for(const nat of ['promi','chiche','nuee']) CAS.push({nat,ferme:false,d:100,second:true,n:Math.max(3,Math.round(N/4))});
+window.__res=[]; window.__fini=false; const t0=Date.now();
+for(const c of CAS){ const nom=c.nat+(c.ferme?' · clavier fermé':' · clavier ouvert')+' · '+c.d+' ms'+(c.second?' · second onglet':''); if(SEUL&&nom.indexOf(SEUL)<0) continue; let la=0,dans=0,geste=0,err=0,tot=0;
+  for(let i=0;i<c.n;i++){ S.textContent=nom+' '+(i+1)+'/'+c.n+' · perdues '+(tot-la)+' · '+Math.round((Date.now()-t0)/60000)+' min'; try{ const r=await essai(c,i); tot++; la+=r.la?1:0; dans+=r.dans?1:0; geste+=r.geste?1:0; }catch(e){ err++; } }
+  const b={quoi:'durable',cas:nom,essais:tot,la:la,ecrite:dans,geste:geste,err:err,min:+((Date.now()-t0)/60000).toFixed(1),ua:navigator.userAgent.slice(0,60)}; window.__res.push(b);
+  try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(b)}); }catch(e){} }
+window.__fini=true; S.textContent='FINI · '+window.__res.reduce((a,b)=>a+b.la,0)+' / '+window.__res.reduce((a,b)=>a+b.essais,0);
+try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quoi:'durable-fin',ua:navigator.userAgent.slice(0,60)})}); }catch(e){}
+})();
+</script>

@@ -1,0 +1,28 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banc mouvement</title>
+<!-- v177 (Q598) : la page + rejoint sa place à la fermeture du clavier, lue image par image, dans Safari iOS. L'app dans un cadre : la saisie ouverte, la parole écrite, le champ quitté ;
+     chaque image, les cotes de la phrase, du libellé et de la barre, et l'état du mouvement ; le relevé part au Mac (/mesure). Trois natures, trois fois. -->
+<style>body{margin:0;background:#201908;color:#F7F0DE;font:14px system-ui}#f{position:fixed;left:0;top:0;width:100%;height:100%;border:0}#s{position:fixed;left:0;bottom:0;right:0;background:#201908;padding:4px 8px;z-index:9}</style>
+<div id="s">…</div><iframe id="f" src="about:blank"></iframe>
+<script>
+(async function(){
+const S=document.getElementById('s'), F=document.getElementById('f'), wait=ms=>new Promise(r=>setTimeout(r,ms));
+for(const[k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1']]) localStorage.setItem(k,v);
+const pret=async()=>{ for(let i=0;i<600;i++){ await wait(100); try{ const w=F.contentWindow; if(w&&w.document.readyState==='complete'&&w._ppEcran&&w.Toile){ await wait(800); return w; } }catch(e){} } throw new Error('pas prêt'); };
+const res=[];
+for(const nat of ['promi','chiche','nuee']) for(let k=0;k<3;k++){ S.textContent=nat+' '+(k+1);
+  try{ const l=new Promise(r=>{F.onload=r;}); F.src='app.html?m='+nat+k+'&t='+Date.now(); await l; const w=await pret(), d=w.document; w.__jerr=[]; w.addEventListener('error',ev=>{ w.__jerr.push(String(ev.message).slice(0,120)); });
+    d.getElementById('createBtn').click(); await wait(700); d.querySelector('#accChoix .acc-pil[data-k='+nat+']').click(); await wait(2800);
+    d.querySelector(nat==='nuee'?'#nueePhrase .ph-m[data-np="nom"]':'#csPhrase .ph-m[data-ph="titre"]').click(); await wait(900);
+    const i=d.getElementById(nat==='nuee'?'nueeNomIn':'phIn'); i.value='nager'; i.dispatchEvent(new w.Event('input',{bubbles:true})); await wait(1800);
+    const M=[]; let on=true; (function f(){ if(!on) return; const c=d.getElementById('createSheet'), e=w._ppEcran(), p=d.getElementById(e.nat==='nuee'?'nueePhrase':'csPhrase'), D=d.getElementById('device').getBoundingClientRect(), K=D.width/390, h=n=>n?+((n.getBoundingClientRect().top-D.top)/K).toFixed(1):null;
+      M.push({t:Math.round(w.performance.now()), ph:h(p), lib:h(c.querySelector('.pp-trace')), barre:h(d.getElementById('csBotBar')), ouv:c.classList.contains('pp-ouvert'), ov:!!d.getElementById('ppMvt'), et:w._ppMvtEtat?Object.assign({},w._ppMvtEtat):null}); w.requestAnimationFrame(f); })();
+    await wait(200); const tb=Math.round(w.performance.now()); i.blur(); for(let q=0;q<40;q++){ await wait(100); const e=w._ppMvtEtat; if(q>=15 && (!e||e.fini) ) break; } await wait(300); on=false;
+    const j=M.findIndex(r=>!r.ouv||r.ov), S_=j>0?M.slice(j-1):[], z=M[M.length-1], ph=S_.map(r=>r.ph);
+    const pas=ph.length>2?Math.max(...ph.slice(1).map((v,q)=>Math.abs(ph[q+1]-ph[q])).slice(1)):null;
+    const r0=M.find(r=>r.ov); res.push({quoi:'mvt-ios',nat,k,depart:r0?r0.t-tb:null,ms:z.et&&z.et.ms,images:z.et&&z.et.images,fini:z.et&&z.et.fini,ph0:S_[0]&&S_[0].ph,ph1:S_[1]&&S_[1].ph,phFin:z.ph,libFin:z.lib,barreFin:z.barre,course:S_[0]?+(z.ph-S_[0].ph).toFixed(1):null,pasMax:pas,cal:d.querySelectorAll('#ppMvt,#ppMvtDeja').length,err:w._ppMvtErr||null,jerr:(w.__jerr||[]).slice(0,2),ua:navigator.userAgent.slice(0,40)});
+  }catch(e){ res.push({quoi:'mvt-ios',nat,k,err:String(e).slice(0,80)}); }
+  try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(res[res.length-1])}); }catch(e){} }
+S.textContent='FINI'; try{ await fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quoi:'mvt-ios-fin'})}); }catch(e){}
+})();
+</script>

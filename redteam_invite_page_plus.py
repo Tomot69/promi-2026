@@ -131,7 +131,7 @@ def tour(b, nat, sombre, vw, vh, nom):
         return {cl:!!(d&&d.classList.contains('clignote')), a:A?A.currentTime:null, i:AI?AI.currentTime:null}; }""")
     ph = None if (c['a'] is None or c['i'] is None) else abs(((c['a'] - c['i']) + 575) % 1150 - 575)
     juge(T + ' D · le départ clignote, en phase avec le I de PROMI (± 40 ms)', c['cl'] and ph is not None and ph <= 40, c)
-    pg.evaluate("()=>{ const z=document.getElementById('planterCv'); const r=z.getBoundingClientRect(); z.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,clientX:r.left+r.width*0.8,clientY:r.top+r.height/2,pointerType:'touch',isPrimary:true})); z.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,clientX:r.left+r.width*0.8,clientY:r.top+r.height/2,pointerType:'touch',isPrimary:true})); }")
+    pg.evaluate("()=>{ const z=document.getElementById(_ppEcran().nat==='nuee'?'planterCvN':'planterCv'); const r=z.getBoundingClientRect(); z.dispatchEvent(new PointerEvent('pointerdown',{bubbles:true,clientX:r.left+r.width*0.8,clientY:r.top+r.height/2,pointerType:'touch',isPrimary:true})); z.dispatchEvent(new PointerEvent('pointerup',{bubbles:true,clientX:r.left+r.width*0.8,clientY:r.top+r.height/2,pointerType:'touch',isPrimary:true})); }")
     pg.wait_for_timeout(500); c2 = pg.evaluate("()=>{ const d=document.getElementById('ppDepart'); return d?{cl:d.classList.contains('clignote'), anim:d.getAnimations?d.getAnimations().length:0}:{cl:false, anim:0, absente:true}; }"); w = lire(pg, pg.evaluate(GEO) or g)
     juge(T + ' D · au premier toucher du trait, le départ cesse de clignoter et reste orange', not c2['cl'] and c2['anim'] == 0 and w['depart'] > 60, '%s · orange %d' % (c2, w['depart']))
     if not VITE or (nat == 'promi'):
@@ -183,7 +183,8 @@ with sync_playwright() as p:
         for sombre in (False, True):
             for nat in ('promi', 'chiche', 'nuee'):
                 if VITE and (nom != '1' or sombre) and nat != 'promi': continue
-                if SEUL and (nat != SEUL or nom != '1' or sombre): continue
+                if SEUL and SEUL != nat and SEUL != '%s-%s-%s' % (nat, 'sombre' if sombre else 'clair', nom): continue   # --seul=promi (clair, 1) ou --seul=promi-sombre-1
+                if SEUL == nat and (nom != '1' or sombre): continue
                 tour(b, nat, sombre, vw, vh, nom)
     # Réduire les animations : le départ fixe, l'invite posée
     ctx = b.new_context(viewport={'width': 430, 'height': 932}, device_scale_factor=3, has_touch=True, is_mobile=True, user_agent=B.UA, reduced_motion='reduce')
