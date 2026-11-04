@@ -35,6 +35,10 @@ def tour(b, nat, sombre, vw, vh, nom, ecrit=True):
     elif ecrit: juge(T + ' la barre remonte du bas : sous sa place au départ, à sa place à la fin', S[1]['barre'] > z['barre'] + 40 and abs(z['barre'] - 760) < 1, [S[1]['barre'], z['barre']])
     b_ = [r['base'] for r in S if r['base'] is not None]; juge(T + ' l\'onde descend avec eux', len(b_) >= 2 and b_[0] < b_[-1], b_[:4])
     d = (et or {}).get('ms'); juge(T + ' durée 300 à 400 ms (au calme ; sinon non jugée)', et and et.get('fini') and (ch >= 4 or 300 <= d <= 400), '%s ms · charge %.0f' % (d, ch))
+    # v178b (C-229) : le trait naît APRÈS la fermeture du clavier (horizon 360 ms, puis 700 ms de flaques) — « la fin » attend la fin de sa naissance, 3 s au plus
+    for _ in range(30):
+        if not pg.evaluate("()=>document.querySelectorAll('#ppMvt,#ppMvtDeja,#createSheet canvas.passage-flaques').length"): break
+        pg.wait_for_timeout(100)
     f = pg.evaluate("()=>{const c=document.getElementById('createSheet');return {cal:document.querySelectorAll('#ppMvt,#ppMvtDeja,#createSheet canvas.passage-flaques').length, tr:[...c.querySelectorAll('.pp-phrase,.pp-trace,#csPinceau,.pp-garder,#csBotBar')].map(n=>(n.style.getPropertyValue('transform')+n.style.getPropertyValue('translate'))).join('')}}")
     juge(T + ' à la fin : aucun calque, aucune transformation restée', f['cal'] == 0 and not f['tr'], f)
     if pg.__dict__['erreurs']: juge(T + ' aucune erreur de page', False, pg.__dict__['erreurs'][:2])

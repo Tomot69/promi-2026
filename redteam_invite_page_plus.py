@@ -40,6 +40,13 @@ l'app déclare. A : à l'ouverture, l'horizon 20 à 45 pt sous sa place, ≥ 12 
 même loi ; à la frappe qui complète, l'horizon part dans l'image qui suit, remonte d'un mouvement (≥ 4 images, aucun pas > 35 % de la course), PUIS le trait naît ; la phrase
 ne bouge pas d'une image à l'autre. C : clavier fermé, l'horizon à sa place, la phrase à la place qu'elle avait à l'ouverture. E : retrait en flaques, puis l'horizon redescend,
 la phrase immobile. S : sans clavier, la même remontée. Rouge sur v177a (`--fichier=zz-v177a.html`).
+
+⚑ v178b (Tom, 4 nov. 2026, C-229, remet ce juge au niveau, il remplace C-222) — « Le trait arrive trop tôt, dès qu'on commence à taper : on ne comprend pas. Rien du trait
+pendant la frappe. Il naît quand l'utilisateur a VALIDÉ (Retour ou fermeture du clavier), le minimum rempli : l'horizon remonte (360 ms), puis le trait naît. » Et Q599 : « la
+dalle descend avec l'horizon, 30 à 50 % de son déplacement, même durée, même courbe ». B : dix frappes, clavier ouvert : aucune invite, l'horizon immobile, la phrase immobile,
+le champ garde la main. C : Retour : l'horizon remonte d'un mouvement, PUIS le trait naît (flaques, libellé tracé). E : une lettre retapée clavier ouvert ne fait pas renaître le
+trait ; Retour, il renaît une fois. Q : la dalle à 30–50 % de l'horizon pas prête, à sa place une fois prête (la boîte peinte, `__matRect`, comparée à la mise en page).
+Rouge sur v177b (`--fichier=zz-v177b.html`).
 """
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
@@ -52,6 +59,7 @@ res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-96s %s' % ('✅' if ok else '❌', nom, str(d)[:220]), flush=True)
 
+DALLE = """()=>{ const c=document.getElementById('csTrameCv'), e=_ppEcran(); if(!c||!c.__matRect||!e) return null; return {dy:c.__matRect.y-e.dalle.y, dh:c.__matRect.h-e.dalle.h}; }"""   # v178b (Q599) : la boîte que le peintre a POSÉE, contre la place de la mise en page
 GEO = """()=>{ const e=window._ppEcran?window._ppEcran():null, O=window._onde, t=document.querySelector('#createSheet .pp-trace'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390;
   if(!e||!O) return null; const y=O.onde(e.base,e.amp); let m=1e9; for(let x=-12;x<=110;x+=2) m=Math.min(m,y(x)); const r=t?t.getBoundingClientRect():null;
   let b=-1e9; for(let x=0;x<=390;x+=3) b=Math.max(b,y(x));
@@ -88,7 +96,7 @@ def lire(pg, g):
     pts = sum(compte(im, k, [x - 7, y - 7, 14, 14], sombre_de(trait)) for x, y in g['pts'])
     return {'depart': dep, 'fleche': fl, 'libelle': lib, 'points': pts}
 # le relevé image par image, DANS la page : la couverture des canevas de passage (ce qui est peint) et la découpe du libellé (ce qui en est montré)
-ENREG = """()=>{ window.__inv=[]; const t0=performance.now(); (function f(){ const c=document.getElementById('createSheet'); if(!c) return;
+ENREG = """()=>{ window.__inv=[]; const t0=performance.now(), J=window.__invJ=(window.__invJ||0)+1; (function f(){ const c=document.getElementById('createSheet'); if(!c || J!==window.__invJ) return;   /* v178b : un seul relevé à la fois */
    const P=[...c.querySelectorAll('canvas.passage-flaques')].map(k=>{ try{ const g=k.getContext('2d'), d=g.getImageData(0,0,k.width,k.height).data; let n=0, a=0; for(let i=3;i<d.length;i+=16){ n++; if(d[i]>128) a++; } return +(a/Math.max(1,n)).toFixed(3); }catch(e){ return -1; } });
    const t=c.querySelector('.pp-trace'), cs=t?getComputedStyle(t):null;
    const ph=document.getElementById(c.classList.contains('pp-nuee')?'nueePhrase':'csPhrase'), tp=ph?getComputedStyle(ph).translate:'none', ty=(!tp||tp==='none')?0:parseFloat(tp.split(/\s+/)[1]||'0')||0;
@@ -96,7 +104,8 @@ ENREG = """()=>{ window.__inv=[]; const t0=performance.now(); (function f(){ con
      for(const x of [165,215,265,315]){ const X=Math.round(x*s), d=cv.getContext('2d').getImageData(X,0,1,cv.height).data; let last=-1; for(let i=0;i<cv.height;i++){ const o=i*4; if(d[o+3]>200 && Math.abs(d[o]-C[0])+Math.abs(d[o+1]-C[1])+Math.abs(d[o+2]-C[2])<36) last=i; } if(last>=0) v.push(last/s-y(x)); }
      v.sort((a,b)=>a-b); hz=v.length?+v[v.length>>1].toFixed(2):null; }catch(_){ }
    const Dv=document.getElementById('device').getBoundingClientRect(), phr=ph?ph.getBoundingClientRect():null, phy=phr?+((phr.top-Dv.top)/(Dv.width/390)).toFixed(2):null;
-   window.__inv.push({t:Math.round(performance.now()-t0), abs:performance.now(), ty:ty, hz:hz, phy:phy, p:P, vis:cs?cs.visibility:null, clip:t?(t.style.getPropertyValue('clip-path')||'none'):null, inv:c.getAttribute('data-invite')});
+   let dq=null; try{ const cv=document.getElementById('csTrameCv'), e=_ppEcran(); if(cv.__matRect&&e) dq=+(cv.__matRect.y-e.dalle.y).toFixed(2); }catch(_){ }
+   window.__inv.push({t:Math.round(performance.now()-t0), abs:performance.now(), ty:ty, hz:hz, dq:dq, phy:phy, p:P, vis:cs?cs.visibility:null, clip:t?(t.style.getPropertyValue('clip-path')||'none'):null, inv:c.getAttribute('data-invite')});
    if(window.__inv.length<400) requestAnimationFrame(f); })(); }"""
 FRAPPE = """()=>{ window.__frappe=null; document.addEventListener('input', e=>{ if(window.__frappe==null && (e.target.id==='phIn'||e.target.id==='nueeNomIn')) window.__frappe=performance.now(); }, true); }"""   # v176 (C-222) : l'instant de la première frappe, lu dans la page
 def pleine(pg):
@@ -114,51 +123,55 @@ def tour(b, nat, sombre, vw, vh, nom):
     a = lire(pg, g)
     juge(T + ' A · à l\'ouverture : RIEN du trait — ni pointillés, ni départ, ni flèche, ni libellé', a['depart'] == 0 and a['fleche'] < 6 and a['libelle'] == 0 and a['points'] < 12, a)
     g0 = g; im0 = Image.open(io.BytesIO(B.capture(pg))).convert('RGB'); hz0, hb0 = horizon(im0, im0.width / 390.0, g, nat)
+
     if g['ph'] and hz0 is not None:
         juge(T + ' A · pas prête : la phrase à sa place (aucune translation), l\'horizon 20 à 45 pt SOUS sa place, ≥ 12 pt au-dessus de l\'encre de la phrase', g['tr'] in ('none', '0px', '0px 0px') and 20 <= hz0 <= 45 and g['ph'][0] - hb0 >= 12, 'horizon +%.1f pt · marge %.1f pt · %s' % (hz0, g['ph'][0] - hb0, g['tr']))
     else: juge(T + ' A · pas prête : l\'horizon plus bas', False, '%s · %s' % (hz0, g['ph']))
-    # ⚑ v176 (C-222) : LA GENÈSE PART À LA FRAPPE QUI COMPLÈTE LE MINIMUM, le clavier ouvert (le champ a la main). La page garde sa mise en page de saisie : rien ne bouge, rien ne descend.
+    # ⚑ v178b (C-229) : RIEN DU TRAIT PENDANT LA FRAPPE — il naît après la VALIDATION (Retour), l'horizon d'abord.
     B.tap_sel(pg, phrase(nat)); pg.wait_for_timeout(900)
     g = pg.evaluate(GEO) or g; f = lire(pg, g)
     juge(T + ' B · le champ ouvert, aucune lettre : toujours rien', f['depart'] == 0 and f['libelle'] == 0 and f['fleche'] < 6, f)
     imb = Image.open(io.BytesIO(B.capture(pg))).convert('RGB'); hzb, hbb = horizon(imb, imb.width / 390.0, g, nat)
     juge(T + ' B · le champ ouvert : l\'horizon plus bas, ≥ 12 pt au-dessus de la phrase (rien sur la saisie)', hzb is not None and hzb >= 15 and g['ph'] and g['ph'][0] - hbb >= 12, 'horizon +%s · marge %s' % (hzb, g['ph'] and round(g['ph'][0] - hbb, 1)))
     clip0 = pg.evaluate("()=>{ const t=document.querySelector('#createSheet .pp-trace'); return t?(t.style.getPropertyValue('clip-path')||'none'):'none'; }")   # la découpe d'avant le tracé : le module la rend à la fin
-    pg.evaluate(ENREG); pg.evaluate(FRAPPE); pg.wait_for_timeout(150); pg.keyboard.type('n'); pg.wait_for_timeout(120); pg.keyboard.type('ager loin', delay=45); pg.wait_for_timeout(1200)
+    pg.evaluate(ENREG); pg.evaluate(FRAPPE); pg.wait_for_timeout(150); pg.keyboard.type('n'); pg.wait_for_timeout(120); pg.keyboard.type('ager loin', delay=45); pg.wait_for_timeout(1500)
+    R = pg.evaluate("()=>window.__inv"); fr = pg.evaluate("()=>window.__frappe"); Ri = [r for r in R if fr is not None and r['abs'] >= fr]
+    act = pg.evaluate("()=>{ const a=document.activeElement; return a?(a.id||a.tagName):null; }"); f = lire(pg, pg.evaluate(GEO) or g)
+    H = [r['hz'] for r in Ri if r['hz'] is not None]; phs = [r['phy'] for r in Ri if r['phy'] is not None]; tys = [r['ty'] for r in Ri] or [1]
+    juge(T + ' B · PENDANT LA FRAPPE, RIEN DU TRAIT : aucune invite, aucun passage, rien sur l\'image', all(r['inv'] != '1' for r in Ri) and all(not r['p'] for r in Ri) and f['depart'] == 0 and f['libelle'] == 0 and f['fleche'] < 6, '%s · %d images' % (f, len(Ri)))
+    juge(T + ' B · pendant la frappe, l\'horizon ne bouge pas, la phrase non plus, le champ a la main', H and max(H) - min(H) <= 1 and H[0] >= 15 and phs and max(phs) - min(phs) <= 1.5 and max(abs(t) for t in tys) < 0.1 and act in ('phIn', 'nueeNomIn'), 'horizon %s → %s · phrase ±%.1f · champ %s' % (H and min(H), H and max(H), (max(phs) - min(phs)) if phs else -1, act))
+    J = [j[1] for j in pg.evaluate("()=>_ppInvite.etat().journal")]
+    juge(T + ' B · aucune naissance, aucune remontée pendant la frappe', 'montre' not in J and 'horizon-haut' not in J, J[-4:])
+    # C · LA VALIDATION (Retour) : l'horizon remonte d'un mouvement, PUIS le trait naît
+    pg.evaluate(ENREG); t_val = pg.evaluate("()=>performance.now()"); pg.keyboard.press('Enter'); pg.wait_for_timeout(2600)
     for _ in range(40):   # la fin du tracé du libellé (sous charge, il dure plus que sa durée prévue)
         if pg.evaluate("(c0)=>{ const t=document.querySelector('#createSheet .pp-trace'); return !!t && getComputedStyle(t).visibility==='visible' && (t.style.getPropertyValue('clip-path')||'none')===c0 && !t.__trace; }", clip0): break
         pg.wait_for_timeout(100)
-    pg.wait_for_timeout(150); R = pg.evaluate("()=>window.__inv"); Ri = [r for r in R if pg.evaluate("()=>window.__frappe") is not None and r['abs'] >= pg.evaluate("()=>window.__frappe")]
-    act = pg.evaluate("()=>{ const a=document.activeElement; return a?(a.id||a.tagName):null; }")
+    pg.wait_for_timeout(150); Ri = pg.evaluate("()=>window.__inv")
     n1 = next((i for i, r in enumerate(Ri) if r['inv'] == '1'), None); n2 = next((i for i, r in enumerate(Ri) if any(u < 0.9995 for u in r['p'])), None)
-    H = [r['hz'] for r in Ri if r['hz'] is not None]; h0 = H[0] if H else None
-    m0 = next((i for i, r in enumerate(Ri) if r['hz'] is not None and h0 is not None and r['hz'] < h0 - 0.5), None)
-    fin = next((i for i, r in enumerate(Ri) if r['hz'] is not None and r['hz'] <= 1.5), None)
+    J = [j[1] for j in pg.evaluate("()=>_ppInvite.etat().journal")]
+    # (pendant le mouvement du clavier, l'horizon se lit sous l'onde finale : négatif, parfois à 0 — l'arrivée se cherche APRÈS la dernière image « pas prête »)
+    hi = max([i for i, r in enumerate(Ri) if r['hz'] is not None and r['hz'] > 15] or [0])
+    fin = next((i for i, r in enumerate(Ri) if r['hz'] is not None and r['hz'] <= 1.5 and i > hi), None)
+    m0 = None
+    if fin is not None:   # le début de la remontée : en remontant depuis l'arrivée, tant que l'horizon était plus bas l'image d'avant (un saut de mise en page — le clavier qui se ferme — n'en fait pas partie)
+        k = fin
+        while k > 0 and Ri[k - 1]['hz'] is not None and Ri[k]['hz'] is not None and 0.3 < Ri[k - 1]['hz'] - Ri[k]['hz'] < 40: k -= 1
+        m0 = k if k < fin else None
     route = [r['hz'] for r in Ri[(m0 or 0):(fin or 0) + 1] if r['hz'] is not None]; course = (route[0] - route[-1]) if len(route) > 1 else 0
     pasM = max([route[i] - route[i + 1] for i in range(len(route) - 1)] or [99]); mono = all(route[i + 1] <= route[i] + 0.3 for i in range(len(route) - 1))
-    juge(T + ' B · À LA FRAPPE, L\'HORIZON PART dans l\'image qui suit, le champ a toujours la main', m0 is not None and m0 <= 2 and act in ('phIn', 'nueeNomIn'), 'image %s · champ %s · horizon de +%s' % (m0, act, h0))
-    juge(T + ' B · il REMONTE, monotone, jusqu\'à sa place', fin is not None and mono and course > 15, '%d images · course %.1f' % (len(route), course))
-    juge(T + ' B · d\'un mouvement : ≥ 4 images en route, aucun pas > 35 % de la course (cadence : jugée au calme seulement)', B.charge() >= 4 or (len(route) >= 5 and pasM <= course * 0.35), '%d images · pas max %.1f%s' % (len(route), pasM, ' — NON JUGÉ (charge %.1f)' % B.charge() if B.charge() >= 4 else ''))
+    dep = (Ri[m0]['abs'] - t_val) if m0 is not None else None
+    if '--dump' in sys.argv: print('      hz', [(r['t'], r['hz']) for r in Ri][:60])
+    juge(T + ' C · Retour : l\'horizon REMONTE, monotone, jusqu\'à sa place', fin is not None and mono and course > 15 and 'horizon-haut' in J, '%d images · course %.1f · départ %s ms après Retour' % (len(route), course, dep and round(dep)))
+    juge(T + ' C · d\'un mouvement : ≥ 4 images en route, aucun pas > 35 % de la course (cadence : jugée au calme seulement)', B.charge() >= 4 or (len(route) >= 5 and pasM <= course * 0.35), '%d images · pas max %.1f%s' % (len(route), pasM, ' — NON JUGÉ (charge %.1f)' % B.charge() if B.charge() >= 4 else ''))
     dur = (Ri[fin]['t'] - Ri[m0]['t']) if (fin is not None and m0 is not None) else None
-    juge(T + ' B · la remontée dure 300 à 400 ms (jugée au calme seulement)', B.charge() >= 4 or (dur is not None and 280 <= dur <= 440), 'durée %s ms · charge %.1f%s' % (dur, B.charge(), ' — NON JUGÉ' if B.charge() >= 4 else ''))
-    juge(T + ' B · PUIS le trait naît : l\'invite paraît une fois l\'horizon à sa place, et le passage a ses trous dès sa première image', n1 is not None and fin is not None and n1 >= fin and n2 is not None and n2 <= n1 + 1, 'horizon posé à l\'image %s · invite à %s · trous à %s' % (fin, n1, n2))
-    phs = [r['phy'] for r in Ri if r['phy'] is not None]
-    juge(T + ' B · la phrase ne bouge pas d\'une image à l\'autre pendant tout cela', phs and max(phs) - min(phs) <= 0.5, 'phrase %s → %s' % (phs and min(phs), phs and max(phs)))
-    J = [j[1] for j in pg.evaluate("()=>_ppInvite.etat().journal")]
-    juge(T + ' B · elle ne se relance pas à chaque lettre : une seule naissance pour dix frappes', J.count('montre') == 1 and 'renait' not in J, J)
-    gs = pg.evaluate(GEO) or g; tys = [r['ty'] for r in Ri] or [1]
-    juge(T + ' B · le clavier ouvert, rien ne descend : la phrase ne bouge pas, le libellé reste au-dessus d\'elle', (gs['ph'] and gs['lib']) and abs(gs['ph'][0] - g['ph'][0]) <= 1.5 and max(abs(t) for t in tys) < 0.1 and gs['lib'][1] + gs['lib'][3] <= gs['ph'][0], 'haut phrase %.1f → %.1f · bas libellé %.1f' % (g['ph'][0], gs['ph'][0], gs['lib'][1] + gs['lib'][3]))
+    juge(T + ' C · la remontée dure 300 à 400 ms (jugée au calme seulement)', B.charge() >= 4 or (dur is not None and 280 <= dur <= 440), 'durée %s ms · charge %.1f%s' % (dur, B.charge(), ' — NON JUGÉ' if B.charge() >= 4 else ''))
+    juge(T + ' C · PUIS le trait naît : l\'invite paraît une fois l\'horizon à sa place, et le passage a ses trous dès sa première image', n1 is not None and fin is not None and n1 >= fin and n2 is not None and n2 <= n1 + 1, 'horizon posé à l\'image %s · invite à %s · trous à %s' % (fin, n1, n2))
     partiel = sum(1 for r in Ri for u in r['p'] if 0.05 < u < 0.95)
-    clips = [r['clip'] for r in Ri if r['vis'] == 'visible']
+    clips = [r['clip'] for r in Ri[(n1 or 0):] if r['vis'] == 'visible']
     trace_ok = len(clips) >= 4 and clips[0] not in ('none', '', clip0) and sum(1 for c in clips if c not in ('none', '', clip0)) >= 4 and clips[-1] == clip0
     juge(T + ' C · le trait naît EN FLAQUES (≥ 3 images à demi couvertes)', partiel >= 3, '%d images partielles' % partiel)
     juge(T + ' C · le libellé se TRACE : découpé dès sa première image visible, puis partiel, puis entier', trace_ok, '%d images · première %s · dernière %s' % (len(clips), (clips[0] if clips else None) and clips[0][:24], clips[-1][:24] if clips else None))
-    pleine(pg); v = lire(pg, gs)
-    for _ in range(3):   # la capture peut tomber dans la phase éteinte du clignotement, sous charge : on reprend à la phase pleine
-        if v['depart'] > 60: break
-        pleine(pg); v2 = lire(pg, gs); v = v2 if v2['depart'] > v['depart'] else v
-    juge(T + ' C · clavier ouvert, sur l\'image : le départ orange, la flèche courbe, le libellé, les pointillés', v['depart'] > 60 and v['fleche'] > 20 and v['libelle'] > 60 and v['points'] > 150, v)
-    pg.keyboard.press('Enter'); pg.wait_for_timeout(1300)   # (± 1,5 pt ci-dessus : la phrase d'un Chiche se resserre d'un point avec son texte, elle ne descend pas)
     g = pg.evaluate(GEO) or g; pleine(pg); v = lire(pg, g)
     for _ in range(3):
         if v['depart'] > 60: break
@@ -181,7 +194,9 @@ def tour(b, nat, sombre, vw, vh, nom):
         R = pg.evaluate("()=>window.__inv"); partiel = sum(1 for r in R for u in r['p'] if 0.05 < u < 0.95); g = pg.evaluate(GEO) or g; z = lire(pg, g)
         juge(T + ' E · la phrase effacée : l\'invite se retire EN FLAQUES (≥ 2 images à demi couvertes), puis plus rien', partiel >= 2 and z['depart'] == 0 and z['libelle'] == 0 and z['fleche'] < 6 and z['points'] < 12, '%d partielles · %s' % (partiel, z))
         n0 = [j[1] for j in pg.evaluate("()=>_ppInvite.etat().journal")].count('montre'); pg.keyboard.type('a'); pg.wait_for_timeout(900); n1 = [j[1] for j in pg.evaluate("()=>_ppInvite.etat().journal")].count('montre')
-        juge(T + ' E · une lettre retapée, clavier ouvert : le trait renaît, une fois', n1 == n0 + 1, '%d → %d' % (n0, n1))
+        pg.keyboard.press('Enter'); pg.wait_for_timeout(2400); n2 = [j[1] for j in pg.evaluate("()=>_ppInvite.etat().journal")].count('montre')
+        juge(T + ' E · une lettre retapée, clavier ouvert : rien ; Retour : le trait renaît, une fois', n1 == n0 and n2 == n0 + 1, '%d → %d → %d' % (n0, n1, n2))
+        B.tap_sel(pg, phrase(nat)); pg.wait_for_timeout(700); pg.evaluate("()=>{ const a=document.activeElement; if(a&&a.select) a.select(); }")
         pg.evaluate(ENREG); pg.keyboard.press('Backspace'); pg.wait_for_timeout(1200)
         R = pg.evaluate("()=>window.__inv"); Hh = [r['hz'] for r in R if r['hz'] is not None]; phs = [r['phy'] for r in R if r['phy'] is not None]
         J = [j[1] for j in pg.evaluate("()=>_ppInvite.etat().journal")]
@@ -243,6 +258,17 @@ with sync_playwright() as p:
     v = lire(pg, pg.evaluate(GEO) or g); c = pg.evaluate("()=>{ const d=document.getElementById('ppDepart'); return d?{cl:d.classList.contains('clignote'), anim:d.getAnimations?d.getAnimations().length:0}:null; }")
     juge('[réduit] caché à l\'ouverture, puis l\'invite posée, le départ FIXE (aucune animation)', a['depart'] == 0 and a['libelle'] == 0 and v['depart'] > 60 and v['libelle'] > 60 and c and c['anim'] == 0, '%s → %s · %s' % (a, v, c))
     ctx.close()
+    # ⚑ v178b (Q599) : LA DALLE SUIT L'HORIZON — une parole plantée (sans elle, la page + n'a pas de dalle), puis la page + : pas prête, prête ; deux thèmes
+    for sb in (False, True):
+        ctx = B.contexte(b, sb, vw=430, vh=932); pg = B.ouvre(ctx, F); B.plante_doigt(pg, 'écrire à Lou', 'moi', 0); pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(900)
+        ouvre_nat(pg, 'promi'); g = pg.evaluate(GEO); im = Image.open(io.BytesIO(B.capture(pg))).convert('RGB'); hz, _ = horizon(im, im.width / 390.0, g, 'promi'); dq = pg.evaluate(DALLE)
+        juge('[Q · %s] pas prête : la dalle descend de 30 à 50 %% du déplacement de l\'horizon, sa taille gardée' % ('sombre' if sb else 'clair'), dq is not None and hz and 0.3 * hz - 1 <= dq['dy'] <= 0.5 * hz + 1 and abs(dq['dh']) <= 1.5, 'dalle %s pour l\'horizon +%s' % (dq, hz))
+        pg.evaluate(ENREG); B.tap_sel(pg, phrase('promi')); pg.wait_for_timeout(700); pg.keyboard.type('nager', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(2600)
+        Ri = pg.evaluate("()=>window.__inv"); dq2 = pg.evaluate(DALLE); Ds = pg.evaluate("()=>window.__dq||[]")
+        juge('[Q · %s] prête : la dalle à sa place, sa taille gardée' % ('sombre' if sb else 'clair'), dq2 is not None and abs(dq2['dy']) <= 1.5 and abs(dq2['dh']) <= 1.5, dq2)   # 1,5 pt : la dalle se recadre sur sa matière à chaque rendu (la respiration, §7)
+        p0 = (dq['dy'] / hz) if (dq and hz) else 0.4; ec = [abs(r['dq'] - p0 * r['hz']) for r in Ri if r['hz'] is not None and r['dq'] is not None and r['hz'] > 0.5]; enr = [r for r in Ri if r['hz'] is not None and 2 < r['hz'] < (hz or 0) - 2]
+        juge('[Q · %s] la dalle bouge AVEC l\'horizon, image par image : même durée, même courbe (sa part constante, à 1 pt près : la dalle se pose au pixel de l\'appareil, sa place au repos à 0,5 pt près)' % ('sombre' if sb else 'clair'), len(ec) >= 3 and max(ec) <= 1.0 and len(enr) >= 2, '%d images · part %.3f · écart max %.2f pt' % (len(ec), p0, max(ec) if ec else -1))
+        ctx.close()
     # v174 (C-213) : tracer avant que ce soit prêt : plus rien à tracer, le geste ne dessine rien ; une fiche garde son départ orange
     ctx = B.contexte(b, False, vw=430, vh=932); pg = B.ouvre(ctx, F); ouvre_nat(pg, 'promi')
     B.glisse(pg, [[30, 285]] + [[30 + i * 15, 285 + (i % 3)] for i in range(1, 16)], tenue=380); pg.wait_for_timeout(1200)

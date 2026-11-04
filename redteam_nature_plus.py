@@ -30,7 +30,7 @@ with sync_playwright() as p:
     juge('A · puis le trait d\'un Cercle plante un Cercle', 'Les voisins' in r, r)
     ctx.close()
     for nat, z in (('promi', 'planterZone'), ('chiche', 'planterZone'), ('nuee', 'planterZoneN')):
-        ctx = B.contexte(b, False, vw=390, vh=844); pg = B.ouvre(ctx, F); ouvre(pg, nat); saisit(pg, nat, 'nager'); pg.wait_for_timeout(1200)
+        ctx = B.contexte(b, False, vw=390, vh=844); pg = B.ouvre(ctx, F); ouvre(pg, nat); saisit(pg, nat, 'nager'); pg.keyboard.press('Enter'); pg.wait_for_timeout(2800)   # v178b (C-229) : le trait ne naît qu'à la validation
         c0 = pg.evaluate("()=>{const d=document.getElementById('ppDepart');return !!d&&d.classList.contains('clignote');}")
         pg.evaluate("z=>{const c=document.getElementById(z).querySelector('canvas'),r=c.getBoundingClientRect();const o={bubbles:true,clientX:r.left+r.width*0.8,clientY:r.top+r.height/2,pointerType:'touch',isPrimary:true};c.dispatchEvent(new PointerEvent('pointerdown',o));c.dispatchEvent(new PointerEvent('pointerup',o));}", z); pg.wait_for_timeout(500)
         c1 = pg.evaluate("()=>{const d=document.getElementById('ppDepart');return !!d&&d.classList.contains('clignote');}")

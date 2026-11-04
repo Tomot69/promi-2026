@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v178a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v178b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -17741,6 +17741,7 @@ var CREMEETAT='#F7F0DE';
             dalle:{x:Math.floor((W-dw)/2), y:88, w:dw, h:dh}};
   }
   window._ppEcran = ecran;
+  window._ppDalleHz = function(){ try{ var m = /[?&]dallehz=([0-9.]+)/.exec(location.search); if(m){ var v = +m[1]; if(v >= 0 && v <= 1) return v; } }catch(_){ } return 0.4; };   /* v178b (Q599) */
 
   /* ═══ LE TRAIT (§2.6) — sur la page +, rien n'est tracé : amorce effilée, chevron, points. ═══ */
   function trait(){
@@ -17754,7 +17755,10 @@ var CREMEETAT='#F7F0DE';
          place ; le texte et les éléments de la page restent à leur place finale (`ecran()` ne change pas : la mise en page se tire de `base`). Le décalage est
          décidé par `lot-V172-INVITE` (`window._ppHz`), il ne touche que ce que ce peintre dessine : le champ s'étend, la dalle ne bouge pas. */
       var _hz = (!M && e.etat === 'plate' && window._ppHz) ? (+window._ppHz(e) || 0) : 0;
-      if(_hz > 0) e = Object.assign({}, e, {base:e.base + _hz, boite:e.boite + _hz});
+      /* ⚑ v178b (Tom, Q599 tranchée) — « LA DALLE BOUGE AVEC L'HORIZON, c'est tout l'intérêt » : elle descend d'une part du déplacement de l'horizon (40 %,
+         Tom choisit entre 30 et 50 % — `?dallehz=0.3…0.5`, jamais mémorisé), même durée, même courbe (elle suit `_ppHz` image par image). Elle garde sa
+         taille : seule sa place bouge (§4, une dalle se pose 1:1). La photo et le dessin, posés sur leurs couches, ne bougent pas. */
+      if(_hz > 0) e = Object.assign({}, e, {base:e.base + _hz, boite:e.boite + _hz, dalle:Object.assign({}, e.dalle, {y:e.dalle.y + Math.round(_hz*window._ppDalleHz()*4)/4})});
       var cv = M ? M.cv : document.getElementById('csTrameCv'); if(!cv) return;
       var y = O.onde(e.base, e.amp), H = M ? M.H : e.boite;
       var largeur = cs.clientWidth || W, sc = largeur/W;
@@ -43499,7 +43503,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(INV.vis && !INV.desc && c1.classList.contains('ppa-haut') && e && !e.ouvert) bouge(false);   /* v176 (C-222) : le trait là, la page n'est jamais à sa place « pas prête » */
     if(INV.vis || INV.sortie) return;
     /* ⚑ v176 (Tom, C-222) : la saisie ouverte, le trait naît tout de suite, à sa place : rien ne descend sous le clavier */
-    if(e && e.ouvert){ if(e.etat!=='plate') return; if(INV.haut){ bouge(false); return; } if(INV.desc) return; montre(); return; }   /* v177b (C-229) : l'horizon remonte, puis le trait naît */
+    /* ⚑ v178b (Tom, C-229 : « le trait arrive trop tôt, dès qu'on commence à taper : on ne comprend pas ») — CE BLOC CORRIGE C-222 (v176 : « la genèse part à la frappe »).
+       RIEN DU TRAIT PENDANT LA SAISIE : il naît quand la saisie est VALIDÉE — Retour ou fermeture du clavier —, le minimum rempli ; alors l'horizon remonte (360 ms),
+       puis le trait naît, par les gardes qui suivent (clavier redescendu et posé, page recomposée). Un minimum complété par un choix sans clavier : le choix
+       refermé, la même suite, au plus 300 ms après. */
+    if(e && e.ouvert) return;
     if(c1.classList.contains('pp-ouvert')) return;                            /* le choix se referme : sa classe tombe après l'état, la page n'est pas encore posée */
     if(frappe()) return;                                                      /* jamais pendant la frappe */
     if(vv && vv.height < innerHeight - 40) return;                            /* le clavier encore là */
