@@ -12,6 +12,9 @@ Banc comme Tom (WebKit, doigt), après une VRAIE plantation tracée au doigt (sa
   B · sur l'IMAGE, de part et d'autre de la vague : au-dessus, le champ de la nature ; en dessous, le corps de la nature (colonne par colonne, hors dalle et hors éléments attendus).
 Couleurs en dur : champs #82AEF8 · #FFB8D2 · #C9A8F5 ; corps #0E78F2 · #7C3F58 · #5D4978.
 Rouge sur v174 (`git show aeeb479:app.html > zz-v174b.html` ; `--fichier=zz-v174b.html`). Safari iOS : voir le rapport du lot.
+⚑ v177b (Tom, C-229, remet ce juge au niveau ; original : sauvegardes/redteam_bandeau-avant-v177b.py) : la parole pas prête, l'horizon est peint jusqu'à 40 pt SOUS sa place
+— le champ et le corps se lisent de part et d'autre de l'horizon PEINT (la base plus le décalage que la page déclare, borné à 45 pt : un pointeur, pas un verdict ;
+`redteam_invite_page_plus` juge le décalage lui-même, sur l'image). Même intention : aucun calque de passage, rien d'autre que le champ et le corps autour de la vague.
 """
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
@@ -45,7 +48,7 @@ def trace(pg):
 def lit(pg, k, invite):
     """colonne par colonne : au-dessus de la vague le champ, en dessous le corps ; on saute la dalle (au-dessus) en ne gardant que l'étroite bande sous elle si elle descend,
     et ce qu'on attend près du trait quand il est là"""
-    z = pg.evaluate("""()=>{const e=_ppEcran(),y=_onde.onde(e.base,e.amp),c=document.getElementById('createSheet'),D=c.getBoundingClientRect(),K=D.width/(c.offsetWidth||390);
+    z = pg.evaluate("""()=>{const e=_ppEcran(),hz=window._ppHz?Math.max(0,Math.min(45,+window._ppHz(e)||0)):0,y=_onde.onde(e.base+hz,e.amp),c=document.getElementById('createSheet'),D=c.getBoundingClientRect(),K=D.width/(c.offsetWidth||390);
       const T=document.querySelector('#createSheet .pp-trace'),r=T?T.getBoundingClientRect():null;
       const ph=document.getElementById(e.nat==='nuee'?'nueePhrase':'csPhrase'),hs=[...ph.querySelectorAll('.ph-txt > .ph-m, .ph-txt > .ph-b')].map(n=>n.getBoundingClientRect()).filter(q=>q.width).map(q=>(q.top-D.top)/K);
       const d=document.getElementById('csTrameCv').getAttribute('data-matiere');

@@ -20,10 +20,19 @@
 > - **A6 · HONNÊTETÉ.** Un point non reproduit, non mesuré ou non jugé est écrit comme tel, jamais « réglé ».
 > Le rapport de chaque lot commence par le tableau A1 à A6, « tenu » ou « non tenu ».
 
-> ## ⚑ LE TEMPS D'UN LOT — RÈGLE PERMANENTE (Tom, 1er nov. 2026, C-225). ELLE S'APPLIQUE À CHAQUE LOT.
-> - **N'attends JAMAIS le calme du Mac plus de 30 minutes en tout par lot.** Passé ce délai, les cadences sont « non jugées » et tu livres.
-> - **Pendant le lot : seulement les juges du périmètre. La série complète passe UNE fois, à la fin, dans un ordre fixe, sans rejeu d'un juge rouge plus de 2 fois.**
-> - **Un lot normal se livre dans la journée. Si ce n'est pas tenable, dis-le dès le départ.**
+> ## ⚑ LA VÉRIFICATION D'UN LOT — RÈGLE PERMANENTE (Tom, 4 nov. 2026, C-227 ; elle REMPLACE C-225). ELLE S'APPLIQUE À CHAQUE LOT.
+> *Pourquoi* : « Un lot qui dure plusieurs jours n'est plus acceptable. »
+> 1. **Par lot, UNIQUEMENT : les juges du périmètre (10 au plus) + 5 sentinelles fixes — `redteam_ecrans`, `redteam_decisions`,
+>    `redteam_couleurs_ref`, `redteam_trace_present`, `banc_rendu`. Rien d'autre.**
+> 2. **Chaque juge a un plafond de 10 minutes.** Au-delà : arrêté, « non jugé ».
+> 3. **Un juge rouge se rejoue UNE fois.** Encore rouge : une seule comparaison avec la version précédente ; rouge aussi sur elle →
+>    « préexistant », on passe.
+> 4. **La série complète ne tourne plus à chaque lot**, seulement quand Tom la demande (par exemple avant le passage en Swift).
+> 5. **Plus d'attente du calme** : on mesure ce qu'on peut, « non jugé » pour les cadences, et on livre.
+> 6. **Un lot se livre en quelques heures. Au-delà de 6 h, on s'arrête et on dit pourquoi.**
+> 7. **Le simulateur iOS ne reste JAMAIS ouvert pendant le travail ni pendant les juges.** On l'ouvre une seule fois par lot, à la fin, pour les seuls points
+>    visuels ou sensibles à Safari (15 minutes au plus), puis on le ferme aussitôt. Un point qui le demande en cours de lot : on l'ouvre, on vérifie, on le referme.
+> (Les blocs datés plus bas qui demandent la « série complète », la « série courte » ou d'attendre le calme sont corrigés par celui-ci.)
 
 > ## ⚑ LES COULEURS DE TOM — RÈGLE PERMANENTE (Tom, 26 oct. 2026, C-204). ELLE PASSE AVANT TOUTE RÈGLE DE CONTRASTE DE CE FICHIER.
 > **Les couleurs de Tom ne se modifient JAMAIS sans sa demande : ni assombries, ni éclaircies, ni dérivées pour le contraste. Quand il dit « la
@@ -206,6 +215,12 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v177b (4 nov. 2026) — PEAUFINER SE REFERME SUR LA FICHE D'UN CERCLE (C-228) ; PAGE + : C'EST L'HORIZON QUI BOUGE, PAS LE TEXTE (C-229) ; LA VÉRIFICATION ALLÉGÉE (C-227). (Décisions Tom.) Ce bloc CORRIGE v174a (C-213 : « pas prête, la page REMONTE ») et v176 (C-222 : clavier ouvert, « le trait naît à sa place, rien ne bouge »).
+> **Validés par Tom : C-224, C-226, Q598. Règle de vérification C-227 : en tête de ce fichier (elle remplace C-225).**
+> **⚑ C-228 — LA CAUSE, reproduite (WebKit, au doigt)** : sur la fiche d'un Cercle, l'état « Peaufiner ouvert » vivait à DEUX endroits — `#detailPoster.s2-ouv` (lot-S2) et `#dpDetails.ouvert` (le Peaufiner d'une Nuée), que seul `closeAll` retirait. Le X, la barre et le glissement retiraient `s2-ouv` ; `_nueePeaufiner`, rappelé à chaque pose de la fiche (30 et 420 ms après la barre, et à chaque rendu), relisait `ouvert` et remettait `s2-ouv` : la barre et le glissement rouvraient dans l'image suivante, le X tenait jusqu'à la pose suivante. **Corrigé** : fermer (`ouvre(false)` de lot-S2) retire les deux ; la barre d'un Cercle BASCULE `ouvert` sur ce que lot-S2 vient de décider. Et la croix d'un Cercle (`#npFermer`) a un seul propriétaire, `lot-V157-CROIX` : `_nueePeaufiner` réécrivait sa police à 13 px à chaque pose. **Seconde cause, trouvée par `redteam_nuee` une fois la première corrigée : refermé, ce Peaufiner laissait la FICHE VIDE** — il masque le champ, le titre, les Noyaux et le fil (« la fiche s'efface ») et seul `closeAll` les rendait ; ce chemin n'avait jamais été pris. Au repli, il retire exactement ce qu'il a posé, puis la fiche se repose une fois ; « Planter dans le Cercle » revient à sa place exacte, son « + » compris ; et le nid du bouton n'a plus d'id (`npNidAdd` finissait en « Add » : la règle `#detailPoster [id$="Add"]{opacity:.9}` rendait translucide le bloc collant du fil). *Les règles (§7, deux propriétaires)* : **un état a UN endroit ; un second endroit qui le relit le rouvre. Et un chemin jamais pris (un repli qui n'arrivait pas) se juge comme neuf.** Juge : **`redteam_peauf_fermer.py`** (39 : Promi, Chiche, Cercle × X, barre, glissement ; fermé 2,5 s après et après une nouvelle pose ; le X touché au centre de son encre ; la fiche rendue telle qu'avant l'ouverture, sur l'image ; rouge sur v177a : 31/39 — le Cercle refermé par son X, 58 % de l'image écartée).
+> **⚑ C-229 — L'HORIZON** (`lot-V172-INVITE`, `window._ppHz`, le peintre de la page + `trait()`) : le texte et les éléments de la page (phrase, rail du pinceau, « garder de côté », bouton photo) sont à leur place FINALE dès l'ouverture et ne bougent plus (`--ppa-ph`, `--ppa-rail` à 0). **Pas prête : l'horizon est 40 pt plus bas que sa place (`HZ_BAS`), jamais à moins de 12 pt de l'encre de la phrase (`HZ_AIR`, mesuré à chaque peinture), aucun élément du trait. Prête (dès le minimum, C-222, clavier ouvert compris) : l'horizon remonte en 360 ms (aller-retour quadratique), PUIS le trait naît comme avant. Redevenue incomplète : le trait se retire en flaques, puis l'horizon redescend en 360 ms.** Seul le peintre décale l'onde (`base` de `_ppEcran()` reste la mise en page) ; le champ s'étend, **la dalle ne bouge pas** (décision de lot : la redimensionner à chaque image serait une dalle qui respire sous l'œil, §4 ; Tom écrivait « le champ du haut (la dalle) prend la place libérée » — Q599). Le mouvement de Q598 (fermeture du clavier) finit sur l'horizon « pas prête » quand la parole est vide. Juge : **`redteam_invite_page_plus.py`** remis au niveau (`--echelle=1|0,79`, un juge ≤ 10 min : l'horizon lu sur l'image et, image par image, sur le canevas du champ ; la phrase immobile ; marge ≥ 12 ; rouge sur v177a : 71 rouges).
+> ⚠ **Un créneau de la phrase peut porter la teinte du champ** (« Je me promets », bleu sur bleu) : un juge qui cherche le bas du champ s'arrête au premier pixel qui n'est plus le champ, depuis le haut.
 
 ### ⚑ v177a (2 nov. 2026) — UNE PAROLE PLANTÉE N'EST JAMAIS PERDUE (C-226) ; LA PAGE + LIT SA NATURE (C-224) ; LE CLIGNOTEMENT DU CERCLE (C-223) ; LA FERMETURE DU CLAVIER EN MOUVEMENT (Q598). (Décisions Tom.) Ce bloc CORRIGE v176 (Q598 : « la page rejoint sa place finale » d'un coup).
 > **Validés par Tom : C-220, C-221, C-222. Règle de temps C-225 : en tête de ce fichier.**

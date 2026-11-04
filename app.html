@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v177', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v177b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -16965,7 +16965,11 @@ var CREMEETAT='#F7F0DE';
     var dp = document.getElementById('detailPoster'); if(!dp) return;
     if(v){ bati(); dp.classList.add('s2-ouv'); dp.scrollTop = 0;
            var c=document.getElementById('dpdCorps'); if(c) c.scrollTop = 0; }
-    else { dp.classList.remove('s2-ouv'); }
+    else { dp.classList.remove('s2-ouv');
+           /* ⚑ v177b (Tom, C-228) : sur la fiche d'un Cercle, l'état « ouvert » de Peaufiner vivait AUSSI dans `#dpDetails.ouvert`, que seul
+              closeAll retirait ; `_nueePeaufiner` (rappelé à chaque pose de la fiche) le relisait et remettait `s2-ouv` : X, glissement et barre
+              refermaient, la passe suivante rouvrait. Fermer ferme les deux. */
+           var dd=document.getElementById('dpDetails'); if(dd) dd.classList.remove('ouvert'); }
   }
   window._s2Ouvre = ouvre;
 
@@ -17741,6 +17745,11 @@ var CREMEETAT='#F7F0DE';
       if(!cs || !cs.classList.contains('pp')) return;
       /* ⚑ v177 (Tom, Q598) : une image du mouvement à la fermeture du clavier. Le même peintre, sur son canevas (`M.cv`), à l'onde du moment : le corps de la page sous l'onde, puis le trait ; ni aplat, ni dalle (ils sont à leur place finale, dessous) */
       var M = window._ppMvtImage; if(M) e = Object.assign({}, e, {base:M.base, amp:M.amp});
+      /* ⚑ v177b (Tom, C-229) — « c'est l'HORIZON qui bouge, pas le texte » : tant que la parole n'est pas prête, l'onde (le bord du champ) est PLUS BAS que sa
+         place ; le texte et les éléments de la page restent à leur place finale (`ecran()` ne change pas : la mise en page se tire de `base`). Le décalage est
+         décidé par `lot-V172-INVITE` (`window._ppHz`), il ne touche que ce que ce peintre dessine : le champ s'étend, la dalle ne bouge pas. */
+      var _hz = (!M && e.etat === 'plate' && window._ppHz) ? (+window._ppHz(e) || 0) : 0;
+      if(_hz > 0) e = Object.assign({}, e, {base:e.base + _hz, boite:e.boite + _hz});
       var cv = M ? M.cv : document.getElementById('csTrameCv'); if(!cv) return;
       var y = O.onde(e.base, e.amp), H = M ? M.H : e.boite;
       var largeur = cs.clientWidth || W, sc = largeur/W;
@@ -21533,6 +21542,18 @@ var CREMEETAT='#F7F0DE';
 
     if(!ouvert()){
       /* le panneau est replié : on rend l'écran à `_ficheNuee`, et le bouton à sa place. */
+      /* ⚑ v177b (Tom, C-228) — ET LA FICHE QU'IL AVAIT EFFACÉE. Ouvert, ce Peaufiner masque le champ, le titre, les Noyaux et le fil (« la fiche s'efface »,
+         plus bas) ; seul `closeAll` les rendait. Tant que la barre ne refermait pas (C-228), ce chemin n'était jamais pris ; refermé, la fiche restait
+         vide — le bouton « Planter » à y −44 (pris par `redteam_nuee`). On retire exactement ce qu'on a posé, puis la fiche se repose une fois. */
+      var _rendu = false;
+      ['dpTrameCv','dAura','dptQui','dptTitre','dptQuand','dpNueeFil'].forEach(function(id){ var e = document.getElementById(id);
+        if(!e || e.getAttribute('data-masque') !== '1') return; e.style.removeProperty('display'); e.removeAttribute('data-masque');
+        var v = (e.getAttribute('data-pose')||'').split(' ').filter(function(x){ return x && x !== 'display'; });
+        if(v.length) e.setAttribute('data-pose', v.join(' ')); else e.removeAttribute('data-pose'); _rendu = true; });
+      if(dp.style.getPropertyValue('--nuee-bande') === '0px'){ dp.style.removeProperty('--nuee-bande'); _rendu = true;
+        var vd = (dp.getAttribute('data-pose')||'').split(' ').filter(function(x){ return x && x !== '--nuee-bande'; });
+        if(vd.length) dp.setAttribute('data-pose', vd.join(' ')); else dp.removeAttribute('data-pose'); }
+      if(_rendu) requestAnimationFrame(function(){ try{ (window._ficheNuee || window._ficheTout)(); }catch(_){ } });
       [].forEach.call(corps.querySelectorAll('.np-carte'), cache);
       if(nfAdd && nfAdd.getAttribute('data-np-pris') === '1'){
         nfAdd.removeAttribute('data-np-pris');
@@ -21540,9 +21561,11 @@ var CREMEETAT='#F7F0DE';
         /* ON LE REND À SON NID. Le déplacer, c'est aussi devoir le remettre : sans ça il
            resterait sur le poster, hors du fil, et la fiche au repos aurait deux boutons
            — ou aucun. Le nid est mémorisé au moment de la prise. */
-        try{ var nid = document.getElementById(nfAdd.getAttribute('data-np-nid') || '');
-             if(nid && nfAdd.parentNode !== nid) nid.insertBefore(nfAdd, nid.firstChild); }catch(_){ }
-        if(nfAdd.getAttribute('data-np-mot')) nfAdd.textContent = nfAdd.getAttribute('data-np-mot');
+        try{ var nid = (nfAdd._npNid && nfAdd._npNid.isConnected) ? nfAdd._npNid : document.getElementById(nfAdd.getAttribute('data-np-nid') || '');
+             var suiv = (nfAdd._npSuiv && nid && nfAdd._npSuiv.parentNode === nid) ? nfAdd._npSuiv : ((nfAdd._npHtml != null || !nid) ? null : nid.firstChild);   /* il était le dernier : il le redevient */
+             if(nid && nfAdd.parentNode !== nid) nid.insertBefore(nfAdd, suiv); }catch(_){ }
+        if(nfAdd._npHtml != null){ if(nfAdd.innerHTML !== nfAdd._npHtml) nfAdd.innerHTML = nfAdd._npHtml; nfAdd.removeAttribute('data-pose'); }   /* v177b (C-228) : le « + » compris */
+        else if(nfAdd.getAttribute('data-np-mot')) nfAdd.textContent = nfAdd.getAttribute('data-np-mot');
       }
       /* ⚠ AU REPOS, LA FICHE NE PORTE PAS CE BOUTON. Cherché dans les vingt écrans du §12 :
          aucune ligne « Planter ». Cherché dans `promi-nuee-toile.html` : zéro occurrence. Il
@@ -21602,7 +21625,11 @@ var CREMEETAT='#F7F0DE';
     /* ⚑ LE MÊME ✕ FERMER QUE LE PEAUFINER D'UNE FICHE (13 sept. 2026) : il sortait en Apfel 16 avec deux espaces
        insécables, plus large de 25 px que celui d'un Promi. */
     if(ferm && ferm.textContent !== 'X') ferm.textContent = 'X';   /* v157 (C-173) */
-    if(ferm) pose(ferm, {visibility:'visible', 'font-family':'var(--f-texte)',
+    /* ⚑ v177b (Tom, C-228) : LA CROIX A UN SEUL PROPRIÉTAIRE, `lot-V157-CROIX` (zone de 44 × 44, PromiLate à la taille du X de l'Index). Ce poseur
+       réécrivait sa police et sa taille à chaque pose de la fiche : la zone retombait à 12 × 17 pt, sous le coin du glyphe — au doigt, le X d'un Cercle
+       ne prenait presque rien. Une fois la croix posée par son propriétaire, on ne la rend que visible. */
+    if(ferm && ferm.classList.contains('x157')) pose(ferm, {visibility:'visible', cursor:'pointer'});
+    else if(ferm) pose(ferm, {visibility:'visible', 'font-family':'var(--f-texte)',
                          'font-weight':'500', 'font-size':'13px', 'letter-spacing':'.20em', 'white-space':'nowrap',
                          cursor:'pointer', color:encre, '-webkit-text-fill-color':encre});
 
@@ -21709,9 +21736,12 @@ var CREMEETAT='#F7F0DE';
          (−14, −30)**, mesuré. On le déplace sur le poster, et on note d'où il vient. */
       if(nfAdd.getAttribute('data-np-pris') !== '1'){
         try{ var nidEl = nfAdd.parentNode;
-             if(nidEl && !nidEl.id) nidEl.id = 'npNidAdd';
-             nfAdd.setAttribute('data-np-nid', nidEl ? nidEl.id : '');
+             /* v177b (C-228) : plus d'id posé sur le nid — « npNidAdd » finissait en « Add » et prenait la règle `#detailPoster [id$="Add"]{opacity:.9}` :
+                au repli, le bloc collant du fil devenait translucide. Le nid est gardé par référence. */
+             nfAdd._npNid = nidEl;
+             nfAdd.setAttribute('data-np-nid', (nidEl && nidEl.id) ? nidEl.id : '');
              nfAdd.setAttribute('data-np-mot', (nfAdd.textContent||'').trim());
+             nfAdd._npHtml = nfAdd.innerHTML; nfAdd._npSuiv = nfAdd.nextSibling;   /* v177b (C-228) : sa place exacte et son « + », pour le rendre tel quel au repli */
              corps.appendChild(nfAdd); }catch(_){ }
       }
       nfAdd.setAttribute('data-np-pris', '1');
@@ -21765,8 +21795,9 @@ var CREMEETAT='#F7F0DE';
     if(!ev.target.closest('#dpDetails .dpd-tog')) return;
     var dp = document.getElementById('detailPoster');
     if(estNuee(dp)){
+      /* ⚑ v177b (C-228) : la barre BASCULE — l'écouteur de `lot-S2` (posé avant) vient de décider ; on suit `s2-ouv`, on n'ouvre plus d'office. */
       var d = document.getElementById('dpDetails');
-      if(d && !d.classList.contains('ouvert')) d.classList.add('ouvert');
+      if(d) d.classList.toggle('ouvert', dp.classList.contains('s2-ouv'));
     }
     setTimeout(function(){ try{ (window._ficheTout||window._ficheNuee)(); }catch(_){ } }, 30);
     setTimeout(function(){ try{ (window._ficheTout||window._ficheNuee)(); }catch(_){ } }, 420);
@@ -43273,7 +43304,27 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 (function(){
   var dev=document.getElementById('device'); if(!dev) return;
   var INV={vis:false, touche:false, sortie:false, ouvert:false, vvT:0, vvH:0, sig:'', sigT:0, tr:null, jeu:0, journal:[], haut:true, desc:0, finA:0, sigM:'', finP:0, prep:''};
-  var AIR_VAGUE=28, AIR_RAIL=56, DESCENTE=480;   /* l'air de la colonne, puis son double (`K.AIR`, l'échelle de l'Aura) ; 36 pt sépare le rail de la phrase quand elle est prête */
+  var AIR_VAGUE=28, AIR_RAIL=56, DESCENTE=480;
+  /* ⚑ v177b (Tom, C-229) — CE BLOC CORRIGE C-213 (« pas prête, la phrase et le rail remontent ») : « c'est le TRAIT (l'horizon entre le champ du haut et le corps)
+     qui bouge. La hauteur de l'horizon dit la promesse. » Le texte et les éléments de la page sont à leur place FINALE dès l'ouverture, et ne bougent plus.
+     · PAS PRÊTE : l'horizon est HZ_BAS pt plus bas que sa place (40), le champ prend la place libérée ; jamais plus bas que 12 pt au-dessus de l'encre de la phrase
+       (le plus haut élément du corps — le libellé du trait est caché tant qu'il n'y a rien à tracer), mesuré à chaque peinture (`_ppHz`). Aucun élément du trait.
+     · PRÊTE : l'horizon REMONTE à sa place (360 ms, une courbe douce), puis le trait y naît comme avant (flaques, libellé tracé, départ qui clignote).
+     · REDEVENUE INCOMPLÈTE : le trait se retire en flaques (300 ms), puis l'horizon redescend (360 ms).
+     · La dalle ne bouge pas : elle garde sa taille et sa place (une dalle se rend à sa taille et se pose 1:1 — §4 ; la redimensionner à chaque image serait
+       une dalle qui « respire » sous l'œil). C'est le champ autour d'elle qui grandit et rétrécit.
+     · Clavier ouvert, la même loi, sur la mise en page de saisie (l'onde à 144) : l'horizon reste au-dessus de la phrase, rien ne passe sous le clavier. */
+  var HZ_BAS=40, HZ_AIR=12, HZ_DUREE=360, HZ={v:null, anim:null};
+  function hzCible(e){ try{ var c=cs(), ph=phraseEl(), O=window._onde; if(!c || !ph || !O || !e) return 0;
+      var D=c.getBoundingClientRect(), k=D.width/(c.offsetWidth||390), h=1e9;
+      [].forEach.call(ph.querySelectorAll('.ph-txt > .ph-m, .ph-txt > .ph-b'), function(n){ var r=n.getBoundingClientRect(); if(!r.width) return; h=Math.min(h,(r.top-D.top)/k); });
+      if(h>1e8) return 0;
+      var y=O.onde(e.base, e.amp), bas=-1e9; for(var x=0;x<=390;x+=3){ var v=y(x); if(v>bas) bas=v; }
+      return Math.max(0, Math.min(HZ_BAS, Math.floor((h - HZ_AIR - bas)*2)/2)); }catch(_){ return 0; } }
+  /* le décalage de l'horizon, lu par le peintre de la page + à chaque peinture : en mouvement, la valeur du mouvement ; posé « pas prête », la cible mesurée */
+  window._ppHz=function(e){ if(BANC() || !ouverte() || INV.vis || INV.sortie) return HZ.anim ? HZ.v : 0;
+    if(HZ.anim) return Math.min(HZ.v, hzCible(e||window._ppEcran()));
+    return INV.haut ? hzCible(e||window._ppEcran()) : 0; };   /* l'air de la colonne, puis son double (`K.AIR`, l'échelle de l'Aura) ; 36 pt sépare le rail de la phrase quand elle est prête */
   function $(i){ return document.getElementById(i); }
   function cs(){ return $('createSheet'); }
   function ouverte(){ var c=cs(); return !!(c && c.classList.contains('show') && c.classList.contains('pp')); }
@@ -43316,14 +43367,22 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       if(h>1e8) return;
       var dP=Math.min(0, Math.round((bas+AIR_VAGUE-h)*2)/2), R=$('csPinceau'), dR=dP;
       if(R && R.style.getPropertyValue('display')!=='none'){ var t=parseFloat(R.style.getPropertyValue('top')); if(t) dR=Math.min(0, Math.round((b+dP+AIR_RAIL-t)*2)/2); }
+      dP=0; dR=0;   /* v177b (C-229) : le texte ne bouge plus — c'est l'horizon (`_ppHz`) */
       if(c.style.getPropertyValue('--ppa-ph')!==dP+'px') c.style.setProperty('--ppa-ph', dP+'px');
       if(c.style.getPropertyValue('--ppa-rail')!==dR+'px') c.style.setProperty('--ppa-rail', dR+'px');
     }catch(_){ } }
   window._ppaMesure=mesure;
-  function bouge(enHaut, fin){ var c=cs(); if(!c) return; var j=++INV.finA; INV.haut=enHaut;
-    if(reduit()){ c.classList.remove('ppa-anim'); c.classList.toggle('ppa-haut', enHaut); INV.desc=0; if(fin) fin(); return; }
-    c.classList.add('ppa-anim'); void c.offsetWidth; c.classList.toggle('ppa-haut', enHaut); INV.desc=performance.now()+DESCENTE; note(enHaut?'monte':'descend');
-    setTimeout(function(){ if(j!==INV.finA) return; INV.desc=0; c.classList.remove('ppa-anim'); if(fin) fin(); }, DESCENTE+30); }
+  /* v177b (C-229) : « enHaut » garde son nom d'avant (la page « pas prête ») ; ce qui bouge est l'horizon, `HZ.v`, de sa valeur du moment à la cible, en 360 ms */
+  function bouge(enHaut, fin){ var c=cs(); if(!c) return; var j=++INV.finA; var e=window._ppEcran?window._ppEcran():null;
+    var de=HZ.anim ? HZ.v : (INV.haut ? hzCible(e) : 0); INV.haut=enHaut; c.classList.toggle('ppa-haut', enHaut); c.classList.remove('ppa-anim');
+    var a=enHaut ? hzCible(e) : 0;
+    if(reduit() || Math.abs(a-de)<0.5){ HZ.anim=null; HZ.v=null; INV.desc=0; repeint(); if(fin) fin(); return; }
+    var A={t0:performance.now()-17, de:de, a:a, n:0}; HZ.anim=A; HZ.v=de; INV.desc=performance.now()+HZ_DUREE; note(enHaut?'horizon-bas':'horizon-haut');   /* l'horloge part une image avant l'appel : l'image qui suit la frappe a déjà bougé */
+    function doux(u){ return u<.5 ? 2*u*u : 1-Math.pow(-2*u+2,2)/2; }
+    (function f(){ if(HZ.anim!==A || j!==INV.finA) return; var u=Math.min(1,(performance.now()-A.t0)/HZ_DUREE);
+      if(enHaut) A.a=hzCible(window._ppEcran());   /* la cible suit la page (une ligne de plus ou de moins) */
+      HZ.v=A.de+(A.a-A.de)*doux(u); A.n++; repeint(); window._ppHzEtat={q:u, v:HZ.v, images:A.n};
+      if(u<1) requestAnimationFrame(f); else { HZ.anim=null; HZ.v=null; INV.desc=0; repeint(); if(fin) fin(); } })(); }
   /* l'image de ce qui est là : le CORPS de la page (un aplat, sous l'onde le champ est transparent — la flèche et le libellé y vivent), puis le champ */
   function copie(src){ var k=document.createElement('canvas'), ex=src.width/390; k.width=src.width; k.height=Math.max(src.height, Math.round(844*ex)); var g=k.getContext('2d');
     try{ g.fillStyle=getComputedStyle(cs()).backgroundColor; g.fillRect(0,0,k.width,k.height); }catch(_){ } g.drawImage(src,0,0); return k; }
@@ -43356,13 +43415,16 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      `bout` renonçait — les deux calques restaient DANS la page + (l'image de la page d'avant, son champ et son corps, sur 390 pt de large), par-dessus tout, à toutes les ouvertures
      suivantes, quelle que soit la nature. Un calque de passage appartient à la page ouverte : il s'arrête et se retire avec elle, quel que soit le chemin. */
   function purge(){ var c=cs(); if(!c) return; [].forEach.call(c.querySelectorAll('canvas.passage-flaques'), function(k){ try{ if(k.__ctl) k.__ctl.arrete=true; }catch(_){ } k.remove(); }); }
-  function cache(){ var c=cs(); purge(); INV.vis=false; INV.sortie=false; INV.touche=false; INV.jeu++; stopTrace(); INV.haut=true; INV.desc=0; INV.finA++; if(c && !BANC()){ c.classList.remove('ppa-anim'); c.classList.add('ppi-cache','ppa-haut','ppi-vide'); } var d=$('ppDepart'); if(d){ d.classList.remove('clignote'); try{ d.getContext('2d').clearRect(0,0,d.width,d.height); }catch(_){ } } }
+  function cache(){ var c=cs(); purge(); HZ.anim=null; HZ.v=null; INV.vis=false; INV.sortie=false; INV.touche=false; INV.jeu++; stopTrace(); INV.haut=true; INV.desc=0; INV.finA++; if(c && !BANC()){ c.classList.remove('ppa-anim'); c.classList.add('ppi-cache','ppa-haut','ppi-vide'); } var d=$('ppDepart'); if(d){ d.classList.remove('clignote'); try{ d.getContext('2d').clearRect(0,0,d.width,d.height); }catch(_){ } } }
   /* à l'ouverture : caché d'emblée (la classe est posée avant la première image de la page +, dès qu'elle est ouverte ou refermée) */
   var c0=cs(); if(c0 && !BANC()) c0.classList.add('ppi-cache','ppa-haut','ppi-vide');
   var _ca=window.closeAll; if(typeof _ca==='function') window.closeAll=function(){ var r=_ca.apply(this, arguments); try{ cache(); }catch(_){ } return r; };
   try{ new MutationObserver(function(){ var o=ouverte(); if(o!==INV.ouvert){ INV.ouvert=o; if(!o || !INV.vis) cache(); } if(o && INV.haut) mesure(); }).observe(c0, {attributes:true, attributeFilter:['class']}); }catch(_){ }   /* v174 : un choix qui se referme (la phrase a changé de lignes) : la cote est reprise avant l'image */
   /* le premier toucher du trait : le départ cesse de clignoter, il reste orange, fixe */
-  function toucher(ev){ try{ var t=ev.target; if(!INV.vis || INV.touche || !t || !t.closest) return; if(t.closest('#planterZone, #planterCv, #planterZoneN, #planterCvN')){ INV.touche=true;   /* v177 (C-223) : le Cercle a sa zone */ clignote(false); repeint(); note('touche'); } }catch(_){ } }
+  function toucher(ev){ try{ var t=ev.target; if(!INV.vis || INV.touche || !t || !t.closest) return; if(t.closest('#planterZone, #planterCv, #planterZoneN, #planterCvN')){ INV.touche=true;   /* v177 (C-223) : le Cercle a sa zone */ clignote(false);
+      /* v177b (C-229) : le doigt sur le trait, le libellé n'a plus qu'UN propriétaire, le ruban (`lot-V148-RUBAN`, sa découpe). Tracé pendant le geste, il
+         alternait avec lui d'une image à l'autre et paraissait entier entre deux (pris par `redteam_flash` C1 : l'horizon remonte d'abord, le tracé n'était pas fini). */
+      stopTrace(); repeint(); note('touche'); } }catch(_){ } }
   document.addEventListener('pointerdown', toucher, true); document.addEventListener('touchstart', toucher, {capture:true, passive:true});
   /* v176 (C-222) : la saisie ouverte, le libellé est préparé d'avance à sa place : à la première lettre il n'a plus rien à calculer (C-125) */
   function prepare(e){ try{ var t=libelle(), s=[e.nat, e.base, t?t.textContent:''].join('|'); if(!t || s===INV.prep || !window.TraceLettres || reduit()) return; INV.prep=s; window.TraceLettres.trace(t, null, {depart:'h', preparer:true}); }catch(_){ } }
@@ -43383,7 +43445,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   document.addEventListener('blur', function(ev){ try{ var t=ev.target; if(!t || (t.id!=='phIn' && t.id!=='nueeNomIn') || !ouverte() || reduit() || BANC() || window._tirageActive || MV.cours) return;
       var e=window._ppEcran(), c=cs(), ph=phraseEl(); if(!e || !e.ouvert || e.etat!=='plate' || !ph) return; var K=kDev(), av={};
       cibles().forEach(function(x){ av[x[0]]=hautDe(x[1],K); });
-      MV.att={t:performance.now(), base:e.base, amp:e.amp, av:av, fs:tailleDe(ph), image:copie($('csTrameCv')), deja:[].map.call(c.querySelectorAll('.ppo-deja, .ppo-dejarow'), function(n){ return n.getBoundingClientRect().height?fige(n,K):null; }).filter(Boolean)};
+      MV.att={t:performance.now(), base:e.base+(window._ppHz?(+window._ppHz(e)||0):0), amp:e.amp, av:av, fs:tailleDe(ph), image:copie($('csTrameCv')), deja:[].map.call(c.querySelectorAll('.ppo-deja, .ppo-dejarow'), function(n){ return n.getBoundingClientRect().height?fige(n,K):null; }).filter(Boolean)};
     }catch(_){ MV.att=null; } }, true);
   function finMv(){ var C=MV.cours; if(!C) return; MV.cours=null; C.arrete=true;
     C.el.forEach(function(x){ x.n.style.removeProperty(x.p); if(x.p==='transform') x.n.style.removeProperty('transform-origin'); });
@@ -43395,14 +43457,15 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var K=kDev(), cv=$('csTrameCv'), d=$('ppDepart'), ph=phraseEl(), ap0=hautDe(ph,K), dyB=(A.av.ph!=null && ap0!=null)?A.av.ph-ap0:0, rt=(tailleDe(ph)>0 && A.fs>0)?A.fs/tailleDe(ph):1, el=[];
     cibles().forEach(function(x){ var ap=hautDe(x[1],K), av=A.av[x[0]], dy=(x[0]==='barre')?(av==null?(x[1].offsetHeight||84)+40:0):((av!=null && ap!=null)?av-ap:dyB); if(ap==null && x[0]!=='barre') return; if(!dy) return;   /* la barre d'un Cercle reste là pendant la saisie : elle ne bouge pas */
       var pr=(getComputedStyle(x[1]).transform==='none')?'transform':'translate'; if(x[0]==='ph') x[1].style.setProperty('transform-origin','0 0','important'); el.push({n:x[1], p:pr, dy:dy, k:(x[0]==='ph')?rt:1}); });
-    var largeur=c.clientWidth||390, sc=largeur/390, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2)), H=Math.max(e.base+e.amp,A.base+A.amp)+64, ov=document.createElement('canvas'); ov.id='ppMvt'; ov.setAttribute('aria-hidden','true'); ov.width=Math.round(largeur*dpr); ov.height=Math.round(H*sc*dpr);
+    var largeur=c.clientWidth||390, sc=largeur/390, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2)), H=Math.max(e.base+e.amp,A.base+A.amp)+64+HZ_BAS, ov=document.createElement('canvas'); ov.id='ppMvt'; ov.setAttribute('aria-hidden','true'); ov.width=Math.round(largeur*dpr); ov.height=Math.round(H*sc*dpr);
     ov.style.setProperty('width',largeur+'px','important'); ov.style.setProperty('height',(H*sc)+'px','important'); var z=getComputedStyle(cv).zIndex; ov.style.setProperty('z-index',(z&&z!=='auto')?z:'0','important');
     var y0=window._onde.onde(A.base,A.amp), m=1e9; for(var x=0;x<=390;x+=6){ var v=y0(x); if(v<m) m=v; }
     var pass=null; try{ if(m>30) pass=window._passageFlaques(c,{mode:'ouvre',rect:[0,0,390,Math.round(m-14)],image:A.image,duree:MVDUR,avance:30,apres:d||cv,z:(d?d.style.zIndex:null)||0}); }catch(_){ }
     var av2=(pass&&pass.canevas)||d||cv; if(av2.nextSibling) c.insertBefore(ov,av2.nextSibling); else c.appendChild(ov);
     var dj=null; if(A.deja.length){ dj=document.createElement('div'); dj.id='ppMvtDeja'; dj.setAttribute('aria-hidden','true'); A.deja.forEach(function(n){ dj.appendChild(n); }); c.appendChild(dj); }
     var C={el:el, ov:ov, dj:dj, pass:pass, t0:0, n:0, arrete:false}, im={cv:ov, H:H, corps:getComputedStyle(c).backgroundColor, base:A.base, amp:A.amp};
-    function pose(q){ var r=1-q; im.base=A.base+(e.base-A.base)*q; im.amp=A.amp+(e.amp-A.amp)*q; window._ppMvtImage=im; try{ if(window._ppTrait) window._ppTrait(); }finally{ window._ppMvtImage=null; }
+    var eb=e.base+(INV.haut && !INV.vis ? hzCible(e) : 0);   /* v177b (C-229) : la page pas prête, l'horizon finit sous sa place */
+    function pose(q){ var r=1-q; im.base=A.base+(eb-A.base)*q; im.amp=A.amp+(e.amp-A.amp)*q; window._ppMvtImage=im; try{ if(window._ppTrait) window._ppTrait(); }finally{ window._ppMvtImage=null; }
       el.forEach(function(x){ var yy=(x.dy*r).toFixed(2)+'px'; x.n.style.setProperty(x.p, x.p==='translate'?('0 '+yy):('translateY('+yy+')'+(x.k!==1?' scale('+(1+(x.k-1)*r).toFixed(4)+')':'')), 'important'); });
       if(dj) dj.style.setProperty('transform','translateY('+(q*520).toFixed(1)+'px)','important'); C.n++; window._ppMvtEtat={fini:false, q:q, base:im.base, images:C.n}; }
     function doux(u){ return u<.5 ? 2*u*u : 1-Math.pow(-2*u+2,2)/2; }
@@ -43431,7 +43494,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(INV.vis && !INV.desc && c1.classList.contains('ppa-haut') && e && !e.ouvert) bouge(false);   /* v176 (C-222) : le trait là, la page n'est jamais à sa place « pas prête » */
     if(INV.vis || INV.sortie) return;
     /* ⚑ v176 (Tom, C-222) : la saisie ouverte, le trait naît tout de suite, à sa place : rien ne descend sous le clavier */
-    if(e && e.ouvert){ if(e.etat!=='plate') return; INV.finA++; INV.desc=0; INV.haut=false; c1.classList.remove('ppa-anim','ppa-haut'); montre(); return; }
+    if(e && e.ouvert){ if(e.etat!=='plate') return; if(INV.haut){ bouge(false); return; } if(INV.desc) return; montre(); return; }   /* v177b (C-229) : l'horizon remonte, puis le trait naît */
     if(c1.classList.contains('pp-ouvert')) return;                            /* le choix se referme : sa classe tombe après l'état, la page n'est pas encore posée */
     if(frappe()) return;                                                      /* jamais pendant la frappe */
     if(vv && vv.height < innerHeight - 40) return;                            /* le clavier encore là */
