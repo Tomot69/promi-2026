@@ -216,6 +216,20 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v178c (4 nov. 2026) — E4 ÉTAPE 2 : LES TEXTES DES ÉCRANS VIDES (C-078). (Décisions Tom, mot pour mot.) Ce bloc CLÔT Q584 (le texte de la Toile vide).
+> **Deux lignes ; la ligne 2 est le SEUL élément touchable du bloc et mène à l'action dite** (`lot-V178C-VIDES`, `window._e4Vide(l1, l2, action)`, `window._e4Act`) :
+> Toile vide « Rien n'est planté. » / « Qu'as-tu dit aujourd'hui que tu comptes tenir ? » → page + d'un Promi · Index vide « Pas encore de parole. » / « La première se plante en une phrase. » → page + ·
+> Index trié « Rien sous ce tri. » / « Revenir à toutes les paroles. » → filtre Tout · gardés de côté « Rien de gardé de côté. » / même ligne 2 · recherche de l'Index « Rien pour « mot ». » /
+> « Revenir à tout l'Index. » → vide le champ · Fil vide « Rien ne bouge encore. » / « Une parole donnée à quelqu'un, et le Fil s'anime. » → page + d'un Promi « à quelqu'un » (le sens basculé) ·
+> recherche du Fil « Rien pour « mot ». » / « Revenir à tout le Fil. » · Fil trié « Rien sous ce tri. » / « Revenir à tout le Fil. » → filtre Tout · Cercle sans membre « Un Cercle, c'est des gens. » /
+> « La première personne s'ajoute ici. » → Peaufiner sur MEMBRES · Aura sans parole « La première parole laissera sa trace ici. » / « Tout commence par une parole donnée. » → page + ·
+> Aura rien de tenu « Rien de tenu pour l'instant. » / « Une parole tenue prendra place ici. » → l'Index · une personne « Rien entre vous pour l'instant. » (une ligne) · pièces jointes « Aucun fichier. ».
+> **Style** : ligne 1 le rôle « texte » de l'échelle (Atkinson 500, 25/30, encre du mode) ; ligne 2 le rôle « liste » (22,3/26), au bleu des mots-clés (cobalt `#0E78F2` en clair, `#82AEF8` en sombre, C-162), zone ≥ 44 pt ;
+> aucun tracé (ces écrans n'en ont pas) : paraît sans fondu. La Toile vide : un bloc DOM sous le plateau (centre ≈ 330 pt), jamais peint sur la Toile, absent pendant l'onboarding, le guide et tout écran ouvert.
+> **⚑ Q600 — LE CERCLE SANS MEMBRE (décision de lot, à valider)** : son fil n'a pas de place libre (le bloc collant « Un mot… / Planter » le couvre) — le bloc se pose À DROITE DES NOYAUX (17/21 px), là où viendront les
+> membres ; `#dAura.e4-sans` passe au-dessus de `#dpMain` (z 3) et perd son fondu à droite, le temps qu'il n'y a aucun membre.
+> ⚠ Le toucher se lit au GESTE et au clic (la fiche ne produit pas de `click` au doigt) ; `closeAll` ne ferme pas l'Aura : l'action « l'Index » clique d'abord son X. Juge : **`redteam_vides.py`** (`--echelle=1|0,79`, `--vite`).
+
 ### ⚑ v178b (4 nov. 2026) — PAGE + : LE TRAIT NE NAÎT QU'APRÈS LA VALIDATION (C-229) ; LA DALLE SUIT L'HORIZON (Q599). (Décisions Tom.) Ce bloc CORRIGE v176 (C-222 : « la genèse part à la frappe ») et v177b (« la dalle ne bouge pas »).
 > **⚑ C-229 — RIEN DU TRAIT PENDANT LA FRAPPE.** Il naît quand la saisie est VALIDÉE (Retour, qui ferme le clavier, ou le clavier fermé), le minimum rempli : la page rejoint sa place (Q598, 360 ms), l'horizon remonte (360 ms), PUIS le trait naît (flaques, libellé tracé). Un minimum complété sans clavier (un choix) : ≤ 300 ms, la veille de 50 ms. Où : `lot-V172-INVITE`, `veille()` (`if(e && e.ouvert) return;` : le champ a la main, rien ne naît). Une lettre retapée ne fait rien renaître avant la validation.
 > **⚑ Q599 — LA DALLE DESCEND AVEC L'HORIZON, 40 % DE SON DÉPLACEMENT** (30 à 50 % décidé ; `window._ppDalleHz`, `?dallehz=` 0 à 1 pour comparer, jamais mémorisé), même durée, même courbe : le peintre `trait()` décale `dalle.y` du même `_hz`, × 0,4, arrondi au quart de point ; sa taille ne change pas (§4). Captures Safari : `planche-v178b/q599-*.png`.

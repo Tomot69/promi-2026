@@ -10127,3 +10127,4 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v177b | Peaufiner se referme sur la fiche d'un Cercle — X, barre, glissement — et la fiche revient telle qu'avant (C-228) ; page + : c'est l'horizon qui bouge, le texte reste à sa place (C-229) ; la vérification allégée (C-227). |
 | v178a | Peaufiner d'un Cercle refermé par le X : il se replie aussitôt, plus rien de lui ne reste sur la fiche (C-228, récidive). |
 | v178b | Page + : le trait ne naît qu'après la validation (Retour, clavier fermé), après la remontée de l'horizon (C-229) ; la dalle suit l'horizon à 40 % (Q599). |
+| v178c | E4 étape 2 : les textes des écrans vides, mot pour mot ; la ligne 2 seule touchable, vers l'action dite (C-078) ; Q584 close. |

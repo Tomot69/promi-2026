@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v178b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v178c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -3838,8 +3838,8 @@ function buildIndex(){
       +'</div></div>';
   });
   h+='</div>';
-  if(!ent.length) h='<div class="ix-empty"><div class="fe-t">Rien ici</div>'
-    +'<div class="fe-s">Touche le <b>+</b> pour planter un Promi.</div></div>';
+  if(!ent.length) h=window._e4Index ? window._e4Index() : '<div class="ix-empty"><div class="fe-t">Rien ici</div>'
+    +'<div class="fe-s">Touche le <b>+</b> pour planter un Promi.</div></div>';   /* v178c (E4) : les vides de l'Index */
   $('#indexList').innerHTML=h;
 
   /* le compte a cote du titre.
@@ -7099,7 +7099,7 @@ function seedFeed(){FEED=[];_fid=1;feedAdd('added','Rachel a planté « la playl
   feedAdd('chiche_releve','Marion a relevé ton chiche : « lire 10 pages »',{from:'Marion',t:'hier'});
   promises.filter(function(p){return p.pending;}).forEach(function(p){feedAdd('received',(p.from||'Quelqu\'un')+' te promet : « '+p.title+' »',{pid:p.id,unread:true,t:'récemment'});});}
 function feedIcon(t){return {received:'✎',kept:'✓',missed:'×',added:'✦',joined:'⊕',nuee:'❉',accepted:'✓',declined:'×',relance:'⤴'}[t]||'·';}
-function buildFeed(){var el=$('#feedList');if(!el)return;var _q=(typeof fdQuery!=='undefined'?fdQuery:'').trim().toLowerCase();/* on cherche dans le geste, le Promi concerné, la personne, la Nuée, et les brouillons */var _fmatch=function(f){if(!_q)return true;var p=f.pid?promises.find(function(x){return x.id===f.pid;}):null;var bag=(f.text||'')+' '+(f.t||'')+' '+(f.who||'')+' '+(f.from||'');if(p){bag+=' '+(p.title||'')+' '+(p.who||'')+' '+(p.from||'')+' '+((typeof NUE!=='undefined'&&NUE[p.nuee])||p.nuee||'');if(p.draft)bag+=' brouillon';}return bag.toLowerCase().indexOf(_q)>=0;};var _list=FEED.filter(_fmatch);if(typeof fdSortMode!=='undefined'&&fdSortMode==='personne'){_list=_list.slice().sort(function(a,b){function pk(f){var pp=f.pid?promises.find(function(x){return x.id===f.pid;}):null;return ''+(f.from||(pp&&pp.from)||(pp&&pp.who)||f.who||'');}var ka=pk(a),kb=pk(b);function moi(k){k=k.trim().toLowerCase();return k===''||k==='moi'||k===(USER.name||'').trim().toLowerCase();}var ma=moi(ka)?0:1,mb=moi(kb)?0:1;if(ma!==mb)return ma-mb;return ka.localeCompare(kb);});}else if(typeof fdSortMode!=='undefined'&&fdSortMode==='brouillon'){_list=_list.slice().sort(function(a,b){function dk(f){var pp=f.pid?promises.find(function(x){return x.id===f.pid;}):null;return pp&&pp.draft?0:1;}return dk(a)-dk(b);});}else if(typeof fdSortMode!=='undefined'&&fdSortMode==='nuee'){_list=_list.slice().sort(function(a,b){function nk(f){var pp=f.pid?promises.find(function(x){return x.id===f.pid;}):null;return ''+((pp&&((typeof NUE!=='undefined'&&NUE[pp.nuee])||pp.nuee))||'~~');}return nk(a).localeCompare(nk(b));});}if(!_list.length){el.innerHTML='<div class="feed-empty"><div class="fe-ic">\u2726</div><div class="fe-t">'+(_q?'Rien ne correspond':'Rien ne bouge encore')+'</div><div class="fe-s">'+(_q?'essaie un autre mot':'les gestes de tes proches<br>appara\u00eetront ici')+'</div></div>';return;}var h='';_list.forEach(function(f){var p=f.pid?promises.find(function(x){return x.id===f.pid;}):null;var pending=(f.type==='received'&&p&&p.pending);
+function buildFeed(){var el=$('#feedList');if(!el)return;var _q=(typeof fdQuery!=='undefined'?fdQuery:'').trim().toLowerCase();/* on cherche dans le geste, le Promi concerné, la personne, la Nuée, et les brouillons */var _fmatch=function(f){if(!_q)return true;var p=f.pid?promises.find(function(x){return x.id===f.pid;}):null;var bag=(f.text||'')+' '+(f.t||'')+' '+(f.who||'')+' '+(f.from||'');if(p){bag+=' '+(p.title||'')+' '+(p.who||'')+' '+(p.from||'')+' '+((typeof NUE!=='undefined'&&NUE[p.nuee])||p.nuee||'');if(p.draft)bag+=' brouillon';}return bag.toLowerCase().indexOf(_q)>=0;};var _list=FEED.filter(_fmatch);if(typeof fdSortMode!=='undefined'&&fdSortMode==='personne'){_list=_list.slice().sort(function(a,b){function pk(f){var pp=f.pid?promises.find(function(x){return x.id===f.pid;}):null;return ''+(f.from||(pp&&pp.from)||(pp&&pp.who)||f.who||'');}var ka=pk(a),kb=pk(b);function moi(k){k=k.trim().toLowerCase();return k===''||k==='moi'||k===(USER.name||'').trim().toLowerCase();}var ma=moi(ka)?0:1,mb=moi(kb)?0:1;if(ma!==mb)return ma-mb;return ka.localeCompare(kb);});}else if(typeof fdSortMode!=='undefined'&&fdSortMode==='brouillon'){_list=_list.slice().sort(function(a,b){function dk(f){var pp=f.pid?promises.find(function(x){return x.id===f.pid;}):null;return pp&&pp.draft?0:1;}return dk(a)-dk(b);});}else if(typeof fdSortMode!=='undefined'&&fdSortMode==='nuee'){_list=_list.slice().sort(function(a,b){function nk(f){var pp=f.pid?promises.find(function(x){return x.id===f.pid;}):null;return ''+((pp&&((typeof NUE!=='undefined'&&NUE[pp.nuee])||pp.nuee))||'~~');}return nk(a).localeCompare(nk(b));});}if(!_list.length && window._e4Fil){el.innerHTML=window._e4Fil(_q);return;}/* v178c (E4) */if(!_list.length){el.innerHTML='<div class="feed-empty"><div class="fe-ic">\u2726</div><div class="fe-t">'+(_q?'Rien ne correspond':'Rien ne bouge encore')+'</div><div class="fe-s">'+(_q?'essaie un autre mot':'les gestes de tes proches<br>appara\u00eetront ici')+'</div></div>';return;}var h='';_list.forEach(function(f){var p=f.pid?promises.find(function(x){return x.id===f.pid;}):null;var pending=(f.type==='received'&&p&&p.pending);
     var _nk=null;
     if(!p){ try{
       var _t=(f.text||'').toLowerCase();
@@ -9468,7 +9468,7 @@ else setTimeout(ixRefresh,400);
       var vis=(k==='img'&&f.thumb)?'<span class="dpf-th" style="background-image:url('+f.thumb+')"></span>':'<span class="dpf-ic dpf-'+k+'">'+_fileGlyph(k)+'</span>';
       var rm=canDel(f)?'<button class="dpf-rm" data-rm="'+ix+'" title="retirer">\u2715</button>':'';
       var by=(f.by&&f.by!=='moi')?(' \u00b7 '+_esc(f.by)):'';
-      return '<div class="dpf-row">'+vis+'<div class="dpf-meta"><div class="dpf-n">'+_esc(f.name)+'</div><div class="dpf-s">'+_fileSize(f.size)+by+'</div></div>'+rm+'</div>';}).join(''):'<div class="dpf-empty">aucun fichier \u2014 appuie sur +</div>';
+      return '<div class="dpf-row">'+vis+'<div class="dpf-meta"><div class="dpf-n">'+_esc(f.name)+'</div><div class="dpf-s">'+_fileSize(f.size)+by+'</div></div>'+rm+'</div>';}).join(''):'<div class="dpf-empty">Aucun fichier.</div>';
     el.querySelectorAll('.dpf-rm').forEach(function(b){b.onclick=function(){list.splice(+b.dataset.rm,1);if(opts.after)opts.after();};});};
 
   function _peintGlypheNuee(){var dg=document.getElementById('dForm');if(!dg)return;dg.innerHTML='';
@@ -16006,6 +16006,7 @@ var CREMEETAT='#F7F0DE';
     if(aura) pose(aura,{display:'block', position:'absolute', left:'24px', top:yN+'px',
                         width:'342px', height:'auto', margin:'0', padding:'0', background:'none'});
     noyaux(aura, natCol);
+    try{ if(window._e4Cercle) window._e4Cercle(aura, k); }catch(_){ }   /* v178c (E4) : un Cercle sans membre */
     var qui=document.getElementById('dptQui'), ti=document.getElementById('dptTitre'), qd=document.getElementById('dptQuand');
     /* ⚑ LE MOT DE LA LIGNE « À QUI » D'UNE NUÉE VIENT DES CADRES 58 ET 60 :
            « Avec Rachel, Adrien, +3 »        — deux nommés, puis le reste, MOI COMPRIS
@@ -19941,6 +19942,7 @@ var CREMEETAT='#F7F0DE';
     var items=[].slice.call(li.querySelectorAll('.fd-item'));
     if(!items.length) return;
     if(window._filTrieFiltre) items=window._filTrieFiltre(items);   /* v163b (C-191) : le tri et le filtre du menu ⇅ */
+    if(!items.length && window._e4Vide){ li.innerHTML=window._e4Vide('Rien sous ce tri.', 'Revenir à tout le Fil.', 'fdTout'); return; }   /* v178c (E4) : un tri sans résultat n'est plus une page muette */
     var l=light();
     var W=358, H=128, X=16, PAS=140, CX=143;
     var gr=document.createElement('div');
@@ -31230,17 +31232,20 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   /* ⚑ v131 (Tom, 5 oct. 2026, C-052) : « La liste « Ce que tu as tenu » de l'Aura montre TOUTES les paroles tenues, dans l'ordre
      chronologique, l'Aura défilant. Plus de limite à 3 ou 6. » (remplace Q187 : trois dalles, six dès cinq tenues.) */
   function nbMoisson(){ return D ? D.T.length : 0; }
+  /* ⚑ v178c (Tom, E4 étape 2) — DES PAROLES, RIEN DE TENU : « Rien de tenu pour l'instant. » / « Une parole tenue prendra place ici. » → l'Index (la ligne 2 seule se touche) */
+  function zero(){ MOT.textContent=''; MOT.appendChild(document.createTextNode('Rien de tenu pour l’instant.'));
+    var l2=el('em', 'e4-l2 e4-aura', 'Une parole tenue prendra place ici.'); l2.setAttribute('data-e4','index'); l2.setAttribute('role','button'); MOT.appendChild(l2); }
   function remplit(){
     D=donnees();
     var vide = D.P.length===0;
     CAD.classList.toggle('au-vide', vide);
     if(vide){
       INV.textContent=''; INV.appendChild(document.createTextNode(VIDE[0]));
-      INV.appendChild(el('em', null, VIDE[1])); MOT.textContent='';
+      var _l2=el('em', 'e4-l2 e4-aura', VIDE[1]); _l2.setAttribute('data-e4','plus'); _l2.setAttribute('role','button'); INV.appendChild(_l2); MOT.textContent='';   /* v178c (E4) : la ligne 2 se touche */
     } else {
       /* le mot se tire du NOMBRE de paroles tenues : il change en faisant plus, jamais
          au hasard d'une ouverture, et jamais en laissant filer */
-      MOT.textContent = D.n>0 ? MOTS[D.n % MOTS.length] : VIDE[0]; INV.textContent='';
+      if(D.n>0) MOT.textContent = MOTS[D.n % MOTS.length]; else zero(); INV.textContent='';   /* v178c (E4) : rien de tenu */
     }
     NX.textContent='';
     if(!vide){
@@ -31992,7 +31997,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     tracesGeo:function(){ return TRACES.concat(FILE).concat(ATTENTE).map(function(t){ var c=Math.cos(t.L), s=Math.sin(t.L); return {a:t.a, b:[t.a[0]*c+t.d[0]*s, t.a[1]*c+t.d[1]*s, t.a[2]*c+t.d[2]*s], L:t.L, w:t.w, f:t.f, et:t.et?1:0}; }); },
     /* pour le juge : poser la phrase i (null = celle des données) et recalculer la colonne */
     mot:function(i){ if(!CAD || CAD.classList.contains('au-vide')) return null;
-      MOT.textContent = (i===null||i===undefined) ? (D.n>0 ? MOTS[D.n % MOTS.length] : VIDE[0])
+      if((i===null||i===undefined) && !(D.n>0)) zero(); else MOT.textContent = (i===null||i===undefined) ? MOTS[D.n % MOTS.length]
                                                   : MOTS[((i|0)%MOTS.length+MOTS.length)%MOTS.length];
       place(); return MOT.textContent; },
     /* pour le juge : repartir d'un palier donné (0 = 110 000) et oublier les mesures */
@@ -32439,6 +32444,7 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
         bx.appendChild(cv); c.appendChild(bx); c.appendChild(el('span',null,p.title||'')); pile.appendChild(c); });
       y+=Math.ceil(T.length/3)*101-12+32;
     }
+    if(!L.length){ var e4=el('div','e4-l1 e4-ps','Rien entre vous pour l’instant.'); e4.style.left='24px'; e4.style.top=y+'px'; pile.appendChild(e4); y+=30+28; }   /* v178c (E4) : sans ligne 2, les deux boutons restent */
     if(L.length){
       var h2=el('div','ps-h','Ce que tu partages avec '+nom); h2.style.left='24px'; h2.style.top=y+'px'; pile.appendChild(h2); y+=30;
       var box=el('div','ps-cartes'); box.id='psCartes'; box.style.top=y+'px'; pile.appendChild(box);
@@ -43524,6 +43530,104 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 })();
 </script>
 
+<style id="lot-V178C-VIDES-css">
+/* ⚑ v178c (Tom, 4 nov. 2026, E4 étape 2, C-078) — LES ÉCRANS VIDES : la ligne 1 sobre (le rôle « texte » de l'échelle, C-138), la ligne 2 (le rôle « liste ») est le SEUL élément
+   touchable, au bleu des mots-clés (cobalt en clair, bleu Promi en sombre, la règle de C-162) ; une zone de toucher de 44 pt ; même style sur tous les écrans vides. */
+#device .e4v{position:relative;box-sizing:border-box;width:342px;margin:0 auto;padding:0;text-align:center;opacity:1}
+#device .e4v .e4-l1,#device .e4-l1{display:block;font-family:var(--f-texte);font-weight:500;font-size:25px;line-height:30px;letter-spacing:0;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95);text-wrap:balance;margin:0}
+#device.light .e4v .e4-l1,#device.light .e4-l1{color:var(--c-brun09);-webkit-text-fill-color:var(--c-brun09)}
+#device .e4v .e4-l2{display:block;box-sizing:border-box;min-height:44px;margin:4px auto 0;padding:9px 0;font-family:var(--f-texte);font-weight:500;font-size:22.3px;line-height:26px;font-style:normal;text-wrap:balance;cursor:pointer;color:var(--c-bleu45);-webkit-text-fill-color:var(--c-bleu45)}
+#device.light .e4v .e4-l2{color:var(--c-cobalt50);-webkit-text-fill-color:var(--c-cobalt50)}
+#device .e4-l2.e4-aura{display:block;cursor:pointer;font-style:normal;color:var(--c-bleu45)!important;-webkit-text-fill-color:var(--c-bleu45)!important}
+#device.light .e4-l2.e4-aura{color:var(--c-cobalt50)!important;-webkit-text-fill-color:var(--c-cobalt50)!important}
+#device #indexList .e4v,#device #feedList .e4v{margin-top:64px}
+#device .e4-ps{position:absolute;width:342px;text-align:left;font-size:22.3px;line-height:26px}
+#device#device #detailPoster #dAura.e4-sans{z-index:3!important;overflow:visible!important;-webkit-mask-image:none!important;mask-image:none!important}
+#device #dAura .e4-cercle{display:block!important;position:absolute;margin:0;text-align:left;z-index:3}
+#device#device .e4-cercle .e4-l1{font-size:17px;line-height:21px;color:var(--c-creme95);-webkit-text-fill-color:var(--c-creme95);text-align:left;text-wrap:pretty}
+#device#device .e4-cercle .e4-l2{font-size:17px;line-height:21px;min-height:44px;padding:4px 0 0;color:var(--c-bleu45);-webkit-text-fill-color:var(--c-bleu45);text-align:left;margin:0;text-wrap:pretty}
+#device #e4Toile{position:absolute;left:24px;top:330px;width:342px;z-index:3;display:none}
+#device #e4Toile.vu{display:block}
+</style>
+<script id="lot-V178C-VIDES">
+/* ⚑ v178c (Tom, 4 nov. 2026, E4 étape 2, C-078) — LES TEXTES DES ÉCRANS VIDES, mot pour mot. Deux lignes ; la ligne 2 est le seul élément touchable et mène à l'action dite :
+   Toile · Index (vide, tri, gardés de côté, recherche) · Fil (vide, recherche, tri) · Cercle sans membre · Aura (sans parole, rien de tenu) · une personne (une ligne) ·
+   les pièces jointes (une ligne). La recherche ne dit jamais la même chose qu'un vide de contenu. Aucun tracé (ces écrans n'en ont pas) : la ligne paraît sans fondu.
+   Le toucher se lit au GESTE (la fiche et le Peaufiner ne produisent pas de `click` au doigt) et au clic ; une seule action par geste. */
+(function(){
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  window._e4Vide=function(l1, l2, act){ return '<div class="e4v" data-e4v="'+esc(act||'')+'"><div class="e4-l1">'+esc(l1)+'</div>'+(l2?'<div class="e4-l2" role="button" data-e4="'+esc(act)+'">'+esc(l2)+'</div>':'')+'</div>'; };
+  function q(s){ return '« '+s+' »'; }
+  window._e4Index=function(){ var Q=(typeof ixQuery!=='undefined'?ixQuery:'').trim(), f=window.ixFiltre||'tous';
+    if(Q) return _e4Vide('Rien pour '+q(Q)+'.', 'Revenir à tout l’Index.', 'ixVide');
+    if(f==='brouillons') return _e4Vide('Rien de gardé de côté.', 'Revenir à toutes les paroles.', 'ixTout');
+    if(f && f!=='tous') return _e4Vide('Rien sous ce tri.', 'Revenir à toutes les paroles.', 'ixTout');
+    return _e4Vide('Pas encore de parole.', 'La première se plante en une phrase.', 'plus'); };
+  window._e4Fil=function(Q){ Q=(Q||'').trim();
+    if(Q) return _e4Vide('Rien pour '+q((typeof fdQuery!=='undefined'?fdQuery:Q).trim())+'.', 'Revenir à tout le Fil.', 'fdVide');
+    return _e4Vide('Rien ne bouge encore.', 'Une parole donnée à quelqu’un, et le Fil s’anime.', 'plusQ'); };
+  /* les actions */
+  function ferme(){ try{ if(window._peaufSortie) window._peaufSortie(); }catch(_){ }
+    try{ var a=document.getElementById('auraScreen'), x=document.querySelector('#auraScreen .closeb'); if(a && a.classList.contains('show') && x) x.click(); }catch(_){ }   /* l'Aura ne se ferme que par son X : `closeAll` la laisse (§8) */
+    try{ closeAll(); }catch(_){ } }
+  function plus(aQui){ ferme(); setTimeout(function(){ var pi=document.querySelector('#accChoix .acc-pil[data-k=promi]'); if(pi) pi.click();
+      if(aQui){ var n=0; (function sens(){ var s=document.querySelector('#createSheet.pp-promi #csPhrase [data-ph=sens]'), c=document.getElementById('createSheet');
+        if(s && c && c.classList.contains('show') && !c.classList.contains('acc-passe')){ if(!/promets à/i.test((document.getElementById('csPhrase')||{}).textContent||'')) s.click(); return; }
+        if(++n<40) setTimeout(sens, 80); })(); } }, 360); }
+  function ixMenu(f){ try{ document.querySelectorAll('#ixMenu .ix-mi[data-filt]').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-filt')===f); }); }catch(_){ } }
+  function fdMenu(f){ try{ document.querySelectorAll('#fdMenu .ix-mi[data-fdfilt]').forEach(function(x){ x.classList.toggle('on', x.getAttribute('data-fdfilt')===f); }); }catch(_){ } }
+  var ACT={
+    plus:function(){ plus(false); }, plusQ:function(){ plus(true); },
+    ixTout:function(){ window.ixFiltre='tous'; ixMenu('tous'); try{ buildIndex(); }catch(_){ } },
+    ixVide:function(){ var i=document.getElementById('ixSearch'); if(i) i.value=''; try{ ixQuery=''; }catch(_){ } try{ buildIndex(); }catch(_){ } },
+    fdTout:function(){ window.fdFiltre='tous'; fdMenu('tous'); try{ buildFeed(); }catch(_){ } },
+    fdVide:function(){ var i=document.getElementById('fdSearch'); if(i) i.value=''; try{ fdQuery=''; }catch(_){ } try{ buildFeed(); }catch(_){ } },
+    index:function(){ ferme(); setTimeout(function(){ var b=document.getElementById('indexBtn'); if(b) b.click(); }, 360); },
+    membre:function(){ try{ var t=document.querySelector('#dpDetails .dpd-tog'), dp=document.getElementById('detailPoster');
+      if(dp && !dp.classList.contains('s2-ouv') && t) t.click();
+      setTimeout(function(){ window._npGensOuvert=true; try{ if(window._ficheTout) _ficheTout(); else if(window._nueePeaufiner) window._nueePeaufiner(); }catch(_){ } }, 450); }catch(_){ } }
+  };
+  window._e4Act=ACT;
+  /* ⚑ LE CERCLE SANS MEMBRE (décision de lot, à valider — Q600) : la fiche n'a pas de place libre dans son fil (le bloc collant « Un mot… / Planter » le couvre) ;
+     le bloc se pose À DROITE DES NOYAUX, là où viendront les membres — « La première personne s'ajoute ici. » —, à la taille de la ligne « Avec toi seulement » (19 px). */
+  window._e4Cercle=function(aura, k){ if(!aura) return; var v=aura.querySelector('.e4-cercle'); var sans=!((typeof NUEEMEM!=='undefined' && NUEEMEM[k]) || []).length;
+    aura.classList.toggle('e4-sans', sans);   /* sans membre, la rangée n'a rien qui glisse : ni fondu à droite ni rognage, le bloc s'y lit entier */
+    if(!sans){ if(v) v.remove(); return; }
+    if(!v){ var w=document.createElement('div'); w.innerHTML=_e4Vide('Un Cercle, c’est des gens.', 'La première personne s’ajoute ici.', 'membre'); v=w.firstChild; v.classList.add('e4-cercle'); aura.appendChild(v); }
+    var D=aura.getBoundingClientRect(), sc=(aura.offsetWidth? D.width/aura.offsetWidth : 1)||1, droite=0;
+    [].forEach.call(aura.querySelectorAll('.kring'), function(c){ var r=c.getBoundingClientRect(); if(r.width>2 && r.height>2) droite=Math.max(droite, (r.right-D.left)/sc); });
+    var g=Math.round(Math.max(150, droite+18)); v.style.left=g+'px'; v.style.top='0px'; v.style.width=Math.max(120, 342-g)+'px'; };
+  var G=null, dernier=0;
+  function agir(t){ var a=t && t.getAttribute('data-e4'); if(!a || !ACT[a]) return false; var n=performance.now(); if(n-dernier<700) return true; dernier=n;
+    window._e4Dernier={act:a, t:Math.round(n)}; try{ ACT[a](); }catch(_){ } return true; }
+  /* ⚑ La ligne 2 d'un Cercle sans membre vit sous #dpMain (la colonne de la fiche, z-index 2, qui prend le doigt comme pour les Noyaux) : on la lit à sa GÉOMÉTRIE,
+     seulement la fiche ouverte et son Peaufiner fermé (la règle des murs, v104). */
+  function cible(ev){ var t=ev.target, c=t && t.closest ? t.closest('[data-e4]') : null; if(c) return c;
+    try{ var dp=document.getElementById('detailPoster'), l=dp && dp.classList.contains('show') && !dp.classList.contains('s2-ouv') ? dp.querySelector('.e4-cercle [data-e4]') : null;
+      if(l){ var p=(ev.changedTouches&&ev.changedTouches[0])||(ev.touches&&ev.touches[0])||ev, r=l.getBoundingClientRect();
+        if(r.width>0 && p.clientX>=r.left && p.clientX<=r.right && p.clientY>=r.top && p.clientY<=r.bottom) return l; } }catch(_){ }
+    return null; }
+  function deb(ev){ var t=cible(ev); if(!t){ G=null; return; } var p=(ev.touches&&ev.touches[0])||ev; G={t:t, x:p.clientX, y:p.clientY, d:performance.now()}; }
+  function fin(ev){ var g=G; G=null; if(!g) return; var p=(ev.changedTouches&&ev.changedTouches[0])||ev, t=cible(ev);
+    if(Math.hypot(p.clientX-g.x, p.clientY-g.y)>10 || performance.now()-g.d>600) return;
+    if(t!==g.t && !(t && g.t.contains(t))) return; if(agir(g.t)){ try{ ev.stopPropagation(); }catch(_){ } } }
+  document.addEventListener('pointerdown', deb, true); document.addEventListener('touchstart', deb, {capture:true, passive:true});
+  document.addEventListener('pointerup', fin, true); document.addEventListener('touchend', fin, {capture:true, passive:true});
+  document.addEventListener('click', function(ev){ var t=cible(ev); if(!t) return; ev.stopPropagation(); ev.preventDefault(); agir(t); }, true);
+  /* ⚑ LA TOILE VIDE : « Rien n'est planté. » / « Qu'as-tu dit aujourd'hui que tu comptes tenir ? » → la page + d'un Promi (clôt Q584). Seulement sur l'accueil,
+     aucune parole (hors gardés de côté et demandes) ni aucun Cercle, jamais pendant l'onboarding ni le guide. */
+  var T=null;
+  function toileVide(){ try{ var dv=document.getElementById('device'), st=document.getElementById('stage'); if(!dv || !st) return;
+      if(!T){ T=document.createElement('div'); T.id='e4Toile'; T.className='e4v'; T.innerHTML='<div class="e4-l1">Rien n’est planté.</div><div class="e4-l2" role="button" data-e4="plus">Qu’as-tu dit aujourd’hui que tu comptes tenir ?</div>'; dv.appendChild(T); }
+      var n=(typeof promises!=='undefined'?promises:[]).filter(function(p){ return !p.draft && !p.brouillon && !p.req; }).length, c=(typeof NUE!=='undefined')?Object.keys(NUE).length:0;
+      var onb=document.getElementById('promiOnb'), onbV=!!(onb && !onb.classList.contains('gone') && getComputedStyle(onb).display!=='none');
+      var gd=document.getElementById('guide'), gdV=!!(gd && getComputedStyle(gd).display!=='none' && getComputedStyle(gd).visibility!=='hidden' && gd.getBoundingClientRect().height>0);
+      var ouvert=!!document.querySelector('#device .screen.show:not(#studioScreen):not(#auraScreen), #device .sheet.show, #detailPoster.show, #createSheet.show');
+      var vu=(n===0 && c===0 && !onbV && !gdV && !ouvert);
+      if(T.classList.contains('vu')!==vu) T.classList.toggle('vu', vu); }catch(_){ } }
+  setInterval(toileVide, 400); try{ if(window._paroles && window._paroles.abonne) window._paroles.abonne(toileVide); }catch(_){ }
+})();
+</script>
 </body>
 
 </html>
