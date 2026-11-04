@@ -37388,6 +37388,19 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var ok=true; annulable(msg, function(){ ok=false; }, 5000);
     setTimeout(function(){ if(ok){ try{ faire(); }catch(_){} } }, 5200);
   }
+  /* ⚑ v179a (Tom, C-233) — « TOUT EFFACER » SANS LATENCE : plus de délai d'annulation (la feuille « Effacer · Garder » est la protection) ; la confirmation pose,
+     dans la même image, l'aplat qui ouvre l'onboarding d'un premier lancement — le fond de la Toile du thème clair, #DFCAA4, celui que le nouveau chargement
+     peint à sa première image, avant que « Toi, c'est … ? » s'ouvre en flaques —, vide le stockage, et recharge une fois l'aplat peint : l'ancienne Toile ne se revoit jamais,
+     même une image (Safari garde la dernière image de la page jusqu'à la première de la suivante : c'est cet aplat). */
+  function effaceTout(){
+    try{ var D=document.getElementById('device'), r=D.getBoundingClientRect(), k=r.width/390, rad=parseFloat(getComputedStyle(D).borderTopLeftRadius)||0,
+        v=document.createElement('div'); v.id='effaceVoile';
+      v.style.cssText='position:fixed;left:'+r.left+'px;top:'+r.top+'px;width:'+r.width+'px;height:'+r.height+'px;border-radius:'+(rad*k)+'px;background:#DFCAA4;z-index:2147483647;pointer-events:auto;margin:0;padding:0';
+      document.body.appendChild(v); }catch(_){}
+    try{ localStorage.clear(); }catch(_){}
+    /* l'aplat est PEINT avant le rechargement (deux images) : rechargée dans la même tâche, Safari iOS gardait l'image d'avant — les Réglages et la feuille —
+       jusqu'à la première image de la page neuve (vu dans Safari iOS 26.1) */
+    var go=function(){ location.reload(); }; try{ requestAnimationFrame(function(){ requestAnimationFrame(go); }); setTimeout(go, 120); }catch(_){ go(); } }
   function instantane(){
     var s={pr:promises.slice(), liens:promises.map(function(p){ return [p,p.nuee]; })};
     try{ s.NUE=Object.assign({},NUE); }catch(_){}
@@ -37499,10 +37512,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     /* ⚑ v163b (Tom, C-195) : UNE rangée « Tout effacer » — la feuille, puis 5 s pour annuler, puis tout le stockage de l'appareil est vidé et l'app repart */
     if((c=$i('resetData')) && !c._v16){ c._v16=1;
       c.onclick=function(){ conf({titre:'Tout effacer ?', texte:'Tes Promi, tes Cercles et tes réglages seront effacés de cet appareil.', oui:'Effacer', non:'Garder',
-        faire:function(){ differe('Tout est effacé', function(){ try{ localStorage.clear(); }catch(_){} location.reload(); }); }}); }; }
+        faire:effaceTout}); }; }
     if((c=$i('pvReset')) && !c._v16){ c._v16=1;
       c.onclick=function(){ conf({titre:'Tout effacer ?', texte:'Tous tes Promi seront effacés de cet appareil.', oui:'Effacer', non:'Garder',
-        faire:function(){ differe('Tout est effacé', function(){ try{ localStorage.clear(); }catch(_){} location.reload(); }); }}); }; }
+        faire:effaceTout}); }; }
     /* l'ancien bouton caché « Supprimer » de la fiche passe par le même chemin */
     if((c=$i('actDel')) && !c._v16){ c._v16=1; c.onclick=function(){ try{ window._v16SupprimerPromi(cur); }catch(_){} }; }
     /* la photo retirée revient si on annule */
@@ -42974,7 +42987,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    boîte dépasse l'encre) ; l'entrée et la sortie en flaques passent à 350 ms chacune (1 100 et 900 avant). */
 (function(){
   var Q=new URLSearchParams(location.search);
-  var R=window._veilleRegle={DELAI:(Math.max(1, +Q.get('veille')||45))*1000, VITESSE:61.2,   /* ⚑ v175 (Tom, C-181) : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
+  var R=window._veilleRegle={DELAI:(Q.has('veille') && +Q.get('veille')>0 ? +Q.get('veille') : 60)*1000, VITESSE:61.2,   /* ⚑ v179a (Tom, C-232) : 60 s, quelle que soit l'adresse ; `?veille=` seulement s'il est dans l'adresse du moment, jamais mémorisé · v175 : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
      VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y
@@ -43106,11 +43119,21 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(actif || performance.now()<avale){ if(actif){ avale=performance.now()+800; quitte(); } try{ e.preventDefault(); }catch(_){ } e.stopImmediatePropagation(); e.stopPropagation(); return; } }
   ['pointerdown','touchstart','mousedown'].forEach(function(n){ window.addEventListener(n, function(e){ if(n==='pointerdown' && !actif) doigts++; if(n==='pointerdown' && !verrou) demande(); touche(e); }, {capture:true, passive:true}); });   /* passifs : un écouteur non passif sur toute la page retarde le défilement dans Safari ; pendant la veille le toucher est arrêté (propagation) et le clic qui suit, avalé */
   ['pointerup','pointercancel'].forEach(function(n){ window.addEventListener(n, function(e){ doigts=Math.max(0, doigts-1); dernier=performance.now(); if(performance.now()<avale){ e.stopImmediatePropagation(); } }, {capture:true}); });
-  ['touchend','touchmove','mouseup','click','keydown','wheel','pointermove'].forEach(function(n){ window.addEventListener(n, function(e){ if(n==='pointermove' && !e.buttons && e.pointerType==='mouse') return; dernier=performance.now();
+  ['touchend','touchmove','mouseup','click','keydown','wheel','pointermove'].forEach(function(n){ window.addEventListener(n, function(e){ if(n==='pointermove' && !e.buttons && e.pointerType==='mouse') return; if(!e.isTrusted && (n==='click'||n==='keydown') && !actif) return;   /* v179a : un clic posé par l'app elle-même (`el.click()` au démarrage) n'est pas un toucher */
+      dernier=performance.now();
       if(performance.now()<avale || actif){ if(n!=='pointermove'){ try{ e.preventDefault(); }catch(_){ } e.stopImmediatePropagation(); e.stopPropagation(); } } }, {capture:true, passive:n==='click'||n==='keydown'?false:true}); });
-  document.addEventListener('input', function(){ dernier=performance.now(); }, true);
+  document.addEventListener('input', function(e){ if(e.isTrusted) dernier=performance.now(); }, true);
   function nDoigts(){ var D=window.__doigts; return D ? D.n : doigts; }   /* v167 (C-181 §3) : le compteur posé en tête de page — aucun écouteur ne peut lui avaler un lever */
-  setInterval(function(){ if(actif || COUPEE) return; try{ if(window.__doigts && window.__doigts.t>dernier) dernier=window.__doigts.t; }catch(_){ } if(nDoigts()>0 || saisie() || document.visibilityState!=='visible'){ dernier=performance.now(); return; }
+  /* ⚑ v179a (Tom, C-232) — « LA VEILLE PART AU BOUT DE QUELQUES SECONDES » (iPhone). LA CAUSE : sur l'iPhone la page est servie en http, le Wake Lock n'y existe pas
+     (`navigator.wakeLock` absent hors contexte sûr) : l'écran se verrouille seul (le verrouillage auto de l'iPhone), Safari GÈLE la page — la minuterie ne tourne
+     plus — et au déverrouillage le premier tour de minuterie trouvait `maintenant − dernier toucher` ≥ le délai : le temps passé écran éteint comptait comme du
+     calme, la veille partait aussitôt rentré. Aujourd'hui : rien ne compte pendant que la page est cachée ou gelée — au retour (`visibilitychange`, `pageshow`)
+     et après tout tour de minuterie manqué (un écart de plus de 5 s entre deux tours : la page dormait ; le chargement de l'app bloque déjà le fil 1 à 2 s), le compte repart de zéro. */
+  var tic=performance.now();
+  function repart(){ dernier=performance.now(); tic=dernier; }
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible') repart(); }, true);
+  window.addEventListener('pageshow', repart, true);
+  setInterval(function(){ var t=performance.now(), saut=t-tic>5000; tic=t; if(saut){ dernier=t; return; } if(actif || COUPEE) return; try{ if(window.__doigts && window.__doigts.t>dernier) dernier=window.__doigts.t; }catch(_){ } if(nDoigts()>0 || saisie() || document.visibilityState!=='visible'){ dernier=performance.now(); return; }
     if(performance.now()-dernier>=R.DELAI) demarre(); }, 250);
   window._veille=function(){ var V=actif; return {doigts:nDoigts(), doigtsVeille:doigts, saisie:saisie(), calme:Math.round(performance.now()-dernier), coupee:COUPEE, delai:R.DELAI, visible:document.visibilityState, active:!!V, depuis:V?Math.round(performance.now()-V.t0):0, couleurs:V?V.couleurs.slice():[], coins:V?V.coins.slice():[], rebonds:V?V.rebonds:0,
     logo:V?[V.s.x, V.s.y, V.logo.__w, V.logo.__h]:null, bornes:V?V.B:null, cadre:V?V.C:null, fond:V?V.fond:null, amande:V?V.amande:null, verrou:etatVerrou, couleur:V?V.couleur:null, tons:V?V.tons.slice():null, derniere:window._veilleDerniere||null}; };

@@ -235,6 +235,21 @@ la nature, la ligne dit l'état.)*
 > **⚑ Q599 — LA DALLE DESCEND AVEC L'HORIZON, 40 % DE SON DÉPLACEMENT** (30 à 50 % décidé ; `window._ppDalleHz`, `?dallehz=` 0 à 1 pour comparer, jamais mémorisé), même durée, même courbe : le peintre `trait()` décale `dalle.y` du même `_hz`, × 0,4, arrondi au quart de point ; sa taille ne change pas (§4). Captures Safari : `planche-v178b/q599-*.png`.
 > **Juges remis au niveau** (originaux `sauvegardes/*-avant-v178b.py`) : `redteam_invite_page_plus` (B pendant la frappe rien ; C après Retour l'horizon puis le trait ; Q la dalle à 30–50 %, image par image ; l'arrivée de l'horizon se cherche après la dernière image « pas prête » : pendant le mouvement du clavier il se lit sous l'onde finale ; la dalle ± 1,5 pt, elle se recadre sur sa matière), `redteam_clavier_doux` (« la fin » attend la naissance du trait), `redteam_nature_plus` (B valide avant d'attendre le clignotement).
 
+### ⚑ v179a (5 nov. 2026) — LA VEILLE À 60 s, JAMAIS AU RETOUR D'UN ÉCRAN ÉTEINT (C-232) ; « TOUT EFFACER » SANS DÉLAI (C-233). (Décisions Tom.) Ce bloc CORRIGE v175b (la veille à 45 s) et v163b (C-195 : les 5 s pour annuler).
+> **Validés par Tom : C-228, C-229, E4 écrans vides (Fil, Index, recherche).**
+> **⚑ C-232 — LA CAUSE** : sur l'iPhone la page est servie en http, le Wake Lock n'y existe pas (hors contexte sûr) : l'écran se verrouille seul, Safari GÈLE la page (sa
+> minuterie ne tourne plus) ; au déverrouillage, le premier tour de minuterie trouvait « maintenant − dernier toucher » au-delà du délai — le temps écran éteint comptait comme
+> du calme, la veille partait aussitôt. Et le délai était encore 45 s. **Aujourd'hui : 60 s ; au retour au premier plan (`visibilitychange`, `pageshow`) et après tout tour de
+> minuterie manqué de plus de 5 s (la page dormait ; le chargement de l'app bloque déjà le fil 1 à 2 s), le compte repart de zéro ; un clic posé par l'app elle-même (`el.click()`,
+> `isTrusted` faux) ne compte plus comme un toucher ; `?veille=N` ne vaut que dans l'adresse du moment, jamais mémorisé.** *La règle* : **un compte de temps de calme ne compte
+> jamais le temps où la page dormait.** Juge : **`redteam_veille_60.py`** (état de Tom ; `?veille=5` ; 60 s sans toucher ; 60 s après un toucher ; page gelée 2 min puis visible ;
+> rouge sur v178 : 45 s et départ immédiat au retour). ⚠ **Le simulateur iOS ne gèle pas la page** (écran verrouillé compris, sa minuterie continue à 1 Hz) : le gel s'y
+> reproduit seulement par émulation en WebKit (horloge qui saute). **`banc-veille.html`** (l'état de Tom, l'app dans un cadre, les départs envoyés au Mac) juge le reste dans Safari iOS.
+> **⚑ C-233 — « TOUT EFFACER »** : plus de délai d'annulation ; la confirmation pose l'aplat d'ouverture de l'onboarding (#DFCAA4, la première image du chargement neuf), vide le
+> stockage, et recharge UNE FOIS L'APLAT PEINT (deux images) — rechargée dans la même tâche, Safari iOS gardait l'image d'avant (les Réglages) jusqu'à la page neuve. *La règle* :
+> **une couche posée juste avant un rechargement n'est vue que si une image passe entre les deux.** Juges : **`redteam_effacer_net.py`**, `redteam_tout_effacer` (C remis au niveau).
+> ⚠ « Toi, c'est … ? » paraît avec le document neuf, 0,9 à 1 s après le toucher en WebKit (le temps de recharger l'app) ; l'aplat, lui, dès l'image qui suit.
+
 ### ⚑ v178a (4 nov. 2026) — PEAUFINER D'UN CERCLE, RÉCIDIVE : REFERMÉ PAR LE X, IL RESTAIT PAR-DESSUS LA FICHE (C-228). (Décision Tom.) Ce bloc COMPLÈTE v177b.
 > **LA CAUSE (reproduite au banc et sur l'état de Tom, présente telle quelle en v176)** : le X du Peaufiner d'un Cercle (`#npFermer` → `_s2Ouvre(false)`) ne retirait que les
 > classes ; les nœuds de ce Peaufiner sont posés EN LIGNE (`pose()` : le défileur `#dpdCorps`, l'entête `#npTete`, les cartes) et ne partent qu'au REPLI de

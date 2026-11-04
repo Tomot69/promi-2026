@@ -1,0 +1,23 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Banc veille</title>
+<!-- v179a (C-232) : la veille sur l'état exporté de Tom, dans Safari iOS. L'état (etats/<etat>) est posé dans le stockage, l'app (`?app=`, app.html par défaut)
+     tourne dans un cadre plein écran, SANS ?veille. Le banc relève, dans la page, chaque départ et chaque fin de la veille, chaque toucher (vrai doigt) et chaque
+     retour au premier plan, et envoie chaque évènement au Mac (/mesure, « veille-banc »). Lu par scratchpad/v179/veille_ios.py. -->
+<style>html,body{margin:0;height:100%;background:#000}#f{position:fixed;left:0;top:0;width:100%;height:100%;border:0}</style>
+<iframe id="f" src="about:blank"></iframe>
+<script>
+(async function(){
+const Q=new URLSearchParams(location.search), APP=Q.get('app')||'app.html', ETAT=Q.get('etat'), F=document.getElementById('f'), RUN=Date.now().toString(36);
+const envoie=o=>{ try{ fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(Object.assign({quoi:'veille-banc',run:RUN,app:APP,ua:navigator.userAgent.slice(0,60)},o)),keepalive:true}); }catch(_){} };
+const d=await (await fetch('etats/'+ETAT,{cache:'no-store'})).json(); localStorage.clear();
+for(const [k,v] of Object.entries(d.ls||{})){ if(['setItem','getItem','removeItem','clear','key','length'].indexOf(k)<0) localStorage.setItem(k,v); }
+localStorage.removeItem('promi_veille_off');
+F.onload=function(){ const w=F.contentWindow; let a=false; const t0=performance.now();
+  envoie({ev:'charge', t:0, delai:null});
+  w.addEventListener('pointerdown',()=>envoie({ev:'toucher', t:Math.round(performance.now()-t0)}),true);
+  document.addEventListener('visibilitychange',()=>envoie({ev:'visibilite', etat:document.visibilityState, t:Math.round(performance.now()-t0)}));
+  setInterval(()=>{ let v=null; try{ v=w._veille&&w._veille(); }catch(e){ v={err:String(e)}; } envoie({ev:'etat', t:Math.round(performance.now()-t0), v:v?{calme:v.calme, doigts:v.doigts, saisie:v.saisie, coupee:v.coupee, delai:v.delai, visible:v.visible, active:v.active, err:v.err}:null, act:(()=>{ try{ const a=w.document.activeElement; return a?(a.id||a.tagName):null; }catch(_){ return '?'; } })()}); }, 5000);
+  setInterval(()=>{ let v=null; try{ v=w._veille&&w._veille(); }catch(_){} if(!v) return; if(v.active!==a){ a=v.active; envoie({ev:a?'depart':'fin', t:Math.round(performance.now()-t0), delai:v.delai, calme:v.calme}); } }, 40); };
+F.src=APP+'?b='+RUN;
+})();
+</script>

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""redteam_veille_depart.py — ⚑ v175 (Tom, C-181) : LA VEILLE PART À 45 s, PARTOUT (90 s en v174, 60 s en v167 ; originaux : sauvegardes/redteam_veille_depart-avant-v175.py, -avant-v174.py).
+"""redteam_veille_depart.py — ⚑ v175 (Tom, C-181) : LA VEILLE PART À 60 s, PARTOUT (v179a, Tom, C-232 ; 45 s en v175, 90 s en v174, 60 s en v167 ; originaux : sauvegardes/redteam_veille_depart-avant-v175.py, -avant-v174.py).
 
 « Au bout de 2 minutes, la veille n'arrive pas. Le délai repasse à 60 s. Reproduis sur mon état exporté, dans Safari WebKit, sur le vrai chemin. Juge : départ à
 60 s ± 1 s sur 5 écrans différents, sur mon état, en WebKit. »
@@ -41,12 +41,12 @@ with sync_playwright() as p:
         pg.evaluate(ouvre); pg.wait_for_timeout(3500)
         r = pg.evaluate(DOIGT, mur)
         if not r: juge('[%s] le dernier toucher (un mur)' % nom, False, 'introuvable'); ctx.close(); continue
-        dep = None; tf = time.time() + 105
+        dep = None; tf = time.time() + 120
         while time.time() < tf:
             v = pg.evaluate("()=>{ const v=_veille(); return [v.active, performance.now()-v.depuis, v.doigts]; }")
             if v[0]: dep = (v[1] - r['t']) / 1000.0; break
             pg.wait_for_timeout(500)
-        juge('[%s] la veille part 45 s (± 1) après le dernier toucher (%s)' % (nom, r['cible'][:24]), dep is not None and 44 <= dep <= 46,
+        juge('[%s] la veille part 60 s (± 1) après le dernier toucher (%s)' % (nom, r['cible'][:24]), dep is not None and 59 <= dep <= 61,
              ('part à %.2f s' % dep) if dep is not None else ('ne part pas à temps · doigts %s' % v[2]))
         ctx.close()
     b.close()

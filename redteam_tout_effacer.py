@@ -2,12 +2,12 @@
 """redteam_tout_effacer.py — ⚑ v163b (Tom, C-195 ; AUDIT-BOUTONS 20, 21, 27, point 7) : UN SEUL « TOUT EFFACER ».
 
 « « Réinitialiser mes données », « Tout effacer » et « Supprimer mon compte » deviennent une seule rangée « Tout effacer » des Réglages, avec feuille de
-confirmation et annulation de 5 s. « Se déconnecter » ne paraît que si un compte existe. Le bouton d'action des feuilles de confirmation prend l'encre du
+confirmation et annulation de 5 s. » ⚑ v179a (Tom, C-233) : « supprime le délai d'annulation de 5 s ; la feuille reste la protection » — C remis au niveau (original : sauvegardes/redteam_tout_effacer-avant-v179.py). « Se déconnecter » ne paraît que si un compte existe. Le bouton d'action des feuilles de confirmation prend l'encre du
 mode en gras, pas #DD4D23. »
 Banc comme Tom (WebKit ×3, doigt), clair et sombre :
   A · les Réglages portent « Tout effacer » une fois ; ni « Réinitialiser mes données » ni « Supprimer mon compte » ; Vie privée n'a plus « Tout effacer » ;
   B · « Tout effacer » touché : la feuille « Tout effacer ? » ; son bouton d'action est à l'encre du mode (fond = encre, ±12), en gras, jamais l'orange d'état ;
-  C · « Effacer », puis « Annuler » dans les 5 s : rien n'est effacé ; « Effacer » sans annuler : après 5 s tout le stockage est vide ;
+  C · « Effacer » : aucun toast d'annulation, le stockage vidé tout de suite (le délai de 5 s est retiré, C-233) ;
   D · « Se déconnecter » absent sans compte, présent avec un compte.
 Preuve : `--fichier=zz-v162.html` rougit.
 """
@@ -40,24 +40,15 @@ with sync_playwright() as p:
         f = pg.evaluate("()=>{ const v=document.getElementById('v16Conf'); if(!v) return null; const o=v.querySelector('.v16-oui'), s=getComputedStyle(o); return [v.querySelector('.v16-conf-t').textContent, o.textContent, s.backgroundColor, s.fontWeight]; }")
         okB = f and 'Tout effacer' in f[0] and f[1] == 'Effacer' and sum(abs(a - b_) for a, b_ in zip(rgb(f[2]), ENC)) <= 36 and int(f[3]) >= 700 and rgb(f[2]) != (221, 77, 35)
         juge('[%s] B · la feuille « Tout effacer ? », l\'action à l\'encre du mode, en gras, jamais l\'orange d\'état' % T, okB, f)
-        if f:
-            o = centre(pg, '#v16Conf .v16-oui'); B.tap(pg, o[0], o[1]); pg.wait_for_timeout(900)
-            a = centre(pg, '#v16Toast button')
-            if a: B.tap(pg, a[0], a[1])
-            pg.wait_for_timeout(6000); n = pg.evaluate("()=>localStorage.getItem('promi_state')!=null")
-            juge('[%s] C · « Effacer » puis « Annuler » dans les 5 s : rien n\'est effacé' % T, a is not None and n, 'annuler %s · état gardé %s' % (a, n))
+        if f:   # ⚑ v179a (Tom, C-233) : plus d'annulation de 5 s — « Effacer » efface tout de suite (la feuille est la protection)
+            o = centre(pg, '#v16Conf .v16-oui'); B.tap(pg, o[0], o[1]); pg.wait_for_timeout(1500)
+            try: n = pg.evaluate("()=>{ var s=localStorage.getItem('promi_state'); return [!!document.getElementById('v16Toast'), s?JSON.parse(s).promises.length:0, !!localStorage.getItem('promi_onb')]; }")
+            except Exception as e: n = ['?', str(e)[:40]]
+            juge('[%s] C · « Effacer » : aucun délai d\'annulation, tout le stockage est vidé tout de suite' % T, n[0] is False and n[1] == 0 and n[2] is False, n)
+            ctx.close(); ctx = B.contexte(b, sombre=sombre); B.toile_pleine(ctx, 5); pg = B.ouvre(ctx, F)
         pg.evaluate("()=>{ localStorage.setItem('promi_compte','fait-apple'); }"); pg.evaluate("()=>closeAll()"); pg.wait_for_timeout(500)
         B.tap_sel(pg, '#settingsBtn'); pg.wait_for_timeout(1800); L = pg.evaluate(RANGEES)
         juge('[%s] D · « Se déconnecter » présent avec un compte' % T, 'Se déconnecter' in L, L)
-        if not sombre:
-            c = centre(pg, '#resetData'); B.tap(pg, c[0], c[1]); pg.wait_for_timeout(700)
-            o = centre(pg, '#v16Conf .v16-oui')
-            if o:
-                pg.evaluate("()=>{ window.__rel=0; try{ Object.defineProperty(location, 'reload', {value:()=>{ window.__rel++; }}); }catch(e){ window.__relErr=String(e); } }")
-                B.tap(pg, o[0], o[1]); pg.wait_for_timeout(6500)
-                try: n = pg.evaluate("()=>[localStorage.length, window.__rel||0]")
-                except Exception as e: n = ['rechargé', str(e)[:40]]
-                juge('[clair] C · « Effacer » sans annuler : après 5 s, tout le stockage est vide', n == ['rechargé', n[1]] or (n[0] <= 1), n)
         ctx.close()
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
