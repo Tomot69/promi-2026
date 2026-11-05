@@ -87,9 +87,16 @@ with sync_playwright() as p:
                 pt = pg.evaluate("()=>{const r=document.getElementById('nfAdd').getBoundingClientRect(); const h=document.elementFromPoint(r.left+r.width/2,r.top+r.height/2); return {x:r.left+r.width/2,y:r.top+r.height/2,dessus:!!h&&(h.id==='nfAdd'||!!h.closest('#nfAdd'))};}")
                 cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': pt['x'], 'y': pt['y']}]})
                 cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
+                pg.wait_for_timeout(600)
+                # ⚑ v179b (Tom, C-230) : le toucher ouvre d'abord le petit menu Promi · Chiche ; « Un Promi » touché au doigt ouvre la page +
+                pm = pg.evaluate("()=>{ const p=document.querySelector('#cpChoix.ouvert .cp-pil[data-k=promi]'); if(!p) return null; const r=p.getBoundingClientRect(); return {x:r.left+r.width/2, y:r.top+r.height/2}; }")
+                if pm:
+                    cdp.send('Input.dispatchTouchEvent', {'type': 'touchStart', 'touchPoints': [{'x': pm['x'], 'y': pm['y']}]})
+                    cdp.send('Input.dispatchTouchEvent', {'type': 'touchEnd', 'touchPoints': []})
                 pg.wait_for_timeout(1600)
                 o = pg.evaluate("()=>{const s=document.getElementById('createSheet');return {ouvert:s.classList.contains('show'),nuee:(typeof selNuee!=='undefined')?selNuee:null,cs:s.classList.contains('cs-nuee')};}")
-                t('[%s · %s] 5 · au doigt, la page + s\'ouvre dans « %s »' % (T, etat, cle), pt['dessus'] and o['ouvert'] and o['nuee'] == cle, 'au doigt %s · %s' % (pt['dessus'], o))
+                o['menu'] = bool(pm)
+                t('[%s · %s] 5 · au doigt, le menu Promi · Chiche, puis « Un Promi » : la page + s\'ouvre dans « %s »' % (T, etat, cle), pt['dessus'] and o['menu'] and o['ouvert'] and o['nuee'] == cle, 'au doigt %s · %s' % (pt['dessus'], o))
             else:
                 t('[%s · %s] 5 · au doigt, la page + s\'ouvre dans « %s »' % (T, etat, cle), False, 'pas d\'entrée')
             pg.evaluate("()=>{closeAll(); const d=document.getElementById('detailPoster'); if(d) d.scrollTop=0; const m=document.getElementById('dpMain'); if(m) m.scrollTop=0;}"); pg.wait_for_timeout(600)

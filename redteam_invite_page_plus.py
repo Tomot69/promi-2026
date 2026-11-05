@@ -262,12 +262,15 @@ with sync_playwright() as p:
     for sb in (False, True):
         ctx = B.contexte(b, sb, vw=430, vh=932); pg = B.ouvre(ctx, F); B.plante_doigt(pg, 'écrire à Lou', 'moi', 0); pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(900)
         ouvre_nat(pg, 'promi'); g = pg.evaluate(GEO); im = Image.open(io.BytesIO(B.capture(pg))).convert('RGB'); hz, _ = horizon(im, im.width / 390.0, g, 'promi'); dq = pg.evaluate(DALLE)
-        juge('[Q · %s] pas prête : la dalle descend de 30 à 50 %% du déplacement de l\'horizon, sa taille gardée' % ('sombre' if sb else 'clair'), dq is not None and hz and 0.3 * hz - 1 <= dq['dy'] <= 0.5 * hz + 1 and abs(dq['dh']) <= 1.5, 'dalle %s pour l\'horizon +%s' % (dq, hz))
+        juge('[Q · %s] pas prête : la dalle descend de 12 à 18 pt avec l\'horizon (C-234), sa taille gardée' % ('sombre' if sb else 'clair'), dq is not None and hz and 12 <= dq['dy'] <= 18 and abs(dq['dh']) <= 1.5, 'dalle %s pour l\'horizon +%s' % (dq, hz))
         pg.evaluate(ENREG); B.tap_sel(pg, phrase('promi')); pg.wait_for_timeout(700); pg.keyboard.type('nager', delay=30); pg.keyboard.press('Enter'); pg.wait_for_timeout(2600)
         Ri = pg.evaluate("()=>window.__inv"); dq2 = pg.evaluate(DALLE); Ds = pg.evaluate("()=>window.__dq||[]")
         juge('[Q · %s] prête : la dalle à sa place, sa taille gardée' % ('sombre' if sb else 'clair'), dq2 is not None and abs(dq2['dy']) <= 1.5 and abs(dq2['dh']) <= 1.5, dq2)   # 1,5 pt : la dalle se recadre sur sa matière à chaque rendu (la respiration, §7)
-        p0 = (dq['dy'] / hz) if (dq and hz) else 0.4; ec = [abs(r['dq'] - p0 * r['hz']) for r in Ri if r['hz'] is not None and r['dq'] is not None and r['hz'] > 0.5]; enr = [r for r in Ri if r['hz'] is not None and 2 < r['hz'] < (hz or 0) - 2]
-        juge('[Q · %s] la dalle bouge AVEC l\'horizon, image par image : même durée, même courbe (sa part constante, à 1 pt près : la dalle se pose au pixel de l\'appareil, sa place au repos à 0,5 pt près)' % ('sombre' if sb else 'clair'), len(ec) >= 3 and max(ec) <= 1.0 and len(enr) >= 2, '%d images · part %.3f · écart max %.2f pt' % (len(ec), p0, max(ec) if ec else -1))
+        # ⚑ v179b (C-234) : la dalle suit l'ÉTAT de l'horizon (16 pt bas, 0 haut, la même part de sa course en mouvement) — elle bouge pendant que l'horizon bouge, sans saut
+        pr = [(r['hz'], r['dq'], r['t']) for r in Ri if r['hz'] is not None and r['dq'] is not None]
+        mob = [d for h, d, t in pr if 0.5 < h < (hz or 0) - 0.5]; fin = [d for h, d, t in pr if h <= 0.5][-3:]
+        pas = max([abs(pr[i + 1][1] - pr[i][1]) / max(1.0, (pr[i + 1][2] - pr[i][2]) / 16.7) for i in range(len(pr) - 1)] or [0])   # à la vitesse : au plus 3 pt par image de 16,7 ms
+        juge('[Q · %s] la dalle bouge AVEC l\'horizon, image par image : en route pendant sa remontée, à sa place à la fin, aucun pas > 3 pt par image (C-234)' % ('sombre' if sb else 'clair'), len(mob) >= 2 and all(0.2 < d < 18 for d in mob) and pas <= 3 and fin and all(abs(d) <= 1.5 for d in fin), '%d images en route · pas max %.2f pt / image · fin %s' % (len(mob), pas, fin))
         ctx.close()
     # v174 (C-213) : tracer avant que ce soit prêt : plus rien à tracer, le geste ne dessine rien ; une fiche garde son départ orange
     ctx = B.contexte(b, False, vw=430, vh=932); pg = B.ouvre(ctx, F); ouvre_nat(pg, 'promi')

@@ -60,7 +60,8 @@ with sync_playwright() as p:
         juge('[%s] fil court : « + Planter dans le Cercle » est 12 pt au-dessus du bandeau' % th, c['bouton'] and c['bandeau'] and pres(c['bandeau'][0] - c['bouton'][1], 12), 'bouton %s' % (c['bouton'] and [round(v, 1) for v in c['bouton']]))
         # un fil LONG : six paroles de plus, plantées depuis la fiche
         for t in ['arroser les tomates', 'tailler la haie', 'pailler les fraisiers', 'récolter les courgettes', 'semer les fèves', 'ranger la serre']:
-            pg.evaluate("()=>{ const b=document.getElementById('nfAdd'); b&&b.click(); }"); pg.wait_for_timeout(1500)
+            pg.evaluate("()=>{ const b=document.getElementById('nfAdd'); b&&b.click(); }"); pg.wait_for_timeout(400)
+            pg.evaluate("()=>{ const p=document.querySelector('#cpChoix.ouvert .cp-pil[data-k=promi]'); p&&p.click(); }"); pg.wait_for_timeout(1500)   # v179b (C-230) : le menu Promi · Chiche
             pg.evaluate("a=>{document.getElementById('fTitle').value=a;window._csEnLair=true;window._csDueISO=null;document.getElementById('addPromi').click()}", t); pg.wait_for_timeout(2600)
             pg.evaluate("()=>{try{closeAll()}catch(e){}}"); pg.wait_for_timeout(500)
             ouvre_cercle()

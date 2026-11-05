@@ -10129,3 +10129,4 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v178b | Page + : le trait ne naît qu'après la validation (Retour, clavier fermé), après la remontée de l'horizon (C-229) ; la dalle suit l'horizon à 40 % (Q599). |
 | v178c | E4 étape 2 : les textes des écrans vides, mot pour mot ; la ligne 2 seule touchable, vers l'action dite (C-078) ; Q584 close. |
 | v179a | La veille part à 60 s, et jamais au retour d'un écran éteint (C-232) ; « Tout effacer » sans délai, directement « Toi, c'est … ? » (C-233). |
+| v179b | La dalle de la page + ne zoome plus (C-234) ; « + Planter dans le Cercle » : Promi ou Chiche (C-230) ; les dalles d'un Cercle entières, dans leur monde (C-231) ; la phrase du Cercle sans membre retirée (C-235) ; les phrases d'exemple jamais deux fois de suite (E4). |

@@ -235,6 +235,33 @@ la nature, la ligne dit l'état.)*
 > **⚑ Q599 — LA DALLE DESCEND AVEC L'HORIZON, 40 % DE SON DÉPLACEMENT** (30 à 50 % décidé ; `window._ppDalleHz`, `?dallehz=` 0 à 1 pour comparer, jamais mémorisé), même durée, même courbe : le peintre `trait()` décale `dalle.y` du même `_hz`, × 0,4, arrondi au quart de point ; sa taille ne change pas (§4). Captures Safari : `planche-v178b/q599-*.png`.
 > **Juges remis au niveau** (originaux `sauvegardes/*-avant-v178b.py`) : `redteam_invite_page_plus` (B pendant la frappe rien ; C après Retour l'horizon puis le trait ; Q la dalle à 30–50 %, image par image ; l'arrivée de l'horizon se cherche après la dernière image « pas prête » : pendant le mouvement du clavier il se lit sous l'onde finale ; la dalle ± 1,5 pt, elle se recadre sur sa matière), `redteam_clavier_doux` (« la fin » attend la naissance du trait), `redteam_nature_plus` (B valide avant d'attendre le clignotement).
 
+### ⚑ v179b (5 nov. 2026) — LA DALLE DE LA PAGE + NE ZOOME JAMAIS (C-234) ; « + PLANTER DANS LE CERCLE » : PROMI OU CHICHE (C-230) ; LES DALLES D'UN CERCLE DANS LEUR MONDE (C-231) ; LA PHRASE DU CERCLE SANS MEMBRE RETIRÉE (C-235) ; LES PHRASES D'EXEMPLE (E4 point 4). (Décisions Tom.) Ce bloc CORRIGE v178b (Q599, `?dallehz`), v178c (le Cercle sans membre, Q600), le §4 (« la matière remplit le champ au plancher », pour la page + et pour un Cercle qui porte des paroles) et v115 (le sac des phrases).
+> **⚑ C-234 — LA CAUSE, mesurée (WebKit, état de Tom)** : la boîte de la dalle se tirait de `base`, et `base` change pendant la saisie — elle suit le nombre de lignes de la phrase et
+> passe à 144 quand le champ de saisie est ouvert, c'est-à-dire AU PLANCHER, où la matière remplissait tout le champ : 147 × 167 pt à l'ouverture, 390 × 191 pendant la frappe, 176 × 200
+> validée. **Aujourd'hui la taille est FIXÉE À L'OUVERTURE de la page + (`window._ppDalleT`, tirée de la base au repos) et ne change plus jusqu'à sa fermeture ; au plancher la vague
+> la recouvre (découpe par l'onde), elle n'est jamais agrandie. Elle suit l'ÉTAT de l'horizon (`window._ppHzDalle` : bas 16 pt, haut 0, la même part de sa course en mouvement), jamais
+> sa cible mesurée** — pendant que le clavier se ferme, la phrase glisse encore et la cible mesurée (`hzCible`) tombe à 0 quelques centaines de ms : la dalle remontait de 16 pt d'un
+> coup puis redescendait. `?dallehz` est retiré. Juge : **`redteam_dalle_fixe.py`** (la dalle PIÉGÉE à chaque dessin : une taille, ≤ 18 pt, ≤ 3 pt par image de 16,7 ms ; trois natures, deux
+> échelles). `redteam_invite_page_plus` Q remis au niveau (12 à 18 pt). ⚠ **Un saut se juge à la VITESSE, pas d'un relevé au suivant** : sous charge, deux images espacées de 30 à 60 ms
+> d'une remontée régulière font 2 à 5 pt.
+> ⚠ **Vu, non touché (A5, C-229 validé)** : pendant ces mêmes centaines de ms l'horizon lui-même lit une cible de 0 ; si la page se repeint dans ce créneau (observé une fois sur deux passes au banc),
+> l'horizon est peint à sa place finale puis redescend à 40 pt avant de remonter — le même saut, sur la vague.
+> **⚑ C-230 — LE MENU DE « + PLANTER DANS LE CERCLE »** (`lot-V179B-CERCLE-PLUS`, `#cpChoix`) : deux encarts, Chiche puis Promi, les codes de `#accChoix .acc-pil` (aplat de la nature,
+> contour crème 2 pt, « Un » en Gilbert, la nature en PromiLate capitales) sans le texte de droite, 300 × 60 (0,89 de l'accueil), 10 pt au-dessus du bouton ; Promi : le chemin d'avant
+> (`#nqAddPromi`) ; Chiche : le chemin de l'encart « Un Chiche » de l'accueil, puis le Cercle rattaché (`selNuee`, « tout le monde ») ; un toucher à côté referme et n'actionne rien.
+> Juge : **`redteam_cercle_plus.py`** ; `redteam_nuee_entree` 5 et `redteam_cercle_tom` remis au niveau (ils plantaient par le bouton : il ouvre le menu). Capture `planche-v179b/cercle-menu.png`.
+> **⚑ C-231 — LA BANDE D'UN CERCLE QUI PORTE DES PAROLES** : le semis (cases qui couvrent le champ, dalles ×1,35 dans le monde du Studio, décalées, coupées par le plateau, les bords et
+> la vague) est remplacé par la méthode de « Ce que tu as tenu » : chaque dalle rendue à la taille de sa boîte DANS LE MONDE ET LA PALETTE DE SA PLANTATION (`_rendDalle(id, w, h,
+> {monde})`), posée 1:1, entière ; des boîtes égales (rapport 1,3, 12 pt entre deux, la largeur de grille qui donne les plus grandes), de la marge de gauche, chaque colonne centrée dans
+> sa place entre le plateau (100 pt + 12) et la vague (10 pt d'air) : la rangée suit doucement la vague ; jamais sous le bouton photo. Le Cercle VIDE garde ses graines. Le moteur n'est pas
+> touché. Juge : **`redteam_cercle_dalles.py`** ; `redteam_nuee` remis au niveau (« la matière remplit le champ » ne vaut plus que pour un Cercle vide). ⚠ **La bande est étroite : avec
+> six paroles (base 176), 34 × 26 pt par boîte.** Banc : `banc-etats/etat-cercle.json` (six paroles, trois mondes) ; `banc_tom.toile_pleine(ctx, 'cercle')`.
+> ⚠ **Vu, non touché (A5, identique sur v179a)** : page + d'un Chiche, une phrase de cinq lignes (« courir le marathon de Paris avec toute la bande ») : la dernière ligne
+> (« avec qui en est ? ») descend à 705 pt et passe sous le rail du pinceau (691 → 735), « garder de côté » aussi — la mise en page de la page + ne prévoit pas cinq lignes.
+> **⚑ C-235** : « Un Cercle, c'est des gens. » retiré partout, avec `_e4Cercle`, son action `membre`, son placement et ses règles (Q600 sans objet). `redteam_vides` remis au niveau.
+> **⚑ E4 point 4 — LES PHRASES D'EXEMPLE** : la dernière sortie est gardée (`promi_ex_der_<type>`) et n'est jamais retirée juste après elle-même, même quand le sac repart de zéro ;
+> la liste ne change pas. Juge : **`redteam_exemples.py`** (50 ouvertures réelles ; 2 000 par liste ; rouge sur v178 : 1 à 14 répétitions par liste).
+
 ### ⚑ v179a (5 nov. 2026) — LA VEILLE À 60 s, JAMAIS AU RETOUR D'UN ÉCRAN ÉTEINT (C-232) ; « TOUT EFFACER » SANS DÉLAI (C-233). (Décisions Tom.) Ce bloc CORRIGE v175b (la veille à 45 s) et v163b (C-195 : les 5 s pour annuler).
 > **Validés par Tom : C-228, C-229, E4 écrans vides (Fil, Index, recherche).**
 > **⚑ C-232 — LA CAUSE** : sur l'iPhone la page est servie en http, le Wake Lock n'y existe pas (hors contexte sûr) : l'écran se verrouille seul, Safari GÈLE la page (sa

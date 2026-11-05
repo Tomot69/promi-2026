@@ -125,8 +125,9 @@ def tour(b, sombre, vw, vh, nom):
         pg.evaluate("()=>{const x=[...document.querySelectorAll('#createSheet .tile')][2];x&&x.click()}"); pg.wait_for_timeout(1500)
         pg.evaluate("()=>{ const n=document.getElementById('nName'), b=document.getElementById('addNuee'); n.value='les voisins'; b.click(); }"); pg.wait_for_timeout(3200); ferme(pg)
         cle = pg.evaluate("()=>Object.keys(NUE).find(k=>NUE[k]==='les voisins')"); pg.evaluate("(k)=>{closeAll();openNueeDetail(k)}", cle); pg.wait_for_timeout(2600)
-        bloc(pg, '#dAura .e4-cercle', 'cercle', T); pg.wait_for_timeout(1600)
-        juge(T + ' ③ cercle sans membre : la ligne 2 ouvre Peaufiner sur l\'ajout d\'une personne', pg.evaluate("()=>document.getElementById('detailPoster').classList.contains('s2-ouv') && !!window._npGensOuvert"))
+        # ⚑ v179b (Tom, C-235) : « Un Cercle, c'est des gens. » est SUPPRIMÉ partout, avec son code — un Cercle sans membre ne porte aucune phrase
+        cz = pg.evaluate("()=>({noeud:!!document.querySelector('.e4-cercle'), texte:/c.est des gens|premi.re personne s.ajoute/i.test(document.body.innerText||''), code:typeof window._e4Cercle})")
+        juge(T + ' ③ cercle sans membre : aucune phrase, aucun nœud, plus de code (C-235)', not cz['noeud'] and not cz['texte'] and cz['code'] == 'undefined', cz)
         ferme(pg)
     if pg.__dict__.get('erreurs'): juge(T + ' aucune erreur de page', False, pg.__dict__['erreurs'][:2])
     ctx.close()

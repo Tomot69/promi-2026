@@ -32,7 +32,7 @@ def toile_pleine(ctx, n=25):
     l'app elle-même et gardées dans banc-etats/etat-n.json (tout le stockage local ; bâties par scratchpad/v145/etats.py). À appeler après
     `contexte()` et avant `ouvre()`. Le juge de v144 plantait trois paroles sur une Toile vide : il n'a pas vu ce qui saccadait chez Tom."""
     import json
-    st = json.load(io.open('banc-etats/etat-%d.json' % n, encoding='utf-8')); st.pop('promi_theme', None)
+    st = json.load(io.open('banc-etats/etat-%s.json' % n, encoding='utf-8')); st.pop('promi_theme', None)
     ctx.add_init_script("try{ if(!sessionStorage.getItem('__etat')){ sessionStorage.setItem('__etat','1'); var E=%s; for(var k in E) localStorage.setItem(k,E[k]); } }catch(e){}" % json.dumps(st))
 def etat_tom(chemin=None):
     """⚑ v160 (C-179) — le dernier état exporté par l'iPhone de Tom (`?export=1` → etats/tom-<date>.json), ou celui qu'on nomme ; None s'il n'y en a pas."""

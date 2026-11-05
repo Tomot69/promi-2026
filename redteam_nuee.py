@@ -588,9 +588,16 @@ def main():
             else:
                 if p['champ'] == 0:
                     peint.append((nom, 'CHAMP', 'aucun aplat peint'))
-                if p['sansMatiere'] > 2:
+                # ⚑ v179b (Tom, C-231) — CONTRAT RÉÉCRIT : la bande d'un Cercle QUI PORTE DES PAROLES n'est plus un semis qui remplit le champ — ses dalles, entières,
+                # chacune dans son monde, rangées comme « Ce que tu as tenu » (redteam_cercle_dalles) : le champ entre elles reste nu. Pour lui on vérifie que
+                # chaque parole a sa dalle ; la règle « la matière remplit le champ » ne vaut plus que pour les graines d'un Cercle VIDE.
+                _np = (reel or {}).get('n') or 0
+                if _np:
+                    _nc = pg.evaluate("()=>(window._nueeSemis&&window._nueeSemis.cases||[]).length")
+                    if _nc != _np: peint.append((nom, 'TOILE', '%d dalles pour %d paroles' % (_nc, _np)))
+                elif p['sansMatiere'] > 2:
                     peint.append((nom, 'TOILE', '%d abscisses sans matière' % p['sansMatiere']))
-                if p['vide'] > p['matiere'] / 2 and p['matiere']:
+                if not _np and p['vide'] > p['matiere'] / 2 and p['matiere']:
                     peint.append((nom, 'TOILE', 'bandeau nu au-dessus du trait (%d/%d)'
                                   % (p['vide'], p['matiere'])))
                 if p['trait'] == 0:
