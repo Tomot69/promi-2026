@@ -9,7 +9,8 @@ trait revient à son état d'avant (la moitié plantée reste, rien n'est valid�
 Comme Tom (banc_tom : WebKit, 390 × 844 ×3, doigt, Toile vide, paroles plantées par l'app, fiche ouverte en touchant la dalle). 60 EN DUR.
   TENIR  (sur la fiche)  : 30 pt → refusé, la parole n'est pas tenue, le trait est revenu ; un doigt POSÉ 1,2 s sans avancer → refusé ;
                            70 pt lent (1 s) → tenue ; 70 pt rapide (0,12 s) → tenue ;
-  PLANTER (sur la page +) : 30 pt → rien n'est planté, la page + reste ; 70 pt lent → planté ; 70 pt rapide → planté ;
+  PLANTER (sur la page +) : 30 pt → rien n'est planté, la page + reste ; ⚑ v180a (Tom, C-237) « planter, c'est tracer la première moitié du trait » :
+                           70 pt qui n'arrivent pas au milieu → rien ; jusqu'au milieu (40 → 195), lent puis rapide → planté ;
   la règle déclarée vaut 60. (v147 : le contrôle de la main fantôme est retiré avec elle, C-139.)
 Le verdict se lit sur l'ÉTAT RÉEL (le statut de la parole, le nombre de paroles), jamais sur ce que le geste déclare.
 Preuve : rouge sur v142 (python3 redteam_trait.py zz-av143.html).
@@ -45,11 +46,14 @@ with sync_playwright() as p:
     page_plus('rendre le livre'); n0 = pg.evaluate(ST)['n']
     trait(pg, 'planterZone', 40, 30, 30); pg.wait_for_timeout(1500); s = pg.evaluate(ST)
     juge('PLANTER · 30 pt : rien n\'est planté, la page + reste ouverte', s['n'] == n0 and s['cs'], 'paroles %d → %d · page + %s · geste %s' % (n0, s['n'], s['cs'], s['d']))
-    trait(pg, 'planterZone', 40, 70, 100); pg.wait_for_timeout(3200); s = pg.evaluate(ST)
-    juge('PLANTER · 70 pt lent (1 s) : la parole est plantée', s['n'] == n0 + 1, 'paroles %d → %d · geste %s' % (n0, s['n'], s['d']))
+    trait(pg, 'planterZone', 40, 70, 100); pg.wait_for_timeout(1500); s = pg.evaluate(ST)
+    juge('PLANTER · 70 pt sans atteindre le milieu : rien n\'est planté (C-237)', s['n'] == n0 and s['cs'], 'paroles %d → %d · geste %s' % (n0, s['n'], s['d']))
+    z = pg.evaluate(ZONE, 'planterZone'); dxm = 195 - 40 if z else 155
+    trait(pg, 'planterZone', 40, dxm + 4, 100); pg.wait_for_timeout(3200); s = pg.evaluate(ST)
+    juge('PLANTER · jusqu\'au milieu, lent (1 s) : la parole est plantée', s['n'] == n0 + 1, 'paroles %d → %d · geste %s' % (n0, s['n'], s['d']))
     page_plus('écrire à Lou'); n1 = pg.evaluate(ST)['n']
-    trait(pg, 'planterZone', 40, 70, 12); pg.wait_for_timeout(3200); s = pg.evaluate(ST)
-    juge('PLANTER · 70 pt rapide (0,12 s) : la parole est plantée', s['n'] == n1 + 1, 'paroles %d → %d · geste %s' % (n1, s['n'], s['d']))
+    trait(pg, 'planterZone', 40, dxm + 4, 12); pg.wait_for_timeout(3200); s = pg.evaluate(ST)
+    juge('PLANTER · jusqu\'au milieu, rapide (0,12 s) : la parole est plantée', s['n'] == n1 + 1, 'paroles %d → %d · geste %s' % (n1, s['n'], s['d']))
     plante(pg, 'réparer le vélo'); pg.wait_for_timeout(800)
     ids = pg.evaluate("()=>promises.map(p=>p.id)")
     # ── TENIR ──

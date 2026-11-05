@@ -1518,6 +1518,7 @@ Un bandeau : le message + le bouton « Annuler » ; il reste **5 s**. « Annu
   le vert amande `#8FE08F` ; l'angle tiré à chaque rebond, 45° ± 2 à 3° ; aucun coin dans la première minute ni dans la minute qui suit un coin ; mesuré
   sur 30 × 2 h : un coin toutes les 16,6 min. Entrée et sortie en flaques. « Réduire les animations » : le logo fixe au centre, sans flaques.
 - **Écran allumé** : en Swift, `UIApplication.shared.isIdleTimerDisabled = true` tant que Promi est au premier plan ; relâché après 10 min de veille ; sans
+  ⚑ v180a (C-236) : le prototype tient l'écran allumé dès le premier toucher, PAS seulement pendant la veille — Screen Wake Lock, ou en http une vidéo de silence hors de l'écran (NoSleep, sans `loop`). En Swift ce repli n'existe pas : `isIdleTimerDisabled = true` au premier plan, `false` après 10 min de veille et à la sortie au fond, remis au toucher suivant.
   limite seulement quand l'iPhone est branché (`UIDevice.current.batteryState` = `.charging` ou `.full`). Le prototype le fait par le Screen Wake Lock de
   Safari (demandé au premier toucher, redemandé au retour au premier plan).
 - Source : `app.html`, `lot-V161-VEILLE` ; juge `redteam_veille.py`.

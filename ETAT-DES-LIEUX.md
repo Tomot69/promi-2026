@@ -10130,3 +10130,4 @@ Sans iPhone, la preuve est faite au simulateur ou au banc (WebKit) ; l'item rest
 | v178c | E4 étape 2 : les textes des écrans vides, mot pour mot ; la ligne 2 seule touchable, vers l'action dite (C-078) ; Q584 close. |
 | v179a | La veille part à 60 s, et jamais au retour d'un écran éteint (C-232) ; « Tout effacer » sans délai, directement « Toi, c'est … ? » (C-233). |
 | v179b | La dalle de la page + ne zoome plus (C-234) ; « + Planter dans le Cercle » : Promi ou Chiche (C-230) ; les dalles d'un Cercle entières, dans leur monde (C-231) ; la phrase du Cercle sans membre retirée (C-235) ; les phrases d'exemple jamais deux fois de suite (E4). |
+| v180a | L'écran reste allumé : Wake Lock, sinon une vidéo silencieuse hors de l'écran relancée par son temps, relâchée après 10 min de veille (C-236) ; page + d'un Promi et d'un Chiche : on trace la moitié, la dalle naît au milieu avec l'animation de l'onboarding, par son code, puis rejoint la Toile (C-237). |

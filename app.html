@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v179b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v180a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -3406,7 +3406,7 @@ $('#dueChips').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;
     try{ di.showPicker ? di.showPicker() : di.focus(); }catch(_){ try{ di.focus(); }catch(__){ } } return; }
   else { marque(c); due=+c.dataset.d; window._csEnLair=false; window._csDueISO=null; if(mots[due]) P.quand=mots[due]; }
   try{ if(window._phraseRendu) _phraseRendu(); }catch(_){ } };
-window.printTirage=function(btnId,closeFn){try{window._tirageActive=true;window._ppPart=true;/* v149 (C-155) : la page + s'en va — rien ne la recompose jusqu'à la coupe (`_ppPart`, levé au départ, baissé à la coupe) */var _dc=document.getElementById('csTrameCv');var _cs=document.getElementById('createSheet');var _k=_cs?(_cs.getAttribute('data-kind')||'promi'):'promi';var _tc={promi:'#82AEF8',nuee:'#E6D8FA',draft:'#FB4C0D'}[_k]||'#82AEF8';var _fired=false,_fin=function(){if(_fired)return;_fired=true;window._ppPart=false;/* v103 (Tom : « retire ce qui apparaît une fraction de seconde ») : la dalle a couvert l'écran — ON COUPE. La page + disparaissait en glissant après avoir repris son aspect d'avant (la dalle remise à sa taille, ~100 ms), puis son plateau traînait seul sur la Toile. Elle se cache d'un coup ; elle se remontre une fois hors de l'écran. */if(_cs){_cs.classList.add('cs-coupe');setTimeout(function(){_cs.classList.remove('cs-coupe');},900);}if(_dc){_dc.style.transition='none';_dc.style.transform='none';_dc.style.filter='none';_dc.style.backgroundColor='';_dc.style.transformOrigin='';_dc.style.willChange='auto';}if(closeFn){try{closeFn();}catch(_){}}};if(_dc){_dc.style.willChange='transform,filter,background-color';_dc.style.transformOrigin='68% 40%';_dc.style.transition='none';_dc.style.transform='scale(1)';_dc.style.backgroundColor='transparent';_dc.style.filter='none';void _dc.offsetWidth;/* ⚑ v149 (Tom, C-155) : « si le trait est complet au lever, l'animation part DANS L'IMAGE SUIVANTE, sans attente de confirmation ». La signature (deux ombres orange et bleue, 440 ms) faisait attendre la dalle presque une demi-seconde après le lever : elle est retirée. La dalle grandit dès l'image suivante, À VITESSE CONSTANTE (linéaire), jusqu'à couvrir l'écran, puis on coupe. */_dc.style.transition='transform .32s linear -17ms,background-color .32s linear -17ms';/* une image d'avance : la première image peinte montre déjà la dalle qui grandit (une transition CSS commence à son point de départ) */_dc.style.transform='scale(7)';_dc.style.backgroundColor=_tc;var _te=function(e){if(e&&e.propertyName&&e.propertyName!=='transform')return;_dc.removeEventListener('transitionend',_te);_fin();};_dc.addEventListener('transitionend',_te);setTimeout(_fin,400);setTimeout(function(){_dc.style.transition='';_dc.style.transform='none';_dc.style.filter='none';_dc.style.backgroundColor='';_dc.style.transformOrigin='';_dc.style.willChange='auto';window._tirageActive=false;},1500);}else{_fin();}if(btnId){var _bp=document.getElementById(btnId);if(_bp){_bp.style.transition='transform .2s ease';_bp.style.transform='scale(.98)';setTimeout(function(){_bp.style.transform='';},220);}}}catch(e){window._ppPart=false;if(closeFn){try{closeFn();}catch(_){}}}};
+window.printTirage=function(btnId,closeFn){try{window._tirageActive=true;window._ppPart=true;/* v149 (C-155) : la page + s'en va — rien ne la recompose jusqu'à la coupe (`_ppPart`, levé au départ, baissé à la coupe) */var _dc=document.getElementById('csTrameCv');var _cs=document.getElementById('createSheet');var _k=_cs?(_cs.getAttribute('data-kind')||'promi'):'promi';if((_k==='promi'||_k==='chiche')&&window._planteNait){window._planteNait(closeFn);return;}/* ⚑ v180a (C-237) : Promi et Chiche — la dalle naît à la moitié du trait (lot-V180-NAISSANCE) ; le Cercle et le gardé de côté gardent ce qui suit */var _tc={promi:'#82AEF8',nuee:'#E6D8FA',draft:'#FB4C0D'}[_k]||'#82AEF8';var _fired=false,_fin=function(){if(_fired)return;_fired=true;window._ppPart=false;/* v103 (Tom : « retire ce qui apparaît une fraction de seconde ») : la dalle a couvert l'écran — ON COUPE. La page + disparaissait en glissant après avoir repris son aspect d'avant (la dalle remise à sa taille, ~100 ms), puis son plateau traînait seul sur la Toile. Elle se cache d'un coup ; elle se remontre une fois hors de l'écran. */if(_cs){_cs.classList.add('cs-coupe');setTimeout(function(){_cs.classList.remove('cs-coupe');},900);}if(_dc){_dc.style.transition='none';_dc.style.transform='none';_dc.style.filter='none';_dc.style.backgroundColor='';_dc.style.transformOrigin='';_dc.style.willChange='auto';}if(closeFn){try{closeFn();}catch(_){}}};if(_dc){_dc.style.willChange='transform,filter,background-color';_dc.style.transformOrigin='68% 40%';_dc.style.transition='none';_dc.style.transform='scale(1)';_dc.style.backgroundColor='transparent';_dc.style.filter='none';void _dc.offsetWidth;/* ⚑ v149 (Tom, C-155) : « si le trait est complet au lever, l'animation part DANS L'IMAGE SUIVANTE, sans attente de confirmation ». La signature (deux ombres orange et bleue, 440 ms) faisait attendre la dalle presque une demi-seconde après le lever : elle est retirée. La dalle grandit dès l'image suivante, À VITESSE CONSTANTE (linéaire), jusqu'à couvrir l'écran, puis on coupe. */_dc.style.transition='transform .32s linear -17ms,background-color .32s linear -17ms';/* une image d'avance : la première image peinte montre déjà la dalle qui grandit (une transition CSS commence à son point de départ) */_dc.style.transform='scale(7)';_dc.style.backgroundColor=_tc;var _te=function(e){if(e&&e.propertyName&&e.propertyName!=='transform')return;_dc.removeEventListener('transitionend',_te);_fin();};_dc.addEventListener('transitionend',_te);setTimeout(_fin,400);setTimeout(function(){_dc.style.transition='';_dc.style.transform='none';_dc.style.filter='none';_dc.style.backgroundColor='';_dc.style.transformOrigin='';_dc.style.willChange='auto';window._tirageActive=false;},1500);}else{_fin();}if(btnId){var _bp=document.getElementById(btnId);if(_bp){_bp.style.transition='transform .2s ease';_bp.style.transform='scale(.98)';setTimeout(function(){_bp.style.transform='';},220);}}}catch(e){window._ppPart=false;if(closeFn){try{closeFn();}catch(_){}}}};
 $('#addPromi').onclick=()=>{if(!window.promiRequis($('#fTitle')))return;const t=$('#fTitle').value.trim();try{if(window.printTirage)window.printTirage('addPromi',function(){var _cs=document.getElementById('createSheet');if(_cs)_cs.style.transition='none';closeAll();requestAnimationFrame(function(){requestAnimationFrame(function(){if(window._toileDefer){var _q=window._toileDefer;window._toileDefer=null;_q.forEach(function(fn){try{fn();}catch(_){}});}relayout();caption();if(window.syncAll)window.syncAll();});});if(_cs)setTimeout(function(){_cs.style.transition='';},80);});}catch(e){}var _impEl=document.querySelector('#impSeg .is.on');var _impV=_impEl?({light:1,normal:2,high:3}[_impEl.dataset.imp]||2):2;var _urgEl=document.querySelector('#urgSeg .is.on');var _urgV=_urgEl?(+_urgEl.dataset.urg||2):2;var _nEl=document.getElementById('fNote');var _nV=_nEl?_nEl.value.trim():'';var _recips=(typeof window.newWhoSel!=='undefined'&&window.newWhoSel&&window.newWhoSel.length)?window.newWhoSel.slice():[];if(!_recips.length){var _typed=$('#fWho')&&$('#fWho').value.trim();if(_typed&&_typed.toLowerCase()!=='moi'&&_typed.indexOf(',')<0)_recips=[_typed];}if(!_recips.length)_recips=['moi'];if(_recips.length>1)_recips=_recips.filter(function(r){return r&&r!=='moi';});/* ⚑ v145 (C-115) — À PLUSIEURS, UNE SEULE PAROLE : « Marion et Rachel, vous êtes pas chiches de… » est UNE fiche, UNE dalle, dont chacun trace sa part. Avant : une parole par personne (« 3 Promi plantés »). */if(_recips.length>1)_recips=[_recips.join(', ')];var _made=[];_recips.forEach(function(w){const np=P(t,w,due,_impV,'encours',selNuee||undefined);np.urg=_urgV;if(_nV)np.note=_nV;try{if(window._csDueISO)np.dueISO=window._csDueISO;}catch(_dz){}try{if(window._csEnLair){np.enLair=true;np.due=null;}}catch(_el){}try{var _wl=window.csWhoList?window.csWhoList('whoChips'):[];if(_wl.length)np.aussi=_wl.slice();}catch(_w){}try{if(window.csSens){np.phraseSens=window.csSens();
   if(np.phraseSens==='demander'){ np.req=true; np.reqEtat='attente'; np.reqLe=Date.now(); }
   else if(np.phraseSens==='chiche'){ np.chiche=true; np.chicheEtat='lance'; try{ var _av=(window._phrase&&window._phrase.avec)||''; if(_av)np.avec=_av; }catch(_){} }
@@ -13135,10 +13135,10 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
    Sur validation : clique #addPromi (l'action « planter » existante).
    À mutualiser avec le moteur du geste dans un lot dédié. */
 (function(){
-  function init(zone,cv,lab,alt){
+  function init(zone,cv,lab,alt,moitie){
     if(!zone||!cv||zone._pose) return;
     zone._pose=true;
-    var g,W=0,H=0,dpr=1,pts=[],actif=false,arrive=false;
+    var g,W=0,H=0,dpr=1,pts=[],actif=false,arrive=false,plante=false;
     function ink(){
       try{ var cs=document.getElementById('createSheet');
         var bg=getComputedStyle(cs).backgroundColor.match(/[\d.]+/g)||[247,240,222];
@@ -13197,8 +13197,21 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
          d'écran 390 ; le trait s'en occupe. */
       try{ window._ppDoigt = Math.max(0, Math.min(390, p.x * 390 / (W||390)));
         if(window._ppTout) _ppTout(); }catch(_){}
+      /* ⚑ v180a (Tom, C-237) — PLANTER, C'EST TRACER LA PREMIÈRE MOITIÉ DU TRAIT, comme dans l'onboarding (son `planter()` part à `MID − 2`) : sur la page + d'un
+         Promi et d'un Chiche, le doigt arrivé au milieu (195) plante, sans attendre le lever, et le trait ne va pas plus loin. Le Cercle et le gardé de côté : inchangés. */
+      if(moitie && window._ppDoigt>=193 && _av()>=(window._traitRegle||{MIN:60}).MIN){ actif=false; plante=true; window._ppDoigt=195;
+        try{ window._traitDernier={quoi:'planter', avance:Math.round(_av()*10)/10, ok:true, moitie:true}; }catch(_){}
+        zone.classList.remove('ouvert'); zone.classList.remove('atteint'); try{ if(navigator.vibrate)navigator.vibrate([12,40,26]); }catch(_){}
+        var _bm=document.getElementById('addPromi'); if(_bm) _bm.click();
+        setTimeout(function(){ plante=false; window._ppDoigt=null; pts=[]; taille(); peindre(); }, 2000); }
       if(e.preventDefault)e.preventDefault(); }
     function fin(){ if(!actif) return; actif=false;
+      if(moitie){   /* v180a (C-237) : lâché avant la moitié, rien n'est planté — le trait se retire (300 ms), comme dans l'onboarding */
+        try{ window._traitDernier={quoi:'planter', avance:Math.round(_av()*10)/10, ok:false, moitie:true}; }catch(_){}
+        zone.classList.remove('ouvert'); zone.classList.remove('atteint'); arrive=false;
+        var d0=(typeof window._ppDoigt==='number')?window._ppDoigt:0, t0=performance.now();
+        (function r(){ if(actif||plante) return; var u=Math.min(1,(performance.now()-t0)/300); window._ppDoigt=d0*(1-u); try{ if(window._ppTout) _ppTout(); }catch(_){} if(u<1) requestAnimationFrame(r); else { window._ppDoigt=null; try{ if(window._ppTout) _ppTout(); }catch(_){} } })();
+        setTimeout(function(){ if(!actif){ pts=[]; taille(); peindre(); } },330); return; }
       var _a=_av(), ok=_a>=(window._traitRegle||{MIN:60}).MIN;   /* v143 (C-107) : en dessous de 60 pt c'est un faux contact, rien n'est planté */
       try{ window._traitDernier={quoi:'planter', avance:Math.round(_a*10)/10, ok:ok}; }catch(_){}
       zone.classList.remove('ouvert'); zone.classList.remove('atteint');
@@ -13238,10 +13251,10 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
      formulaire (Promi/Nuée/Brouillon). La validation route déjà vers addPromi/
      addNuee/addDraft selon createKind (voir fin()). */
   function initAll(){
-    [['planterZone','planterCv','planterLab','planterAlt'],
+    [['planterZone','planterCv','planterLab','planterAlt',true],
      ['planterZoneN','planterCvN','planterLabN','planterAltN'],
      ['planterZoneD','planterCvD','planterLabD','planterAltD']].forEach(function(p){
-      init(document.getElementById(p[0]),document.getElementById(p[1]),document.getElementById(p[2]),document.getElementById(p[3]));
+      init(document.getElementById(p[0]),document.getElementById(p[1]),document.getElementById(p[2]),document.getElementById(p[3]),!!p[4]);
     });
   }
   window._planterPeindre=function(){ (window._planterRepaint||[]).forEach(function(f){ try{f();}catch(_){} }); };
@@ -38190,6 +38203,71 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     requestAnimationFrame(function(){ go(); }); return ctl; };
 })();
 </script>
+<script id="lot-V180-NAISSANCE">
+/* ⚑ v180a (Tom, C-237) — LA NAISSANCE D'UNE DALLE, UN SEUL CODE pour l'onboarding et la page + (Promi, Chiche). « Planter, c'est tracer la PREMIÈRE
+   MOITIÉ du trait : à la moitié, la dalle de cette parole naît, dans son monde, son design, sa couleur et sa forme, EXACTEMENT avec l'animation de
+   l'onboarding, puis elle rejoint la Toile. » Sorti de `planter()` (lot-ONB-V20), tel quel :
+     _naissanceDalle(hôte, id, monde, x, y, w) : la vraie dalle du moteur (`dalleTrame`, à sa taille, 1:1), centrée au point du trait, à l'échelle 0,08,
+        qui grandit à 0,85 en 0,5 s (cubic-bezier(.2,1.3,.4,1)) ; `.vole(cible)` : elle rejoint sa cellule (0,765 s, à l'échelle 1).
+     _retireFondFlaques(fond, dc, fin) : l'image figée de la Toile d'avant (la dalle en vol peinte dedans) se retire en flaques (720 ms).
+     _cibleDalle(id) : la cellule de la parole sur la Toile, en pt de l'appareil. */
+(function(){
+  window._naissanceDalle=function(hote, id, monde, bx, by, w){
+    var dc=document.createElement('canvas'); dc.className='onbv-a onbv-dalle';
+    var ok=false; try{ ok=Toile.dalleTrame(dc, id, 1, monde); }catch(_){}
+    var h=w*(dc.height/(dc.width||1));
+    if(ok){
+      dc.style.cssText='position:absolute;margin:0;padding:0;pointer-events:none;transform-origin:50% 50%;left:'+(bx-w/2)+'px;top:'+(by-h/2)+'px;width:'+w+'px;height:'+h+'px;transform:scale(.08);opacity:1;transition:transform .5s cubic-bezier(.2,1.3,.4,1)';   /* v148 (C-141 §10.3) : plus de fondu d'opacité — elle grandit depuis le trait */
+      hote.appendChild(dc);
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){ dc.style.transform='scale(.85)'; }); });
+    }
+    return {dc:dc, ok:ok, w:w, h:h, vole:function(cible){ if(!ok||!cible) return;
+      dc.style.transition='left .765s cubic-bezier(.45,0,.2,1),top .765s cubic-bezier(.45,0,.2,1),transform .765s cubic-bezier(.45,0,.2,1)';
+      dc.style.left=(cible.x+cible.w/2-w/2)+'px'; dc.style.top=(cible.y+cible.h/2-h/2)+'px'; dc.style.transform='scale(1)'; }};
+  };
+  /* LA PAGE + (Promi, Chiche) — la chorégraphie de l'onboarding, mêmes temps : t 0 la dalle naît au milieu du trait (sous le doigt) ; 553 ms la Toile d'avant
+     (son image figée au moment du trait) couvre la page en flaques (620 ms), la page se ferme dessous ; 808 ms la dalle rejoint sa cellule (0,765 s) ;
+     1 615 ms la Toile d'avant se retire en flaques sur la Toile vivante, où la parole a pris sa place (le moteur l'a reçue au trait, sous la page). */
+  window._planteNait=function(closeFn){
+    var dev=document.getElementById('device'), cs=document.getElementById('createSheet'), tc=document.getElementById('toileCv');
+    var D=dev.getBoundingClientRect(), s=(D.width/(dev.offsetWidth||390))||1, coupe=false, fini=false, cover=null, N=null, np=null;
+    var hote=document.createElement('div'); hote.id='ppNait'; hote.setAttribute('aria-hidden','true');
+    hote.style.cssText='position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;border:0;z-index:2147482000;pointer-events:none;overflow:hidden';
+    var fond=document.createElement('canvas'); fond.className='onbv-fond';
+    try{ fond.width=780; fond.height=1688; var r=tc.getBoundingClientRect(); fond.getContext('2d').drawImage(tc, (r.left-D.left)/s*2, (r.top-D.top)/s*2, r.width/s*2, r.height/s*2); }catch(_){ }
+    fond.style.cssText='position:absolute;display:none;left:0px;top:0px;width:390px;height:844px;margin:0;padding:0';
+    hote.appendChild(fond);
+    var bx=195, by=430; try{ var e=window._ppEcran(), y=window._onde.onde(e.base, e.amp), cT=document.getElementById('csTrameCv'), rT=cT.getBoundingClientRect(); by=(rT.top-D.top)/s + y(195); }catch(_){ }
+    dev.appendChild(hote);
+    function ferme(){ if(coupe) return; coupe=true; window._ppPart=false; if(cs){ cs.classList.add('cs-coupe'); setTimeout(function(){ cs.classList.remove('cs-coupe'); }, 900); } if(closeFn){ try{ closeFn(); }catch(_){ } } }
+    function fin(){ if(fini) return; fini=true; ferme(); window._tirageActive=false; if(hote.parentNode) hote.remove(); window._ppNaitDernier={id:np?np.id:null, t:performance.now()}; }
+    Promise.resolve().then(function(){
+      try{ np=promises[promises.length-1]; }catch(_){ }
+      try{ if(window._toileDefer){ var q=window._toileDefer; window._toileDefer=null; q.forEach(function(f){ try{ f(); }catch(_){ } }); } }catch(_){ }   /* le moteur reçoit la parole au trait : sa cellule grandit sous la page */
+      if(!np){ fin(); return; }
+      var c0=window._cibleDalle(np.id); N=window._naissanceDalle(hote, np.id, np.monde, bx, by, (c0 && c0.w>=40) ? c0.w : 90);
+      window._ppNait={id:np.id, dc:N.dc, x:bx, y:by, w:N.w, t0:performance.now()};
+      setTimeout(function(){ cover=window._passageFlaques(hote, {mode:'couvre', rect:[0,0,390,844], image:fond, duree:620, garde:true, fin:function(){ ferme(); }}); if(!cover) ferme(); }, 553);
+      setTimeout(function(){ try{ N.vole(window._cibleDalle(np.id)); }catch(_){ } }, 808);
+      setTimeout(function(){ ferme(); window._retireFondFlaques(fond, N.dc, fin); try{ if(cover){ cover.arrete=true; if(cover.canevas.parentNode) cover.canevas.remove(); } }catch(_){ } }, 1615);
+      setTimeout(fin, 4000);
+    });
+  };
+  window._cibleDalle=function(id){ try{ var dev=document.getElementById('device'), D=dev.getBoundingClientRect(), s=(D.width/(dev.offsetWidth||390))||1, a=Toile.dalleAbs(id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
+      return {x:(R.left-D.left+a.minx*sx)/s, y:(R.top-D.top+a.miny*sx)/s, w:a.w*sx/s, h:a.h*sx/s}; }catch(_){ return null; } };
+  window._retireFondFlaques=function(fond, dc, fin){ var F2=window.Flaques; if(!F2 || !F2.Scene || !fond.width || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){ fond.style.display='none'; fin(); return; }
+      try{ var eau=document.createElement('canvas'); eau.className='onbv-a onbv-fond'; eau.style.cssText=fond.style.cssText; eau.style.display='block'; eau.setAttribute('aria-hidden','true'); fond.parentNode.insertBefore(eau, fond.nextSibling);
+        var Lw=parseFloat(fond.style.width)||390, Lh=parseFloat(fond.style.height)||844, Lx=parseFloat(fond.style.left)||0, Ly=parseFloat(fond.style.top)||0, im=document.createElement('canvas');
+        im.width=fond.width; im.height=fond.height; var gi=im.getContext('2d'); gi.drawImage(fond, 0, 0);
+        if(dc && dc.parentNode && dc.width){ var dx=parseFloat(dc.style.left)||0, dy=parseFloat(dc.style.top)||0, dw=parseFloat(dc.style.width)||0, dh=parseFloat(dc.style.height)||0, ex=im.width/Lw;
+          gi.drawImage(dc, (dx-Lx)*ex, (dy-Ly)*ex, dw*ex, dh*ex); dc.remove(); }
+        var SCf=F2.Scene(eau, {l:Lw, h:Lh, densite:2, flou:im, graine:((Date.now()&0xffffff)|1), creux:12, rayon:120});
+        fond.style.display='none'; SCf.couvre(1); SCf.peint(); var t0=performance.now();
+        var LO=Math.max(1, parseFloat((/[?&]onbLent=([\d.]+)/.exec(location.search)||[])[1])||1);   /* `?onbLent=4` : la vidéo ralentie */
+        (function f(){ var u=Math.min(1,(performance.now()-t0)/(720*LO)); SCf.couvre(1-u); SCf.peint(); if(u<1) requestAnimationFrame(f); else { if(eau.parentNode) eau.remove(); fin(); } })();
+      }catch(_){ fond.style.display='none'; fin(); } };
+})();
+</script>
 <script id="lot-ONB-V20">
 /* ⚑ v20 · L'ONBOARDING REFAIT — voir redteam_onboarding.py (le juge écrit AVANT, rouge 7/38).
    Décisions de Tom (21-22 sept. 2026) : une promesse à soi d'abord ; prénom → premier trait →
@@ -38637,14 +38715,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var D=dev.getBoundingClientRect(), s=k(), cible=null;
     try{ var a=Toile.dalleAbs(np.id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
       cible={x:(R.left-D.left+a.minx*sx)/s, y:(R.top-D.top+a.miny*sx)/s, w:a.w*sx/s, h:a.h*sx/s}; }catch(_){}
-    var dc=document.createElement('canvas'); dc.className='onbv-a onbv-dalle';
-    var ok=false; try{ ok=Toile.dalleTrame(dc, np.id, 1, np.monde); }catch(_){}
-    var y=yOnde(), bx=MID, by=ZONE_Y+y(MID), w=cible?cible.w:90, h=w*(dc.height/(dc.width||1));
-    if(ok){
-      dc.style.cssText='left:'+(bx-w/2)+'px;top:'+(by-h/2)+'px;width:'+w+'px;height:'+h+'px;transform:scale(.08);opacity:1;transition:transform .5s cubic-bezier(.2,1.3,.4,1)';   /* v148 (C-141 §10.3) : plus de fondu d'opacité — elle grandit depuis le trait */
-      v.appendChild(dc);
-      requestAnimationFrame(function(){ requestAnimationFrame(function(){ dc.style.transform='scale(.85)'; }); });
-    }
+    var y=yOnde(), bx=MID, by=ZONE_Y+y(MID), w=cible?cible.w:90;
+    var N=window._naissanceDalle(v, np.id, np.monde, bx, by, w), dc=N.dc, ok=N.ok, h=N.h;   /* v180a (C-237) : la naissance est partagée avec la page + (lot-V180-NAISSANCE) */
     /* ⚑ v148 (C-141 §10.2) : la page du trait ne part plus en FONDU (`opacity` 0,5 s) — la Toile d'avant (son image figée, `fond`) la recouvre EN FLAQUES */
     /* ⚑ v173 (Tom, C-212) — « l'attente avant l'apparition des textes est un peu trop longue » : − 15 % sur chaque attente de cette suite (1 900 → 1 615, 950 → 808, 650 → 553,
        le vol de la dalle 0,9 → 0,765 s : il remplit l'attente et finirait après elle ; dans `finPas` 320 → 272). Les durées de tracé et les passages en flaques ne bougent pas. */
@@ -38655,23 +38727,11 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         if(rh[0]<1e9 && fond && fond.width){ var y0=Math.max(0, Math.floor(rh[1]-14)), y1=Math.min(844, Math.ceil(rh[3]+14));
           couvreHaut=window._passageFlaques(v, {mode:'couvre', apres:hh, rect:[0, y0, 390, y1-y0], image:fond, duree:620, lent:LENT_ONB(), garde:true, fin:function(){ hh.style.visibility='hidden'; }}); }
         else hh.style.visibility='hidden'; }catch(_){ hh.style.visibility='hidden'; } }, 553);
-    T(function(){ if(!ok||!cible) return;
-      dc.style.transition='left .765s cubic-bezier(.45,0,.2,1),top .765s cubic-bezier(.45,0,.2,1),transform .765s cubic-bezier(.45,0,.2,1)';
-      dc.style.left=(cible.x+cible.w/2-w/2)+'px'; dc.style.top=(cible.y+cible.h/2-h/2)+'px'; dc.style.transform='scale(1)'; }, 808);
+    T(function(){ if(!ok||!cible) return; N.vole(cible); }, 808);
     /* ⚑ v146 (Tom, C-123) — LA TOILE D'AVANT NE DISPARAÎT PLUS D'UN COUP. L'image figée pendant le vol de la dalle s'effaçait en une image : toutes ses
        cellules partaient ensemble. Elle se retire EN FLAQUES (le moteur du guide, `variantes/flaques.js`) : des trous naissent, s'agrandissent, se
        rejoignent, et la Toile vivante paraît dessous — où les voisines naissent une à une. 720 ms ; « Réduire les animations » : retirée d'un coup. */
-    function retireFond(fin){ var F2=window.Flaques; if(!F2 || !F2.Scene || !fond.width || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){ fond.style.display='none'; fin(); return; }
-      try{ var eau=document.createElement('canvas'); eau.className='onbv-a onbv-fond'; eau.style.cssText=fond.style.cssText; eau.setAttribute('aria-hidden','true'); fond.parentNode.insertBefore(eau, fond.nextSibling);
-        var Lw=parseFloat(fond.style.width)||390, Lh=parseFloat(fond.style.height)||844, Lx=parseFloat(fond.style.left)||0, Ly=parseFloat(fond.style.top)||0, im=document.createElement('canvas');
-        im.width=fond.width; im.height=fond.height; var gi=im.getContext('2d'); gi.drawImage(fond, 0, 0);
-        if(dc && dc.parentNode && dc.width){ var dx=parseFloat(dc.style.left)||0, dy=parseFloat(dc.style.top)||0, dw=parseFloat(dc.style.width)||0, dh=parseFloat(dc.style.height)||0, ex=im.width/Lw;
-          gi.drawImage(dc, (dx-Lx)*ex, (dy-Ly)*ex, dw*ex, dh*ex); dc.remove(); }
-        var SCf=F2.Scene(eau, {l:Lw, h:Lh, densite:2, flou:im, graine:((Date.now()&0xffffff)|1), creux:12, rayon:120});
-        fond.style.display='none'; SCf.couvre(1); SCf.peint(); var t0=performance.now();
-        var LO=Math.max(1, parseFloat((/[?&]onbLent=([\d.]+)/.exec(location.search)||[])[1])||1);   /* `?onbLent=4` : la vidéo ralentie */
-        (function f(){ var u=Math.min(1,(performance.now()-t0)/(720*LO)); SCf.couvre(1-u); SCf.peint(); if(u<1) requestAnimationFrame(f); else { if(eau.parentNode) eau.remove(); fin(); } })();
-      }catch(_){ fond.style.display='none'; fin(); } }
+    function retireFond(fin){ window._retireFondFlaques(fond, dc, fin); }   /* v180a (C-237) : le code est partagé avec la page + (lot-V180-NAISSANCE) */
     T(function(){
       retireFond(function(){ if(dc.parentNode) dc.remove(); });   /* la dalle en vol part AVEC la Toile d'avant : elle est peinte dans l'image qui se retire */
       var hh=document.getElementById('onbHaut'); if(hh) hh.style.display='none';
@@ -43154,7 +43214,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
           if(c!==V.couleur){ var nl=logo(c, V.C.k); V.couche.replaceChild(nl, V.logo); V.logo=nl; V.couleur=c; } V.couleurs.push(c);
           oriente(V.s, V.B, ec, V.al); V.n=prochain(V.s, V.B); V.tn=0; } }
       pose(V); }
-    if(ec>=R.VERROU && etatVerrou==='actif') relache();
+    if(ec>=R.VERROU && (etatVerrou==='actif' || eveil.etat==='joue')) relache();
     requestAnimationFrame(boucle); }
   function quitte(){ var V=actif; if(!V) return; V.fini=true; actif=null; dernier=performance.now();
     if(V.passage){ V.passage.arrete=true; if(V.passage.canevas) V.passage.canevas.remove(); }
@@ -43164,9 +43224,36 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     window._veilleDerniere={duree:Math.round(performance.now()-V.t0), couleurs:V.couleurs, coins:V.coins, rebonds:V.rebonds};
     demande(); }
   /* ── LE VERROU DE L'ÉCRAN (Screen Wake Lock) ── */
-  function demande(){ try{ if(!navigator.wakeLock || verrou || etatVerrou==='refusé' || document.visibilityState!=='visible') return; navigator.wakeLock.request('screen').then(function(v){ verrou=v; etatVerrou='actif';
-      v.addEventListener && v.addEventListener('release', function(){ if(verrou===v){ verrou=null; if(etatVerrou==='actif') etatVerrou='perdu'; } }); }, function(){ etatVerrou='refusé'; }); }catch(_){ } }
-  function relache(){ try{ var v=verrou; verrou=null; etatVerrou='relâché'; if(v && v.release) v.release(); }catch(_){ } }
+  function demande(){ try{ if(document.visibilityState!=='visible') return; if(!navigator.wakeLock || etatVerrou==='refusé'){ eveilVideo(); return; } if(verrou) return; navigator.wakeLock.request('screen').then(function(v){ verrou=v; etatVerrou='actif'; eveil.methode='wakelock'; dit('wakelock');
+      v.addEventListener && v.addEventListener('release', function(){ if(verrou===v){ verrou=null; if(etatVerrou==='actif') etatVerrou='perdu'; } }); }, function(){ etatVerrou='refusé'; eveilVideo(); }); }catch(_){ } }
+  function relache(){ try{ var v=verrou; verrou=null; etatVerrou='relâché'; if(v && v.release) v.release(); }catch(_){ } eveilPause('relâché'); }
+  /* ⚑ v180a (Tom, C-236) — L'ÉCRAN RESTE ALLUMÉ tant que Promi est au premier plan, même posé sans être touché : sans quoi l'iPhone se verrouille (son
+     verrouillage automatique, 30 s chez beaucoup) avant la minute de la veille, qu'on ne voit jamais. ① Screen Wake Lock quand il existe (https : Netlify, et
+     Swift : `isIdleTimerDisabled`, portage/). ② Sinon — en http (l'iPhone de Tom sur le Mac), `navigator.wakeLock` n'existe pas hors contexte sûr — ou si la
+     demande est refusée : LE REPLI DE NoSleep, une vidéo de 2 s (16 × 16 pt, noire, piste son de silence), lancée au premier toucher (le geste que Safari
+     exige), posée HORS de l'écran (jamais visible, aucun son : sa piste est un silence), relancée en boucle PAR SON TEMPS (`timeupdate`) et non par
+     `loop` : WebKit ne retient pas l'extinction de l'écran pour une vidéo en `loop` (c'est la règle des images animées en vidéo), et NoSleep fait de même.
+     Elle n'est créée QUE si Wake Lock manque. ③ Après 10 min de veille, tout est relâché (`relache`) : l'iPhone se verrouille selon ses propres réglages ;
+     le toucher suivant le redemande. Mise en pause quand la page est cachée. ⚠ Le simulateur iOS ne verrouille jamais son écran : l'effet se vérifie sur
+     l'iPhone ; le juge vérifie que la vidéo joue sans fin, invisible et silencieuse, et qu'elle n'existe pas avec Wake Lock. */
+  var eveil={methode:'aucun', etat:'aucun', t:0}, eveilVid=null;
+  var EVEIL_SRC='data:video/mp4;base64,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';
+  function dit(quoi){ try{ var Q=new URLSearchParams(location.search), h=location.hostname; if(!(Q.has('mesure')||Q.has('diag'))) return; if(!(h==='localhost' || /^127\.|^10\.|^192\.168\.|^172\.(1[6-9]|2\d|3[01])\./.test(h))) return;
+      var v=eveilVid; fetch('/mesure', {method:'POST', headers:{'Content-Type':'application/json'}, keepalive:true, body:JSON.stringify({quoi:'eveil', ev:quoi, methode:eveil.methode, etat:eveil.etat, wakeLock:!!navigator.wakeLock,
+        joue:v?!v.paused:false, temps:v?Math.round(v.currentTime*100)/100:null, depuis:Math.round(performance.now()), quand:new Date().toISOString(), version:window.PROMI_VERSION||null, ua:navigator.userAgent})}).catch(function(){}); }catch(_){ } }
+  function eveilVideo(){ try{ if(document.visibilityState!=='visible' || (actif && performance.now()-actif.t0>=R.VERROU)) return;
+      if(!eveilVid){ var v=document.createElement('video'); v.id='promiEveil'; v.setAttribute('playsinline',''); v.setAttribute('webkit-playsinline',''); v.playsInline=true; v.preload='auto';
+        v.setAttribute('aria-hidden','true'); v.setAttribute('tabindex','-1'); v.disablePictureInPicture=true; v.setAttribute('disableremoteplayback',''); v.src=EVEIL_SRC;
+        v.style.cssText='position:fixed!important;left:-200px!important;top:-200px!important;width:16px!important;height:16px!important;pointer-events:none!important;opacity:1!important;margin:0!important;padding:0!important;border:0!important;';
+        v.addEventListener('timeupdate', function(){ if(v.currentTime>1.2) v.currentTime=0.2+Math.random()*0.3; });
+        v.addEventListener('ended', function(){ try{ v.currentTime=0.2; v.play(); }catch(_){ } });
+        (document.body||document.documentElement).appendChild(v); eveilVid=v; }
+      if(eveilVid.paused){ var p=eveilVid.play(); if(p && p.then) p.then(function(){ eveil.methode='vidéo'; eveil.etat='joue'; eveil.t=performance.now(); dit('joue'); }, function(){ eveil.etat='refusé'; dit('refusé'); }); } }catch(_){ } }
+  function eveilPause(etat){ try{ if(eveilVid && !eveilVid.paused){ eveilVid.pause(); eveil.etat=etat||'pause'; dit(eveil.etat); } }catch(_){ } }
+  setInterval(function(){ if(eveil.methode==='vidéo' && document.visibilityState==='visible') dit('tic'); }, 30000);
+  document.addEventListener('visibilitychange', function(){ if(document.visibilityState!=='visible') eveilPause('cachée'); }, true);
+  /* le geste que Safari exige pour lancer une vidéo : le lever du doigt (et le clic), lus AVANT les écouteurs de la veille qui arrêtent la propagation */
+  ['touchend','click'].forEach(function(n){ window.addEventListener(n, function(e){ if(e.isTrusted && !verrou && (!navigator.wakeLock || etatVerrou==='refusé')) eveilVideo(); }, {capture:true, passive:true}); });
   document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='visible'){ if(etatVerrou==='refusé') etatVerrou='aucun'; if(!(actif && performance.now()-actif.t0>=R.VERROU)) demande(); } });
   /* ── LE TOUCHER : il retarde la veille ; pendant elle, il la quitte et n'actionne rien dessous ── */
   function touche(e){ dernier=performance.now();
@@ -43190,7 +43277,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   setInterval(function(){ var t=performance.now(), saut=t-tic>5000; tic=t; if(saut){ dernier=t; return; } if(actif || COUPEE) return; try{ if(window.__doigts && window.__doigts.t>dernier) dernier=window.__doigts.t; }catch(_){ } if(nDoigts()>0 || saisie() || document.visibilityState!=='visible'){ dernier=performance.now(); return; }
     if(performance.now()-dernier>=R.DELAI) demarre(); }, 250);
   window._veille=function(){ var V=actif; return {doigts:nDoigts(), doigtsVeille:doigts, saisie:saisie(), calme:Math.round(performance.now()-dernier), coupee:COUPEE, delai:R.DELAI, visible:document.visibilityState, active:!!V, depuis:V?Math.round(performance.now()-V.t0):0, couleurs:V?V.couleurs.slice():[], coins:V?V.coins.slice():[], rebonds:V?V.rebonds:0,
-    logo:V?[V.s.x, V.s.y, V.logo.__w, V.logo.__h]:null, bornes:V?V.B:null, cadre:V?V.C:null, fond:V?V.fond:null, amande:V?V.amande:null, verrou:etatVerrou, couleur:V?V.couleur:null, tons:V?V.tons.slice():null, derniere:window._veilleDerniere||null}; };
+    logo:V?[V.s.x, V.s.y, V.logo.__w, V.logo.__h]:null, bornes:V?V.B:null, cadre:V?V.C:null, fond:V?V.fond:null, amande:V?V.amande:null, verrou:etatVerrou, eveil:{methode:eveil.methode, etat:eveil.etat, video:!!eveilVid, joue:eveilVid?!eveilVid.paused:false, temps:eveilVid?eveilVid.currentTime:null}, couleur:V?V.couleur:null, tons:V?V.tons.slice():null, derniere:window._veilleDerniere||null}; };
 })();
 </script>
 <script id="lot-V163B-PILE">

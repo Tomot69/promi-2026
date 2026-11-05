@@ -235,6 +235,21 @@ la nature, la ligne dit l'état.)*
 > **⚑ Q599 — LA DALLE DESCEND AVEC L'HORIZON, 40 % DE SON DÉPLACEMENT** (30 à 50 % décidé ; `window._ppDalleHz`, `?dallehz=` 0 à 1 pour comparer, jamais mémorisé), même durée, même courbe : le peintre `trait()` décale `dalle.y` du même `_hz`, × 0,4, arrondi au quart de point ; sa taille ne change pas (§4). Captures Safari : `planche-v178b/q599-*.png`.
 > **Juges remis au niveau** (originaux `sauvegardes/*-avant-v178b.py`) : `redteam_invite_page_plus` (B pendant la frappe rien ; C après Retour l'horizon puis le trait ; Q la dalle à 30–50 %, image par image ; l'arrivée de l'horizon se cherche après la dernière image « pas prête » : pendant le mouvement du clavier il se lit sous l'onde finale ; la dalle ± 1,5 pt, elle se recadre sur sa matière), `redteam_clavier_doux` (« la fin » attend la naissance du trait), `redteam_nature_plus` (B valide avant d'attendre le clignotement).
 
+### ⚑ v180a (5 nov. 2026) — L'ÉCRAN RESTE ALLUMÉ (C-236) ; PAGE + D'UN PROMI ET D'UN CHICHE : ON TRACE LA MOITIÉ, LA DALLE NAÎT COMME À L'ONBOARDING (C-237). (Décisions Tom.) Ce bloc CORRIGE v143 (C-107 : « un trait ne compte qu'à 60 pt » pour PLANTER) et v149 (C-155 : « la dalle grandit dans la page + » pour un Promi et un Chiche).
+> **Validés par Tom : C-230, C-231, C-232, C-233, C-235, et les phrases d'exemple (E4 point 4).**
+> **⚑ C-236 — LA CAUSE** : rien ne retenait l'écran ; en http (l'iPhone de Tom sur le Mac) `navigator.wakeLock` n'existe pas. **Aujourd'hui** (`lot-V161-VEILLE`) : Wake Lock demandé au
+> toucher quand il existe ; SINON SEULEMENT, le repli NoSleep — une vidéo de 2 s (`#promiEveil`, piste son de silence, hors de l'écran) lancée au premier toucher, relancée
+> PAR SON TEMPS (`timeupdate`) et jamais par `loop` (WebKit ne retient pas l'écran pour une vidéo en boucle) ; arrêtée page cachée ; tout relâché après 10 min de veille ;
+> Swift : `isIdleTimerDisabled` (portage/SPEC-ECRANS). Avec `?mesure=1`, l'iPhone envoie au Mac « vidéo joue » toutes les 30 s. ⚠ **Le simulateur iOS ne verrouille jamais
+> son écran : « l'écran ne s'éteint pas à 30 s ni à 1 min » ne se prouve que sur l'iPhone.** ⚠ Non vérifié : une piste son, même silencieuse, peut couper une musique en
+> cours sur iOS. Juge : **`redteam_ecran_allume.py`** (9 ; rouge sur v179b).
+> **⚑ C-237 — PLANTER UN PROMI OU UN CHICHE, C'EST TRACER LA PREMIÈRE MOITIÉ** : le geste de la page + (`lot 1`, `moitie`) plante quand le doigt atteint le milieu
+> (195 pt), avant le lever, et ne trace jamais au-delà ; lâché avant, le trait revient et rien n'est planté. La dalle naît AU MILIEU DU TRAIT par le code de l'onboarding,
+> partagé et non copié (`lot-V180-NAISSANCE` : `_naissanceDalle`, `_planteNait`, `_cibleDalle`, `_retireFondFlaques` ; `planter()` de l'onboarding les appelle), puis
+> vole à sa cellule. **Le Cercle ne change pas** (trait entier, la dalle grandit dans la page +). Parole écrite au trait (C-226). Juge : **`redteam_moitie.py`** (25 ; la
+> naissance comparée image par image à celle de l'onboarding ; 1/25 sur v179b). Contrats remis au niveau (originaux `sauvegardes/*-avant-v180.py`) : `redteam_trait`
+> (planter demande le milieu), `redteam_validation` E (la création jugée sur le Cercle).
+
 ### ⚑ v179b (5 nov. 2026) — LA DALLE DE LA PAGE + NE ZOOME JAMAIS (C-234) ; « + PLANTER DANS LE CERCLE » : PROMI OU CHICHE (C-230) ; LES DALLES D'UN CERCLE DANS LEUR MONDE (C-231) ; LA PHRASE DU CERCLE SANS MEMBRE RETIRÉE (C-235) ; LES PHRASES D'EXEMPLE (E4 point 4). (Décisions Tom.) Ce bloc CORRIGE v178b (Q599, `?dallehz`), v178c (le Cercle sans membre, Q600), le §4 (« la matière remplit le champ au plancher », pour la page + et pour un Cercle qui porte des paroles) et v115 (le sac des phrases).
 > **⚑ C-234 — LA CAUSE, mesurée (WebKit, état de Tom)** : la boîte de la dalle se tirait de `base`, et `base` change pendant la saisie — elle suit le nombre de lignes de la phrase et
 > passe à 144 quand le champ de saisie est ouvert, c'est-à-dire AU PLANCHER, où la matière remplissait tout le champ : 147 × 167 pt à l'ouverture, 390 × 191 pendant la frappe, 176 × 200

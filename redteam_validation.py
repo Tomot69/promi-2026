@@ -38,7 +38,7 @@ def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-118s %s' % ('✅' if ok else '❌', nom, str(d)[:230]), flush=True)
 SUIT = r"""()=>{ window.__R=[]; window.__lev=0; window.__add=0; const D=()=>document.getElementById('device').getBoundingClientRect();
   if(!window.__levA){ window.__levA=1; document.addEventListener('touchend',()=>{ window.__lev=performance.now(); },{capture:true});
-    try{ const ad=Toile.addPromi; Toile.addPromi=function(){ if(!window.__add) window.__add=performance.now(); return ad.apply(this,arguments); }; }catch(e){} }
+    try{ const ad=Toile.addPromi; Toile.addPromi=function(){ if(!window.__add) window.__add=performance.now(); return ad.apply(this,arguments); }; const sy=Toile.sync; Toile.sync=function(){ if(window.__lev && !window.__add) window.__add=performance.now(); return sy.apply(this,arguments); }; }catch(e){} }
   function lit(cv, X){ if(!cv) return null; const r=cv.getBoundingClientRect(), d=D(), k=d.width/390, s=cv.width/(r.width/k), top=(r.top-d.top)/k; const g=cv.getContext('2d'); const out=[];
     for(const x of X){ const col=g.getImageData(Math.round(x*s),0,1,cv.height).data; let a0=-1,a1=-1; for(let j=0;j<cv.height;j++){ const a=col[j*4+3], gg=col[j*4+1], rr=col[j*4]; if(a>128 && gg>180 && rr<200){ if(a0<0) a0=j; a1=j; } } out.push(a0<0?null:[top+a0/s, top+a1/s]); } return out; }
   (function f(){ if(window.__lev){ const t=performance.now()-window.__lev; if(t<1600){ const dc=document.getElementById('csTrameCv'); let sc=null; try{ const m=getComputedStyle(dc).transform.match(/matrix\(([^,]+)/); sc=m?+m[1]:1; }catch(e){}
@@ -144,12 +144,19 @@ with sync_playwright() as p:
     ctx.close()
     # ── E · la création
     ctx = B.contexte(b); pg = B.ouvre(ctx, F)
-    B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=promi]'); pg.wait_for_timeout(2500)
-    pg.evaluate("()=>{ document.getElementById('fTitle').value='lire un livre'; window._csEnLair=true; window._csDueISO=null; try{ if(window._phrase) _phrase.titre='lire un livre'; }catch(e){} }"); pg.wait_for_timeout(600)
-    pg.evaluate(SUIT); z = pg.evaluate("()=>_ppEcran().base")
-    B.glisse(pg, [[40 + 220 * i / 12, z + 8] for i in range(13)], pas=30, tenue=0); pg.wait_for_timeout(1800)
+    # ⚑ v180a (C-237) : un Promi et un Chiche se plantent à la MOITIÉ du trait et leur dalle naît comme à l'onboarding (jugé par redteam_moitie) ;
+    # la création « la dalle grandit dans la page + » ne vaut plus que pour le Cercle, que le lot ne change pas (son trait entier).
+    B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=nuee]'); pg.wait_for_timeout(2500)
+    pg.evaluate("()=>{ const f=document.getElementById('nName'); f.value='les voisins'; f.dispatchEvent(new Event('input',{bubbles:true})); if(window._ppTout) _ppTout(); }")
+    for _ in range(60):
+        if pg.evaluate("()=>{const e=window._ppInvite&&window._ppInvite.etat();return !!(e&&e.visible&&!e.sortie&&!e.descend)}"): break
+        pg.wait_for_timeout(100)
+    pg.wait_for_timeout(900)
+    pg.evaluate(SUIT); z = pg.evaluate("()=>{ const e=_ppEcran(), y=_onde.onde(e.base,e.amp), D=document.getElementById('device').getBoundingClientRect(), r=document.getElementById('csTrameCv').getBoundingClientRect(); return (r.top-D.top)/(D.width/390); }")
+    ys = pg.evaluate("xs=>{ const e=_ppEcran(), y=_onde.onde(e.base,e.amp); return xs.map(x=>y(x)); }", [40 + 332 * i / 12 for i in range(13)])
+    B.glisse(pg, [[40 + 332 * i / 12, z + ys[i]] for i in range(13)], pas=30, tenue=380); pg.wait_for_timeout(1800)
     R = pg.evaluate("()=>window.__R"); add = pg.evaluate("()=>window.__add ? window.__add - window.__lev : null"); L = [r for r in R if r[0] >= 0]
-    print('E · la création (page +)')
+    print('E · la création (page + d\'un Cercle — C-237 : Promi et Chiche, voir redteam_moitie)')
     sc = [(r[0], r[3]) for r in L if r[3] is not None]; coupe = next((i for i, (t, s_) in enumerate(sc) if i > 0 and s_ <= 1.0001 and sc[i - 1][1] > 1.5), len(sc))
     juge('[E] C-155 · la première image après le lever montre la dalle qui GRANDIT (aucune attente)', bool(sc) and sc[0][1] > 1.001, 'échelle %s à +%.0f ms' % (sc[0][1] if sc else None, sc[0][0] if sc else -1))
     g = [sc[i + 1][1] - sc[i][1] for i in range(max(0, coupe - 1))]
