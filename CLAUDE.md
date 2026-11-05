@@ -235,6 +235,24 @@ la nature, la ligne dit l'état.)*
 > **⚑ Q599 — LA DALLE DESCEND AVEC L'HORIZON, 40 % DE SON DÉPLACEMENT** (30 à 50 % décidé ; `window._ppDalleHz`, `?dallehz=` 0 à 1 pour comparer, jamais mémorisé), même durée, même courbe : le peintre `trait()` décale `dalle.y` du même `_hz`, × 0,4, arrondi au quart de point ; sa taille ne change pas (§4). Captures Safari : `planche-v178b/q599-*.png`.
 > **Juges remis au niveau** (originaux `sauvegardes/*-avant-v178b.py`) : `redteam_invite_page_plus` (B pendant la frappe rien ; C après Retour l'horizon puis le trait ; Q la dalle à 30–50 %, image par image ; l'arrivée de l'horizon se cherche après la dernière image « pas prête » : pendant le mouvement du clavier il se lit sous l'onde finale ; la dalle ± 1,5 pt, elle se recadre sur sa matière), `redteam_clavier_doux` (« la fin » attend la naissance du trait), `redteam_nature_plus` (B valide avant d'attendre le clignotement).
 
+### ⚑ v180b (5 nov. 2026) — LA FRAPPE EN DOUCEUR (C-234 suite) ; LES MEMBRES D'UN CERCLE PRÉ-CHOISIS (C-230 suite) ; LE FIL D'UN CERCLE DÉFILE (C-238) ; LA PHRASE LONGUE DE LA PAGE + (C-240) ; TOUFFE NON LIVRÉ (C-239). (Décisions Tom.)
+> **⚑ C-234 suite — LA CAUSE** : au toucher sur la phrase, la page passait dans la même image à sa mise en page de saisie (l'onde de 312 à 144 pt). **Le mouvement de Q598, à l'envers**
+> (`lot-V172-INVITE`, `avantSaisie`, `MV.att.sens='ouvre'`) : l'état d'avant est noté au doigt posé dans la phrase ; la page se compose à sa place de saisie et l'onde (la dalle avec elle)
+> monte de sa place d'avant en 360 ms, la courbe de l'horizon ; la phrase, le rail, « garder de côté », le bouton photo glissent ; seulement quand le champ qui prend la main est la
+> saisie du titre ou du nom (`#phIn`, `#nueeNomIn`) — un choix garde son ouverture d'avant. L'avancée d'un mouvement de la page + est bornée à 34 ms par image (une image longue ne fait
+> plus sauter la vague) ; la cible de l'horizon est gardée pendant un mouvement (`MV.hz`). ⚠ **Un titre ou un nom sur deux lignes a un creux entre ses lignes : le doigt y tombe sur la
+> phrase, pas sur la pastille, et la saisie s'ouvre quand même** — un déclencheur lu sur la pastille seule manquait ces touchers. ⚠ « ≤ 3 pt par image » ne vaut que pour la DALLE : la vague
+> va de 312 à 144 pt, la courbe y passe à 15 pt par image au pic. Juge : **`redteam_frappe_douce.py`** (la durée comptée du départ du mouvement ; rouge sur v180a).
+> **⚑ C-230 suite** : « + Planter dans le Cercle » pré-choisit les membres du Cercle (« à qui », « qui ose ? ») ; on en retire au doigt. Juge : **`redteam_cercle_membres.py`**.
+> **⚑ C-238 — TROIS CAUSES** : ① le geste d'août (doigt qui monte, défilement en bas) dépliait le Peaufiner d'un Cercle : il ne s'ouvre plus que par sa barre (§13) ; ② le bloc collant
+> n'avait pas de fond : il porte le corps du Cercle (`lot-V180-CERCLE-FIL-css`, `--nf-corps`) ; ③ la hauteur du fil était divisée par `clientWidth/390` (Q592) : à 0,75 le fil était
+> compté 25 % trop court — `_echDp`. Juge : **`redteam_cercle_defile.py`** (les interstices du bloc lus sur l'image ; 7/18 sur v179b). *La règle (§8, deux unités)* : **Q592 nommait
+> trois divisions par `clientWidth` ; celle du fil d'un Cercle est corrigée, les deux du dessin restent.**
+> **⚑ C-240** : si la phrase posée ne laisse pas 12 pt + la rangée du pinceau (44) + 12 pt au-dessus de « garder de côté » (ou de la barre), elle se réduit d'un point et l'on recompose
+> (`_ppPhCap`, pour cette phrase seulement). Juge : **`redteam_phrase_lignes.py`** (la vraie saisie au clavier ; la page posée avant de mesurer ; 9/18 sur v179b).
+> **⚑ C-239 — NON LIVRÉ, MESURÉ** : sur l'état de Tom (8 paroles réparties sur toute la Toile) la plus petite zone touchable fait 24 pt à la vue × 1 ; zoomer ne la porte pas à 44
+> sans sortir d'autres paroles de l'écran (× 1,2 → 28 ; × 1,6 → 8). Par le vrai chemin, de 1 à 13 paroles, chaque cellule fait déjà ≥ 44 pt. Rien changé : question à Tom.
+
 ### ⚑ v180a (5 nov. 2026) — L'ÉCRAN RESTE ALLUMÉ (C-236) ; PAGE + D'UN PROMI ET D'UN CHICHE : ON TRACE LA MOITIÉ, LA DALLE NAÎT COMME À L'ONBOARDING (C-237). (Décisions Tom.) Ce bloc CORRIGE v143 (C-107 : « un trait ne compte qu'à 60 pt » pour PLANTER) et v149 (C-155 : « la dalle grandit dans la page + » pour un Promi et un Chiche).
 > **Validés par Tom : C-230, C-231, C-232, C-233, C-235, et les phrases d'exemple (E4 point 4).**
 > **⚑ C-236 — LA CAUSE** : rien ne retenait l'écran ; en http (l'iPhone de Tom sur le Mac) `navigator.wakeLock` n'existe pas. **Aujourd'hui** (`lot-V161-VEILLE`) : Wake Lock demandé au
