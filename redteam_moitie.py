@@ -75,7 +75,7 @@ def un(b, k, vw, vh, nom):
     juge(T + ' C · la dalle naît au milieu du trait (± 2 pt)', K and abs(K['c0'][0] - 195) <= 2 and abs(K['c0'][1] - y195) <= 2, 'naissance %s · trait (195, %.1f)' % (K and K['c0'], y195))
     R = REF
     okc = bool(K and R and tr == R['tr'] and K['s0'] <= 0.1 and abs(K['pic'] - R['k']['pic']) <= 0.03 and K['t08'] is not None and R['k']['t08'] is not None and abs(K['t08'] - R['k']['t08']) <= 50
-               and K['vol'] is not None and R['k']['vol'] is not None and abs(K['vol'] - R['k']['vol']) <= 50 and abs(K['fin'] - 1) <= 0.02)
+               and K['vol'] is not None and R['k']['vol'] is not None and abs(K['vol'] - R['k']['vol']) <= 50 and abs(K['fin'] - pg.evaluate("()=>{ const c=window._cibleDalle(promises[promises.length-1].id); return c ? c.w/(window._naissanceW?window._naissanceW():c.w) : 1; }")) <= 0.03)   # v182a (C-237, C-247) : la dalle naît à la taille de l'onboarding et se pose à la taille de SA cellule (l'onboarding : sa cellule fait déjà sa taille, l'échelle y reste 1)
     juge(T + ' C · la naissance est celle de l\'onboarding, image par image', okc, 'page + %s · onboarding %s' % (K, R and R['k']))
     dern = c[-1] if c else None
     cib = pg.evaluate("()=>{ var p=promises[promises.length-1]; return window._cibleDalle?window._cibleDalle(p.id):null; }")

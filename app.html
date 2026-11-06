@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v181b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v182a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -17925,7 +17925,29 @@ var CREMEETAT='#F7F0DE';
         }
       }catch(_){}
       cv.__matRect=null; cv.__matLum=null;   /* v29 · la matière déclarée ne survit pas à l'écran d'avant */
-      if(id!=null && window.Toile && Toile.dalleAbs && Toile.dalleAbs(id)){
+      try{ cv.removeAttribute('data-avenir'); }catch(_){}
+      /* ⚑ v182a (Tom, C-241) — « la dalle du fond, en haut de la page +, est EXACTEMENT celle qui naît à la moitié du trait, qui est celle qui arrive sur la
+         Toile : même monde, même palette, même couleur, même forme ». Elle prenait la dalle d'une AUTRE parole (la dernière de la même nature), teinte par la
+         nature (Q30). Aujourd'hui, pour un Promi et un Chiche (pas une parole reprise) : la dalle QUE CETTE PAROLE AURA (`Toile.dalleAvenir`, lecture seule,
+         `window._dalleAvenirCv`), rendue à la taille de la boîte, posée 1:1 ; aucune couleur n'est changée (sous Ingénu, une dalle de Promi a la couleur
+         même du champ : dit, en capture). */
+      var _avC = null;
+      if(!M && (e.nat==='promi' || e.nat==='chiche') && window._ppDalleId==null && window._dalleAvenirCv && !window._ppPart && !(typeof selNuee!=='undefined' && selNuee)){   /* planter DANS un Cercle passe par un autre chemin du moteur : pas d'avance */
+        try{ var _Tg=g.getTransform(), _sxg=Math.hypot(_Tg.a,_Tg.b)||1, _syg=Math.hypot(_Tg.c,_Tg.d)||1, _qp=window._ppQuiPlante ? window._ppQuiPlante() : {title:'', who:'moi'};
+          /* clavier ouvert, la dalle ne se refait pas (C-234 : elle ne change jamais pendant la frappe) — elle suit la parole quand la saisie est validée */
+          var _avD=window._ppAvDernier;
+          if(cs.classList.contains('pp-ouvert') && _avD && _avD.id===nid && _avD.nat===e.nat && _avD.w===Math.round(e.dalle.w) && _avD.cv) _avC=_avD.cv;
+          else { _avC = window._dalleAvenirCv(nid, e.dalle.w*_sxg, e.dalle.h*_syg, {chiche:e.nat==='chiche', title:_qp.title, who:_qp.who}); if(_avC) window._ppAvDernier={id:nid, nat:e.nat, w:Math.round(e.dalle.w), cv:_avC}; } }catch(_){ _avC=null; } }
+      if(_avC){
+        var _sousVA = !!(e.ouvert || e.auPlancher);
+        if(_sousVA){ g.save(); g.beginPath(); O.chemin(g,y,0,W); g.lineTo(W,0); g.lineTo(0,0); g.closePath(); g.clip(); }
+        var _Tg2=g.getTransform(), _sx2=Math.hypot(_Tg2.a,_Tg2.b)||1, _sy2=Math.hypot(_Tg2.c,_Tg2.d)||1, _dwA=_avC.width/_sx2, _dhA=_avC.height/_sy2;
+        window._poseUn(g, _avC, e.dalle.x+e.dalle.w/2, e.dalle.y+e.dalle.h/2);
+        if(_sousVA) g.restore();
+        cv.__matRect={x:e.dalle.x+e.dalle.w/2-_dwA/2, y:e.dalle.y+e.dalle.h/2-_dhA/2, w:_dwA, h:_dhA}; cv.__matLum=_avC.__dalleInfo?_avC.__dalleInfo.lum:null;
+        try{ cv.setAttribute('data-matiere', [Math.round(cv.__matRect.x),Math.round(cv.__matRect.y),Math.round(_dwA),Math.round(_dhA)].join(',')); cv.setAttribute('data-avenir', String(nid)); }catch(_){}
+      }
+      else if(id!=null && window.Toile && Toile.dalleAbs && Toile.dalleAbs(id)){
         /* ⚑ v29 — la teinture de Q30 est PEINTE PAR LE MOTEUR (`opts.rampe`), à la taille finale de la dalle ;
            plus aucun pixel relu ni reposé ici (redteam_decoupe, familles B et C). La rampe reste celle de
            `teinteDalle`, et elle ne sort toujours pas de la bande haute (Q30 borné, CLAUDE.md §4). */
@@ -38382,15 +38404,18 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      _retireFondFlaques(fond, dc, fin) : l'image figée de la Toile d'avant (la dalle en vol peinte dedans) se retire en flaques (720 ms).
      _cibleDalle(id) : la cellule de la parole sur la Toile, en pt de l'appareil. */
 (function(){
-  window._naissanceDalle=function(hote, id, monde, bx, by, w){
+  window._naissanceDalle=function(hote, id, monde, bx, by, w, pre){
     var dc=document.createElement('canvas'); dc.className='onbv-a onbv-dalle';
+    /* v182a (C-241) : `pre`, la dalle d'avance (`_dalleAvenirCv`) — la page + y pose la MÊME image que son haut : copiée 1:1, rien n'est recalculé */
+    if(pre && pre.width){ dc.width=pre.width; dc.height=pre.height; dc.getContext('2d').drawImage(pre,0,0); dc.__dalleInfo=pre.__dalleInfo; }
     /* ⚑ v181a (Tom, C-241) — « la dalle qui naît à la moitié du trait est la même que celle qui arrive sur la Toile : même couleur ». LA CAUSE, mesurée :
        elle était rendue dans l'image même où le moteur reçoit la parole, quand sa cellule commence à S'ALLUMER (cOf : du gris de la cellule à sa couleur
        en 760 ms) — elle naissait crème (253, 232, 199) et la Toile la montrait bleue (128, 173, 249). Elle est rendue par le même appel, à l'instant où
        sa couleur est posée (l'horloge du rendu avancée de 900 ms, le temps de ce seul appel) : la couleur qu'elle aura sur la Toile. */
-    var ok=false, _pn=performance.now, _t1=_pn.call(performance)+900;
+    var ok=!!(pre && pre.width), _pn=performance.now, _t1=_pn.call(performance)+900;
+    if(!ok){
     try{ performance.now=function(){ return _t1; }; }catch(_){ }
-    try{ ok=Toile.dalleTrame(dc, id, 1, monde); }catch(_){} finally{ try{ performance.now=_pn; }catch(_){ } try{ delete performance.now; }catch(_){ } }
+    try{ ok=Toile.dalleTrame(dc, id, 1, monde); }catch(_){} finally{ try{ performance.now=_pn; }catch(_){ } try{ delete performance.now; }catch(_){ } } }
     var h=w*(dc.height/(dc.width||1));
     if(ok){
       dc.style.cssText='position:absolute;margin:0;padding:0;pointer-events:none;transform-origin:50% 50%;left:'+(bx-w/2)+'px;top:'+(by-h/2)+'px;width:'+w+'px;height:'+h+'px;transform:scale(.08);opacity:1;transition:transform .5s cubic-bezier(.2,1.3,.4,1)';   /* v148 (C-141 §10.3) : plus de fondu d'opacité — elle grandit depuis le trait */
@@ -38399,7 +38424,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     }
     return {dc:dc, ok:ok, w:w, h:h, vole:function(cible){ if(!ok||!cible) return;
       dc.style.transition='left .765s cubic-bezier(.45,0,.2,1),top .765s cubic-bezier(.45,0,.2,1),transform .765s cubic-bezier(.45,0,.2,1)';
-      dc.style.left=(cible.x+cible.w/2-w/2)+'px'; dc.style.top=(cible.y+cible.h/2-h/2)+'px'; dc.style.transform='scale(1)'; }};
+      /* v182a (C-237) : elle se pose À LA TAILLE de sa cellule (l'onboarding : sa cellule fait déjà sa taille, l'échelle reste 1) */
+      var sc=(cible.w>0 && Math.abs(cible.w-w)>0.5) ? (cible.w/w) : 1;
+      dc.style.left=(cible.x+cible.w/2-w/2)+'px'; dc.style.top=(cible.y+cible.h/2-h/2)+'px'; dc.style.transform='scale('+sc+')'; }};
   };
   /* LA PAGE + (Promi, Chiche) — la chorégraphie de l'onboarding, mêmes temps : t 0 la dalle naît au milieu du trait (sous le doigt) ; 553 ms la Toile d'avant
      (son image figée au moment du trait) couvre la page en flaques (620 ms), la page se ferme dessous ; 808 ms la dalle rejoint sa cellule (0,765 s) ;
@@ -38419,9 +38446,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     function fin(){ if(fini) return; fini=true; ferme(); window._tirageActive=false; if(hote.parentNode) hote.remove(); window._ppNaitDernier={id:np?np.id:null, t:performance.now()}; }
     Promise.resolve().then(function(){
       try{ np=promises[promises.length-1]; }catch(_){ }
+      /* ⚑ v182a (Tom, C-237 récidive, C-247 : « la dalle naît EXACTEMENT comme dans l'onboarding : taille, naissance, vol ») — CE QUI DIFFÉRAIT : sa taille. La
+         dalle naissait à la taille de SA CELLULE au moment du trait — une cellule qui vient de naître (poids 0) sur une Toile déjà pleine : 105 pt mesurés,
+         contre 241 dans l'onboarding (la première parole y prend une grande cellule) ; à l'échelle 0,85 de la naissance, 90 pt contre 205. Elle naît maintenant à
+         la taille de l'onboarding (`_naissanceW` : celle qu'il a donnée sur cet appareil, sinon 241 pt) et, au vol, se pose à la taille de sa cellule. Et c'est
+         la dalle d'avance (C-241), rendue AVANT que le moteur reçoive la parole : la même image que le haut de la page +. */
+      var _w0 = window._naissanceW ? window._naissanceW() : 241, _pre = null;
+      try{ if(np && window._dalleAvenirCv){ var _E=(Toile.vue&&Toile.vue().dpr)||Math.min(2,window.devicePixelRatio||1); _pre=window._dalleAvenirCv(np.id, _w0*_E*D.width/390/s, 1e5, {chiche:!!np.chiche}); } }catch(_){ _pre=null; }
       try{ if(window._toileDefer){ var q=window._toileDefer; window._toileDefer=null; q.forEach(function(f){ try{ f(); }catch(_){ } }); } }catch(_){ }   /* le moteur reçoit la parole au trait : sa cellule grandit sous la page */
       if(!np){ fin(); return; }
-      var c0=window._cibleDalle(np.id); N=window._naissanceDalle(hote, np.id, np.monde, bx, by, (c0 && c0.w>=40) ? c0.w : 90);
+      N=window._naissanceDalle(hote, np.id, np.monde, bx, by, _w0, _pre);
       window._ppNait={id:np.id, dc:N.dc, x:bx, y:by, w:N.w, t0:performance.now()};
       setTimeout(function(){ cover=window._passageFlaques(hote, {mode:'couvre', rect:[0,0,390,844], image:fond, duree:620, garde:true, fin:function(){ ferme(); }}); if(!cover) ferme(); }, 553);
       setTimeout(function(){ try{ N.vole(window._cibleDalle(np.id)); }catch(_){ } }, 808);
@@ -38429,6 +38463,30 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       setTimeout(fin, 4000);
     });
   };
+  /* ce que `#addPromi` donnera à la parole (titre, personne) — la même lecture que lui */
+  window._ppQuiPlante=function(){ var t='', w='moi'; try{ var f=document.getElementById('fTitle'); t=((window._phrase&&window._phrase.titre)||(f&&f.value)||'').trim();
+      var r=(typeof newWhoSel!=='undefined' && newWhoSel && newWhoSel.length) ? newWhoSel.slice() : [];
+      if(!r.length){ var ty=(document.getElementById('fWho')||{}).value; ty=(ty||'').trim(); if(ty && ty.toLowerCase()!=='moi' && ty.indexOf(',')<0) r=[ty]; }
+      if(!r.length) r=['moi']; if(r.length>1) r=r.filter(function(x){ return x && x!=='moi'; }); if(r.length>1) r=[r.join(', ')]; w=r[0]; }catch(_){ } return {title:t, who:w}; };
+  window._naissanceW=function(){ var v=0; try{ v=parseFloat(localStorage.getItem('promi_naissance_w'))||0; }catch(_){ } return (v>40 && v<390) ? v : 241; };
+  /* ⚑ v182a (C-241) — LA DALLE QUE LA PAROLE `id` AURA, rendue d'avance par le moteur (`Toile.dalleAvenir`, lecture seule) dans la boîte (tw × th, en pixels de
+     l'appareil), « contain » : un premier rendu donne sa taille naturelle, le second la rend à la taille de la boîte, 1:1. Gardée tant que la Toile, le monde,
+     la palette et la parole n'ont pas changé (le calcul refait la plantation sur des copies : on ne le refait pas à chaque image du peintre). */
+  var AV={};
+  window._dalleAvenirCv=function(id, tw, th, a){ try{
+    if(!window.Toile || !Toile.dalleAvenir || id==null) return null;
+    var L=window.Toile_lecture ? Toile_lecture() : null, sig='';
+    if(L) sig=L.graines.length+':'+L.graines.map(function(q){ return (q.pid==null?'':q.pid); }).join(';');   /* les paroles, pas leurs places au pixel : la Toile respire (la vie au repos) — rendue à chaque souffle, la dalle du haut changeait de format sous l'œil */
+    var m=''; try{ m=JSON.stringify(Toile.mondeCourant()); }catch(_){ }
+    var neuf=false; try{ neuf=!!(Toile.semisNeuf && Toile.semisNeuf()); }catch(_){ }
+    var A={id:id, chiche:!!(a&&a.chiche), title:neuf?((a&&a.title)||''):'', who:neuf?((a&&a.who)||'moi'):'moi'};   /* le titre et la personne : sur une Toile faite de ses paroles, l'ampleur d'une dalle en dépend (C-062) ; ailleurs ils ne comptent pas — la dalle ne se refait pas à chaque lettre */
+    var cle=[id, Math.round(tw), Math.round(th), A.chiche?1:0, A.title, A.who, m, sig].join('|');
+    if(AV[cle]) return AV[cle];
+    var c1=document.createElement('canvas'); if(!Toile.dalleAvenir(c1, 1, A) || !c1.width) return null;
+    var k=Math.min(tw/c1.width, th/c1.height), c2=document.createElement('canvas');
+    if(!Toile.dalleAvenir(c2, k, A) || !c2.width) return null;
+    var ks=Object.keys(AV); if(ks.length>8) delete AV[ks[0]];
+    c2.__avenir=1; AV[cle]=c2; return c2; }catch(_){ return null; } };
   window._cibleDalle=function(id){ try{ var dev=document.getElementById('device'), D=dev.getBoundingClientRect(), s=(D.width/(dev.offsetWidth||390))||1, a=Toile.dalleAbs(id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
       return {x:(R.left-D.left+a.minx*sx)/s, y:(R.top-D.top+a.miny*sx)/s, w:a.w*sx/s, h:a.h*sx/s}; }catch(_){ return null; } };
   window._retireFondFlaques=function(fond, dc, fin){ var F2=window.Flaques; if(!F2 || !F2.Scene || !fond.width || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){ fond.style.display='none'; fin(); return; }
@@ -38892,7 +38950,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     try{ var a=Toile.dalleAbs(np.id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
       cible={x:(R.left-D.left+a.minx*sx)/s, y:(R.top-D.top+a.miny*sx)/s, w:a.w*sx/s, h:a.h*sx/s}; }catch(_){}
     var y=yOnde(), bx=MID, by=ZONE_Y+y(MID), w=cible?cible.w:90;
-    var N=window._naissanceDalle(v, np.id, np.monde, bx, by, w), dc=N.dc, ok=N.ok, h=N.h;   /* v180a (C-237) : la naissance est partagée avec la page + (lot-V180-NAISSANCE) */
+    var N=window._naissanceDalle(v, np.id, np.monde, bx, by, w), dc=N.dc, ok=N.ok, h=N.h;
+    try{ if(cible && cible.w>40) localStorage.setItem('promi_naissance_w', String(Math.round(cible.w*100)/100)); }catch(_){ }   /* v182a (C-237) : la taille de la naissance, que la page + reprend */   /* v180a (C-237) : la naissance est partagée avec la page + (lot-V180-NAISSANCE) */
     /* ⚑ v148 (C-141 §10.2) : la page du trait ne part plus en FONDU (`opacity` 0,5 s) — la Toile d'avant (son image figée, `fond`) la recouvre EN FLAQUES */
     /* ⚑ v173 (Tom, C-212) — « l'attente avant l'apparition des textes est un peu trop longue » : − 15 % sur chaque attente de cette suite (1 900 → 1 615, 950 → 808, 650 → 553,
        le vol de la dalle 0,9 → 0,765 s : il remplit l'attente et finirait après elle ; dans `finPas` 320 → 272). Les durées de tracé et les passages en flaques ne bougent pas. */

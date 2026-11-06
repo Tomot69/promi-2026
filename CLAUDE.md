@@ -20,6 +20,10 @@
 > - **A6 · HONNÊTETÉ.** Un point non reproduit, non mesuré ou non jugé est écrit comme tel, jamais « réglé ».
 > Le rapport de chaque lot commence par le tableau A1 à A6, « tenu » ou « non tenu ».
 
+> ## ⚑ « COMME [UN AUTRE ÉCRAN] » = IDENTIQUE EN TOUT — RÈGLE PERMANENTE (Tom, 6 nov. 2026, C-247). ELLE S'APPLIQUE À CHAQUE LOT.
+> **Quand Tom demande « comme dans l'onboarding » ou « comme [un autre écran] », c'est IDENTIQUE EN TOUT : même taille, même animation, mêmes durées, même ordre,
+> même code. Pas une version approchée, pas une partie seulement. Avant de livrer, on compare les deux image par image ; tout écart non demandé est un défaut.**
+
 > ## ⚑ LA VÉRIFICATION D'UN LOT — RÈGLE PERMANENTE (Tom, 4 nov. 2026, C-227 ; elle REMPLACE C-225). ELLE S'APPLIQUE À CHAQUE LOT.
 > *Pourquoi* : « Un lot qui dure plusieurs jours n'est plus acceptable. »
 > 1. **Par lot, UNIQUEMENT : les juges du périmètre (10 au plus) + 5 sentinelles fixes — `redteam_ecrans`, `redteam_decisions`,
@@ -215,6 +219,24 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v182a (6 nov. 2026) — LA DALLE DE LA PAGE + : NAÎT COMME DANS L'ONBOARDING (C-237 récidive, C-247) ; UNE SEULE DALLE, CALCULÉE D'AVANCE PAR LE MOTEUR (C-241). (Décisions Tom.)
+> **Validé par Tom : C-239. Règle permanente C-247 (« comme [un autre écran] » = identique en tout) : en tête de ce fichier.**
+> **⚑ C-237 — CE QUI DIFFÉRAIT : LA TAILLE.** La dalle de la page + naissait à la taille de SA CELLULE au moment du trait — une cellule qui vient de naître sur une Toile
+> pleine : 105 pt (90 vus à l'échelle 0,85 de la naissance), contre 241 dans l'onboarding (la première parole y prend une grande cellule). Elle naît maintenant à la taille
+> de l'onboarding (`_naissanceW` : celle qu'il a donnée sur cet appareil, `promi_naissance_w`, sinon 241 pt), par le même code (`_naissanceDalle`, mêmes temps, même
+> transition), et au vol se pose À LA TAILLE de sa cellule (l'onboarding : sa cellule fait déjà sa taille, l'échelle y reste 1). Juge : **`redteam_naissance_onb.py`**
+> (la page + et l'onboarding image par image ; 4/8 sur v181b). Contrat remis : `redteam_moitie` C (l'échelle d'arrivée = la cellule ; original en sauvegarde).
+> **⚑ C-241 — `Toile.dalleAvenir(dcv, k, {id, chiche, title, who})` (promi-moteur.js, autorisée par Tom, LECTURE SEULE)** : la plantation rejouée sur des COPIES des graines
+> (le même tirage que la vraie, `_aleaRepart('plante|'+id+'|'+n)`, ou celui que `Toile.simule` a gardé), le point fixe (`_semisFinal`), la couleur allumée, peinte par
+> `dalleTrame` ; tout est rendu dans le `finally` (graines, vue, transition, tirage, couleurs figées, drapeau d'évolution) et aucune image n'est demandée pendant le calcul
+> (`running`). Vérifié : l'état lu (`Toile_lecture`, couleurs figées, monde, palette) identique avant et après, six mondes. **Le haut de la page + (Promi, Chiche ; pas une
+> parole reprise ni une plantation dans un Cercle) et la dalle qui naît sont la MÊME image** (`window._dalleAvenirCv`, gardée tant que les paroles, le monde et la palette
+> ne changent pas ; clavier ouvert elle ne se refait pas). Aucune couleur changée : sous Ingénu, la dalle d'un Promi #82AEF8 sur le champ #82AEF8 — capture
+> `planche-v182/ingenu-page-plus.png`. **Dans les anciens mondes (semis constant), la dalle de la Toile est la même (IoU 0,99) ; dans les mondes faits de leurs paroles
+> (Esquille), NON : la vraie Toile se pose par images successives (le relâchement de `frame`), pas au point fixe que le calcul lit — IoU 0,46.** Garde-fou tenu :
+> `banc_rendu` au pixel hors Ramage (préexistant), `redteam_toile_stable` T 6/6 sur l'état de Tom. Juge : **`redteam_dalle_unique.py`** (11/12) ; `redteam_dalle_fixe`
+> lit aussi la dalle d'avance (`_poseUn`, `cv.__avenir` ; original en sauvegarde).
 
 ### ⚑ v181b (6 nov. 2026) — LES TEXTES LONGS : PLUS DE LIGNES, UN DÉPLIAGE, UNE LIMITE (C-244) ; INDEX ET FIL : LA DERNIÈRE ACTION EN PREMIER (C-245). (Décisions Tom.)
 > **⚑ C-244 §5.3 — 280 caractères pour une parole, 40 pour le nom d'un Cercle, à la saisie, collage compris** (`lot-V181B-TEXTES`, `window._limiteTexte`) : `maxLength` posé au

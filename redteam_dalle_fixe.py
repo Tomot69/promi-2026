@@ -17,7 +17,12 @@ ECH = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--echelle=
 res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-96s %s' % ('✅' if ok else '❌', nom, str(d)[:230]), flush=True)
-PIEGE = """()=>{ if(window.__pdP) return; window.__pdP=1; window.__pd=[]; const f=window._poseDalle;
+PIEGE = """()=>{ if(window.__pdP) return; window.__pdP=1; window.__pd=[];
+  /* v182a (C-241) : la dalle du haut est la dalle d'avance, posée par `_poseUn` (le canevas porte `data-avenir`) — on la lit aussi */
+  const u=window._poseUn; window._poseUn=function(g,cv,cx,cy){ const r=u.apply(this, arguments); try{ const cs=document.getElementById('createSheet');
+    if(g && g.canvas && g.canvas.id==='csTrameCv' && cs.classList.contains('show') && !cs.classList.contains('acc-passe') && getComputedStyle(cs).visibility==='visible' && r && cv && cv.__avenir)
+      window.__pd.push([Math.round(performance.now()), +r.w.toFixed(2), +r.h.toFixed(2), +(cx-r.w/2).toFixed(2), +(cy-r.h/2).toFixed(2)]); }catch(_){ } return r; };
+  const f=window._poseDalle;
   window._poseDalle=function(g,id,x,y,w,h,o){ const r=f.apply(this, arguments); try{ const cs=document.getElementById('createSheet');
     if(g && g.canvas && g.canvas.id==='csTrameCv' && cs.classList.contains('show') && !cs.classList.contains('acc-passe') && getComputedStyle(cs).visibility==='visible' && r)
       window.__pd.push([Math.round(performance.now()), +r.w.toFixed(2), +r.h.toFixed(2), +r.x.toFixed(2), +r.y.toFixed(2)]); }catch(_){ } return r; }; }"""

@@ -15,7 +15,7 @@ from PIL import Image
 from playwright.sync_api import sync_playwright
 exec(open('redteam_moitie.py').read().split('REF = None')[0].split('from playwright.sync_api import sync_playwright')[1])
 F = sys.argv[1] if len(sys.argv)>1 else 'app.html'
-PIEGE = """()=>{ if(window.__pp) return; window.__pp=[]; const f=window._poseDalle; window._poseDalle=function(g,id,x,y,w,h,o){ const r=f.apply(this,arguments); try{ if(g.canvas&&g.canvas.id==='csTrameCv') window.__pp.push({id:id, o:o?JSON.stringify(o).slice(0,80):null, cv:r&&r.cv?r.cv.toDataURL():null, info:r&&r.cv&&r.cv.__dalleInfo?{c:r.cv.__dalleInfo.c||r.cv.__dalleInfo.sat, lum:r.cv.__dalleInfo.lum, monde:r.cv.__dalleInfo.monde}:null}); }catch(e){} return r; }; }"""
+PIEGE = """()=>{ if(window.__pp) return; window.__pp=[]; const u=window._poseUn; window._poseUn=function(g,cv,x,y){ const r=u.apply(this,arguments); try{ if(g.canvas&&g.canvas.id==='csTrameCv'&&g.canvas.getAttribute('data-avenir')!=null||(g.canvas&&g.canvas.id==='csTrameCv'&&cv&&cv.width>40)) window.__pp.push({id:'avenir', o:null, cv:cv.toDataURL(), info:null}); }catch(e){} return r; }; const f=window._poseDalle; window._poseDalle=function(g,id,x,y,w,h,o){ const r=f.apply(this,arguments); try{ if(g.canvas&&g.canvas.id==='csTrameCv') window.__pp.push({id:id, o:o?JSON.stringify(o).slice(0,80):null, cv:r&&r.cv?r.cv.toDataURL():null, info:r&&r.cv&&r.cv.__dalleInfo?{c:r.cv.__dalleInfo.c||r.cv.__dalleInfo.sat, lum:r.cv.__dalleInfo.lum, monde:r.cv.__dalleInfo.monde}:null}); }catch(e){} return r; }; }"""
 NAIT = """()=>{ const e=document.querySelector('.onbv-dalle'); if(e && !window.__nait) window.__nait=e.toDataURL(); requestAnimationFrame(()=>{}); return !!e; }"""
 def img(u): return Image.open(io.BytesIO(base64.b64decode(u.split(',')[1]))).convert('RGBA')
 def masque(im, n=48):
@@ -37,7 +37,7 @@ with sync_playwright() as p:
         res.append(bool(ok)); print('  %s %-80s %s' % ('✅' if ok else '❌', nom, str(d)[:200]), flush=True)
     for monde in ('encre','touffe','esquille'):
         ctx=B.contexte(b, vw=430, vh=932); B.toile_pleine(ctx, 10); pg=B.ouvre(ctx, F, 7000)
-        pg.evaluate("m=>{ Toile.setTheme(m); }", monde); pg.wait_for_timeout(3000)
+        pg.evaluate("m=>{ Toile.setTheme(m); }", monde); pg.wait_for_timeout(9000)   # la Toile posée dans son monde (un changement de famille la ressème)
         pg.evaluate(PIEGE); ouvre_nature(pg,'promi'); remplit(pg,'promi','arroser les tomates')
         haut = pg.evaluate("()=>window.__pp.slice(-1)[0]")
         pg.evaluate("()=>{ window.__nait=null; (function f(){ const e=document.querySelector('.onbv-dalle'); if(e&&!window.__nait&&e.width) window.__nait=e.toDataURL(); if(!window.__nait) requestAnimationFrame(f); })(); }")

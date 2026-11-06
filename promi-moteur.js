@@ -7502,6 +7502,33 @@ window.Toile.addPromi=function(id){ var R=_simRand;
   if(R&&R.used===0&&(R.sig!==_simSig()||performance.now()-R.t>120000)) R=_simRand=null;
   if(!R) return _addPromiNu.apply(this,arguments);
   var mr=_aleaF; _aleaF=R.f; try{ return _addPromiNu.apply(this,arguments); } finally{ _aleaF=mr; if(++R.used>=R.n) _simRand=null; } };
+/* ⚑ v182a (Tom, 6 nov. 2026, C-241 : « tu peux toucher au moteur, sous des conditions strictes : une fonction de LECTURE SEULE, qui calcule d'avance la place,
+   la couleur et la forme de la prochaine dalle, sans modifier aucun état du moteur ni d'aucune Toile ») — LA PROCHAINE DALLE, D'AVANCE.
+   `Toile.dalleAvenir(dcv, k, {id, chiche, title, monde, opts})` rend dans `dcv` la dalle QUE LA PAROLE `id` AURA, une fois plantée et la Toile posée : sur des
+   COPIES des graines, la vraie plantation (`_addPromiNu` : le même tirage, `_aleaRepart('plante|'+id+'|'+n)`, ou celui que `Toile.simule` a gardé pour elle),
+   puis le point fixe de la Toile (`_semisFinal`, poids d'arrivée) et la couleur allumée ; elle est peinte par `dalleTrame`, le code de toute dalle. Tout est
+   rendu à l'identique dans le `finally` : les graines, la vue, le moment de transition, le tirage (`_aleaF`, `_aleaE`, `_simRand`), la couleur figée des paroles,
+   le drapeau d'évolution. Rien n'est planté, rien n'est enregistré. Rend `false` si elle ne peut pas (un aperçu en cours, pas de canevas). */
+window.Toile.dalleAvenir=function(dcv,k,a){
+  a=a||{}; if(!dcv||!g||_AP) return false;
+  var M=_apLit(), tn=_transN, mr=_aleaF, aE=_aleaE, sr=_simRand, sr2=sr?{used:sr.used}:null, te=window._tEvolDemande, ru=running, faux=null, dal=[], ok=false;
+  running=true;   /* la plantation simulée appelle `kick()` : aucune image de la vraie Toile n'est demandée pendant le calcul */
+  var copie=seeds.map(function(s){ var c={}; for(var q in s) c[q]=s[q]; return c; });
+  try{
+    promises.forEach(function(p){ dal.push([p,p.dalle]); });
+    _apPose(Object.assign({},M,{seeds:copie,view:{s:M.view.s,ox:M.view.ox,oy:M.view.oy},vTarget:(M.vTarget?{s:M.vTarget.s,ox:M.vTarget.ox,oy:M.vTarget.oy}:null),nueeCells:Object.assign({},M.nueeCells)}));
+    var id=(a.id!=null)?a.id:-(9e8+11), ex=null; for(var pi=0;pi<promises.length;pi++){ if(promises[pi].id===id){ ex=promises[pi]; break; } }
+    if(!ex){ faux={id:id,title:a.title||'',who:a.who||'moi',chiche:!!a.chiche,draft:false}; promises.push(faux); }
+    var R=_simRand; if(R&&R.used===0&&(R.sig===_simSig())) _aleaF=_lcgSim(R.g0);   /* la vraie plantation prendra ce tirage-là (Toile.addPromi, plus haut) */
+    var s=_addPromiNu(id); if(!s) throw 0;
+    var m=_semisFinal();
+    seeds.forEach(function(q){ var f=m.get(q); if(f){ q.x=q.tx=f[0]; q.y=q.ty=f[1]; } var wf=(q.wAt&&q.wFin!=null)?q.wFin:(q.wt!=null?q.wt:q.w); if(wf!=null) q.w=wf; if(q.kind!=='gray') q.t0=-1e9; });
+    ok=window.Toile.dalleTrame(dcv,id,k||1,a.monde,a.opts);
+  }catch(e){ ok=false; }
+  finally{ running=ru; _aleaF=mr; _aleaE=aE; _simRand=sr; if(sr&&sr2) sr.used=sr2.used; window._tEvolDemande=te;
+    if(faux){ var fi=promises.indexOf(faux); if(fi>=0) promises.splice(fi,1); }
+    dal.forEach(function(d){ d[0].dalle=d[1]; }); _apPose(M); _transN=tn; }
+  return ok; };
 /* les trois moments où l'on sait ce qui va arriver : la phrase qui s'écrit (pause de 700 ms), le trait de la plantation, la
    confirmation d'une suppression. Ramage et Volubilis : les deux mondes dont l'arrivée se calcule. */
 (function(){
