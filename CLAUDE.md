@@ -216,6 +216,24 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v181a (6 nov. 2026) — TOUFFE : LE TOUCHER TOLÉRANT (C-239) ; UNE SEULE DALLE À LA PAGE + (C-241, en partie) ; LE + DES MEMBRES D'UN CERCLE (C-242) ; LE FIL D'UN CERCLE SOUS L'EN-TÊTE (C-243). (Décisions Tom.)
+> **Validés par Tom : C-236, C-237, C-234, C-238, C-240 ; C-230 (« tout le monde » quand tous les membres sont présélectionnés : accepté).**
+> **⚑ C-239 — « un toucher ouvre la dalle de parole la plus proche si elle est à 22 pt ou moins du doigt ; deux à égale distance : aucune ; rien ne change à l'écran ; le moteur
+> n'est pas touché »** (`window._toucheTolerant`, dans le toucher de la Toile) : seulement quand le doigt ne tombe sur AUCUNE dalle de parole ; la plus proche se cherche
+> par le toucher du moteur (`Toile.hit`, lecture seule) sur des cercles de 1 en 1 pt ; une seconde dalle à 3 pt près = égale distance ; seulement une dalle dont la zone
+> de toucher (le plus grand carré qu'elle contient, pas de 2 pt) fait moins de 44 pt. Juge : **`redteam_toucher_tolerant.py`** (l'état de Tom, Touffe forcé ; 9/11 sur v180b).
+> **⚑ C-241 — LA CAUSE, mesurée (3 mondes) : ① la dalle qui NAÎT était rendue à l'image où sa cellule commence à s'allumer (`cOf` : du gris de la cellule à sa couleur en
+> 760 ms) — crème contre bleue sur la Toile. Corrigé : rendue par le même appel, l'horloge de ce seul rendu avancée de 900 ms (`_naissanceDalle`) ; ② la dalle du HAUT de la
+> page + est celle d'une AUTRE parole (la dernière de la même nature), teinte par la rampe de la nature (Q30) — NON CORRIGÉ : la parole n'existe pas dans le moteur avant le
+> trait ; montrer SA dalle demande au moteur de tirer sa place, sa couleur et sa forme finale d'avance. Question à Tom.** Juge : **`redteam_dalle_unique.py`** (5/12, rouge
+> par ce qui reste).
+> **⚑ C-242 — LE + DES MEMBRES** (`lot-V181A-CERCLE`) : le signe seul, orange `#FB4C0D`, encre de 22 pt finissant à 366, centré sur le disque du Cercle (le second Noyau),
+> zone de 44 pt ; un toucher ouvre Peaufiner par le chemin de sa barre, MEMBRES déplié, puis le panneau glisse jusqu'à MEMBRES (420 ms, avancée bornée à 34 ms par image).
+> Trouvé et corrigé : MEMBRES déplié, le bloc « Ma Parole ! » (`#npCercle`) restait à 630 et son flou couvrait « + ajouter quelqu'un » (déjà en v180b) — il descend avec
+> les cartes (`window._npGensH`). ⚠ **Une règle du poster pose ses boutons en `display:flex` important : un nœud ajouté se cache par `setProperty(…, 'important')`.**
+> **⚑ C-243** : le fil d'un Cercle est rogné 12 pt sous l'encart (112 pt), à chaque image du défilement ; au repos rien n'est rogné ; le + s'efface quand il passerait sous
+> l'encart (sa cote est gardée : défilé, les Noyaux se retirent et leur boîte est nulle). Juge : **`redteam_cercle_plus_membres.py`** (10/10 ; 2/10 sur v180b).
+
 ### ⚑ v178c (4 nov. 2026) — E4 ÉTAPE 2 : LES TEXTES DES ÉCRANS VIDES (C-078). (Décisions Tom, mot pour mot.) Ce bloc CLÔT Q584 (le texte de la Toile vide).
 > **Deux lignes ; la ligne 2 est le SEUL élément touchable du bloc et mène à l'action dite** (`lot-V178C-VIDES`, `window._e4Vide(l1, l2, action)`, `window._e4Act`) :
 > Toile vide « Rien n'est planté. » / « Qu'as-tu dit aujourd'hui que tu comptes tenir ? » → page + d'un Promi · Index vide « Pas encore de parole. » / « La première se plante en une phrase. » → page + ·

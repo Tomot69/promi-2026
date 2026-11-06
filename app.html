@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v180b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v181a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -7026,6 +7026,10 @@ stage.addEventListener('pointerup',e=>{
     var _now=Date.now(), _t1=window._tapVide;
     if(_t1 && _now-_t1.t<320 && Math.abs(e.clientX-_t1.x)<30 && Math.abs(e.clientY-_t1.y)<30){
       window._tapVide=null; if(_t1.to) clearTimeout(_t1.to); try{ window.Toile_recadre(); }catch(_){} return; }
+    /* ⚑ v181a (Tom, 6 nov. 2026, C-239) — « Toucher à peine plus tolérant, léger, sous Touffe et partout où une dalle fait moins de 44 pt :
+       un toucher ouvre la dalle de parole la plus proche si elle est à 22 pt ou moins du doigt. Si deux dalles sont à égale distance, aucune
+       ne s'ouvre. Rien ne change à l'écran ; le moteur n'est pas touché. » Seulement quand le doigt ne tombe sur AUCUNE dalle de parole. */
+    if(!(h && (h.pid!=null || (h.kind==='nuee' && h.nuee)))){ var _tl=window._toucheTolerant(sx,sy); if(_tl) h=_tl; }
     var _ouvre = null;
     if(h && h.kind==='nuee' && h.nuee){ _ouvre=function(){ if(typeof openEssaim==='function')openEssaim(h.nuee); }; }
     else if(h && h.pid!=null && typeof openDetail==='function'){ const p=promises.find(x=>x.id===h.pid); if(p) _ouvre=function(){ openDetail(h.pid); }; }
@@ -7035,6 +7039,26 @@ stage.addEventListener('pointerup',e=>{
 }, true);
 stage.addEventListener('pointercancel',()=>clearTimeout(lp));
 
+/* ⚑ v181a (C-239) — la dalle de parole la plus proche du doigt, à 22 pt au plus (pt de la Toile de l'écran, ceux de sx, sy), lue par le
+   toucher du moteur (`Toile.hit`, lecture seule) sur des cercles de 1 en 1 pt ; une seconde dalle à 3 pt près = égale distance : aucune.
+   Seulement une dalle dont la zone de toucher (le plus grand carré qu'elle contient) fait moins de 44 pt. */
+window._toucheTolerant=function(sx,sy){ try{
+  var T=window.Toile; if(!T||!T.hit) return null;
+  var cle=function(h){ return !h?null:(h.kind==='nuee'&&h.nuee)?('n:'+h.nuee):(h.pid!=null?('p:'+h.pid):null); };
+  var N=40, R=window._toucheTolerant.R||22, prem=null, r1=0;
+  for(var r=1;r<=R+3;r++){ if(prem&&r>r1+3) break; var vu={};
+    for(var a=0;a<N;a++){ var x=sx+r*Math.cos(a*2*Math.PI/N), y=sy+r*Math.sin(a*2*Math.PI/N), h=T.hit(x,y), k=cle(h);
+      if(k&&!vu[k]) vu[k]={k:k,h:h,x:x,y:y}; }
+    var ks=Object.keys(vu); if(!ks.length) continue;
+    if(!prem){ if(r>R) break; if(ks.length>1) return null; prem=vu[ks[0]]; r1=r; continue; }
+    for(var q=0;q<ks.length;q++) if(ks[q]!==prem.k) return null;   /* une autre dalle à 3 pt près : égale distance, aucune */
+  }
+  if(!prem) return null;
+  /* sa taille : le plus grand carré qu'elle contient (sa zone de toucher), lu par pas de 2 pt autour du point trouvé ; 44 pt et plus : rien */
+  var P=2, M=60, S2={}, L=[];
+  for(var y2=-M;y2<=M;y2+=P) for(var x2=-M;x2<=M;x2+=P){ if(cle(T.hit(prem.x+x2,prem.y+y2))===prem.k){ S2[x2+','+y2]=1; L.push([x2,y2]); } }
+  var best=0; for(var n=0;n<L.length;n++){ var a2=best+P; while(a2<44){ var ok=true; for(var yy=L[n][1];yy<=L[n][1]+a2&&ok;yy+=P) for(var xx=L[n][0];xx<=L[n][0]+a2;xx+=P){ if(!S2[xx+','+yy]){ ok=false; break; } } if(!ok) break; best=a2; a2+=P; } if(best>=44) return null; }
+  return prem.h; }catch(e){ return null; } };
 function assureLiaisonDalles(){
   try{
     if(!window.Toile||!window.Toile.sync||!window.Toile.dalleAbs) return false;
@@ -21750,6 +21774,7 @@ var CREMEETAT='#F7F0DE';
         gensH = Math.ceil(gHote.offsetHeight) + 14 + 16;
       } else if(gHote){ pose(gHote, {display:'none'}); }
     }catch(_){ gensH = 0; }
+    window._npGensH = gensH;   /* v181a (C-242) : le bloc « Ma Parole ! » de ce Peaufiner (lot-CERCLE-MUR, #npCercle) descend avec les cartes */
     PLAN.forEach(function(b){
       var el = document.getElementById(b.id); if(!el) return;
       var bY = b.y + ((gensH && b.y > 364) ? gensH : 0), bH = b.h + ((gensH && b.id === 'npMemb') ? gensH : 0);
@@ -34835,15 +34860,18 @@ window._petiteToile=function(g,A,Lr,ids){ try{
       if(!window._s2Briques || !window._s2Briques.cercle) return;
       bloc=window._s2Briques.cercle(); bloc.id='npCercle'; corps.appendChild(bloc);
       try{ if(window._cerclePaye) window._cerclePaye(); }catch(_){} }
-    P(bloc,'visibility','visible'); P(bloc,'display','block'); P(bloc,'position','absolute'); P(bloc,'left','24px'); P(bloc,'top',TOP+'px');
+    /* ⚑ v181a (Tom, C-242 : « les membres bien espacés ») — MEMBRES ouvert grandit de la liste des personnes et les cartes du dessous descendent d'autant ;
+       ce bloc restait à 630 : son flou recouvrait « + ajouter quelqu'un » et PIÈCES JOINTES (déjà en v180b). Il descend avec elles. */
+    var TOPg=TOP+(+window._npGensH||0);
+    P(bloc,'visibility','visible'); P(bloc,'display','block'); P(bloc,'position','absolute'); P(bloc,'left','24px'); P(bloc,'top',TOPg+'px');
     [].forEach.call(bloc.querySelectorAll('.s2-reg,.s2-encart,.s2-lab,.s2-val,.s2-ctl,.s2-ctl *'), function(x){ P(x,'visibility','visible'); });
     var paye=document.getElementById('device').classList.contains('premium');
     var ouv=bloc.querySelector('.s2-couleur.s2-ouv');
     var ech=(bloc.getBoundingClientRect().height/(bloc.offsetHeight||1))||1;
     var h=(paye && ouv) ? Math.max(BLOC, bloc.offsetHeight) : BLOC;
-    var diss=document.getElementById('npDiss'); if(diss) P(diss,'top',(TOP+h+ECART)+'px');
+    var diss=document.getElementById('npDiss'); if(diss) P(diss,'top',(TOPg+h+ECART)+'px');
     var pied=document.getElementById('npPied'); if(pied){ var hp=parseFloat(pied.style.getPropertyValue('height'))||2*PAGE;
-      var besoin=TOP+h+ECART+64+56; if(hp<besoin) P(pied,'height',besoin+'px'); }
+      var besoin=TOPg+h+ECART+64+56; if(hp<besoin) P(pied,'height',besoin+'px'); }
   }
   function brancher(){ var f=window._nueePeaufiner; if(typeof f!=='function' || f._cercle) return typeof f==='function';
     var g=function(){ var r=f.apply(this, arguments); try{ pose(r===true); }catch(_){} return r; };
@@ -38232,6 +38260,81 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     requestAnimationFrame(function(){ go(); }); return ctl; };
 })();
 </script>
+<script id="lot-V181A-CERCLE">
+/* ⚑ v181a (Tom, 6 nov. 2026) — LA FICHE D'UN CERCLE.
+   C-242 : « un + à droite du disque du Cercle, aligné à droite ; un toucher ouvre Peaufiner directement sur MEMBRES, en glissement doux, les membres bien
+           espacés ; mêmes codes que les autres + de l'app (orange #FB4C0D, zone de toucher de 44 pt). » Le + est celui qui valide un nom (C-122) : le signe
+           seul, orange, gras ; son encre (22 pt) finit à la marge droite (366), centrée sur le disque du Cercle (le second Noyau) ; sa zone fait 44 pt.
+           Il ouvre Peaufiner par le chemin de sa barre (`_s2Ouvre` + `#dpDetails.ouvert`), MEMBRES déplié, puis le panneau glisse jusqu'à MEMBRES (420 ms).
+   C-243 : « quand on fait défiler le fil du Cercle, son haut passe sous l'encart du haut (CERCLE et X) » — le fil est rogné 12 pt sous l'encart (100 pt) :
+           rien de son contenu n'est sous l'en-tête, au repos comme en défilant (la règle de l'Index : ce qui défile commence sous le plateau et rogne). */
+(function(){
+  var HAUT=100+12, OR='#FB4C0D';
+  function dp(){ return document.getElementById('detailPoster'); }
+  function cercle(d){ return !!(d && d.classList.contains('show') && (d.classList.contains('dp-mode-nuee')||d.classList.contains('dp-nuee'))); }
+  function ech(e){ try{ var r=e.getBoundingClientRect(); return (r.width/(e.offsetWidth||1))||1; }catch(_){ return 1; } }
+  /* ── le + ── */
+  function bouton(){
+    var b=document.getElementById('cerclePlusMembres'); if(b) return b;
+    b=document.createElement('button'); b.id='cerclePlusMembres'; b.type='button'; b.setAttribute('aria-label','Ajouter des membres');
+    b.innerHTML='<svg viewBox="0 0 22 22" width="22" height="22" aria-hidden="true"><path d="M11 1.6V20.4M1.6 11H20.4" stroke="'+OR+'" stroke-width="4.4" stroke-linecap="round" fill="none"/></svg>';
+    b.style.cssText='position:absolute!important;width:44px!important;height:44px!important;margin:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;display:none!important;align-items:center;justify-content:center;z-index:4!important;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;visibility:visible!important;opacity:1!important';
+    var x0=0,y0=0,t0=0;
+    b.addEventListener('pointerdown',function(e){ x0=e.clientX; y0=e.clientY; t0=e.timeStamp||performance.now(); e.stopPropagation(); },true);
+    b.addEventListener('pointerup',function(e){ e.stopPropagation(); if(Math.abs(e.clientX-x0)>12||Math.abs(e.clientY-y0)>12) return; if((e.timeStamp||performance.now())-t0>700) return; ouvre(); b._vu=performance.now(); },true);
+    b.addEventListener('click',function(e){ e.stopPropagation(); e.preventDefault(); if(b._vu && performance.now()-b._vu<800) return; ouvre(); },true);
+    return b;
+  }
+  function place(){
+    var d=dp(), b=document.getElementById('cerclePlusMembres');
+    if(!cercle(d) || d.classList.contains('s2-ouv')){ if(b) b.style.setProperty('display','none','important'); return; }
+    var a=document.getElementById('dAura'), ks=a?a.querySelectorAll('.kring .kr-wrap'):[], w=ks.length>1?ks[1]:ks[0];
+    if(!a || !w || a.style.display==='none' || getComputedStyle(a).display==='none'){ if(b) b.style.setProperty('display','none','important'); return; }
+    b=bouton(); if(b.parentNode!==d) d.appendChild(b);
+    var k=ech(d), R=d.getBoundingClientRect(), r=w.getBoundingClientRect();
+    var cy=r.height ? (r.top+r.height/2-R.top)/k + d.scrollTop : b._cy;   /* en cotes du poster (il défile) ; défilé, les Noyaux se retirent (boîte nulle) : la cote d'avant */
+    if(cy==null){ b.style.setProperty('display','none','important'); return; } b._cy=cy;
+    var top=Math.round((cy-22)*4)/4, left=366-11-22;   /* l'encre (22) finit à 366 ; la zone (44) centrée sur elle */
+    var vis=(cy-11-d.scrollTop < HAUT) ? 'hidden' : 'visible'; if(b.style.getPropertyValue('visibility')!==vis) b.style.setProperty('visibility',vis,'important');   /* C-243 : rien sous l'en-tête — défilé jusque-là, le + s'efface avec ce qui passe dessous */
+    if(b.style.top!==top+'px') b.style.setProperty('top',top+'px','important');
+    if(b.style.left!==left+'px') b.style.setProperty('left',left+'px','important');
+    if(b.style.getPropertyValue('display')!=='flex') b.style.setProperty('display','flex','important');   /* en important : une règle du poster pose ses boutons en flex */
+  }
+  function ouvre(){
+    var d=dp(); if(!cercle(d)) return;
+    try{ window._npGensOuvert=true; var dd=document.getElementById('dpDetails'); if(dd) dd.classList.add('ouvert'); if(window._s2Ouvre) window._s2Ouvre(true); if(window._nueePeaufiner){ window._nueePeaufiner(); window._nueePeaufiner(); } }catch(_){ }   /* deux passes : à la première, la liste des personnes vient d'être bâtie (hauteur 0 tant qu'elle n'est pas posée) */
+    var b=document.getElementById('cerclePlusMembres'); if(b) b.style.setProperty('display','none','important');
+    var c=document.getElementById('dpdCorps'); if(!c) return;
+    var reduit=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      var m=document.getElementById('npMemb'); if(!m) return;
+      var cible=Math.max(0, Math.min((parseFloat(m.style.top)||364)-110, c.scrollHeight-c.clientHeight));   /* MEMBRES à la place de la première carte (110) */
+      if(reduit){ c.scrollTop=cible; return; }
+      var y0=c.scrollTop, t0=performance.now(), D=420;
+      var tl=0, tp=performance.now();   /* l'avancée bornée à 34 ms par image (la règle de v180b) : une image longue ne fait pas sauter le panneau */
+      (function f(){ var n=performance.now(); tl+=Math.min(34, n-tp); tp=n; var u=Math.min(1,tl/D), e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2; c.scrollTop=y0+(cible-y0)*e; if(u<1) requestAnimationFrame(f); })();
+    }); });
+  }
+  window._cerclePlusMembres={ouvre:ouvre, place:place};
+  /* ── le fil rogné sous l'en-tête ── */
+  function rogne(){
+    var d=dp(), L=document.querySelector('#dpNueeFil .nf-liste'); if(!L) return;
+    if(!cercle(d) || d.classList.contains('s2-ouv')){ if(L.style.clipPath){ L.style.removeProperty('clip-path'); L.style.removeProperty('-webkit-clip-path'); } return; }
+    var dev=document.getElementById('device'), D=dev.getBoundingClientRect(), k=ech(dev), r=L.getBoundingClientRect(), kl=ech(L);
+    var cut=(HAUT-(r.top-D.top)/k)*k/kl;   /* en px du fil (la même unité que son clip-path) */
+    var v=cut>0 ? 'inset('+(Math.round(cut*4)/4)+'px 0 0 0)' : '';
+    if((L.style.clipPath||'')!==v){ if(v){ L.style.setProperty('clip-path',v,'important'); L.style.setProperty('-webkit-clip-path',v,'important'); } else { L.style.removeProperty('clip-path'); L.style.removeProperty('-webkit-clip-path'); } }
+  }
+  window._cercleRogne=rogne;
+  var demande=false;
+  function tout(){ if(demande) return; demande=true; requestAnimationFrame(function(){ demande=false; try{ place(); }catch(_){ } try{ rogne(); }catch(_){ } }); }
+  document.addEventListener('scroll',function(e){ if(e.target && e.target.id==='detailPoster'){ try{ rogne(); }catch(_){ } try{ place(); }catch(_){ } tout(); } },true);   /* et après les autres écouteurs du défilement (l'état défilé retire les Noyaux) */   /* dans l'image du défilement, pas après */
+  var pose=window._fichePose; if(typeof pose==='function'){ window._fichePose=function(){ var r=pose.apply(this,arguments); tout(); setTimeout(tout,120); setTimeout(tout,480); return r; }; }
+  var on=window.openNueeDetail; if(typeof on==='function'){ window.openNueeDetail=function(){ var r=on.apply(this,arguments); tout(); setTimeout(tout,200); setTimeout(tout,700); setTimeout(tout,1600); return r; }; }
+  try{ new MutationObserver(function(){ tout(); }).observe(document.getElementById('detailPoster'),{attributes:true,attributeFilter:['class']}); }catch(_){ }
+  (window._rangeurs=window._rangeurs||[]).push(function(){ var b=document.getElementById('cerclePlusMembres'); if(b) b.style.setProperty('display','none','important'); var L=document.querySelector('#dpNueeFil .nf-liste'); if(L){ L.style.removeProperty('clip-path'); L.style.removeProperty('-webkit-clip-path'); } });
+})();
+</script>
 <script id="lot-V180-NAISSANCE">
 /* ⚑ v180a (Tom, C-237) — LA NAISSANCE D'UNE DALLE, UN SEUL CODE pour l'onboarding et la page + (Promi, Chiche). « Planter, c'est tracer la PREMIÈRE
    MOITIÉ du trait : à la moitié, la dalle de cette parole naît, dans son monde, son design, sa couleur et sa forme, EXACTEMENT avec l'animation de
@@ -38243,7 +38346,13 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 (function(){
   window._naissanceDalle=function(hote, id, monde, bx, by, w){
     var dc=document.createElement('canvas'); dc.className='onbv-a onbv-dalle';
-    var ok=false; try{ ok=Toile.dalleTrame(dc, id, 1, monde); }catch(_){}
+    /* ⚑ v181a (Tom, C-241) — « la dalle qui naît à la moitié du trait est la même que celle qui arrive sur la Toile : même couleur ». LA CAUSE, mesurée :
+       elle était rendue dans l'image même où le moteur reçoit la parole, quand sa cellule commence à S'ALLUMER (cOf : du gris de la cellule à sa couleur
+       en 760 ms) — elle naissait crème (253, 232, 199) et la Toile la montrait bleue (128, 173, 249). Elle est rendue par le même appel, à l'instant où
+       sa couleur est posée (l'horloge du rendu avancée de 900 ms, le temps de ce seul appel) : la couleur qu'elle aura sur la Toile. */
+    var ok=false, _pn=performance.now, _t1=_pn.call(performance)+900;
+    try{ performance.now=function(){ return _t1; }; }catch(_){ }
+    try{ ok=Toile.dalleTrame(dc, id, 1, monde); }catch(_){} finally{ try{ performance.now=_pn; }catch(_){ } try{ delete performance.now; }catch(_){ } }
     var h=w*(dc.height/(dc.width||1));
     if(ok){
       dc.style.cssText='position:absolute;margin:0;padding:0;pointer-events:none;transform-origin:50% 50%;left:'+(bx-w/2)+'px;top:'+(by-h/2)+'px;width:'+w+'px;height:'+h+'px;transform:scale(.08);opacity:1;transition:transform .5s cubic-bezier(.2,1.3,.4,1)';   /* v148 (C-141 §10.3) : plus de fondu d'opacité — elle grandit depuis le trait */
