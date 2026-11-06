@@ -5,8 +5,11 @@ espacés ; mêmes codes que les autres + (orange #FB4C0D, zone de toucher de 44 
 C-243 : « le haut du fil passe sous l'en-tête (CERCLE et X) : aucun recouvrement entre le fil et l'en-tête, en haut et pendant le défilement ».
 
 Banc WebKit ×3, le Cercle « Le potager » (six paroles), 430 × 932 (échelle 1) et 330 × 714 (0,79) :
-  A · le + paraît : son encre orange #FB4C0D (lue sur l'image), son bord droit à 366 pt ± 1, centré sur le disque du Cercle ± 1,5 ; sa zone de 44 pt (les
-      quatre coins, 2 pt en dedans, rendent le bouton au doigt) ;
+  A · ⚑ v182b (C-242 suite : « juste après la liste des membres, sur la même ligne, avec un petit écart régulier ») — le + paraît : son encre orange #FB4C0D
+      (lue sur l'image) commence 8 pt ± 1,5 après la fin du texte de `#dptQui`, centrée sur sa ligne ± 2, haute comme une capitale de cette ligne ± 1,5 ; sa zone
+      de 44 pt (les quatre coins, 2 pt en dedans, rendent le bouton au doigt) ;
+  F · ⚑ v182b (C-243 suite : « le fil ne doit pas sauter ») — défilé de 6 pt en 6 pt du haut jusqu'en bas puis remonté : chaque carte du fil se déplace exactement du
+      pas (± 1 pt), à chaque pas, dans les deux sens (aucun saut, aucune mise en page qui change sous le doigt) ;
   B · un toucher au doigt : Peaufiner s'ouvre, MEMBRES déplié (la liste des personnes visible) ; le panneau GLISSE (au moins 8 images de défilement, aucun
       pas de plus d'un sixième de la course — le pas le plus long de la courbe prévue, à 34 ms par image ; la durée — 420 ms prévus — se lit dans Safari : les images du banc durent 50 à 70 ms) jusqu'à MEMBRES à 110 pt ± 4 ;
   C · les membres bien espacés : aucune carte, ni le bloc « Ma Parole ! », ne recouvre la carte MEMBRES dépliée (rectangles, et au doigt sur
@@ -14,7 +17,7 @@ Banc WebKit ×3, le Cercle « Le potager » (six paroles), 430 × 932 (échelle 
   D · le fil défilé par pas de 30 pt jusqu'en bas, lu image par image : aucune carte du fil au-dessus de 112 pt (12 pt sous l'encart), la bande 101 → 111 pt
       unie (lue sur l'image) ; au repos (défilement 0) rien n'est rogné ; le + ne paraît jamais sous l'encart ;
   E · aucune erreur de page.
-Rouge sur v180b (`--fichier=zz-v180b.html`) : A, B, C, D.
+Rouge sur v180b (`--fichier=zz-v180b.html`) : A, B, C, D. Rouge sur v182a (`--fichier=zz-v182a.html`) : A (le + à droite), F (l'état défilé).
 """
 import sys, io as _io; sys.path.insert(0, '.')
 import banc_tom as B
@@ -29,9 +32,9 @@ def px(pg, im, x, y):
     D = B.dev(pg); s = im.width / pg.viewport_size['width']; return im.getpixel((int((D[0] + x * D[4]) * s), int((D[1] + y * D[4]) * s)))
 BTN = """()=>{ const b=document.getElementById('cerclePlusMembres'); if(!b) return null; const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, r=b.getBoundingClientRect(), s=getComputedStyle(b);
   if(s.display==='none'||s.visibility==='hidden'||!r.width) return {vu:false};
-  const w=[...document.querySelectorAll('#dAura .kring .kr-wrap')][1].getBoundingClientRect();
+  const q=document.getElementById('dptQui'), rg=document.createRange(); rg.selectNodeContents(q); const L=[...rg.getClientRects()].filter(x=>x.width>1&&x.height>1), der=L[L.length-1];
   const coins=[[r.left+2,r.top+2],[r.right-2,r.top+2],[r.left+2,r.bottom-2],[r.right-2,r.bottom-2]].map(p=>{ const e=document.elementFromPoint(p[0],p[1]); return !!(e&&e.closest&&e.closest('#cerclePlusMembres')); });
-  return {vu:true, x:(r.left-D.left)/k, y:(r.top-D.top)/k, w:r.width/k, h:r.height/k, disque:(w.top+w.height/2-D.top)/k, coins:coins}; }"""
+  return {vu:true, x:(r.left-D.left)/k, y:(r.top-D.top)/k, w:r.width/k, h:r.height/k, fin:(der.right-D.left)/k, ligne:((der.top+der.bottom)/2-D.top)/k, fs:parseFloat(getComputedStyle(q).fontSize), coins:coins}; }"""
 with sync_playwright() as p:
     b = p.webkit.launch()
     for vw, vh, nom in ((430, 932, '1'), (330, 714, '0,79')):
@@ -41,11 +44,14 @@ with sync_playwright() as p:
         q = pg.evaluate(BTN)
         if q and q.get('vu'):
             im = image(pg)
-            enc = [x for x in range(int(q['x']), int(q['x'] + q['w'])) if (lambda c: c[0] > 200 and 50 < c[1] < 110 and c[2] < 60)(px(pg, im, x + 0.5, q['disque']))]
-            droit = max(enc) + 1 if enc else None
-            juge(T + ' A · le + : encre orange, bord droit 366 ± 1, centré sur le disque du Cercle, zone de 44 pt', enc and abs(droit - 366) <= 1.2 and abs(q['y'] + 22 - q['disque']) <= 1.5 and abs(q['w'] - 44) <= .6 and all(q['coins']),
-                 {'droit': droit, 'centre': round(q['y'] + 22, 1), 'disque': round(q['disque'], 1), 'w': round(q['w'], 1), 'coins': q['coins']})
-        else: juge(T + ' A · le + paraît à droite du disque du Cercle', False, q)
+            xs = [x for x in range(int(q['x']), int(q['x'] + q['w']) + 1) for yy in range(int(q['y']), int(q['y'] + q['h']) + 1, 1) if (lambda c: c[0] > 200 and 50 < c[1] < 110 and c[2] < 60)(px(pg, im, x + 0.5, yy + 0.5))]
+            ys = [yy for yy in range(int(q['y']), int(q['y'] + q['h']) + 1) for x in range(int(q['x']), int(q['x'] + q['w']) + 1, 1) if (lambda c: c[0] > 200 and 50 < c[1] < 110 and c[2] < 60)(px(pg, im, x + 0.5, yy + 0.5))]
+            if xs and ys:
+                g0, h0, cy = min(xs) - q['fin'], max(ys) - min(ys) + 1, (min(ys) + max(ys) + 1) / 2
+                juge(T + ' A · le + : encre orange, 8 pt après la liste, centré sur sa ligne, haut d\'une capitale, zone de 44 pt', abs(g0 - 8) <= 1.5 and abs(cy - q['ligne']) <= 2 and abs(h0 - q['fs'] * 0.70) <= 1.5 and abs(q['w'] - 44) <= .6 and all(q['coins']),
+                     {'écart': round(g0, 1), 'centre': round(cy, 1), 'ligne': round(q['ligne'], 1), 'hauteur': h0, 'capitale': round(q['fs'] * .7, 1), 'coins': q['coins']})
+            else: juge(T + ' A · le + : encre orange lue', False, q)
+        else: juge(T + ' A · le + paraît après la liste des membres', False, q)
         # B
         pg.evaluate("()=>{ window.__sc=[]; const t0=performance.now(); (function f(){ const c=document.getElementById('dpdCorps'); window.__sc.push([performance.now()-t0, c?c.scrollTop:-1]); if(performance.now()-t0<1600) requestAnimationFrame(f); })(); }")
         B.tap_sel(pg, '#cerclePlusMembres'); pg.wait_for_timeout(1800)
@@ -86,6 +92,20 @@ with sync_playwright() as p:
             if vis['plus'] is not None and vis['plus'] + 11 < 112: mauvais.append((y, '+ sous l\'encart', round(vis['plus'], 1)))
             if y >= dmax: break
         juge(T + ' D · défilé jusqu\'en bas : rien du fil ni le + sous l\'encart (image et doigt) ; au repos rien n\'est rogné', not mauvais and rep == '', {'repos': rep, 'défauts': mauvais[:4], 'course': dmax})
+        pg.evaluate("()=>{ try{_peaufSortie()}catch(e){} closeAll(); openNueeDetail('potager'); }"); pg.wait_for_timeout(2600)
+        CART = "()=>{ const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return [...document.querySelectorAll('#dpNueeFil .nf-liste > *')].filter(c=>c.getBoundingClientRect().height>20).map(c=>(c.getBoundingClientRect().top-D.top)/k); }"
+        dmax = pg.evaluate("()=>{ const d=document.getElementById('detailPoster'); return d.scrollHeight-d.clientHeight; }"); sauts = []; prev = pg.evaluate(CART); y = 0
+        seq = list(range(6, int(dmax) + 1, 6)) + list(range(int(dmax) - 6, -1, -6))
+        for yy in seq:
+            pg.evaluate("y=>{ document.getElementById('detailPoster').scrollTop=y; }", yy)
+            pg.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
+            cur = pg.evaluate(CART); dy = yy - y
+            if len(cur) != len(prev): sauts.append((yy, 'cartes', len(prev), len(cur)))
+            else:
+                for a_, b_ in zip(prev, cur):
+                    if abs((a_ - b_) - dy) > 1: sauts.append((yy, round(a_ - b_, 1), dy)); break
+            prev, y = cur, yy
+        juge(T + ' F · défilé de 6 en 6 pt, aller et retour : chaque carte suit le pas, aucun saut', not sauts and dmax > 30, {'course': dmax, 'sauts': sauts[:4]})
         juge(T + ' E · aucune erreur de page', not pg.erreurs, pg.erreurs[:2])
         ctx.close()
     b.close()

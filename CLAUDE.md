@@ -220,6 +220,33 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v182b (6 nov. 2026) — LE + DES MEMBRES AU BOUT DE LA LIGNE (C-242) ; LE SAUT DU FIL D'UN CERCLE NON LIVRÉ (C-243) ; « RÉCENTS » DANS LE FIL (C-245) ; LE DÉPLIAGE DU TITRE (C-244) ; « UN MOT… » SOUS L'ÉTAT (C-246). (Décisions Tom.) Ce bloc CORRIGE v181a (le + à droite du disque) et v181b (§5.2 « non livré », `?deplie=1`).
+> **Vérifié au doigt dans Safari iOS 26.1 (simulateur iPhone 16e) : le + des membres, le dépliage (Peaufiner ne s'ouvre pas, la barre reste en bas, le repli remonte la fiche), le Chiche de 280 caractères, « Un mot… » sous l'état, « Récents » dans le Fil.**
+> **⚑ C-242 — LE + SUIT LA LIGNE « Avec … »** (`lot-V181A-CERCLE`, `place()`) : 8 pt après la fin du texte de `#dptQui` (lue sur son encre, `Range`), centré sur sa ligne, son
+> encre haute d'une capitale de cette ligne ; une ligne pleine (au-delà de 366) : il ouvre la suivante. Zone de 44 pt. **Trouvé : le clic que le navigateur fabrique après
+> le toucher tombait sur la carte MEMBRES que Peaufiner vient d'ouvrir sous le doigt, et la repliait** — le clic qui suit le lever est avalé (800 ms).
+> **⚑ C-243 — NON LIVRÉ (le saut).** LA CAUSE, mesurée : au-delà de 8 pt de défilement la fiche d'un Cercle passe à son « état défilé » (§13 d'août : la Toile
+> réduite à une bande de 114, les Noyaux retirés, le titre et le fil reposés) — toute la mise en page change d'un coup sous le doigt, et revient d'un coup en haut.
+> Retirer l'état défilé fait défiler toute la fiche d'un mouvement (vert au banc : `redteam_cercle_plus_membres` F) ; **mais dans Safari iOS (l'appareil réduit à 0,76),
+> le bandeau collant (`--colle`, v142) allonge alors la zone de défilement : au bas du fil, la barre Peaufiner remonte de 93 pt, au milieu de l'écran, sur « Planter dans
+> le Cercle »** (v181b, avec son état défilé, n'a pas ce défaut). Trois parades essayées au simulateur (remesurer `--colle` au défilement ; borner le défilement à la
+> fin de la colonne ; puis au bas du fil rendu) : aucune n'a tenu. L'état défilé est rendu tel qu'en v181b. Livré seulement : **la fiche se rouvre en haut** (le défilement
+> de la dernière fiche restait sur `#detailPoster`) — `closeAll` le remet à 0.
+> ⚠ **Vu, non touché (A5, identique en v181b)** : après un aller-retour de l'état défilé, la ligne « Avec Rachel, Marion, +1 » passe en `display:none` (son + avec elle).
+> **⚑ C-245 — LA CAUSE (Fil)** : le Fil et l'Index ne se rebâtissent que si la signature des paroles change (`_paroles`) ; une action relevée par `lot-V181B-RECENTS` (un
+> mot, une modification, un membre) ne la changeait pas, et l'action n'est relevée qu'à l'enregistrement (jusqu'à 1,5 s après) ; et le Fil SOUS une fiche ouverte depuis
+> lui (C-193) n'a plus `.in` : revenu sur lui, il gardait son ordre. Une action relevée change la signature (`_derActN`) et la publie ; le Fil sous une fiche se reclasse.
+> ⚠ Sur l'état de Tom rejoué, le défaut ne se reproduit pas sur v181b non plus : la cause écrite est probable, non prouvée. Juge : **`redteam_recents_fil.py`**.
+> **⚑ C-244 §6.1 — LE DÉPLIAGE, LIVRÉ** (`lot-V181B-TEXTES`, `?deplie=1` retiré) : le toucher du titre déplie et replie, son clic fabriqué est avalé (sur `window`, en
+> capture) — Peaufiner ne s'ouvre jamais par lui ; trop long pour l'écran, la fiche défile et la barre Peaufiner est TENUE à 760 pt (`position:absolute`, `top = 760 +
+> scrollTop`, reposée dans l'image de chaque défilement — le `sticky` de v181b se posait au milieu dans Safari iOS) ; `#dpMain` porte la hauteur (gardée par un
+> observateur : la pose la réécrivait) ; ouvrir Peaufiner replie d'abord ; replié, la fiche remonte en haut dans le même mouvement (vu dans Safari : elle restait défilée sur un vide). **§6.2** : la phrase de la page + descend de 2 pt par palier, puis de 1 sous 14, jusqu'à 12 ; l'air
+> autour du rail du pinceau est celui de C-240 (12 · 44 · 12) : un Chiche de 280 caractères reste entier.
+> **⚑ C-246 — LA CAUSE** : « Un mot… » est posé à une cote fixe (692, lot-V145-COMM) ; la phrase d'un Chiche (« Marion, t'es pas chiche de ») prend une ligne de plus et
+> pousse l'état jusqu'à 750. La ligne et le dernier mot descendent pour garder 16 pt sous l'état (`_ajusteLigne`) ; trop bas, la fiche défile au-dessus de la barre.
+> Juges : **`redteam_textes_longs`** (deux passes, `--seul=page|fiches` : sous charge elle ne tenait pas les 10 min ; la fin du dépliage lue sur la page), `redteam_cercle_plus_membres`.
+> ⚠ **Lot jugé sous une charge de 12 à 52 (l'émulateur Android de l'autre session) : aucune cadence n'est jugée.**
+
 ### ⚑ v182a (6 nov. 2026) — LA DALLE DE LA PAGE + : NAÎT COMME DANS L'ONBOARDING (C-237 récidive, C-247) ; UNE SEULE DALLE, CALCULÉE D'AVANCE PAR LE MOTEUR (C-241). (Décisions Tom.)
 > **Validé par Tom : C-239. Règle permanente C-247 (« comme [un autre écran] » = identique en tout) : en tête de ce fichier.**
 > **⚑ C-237 — CE QUI DIFFÉRAIT : LA TAILLE.** La dalle de la page + naissait à la taille de SA CELLULE au moment du trait — une cellule qui vient de naître sur une Toile
@@ -246,7 +273,7 @@ la nature, la ligne dit l'état.)*
 > plancher du §6), autant de lignes que la hauteur le permet ; la coupe ne vient qu'après. **Clavier ouvert (`pp-ouvert`), la hauteur ne se juge pas** (la page est à sa place
 > de saisie : la coupe s'y faisait et RESTAIT, la clé du calcul ne disant rien de la géométrie) ; une phrase coupée se recompose 700 ms plus tard (quatre fois au plus).
 > Une phrase qui tenait ne change pas.
-> **⚑ §5.2 — LES FICHES : NON LIVRÉ, COUPÉ PAR DÉFAUT (`?deplie=1` le rend, pour regarder).** Replié : le titre comme aujourd'hui (trois lignes) ; **le nom d'un
+> **⚑ §5.2 — LES FICHES : ⚑ LIVRÉ EN v182b (bloc v182b ; `?deplie=1` est retiré). Ce qui suit est l'état de v181b.** Replié : le titre comme aujourd'hui (trois lignes) ; **le nom d'un
 > Cercle : deux lignes, de 38 à 26 pt, puis « … »** (livré). Le dépliage est écrit (`window._titreDeplie`, le titre se découvre, ce qui suit glisse 360 ms, « Un mot… »
 > descend en gardant son air, `#dpMain` porte la hauteur et la barre se colle au bas) et vert au banc WebKit, mais **vu dans Safari iOS en fin de lot : le toucher du titre
 > ouvrait AUSSI Peaufiner, et déplié la barre Peaufiner se posait au milieu de la fiche** (le `sticky` au bas ne tient pas dans Safari comme au banc). À reprendre.

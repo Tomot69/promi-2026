@@ -20,6 +20,7 @@ import sys; sys.path.insert(0, '.')
 import banc_tom as B
 from playwright.sync_api import sync_playwright
 F = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--fichier=')), 'app.html')
+SEUL = next((a.split('=', 1)[1] for a in sys.argv[1:] if a.startswith('--seul=')), '')   # v182b : 'page' ou 'fiches' — une passe chacune, pour tenir dans le plafond de 10 min sous charge
 src = open('redteam_phrase_lignes.py', encoding='utf-8').read()
 exec(src.split('with sync_playwright() as p:')[0].split('from playwright.sync_api import sync_playwright')[1].replace('F = next', 'F_ = next').replace('res = []', '').replace('def juge', 'def _juge'))
 res = []
@@ -47,7 +48,7 @@ def suit(pg, sel, ms=3000):
 with sync_playwright() as p:
     b = p.webkit.launch()
     # P et L · la page +
-    for vw, vh, nom, cas in ((430, 932, '1', ('court', 'moyen', 'limite')), (330, 714, '0,79', ('limite',))):
+    for vw, vh, nom, cas in (((430, 932, '1', ('court', 'moyen', 'limite')), (330, 714, '0,79', ('limite',))) if SEUL != 'fiches' else ()):
         for k in ('promi', 'chiche', 'nuee'):
             ctx = B.contexte(b, vw=vw, vh=vh); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F)
             B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(700); B.tap_sel(pg, '.acc-pil[data-k=%s]' % k); pg.wait_for_timeout(2600)
@@ -76,7 +77,7 @@ with sync_playwright() as p:
             juge('[page + · %s · ×%s] aucune erreur de page' % (k, nom), not pg.erreurs, pg.erreurs[:2])
             ctx.close()
     # F et D · les fiches
-    for k in ('promi', 'chiche', 'nuee'):
+    for k in (('promi', 'chiche', 'nuee') if SEUL != 'page' else ()):
       for c in ('court', 'moyen', 'limite'):
         if True:
             ctx = B.contexte(b, vw=430, vh=932); B.toile_pleine(ctx, 'cercle'); pg = B.ouvre(ctx, F, 7000)   # une page neuve par fiche : rien ne se transmet d'une fiche à l'autre
@@ -90,7 +91,8 @@ with sync_playwright() as p:
             juge(T + ' F · replié : aucun recouvrement, %d lignes au plus' % maxl, not pb and f0['lignes'] <= maxl, (pb, f0['lignes'], f0['texte'][-24:]))
             if not f0['coupe']:
                 juge(T + ' E · aucune erreur de page', not pg.erreurs, pg.erreurs[:2]); ctx.close(); continue
-            suit(pg, '#dptQuand'); B.tap_sel(pg, '#dptTitre'); pg.wait_for_timeout(3200); f1 = pg.evaluate(FICHE); mv = pg.evaluate("()=>window.__mv")   # 360 ms prévus ; sous charge les images s'allongent (34 ms d'avancée au plus par image) : on attend la fin
+            suit(pg, '#dptQuand'); B.tap_sel(pg, '#dptTitre'); pg.wait_for_timeout(600); pg.wait_for_function("()=>{ const q=document.getElementById('dptQuand'); return !q || !q.style.translate; }", timeout=15000); pg.wait_for_timeout(300);   # v182b : la FIN du mouvement, lue sur la page (sous une charge de 50 une image dure une seconde : 3,2 s ne suffisaient plus)
+            f1 = pg.evaluate(FICHE); mv = pg.evaluate("()=>window.__mv")   # 360 ms prévus ; sous charge les images s'allongent (34 ms d'avancée au plus par image) : on attend la fin
             pos = sorted(set(round(x, 1) for x in mv)); pas = max([abs(mv[i + 1] - mv[i]) for i in range(len(mv) - 1)] or [0]); course = abs(mv[-1] - mv[0]) if mv else 0
             pb = chevauche(f1['B'])
             juge(T + ' D · touché : déplié en entier, ce qui suit glisse, rien ne se recouvre', f1['texte'] == t and not pb and len(pos) >= 8 and pas <= course / 3 + 1 and course > 4,
@@ -100,7 +102,7 @@ with sync_playwright() as p:
                 bas = max(r[3] for r in f2['B'].values())
                 juge(T + ' D · trop long pour l\'écran : la fiche défile, tout se lit au-dessus du bandeau', bas <= 760.5, round(bas, 1))
                 pg.evaluate("()=>{ document.getElementById('detailPoster').scrollTop=0; }"); pg.wait_for_timeout(400)
-            B.tap_sel(pg, '#dptTitre'); pg.wait_for_timeout(3200); f3 = pg.evaluate(FICHE)
+            B.tap_sel(pg, '#dptTitre'); pg.wait_for_timeout(600); pg.wait_for_function("()=>{ const q=document.getElementById('dptQuand'); return !q || !q.style.translate; }", timeout=15000); pg.wait_for_timeout(300); f3 = pg.evaluate(FICHE)
             juge(T + ' D · touché de nouveau : replié tel qu\'avant', f3['texte'] == f0['texte'] and all(abs(a - b) < 0.6 for x in f0['B'] for a, b in zip(f0['B'][x], f3['B'].get(x, [0] * 4))), (f3['texte'][-20:], f0['texte'][-20:]))
             juge(T + ' E · aucune erreur de page', not pg.erreurs, pg.erreurs[:2]); ctx.close()
     b.close()
