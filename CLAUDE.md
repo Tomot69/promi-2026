@@ -216,6 +216,24 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v181b (6 nov. 2026) — LES TEXTES LONGS : PLUS DE LIGNES, UN DÉPLIAGE, UNE LIMITE (C-244) ; INDEX ET FIL : LA DERNIÈRE ACTION EN PREMIER (C-245). (Décisions Tom.)
+> **⚑ C-244 §5.3 — 280 caractères pour une parole, 40 pour le nom d'un Cercle, à la saisie, collage compris** (`lot-V181B-TEXTES`, `window._limiteTexte`) : `maxLength` posé au
+> focus, et la valeur bornée à chaque `input` en capture (les autres écouteurs lisent déjà le texte borné). Champs : fTitle, phIn, dfTitle, draftTitreIn, obPromiInput, onbIn ;
+> nName, nueeNomIn, esName ; dRenameInput selon la fiche. *Q576 (v160c : « le champ n'a plus de limite ») est remplacée.*
+> **⚑ §5.1 — LA PAGE +** : là où le titre se coupait (« … » à trois lignes, 16 pt), la phrase entière descend d'un palier de 2 pt (jusqu'à 14) et le titre de 16 à 12 pt (le
+> plancher du §6), autant de lignes que la hauteur le permet ; la coupe ne vient qu'après. **Clavier ouvert (`pp-ouvert`), la hauteur ne se juge pas** (la page est à sa place
+> de saisie : la coupe s'y faisait et RESTAIT, la clé du calcul ne disant rien de la géométrie) ; une phrase coupée se recompose 700 ms plus tard (quatre fois au plus).
+> Une phrase qui tenait ne change pas.
+> **⚑ §5.2 — LES FICHES : NON LIVRÉ, COUPÉ PAR DÉFAUT (`?deplie=1` le rend, pour regarder).** Replié : le titre comme aujourd'hui (trois lignes) ; **le nom d'un
+> Cercle : deux lignes, de 38 à 26 pt, puis « … »** (livré). Le dépliage est écrit (`window._titreDeplie`, le titre se découvre, ce qui suit glisse 360 ms, « Un mot… »
+> descend en gardant son air, `#dpMain` porte la hauteur et la barre se colle au bas) et vert au banc WebKit, mais **vu dans Safari iOS en fin de lot : le toucher du titre
+> ouvrait AUSSI Peaufiner, et déplié la barre Peaufiner se posait au milieu de la fiche** (le `sticky` au bas ne tient pas dans Safari comme au banc). À reprendre.
+> **⚑ C-245 — « Récents » = LA DERNIÈRE ACTION D'ABORD** (`lot-V181B-RECENTS`, `window._derAct`) : une parole porte `p.derAct` (ms), posé quand sa signature change — tout ce
+> qu'elle porte, sauf ce qui bouge sans qu'on agisse (place, vue, couleur figée, monde, compte des jours, ce qu'on a seulement vu) et les valeurs vides (ouvrir une fiche pose
+> `files: []`) — relue à chaque enregistrement et à chaque tri ; un Cercle la sienne (`promi_cercle_act` : nom, membres, note, mots, fichiers) et la plus récente de ses
+> paroles. La base est posée 1,5 s après le chargement (l'état relu n'est jamais une action). Sans action connue, la plus récemment plantée d'abord. Les autres tris ne
+> changent pas (comparés à v180b). Juge : **`redteam_recents.py`**.
+
 ### ⚑ v181a (6 nov. 2026) — TOUFFE : LE TOUCHER TOLÉRANT (C-239) ; UNE SEULE DALLE À LA PAGE + (C-241, en partie) ; LE + DES MEMBRES D'UN CERCLE (C-242) ; LE FIL D'UN CERCLE SOUS L'EN-TÊTE (C-243). (Décisions Tom.)
 > **Validés par Tom : C-236, C-237, C-234, C-238, C-240 ; C-230 (« tout le monde » quand tous les membres sont présélectionnés : accepté).**
 > **⚑ C-239 — « un toucher ouvre la dalle de parole la plus proche si elle est à 22 pt ou moins du doigt ; deux à égale distance : aucune ; rien ne change à l'écran ; le moteur

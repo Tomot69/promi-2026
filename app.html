@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v181a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v181b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -3798,6 +3798,7 @@ function buildIndex(){
           var c=ixSortBy(a.p,b.p); if(c) return c;
         } else if(a.kind!==b.kind) return a.kind==='nuee' ? -1 : 1;
       }
+      if(window._derAct && (!window.ixTri || window.ixTri==='recent')) return window._derAct.cle(b)-window._derAct.cle(a);   /* v181b (C-245) : « Récents », la dernière action d'abord */
       return _ordre(a)-_ordre(b); }); }catch(e){}
 
   var h='<div class="ix-blocs">';
@@ -4512,6 +4513,7 @@ window._filTrieFiltre=function(items){ try{
   if(mode==='personne') cle=function(o){ var w=(o.ev&&o.ev.from)||(o.p&&o.p.who)||''; w=(''+w).toLowerCase(); return (!w||w==='moi')?'\uffff':w; };
   else if(mode==='nuee') cle=function(o){ var n=o.nk?((typeof NUE!=='undefined'&&NUE[o.nk])||o.nk):''; return n?(''+n).toLowerCase():'\uffff'; };
   if(cle){ L=L.map(function(o,i){ return [cle(o), i, o]; }).sort(function(a,b){ return a[0]<b[0]?-1:(a[0]>b[0]?1:a[1]-b[1]); }).map(function(x){ return x[2]; }); }
+  else if(mode==='recent' && window._derAct){ L=L.map(function(o,i){ return [window._derAct.cleFil(o, i, L.length), i, o]; }).sort(function(a,b){ return (b[0]-a[0]) || (a[1]-b[1]); }).map(function(x){ return x[2]; }); }   /* v181b (C-245) */
   return L.map(function(o){ return o.it; });
 }catch(e){ return items; } };
 /* Le selecteur ne clignote plus : un observateur suit l'affichage du Fil
@@ -15608,16 +15610,26 @@ var CREMEETAT='#F7F0DE';
          prenait quatre lignes et plus, et passait sous Peaufiner. Un titre court n'est pas touché ; ce qui suit se place
          sur la hauteur réelle du titre (hTitre, plus bas). Ce qu'on a tapé n'est pas modifié : seul l'affichage. */
       var _lg = function(){ var lh = parseFloat(getComputedStyle(ti).lineHeight) || _fs*1.02; return Math.round((ti.getBoundingClientRect().height/_sc) / lh); };
-      var _long = (p && p.title) ? String(p.title) : (ti.getAttribute('data-long') || ti.textContent);   /* le titre entier fait foi, jamais l'affichage tronqué */
+      /* ⚑ v181b (Tom, C-244 §5.2, §5.3) — « la phrase ou le nom restent affichés comme aujourd'hui ; un toucher sur le texte le DÉPLIE en entier, un nouveau
+         toucher le REPLIE » ; « dans la fiche d'un Cercle, son nom replié est plus court que la phrase d'un Promi » : deux lignes au plus (trois pour un Promi).
+         Déplié (`window._titreDeplie`, cette fiche seulement, oublié à la fermeture) : le titre entier, à la taille du replié ; ce qui suit se place sur sa
+         hauteur réelle (hTitre, plus bas) — le mouvement est posé par lot-V181B-TEXTES. */
+      var _cercleT = dp.classList.contains('dp-mode-nuee') || dp.classList.contains('dp-nuee');
+      var _limMax = _cercleT ? 2 : 3;
+      var _long = (p && p.title) ? String(p.title) : (_cercleT && typeof curNuee!=='undefined' && curNuee && typeof NUE!=='undefined' && NUE[curNuee]) ? String(NUE[curNuee]) : (ti.getAttribute('data-long') || ti.textContent);   /* le titre entier fait foi, jamais l'affichage tronqué */
+      var _cleT = p ? ('p:'+p.id) : ('n:'+(typeof curNuee!=='undefined'?curNuee:''));
+      var _dep = !!(window._titreDeplie && window._titreDeplie === _cleT);
+      ti.setAttribute('data-long', _long); ti.setAttribute('data-cle', _cleT); ti.removeAttribute('data-coupe');
       if(!ti.querySelector('*') && ti.textContent !== _long) ti.textContent = _long;
       ti.style.setProperty('overflow-wrap','anywhere','important');
       if(_lg() > 2){
         var _ok = false;
-        for(var _lim = 2; _lim <= 3 && !_ok; _lim++) for(var _f2 = _fs; _f2 >= 24; _f2--){ pose(ti, {'font-size':_f2+'px'}); if(_lg() <= _lim){ _fs = _f2; _ok = true; break; } }
-        if(!_ok && !ti.querySelector('*')){ _fs = 24; pose(ti, {'font-size':'24px'});
+        for(var _lim = 2; _lim <= _limMax && !_ok; _lim++) for(var _f2 = _fs; _f2 >= 24; _f2--){ pose(ti, {'font-size':_f2+'px'}); if(_lg() <= _lim){ _fs = _f2; _ok = true; break; } }
+        if(!_ok && !ti.querySelector('*')){ _fs = 24; pose(ti, {'font-size':'24px'}); ti.setAttribute('data-coupe', '1');
+          if(!_dep){
           var _lo = 0, _hi = _long.length;
-          while(_lo < _hi){ var _md = (_lo + _hi + 1) >> 1; ti.textContent = _long.slice(0, _md).replace(/\s+$/, '') + '\u2026'; if(_lg() <= 3) _lo = _md; else _hi = _md - 1; }
-          ti.textContent = _long.slice(0, _lo).replace(/\s+$/, '') + '\u2026'; }
+          while(_lo < _hi){ var _md = (_lo + _hi + 1) >> 1; ti.textContent = _long.slice(0, _md).replace(/\s+$/, '') + '\u2026'; if(_lg() <= _limMax) _lo = _md; else _hi = _md - 1; }
+          ti.textContent = _long.slice(0, _lo).replace(/\s+$/, '') + '\u2026'; } }
       }
       e.titreFs = _fs; }
     var hTitre = ti ? Math.round(ti.getBoundingClientRect().height/(window._echDp(dp))) : Math.round(e.titreFs*1.02);
@@ -16103,6 +16115,20 @@ var CREMEETAT='#F7F0DE';
     pose(qui,{top:yQui+'px', color:colTexte, '-webkit-text-fill-color':colTexte, 'font-size':'19px'});
     pose(ti ,{top:yTitre+'px', color:encre, '-webkit-text-fill-color':encre, 'font-size':'38px'});
     var sc2=window._echDp(dp);   /* v171 (C-207) : l'échelle de l'écran, jamais clientWidth (toujours 390) */
+    /* ⚑ v181b (Tom, C-244 §5.2, §5.3) — « dans la fiche d'un Cercle, son nom replié est plus court que la phrase d'un Promi » : DEUX lignes au plus (trois pour
+       un Promi) — le nom descend de 38 à 26 pt pour tenir sur deux ; s'il ne tient toujours pas, il se coupe (« … ») et se déplie au toucher
+       (lot-V181B-TEXTES). Un nom qui tient ne change pas. Ce qui suit (l'état, le fil) se place sur la hauteur réelle du titre (hT). */
+    try{ if(ti && !ti.querySelector('*')){
+      var _nomL=(typeof NUE!=='undefined' && NUE[k]) ? String(NUE[k]) : (ti.getAttribute('data-long') || ti.textContent), _cleN='n:'+k, _depN=(window._titreDeplie===_cleN);
+      ti.setAttribute('data-long', _nomL); ti.setAttribute('data-cle', _cleN); ti.removeAttribute('data-coupe');
+      if(ti.textContent !== _nomL) ti.textContent=_nomL;
+      ti.style.setProperty('overflow-wrap','anywhere','important');
+      var _lgN=function(){ var lh=parseFloat(getComputedStyle(ti).lineHeight)||parseFloat(getComputedStyle(ti).fontSize)*1.02; return Math.round((ti.getBoundingClientRect().height/sc2)/lh); };
+      if(_lgN() > 2){ var _fN=38; while(_fN > 26 && _lgN() > 2){ _fN-=1; pose(ti,{'font-size':_fN+'px'}); }
+        if(_lgN() > 2){ ti.setAttribute('data-coupe','1');
+          if(!_depN){ var _lo=0, _hi=_nomL.length; while(_lo<_hi){ var _md=(_lo+_hi+1)>>1; ti.textContent=_nomL.slice(0,_md).replace(/\s+$/,'')+'\u2026'; if(_lgN()<=2) _lo=_md; else _hi=_md-1; }
+            ti.textContent=_nomL.slice(0,_lo).replace(/\s+$/,'')+'\u2026'; } } }
+    } }catch(_n){ }
     var hT = ti ? Math.round(ti.getBoundingClientRect().height/sc2) : 39;
     /* §12 · la méta d'une Nuée est à TITRE + 65, une valeur de l'inventaire, pas une mesure :
        730−665 · 644−579 · 558−493 · 472−407 · 446−381 — 65 sur les vingt écrans. Mesurée
@@ -18189,7 +18215,7 @@ var CREMEETAT='#F7F0DE';
            et l'on recompose (le plafond `_ppPhCap` vaut pour CETTE phrase seulement) ; une phrase qui tient ne change pas. */
         var _capK = (function(){ var P = window._phrase || {}, n = document.getElementById('nName'); return [e.nat, P.titre||'', P.qui||'', P.avec||'', P.sens||'', P.quand||'', P.due||'', n ? n.value : ''].join('|'); })();
         var _cap = (!e.ouvert && window._ppPhCap && window._ppPhCap.k === _capK) ? window._ppPhCap.t : 0;
-        var _cleP = [e.nat, e.ouvert?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', txt.style.cssText, txt.innerHTML, _cap].join('§');
+        var _cleP = [e.nat, e.ouvert?1:0, cs.classList.contains('pp-ouvert')?1:0, document.getElementById('ppMvt')?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', txt.style.cssText, txt.innerHTML, _cap].join('§');
         if(cotes.__fige) txt.__phCle = _cleP;   /* v150 : la bascule est figée — on garde la taille de la passe précédente, on ne fait que reposer */
         if(txt.__phCle !== _cleP){
         /* §2.8 — `taille = min(estimation, mesure)`. (Décision Tom, 18 août 2026 ;
@@ -18340,13 +18366,20 @@ var CREMEETAT='#F7F0DE';
           try{ if(!e.ouvert && e.etat === 'plate' && ph.querySelector('.ph-m.ph-vide')) aideH = 34 + 24; }catch(_){}
           var tient = function(lim){ if(lignesDe(ptL) > lim) return false; var R = txt.getBoundingClientRect(), ok = true;
             [].forEach.call(ptL.getClientRects(), function(q){ if((q.right - R.left)/sc4 > 342.5) ok = false; });
-            if(ok && !e.ouvert && (R.bottom - crS.top)/sc4 + aideH + 20 + 44 + 20 > finMax) ok = false;
+            if(ok && !e.ouvert && !cs.classList.contains('pp-ouvert') && !document.getElementById('ppMvt') && (R.bottom - crS.top)/sc4 + aideH + 20 + 44 + 20 > finMax) ok = false;   /* v181b (C-244) : clavier ouvert, la page est à sa place de saisie — la hauteur se juge la page posée */
             return ok; };
           var taillePt = function(t){ [ptL, liL].forEach(function(x){ if(!x) return;
             x.style.setProperty('font-size', t+'px', 'important'); x.style.setProperty('line-height', Math.round(t*1.2)+'px', 'important'); }); };
           if(!tient(2)){
             var fait = false;
             for(var lim = 2; lim <= 3 && !fait; lim++) for(var tp = taille; tp >= 16; tp--){ taillePt(tp); if(tient(lim)){ fait = true; break; } }
+            /* ⚑ v181b (Tom, C-244 §5.1) — « il y a de la place pour plus de lignes : laisse la phrase prendre plus de lignes en réduisant encore sa taille par
+               paliers, sans rien recouvrir ». Là où le titre se coupait (« … » à trois lignes, 16 pt), il prend autant de lignes que la hauteur le permet
+               (`tient` garde la rangée du pinceau et son air au-dessus de « garder de côté »), la phrase entière d'un palier de 2 pt à la fois (jusqu'à 14), le titre de 16 à 12 pt (le plancher du §6) ; la coupe ne vient qu'après.
+               Une phrase qui tenait ne change pas. */
+            for(var tg = taille; tg >= 14 && !fait; tg -= 2){ appli(tg);   /* la phrase entière descend d'un palier (2 pt) : son interligne rend la place */
+              for(var tp2 = Math.min(16, tg); tp2 >= 12 && !fait; tp2--){ taillePt(tp2); if(tient(20)){ fait = true; taille = tg; } } }   /* 12 pt : le plancher du §6 */
+            if(!fait) appli(taille);
             if(!fait){
               taillePt(16);
               for(var limT = 3; limT >= 1; limT--){
@@ -18368,7 +18401,12 @@ var CREMEETAT='#F7F0DE';
             }
           }
         }
-        try{ txt.__phCle = [e.nat, e.ouvert?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', txt.style.cssText, txt.innerHTML, _cap].join('§'); }catch(_){}
+        try{ txt.__phCle = [e.nat, e.ouvert?1:0, cs.classList.contains('pp-ouvert')?1:0, document.getElementById('ppMvt')?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', txt.style.cssText, txt.innerHTML, _cap].join('§'); }catch(_){}
+        /* ⚑ v181b (C-244 §5.1) — UNE COUPE NE SE GARDE PAS. La hauteur libre se lit sur la page (« garder de côté », la barre) : mesurée pendant que la page
+           se pose (son glissement, le clavier qui descend), elle peut manquer, et la coupe restait (la clé ne dit rien de la géométrie) — vu une fois sur
+           trois au banc. Une phrase coupée se recompose donc 700 ms plus tard, quatre fois au plus pour la même parole. */
+        try{ if(ptL && /\u2026$/.test(ptL.textContent||'') && !e.ouvert && !cs.classList.contains('pp-ouvert') && !document.getElementById('ppMvt')){ var _rk=_capK, R3=window._ppRecoupe||(window._ppRecoupe={k:null,n:0}); if(R3.k!==_rk){ R3.k=_rk; R3.n=0; }
+          if(R3.n<4){ R3.n++; txt.__phCle=null; setTimeout(function(){ try{ if(window._ppTout) window._ppTout(); }catch(_){ } }, 700); } } }catch(_){}
         }
         /* ⚑ v22 — LA COUPE CHANGE LE NOMBRE DE LIGNES APRÈS QUE LES COTES ONT ÉTÉ CALCULÉES (`e.nl`) : la phrase et le mot du
            trait restaient alors 32 px trop bas, selon l'ordre des passes (pris par releve-S3, par intermittence). On
@@ -43798,7 +43836,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function finMv(){ var C=MV.cours; if(!C) return; MV.cours=null; MV.hz=null; C.arrete=true;
     C.el.forEach(function(x){ x.n.style.removeProperty(x.p); if(x.p==='transform') x.n.style.removeProperty('transform-origin'); });
     if(C.ov && C.ov.parentNode) C.ov.remove(); if(C.dj && C.dj.parentNode) C.dj.remove(); if(C.pass && C.pass.canevas && C.pass.canevas.parentNode){ C.pass.arrete=true; C.pass.canevas.remove(); }
-    window._ppMvtEtat={fini:true, images:C.n, ms:Math.round(performance.now()-C.t0), sens:C.sens}; }
+    window._ppMvtEtat={fini:true, images:C.n, ms:Math.round(performance.now()-C.t0), sens:C.sens};
+    try{ var _pt=document.querySelector('#csPhrase .ph-m[data-ph="titre"], #nueePhrase .ph-m[data-np="nom"]'); if(_pt && /…$/.test(_pt.textContent||'') && window._ppTout) setTimeout(window._ppTout, 0); }catch(_){ } }   /* v181b (C-244) : une phrase coupée pendant le mouvement se recompose dès qu'il finit (la page posée) */
   window._ppMvtPose=function(){ var A=MV.att; if(!A || MV.cours) return; var c=cs(), e=window._ppEcran(), OUV=(A.sens==='ouvre'); if(!c || !e) return;
     if(OUV ? !e.ouvert : (e.ouvert || c.classList.contains('pp-ouvert'))) return;   /* v180b (C-234) : 'ouvre' — la page vient de passer à sa mise en page de saisie */
     if(OUV){ var ae=document.activeElement; if(!ae || !/^(phIn|nueeNomIn)$/.test(ae.id||'')){ MV.att=null; return; } }   /* seulement la saisie du titre ou du nom : un choix (à qui, quand) garde son ouverture d'avant */
@@ -44013,6 +44052,126 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   document.addEventListener('pointerup', fin, true); document.addEventListener('touchend', fin, {capture:true, passive:true});
   /* la fiche qui se ferme emporte le menu */
   var _ca=window.closeAll; if(typeof _ca==='function' && !_ca.__cp){ var f=function(){ ferme(); return _ca.apply(this, arguments); }; f.__cp=1; window.closeAll=f; }
+})();
+</script>
+<script id="lot-V181B-TEXTES">
+/* ⚑ v181b (Tom, 6 nov. 2026, C-244) — LES TEXTES LONGS.
+   §5.3 « Limite de longueur, à la saisie, pour ne pas saturer : 280 caractères pour une parole, 40 pour le nom d'un Cercle » — collage compris : la limite
+        est posée sur le champ (`maxLength`) et tenue à chaque saisie (`input`, en capture : les autres écouteurs lisent déjà le texte borné).
+   §5.2 « Un toucher sur le texte le DÉPLIE en entier ; un nouveau toucher le REPLIE. Les éléments du dessous descendent en douceur, sous le bandeau de
+        Peaufiner. Si le texte est très long, la fiche défile vers le bas. » Seulement un titre coupé (« … ») ; le toucher se lit au geste (la fiche ne
+        produit pas de `click` au doigt) ; le titre se découvre de haut en bas et ce qui suit glisse (360 ms, aller-retour quadratique) ; rien d'un coup. */
+(function(){
+  var PAROLE={fTitle:1,phIn:1,dfTitle:1,draftTitreIn:1,obPromiInput:1,onbIn:1}, NOM={nName:1,nueeNomIn:1,esName:1};
+  function cercle(){ var d=document.getElementById('detailPoster'); return !!(d && (d.classList.contains('dp-mode-nuee')||d.classList.contains('dp-nuee'))); }
+  function lim(el){ if(!el || !el.id) return 0; if(NOM[el.id]) return 40; if(el.id==='dRenameInput') return cercle()?40:280; return PAROLE[el.id] ? 280 : 0; }
+  function borne(el){ var n=lim(el); if(!n) return; if(el.maxLength!==n) el.maxLength=n; var v=el.value||''; if(Array.from(v).length>n){ el.value=Array.from(v).slice(0,n).join(''); } }
+  window._limiteTexte={parole:280, nom:40, lim:lim};
+  document.addEventListener('focusin', function(e){ try{ borne(e.target); }catch(_){ } }, true);
+  document.addEventListener('input', function(e){ try{ borne(e.target); }catch(_){ } }, true);
+  function tous(){ try{ Object.keys(PAROLE).concat(Object.keys(NOM)).forEach(function(id){ var el=document.getElementById(id); if(el) borne(el); }); }catch(_){ } }
+  window.addEventListener('load', tous); setTimeout(tous, 0);
+  /* §5.2 */
+  var D=360;
+  function doux(u){ return u<.5 ? 2*u*u : 1-Math.pow(-2*u+2,2)/2; }
+  var SUIT=['cm5Ligne','cm5Dernier','cm5Fil'];   /* la ligne « Un mot… » est posée au bas de la fiche (692) : déplié, elle descend avec ce qui suit le titre */
+  function decale(dy){ SUIT.forEach(function(id){ var e=document.getElementById(id); if(e){ if(dy) e.style.setProperty('translate','0 '+dy.toFixed(2)+'px','important'); else e.style.removeProperty('translate'); } }); }
+  /* trop long pour l'écran : la fiche défile — comme celle d'un Cercle (C-238), #dpMain porte la hauteur du contenu et la barre Peaufiner se colle au BAS
+     (`sticky`, bottom 0) : ce qui suit le titre passe sous elle, et le dernier mot se lit au-dessus d'elle en bas du défilement. */
+  function espace(dp, bas){ var m=document.getElementById('dpMain'), b=document.getElementById('dpDetails');
+    if(bas==null){ if(m && m.hasAttribute('data-deplie')){ m.style.removeProperty('min-height'); m.removeAttribute('data-deplie'); }
+      if(b && b.hasAttribute('data-deplie')){ b.style.removeProperty('top'); b.style.removeProperty('bottom'); b.removeAttribute('data-deplie'); } return; }
+    if(m){ m.style.setProperty('min-height', Math.ceil(bas+12)+'px', 'important'); m.setAttribute('data-deplie','1'); }
+    if(b){ b.style.setProperty('top','auto','important'); b.style.setProperty('bottom','0px','important'); b.setAttribute('data-deplie','1'); } }
+  /* ⚑ v181b — NON LIVRÉ, COUPÉ PAR DÉFAUT : vu dans Safari iOS en fin de lot, le toucher du titre ouvrait AUSSI Peaufiner, et déplié, la barre Peaufiner
+     se posait au milieu de la fiche (le `sticky` au bas ne tient pas dans Safari comme dans le WebKit du banc). `?deplie=1` le rend, pour regarder. */
+  var DEPLIE_ON=/[?&]deplie=1/.test(location.search);
+  function bascule(){
+    if(!DEPLIE_ON) return;
+    var dp=document.getElementById('detailPoster'), ti=document.getElementById('dptTitre'); if(!dp || !ti) return;
+    var cle=ti.getAttribute('data-cle'); if(!cle) return;
+    if(!(ti.getAttribute('data-coupe') || window._titreDeplie===cle)) return;   /* un titre entier ne se déplie pas */
+    var k=window._echDp ? window._echDp(dp) : 1, h0=ti.getBoundingClientRect().height/k, T=ti.getBoundingClientRect().bottom, q=document.getElementById('dptQuand');
+    var q0=q ? q.getBoundingClientRect().bottom : null, dy0=window._titreDecal||0, lg=document.getElementById('cm5Ligne'), lt0=(lg && lg.getBoundingClientRect().height) ? lg.getBoundingClientRect().top : null;
+    var av=[].map.call(dp.querySelectorAll('#dpTete > *, #detailPoster > *'), function(e){ var r=e.getBoundingClientRect(); return [e, r.top, r.height]; })
+      .filter(function(x){ return x[0]!==ti && x[2]>0 && x[1]>=T-1 && x[0].id!=='dpDetails' && x[0].id!=='dpTete' && SUIT.indexOf(x[0].id)<0 && !x[0].contains(ti); });
+    window._titreDeplie = (window._titreDeplie===cle) ? null : cle;
+    try{ if(window._ficheTout) window._ficheTout(); }catch(_){ }
+    var h1=ti.getBoundingClientRect().height/k, ouvre=h1>h0, reduit=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    /* la ligne « Un mot… » garde sous l'état l'air qu'elle avait replié (12 pt au moins) */
+    var dy1=0; if(window._titreDeplie && q && q0!=null){ if(lt0!=null){ var air=(dy0===0) ? Math.max(12, (lt0-q0)/k) : (window._titreAir||12); window._titreAir=air;
+        dy1=Math.max(0, (q.getBoundingClientRect().bottom-(lt0-dy0*k))/k + air); } else dy1=Math.max(0, dy0 + (q.getBoundingClientRect().bottom-q0)/k); }
+    window._titreDecal=dy1;
+    var mv=av.map(function(x){ return [x[0], (x[1]-x[0].getBoundingClientRect().top)/k, 0]; }).filter(function(x){ return Math.abs(x[1])>0.5; });
+    SUIT.forEach(function(id){ var e=document.getElementById(id); if(e && e.getBoundingClientRect().height) mv.push([e, dy0, dy1, 1]); });
+    /* la place sous le dernier élément : la fiche défile s'il passe sous le bandeau */
+    var bas=0; mv.forEach(function(x){ var r=x[0].getBoundingClientRect(), DR=dp.getBoundingClientRect(); bas=Math.max(bas, (r.bottom-DR.top)/k + dp.scrollTop + (x[3] ? (x[2]-x[1]) : 0)); });
+    espace(dp, (window._titreDeplie && bas>748) ? bas : null);
+    if(reduit){ decale(dy1); return; }
+    var tl=0, tp=performance.now();
+    (function f(){ var n=performance.now(); tl+=Math.min(34, n-tp); tp=n; var u=Math.min(1, tl/D), e=doux(u);
+      mv.forEach(function(x){ var v=x[1]+(x[2]-x[1])*e; if(x[3]) { if(v) x[0].style.setProperty('translate','0 '+v.toFixed(2)+'px','important'); else x[0].style.removeProperty('translate'); } else x[0].style.translate = (u<1 && v) ? ('0 '+v.toFixed(2)+'px') : ''; });
+      var hc=h0+(h1-h0)*e, cut=Math.max(0, h1-hc);
+      if(u<1 && ouvre){ ti.style.clipPath='inset(0 0 '+cut.toFixed(2)+'px 0)'; } else ti.style.clipPath='';
+      if(u<1) requestAnimationFrame(f); })();
+  }
+  window._titreBascule=bascule;
+  var x0=0, y0=0, t0=0, sur=false;
+  document.addEventListener('pointerdown', function(e){ var ti=e.target && e.target.closest && e.target.closest('#dptTitre'); sur=!!ti; if(sur){ x0=e.clientX; y0=e.clientY; t0=e.timeStamp||performance.now(); } }, true);
+  document.addEventListener('pointerup', function(e){ if(!sur) return; sur=false; var ti=e.target && e.target.closest && e.target.closest('#dptTitre'); if(!ti) return;
+    if(Math.abs(e.clientX-x0)>10 || Math.abs(e.clientY-y0)>10 || (e.timeStamp||performance.now())-t0>600) return;
+    var dp=document.getElementById('detailPoster'); if(!dp || !dp.classList.contains('show') || dp.classList.contains('s2-ouv')) return;
+    bascule(); avale=performance.now(); }, true);
+  /* le clic que le navigateur fabrique après le toucher tombe sur ce qui est sous le doigt APRÈS le repli (la barre Peaufiner, revenue en place) : avalé (§8, le clic fantôme) — sur `window`, en capture : il passe avant les écouteurs du document */
+  var avale=0;
+  window.addEventListener('click', function(e){ if(avale && performance.now()-avale<700){ avale=0; e.stopPropagation(); e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+  (window._rangeurs=window._rangeurs||[]).push(function(){ window._titreDeplie=null; window._titreDecal=0; decale(0); espace(null, null); var ti=document.getElementById('dptTitre'); if(ti) ti.style.clipPath=''; });
+  var od=window.openDetail; if(typeof od==='function' && !od.__dep){ window.openDetail=function(){ window._titreDeplie=null; window._titreDecal=0; decale(0); espace(null, null); return od.apply(this, arguments); }; window.openDetail.__dep=1; try{ openDetail=window.openDetail; }catch(_){ } }
+})();
+</script>
+<script id="lot-V181B-RECENTS">
+/* ⚑ v181b (Tom, 6 nov. 2026, C-245) — « Dans l'Index et dans le Fil, la parole ou la fiche qui a eu la dernière action (création, trait, commentaire,
+   modification, membre ajouté) remonte en tête de liste, et ainsi de suite. C'est l'ordre par défaut (« Récents »). Les autres tris ne changent pas. »
+   UNE PAROLE PORTE SA DERNIÈRE ACTION : `p.derAct` (ms), posé quand ce qu'elle porte change — sa signature (tout ce qu'elle porte, sauf ce qui bouge sans
+   qu'on agisse : la place, la vue, sa couleur figée, son monde, le compte des jours, ce qu'on a seulement VU) — relue à chaque enregistrement et à chaque
+   tri. UN CERCLE la sienne (`promi_cercle_act`) : son nom, ses membres, sa note, ses mots, ses fichiers — et la plus récente de ses paroles.
+   Sans action connue (une parole d'avant ce lot), la plus récemment plantée d'abord. Un événement du Fil prend l'heure où il est arrivé (`ts`). */
+(function(){
+  var HORS={x:1,y:1,tx:1,ty:1,place:1,derAct:1,vuTenue:1,monde:1,dalle:1,due:1,ech:1,pending:1,_v:1};
+  var SIG={}, CA={}; try{ CA=JSON.parse(localStorage.getItem('promi_cercle_act')||'{}')||{}; }catch(_){ CA={}; }
+  function vide(v){ return v==null || v==='' || v===false || (Array.isArray(v) && !v.length) || (typeof v==='object' && !Array.isArray(v) && !Object.keys(v).length); }   /* ouvrir une fiche pose `files: []` sur une parole qui n'en avait pas : ce n'est pas une action */
+  function sig(p){ var o={}; for(var k in p){ if(!HORS[k] && typeof p[k]!=='function' && !vide(p[k])) o[k]=p[k]; } if(p.ech&&p.ech.iso) o.echIso=p.ech.iso; try{ return JSON.stringify(o); }catch(_){ return ''; } }
+  function motsC(){ try{ return JSON.parse(localStorage.getItem('promi_cercle_mots')||'{}')||{}; }catch(_){ return {}; } }
+  function sigC(k, M){ try{ return JSON.stringify([(typeof NUE!=='undefined'&&NUE[k])||'', (typeof NUEEMEM!=='undefined'&&NUEEMEM[k])||[], (typeof NUENOTE!=='undefined'&&NUENOTE[k])||'', M[k]||[], (typeof NUEFILES!=='undefined'&&NUEFILES[k])||[]]); }catch(_){ return ''; } }
+  var pret=false, base=false;
+  function note(){ try{
+    if(!base) return;   /* la base : l'état relu au lancement (posée 1,5 s après le chargement), jamais une action */
+    var t=Date.now(), M=motsC(), chC=false;
+    (promises||[]).forEach(function(p){ var s=sig(p), v=SIG[p.id];
+      if(v===undefined){ SIG[p.id]=s; if(pret && p.derAct==null) p.derAct=t; return; }   /* une parole neuve (créée après l'ouverture) : sa création est sa dernière action */
+      if(v!==s){ SIG[p.id]=s; p.derAct=t; } });
+    var ks={}; try{ Object.keys(NUE||{}).forEach(function(k){ ks[k]=1; }); }catch(_){ } (promises||[]).forEach(function(p){ if(p.nuee) ks[p.nuee]=1; });
+    Object.keys(ks).forEach(function(k){ var s=sigC(k,M), c=CA[k];
+      if(!c){ CA[k]=[s, pret?t:0]; chC=true; } else if(c[0]!==s){ CA[k]=[s,t]; chC=true; } });
+    pret=true;
+    if(chC){ try{ localStorage.setItem('promi_cercle_act', JSON.stringify(CA)); }catch(_){ } }
+  }catch(_){ } }
+  function actP(p){ return p ? (p.derAct!=null ? +p.derAct : (+p.id||0)) : 0; }   /* sans action connue : l'id (quelques centaines), toujours sous une heure en ms */
+  function actC(k){ var a=(CA[k]&&CA[k][1])||0; try{ (promises||[]).forEach(function(q){ if(q.nuee===k && !q.draft){ var v=actP(q); if(v>a) a=v; } }); }catch(_){ } return a; }
+  window._derAct={
+    note:note,
+    cle:function(E){ note(); return E.kind==='nuee' ? actC(E.n) : actP(E.p); },
+    cleFil:function(o, i, n){ note(); var a=0; if(o.p) a=actP(o.p); if(o.nk) a=Math.max(a, actC(o.nk)); if(o.ev && o.ev.ts) a=Math.max(a, +o.ev.ts);
+      return a>1e12 ? a : -i; },   /* rien de daté : l'ordre du Fil tel quel */
+    cercle:function(k){ return actC(k); } };
+  /* l'enregistrement relit les signatures (le trait, un mot, une modification passent tous par lui) */
+  var s0=window.saveState; if(typeof s0==='function' && !s0.__derAct){ window.saveState=function(){ note(); return s0.apply(this, arguments); }; window.saveState.__derAct=1; try{ saveState=window.saveState; }catch(_){ } }
+  var f0=window.feedAdd; if(typeof f0==='function' && !f0.__derAct){ window.feedAdd=function(){ var r=f0.apply(this, arguments); try{ if(FEED[0] && FEED[0].ts==null) FEED[0].ts=Date.now(); }catch(_){ } return r; }; window.feedAdd.__derAct=1; try{ feedAdd=window.feedAdd; }catch(_){ } }
+  /* les mots d'un Cercle ne passent pas par l'enregistrement de l'état */
+  try{ var ls=localStorage.setItem; localStorage.setItem=function(k, v){ var r=ls.apply(this, arguments); if(k==='promi_cercle_mots'){ try{ note(); }catch(_){ } } return r; }; }catch(_){ }
+  function pose(){ if(base) return; base=true; note(); }
+  window.addEventListener('load', function(){ setTimeout(pose, 1500); });
+  if(document.readyState==='complete') setTimeout(pose, 1500);
 })();
 </script>
 </body>
