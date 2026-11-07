@@ -20,6 +20,14 @@
 > - **A6 · HONNÊTETÉ.** Un point non reproduit, non mesuré ou non jugé est écrit comme tel, jamais « réglé ».
 > Le rapport de chaque lot commence par le tableau A1 à A6, « tenu » ou « non tenu ».
 
+> ## ⚑ SENTINELLE PERMANENTE C-255 — `redteam_haut_fiche.py` FAIT PARTIE DE LA PORTE A1 DE TOUS LES LOTS (Tom, 7 nov. 2026, v184a).
+> *Pourquoi* : la ligne « Avec … » qui disparaît, le fil d'un Cercle qui saute, les éléments du haut collés sous la marge — trois fois « réglés » au banc, trois fois
+> vus sur l'iPhone. Les juges écrivaient `scrollTop` et attendaient au repos : ils ne voyaient ni le geste ni l'élan.
+> **Il relève, à CHAQUE IMAGE d'un défilement NATIF (molette de WebKit ; dans Safari iOS, le doigt — `banc-haut-fiche.html` + `--lire`), la place et la présence de
+> l'en-tête, de la ligne « Avec … » / la phrase, du titre, de la ligne d'état, du + et des Noyaux, sur les fiches Cercle, Promi et Chiche, aux échelles 1 et 0,79 :
+> ouverture ; bas puis haut ; dix allers-retours ; un commentaire ; dépliage puis repliage ; fermer puis rouvrir. Un saut pendant le geste, ou un écart à la place
+> d'ouverture une fois revenu en haut, et le lot n'est pas livré.** Il se passe par nature (`--nature=`) pour tenir les 10 minutes. Il ne compte pas dans les 10 juges du périmètre.
+
 > ## ⚑ « COMME [UN AUTRE ÉCRAN] » = IDENTIQUE EN TOUT — RÈGLE PERMANENTE (Tom, 6 nov. 2026, C-247). ELLE S'APPLIQUE À CHAQUE LOT.
 > **Quand Tom demande « comme dans l'onboarding » ou « comme [un autre écran] », c'est IDENTIQUE EN TOUT : même taille, même animation, mêmes durées, même ordre,
 > même code. Pas une version approchée, pas une partie seulement. Avant de livrer, on compare les deux image par image ; tout écart non demandé est un défaut.**
@@ -219,6 +227,22 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v184a (7 nov. 2026) — LE FIL D'UNE FICHE NE SAUTE PLUS : L'ÉTAT DÉFILÉ EST SUPPRIMÉ, L'EN-TÊTE ET LA BARRE SONT FIXÉS (C-243 définitif, C-252, C-255). (Décisions Tom.) Ce bloc CORRIGE le §13 (l'état défilé), v181a, v182b et v183c (C-252 : rendre la ligne au retour).
+> **LA CAUSE, UNE SEULE POUR LES TROIS DÉFAUTS** : au-delà de 8 pt de défilement la fiche d'un Cercle basculait d'un coup dans son « état défilé » — Noyaux, ligne « Avec … » et +
+> cachés (`display:none`), titre reposé à 100, état à 140, fil à 187 : la hauteur du contenu passait de 1 256 à 1 003 pt et le titre sautait de 289 pt sous le doigt (mesuré par la
+> sentinelle, image par image, sur v183d). La ligne « Avec … » disparaissait avec lui, et les éléments du haut restaient « collés sous la marge » (les cotes de l'état défilé) quand
+> Safari finissait son élan au-dessus du seuil ou quand le retour changeait la hauteur pendant l'élan. **Pourquoi les juges étaient verts** : ils écrivaient `scrollTop` puis
+> attendaient 1,5 s au repos — ni élan, ni rebond, ni défilement asynchrone ; au repos, la pose avait déjà tout réparé (la sentinelle, sur v183d : repos vert, geste rouge).
+> **AUJOURD'HUI, UN SEUL MÉCANISME, LES TROIS NATURES** (`lot-V184A-FICHE`) : l'état défilé ne s'arme plus (`_nueeDefile(false)`) ; dès la fin du glissement d'ouverture la fiche perd
+> sa transformation (`.v184-pose` → `transform:none`, posée seulement une fois le glissement FINI, `getAnimations`) ; l'en-tête (`.enh`) et la barre Peaufiner (`#dpDetails`) sont en
+> `position:fixed` — leur bloc englobant est alors le cadre de l'app (`.frame`) : Safari les tient sans calcul par image (plus de `translateY(scrollTop)` d'une image de retard).
+> ⚠ **Écart à la méthode de Tom, assumé** : ils restent dans le DOM de la fiche (plus de 300 règles les visent par `#detailPoster`) ; c'est l'absence d'ancêtre transformé qui les
+> fixe à la racine. Une CALE invisible (`#v184Cale`, ordre 7, collante) tient la place que la barre occupait dans le défilement ; `--colle` s'y mesure. Ce qui passe sous l'en-tête
+> (Noyaux, ligne « Avec … »/phrase, titre, état, liste des mots) est rogné à 112 pt, fiche défilée seulement (`_v184Rogne`). La colonne suit la hauteur réelle du fil d'un Cercle
+> (`_v184Colonne`, ResizeObserver) : la pose de l'état défilé la remesurait, sans lui la dernière carte restait sous le bloc « Un mot… / Planter » (pris par `redteam_cercle_defile` B).
+> ⚠ Un élément fixé dans un ancêtre transformé y défile (v183d) : **toute transformation posée sur `#detailPoster` après son ouverture remet ce défaut** — `.v184-pose` la retire.
+> Juge : **`redteam_haut_fiche.py`** (sentinelle C-255) ; rouge sur v183d (saut de 289 pt, la ligne « Avec … » qui disparaît pendant le geste).
 
 ### ⚑ v183d (7 nov. 2026) — LE JUGE SÉVÈRE DE L'INDEX ET DU FIL (C-250) ET CE QU'IL A TROUVÉ : DEUX ONGLETS, UNE ACTION PERDUE, LE RETOUR AU MÊME ENDROIT. (Décisions Tom.) Ce bloc CORRIGE v177a (C-226 : « dans un onglet dépassé, une modification autre qu'une plantation n'est pas écrite »).
 > **Juge : `redteam_index_fil.py`** (`--etat=tom|200`, `--partie=1|2|3` — trois passes, chacune sous 10 min ; l'état de 200 paroles : `banc-etats/etat-200.json`, bâti par

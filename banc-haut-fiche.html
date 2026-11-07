@@ -1,0 +1,48 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Banc haut de fiche</title>
+<!-- v184a (C-255) : le banc Safari iOS de redteam_haut_fiche.py. L'app dans un cadre plein écran, l'état de la fiche posé, l'enregistreur (haut-fiche-rec.js)
+     qui relève CHAQUE IMAGE. Le défilement vient du DOIGT (glissés du simulateur) : rien n'écrit scrollTop. ?nature=cercle|promi|chiche ; ?ar=3 allers-retours
+     au doigt attendus avant les cas écrits (un commentaire, dépliage et repliage, fermer et rouvrir), puis encore un aller-retour au doigt. Le bilan part au Mac
+     (/mesure, banc:"haut-fiche") ; `python3 redteam_haut_fiche.py --lire` le juge. -->
+<style>html,body{margin:0;height:100%;background:#201908;color:#F7F0DE;font:11px system-ui}#f{position:fixed;left:0;top:0;width:100%;height:100%;border:0}
+#s{position:fixed;left:0;top:0;right:0;z-index:9;background:rgba(32,25,8,.86);padding:2px 6px;white-space:nowrap;overflow:hidden;pointer-events:none}</style>
+<div id="s">…</div><iframe id="f" src="about:blank"></iframe>
+<script>
+(async function(){
+const Q=new URLSearchParams(location.search), NAT=Q.get('nature')||'cercle', AR=+(Q.get('ar')||3), S=document.getElementById('s'), F=document.getElementById('f');
+const wait=ms=>new Promise(r=>setTimeout(r,ms)); const dit=t=>{ S.textContent=NAT+' · '+t; };
+const envoie=d=>{ try{ d.banc='haut-fiche'; d.nature=NAT; d.quand=new Date().toISOString(); d.ua=navigator.userAgent; fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}); }catch(e){} };
+let etat={};
+if(NAT==='cercle'){ etat=await (await fetch('banc-etats/etat-cercle.json',{cache:'no-store'})).json(); }
+else { const nom=Q.get('etat')||'etats/tom-20261101-205518.json'; const d=await (await fetch(nom,{cache:'no-store'})).json(); etat=d.ls||{}; ['setItem','getItem','removeItem','clear','key','length'].forEach(k=>delete etat[k]); }
+delete etat.promi_theme; localStorage.clear(); for(const k in etat) localStorage.setItem(k,etat[k]);
+for(const [k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1'],['promi_theme','light']]) localStorage.setItem(k,v);
+const ch=new Promise(r=>{F.onload=r;}); F.src='app.html'; await ch;
+let w=null; for(let i=0;i<300;i++){ await wait(100); try{ const x=F.contentWindow; if(x.document.readyState==='complete'&&x.openDetail&&x.Toile&&x.eval('typeof promises')==='object'){ w=x; break; } }catch(e){} }
+if(!w){ dit('app pas prête'); envoie({erreur:'app pas prête'}); return; }
+await wait(2500);
+w.eval(await (await fetch('haut-fiche-rec.js',{cache:'no-store'})).text());
+const OUVRE={cercle:"openEssaim('potager')", promi:"(function(){var p=promises.filter(function(q){return !q.draft&&!q.chiche&&!q.nuee}).sort(function(a,b){return (b.title||'').length-(a.title||'').length})[0]; openDetail(p.id);})()", chiche:"(function(){var p=promises.filter(function(q){return !q.draft&&q.chiche})[0]; openDetail(p.id);})()"};
+const nat=NAT==='cercle'?'cercle':NAT;
+w.eval(OUVRE[NAT]); await wait(2800);
+const dp=w.document.getElementById('detailPoster'); const O=w.HF.releve(); const B={O:O, version:w.PROMI_VERSION||null, echelle:w._echDp?w._echDp(dp):null, cas:[]};
+const ecart=()=>w.HF.compare(O,w.HF.releve(),nat);
+/* une phase au doigt : on enregistre chaque image jusqu'à n allers-retours (en bas puis revenu à 0, posé 600 ms) */
+async function doigt(n,nom){ w.HF.start(); let ar=0, bas=false, t0=performance.now(), tRepos=0; const m=()=>dp.scrollHeight-dp.clientHeight;
+  while(ar<n && performance.now()-t0<180000){ await wait(80); const s=dp.scrollTop; if(s>Math.min(120,m()*0.6)) bas=true;
+    if(bas && s<=0.5){ if(!tRepos) tRepos=performance.now(); if(performance.now()-tRepos>600){ ar++; bas=false; tRepos=0; const e=ecart(); B.cas.push({cas:nom+' retour '+ar, ecart:e}); } } else tRepos=0;
+    dit(nom+' : '+ar+' / '+n+' allers-retours au doigt · défilé '+Math.round(s)+' / '+Math.round(m())); }
+  const fr=w.HF.stop(); const J=w.HF.sauts(fr,nat); B.cas.push({cas:nom+' sauts', images:fr.length, n:J.n, pire:J.pire, defauts:J.defauts, max:Math.max(...fr.map(f=>f.st))}); envoie(Object.assign({phase:nom},B)); }
+dit('ouverture relevée — fais défiler au doigt'); await doigt(AR,'doigt 1');
+/* un commentaire, par la saisie de l'app */
+try{ dp.scrollTop=dp.scrollHeight; await wait(400); const l=w.document.querySelector('#cm5Ligne'); l.dispatchEvent(new w.PointerEvent('pointerdown',{bubbles:true})); l.click(); await wait(400); const s=w.document.querySelector('#cm5Ligne .cm5-saisie'); if(s){ s.value='un mot du banc'; s.dispatchEvent(new w.KeyboardEvent('keydown',{key:'Enter',bubbles:true})); } await wait(1200); w.document.activeElement&&w.document.activeElement.blur&&w.document.activeElement.blur(); await wait(500); }catch(e){ B.cas.push({cas:'commentaire',erreur:String(e)}); }
+dit('commentaire posé — remonte en haut au doigt'); await doigt(1,'après commentaire');
+/* dépliage puis repliage */
+try{ const t=w.document.getElementById('dptTitre'); t.click(); await wait(900); const dep=!!w._titreDeplie; t.click(); await wait(1100); B.cas.push({cas:'dépliage', deplie:dep, coupe:t.hasAttribute('data-coupe'), ecart:(dp.scrollTop<=0.5?ecart():['défilé '+dp.scrollTop])}); }catch(e){}
+/* fermer, rouvrir */
+try{ w.closeAll(); await wait(900); w.eval(OUVRE[NAT]); await wait(2800); B.cas.push({cas:'fermée puis rouverte', ecart:ecart()}); }catch(e){}
+dit('rouverte — un aller-retour au doigt'); await doigt(1,'rouverte');
+B.fin=true; envoie(B);
+const ko=B.cas.filter(c=>(c.ecart&&c.ecart.length)||c.n); dit('FINI : '+(ko.length?('ROUGE '+ko.length):'VERT')+' · '+B.cas.length+' cas');
+})();
+</script>

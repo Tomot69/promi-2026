@@ -16327,7 +16327,8 @@ var CREMEETAT='#F7F0DE';
       /* ⚑ v182b — C-243 (le saut) NON LIVRÉ : retirer l'état défilé faisait défiler toute la fiche ; dans Safari iOS (l'appareil réduit) le bandeau collant
          allonge alors la zone de défilement et, au bas du fil, la barre Peaufiner remonte au milieu de l'écran, sur « Planter dans le Cercle » (vu au
          simulateur ; le banc WebKit ne le montre pas). Rendu tel qu'en v181b, en attendant. */
-      window._nueeDefile(t > _defSeuil);
+      /* ⚑ v184a (Tom, C-243 définitif) : L'ÉTAT DÉFILÉ BINAIRE EST SUPPRIMÉ — il n'y a plus qu'un mécanisme : le contenu défile sous l'en-tête fixé (lot-V184A-FICHE). */
+      window._nueeDefile(false); void t;
     }
     ['scroll','touchmove','wheel'].forEach(function(ev){
       document.addEventListener(ev, lu, true);
@@ -24643,7 +24644,9 @@ var CREMEETAT='#F7F0DE';
          l'écran soit peint — la correction est donc posée dès le chargement. */
       var dehors = !dv.contains(sc);
       var dx = dehors ? dv.offsetLeft : 0, dy = dehors ? dv.offsetTop : 0;
-      b.style.setProperty('position','absolute','important');
+      var _fx = !!(window._v184Fixe && window._v184Fixe(sc));   /* v184a (C-243) : la fiche posée — le plateau est fixé à l'app (son bloc englobant est le cadre) */
+      if(_fx){ dx = dv.offsetLeft; dy = dv.offsetTop; }
+      b.style.setProperty('position', _fx ? 'fixed' : 'absolute','important');
       b.style.setProperty('left',   (REF.left + dx) + 'px', 'important');
       b.style.setProperty('top',    (REF.top  + dy) + 'px', 'important');
       b.style.setProperty('right',  'auto', 'important');
@@ -25055,6 +25058,7 @@ var CREMEETAT='#F7F0DE';
         var v0 = sc.querySelector(':scope > .enh-voile'); if(v0) v0.style.display = 'none';
         return;
       }
+      if(window._v184Fixe && window._v184Fixe(sc)){ b.style.removeProperty('transform'); return; }   /* v184a : fixé, il ne se translate plus (plus d'image de retard) */
       var y = sc.scrollTop || 0;
       b.style.setProperty('transform', 'translateY(' + y + 'px)', 'important');
       /* ⚠ LE VOILE NE VA QUE LÀ OÙ IL SERT — TROIS ÉCRANS, NOMMÉMENT.
@@ -41630,7 +41634,8 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   function mesure(){ try{
     var P=document.getElementById('detailPoster'), dev=document.getElementById('device'); if(!P||!dev||!P.classList.contains('show')) return;
     if(!(P.classList.contains('dp-nuee')||P.classList.contains('dp-mode-nuee'))||P.classList.contains('s2-ouv')) return;
-    var D=document.getElementById('dpDetails'), M=document.getElementById('dpMain'); if(!D||!M||M.offsetHeight<759.5) return;   /* le bandeau n'est collé que si la colonne le pousse au bas de l'écran */
+    var D=document.getElementById('dpDetails'), M=document.getElementById('dpMain'); var _cl=document.getElementById('v184Cale'); if(_cl && _cl.offsetHeight>1) D=_cl;   /* v184a : la barre fixée ne mesure plus rien ; la cale tient sa place collante */
+    if(!D||!M||M.offsetHeight<759.5) return;   /* le bandeau n'est collé que si la colonne le pousse au bas de l'écran */
     var e=dev.getBoundingClientRect().width/390; if(!(e>0)) return;
     var err=(P.getBoundingClientRect().bottom-D.getBoundingClientRect().bottom)/e;
     if(Math.abs(err)<0.5) { essais=0; return; }
@@ -44291,7 +44296,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      défilement. (v181b la collait au bas par `sticky` : au banc WebKit elle y restait ; dans Safari iOS elle se posait au milieu de la fiche, et le clic fabriqué
      après le toucher du titre tombait sur elle — Peaufiner s'ouvrait.) `#dpMain` porte la hauteur du contenu, plus celle de la barre. */
   var BAR=null;
-  function tient(){ var dp=document.getElementById('detailPoster'), b=document.getElementById('dpDetails'); if(!dp || !b || !b.hasAttribute('data-deplie')) return;
+  function tient(){ var dp=document.getElementById('detailPoster'), b=document.getElementById('dpDetails'); if(!dp || !b || !b.hasAttribute('data-deplie')) return; if(window._v184Fixe && window._v184Fixe(dp)) return;   /* v184a : la barre est fixée à l'app */
     var v=(760+dp.scrollTop)+'px'; if(b.style.getPropertyValue('top')!==v) b.style.setProperty('top', v, 'important'); }
   function espace(dp, bas){ var m=document.getElementById('dpMain'), b=document.getElementById('dpDetails');
     if(bas==null){ if(m && m.hasAttribute('data-deplie')){ m.style.removeProperty('min-height'); m.removeAttribute('data-deplie'); }
@@ -44416,6 +44421,108 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   ['pointerdown','touchstart','keydown'].forEach(function(n){ document.addEventListener(n, function(e){ if(e.isTrusted && !base && document.readyState!=='loading') pose(); }, true); });
   window.addEventListener('load', function(){ setTimeout(pose, 1500); });
   if(document.readyState==='complete') setTimeout(pose, 1500);
+})();
+</script>
+<style id="lot-V184A-FICHE-css">
+/* ⚑ v184a (Tom, 7 nov. 2026, C-243 définitif) — la fiche posée ne porte plus de transformation : un élément fixé n'y défile plus avec elle */
+#device #detailPoster.poster.show.v184-pose{transform:none!important;transition:none!important}   /* translateY(0) → none : aucune différence à l'écran, rien à animer */
+#device#device #detailPoster#detailPoster > #v184Cale#v184Cale{position:sticky!important;bottom:0;left:0!important;top:auto!important;width:390px!important;max-width:none!important;margin:0!important;padding:0!important;visibility:hidden!important;pointer-events:none!important;flex:none!important;order:7!important;z-index:0!important;transform:none!important}   /* la place de la barre dans la colonne (ordre 7, comme elle) */
+#device#device #detailPoster#detailPoster.dp-nuee:not(.s2-ouv) > #v184Cale, #device#device #detailPoster#detailPoster.dp-mode-nuee:not(.s2-ouv) > #v184Cale{bottom:calc(0px - var(--colle,0px))!important}
+</style>
+<script id="lot-V184A-FICHE">
+/* ⚑ v184a (Tom, 7 nov. 2026, C-243 DÉFINITIF, C-252, C-255) — LE FIL D'UNE FICHE NE SAUTE PLUS.
+   LA CAUSE (v182b, mesurée de nouveau) : au-delà de 8 pt de défilement la fiche d'un Cercle basculait D'UN COUP dans son « état défilé » (§13) — la Toile
+   réduite à 114, les Noyaux, la ligne « Avec … » et le + cachés (display:none), le titre reposé à 100, le fil à 187 : la hauteur du contenu passait de 1 256 à
+   1 003 pt et tout sautait de 250 à 330 pt sous le doigt, dans les deux sens. Et c'est la MÊME cause que la ligne « Avec … » qui disparaît (l'état défilé la
+   cachait, le retour devait la rendre) et que les éléments du haut collés sous la marge (titre à 100, état à 140 : les cotes de l'état défilé, restées quand
+   Safari finissait son élan au-dessus du seuil, ou quand le retour changeait la hauteur pendant l'élan).
+   AUJOURD'HUI, UN SEUL MÉCANISME (les trois natures) : l'état défilé ne s'arme plus ; l'en-tête est FIXÉ (le défilement natif de Safari, aucun calcul par
+   image) ; la barre Peaufiner est fixée au bas de l'écran ; dès la fin du glissement d'ouverture la fiche perd sa transformation (`v184-pose`) : aucun ancêtre
+   transformé entre ces deux éléments et le cadre de l'app, ils y sont fixés (un élément fixé dans un ancêtre transformé y défile, v183d). Ils restent dans le
+   DOM de la fiche : plus de 300 règles les visent par `#detailPoster` (les sortir du nœud les aurait dépouillées). Une CALE invisible tient la place que la
+   barre occupait dans le défilement (collante comme elle : `--colle` s'y mesure). Le contenu qui passe sous l'en-tête est rogné à 112 pt (la règle du fil,
+   C-243 v181a), et seulement quand la fiche est défilée. */
+(function(){
+  var HAUT=112, DUREE=440;
+  function D(){ return document.getElementById('detailPoster'); }
+  function actif(){ var d=D(); return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose')); }
+  window._v184Fixe=function(sc){ return !!(sc && sc.id==='detailPoster' && actif()); };
+  function off(){ var dv=document.getElementById('device'); return dv ? [dv.offsetLeft||0, dv.offsetTop||0] : [16,16]; }
+  function ecrit(e, k, v){ if(e.style.getPropertyValue(k)!==v || e.style.getPropertyPriority(k)!=='important') e.style.setProperty(k, v, 'important'); }
+  var MES=['position','top','left','bottom','width','transform'];
+  function cale(){ var d=D(), b=document.getElementById('dpDetails'); if(!d||!b) return null; var c=document.getElementById('v184Cale');
+    if(!c){ c=document.createElement('div'); c.id='v184Cale'; c.setAttribute('aria-hidden','true'); }
+    if(c.parentNode!==d || c.nextSibling!==b) d.insertBefore(c, b); return c; }
+  function guette(b, f){ if(!b || b.__v184o) return; b.__v184o=1; new MutationObserver(f).observe(b,{attributes:true, attributeFilter:['style']}); }
+  function poseBarre(){ var d=D(), b=document.getElementById('dpDetails'); if(!d||!b) return;
+    /* un autre propriétaire réécrit la barre (pose(), espace() : `position:absolute`) : on compare avant d'écrire (§8). Posé ici : la barre n'existe pas toujours au chargement. */
+    guette(b, function(){ if(actif() && (b.style.getPropertyValue('position')!=='fixed' || b.style.getPropertyValue('top')!==(760+off()[1])+'px')) poseBarre(); });
+    var c=document.getElementById('v184Cale'), dep=b.hasAttribute('data-deplie');
+    /* deux places possibles pour la barre dans le défilement : la fiche dépliée (C-244) la pose en absolu et `espace()` porte sa hauteur dans la colonne ;
+       sinon c'est la feuille de style (collante sur un Cercle). On ne garde JAMAIS les cotes écrites par un autre (une copie périme) : on lit la feuille. */
+    if(!actif()){ if(b.hasAttribute('data-v184')){ MES.forEach(function(k){ b.style.removeProperty(k); }); b.removeAttribute('data-v184');
+        if(dep){ var dd=D(); ecrit(b,'position','absolute'); ecrit(b,'left','0px'); ecrit(b,'width','390px'); ecrit(b,'bottom','auto'); ecrit(b,'top',(760+(dd?dd.scrollTop:0))+'px'); } }
+      if(c){ c.style.setProperty('height','0px','important'); c.style.setProperty('display','none','important'); } return; }
+    b.setAttribute('data-v184','1');
+    var pos='absolute', h=b.offsetHeight;
+    if(!dep){ MES.forEach(function(k){ b.style.removeProperty(k); }); pos=getComputedStyle(b).position; h=b.offsetHeight; }
+    var flux=!dep && (pos==='sticky'||pos==='static'||pos==='relative');
+    c=cale(); if(c){ if(flux && h){ c.style.setProperty('display','block','important'); c.style.setProperty('height', h+'px','important'); } else { c.style.setProperty('height','0px','important'); c.style.setProperty('display','none','important'); } }
+    var o=off();
+    ecrit(b,'position','fixed'); ecrit(b,'top',(760+o[1])+'px'); ecrit(b,'left',o[0]+'px'); ecrit(b,'bottom','auto'); ecrit(b,'width','390px'); ecrit(b,'transform','none');
+  }
+  function poseTete(){ var d=D(); if(!d) return; var e=d.querySelector(':scope > .enh'); if(!e) return; var o=off();
+    guette(e, function(){ if(actif() && (e.style.getPropertyValue('position')!=='fixed' || e.style.getPropertyValue('transform'))) poseTete(); });
+    if(actif()){ ecrit(e,'position','fixed'); ecrit(e,'top',(40+o[1])+'px'); ecrit(e,'left',(24+o[0])+'px'); if(e.style.getPropertyValue('transform')) e.style.removeProperty('transform'); }
+    else if(e.style.getPropertyValue('position')==='fixed'){ e.style.setProperty('position','absolute','important'); e.style.setProperty('top','40px','important'); e.style.setProperty('left','24px','important'); }
+  }
+  /* ── ce qui passe sous l'en-tête est rogné à 112 pt, seulement fiche défilée (au repos, rien n'est rogné) ── */
+  var ROG=['dAura','dptQui','dptTitre','dptQuand','cm5Liste','cm5Ligne'];
+  function ech(e){ try{ var r=e.getBoundingClientRect(); return (r.width/(e.offsetWidth||1))||1; }catch(_){ return 1; } }
+  function rogne(){ var d=D(), dv=document.getElementById('device'); if(!d||!dv) return; var on=actif() && !d.classList.contains('s2-ouv') && d.scrollTop>0;
+    var R=dv.getBoundingClientRect(), k=ech(dv);
+    ROG.forEach(function(id){ var e=document.getElementById(id); if(!e) return;
+      if(id==='dptTitre' && window._titreDeplie) { if(e.hasAttribute('data-v184r')){ e.removeAttribute('data-v184r'); } return; }   /* le titre déplié porte sa propre découpe (C-244) */
+      var v='';
+      if(on){ var r=e.getBoundingClientRect(); if(r.height){ var cut=(HAUT-(r.top-R.top)/k)*k/ech(e); if(cut>0) v='inset('+(Math.min(cut, e.offsetHeight+2)*4|0)/4+'px 0 0 0)'; } }
+      if(v){ if(e.style.getPropertyValue('clip-path')!==v){ e.style.setProperty('clip-path',v,'important'); e.style.setProperty('-webkit-clip-path',v,'important'); } e.setAttribute('data-v184r','1'); }
+      else if(e.hasAttribute('data-v184r')){ e.style.removeProperty('clip-path'); e.style.removeProperty('-webkit-clip-path'); e.removeAttribute('data-v184r'); } });
+  }
+  window._v184Rogne=rogne;
+  /* ── la colonne porte la hauteur RÉELLE du fil d'un Cercle. L'état défilé reposait la fiche à chaque passage, et la hauteur du fil y était remesurée ; sans lui,
+     elle n'est posée qu'à l'ouverture, avant que la liste des mots (C-248) ait sa hauteur : en bas du défilement la dernière carte restait 34 pt sous le bloc
+     « Un mot… / Planter » (redteam_cercle_defile B). La même formule que le poseur (`fil + sa hauteur + 12`), relue quand le fil change de taille ; on ne fait
+     que la RELEVER, jamais la baisser, en comparant avant d'écrire (§8). ── */
+  function colonne(){ var d=D(), f=document.getElementById('dpNueeFil'), m=document.getElementById('dpMain'); if(!d||!f||!m) return;
+    if(!d.classList.contains('show') || !(d.classList.contains('dp-nuee')||d.classList.contains('dp-mode-nuee')) || d.classList.contains('s2-ouv')) return;
+    if(getComputedStyle(f).display==='none') return;
+    var need=Math.ceil(f.offsetTop + f.offsetHeight + 12), cur=parseFloat(m.style.getPropertyValue('min-height'))||0;
+    if(need > cur + 0.5) m.style.setProperty('min-height', need+'px', 'important'); }
+  window._v184Colonne=colonne;
+  (function(){ function arme2(){ var f=document.getElementById('dpNueeFil'), m=document.getElementById('dpMain'); if(!f||!m){ setTimeout(arme2,400); return; }
+      try{ new ResizeObserver(function(){ colonne(); }).observe(f); }catch(_){ }
+      new MutationObserver(function(){ colonne(); }).observe(m,{attributes:true, attributeFilter:['style']}); }
+    setTimeout(arme2, 0); })();
+  function tout(){ try{ poseTete(); }catch(_){ } try{ poseBarre(); }catch(_){ } try{ rogne(); }catch(_){ } try{ colonne(); }catch(_){ } }
+  window._v184Pose=tout;
+  var tPose=0;
+  function suit(){ var d=D(); if(!d) return;
+    if(d.classList.contains('show')){ if(!d.classList.contains('v184-pose') && !tPose){
+        var reduit=false; try{ reduit=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
+        var pose=function(){ tPose=0; var e=D(); if(!e || !e.classList.contains('show')) return;
+          /* on ne retire la transformation qu'une fois le glissement d'ouverture FINI (une image longue le fait durer plus que prévu) */
+          var en=[]; try{ en=e.getAnimations().filter(function(a){ return a.transitionProperty==='transform' && a.playState==='running'; }); }catch(_){ }
+          if(en.length){ tPose=-1; Promise.all(en.map(function(a){ return a.finished.catch(function(){}); })).then(function(){ tPose=0; suit(); }); return; }
+          e.classList.add('v184-pose'); tout(); };
+        tPose=setTimeout(pose, reduit ? 0 : DUREE); } }
+    else { if(tPose>0) clearTimeout(tPose); tPose=0; if(d.classList.contains('v184-pose')){ d.classList.remove('v184-pose'); tout(); } } }
+  function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; }
+    new MutationObserver(function(){ suit(); }).observe(d,{attributes:true, attributeFilter:['class']});
+    d.addEventListener('scroll', rogne, {passive:true});
+    suit(); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', arme); else arme();
+  window.addEventListener('resize', function(){ try{ tout(); }catch(_){ } });
+  (window._rangeurs=window._rangeurs||[]).push(function(){ ROG.forEach(function(id){ var e=document.getElementById(id); if(e && e.hasAttribute('data-v184r')){ e.style.removeProperty('clip-path'); e.style.removeProperty('-webkit-clip-path'); e.removeAttribute('data-v184r'); } }); });
 })();
 </script>
 </body>
