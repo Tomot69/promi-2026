@@ -220,6 +220,27 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v183a (7 nov. 2026) — LES COMMENTAIRES SUR LA VUE PRINCIPALE D'UNE FICHE (C-248, urgent). (Décision Tom.) Ce bloc CORRIGE v145, v146 et v147 (C-116 : « le dernier mot au-dessus de la ligne ; la ligne touchée, les commentaires s'affichent sous le trait »).
+> **Validés par Tom : C-244 (le dépliage), C-245 (Récents dans le Fil, sous réserve du juge de C-250), C-247.** Le Chiche de 280 caractères tronqué sur la fiche : accepté (le dépliage le montre).
+> **⚑ C-248 — LA LISTE DES MOTS EST DANS LA FICHE** (`lot-V145-COMM`, `#cm5Liste`) : sous la ligne d'état, à la place du dernier mot d'avant, les mots du PLUS RÉCENT AU
+> PLUS ANCIEN, trois au plus (`VUS`), puis « + X commentaires » (Atkinson 700, 40 pt de haut), puis la ligne « Un mot… ». Un toucher sur « + X » déplie le reste d'un
+> seul mouvement (360 ms, aller-retour quadratique) : la ligne « + X » se referme pendant que le reste s'ouvre, « Un mot… » glisse avec ; la place est faite d'avance.
+> La liste est dans le flux de la fiche (elle suit le titre déplié, C-244, et l'air de C-246 : `lot-V181B-TEXTES` la compte dans `SUIT`, l'air se mesure depuis le
+> haut du premier bloc) ; plus bas que la barre, la fiche défile au-dessus d'elle (la barre tenue à `760 + scrollTop`). À l'envoi, le mot neuf entre en tête et la fiche
+> défile d'autant : « Un mot… » reste sous le doigt. **Le fil des mots superposé (`#cm5Fil`) et le dernier mot (`#cm5Dernier`) ne paraissent plus** ; toucher la ligne
+> n'ouvre que la saisie. **Sur un Cercle**, la liste ferme le fil des paroles (dans `.nf-liste`, aux marges des cartes ; coupée sous l'en-tête par le rognage de C-243) ;
+> « Un mot… » reste dans son bloc collant ; la fiche prend la hauteur de son fil quand la liste grandit (`cercleHaut`, la règle de C-238 lue sur le fil rendu — reposer
+> la fiche rebâtissait les cartes et défaisait leur hauteur : essayé, retiré). Un mot : texte = nom = 16 pt (C-116), visage rond de 22.
+> **La cause — NON REPRODUITE** : au banc (WebKit, 390 × 844, l'état exporté de Tom), v180b, v181b et v182b se comportent pareil à l'ouverture, à la saisie et à l'envoi ;
+> le simulateur iOS n'a pas démarré sous la charge de l'autre session. Probable, non prouvée : le fil des mots était une COUCHE posée par-dessus la fiche à l'ouverture
+> de la saisie, à des cotes fixes (sous le trait ; sur un Cercle défilé, à `scrollTop + 110`, juste sous l'en-tête) ; depuis v182b la fiche peut défiler (dépliage C-244,
+> « Un mot… » sous l'état C-246) et le clavier de Safari la fait défiler : la couche part avec elle sous l'en-tête, et se referme au premier toucher ailleurs.
+> Juges : **`redteam_commentaires_liste.py`** (68 : Promi, Chiche, Cercle × 0, 1, 3, 12 mots, dont un de 280 caractères ; aucun chevauchement, rien sous l'en-tête,
+> rien ne disparaît ni ne saute, le dépliage d'un mouvement, la barre au bas ; l'état de Tom). **Contrats remis au niveau** (originaux `sauvegardes/*-avant-v183a.py`) :
+> `redteam_commentaires` (B à G), `redteam_noms` (les mots lus dans la liste), `redteam_cercle_defile` D (aucune couche par-dessus le fil).
+> ⚠ **Trouvé en jugeant, corrigé** : la liste paraissait à 10 pt sous l'état puis sautait à 16, 270 ms plus tard (l'air de C-246 passait à l'image suivante) — il passe
+> dans l'image de la pose. ⚠ **Préexistant (v182b aussi)** : `redteam_commentaires` A, la ligne d'une fiche TENUE est à 731 (l'air de C-246 sous un état plus long).
+
 ### ⚑ v182b (6 nov. 2026) — LE + DES MEMBRES AU BOUT DE LA LIGNE (C-242) ; LE SAUT DU FIL D'UN CERCLE NON LIVRÉ (C-243) ; « RÉCENTS » DANS LE FIL (C-245) ; LE DÉPLIAGE DU TITRE (C-244) ; « UN MOT… » SOUS L'ÉTAT (C-246). (Décisions Tom.) Ce bloc CORRIGE v181a (le + à droite du disque) et v181b (§5.2 « non livré », `?deplie=1`).
 > **Vérifié au doigt dans Safari iOS 26.1 (simulateur iPhone 16e) : le + des membres, le dépliage (Peaufiner ne s'ouvre pas, la barre reste en bas, le repli remonte la fiche), le Chiche de 280 caractères, « Un mot… » sous l'état, « Récents » dans le Fil.**
 > **⚑ C-242 — LE + SUIT LA LIGNE « Avec … »** (`lot-V181A-CERCLE`, `place()`) : 8 pt après la fin du texte de `#dptQui` (lue sur son encre, `Range`), centré sur sa ligne, son

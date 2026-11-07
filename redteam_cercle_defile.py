@@ -5,7 +5,7 @@ Banc WebKit ×3, le Cercle « Le potager » (six paroles, trois mots), fenêtres
   A · le geste qui fait défiler (le doigt qui monte, 250 pt) ne déplie pas le Peaufiner du Cercle (§13 : il ne s'ouvre qu'en touchant sa barre) ;
   B · défilé jusqu'en bas : la dernière carte est entière et touchable, au-dessus du bloc collant (elementFromPoint à son bas) ; le Peaufiner reste fermé ;
   C · le bloc collant est plein : dans ses interstices (sous le dernier mot, entre « Un mot… » et « + Planter », sous le bouton jusqu'au bandeau), aucune carte ;
-  D · les mots ouverts (« Un mot… » touché) : entre le fil des mots et la ligne, aucune carte ;
+  D · (v183a, C-248) « Un mot… » touché : la saisie s'ouvre, aucune couche de mots par-dessus le fil ;
   E · la ligne « Un mot… » et le dernier mot ont le style de ceux d'une fiche Promi (police, taille, graisse).
 Rouge sur v179b (`--fichier=zz-v179b.html`).
 """
@@ -65,7 +65,10 @@ with sync_playwright() as p:
         c = pg.evaluate("()=>{ const l=document.getElementById('cm5Ligne'); const r=l.getBoundingClientRect(); return [r.left+40, r.top+r.height/2]; }")
         pg.touchscreen.tap(c[0], c[1]); pg.wait_for_timeout(900); g2 = pg.evaluate(GEO)
         u = uni(pg, [g2['fil'][1] + 3, (g2['fil'][1] + g2['ligne'][0]) / 2]) if g2['fil'] and g2['ligne'] else None
-        juge(T + ' D · les mots ouverts : aucune carte entre leur fil et la ligne (lu sur l\'image)', u and all(d <= 14 and e <= 14 for _, d, e in u), (u, g2['fil'], g2['ligne']))
+        # ⚑ v183a (Tom, C-248) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_cercle_defile-avant-v183a.py) : « Un mot… » touché n'ouvre plus de fil des mots
+        #   PAR-DESSUS la fiche (C-248 : « rien ne passe sous l'en-tête ») — la saisie s'ouvre, aucune couche ; les mots restent à la fin du fil des paroles.
+        d2 = pg.evaluate("()=>{ const f=document.getElementById('cm5Fil'), s=document.querySelector('#cm5Ligne .cm5-saisie'); return {couche:!!(f && getComputedStyle(f).display!=='none' && f.getBoundingClientRect().height>1), saisie:!!(s && document.activeElement===s)}; }")
+        juge(T + ' D · « Un mot… » touché : la saisie s\'ouvre, aucune couche de mots par-dessus le fil (C-248)', d2['saisie'] and not d2['couche'], d2)
         pg.evaluate("()=>{ try{ window._comm.ferme(); }catch(e){} }"); pg.wait_for_timeout(400)
         st = pg.evaluate(STYLE)
         juge(T + ' E · « Un mot… » et le dernier mot au style d\'une fiche Promi', st == ref, (st, ref))

@@ -37,10 +37,12 @@ with sync_playwright() as p:
       q.comments.push({t:'On fait ça ensemble ?', by:'Christophe', d:new Date(now-86400000).toISOString()});   /* v148 : 24 h, toujours « hier » — 36 h ne l'était qu'après midi */ q.comments.push({t:'Avec plaisir', by:'Christine', d:new Date(now-4*60000).toISOString()});
       q.comments.push({t:'Je réserve.', by:'Bartholomew', d:new Date(now-40000).toISOString()}); openDetail(q.id); }""")
     pg.wait_for_timeout(2600); tap_sel(pg, '#cm5Ligne'); pg.wait_for_timeout(1200)
-    E = pg.evaluate("()=>[...document.querySelectorAll('#cm5Fil .cm5-un')].map(u=>{ const n=u.querySelector('.nom-lien'); const c=u.querySelector(':scope > div'); return {nom:n?n.textContent:null, data:n?n.getAttribute('data-nom'):null, tete:c?c.children[0].textContent:''}; })")
+    # ⚑ v183a (Tom, C-248) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_noms-avant-v183a.py) : les mots sont dans la LISTE de la fiche (`#cm5Liste`),
+    #   le plus récent d'abord ; on les relit dans l'ordre chronologique pour garder les mêmes contrôles.
+    E = pg.evaluate("()=>[...document.querySelectorAll('#cm5Liste .cm5-un')].reverse().map(u=>{ const n=u.querySelector('.nom-lien'); const c=u.querySelector(':scope > div'); return {nom:n?n.textContent:null, data:n?n.getAttribute('data-nom'):null, tete:c?c.children[0].textContent:''}; })")
     juge('les mots : le nom s\'affiche selon la règle et porte la personne (Christophe, Christine, Bartholomew)', [e['data'] for e in E] == ['Christophe', 'Christine', 'Bartholomew'] and all(e['nom'] for e in E), [(e['nom'], e['data']) for e in E])
     juge('les mots : la date sobre (« hier », « il y a 4 min », « à l’instant »)', len(E) == 3 and 'hier' in E[0]['tete'] and 'il y a 4 min' in E[1]['tete'] and 'instant' in E[2]['tete'], [e['tete'] for e in E])
-    c = pg.evaluate("()=>{ const n=[...document.querySelectorAll('#cm5Fil .nom-lien')].find(x=>x.getAttribute('data-nom')==='Christine'); if(!n) return null; const r=n.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return [(r.left+r.width/2-D.left)/k, (r.top+r.height/2-D.top)/k]; }")
+    c = pg.evaluate("()=>{ const n=[...document.querySelectorAll('#cm5Liste .nom-lien')].find(x=>x.getAttribute('data-nom')==='Christine'); if(!n) return null; const r=n.getBoundingClientRect(), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; return [(r.left+r.width/2-D.left)/k, (r.top+r.height/2-D.top)/k]; }")
     if c: tap(pg, c[0], c[1]); pg.wait_for_timeout(1500)
     ps = pg.evaluate("()=>{ const s=document.getElementById('personSheet'), c=document.getElementById('psCadre'), n=document.getElementById('psName'); return {vu:!!(s&&s.classList.contains('show')), fiche:c?c.getAttribute('data-fiche'):null, nom:n?n.textContent:null}; }")
     juge('toucher un nom (Christine) mène à la fiche de la personne', bool(c) and ps['vu'] and ps['fiche'] == 'Christine', ps)
