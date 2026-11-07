@@ -8008,6 +8008,9 @@ window.Toile.dalleTrame=function(dcv,pid,k,monde,opts){
       }
     }catch(e){}
     try{ _dalleFinit(dcv, opts||null); dcv.__dalleInfo.monde={m:theme,p:palKey,h:hueShift}; dcv.__dalleInfo.courant=!!(opts&&opts.courant); }catch(e){}
+    /* ⚑ v183b (Tom, 7 nov. 2026, C-237 suite) — LA PLACE DE CETTE IMAGE SUR LA TOILE, DÉCLARÉE : `org` = son coin haut-gauche en unités de la Toile et ses px de
+       canevas par unité ; `cel` = l'origine de la cellule qui a servi. Une simple déclaration : rien de ce qui est peint ne change (la dalle qui vole s'y pose). */
+    try{ var _kp=DPR*k, _cx=(typeof x0==='number'&&x1>x0)?x0:0, _cy=(typeof y0==='number'&&y1>y0)?y0:0; dcv.__dalleInfo.org=[D.minx-padX/k+_cx/_kp, D.miny-padY/k+_cy/_kp, _kp]; dcv.__dalleInfo.cel=[D.minx, D.miny, 0]; }catch(e){}
     }
     ok=true;
   }catch(e){}
@@ -8068,6 +8071,7 @@ function _dalleNeuve(dcv,pid,k,opts){
   _dalleFinit(dcv, (_rg('donneesPropres')&&opts)?{donnees:opts.donnees}:(opts||null));
   dcv.__dalleInfo.monde={m:theme,p:palKey,h:hueShift}; dcv.__dalleInfo.courant=!!(opts&&opts.courant);
   dcv.__dalleInfo.nature=_rg('donneesPropres')?_MN.nature(theme,ts):'dalle';
+  dcv.__dalleInfo.org=[B.x0-pd/k, B.y0-pd/k, DPR*k]; dcv.__dalleInfo.cel=[B.x0, B.y0, 1];   /* ⚑ v183b (C-237) : où la Toile pose cette image — déclaré, rien ne change au rendu */
 }
 /* ⚑ v29 — LA FIN D'UNE DALLE, DANS LE MOTEUR : la rampe ou le décalage (opts), puis ce qu'il déclare avoir peint. */
 function _dLin(v){ v/=255; return v<=0.04045?v/12.92:Math.pow((v+0.055)/1.055,2.4); }

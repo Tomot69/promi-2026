@@ -48,7 +48,7 @@ with sync_playwright() as p:
         ctx = B.contexte(b, vw=430, vh=932); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F, 7000)
         ouvre_nature(pg, k); remplit(pg, k, 'marcher le dimanche')
         pg.evaluate(SUIT); B.glisse(pg, points(pg, list(range(44, 212, 12))), pas=18, tenue=40); pg.wait_for_timeout(2600)
-        Pp = cles(pg.evaluate("()=>window.__fr")); cell = pg.evaluate("()=>{ const c=window._cibleDalle(promises[promises.length-1].id); return c?[c.w, c.x+c.w/2, c.y+c.h/2]:null; }")
+        Pp = cles(pg.evaluate("()=>window.__fr")); cell = pg.evaluate("()=>{ const c=(()=>{ const id=promises[promises.length-1].id, c=document.createElement('canvas'); if(!Toile.dalleTrame(c,id,1)) return null; const r=window._dalleSurToile?window._dalleSurToile(c,null):null; return r; })(); return c?[c.w, c.x+c.w/2, c.y+c.h/2]:null; }")   # ⚑ v183b (C-237 suite) — CONTRAT RÉÉCRIT (original en sauvegarde) : la place où la Toile vivante peint la dalle, plus la boîte de la cellule sans la vue
         print('  page + %s' % k, {kk: (round(v, 3) if isinstance(v, float) else v) for kk, v in Pp.items() if kk != 'tr'} if Pp else None, 'cellule', cell, flush=True)
         T = '[%s]' % k
         if not Pp: juge(T + ' la dalle naît', False); ctx.close(); continue

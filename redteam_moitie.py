@@ -6,7 +6,7 @@ Banc WebKit (banc_tom), au doigt, échelles 1 (430 × 932) et 0,79 (330 × 714),
   B · tracé au-delà (50 → 235 pt) : le plein ne passe jamais le milieu (195) ; la parole est plantée quand le doigt arrive au milieu, avant le lever.
   C · la dalle naît au milieu du trait (± 2 pt) — et SA NAISSANCE EST CELLE DE L'ONBOARDING, image par image : la même transition, la même échelle à
       la première image (≤ 0,1), le même sommet (± 0,03), le même temps pour atteindre 0,8 (± 50 ms), le même départ du vol (± 50 ms), l'échelle 1 à l'arrivée.
-  D · elle rejoint sa cellule sur la Toile (son centre à 4 pt de la cellule) ; la page + est fermée, la couche de la naissance retirée.
+  D · elle rejoint sa place sur la Toile (v183b : son centre à 4 pt de la dalle que la Toile vivante peint) ; la page + est fermée, la couche de la naissance retirée.
   E · la parole est enregistrée dans le stockage dans les 50 ms du trait (C-226).
   F · le Cercle ne change pas : son trait entier plante par l'ancien chemin, aucune naissance.
 Rouge sur v179b (`--fichier=zz-v179b.html`).
@@ -75,10 +75,13 @@ def un(b, k, vw, vh, nom):
     juge(T + ' C · la dalle naît au milieu du trait (± 2 pt)', K and abs(K['c0'][0] - 195) <= 2 and abs(K['c0'][1] - y195) <= 2, 'naissance %s · trait (195, %.1f)' % (K and K['c0'], y195))
     R = REF
     okc = bool(K and R and tr == R['tr'] and K['s0'] <= 0.1 and abs(K['pic'] - R['k']['pic']) <= 0.03 and K['t08'] is not None and R['k']['t08'] is not None and abs(K['t08'] - R['k']['t08']) <= 50
-               and K['vol'] is not None and R['k']['vol'] is not None and abs(K['vol'] - R['k']['vol']) <= 50 and abs(K['fin'] - pg.evaluate("()=>{ const c=window._cibleDalle(promises[promises.length-1].id); return c ? c.w/(window._naissanceW?window._naissanceW():c.w) : 1; }")) <= 0.03)   # v182a (C-237, C-247) : la dalle naît à la taille de l'onboarding et se pose à la taille de SA cellule (l'onboarding : sa cellule fait déjà sa taille, l'échelle y reste 1)
+               and K['vol'] is not None and R['k']['vol'] is not None and abs(K['vol'] - R['k']['vol']) <= 50 and abs(K['fin'] - pg.evaluate("()=>{ const c=(()=>{ const id=promises[promises.length-1].id, c=document.createElement('canvas'); if(!Toile.dalleTrame(c,id,1)) return null; const r=window._dalleSurToile?window._dalleSurToile(c,null):null; return r; })(); return c ? c.w/(window._naissanceW?window._naissanceW():c.w) : 1; }")) <= 0.03)   # v182a (C-237, C-247) : la dalle naît à la taille de l'onboarding et se pose à la taille de SA cellule (l'onboarding : sa cellule fait déjà sa taille, l'échelle y reste 1)
     juge(T + ' C · la naissance est celle de l\'onboarding, image par image', okc, 'page + %s · onboarding %s' % (K, R and R['k']))
     dern = c[-1] if c else None
-    cib = pg.evaluate("()=>{ var p=promises[promises.length-1]; return window._cibleDalle?window._cibleDalle(p.id):null; }")
+    # ⚑ v183b (Tom, C-237 suite) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_moitie-avant-v183b.py) : la référence est la place où la Toile VIVANTE peint
+    #   cette dalle (son image rendue par le moteur, `org` déclarée, dans la vue du moment) — `_cibleDalle` lisait la boîte de la CELLULE sans la vue de la Toile :
+    #   sur une Toile zoomée elle tombait à 85 pt de la dalle peinte, et la dalle qui volait s'y posait (le coup à la fin du vol).
+    cib = pg.evaluate("()=>(()=>{ const id=promises[promises.length-1].id, c=document.createElement('canvas'); if(!Toile.dalleTrame(c,id,1)) return null; const r=window._dalleSurToile?window._dalleSurToile(c,null):null; return r; })()")
     ferme = pg.evaluate("()=>!document.getElementById('createSheet').classList.contains('show') && !document.getElementById('ppNait')")
     dd = None if not (dern and cib) else max(abs(dern['cx'] - (cib['x'] + cib['w'] / 2)), abs(dern['cy'] - (cib['y'] + cib['h'] / 2)))
     juge(T + ' D · elle rejoint sa cellule sur la Toile ; la page + fermée, la couche retirée', dd is not None and dd <= 4 and ferme, 'écart %s pt · fermée %s' % (dd and round(dd, 1), ferme))

@@ -220,6 +220,28 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v183b (7 nov. 2026) — LA FIN DU VOL DE LA DALLE (C-237 suite) ; UNE SEULE DALLE À LA FOIS (C-241 suite). (Décisions Tom.) Ce bloc CORRIGE v182a (« au vol, elle se pose À LA TAILLE de sa cellule »).
+> **⚑ LE COUP À LA FIN DU VOL — LA CAUSE, mesurée image par image** : depuis v182a la dalle de la page + vole à l'échelle de sa cellule (`transform: scale`, ≈ 0,4 sur une
+> Toile pleine) ; à l'arrivée, `_retireFondFlaques` la recopiait dans l'image de la Toile d'avant à sa largeur de STYLE (241 pt), sans l'échelle — elle reprenait d'un coup
+> sa taille de naissance, puis la Toile vivante se découvrait dessous (mesuré : 31,8 % des pixels de la dalle changent au collage dans Pochade, 90 % dans Touffe).
+> Elle est collée à sa boîte RENDUE. Et elle visait la boîte de la CELLULE, relevée au départ du vol : la Toile peint la dalle ailleurs (sa matière déborde et se
+> recadre ; la vue se recadre encore) — 4 à 23 pt d'écart. Elle suit maintenant, à chaque image, la place où la Toile VIVANTE pose cette image : le moteur DÉCLARE
+> (`__dalleInfo.org`, `cel` — une déclaration, rien de ce qu'il peint ne change) ; à mi-vol, la place de la dalle vivante est relue une fois et rejointe en 200 ms.
+> Mêmes temps (0,765 s), même courbe, sur l'HORLOGE RÉELLE (la borne de 34 ms par image de v180b la laissait en plein vol sur un appareil chargé, à l'heure fixe où
+> elle est collée : 120 à 170 pt d'écart mesurés) ; l'onboarding passe par le même code (C-247).
+> ⚠ **`_cibleDalle` lit la boîte de la CELLULE sans la vue de la Toile** (ni son zoom ni son décalage) : sur une Toile zoomée elle tombe jusqu'à 85 pt de la dalle peinte.
+> En v182a la dalle s'y posait, et deux juges la prenaient pour référence : ils étaient d'accord avec le défaut. Ils lisent maintenant la place où la Toile vivante peint la
+> dalle (`_dalleSurToile` de son image rendue) — `redteam_moitie` (C, D), `redteam_naissance_onb` (C), originaux en sauvegarde.
+> **⚑ UNE SEULE DALLE** : la page + gardait SA dalle en haut (la même image) pendant toute la naissance, jusqu'à ce que la Toile d'avant la recouvre (1,2 s) : deux dalles.
+> Dès que la dalle naît, la page + ne la peint plus, dans la même image (`window._ppSansDalle`) — ni l'avance, ni la dalle d'une autre parole qu'elle reprenait pendant
+> la plantation (`_ppPart`).
+> **⚑ ESQUILLE (et les mondes faits de leurs paroles) — NON LIVRÉ.** La consigne : faire tourner le moteur sur une COPIE de l'état. Fait (le ressort de `frame` rejoué au
+> pas de 1/60 s sur des graines copiées jusqu'à l'atterrissage) : la forme ne s'est PAS rapprochée (IoU 0,46 avant comme après) — la Toile vivante n'est pas une suite
+> d'images de ce ressort seul (ses graines restent contre les bornes, l'éclat d'une dalle d'Esquille naît de toute la Toile). Le changement du moteur n'a rien apporté :
+> RETIRÉ (garde-fous non entamés). La dalle qui vole y garde la forme d'avance ; au collage elle n'est pas celle que la Toile peint.
+> Juge : **`redteam_vol_dalle.py`** (Pochade sous Ingénu, Esquille, Touffe, Tesselle ; A une seule dalle à chaque image, B l'image de la dalle au collage contre
+> l'écran découvert). ⚠ Le titre que la Toile écrit sur sa dalle compte dans B (il se découvre en flaques avec elle).
+
 ### ⚑ v183a (7 nov. 2026) — LES COMMENTAIRES SUR LA VUE PRINCIPALE D'UNE FICHE (C-248, urgent). (Décision Tom.) Ce bloc CORRIGE v145, v146 et v147 (C-116 : « le dernier mot au-dessus de la ligne ; la ligne touchée, les commentaires s'affichent sous le trait »).
 > **Validés par Tom : C-244 (le dépliage), C-245 (Récents dans le Fil, sous réserve du juge de C-250), C-247.** Le Chiche de 280 caractères tronqué sur la fiche : accepté (le dépliage le montre).
 > **⚑ C-248 — LA LISTE DES MOTS EST DANS LA FICHE** (`lot-V145-COMM`, `#cm5Liste`) : sous la ligne d'état, à la place du dernier mot d'avant, les mots du PLUS RÉCENT AU
