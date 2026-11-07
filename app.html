@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v183c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v183d', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -7948,9 +7948,28 @@ if($('#shShareBtn'))$('#shShareBtn').onclick=shareExport;
 var _etatBase=null,_etatSens=null,_etatAutre=false,_etatNid=0;
 function _etatDit(d){return JSON.stringify(d,function(k,v){return(k==='x'||k==='y'||k==='tx'||k==='ty')?undefined:v;});}
 function _etatDepasse(){_etatAutre=true;try{if(document.visibilityState!=='visible')return;var cs=document.getElementById('createSheet');if(cs&&cs.classList.contains('show'))return;var t=+sessionStorage.getItem('promi_relu')||0,n=Date.now();if(n-t<5000)return;sessionStorage.setItem('promi_relu',n);location.reload();}catch(e){}}
-function _etatFusion(sur){var cles={},o=sur?JSON.parse(sur):{v:1,promises:[],NUE:{},NUEEMEM:{},NUEDALLE:{},PEOPLE:PEOPLE,FEED:[],feedReacted:feedReacted,shareHidden:shareHidden,state:{mood:state.mood,structure:state.structure,sort:state.sort,labels:state.labels},nid:nid,fid:_fid,notifOn:notifOn},m=0;   /* stockage vidé ailleurs (« Tout effacer ») : la seule plantation neuve et son Cercle, rien d'autre ne revient */o.promises.forEach(function(q){if(q.id>m)m=q.id;});if((o.nid||0)>m+1)m=o.nid-1;promises.filter(function(p){return p.id>=_etatNid;}).forEach(function(p){if(o.promises.some(function(q){return q.id===p.id&&q.title===p.title;}))return;var c=JSON.parse(JSON.stringify(p));if(o.promises.some(function(q){return q.id===c.id;}))c.id=++m;if(c.id>m)m=c.id;o.promises.push(c);if(c.nuee)cles[c.nuee]=1;});o.nid=m+1;['NUE','NUEEMEM','NUEDALLE'].forEach(function(k){var a=k==='NUE'?NUE:(k==='NUEEMEM'?NUEEMEM:(window.NUEDALLE||{}));o[k]=o[k]||{};Object.keys(a).forEach(function(c){if(cles[c]&&!(c in o[k]))o[k][c]=a[c];});});var s=JSON.stringify(o);   /* seuls les Cercles des paroles neuves : un Cercle dissous ailleurs ne revient pas */localStorage.setItem('promi_state',s);_etatBase=s;}
-function saveState(force){try{if(typeof promises==='undefined')return;var sur=localStorage.getItem('promi_state');if(_etatAutre||(_etatBase!=null&&sur!==_etatBase)){if(force===true)_etatFusion(sur);_etatDepasse();return;}try{if(window._reparePlaces)window._reparePlaces();}catch(_r){}var d={v:1,promises:promises,NUE:NUE,NUEEMEM:NUEEMEM,NUEDALLE:(window.NUEDALLE||{}),PEOPLE:PEOPLE,FEED:FEED,feedReacted:feedReacted,shareHidden:shareHidden,state:{mood:state.mood,structure:state.structure,sort:state.sort,labels:state.labels},nid:nid,fid:_fid,notifOn:notifOn};var dit=_etatDit(d);if(_etatSens==null&&sur!=null){try{_etatSens=_etatDit(JSON.parse(sur));}catch(_e){}}if(dit===_etatSens&&sur!=null)return;var s=JSON.stringify(d);localStorage.setItem('promi_state',s);_etatBase=s;_etatSens=dit;try{if(typeof updateSaveStatus==='function')updateSaveStatus(true);}catch(_){}}catch(e){}}
-try{window.addEventListener('storage',function(e){if(e.key==='promi_state'&&e.newValue!==_etatBase&&(e.newValue!=null||_etatBase!=null))_etatDepasse();});var _etatRevient=function(){try{if(document.visibilityState!=='visible')return;var s=localStorage.getItem('promi_state');if(_etatAutre||(_etatBase!=null&&s!==_etatBase))_etatDepasse();}catch(e){}};document.addEventListener('visibilitychange',_etatRevient);window.addEventListener('pageshow',_etatRevient);}catch(e){}
+function _etatFusion(sur){var cles={},o=sur?JSON.parse(sur):{v:1,promises:[],NUE:{},NUEEMEM:{},NUEDALLE:{},PEOPLE:PEOPLE,FEED:[],feedReacted:feedReacted,shareHidden:shareHidden,state:{mood:state.mood,structure:state.structure,sort:state.sort,labels:state.labels},nid:nid,fid:_fid,notifOn:notifOn},m=0;   /* stockage vidé ailleurs (« Tout effacer ») : la seule plantation neuve et son Cercle, rien d'autre ne revient */o.promises.forEach(function(q){if(q.id>m)m=q.id;});if((o.nid||0)>m+1)m=o.nid-1;promises.filter(function(p){return p.id>=_etatNid;}).forEach(function(p){if(o.promises.some(function(q){return q.id===p.id&&q.title===p.title;}))return;var c=JSON.parse(JSON.stringify(p));if(o.promises.some(function(q){return q.id===c.id;}))c.id=++m;if(c.id>m)m=c.id;o.promises.push(c);if(c.nuee)cles[c.nuee]=1;});o.nid=m+1;['NUE','NUEEMEM','NUEDALLE'].forEach(function(k){var a=k==='NUE'?NUE:(k==='NUEEMEM'?NUEEMEM:(window.NUEDALLE||{}));o[k]=o[k]||{};Object.keys(a).forEach(function(c){if(cles[c]&&!(c in o[k]))o[k][c]=a[c];});});
+/* ⚑ v183d (Tom, C-250 : « aucune carte perdue ») — UN ONGLET DÉPASSÉ N'OUBLIE PLUS CE QU'ON Y A FAIT. Jusqu'ici seule une plantation y était portée sur le stockage :
+   un mot, un « tenu », une échéance, une suppression faits dans un onglet qu'un autre avait dépassé (Safari en garde plusieurs) étaient PERDUS au rechargement.
+   Ce qui a changé ici depuis la dernière lecture (`_etatSens` : ce que disait le stockage quand on l'a lu ou écrit) est porté sur ce qu'il porte maintenant —
+   une parole changée ici prend notre version, une parole effacée ici est effacée, nos événements du Fil s'ajoutent (un nouvel id si l'autre onglet a pris le
+   même), un Cercle changé ici prend le nôtre. Ce que l'autre onglet a changé ailleurs reste. */
+try{var B0=_etatSens?JSON.parse(_etatSens):null;if(B0&&sur){var bm={},nous={};(B0.promises||[]).forEach(function(q){bm[q.id]=JSON.stringify(q);});
+  promises.forEach(function(p){nous[p.id]=1;if(bm[p.id]===undefined)return;if(_etatDit(p)===bm[p.id])return;var q=null;o.promises.forEach(function(z){if(z.id===p.id)q=z;});if(!q)return;var bq=JSON.parse(bm[p.id]),ks={};
+    Object.keys(p).concat(Object.keys(bq)).forEach(function(k){ks[k]=1;});   /* champ par champ : seul ce qui a changé ICI est porté (un mot de l'autre onglet sur la même parole reste) */
+    Object.keys(ks).forEach(function(k){if(k==='x'||k==='y'||k==='tx'||k==='ty'||typeof p[k]==='function')return;if(JSON.stringify(p[k])===JSON.stringify(bq[k]))return;
+      if(k==='comments'&&Array.isArray(p[k])){var L=(q[k]||[]).slice(),cle=function(c){return (c&&(c.by+'|'+c.d+'|'+c.t))||'';},vu={};L.forEach(function(c){vu[cle(c)]=1;});var bv={};(bq[k]||[]).forEach(function(c){bv[cle(c)]=1;});
+        p[k].forEach(function(c){if(!vu[cle(c)]&&!bv[cle(c)])L.push(JSON.parse(JSON.stringify(c)));});var ici={};p[k].forEach(function(c){ici[cle(c)]=1;});q[k]=L.filter(function(c){return !(bv[cle(c)]&&!ici[cle(c)]);});return;}
+      if(p[k]===undefined)delete q[k];else q[k]=JSON.parse(JSON.stringify(p[k]));});});
+  Object.keys(bm).forEach(function(id){if(!nous[id])o.promises=o.promises.filter(function(q){return q.id!==+id;});});
+  var bf={},mf=0;(B0.FEED||[]).forEach(function(x){bf[x.id]=1;});(o.FEED||[]).forEach(function(x){if(x.id>mf)mf=x.id;});
+  var neufs=(FEED||[]).filter(function(x){return !bf[x.id]&&!(o.FEED||[]).some(function(y){return y.id===x.id&&y.text===x.text;});}).map(function(x){var c=JSON.parse(JSON.stringify(x));if((o.FEED||[]).some(function(y){return y.id===c.id;}))c.id=++mf;return c;});
+  o.FEED=neufs.concat(o.FEED||[]);o.fid=Math.max(o.fid||0,mf+1,_fid||0);
+  ['NUE','NUEEMEM','NUEDALLE'].forEach(function(k){var a=k==='NUE'?NUE:(k==='NUEEMEM'?NUEEMEM:(window.NUEDALLE||{})),b=B0[k]||{};o[k]=o[k]||{};Object.keys(a).forEach(function(c){if(JSON.stringify(a[c])!==JSON.stringify(b[c]))o[k][c]=a[c];});Object.keys(b).forEach(function(c){if(!(c in a))delete o[k][c];});});}}catch(_f){}
+var s=JSON.stringify(o);   /* seuls les Cercles des paroles neuves : un Cercle dissous ailleurs ne revient pas */localStorage.setItem('promi_state',s);_etatBase=s;}
+function _etatMeme(s){try{if(s==null||_etatSens==null)return false;if(_etatDit(JSON.parse(s))!==_etatSens)return false;_etatBase=s;return true;}catch(e){return false;}}   /* ⚑ v183d (C-250) : une écriture d'un autre onglet qui DIT la même chose (positions mises à part) n'est pas une action : on l'adopte, on ne se recharge pas */
+function saveState(force){try{if(typeof promises==='undefined')return;var sur=localStorage.getItem('promi_state');if(_etatAutre||(_etatBase!=null&&sur!==_etatBase&&!_etatMeme(sur))){if(sur!=null||force===true)_etatFusion(sur);_etatDepasse();return;}   /* un stockage VIDÉ ailleurs (« Tout effacer ») : seule une plantation y écrit, comme avant (v177a) */try{if(window._reparePlaces)window._reparePlaces();}catch(_r){}var d={v:1,promises:promises,NUE:NUE,NUEEMEM:NUEEMEM,NUEDALLE:(window.NUEDALLE||{}),PEOPLE:PEOPLE,FEED:FEED,feedReacted:feedReacted,shareHidden:shareHidden,state:{mood:state.mood,structure:state.structure,sort:state.sort,labels:state.labels},nid:nid,fid:_fid,notifOn:notifOn};if(!window._studioRelu&&sur){try{if(localStorage.getItem('promi_studio')){var _sv=JSON.parse(sur).state;if(_sv)d.state=_sv;}}catch(_s){}}   /* ⚑ v183d (C-250) : tant que le monde du Studio n'est pas relu (lot-V71), `state.structure` porte le monde PAR DÉFAUT : l'écrire était un faux changement — deux onglets se rechargeaient l'un l'autre sans fin */var dit=_etatDit(d);if(_etatSens==null&&sur!=null){try{_etatSens=_etatDit(JSON.parse(sur));}catch(_e){}}if(dit===_etatSens&&sur!=null)return;var s=JSON.stringify(d);localStorage.setItem('promi_state',s);_etatBase=s;_etatSens=dit;try{if(typeof updateSaveStatus==='function')updateSaveStatus(true);}catch(_){}}catch(e){}}
+try{window.addEventListener('storage',function(e){if(e.key==='promi_state'&&e.newValue!==_etatBase&&(e.newValue!=null||_etatBase!=null)&&!_etatMeme(e.newValue))_etatDepasse();});var _etatRevient=function(){try{if(document.visibilityState!=='visible')return;var s=localStorage.getItem('promi_state');if(_etatAutre||(_etatBase!=null&&s!==_etatBase&&!_etatMeme(s)))_etatDepasse();}catch(e){}};document.addEventListener('visibilitychange',_etatRevient);window.addEventListener('pageshow',_etatRevient);}catch(e){}
 function storageWorks(){try{localStorage.setItem('promi_t','1');localStorage.removeItem('promi_t');return true;}catch(e){return false;}}
 function updateSaveStatus(saved){var el=$('#saveStatus');if(!el)return;if(!storageWorks()){el.textContent='indisponible ici';el.style.color='var(--rate)';return;}if(saved){var d=new Date();el.textContent='enregistré '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');}else{el.textContent='active ✓';}el.style.color='var(--tenu,#A4D294)';}
 var _saveT=null;function queueSave(){try{clearTimeout(_saveT);}catch(e){}try{_saveT=setTimeout(saveState,400);}catch(e){try{saveState();}catch(_){}}}
@@ -43668,7 +43687,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       if(s.id==='personSheet') return {k:'personne', nom:window.__pileNom||null};
       if(s.id==='detailPoster'){ if(typeof curNuee!=='undefined' && curNuee && (s.classList.contains('dp-nuee') || s.classList.contains('dp-mode-nuee'))) return {k:'cercle', cle:curNuee}; if(typeof cur!=='undefined' && cur && !cur.draft) return {k:'fiche', id:cur.id}; return {k:null, id:s.id}; }
       if(s.id==='indexSheet'){ var il=document.getElementById('indexList'); return {k:'index', sc:il?il.scrollTop:0}; }
-      if(s.id==='feedView'){ var fl=document.getElementById('feedList'), fv=document.getElementById('feedView'); return {k:'fil', sc:(fv?fv.scrollTop:0)||(fl?fl.scrollTop:0)}; }
+      if(s.id==='feedView'){ var fl=document.getElementById('feedList'), fv=document.getElementById('feedView'); return {k:'fil', sc:(fv?fv.scrollTop:0)||(fl?fl.scrollTop:0), el:(fv&&fv.scrollTop)?'feedView':'feedList'}; }   /* v183d : on note QUI défilait, pour rendre le défilement au même conteneur */
       if(s.id==='settingsScreen') return {k:'reglages'};
       if(s.id==='auraScreen') return {k:'aura'};
       return {k:null, id:s.id}; }catch(_){ return null; } }   /* un écran qui n'est pas une origine (Partager, Vie privée…) : ni rendu, ni vidé */
@@ -43682,10 +43701,19 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   document.addEventListener('pointerup', function(e){ var a=pd; pd=null; if(!a) return; if(Math.hypot(e.clientX-a.x, e.clientY-a.y)>10 || performance.now()-a.t>600) return;
     setTimeout(function(){ if(porte && performance.now()-porte<400) return; porte=performance.now(); try{ if(a.c.onclick) a.c.onclick({target:a.c, stopPropagation:function(){}, preventDefault:function(){}}); else a.c.click(); }catch(_){ } }, 80); }, true);
   document.addEventListener('click', function(e){ var c=e.target && e.target.closest && e.target.closest('#personSheet .ps-c'); if(!c) return; if(porte && performance.now()-porte<700){ e.stopImmediatePropagation(); e.preventDefault(); return; } porte=performance.now(); }, true);
+  /* ⚑ v183d (C-250) — « retour au même endroit » : le défilement était rendu une fois, 460 ms après la porte ; une longue liste (200 paroles) se rebâtit
+     plus tard et repart en haut. Il est rendu à chaque image où la liste n'est pas encore à sa place (et après chaque reconstruction), 2,5 s au plus. */
+  function remet(ids, sc){ var t0=performance.now(), fini=false, stable=0, hv=-1, doigt=function(e){ if(e.isTrusted) fini=true; };   /* un doigt posé : la liste est à la personne */
+    ['pointerdown','touchstart','wheel'].forEach(function(n){ document.addEventListener(n, doigt, {capture:true, passive:true, once:true}); });
+    (function pas(){ if(fini) return; var e=null; ids.some(function(id){ var x=document.getElementById(id); if(x && x.scrollHeight>x.clientHeight+1){ e=x; return true; } return false; });
+      if(e && Math.abs(e.scrollTop-sc)>1){ e.scrollTop=sc; stable=0; try{ e.dispatchEvent(new Event('scroll')); }catch(_){ } }
+      else if(e){ if(e.scrollHeight===hv) stable++; else { stable=0; hv=e.scrollHeight; } }
+      if(stable>=8) return;   /* à sa place, la liste ne se rebâtit plus : on la laisse (rien ne force ensuite un défilement fait par quelqu'un d'autre) */
+      if(performance.now()-t0<2500) requestAnimationFrame(pas); })(); }
   function rend(o){ retour=true;
     try{
-      if(o.k==='index'){ if(window.quitteVues) quitteVues(); window.ouvrirIndex(); setTimeout(function(){ var il=document.getElementById('indexList'); if(il) il.scrollTop=o.sc||0; }, 460); }
-      else if(o.k==='fil'){ var fb=document.getElementById('filBtn'); if(fb && fb.onclick) fb.onclick(); else if(window.setView) setView('fil'); setTimeout(function(){ var fv=document.getElementById('feedView'); if(fv) fv.scrollTop=o.sc||0; }, 460); }
+      if(o.k==='index'){ if(window.quitteVues) quitteVues(); window.ouvrirIndex(); remet(['indexList'], o.sc||0); }
+      else if(o.k==='fil'){ var fb=document.getElementById('filBtn'); if(fb && fb.onclick) fb.onclick(); else if(window.setView) setView('fil'); remet([o.el||'feedList'], o.sc||0); }
       else if(o.k==='personne' && o.nom){ window.openPerson(o.nom); }
       else if(o.k==='fiche'){ window.openDetail(o.id); }
       else if(o.k==='cercle'){ window.openNueeDetail(o.cle); }
@@ -44375,13 +44403,17 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     cle:function(E){ rentre=true; try{ note(); }finally{ rentre=false; } return E.kind==='nuee' ? actC(E.n) : actP(E.p); },
     cleFil:function(o, i, n){ rentre=true; try{ note(); }finally{ rentre=false; } var a=0; if(o.p) a=actP(o.p); if(o.nk) a=Math.max(a, actC(o.nk)); if(o.ev && o.ev.ts) a=Math.max(a, +o.ev.ts);
       return a>1e12 ? a : -i; },   /* rien de daté : l'ordre du Fil tel quel */
-    cercle:function(k){ return actC(k); } };
+    cercle:function(k){ return actC(k); },
+    etat:function(){ return {base:base, pret:pret, n:Object.keys(SIG).length}; } };   /* v183d : un pointeur pour les juges (jamais un verdict) */
   /* l'enregistrement relit les signatures (le trait, un mot, une modification passent tous par lui) */
   var s0=window.saveState; if(typeof s0==='function' && !s0.__derAct){ window.saveState=function(){ note(); return s0.apply(this, arguments); }; window.saveState.__derAct=1; try{ saveState=window.saveState; }catch(_){ } }
   var f0=window.feedAdd; if(typeof f0==='function' && !f0.__derAct){ window.feedAdd=function(){ var r=f0.apply(this, arguments); try{ if(FEED[0] && FEED[0].ts==null) FEED[0].ts=Date.now(); }catch(_){ } return r; }; window.feedAdd.__derAct=1; try{ feedAdd=window.feedAdd; }catch(_){ } }
   /* les mots d'un Cercle ne passent pas par l'enregistrement de l'état */
   try{ var ls=localStorage.setItem; localStorage.setItem=function(k, v){ var r=ls.apply(this, arguments); if(k==='promi_cercle_mots'){ try{ note(); }catch(_){ } } return r; }; }catch(_){ }
   function pose(){ if(base) return; base=true; note(); }
+  /* ⚑ v183d (C-250) : la base était posée 1,5 s après le chargement — une action faite avant (un téléphone lent, une page longue à lire) n'était jamais
+     comptée comme la dernière. Le premier geste pose la base (en capture, avant que l'action ne change quoi que ce soit). */
+  ['pointerdown','touchstart','keydown'].forEach(function(n){ document.addEventListener(n, function(e){ if(e.isTrusted && !base && document.readyState!=='loading') pose(); }, true); });
   window.addEventListener('load', function(){ setTimeout(pose, 1500); });
   if(document.readyState==='complete') setTimeout(pose, 1500);
 })();

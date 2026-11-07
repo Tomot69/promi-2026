@@ -220,6 +220,27 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v183d (7 nov. 2026) — LE JUGE SÉVÈRE DE L'INDEX ET DU FIL (C-250) ET CE QU'IL A TROUVÉ : DEUX ONGLETS, UNE ACTION PERDUE, LE RETOUR AU MÊME ENDROIT. (Décisions Tom.) Ce bloc CORRIGE v177a (C-226 : « dans un onglet dépassé, une modification autre qu'une plantation n'est pas écrite »).
+> **Juge : `redteam_index_fil.py`** (`--etat=tom|200`, `--partie=1|2|3` — trois passes, chacune sous 10 min ; l'état de 200 paroles : `banc-etats/etat-200.json`, bâti par
+> `scratchpad/v183d/etat200.py`). L'Index et le Fil sont LUS SUR LEURS CARTES RENDUES ; après chaque cas : chaque parole et chaque Cercle une fois dans l'Index, autant de
+> cartes par parole que le journal (une parole effacée n'en a plus), le même ordre dans les deux, aucune erreur. Cas : mot, tenir, échéance, planter, effacer (la feuille),
+> une parole d'un Cercle, deux actions à 120 ms, recharger, un second onglet (par la vraie saisie, 4 s après son ouverture), un onglet DÉPASSÉ qui agit, `?jour=+30`, un tri puis
+> retiré, le Fil sous une fiche, carte → fiche → X (Fil et Index) au même défilement. ⚠ **Un second onglet s'ouvre PAR L'APP (`window.open`)** : il hérite du
+> `sessionStorage`, sinon le script d'amorce du banc réécrit le stockage avec l'état de départ et le second onglet juge un autre état.
+> **⚑ TROUVÉ ① — DEUX ONGLETS SE RECHARGEAIENT L'UN L'AUTRE SANS FIN** (toutes les 5 à 8 s, mesuré) : à son chargement, un onglet écrivait `state.structure` = le monde PAR
+> DÉFAUT (Encre) avant que `lot-V71-REOUVERTURE` relise celui du Studio, puis le bon : l'autre onglet prenait cette écriture pour une action étrangère et se rechargeait,
+> et ainsi de suite. `saveState` garde le monde du stockage tant que le Studio n'est pas relu (`_studioRelu`) ; une écriture d'un autre onglet qui DIT la même chose (hors
+> positions) est adoptée sans recharger (`_etatMeme`). **② UN ONGLET DÉPASSÉ N'OUBLIE PLUS CE QU'ON Y FAIT** : `_etatFusion` porte maintenant sur le stockage, champ par champ,
+> ce qui a changé ICI depuis la dernière lecture (`_etatSens`) — les mots d'une même parole s'additionnent, une parole effacée ici l'est, nos événements du Fil s'ajoutent (un
+> id neuf si l'autre l'a pris), un Cercle changé ici prend le nôtre — à chaque enregistrement, plus seulement `saveState(true)`. **③ UNE ACTION AVANT 1,5 s** : la base des
+> « dernières actions » se pose aussi au premier geste (capture, avant l'action). **④ LE RETOUR AU MÊME ENDROIT** : le X rendait le défilement de l'Index ou du Fil une fois,
+> à 460 ms ; une longue liste se rebâtit plus tard et repartait en haut — il est rendu à chaque image jusqu'à tenir (2,5 s, jamais contre un doigt), au conteneur qui défilait.
+> Rouge sur v183c : l'onglet dépassé perd le mot (état de Tom), le second onglet se recharge en boucle (200 paroles), la mauvaise fiche ouverte et le défilement perdu (200).
+> ⚠ La cause de « la mauvaise fiche ouverte » sur v183c (une carte du bas du Fil ouvrait une autre parole) n'est pas nommée ; elle ne se produit plus.
+> **⚑ C-243 — NON COMMENCÉ.** La méthode de Tom (la barre en `position:fixed`, l'en-tête réduit par transformations) dépend de Safari : la fiche porte une transformation
+> (`matrix(1,0,0,1,0,0)`, son glissement) et un élément « fixé » dans un ancêtre transformé y défile comme un absolu ; une transformation posée à chaque `scroll` y a une image
+> de retard sur le défilement. À juger dans Safari : impossible sous la charge de l'autre session (50 à 140).
+
 ### ⚑ v183c (7 nov. 2026) — LE + DES MEMBRES (C-242 suite) ; LE « 1 » DU FIL (C-251) ; LA LIGNE « AVEC … » (C-252) ; LA VEILLE À 75 s (C-249). LE FIL D'UN CERCLE (C-243) ET LE JUGE SÉVÈRE DE L'INDEX ET DU FIL (C-250) : NON LIVRÉS. (Décisions Tom.) Ce bloc CORRIGE v182b (le + à 8 pt) et v179a (la veille à 60 s).
 > **⚑ C-242 — LE +** (`lot-V181A-CERCLE`, `place()`) : 26 pt après la fin de « Avec … » (8 avant ; 18 pt ≈ 3 mm sur l'iPhone 16e) ; son encre a la hauteur de capitale de
 > cette ligne, LUE sur sa police rendue (le « A », `measureText`), et commence au haut de ses majuscules ; plus gras (le trait fait 0,28 de la hauteur, 0,20 avant) ;
@@ -4123,6 +4144,7 @@ python3 redteam_motmarque.py   # 4 — v129 (C-046) : l'encre du mot de la natur
                                #   clair et sombre (capture @3x). Rougit sur sauvegardes/app-avant-v129.html (0/4 : CERCLE 2,7 pt trop haut).
 python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvements de repos forcés sur 15 mondes, 0 pixel d'écart au retour (égalité stricte,
                                #   canevas entier, WebKit) ; les mouvements ont bien lieu. Rougit sur la version de v126 (Touffe). ≈ 10 min, seul.
+python3 redteam_index_fil.py  # v183d (C-250) : l'Index, le Fil et leurs liens, trois passes (--partie=1|2|3) × deux états (--etat=tom|200) : même ordre, aucun doublon, aucune carte perdue, la bonne fiche, retour au même défilement ; second onglet, onglet dépassé. Rouge sur v183c.
 python3 redteam_fluide.py      # 5 — v124, TENIR EST FLUIDE : 20 animations, aucune image au-delà de 20 ms de travail du fil principal, p95 ≤ 16,7 ms
                                #   (trace Chromium, vrai GPU, @3x) ; la durée (1 000 ms) et les deux états. Rougit sur app-avant-v124 (2/5). ≈ 3 min.
 python3 redteam_bouton.py      # 33 — v124, « PARTAGER MA PELOTE » : PromiLate 15 px, capitale = celle du trait ; couleur de la palette ≠ poils ≠ corps,
