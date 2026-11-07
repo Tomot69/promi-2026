@@ -66,13 +66,14 @@ with sync_playwright() as p:
             pg.evaluate("id=>_comm.arrive(promises.find(p=>p.id===id),{t:'Promis, j’y serai. Tu gardes une place ?',by:'Marion',d:'2026-10-11T18:00:00.000Z'})", p1); pg.wait_for_timeout(700); e = pg.evaluate(ET)
             d = e.get('dernier') or {}
             juge('B · [%s] RÉCEPTION : le commentaire reçu paraît au-dessus de la ligne (auteur, date, début)' % th, bool(d) and 'MARION' in d.get('t', '').upper() and '11 oct.' in d.get('t', '') and 'Promis' in d.get('t', '') and d['y'] + d['h'] <= e['ligne']['y'] and e['etatBas'] <= d['y'], d)
-            # ⚑ v147 (Tom, §12.1 : « Le nombre de commentaires ne paraît que s'il y en a, discrètement, sans pastille ») — CONTRAT RÉÉCRIT
-            #   (original : sauvegardes/redteam_commentaires-avant-v147.py, « la ligne ne porte aucun chiffre ») : avant le premier mot, aucun chiffre ;
-            #   après, le nombre est là, petit (≤ 15 px), SANS pastille (aucun fond, aucun rayon, aucun bord) ; et le Fil ne gagne toujours aucun non-lu.
+            # ⚑ v184b (Tom, 7 nov. 2026, C-253 : « le texte qui signale un nouveau commentaire, c'est du bruit — remplace-le par la pastille ») — CONTRAT RÉÉCRIT
+            #   (original : sauvegardes/redteam_commentaires-avant-v184b.py, « le nombre paraît, discret, sans pastille ») : la ligne ne porte AUCUN chiffre, avant
+            #   comme après ; le mot reçu porte la pastille (`.s4-att`, celle du Fil) ; le Fil ne gagne aucun non-lu (la pastille de la carte, elle, s'allume).
             nb = e.get('nb') or {}
-            juge('B · [%s] le nombre paraît dès qu\'il y a un mot, discret, sans pastille ; avant, aucun chiffre ; le Fil ne gagne aucun non-lu' % th,
-                 nb0 is None and not any(ch.isdigit() for ch in ligne0) and nb.get('t', '').startswith('1 ') and nb.get('fs', 99) <= 15 and nb.get('fond') in ('rgba(0, 0, 0, 0)', 'transparent') and nb.get('rayon') in ('0px', '') and nb.get('bord') in ('0px', '') and e.get('nonlus') == nl0,
-                 'avant : « %s », compte %s · après : %s · non-lus du Fil %s → %s' % (ligne0, nb0, nb, nl0, e.get('nonlus')))
+            att = pg.evaluate("()=>!!document.querySelector('#cm5Liste .cm5-un .s4-att')")
+            juge('B · [%s] aucun nombre écrit, avant comme après ; le mot reçu porte la pastille ; le Fil ne gagne aucun non-lu' % th,
+                 nb0 is None and not any(ch.isdigit() for ch in ligne0) and not (nb.get('t') or '').strip() and att and e.get('nonlus') == nl0,
+                 'avant : « %s », compte %s · après : %s · pastille %s · non-lus du Fil %s → %s' % (ligne0, nb0, nb, att, nl0, e.get('nonlus')))
             # C · toucher la ligne ouvre la saisie
             B.tap_sel(pg, '#cm5Ligne'); pg.wait_for_timeout(900); e = pg.evaluate(ET)
             juge('C · [%s] toucher la ligne ouvre la saisie (le champ a le curseur) ; la liste des mots reste à sa place, sous l\'état (C-248)' % th, e.get('saisie') and bool(e.get('fil')) and e['fil']['y'] >= e['etatBas'] - 0.5 and len(e.get('uns', [])) == 1, 'saisie %s · fil %s · %d commentaire(s)' % (e.get('saisie'), e.get('fil'), len(e.get('uns', []))))

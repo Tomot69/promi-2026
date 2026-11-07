@@ -6040,7 +6040,7 @@ window._fichePose = function(){ try{
       if(nf2) ex.push(nf2 + (nf2>1?' fichiers':' fichier'));
       var nc2 = 0;
       lst.forEach(function(q){ nc2 += (q.comments && q.comments.length) || 0; });
-      if(nc2) ex.push(nc2 + (nc2>1?' mots':' mot'));
+      void nc2;   /* ⚑ v184b (Tom, C-253) : plus de « 3 mots » sur la ligne d'état d'un Cercle — la pastille sur la carte et sur le mot neuf */
       var sp = document.getElementById('dptExtras');
       if(!sp){ sp = document.createElement('span'); sp.id = 'dptExtras'; qN.appendChild(sp); }
       sp.textContent = ex.length ? '  ·  ' + ex.join('  ·  ') : '';
@@ -17048,7 +17048,7 @@ var CREMEETAT='#F7F0DE';
     var aSoi = !chiche && !p.req && (!p.who || /^moi$/i.test(p.who));
     var _gh = function(k){ return window._gensFiche ? window._gensFiche(k) : emprunte('dWhoInput'); };
     var _recu = !!p.from && !/^moi$/i.test(String(p.from).trim());   /* v163b (C-192) : sur un Chiche REÇU, « À QUI JE LANCE » n'a pas de sens — je ne l'ai pas lancé */
-    if(!aSoi && !(chiche && _recu)) liste.appendChild(reg(chiche?'QUI OSE ?':'À QUI', (p.who||'moi'),   /* v163b (C-197) : « qui ose ? » partout */
+    if((!aSoi || window._v184Qui) && !(chiche && _recu)) liste.appendChild(reg(chiche?'QUI OSE ?':'À QUI', (p.who||'moi'),   /* v184b (C-254) : le + des membres l'ouvre aussi sur un Promi à soi */   /* v163b (C-197) : « qui ose ? » partout */
       {hote:_gh('who')}));
     /* 2 · le compagnon d'un Chiche — vide, il prend le contour pointillé (§3.3) */
     if(chiche) liste.appendChild(reg('AVEC', (p.avec||'personne'),
@@ -20059,6 +20059,8 @@ var CREMEETAT='#F7F0DE';
         : (p&&p.draft) ? 'garde'
         : (p&&p.status==='tenu') ? 'tenue'
         : (p&&p.chiche) ? 'lance' : 'encours');
+      /* ⚑ v184b (C-253) : la parole (ou le Cercle) de la carte — la pastille « pas encore vu » (v89) la lisait par `data-pid`, absent ici : elle ne s'allumait jamais sur l'Index */
+      if(b.nuee) d.setAttribute('data-nk', b.nuee); else if(p) d.setAttribute('data-pid', p.id);
       d.style.cssText='left:'+GX[i%GX.length]+'px;top:'+(row*PAS)+'px;width:'+CW+'px;height:'+CH+'px;'
         +'border-radius:'+RAD+'px;background:'+fond+';';
       /* ⚑ LE POINTILLÉ D'UN GARDÉ DE CÔTÉ EST **DEDANS** — `outline-offset:-2px`, comme
@@ -36345,6 +36347,12 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
          Promi l'est. Elle s'efface quand on ouvre la carte. */
       var nvA=c.getAttribute('data-nonvu'), pidA=c.getAttribute('data-pid');
       var attend = nvA!=null ? nvA==='1' : (pidA!=null && (function(){ try{ return (FEED||[]).some(function(f){ return f.pid===+pidA && f.unread; }); }catch(_){ return false; } })());
+      /* ⚑ v184b (Tom, C-253) : « la pastille sur la ligne ou la carte de la parole qui a du nouveau » — un mot neuf (d'un autre, pas encore vu) l'allume aussi ;
+         dans le Fil, sur la ligne la plus récente de cette parole seulement */
+      if(!attend && window._motsNeufs){ var nkA=c.getAttribute('data-nk')||c.getAttribute('data-nuee');
+        if((pidA!=null && window._motsNeufs(+pidA)) || (nkA && window._motsNeufs('cercle:'+nkA))){
+          var prem = c.classList.contains('s4-carte') && c.closest && c.closest('#feedView') ? (function(){ var t=[].filter.call(n.querySelectorAll('#feedView .s4-carte'), function(x){ return (pidA!=null && x.getAttribute('data-pid')===pidA) || (nkA && (x.getAttribute('data-nk')||x.getAttribute('data-nuee'))===nkA); }); return t[0]===c; })() : true;
+          if(prem) attend=true; } }
       var p=c.querySelector(':scope > .s4-att');
       if(!attend){ if(p) p.parentNode.removeChild(p); return; }
       if(!p){ p=document.createElement('i'); p.className='s4-att'; c.appendChild(p); }
@@ -38370,6 +38378,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   var HAUT=100+12, OR='#FB4C0D';
   function dp(){ return document.getElementById('detailPoster'); }
   function cercle(d){ return !!(d && d.classList.contains('show') && (d.classList.contains('dp-mode-nuee')||d.classList.contains('dp-nuee'))); }
+  /* ⚑ v184b (C-254) : une fiche Promi ou Chiche, ma parole (ni reçue, ni gardée de côté) */
+  function sienne(d){ try{ if(!d || !d.classList.contains('show') || cercle(d) || !(d.classList.contains('dp-promi')||d.classList.contains('dp-chiche'))) return false; var p=(typeof cur!=='undefined')?cur:null; if(!p || p.draft || p.pending) return false;
+      var fr=String(p.from||'').trim(); return !fr || /^moi$/i.test(fr) || fr===(localStorage.getItem('promi_prenom')||'').trim(); }catch(_){ return false; } }
+  function avecPlus(d){ return cercle(d) || sienne(d); }
   function ech(e){ try{ var r=e.getBoundingClientRect(); return (r.width/(e.offsetWidth||1))||1; }catch(_){ return 1; } }
   /* ── le + ── */
   function bouton(){
@@ -38388,7 +38400,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   }
   function place(){
     var d=dp(), b=document.getElementById('cerclePlusMembres');
-    if(!cercle(d) || d.classList.contains('s2-ouv')){ if(b) b.style.setProperty('display','none','important'); return; }
+    if(!avecPlus(d) || d.classList.contains('s2-ouv') || window._titreDeplie){ if(b) b.style.setProperty('display','none','important'); return; }
     /* ⚑ v182b (Tom, C-242 suite : « le + se place juste après la liste des membres, sur la même ligne, avec un petit écart régulier ; plus de grand vide à
        droite ») — il suit la fin du TEXTE de la ligne « Avec Rachel, Marion, +1 » (`#dptQui`, lue sur son encre : Range), 8 pt après elle, centré sur sa
        hauteur d'x ; son encre a la hauteur d'une capitale de cette ligne (le + qui valide un nom, C-122). Une ligne trop longue : le + passe à la ligne suivante. */
@@ -38414,7 +38426,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(b.style.getPropertyValue('display')!=='flex') b.style.setProperty('display','flex','important');   /* en important : une règle du poster pose ses boutons en flex */
   }
   function ouvre(){
-    var d=dp(); if(!cercle(d)) return;
+    var d=dp(); if(sienne(d)){ ouvreGens(d); return; } if(!cercle(d)) return;
     try{ window._npGensOuvert=true; var dd=document.getElementById('dpDetails'); if(dd) dd.classList.add('ouvert'); if(window._s2Ouvre) window._s2Ouvre(true); if(window._nueePeaufiner){ window._nueePeaufiner(); window._nueePeaufiner(); } }catch(_){ }   /* deux passes : à la première, la liste des personnes vient d'être bâtie (hauteur 0 tant qu'elle n'est pas posée) */
     var b=document.getElementById('cerclePlusMembres'); if(b) b.style.setProperty('display','none','important');
     var c=document.getElementById('dpdCorps'); if(!c) return;
@@ -38428,6 +38440,26 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       (function f(){ var n=performance.now(); tl+=Math.min(34, n-tp); tp=n; var u=Math.min(1,tl/D), e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2; c.scrollTop=y0+(cible-y0)*e; if(u<1) requestAnimationFrame(f); })();
     }); });
   }
+  /* ⚑ v184b (C-254) : sur un Promi ou un Chiche, Peaufiner s'ouvre sur les personnes de la parole, dépliées, et le panneau glisse jusqu'à elles */
+  function ouvreGens(d){ var p=cur, ch=d.classList.contains('dp-chiche'), recu=!!p.from && !/^moi$/i.test(String(p.from).trim());
+    window._v184Qui=true;
+    try{ if(window._s2Ouvre) window._s2Ouvre(true); }catch(_){ }
+    var b=document.getElementById('cerclePlusMembres'); if(b) b.style.setProperty('display','none','important');
+    var reduit=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var cible=(ch && recu) ? /^AVEC$/ : /^(À QUI|QUI OSE \?)$/;
+    function rangee(){ var c=document.getElementById('dpdCorps'); if(!c) return null; return [].filter.call(c.querySelectorAll('.s2-reg'), function(x){ var l=x.querySelector('.s2-lab'); return l && cible.test((l.textContent||'').trim()); })[0]||null; }
+    /* la liste de Peaufiner se rebâtit encore après l'ouverture (ses poses différées) : la rangée des personnes reste dépliée, et présente sur un Promi à soi,
+       tant que ce Peaufiner ouvert par le + est ouvert (on compare avant d'agir) */
+    var t0=performance.now(); (function tient(){ var dp2=dp(); if(!dp2 || !dp2.classList.contains('s2-ouv') || performance.now()-t0>4000){ window._v184Qui=false; return; }
+      var r2=rangee(); if(r2 && !r2.classList.contains('s2-ouv') && !r2.__v184vu){ r2.classList.add('s2-ouv'); r2.__v184vu=1; } setTimeout(tient, 150); })();
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      var c=document.getElementById('dpdCorps'); if(!c) return;
+      var r=rangee(); if(!r) return;
+      r.classList.add('s2-ouv'); r.__v184vu=1;
+      var y=r.offsetTop, cy=Math.max(0, Math.min(y-110, c.scrollHeight-c.clientHeight));
+      if(reduit){ c.scrollTop=cy; return; }
+      var y0=c.scrollTop, D=420, tl=0, tp=performance.now();
+      (function f(){ var n=performance.now(); tl+=Math.min(34, n-tp); tp=n; var u=Math.min(1,tl/D), e=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2; c.scrollTop=y0+(cy-y0)*e; if(u<1) requestAnimationFrame(f); })(); }); }); }
   window._cerclePlusMembres={ouvre:ouvre, place:place};
   /* ── le fil rogné sous l'en-tête ── */
   function rogne(){
@@ -42296,8 +42328,8 @@ window._noms=(function(){
       s=l.querySelector('.cm5-saisie'); m=l.querySelector('.cm5-mot'); f=l.querySelector('.cm5-va'); }
     m.textContent=TXT.ligne; m.style.display=ouvert?'none':'block'; s.style.display=ouvert?'block':'none';
     var nb=l.querySelector('.cm5-nb'); if(!nb){ nb=document.createElement('span'); nb.className='cm5-nb'; nb.setAttribute('style','font:500 14px/1.2 Atkinson,system-ui,sans-serif;letter-spacing:.02em;white-space:nowrap;margin-left:auto'); l.insertBefore(nb, f); }
-    var cn=compte(p); nb.textContent=cn; nb.style.display=(cn && !ouvert)?'block':'none'; f.style.display=ouvert?'':'none'; s.style.color=C.encre; s.style.webkitTextFillColor=C.encre; s.style.caretColor=C.encre; f.style.color=C.encre;
-    l.setAttribute('role', ouvert?'group':'button'); l.setAttribute('aria-label', TXT.voix+(cn?', '+cn:'')); }
+    var cn=compte(p); nb.textContent=''; nb.style.display='none';   /* ⚑ v184b (Tom, C-253) : « le texte qui signale les mots, c'est du bruit » — plus de « 3 mots » : la pastille sur le mot neuf */ f.style.display=ouvert?'':'none'; s.style.color=C.encre; s.style.webkitTextFillColor=C.encre; s.style.caretColor=C.encre; f.style.color=C.encre;
+    l.setAttribute('role', ouvert?'group':'button'); l.setAttribute('aria-label', TXT.voix); }
   /* ⚑ v183a (Tom, 7 nov. 2026, C-248) — « Les commentaires sont visibles sur la vue principale de la fiche, les uns sous les autres, sans aucun chevauchement.
      S'il y en a trop, les plus récents sont affichés, suivis d'une ligne « + X commentaires ». Un toucher sur cette ligne déplie le reste en douceur (hauteur
      animée, sans saut), et le contenu défile au-dessus de la barre Peaufiner. Rien ne passe sous l'en-tête. Rien ne disparaît. »
@@ -42308,16 +42340,17 @@ window._noms=(function(){
   var VUS=3, LIGNE_T=LIGNE_Y0, DEPLIE={}, ANIM=0;
   function cle(p){ return String(p && p.id); }
   function rangee(c){ var qui=(c.by&&!/^moi$/i.test(c.by))?c.by:nom(c);
-    return '<div class="cm5-un" style="display:flex;gap:10px;align-items:flex-start;margin:0;padding:0 0 12px">'+visage(c.by, 22)+'<div style="flex:1 1 auto;min-width:0"><div style="font:700 16px/22px Gilbert,system-ui,sans-serif;margin:0;white-space:nowrap;overflow:hidden">'+(window._noms?window._noms.lien(qui, {largeur:180, police:'700 16px Gilbert'}):esc(qui))+'<span class="cm5-date" style="font:400 13px/22px Atkinson,system-ui,sans-serif;margin-left:7px">'+esc(date(c.d))+'</span></div><div class="cm5-t" style="font:400 16px/1.35 Atkinson,system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;margin:1px 0 0">'+esc(c.t)+'</div></div></div>'; }
+    return '<div class="cm5-un" style="display:flex;gap:10px;align-items:flex-start;margin:0;padding:0 0 12px;position:relative">'+(window._motNeuf&&window._motNeuf(c)?window._pastilleHTML('top:6.5px;right:0'):'')+visage(c.by, 22)+'<div style="flex:1 1 auto;min-width:0"><div style="font:700 16px/22px Gilbert,system-ui,sans-serif;margin:0;white-space:nowrap;overflow:hidden">'+(window._noms?window._noms.lien(qui, {largeur:180, police:'700 16px Gilbert'}):esc(qui))+'<span class="cm5-date" style="font:400 13px/22px Atkinson,system-ui,sans-serif;margin-left:7px">'+esc(date(c.d))+'</span></div><div class="cm5-t" style="font:400 16px/1.35 Atkinson,system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;margin:1px 0 0">'+esc(c.t)+'</div></div></div>'; }
   function plusTxt(n){ return '+ '+n+(n>1?' commentaires':' commentaire'); }
   function listeEl(dp){ var el=$('cm5Liste'); if(!el){ el=document.createElement('div'); el.id='cm5Liste'; el.className='cm5 cm5-liste'; }
     var h=HOTE ? (document.querySelector('#dpNueeFil .nf-liste')||null) : dp; if(h && el.parentNode!==h) h.appendChild(el); return h ? el : null; }
   function peintListe(p, C, dp){ var L=liste(p).slice().reverse(), el=$('cm5Liste');
     if(!L.length){ if(el) pose(el,{display:'none'}); LIGNE_T=LIGNE_Y; return; }
     el=listeEl(dp); if(!el){ LIGNE_T=LIGNE_Y; return; }
-    var n=L.length, dep=!!DEPLIE[cle(p)], sig=cle(p)+'|'+n+'|'+L.map(function(c){ return (c.d||'')+(c.by||'')+(c.t||''); }).join('§')+'|'+C.encre;
+    var n=L.length, dep=!!DEPLIE[cle(p)], sig=cle(p)+'|'+n+'|'+L.map(function(c){ return (c.d||'')+(c.by||'')+(c.t||'')+(window._motNeuf&&window._motNeuf(c)?'*':''); }).join('§')+'|'+C.encre+'|'+dep;   /* v184b (C-253) : la pastille d'un mot neuf */
+    window._cm5Montres = { p:p, mots: L.slice(0, dep ? n : VUS) };   /* ce que la fiche montre : vu à sa fermeture */
     if(el.getAttribute('data-sig')!==sig){ el.setAttribute('data-sig', sig);
-      el.innerHTML='<div class="cm5-vus">'+L.slice(0,VUS).map(rangee).join('')+'</div>'+(n>VUS?'<div class="cm5-plus" role="button" aria-label="'+esc(plusTxt(n-VUS))+'" style="display:flex;align-items:center;height:40px;margin:0;padding:0;overflow:hidden;font:700 15px/20px Atkinson,system-ui,sans-serif;letter-spacing:.01em;cursor:pointer">'+esc(plusTxt(n-VUS))+'</div><div class="cm5-reste" style="overflow:hidden;margin:0;padding:0">'+L.slice(VUS).map(rangee).join('')+'</div>':''); }
+      el.innerHTML='<div class="cm5-vus">'+L.slice(0,VUS).map(rangee).join('')+'</div>'+(n>VUS?'<div class="cm5-plus" role="button" aria-label="'+esc(plusTxt(n-VUS))+'" style="display:flex;align-items:center;height:40px;margin:0;padding:0;overflow:hidden;font:700 15px/20px Atkinson,system-ui,sans-serif;letter-spacing:.01em;cursor:pointer;position:relative">'+esc(plusTxt(n-VUS))+(window._motNeuf&&L.slice(VUS).some(window._motNeuf)?window._pastilleHTML('top:15.5px;right:0'):'')+'</div><div class="cm5-reste" style="overflow:hidden;margin:0;padding:0">'+L.slice(VUS).map(rangee).join('')+'</div>':''); }
     var pl=el.querySelector('.cm5-plus'), re=el.querySelector('.cm5-reste');
     if(!ANIM){ if(pl) pl.style.setProperty('height', dep?'0px':'40px'); if(re) re.style.setProperty('height', dep?'auto':'0px'); if(pl) pl.setAttribute('aria-hidden', dep?'true':'false'); }
     if(HOTE){ var _cr=document.querySelector('#dpNueeFil .nf-item'), _lr=el.parentNode.getBoundingClientRect(), _k=(window._echDp?window._echDp($('detailPoster')):1)||1, _ml=_cr?Math.max(0,(_cr.getBoundingClientRect().left-_lr.left)/_k):24; }
@@ -42333,7 +42366,7 @@ window._noms=(function(){
   /* « + X commentaires » : la ligne se referme pendant que le reste s'ouvre, d'un seul mouvement (360 ms, aller-retour quadratique) ; ce qui suit (la ligne
      « Un mot… ») glisse avec ; la place est faite d'avance (la fiche défile au-dessus de la barre), puis le mouvement part */
   function deplie(){ var p=courant, el=$('cm5Liste'); if(!p || !el || DEPLIE[cle(p)] || ANIM) return; var pl=el.querySelector('.cm5-plus'), re=el.querySelector('.cm5-reste'); if(!pl || !re) return;
-    var Hp=pl.offsetHeight, Hr=re.scrollHeight, l=$('cm5Ligne'); DEPLIE[cle(p)]=true;
+    var Hp=pl.offsetHeight, Hr=re.scrollHeight, l=$('cm5Ligne'); DEPLIE[cle(p)]=true; window._cm5Montres={p:p, mots:liste(p)};   /* v184b (C-253) : déplié, tous les mots sont montrés — vus à la fermeture, même pendant le mouvement */
     var reduit=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     function etape(e){ pl.style.setProperty('height', (Hp*(1-e)).toFixed(2)+'px'); re.style.setProperty('height', (Hr*e).toFixed(2)+'px');
       if(!HOTE && l){ LIGNE_T=Math.max(LIGNE_Y, (LIGNE_Y-8-DERNIER_H) + el.offsetHeight + 4); l.style.setProperty('top', LIGNE_T+'px', 'important'); } }
@@ -42363,6 +42396,7 @@ window._noms=(function(){
       peint(); },
     /* un commentaire arrive de quelqu'un d'autre (dans Swift : par le réseau ; ici : le juge) */
     arrive:function(p, c){ if(!p || !c || !c.t) return; if(!p.comments) p.comments=[]; p.comments.push({t:String(c.t), d:c.d||new Date().toISOString(), by:c.by||'moi'}); try{ if(typeof queueSave==='function') queueSave(); }catch(_){ }
+      try{ if(p._cercle && window._cercleMots) window._cercleMots.garde(); if(window._pastillesAttente) window._pastillesAttente(); }catch(_){ }
       if(courant===p) peint(); else if(typeof cur!=='undefined' && cur===p){ try{ if(window._ficheCotes) window._ficheCotes(); }catch(_){ } } } };
   /* le toucher : on lit le geste (la fiche ne produit pas toujours de `click` au doigt, §8) ; le clic qui suit n'a rien d'autre à faire */
   var G=null;
@@ -44523,6 +44557,49 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', arme); else arme();
   window.addEventListener('resize', function(){ try{ tout(); }catch(_){ } });
   (window._rangeurs=window._rangeurs||[]).push(function(){ ROG.forEach(function(id){ var e=document.getElementById(id); if(e && e.hasAttribute('data-v184r')){ e.style.removeProperty('clip-path'); e.style.removeProperty('-webkit-clip-path'); e.removeAttribute('data-v184r'); } }); });
+})();
+</script>
+<script id="lot-V184B-MOTS">
+/* ⚑ v184b (Tom, 7 nov. 2026, C-253) — « LES NOUVEAUX COMMENTAIRES : UNE PASTILLE, PAS DU TEXTE. » La pastille est celle qui existe déjà (`.s4-att`, v89, Q347 : « pas
+   encore vu ») : un disque de 9 pt, l'orange #FB4C0D, cerné d'un filet crème de 1,4 pt — même composant, même taille, même couleur ; seule sa place change (au bout
+   de la rangée d'un mot, au bout de « + X commentaires »). UN MOT NEUF : écrit par un autre, pas encore vu. VU : la fiche l'a montré (les trois premiers, ou
+   tous une fois dépliés) — marqué quand on quitte la fiche. Les mots d'avant ce lot sont comptés vus (aucune pastille sur l'ancien). */
+(function(){
+  var CSS='position:absolute;z-index:4;width:9px;height:9px;border-radius:50%;background:#FB4C0D;box-shadow:0 0 0 1.4px #F7F0DE;pointer-events:none';   /* la cote de `.s4-att` (pastilles) */
+  window._pastilleHTML=function(place){ return '<i class="s4-att cm5-att" aria-hidden="true" style="'+CSS+';'+place+'"></i>'; };
+  function moi(){ try{ return (localStorage.getItem('promi_prenom')||'').trim(); }catch(_){ return ''; } }
+  function deMoi(c){ var b=String((c&&c.by)||'moi').trim(); return /^moi$/i.test(b) || (moi() && b===moi()); }
+  window._motNeuf=function(c){ return !!(c && !c.vu && !deMoi(c)); };
+  function parole(id){ if(typeof id==='string' && id.indexOf('cercle:')===0){ return window._cercleMots ? window._cercleMots.de(id.slice(7)) : null; }
+    try{ return promises.filter(function(q){ return q.id===id; })[0]||null; }catch(_){ return null; } }
+  window._motsNeufs=function(id){ var p=parole(id); return p ? ((p.comments||[]).filter(window._motNeuf).length) : 0; };
+  /* les mots d'avant ce lot : vus (une fois) */
+  function migre(){ try{ if(localStorage.getItem('promi_mots_v184')) return;
+      (promises||[]).forEach(function(p){ (p.comments||[]).forEach(function(c){ if(!c.vu) c.vu=true; }); });
+      var M=JSON.parse(localStorage.getItem('promi_cercle_mots')||'{}')||{}; Object.keys(M).forEach(function(k){ (window._cercleMots ? window._cercleMots.de(k).comments : M[k]).forEach(function(c){ c.vu=true; }); });
+      if(window._cercleMots) window._cercleMots.garde();
+      try{ if(typeof saveState==='function') saveState(true); }catch(_){ }
+      localStorage.setItem('promi_mots_v184','1'); }catch(_){ } }
+  /* VU : ce que la fiche a montré, quand on la quitte */
+  function vus(){ var m=window._cm5Montres; window._cm5Montres=null; if(!m || !m.p) return; var n=0;
+    (m.mots||[]).forEach(function(c){ if(window._motNeuf(c)){ c.vu=true; n++; } });
+    if(!n) return;
+    try{ if(m.p._cercle && window._cercleMots) window._cercleMots.garde(); else if(typeof queueSave==='function') queueSave(); }catch(_){ }
+    try{ if(window._pastillesAttente) setTimeout(window._pastillesAttente, 0); }catch(_){ } }
+  window._motsVus=vus;
+  (window._rangeurs=window._rangeurs||[]).push(vus);
+  setTimeout(migre, 1600);
+})();
+</script>
+<script id="lot-V184B-MEMBRES">
+/* ⚑ v184b (Tom, 7 nov. 2026, C-254) — « LE + QUI AJOUTE DES MEMBRES EXISTE AUSSI SUR LES FICHES PROMI ET CHICHE, identique à celui du Cercle (C-247) : même dessin,
+   même position après la liste, même comportement. » LE MÊME CODE (lot-V181A-CERCLE : `bouton`, `place`) : sur une fiche Promi ou Chiche, la « liste » est la
+   phrase (`#dptQui`, « Je promets à Rachel de », « T'es pas chiche de ») ; le + se pose 26 pt après son encre, haut d'une capitale. Son geste ouvre Peaufiner sur
+   les personnes de la parole (À QUI · QUI OSE ? ; AVEC sur un Chiche reçu), déplié, et le panneau glisse jusqu'à elles (420 ms) — sur un Promi « je me promets »,
+   la rangée À QUI paraît pour l'occasion (la nature ne change pas : c'est un Promi, il a quelqu'un de plus). Un Promi ou un Chiche REÇU n'a pas de + (ce n'est
+   pas ma parole). L'HISTORIQUE : un membre ajouté voit TOUT ce que la parole porte depuis sa plantation (`_historique`, portage/SPEC-DONNEES §1.13). */
+(function(){
+  window._historique=function(p, nom){ if(!p) return null; return { mots:(p.comments||[]).slice(), actes:((typeof FEED!=='undefined'&&FEED)||[]).filter(function(f){ return f.pid===p.id; }).slice(), depuis:p.planteLe||p.created||null, pour:nom||null }; };   /* aucun filtre par date d'arrivée : tout, depuis la plantation */
 })();
 </script>
 </body>

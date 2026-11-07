@@ -20,15 +20,15 @@
   /* juge une suite d'images : un élément qui défile se déplace EXACTEMENT de −Δdéfilement (± 1,5 pt) ; l'en-tête et la barre ne bougent pas (± 0,5) */
   function sauts(fr, nature){ var pire={v:0}, L=[];
     for(var i=1;i<fr.length;i++){ var a=fr[i-1], b=fr[i], ds=b.st-a.st;
-      ['qui','titre','etat','noyaux'].concat(nature==='cercle'?['plus']:[]).forEach(function(c){ if(!a[c]||!b[c]) return;
+      ['qui','titre','etat','noyaux','plus'].forEach(function(c){ if(!a[c]||!b[c]) return;
         if(a[c][1]!==b[c][1] && c!=='plus') L.push({i:i, el:c, quoi:'présence '+a[c][1]+'→'+b[c][1], st:b.st});
         if(!a[c][1]||!b[c][1]) return;
         var e=Math.abs((b[c][0]-a[c][0]) + ds); if(e>pire.v) pire={v:e, el:c, i:i, st:b.st}; if(e>1.5) L.push({i:i, el:c, quoi:'saut '+e.toFixed(1)+' pt', st:b.st}); });
       if(a.tete&&b.tete){ var et=Math.abs(b.tete[0]-a.tete[0]); if(et>0.5) L.push({i:i, el:'tete', quoi:'en-tête bougé '+et.toFixed(1), st:b.st}); }
       if(b.barre && b.barre[1] && Math.abs(b.barre[0]-760)>0.5) L.push({i:i, el:'barre', quoi:'barre à '+b.barre[0], st:b.st}); }
     return {pire:pire, defauts:L.slice(0,12), n:L.length, images:fr.length}; }
-  function compare(o, r, nature){ var L=[]; ['tete','qui','titre','etat','noyaux','barre'].concat(nature==='cercle'?['plus']:[]).forEach(function(c){
-      if(!o[c]) return; if(!r[c]){ L.push(c+' absent'); return; }
+  function compare(o, r, nature){ var L=[]; ['tete','qui','titre','etat','noyaux','barre','plus'].forEach(function(c){
+      if(!o[c] || (c==='plus' && !o[c][1])) return;   /* v184b : le + des membres, sur toute fiche qui en a un à l'ouverture */ if(!r[c]){ L.push(c+' absent'); return; }
       if(o[c][1] && !r[c][1]) L.push(c+' caché');
       if(Math.abs(r[c][0]-o[c][0])>0.5) L.push(c+' '+o[c][0]+'→'+r[c][0]); });
     if(nature==='cercle' && !/^Avec /.test(r.quiTx||'')) L.push('ligne « Avec … » : « '+r.quiTx+' »');

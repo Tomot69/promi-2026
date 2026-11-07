@@ -91,8 +91,8 @@ with sync_playwright() as p:
             ctx = contexte(b, vw, vh, stockage(nat)); pg = B.ouvre(ctx, F); pg.evaluate(REC)
             qui = pg.evaluate(OUVRE[nat]); pg.wait_for_timeout(2600)
             O = repos(pg)
-            pres = [c for c in ('tete', 'qui', 'titre', 'etat') + (('plus',) if nat == 'cercle' else ()) if not (O.get(c) and O[c][1])]
-            juge('%s ouverture (%s) : en-tête, %s, titre, état%s présents' % (T, qui, 'ligne « Avec … »' if nat == 'cercle' else 'phrase', ', le +' if nat == 'cercle' else ''), not pres and (nat != 'cercle' or O['quiTx'].startswith('Avec ')), pres or O['quiTx'])
+            pres = [c for c in ('tete', 'qui', 'titre', 'etat', 'plus') if not (O.get(c) and O[c][1])]   # v184b : le + des membres sur les trois natures (C-254)
+            juge('%s ouverture (%s) : en-tête, %s, titre, état%s présents' % (T, qui, 'ligne « Avec … »' if nat == 'cercle' else 'phrase', ', le +'), not pres and (nat != 'cercle' or O['quiTx'].startswith('Avec ')), pres or O['quiTx'])
             juge('%s ouverture : barre Peaufiner au bas de l\'écran (760)' % T, O['barre'] and abs(O['barre'][0] - 760) <= 0.5, O['barre'])
             # 2 · défilement bas puis haut
             S, m = aller_retour(pg, nat)

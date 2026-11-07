@@ -228,6 +228,18 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v184b (7 nov. 2026) — LES MOTS NEUFS : UNE PASTILLE, PAS DU TEXTE (C-253) ; LE + DES MEMBRES SUR UN PROMI ET UN CHICHE (C-254). (Décisions Tom.) Ce bloc CORRIGE v147 (C-116 : « le nombre de mots paraît s'il y en a, sans pastille ») et la ligne d'état d'un Cercle (« · 3 mots »).
+> **⚑ C-253 — LA PASTILLE EST `.s4-att`** (v89, Q347 : « pas encore vu ») : un disque de 9 pt, `#FB4C0D`, cerné d'un filet crème de 1,4 pt — même composant, même taille, même couleur ; seule sa
+> place change (au bout de la rangée d'un mot, au bout de « + X commentaires »). **Un mot NEUF : écrit par un autre, pas encore vu** (`c.vu`) ; **vu** quand la fiche l'a montré
+> (les trois premiers, ou tous une fois dépliés), marqué à sa fermeture (`_motsVus`, un rangeur de `closeAll`). Les mots d'avant ce lot sont comptés vus (`promi_mots_v184`). Les textes
+> retirés : le « 3 mots » de la ligne « Un mot… » et le « · 3 mots » de la ligne d'état d'un Cercle. La carte de l'Index et la ligne la plus récente du Fil de la parole portent la
+> pastille tant qu'un mot neuf l'attend. ⚠ **Trouvé : les cartes de l'Index ne portaient pas `data-pid`** — la pastille « pas encore vu » de v89 ne s'y est jamais allumée ; elles le portent
+> (`data-nk` pour un Cercle). ⚠ « Tu as commenté « … » » reste au Fil : c'est le journal de MON geste, pas le signal d'un mot neuf (question à Tom, Q601).
+> **⚑ C-254 — LE + DES MEMBRES SUR UN PROMI ET UN CHICHE, LE MÊME CODE** (`lot-V181A-CERCLE` : `sienne()`, `ouvreGens()`) : 26 pt après la phrase (`#dptQui`), haut d'une capitale ;
+> son geste ouvre Peaufiner sur les personnes de la parole (À QUI · QUI OSE ? ; AVEC sur un Chiche reçu), dépliées, le panneau glisse jusqu'à elles (420 ms) ; sur un Promi « je me
+> promets », la rangée À QUI paraît pour l'occasion (`_v184Qui`). Pas de + sur une parole reçue. **L'historique** : un membre ajouté voit tout depuis la plantation (`_historique`,
+> portage/SPEC-DONNEES §12). Juge : **`redteam_mots_neufs.py`**.
+
 ### ⚑ v184a (7 nov. 2026) — LE FIL D'UNE FICHE NE SAUTE PLUS : L'ÉTAT DÉFILÉ EST SUPPRIMÉ, L'EN-TÊTE ET LA BARRE SONT FIXÉS (C-243 définitif, C-252, C-255). (Décisions Tom.) Ce bloc CORRIGE le §13 (l'état défilé), v181a, v182b et v183c (C-252 : rendre la ligne au retour).
 > **LA CAUSE, UNE SEULE POUR LES TROIS DÉFAUTS** : au-delà de 8 pt de défilement la fiche d'un Cercle basculait d'un coup dans son « état défilé » — Noyaux, ligne « Avec … » et +
 > cachés (`display:none`), titre reposé à 100, état à 140, fil à 187 : la hauteur du contenu passait de 1 256 à 1 003 pt et le titre sautait de 289 pt sous le doigt (mesuré par la
