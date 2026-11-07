@@ -34,7 +34,8 @@ BTN = """()=>{ const b=document.getElementById('cerclePlusMembres'); if(!b) retu
   if(s.display==='none'||s.visibility==='hidden'||!r.width) return {vu:false};
   const q=document.getElementById('dptQui'), rg=document.createRange(); rg.selectNodeContents(q); const L=[...rg.getClientRects()].filter(x=>x.width>1&&x.height>1), der=L[L.length-1];
   const coins=[[r.left+2,r.top+2],[r.right-2,r.top+2],[r.left+2,r.bottom-2],[r.right-2,r.bottom-2]].map(p=>{ const e=document.elementFromPoint(p[0],p[1]); return !!(e&&e.closest&&e.closest('#cerclePlusMembres')); });
-  return {vu:true, x:(r.left-D.left)/k, y:(r.top-D.top)/k, w:r.width/k, h:r.height/k, fin:(der.right-D.left)/k, ligne:((der.top+der.bottom)/2-D.top)/k, fs:parseFloat(getComputedStyle(q).fontSize), coins:coins}; }"""
+  const cs=getComputedStyle(q), fs=parseFloat(cs.fontSize), g=document.createElement('canvas').getContext('2d'); g.font=cs.fontStyle+' '+cs.fontWeight+' '+fs+'px '+cs.fontFamily; const mA=g.measureText('A');
+  return {vu:true, x:(r.left-D.left)/k, y:(r.top-D.top)/k, w:r.width/k, h:r.height/k, fin:(der.right-D.left)/k, ligne:((der.top+der.bottom)/2-D.top)/k, fs:fs, cap:mA.actualBoundingBoxAscent, capHaut:(der.top-D.top)/k+(mA.fontBoundingBoxAscent-mA.actualBoundingBoxAscent), coins:coins}; }"""
 with sync_playwright() as p:
     b = p.webkit.launch()
     for vw, vh, nom in ((430, 932, '1'), (330, 714, '0,79')):
@@ -48,8 +49,14 @@ with sync_playwright() as p:
             ys = [yy for yy in range(int(q['y']), int(q['y'] + q['h']) + 1) for x in range(int(q['x']), int(q['x'] + q['w']) + 1, 1) if (lambda c: c[0] > 200 and 50 < c[1] < 110 and c[2] < 60)(px(pg, im, x + 0.5, yy + 0.5))]
             if xs and ys:
                 g0, h0, cy = min(xs) - q['fin'], max(ys) - min(ys) + 1, (min(ys) + max(ys) + 1) / 2
-                juge(T + ' A · le + : encre orange, 8 pt après la liste, centré sur sa ligne, haut d\'une capitale, zone de 44 pt', abs(g0 - 8) <= 1.5 and abs(cy - q['ligne']) <= 2 and abs(h0 - q['fs'] * 0.70) <= 1.5 and abs(q['w'] - 44) <= .6 and all(q['coins']),
-                     {'écart': round(g0, 1), 'centre': round(cy, 1), 'ligne': round(q['ligne'], 1), 'hauteur': h0, 'capitale': round(q['fs'] * .7, 1), 'coins': q['coins']})
+                # ⚑ v183c (Tom, C-242 suite) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_cercle_plus_membres-avant-v183c.py) : 26 pt après la liste (8 avant) ;
+                #   la hauteur d'encre = la hauteur de capitale de « Avec … » (le « A » de sa police rendue), son haut sur le haut des majuscules ; plus gras : la barre
+                #   horizontale lue sur l'image fait au moins 0,26 de la hauteur (0,20 avant) ; la couleur ne change pas (#FB4C0D).
+                mx = (min(xs) + max(xs)) // 2; colx = int(min(xs) + (max(xs) - min(xs)) * 0.18)
+                ep = 0.25 * len([j for j in range(int(q['y']) * 4, int(q['y'] + q['h']) * 4 + 4) if (lambda c: c[0] > 200 and 50 < c[1] < 110 and c[2] < 60)(px(pg, im, colx + 0.5, j / 4 + 0.125))])   # au quart de point : à 0,79, le point entier ne voit pas le trait
+                juge(T + ' A · le + : encre orange, 26 pt après la liste, haut d\'une capitale de la ligne, sur le haut des majuscules, plus gras, zone de 44 pt',
+                     abs(g0 - 26) <= 1.5 and abs(h0 - q['cap']) <= 1.5 and abs(min(ys) - q['capHaut']) <= 1.5 and ep >= 0.26 * q['cap'] - 0.5 and abs(q['w'] - 44) <= .6 and all(q['coins']),
+                     {'écart': round(g0, 1), 'hauteur': h0, 'capitale': round(q['cap'], 1), 'haut': min(ys), 'haut des capitales': round(q['capHaut'], 1), 'épaisseur': ep, 'coins': q['coins']})
             else: juge(T + ' A · le + : encre orange lue', False, q)
         else: juge(T + ' A · le + paraît après la liste des membres', False, q)
         # B

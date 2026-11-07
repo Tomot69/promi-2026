@@ -220,6 +220,22 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v183c (7 nov. 2026) — LE + DES MEMBRES (C-242 suite) ; LE « 1 » DU FIL (C-251) ; LA LIGNE « AVEC … » (C-252) ; LA VEILLE À 75 s (C-249). LE FIL D'UN CERCLE (C-243) ET LE JUGE SÉVÈRE DE L'INDEX ET DU FIL (C-250) : NON LIVRÉS. (Décisions Tom.) Ce bloc CORRIGE v182b (le + à 8 pt) et v179a (la veille à 60 s).
+> **⚑ C-242 — LE +** (`lot-V181A-CERCLE`, `place()`) : 26 pt après la fin de « Avec … » (8 avant ; 18 pt ≈ 3 mm sur l'iPhone 16e) ; son encre a la hauteur de capitale de
+> cette ligne, LUE sur sa police rendue (le « A », `measureText`), et commence au haut de ses majuscules ; plus gras (le trait fait 0,28 de la hauteur, 0,20 avant) ;
+> l'orange `#FB4C0D` ne change pas. Juge : `redteam_cercle_plus_membres` A remis au niveau (original en sauvegarde).
+> **⚑ C-251 — LA CAUSE DU « 1 »** : la ligne d'origine du Fil (`buildFeed`) porte, dans `.fd-tx`, l'icône « commenter » suivie du NOMBRE de mots de la parole (`<b>1</b>`) ;
+> la carte du Fil (`lot-S4`, `_s4Fil`) relisait tout le texte de la ligne (`textContent`) : le nombre se collait à « Tu as commenté », « Tu as planté ». Le texte se relit
+> sans l'icône. Juge : **`redteam_fil_nombre.py`** (Fil et Index, banc et état de Tom, un mot envoyé par la vraie saisie : aucun texte de carte ne finit par un nombre isolé).
+> **⚑ C-252 — LA CAUSE** : l'état défilé d'un Cercle cache la ligne « Avec … » (`display:none`, en ligne, important) ; revenue en haut, la fiche la replaçait sans jamais rendre
+> ce `display`. Le défilé la marque (`data-defile-cache`) ; le retour en haut rend ce qu'il a caché, et seulement cela (elle revient avec les Noyaux et le titre, à la pose
+> qui suit le retour, ≈ 1 s). Juge : **`redteam_avec.py`** (dix allers-retours, deux échelles).
+> **⚑ C-249 — LA VEILLE PART APRÈS 75 s** (`_veilleRegle.DELAI`, `?veille=` reste) ; le reste ne change pas (Wake Lock, remise à zéro au retour au premier plan, C-232).
+> Juges remis au niveau (originaux en sauvegarde) : `redteam_veille_60` (74 à 76 s), `redteam_veille_depart`, `redteam_veille_bords` C.
+> **⚑ C-243 — NON LIVRÉ (plafond de 6 h du lot).** La méthode demandée par Tom — l'en-tête qui se réduit en proportion du défilement par transformations seules, la barre
+> Peaufiner en `position:fixed` hors du contenu, le fil coupé sous l'en-tête — n'est pas commencée. **C-250 — NON LIVRÉ (même raison)** : le juge sévère de l'Index et du
+> Fil n'est pas écrit.
+
 ### ⚑ v183b (7 nov. 2026) — LA FIN DU VOL DE LA DALLE (C-237 suite) ; UNE SEULE DALLE À LA FOIS (C-241 suite). (Décisions Tom.) Ce bloc CORRIGE v182a (« au vol, elle se pose À LA TAILLE de sa cellule »).
 > **⚑ LE COUP À LA FIN DU VOL — LA CAUSE, mesurée image par image** : depuis v182a la dalle de la page + vole à l'échelle de sa cellule (`transform: scale`, ≈ 0,4 sur une
 > Toile pleine) ; à l'arrivée, `_retireFondFlaques` la recopiait dans l'image de la Toile d'avant à sa largeur de STYLE (241 pt), sans l'échelle — elle reprenait d'un coup

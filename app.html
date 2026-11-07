@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v183b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v183c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -16112,6 +16112,10 @@ var CREMEETAT='#F7F0DE';
         ? ('Avec ' + _mem.slice(0,2).join(', ') + (_reste>0 ? (', +'+_reste) : ''))
         : 'Avec toi seulement';
     }
+    /* ⚑ v183c (Tom, 7 nov. 2026, C-252 : « après un aller-retour dans le fil, la ligne « Avec … » disparaît ») — LA CAUSE : l'état défilé d'un Cercle la cache
+       (`display:none`, en ligne, important) et le retour en haut la replaçait sans jamais rendre ce `display` (§8, « rien ne survit » : un état posé en ligne se
+       retire dans le geste qui le défait). Le défilé la marque (`data-defile-cache`) ; revenu en haut, ce qu'il a caché est rendu, et seulement cela. */
+    if(qui && qui.getAttribute('data-defile-cache')){ qui.removeAttribute('data-defile-cache'); if(qui.style.getPropertyValue('display')==='none') qui.style.removeProperty('display'); }
     pose(qui,{top:yQui+'px', color:colTexte, '-webkit-text-fill-color':colTexte, 'font-size':'19px'});
     pose(ti ,{top:yTitre+'px', color:encre, '-webkit-text-fill-color':encre, 'font-size':'38px'});
     var sc2=window._echDp(dp);   /* v171 (C-207) : l'échelle de l'écran, jamais clientWidth (toujours 390) */
@@ -16235,7 +16239,7 @@ var CREMEETAT='#F7F0DE';
          Le §13 continue de faire remonter l'encart, les Noyaux et le titre : eux seuls
          appartiennent au défilement. */
       pose(document.getElementById('dAura'), {display:'none'});
-      pose(document.getElementById('dptQui'), {display:'none'});
+      pose(document.getElementById('dptQui'), {display:'none'}); try{ document.getElementById('dptQui').setAttribute('data-defile-cache','1'); }catch(_){ }   /* v183c (C-252) : marqué — le retour en haut le rend */
       var tiD=document.getElementById('dptTitre'), qdD=document.getElementById('dptQuand');
       /* ⚑ v101 — mêmes airs à l'encre qu'avant l'agrandissement v96 : titre dès 95, état 8 dessous, fil 31 sous l'état
          (98 · 136 · 182 laissaient 6 et 30 : le titre de 26 finit désormais à boîte + 30, l'état commence à boîte − 2). */
@@ -20142,7 +20146,10 @@ var CREMEETAT='#F7F0DE';
           return {quoi:q, fid:+(a.getAttribute('data-'+q)||0),
                   mot:(a.textContent||'').trim(), fort:a.classList.contains('fd-acc')||q==='releve'||q==='rejoindre'||q==='tracer'};});
       return {pid:pid?+pid:null, nk:nk, actes:actes, fid:(it.getAttribute('data-fid')!=null?+it.getAttribute('data-fid'):null), nonvu:it.classList.contains('unread'), type:it.getAttribute('data-type')||'',
-              texte:tx?(tx.textContent||'').trim():'', quand:tt?(tt.textContent||'').trim():''};
+              texte:tx?(function(){ var c=tx.cloneNode(true); [].forEach.call(c.querySelectorAll('.ix-cm'), function(n){ n.remove(); }); return (c.textContent||'').trim(); })():'', quand:tt?(tt.textContent||'').trim():''};
+      /* ⚑ v183c (Tom, 7 nov. 2026, C-251 : « deux cartes portent un « 1 » après « Tu as commenté » ou « Tu as planté » ») — LA CAUSE : la ligne d'origine du Fil
+         (`buildFeed`) porte, dans `.fd-tx`, l'icône « commenter » suivie du NOMBRE de mots de la parole (`<b>1</b>`) ; la carte relisait tout le texte de la ligne
+         (`textContent`) : le nombre se collait à l'événement. Le texte se relit sans l'icône. */
     });
     li.innerHTML=''; li.appendChild(gr);
     var yCur=0;
@@ -38345,7 +38352,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function bouton(){
     var b=document.getElementById('cerclePlusMembres'); if(b) return b;
     b=document.createElement('button'); b.id='cerclePlusMembres'; b.type='button'; b.setAttribute('aria-label','Ajouter des membres');
-    b.innerHTML='<svg viewBox="0 0 22 22" width="22" height="22" aria-hidden="true"><path d="M11 1.6V20.4M1.6 11H20.4" stroke="'+OR+'" stroke-width="4.4" stroke-linecap="round" fill="none"/></svg>';
+    b.innerHTML='<svg viewBox="0 0 22 22" width="22" height="22" aria-hidden="true"><path d="M11 3.08V18.92M3.08 11H18.92" stroke="'+OR+'" stroke-width="6.16" stroke-linecap="round" fill="none"/></svg>';   /* v183c (C-242) : plus gras — le trait fait 0,28 de la hauteur (0,20 avant) ; les bouts ronds finissent au bord de la boîte */
     b.style.cssText='position:absolute!important;width:44px!important;height:44px!important;margin:0!important;padding:0!important;border:0!important;background:none!important;box-shadow:none!important;display:none!important;align-items:center;justify-content:center;z-index:4!important;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;visibility:visible!important;opacity:1!important';
     var x0=0,y0=0,t0=0;
     b.addEventListener('pointerdown',function(e){ x0=e.clientX; y0=e.clientY; t0=e.timeStamp||performance.now(); e.stopPropagation(); },true);
@@ -38367,10 +38374,16 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     b=bouton(); if(b.parentNode!==d) d.appendChild(b);
     var k=ech(d), R=d.getBoundingClientRect(), rg=document.createRange(); rg.selectNodeContents(qe);
     var L=[].filter.call(rg.getClientRects(), function(q){ return q.width>1 && q.height>1; }); if(!L.length){ b.style.setProperty('display','none','important'); return; }
-    var der=L[L.length-1], fs=parseFloat(getComputedStyle(qe).fontSize)||19, cap=Math.round(fs*0.70*4)/4, ex=(der.right-R.left)/k, cy0=((der.top+der.bottom)/2-R.top)/k + d.scrollTop;
-    var gx=ex+8; if(gx+cap>366){ gx=24; cy0+=fs*1.25; }   /* la ligne est pleine : le + ouvre la suivante */
-    var cy=cy0; b._cy=cy;
-    var sv=b.querySelector('svg'); if(sv){ sv.setAttribute('width', cap); sv.setAttribute('height', cap); var pth=sv.querySelector('path'); if(pth) pth.setAttribute('stroke-width', String(Math.max(2.6, cap*0.2*22/cap))); }
+    /* ⚑ v183c (Tom, 7 nov. 2026, C-242 suite : « décale-le de 3 mm vers la droite sur l'iPhone 16e, soit 18 pt de plus (26 pt après la liste au lieu de 8) ; rends-le
+       plus gras ; sa hauteur est celle des majuscules de la liste à gauche, alignée sur le haut de ces majuscules ; ne change pas sa couleur ») — la hauteur de
+       capitale et sa place se LISENT sur la police rendue de la ligne (le « A » de « Avec », `measureText` : son haut d'encre et l'ascendante de la police) */
+    var csq=getComputedStyle(qe), fs=parseFloat(csq.fontSize)||19, cap=Math.round(fs*0.70*4)/4, asc=fs*0.8, der=L[L.length-1];
+    try{ var cvm=bouton.__cv||(bouton.__cv=document.createElement('canvas')), gm=cvm.getContext('2d'); gm.font=(csq.fontStyle||'normal')+' '+(csq.fontWeight||'400')+' '+fs+'px '+csq.fontFamily; var mA=gm.measureText('A');
+      if(mA.actualBoundingBoxAscent>0) cap=Math.round(mA.actualBoundingBoxAscent*4)/4; if(mA.fontBoundingBoxAscent>0) asc=mA.fontBoundingBoxAscent; }catch(_){ }
+    var ex=(der.right-R.left)/k, top0=(der.top-R.top)/k + d.scrollTop + (asc-cap);   /* le haut des capitales de la dernière ligne */
+    var gx=ex+26; if(gx+cap>366){ gx=24; top0+=fs*1.25; }   /* la ligne est pleine : le + ouvre la suivante */
+    var cy=top0+cap/2; b._cy=cy;
+    var sv=b.querySelector('svg'); if(sv){ sv.setAttribute('width', cap); sv.setAttribute('height', cap); }
     var top=Math.round((cy-22)*4)/4, left=Math.round((gx+cap/2-22)*4)/4;   /* l'encre (une capitale) commence 8 pt après la liste ; la zone (44) centrée sur elle */
     var vis=(cy-11-d.scrollTop < HAUT) ? 'hidden' : 'visible'; if(b.style.getPropertyValue('visibility')!==vis) b.style.setProperty('visibility',vis,'important');   /* C-243 : rien sous l'en-tête — défilé jusque-là, le + s'efface avec ce qui passe dessous */
     if(b.style.top!==top+'px') b.style.setProperty('top',top+'px','important');
@@ -43456,7 +43469,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    boîte dépasse l'encre) ; l'entrée et la sortie en flaques passent à 350 ms chacune (1 100 et 900 avant). */
 (function(){
   var Q=new URLSearchParams(location.search);
-  var R=window._veilleRegle={DELAI:(Q.has('veille') && +Q.get('veille')>0 ? +Q.get('veille') : 60)*1000, VITESSE:61.2,   /* ⚑ v179a (Tom, C-232) : 60 s, quelle que soit l'adresse ; `?veille=` seulement s'il est dans l'adresse du moment, jamais mémorisé · v175 : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
+  /* ⚑ v183c (Tom, 7 nov. 2026, C-249 : « la veille DVD arrive trop tôt — passe le délai de 60 s à 75 s ; le reste est inchangé ») */
+  var R=window._veilleRegle={DELAI:(Q.has('veille') && +Q.get('veille')>0 ? +Q.get('veille') : 75)*1000, VITESSE:61.2,   /* ⚑ v179a (Tom, C-232) : 60 s, quelle que soit l'adresse ; `?veille=` seulement s'il est dans l'adresse du moment, jamais mémorisé · v175 : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
      VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y

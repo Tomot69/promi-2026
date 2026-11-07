@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
-"""redteam_veille_60.py — ⚑ v179a (Tom, C-232) : « la veille démarre après 60 s sans toucher ; sur mon iPhone elle part au bout de quelques secondes ».
+"""redteam_veille_60.py — ⚑ v183c (Tom, C-249) : le délai passe à 75 s (contrat remis au niveau ; original sauvegardes/redteam_veille_60-avant-v183c.py). ⚑ v179a (Tom, C-232) : « la veille démarre après 60 s sans toucher ; sur mon iPhone elle part au bout de quelques secondes ».
 
 LA CAUSE : sur l'iPhone (http, pas de Wake Lock) l'écran se verrouille seul ; Safari gèle la page ; au déverrouillage le premier tour de minuterie comptait
 le temps passé écran éteint comme du calme, et la veille partait aussitôt rentré.
 Banc WebKit sur l'état exporté de Tom, veille rétablie, temps lus DANS la page :
   D · `?veille=5` dans l'adresse : départ à 5 s ± 1 ; puis la même page SANS le paramètre : il n'est pas mémorisé (A).
-  A · sans toucher depuis la fin du chargement (l'app affichée) : rien avant 59 s, départ à 60 s ± 1 (le délai déclaré : 60 000 en dur).
-  B · un toucher (qui quitte la veille) : le départ suivant à 60 s ± 1 de ce toucher.
-  C · la page cachée puis gelée deux minutes (son horloge saute, aucun tour de minuterie), puis rendue visible : rien avant 59 s, départ à 60 s ± 1 du retour.
+  A · sans toucher depuis la fin du chargement (l'app affichée) : rien avant 74 s, départ à 75 s ± 1 (le délai déclaré : 75 000 en dur).
+  B · un toucher (qui quitte la veille) : le départ suivant à 75 s ± 1 de ce toucher.
+  C · la page cachée puis gelée deux minutes (son horloge saute, aucun tour de minuterie), puis rendue visible : rien avant 74 s, départ à 75 s ± 1 du retour.
 Rouge sur v178 (`--fichier=zz-v178.html`) : 45 s, et départ immédiat au retour.
 """
 import sys, time; sys.path.insert(0, '.')
@@ -41,15 +41,15 @@ with sync_playwright() as p:
     pg.goto('http://127.0.0.1:8752/' + F); pg.evaluate(SONDE)
     di = pg.evaluate("()=>performance.getEntriesByType('navigation')[0].loadEventStart")
     dl = pg.evaluate("()=>window._veilleRegle.DELAI")
-    t = attend_depart(pg, 1, 75)
+    t = attend_depart(pg, 1, 92)
     s = None if t is None else (t - di) / 1000
-    juge('A · sans toucher : rien avant 59 s, départ à 60 s ± 1 (et `?veille` non mémorisé)', s is not None and 59 <= s <= 61 and dl == 60000, 'départ %s · délai %s' % ('—' if s is None else '%.2f s' % s, dl))
-    # B · un toucher quitte la veille ; le départ suivant à 60 s du toucher
+    juge('A · sans toucher : rien avant 74 s, départ à 75 s ± 1 (et `?veille` non mémorisé)', s is not None and 74 <= s <= 76 and dl == 75000, 'départ %s · délai %s' % ('—' if s is None else '%.2f s' % s, dl))
+    # B · un toucher quitte la veille ; le départ suivant à 75 s du toucher
     tt = touche(pg); pg.wait_for_timeout(300)
     act = pg.evaluate("()=>window._veille().active")
-    t = attend_depart(pg, 2, 75)
+    t = attend_depart(pg, 2, 92)
     s = None if t is None else (t - tt) / 1000
-    juge('B · un toucher quitte la veille ; départ suivant à 60 s ± 1 du toucher', (not act) and s is not None and 59 <= s <= 61, 'quittée %s · départ %s' % (not act, '—' if s is None else '%.2f s' % s))
+    juge('B · un toucher quitte la veille ; départ suivant à 75 s ± 1 du toucher', (not act) and s is not None and 74 <= s <= 76, 'quittée %s · départ %s' % (not act, '—' if s is None else '%.2f s' % s))
     # C · la page cachée et gelée 2 min, puis visible
     touche(pg); pg.wait_for_timeout(400)
     tr = pg.evaluate("""()=>{ var real=performance.now.bind(performance);
@@ -59,9 +59,9 @@ with sync_playwright() as p:
       Object.defineProperty(document,'visibilityState',{get:()=>'visible',configurable:true}); Object.defineProperty(document,'hidden',{get:()=>false,configurable:true});
       document.dispatchEvent(new Event('visibilitychange')); return performance.now(); }""")
     n0 = pg.evaluate("()=>window.__va.length")
-    t = attend_depart(pg, n0 + 1, 75)
+    t = attend_depart(pg, n0 + 1, 92)
     s = None if t is None else (t - tr) / 1000
-    juge('C · gelée 2 min puis rendue visible : rien avant 59 s, départ à 60 s ± 1 du retour', s is not None and 59 <= s <= 61, 'départ %s après le retour' % ('—' if s is None else '%.2f s' % s))
+    juge('C · gelée 2 min puis rendue visible : rien avant 74 s, départ à 75 s ± 1 du retour', s is not None and 74 <= s <= 76, 'départ %s après le retour' % ('—' if s is None else '%.2f s' % s))
     juge('aucune erreur de page', not pg.erreurs, pg.erreurs[:2])
     b.close()
 ok = sum(res); print('\n  %s  %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res)))
