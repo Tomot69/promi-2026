@@ -65,7 +65,9 @@ with sync_playwright() as p:
             nl0 = e.get('nonlus'); nb0 = e.get('nb'); ligne0 = (e.get('ligne') or {}).get('t', '')
             pg.evaluate("id=>_comm.arrive(promises.find(p=>p.id===id),{t:'Promis, j’y serai. Tu gardes une place ?',by:'Marion',d:'2026-10-11T18:00:00.000Z'})", p1); pg.wait_for_timeout(700); e = pg.evaluate(ET)
             d = e.get('dernier') or {}
-            juge('B · [%s] RÉCEPTION : le commentaire reçu paraît au-dessus de la ligne (auteur, date, début)' % th, bool(d) and 'MARION' in d.get('t', '').upper() and '11 oct.' in d.get('t', '') and 'Promis' in d.get('t', '') and d['y'] + d['h'] <= e['ligne']['y'] and e['etatBas'] <= d['y'], d)
+            # ⚑ v188 (Tom, Q608 tranchée autrement ; C-257 suite) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_commentaires-avant-v188.py) : les mots sont SOUS
+            #   « Un mot… » ; un mot nouveau fait afficher « +1 » (le nombre de nouveaux) au lieu du total
+            juge('B · [%s] RÉCEPTION : le commentaire reçu paraît sous la ligne « Un mot… » (auteur, date, début)' % th, bool(d) and 'MARION' in d.get('t', '').upper() and '11 oct.' in d.get('t', '') and 'Promis' in d.get('t', '') and d['y'] >= e['ligne']['y'] + 55.5 and e['etatBas'] <= d['y'], d)
             # ⚑ v184b (Tom, 7 nov. 2026, C-253 : « le texte qui signale un nouveau commentaire, c'est du bruit — remplace-le par la pastille ») — CONTRAT RÉÉCRIT
             #   (original : sauvegardes/redteam_commentaires-avant-v184b.py, « le nombre paraît, discret, sans pastille ») : la ligne ne porte AUCUN chiffre, avant
             #   comme après ; le mot reçu porte la pastille (`.s4-att`, celle du Fil) ; le Fil ne gagne aucun non-lu (la pastille de la carte, elle, s'allume).
@@ -74,8 +76,8 @@ with sync_playwright() as p:
             # ⚑ v186b (Tom, C-257 : « sur la ligne « Un mot… », le nombre de commentaires à droite, le nombre seul ») — CONTRAT REMIS AU NIVEAU (original :
             #   sauvegardes/redteam_commentaires-avant-v186b.py) : après la réception, le nombre affiché est le compte des mots de la parole, seul ; la pastille et le Fil : inchangés
             nmots = pg.evaluate("id=>((promises.find(p=>p.id===id)||{}).comments||[]).length", p1)
-            juge('B · [%s] le nombre seul (C-257) : « %d » après la réception ; le mot reçu porte la pastille ; le Fil ne gagne aucun non-lu' % (th, nmots),
-                 (nb.get('t') or '').strip() == str(nmots) and att and e.get('nonlus') == nl0,
+            juge('B · [%s] le nombre (C-257 suite) : « +1 » après la réception d\'un mot nouveau ; le mot reçu porte la pastille ; le Fil ne gagne aucun non-lu' % th,
+                 (nb.get('t') or '').strip() == '+1' and att and e.get('nonlus') == nl0,
                  'avant : « %s », compte %s · après : %s · pastille %s · non-lus du Fil %s → %s' % (ligne0, nb0, nb, att, nl0, e.get('nonlus')))
             # C · toucher la ligne ouvre la saisie
             B.tap_sel(pg, '#cm5Ligne'); pg.wait_for_timeout(900); e = pg.evaluate(ET)
@@ -94,7 +96,7 @@ with sync_playwright() as p:
             B.capture(pg, 'scratchpad/v145/comm-ouvert-%s.png' % th)
             # G · toucher la bande referme la saisie, la fiche reste
             B.tap(pg, 195, 170); pg.wait_for_timeout(900); e = pg.evaluate(ET)
-            juge('G · [%s] toucher la bande referme la saisie, la fiche reste, le mot le plus récent est en tête de la liste, au-dessus de la ligne' % th, e.get('fiche') and not e.get('saisie') and e.get('motVu') == TEXTE and 'samedi' in (e.get('dernier') or {}).get('t', '') and e['dernier']['y'] < e['ligne']['y'], 'fiche %s · saisie %s · dernier %s' % (e.get('fiche'), e.get('saisie'), e.get('dernier')))
+            juge('G · [%s] toucher la bande referme la saisie, la fiche reste, le mot le plus récent est en tête de la liste, sous la ligne' % th, e.get('fiche') and not e.get('saisie') and e.get('motVu') == TEXTE and 'samedi' in (e.get('dernier') or {}).get('t', '') and e['dernier']['y'] > e['ligne']['y'], 'fiche %s · saisie %s · dernier %s' % (e.get('fiche'), e.get('saisie'), e.get('dernier')))
             B.capture(pg, 'scratchpad/v145/comm-ferme-%s.png' % th)
             # A · les autres états reçus
             p2 = recue(pg, 'le grand plongeoir', 1, 'Rachel'); fiche(pg, p2); e = pg.evaluate(ET)

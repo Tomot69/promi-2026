@@ -27,9 +27,11 @@ res = []
 def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:240]), flush=True)
 ATT = "(sel)=>[...document.querySelectorAll(sel)].map(e=>{ const c=getComputedStyle(e); return [Math.round(e.getBoundingClientRect().width*10)/10, c.backgroundColor, c.boxShadow]; })"
-FICHE = """()=>{ const L=document.getElementById('cm5Liste'); if(!L) return null; const r=[...L.querySelectorAll('.cm5-vus .cm5-un')].map(x=>!!x.querySelector('.s4-att'));
+# ⚑ v188 (Tom, Q608 tranchée autrement) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_mots_neufs-avant-v188.py) : plus de « + X commentaires » ni de dépliage ;
+#   tous les mots sont sous « Un mot… » ; un mot est VU quand il est passé à l'écran (sous la barre au repos : on les lit en défilant).
+FICHE = """()=>{ const L=document.getElementById('cm5Liste'); if(!L) return null; const r=[...L.querySelectorAll('.cm5-un')].map(x=>!!x.querySelector('.s4-att'));
   const pl=L.querySelector('.cm5-plus'); const nb=document.querySelector('#cm5Ligne .cm5-nb');
-  return {rangees:r, plus:pl?{txt:pl.textContent.trim(), att:!!pl.querySelector('.s4-att'), h:pl.getBoundingClientRect().height}:null, reste:[...L.querySelectorAll('.cm5-reste .cm5-un')].map(x=>!!x.querySelector('.s4-att')),
+  return {rangees:r, plus:pl?1:null, reste:[],
     nb:nb?[getComputedStyle(nb).display, nb.textContent]:null, ligneTx:(document.getElementById('cm5Ligne')||{}).textContent||''}; }"""
 def fiche(pg):
     """la liste des mots, attendue jusqu'à 6 s (sous charge la pose de la fiche passe au-delà de 2,6 s)"""
@@ -59,18 +61,17 @@ with sync_playwright() as p:
         # A · la fiche
         pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600)
         f = fiche(pg); a = pg.evaluate(ATT, '#cm5Liste .s4-att')
-        juge(T + ' A · trois rangées à pastille, « + 2 commentaires » à pastille', f and f['rangees'] == [True, True, True] and f['plus'] and f['plus']['att'] and f['plus']['txt'].startswith('+ 2'), f)
+        juge(T + ' A · cinq rangées, chacune à pastille, aucun « + X »', f and f['rangees'] == [True] * 5 and not f['plus'], f)
         # ⚑ v186b (Tom, C-257) : le NOMBRE seul revient sur la ligne « Un mot… » — jamais le mot « mots » (original : sauvegardes/redteam_mots_neufs-avant-v186b.py)
         juge(T + ' A · aucun « N mots » écrit sur la fiche (le nombre seul, C-257)', f and ' mots' not in f['ligneTx'] and ' mot' not in f['ligneTx'].replace('Un mot', ''), (f or {}).get('nb'))
         juge(T + ' A · la pastille de la fiche est celle du Fil (taille, couleur, filet)', ref and a and all(x == ref[0] for x in a), (ref[:1], a[:2]))
         # C · vus
         B.tap_sel(pg, '#detailPoster > .enh .closeb'); pg.wait_for_timeout(1200); pg.evaluate("()=>{ closeAll(); }"); pg.wait_for_timeout(400)
         pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600); f = fiche(pg)
-        juge(T + ' C · rouverte : les trois vus sans pastille, « + 2 » la garde', f and f['rangees'] == [False, False, False] and f['plus'] and f['plus']['att'], f)
-        pg.evaluate("()=>window._commDeplie()"); pg.wait_for_timeout(900)
-        f2 = fiche(pg)
+        juge(T + ' C · fermée sans défiler (les mots sous la barre, jamais à l\'écran) : les cinq gardent leur pastille', f and f['rangees'] == [True] * 5, f)
+        pg.evaluate("()=>new Promise(async r=>{ const d=document.getElementById('detailPoster'); for(let y=0;y<=d.scrollHeight;y+=150){ d.scrollTop=y; await new Promise(q=>setTimeout(q,150)); } r(); })"); pg.wait_for_timeout(500)
         pg.evaluate("()=>{ closeAll(); }"); pg.wait_for_timeout(500); pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600); f3 = fiche(pg)
-        juge(T + ' C · dépliée (les deux repliés à pastille), puis rouverte : plus aucune pastille', f2 and f2['reste'] == [True, True] and f3 and not any(f3['rangees']) and not any(f3['reste']) and not (f3['plus'] and f3['plus']['att']), (f2 and f2['reste'], f3))
+        juge(T + ' C · lus en défilant (passés à l\'écran), puis rouverte : plus aucune pastille', f3 and f3['rangees'] and not any(f3['rangees']), f3)
         pg.evaluate("()=>{ closeAll(); }"); B.tap_sel(pg, '#indexBtn'); pg.wait_for_timeout(2400)
         ix2 = pg.evaluate("id=>{ const c=document.querySelector('#indexList .s4-carte[data-pid=\"'+id+'\"]'); return c ? !!c.querySelector(':scope > .s4-att') : null; }", pid)
         juge(T + ' C · tout vu : la carte de l\'Index n\'a plus de pastille', ix2 is False, ix2)
@@ -103,7 +104,7 @@ with sync_playwright() as p:
         w = pg.evaluate("id=>{ const p=promises.find(q=>q.id===id); const h=window._historique(p,'Adrien'); return {who:p.who, chiche:!!p.chiche, nuee:!!p.nuee, mots:h?h.mots.length:null}; }", pid)
         juge(T + ' F · Adrien ajouté : la parole le porte, toujours un Promi, il voit les 5 mots', w['who'] and 'Adrien' in w['who'] and not w['chiche'] and not w['nuee'] and w['mots'] == 5, (w, foc))
         pg.evaluate("()=>{ try{ _peaufSortie(); }catch(e){} closeAll(); }"); pg.wait_for_timeout(500); pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600); f = fiche(pg)
-        juge(T + ' F · la fiche montre les 5 mots (3 + « + 2 »)', f and len(f['rangees']) == 3 and f['plus'] and f['plus']['txt'].startswith('+ 2'), f)
+        juge(T + ' F · la fiche montre les 5 mots (v188 : tous, sous « Un mot… »)', f and len(f['rangees']) == 5 and not f['plus'], f)
         pg.evaluate("()=>{ closeAll(); }"); pg.wait_for_timeout(400)
         # G · Chiche à moi, parole reçue
         g2 = pg.evaluate("""async ()=>{ const vis=()=>{ const b=document.getElementById('cerclePlusMembres'); return !!(b && getComputedStyle(b).display!=='none'); };
