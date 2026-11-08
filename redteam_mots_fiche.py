@@ -58,6 +58,8 @@ with sync_playwright() as p:
                  txt == att and e['plus'] == 0 and ordre and air and not cr, (len(txt), e['plus'], ordre, air, cr[:2], e['ligne'] and round(e['ligne']['y'], 1), e['etat'] and round(e['etat']['b'], 1)))
             if nat != 'cercle':
                 juge(T + ' B · « Un mot… » entière au-dessus de la barre, 8 pt de marge au moins (au repos)', e['ligne'] and e['ligne']['b'] <= 752.5 and e['sc'] == 0, (e['ligne'] and round(e['ligne']['b'], 1), e['sc']))
+                coupe = [round(u['y'], 1) for u in e['uns'] if u.get('y') is not None and u['y'] < 760 - 0.5 and u['b'] > 760 + 0.5]
+                juge(T + ' B · aucun mot coupé par la barre au repos (entier au-dessus, ou sous elle)', not coupe, coupe)
             if n == 3:
                 P = [];
                 for i in range(10):

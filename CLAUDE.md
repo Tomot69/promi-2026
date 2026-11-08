@@ -235,7 +235,7 @@ la nature, la ligne dit l'état.)*
 > du Cercle (≈ 150–230 pt, elle défile) et le trait du geste (Promi, Chiche). Décision à Tom (Q612).
 > **⚑ §2 (Q608)** (`lot-V145-COMM`) : la ligne « + X commentaires » et le dépliage de C-248 (`deplie`, `_commDeplie`, `.cm5-plus`, `.cm5-reste`, `ANIM`, `DEPLIE`, `VUS`) sont
 > RETIRÉS. L'ordre : la ligne d'état, « Un mot… » (692 pt, bas à 748 ; descend seulement pour garder 8 pt sous l'état — `lot-V181B-TEXTES`, `AIR` 16 → 8, `premier()` = la ligne),
-> puis TOUS les mots (le plus récent d'abord), 8 pt sous elle ; sur un Cercle, au bout du fil. On les atteint en défilant ou par le nombre. Deux cotes de la pose de la fiche
+> puis TOUS les mots (le plus récent d'abord), 12 pt sous elle (à 8, le haut du premier visage dépassait de 4 pt au-dessus de la barre : vu à la capture, corrigé après la première fusion) ; sur un Cercle, au bout du fil. On les atteint en défilant ou par le nombre. Deux cotes de la pose de la fiche
 > (`_ficheCotes`) ont dû bouger pour tenir « Un mot… » au-dessus de la barre avec 8 pt de marge : une parole TENUE sans mot, `base` 400 → 362 ; un Chiche TENU À DEUX, 396 → 334
 > (leur état finissait à 726 et 750, « Un mot… » à 790 et 814 ; maintenant 688 et 752). **VU (C-253)** : un mot est vu quand il est passé à l'écran entre l'en-tête et la barre
 > (`IntersectionObserver`, aucune écriture au défilement) ; marqué à la fermeture. **Pourquoi ma première écriture de Q608 (v187) rendait la liste instable** : elle recalculait le

@@ -42457,7 +42457,7 @@ window._noms=(function(){
      place) : elle se pose à 692 pt (bas à 748, 12 pt au-dessus de la barre), et descend seulement pour garder 8 pt sous l'état (`lot-V181B-TEXTES`, C-246).
      VU (C-253) : un mot est vu quand il est passé À L'ÉCRAN, entre l'en-tête et la barre (un `IntersectionObserver` : aucune écriture au défilement) ; marqué à la
      fermeture, comme avant. */
-  var LIGNE_T=LIGNE_Y0, ECART=8;
+  var LIGNE_T=LIGNE_Y0, ECART=12;   /* v188 : 12 pt sous « Un mot… » (un pas de l'échelle) — à 8, la liste commençait à 756, 4 pt au-dessus de la barre : le haut du premier visage dépassait, coupé (vu à la capture) ; à 12, elle commence au bord de la barre ou sous elle */
   /* ⚑ v186b (Tom, C-257) — LE GLISSEMENT JUSQU'AUX COMMENTAIRES : la fiche défile (elle seule ; la barre Peaufiner reste en bas, elle est fixée) jusqu'à ce que le
      premier commentaire (le plus récent, en tête de la liste) soit 16 pt sous le rognage de l'en-tête (112 pt), borné au défilement possible. Un seul mouvement,
      sur l'horloge réelle, une courbe douce (aller-retour quadratique) dont la durée suit la distance (300 à 700 ms) : la vitesse ne fait jamais de saut. Un doigt
