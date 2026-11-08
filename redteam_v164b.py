@@ -36,13 +36,15 @@ with sync_playwright() as p:
         for ecr, porte, btn, menu in (('Index', "document.getElementById('indexBtn').click()", '#ixTriBtn', '#ixMenu'), ('Fil', "openFeed()", '#fdTriBtn', '#fdMenu')):
             pg.evaluate("()=>{ try{closeAll()}catch(e){} try{ %s }catch(e){} }" % porte); pg.wait_for_timeout(2600)
             r = pg.evaluate(BOUTON, btn) or {}
-            juge('[%s · %s] T · le mot « TRIER » seul, Gilbert, à l\'encre du mode' % (T, ecr), r.get('txt') == 'TRIER' and r.get('f') == 'Gilbert' and r.get('col') == ink, r)
-            juge('[%s · %s] T · ni contour, ni fond, ni ombre' % (T, ecr), r.get('bd') == 0 and r.get('bg') in ('rgba(0, 0, 0, 0)', 'transparent') and r.get('sh') in ('none', ''), r)
+            # ⚑ v186a (Tom, C-256 : « plus de bouton Trier ; EXACTEMENT ce qu'il y avait avant : le bouton aux deux flèches, dans le même encart entouré ») — Q582 → A
+            # est annulé : le bouton porte « ⇅ », un contour (celui de v164a) et le fond du mode ; original `sauvegardes/redteam_v164b-avant-v186a.py`
+            juge('[%s · %s] T · le bouton aux deux flèches « ⇅ », à l\'encre du mode (C-256)' % (T, ecr), r.get('txt') == '⇅' and r.get('col') == ({'Index': 'rgb(228, 215, 187)'}.get(ecr, ink) if sombre else ink), r)   # la couleur de v164a, relevée sur le commit d'origine (63e9f14) : en sombre, le ⇅ de l'Index est #E4D7BB
+            juge('[%s · %s] T · dans son encart entouré (contour, fond du mode, comme v164a)' % (T, ecr), r.get('bd', 0) > 0 and r.get('bg') not in ('rgba(0, 0, 0, 0)', 'transparent'), r)
             juge('[%s · %s] T · zone de toucher ≥ 44 pt, prise à son centre' % (T, ecr), r.get('w', 0) >= 44 - 0.5 and r.get('h', 0) >= 44 - 0.5 and r.get('hit'), r)
             B.tap_sel(pg, btn); pg.wait_for_timeout(900)
             ouv = pg.evaluate("(m)=>{ const e=document.querySelector(m); if(!e) return false; const c=getComputedStyle(e); return c.display!=='none' && c.visibility!=='hidden' && (e.classList.contains('on')||e.classList.contains('ouvert')||e.classList.contains('show')||+c.opacity>0.5); }", menu)
             r2 = pg.evaluate(BOUTON, btn) or {}
-            juge('[%s · %s] T · un toucher ouvre le menu ; ouvert, toujours ni fond ni contour' % (T, ecr), ouv and r2.get('bd') == 0 and r2.get('bg') in ('rgba(0, 0, 0, 0)', 'transparent'), {'menu': ouv, 'bg': r2.get('bg'), 'bd': r2.get('bd')})
+            juge('[%s · %s] T · un toucher ouvre le menu (C-256 : les tris restent par ce bouton)' % (T, ecr), ouv, {'menu': ouv, 'bg': r2.get('bg'), 'bd': r2.get('bd')})
         ctx.close()
     # ── ④ le mot « Promi » (sur un accueil frais : rien d'ouvert par-dessus) ──
     ctx4 = B.contexte(b); B.toile_pleine(ctx4, 10); pg4 = B.ouvre(ctx4, F)

@@ -228,6 +228,15 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v186a (8 nov. 2026) — CE QUE VOIT L'iPHONE (§0) ; LE BOUTON ⇅ REVIENT, « TRIER » EST RETIRÉ (C-256). (Décisions Tom.) Ce bloc CORRIGE v164b (C-191, Q582 → A : le mot « TRIER »).
+> **⚑ §0 — v185 N'A JAMAIS EXISTÉ DANS LE DÉPÔT** : le dernier lot livré était v184c (`0d83663`) ; le registre s'arrêtait à C-255 ; ni le bouton ⇅ ni le + « dans le titre » n'avaient été
+> faits. **Le cache n'était pas en cause** : `serveur.py` envoie `Cache-Control: no-store, no-cache, must-revalidate, max-age=0`, sans `Last-Modified` ni `ETag`, pour `app.html` et pour
+> les huit fichiers qu'elle charge (moteur, flaques, tracé des lettres et ses trois tables de chemins, deux diagnostics) — relevé à 192.168.1.141 ; la page servie y est celle du dépôt.
+> **Avec `?diag=1`, la marque de version** (« v186a · commit », celle de `?mesure=1`, sans relevé d'images ni envoi) paraît en haut de tous les écrans (`lot-V145-VERSION`).
+> **⚑ C-256 — LE BOUTON AUX DEUX FLÈCHES** : `lot-V164B-TRIER-css` est retiré et les deux boutons (`#ixTriBtn`, `#fdTriBtn`) reprennent « ⇅ » : la barre de l'Index et du Fil est
+> celle de v164a (`63e9f14`), au pixel (WebKit, clair et sombre, `planche-v186/barre-*`). Les tris (« Récents » compris) restent par ce bouton. Contrat remis au niveau :
+> `redteam_v164b` T (original `sauvegardes/redteam_v164b-avant-v186a.py` ; la couleur du ⇅ de l'Index en sombre est celle de v164a, `#E4D7BB`, relevée).
+
 ### ⚑ v184c (8 nov. 2026) — LA FIN DU VOL À LA DENSITÉ DE L'ÉCRAN (C-237) ; LE FIL RESTE SOUS SA FICHE, LE X LE RETROUVE TEL QUEL (C-250) ; LE « 1 » VÉRIFIÉ (C-251) ; DEUX JUGES REMIS AU NIVEAU. C-241 (Esquille, Tesselle) : NON COMMENCÉ. (Décisions Tom.) Ce bloc CORRIGE v183d (« le X rend le défilement du Fil »).
 > **⚑ C-237 — LA CAUSE DU FLOU À LA FIN DU VOL** : l'image figée de la Toile d'avant (où la dalle est collée à l'arrivée, puis qui se retire en flaques sur la Toile vivante) était
 > faite à **2 px par pt** sur la page +, à **2 × l'échelle** dans l'onboarding (1,6 sur l'iPhone de Tom) ; l'écran de Tom en montre 2,4 (3 × 0,8) : la Toile d'avant et la dalle

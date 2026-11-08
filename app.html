@@ -2567,13 +2567,15 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v184c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v186a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
   var MESURE=false; try{ MESURE=/[?&]mesure=1(?:&|$)/.test(location.search); }catch(_){}
+  /* ⚑ v186a (Tom, §0) : avec `?diag=1`, la même marque de version (le lot et le commit servis), seule — sans relevé d'images ni envoi */
+  var DIAG=false; try{ DIAG=/[?&]diag=1(?:&|$)/.test(location.search); }catch(_){}
   var el=null, etat='';
-  function pose(){ if(!MESURE) return; var d=document.getElementById('device'); if(!d) return;
+  function pose(){ if(!MESURE && !DIAG) return; var d=document.getElementById('device'); if(!d) return;
     if(!el){ el=document.createElement('div'); el.id='versionMarque'; el.setAttribute('aria-hidden','true'); d.appendChild(el); }
     var clair=d.classList.contains('light'), txt=V.marque()+etat;
     var css='position:absolute;left:50%;top:9px;transform:translateX(-50%);z-index:2147483000;pointer-events:none;white-space:nowrap;max-width:370px;overflow:hidden;'
@@ -2624,6 +2626,8 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
   }
   if(MESURE){ var go=function(){ pose(); verifie(false); setInterval(function(){ pose(); pose2(); }, 1500); setTimeout(pose2, 900); };
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', go); else go(); }
+  else if(DIAG){ var go2=function(){ pose(); verifie(false); setInterval(pose, 1500); };
+    if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', go2); else go2(); }
 })();
 </script>
 <script id="lot-V146-THEME">
@@ -2733,7 +2737,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
 
     <div class="stage" id="stage"><div id="toile"></div><canvas id="toileCv" class="toilecv"></canvas><div class="toile-empty" id="toileEmpty"><svg class="te-ghosts" viewBox="0 0 200 200" aria-hidden="true"><path class="te-g te-g1" d="M40 34 Q80 24 94 56 Q102 90 66 98 Q30 102 26 68 Q22 40 40 34Z"/><path class="te-g te-g2" d="M120 62 Q160 56 166 92 Q170 126 132 132 Q100 134 100 100 Q100 70 120 62Z"/><path class="te-g te-g3" d="M58 122 Q96 116 106 148 Q110 178 74 182 Q42 184 40 152 Q40 128 58 122Z"/></svg><div class="te-mark">Prom<span class="te-i">i</span></div><div class="te-t">Ta Toile n’attend que toi</div><div class="te-s"><!-- v164b (Tom, C-200 ⑥) : « Plante ton premier Promi — touche le + » retiré ; le texte de Tom attendu (Q584) --><span class="te-nudge">chaque parole tenue devient une dalle</span></div></div><div class="sidelabel eb" id="sidelabel">LA&nbsp;TOILE</div></div>
 
-    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">X</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">Trier</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i></i></div><div class="ix-mi" data-fdtri="personne">Par personne<i></i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i></i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i></i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i></i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i></i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i></i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i></i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i></i></div></div></div><div id="feedList"></div></div>
+    <div class="feedview tuto-fond tf-fil" id="feedView" style="display:none"><canvas id="fdTrameCv" aria-hidden="true"></canvas><div class="closeb" id="fdClose">X</div><h2 class="fd-h2 scr-ti">Fi<span class="ti-x">l</span><span class="ix-count fd-count" id="fdCount" style="display:none"></span></h2><div class="ix-bar"><div class="ix-srch"><input id="fdSearch" class="ix-search" placeholder="Rechercher dans le Fil…" autocomplete="off"></div><button class="ix-tri" id="fdTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-menu" id="fdMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-fdtri="recent">Récents<i></i></div><div class="ix-mi" data-fdtri="personne">Par personne<i></i></div><div class="ix-mi" data-fdtri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-fdfilt="tous">Tout<i></i></div><div class="ix-mi" data-fdfilt="agir">Ce qui attend un geste<i></i></div><div class="ix-mi" data-fdfilt="tenues">Paroles tenues<i></i></div><div class="ix-mi" data-fdfilt="demandes">Demandes<i></i></div><div class="ix-mi" data-fdfilt="nuees">Cercles<i></i></div><div class="ix-mi" data-fdfilt="moi">Mes Promi<i></i></div><div class="ix-mi" data-fdfilt="proches">Mes proches<i></i></div></div></div><div id="feedList"></div></div>
     <div class="stage-fade-t"></div><div class="stage-fade-b"></div>
     <div class="footer">
       <div class="cap" id="cap">six Promi vivants</div>
@@ -2820,7 +2824,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="sh-actions"><button class="sh-share sh-invite" id="shInviteBtn">Inviter</button><button class="sh-share" id="shShareBtn">↗&nbsp;&nbsp;Partager</button></div><div class="sh-invite-note" id="shInviteNote" hidden></div></div></div><div class="sh-bot"><div class="sh-foot"><div class="sh-fmtx"><span class="sh-ic" id="shTrayBtn">⋯</span><span id="shFmtTxt">Plein écran · 9:19,5</span></div><button class="sh-go" id="shGo" aria-label="Partager">↗</button></div>
       </div>
     </div>
-    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">Trier</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i></i></div><div class="ix-mi" data-tri="personne">Par personne<i></i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i></i></div><div class="ix-mi" data-filt="suspens">En suspens<i></i></div><div class="ix-mi" data-filt="promi">Promi<i></i></div><div class="ix-mi" data-filt="nuees">Cercles<i></i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i></i></div><div class="ix-mi" data-filt="demandes">Demandes<i></i></div></div></div><div id="indexList"></div></div>
+    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i></i></div><div class="ix-mi" data-tri="personne">Par personne<i></i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i></i></div><div class="ix-mi" data-filt="suspens">En suspens<i></i></div><div class="ix-mi" data-filt="promi">Promi<i></i></div><div class="ix-mi" data-filt="nuees">Cercles<i></i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i></i></div><div class="ix-mi" data-filt="demandes">Demandes<i></i></div></div></div><div id="indexList"></div></div>
 
     <!-- v104 (Tom, 30 sept. 2026) : « Arranger la Toile » supprimé — la pastille, l'icône, la fonction, la feuille. « On n'en veut pas. » -->
 
@@ -43844,22 +43848,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   setInterval(pose, 700);
 })();
 </script>
-<style id="lot-V164B-TRIER-css">
-/* ⚑ v164b (Tom, Q582 → A : « le mot TRIER, mais sans pilule ni encart autour : le mot seul, en petites capitales, à l'encre du mode, avec une zone de
-   toucher de 44 pt invisible. Même chose dans l'Index et le Fil. ») — le bouton garde sa place (le créneau de 52 pt à droite de la recherche, ≥ 44 pt :
-   c'est la zone qu'on touche) ; ni contour, ni fond, ni ombre, ouvert ou fermé ; le mot en Gilbert (la police des libellés, qui n'a que des capitales),
-   15 pt, à l'encre du mode. */
-#device #indexSheet #ixTriBtn,#device #feedView #fdTriBtn,#device #indexSheet.s4 #ixTriBtn,#device #feedView.s4 #fdTriBtn,
-.frame #indexSheet #ixTriBtn,.frame #feedView #fdTriBtn{
-  width:52px!important;height:52px!important;min-width:44px!important;min-height:44px!important;padding:0!important;
-  border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;outline:none!important;
-  font-family:var(--f-libelle)!important;font-weight:700!important;font-size:15px!important;letter-spacing:.04em!important;line-height:1!important;
-  text-transform:uppercase!important;display:flex!important;align-items:center!important;justify-content:center!important;
-  color:var(--c-creme95)!important;-webkit-text-fill-color:var(--c-creme95)!important}
-#device.light #indexSheet #ixTriBtn,#device.light #feedView #fdTriBtn,.frame.light #indexSheet #ixTriBtn,.frame.light #feedView #fdTriBtn{
-  color:var(--c-brun09)!important;-webkit-text-fill-color:var(--c-brun09)!important}
-#device #indexSheet #ixTriBtn.on,#device #feedView #fdTriBtn.on,.frame #indexSheet #ixTriBtn.on,.frame #feedView #fdTriBtn.on{background:transparent!important;border:0!important}
-</style>
+<!-- ⚑ v186a (Tom, C-256 : « plus de bouton Trier ; EXACTEMENT ce qu'il y avait avant : la recherche et, à côté, le bouton aux deux flèches, dans le même encart entouré ») — `lot-V164B-TRIER-css` (v164b, Q582 → A) est RETIRÉ et le bouton reprend « ⇅ » : l'Index et le Fil rendent la barre de v164a. -->
 <style id="lot-V172-INVITE-css">
 /* v172 (C-209) : le libellé « trace pour … » de la page + caché tant que la parole n'est pas prête ; la couche du départ clignote avec le I */
 #device#device#device#device#device#device#device #createSheet.ppi-cache .pp-trace{visibility:hidden!important}
