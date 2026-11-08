@@ -38381,12 +38381,14 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var masque=ouvre?document.createElement('canvas'):cv, SC=F.Scene(masque, ouvre?{l:l, h:h, densite:dens, aplat:'#000', graine:graine}:{l:l, h:h, densite:dens, flou:couv, graine:graine});
     if(ouvre){ cv.width=masque.width; cv.height=masque.height; }
     var g=cv.getContext('2d'), dur=(o.duree||1100)*(o.lent||1); cv.setAttribute('data-mode', ouvre?'ouvre':'couvre');
-    function image(t){ var u=Math.max(0, Math.min(1, t/dur)); SC.couvre(u); SC.peint(); cv.setAttribute('data-u', u.toFixed(3));
+    /* v187 (§1) : `suit` — l'image est recopiée à chaque image (la Toile VIVANTE, `_fondVivant`) : la couverture montre ce qui se passe, pas un instant figé */
+    function recopie(){ if(!(o.suit && o.image)) return; try{ var im2=o.image, ex2=(im2.width||390)/390; gc.clearRect(0,0,couv.width,couv.height); gc.drawImage(im2, x*ex2, y*ex2, l*ex2, h*ex2, 0, 0, couv.width, couv.height); }catch(_){ } }
+    function image(t){ var u=Math.max(0, Math.min(1, t/dur)); recopie(); SC.couvre(u); SC.peint(); cv.setAttribute('data-u', u.toFixed(3));
       if(ouvre){ g.setTransform(1,0,0,1,0,0); g.globalCompositeOperation='source-over'; g.clearRect(0,0,cv.width,cv.height); if(u<1){ g.drawImage(couv, 0, 0, cv.width, cv.height); g.globalCompositeOperation='destination-out'; g.drawImage(masque, 0, 0); g.globalCompositeOperation='source-over'; } } }
     var ctl={canevas:cv, arrete:false, image:image, duree:dur, mode:ouvre?'ouvre':'couvre'}; cv.__ctl=ctl; if(o.image && o.image.__flou) cv.setAttribute('data-flou','1'); else cv.removeAttribute('data-flou');   /* v158 (C-170) : un passage qui porte une image floutée le dit */
     function fini(){ if(ouvre && !o.garde && cv.parentNode) cv.remove(); if(o.fin) o.fin(ctl); }
     var av=o.avance||0;   /* v176 (C-222) : `avance` (ms) : la première image a déjà ses premiers trous — aucune image d'attente */
-    function go(){ if(reduit){ image(dur); fini(); return; } var t0=performance.now()-av; (function f(){ if(ctl.arrete) return; var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else fini(); })(); }
+    function go(){ if(reduit){ image(dur); fini(); if(o.suit) (function s(){ if(ctl.arrete||!cv.parentNode) return; image(dur); requestAnimationFrame(s); })(); return; } var t0=performance.now()-av; (function f(){ if(ctl.arrete) return; var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else { fini(); if(o.suit) (function s(){ if(ctl.arrete||!cv.parentNode) return; image(dur); requestAnimationFrame(s); })(); } })(); }
     image(av); if(o.attend){ ctl.lance=go; return ctl; }
     requestAnimationFrame(function(){ go(); }); return ctl; };
 })();
@@ -38607,15 +38609,15 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
          Toile d'avant —, l'image figée part dès sa première image peinte, et la place se fait à vue, par le mouvement propre de la Toile, sous la dalle posée.
          La cible du vol se calcule AVANT la pause (la place que le moteur prédit, C-241). */
       var _cib0=null; try{ if(_pre && window._dalleSurToile) _cib0=window._dalleSurToile(_pre, np.id); }catch(_){ } if(!_cib0){ try{ _cib0=window._cibleDalle(np.id); }catch(_){ } }
-      window._v186Gel && window._v186Gel(true);
       /* ⚑ v183b (Tom, C-241 suite : « à tout instant, une seule dalle de la nouvelle parole est visible ») — la page + gardait SA dalle en haut (la même image)
          pendant toute la naissance, jusqu'à ce que la Toile d'avant la recouvre (1,2 s) : deux dalles. Elle ne la peint plus dès que la dalle naît, dans la même image. */
       window._ppSansDalle=true; try{ if(window._ppTrait) window._ppTrait(); }catch(_){ }
       N=window._naissanceDalle(hote, np.id, np.monde, bx, by, _w0, _pre);
+      var viv=window._fondVivant(fond, np.id, N.dc);   /* v187 (§1) : la Toile vivante, sans la dalle qui vole — plus de pause (v186c) */
       window._ppNait={id:np.id, dc:N.dc, x:bx, y:by, w:N.w, t0:performance.now()};
-      setTimeout(function(){ cover=window._passageFlaques(hote, {mode:'couvre', rect:[0,0,390,844], image:fond, duree:620, garde:true, fin:function(){ ferme(); }}); if(!cover) ferme(); }, 553);
+      setTimeout(function(){ viv.lance && viv.lance(); cover=window._passageFlaques(hote, {mode:'couvre', rect:[0,0,390,844], image:fond, suit:true, duree:620, garde:true, fin:function(){ ferme(); }}); if(!cover) ferme(); }, 553);
       setTimeout(function(){ try{ if(_cib0 && N.dc) N.dc.__dalleInfo=null; N.vole(_cib0 || window._cibleDalle(np.id)); }catch(_){ } }, 808);
-      setTimeout(function(){ ferme(); window._poseNette(fond, N.dc, fin, np.id); try{ if(cover){ cover.arrete=true; if(cover.canevas.parentNode) cover.canevas.remove(); } }catch(_){ } }, 1615);
+      setTimeout(function(){ ferme(); window._atterrit(fond, N.dc, fin, viv, [cover]); }, 1615);
       setTimeout(fin, 4000);
     });
   };
@@ -38668,6 +38670,36 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       vise(200);
       /* rejointe, la couche part : la dalle vivante est dessous, à la même place, et c'est elle que la Toile continue de poser */
       setTimeout(function(){ vise(0); requestAnimationFrame(function(){ suit=null; try{ if(dc && dc.parentNode) dc.remove(); }catch(_){ } fin(); }); }, 240); }); }); };
+  /* ⚑ v187 (Tom, §1, Q611 tranchée : « la Toile fait la place PENDANT le vol, à vue, en douceur ; la dalle vole directement vers sa position finale ; elle se
+     pose, et plus rien ne bouge autour d'elle ») — L'ORDRE INVERSÉ. La Toile n'est plus en pause (v186c) : elle reçoit la parole au trait et fait la place tout de
+     suite (mesuré, WebKit : posée à ± 0,5 pt 0,7 à 1,0 s après le trait — Pochade 766 ms, Esquille 803, Touffe 963, Tesselle 714 —, avant l'atterrissage, 1,57 s).
+     L'image qui couvre l'écran pendant le vol n'est plus la Toile d'avant figée : c'est la Toile VIVANTE, recopiée à chaque image (`_fondVivant`), où la place de
+     la nouvelle dalle est laissée VIDE, au papier de la Toile (son image rendue seule par le moteur sert de découpe) — on voit la place se faire, et une seule
+     dalle : celle qui vole. Elle vole vers la place que la Toile vivante lui fait (`vole`, v183b) ; à l'atterrissage elle y est, la couche part dans la même
+     image (`_atterrit`), et c'est la dalle vivante, posée, qu'on voit. Le même code pour la page + et l'onboarding (C-247). Ni flaques, ni fondu, ni pause. */
+  window._fondVivant=function(fond, id, dc){
+    var tc=document.getElementById('toileCv'), dev=document.getElementById('device'), ctl={arrete:false, n:0}; if(!fond || !tc || !dev || id==null) return ctl;
+    var g=fond.getContext('2d'), papier='#DFCAA4'; try{ papier=window._fondToileVif(); }catch(_){ }
+    /* la découpe : l'image de la dalle qui vole (la même, la dalle d'avance), posée là où la Toile vivante pose sa dalle (`_dalleSurToile`, la cellule suivie) —
+       la place laissée vide est celle que la dalle qui vole remplit à l'atterrissage. Rien n'est rendu par image : une copie de la Toile, une découpe. */
+    var info=dc && dc.__dalleInfo, gab=(dc && info) ? {width:dc.width, height:dc.height, __dalleInfo:info} : null;
+    function maj(){ if(ctl.arrete) return; try{
+      var D=dev.getBoundingClientRect(), s=(D.width/(dev.offsetWidth||390))||1, R=tc.getBoundingClientRect(), fl=parseFloat(fond.style.left)||0, ft=parseFloat(fond.style.top)||0, fw=parseFloat(fond.style.width)||390, E=fond.width/fw;
+      g.setTransform(1,0,0,1,0,0); g.globalCompositeOperation='source-over'; g.clearRect(0,0,fond.width,fond.height);
+      g.drawImage(tc, ((R.left-D.left)/s-fl)*E, ((R.top-D.top)/s-ft)*E, R.width/s*E, R.height/s*E);
+      var r=gab ? window._dalleSurToile(gab, id) : null;
+      if(r){ var mx=(r.x-fl)*E, my=(r.y-ft)*E, mw=r.w*E, mh=r.h*E; ctl.r=r;
+        g.globalCompositeOperation='destination-out'; g.drawImage(dc, mx, my, mw, mh);
+        g.globalCompositeOperation='destination-over'; g.fillStyle=papier; g.fillRect(Math.floor(mx)-1, Math.floor(my)-1, Math.ceil(mw)+3, Math.ceil(mh)+3); g.globalCompositeOperation='source-over'; }
+      ctl.n++; }catch(_){ }
+      requestAnimationFrame(maj); }
+    ctl.maj=maj; ctl.lance=function(){ if(!ctl.parti){ ctl.parti=true; maj(); } }; return ctl; };
+  /* l'atterrissage : la dalle qui volait est sur la dalle vivante ; dans la même image, la Toile vivante seule (la couche, la couverture, la dalle qui volait partent) */
+  window._atterrit=function(fond, dc, fin, viv, couches){
+    requestAnimationFrame(function(){ try{ if(viv) viv.arrete=true; }catch(_){ } try{ if(fond) fond.style.display='none'; }catch(_){ }
+      (couches||[]).forEach(function(c){ try{ if(c){ if(c.arrete!==undefined) c.arrete=true; var cv=c.canevas||c; if(cv && cv.parentNode) cv.remove(); } }catch(_){ } });
+      try{ if(dc && dc.parentNode) dc.remove(); }catch(_){ }
+      window._atterriT=performance.now(); if(fin) fin(); }); };
   window._retireFondFlaques=function(fond, dc, fin){ var F2=window.Flaques; if(!F2 || !F2.Scene || !fond.width || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){ fond.style.display='none'; fin(); return; }
       try{ var eau=document.createElement('canvas'); eau.className='onbv-a onbv-fond'; eau.style.cssText=fond.style.cssText; eau.style.display='block'; eau.setAttribute('aria-hidden','true'); fond.parentNode.insertBefore(eau, fond.nextSibling);
         var Lw=parseFloat(fond.style.width)||390, Lh=parseFloat(fond.style.height)||844, Lx=parseFloat(fond.style.left)||0, Ly=parseFloat(fond.style.top)||0, im=document.createElement('canvas');

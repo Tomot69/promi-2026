@@ -26,7 +26,7 @@ def juge(nom, ok, d=''):
 REC = r"""()=>{ window.__vol=[]; const t0=performance.now(); (function f(){ const dc=document.querySelector('#ppNait .onbv-dalle'), cs=document.getElementById('createSheet');
    const pageDalle=!!(cs && cs.classList.contains('show') && !cs.classList.contains('cs-coupe') && getComputedStyle(cs).visibility!=='hidden' && !window._ppSansDalle);
    window.__vol.push([Math.round(performance.now()-t0), !!dc, pageDalle]); if(performance.now()-t0<7000) requestAnimationFrame(f); })(); }"""
-PIEGE = r"""()=>{ const NOM=window._poseNette?'_poseNette':'_retireFondFlaques'; const o=window[NOM]; window.__fini=false; window.__dc=null; window[NOM]=function(fond, dc, fin){ window[NOM]=o;
+PIEGE = r"""()=>{ /* v187 (§1) : l'atterrissage est `_atterrit` (la Toile vivante pendant le vol, la couche partie dans une image) — contrat remis au niveau (original : sauvegardes/redteam_vol_dalle-avant-v187.py) */ const NOM=window._atterrit?'_atterrit':(window._poseNette?'_poseNette':'_retireFondFlaques'); const o=window[NOM]; window.__fini=false; window.__dc=null; window[NOM]=function(fond, dc, fin, a4, a5){ window[NOM]=o;
    /* v186c (C-237) : après l'atterrissage, chaque image : la part de pixels qui change hors de la dalle d'une image à la suivante (le mouvement de la Toile) */
    try{ const tc0=document.getElementById('toileCv'), dv0=document.getElementById('device'); window.__img=[]; let prev=null; const t1=performance.now();
      const lit=()=>{ const D=dv0.getBoundingClientRect(), s=(D.width/(dv0.offsetWidth||390))||1, E=2, c=document.createElement('canvas'); c.width=390*E; c.height=844*E; const rt=tc0.getBoundingClientRect(); if(!rt.width) return null; c.getContext('2d').drawImage(tc0,(rt.left-D.left)/s*E,(rt.top-D.top)/s*E,rt.width/s*E,rt.height/s*E); return {d:c.getContext('2d').getImageData(0,0,c.width,c.height).data, w:c.width, s:s, D:D, E:E}; };
@@ -46,7 +46,7 @@ PIEGE = r"""()=>{ const NOM=window._poseNette?'_poseNette':'_retireFondFlaques';
      const a=ga.getImageData(0,0,A.width,A.height).data, b2=gb.getImageData(0,0,A.width,A.height).data; let n=0, ch=0;
      for(let y=0;y<A.height;y+=2) for(let x=0;x<A.width;x+=2){ if(x>=bx[0]&&x<=bx[2]&&y>=bx[1]&&y<=bx[3]) continue; const i=(y*A.width+x)*4; n++; if(Math.max(Math.abs(a[i]-b2[i]),Math.abs(a[i+1]-b2[i+1]),Math.abs(a[i+2]-b2[i+2]))>24) ch++; }
      window.__hors={pc:100*ch/Math.max(1,n), n:n, vue:Toile.vue(), vue0:window.__vue0||null, g:(window.Toile_graines?Toile_graines():[]).filter(z=>z[3]!=='gray').length}; }catch(e){ window.__hors={err:String(e)}; }
-   return o(fond, dc, function(){ window.__fini=true; fin(); }); }; }"""
+   return o(fond, dc, function(){ window.__fini=true; if(fin) fin(); }, a4, a5); }; }"""
 def zone(im, r, S=3, m=24): return im.crop((int(r[0]*S)-m, int(r[1]*S)-m, int((r[0]+r[2])*S)+m, int((r[1]+r[3])*S)+m))
 def change(a, c): d = ImageChops.difference(a, c).convert('L'); h = d.histogram(); return 100 * sum(h[40:]) / max(1, sum(h))
 with sync_playwright() as p:
