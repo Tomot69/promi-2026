@@ -60,7 +60,8 @@ with sync_playwright() as p:
         pg.evaluate("id=>openDetail(id)", pid); pg.wait_for_timeout(2600)
         f = fiche(pg); a = pg.evaluate(ATT, '#cm5Liste .s4-att')
         juge(T + ' A · trois rangées à pastille, « + 2 commentaires » à pastille', f and f['rangees'] == [True, True, True] and f['plus'] and f['plus']['att'] and f['plus']['txt'].startswith('+ 2'), f)
-        juge(T + ' A · aucun « N mots » écrit sur la fiche', f and (not f['nb'] or f['nb'][0] == 'none') and ' mots' not in f['ligneTx'] and ' mot' not in f['ligneTx'].replace('Un mot', ''), (f or {}).get('nb'))
+        # ⚑ v186b (Tom, C-257) : le NOMBRE seul revient sur la ligne « Un mot… » — jamais le mot « mots » (original : sauvegardes/redteam_mots_neufs-avant-v186b.py)
+        juge(T + ' A · aucun « N mots » écrit sur la fiche (le nombre seul, C-257)', f and ' mots' not in f['ligneTx'] and ' mot' not in f['ligneTx'].replace('Un mot', ''), (f or {}).get('nb'))
         juge(T + ' A · la pastille de la fiche est celle du Fil (taille, couleur, filet)', ref and a and all(x == ref[0] for x in a), (ref[:1], a[:2]))
         # C · vus
         B.tap_sel(pg, '#detailPoster > .enh .closeb'); pg.wait_for_timeout(1200); pg.evaluate("()=>{ closeAll(); }"); pg.wait_for_timeout(400)
@@ -86,9 +87,11 @@ with sync_playwright() as p:
             pg.wait_for_timeout(200)
         tplus = pg.evaluate("()=>window.__tPlus"); print('  … le + paraît %s ms après l\'ouverture' % tplus, flush=True)
         g = pg.evaluate("""()=>{ const b=document.getElementById('cerclePlusMembres'), q=document.getElementById('dptQui'); if(!b || getComputedStyle(b).display==='none') return null; const k=window._echDp(document.getElementById('detailPoster'));
-          const rg=document.createRange(); rg.selectNodeContents(q); const L=[...rg.getClientRects()].filter(r=>r.width>1); const der=L[L.length-1], s=b.querySelector('svg').getBoundingClientRect(), z=b.getBoundingClientRect();
+          /* ⚑ v186b (Tom, C-254 suite, Q606) : le + est 26 pt après le DERNIER PETIT DISQUE (sans petit disque, le tien) — plus après la phrase */
+          const KR=[...document.querySelectorAll('#dAura .kring:not(.kring-moi) .kr-c')].filter(c=>c.getBoundingClientRect().width>4); const KR2=KR.length?KR:[...document.querySelectorAll('#dAura .kring .kr-c')].filter(c=>c.getBoundingClientRect().width>4);
+          const der=KR2[KR2.length-1].getBoundingClientRect(), s=b.querySelector('svg').getBoundingClientRect(), z=b.getBoundingClientRect();
           return {ecart:Math.round((s.left-der.right)/k*10)/10, h:Math.round(s.height/k*10)/10, zone:Math.round(z.width/k), coul:b.querySelector('path').getAttribute('stroke'), vis:getComputedStyle(b).visibility}; }""")
-        juge(T + ' E · le + d\'un Promi : 26 pt après la phrase, orange, zone de 44 pt', g and abs(g['ecart'] - 26) <= 1 and g['coul'].upper() == '#FB4C0D' and g['zone'] == 44 and g['vis'] == 'visible', g)
+        juge(T + ' E · le + d\'un Promi : 26 pt après le disque (C-254, Q606), orange, zone de 44 pt', g and abs(g['ecart'] - 26) <= 1 and g['coul'].upper() == '#FB4C0D' and g['zone'] == 44 and g['vis'] == 'visible', g)
         B.tap_sel(pg, '#cerclePlusMembres'); pg.wait_for_timeout(1600)
         o = pg.evaluate("""()=>{ const r=[...document.querySelectorAll('#dpdCorps .s2-reg')].find(x=>/^(À QUI|QUI OSE \\?)$/.test(((x.querySelector('.s2-lab')||{}).textContent||'').trim())); return {s2:document.getElementById('detailPoster').classList.contains('s2-ouv'), ligne:!!r, ouverte:!!(r&&r.classList.contains('s2-ouv'))}; }""")
         juge(T + ' E · au doigt : Peaufiner ouvert sur À QUI, déplié', o['s2'] and o['ligne'] and o['ouverte'], o)

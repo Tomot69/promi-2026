@@ -228,6 +228,26 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v186b (8 nov. 2026) — LE + DES MEMBRES À CÔTÉ DU PETIT DISQUE (C-254 suite, Q606) ; LE NOMBRE DE COMMENTAIRES SUR LA LIGNE « UN MOT… » (C-257). (Décisions Tom.) Ce bloc CORRIGE v183c (C-242 : le + au bout de la ligne « Avec … ») et v184b (C-253 : « plus de « 3 mots » » — le nombre seul revient).
+> **⚑ C-254 suite** (`lot-V181A-CERCLE`, `place()`) : le + n'est plus dans la ligne de la phrase. Il se place **26 pt après le bord droit du DERNIER petit disque** (les Noyaux
+> `#dAura .kring:not(.kring-moi) .kr-c` ; le gros disque, `kring-moi`, est le tien), **centré verticalement sur lui** ; même dessin, même encre, même taille (la hauteur de
+> capitale de la ligne « Avec … » / de la phrase), zone de 44 pt ; Promi, Chiche et Cercle ; il ne dépend plus du titre (ni de sa longueur, ni de son dépliage). Juge :
+> **`redteam_plus_disque.py`** (54 : centre du + = centre du petit disque à 0,5 pt, 26 pt ± 0,5, aucun recouvrement, ≤ 366 ; trois natures × titres court, plein, 280 caractères ×
+> échelles 1 et 0,79 ; rouge sur v186a).
+> **⚑ C-257** (`lot-V145-COMM`) : sur la ligne « Un mot… », à droite, **le nombre de commentaires, seul** (Gilbert 700, 18 pt : la police de « Un mot… », son encre), rien
+> s'il n'y en a aucun ; zone de toucher de 44 pt. **Un toucher sur ce nombre fait glisser la fiche** jusqu'à ce que le premier commentaire (le plus récent) soit 16 pt sous le
+> rognage de l'en-tête (112), borné au défilement possible : le défilement doux NATIF du navigateur (`scrollTo({behavior:'smooth'})`) — un mouvement continu, que le
+> doigt peut reprendre ; ni la saisie, ni le clavier, ni Peaufiner (le geste est lu au doigt, `G.nb`, et son clic avalé). ⚠ **Essayé puis retiré** : un glissement écrit
+> image par image (`scrollTop` à chaque image) — sur la fiche d'un Cercle chaque écriture recalcule la page, ≈ 150 ms par image en WebKit : des sauts. Juge :
+> **`redteam_nombre_mots.py`** (Promi, Chiche, Cercle × 0, 1, 3, 12 ; un sens, arrivé à la cible ± 1 pt ; la cadence jugée seulement au calme). Contrat remis au niveau : `redteam_commentaires` B
+> (original `sauvegardes/redteam_commentaires-avant-v186b.py`).
+> **Vu dans Safari iOS 26.1 (simulateur iPhone 16e, banc `banc-haut-fiche.html`, Cercle)** : le + à côté du petit disque, le « 1 » à droite de « Un mot… » (`planche-v186/safari-cercle-plus-et-nombre.png`).
+> Le glissement au doigt dans Safari : à la séance de fin de chapitre (v186c). ⚠ **Mesuré en jugeant** : ① à l'échelle 0,79, sur la fiche d'un Cercle, le défilement s'arrête
+> 83 pt avant la cible calculée (la cale collante de la barre retranche ce défilement) — le premier commentaire y est entier à l'écran ; ② une pose tardive de la fiche
+> (≈ 1 s après l'ouverture) peut réduire sa hauteur : un défilement fait dans ce créneau retombe (155 → 59, sans écriture de `scrollTop`) — préexistant, non touché.
+> ⚠ **Trouvé, non touché (A5, déjà en v184c)** : sur une fiche Promi ou Chiche à un ou trois mots, la ligne « Un mot… » est à 732 → 788 pt, **à moitié sous la barre Peaufiner
+> (760)** au repos — son texte et le nombre sont coupés en deux ; il faut défiler pour la voir entière (Q608).
+
 ### ⚑ v186a (8 nov. 2026) — CE QUE VOIT L'iPHONE (§0) ; LE BOUTON ⇅ REVIENT, « TRIER » EST RETIRÉ (C-256). (Décisions Tom.) Ce bloc CORRIGE v164b (C-191, Q582 → A : le mot « TRIER »).
 > **⚑ §0 — v185 N'A JAMAIS EXISTÉ DANS LE DÉPÔT** : le dernier lot livré était v184c (`0d83663`) ; le registre s'arrêtait à C-255 ; ni le bouton ⇅ ni le + « dans le titre » n'avaient été
 > faits. **Le cache n'était pas en cause** : `serveur.py` envoie `Cache-Control: no-store, no-cache, must-revalidate, max-age=0`, sans `Last-Modified` ni `ETag`, pour `app.html` et pour

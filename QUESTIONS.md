@@ -8934,8 +8934,10 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   cloner TOUT l'état du moteur (pas seulement les graines) et d'y rejouer la pose : c'est écrire dans le moteur. Ou bien accepter, pour ces mondes faits de leurs paroles, que la
   dalle se recadre à l'arrivée (elle le fait déjà, en flaques). Non commencé.
 - **Q605 — À SAVOIR (v184c, C-250)** : sur 200 paroles, le Fil met ≈ 16 s à s'ouvrir en WebKit piloté (déjà en v183d). Non mesuré sur l'iPhone ; non traité dans ce lot.
-- **Q606 — À TRANCHER (v184c, vu dans Safari, C-254)** : quand la phrase d'un Promi ou d'un Chiche remplit sa ligne, le + des membres passe à la ligne suivante et chevauche le haut du
+- **Q606 — TRANCHÉE (Tom, v186 §2 : à côté du petit disque, centré sur lui ; v186b)** — *(historique)* ~~À TRANCHER (v184c, vu dans Safari, C-254)~~ : quand la phrase d'un Promi ou d'un Chiche remplit sa ligne, le + des membres passe à la ligne suivante et chevauche le haut du
   titre. Trois réponses possibles : faire descendre le titre d'une ligne pour lui faire place ; poser le + au bout de la DERNIÈRE ligne du titre ; ne pas le montrer (Peaufiner reste).
   Capture : `planche-v184/safari-chiche-plus-chevauche.png`. Rien changé.
 - **Q607 — À SAVOIR (v184c, vu dans Safari, préexistant v183c)** : sur la fiche d'un Cercle, un glissé vers le bas qui part d'une carte du fil ne fait pas remonter la fiche
   (le geste part à la page Safari). Parti de l'espace libre ou du haut de la fiche, il remonte. Cause non nommée ; rien changé.
+- **Q608 — À SAVOIR (v186b, préexistant v184c)** : sur une fiche Promi ou Chiche à un ou trois mots, la ligne « Un mot… » est posée à 732 → 788 pt, à moitié sous la barre
+  Peaufiner (760) au repos : son texte (et maintenant le nombre, C-257) est coupé en deux. Remonter la ligne (ou la fiche) touche la mise en page validée de C-246 et C-248 : rien changé.

@@ -71,8 +71,11 @@ with sync_playwright() as p:
             #   comme après ; le mot reçu porte la pastille (`.s4-att`, celle du Fil) ; le Fil ne gagne aucun non-lu (la pastille de la carte, elle, s'allume).
             nb = e.get('nb') or {}
             att = pg.evaluate("()=>!!document.querySelector('#cm5Liste .cm5-un .s4-att')")
-            juge('B · [%s] aucun nombre écrit, avant comme après ; le mot reçu porte la pastille ; le Fil ne gagne aucun non-lu' % th,
-                 nb0 is None and not any(ch.isdigit() for ch in ligne0) and not (nb.get('t') or '').strip() and att and e.get('nonlus') == nl0,
+            # ⚑ v186b (Tom, C-257 : « sur la ligne « Un mot… », le nombre de commentaires à droite, le nombre seul ») — CONTRAT REMIS AU NIVEAU (original :
+            #   sauvegardes/redteam_commentaires-avant-v186b.py) : après la réception, le nombre affiché est le compte des mots de la parole, seul ; la pastille et le Fil : inchangés
+            nmots = pg.evaluate("id=>((promises.find(p=>p.id===id)||{}).comments||[]).length", p1)
+            juge('B · [%s] le nombre seul (C-257) : « %d » après la réception ; le mot reçu porte la pastille ; le Fil ne gagne aucun non-lu' % (th, nmots),
+                 (nb.get('t') or '').strip() == str(nmots) and att and e.get('nonlus') == nl0,
                  'avant : « %s », compte %s · après : %s · pastille %s · non-lus du Fil %s → %s' % (ligne0, nb0, nb, att, nl0, e.get('nonlus')))
             # C · toucher la ligne ouvre la saisie
             B.tap_sel(pg, '#cm5Ligne'); pg.wait_for_timeout(900); e = pg.evaluate(ET)

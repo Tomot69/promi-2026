@@ -17,17 +17,22 @@ if(NAT==='cercle'){ etat=await (await fetch('banc-etats/etat-cercle.json',{cache
 else { const nom=Q.get('etat')||'etats/tom-20261101-205518.json'; const d=await (await fetch(nom,{cache:'no-store'})).json(); etat=d.ls||{}; ['setItem','getItem','removeItem','clear','key','length'].forEach(k=>delete etat[k]); }
 delete etat.promi_theme; localStorage.clear(); for(const k in etat) localStorage.setItem(k,etat[k]);
 for(const [k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1'],['promi_theme','light']]) localStorage.setItem(k,v);
+if(Q.get('haut')){ location.replace(Q.get('app')||'app.html'); return; }   /* v186c : l'app en haut de page, sans cadre (Q607 : juger sans l'iframe) */
 const ch=new Promise(r=>{F.onload=r;}); F.src=(Q.get('app')||'app.html'); await ch;
 let w=null; for(let i=0;i<300;i++){ await wait(100); try{ const x=F.contentWindow; if(x.document.readyState==='complete'&&x.openDetail&&x.Toile&&x.eval('typeof promises')==='object'){ w=x; break; } }catch(e){} }
 if(!w){ dit('app pas prête'); envoie({erreur:'app pas prête'}); return; }
 await wait(2500);
 w.eval(await (await fetch('haut-fiche-rec.js',{cache:'no-store'})).text());
+if(Q.get('css')){ const st=w.document.createElement('style'); st.id='bancCss'; st.textContent=Q.get('css'); w.document.head.appendChild(st); }   /* v186c : une règle candidate, pour tester une cause au doigt */
+if(Q.get('norogne')){ const dd=w.document.getElementById('detailPoster'); dd.addEventListener('scroll',()=>{ w.document.querySelectorAll('[data-v184r]').forEach(e=>{ e.style.removeProperty('clip-path'); e.style.removeProperty('-webkit-clip-path'); }); },{passive:true}); }   /* v186c : Q607, sans la découpe du haut */
 if(Q.get('trace')){ let T=null; const cl=e=>{ const x=e.target; return x ? ((x.id||'')+'.'+(x.className&&x.className.baseVal!==undefined?x.className.baseVal:(x.className||''))).slice(0,50) : ''; };
-  w.addEventListener('touchstart',e=>{ T={cible:cl(e), chaine:[], prev:0, n:0, st0:w.document.getElementById('detailPoster').scrollTop}; let a=e.target; while(a&&a!==w.document.body){ T.chaine.push((a.id||String(a.className||'').slice(0,20))); a=a.parentElement; } },{passive:true});
+  w.addEventListener('touchstart',e=>{ setTimeout(()=>{ if(T) T.prevStart2=e.defaultPrevented?1:0; },0); T={cible:cl(e), chaine:[], prev:0, n:0, prevStart:e.defaultPrevented?1:0, st0:w.document.getElementById('detailPoster').scrollTop}; let a=e.target; while(a&&a!==w.document.body){ T.chaine.push((a.id||String(a.className||'').slice(0,20))); a=a.parentElement; } },{passive:true});
   w.addEventListener('touchmove',e=>{ if(T){ T.n++; if(e.defaultPrevented) T.prev++; } },{passive:true});
   w.addEventListener('touchend',()=>{ if(T){ T.st1=w.document.getElementById('detailPoster').scrollTop; envoie({trace:T}); T=null; } },{passive:true}); }
-const OUVRE={cercle:"openEssaim('potager')", promi:"(function(){var p=promises.filter(function(q){return !q.draft&&!q.chiche&&!q.nuee}).sort(function(a,b){return (b.title||'').length-(a.title||'').length})[0]; openDetail(p.id);})()", chiche:"(function(){var p=promises.filter(function(q){return !q.draft&&q.chiche})[0]; openDetail(p.id);})()"};
+const OUVRE={cercle:"openEssaim('potager')", promi:"(function(){var p=promises.filter(function(q){return !q.draft&&!q.chiche&&!q.nuee}).sort(function(a,b){return (b.title||'').length-(a.title||'').length})[0]; if(window.__mots) p.comments=window.__mots; openDetail(p.id);})()", chiche:"(function(){var p=promises.filter(function(q){return !q.draft&&q.chiche})[0]; if(window.__mots) p.comments=window.__mots; openDetail(p.id);})()"};
 const nat=NAT==='cercle'?'cercle':NAT;
+if(Q.get('mots')){ const nm=+Q.get('mots'), C=[]; for(let i=0;i<nm;i++) C.push({t:'Mot numéro '+(i+1)+', à propos de ce qu’on prévoit', by:['Marion','Rachel','Nico'][i%3], d:'2026-11-0'+(1+i%7)+'T1'+(i%10)+':00:00Z', vu:true});   /* v186 : des commentaires, pour le nombre de C-257 */
+  try{ if(NAT==='cercle'){ const o=w._cercleMots.de('potager'); o.comments.length=0; C.forEach(c=>o.comments.push(c)); w._cercleMots.garde(); } else { w.eval('window.__mots='+JSON.stringify(C)); } }catch(e){} }
 w.eval(OUVRE[NAT]); await wait(2800);
 const dp=w.document.getElementById('detailPoster'); const O=w.HF.releve(); const B={O:O, version:w.PROMI_VERSION||null, echelle:w._echDp?w._echDp(dp):null, cas:[]};
 const ecart=()=>w.HF.compare(O,w.HF.releve(),nat);

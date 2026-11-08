@@ -54,8 +54,11 @@ with sync_playwright() as p:
                 #   horizontale lue sur l'image fait au moins 0,26 de la hauteur (0,20 avant) ; la couleur ne change pas (#FB4C0D).
                 mx = (min(xs) + max(xs)) // 2; colx = int(min(xs) + (max(xs) - min(xs)) * 0.18)
                 ep = 0.25 * len([j for j in range(int(q['y']) * 4, int(q['y'] + q['h']) * 4 + 4) if (lambda c: c[0] > 200 and 50 < c[1] < 110 and c[2] < 60)(px(pg, im, colx + 0.5, j / 4 + 0.125))])   # au quart de point : à 0,79, le point entier ne voit pas le trait
-                juge(T + ' A · le + : encre orange, 26 pt après la liste, haut d\'une capitale de la ligne, sur le haut des majuscules, plus gras, zone de 44 pt',
-                     abs(g0 - 26) <= 1.5 and abs(h0 - q['cap']) <= 1.5 and abs(min(ys) - q['capHaut']) <= 1.5 and ep >= 0.26 * q['cap'] - 0.5 and abs(q['w'] - 44) <= .6 and all(q['coins']),
+                # ⚑ v186b (Tom, Q606 → C-254 suite) — CONTRAT RÉÉCRIT (original : sauvegardes/redteam_cercle_plus_membres-avant-v186b.py) : le + n'est plus au bout de la ligne
+                #   « Avec … » mais à côté du dernier petit disque, centré sur lui — sa PLACE est jugée par redteam_plus_disque ; ici : son dessin (orange, haut d'une capitale
+                #   de la ligne « Avec … », plus gras), sa zone de 44 pt prise à ses quatre coins.
+                juge(T + ' A · le + : encre orange, haut d\'une capitale de la ligne « Avec … », plus gras, zone de 44 pt (sa place : redteam_plus_disque)',
+                     abs(h0 - q['cap']) <= 1.5 and ep >= 0.26 * q['cap'] - 0.5 and abs(q['w'] - 44) <= .6 and all(q['coins']),
                      {'écart': round(g0, 1), 'hauteur': h0, 'capitale': round(q['cap'], 1), 'haut': min(ys), 'haut des capitales': round(q['capHaut'], 1), 'épaisseur': ep, 'coins': q['coins']})
             else: juge(T + ' A · le + : encre orange lue', False, q)
         else: juge(T + ' A · le + paraît après la liste des membres', False, q)

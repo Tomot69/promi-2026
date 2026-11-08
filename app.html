@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v186a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v186b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -38408,24 +38408,28 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   }
   function place(){
     var d=dp(), b=document.getElementById('cerclePlusMembres');
-    if(!avecPlus(d) || d.classList.contains('s2-ouv') || window._titreDeplie){ if(b) b.style.setProperty('display','none','important'); return; }
+    if(!avecPlus(d) || d.classList.contains('s2-ouv')){ if(b) b.style.setProperty('display','none','important'); return; }   /* v186b : le dépliage du titre ne le touche plus (il est près des Noyaux) */
     /* ⚑ v182b (Tom, C-242 suite : « le + se place juste après la liste des membres, sur la même ligne, avec un petit écart régulier ; plus de grand vide à
        droite ») — il suit la fin du TEXTE de la ligne « Avec Rachel, Marion, +1 » (`#dptQui`, lue sur son encre : Range), 8 pt après elle, centré sur sa
        hauteur d'x ; son encre a la hauteur d'une capitale de cette ligne (le + qui valide un nom, C-122). Une ligne trop longue : le + passe à la ligne suivante. */
-    var qe=document.getElementById('dptQui');
-    if(!qe || getComputedStyle(qe).display==='none' || !(qe.textContent||'').trim()){ if(b) b.style.setProperty('display','none','important'); return; }
+    /* ⚑ v186b (Tom, C-254 suite, Q606 : « le + ne va plus dans le titre. Il se place à hauteur du milieu du PETIT disque (pas du gros, qui est le tien), juste à côté
+       de lui, verticalement centré sur ce petit disque, à la même distance de l'élément qu'aujourd'hui ; plusieurs petits disques : après le dernier ; même dessin,
+       même graisse, même couleur, même taille ; il ne chevauche plus jamais rien ; Promi, Chiche et Cercle ») — le disque est le canevas de l'anneau
+       (`#dAura .kring:not(.kring-moi) .kr-c`, le dernier) ; l'encre du + commence 26 pt après son bord droit (l'écart de C-242), son centre à la hauteur du centre du
+       disque. Sa taille reste la hauteur de capitale de la ligne « Avec … » / de la phrase (lue comme avant sur sa police rendue). */
+    var qe=document.getElementById('dptQui'), au=document.getElementById('dAura');
+    var KR=au ? [].filter.call(au.querySelectorAll('.kring:not(.kring-moi) .kr-c'), function(c){ var r=c.getBoundingClientRect(); return r.width>4 && r.height>4; }) : [];
+    if(!KR.length && au) KR=[].filter.call(au.querySelectorAll('.kring .kr-c'), function(c){ var r=c.getBoundingClientRect(); return r.width>4 && r.height>4; });   /* aucun petit disque (un Promi à soi : seulement le tien) : après le gros, centré sur lui */
+    if(!KR.length){ if(b) b.style.setProperty('display','none','important'); return; }
     b=bouton(); if(b.parentNode!==d) d.appendChild(b);
-    var k=ech(d), R=d.getBoundingClientRect(), rg=document.createRange(); rg.selectNodeContents(qe);
-    var L=[].filter.call(rg.getClientRects(), function(q){ return q.width>1 && q.height>1; }); if(!L.length){ b.style.setProperty('display','none','important'); return; }
+    var k=ech(d), R=d.getBoundingClientRect(), dq=KR[KR.length-1].getBoundingClientRect();
     /* ⚑ v183c (Tom, 7 nov. 2026, C-242 suite : « décale-le de 3 mm vers la droite sur l'iPhone 16e, soit 18 pt de plus (26 pt après la liste au lieu de 8) ; rends-le
        plus gras ; sa hauteur est celle des majuscules de la liste à gauche, alignée sur le haut de ces majuscules ; ne change pas sa couleur ») — la hauteur de
        capitale et sa place se LISENT sur la police rendue de la ligne (le « A » de « Avec », `measureText` : son haut d'encre et l'ascendante de la police) */
-    var csq=getComputedStyle(qe), fs=parseFloat(csq.fontSize)||19, cap=Math.round(fs*0.70*4)/4, asc=fs*0.8, der=L[L.length-1];
-    try{ var cvm=bouton.__cv||(bouton.__cv=document.createElement('canvas')), gm=cvm.getContext('2d'); gm.font=(csq.fontStyle||'normal')+' '+(csq.fontWeight||'400')+' '+fs+'px '+csq.fontFamily; var mA=gm.measureText('A');
-      if(mA.actualBoundingBoxAscent>0) cap=Math.round(mA.actualBoundingBoxAscent*4)/4; if(mA.fontBoundingBoxAscent>0) asc=mA.fontBoundingBoxAscent; }catch(_){ }
-    var ex=(der.right-R.left)/k, top0=(der.top-R.top)/k + d.scrollTop + (asc-cap);   /* le haut des capitales de la dernière ligne */
-    var gx=ex+26; if(gx+cap>366){ gx=24; top0+=fs*1.25; }   /* la ligne est pleine : le + ouvre la suivante */
-    var cy=top0+cap/2; b._cy=cy;
+    var csq=qe ? getComputedStyle(qe) : null, fs=(csq && parseFloat(csq.fontSize))||19, cap=Math.round(fs*0.70*4)/4;
+    try{ if(csq){ var cvm=bouton.__cv||(bouton.__cv=document.createElement('canvas')), gm=cvm.getContext('2d'); gm.font=(csq.fontStyle||'normal')+' '+(csq.fontWeight||'400')+' '+fs+'px '+csq.fontFamily; var mA=gm.measureText('A');
+      if(mA.actualBoundingBoxAscent>0) cap=Math.round(mA.actualBoundingBoxAscent*4)/4; } }catch(_){ }
+    var gx=(dq.right-R.left)/k + 26, cy=((dq.top+dq.bottom)/2-R.top)/k + d.scrollTop; b._cy=cy;   /* 26 pt après le petit disque, centré sur lui */
     var sv=b.querySelector('svg'); if(sv){ sv.setAttribute('width', cap); sv.setAttribute('height', cap); }
     var top=Math.round((cy-22)*4)/4, left=Math.round((gx+cap/2-22)*4)/4;   /* l'encre (une capitale) commence 8 pt après la liste ; la zone (44) centrée sur elle */
     var vis=(cy-11-d.scrollTop < HAUT) ? 'hidden' : 'visible'; if(b.style.getPropertyValue('visibility')!==vis) b.style.setProperty('visibility',vis,'important');   /* C-243 : rien sous l'en-tête — défilé jusque-là, le + s'efface avec ce qui passe dessous */
@@ -42340,8 +42344,14 @@ window._noms=(function(){
     if(!s){ l.innerHTML='<span class="cm5-mot" style="font:700 18px/1.2 Gilbert,system-ui,sans-serif;white-space:nowrap"></span><input class="cm5-saisie" type="text" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" aria-label="'+esc(TXT.voix)+'"><button type="button" class="cm5-va" aria-label="Envoyer" style="flex:none;width:44px;height:44px;margin:0 -12px 0 0;padding:0;border:0;background:transparent;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>';
       s=l.querySelector('.cm5-saisie'); m=l.querySelector('.cm5-mot'); f=l.querySelector('.cm5-va'); }
     m.textContent=TXT.ligne; m.style.display=ouvert?'none':'block'; s.style.display=ouvert?'block':'none';
-    var nb=l.querySelector('.cm5-nb'); if(!nb){ nb=document.createElement('span'); nb.className='cm5-nb'; nb.setAttribute('style','font:500 14px/1.2 Atkinson,system-ui,sans-serif;letter-spacing:.02em;white-space:nowrap;margin-left:auto'); l.insertBefore(nb, f); }
-    var cn=compte(p); nb.textContent=''; nb.style.display='none';   /* ⚑ v184b (Tom, C-253) : « le texte qui signale les mots, c'est du bruit » — plus de « 3 mots » : la pastille sur le mot neuf */ f.style.display=ouvert?'':'none'; s.style.color=C.encre; s.style.webkitTextFillColor=C.encre; s.style.caretColor=C.encre; f.style.color=C.encre;
+    var nb=l.querySelector('.cm5-nb'); if(!nb){ nb=document.createElement('span'); nb.className='cm5-nb'; l.insertBefore(nb, f); }
+    /* ⚑ v186b (Tom, C-257 : « sur la ligne « Un mot… », le nombre de commentaires à droite : le nombre seul, dans la typographie et à l'encre de cette ligne,
+       sans mot ajouté ; aucun commentaire : rien. Un toucher sur ce nombre fait glisser la fiche en douceur jusqu'aux commentaires ; il n'ouvre ni le clavier
+       ni Peaufiner ») — la police de « Un mot… » (Gilbert 700, 18 pt), l'encre de la ligne ; la zone de toucher fait 44 pt de haut (la ligne) et au moins 44 de
+       large. Ce corrige v184b (C-253 : « plus de « 3 mots » ») pour le nombre seul ; la pastille des mots neufs ne change pas. */
+    var nbN=liste(p).length;
+    nb.setAttribute('style','font:700 18px/1.2 Gilbert,system-ui,sans-serif;white-space:nowrap;margin-left:auto;min-width:44px;height:44px;display:'+((nbN>0 && !ouvert)?'flex':'none')+';align-items:center;justify-content:flex-end;cursor:pointer;color:inherit;-webkit-text-fill-color:inherit');
+    nb.textContent=nbN>0 ? String(nbN) : ''; nb.setAttribute('role','button'); nb.setAttribute('aria-label', nbN>0 ? (nbN+(nbN>1?' commentaires':' commentaire')) : '');   /* ⚑ v184b (Tom, C-253) : « le texte qui signale les mots, c'est du bruit » — plus de « 3 mots » : la pastille sur le mot neuf */ f.style.display=ouvert?'':'none'; s.style.color=C.encre; s.style.webkitTextFillColor=C.encre; s.style.caretColor=C.encre; f.style.color=C.encre;
     l.setAttribute('role', ouvert?'group':'button'); l.setAttribute('aria-label', TXT.voix); }
   /* ⚑ v183a (Tom, 7 nov. 2026, C-248) — « Les commentaires sont visibles sur la vue principale de la fiche, les uns sous les autres, sans aucun chevauchement.
      S'il y en a trop, les plus récents sont affichés, suivis d'une ligne « + X commentaires ». Un toucher sur cette ligne déplie le reste en douceur (hauteur
@@ -42351,6 +42361,20 @@ window._noms=(function(){
      fiche défile au-dessus de la barre quand elle passe sous elle. Sur un Cercle, elle ferme le fil des paroles (qui défile, coupé sous l'en-tête) ; « Un mot… »
      reste dans son bloc collant. Le fil superposé (`#cm5Fil`) et le dernier mot (`#cm5Dernier`) ne paraissent plus. */
   var VUS=3, LIGNE_T=LIGNE_Y0, DEPLIE={}, ANIM=0;
+  /* ⚑ v186b (Tom, C-257) — LE GLISSEMENT JUSQU'AUX COMMENTAIRES : la fiche défile (elle seule ; la barre Peaufiner reste en bas, elle est fixée) jusqu'à ce que le
+     premier commentaire (le plus récent, en tête de la liste) soit 16 pt sous le rognage de l'en-tête (112 pt), borné au défilement possible. Un seul mouvement,
+     sur l'horloge réelle, une courbe douce (aller-retour quadratique) dont la durée suit la distance (300 à 700 ms) : la vitesse ne fait jamais de saut. Un doigt
+     posé pendant le glissement l'arrête (il a la main). */
+  var GL=0;
+  function glisse(){ var dp=$('detailPoster'), el=dp && dp.querySelector('#cm5Liste .cm5-un'); if(!dp || !el) return;
+    var k=(window._echDp?window._echDp(dp):1)||1, R0=dp.getBoundingClientRect(), r=el.getBoundingClientRect();
+    var cible=Math.max(0, Math.min(dp.scrollHeight-dp.clientHeight, dp.scrollTop + (r.top-R0.top)/k - 128)), depart=dp.scrollTop;
+    window._cm5Glisse={cible:cible, depart:depart, t0:performance.now(), natif:true};
+    if(Math.abs(cible-depart)<0.5) return;
+    /* le défilement doux NATIF (Safari, WebKit) : animé par le compositeur, comme un défilement au doigt — une boucle d'images qui écrit `scrollTop` coûtait
+       ≈ 150 ms par image sur la fiche d'un Cercle (tout ce qui suit le défilement se recalcule dans la même tâche) : 3 images pour 700 ms */
+    try{ dp.scrollTo({top:cible, behavior:'smooth'}); }catch(_){ dp.scrollTop=cible; } }
+  window._cm5Glisse=null; window._cm5GlisseFn=glisse;
   function cle(p){ return String(p && p.id); }
   function rangee(c){ var qui=(c.by&&!/^moi$/i.test(c.by))?c.by:nom(c);
     return '<div class="cm5-un" style="display:flex;gap:10px;align-items:flex-start;margin:0;padding:0 0 12px;position:relative">'+(window._motNeuf&&window._motNeuf(c)?window._pastilleHTML('top:6.5px;right:0'):'')+visage(c.by, 22)+'<div style="flex:1 1 auto;min-width:0"><div style="font:700 16px/22px Gilbert,system-ui,sans-serif;margin:0;white-space:nowrap;overflow:hidden">'+(window._noms?window._noms.lien(qui, {largeur:180, police:'700 16px Gilbert'}):esc(qui))+'<span class="cm5-date" style="font:400 13px/22px Atkinson,system-ui,sans-serif;margin-left:7px">'+esc(date(c.d))+'</span></div><div class="cm5-t" style="font:400 16px/1.35 Atkinson,system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;margin:1px 0 0">'+esc(c.t)+'</div></div></div>'; }
@@ -42416,13 +42440,15 @@ window._noms=(function(){
   var GP=null;
   document.addEventListener('pointerdown', function(e){ var t=e.target, z=t && t.closest ? t.closest('#cm5Ligne, #cm5Dernier') : null, dans=t && t.closest ? t.closest('#cm5Ligne, #cm5Dernier, #cm5Fil, #cm5Liste') : null;
     GP=(t && t.closest && t.closest('#cm5Liste .cm5-plus')) ? {x:e.clientX, y:e.clientY, t:performance.now()} : null;
-    G=z?{z:z, va:!!t.closest('.cm5-va'), x:e.clientX, y:e.clientY, t:performance.now()}:null;
+    G=z?{z:z, va:!!t.closest('.cm5-va'), nb:!!t.closest('#cm5Ligne .cm5-nb'), x:e.clientX, y:e.clientY, t:performance.now()}:null;   /* v186b (C-257) : le nombre */
     if(ouvert && !dans){ var dp=$('detailPoster'); if(dp && dp.contains(t)) window._cm5Ferme=performance.now(); ferme(); } }, true);
   document.addEventListener('pointerup', function(e){ var gp=GP; GP=null; if(gp && Math.abs(e.clientX-gp.x)<=10 && Math.abs(e.clientY-gp.y)<=10 && performance.now()-gp.t<=700){ e.preventDefault(); window._cm5Ferme=performance.now(); deplie(); return; }
     var g=G; G=null; if(!g) return; if(Math.abs(e.clientX-g.x)>10 || Math.abs(e.clientY-g.y)>10 || performance.now()-g.t>700) return;
     if(g.va && ouvert){ e.preventDefault(); envoie(); return; }
+    if(g.nb && !ouvert){ e.preventDefault(); e.stopPropagation(); window._cm5NbT=performance.now(); glisse(); return; }   /* v186b (C-257) : ni la saisie ni Peaufiner */
     if(!ouvert){ e.preventDefault(); window._cm5T=performance.now(); ouvre(); } }, true);
   document.addEventListener('click', function(e){ var t=e.target; if(t && t.closest && t.closest('#cm5Liste .cm5-plus')){ e.stopPropagation(); e.preventDefault(); deplie(); return; }   /* v183a : le clic (au banc, ou sans évènement de pointeur) ; déjà déplié par le geste, il ne fait rien */
+    if(t && t.closest && t.closest('#cm5Ligne .cm5-nb')){ e.stopPropagation(); e.preventDefault(); if(!ouvert && e.detail===0) glisse(); return; }   /* v186b (C-257) : le clic qui suit le toucher ne fait rien de plus ; un clic de script glisse */
     if(t && t.closest && t.closest('#cm5Ligne, #cm5Dernier')){ e.stopPropagation(); if(!ouvert && e.detail===0) ouvre(); return; }
     if(window._cm5Ferme && performance.now()-window._cm5Ferme<450){ e.stopPropagation(); e.preventDefault(); } }, true);   /* le toucher qui referme la saisie ne fait rien d'autre */
   document.addEventListener('keydown', function(e){ if(e.key==='Enter' && e.target && e.target.classList && e.target.classList.contains('cm5-saisie')){ e.preventDefault(); envoie(); } }, true);
