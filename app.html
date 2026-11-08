@@ -39170,20 +39170,21 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        le vol de la dalle 0,9 → 0,765 s : il remplit l'attente et finirait après elle ; dans `finPas` 320 → 272). Les durées de tracé et les passages en flaques ne bougent pas. */
     var FIN_T=1615;
     var couvreHaut=null;
-    T(function(){ var hh=document.getElementById('onbHaut'); if(!hh) return;
+    T(function(){ try{ if(viv && viv.lance) viv.lance(); }catch(_){ } var hh=document.getElementById('onbHaut'); if(!hh) return;
       try{ var D0=dev.getBoundingClientRect(), s0=k(), rh=[].reduce.call(hh.querySelectorAll('.onbv-a'), function(a, e){ if(getComputedStyle(e).display==='none') return a; var q=e.getBoundingClientRect(); if(!q.width||!q.height) return a; return [Math.min(a[0],(q.left-D0.left)/s0), Math.min(a[1],(q.top-D0.top)/s0), Math.max(a[2],(q.right-D0.left)/s0), Math.max(a[3],(q.bottom-D0.top)/s0)]; }, [1e9,1e9,-1e9,-1e9]);
         if(rh[0]<1e9 && fond && fond.width){ var y0=Math.max(0, Math.floor(rh[1]-14)), y1=Math.min(844, Math.ceil(rh[3]+14));
-          couvreHaut=window._passageFlaques(v, {mode:'couvre', apres:hh, rect:[0, y0, 390, y1-y0], image:fond, duree:620, lent:LENT_ONB(), garde:true, fin:function(){ hh.style.visibility='hidden'; }}); }
+          couvreHaut=window._passageFlaques(v, {mode:'couvre', apres:hh, rect:[0, y0, 390, y1-y0], image:fond, suit:true, duree:620, lent:LENT_ONB(), garde:true, fin:function(){ hh.style.visibility='hidden'; }}); }
         else hh.style.visibility='hidden'; }catch(_){ hh.style.visibility='hidden'; } }, 553);
     T(function(){ if(!ok||!cible) return; N.vole(cible); }, 808);
     /* ⚑ v146 (Tom, C-123) — LA TOILE D'AVANT NE DISPARAÎT PLUS D'UN COUP. L'image figée pendant le vol de la dalle s'effaçait en une image : toutes ses
        cellules partaient ensemble. Elle se retire EN FLAQUES (le moteur du guide, `variantes/flaques.js`) : des trous naissent, s'agrandissent, se
        rejoignent, et la Toile vivante paraît dessous — où les voisines naissent une à une. 720 ms ; « Réduire les animations » : retirée d'un coup. */
-    function retireFond(fin){ window._retireFondFlaques(fond, dc, fin); }   /* v180a (C-237) : le code est partagé avec la page + (lot-V180-NAISSANCE) */
+    /* ⚑ v187 (Tom, §2, Q609 tranchée : « l'onboarding perd aussi ses flaques à l'atterrissage, exactement comme la page + ») — la Toile vivante pendant le vol
+       (`_fondVivant`), l'atterrissage dans une image (`_atterrit`) : le code de la page +. `_retireFondFlaques` n'est plus appelé. */
+    var viv=window._fondVivant(fond, np?np.id:null, dc);
     T(function(){
-      retireFond(function(){ if(dc.parentNode) dc.remove(); });   /* la dalle en vol part AVEC la Toile d'avant : elle est peinte dans l'image qui se retire */
+      window._atterrit(fond, dc, null, viv, [couvreHaut]);
       var hh=document.getElementById('onbHaut'); if(hh) hh.style.display='none';
-      try{ if(couvreHaut){ couvreHaut.arrete=true; if(couvreHaut.canevas.parentNode) couvreHaut.canevas.remove(); } }catch(_){ }   /* v148 : son image est celle que la Toile d'avant emporte en flaques à cet instant */
       var fin=document.getElementById('onbFin');
       if(fin){ finPlace(fin, np); finMontre(fin); } }, FIN_T);
     /* ⚑ v21 (Tom) : le message RESTE — au moins quatre secondes, puis jusqu'au toucher. */
