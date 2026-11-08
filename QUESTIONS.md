@@ -8958,3 +8958,9 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   de la fiche) — ou acceptée telle quelle. Rien n'est changé avant ta décision.
 - **Q609 — TRANCHÉE PAR TOM (v187 §2 : l'onboarding perd aussi ses flaques à l'atterrissage) — FAIT en v187** (v186c, C-237, C-247) : la tache à la fin du vol est retirée de la page + ; l'onboarding garde ses flaques à l'atterrissage, parce qu'elles y couvrent
   le recadrage de la vue (× 2) et la naissance des voisines. Les retirer là aussi ferait voir ces deux mouvements d'un coup. Les deux séquences ne sont donc plus identiques sur ce point.
+- **Q612 — À TRANCHER (v188 §1, C-259)** : « le trait de jonction sous l'en-tête » — ARRÊTÉ, comme tu l'as demandé : à la jonction (le bas de la bande de v187, 112 pt) il
+  n'y a aujourd'hui AUCUNE vague. Ce qu'il y a : ① au repos, la bande n'existe pas ; la fiche montre le champ jusqu'à sa vague, plus bas ; ② défilée, la bande couvre
+  0 → 112 pt avec le haut du champ, et finit par un bord DROIT, sans trait ; ③ les vagues de la fiche sont ailleurs : sur un Cercle, le bas de la bande de la Toile
+  (≈ 150 → 230 pt), un trait sombre qui défile avec la fiche et passe sous la bande ; sur un Promi et un Chiche, le trait du GESTE (« trace pour tenir », ≈ 300 → 370 pt),
+  qu'on trace au doigt ; ④ en faire le trait de jonction demande de choisir laquelle (la vague du Cercle qui suit la jonction et s'aplatit ; un trait neuf au bas de la
+  bande, qui part de la forme de la vague) — et sur un Promi la vague est le geste : je ne l'aplatis pas sans ta décision.
