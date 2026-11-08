@@ -13,7 +13,8 @@ const Q=new URLSearchParams(location.search), NAT=Q.get('nature')||'cercle', AR=
 const wait=ms=>new Promise(r=>setTimeout(r,ms)); const dit=t=>{ S.textContent=NAT+' · '+t; };
 const envoie=d=>{ try{ d.banc='haut-fiche'; d.nature=NAT; d.quand=new Date().toISOString(); d.ua=navigator.userAgent; fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}); }catch(e){} };
 let etat={};
-if(NAT==='cercle'){ etat=await (await fetch('banc-etats/etat-cercle.json',{cache:'no-store'})).json(); }
+if(Q.get('vol')){ etat=await (await fetch('banc-etats/etat-10.json',{cache:'no-store'})).json(); if(Q.get('monde')) etat.promi_theme_monde=Q.get('monde'); }
+else if(NAT==='cercle'){ etat=await (await fetch('banc-etats/etat-cercle.json',{cache:'no-store'})).json(); }
 else { const nom=Q.get('etat')||'etats/tom-20261101-205518.json'; const d=await (await fetch(nom,{cache:'no-store'})).json(); etat=d.ls||{}; ['setItem','getItem','removeItem','clear','key','length'].forEach(k=>delete etat[k]); }
 delete etat.promi_theme; localStorage.clear(); for(const k in etat) localStorage.setItem(k,etat[k]);
 for(const [k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1'],['promi_theme','light']]) localStorage.setItem(k,v);
@@ -29,6 +30,10 @@ if(Q.get('trace')){ let T=null; const cl=e=>{ const x=e.target; return x ? ((x.i
   w.addEventListener('touchstart',e=>{ setTimeout(()=>{ if(T) T.prevStart2=e.defaultPrevented?1:0; },0); T={cible:cl(e), chaine:[], prev:0, n:0, prevStart:e.defaultPrevented?1:0, st0:w.document.getElementById('detailPoster').scrollTop}; let a=e.target; while(a&&a!==w.document.body){ T.chaine.push((a.id||String(a.className||'').slice(0,20))); a=a.parentElement; } },{passive:true});
   w.addEventListener('touchmove',e=>{ if(T){ T.n++; if(e.defaultPrevented) T.prev++; } },{passive:true});
   w.addEventListener('touchend',()=>{ if(T){ T.st1=w.document.getElementById('detailPoster').scrollTop; envoie({trace:T}); T=null; } },{passive:true}); }
+if(Q.get('vol')){   /* v186c (C-237) : la fin du vol jugée dans Safari — le piège de redteam_vol_dalle posé dans l'app ; le DOIGT plante (le +, la nature, la moitié du trait) */
+  const PG=await (await fetch('banc-piege-vol.js',{cache:'no-store'})).text(); w.eval('('+PG+')()'); dit('vol : plante au doigt…');
+  for(let i=0;i<1800;i++){ await wait(200); if(w.__fini){ await wait(2900); envoie({vol:{hors:w.__hors, img:w.__img, monde:w.eval('Toile.mondeCourant&&Toile.mondeCourant()')}}); dit('vol : relevé envoyé'); return; } }
+  return; }
 const OUVRE={cercle:"openEssaim('potager')", promi:"(function(){var p=promises.filter(function(q){return !q.draft&&!q.chiche&&!q.nuee}).sort(function(a,b){return (b.title||'').length-(a.title||'').length})[0]; if(window.__mots) p.comments=window.__mots; openDetail(p.id);})()", chiche:"(function(){var p=promises.filter(function(q){return !q.draft&&q.chiche})[0]; if(window.__mots) p.comments=window.__mots; openDetail(p.id);})()"};
 const nat=NAT==='cercle'?'cercle':NAT;
 if(Q.get('mots')){ const nm=+Q.get('mots'), C=[]; for(let i=0;i<nm;i++) C.push({t:'Mot numéro '+(i+1)+', à propos de ce qu’on prévoit', by:['Marion','Rachel','Nico'][i%3], d:'2026-11-0'+(1+i%7)+'T1'+(i%10)+':00:00Z', vu:true});   /* v186 : des commentaires, pour le nombre de C-257 */

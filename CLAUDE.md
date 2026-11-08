@@ -228,6 +228,99 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v188 (8 nov. 2026) — « UN MOT… » PUIS TOUS LES MOTS, PLUS DE « + X » (Q608) ; LE NOMBRE « +N » EN ORANGE (C-257 suite) ; LE TRAIT DE JONCTION ARRÊTÉ (C-259). (Décisions Tom.) Ce bloc CORRIGE v183a (C-248 : trois mots au plus, « + X commentaires », le dépliage), v186b (C-257 : le nombre seul) et v182b (C-246 : 16 pt sous l'état).
+> **Validés par Tom : C-237 (la fin du vol), C-243 et Q610 (le glissé parti d'une carte), le défilement de la fiche.** Le simulateur d'un autre projet (66398523) reste allumé : on n'y
+> touche jamais. **Safari non vu** : charge 93 → 200 avant l'ouverture, 34 au démarrage du mien, puis aucun écran (« Main Screen Surface » introuvable, ouverture expirée) — refermé.
+> **⚑ §1 (C-259) — ARRÊTÉ** : à la jonction (le bas de la bande de v187, 112 pt) il n'y a aucune vague ; la bande finit par un bord droit. Les vagues sont celle de la bande
+> du Cercle (≈ 150–230 pt, elle défile) et le trait du geste (Promi, Chiche). Décision à Tom (Q612).
+> **⚑ §2 (Q608)** (`lot-V145-COMM`) : la ligne « + X commentaires » et le dépliage de C-248 (`deplie`, `_commDeplie`, `.cm5-plus`, `.cm5-reste`, `ANIM`, `DEPLIE`, `VUS`) sont
+> RETIRÉS. L'ordre : la ligne d'état, « Un mot… » (692 pt, bas à 748 ; descend seulement pour garder 8 pt sous l'état — `lot-V181B-TEXTES`, `AIR` 16 → 8, `premier()` = la ligne),
+> puis TOUS les mots (le plus récent d'abord), 8 pt sous elle ; sur un Cercle, au bout du fil. On les atteint en défilant ou par le nombre. Deux cotes de la pose de la fiche
+> (`_ficheCotes`) ont dû bouger pour tenir « Un mot… » au-dessus de la barre avec 8 pt de marge : une parole TENUE sans mot, `base` 400 → 362 ; un Chiche TENU À DEUX, 396 → 334
+> (leur état finissait à 726 et 750, « Un mot… » à 790 et 814 ; maintenant 688 et 752). **VU (C-253)** : un mot est vu quand il est passé à l'écran entre l'en-tête et la barre
+> (`IntersectionObserver`, aucune écriture au défilement) ; marqué à la fermeture. **Pourquoi ma première écriture de Q608 (v187) rendait la liste instable** : elle recalculait le
+> nombre de mots à CHAQUE pose de la fiche en repartant de trois, et rebâtissait la liste (son `innerHTML`) deux fois par pose ; une pose qui tombait pendant le dépliage effaçait
+> les hauteurs que l'animation posait (le dépliage restait fermé). Les « disparitions » relevées alors venaient de ma sonde (une fiche ouverte pendant la fermeture de la précédente :
+> la même sonde les montre sur v187). *La règle* : **un calcul de mise en page qui rebâtit des nœuds ne se refait pas à chaque pose en repartant d'une valeur par défaut — il part de
+> l'état en place, et ne rebâtit que si le résultat change.** Juge : **`redteam_mots_fiche.py`** (3 natures × 0, 1, 3, 12 mots, titre de 280, sept états de fiche, dix ouvertures, le
+> nombre ; 56/56 et 55/56 — le Cercle à 3 mots, stabilité, intermittent, aussi sur v187 ; rouge sur v187 : 27). Contrats remis au niveau (originaux `sauvegardes/*-avant-v188.py`) :
+> `redteam_commentaires_liste`, `redteam_commentaires`, `redteam_mots_neufs`, `redteam_noms`.
+> **⚑ §3 (C-257 suite)** : sans mot nouveau, le total à l'encre de la ligne ; avec, « +N » (le nombre de nouveaux) en `#FB4C0D` — la passe de lisibilité l'exempte (`cm5-neufs`, une
+> décision : 1,23:1 sur le corps d'un Promi) ; le toucher glisse jusqu'au premier nouveau (`data-neuf`). Il redevient le total à la réouverture qui suit la lecture.
+
+### ⚑ v187 (8 nov. 2026) — LA DALLE VOLE À SA PLACE FINALE (Q611) ; L'ONBOARDING SANS FLAQUES À L'ATTERRISSAGE (Q609) ; UNE PAROLE EFFACÉE NE REVIENT JAMAIS ; LE GLISSÉ PARTI D'UNE CARTE (Q610). (Décisions Tom.) Ce bloc CORRIGE v186c (la Toile en pause pendant le vol, `_poseNette`, l'onboarding qui garde ses flaques, Q607 non corrigé).
+> **⚑ NON LIVRÉ SUR main : SAFARI NON VÉRIFIÉ.** La charge du Mac était à 16,5 avant l'ouverture du simulateur ; son démarrage l'a portée à 452 puis 564 (un second
+> simulateur, d'un autre projet, tournait déjà) ; redescendue à 20, Safari restait sur un écran noir et les ouvertures d'adresse expiraient — refermé après 10 min. Ni la fin du
+> vol, ni l'onboarding, ni les glissés, ni l'effacement n'ont été vus dans Safari. Commité sur la branche `v186c`, en attente.
+> **⚑ §1 (Q611) — L'ORDRE INVERSÉ** (`lot-V180-NAISSANCE` : `_fondVivant`, `_atterrit`) : plus de pause (`_v186Gel` n'est plus appelé). La Toile reçoit la parole au trait et fait la
+> place tout de suite (mesuré en WebKit : posée à ± 0,5 pt 0,7 à 1,0 s après le trait — Pochade 766 ms, Esquille 803, Touffe 963, Tesselle 714 — avant l'atterrissage, 1,57 s).
+> Pendant le vol, l'image qui couvre l'écran est la Toile VIVANTE recopiée à chaque image, la place de la nouvelle dalle laissée vide au papier de la Toile (la découpe : l'image de
+> la dalle qui vole, posée là où la Toile vivante pose sa dalle) — une seule dalle visible, celle qui vole ; la couverture en flaques la suit (`_passageFlaques`, option `suit`).
+> La dalle vole vers la place que la Toile vivante lui fait (v183b) ; à l'atterrissage la couche, la couverture et la dalle qui volait partent dans la même image. ⚠ La recopie
+> commence avec la couverture (553 ms) : avant, la page + couvre tout ; refaire la dalle seule à chaque image coûtait 14 à 81 ms pendant que la place se fait (essayé, retiré).
+> Juge : **`redteam_pose_dalle.py`** (22 : quatre mondes, A sur la dalle vivante à l'atterrissage ± 0,5 pt, B les 30 images d'après constantes ± 0,5 pt — mesuré 0,00 —, C aucune
+> flaque, D la place vide sur la couche ; E l'onboarding contre la page + ; rouge sur v186c : 6/10). `redteam_vol_dalle` : contrat remis au niveau (`_atterrit` ; original en
+> sauvegarde) ; C et D à 0 % hors de la dalle (Esquille C 2,02 % : sa forme, C-241) ; B reste rouge pour C-241 et le titre que la Toile écrit (7,7 % Pochade, 11,2 en v186c).
+> ⚠ **Sous Esquille et Tesselle, la dalle qui vole n'a pas la forme de la dalle vivante (C-241, reporté avec le lot moteur) : à l'atterrissage la forme change ; la place vide
+> pendant le vol a la forme de la dalle qui vole.** ⚠ La page + perd des images pendant la naissance (20 à 25 relevées contre 30 dans l'onboarding) : la Toile vivante fait la
+> place sous elle (v186b de même ; la pause de v186c l'évitait).
+> **⚑ §2 (Q609)** : l'onboarding prend le même code (`_fondVivant`, `_atterrit`) ; `_retireFondFlaques` n'est plus appelé nulle part (le code reste). Les voisines de l'onboarding
+> naissent toujours après (2 125 ms), comme validé. ⚠ **La comparaison image par image de la naissance n'est pas jugeable à 0,03** : la lecture du style à l'image en WebKit
+> s'écarte de sa propre courbe de 0,02 à 0,06, sur les deux séquences ; le juge tient la même transition, la même échelle de départ, le même sommet, le même départ et la même
+> durée du vol.
+> **⚑ §3 — LA CAUSE DU ROUGE E DE `redteam_index_fil`** (reproduite : `scratchpad/v187/e_tot.py`) : la feuille de confirmation (`conf`, `lot-V16`) ne prenait le doigt qu'à son
+> image suivante (`.ouv`, posée dans un `requestAnimationFrame`) ; sous charge cette image tardait au-delà des 700 ms d'attente du juge, et le toucher sur « Supprimer » passait
+> À TRAVERS, sur le bouton de Peaufiner dessous : rien n'était effacé. Ni la fusion de v183d ni l'écriture différée de la plantation ne faisaient revenir la parole.
+> Aujourd'hui : la feuille prend le doigt dès qu'elle existe ; pendant son arrivée (400 ms) un toucher à côté du panneau ne la referme pas. **Et la pierre tombale** : une parole
+> effacée laisse `id|titre` dans `effacees` (avec l'état, les 300 dernières) ; `_sansTombes` la retire à la relecture, à chaque enregistrement et dans chaque fusion d'onglets ;
+> « Annuler » retire la pierre ; l'effacement s'écrit tout de suite (`saveState(true)`). Tous les chemins d'effacement la posent (fiche, Peaufiner, gardé de côté, Cercle dissous).
+> Juge : **`redteam_effacer.py`** (26 : vingt effacements de suite juste après une plantation, le doigt de 0 à 700 ms après l'ouverture de la feuille ; rechargement ; un second
+> onglet qui écrit ; une écriture tardive ; « Annuler » — 26/26 aux deux échelles ; v186c 9/26).
+> **⚑ §4 (Q610) — LES DEUX CAUSES CORRIGÉES** (`lot-V187-HAUT`) : ① plus aucun `clip-path` réécrit au défilement (`lot-V184A-FICHE` et `lot-V181A-CERCLE` ne découpent plus ;
+> le + ne se repose plus au défilement) : la fiche défilée, une BANDE fixe (`#v187Bande`, z 8, sous l'en-tête) couvre l'écran jusqu'à 112 pt, peinte une fois avec le haut du
+> champ ; ce qui monte passe dessous, coupé net. Au repos elle n'existe pas : la fiche est celle de v186b (au pixel, hors la respiration des dalles du champ, qui varie d'une ouverture
+> à l'autre en v186b même). ⚠ **Écart à la consigne, assumé** : la fiche reste le conteneur qui défile (plus de 300 règles `#detailPoster > …`) ; et la bande garde la couleur
+> du champ quand la fiche est défilée (en v186b, la région sous l'en-tête montrait le corps une fois le champ passé). ② l'état pressé des cartes (`.scard`, `.s4-carte`,
+> `.nf-item`) : `v187-presse` après 100 ms de doigt immobile, annulé au-delà de 6 pt ; même `scale:.97`. `redteam_haut_fiche` 18/18 × 3.
+> **⚑ §5 (Q608)** : écrit en trois lignes avec ma recommandation (montrer autant de mots que la place en laisse) — elle change ce que Tom voit : laissée ouverte. **§6** : C-241 reporté (Tom).
+
+### ⚑ v186c (8 nov. 2026) — LA FIN DU VOL SANS TACHE (C-237) ; LE GLISSÉ PARTI D'UNE CARTE (Q607) ; CE QUI RESTAIT DU CHAPITRE, FINI OU ARRÊTÉ. (Décisions Tom.) Ce bloc CORRIGE v183b et v184c (C-237 : « la Toile d'avant se retire en flaques sur la Toile vivante »).
+> **⚑ NON LIVRÉ SUR main (porte A1) : commité sur la branche `v186c`, en attente de Tom.** Deux régressions face à v186b : `redteam_moitie` 17–20/25 contre 22/25 (C et D, par le
+> choix de la fin du vol, Q611) ; `redteam_index_fil` E (effacer juste après une plantation) rouge 2 fois sur 3 à l'échelle 1, vert sur v186b, vert isolé — cause non nommée.
+> **⚑ C-237 — LA « TACHE ABSTRAITE » À LA FIN DU VOL, SUPPRIMÉE (page + d'un Promi et d'un Chiche).** Inventaire de tout ce qui se dessine autour de la dalle, de la naissance
+> à l'atterrissage : ① **`_retireFondFlaques`** (`lot-V180-NAISSANCE`) — l'image figée de la Toile d'avant se retirait EN FLAQUES (`Flaques.Scene` « eau », `flou:im`,
+> 720 ms) sur la Toile vivante : c'était la tache — **retiré du chemin de la page +** ; ② le passage `couvre` de la fermeture de la page + (`_passageFlaques`, 553 ms) :
+> c'est la page + qui part, pas un effet autour de la dalle — gardé ; ③ la dalle elle-même : aucun `filter`, `blur`, `backdrop-filter`, dégradé, halo, ombre portée
+> (relevé sur son canevas et ses ancêtres). **LA CAUSE** : pendant le vol la Toile vivante bougeait sous l'image figée (la cellule neuve grandit, les voisines se poussent :
+> 5 à 39 % des pixels hors de la dalle changés à l'atterrissage, mesuré) et les flaques couvraient ce changement. **AUJOURD'HUI** (`_v186Gel`, `_poseNette`) : la Toile
+> vivante est EN PAUSE du trait à l'atterrissage (sa boucle s'arrête quand `#stage` est caché, l'image figée couvre l'écran) ; à l'atterrissage elle reprend où elle
+> était, l'image figée part dans l'image où la Toile repeint (0 à 0,4 % de pixels changés hors de la dalle, contre 5 à 39), la dalle rejoint la dalle vivante
+> (200 ms), s'y cale, et part : c'est la dalle vivante que la Toile continue de poser. La cible du vol se calcule AVANT la pause. Juge : `redteam_vol_dalle` C (l'atterrissage), D (après : la plus grande part
+> de pixels qui change d'une image à l'autre hors de la dalle). ⚠ **Ce qui bouge encore hors de la dalle après l'atterrissage est la Toile elle-même qui fait la place**
+> (le relâchement du moteur, lecture seule) : Pochade 3 %, Tesselle 1,3 % par image ; **Esquille 9,7 %, Touffe 18 %** (leur matière se réorganise) — ce n'est pas un effet
+> dessiné, mais c'est un changement hors de la dalle : Tom juge sur l'iPhone. ⚠ **Le choix, et ce qu'il coûte (Q611)** : les trois façons possibles sont ① la Toile bouge
+> sous l'image figée pendant le vol, et l'écran saute à l'atterrissage (5 à 39 %) ; ② un fondu (les flaques) cache ce saut — la tache, refusée ; ③ la Toile fait la place
+> APRÈS, à vue (retenu). Avec ③, la dalle se pose à la place que le moteur prédit, puis bouge de 5 à 7 pt avec la Toile qui se pose : `redteam_moitie` D (« elle se pose à sa
+> place finale », ≤ 4 pt) et C (le vol de l'onboarding, qui garde ses flaques : 947 ms contre 871) sont rouges par cette décision. ⚠ **Vu image par image en WebKit
+> seulement** : dans Safari, le simulateur ne recevait plus rien (charge 85 à 376, ouvertures d'adresse expirées) ; la fin du vol n'y a pas été enregistrée — le banc
+> `banc-haut-fiche.html?vol=1` (le piège du juge posé dans l'app, la plantation au doigt) est prêt pour le faire. ⚠ **L'ONBOARDING N'EST PAS CHANGÉ (C-247 non tenu sur ce point, décision de lot, Q609)** :
+> ses flaques y couvrent aussi le recadrage de la vue (× 2) et la naissance des voisines, deux mouvements que la page + n'a pas — les retirer y ferait sauter l'écran.
+> **⚑ Q607 — LE GLISSÉ PARTI D'UNE CARTE DU FIL D'UN CERCLE.** **NON RÉGLÉ — la cause est nommée et mesurée au doigt dans Safari iOS 26.1** (simulateur iPhone 16e, `banc-haut-fiche.html?trace=1`, relevés
+> `planche-v186/q607-traces.txt`). Un glissé parti d'une carte du fil d'un Cercle (ou d'un espace entre deux cartes) ne fait parfois défiler NI la fiche NI la page : un ou
+> deux `touchmove` seulement, défilement inchangé ; l'app n'annule rien (`preventDefault` : 0 partout). Même suite de cinq glissés : l'app telle quelle, 2 sur 5 perdus ; sans la
+> découpe du haut (`?norogne=1` : le `clip-path` que `lot-V184A-FICHE` réécrit à CHAQUE défilement sur les Noyaux, la phrase, le titre, l'état, la liste des mots et « Un
+> mot… »), 1 sur 5 ; sans la découpe ET sans l'état pressé des cartes (`.nf-item:active{scale:.97}` et sa transition, posés au doigt posé), 6 sur 6, en haut, au milieu et en
+> butée basse (459 → 185, 459 → 197). Ce sont deux décisions validées (C-243 la découpe, l'état pressé « partout ») : les retirer touche hors du périmètre (A5) —
+> **rien n'est changé dans l'app ; la décision revient à Tom (Q610)**. Sans `overscroll-behavior:contain` sur la fiche, le geste perdu tirait la page (la roue « recharger »,
+> la barre d'adresse) : non posé non plus, pour la même raison. Le banc porte `?haut=1` (l'app sans cadre), `?norogne=1`, `?css=`.
+> **⚑ §6 — FINI OU ARRÊTÉ.** **C-241, Esquille et Tesselle : ARRÊTÉ.** ① La dalle qui vole est calculée d'avance par `Toile.dalleAvenir` (lecture seule) sur une copie des
+> graines. ② Sous Esquille et Tesselle (mondes faits de leurs paroles), la Toile vivante pose la dalle par images successives (le relâchement de `frame`), pas au point fixe
+> que lit le calcul : IoU 0,46. ③ La rapprocher demande de cloner TOUT l'état du moteur (graines, vue, caches des mondes, horloge, tirages), qui vit dans ses fermetures.
+> ④ Cloner cet état, c'est écrire dans le moteur — interdit sans l'accord de Tom (C-241, lecture seule) ; rejouer la pose image par image coûterait la durée du vol en calcul.
+> ⑤ Arrêté ici ; la décision revient à Tom (Q604). **`redteam_vol_dalle` B reste rouge pour la même raison** (la FORME au collage, pas la netteté : B mesure C-241).
+> **A3 à 0,79** : les sentinelles et les juges de l'Index et du Fil ont été passés aux deux échelles (0,79 = fenêtre 330 × 714 imposée à chaque contexte,
+> `scratchpad/v186/echelle079/sitecustomize.py`) ; `banc_rendu` à l'échelle 1 seulement (il rend la Toile à une taille fixe, l'échelle de la fenêtre n'y entre pas).
+
 ### ⚑ v186b (8 nov. 2026) — LE + DES MEMBRES À CÔTÉ DU PETIT DISQUE (C-254 suite, Q606) ; LE NOMBRE DE COMMENTAIRES SUR LA LIGNE « UN MOT… » (C-257). (Décisions Tom.) Ce bloc CORRIGE v183c (C-242 : le + au bout de la ligne « Avec … ») et v184b (C-253 : « plus de « 3 mots » » — le nombre seul revient).
 > **⚑ C-254 suite** (`lot-V181A-CERCLE`, `place()`) : le + n'est plus dans la ligne de la phrase. Il se place **26 pt après le bord droit du DERNIER petit disque** (les Noyaux
 > `#dAura .kring:not(.kring-moi) .kr-c` ; le gros disque, `kring-moi`, est le tien), **centré verticalement sur lui** ; même dessin, même encre, même taille (la hauteur de

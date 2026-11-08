@@ -26,9 +26,27 @@ def juge(nom, ok, d=''):
 REC = r"""()=>{ window.__vol=[]; const t0=performance.now(); (function f(){ const dc=document.querySelector('#ppNait .onbv-dalle'), cs=document.getElementById('createSheet');
    const pageDalle=!!(cs && cs.classList.contains('show') && !cs.classList.contains('cs-coupe') && getComputedStyle(cs).visibility!=='hidden' && !window._ppSansDalle);
    window.__vol.push([Math.round(performance.now()-t0), !!dc, pageDalle]); if(performance.now()-t0<7000) requestAnimationFrame(f); })(); }"""
-PIEGE = r"""()=>{ const o=window._retireFondFlaques; window.__fini=false; window.__dc=null; window._retireFondFlaques=function(fond, dc, fin){ window._retireFondFlaques=o;
+PIEGE = r"""()=>{ /* v187 (§1) : l'atterrissage est `_atterrit` (la Toile vivante pendant le vol, la couche partie dans une image) — contrat remis au niveau (original : sauvegardes/redteam_vol_dalle-avant-v187.py) */ const NOM=window._atterrit?'_atterrit':(window._poseNette?'_poseNette':'_retireFondFlaques'); const o=window[NOM]; window.__fini=false; window.__dc=null; window[NOM]=function(fond, dc, fin, a4, a5){ window[NOM]=o;
+   /* v186c (C-237) : après l'atterrissage, chaque image : la part de pixels qui change hors de la dalle d'une image à la suivante (le mouvement de la Toile) */
+   try{ const tc0=document.getElementById('toileCv'), dv0=document.getElementById('device'); window.__img=[]; let prev=null; const t1=performance.now();
+     const lit=()=>{ const D=dv0.getBoundingClientRect(), s=(D.width/(dv0.offsetWidth||390))||1, E=2, c=document.createElement('canvas'); c.width=390*E; c.height=844*E; const rt=tc0.getBoundingClientRect(); if(!rt.width) return null; c.getContext('2d').drawImage(tc0,(rt.left-D.left)/s*E,(rt.top-D.top)/s*E,rt.width/s*E,rt.height/s*E); return {d:c.getContext('2d').getImageData(0,0,c.width,c.height).data, w:c.width, s:s, D:D, E:E}; };
+     (function f(){ const r=dc && dc.getBoundingClientRect && dc.parentNode ? dc.getBoundingClientRect() : (window.__dcR||null); if(r && dc.parentNode) window.__dcR=r; const L=lit();
+       if(L && prev && r){ const bx=[((r.left-L.D.left)/L.s-8)*L.E,((r.top-L.D.top)/L.s-8)*L.E,((r.right-L.D.left)/L.s+8)*L.E,((r.bottom-L.D.top)/L.s+8)*L.E]; let n=0,ch=0;
+         for(let y=0;y<844*L.E;y+=3) for(let x=0;x<L.w;x+=3){ if(x>=bx[0]&&x<=bx[2]&&y>=bx[1]&&y<=bx[3]) continue; const i=(y*L.w+x)*4; n++; if(Math.max(Math.abs(L.d[i]-prev[i]),Math.abs(L.d[i+1]-prev[i+1]),Math.abs(L.d[i+2]-prev[i+2]))>24) ch++; }
+         window.__img.push([Math.round(performance.now()-t1), Math.round(1000*ch/Math.max(1,n))/10]); }
+       if(L && !window.__c0done && fond && fond.width){ window.__c0done=true; try{ const A=document.createElement('canvas'); A.width=L.w; A.height=844*L.E; A.getContext('2d').drawImage(fond,0,0,A.width,A.height); const a=A.getContext('2d').getImageData(0,0,A.width,A.height).data; const r2=window.__dcR; const bx=r2?[((r2.left-L.D.left)/L.s-8)*L.E,((r2.top-L.D.top)/L.s-8)*L.E,((r2.right-L.D.left)/L.s+8)*L.E,((r2.bottom-L.D.top)/L.s+8)*L.E]:[0,0,0,0]; let n=0,ch=0; for(let y=0;y<844*L.E;y+=3) for(let x=0;x<L.w;x+=3){ if(x>=bx[0]&&x<=bx[2]&&y>=bx[1]&&y<=bx[3]) continue; const i=(y*L.w+x)*4; n++; if(Math.max(Math.abs(L.d[i]-a[i]),Math.abs(L.d[i+1]-a[i+1]),Math.abs(L.d[i+2]-a[i+2]))>24) ch++; } window.__hors={pc:100*ch/Math.max(1,n), n:n, quand:'première image vivante'}; }catch(e){ window.__hors={err:String(e)}; } }
+       if(L) prev=L.d; if(performance.now()-t1<2600) requestAnimationFrame(f); })(); }catch(e){ window.__img=[['err',String(e)]]; }
    try{ if(dc && dc.width){ const r=dc.getBoundingClientRect(); window.__dc={u:dc.toDataURL(), r:[r.left,r.top,r.width,r.height]}; } }catch(_){ }
-   return o(fond, dc, function(){ window.__fini=true; fin(); }); }; }"""
+   /* v186c (C-237 : « aucun pixel ne change à l'extérieur du contour de la dalle ») : à l'atterrissage, l'image figée (ce qu'on voyait) contre la Toile vivante
+      (ce qu'on voit ensuite), hors de la boîte de la dalle élargie de 8 pt, à la densité de l'image figée */
+   try{ const tc=document.getElementById('toileCv'), dv=document.getElementById('device'), D=dv.getBoundingClientRect(), s=(D.width/(dv.offsetWidth||390))||1, E=fond.width/390;
+     const A=document.createElement('canvas'); A.width=fond.width; A.height=fond.height; const ga=A.getContext('2d'); ga.drawImage(fond,0,0);
+     const Bc=document.createElement('canvas'); Bc.width=fond.width; Bc.height=fond.height; const gb=Bc.getContext('2d'); const rt=tc.getBoundingClientRect(); gb.drawImage(tc,(rt.left-D.left)/s*E,(rt.top-D.top)/s*E,rt.width/s*E,rt.height/s*E);
+     const r=dc && dc.getBoundingClientRect(); const bx=r?[((r.left-D.left)/s-8)*E,((r.top-D.top)/s-8)*E,((r.right-D.left)/s+8)*E,((r.bottom-D.top)/s+8)*E]:[0,0,0,0];
+     const a=ga.getImageData(0,0,A.width,A.height).data, b2=gb.getImageData(0,0,A.width,A.height).data; let n=0, ch=0;
+     for(let y=0;y<A.height;y+=2) for(let x=0;x<A.width;x+=2){ if(x>=bx[0]&&x<=bx[2]&&y>=bx[1]&&y<=bx[3]) continue; const i=(y*A.width+x)*4; n++; if(Math.max(Math.abs(a[i]-b2[i]),Math.abs(a[i+1]-b2[i+1]),Math.abs(a[i+2]-b2[i+2]))>24) ch++; }
+     window.__hors={pc:100*ch/Math.max(1,n), n:n, vue:Toile.vue(), vue0:window.__vue0||null, g:(window.Toile_graines?Toile_graines():[]).filter(z=>z[3]!=='gray').length}; }catch(e){ window.__hors={err:String(e)}; }
+   return o(fond, dc, function(){ window.__fini=true; if(fin) fin(); }, a4, a5); }; }"""
 def zone(im, r, S=3, m=24): return im.crop((int(r[0]*S)-m, int(r[1]*S)-m, int((r[0]+r[2])*S)+m, int((r[1]+r[3])*S)+m))
 def change(a, c): d = ImageChops.difference(a, c).convert('L'); h = d.histogram(); return 100 * sum(h[40:]) / max(1, sum(h))
 with sync_playwright() as p:
@@ -37,7 +55,7 @@ with sync_playwright() as p:
         ctx = B.contexte(b, vw=430, vh=932); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F, 7000, q='?onbLent=4')
         pg.evaluate("m=>{ Toile.setTheme(m); window._vivantOff=true; }", m); pg.wait_for_timeout(9000)
         ouvre_nature(pg, 'promi'); remplit(pg, 'promi', 'arroser les tomates')
-        pg.evaluate(REC); pg.evaluate(PIEGE)
+        pg.evaluate(REC); pg.evaluate(PIEGE); pg.evaluate("()=>{ window.__vue0=Toile.vue(); window.__g0=Toile_graines(); }")
         B.glisse(pg, points(pg, list(range(44, 212, 12))), pas=18, tenue=40)
         for _ in range(120):
             pg.wait_for_timeout(100)
@@ -59,6 +77,10 @@ with sync_playwright() as p:
         pc = 100 * fort / max(1, n)
         juge('B · [%s] la dalle qui vole, au collage, est la dalle de la Toile vivante : même place, taille, forme, couleur (%.1f %% de pixels écartés de plus de 40)' % (NOMS.get(m, m), pc), pc <= 4.0, ([round(x) for x in r], n))
         pl = Image.new('RGB', (W * 2 + 10, H), 'white'); bg = Image.new('RGBA', (W, H), (230, 220, 200, 255)); bg.alpha_composite(im); pl.paste(bg.convert('RGB'), (0, 0)); pl.paste(c.crop((X, Y, X + W, Y + H)), (W + 10, 0)); pl.save('scratchpad/v183/vol-%s.png' % m)
+        h = pg.evaluate("()=>window.__hors") or {}
+        juge('C · [%s] à l\'atterrissage, hors de la dalle (8 pt), les pixels qui changent entre ce qu\'on voyait et la Toile vivante : %.2f %%' % (NOMS.get(m, m), h.get('pc', 99)), h.get('pc', 99) <= 0.5, h)
+        im2 = pg.evaluate("()=>window.__img") or []; vals = [z[1] for z in im2 if isinstance(z[1], (int, float))]
+        juge('D · [%s] après l\'atterrissage, hors de la dalle, aucune image ne change plus de 6 %% des pixels d\'un coup (plus grand : %.1f %% sur %d images)' % (NOMS.get(m, m), max(vals or [0]), len(vals)), vals and max(vals) <= 6, im2[:14])
         juge('Z · [%s] aucune erreur de page' % NOMS.get(m, m), not pg.__dict__['erreurs'], pg.__dict__['erreurs'][:2])
         ctx.close()
     b.close()

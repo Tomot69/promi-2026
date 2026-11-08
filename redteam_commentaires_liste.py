@@ -50,9 +50,12 @@ def ferme(pg):
 def cas(pg, tag, ouvrir, n, attendus):
     ouvrir(); pg.wait_for_timeout(800); e1 = pg.evaluate(ET); pg.wait_for_timeout(1700); e = pg.evaluate(ET)
     if SONDE == 'chevauche' and e['liste']: pg.evaluate("()=>{ var l=document.getElementById('cm5Liste'); l.style.setProperty('top', (parseFloat(l.style.top)||640)-30+'px','important'); }"); e = pg.evaluate(ET)
-    nv = min(n, 3); txt = e['poses']   # les mots POSÉS dans la fiche (sur un Cercle, au bout du fil : on les voit en défilant ; B et C jugent ce qui est à l'écran)
-    juge('A · [%s] %d mot(s) : %d affiché(s), le plus récent d\'abord, « + %s »' % (tag, n, nv, n - 3 if n > 3 else '—'),
-         len(txt) == nv and txt == attendus[:nv] and ((n > 3 and e['plusT2'] == '+ %d commentaire%s' % (n - 3, 's' if n - 3 > 1 else '')) or (n <= 3 and not e['plusPose'])) and (n > 0 or not e['liste']),
+    # ⚑ v188 (Tom, Q608 tranchée autrement) — CONTRAT REMIS AU NIVEAU (original : sauvegardes/redteam_commentaires_liste-avant-v188.py) : plus de « + X commentaires » ;
+    #   TOUS les mots, le plus récent d'abord, sous « Un mot… » (Promi, Chiche) ou au bout du fil (Cercle) ; plus de dépliage (E) ; défilée jusqu'en bas, le dernier mot
+    #   entier au-dessus de la barre (F) ; rien sous l'en-tête au doigt (la bande de v187 couvre ce qui y passe, G).
+    nv = n; txt = e['poses']   # les mots POSÉS dans la fiche (sur un Cercle, au bout du fil : on les voit en défilant ; B et C jugent ce qui est à l'écran)
+    juge('A · [%s] %d mot(s) : tous affichés, le plus récent d\'abord, aucun « + X »' % (tag, n),
+         len(txt) == nv and txt == attendus[:nv] and not e['plusPose'] and (n > 0 or not e['liste']),
          (len(txt), [t[:18] for t in txt], e['plusT2']))
     boites = e['uns'] + [x for x in (e['etat'], e['ligne'], e['plus']) if x]
     cr = [(i, j) for i in range(len(boites)) for j in range(i + 1, len(boites)) if croise(boites[i], boites[j])]
@@ -67,22 +70,12 @@ def cas(pg, tag, ouvrir, n, attendus):
     return e
 def depliage(pg, tag):
     e0 = pg.evaluate(ET)
-    if not e0['plusPose']: juge('E · [%s] « + X » présent' % tag, False); return
-    for _ in range(3):   # « + X » à l'écran, au-dessus de la barre et du bloc collant, comme le doigt le trouve (sur un Cercle, défiler change la mise en page : on recale)
-        pg.evaluate("()=>{ var p=document.querySelector('#cm5Liste .cm5-plus'), dp=document.getElementById('detailPoster'); if(p){ var q=p.getBoundingClientRect(), dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390; dp.scrollTop+=((q.top-dv.top)/k-440)*k/((dp.getBoundingClientRect().width/dp.offsetWidth)||1); } }"); pg.wait_for_timeout(1300)
-    pg.evaluate("()=>{ window.__img=[]; var dv=document.getElementById('device').getBoundingClientRect(), k=dv.width/390; (function f(){ var l=document.getElementById('cm5Liste'); if(l){ var q=l.getBoundingClientRect(); window.__img.push([(q.top-dv.top)/k, q.height/k, performance.now()]); } if(window.__img.length<200) requestAnimationFrame(f); })(); }")
-    sous = pg.evaluate("()=>{ var p=document.querySelector('#cm5Liste .cm5-plus'); var q=p.getBoundingClientRect(); var e=document.elementFromPoint(q.left+q.width/2,q.top+q.height/2); return e?(e.id||e.className):null; }")
-    B.tap_sel(pg, '#cm5Liste .cm5-plus'); pg.wait_for_timeout(1500)
-    im = pg.evaluate("()=>window.__img"); h = [x[1] for x in im]; t0 = [x[0] for x in im]
-    course = max(h) - min(h); pas = max([abs(h[i + 1] - h[i]) for i in range(len(h) - 1)] or [0]); n_mvt = len([1 for i in range(len(h) - 1) if abs(h[i + 1] - h[i]) > 0.3])
-    e = pg.evaluate(ET)
-    juge('E · [%s] « + X » touché : la hauteur croît d\'un mouvement (%d images, plus grand pas %.0f pt sur %.0f), le haut immobile, 12 mots à la fin' % (tag, n_mvt, pas, course),
-         course > 50 and n_mvt >= 4 and pas <= course / 4 + 1 and max(t0) - min(t0) <= 1 and all(h[i + 1] >= h[i] - 0.5 for i in range(len(h) - 1)) and not e['plus'] and pg.evaluate("()=>document.querySelectorAll('#cm5Liste .cm5-un').length") == 12,
-         (n_mvt, round(pas, 1), round(course, 1), round(max(t0) - min(t0), 1), 'sous le doigt : %s' % sous, len(im)))
+    juge('E · [%s] plus de « + X » ni de dépliage (v188) : les 12 mots posés' % tag, not e0['plusPose'] and pg.evaluate("()=>typeof window._commDeplie") == 'undefined' and pg.evaluate("()=>document.querySelectorAll('#cm5Liste .cm5-un').length") == 12)
     pg.evaluate("()=>{ var dp=document.getElementById('detailPoster'); dp.scrollTop=dp.scrollHeight; }"); pg.wait_for_timeout(1800)
     e = pg.evaluate(ET)
-    juge('F · [%s] défilée jusqu\'en bas : la barre au bas de l\'écran (760), « Un mot… » entier au-dessus' % tag,
-         e['barre'] and abs(e['barre']['y'] - 760) <= 1.5 and e['ligne'] and e['ligne']['b'] <= e['barre']['y'] + 0.5 and e['ligne']['y'] >= 100, (e['barre'], e['ligne'], round(e['sc'])))
+    der = e['uns'][-1] if e['uns'] else None
+    juge('F · [%s] défilée jusqu\'en bas : la barre au bas de l\'écran (760), le dernier mot entier au-dessus' % tag,
+         e['barre'] and abs(e['barre']['y'] - 760) <= 1.5 and der and der['b'] <= e['barre']['y'] + 0.5 and der['y'] >= 100, (e['barre'], der and (round(der['y'], 1), round(der['b'], 1)), round(e['sc'])))
 def ouvre_par(pg, titre): return lambda: pg.evaluate("t=>openDetail(promises.find(x=>x.title===t).id)", titre)
 with sync_playwright() as p:
     b = p.webkit.launch()
@@ -100,9 +93,9 @@ with sync_playwright() as p:
             if n:
                 pg.evaluate("()=>{ var dp=document.getElementById('detailPoster'); dp.scrollTop=dp.scrollHeight; }"); pg.wait_for_timeout(1500); e = pg.evaluate(ET)
                 der = e['cartes'][-1] if e['cartes'] else None
-                sous = [u for u in e['uns'] if e['ent'] and u['y'] < e['ent']['b'] - 0.5 and u['b'] > 0]
+                sous = pg.evaluate("()=>{ const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; let n=0; document.querySelectorAll('#cm5Liste .cm5-un').forEach(u=>{ const r=u.getBoundingClientRect(); for(let y=Math.max(r.top,D.top+2*k); y<Math.min(r.bottom, D.top+100*k); y+=4*k){ const e=document.elementFromPoint(r.left+r.width/2, y); if(e && u.contains(e)){ n++; break; } } }); return Array(n).fill(0); }")   # au doigt
                 juge('G · [Cercle] %d mot(s), défilé : la liste sous la dernière carte, dans ses marges, rien sous l\'encart' % n,
-                     e['uns'] and der and e['uns'][0]['y'] >= der['b'] - 0.5 and all(abs(u['x'] - der['x']) <= 1.5 and u['r'] <= der['x'] + 342.5 for u in e['uns']) and not sous,
+                     e['uns'] and der and pg.evaluate("()=>{ const L=document.getElementById('cm5Liste'), c=[...document.querySelectorAll('#dpNueeFil .nf-item')].pop(); return L && c && L.getBoundingClientRect().top >= c.getBoundingClientRect().bottom - 0.5; }") and all(abs(u['x'] - der['x']) <= 1.5 and u['r'] <= der['x'] + 342.5 for u in e['uns']) and not sous,
                      (der and round(der['b']), [(round(u['x']), round(u['y'])) for u in e['uns'][:2]], len(sous)))
                 if n == 12:
                     pg.evaluate("()=>{ document.getElementById('detailPoster').scrollTop=0; }"); pg.wait_for_timeout(1200); depliage(pg, 'Cercle')

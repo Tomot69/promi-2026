@@ -8930,7 +8930,7 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q601 — À VALIDER (v184b, C-253)** : « le texte qui signale un nouveau commentaire, dans le Fil et dans la fiche » — j'ai retiré les COMPTES (« 3 mots » sur la ligne « Un mot… », « · 3 mots » sur la ligne d'état d'un Cercle) et posé la pastille `.s4-att` sur les mots neufs, la carte de l'Index et la ligne du Fil. J'ai GARDÉ l'entrée du Fil « Tu as commenté « … » » : c'est le journal de mon propre geste (C-245, C-250 en comptent les cartes), pas le signal d'un mot neuf. Si c'est elle que tu visais, elle se retire en une ligne.
 - **Q602 — À VALIDER (v184b, C-254)** : sur un Promi « je me promets » (à soi), le + des membres ouvre la rangée « À QUI » (qui n'existe pas sur un Promi à soi, décision du 13 sept.) : ajouter quelqu'un en fait « Je promets à Adrien de » — la nature reste Promi. Une parole REÇUE n'a pas de + (ce n'est pas la mienne).
 - **Q603 — À VALIDER (v184a, C-243)** : ta méthode demandait la barre Peaufiner rendue « hors de la fiche, à la racine de l'app ». Elle reste dans le DOM de la fiche (plus de 300 règles la visent par `#detailPoster`) ; c'est le retrait de la transformation de la fiche après son glissement qui la fixe à la racine de l'app (même rendu, mêmes cotes, mesuré). Même chose pour l'en-tête (`position:fixed`, pas `sticky` : il était déjà hors du flux).
-- **Q604 — À TRANCHER (v184c, C-241)** : Esquille et Tesselle — la dalle qui vole n'a pas la forme que la Toile vivante lui donne à l'arrivée. La seule voie que je vois est de
+- **Q604 (v187 §6 : C-241 REPORTÉ, accepté par Tom — il revient avec le lot moteur) — À TRANCHER (v184c, C-241)** : Esquille et Tesselle — la dalle qui vole n'a pas la forme que la Toile vivante lui donne à l'arrivée. La seule voie que je vois est de
   cloner TOUT l'état du moteur (pas seulement les graines) et d'y rejouer la pose : c'est écrire dans le moteur. Ou bien accepter, pour ces mondes faits de leurs paroles, que la
   dalle se recadre à l'arrivée (elle le fait déjà, en flaques). Non commencé.
 - **Q605 — À SAVOIR (v184c, C-250)** : sur 200 paroles, le Fil met ≈ 16 s à s'ouvrir en WebKit piloté (déjà en v183d). Non mesuré sur l'iPhone ; non traité dans ce lot.
@@ -8939,5 +8939,28 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   Capture : `planche-v184/safari-chiche-plus-chevauche.png`. Rien changé.
 - **Q607 — À SAVOIR (v184c, vu dans Safari, préexistant v183c)** : sur la fiche d'un Cercle, un glissé vers le bas qui part d'une carte du fil ne fait pas remonter la fiche
   (le geste part à la page Safari). Parti de l'espace libre ou du haut de la fiche, il remonte. Cause non nommée ; rien changé.
-- **Q608 — À SAVOIR (v186b, préexistant v184c)** : sur une fiche Promi ou Chiche à un ou trois mots, la ligne « Un mot… » est posée à 732 → 788 pt, à moitié sous la barre
+- **Q608 — TRANCHÉE PAR TOM, FAITE EN v188** (plus de « + X » ; « Un mot… » puis tous les mots ; 8 pt sous l'état) — à l'origine : À SAVOIR (v186b, préexistant v184c) : sur une fiche Promi ou Chiche à un ou trois mots, la ligne « Un mot… » est posée à 732 → 788 pt, à moitié sous la barre
   Peaufiner (760) au repos : son texte (et maintenant le nombre, C-257) est coupé en deux. Remonter la ligne (ou la fiche) touche la mise en page validée de C-246 et C-248 : rien changé.
+  **v187 (§5) — en trois lignes, avec ma recommandation, LAISSÉE OUVERTE (elle change ce que tu vois) :** ① le défaut : sous un état long, la liste des trois mots
+  pousse « Un mot… » à 732 → 788 pt, la barre Peaufiner commence à 760 — la ligne est coupée en deux au repos ; ② ma recommandation : la liste montre autant de mots
+  que la place en laisse au-dessus de la barre (16 pt d'air), le reste passe dans « + X commentaires » — « Un mot… » et son nombre sont toujours entiers, sans défiler ;
+  ③ ce que tu verrais : un ou deux mots au lieu de trois sur ces fiches-là, rien d'autre ne bouge. À toi de dire oui.
+  **v187 (8 nov., après ta décision) — NON FAIT, mesuré :** sur la fiche Promi du banc (état à 654 pt), même à ZÉRO mot montré, la ligne « + X commentaires » (40 pt,
+  670 → 710) pousse « Un mot… » à 714 → 770 ; sur un Chiche (état à 612) à 708 → 764 — 4 à 10 pt sous la barre. Ne montrer que les mots qui tiennent ne suffit donc pas à garder
+  « Un mot… » entière : il faut aussi soit une ligne « + X » plus basse ou absente quand aucun mot ne tient, soit moins d'air sous l'état (C-246, validé). Ma première écriture
+  rendait en plus la liste instable (elle disparaissait d'une ouverture à l'autre, le dépliage restait fermé) : retirée, rien n'est commité. Décision à prendre avec toi.
+- **Q611 — TRANCHÉE PAR TOM (v187 §1 : « la Toile fait la place pendant le vol, la dalle vole à sa place finale, plus rien ne bouge ») — FAIT en v187** (v186c, C-237) : sans la tache, la Toile fait la place à la dalle APRÈS l'atterrissage, à vue (la dalle bouge de 5 à 7 pt avec elle ; sous Esquille
+  et Touffe la matière se réorganise : 9,6 et 18 % des pixels par image). L'autre choix sans fondu : la Toile bouge pendant le vol sous l'image figée, et tout saute d'un
+  coup à l'atterrissage (5 à 39 %). Le premier est livré ; à juger sur l'iPhone.
+- **Q610 — TRANCHÉE PAR TOM (v187 §4 : la découpe du haut sans clip-path réécrit, l'état pressé après 100 ms / 6 pt) — FAIT en v187** (v186c, Q607, vu dans Safari) : le glissé perdu sur une carte du fil d'un Cercle vient de deux décisions — la découpe du haut réécrite à chaque
+  défilement (C-243) et l'état pressé des cartes (`scale:.97` au doigt posé). Sans les deux, 6 glissés sur 6 défilent la fiche (2 sur 5 perdus aujourd'hui). Proposition :
+  ① l'état pressé retiré des cartes du fil d'un Cercle (et du Fil, de l'Index : à mesurer) ; ② la découpe du haut posée autrement (un cache opaque fixe sous l'en-tête, au corps
+  de la fiche) — ou acceptée telle quelle. Rien n'est changé avant ta décision.
+- **Q609 — TRANCHÉE PAR TOM (v187 §2 : l'onboarding perd aussi ses flaques à l'atterrissage) — FAIT en v187** (v186c, C-237, C-247) : la tache à la fin du vol est retirée de la page + ; l'onboarding garde ses flaques à l'atterrissage, parce qu'elles y couvrent
+  le recadrage de la vue (× 2) et la naissance des voisines. Les retirer là aussi ferait voir ces deux mouvements d'un coup. Les deux séquences ne sont donc plus identiques sur ce point.
+- **Q612 — À TRANCHER (v188 §1, C-259)** : « le trait de jonction sous l'en-tête » — ARRÊTÉ, comme tu l'as demandé : à la jonction (le bas de la bande de v187, 112 pt) il
+  n'y a aujourd'hui AUCUNE vague. Ce qu'il y a : ① au repos, la bande n'existe pas ; la fiche montre le champ jusqu'à sa vague, plus bas ; ② défilée, la bande couvre
+  0 → 112 pt avec le haut du champ, et finit par un bord DROIT, sans trait ; ③ les vagues de la fiche sont ailleurs : sur un Cercle, le bas de la bande de la Toile
+  (≈ 150 → 230 pt), un trait sombre qui défile avec la fiche et passe sous la bande ; sur un Promi et un Chiche, le trait du GESTE (« trace pour tenir », ≈ 300 → 370 pt),
+  qu'on trace au doigt ; ④ en faire le trait de jonction demande de choisir laquelle (la vague du Cercle qui suit la jonction et s'aplatit ; un trait neuf au bas de la
+  bande, qui part de la forme de la vague) — et sur un Promi la vague est le geste : je ne l'aplatis pas sans ta décision.
