@@ -45,6 +45,9 @@
 > 7. **Le simulateur iOS ne reste JAMAIS ouvert pendant le travail ni pendant les juges.** On l'ouvre une seule fois par lot, à la fin, pour les seuls points
 >    visuels ou sensibles à Safari (15 minutes au plus), puis on le ferme aussitôt. Un point qui le demande en cours de lot : on l'ouvre, on vérifie, on le referme.
 > (Les blocs datés plus bas qui demandent la « série complète », la « série courte » ou d'attendre le calme sont corrigés par celui-ci.)
+> **⚑ LE SIMULATEUR DE PROMI (Tom, v189 §0) : « Promi iPhone 16e », iOS 26.1, `D42A4999-F0B5-477C-944C-A4F370AEC908`** — créé le 8 nov. 2026 (`xcrun simctl create`), réservé à
+> Promi. L'ancien `0A09FCF2` démarrait sans écran (« Main Screen Surface » introuvable, même à charge 10). **On ne touche JAMAIS un simulateur qui n'est pas celui-là**
+> (66398523 : ENTRE, Fairly, une autre session).
 
 > ## ⚑ LES COULEURS DE TOM — RÈGLE PERMANENTE (Tom, 26 oct. 2026, C-204). ELLE PASSE AVANT TOUTE RÈGLE DE CONTRASTE DE CE FICHIER.
 > **Les couleurs de Tom ne se modifient JAMAIS sans sa demande : ni assombries, ni éclaircies, ni dérivées pour le contraste. Quand il dit « la
@@ -227,6 +230,34 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v189 (8 nov. 2026) — LE SIMULATEUR NEUF (§0) ; LA VAGUE DU CERCLE EST LE TRAIT DE JONCTION (C-259, Q612) ; ENVOYER UN MOT, TOUT DE SUITE (C-260) ; ?mot_neuf=1 (C-257) ; « LES MOTS » (C-261). (Décisions Tom.) Ce bloc CORRIGE v188 §1 (C-259 arrêté) et v183a (l'envoi d'un mot).
+> **Validés par Tom : Q608, le glissé vers les commentaires (C-257, le toucher du nombre).** **Porte v189b** : juges du périmètre verts (envoi 22/22 ×2, essai 60/60, Les Mots 8/8 ×2, mots_fiche 64/64, commentaires 28/28, mots_neufs 28/28, effacer 26/26, durable 13/13 paroles là — la « page pas prête » préexistante) ; haut_fiche 18/18 ×3 ; écrans 152/152, décisions 102/102, couleurs_ref 0 écart, trace_present 115/115 rejoué, banc_rendu Ramage seul (préexistant). A1 face à v188 au repos : seule la matière des dalles diffère.
+> **⚑ SAFARI VU (iOS 26.1, « Promi iPhone 16e », servi « v189 · 5ec0b9e »)** : sur la fiche du Cercle, « +1 » orange (`?mot_neuf=1`), le toucher qui glisse jusqu'au mot neuf et sa pastille, « Les Mots », le trait de jonction aplati sous l'en-tête une fois défilé ; un mot tapé au clavier puis envoyé par la flèche : le champ vide, le clavier resté ouvert, le mot en tête (`planche-v189/safari-*.png`). **Non vus dans Safari** : le vol lui-même (240 ms : une capture ne le prend pas), la jonction de Promi et de Chiche.
+> **⚑ §0** : le simulateur de Promi est neuf (`D42A4999…`, en tête de ce fichier) ; l'ancien `0A09FCF2` démarrait sans écran. On ne touche jamais un autre simulateur.
+> **⚑ §1 (C-259, Q612 tranchée)** (`lot-V189-JONCTION`, `#v189Jonction`, z 8, sous rien qui se touche) : **Cercle** — sa vague EST le trait de jonction : elle défile avec le contenu
+> jusqu'à toucher la jonction (112 pt), y reste accrochée, et s'aplatit en proportion du défilement sur les 40 pt qui suivent (amplitude × (1 − t)) ; au retour, l'inverse ; même couleur
+> (`#0A0415`), même épaisseur (10 × `_TRAIT_K`). **Promi et Chiche** : un trait plat, le même, paraît en proportion du défilement sur les 40 premiers pt. Au repos : rien (la fiche de v188
+> au pixel). Juge : **`redteam_jonction.py`** (15, deux échelles ; rouge sur v188).
+> **⚑ §2 (C-260) — LA CAUSE DE LA LATENCE (lue dans le code ; au banc WebKit l'image suit le lever de 2 à 3 ms, non reproduite)** : ① le doigt POSÉ sur la flèche retirait le focus du
+> champ (le comportement d'un bouton) : sur l'iPhone le clavier commençait à descendre, la page se recomposait, puis `envoie()` (au LEVER) rendait le focus ; ② `envoie()` faisait tout
+> avant la moindre image : le Fil, la liste rebâtie (`innerHTML`), ses mesures ; ③ le texte quittait le champ et paraissait dans la liste dans la même image : « sec ». **Aujourd'hui**
+> (`lot-V145-COMM`, `presse`, `envoie`, `finVol`) : au doigt posé, `preventDefault` (le focus reste, le clavier ne bouge pas), la flèche se presse (scale .82, 160 ms) et la copie se
+> prépare ; au lever, dans la même tâche (≤ 2 ms), le champ se vide et le texte passe sur une copie posée au même endroit (`.cm5-vol`, dans la fiche, z 7) ; derrière la première image :
+> l'écriture (`saveState(true)` ou le magasin du Cercle), le Fil, la liste ; la copie rejoint le texte du mot neuf en 240 ms (`cubic-bezier(.33,1,.68,1)` : départ vif, arrivée douce),
+> le texte passe à la ligne comme lui (sa largeur, découpe d'une ligne → toutes), puis le découvre ; si le mot neuf tomberait sous la barre (ou le clavier, ou le bloc « Un mot… » d'un
+> Cercle), la fiche glisse d'autant (défilement doux natif). Aucune couleur nouvelle (la copie a la couleur du champ, celle du mot). **Trouvé : mon propre mot sortait « +1 »** (signé de
+> `USER.name`, comparé au prénom) — il est posé vu, et `deMoi` connaît `USER.name`. Juge : **`redteam_envoi_mot.py`** (22 : la première image après le lever porte le changement, la
+> tâche du lever ≤ 4 ms ; < 16,7 ms au calme seulement ; la copie vise le mot ± 1 pt ; chemin sans retour ; rechargée 100 ms après, le mot reste ; rouge sur v189a : 4/19).
+> **⚑ §3 (C-257 suite) — `?mot_neuf=1`** (`lot-V189-MOT-NEUF`) : à la première ouverture de chaque fiche dans la page, un mot arrive (par `_comm.arrive`) d'une personne de la parole,
+> daté de maintenant, pas vu, marqué `essai` ; à CHAQUE chargement les mots `essai` sont retirés (et la parole retrouve exactement son état : `comments` absent s'il l'était, le
+> magasin des Cercles aussi) ; la dernière action (Récents) ne les compte pas. **Trouvé : le Fil n'allumait jamais la pastille d'un mot neuf d'un CERCLE** (ses lignes ne portent que le
+> `data-pid` d'une parole) : la ligne la plus récente d'une parole du Cercle la porte. Juge : **`redteam_mot_neuf_essai.py`** (60 : trois passes × Promi, Chiche, Cercle — « +1 » orange,
+> la pastille du mot, de l'Index, du Fil, le glissé, le total après lecture, les données identiques après rechargement ; 6/60 sur v189a).
+> **⚑ §4 (C-261) — « LES MOTS »** (`#cm5Titre`, Cercle seul, quand il a des mots) : le style des titres de section de l'Aura (« Ce que tu as tenu ») — Gilbert 700, 13 pt, interligne 16,
+> chasse 0,10 em, capitales, `--c-beige67` (la fiche d'un Cercle est sombre dans les deux thèmes) ; la passe de lisibilité ne le repeint pas (2,96:1 sur `#5D4978`, mesuré, C-204).
+> **Cotes** : avant, 16 pt de la dernière carte du fil au premier mot ; aujourd'hui **32 pt** (le double) jusqu'au haut du titre, **16** de titre, **36 pt** jusqu'au premier mot — le
+> rapport de l'Aura (18,5 au-dessus, 21 dessous : 0,881 ; ici 0,889). Juge : **`redteam_les_mots.py`** (8, deux échelles ; 4/8 sur v189a).
 
 ### ⚑ v188 (8 nov. 2026) — « UN MOT… » PUIS TOUS LES MOTS, PLUS DE « + X » (Q608) ; LE NOMBRE « +N » EN ORANGE (C-257 suite) ; LE TRAIT DE JONCTION ARRÊTÉ (C-259). (Décisions Tom.) Ce bloc CORRIGE v183a (C-248 : trois mots au plus, « + X commentaires », le dépliage), v186b (C-257 : le nombre seul) et v182b (C-246 : 16 pt sous l'état).
 > **Validés par Tom : C-237 (la fin du vol), C-243 et Q610 (le glissé parti d'une carte), le défilement de la fiche.** Le simulateur d'un autre projet (66398523) reste allumé : on n'y

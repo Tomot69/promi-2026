@@ -8964,3 +8964,6 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   (≈ 150 → 230 pt), un trait sombre qui défile avec la fiche et passe sous la bande ; sur un Promi et un Chiche, le trait du GESTE (« trace pour tenir », ≈ 300 → 370 pt),
   qu'on trace au doigt ; ④ en faire le trait de jonction demande de choisir laquelle (la vague du Cercle qui suit la jonction et s'aplatit ; un trait neuf au bas de la
   bande, qui part de la forme de la vague) — et sur un Promi la vague est le geste : je ne l'aplatis pas sans ta décision.
+- **Q612 — TRANCHÉE (Tom, v189)** : la vague du Cercle EST le trait de jonction (elle s'accroche à 112 pt et s'aplatit sur 40 pt) ; Promi et Chiche : un trait plat qui paraît sur 40 pt. Fait en v189a.
+- **Q613 — À VALIDER (v189b, C-261)** : « Les Mots » au gris des titres de section de l'Aura (`--c-beige67`, #A8A08E) : sur le corps d'un Cercle (#5D4978) il fait 2,96:1. Rien dérivé (C-204) ; si tu le veux plus lisible, dis la couleur (la crème des noms ferait 6,9:1).
+- **Q614 — À VALIDER (v189b, C-260)** : envoyé, si le mot neuf tomberait sous la barre (ou sous le clavier), la fiche glisse d'autant pour le montrer se poser — c'est un mouvement que tu n'as pas demandé nommément.

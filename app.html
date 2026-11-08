@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v188', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v189', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -36370,7 +36370,12 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       if(!attend && window._motsNeufs){ var nkA=c.getAttribute('data-nk')||c.getAttribute('data-nuee');
         if((pidA!=null && window._motsNeufs(+pidA)) || (nkA && window._motsNeufs('cercle:'+nkA))){
           var prem = c.classList.contains('s4-carte') && c.closest && c.closest('#feedView') ? (function(){ var t=[].filter.call(n.querySelectorAll('#feedView .s4-carte'), function(x){ return (pidA!=null && x.getAttribute('data-pid')===pidA) || (nkA && (x.getAttribute('data-nk')||x.getAttribute('data-nuee'))===nkA); }); return t[0]===c; })() : true;
-          if(prem) attend=true; } }
+          if(prem) attend=true; }
+        /* ⚑ v189b (Tom, C-257 suite : « la pastille dans le Fil », sur les trois natures) — les lignes du Fil ne portent que le `data-pid` d'une parole : le mot neuf d'un CERCLE
+           n'y allumait rien. La ligne la plus récente d'une parole de ce Cercle porte sa pastille. */
+        if(!attend && pidA!=null && c.closest && c.closest('#feedView')){ var qC=null; try{ qC=(promises||[]).filter(function(q){ return q.id===+pidA; })[0]; }catch(_){ }
+          if(qC && qC.nuee && window._motsNeufs('cercle:'+qC.nuee)){ var kC=qC.nuee, premC=[].filter.call(n.querySelectorAll('#feedView .s4-carte'), function(x){ var i=x.getAttribute('data-pid'); if(i==null) return (x.getAttribute('data-nk')||x.getAttribute('data-nuee'))===kC; try{ return (promises||[]).some(function(q){ return q.id===+i && q.nuee===kC; }); }catch(_){ return false; } })[0];
+            if(premC===c) attend=true; } } }
       var p=c.querySelector(':scope > .s4-att');
       if(!attend){ if(p) p.parentNode.removeChild(p); return; }
       if(!p){ p=document.createElement('i'); p.className='s4-att'; c.appendChild(p); }
@@ -36658,6 +36663,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var cs=getComputedStyle(el);
       if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity<0.05) return;
       if(el.id==='dptTrace' && el.classList.contains('dpt-depart')) return;
+      if(el.id==='cm5Titre') return;   /* ⚑ v189b (Tom, C-261) : « Les Mots » au style des titres de section en Gilbert (l'Aura : --c-beige67 en sombre) — on ne le repeint pas (C-204 ; mesuré 2,96:1 sur le corps d'un Cercle) */
       if(el.classList && el.classList.contains('cm5-nb') && el.classList.contains('cm5-neufs')) return;   /* ⚑ v188 (Tom, C-257 suite) : « +N » en #FB4C0D, comme le + — une décision (C-204) : on ne le repeint pas (mesuré : 1,23:1 sur le corps d'un Promi) */   /* ⚑ v174 (Tom, C-214) : l'orange du libellé est une décision, comme à la page + : 1,23:1 sur le corps d'un Promi, dit dans le rapport, on ne le repeint pas */
       var c=col3(cs.webkitTextFillColor||cs.color); if(!c) return;
       var f=fondOpaque(el); if(!f) return;
@@ -42410,7 +42416,7 @@ window._noms=(function(){
      « Un mot… » à l'encre, et à droite, s'il y en a, « 3 mots » en petit ; ouverte, la saisie prend un trait fin sous elle (l'endroit où l'on écrit). */
   function actif(p, e){ if(!p || p.draft) return false; return true; }
   function compte(p){ var n=liste(p).length; return n ? (n+(n>1?' mots':' mot')) : ''; }   /* mot manquant, le plus sobre : « 3 mots » (QUESTIONS, à valider) */
-  function retire(){ ['cm5Ligne','cm5Dernier','cm5Fil','cm5Liste'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); ouvert=false; courant=null; }
+  function retire(){ ['cm5Ligne','cm5Dernier','cm5Fil','cm5Liste','cm5Titre'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); ouvert=false; courant=null; }
   function couleurs(dp, e, encre){ var corps='#F7F0DE'; try{ corps=getComputedStyle(dp).backgroundColor||corps; }catch(_){ } return {corps:corps, encre:encre||'#201908', bord:encre||'#201908'}; }   /* le contour est à l'encre du corps, dans tous les états : la couleur d'un état (l'orange d'« à tenir ») ne sert qu'à l'état (C-053) */
   function peintDernier(p, C){ var L=liste(p), d=$('cm5Dernier'); try{ var _dp=$('detailPoster'); if(_dp){ _dp.classList.toggle('cm5-der', false); if(C && C.corps) _dp.style.setProperty('--nf-corps', C.corps); } }catch(_){ } if(!d) return; if(true){ pose(d,{display:'none'}); return; } var c=L[L.length-1];   /* v183a (C-248) : la liste des mots remplace le dernier mot */
     d.innerHTML=visage(c.by, 18)+'<b style="font:700 15px/20px Gilbert,system-ui,sans-serif;margin:0 0 0 7px">'+(window._noms?window._noms.lien(c.by&&!/^moi$/i.test(c.by)?c.by:nom(c), {largeur:96, police:'700 15px Gilbert'}):esc(nom(c)))+'</b><span class="cm5-date" style="font:400 13px/20px Atkinson,system-ui,sans-serif;margin:0 7px 0 6px">'+esc(date(c.d))+'</span><span style="font:400 15px/20px Atkinson,system-ui,sans-serif;overflow:hidden;text-overflow:ellipsis">'+esc(c.t)+'</span>';
@@ -42475,6 +42481,18 @@ window._noms=(function(){
   function cle(p){ return String(p && p.id); }
   function rangee(c){ var qui=(c.by&&!/^moi$/i.test(c.by))?c.by:nom(c);
     return '<div class="cm5-un"'+(window._motNeuf&&window._motNeuf(c)?' data-neuf="1"':'')+' style="display:flex;gap:10px;align-items:flex-start;margin:0;padding:0 0 12px;position:relative">'+(window._motNeuf&&window._motNeuf(c)?window._pastilleHTML('top:6.5px;right:0'):'')+visage(c.by, 22)+'<div style="flex:1 1 auto;min-width:0"><div style="font:700 16px/22px Gilbert,system-ui,sans-serif;margin:0;white-space:nowrap;overflow:hidden">'+(window._noms?window._noms.lien(qui, {largeur:180, police:'700 16px Gilbert'}):esc(qui))+'<span class="cm5-date" style="font:400 13px/22px Atkinson,system-ui,sans-serif;margin-left:7px">'+esc(date(c.d))+'</span></div><div class="cm5-t" style="font:400 16px/1.35 Atkinson,system-ui,sans-serif;white-space:pre-wrap;overflow-wrap:anywhere;margin:1px 0 0">'+esc(c.t)+'</div></div></div>'; }
+  /* ⚑ v189b (Tom, C-261) — « LES MOTS » SUR LA FICHE DU CERCLE : « double l'espace entre la fin du fil du Cercle et les commentaires ; dans cet espace, le titre « Les Mots »,
+     en Gilbert, au style des autres titres Gilbert de même rang ; il doit respirer : le rythme des autres titres de section (même rapport entre l'air au-dessus et l'air
+     en dessous). Seulement sur la fiche du Cercle. »
+     LE STYLE : celui des titres de section de l'Aura (« Ce que tu as tenu », « Ce qu'on t'a tenu ») — Gilbert 700, 13 pt, interligne 16, chasse 0,10 em, capitales,
+     `--c-beige67` (la fiche d'un Cercle est sombre dans les deux thèmes, v146). LES COTES : avant, 16 pt entre la dernière carte du fil et le premier mot (12 de la carte, 4 de la
+     liste) ; aujourd'hui 32 pt (le double) jusqu'au haut du titre, puis 36 pt du bas du titre au premier mot — le rapport de l'Aura (18,5 au-dessus, 21 dessous : 0,881 ; ici 0,889). */
+  var TITRE={AVANT:20, SOUS:36};   /* 12 (la marge de la carte) + 20 = 32 */
+  function titre(el, ml){ var t=$('cm5Titre'); if(!el){ if(t) pose(t,{display:'none'}); return; }
+    if(!t){ t=document.createElement('div'); t.id='cm5Titre'; t.className='cm5 cm5-titre'; t.setAttribute('role','heading'); t.setAttribute('aria-level','2'); t.textContent='Les Mots'; }
+    if(t.parentNode!==el.parentNode || t.nextSibling!==el) el.parentNode.insertBefore(t, el);
+    pose(t,{display:'block',visibility:'visible',opacity:'1',position:'relative',left:'0',top:'0',width:'auto','max-width':'none',margin:TITRE.AVANT+'px '+(ml||0).toFixed(1)+'px 0 '+(ml||0).toFixed(1)+'px',padding:'0',
+      font:'700 13px/16px Gilbert,system-ui,sans-serif','letter-spacing':'.10em','text-transform':'uppercase',color:'var(--c-beige67)','-webkit-text-fill-color':'var(--c-beige67)',background:'transparent','pointer-events':'none','white-space':'nowrap'}); }
   function listeEl(dp){ var el=$('cm5Liste'); if(!el){ el=document.createElement('div'); el.id='cm5Liste'; el.className='cm5 cm5-liste'; }
     var h=HOTE ? (document.querySelector('#dpNueeFil .nf-liste')||null) : dp; if(h && el.parentNode!==h) h.appendChild(el); return h ? el : null; }
   /* le vu : les rangées passées à l'écran entre l'en-tête (112) et la barre (760) — `_cm5Montres`, lu à la fermeture (lot-V184B-MOTS) */
@@ -42486,13 +42504,14 @@ window._noms=(function(){
     [].forEach.call(el.querySelectorAll('.cm5-un'), function(r, i){ r.setAttribute('data-i', i); IO.observe(r); }); }
   function peintListe(p, C, dp){ var L=liste(p).slice().reverse(), el=$('cm5Liste');
     LIGNE_T=LIGNE_Y;   /* v188 : « Un mot… » à sa place ; la liste est dessous */
-    if(!L.length){ if(el) pose(el,{display:'none'}); try{ if(IO) IO.disconnect(); }catch(_){ } return; }
+    if(!L.length){ if(el) pose(el,{display:'none'}); titre(null); try{ if(IO) IO.disconnect(); }catch(_){ } return; }
     el=listeEl(dp); if(!el) return;
     var n=L.length, sig=cle(p)+'|'+n+'|'+L.map(function(c){ return (c.d||'')+(c.by||'')+(c.t||'')+(window._motNeuf&&window._motNeuf(c)?'*':''); }).join('§')+'|'+C.encre;   /* v184b (C-253) : la pastille d'un mot neuf */
     if(el.getAttribute('data-sig')!==sig){ el.setAttribute('data-sig', sig); el.innerHTML=L.map(rangee).join(''); guetteVus(el, p, L); }
     else if(!window._cm5Montres || window._cm5Montres.p!==p) guetteVus(el, p, L);
     if(HOTE){ var _cr=document.querySelector('#dpNueeFil .nf-item'), _lr=el.parentNode.getBoundingClientRect(), _k=(window._echDp?window._echDp($('detailPoster')):1)||1, _ml=_cr?Math.max(0,(_cr.getBoundingClientRect().left-_lr.left)/_k):24; }
-    if(HOTE) pose(el,{display:'block',position:'relative',left:'0',top:'0',width:'auto','max-width':'none',margin:'4px '+_ml.toFixed(1)+'px 0 '+_ml.toFixed(1)+'px',padding:'0','box-sizing':'border-box',color:C.encre,'-webkit-text-fill-color':C.encre,'z-index':'auto',background:'transparent','pointer-events':'auto',visibility:'visible',opacity:'1'});
+    titre(HOTE ? el : null, HOTE ? _ml : 0);
+    if(HOTE) pose(el,{display:'block',position:'relative',left:'0',top:'0',width:'auto','max-width':'none',margin:(TITRE.SOUS)+'px '+_ml.toFixed(1)+'px 0 '+_ml.toFixed(1)+'px',padding:'0','box-sizing':'border-box',color:C.encre,'-webkit-text-fill-color':C.encre,'z-index':'auto',background:'transparent','pointer-events':'auto',visibility:'visible',opacity:'1'});
     else pose(el,{display:'block',position:'absolute',left:'24px',top:(LIGNE_Y+LIGNE_H+ECART)+'px',width:'342px','max-width':'none',margin:'0',padding:'0','box-sizing':'border-box',color:C.encre,'-webkit-text-fill-color':C.encre,'z-index':ZL,background:'transparent','pointer-events':'auto'});
     if(HOTE){ var hh=el.offsetHeight; if(hh!==el.__h){ el.__h=hh; requestAnimationFrame(cercleHaut); } } }   /* un Cercle : la fiche reprend la hauteur du fil quand la liste change */
   /* un Cercle : la fiche fait la hauteur de son fil, plus 12 (la règle de C-238, `187 + hD + 12`, lue sur le fil rendu) — sinon la barre, collée au bas,
@@ -42504,14 +42523,69 @@ window._noms=(function(){
     if(!HOTE){ try{ if(window._ajusteLigne){ window._ajusteLigne(); requestAnimationFrame(window._ajusteLigne); } }catch(_){ } } }   /* dans la même image que la pose : la liste paraissait à 10 pt sous l'état, puis sautait à 16 (C-246) 270 ms plus tard */
   function ouvre(){ if(ouvert || !courant) return; ouvert=true; peint(); var s=document.querySelector('#cm5Ligne .cm5-saisie'); if(s){ try{ s.focus({preventScroll:false}); }catch(_){ try{ s.focus(); }catch(__){ } } } }   /* le clavier s'ouvre DANS le geste (v114) */
   function ferme(){ if(!ouvert) return; ouvert=false; var s=document.querySelector('#cm5Ligne .cm5-saisie'); if(s){ try{ s.blur(); }catch(_){ } } peint(); }
+  /* ⚑ v189b (Tom, C-260) — « ENVOYER UN COMMENTAIRE : IMMÉDIAT, AVEC UN SENTIMENT DE VALIDATION. Le retour visuel commence à l'image qui suit le toucher ; l'enregistrement se fait
+     derrière. La flèche répond d'une légère pression (≈ 160 ms). Le texte quitte le champ et vient se poser en tête de la liste des mots, en ≈ 240 ms, départ vif, arrivée douce.
+     Le champ se vide en même temps, le nombre se met à jour. Aucune couleur nouvelle, aucun flash, aucune vibration. »
+     LA CAUSE DE LA LATENCE (lue dans le code ; au banc WebKit l'image suit le lever de 2 à 3 ms, elle n'y est pas reproduite) : ① le toucher de la flèche se lisait au LEVER du doigt,
+     et le doigt POSÉ sur le bouton retirait le focus du champ (le comportement par défaut d'un bouton) : sur l'iPhone le clavier commençait à descendre, la page se recomposait
+     (`visualViewport`), puis `envoie()` rendait le focus et le clavier remontait — rien ne disait que le mot partait pendant ce temps ; ② `envoie()` faisait tout dans la tâche du
+     toucher avant la moindre image : le Fil (`feedAdd`), la liste rebâtie en entier (`innerHTML`), ses mesures (`_ajusteLigne`, `getBoundingClientRect`) ; ③ le texte était retiré
+     du champ et posé dans la liste dans la même image : il « disparaissait sec ».
+     AUJOURD'HUI : le doigt posé ne retire plus le focus (`preventDefault` au `pointerdown` de la flèche) et la flèche se presse tout de suite ; au lever, dans la même tâche, le champ se vide
+     et le texte, posé sur une copie au même endroit, part ; la parole reçoit son mot (en mémoire) et s'écrit derrière, après la première image (`saveState(true)`, ou le magasin d'un Cercle) ;
+     la liste est rebâtie à l'image suivante, la copie y rejoint le mot neuf (240 ms) puis le découvre. */
+  var VOL=null, PREP=null;
+  function prepare(s){ try{ var dp=$('detailPoster'), c=getComputedStyle(s); PREP={s:s, t:performance.now(), st:dp.scrollTop, k:(window._echDp?window._echDp(dp):1)||1, R:dp.getBoundingClientRect(), r:s.getBoundingClientRect(),
+      cs:{font:c.font, color:c.color, webkitTextFillColor:c.webkitTextFillColor, lineHeight:c.lineHeight, fontSize:c.fontSize}}; }catch(_){ PREP=null; } }
+  function presse(f){ try{ var g=f && (f.querySelector('svg')||f); if(!g || !g.animate) return; window._cm5Presse=performance.now();
+      g.animate([{transform:'scale(1)'},{transform:'scale(.82)',offset:.38},{transform:'scale(1)'}],{duration:160,easing:'cubic-bezier(.2,.7,.3,1)'}); }catch(_){ } }
+  function finVol(){ var v=VOL; VOL=null; if(!v) return; try{ if(v.a) v.a.cancel(); }catch(_){ } try{ if(v.n && v.n.parentNode) v.n.parentNode.removeChild(v.n); }catch(_){ }
+    try{ if(v.cible){ v.cible.style.removeProperty('visibility'); } }catch(_){ } }
   function envoie(){ var s=document.querySelector('#cm5Ligne .cm5-saisie'), p=courant; if(!s || !p) return; var v=s.value.trim(); if(!v) return;
-    if(!p.comments) p.comments=[]; p.comments.push({t:v, d:new Date().toISOString(), by:moi()}); s.value='';
-    try{ if(typeof feedAdd==='function'){ var au=p.nuee?((typeof NUE!=='undefined'&&NUE[p.nuee])||p.nuee):(recue(p)?p.from:p.who); feedAdd('comment','Tu as commenté « '+p.title+' »'+(au && !/^moi$/i.test(au)?' · '+au:''),{pid:p.id}); } }catch(_){ }
-    try{ if(p._cercle && window._cercleMots) window._cercleMots.garde(); else if(typeof queueSave==='function') queueSave(); }catch(_){ }
-    /* v183a (C-248) : le mot neuf entre en tête de la liste, au-dessus de la ligne — la ligne « Un mot… » reste sous le doigt : la fiche défile d'autant que la liste a grandi */
-    var _dp=$('detailPoster'), _l=$('cm5Ligne'), _y0=_l?_l.getBoundingClientRect().top:null;
-    peint(); try{ s.focus(); }catch(_){ }
-    if(!HOTE && _dp && _y0!=null){ try{ if(window._ajusteLigne) window._ajusteLigne(); var _k=window._echDp?window._echDp(_dp):1, _y1=_l.getBoundingClientRect().top; if(Math.abs(_y1-_y0)>0.5) _dp.scrollTop+=(_y1-_y0)/_k; }catch(_){ } } }
+    finVol(); var f=s.parentNode && s.parentNode.querySelector('.cm5-va'); if(!window._cm5Presse || performance.now()-window._cm5Presse>220) presse(f);
+    var dp=$('detailPoster'), k, R, r, cs, g=PREP; PREP=null;
+    if(g && g.s===s && performance.now()-g.t<1500 && Math.abs(g.st-dp.scrollTop)<0.5){ k=g.k; R=g.R; r=g.r; cs=g.cs; }   /* préparé au doigt posé : l'image du lever ne relit rien */
+    else { k=(window._echDp?window._echDp(dp):1)||1; R=dp.getBoundingClientRect(); r=s.getBoundingClientRect(); cs=getComputedStyle(s); cs={font:cs.font, color:cs.color, webkitTextFillColor:cs.webkitTextFillColor, lineHeight:cs.lineHeight, fontSize:cs.fontSize}; }
+    /* la copie : le texte du champ, à sa place, dans sa police ; elle vit dans la fiche (z 7 : sous la bande d'en-tête et la barre, au-dessus de la liste) */
+    var n=document.createElement('div'); n.className='cm5-vol'; n.setAttribute('aria-hidden','true'); n.textContent=v;
+    var x0=(r.left-R.left)/k, y0=(r.top-R.top)/k+dp.scrollTop, h0=r.height/k, lh=parseFloat(cs.lineHeight)||(parseFloat(cs.fontSize)*1.2);
+    [['display','block'],['visibility','visible'],['opacity','1'],['position','absolute'],['left',x0.toFixed(2)+'px'],['top',(y0+(h0-lh)/2).toFixed(2)+'px'],['width',(r.width/k).toFixed(2)+'px'],['height',lh+'px'],
+     ['margin','0'],['padding','0'],['font',cs.font],['color',cs.color],['-webkit-text-fill-color',cs.webkitTextFillColor||cs.color],['white-space','nowrap'],['overflow','hidden'],
+     ['text-overflow','clip'],['pointer-events','none'],['z-index','7'],['transform-origin','0 0'],['background','transparent'],['max-width','none'],['box-sizing','border-box']].forEach(function(q){ n.style.setProperty(q[0], q[1], 'important'); });
+    dp.appendChild(n); VOL={n:n, p:p, t0:performance.now()};
+    s.value='';   /* le champ se vide dans la même image */
+    var c={t:v, d:new Date().toISOString(), by:moi(), vu:true};   /* mon mot n'est jamais « neuf » pour moi (il sortait « +1 » : signé de USER.name, comparé au prénom) */ if(!p.comments) p.comments=[]; p.comments.push(c);
+    var vol=VOL;
+    requestAnimationFrame(function(){ setTimeout(function(){ if(VOL!==vol) return;
+      /* derrière la première image : l'écriture (rechargée 100 ms après l'envoi, la parole garde son mot), le Fil, puis la liste */
+      try{ if(p._cercle && window._cercleMots) window._cercleMots.garde(); else if(typeof saveState==='function') saveState(true); else if(typeof queueSave==='function') queueSave(); }catch(_){ }
+      try{ if(typeof feedAdd==='function'){ var au=p.nuee?((typeof NUE!=='undefined'&&NUE[p.nuee])||p.nuee):(recue(p)?p.from:p.who); feedAdd('comment','Tu as commenté « '+p.title+' »'+(au && !/^moi$/i.test(au)?' · '+au:''),{pid:p.id}); } }catch(_){ }
+      var _l=$('cm5Ligne'), _y0=_l?_l.getBoundingClientRect().top:null;
+      if(courant===p) peint(); try{ s.focus({preventScroll:true}); }catch(_){ }
+      if(!HOTE && _y0!=null){ try{ if(window._ajusteLigne) window._ajusteLigne(); var _y1=_l.getBoundingClientRect().top; if(Math.abs(_y1-_y0)>0.5) dp.scrollTop+=(_y1-_y0)/k; }catch(_){ } }
+      /* la cible : le texte du mot neuf, en tête de la liste ; la copie le rejoint, prend sa largeur (le texte passe à la ligne comme lui), puis le découvre */
+      var un=document.querySelector('#cm5Liste .cm5-un'), t=un&&un.querySelector('.cm5-t');
+      if(!t || (t.textContent||'')!==v){ finVol(); return; }
+      var R2=dp.getBoundingClientRect(), rt=t.getBoundingClientRect(), ct=getComputedStyle(t), x1=(rt.left-R2.left)/k, y1=(rt.top-R2.top)/k+dp.scrollTop, w1=rt.width/k, h1=rt.height/k;
+      var xa=parseFloat(n.style.left), ya=parseFloat(n.style.top);
+      t.style.setProperty('visibility','hidden'); vol.cible=t;
+      [['font',ct.font],['white-space','pre-wrap'],['overflow-wrap','anywhere'],['width',w1.toFixed(2)+'px'],['height',h1.toFixed(2)+'px'],['line-height',ct.lineHeight],['overflow','visible']].forEach(function(q){ n.style.setProperty(q[0], q[1], 'important'); });
+      var lh1=parseFloat(ct.lineHeight)||22, haut=Math.max(0, h1-lh1);
+      try{ vol.a=n.animate([{transform:'translate(0px,0px)', clipPath:'inset(0px 0px '+haut.toFixed(1)+'px 0px)'},{transform:'translate('+(x1-xa).toFixed(2)+'px,'+(y1-ya).toFixed(2)+'px)', clipPath:'inset(0px 0px 0px 0px)'}],
+                     {duration:240, easing:'cubic-bezier(.33,1,.68,1)', fill:'forwards'});   /* départ vif, arrivée douce */
+        vol.a.onfinish=function(){ if(VOL===vol) finVol(); }; }catch(_){ finVol(); }
+      /* le mot neuf doit se VOIR se poser : s'il tombe sous la barre (ou sous le clavier, ou sous le bloc « Un mot… » d'un Cercle), la fiche glisse d'autant, en douceur (le défilement
+         natif, v186b) — la ligne « Un mot… » reste au-dessus de 120 pt */
+      var sc=0; try{ var D=$('device').getBoundingClientRect(), bas=760, bar=$('dpDetails'), vv=window.visualViewport;
+        if(HOTE){ var hb=HOTE.getBoundingClientRect(); if(hb.height) bas=Math.min(bas, (hb.top-D.top)/k); } else if(bar && bar.getBoundingClientRect().height) bas=Math.min(bas, (bar.getBoundingClientRect().top-D.top)/k);
+        if(vv) bas=Math.min(bas, (vv.offsetTop+vv.height-D.top)/k);
+        var ru=un.getBoundingClientRect(), hu=(ru.top-D.top)/k, bu=(ru.bottom-D.top)/k-12, lt=_l?(_l.getBoundingClientRect().top-D.top)/k:200;
+        if(bu>bas-8){ sc=bu-(bas-8); if(!HOTE) sc=Math.min(sc, Math.max(0, lt-120)); }
+        else if(hu<120) sc=hu-120;
+        sc=Math.max(-dp.scrollTop, Math.min(sc, dp.scrollHeight-dp.clientHeight-dp.scrollTop));
+        if(Math.abs(sc)>0.5) dp.scrollTo({top:dp.scrollTop+sc, behavior:'smooth'}); }catch(_){ }
+      window._cm5Vol={t0:vol.t0, de:[xa,ya], a:[x1,y1], defile:sc};
+    },0); }); }
   window._comm={ TXT:TXT, regle:{LIGNE_H:LIGNE_H, LIGNE_Y:LIGNE_Y}, actif:actif, retire:retire, recue:recue, liste:liste, etat:function(){ return {ouvert:ouvert, pid:courant?courant.id:null}; }, ouvre:ouvre, ferme:ferme,
     pose:function(p, e, dp, encre, o){ if(courant!==p){ ouvert=false; } courant=p; COUL.set(p, couleurs(dp, e, encre)); LIGNE_Y=(o&&o.ligneY!=null)?o.ligneY:LIGNE_Y0; ZL=(o&&o.z)||'3'; HOTE=(o&&o.dans)||null;   /* v146 : sur un Cercle la ligne vit DANS le bloc collant de « + Planter » (o.dans) : posée dans la fiche qui défile, elle partait avec le fil (pris par redteam_joignable) */   /* v146 : la fiche d'un Cercle pose la ligne au-dessus de « + Planter dans le Cercle » */
       ['cm5Fil','cm5Dernier','cm5Ligne'].forEach(function(i){ var n=cree(i), h=(i!=='cm5Fil'&&HOTE)?HOTE:dp; if(n.parentNode!==h) h.appendChild(n); if(i==='cm5Fil') n.className='cm5 cm5-fil'; });
@@ -42524,6 +42598,7 @@ window._noms=(function(){
   var G=null;
   document.addEventListener('pointerdown', function(e){ var t=e.target, z=t && t.closest ? t.closest('#cm5Ligne, #cm5Dernier') : null, dans=t && t.closest ? t.closest('#cm5Ligne, #cm5Dernier, #cm5Fil, #cm5Liste') : null;
     G=z?{z:z, va:!!t.closest('.cm5-va'), nb:!!t.closest('#cm5Ligne .cm5-nb'), x:e.clientX, y:e.clientY, t:performance.now()}:null;   /* v186b (C-257) : le nombre */
+    if(G && G.va && ouvert){ e.preventDefault(); var _s=document.querySelector('#cm5Ligne .cm5-saisie'); if(_s && _s.value.trim()){ presse(t.closest('.cm5-va')); prepare(_s); } }   /* v189b (C-260) : le doigt posé ne retire plus le focus du champ (le clavier ne descend plus), la flèche se presse */
     if(ouvert && !dans){ var dp=$('detailPoster'); if(dp && dp.contains(t)) window._cm5Ferme=performance.now(); ferme(); } }, true);
   document.addEventListener('pointerup', function(e){ var g=G; G=null; if(!g) return; if(Math.abs(e.clientX-g.x)>10 || Math.abs(e.clientY-g.y)>10 || performance.now()-g.t>700) return;
     if(g.va && ouvert){ e.preventDefault(); envoie(); return; }
@@ -42534,7 +42609,7 @@ window._noms=(function(){
     if(t && t.closest && t.closest('#cm5Ligne, #cm5Dernier')){ e.stopPropagation(); if(!ouvert && e.detail===0) ouvre(); return; }
     if(window._cm5Ferme && performance.now()-window._cm5Ferme<450){ e.stopPropagation(); e.preventDefault(); } }, true);   /* le toucher qui referme la saisie ne fait rien d'autre */
   document.addEventListener('keydown', function(e){ if(e.key==='Enter' && e.target && e.target.classList && e.target.classList.contains('cm5-saisie')){ e.preventDefault(); envoie(); } }, true);
-  (window._rangeurs=window._rangeurs||[]).push(function(){ retire(); });
+  (window._rangeurs=window._rangeurs||[]).push(function(){ finVol(); retire(); });
 })();
 </script>
 <script id="lot-V145-PARTS">
@@ -43342,7 +43417,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   var M={}; try{ M=JSON.parse(localStorage.getItem('promi_cercle_mots')||'{}')||{}; }catch(_){ M={}; }
   var O={};
   window._cercleMots={ de:function(k){ if(!O[k]) O[k]={id:'cercle:'+k, nuee:k, _cercle:true, from:'moi', title:(typeof NUE!=='undefined'&&NUE[k])||k, comments:(M[k]=M[k]||[])}; return O[k]; },
-    garde:function(){ try{ localStorage.setItem('promi_cercle_mots', JSON.stringify(M)); }catch(_){ } } };
+    garde:function(){ try{ localStorage.setItem('promi_cercle_mots', JSON.stringify(M)); }catch(_){ } },
+    oublie:function(k){ if(M[k] && !M[k].length){ delete M[k]; delete O[k]; } try{ if(Object.keys(M).length || localStorage.getItem('promi_cercle_mots')!=null) localStorage.setItem('promi_cercle_mots', JSON.stringify(M)); }catch(_){ } } };   /* v189b : un Cercle sans mot avant l'essai de ?mot_neuf=1 retrouve exactement son magasin */
   function place(){ try{
     var dp=document.getElementById('detailPoster'); if(!dp || !dp.classList.contains('show') || !dp.classList.contains('dp-mode-nuee') || typeof curNuee==='undefined' || !curNuee || !window._comm) return;
     var a=document.getElementById('nfAdd'); if(!a) return; var D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, r=a.getBoundingClientRect(); if(!r.height) return;
@@ -44539,9 +44615,10 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   var HORS={x:1,y:1,tx:1,ty:1,place:1,derAct:1,vuTenue:1,monde:1,dalle:1,due:1,ech:1,pending:1,_v:1};
   var SIG={}, CA={}; try{ CA=JSON.parse(localStorage.getItem('promi_cercle_act')||'{}')||{}; }catch(_){ CA={}; }
   function vide(v){ return v==null || v==='' || v===false || (Array.isArray(v) && !v.length) || (typeof v==='object' && !Array.isArray(v) && !Object.keys(v).length); }   /* ouvrir une fiche pose `files: []` sur une parole qui n'en avait pas : ce n'est pas une action */
-  function sig(p){ var o={}; for(var k in p){ if(!HORS[k] && typeof p[k]!=='function' && !vide(p[k])) o[k]=p[k]; } if(p.ech&&p.ech.iso) o.echIso=p.ech.iso; try{ return JSON.stringify(o); }catch(_){ return ''; } }
+  function sansEssai(L){ return Array.isArray(L) ? L.filter(function(c){ return !(c && c.essai); }) : L; }   /* v189b : le mot d'essai de ?mot_neuf=1 n'est pas une action (« sans rien changer d'autre dans les données de Tom ») */
+  function sig(p){ var o={}; for(var k in p){ if(!HORS[k] && typeof p[k]!=='function' && !vide(k==='comments'?sansEssai(p[k]):p[k])) o[k]=(k==='comments'?sansEssai(p[k]):p[k]); } if(p.ech&&p.ech.iso) o.echIso=p.ech.iso; try{ return JSON.stringify(o); }catch(_){ return ''; } }
   function motsC(){ try{ return JSON.parse(localStorage.getItem('promi_cercle_mots')||'{}')||{}; }catch(_){ return {}; } }
-  function sigC(k, M){ try{ return JSON.stringify([(typeof NUE!=='undefined'&&NUE[k])||'', (typeof NUEEMEM!=='undefined'&&NUEEMEM[k])||[], (typeof NUENOTE!=='undefined'&&NUENOTE[k])||'', M[k]||[], (typeof NUEFILES!=='undefined'&&NUEFILES[k])||[]]); }catch(_){ return ''; } }
+  function sigC(k, M){ try{ return JSON.stringify([(typeof NUE!=='undefined'&&NUE[k])||'', (typeof NUEEMEM!=='undefined'&&NUEEMEM[k])||[], (typeof NUENOTE!=='undefined'&&NUENOTE[k])||'', sansEssai(M[k]||[]), (typeof NUEFILES!=='undefined'&&NUEFILES[k])||[]]); }catch(_){ return ''; } }
   var pret=false, base=false, rentre=false;
   function note(){ try{
     if(!base) return;   /* la base : l'état relu au lancement (posée 1,5 s après le chargement), jamais une action */
@@ -44738,6 +44815,58 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   document.addEventListener('scroll', function(){ if(P && !P.m) lache(); }, {capture:true, passive:true});
 })();
 </script>
+<script id="lot-V189-JONCTION">
+/* ⚑ v189 (Tom, 8 nov. 2026, Q612 tranchée, C-259) — LE TRAIT DE JONCTION SOUS L'EN-TÊTE.
+   CERCLE : sa vague (le bas de la bande de la Toile, peinte par `_peintBande` sur `#dpTrameCv` : `data-trait` = base, amp, couleur) EST le trait de jonction. Elle
+   défile avec le contenu ; quand le HAUT de son trait atteint la jonction (le bas de la bande sous l'en-tête, 112 pt), elle ne passe plus dessous : elle reste
+   collée à la jonction et s'aplatit, son amplitude décroissant LINÉAIREMENT avec le défilement sur les 40 pt qui suivent, jusqu'au trait plat ; au retour, l'inverse,
+   jusqu'à sa place exacte de repos. PROMI, CHICHE : leur vague est le trait du geste (on n'y touche pas) ; à la jonction un trait plat paraît, son opacité suivant
+   linéairement le défilement sur les 40 premiers pt — le même trait que le plat du Cercle (couleur `NATTRAIT.nuee` #0A0415, épaisseur 10 × `_TRAIT_K`, sa tranche
+   haute sur la jonction). Rien de la mise en page ne change : une COUCHE fixe (`#v189Jonction`, z 8, après la bande de v187, sous l'en-tête z 9), qui ne prend pas
+   le doigt ; elle redessine son tracé une fois par image pendant le défilement (un canevas : aucune écriture de style). Sous la vague collée, elle porte la couleur du
+   champ (au-dessus du trait) et celle du corps (au-dessous, jusqu'au bas de la vraie vague qui défile dessous) : on ne voit jamais deux vagues. Au repos : rien. */
+(function(){
+  var J=112, COURSE=40, COL='#0A0415', HT=300;
+  function D(){ return document.getElementById('detailPoster'); }
+  function actif(d){ return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose') && !d.classList.contains('s2-ouv')); }
+  function cercle(d){ return !!(d && (d.classList.contains('dp-mode-nuee') || d.classList.contains('dp-nuee'))); }
+  function off(){ var dv=document.getElementById('device'); return dv ? [dv.offsetLeft||0, dv.offsetTop||0] : [16,16]; }
+  var cv=null, montre=false, F=null, demande=false;
+  function couche(d){ if(!cv){ cv=document.createElement('canvas'); cv.id='v189Jonction'; cv.setAttribute('aria-hidden','true'); }
+    var b=document.getElementById('v187Bande'); if(cv.parentNode!==d || (b && b.parentNode===d && cv.previousSibling!==b)){ if(b && b.parentNode===d) d.insertBefore(cv, b.nextSibling); else d.appendChild(cv); } return cv; }
+  /* la forme de la vague du Cercle (déclarée par son peintre) et les couleurs, relues à chaque ouverture */
+  function forme(d){ var c=document.getElementById('dpTrameCv'); if(!c) return null; var t=(c.getAttribute('data-trait')||'').split(','), base=+t[0], amp=+t[1];
+    var K=window._TRAIT_K||1.3, lw=10*K, f={lw:lw, cercle:cercle(d), cle:(c.getAttribute('data-trait')||'')+'|'+d.className};
+    var cs=getComputedStyle(d); f.corps=cs.backgroundColor;
+    if(f.cercle && isFinite(base) && isFinite(amp) && window._onde){ var y=window._onde.onde(base, amp), P=[], mn=1e9, mx=-1e9; for(var x=0;x<=390;x+=2){ var v=y(x); P.push(v); if(v<mn) mn=v; if(v>mx) mx=v; }
+      f.P=P; f.min=mn; f.max=mx; f.s0=mn-lw/2-J;
+      try{ var g=c.getContext('2d'), E=c.width/(c.offsetWidth||390), px=g.getImageData(Math.round(4*E), Math.max(0, Math.round((mn-lw-6)*E)), 1, 1).data; f.champ='rgb('+px[0]+','+px[1]+','+px[2]+')'; }catch(_){ f.champ=null; } }
+    return f; }
+  function peint(){ demande=false; var d=D(); if(!d) return; var s=d.scrollTop, on=actif(d) && s>0.25;
+    if(on && (!F || F.cle!==((document.getElementById('dpTrameCv')||{}).getAttribute ? (document.getElementById('dpTrameCv').getAttribute('data-trait')||'')+'|'+d.className : ''))) F=forme(d);
+    var etat=null;
+    if(on && F){ if(F.cercle){ if(F.P && s>=F.s0) etat={t:Math.min(1, (s-F.s0)/COURSE)}; } else etat={a:Math.min(1, s/COURSE)}; }
+    if(!etat){ if(montre){ montre=false; cv.style.setProperty('display','none','important'); } return; }
+    var c=couche(d), E=(window._densEcran?window._densEcran():2), o=off();
+    if(!montre){ montre=true; c.width=Math.round(390*E); c.height=Math.round(HT*E);
+      c.style.cssText='position:fixed!important;left:'+o[0]+'px!important;top:'+o[1]+'px!important;width:390px!important;height:'+HT+'px!important;margin:0!important;padding:0!important;max-width:none!important;z-index:8!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important'; }
+    var g=c.getContext('2d'); g.setTransform(E,0,0,E,0,0); g.clearRect(0,0,390,HT); g.lineCap='round'; g.lineJoin='round'; g.lineWidth=F.lw; g.strokeStyle=COL;
+    var y0=J+F.lw/2;
+    if(F.cercle){ var k=1-etat.t, Y=function(i){ return y0+(F.P[i]-F.min)*k; }, n=F.P.length, bas=F.max-s+F.lw/2+1.5;
+      if(F.champ){ g.fillStyle=F.champ; g.beginPath(); g.moveTo(0,J); g.lineTo(390,J); for(var i=n-1;i>=0;i--) g.lineTo(i*2, Y(i)); g.closePath(); g.fill(); }
+      if(bas>y0){ g.fillStyle=F.corps; g.beginPath(); for(var j=0;j<n;j++) g.lineTo(j*2, Y(j)); g.lineTo(390, Math.max(bas, y0)); g.lineTo(0, Math.max(bas, y0)); g.closePath(); g.fill(); }
+      g.beginPath(); for(var q=0;q<n;q++){ if(q) g.lineTo(q*2, Y(q)); else g.moveTo(0, Y(0)); } g.stroke();
+      c.setAttribute('data-jonction', 'cercle,'+etat.t.toFixed(4)+','+(F.max-F.min).toFixed(2)); }
+    else { g.globalAlpha=etat.a; g.beginPath(); g.moveTo(0, y0); g.lineTo(390, y0); g.stroke(); g.globalAlpha=1; c.setAttribute('data-jonction', 'plat,'+etat.a.toFixed(4)); } }
+  function tour(){ if(demande) return; demande=true; requestAnimationFrame(peint); }
+  window._v189Jonction=function(){ return {montre:montre, F:F?{s0:F.s0, min:F.min, max:F.max, lw:F.lw, cercle:F.cercle}:null}; };   /* un pointeur pour les juges */
+  function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; }
+    d.addEventListener('scroll', tour, {passive:true});
+    new MutationObserver(function(){ F=null; tour(); }).observe(d,{attributes:true, attributeFilter:['class']}); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', arme); else arme();
+  (window._rangeurs=window._rangeurs||[]).push(function(){ F=null; if(montre && cv){ montre=false; cv.style.setProperty('display','none','important'); } });
+})();
+</script>
 <script id="lot-V184B-MOTS">
 /* ⚑ v184b (Tom, 7 nov. 2026, C-253) — « LES NOUVEAUX COMMENTAIRES : UNE PASTILLE, PAS DU TEXTE. » La pastille est celle qui existe déjà (`.s4-att`, v89, Q347 : « pas
    encore vu ») : un disque de 9 pt, l'orange #FB4C0D, cerné d'un filet crème de 1,4 pt — même composant, même taille, même couleur ; seule sa place change (au bout
@@ -44747,7 +44876,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   var CSS='position:absolute;z-index:4;width:9px;height:9px;border-radius:50%;background:#FB4C0D;box-shadow:0 0 0 1.4px #F7F0DE;pointer-events:none';   /* la cote de `.s4-att` (pastilles) */
   window._pastilleHTML=function(place){ return '<i class="s4-att cm5-att" aria-hidden="true" style="'+CSS+';'+place+'"></i>'; };
   function moi(){ try{ return (localStorage.getItem('promi_prenom')||'').trim(); }catch(_){ return ''; } }
-  function deMoi(c){ var b=String((c&&c.by)||'moi').trim(); return /^moi$/i.test(b) || (moi() && b===moi()); }
+  function deMoi(c){ var b=String((c&&c.by)||'moi').trim(), u=''; try{ u=(typeof USER!=='undefined'&&USER&&USER.name)?String(USER.name).trim():''; }catch(_){ } return /^moi$/i.test(b) || (moi() && b===moi()) || (u && b===u); }
   window._motNeuf=function(c){ return !!(c && !c.vu && !deMoi(c)); };
   function parole(id){ if(typeof id==='string' && id.indexOf('cercle:')===0){ return window._cercleMots ? window._cercleMots.de(id.slice(7)) : null; }
     try{ return promises.filter(function(q){ return q.id===id; })[0]||null; }catch(_){ return null; } }
@@ -44768,6 +44897,40 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   window._motsVus=vus;
   (window._rangeurs=window._rangeurs||[]).push(vus);
   setTimeout(migre, 1600);
+})();
+</script>
+<script id="lot-V189-MOT-NEUF">
+/* ⚑ v189b (Tom, C-257 suite) — « Ajoute l'adresse ?mot_neuf=1. À l'ouverture d'une fiche, elle fait arriver un mot d'un membre, comme s'il venait d'être écrit, sans rien
+   changer d'autre dans les données de Tom. Ce mot est retiré au rechargement sans le paramètre. »
+   À la PREMIÈRE ouverture de chaque fiche (Promi, Chiche, Cercle) dans la page, un mot arrive par le chemin d'un mot reçu (`_comm.arrive`) : signé d'une personne de la
+   parole (celle qui me la promet, celle à qui je la promets, une personne « avec », un membre du Cercle ; sinon « Marion »), daté de maintenant, pas encore vu. Il porte
+   `essai:true` ; à CHAQUE chargement de la page, tous les mots `essai` sont retirés des paroles et du magasin des Cercles, avant tout le reste de ce lot — avec ou sans
+   le paramètre ; avec lui, un nouveau mot arrive à l'ouverture suivante. Rien d'autre n'est écrit. */
+(function(){
+  var ON=/[?&]mot_neuf=1(&|$)/.test(location.search), FAIT={};
+  function nettoie(){ var n=0; try{ (promises||[]).forEach(function(p){ var c=p.comments, seul=false; if(!c || !c.length) return; for(var i=c.length-1;i>=0;i--) if(c[i] && c[i].essai){ if(c[i].seul) seul=true; c.splice(i,1); n++; } if(seul && !c.length) delete p.comments; }); }catch(_){ }   /* une parole qui n'avait aucun mot retrouve exactement son état */
+    try{ var M=JSON.parse(localStorage.getItem('promi_cercle_mots')||'{}')||{}, m=0, seuls=[], sansM=false; Object.keys(M).forEach(function(k){ var c=window._cercleMots ? window._cercleMots.de(k).comments : M[k], seul=false; for(var i=c.length-1;i>=0;i--) if(c[i] && c[i].essai){ if(c[i].seul) seul=true; if(c[i].sansMagasin) sansM=true; c.splice(i,1); m++; } if(seul && !c.length) seuls.push(k); });
+      if(m && window._cercleMots){ window._cercleMots.garde(); seuls.forEach(function(k){ window._cercleMots.oublie(k); }); if(sansM && localStorage.getItem('promi_cercle_mots')==='{}') localStorage.removeItem('promi_cercle_mots'); } n+=m; }catch(_){ }
+    if(n){ try{ if(typeof saveState==='function') saveState(true); }catch(_){ } }
+    return n; }
+  window._motNeufNettoie=nettoie; nettoie();
+  if(!ON || !window._comm || !window._comm.pose) return;
+  function nomMoi(c){ var b=String(c||'').trim(); return !b || /^moi$/i.test(b) || /^le groupe$/i.test(b) || /^tout le monde$/i.test(b); }
+  function qui(p){ var L=[];
+    if(p._cercle){ try{ L=(NUEEMEM[p.nuee]||[]).slice(); }catch(_){ } }
+    else { [p.from, p.who, p.avec].forEach(function(x){ String(x||'').split(/\s*,\s*/).forEach(function(n){ if(n) L.push(n); }); }); }
+    L=L.filter(function(n){ return !nomMoi(n); }); return L[0]||'Marion'; }
+  var TEXTES=['Je viens de le voir, je suis partant.','On en parle ce soir ?','Bien vu, je te suis.'];
+  var pose=window._comm.pose;
+  window._comm.pose=function(p){ var r=pose.apply(this, arguments);
+    try{ var k=p && (p._cercle ? 'c:'+p.nuee : 'p:'+p.id);
+      if(k && !FAIT[k]){ FAIT[k]=1; var n=Object.keys(FAIT).length-1, magasin=localStorage.getItem('promi_cercle_mots')!=null, avait=p._cercle ? !!(p.comments&&p.comments.length) : Array.isArray(p.comments);   /* un Cercle : son magasin n'avait pas de mots */
+        window._comm.arrive(p, {t:TEXTES[n%TEXTES.length], by:qui(p), d:new Date().toISOString()});
+        var c=p.comments[p.comments.length-1]; if(c){ c.essai=true; c.vu=false; if(p.comments.length===1 && !avait){ c.seul=true; if(p._cercle && !magasin) c.sansMagasin=true; } }
+        try{ if(p._cercle && window._cercleMots) window._cercleMots.garde(); else if(typeof saveState==='function') saveState(true); }catch(_){ }
+        try{ if(window._pastillesAttente) window._pastillesAttente(); }catch(_){ }
+        try{ if(typeof syncAll==='function') syncAll(); }catch(_){ } } }catch(_){ }
+    return r; };
 })();
 </script>
 <script id="lot-V184B-MEMBRES">
