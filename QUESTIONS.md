@@ -8945,6 +8945,10 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   pousse « Un mot… » à 732 → 788 pt, la barre Peaufiner commence à 760 — la ligne est coupée en deux au repos ; ② ma recommandation : la liste montre autant de mots
   que la place en laisse au-dessus de la barre (16 pt d'air), le reste passe dans « + X commentaires » — « Un mot… » et son nombre sont toujours entiers, sans défiler ;
   ③ ce que tu verrais : un ou deux mots au lieu de trois sur ces fiches-là, rien d'autre ne bouge. À toi de dire oui.
+  **v187 (8 nov., après ta décision) — NON FAIT, mesuré :** sur la fiche Promi du banc (état à 654 pt), même à ZÉRO mot montré, la ligne « + X commentaires » (40 pt,
+  670 → 710) pousse « Un mot… » à 714 → 770 ; sur un Chiche (état à 612) à 708 → 764 — 4 à 10 pt sous la barre. Ne montrer que les mots qui tiennent ne suffit donc pas à garder
+  « Un mot… » entière : il faut aussi soit une ligne « + X » plus basse ou absente quand aucun mot ne tient, soit moins d'air sous l'état (C-246, validé). Ma première écriture
+  rendait en plus la liste instable (elle disparaissait d'une ouverture à l'autre, le dépliage restait fermé) : retirée, rien n'est commité. Décision à prendre avec toi.
 - **Q611 — TRANCHÉE PAR TOM (v187 §1 : « la Toile fait la place pendant le vol, la dalle vole à sa place finale, plus rien ne bouge ») — FAIT en v187** (v186c, C-237) : sans la tache, la Toile fait la place à la dalle APRÈS l'atterrissage, à vue (la dalle bouge de 5 à 7 pt avec elle ; sous Esquille
   et Touffe la matière se réorganise : 9,6 et 18 % des pixels par image). L'autre choix sans fondu : la Toile bouge pendant le vol sous l'image figée, et tout saute d'un
   coup à l'atterrissage (5 à 39 %). Le premier est livré ; à juger sur l'iPhone.
