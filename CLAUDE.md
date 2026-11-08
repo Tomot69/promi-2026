@@ -228,6 +228,32 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v184c (8 nov. 2026) — LA FIN DU VOL À LA DENSITÉ DE L'ÉCRAN (C-237) ; LE FIL RESTE SOUS SA FICHE, LE X LE RETROUVE TEL QUEL (C-250) ; LE « 1 » VÉRIFIÉ (C-251) ; DEUX JUGES REMIS AU NIVEAU. C-241 (Esquille, Tesselle) : NON COMMENCÉ. (Décisions Tom.) Ce bloc CORRIGE v183d (« le X rend le défilement du Fil »).
+> **⚑ C-237 — LA CAUSE DU FLOU À LA FIN DU VOL** : l'image figée de la Toile d'avant (où la dalle est collée à l'arrivée, puis qui se retire en flaques sur la Toile vivante) était
+> faite à **2 px par pt** sur la page +, à **2 × l'échelle** dans l'onboarding (1,6 sur l'iPhone de Tom) ; l'écran de Tom en montre 2,4 (3 × 0,8) : la Toile d'avant et la dalle
+> collée y étaient plus floues que la Toile vivante qu'elles découvrent. Elles sont faites à la densité réelle de l'écran (`window._densEcran()`, celle de `_passageFlaques`), les
+> flaques à la densité de leur image. Même code pour la page + et l'onboarding (C-247). ⚠ **La netteté est lue dans le code et dans la taille des images ; elle n'est pas mesurée
+> image par image** — à juger sur l'iPhone. `redteam_vol_dalle` B reste rouge (8/12), comme sur v184b : la FORME d'arrivée (Esquille, Tesselle, Touffe) n'est pas la netteté.
+> **⚑ C-250 — LE FIL** : une carte du Fil FERMAIT le Fil (`setView('toile')`) avant d'ouvrir sa fiche ; au X, la pile le rouvrait par `setView('fil')`, qui le rebâtit en entier
+> (`buildFeed`) et le remet en haut : l'accueil 1,6 s (10 paroles ; plus de 3 s sur 200), puis le Fil en haut, puis le défilement rendu. **Aujourd'hui** la fiche s'ouvre
+> par-dessus le Fil (comme l'Index) ; au X, le Fil est montré TEL QU'IL ÉTAIT, au même défilement, dans l'image où la fiche finit de glisser (mesuré : 87 à 96 ms après la fin de
+> la fermeture, 424 ms sur 200 paroles, sans saut ; la hauteur qui manque est réservée en bas le temps que le contenu arrive), puis il se reclasse (C-245) sans bouger le défilement.
+> TRACER (Fil) ouvre aussi la fiche par-dessus. `lot-V184C-CARTE-DOIGT` : la carte que le doigt a TOUCHÉE est celle qui s'ouvre (si la liste a été rebâtie entre l'appui et le
+> clic, le clic qui tombe sur une autre parole est avalé et la carte de la même parole s'ouvre).
+> **« LA MAUVAISE FICHE » (v183c, M de `redteam_index_fil`) — LA CAUSE, RELEVÉE** : sur 200 paroles, en WebKit piloté, le Fil met **≈ 16 s** à se bâtir (déjà en v183d : 16,0 s ;
+> aujourd'hui 15,9 s ; ≈ 9 000 écritures de style) ; le juge attendait 2,4 s d'HORLOGE, visait la carte pendant que le Fil glissait encore (y 472), et le clic tombait sur une autre
+> (y 778 : 1003 au lieu de 1001 ; relevé par `scratchpad/v184/m_sonde.py`, une fois sur trois). **C'était l'instrument** (§8, « un instrument qui ralentit avec la machine ») : le juge
+> attend maintenant une liste POSÉE (deux images sans mouvement, `POSE`). ⚠ **La lenteur elle-même (16 s pour ouvrir un Fil de 200 paroles, en WebKit piloté) est préexistante et
+> non traitée** : sur l'iPhone, non mesurée. `redteam_pile_retour` 2 était rouge pour une autre raison, du juge aussi : depuis C-245 le gardé de côté qu'il pose monte en tête du Fil
+> et sa carte ouvre la page + — il touche la première carte d'une PAROLE (original `sauvegardes/redteam_pile_retour-avant-v184.py`).
+> **⚑ C-251** : sur l'état exporté de Tom, aucune carte du Fil ne finit par un nombre (`redteam_fil_nombre` 4/4 ; capture `planche-v184/fil-tom-sans-1.png`).
+> **`redteam_couleurs_ref`** : les cartes de l'Index se comparent par leur TITRE, plus par leur rang (depuis C-245 l'ordre « Récents » n'est plus celui de v118 : la carte 12
+> « appeler Marion » était comparée à une autre ; original `sauvegardes/redteam_couleurs_ref-avant-v184c.py`). Son pointillé de v163a (E21) est retrouvé, 0 écart.
+> **⚑ C-241 — ESQUILLE ET TESSELLE : NON COMMENCÉ.** Ce que demande la consigne (faire tourner le moteur sur une COPIE PROFONDE de l'état) suppose de cloner un état qui vit dans
+> les fermetures du moteur (graines, vue, caches des mondes, horloge, tirages) : `Toile.dalleAvenir` n'en copie que les graines, et v183b a montré que rejouer le ressort sur cette
+> copie ne rapproche pas la forme (IoU 0,46). Cloner le reste, c'est écrire dans le moteur — hors de la lecture seule (C-241) ; et rejouer la pose image par image avant la
+> naissance coûterait toute la durée du vol en calcul. Je n'ai pas commencé ; c'est une décision qui revient à Tom (Q604).
+
 ### ⚑ v184b (7 nov. 2026) — LES MOTS NEUFS : UNE PASTILLE, PAS DU TEXTE (C-253) ; LE + DES MEMBRES SUR UN PROMI ET UN CHICHE (C-254). (Décisions Tom.) Ce bloc CORRIGE v147 (C-116 : « le nombre de mots paraît s'il y en a, sans pastille ») et la ligne d'état d'un Cercle (« · 3 mots »).
 > **⚑ C-253 — LA PASTILLE EST `.s4-att`** (v89, Q347 : « pas encore vu ») : un disque de 9 pt, `#FB4C0D`, cerné d'un filet crème de 1,4 pt — même composant, même taille, même couleur ; seule sa
 > place change (au bout de la rangée d'un mot, au bout de « + X commentaires »). **Un mot NEUF : écrit par un autre, pas encore vu** (`c.vu`) ; **vu** quand la fiche l'a montré

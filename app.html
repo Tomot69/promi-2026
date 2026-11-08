@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v183d', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v184c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -20310,8 +20310,12 @@ var CREMEETAT='#F7F0DE';
          L'app écrivait `FEED.length`, soit 5. À VALIDER (QUESTIONS · Q79). */
       if(ev && ev.trim().toLowerCase() !== 'à moi') nAutrui++;
       peintBandeau(d.querySelector('canvas'), e, id);
-      if(p){ var ii=p.id; d.onclick=function(){ setView('toile'); openDetail(ii); }; }
-      else if(F.nk){ var kk=F.nk; d.onclick=function(){ setView('toile'); openEssaim(kk); }; }
+      /* ⚑ v184c (Tom, C-250 suite : « dans le Fil, le X ne ramène pas au même endroit ») — LA CAUSE : une carte du Fil FERMAIT le Fil (`setView('toile')`) avant
+         d'ouvrir sa fiche ; au X, la pile le rouvrait par `setView('fil')`, qui le rebâtit en entier (`buildFeed`) et le remet en haut (`fv.scrollTop=0`) : on voyait
+         l'accueil 1,6 s (10 paroles ; plus de 3 s sur 200), puis le Fil en haut, puis le défilement rendu. L'Index, lui, reste ouvert sous la fiche. Le Fil aussi,
+         maintenant : la fiche s'ouvre par-dessus lui, le X le découvre tel qu'il était, au même défilement. */
+      if(p){ var ii=p.id; d.onclick=function(){ openDetail(ii); }; }
+      else if(F.nk){ var kk=F.nk; d.onclick=function(){ openEssaim(kk); }; }
       if(F.fid!=null){ (function(dd,fid){ var o=dd.onclick; dd.onclick=function(evt){ try{ if(window._filVu) window._filVu(fid); dd.setAttribute('data-nonvu','0'); var nv=dd.querySelector(':scope > .s4-att'); if(nv) nv.remove(); }catch(_){} if(o) return o.call(this,evt); }; })(d,F.fid); }
       yCur += PAS;
       /* LE GESTE, sous le bandeau. Pastille d'action du §3.5. Le bandeau reste celui du
@@ -35566,7 +35570,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     try{ if(window.syncAll) syncAll(); }catch(_){} try{ if(typeof render==='function') render(); }catch(_){}
     rafraichit(); }catch(_){} };
   window.filTracer=function(fid){ try{ var f=(FEED||[]).filter(function(x){ return x.id===fid; })[0]; if(!f) return; f.unread=false; var p=pOf(f.pid); if(!p) return;
-    if(window.setView) setView('toile'); if(window.openDetail) openDetail(p.id); }catch(_){} };
+    if(window.openDetail) openDetail(p.id); }catch(_){} };   /* v184c (C-250) : TRACER ouvre la fiche par-dessus le Fil, qui reste ouvert dessous (le X le retrouve tel quel) */
   /* une parole tenue depuis sa fiche (sa moitié tracée) : le compteur redescend */
   setInterval(function(){ try{ var d=document.getElementById('filDot'); if(!d) return; var on=window._filAttente()>0; if(d.classList.contains('on')!==on) d.classList.toggle('on',on);
     var c=document.getElementById('fdCount'); if(c){ var n=''+window._filAttente(); if(c.textContent!==n) c.textContent=n; } }catch(_){} }, 1000);
@@ -38550,7 +38554,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var hote=document.createElement('div'); hote.id='ppNait'; hote.setAttribute('aria-hidden','true');
     hote.style.cssText='position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;border:0;z-index:2147482000;pointer-events:none;overflow:hidden';
     var fond=document.createElement('canvas'); fond.className='onbv-fond';
-    try{ fond.width=780; fond.height=1688; var r=tc.getBoundingClientRect(); fond.getContext('2d').drawImage(tc, (r.left-D.left)/s*2, (r.top-D.top)/s*2, r.width/s*2, r.height/s*2); }catch(_){ }
+    /* ⚑ v184c (Tom, C-237 suite : « aucun flou à la fin du vol ») — LA CAUSE : l'image figée de la Toile d'avant (où la dalle est collée à la fin du vol, puis qui
+       se retire en flaques sur la Toile vivante) était faite à 2 px par pt — l'écran de Tom en montre 2,4 (3 × 0,8) : la Toile d'avant et la dalle collée y
+       étaient plus floues que la Toile vivante qu'elles découvrent. Elle est faite à la densité réelle de l'écran (`_densEcran`), comme `_passageFlaques`. */
+    try{ var E0=window._densEcran(); fond.width=Math.round(390*E0); fond.height=Math.round(844*E0); var r=tc.getBoundingClientRect(); fond.getContext('2d').drawImage(tc, (r.left-D.left)/s*E0, (r.top-D.top)/s*E0, r.width/s*E0, r.height/s*E0); }catch(_){ }
     fond.style.cssText='position:absolute;display:none;left:0px;top:0px;width:390px;height:844px;margin:0;padding:0';
     hote.appendChild(fond);
     var bx=195, by=430; try{ var e=window._ppEcran(), y=window._onde.onde(e.base, e.amp), cT=document.getElementById('csTrameCv'), rT=cT.getBoundingClientRect(); by=(rT.top-D.top)/s + y(195); }catch(_){ }
@@ -38605,6 +38612,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     c2.__avenir=1; AV[cle]=c2; return c2; }catch(_){ return null; } };
   window._cibleDalle=function(id){ try{ var dev=document.getElementById('device'), D=dev.getBoundingClientRect(), s=(D.width/(dev.offsetWidth||390))||1, a=Toile.dalleAbs(id), cv2=document.getElementById('toileCv'), R=cv2.getBoundingClientRect(), sx=R.width/cv2.clientWidth;
       return {x:(R.left-D.left+a.minx*sx)/s, y:(R.top-D.top+a.miny*sx)/s, w:a.w*sx/s, h:a.h*sx/s}; }catch(_){ return null; } };
+  /* v184c : la densité réelle de l'écran, en px par pt de l'appareil (celle de `_passageFlaques`) */
+  window._densEcran=function(){ try{ var dv=document.getElementById('device'), k=(dv.getBoundingClientRect().width/(dv.offsetWidth||390))||1; return Math.max(2, Math.min(3, (window.devicePixelRatio||1)*k)); }catch(_){ return 2; } };
   window._retireFondFlaques=function(fond, dc, fin){ var F2=window.Flaques; if(!F2 || !F2.Scene || !fond.width || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){ fond.style.display='none'; fin(); return; }
       try{ var eau=document.createElement('canvas'); eau.className='onbv-a onbv-fond'; eau.style.cssText=fond.style.cssText; eau.style.display='block'; eau.setAttribute('aria-hidden','true'); fond.parentNode.insertBefore(eau, fond.nextSibling);
         var Lw=parseFloat(fond.style.width)||390, Lh=parseFloat(fond.style.height)||844, Lx=parseFloat(fond.style.left)||0, Ly=parseFloat(fond.style.top)||0, im=document.createElement('canvas');
@@ -38613,7 +38622,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
            elle vole à l'échelle de sa cellule (≈ 0,4 sur une Toile pleine) — collée, elle reprenait d'un coup 241 pt. On colle sa boîte RENDUE. */
         if(dc && dc.parentNode && dc.width){ var _hr=dc.parentNode.getBoundingClientRect(), _hs=(_hr.width/((dc.parentNode.offsetWidth)||390))||1, _dr=dc.getBoundingClientRect(), dx=(_dr.left-_hr.left)/_hs, dy=(_dr.top-_hr.top)/_hs, dw=_dr.width/_hs, dh=_dr.height/_hs, ex=im.width/Lw;
           gi.drawImage(dc, (dx-Lx)*ex, (dy-Ly)*ex, dw*ex, dh*ex); dc.remove(); }
-        var SCf=F2.Scene(eau, {l:Lw, h:Lh, densite:2, flou:im, graine:((Date.now()&0xffffff)|1), creux:12, rayon:120});
+        var SCf=F2.Scene(eau, {l:Lw, h:Lh, densite:Math.max(1, im.width/Lw), flou:im, graine:((Date.now()&0xffffff)|1), creux:12, rayon:120});   /* v184c (C-237) : l'eau à la densité de son image (2 avant : elle la rééchantillonnait) */
         fond.style.display='none'; SCf.couvre(1); SCf.peint(); var t0=performance.now();
         var LO=Math.max(1, parseFloat((/[?&]onbLent=([\d.]+)/.exec(location.search)||[])[1])||1);   /* `?onbLent=4` : la vidéo ralentie */
         (function f(){ var u=Math.min(1,(performance.now()-t0)/(720*LO)); SCf.couvre(1-u); SCf.peint(); if(u<1) requestAnimationFrame(f); else { if(eau.parentNode) eau.remove(); fin(); } })();
@@ -39025,7 +39034,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var v=document.getElementById('onbV'), titre=parole.trim(), np=null;
     /* la Toile d'avant, figée le temps du vol : sans elle la dalle paraîtrait deux fois */
     var fond=v.querySelector('.onbv-fond'), tc=document.getElementById('toileCv');
-    try{ var r=tc.getBoundingClientRect(), s=k(); fond.width=Math.round(r.width*2); fond.height=Math.round(r.height*2);
+    try{ var r=tc.getBoundingClientRect(), s=k(), E0=window._densEcran ? window._densEcran() : 2; fond.width=Math.round(r.width/s*E0); fond.height=Math.round(r.height/s*E0);   /* v184c (C-237, C-247) : la même densité que la page + — l'écran réel (1,6 px par pt avant, sur l'iPhone de Tom) */
       fond.style.cssText='display:block;left:'+((r.left-dev.getBoundingClientRect().left)/s)+'px;top:'+((r.top-dev.getBoundingClientRect().top)/s)+'px;width:'+(r.width/s)+'px;height:'+(r.height/s)+'px';
       fond.getContext('2d').drawImage(tc,0,0,fond.width,fond.height); }catch(_){}
     try{
@@ -43752,7 +43761,26 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function rend(o){ retour=true;
     try{
       if(o.k==='index'){ if(window.quitteVues) quitteVues(); window.ouvrirIndex(); remet(['indexList'], o.sc||0); }
-      else if(o.k==='fil'){ var fb=document.getElementById('filBtn'); if(fb && fb.onclick) fb.onclick(); else if(window.setView) setView('fil'); remet([o.el||'feedList'], o.sc||0); }
+      else if(o.k==='fil'){ var fvw=document.getElementById('feedView');
+        /* ⚑ v184c (C-250) — `openDetail` passe par `closeAll`, qui FERME le Fil (`display:none`) ; le rouvrir par `setView('fil')` le rebâtit en entier et le remet en haut
+           (`fv.scrollTop=0`, la liste rebâtie à 0) : on voyait l'accueil, puis le Fil en haut, puis le défilement rendu. Ses cartes sont toujours dans la page : on le
+           RÉAFFICHE tel quel, son défilement posé dans la même tâche (avant la première image), puis il se rebâtit dessous (l'ordre « Récents » a pu changer) et
+           `remet` garde le défilement jusqu'à ce qu'il tienne. */
+        var flw=document.getElementById(o.el||'feedList'), stg=document.getElementById('stage');
+        if(fvw && flw && flw.querySelector('.s4-carte')){
+          fvw.style.display='';   /* réaffiché TEL QUEL, tout de suite : la fiche qui glisse découvre le Fil, pas l'accueil */
+          /* la liste n'a pas encore toute sa hauteur à la première image (ses cartes se posent ensuite) : le défilement serait tronqué (32 pt mesurés), puis rendu —
+             un saut. La hauteur qui manque est réservée en bas, le temps qu'elle arrive, puis rendue (le défilement ne bouge pas : la liste est alors assez haute). */
+          var sc0=o.sc||0, manque=Math.max(0, sc0-(flw.scrollHeight-flw.clientHeight)), pb0=flw.style.getPropertyValue('padding-bottom'), pp0=flw.style.getPropertyPriority('padding-bottom');
+          if(manque>0){ flw.style.setProperty('padding-bottom', ((parseFloat(getComputedStyle(flw).paddingBottom)||0)+manque)+'px', 'important');
+            var tR=performance.now(); (function rend2(){ var pad=(parseFloat(getComputedStyle(flw).paddingBottom)||0)-(parseFloat(pb0)||0); var nat=flw.scrollHeight-flw.clientHeight-Math.max(0,pad);
+              if(nat>=sc0-1 || performance.now()-tR>2500){ flw.style.removeProperty('padding-bottom'); if(pb0) flw.style.setProperty('padding-bottom', pb0, pp0); return; } requestAnimationFrame(rend2); })(); }
+          flw.scrollTop=sc0; fvw.classList.add('in'); try{ _mainView='fil'; }catch(_){ } try{ document.getElementById('device').classList.add('v-fil'); }catch(_){ }
+          setTimeout(function(){ try{ if(_mainView==='fil' && stg) stg.style.display='none'; }catch(_){ } }, 380);
+          remet([o.el||'feedList'], o.sc||0);
+          /* puis il se rebâtit dessous (l'ordre « Récents » a pu changer pendant la fiche), son défilement gardé */
+          requestAnimationFrame(function(){ requestAnimationFrame(function(){ var av=flw.scrollTop; try{ buildFeed(); if(window._s4Fil) window._s4Fil(); }catch(_){ } if(Math.abs(flw.scrollTop-av)>1) flw.scrollTop=av; }); });
+        } else { var fb=document.getElementById('filBtn'); if(fb && fb.onclick) fb.onclick(); else if(window.setView) setView('fil'); remet([o.el||'feedList'], o.sc||0); } }
       else if(o.k==='personne' && o.nom){ window.openPerson(o.nom); }
       else if(o.k==='fiche'){ window.openDetail(o.id); }
       else if(o.k==='cercle'){ window.openNueeDetail(o.cle); }
@@ -44600,6 +44628,25 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    pas ma parole). L'HISTORIQUE : un membre ajouté voit TOUT ce que la parole porte depuis sa plantation (`_historique`, portage/SPEC-DONNEES §1.13). */
 (function(){
   window._historique=function(p, nom){ if(!p) return null; return { mots:(p.comments||[]).slice(), actes:((typeof FEED!=='undefined'&&FEED)||[]).filter(function(f){ return f.pid===p.id; }).slice(), depuis:p.planteLe||p.created||null, pour:nom||null }; };   /* aucun filtre par date d'arrivée : tout, depuis la plantation */
+})();
+</script>
+<script id="lot-V184C-CARTE-DOIGT">
+/* ⚑ v184c (Tom, C-250 suite : « une carte du bas du Fil ouvrait la fiche d'une autre parole ; trouve la cause, sinon elle reviendra »).
+   LA CAUSE : voir CLAUDE.md, bloc v184c (relevée par la sonde de `scratchpad/v184/index_fil_sonde.py` sur v183c). LA RÈGLE : la carte que le doigt a TOUCHÉE est celle
+   qui s'ouvre — on la note à l'appui (capture) ; si la liste a été rebâtie entre l'appui et le clic (la carte touchée n'est plus dans la page), le clic qui tombe
+   sur la carte d'une autre parole est avalé, et c'est la carte de la MÊME parole, dans la liste rebâtie, qui s'ouvre. */
+(function(){
+  var A=null;
+  function cle(c){ return c ? (c.getAttribute('data-pid')||'')+'|'+(c.getAttribute('data-nk')||c.getAttribute('data-nuee')||'')+'|'+(c.getAttribute('data-fid')||'') : ''; }
+  document.addEventListener('pointerdown', function(e){ var c=e.target && e.target.closest && e.target.closest('#feedList .s4-carte, #indexList .s4-carte, #feedView .s4-carte'); A=c ? {c:c, k:cle(c), t:performance.now()} : null; }, true);
+  document.addEventListener('click', function(e){ var a=A; if(!a) return; var c=e.target && e.target.closest && e.target.closest('#feedList .s4-carte, #indexList .s4-carte, #feedView .s4-carte'); if(!c) return;
+    if(c===a.c || performance.now()-a.t>1500) return;
+    if(a.c.isConnected && cle(c)===a.k) return;
+    if(cle(c)===a.k) return;   /* la même parole, rebâtie : c'est bien elle */
+    e.stopImmediatePropagation(); e.preventDefault(); A=null;
+    var liste=c.parentNode, bon=null; try{ bon=[].filter.call((liste||document).querySelectorAll('.s4-carte'), function(x){ return cle(x)===a.k; })[0]||null; }catch(_){ }
+    window._v184CarteSauvee=(window._v184CarteSauvee||0)+1;
+    if(bon){ try{ if(bon.onclick) bon.onclick({target:bon, stopPropagation:function(){}, preventDefault:function(){}}); else bon.click(); }catch(_){ } } }, true);
 })();
 </script>
 </body>

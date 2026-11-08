@@ -92,7 +92,12 @@ COLLECTE = r"""()=>{
       const cl=(a.className&&a.className.baseVal!==undefined?a.className.baseVal:(a.className||'')).toString().trim().split(/\s+/).filter(c=>c&&!/^(on|show|sel|actif|active|pris|ouvert|zzz|tracant|is-|s2-ouv|gone)/.test(c)).slice(0,3).join('.');
       ch.unshift(a.tagName.toLowerCase()+(cl?'.'+cl:'')); a=a.parentElement; }
     if(a&&a.id&&ch[0]!=='#'+a.id) ch.unshift('#'+a.id);
-    const k=ch.join(' > '); vus[k]=(vus[k]||0)+1; return k+' ['+vus[k]+']'; }
+    let k=ch.join(' > ');
+    /* ⚑ v184c (Tom, §8 : « mets la référence de « appeler Marion » au pointillé de v163a ») — une CARTE de l'Index (et ce qu'elle porte) se nomme par son TITRE,
+       plus par son rang : depuis C-245 (« Récents », la dernière action d'abord) l'ordre des cartes n'est plus celui de v118 — le rang [12] n'était plus la même
+       carte des deux côtés (l'app : le gardé de côté a bien son pointillé de 3 pt, mesuré). La règle des canevas (v123) appliquée aux cartes. */
+    const crt=e.closest && e.closest('#indexList .s4-carte'); if(crt){ const t=((crt.querySelector('.s4-ti')||crt).textContent||'').replace(/\s+/g,' ').trim().slice(0,30); k+=' «'+t+'»'; }
+    vus[k]=(vus[k]||0)+1; return k+' ['+vus[k]+']'; }
   const T=document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT); let e;
   while((e=T.nextNode())){
     const r=e.getBoundingClientRect(); if(r.width<2||r.height<2) continue;

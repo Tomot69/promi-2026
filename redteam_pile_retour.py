@@ -49,7 +49,10 @@ with sync_playwright() as p:
     accueil(pg)
     # 2 · Fil → fiche → X
     B.tap_sel(pg, '#filBtn'); pg.wait_for_timeout(2600)
-    touche(pg, '#feedView .s4-carte'); v1 = pg.evaluate(VU); x_de(pg, 'detailPoster'); v2 = pg.evaluate(VU)
+    # v184c (C-250, C-245) : la première carte d'une PAROLE (pas un gardé de côté) — la mise en place du juge (une parole passée en gardé de côté, 6 s après le
+    # chargement) est une action : depuis C-245 (« Récents »), ce gardé de côté monte en tête du Fil, et sa carte ouvre la page + (createSheet), pas une fiche
+    pg.evaluate("()=>{ const c=[...document.querySelectorAll('#feedView .s4-carte')].find(c=>{ const id=c.getAttribute('data-pid'); const p=id!=null&&promises.find(q=>q.id===+id); return p && !p.draft; }); if(c) c.setAttribute('data-juge','1'); }")   # une carte du Fil n'a pas de data-etat : la parole se lit par son id
+    touche(pg, '#feedView .s4-carte[data-juge]'); v1 = pg.evaluate(VU); x_de(pg, 'detailPoster'); v2 = pg.evaluate(VU)
     juge('2 · Fil → fiche → X → le Fil', v1 == 'detailPoster' and v2 == 'feedView', '%s → %s' % (v1, v2))
     accueil(pg)
     # 3 · personne → fiche → X

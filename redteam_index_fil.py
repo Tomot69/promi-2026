@@ -111,10 +111,16 @@ CARTE = """([liste, rang])=>{ const L=[...document.querySelectorAll(liste+' .s4-
   const r=c.getBoundingClientRect(), s=document.querySelector(liste).getBoundingClientRect(); if(r.top<s.top+8||r.bottom>s.bottom-8) c.scrollIntoView({block:'center'}); return true; }"""
 POINT = """([liste, rang])=>{ const L=[...document.querySelectorAll(liste+' .s4-carte')].sort((a,b)=>(a.offsetTop-b.offsetTop)||(a.offsetLeft-b.offsetLeft)); const c=L[rang]; const r=c.getBoundingClientRect();
   return [r.left+r.width*0.62, r.top+r.height*0.55, document.querySelector(liste).scrollTop]; }"""
+POSE = """(liste)=>new Promise(res=>{ const L=document.querySelector(liste); if(!L){ res(false); return; } const sig=()=>{ const c=L.querySelectorAll('.s4-carte'); const r=L.getBoundingClientRect(), a=c[c.length-1]; return c.length+':'+Math.round(r.top)+':'+Math.round(L.scrollTop)+':'+(a?Math.round(a.getBoundingClientRect().top):0); };
+  const s0=sig(); requestAnimationFrame(()=>requestAnimationFrame(()=>{ const s1=sig(); requestAnimationFrame(()=>res(s0===s1 && s1===sig() && L.querySelectorAll('.s4-carte').length>0)); })); })"""
 def touche(pg, liste, rang):
     """la souris : elle porte des évènements de pointeur, que la pile de C-193 lit à `pointerdown` (un toucher du banc WebKit n'en porte pas)"""
+    # v184c (C-250) : on vise une liste POSÉE — sur 200 paroles le Fil met ~16 s à se bâtir en WebKit piloté (déjà en v183d) ; une attente d'horloge de 2,4 s
+    # se terminait pendant qu'il glissait encore : la carte visée (y 472) n'était plus sous la souris au clic (y 778) — le « M » rouge par intermittence
+    pg.wait_for_function(POSE, arg=liste, timeout=60000, polling=200)
     if not pg.evaluate(CARTE, [liste, rang]): return None, None
-    pg.wait_for_timeout(500); x, y, st = pg.evaluate(POINT, [liste, rang]); pg.mouse.click(x, y); pg.wait_for_timeout(2600)
+    pg.wait_for_timeout(500); pg.wait_for_function(POSE, arg=liste, timeout=60000, polling=200)
+    x, y, st = pg.evaluate(POINT, [liste, rang]); pg.mouse.click(x, y); pg.wait_for_timeout(2600)
     return pg.evaluate("()=>{ const d=document.getElementById('detailPoster'); if(!d.classList.contains('show')) return null; return (typeof curNuee!=='undefined' && curNuee && (!cur || d.classList.contains('dp-mode-nuee'))) ? 'n:'+curNuee : (cur ? cur.id : null); }"), st
 
 def onglet(pg, q):
