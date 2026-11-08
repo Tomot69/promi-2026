@@ -45,6 +45,9 @@
 > 7. **Le simulateur iOS ne reste JAMAIS ouvert pendant le travail ni pendant les juges.** On l'ouvre une seule fois par lot, à la fin, pour les seuls points
 >    visuels ou sensibles à Safari (15 minutes au plus), puis on le ferme aussitôt. Un point qui le demande en cours de lot : on l'ouvre, on vérifie, on le referme.
 > (Les blocs datés plus bas qui demandent la « série complète », la « série courte » ou d'attendre le calme sont corrigés par celui-ci.)
+> **⚑ LE SIMULATEUR DE PROMI (Tom, v189 §0) : « Promi iPhone 16e », iOS 26.1, `D42A4999-F0B5-477C-944C-A4F370AEC908`** — créé le 8 nov. 2026 (`xcrun simctl create`), réservé à
+> Promi. L'ancien `0A09FCF2` démarrait sans écran (« Main Screen Surface » introuvable, même à charge 10). **On ne touche JAMAIS un simulateur qui n'est pas celui-là**
+> (66398523 : ENTRE, Fairly, une autre session).
 
 > ## ⚑ LES COULEURS DE TOM — RÈGLE PERMANENTE (Tom, 26 oct. 2026, C-204). ELLE PASSE AVANT TOUTE RÈGLE DE CONTRASTE DE CE FICHIER.
 > **Les couleurs de Tom ne se modifient JAMAIS sans sa demande : ni assombries, ni éclaircies, ni dérivées pour le contraste. Quand il dit « la
