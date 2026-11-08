@@ -37397,8 +37397,12 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 /* ── L'ÉTAT PRESSÉ — un retour discret, partout ──
    `scale`, pas `transform` : il se compose avec les transformations de placement sans les
    écraser ; et jamais d'opacité ni de filtre (§4 : rien ne voile une dalle). */
-#device :is(button,[role=button],[role=switch],.scard,.s4-carte,.s2-reg,.pc-t,.ph-b,.ph-m,.tile,.nf-item,.au-n,.au-c,.chip,.set-cercle,.closeb,.dpd-tog,.acc-plat>*,.pl-buy,.v16-conf-b button,.v16-toast button):active,
-.frame :is(button,[role=button],.scard,.s4-carte,.closeb):active{scale:.97;transition:scale .06s}
+#device :is(button,[role=button],[role=switch],.s2-reg,.pc-t,.ph-b,.ph-m,.tile,.au-n,.au-c,.chip,.set-cercle,.closeb,.dpd-tog,.acc-plat>*,.pl-buy,.v16-conf-b button,.v16-toast button):not(.scard,.s4-carte,.nf-item):active,
+.frame :is(button,[role=button],.closeb):not(.scard,.s4-carte,.nf-item):active,
+/* ⚑ v187 (Tom, §4, Q610) — L'ÉTAT PRESSÉ D'UNE CARTE, COMME DANS iOS : il ne paraît qu'après 100 ms de doigt immobile et s'annule dès que le doigt bouge de plus
+   de 6 pt (`lot-V187-HAUT`, la classe `v187-presse`) ; posé au doigt posé, il changeait la carte sous un doigt qui partait glisser — Safari perdait le glissé.
+   Même échelle (.97), même durée. */
+#device :is(.scard,.s4-carte,.nf-item).v187-presse,.frame :is(.scard,.s4-carte).v187-presse{scale:.97;transition:scale .06s}
 #device :is(button,[role=button],[role=switch],.scard,.s4-carte,.s2-reg,.pc-t,.ph-b,.ph-m,.tile,.nf-item,.au-n,.au-c,.chip,.set-cercle,.closeb,.dpd-tog,.pl-buy){transition:scale .16s}
 
 /* ── LES TEXTES COUPÉS : deux lignes au plus, points de suite au-delà, jamais plus petit ── */
@@ -38494,6 +38498,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   window._cerclePlusMembres={ouvre:ouvre, place:place};
   /* ── le fil rogné sous l'en-tête ── */
   function rogne(){
+    var L0=document.querySelector('#dpNueeFil .nf-liste'); if(L0 && L0.style.clipPath){ L0.style.removeProperty('clip-path'); L0.style.removeProperty('-webkit-clip-path'); } return;   /* v187 (§4) : plus de découpe — la bande de l'en-tête couvre */
     var d=dp(), L=document.querySelector('#dpNueeFil .nf-liste'); if(!L) return;
     if(!cercle(d) || d.classList.contains('s2-ouv')){ if(L.style.clipPath){ L.style.removeProperty('clip-path'); L.style.removeProperty('-webkit-clip-path'); } return; }
     var dev=document.getElementById('device'), D=dev.getBoundingClientRect(), k=ech(dev), r=L.getBoundingClientRect(), kl=ech(L);
@@ -38504,7 +38509,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   window._cercleRogne=rogne;
   var demande=false;
   function tout(){ if(demande) return; demande=true; requestAnimationFrame(function(){ demande=false; try{ place(); }catch(_){ } try{ rogne(); }catch(_){ } }); }
-  document.addEventListener('scroll',function(e){ if(e.target && e.target.id==='detailPoster'){ try{ rogne(); }catch(_){ } try{ place(); }catch(_){ } tout(); } },true);   /* et après les autres écouteurs du défilement (l'état défilé retire les Noyaux) */   /* dans l'image du défilement, pas après */
+  /* ⚑ v187 (Tom, §4, Q610) : plus rien n'est écrit pendant le défilement — la découpe du fil réécrite à chaque défilement faisait perdre un glissé parti d'une
+     carte (mesuré dans Safari). Ce qui passe sous l'en-tête y passe SOUS la bande de l'en-tête (`lot-V187-HAUT`). Le + défile avec la fiche (sa cote est en
+     coordonnées de la fiche) : rien à reposer. */   /* et après les autres écouteurs du défilement (l'état défilé retire les Noyaux) */   /* dans l'image du défilement, pas après */
   var pose=window._fichePose; if(typeof pose==='function'){ window._fichePose=function(){ var r=pose.apply(this,arguments); tout(); setTimeout(tout,120); setTimeout(tout,480); return r; }; }
   var on=window.openNueeDetail; if(typeof on==='function'){ window.openNueeDetail=function(){ var r=on.apply(this,arguments); tout(); setTimeout(tout,200); setTimeout(tout,700); setTimeout(tout,1600); return r; }; }
   try{ new MutationObserver(function(){ tout(); }).observe(document.getElementById('detailPoster'),{attributes:true,attributeFilter:['class']}); }catch(_){ }
@@ -44635,7 +44642,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   /* ── ce qui passe sous l'en-tête est rogné à 112 pt, seulement fiche défilée (au repos, rien n'est rogné) ── */
   var ROG=['dAura','dptQui','dptTitre','dptQuand','cm5Liste','cm5Ligne'];
   function ech(e){ try{ var r=e.getBoundingClientRect(); return (r.width/(e.offsetWidth||1))||1; }catch(_){ return 1; } }
-  function rogne(){ var d=D(), dv=document.getElementById('device'); if(!d||!dv) return; var on=actif() && !d.classList.contains('s2-ouv') && d.scrollTop>0;
+  function rogne(){ var d=D(), dv=document.getElementById('device'); if(!d||!dv) return; var on=false;   /* v187 (Tom, §4, Q610) : plus de clip-path réécrit à chaque défilement — la bande de l'en-tête (`lot-V187-HAUT`) couvre ce qui passe dessous */
     var R=dv.getBoundingClientRect(), k=ech(dv);
     ROG.forEach(function(id){ var e=document.getElementById(id); if(!e) return;
       if(id==='dptTitre' && window._titreDeplie) { if(e.hasAttribute('data-v184r')){ e.removeAttribute('data-v184r'); } return; }   /* le titre déplié porte sa propre découpe (C-244) */
@@ -44674,11 +44681,65 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     else { if(tPose>0) clearTimeout(tPose); tPose=0; if(d.classList.contains('v184-pose')){ d.classList.remove('v184-pose'); tout(); } } }
   function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; }
     new MutationObserver(function(){ suit(); }).observe(d,{attributes:true, attributeFilter:['class']});
-    d.addEventListener('scroll', rogne, {passive:true});
     suit(); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', arme); else arme();
   window.addEventListener('resize', function(){ try{ tout(); }catch(_){ } });
   (window._rangeurs=window._rangeurs||[]).push(function(){ ROG.forEach(function(id){ var e=document.getElementById(id); if(e && e.hasAttribute('data-v184r')){ e.style.removeProperty('clip-path'); e.style.removeProperty('-webkit-clip-path'); e.removeAttribute('data-v184r'); } }); });
+})();
+</script>
+<script id="lot-V187-HAUT">
+/* ⚑ v187 (Tom, 8 nov. 2026, §4, Q610 tranchée : « le glissé parti d'une carte n'est plus perdu ; rendu au repos identique au pixel à v186b ») — LES DEUX CAUSES,
+   mesurées dans Safari (v186c) : ① la découpe du haut, un `clip-path` réécrit à CHAQUE défilement sur six éléments de la fiche et sur le fil d'un Cercle ;
+   ② l'état pressé des cartes (`scale:.97`) posé au doigt posé. Sans les deux : 6 glissés sur 6.
+   ① AUJOURD'HUI, L'EN-TÊTE COMPACT : la fiche défilée, une BANDE fixe couvre le haut de l'écran jusqu'à 112 pt (le bas du plateau + 12, la ligne de la découpe),
+   sous le plateau, au-dessus de tout ce qui défile : ce qui monte (les Noyaux, la ligne « Avec … », le titre, l'état, les mots, le fil) passe sous elle et y est
+   coupé net, par recouvrement, comme sous la barre d'un grand titre d'iOS. Elle porte le haut du CHAMP de la fiche tel qu'il est au repos (sa couleur ; copié une
+   fois, au premier pixel de défilement). Au repos (défilement 0) elle n'existe pas : la fiche est celle de v186b, au pixel. Rien n'est écrit pendant le défilement,
+   sauf au passage par 0 (on compare avant d'écrire). Écart à la consigne de Tom (« le conteneur qui défile commence sous l'en-tête »), assumé : la fiche reste le
+   conteneur qui défile — plus de 300 règles la visent par `#detailPoster > …` ; la bande donne la même chose à l'écran.
+   ② `lot-V187-HAUT` pose `v187-presse` sur une carte après 100 ms de doigt immobile, le retire au-delà de 6 pt ou au lever. */
+(function(){
+  var HAUT=112;
+  function D(){ return document.getElementById('detailPoster'); }
+  function actif(){ var d=D(); return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose') && !d.classList.contains('s2-ouv')); }
+  function off(){ var dv=document.getElementById('device'); return dv ? [dv.offsetLeft||0, dv.offsetTop||0] : [16,16]; }
+  function bande(){ var d=D(); if(!d) return null; var b=document.getElementById('v187Bande');
+    if(!b){ b=document.createElement('canvas'); b.id='v187Bande'; b.setAttribute('aria-hidden','true'); }
+    if(b.parentNode!==d) d.appendChild(b); return b; }
+  function peint(b){ var c=document.getElementById('dpTrameCv'), d=D(); if(!c||!d) return false;
+    try{ var cw=c.offsetWidth||390, E=(c.width/cw)||2, h=Math.min(HAUT, c.offsetHeight||HAUT), ox=c.offsetLeft||0, oy=c.offsetTop||0;
+      b.width=Math.round(390*E); b.height=Math.round(HAUT*E); var g=b.getContext('2d'); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,b.width,b.height);
+      var bg=getComputedStyle(d).backgroundColor; if(bg && bg!=='rgba(0, 0, 0, 0)'){ g.fillStyle=bg; g.fillRect(0,0,b.width,b.height); }
+      /* les rangées 0 → 112 du champ, à leur place au repos (leurs pixels du canevas : le défilement n'y entre pas) */
+      g.drawImage(c, 0, Math.max(0,-oy)*E, c.width, (h-Math.max(0,oy))*E, ox*E, Math.max(0,oy)*E, cw*E, (h-Math.max(0,oy))*E); return true; }catch(_){ return false; } }
+  var montre=false;
+  function suit(){ var d=D(); if(!d) return; var on=actif() && d.scrollTop>0.5;
+    if(on===montre) return; montre=on;
+    var b=bande(); if(!b) return;
+    if(on){ peint(b); var o=off(); b.style.cssText='position:fixed!important;left:'+o[0]+'px!important;top:'+o[1]+'px!important;width:390px!important;height:'+HAUT+'px!important;margin:0!important;padding:0!important;max-width:none!important;z-index:8!important;pointer-events:auto!important;touch-action:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important'; }
+    else b.style.setProperty('display','none','important'); }
+  window._v187Bande=function(){ return {montre:montre}; };   /* un pointeur pour les juges */
+  /* la bande prend le doigt : rien de ce qui est passé dessous ne se touche au travers (la découpe de v184a le faisait) ; un toucher sur elle ne fait rien */
+  document.addEventListener('click', function(e){ if(e.target && e.target.id==='v187Bande'){ e.preventDefault(); e.stopImmediatePropagation(); } }, true);
+  /* le + des membres s'efface sous l'en-tête (C-243) : une écriture au passage seulement, sa cote est gardée (`_cy`, coordonnées de la fiche) — aucune lecture de mise en page */
+  function plus(){ var d=D(), b=document.getElementById('cerclePlusMembres'); if(!d||!b||b._cy==null) return; var v=(b._cy-11-d.scrollTop < HAUT) ? 'hidden' : 'visible';
+    if(b.style.getPropertyValue('visibility')!==v) b.style.setProperty('visibility', v, 'important'); }
+  function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; }
+    d.addEventListener('scroll', function(){ suit(); plus(); }, {passive:true});
+    new MutationObserver(suit).observe(d,{attributes:true, attributeFilter:['class']}); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', arme); else arme();
+  (window._rangeurs=window._rangeurs||[]).push(function(){ montre=false; var b=document.getElementById('v187Bande'); if(b) b.style.setProperty('display','none','important'); });
+  /* ② l'état pressé d'une carte, différé */
+  var SEL='.scard,.s4-carte,.nf-item', P=null;
+  function lache(){ if(!P) return; clearTimeout(P.t); if(P.el) P.el.classList.remove('v187-presse'); P=null; }
+  document.addEventListener('pointerdown', function(e){ lache(); var el=e.target && e.target.closest && e.target.closest(SEL); if(!el) return;
+    if(e.pointerType==='mouse'){ el.classList.add('v187-presse'); P={el:el, x:e.clientX, y:e.clientY, t:0, m:1}; return; }
+    var k=1; try{ var dv=document.getElementById('device'); k=(dv.getBoundingClientRect().width/(dv.offsetWidth||390))||1; }catch(_){ }
+    P={el:el, x:e.clientX, y:e.clientY, k:k}; P.t=setTimeout(function(){ if(P && P.el===el) el.classList.add('v187-presse'); }, 100); }, true);
+  document.addEventListener('pointermove', function(e){ if(!P || P.m) return; if(Math.hypot(e.clientX-P.x, e.clientY-P.y)/P.k > 6) lache(); }, true);
+  ['pointerup','pointercancel'].forEach(function(n){ document.addEventListener(n, lache, true); });
+  document.addEventListener('touchmove', function(e){ if(!P || P.m) return; var t=e.touches && e.touches[0]; if(t && Math.hypot(t.clientX-P.x, t.clientY-P.y)/P.k > 6) lache(); }, {capture:true, passive:true});
+  document.addEventListener('scroll', function(){ if(P && !P.m) lache(); }, {capture:true, passive:true});
 })();
 </script>
 <script id="lot-V184B-MOTS">
