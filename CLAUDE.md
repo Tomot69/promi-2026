@@ -253,6 +253,14 @@ la nature, la ligne dit l'état.)*
 > les fermetures du moteur (graines, vue, caches des mondes, horloge, tirages) : `Toile.dalleAvenir` n'en copie que les graines, et v183b a montré que rejouer le ressort sur cette
 > copie ne rapproche pas la forme (IoU 0,46). Cloner le reste, c'est écrire dans le moteur — hors de la lecture seule (C-241) ; et rejouer la pose image par image avant la
 > naissance coûterait toute la durée du vol en calcul. Je n'ai pas commencé ; c'est une décision qui revient à Tom (Q604).
+> **⚑ VU AU DOIGT DANS SAFARI iOS 26.1 (simulateur iPhone 16e, en fin de lot, charge 6 au départ, 17 à 31 à la fin)** : la fiche d'un Cercle défile jusqu'en bas et revient
+> en haut, l'en-tête et la barre Peaufiner ne bougent pas, la ligne « Avec … », le + et le titre sont à leur place revenu en haut ; le Fil sans « 1 » ; carte du Fil → la bonne
+> fiche → X → le Fil. **TROIS DÉFAUTS TROUVÉS, NON CORRIGÉS** : ① **le + des membres (C-254) chevauche le titre** quand la phrase remplit sa ligne (« Je promets à tout le
+> monde d' », « tout le monde, t'es pas chiche de ») : il ouvre la ligne suivante, qui est celle du titre (`planche-v184/safari-chiche-plus-chevauche.png` ; Q606) ;
+> ② **un glissé vers le bas qui PART D'UNE CARTE du fil d'un Cercle ne fait pas remonter la fiche** : le geste va à la page Safari (la barre d'adresse se replie, ou la roue
+> « recharger »). Aucun `touchmove` n'est annulé (0 sur 35, relevé dans Safari) ; identique sur v183c : préexistant, cause non nommée — piste : la fiche déborde en largeur
+> (`scrollWidth` 686 pour 390, `overflow-x:hidden`) et le fil est posé en absolu au-dessus de la colonne (Q607) ; ③ le banc Safari de la sentinelle (`banc-haut-fiche.html`) n'a
+> pas été mené jusqu'à son bilan (un aller-retour au doigt sur trois) : **`redteam_haut_fiche --lire` n'a rien à juger pour ce lot** — la sentinelle est jugée en WebKit seulement.
 
 ### ⚑ v184b (7 nov. 2026) — LES MOTS NEUFS : UNE PASTILLE, PAS DU TEXTE (C-253) ; LE + DES MEMBRES SUR UN PROMI ET UN CHICHE (C-254). (Décisions Tom.) Ce bloc CORRIGE v147 (C-116 : « le nombre de mots paraît s'il y en a, sans pastille ») et la ligne d'état d'un Cercle (« · 3 mots »).
 > **⚑ C-253 — LA PASTILLE EST `.s4-att`** (v89, Q347 : « pas encore vu ») : un disque de 9 pt, `#FB4C0D`, cerné d'un filet crème de 1,4 pt — même composant, même taille, même couleur ; seule sa

@@ -17,11 +17,15 @@ if(NAT==='cercle'){ etat=await (await fetch('banc-etats/etat-cercle.json',{cache
 else { const nom=Q.get('etat')||'etats/tom-20261101-205518.json'; const d=await (await fetch(nom,{cache:'no-store'})).json(); etat=d.ls||{}; ['setItem','getItem','removeItem','clear','key','length'].forEach(k=>delete etat[k]); }
 delete etat.promi_theme; localStorage.clear(); for(const k in etat) localStorage.setItem(k,etat[k]);
 for(const [k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1'],['promi_theme','light']]) localStorage.setItem(k,v);
-const ch=new Promise(r=>{F.onload=r;}); F.src='app.html'; await ch;
+const ch=new Promise(r=>{F.onload=r;}); F.src=(Q.get('app')||'app.html'); await ch;
 let w=null; for(let i=0;i<300;i++){ await wait(100); try{ const x=F.contentWindow; if(x.document.readyState==='complete'&&x.openDetail&&x.Toile&&x.eval('typeof promises')==='object'){ w=x; break; } }catch(e){} }
 if(!w){ dit('app pas prête'); envoie({erreur:'app pas prête'}); return; }
 await wait(2500);
 w.eval(await (await fetch('haut-fiche-rec.js',{cache:'no-store'})).text());
+if(Q.get('trace')){ let T=null; const cl=e=>{ const x=e.target; return x ? ((x.id||'')+'.'+(x.className&&x.className.baseVal!==undefined?x.className.baseVal:(x.className||''))).slice(0,50) : ''; };
+  w.addEventListener('touchstart',e=>{ T={cible:cl(e), chaine:[], prev:0, n:0, st0:w.document.getElementById('detailPoster').scrollTop}; let a=e.target; while(a&&a!==w.document.body){ T.chaine.push((a.id||String(a.className||'').slice(0,20))); a=a.parentElement; } },{passive:true});
+  w.addEventListener('touchmove',e=>{ if(T){ T.n++; if(e.defaultPrevented) T.prev++; } },{passive:true});
+  w.addEventListener('touchend',()=>{ if(T){ T.st1=w.document.getElementById('detailPoster').scrollTop; envoie({trace:T}); T=null; } },{passive:true}); }
 const OUVRE={cercle:"openEssaim('potager')", promi:"(function(){var p=promises.filter(function(q){return !q.draft&&!q.chiche&&!q.nuee}).sort(function(a,b){return (b.title||'').length-(a.title||'').length})[0]; openDetail(p.id);})()", chiche:"(function(){var p=promises.filter(function(q){return !q.draft&&q.chiche})[0]; openDetail(p.id);})()"};
 const nat=NAT==='cercle'?'cercle':NAT;
 w.eval(OUVRE[NAT]); await wait(2800);
