@@ -228,6 +228,26 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v188 (8 nov. 2026) — « UN MOT… » PUIS TOUS LES MOTS, PLUS DE « + X » (Q608) ; LE NOMBRE « +N » EN ORANGE (C-257 suite) ; LE TRAIT DE JONCTION ARRÊTÉ (C-259). (Décisions Tom.) Ce bloc CORRIGE v183a (C-248 : trois mots au plus, « + X commentaires », le dépliage), v186b (C-257 : le nombre seul) et v182b (C-246 : 16 pt sous l'état).
+> **Validés par Tom : C-237 (la fin du vol), C-243 et Q610 (le glissé parti d'une carte), le défilement de la fiche.** Le simulateur d'un autre projet (66398523) reste allumé : on n'y
+> touche jamais. **Safari non vu** : charge 93 → 200 avant l'ouverture, 34 au démarrage du mien, puis aucun écran (« Main Screen Surface » introuvable, ouverture expirée) — refermé.
+> **⚑ §1 (C-259) — ARRÊTÉ** : à la jonction (le bas de la bande de v187, 112 pt) il n'y a aucune vague ; la bande finit par un bord droit. Les vagues sont celle de la bande
+> du Cercle (≈ 150–230 pt, elle défile) et le trait du geste (Promi, Chiche). Décision à Tom (Q612).
+> **⚑ §2 (Q608)** (`lot-V145-COMM`) : la ligne « + X commentaires » et le dépliage de C-248 (`deplie`, `_commDeplie`, `.cm5-plus`, `.cm5-reste`, `ANIM`, `DEPLIE`, `VUS`) sont
+> RETIRÉS. L'ordre : la ligne d'état, « Un mot… » (692 pt, bas à 748 ; descend seulement pour garder 8 pt sous l'état — `lot-V181B-TEXTES`, `AIR` 16 → 8, `premier()` = la ligne),
+> puis TOUS les mots (le plus récent d'abord), 8 pt sous elle ; sur un Cercle, au bout du fil. On les atteint en défilant ou par le nombre. Deux cotes de la pose de la fiche
+> (`_ficheCotes`) ont dû bouger pour tenir « Un mot… » au-dessus de la barre avec 8 pt de marge : une parole TENUE sans mot, `base` 400 → 362 ; un Chiche TENU À DEUX, 396 → 334
+> (leur état finissait à 726 et 750, « Un mot… » à 790 et 814 ; maintenant 688 et 752). **VU (C-253)** : un mot est vu quand il est passé à l'écran entre l'en-tête et la barre
+> (`IntersectionObserver`, aucune écriture au défilement) ; marqué à la fermeture. **Pourquoi ma première écriture de Q608 (v187) rendait la liste instable** : elle recalculait le
+> nombre de mots à CHAQUE pose de la fiche en repartant de trois, et rebâtissait la liste (son `innerHTML`) deux fois par pose ; une pose qui tombait pendant le dépliage effaçait
+> les hauteurs que l'animation posait (le dépliage restait fermé). Les « disparitions » relevées alors venaient de ma sonde (une fiche ouverte pendant la fermeture de la précédente :
+> la même sonde les montre sur v187). *La règle* : **un calcul de mise en page qui rebâtit des nœuds ne se refait pas à chaque pose en repartant d'une valeur par défaut — il part de
+> l'état en place, et ne rebâtit que si le résultat change.** Juge : **`redteam_mots_fiche.py`** (3 natures × 0, 1, 3, 12 mots, titre de 280, sept états de fiche, dix ouvertures, le
+> nombre ; 56/56 et 55/56 — le Cercle à 3 mots, stabilité, intermittent, aussi sur v187 ; rouge sur v187 : 27). Contrats remis au niveau (originaux `sauvegardes/*-avant-v188.py`) :
+> `redteam_commentaires_liste`, `redteam_commentaires`, `redteam_mots_neufs`, `redteam_noms`.
+> **⚑ §3 (C-257 suite)** : sans mot nouveau, le total à l'encre de la ligne ; avec, « +N » (le nombre de nouveaux) en `#FB4C0D` — la passe de lisibilité l'exempte (`cm5-neufs`, une
+> décision : 1,23:1 sur le corps d'un Promi) ; le toucher glisse jusqu'au premier nouveau (`data-neuf`). Il redevient le total à la réouverture qui suit la lecture.
+
 ### ⚑ v187 (8 nov. 2026) — LA DALLE VOLE À SA PLACE FINALE (Q611) ; L'ONBOARDING SANS FLAQUES À L'ATTERRISSAGE (Q609) ; UNE PAROLE EFFACÉE NE REVIENT JAMAIS ; LE GLISSÉ PARTI D'UNE CARTE (Q610). (Décisions Tom.) Ce bloc CORRIGE v186c (la Toile en pause pendant le vol, `_poseNette`, l'onboarding qui garde ses flaques, Q607 non corrigé).
 > **⚑ NON LIVRÉ SUR main : SAFARI NON VÉRIFIÉ.** La charge du Mac était à 16,5 avant l'ouverture du simulateur ; son démarrage l'a portée à 452 puis 564 (un second
 > simulateur, d'un autre projet, tournait déjà) ; redescendue à 20, Safari restait sur un écran noir et les ouvertures d'adresse expiraient — refermé après 10 min. Ni la fin du

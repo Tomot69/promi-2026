@@ -8939,7 +8939,7 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   Capture : `planche-v184/safari-chiche-plus-chevauche.png`. Rien changé.
 - **Q607 — À SAVOIR (v184c, vu dans Safari, préexistant v183c)** : sur la fiche d'un Cercle, un glissé vers le bas qui part d'une carte du fil ne fait pas remonter la fiche
   (le geste part à la page Safari). Parti de l'espace libre ou du haut de la fiche, il remonte. Cause non nommée ; rien changé.
-- **Q608 — À SAVOIR (v186b, préexistant v184c)** : sur une fiche Promi ou Chiche à un ou trois mots, la ligne « Un mot… » est posée à 732 → 788 pt, à moitié sous la barre
+- **Q608 — TRANCHÉE PAR TOM, FAITE EN v188** (plus de « + X » ; « Un mot… » puis tous les mots ; 8 pt sous l'état) — à l'origine : À SAVOIR (v186b, préexistant v184c) : sur une fiche Promi ou Chiche à un ou trois mots, la ligne « Un mot… » est posée à 732 → 788 pt, à moitié sous la barre
   Peaufiner (760) au repos : son texte (et maintenant le nombre, C-257) est coupé en deux. Remonter la ligne (ou la fiche) touche la mise en page validée de C-246 et C-248 : rien changé.
   **v187 (§5) — en trois lignes, avec ma recommandation, LAISSÉE OUVERTE (elle change ce que tu vois) :** ① le défaut : sous un état long, la liste des trois mots
   pousse « Un mot… » à 732 → 788 pt, la barre Peaufiner commence à 760 — la ligne est coupée en deux au repos ; ② ma recommandation : la liste montre autant de mots
