@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v187', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v188', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -36657,7 +36657,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         el.removeAttribute('data-lis'); }
       var cs=getComputedStyle(el);
       if(cs.visibility==='hidden'||cs.display==='none'||+cs.opacity<0.05) return;
-      if(el.id==='dptTrace' && el.classList.contains('dpt-depart')) return;   /* ⚑ v174 (Tom, C-214) : l'orange du libellé est une décision, comme à la page + : 1,23:1 sur le corps d'un Promi, dit dans le rapport, on ne le repeint pas */
+      if(el.id==='dptTrace' && el.classList.contains('dpt-depart')) return;
+      if(el.classList && el.classList.contains('cm5-nb') && el.classList.contains('cm5-neufs')) return;   /* ⚑ v188 (Tom, C-257 suite) : « +N » en #FB4C0D, comme le + — une décision (C-204) : on ne le repeint pas (mesuré : 1,23:1 sur le corps d'un Promi) */   /* ⚑ v174 (Tom, C-214) : l'orange du libellé est une décision, comme à la page + : 1,23:1 sur le corps d'un Promi, dit dans le rapport, on ne le repeint pas */
       var c=col3(cs.webkitTextFillColor||cs.color); if(!c) return;
       var f=fondOpaque(el); if(!f) return;
       if(Math.abs(lum(c)-lum(f)) >= SEUIL) return;         /* il se lit : on n'y touche pas */
@@ -42435,9 +42436,13 @@ window._noms=(function(){
        sans mot ajouté ; aucun commentaire : rien. Un toucher sur ce nombre fait glisser la fiche en douceur jusqu'aux commentaires ; il n'ouvre ni le clavier
        ni Peaufiner ») — la police de « Un mot… » (Gilbert 700, 18 pt), l'encre de la ligne ; la zone de toucher fait 44 pt de haut (la ligne) et au moins 44 de
        large. Ce corrige v184b (C-253 : « plus de « 3 mots » ») pour le nombre seul ; la pastille des mots neufs ne change pas. */
-    var nbN=liste(p).length;
-    nb.setAttribute('style','font:700 18px/1.2 Gilbert,system-ui,sans-serif;white-space:nowrap;margin-left:auto;min-width:44px;height:44px;display:'+((nbN>0 && !ouvert)?'flex':'none')+';align-items:center;justify-content:flex-end;cursor:pointer;color:inherit;-webkit-text-fill-color:inherit');
-    nb.textContent=nbN>0 ? String(nbN) : ''; nb.setAttribute('role','button'); nb.setAttribute('aria-label', nbN>0 ? (nbN+(nbN>1?' commentaires':' commentaire')) : '');   /* ⚑ v184b (Tom, C-253) : « le texte qui signale les mots, c'est du bruit » — plus de « 3 mots » : la pastille sur le mot neuf */ f.style.display=ouvert?'':'none'; s.style.color=C.encre; s.style.webkitTextFillColor=C.encre; s.style.caretColor=C.encre; f.style.color=C.encre;
+    var nbN=liste(p).length, nbNeufs=window._motNeuf ? liste(p).filter(window._motNeuf).length : 0;
+    /* ⚑ v188 (Tom, C-257 suite) — « sans commentaire nouveau : le nombre total, seul, à l'encre de la ligne ; aucun : rien. Avec des commentaires nouveaux : « +1 », « +2 »…
+       (le nombre de nouveaux), en orange #FB4C0D, comme le +. Une fois vus, il redevient le total, à l'encre de la ligne. » (vus : à la fermeture, C-253) */
+    var nbOr=nbNeufs>0, nbCoul=nbOr ? '#FB4C0D' : 'inherit';
+    nb.classList.toggle('cm5-neufs', nbOr); if(nbOr && nb.hasAttribute('data-lis')) nb.removeAttribute('data-lis');
+    nb.setAttribute('style','font:700 18px/1.2 Gilbert,system-ui,sans-serif;white-space:nowrap;margin-left:auto;min-width:44px;height:44px;display:'+((nbN>0 && !ouvert)?'flex':'none')+';align-items:center;justify-content:flex-end;cursor:pointer;color:'+nbCoul+';-webkit-text-fill-color:'+nbCoul);
+    nb.textContent=nbN>0 ? (nbOr ? '+'+nbNeufs : String(nbN)) : ''; nb.setAttribute('role','button'); nb.setAttribute('aria-label', nbN>0 ? (nbOr ? (nbNeufs+(nbNeufs>1?' commentaires nouveaux':' commentaire nouveau')+' sur '+nbN) : (nbN+(nbN>1?' commentaires':' commentaire'))) : '');   /* ⚑ v184b (Tom, C-253) : « le texte qui signale les mots, c'est du bruit » — plus de « 3 mots » : la pastille sur le mot neuf */ f.style.display=ouvert?'':'none'; s.style.color=C.encre; s.style.webkitTextFillColor=C.encre; s.style.caretColor=C.encre; f.style.color=C.encre;
     l.setAttribute('role', ouvert?'group':'button'); l.setAttribute('aria-label', TXT.voix); }
   /* ⚑ v183a (Tom, 7 nov. 2026, C-248) — « Les commentaires sont visibles sur la vue principale de la fiche, les uns sous les autres, sans aucun chevauchement.
      S'il y en a trop, les plus récents sont affichés, suivis d'une ligne « + X commentaires ». Un toucher sur cette ligne déplie le reste en douceur (hauteur
