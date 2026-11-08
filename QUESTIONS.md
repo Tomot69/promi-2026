@@ -8941,3 +8941,12 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
   (le geste part à la page Safari). Parti de l'espace libre ou du haut de la fiche, il remonte. Cause non nommée ; rien changé.
 - **Q608 — À SAVOIR (v186b, préexistant v184c)** : sur une fiche Promi ou Chiche à un ou trois mots, la ligne « Un mot… » est posée à 732 → 788 pt, à moitié sous la barre
   Peaufiner (760) au repos : son texte (et maintenant le nombre, C-257) est coupé en deux. Remonter la ligne (ou la fiche) touche la mise en page validée de C-246 et C-248 : rien changé.
+- **Q611 — À TRANCHER (v186c, C-237)** : sans la tache, la Toile fait la place à la dalle APRÈS l'atterrissage, à vue (la dalle bouge de 5 à 7 pt avec elle ; sous Esquille
+  et Touffe la matière se réorganise : 9,6 et 18 % des pixels par image). L'autre choix sans fondu : la Toile bouge pendant le vol sous l'image figée, et tout saute d'un
+  coup à l'atterrissage (5 à 39 %). Le premier est livré ; à juger sur l'iPhone.
+- **Q610 — À TRANCHER (v186c, Q607, vu dans Safari)** : le glissé perdu sur une carte du fil d'un Cercle vient de deux décisions — la découpe du haut réécrite à chaque
+  défilement (C-243) et l'état pressé des cartes (`scale:.97` au doigt posé). Sans les deux, 6 glissés sur 6 défilent la fiche (2 sur 5 perdus aujourd'hui). Proposition :
+  ① l'état pressé retiré des cartes du fil d'un Cercle (et du Fil, de l'Index : à mesurer) ; ② la découpe du haut posée autrement (un cache opaque fixe sous l'en-tête, au corps
+  de la fiche) — ou acceptée telle quelle. Rien n'est changé avant ta décision.
+- **Q609 — À TRANCHER (v186c, C-237, C-247)** : la tache à la fin du vol est retirée de la page + ; l'onboarding garde ses flaques à l'atterrissage, parce qu'elles y couvrent
+  le recadrage de la vue (× 2) et la naissance des voisines. Les retirer là aussi ferait voir ces deux mouvements d'un coup. Les deux séquences ne sont donc plus identiques sur ce point.

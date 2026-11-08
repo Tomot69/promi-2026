@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v186b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v186c', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -38538,7 +38538,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var t0v=performance.now();   /* l'horloge RÉELLE (pas la borne de 34 ms par image de v180b) : la dalle est reprise dans l'image de la Toile à heure fixe (1 615 ms) —
          sur un appareil chargé, un vol borné n'avait pas fini : elle était collée en plein vol */
       (function f(){ if(!dc.parentNode) return; var u=Math.min(1, (performance.now()-t0v)/765), e=bz(u);
-        if(!viv && u>=0.5 && id!=null){ try{ var lc=document.createElement('canvas'); if(Toile.dalleTrame(lc, id, 1) && lc.__dalleInfo && lc.__dalleInfo.org){ viv=lc; tViv=performance.now(); } else viv=false; }catch(_){ viv=false; } }
+        if(!viv && u>=0.5 && id!=null && !window._v186GelOn){ try{ var lc=document.createElement('canvas'); if(Toile.dalleTrame(lc, id, 1) && lc.__dalleInfo && lc.__dalleInfo.org){ viv=lc; tViv=performance.now(); } else viv=false; }catch(_){ viv=false; } }
         var c=cib(); if(!c){ requestAnimationFrame(f); return; }
         var sc=c.w/w, cx=x0c+(c.x+c.w/2-x0c)*e, cy=y0c+(c.y+c.h/2-y0c)*e, ss=s0+(sc-s0)*e;
         dc.style.left=(cx-w/2)+'px'; dc.style.top=(cy-h/2)+'px'; dc.style.transform='scale('+ss.toFixed(5)+')';
@@ -38571,7 +38571,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var bx=195, by=430; try{ var e=window._ppEcran(), y=window._onde.onde(e.base, e.amp), cT=document.getElementById('csTrameCv'), rT=cT.getBoundingClientRect(); by=(rT.top-D.top)/s + y(195); }catch(_){ }
     dev.appendChild(hote);
     function ferme(){ if(coupe) return; coupe=true; window._ppPart=false; if(cs){ cs.classList.add('cs-coupe'); setTimeout(function(){ cs.classList.remove('cs-coupe'); }, 900); } if(closeFn){ try{ closeFn(); }catch(_){ } } }
-    function fin(){ if(fini) return; fini=true; ferme(); window._tirageActive=false; window._ppSansDalle=false; if(hote.parentNode) hote.remove(); window._ppNaitDernier={id:np?np.id:null, t:performance.now()}; }
+    function fin(){ if(fini) return; fini=true; try{ window._v186Gel && window._v186Gel(false); }catch(_){ } ferme(); window._tirageActive=false; window._ppSansDalle=false; if(hote.parentNode) hote.remove(); window._ppNaitDernier={id:np?np.id:null, t:performance.now()}; }
     Promise.resolve().then(function(){
       try{ np=promises[promises.length-1]; }catch(_){ }
       /* ⚑ v182a (Tom, C-237 récidive, C-247 : « la dalle naît EXACTEMENT comme dans l'onboarding : taille, naissance, vol ») — CE QUI DIFFÉRAIT : sa taille. La
@@ -38583,14 +38583,22 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       try{ if(np && window._dalleAvenirCv){ var _E=(Toile.vue&&Toile.vue().dpr)||Math.min(2,window.devicePixelRatio||1); _pre=window._dalleAvenirCv(np.id, _w0*_E*D.width/390/s, 1e5, {chiche:!!np.chiche, title:np.title||'', who:np.who||'moi'}); } }catch(_){ _pre=null; }
       try{ if(window._toileDefer){ var q=window._toileDefer; window._toileDefer=null; q.forEach(function(f){ try{ f(); }catch(_){ } }); } }catch(_){ }   /* le moteur reçoit la parole au trait : sa cellule grandit sous la page */
       if(!np){ fin(); return; }
+      /* ⚑ v186c (Tom, C-237 suite : « l'effet de tache abstraite à la fin du vol est supprimé ; la dalle vole et se pose, nette, et c'est tout ») — LA CAUSE DE LA
+         TACHE : pendant le vol, la Toile vivante bougeait SOUS l'image figée (la cellule neuve grandit, les voisines se poussent : mesuré, 5 à 39 % des pixels hors
+         de la dalle changés à l'atterrissage) ; l'image figée se retirait en flaques pour révéler ce changement. Aujourd'hui la Toile vivante est EN PAUSE du trait
+         à l'atterrissage (sa boucle s'arrête quand `#stage` est caché ; l'image figée couvre tout l'écran) : à l'atterrissage elle reprend où elle était — la
+         Toile d'avant —, l'image figée part dès sa première image peinte, et la place se fait à vue, par le mouvement propre de la Toile, sous la dalle posée.
+         La cible du vol se calcule AVANT la pause (la place que le moteur prédit, C-241). */
+      var _cib0=null; try{ if(_pre && window._dalleSurToile) _cib0=window._dalleSurToile(_pre, np.id); }catch(_){ } if(!_cib0){ try{ _cib0=window._cibleDalle(np.id); }catch(_){ } }
+      window._v186Gel && window._v186Gel(true);
       /* ⚑ v183b (Tom, C-241 suite : « à tout instant, une seule dalle de la nouvelle parole est visible ») — la page + gardait SA dalle en haut (la même image)
          pendant toute la naissance, jusqu'à ce que la Toile d'avant la recouvre (1,2 s) : deux dalles. Elle ne la peint plus dès que la dalle naît, dans la même image. */
       window._ppSansDalle=true; try{ if(window._ppTrait) window._ppTrait(); }catch(_){ }
       N=window._naissanceDalle(hote, np.id, np.monde, bx, by, _w0, _pre);
       window._ppNait={id:np.id, dc:N.dc, x:bx, y:by, w:N.w, t0:performance.now()};
       setTimeout(function(){ cover=window._passageFlaques(hote, {mode:'couvre', rect:[0,0,390,844], image:fond, duree:620, garde:true, fin:function(){ ferme(); }}); if(!cover) ferme(); }, 553);
-      setTimeout(function(){ try{ N.vole(window._cibleDalle(np.id)); }catch(_){ } }, 808);
-      setTimeout(function(){ ferme(); window._retireFondFlaques(fond, N.dc, fin); try{ if(cover){ cover.arrete=true; if(cover.canevas.parentNode) cover.canevas.remove(); } }catch(_){ } }, 1615);
+      setTimeout(function(){ try{ if(_cib0 && N.dc) N.dc.__dalleInfo=null; N.vole(_cib0 || window._cibleDalle(np.id)); }catch(_){ } }, 808);
+      setTimeout(function(){ ferme(); window._poseNette(fond, N.dc, fin, np.id); try{ if(cover){ cover.arrete=true; if(cover.canevas.parentNode) cover.canevas.remove(); } }catch(_){ } }, 1615);
       setTimeout(fin, 4000);
     });
   };
@@ -38622,6 +38630,27 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       return {x:(R.left-D.left+a.minx*sx)/s, y:(R.top-D.top+a.miny*sx)/s, w:a.w*sx/s, h:a.h*sx/s}; }catch(_){ return null; } };
   /* v184c : la densité réelle de l'écran, en px par pt de l'appareil (celle de `_passageFlaques`) */
   window._densEcran=function(){ try{ var dv=document.getElementById('device'), k=(dv.getBoundingClientRect().width/(dv.offsetWidth||390))||1; return Math.max(2, Math.min(3, (window.devicePixelRatio||1)*k)); }catch(_){ return 2; } };
+  /* v186c (C-237) : la pause de la Toile vivante pendant le vol — la boucle du moteur s'arrête quand `#stage` est caché ; une image par image tient la pause
+     (une fermeture d'écran peut rendre `#stage`) ; 4 s au plus, jamais oubliée */
+  window._v186Gel=function(on){ var st=document.getElementById('stage'); if(!st) return;
+    if(on){ if(window._v186GelOn) return; window._v186GelOn={d:st.style.display, t:performance.now()}; st.style.display='none';
+      (function tient(){ var g=window._v186GelOn; if(!g) return; if(performance.now()-g.t>4000){ window._v186Gel(false); return; } if(st.style.display!=='none') st.style.display='none'; requestAnimationFrame(tient); })(); }
+    else { var g=window._v186GelOn; window._v186GelOn=null; if(!g) return; st.style.display=(g.d==='none'?'':g.d); try{ if(window.Toile_liven) Toile_liven(); }catch(_){ } } };
+  /* v186c (C-237) : se poser, net — la Toile reprend ; l'image figée part dans l'image où la Toile vivante a repeint (deux images) ; la dalle posée rejoint
+     la dalle vivante (200 ms), s'y cale, et part : la Toile continue de lui faire place à vue */
+  window._poseNette=function(fond, dc, fin, id){ window._v186Gel(false);
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ try{ fond.style.display='none'; }catch(_){ } var t0=performance.now();
+      /* la dalle posée se recale sur la dalle que la Toile vivante peint (relue une fois, rejointe en 200 ms — le recalage de mi-vol de v183b) */
+      /* v186c : rejointe en 200 ms, calée une dernière fois sur la dalle vivante, puis retirée */
+      var suit=null;
+      function vise(dur){ try{ if(id==null || !dc || !dc.parentNode) return; var lc=document.createElement('canvas'); if(!(Toile.dalleTrame(lc, id, 1) && lc.__dalleInfo && lc.__dalleInfo.org)) return; var c3=window._dalleSurToile(lc, null); if(!c3) return;
+        var w=parseFloat(dc.style.width)||dc.width, h=parseFloat(dc.style.height)||dc.height, r0=dc.getBoundingClientRect(), hp=dc.parentNode.getBoundingClientRect(), hs=(hp.width/(dc.parentNode.offsetWidth||390))||1;
+        var a={x:(r0.left-hp.left)/hs, y:(r0.top-hp.top)/hs, w:r0.width/hs, h:r0.height/hs}, tr=performance.now(), jeton={}; suit=jeton;
+        (function g(){ if(suit!==jeton) return; var k=dur>0 ? Math.min(1,(performance.now()-tr)/dur) : 1; k=k*k*(3-2*k); var c={x:a.x+(c3.x-a.x)*k, y:a.y+(c3.y-a.y)*k, w:a.w+(c3.w-a.w)*k};
+          dc.style.left=(c.x+c.w/2-w/2)+'px'; dc.style.top=(c.y+(a.h+(c3.h-a.h)*k)/2-h/2)+'px'; dc.style.transform='scale('+(c.w/w).toFixed(5)+')'; if(k<1 && dc.parentNode) requestAnimationFrame(g); })(); }catch(_){ } }
+      vise(200);
+      /* rejointe, la couche part : la dalle vivante est dessous, à la même place, et c'est elle que la Toile continue de poser */
+      setTimeout(function(){ vise(0); requestAnimationFrame(function(){ suit=null; try{ if(dc && dc.parentNode) dc.remove(); }catch(_){ } fin(); }); }, 240); }); }); };
   window._retireFondFlaques=function(fond, dc, fin){ var F2=window.Flaques; if(!F2 || !F2.Scene || !fond.width || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){ fond.style.display='none'; fin(); return; }
       try{ var eau=document.createElement('canvas'); eau.className='onbv-a onbv-fond'; eau.style.cssText=fond.style.cssText; eau.style.display='block'; eau.setAttribute('aria-hidden','true'); fond.parentNode.insertBefore(eau, fond.nextSibling);
         var Lw=parseFloat(fond.style.width)||390, Lh=parseFloat(fond.style.height)||844, Lx=parseFloat(fond.style.left)||0, Ly=parseFloat(fond.style.top)||0, im=document.createElement('canvas');
