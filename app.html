@@ -2567,7 +2567,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v189', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v190', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -42487,11 +42487,12 @@ window._noms=(function(){
      LE STYLE : celui des titres de section de l'Aura (« Ce que tu as tenu », « Ce qu'on t'a tenu ») — Gilbert 700, 13 pt, interligne 16, chasse 0,10 em, capitales,
      `--c-beige67` (la fiche d'un Cercle est sombre dans les deux thèmes, v146). LES COTES : avant, 16 pt entre la dernière carte du fil et le premier mot (12 de la carte, 4 de la
      liste) ; aujourd'hui 32 pt (le double) jusqu'au haut du titre, puis 36 pt du bas du titre au premier mot — le rapport de l'Aura (18,5 au-dessus, 21 dessous : 0,881 ; ici 0,889). */
-  var TITRE={AVANT:20, SOUS:36};   /* 12 (la marge de la carte) + 20 = 32 */
-  function titre(el, ml){ var t=$('cm5Titre'); if(!el){ if(t) pose(t,{display:'none'}); return; }
+  var TITRE={AVANT:20, SOUS:36, HAUT:32};   /* 12 (la marge de la carte) + 20 = 32 ; ⚑ v190 (Tom, C-261 suite) : sur Promi et Chiche, 32 pt sous « Un mot… », puis 36 jusqu'au premier mot — les mêmes cotes (C-247) */
+  function titre(el, ml, abs){ var t=$('cm5Titre'); if(!el){ if(t) pose(t,{display:'none'}); return; }
     if(!t){ t=document.createElement('div'); t.id='cm5Titre'; t.className='cm5 cm5-titre'; t.setAttribute('role','heading'); t.setAttribute('aria-level','2'); t.textContent='Les Mots'; }
     if(t.parentNode!==el.parentNode || t.nextSibling!==el) el.parentNode.insertBefore(t, el);
-    pose(t,{display:'block',visibility:'visible',opacity:'1',position:'relative',left:'0',top:'0',width:'auto','max-width':'none',margin:TITRE.AVANT+'px '+(ml||0).toFixed(1)+'px 0 '+(ml||0).toFixed(1)+'px',padding:'0',
+    pose(t, abs!=null ? {display:'block',visibility:'visible',opacity:'1',position:'absolute',left:'24px',top:abs+'px',width:'342px','max-width':'none',margin:'0','z-index':ZL} : {display:'block',visibility:'visible',opacity:'1',position:'relative',left:'0',top:'0',width:'auto','max-width':'none',margin:TITRE.AVANT+'px '+(ml||0).toFixed(1)+'px 0 '+(ml||0).toFixed(1)+'px'});
+    pose(t,{padding:'0',
       font:'700 13px/16px Gilbert,system-ui,sans-serif','letter-spacing':'.10em','text-transform':'uppercase',color:'var(--c-beige67)','-webkit-text-fill-color':'var(--c-beige67)',background:'transparent','pointer-events':'none','white-space':'nowrap'}); }
   function listeEl(dp){ var el=$('cm5Liste'); if(!el){ el=document.createElement('div'); el.id='cm5Liste'; el.className='cm5 cm5-liste'; }
     var h=HOTE ? (document.querySelector('#dpNueeFil .nf-liste')||null) : dp; if(h && el.parentNode!==h) h.appendChild(el); return h ? el : null; }
@@ -42510,9 +42511,9 @@ window._noms=(function(){
     if(el.getAttribute('data-sig')!==sig){ el.setAttribute('data-sig', sig); el.innerHTML=L.map(rangee).join(''); guetteVus(el, p, L); }
     else if(!window._cm5Montres || window._cm5Montres.p!==p) guetteVus(el, p, L);
     if(HOTE){ var _cr=document.querySelector('#dpNueeFil .nf-item'), _lr=el.parentNode.getBoundingClientRect(), _k=(window._echDp?window._echDp($('detailPoster')):1)||1, _ml=_cr?Math.max(0,(_cr.getBoundingClientRect().left-_lr.left)/_k):24; }
-    titre(HOTE ? el : null, HOTE ? _ml : 0);
+    titre(el, HOTE ? _ml : 0, HOTE ? null : (LIGNE_Y+LIGNE_H+TITRE.HAUT));   /* ⚑ v190 : les trois natures */
     if(HOTE) pose(el,{display:'block',position:'relative',left:'0',top:'0',width:'auto','max-width':'none',margin:(TITRE.SOUS)+'px '+_ml.toFixed(1)+'px 0 '+_ml.toFixed(1)+'px',padding:'0','box-sizing':'border-box',color:C.encre,'-webkit-text-fill-color':C.encre,'z-index':'auto',background:'transparent','pointer-events':'auto',visibility:'visible',opacity:'1'});
-    else pose(el,{display:'block',position:'absolute',left:'24px',top:(LIGNE_Y+LIGNE_H+ECART)+'px',width:'342px','max-width':'none',margin:'0',padding:'0','box-sizing':'border-box',color:C.encre,'-webkit-text-fill-color':C.encre,'z-index':ZL,background:'transparent','pointer-events':'auto'});
+    else pose(el,{display:'block',position:'absolute',left:'24px',top:(LIGNE_Y+LIGNE_H+TITRE.HAUT+16+TITRE.SOUS)+'px',width:'342px','max-width':'none',margin:'0',padding:'0','box-sizing':'border-box',color:C.encre,'-webkit-text-fill-color':C.encre,'z-index':ZL,background:'transparent','pointer-events':'auto'});
     if(HOTE){ var hh=el.offsetHeight; if(hh!==el.__h){ el.__h=hh; requestAnimationFrame(cercleHaut); } } }   /* un Cercle : la fiche reprend la hauteur du fil quand la liste change */
   /* un Cercle : la fiche fait la hauteur de son fil, plus 12 (la règle de C-238, `187 + hD + 12`, lue sur le fil rendu) — sinon la barre, collée au bas,
      s'arrête au bout de l'ancienne hauteur et remonte au milieu de l'écran quand la liste grandit. On ne repose pas la fiche (rebâtir le fil défaisait la
@@ -42577,7 +42578,7 @@ window._noms=(function(){
       /* le mot neuf doit se VOIR se poser : s'il tombe sous la barre (ou sous le clavier, ou sous le bloc « Un mot… » d'un Cercle), la fiche glisse d'autant, en douceur (le défilement
          natif, v186b) — la ligne « Un mot… » reste au-dessus de 120 pt */
       var sc=0; try{ var D=$('device').getBoundingClientRect(), bas=760, bar=$('dpDetails'), vv=window.visualViewport;
-        if(HOTE){ var hb=HOTE.getBoundingClientRect(); if(hb.height) bas=Math.min(bas, (hb.top-D.top)/k); } else if(bar && bar.getBoundingClientRect().height) bas=Math.min(bas, (bar.getBoundingClientRect().top-D.top)/k);
+        if(HOTE){ var hb=HOTE.getBoundingClientRect(); if(hb.height) bas=Math.min(bas, (hb.top-D.top)/k); } else if(!(window._v184Fixe && window._v184Fixe(dp)) && bar && bar.getBoundingClientRect().height) bas=Math.min(bas, (bar.getBoundingClientRect().top-D.top)/k);   /* ⚑ v190 : la barre fixée (v184a) EST à 760 ; sa boîte lue ici, dans la tâche où `peint()` la fait réécrire en absolu par un autre propriétaire (le guetteur de v184a ne la refixe qu'à la microtâche suivante), tombait à 776 − défilement : la fiche glissait de ce défilement en trop (v189 : 37 pt ; v190, la liste 72 pt plus bas : 110) */
         if(vv) bas=Math.min(bas, (vv.offsetTop+vv.height-D.top)/k);
         var ru=un.getBoundingClientRect(), hu=(ru.top-D.top)/k, bu=(ru.bottom-D.top)/k-12, lt=_l?(_l.getBoundingClientRect().top-D.top)/k:200;
         if(bu>bas-8){ sc=bu-(bas-8); if(!HOTE) sc=Math.min(sc, Math.max(0, lt-120)); }
@@ -44523,7 +44524,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   /* §5.2 */
   var D=360;
   function doux(u){ return u<.5 ? 2*u*u : 1-Math.pow(-2*u+2,2)/2; }
-  var SUIT=['cm5Liste','cm5Ligne','cm5Dernier','cm5Fil'];   /* v183a (C-248) : la liste des mots, au-dessus de la ligne */
+  var SUIT=['cm5Liste','cm5Titre','cm5Ligne','cm5Dernier','cm5Fil'];   /* v190 : « Les Mots » descend avec la liste */
+  var _suit0=0;   /* v183a (C-248) : la liste des mots, au-dessus de la ligne */
   function premier(){ return document.getElementById('cm5Ligne'); }   /* v188 (Q608) : « Un mot… » suit l'état ; la liste des mots est dessous */   /* la ligne « Un mot… » est posée au bas de la fiche (692) : déplié, elle descend avec ce qui suit le titre */
   function decale(dy){ SUIT.forEach(function(id){ var e=document.getElementById(id); if(e){ if(dy) e.style.setProperty('translate','0 '+dy.toFixed(2)+'px','important'); else e.style.removeProperty('translate'); } }); }
   /* ⚑ v182b (Tom, C-244 §6.1 : « une fois déplié, la barre de Peaufiner reste à sa place, en bas, et le contenu défile au-dessus ») — trop long pour l'écran, la
@@ -44820,9 +44822,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    CERCLE : sa vague (le bas de la bande de la Toile, peinte par `_peintBande` sur `#dpTrameCv` : `data-trait` = base, amp, couleur) EST le trait de jonction. Elle
    défile avec le contenu ; quand le HAUT de son trait atteint la jonction (le bas de la bande sous l'en-tête, 112 pt), elle ne passe plus dessous : elle reste
    collée à la jonction et s'aplatit, son amplitude décroissant LINÉAIREMENT avec le défilement sur les 40 pt qui suivent, jusqu'au trait plat ; au retour, l'inverse,
-   jusqu'à sa place exacte de repos. PROMI, CHICHE : leur vague est le trait du geste (on n'y touche pas) ; à la jonction un trait plat paraît, son opacité suivant
-   linéairement le défilement sur les 40 premiers pt — le même trait que le plat du Cercle (couleur `NATTRAIT.nuee` #0A0415, épaisseur 10 × `_TRAIT_K`, sa tranche
-   haute sur la jonction). Rien de la mise en page ne change : une COUCHE fixe (`#v189Jonction`, z 8, après la bande de v187, sous l'en-tête z 9), qui ne prend pas
+   jusqu'à sa place exacte de repos. ⚑ v190 (Tom) : PROMI ET CHICHE N'ONT PLUS DE TRAIT À LA JONCTION (le trait plat de v189 est retiré, code compris) : au défilement
+   ces fiches sont celles de v188. Rien de la mise en page ne change : une COUCHE fixe (`#v189Jonction`, z 8, après la bande de v187, sous l'en-tête z 9), qui ne prend pas
    le doigt ; elle redessine son tracé une fois par image pendant le défilement (un canevas : aucune écriture de style). Sous la vague collée, elle porte la couleur du
    champ (au-dessus du trait) et celle du corps (au-dessous, jusqu'au bas de la vraie vague qui défile dessous) : on ne voit jamais deux vagues. Au repos : rien. */
 (function(){
@@ -44840,26 +44841,37 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var cs=getComputedStyle(d); f.corps=cs.backgroundColor;
     if(f.cercle && isFinite(base) && isFinite(amp) && window._onde){ var y=window._onde.onde(base, amp), P=[], mn=1e9, mx=-1e9; for(var x=0;x<=390;x+=2){ var v=y(x); P.push(v); if(v<mn) mn=v; if(v>mx) mx=v; }
       f.P=P; f.min=mn; f.max=mx; f.s0=mn-lw/2-J;
+      /* l'ENVELOPPE haute du trait de la vraie vague : sur une pente, le bord d'un trait épais monte plus haut que « centre − ½ épaisseur » (l'épaisseur se mesure selon la
+         normale) — la réunion des disques de rayon ½ épaisseur posés sur la courbe. Sans elle, un filet pâle de la vraie vague passait au bord du remplissage, sur les pentes. */
+      var r=lw/2, EN=[]; for(var i=0;i<P.length;i++){ var m=1e9; for(var dx=-Math.ceil(r/2);dx<=Math.ceil(r/2);dx++){ var j=i+dx; if(j<0||j>=P.length) continue; var h=Math.abs(dx*2); if(h>r) continue; var v=P[j]-Math.sqrt(r*r-h*h); if(v<m) m=v; } EN.push(m); } f.EN=EN;
       try{ var g=c.getContext('2d'), E=c.width/(c.offsetWidth||390), px=g.getImageData(Math.round(4*E), Math.max(0, Math.round((mn-lw-6)*E)), 1, 1).data; f.champ='rgb('+px[0]+','+px[1]+','+px[2]+')'; }catch(_){ f.champ=null; } }
     return f; }
-  function peint(){ demande=false; var d=D(); if(!d) return; var s=d.scrollTop, on=actif(d) && s>0.25;
+  function peint(){ demande=false; var d=D(); if(!d) return; var s=d.scrollTop, on=actif(d) && cercle(d) && s>0.25;
     if(on && (!F || F.cle!==((document.getElementById('dpTrameCv')||{}).getAttribute ? (document.getElementById('dpTrameCv').getAttribute('data-trait')||'')+'|'+d.className : ''))) F=forme(d);
     var etat=null;
-    if(on && F){ if(F.cercle){ if(F.P && s>=F.s0) etat={t:Math.min(1, (s-F.s0)/COURSE)}; } else etat={a:Math.min(1, s/COURSE)}; }
+    if(on && F && F.cercle && F.P && s>=F.s0) etat={t:Math.min(1, (s-F.s0)/COURSE)};   /* ⚑ v190 (Tom, C-259) : Promi et Chiche n'ont plus de trait à la jonction — leurs fiches sont celles de v188 */
     if(!etat){ if(montre){ montre=false; cv.style.setProperty('display','none','important'); } return; }
     var c=couche(d), E=(window._densEcran?window._densEcran():2), o=off();
     if(!montre){ montre=true; c.width=Math.round(390*E); c.height=Math.round(HT*E);
       c.style.cssText='position:fixed!important;left:'+o[0]+'px!important;top:'+o[1]+'px!important;width:390px!important;height:'+HT+'px!important;margin:0!important;padding:0!important;max-width:none!important;z-index:8!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important'; }
     var g=c.getContext('2d'); g.setTransform(E,0,0,E,0,0); g.clearRect(0,0,390,HT); g.lineCap='round'; g.lineJoin='round'; g.lineWidth=F.lw; g.strokeStyle=COL;
     var y0=J+F.lw/2;
-    if(F.cercle){ var k=1-etat.t, Y=function(i){ return y0+(F.P[i]-F.min)*k; }, n=F.P.length, bas=F.max-s+F.lw/2+1.5;
-      if(F.champ){ g.fillStyle=F.champ; g.beginPath(); g.moveTo(0,J); g.lineTo(390,J); for(var i=n-1;i>=0;i--) g.lineTo(i*2, Y(i)); g.closePath(); g.fill(); }
+    { var k=1-etat.t, Y=function(i){ return y0+(F.P[i]-F.min)*k; }, n=F.P.length, bas=F.max-s+F.lw/2+1.5;
+      /* ⚑ v190 (Tom, C-259 : « deux traits gris parasites sur le haut des bosses ») — LA CAUSE : le bas de la bande d'en-tête (`#v187Bande`) et le haut de ce remplissage
+         tombaient tous deux à 112 pt, sur une FRACTION de pixel de l'écran (112 × 2,37 = 265,3) : la rangée de jointure n'était couverte qu'à moitié par chacun, et la vraie
+         vague qui défile DESSOUS transparaissait par elle — un trait gris exactement là où passent ses bosses. Le remplissage part maintenant 2 pt AU-DESSUS de la jonction
+         (dans la bande, à sa couleur) : il n'y a plus de jointure entre deux calques à cet endroit. */
+      /* ⚑ v190 aussi : ce remplissage ne couvre que l'EMPREINTE de la vraie vague (son trait et son corps) là où elle passe au-dessus de la vague collée — du haut de son trait
+         (1,5 pt de plus, ou 2 pt au-dessus de la jonction si elle est déjà dessous) jusqu'à la vague collée. Couvrir tout l'espace de la jonction à la vague collée effaçait
+         d'un coup, à l'instant où elle s'accroche, les dalles du champ prises entre les bosses (déjà en v189). */
+      if(F.champ){ g.fillStyle=F.champ; g.beginPath(); var H=[];
+        for(var i=0;i<n;i++){ var hy=Math.max(J-2, F.EN[i]-s-1.5), by=Y(i); H.push(Math.min(hy, by)); g.lineTo(i*2, H[i]); }
+        for(var i2=n-1;i2>=0;i2--) g.lineTo(i2*2, Y(i2)); g.closePath(); g.fill(); }
       if(bas>y0){ g.fillStyle=F.corps; g.beginPath(); for(var j=0;j<n;j++) g.lineTo(j*2, Y(j)); g.lineTo(390, Math.max(bas, y0)); g.lineTo(0, Math.max(bas, y0)); g.closePath(); g.fill(); }
       g.beginPath(); for(var q=0;q<n;q++){ if(q) g.lineTo(q*2, Y(q)); else g.moveTo(0, Y(0)); } g.stroke();
-      c.setAttribute('data-jonction', 'cercle,'+etat.t.toFixed(4)+','+(F.max-F.min).toFixed(2)); }
-    else { g.globalAlpha=etat.a; g.beginPath(); g.moveTo(0, y0); g.lineTo(390, y0); g.stroke(); g.globalAlpha=1; c.setAttribute('data-jonction', 'plat,'+etat.a.toFixed(4)); } }
+      c.setAttribute('data-jonction', 'cercle,'+etat.t.toFixed(4)+','+(F.max-F.min).toFixed(2)); } }
   function tour(){ if(demande) return; demande=true; requestAnimationFrame(peint); }
-  window._v189Jonction=function(){ return {montre:montre, F:F?{s0:F.s0, min:F.min, max:F.max, lw:F.lw, cercle:F.cercle}:null}; };   /* un pointeur pour les juges */
+  window._v189Jonction=function(){ return {montre:montre, F:F?{s0:F.s0, min:F.min, max:F.max, lw:F.lw, cercle:F.cercle, P:F.P?F.P.slice():null, EN:F.EN?F.EN.slice():null}:null}; };   /* un pointeur pour les juges */
   function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; }
     d.addEventListener('scroll', tour, {passive:true});
     new MutationObserver(function(){ F=null; tour(); }).observe(d,{attributes:true, attributeFilter:['class']}); }

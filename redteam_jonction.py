@@ -8,7 +8,13 @@ jusqu'à 140 pt puis remontée à 0, chaque pas lu après l'image :
       le haut de son trait (au sommet de la vague) aussi ;
   C · aucun saut à l'accrochage : l'écran juste avant et juste après (± 1 pt de défilement) diffère de moins de 2 % des pixels dans la bande 100 → 260 pt ;
   D · au repos (défilement 0) : aucune couche, rien de dessiné ;
-  E · même couleur et même épaisseur que la vague du Cercle (#0A0415, 10 × _TRAIT_K) ; la couche ne prend pas le doigt."""
+  E · même couleur et même épaisseur que la vague du Cercle (#0A0415, 10 × _TRAIT_K) ; la couche ne prend pas le doigt.
+⚑ v190 (Tom, C-259 ; original : sauvegardes/redteam_jonction-avant-v190.py) :
+  F · Cercle — AUCUN TRAIT PARASITE : défilé de 1 pt en 1 pt, aller et retour, de l'accrochage − 6 à + 46 pt ; à chaque image, colonne par colonne, entre le bas de la bande
+      (112 − 1,5) et le haut de la vague collée (son enveloppe, − 1,2 pt), sous les dalles du champ (l'enveloppe de la vraie vague) : rien que le champ (± 6) ; sous la vague
+      collée (+ 1,2 → + 12 pt) : rien que le corps (± 6). Rouge sur v189 (le trait gris à 112, sur les bosses).
+  G · Promi, Chiche — PLUS AUCUN TRAIT : la zone de la jonction (112 → 212 pt) identique à v188 AU PIXEL à chaque pas, aller et retour (banc_jonction, matière exceptée) ;
+      la couche n'existe plus. Rouge sur v189."""
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
 from PIL import Image, ImageChops
@@ -35,7 +41,7 @@ with sync_playwright() as p:
     b = p.webkit.launch()
     ctx = B.contexte(b, vw=430, vh=932); B.toile_pleine(ctx, 'cercle'); pg = B.ouvre(ctx, F, 9000); pg.wait_for_timeout(2500)
     pg.evaluate("()=>{ var v=promises.find(x=>x.title==='réparer le vélo'); if(v){ v.chiche=true; v.chicheEtat='lance'; v.phraseSens='chiche'; } }")
-    for nat in ('cercle', 'promi', 'chiche'):
+    for nat in ('cercle',):
         T = '[%s]' % nat
         if nat == 'cercle': pg.evaluate("()=>{ closeAll(); openNueeDetail('potager'); }")
         else: pg.evaluate("t=>{ closeAll(); var p=promises.find(x=>x.title===t); p.comments=(p.comments||[]).concat(Array.from({length:6},(_,i)=>({t:'mot '+i, by:'Rachel', d:'2026-11-0'+(i+1)+'T10:00:00Z', vu:true}))); openDetail(p.id); }", 'faire les crêpes' if nat == 'promi' else 'réparer le vélo')
@@ -82,6 +88,46 @@ with sync_playwright() as p:
         rr = pas(pg, 80)
         juge(T + ' E · même couleur et même épaisseur (#0A0415, %.1f pt) ; la couche ne prend pas le doigt, sous l\'en-tête' % (FF.get('lw') or 0), rr['pe'] == 'none' and rr['z'] == '8' and abs((FF.get('lw') or 0) - 10 * pg.evaluate("()=>window._TRAIT_K")) < 0.01, (rr['pe'], rr['z']))
         pas(pg, 0)
+    # F · les traits parasites (Cercle), image par image
+    pg.evaluate("()=>{ closeAll(); openNueeDetail('potager'); }"); pg.wait_for_timeout(3200); pas(pg, 60)
+    # la forme de la vraie vague, calculée ICI depuis ce que son peintre déclare (`data-trait` : base, amp) et la courbe partagée (`_onde`) — pas lue dans la couche jugée
+    JJ = pg.evaluate("()=>{ const t=(document.getElementById('dpTrameCv').getAttribute('data-trait')||'').split(','), y=_onde.onde(+t[0], +t[1]), P=[]; for(let x=0;x<=390;x+=2) P.push(y(x)); return {P, lw:10*(window._TRAIT_K||1.3)}; }")
+    P = JJ['P']; lw = JJ['lw']; r = lw / 2; mn = min(P); s0 = mn - r - 112
+    ENr = [min(P[j] - (r * r - ((j - i) * 2) ** 2) ** .5 for j in range(max(0, i - 4), min(len(P), i + 5)) if abs((j - i) * 2) <= r) for i in range(len(P))]
+    champ = None; corps = pg.evaluate("()=>getComputedStyle(document.getElementById('detailPoster')).backgroundColor")
+    import re; corps = tuple(int(x) for x in re.findall(r'\d+', corps)[:3])
+    seq = [s0 - 6 + i for i in range(0, 53)]; seq = seq + seq[::-1]; mauvais = []
+    for s in seq:
+        rr = pas(pg, s); im = Image.open(io.BytesIO(pg.screenshot())).convert('RGB'); d = pg.evaluate("()=>{ const r=document.getElementById('device').getBoundingClientRect(); return [r.left,r.top,r.width/390,devicePixelRatio]; }")
+        q = d[3]; px = im.load(); t = (1 - rr['v']) if rr['v'] is not None else None
+        if champ is None: champ = px[int((d[0] + 4 * d[2]) * q), int((d[1] + 108 * d[2]) * q)]
+        Y = lambda yy: int((d[1] + yy * d[2]) * q)
+        for i in range(2, len(P) - 2, 2):
+            x = i * 2; X = int((d[0] + x * d[2]) * q)
+            if t is None: continue   # avant l'accrochage : la vraie vague, rien de dessiné
+            mine = [112 + r + (P[j] - mn) * t for j in range(max(0, i - 4), min(len(P), i + 5))]
+            haut = min(mine[j - max(0, i - 4)] - (r * r - ((j - i) * 2) ** 2) ** .5 for j in range(max(0, i - 4), min(len(P), i + 5)) if abs((j - i) * 2) <= r)
+            basm = max(mine[j - max(0, i - 4)] + (r * r - ((j - i) * 2) ** 2) ** .5 for j in range(max(0, i - 4), min(len(P), i + 5)) if abs((j - i) * 2) <= r)
+            dal = ENr[i] - s - 2.5
+            for yy in range(Y(max(110.5, dal)), Y(haut - 1.2)):
+                c = px[X, yy]
+                if sum(abs(c[k] - champ[k]) for k in range(3)) > 6: mauvais.append((round(s, 1), x, round((yy / q - d[1]) / d[2], 1), c)); break
+            for yy in range(Y(basm + 1.2), Y(basm + 12)):
+                c = px[X, yy]
+                if sum(abs(c[k] - corps[k]) for k in range(3)) > 6: mauvais.append((round(s, 1), x, round((yy / q - d[1]) / d[2], 1), c, 'corps')); break
+    juge('[cercle] F · aucun trait parasite : %d images, aller et retour, rien que le champ au-dessus de la vague collée et le corps dessous' % len(seq), not mauvais, (len(mauvais), mauvais[:4]))
+    pas(pg, 0)
     juge('Z · aucune erreur de page', not pg.__dict__['erreurs'], pg.__dict__['erreurs'][:2])
+    # G · Promi, Chiche : la zone de jonction identique à v188 au pixel, à chaque pas
+    import banc_jonction as BJ
+    vw, vh = pg.evaluate("()=>[innerWidth, innerHeight]")
+    for nat in ('promi', 'chiche'):
+        R = []
+        for f in (F, 'zz-v188.html'):
+            cx, pp = BJ.ouvre(b, f, nat, vw, vh); R.append(BJ.images(pp)); cou = pp.evaluate("()=>{ const c=document.getElementById('v189Jonction'); return c ? getComputedStyle(c).display : 'absente'; }") if f == F else None
+            if f == F: CO = cou
+            cx.close()
+        e = [(x[0], BJ.ecart(x, y)) for x, y in zip(R[0], R[1])]
+        juge('[%s] G · la zone de la jonction identique à v188 au pixel, %d pas aller et retour ; aucune couche' % (nat, len(e)), not [z for z in e if z[1]] and CO in ('absente', 'none'), ([z for z in e if z[1]][:4], CO))
     b.close()
 print('\n  %d / %d' % (sum(res), len(res)))
