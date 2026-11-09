@@ -8969,3 +8969,4 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q614 — À VALIDER (v189b, C-260)** : envoyé, si le mot neuf tomberait sous la barre (ou sous le clavier), la fiche glisse d'autant pour le montrer se poser — c'est un mouvement que tu n'as pas demandé nommément.
 - **Q613 — TRANCHÉE (Tom, v190)** : « Les Mots » garde le gris des titres de l'Aura ; rien ne change (C-204).
 - **Q614 — TRANCHÉE (Tom, v190)** : accepté — la fiche glisse pour montrer le mot envoyé se poser.
+- **Q615 — À TRANCHER (v191, C-262)** : un blocage de la page vu une fois dans Safari, juste après « tenir » un Promi au titre de cinq lignes défilé puis revenu en haut. Non reproduit au banc (v191 = v190), non comparé dans Safari. v191 est commité sur la branche `v191`, NON fusionné : à voir sur ton iPhone (défiler un Promi en cours au titre long, remonter, tenir, puis la croix) avant la fusion.

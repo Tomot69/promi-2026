@@ -239,6 +239,33 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v191 (9 nov. 2026) — PROMI ET CHICHE : LE VRAI TRAIT S'ACCROCHE À LA JONCTION ET S'APLATIT, COMME LA VAGUE DU CERCLE (C-259 suite) ; L'ENVOI DE DEUX MOTS VU DANS SAFARI (§2). (Décisions Tom.) Ce bloc CORRIGE v190 §2 (« plus de trait sur Promi et Chiche, v188 au pixel au défilement »).
+> **Validés par Tom : C-259 sur le Cercle, C-261, v190 sur Promi et Chiche.**
+> **⚑ NON FUSIONNÉ DANS main : commité sur la branche `v191`, en attente de Tom (Q615, C-262).** Dans Safari, une fois, la page s'est figée juste après « tenir » un Promi au titre de
+> cinq lignes défilé puis revenu en haut (la parole est tenue, puis plus aucun toucher, plus de rechargement). Non reproduit : le même chemin sur un titre court passe dans Safari ; au banc
+> WebKit (titre long, dix allers-retours, tenir, la croix ; échelles 1, 0,79, fenêtre de Tom), v191 et v190 passent. Non comparé à v190 dans Safari.
+> **⚑ §1 — LE MÊME CODE (`lot-V189-JONCTION`)** : pour Promi et Chiche, `forme` prend l'onde déclarée (`#dpTrameCv[data-trait]`) ; l'accrochage à 112 pt, l'aplatissement linéaire sur 40 pt,
+> le remplissage (champ au-dessus, corps dessous, parti 2 pt au-dessus de la jonction : la correction du demi-pixel de v190) sont ceux du Cercle. Ce qui change : la ligne n'est pas un trait
+> d'une couleur, c'est **la ligne de la fiche, retracée par SON peintre** — l'étape 3 de `_ficheTrait` est devenue une fonction (`ligne(g, base, amp, cvD)`, `cv.__ligne`) : moitié plantée,
+> moitié tracée, départ orange et pointe, points, parts et initiales, pinceau, tenu — sur l'onde aplatie, qui est exactement l'onde (base', k·amp) (`onde` est linéaire en l'amplitude) ; ce
+> qu'elle déclare (`data-trait`, `data-depart`, `data-parts`, `data-filet-trait`) ne s'écrit que sur le canevas de la fiche (retracée, sur un canevas muet). La ligne accrochée est coupée net à
+> 112 (ce qui passe sous l'en-tête l'est aussi). Son EMPREINTE (le haut de ce qu'elle peint, colonne par colonne, et son bas) est LUE sur ce qu'elle peint, une fois par ouverture, hors de
+> l'écran (l'amorce, la pointe, les points et les initiales débordent de la demi-épaisseur) ; le remplissage d'une fiche part 2,5 pt au-dessus d'elle (1,5 au Cercle : la sienne est calculée).
+> **LE GESTE** : accroché, la zone du geste ne prend plus le doigt (`pointer-events:none` sur `#tenirZone`, posé et rendu par la couche ; aucune classe sur la fiche) : le doigt fait défiler
+> la fiche et ne trace rien ; décroché ou au repos, rien ne change. Au repos, la fiche est v190 au pixel (8 états × 3 échelles).
+> Juge : **`redteam_jonction_fiche.py`** (Promi, Chiche × planté, à moitié tracé, tenu, date passée ; A l'amplitude, B la place du trait — le haut lu sur l'écran contre la ligne aplatie de son
+> peintre, ± 0,5 —, C aucun pixel parasite au-dessus du trait ou de son axe, D au repos = v190, E le geste ; 23/23 aux échelles 1, 0,79 et dans la fenêtre de Tom ; rouge sur v190 ; la sonde
+> du demi-pixel — remplissage reparti de 112 — prise à 0,79 : 1 384 pixels à 111,7 pt). `redteam_jonction` G remis au niveau (avant l'accrochage, v190 au pixel ; original en sauvegarde).
+> ⚠ **Une capture rognée à une cote fractionnaire est rééchantillonnée** (§8) : le juge lisait le trait 0,53 pt trop bas — il lit l'écran entier.
+> **⚑ VU DANS SAFARI (D42A4999, iOS 26.1, « v191 · 36c80de + modifs », l'appareil ≈ 0,8)** : Promi tenu (« hhhh ») — l'accrochage, l'aplatissement jusqu'au trait plat, le retour, la place de
+> repos (`planche-v191/safari-promi-*.png`) ; Chiche lancé (« Thyh ») — plat avec son départ orange, sa pointe et ses points, un trait tracé sur la ligne accrochée ne fait rien, un glissé parti
+> d'elle fait défiler, trois allers-retours, puis tenu au doigt revenu en haut (`safari-chiche-*.png`) ; Promi en cours à date passée — accroché, puis tenu au doigt après défilement.
+> **Cercle : non revu dans ce lot** (son code n'a pas changé : `redteam_jonction` 10/10 aux deux échelles, `redteam_haut_fiche` 20/20).
+> **⚑ §2 — TAPER DANS LE SIMULATEUR** : « Connect Hardware Keyboard » posé par la préférence du seul simulateur Promi (`DevicePreferences`, D42A4999) ; ⚠ **`osascript` n'a pas l'accès d'aide
+> (Accessibilité) sur ce Mac : ni menu ni `keystroke`** — le texte est entré par l'outil du simulateur (presse-papiers, puis collé), qui expire par moments ; un « è » y est mal passé.
+> **Vu dans Safari** : deux mots de suite sur un Chiche — le champ se vide, le clavier reste, le premier fait glisser la fiche pour se montrer (Q614), le second se pose à sa place sans glissement
+> de trop (`safari-chiche-mot1.png`, `mot2.png`). Le correctif de v190 est vu.
+
 ### ⚑ v190 (9 nov. 2026) — LES DEUX TRAITS GRIS DU CERCLE (C-259) ; PLUS DE TRAIT SUR PROMI ET CHICHE ; « LES MOTS » SUR LES TROIS NATURES (C-261) ; LA JONCTION AU PIXEL DANS LA SENTINELLE. (Décisions Tom.) Ce bloc CORRIGE v189 (§1 : le trait plat de Promi et Chiche ; §4 : « Les Mots » sur le Cercle seul).
 > **Tom : « On régresse, on ne peut pas passer à la suite pour des bêtises. » Validés : C-260, C-257 (`?mot_neuf=1`), la jonction du Cercle sur le principe. Q613 (le gris de « Les Mots » gardé), Q614 (la fiche glisse pour montrer le mot envoyé) : tranchées.**
 > **⚑ §1 — LA CAUSE DES DEUX TRAITS GRIS** : le bas de la bande d'en-tête (`#v187Bande`) et le haut du remplissage de la couche de la jonction (`#v189Jonction`) tombaient TOUS DEUX
@@ -4393,6 +4420,8 @@ python3 redteam_motmarque.py   # 4 — v129 (C-046) : l'encre du mot de la natur
                                #   clair et sombre (capture @3x). Rougit sur sauvegardes/app-avant-v129.html (0/4 : CERCLE 2,7 pt trop haut).
 python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvements de repos forcés sur 15 mondes, 0 pixel d'écart au retour (égalité stricte,
                                #   canevas entier, WebKit) ; les mouvements ont bien lieu. Rougit sur la version de v126 (Touffe). ≈ 10 min, seul.
+python3 redteam_jonction_fiche.py # 23 — v191 (C-259 suite) : Promi, Chiche × 4 états — l'amplitude, la place du trait à la jonction (écran contre le peintre), aucun pixel parasite,
+                               #   au repos = v190, le geste coupé accroché et tenir après dix allers-retours ; --natures=, --etats=, --sans-geste ; trois échelles. Rouge sur v190.
 python3 redteam_index_fil.py  # v183d (C-250) : l'Index, le Fil et leurs liens, trois passes (--partie=1|2|3) × deux états (--etat=tom|200) : même ordre, aucun doublon, aucune carte perdue, la bonne fiche, retour au même défilement ; second onglet, onglet dépassé. Rouge sur v183c.
 python3 redteam_fluide.py      # 5 — v124, TENIR EST FLUIDE : 20 animations, aucune image au-delà de 20 ms de travail du fil principal, p95 ≤ 16,7 ms
                                #   (trace Chromium, vrai GPU, @3x) ; la durée (1 000 ms) et les deux états. Rougit sur app-avant-v124 (2/5). ≈ 3 min.

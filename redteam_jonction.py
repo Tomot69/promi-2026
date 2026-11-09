@@ -13,8 +13,8 @@ jusqu'à 140 pt puis remontée à 0, chaque pas lu après l'image :
   F · Cercle — AUCUN TRAIT PARASITE : défilé de 1 pt en 1 pt, aller et retour, de l'accrochage − 6 à + 46 pt ; à chaque image, colonne par colonne, entre le bas de la bande
       (112 − 1,5) et le haut de la vague collée (son enveloppe, − 1,2 pt), sous les dalles du champ (l'enveloppe de la vraie vague) : rien que le champ (± 6) ; sous la vague
       collée (+ 1,2 → + 12 pt) : rien que le corps (± 6). Rouge sur v189 (le trait gris à 112, sur les bosses).
-  G · Promi, Chiche — PLUS AUCUN TRAIT : la zone de la jonction (112 → 212 pt) identique à v188 AU PIXEL à chaque pas, aller et retour (banc_jonction, matière exceptée) ;
-      la couche n'existe plus. Rouge sur v189."""
+  G · Promi, Chiche — ⚑ v191 : AVANT L'ACCROCHAGE, la zone de la jonction (112 → 212 pt) identique à v190 AU PIXEL à chaque pas, aller et retour (banc_jonction, matière
+      exceptée) ; l'accrochage lui-même est jugé par redteam_jonction_fiche. (v190 : identique à v188 à tous les pas, la couche absente.)"""
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
 from PIL import Image, ImageChops
@@ -121,13 +121,17 @@ with sync_playwright() as p:
     # G · Promi, Chiche : la zone de jonction identique à v188 au pixel, à chaque pas
     import banc_jonction as BJ
     vw, vh = pg.evaluate("()=>[innerWidth, innerHeight]")
+    # ⚑ v191 (Tom, C-259 suite ; original : sauvegardes/redteam_jonction-avant-v191.py) : Promi et Chiche s'accrochent eux aussi (jugé par redteam_jonction_fiche) ;
+    # G ne garde que ce qui précède l'accrochage : la zone de la jonction identique à v190 (= v188) au pixel, aller et retour, tant que le trait n'est pas accroché.
     for nat in ('promi', 'chiche'):
         R = []
-        for f in (F, 'zz-v188.html'):
-            cx, pp = BJ.ouvre(b, f, nat, vw, vh); R.append(BJ.images(pp)); cou = pp.evaluate("()=>{ const c=document.getElementById('v189Jonction'); return c ? getComputedStyle(c).display : 'absente'; }") if f == F else None
-            if f == F: CO = cou
-            cx.close()
+        for f in (F, 'zz-v190.html'):
+            cx, pp = BJ.ouvre(b, f, nat, vw, vh)
+            if f == F:
+                pp.evaluate("()=>{ document.getElementById('detailPoster').scrollTop=1; }"); pp.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
+                S0 = pp.evaluate("()=>{ const j=window._v189Jonction&&_v189Jonction(); return j&&j.F?j.F.s0:null; }") or 0
+            PAS = [s for s in BJ.PAS if s < S0 - 0.5]; R.append(BJ.images(pp, PAS)); cx.close()
         e = [(x[0], BJ.ecart(x, y)) for x, y in zip(R[0], R[1])]
-        juge('[%s] G · la zone de la jonction identique à v188 au pixel, %d pas aller et retour ; aucune couche' % (nat, len(e)), not [z for z in e if z[1]] and CO in ('absente', 'none'), ([z for z in e if z[1]][:4], CO))
+        juge('[%s] G · avant l\'accrochage (s0 = %.1f) : la zone de la jonction identique à v190 au pixel, %d pas aller et retour' % (nat, S0, len(e)), S0 > 60 and len(e) > 10 and not [z for z in e if z[1]], [z for z in e if z[1]][:4])
     b.close()
 print('\n  %d / %d' % (sum(res), len(res)))
