@@ -14,7 +14,12 @@ réparer ce que le doigt aurait laissé. Ici le défilement est NATIF : la molet
 image) ; et dans Safari iOS, le doigt (banc-haut-fiche.html, glissés du simulateur). L'enregistreur (haut-fiche-rec.js) relève CHAQUE IMAGE et juge les sauts
 pendant le geste, pas seulement le repos.
 
-Usage : python3 redteam_haut_fiche.py [--fichier=app.html] [--nature=cercle|promi|chiche] [--echelle=1|0,79] [--vite]
+⚑ v190 (Tom, §5, C-259) — LA ZONE DE LA JONCTION, AU PIXEL : pour chaque nature et chaque échelle, la fiche défilée pas à pas (0 → 120 pt de 3 en 3, aller et retour),
+la zone 112 → 212 pt comparée AU PIXEL à la référence enregistrée sur le rendu validé de v190 (banc-jonction/ref/<nature>-<échelle>.png ; banc_jonction : horloge
+et hasard figés, matière des dalles exceptée — CLAUDE.md §8 bis). Un pixel qui diffère de plus de 24 niveaux, à l'aller ou au retour, et le lot n'est pas livré.
+`--figer-jonction` enregistre la référence (seulement sur un rendu validé, dans Safari, sur les trois natures).
+
+Usage : python3 redteam_haut_fiche.py [--fichier=app.html] [--nature=cercle|promi|chiche] [--echelle=1|0,79] [--vite] [--figer-jonction]
 """
 import sys, json, io; sys.path.insert(0, '.')
 import banc_tom as B
@@ -131,6 +136,24 @@ with sync_playwright() as p:
             juge('%s rouverte, un aller-retour de plus : aucun saut, tout à sa place' % T, S['n'] == 0 and not e, (S['defauts'][:3], e))
             if pg.erreurs: juge('%s aucune erreur de page' % T, False, pg.erreurs[:3])
             ctx.close()
+            # 7 · ⚑ v190 (§5) : la zone de la jonction, au pixel, contre la référence de v190
+            import banc_jonction as BJ, os
+            from PIL import Image
+            cx, pp = BJ.ouvre(b, F, nat, vw, vh); IM = BJ.images(pp, matiere=(nat != 'cercle')); cx.close()
+            ref = 'banc-jonction/ref/%s-%s.png' % (nat, ech.replace(',', ''))
+            uniq = sorted(set(s for s, _, _ in IM)); W, H = IM[0][1].size
+            if '--figer-jonction' in sys.argv:
+                big = Image.new('RGB', (W, H * len(uniq)))
+                for i, s in enumerate(uniq): big.paste(next(im for ss, im, _ in IM if ss == s), (0, i * H))
+                os.makedirs('banc-jonction/ref', exist_ok=True); big.save(ref, optimize=True); juge('%s jonction : référence enregistrée (%s, %d pas)' % (T, ref, len(uniq)), True)
+            elif not os.path.exists(ref): juge('%s jonction : la référence existe (%s)' % (T, ref), False)
+            else:
+                big = Image.open(ref).convert('RGB'); bad = []
+                for s, im, m in IM:
+                    i = uniq.index(s); r = big.crop((0, i * H, W, (i + 1) * H)) if big.size[0] == W else None
+                    e = BJ.ecart((s, im, m), (s, r, m)) if r is not None else -1
+                    if e: bad.append((s, e))
+                juge('%s jonction : la zone 112 → 212 pt identique à la référence de v190 au pixel, %d images aller et retour' % (T, len(IM)), not bad, bad[:5])
     b.close()
 print('\n%d / %d' % (sum(res), len(res)))
 sys.exit(0 if all(res) else 1)

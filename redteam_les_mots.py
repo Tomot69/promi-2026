@@ -3,7 +3,8 @@
 Banc WebKit, Toile du Cercle (échelle 0,79 : PYTHONPATH=scratchpad/v186/echelle079 PROMI_ECHELLE=0,79) :
   A · Cercle à 1 et 3 mots : le titre « Les Mots » (ce texte), Gilbert 700, 13 pt, interligne 16, chasse 0,10 em, capitales, --c-beige67 (le style des titres de section de l'Aura) ;
   B · ses cotes : 32 pt de la dernière carte du fil au haut du titre (le double des 16 d'avant), 36 pt du bas du titre au premier mot (± 0,5) ; il ne recouvre rien ;
-  C · seulement sur le Cercle : absent d'une fiche Promi et Chiche (avec mots), absent d'un Cercle sans mot ; aucune erreur de page."""
+  C · ⚑ v190 (Tom, C-261 suite ; original : sauvegardes/redteam_les_mots-avant-v190.py) — Promi et Chiche aussi, identiques au Cercle (C-247) : le même titre, 32 pt sous
+      « Un mot… » (qui reste à sa place, au-dessus de la barre), 36 pt jusqu'au premier mot ; aucun mot : pas de titre, sur les trois natures ; aucune erreur de page."""
 import sys, os; sys.path.insert(0, '.')
 import banc_tom as B
 from playwright.sync_api import sync_playwright
@@ -27,15 +28,28 @@ with sync_playwright() as p:
         pg.evaluate("a=>{ var o=window._cercleMots.de('potager'); o.comments.length=0; a.forEach((x,i)=>o.comments.push({t:x[1], by:x[0], d:'2026-11-0'+(i+1)+'T09:00:00Z', vu:true})); _cercleMots.garde(); openEssaim('potager'); }", MOTS[:n]); pg.wait_for_timeout(3000)
         e = pg.evaluate(LIT); T = '[Cercle · %d mot%s]' % (n, 's' if n > 1 else '')
         if n == 0: juge(T + ' C · un Cercle sans mot n\'a pas le titre', not e['vis']); continue
+        if e['vis']: globals()['REF_C'] = (e['txt'], e['font'], e['ls'], e['tt'], e['col'])
         juge(T + ' A · « Les Mots », Gilbert 700 13/16, chasse 0,10 em, capitales, --c-beige67', e['vis'] and e['txt'] == 'Les Mots' and e['font'].startswith('700 13px / 16px Gilbert') and e['ls'] == '1.3px' and e['tt'] == 'uppercase' and e['col'] == hexrgb(e['ref']), (e.get('txt'), e.get('font'), e.get('ls'), e.get('col'), e.get('ref')))
         if not e['vis']: juge(T + ' B · les cotes (pas de titre)', False); continue
         av = e['titre'][0] - e['carte'][1]; so = e['mot'][0] - e['titre'][1] if e['mot'] else None
         cr = [v for v in e['voisins'] if v[0] < e['titre'][1] - 0.5 and e['titre'][0] < v[1] - 0.5 and v[2] < e['titre'][3] and e['titre'][2] < v[3]]
         juge(T + ' B · 32 pt sous la dernière carte, 36 pt au-dessus du premier mot (± 0,5), aucun recouvrement', abs(av - 32) <= 0.5 and so is not None and abs(so - 36) <= 0.5 and not cr, (round(av, 2), so and round(so, 2), cr[:2]))
+    LIGNE = """()=>{ const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, dp=document.getElementById('detailPoster'), l=document.getElementById('cm5Ligne'), r=l.getBoundingClientRect(); return [(r.top-D.top)/k+dp.scrollTop, (r.bottom-D.top)/k+dp.scrollTop, dp.scrollTop]; }"""
+    REF = globals().get('REF_C')
     for nat, t in (('promi', 'faire les crêpes'), ('chiche', 'réparer le vélo')):
-        pg.evaluate("()=>{ try{ closeAll() }catch(e){} }"); pg.wait_for_timeout(700)
-        pg.evaluate("a=>{ var p=promises.find(x=>x.title===a[0]); if(a[1]){ p.chiche=true; p.phraseSens='chiche'; } p.comments=[{t:'Un mot', by:'Marion', d:'2026-11-01T09:00:00Z', vu:true}]; openDetail(p.id); }", [t, nat == 'chiche']); pg.wait_for_timeout(3000)
-        e = pg.evaluate(LIT); juge('[%s] C · pas de titre « Les Mots » hors du Cercle' % nat, not e['vis'])
+        for n in (1, 3, 0):
+            pg.evaluate("()=>{ try{ closeAll() }catch(e){} }"); pg.wait_for_timeout(700)
+            pg.evaluate("a=>{ var p=promises.find(x=>x.title===a[0]); if(a[1]){ p.chiche=true; p.phraseSens='chiche'; } p.comments=a[2].map((x,i)=>({t:x[1], by:x[0], d:'2026-11-0'+(i+1)+'T09:00:00Z', vu:true})); openDetail(p.id); }", [t, nat == 'chiche', MOTS[:n]]); pg.wait_for_timeout(3000)
+            e = pg.evaluate(LIT); li = pg.evaluate(LIGNE); T = '[%s · %d mot%s]' % (nat, n, 's' if n > 1 else '')
+            if n == 0: juge(T + ' C · aucun mot : pas de titre', not e['vis']); continue
+            st = e.get('vis') and (e['txt'], e['font'], e['ls'], e['tt'], e['col'])
+            if REF is None: REF = st
+            juge(T + ' C · « Les Mots » au style du Cercle (texte, police, chasse, capitales, couleur)', e['vis'] and st == REF, st)
+            if not e['vis']: continue
+            av = e['titre'][0] - li[1]; so = e['mot'][0] - e['titre'][1] if e['mot'] else None
+            cr = [v for v in e['voisins'] if v[0] < e['titre'][1] - 0.5 and e['titre'][0] < v[1] - 0.5 and v[2] < e['titre'][3] and e['titre'][2] < v[3]]
+            juge(T + ' C · 32 pt sous « Un mot… », 36 pt au-dessus du premier mot (± 0,5), aucun recouvrement ; « Un mot… » à sa place, au-dessus de la barre', abs(av - 32) <= 0.5 and so is not None and abs(so - 36) <= 0.5 and not cr and li[2] == 0 and li[1] <= 752.5,
+                 (round(av, 2), so and round(so, 2), cr[:2], [round(x, 1) for x in li]))
     juge('aucune erreur de page', not [x for x in pg.erreurs if 'Load failed' not in x and 'cancelled' not in x], pg.erreurs[:2])
     b.close()
 print('\n  %d / %d' % (sum(res), len(res)))

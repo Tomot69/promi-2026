@@ -20,6 +20,11 @@
 > - **A6 · HONNÊTETÉ.** Un point non reproduit, non mesuré ou non jugé est écrit comme tel, jamais « réglé ».
 > Le rapport de chaque lot commence par le tableau A1 à A6, « tenu » ou « non tenu ».
 
+> ## ⚑ VU DANS SAFARI SUR LES TROIS NATURES — RÈGLE PERMANENTE (Tom, 9 nov. 2026, v190). ELLE S'APPLIQUE À CHAQUE LOT.
+> *Pourquoi* : en v189, la jonction de Promi et de Chiche n'avait pas été vue dans Safari — et c'est là que le défaut est apparu (« on régresse »).
+> **Un changement visible n'est « fait » que vu dans Safari, sur le simulateur de Promi, sur les TROIS natures : Cercle, Promi, Chiche.** Une nature non vue : le point est écrit
+> « non vu » dans le rapport, jamais « fait ».
+
 > ## ⚑ SENTINELLE PERMANENTE C-255 — `redteam_haut_fiche.py` FAIT PARTIE DE LA PORTE A1 DE TOUS LES LOTS (Tom, 7 nov. 2026, v184a).
 > *Pourquoi* : la ligne « Avec … » qui disparaît, le fil d'un Cercle qui saute, les éléments du haut collés sous la marge — trois fois « réglés » au banc, trois fois
 > vus sur l'iPhone. Les juges écrivaient `scrollTop` et attendaient au repos : ils ne voyaient ni le geste ni l'élan.
@@ -27,6 +32,9 @@
 > l'en-tête, de la ligne « Avec … » / la phrase, du titre, de la ligne d'état, du + et des Noyaux, sur les fiches Cercle, Promi et Chiche, aux échelles 1 et 0,79 :
 > ouverture ; bas puis haut ; dix allers-retours ; un commentaire ; dépliage puis repliage ; fermer puis rouvrir. Un saut pendant le geste, ou un écart à la place
 > d'ouverture une fois revenu en haut, et le lot n'est pas livré.** Il se passe par nature (`--nature=`) pour tenir les 10 minutes. Il ne compte pas dans les 10 juges du périmètre.
+> **⚑ v190 (§5) : il compare aussi, AU PIXEL, la zone de la jonction (112 → 212 pt) pendant le défilement, aller et retour, sur les trois natures et les deux échelles, à la
+> référence enregistrée sur le rendu validé de v190 (`banc-jonction/ref/`, `banc_jonction.py` : horloge et hasard figés, matière exceptée). `--figer-jonction` la refait — seulement
+> sur un rendu vu dans Safari sur les trois natures.**
 
 > ## ⚑ « COMME [UN AUTRE ÉCRAN] » = IDENTIQUE EN TOUT — RÈGLE PERMANENTE (Tom, 6 nov. 2026, C-247). ELLE S'APPLIQUE À CHAQUE LOT.
 > **Quand Tom demande « comme dans l'onboarding » ou « comme [un autre écran] », c'est IDENTIQUE EN TOUT : même taille, même animation, mêmes durées, même ordre,
@@ -230,6 +238,24 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v190 (9 nov. 2026) — LES DEUX TRAITS GRIS DU CERCLE (C-259) ; PLUS DE TRAIT SUR PROMI ET CHICHE ; « LES MOTS » SUR LES TROIS NATURES (C-261) ; LA JONCTION AU PIXEL DANS LA SENTINELLE. (Décisions Tom.) Ce bloc CORRIGE v189 (§1 : le trait plat de Promi et Chiche ; §4 : « Les Mots » sur le Cercle seul).
+> **Tom : « On régresse, on ne peut pas passer à la suite pour des bêtises. » Validés : C-260, C-257 (`?mot_neuf=1`), la jonction du Cercle sur le principe. Q613 (le gris de « Les Mots » gardé), Q614 (la fiche glisse pour montrer le mot envoyé) : tranchées.**
+> **⚑ §1 — LA CAUSE DES DEUX TRAITS GRIS** : le bas de la bande d'en-tête (`#v187Bande`) et le haut du remplissage de la couche de la jonction (`#v189Jonction`) tombaient TOUS DEUX
+> à 112 pt — sur l'iPhone, une fraction de pixel (112 × 2,37 = 265,3) : la rangée de jointure n'était couverte qu'à moitié par chacun, et la vraie vague qui défile DESSOUS
+> transparaissait par elle, en gris, exactement là où passent ses bosses (deux bosses, deux traits). À l'échelle 1 du banc (×3, pixel entier) rien ne se voit : seul 0,79 le prend.
+> **Corrigé à la source** : le remplissage part de 2 pt au-dessus de la jonction (plus de jointure à cet endroit) et ne couvre que l'EMPREINTE de la vraie vague — son enveloppe
+> haute (la réunion des disques du trait : sur une pente, le bord monte plus haut que « centre − ½ épaisseur »), jusqu'à la vague collée. Trouvé au passage, déjà en v189 : couvrir
+> tout l'espace de la jonction à la vague collée effaçait d'un coup les dalles du champ prises entre les bosses, à l'instant de l'accrochage — elles défilent maintenant dessous.
+> **⚑ §2** : le trait plat de Promi et de Chiche est retiré, code compris (`lot-V189-JONCTION` ne s'arme plus que sur un Cercle) : leur zone de jonction est celle de v188 au pixel.
+> **⚑ §3 (C-261 suite)** : « Les Mots » sur Promi et Chiche, identique au Cercle (C-247) : 32 pt sous « Un mot… » (qui reste à 692 → 748), 16 de titre, 36 jusqu'au premier mot
+> (la liste passe de 760 à 832) ; aucun mot : pas de titre, sur les trois natures. `#cm5Titre` descend avec la liste (`SUIT`).
+> Juges : **`redteam_jonction`** (F : aucun trait parasite, image par image, 1 pt par 1 pt, aller et retour, champ au-dessus de la vague collée, corps dessous ; G : Promi et Chiche
+> identiques à v188 au pixel ; 10/10 aux deux échelles ; v189 à 0,79 : F 2 300 pixels gris à 111,7 pt, G rouges) ; **`redteam_les_mots`** (16, contrat remis au niveau ; original en
+> sauvegarde) ; **`redteam_haut_fiche`** §7 (la jonction au pixel, référence `banc-jonction/ref/`).
+> **⚑ TROUVÉ PAR LA PORTE, CORRIGÉ — LA FICHE GLISSAIT TROP APRÈS LE SECOND MOT ENVOYÉ** (`redteam_commentaires` G : 26/28, vert sur v189) : le calcul du glissement (C-260) lisait la boîte de la barre Peaufiner dans la tâche où `peint()` la fait réécrire en absolu (`top:776`) par un autre propriétaire — le guetteur de v184a ne la refixe qu'à la microtâche suivante. La barre était lue à 776 − défilement : la fiche glissait de ce défilement en trop (v189 : 37 pt ; v190, la liste 72 pt plus bas : 110 — un toucher sur la bande tombait sur un Noyau). La barre fixée EST à 760 : le glissement la prend là (`_v184Fixe`). Après : le second mot reste à sa place (707 → 765), `redteam_commentaires` 28/28, `redteam_envoi_mot` 22/22 aux deux échelles. *La règle (§7, deux propriétaires)* : **une boîte qu'un autre propriétaire réécrit puis qu'un observateur remet à la microtâche suivante ne se lit pas dans la même tâche — on prend la place déclarée.**
+> **⚑ A2 — L'ÉTAT DE TOM** (`scratchpad/v190/a2_tom.py`, `contexte_tom` : sa fenêtre 390 × 651, l'appareil à 0,7466) : Promi (« hhhh ») et Chiche (« Thyh ») — la zone de la jonction identique à v188 au pixel, 82 pas aller et retour, aucune couche ; son export n'a pas de Cercle : `redteam_jonction` passé DANS SA FENÊTRE (`scratchpad/v190/fenetretom`) — 10/10 ; v189 dans la même fenêtre : F rouge, 2 122 pixels gris à 111,9 pt (le défaut qu'il a vu).
+> **⚑ VU DANS SAFARI (iOS 26.1, « Promi iPhone 16e » D42A4999, servi « v190 · 6c99a0f + modifs », l'appareil réduit ≈ 0,8)** : **Cercle** — la jonction en défilant vers le bas puis vers le haut, image après image : aucun trait gris, la vague s'accroche sous l'en-tête et s'aplatit, puis revient (`planche-v190/safari-cercle-jonction.png`, `safari-cercle-retour.png`) ; **Promi et Chiche** — en défilant, aucun trait : la matière passe sous l'en-tête, coupée net (`safari-promi-jonction.png`, `safari-chiche-jonction.png`) ; **« Les Mots » sur les trois natures**, après le toucher sur « +1 » (`safari-cercle-lesmots.png`, `safari-promi-lesmots.png`, `safari-chiche-lesmots.png`). **Non vu dans Safari : le glissement après l'envoi corrigé** (la saisie au clavier ne passe pas : le presse-papiers du simulateur expire) — jugé en WebKit seulement.
 
 ### ⚑ v189 (8 nov. 2026) — LE SIMULATEUR NEUF (§0) ; LA VAGUE DU CERCLE EST LE TRAIT DE JONCTION (C-259, Q612) ; ENVOYER UN MOT, TOUT DE SUITE (C-260) ; ?mot_neuf=1 (C-257) ; « LES MOTS » (C-261). (Décisions Tom.) Ce bloc CORRIGE v188 §1 (C-259 arrêté) et v183a (l'envoi d'un mot).
 > **Validés par Tom : Q608, le glissé vers les commentaires (C-257, le toucher du nombre).** **Porte v189b** : juges du périmètre verts (envoi 22/22 ×2, essai 60/60, Les Mots 8/8 ×2, mots_fiche 64/64, commentaires 28/28, mots_neufs 28/28, effacer 26/26, durable 13/13 paroles là — la « page pas prête » préexistante) ; haut_fiche 18/18 ×3 ; écrans 152/152, décisions 102/102, couleurs_ref 0 écart, trace_present 115/115 rejoué, banc_rendu Ramage seul (préexistant). A1 face à v188 au repos : seule la matière des dalles diffère.
