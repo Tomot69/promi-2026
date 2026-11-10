@@ -93,7 +93,9 @@ def plante_a(pg, titre, gens, nature=1):
     n0 = pg.evaluate("()=>promises.length")
     z = pg.evaluate("()=>{ const c=document.getElementById('planterZone'); if(!c) return null; const r=c.getBoundingClientRect(), d=document.getElementById('device').getBoundingClientRect(), k=d.width/390; return r.width>20?[(r.left-d.left)/k,(r.top-d.top)/k,r.width/k,r.height/k]:null }")
     if z:
-        y = z[1] + z[3] * 0.45; B.glisse(pg, [[40 + 80 * i / 10.0, y] for i in range(11)], pas=60)
+        # ⚑ v192 (C-237, v180a : « planter un Promi ou un Chiche, c'est tracer la première moitié du trait ») — le juge traçait 80 pt (la règle de 60 de v143) et ne plantait
+        #   plus rien depuis v180a : les 7 contrôles B tombaient avec. Il trace maintenant jusqu'au milieu (40 → 200 pt), comme redteam_trait.
+        y = z[1] + z[3] * 0.45; B.glisse(pg, [[40 + 160 * i / 10.0, y] for i in range(11)], pas=60)
     pg.wait_for_timeout(3400)
     pg.evaluate("()=>{ try{closeAll()}catch(e){} }"); pg.wait_for_timeout(500)
     return n0, pg.evaluate("()=>promises.length"), pg.evaluate("()=>{ var p=promises[promises.length-1]; return {id:p.id, who:p.who, chiche:!!p.chiche, status:p.status}; }")

@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-"""⚑ v189 (Tom, Q612 tranchée, C-259) — LE TRAIT DE JONCTION SOUS L'EN-TÊTE.
+"""⚑ v192 (C-259 suite ; original : sauvegardes/redteam_jonction-avant-v192.py) : la couche est une BOÎTE COLLANTE (#v192Colle, canevas #v189Jonction) — la tranche haute se lit
+ sur son canevas et se replace à la position de la boîte à l'écran ; E lit la boîte. F inchangé (le trait collé du Cercle suit le modèle échantillonné, comme en v190).
+⚑ v189 (Tom, Q612 tranchée, C-259) — LE TRAIT DE JONCTION SOUS L'EN-TÊTE.
 Banc WebKit (banc_tom), échelles 1 et 0,79 (PYTHONPATH=scratchpad/v186/echelle079 PROMI_ECHELLE=0,79), fiches Cercle, Promi, Chiche ; la fiche défilée pas à pas de 2 pt
 jusqu'à 140 pt puis remontée à 0, chaque pas lu après l'image :
   A · Cercle : avant l'accrochage, rien n'est dessiné (la vraie vague défile) ; après, l'amplitude = (1 − (s − s0)/40) bornée, continue et monotone, la même à l'aller et
@@ -25,10 +27,10 @@ def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:220]), flush=True); return ok
 LIT = r"""()=>{ const c=document.getElementById('v189Jonction'); const d=document.getElementById('detailPoster');
   if(!c || getComputedStyle(c).display==='none') return {s:d.scrollTop, v:null};
-  const g=c.getContext('2d'), E=c.width/390, a=(c.getAttribute('data-jonction')||'').split(',');
+  const g=c.getContext('2d'), E=c.width/390, a=(c.getAttribute('data-jonction')||'').split(','), Bx=document.getElementById('v192Colle')||c, Dv=document.getElementById('device').getBoundingClientRect(), O=(Bx.getBoundingClientRect().top-Dv.top)/(Dv.width/390);   /* ⚑ v192 : le canevas est dans la boîte collante (#v192Colle) : sa rangée 0 est à O pt à l'écran */
   /* la tranche haute du trait : la première rangée opaque de la couleur du trait, colonnes 60, 195, 330 */
-  const haut=x=>{ const col=g.getImageData(Math.round(x*E),0,1,c.height).data; for(let y=0;y<c.height;y++){ const i=y*4; if(col[i+3]>128 && Math.abs(col[i]-10)<24 && Math.abs(col[i+1]-4)<24 && Math.abs(col[i+2]-21)<24) return y/E; } return null; };
-  const cs=getComputedStyle(c);
+  const haut=x=>{ const col=g.getImageData(Math.round(x*E),0,1,c.height).data; for(let y=0;y<c.height;y++){ const i=y*4; if(col[i+3]>128 && Math.abs(col[i]-10)<24 && Math.abs(col[i+1]-4)<24 && Math.abs(col[i+2]-21)<24) return O+y/E; } return null; };
+  const cs=getComputedStyle(Bx);
   return {s:d.scrollTop, v:a[1]!=null?+a[1]:null, kind:a[0], h:[haut(60),haut(195),haut(330)], pe:cs.pointerEvents, z:cs.zIndex}; }"""
 def pas(pg, s):
     pg.evaluate("s=>{ document.getElementById('detailPoster').scrollTop=s; }", s)

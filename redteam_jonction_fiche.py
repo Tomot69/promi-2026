@@ -8,6 +8,7 @@ date passée. La forme de la vraie ligne est lue sur ce que peint le peintre de 
       ligne aplatie que trace le peintre de la fiche (`__ligne` sur l'onde (base', k·amp), coupée à 112) — à 112 pour un trait plein ;
   C · aucun pixel parasite dans la zone de la jonction, aux mêmes images : du bas de l'en-tête (104) jusqu'au haut de cette ligne aplatie (− 1,2 pt) ou de son axe (− 1 pt : entre deux points, le corps commence à l'axe), sous la matière du champ
       (l'empreinte de la vraie ligne) : rien que le champ (± 8) ;
+  (⚑ v192 : la couche est là au repos — la boîte collante —, sans rien déclarer : « pas accrochée » = pas de `data-jonction` ; original : sauvegardes/redteam_jonction_fiche-avant-v192.py)
   D · au repos (défilement 0) : la fiche identique à v190 au pixel (zz-v190.html servie à côté, matière exceptée) ;
   E · le geste (planté, horloge réelle) : accroché, la zone du geste ne prend plus le doigt et un trait tracé sur la ligne accrochée ne tient rien ; après dix
       allers-retours de défilement, revenu en haut, tenir au doigt tient la parole. Aucune erreur de page."""
@@ -47,7 +48,8 @@ def pas(pg, s):
     pg.evaluate("s=>{ document.getElementById('detailPoster').scrollTop=s; }", s)
     pg.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(r))))")
     return pg.evaluate("()=>{ const c=document.getElementById('v189Jonction'), d=document.getElementById('detailPoster'); if(!c || getComputedStyle(c).display==='none') return {s:d.scrollTop, t:null};"
-                       " const a=(c.getAttribute('data-jonction')||'').split(','); return {s:d.scrollTop, t:+a[1], kind:a[0]}; }")
+                       " if(!c.hasAttribute('data-jonction')) return {s:d.scrollTop, t:null};"
+                       " const a=c.getAttribute('data-jonction').split(','); return {s:d.scrollTop, t:+a[1], kind:a[0]}; }")
 # la vraie ligne, lue sur ce que peint le peintre de la fiche (son empreinte : le haut de ce qu'il peint, colonne par colonne)
 FORME = """()=>{ const c=document.getElementById('dpTrameCv'), t=(c.getAttribute('data-trait')||'').split(','), base=+t[0], amp=+t[1], y=_onde.onde(base, amp), P=[];
   for(let x=0;x<=390;x+=2) P.push(y(x)); const mn=Math.min(...P), lw=10*(window._TRAIT_K||1.3);

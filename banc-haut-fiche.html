@@ -38,7 +38,11 @@ const OUVRE={cercle:"openEssaim('potager')", promi:"(function(){var p=promises.f
 const nat=NAT==='cercle'?'cercle':NAT;
 if(Q.get('mots')){ const nm=+Q.get('mots'), C=[]; for(let i=0;i<nm;i++) C.push({t:'Mot numéro '+(i+1)+', à propos de ce qu’on prévoit', by:['Marion','Rachel','Nico'][i%3], d:'2026-11-0'+(1+i%7)+'T1'+(i%10)+':00:00Z', vu:true});   /* v186 : des commentaires, pour le nombre de C-257 */
   try{ if(NAT==='cercle'){ const o=w._cercleMots.de('potager'); o.comments.length=0; C.forEach(c=>o.comments.push(c)); w._cercleMots.garde(); } else { w.eval('window.__mots='+JSON.stringify(C)); } }catch(e){} }
+/* ⚑ v192 (C-262, C-263) : ?encours=1 pose la parole visée « en cours » (sans parts) ; ?long=1 lui donne un titre de cinq lignes ; ?libre=1 laisse la fiche au doigt, sans rien d'écrit */
+if(Q.get('encours')||Q.get('long')){ const L=Q.get('long')?'ranger tout le garage avec les enfants, trier les cartons du grenier, donner ce qui ne sert plus et repeindre la porte avant la fin du mois prochain':'';
+  w.eval("(function(){ var p="+(NAT==='chiche'?"promises.filter(function(q){return !q.draft&&q.chiche})[0]":"promises.filter(function(q){return !q.draft&&!q.chiche&&!q.nuee}).sort(function(a,b){return (b.title||'').length-(a.title||'').length})[0]")+"; if(!p) return; p.status='encours'; delete p.parts; delete p.req; "+(NAT==='chiche'?"p.chicheEtat='lance'; ":"")+(L?"p.title="+JSON.stringify(L)+"; ":"")+"try{ saveState(true); }catch(e){} })()"); }
 w.eval(OUVRE[NAT]); await wait(2800);
+if(Q.get('libre')){ dit('fiche ouverte — libre au doigt'); return; }
 const dp=w.document.getElementById('detailPoster'); const O=w.HF.releve(); const B={O:O, version:w.PROMI_VERSION||null, echelle:w._echDp?w._echDp(dp):null, cas:[]};
 const ecart=()=>w.HF.compare(O,w.HF.releve(),nat);
 /* une phase au doigt : on enregistre chaque image jusqu'à n allers-retours (en bas puis revenu à 0, posé 600 ms) */

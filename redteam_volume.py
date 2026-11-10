@@ -58,10 +58,11 @@ def floue(val):
 def blocs(S):
     """⚑ v168 : un bloc <script id> s'arrête à sa balise de fin — ce qui suit retrouve le nom d'avant lui. Sans cela, `lot-V167-DOIGTS` (posé en tête de
     <head> : il doit passer avant tout écouteur) volait le <style> sans id qui le suit (208 « volumes nouveaux », tous anciens : le piège de v145)."""
-    out=[]
+    out=[]; tete=True   # ⚑ v192 : `lot-V192-BOITE` (la boîte noire) est posé en tête de <head> lui aussi, après `lot-V167-DOIGTS` — les scripts de tête, tant qu'aucun <style> nommé ne les précède
     for m in re.finditer(r"<(style|script)[^>]*\bid=\"([^\"]+)\"", S):
         out.append((m.start(), m.group(2)))
-        if m.group(1)=='script' and len(out)==1:   # seulement un script posé AVANT tout bloc nommé (la tête de <head>) : la dette d'après reste rangée comme avant
+        if m.group(1)!='script': tete=False
+        if m.group(1)=='script' and tete:   # seulement un script posé AVANT tout bloc nommé (la tête de <head>) : la dette d'après reste rangée comme avant
             f=S.find('</script>', m.end())
             if f>0: out.append((f, '(hors bloc)'))
     out.sort(key=lambda x:x[0]); return out
