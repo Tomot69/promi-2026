@@ -111,10 +111,10 @@ with sync_playwright() as p:
             haut = min(mine[j - max(0, i - 4)] - (r * r - ((j - i) * 2) ** 2) ** .5 for j in range(max(0, i - 4), min(len(P), i + 5)) if abs((j - i) * 2) <= r)
             basm = max(mine[j - max(0, i - 4)] + (r * r - ((j - i) * 2) ** 2) ** .5 for j in range(max(0, i - 4), min(len(P), i + 5)) if abs((j - i) * 2) <= r)
             dal = ENr[i] - s - 2.5
-            for yy in range(Y(max(110.5, dal)), Y(haut - 1.2)):
+            for yy in range(Y(max(110.5, dal)), Y(haut - 1.2) - 2):   # ⚑ v193 (Q616) : 2 pixels de l'appareil au bord du trait exceptés (le lissage des bords)
                 c = px[X, yy]
                 if sum(abs(c[k] - champ[k]) for k in range(3)) > 6: mauvais.append((round(s, 1), x, round((yy / q - d[1]) / d[2], 1), c)); break
-            for yy in range(Y(basm + 1.2), Y(basm + 12)):
+            for yy in range(Y(basm + 1.2) + 2, Y(basm + 12)):   # ⚑ v193 (Q616) : idem
                 c = px[X, yy]
                 if sum(abs(c[k] - corps[k]) for k in range(3)) > 6: mauvais.append((round(s, 1), x, round((yy / q - d[1]) / d[2], 1), c, 'corps')); break
     juge('[cercle] F · aucun trait parasite : %d images, aller et retour, rien que le champ au-dessus de la vague collée et le corps dessous' % len(seq), not mauvais, (len(mauvais), mauvais[:4]))
@@ -133,7 +133,7 @@ with sync_playwright() as p:
                 pp.evaluate("()=>{ document.getElementById('detailPoster').scrollTop=1; }"); pp.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
                 S0 = pp.evaluate("()=>{ const j=window._v189Jonction&&_v189Jonction(); return j&&j.F?j.F.s0:null; }") or 0
             PAS = [s for s in BJ.PAS if s < S0 - 0.5]; R.append(BJ.images(pp, PAS)); cx.close()
-        e = [(x[0], BJ.ecart(x, y)) for x, y in zip(R[0], R[1])]
-        juge('[%s] G · avant l\'accrochage (s0 = %.1f) : la zone de la jonction identique à v190 au pixel, %d pas aller et retour' % (nat, S0, len(e)), S0 > 60 and len(e) > 10 and not [z for z in e if z[1]], [z for z in e if z[1]][:4])
+        e = [(x[0], BJ.ecart_bords(x, y)) for x, y in zip(R[0], R[1])]   # ⚑ v193 (Q616) : les bords lissés du trait exceptés
+        juge('[%s] G · avant l\'accrochage (s0 = %.1f) : la zone de la jonction comme v190 — même forme, position ± 0,5 pt, mêmes couleurs (bords lissés exceptés, Q616), %d pas aller et retour' % (nat, S0, len(e)), S0 > 60 and len(e) > 10 and not [z for z in e if z[1]], [z for z in e if z[1]][:4])
     b.close()
 print('\n  %d / %d' % (sum(res), len(res)))

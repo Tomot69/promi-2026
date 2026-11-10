@@ -27,8 +27,10 @@ MESURE = """(hote)=>{ const dv=document.getElementById('device').getBoundingClie
  let R=b.getBoundingClientRect(); const a=getComputedStyle(b,'::after');
  let bx0=(R.left-dv.left)/k, bx1=(R.right-dv.left)/k, by1=(R.bottom-dv.top)/k;
  if(a && a.content && a.content!=='none'){ const h=parseFloat(a.height)||0, w=parseFloat(a.width)||0; if(h>R.height/k){ by1=(R.top-dv.top)/k + R.height/k/2 + h/2; } if(w>R.width/k){ const cx=(bx0+bx1)/2; bx0=cx-w/2; bx1=cx+w/2; } }
- const cv=H.querySelector('#csTrameCv, #dpTrameCv'); if(!cv) return {err:'pas de canevas'};
- let base, amp; if(cv.id==='csTrameCv' && window._ppEcran){ const e=_ppEcran(); base=e.base; amp=e.amp; } else { const t=(cv.getAttribute('data-trait')||'').split(','); base=+t[0]; amp=+t[1]; }
+ const cv0=H.querySelector('#csTrameCv, #dpTrameCv'); if(!cv0) return {err:'pas de canevas'};
+ /* ⚑ v193 (Tom, C-259) : sur une fiche, le trait n'est plus sur #dpTrameCv — il est dessiné par la boîte collante de la jonction (#v189Jonction) */
+ const cv=(cv0.id==='dpTrameCv' && document.getElementById('v189Jonction')) || cv0;
+ let base, amp; if(cv0.id==='csTrameCv' && window._ppEcran){ const e=_ppEcran(); base=e.base; amp=e.amp; } else { const t=(cv0.getAttribute('data-trait')||'').split(','); base=+t[0]; amp=+t[1]; }
  if(!isFinite(base)) return {err:'onde inconnue'};
  const C=cv.getBoundingClientRect(), sx=cv.width/C.width, sy=cv.height/C.height, g=cv.getContext('2d'), yc=window._onde.onde(base,amp);
  let haut=1e9;
@@ -36,7 +38,7 @@ MESURE = """(hote)=>{ const dv=document.getElementById('device').getBoundingClie
    const y0=Math.max(0, Math.round(((y-34)*k+dv.top-C.top)*sy)), y1=Math.round(((y+34)*k+dv.top-C.top)*sy); if(y1<=y0) continue;
    const d=g.getImageData(px, y0, 1, y1-y0).data, n=d.length/4, c=Math.round((y*k+dv.top-C.top)*sy)-y0;
    if(c<0||c>=n||d[c*4+3]<200) continue; const ref=[d[c*4],d[c*4+1],d[c*4+2]], top=[d[0],d[1],d[2]];
-   if(Math.abs(ref[0]-top[0])+Math.abs(ref[1]-top[1])+Math.abs(ref[2]-top[2])<60) continue;   // sous ce point de l'onde, rien n'est tracé (entre deux points)
+   if(d[3]>100 && Math.abs(ref[0]-top[0])+Math.abs(ref[1]-top[1])+Math.abs(ref[2]-top[2])<60) continue;   /* v193 : un canevas transparent au-dessus du trait (la boîte) n'est pas « la même couleur » */   // sous ce point de l'onde, rien n'est tracé (entre deux points)
    for(let i=c;i>=0;i--){ const q=[d[i*4],d[i*4+1],d[i*4+2]]; if(!(d[i*4+3]>100 && Math.abs(q[0]-ref[0])+Math.abs(q[1]-ref[1])+Math.abs(q[2]-ref[2])<90)){ const yy=((y0+i+1)/sy+C.top-dv.top)/k; if(yy<haut) haut=yy; break; } } }
  return {bas:Math.round(by1*10)/10, encre:haut<1e8?Math.round(haut*10)/10:null, ecart:haut<1e8?Math.round((haut-by1)*10)/10:null}; }"""
 def ecrans(pg, etiq):

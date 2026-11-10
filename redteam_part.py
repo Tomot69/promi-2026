@@ -32,7 +32,11 @@ def juge(nom, cond, detail=''):
     res.append((nom, bool(cond))); print('%s  %s  %s' % ('OK' if cond else 'KO', nom, str(detail)[:330]), flush=True)
 # pour chaque part : son épaisseur peinte et sa couleur, lues sur le canevas à cinq abscisses ; et s'il y a de l'encre sous elle (les initiales)
 LIT = r"""()=>{ const cv=document.getElementById('dpTrameCv'); if(!cv) return null; const t=(cv.getAttribute('data-trait')||'').split(','), dp=cv.getAttribute('data-parts');
-  const k=cv.width/390, g=cv.getContext('2d'), f=window._onde.onde(parseFloat(t[0]), parseFloat(t[1])), P=dp?JSON.parse(dp):null;
+  /* ⚑ v193 (Tom, C-259) : le trait n'est plus sur #dpTrameCv, la boîte collante de la jonction le dessine — on lit la COMPOSITION des deux, la boîte posée à sa place
+     (sa cote Ytop, son débord XO), sur la grille du canevas de la fiche : ce que portait #dpTrameCv avant */
+  const SC=document.getElementById('v189Jonction'), J=window._v189Jonction&&_v189Jonction(), cmp=document.createElement('canvas'); cmp.width=cv.width; cmp.height=cv.height;
+  const gc=cmp.getContext('2d'); gc.drawImage(cv,0,0); if(SC && J && J.F && J.montre) gc.drawImage(SC, -(J.XO||0)*cv.width/390, J.F.Ytop*cv.width/390);
+  const k=cv.width/390, g=gc, f=window._onde.onde(parseFloat(t[0]), parseFloat(t[1])), P=dp?JSON.parse(dp):null;
   /* sous l'onde le canevas est TRANSPARENT : le trait est ce qui est opaque et n'a pas la couleur du champ, dans une fenêtre de ± 7,5 pt autour de l'onde
      (les initiales, posées dessous, n'y entrent pas). Une première écriture prenait pour référence « le pixel 16 pt sous l'onde » : il tombait dans
      l'initiale d'une part tracée, verte comme elle — le trait vert n'était plus compté, et la part sortait « noire ». */

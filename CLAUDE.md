@@ -239,6 +239,39 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v193 (10 nov. 2026) — UN SEUL COMPOSANT POUR LE TRAIT DE JONCTION (C-259) ; LE GESTE PREND LE TRAIT DU PREMIER COUP (C-263) ; Q616 TRANCHÉE. (Décisions Tom, « dernier lot de ce sujet ».) Ce bloc CORRIGE v192 (la copie de `#dpTrameCv` au repos, sa découpe, le geste coupé dès 0,25 pt de défilement).
+> **⚑ NON LIVRÉ — NON FUSIONNÉ (condition de sortie de Tom : « si à 5 h ce n'est pas impeccable, tu ne fusionnes rien »). Commité sur la branche `v191` ; main reste à v190.**
+> Ce qui manque, vu dans Safari (D42A4999, iOS 26.1, « v193 · bef20e9 + modifs ») : ① le Cercle et Promi, défilement lancé aller et retour et lent, le trait accroché puis revenu
+> à sa place — VU ; ② tenir après défilement sur Promi (chemin de C-262, titre de cinq lignes, six mots) : 4 sur 5 au premier toucher une fois la fiche au repos, aucun blocage de
+> la page ; MAIS après un aller-retour LENT arrêté à quelques points du haut, le premier tracé est perdu et le second tient — le « deux fois » de Tom, que redteam_premier_toucher
+> (WebKit) ne reproduit pas ; ③ un tracé lancé pendant l'élan d'iOS est perdu (le toucher arrête l'élan), sur v191 comme sur v193 ; ④ Chiche NON VU dans Safari (le temps) ;
+> ⑤ la référence de la jonction n'est PAS refaite (elle ne se refait que sur un rendu vu sur les trois natures).
+> **Constat de Tom sur l'iPhone (v192)** : « ça saute et ça bugue toujours au défilement, dans les fiches » ; « le geste ne prend plus le trait du premier coup ». v192 n'a pas été fusionné.
+> **⚑ §1 (C-259) — UN SEUL COMPOSANT, LE MÊME PARTOUT** (`lot-V189-JONCTION`) : le trait — la vague du Cercle, le trait du geste de Promi et de Chiche avec toutes ses couleurs
+> et tous ses états, l'instant « tenir » compris — n'est dessiné QUE par la boîte collante `#v192Colle` (`position: sticky`), posée dans le flux de la fiche à la place de
+> repos du trait : au repos elle est à sa place, défilée elle défile, arrivée à la jonction (112 pt) elle s'y accroche (le défilement la tient, à chaque image, quel que soit
+> l'élan). **`#dpTrameCv` ne dessine plus le trait, nulle part** : `_ficheTrait` (étape 3), le peintre de l'instant (`l3`) et `_peintBande` (le Cercle) le tracent sur un
+> canevas muet (leurs déclarations restent sur la fiche : `data-trait`, `data-depart`, `data-parts`) et posent `cv.__ligne`, que la boîte appelle. Plus de copie, plus de
+> découpe, plus de relais. **Le seul dessin du script est l'aplatissement** (une image de retard admise) : accrochée, la boîte dessine le trait aplati (l'onde (base', k·amp)),
+> le champ au-dessus (sur l'empreinte du trait) et le corps dessous — la géométrie de v190. Une photo couvre la moitié haute du trait (`_photoPeint`) : au repos, sur une photo,
+> la boîte ne peint que sous l'onde.
+> **Trois pièges trouvés en jugeant** : ① la boîte n'apparaissait qu'une fois la fiche POSÉE (`v184-pose`, après le glissement d'ouverture) : pendant l'ouverture la fiche
+> n'avait plus de trait (`redteam_fiches_orange` B, 0/90) — elle est là dès `show` ; ② redessinée par `requestAnimationFrame`, elle venait une image ou plus APRÈS le peintre
+> de la fiche (sous charge, plus d'une seconde) — elle se redessine dans la même tâche que lui (une microtâche : le crochet sur `getContext` de `#dpTrameCv`, l'enveloppe de
+> `_ficheTrait`, le changement de classe) ; ③ les classes de l'invite du geste (`gs0`…`gs3`) changent sans cesse : elles ne comptent plus dans la clé de la forme.
+> *La règle* : **un seul composant dessine un objet ; s'il en dépend, il se dessine dans la tâche de celui qui peint autour de lui, jamais à l'image suivante.**
+> **⚑ Q616 TRANCHÉE (Tom)** : la référence au pixel de v190 ne s'impose plus au bord du trait — la même forme, la même position (0,5 pt près), les mêmes couleurs ; le lissage des
+> bords peut différer. `banc_jonction.ecart_bords` : comme `ecart`, sauf les pixels à 2 px (≈ 0,67 pt au banc @3x) d'un bord de la référence, la rangée du bord de la zone (112 pt,
+> le haut du trait accroché) et la colonne du bord de l'écran (à une échelle non entière son pixel est à cheval sur le bord) ; mesuré : un décalage de 1 px (0,33 pt) passe, 2 px
+> (0,67) laissent 15 à 216 pixels, 3 px (1 pt) 400 à 1 000. La référence `banc-jonction/ref/` est REFAITE sur ce lot (`--figer-jonction`), après Safari sur les trois natures.
+> **⚑ §2 (C-263) — LE GESTE PREND LE TRAIT DU PREMIER COUP. LA CAUSE** : en v192, la zone du geste perdait le doigt dès 0,25 pt de défilement (`geste(d, s>0.25)` ; v191 :
+> seulement une fois accroché). Revenu « en haut » d'un doigt qui laisse la fiche à 1 à 3 pt, le premier toucher sur le trait ne touchait plus la zone : il faisait défiler la
+> fiche jusqu'à 0, le second traçait. **Aujourd'hui** : « accroché » se lit sur la position réelle de la boîte (le défilement lu au moment même, contre la cote où elle se colle),
+> à chaque événement de défilement (synchrone), à `scrollend` et au doigt posé (capture) ; la boîte et son canevas sont en `pointer-events: none`. Juge : **`redteam_premier_toucher.py`**
+> (20 tracés de suite, 10 au repos, 10 après un aller-retour lent — arrêté à 1 ou 3 pt du haut — ou lancé ; Promi et Chiche ; seule la zone du geste sous le trait ; latence
+> lever → célébration, jugée au calme seulement ; rouge sur v192).
+> **Contrats remis au niveau** (originaux en sauvegarde, `*-avant-v193.py`) : `redteam_haut_fiche` §7 (`ecart_bords`, Q616), `banc_jonction` (`ecart_bords`).
+
 ### ⚑ v192 (10 nov. 2026) — AU DÉFILEMENT RAPIDE, LE TRAIT TIENT À LA JONCTION (C-259 suite) : L'ACCROCHAGE PAR `position: sticky` ; LA LATENCE DE « TENIR » (C-263) ; LA BOÎTE NOIRE (C-262) ; redteam_part (§4). (Décisions Tom.) Ce bloc CORRIGE v189–v191 (la couche FIXE de la jonction, redessinée en JavaScript à chaque image).
 > **Validés par Tom (sur l'iPhone, v191) : le trait de Promi et de Chiche qui s'accroche et s'aplatit au défilement lent, son retour à sa place, tenir après défilement.**
 > **⚑ NON LIVRÉ — plafond de 6 h atteint (C-227 §6) : commité sur la branche `v191`, NON fusionné ; Safari NON VU.** Ce qui reste rouge : `redteam_haut_fiche` §7 sur le Cercle
@@ -4463,6 +4496,7 @@ python3 redteam_motmarque.py   # 4 — v129 (C-046) : l'encre du mot de la natur
                                #   clair et sombre (capture @3x). Rougit sur sauvegardes/app-avant-v129.html (0/4 : CERCLE 2,7 pt trop haut).
 python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvements de repos forcés sur 15 mondes, 0 pixel d'écart au retour (égalité stricte,
                                #   canevas entier, WebKit) ; les mouvements ont bien lieu. Rougit sur la version de v126 (Touffe). ≈ 10 min, seul.
+python3 redteam_premier_toucher.py # v193 (C-263) : 20 tracés de suite (10 au repos, 10 après un aller-retour lent ou lancé), Promi et Chiche, trois échelles : chacun pris au premier toucher ; seule la zone du geste sous le trait ; latence au calme seulement. Rouge sur v192.
 python3 redteam_elan.py        # v192 (C-259 suite) : un élan lancé à 1 500, 3 000, 5 000 pt/s (décroissance d'iOS), bas puis haut, « vivant » et « gelé » (requestAnimationFrame coupé) ; à chaque image le
                                #   trait à 112 ± 0,5 pt accroché, ou à sa place de repos, jamais absent ; Cercle, Promi, Chiche (--natures=, le Cercle seul : ≈ 9 min) ; trois échelles. Rouge sur v191.
 python3 redteam_jonction_fiche.py # 23 — v191 (C-259 suite) : Promi, Chiche × 4 états — l'amplitude, la place du trait à la jonction (écran contre le peintre), aucun pixel parasite,

@@ -2602,7 +2602,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v192', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v193', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -15551,8 +15551,11 @@ var CREMEETAT='#F7F0DE';
     try{ cvD.setAttribute('data-trait', [base, amp, col, e.mode].join(',')); }catch(_){}
     }
     var _corpsFiche=null;
-    ligne(g, e.base, e.amp, cv);
     var _muet=window._v191Muet||(window._v191Muet=document.createElement('canvas'));
+    /* ⚑ v193 (Tom, C-259 : « un seul composant pour le trait de jonction ») — LE CANEVAS DE LA FICHE NE DESSINE PLUS LE TRAIT. La ligne est tracée sur un canevas
+       muet (ses déclarations — `data-trait`, `data-depart`, `data-parts`, `data-filet-trait` — s'écrivent sur la fiche), et c'est la boîte collante de la jonction
+       (`lot-V189-JONCTION`, `#v192Colle`) qui la dessine, du repos à l'accrochage, par `cv.__ligne`. */
+    var _gm=_muet.getContext('2d'); _gm.setTransform(1,0,0,1,0,0); ligne(_gm, e.base, e.amp, cv);
     cv.__ligne=function(g2, b2, a2){ ligne(g2, b2, a2, _muet); };
   }catch(err){} };
 
@@ -16131,8 +16134,7 @@ var CREMEETAT='#F7F0DE';
               if(_M.length){ var a=_M.shift(); try{ _faire(a[0],a[1],a[2],a[3],a[4]); }catch(_){ } suite(); return; }
               try{ if(window._nueeBande) window._nueeBande(); }catch(_){ } }, 0); }); })(); }
         })();
-        g.strokeStyle=col; g.lineWidth=10*window._TRAIT_K; g.lineCap='round'; g.lineJoin='round';   /* v162 (C-184) : le trait d'un Cercle aussi */
-        g.beginPath(); chemin(g,y,0,W); g.stroke();
+        /* ⚑ v193 (Tom, C-259) : la vague n'est plus tracée ici — la boîte collante de la jonction la dessine (même couleur, même épaisseur, même chemin) ; le peintre DÉCLARE */
         try{ cv.setAttribute('data-trait', [base, amp, col, 'complet'].join(',')); }catch(_){}   /* v147 (C-140) : le peintre du Cercle DÉCLARE son onde */
         };
         window._nueeBande=_peintBande; _peintBande();
@@ -20751,7 +20753,8 @@ var CREMEETAT='#F7F0DE';
       } }catch(_){}
     }
 
-    /* 3 · LA LIGNE (§2.6). */
+    /* 3 · LA LIGNE (§2.6). ⚑ v193 (Tom, C-259) : pendant l'instant aussi, c'est la boîte collante de la jonction qui la dessine (`cv.__ligne`) ; ici, un canevas muet. */
+    var _cvI=cv; function l3(g, B2, A2){ var y=O.onde(B2, A2);
     var ep=10*window._TRAIT_K, rr=4.5*window._TRAIT_PTS, esp=18, mid=W/2;   /* v162 (C-184) ; v164 : les points fixes */
     g.lineWidth=ep; g.lineCap='round'; g.lineJoin='round';
     /* ⚑ LE PINCEAU SUR LA FICHE — la matière remplace le plein, jamais la COURBE.
@@ -20763,7 +20766,7 @@ var CREMEETAT='#F7F0DE';
       var m = null;
       try{ m = window.promiPinceau ? window.promiPinceau(p) : 'Plein'; }catch(_){ m='Plein'; }
       if(m && m !== 'Plein' && window._matiereTrait &&
-         window._matiereTrait(g, m, E.base, E.amp, a, b, col)) return;
+         window._matiereTrait(g, m, B2, A2, a, b, col)) return;
       g.strokeStyle=col; g.beginPath(); O.chemin(g,y,a,b); g.stroke(); }
     if(E.trait.mode==='complet'){ plein(E.trait.col,0,W); }
     else {
@@ -20777,6 +20780,9 @@ var CREMEETAT='#F7F0DE';
       var xa=window._instantX;
       if(typeof xa==='number' && xa>mid) plein(MENTHE, mid, Math.min(W,xa));
     }
+    }
+    var _mI=window._v191Muet||(window._v191Muet=document.createElement('canvas')), _gI=_mI.getContext('2d'); _gI.setTransform(1,0,0,1,0,0); l3(_gI, E.base, E.amp);
+    _cvI.__ligne=function(g2, b2, a2){ l3(g2, b2, a2); };
     /* ⚑ ET CE PEINTRE-CI DÉCLARE AUSSI — c'est LUI qui tient le canevas pendant l'instant.
        Deux peintres pour un même canevas : sans cette ligne, la déclaration de
        `_ficheTrait` restait affichée alors que l'instant avait tout repeint. Le motif du
@@ -44868,144 +44874,115 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 })();
 </script>
 <script id="lot-V189-JONCTION">
-/* ⚑ v189 (Tom, 8 nov. 2026, Q612 tranchée, C-259) — LE TRAIT DE JONCTION SOUS L'EN-TÊTE.
-   CERCLE : sa vague (le bas de la bande de la Toile, peinte par `_peintBande` sur `#dpTrameCv` : `data-trait` = base, amp, couleur) EST le trait de jonction. Elle
-   défile avec le contenu ; quand le HAUT de son trait atteint la jonction (le bas de la bande sous l'en-tête, 112 pt), elle ne passe plus dessous : elle reste
-   collée à la jonction et s'aplatit, son amplitude décroissant LINÉAIREMENT avec le défilement sur les 40 pt qui suivent, jusqu'au trait plat ; au retour, l'inverse,
-   jusqu'à sa place exacte de repos. ⚑ v191 : PROMI ET CHICHE AUSSI, leur vague étant le trait du geste (voir `forme`). ⚑ v190 (Tom) : PROMI ET CHICHE N'ONT PLUS DE TRAIT À LA JONCTION (le trait plat de v189 est retiré, code compris) : au défilement
-   ces fiches sont celles de v188. Rien de la mise en page ne change : une COUCHE fixe (`#v189Jonction`, z 8, après la bande de v187, sous l'en-tête z 9), qui ne prend pas
-   le doigt ; elle redessine son tracé une fois par image pendant le défilement (un canevas : aucune écriture de style). Sous la vague collée, elle porte la couleur du
-   champ (au-dessus du trait) et celle du corps (au-dessous, jusqu'au bas de la vraie vague qui défile dessous) : on ne voit jamais deux vagues. Au repos : rien. */
+/* ⚑ v193 (Tom, 10 nov. 2026, C-259, « dernier lot de ce sujet ») — UN SEUL COMPOSANT POUR LE TRAIT DE JONCTION, LE MÊME PARTOUT.
+   « Le trait est dessiné par deux mécanismes, le canevas de la fiche au repos et la boîte collante une fois accroché, avec un passage de relais entre les deux.
+   Chaque raccord produit un défaut. On arrête de rapiécer. » AUJOURD'HUI : le trait (la vague du Cercle ; le trait du geste de Promi et de Chiche, toutes ses couleurs
+   et tous ses états, l'instant « tenir » compris) n'est dessiné QUE par une boîte collante (`#v192Colle`, `position: sticky`) posée dans le flux de la fiche à la
+   place de repos du trait : au repos elle est simplement à sa place, défilée elle défile, arrivée à la jonction (112 pt) elle s'y accroche — c'est le défilement
+   lui-même qui la tient, à chaque image, quel que soit l'élan. `#dpTrameCv` ne dessine plus le trait, nulle part (ses peintres le tracent sur un canevas muet pour
+   leurs déclarations : `data-trait`, `data-depart`, `data-parts`). Plus de copie, plus de découpe, plus de relais. Le SEUL dessin du script est l'aplatissement
+   (une image de retard au plus, Tom) : accrochée, la boîte dessine le trait aplati (l'onde (base', k·amp), k = 1 − défilement / 40), le champ au-dessus et le corps
+   au-dessous (la géométrie de v190, validée) ; l'épaisseur du trait est constante. Les juges : redteam_elan, redteam_jonction, redteam_jonction_fiche,
+   redteam_haut_fiche, redteam_premier_toucher.
+   ⚑ C-263 (Tom, v193 §2 : « le geste ne prend plus le trait du premier coup ») — LA CAUSE : en v192, la zone du geste perdait le doigt dès 0,25 pt de défilement
+   (`geste(d, s>0.25)` ; v191 : seulement une fois accroché). Revenu « en haut » d'un geste qui laisse la fiche à 1 ou 2 pt, le premier toucher sur le trait ne
+   touchait plus la zone du geste : il faisait défiler la fiche jusqu'à 0 — le second traçait. AUJOURD'HUI la zone du geste ne lâche le doigt que si la boîte
+   EST accrochée, lu sur sa position réelle (le défilement lu au moment même, à chaque événement de défilement, à sa fin et au doigt posé), jamais sur un drapeau
+   resté levé ; et aucune couche d'affichage ne prend le doigt (la boîte, son canevas : `pointer-events: none`). */
 (function(){
-  var J=112, COURSE=40, COL='#0A0415', HT=300;
+  var J=112, COURSE=40, COL='#0A0415', XO=2;
   function D(){ return document.getElementById('detailPoster'); }
-  function actif(d){ return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose') && !d.classList.contains('s2-ouv')); }
+  function actif(d){ return !!(d && d.classList.contains('show')); }   /* ⚑ v193 : dès l'ouverture (le glissement compris) — c'est le seul trait de la fiche */
+  function classes(d){ return d ? d.className.replace(/\bgs\d\b/g,'').replace(/\s+/g,' ').trim() : ''; }   /* sans les classes de l'invite du geste (gs0…gs3), qui changent sans cesse */
   function cercle(d){ return !!(d && (d.classList.contains('dp-mode-nuee') || d.classList.contains('dp-nuee'))); }
-  function off(){ var dv=document.getElementById('device'); return dv ? [dv.offsetLeft||0, dv.offsetTop||0] : [16,16]; }
-  /* ⚑ v192 (Tom, C-259 suite : « au défilement rapide, ça saute ») — LA CAUSE : la couche de v189–v191 était FIXE et redessinée en JavaScript à chaque image ; pendant
-     l'élan, Safari fait défiler le contenu sans attendre le JavaScript (le défilement est fait par le compositeur) : le contenu — et sa vraie vague — avait déjà bougé
-     quand la couche le rattrapait, une image ou plusieurs plus tard. Le trait décrochait de la jonction, ou disparaissait une image, ou paraissait deux fois.
-     AUJOURD'HUI L'ACCROCHAGE NE DÉPEND PLUS DU JAVASCRIPT : dès que la fiche défile, le trait est porté par une boîte COLLANTE (`position: sticky`, `#v192Colle`) posée
-     dans le défilement à la place exacte du trait, et collée à la jonction : c'est le défilement lui-même (le compositeur de Safari) qui la tient à sa place de repos
-     puis à 112 pt, à chaque image, quel que soit l'élan. Dans la même tâche, `#dpTrameCv` est DÉCOUPÉ juste au-dessus du trait (`clip-path`, colonne par colonne, sur
-     une rangée de pixels de l'appareil) : il n'y a qu'un trait, celui de la boîte. Au repos (défilement 0), rien de tout cela : la fiche est celle de v191, le trait est
-     celui de `#dpTrameCv` (l'instant « tenir » et le geste n'ont qu'un canevas, comme avant). L'APLATISSEMENT reste dessiné en JavaScript (une image de retard est
-     admise, Tom) : la boîte se redessine seulement quand l'aplatissement change — rien au repos, rien quand le trait est plat et le contenu passé.
-     `animation-timeline: scroll()` n'est pas employé : l'accrochage n'en a pas besoin (la position collante le fait), et l'aplatissement change la FORME du trait
-     (son épaisseur reste constante) — une transformation ne le peut pas. */
-  var S=null, SC=null, montre=false, F=null, demande=false, vu='', XO=2;   /* ⚑ v192 (2) : le canevas de la boîte déborde de 2 pt de chaque côté, sous le rognage de l'appareil (ses bords posés au bord de l'écran, à une échelle non entière, laissaient une colonne de pixels mêlés : redteam_jonction G, Chiche à 0,79) */
+  var S=null, SC=null, montre=false, F=null, demande=false, vu='';
   function boite(d){ if(!S){ S=document.createElement('div'); S.id='v192Colle'; S.setAttribute('aria-hidden','true'); SC=document.createElement('canvas'); SC.id='v189Jonction'; SC.setAttribute('aria-hidden','true'); S.appendChild(SC); }
     var t=document.getElementById('dpTrameCv'); if(S.parentNode!==d){ if(t && t.parentNode===d) d.insertBefore(S, t.nextSibling); else d.insertBefore(S, d.firstChild); } return S; }
-  function decoupe(c, on, cl){ if(!c) return; if(!on){ if(c.__v192){ c.style.removeProperty('clip-path'); c.style.removeProperty('-webkit-clip-path'); c.__v192=null; } return; }
-    cl=cl||F.clip; if(c.__v192===cl) return; c.style.setProperty('clip-path', cl, 'important'); c.style.setProperty('-webkit-clip-path', cl, 'important'); c.__v192=cl; }
-  function cache(d){ if(montre){ montre=false; if(S){ S.style.setProperty('display','none','important'); SC.style.setProperty('display','none','important'); } } decoupe(document.getElementById('dpTrameCv'), false); geste(d, false); vu=''; }
-  /* la forme de la vague du Cercle (déclarée par son peintre) et les couleurs, relues à chaque ouverture */
+  function cache(d){ if(montre){ montre=false; if(S){ S.style.setProperty('display','none','important'); } } geste(d, false); vu=''; }
+  /* la boîte suit la visibilité du canevas de la fiche (un Peaufiner qui efface la fiche l'efface aussi) */
+  function visible(c){ if(!c) return false; var cs=getComputedStyle(c); return cs.display!=='none' && cs.visibility!=='hidden' && +cs.opacity>0.01; }
+  /* la forme de l'onde déclarée (`data-trait` : base, amp, couleur), la boîte (au repos : un point entier, assez haute pour l'amorce effilée, les points, la pointe,
+     les initiales des parts) ; l'EMPREINTE du trait (le haut de ce qu'il peint, colonne par colonne) n'est lue que pour l'accrochage, hors de l'écran, au calme */
   function forme(d){ var c=document.getElementById('dpTrameCv'); if(!c) return null; var t=(c.getAttribute('data-trait')||'').split(','), base=+t[0], amp=+t[1];
-    var K=window._TRAIT_K||1.3, lw=10*K, f={lw:lw, cercle:cercle(d), cle:(c.getAttribute('data-trait')||'')+'|'+d.className};
-    var cs=getComputedStyle(d); f.corps=cs.backgroundColor;
-    if(f.cercle && isFinite(base) && isFinite(amp) && window._onde){ var y=window._onde.onde(base, amp), P=[], mn=1e9, mx=-1e9; for(var x=0;x<=390;x+=2){ var v=y(x); P.push(v); if(v<mn) mn=v; if(v>mx) mx=v; }
-      f.P=P; f.min=mn; f.max=mx; f.s0=mn-lw/2-J; f.base=base; f.amp=amp; f.col=t[2]||COL;
-      /* l'ENVELOPPE haute du trait de la vraie vague : sur une pente, le bord d'un trait épais monte plus haut que « centre − ½ épaisseur » (l'épaisseur se mesure selon la
-         normale) — la réunion des disques de rayon ½ épaisseur posés sur la courbe. Sans elle, un filet pâle de la vraie vague passait au bord du remplissage, sur les pentes. */
-      var r=lw/2, EN=[]; for(var i=0;i<P.length;i++){ var m=1e9; for(var dx=-Math.ceil(r/2);dx<=Math.ceil(r/2);dx++){ var j=i+dx; if(j<0||j>=P.length) continue; var h=Math.abs(dx*2); if(h>r) continue; var v=P[j]-Math.sqrt(r*r-h*h); if(v<m) m=v; } EN.push(m); } f.EN=EN;
-      try{ var g=c.getContext('2d'), E=c.width/(c.offsetWidth||390), px=g.getImageData(Math.round(4*E), Math.max(0, Math.round((mn-lw-6)*E)), 1, 1).data; f.champ='rgb('+px[0]+','+px[1]+','+px[2]+')'; }catch(_){ f.champ=null; }
-      f.BAS=mx+lw/2; if(c.getAttribute('data-champ')) f.champ=c.getAttribute('data-champ'); }
-    /* ⚑ v191 (Tom, C-259 suite) — PROMI ET CHICHE : leur vague EST le trait du geste, et il fait exactement ce que fait la vague du Cercle, par ce même code. Ce qui
-       change, et seulement ça : la ligne n'est pas un trait d'une couleur, c'est la ligne de la fiche — elle est retracée par SON peintre (`c.__ligne`, toutes ses
-       couleurs, tous ses états) sur l'onde aplatie ; et son EMPREINTE (le haut de ce qu'elle peint, colonne par colonne, et son bas) se lit sur ce qu'elle peint
-       (une fois par ouverture, hors de l'écran) : l'amorce effilée, la pointe, les points et les initiales débordent de la demi-épaisseur du trait. */
-    else if(!f.cercle && c.__ligne && isFinite(base) && isFinite(amp) && window._onde && !d.classList.contains('dp-draft')){ var y2=window._onde.onde(base, amp), P2=[], mn2=1e9, mx2=-1e9; for(var x2=0;x2<=390;x2+=2){ var v2=y2(x2); P2.push(v2); if(v2<mn2) mn2=v2; if(v2>mx2) mx2=v2; }
-      f.P=P2; f.min=mn2; f.max=mx2; f.s0=mn2-lw/2-J; f.base=base; f.amp=amp; f.ligne=c.__ligne;
-      try{ var Ee=2, Hh=Math.ceil(mx2+60), o2=document.createElement('canvas'); o2.width=390*Ee; o2.height=Hh*Ee; var gg=o2.getContext('2d'); gg.setTransform(Ee,0,0,Ee,0,0); c.__ligne(gg, base, amp);
-        var D2=gg.getImageData(0,0,o2.width,o2.height).data, n2=P2.length, EN2=[], bas2=-1e9, Wd=o2.width;
-        for(var i3=0;i3<n2;i3++){ var top=1e9, xa=Math.max(0, (i3*2-1)*Ee), xb=Math.min(Wd-1, (i3*2+1)*Ee);
-          for(var xx=xa;xx<=xb;xx++){ for(var yy=0;yy<o2.height;yy++){ if(D2[(yy*Wd+xx)*4+3]>8){ if(yy<top) top=yy; break; } }
-            for(var yb=o2.height-1;yb>=0;yb--){ if(D2[(yb*Wd+xx)*4+3]>8){ if(yb/Ee>bas2) bas2=(yb+1)/Ee; break; } } }
-          EN2.push(top<1e9 ? top/Ee : P2[i3]-lw/2); }
-        f.EN=EN2; f.BAS=Math.max(bas2, mx2+lw/2); }catch(_){ f.EN=P2.map(function(v){ return v-lw/2; }); f.BAS=mx2+lw/2+16; }
-      try{ var g3=c.getContext('2d'), E3=c.width/(c.offsetWidth||390), px3=g3.getImageData(Math.round(4*E3), Math.max(0, Math.round((mn2-lw-6)*E3)), 1, 1).data; f.champ=px3[3]>200 ? 'rgb('+px3[0]+','+px3[1]+','+px3[2]+')' : null; }catch(_){ f.champ=null; } }
-    if(f.P){ var E=c.width/390, i4, ENm=1e9, ENx=-1e9; for(i4=0;i4<f.EN.length;i4++){ if(f.EN[i4]<ENm) ENm=f.EN[i4]; if(f.EN[i4]>ENx) ENx=f.EN[i4]; }
-      f.E=E; f.Ytop=Math.floor(Math.min(ENm, f.min-lw/2)-2);   /* ⚑ v192 (2) : jamais sous la jonction (min − ½ épaisseur) — à moitié tracé, le haut peint le plus haut (la part pleine) est plus bas que le creux de l'onde (le trait fin) : la boîte commençait 1 pt sous la jonction, et le corps y paraissait */   /* un point ENTIER : un pixel entier de l'appareil ET une position exacte pour WebKit (qui arrondit au 1/64) — à 244,333 la boîte était posée à 244,328, et tout son canevas rééchantillonné */ f.H=Math.ceil(f.BAS+16-f.Ytop); f.T=f.Ytop-f.s0;
-      /* le découpage de `#dpTrameCv` : au-dessus du haut du trait (son empreinte − ½ pt), colonne par colonne, sur une rangée de pixels — le même contour borne le champ
-         que la boîte repeint sous le bord haut du trait (aucune jointure entre deux calques, la leçon du demi-pixel de v190) */
-      f.YC=f.EN.map(function(v, q, A){ var m=Math.min(v, q>0?A[q-1]:v, q<A.length-1?A[q+1]:v); return Math.floor((m-0.75)*E)/E; });   /* ⚑ v192 (2) : la marche au plus haut des colonnes voisines — sur une pente, le pixel d'écran à cheval sur une marche mêlait la frange du trait de la colonne d'à côté (composée deux fois : 1 pixel, Chiche à 0,79) */
-      var pts=['-20px -20px','410px -20px'], nY=f.YC.length; for(i4=nY-1;i4>=0;i4--){ pts.push((i4===nY-1?410:Math.min(390, i4*2+1))+'px '+f.YC[i4]+'px'); pts.push((i4===0?-20:Math.max(0, i4*2-1))+'px '+f.YC[i4]+'px'); }   /* ⚑ v192 (2) : le contour déborde de l'élément — sur ses bords, à une échelle non entière, un contour posé AU bord ajoutait son lissage à celui du calque */
-      f.clip='polygon('+pts.join(',')+')';
-      /* ⚑ v192 (2) — AU REPOS ET AVANT L'ACCROCHAGE, les 1,5 pt du bord de l'écran restent à `#dpTrameCv` seul : là, la boîte et lui avaient chacun leur bord lissé, à
-         une échelle non entière (l'iPhone de Tom, 0,7466 ; le banc à 0,79) le pixel du bord était couvert deux fois — une colonne plus claire (redteam_jonction G, Chiche
-         à 0,79). Accroché, la boîte reprend toute la largeur (`f.clip`). */
-      var hb=Math.ceil(c.height/E)+20, pr=['-20px -20px','410px -20px','410px '+hb+'px','388.5px '+hb+'px'];
-      for(i4=nY-1;i4>=0;i4--){ var xr=Math.min(388.5, i4*2+1), xl=Math.max(1.5, i4*2-1); if(xl>=xr) continue; pr.push(xr+'px '+f.YC[i4]+'px'); pr.push(xl+'px '+f.YC[i4]+'px'); }
-      pr.push('1.5px '+hb+'px'); pr.push('-20px '+hb+'px'); f.clipR='polygon('+pr.join(',')+')';
-      f.umax=Math.max(f.BAS-f.min+2, ENx-f.min+lw/2+6, COURSE)+1; }
+    var K=window._TRAIT_K||1.3, lw=10*K, f={lw:lw, cercle:cercle(d), vis:visible(c)};
+    if(!(isFinite(base) && isFinite(amp) && window._onde)) return f; if(!f.cercle && !c.__ligne) return f;
+    var y=window._onde.onde(base, amp), P=[], mn=1e9, mx=-1e9; for(var x=0;x<=390;x+=2){ var v=y(x); P.push(v); if(v<mn) mn=v; if(v>mx) mx=v; }
+    f.P=P; f.min=mn; f.max=mx; f.s0=mn-lw/2-J; f.base=base; f.amp=amp; f.col=t[2]||COL; f.ligne=c.__ligne; f.corps=getComputedStyle(d).backgroundColor;
+    f.photo=!f.cercle && !window._instant && typeof cur!=='undefined' && cur && !!cur.photo;
+    try{ var g=c.getContext('2d'), E0=c.width/(c.offsetWidth||390), px=g.getImageData(Math.round(4*E0), Math.max(0, Math.round((mn-lw-6)*E0)), 1, 1).data; f.champ=px[3]>200 ? 'rgb('+px[0]+','+px[1]+','+px[2]+')' : null; }catch(_){ f.champ=null; }
+    if(f.cercle && c.getAttribute('data-champ')) f.champ=c.getAttribute('data-champ');
+    f.E=c.width/390; f.Ytop=Math.floor(mn-lw/2-14); f.H=Math.ceil(mx+lw/2+40-f.Ytop); f.T=f.Ytop-f.s0;
     return f; }
-  function cle(){ var c=document.getElementById('dpTrameCv'), d=D(); return (c && c.getAttribute('data-trait')||'')+'|'+(d?d.className:'')+'|'+(c?c.width+'x'+c.height:''); }
-  /* ⚑ v192 — LA BOÎTE EST LÀ DÈS QUE LA FICHE EST POSÉE, défilée ou non : un élan qui part du repos ne dépend d'aucun JavaScript (la montrer « au premier défilement »
-     laissait, au premier élan, une image ou plus où le vrai trait filait sous l'en-tête). Au repos elle est SOUS le contenu (z 1 : l'encre du geste reste au-dessus du trait,
-     comme au-dessus de `#dpTrameCv`) ; accrochée, au-dessus (z 8 : le contenu passe dessous). Pendant l'instant « tenir » (il repeint le trait sur `#dpTrameCv`) : retirée. */
-  function peint(){ demande=false; var d=D(); if(!d) return; var s=d.scrollTop, on=actif(d) && !window._instant && !window._tenirAnime;
-    if(on && (!F || F.cle!==cle())) { F=forme(d); if(F) F.cle=cle(); vu=''; }
-    if(!on || !F || !F.P){ cache(d); return; }
-    var c=document.getElementById('dpTrameCv'), B=boite(d), u=Math.max(0, s-F.s0), uc=Math.min(u, F.umax), k=1-Math.min(1, uc/COURSE);
-    if(!montre){ montre=true;
-      B.style.cssText='position:-webkit-sticky!important;position:sticky!important;top:'+F.T+'px!important;bottom:auto!important;left:auto!important;order:-10!important;flex:none!important;align-self:flex-start!important;width:390px!important;height:'+F.H+'px!important;margin:'+F.Ytop+'px 0 '+(-(F.Ytop+F.H))+'px 0!important;padding:0!important;max-width:none!important;z-index:1!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important;background:transparent!important';
-      SC.style.cssText='position:absolute!important;left:'+(-XO)+'px!important;top:0!important;width:'+(390+2*XO)+'px!important;height:'+F.H+'px!important;margin:0!important;padding:0!important;max-width:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important;pointer-events:none!important';
+  function empreinte(f){ if(!f || !f.P || f.EN) return; var lw=f.lw, P=f.P, n=P.length;
+    if(f.cercle){ var r=lw/2, EN=[]; for(var i=0;i<n;i++){ var m=1e9; for(var dx=-Math.ceil(r/2);dx<=Math.ceil(r/2);dx++){ var j=i+dx; if(j<0||j>=n) continue; var h=Math.abs(dx*2); if(h>r) continue; var v=P[j]-Math.sqrt(r*r-h*h); if(v<m) m=v; } EN.push(m); } f.EN=EN; f.BAS=f.max+lw/2; }
+    else { try{ var Ee=2, Hh=Math.ceil(f.max+60), o=document.createElement('canvas'); o.width=390*Ee; o.height=Hh*Ee; var gg=o.getContext('2d'); gg.setTransform(Ee,0,0,Ee,0,0); f.ligne(gg, f.base, f.amp);
+        var D2=gg.getImageData(0,0,o.width,o.height).data, EN2=[], bas=-1e9, Wd=o.width;
+        for(var i3=0;i3<n;i3++){ var top=1e9, xa=Math.max(0,(i3*2-1)*Ee), xb=Math.min(Wd-1,(i3*2+1)*Ee);
+          for(var xx=xa;xx<=xb;xx++){ for(var yy=0;yy<o.height;yy++){ if(D2[(yy*Wd+xx)*4+3]>8){ if(yy<top) top=yy; break; } } for(var yb=o.height-1;yb>=0;yb--){ if(D2[(yb*Wd+xx)*4+3]>8){ if(yb/Ee>bas) bas=(yb+1)/Ee; break; } } }
+          EN2.push(top<1e9 ? top/Ee : P[i3]-lw/2); }
+        f.EN=EN2; f.BAS=Math.max(bas, f.max+lw/2); }catch(_){ f.EN=P.map(function(v){ return v-lw/2; }); f.BAS=f.max+lw/2+16; } }
+    var ENx=-1e9; for(var q=0;q<f.EN.length;q++) if(f.EN[q]>ENx) ENx=f.EN[q]; f.umax=Math.max(f.BAS-f.min+2, ENx-f.min+lw/2+6, COURSE)+1; }
+  function cle(){ var c=document.getElementById('dpTrameCv'), d=D(); return (c && c.getAttribute('data-trait')||'')+'|'+classes(d)+'|'+(c?c.width+'x'+c.height:'')+'|'+(c&&c.__ligne?1:0); }
+  /* ⚑ LE DRAPEAU « ACCROCHÉ » : la position réelle de la boîte — le défilement lu à l'instant même, contre la cote où elle se colle */
+  function accroche(d){ return !!(d && F && F.P && montre && d.scrollTop>=F.s0+0.25); }
+  function peint(){ demande=false; var d=D(); if(!d) return; var on=actif(d);
+    if(on && (!F || F.cle!==cle())){ F=forme(d); if(F){ F.cle=cle(); var f0=F; setTimeout(function(){ if(F===f0 && !window._tenirAnime && !window._instant) empreinte(f0); }, 350); } vu=''; }
+    var c=document.getElementById('dpTrameCv'); crochet(); if(F && F.P) F.vis=visible(c);   /* la visibilité se relit à chaque passage : cachée pendant une ouverture, la boîte revient dès que la fiche se montre */
+    if(!on || !F || !F.P || !F.vis){ cache(d); return; }
+    var s=d.scrollTop, B=boite(d), u=Math.max(0, s-F.s0);
+    if(!montre || B.__T!==F.T || B.__H!==F.H || B.__Y!==F.Ytop){ montre=true; B.__T=F.T; B.__H=F.H; B.__Y=F.Ytop;
+      B.style.cssText='position:-webkit-sticky!important;position:sticky!important;top:'+F.T+'px!important;bottom:auto!important;left:auto!important;order:-10!important;flex:none!important;align-self:flex-start!important;width:'+(390+2*XO)+'px!important;height:'+F.H+'px!important;margin:'+F.Ytop+'px 0 '+(-(F.Ytop+F.H))+'px '+(-XO)+'px!important;overflow:visible!important;padding:0!important;max-width:none!important;z-index:1!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important;background:transparent!important';
+      SC.style.cssText='position:absolute!important;left:0!important;top:0!important;width:'+(390+2*XO)+'px!important;height:'+F.H+'px!important;margin:0!important;padding:0!important;max-width:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important;pointer-events:none!important';
       vu=''; }
-    /* la copie suit `#dpTrameCv` : tout peintre qui le repeint passe par `getContext` — la boîte se recopie à l'image suivante */
-    if(!c.__v192g){ var gc=c.getContext; c.getContext=function(){ vu=''; tour(); return gc.apply(this, arguments); }; c.__v192g=1; }
-    decoupe(c, u<=0, F.clipR); geste(d, s>0.25);   /* ⚑ v192 (3) : la découpe ne vaut qu'au repos et avant l'accrochage — accrochée et dessinée, la boîte couvre l'empreinte du vrai trait qui défile dessous, comme la couche de v190 (au pixel : redteam_haut_fiche §7) ; tant que le script n'a pas tourné (au pire d'un élan), la découpe du repos reste : il n'y a qu'un trait */   /* le geste ne marche qu'au repos (Tom) */
+    /* tout peintre qui repeint `#dpTrameCv` passe par `getContext` : la boîte se redessine à l'image suivante */
+    geste(d, accroche(d));
+    /* au repos, sous le contenu (z 1 : l'encre du geste reste au-dessus du trait) ; accrochée, au-dessus (z 8 : le contenu passe dessous) */
     var z=(u>0)?'8':'1'; if(B.style.getPropertyValue('z-index')!==z) B.style.setProperty('z-index', z, 'important');
-    var v=(u>0 ? 'c'+(Math.round(uc*8)/8) : 'r')+'|'+F.cle; if(v===vu) return; vu=v;
+    if(u>0) empreinte(F);
+    var uc=Math.min(u, F.umax||u), k=1-Math.min(1, uc/COURSE);
+    var v=(u>0 ? 'c'+(Math.round(uc*8)/8) : 'r')+'|'+F.cle+'|'+(window._instantX||0); if(v===vu) return; vu=v;
     var E=F.E; if(SC.width!==Math.round((390+2*XO)*E) || SC.height!==Math.round(F.H*E)){ SC.width=Math.round((390+2*XO)*E); SC.height=Math.round(F.H*E); }
-    var g=SC.getContext('2d'); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,SC.width,SC.height); g.setTransform(E,0,0,E,XO*E,-F.Ytop*E);   /* en cotes de la fiche (la boîte commence à Ytop) */
+    var g=SC.getContext('2d'); g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,SC.width,SC.height); g.setTransform(E,0,0,E,XO*E,-F.Ytop*E);   /* en cotes de la fiche */
     g.imageSmoothingEnabled=true; g.lineCap='round'; g.lineJoin='round';
     var O=window._onde, n=F.P.length, i;
-    function marches(){ g.beginPath(); g.moveTo(0, F.Ytop+F.H+40); g.lineTo(390, F.Ytop+F.H+40); g.lineTo(390, F.YC[n-1]); for(var q=n-1;q>=0;q--){ g.lineTo(Math.min(390, q*2+1), F.YC[q]); g.lineTo(Math.max(0, q*2-1), F.YC[q]); } g.closePath(); }
     function trait(b2, a2){ if(F.cercle){ g.save(); g.strokeStyle=F.col; g.lineWidth=F.lw; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); O.chemin(g, O.onde(b2, a2), 0, 390); g.stroke(); g.restore(); }
-      else { try{ F.ligne(g, b2, a2); }catch(_){ } } }
-    /* ⚑ v192 (2) — LA BOÎTE RECOPIE `#dpTrameCv` (`drawImage`, pixel pour pixel, sur la même grille : sa cote est un point entier) au lieu de redessiner la fiche : au repos,
-       redessiner le champ et le trait sous un découpage laissait, à la jointure des deux calques, une marche de pixels mêlés (le fond du corps transparaissait d'un demi-pixel :
-       pris par `redteam_jonction_fiche` D, au repos, contre v190 ; et défilé, des tirets au-dessus du trait accroché, C). Deux calques qui portent LES MÊMES pixels à la
-       jointure se composent sans trace, quelle que soit la part de pixel de la jointure. */
-    var W=c.width, sy=function(y){ return Math.round(y*E); };
-    function copie(dec){ var y0=sy(F.Ytop+dec), h=Math.min(SC.height, c.height-y0), o=Math.round(XO*E); if(h>0){ g.drawImage(c, 0, y0, W, h, o, 0, W, h); g.drawImage(c, 0, y0, 1, h, 0, 0, o, h); g.drawImage(c, W-1, y0, 1, h, W+o, 0, o, h); } }   /* les bords hors de l'écran : la colonne du bord, répétée */
+      else { g.save(); try{ F.ligne(g, b2, a2); }catch(_){ } g.restore(); } }
     if(u<=0){
-      /* À SA PLACE (pas encore accroché) : la boîte EST `#dpTrameCv` sur sa hauteur (le champ, sa matière, le trait, ses points, ses initiales) — la fiche, au pixel */
-      g.setTransform(1,0,0,1,0,0); copie(0); var b1=Math.round((XO+0.5)*E), b2=Math.round((XO+1.5)*E)+2; g.clearRect(0,0,b1,SC.height); g.clearRect(SC.width-b1,0,b1,SC.height);   /* le bord : à `#dpTrameCv` (voir `clipR`) */
-      g.globalCompositeOperation='destination-over'; g.fillStyle=F.corps; g.fillRect(b1,0,b2-b1,SC.height); g.fillRect(SC.width-b2,0,b2-b1,SC.height); g.globalCompositeOperation='source-over';   /* là où la boîte et `#dpTrameCv` se recouvrent (le bord de la bande), la boîte est opaque : la frange du trait n'y est pas composée deux fois */
-      SC.removeAttribute('data-jonction'); return; }   /* pas accroché : rien à déclarer (les juges lisent l'aplatissement) */
-    /* ACCROCHÉ : la boîte est collée (le compositeur la tient) ; on ne dessine que l'aplatissement — en cotes de la fiche, la jonction (112 à l'écran) est le haut du trait
-       au repos, `min − ½ épaisseur` ; l'onde aplatie est l'onde (base', k·amp) */
+      /* AU REPOS : le trait, à sa place, rien d'autre (le champ et le corps sont ceux de la fiche). Une photo couvre la moitié haute du trait (`_photoPeint`, découpée
+         par l'onde) : la boîte ne peint, sur une photo, que sous l'onde. */
+      if(F.photo){ g.save(); g.beginPath(); O.chemin(g, O.onde(F.base, F.amp), 0, 390); g.lineTo(390+XO, F.P[n-1]); g.lineTo(390+XO, F.Ytop+F.H); g.lineTo(-XO, F.Ytop+F.H); g.lineTo(-XO, F.P[0]); g.closePath(); g.clip(); trait(F.base, F.amp); g.restore(); }
+      else trait(F.base, F.amp);
+      SC.removeAttribute('data-jonction'); return; }
+    /* ACCROCHÉE : le trait aplati ; le champ au-dessus (seulement sur l'empreinte du trait, là où défilait la vague) et le corps dessous — la géométrie de v190 */
     var J0=F.min-F.lw/2, Y=function(q){ return F.min+(F.P[q]-F.min)*k; }, marge=F.cercle?1.5:2.5, bas=F.BAS-uc+1.5;
-    /* ⚑ v190, gardé tel quel (la référence validée, au pixel : redteam_haut_fiche §7) : le champ au-dessus du trait accroché ne couvre que l'EMPREINTE du vrai trait
-       (le contenu — `#dpTrameCv`, sa matière — y défile dessous, nativement), parti 2 pt au-dessus de la jonction (sous la bande d'en-tête) ; le corps dessous, jusqu'au bas
-       du vrai trait ; puis le trait aplati. Ce remplissage dépend du défilement : c'est la seule chose qui peut avoir une image de retard. */
     if(F.champ){ g.fillStyle=F.champ; g.beginPath(); for(i=0;i<n;i++){ var hy=Math.max(J0-2, F.EN[i]-uc-marge); g.lineTo(i===0?-XO:i*2, Math.min(hy, Y(i))); if(i===n-1) g.lineTo(390+XO, Math.min(hy, Y(i))); } g.lineTo(390+XO, Y(n-1)); for(i=n-1;i>=0;i--) g.lineTo(i*2, Y(i)); g.lineTo(-XO, Y(0)); g.closePath(); g.fill(); }
     if(bas>F.min){ g.fillStyle=F.corps; g.beginPath(); g.moveTo(-XO, Y(0)); for(i=0;i<n;i++) g.lineTo(i*2, Y(i)); g.lineTo(390+XO, Y(n-1)); g.lineTo(390+XO, Math.max(bas, F.min)); g.lineTo(-XO, Math.max(bas, F.min)); g.closePath(); g.fill(); }
-    /* le trait aplati : le Cercle, la ligne brisée de v190 (validée, au pixel) ; Promi et Chiche, la ligne de la fiche retracée par son peintre (v191) */
     if(F.cercle){ g.save(); g.strokeStyle=F.col; g.lineWidth=F.lw; g.lineCap='round'; g.lineJoin='round'; g.beginPath(); for(i=0;i<n;i++){ if(i) g.lineTo(i*2, Y(i)); else g.moveTo(0, Y(0)); } g.stroke(); g.restore(); }
     else { g.save(); g.beginPath(); g.rect(-XO, J0, 390+2*XO, F.H+F.Ytop); g.clip(); trait(F.min+k*(F.base-F.min), k*F.amp); g.restore(); }
     SC.setAttribute('data-jonction', (F.cercle?'cercle':'fiche')+','+(1-k).toFixed(4)+','+(F.max-F.min).toFixed(2)); }
   /* ⚑ v191 (Tom) — « Le geste ne marche qu'au repos, quand le trait est à sa place. Accroché ou aplati, un toucher sur lui fait défiler la fiche et ne trace rien. »
-     La zone du geste ne prend plus le doigt tant que le trait est accroché : le doigt tombe sur la fiche, qui défile (aucune classe posée sur la fiche : une
-     écriture de style sur la zone seule, rendue dès qu'il se décroche et à la fermeture). */
+     ⚑ v193 : « accroché » = la boîte collée à la jonction, lu sur sa position réelle (voir `accroche`) — jamais un défilement de quelques points. */
   var coupe=false;
-  function geste(d, accroche){ accroche=!!(accroche && d && !cercle(d)); if(accroche===coupe) return; coupe=accroche; var z=document.getElementById('tenirZone'); if(!z) return;
+  function geste(d, acc){ acc=!!(acc && d && !cercle(d)); if(acc===coupe) return; coupe=acc; var z=document.getElementById('tenirZone'); if(!z) return;
     if(coupe) z.style.setProperty('pointer-events','none','important'); else z.style.removeProperty('pointer-events'); }
+  function relit(){ var d=D(); geste(d, accroche(d)); }
   function tour(){ if(demande) return; demande=true; requestAnimationFrame(peint); }
-  window._v189Jonction=function(){ return {montre:montre, coupe:coupe, F:F?{T:F.T, Ytop:F.Ytop, H:F.H, s0:F.s0, min:F.min, max:F.max, lw:F.lw, cercle:F.cercle, base:F.base, amp:F.amp, BAS:F.BAS, P:F.P?F.P.slice():null, EN:F.EN?F.EN.slice():null}:null}; };   /* un pointeur pour les juges */
-  function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; }
-    d.addEventListener('scroll', tour, {passive:true});
-    d.addEventListener('scroll', function(){ var s=d.scrollTop; if(s>(window._v192Defile||0)) window._v192Defile=Math.round(s); }, {passive:true});   /* ⚑ v192 (C-263) : le plus grand défilement de la fiche ouverte, pour la mesure de « tenir » */
-    new MutationObserver(function(){ F=null; tour(); }).observe(d,{attributes:true, attributeFilter:['class']}); }
+  /* ⚑ v193 — DANS LA MÊME TÂCHE que le peintre de la fiche (une microtâche : après lui, avant l'image) : le trait paraît dans l'image où la fiche paraît, jamais une image après */
+  var mq=false; function vite(){ vu=''; if(mq) return; mq=true; Promise.resolve().then(function(){ mq=false; try{ peint(); }catch(_){ } }); }
+  function crochet(){ var c=document.getElementById('dpTrameCv'); if(!c || c.__v192g) return; var gc=c.getContext; c.getContext=function(){ vite(); return gc.apply(this, arguments); }; c.__v192g=1; }
+  window._v189Jonction=function(){ return {montre:montre, coupe:coupe, XO:XO, F:F?{T:F.T, Ytop:F.Ytop, H:F.H, s0:F.s0, min:F.min, max:F.max, lw:F.lw, cercle:F.cercle, base:F.base, amp:F.amp, BAS:F.BAS, P:F.P?F.P.slice():null, EN:F.EN?F.EN.slice():null}:null}; };   /* un pointeur pour les juges */
+  function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; } crochet();
+    d.addEventListener('scroll', function(){ relit(); tour(); }, {passive:true});
+    d.addEventListener('scrollend', relit, {passive:true});
+    d.addEventListener('scroll', function(){ var s=d.scrollTop; if(s>(window._v192Defile||0)) window._v192Defile=Math.round(s); }, {passive:true});   /* ⚑ v192 (C-263) : le plus grand défilement de la fiche ouverte */
+    var dern=classes(d); new MutationObserver(function(){ var k=classes(d); if(k===dern) return; dern=k; F=null; vite(); }).observe(d,{attributes:true, attributeFilter:['class']}); }
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', arme); else arme();
+  /* au doigt posé, le drapeau est relu (avant tout écouteur du geste) */
+  ['touchstart','pointerdown'].forEach(function(t){ window.addEventListener(t, relit, {capture:true, passive:true}); });
   (window._rangeurs=window._rangeurs||[]).push(function(){ cache(null); F=null; window._v192Defile=0; });
-  /* « tenir » : l'instant s'arme au clic « tenue » (en capture, sur `window`) et repeint le trait sur `#dpTrameCv` — la boîte part DANS LA MÊME TÂCHE */
-  document.addEventListener('click', function(e){ if(e.target && e.target.closest && e.target.closest('#segStatus button') && (window._instant || window._tenirAnime)) cache(D()); }, true);
-  /* l'instant fini (la fiche posée tenue), la boîte revient */
-  setInterval(function(){ var d=D(); if(!montre && d && actif(d) && !window._instant && !window._tenirAnime) tour(); }, 400);
-  /* la fiche repeinte (un état, une part, un pinceau) : la forme est relue à l'image suivante */
-  (function enveloppe(){ var f=window._ficheTrait; if(typeof f!=='function'){ setTimeout(enveloppe, 300); return; } if(f.__v192) return; var w=function(){ var r=f.apply(this, arguments); F=null; if(window._instant || window._tenirAnime) cache(D()); tour(); return r; }; w.__v192=1; window._ficheTrait=w; })();
+  setInterval(function(){ var d=D(); if(d && actif(d) && (!montre || !visible(document.getElementById('dpTrameCv')))) tour(); }, 400);
+  /* la fiche repeinte (un état, une part, un pinceau, l'instant) : la forme est relue à l'image suivante */
+  (function enveloppe(){ var f=window._ficheTrait; if(typeof f!=='function'){ setTimeout(enveloppe, 300); return; } if(f.__v192) return; var w=function(){ var r=f.apply(this, arguments); vite(); return r; }; w.__v192=1; window._ficheTrait=w; })();
 })();
 </script>
 <script id="lot-V184B-MOTS">

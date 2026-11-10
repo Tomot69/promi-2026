@@ -123,9 +123,9 @@ with sync_playwright() as p:
                 return im, m
             A1 = fiche(pg); er = pg.erreurs[:]; ctx.close()
             c2, p2, _ = ouvre(b, REF, nat, etat); p2.evaluate("()=>{ document.getElementById('detailPoster').scrollTop=0; }"); p2.wait_for_timeout(300); A2 = fiche(p2); c2.close()
-            dif = ImageChops.difference(A1[0], A2[0]).convert('L').point(lambda v: 255 if v > 24 else 0); dif = ImageChops.subtract(dif, ImageChops.lighter(A1[1], A2[1])); nd = sum(dif.histogram()[1:])
-            if nd: dif.save('scratchpad/v191/D-%s-%s-%s.png' % (ECH.replace(',', ''), nat, etat))
-            juge(T + ' D · au repos : la fiche identique à %s au pixel (matière exceptée)' % REF, nd == 0, nd)
+            import banc_jonction as BJ   # ⚑ v193 (Tom, Q616) : la même forme, la même position (± 0,5 pt), les mêmes couleurs — le lissage des bords du trait peut différer
+            nd = BJ.ecart_bords((0, A1[0], A1[1]), (0, A2[0], A2[1]))
+            juge(T + ' D · au repos : la fiche comme %s (matière exceptée ; bords lissés du trait exceptés, Q616)' % REF, nd == 0, nd)
             juge(T + ' aucune erreur de page', not er, er[:2])
         # E — le geste, horloge réelle (planté)
         if SANS_E: continue
