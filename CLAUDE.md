@@ -239,6 +239,45 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v195 (11 nov. 2026) — Q617 TRANCHÉE : TRAIT PLAT COLLÉ. LE TRAIT DE JONCTION PAR LA SEULE GÉOMÉTRIE (C-259). (Décision Tom.) Ce bloc CORRIGE v189–v194 (l'aplatissement : une couche redessinée, une boîte redessinée, des images montrées par la chronologie de défilement).
+> **⚑ NON LIVRÉ — NON FUSIONNÉ (condition de sortie de Tom). Commité sur la branche `v191` ; main reste à v190 ; le serveur sert main.**
+> Ce qui manque : ① dans Safari (D42A4999, iOS 26.1), un aller lent puis un retour sur le Cercle sont vus — la vague monte, rejoint le trait plat collé, passe sous la bande, et revient
+> exactement à sa place ; les cartes passent sous le trait plat ; ② **l'élan n'est PAS vérifié dans Safari** : la charge du Mac est montée de 8 à 620 (l'émulateur Android d'une autre
+> session), Safari a rechargé la page une fois (« un problème est survenu »), les gestes du simulateur ne faisaient plus défiler ; Promi et Chiche non vus en v195 ; ③ les 5 tracés
+> complets et 3 lâchés par nature : non faits en v195 ; ④ **vu une fois, non expliqué** : après trois allers-retours lancés sur le Cercle, le X du plateau était à gauche, sur le C de
+> « CERCLE » (rechargé, défilé, touché : à sa place, x 300 — non reproduit au banc WebKit, ni à 330 × 714 avec `?mesure=1`) — C-265 ; ⑤ la référence de la jonction n'est pas refaite
+> (`redteam_haut_fiche` §7 compare encore à v190 : la jonction défilée a changé par décision).
+> **Trouvés par la porte, corrigés** : ① le bloqueur de toucher de la bande avalait le clic PROGRAMMÉ qui tient la parole (`#segStatus`, sans coordonnées) dès que la fiche était défilée
+> d'un point (`redteam_premier_toucher` 4/6) — il ne vise que les vrais touchers (`isTrusted`) ; ② la vague ne se redessinait plus quand seul l'état des parts changeait
+> (`redteam_part` C) — chaque passage du peintre de la fiche la redessine (la recopie périodique, non).
+> **Pourquoi** : Safari iOS 26.1 ne fait pas suivre au défilement par élan les animations liées au défilement (`animation-timeline`, v194), ni un script (v193) : tout aplatissement
+> animé y prend du retard puis se recale d'un coup. Seuls le flux normal et `position: sticky` suivent le défilement image par image.
+> **⚑ LA RÈGLE (Tom) : PENDANT LE DÉFILEMENT, RIEN DE VISIBLE NE DÉPEND D'UNE ANIMATION NI D'UN SCRIPT.** Quatre calques, posés quand la fiche change, jamais au défilement
+> (`lot-V189-JONCTION`, `lot-V187-HAUT`) :
+> ① **la VAGUE** (`#v192Colle` > `#v189Jonction`, z 1) : dans le flux (`position: relative`), elle défile avec le contenu — le trait du geste avec toutes ses couleurs et tous ses états,
+>    l'instant, le tracé qui suit le doigt (C-264) ; la vague du Cercle ;
+> ② **le TRAIT PLAT** (`#v195Plat`, z 5) : collé à la jonction (`sticky`, haut à 112 pt), même peintre (l'onde d'amplitude 0), même couleur, même épaisseur ; 2 pt de champ au-dessus
+>    (la correction du demi-pixel de v190) ;
+> ③ **le CACHE** (`#v195Cache`, z 6, dans le flux) : l'image de la fiche au repos (le corps, `#dpTrameCv`, le dessin posé, la vague telle qu'elle est), colonne par colonne jusqu'au
+>    dernier pixel PLEIN du trait (au moins l'axe + ½ épaisseur − 2 px), calé sur le haut du champ (une cote fractionnaire relisse tout le calque, v192 ①) : au repos il recouvre le
+>    trait plat ; en défilant, il découvre le trait plat SOUS la vague qui monte — les bosses rejoignent le trait l'une après l'autre, puis passent sous la bande ; au retour, l'inverse ;
+> ④ **la BANDE** (`#v187Bande`, z 8) : collée en haut (`sticky`, 0 → 112 pt), en tête du flux (un Chiche tenu met la fiche en mise en page bloc : `order` y est ignoré), toujours
+>    là : au repos elle est le haut du champ ; au rebond du haut elle suit le contenu (une couche fixe y laissait une couture). Elle ne prend pas le doigt ; un toucher sur elle, la
+>    fiche défilée, est avalé au clic (rien de visible).
+> Le bouton photo (`.ph-photo-nid`, z 9 : sur un Cercle il dépasse dans 0 → 112 pt au repos) et le bouton du dessin (`.dz-oeil`) restent au-dessus. Le + des membres passe sous la bande
+> par le seul ordre des calques. **Retirés, sans code mort** : la chronologie `--fiche`, les images d'avance, le repli, `_v194Lie`, l'empreinte (`EN`), la bande fixe et son affichage par
+> défilement.
+> **Quatre pièges payés** : ① un bord de cache calculé tous les 2 pt fait un escalier — le masque se lit sur la vague rendue, à la résolution du champ ; ② le cache coupé au premier
+> pixel du trait laissait voir le trait plat dans les CREUX de la vague (entre le bras de la pointe et le ruban, entre deux points), puis coupé « sur le trait » il mordait les points —
+> d'où l'image entière du repos jusqu'au bas du trait ; ③ le lissage du bord bas recopié dans le cache faisait un liseré bleu sur le trait plat orange — le cache s'arrête au dernier
+> pixel PLEIN ; ④ **WebKit étire une image source à origine négative au lieu de la couper** (`drawImage(src, sx<0, …)`) — on calcule les rectangles soi-même.
+> ⚠ **Ce qui se voit pendant la rencontre, et que la géométrie impose** : sur Promi et Chiche, les points du trait plat ne sont pas aux mêmes abscisses que ceux de la vague ; pendant
+> ~10 pt de défilement, des points de la vague passent au-dessus des points plats qui se découvrent. ⚠ Le cache est composé par WebKit un peu autrement que le champ dessous : au
+> repos, des écarts de lissage aux bords (dalles, vague) — exceptés par Q616.
+> **Juge : `redteam_jonction_plat.py`** (par nature, `--natures=`) — sur l'écran, colonne par colonne : A au repos = v190 (bords et matière exceptés) ; B0 défilé au bout, le trait plat à la
+> jonction ; B la vague à sa place jusqu'au contact (aucun trait plat au-dessus d'elle), puis le trait plat ; C le même écran à l'aller et au retour ; tout cela aussi GELÉ
+> (`requestAnimationFrame`, minuteries, microtâches coupés pendant le défilement). Il remplace, pour la jonction, `redteam_jonction` A–G et `redteam_jonction_fiche` A–C (l'aplatissement).
+> `banc_jonction.ecart_bords` : un bord se lit sur chaque canal de couleur (un orange sur un bleu de même clarté n'était pas un bord) — original `sauvegardes/banc_jonction-avant-v195.py`.
 ### ⚑ v194 (11 nov. 2026) — PLUS AUCUN SAUT : L'APLATISSEMENT PILOTÉ PAR LE NAVIGATEUR (C-259) ; LE TRAIT QUI SUIT LE DOIGT ET REVIENT COMME SUR LA PAGE + (C-247) ; LE PREMIER TRACÉ APRÈS UN DÉFILEMENT (C-263). (Décisions Tom.) Ce bloc CORRIGE v193 (l'état accroché redessiné par le script à chaque défilement).
 > **Constat de Tom (v193)** : « ça saute encore au défilement » ; « on ne voit plus la flèche progressive qui revient en douceur quand on lâche le tracé ».
 > **⚑ §1 — LA RÈGLE : AUCUNE VALEUR VISIBLE NE DÉPEND D'UN ÉVÉNEMENT DE DÉFILEMENT TRAITÉ EN JAVASCRIPT.** Vérifié sur le simulateur Promi (Safari iOS 26.1) :
@@ -4537,6 +4576,7 @@ python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvemen
                                #   canevas entier, WebKit) ; les mouvements ont bien lieu. Rougit sur la version de v126 (Touffe). ≈ 10 min, seul.
 python3 redteam_premier_toucher.py # v193 (C-263) : 20 tracés de suite (10 au repos, 10 après un aller-retour lent ou lancé), Promi et Chiche, trois échelles : chacun pris au premier toucher ; seule la zone du geste sous le trait ; latence au calme seulement. Rouge sur v192.
 python3 redteam_retour_trait.py   # v194 (C-264) : le trait de la fiche suit le doigt et, lâché à 5, 15, 40 % de la seconde moitié, revient à la pointe par la loi de la page + (300 ms, ± 1,5 pt par image) ; Promi, Chiche, avec et sans défilement ; trois échelles. 52/52.
+python3 redteam_jonction_plat.py  # v195 (C-259, Q617) : par nature (--natures=), sur l'écran colonne par colonne : au repos = v190 (bords, matière exceptés) ; la vague à sa place jusqu'au contact, puis le trait plat collé ; même écran aller et retour ; aussi GELÉ (rAF, minuteries coupés). Trois échelles. Remplace jonction A–G et jonction_fiche A–C.
 python3 redteam_elan.py        # v192 (C-259 suite) : un élan lancé à 1 500, 3 000, 5 000 pt/s (décroissance d'iOS), bas puis haut, « vivant » et « gelé » (requestAnimationFrame coupé) ; à chaque image le
                                #   trait à 112 ± 0,5 pt accroché, ou à sa place de repos, jamais absent ; Cercle, Promi, Chiche (--natures=, le Cercle seul : ≈ 9 min) ; trois échelles. Rouge sur v191.
 python3 redteam_jonction_fiche.py # 23 — v191 (C-259 suite) : Promi, Chiche × 4 états — l'amplitude, la place du trait à la jonction (écran contre le peintre), aucun pixel parasite,
