@@ -239,6 +239,19 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v197 (11 nov. 2026) — LE SUJET DE LA JONCTION EST CLOS ; LE TRAIT N'EST PLUS COUPÉ EN HAUT DE SA COURBE (C-267). (Décisions Tom.)
+> **Validés par Tom sur son iPhone : C-259 (la jonction au défilement lancé et lent, le retour au repos), C-263 (le premier tracé tient), C-265 (clos, jamais reproduit). La
+> rencontre des points en « 8 » est ACCEPTÉE TELLE QUELLE : « pas de points collés, n'y touche plus ». La branche `v191` est fusionnée dans main (étiquette `avant-fusion-v197`).**
+> **⚑ C-267 — « le trait est coupé en haut à droite de sa courbe : il manque 1 à 2 mm » (après un défilement lâché, ou un tracé lâché) — NON REPRODUIT AU BANC** (v196 :
+> `redteam_trait_entier` vert aux échelles 1, 0,79, dans la fenêtre de Tom et sur son état exporté ; sa sonde rougit). Mesuré : la pointe et les bras du chevron montent à ≈ 17 pt
+> au-dessus de l'axe, à 4 pt du haut de la boîte de la vague. **Les deux pistes sont supprimées** (`lot-V189-JONCTION`) : ① la boîte de la vague a 30 pt de marge au-dessus du sommet
+> de sa courbe (`MH`, 14 avant) ; ② le cache ne montre plus de COPIE de la vague (une image d'elle, refaite à chaque passage, qui pouvait avoir une image de retard) : la vague VIVANTE
+> (`#v192Colle`) passe au-dessus du cache (z 7, au-dessous de la bande z 8) — sauf sur les 2 pt de chaque bord de l'écran, où la copie reste (à 0,79, la colonne du bord n'est
+> entière que là : 13 pixels du trait manquaient sur un Chiche, trouvé par la porte). Juge : **`redteam_trait_entier.py`** (trois natures ; au repos, après défilement et retour, après
+> un élan, pendant le retour d'un tracé lâché ; chaque pixel du trait de v190 au repos présent ; trois échelles et l'état de Tom ; `--sonde` : il rougit).
+> ⚠ **`redteam_haut_fiche` §7 compare encore la jonction défilée à la référence de v190** (changée par décision en v195) : la référence `banc-jonction/ref/` est REFAITE sur ce lot
+> (`--figer-jonction`), le rendu étant celui que Tom a validé sur son iPhone, sur les trois natures.
+
 ### ⚑ v196 (11 nov. 2026) — LA VERSION QUE TOM TESTE EST LA BRANCHE ; LES POINTS DU TRAIT PLAT (C-259) ; « TRACE POUR PLANTER » AVEC LE TRAIT (C-266). (Décisions Tom.) Ce bloc CORRIGE v174 (« “trace pour planter” juste après “Petite ou grande promesse” »).
 > **Tom n'avait pas vu v195 : le serveur servait main (v190).** Changement de méthode, pour ce sujet : **l'iPhone de Tom remplace le simulateur** ; la branche `v191` est servie (192.168.1.141, `?diag=1` : « v196 »), pas de fusion avant son retour.
 > **⚑ §2 — LES POINTS DU TRAIT PLAT** : mesuré au dessin (chaque `arc` piégé, rapporté à l'écran par la place des deux canevas), les points du trait plat sont DÉJÀ aux abscisses de ceux de la
@@ -4588,6 +4601,7 @@ python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvemen
 python3 redteam_premier_toucher.py # v193 (C-263) : 20 tracés de suite (10 au repos, 10 après un aller-retour lent ou lancé), Promi et Chiche, trois échelles : chacun pris au premier toucher ; seule la zone du geste sous le trait ; latence au calme seulement. Rouge sur v192.
 python3 redteam_retour_trait.py   # v194 (C-264) : le trait de la fiche suit le doigt et, lâché à 5, 15, 40 % de la seconde moitié, revient à la pointe par la loi de la page + (300 ms, ± 1,5 pt par image) ; Promi, Chiche, avec et sans défilement ; trois échelles. 52/52.
 python3 redteam_jonction_plat.py  # v195 (C-259, Q617) : par nature (--natures=), sur l'écran colonne par colonne : au repos = v190 (bords, matière exceptés) ; la vague à sa place jusqu'au contact, puis le trait plat collé ; même écran aller et retour ; aussi GELÉ (rAF, minuteries coupés). Trois échelles. Remplace jonction A–G et jonction_fiche A–C.
+python3 redteam_trait_entier.py # v197 (C-267) : chaque pixel du trait de v190 au repos est présent — au repos, après défilement, après un élan, pendant le retour d'un tracé lâché ; trois natures, trois échelles (PROMI_ECHELLE), `--tom` l'état exporté. --sonde : il rougit.
 python3 redteam_points_plat.py  # 10 — v196 (C-259) : les points du trait plat aux abscisses de ceux de la vague (< 0,5 pt), Promi et Chiche, trois échelles. --sonde : il rougit.
 python3 redteam_elan.py        # v192 (C-259 suite) : un élan lancé à 1 500, 3 000, 5 000 pt/s (décroissance d'iOS), bas puis haut, « vivant » et « gelé » (requestAnimationFrame coupé) ; à chaque image le
                                #   trait à 112 ± 0,5 pt accroché, ou à sa place de repos, jamais absent ; Cercle, Promi, Chiche (--natures=, le Cercle seul : ≈ 9 min) ; trois échelles. Rouge sur v191.

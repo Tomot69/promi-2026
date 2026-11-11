@@ -2602,7 +2602,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v196', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v197', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -44913,11 +44913,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    Pourquoi : Safari iOS 26.1 ne fait pas suivre au défilement par élan les animations liées au défilement (v194, `animation-timeline`), ni un script (v193) : tout
    aplatissement animé y prend du retard puis se recale d'un coup. Seules la position collée (`sticky`) et le flux normal suivent le défilement image par image.
    LA RÈGLE : pendant le défilement, rien de visible ne dépend d'une animation ni d'un script. Quatre calques, posés une fois quand la fiche change, jamais au défilement :
-   ① la VAGUE au repos (`#v192Colle` > `#v189Jonction`) : dans le flux, elle défile avec le contenu (z 1, au-dessus du champ) — le trait du geste de Promi et de Chiche
+   ① la VAGUE au repos (`#v192Colle` > `#v189Jonction`) : dans le flux, elle défile avec le contenu (⚑ v197, C-267 : z 7, au-dessus du cache — le trait vivant, jamais une copie) — le trait du geste de Promi et de Chiche
       avec toutes ses couleurs et tous ses états (l'instant « tenir », le tracé qui suit le doigt, C-264), la vague du Cercle ; `#dpTrameCv` ne dessine pas le trait ;
    ② le TRAIT PLAT (`#v195Plat`) : collé à la jonction (`position: sticky`, haut à 112 pt), la même couleur, la même épaisseur, le même peintre (l'onde d'amplitude 0) ;
       2 pt de champ au-dessus de lui (la correction du demi-pixel de v190 : sous la jointure de la bande, jamais la vague) ; z 5, au-dessus du contenu qui défile ;
-   ③ le CACHE (`#v195Cache`) : l'image de la fiche au repos (le corps, `#dpTrameCv`, le dessin posé, la vague telle qu'elle est), jusqu'au bas du trait (colonne par
+   ③ le CACHE (`#v195Cache`) : l'image de la fiche au repos (le corps, `#dpTrameCv`, le dessin posé — ⚑ v197 : plus la vague, qui passe au-dessus de lui), jusqu'au bas du trait (colonne par
       colonne, à la résolution du champ), qui défile avec le contenu, AU-DESSUS du trait plat (z 6) : au repos il le recouvre exactement (mêmes pixels que le champ dessous) ; en défilant, il monte
       sous la bande et découvre le trait plat SOUS la vague, colonne par colonne, à mesure que la vague le rejoint — les bosses rejoignent le trait l'une après
       l'autre, puis passent sous la bande ; au retour, l'inverse, par la même géométrie ;
@@ -44927,7 +44927,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    ⚑ C-263 (v193) : la zone du geste ne lâche le doigt que la vague arrivée à la jonction (le défilement lu au moment même — au doigt posé, à l'événement de défilement,
    à sa fin : rien de visible), et aucune couche d'affichage ne prend le doigt (`pointer-events: none`). */
 (function(){
-  var J=112, COL='#0A0415', XO=2, HP=40, CH=2;
+  var J=112, COL='#0A0415', XO=2, HP=40, CH=2, MH=30;
   function D(){ return document.getElementById('detailPoster'); }
   function actif(d){ return !!(d && d.classList.contains('show')); }   /* dès l'ouverture (le glissement compris) : c'est le seul trait de la fiche */
   function classes(d){ return d ? d.className.replace(/\bgs\d\b|\btracant\b/g,'').replace(/\s+/g,' ').trim() : ''; }   /* ni l'invite du geste (gs0…gs3), ni le geste en cours */
@@ -44952,7 +44952,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     f.photo=!f.cercle && !window._instant && typeof cur!=='undefined' && cur && !!cur.photo;
     try{ var g=c.getContext('2d'), E0=c.width/(c.offsetWidth||390), px=g.getImageData(Math.round(4*E0), Math.max(0, Math.round((mn-lw-6)*E0)), 1, 1).data; f.champ=px[3]>200 ? 'rgb('+px[0]+','+px[1]+','+px[2]+')' : null; }catch(_){ f.champ=null; }
     if(f.cercle && c.getAttribute('data-champ')) f.champ=c.getAttribute('data-champ');
-    f.Ytop=Math.floor(mn-lw/2-14); f.H=Math.ceil(mx+lw/2+40-f.Ytop);
+    f.Ytop=Math.floor(mn-lw/2-MH); f.H=Math.ceil(mx+lw/2+40-f.Ytop);   /* ⚑ v197 (C-267) : MH pt au-dessus du sommet de la courbe (la pointe d'un tracé au sommet monte à 17 pt au-dessus de l'axe, un pinceau plus haut) */
     return f; }
   function cle(){ var c=document.getElementById('dpTrameCv'), d=D(); return (c && c.getAttribute('data-trait')||'')+'|'+classes(d)+'|'+(c?c.width+'x'+c.height:'')+'|'+(c&&c.__ligne?1:0); }
   /* « accroché » : la vague arrivée à la jonction — le défilement lu à l'instant même (pour le geste seulement : rien de visible) */
@@ -44987,7 +44987,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var fond=getComputedStyle(D()).backgroundColor; if(fond && fond!=='rgba(0, 0, 0, 0)'){ g.fillStyle=fond; g.fillRect(0,0,CA.width,CA.height); }   /* le corps, sous le champ : les creux du trait sous l'axe */
     try{ g.drawImage(c, 0, r0, c.width, Math.min(h, c.height-r0), 0, 0, c.width, Math.min(h, c.height-r0)); }catch(_){ }
     var dz=document.querySelector('#detailPoster > canvas.dz-bande'); if(dz && dz.width && visible(dz)){ try{ var Ez=dz.width/(dz.offsetWidth||390), zr0=y0*Ez, zh=Math.min(dz.height-zr0, h/E*Ez); if(zh>0) g.drawImage(dz, 0, zr0, dz.width, zh, 0, 0, c.width, zh*E/Ez); }catch(_){ } }
-    try{ var oy=Math.round((F.Ytop-y0)*E), sh=Math.min(SC.height, h-oy); if(oy>=0 && sh>0) g.drawImage(SC, Math.round(XO*E), 0, c.width, sh, 0, oy, c.width, sh); }catch(_){ }   /* jamais une origine source négative (WebKit l'étire au lieu de la couper) */   /* la vague telle qu'elle est (le geste compris) : le cache est l'image du repos */
+    try{ var oy=Math.round((F.Ytop-y0)*E), sh=Math.min(SC.height, h-oy), bw=Math.ceil(2*E)+1; if(oy>=0 && sh>0){ g.drawImage(SC, Math.round(XO*E), 0, bw, sh, 0, oy, bw, sh); g.drawImage(SC, Math.round(XO*E)+c.width-bw, 0, bw, sh, c.width-bw, oy, bw, sh); } }catch(_){ }   /* ⚑ v197 (C-267, porte) : la copie de la vague ne reste que sur les 2 pt de chaque bord de l'écran — à une échelle non entière la colonne du bord n'est entière que là (v192 ③ : 13 pixels du trait manquaient sur un Chiche à 0,79) */
+    /* ⚑ v197 (Tom, C-267) : le cache ne porte plus de copie de la vague. La vague vivante (`#v192Colle`, z 7) est au-dessus de lui : c'est toujours LE trait qui se voit, jamais une image de lui, même un instant en retard ou décalée (le haut de la courbe était montré par cette copie). Le cache ne fait plus que cacher le trait plat (z 5) jusqu'au bas de la vague. */   /* jamais une origine source négative (WebKit l'étire au lieu de la couper) */   /* la vague telle qu'elle est (le geste compris) : le cache est l'image du repos */
     var mk=masque(c.width, h, E, y0); if(mk){ g.globalCompositeOperation='destination-in'; g.drawImage(mk, 0, 0); g.globalCompositeOperation='source-over'; }
     var o=(c.offsetTop||0)+y0;
     CA.style.cssText='position:absolute!important;left:'+(c.offsetLeft||0)+'px!important;top:'+o+'px!important;width:'+(c.offsetWidth||390)+'px!important;height:'+(h/E)+'px!important;margin:0!important;padding:0!important;max-width:none!important;z-index:6!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important'; }
@@ -44997,7 +44998,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(!on || !F || !F.P || !F.vis){ cache(d); return; }
     noeuds(d);
     if(!montre || S.__k!==F.cle){ montre=true; S.__k=F.cle;
-      S.style.cssText='position:relative!important;order:-10!important;flex:none!important;align-self:flex-start!important;width:'+(390+2*XO)+'px!important;height:'+F.H+'px!important;margin:'+F.Ytop+'px 0 '+(-(F.Ytop+F.H))+'px '+(-XO)+'px!important;overflow:visible!important;padding:0!important;max-width:none!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important;background:transparent!important;z-index:1!important';
+      S.style.cssText='position:relative!important;order:-10!important;flex:none!important;align-self:flex-start!important;width:'+(390+2*XO)+'px!important;height:'+F.H+'px!important;margin:'+F.Ytop+'px 0 '+(-(F.Ytop+F.H))+'px '+(-XO)+'px!important;overflow:visible!important;padding:0!important;max-width:none!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important;background:transparent!important;z-index:7!important';
       PL.style.cssText='position:-webkit-sticky!important;position:sticky!important;top:'+(J-CH)+'px!important;bottom:auto!important;order:-11!important;flex:none!important;align-self:flex-start!important;width:'+(390+2*XO)+'px!important;height:'+HP+'px!important;margin:'+(J-CH)+'px 0 '+(-(J-CH+HP))+'px '+(-XO)+'px!important;overflow:visible!important;padding:0!important;max-width:none!important;pointer-events:none!important;display:block!important;visibility:visible!important;opacity:1!important;transform:none!important;filter:none!important;background:transparent!important;z-index:5!important';
       plein(SC); plein(PC);
       var gp=prepare(PC, F.E||c.width/390, J-CH, HP); plat(gp); vu=''; }
