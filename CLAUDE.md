@@ -239,6 +239,20 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v197b (11–12 nov. 2026) — LE GUIDE DU STUDIO ATTEND LA FIN DE TOUTE ACTION (C-268) ; « À : MOI » SUR LA PAGE + (C-269). (Décisions Tom.) Branche `v197`, partie de main après la fusion de v191 ; NON POUSSÉE (C-269 : la place manque, ci-dessous).
+> **⚑ C-268 — L'ORDRE DES ÉTAPES (inchangé)** : la dernière page de l'onboarding (« Plus tard » du compte) → l'image s'ouvre en flaques sur l'accueil (900 ms) → `terminerSuite`
+> appelle `_guide.attend` → **le calme** → la couverture (1,4 s), la zone nette et la phrase du Studio. **LA CAUSE** (`lot-V141-GUIDE`) : la veille lisait l'accueil sur UN point de
+> l'écran (le milieu, à 45 % de la hauteur) et un calme de 250 ms après le dernier toucher ; ce qui ne couvre pas ce point n'était pas vu — le menu des trois natures du + (posé
+> en bas de l'accueil : mesuré, le guide partait par-dessus lui à 766 ms), une fiche dont le toucher attend encore le double toucher (`_tapVide`, 260 ms, v46), une feuille. Et
+> l'attente se comptait deux fois (250 ms après le toucher, PUIS 250 ms d'accueil, par pas de 60 ms) : 312 à 376 ms après le calme. **AUJOURD'HUI** (`occupe()`, `window._guideOccupe`,
+> pour cette étape seulement) : rien ne recouvre l'appareil (lu sur l'écran : une fiche, une feuille, un écran, le menu des natures, la vue en entier, le dessin ; et l'état « ouvert »,
+> la classe `show`, d'une fiche ou d'une feuille), aucun toucher en attente, aucun doigt (`__doigts`), aucun « tenir » qui joue, la Toile au repos ; puis **150 ms** comptées depuis le
+> dernier de ces instants ET le dernier toucher, relues toutes les 30 ms : le guide part 150 à 250 ms après le calme. ⚠ Le lancement lui-même occupe le fil ≈ 0,5 s quand la Toile
+> vient de bouger (le flou de l'accueil refait, C-208, préexistant) : sa première image vient après.
+> Juge : **`redteam_guide_calme.py`** (A rien ; B une dalle touchée à 0, 120, 400 ms ; C un glissé ; D une fiche et un tracé maintenu ; E le menu des natures ; F l'onboarding entier
+> au doigt — chaque image relevée dans la page, l'instant du lancement lu sur `data-pose` ; ② rien en cours à cet instant, ②b aucune fiche ouverte par un toucher d'avant ne paraît
+> sous le guide, ③ ≤ 300 ms après le calme, jugé au calme seulement ; rouge sur v196 : E par-dessus le menu, A et B 312 à 376 ms). `redteam_onb_ordre` : 65/65.
+
 ### ⚑ v197 (11 nov. 2026) — LE SUJET DE LA JONCTION EST CLOS ; LE TRAIT N'EST PLUS COUPÉ EN HAUT DE SA COURBE (C-267). (Décisions Tom.)
 > **Validés par Tom sur son iPhone : C-259 (la jonction au défilement lancé et lent, le retour au repos), C-263 (le premier tracé tient), C-265 (clos, jamais reproduit). La
 > rencontre des points en « 8 » est ACCEPTÉE TELLE QUELLE : « pas de points collés, n'y touche plus ». La branche `v191` est fusionnée dans main (étiquette `avant-fusion-v197`).**
@@ -4601,6 +4615,7 @@ python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvemen
 python3 redteam_premier_toucher.py # v193 (C-263) : 20 tracés de suite (10 au repos, 10 après un aller-retour lent ou lancé), Promi et Chiche, trois échelles : chacun pris au premier toucher ; seule la zone du geste sous le trait ; latence au calme seulement. Rouge sur v192.
 python3 redteam_retour_trait.py   # v194 (C-264) : le trait de la fiche suit le doigt et, lâché à 5, 15, 40 % de la seconde moitié, revient à la pointe par la loi de la page + (300 ms, ± 1,5 pt par image) ; Promi, Chiche, avec et sans défilement ; trois échelles. 52/52.
 python3 redteam_jonction_plat.py  # v195 (C-259, Q617) : par nature (--natures=), sur l'écran colonne par colonne : au repos = v190 (bords, matière exceptés) ; la vague à sa place jusqu'au contact, puis le trait plat collé ; même écran aller et retour ; aussi GELÉ (rAF, minuteries coupés). Trois échelles. Remplace jonction A–G et jonction_fiche A–C.
+python3 redteam_guide_calme.py  # v197b (C-268) : le guide du Studio ne part jamais par-dessus une action (une dalle touchée à 0/120/400 ms, un glissé, une fiche et un tracé, le menu des natures, l'onboarding entier) ; ≤ 300 ms après le calme (au calme). Rouge sur v196.
 python3 redteam_trait_entier.py # v197 (C-267) : chaque pixel du trait de v190 au repos est présent — au repos, après défilement, après un élan, pendant le retour d'un tracé lâché ; trois natures, trois échelles (PROMI_ECHELLE), `--tom` l'état exporté. --sonde : il rougit.
 python3 redteam_points_plat.py  # 10 — v196 (C-259) : les points du trait plat aux abscisses de ceux de la vague (< 0,5 pt), Promi et Chiche, trois échelles. --sonde : il rougit.
 python3 redteam_elan.py        # v192 (C-259 suite) : un élan lancé à 1 500, 3 000, 5 000 pt/s (décroissance d'iOS), bas puis haut, « vivant » et « gelé » (requestAnimationFrame coupé) ; à chaque image le

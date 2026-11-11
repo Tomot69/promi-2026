@@ -41982,6 +41982,28 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   var tDoigt=0, doigt=0; ['pointerdown','touchstart','touchmove','touchend','pointerup','wheel','keydown'].forEach(function(n){ document.addEventListener(n,function(e){ tDoigt=performance.now(); if(n==='touchstart'||n==='pointerdown') doigt=1; if(n==='touchend'||n==='pointerup') doigt=0; },{capture:true,passive:true}); });
   function calme(){ try{ var st=window.Toile_state&&window.Toile_state(); if(st&&st.running) return false; }catch(_){ }
     if(window._tirageActive || doigt) return false; return performance.now()-tDoigt>250; }
+  /* ⚑ v197 (Tom, C-268) — « Le guide se lance au milieu d'un geste. » LA CAUSE : à la fin de l'onboarding (`terminerSuite` → `_guide.attend`), la veille
+     lisait « l'accueil » sur UN point de l'écran (le milieu, à 45 % de la hauteur) et un calme de 250 ms après le dernier toucher. Ce qui ne couvre pas ce
+     point n'était pas vu : le menu des trois natures du + (posé sur l'accueil, en bas — mesuré : le guide partait par-dessus lui à 766 ms), une fiche qui
+     glisse encore, une feuille. Et l'attente se comptait deux fois (250 ms après le toucher, PUIS 250 ms d'accueil, par pas de 60 ms) : 312 à 376 ms après
+     le calme, un temps mort. AUJOURD'HUI, pour cette étape seulement (`libre`) : rien ne recouvre l'appareil (lu sur l'écran : une fiche, une feuille, un
+     écran, le menu des natures, la vue en entier, le dessin), aucun doigt (le compteur de tête de page, `__doigts`), aucun « tenir » qui joue, la Toile au
+     repos ; puis 150 ms comptées depuis le dernier de ces instants ET depuis le dernier toucher, relues toutes les 30 ms : le guide part 150 à 250 ms
+     après que tout est calme. Ordre des étapes (inchangé) : la dernière page de l'onboarding (« Plus tard » du compte) → l'image s'ouvre en flaques sur
+     l'accueil (900 ms) → `terminerSuite` (le guide attend) → le calme (ci-dessus) → la couverture (1,4 s), la zone nette et la phrase du Studio. */
+  function couvre(el){ if(!el) return false; var c=getComputedStyle(el); if(c.display==='none' || c.visibility==='hidden' || +c.opacity<0.02) return false;
+    var r=el.getBoundingClientRect(), d=dev.getBoundingClientRect(); return Math.min(r.right,d.right)-Math.max(r.left,d.left)>2 && Math.min(r.bottom,d.bottom)-Math.max(r.top,d.top)>2; }
+  function occupe(){ try{ if(onbOuvert() || !studioFerme()) return 'onboarding ou Studio';
+      var ch=$('accChoix'); if(ch && ch.classList.contains('ouvert')) return 'natures';
+      var ou=document.querySelector('#detailPoster.show, #createSheet.show, #personSheet.show'); if(ou) return ou.id;   /* l'état « ouvert » d'abord (la classe que le code pose, §8) : une fiche ouverte au toucher n'est pas encore à l'écran à l'image où elle s'ouvre */
+      var L=document.querySelectorAll('#detailPoster, #createSheet, #personSheet, #feedView, #entierVue, #dessinMode, #accRappelCompte, .screen:not(#studioScreen)');
+      for(var i=0;i<L.length;i++) if(couvre(L[i])) return L[i].id || 'écran';
+      if(window._tenirAnime || window._instant || window._tirageActive) return 'geste';
+      if(window._tapVide && window._tapVide.to) return 'toucher en attente';   /* un toucher sur une dalle n'ouvre sa fiche que 260 ms plus tard (le double toucher, v46) */
+      var D=window.__doigts; if((D && D.n>0) || doigt) return 'doigt';
+      var st=window.Toile_state&&window.Toile_state(); if(st&&st.running) return 'toile';
+      return ''; }catch(_){ return 'erreur'; } }
+  var tLibre=0, ATT_CALME=150; window._guideOccupe=occupe;   /* un pointeur pour les juges */
   var etat=null, attente=null, tAcc=0, trou=null, tVu=0, vuStudio=false, tPose=0, SC=null, jeu=0, ou='studio', uC=0, uN=0, vivAv=null, traceCtl=null;
   var TRACE=true; try{ TRACE=!/[?&]trace=0(&|$)/.test(location.search); }catch(_){ }   /* ⚑ v147 (Tom, C-125 §9) : le tracé des lettres, PAR DÉFAUT (`?trace=0` l'éteint) */
   function k(){ return (dev.getBoundingClientRect().width/390)||1; }
@@ -42396,7 +42418,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   /* la veille : l'état se lit sur ce qui est à l'écran */
   setInterval(function(){ var now=performance.now();
     if(attente){ if(!attente.rejeu && LS.g(CLE)==='1'){ attente=null; return; }
-      if(accueil() && calme()){ if(!tAcc) tAcc=now; if(now-tAcc>=ATTENTE){ attente=null; tAcc=0; LS.s(CLE,'studio'); montre('studio'); } } else tAcc=0; return; }
+      return; }   /* ⚑ v197 (C-268) : l'attente de la fin de l'onboarding a sa propre veille (30 ms), plus bas */
     if(etat==='apres-plus'){ if(revenu()) cloture(); return; }   /* v165 (C-203, a et b) ; v169b : sans attendre le calme (repli de `guetteRetour`) */
     if(etat==='partage' || etat==='vers-partage') majFlou();   /* v169b : une parole plantée — le fond flouté refait quand la Toile est posée */
     if(etat==='au-partage' || etat==='vers-partage' || etat==='vers-reste') return;
@@ -42409,6 +42431,11 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       if(!glisse && !accueil()){ retire(); etat=null; } } }, 60);
   /* `?guide=1` le rejoue à l'ouverture ; `&gfige=800` arrête la couverture à cet instant ; `&getape=plus` montre la seconde étape ;
      `&gnet=350` arrête l'ouverture de la zone nette à cet instant (pour le regarder dans Safari) */
+  setInterval(function(){ if(!attente) return; var now=performance.now();
+    if(!attente.rejeu && LS.g(CLE)==='1'){ attente=null; return; }
+    if(occupe()){ tLibre=0; return; } if(!tLibre) tLibre=now;
+    var D=window.__doigts, tD=Math.max(tDoigt, D&&D.t||0);
+    if(now-Math.max(tLibre, tD)>=ATT_CALME){ attente=null; tAcc=0; tLibre=0; LS.s(CLE,'studio'); montre('studio'); } }, 30);
   try{ if(/[?&]guide=1(&|$)/.test(location.search)) setTimeout(function(){ attente={rejeu:true}; tAcc=0; }, 1500); }catch(_){ }
   /* ⚑ v148 (C-146) : « au lancement, le flou du Studio » — tant que le Studio n'a jamais été ouvert depuis le guide (`promi_guide` = « studio » : le guide
      a paru, l'app a été quittée à l'étape du Studio), le guide reprend à cette étape au lancement suivant. Le Studio ouvert, `promi_guide` passe à « 1 ». */
