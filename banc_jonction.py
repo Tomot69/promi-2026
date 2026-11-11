@@ -44,3 +44,21 @@ def ecart(a, b, seuil=24):
     from PIL import ImageChops as C
     d = C.difference(a[1], b[1]).convert('L').point(lambda v: 255 if v > seuil else 0)
     d = C.subtract(d, C.lighter(a[2], b[2])); return sum(d.histogram()[1:])
+def ecart_bords(a, ref, seuil=24, rayon=2):
+    """⚑ v193 (Tom, Q616 tranchée) — « la référence au pixel ne s'impose plus au bord du trait : la même forme, la même position (0,5 pt près), les mêmes couleurs ;
+    le lissage des bords peut différer ». Comme `ecart`, sauf les pixels à `rayon` pixels (2 px ≈ 0,67 pt au banc @3x) d'un BORD de la référence : un trait décalé de
+    plus d'un demi-point, d'une autre forme ou d'une autre couleur laisse des pixels hors de cette bande, et il est pris."""
+    if a[1].size != ref[1].size: return -1
+    from PIL import ImageChops as C, ImageFilter as IF
+    d = C.difference(a[1], ref[1]).convert('L').point(lambda v: 255 if v > seuil else 0)
+    bord = None   # ⚑ v195 : un bord se lit sur CHAQUE canal (un orange sur un bleu de même clarté n'est pas un bord de luminance — le pointe du trait de Promi)
+    for ch in ref[1].convert('RGB').split():
+        e = ch.filter(IF.FIND_EDGES).point(lambda v: 255 if v > 30 else 0); bord = e if bord is None else C.lighter(bord, e)
+    bord = bord.filter(IF.MaxFilter(2 * rayon + 1))
+    from PIL import ImageDraw; W, H = bord.size; dr = ImageDraw.Draw(bord)   # la rangée du bord de la zone (112 pt : le haut du trait accroché) — le filtre n'y voit pas le bord ; le bas du trait, lui, reste jugé
+    dr.rectangle([0, 0, W, rayon - 1], fill=255); dr.rectangle([0, H - rayon, W, H], fill=255)
+    dr.rectangle([0, 0, 0, H], fill=255); dr.rectangle([W - 1, 0, W, H], fill=255)   # la colonne du bord de l'écran : à une échelle non entière, son pixel est à cheval sur le bord (le lissage du bord de l'écran)
+    d = C.subtract(C.subtract(d, C.lighter(a[2], ref[2])), bord)
+    import os
+    if os.environ.get('BJ_DIFF'): d.save(os.environ['BJ_DIFF']); a[1].save(os.environ['BJ_DIFF']+'.a.png'); ref[1].save(os.environ['BJ_DIFF']+'.r.png')
+    return sum(d.histogram()[1:])

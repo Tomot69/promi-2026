@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
-"""⚑ v189 (Tom, Q612 tranchée, C-259) — LE TRAIT DE JONCTION SOUS L'EN-TÊTE.
+"""⚑ v192 (C-259 suite ; original : sauvegardes/redteam_jonction-avant-v192.py) : la couche est une BOÎTE COLLANTE (#v192Colle, canevas #v189Jonction) — la tranche haute se lit
+ sur son canevas et se replace à la position de la boîte à l'écran ; E lit la boîte. F inchangé (le trait collé du Cercle suit le modèle échantillonné, comme en v190).
+⚑ v189 (Tom, Q612 tranchée, C-259) — LE TRAIT DE JONCTION SOUS L'EN-TÊTE.
 Banc WebKit (banc_tom), échelles 1 et 0,79 (PYTHONPATH=scratchpad/v186/echelle079 PROMI_ECHELLE=0,79), fiches Cercle, Promi, Chiche ; la fiche défilée pas à pas de 2 pt
 jusqu'à 140 pt puis remontée à 0, chaque pas lu après l'image :
   A · Cercle : avant l'accrochage, rien n'est dessiné (la vraie vague défile) ; après, l'amplitude = (1 − (s − s0)/40) bornée, continue et monotone, la même à l'aller et
@@ -13,8 +15,8 @@ jusqu'à 140 pt puis remontée à 0, chaque pas lu après l'image :
   F · Cercle — AUCUN TRAIT PARASITE : défilé de 1 pt en 1 pt, aller et retour, de l'accrochage − 6 à + 46 pt ; à chaque image, colonne par colonne, entre le bas de la bande
       (112 − 1,5) et le haut de la vague collée (son enveloppe, − 1,2 pt), sous les dalles du champ (l'enveloppe de la vraie vague) : rien que le champ (± 6) ; sous la vague
       collée (+ 1,2 → + 12 pt) : rien que le corps (± 6). Rouge sur v189 (le trait gris à 112, sur les bosses).
-  G · Promi, Chiche — PLUS AUCUN TRAIT : la zone de la jonction (112 → 212 pt) identique à v188 AU PIXEL à chaque pas, aller et retour (banc_jonction, matière exceptée) ;
-      la couche n'existe plus. Rouge sur v189."""
+  G · Promi, Chiche — ⚑ v191 : AVANT L'ACCROCHAGE, la zone de la jonction (112 → 212 pt) identique à v190 AU PIXEL à chaque pas, aller et retour (banc_jonction, matière
+      exceptée) ; l'accrochage lui-même est jugé par redteam_jonction_fiche. (v190 : identique à v188 à tous les pas, la couche absente.)"""
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
 from PIL import Image, ImageChops
@@ -25,10 +27,13 @@ def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:220]), flush=True); return ok
 LIT = r"""()=>{ const c=document.getElementById('v189Jonction'); const d=document.getElementById('detailPoster');
   if(!c || getComputedStyle(c).display==='none') return {s:d.scrollTop, v:null};
-  const g=c.getContext('2d'), E=c.width/390, a=(c.getAttribute('data-jonction')||'').split(',');
+  /* ⚑ v194 : les états accrochés sont des images d'avance (#v194Images), montrées par le défilement — on lit celle que le navigateur montre (le repli si elles ne sont pas prêtes) */
+  const J=window._v189Jonction&&_v189Jonction(), XO=(J&&J.XO)||0, vue=[...document.querySelectorAll('#v194Images canvas, #v194Repli')].find(k=>getComputedStyle(k).display!=='none' && getComputedStyle(k.parentNode).display!=='none' && !String(getComputedStyle(k).translate).startsWith('-'));
+  const cv=(c.getAttribute('data-jonction') && vue) ? vue : c;
+  const g=cv.getContext('2d'), E=cv.width/(390+2*XO), a=(c.getAttribute('data-jonction')||'').split(','), Bx=document.getElementById('v192Colle')||c, Dv=document.getElementById('device').getBoundingClientRect(), O=(Bx.getBoundingClientRect().top-Dv.top)/(Dv.width/390);   /* ⚑ v192 : le canevas est dans la boîte collante (#v192Colle) : sa rangée 0 est à O pt à l'écran */
   /* la tranche haute du trait : la première rangée opaque de la couleur du trait, colonnes 60, 195, 330 */
-  const haut=x=>{ const col=g.getImageData(Math.round(x*E),0,1,c.height).data; for(let y=0;y<c.height;y++){ const i=y*4; if(col[i+3]>128 && Math.abs(col[i]-10)<24 && Math.abs(col[i+1]-4)<24 && Math.abs(col[i+2]-21)<24) return y/E; } return null; };
-  const cs=getComputedStyle(c);
+  const haut=x=>{ const col=g.getImageData(Math.round((x+XO)*E),0,1,cv.height).data; for(let y=0;y<cv.height;y++){ const i=y*4; if(col[i+3]>128 && Math.abs(col[i]-10)<24 && Math.abs(col[i+1]-4)<24 && Math.abs(col[i+2]-21)<24) return O+y/E; } return null; };
+  const cs=getComputedStyle(Bx);
   return {s:d.scrollTop, v:a[1]!=null?+a[1]:null, kind:a[0], h:[haut(60),haut(195),haut(330)], pe:cs.pointerEvents, z:cs.zIndex}; }"""
 def pas(pg, s):
     pg.evaluate("s=>{ document.getElementById('detailPoster').scrollTop=s; }", s)
@@ -109,10 +114,10 @@ with sync_playwright() as p:
             haut = min(mine[j - max(0, i - 4)] - (r * r - ((j - i) * 2) ** 2) ** .5 for j in range(max(0, i - 4), min(len(P), i + 5)) if abs((j - i) * 2) <= r)
             basm = max(mine[j - max(0, i - 4)] + (r * r - ((j - i) * 2) ** 2) ** .5 for j in range(max(0, i - 4), min(len(P), i + 5)) if abs((j - i) * 2) <= r)
             dal = ENr[i] - s - 2.5
-            for yy in range(Y(max(110.5, dal)), Y(haut - 1.2)):
+            for yy in range(Y(max(110.5, dal)), Y(haut - 1.2) - 2):   # ⚑ v193 (Q616) : 2 pixels de l'appareil au bord du trait exceptés (le lissage des bords)
                 c = px[X, yy]
                 if sum(abs(c[k] - champ[k]) for k in range(3)) > 6: mauvais.append((round(s, 1), x, round((yy / q - d[1]) / d[2], 1), c)); break
-            for yy in range(Y(basm + 1.2), Y(basm + 12)):
+            for yy in range(Y(basm + 1.2) + 2, Y(basm + 12)):   # ⚑ v193 (Q616) : idem
                 c = px[X, yy]
                 if sum(abs(c[k] - corps[k]) for k in range(3)) > 6: mauvais.append((round(s, 1), x, round((yy / q - d[1]) / d[2], 1), c, 'corps')); break
     juge('[cercle] F · aucun trait parasite : %d images, aller et retour, rien que le champ au-dessus de la vague collée et le corps dessous' % len(seq), not mauvais, (len(mauvais), mauvais[:4]))
@@ -121,13 +126,17 @@ with sync_playwright() as p:
     # G · Promi, Chiche : la zone de jonction identique à v188 au pixel, à chaque pas
     import banc_jonction as BJ
     vw, vh = pg.evaluate("()=>[innerWidth, innerHeight]")
+    # ⚑ v191 (Tom, C-259 suite ; original : sauvegardes/redteam_jonction-avant-v191.py) : Promi et Chiche s'accrochent eux aussi (jugé par redteam_jonction_fiche) ;
+    # G ne garde que ce qui précède l'accrochage : la zone de la jonction identique à v190 (= v188) au pixel, aller et retour, tant que le trait n'est pas accroché.
     for nat in ('promi', 'chiche'):
         R = []
-        for f in (F, 'zz-v188.html'):
-            cx, pp = BJ.ouvre(b, f, nat, vw, vh); R.append(BJ.images(pp)); cou = pp.evaluate("()=>{ const c=document.getElementById('v189Jonction'); return c ? getComputedStyle(c).display : 'absente'; }") if f == F else None
-            if f == F: CO = cou
-            cx.close()
-        e = [(x[0], BJ.ecart(x, y)) for x, y in zip(R[0], R[1])]
-        juge('[%s] G · la zone de la jonction identique à v188 au pixel, %d pas aller et retour ; aucune couche' % (nat, len(e)), not [z for z in e if z[1]] and CO in ('absente', 'none'), ([z for z in e if z[1]][:4], CO))
+        for f in (F, 'zz-v190.html'):
+            cx, pp = BJ.ouvre(b, f, nat, vw, vh)
+            if f == F:
+                pp.evaluate("()=>{ document.getElementById('detailPoster').scrollTop=1; }"); pp.evaluate("()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r)))")
+                S0 = pp.evaluate("()=>{ const j=window._v189Jonction&&_v189Jonction(); return j&&j.F?j.F.s0:null; }") or 0
+            PAS = [s for s in BJ.PAS if s < S0 - 0.5]; R.append(BJ.images(pp, PAS)); cx.close()
+        e = [(x[0], BJ.ecart_bords(x, y)) for x, y in zip(R[0], R[1])]   # ⚑ v193 (Q616) : les bords lissés du trait exceptés
+        juge('[%s] G · avant l\'accrochage (s0 = %.1f) : la zone de la jonction comme v190 — même forme, position ± 0,5 pt, mêmes couleurs (bords lissés exceptés, Q616), %d pas aller et retour' % (nat, S0, len(e)), S0 > 60 and len(e) > 10 and not [z for z in e if z[1]], [z for z in e if z[1]][:4])
     b.close()
 print('\n  %d / %d' % (sum(res), len(res)))

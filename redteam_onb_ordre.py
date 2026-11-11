@@ -24,7 +24,7 @@ la visibilité du style rendu image par image, l'encre de la phrase d'une captur
 Preuve : `--fichier=zz-v172.html` rougit (A, B, C, D, E, G, J).
 ⚑ v174 (Tom, 31 oct. 2026, corrige C-211) — « “Petite ou grande promesse, elle compte.” n'arrive qu'APRÈS que la promesse est complétée, juste avant “TRACE POUR PLANTER” et le
 trait, avec eux. » A : trois textes (prénom, Quid, phrase) ; C, D : « Petite… » absente, comme le trait ; E : elle se trace pendant que le trait naît, le libellé juste après ;
-G : elle repart avec eux. Places : v173 servie à côté (`zz-v173.html`) ; K retiré (C-212 validé en v173). Rouge sur v173 (`--fichier=zz-v173.html`).
+G : elle repart avec eux. ⚑ v196 (Tom) : « trace pour planter » apparaît EN MÊME TEMPS que le trait, plus après « Petite… » (E, ≤ 50 ms ; rouge sur v195). Places : v173 servie à côté (`zz-v173.html`) ; K retiré (C-212 validé en v173). Rouge sur v173 (`--fichier=zz-v173.html`).
 """
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
@@ -116,7 +116,7 @@ def premier_parcours(b, fichier, vw, vh, sombre, T):
     fl = sum(1 for m in ims if 'ouvre' in (m['fl'] or []))
     juge('[%s] E · le trait et le départ naissent en flaques, le libellé est TRACÉ' % T, fl >= 8 and bool(tr2) and not any(m['onbTrace'] and m['t'] < tr2[0]['t0'] - 40 for m in ims), '%d images de flaques · tracé du libellé %s' % (fl, 'oui' if tr2 else 'non'))
     so2 = [q for q in pg.evaluate("()=>window.__tr") if q['id'] == 'onbSous']
-    juge('[%s] E · « Petite ou grande promesse » se trace avec le trait, juste avant le libellé' % T, bool(so2) and bool(tr2) and t_vu is not None and abs(so2[0]['t0'] - t_vu) <= 450 and tr2[0]['t0'] >= so2[0]['t0'], '« Petite… » %s · trait %s · libellé %s' % (round(so2[0]['t0'] - tn) if so2 else None, round(t_vu - tn) if t_vu else None, round(tr2[0]['t0'] - tn) if tr2 else None))
+    juge('[%s] E · « Petite ou grande promesse » et « trace pour planter » se tracent EN MÊME TEMPS que le trait naît (v196 : ≤ 50 ms l\'un de l\'autre, et du trait)' % T, bool(so2) and bool(tr2) and t_vu is not None and abs(so2[0]['t0'] - t_vu) <= 50 and abs(tr2[0]['t0'] - t_vu) <= 50, '« Petite… » %s · trait %s · libellé %s' % (round(so2[0]['t0'] - tn) if so2 else None, round(t_vu - tn) if t_vu else None, round(tr2[0]['t0'] - tn) if tr2 else None))
     juge('[%s] E · le départ clignote (promiBlink), en phase avec le I' % T, ph['clig'] and ph['anim'] == 'promiBlink' and ph['ecart'] is not None and ph['ecart'] <= 70, ph)
     # I — les places
     r_ic = pg.evaluate(RECTS)

@@ -151,9 +151,9 @@ with sync_playwright() as p:
                 big = Image.open(ref).convert('RGB'); bad = []
                 for s, im, m in IM:
                     i = uniq.index(s); r = big.crop((0, i * H, W, (i + 1) * H)) if big.size[0] == W else None
-                    e = BJ.ecart((s, im, m), (s, r, m)) if r is not None else -1
+                    e = BJ.ecart_bords((s, im, m), (s, r, m)) if r is not None else -1   # ⚑ v193 (Q616) : les bords lissés du trait exceptés
                     if e: bad.append((s, e))
-                juge('%s jonction : la zone 112 → 212 pt identique à la référence de v190 au pixel, %d images aller et retour' % (T, len(IM)), not bad, bad[:5])
+                juge('%s jonction : la zone 112 → 212 pt — même forme, même position (± 0,5 pt), mêmes couleurs que la référence (bords lissés exceptés, Q616), %d images aller et retour' % (T, len(IM)), not bad, bad[:5])
     b.close()
 print('\n%d / %d' % (sum(res), len(res)))
 sys.exit(0 if all(res) else 1)
