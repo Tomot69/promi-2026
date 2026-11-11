@@ -55,4 +55,7 @@ def ecart_bords(a, ref, seuil=24, rayon=2):
     from PIL import ImageDraw; W, H = bord.size; dr = ImageDraw.Draw(bord)   # la rangée du bord de la zone (112 pt : le haut du trait accroché) — le filtre n'y voit pas le bord ; le bas du trait, lui, reste jugé
     dr.rectangle([0, 0, W, rayon - 1], fill=255); dr.rectangle([0, H - rayon, W, H], fill=255)
     dr.rectangle([0, 0, 0, H], fill=255); dr.rectangle([W - 1, 0, W, H], fill=255)   # la colonne du bord de l'écran : à une échelle non entière, son pixel est à cheval sur le bord (le lissage du bord de l'écran)
-    d = C.subtract(C.subtract(d, C.lighter(a[2], ref[2])), bord); return sum(d.histogram()[1:])
+    d = C.subtract(C.subtract(d, C.lighter(a[2], ref[2])), bord)
+    import os
+    if os.environ.get('BJ_DIFF'): d.save(os.environ['BJ_DIFF']); a[1].save(os.environ['BJ_DIFF']+'.a.png'); ref[1].save(os.environ['BJ_DIFF']+'.r.png')
+    return sum(d.histogram()[1:])

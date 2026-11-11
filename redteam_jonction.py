@@ -27,9 +27,12 @@ def juge(nom, ok, d=''):
     res.append(bool(ok)); print('  %s %-100s %s' % ('✅' if ok else '❌', nom, str(d)[:220]), flush=True); return ok
 LIT = r"""()=>{ const c=document.getElementById('v189Jonction'); const d=document.getElementById('detailPoster');
   if(!c || getComputedStyle(c).display==='none') return {s:d.scrollTop, v:null};
-  const g=c.getContext('2d'), E=c.width/390, a=(c.getAttribute('data-jonction')||'').split(','), Bx=document.getElementById('v192Colle')||c, Dv=document.getElementById('device').getBoundingClientRect(), O=(Bx.getBoundingClientRect().top-Dv.top)/(Dv.width/390);   /* ⚑ v192 : le canevas est dans la boîte collante (#v192Colle) : sa rangée 0 est à O pt à l'écran */
+  /* ⚑ v194 : les états accrochés sont des images d'avance (#v194Images), montrées par le défilement — on lit celle que le navigateur montre (le repli si elles ne sont pas prêtes) */
+  const J=window._v189Jonction&&_v189Jonction(), XO=(J&&J.XO)||0, vue=[...document.querySelectorAll('#v194Images canvas, #v194Repli')].find(k=>getComputedStyle(k).display!=='none' && getComputedStyle(k.parentNode).display!=='none' && !String(getComputedStyle(k).translate).startsWith('-'));
+  const cv=(c.getAttribute('data-jonction') && vue) ? vue : c;
+  const g=cv.getContext('2d'), E=cv.width/(390+2*XO), a=(c.getAttribute('data-jonction')||'').split(','), Bx=document.getElementById('v192Colle')||c, Dv=document.getElementById('device').getBoundingClientRect(), O=(Bx.getBoundingClientRect().top-Dv.top)/(Dv.width/390);   /* ⚑ v192 : le canevas est dans la boîte collante (#v192Colle) : sa rangée 0 est à O pt à l'écran */
   /* la tranche haute du trait : la première rangée opaque de la couleur du trait, colonnes 60, 195, 330 */
-  const haut=x=>{ const col=g.getImageData(Math.round(x*E),0,1,c.height).data; for(let y=0;y<c.height;y++){ const i=y*4; if(col[i+3]>128 && Math.abs(col[i]-10)<24 && Math.abs(col[i+1]-4)<24 && Math.abs(col[i+2]-21)<24) return O+y/E; } return null; };
+  const haut=x=>{ const col=g.getImageData(Math.round((x+XO)*E),0,1,cv.height).data; for(let y=0;y<cv.height;y++){ const i=y*4; if(col[i+3]>128 && Math.abs(col[i]-10)<24 && Math.abs(col[i+1]-4)<24 && Math.abs(col[i+2]-21)<24) return O+y/E; } return null; };
   const cs=getComputedStyle(Bx);
   return {s:d.scrollTop, v:a[1]!=null?+a[1]:null, kind:a[0], h:[haut(60),haut(195),haut(330)], pe:cs.pointerEvents, z:cs.zIndex}; }"""
 def pas(pg, s):

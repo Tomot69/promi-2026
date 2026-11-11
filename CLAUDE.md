@@ -239,6 +239,45 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v194 (11 nov. 2026) — PLUS AUCUN SAUT : L'APLATISSEMENT PILOTÉ PAR LE NAVIGATEUR (C-259) ; LE TRAIT QUI SUIT LE DOIGT ET REVIENT COMME SUR LA PAGE + (C-247) ; LE PREMIER TRACÉ APRÈS UN DÉFILEMENT (C-263). (Décisions Tom.) Ce bloc CORRIGE v193 (l'état accroché redessiné par le script à chaque défilement).
+> **Constat de Tom (v193)** : « ça saute encore au défilement » ; « on ne voit plus la flèche progressive qui revient en douceur quand on lâche le tracé ».
+> **⚑ §1 — LA RÈGLE : AUCUNE VALEUR VISIBLE NE DÉPEND D'UN ÉVÉNEMENT DE DÉFILEMENT TRAITÉ EN JAVASCRIPT.** Vérifié sur le simulateur Promi (Safari iOS 26.1) :
+> `CSS.supports('animation-timeline: scroll()')` est VRAI (`view()` et `animation-range` aussi). Donc (`lot-V189-JONCTION`) : `#detailPoster` porte la chronologie
+> `--fiche` (`scroll-timeline`) ; chaque état accroché du trait — u, le défilement au-delà de l'accrochage, de 1 en 1 pt sur les 40 pt de l'aplatissement, puis de 4 en 4 pt
+> jusqu'à la fin des remplissages — est une IMAGE dessinée d'avance par le même peintre (trait, points, pointe, départ orange, initiales, pinceau : rien ne se déforme,
+> l'épaisseur est celle du trait ; l'état accroché de v190), et le navigateur montre celle du défilement du moment (`animation-range` en px de défilement, propriété
+> `translate`). Le trait au repos (`#v189Jonction`) disparaît à l'accrochage par le même moyen ; l'ordre des calques de la boîte (z 1 au repos, 8 accrochée) aussi ;
+> la bande d'en-tête de v187 (`#v187Bande`) est posée dès que la fiche l'est, et c'est le défilement qui la montre et lui donne le doigt ; le + des membres d'un
+> Cercle se cache sous elle par le défilement. Le script ne dessine plus que le trait au repos (et le geste), et les images d'avance quand la fiche change, par tranches
+> de 8 ms ; tant qu'elles ne sont pas prêtes (la première demi-seconde), un repli dessine l'état accroché comme en v193 (C-206). Une SVG à `vector-effect:
+> non-scaling-stroke` n'a pas été retenue : un `scaleY` déformerait les points, la pointe et le départ orange, et le pinceau n'est pas un tracé SVG.
+> ⚠ **Piège payé** : un style posé sans `!important` est battu par une animation ; un style `!important` bat l'animation — les propriétés que l'animation pilote
+> (`translate`, `z-index`, `pointer-events`, `visibility` du +) sont posées SANS `!important`. Et un drapeau « posé » se remet à zéro dans le rangeur de `closeAll`
+> (la bande ne se reposait plus).
+> **⚑ §2 — LE TRAIT QUI SUIT LE DOIGT, COMME SUR LA PAGE + (C-247)** : le geste de la fiche publie la position du doigt (`window._ficheDoigt`, en écran 390, comme
+> `_ppDoigt`) ; le peintre de la ligne dessine le plein de la seconde moitié jusqu'à lui (couleur de la seconde moitié, C-204), la pointe au bout, les points devant ;
+> lâché avant 60 pt (C-107), il revient à la pointe par le code de retour de la page + (300 ms, linéaire ; la même loi rapportée à la pointe : la même séquence visible
+> pour un même tracé au-delà de la pointe). Le dessin est celui de la boîte (`window._jonctionRedessine`). Juge : **`redteam_retour_trait.py`** (5, 15, 40 % de la seconde
+> moitié ; Promi, Chiche ; avec et sans défilement ; la loi de retour contre la page + mesurée dans le même banc, ± 1,5 pt par image ; à 40 %, 78 pt ≥ 60 : la parole est tenue).
+> **⚑ §3 (C-263)** : avec `?mesure=1`, chaque toucher sur une fiche envoie au Mac la vitesse de défilement de la fiche au doigt posé (80 dernières ms), le temps depuis
+> son dernier défilement, et s'il a commencé un tracé (`quoi: 'toucher'`).
+> **⚑ NON LIVRÉ — NON FUSIONNÉ (condition de sortie de Tom). Commité sur la branche `v191` ; main reste à v190 ; le serveur sert main.**
+> **⚑ VU DANS SAFARI (D42A4999, iOS 26.1, « v194 · 24a00d4 + modifs », charge 7 à 34 pendant la vérification ; 113 au démarrage du simulateur, attendu sous 40) :**
+> ① Cercle et Chiche au repos et accrochés (défilement lent) : le trait à plat sous l'en-tête, pointe, points et départ orange intacts ; retour au repos exact. Promi : repos.
+> ② **LE DÉFAUT QUI RESTE (planche-v194/safari-chiche-elan-retard.png)** : pendant un défilement LANCÉ (l'élan d'iOS), la boîte collante est tenue à la jonction par le défilement,
+> mais TOUT ce que pilote la chronologie de défilement (l'image accrochée, la bande d'en-tête, le trait au repos caché, l'ordre des calques) reste en retard sur le défilement réel :
+> on voit la vague au repos à la jonction et le corps sans la bande, puis tout se recale à la fin de l'élan. **Safari iOS 26.1 accepte `animation-timeline: scroll()` mais ne fait
+> pas suivre ces animations au défilement du compositeur** (WebKit piloté au banc : aucun retard — le banc ne peut pas le voir). La règle de §1 n'est donc PAS tenue dans Safari.
+> ③ §2 vu au doigt : lâché à 42 pt de la pointe, le trait revient progressivement (Promi 47 → 43 → 31 → 19 → 0 en 313 ms ; Chiche 47 → 36 → 5 → 0 en 344 ms — le simulateur ne
+> rend qu'une image toutes les 50 à 100 ms) ; un tracé complet tient (Chiche 63,6 pt, Promi 88,6 pt après un aller-retour lent). **Non fait : 5 tracés complets et 3 lâchés par nature**
+> (1 complet et 2 à 3 lâchés par nature ; deux `touch_path` du simulateur n'ont livré aucun mouvement).
+> ④ §3 : un toucher après un aller-retour lent (fiche en rebond, −5 pt, vitesse 0, dernier défilement 197 ms avant) : le premier tracé est pris. Un seul relevé.
+> ⑤ La référence de la jonction n'est PAS refaite (§1 non tenu dans Safari).
+> **Les autres causes de saut cherchées (§1)** : le rebond en haut (défilement négatif : la chronologie est à 0, l'état de repos — vu −5 pt sans défaut) ; la hauteur du contenu qui change
+> (les plages sont en pt depuis le haut : inchangées) ; l'accrochage et le décrochage (faits par `position: sticky`, synchrones au compositeur) ; la fin de l'élan (aucun script) —
+> **la seule cause trouvée est ②**, et c'est la chronologie elle-même. Pour la tenir : ne rien faire dépendre d'une animation, seulement de positions (`sticky`) ; décision à Tom (Q617).
+> ⚠ Le texte de la fiche (« Je me promets de », « Toi ») passe SOUS le trait accroché — identique en v193 au pixel près, et en v191 (validé) : préexistant.
+
 ### ⚑ v193 (10 nov. 2026) — UN SEUL COMPOSANT POUR LE TRAIT DE JONCTION (C-259) ; LE GESTE PREND LE TRAIT DU PREMIER COUP (C-263) ; Q616 TRANCHÉE. (Décisions Tom, « dernier lot de ce sujet ».) Ce bloc CORRIGE v192 (la copie de `#dpTrameCv` au repos, sa découpe, le geste coupé dès 0,25 pt de défilement).
 > **⚑ NON LIVRÉ — NON FUSIONNÉ (condition de sortie de Tom : « si à 5 h ce n'est pas impeccable, tu ne fusionnes rien »). Commité sur la branche `v191` ; main reste à v190.**
 > Ce qui manque, vu dans Safari (D42A4999, iOS 26.1, « v193 · bef20e9 + modifs ») : ① le Cercle et Promi, défilement lancé aller et retour et lent, le trait accroché puis revenu
@@ -4497,6 +4536,7 @@ python3 redteam_motmarque.py   # 4 — v129 (C-046) : l'encre du mot de la natur
 python3 redteam_retour.py      # v127 (C-028) — LE RETOUR EXACT : 105 mouvements de repos forcés sur 15 mondes, 0 pixel d'écart au retour (égalité stricte,
                                #   canevas entier, WebKit) ; les mouvements ont bien lieu. Rougit sur la version de v126 (Touffe). ≈ 10 min, seul.
 python3 redteam_premier_toucher.py # v193 (C-263) : 20 tracés de suite (10 au repos, 10 après un aller-retour lent ou lancé), Promi et Chiche, trois échelles : chacun pris au premier toucher ; seule la zone du geste sous le trait ; latence au calme seulement. Rouge sur v192.
+python3 redteam_retour_trait.py   # v194 (C-264) : le trait de la fiche suit le doigt et, lâché à 5, 15, 40 % de la seconde moitié, revient à la pointe par la loi de la page + (300 ms, ± 1,5 pt par image) ; Promi, Chiche, avec et sans défilement ; trois échelles. 52/52.
 python3 redteam_elan.py        # v192 (C-259 suite) : un élan lancé à 1 500, 3 000, 5 000 pt/s (décroissance d'iOS), bas puis haut, « vivant » et « gelé » (requestAnimationFrame coupé) ; à chaque image le
                                #   trait à 112 ± 0,5 pt accroché, ou à sa place de repos, jamais absent ; Cercle, Promi, Chiche (--natures=, le Cercle seul : ≈ 9 min) ; trois échelles. Rouge sur v191.
 python3 redteam_jonction_fiche.py # 23 — v191 (C-259 suite) : Promi, Chiche × 4 états — l'amplitude, la place du trait à la jonction (écran contre le peintre), aucun pixel parasite,
