@@ -45,6 +45,10 @@
 > 1. **Par lot, UNIQUEMENT : les juges du périmètre (10 au plus) + 5 sentinelles fixes — `redteam_ecrans`, `redteam_decisions`,
 >    `redteam_couleurs_ref`, `redteam_trace_present`, `banc_rendu`. Rien d'autre.**
 > 2. **Chaque juge a un plafond de 10 minutes.** Au-delà : arrêté, « non jugé ».
+> **⚑ v198 (§0, Tom) — UN JUGE FERME SON NAVIGATEUR EN FIN DE PASSE, MÊME EN ÉCHEC OU AU-DELÀ DES 10 MINUTES.** Les juges tournent par **`serie_juges.py`**
+> (`<dossier> <liste>`) : chacun dans son groupe de processus, tout le groupe arrêté à sa fin (pilote Playwright et navigateurs compris ; `subprocess.run(timeout=…)` ne tuait
+> que le Python et laissait les WebKit en orphelins). Un juge écrit hors de cet outil ouvre son navigateur dans `with sync_playwright()`. À la fin de chaque lot :
+> `ps` sans aucun navigateur de Promi, et le serveur qui répond à 192.168.1.141 (relancé s'il est tombé : il s'arrête avec le Mac).
 > 3. **Un juge rouge se rejoue UNE fois.** Encore rouge : une seule comparaison avec la version précédente ; rouge aussi sur elle →
 >    « préexistant », on passe.
 > 4. **La série complète ne tourne plus à chaque lot**, seulement quand Tom la demande (par exemple avant le passage en Swift).
@@ -238,6 +242,25 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v198 (12 nov. 2026) — LE MÉNAGE DU MAC ; « À : MOI » TOUJOURS VISIBLE, LA PHRASE JAMAIS COUPÉE (C-269 tranchée) ; LE ROUGE E D'invite_pp. (Décisions Tom.) Ce bloc CORRIGE v197b (C-269 : « là où la place manque, la ligne ne paraît pas »).
+> **⚑ §0 — LE MÉNAGE** : on ne ferme et ne supprime QUE ce qui est à Promi (ENTRE, Fairly, Codex et les autres sessions travaillent sur ce Mac). Les juges passent par **`serie_juges.py`**
+> (règle C-227 en tête de ce fichier). L'ancien simulateur `0A09FCF2` est supprimé ; seul `D42A4999` reste. Les captures des lots validés (avant v196), les copies `zz-*` qu'aucun juge ne
+> lit et les scratchpad des lots validés sont à la CORBEILLE (`~/.Trash/promi-menage-v198`) — jamais un fichier suivi par git, jamais ce que lit un juge. ⚠ Un dossier de lot peut porter
+> un outil vivant : `serie192.py` vivait dans `scratchpad/v191` (il est devenu `serie_juges.py`, à la racine) ; un outil partagé ne vit jamais dans le scratchpad d'un lot.
+> **⚑ §1 (C-269) — POURQUOI « IL MANQUAIT 29 pt » MALGRÉ UNE PHRASE PASSÉE DE 30 À 16 pt** : la hauteur d'une parole longue est celle du TITRE (sa pastille, 16 pt, posée à part) ; le
+> palier de C-240 (`_ppPhCap`, `appli`) ne réduisait que la phrase autour (« Je me promets de ») et ne rendait que son interligne (17 pt). Les paliers de C-244, eux, réduisent AUSSI le
+> titre (`taillePt`, jusqu'à 12) — mais ils ne comptaient pas la ligne. **Aujourd'hui la place de la ligne (12 pt d'air + 20,9 de ligne, 33) compte dans la hauteur que la phrase doit
+> laisser, dès l'ouverture** (`tient`, `_place` ; `window._ppQuiH`) : la phrase garde sa taille quand la ligne paraît, rien ne saute. L'aide d'un mot vide (`aideH`, 58) et la ligne ne sont
+> jamais à l'écran ensemble (l'aide est cachée quand la parole est prête) : la place est la plus grande des deux — les additionner coupait un Chiche de 280 caractères (« … », trouvé en
+> sondant). Mesuré : Promi de 280 caractères, phrase 22 pt, titre 12 pt, entier, la ligne à 630 ; la dalle, le trait et « TRACE POUR … » comme v196 (`redteam_a_moi` D). Jamais sous
+> `__INVITE_BANC`. Juge : `redteam_a_moi` (+ « la phrase n'est jamais coupée » ; sa sonde, la réserve additionnée, rougit).
+> **⚑ §2 — LE ROUGE E D'invite_pp — NON RÉGLÉ.** Deux causes nommées et retirées : ① la ligne, en paraissant, relançait la recomposition ENTIÈRE de la page + (`_ppTout`), à
+> n'importe quel moment (pendant le mouvement de la saisie, C-234) — elle ne replace plus que le rail (`_pinceauRangee`), à l'apparition et au retrait ; ② la ligne se traçait SANS
+> préparation, dans l'image où le trait naît (C-125) — elle se prépare d'avance (`prepare`, `preparer:true`), la page + ouverte. **Reste** : passes complètes `--vite`, E rouge 2 fois
+> sur 5 (la phrase à 46 au lieu de 53 pt de marge, ou l'horizon qui n'a pas fini) ; v196 0 sur 4 sous la même charge. Le Q (la dalle 1,67 pt plus petite) est le même sur v196 (sa
+> matière se recadre) : préexistant. ⚠ Le toucher sur la phrase ouvre bien la saisie à chaque fois (instrumenté) : ce n'est pas le + de la ligne.
+> saisie, C-234) — la phrase en sautait. Elle ne replace plus que le rail du pinceau (`_pinceauRangee`), à l'apparition et au retrait.
 
 ### ⚑ v197b (11–12 nov. 2026) — LE GUIDE DU STUDIO ATTEND LA FIN DE TOUTE ACTION (C-268) ; « À : MOI » SUR LA PAGE + (C-269). (Décisions Tom.) Branche `v197`, partie de main après la fusion de v191 ; NON POUSSÉE (C-269 : la place manque, ci-dessous).
 > **⚑ C-268 — L'ORDRE DES ÉTAPES (inchangé)** : la dernière page de l'onboarding (« Plus tard » du compte) → l'image s'ouvre en flaques sur l'accueil (900 ms) → `terminerSuite`

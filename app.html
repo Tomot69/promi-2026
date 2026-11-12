@@ -2602,7 +2602,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v197', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v198', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -18513,9 +18513,15 @@ var CREMEETAT='#F7F0DE';
           var crS = cs.getBoundingClientRect(), gdS = cs.querySelector('.pp-garder'), aideH = 0;
           var finMax = 760; try{ if(gdS && gdS.offsetParent && getComputedStyle(gdS).display !== 'none') finMax = (gdS.getBoundingClientRect().top - crS.top)/sc4; }catch(_){}
           try{ if(!e.ouvert && e.etat === 'plate' && ph.querySelector('.ph-m.ph-vide')) aideH = 34 + 24; }catch(_){}
+          /* ⚑ v198 (Tom, C-269 tranchée) — LA LIGNE « À : MOI » EST TOUJOURS VISIBLE, LA PHRASE N'EST JAMAIS COUPÉE : sa place (12 pt d'air + 20,9 de ligne, arrondis à 33)
+             compte dans la hauteur que la phrase doit laisser, dès l'ouverture (la phrase garde ainsi sa taille quand la ligne paraît : rien ne saute). Les paliers
+             existants font le reste — et ils réduisent AUSSI le titre (`taillePt`), qui porte la hauteur d'une parole longue : réduire la seule phrase (`appli`,
+             30 → 16 en v197) ne rendait que son interligne (17 pt), d'où le « il manque 29 pt ». Jamais sous `__INVITE_BANC` (les juges qui comparent la page + à
+             une version d'avant la ligne). */
+          var _quiH = window.__INVITE_BANC ? 0 : 33; window._ppQuiH = _quiH;   /* l'aide d'un mot vide (`aideH`) et la ligne ne sont jamais à l'écran ensemble (l'aide est cachée quand la parole est prête) : la place est la plus grande des deux */
           var tient = function(lim, air){ if(air == null) air = 20; if(lignesDe(ptL) > lim) return false; var R = txt.getBoundingClientRect(), ok = true;
             [].forEach.call(ptL.getClientRects(), function(q){ if((q.right - R.left)/sc4 > 342.5) ok = false; });
-            if(ok && !e.ouvert && !cs.classList.contains('pp-ouvert') && !document.getElementById('ppMvt') && (R.bottom - crS.top)/sc4 + aideH + air + 44 + air > finMax) ok = false;   /* v181b (C-244) : clavier ouvert, la page est à sa place de saisie — la hauteur se juge la page posée */
+            if(ok && !e.ouvert && !cs.classList.contains('pp-ouvert') && !document.getElementById('ppMvt') && (R.bottom - crS.top)/sc4 + Math.max(aideH, _quiH) + air + 44 + air > finMax) ok = false;   /* v181b (C-244) : clavier ouvert, la page est à sa place de saisie — la hauteur se juge la page posée */
             return ok; };
           var taillePt = function(t){ [ptL, liL].forEach(function(x){ if(!x) return;
             x.style.setProperty('font-size', t+'px', 'important'); x.style.setProperty('line-height', Math.round(t*1.2)+'px', 'important'); }); };
@@ -18588,7 +18594,7 @@ var CREMEETAT='#F7F0DE';
           var _place = function(){ var crS = cs.getBoundingClientRect(), sc = (crS.width||390)/390, g = cs.querySelector('.pp-garder'), fin = 760, b = 0;
             try{ if(g && g.offsetParent && getComputedStyle(g).display !== 'none' && getComputedStyle(g).visibility !== 'hidden') fin = Math.min(fin, (g.getBoundingClientRect().top - crS.top)/sc); }catch(_){}
             var rg = document.createRange(); rg.selectNodeContents(txt); [].forEach.call(rg.getClientRects(), function(q){ if(q.width > 1 && q.height > 1) b = Math.max(b, (q.bottom - crS.top)/sc); });
-            return b ? (b - (window._ppDyPhrase||0) - (window._ppaDy ? window._ppaDy() : 0)) + 12 + 44 + 12 - fin : -1; };
+            return b ? (b - (window._ppDyPhrase||0) - (window._ppaDy ? window._ppaDy() : 0)) + (window.__INVITE_BANC ? 0 : 33) + 12 + 44 + 12 - fin : -1; };   /* v198 (C-269) : la place de « À : moi » */
           var _trop = _place();
           if(_trop > 0.5){
             cotes.__cap = true;
@@ -45208,7 +45214,17 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var rg=document.createRange(); rg.selectNodeContents(ph); var R=c.getBoundingClientRect(), s=(R.width||390)/390, b=0;
     [].forEach.call(rg.getClientRects(), function(r){ if(r.width>1 && r.height>1) b=Math.max(b, (r.bottom-R.top)/s); });
     var em=ph.querySelector('em'); return b ? {bas:b, col:em ? getComputedStyle(em).color : getComputedStyle(ph).color} : null; }
-  function cache(q){ if(q.getAttribute('data-vu')!=='0'){ q.setAttribute('data-vu','0'); q.style.setProperty('visibility','hidden','important'); try{ if(q.__tl && q.__tl.stop) q.__tl.stop(); }catch(_){ } } }
+  function cache(q){ if(q.getAttribute('data-vu')!=='0'){ var etait=q.getAttribute('data-vu')==='1'; q.setAttribute('data-vu','0'); q.style.setProperty('visibility','hidden','important'); try{ if(q.__tl && q.__tl.stop) q.__tl.stop(); }catch(_){ } if(etait){ try{ if(window._pinceauRangee) window._pinceauRangee(); }catch(_){ } } } }   /* v198 : la ligne partie, le rail reprend sa place */
+  /* ⚑ v198 (§2, C-125) — LA LIGNE SE PRÉPARE D'AVANCE. Elle se traçait sans préparation, dans l'image où le trait naît : le calcul de ses lettres tombait sur le fil
+     principal pendant la naissance du trait et le mouvement de la page (sous charge, les étapes suivantes — le clavier qui se ferme, l'horizon — glissaient : invite_pp E,
+     jamais sur v196). Comme tout texte tracé (v170d) : la page + ouverte, la ligne pas encore là, ses lettres sont calculées, cachée (`preparer`), une fois par texte. */
+  function prepare(c, q){ if(q.getAttribute('data-vu')==='1' || !window.TraceLettres) return; try{ if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(_){ }
+    var k=nat(c), t=noms(k); if(q.__prep===t) return; q.__prep=t;
+    var tx=q.querySelector('.ppq-t'); tx.textContent=t;
+    q.style.cssText='position:absolute!important;left:24px!important;top:'+(parseFloat(q.style.top)||560)+'px!important;max-width:none!important;width:auto!important;margin:0!important;padding:0!important;z-index:6!important;display:block!important;white-space:nowrap!important;'
+      +'font-family:var(--f-libelle)!important;font-weight:600!important;font-size:19px!important;letter-spacing:-.01em!important;line-height:1.1!important;opacity:1!important;pointer-events:none!important;visibility:hidden!important';
+    tx.style.cssText='font:inherit!important;color:inherit!important;-webkit-text-fill-color:currentColor!important';
+    try{ window.TraceLettres.trace(tx, null, {preparer:true}); }catch(_){ } }
   var sig='';
   function veille(){ var c=cs(); var q=$('ppQui');
     if(!c || !c.classList.contains('show') || !c.classList.contains('pp') || c.classList.contains('pp-choix') || c.classList.contains('pp-peauf')){ if(q) cache(q); sig=''; return; }
@@ -45217,7 +45233,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var nz=$('nueeChoix'); var ouvert=c.classList.contains('pp-ouvert') || (e && e.ouvert) || (c.classList.contains('pp-nuee') && nz && nz.children.length>0);
     var pret=!!(inv && inv.visible && !inv.sortie) && !window.__INVITE_BANC;   /* `__INVITE_BANC` : les juges qui comparent la page + à une version d'avant (la ligne a son juge, redteam_a_moi) */
     q=bati(c);
-    if(!pret || ouvert){ cache(q); sig=''; return; }
+    if(!pret || ouvert){ cache(q); sig=''; if(!ouvert && !window.__INVITE_BANC) prepare(c, q); return; }
     var k=nat(c), t=noms(k), en=encre(c, k); if(!en){ cache(q); return; }
     var top=Math.round((en.bas+AIR)*4)/4, s2=[k,t,top,en.col].join('|');
     /* LA PLACE : la ligne (20,9), 12 pt d'air, le rail (44), 12 pt d'air au-dessus de « garder de côté » (ou de la barre) — sinon elle ne paraît pas : rien d'autre ne bouge
@@ -45241,7 +45257,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     pl.style.cssText='position:absolute!important;display:flex!important;align-items:center;justify-content:center;width:44px!important;height:44px!important;margin:0!important;padding:0!important;background:none!important;left:'+(Math.round((fin+26-(44-cap)/2)*4)/4)+'px!important;top:'+(Math.round((base-cap/2-22)*4)/4)+'px!important';   /* son encre commence 26 pt après le texte, centrée sur les capitales */
     q.setAttribute('data-bas', String(top + 20.9));
     if(neuve){ q.setAttribute('data-vu','1');
-      try{ if(window._ppTout) window._ppTout(); }catch(_){ }   /* le rail se place sous elle */
+      try{ if(window._pinceauRangee) window._pinceauRangee(); }catch(_){ }   /* ⚑ v198 (§2) : seul le rail se replace (sous elle s'il la toucherait) — plus la recomposition ENTIÈRE de la page + (`_ppTout`), qui tombait n'importe quand, mouvement de la page compris : la phrase en sautait (invite_pp E) */
       q.style.setProperty('visibility','visible','important');
       var reduit=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
       if(!reduit && window.TraceLettres){ try{ q.__tl=window.TraceLettres.trace(tx, null, {depart:'h'}); }catch(_){ } } }

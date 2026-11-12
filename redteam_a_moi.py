@@ -78,6 +78,8 @@ with sync_playwright() as p:
                 L = pg.evaluate(LIGNE); g = stable(pg, k); geo = pg.evaluate(GEOM)
                 ok = bool(L and L['vu'])
                 juge(T + ' A · la ligne paraît : « %s »' % MOTS[k], ok and L['txt'] == MOTS[k], L and ('« %s » · vue %s' % (L['txt'], L['vu']) + (' · LA PLACE MANQUE de %s pt (la ligne, 12 pt, le rail, 12 pt au-dessus de « garder de côté »)' % L['manque'] if L.get('manque') else '')))
+                coupe = pg.evaluate("k=>{ const ph=document.querySelector(k==='nuee'?'#nueePhrase .ph-txt':'#csPhrase .ph-txt'); return ph ? /\u2026/.test(ph.textContent||'') : null; }", k)
+                juge(T + ' A · la phrase n\'est jamais coupée (aucun « … » ; v198, C-269)', coupe is False, 'coupée' if coupe else coupe)   # ⚑ v198 (Tom) : la ligne toujours visible, la phrase jamais coupée
                 if not ok: ctx.close(); continue
                 bas = max(l[3] for l in g['lignes'])
                 juge(T + ' A · sous l\'encre de la phrase, 12 pt (± 1), à la marge (24 pt), Gilbert 19 pt', abs(L['texte'][1] + (L['texte'][3] - L['texte'][1] - 20.9) / 2 - bas - AIR_PH) <= 1.0 and abs(L['texte'][0] - 24) <= 0.6 and L['fam'] == 'Gilbert' and abs(L['fs'] - 19) < 0.1,
