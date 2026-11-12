@@ -26188,6 +26188,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
       /* ⚑ v150 (C-158, C-149) : la phrase d'un Chiche ou d'un Cercle remonte (`_ppDyPhrase`) et « garder de côté » descend de 4 pt — le rail, lui,
          ne bouge pas (« le choix du trait ne bouge pas ») : il se place comme si ni l'une ni l'autre n'avaient bougé. */
       dessus -= (window._ppDyPhrase || 0);
+      var _qq = document.getElementById('ppQui'), _ql = (_qq && _qq.getAttribute('data-vu') === '1') ? (function(){ var t = _qq.querySelector('.ppq-t'), g = document.createRange(); if(!t) return parseFloat(_qq.getAttribute('data-bas')) || 0; g.selectNodeContents(t); return (g.getBoundingClientRect().bottom - cr.top)/k; })() : 0, _qb = _ql ? _ql + (window._ppDyPhrase || 0) : 0;   /* ⚑ v197 (C-269) : le bas de la ligne « À : moi », dans l'unité de `dessus` ; le rail ne descend sous elle QUE si elle le toucherait (sinon il ne bouge pas : A5) */
       dessus -= (window._ppaDy ? window._ppaDy() : 0);   /* v174 (C-213) : la remontée de la page « pas prête » n'est pas sa place : le rail se calcule comme si la phrase n'avait pas bougé */
       var dessous = 760;
       var gl = cs.querySelector('.pp-garder');
@@ -26197,6 +26198,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
          garde la place que le lien lui donne : sa cote est fixe (708, lot de la page +). */
       else if(gl && cs.classList.contains('pp-cours') && !cs.classList.contains('pp-ouvert')) dessous = 708 + INK_LIEN + (parseFloat(cs.style.getPropertyValue('--pp-dyt'))||0);   /* v163 : du pas du trait */
       if(k && dessus > 0) haut = Math.round((dessus + (dessous - dessus - PHT)/2)*4)/4;
+      if(k && _ql && _ql + 12 > haut){ var _d2 = Math.max(dessus, _qb); haut = Math.max(Math.round((_d2 + (dessous - _d2 - PHT)/2)*4)/4, Math.ceil((_ql + 12)*4)/4); }   /* ⚑ v197 (C-269) : la cote vraie de la ligne (data-bas) contre celle du rail ; il ne descend que s'il la toucherait */
     }catch(_){}
     var geo = haut + '|' + PHT;
     if(r.getAttribute('data-geo') === geo) return r;   /* on compare avant d'agir (§8) */
@@ -45154,6 +45156,107 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var liste=c.parentNode, bon=null; try{ bon=[].filter.call((liste||document).querySelectorAll('.s4-carte'), function(x){ return cle(x)===a.k; })[0]||null; }catch(_){ }
     window._v184CarteSauvee=(window._v184CarteSauvee||0)+1;
     if(bon){ try{ if(bon.onclick) bon.onclick({target:bon, stopPropagation:function(){}, preventDefault:function(){}}); else bon.click(); }catch(_){ } } }, true);
+})();
+</script>
+<script id="lot-V197-AMOI">
+/* ⚑ v197 (Tom, 11 nov. 2026, C-269) — « Sur la page +, “À : moi” par défaut, visible avant de planter. Au moment où le texte est validé (Promi, Chiche, Cercle),
+   la ligne des personnes paraît sous le titre : « À : moi », ou « Avec : moi » pour un Cercle. C'est le même composant que la ligne de la fiche (C-242, C-254,
+   C-247). Un toucher sur la ligne ou sur le + ouvre le menu des membres existant. La liste n'est jamais vide : “moi” revient. Le trait et la naissance de la dalle
+   ne changent pas. Les mêmes personnes paraissent sur la fiche après la plantation. L'onboarding n'est pas concerné. »
+   LA LIGNE (`#ppQui`) : la police de la ligne « Avec … » d'une fiche de Cercle (`--f-libelle` 600, 19 pt, interligne 1,1), la couleur des mots de liaison de la
+   phrase (« de », « avec ») ; 12 pt sous l'ENCRE de la phrase, à la marge (24 pt). LE + : le dessin de celui des membres (`#cerclePlusMembres`, C-242 : le signe
+   seul, orange #FB4C0D, haut d'une capitale de la ligne, trait 0,28), son encre 26 pt après la fin du texte, centré sur les capitales ; zone de 44 pt.
+   QUAND : seulement quand l'invite du trait est là (`_ppInvite` : la parole est prête, le trait est né) — jamais pendant la frappe ni un choix ouvert. Elle se
+   TRACE en même temps que le trait (le tracé des lettres, C-125). LES PERSONNES : celles que la page + porte déjà (`_phrase.qui`, `_phrase.avec` ; un Cercle :
+   `newNueeMembers`) — aucune nouvelle donnée ; vide → « moi ». LE TOUCHER : le choix des personnes de la phrase (la pastille « qui », « avec » d'un Cercle ;
+   un Promi « je me promets » bascule d'abord le sens, comme le fait sa pastille). LA PLACE : le rail du pinceau se place sous elle (mi-chemin, sa règle) ; s'il
+   n'y a plus la place (un Promi de 280 caractères : la phrase descend jusqu'à 12 pt au-dessus de « garder de côté »), LA PLACE MANQUE — non résolu, décision à Tom
+   (C-269 ; réduire la phrase par C-240 a été essayé : 30 → 16 pt, et la place ne suffit toujours pas — retiré). */
+(function(){
+  var OR='#FB4C0D', AIR=12;
+  function $(i){ return document.getElementById(i); }
+  function cs(){ return $('createSheet'); }
+  function nat(c){ var k=c.getAttribute('data-kind'); if(k==='nuee'||c.classList.contains('pp-nuee')) return 'nuee'; if(c.classList.contains('pp-chiche')) return 'chiche'; return (window._phrase && window._phrase.sens==='chiche') ? 'chiche' : (k||'promi'); }
+  function liste(v){ try{ return window._gensListe ? window._gensListe(v) : String(v||'').split(',').map(function(s){ return s.trim(); }).filter(Boolean); }catch(_){ return []; } }
+  function noms(k){ var P=window._phrase||{}, L;
+    if(k==='nuee') L=(window.newNueeMembers||[]).slice(); else L=liste(P.qui);
+    L=L.filter(function(n){ return n && !/^moi$/i.test(n); });
+    if(!L.length) L=['moi'];
+    var t=L.length<=2 ? L.join(', ') : (L.slice(0,2).join(', ')+', +'+(L.length-2));
+    if(k==='chiche'){ var A=liste(P.avec).filter(function(n){ return n && !/^moi$/i.test(n); }); if(A.length) t+=' · avec '+(A.length<=2?A.join(', '):(A.slice(0,2).join(', ')+', +'+(A.length-2))); }
+    return (k==='nuee' ? 'Avec : ' : 'À : ')+t; }
+  function bati(c){ var q=$('ppQui'); if(q && q.parentNode===c) return q;
+    if(!q){ q=document.createElement('div'); q.id='ppQui'; q.setAttribute('role','button'); q.setAttribute('aria-label','Les personnes de la parole');
+      q.innerHTML='<span class="ppq-t"></span><span class="ppq-b" aria-hidden="true"></span><span class="ppq-p" aria-hidden="true"><svg viewBox="0 0 22 22" width="13" height="13"><path d="M11 3.08V18.92M3.08 11H18.92" stroke="'+OR+'" stroke-width="6.16" stroke-linecap="round" fill="none"/></svg></span>';
+      arme(q);
+      try{ (window._rangeurs=window._rangeurs||[]).push(function(){ var n=$('ppQui'); if(n){ n.setAttribute('data-vu','0'); n.style.setProperty('visibility','hidden','important'); } }); }catch(_){ } }
+    c.appendChild(q); return q; }
+  /* le toucher : le geste lui-même (la page + ne produit pas toujours de `click` au doigt), et le clic qui suit avalé */
+  var vu=0;
+  function arme(q){ var x0=0,y0=0,t0=0;
+    q.addEventListener('pointerdown',function(e){ x0=e.clientX; y0=e.clientY; t0=e.timeStamp||performance.now(); e.stopPropagation(); },true);
+    q.addEventListener('pointerup',function(e){ e.stopPropagation(); if(Math.abs(e.clientX-x0)>12||Math.abs(e.clientY-y0)>12) return; if((e.timeStamp||performance.now())-t0>700) return; ouvre(); vu=performance.now(); },true);
+    q.addEventListener('click',function(e){ e.stopPropagation(); e.preventDefault(); if(vu && performance.now()-vu<800) return; ouvre(); },true); }
+  window.addEventListener('click',function(e){ if(e.isTrusted && vu && performance.now()-vu<800 && !(e.target&&e.target.closest&&e.target.closest('#ppQui'))){ e.stopPropagation(); e.preventDefault(); vu=0; } },true);
+  function ouvre(){ var c=cs(); if(!c) return; var k=nat(c);
+    if(k==='nuee'){ var a=document.querySelector('#nueePhrase .ph-m[data-np="avec"]'); if(a) a.click(); return; }
+    var q=document.querySelector('#csPhrase .ph-m[data-ph="qui"]');
+    if(q && q.offsetParent){ q.click(); return; }
+    var s=document.querySelector('#csPhrase .ph-b[data-ph="sens"]'); if(s) s.click();   /* « je me promets » : le sens bascule, comme le fait sa pastille */
+    setTimeout(function(){ var q2=document.querySelector('#csPhrase .ph-m[data-ph="qui"]'); if(q2) q2.click(); }, 90); }
+  function encre(c, k){ var ph=document.querySelector(k==='nuee'?'#nueePhrase .ph-txt':'#csPhrase .ph-txt'); if(!ph) return null;
+    var rg=document.createRange(); rg.selectNodeContents(ph); var R=c.getBoundingClientRect(), s=(R.width||390)/390, b=0;
+    [].forEach.call(rg.getClientRects(), function(r){ if(r.width>1 && r.height>1) b=Math.max(b, (r.bottom-R.top)/s); });
+    var em=ph.querySelector('em'); return b ? {bas:b, col:em ? getComputedStyle(em).color : getComputedStyle(ph).color} : null; }
+  function cache(q){ if(q.getAttribute('data-vu')!=='0'){ q.setAttribute('data-vu','0'); q.style.setProperty('visibility','hidden','important'); try{ if(q.__tl && q.__tl.stop) q.__tl.stop(); }catch(_){ } } }
+  var sig='';
+  function veille(){ var c=cs(); var q=$('ppQui');
+    if(!c || !c.classList.contains('show') || !c.classList.contains('pp') || c.classList.contains('pp-choix') || c.classList.contains('pp-peauf')){ if(q) cache(q); sig=''; return; }
+    var inv=null; try{ inv=window._ppInvite && window._ppInvite.etat(); }catch(_){ }
+    var e=null; try{ e=window._ppEcran && window._ppEcran(); }catch(_){ }
+    var nz=$('nueeChoix'); var ouvert=c.classList.contains('pp-ouvert') || (e && e.ouvert) || (c.classList.contains('pp-nuee') && nz && nz.children.length>0);
+    var pret=!!(inv && inv.visible && !inv.sortie) && !window.__INVITE_BANC;   /* `__INVITE_BANC` : les juges qui comparent la page + à une version d'avant (la ligne a son juge, redteam_a_moi) */
+    q=bati(c);
+    if(!pret || ouvert){ cache(q); sig=''; return; }
+    var k=nat(c), t=noms(k), en=encre(c, k); if(!en){ cache(q); return; }
+    var top=Math.round((en.bas+AIR)*4)/4, s2=[k,t,top,en.col].join('|');
+    /* LA PLACE : la ligne (20,9), 12 pt d'air, le rail (44), 12 pt d'air au-dessus de « garder de côté » (ou de la barre) — sinon elle ne paraît pas : rien d'autre ne bouge
+       (un Promi de 280 caractères : décision à Tom, C-269) */
+    var gl=c.querySelector('.pp-garder'), fin=760; try{ if(gl && gl.offsetParent && getComputedStyle(gl).display!=='none' && getComputedStyle(gl).visibility!=='hidden'){ var Rg=c.getBoundingClientRect(); fin=Math.min(fin, (gl.getBoundingClientRect().top-Rg.top)/((Rg.width||390)/390)); } }catch(_){ }
+    if(top+20.9+AIR+44+AIR > fin+0.5){ cache(q); q.setAttribute('data-manque', String(Math.round((top+20.9+AIR+44+AIR-fin)*10)/10)); sig=''; return; }
+    q.removeAttribute('data-manque');
+    if(s2===sig && q.getAttribute('data-vu')==='1') return;   /* on compare avant d'agir (§8) */
+    var neuve=q.getAttribute('data-vu')!=='1';
+    sig=s2;
+    var tx=q.querySelector('.ppq-t'); if(tx.textContent!==t){ tx.textContent=t; neuve=true; }
+    q.style.cssText='position:absolute!important;left:24px!important;top:'+top+'px!important;max-width:none!important;width:auto!important;margin:0!important;padding:0!important;z-index:6!important;display:block!important;white-space:nowrap!important;'
+      +'font-family:var(--f-libelle)!important;font-weight:600!important;font-size:19px!important;letter-spacing:-.01em!important;line-height:1.1!important;color:'+en.col+'!important;-webkit-text-fill-color:'+en.col+'!important;opacity:1!important;'
+      +'background:none!important;border:0!important;box-shadow:none!important;transform:none!important;filter:none!important;pointer-events:auto!important;cursor:pointer;visibility:'+(neuve?'hidden':'visible')+'!important';
+    tx.style.cssText='font:inherit!important;color:inherit!important;-webkit-text-fill-color:currentColor!important';
+    /* le + : sa hauteur est la capitale de la ligne, lue sur sa police rendue ; 26 pt après le texte, centré sur les capitales */
+    var cap=13.25; try{ var g=(veille.__cv||(veille.__cv=document.createElement('canvas'))).getContext('2d'), csq=getComputedStyle(q); g.font=csq.fontStyle+' '+csq.fontWeight+' '+csq.fontSize+' '+csq.fontFamily; var mA=g.measureText('A'); if(mA.actualBoundingBoxAscent>0) cap=Math.round(mA.actualBoundingBoxAscent*4)/4; }catch(_){ }
+    var pl=q.querySelector('.ppq-p'), sv=pl.querySelector('svg'); sv.setAttribute('width',cap); sv.setAttribute('height',cap);
+    var bm=q.querySelector('.ppq-b'); bm.style.cssText='display:inline-block!important;width:0!important;height:0!important;vertical-align:baseline!important;margin:0!important;padding:0!important';   /* la ligne de base, mesurée */
+    var R=c.getBoundingClientRect(), sc=(R.width||390)/390, qb=q.getBoundingClientRect(), base=(bm.getBoundingClientRect().top-qb.top)/sc, rg2=document.createRange(); rg2.selectNodeContents(tx); var fin=(rg2.getBoundingClientRect().right-qb.left)/sc;
+    pl.style.cssText='position:absolute!important;display:flex!important;align-items:center;justify-content:center;width:44px!important;height:44px!important;margin:0!important;padding:0!important;background:none!important;left:'+(Math.round((fin+26-(44-cap)/2)*4)/4)+'px!important;top:'+(Math.round((base-cap/2-22)*4)/4)+'px!important';   /* son encre commence 26 pt après le texte, centrée sur les capitales */
+    q.setAttribute('data-bas', String(top + 20.9));
+    if(neuve){ q.setAttribute('data-vu','1');
+      try{ if(window._ppTout) window._ppTout(); }catch(_){ }   /* le rail se place sous elle */
+      q.style.setProperty('visibility','visible','important');
+      var reduit=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(!reduit && window.TraceLettres){ try{ q.__tl=window.TraceLettres.trace(tx, null, {depart:'h'}); }catch(_){ } } }
+    void qb; void sc; }
+  setInterval(veille, 50);
+  /* ⚑ LES MEMBRES D'UN CERCLE PLANTÉ (trouvé par redteam_a_moi, présent tel quel en v196) — deux variables du même nom : le choix des personnes de la page + écrit
+     `window.newNueeMembers`, `#addNuee` lit le `let newNueeMembers` du script (une déclaration `let` n'est pas une propriété de `window`, le piège de `createKind`, v177a) :
+     un Cercle planté depuis la page + était enregistré SANS ses membres (« Avec toi seulement » sur sa fiche). Au toucher qui plante (en capture, avant son gestionnaire), le
+     choix est recopié dans la variable que lit la plantation ; le Cercle créé, le choix est vidé (sinon le Cercle suivant partait avec les mêmes membres). */
+  function relie(){ var b=document.getElementById('addNuee'); if(!b || b.__v197m){ if(!b) setTimeout(relie, 400); return; } b.__v197m=1;
+    b.addEventListener('click', function(){ try{ if(Array.isArray(window.newNueeMembers) && typeof newNueeMembers!=='undefined'){ newNueeMembers=window.newNueeMembers.slice();
+        var n0=Object.keys(window.NUE||(typeof NUE!=='undefined'?NUE:{})).length;
+        setTimeout(function(){ try{ var n1=Object.keys(typeof NUE!=='undefined'?NUE:{}).length; if(n1>n0){ window.newNueeMembers=[]; window._nueeMoiSeul=false; } }catch(_){ } }, 0); } }catch(_){ } }, true); }
+  relie();
+  window._ppQui={ veille:veille, noms:noms, ouvre:ouvre };
 })();
 </script>
 </body>

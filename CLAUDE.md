@@ -252,6 +252,21 @@ la nature, la ligne dit l'état.)*
 > Juge : **`redteam_guide_calme.py`** (A rien ; B une dalle touchée à 0, 120, 400 ms ; C un glissé ; D une fiche et un tracé maintenu ; E le menu des natures ; F l'onboarding entier
 > au doigt — chaque image relevée dans la page, l'instant du lancement lu sur `data-pose` ; ② rien en cours à cet instant, ②b aucune fiche ouverte par un toucher d'avant ne paraît
 > sous le guide, ③ ≤ 300 ms après le calme, jugé au calme seulement ; rouge sur v196 : E par-dessus le menu, A et B 312 à 376 ms). `redteam_onb_ordre` : 65/65.
+> **⚑ C-269 — LA LIGNE DES PERSONNES** (`lot-V197-AMOI`, `#ppQui`) : quand l'invite du trait est là (la parole prête, le trait né), « À : moi » (Promi, Chiche) ou « Avec : moi »
+> (Cercle) paraît 12 pt sous l'encre de la phrase, à la marge (24 pt) — la police de la ligne « Avec … » d'une fiche de Cercle (Gilbert 19, interligne 1,1), la couleur des mots de
+> liaison de la phrase ; elle se TRACE avec le trait. Le + : le dessin de celui des membres (C-242 : orange `#FB4C0D`, haut d'une capitale), son encre 26 pt après le texte, centré
+> sur les capitales (lu sur la ligne de base mesurée), zone de 44 pt. Les personnes sont celles que la page + porte déjà (`_phrase.qui`, `_phrase.avec` ; `newNueeMembers`) : aucune
+> donnée neuve ; vide → « moi ». Un toucher sur la ligne ou le + ouvre le choix existant (la pastille « qui » ; « avec » d'un Cercle ; un Promi « je me promets » bascule d'abord le
+> sens, comme sa pastille). Le rail du pinceau ne descend sous elle QUE si elle le toucherait (12 pt d'air, lu sur l'encre de la ligne — sa boîte de 20,9 pt était trop courte : trouvé par la porte) ; sinon il garde sa place de v196. Jamais pendant la frappe ni un choix ouvert ; jamais sous `__INVITE_BANC`.
+> **⚠ LA PLACE MANQUE sur un Promi de 280 caractères** : la phrase y finit à 631–648 pt et « garder de côté » est à 717 — la ligne (20,9), 12 pt, le rail (44) et 12 pt n'y tiennent
+> pas (il manque 29 pt, aux échelles 1 et 0,79 — mesuré par `redteam_a_moi`). **Là, la ligne ne paraît pas et rien d'autre ne bouge** (`data-manque` dit de combien) : posée quand même, elle touchait le rail, et le
+> rail descendu sous elle recouvrait « garder de côté ». Réduire la phrase (C-240) a été essayé : 30 → 16 pt (titre 12 → 15), et la place ne suffit toujours pas — retiré.
+> Décision à Tom (C-269). Hors de ce cas, la page + est celle de v196 (géométrie du trait et de la dalle identique, `redteam_a_moi` D).
+> **⚑ TROUVÉ, CORRIGÉ (présent tel quel en v196) — LES MEMBRES D'UN CERCLE PLANTÉ ÉTAIENT PERDUS** : le choix des personnes de la page + écrit `window.newNueeMembers`,
+> `#addNuee` lit le `let newNueeMembers` du script — une déclaration `let` n'est pas une propriété de `window` (le piège de `createKind`, v177a). Un Cercle planté depuis la
+> page + était enregistré sans ses membres (« Avec toi seulement »). Au toucher qui plante (en capture), le choix est recopié dans la variable que lit la plantation ; le Cercle
+> créé, le choix est vidé. Juge : **`redteam_a_moi.py`** (trois natures × court et 280 caractères × échelles 1 et 0,79 ; au doigt : ajouter Rachel, la retirer, « moi » revient,
+> planter au trait, Rachel sur la parole et sur sa fiche — rouge sur v196 pour le Cercle).
 
 ### ⚑ v197 (11 nov. 2026) — LE SUJET DE LA JONCTION EST CLOS ; LE TRAIT N'EST PLUS COUPÉ EN HAUT DE SA COURBE (C-267). (Décisions Tom.)
 > **Validés par Tom sur son iPhone : C-259 (la jonction au défilement lancé et lent, le retour au repos), C-263 (le premier tracé tient), C-265 (clos, jamais reproduit). La
@@ -4616,6 +4631,7 @@ python3 redteam_premier_toucher.py # v193 (C-263) : 20 tracés de suite (10 au r
 python3 redteam_retour_trait.py   # v194 (C-264) : le trait de la fiche suit le doigt et, lâché à 5, 15, 40 % de la seconde moitié, revient à la pointe par la loi de la page + (300 ms, ± 1,5 pt par image) ; Promi, Chiche, avec et sans défilement ; trois échelles. 52/52.
 python3 redteam_jonction_plat.py  # v195 (C-259, Q617) : par nature (--natures=), sur l'écran colonne par colonne : au repos = v190 (bords, matière exceptés) ; la vague à sa place jusqu'au contact, puis le trait plat collé ; même écran aller et retour ; aussi GELÉ (rAF, minuteries coupés). Trois échelles. Remplace jonction A–G et jonction_fiche A–C.
 python3 redteam_guide_calme.py  # v197b (C-268) : le guide du Studio ne part jamais par-dessus une action (une dalle touchée à 0/120/400 ms, un glissé, une fiche et un tracé, le menu des natures, l'onboarding entier) ; ≤ 300 ms après le calme (au calme). Rouge sur v196.
+python3 redteam_a_moi.py       # v197b (C-269) : « À : moi » / « Avec : moi » sur la page + — trois natures × court et 280 caractères × deux échelles ; au doigt : ajouter, retirer, « moi » revient, la parole et sa fiche après le trait ; trait et dalle comme v196. Rouge sur v196 (Cercle).
 python3 redteam_trait_entier.py # v197 (C-267) : chaque pixel du trait de v190 au repos est présent — au repos, après défilement, après un élan, pendant le retour d'un tracé lâché ; trois natures, trois échelles (PROMI_ECHELLE), `--tom` l'état exporté. --sonde : il rougit.
 python3 redteam_points_plat.py  # 10 — v196 (C-259) : les points du trait plat aux abscisses de ceux de la vague (< 0,5 pt), Promi et Chiche, trois échelles. --sonde : il rougit.
 python3 redteam_elan.py        # v192 (C-259 suite) : un élan lancé à 1 500, 3 000, 5 000 pt/s (décroissance d'iOS), bas puis haut, « vivant » et « gelé » (requestAnimationFrame coupé) ; à chaque image le
