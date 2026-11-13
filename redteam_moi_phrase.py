@@ -37,7 +37,7 @@ pose, stable = ns['pose'], ns['stable']
 PLACE = """k=>{ const e=document.querySelector(k==='nuee'?'#nueePhrase .ph-m[data-np="avec"]':'#csPhrase .ph-m[data-ph="qui"]'); return e?{txt:e.textContent, vide:e.classList.contains('ph-vide'), trace:!!e.__trace||!!e.__tl}:null; }"""
 GEOM = """()=>{ let e=null; try{ e=_ppEcran(); }catch(x){} const c=document.getElementById('csTrameCv');
   return {base:e&&Math.round(e.base*100)/100, amp:e&&Math.round(e.amp*100)/100, nl:e&&e.nl, nat:e&&e.nat, dalle:window._ppDalleT?JSON.stringify(window._ppDalleT):null, trait:c&&c.getAttribute('data-trait')}; }"""
-SUIT = """()=>{ window.__mt=[]; const T=window.TraceLettres; if(T && !T.__m){ T.__m=1; const t=T.trace; T.trace=function(c,x,o){ if(!(o&&o.preparer) && c && c.matches && c.matches('#csPhrase .ph-m[data-ph="qui"], #nueePhrase .ph-m[data-np="avec"]')) window.__mt.push(c.textContent); return t.apply(this, arguments); }; } }"""
+SUIT = """()=>{ window.__mt=[]; const T=window.TraceLettres; if(T && !T.__m){ T.__m=1; const t=T.trace; T.trace=function(c,x,o){ const pl=c && c.matches && (c.matches('#csPhrase .ph-m[data-ph="qui"], #nueePhrase .ph-m[data-np="avec"]') || (c.matches('.v200-mt') && c.parentElement && c.parentElement.matches('#csPhrase .ph-m[data-ph="qui"], #nueePhrase .ph-m[data-np="avec"]'))); if(!(o&&o.preparer) && !(o&&o.inverse) && pl) window.__mt.push(c.textContent);   /* ⚑ v200 (C-271) : le tracé se fait sur l'enveloppe du mot (.v200-mt), jamais sur l'encart et ses pointillés */ return t.apply(this, arguments); }; } }"""
 def page(b, f, k, t, vw, vh, valide=True):
     ctx = B.contexte(b, vw=vw, vh=vh); pg = B.ouvre(ctx, f)
     pg.evaluate("()=>{ Math.random=(function(){ let s=7; return ()=>{ s=(s*16807)%2147483647; return (s-1)/2147483646; }; })(); }")

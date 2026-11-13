@@ -3,6 +3,15 @@
 > Ce fichier est relu à chaque session. Il fait autorité sur tout le reste.
 > Si une consigne de l'utilisateur contredit ce fichier, **demander avant d'agir**.
 
+> ## ⚑ AUCUN CHANGEMENT SEC À L'ÉCRAN, NULLE PART — RÈGLE PERMANENTE (Tom, 13 nov. 2026, C-271). ELLE S'APPLIQUE À CHAQUE LOT.
+> *Pourquoi* : en v199, « moi » remplaçait « qui ose ? » d'un coup, l'encart sautait de largeur. Tom : « Jamais plus de livraison avec ces merdes nulle part. »
+> - **Un texte qui change se DÉTRACE (le tracé de C-125 joué à rebours, même cadence : `TraceLettres.trace(el, null, {inverse:true})`), puis le nouveau se TRACE.**
+> - **Une boîte, un encart ou une ligne qui change de taille s'adapte EN DOUCEUR** (la suite glisse avec elle).
+> - **Rien n'apparaît ni ne disparaît d'une image à l'autre.**
+> Tout lot qui livre un changement visible sans transition est un défaut. **La porte A4 l'écrit : pour chaque changement visible du lot, la transition qu'il utilise.**
+> L'outil : `lot-V200-DOUCEUR` (`window._douceur.mot(el, {html, cls})` : détracé, encart, pointillés en flaques, tracé ; la ligne d'une fiche observée).
+> Le relevé des changements secs encore dans l'app : `AUDIT-SECS.md` (v200 §4) — il forme le lot suivant.
+
 > ## ⚑ PORTE DE QUALITÉ — RÈGLE PERMANENTE (Tom, 22 oct. 2026, C-178). ELLE S'APPLIQUE À CHAQUE LOT ET PASSE AVANT TOUT LE RESTE.
 > *Pourquoi* : v159 a AGGRAVÉ la Toile sur l'iPhone de Tom (dès l'ouverture, les dalles écrasées et superposées). « Un lot qui casse ce qui marchait
 > n'est pas livré. »
@@ -12,7 +21,7 @@
 > - **A2 · L'ÉTAT RÉEL DE TOM.** Le banc rejoue AUSSI l'état exporté de Tom (`?export=1` → `etats/tom-*.json`, `banc_tom.contexte_tom`), pas seulement
 >   des jeux de test. Un défaut que Tom voit et que le banc ne voit pas : le banc a tort.
 > - **A3 · ÉCHELLE DE SAFARI.** Toute mesure de mise en page à l'échelle 1 ET à l'échelle 0,79 (Safari iPhone : fenêtre 330 × 714 ou 390 × 692).
-> - **A4 · MISE EN PAGE.** Pour tout élément d'interface touché, mesures à l'appui, clair et sombre, clavier ouvert et fermé, contenu court et long :
+> - **A4 · MISE EN PAGE ET TRANSITIONS.** (⚑ v200, C-271 : pour chaque changement visible du lot, la transition qu'il utilise — aucun changement sec.) Pour tout élément d'interface touché, mesures à l'appui, clair et sombre, clavier ouvert et fermé, contenu court et long :
 >   rien ne déborde de son cadre ni de l'écran, aucun texte coupé ou caché ; aucun recouvrement ; les espacements de l'échelle (aucun inventé, aucune
 >   ligne qui saute) ; un texte remplit sa largeur : aucune ligne anormalement courte, sauf la dernière.
 > - **A5 · PÉRIMÈTRE.** On ne touche que ce que le lot demande. Tout ce que Tom a déclaré bon est GELÉ. Si une correction exige de toucher autre chose :
@@ -242,6 +251,38 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v200 (13 nov. 2026) — LE TRAIT N'EST PLUS ROGNÉ NI DOUBLÉ (C-267, capture de Tom) ; « MOI » ARRIVE EN DOUCEUR (C-269, C-271) ; MASCARET (C-272) ; L'AUDIT DES CHANGEMENTS SECS. (Décisions Tom.) Ce bloc CORRIGE v195 et v197 (③ le CACHE de la jonction) et v199 (§3 : « moi » posé d'un coup).
+> **Validé par Tom : C-270. Règle permanente C-271 (aucun changement sec) : en tête de ce fichier.** Branche `v197`, poussée, NON fusionnée.
+> **⚑ §1 (C-267) — LA CAUSE, REPRODUITE AU BANC À L'ÉCHELLE DE TOM (390 × 651, l'appareil à 0,7466, ×3 ; le Chiche « Hhhh » de sa capture)** : à la rencontre, le cache de v195
+> couvrait le trait plat jusqu'au bas du trait PLEIN (l'axe + ½ épaisseur − 2 px au moins), plus bas que le bas d'un POINT (Ø 10,4 pour 13 pt) : une encoche couleur du champ
+> coupait chaque point en deux (« doublé »), sous la bande qui en coupait le haut (« rogné »). Et le cache était une image de la fiche (le champ, le dessin, les bords de la vague).
+> **LE CACHE EST SUPPRIMÉ — ni image, ni aplat : il n'y a plus rien à reproduire.** Le trait plat (collé à 112 pt, inchangé) vit dans une FENÊTRE (`#v200Fenetre`) qui défile
+> avec le contenu et le DÉCOUPE (`clip-path`, posé quand la fiche change, jamais au défilement) juste sous la vague, colonne par colonne : sous son dernier pixel plein (sous le
+> point là où il y a un point), sous son dernier pixel peint au bord d'un point, au bas du trait entre deux points. Au repos le trait plat est hors de la fenêtre ; en défilant il
+> se découvre sous la vague, contigu. La hauteur de la fenêtre suit le défilement possible (sans jamais le porter). La correction de la marge (v199 §2) est gardée.
+> ⚠ Ce qui reste, par la géométrie : à la rencontre, un point qui passe sous la bande et le point plat qui se découvre font une forme d'un seul tenant (le « 8 » accepté en
+> v197, sans encoche) ; à la POINTE d'un Promi (la flèche inclinée de la vague, droite du trait plat), la branche basse paraît double ≈ 10 pt de défilement — identique sur v199.
+> ⚠ **Safari NON VU** (A6). Juge : **`redteam_un_trait.py`** (compte les TRAITS sur l'image, colonne par colonne, image par image, lent et lancé — la décroissance d'iOS ; A au
+> cœur d'un point et sur tout le trait plein une seule suite de pixels, B jamais coupé, D jamais doublé en épaisseur ; `--vue=tom|1|0,79`, `--sonde` : l'encoche posée exprès) :
+> Chiche de la capture v199 rouge, v200 vert, la sonde rouge ; Chiche et Cercle verts aux trois vues ; Promi rouge à la pointe (v199 aussi : préexistant).
+> **⚑ §2 (C-269, C-271) — `lot-V200-DOUCEUR`, `window._douceur.mot(el, {html, cls})`** : le mot de la place se DÉTRACE (`TraceLettres.trace(el, null, {inverse:true})` : le tracé à
+> rebours, même cadence ; un détracé fini garde la découpe vide, `TL.montre` la rend), l'encart s'adapte en douceur (une transition de largeur, ≥ 320 ms ; la suite de la phrase glisse),
+> puis le nouveau se TRACE ; le tracé découpe une ENVELOPPE du texte (`.v200-mt`), jamais l'encart : les pointillés ne clignotent jamais. Une personne ajoutée : l'encart vidé de « moi »,
+> son filet s'amincit (3 → 0 px) pendant que la pastille se remplit EN FLAQUES, puis le nom se trace à sa couleur finale ; retirée : l'inverse. ⚠ Ordre retenu (décision de lot) : les
+> pointillés partent l'encart VIDE, avant le tracé du nom — sinon le nom changerait de couleur sous l'œil (teinte → encre sur la pastille pleine). Branché sur `lot-V199-MOI` (la
+> validation), sur les reconstructions de la phrase (`_phraseRendu`, `_nueePhraseRendu` : un nœud en transition garde sa place ; la largeur part de l'encart qui était à l'écran) —
+> places « qui », « avec », le verbe « Chiche/chiche » —, sur le libellé du trait (« trace pour planter » → « trace ta moitié ») et sur la ligne de la phrase d'une fiche (`#dptQui`,
+> observée : plusieurs propriétaires l'écrivent ; rebâtie à chaque ouverture, l'observateur suit le nœud vivant ; le titre glisse, `v200-glisse`). Jamais pendant « tenir ».
+> Juge : **`redteam_moi_douceur.py`** (image par image, relevé dans la page : A le mot ne change qu'entièrement découpé, détracé puis tracé ; B la largeur continue, à la vitesse ;
+> C les pointillés entiers à chaque image tant que personne, à l'ajout ils s'amincissent et la pastille se remplit en flaques ; D la cadence, au calme seulement ; page + × 3 natures
+> × validation, ajout, retrait ; fiche Promi et Chiche). Contrat remis : `redteam_moi_phrase` A (le tracé guetté sur l'enveloppe ; original en sauvegarde).
+> **⚑ §3 (C-272) — MASCARET AU STUDIO : DANS LE MOTEUR, ARRÊTÉ** (REPORTÉ au lot moteur, Q573, Q575) : 300 images au banc WebKit (charge 5 à 9 : NON JUGÉ au calme), p95 20 ms,
+> la pire 28 ms, 11 au-dessus de 20 ms ; le seul rappel qui coûte est l'image de l'aperçu, `Toile.apercuImage` (8,7 ms en moyenne, 11 au pire) ; la préparation de la boucle du
+> Studio reste dans son budget ; à l'accueil en Mascaret, `frame()` du moteur jusqu'à 62 ms. Rien hors du moteur. (`scratchpad/v200/mascaret.py`)
+> **⚑ §4 — `AUDIT-SECS.md`** : les changements secs relevés (mesurés : textes, au banc ; lus : le reste), ceux de ce lot corrigés ; le reste forme le lot suivant.
+> **⚑ §5 — LE ROUGE E D'invite_pp : NON CLOS, CAUSE NON NOMMÉE.** Dix passes complètes demandées au calme (charge sous 20) : la charge du Mac (les builds d'une autre session) a dépassé 20 pendant cinq d'entre elles (24 à 115) — NON JUGÉES au calme. Sur les cinq passes restées sous 20 (charge 4 à 17,6 au départ et au milieu), E est vert 3 fois (charge 4,0 ; 12,1 ; 13,8) et rouge 2 fois (17,5 ; 16,9 : la phrase effacée sans retrait en flaques, l'horizon qui ne redescend pas, la marge sous l'horizon négative — Promi seul). E n'est donc pas un pur rouge de charge ; il reste ouvert. Q (la dalle 1,67 pt plus petite) : rouge aussi sur v196 (préexistant).
+> **⚑ TROUVÉ PAR LA PORTE, CORRIGÉ — la pose de la fiche refermait le choix de Peaufiner** (`redteam_gens` 34/38, v199 38/38) : à la fin du détracé de `#dptQui`, l'observateur de `lot-V200-DOUCEUR` rappelait `_fichePose()` — sous Peaufiner ouvert, la pose refermait la liste À QUI. Peaufiner ouvert, la fiche ne se repose plus ; elle se repose à sa fermeture. *La règle* : **une transition qui repose un écran vérifie d'abord ce qui est ouvert par-dessus lui.**
 
 ### ⚑ v199 (13 nov. 2026) — LA VALIDATION DE L'ONBOARDING SANS SURSAUT (C-270) ; LE TRAIT REVIENT À SA PLACE D'OUVERTURE (C-267) ; « MOI » DANS LA PHRASE, LA LIGNE « À : MOI » SUPPRIMÉE (C-269 refaite). (Décisions Tom.) Ce bloc CORRIGE v197b et v198 (C-269 : la ligne des personnes, sa place comptée dans les paliers).
 > **Validés par Tom : C-268 (le guide attend la fin de toute action), le ménage du Mac.** Branche `v197`, poussée, NON fusionnée.
