@@ -2602,7 +2602,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v198', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v199', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -5688,7 +5688,8 @@ window._phraseRendu = function(){ try{
     /* LE CRÉNEAU « QUI JE DÉFIE » ouvre la phrase, et il se montre MÊME VIDE : le cadre
        « Chiche · vide » écrit « à qui ? » en pastille pointillée. La liaison « à » est
        celle du moodboard — « à Marion, chiche de courir dimanche » (décision Tom, S3/Q29). */
-    h += '<em>à</em> ' + pl('qui', _defie ? P.qui : 'qui ose ?', !_defie,
+    h += '<em>à</em> ' + pl('qui', _defie ? P.qui : (window._ppMoi ? 'moi' : 'qui ose ?'), !_defie,   /* ⚑ v199 (C-269 refaite) : le texte validé, personne de choisi : « moi », en pointillés (lot-V199-MOI) */
+          
            {virgule:true, visage:true, taille:_tailleV, natCol:_natCol}) + '<br>';
     h += basc + ' ' + etoile + '<br>'
       + (function(){var _e=elide(P.titre);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exChi, !P.titre);})() + '<br>';
@@ -5713,7 +5714,8 @@ window._phraseRendu = function(){ try{
     if(!faireSoi){ var _perso = (P.qui && !estMoi);
       /* LE MOT DU CADRE (§5, décision Tom) : la pastille vide du destinataire s'écrit
          « qui ? », comme celle du Chiche — l'app écrivait « quelqu'un ». */
-      h += '<em>à</em> ' + pl('qui', _perso ? P.qui : 'qui ?', !_perso,
+      h += '<em>à</em> ' + pl('qui', _perso ? P.qui : (window._ppMoi ? 'moi' : 'qui ?'), !_perso,   /* ⚑ v199 (C-269 refaite) : « moi », en pointillés */
+            
              {visage:true, taille:_tailleV, natCol:_natCol}) + '<br>'; }
     h += lignesFin;
   }
@@ -13795,7 +13797,7 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
     if(!box){ box=document.createElement('div'); box.id='nueePhrase'; nf.insertBefore(box, nf.firstChild); }
     var nom=(document.getElementById('nName')||{}).value||'';
     var membres=(window.newNueeMembers||[]);
-    var avec = membres.length ? membres.join(' · ') : (window._nueeMoiSeul ? 'Moi' : 'tout le monde');   /* §5 : « Moi » choisi = avec toi seulement */
+    var avec = membres.length ? membres.join(' · ') : (window._ppMoi ? 'moi' : (window._nueeMoiSeul ? 'Moi' : 'tout le monde'));   /* ⚑ v199 (C-269 refaite) : le nom validé, aucun membre : « moi » en pointillés à la place de « tout le monde » */   /* §5 : « Moi » choisi = avec toi seulement */
     var pl=function(cle,txt,vide){ return '<span class="ph-m'+(vide?' ph-vide':'')+'" data-np="'+cle+'">'+txt+'</span>'; };
     /* LE VERBE EST UNE PASTILLE, comme sur les deux autres natures (§5 · Nuée · écriture :
        « Je lance une Nuée » Bricolage 700/29, crème sur #291547, rayon 18). Il était en
@@ -18513,15 +18515,9 @@ var CREMEETAT='#F7F0DE';
           var crS = cs.getBoundingClientRect(), gdS = cs.querySelector('.pp-garder'), aideH = 0;
           var finMax = 760; try{ if(gdS && gdS.offsetParent && getComputedStyle(gdS).display !== 'none') finMax = (gdS.getBoundingClientRect().top - crS.top)/sc4; }catch(_){}
           try{ if(!e.ouvert && e.etat === 'plate' && ph.querySelector('.ph-m.ph-vide')) aideH = 34 + 24; }catch(_){}
-          /* ⚑ v198 (Tom, C-269 tranchée) — LA LIGNE « À : MOI » EST TOUJOURS VISIBLE, LA PHRASE N'EST JAMAIS COUPÉE : sa place (12 pt d'air + 20,9 de ligne, arrondis à 33)
-             compte dans la hauteur que la phrase doit laisser, dès l'ouverture (la phrase garde ainsi sa taille quand la ligne paraît : rien ne saute). Les paliers
-             existants font le reste — et ils réduisent AUSSI le titre (`taillePt`), qui porte la hauteur d'une parole longue : réduire la seule phrase (`appli`,
-             30 → 16 en v197) ne rendait que son interligne (17 pt), d'où le « il manque 29 pt ». Jamais sous `__INVITE_BANC` (les juges qui comparent la page + à
-             une version d'avant la ligne). */
-          var _quiH = window.__INVITE_BANC ? 0 : 33; window._ppQuiH = _quiH;   /* l'aide d'un mot vide (`aideH`) et la ligne ne sont jamais à l'écran ensemble (l'aide est cachée quand la parole est prête) : la place est la plus grande des deux */
           var tient = function(lim, air){ if(air == null) air = 20; if(lignesDe(ptL) > lim) return false; var R = txt.getBoundingClientRect(), ok = true;
             [].forEach.call(ptL.getClientRects(), function(q){ if((q.right - R.left)/sc4 > 342.5) ok = false; });
-            if(ok && !e.ouvert && !cs.classList.contains('pp-ouvert') && !document.getElementById('ppMvt') && (R.bottom - crS.top)/sc4 + Math.max(aideH, _quiH) + air + 44 + air > finMax) ok = false;   /* v181b (C-244) : clavier ouvert, la page est à sa place de saisie — la hauteur se juge la page posée */
+            if(ok && !e.ouvert && !cs.classList.contains('pp-ouvert') && !document.getElementById('ppMvt') && (R.bottom - crS.top)/sc4 + aideH + air + 44 + air > finMax) ok = false;   /* v181b (C-244) : clavier ouvert, la page est à sa place de saisie — la hauteur se juge la page posée */
             return ok; };
           var taillePt = function(t){ [ptL, liL].forEach(function(x){ if(!x) return;
             x.style.setProperty('font-size', t+'px', 'important'); x.style.setProperty('line-height', Math.round(t*1.2)+'px', 'important'); }); };
@@ -18594,7 +18590,7 @@ var CREMEETAT='#F7F0DE';
           var _place = function(){ var crS = cs.getBoundingClientRect(), sc = (crS.width||390)/390, g = cs.querySelector('.pp-garder'), fin = 760, b = 0;
             try{ if(g && g.offsetParent && getComputedStyle(g).display !== 'none' && getComputedStyle(g).visibility !== 'hidden') fin = Math.min(fin, (g.getBoundingClientRect().top - crS.top)/sc); }catch(_){}
             var rg = document.createRange(); rg.selectNodeContents(txt); [].forEach.call(rg.getClientRects(), function(q){ if(q.width > 1 && q.height > 1) b = Math.max(b, (q.bottom - crS.top)/sc); });
-            return b ? (b - (window._ppDyPhrase||0) - (window._ppaDy ? window._ppaDy() : 0)) + (window.__INVITE_BANC ? 0 : 33) + 12 + 44 + 12 - fin : -1; };   /* v198 (C-269) : la place de « À : moi » */
+            return b ? (b - (window._ppDyPhrase||0) - (window._ppaDy ? window._ppaDy() : 0)) + 12 + 44 + 12 - fin : -1; };
           var _trop = _place();
           if(_trop > 0.5){
             cotes.__cap = true;
@@ -26194,7 +26190,6 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
       /* ⚑ v150 (C-158, C-149) : la phrase d'un Chiche ou d'un Cercle remonte (`_ppDyPhrase`) et « garder de côté » descend de 4 pt — le rail, lui,
          ne bouge pas (« le choix du trait ne bouge pas ») : il se place comme si ni l'une ni l'autre n'avaient bougé. */
       dessus -= (window._ppDyPhrase || 0);
-      var _qq = document.getElementById('ppQui'), _ql = (_qq && _qq.getAttribute('data-vu') === '1') ? (function(){ var t = _qq.querySelector('.ppq-t'), g = document.createRange(); if(!t) return parseFloat(_qq.getAttribute('data-bas')) || 0; g.selectNodeContents(t); return (g.getBoundingClientRect().bottom - cr.top)/k; })() : 0, _qb = _ql ? _ql + (window._ppDyPhrase || 0) : 0;   /* ⚑ v197 (C-269) : le bas de la ligne « À : moi », dans l'unité de `dessus` ; le rail ne descend sous elle QUE si elle le toucherait (sinon il ne bouge pas : A5) */
       dessus -= (window._ppaDy ? window._ppaDy() : 0);   /* v174 (C-213) : la remontée de la page « pas prête » n'est pas sa place : le rail se calcule comme si la phrase n'avait pas bougé */
       var dessous = 760;
       var gl = cs.querySelector('.pp-garder');
@@ -26204,7 +26199,6 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
          garde la place que le lien lui donne : sa cote est fixe (708, lot de la page +). */
       else if(gl && cs.classList.contains('pp-cours') && !cs.classList.contains('pp-ouvert')) dessous = 708 + INK_LIEN + (parseFloat(cs.style.getPropertyValue('--pp-dyt'))||0);   /* v163 : du pas du trait */
       if(k && dessus > 0) haut = Math.round((dessus + (dessous - dessus - PHT)/2)*4)/4;
-      if(k && _ql && _ql + 12 > haut){ var _d2 = Math.max(dessus, _qb); haut = Math.max(Math.round((_d2 + (dessous - _d2 - PHT)/2)*4)/4, Math.ceil((_ql + 12)*4)/4); }   /* ⚑ v197 (C-269) : la cote vraie de la ligne (data-bas) contre celle du rail ; il ne descend que s'il la toucherait */
     }catch(_){}
     var geo = haut + '|' + PHT;
     if(r.getAttribute('data-geo') === geo) return r;   /* on compare avant d'agir (§8) */
@@ -33972,7 +33966,8 @@ function bati(){
     var h = '';
     /* « tout le monde » n'est pas une personne : pas d'initiale (elle n'aurait rien dit, et coupait le mot) */
     if(cfg.tete) h += '<button type="button" class="ph-o'+(cfg.teteOn()?' on':'')+'" data-gn-tete="1">'
-      + (/^moi$/i.test(cfg.tete) ? '<span class="ppo-ini">M</span>' : '') + '<span class="ppo-nom">'+esc(cfg.tete)+'</span></button>';
+      + (/^moi$/i.test(cfg.tete) ? '<span class="ppo-ini">M</span>' : '') + '<span class="ppo-nom">'+esc(cfg.tete)+'</span>'
+      + ((/^moi$/i.test(cfg.tete) && cfg.teteOn()) ? '<span class="ppo-x" role="button" aria-label="retirer moi">'+X+'</span>' : '') + '</button>';   /* ⚑ v199 (C-269 refaite) : « moi » est une personne choisie, avec sa croix ; retiré seul, il revient (jamais vide) — on le remplace en ajoutant quelqu'un */
     /* ⚑ §5 (14 sept.) : dans une Nuée, « tout le monde » passe devant, « Moi » ensuite */
     if(cfg.tete2) h += '<button type="button" class="ph-o'+(cfg.tete2On()?' on':'')+'" data-gn-tete2="1"><span class="ppo-ini">M</span><span class="ppo-nom">'+esc(cfg.tete2)+'</span></button>';
     noms.forEach(function(n){
@@ -34232,7 +34227,7 @@ function bati(){
       ajoute: function(n){ var l = window._gensListe(P[champ]); if(l.indexOf(n)<0) l.push(n); pose(l); },
       retire: function(n){ pose(window._gensListe(P[champ]).filter(function(x){ return x !== n; })); },
       tete: (champ === 'qui') ? 'Moi' : null,
-      teteOn: function(){ return !window._gensListe(P.qui).length && /^moi$/i.test(String(P.qui||'')); },
+      teteOn: function(){ return !window._gensListe(P.qui).length; },   /* ⚑ v199 (C-269 refaite) : personne d'autre = « moi » choisi */
       teteChoisie: function(){ P.qui = 'Moi'; try{ window.newWhoSel = []; }catch(_){}
         try{ var w = document.getElementById('fWho'); if(w){ w.value = 'Moi'; w.dispatchEvent(new Event('input',{bubbles:true})); } }catch(_){} },
       rendu: function(){
@@ -34256,12 +34251,11 @@ function bati(){
       choisis: function(){ return M().slice(); },
       ajoute: function(n){ window._nueeMoiSeul = false; if(M().indexOf(n)<0) M().push(n); },
       retire: function(n){ var i = M().indexOf(n); if(i>=0) M().splice(i,1); },
-      tete: 'tout le monde',
-      teteOn: function(){ return !M().length && !window._nueeMoiSeul; },
+      /* ⚑ v199 (Tom, C-269 refaite : « avec Moi au lieu de “tout le monde”, qui est remplacé ») — « Moi » choisi tant qu'aucun membre n'est ajouté, avec sa croix ;
+         les données ne changent pas (aucun membre, comme le « tout le monde » d'avant) */
+      tete: 'Moi',
+      teteOn: function(){ return !M().length; },
       teteChoisie: function(){ window._nueeMoiSeul = false; window.newNueeMembers = []; },
-      tete2: 'Moi',                                  /* « Avec toi seulement » : aucune autre personne */
-      tete2On: function(){ return !M().length && !!window._nueeMoiSeul; },
-      tete2Choisie: function(){ window._nueeMoiSeul = true; window.newNueeMembers = []; },
       rendu: function(){
         try{ if(window.buildNueeMembers) buildNueeMembers(); }catch(_){}
         try{ window._nueePhraseRendu(); }catch(_){}
@@ -34339,7 +34333,9 @@ function bati(){
       choisis: lire,
       ajoute: function(n){ var l = lire(); if(l.indexOf(n)<0) l.push(n); ecrire(l); },
       retire: function(n){ ecrire(lire().filter(function(x){ return x !== n; })); },
-      tete: null,
+      tete: (kind === 'avec') ? null : 'Moi',   /* ⚑ v199 (C-269 refaite) : sur la fiche aussi, « moi » est la personne choisie tant que personne d'autre, avec sa croix */
+      teteOn: function(){ return !lire().length; },
+      teteChoisie: function(){ ecrire([]); },
       rendu: function(){
         rend(host, cfg);
         var reg = host.closest && host.closest('.s2-reg');
@@ -38639,7 +38635,14 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var ok=!!(pre && pre.width), _pn=performance.now, _t1=_pn.call(performance)+900;
     if(!ok){
     try{ performance.now=function(){ return _t1; }; }catch(_){ }
-    try{ ok=Toile.dalleTrame(dc, id, 1, monde); }catch(_){} finally{ try{ performance.now=_pn; }catch(_){ } try{ delete performance.now; }catch(_){ } } }
+    try{ ok=Toile.dalleTrame(dc, id, 1, monde); }catch(_){} finally{ try{ performance.now=_pn; }catch(_){ } try{ delete performance.now; }catch(_){ } } 
+      /* ⚑ v199 (Tom, §1 : « à la fin de l'animation de validation du premier Promi, un sursaut, un décalage, et la dalle se dédouble ») — LA CAUSE (présente depuis
+         v183b, donc déjà dans v196 ; aucun commit de v197–v198) : la dalle rendue AU TRAIT déclare la boîte de sa cellule à cet instant (`cel`), une cellule qui vient de
+         naître — minuscule ; `_dalleSurToile` lisait sa croissance comme un DÉPLACEMENT (le coin de la boîte recule quand elle grandit) et décalait la cible de
+         (−63, −64) unités (≈ 126 pt à la vue × 2) : la dalle volait vers une fausse place, la couche de la Toile d'avant y laissait son trou (la vraie dalle restait
+         visible dessus : deux dalles), puis la cible relue en fin de vol la faisait glisser de 100 pt d'un coup. La place de sa matière (`org`) ne bouge pas, elle :
+         sans la boîte de la cellule, la place se lit sur elle (la dalle d'avance de la page +, qui déclare la cellule FINALE prédite, garde sa compensation). */
+      if(ok && dc.__dalleInfo && dc.__dalleInfo.cel){ var _di={}; for(var _k in dc.__dalleInfo) if(_k!=='cel') _di[_k]=dc.__dalleInfo[_k]; dc.__dalleInfo=_di; } }
     var h=w*(dc.height/(dc.width||1));
     if(ok){
       dc.style.cssText='position:absolute;margin:0;padding:0;pointer-events:none;transform-origin:50% 50%;left:'+(bx-w/2)+'px;top:'+(by-h/2)+'px;width:'+w+'px;height:'+h+'px;transform:scale(.08);opacity:1;transition:transform .5s cubic-bezier(.2,1.3,.4,1)';   /* v148 (C-141 §10.3) : plus de fondu d'opacité — elle grandit depuis le trait */
@@ -38669,6 +38672,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
         var c=cib(); if(!c){ requestAnimationFrame(f); return; }
         var sc=c.w/w, cx=x0c+(c.x+c.w/2-x0c)*e, cy=y0c+(c.y+c.h/2-y0c)*e, ss=s0+(sc-s0)*e;
         dc.style.left=(cx-w/2)+'px'; dc.style.top=(cy-h/2)+'px'; dc.style.transform='scale('+ss.toFixed(5)+')';
+        if(u>=1 && !dc.__volFini) requestAnimationFrame(function(){ dc.__volFini=true; });   /* v199 : posée, et cette image peinte */
         requestAnimationFrame(f); })(); }};
   };
   /* où la Toile vivante pose l'image `cv` d'une dalle, en pt de l'appareil : `__dalleInfo.org` (unités de la Toile, px du canevas par unité), dans la vue du moment */
@@ -38804,6 +38808,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     ctl.maj=maj; ctl.lance=function(){ if(!ctl.parti){ ctl.parti=true; maj(); } }; return ctl; };
   /* l'atterrissage : la dalle qui volait est sur la dalle vivante ; dans la même image, la Toile vivante seule (la couche, la couverture, la dalle qui volait partent) */
   window._atterrit=function(fond, dc, fin, viv, couches){
+    /* ⚑ v199 (§1 : « un sursaut à la fin de la validation ») — l'atterrissage attend que la dalle qui vole ait PEINT sa place finale (300 ms au plus) : une image
+       longue juste avant (le navigateur, ≈ 400 ms au banc, déjà en v196) la laissait à 15 pt de sa place, et l'atterrissage la remplaçait d'un coup par la vivante */
+    if(dc && dc.parentNode && dc.__suit && !dc.__volFini && !(window._atterritT0 && performance.now()-window._atterritT0>300)){ if(!window._atterritT0) window._atterritT0=performance.now(); requestAnimationFrame(function(){ window._atterrit(fond, dc, fin, viv, couches); }); return; }
+    window._atterritT0=0;
     requestAnimationFrame(function(){ try{ if(viv) viv.arrete=true; }catch(_){ } try{ if(fond) fond.style.display='none'; }catch(_){ }
       (couches||[]).forEach(function(c){ try{ if(c){ if(c.arrete!==undefined) c.arrete=true; var cv=c.canevas||c; if(cv && cv.parentNode) cv.remove(); } }catch(_){ } });
       try{ if(dc && dc.parentNode) dc.remove(); }catch(_){ }
@@ -44987,7 +44995,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     f.photo=!f.cercle && !window._instant && typeof cur!=='undefined' && cur && !!cur.photo;
     try{ var g=c.getContext('2d'), E0=c.width/(c.offsetWidth||390), px=g.getImageData(Math.round(4*E0), Math.max(0, Math.round((mn-lw-6)*E0)), 1, 1).data; f.champ=px[3]>200 ? 'rgb('+px[0]+','+px[1]+','+px[2]+')' : null; }catch(_){ f.champ=null; }
     if(f.cercle && c.getAttribute('data-champ')) f.champ=c.getAttribute('data-champ');
-    f.Ytop=Math.floor(mn-lw/2-MH); f.H=Math.ceil(mx+lw/2+40-f.Ytop);   /* ⚑ v197 (C-267) : MH pt au-dessus du sommet de la courbe (la pointe d'un tracé au sommet monte à 17 pt au-dessus de l'axe, un pinceau plus haut) */
+    f.Ytop=Math.floor(Math.max(Math.min(J, mn-lw/2-17), mn-lw/2-MH)); f.H=Math.ceil(mx+lw/2+40-f.Ytop);   /* ⚑ v199 (Tom, §2, C-267) : le haut de la boîte ne monte JAMAIS au-dessus de la jonction (112) — un Cercle (sa vague à 140) l'avait à 103 pt avec la marge de 30 ; la place de la pointe (17 pt au-dessus de l'axe) reste prioritaire */   /* ⚑ v197 (C-267) : MH pt au-dessus du sommet de la courbe (la pointe d'un tracé au sommet monte à 17 pt au-dessus de l'axe, un pinceau plus haut) */
     return f; }
   function cle(){ var c=document.getElementById('dpTrameCv'), d=D(); return (c && c.getAttribute('data-trait')||'')+'|'+classes(d)+'|'+(c?c.width+'x'+c.height:'')+'|'+(c&&c.__ligne?1:0); }
   /* « accroché » : la vague arrivée à la jonction — le défilement lu à l'instant même (pour le geste seulement : rien de visible) */
@@ -45164,105 +45172,44 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(bon){ try{ if(bon.onclick) bon.onclick({target:bon, stopPropagation:function(){}, preventDefault:function(){}}); else bon.click(); }catch(_){ } } }, true);
 })();
 </script>
-<script id="lot-V197-AMOI">
-/* ⚑ v197 (Tom, 11 nov. 2026, C-269) — « Sur la page +, “À : moi” par défaut, visible avant de planter. Au moment où le texte est validé (Promi, Chiche, Cercle),
-   la ligne des personnes paraît sous le titre : « À : moi », ou « Avec : moi » pour un Cercle. C'est le même composant que la ligne de la fiche (C-242, C-254,
-   C-247). Un toucher sur la ligne ou sur le + ouvre le menu des membres existant. La liste n'est jamais vide : “moi” revient. Le trait et la naissance de la dalle
-   ne changent pas. Les mêmes personnes paraissent sur la fiche après la plantation. L'onboarding n'est pas concerné. »
-   LA LIGNE (`#ppQui`) : la police de la ligne « Avec … » d'une fiche de Cercle (`--f-libelle` 600, 19 pt, interligne 1,1), la couleur des mots de liaison de la
-   phrase (« de », « avec ») ; 12 pt sous l'ENCRE de la phrase, à la marge (24 pt). LE + : le dessin de celui des membres (`#cerclePlusMembres`, C-242 : le signe
-   seul, orange #FB4C0D, haut d'une capitale de la ligne, trait 0,28), son encre 26 pt après la fin du texte, centré sur les capitales ; zone de 44 pt.
-   QUAND : seulement quand l'invite du trait est là (`_ppInvite` : la parole est prête, le trait est né) — jamais pendant la frappe ni un choix ouvert. Elle se
-   TRACE en même temps que le trait (le tracé des lettres, C-125). LES PERSONNES : celles que la page + porte déjà (`_phrase.qui`, `_phrase.avec` ; un Cercle :
-   `newNueeMembers`) — aucune nouvelle donnée ; vide → « moi ». LE TOUCHER : le choix des personnes de la phrase (la pastille « qui », « avec » d'un Cercle ;
-   un Promi « je me promets » bascule d'abord le sens, comme le fait sa pastille). LA PLACE : le rail du pinceau se place sous elle (mi-chemin, sa règle) ; s'il
-   n'y a plus la place (un Promi de 280 caractères : la phrase descend jusqu'à 12 pt au-dessus de « garder de côté »), LA PLACE MANQUE — non résolu, décision à Tom
-   (C-269 ; réduire la phrase par C-240 a été essayé : 30 → 16 pt, et la place ne suffit toujours pas — retiré). */
+<script id="lot-V199-MOI">
+/* ⚑ v199 (Tom, 13 nov. 2026, C-269 REFAITE) — « Le choix des personnes existe déjà, DANS LA PHRASE. » Quand le texte est validé (le trait naît : `_ppInvite`) et
+   qu'aucune personne n'est choisie, la place du destinataire montre « moi » entre pointillés (le marquage des places modifiables) : Chiche « à qui ose ? » → « à moi »,
+   Promi « Je promets … à qui ? » → « à moi » (« Je me promets » ne change pas), Cercle « avec tout le monde » → « avec moi ». Les pointillés restent tant que personne
+   n'est ajouté. Le mot paraît PAR SON TRACÉ, avec le trait (jamais d'un coup ; ses lettres préparées d'avance, C-125) ; la parole redevenue incomplète, la place
+   reprend son mot de même. Le toucher sur la place ouvre le choix existant, où « Moi » est la personne choisie, avec sa croix (lot-GENS). Rien d'autre ne bouge :
+   la place est sur sa propre ligne (la phrase garde ses lignes, le trait et la dalle naissent comme v196). Jamais sous `__INVITE_BANC`. */
 (function(){
-  var OR='#FB4C0D', AIR=12;
-  function $(i){ return document.getElementById(i); }
-  function cs(){ return $('createSheet'); }
-  function nat(c){ var k=c.getAttribute('data-kind'); if(k==='nuee'||c.classList.contains('pp-nuee')) return 'nuee'; if(c.classList.contains('pp-chiche')) return 'chiche'; return (window._phrase && window._phrase.sens==='chiche') ? 'chiche' : (k||'promi'); }
-  function liste(v){ try{ return window._gensListe ? window._gensListe(v) : String(v||'').split(',').map(function(s){ return s.trim(); }).filter(Boolean); }catch(_){ return []; } }
-  function noms(k){ var P=window._phrase||{}, L;
-    if(k==='nuee') L=(window.newNueeMembers||[]).slice(); else L=liste(P.qui);
-    L=L.filter(function(n){ return n && !/^moi$/i.test(n); });
-    if(!L.length) L=['moi'];
-    var t=L.length<=2 ? L.join(', ') : (L.slice(0,2).join(', ')+', +'+(L.length-2));
-    if(k==='chiche'){ var A=liste(P.avec).filter(function(n){ return n && !/^moi$/i.test(n); }); if(A.length) t+=' · avec '+(A.length<=2?A.join(', '):(A.slice(0,2).join(', ')+', +'+(A.length-2))); }
-    return (k==='nuee' ? 'Avec : ' : 'À : ')+t; }
-  function bati(c){ var q=$('ppQui'); if(q && q.parentNode===c) return q;
-    if(!q){ q=document.createElement('div'); q.id='ppQui'; q.setAttribute('role','button'); q.setAttribute('aria-label','Les personnes de la parole');
-      q.innerHTML='<span class="ppq-t"></span><span class="ppq-b" aria-hidden="true"></span><span class="ppq-p" aria-hidden="true"><svg viewBox="0 0 22 22" width="13" height="13"><path d="M11 3.08V18.92M3.08 11H18.92" stroke="'+OR+'" stroke-width="6.16" stroke-linecap="round" fill="none"/></svg></span>';
-      arme(q);
-      try{ (window._rangeurs=window._rangeurs||[]).push(function(){ var n=$('ppQui'); if(n){ n.setAttribute('data-vu','0'); n.style.setProperty('visibility','hidden','important'); } }); }catch(_){ } }
-    c.appendChild(q); return q; }
-  /* le toucher : le geste lui-même (la page + ne produit pas toujours de `click` au doigt), et le clic qui suit avalé */
-  var vu=0;
-  function arme(q){ var x0=0,y0=0,t0=0;
-    q.addEventListener('pointerdown',function(e){ x0=e.clientX; y0=e.clientY; t0=e.timeStamp||performance.now(); e.stopPropagation(); },true);
-    q.addEventListener('pointerup',function(e){ e.stopPropagation(); if(Math.abs(e.clientX-x0)>12||Math.abs(e.clientY-y0)>12) return; if((e.timeStamp||performance.now())-t0>700) return; ouvre(); vu=performance.now(); },true);
-    q.addEventListener('click',function(e){ e.stopPropagation(); e.preventDefault(); if(vu && performance.now()-vu<800) return; ouvre(); },true); }
-  window.addEventListener('click',function(e){ if(e.isTrusted && vu && performance.now()-vu<800 && !(e.target&&e.target.closest&&e.target.closest('#ppQui'))){ e.stopPropagation(); e.preventDefault(); vu=0; } },true);
-  function ouvre(){ var c=cs(); if(!c) return; var k=nat(c);
-    if(k==='nuee'){ var a=document.querySelector('#nueePhrase .ph-m[data-np="avec"]'); if(a) a.click(); return; }
-    var q=document.querySelector('#csPhrase .ph-m[data-ph="qui"]');
-    if(q && q.offsetParent){ q.click(); return; }
-    var s=document.querySelector('#csPhrase .ph-b[data-ph="sens"]'); if(s) s.click();   /* « je me promets » : le sens bascule, comme le fait sa pastille */
-    setTimeout(function(){ var q2=document.querySelector('#csPhrase .ph-m[data-ph="qui"]'); if(q2) q2.click(); }, 90); }
-  function encre(c, k){ var ph=document.querySelector(k==='nuee'?'#nueePhrase .ph-txt':'#csPhrase .ph-txt'); if(!ph) return null;
-    var rg=document.createRange(); rg.selectNodeContents(ph); var R=c.getBoundingClientRect(), s=(R.width||390)/390, b=0;
-    [].forEach.call(rg.getClientRects(), function(r){ if(r.width>1 && r.height>1) b=Math.max(b, (r.bottom-R.top)/s); });
-    var em=ph.querySelector('em'); return b ? {bas:b, col:em ? getComputedStyle(em).color : getComputedStyle(ph).color} : null; }
-  function cache(q){ if(q.getAttribute('data-vu')!=='0'){ var etait=q.getAttribute('data-vu')==='1'; q.setAttribute('data-vu','0'); q.style.setProperty('visibility','hidden','important'); try{ if(q.__tl && q.__tl.stop) q.__tl.stop(); }catch(_){ } if(etait){ try{ if(window._pinceauRangee) window._pinceauRangee(); }catch(_){ } } } }   /* v198 : la ligne partie, le rail reprend sa place */
-  /* ⚑ v198 (§2, C-125) — LA LIGNE SE PRÉPARE D'AVANCE. Elle se traçait sans préparation, dans l'image où le trait naît : le calcul de ses lettres tombait sur le fil
-     principal pendant la naissance du trait et le mouvement de la page (sous charge, les étapes suivantes — le clavier qui se ferme, l'horizon — glissaient : invite_pp E,
-     jamais sur v196). Comme tout texte tracé (v170d) : la page + ouverte, la ligne pas encore là, ses lettres sont calculées, cachée (`preparer`), une fois par texte. */
-  function prepare(c, q){ if(q.getAttribute('data-vu')==='1' || !window.TraceLettres) return; try{ if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return; }catch(_){ }
-    var k=nat(c), t=noms(k); if(q.__prep===t) return; q.__prep=t;
-    var tx=q.querySelector('.ppq-t'); tx.textContent=t;
-    q.style.cssText='position:absolute!important;left:24px!important;top:'+(parseFloat(q.style.top)||560)+'px!important;max-width:none!important;width:auto!important;margin:0!important;padding:0!important;z-index:6!important;display:block!important;white-space:nowrap!important;'
-      +'font-family:var(--f-libelle)!important;font-weight:600!important;font-size:19px!important;letter-spacing:-.01em!important;line-height:1.1!important;opacity:1!important;pointer-events:none!important;visibility:hidden!important';
-    tx.style.cssText='font:inherit!important;color:inherit!important;-webkit-text-fill-color:currentColor!important';
-    try{ window.TraceLettres.trace(tx, null, {preparer:true}); }catch(_){ } }
-  var sig='';
-  function veille(){ var c=cs(); var q=$('ppQui');
-    if(!c || !c.classList.contains('show') || !c.classList.contains('pp') || c.classList.contains('pp-choix') || c.classList.contains('pp-peauf')){ if(q) cache(q); sig=''; return; }
+  function cs(){ return document.getElementById('createSheet'); }
+  function nat(c){ return (c.getAttribute('data-kind')==='nuee' || c.classList.contains('pp-nuee')) ? 'nuee' : 'promi'; }
+  function place(c){ return nat(c)==='nuee' ? document.querySelector('#nueePhrase .ph-m[data-np="avec"].ph-vide') : document.querySelector('#csPhrase .ph-m[data-ph="qui"].ph-vide'); }
+  function attente(c){ if(nat(c)==='nuee') return (window._nueeMoiSeul ? 'Moi' : 'tout le monde'); var P=window._phrase||{}; return P.sens==='chiche' ? 'qui ose ?' : 'qui\u202f?'; }
+  function reduit(){ try{ return window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function trace(el){ if(reduit() || !window.TraceLettres) return; try{ el.__tl=window.TraceLettres.trace(el, null, {depart:'h'}); }catch(_){ } }
+  /* les lettres de « moi » préparées d'avance, sur une copie cachée de la place (même police, même taille) */
+  var prep='';
+  function prepare(el){ if(!window.TraceLettres || reduit()) return; var k=getComputedStyle(el).font; if(prep===k) return; prep=k;
+    try{ var cl=el.cloneNode(false); cl.textContent='moi'; cl.removeAttribute('data-ph'); cl.removeAttribute('data-np');
+      cl.style.cssText='position:absolute!important;left:0!important;top:0!important;visibility:hidden!important;pointer-events:none!important';
+      el.parentNode.appendChild(cl); var t=window.TraceLettres.trace(cl, null, {preparer:true}); (t && t.fin ? t.fin : Promise.resolve()).then(function(){ if(cl.parentNode) cl.remove(); }); }catch(_){ } }
+  function pose(v){ window._ppMoi=v; var c=cs(); if(!c) return; var el=place(c); if(!el) return;
+    var t=v ? 'moi' : attente(c); if(el.textContent===t) return; el.textContent=t; trace(el); }
+  window._ppMoi=false;
+  function veille(){ var c=cs();
+    if(!c || !c.classList.contains('show') || !c.classList.contains('pp') || c.classList.contains('pp-choix')){ if(window._ppMoi) window._ppMoi=false; return; }
+    if(window.__INVITE_BANC){ if(window._ppMoi) pose(false); return; }
     var inv=null; try{ inv=window._ppInvite && window._ppInvite.etat(); }catch(_){ }
-    var e=null; try{ e=window._ppEcran && window._ppEcran(); }catch(_){ }
-    var nz=$('nueeChoix'); var ouvert=c.classList.contains('pp-ouvert') || (e && e.ouvert) || (c.classList.contains('pp-nuee') && nz && nz.children.length>0);
-    var pret=!!(inv && inv.visible && !inv.sortie) && !window.__INVITE_BANC;   /* `__INVITE_BANC` : les juges qui comparent la page + à une version d'avant (la ligne a son juge, redteam_a_moi) */
-    q=bati(c);
-    if(!pret || ouvert){ cache(q); sig=''; if(!ouvert && !window.__INVITE_BANC) prepare(c, q); return; }
-    var k=nat(c), t=noms(k), en=encre(c, k); if(!en){ cache(q); return; }
-    var top=Math.round((en.bas+AIR)*4)/4, s2=[k,t,top,en.col].join('|');
-    /* LA PLACE : la ligne (20,9), 12 pt d'air, le rail (44), 12 pt d'air au-dessus de « garder de côté » (ou de la barre) — sinon elle ne paraît pas : rien d'autre ne bouge
-       (un Promi de 280 caractères : décision à Tom, C-269) */
-    var gl=c.querySelector('.pp-garder'), fin=760; try{ if(gl && gl.offsetParent && getComputedStyle(gl).display!=='none' && getComputedStyle(gl).visibility!=='hidden'){ var Rg=c.getBoundingClientRect(); fin=Math.min(fin, (gl.getBoundingClientRect().top-Rg.top)/((Rg.width||390)/390)); } }catch(_){ }
-    if(top+20.9+AIR+44+AIR > fin+0.5){ cache(q); q.setAttribute('data-manque', String(Math.round((top+20.9+AIR+44+AIR-fin)*10)/10)); sig=''; return; }
-    q.removeAttribute('data-manque');
-    if(s2===sig && q.getAttribute('data-vu')==='1') return;   /* on compare avant d'agir (§8) */
-    var neuve=q.getAttribute('data-vu')!=='1';
-    sig=s2;
-    var tx=q.querySelector('.ppq-t'); if(tx.textContent!==t){ tx.textContent=t; neuve=true; }
-    q.style.cssText='position:absolute!important;left:24px!important;top:'+top+'px!important;max-width:none!important;width:auto!important;margin:0!important;padding:0!important;z-index:6!important;display:block!important;white-space:nowrap!important;'
-      +'font-family:var(--f-libelle)!important;font-weight:600!important;font-size:19px!important;letter-spacing:-.01em!important;line-height:1.1!important;color:'+en.col+'!important;-webkit-text-fill-color:'+en.col+'!important;opacity:1!important;'
-      +'background:none!important;border:0!important;box-shadow:none!important;transform:none!important;filter:none!important;pointer-events:auto!important;cursor:pointer;visibility:'+(neuve?'hidden':'visible')+'!important';
-    tx.style.cssText='font:inherit!important;color:inherit!important;-webkit-text-fill-color:currentColor!important';
-    /* le + : sa hauteur est la capitale de la ligne, lue sur sa police rendue ; 26 pt après le texte, centré sur les capitales */
-    var cap=13.25; try{ var g=(veille.__cv||(veille.__cv=document.createElement('canvas'))).getContext('2d'), csq=getComputedStyle(q); g.font=csq.fontStyle+' '+csq.fontWeight+' '+csq.fontSize+' '+csq.fontFamily; var mA=g.measureText('A'); if(mA.actualBoundingBoxAscent>0) cap=Math.round(mA.actualBoundingBoxAscent*4)/4; }catch(_){ }
-    var pl=q.querySelector('.ppq-p'), sv=pl.querySelector('svg'); sv.setAttribute('width',cap); sv.setAttribute('height',cap);
-    var bm=q.querySelector('.ppq-b'); bm.style.cssText='display:inline-block!important;width:0!important;height:0!important;vertical-align:baseline!important;margin:0!important;padding:0!important';   /* la ligne de base, mesurée */
-    var R=c.getBoundingClientRect(), sc=(R.width||390)/390, qb=q.getBoundingClientRect(), base=(bm.getBoundingClientRect().top-qb.top)/sc, rg2=document.createRange(); rg2.selectNodeContents(tx); var fin=(rg2.getBoundingClientRect().right-qb.left)/sc;
-    pl.style.cssText='position:absolute!important;display:flex!important;align-items:center;justify-content:center;width:44px!important;height:44px!important;margin:0!important;padding:0!important;background:none!important;left:'+(Math.round((fin+26-(44-cap)/2)*4)/4)+'px!important;top:'+(Math.round((base-cap/2-22)*4)/4)+'px!important';   /* son encre commence 26 pt après le texte, centrée sur les capitales */
-    q.setAttribute('data-bas', String(top + 20.9));
-    if(neuve){ q.setAttribute('data-vu','1');
-      try{ if(window._pinceauRangee) window._pinceauRangee(); }catch(_){ }   /* ⚑ v198 (§2) : seul le rail se replace (sous elle s'il la toucherait) — plus la recomposition ENTIÈRE de la page + (`_ppTout`), qui tombait n'importe quand, mouvement de la page compris : la phrase en sautait (invite_pp E) */
-      q.style.setProperty('visibility','visible','important');
-      var reduit=window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if(!reduit && window.TraceLettres){ try{ q.__tl=window.TraceLettres.trace(tx, null, {depart:'h'}); }catch(_){ } } }
-    void qb; void sc; }
+    var pret=!!(inv && inv.visible && !inv.sortie);
+    var el=place(c); if(el && !window._ppMoi) prepare(el);
+    if(pret!==!!window._ppMoi) pose(pret); }
   setInterval(veille, 50);
+  try{ (window._rangeurs=window._rangeurs||[]).push(function(){ window._ppMoi=false; }); }catch(_){ }
+})();
+</script>
+<script id="lot-V197-CERCLE-MEMBRES">
+/* ⚑ v199 (Tom, C-269 refaite) : la ligne « À : moi » / « Avec : moi » et son + sont SUPPRIMÉS (« le choix des personnes existe déjà, dans la phrase ; une ligne de
+   plus, c'était du bruit ») — remplacés par « moi » en pointillés dans la phrase elle-même (`lot-V199-MOI`). De ce lot ne reste que la correction trouvée en route : */
+(function(){
   /* ⚑ LES MEMBRES D'UN CERCLE PLANTÉ (trouvé par redteam_a_moi, présent tel quel en v196) — deux variables du même nom : le choix des personnes de la page + écrit
      `window.newNueeMembers`, `#addNuee` lit le `let newNueeMembers` du script (une déclaration `let` n'est pas une propriété de `window`, le piège de `createKind`, v177a) :
      un Cercle planté depuis la page + était enregistré SANS ses membres (« Avec toi seulement » sur sa fiche). Au toucher qui plante (en capture, avant son gestionnaire), le
@@ -45272,7 +45219,6 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
         var n0=Object.keys(window.NUE||(typeof NUE!=='undefined'?NUE:{})).length;
         setTimeout(function(){ try{ var n1=Object.keys(typeof NUE!=='undefined'?NUE:{}).length; if(n1>n0){ window.newNueeMembers=[]; window._nueeMoiSeul=false; } }catch(_){ } }, 0); } }catch(_){ } }, true); }
   relie();
-  window._ppQui={ veille:veille, noms:noms, ouvre:ouvre };
 })();
 </script>
 </body>

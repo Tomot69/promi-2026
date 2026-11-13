@@ -243,6 +243,48 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v199 (13 nov. 2026) — LA VALIDATION DE L'ONBOARDING SANS SURSAUT (C-270) ; LE TRAIT REVIENT À SA PLACE D'OUVERTURE (C-267) ; « MOI » DANS LA PHRASE, LA LIGNE « À : MOI » SUPPRIMÉE (C-269 refaite). (Décisions Tom.) Ce bloc CORRIGE v197b et v198 (C-269 : la ligne des personnes, sa place comptée dans les paliers).
+> **Validés par Tom : C-268 (le guide attend la fin de toute action), le ménage du Mac.** Branche `v197`, poussée, NON fusionnée.
+> **⚑ §1 (C-270) — « À LA FIN DE LA VALIDATION DU PREMIER PROMI, UN SURSAUT, UN DÉCALAGE, LA DALLE SE DÉDOUBLE » — AUCUN COMMIT DE v197–v198 : le défaut est DÉJÀ DANS v196**
+> au banc, image par image (la dalle à 111 pt de sa place à l'atterrissage, le trou de la couche à 178 pt de la dalle vivante). **LA CAUSE (présente depuis v183b)** : la dalle
+> rendue AU TRAIT (`_naissanceDalle`) déclare la boîte de sa cellule à cet instant (`__dalleInfo.cel`) — une cellule qui vient de naître, minuscule ; `_dalleSurToile` lisait sa
+> CROISSANCE comme un DÉPLACEMENT (le coin de la boîte recule quand elle grandit) et décalait la cible de (−63, −64) unités (≈ 126 pt à la vue × 2) : la dalle volait vers une
+> fausse place, la couche de la Toile d'avant y laissait son trou (la vraie dalle restait visible : deux dalles), puis la cible relue en fin de vol la faisait glisser de 100 pt
+> d'un coup. **Corrigé** : la dalle de naissance ne déclare plus `cel` (la place de sa matière, `org`, ne bouge pas : elle se lit sur elle) ; la dalle d'avance de la page +, qui
+> déclare la cellule FINALE prédite, garde sa compensation. Et l'atterrissage attend que la dalle qui vole ait PEINT sa place finale (`__volFini`, 300 ms au plus) : une image
+> longue juste avant (≈ 400 ms au banc, déjà en v196, aucun rappel du script au-delà de 25 ms) la laissait à 15 pt de sa place, remplacée d'un coup par la vivante.
+> Juge : **`redteam_onb_validation.py`** (le vrai parcours, chaque image : A le trou de la couche sur la dalle vivante ± 3 pt, B la dalle sur la droite départ → place finale ± 6 pt,
+> C aucun saut à l'atterrissage, une seule dalle après, D la naissance et la place finale = v196 ; `--ref=`). 8/8 aux échelles 1, 0,79 et dans la fenêtre de Tom ; v196 3/6.
+> ⚠ `redteam_naissance_onb` est rouge sur v196 aussi (2/8, contrat d'avant v187 : préexistant).
+> **⚑ §2 (C-267) — « CE N'ÉTAIT PAS UNE COUPE, C'EST UNE POSITION DE RETOUR FAUSSE » : LA PISTE DE TOM VÉRIFIÉE, sur le Cercle.** Avec la marge de 30 pt de v197 (`MH`), la boîte
+> de la vague d'un Cercle (sa vague à 140 pt) avait son haut à **103 pt — au-dessus de la jonction (112)** ; Promi et Chiche (vague ≈ 250 pt) étaient sous elle. Le haut de la
+> boîte ne monte plus jamais au-dessus de 112 (`f.Ytop = max(min(J, sommet − ½ ép − 17), sommet − ½ ép − MH)` : la place de la pointe, 17 pt au-dessus de l'axe, reste
+> prioritaire). ⚠ **Au banc, le retour était déjà exact avant la correction** (aucun écart après 1, 3, 10 allers-retours, lents et lancés) : le défaut de Tom n'est pas
+> reproduit, la cause est probable, non prouvée. **Safari NON VU** (le simulateur refusait tout geste, charge 100 à 450 : « input connection still starting up »).
+> Juge : **`redteam_trait_retour.py`** (trois natures ; A le haut de la boîte ≥ 112, B après 1, 3 et 10 allers-retours lents et lancés, chaque calque — vague, trait plat,
+> cache, bande — à sa place d'ouverture à 0 pt, C les pixels de la bande du trait identiques à l'ouverture ; échelles 1, 0,79, fenêtre de Tom, `--tom` son état exporté —
+> ses paroles reçoivent les trois mots du banc de la jonction pour défiler ; Cercle A rouge sur v198). `banc-trait-retour.html` (`?retour=1`) : le même relevé dans Safari.
+> **⚑ §3 (C-269 REFAITE, Tom : « le choix des personnes existe déjà, dans la phrase »)** — la ligne « À : moi » / « Avec : moi » et son + sont SUPPRIMÉS (code, paliers, rail :
+> `_ppQuiH`, la place comptée dans `tient` et `_place`, la descente du rail — tout rendu à v197 §2, donc à v196) ; `redteam_a_moi` va en sauvegarde. De lot-V197-AMOI ne reste
+> que la correction trouvée en route (`lot-V197-CERCLE-MEMBRES` : les membres d'un Cercle planté depuis la page + recopiés dans la variable que lit la plantation).
+> **Aujourd'hui** (`lot-V199-MOI`, `window._ppMoi`) : quand le texte est validé (le trait naît : `_ppInvite` visible) et qu'AUCUNE personne n'est choisie, la place du
+> destinataire montre **« moi » entre pointillés** (`.ph-vide`), tracé avec le trait (ses lettres préparées d'avance, C-125) ; redevenue incomplète, la place reprend son mot.
+> Les pointillés restent tant que personne n'est ajouté. Le toucher sur la place ouvre le choix existant (lot-GENS), où **« Moi » est la personne choisie, avec sa croix**
+> (`.ppo-x`) ; retiré seul, il revient (jamais vide) — on le remplace en ajoutant quelqu'un ; aucune fonction « remplacer ». Même chose sur la fiche (`_gensFiche` : « Moi »
+> choisi tant que personne d'autre, avec sa croix). Le + des membres de la fiche (C-254) reste. **Les phrases, exactes (v196 → v199)** :
+> ```
+> Promi « je promets »   à l'ouverture : « Je promets / de lire un livre / à [qui ?] »            validé : « … / à [moi] »         avec Rachel : « … / à Rachel »
+> Chiche                 à l'ouverture : « à [qui ose ?] / Chiche / de … / avec [qui en est ?] »  validé : « à [moi] / Chiche / … » avec Rachel : « à Rachel, / chiche / … »
+> Cercle                 à l'ouverture : « Je lance un Cercle / nommé … / avec [tout le monde] »  validé : « … / avec [moi] »      avec Rachel : « … / avec Rachel »
+> Promi « je me promets » : inchangé ([…] = en pointillés ; à l'ouverture, avant la validation, tout est v196)
+> ```
+> Les données ne changent pas : « moi » = aucune personne (comme « tout le monde » d'avant pour un Cercle). Jamais sous `__INVITE_BANC`.
+> Juge : **`redteam_moi_phrase.py`** (`--natures=promi,chiche,nuee,promi-soi`, `--echelle=` ; court et 280 caractères : A le mot d'attente avant, « moi » en pointillés après,
+> tracé, aucun `#ppQui` ; B rien de coupé ; C la géométrie (phrase, trait, dalle) = v196 ; au doigt : D la place ouvre le choix, « Moi » choisi avec sa croix, retiré seul il
+> reste ; E Rachel ajoutée → « Rachel » sans pointillés, retirée → « moi » revient ; F planter avec Rachel → la parole et sa fiche ; G planter sans personne → la fiche montre
+> « Moi » choisi). ⚠ Un juge par nature à l'échelle 1 (les quatre ensemble passent les 10 min).
+> **⚑ §4 — LE ROUGE E D'invite_pp** : NON RÉGLÉ, et la cause n'est pas nommée. Sur v199, E est rouge 3 passes complètes sur 7 (les cinq de la porte, charge 4 à 5 : rouges aux passes 1, 2, 5 ; les deux de la comparaison, charge 2 à 4 : vertes) ; v196, servie en alternance, 0 sur 6. Le chemin que joue E (un Promi « je me promets ») est celui de v196 au code près : la ligne de v197–v198 est retirée, et `lot-V199-MOI` n'y trouve aucune place à remplir (sa veille de 50 ms ne fait rien). Ce qui reste : les rouges de E sont des reprises de saisie sous charge (la phrase qui bouge de 39 à 183 pt pendant le retrait, l'invite déjà partie avant le relevé) — non reproduits au calme. Le Q (la dalle 1,67 pt plus petite) est le même sur v196 : préexistant.
+
 ### ⚑ v198 (12 nov. 2026) — LE MÉNAGE DU MAC ; « À : MOI » TOUJOURS VISIBLE, LA PHRASE JAMAIS COUPÉE (C-269 tranchée) ; LE ROUGE E D'invite_pp. (Décisions Tom.) Ce bloc CORRIGE v197b (C-269 : « là où la place manque, la ligne ne paraît pas »).
 > **⚑ §0 — LE MÉNAGE** : on ne ferme et ne supprime QUE ce qui est à Promi (ENTRE, Fairly, Codex et les autres sessions travaillent sur ce Mac). Les juges passent par **`serie_juges.py`**
 > (règle C-227 en tête de ce fichier). L'ancien simulateur `0A09FCF2` est supprimé ; seul `D42A4999` reste. Les captures des lots validés (avant v196), les copies `zz-*` qu'aucun juge ne
