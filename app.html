@@ -2605,7 +2605,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v202a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v203', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2676,6 +2676,13 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
         if(t.closest('#addPromi,#addNuee')) mesure('planter'); else if(t.closest('.v16-oui')) mesure('retirer'); else if(t.closest('#segStatus button[data-st="tenu"]')) mesure('tenir'); }catch(_){ } }, true);
     window._mesureImages=mesure;
     /* v146 (C-135) : une mesure qui n'est pas un compte d'images (la latence de la Pelote) — affichée sur la marque et envoyée au Mac */
+    window._mesureNote=function(texte, R){ try{ derniere=texte; pose2(); R=R||{}; R.version=V.marque(); R.etat=etatLu(); R.ua=navigator.userAgent; R.quand=new Date().toISOString();
+        fetch('mesure', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:true}).catch(function(){}); }catch(_){ } };
+  }
+  /* ⚑ v203 (Tom, §1 : « jusqu'à la fin du chapitre, le relevé est actif par défaut, sans paramètre, sans aucun effet visible ; Tom est le seul utilisateur ») —
+     le relevé des images tourne toujours (`?releve=0` le coupe). Rien ne s'affiche sans `?mesure=1`. Le serveur range à part ce qui vient du Mac (le banc). */
+  var RELEVE=true; try{ RELEVE=!/[?&]releve=0(?:&|$)/.test(location.search); }catch(_){}
+  if(RELEVE){
     /* ⚑ v202a (Tom, C-272, C-273, C-275 : « le banc ne voit pas ce que voit l'iPhone ») — LE RELEVÉ DE TOUTE LA SÉANCE. Chaque image (requestAnimationFrame) est
        notée avec sa durée, l'écran qu'on voit (sous le centre de l'appareil, relu toutes les 30 images) et ce qui s'anime (tracé, détracé, transition, défilement,
        doigt, « tenir », guide, veille). Toutes les 2 s, hors animation et sans doigt posé, le lot part au Mac (`POST /releve`) ; `serveur.py` l'écrit dans
@@ -2726,8 +2733,6 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
       window.addEventListener('pagehide', function(){ envoie(true); });
       window._releve={seance:SEANCE, tags:TAGS, buf:function(){ return BUF.length; }, envoie:envoie, ecran:lisEcran};
     })();
-    window._mesureNote=function(texte, R){ try{ derniere=texte; pose2(); R=R||{}; R.version=V.marque(); R.etat=etatLu(); R.ua=navigator.userAgent; R.quand=new Date().toISOString();
-        fetch('mesure', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:true}).catch(function(){}); }catch(_){ } };
   }
   if(MESURE){ var go=function(){ pose(); verifie(false); setInterval(function(){ pose(); pose2(); }, 1500); setTimeout(pose2, 900); };
     if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', go); else go(); }

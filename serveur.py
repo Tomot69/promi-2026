@@ -138,13 +138,15 @@ class SansCache(http.server.SimpleHTTPRequestHandler):
                 s = str(d.get('seance') or 'x')[:40]
                 with SEANCES_VERROU:
                     nom = SEANCES.get(s)
+                    if nom is None and d['_de'] in ('127.0.0.1', '::1', '::ffff:127.0.0.1'): pass
                     if not nom:
                         nom = time.strftime('%Y-%m-%d-%H%M'); base = nom; k = 2
                         while os.path.exists(os.path.join(ICI, 'mesures', nom + '.jsonl')) and nom not in SEANCES.values():
                             nom = '%s-%d' % (base, k); k += 1
                         SEANCES[s] = nom
-                    os.makedirs(os.path.join(ICI, 'mesures'), exist_ok=True)
-                    with open(os.path.join(ICI, 'mesures', nom + '.jsonl'), 'a', encoding='utf-8') as f: f.write(json.dumps(d, ensure_ascii=False) + '\n')
+                    dos = os.path.join(ICI, 'mesures', 'banc') if d['_de'] in ('127.0.0.1', '::1', '::ffff:127.0.0.1') else os.path.join(ICI, 'mesures')   # v203 : le banc (le Mac) à part
+                    os.makedirs(dos, exist_ok=True)
+                    with open(os.path.join(dos, nom + '.jsonl'), 'a', encoding='utf-8') as f: f.write(json.dumps(d, ensure_ascii=False) + '\n')
                 self._envoie(json.dumps({'ok': True, 'fichier': nom + '.jsonl'}).encode('utf-8'), 'application/json')
             except Exception:
                 self.send_response(400); self.end_headers()
