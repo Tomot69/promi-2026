@@ -12,7 +12,7 @@
   /* ⚑ v203 (second relevé de Tom : 44 images de 60 à 88 ms sur la page +, toutes les 1,45 à 1,7 s, sans aucun rappel de 20 ms) : les rappels de 3 ms et plus vont dans
      un anneau (les 400 derniers) ; le relevé y cherche, pour chaque image de plus de 33 ms, ce qui a tourné pendant elle (`window.__petites`) */
   var PT=window.__petites=[];
-  function note(t, f, quoi){ var x=P.now()-t; if(x>=3){ PT.push([t, x, f, quoi]); if(PT.length>400) PT.shift(); } if(x>=SEUIL && L.length<3000) L.push([Math.round(t), Math.round(x), quoi+' '+nomDe(f)]); }
+  function note(t, f, quoi){ if(window.__tachesOff) return; var x=P.now()-t; if(x>=3){ PT.push([t, x, f, quoi]); if(PT.length>400) PT.shift(); } if(x>=SEUIL && L.length<3000) L.push([Math.round(t), Math.round(x), quoi+' '+nomDe(f)]); }
   window.__nomTache=nomDe;
   function chrono(f, quoi){ return function(){ var t=P.now(); try{ return f.apply(this, arguments); } finally{ note(t, f, quoi); } }; }
   ['setTimeout','setInterval'].forEach(function(n){ var o=window[n]; window[n]=function(f, d){ if(typeof f!=='function') return o.apply(window, arguments); var a=[].slice.call(arguments); a[0]=chrono(f, n==='setTimeout'?'minuterie':'intervalle'); return o.apply(window, a); }; });
@@ -2724,7 +2724,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
        mesures/AAAA-MM-JJ-HHMM.jsonl (un fichier par séance). Rien n'est affiché ; résumé : `python3 resume_releve.py`. */
     (function(){
       var SEANCE=Date.now().toString(36)+Math.random().toString(36).slice(2,6), DEBUT=new Date().toISOString(), T0=performance.now();
-      var TAGS=[], IDX={}, BUF=[], nImg=0, ecr='?', ecrN=0, dernierDefile=0, dernierEnvoi=performance.now(), prec=0;
+      var TAGS=[], IDX={}, BUF=[], nImg=0, ecr='?', ecrN=0, dernierDefile=0, dernierEnvoi=performance.now(), prec=0, MODE=-1, MODES=[];
       function tag(s){ var i=IDX[s]; if(i==null){ i=IDX[s]=TAGS.length; TAGS.push(s); } return i; }
       var TLw=false, INV=0;
       function enveloppe(){ var T=window.TraceLettres; if(TLw || !T || !T.trace) return; TLw=true; var f=T.trace;
@@ -2755,17 +2755,22 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
         return a.join('+')||'repos'; }
       function envoie(force){ if(!BUF.length && !(window.__taches&&window.__taches.length)) return; var lot=BUF; BUF=[]; dernierEnvoi=performance.now();
         var R={quoi:'releve', seance:SEANCE, debut:DEBUT, version:V.marque(), etat:etatLu(), ecran:[screen.width, screen.height, window.devicePixelRatio, window.innerWidth, window.innerHeight],
-               ua:navigator.userAgent, tags:TAGS.slice(), images:lot, quand:new Date().toISOString(), taches:(window.__taches||[]).splice(0).map(function(x){ return [Math.round(x[0]-T0), x[1], x[2]]; })};
+               ua:navigator.userAgent, tags:TAGS.slice(), images:lot, modes:MODES.slice(), quand:new Date().toISOString(), taches:(window.__taches||[]).splice(0).map(function(x){ return [Math.round(x[0]-T0), x[1], x[2]]; })};
         try{ fetch('releve', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:!!force}).catch(function(){}); }catch(_){ } }
       function b(t){ requestAnimationFrame(b); enveloppe(); var n=performance.now();
         if(prec){ var dur=n-prec; if(document.visibilityState==='visible' && dur<5000){ if(++ecrN>=30 || ecr==='?'){ ecrN=0; ecr=lisEcran(); }
             var _e=[Math.round(n-T0), Math.round(dur*10)/10, tag(ecr), tag(anime(n))];
             if(ecr.indexOf('fiche')===0 && n-dernierDefile<1200){ var _dp=document.getElementById('detailPoster'); if(_dp) _e.push(Math.round(_dp.scrollTop*10)/10); }   /* ⚑ v203 (C-267) : le défilement de la fiche, image par image, tant qu'elle bouge — la continuité du retour se lit sur l'iPhone */
             BUF.push(_e);
-            if(dur>33.4){ try{ var PT=window.__petites||[], som=0, q=[], a0=prec-2; for(var i=PT.length-1;i>=0;i--){ var x=PT[i]; if(x[0]+x[1]<a0) break; if(x[0]<=n){ som+=x[1]; q.push(x); } }
+            if(dur>33.4 && !window.__tachesOff){ try{ var PT=window.__petites||[], som=0, q=[], a0=prec-2; for(var i=PT.length-1;i>=0;i--){ var x=PT[i]; if(x[0]+x[1]<a0) break; if(x[0]<=n){ som+=x[1]; q.push(x); } }
                 q.sort(function(u,v){ return v[1]-u[1]; }); if(window.__taches && window.__taches.length<3000) window.__taches.push([prec, Math.round(som), 'somme '+q.length+' rappels (image '+Math.round(dur)+' ms) : '+q.slice(0,3).map(function(x){ return Math.round(x[1])+' '+x[3]+' '+window.__nomTache(x[2]).slice(0,50); }).join(' | ')]); }catch(_){ } } } }
         prec=n;
-        if(n-dernierEnvoi>2000){ var occ=false; try{ occ=(window._animEnCours && window._animEnCours()) || (window.__doigts && window.__doigts.n>0) || window._tenirAnime; }catch(_){ }
+        /* ⚑ v203 (Tom, fin de v203, §2 : « l'image de 60 à 120 ms toutes les 1,7 s — vérifie d'abord si c'est le relevé lui-même : garde-le en mémoire 30 s sans l'envoyer, et
+           compare ») — trois fenêtres de 30 s, en boucle : 0 · l'envoi toutes les 2 s (comme avant) ; 1 · le relevé GARDÉ en mémoire (rien n'est envoyé) ; 2 · gardé, et le
+           chronométrage des rappels coupé. Chaque lot porte ses fenêtres (`modes`) ; resume_releve.py compare les images longues fenêtre par fenêtre. */
+        var md=Math.floor((n-T0)/30000)%3; if(md!==MODE){ MODE=md; MODES.push([Math.round(n-T0), md]); window.__tachesOff=(md===2); }
+        var garde=(MODE!==0) && BUF.length<5000;
+        if(!garde && n-dernierEnvoi>2000){ var occ=false; try{ occ=(window._animEnCours && window._animEnCours()) || (window.__doigts && window.__doigts.n>0) || window._tenirAnime; }catch(_){ }
           if(!occ || BUF.length>1800) setTimeout(function(){ envoie(false); }, 0); } }
       requestAnimationFrame(b);
       document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='hidden'){ envoie(true); prec=0; } });
@@ -26370,14 +26375,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
     /* ⚑ v203 (C-278) — PENDANT LE MOUVEMENT DE LA FERMETURE DU CLAVIER (Q598), la phrase est TRANSLATÉE : la mesurer y plaçait le rail à 402 au lieu de 634, et le
        rail, emporté par le même mouvement, passait par-dessus la phrase (déjà en v201b). Il garde sa place pendant le mouvement ; il se replace à sa fin, en glissant. */
     try{ if(window._ppMvtCours && window._ppMvtCours() && r.getAttribute('data-geo')){ setTimeout(function(){ try{ if(window._pinceauRangee) window._pinceauRangee(); }catch(_){ } }, 420); return r; } }catch(_){}
-    /* ⚑ v203 (C-271, C-278) : la phrase change de lignes (le sens basculé, un titre) — le rail ne saute plus : il glisse vers sa place (320 ms, une transformation,
-       sa cote est posée tout de suite) */
-    try{ var hAv=parseFloat(r.style.getPropertyValue('top')); if(hAv>0 && Math.abs(hAv-haut)>0.5 && !r.__v203sans && !r.__v203revele && r.__v203vu && r.style.getPropertyValue('display')!=='none' && r.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){
-        /* vers le bas (la phrase a pris une ligne) : il s'écarte vite de la ligne qui vient de paraître (départ vif, arrivée douce) ; vers le haut : la courbe des transitions */
-        /* il part de la place où on le VOIT (un glissement en cours compris), jamais de sa cote d'avant : repartir de la cote faisait un saut */
-        var dn=haut>hAv, vis=hAv; try{ var _m=/matrix\(([^)]+)\)/.exec(getComputedStyle(r).transform||''); if(_m){ var _v=_m[1].split(',').map(parseFloat); if(isFinite(_v[5])) vis=hAv+_v[5]; } }catch(_){}
-        if(r.__v203g) r.__v203g.cancel(); r.__v203g=r.animate([{transform:'translateY('+(vis-haut)+'px)'},{transform:'translateY(0)'}], {duration:320, easing:'cubic-bezier(.33,0,.67,1)'}); window.__animT=performance.now(); } }catch(_){}   /* même durée, même courbe que la phrase (« la suite glisse avec elle ») */
-    r.setAttribute('data-geo', geo); r.__v203revele=0; r.__v203vu = cs.classList.contains('show') && !cs.classList.contains('acc-passe') && !cs.classList.contains('pp-choix');   /* une place prise sur une page cachée (qui se compose) n'a jamais été vue : on n'en part pas en glissant */
+    r.setAttribute('data-geo', geo); r.__v203revele=0;
     ['position:absolute','left:0px','top:'+haut+'px','width:390px','height:'+PHT+'px',
      'max-width:none','margin:0','padding:0','overflow-x:auto','overflow-y:hidden','z-index:6'   /* v163b (C-196) : le rail GLISSE — les douze traits s'atteignent */
     ].forEach(function(d){ var i=d.indexOf(':');
@@ -42345,7 +42343,20 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   /* ── LA SCÈNE ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────── */
   function retire(){ jeu++; try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var g=$('guide'); if(g) g.remove(); dev.classList.remove('guide-studio','guide-plus','guide-partage','guide-menu'); trou=null; SC=null; uC=0; uN=0;
     if(vivAv!==null){ window._vivantOff=vivAv; vivAv=null; } }
-  function deshabille(){ try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; ['guidePhrase','guideCible'].forEach(function(i){ var n=$(i); if(n) n.remove(); }); }
+  /* ⚑ v203 (Tom, C-279) — LA PHRASE DU GUIDE PART PAR SON DÉTRACÉ, jamais d'un coup : à chaque changement d'étape elle était retirée dans l'image. Elle garde sa
+     place et son style (figés en ligne : ses règles visent `#guidePhrase`, que la phrase suivante prend), se détrace (le module, à rebours, la cadence d'Atkinson),
+     puis se retire. `sec` : pour les captures et les juges (un état figé) — retirée tout de suite. */
+  var PARTS=[];
+  function figeStyles(el){ [el].concat([].slice.call(el.querySelectorAll('*'))).forEach(function(e){ var c=getComputedStyle(e);
+      ['font-family','font-size','font-weight','font-style','line-height','letter-spacing','color','-webkit-text-fill-color','text-transform','text-align','text-wrap','white-space','transform','position','top','left','width','display'].forEach(function(p){ var v=c.getPropertyValue(p); if(v) e.style.setProperty(p, v, 'important'); }); }); }
+  function partPhrase(sec){ var av=$('guidePhrase'); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; if(!av) return;
+    var TLr=window.TraceLettres; if(sec || !TLr || reduit() || !av.getClientRects().length){ av.remove(); return; }
+    try{ figeStyles(av); }catch(_){ } av.removeAttribute('id'); av.classList.add('gd-part');
+    var P={}; P.fin=new Promise(function(r){ P.r=r; }); PARTS.push(P);
+    var fait=false, f=function(){ if(fait) return; fait=true; if(av.parentNode) av.remove(); PARTS=PARTS.filter(function(x){ return x!==P; }); P.r(); };
+    try{ TLr.trace(av, null, {inverse:true, depart:'h', surFin:f}); }catch(_){ f(); } setTimeout(f, 3500); }
+  function partisFinis(){ return Promise.all(PARTS.map(function(p){ return p.fin; })); }
+  function deshabille(sec){ partPhrase(sec); var n=$('guideCible'); if(n) n.remove(); }
   function cible(quoi){ var st=$('studioBtn'), pl=$('createBtn'); if(!st || !pl) return null;
     if(quoi==='studio'){ var b=vu(st); if(b[2]<2) return null; var bb=(F.avecAir?F.avecAir(b, GD.AIR_STUDIO):b), au=$('souffleBtn'), pr=10;
       /* v147 (§10.2 : « aucun élément voisin n'est découvert ») : à droite, la marge s'arrête 0,8 pt avant l'icône de l'Aura */
@@ -42424,8 +42435,8 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   /* ⚑ v148 (Tom, 16 oct. 2026, C-146) — « Tant que le Studio n'a jamais été ouvert, toucher ailleurs montre la phrase de rappel — choisir son monde — et
      SEULEMENT elle, autant de fois qu'on touche ailleurs. Jamais la phrase du + avant le Studio. » Le rappel : la phrase du Studio (les mots de Tom, tels
      quels) se retire et s'écrit de nouveau, par le tracé ; la zone nette du Studio reste ouverte. */
-  /* ⚑ v203 (Tom, C-277) — LE RAPPEL VAUT POUR CHAQUE ÉTAPE (le Studio, le +, Partager) : un toucher au hasard ne valide jamais une étape, il montre sa phrase
-     de nouveau. Et la phrase ne part plus d'un coup (C-271) : elle se détrace, puis s'écrit de nouveau. */
+  /* ⚑ v203 (Tom, C-277) — LE RAPPEL DE L'ÉTAPE OBLIGATOIRE (le Studio) : un toucher au hasard ne la valide jamais, il montre sa phrase de nouveau ; et la phrase
+     ne part plus d'un coup (C-271) : elle se détrace, puis s'écrit de nouveau. (Le + et Partager sont facultatifs : v165, v166.) */
   var RAP=0;
   function rappel(quoi){ quoi=quoi||'studio'; var g=$('guide'); if(!g || etat!==quoi) return; g.setAttribute('data-rappels', String((+g.getAttribute('data-rappels')||0)+1)); if(RAP) return;   /* chaque toucher compte ; un rappel en cours n'en refait pas un */
     try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null;
@@ -42436,7 +42447,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     setTimeout(function(){ if(RAP) neuf(); }, 3000); }
   var PRE=null;
   function preCible(quoi){ PRE=null; var c=cible(quoi); if(!c || !SC) return false; PRE={quoi:quoi, sc:SC, ent:SC.cible(c.b, c.marge, ((Date.now()&0xffff)|1), c.o)}; return true; }
-  function habille(g, quoi){ deshabille(); var c=cible(quoi); if(!c) return false; ou=quoi;
+  function habille(g, quoi, sec){ deshabille(sec); var c=cible(quoi); if(!c) return false; ou=quoi;
     g.setAttribute('data-guide', quoi); dev.classList.remove('guide-studio','guide-plus','guide-partage'); dev.classList.add('guide-'+quoi);
     var H=(PREH && PREH.quoi===quoi && PREH.sc===SC && SC.ent===PREH.ent && SC.fl===PREH.fl && PREH.clair===dev.classList.contains('light'))?PREH:null; PREH=null; habille.prep=!!H;   /* v171 (C-208) : préparé avant la couverture */
     posePhrase(g, quoi, H?H.p:null);
@@ -42526,15 +42537,15 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   /* ⚑ v147 (Tom, §10.2) — la zone ouverte RESPIRE, très légèrement : ses lobes tournent, sa marge bouge de ±0,8 pt (6 à 10 pt) — une image sur deux */
   function respire(quoi){ if(reduit() || !SC || !SC.respire) return; var id=jeu, t0=performance.now(), n=0;
     (function f(){ if(id!==jeu || etat!==quoi || !SC || uN<1) return; if((n++)%2===0){ SC.respire((performance.now()-t0)/1000); SC.peint(); } requestAnimationFrame(f); })(); }
-  /* ⚑ v203 (Tom, C-277) — « Chaque étape du guide a une condition : avoir ouvert le Studio, touché le +, ouvert Partager. Si la condition est déjà remplie quand
+  /* ⚑ v203 (Tom, C-277 ; fin de v203 : seulement pour l'étape OBLIGATOIRE, le Studio) — « Chaque étape a une condition. Si la condition est déjà remplie quand
      l'étape devrait paraître, l'étape ne s'affiche pas : le guide passe en douceur à l'étape suivante. » `FAIT` : ce qui a été fait depuis le chargement (ou depuis
      le début d'un rejeu) — lu sur le toucher de la vraie commande (son clic, en capture, avant que l'écran ne s'ouvre) et sur l'écran qu'on voit. */
-  var FAIT={}, SUITE={studio:'plus', plus:'partage', partage:'reste', reste:'fin'};
-  function saute(q){ var n=0; while(q && q!=='fin' && q!=='reste' && FAIT[q] && n++<5) q=SUITE[q]; return q; }
+  var FAIT={};
+  function saute(q){ return (q==='studio' && FAIT.studio) ? 'plus' : q; }   /* seule l'étape obligatoire (le Studio) se saute quand elle est faite ; le + et Partager, facultatifs, gardent v166 */
   document.addEventListener('click', function(e){ try{ var t=e.target; if(!t || !t.closest) return; if(t.closest('#studioBtn')) FAIT.studio=1; else if(t.closest('#createBtn')) FAIT.plus=1; else if(t.closest('#shareBtn')) FAIT.partage=1; }catch(_){ } }, true);
   setInterval(function(){ try{ if(!studioFerme()) FAIT.studio=1; var cs=$('createSheet'); if((cs && cs.classList.contains('show')) || choixOuvert()) FAIT.plus=1; }catch(_){ } }, 120);
   window._guideFait=function(){ return Object.assign({}, FAIT); };
-  function montre(quoi, sansRevelation, vite){ var q0=quoi; quoi=saute(quoi); if(quoi==='fin'){ retire(); etat=null; LS.s(CLE,'1'); return false; }
+  function montre(quoi, sansRevelation, vite){ var q0=quoi; quoi=saute(quoi);
     if(q0==='studio' && quoi!=='studio') LS.s(CLE,'1');
     retire(); if(!F || !F.Scene) { etat=null; return false; } var id=++jeu; etat='prepare'; window._tEvol=performance.now()+400;
     var g=eng(document.createElement('div'),'guide'); g.id='guide'; dev.appendChild(g); g.setAttribute('data-etape', quoi); if(quoi!==q0) g.setAttribute('data-saute', q0+'>'+quoi);
@@ -42548,14 +42559,18 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       if(trou && Math.abs(x-trou.x)<=trou.w/2+4 && Math.abs(yy-trou.y)<=trou.h/2+4){ if(etat==='studio') versStudio(); else if(etat==='plus') versPlus(); else if(etat==='partage') versPartage(); return; }
       /* ⚑ v203 (Tom, C-277) : CHAQUE ÉTAPE A SA CONDITION, ET JAMAIS UN TOUCHER AU HASARD NE LA VALIDE — à l'étape du Studio, du + ou de Partager, toucher
          ailleurs montre le rappel de sa phrase (v148 le faisait pour le Studio seul ; v165 menait du + à la clôture, et de Partager à la phrase 2). */
-      if(etat==='studio' || etat==='plus' || etat==='partage'){ rappel(etat); return; }
-      if(etat==='au-studio' || etat==='vers-reste' || etat==='apres-plus') return;   /* v203 (C-277) : entre deux étapes, un toucher au hasard ne termine plus le guide */
+      /* ⚑ v203 (Tom, fin de v203) : C-277 ne vaut que pour l'étape OBLIGATOIRE, le Studio — le + et Partager restent facultatifs (v165, v166 : « Partager n'est
+         jamais obligatoire » ; une décision de Tom ne se renverse jamais sans lui) */
+      if(etat==='studio'){ rappel('studio'); return; }                /* ⚑ v148 (C-146), C-277 : toucher ailleurs à l'étape du Studio redit sa phrase — jamais l'étape du + */
+      if(etat==='au-studio') return;                                  /* le Studio ouvert : un toucher au hasard ne termine pas le guide */
+      if(etat==='plus'){ versCloture(); return; }                     /* ⚑ v165 (C-203, chemin c) : toucher ailleurs que le + mène à la clôture */
+      if(etat==='partage'){ phraseReste(); return; }                  /* v165 : toucher ailleurs que Partager : la phrase 2 */
       finir(); }, true);
     /* ⚑ v203 (C-277) — PENDANT QU'UNE ÉTAPE PARAÎT (l'eau monte, la zone d'avant se referme), le toucher sur SA cible fait l'action tout de suite : l'eau finit de
        monter sous l'écran qui s'ouvre, et l'étape n'est jamais redemandée. Un toucher ailleurs ne fait rien. Avant l'image floutée (« prepare »), le guide se
        retire sans rien montrer (rien n'est encore peint), l'action se fait, et le guide revient au calme à l'étape suivante. */
-    g.addEventListener('click', function(e){ if(!(etat==='prepare' || etat==='couvre' || etat==='vers-plus' || etat==='vers-partage')) return;
-      var Q=(etat==='prepare' || etat==='couvre') ? (g.getAttribute('data-etape')||'') : etat.slice(5); if(!Q || Q==='reste') return;
+    g.addEventListener('click', function(e){ if(!(etat==='prepare' || etat==='couvre')) return;
+      var Q=g.getAttribute('data-etape')||''; if(Q!=='studio') return;   /* l'étape obligatoire seule (fin de v203) */
       var c=cible(Q); if(!c) return; var D2=dev.getBoundingClientRect(), q=k(), x=(e.clientX-D2.left)/q, yy=(e.clientY-D2.top)/q, b=c.b, m=8;
       if(x<b[0]-m || x>b[0]+b[2]+m || yy<b[1]-m || yy>b[1]+b[3]+m) return;
       FAIT[Q]=1;
@@ -42568,7 +42583,6 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     (CA?Promise.resolve(CA.net):accueilImage()).then(function(net0){ if(id!==jeu || !$('guide')) return; var t0=performance.now(), flou=CA?CA.flou:F.floute(net0, FLOU); g.setAttribute('data-flou-ms', ''+Math.round(performance.now()-t0));
       SC=F.Scene(cv, {l:390, h:844, densite:2, flou:flou, graine:((Date.now()&0xffffff)|1), creux:GD.CREUX||10, rayon:GD.RAYON||150});
       g.__flou=flou; g.__net=net0; SIG0=CA?CA.sig:sigToile(); g.setAttribute('data-flou-sig', SIG0);   /* v154 (C-166) : ce que montre le fond flouté */
-      if(quoi==='reste'){ etat='couvre'; joue(reduit()?1:COUVRE, 0, 1, couv).then(function(ok){ if(!ok) return; g.setAttribute('data-entier','1'); phraseReste(true); }); return; }   /* v203 (C-277) : tout est déjà fait — la phrase 2 seule */
       if(reduit() || sansRevelation){ couv(1); SC.peint(); g.setAttribute('data-entier','1'); etape(quoi, true); return; }
       if(vite){ etat='couvre'; g.setAttribute('data-depart', ''+Math.round(performance.now())); montee(g, 0, quoi, true); return; }   /* v169b : l'eau d'abord, l'entourage à l'image suivante */
       preCible(quoi);                                                 /* l'entourage du premier arrêt, calculé ici : rien ne bouge encore */
@@ -42578,10 +42592,9 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     return true; }
   /* DU STUDIO AU + : la zone du Studio se referme sur elle-même, puis celle du + s'ouvre — rien ne se déplace */
   function versLePlus(pose, vite){ var g=$('guide'); if(!g || !SC) return false; if(etat==='vers-plus') return true;
-    var sq=saute('plus'); if(sq!=='plus'){ if(sq==='partage') return passeVers('partage', 'studio'); if(sq==='reste'){ dev.classList.remove('guide-studio'); phraseReste(); return true; } finCloture(); return true; }   /* v203 (C-277) */
     g.setAttribute('data-etape','plus'); etat='vers-plus'; g.setAttribute('data-guide','vers-plus'); dev.classList.remove('guide-studio');
     var FERME_=vite?FERME_R:FERME, OUVRE_=vite?OUVRE_R:OUVRE; g.setAttribute('data-vers-plus', ''+Math.round(performance.now()));
-    var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt=$('guideCible'); if(bt) bt.remove(); trou=null;
+    partPhrase(); var bt=$('guideCible'); if(bt) bt.remove(); trou=null;
     (pose?Promise.resolve(true):joue(FERME_, uN, 0, net)).then(function(ok){ if(!ok) return; SC.sansCible(); SC.peint(); if(pose){ etape('plus', true); return; } var j2=jeu;
       /* ⚑ v162 : le flou quitte le Studio avant la fin de sa course, mais l'étape du + attend qu'il soit SORTI (C-172, validé) */
       (function attendSorti(){ if(j2!==jeu || !$('guide') || !SC) return; if(!studioFerme()){ requestAnimationFrame(attendSorti); return; }
@@ -42659,10 +42672,9 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
   /* la même suite que du Studio au + : la phrase part, la zone d'avant se referme (FERME_R), le flou suit la Toile réelle, l'entourage se prépare, la zone
      suivante s'ouvre (OUVRE_R) avec sa phrase */
   function passeVers(quoi, depuis){ var g=$('guide'); if(!g || !SC) return false; dev.classList.remove('guide-menu');
-    if(quoi==='partage' && FAIT.partage){ dev.classList.remove('guide-'+depuis); phraseReste(); return true; }   /* v203 (C-277) : Partager déjà ouvert — la phrase 2 */
     g.setAttribute('data-etape', quoi); etat='vers-'+quoi; g.style.pointerEvents=''; g.setAttribute('data-guide','vers-'+quoi);
     dev.classList.remove('guide-'+depuis); g.setAttribute('data-vers-'+quoi, ''+Math.round(performance.now()));
-    var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt=$('guideCible'); if(bt) bt.remove(); trou=null; var id=jeu;
+    partPhrase(); var bt=$('guideCible'); if(bt) bt.remove(); trou=null; var id=jeu;
     requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(id===jeu) majFlou(true); }); });   /* la Toile a pu changer (une parole plantée) : le fond suit, comme au retour du Studio */
     joue(FERME_R, uN, 0, net).then(function(ok){ if(!ok || id!==jeu || !SC) return; SC.sansCible(); SC.peint();
       requestAnimationFrame(function(){ if(id!==jeu || !$('guide') || !SC) return; preCible(quoi); requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; etape(quoi, false, OUVRE_R); }); }); });
@@ -42720,7 +42732,7 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
       try{ var Zs=zonesReste(); if(Zs.length){ SC.zones(Zs); net(0); joue(OUVRE, 0, 1, net).then(function(ok){ if(ok) respire('reste'); }); } }catch(_){ }
       setTimeout(function(){ if(id===jeu && etat==='reste' && performance.now()-tReste>=2990) finCloture(); }, 3000); }   /* 3 s sans toucher : la fin */
     if(retour || uN<=0){ net(0); SC.sansCible(); SC.peint(); var bt=$('guideCible'); if(bt) bt.remove(); trou=null; pose(); return; }
-    etat='vers-reste'; var av=$('guidePhrase'); if(av) av.remove(); try{ if(traceCtl && traceCtl.stop) traceCtl.stop(); }catch(_){ } traceCtl=null; var bt2=$('guideCible'); if(bt2) bt2.remove(); trou=null;
+    etat='vers-reste'; partPhrase(); var bt2=$('guideCible'); if(bt2) bt2.remove(); trou=null;
     joue(FERME, uN, 0, net).then(function(ok){ if(!ok || !SC) return; SC.sansCible(); SC.peint(); pose(); }); }
   /* les trois zones de la phrase 2 : chacune serrée sur son icône et son mot, 4 à 10 pt de marge, et jamais au-delà de 0,8 pt avant l'icône voisine */
   function zonesReste(){ var B=function(id){ var e=$(id); if(!e) return null; var b=(id==='createBtn')?boite(e):vu(e); return (b && b[2]>2)?b:null; };
@@ -42732,14 +42744,14 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     return L; }
   function finCloture(){ var g=$('guide'); LS.s(CLE,'1'); if(!g){ etat=null; return; } if(etat==='part') return; etat='part'; deshabille(); g.setAttribute('data-guide','part'); g.setAttribute('data-fin', ''+Math.round(performance.now()));
     if(!SC || reduit()){ retire(); etat=null; return; } var id=jeu; SC.tire(true);   /* v166 : les zones nettes de la phrase 2 restent ouvertes pendant que l'eau se retire */
-    joue(RETIRE, 1, 0, couv).then(function(){ if(id===jeu){ retire(); etat=null; } }); }
+    joue(RETIRE, 1, 0, couv).then(function(){ return partisFinis(); }).then(function(){ if(id===jeu){ retire(); etat=null; } }); }   /* v203 (C-279) : le guide se retire quand la phrase a fini de se détracer */
   /* toucher ailleurs à l'étape du + : sa zone se referme sur elle-même, puis les flaques se vident — le guidage est fini */
   function finir(){ attente=null; var g=$('guide'); if(!g){ etat=null; return; } if(etat==='part') return; etat='part'; deshabille(); dev.classList.remove('guide-studio','guide-plus','guide-partage'); g.setAttribute('data-guide','part');
     if(!SC || reduit()){ retire(); etat=null; return; } var id=jeu;
-    joue(FERME, uN, 0, net).then(function(ok){ if(!ok || !SC) return false; SC.sansCible(); SC.tire(true); return joue(RETIRE, 1, 0, couv); }).then(function(){ if(id===jeu){ retire(); etat=null; } }); }
+    joue(FERME, uN, 0, net).then(function(ok){ if(!ok || !SC) return false; SC.sansCible(); SC.tire(true); return joue(RETIRE, 1, 0, couv); }).then(function(){ return partisFinis(); }).then(function(){ if(id===jeu){ retire(); etat=null; } }); }
   /* pour les captures et les juges : un état arrêté (aucune horloge) — la couverture à `ms`, ou la zone nette d'une étape à `ms` */
-  function fige(ms){ if(!SC) return false; jeu++; deshabille(); SC.sansCible(); etat='couvre'; couv(Math.max(0,Math.min(1,ms/COUVRE))); net(0); SC.peint(); var g=$('guide'); if(g){ if(ms>=COUVRE) g.setAttribute('data-entier','1'); else g.removeAttribute('data-entier'); } return true; }
-  function figeNet(quoi, ms){ var g=$('guide'); if(!SC || !g) return false; jeu++; couv(1); if(!habille(g, quoi)) return false; etat=quoi; net(Math.max(0,Math.min(1,ms/OUVRE))); SC.peint(); return true; }
+  function fige(ms){ if(!SC) return false; jeu++; deshabille(true); SC.sansCible(); etat='couvre'; couv(Math.max(0,Math.min(1,ms/COUVRE))); net(0); SC.peint(); var g=$('guide'); if(g){ if(ms>=COUVRE) g.setAttribute('data-entier','1'); else g.removeAttribute('data-entier'); } return true; }
+  function figeNet(quoi, ms){ var g=$('guide'); if(!SC || !g) return false; jeu++; couv(1); if(!habille(g, quoi, true)) return false; etat=quoi; net(Math.max(0,Math.min(1,ms/OUVRE))); SC.peint(); return true; }
   /* la veille : l'état se lit sur ce qui est à l'écran */
   setInterval(function(){ var now=performance.now();
     if(attente){ if(!attente.rejeu && LS.g(CLE)==='1'){ attente=null; return; }
@@ -44660,8 +44672,6 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   /* v174 (C-213) : tout le trait, sur la largeur de l'écran — du haut de l'onde moins 22 pt jusque sous la flèche et le creux de l'onde */
   function rectDepart(){ try{ var e=window._ppEcran(), O=window._onde, y=O.onde(e.base, e.amp), m=1e9, b=-1e9; for(var x=-12;x<=402;x+=4){ var v=y(x); if(v<m) m=v; if(v>b) b=v; }
       var y0=Math.max(0, m-22), y1=Math.min(e.boite||844, Math.max(e.base+54, b+14)); return [0, y0, 390, y1-y0]; }catch(_){ return null; } }
-  function rectLib(){ try{ var t=cs().querySelector('.pp-trace'), H=cs(), D=H.getBoundingClientRect(), k=D.width/(H.offsetWidth||390), r=t.getBoundingClientRect(); if(!r.width) return null;
-      return [Math.max(0,(r.left-D.left)/k-4), Math.max(0,(r.top-D.top)/k-4), r.width/k+8, r.height/k+8]; }catch(_){ return null; } }
   function libelle(){ var c=cs(); return c ? c.querySelector('.pp-trace') : null; }
   function montre(){ var c=cs(), cv=$('csTrameCv'); if(!c || !cv || INV.vis) return; var j=++INV.jeu;
     var avant=copie(cv); INV.vis=true; INV.touche=false; INV.sortie=false; try{ cs().classList.remove('ppi-vide'); }catch(_){ } repeint(); note('montre');
@@ -44674,11 +44684,14 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(!cv || reduit() || !window._passageFlaques){ INV.vis=false; INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint(); bouge(true); return; }
     /* l'image SANS invite (le champ repeint sans elle), puis le champ rendu tel qu'il est : rien ne change à l'écran dans cette tâche */
     INV.vis=false; INV.sortie=false; repeint(); var apres=copie(cv); INV.sortie=true; repeint(); clignote(false);
-    var fin=0, n=0, lib=libelle(), zl=lib?getComputedStyle(lib).zIndex:'1', z=String(Math.max(2, (parseInt(zl,10)||1)+1));
+    var fin=0, n=0, lib=libelle(), zl=lib?getComputedStyle(lib).zIndex:'1';
     function bout(){ if(++fin<n) return; if(j!==INV.jeu){ purge(); return; } INV.sortie=false; stopTrace(); c.classList.add('ppi-cache'); repeint();
       purge(); mesure(); bouge(true); }
-    [rectDepart(), rectLib()].forEach(function(r){ if(!r) return; n++;
-      var p=window._passageFlaques(c, {mode:'couvre', rect:r, image:apres, duree:300, devant:true, z:z, fin:bout}); if(p && p.canevas) p.canevas.classList.add('ppi-sortie'); });
+    /* ⚑ v203 (Tom, C-279 : « un seul langage pour tracer et détracer ; le détracé est l'inverse exact du tracé, aucun fondu, rien d'un coup ») — le libellé, né par son
+       tracé, part par son DÉTRACÉ (le même module, à rebours, à la même cadence) ; le trait, né en flaques, repart en flaques, sous le libellé */
+    var rD=rectDepart(); if(rD){ n++; var p=window._passageFlaques(c, {mode:'couvre', rect:rD, image:apres, duree:300, devant:true, z:String(Math.max(1,(parseInt(zl,10)||1)-1)), fin:bout}); if(p && p.canevas) p.canevas.classList.add('ppi-sortie'); }
+    if(lib && lib.getClientRects().length && window.TraceLettres){ n++; stopTrace(); var fl=false, finL=function(){ if(fl) return; fl=true; bout(); };
+      try{ INV.tr=window.TraceLettres.trace(lib, null, {inverse:true, depart:'h', surFin:finL}); }catch(_){ finL(); } setTimeout(finL, 2500); }
     if(!n){ fin=-1; n=0; bout(); } }
   function stopTrace(){ try{ if(INV.tr && INV.tr.stop) INV.tr.stop(); }catch(_){ } INV.tr=null; }
   /* ⚑ v175 (Tom, C-218) — « un bandeau horizontal parasite, de deux couleurs, au-dessus ou en dessous du trait vide ». LA CAUSE : un passage 'couvre' reste à l'écran une fois fini
@@ -45605,6 +45618,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 /* ⚑ v200 (C-271, C-269) : l'enveloppe du mot qu'on trace (le tracé la découpe, jamais l'encart et ses pointillés) ; la fiche dont la phrase change : ce qui suit glisse */
 /* ⚑ v203 (C-278) : la pastille du sens (« Je me promets » ⇄ « Je promets à ») ne se coupe jamais sur deux lignes — pendant la bascule son texte d'avant, plus long, s'y repliait : la phrase prenait une ligne puis la rendait (48 pt de saut), le rail passait dessus */
 #device#device #createSheet #csPhrase .ph-b, #device#device #createSheet #csPhrase .ph-b *{white-space:nowrap!important}
+/* ⚑ v203 (C-278 §4) : un mot de liaison (« de », « à », « avec ») GLISSE avec les autres (lot-V203-CONTINU) — une transformation ne s'applique pas à une boîte en ligne ; un seul mot, sa mise en page ne change pas */
+#device #createSheet .ph-txt > em{display:inline-block}
 #device #createSheet .ph-m > .v200-mt{display:inline-flex!important;align-items:center!important;white-space:nowrap!important;margin:0!important;padding:0!important}
 #device #createSheet .ph-b > .v200-mt{display:inline!important;margin:0!important;padding:0!important}
 #detailPoster.v200-glisse :is(#dptTitre,#dptQuand,#dptTrace){transition:top .36s cubic-bezier(.33,0,.67,1)!important}
@@ -45788,9 +45803,9 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var finP=false, ctl=window._passageFlaques(el, {mode:'couvre', couleur:bg, duree:PREM, z:-1, fin:function(){ if(finP) return; finP=true; termine(); }});
     var cv=ctl && ctl.canevas; if(cv){ cv.classList.add('v200-fl'); ['left:0','top:0','width:100%','height:100%','border-radius:'+rad].forEach(function(d){ var i=d.indexOf(':'); cv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); }); }
     else { setTimeout(function(){ if(!finP){ finP=true; termine(); } }, PREM); }
-    var k=Math.max(1, ((texte(ex).length/40)+0.08)/(PREM/1000));
-    try{ TL().trace(gh, null, {inverse:true, vitesse:k, surFin:function(){ if(gh.parentNode) gh.parentNode.removeChild(gh); }}); }catch(_){ gh.remove(); }
-    setTimeout(function(){ if(gh.parentNode) gh.parentNode.removeChild(gh); }, PREM*4);
+    /* ⚑ v203 (Tom, C-279) : le détracé de l'exemple a la cadence de tous les tracés (40 car/s, celle d'Atkinson) — il était accéléré pour tenir dans le remplissage */
+    try{ TL().trace(gh, null, {inverse:true, depart:'h', surFin:function(){ if(gh.parentNode) gh.parentNode.removeChild(gh); }}); }catch(_){ gh.remove(); }
+    setTimeout(function(){ if(gh.parentNode) gh.parentNode.removeChild(gh); }, 4000);
     note({premiere:texte(html), ex:texte(ex)});
     function termine(){ var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA.delete(el); }catch(_){ }
       var cvv=el.querySelector(':scope > canvas.v200-fl'); if(cvv) cvv.remove();
@@ -45820,7 +45835,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 /* ⚑ v201b (Tom, 13 nov. 2026, C-271, AUDIT-SECS.md) — LES CHANGEMENTS SECS QUI RESTAIENT. Un seul code, trois gestes :
    ① une BOÎTE qui change de place (une rangée, une carte) glisse de l'ancienne à la nouvelle ; une boîte qui arrive se découvre de haut en bas ; une boîte qui part se
       referme à sa place (une copie, retirée à la fin) — `window._flip(boite, sel, cle, rendu)` ;
-   ② une VALEUR (un nombre, « Affichée · Masquée ») change en fondu croisé — l'ancienne s'efface pendant que la nouvelle paraît (220 ms) — `window._douceur.valeur` ;
+   ② une VALEUR (un nombre, « Affichée · Masquée ») : ⚑ v203 (Tom, C-279 : « un seul langage, aucun fondu ») elle se détrace puis la nouvelle se trace, comme un texte (③) ;
    ③ un TEXTE (le nom du monde, de la palette, « Les Mots ») se détrace puis le nouveau se trace (C-125) — `window._douceur.texte`.
    Chaque transition se déclare (`__dcA`, `_animEnCours`) : pendant elle, aucun travail lourd (C-273). « Réduire les animations » : rien ne bouge. */
 (function(){
@@ -45866,22 +45881,17 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
           m.set(k, p); }
         s.m=m; s.vu=L.length>0; }); }catch(_){ } requestAnimationFrame(image); })();
   /* ② LES VALEURS : un fondu croisé, l'ancienne valeur posée par-dessus le temps de s'effacer */
-  function valeur(el, ancien){ if(reduit() || !el.isConnected) return; var neuf=el.__v201h, cs=getComputedStyle(el); if(cs.position==='static') el.style.setProperty('position','relative');
-    el.__v201in=true; el.innerHTML='<span class="v201-n">'+neuf+'</span><span class="v201-val" aria-hidden="true" style="position:absolute;left:0;top:0;right:0;bottom:0;pointer-events:none;white-space:nowrap;text-align:'+cs.textAlign+'">'+ancien+'</span>'; el.__v201in=false;
-    var n=el.querySelector('.v201-n'), o=el.querySelector('.v201-val'); declare(el, 260);
-    n.animate([{opacity:0},{opacity:1}], {duration:220, easing:'linear'}); var a=o.animate([{opacity:1},{opacity:0}], {duration:220, easing:'linear', fill:'forwards'});
-    a.onfinish=function(){ if(el.querySelector('.v201-val')===o){ el.__v201in=true; el.innerHTML=el.__v201h; el.__v201in=false; } }; }
   /* ③ LES TEXTES : détracé puis tracé (le système de C-125) */
   function texte(el, ancien, neuf){ var T=TL(); if(!T || reduit() || !el.isConnected) return; el.__v201in=true; el.innerHTML=ancien; el.__v201in=false; declare(el, 4000);
     T.trace(el, null, {inverse:true, surFin:function(r){ el.__v201in=true; el.innerHTML=neuf; el.__v201in=false; if(r && r.interrompu) return; T.trace(el, null, {surFin:function(){ try{ window.__dcA && window.__dcA.delete(el); el.__v200=null; }catch(_){ } }}); }}); }
   /* les observateurs : chaque élément suivi garde sa dernière valeur ; un écrivain qui la change déclenche la transition */
-  var SUIVIS=[ ['.cm5-nb','valeur'], ['#settingsScreen .scard .v','valeur'], 
+  var SUIVIS=[ ['.cm5-nb','texte'], ['#settingsScreen .scard .v','texte'], 
                ['#st3pn','texte'] ];
   function vu(el){ var r=el.getClientRects(); if(!r.length) return false; var cs=getComputedStyle(el); return cs.visibility!=='hidden' && +cs.opacity>0.05; }
   function branche(el, mode){ if(el.__v201o) return; el.__v201o=1; el.__v201h=el.innerHTML;
-    new MutationObserver(function(){ if(el.__v201in) return; var h=el.innerHTML; if(el.querySelector('.v201-val')) return; if(h===el.__v201h) return; var a=el.__v201h; el.__v201h=h;
+    new MutationObserver(function(){ if(el.__v201in) return; var h=el.innerHTML; if(h===el.__v201h) return; var a=el.__v201h; el.__v201h=h;
       if(!vu(el) || !a.replace(/<[^>]*>/g,'').trim()) return;   /* caché, ou vide avant : rien à adoucir (une première pose) */
-      if(mode==='valeur') valeur(el, a); else texte(el, a, h); }).observe(el, {childList:true, characterData:true, subtree:true}); }
+      texte(el, a, h); }).observe(el, {childList:true, characterData:true, subtree:true}); }
   setInterval(function(){ SUIVIS.forEach(function(s){ document.querySelectorAll(s[0]).forEach(function(el){ branche(el, s[1]); }); }); }, 400);
   /* le nom du monde et de la palette (#stpNom) sont REBÂTIS à chaque monde : on suit leur parent, et chaque partie qui change se détrace puis se trace */
   (function nomStudio(){ var N=document.getElementById('stpNom'); if(!N){ setTimeout(nomStudio, 600); return; } var der={};
@@ -45894,18 +45904,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function emplacement(contSel, itemSel, cle, mode){ var C=null, der={}, enCours={};
     function lit(){ var o={}; if(!C) return o; C.querySelectorAll(itemSel).forEach(function(e){ var k=cle(e); if(k!=null && !(k in o)) o[k]={e:e, h:e.innerHTML}; }); return o; }
     (function arme(){ var c=document.querySelector(contSel); if(!c){ setTimeout(arme, 700); return; } if(c===C) { setTimeout(arme, 1500); return; } C=c; var a=lit(); der={}; Object.keys(a).forEach(function(k){ der[k]=a[k].h; });
-      var prevu=false; function compare(){ prevu=false; var b=lit(); Object.keys(b).forEach(function(k){ var e=b[k].e; if(e.__v201in || (e.__v200 && !e.__v200.fini) || e.querySelector('.v201-val')) return; var h=b[k].h, av=der[k];
+      var prevu=false; function compare(){ prevu=false; var b=lit(); Object.keys(b).forEach(function(k){ var e=b[k].e; if(e.__v201in || (e.__v200 && !e.__v200.fini)) return; var h=b[k].h, av=der[k];
           if(!vu(e)) return;   /* caché (un écran qui se rebâtit) : on garde l'ancienne valeur, on compare quand il se montre */
           der[k]=h; var ec=enCours[k];
-          if(av===h && ec && performance.now()-ec.t<200 && ec.e!==e && mode==='valeur'){ ec.e=e; e.__v201h=h; valeur(e, ec.a); return; }   /* le nœud qui fondait vient d'être remplacé (l'écran rebâti deux fois) : le fondu continue sur le neuf */
-          if(av==null || av===h || !av.replace(/<[^>]*>/g,'').trim()) return; enCours[k]={a:av, t:performance.now(), e:e}; if(mode==='valeur'){ e.__v201h=h; valeur(e, av); } else texte(e, av, h); }); }
+          if(av===h && ec && performance.now()-ec.t<200 && ec.e!==e){ ec.e=e; texte(e, ec.a, h); return; }   /* le nœud qui fondait vient d'être remplacé (l'écran rebâti deux fois) : le fondu continue sur le neuf */
+          if(av==null || av===h || !av.replace(/<[^>]*>/g,'').trim()) return; enCours[k]={a:av, t:performance.now(), e:e}; texte(e, av, h); }); }
       new MutationObserver(function(){ compare(); var cache=false; var b2=lit(); Object.keys(b2).forEach(function(k){ if(!vu(b2[k].e) && der[k]!==b2[k].h) cache=true; }); if(cache && !prevu){ prevu=true; requestAnimationFrame(compare); } }).observe(c, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:['class','style']});   /* comparé dans l'image qui vient, avant sa peinture */
       setTimeout(arme, 1500); })(); }
   function libRangee(e){ var r=e.closest('.s2-reg'), l=r&&r.querySelector('.s2-lab'); return l?l.textContent.trim():null; }
-  emplacement('#detailPoster', '#dpdCorps .s2-reg > .s2-val', libRangee, 'valeur');
-  emplacement('#createSheet', '.s2-reg > .s2-val', libRangee, 'valeur');
+  emplacement('#detailPoster', '#dpdCorps .s2-reg > .s2-val', libRangee, 'texte');
+  emplacement('#createSheet', '.s2-reg > .s2-val', libRangee, 'texte');
   emplacement('#auraScreen', '#auCadre .au-mot', function(){ return 'mot'; }, 'texte');
-  emplacement('#auraScreen', '.au-cpt > span', function(e){ return 'cpt'+[].indexOf.call(e.parentNode.children, e); }, 'valeur');   /* les deux chiffres, rebâtis : suivis par leur rang */
+  emplacement('#auraScreen', '.au-cpt > span', function(e){ return 'cpt'+[].indexOf.call(e.parentNode.children, e); }, 'texte');   /* les deux chiffres, rebâtis : suivis par leur rang */
   /* le toast (« Design débloqué ✓ », « … dissous ») : il se découvre en arrivant, se referme en partant ; un nouveau toast demandé pendant qu'il part le remplace aussitôt */
   (function(){ var R=Element.prototype.remove;
     Element.prototype.remove=function(){ var el=this; if(el.id==='_toast' && !el.__v201p && !reduit() && el.isConnected){ el.__v201p=1; declare(el, 240); var a=el.animate([{clipPath:'inset(0 0 0 0 round 16px)'},{clipPath:'inset(50% 0 50% 0 round 16px)'}], {duration:220, easing:EZ, fill:'forwards'}); a.onfinish=function(){ R.call(el); }; return; } return R.call(el); };
@@ -45916,7 +45926,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   (function titre(){ var t=document.getElementById('cm5Titre'); if(t && !t.__v201o){ t.__v201o=1; var avant=vu(t);
       new MutationObserver(function(){ var v=vu(t); if(v && !avant && TL() && !reduit()){ declare(t, 3000); TL().trace(t, null, {}); } avant=v; }).observe(t, {attributes:true, attributeFilter:['style','class']}); }
     setTimeout(titre, 500); })();
-  window._douceur=window._douceur||{}; window._douceur.valeur=valeur; window._douceur.texte=texte;
+  window._douceur=window._douceur||{}; window._douceur.texte=texte;
   /* ⚑ v203 (Tom, C-272, C-273 : « Mascaret saccade au Studio ») — LES NOMS DES MONDES PRÉPARÉS D'AVANCE. Au glissement d'un monde à l'autre, son nom se détrace puis le
      nouveau se trace ; leurs lettres n'étaient calculées qu'à ce moment (`carte`, `surPlace` : 70 ms par glissement au banc, une image de 0,75 à 1,3 s dans le relevé de
      l'iPhone). Le Studio ouvert, chaque nom est préparé à SA place (une copie cachée du nom, mêmes cotes), les voisins d'abord, un par un, jamais sous un doigt. */
@@ -45970,6 +45980,63 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   (function arme(){ var a=enveloppe('_phraseRendu', '#csPhrase .ph-txt'), b=enveloppe('_nueePhraseRendu', '#nueePhrase .ph-txt'); if(!(window._phraseRendu && window._phraseRendu.__v203l)) setTimeout(arme, 400); })();
 })();
 </script>
+<script id="lot-V203-CONTINU">
+/* ⚑ v203 (Tom, fin de v203, C-278 §4) — « La fin de chaque séquence (taille, rail, phrase, dalle) arrive par un seul mouvement continu, sans saut ni recalage final ; en
+   passant à “promets-moi”, les mots changent de place d'un coup : ils glissent. » UN SEUL MOUVEMENT POUR TOUT CE QUI CHANGE DE PLACE DANS LA PAGE + : à chaque image, juste
+   avant la peinture, la place de MISE EN PAGE (sans les transformations) de la phrase, de chacun de ses mots (ses créneaux, ses mots de liaison) et du rail est relue ; dès
+   qu'elle change — un rebâti, la fin d'une transition de largeur, une ligne gagnée ou perdue, le rail replacé —, l'élément glisse de la place où on le VOIT à la nouvelle
+   (320 ms, la courbe des transitions, au compositeur : `translate`). La cause du changement ne compte pas : aucune image ne montre un élément sauter. Les mots se comptent
+   par rapport à la phrase (son propre glissement ne se compte pas deux fois). Rien pendant le mouvement du clavier (Q598, il porte la page), à l'ouverture (la page se pose),
+   sous « Réduire les animations ». `window._sansGlisse(el)` met ces mouvements à leur fin le temps d'une mesure (le tracé des lettres, le rail) et rend une fonction qui les remet. */
+(function(){
+  var DUR=320, EZ='cubic-bezier(.33,0,.67,1)', PREV=null, OUV=0, vu=false, CLS=null;
+  function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function cs(){ return document.getElementById('createSheet'); }
+  function pos(e, base){ var x=0, y=0, q=e, n=0; while(q && q!==base && n++<30){ x+=q.offsetLeft||0; y+=q.offsetTop||0; q=q.offsetParent; } return q===base ? [x, y] : null; }
+  function suivis(c){ var L=[], ph=c.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt'), bp=ph?pos(ph, c):null; if(ph && bp){ L.push(['phrase', ph, bp]); var cnt={};
+      ph.querySelectorAll('[data-ph],[data-np],em').forEach(function(e){ if(e.tagName==='EM' && e.closest('[data-ph],[data-np]')) return; if(e.classList.contains('v203-part')) return;
+        var s=(e.textContent||'').trim(), n=(cnt[s]=(cnt[s]||0)+1), k=(e.getAttribute('data-ph')||e.getAttribute('data-np')) ? 'p:'+(e.getAttribute('data-ph')||e.getAttribute('data-np')) : 'e:'+s+'#'+n, p=pos(e, c); if(p) L.push([k, e, [p[0]-bp[0], p[1]-bp[1]]]); }); }
+    var rl=document.getElementById('csPinceau'); if(rl && c.contains(rl) && rl.style.getPropertyValue('display')!=='none' && rl.style.getPropertyValue('visibility')!=='hidden'){ var pr=pos(rl, c); if(pr) L.push(['rail', rl, pr]); }
+    return L; }
+  function courant(e){ var v=[0,0]; try{ e.getAnimations().forEach(function(a){ if(a.id!=='v203c' || a.playState!=='running') return; var t=getComputedStyle(e).translate; if(t && t!=='none'){ var p=t.split(' ').map(parseFloat); v=[p[0]||0, p[1]||0]; } }); }catch(_){ } return v; }
+  /* la courbe (.33,0,.67,1) résolue : le décalage RESTANT d'un glissement à l'instant présent (un nœud rebâti le reprend là où on le voit maintenant, pas à l'image d'avant) */
+  function bez(u){ var x1=.33, x2=.67, t=u; for(var i=0;i<8;i++){ var x=3*(1-t)*(1-t)*t*x1+3*(1-t)*t*t*x2+t*t*t-u, dx=3*(1-t)*(1-t)*x1+6*(1-t)*t*(x2-x1)+3*t*t*(1-x2); if(Math.abs(x)<1e-4 || !dx) break; t-=x/dx; t=Math.max(0,Math.min(1,t)); } return 3*(1-t)*t*t+t*t*t; }
+  function reste(e){ var g=e && e.__v203c; if(!g) return null; var u=(performance.now()-g.t)/DUR; if(u>=1) return [0,0]; var f=1-bez(Math.max(0,u)); return [g.d[0]*f, g.d[1]*f]; }
+  function glisse(e, dx, dy){ var c=reste(e) || courant(e); dx+=c[0]; dy+=c[1]; e.getAnimations().forEach(function(a){ if(a.id==='v203c') a.cancel(); });
+    var K=[{translate:dx+'px '+dy+'px'},{translate:'0 0'}], O={duration:DUR, easing:EZ, id:'v203c'}; e.animate(K, O); e.__v203c={t:performance.now(), d:[dx, dy]}; window.__animT=performance.now();
+    var cv=e.nextElementSibling; if(cv && cv.tagName==='CANVAS' && cv.hasAttribute('data-trace')){ cv.getAnimations().forEach(function(a){ if(a.id==='v203c') a.cancel(); }); cv.animate(K, O); } }   /* le canevas d'un tracé en cours est le frère de son mot */
+  function image(){ requestAnimationFrame(image); verifie(); }
+  /* un rebâti fait dans une autre fonction d'image de la même image (la fin d'un tracé, une passe de composition) : vérifié tout de suite, avant la peinture */
+  var MO=null, prevu=false;
+  function observe(){ var c=cs(); if(!c){ setTimeout(observe, 600); return; } if(MO) return;
+    MO=new MutationObserver(function(ms){ if(prevu) return; for(var i=0;i<ms.length;i++){ var m=ms[i], t=m.target; if(m.type==='childList' || t.id==='csPhrase' || t.id==='nueePhrase' || t.id==='csPinceau'){ prevu=true; Promise.resolve().then(function(){ prevu=false; verifie(); }); return; } } });
+    MO.observe(c, {childList:true, subtree:true}); ['csPhrase','nueePhrase'].forEach(function(id){ var n=document.getElementById(id); if(n) MO.observe(n, {attributes:true, attributeFilter:['style','class']}); });
+    (function rail(){ var r=document.getElementById('csPinceau'); if(!r){ setTimeout(rail, 800); return; } MO.observe(r, {attributes:true, attributeFilter:['style']}); })(); }
+  observe();
+  function verifie(){ var c=cs(); if(!c){ PREV=null; return; }
+    var v=c.classList.contains('show') && !c.classList.contains('acc-passe'); if(v && !vu) OUV=performance.now(); vu=v;
+    var cls=(c.classList.contains('pp-ouvert')?'o':'')+(c.classList.contains('pp-choix')?'c':'')+(c.getAttribute('data-kind')||'');
+    var nat=c.getAttribute('data-kind')||'';
+    if(!v || reduit() || performance.now()-OUV<600 || nat!==CLS){ CLS=nat; PREV=null; return; }   /* la page qui se pose, une autre nature (une page neuve) : rien ne glisse */
+    var L=suivis(c), ph=c.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt');
+    /* le mouvement du clavier (Q598, la page entière glisse) : on suit la place VUE ; à sa fin, chacun glisse de la place vue à la sienne — la fin n'est jamais un recalage */
+    var MVT=!!(window._ppMvtCours && window._ppMvtCours());
+    var M={}; L.forEach(function(x){ M[x[0]]={e:x[1], p:x[2]}; if(MVT && (x[0]==='phrase' || x[0]==='rail')) M[x[0]].mvt=true; });
+    /* pendant le mouvement du clavier, la phrase et le rail sont portés par lui ; les mots, eux, glissent dans la phrase. À sa fin, la phrase et le rail repartent de leur
+       place de mise en page (aucun glissement : le mouvement y arrive). ⚠ Non réglé, déjà en v201b : son DÉPART ne tombe pas toujours sur la place de la saisie (12 à 18 pt). */
+    if(PREV && PREV.__mvt!==MVT) ['phrase','rail'].forEach(function(k){ if(M[k]) M[k].fait=true; });
+    var tailleChange=false; try{ if(ph) ph.getAnimations().forEach(function(a){ var k0=a.effect && a.effect.getKeyframes && a.effect.getKeyframes()[0]; if(k0 && k0.scale && a.currentTime!=null && a.currentTime<60) tailleChange=true; }); }catch(_){ }   /* la taille de la phrase vient de changer : sa mise à l'échelle (lot-V202A-TAILLE) porte déjà les mots */
+    if(PREV) Object.keys(M).forEach(function(k){ var a=PREV[k], b=M[k]; if(!a || b.mvt || b.fait) return; if(tailleChange && k!=='phrase' && k!=='rail') return; var dx=a.p[0]-b.p[0], dy=a.p[1]-b.p[1];
+      if(a.e!==b.e){ var o2=reste(a.e) || a.off; if(o2){ dx+=o2[0]; dy+=o2[1]; } }   /* un nœud rebâti (la phrase, un mot) : le décalage qu'on voyait encore sur l'ancien passe au neuf — sans cela il s'arrêtait net */
+      if(Math.abs(dx)<1.5 && Math.abs(dy)<1.5) return; try{ glisse(b.e, dx, dy); }catch(_){ } });
+    Object.keys(M).forEach(function(k){ if(!M[k].mvt) M[k].off=courant(M[k].e); }); M.__mvt=MVT;
+    PREV=M; }
+  requestAnimationFrame(image);
+  window._sansGlisse=function(el){ if(!el) return null; var R=[]; function fige(e){ try{ e.getAnimations().forEach(function(a){ if(a.id!=='v203c' || a.playState!=='running') return; var t=a.currentTime; a.pause(); a.currentTime=DUR; R.push(function(){ try{ a.currentTime=t; a.play(); }catch(_){ } }); }); }catch(_){ } }
+    for(var q=el; q && q.nodeType===1; q=q.parentElement) fige(q); try{ el.querySelectorAll('[data-ph],[data-np],em,canvas[data-trace]').forEach(fige); }catch(_){ }
+    return R.length ? function(){ R.forEach(function(f){ f(); }); } : null; };
+})();
+</script>
 <script id="lot-V202A-TAILLE">
 /* ⚑ v202a (Tom, C-271 ; AUDIT-SECS point 2, C-274) — LA TAILLE DE LA PHRASE DE LA PAGE + CHANGE EN DOUCEUR. La composition (§2.8) choisit la taille de la phrase
    d'après ce qu'elle dit : un titre tapé court la porte à 30, l'exemple qui revient quand on efface le titre la ramène à 24 ; un choix qui s'ouvre la fait passer de 34
@@ -45998,34 +46065,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      haut gauche de la phrase, au compositeur (Web Animations) — aucune mise en page pendant le mouvement. Une passe de composition qui tombe pendant lui lit la taille finale
      (le mouvement est mis à sa fin le temps de la passe, puis rendu). */
   var ANI=null;
-  /* ⚑ v203 (C-271, C-278) — LA PHRASE GLISSE À SA NOUVELLE PLACE : quand elle gagne ou perd une ligne (le sens basculé, un mot qui change), la composition la remontait
-     ou la descendait de 32 pt d'une image à l'autre. Sa place VUE avant la passe est notée ; si la passe la déplace, elle y glisse (`translate`, au compositeur, 320 ms),
-     et comme la taille, ce mouvement est mis à sa fin pendant toute passe qui mesure. */
-  var TR=null;
-  function txtPh(){ return document.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt'); }
-  window._phDouceAvant=function(){ var L=[], t=txtPh(), v0=null;
-    try{ if(t && t.isConnected && t.getClientRects().length) v0=t.getBoundingClientRect().top; }catch(_){ }
-    if(ANI && ANI.a && ANI.a.playState==='running'){ ANI.t=ANI.a.currentTime; ANI.a.pause(); ANI.a.currentTime=DUREE; L.push(ANI); }
-    if(TR && TR.a && TR.a.playState==='running'){ TR.t=TR.a.currentTime; TR.a.pause(); TR.a.currentTime=DUREE; L.push(TR); }
-    L.v0=v0; L.txt=t; return L; };
-  function glisse(L){ try{ var t=txtPh(); if(!t || L.v0==null || reduit() || !t.animate) return;   /* la passe peut rebâtir la phrase (`_phraseRendu`) : la place vue avant vaut pour le nœud neuf */ var cs=document.getElementById('createSheet');
-      if(!cs || !cs.classList.contains('show') || cs.classList.contains('pp-choix') || cs.classList.contains('pp-ouvert') || !vu || performance.now()-ouvertT<600 || (window._ppMvtCours && window._ppMvtCours())) return;
-      if(TR && TR.a){ TR.a.cancel(); TR=null; }
-      var f=t.getBoundingClientRect().top, dy=L.v0-f; if(Math.abs(dy)<2) return;
-      var dv=document.getElementById('device'), k=(dv && dv.getBoundingClientRect().width/(dv.offsetWidth||390))||1;
-      var a=t.animate([{translate:'0 '+(dy/k)+'px'},{translate:'0 0'}], {duration:DUREE, easing:'cubic-bezier(.33,0,.67,1)'});
-      TR={a:a, txt:t, t:0}; window.__animT=performance.now(); a.onfinish=function(){ if(TR && TR.a===a) TR=null; }; }catch(_){ } }
+  window._phDouceAvant=function(){ var L=[]; if(ANI && ANI.a && ANI.a.playState==='running'){ ANI.t=ANI.a.currentTime; ANI.a.pause(); ANI.a.currentTime=DUREE; L.push(ANI); } return L; };
   /* ⚑ v203 (Tom, C-278 : « la genèse bugue quand on change de nature ») — LA CAUSE, mesurée (le sens basculé « Je me promets » ⇄ « Je promets à ») : l'animation de taille
      partait AU MILIEU de la passe de composition ; la règle C-240 (`_place`) relisait alors la phrase AGRANDIE (le `scale` de départ), la croyait trop haute, la réduisait
      d'un point, ce qui relançait une animation plus grande encore — la phrase tombait de 36 à 16 px (v201b : 34). Une animation demandée pendant une passe attend la fin de
      la passe la plus extérieure (la règle payée en v202a : une valeur animée ne s'écrit jamais au milieu d'une passe qui mesure), et part de la taille qu'on voyait avant elle. */
   var PEND=null;
-  window._phDouceApres=function(L){ var trRepris=false; (L||[]).forEach(function(x){ if(x && x.a && (x===ANI || x===TR) && x.a.playState==='paused'){ x.a.currentTime=x.t; x.a.play(); if(x===TR) trRepris=true; } });
-    if(L && !trRepris) glisse(L);
+  window._phDouceApres=function(L){ (L||[]).forEach(function(x){ if(x && x.a && x===ANI && x.a.playState==='paused'){ x.a.currentTime=x.t; x.a.play(); } });
     var P=PEND; PEND=null; if(P){ try{ demarre(P.txt, P.t0, P.cs); }catch(_){ } } };
   /* le tracé des lettres mesure la phrase à sa taille FINALE (le mouvement mis à sa fin le temps de la mesure) : sa découpe vit dans les coordonnées de l'élément */
   (function hook(){ var TLh=window.TraceLettres; if(!TLh){ setTimeout(hook, 300); return; }
-    TLh.horsAnim=function(el){ var R=[]; [ANI, TR].forEach(function(X){ if(X && X.a && X.a.playState==='running' && X.txt && el && X.txt.contains(el)){ var a=X.a, t=a.currentTime; a.pause(); a.currentTime=DUREE; R.push(function(){ try{ a.currentTime=t; a.play(); }catch(_){ } }); } });
+    TLh.horsAnim=function(el){ var R=[]; if(ANI && ANI.a && ANI.a.playState==='running' && ANI.txt && el && ANI.txt.contains(el)){ var a=ANI.a, t=a.currentTime; a.pause(); a.currentTime=DUREE; R.push(function(){ try{ a.currentTime=t; a.play(); }catch(_){ } }); }
+      var g=window._sansGlisse ? window._sansGlisse(el) : null; if(g) R.push(g);   /* les glissements de lot-V203-CONTINU, sur ses ancêtres et dans lui */
       return R.length ? function(){ R.forEach(function(f){ f(); }); } : null; }; })();
   window._phTailleDouce=function(txt, t0, cs){ if(window._phEnPasse && window._phEnPasse()){ if(!PEND) PEND={txt:txt, t0:t0, cs:cs}; else { PEND.txt=txt; PEND.cs=cs; } return; } demarre(txt, t0, cs); };
   function demarre(txt, t0, cs){
@@ -46035,10 +46086,6 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var k0=t0/t1; if(ANI && ANI.a && ANI.a.playState==='running' && ANI.txt===txt){ try{ var cur=getComputedStyle(txt).scale; var v=parseFloat(cur); if(v>0) k0=v*(ANI.t1/t1); }catch(_){ } ANI.a.cancel(); }
     txt.style.setProperty('transform-origin','0 0');
     var a=txt.animate([{scale:String(k0)},{scale:'1'}], {duration:DUREE, easing:'cubic-bezier(.33,0,.67,1)'});
-    /* ⚑ v203 (C-271, C-278) — LE RAIL DU PINCEAU SUIT LA PHRASE : à distance constante de son bas VISIBLE, même durée, même courbe (« la suite glisse avec elle »). Seul, il
-       glissait vers sa place pendant que la phrase, agrandie au départ du mouvement, descendait plus bas qu'elle : il la recouvrait. */
-    try{ var rl=document.getElementById('csPinceau'); if(rl && cs && cs.contains(rl) && rl.style.getPropertyValue('display')!=='none' && rl.getBoundingClientRect().top > txt.getBoundingClientRect().top){
-        var hT=txt.offsetHeight||0; if(rl.__v203g) rl.__v203g.cancel(); rl.__v203g=rl.animate([{transform:'translateY('+(hT*(k0-1))+'px)'},{transform:'translateY(0)'}], {duration:DUREE, easing:'cubic-bezier(.33,0,.67,1)'}); } }catch(_){ }
     ANI={a:a, txt:txt, t1:t1, t:0}; window.__animT=performance.now();
     a.onfinish=function(){ if(ANI && ANI.a===a) ANI=null; };
   };

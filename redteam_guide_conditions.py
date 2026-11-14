@@ -1,16 +1,15 @@
-"""⚑ v203 (Tom, C-277) — CHAQUE ÉTAPE DU GUIDE A SA CONDITION, ET JAMAIS UN TOUCHER AU HASARD NE LA VALIDE.
-« Si la condition est déjà remplie quand l'étape devrait apparaître, l'étape ne s'affiche pas : le guide passe en douceur à l'étape suivante. Si elle n'est pas
-remplie, la phrase et le flou exigent le toucher sur sa cible. »
-
-Les conditions (en dur) : Studio → le Studio ouvert ; + → le + touché ; Partager → Partager ouvert ; la phrase 2 (« Le reste… ») n'a pas de condition (un toucher
-ou 3 s la ferme).
+"""⚑ v203 (Tom, C-277 ; fin de v203) — L'ÉTAPE OBLIGATOIRE (LE STUDIO) A SA CONDITION, ET JAMAIS UN TOUCHER AU HASARD NE LA VALIDE ; LE + ET PARTAGER RESTENT FACULTATIFS.
+« Si la condition est déjà remplie quand l'étape devrait apparaître, l'étape ne s'affiche pas : le guide passe en douceur à l'étape suivante. » — pour le Studio seul.
+« Partager reste facultatif » (Tom, fin de v203, qui rétablit v166) : à l'étape du + comme à celle de Partager, toucher ailleurs fait avancer (v165 : le + → Partager,
+Partager → la phrase 2) ; ces étapes paraissent même si leur action a été faite avant.
 WebKit, 390 × 844 ×3, au doigt (banc_tom), stockage d'un parcours fini (onboarding fait, guide jamais vu) ; le guide est demandé comme à la fin de l'onboarding
 (`_guide.attend(false)`). Une sonde relève chaque image : l'étape (`data-guide`) et la phrase affichée.
   A · AVANT : le Studio ouvert (une palette changée) et refermé avant que le guide paraisse → la phrase du Studio ne paraît jamais ; le guide commence au +
-  B · AVANT, le + aussi (touché, le menu refermé) → le guide commence à Partager ; tout fait → la seule phrase 2
+      puis un toucher ailleurs au + → Partager ; un toucher ailleurs à Partager → la phrase 2 (v165, v166)
+  B · AVANT, le + aussi (touché, le menu refermé) → le guide commence au + (facultatif : il paraît) ; tout fait → le guide commence au +
   C · PENDANT : le Studio touché pendant que le flou monte → le Studio s'ouvre ; refermé, le +, jamais la phrase du Studio après
-  D · APRÈS : trois touchers au hasard à chaque étape (Studio, +, Partager) → l'étape reste, sa phrase redite (rappel) ; seule sa cible la fait passer
-  E · le + déjà touché pendant l'étape du Studio n'est pas redemandé (le Studio touché, refermé → Partager)
+  D · APRÈS : trois touchers au hasard à l'étape du Studio → elle reste, sa phrase redite (rappel) ; seule sa cible la fait passer
+  E · le + touché avant le guide : l'étape du Studio, puis celle du + (facultative : elle paraît)
 --seul=A,B,… · --sombre"""
 import sys, os, time, json; sys.path.insert(0, '.')
 import banc_tom as B
@@ -70,33 +69,25 @@ def passe(b, sombre):
         juge('[%s] A · le Studio ouvert AVANT le guide : le guide commence au +, la phrase du Studio ne paraît jamais' % T, e['guide'] == 'plus' and 'studio' not in ph and norm(e['phrase']) == norm(PH['plus']),
              'étape %s · phrases vues %s · saut %s' % (e['guide'], [x for x in ph if x], e['saute']))
         if e['guide'] == 'plus':
-            ailleurs(pg); e = etat(pg)
-            juge('[%s] D · trois touchers au hasard à l\'étape du + : elle reste, sa phrase redite' % T, e['guide'] == 'plus' and e['rappels'] >= 1 and norm(e['phrase']) == norm(PH['plus']) and not e['choix'],
-                 'étape %s · rappels %s · « %s »' % (e['guide'], e['rappels'], e['phrase']))
-            B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(1200); e1 = etat(pg)
-            B.tap(pg, 200, 330); pg.wait_for_timeout(300)
-            e = attend(pg, lambda e: pose(e, 'partage'), 8000)
-            juge('[%s] D · le + touché : les natures ; le menu refermé : Partager' % T, e1['choix'] and e['guide'] == 'partage' and norm(e['phrase']) == norm(PH['partage']), 'natures %s · étape %s' % (e1['choix'], e['guide']))
+            B.tap(pg, 200, 380); e = attend(pg, lambda e: pose(e, 'partage'), 8000)
+            juge('[%s] A · un toucher ailleurs à l\'étape du + (facultative) : Partager' % T, e['guide'] == 'partage' and norm(e['phrase']) == norm(PH['partage']), 'étape %s · « %s »' % (e['guide'], e['phrase']))
             if e['guide'] == 'partage':
-                ailleurs(pg); e = etat(pg)
-                juge('[%s] D · trois touchers au hasard à l\'étape de Partager : elle reste, sa phrase redite' % T, e['guide'] == 'partage' and e['rappels'] >= 1 and not e['partage'], 'étape %s · rappels %s' % (e['guide'], e['rappels']))
-                B.tap_sel(pg, '#shareBtn'); pg.wait_for_timeout(1800); e1 = etat(pg); ferme_partage(pg)
-                e = attend(pg, lambda e: e['guide'] == 'reste' and norm(e['phrase']) == norm(PH['reste']), 8000)
-                juge('[%s] D · Partager touché : il s\'ouvre ; refermé : la phrase 2' % T, e1['partage'] and e['guide'] == 'reste' and norm(e['phrase']) == norm(PH['reste']), 'partage %s · étape %s · « %s »' % (e1['partage'], e['guide'], e['phrase']))
+                B.tap(pg, 200, 380); e = attend(pg, lambda e: e['guide'] == 'reste' and norm(e['phrase']) == norm(PH['reste']), 8000)
+                juge('[%s] A · un toucher ailleurs à l\'étape de Partager (facultative) : la phrase 2' % T, e['guide'] == 'reste' and norm(e['phrase']) == norm(PH['reste']), 'étape %s · « %s »' % (e['guide'], e['phrase']))
         ctx.close()
     if not SEUL or 'B' in SEUL:
         ctx, pg = ouvre(b, sombre)   # les actions faites, PUIS le guide demandé (la fin de l'onboarding) : rien entre elles ne le lance
         B.tap_sel(pg, '#studioBtn'); pg.wait_for_timeout(1500); ferme_studio(pg)
         B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(900); B.tap(pg, 200, 330); pg.wait_for_timeout(900); lance(pg)
         e = attend(pg, lambda e: pose(e, 'partage') or pose(e, 'plus') or pose(e, 'studio'), 15000); ph = phrases(pg)
-        juge('[%s] B · le Studio et le + faits AVANT : le guide commence à Partager' % T, e['guide'] == 'partage' and not ({'studio', 'plus'} & set(ph)), 'étape %s · phrases %s' % (e['guide'], [x for x in ph if x]))
+        juge('[%s] B · le Studio et le + faits AVANT : le guide commence au + (facultatif, il paraît), jamais au Studio' % T, e['guide'] == 'plus' and 'studio' not in ph, 'étape %s · phrases %s' % (e['guide'], [x for x in ph if x]))
         ctx.close()
         ctx, pg = ouvre(b, sombre)
         B.tap_sel(pg, '#studioBtn'); pg.wait_for_timeout(1500); ferme_studio(pg)
         B.tap_sel(pg, '#createBtn'); pg.wait_for_timeout(900); B.tap(pg, 200, 330); pg.wait_for_timeout(900)
         B.tap_sel(pg, '#shareBtn'); pg.wait_for_timeout(1600); ferme_partage(pg); lance(pg)
         e = attend(pg, lambda e: (e['guide'] == 'reste' and norm(e['phrase']) == norm(PH['reste'])) or pose(e, 'partage') or pose(e, 'plus') or pose(e, 'studio'), 15000); ph = phrases(pg)
-        juge('[%s] B · tout fait AVANT : la seule phrase 2' % T, e['guide'] == 'reste' and 'reste' in ph and not ({'studio', 'plus', 'partage'} & set(ph)), 'étape %s · phrases %s' % (e['guide'], [x for x in ph if x]))
+        juge('[%s] B · tout fait AVANT : le guide commence au +, jamais au Studio' % T, e['guide'] == 'plus' and 'studio' not in ph, 'étape %s · phrases %s' % (e['guide'], [x for x in ph if x]))
         ctx.close()
     if not SEUL or 'C' in SEUL:
         ctx, pg = ouvre(b, sombre); lance(pg)
@@ -125,7 +116,7 @@ def passe(b, sombre):
         ok0 = e['guide'] == 'studio'
         B.tap_sel(pg, '#studioBtn'); pg.wait_for_timeout(1600); ferme_studio(pg)
         e = attend(pg, lambda e: pose(e, 'partage') or pose(e, 'plus'), 9000); ph = phrases(pg)
-        juge('[%s] E · le + touché avant le guide : l\'étape du Studio, puis Partager — jamais la phrase du +' % T, ok0 and e['guide'] == 'partage' and 'plus' not in ph, 'étape %s · phrases %s' % (e['guide'], [x for x in ph if x]))
+        juge('[%s] E · le + touché avant le guide : l\'étape du Studio, puis celle du + (facultative, elle paraît)' % T, ok0 and e['guide'] == 'plus', 'étape %s · phrases %s' % (e['guide'], [x for x in ph if x]))
         ctx.close()
 
 with sync_playwright() as p:

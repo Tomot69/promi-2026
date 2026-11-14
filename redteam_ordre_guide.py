@@ -85,7 +85,7 @@ def passe(b, th):
     for i, (x_, y_, nom) in enumerate(lieux, 1):
         pg.evaluate("()=>{ const p=document.getElementById('guidePhrase'); if(p) p.__vieux=1; }")
         x, y = pt(pg, x_, y_); toucher(cdp, pg, x, y); pg.wait_for_timeout(900)
-        for _ in range(20):   # ⚑ v203 (C-271, C-277) : le rappel détrace la phrase, puis l'écrit de nouveau — le nœud neuf vient après le détracé (≤ 2,5 s)
+        for _ in range(20):   # ⚑ v203 (C-271, C-279) : le rappel du Studio détrace sa phrase, puis l'écrit de nouveau — le nœud neuf vient après le détracé (≤ 2,5 s) ; le contrat est celui d'origine
             e = pg.evaluate(ETAT)
             if e['neuf'] is True: break
             pg.wait_for_timeout(150)

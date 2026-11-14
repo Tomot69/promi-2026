@@ -26,7 +26,7 @@ def stats(v):
 
 
 def lit(chemin):
-    images = []; meta = {}; lit.taches = []
+    images = []; meta = {}; lit.taches = []; lit.modes = []
     for ligne in open(chemin, encoding='utf-8'):
         try: d = json.loads(ligne)
         except Exception: continue
@@ -34,6 +34,8 @@ def lit(chemin):
         tags = d.get('tags') or []
         meta = {k: d.get(k) for k in ('seance', 'debut', 'version', 'etat', 'ecran', 'ua', '_de')}
         lit.taches += d.get('taches') or []
+        for m in d.get('modes') or []:
+            if m not in lit.modes: lit.modes.append(m)
         for im in d.get('images') or []:
             t, dur, e, a = im[:4]
             images.append((t, dur, tags[e] if e < len(tags) else '?', tags[a] if a < len(tags) else '?') + ((im[4],) if len(im) > 4 else ()))
@@ -86,6 +88,21 @@ def main():
             i = max(j, i + 1)
     print('défilements de fiche : %d séries · arrêts suivis d\'une reprise : %d %s' % (len(ser), len(reprises), reprises[:5]))
     print('%d images sur %.0f s — p50 %.1f · p95 %.1f · max %.1f ms · > 16,7 : %d · > 33 : %d' % (tout['n'], dureeS, tout['p50'], tout['p95'], tout['max'], tout['sup16'], tout['sup33']))
+    if lit.modes:   # ⚑ v203 (fin de v203, §2) : les fenêtres de 30 s — l'envoi, le relevé gardé, gardé sans le chronométrage des rappels
+        M = sorted(lit.modes); NOMS = {0: "envoi toutes les 2 s", 1: "relevé gardé en mémoire", 2: "gardé, sans chronométrage"}
+        def mode_de(t):
+            m = None
+            for t0, md in M:
+                if t0 <= t: m = md
+            return m
+        par = {}
+        for im in images:
+            md = mode_de(im[0])
+            if md is None: continue
+            a = par.setdefault(md, [0, 0, 0, 0]); a[0] += 1; a[1] += 1 if im[1] > 33.4 else 0; a[2] += 1 if im[1] > 50 else 0; a[3] += 1 if (im[1] > 50 and im[3] == 'repos') else 0
+        print('\nFENÊTRES DE 30 s (le relevé lui-même ?) — images · > 33 ms · > 50 ms · > 50 ms au repos (pour 1 000 images)')
+        for md in sorted(par):
+            a = par[md]; print('  %-28s %6d   %5.1f   %5.1f   %5.1f' % (NOMS.get(md, md), a[0], 1000 * a[1] / max(1, a[0]), 1000 * a[2] / max(1, a[0]), 1000 * a[3] / max(1, a[0])))
     T = lit.taches
     if T:
         agg = {}
