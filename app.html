@@ -2605,7 +2605,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v201b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v202a', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2676,6 +2676,56 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
         if(t.closest('#addPromi,#addNuee')) mesure('planter'); else if(t.closest('.v16-oui')) mesure('retirer'); else if(t.closest('#segStatus button[data-st="tenu"]')) mesure('tenir'); }catch(_){ } }, true);
     window._mesureImages=mesure;
     /* v146 (C-135) : une mesure qui n'est pas un compte d'images (la latence de la Pelote) — affichée sur la marque et envoyée au Mac */
+    /* ⚑ v202a (Tom, C-272, C-273, C-275 : « le banc ne voit pas ce que voit l'iPhone ») — LE RELEVÉ DE TOUTE LA SÉANCE. Chaque image (requestAnimationFrame) est
+       notée avec sa durée, l'écran qu'on voit (sous le centre de l'appareil, relu toutes les 30 images) et ce qui s'anime (tracé, détracé, transition, défilement,
+       doigt, « tenir », guide, veille). Toutes les 2 s, hors animation et sans doigt posé, le lot part au Mac (`POST /releve`) ; `serveur.py` l'écrit dans
+       mesures/AAAA-MM-JJ-HHMM.jsonl (un fichier par séance). Rien n'est affiché ; résumé : `python3 resume_releve.py`. */
+    (function(){
+      var SEANCE=Date.now().toString(36)+Math.random().toString(36).slice(2,6), DEBUT=new Date().toISOString(), T0=performance.now();
+      var TAGS=[], IDX={}, BUF=[], nImg=0, ecr='?', ecrN=0, dernierDefile=0, dernierEnvoi=performance.now(), prec=0;
+      function tag(s){ var i=IDX[s]; if(i==null){ i=IDX[s]=TAGS.length; TAGS.push(s); } return i; }
+      var TLw=false, INV=0;
+      function enveloppe(){ var T=window.TraceLettres; if(TLw || !T || !T.trace) return; TLw=true; var f=T.trace;
+        T.trace=function(c, co, o){ if(o && o.inverse && !o.preparer){ INV++; var sf=o.surFin, fait=false; o=Object.assign({}, o, {surFin:function(r){ if(!fait){ fait=true; INV=Math.max(0,INV-1); } if(sf) return sf.apply(this, arguments); }});
+            setTimeout(function(){ if(!fait){ fait=true; INV=Math.max(0,INV-1); } }, 6000); }
+          return f.call(this, c, co, o); }; }
+      ['scroll'].forEach(function(n){ document.addEventListener(n, function(){ dernierDefile=performance.now(); }, {capture:true, passive:true}); });
+      function lisEcran(){ try{
+        if(window._veille && window._veille().active) return 'veille';
+        var onb=document.getElementById('promiOnb'); if(onb && !onb.classList.contains('gone') && onb.style.display!=='none' && onb.getBoundingClientRect().height>0) return 'onboarding';
+        var d=document.getElementById('device'), r=d.getBoundingClientRect(), k=r.width/390, e=document.elementFromPoint(r.left+195*k, r.top+422*k);
+        var s=e && e.closest ? e.closest('#personSheet, #detailPoster, #createSheet, #indexSheet, #feedView, #settingsScreen, #auraScreen, #studioScreen, #shareScreen, #plusScreen, #privScreen, .screen, .sheet, .poster') : null;
+        var g=document.getElementById('guide') ? '+guide' : '';
+        if(!s) return 'accueil'+g;
+        if(s.id==='detailPoster'){ var nat=(typeof curNuee!=='undefined' && curNuee && (s.classList.contains('dp-nuee')||s.classList.contains('dp-mode-nuee'))) ? 'cercle' : ((typeof cur!=='undefined' && cur && cur.chiche) ? 'chiche' : 'promi');
+          return 'fiche-'+nat+(s.classList.contains('s2-ouv')?'+peaufiner':''); }
+        if(s.id==='createSheet') return 'page+-'+(s.getAttribute('data-kind')||'promi');
+        if(s.id==='studioScreen'){ var m='?'; try{ var mc=Toile.mondeCourant(); m=mc.m+'/'+mc.p; }catch(_){ } return 'studio:'+m+g; }
+        var nom={indexSheet:'index', feedView:'fil', settingsScreen:'reglages', auraScreen:'aura', shareScreen:'partager', personSheet:'personne', plusScreen:'ma-parole', privScreen:'vie-privee'}[s.id];
+        return (nom || s.id || 'autre')+g; }catch(_){ return '?'; } }
+      function anime(t){ var a=[];
+        try{ var T=window.TraceLettres; if(T && T.actif && T.actif()) a.push(INV>0?'detrace':'trace'); }catch(_){ }
+        try{ var A=window.__dcA; if(A && A.size) a.push('transition-mot'); }catch(_){ }
+        if(window.__animT && t-window.__animT<120) a.push('mouvement');
+        if(window._tenirAnime) a.push('tenir');
+        if(t-dernierDefile<150) a.push('defilement');
+        try{ if(window.__doigts && window.__doigts.n>0) a.push('doigt'); }catch(_){ }
+        return a.join('+')||'repos'; }
+      function envoie(force){ if(!BUF.length) return; var lot=BUF; BUF=[]; dernierEnvoi=performance.now();
+        var R={quoi:'releve', seance:SEANCE, debut:DEBUT, version:V.marque(), etat:etatLu(), ecran:[screen.width, screen.height, window.devicePixelRatio, window.innerWidth, window.innerHeight],
+               ua:navigator.userAgent, tags:TAGS.slice(), images:lot, quand:new Date().toISOString()};
+        try{ fetch('releve', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:!!force}).catch(function(){}); }catch(_){ } }
+      function b(t){ requestAnimationFrame(b); enveloppe(); var n=performance.now();
+        if(prec){ var dur=n-prec; if(document.visibilityState==='visible' && dur<5000){ if(++ecrN>=30 || ecr==='?'){ ecrN=0; ecr=lisEcran(); }
+            BUF.push([Math.round(n-T0), Math.round(dur*10)/10, tag(ecr), tag(anime(n))]); } }
+        prec=n;
+        if(n-dernierEnvoi>2000){ var occ=false; try{ occ=(window._animEnCours && window._animEnCours()) || (window.__doigts && window.__doigts.n>0) || window._tenirAnime; }catch(_){ }
+          if(!occ || BUF.length>1800) setTimeout(function(){ envoie(false); }, 0); } }
+      requestAnimationFrame(b);
+      document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='hidden'){ envoie(true); prec=0; } });
+      window.addEventListener('pagehide', function(){ envoie(true); });
+      window._releve={seance:SEANCE, tags:TAGS, buf:function(){ return BUF.length; }, envoie:envoie, ecran:lisEcran};
+    })();
     window._mesureNote=function(texte, R){ try{ derniere=texte; pose2(); R=R||{}; R.version=V.marque(); R.etat=etatLu(); R.ua=navigator.userAgent; R.quand=new Date().toISOString();
         fetch('mesure', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:true}).catch(function(){}); }catch(_){ } };
   }

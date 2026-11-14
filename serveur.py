@@ -20,6 +20,8 @@ import http.server, socketserver, subprocess, json, os, sys, re, hashlib
 
 PORT = 8752
 ICI = os.path.dirname(os.path.abspath(__file__))
+import threading
+SEANCES = {}; SEANCES_VERROU = threading.Lock()   # v202a : une séance du relevé → son fichier
 
 
 def lot_et_moteur():
@@ -125,6 +127,26 @@ class SansCache(http.server.SimpleHTTPRequestHandler):
                 with open(os.path.join(ICI, 'etats', nom), 'w', encoding='utf-8') as f: json.dump(d, f, ensure_ascii=False)
                 self._envoie(json.dumps({'ok': True, 'fichier': nom}).encode('utf-8'), 'application/json')
             except Exception as e:
+                self.send_response(400); self.end_headers()
+            return
+        if self.path.split('?')[0] == '/releve':
+            # v202a (Tom, C-272) — `/releve` : avec `?mesure=1`, la durée de CHAQUE image de la séance, avec l'écran et l'animation en cours, envoyée
+            # toutes les 2 s. Un fichier par séance : mesures/AAAA-MM-JJ-HHMM.jsonl (l'heure du Mac au premier envoi). Résumé : resume_releve.py.
+            try:
+                n = min(int(self.headers.get('Content-Length') or 0), 5000000); d = json.loads(self.rfile.read(n).decode('utf-8', 'replace'))
+                d['_de'] = self.client_address[0]; d['_recu'] = time.strftime('%Y-%m-%d %H:%M:%S')
+                s = str(d.get('seance') or 'x')[:40]
+                with SEANCES_VERROU:
+                    nom = SEANCES.get(s)
+                    if not nom:
+                        nom = time.strftime('%Y-%m-%d-%H%M'); base = nom; k = 2
+                        while os.path.exists(os.path.join(ICI, 'mesures', nom + '.jsonl')) and nom not in SEANCES.values():
+                            nom = '%s-%d' % (base, k); k += 1
+                        SEANCES[s] = nom
+                    os.makedirs(os.path.join(ICI, 'mesures'), exist_ok=True)
+                    with open(os.path.join(ICI, 'mesures', nom + '.jsonl'), 'a', encoding='utf-8') as f: f.write(json.dumps(d, ensure_ascii=False) + '\n')
+                self._envoie(json.dumps({'ok': True, 'fichier': nom + '.jsonl'}).encode('utf-8'), 'application/json')
+            except Exception:
                 self.send_response(400); self.end_headers()
             return
         if self.path.split('?')[0] != '/mesure':
