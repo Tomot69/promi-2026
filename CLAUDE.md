@@ -252,6 +252,12 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v201 (14 nov. 2026) — DEUX RÈGLES NEUVES (Tom, C-267, C-273).
+> **① Une fiche ne reste jamais au repos la vague à demi sous la bande** : entre `a` (la vague entière sous 112) et `z` (entière sous la bande), un défilement fait au doigt ou à la molette
+> finit par glisser vers la plus proche des deux places sûres ; les glissements de l'app visent une place sûre (`window._ficheSure`). Juge : `redteam_repos_fiche.py`.
+> **② Pendant une animation de texte (un tracé, un détracé, une transition de mot, l'horizon, le mouvement de la page), aucun travail lourd** : les passes de tout le document, les
+> recompositions périodiques et les tâches de fond attendent `window._animEnCours()` (une animation se déclare : `TraceLettres.actif()`, `__dcA`, `__animT`). Mesure : `scratchpad/v201/sacc.py` (processeur ×4).
+
 ### ⚑ v200 (13 nov. 2026) — LE TRAIT N'EST PLUS ROGNÉ NI DOUBLÉ (C-267, capture de Tom) ; « MOI » ARRIVE EN DOUCEUR (C-269, C-271) ; MASCARET (C-272) ; L'AUDIT DES CHANGEMENTS SECS. (Décisions Tom.) Ce bloc CORRIGE v195 et v197 (③ le CACHE de la jonction) et v199 (§3 : « moi » posé d'un coup).
 > **Validé par Tom : C-270. Règle permanente C-271 (aucun changement sec) : en tête de ce fichier.** Branche `v197`, poussée, NON fusionnée.
 > **⚑ §1 (C-267) — LA CAUSE, REPRODUITE AU BANC À L'ÉCHELLE DE TOM (390 × 651, l'appareil à 0,7466, ×3 ; le Chiche « Hhhh » de sa capture)** : à la rencontre, le cache de v195

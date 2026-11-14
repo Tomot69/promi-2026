@@ -9,6 +9,9 @@
    ne partait plus (un doigt « posé »). Les bancs ne pouvaient pas le voir : les touchers de banc_tom ne fabriquent aucun évènement de pointeur. Ce compteur est le
    PREMIER écouteur de la page : aucun autre ne peut lui retirer un lever. Il compte les doigts posés par leur identifiant ; un toucher fini (plus aucun doigt), un
    lever de souris, la page cachée les rendent tous. */
+/* ⚑ v201a (Tom, C-273 : « les tracés saccadent ») — UNE ANIMATION DE TEXTE EN COURS : un tracé ou un détracé (TraceLettres), une transition de mot (lot-V200-DOUCEUR).
+   Pendant elle, aucune passe de tout le document, aucune recomposition périodique, aucun travail de fond. */
+window._animEnCours=function(){ try{ if(window.__animT && performance.now()-window.__animT<120) return true; var T=window.TraceLettres; if(T && T.actif && T.actif()) return true; var A=window.__dcA; if(A && A.size){ var on=false; A.forEach(function(e){ if(!e.isConnected || !e.__v200 || e.__v200.fini) A.delete(e); else on=true; }); return on; } }catch(_){ } return false; };
 (function(){ var D=window.__doigts={ids:{}, n:0, t:performance.now()};
   function maj(){ D.n=Object.keys(D.ids).length; D.t=performance.now(); }
   function vide(type){ for(var k in D.ids){ if(!type || D.ids[k]===type) delete D.ids[k]; } maj(); }
@@ -8951,11 +8954,16 @@ var BX=52,BY=84,BR=3;
    (`fv.classList.contains('in') && getComputedStyle(fv).display!=='none'`, ≈ l. 19208). D'où les DEUX
    classes ci-dessous : ce sont les deux états que le code pose, et rien n'est déduit d'une géométrie. */
 function ouvert(e){ return e.classList.contains('show') || e.classList.contains('in'); }
+/* ⚑ v201a (Tom, C-273 : « les tracés saccadent ») — trois propriétés HÉRITÉES écrites à chaque image sur un écran recalculent les styles de TOUT son contenu ;
+   sur la page +, le fond qui les lit (`::before`) n'est pas affiché (`content: none`) : on n'écrit que là où il se peint (relu une fois par seconde) */
+function peint(e){ var t=performance.now(); if(!e.__ombT || t-e.__ombT>1000){ e.__ombT=t; try{ var c=getComputedStyle(e,'::before'); e.__omb=(c.content!=='none' && c.display!=='none'); }catch(_){ e.__omb=true; } } return e.__omb; }
+var _ombL=null, _ombLT=0;
 function frame(){
-  var all=document.querySelectorAll('.tuto-fond, #createSheet, #settingsScreen');var vis=false;
+  var _tn=performance.now(); if(!_ombL || _tn-_ombLT>1000){ _ombL=document.querySelectorAll('.tuto-fond, #createSheet, #settingsScreen'); _ombLT=_tn; }   /* ⚑ v201a (C-273) : relue une fois par seconde, plus à chaque image (267 ms au processeur ×4 sur la validation) */
+  var all=_ombL;var vis=false;
   for(var i=0;i<all.length;i++){if(ouvert(all[i])){vis=true;break;}}
   if(vis){st.t+=0.0016;var x=BX*Math.sin(st.t*1.0)*Math.cos(st.t*0.37);var y=BY*Math.sin(st.t*0.63);var rot=BR*Math.sin(st.t*0.5);
-    for(var j=0;j<all.length;j++){var e=all[j];if(ouvert(e)){e.style.setProperty('--gx',x.toFixed(2)+'px');e.style.setProperty('--gy',y.toFixed(2)+'px');e.style.setProperty('--grot',rot.toFixed(3)+'deg');}}
+    for(var j=0;j<all.length;j++){var e=all[j];if(ouvert(e)&&peint(e)){e.style.setProperty('--gx',x.toFixed(2)+'px');e.style.setProperty('--gy',y.toFixed(2)+'px');e.style.setProperty('--grot',rot.toFixed(3)+'deg');}}
     requestAnimationFrame(frame);
   }else{setTimeout(frame,350);}
 }
@@ -19002,8 +19010,12 @@ var CREMEETAT='#F7F0DE';
     }, true);
   }
 
+  /* ⚑ v201a (C-273) : ce qui fait la mise en page de la page + (sa clé) — notée à chaque composition ; la relecture périodique ne recompose que si elle a changé */
+  window._ppCle=function(){ var cs=document.getElementById('createSheet'), ph=document.getElementById('csPhrase'), np=document.getElementById('nueePhrase'), vv=window.visualViewport;
+    return cs?(cs.className.split(/\s+/).filter(function(c){ return c && !/^(ppi-|ppa-|pp-cours$)/.test(c); }).sort().join(' ')+'|'+cs.getAttribute('data-kind')+'|'+(ph?ph.textContent:'')+'|'+(np?np.textContent:'')+'|'+innerWidth+'x'+innerHeight+'|'+(vv?Math.round(vv.height):0)):''; };
   function tout(){ try{
     var cs = document.getElementById('createSheet');
+    window.__ppCleFaite=window._ppCle();
     if(cs && cs.classList.contains('pp-peauf')){ peaufBati(); return; }
     cotes(); trait();
     /* §10.6 · l'entête suit ce qui est peint sous lui — la matière remplit le champ, et
@@ -19063,7 +19075,7 @@ var CREMEETAT='#F7F0DE';
     var choix = ouvert && !forme;
     if(cs.classList.contains('pp-choix') !== choix) cs.classList.toggle('pp-choix', choix);
     if(choix) cartes(cs);
-    if(doit && ouvert && !window._ppPart) tout();   /* v149 (C-155) : ni pendant que la dalle plantée grandit (le clic de plantation la faisait recomposer 60 ms après, 32 ms d'un bloc en WebKit) — v60 (rythme) : une page + qui glisse hors de l'écran garde sa mise en page, mais ne se REPEINT plus — c'était ~180 ms (dalle et trait) pile quand la dalle plantée arrive */
+    if(doit && ouvert && !window._ppPart && !window.__armeSans) tout();   /* v149 (C-155) : ni pendant que la dalle plantée grandit (le clic de plantation la faisait recomposer 60 ms après, 32 ms d'un bloc en WebKit) — v60 (rythme) : une page + qui glisse hors de l'écran garde sa mise en page, mais ne se REPEINT plus — c'était ~180 ms (dalle et trait) pile quand la dalle plantée arrive */
   }
   window._ppArme = arme;
   try{ var _csO=document.getElementById('createSheet'); if(_csO){ var _vu=_csO.classList.contains('show');
@@ -19075,7 +19087,11 @@ var CREMEETAT='#F7F0DE';
     if(ev.target && ev.target.closest && ev.target.closest('#createSheet')) setTimeout(tout,40);
   }, true);
   ['resize','orientationchange'].forEach(function(ev){ window.addEventListener(ev, tout); });
-  setInterval(arme, 500);
+  /* ⚑ v201a (C-273) — la relecture périodique (le filet de sûreté) ne recompose la page + que si ce qui la fait a changé depuis son dernier passage, et jamais
+     pendant un tracé : elle tombait en pleine naissance du trait (jusqu'à 293 ms d'un bloc au processeur ×4) */
+  setInterval(function(){ var k=window._ppCle();
+    window.__armeSans=(k===window.__ppCleFaite) || !!(window._animEnCours && window._animEnCours());
+    try{ arme(); } finally { window.__armeSans=false; } }, 500);
 })();
 </script>
 
@@ -21289,7 +21305,10 @@ var CREMEETAT='#F7F0DE';
   window._hautBoutonPhoto=hautBouton;
   (function suit(){ try{ ['createSheet','detailPoster'].forEach(function(id){ var h=document.getElementById(id); if(!h || !h.classList.contains('show')) return;
         var b=h.querySelector(':scope > .ph-photo-nid .ph-photo-btn'); if(!b || b.offsetParent===null) return; var e=null;
-        if(id==='createSheet' && window._ppEcran){ var E=window._ppEcran(); if(E) e=[E.base, E.amp]; }
+        if(id==='createSheet' && window._ppEcran){ var ph=document.getElementById('csPhrase'), np=document.getElementById('nueePhrase'), vv=window.visualViewport;
+          var kk=h.className+'|'+h.getAttribute('data-kind')+'|'+(ph?ph.textContent:'')+'|'+(np?np.textContent:'')+'|'+innerWidth+'x'+innerHeight+'|'+(vv?Math.round(vv.height):0);
+          if(b.__ppK===kk && b.getAttribute('data-onde')) return; b.__ppK=kk;   /* ⚑ v201a (C-273) : la mise en page de la page + ne se relit que si ce qui la fait a changé (elle se relisait à chaque image : 30 à 98 ms au processeur ×4) */
+          var E=window._ppEcran(); if(E) e=[E.base, E.amp]; }
         else { var c=h.querySelector('#dpTrameCv'), t=c&&c.getAttribute('data-trait'); if(t){ var a=t.split(','); e=[+a[0], +a[1]]; } }
         if(!e || !isFinite(e[0])) return; var s=e.join(','); if(b.getAttribute('data-onde')===s) return;
         b.setAttribute('data-onde', s); b.style.setProperty('top', hautBouton(e[0], e[1]) + 'px', 'important'); }); }catch(_){ }
@@ -22292,7 +22311,7 @@ var CREMEETAT='#F7F0DE';
     _enCours=true; _redemande=false;
     var els=document.querySelectorAll('*'), i=0, _t0P=performance.now();
     (function tranche(){
-      var t0=performance.now(), budget=5;
+      var t0=performance.now(), budget=5; if(window._animEnCours && window._animEnCours() && performance.now()-_t0P<3000){ setTimeout(tranche, 140); return; }
       while(i<els.length && performance.now()-t0<budget){ passe(els, i, i+40); i+=40; }
       if(i<els.length) setTimeout(tranche, (window._evol && window._evol() && performance.now()-_t0P<3000) ? 140 : 0);   /* v144 (C-112) : elle s'efface pendant qu'une dalle arrive ou part */   /* tâches courtes enchaînées : on n'attend pas de temps mort (la Toile animée n'en laisse pas) */
       else { _enCours=false; window._policesDuree=Math.round(performance.now()-_t0P); window._policesN=els.length; if(_redemande) setTimeout(passeFond, 30); }
@@ -22313,7 +22332,8 @@ var CREMEETAT='#F7F0DE';
   /* ⚑ v142 (C-102) — juste après « tenir », la passe visible part EN TRANCHES (5 ms, une tâche chacune) : relevée d'un bloc à 50–104 ms dans la
      trace (`p`, minuterie), là où un toucher ne doit pas attendre plus de deux images. Hors de ce moment, elle reste synchrone, comme avant. */
   function passeVisible(){ if(window._policesFond && window._policesFond.__coupe) return; try{ var L=visibles(), o={length:L.length, __l:L};
-      if(window._tenirFinT && performance.now()-window._tenirFinT<4500){ var i=0; (function tr(){ var t0=performance.now(); while(i<L.length && performance.now()-t0<5){ passe(o, i, i+24); i+=24; } if(i<L.length) setTimeout(tr, 0); })(); return; }
+      var _sh=function(id){ var e=document.getElementById(id); return !!(e && e.classList.contains('show')); };   /* ⚑ v201a (C-273) : la page + ou une fiche ouverte, ou un tracé en cours — en tranches aussi (elle tombait d'un bloc entre deux tracés : 300 ms au processeur ×4) */
+      if((window._tenirFinT && performance.now()-window._tenirFinT<4500) || _sh('createSheet') || _sh('detailPoster') || (window._animEnCours && window._animEnCours())){ var i=0; (function tr(){ var t0=performance.now(); while(i<L.length && performance.now()-t0<5){ passe(o, i, i+24); i+=24; } if(i<L.length) setTimeout(tr, 0); })(); return; }
       passe(o); }catch(_){ } }
   function tard(){ var p=function(){ (window._apresMouvement||function(f){f();})(passeVisible); }; setTimeout(p, 60); setTimeout(p, 420); setTimeout(p, 900);
     setTimeout(function(){ (window._apresMouvement||function(f){f();})(function(){ (window._policesFond||passeFond)(); }); }, 1500); }   /* par window : un juge peut la couper pour prouver qu'il mord */
@@ -26312,7 +26332,9 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
   try{ if(document.fonts && document.fonts.ready) document.fonts.ready.then(tout); }catch(_){}
   try{
     var cs = document.getElementById('createSheet');
-    if(cs) new MutationObserver(function(){ tout(); })
+    var _clsAv=cs?cs.className+'|'+cs.getAttribute('data-kind'):'', _toutPrevu=false;
+    if(cs) new MutationObserver(function(){ var k=cs.className.replace(/\b(ppi-[\w-]+|ppa-[\w-]+|pp-cours)\b/g,'').replace(/\s+/g,' ')+'|'+cs.getAttribute('data-kind'); if(k===_clsAv) return; _clsAv=k;   /* ⚑ v201a (C-273) : l'invite et l'horizon (ppi-*, ppa-*) changent sans cesse pendant le tracé — ils ne refont pas la rangée ; une seule fois par image */
+             if(_toutPrevu) return; _toutPrevu=true; requestAnimationFrame(function(){ _toutPrevu=false; tout(); }); })
              .observe(cs, {attributes:true, attributeFilter:['class','data-kind']});
     /* la zone de choix d'une Nuée se remplit et se vide sans toucher aux classes de la feuille */
     if(cs) new MutationObserver(function(ms){
@@ -33551,6 +33573,9 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
        maintenant un vrai calme : 3 s sans aucun toucher (le lever compris), aucune animation de « tenir » en cours ni finie depuis moins de 6 s. */
     if(window._tenirAnime || window._instant || (window._tenirFinT && performance.now()-window._tenirFinT<6000)) return false;
     if(window._evolRecente && window._evolRecente(4000)) return false;   /* v144 (C-112) : ni pendant qu'une dalle arrive ou part, ni dans les 4 s qui suivent le toucher */
+    /* ⚑ v201a (C-273) : ni pendant un tracé ni dans la seconde et demie qui le suit, ni la page + ou une fiche ouverte (la naissance du trait, « moi ») */
+    try{ var _TL=window.TraceLettres; if((window._animEnCours && window._animEnCours()) || (_TL && _TL._finT && performance.now()-_TL._finT<1500)) return false;
+      var _o=function(id){ var e=document.getElementById(id); return !!(e && e.classList.contains('show')); }; if(_o('createSheet') || _o('detailPoster')) return false; }catch(_){ }
     return performance.now()-_toucheA>3000; }   /* ⚑ v100 : et pas dans les 2,5 s d'un changement d'écran */
   function fond(j){
     if(j!=null && j!==JETON) return;                 /* une chaîne plus récente a pris la main */
@@ -38451,7 +38476,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       else { g.fillStyle=fond; g.beginPath(); L.forEach(function(c){ if(t>=c.t) cellule(c); }); g.fill(); if(t>=dur) g.fillRect(0,0,w,h); } }
     var ctl={canevas:cv, arrete:false, image:image, duree:dur};   /* `image(t)` : l'état à l'instant t, pour les juges (rien d'autre ne l'appelle) */
     if(o.attend){ image(0); ctl.lance=function(){ go(); }; return ctl; }
-    function go(){ if(reduit){ image(dur); fini(); return; } var t0=performance.now(); (function f(){ if(ctl.arrete) return; var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else fini(); })(); }
+    function go(){ if(reduit){ image(dur); fini(); return; } var t0=performance.now(); (function f(){ if(ctl.arrete) return; window.__animT=performance.now(); var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else fini(); })(); }
     function fini(){ if(o.mode!=='resorbe' && !o.garde && cv.parentNode) cv.remove(); if(o.fin) o.fin(ctl); }
     go(); return ctl; };
   /* ⚑ v148 (Tom, 16 oct. 2026, C-141 rouvert §10) — « Les transitions de l'onboarding sont encore cheap. Le flou en flaques, lui, est validé : c'est donc
@@ -38488,7 +38513,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     var ctl={canevas:cv, arrete:false, image:image, duree:dur, mode:ouvre?'ouvre':'couvre'}; cv.__ctl=ctl; if(o.image && o.image.__flou) cv.setAttribute('data-flou','1'); else cv.removeAttribute('data-flou');   /* v158 (C-170) : un passage qui porte une image floutée le dit */
     function fini(){ if(ouvre && !o.garde && cv.parentNode) cv.remove(); if(o.fin) o.fin(ctl); }
     var av=o.avance||0;   /* v176 (C-222) : `avance` (ms) : la première image a déjà ses premiers trous — aucune image d'attente */
-    function go(){ if(reduit){ image(dur); fini(); if(o.suit) (function s(){ if(ctl.arrete||!cv.parentNode) return; image(dur); requestAnimationFrame(s); })(); return; } var t0=performance.now()-av; (function f(){ if(ctl.arrete) return; var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else { fini(); if(o.suit) (function s(){ if(ctl.arrete||!cv.parentNode) return; image(dur); requestAnimationFrame(s); })(); } })(); }
+    function go(){ if(reduit){ image(dur); fini(); if(o.suit) (function s(){ if(ctl.arrete||!cv.parentNode) return; image(dur); requestAnimationFrame(s); })(); return; } var t0=performance.now()-av; (function f(){ if(ctl.arrete) return; window.__animT=performance.now(); var t=performance.now()-t0; image(t); if(t<dur) requestAnimationFrame(f); else { fini(); if(o.suit) (function s(){ if(ctl.arrete||!cv.parentNode) return; image(dur); requestAnimationFrame(s); })(); } })(); }
     image(av); if(o.attend){ ctl.lance=go; return ctl; }
     requestAnimationFrame(function(){ go(); }); return ctl; };
 })();
@@ -40853,10 +40878,11 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   window._apresMouvement=function(fn){
     /* ⚠ v144 : ne PAS retarder ici au nom de `_evol()` (essayé) — le moteur protège déjà l'arrivée (900 ms), et Ramage passe par cette porte : la
        retarder changeait ce qu'il rend (banc de rendu, 14 images) */
-    if(!window._tenirAnime) return f(fn);
+    var trace=function(){ try{ return !!(window._animEnCours && window._animEnCours()); }catch(_){ return false; } };   /* ⚑ v201a (C-273) : un tracé en cours retient aussi le travail */
+    if(!window._tenirAnime && !trace()) return f(fn);
     if(retenues.indexOf(fn)<0) retenues.push(fn);
     if(veille) return; veille=true; var t0=performance.now();
-    (function att(){ if(window._tenirAnime && performance.now()-t0<3500){ setTimeout(att, 120); return; }
+    (function att(){ if((window._tenirAnime || trace()) && performance.now()-t0<3500){ setTimeout(att, 120); return; }
       veille=false; var L=retenues.map(function(g){ return function(){ f(g); }; }); retenues=[];
       setTimeout(function(){ (window._enFond||function(a){ a.forEach(function(h){ h(); }); })(L); }, 260); })(); };
 })();
@@ -42603,6 +42629,7 @@ window._noms=(function(){
   function glisse(){ var dp=$('detailPoster'), el=dp && (dp.querySelector('#cm5Liste .cm5-un[data-neuf]') || dp.querySelector('#cm5Liste .cm5-un')); if(!dp || !el) return;   /* v188 (C-257 suite) : en commençant par le premier nouveau */
     var k=(window._echDp?window._echDp(dp):1)||1, R0=dp.getBoundingClientRect(), r=el.getBoundingClientRect();
     var cible=Math.max(0, Math.min(dp.scrollHeight-dp.clientHeight, dp.scrollTop + (r.top-R0.top)/k - 128)), depart=dp.scrollTop;
+    if(window._ficheSure) cible=window._ficheSure(cible);   /* ⚑ v201a (C-267) : jamais au repos la vague à demi sous la bande */
     window._cm5Glisse={cible:cible, depart:depart, t0:performance.now(), natif:true};
     if(Math.abs(cible-depart)<0.5) return;
     /* le défilement doux NATIF (Safari, WebKit) : animé par le compositeur, comme un défilement au doigt — une boucle d'images qui écrit `scrollTop` coûtait
@@ -42715,6 +42742,7 @@ window._noms=(function(){
         if(bu>bas-8){ sc=bu-(bas-8); if(!HOTE) sc=Math.min(sc, Math.max(0, lt-120)); }
         else if(hu<120) sc=hu-120;
         sc=Math.max(-dp.scrollTop, Math.min(sc, dp.scrollHeight-dp.clientHeight-dp.scrollTop));
+        if(window._ficheSure) sc=window._ficheSure(dp.scrollTop+sc)-dp.scrollTop;   /* ⚑ v201a (C-267) : jamais au repos la vague à demi sous la bande */
         if(Math.abs(sc)>0.5) dp.scrollTo({top:dp.scrollTop+sc, behavior:'smooth'}); }catch(_){ }
       window._cm5Vol={t0:vol.t0, de:[xa,ya], a:[x1,y1], defile:sc};
     },0); }); }
@@ -44333,7 +44361,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(reduit() || Math.abs(a-de)<0.5){ HZ.anim=null; HZ.v=null; INV.desc=0; repeint(); if(fin) fin(); return; }
     var A={t0:performance.now()-17, de:de, a:a, n:0, acc:17, tp:performance.now()}; HZ.anim=A; HZ.v=de; INV.desc=performance.now()+HZ_DUREE; note(enHaut?'horizon-bas':'horizon-haut');   /* l'horloge part une image avant l'appel : l'image qui suit la frappe a déjà bougé */
     function doux(u){ return u<.5 ? 2*u*u : 1-Math.pow(-2*u+2,2)/2; }
-    (function f(){ if(HZ.anim!==A || j!==INV.finA) return; var tn=performance.now(); A.acc+=Math.min(34, tn-A.tp); A.tp=tn; var u=Math.min(1, A.acc/HZ_DUREE);   /* v180b (C-234) : une image longue (la saisie qui se compose, une machine chargée) n'avance le mouvement que de 34 ms : il ne saute jamais */
+    (function f(){ if(HZ.anim!==A || j!==INV.finA) return; var tn=performance.now(); window.__animT=performance.now(); A.acc+=Math.min(34, tn-A.tp); A.tp=tn; var u=Math.min(1, A.acc/HZ_DUREE);   /* v180b (C-234) : une image longue (la saisie qui se compose, une machine chargée) n'avance le mouvement que de 34 ms : il ne saute jamais */
       if(enHaut) A.a=hzCible(window._ppEcran());   /* la cible suit la page (une ligne de plus ou de moins) */
       HZ.v=A.de+(A.a-A.de)*doux(u); A.n++; repeint(); window._ppHzEtat={q:u, v:HZ.v, images:A.n};
       if(u<1) requestAnimationFrame(f); else { HZ.anim=null; HZ.v=null; INV.desc=0; repeint(); if(fin) fin(); } })(); }
@@ -44443,7 +44471,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     C.tA=performance.now(); MV.cours=C;
     try{ pose(0); }catch(er){ window._ppMvtErr=String(er&&er.stack||er).slice(0,300); finMv(); return; }   /* une erreur ne laisse jamais la page figée sur la saisie */
     note('mvt');
-    requestAnimationFrame(function f(now){ if(C.arrete) return; if(!C.t0){ C.t0=now; C.tp=now; C.acc=0; } C.acc+=Math.min(34, now-C.tp); C.tp=now; var u=Math.min(1, C.acc/MVDUR);   /* v180b (C-234) : l'avancée bornée à 34 ms par image */
+    requestAnimationFrame(function f(now){ if(C.arrete) return; window.__animT=performance.now(); if(!C.t0){ C.t0=now; C.tp=now; C.acc=0; } C.acc+=Math.min(34, now-C.tp); C.tp=now; var u=Math.min(1, C.acc/MVDUR);   /* v180b (C-234) : l'avancée bornée à 34 ms par image */
       try{ pose(doux(u)); }catch(er){ window._ppMvtErr=String(er&&er.stack||er).slice(0,300); finMv(); return; } if(u<1) requestAnimationFrame(f); else finMv(); }); };
   (function(){ var f=window._ppMvtPose; window._ppMvtPose=function(){ try{ f(); }catch(er){ window._ppMvtErr=String(er&&er.stack||er).slice(0,300); MV.att=null;
     if(MV.cours) finMv(); else { var c=cs(); if(c) [].forEach.call(c.querySelectorAll('#ppMvt,#ppMvtDeja'), function(n){ n.remove(); }); } } }; })();
@@ -44982,7 +45010,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var t=document.getElementById('dpTrameCv');
     if(S.parentNode!==d){ if(t && t.parentNode===d) d.insertBefore(S, t.nextSibling); else d.insertBefore(S, d.firstChild); }
     if(W.parentNode!==d || W.previousSibling!==S) d.insertBefore(W, S.nextSibling); }
-  function cache(d){ if(montre){ montre=false; [S,W].forEach(function(e){ if(e) e.style.setProperty('display','none','important'); }); } geste(d, false); vu=''; HW=0; CP=''; }
+  function cache(d){ eteint(false); if(montre){ montre=false; [S,W].forEach(function(e){ if(e) e.style.setProperty('display','none','important'); }); } geste(d, false); vu=''; HW=0; CP=''; }
   /* la jonction suit la visibilité du canevas de la fiche (un Peaufiner qui efface la fiche l'efface aussi) */
   function visible(c){ if(!c) return false; var cs=getComputedStyle(c); return cs.display!=='none' && cs.visibility!=='hidden' && +cs.opacity>0.01; }
   /* la forme de l'onde déclarée (`data-trait` : base, amp, couleur) */
@@ -45029,11 +45057,23 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
         if(bas===null && bord!==null) bas=bord;   /* le bord d'un point (aucun pixel plein) : sous son dernier pixel peint */
         if(bas===null){ var q=Math.min(n-1, Math.max(0, (xp-XO)/2)), q0=Math.floor(q), q1=Math.min(n-1, q0+1); bas=F.P[q0]+(F.P[q1]-F.P[q0])*(q-q0)+F.lw/2; }   /* entre deux points : aucun pixel de la vague ni du trait plat (mêmes abscisses, v196) — fermé jusqu'au bas du trait */
         L.push(bas); }
+      var r0=-1, r1=-1; for(var rr=0; rr<h && r0<0; rr++){ for(var xx=0; xx<w; xx+=2){ if(a[(rr*w+xx)*4+3]>8){ r0=rr; break; } } }
+      for(var rb=h-1; rb>=0 && r1<0; rb--){ for(var xb=0; xb<w; xb+=2){ if(a[(rb*w+xb)*4+3]>8){ r1=rb; break; } } }
+      F.haut=r0>=0 ? F.Ytop+r0/E : null; F.basV=r1>=0 ? F.Ytop+(r1+1)/E : null;   /* ⚑ v201a (C-267) : le plus haut et le plus bas pixel peints de la vague au repos */
+      /* ⚑ v201a (C-267, « la branche basse de la pointe paraît double ») — LA DÉCOUPE À LA RÉSOLUTION DU CHAMP (⅓ pt), PLUS PAR POINT : une colonne d'un point mêlait le bas du
+         ruban (307,7) et le bout du bras bas du chevron (317,7) ; le plus haut des deux découvrait le trait plat sous le bras encore visible (deux bras). Chaque colonne de pixels a
+         maintenant son propre bas (le même critère : le plus bas pixel plein, sinon le bord, sinon le bas du trait) : jamais deux parties de la vague mêlées, jamais de trou. */
+      var LF=[]; for(var x3=0; x3<w; x3++){ var b3=null, d3=null; for(var r3=h-1;r3>=0;r3--){ var a3=a[(r3*w+x3)*4+3]; if(a3>250){ b3=F.Ytop+r3/E; break; } if(a3>8 && d3===null) d3=F.Ytop+r3/E; }
+        if(b3===null && d3!==null) b3=d3; if(b3===null) b3=L[Math.min(L.length-1, Math.max(0, Math.round(x3/E)))]; LF.push(b3); }
+      F.ligF=LF;
       F.lig=L; F.ligE=E; return L; }catch(_){ return null; } }
   function fenetre(d){ var smax=Math.max(0, d.scrollHeight-d.clientHeight), bas=(J-CH)+HW;
     if(HW && bas > d.scrollHeight-40){ W.style.setProperty('height', HP+'px', 'important'); smax=Math.max(0, d.scrollHeight-d.clientHeight); HW=0; }   /* la fenêtre ne porte jamais le défilement : mesuré sans elle */
     var h=Math.ceil(smax+HP+8); if(Math.abs(h-HW)>1){ HW=h; W.style.setProperty('height', HW+'px', 'important'); W.style.setProperty('margin-bottom', (-(J-CH+HW))+'px', 'important'); } }
-  function decoupe(E){ var L=ligne(E); if(!L) return; var o=J-CH, p=[]; for(var i=0;i<L.length;i++) p.push(i+'px '+(Math.round((L[i]-o)*100)/100)+'px'); p.push((390+2*XO)+'px '+(L[L.length-1]-o)+'px', (390+2*XO)+'px 100%', '0px 100%');
+  function decoupe(E){ var L=ligne(E); if(!L) return; var o=J-CH, p=[], LF=F.ligF;
+    if(LF && LF.length){ var yp=null; for(var i=0;i<LF.length;i++){ var y=Math.round((LF[i]-o)*100)/100; if(y!==yp){ var xg=Math.round(i/E*1000)/1000; if(yp!==null) p.push(xg+'px '+yp+'px'); p.push(xg+'px '+y+'px'); yp=y; } }
+      p.push((390+2*XO)+'px '+yp+'px', (390+2*XO)+'px 100%', '0px 100%'); }   /* des marches à chaque colonne de pixels (seulement là où le bas change) */
+    else { for(var i2=0;i2<L.length;i2++) p.push(i2+'px '+(Math.round((L[i2]-o)*100)/100)+'px'); p.push((390+2*XO)+'px '+(L[L.length-1]-o)+'px', (390+2*XO)+'px 100%', '0px 100%'); }
     var v='polygon('+p.join(',')+')'; if(v!==CP){ CP=v; W.style.setProperty('clip-path', v, 'important'); W.style.setProperty('-webkit-clip-path', v, 'important'); } }
   function peint(){ var d=D(); if(!d) return; var on=actif(d);
     if(on && (!F || F.cle!==cle())){ F=forme(d); if(F) F.cle=cle(); vu=''; }
@@ -45064,7 +45104,29 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   window._jonctionRedessine=vite;   /* le geste de la fiche (le plein qui suit le doigt, son retour, C-264) */
   function crochet(){ var c=document.getElementById('dpTrameCv'); if(!c || c.__v192g) return; var gc=c.getContext; c.getContext=function(){ vite(); return gc.apply(this, arguments); }; c.__v192g=1; }
   window._v189Jonction=function(){ return {montre:montre, coupe:coupe, XO:XO, J:J, HW:HW, ligne:F&&F.lig?F.lig.slice():null, F:F?{Ytop:F.Ytop, H:F.H, s0:F.s0, min:F.min, max:F.max, lw:F.lw, cercle:F.cercle, base:F.base, amp:F.amp, P:F.P?F.P.slice():null}:null}; };   /* un pointeur pour les juges */
+  /* ⚑ v201a (Tom, C-267, capture du 13 nov. : « quand je descends puis remonte, ça redescend un peu et le trait est entier ») — LA FICHE NE RESTE JAMAIS AU REPOS LA VAGUE À DEMI
+     SOUS LA BANDE. La cause de la capture : après l'envoi d'un mot, la fiche glissait (C-260) jusqu'à 125 pt — la crête de la vague (son haut peint à 230 pt) passait sous la bande
+     (112) sans que la vague ait encore rejoint le trait plat (135) : les points du haut, coupés. Entre `a` (le dernier défilement où la vague est entière sous 112) et `z` (le
+     premier où elle est entière sous la bande, seul le trait plat paraît), aucune position de repos : la fiche glisse (le défilement doux natif) vers la plus proche des deux
+     (vers `a` si `z` n'est pas atteignable). Les glissements de l'app (C-260, le nombre de mots) visent directement une position sûre (`window._ficheSure`).
+     Au repos en haut (s ≤ a), la jonction se coupe : la fenêtre du trait plat s'efface (150 ms, rien de visible : le trait plat y est entièrement découpé), la vague est redessinée
+     par le code de l'ouverture ; elle se rallume au premier défilement. */
+  function bornes(d){ if(!F || F.haut==null || F.basV==null) return null; var m=Math.max(0, d.scrollHeight-d.clientHeight); return {a:Math.max(0, Math.floor(F.haut-J-1)), z:Math.ceil(F.basV-J+1), m:m}; }   /* des défilements ENTIERS : un défilement se pose au pixel près */
+  function sure(t, d){ var b=bornes(d); if(!b) return t; if(t<=b.a+0.5 || t>=b.z-0.5) return t; return (b.z<=b.m && (b.z-t)<(t-b.a)) ? b.z : b.a; }
+  window._ficheSure=function(t){ var d=D(); return (d && actif(d)) ? sure(t, d) : t; };
+  var tRepos=null, eteinte=false, tRoue=0, gesteDefile=false;
+  function eteint(on){ if(!W || on===eteinte) return; eteinte=on; if(on){ W.style.setProperty('transition','opacity .15s linear','important'); W.style.setProperty('opacity','0','important'); vu=''; vite(true); }
+    else { W.style.setProperty('transition','none','important'); W.style.setProperty('opacity','1','important'); } }
+  function repos(){ tRepos=null; var d=D(); if(!d || !actif(d) || !montre || !F) return; var Dg=window.__doigts; if(Dg && Dg.n>0){ tRepos=setTimeout(repos, 120); return; }
+    if(d.classList.contains('tracant')) return; if(!gesteDefile) return; gesteDefile=false;   /* seulement un défilement fait au doigt (posé, ou l'élan qui suit son lever) ou à la molette : un défilement posé par un script garde sa place */
+    var s=d.scrollTop, t=sure(s, d), b=bornes(d);
+    if(Math.abs(t-s)>0.5){ try{ d.scrollTo({top:t, behavior:'smooth'}); }catch(_){ d.scrollTop=t; } return; }
+    if(b && s<=b.a+0.5) eteint(true); }
+  window._ficheRepos=function(){ var d=D(), b=d&&bornes(d); return {eteinte:eteinte, s:d?d.scrollTop:null, bornes:b}; };   /* un pointeur pour les juges */
   function arme(){ var d=D(); if(!d){ setTimeout(arme,300); return; } crochet();
+    d.addEventListener('scroll', function(){ var Dg=window.__doigts; if((Dg && (Dg.n>0 || performance.now()-Dg.t<150)) || performance.now()-tRoue<150) gesteDefile=true; var b=bornes(d); if(eteinte && (!b || d.scrollTop>b.a+0.5)) eteint(false); if(tRepos) clearTimeout(tRepos); tRepos=setTimeout(repos, 120); }, {passive:true});
+    d.addEventListener('scrollend', function(){ if(tRepos) clearTimeout(tRepos); tRepos=setTimeout(repos, 0); }, {passive:true});
+    d.addEventListener('wheel', function(){ tRoue=performance.now(); gesteDefile=true; }, {passive:true});
     d.addEventListener('scroll', relit, {passive:true});
     d.addEventListener('scrollend', relit, {passive:true});
     d.addEventListener('scroll', function(){ var s=d.scrollTop; if(s>(window._v192Defile||0)) window._v192Defile=Math.round(s); }, {passive:true});   /* ⚑ v192 (C-263) : le plus grand défilement de la fiche ouverte (une mesure) */
@@ -45268,7 +45330,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var html0=contenu(el), cls0=el.className;
     if(texte(html0)===texte(cible.html) && net(cls0)===net(cible.cls)){ if(cible.html!==html0) pose(el, cible); return; }
     if(reduit() || !TL() || !visible(el)){ pose(el, cible); note({mot:texte(cible.html), sec:'reduit'}); return; }
-    st=el.__v200={cible:cible, fini:false, phase:'detrace'}; note({de:texte(html0), vers:texte(cible.html), phase:'detrace'});
+    st=el.__v200={cible:cible, fini:false, phase:'detrace'}; (window.__dcA=window.__dcA||new Set()).add(el);   /* ⚑ v201a (C-273) : une transition en cours se déclare (`_animEnCours`) */ note({de:texte(html0), vers:texte(cible.html), phase:'detrace'});
     var w0=(w0d>0 ? w0d : el.offsetWidth), m=mesure(el, cible.html, cible.cls), D=dureeMot(texte(html0));   /* la largeur de départ : celle de l'encart qui était à l'écran (une phrase reconstruite le rebâtit) */
     el.style.setProperty('box-sizing','border-box','important'); el.style.setProperty('width', w0+'px','important'); el.style.setProperty('justify-content','flex-start','important');
     void el.offsetWidth; el.style.setProperty('transition','width '+D+'ms '+COURBE+', border-width '+D_FL+'ms '+COURBE,'important'); el.style.setProperty('width', m.w+'px','important');
@@ -45281,7 +45343,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       var cv=el.querySelector(':scope > canvas.v200-fl'); if(cv) cv.remove();
       note({mot:texte(c.html), phase:'trace'});
       TL().trace(inn2, null, {surFin:function(){ fin(); }}); }
-    function fin(){ var c=st.cible; st.fini=true; el.__v200=null;
+    function fin(){ var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA && window.__dcA.delete(el); }catch(_){ }
       if(texte(c.html)!==texte(st.trace.html) || net(c.cls)!==net(st.trace.cls)){ mot(el, c); return; }   /* la cible a changé pendant le tracé : on repart d'ici, sans saut */
       var wc=el.offsetWidth; el.style.removeProperty('transition'); el.style.removeProperty('width'); var wn=el.offsetWidth;
       if(Math.abs(wn-wc)>0.5){ el.style.setProperty('width', wc+'px','important'); void el.offsetWidth; el.style.setProperty('transition','width 200ms '+COURBE,'important'); el.style.setProperty('width', wn+'px','important'); setTimeout(function(){ if(!el.__v200) nettoie(el); }, 240); }

@@ -544,6 +544,9 @@
     cible.style.removeProperty('-webkit-clip-path'); cible.style.removeProperty('clip-path'); if (a[0]) cible.style.setProperty('clip-path', a[0], a[1]); if (a[2]) cible.style.setProperty('-webkit-clip-path', a[2], a[3]); };
 
   var VIDE = 'polygon(0px 0px,0px 0px,0px 0px)';
+  /* ⚑ v201a (Tom, C-273 : « les tracés saccadent sur l'iPhone ») — UN TRACÉ EN COURS SE DÉCLARE : `TL.actif()` est vrai du départ de la plume à sa fin (un tracé armé qui
+     attend son toucher, une préparation : non). Pendant ce temps l'app ne fait aucune passe de tout le document ni aucun travail retenu (`_apresMouvement`). */
+  TL.actif = function () { return (TL._en || 0) > 0; };
   TL.trace = function (cible, contenu, options) {
     var o = options || {}, cps = (o.cps || TL.defauts.cps), vit = (o.vitesse || TL.defauts.vitesse),   /* v153 : l'app ne passe plus `cps` — la vitesse décidée vit ici (40, ou `?cps=`) ; v154 : `vit` ralentit tout le temps (débit ET durée) */ esp = o.espace == null ? TL.defauts.espace : o.espace;
     /* ⚑ v170d — `preparer` : la même mesure et les mêmes calculs qu'un tracé, sans RIEN montrer ni toucher à l'élément (ni découpe, ni canevas laissé) :
@@ -579,6 +582,7 @@
     function texteDe() { return String(cible.textContent || '').replace(/\s+/g, ' ').slice(0, 40); }
     function termine(interrompu) {
       if (ctl.fini) return; ctl.fini = true; mort = true; resPart(ctl); if (raf) racine.cancelAnimationFrame(raf);
+      if (ctl.__compte) { ctl.__compte = false; TL._en = Math.max(0, (TL._en || 0) - 1); TL._finT = racine.performance.now(); }
       /* v170c : chaque fin est notée — un tracé fini bien avant sa durée prévue est une APPARITION D'UN COUP, la régression de v170b */
       if (prep) { signale('prepare', { texte: texteDe(), lettres: G.length, ms: Math.round(racine.performance.now() - tDepart) }); range(); resPret(ctl); resFin({ interrompu: !!interrompu }); return; }
       var tF = racine.performance.now(); ctl.mesure = { attente: tDebut ? Math.round(tDebut - tDepart) : null, reel: tDebut ? Math.round(tF - tDebut) : null, prevu: Math.round(total) };
@@ -621,7 +625,7 @@
     }
     /* ⚑ v175 (Tom, C-219) — UN TRACÉ ARMÉ (`arme:true`) : tout est fait d'avance (la mesure, les lettres, la découpe), la plume attend `ctl.lance()` et part à l'image suivante, une image de plume déjà faite : de l'encre dès cette image-là */
     var arme = false, lancer = false;
-    function part() { if (mort) return; resPart(ctl); tDebut = racine.performance.now(); t0 = tDebut; tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); }
+    function part() { if (mort) return; resPart(ctl); if (!prep && !ctl.__compte) { ctl.__compte = true; TL._en = (TL._en || 0) + 1; } tDebut = racine.performance.now(); t0 = tDebut; tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); }
     ctl.lance = function () { lancer = true; if (o.arme) tDepart = racine.performance.now(); if (arme) { arme = false; part(); } };
     if (prep && o.immediat) { apresPolices(); return ctl; }   /* l'appelant a déjà ses polices : la mesure se fait tout de suite (l'élément peut être retiré aussitôt) */
     try { if (doc.fonts && doc.fonts.load) Object.keys(polices).forEach(function (f) { attente.push(doc.fonts.load(f).catch(function () { })); }); } catch (e) { }
