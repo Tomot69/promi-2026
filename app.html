@@ -5939,9 +5939,20 @@ window._phraseChoix = function(cle, el){ try{
         var m = document.querySelector('#csPhrase [data-ph=titre]');
         if(m){
           var v = (inp.value||'').trim();
+          /* ⚑ v202a (Tom, C-274, C-271) — LE TITRE QU'ON EFFACE ET LA PREMIÈRE LETTRE : l'exemple ne revient plus d'un coup dans l'encart en pointillés.
+             Le titre vidé : ce qu'on avait tapé se détrace, l'encart reprend ses pointillés en flaques et sa largeur en douceur, puis l'exemple SE TRACE
+             (`_douceur.mot`, le code de « moi », C-247). La première lettre : l'exemple se détrace, la pastille se remplit en flaques, puis ce qu'on a tapé
+             paraît tel quel (`brut` : la frappe ne se trace pas). Pendant la transition, chaque lettre tapée devient sa cible (rien n'est perdu). */
+          var D2 = window._douceur, st2 = m.__v200, cours = !!(st2 && !st2.fini), etaitVide = cours ? /(^|\s)ph-vide(\s|$)/.test(st2.cible.cls) : m.classList.contains('ph-vide');
+          if(D2 && D2.mot && (cours || (!v) !== etaitVide)){
+            var ex = inp.getAttribute('placeholder')||'', h = (v || ex).replace(/&/g,'&amp;').replace(/</g,'&lt;');
+            var cl = m.className.split(/\s+/).filter(function(c){ return c && c!=='ph-vide' && c.indexOf('v200')!==0; }); if(!v) cl.push('ph-vide');
+            D2.mot(m, {html:(v ? h+'<i class="ph-caret"></i>' : h), cls:cl.join(' '), brut:!!v});
+          } else {
           m.classList.toggle('ph-vide', !v);
           var cible = m.querySelector('.ph-mot') || m;
           cible.textContent = v || (inp.getAttribute('placeholder')||'');
+          }
           /* ⚑ v46 (Tom) — L'ÉLISION SUIT LA FRAPPE, à chaque caractère : « de » / « d’ » est l'élément qui précède la
              pastille (.ph-li) ; il n'était recalculé qu'au rendu complet (à la sortie du champ) — on lisait « de aller ».
              Même règle, même propriétaire que le rendu : window._promiElide (pastille vide → « de »). */
@@ -18347,7 +18358,12 @@ var CREMEETAT='#F7F0DE';
     });
   }
 
-  function cotes(){
+  /* ⚑ v202a (C-271) : pendant que la taille de la phrase va en douceur à sa valeur (`lot-V202A-TAILLE`), la composition se fait sur la taille FINALE (la mise en
+     page du moment ne lui dit rien) ; la taille du moment est rendue à la fin de la passe — aucune image ne voit la finale. */
+  var _cotesN = 0;
+  function cotes(){ var D = (_cotesN++ === 0 && window._phDouceAvant) ? window._phDouceAvant() : null;
+    try{ return cotes0.apply(this, arguments); } finally { if(--_cotesN === 0 && window._phDouceApres) window._phDouceApres(); } }
+  function cotes0(){
     try{
       var e = ecran(), cs = e.cs;
       if(!cs || !cs.classList.contains('pp')) return;
@@ -18424,9 +18440,11 @@ var CREMEETAT='#F7F0DE';
            et l'on recompose (le plafond `_ppPhCap` vaut pour CETTE phrase seulement) ; une phrase qui tient ne change pas. */
         var _capK = (function(){ var P = window._phrase || {}, n = document.getElementById('nName'); return [e.nat, P.titre||'', P.qui||'', P.avec||'', P.sens||'', P.quand||'', P.due||'', n ? n.value : ''].join('|'); })();
         var _cap = (!e.ouvert && window._ppPhCap && window._ppPhCap.k === _capK) ? window._ppPhCap.t : 0;
-        var _cleP = [e.nat, e.ouvert?1:0, cs.classList.contains('pp-ouvert')?1:0, document.getElementById('ppMvt')?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', txt.style.cssText, txt.innerHTML, _cap].join('§');
+        var _cleP = [e.nat, e.ouvert?1:0, cs.classList.contains('pp-ouvert')?1:0, document.getElementById('ppMvt')?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', (txt.__phDouce ? txt.__phDouce.css : txt.style.cssText), txt.innerHTML, _cap].join('§');
+        var _phT0 = txt.__phDouce ? txt.__phDouce.cur : (parseFloat(txt.style.fontSize)||(ph.__phTaille||0));   /* une phrase rebâtie (la sortie du champ) : la taille de la précédente */
+        var _ttr = txt.querySelector('[data-ph="titre"],[data-np="nom"]'); _ttr = !!(_ttr && _ttr.__v200 && !_ttr.__v200.fini);   /* ⚑ v202a (C-274) : pendant qu'un titre se trace ou se détrace, la taille ne se recalcule pas (l'encart qui s'adapte la faisait tomber à 16) */   /* ⚑ v202a (C-271, audit 2) : la taille affichée avant cette passe */
         if(cotes.__fige) txt.__phCle = _cleP;   /* v150 : la bascule est figée — on garde la taille de la passe précédente, on ne fait que reposer */
-        if(txt.__phCle !== _cleP){
+        if(txt.__phCle !== _cleP && !_ttr){
         /* §2.8 — `taille = min(estimation, mesure)`. (Décision Tom, 18 août 2026 ;
            la « correction du §2.8 » qui remplaçait l'estimation par la mesure est ANNULÉE
            pour de bon.)
@@ -18499,12 +18517,17 @@ var CREMEETAT='#F7F0DE';
            de Nuée) passe à la ligne, son contour recopié sur chaque morceau. */
         var PLANCHER_PH = 28, tailleDepart = taille;
         var pmC = txt.querySelector('.ph-m.ph-vide[data-ph="titre"],.ph-m.ph-vide[data-np="nom"]');
+        /* ⚑ v202a (C-274) : un titre en transition (l'exemple qui se trace ou se détrace, `_douceur.mot`) a UN propriétaire, la transition — la composition ne
+           réécrit pas son texte (elle détruisait l'enveloppe du tracé : l'exemple paraissait d'un coup, ou « … »). */
+        var _enTr = function(x){ return !!(x && x.__v200 && !x.__v200.fini); };
+        if(_enTr(pmC)) pmC = null;
         try{ txt.classList.remove('ph-coupe'); if(pmC && pmC.getAttribute('data-plein')) pmC.textContent = pmC.getAttribute('data-plein'); }catch(_){}
         /* ⚑ v46 (Tom) — « LE RESTE RESTE INDEMNE : seule la partie à partir du de / d’ — le mot et la pastille noire —
            rapetisse et s'étale sur deux lignes, trois au plus, puis points de suite ; jamais hors de l'écran, même marge que
            le reste. » La taille de la phrase se calcule donc comme si la parole tapée était courte (son premier mot) : une
            parole longue la faisait tomber au plancher de 16 px, TOUT le reste avec. La pastille est traitée après, seule. */
         var ptL = txt.querySelector('.ph-m[data-ph="titre"]:not(.ph-vide), .ph-m[data-np="nom"]:not(.ph-vide)'), ptOrig = null;
+        if(ptL && _enTr(ptL)) ptL = null;
         if(ptL && !ptL.querySelector('*')){
           ptOrig = (ptL.getAttribute('data-ph') === 'titre' && window._phrase && window._phrase.titre) ? String(window._phrase.titre) : ptL.textContent.replace(/\u2026$/, '');
           ptL.style.removeProperty('font-size'); ptL.style.removeProperty('line-height');
@@ -18610,7 +18633,8 @@ var CREMEETAT='#F7F0DE';
             }
           }
         }
-        try{ txt.__phCle = [e.nat, e.ouvert?1:0, cs.classList.contains('pp-ouvert')?1:0, document.getElementById('ppMvt')?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', txt.style.cssText, txt.innerHTML, _cap].join('§'); }catch(_){}
+        try{ if(window._phTailleDouce) window._phTailleDouce(txt, _phT0, cs); ph.__phTaille = parseFloat(txt.style.fontSize)||ph.__phTaille; }catch(_){}
+        try{ txt.__phCle = [e.nat, e.ouvert?1:0, cs.classList.contains('pp-ouvert')?1:0, document.getElementById('ppMvt')?1:0, e.nl, e.etat==='plate'?1:0, cs.clientWidth, (document.fonts&&document.fonts.status)||'', (txt.__phDouce ? txt.__phDouce.css : txt.style.cssText), txt.innerHTML, _cap].join('§'); }catch(_){}
         /* ⚑ v181b (C-244 §5.1) — UNE COUPE NE SE GARDE PAS. La hauteur libre se lit sur la page (« garder de côté », la barre) : mesurée pendant que la page
            se pose (son glissement, le clavier qui descend), elle peut manquer, et la coupe restait (la clé ne dit rien de la géométrie) — vu une fois sur
            trois au banc. Une phrase coupée se recompose donc 700 ms plus tard, quatre fois au plus pour la même parole. */
@@ -27922,7 +27946,9 @@ function rampeVelours(base){
          le contour est ce qui la fait exister. On garde le glissement vers
          l'encre — c'est lui qui evite le bleu electrique — mais on s'arrete
          avant de la toucher. */
-      out.push(mix(marche(base,-0.10*u), ENCRE_F, 0.44*u*u));
+      /* ⚑ v202a (Tom, C-275 : « jamais terne ; le poil extérieur dans une couleur EXACTE de la palette ») : le côté de l'ombre ne glisse plus vers
+         l'encre ni ne s'assombrit — il EST le ton de la palette. La lumière (la moitié haute) reste : c'est elle qui fait le volume. */
+      out.push([base[0], base[1], base[2]]);
     } else {
       /* ⚑ EN HAUT, LA CHROMA MONTE PLUS QUE LA CLARTE.
          A +0,30 de clarte HSL, le violet montait vers le BLANC : le haut de la
@@ -27932,8 +27958,9 @@ function rampeVelours(base){
          donc la clarte de moitie moins, et on RESSATURE : le haut reste
          violet, il est simplement plus lumineux. */
       var v=(t-0.5)/0.5, _t=r2h(base);
-      out.push(h2r(_t[0], Math.min(0.98, _t[1]*(1+0.34*v)),
-                   Math.max(0.045, Math.min(0.965, _t[2]+0.225*v))));
+      /* ⚑ v202a (C-275) : la lumière de moitié — à +0,225 de clarté, un ton clair montait presque au blanc : délavé, terne à sa façon */
+      out.push(h2r(_t[0], Math.min(0.98, _t[1]*(1+0.17*v)),
+                   Math.max(0.045, Math.min(0.965, _t[2]+0.11*v))));
     }
   }
   return out;
@@ -30443,11 +30470,15 @@ function _glInit(W){
        poils de profil au-delà du corps est à demi transparente (un anneau pâle) : son opacité est resserrée (0,30 → 0,62) — pleine
        jusqu'aux pointes, puis les pointes ; ② ces pointes prennent la couleur de l'intérieur (poil SUR corps), pas celle du poil seul :
        sinon elles font un anneau d'une autre couleur. Rien d'autre autour. */
-    '  float al=f.a+t*(1.0-f.a); vec3 pm=f.rgb*f.a+uCorps*t*(1.0-f.a);',
+    /* ⚑ v202a (Tom, C-275 : « supprime toute superposition semi-transparente ») : DANS la boule, un pixel est poil OU corps — l'opacité du tampon
+       passe par une marche courte (0,30 → 0,62) qui ne garde qu'un pixel de lissage ; le poil n'est plus un mélange de sa couleur et de celle du
+       corps. Hors de la boule (t < 1 : les pointes, la silhouette), l'opacité est celle du tampon, comme avant : la silhouette ne bouge pas. */
+    '  float fa=mix(f.a, smoothstep(0.30,0.62,f.a), 1.0-smoothstep(uR0*0.985, uR0, r));',   /* la frange du bord (v141) garde l'opacité de ses tampons : la marche ne vaut qu'à l'intérieur */
+    '  float al=fa+t*(1.0-fa); vec3 pm=f.rgb*fa+uCorps*t*(1.0-fa);',
     '  float rb=uR1*(0.92/1.012), w=clamp((r-rb*(0.90/0.92))/(rb*(0.03/0.92)),0.0,1.0); w=w*w*(3.0-2.0*w)*uA;',
     '  if(w>0.0 && al>0.0){ vec2 d=vec2(gl_FragCoord.x-uC2, gl_FragCoord.y-(uW2-uC2)); float rr=max(2.0*rb-r, rb*0.80);',
     '    vec4 g=texelFetch(uFur, ivec2(vec2(uC2, uW2-uC2)+d*(rr/max(r,1.0))), 0);',
-    '    vec3 ci=g.rgb*g.a+uCorps*(1.0-g.a); pm=mix(pm, ci*al, w); }',
+    '    float ga=smoothstep(0.30,0.62,g.a); vec3 ci=g.rgb*ga+uCorps*(1.0-ga); pm=mix(pm, ci*al, w); }',
     '  o=vec4(pm, al); }'].join('\n');
   var G={cv:cv, gl:gl, W:W, pts:PTS}, DIV=PTS?0:1;
   G.p1=_glProg(gl,VS,FS); G.p2=_glProg(gl,VS2,FS2);
@@ -31086,10 +31117,18 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
      (#1B436F) là où la nature est #82AEF8. Sous Ingénu : les poils et le corps sont tirés parmi les TROIS NATURES ; en clair le poil garde
      la teinte de sa nature, plus dense qu'elle (clarté OKLCH ≤ 0,60, chroma × 1,5 — une « teinte voisine »), puis le garde-fou de la page. */
   function ingenu(){ try{ return window.Toile.mondeCourant().p==='signal'; }catch(_){ return false; } }
+  /* ⚑ v202a (Tom, C-275, C-204) — LE POIL EST UN TON EXACT DE LA PALETTE. Plus de couleur dérivée : ni l'assombrissement du clair (× 0,38 puis
+     ressaturé, Q210), ni la teinte « plus dense » d'Ingénu en clair (v142), ni le décalage vers le blanc ou le noir qui l'écartait de la page. Le ton
+     tiré à l'ouverture (`SOL_IDX`) ; s'il ne se détache pas de la page (écart de luminosité < 42, §3), le ton suivant de la palette qui s'en détache ;
+     à défaut, celui qui s'en détache le plus. Sous Ingénu, jamais le crème (le quatrième ton, v142). */
+  function solIdxEff(){
+    try{ var c=window.Toile.cols(); if(!c || !c.length) return -1; var ing=ingenu(), n=c.length, b=Math.max(0, Math.min((ing&&SOL_IDX>2)?(SOL_IDX%3):SOL_IDX, n-1));
+      var pl=_lum(pageCouleur()), best=-1, bd=-1;
+      for(var k=0;k<n;k++){ var i=(b+k)%n; if(ing && i>2) continue; var d=Math.abs(_lum(c[i])-pl); if(d>=42) return i; if(d>bd){ bd=d; best=i; } }
+      return best; }catch(e){ return -1; } }
   function solPalette(){
-    try{ var c=window.Toile.cols();
-      if(c && c.length){ var t=c[Math.max(0,Math.min((ingenu()&&SOL_IDX>2)?(SOL_IDX%3):SOL_IDX, c.length-1))] || c[0];
-        if(t) return [t[0]|0, t[1]|0, t[2]|0]; } }catch(e){}
+    try{ var c=window.Toile.cols(), i=solIdxEff();
+      if(c && c.length && i>=0){ var t=c[i] || c[0]; if(t) return [t[0]|0, t[1]|0, t[2]|0]; } }catch(e){}
     return NAT.promi;   /* avant que le moteur soit là */
   }
   /* ⚠ UN TIRAGE INVALIDE LES DEUX CACHES : le semis (le poil porte la couleur du sol) et les
@@ -31129,18 +31168,24 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     return true; }
   function nouveauCorps(){
     var n=4; try{ var c=window.Toile.cols(); if(c&&c.length) n=c.length; }catch(_){}
-    var L=[], i, j, t, ing=ingenu(), sI=(ing&&SOL_IDX>2)?(SOL_IDX%3):SOL_IDX; for(i=0;i<n;i++) if(i!==sI && !(ing && i>2)) L.push(i);   /* v142 : sous Ingénu, jamais le crème (le quatrième ton) */
+    var L=[], i, j, t, ing=ingenu(); for(i=0;i<n;i++) if(!(ing && i>2)) L.push(i);   /* v142 : sous Ingénu, jamais le crème (le quatrième ton) ; v202a : le ton du poil est écarté au moment du choix (`corps`) */
     for(i=L.length-1;i>0;i--){ j=(Math.random()*(i+1))|0; t=L[i]; L[i]=L[j]; L[j]=t; }
     CORPS_ORDRE=L; CORPS_MEMO.cle='';
   }
   function corps(){
     var P=null; try{ P=window.Toile.cols(); }catch(_){}
     if(!P || !P.length) return null;
-    var _ing=ingenu(); if(!CORPS_ORDRE.length || CORPS_ORDRE.some(function(i){ return i>=P.length || i===SOL_IDX || (_ing && i>2); })) nouveauCorps();
-    var poil=PEL.solR||solEffectif(), cle=[poil[0]|0,poil[1]|0,poil[2]|0,SOL_IDX,_ing?1:0,CORPS_ORDRE.join('.'),P.map(function(q){ return (q[0]|0)+'.'+(q[1]|0)+'.'+(q[2]|0); }).join('_')].join(',');
+    var _ing=ingenu(); if(!CORPS_ORDRE.length || CORPS_ORDRE.some(function(i){ return i>=P.length || (_ing && i>2); })) nouveauCorps();
+    var sE=solIdxEff(), poil=PEL.solR||solEffectif(), cle=[poil[0]|0,poil[1]|0,poil[2]|0,sE,_ing?1:0,CORPS_ORDRE.join('.'),P.map(function(q){ return (q[0]|0)+'.'+(q[1]|0)+'.'+(q[2]|0); }).join('_')].join(',');
     if(CORPS_MEMO.cle===cle) return CORPS_MEMO.c;
-    var k, q, c=null, idx=-1, pas, s;
-    for(k=0;k<CORPS_ORDRE.length && !c;k++){ q=P[CORPS_ORDRE[k]]; q=[q[0]|0,q[1]|0,q[2]|0]; if(corpsTient(q, poil)){ c=q; idx=CORPS_ORDRE[k]; } }
+    var k, q, c=null, idx=-1, pas, s, ORD=CORPS_ORDRE.filter(function(i){ return i!==sE; });
+    /* ⚑ v202a (Tom, C-275, C-204) — LE CORPS EST UN AUTRE TON EXACT DE LA PALETTE. La règle de v123 tient (tiré au hasard à l'ouverture parmi les
+       autres tons, ΔE00 ≥ 15 face au poil et à sa rampe, jamais kaki) ; si aucun ton exact ne la tient, celui qui contraste le PLUS avec le poil —
+       plus aucun ton éclairci, assombri, ni la crème ou la seiche de l'app. */
+    for(k=0;k<ORD.length && !c;k++){ q=P[ORD[k]]; q=[q[0]|0,q[1]|0,q[2]|0]; if(corpsTient(q, poil)){ c=q; idx=ORD[k]; } }
+    if(!c){ var bd=-1; for(k=0;k<ORD.length;k++){ q=P[ORD[k]]; q=[q[0]|0,q[1]|0,q[2]|0]; var de=_dE00(q, poil); if(de>bd){ bd=de; c=q; idx=ORD[k]; } } }
+    if(!c){ for(k=0;k<P.length && !c;k++){ if(k!==sE && !(_ing && k>2)){ q=P[k]; c=[q[0]|0,q[1]|0,q[2]|0]; idx=k; } } }
+    if(c){ CORPS_MEMO={cle:cle, c:c, idx:idx}; return c; }
     for(k=0;k<CORPS_ORDRE.length && !c;k++){ q=P[CORPS_ORDRE[k]];
       for(pas=1;pas<=16 && !c;pas++){ s=versBlanc(q, pas*0.05); s=[Math.round(s[0]),Math.round(s[1]),Math.round(s[2])]; if(corpsTient(s, poil)){ c=s; idx=CORPS_ORDRE[k]; } }
       for(pas=1;pas<=16 && !c;pas++){ s=versNoir(q, pas*0.05); s=[Math.round(s[0]),Math.round(s[1]),Math.round(s[2])]; if(corpsTient(s, poil)){ c=s; idx=CORPS_ORDRE[k]; } } }
@@ -31208,11 +31253,12 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       SOL_IDX=(Math.random()*(ingenu()?Math.min(3,n):n))|0;   /* v142 : sous Ingénu, l'une des trois natures */
       try{ nouveauCorps(); }catch(_){}
       mx=_rendue();
-      var d=(av && av.c && mx) ? _dE00(mx, av.c) : 99, meme=!!(av && (av.s===SOL_IDX || av.k===CORPS_MEMO.idx)) && n>2;
-      if(!best || (meme?0:d)>best.d) best={d:(meme?0:d), s:SOL_IDX, o:CORPS_ORDRE.slice(), c:mx};
+      var sE=solIdxEff();   /* ⚑ v202a (C-275) : le ton qu'on VERRA (un ton tiré qui ne se détache pas de la page cède au suivant : deux tirages peuvent donner le même poil) */
+      var d=(av && av.c && mx) ? _dE00(mx, av.c) : 99, meme=!!(av && (av.s===sE || av.k===CORPS_MEMO.idx)) && n>2;
+      if(!best || (meme?0:d)>best.d) best={d:(meme?0:d), s:SOL_IDX, e:sE, o:CORPS_ORDRE.slice(), c:mx};
       if(!meme && d>=14) break;
     }
-    if(best){ SOL_IDX=best.s; CORPS_ORDRE=best.o; CORPS_MEMO.cle=''; try{ corps(); localStorage.setItem('promi_pelote_vue', JSON.stringify({s:SOL_IDX, k:CORPS_MEMO.idx, c:best.c, t:Date.now(), p:(ref?{s:ref.s, k:ref.k, c:ref.c}:null)})); }catch(_){} }
+    if(best){ SOL_IDX=best.s; CORPS_ORDRE=best.o; CORPS_MEMO.cle=''; try{ corps(); localStorage.setItem('promi_pelote_vue', JSON.stringify({s:solIdxEff(), k:CORPS_MEMO.idx, c:best.c, t:Date.now(), p:(ref?{s:ref.s, k:ref.k, c:ref.c}:null)})); }catch(_){} }
     try{ nouveauTexte(); }catch(_){}        /* v124 : et une couleur neuve pour « PARTAGER MA PELOTE » */
     try{ var S2=semis(); if(S2) S2.__stCle=null; }catch(_){}
     PEL.iles=null; PEL.cleI='';
@@ -31252,6 +31298,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     return [Math.round(r[0]),Math.round(r[1]),Math.round(r[2])];
   }
   function solEffectif(){
+    return solPalette();   /* ⚑ v202a (C-275) : le ton exact ; ce qui suit (le chemin d'avant) n'est plus suivi */
     var p=solPalette(), s=p;
     if(clair() && ingenu() && window._teinte){ var _o=window._teinte.okl(p); return ecarteDeLaPage(window._teinte.deOkl(Math.min(_o[0], ING_L), _o[1]*ING_C, _o[2])); }   /* v142 : la teinte de la nature, plus dense */
     if(clair()){
@@ -32425,7 +32472,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     /* v123 — le corps : la teinte posée sous les poils, l'indice du ton de palette dont elle vient (−1 : dernier recours), le poil d'aujourd'hui */
     /* v124 — la couleur de « PARTAGER MA PELOTE » : sa teinte, l'indice du ton de palette (−1 : l'encre du mode), le fond */
     bouton:function(){ var t=texteBouton(); return {rgb:t.rgb, idx:t.idx, ordre:TEXTE_ORDRE.slice(), fond:fondPage()}; },
-    corps:function(){ var c=corps(); return {rgb:c, idx:CORPS_MEMO.idx, ordre:CORPS_ORDRE.slice(), poil:(PEL.solR||solEffectif()), solIdx:SOL_IDX}; },
+    corps:function(){ var c=corps(); return {rgb:c, idx:CORPS_MEMO.idx, ordre:CORPS_ORDRE.slice(), poil:(PEL.solR||solEffectif()), solIdx:solIdxEff(), solTire:SOL_IDX}; },
     nouveauSol:nouveauSol,
     /* v146 (C-135) — pour le juge et pour ?mesure=1 : où en est la préparation au repos, et la dernière latence lue */
     pre:function(){ return {pret:PRE.pret, enCours:PRE.enCours, sol:PRE.sol, n:PRE.n, ms:PRE.ms, latence:PRE.latence, dansGeste:!!PRE.dansGeste, chaude:PRE.chaude, calme:calme(), chaud:chaud()}; },
@@ -34475,6 +34522,7 @@ function bati(){
   }
   function peint(inp){
     var m = pastille(inp); if(!m) return;
+    if(m.__v200 && !m.__v200.fini) return;   /* ⚑ v202a (C-274) : une pastille en transition (l'exemple qui se trace, se détrace) n'a qu'un propriétaire : la transition */
     var v = inp.value || '';
     var cible = m.querySelector('.ph-mot') || m;
     var h = v ? (esc(v) + '<i class="ph-caret"></i>') : '<i class="ph-caret"></i>\u2026';
@@ -36541,7 +36589,12 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
           if(qC && qC.nuee && window._motsNeufs('cercle:'+qC.nuee)){ var kC=qC.nuee, premC=[].filter.call(n.querySelectorAll('#feedView .s4-carte'), function(x){ var i=x.getAttribute('data-pid'); if(i==null) return (x.getAttribute('data-nk')||x.getAttribute('data-nuee'))===kC; try{ return (promises||[]).some(function(q){ return q.id===+i && q.nuee===kC; }); }catch(_){ return false; } })[0];
             if(premC===c) attend=true; } } }
       var p=c.querySelector(':scope > .s4-att');
-      if(!attend){ if(p) p.parentNode.removeChild(p); return; }
+      /* ⚑ v202a (Tom, C-271 ; AUDIT-SECS point 10) — LA PASTILLE QUI PART se referme sur son centre (le geste de son arrivée, à l'envers, 260 ms), puis s'en va.
+         Pendant ce temps elle n'est plus une pastille (`s4-att-part`) : une pastille qui revient en crée une neuve. */
+      if(!attend){ if(p){ p.className='s4-att-part'; var _rd=false; try{ _rd=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
+          if(_rd || !p.animate){ p.parentNode.removeChild(p); }
+          else { try{ var _an=p.animate([{transform:'scale(1)'},{transform:'scale(0)'}], {duration:260, easing:'cubic-bezier(.33,0,.67,1)', fill:'forwards'}); _an.onfinish=function(){ if(p.parentNode) p.parentNode.removeChild(p); }; }catch(_){ if(p.parentNode) p.parentNode.removeChild(p); } } }
+        return; }
       if(!p){ p=document.createElement('i'); p.className='s4-att'; c.appendChild(p); }
       var col='#FB4C0D';
       p.style.cssText='position:absolute;top:10px;right:10px;z-index:4;width:9px;height:9px;'
@@ -42697,11 +42750,15 @@ window._noms=(function(){
      liste) ; aujourd'hui 32 pt (le double) jusqu'au haut du titre, puis 36 pt du bas du titre au premier mot — le rapport de l'Aura (18,5 au-dessus, 21 dessous : 0,881 ; ici 0,889). */
   var TITRE={AVANT:20, SOUS:36, HAUT:32};   /* 12 (la marge de la carte) + 20 = 32 ; ⚑ v190 (Tom, C-261 suite) : sur Promi et Chiche, 32 pt sous « Un mot… », puis 36 jusqu'au premier mot — les mêmes cotes (C-247) */
   function titre(el, ml, abs){ var t=$('cm5Titre'); if(!el){ if(t) pose(t,{display:'none'}); return; }
-    if(!t){ t=document.createElement('div'); t.id='cm5Titre'; t.className='cm5 cm5-titre'; t.setAttribute('role','heading'); t.setAttribute('aria-level','2'); t.textContent='Les Mots'; }
+    var _neuf=false; if(!t){ _neuf=true; t=document.createElement('div'); t.id='cm5Titre'; t.className='cm5 cm5-titre'; t.setAttribute('role','heading'); t.setAttribute('aria-level','2'); t.textContent='Les Mots'; }
     if(t.parentNode!==el.parentNode || t.nextSibling!==el) el.parentNode.insertBefore(t, el);
     pose(t, abs!=null ? {display:'block',visibility:'visible',opacity:'1',position:'absolute',left:'24px',top:abs+'px',width:'342px','max-width':'none',margin:'0','z-index':ZL} : {display:'block',visibility:'visible',opacity:'1',position:'relative',left:'0',top:'0',width:'auto','max-width':'none',margin:TITRE.AVANT+'px '+(ml||0).toFixed(1)+'px 0 '+(ml||0).toFixed(1)+'px'});
     pose(t,{padding:'0',
-      font:'700 13px/16px Gilbert,system-ui,sans-serif','letter-spacing':'.10em','text-transform':'uppercase',color:'var(--c-beige67)','-webkit-text-fill-color':'var(--c-beige67)',background:'transparent','pointer-events':'none','white-space':'nowrap'}); }
+      font:'700 13px/16px Gilbert,system-ui,sans-serif','letter-spacing':'.10em','text-transform':'uppercase',color:'var(--c-beige67)','-webkit-text-fill-color':'var(--c-beige67)',background:'transparent','pointer-events':'none','white-space':'nowrap'});
+    /* ⚑ v202a (Tom, C-271 ; trouvé par redteam_secs2 A) : au PREMIER mot, « Les Mots » est un nœud neuf — l'observateur de v201b ne suit que le nœud qui existe déjà :
+       il paraissait d'un coup. Né à l'écran, il se trace (C-125). */
+    if(_neuf && t.isConnected && window.TraceLettres && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){ var _tA=window.__dcA=window.__dcA||new Set(); _tA.add(t); t.__v200={fini:false};
+      try{ TraceLettres.trace(t, null, {surFin:function(){ t.__v200=null; _tA.delete(t); }}); }catch(_){ t.__v200=null; _tA.delete(t); } } }
   function listeEl(dp){ var el=$('cm5Liste'); if(!el){ el=document.createElement('div'); el.id='cm5Liste'; el.className='cm5 cm5-liste'; }
     var h=HOTE ? (document.querySelector('#dpNueeFil .nf-liste')||null) : dp; if(h && el.parentNode!==h) h.appendChild(el); return h ? el : null; }
   /* le vu : les rangées passées à l'écran entre l'en-tête (112) et la barre (760) — `_cm5Montres`, lu à la fermeture (lot-V184B-MOTS) */
@@ -45360,7 +45417,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 (function(){
   function TL(){ return window.TraceLettres; }
   function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
-  function texte(h){ var d=document.createElement('div'); d.innerHTML=h||''; return (d.textContent||'').replace(/\s+/g,' ').trim(); }
+  function texte(h){ var d=document.createElement('div'); d.innerHTML=String(h||'').replace(/<br\s*\/?>/gi,' '); return (d.textContent||'').replace(/\s+/g,' ').trim(); }   /* ⚑ v202a : un retour à la ligne (`<br>` de la coupe) est un espace — sans lui, la coupe d'un exemple en deux lignes passait pour un autre texte : le même texte se détraçait puis se retraçait (et sortait de l'écran pendant ce temps) */
   function net(c){ return String(c||'').split(/\s+/).filter(function(x){ return x && x!=='ph-on' && x.indexOf('v200')!==0; }).sort().join(' '); }
   var COURBE='cubic-bezier(.33,0,.67,1)', D_FL=420;
   function dureeMot(t){ var n=String(t||'').length; return Math.max(320, Math.min(640, 110+25*n)); }   /* la largeur suit le détracé (40 car/s, 25 ms par lettre, + la durée d'une lettre, C-125) ; jamais moins de 320 ms (un mot court : l'encart ne bondit pas) */
@@ -45390,13 +45447,15 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(!inn.textContent.trim()) suite(); else TL().trace(inn, null, {inverse:true, surFin:function(r){ if(!r.interrompu) suite(); }});
     function suite(){ if(st.fini) return; var c=st.cible, v0=el.classList.contains('ph-vide'), v1=/(^|\s)ph-vide(\s|$)/.test(c.cls), m2=mesure(el, c.html, c.cls);
       el.style.setProperty('width', m2.w+'px','important');
-      if(v0!==v1 && window._passageFlaques) flaques(el, v1, m2, function(){ trace(c); }); else trace(c); }
+      if(v0!==v1 && window._passageFlaques) flaques(el, v1, m2, function(){ trace(st.cible); }); else trace(c); }
     function trace(c){ if(st.fini) return; st.phase='trace'; st.trace=c; var inn2=enveloppe(el); inn2.innerHTML=c.html; var on=el.classList.contains('ph-on'); el.className=c.cls; if(on) el.classList.add('ph-on');
       var cv=el.querySelector(':scope > canvas.v200-fl'); if(cv) cv.remove();
       note({mot:texte(c.html), phase:'trace'});
+      if(c.brut){ st.phase='brut'; el.innerHTML=c.html; fin(); return; }   /* l'enveloppe du détracé (sa découpe vide) part : ce qu'on tape se voit tout de suite */   /* ⚑ v202a (C-274) : ce qu'on tape paraît tel quel, l'encart finit d'aller à sa largeur */
       TL().trace(inn2, null, {surFin:function(){ fin(); }}); }
     function fin(){ var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA && window.__dcA.delete(el); }catch(_){ }
-      if(texte(c.html)!==texte(st.trace.html) || net(c.cls)!==net(st.trace.cls)){ mot(el, c); return; }   /* la cible a changé pendant le tracé : on repart d'ici, sans saut */
+      if(el.matches && el.matches('[data-ph="titre"],[data-np="nom"]') && window._ppTout){ try{ window._ppTout(); }catch(_){ } }   /* ⚑ v202a (C-274) : le titre a fini sa transition — la composition (coupe, taille) passe AVANT que l'encart se pose : aucune image ne le montre non composé */
+      if(texte(c.html)!==texte(st.trace.html) || net(c.cls)!==net(st.trace.cls)){ if(c.brut && st.trace.brut && net(c.cls)===net(st.trace.cls)) el.innerHTML=c.html; else { mot(el, c); return; } }   /* la cible a changé pendant le tracé : on repart d'ici, sans saut (v202a : une frappe se pose) */
       var wc=el.offsetWidth; el.style.removeProperty('transition'); el.style.removeProperty('width'); var wn=el.offsetWidth;
       if(Math.abs(wn-wc)>0.5){ el.style.setProperty('width', wc+'px','important'); void el.offsetWidth; el.style.setProperty('transition','width 200ms '+COURBE,'important'); el.style.setProperty('width', wn+'px','important'); setTimeout(function(){ if(!el.__v200) nettoie(el); }, 240); }
       else nettoie(el);
@@ -45419,15 +45478,29 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function vivante(box){ var cs=document.getElementById('createSheet'); return !!(box && cs && cs.classList.contains('show') && !cs.classList.contains('pp-choix') && performance.now()-ouvert>600 && visible(box)); }
   function greffe(o, n){ o.onclick=n.onclick; o.classList.toggle('ph-on', n.classList.contains('ph-on')); if(n.parentNode) n.parentNode.replaceChild(o, n); }
   function enveloppeRendu(nom, boxId){ var f=window[nom]; if(typeof f!=='function' || f.__v200) return false;
-    var w=function(){ var box=document.getElementById(boxId), av=vivante(box)?places(box):null, E={}; if(av) Object.keys(av).forEach(function(k){ E[k]=etat(av[k]); });
+    var w=function(){ var box=document.getElementById(boxId), _cs=document.getElementById('createSheet'), _nat=function(){ var k=_cs&&_cs.getAttribute('data-kind'); return k==='nuee' ? 'nuee' : (((window._phrase||{}).sens==='chiche') ? 'chiche' : 'promi'); }, _k0=_nat(), av=vivante(box)?places(box):null, E={}, G={}; if(av) Object.keys(av).forEach(function(k){ E[k]=etat(av[k]);
+        /* ⚑ v202a (C-271, AUDIT-SECS point 3) : la place et la police de chaque mot AVANT la reconstruction — une place qui part (« à qui ? » au retour à « Je me
+           promets ») se détrace à l'endroit où elle était */
+        try{ var e0=av[k], r0=e0.getBoundingClientRect(), cs0=getComputedStyle(e0); G[k]={r:r0, html:e0.outerHTML, fs:cs0.fontSize, lh:cs0.lineHeight}; }catch(_){ } });
       var r=f.apply(this, arguments);
-      if(av){ try{ var ap=places(document.getElementById(boxId)); Object.keys(ap).forEach(function(k){ var o=av[k], n=ap[k]; if(!o || o===n || !E[k]) return;
+      var _k1=_nat(); if(av && (_k1!==_k0 || w.__nat!==_k1)) av=null; w.__nat=_k1;   /* la première phrase de cette page (aucune nature connue) : une page neuve aussi */   /* ⚑ v202a : une autre NATURE, c'est une page neuve — elle arrive en entier, aucune place ne se transforme (trouvé par redteam_app : l'exemple d'une autre nature se traçait sans composition et sortait de l'écran) */
+      if(av){ try{ var ap=places(document.getElementById(boxId)), NV={}; Object.keys(ap).forEach(function(k){ NV[k]=ap[k].innerHTML; });   /* ⚑ v202a : le texte NEUF de chaque place, lu avant que la boucle qui suit lui rende l'ancien (la bascule se lisait après : toujours fausse) */
+          Object.keys(ap).forEach(function(k){ var o=av[k], n=ap[k]; if(!o || o===n || !E[k]) return;
           var c={html:n.innerHTML, cls:n.className}, a=E[k];
           if(o.__v200 && !o.__v200.fini){ greffe(o, n); mot(o, c); return; }
           if(texte(a.html)===texte(c.html) && net(a.cls)===net(c.cls)) return;
           if((k==='titre' || k==='nom') && !(/(^|\s)ph-vide(\s|$)/.test(a.cls) && /(^|\s)ph-vide(\s|$)/.test(c.cls))) return;   /* une saisie : la frappe s'écrit lettre par lettre */
           n.innerHTML=a.html; var on=n.classList.contains('ph-on'); n.className=a.cls; n.classList.toggle('ph-on', on); mot(n, c, a.w); });
-          var _basc=!!(E.sens && ap.sens && texte(E.sens.html)!==texte(ap.sens.innerHTML));   /* seulement à la bascule du sens : une place qui arrive avec elle */
+          var _basc=!!(E.sens && ap.sens && texte(E.sens.html)!==texte(NV.sens||ap.sens.innerHTML));   /* seulement à la bascule du sens : une place qui arrive avec elle */
+          if(_basc && window.TraceLettres && !reduit()) Object.keys(av).forEach(function(k){ if((ap[k] && visible(ap[k])) || !G[k] || !G[k].r.width) return;   /* partie, ou restée mais cachée */ var nb=document.getElementById(boxId); if(!nb) return;
+            try{ var hote=nb.querySelector('.ph-txt')||nb, t=document.createElement('div'); t.innerHTML=G[k].html; var gh=t.firstChild; if(!gh) return;
+              gh.removeAttribute('data-ph'); gh.removeAttribute('data-np'); gh.removeAttribute('id'); gh.onclick=null; gh.classList.add('v202-part'); gh.setAttribute('aria-hidden','true');
+              ['position:absolute','margin:0','pointer-events:none','white-space:nowrap','font-size:'+G[k].fs,'line-height:'+G[k].lh,'left:0px','top:0px','z-index:2'].forEach(function(d){ var i=d.indexOf(':'); gh.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+              hote.appendChild(gh); var R=gh.getBoundingClientRect(), sc=(gh.offsetWidth?R.width/gh.offsetWidth:1)||1;
+              gh.style.setProperty('left', ((G[k].r.left-R.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((G[k].r.top-R.top)/sc)+'px', 'important');
+              (window.__dcA=window.__dcA||new Set()).add(gh); gh.__v200={fini:false};
+              var finG=function(){ try{ window.__dcA.delete(gh); }catch(_){ } if(gh.parentNode) gh.parentNode.removeChild(gh); };
+              TraceLettres.trace(gh, null, {inverse:true, surFin:finG}); setTimeout(finG, 2500); note({part:k}); }catch(_){ } });
           Object.keys(ap).forEach(function(k){ var n=ap[k]; if(!_basc || av[k] || !n || n.__v200 || !window.TraceLettres || !visible(n)) return; try{ (window.__dcA=window.__dcA||new Set()).add(n); n.__v200={fini:false}; TraceLettres.trace(n, null, {surFin:function(){ n.__v200=null; try{ window.__dcA.delete(n); }catch(_){ } }}); }catch(_){ } });   /* ⚑ v201b (C-271) : une place qui ARRIVE (« à qui ? » à la bascule du sens) se trace */
         }catch(_){ } }
       return r; };
@@ -45481,6 +45554,9 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 @keyframes v201pop{from{transform:scale(0)}to{transform:scale(1)}}
 #device .s4-att{animation:v201pop .26s cubic-bezier(.33,0,.67,1) both}
 @media (prefers-reduced-motion: reduce){ #device .s4-att{animation:none} }
+/* ⚑ v202a (C-276, red team) : un titre de carte fait d'un seul mot plus long que la carte (l'état exporté de Tom : « jcicjccjc… ») sortait de la carte et de l'écran — il se
+   coupe à la largeur, comme le titre de la page + (C-180). Un titre fait de mots qui tiennent ne change pas. */
+#device .s4-ti{overflow-wrap:anywhere}
 </style>
 <script id="lot-V201B-SECS">
 /* ⚑ v201b (Tom, 13 nov. 2026, C-271, AUDIT-SECS.md) — LES CHANGEMENTS SECS QUI RESTAIENT. Un seul code, trois gestes :
@@ -45586,6 +45662,46 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 })();
 </script>
 
+<script id="lot-V202A-TAILLE">
+/* ⚑ v202a (Tom, C-271 ; AUDIT-SECS point 2, C-274) — LA TAILLE DE LA PHRASE DE LA PAGE + CHANGE EN DOUCEUR. La composition (§2.8) choisit la taille de la phrase
+   d'après ce qu'elle dit : un titre tapé court la porte à 30, l'exemple qui revient quand on efface le titre la ramène à 24 ; un choix qui s'ouvre la fait passer de 34
+   à 30. Elle le faisait d'une image à l'autre. La composition calcule toujours la taille finale, au même pixel ; puis la taille affichée y va en 320 ms (la courbe des
+   transitions de mot), l'interligne avec elle (la formule d'`appli`). Une passe qui tombe pendant le mouvement repart de la taille du moment. Jamais à l'ouverture de la
+   page + (sa première composition se pose telle quelle), jamais sous « Réduire les animations ». `txt.__phDouce` : le mouvement en cours (la clé de la composition lit
+   la taille finale, pas celle du moment — sans cela chaque image relançait la composition). */
+(function(){
+  var DUREE=320;
+  function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function lh(t){ return (Math.floor(t*1.2*(window._echTexte||1))+24)+'px'; }
+  function ease(u){ return u<.5 ? 4*u*u*u : 1-Math.pow(-2*u+2,3)/2; }
+  var ouvertT=0, vu=false;
+  function veille(){ var cs=document.getElementById('createSheet'); if(!cs){ setTimeout(veille, 400); return; }
+    var on=function(){ var v=cs.classList.contains('show') && !cs.classList.contains('pp-choix'); if(v && !vu) ouvertT=performance.now(); vu=v; };
+    new MutationObserver(on).observe(cs, {attributes:true, attributeFilter:['class']}); on(); }
+  veille();
+  /* une phrase REBÂTIE (la sortie du champ, `_phraseRendu`) garde la taille affichée : sans cela elle paraissait à sa taille de feuille (36) jusqu'à la composition suivante */
+  function garde(nom, sel){ var o=window[nom]; if(typeof o!=='function' || o.__v202) return; var w=function(){ var a=document.querySelector(sel), fs=a&&a.style.getPropertyValue('font-size'), lh=a&&a.style.getPropertyValue('line-height');
+      var r=o.apply(this, arguments); try{ var n=document.querySelector(sel); if(n && n!==a && fs && !n.style.getPropertyValue('font-size')){ n.style.setProperty('font-size', fs, 'important'); if(lh) n.style.setProperty('line-height', lh, 'important'); } }catch(_){ } return r; };
+    w.__v202=true; Object.keys(o).forEach(function(k){ try{ w[k]=o[k]; }catch(_){ } }); window[nom]=w; }
+  function gardes(){ garde('_phraseRendu', '#csPhrase .ph-txt'); garde('_nueePhraseRendu', '#nueePhrase .ph-txt'); }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){ setTimeout(gardes, 0); }); else setTimeout(gardes, 0);
+  window._phDouceAvant=function(){ var L=[]; document.querySelectorAll('#csPhrase .ph-txt, #nueePhrase .ph-txt').forEach(function(t){ var N=t.__phDouce; if(N && !N.fini){ t.style.cssText=N.css; L.push([t,N]); } }); return L; };
+  window._phDouceApres=function(){ document.querySelectorAll('#csPhrase .ph-txt, #nueePhrase .ph-txt').forEach(function(t){ var N=t.__phDouce; if(!N || N.fini) return;
+      if(!N.pret){ N.css=t.style.cssText; } N.pret=true;   /* la taille finale que la passe vient de poser */
+      t.style.setProperty('font-size', N.cur.toFixed(2)+'px', 'important'); t.style.setProperty('line-height', lh(N.cur), 'important'); }); };
+  window._phTailleDouce=function(txt, t0, cs){
+    var t1=parseFloat(txt.style.fontSize)||0, D=txt.__phDouce;
+    var ok = t0>0 && t1>0 && Math.abs(t1-t0)>=0.5 && !reduit() && cs && cs.classList.contains('show') && !cs.classList.contains('pp-choix') && vu && performance.now()-ouvertT>600;
+    if(!ok){ if(D){ D.fini=true; txt.__phDouce=null; } return; }
+    if(D) D.fini=true;
+    var css=txt.style.cssText, N={de:t0, vers:t1, cur:t0, css:css, t:performance.now(), fini:false, pret:false}; txt.__phDouce=N;   /* la taille du moment n'est posée qu'à la fin de la passe (`_phDouceApres`) : la passe ne lit que la finale */
+    requestAnimationFrame(function f(){ if(N.fini) return; if(!N.pret){ requestAnimationFrame(f); return; } var u=Math.min(1, (performance.now()-N.t)/DUREE); window.__animT=performance.now();
+      N.cur=N.de+(N.vers-N.de)*ease(u);
+      if(u<1){ txt.style.setProperty('font-size', N.cur.toFixed(2)+'px', 'important'); txt.style.setProperty('line-height', lh(N.cur), 'important'); requestAnimationFrame(f); }
+      else { N.fini=true; txt.__phDouce=null; txt.style.cssText=N.css; } });
+  };
+})();
+</script>
 </body>
 
 </html>

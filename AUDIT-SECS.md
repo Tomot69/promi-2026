@@ -34,11 +34,18 @@ Règle de Tom (C-271) : aucun changement sec à l'écran, nulle part.
 | ✔ | 15 · Les toasts | Paraissent et partent d'un coup | Se découvrent et se referment — **non jugé** | v201b |
 | ✔ | 16 · La pointe d'un Promi à la jonction | La branche basse paraît double | La découpe du trait plat est calculée au ⅓ pt | v201a |
 
-## Non faits
+## v202a — les quatre points non faits, et les « non jugés »
 
-| # | Écran · élément | Pourquoi |
-|---|---|---|
-| 2 | Page + · la taille de la phrase (34 → 30 px quand un choix s'ouvre) | Les cotes de la page sont calculées à la taille finale. Animer la taille ferait se recomposer la page en mouvement, ce qui toucherait la mise en page validée. Le saut du panneau du choix, lui, est corrigé (point 1). |
-| 3 | « à qui ? » qui part (retour à « Je me promets ») | Le nœud est retiré avant qu'on puisse le détracer. Il faudrait garder une copie à sa place. |
-| 4 | Page + · la pastille du titre à la première lettre | Les pointillés et le mot d'exemple deviennent la lettre tapée. La frappe elle-même n'est pas un défaut, et la bordure n'est pas encore adoucie. |
-| 10 | Pastilles « pas encore vu » qui partent | Leur retrait n'est pas suivi. |
+**Juge : `redteam_secs2.py`** (image par image, après la peinture ; une image de plus de 80 ms dans la fenêtre : « non jugé », ni vert ni rouge). La sonde (transitions coupées) le fait rougir : 1/7.
+
+| | Écran · élément | Aujourd'hui | Juge |
+|---|---|---|---|
+| ✔ | 2 · Page + · la taille de la phrase (34 → 30, et toute taille que la composition change : le titre effacé, la sortie du champ, la bascule) | La composition calcule toujours la taille finale (la même qu'en v201b, mesuré sur trois passes) ; la taille affichée y va en 320 ms. La passe se fait sur la taille finale, la taille du moment est rendue à la fin (`lot-V202A-TAILLE`). ⚠ Le retour à la ligne de l'exemple (une ligne ↔ deux) change d'un coup quand la composition coupe l'exemple. | p_choix, p_stab (scratchpad) |
+| ✔ | 3 · « à qui ? » qui part | Une copie à sa place se détrace, puis part. Trouvé : en v201b, la bascule était lue APRÈS que la reconstruction avait rendu son ancien texte au sens : « à qui ? » qui arrive ne se traçait jamais non plus. | secs2 F |
+| ✔ | 4 · La pastille du titre à la première lettre (et le titre effacé, C-274) | L'exemple se détrace, la pastille se remplit en flaques, ce qu'on tape paraît ; effacé, l'inverse, l'exemple se trace. | secs2 G |
+| ✔ | 10 · La pastille « pas encore vu » qui part | Elle se referme sur son centre (260 ms), puis part. | secs2 C |
+| ✔ | 7 · « Les Mots » | **Il paraissait d'un coup au premier mot** (un nœud neuf : l'observateur de v201b ne suivait que celui qui existait) — il se trace. | secs2 A |
+| ✔ | 10 · Pastilles qui arrivent | Grandissent de leur centre (≥ 180 ms). | secs2 B |
+| ✔ | 14 · Réglages · les valeurs | Fondu croisé (≥ 150 ms). | secs2 D |
+| ✔ | 15 · Le toast | Se découvre et se referme. | secs2 E |
+| ⚠ | Page + · une autre nature (le + → Chiche) | Une page neuve : elle arrive en entier, aucune place ne se transforme (l'exemple d'une autre nature se traçait sans composition et sortait de l'écran — régression de v202a trouvée par `redteam_app`, corrigée avant le commit). | redteam_app |

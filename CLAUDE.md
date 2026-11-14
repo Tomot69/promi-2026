@@ -252,6 +252,27 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v202a (14 nov. 2026) — LE RELEVÉ DE L'iPHONE ; LE TITRE EFFACÉ (C-274) ; LA PELOTE AUX COULEURS EXACTES (C-275) ; LES SECS QUI RESTAIENT ; LA RED TEAM (C-276). (Décisions Tom.) Ce bloc CORRIGE Q210, v142 (la teinte « plus dense » d'Ingénu) et v123 (le corps éclairci ou assombri) pour la Pelote.
+> **Validé par Tom : C-267.** Branche `v197`, poussée, NON fusionnée.
+> **⚑ §1 — `?mesure=1` RELÈVE TOUTE LA SÉANCE** (`lot-V145-VERSION`) : chaque image (sa durée), l'écran sous le centre de l'appareil (relu toutes les 30 images ; le Studio avec monde/palette) et ce qui s'anime
+> (`trace`, `detrace`, `transition-mot`, `mouvement`, `tenir`, `defilement`, `doigt`) ; toutes les 2 s, hors animation et sans doigt, `POST /releve` → `mesures/AAAA-MM-JJ-HHMM.jsonl` (un fichier par séance,
+> `serveur.py`). Résumé : **`python3 resume_releve.py [fichier] [--min=N] [--json]`** (par écran, par animation, par couple : images, p50, p95, max, > 16,7, > 33). *La vérité des cadences est ce relevé.*
+> **⚑ §2 (C-274)** : le titre vidé se détrace, les pointillés reviennent en flaques, l'exemple SE TRACE ; la première lettre : l'exemple se détrace, la pastille se remplit, ce qu'on tape paraît tel quel
+> (`_douceur.mot`, cible `brut`). **Trois écrivains du même nœud** (la frappe `phIn.oninput`, le curseur `lot-CURSEUR`, la composition `_ppTout`) : *pendant une transition, elle seule écrit* ; la composition
+> ne recalcule pas la taille pendant qu'un titre se trace, et passe AVANT que l'encart se pose en fin de transition. **Une autre nature est une page neuve** (aucune place ne se transforme).
+> **⚑ AUDIT-SECS point 2 — LA TAILLE DE LA PHRASE VA EN DOUCEUR** (`lot-V202A-TAILLE`, 320 ms) : la composition se fait sur la taille FINALE (`cotes` enveloppée : `_phDouceAvant`/`_phDouceApres`), la taille du moment
+> est rendue à la fin de la passe la plus extérieure. ⚠ *Piège payé* : la règle C-240 (`_place`) relit le bas de la phrase PENDANT la passe — y poser la taille de départ la faisait rétrécir de point en point
+> (25 au lieu de 29). *La règle* : **une valeur animée ne s'écrit jamais au milieu d'une passe qui mesure.**
+> **⚑ §3 (C-275) — LA PELOTE : LE POIL EST UN TON EXACT DE LA PALETTE, LE CORPS UN AUTRE.** Plus aucune couleur dérivée : ni × 0,38 en clair (Q210), ni la teinte « plus dense » d'Ingénu (v142), ni l'écart à la
+> page par décalage ; un ton tiré qui ne se détache pas de la page (|Δlum| < 42) cède au ton suivant (`solIdxEff`) ; « jamais le même sol deux fois de suite » (v125) se lit sur le ton EFFECTIF. Le corps : v123
+> tenu, sans ton éclairci ni assombri ; à défaut, le ton exact le plus contrasté. La rampe du velours n'assombrit plus vers l'encre (l'ombre = le ton exact), sa lumière est de moitié ; DANS la boule, le poil
+> ne se mêle plus au corps (l'opacité du tampon passe par une marche courte, `FS2` ; la silhouette ne bouge pas). Relevé 24 palettes × 2 thèmes : le poil rendu à ΔE00 ≤ 1,5 de son ton.
+> ⚠ **COÛT, À TRANCHER PAR TOM (Q618)** : en clair, sous Ingénu, les îles (couleur exacte de leur nature) sur un poil exact de nature tombent sous le plancher Q192 (ΔE 8 à 13 pour 15 ; `releve-aura` « la matière »,
+> rouge par décision à prendre). Le peintre de secours (sans WebGL 2) garde l'ancienne composition (la marche d'opacité n'y est pas portée).
+> **⚑ §4 — les quatre points non faits de l'audit, faits ; « Les Mots » (au PREMIER mot il paraissait d'un coup), « à qui ? » (la bascule se lisait après la reconstruction : jamais tracé) — AUDIT-SECS.md.**
+> Juge : **`redteam_secs2.py`** (A à G ; une image > 80 ms dans la fenêtre : « non jugé » ; la sonde rougit 1/7).
+> **⚑ §5 (C-276) — `redteam_app.py`** (19 écrans × 1, 0,79, Tom × deux thèmes ; v201b servie à côté, même hasard) et **RED-TEAM.md**.
+
 ### ⚑ v201 (14 nov. 2026) — DEUX RÈGLES NEUVES (Tom, C-267, C-273).
 > **① Une fiche ne reste jamais au repos la vague à demi sous la bande** : entre `a` (la vague entière sous 112) et `z` (entière sous la bande), un défilement fait au doigt ou à la molette
 > finit par glisser vers la plus proche des deux places sûres ; les glissements de l'app visent une place sûre, au-delà de la zone quand ils le peuvent (`window._ficheSure` ; en deçà, le mot envoyé restait sous la barre : `redteam_envoi_mot`, v201a). Juge : `redteam_repos_fiche.py`.
