@@ -1,41 +1,44 @@
-# Audit des changements secs — v200 §4 (C-271)
+# Audit des changements secs — v200 §4, suivi v201b (C-271)
 
-Règle de Tom (C-271) : aucun changement sec à l'écran, nulle part. Un texte qui change se détrace puis le nouveau se trace ; une boîte qui change de taille s'adapte en douceur ; rien n'apparaît ni ne disparaît d'une image à l'autre.
+Règle de Tom (C-271) : aucun changement sec à l'écran, nulle part.
+- Un texte qui change se détrace, puis le nouveau se trace.
+- Un chiffre ou une valeur change en fondu croisé.
+- Une boîte qui change de taille ou de place s'adapte en douceur.
+- Rien n'apparaît ni ne disparaît d'une image à l'autre.
 
-Ce relevé forme le **lot suivant**. Dans v200, seul ce qui touche le lot a été corrigé (marqué ✔).
+**Juge : `redteam_secs.py`.**
+- Il relève l'écran à chaque image, après la peinture (WebKit, ×3, 430 × 932).
+- **T** est une faute : un texte visible qui change sans transition déclarée (ni tracé, ni détracé, ni fondu, ni découpe, ni animation finie en cours).
+- **B** est une faute : une rangée ou une carte repérée par sa clé qui saute de plus de 12 pt d'une image à l'autre, dans le repère de ce qui défile.
+- **Résultats** : v201a 5/11 à 6/11 selon la passe, v201b 11/11.
+- **Il ne juge pas les apparitions et les disparitions de texte**, ni la frappe.
 
-**Comment les entrées ont été trouvées**
-- **Mesuré** : `scratchpad/v200/audit.py`. Banc WebKit, 430 × 932, ×3. Un relevé est pris dans la page, à chaque image ; il note tout texte visible qui change à sa place sans tracé en cours. Le parcours : la page + des trois natures (ouverture, bascule du sens, saisie, validation, choix des personnes, Rachel ajoutée, choix fermé), puis l'Index, le Fil, l'Aura, les Réglages, le Studio (quatre mondes) et une fiche.
-- **Lu** : relevé dans le code ou vu en jugeant, sans mesure image par image dans ce lot. C'est écrit comme tel.
+## Corrigés
 
-## Corrigés dans v200 (ils touchaient le lot)
+| | Écran · élément | Ce qui changeait d'un coup | Aujourd'hui | Lot |
+|---|---|---|---|---|
+| ✔ | Page + · places « qui », « avec », le verbe | « qui ? » → « moi », « moi » ↔ « Rachel », « Chiche » ↔ « chiche » | Détracé, encart en douceur, tracé | v200 |
+| ✔ | Page + · le libellé du trait | « trace pour planter » → « trace ta moitié » | Détracé, puis tracé | v200 |
+| ✔ | Fiche · la ligne de la phrase | « Je me promets de » → « Je promets à Rachel de » | Détracée, retracée, le titre glisse | v200 |
+| ✔ | 1 · Page + · le choix des personnes | Rachel s'insère en tête : les rangées se décalent d'un coup ; sur un Cercle, tout le panneau saute de 147 pt | Chaque rangée glisse de sa place à la nouvelle, une rangée neuve se découvre, le panneau glisse (suivi à chaque image, avant la peinture) | v201b |
+| ✔ | 3 · Page + Promi · la bascule du sens | L'exemple du titre change, « à qui ? » paraît | L'exemple se détrace puis se trace ; « à qui ? » se trace en arrivant | v201b |
+| ✔ | 5 · Page + Chiche · « avec qui en est ? » | — | Sous `lot-V200-DOUCEUR` (la place `avec`) | v200–v201b |
+| ✔ | 6 · Fiche · « Un mot… » et la liste des mots | Le nombre change d'un coup ; un mot neuf en tête fait sauter les autres de 58 pt | Le nombre en fondu croisé ; les mots glissent, le neuf se découvre | v201b |
+| ✔ | 7 · Fiche · « Les Mots » | Le titre paraît d'un coup avec le premier mot | Il se trace — **non jugé** (une apparition) | v201b |
+| ✔ | 8, 9 · Index, Fil · reclassement, recherche, tris | Les cartes sautent, paraissent, partent | Elles glissent, se découvrent en arrivant, se referment en partant | v201b |
+| ✔ | 10 · Pastilles « pas encore vu » | Paraissent d'un coup | Grandissent de leur centre — **non jugé** | v201b |
+| ✔ | 11 · Aura · les deux chiffres, la phrase | Changent d'un coup quand une parole est tenue | Les chiffres en fondu croisé, la phrase se détrace puis se trace | v201b |
+| ✔ | 12 · Studio · le nom du monde, de la palette | Changent d'un coup au glissé | Se détracent puis se tracent | v201b |
+| ✔ | 13 · Peaufiner · les valeurs des rangées | « en l'air » → « samedi 21 » d'un coup (la fiche est rebâtie deux fois) | Fondu croisé, qui continue sur le nœud rebâti | v201b |
+| ✔ | 14 · Réglages · les valeurs | Changent d'un coup | Fondu croisé — **non jugé** (la valeur basculée par le juge ne change pas à l'écran) | v201b |
+| ✔ | 15 · Les toasts | Paraissent et partent d'un coup | Se découvrent et se referment — **non jugé** | v201b |
+| ✔ | 16 · La pointe d'un Promi à la jonction | La branche basse paraît double | La découpe du trait plat est calculée au ⅓ pt | v201a |
 
-| | Écran · élément | Ce qui changeait d'un coup | Aujourd'hui |
-|---|---|---|---|
-| ✔ | Page + · la place « qui » (Promi, Chiche), « avec » (Cercle) | « qui ? », « qui ose ? », « tout le monde » → « moi » à la validation ; « moi » ↔ « Rachel » ; l'encart sautait de largeur | Détracé, encart en douceur, tracé ; les pointillés partent ou reviennent en flaques (`lot-V200-DOUCEUR`) |
-| ✔ | Page + Chiche · le verbe | « Chiche » ↔ « chiche » à l'ajout ou au retrait d'une personne | Détracé, puis tracé |
-| ✔ | Page + · le libellé du trait | « trace pour planter » → « trace ta moitié » à l'ajout d'une personne | Détracé, puis tracé |
-| ✔ | Fiche · la ligne de la phrase (`#dptQui`), les trois natures | « T'es pas chiche de » → « Rachel, t'es pas chiche de » ; « Je me promets de » → « Je promets à Rachel de » | Détracée, retracée ; le titre glisse |
+## Non faits
 
-## À faire (le lot suivant)
-
-| # | Écran · élément | Ce qui change d'un coup | Trouvé |
-|---|---|---|---|
-| 1 | Page + · le choix des personnes | Un nom ajouté s'insère en tête de la liste : les rangées suivantes se décalent d'un coup (leur initiale et leur nom changent sous l'œil) | Mesuré |
-| 2 | Page + · la phrase entière | Elle se recompose d'un coup à l'ouverture et à la fermeture d'un choix : taille 34 → 30 → 34 px (Promi 36 ↔ 30), place 342 → 230 pt. Aussi dans v196 | Mesuré |
-| 3 | Page + Promi · la bascule « Je me promets » ↔ « Je promets … à qui ? » | Le verbe change ; la ligne « à qui ? » paraît ou part, d'une image à l'autre | Mesuré |
-| 4 | Page + · la pastille du titre (ou du nom d'un Cercle) | À la première lettre tapée : de vide (pointillés, mot d'exemple) à pleine, d'un coup | Mesuré (la frappe elle-même n'est pas un défaut) |
-| 5 | Page + Chiche · la place « avec qui en est ? » | Mêmes règles que « qui » ; elle n'est pas encore branchée sur `lot-V200-DOUCEUR` | Lu |
-| 6 | Fiche · « Un mot… » | Le nombre de mots (« 1 », « +1 ») change d'un coup | Lu |
-| 7 | Fiche · « Les Mots » | Le titre paraît d'un coup avec le premier mot | Lu |
-| 8 | Index, Fil · « Récents » | Une action reclasse les cartes d'un coup (C-245) | Lu |
-| 9 | Index · la recherche, les tris | Les cartes filtrées paraissent ou partent d'un coup | Lu |
-| 10 | Index, Fil, Index d'une personne · pastilles « pas encore vu » (`.s4-att`) | Paraissent et partent d'un coup | Lu |
-| 11 | Aura · les deux chiffres (tenues, en cours) | Changent d'un coup | Lu |
-| 12 | Studio · le nom du monde, le nom de la palette | Changent d'un coup au glissé | Lu |
-| 13 | Peaufiner · les pastilles d'échéance, les valeurs des rangées | Leur état change d'un coup | Lu |
-| 14 | Réglages · les valeurs des rangées (Affichée · Masquée, etc.) | Changent d'un coup | Lu |
-| 15 | Toasts (« Design débloqué ✓ », « … dissous ») | À vérifier : comment ils paraissent et partent | Lu |
-| 16 | La rencontre des pointes d'un Promi (jonction, C-267) | Le trait est incliné dans la vague et droit dans le trait plat : la branche basse paraît double sur ≈ 10 pt de défilement. Aussi dans v199 | Mesuré (`redteam_un_trait`) |
-
-L'audit mesuré ne couvre que les **textes**. Les boîtes qui changent de taille (hors la phrase de la page +) et les éléments qui paraissent ou partent n'ont pas été relevés image par image dans ce lot : c'est écrit tel quel.
+| # | Écran · élément | Pourquoi |
+|---|---|---|
+| 2 | Page + · la taille de la phrase (34 → 30 px quand un choix s'ouvre) | Les cotes de la page sont calculées à la taille finale. Animer la taille ferait se recomposer la page en mouvement, ce qui toucherait la mise en page validée. Le saut du panneau du choix, lui, est corrigé (point 1). |
+| 3 | « à qui ? » qui part (retour à « Je me promets ») | Le nœud est retiré avant qu'on puisse le détracer. Il faudrait garder une copie à sa place. |
+| 4 | Page + · la pastille du titre à la première lettre | Les pointillés et le mot d'exemple deviennent la lettre tapée. La frappe elle-même n'est pas un défaut, et la bordure n'est pas encore adoucie. |
+| 10 | Pastilles « pas encore vu » qui partent | Leur retrait n'est pas suivi. |

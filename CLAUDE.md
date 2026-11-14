@@ -254,9 +254,13 @@ la nature, la ligne dit l'état.)*
 
 ### ⚑ v201 (14 nov. 2026) — DEUX RÈGLES NEUVES (Tom, C-267, C-273).
 > **① Une fiche ne reste jamais au repos la vague à demi sous la bande** : entre `a` (la vague entière sous 112) et `z` (entière sous la bande), un défilement fait au doigt ou à la molette
-> finit par glisser vers la plus proche des deux places sûres ; les glissements de l'app visent une place sûre (`window._ficheSure`). Juge : `redteam_repos_fiche.py`.
-> **② Pendant une animation de texte (un tracé, un détracé, une transition de mot, l'horizon, le mouvement de la page), aucun travail lourd** : les passes de tout le document, les
-> recompositions périodiques et les tâches de fond attendent `window._animEnCours()` (une animation se déclare : `TraceLettres.actif()`, `__dcA`, `__animT`). Mesure : `scratchpad/v201/sacc.py` (processeur ×4).
+> finit par glisser vers la plus proche des deux places sûres ; les glissements de l'app visent une place sûre, au-delà de la zone quand ils le peuvent (`window._ficheSure` ; en deçà, le mot envoyé restait sous la barre : `redteam_envoi_mot`, v201a). Juge : `redteam_repos_fiche.py`.
+> **② Pendant une animation de texte (un tracé, un détracé, une transition de mot, l'horizon, le mouvement de la page), aucun travail lourd** : les passes de tout le document et les
+> tâches de fond attendent `window._animEnCours()` (une animation se déclare : `TraceLettres.actif()`, `__dcA`, `__animT`). Mesure : `scratchpad/v201/sacc.py` (processeur ×4).
+> ⚠ **Exception, payée en v201a** : la relecture périodique de la page + (500 ms) ne s'arrête que pendant un TRACÉ de lettres — le rail du pinceau compte sur elle (sans elle, la phrase
+> passait sur le rail : `redteam_phrase_lignes` 20/54) ; et elle recompose toujours (une clé de « ce qui fait la page » ne suffit pas à le dire).
+> **v201b (C-271)** : `lot-V201B-SECS` — `_flip` (une boîte glisse, arrive en se découvrant, part en se refermant), les boîtes suivies à chaque image avant la peinture (le choix des
+> personnes, les mots), `_douceur.valeur` (fondu croisé), `_douceur.texte` (détracé puis tracé), les emplacements suivis par leur conteneur (un nœud rebâti garde sa rangée). Juge : `redteam_secs.py`.
 
 ### ⚑ v200 (13 nov. 2026) — LE TRAIT N'EST PLUS ROGNÉ NI DOUBLÉ (C-267, capture de Tom) ; « MOI » ARRIVE EN DOUCEUR (C-269, C-271) ; MASCARET (C-272) ; L'AUDIT DES CHANGEMENTS SECS. (Décisions Tom.) Ce bloc CORRIGE v195 et v197 (③ le CACHE de la jonction) et v199 (§3 : « moi » posé d'un coup).
 > **Validé par Tom : C-270. Règle permanente C-271 (aucun changement sec) : en tête de ce fichier.** Branche `v197`, poussée, NON fusionnée.
