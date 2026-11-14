@@ -2,7 +2,8 @@
   A · « Les Mots » : le premier mot arrive sur une fiche ouverte — le titre ne paraît jamais entier d'une image à l'autre (découpé ≥ 3 images avant d'être entier) ;
   B · la pastille « pas encore vu » qui ARRIVE grandit de son centre (≥ 3 images entre 0 et 1, jamais de 0 à 1 d'un coup) ;
   C · la pastille qui PART se referme sur son centre (≥ 3 images, puis absente) — v202a ;
-  D · une valeur des Réglages qui change : l'ancienne et la nouvelle se croisent (≥ 3 images où les deux sont là, opacités intermédiaires) ;
+  D · une valeur des Réglages qui change : ⚑ C-279 (Tom, fin de v203) — l'ancienne se DÉTRACE puis la nouvelle se TRACE (plus de fondu croisé) : le texte ne change
+      que découpé, découpé ≥ 3 images avant et après le changement, puis net ; aucune opacité intermédiaire (original : sauvegardes/redteam_secs2-avant-v203-c279.py) ;
   E · le toast arrive en se découvrant et part en se refermant (≥ 3 images de découpe à chaque bout ; jamais présent puis absent d'une image à l'autre) ;
   F · « à qui ? » qui part (retour à « Je me promets ») : une copie à sa place se détrace (≥ 120 ms découpée), puis plus rien — v202a ;
   G · le titre effacé : l'exemple revient découpé (≥ 3 images), l'encart s'adapte sans saut (≤ 30 pt par image) — v202a, C-274.
@@ -59,10 +60,13 @@ with sync_playwright() as p:
     # D · une valeur des Réglages (l'écrivain : un texte réécrit dans une rangée suivie)
     pg.evaluate("()=>document.getElementById('settingsBtn').click()"); pg.wait_for_timeout(2500)
     ok = pg.evaluate("()=>{ const v=[...document.querySelectorAll('#settingsScreen .scard .v')].find(e=>e.offsetParent&&e.textContent.trim()); if(!v) return false; window.__sv=v; return v.textContent.trim(); }")
-    F_V = "()=>{ const v=window.__sv; if(!v) return ['?']; const parts=v.querySelectorAll('.v201-val, .v201-n'); const op=[...parts].map(x=>+(+getComputedStyle(x).opacity).toFixed(2)); return [parts.length, op.join('/')]; }"
-    pg.evaluate(REC, ['', F_V]); pg.evaluate("()=>{ const v=window.__sv; v.textContent=(v.textContent.trim()==='essai'?'autre':'essai'); }"); pg.wait_for_timeout(800); pg.evaluate("window.__rfStop()"); L = pg.evaluate("window.__rf")
-    T = [x[0] for x in L if x[1] != '?' and x[1] >= 2]; dur = (max(T) - min(T)) if len(T) > 1 else 0
-    juge('D · une valeur des Réglages : l’ancienne et la nouvelle se croisent (≥ 150 ms)', ok and dur >= 150, (ok, dur, [x[1:] for x in L[:8]]), L)
+    F_V = "()=>{ const v=window.__sv; if(!v) return ['?','','']; const C=" + CLIP + "; const op=[v, ...v.querySelectorAll('*')].some(x=>{ const o=+getComputedStyle(x).opacity; return o>0.05&&o<0.95; }); return [(v.textContent||'').trim(), C(v), op?'op':'']; }"
+    pg.evaluate(REC, ['', F_V]); pg.evaluate("()=>{ const v=window.__sv; v.textContent=(v.textContent.trim()==='essai'?'autre':'essai'); }"); pg.wait_for_timeout(3500); pg.evaluate("window.__rfStop()"); L = pg.evaluate("window.__rf")
+    tx = [x[1] for x in L]; cl = [x[2] for x in L]; neuf = tx[-1] if tx else ''
+    kch = next((k for k in range(1, len(L)) if tx[k] != tx[k - 1]), None)   # l'image où le texte change
+    avant = sum(1 for k in range(kch or 0) if cl[k] == 'clip') if kch else 0; apres = sum(1 for k in range(kch or 0, len(L)) if cl[k] == 'clip') if kch else 0
+    okD = bool(ok) and kch is not None and cl[kch] == 'clip' and cl[kch - 1] == 'clip' and avant >= 3 and apres >= 3 and cl[-1] == 'net' and not any(x[3] for x in L)
+    juge('D · une valeur des Réglages : détracée puis tracée (le texte ne change que découpé, ≥ 3 images de chaque côté)', okD, (ok, '→', neuf, kch, avant, apres, ''.join({'clip': 'c', 'net': 'N', 'absent': '.'}.get(c, '?') for c in cl)[:70]), L)
     pg.evaluate("()=>{ try{ closeAll(); }catch(e){} }"); pg.wait_for_timeout(600)
     # E · le toast
     F_T = "()=>{ const t=document.getElementById('_toast'); if(!t) return ['absent']; const c=getComputedStyle(t).clipPath; return [c&&c!=='none'&&!/inset\\(0(px)? 0(px)? 0(px)? 0(px)?/.test(c)?'clip':'net']; }"

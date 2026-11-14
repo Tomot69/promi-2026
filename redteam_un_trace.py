@@ -82,6 +82,6 @@ juge('D · aucun texte ne s\'efface par un fondu', not fo, fo[:5])
 paires = {}
 for a in ap:
     if a.get('reel'): paires.setdefault(a['txt'], {}).setdefault('inv' if a['inv'] else 'tr', []).append(a['reel'])
-ec2 = [(t, v['tr'][0], v['inv'][0]) for t, v in paires.items() if 'tr' in v and 'inv' in v and abs(v['tr'][0] - v['inv'][0]) > 0.25 * max(v['tr'][0], 200)]
+ec2 = [(t, v['tr'][0], v['inv'][0]) for t, v in paires.items() if 'tr' in v and 'inv' in v and abs(v['tr'][0] - v['inv'][0]) > max(0.25 * max(v['tr'][0], v['inv'][0]), 90)]   # 90 ms : la durée d'une lettre (comme B)
 juge('E · le détracé dure comme son tracé (± 25 %%) — %d textes tracés puis détracés' % sum(1 for v in paires.values() if 'tr' in v and 'inv' in v), not ec2, ec2[:4])
 print('%d/%d' % (sum(RES), len(RES)))
