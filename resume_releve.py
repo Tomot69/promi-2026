@@ -33,19 +33,21 @@ def lit(chemin):
         if d.get('quoi') != 'releve': continue
         tags = d.get('tags') or []
         meta = {k: d.get(k) for k in ('seance', 'debut', 'version', 'etat', 'ecran', 'ua', '_de')}
-        for t, dur, e, a in d.get('images') or []:
-            images.append((t, dur, tags[e] if e < len(tags) else '?', tags[a] if a < len(tags) else '?'))
+        for im in d.get('images') or []:
+            t, dur, e, a = im[:4]
+            images.append((t, dur, tags[e] if e < len(tags) else '?', tags[a] if a < len(tags) else '?') + ((im[4],) if len(im) > 4 else ()))
     images.sort()
     return images, meta
 
 
 def resume(images):
     par = {'ecran': {}, 'animation': {}, 'couple': {}}
-    for _, dur, e, a in images:
+    for im in images:
+        dur, e, a = im[1], im[2], im[3]
         par['ecran'].setdefault(e, []).append(dur)
         for x in a.split('+'): par['animation'].setdefault(x, []).append(dur)
         par['couple'].setdefault(e + ' | ' + a, []).append(dur)
-    return {k: {n: stats(v) for n, v in d.items()} for k, d in par.items()}, stats([d for _, d, _, _ in images])
+    return {k: {n: stats(v) for n, v in d.items()} for k, d in par.items()}, stats([im[1] for im in images])
 
 
 def main():
@@ -67,6 +69,19 @@ def main():
     print('version :', meta.get('version'), '· début :', meta.get('debut'), '· écran :', meta.get('ecran'))
     print('état :', meta.get('etat'))
     dureeS = (images[-1][0] - images[0][0]) / 1000 if images else 0
+    # ⚑ v203 (C-267) : les retours de fiche — chaque série de défilement (images avec scrollTop) : un arrêt (≥ 100 ms immobile) suivi d'une reprise (> 1 pt) est un défaut
+    ser, cur = [], []
+    for im in images:
+        if len(im) > 4: cur.append((im[0], im[4]))
+        elif cur: ser.append(cur); cur = []
+    if cur: ser.append(cur)
+    reprises = []
+    for s in ser:
+        for i in range(1, len(s)):
+            j = i
+            while j < len(s) and abs(s[j][1] - s[i - 1][1]) <= 0.5: j += 1
+            if j < len(s) and s[j - 1][0] - s[i - 1][0] >= 100 and abs(s[j][1] - s[i - 1][1]) > 1: reprises.append((s[i - 1][0], s[i - 1][1], s[j][1]))
+    print('défilements de fiche : %d séries · arrêts suivis d\'une reprise : %d %s' % (len(ser), len(reprises), reprises[:5]))
     print('%d images sur %.0f s — p50 %.1f · p95 %.1f · max %.1f ms · > 16,7 : %d · > 33 : %d' % (tout['n'], dureeS, tout['p50'], tout['p95'], tout['max'], tout['sup16'], tout['sup33']))
     for titre, cle in (('PAR ÉCRAN', 'ecran'), ('PAR ANIMATION', 'animation'), ('ÉCRAN × ANIMATION', 'couple')):
         print('\n' + titre)

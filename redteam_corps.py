@@ -21,7 +21,8 @@ Contrôles, par palette :
   1 · ΔE00(corps, poil) ≥ 15 à chaque ouverture (face à la rampe ET face au bac dominant de l'image) ;
   2 · le corps n'est jamais kaki ;
   3 · le corps n'a jamais la teinte des poils : ce n'est pas le ton de palette du sol (ni le plus proche des tons de la palette) ;
-  4 · le tirage est un hasard : sur 50 ouvertures, au moins deux tons de corps différents (pour un même sol, quand la palette le permet).
+  4 · ⚑ v203 (Tom, C-275) : le corps est le ton de la palette le plus contrasté avec le poil (il n'est plus tiré) ; 6 · le SOL ne se répète pas deux ouvertures de suite.
+     (contrat remis au niveau de la décision ; original : sauvegardes/redteam_corps-avant-v203.py)
 Preuve (§7) : sur `sauvegardes/app-avant-v123.html` il ROUGIT (la peau y est la moyenne assombrie de son poil).
 """
 import os, sys, math
@@ -88,7 +89,7 @@ LIT = r"""()=>{ const cv=document.getElementById('auBoule'); if(!cv||!cv.width||
   for(let y=0;y<W;y+=2) for(let x=0;x<W;x+=2){ const i=(y*W+x)*4; if(d[i+3]<250) continue; if(Math.hypot(x-W/2,y-W/2)>W*0.33) continue; n++;
     const k=(d[i]>>4)+','+(d[i+1]>>4)+','+(d[i+2]>>4); const o=h[k]||(h[k]=[0,0,0,0]); o[0]++; o[1]+=d[i]; o[2]+=d[i+1]; o[3]+=d[i+2]; }
   const top=Object.values(h).sort((a,b)=>b[0]-a[0])[0];
-  let sol=null, ramp=null; try{ const s=_aura.sol(); sol=s.idx; }catch(e){}
+  let sol=null, ramp=null; try{ const s=_aura.sol(); sol=(s.eff!=null && s.eff>=0)?s.eff:s.idx; }catch(e){}   /* v203 : le ton effectif (celui qu on voit) */
   let eff=null; try{ eff=(_aura.corps&&_aura.corps().poil)||null; }catch(e){}
   const pal=Toile.cols().map(c=>[c[0]|0,c[1]|0,c[2]|0]);
   /* la rampe de velours du sol EFFECTIF : sans `_aura.corps` (version d'avant), on la déduit du bac dominant */
@@ -113,6 +114,7 @@ with sync_playwright() as p:
     pg.goto(APP); pg.wait_for_timeout(7000)
     pg.evaluate("()=>{var o=document.getElementById('promiOnb');if(o){o.classList.add('gone');o.style.display='none';}}")
     for pal in PALETTES:
+        max_ko = [];
         pires = {'ramp': 999, 'dom': 999}; n_kaki = 0; n_meme = 0; n_lu = 0; corps_vus = {}; ex = ''; halo_ko = 0; ex_h = ''; suite_ko = 0; ex_s = ''; avant = None
         for i in range(N):
             th = 'light' if i % 2 == 0 else 'dark'
@@ -134,6 +136,13 @@ with sync_playwright() as p:
             proche = min(range(len(m['pal'])), key=lambda k: dE00(c, m['pal'][k]))
             if m['sol'] is not None and (proche == m['sol'] or dE00(c, m['pal'][m['sol']]) < 5): n_meme += 1
             corps_vus.setdefault(m['sol'], set()).add(tuple(round(v / 6) for v in c))
+            # ⚑ v203 (Tom, C-275 : « l'intérieur est TOUJOURS le ton de la palette qui contraste le plus avec le poil ») — le corps peint est le ton
+            #   (hors sol, hors kaki, hors crème d'Ingénu) d'écart ΔE00 maximal au ton du poil
+            if m['sol'] is not None and m['sol'] < len(m['pal']):
+                cand = [k for k in range(len(m['pal'])) if k != m['sol'] and not kaki(m['pal'][k]) and not (pal == 'signal' and k == 3)]
+                if cand:
+                    kmax = max(cand, key=lambda k: dE00(m['pal'][k], m['pal'][m['sol']]))
+                    if proche != kmax and dE00(c, m['pal'][kmax]) > 3: max_ko.append('ouverture %d [%s] corps %s, attendu le ton %d %s' % (i + 1, th, [round(v) for v in c], kmax, m['pal'][kmax]))
             # ⚑ v125 (Tom) — « le halo prend la couleur du corps » : sa teinte OKLCH est celle du corps (à 8° près ; sa clarté peut s'écarter
             #   du fond pour faire une lumière). Et d'une ouverture à l'autre, ni le même sol ni le même corps (redteam d'avant : rien ne l'interdisait).
             if i < 20:
@@ -144,7 +153,7 @@ with sync_playwright() as p:
                     halo_ko += 1; ex_h = 'ouverture %d [%s] halo %s · corps %s' % (i + 1, th, h, [round(v) for v in c])
             d = m.get('decl') or {}
             ici = (d.get('solIdx'), d.get('idx'))
-            if avant is not None and len(m['pal']) > 2 and (ici[0] == avant[0] or (ici[1] == avant[1] and ici[1] is not None and ici[1] >= 0)):
+            if avant is not None and len(m['pal']) > 2 and ici[0] == avant[0]:   # v203 : le corps suit le sol (le plus contrasté) — seul le sol ne se répète pas
                 suite_ko += 1; ex_s = 'ouverture %d : sol %s corps %s après sol %s corps %s' % (i + 1, ici[0], ici[1], avant[0], avant[1])
             avant = ici
         t('[%s] les %d ouvertures sont lues (la peau pleine est peinte)' % (pal, N), n_lu == N, '%d lues' % n_lu)
@@ -154,7 +163,7 @@ with sync_playwright() as p:
         t('3 · [%s] le corps n\'a jamais la teinte des poils' % pal, n_lu > 0 and n_meme == 0, '%d ouverture(s) où le corps est le ton du sol' % n_meme)
         t('5 · [%s] v136 : aucun halo autour de la Pelote (vingt ouvertures)' % pal, n_lu > 0 and halo_ko == 0, '%d ouverture(s) · %s' % (halo_ko, ex_h))
         t('6 · [%s] v125 : jamais le même sol ni le même corps deux ouvertures de suite' % pal, n_lu > 0 and suite_ko == 0, '%d fois · %s' % (suite_ko, ex_s))
-        t('4 · [%s] le corps se tire au hasard (au moins deux corps différents sur %d ouvertures)' % (pal, N), len(set().union(*corps_vus.values())) >= 2 if corps_vus else False, '%s' % {k: len(v) for k, v in corps_vus.items()})
+        t('4 · [%s] v203 : le corps est le ton le plus contrasté avec le poil, à chaque ouverture' % pal, n_lu > 0 and not max_ko, '%d écart(s) %s' % (len(max_ko), max_ko[:2]))
     t('aucune erreur de page', not er, '; '.join(er[:2]))
     b.close()
 print('\n%d / %d' % (ok[0], ok[0] + len(ko)))
