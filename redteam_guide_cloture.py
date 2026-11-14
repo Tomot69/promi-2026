@@ -13,6 +13,8 @@ Preuve : `--fichier=zz-v164b.html` rougit (aucune clôture).
 ⚑ v166 (Tom, C-203 §3) — contrat remis au niveau (original : sauvegardes/redteam_guide_cloture-avant-v166.py) : la phrase 2 ENTIÈREMENT en PromiLate, d'une
 seule couleur (v167 : le cobalt #0E78F2 ; v166 : l'encre du mode), à sa place (422 pt) ; pendant elle, trois zones nettes en flaques — Aura, Index, Fil — et aucune autre, ni flèche ;
 Partager jamais obligatoire : sur chacun des trois chemins, Partager touché ET non touché (selon la combinaison).
+⚑ v203 (Tom, C-277) — contrat remis : « chaque étape du guide a une condition ; jamais un toucher au hasard ne la valide » — ailleurs que le +, ailleurs que
+Partager : l'étape reste et sa phrase est redite. Partager devient la condition de sa propre étape.
 """
 import sys, base64
 sys.path.insert(0, '.')
@@ -178,7 +180,14 @@ with sync_playwright() as p:
                 juge('[%s · %s] le guide atteint l\'étape du +' % (T, ch), False, pg.evaluate(ETAT)); ctx.close(); continue
             pg.wait_for_timeout(700)
             if ch == 'c':
-                tap_pt(pg, 200, 520)                                       # ailleurs que le +
+                # ⚑ v203 (Tom, C-277) — CONTRAT REMIS (original : sauvegardes/redteam_guide_cloture-avant-v203.py, « toucher ailleurs que le + mène à la clôture ») :
+                #   « jamais un toucher au hasard ne valide une étape » — ailleurs que le +, l'étape du + reste, sa phrase redite ; le + touché, la suite (chemin b).
+                tap_pt(pg, 200, 520); pg.wait_for_timeout(1400)                # ailleurs que le +
+                e = pg.evaluate("()=>{ const g=document.getElementById('guide'); return g?[g.getAttribute('data-guide'), +(g.getAttribute('data-rappels')||0)]:null; }")
+                juge('[%s · %s] C-277 · ailleurs que le + : l\'étape du + reste, sa phrase redite' % (T, ch), bool(e) and e[0] == 'plus' and e[1] >= 1, e)
+                z = pg.evaluate("()=>_guide.etat().trou"); tap_pt(pg, z['x'], z['y'])   # le +
+                attend(pg, "()=>{const c=document.getElementById('accChoix'); return !!(c&&c.classList.contains('ouvert'));}", 30); pg.wait_for_timeout(1600)
+                tap_pt(pg, 200, 330)                                       # ailleurs : le menu se ferme
             else:
                 z = pg.evaluate("()=>_guide.etat().trou"); tap_pt(pg, z['x'], z['y'])   # le +
                 ouv = attend(pg, "()=>{const c=document.getElementById('accChoix'); return !!(c&&c.classList.contains('ouvert'));}", 30)
@@ -199,7 +208,11 @@ with sync_playwright() as p:
             if touche:
                 if partager(pg, T, ch): phrase2(pg, T, ch + ' · après Partager', attendre_seul=(ech == '1'))
             else:
-                tap_pt(pg, 120, 560); phrase2(pg, T, ch + ' · ailleurs', attendre_seul=(ech != '1'))
+                # ⚑ v203 (C-277) : ailleurs que Partager, l'étape de Partager reste, sa phrase redite (avant : la phrase 2) ; Partager touché ensuite, la phrase 2
+                tap_pt(pg, 120, 560); pg.wait_for_timeout(1400)
+                e = pg.evaluate("()=>{ const g=document.getElementById('guide'); return g?[g.getAttribute('data-guide'), +(g.getAttribute('data-rappels')||0)]:null; }")
+                juge('[%s · %s] C-277 · ailleurs que Partager : l\'étape de Partager reste, sa phrase redite' % (T, ch), bool(e) and e[0] == 'partage' and e[1] >= 1, e)
+                if partager(pg, T, ch): phrase2(pg, T, ch + ' · après un toucher ailleurs, puis Partager', attendre_seul=(ech != '1'))
             if ch == 'c':
                 pg.reload(); pg.wait_for_timeout(9000)
                 juge('[%s · %s] au lancement suivant, le guide ne revient pas' % (T, ch), not pg.evaluate("()=>!!document.getElementById('guide')") and pg.evaluate("()=>localStorage.getItem('promi_guide')") == '1')

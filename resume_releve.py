@@ -26,13 +26,14 @@ def stats(v):
 
 
 def lit(chemin):
-    images = []; meta = {}
+    images = []; meta = {}; lit.taches = []
     for ligne in open(chemin, encoding='utf-8'):
         try: d = json.loads(ligne)
         except Exception: continue
         if d.get('quoi') != 'releve': continue
         tags = d.get('tags') or []
         meta = {k: d.get(k) for k in ('seance', 'debut', 'version', 'etat', 'ecran', 'ua', '_de')}
+        lit.taches += d.get('taches') or []
         for im in d.get('images') or []:
             t, dur, e, a = im[:4]
             images.append((t, dur, tags[e] if e < len(tags) else '?', tags[a] if a < len(tags) else '?') + ((im[4],) if len(im) > 4 else ()))
@@ -77,12 +78,24 @@ def main():
     if cur: ser.append(cur)
     reprises = []
     for s in ser:
-        for i in range(1, len(s)):
+        i = 1
+        while i < len(s):
             j = i
             while j < len(s) and abs(s[j][1] - s[i - 1][1]) <= 0.5: j += 1
             if j < len(s) and s[j - 1][0] - s[i - 1][0] >= 100 and abs(s[j][1] - s[i - 1][1]) > 1: reprises.append((s[i - 1][0], s[i - 1][1], s[j][1]))
+            i = max(j, i + 1)
     print('défilements de fiche : %d séries · arrêts suivis d\'une reprise : %d %s' % (len(ser), len(reprises), reprises[:5]))
     print('%d images sur %.0f s — p50 %.1f · p95 %.1f · max %.1f ms · > 16,7 : %d · > 33 : %d' % (tout['n'], dureeS, tout['p50'], tout['p95'], tout['max'], tout['sup16'], tout['sup33']))
+    T = lit.taches
+    if T:
+        agg = {}
+        for t, x, nom in T: a = agg.setdefault(nom, [0, 0, 0]); a[0] += 1; a[1] += x; a[2] = max(a[2], x)
+        print('\nTÂCHES DE 20 ms ET PLUS (%d) — par nom' % len(T))
+        for nom, a in sorted(agg.items(), key=lambda kv: -kv[1][1])[:25]: print('  %4d× · %6d ms · pire %5d · %s' % (a[0], a[1], a[2], nom[:120]))
+        longues = [im for im in images if im[1] > 33.4]; sans = 0
+        for im in longues:
+            if not any(t <= im[0] + 2 and t + x >= im[0] - im[1] - 2 for t, x, _ in T): sans += 1
+        print('  images > 33 ms sans tâche de 20 ms dans leur intervalle (le rendu, le ramasse-miettes) : %d sur %d' % (sans, len(longues)))
     for titre, cle in (('PAR ÉCRAN', 'ecran'), ('PAR ANIMATION', 'animation'), ('ÉCRAN × ANIMATION', 'couple')):
         print('\n' + titre)
         print('  %-52s %6s %6s %6s %7s %6s %6s' % ('', 'images', 'p50', 'p95', 'max', '>16,7', '>33'))

@@ -84,7 +84,11 @@ def passe(b, th):
     lieux = [(195, 250, 'la Toile'), (300, 560, 'le bas de la Toile'), (195, 760, 'la place du + sous le flou')]
     for i, (x_, y_, nom) in enumerate(lieux, 1):
         pg.evaluate("()=>{ const p=document.getElementById('guidePhrase'); if(p) p.__vieux=1; }")
-        x, y = pt(pg, x_, y_); toucher(cdp, pg, x, y); pg.wait_for_timeout(900); e = pg.evaluate(ETAT)
+        x, y = pt(pg, x_, y_); toucher(cdp, pg, x, y); pg.wait_for_timeout(900)
+        for _ in range(20):   # ⚑ v203 (C-271, C-277) : le rappel détrace la phrase, puis l'écrit de nouveau — le nœud neuf vient après le détracé (≤ 2,5 s)
+            e = pg.evaluate(ETAT)
+            if e['neuf'] is True: break
+            pg.wait_for_timeout(150)
         juge('[%s] B · toucher ailleurs n°%d (%s) : l\'étape reste celle du Studio, la phrase du Studio est écrite DE NOUVEAU, mot pour mot ; rien ne s\'ouvre' % (T, i, nom),
              e['guide'] == 'studio' and e['phrase'] == PH_STUDIO and e['neuf'] is True and e['rappels'] == i and not e['choix'] and not e['cs'] and e['eau'],
              'étape %s · nœud neuf %s · rappels %s · « %s » · natures %s' % (e['guide'], e['neuf'], e['rappels'], e['phrase'], e['choix'] or e['cs']))

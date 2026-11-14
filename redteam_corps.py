@@ -153,7 +153,8 @@ with sync_playwright() as p:
                     halo_ko += 1; ex_h = 'ouverture %d [%s] halo %s · corps %s' % (i + 1, th, h, [round(v) for v in c])
             d = m.get('decl') or {}
             ici = (d.get('solIdx'), d.get('idx'))
-            if avant is not None and len(m['pal']) > 2 and ici[0] == avant[0]:   # v203 : le corps suit le sol (le plus contrasté) — seul le sol ne se répète pas
+            force = pg.evaluate("()=>{ try{ const s=_aura.sol(); return !!(s.iles && s.iles.force); }catch(e){ return false; } }")
+            if avant is not None and len(m['pal']) > 2 and ici[0] == avant[0] and not force:   # v203 : le corps suit le sol (le plus contrasté) — seul le sol ne se répète pas ; ⚑ v203 (C-275 passe avant v125) : sauf quand l'app DÉCLARE qu'il est le seul ton à garder les îles lisibles (`force`)
                 suite_ko += 1; ex_s = 'ouverture %d : sol %s corps %s après sol %s corps %s' % (i + 1, ici[0], ici[1], avant[0], avant[1])
             avant = ici
         t('[%s] les %d ouvertures sont lues (la peau pleine est peinte)' % (pal, N), n_lu == N, '%d lues' % n_lu)

@@ -624,7 +624,8 @@
     var attente = [];
     function apresPolices() {
       if (mort) return;
-      try { mesure(); } catch (e) { if (racine.console) racine.console.error('TraceLettres', e); signale('mesure-erreur', { texte: texteDe(), msg: String(e && e.message || e), pile: String(e && e.stack || '').slice(0, 500) }); termine(true); return; }
+      var _ha = null; try { _ha = TL.horsAnim ? TL.horsAnim(cible) : null; } catch (e) { }   /* ⚑ v203 (C-278) : un ancêtre en mouvement de taille (la phrase de la page +) est mesuré à sa fin */
+      try { mesure(); if (_ha) { _ha(); _ha = null; } } catch (e) { if (_ha) { try { _ha(); } catch (_) { } } if (racine.console) racine.console.error('TraceLettres', e); signale('mesure-erreur', { texte: texteDe(), msg: String(e && e.message || e), pile: String(e && e.stack || '').slice(0, 500) }); termine(true); return; }
       if (prep) { range(); if (o.retire) { try { o.retire(); } catch (e) { } } if (!G.length) { termine(false); return; } preRoll(function () { termine(false); }); return; }
       resPret(ctl); if (!G.length) { termine(false); return; }
       /* ⚑ v170d (Tom, C-125) — AUCUN CALCUL PENDANT L'AFFICHAGE : toutes les lettres sont prêtes AVANT que la plume parte (reprises du cache quand le texte a
