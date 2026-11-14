@@ -26375,7 +26375,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
     /* ⚑ v203 (C-278) — PENDANT LE MOUVEMENT DE LA FERMETURE DU CLAVIER (Q598), la phrase est TRANSLATÉE : la mesurer y plaçait le rail à 402 au lieu de 634, et le
        rail, emporté par le même mouvement, passait par-dessus la phrase (déjà en v201b). Il garde sa place pendant le mouvement ; il se replace à sa fin, en glissant. */
     try{ if(window._ppMvtCours && window._ppMvtCours() && r.getAttribute('data-geo')){ setTimeout(function(){ try{ if(window._pinceauRangee) window._pinceauRangee(); }catch(_){ } }, 420); return r; } }catch(_){}
-    r.setAttribute('data-geo', geo); r.__v203revele=0;
+    r.setAttribute('data-geo', geo); r.__v203revele=0; try{ if(window._v203Verifie) window._v203Verifie(); }catch(_){ }
     ['position:absolute','left:0px','top:'+haut+'px','width:390px','height:'+PHT+'px',
      'max-width:none','margin:0','padding:0','overflow-x:auto','overflow-y:hidden','z-index:6'   /* v163b (C-196) : le rail GLISSE — les douze traits s'atteignent */
     ].forEach(function(d){ var i=d.indexOf(':');
@@ -45652,7 +45652,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     el.parentNode.insertBefore(c, el.nextSibling); var cs=getComputedStyle(c), r={w:c.offsetWidth, bg:cs.backgroundColor, rad:cs.borderTopLeftRadius, bw:cs.borderTopWidth}; c.remove(); return r; }
   function visible(el){ var r=el.getBoundingClientRect(); return el.isConnected && r.width>0 && r.height>0; }
   function nettoie(el){ ['width','box-sizing','transition','border-width','position','isolation','justify-content'].forEach(function(p){ el.style.removeProperty(p); }); }
-  function pose(el, c){ var i=el.querySelector(':scope > .v200-mt'); if(i) i.innerHTML=c.html; else el.innerHTML=c.html; if(c.cls!=null) el.className=c.cls; }
+  function pose(el, c){ var i=el.querySelector(':scope > .v200-mt'); if(i) i.innerHTML=c.html; else el.innerHTML=c.html; if(c.cls!=null) el.className=c.cls; try{ if(window._v203Verifie) window._v203Verifie(); }catch(_){ } }   /* v203 (C-278 §4) : le mot changé, la phrase vérifiée avant la peinture */
   /* ── LE MOT D'UNE PLACE (page +) ── */
   function mot(el, cible, w0d){
     if(!el) return; var st=el.__v200;
@@ -45811,7 +45811,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       var cvv=el.querySelector(':scope > canvas.v200-fl'); if(cvv) cvv.remove();
       ['background-color','border-style','border-color','border-width','position','isolation'].forEach(function(p){ el.style.removeProperty(p); });
       if(!c.brut){ var on3=el.classList.contains('ph-on'); el.className=st.tape.cls; if(on3) el.classList.add('ph-on'); el.innerHTML=st.tape.html; el.style.removeProperty('transition'); el.style.removeProperty('width'); nettoie(el); mot(el, c); return; }   /* effacé pendant le remplissage : le chemin du titre effacé (détracé, pointillés, tracé) */
-      var on2=el.classList.contains('ph-on'); el.className=c.cls; if(on2) el.classList.add('ph-on'); el.innerHTML=c.html;
+      var on2=el.classList.contains('ph-on'); el.className=c.cls; if(on2) el.classList.add('ph-on'); el.innerHTML=c.html; try{ if(window._v203Verifie) window._v203Verifie(); }catch(_){ }
       var wc=el.offsetWidth; el.style.removeProperty('transition'); el.style.removeProperty('width'); if(window._ppTout){ try{ window._ppTout(); }catch(_){ } } var wn=el.offsetWidth;   /* la composition passe sur la largeur libre (forcée, elle réduisait le titre à 19) */
       if(Math.abs(wn-wc)>0.5){ el.style.setProperty('width', wc+'px','important'); void el.offsetWidth; el.style.setProperty('transition','width 160ms '+COURBE,'important'); el.style.setProperty('width', wn+'px','important'); el.__v203lisse=1; setTimeout(function(){ el.__v203lisse=0; if(!el.__v200){ nettoie(el); if(window._ppTout){ try{ window._ppTout(); }catch(_){ } } } }, 200); }   /* le temps que l'encart rejoigne sa largeur, la composition ne le mesure pas (sa largeur est forcée) ; elle passe ensuite */
       else nettoie(el);
@@ -45882,14 +45882,20 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
         s.m=m; s.vu=L.length>0; }); }catch(_){ } requestAnimationFrame(image); })();
   /* ② LES VALEURS : un fondu croisé, l'ancienne valeur posée par-dessus le temps de s'effacer */
   /* ③ LES TEXTES : détracé puis tracé (le système de C-125) */
-  function texte(el, ancien, neuf){ var T=TL(); if(!T || reduit() || !el.isConnected) return; el.__v201in=true; el.innerHTML=ancien; el.__v201in=false; declare(el, 4000);
-    T.trace(el, null, {inverse:true, surFin:function(r){ el.__v201in=true; el.innerHTML=neuf; el.__v201in=false; if(r && r.interrompu) return; T.trace(el, null, {surFin:function(){ try{ window.__dcA && window.__dcA.delete(el); el.__v200=null; }catch(_){ } }}); }}); }
+  /* ⚑ v203 (fin de v203) — une transition qui réécrit son propre texte (l'ancien, puis le neuf) ne se prend jamais pour un changement : la transition en cours se
+     déclare (`__v203tx`, jusqu'à la fin du tracé) et l'observateur ne la relit pas. Sans cela l'observateur relançait la transition à rebours, sans fin
+     (WebKit figé à la plantation, trouvé par redteam_moi_phrase) ; le fondu croisé d'avant s'en gardait par un test que son retrait avait emporté. */
+  function texte(el, ancien, neuf){ var T=TL(); if(!T || reduit() || !el.isConnected || el.__v203tx) return; el.__v203tx=true;
+    el.__v201in=true; el.innerHTML=ancien; el.__v201in=false; if(el.__v200 && el.__v200.fini) el.__v200=null; declare(el, 4000);
+    var fin=function(){ el.__v203tx=false; try{ window.__dcA && window.__dcA.delete(el); el.__v200=null; }catch(_){ } };
+    setTimeout(function(){ if(el.__v203tx) fin(); }, 6000);
+    T.trace(el, null, {inverse:true, surFin:function(r){ el.__v201in=true; el.innerHTML=neuf; el.__v201in=false; if(r && r.interrompu){ fin(); return; } T.trace(el, null, {surFin:fin}); }}); }
   /* les observateurs : chaque élément suivi garde sa dernière valeur ; un écrivain qui la change déclenche la transition */
   var SUIVIS=[ ['.cm5-nb','texte'], ['#settingsScreen .scard .v','texte'], 
                ['#st3pn','texte'] ];
   function vu(el){ var r=el.getClientRects(); if(!r.length) return false; var cs=getComputedStyle(el); return cs.visibility!=='hidden' && +cs.opacity>0.05; }
   function branche(el, mode){ if(el.__v201o) return; el.__v201o=1; el.__v201h=el.innerHTML;
-    new MutationObserver(function(){ if(el.__v201in) return; var h=el.innerHTML; if(h===el.__v201h) return; var a=el.__v201h; el.__v201h=h;
+    new MutationObserver(function(){ if(el.__v201in || el.__v203tx) return; var h=el.innerHTML; if(h===el.__v201h) return; var a=el.__v201h; el.__v201h=h;
       if(!vu(el) || !a.replace(/<[^>]*>/g,'').trim()) return;   /* caché, ou vide avant : rien à adoucir (une première pose) */
       texte(el, a, h); }).observe(el, {childList:true, characterData:true, subtree:true}); }
   setInterval(function(){ SUIVIS.forEach(function(s){ document.querySelectorAll(s[0]).forEach(function(el){ branche(el, s[1]); }); }); }, 400);
@@ -45904,7 +45910,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function emplacement(contSel, itemSel, cle, mode){ var C=null, der={}, enCours={};
     function lit(){ var o={}; if(!C) return o; C.querySelectorAll(itemSel).forEach(function(e){ var k=cle(e); if(k!=null && !(k in o)) o[k]={e:e, h:e.innerHTML}; }); return o; }
     (function arme(){ var c=document.querySelector(contSel); if(!c){ setTimeout(arme, 700); return; } if(c===C) { setTimeout(arme, 1500); return; } C=c; var a=lit(); der={}; Object.keys(a).forEach(function(k){ der[k]=a[k].h; });
-      var prevu=false; function compare(){ prevu=false; var b=lit(); Object.keys(b).forEach(function(k){ var e=b[k].e; if(e.__v201in || (e.__v200 && !e.__v200.fini)) return; var h=b[k].h, av=der[k];
+      var prevu=false; function compare(){ prevu=false; var b=lit(); Object.keys(b).forEach(function(k){ var e=b[k].e; if(e.__v201in || e.__v203tx || (e.__v200 && !e.__v200.fini)) return; var h=b[k].h, av=der[k];
           if(!vu(e)) return;   /* caché (un écran qui se rebâtit) : on garde l'ancienne valeur, on compare quand il se montre */
           der[k]=h; var ec=enCours[k];
           if(av===h && ec && performance.now()-ec.t<200 && ec.e!==e){ ec.e=e; texte(e, ec.a, h); return; }   /* le nœud qui fondait vient d'être remplacé (l'écran rebâti deux fois) : le fondu continue sur le neuf */
@@ -45969,7 +45975,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       var c=TL.trace(s, null, {inverse:true}), fin=function(){ if(s.parentNode) s.remove(); }; (c && c.fin ? c.fin : Promise.resolve()).then(fin, fin); setTimeout(fin, 2500); }catch(_){ } }
   function enveloppe(nom, sel){ var o=window[nom]; if(typeof o!=='function' || o.__v203l) return false;
     var w=function(){ var cs=document.getElementById('createSheet'), vu=!!(cs && cs.classList.contains('show') && !cs.classList.contains('acc-passe') && !cs.classList.contains('pp-choix'));
-      var av=vu ? liaisons(sel) : null, cp=(vu && !reduit()) ? copies(sel) : null, r=o.apply(this, arguments);
+      var av=vu ? liaisons(sel) : null, cp=(vu && !reduit()) ? copies(sel) : null, r=o.apply(this, arguments); try{ if(window._v203Verifie) window._v203Verifie(); }catch(_){ }
       try{ var TL=window.TraceLettres; if(av && TL && TL.trace && !reduit()){ var t=document.querySelector(sel), reste=av.slice(), apres=[];
           if(t) t.querySelectorAll('em').forEach(function(e){ if(e.closest('[data-ph],[data-np]')) return; var x=(e.textContent||'').trim(); if(!x) return; apres.push(x); var i=reste.indexOf(x);
             if(i>=0){ reste.splice(i,1); return; } try{ var ct=TL.trace(e, null, {arme:true}); setTimeout(function(){ try{ if(ct && ct.lance) ct.lance(); }catch(_){ } }, 340); }catch(_){ } });   /* armé (la découpe vide posée tout de suite), lancé quand la phrase et le rail ont glissé à leur place (320 ms) : sinon il se traçait sous le rail qui descendait encore */
@@ -45989,7 +45995,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    par rapport à la phrase (son propre glissement ne se compte pas deux fois). Rien pendant le mouvement du clavier (Q598, il porte la page), à l'ouverture (la page se pose),
    sous « Réduire les animations ». `window._sansGlisse(el)` met ces mouvements à leur fin le temps d'une mesure (le tracé des lettres, le rail) et rend une fonction qui les remet. */
 (function(){
-  var DUR=320, EZ='cubic-bezier(.33,0,.67,1)', PREV=null, OUV=0, vu=false, CLS=null;
+  var DUR=320, EZ='cubic-bezier(.33,0,.67,1)', PREV=null, OUV=0, vu=false, CLS=null, VUES=new WeakSet();
   function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
   function cs(){ return document.getElementById('createSheet'); }
   function pos(e, base){ var x=0, y=0, q=e, n=0; while(q && q!==base && n++<30){ x+=q.offsetLeft||0; y+=q.offsetTop||0; q=q.offsetParent; } return q===base ? [x, y] : null; }
@@ -46003,30 +46009,36 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function bez(u){ var x1=.33, x2=.67, t=u; for(var i=0;i<8;i++){ var x=3*(1-t)*(1-t)*t*x1+3*(1-t)*t*t*x2+t*t*t-u, dx=3*(1-t)*(1-t)*x1+6*(1-t)*t*(x2-x1)+3*t*t*(1-x2); if(Math.abs(x)<1e-4 || !dx) break; t-=x/dx; t=Math.max(0,Math.min(1,t)); } return 3*(1-t)*t*t+t*t*t; }
   function reste(e){ var g=e && e.__v203c; if(!g) return null; var u=(performance.now()-g.t)/DUR; if(u>=1) return [0,0]; var f=1-bez(Math.max(0,u)); return [g.d[0]*f, g.d[1]*f]; }
   function glisse(e, dx, dy){ var c=reste(e) || courant(e); dx+=c[0]; dy+=c[1]; e.getAnimations().forEach(function(a){ if(a.id==='v203c') a.cancel(); });
-    var K=[{translate:dx+'px '+dy+'px'},{translate:'0 0'}], O={duration:DUR, easing:EZ, id:'v203c'}; e.animate(K, O); e.__v203c={t:performance.now(), d:[dx, dy]}; window.__animT=performance.now();
+    /* le rail : `translate` y est posé en `!important` par la page « pas prête » (ppa-haut) — une animation ne le bat pas ; il glisse par `transform` */
+    var K=(e.id==='csPinceau') ? [{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'translate(0,0)'}] : [{translate:dx+'px '+dy+'px'},{translate:'0 0'}], O={duration:DUR, easing:EZ, id:'v203c'};
+    e.animate(K, O); e.__v203c={t:performance.now(), d:[dx, dy]}; window.__animT=performance.now();
     var cv=e.nextElementSibling; if(cv && cv.tagName==='CANVAS' && cv.hasAttribute('data-trace')){ cv.getAnimations().forEach(function(a){ if(a.id==='v203c') a.cancel(); }); cv.animate(K, O); } }   /* le canevas d'un tracé en cours est le frère de son mot */
   function image(){ requestAnimationFrame(image); verifie(); }
-  /* un rebâti fait dans une autre fonction d'image de la même image (la fin d'un tracé, une passe de composition) : vérifié tout de suite, avant la peinture */
-  var MO=null, prevu=false;
-  function observe(){ var c=cs(); if(!c){ setTimeout(observe, 600); return; } if(MO) return;
-    MO=new MutationObserver(function(ms){ if(prevu) return; for(var i=0;i<ms.length;i++){ var m=ms[i], t=m.target; if(m.type==='childList' || t.id==='csPhrase' || t.id==='nueePhrase' || t.id==='csPinceau'){ prevu=true; Promise.resolve().then(function(){ prevu=false; verifie(); }); return; } } });
-    MO.observe(c, {childList:true, subtree:true}); ['csPhrase','nueePhrase'].forEach(function(id){ var n=document.getElementById(id); if(n) MO.observe(n, {attributes:true, attributeFilter:['style','class']}); });
-    (function rail(){ var r=document.getElementById('csPinceau'); if(!r){ setTimeout(rail, 800); return; } MO.observe(r, {attributes:true, attributeFilter:['style']}); })(); }
-  observe();
+  /* un rebâti fait dans une autre fonction d'image de la même image (la fin d'un tracé, une passe de composition) : vérifié dans sa tâche, avant la peinture — appelé par le
+     rebâti de la phrase (lot-V203-LIAISONS), le rail replacé, le mot changé (lot-V200-DOUCEUR). (Un observateur de tout l'écran recalculait à chaque écriture de style : il
+     n'est pas employé.) */
+  var prevu=false; window._v203Verifie=function(){ if(prevu) return; prevu=true; Promise.resolve().then(function(){ prevu=false; try{ verifie(); }catch(_){ } }); };
   function verifie(){ var c=cs(); if(!c){ PREV=null; return; }
     var v=c.classList.contains('show') && !c.classList.contains('acc-passe'); if(v && !vu) OUV=performance.now(); vu=v;
     var cls=(c.classList.contains('pp-ouvert')?'o':'')+(c.classList.contains('pp-choix')?'c':'')+(c.getAttribute('data-kind')||'');
-    var nat=c.getAttribute('data-kind')||'';
-    if(!v || reduit() || performance.now()-OUV<600 || nat!==CLS){ CLS=nat; PREV=null; return; }   /* la page qui se pose, une autre nature (une page neuve) : rien ne glisse */
+    var nat=(c.getAttribute('data-kind')||'')+(c.classList.contains('pp-choix')?'|choix':'');
+    if(!v || reduit() || performance.now()-OUV<600 || nat!==CLS || c.classList.contains('pp-choix') || c.classList.contains('pp-ouvert')){ CLS=nat; PREV=null; return; }   /* un choix ouvert (les personnes, l'échéance) a son propre écran ; pendant la saisie, ce qu'on tape paraît tel quel (Q620) */   /* la page qui se pose, une autre nature (une page neuve) : rien ne glisse */
     var L=suivis(c), ph=c.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt');
     /* le mouvement du clavier (Q598, la page entière glisse) : on suit la place VUE ; à sa fin, chacun glisse de la place vue à la sienne — la fin n'est jamais un recalage */
     var MVT=!!(window._ppMvtCours && window._ppMvtCours());
-    var M={}; L.forEach(function(x){ M[x[0]]={e:x[1], p:x[2]}; if(MVT && (x[0]==='phrase' || x[0]==='rail')) M[x[0]].mvt=true; });
+    var D=c.getBoundingClientRect(), kd=(D.width/(c.offsetWidth||390))||1, PR=ph?ph.getBoundingClientRect():null;
+    var M={}; L.forEach(function(x){ M[x[0]]={e:x[1], p:x[2]}; if(MVT && (x[0]==='phrase' || x[0]==='rail')) M[x[0]].mvt=true;
+      if(PR && x[0]!=='phrase' && x[0]!=='rail'){ var r=x[1].getBoundingClientRect(); M[x[0]].vr=[(r.left-PR.left)/kd, (r.top-PR.top)/kd]; } });   /* la place VUE dans la phrase (sa mise à l'échelle comprise) */
     /* pendant le mouvement du clavier, la phrase et le rail sont portés par lui ; les mots, eux, glissent dans la phrase. À sa fin, la phrase et le rail repartent de leur
        place de mise en page (aucun glissement : le mouvement y arrive). ⚠ Non réglé, déjà en v201b : son DÉPART ne tombe pas toujours sur la place de la saisie (12 à 18 pt). */
     if(PREV && PREV.__mvt!==MVT) ['phrase','rail'].forEach(function(k){ if(M[k]) M[k].fait=true; });
-    var tailleChange=false; try{ if(ph) ph.getAnimations().forEach(function(a){ var k0=a.effect && a.effect.getKeyframes && a.effect.getKeyframes()[0]; if(k0 && k0.scale && a.currentTime!=null && a.currentTime<60) tailleChange=true; }); }catch(_){ }   /* la taille de la phrase vient de changer : sa mise à l'échelle (lot-V202A-TAILLE) porte déjà les mots */
-    if(PREV) Object.keys(M).forEach(function(k){ var a=PREV[k], b=M[k]; if(!a || b.mvt || b.fait) return; if(tailleChange && k!=='phrase' && k!=='rail') return; var dx=a.p[0]-b.p[0], dy=a.p[1]-b.p[1];
+    var tailleChange=false; try{ if(ph) ph.getAnimations().forEach(function(a){ var k0=a.effect && a.effect.getKeyframes && a.effect.getKeyframes()[0]; if(k0 && k0.scale && !VUES.has(a)){ VUES.add(a); tailleChange=true; } }); }catch(_){ }   /* une fois par mise à l'échelle neuve */   /* la taille de la phrase vient de changer : sa mise à l'échelle (lot-V202A-TAILLE) porte déjà les mots */
+    var sc=1; try{ sc=parseFloat(getComputedStyle(ph).scale)||1; }catch(_){ }
+    if(PREV) Object.keys(M).forEach(function(k){ var a=PREV[k], b=M[k]; if(!a || b.mvt || b.fait) return;
+      /* la taille vient de changer : sa mise à l'échelle garde la phrase où elle était, mais un mot qui change de ligne ne suit pas l'échelle — il glisse de la place où on le
+         voyait à celle où l'échelle le pose (en unités de la phrase mise à l'échelle) */
+      if(tailleChange && k!=='phrase' && k!=='rail'){ if(!a.vr || !b.vr) return; var ex=(a.vr[0]-b.vr[0])/sc, ey=(a.vr[1]-b.vr[1])/sc; if(Math.abs(ex)>=1.5 || Math.abs(ey)>=1.5){ try{ glisse(b.e, ex, ey); }catch(_){ } } return; }
+      var dx=a.p[0]-b.p[0], dy=a.p[1]-b.p[1];
       if(a.e!==b.e){ var o2=reste(a.e) || a.off; if(o2){ dx+=o2[0]; dy+=o2[1]; } }   /* un nœud rebâti (la phrase, un mot) : le décalage qu'on voyait encore sur l'ancien passe au neuf — sans cela il s'arrêtait net */
       if(Math.abs(dx)<1.5 && Math.abs(dy)<1.5) return; try{ glisse(b.e, dx, dy); }catch(_){ } });
     Object.keys(M).forEach(function(k){ if(!M[k].mvt) M[k].off=courant(M[k].e); }); M.__mvt=MVT;
