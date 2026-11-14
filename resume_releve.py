@@ -89,6 +89,7 @@ def main():
     T = lit.taches
     if T:
         agg = {}
+        SOM = [(t, x, nom) for t, x, nom in T if nom.startswith('somme ')]; T = [(t, x, nom) for t, x, nom in T if not nom.startswith('somme ')]
         for t, x, nom in T: a = agg.setdefault(nom, [0, 0, 0]); a[0] += 1; a[1] += x; a[2] = max(a[2], x)
         print('\nTÂCHES DE 20 ms ET PLUS (%d) — par nom' % len(T))
         for nom, a in sorted(agg.items(), key=lambda kv: -kv[1][1])[:25]: print('  %4d× · %6d ms · pire %5d · %s' % (a[0], a[1], a[2], nom[:120]))
@@ -96,6 +97,16 @@ def main():
         for im in longues:
             if not any(t <= im[0] + 2 and t + x >= im[0] - im[1] - 2 for t, x, _ in T): sans += 1
         print('  images > 33 ms sans tâche de 20 ms dans leur intervalle (le rendu, le ramasse-miettes) : %d sur %d' % (sans, len(longues)))
+        if SOM:
+            g = {}; peu = 0
+            for t, x, nom in SOM:
+                corps = nom.split(' : ', 1)[1] if ' : ' in nom else ''
+                tete = corps.split(' | ')[0] if corps else '(aucun rappel de 3 ms)'
+                tete = ' '.join(tete.split(' ')[1:]) if corps else tete
+                a = g.setdefault(tete, [0, 0]); a[0] += 1; a[1] += x
+                if x < 10: peu += 1
+            print('\nIMAGES > 33 ms : CE QUI A TOURNÉ PENDANT ELLES (rappels de 3 ms et plus) — %d images, dont %d avec moins de 10 ms de script' % (len(SOM), peu))
+            for nom, a in sorted(g.items(), key=lambda kv: -kv[1][0])[:20]: print('  %4d× · script %6d ms · %s' % (a[0], a[1], nom[:110]))
     for titre, cle in (('PAR ÉCRAN', 'ecran'), ('PAR ANIMATION', 'animation'), ('ÉCRAN × ANIMATION', 'couple')):
         print('\n' + titre)
         print('  %-52s %6s %6s %6s %7s %6s %6s' % ('', 'images', 'p50', 'p95', 'max', '>16,7', '>33'))

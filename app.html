@@ -9,7 +9,11 @@
 (function(){ try{ if(/[?&]releve=0(?:&|$)/.test(location.search)) return; }catch(_){ }
   var P=performance, L=window.__taches=[], SEUIL=20;
   function nomDe(f){ try{ var s=f.name ? f.name+' ' : ''; return (s+String(f).slice(0,90)).replace(/\s+/g,' ').slice(0,110); }catch(_){ return '?'; } }
-  function note(t, f, quoi){ var x=P.now()-t; if(x>=SEUIL && L.length<3000) L.push([Math.round(t), Math.round(x), quoi+' '+nomDe(f)]); }
+  /* ⚑ v203 (second relevé de Tom : 44 images de 60 à 88 ms sur la page +, toutes les 1,45 à 1,7 s, sans aucun rappel de 20 ms) : les rappels de 3 ms et plus vont dans
+     un anneau (les 400 derniers) ; le relevé y cherche, pour chaque image de plus de 33 ms, ce qui a tourné pendant elle (`window.__petites`) */
+  var PT=window.__petites=[];
+  function note(t, f, quoi){ var x=P.now()-t; if(x>=3){ PT.push([t, x, f, quoi]); if(PT.length>400) PT.shift(); } if(x>=SEUIL && L.length<3000) L.push([Math.round(t), Math.round(x), quoi+' '+nomDe(f)]); }
+  window.__nomTache=nomDe;
   function chrono(f, quoi){ return function(){ var t=P.now(); try{ return f.apply(this, arguments); } finally{ note(t, f, quoi); } }; }
   ['setTimeout','setInterval'].forEach(function(n){ var o=window[n]; window[n]=function(f, d){ if(typeof f!=='function') return o.apply(window, arguments); var a=[].slice.call(arguments); a[0]=chrono(f, n==='setTimeout'?'minuterie':'intervalle'); return o.apply(window, a); }; });
   var R=window.requestAnimationFrame; window.requestAnimationFrame=function(f){ return R.call(window, typeof f==='function' ? chrono(f, 'image') : f); };
@@ -23,6 +27,16 @@
       Object.defineProperty(pr, 'on'+t, {configurable:true, enumerable:d.enumerable, get:function(){ var f=d.get.call(this); return (f && f.__orig) || f; },
         set:function(f){ if(typeof f==='function'){ var w=chrono(f, 'propriété:on'+t); w.__orig=f; d.set.call(this, w); } else d.set.call(this, f); } }); }catch(_){ } }); });
 })();
+</script>
+<script id="lot-V203-ECRAN-ANIME">
+/* ⚑ v203 (relevé de Tom, 14 nov.) — UN ÉCRAN QUI S'ANIME DE LUI-MÊME : la Pelote qui tourne (l'Aura), l'aperçu du Studio, l'onboarding, le guide, la veille.
+   Les tâches de fond lourdes (la collection de l'écran qui vend, la préparation de la Pelote) n'y tombent jamais : sur l'iPhone une seule dalle y coûtait 1 040 ms. */
+window._ecranAnime=function(){ try{ var d=document, f=function(id){ var e=d.getElementById(id); return !!(e && e.classList.contains('show')); };
+  var cx=innerWidth/2, cy=innerHeight*0.45, el=d.elementFromPoint(cx,cy);
+  var sous=function(id){ var e=d.getElementById(id); return !!(e && el && e.contains(el)); };
+  if(sous('auraScreen') || sous('studioScreen') || sous('promiOnb') || sous('promiVeille') || f('promiVeille') || d.getElementById('guide')) return true;
+  var ob=d.getElementById('promiOnb'); if(ob && !ob.classList.contains('gone') && ob.offsetWidth>0) return true;
+  return false; }catch(_){ return false; } };
 </script>
 <script id="lot-V167-DOIGTS">/* ⚑ v167 (Tom, C-181 §3) — « au bout de 2 minutes, la veille n'arrive pas » (iPhone). LA CAUSE, reproduite sur l'état de Tom en WebKit avec de vrais
    évènements de pointeur : le mur de Ma Parole ! (lot-V104-MURS) écoute `pointerup` sur `window` en capture et l'ARRÊTE (`stopImmediatePropagation`) quand on
@@ -2747,7 +2761,9 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
         if(prec){ var dur=n-prec; if(document.visibilityState==='visible' && dur<5000){ if(++ecrN>=30 || ecr==='?'){ ecrN=0; ecr=lisEcran(); }
             var _e=[Math.round(n-T0), Math.round(dur*10)/10, tag(ecr), tag(anime(n))];
             if(ecr.indexOf('fiche')===0 && n-dernierDefile<1200){ var _dp=document.getElementById('detailPoster'); if(_dp) _e.push(Math.round(_dp.scrollTop*10)/10); }   /* ⚑ v203 (C-267) : le défilement de la fiche, image par image, tant qu'elle bouge — la continuité du retour se lit sur l'iPhone */
-            BUF.push(_e); } }
+            BUF.push(_e);
+            if(dur>33.4){ try{ var PT=window.__petites||[], som=0, q=[], a0=prec-2; for(var i=PT.length-1;i>=0;i--){ var x=PT[i]; if(x[0]+x[1]<a0) break; if(x[0]<=n){ som+=x[1]; q.push(x); } }
+                q.sort(function(u,v){ return v[1]-u[1]; }); if(window.__taches && window.__taches.length<3000) window.__taches.push([prec, Math.round(som), 'somme '+q.length+' rappels (image '+Math.round(dur)+' ms) : '+q.slice(0,3).map(function(x){ return Math.round(x[1])+' '+x[3]+' '+window.__nomTache(x[2]).slice(0,50); }).join(' | ')]); }catch(_){ } } } }
         prec=n;
         if(n-dernierEnvoi>2000){ var occ=false; try{ occ=(window._animEnCours && window._animEnCours()) || (window.__doigts && window.__doigts.n>0) || window._tenirAnime; }catch(_){ }
           if(!occ || BUF.length>1800) setTimeout(function(){ envoie(false); }, 0); } }
@@ -3404,7 +3420,7 @@ function miniCell(p){
   return `<svg viewBox="0 0 ${S} ${S}" style="width:28px;height:28px;flex:none"><path d="${roundPath(fit,3)}" fill="${col}" opacity="${p.draft?0.45:1}"/></svg>`;}
 
 $$('[data-close]').forEach(function(b){b.onclick=function(e){var el=e.target.closest('.screen,.sheet,.poster,.seal-ov');if(el)el.classList.remove('show');try{if(typeof scrim!=='undefined'&&scrim&&scrim.classList)scrim.classList.remove('show');}catch(_){}};});
-window.renderCsDalle=function(){var cs=document.getElementById('createSheet');var k=cs?(cs.getAttribute('data-kind')||'promi'):'promi';var tint={promi:'#82AEF8',chiche:'#FFB8D2',nuee:'#E6D8FA',draft:'#FB4C0D'}[k]||'#82AEF8';try{if(typeof promiTrame==='function')promiTrame('csTrameCv','createSheet',{cut:0,size:0.52,y:0.40,tint:tint});}catch(e){}
+window.renderCsDalle=function(){/* ⚑ v203 (relevé de Tom : 577 ms à l'ouverture de la page +) : le peintre de la page + (`_ppEcran`, `trait()`) repeint #csTrameCv en entier — mesuré, le canevas est le même au pixel sans ce rendu d'août */ if(window._ppEcran) return; var cs=document.getElementById('createSheet');var k=cs?(cs.getAttribute('data-kind')||'promi'):'promi';var tint={promi:'#82AEF8',chiche:'#FFB8D2',nuee:'#E6D8FA',draft:'#FB4C0D'}[k]||'#82AEF8';try{if(typeof promiTrame==='function')promiTrame('csTrameCv','createSheet',{cut:0,size:0.52,y:0.40,tint:tint});}catch(e){}
 
   try{if(window._dalleDerive)_dalleDerive('createSheet');}catch(e){}};
 window.renderTileIcons=function(){try{
@@ -21168,13 +21184,21 @@ var CREMEETAT='#F7F0DE';
       if(!(window._rendDalle && window.Toile && Toile.dalleAbs && Toile.dalleAbs(p.id))) return;
       var posterW=dp.clientWidth||W, sc=posterW/W, dpr=Math.max(2,Math.min(3,window.devicePixelRatio||2)), k=dpr*sc, nat=nature(dp);
       var o=window._ppRampe?{rampe:window._ppRampe(nat)}:undefined, B=[[228,190],[180,150]], i=0;
+      /* ⚑ v203 (relevé de Tom) : chaque dalle coûte 357 à 573 ms sur l'iPhone ; elle tombait sous le doigt qui fait défiler la fiche qu'on vient d'ouvrir.
+         Elle attend le calme : aucun doigt, aucun défilement depuis 0,5 s, aucune animation — sinon elle se replanifie (la même fiche seulement). */
+      var pid=p.id;
       (function un(){ if(i>=B.length) return;
         if(window._tirageActive || window._tenirAnime || window._instant) return;
+        var n0=performance.now(), dp2=document.getElementById('detailPoster');
+        if(!dp2 || !dp2.classList.contains('show') || typeof cur==='undefined' || !cur || cur.id!==pid) return;
+        if((window.__doigts && window.__doigts.n>0) || n0-(window._tDefFiche||0)<500 || (window._animEnCours && window._animEnCours())){ setTimeout(un, 150); return; }
         try{ window._rendDalle(p.id, B[i][0]*k, B[i][1]*k, o, true); }catch(_){}
-        i++; if(i<B.length) setTimeout(un, 120); })();
+        i++; if(i<B.length) setTimeout(un, 400); })();
     }catch(_){}
   }
   window._instantPrechauffe=prechauffe;
+  try{ document.addEventListener('scroll', function(e){ var t=e.target; if(t && t.id==='detailPoster') window._tDefFiche=performance.now(); }, {capture:true, passive:true});
+    }catch(_){}
   /* le déclencheur RÉEL : le geste qui se referme passe par le bouton « Tenue » du
      sélecteur d'état (l. 4604). On écoute ce nœud-là, pas une famille. */
   document.addEventListener('click',function(e){
@@ -26311,6 +26335,11 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
       var bas = function(x){ return (x.getBoundingClientRect().bottom - cr.top)/k; };
       var hautDe = function(x){ return (x.getBoundingClientRect().top - cr.top)/k; };
       var dessus = 0;
+      /* ⚑ v203 (C-278) : la phrase qui glisse ou change de taille (lot-V202A-TAILLE) se mesure à sa place FINALE — mesurée au milieu de son mouvement, le rail se
+         replaçait à chaque image et oscillait (647 → 635 → 643 pt) */
+      var _phT = cs.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt'), _haR = null;
+      try{ _haR = (_phT && window.TraceLettres && TraceLettres.horsAnim) ? TraceLettres.horsAnim(_phT) : null; }catch(_){}
+      try{
       [].forEach.call(cs.querySelectorAll('#csPhrase .ph-txt > .ph-m, #csPhrase .ph-txt > .ph-b,'
                     + ' #nueePhrase .ph-txt > .ph-m, #nueePhrase .ph-txt > .ph-b'), function(x){
         if(vu(x)) dessus = Math.max(dessus, bas(x)); });
@@ -26318,6 +26347,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
         if(vu(x)) dessus = Math.max(dessus, bas(x) - INK_AIDE); });
       var gm = cs.querySelector('.pp-garde-mot');
       if(vu(gm)) dessus = Math.max(dessus, bas(gm) - INK_MOT);
+      } finally { if(_haR){ try{ _haR(); }catch(_){} } }
       /* ⚑ v150 (C-158, C-149) : la phrase d'un Chiche ou d'un Cercle remonte (`_ppDyPhrase`) et « garder de côté » descend de 4 pt — le rail, lui,
          ne bouge pas (« le choix du trait ne bouge pas ») : il se place comme si ni l'une ni l'autre n'avaient bougé. */
       dessus -= (window._ppDyPhrase || 0);
@@ -26344,7 +26374,9 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
        sa cote est posée tout de suite) */
     try{ var hAv=parseFloat(r.style.getPropertyValue('top')); if(hAv>0 && Math.abs(hAv-haut)>0.5 && !r.__v203sans && !r.__v203revele && r.__v203vu && r.style.getPropertyValue('display')!=='none' && r.animate && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)){
         /* vers le bas (la phrase a pris une ligne) : il s'écarte vite de la ligne qui vient de paraître (départ vif, arrivée douce) ; vers le haut : la courbe des transitions */
-        var dn=haut>hAv; if(r.__v203g) r.__v203g.cancel(); r.__v203g=r.animate([{transform:'translateY('+(hAv-haut)+'px)'},{transform:'translateY(0)'}], {duration:dn?220:320, easing:dn?'cubic-bezier(.15,.85,.35,1)':'cubic-bezier(.33,0,.67,1)'}); window.__animT=performance.now(); } }catch(_){}
+        /* il part de la place où on le VOIT (un glissement en cours compris), jamais de sa cote d'avant : repartir de la cote faisait un saut */
+        var dn=haut>hAv, vis=hAv; try{ var _m=/matrix\(([^)]+)\)/.exec(getComputedStyle(r).transform||''); if(_m){ var _v=_m[1].split(',').map(parseFloat); if(isFinite(_v[5])) vis=hAv+_v[5]; } }catch(_){}
+        if(r.__v203g) r.__v203g.cancel(); r.__v203g=r.animate([{transform:'translateY('+(vis-haut)+'px)'},{transform:'translateY(0)'}], {duration:320, easing:'cubic-bezier(.33,0,.67,1)'}); window.__animT=performance.now(); } }catch(_){}   /* même durée, même courbe que la phrase (« la suite glisse avec elle ») */
     r.setAttribute('data-geo', geo); r.__v203revele=0; r.__v203vu = cs.classList.contains('show') && !cs.classList.contains('acc-passe') && !cs.classList.contains('pp-choix');   /* une place prise sur une page cachée (qui se compose) n'a jamais été vue : on n'en part pas en glissant */
     ['position:absolute','left:0px','top:'+haut+'px','width:390px','height:'+PHT+'px',
      'max-width:none','margin:0','padding:0','overflow-x:auto','overflow-y:hidden','z-index:6'   /* v163b (C-196) : le rail GLISSE — les douze traits s'atteignent */
@@ -32667,6 +32699,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       if(window._tMouv && n-window._tMouv<900) return false;
       var ob=document.getElementById('promiOnb'); if(ob && !ob.classList.contains('gone') && ob.offsetWidth>0) return false;   /* l'onboarding joue : on attend */
       if(document.getElementById('guide')) return false;
+      if(window._ecranAnime && window._ecranAnime()) return false;   /* ⚑ v203 : l'atlas (674 et 822 ms sur l'iPhone) ne tombe plus sous une animation */
       return true; }catch(_){ return false; }
   }
   function prechauffe(){
@@ -33783,7 +33816,8 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
     if(window._evolRecente && window._evolRecente(4000)) return false;   /* v144 (C-112) : ni pendant qu'une dalle arrive ou part, ni dans les 4 s qui suivent le toucher */
     /* ⚑ v201a (C-273) : ni pendant un tracé ni dans la seconde et demie qui le suit, ni la page + ou une fiche ouverte (la naissance du trait, « moi ») */
     try{ var _TL=window.TraceLettres; if((window._animEnCours && window._animEnCours()) || (_TL && _TL._finT && performance.now()-_TL._finT<1500)) return false;
-      var _o=function(id){ var e=document.getElementById(id); return !!(e && e.classList.contains('show')); }; if(_o('createSheet') || _o('detailPoster')) return false; }catch(_){ }
+      var _o=function(id){ var e=document.getElementById(id); return !!(e && e.classList.contains('show')); }; if(_o('createSheet') || _o('detailPoster')) return false;
+      if(window._ecranAnime && window._ecranAnime()) return false; }catch(_){ }   /* ⚑ v203 (relevé de Tom) : une dalle de 1 040 ms tombait sous la Pelote qui tourne */
     return performance.now()-_toucheA>3000; }   /* ⚑ v100 : et pas dans les 2,5 s d'un changement d'écran */
   function fond(j){
     if(j!=null && j!==JETON) return;                 /* une chaîne plus récente a pris la main */
@@ -39642,7 +39676,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var c=document.createElement('canvas'); c.width=390; c.height=844; c.getContext('2d').drawImage(bg, 0, 0, 390, 844);
       var m=(window.Toile&&Toile.mondeCourant)?Toile.mondeCourant():{}; var _fl=Flaques.floute(c, 4.8); try{ _fl.__flou=1; }catch(_){ } var f={net:c, flou:_fl, t:performance.now(), monde:(document.getElementById('studioScreen').getAttribute('data-stp-monde')||m.m||'')+'|'+(m.p||'')};
       window._fondAchat=f; return f; }catch(_){ return null; } }
-  ['touchstart','pointerdown'].forEach(function(n){ document.addEventListener(n, function(e){ var b=e.target && e.target.closest && e.target.closest('#stLockBuy'); if(b) prepareFondStudio(); }, {capture:true, passive:true}); });
+  ['touchstart','pointerdown'].forEach(function(n){ document.addEventListener(n, function(e){ var b=e.target && e.target.closest && e.target.closest('#stLockBuy'); if(b){ var _f=window._fondAchat; if(_f && performance.now()-_f.t<1500) return; prepareFondStudio(); } }, {capture:true, passive:true}); });   /* ⚑ v203 (relevé de Tom) : touchstart PUIS pointerdown le refaisaient deux fois — 563 + 564 ms */
   /* ⚑ v157 (Tom, C-170 suite) — « Après l'achat, le design est déjà débloqué : derrière le second encart (“Garder ton achat”), le Studio est NET, sans flou
      ni voile. On voit le monde débloqué à travers l'encart. » Le second encart ne pose plus de fond : l'hôte reste transparent, et le panneau naît (et part)
      en flaques sur l'image NETTE du Studio de cet instant — aucun pixel flouté, même pendant le passage. Le premier encart garde son flou en flaques. */
@@ -45545,6 +45579,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var el=place(c); if(el && !window._ppMoi) prepare(el);
     if(pret!==!!window._ppMoi){ pose(pret); return; }
     /* ⚑ v203 (C-278) : la place se relit — une reconstruction de la phrase (le sens basculé pendant la genèse) pouvait finir sur l'ancien mot : « qui ? » restait, le trait né */
+    var _sensP=(window._phrase||{}).sens;   /* « promets-moi » : la place porte l'exemple (« Rachel, promets-moi »), jamais « moi » (régression v203, trouvée au banc : « moi, promets-moi ») */
+    if(el && nat(c)!=='nuee' && _sensP==='demander') return;
     if(el && !(el.__v200 && !el.__v200.fini) && !el.__v203lisse){ var at=(pret ? 'moi' : attente(c)).replace(/\s+/g,' ').trim(); if((el.textContent||'').replace(/\s+/g,' ').trim()!==at) pose(pret); } }
   setInterval(veille, 50);
   try{ (window._rangeurs=window._rangeurs||[]).push(function(){ window._ppMoi=false; }); }catch(_){ }
@@ -45567,6 +45603,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 </script>
 <style id="lot-V200-DOUCEUR-css">
 /* ⚑ v200 (C-271, C-269) : l'enveloppe du mot qu'on trace (le tracé la découpe, jamais l'encart et ses pointillés) ; la fiche dont la phrase change : ce qui suit glisse */
+/* ⚑ v203 (C-278) : la pastille du sens (« Je me promets » ⇄ « Je promets à ») ne se coupe jamais sur deux lignes — pendant la bascule son texte d'avant, plus long, s'y repliait : la phrase prenait une ligne puis la rendait (48 pt de saut), le rail passait dessus */
+#device#device #createSheet #csPhrase .ph-b, #device#device #createSheet #csPhrase .ph-b *{white-space:nowrap!important}
 #device #createSheet .ph-m > .v200-mt{display:inline-flex!important;align-items:center!important;white-space:nowrap!important;margin:0!important;padding:0!important}
 #device #createSheet .ph-b > .v200-mt{display:inline!important;margin:0!important;padding:0!important}
 #detailPoster.v200-glisse :is(#dptTitre,#dptQuand,#dptTrace){transition:top .36s cubic-bezier(.33,0,.67,1)!important}
@@ -45884,7 +45922,13 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      l'iPhone). Le Studio ouvert, chaque nom est préparé à SA place (une copie cachée du nom, mêmes cotes), les voisins d'abord, un par un, jamais sous un doigt. */
   (function noms(){ var NOMS=['Pochade','Touffe','Brouillamini','Halin','Esquille','Tesselle','Braille','Buvard','Ramage','Guingois','Chantourné','Volubilis','Madrure','Chamade','Ritournelle','Bobinette','Mascaret','Éclisse','Taille-douce','Houle'], faits={}, enCours=false;
     function ouvert(){ var s=document.getElementById('studioScreen'); return !!(s && s.classList.contains('show') && s.getBoundingClientRect().top < 100); }
-    function un(){ if(enCours || !ouvert() || !TL() || reduit()) return; if(window.__doigts && window.__doigts.n>0) return; if(window._animEnCours && window._animEnCours()) return;
+    /* ⚑ v203 (relevé de Tom : au glissement, 65 tâches de lettres jusqu'à 208 ms — les noms n'étaient pas prêts, Tom glissait dès l'ouverture) : aussi sur l'accueil au repos
+       (3 s sans toucher, rien qui bouge, aucun écran ouvert), une fois le Studio bâti — sa copie cachée garde les cotes du nom */
+    var tT=0; try{ ['touchstart','pointerdown','keydown'].forEach(function(ty){ document.addEventListener(ty, function(){ tT=performance.now(); }, {capture:true, passive:true}); }); }catch(_){}
+    function accueilRepos(){ try{ if(performance.now()-tT<3000 || document.hidden) return false; if(window._ecranAnime && window._ecranAnime()) return false;
+      if(document.querySelector('.screen.show:not(#studioScreen):not(#auraScreen), #createSheet.show, #detailPoster.show')) return false;
+      var st=window.Toile_state&&window.Toile_state(); if(st&&st.running) return false; return true; }catch(_){ return false; } }
+    function un(){ if(enCours || !(ouvert() || accueilRepos()) || !TL() || reduit()) return; if(window.__doigts && window.__doigts.n>0) return; if(window._animEnCours && window._animEnCours()) return;
       var N=document.getElementById('stpNom'), m=N && N.querySelector('.stp-m'); if(!m) return; var cur=(m.textContent||'').trim(), i0=NOMS.indexOf(cur), ord=[];
       for(var d=1; d<NOMS.length; d++){ [i0+d, i0-d].forEach(function(j){ var n=NOMS[(j%NOMS.length+NOMS.length)%NOMS.length]; if(ord.indexOf(n)<0) ord.push(n); }); }
       var nom=null; for(var q=0; q<ord.length; q++){ if(!faits[ord[q]+'|'+m.className]){ nom=ord[q]; break; } } if(!nom) return;
@@ -45897,6 +45941,35 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 })();
 </script>
 
+<script id="lot-V203-LIAISONS">
+/* ⚑ v203 (Tom, C-271, C-278) — LES MOTS DE LIAISON QUI PARAISSENT SE TRACENT. La phrase de la page + est rebâtie (`_phraseRendu`, `_nueePhraseRendu`) ; un mot de
+   liaison neuf (le « à » de « Je promets à », « avec ») y paraissait d'un coup, sous le rail. Avant chaque rebâti on note les mots de liaison vus ; après, un mot neuf
+   se TRACE (C-125). Jamais à l'ouverture de la page (sa première composition se pose telle quelle), jamais sous « Réduire les animations ». */
+(function(){
+  function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function liaisons(sel){ var t=document.querySelector(sel), L=[]; if(!t) return L; t.querySelectorAll('em').forEach(function(e){ if(e.closest('[data-ph],[data-np]')) return; L.push((e.textContent||'').trim()); }); return L; }
+  /* un mot de liaison qui disparaît se DÉTRACE à sa place : une copie posée là où on le voyait, à son style rendu, tracée à rebours, puis retirée */
+  function copies(sel){ var t=document.querySelector(sel), L=[]; if(!t) return L; var hote=t.parentNode; if(!hote) return L; var H=hote.getBoundingClientRect(), k=(H.width/(hote.offsetWidth||H.width))||1;
+    t.querySelectorAll('em').forEach(function(e){ if(e.closest('[data-ph],[data-np]')) return; var x=(e.textContent||'').trim(); if(!x) return; var r=e.getBoundingClientRect(); if(!(r.width>0)) return;
+      var c=getComputedStyle(e); L.push({x:x, l:(r.left-H.left)/k, t:(r.top-H.top)/k, st:['font-family','font-size','font-weight','font-style','line-height','letter-spacing','color','-webkit-text-fill-color','text-transform'].map(function(p){ return [p, c.getPropertyValue(p)]; }), hote:hote}); }); return L; }
+  function part(o){ try{ var TL=window.TraceLettres; if(!TL || !o.hote.isConnected) return; if(getComputedStyle(o.hote).position==='static') return;
+      var s=document.createElement('em'); s.textContent=o.x; s.setAttribute('aria-hidden','true'); s.className='v203-part';
+      s.style.cssText='position:absolute!important;margin:0!important;padding:0!important;white-space:nowrap!important;pointer-events:none!important;left:'+o.l+'px!important;top:'+o.t+'px!important';
+      o.st.forEach(function(p){ if(p[1]) s.style.setProperty(p[0], p[1], 'important'); }); o.hote.appendChild(s);
+      var c=TL.trace(s, null, {inverse:true}), fin=function(){ if(s.parentNode) s.remove(); }; (c && c.fin ? c.fin : Promise.resolve()).then(fin, fin); setTimeout(fin, 2500); }catch(_){ } }
+  function enveloppe(nom, sel){ var o=window[nom]; if(typeof o!=='function' || o.__v203l) return false;
+    var w=function(){ var cs=document.getElementById('createSheet'), vu=!!(cs && cs.classList.contains('show') && !cs.classList.contains('acc-passe') && !cs.classList.contains('pp-choix'));
+      var av=vu ? liaisons(sel) : null, cp=(vu && !reduit()) ? copies(sel) : null, r=o.apply(this, arguments);
+      try{ var TL=window.TraceLettres; if(av && TL && TL.trace && !reduit()){ var t=document.querySelector(sel), reste=av.slice(), apres=[];
+          if(t) t.querySelectorAll('em').forEach(function(e){ if(e.closest('[data-ph],[data-np]')) return; var x=(e.textContent||'').trim(); if(!x) return; apres.push(x); var i=reste.indexOf(x);
+            if(i>=0){ reste.splice(i,1); return; } try{ var ct=TL.trace(e, null, {arme:true}); setTimeout(function(){ try{ if(ct && ct.lance) ct.lance(); }catch(_){ } }, 340); }catch(_){ } });   /* armé (la découpe vide posée tout de suite), lancé quand la phrase et le rail ont glissé à leur place (320 ms) : sinon il se traçait sous le rail qui descendait encore */
+          /* ceux qui ne sont plus là */
+          if(cp && t){ var dispo=apres.slice(); cp.forEach(function(q){ var j=dispo.indexOf(q.x); if(j>=0){ dispo.splice(j,1); return; } part(q); }); } } }catch(_){ }
+      return r; };
+    w.__v203l=1; Object.keys(o).forEach(function(k){ try{ w[k]=o[k]; }catch(_){ } }); window[nom]=w; return true; }
+  (function arme(){ var a=enveloppe('_phraseRendu', '#csPhrase .ph-txt'), b=enveloppe('_nueePhraseRendu', '#nueePhrase .ph-txt'); if(!(window._phraseRendu && window._phraseRendu.__v203l)) setTimeout(arme, 400); })();
+})();
+</script>
 <script id="lot-V202A-TAILLE">
 /* ⚑ v202a (Tom, C-271 ; AUDIT-SECS point 2, C-274) — LA TAILLE DE LA PHRASE DE LA PAGE + CHANGE EN DOUCEUR. La composition (§2.8) choisit la taille de la phrase
    d'après ce qu'elle dit : un titre tapé court la porte à 30, l'exemple qui revient quand on efface le titre la ramène à 24 ; un choix qui s'ouvre la fait passer de 34
@@ -45925,17 +45998,35 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      haut gauche de la phrase, au compositeur (Web Animations) — aucune mise en page pendant le mouvement. Une passe de composition qui tombe pendant lui lit la taille finale
      (le mouvement est mis à sa fin le temps de la passe, puis rendu). */
   var ANI=null;
-  window._phDouceAvant=function(){ if(ANI && ANI.a && ANI.a.playState==='running'){ ANI.t=ANI.a.currentTime; ANI.a.pause(); ANI.a.currentTime=DUREE; return [ANI]; } return []; };
+  /* ⚑ v203 (C-271, C-278) — LA PHRASE GLISSE À SA NOUVELLE PLACE : quand elle gagne ou perd une ligne (le sens basculé, un mot qui change), la composition la remontait
+     ou la descendait de 32 pt d'une image à l'autre. Sa place VUE avant la passe est notée ; si la passe la déplace, elle y glisse (`translate`, au compositeur, 320 ms),
+     et comme la taille, ce mouvement est mis à sa fin pendant toute passe qui mesure. */
+  var TR=null;
+  function txtPh(){ return document.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt'); }
+  window._phDouceAvant=function(){ var L=[], t=txtPh(), v0=null;
+    try{ if(t && t.isConnected && t.getClientRects().length) v0=t.getBoundingClientRect().top; }catch(_){ }
+    if(ANI && ANI.a && ANI.a.playState==='running'){ ANI.t=ANI.a.currentTime; ANI.a.pause(); ANI.a.currentTime=DUREE; L.push(ANI); }
+    if(TR && TR.a && TR.a.playState==='running'){ TR.t=TR.a.currentTime; TR.a.pause(); TR.a.currentTime=DUREE; L.push(TR); }
+    L.v0=v0; L.txt=t; return L; };
+  function glisse(L){ try{ var t=txtPh(); if(!t || L.v0==null || reduit() || !t.animate) return;   /* la passe peut rebâtir la phrase (`_phraseRendu`) : la place vue avant vaut pour le nœud neuf */ var cs=document.getElementById('createSheet');
+      if(!cs || !cs.classList.contains('show') || cs.classList.contains('pp-choix') || cs.classList.contains('pp-ouvert') || !vu || performance.now()-ouvertT<600 || (window._ppMvtCours && window._ppMvtCours())) return;
+      if(TR && TR.a){ TR.a.cancel(); TR=null; }
+      var f=t.getBoundingClientRect().top, dy=L.v0-f; if(Math.abs(dy)<2) return;
+      var dv=document.getElementById('device'), k=(dv && dv.getBoundingClientRect().width/(dv.offsetWidth||390))||1;
+      var a=t.animate([{translate:'0 '+(dy/k)+'px'},{translate:'0 0'}], {duration:DUREE, easing:'cubic-bezier(.33,0,.67,1)'});
+      TR={a:a, txt:t, t:0}; window.__animT=performance.now(); a.onfinish=function(){ if(TR && TR.a===a) TR=null; }; }catch(_){ } }
   /* ⚑ v203 (Tom, C-278 : « la genèse bugue quand on change de nature ») — LA CAUSE, mesurée (le sens basculé « Je me promets » ⇄ « Je promets à ») : l'animation de taille
      partait AU MILIEU de la passe de composition ; la règle C-240 (`_place`) relisait alors la phrase AGRANDIE (le `scale` de départ), la croyait trop haute, la réduisait
      d'un point, ce qui relançait une animation plus grande encore — la phrase tombait de 36 à 16 px (v201b : 34). Une animation demandée pendant une passe attend la fin de
      la passe la plus extérieure (la règle payée en v202a : une valeur animée ne s'écrit jamais au milieu d'une passe qui mesure), et part de la taille qu'on voyait avant elle. */
   var PEND=null;
-  window._phDouceApres=function(L){ (L||[]).forEach(function(x){ if(x && x.a && x===ANI && x.a.playState==='paused'){ x.a.currentTime=x.t; x.a.play(); } });
+  window._phDouceApres=function(L){ var trRepris=false; (L||[]).forEach(function(x){ if(x && x.a && (x===ANI || x===TR) && x.a.playState==='paused'){ x.a.currentTime=x.t; x.a.play(); if(x===TR) trRepris=true; } });
+    if(L && !trRepris) glisse(L);
     var P=PEND; PEND=null; if(P){ try{ demarre(P.txt, P.t0, P.cs); }catch(_){ } } };
   /* le tracé des lettres mesure la phrase à sa taille FINALE (le mouvement mis à sa fin le temps de la mesure) : sa découpe vit dans les coordonnées de l'élément */
   (function hook(){ var TLh=window.TraceLettres; if(!TLh){ setTimeout(hook, 300); return; }
-    TLh.horsAnim=function(el){ if(!(ANI && ANI.a && ANI.a.playState==='running' && ANI.txt && el && ANI.txt.contains(el))) return null; var a=ANI.a, t=a.currentTime; a.pause(); a.currentTime=DUREE; return function(){ try{ a.currentTime=t; a.play(); }catch(_){ } }; }; })();
+    TLh.horsAnim=function(el){ var R=[]; [ANI, TR].forEach(function(X){ if(X && X.a && X.a.playState==='running' && X.txt && el && X.txt.contains(el)){ var a=X.a, t=a.currentTime; a.pause(); a.currentTime=DUREE; R.push(function(){ try{ a.currentTime=t; a.play(); }catch(_){ } }); } });
+      return R.length ? function(){ R.forEach(function(f){ f(); }); } : null; }; })();
   window._phTailleDouce=function(txt, t0, cs){ if(window._phEnPasse && window._phEnPasse()){ if(!PEND) PEND={txt:txt, t0:t0, cs:cs}; else { PEND.txt=txt; PEND.cs=cs; } return; } demarre(txt, t0, cs); };
   function demarre(txt, t0, cs){
     var t1=parseFloat(txt.style.fontSize)||0;

@@ -4,7 +4,7 @@ de la genèse. » WebKit, 390 × 844 ×3, au doigt (banc_tom), Toile de 10 parol
   S · le sens basculé (« Je me promets » ⇄ « Je promets à ») ;  N · la page fermée (✕) et rouverte en Chiche, puis en Cercle.
 Une sonde relève CHAQUE IMAGE dans la page (rien n'est lu en différé) :
   A · aucune lettre tracée hors de sa place : chaque canevas d'un tracé (`canvas[data-trace]`) recoupe la boîte de son texte (± 8 pt)
-  B · le rail du pinceau, visible, n'est jamais sur l'encre de la phrase, et ne saute jamais (≤ 14 pt d'une image à l'autre) une fois visible
+  B · le rail du pinceau, visible, n'est jamais sur l'encre de la phrase, et ne saute jamais seul (≤ 14 pt d'une image à l'autre, sauf avec la phrase) une fois visible
   C · une seule naissance du trait (au plus une invite qui paraît sans retrait entre) ; à la fin, l'invite est là
   D · S : la taille finale de la phrase, la même à chaque instant (et ≥ 30 : la v203 d'avant ce juge tombait à 16) ; « moi » à la place de « qui ? » le trait né
   E · les images de plus de 33 ms : relevées, jugées seulement au calme (charge < 4)
@@ -33,8 +33,14 @@ SONDE = r"""()=>{ window.__G={im:[], A:[], B:[], inv:[]}; const R=window.request
           while((tn=w.nextNode())){ const pe=tn.parentElement; if(!pe || !tn.nodeValue.trim()) continue; let cache=false; for(let x=pe;x&&x!==ph.parentElement;x=x.parentElement){ const c=getComputedStyle(x); if(c.visibility==='hidden'||+c.opacity<0.05||/polygon\(0px 0px, ?0px 0px, ?0px 0px\)/.test(c.clipPath||'')){ cache=true; break; } } if(cache) continue;
             const rg=document.createRange(); rg.selectNodeContents(tn); [].forEach.call(rg.getClientRects(), q=>{ if(q.width>1&&q.height>1) enc=Math.max(enc,(q.bottom-d.top)/k); }); } }
         if(enc && ry<enc-2) window.__G.B.push([Math.round(now-t0),'sur la phrase',Math.round(ry),Math.round(enc)]);
-        const rel=enc?ry-enc:ry-pt; if(railAv!=null && Math.abs(rel-railAv)>14) window.__G.B.push([Math.round(now-t0),'saut',Math.round(railAv),Math.round(rel)]);   /* relatif au bas VISIBLE de la phrase : « la suite glisse avec elle » ; le mouvement du clavier (Q598) les emporte ensemble */
-        railAv=rel; } else railAv=null;
+        /* ⚠ v203 : sans encre visible (toute la phrase découpée), la place relative n'existe pas — le juge lisait une variable absente (`pt`) et comparait ensuite à une valeur périmée */
+        /* ⚑ v203 (C-278) — UN SAUT, C'EST LE RAIL QUI BOUGE SEUL : plus de 14 pt d'une image à l'autre, sans que la phrase bouge d'autant (le mouvement du clavier, Q598, les
+           emporte ensemble). Un mot qui commence à se TRACER sur une ligne neuve abaisse le bas de l'encre sans que rien ne saute : ce n'est pas un saut (le critère « relatif
+           au bas de l'encre » le prenait pour un). */
+        /* et un saut se juge à la VITESSE (CLAUDE.md, v179b) : 14 pt pour une image de 16,7 ms, d'autant plus pour une image plus longue (sous charge) */
+        const lim=railAv?14*Math.max(1,(now-railAv[2])/16.7):14;
+        if(railAv!=null && Math.abs(ry-railAv[0])>lim && !(enc && railAv[1] && Math.abs((ry-railAv[0])-(enc-railAv[1]))<=lim)) window.__G.B.push([Math.round(now-t0),'saut',Math.round(railAv[0]),Math.round(ry),Math.round(now-railAv[2])]);   /* relatif au bas VISIBLE de la phrase : « la suite glisse avec elle » ; le mouvement du clavier (Q598) les emporte ensemble */
+        railAv=[ry, enc, now]; } else railAv=null;
       const iv=!!(window._ppInvite&&_ppInvite.etat().visible); if(iv!==invAv){ window.__G.inv.push([Math.round(now-t0), iv]); invAv=iv; } }
   }catch(e){ window.__G.err=String(e); } if(performance.now()-t0<9000) R(f); })(performance.now()); }"""
 def ouvre_nat(pg, nat):
@@ -47,6 +53,7 @@ def passe(b, quoi, T):
         if pg.evaluate("()=>{const a=document.activeElement;return !!a&&a.id==='phIn';}"): break
     pg.keyboard.type('lire', delay=40); pg.wait_for_timeout(300)
     pg.evaluate(SONDE); pg.keyboard.press('Enter'); pg.wait_for_timeout(T)
+    if '--sonde' in A: pg.evaluate("()=>{ setTimeout(()=>{ const r=document.getElementById('csPinceau'); if(r){ const t=parseFloat(r.style.top)||0; r.style.setProperty('top',(t+40)+'px','important'); r.setAttribute('data-geo','sonde'); } }, 900); }")   # §7 : un vrai saut du rail, il doit être pris
     if quoi == 'S': B.tap_sel(pg, '#csPhrase [data-ph=sens]')
     else:
         B.tap_sel(pg, '#createSheet .closeb'); pg.wait_for_timeout(500); ouvre_nat(pg, 'chiche' if T % 2 == 0 else 'nuee')
