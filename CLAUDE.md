@@ -271,6 +271,18 @@ la nature, la ligne dit l'état.)*
 > au sommet du clignotement, à 1,5 près ; onboarding, accueil, Partager, Réglages × deux thèmes ; la sonde rougit).
 > **⚑ LE RELEVÉ DES IMAGES ET LE CHRONOMÉTRAGE DES RAPPELS NE TOURNENT PLUS PAR DÉFAUT** (`lot-V145-VERSION`, `lot-V203-TACHES`) : `?releve=1` (ou `?mesure=1`) les rallume. `?diag=1` affiche la version.
 > **Le serveur sert `main`.**
+> **⚑ RETOURS SUR LA CLÔTURE (Tom : « l'onboarding, c'est la vitrine ; zéro erreur ») — validés : C-280, Q621, C-281. Q618, Q619, Q620 : TRANCHÉES (faites en v203).**
+> **⚑ C-282 — L'EXEMPLE DE L'ONBOARDING PAR LE CODE DE LA PAGE +.** L'onboarding repeignait sa phrase en entier à chaque frappe : l'exemple revenait d'un coup. **`_douceur.place(el, v, plein,
+> exemple, vide)`** (lot-V200-DOUCEUR) est la décision UNIQUE d'une place qui porte un exemple — page + (titre, nom d'un Cercle) et onboarding (prénom, parole) : vidée, la place se détrace et
+> l'exemple se trace (`mot`, sa veille) ; à la première lettre l'exemple se détrace et la lettre paraît tout de suite (`premiere`). Pendant une transition, l'onboarding ne rebâtit pas sa phrase
+> (`occupe`, `apres`) : la frappe s'écrit dans la place. Juge : **`redteam_onb_exemple.py`** (5 passes × 5 vitesses × clavier ouvert / fermé ; la séquence comparée à la page + : mêmes étapes, même
+> ordre ; l'exemple à la cadence du module).
+> **⚑ §2 — TOUS LES TEXTES QUI REVIENNENT** (`lot-V203-RETOUR`, `window._retour`) : ① les places à exemple (`_douceur.place`) ; ② « de » / « d’ » (`liaison` : détracé puis tracé) ; ③ tout champ à
+> texte d'exemple (`champ` : une copie posée exactement sur le texte natif se détrace à la première lettre et se trace à l'effacement, le natif caché le temps du tracé ; l'échange du curseur
+> « … » au focus se détrace puis se trace) ; ④ « Un mot… » (`motLigne` : il reste le texte d'exemple de la ligne ouverte) ; ⑤ l'ajout d'une personne (`remplace`, `bascule`). Le titre vidé d'une
+> fiche revenait déjà par son tracé (C-280). Juge : **`redteam_retours.py`**. *La règle* : **un texte d'exemple natif (`placeholder`) paraît et disparaît d'un coup — tout champ visible à texte
+> d'exemple passe par `_retour.champ` (lié au focus) ; un composant neuf qui montre un texte d'exemple passe par `_douceur.place` ou `_retour.bascule`.** Trouvé (§7, deux propriétaires) : la
+> recherche avait deux écrivains de son texte d'exemple (le curseur « … », `libelles` « Rechercher ») ; `libelles` écrit l'original (`data-ph0`) quand le champ est focalisé.
 
 ### ⚑ v203 fin (15 nov. 2026) — RETOURS SUR 58a4ff9 : L'EXEMPLE QUI NE REVENAIT PLUS ; LE TITRE TRÈS LONG DE L'INDEX ; MODIFIER LE TITRE D'UNE FICHE (C-280) ; L'OUVRIER DANS LE RELEVÉ. (Décisions Tom.)
 > **Validés par Tom (iPhone) : C-277, C-279, C-278 (le petit à-coup du départ du mouvement du clavier, Q598, est accepté : fermé), Mascaret, l'Aura.**

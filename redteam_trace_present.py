@@ -35,7 +35,7 @@ INIT = {
           " self_.postMessage=function(m,t){ w.postMessage(m,t); }; self_.terminate=function(){ w.terminate(); }; }; }catch(e){}",
 }
 SONDE = r"""(()=>{ window.__S=[]; let T=null;
-  function arme(v){ if(!v||v.__s) return; v.__s=1; const tr=v.trace; v.trace=function(c, ct, o){ if(o && o.preparer) return tr.apply(this,arguments);   /* une préparation d'avance ne montre rien : ce n'est pas un texte affiché */
+  function arme(v){ if(!v||v.__s) return; v.__s=1; const tr=v.trace; v.trace=function(c, ct, o){ if(o && (o.preparer || o.inverse)) return tr.apply(this,arguments);   /* une préparation d'avance ne montre rien : ce n'est pas un texte affiché — ⚑ v203 clôture (C-282) : un DÉTRACÉ non plus (il part entier par définition : l'exemple qui se détrace à la première lettre, dans l'onboarding aussi depuis C-282 ; original : sauvegardes/redteam_trace_present-avant-c282.py) */
     const c0=(c.style.getPropertyValue('clip-path')||'none').replace(/\s+/g,''), t0=performance.now(), ctl=tr.apply(this,arguments);   /* la découpe d'avant le tracé (l'onboarding en pose une) : le module la rend à la fin */
     const tx=String(c.textContent||'').replace(/\s+/g,' ').trim(), r={tx:tx, t0:t0, im:0, part:0, vis:null, prem:null, deb:null, ctl:ctl, i0:v.mesures.image.length, img:[]}; __S.push(r); let tp=0;
     function vu(){ const cp=c.style.getPropertyValue('clip-path')||c.style.getPropertyValue('-webkit-clip-path')||'none';

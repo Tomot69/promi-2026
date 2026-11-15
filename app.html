@@ -6006,14 +6006,8 @@ window._phraseChoix = function(cle, el){ try{
              Le titre vidé : ce qu'on avait tapé se détrace, l'encart reprend ses pointillés en flaques et sa largeur en douceur, puis l'exemple SE TRACE
              (`_douceur.mot`, le code de « moi », C-247). La première lettre : l'exemple se détrace, la pastille se remplit en flaques, puis ce qu'on a tapé
              paraît tel quel (`brut` : la frappe ne se trace pas). Pendant la transition, chaque lettre tapée devient sa cible (rien n'est perdu). */
-          var D2 = window._douceur, st2 = m.__v200, cours = !!(st2 && !st2.fini), etaitVide = cours ? /(^|\s)ph-vide(\s|$)/.test(st2.cible.cls) : m.classList.contains('ph-vide');
-          if(D2 && D2.mot && (cours || (!v) !== etaitVide)){
-            var ex = inp.getAttribute('placeholder')||'', h = (v || ex).replace(/&/g,'&amp;').replace(/</g,'&lt;');
-            var cl = m.className.split(/\s+/).filter(function(c){ return c && c!=='ph-vide' && c.indexOf('v200')!==0; }); if(!v) cl.push('ph-vide');
-            var _hh=(v ? h+'<i class="ph-caret"></i>' : h);
-            if(v && D2.premiere && (cours || etaitVide)){   /* ⚑ v203 (Q620) : la première lettre, tout de suite — elle coupe une transition en cours */
-              if(!(cours && D2.premiereTexte && D2.premiereTexte(m, _hh, cl.join(' ')))) D2.premiere(m, _hh, cl.join(' ')); }
-            else D2.mot(m, {html:_hh, cls:cl.join(' '), brut:!!v});
+          var D2 = window._douceur, _ex = (inp.getAttribute('placeholder')||'').replace(/&/g,'&amp;').replace(/</g,'&lt;'), _hv = v.replace(/&/g,'&amp;').replace(/</g,'&lt;');
+          if(D2 && D2.place && D2.place(m, v, _hv+'<i class="ph-caret"></i>', _ex, 'ph-vide')){   /* ⚑ v203 clôture (C-282) : la décision partagée avec l'onboarding (`_douceur.place`) */
           } else {
           m.classList.toggle('ph-vide', !v);
           var cible = m.querySelector('.ph-mot') || m;
@@ -6025,7 +6019,7 @@ window._phraseChoix = function(cle, el){ try{
           var li = m.previousElementSibling;
           if(li && li.classList.contains('ph-li')){
             var dd = v && window._promiElide ? window._promiElide(v) : 'de', el2 = dd === 'd\u2019';
-            if(li.textContent !== dd) li.textContent = dd;
+            if(li.textContent !== dd || li.__voulu !== dd){ if(window._retour) window._retour.liaison(li, dd); else li.textContent = dd; }   /* ⚑ v203 clôture (§2) : « de » / « d’ » détracé puis tracé */
             li.classList.toggle('ph-elide', el2);
           }
         }
@@ -13953,11 +13947,8 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
       var el0=el; i.oninput=function(){ var n=document.getElementById('nName'); if(n){ n.value=i.value; n.dispatchEvent(new Event('input',{bubbles:true})); }
         /* ⚑ v203 (Tom, retours sur 58a4ff9, §1) : le nom effacé, l'exemple revient EN SE TRAÇANT (C-279) — comme le titre d'un Promi et d'un Chiche (`_douceur`, C-274) ; il revenait d'un coup */
         var el=document.querySelector('#nueePhrase [data-np=nom]')||el0;   /* la place VIVANTE : la frappe fait rebâtir la phrase (le nœud du toucher n'est plus dans la page) */
-        var ex=(window._ppExemple?window._ppExemple('nuee'):'le nom'), v=i.value||'', D2=window._douceur, st2=el.__v200, cours=!!(st2 && !st2.fini), etaitVide=cours ? /(^|\s)ph-vide(\s|$)/.test(st2.cible.cls) : el.classList.contains('ph-vide');
-        if(D2 && D2.mot && (cours || (!v)!==etaitVide)){ var hh=(v||ex).replace(/&/g,'&amp;').replace(/</g,'&lt;'), cl=el.className.split(/\s+/).filter(function(c){ return c && c!=='ph-vide' && c.indexOf('v200')!==0; }); if(!v) cl.push('ph-vide');
-          if(v && D2.premiere && (cours || etaitVide)){ if(!(cours && D2.premiereTexte && D2.premiereTexte(el, hh, cl.join(' ')))) D2.premiere(el, hh, cl.join(' ')); }
-          else D2.mot(el, {html:hh, cls:cl.join(' '), brut:!!v}); }
-        else { el.textContent=v||ex; el.classList.toggle('ph-vide', !v); } };
+        var ex=(window._ppExemple?window._ppExemple('nuee'):'le nom'), v=i.value||'', D2=window._douceur, _q=function(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); };
+        if(!(D2 && D2.place && D2.place(el, v, _q(v), _q(ex), 'ph-vide'))){ el.textContent=v||ex; el.classList.toggle('ph-vide', !v); } };   /* ⚑ v203 clôture (C-282) : la décision partagée (`_douceur.place`) */
       i.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); i.blur(); } };
       i.onblur=function(){ _nueePhraseRendu(); };
       /* ⚑ v114 (Tom, iPhone : « le clavier ne s'ouvre pas ») — iOS n'ouvre le clavier que si focus() est appelé DANS le geste.
@@ -20747,8 +20738,9 @@ var CREMEETAT='#F7F0DE';
   /* les libellés du moodboard : « Rechercher », rien de plus. */
   function libelles(){
     var a=document.getElementById('ixSearch'), b=document.getElementById('fdSearch');
-    if(a&&a.placeholder!=='Rechercher') a.placeholder='Rechercher';
-    if(b&&b.placeholder!=='Rechercher') b.placeholder='Rechercher';
+    /* ⚑ v203 clôture (§2, deux propriétaires §7) : focalisé, le champ appartient au curseur (lot-CURSEUR : « … », l'original gardé dans `data-ph0`) — on écrit
+       l'original, jamais par-dessus « … » (il revenait « Rechercher » d'un coup après un effacement, le champ toujours focalisé) */
+    [a, b].forEach(function(e){ if(!e) return; if(e.hasAttribute('data-ph0')){ if(e.getAttribute('data-ph0')!=='Rechercher') e.setAttribute('data-ph0','Rechercher'); } else if(e.placeholder!=='Rechercher') e.placeholder='Rechercher'; });
     var c=document.getElementById('fdCount');
     if(c){ var n=0;
       /* le compte est celui que `_s4Fil` vient de composer (les gestes d'autrui) ;
@@ -34367,13 +34359,15 @@ function bati(){
     if(!z || !SA.inp) return;
     var i = SA.inp, v = i.value, nom = v.replace(/\s+/g, ' ').trim();
     if(!z.classList.contains('gn-edit') || !z.querySelector('.gn-ligne')){
-      z.classList.add('gn-edit'); z.setAttribute('role', 'group'); z.setAttribute('aria-label', 'Ajouter quelqu’un');
-      z.innerHTML = '<span class="gn-ligne"><span class="gn-txt"></span><i class="ph-caret" aria-hidden="true"></i>'
-        + '<span class="gn-ph">un prénom…</span><span class="gn-plus" role="button" style="display:none">' + PLUS + '</span></span>';
+      var _bat=function(){ z.classList.add('gn-edit'); z.setAttribute('role', 'group'); z.setAttribute('aria-label', 'Ajouter quelqu’un');
+        z.innerHTML = '<span class="gn-ligne"><span class="gn-txt"></span><i class="ph-caret" aria-hidden="true"></i>'
+          + '<span class="gn-ph">un prénom…</span><span class="gn-plus" role="button" style="display:none">' + PLUS + '</span></span>'; };
+      if(window._retour && window._retour.remplace && z.textContent.trim()) window._retour.remplace(z, _bat); else _bat();   /* ⚑ v203 clôture (§2) : « + ajouter quelqu’un » se détrace, « un prénom… » se trace */
     }
     var T = z.querySelector('.gn-txt'), PH = z.querySelector('.gn-ph'), PL = z.querySelector('.gn-plus');
     if(T.textContent !== v) T.textContent = v;
-    var phd = v ? 'none' : ''; if(PH.style.display !== phd) PH.style.display = phd;
+    if(window._retour && window._retour.bascule){ window._retour.bascule(PH, !v); }   /* ⚑ v203 clôture (§2) : « un prénom… » part et revient par le tracé */
+    else { var phd = v ? 'none' : ''; if(PH.style.display !== phd) PH.style.display = phd; }
     z.classList.toggle('gn-repos', document.activeElement !== i);
     if(nom){ PL.setAttribute('aria-label', 'Ajouter ' + nom);
       if(PL.style.display === 'none'){ PL.style.display = ''; saPlus(PL, T, !SA.plusVu); } }
@@ -34388,7 +34382,8 @@ function bati(){
     SA.plusVu = !!SA.inp.value.trim();
     saSuis();
   }
-  function saRepos(z){ if(!z) return; z.classList.remove('gn-edit', 'gn-repos'); z.setAttribute('role', 'button'); z.removeAttribute('aria-label'); z.textContent = '+ ajouter quelqu’un'; }
+  function saRepos(z){ if(!z) return; var _r=function(){ z.classList.remove('gn-edit', 'gn-repos'); z.setAttribute('role', 'button'); z.removeAttribute('aria-label'); z.textContent = '+ ajouter quelqu’un'; };
+    if(window._retour && window._retour.remplace && z.classList.contains('gn-edit') && z.textContent.trim()!=='+ ajouter quelqu’un') window._retour.remplace(z, _r); else _r(); }   /* ⚑ v203 clôture (§2) : le retour de « + ajouter quelqu’un » par le tracé */
   function saFerme(){
     if(!SA.actif) return; var l = saZones();
     SA.actif = false; SA.plusVu = false;
@@ -39251,7 +39246,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       '';
     ov.appendChild(v);
     var inp=v.querySelector('#onbIn');
-    inp.addEventListener('input', function(){ if(etape==='prenom') prenom=inp.value; else parole=inp.value; peindrePhrase(); });
+    inp.addEventListener('input', function(){ if(etape==='prenom') prenom=inp.value; else parole=inp.value; if(!doux()) peindrePhrase(); });
     inp.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); suite(); } });
     inp.addEventListener('focus', peindrePhrase); inp.addEventListener('blur', peindrePhrase);
     v.querySelector('#onbSuite').addEventListener('click', function(e){ e.stopPropagation(); suite(); });
@@ -39282,14 +39277,30 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(!val) return '<span class="onbv-pm vide" data-onb="'+role+'"><span style="white-space:nowrap">'+(f?'<span class="onbv-car"></span>':'')+esc(tete)+'</span>'+esc(reste)+'</span>';
     return '<span class="onbv-pm" data-onb="'+role+'">'+esc(val)+(f?'<span class="onbv-car"></span>':'')+'</span>';
   }
+  /* ⚑ v203 clôture (Tom, C-282) — L'EXEMPLE DE L'ONBOARDING PAR LE CODE DE LA PAGE + (C-247, C-274, C-279, Q620) : la place vidée se détrace et l'exemple SE TRACE ;
+     la première lettre détrace l'exemple et paraît tout de suite — `_douceur.place`, la décision même de la page + (lot-V200-DOUCEUR), avec sa veille de 300 ms ;
+     « de » / « d’ » détracé puis tracé (`_retour.liaison`, comme la page +). Pendant une transition, la phrase n'est pas rebâtie (elle détruirait la transition) :
+     la frappe s'écrit dans la place, la phrase se recompose à la fin (`apres`). Il était repeint en entier à chaque frappe : l'exemple revenait d'un coup. */
+  function occupe(){ var ph=document.getElementById('onbPh'); if(!ph) return false; var pm=ph.querySelector('.onbv-pm'), de=ph.querySelector('.onbv-de');
+    return !!((pm && pm.__v200 && !pm.__v200.fini) || (de && (de.__v203tx || (de.__voulu!=null && de.textContent!==de.__voulu)))); }
+  var _apT=0; function apres(){ clearTimeout(_apT); _apT=setTimeout(function f(){ if(occupe()){ _apT=setTimeout(f, 80); return; } peindrePhrase(); }, 80); }
+  function doux(){ if(pageEnTrace) return false; var D=window._douceur, R=window._retour; if(!D || !D.place) return false;
+    var role=etape==='prenom' ? 'prenom' : 'parole', val=role==='prenom' ? prenom : parole, v=val.trim() ? val : '', ph=document.getElementById('onbPh'), pm=ph && ph.querySelector('.onbv-pm[data-onb="'+role+'"]');
+    if(!pm) return false;
+    if(role==='parole' && R){ var de=ph.querySelector('.onbv-de'), dd=(v && window._promiElide(v)==='d’') ? 'd’' : (de && /\u00a0/.test(de.textContent) ? 'de\u00a0' : 'de '); if(de && (de.textContent!==dd || (de.__voulu!=null && de.__voulu!==dd))) R.liaison(de, dd); }   /* l'espace de « de » : insécable dans la phrase composée, ordinaire sinon — la même, jamais un faux changement */
+    var plein=esc(v)+(aFocus() ? '<span class="onbv-car"></span>' : ''), ex=esc(role==='prenom' ? PH_PRENOM : PH_PAROLE);
+    if(D.place(pm, v, plein, ex, 'vide')){ apres(); return true; }
+    if(occupe()){ var t=pm.querySelector(':scope > .v203-txt') || pm; t.innerHTML=plein; apres(); return true; }   /* la frappe n'attend jamais : elle s'écrit dans la place */
+    return false; }
   function peindrePhrase(){
     var ph=document.getElementById('onbPh'); if(!ph) return;
-    if(pageEnTrace) return;   /* ⚑ v173 (C-211) : un toucher pendant que la page s'écrit ouvre le clavier, mais la phrase (et ce qui se place sous elle) n'est pas réécrite sous son tracé : repeinte à la fin de la séquence (C-206 : rien d'un coup) */
+    if(pageEnTrace) return;
+    if(occupe()){ apres(); return; }   /* v203 clôture (C-282) : une transition en cours finit d'abord */   /* ⚑ v173 (C-211) : un toucher pendant que la page s'écrit ouvre le clavier, mais la phrase (et ce qui se place sous elle) n'est pas réécrite sous son tracé : repeinte à la fin de la séquence (C-206 : rien d'un coup) */
     if(etape==='prenom'){
       ph.innerHTML='Toi, c’est <span style="white-space:nowrap">'+pastille(prenom.trim()?prenom:'', PH_PRENOM, 'prenom')+' ?</span>';
     } else {
       var de=window._promiElide(parole);
-      ph.innerHTML='<span class="onbv-pb">Je me promets</span> '+(de==='d’'?'d’':'de ')+pastille(parole.trim()?parole:'', PH_PAROLE, 'parole');
+      ph.innerHTML='<span class="onbv-pb">Je me promets</span> <span class="onbv-de">'+(de==='d’'?'d’':'de ')+'</span>'+pastille(parole.trim()?parole:'', PH_PAROLE, 'parole');
     }
     placer();
   }
@@ -39343,7 +39354,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
       var fs=35, r=mesure(fs), L=compose(r, 0); while(L.length>3 && fs>22){ fs--; r=mesure(fs); L=compose(r, 0); }
       var ML=maxLignes(fs), d0=0; if(L.length>ML){ d0=1; while(L.length>ML && d0<MOTS.length-1){ d0++; L=compose(r, d0); } }
       var h=''; L.forEach(function(l, j){ var der=(j===L.length-1);
-        h+='<span class="onbv-ligne" style="display:block;white-space:nowrap">'+(l.tete?'<span class="onbv-pb">Je me promets</span>\u00a0'+esc(pre.replace(' ','\u00a0')):'')+
+        h+='<span class="onbv-ligne" style="display:block;white-space:nowrap">'+(l.tete?'<span class="onbv-pb">Je me promets</span>\u00a0<span class="onbv-de">'+esc(pre.replace(' ','\u00a0'))+'</span>':'')+
           (l.mots.length?'<span class="onbv-pm" data-onb="parole">'+esc(l.mots.join(' '))+(der?'<span class="onbv-car"'+(f?'':' style="visibility:hidden"')+'></span>':'')+'</span>':'')+'</span>'; });
       ph.innerHTML=h; ph.setAttribute('data-taille', fs); ph.setAttribute('data-lignes', L.length); ph.setAttribute('data-coupe', d0); }
   /* les cotes sous la phrase se DÉRIVENT de son bas réel (§8 : un texte qui passe à la ligne) */
@@ -42922,7 +42933,7 @@ window._noms=(function(){
     var s=l.querySelector('.cm5-saisie'), m=l.querySelector('.cm5-mot'), f=l.querySelector('.cm5-va');
     if(!s){ l.innerHTML='<span class="cm5-mot" style="font:700 18px/1.2 Gilbert,system-ui,sans-serif;white-space:nowrap"></span><input class="cm5-saisie" type="text" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" aria-label="'+esc(TXT.voix)+'"><button type="button" class="cm5-va" aria-label="Envoyer" style="flex:none;width:44px;height:44px;margin:0 -12px 0 0;padding:0;border:0;background:transparent;display:grid;place-items:center"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>';
       s=l.querySelector('.cm5-saisie'); m=l.querySelector('.cm5-mot'); f=l.querySelector('.cm5-va'); }
-    m.textContent=TXT.ligne; m.style.display=ouvert?'none':'block'; s.style.display=ouvert?'block':'none';
+    m.textContent=TXT.ligne; s.style.display=ouvert?'block':'none'; if(window._retour && window._retour.motLigne) window._retour.motLigne(l, m, s, ouvert); else m.style.display=ouvert?'none':'block';   /* ⚑ v203 clôture (§2) : « Un mot… » part et revient par le tracé */
     var nb=l.querySelector('.cm5-nb'); if(!nb){ nb=document.createElement('span'); nb.className='cm5-nb'; l.insertBefore(nb, f); }
     /* ⚑ v186b (Tom, C-257 : « sur la ligne « Un mot… », le nombre de commentaires à droite : le nombre seul, dans la typographie et à l'encre de cette ligne,
        sans mot ajouté ; aucun commentaire : rien. Un toucher sur ce nombre fait glisser la fiche en douceur jusqu'aux commentaires ; il n'ouvre ni le clavier
@@ -45842,8 +45853,19 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     ['position:absolute','margin:0','pointer-events:none','white-space:nowrap','z-index:3','background:transparent','border:0','box-shadow:none','left:0px','top:0px',
      'font:'+cs0.font,'letter-spacing:'+cs0.letterSpacing,'color:'+cs0.color,'-webkit-text-fill-color:'+(cs0.webkitTextFillColor||cs0.color),'padding:'+cs0.paddingTop+' '+cs0.paddingRight+' '+cs0.paddingBottom+' '+cs0.paddingLeft,'border-width:'+bw0,'border-style:solid','border-color:transparent','line-height:'+cs0.lineHeight,'box-sizing:border-box','display:inline-flex','align-items:center','height:'+el.offsetHeight+'px']
       .forEach(function(d){ var i=d.indexOf(':'); gh.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+    /* ⚑ v203 clôture (C-282) : un exemple sur PLUSIEURS lignes (l'onboarding) — la copie reprend sa coupe exacte (même bloc, même retrait de la première ligne, même
+       interligne) et vit hors de la phrase (elle n'en est pas une ligne) ; sur une ligne (la page +), rien ne change */
+    var RR=el.getClientRects(), multi=null; if(RR.length>1){ var blk=el.closest('#onbPh') || el.parentNode, bcs=getComputedStyle(blk), BR=blk.getBoundingClientRect(), bk=(blk.offsetWidth?BR.width/blk.offsetWidth:1)||1,
+        bl=(parseFloat(bcs.borderLeftWidth)||0)+(parseFloat(bcs.paddingLeft)||0), bt=(parseFloat(bcs.borderTopWidth)||0)+(parseFloat(bcs.paddingTop)||0), lh=parseFloat(bcs.lineHeight)||parseFloat(cs0.lineHeight)||RR[0].height/bk,
+        pg=(parseFloat(cs0.borderLeftWidth)||0)+(parseFloat(cs0.paddingLeft)||0), pd=(parseFloat(cs0.borderRightWidth)||0)+(parseFloat(cs0.paddingRight)||0),   /* la marge et la bordure de la pastille, reprises à chaque ligne */
+        ind=(RR[0].left-BR.left)/bk-bl, li=Math.max(0, Math.round(((RR[0].top-BR.top)/bk-bt)/lh-0.25));
+      hote=blk.parentNode || hote;
+      ['display:block','white-space:normal','height:auto','padding:0 '+pd+'px 0 '+pg+'px','border:0','text-indent:'+ind+'px','box-sizing:border-box','width:'+(blk.clientWidth-bl-(parseFloat(bcs.paddingRight)||0))+'px','line-height:'+lh+'px','font-family:'+bcs.fontFamily,'font-size:'+bcs.fontSize,'font-weight:'+bcs.fontWeight,'letter-spacing:'+bcs.letterSpacing,'word-spacing:'+bcs.wordSpacing]
+        .forEach(function(d){ var i=d.indexOf(':'); gh.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+      multi={top:BR.top+(bt+li*lh)*bk, left:BR.left+bl*bk}; }
     hote.appendChild(gh); var R=gh.getBoundingClientRect(), sc=(gh.offsetWidth?R.width/gh.offsetWidth:1)||1;
-    gh.style.setProperty('left', ((r0.left-R.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((r0.top-R.top)/sc)+'px', 'important');
+    if(multi){ gh.style.setProperty('left', ((multi.left-R.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((multi.top-R.top)/sc)+'px', 'important'); }
+    else { gh.style.setProperty('left', ((r0.left-R.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((r0.top-R.top)/sc)+'px', 'important'); }
     /* la pastille : le mot tapé, tout de suite ; l'allure des pointillés gardée le temps du remplissage */
     st=el.__v200={cible:{html:html, cls:cls, brut:true}, tape:{html:html, cls:cls}, fini:false, phase:'premiere'}; (window.__dcA=window.__dcA||new Set()).add(el);
     var on=el.classList.contains('ph-on'); el.className=cls; if(on) el.classList.add('ph-on');
@@ -45872,7 +45894,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       } }
   /* pendant le remplissage, une lettre tapée s'écrit tout de suite (la frappe n'attend jamais) */
   function premiereTexte(el, html, cls){ var st=el.__v200; if(!st || st.fini || st.phase!=='premiere') return false; st.cible={html:html, cls:cls, brut:true}; st.tape={html:html, cls:cls}; var t=el.querySelector(':scope > .v203-txt'); if(t) t.innerHTML=html; try{ el.style.setProperty('width', mesure(el, html, el.className).w+'px','important'); }catch(_){ } return true; }   /* l'encart suit chaque lettre (sa transition de largeur) : à la fin, il est déjà à sa largeur — la composition ne mesure jamais une largeur forcée */
-  window._douceur={mot:mot, journal:J, premiere:premiere, premiereTexte:premiereTexte};
+  /* ⚑ v203 clôture (Tom, C-282, §2) — LA DÉCISION D'UNE PLACE QUI PORTE UN EXEMPLE, EN UN SEUL ENDROIT. La page + (le titre d'un Promi et d'un Chiche, le nom d'un
+     Cercle) et l'onboarding (le prénom, la parole) l'appellent : vidée, la place se détrace et l'exemple SE TRACE (`mot`, avec sa veille de 300 ms) ; à la première
+     lettre, l'exemple se détrace et ce qu'on tape paraît tout de suite (`premiere`, Q620) ; pendant une transition, chaque frappe devient sa cible. Elle rend faux
+     quand il n'y a rien à faire (la frappe s'écrit alors comme avant). `vide` : la classe de la place vide (`ph-vide` à la page +, `vide` à l'onboarding). */
+  function place(el, v, plein, exemple, vide){ if(!el) return false; vide=vide||'ph-vide';
+    var st=el.__v200, cours=!!(st && !st.fini), re=new RegExp('(^|\\s)'+vide+'(\\s|$)'), etaitVide=cours ? re.test(st.cible.cls) : el.classList.contains(vide);
+    if(!(cours || (!v)!==etaitVide)) return false;
+    var hh=v ? plein : exemple, cl=el.className.split(/\s+/).filter(function(c){ return c && c!==vide && c.indexOf('v200')!==0; }); if(!v) cl.push(vide);
+    if(v && (cours || etaitVide)){ if(!(cours && premiereTexte(el, hh, cl.join(' ')))) premiere(el, hh, cl.join(' ')); }
+    else mot(el, {html:hh, cls:cl.join(' '), brut:!!v});
+    return true; }
+  window._douceur={mot:mot, journal:J, premiere:premiere, premiereTexte:premiereTexte, place:place};
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', function(){ arme(); fiche(); }); else { arme(); fiche(); }
 })();
 </script>
@@ -46011,6 +46044,113 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 })();
 </script>
 
+<style id="lot-V203-RETOUR-css">
+/* ⚑ v203 clôture (Tom, §2) : pendant que le texte d'exemple d'un champ se trace, le texte d'exemple natif (`placeholder`) ne paraît pas d'un coup dessous */
+input.v203-phx::placeholder, textarea.v203-phx::placeholder{color:transparent!important;-webkit-text-fill-color:transparent!important;opacity:0!important}
+input.v203-phx::-webkit-input-placeholder, textarea.v203-phx::-webkit-input-placeholder{color:transparent!important;-webkit-text-fill-color:transparent!important;opacity:0!important}
+</style>
+<script id="lot-V203-RETOUR">
+/* ⚑ v203 clôture (Tom, C-282 §2) — TOUS LES TEXTES QUI REVIENNENT, PAR LE MÊME TRACÉ (C-279, `TraceLettres`, Atkinson). « Liste tous les endroits où un texte
+   d'exemple, de remplacement ou d'origine réapparaît. Chacun passe par le même code de retour et le même tracé. »
+   ① les places à exemple (page + : titre, nom d'un Cercle ; onboarding : prénom, parole) : `_douceur.place` (lot-V200-DOUCEUR) ;
+   ② le mot de liaison qui suit la frappe (« de » / « d’ », page + et onboarding) : `liaison` — détracé puis tracé (`_douceur.texte`), jamais réécrit d'un coup ;
+   ③ un champ simple (la recherche de l'Index et du Fil, les champs de Peaufiner, du Studio, des Réglages…) : son texte d'exemple (`placeholder`) se détrace à la
+      première lettre (une copie posée exactement sur lui, la lettre paraît tout de suite) et se TRACE quand on efface tout (le texte natif caché le temps du tracé) ;
+   ④ « Un mot… » : la ligne ouverte le garde comme texte d'exemple tant qu'on n'a rien écrit ; il se détrace à la première lettre, se trace quand on efface tout.
+   Une veille finit toute transition qui ne rend pas la main (C-274). « Réduire les animations » : d'un coup (la règle de C-125). */
+(function(){
+  function TL(){ return window.TraceLettres; }
+  function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+  function duree(t){ return 900+30*String(t||'').length; }
+  function declare(el, ms){ try{ (window.__dcA=window.__dcA||new Set()).add(el); setTimeout(function(){ try{ window.__dcA.delete(el); }catch(_){ } }, ms); }catch(_){ } }
+  /* ② */
+  function liaison(el, voulu){ if(!el) return; el.__voulu=voulu;
+    (function essaie(n){ if(!el.isConnected || n>60) { if(el.isConnected && el.textContent!==el.__voulu) el.textContent=el.__voulu; return; }
+      if(el.__v203tx){ setTimeout(function(){ essaie(n+1); }, 80); return; }
+      if(el.textContent===el.__voulu) return;
+      var T=window._douceur && window._douceur.texte; if(T && TL() && !reduit()){ T(el, el.innerHTML, esc(el.__voulu)); if(!el.__v203tx) el.textContent=el.__voulu; }
+      else el.textContent=el.__voulu;
+      setTimeout(function(){ essaie(n+1); }, 80); })(0); }
+  /* ③ une copie du texte d'exemple, posée EXACTEMENT sur celui du champ (sa police, sa couleur, sa place) */
+  function fantome(inp, txt){ var cs=getComputedStyle(inp), ph=null; try{ ph=getComputedStyle(inp, '::placeholder'); }catch(_){ }
+    var src=(ph && ph.fontFamily) ? ph : cs, g=document.createElement('span'); g.className='v203-ph'; g.setAttribute('aria-hidden','true'); g.textContent=txt;
+    var ta=inp.tagName==='TEXTAREA', pt=parseFloat(cs.paddingTop)||0, pb=parseFloat(cs.paddingBottom)||0, bt=parseFloat(cs.borderTopWidth)||0, bb=parseFloat(cs.borderBottomWidth)||0,
+        pl=parseFloat(cs.paddingLeft)||0, bl=parseFloat(cs.borderLeftWidth)||0, pr=parseFloat(cs.paddingRight)||0, br=parseFloat(cs.borderRightWidth)||0,
+        hC=inp.offsetHeight-pt-pb-bt-bb, wC=inp.offsetWidth-pl-pr-bl-br, col=(ph && ph.color) || cs.color;
+    var D=['position:absolute','margin:0','padding:0','border:0','background:transparent','box-shadow:none','pointer-events:none','z-index:9','left:0px','top:0px','overflow:visible',
+      'white-space:'+(ta?'pre-wrap':'pre'),'width:'+wC+'px','font-family:'+src.fontFamily,'font-size:'+src.fontSize,'font-weight:'+src.fontWeight,'font-style:'+src.fontStyle,
+      'letter-spacing:'+src.letterSpacing,'text-transform:'+src.textTransform,'text-align:'+cs.textAlign,'color:'+col,'-webkit-text-fill-color:'+col,'opacity:'+((ph && ph.opacity) || '1'),
+      'line-height:'+(ta ? cs.lineHeight : hC+'px'),'height:'+(ta ? 'auto' : hC+'px')];
+    D.forEach(function(d){ var i=d.indexOf(':'); g.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+    inp.parentNode.insertBefore(g, inp.nextSibling);
+    var R=inp.getBoundingClientRect(), G=g.getBoundingClientRect(), sc=(inp.offsetWidth ? R.width/inp.offsetWidth : 1)||1;
+    g.style.setProperty('left', ((R.left+(bl+pl)*sc-G.left)/sc)+'px', 'important'); g.style.setProperty('top', ((R.top+(bt+pt)*sc-G.top)/sc)+'px', 'important');
+    return g; }
+  var LIES=new Set(), EXCLUS={onbIn:1, phIn:1, nueeNomIn:1, fTitle:1, nName:1};
+  function visible(e){ var r=e.getBoundingClientRect(); if(r.width<4 || r.height<4) return false; for(var q=e; q && q.nodeType===1; q=q.parentElement){ var c=getComputedStyle(q); if(c.display==='none' || c.visibility==='hidden' || +c.opacity<0.05) return false; } return true; }
+  function champ(inp){ if(inp.__v203ch) return inp.__v203ch; var c=inp.__v203ch={vide:!inp.value, anim:null, montre:inp.getAttribute('placeholder')||''}; LIES.add(inp);
+    function txt(){ return inp.getAttribute('placeholder')||''; }
+    function etat(){ if(c.anim || !inp.isConnected) return; var v=!inp.value;
+      if(v===c.vide){ if(v && c.montre!==txt()){ var a=c.montre; c.montre=txt(); echange(a, c.montre); } return; }   /* le texte d'exemple a changé pendant une transition : l'échange se joue après elle */
+      c.vide=v; if(v) c.montre=txt(); if(!txt() || reduit() || !TL() || !visible(inp)) return; if(v) revient(); else part(); }
+    function part(){ var g=fantome(inp, txt()), fini=false; c.anim='part'; declare(g, duree(txt()));
+      var f=function(){ if(fini) return; fini=true; if(g.parentNode) g.remove(); c.anim=null; etat(); };
+      try{ TL().trace(g, null, {inverse:true, depart:'h', surFin:f}); }catch(_){ f(); } setTimeout(f, duree(txt())+1500); }
+    function revient(){ inp.classList.add('v203-phx'); var g=fantome(inp, txt()), fini=false; c.anim='revient'; declare(g, duree(txt()));
+      var f=function(){ if(fini) return; fini=true; inp.classList.remove('v203-phx'); if(g.parentNode) g.remove(); c.anim=null; etat(); };
+      try{ TL().trace(g, null, {surFin:f}); }catch(_){ f(); } setTimeout(function(){ if(!fini){ try{ TL().poseTout(g); }catch(_){ } f(); } }, duree(txt())+1500); }   /* la veille */
+    /* le texte d'exemple lui-même qui change, le champ vide (le curseur, lot-CURSEUR : « Rechercher » ↔ « … » au focus) : l'ancien se détrace, PUIS le neuf se trace (C-271) */
+    function echange(ancien, neuf){ if(c.anim) return; if(inp.value || ancien===neuf || !visible(inp) || reduit() || !TL()){ c.montre=txt(); return; } c.montre=neuf;
+      c.anim='echange'; inp.classList.add('v203-phx'); var fini=false, go=null, gn=null;
+      var f=function(){ if(fini) return; fini=true; if(go && go.parentNode) go.remove(); if(gn && gn.parentNode) gn.remove(); inp.classList.remove('v203-phx'); c.anim=null; c.vide=!inp.value; etat(); };
+      if(ancien){ go=fantome(inp, ancien); declare(go, duree(ancien)+duree(neuf)); }
+      var deux=function(){ if(fini) return; if(go && go.parentNode) go.remove(); if(!neuf || inp.value){ f(); return; } gn=fantome(inp, neuf); declare(gn, duree(neuf)); try{ TL().trace(gn, null, {surFin:f}); }catch(_){ f(); } };
+      if(go){ try{ TL().trace(go, null, {inverse:true, depart:'h', surFin:deux}); }catch(_){ deux(); } } else deux();
+      setTimeout(function(){ if(!fini){ f(); } }, duree(ancien)+duree(neuf)+1500); }   /* la veille */
+    new MutationObserver(function(ms){ ms.forEach(function(m){ if(m.attributeName==='placeholder') echange(m.oldValue||'', inp.getAttribute('placeholder')||''); }); }).observe(inp, {attributes:true, attributeFilter:['placeholder'], attributeOldValue:true});
+    c.echange=echange;
+    inp.addEventListener('input', etat); c.etat=etat; return c; }
+  function lie(t){ if(!t || !/^(INPUT|TEXTAREA)$/.test(t.tagName) || EXCLUS[t.id] || !(t.getAttribute('placeholder') || t.getAttribute('data-ph0'))) return null; if(t.type && !/^(text|search)$/.test(t.type) && t.tagName==='INPUT') return null; if(!visible(t)) return null; return champ(t); }
+  document.addEventListener('focusin', function(e){ var t=e.target, neuf=t && !t.__v203ch; var c=lie(t); if(!c) return;
+    if(neuf && t.hasAttribute('data-ph0') && t.getAttribute('data-ph0')!==t.getAttribute('placeholder')) c.echange(t.getAttribute('data-ph0'), t.getAttribute('placeholder')||''); }, true);   /* le curseur a déjà changé le texte (son écouteur passe avant) : l'échange part de l'original */
+  /* les champs visibles au repos (les recherches) sont liés AVANT le premier focus : leur premier échange se voit aussi */
+  setInterval(function(){ document.querySelectorAll('#ixSearch, #fdSearch').forEach(function(i){ if(!i.__v203ch && visible(i)) champ(i); }); }, 400);
+  setInterval(function(){ LIES.forEach(function(i){ if(!i.isConnected){ LIES.delete(i); return; } if(i.__v203ch) i.__v203ch.etat(); }); }, 250);   /* une valeur changée par l'app (« Revenir à tout l'Index ») */
+  /* ④ « Un mot… » (lot-V145-COMM) : son texte reste le texte d'exemple de la ligne ouverte ; il part et revient par le tracé */
+  function motLigne(l, m, s, ouvert){ var st=m.__v203m || (m.__v203m={montre:true, anim:null});
+    if(ouvert){ ['position:absolute','left:0px','top:50%','transform:translateY(-50%)','pointer-events:none','z-index:1'].forEach(function(d){ var i=d.indexOf(':'); m.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); }); }
+    else ['position','left','top','transform','pointer-events','z-index'].forEach(function(p){ m.style.removeProperty(p); });
+    if(s && !s.__v203m){ s.__v203m=1; s.addEventListener('input', function(){ motLigne(l, m, s, true); }); }
+    var veut=!ouvert || !(s && s.value); st.veut=veut; avance(m); }
+  /* un texte qui part et revient par le tracé (« Un mot… », « un prénom… ») : `montre` vrai → il se trace ; faux → il se détrace, puis se cache */
+  function bascule(el, montre){ if(!el) return; var st=el.__v203m || (el.__v203m={montre:el.style.display!=='none', anim:null}); st.veut=!!montre; avance(el); }
+  /* un texte remplacé par un autre à la même place (« + ajouter quelqu’un » ↔ la ligne de saisie) : l'ancien, copié à sa place, se détrace ; le neuf se trace */
+  function remplace(el, applique){ if(!el || reduit() || !TL() || !el.isConnected || !el.getClientRects().length){ applique(); return; }
+    var g=copieA(el); var fin=function(){ if(g.parentNode) g.remove(); }; declare(g, 2500);
+    applique();
+    try{ TL().trace(el, null, {}); }catch(_){ }
+    try{ TL().trace(g, null, {inverse:true, surFin:fin}); }catch(_){ fin(); } setTimeout(fin, 2500); }
+  /* une copie d'un élément, posée exactement à sa place (au-dessus, sans prendre le doigt) */
+  function copieA(el){ var g=el.cloneNode(true), r=el.getBoundingClientRect(), cs=getComputedStyle(el); g.removeAttribute('id'); g.setAttribute('aria-hidden','true'); g.classList.add('v203-rempl');
+    var pad=['Top','Right','Bottom','Left'].map(function(s){ return ((parseFloat(cs['padding'+s])||0)+(parseFloat(cs['border'+s+'Width'])||0))+'px'; }).join(' ');   /* le texte seul : ni bordure ni fond ; l'épaisseur de la bordure passe en marge intérieure (le texte reste au même pixel) */
+    var hote=el.offsetParent || el.parentNode; hote.appendChild(g); var H=hote.getBoundingClientRect(), k=(hote.offsetWidth ? H.width/hote.offsetWidth : 1)||1;
+    ['position:absolute','margin:0','pointer-events:none','z-index:9','box-sizing:border-box','display:block','white-space:nowrap','width:'+r.width/k+'px','height:'+r.height/k+'px','left:'+((r.left-H.left)/k-(hote.clientLeft||0))+'px','top:'+((r.top-H.top)/k-(hote.clientTop||0))+'px',
+     'transform:none','background:transparent','border:0','padding:'+pad,'outline:0','box-shadow:none','transition:none','animation:none'].forEach(function(d){ var i=d.indexOf(':'); g.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+    return g; }
+  function avance(m){ var st=m.__v203m; if(!st || st.anim) return; if(st.veut===st.montre){ m.style.display=st.montre?'':'none'; return; }
+    if(reduit() || !TL() || !m.isConnected){ st.montre=st.veut; m.style.display=st.montre?'':'none'; return; }
+    var vers=st.veut, fini=false; st.anim=vers?'revient':'part';
+    var f=function(){ if(fini) return; fini=true; st.montre=vers; st.anim=null; avance(m); };
+    if(vers){ m.style.display=''; if(!m.getClientRects().length){ f(); return; } declare(m, duree(m.textContent));
+      try{ TL().trace(m, null, {surFin:f}); }catch(_){ f(); }
+      setTimeout(function(){ if(!fini){ try{ TL().poseTout(m); }catch(_){ } f(); } }, duree(m.textContent)+1500); }   /* la veille */
+    else { if(!m.getClientRects().length){ m.style.display='none'; f(); return; } var g=copieA(m); m.style.display='none'; declare(g, duree(g.textContent));
+      var fg=function(){ if(g.parentNode) g.remove(); f(); };
+      try{ TL().trace(g, null, {inverse:true, depart:'h', surFin:fg}); }catch(_){ fg(); } setTimeout(fg, duree(g.textContent)+1500); } }
+  window._retour={liaison:liaison, champ:champ, motLigne:motLigne, bascule:bascule, remplace:remplace, fantome:fantome};
+})();
+</script>
 <script id="lot-V203-LIAISONS">
 /* ⚑ v203 (Tom, C-271, C-278) — LES MOTS DE LIAISON QUI PARAISSENT SE TRACENT. La phrase de la page + est rebâtie (`_phraseRendu`, `_nueePhraseRendu`) ; un mot de
    liaison neuf (le « à » de « Je promets à », « avec ») y paraissait d'un coup, sous le rail. Avant chaque rebâti on note les mots de liaison vus ; après, un mot neuf
