@@ -4,7 +4,7 @@
 
 ## a) L'état
 
-- **Branche `main`, v203** — commit `__HASH__` (fusion de `v197` ; étiquettes `avant-fusion-v203`, `avant-q621`). Le serveur sert `main` ; `?diag=1` affiche la version en haut de chaque écran.
+- **Branche `main`, v203** — commit `5558b66` (fusion de `v197` ; étiquettes `avant-fusion-v203`, `avant-q621`). Le serveur sert `main` ; `?diag=1` affiche la version en haut de chaque écran.
 - **Le relevé des images ne tourne plus par défaut** : `?releve=1` (ou `?mesure=1`) le rallume ; `python3 resume_releve.py <fichier>` le lit (`mesures/`).
 - **Le moteur (`promi-moteur.js`) reste en lecture seule.** Seule exception de ce chapitre, autorisée par Tom : Q621 (deux lectures du titre remplacées par la clé de plantation `p.cle`).
 - **Validé par Tom dans ce chapitre** : le haut des fiches et la jonction du trait (C-255, C-259, C-263 à C-267), la page + et sa genèse (C-269, C-270, C-277, C-278), un seul langage de tracé (C-279), le guide (C-268, C-277), l'exemple qui revient (C-274 suite), le titre long de l'Index (C-276), le titre modifié dans l'Index et le Fil (C-280, en partie), Mascaret (C-272), l'Aura et la Pelote aux couleurs exactes (C-275), PromiLate gardé tel quel.
