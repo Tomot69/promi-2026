@@ -2765,6 +2765,10 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
                taches:(window.__taches||[]).splice(0).map(function(x){ return [Math.round(x[0]-T0), x[1], x[2]]; })};
         if(ENV.premier){ R.version=V.marque(); R.ua=navigator.userAgent; ENV.premier=false; }
         if(ets!==ENV.etat){ R.etat=et; ENV.etat=ets; } if(ecs!==ENV.ecran){ R.ecran=ec; ENV.ecran=ecs; }
+        /* ⚑ v203 (retours sur 58a4ff9, §5) : l'OUVRIER du tracé des lettres — sur l'iPhone, une lettre coûtait ≈ 100 ms au fil principal (11 au banc) ; le relevé dit s'il travaille, ce qu'il a abandonné, et ce que le fil a calculé à sa place */
+        try{ var TLx=window.TraceLettres; if(TLx){ var J=(TLx.journal||[]).filter(function(j){ return /^ouvrier/.test(j.quoi) || (j.quoi==='trace-fin' && (j.attente>150 || j.imagesLongues>2)); }), M=TLx.mesures||{}, pr=(M.prep||[]), sp=0; for(var i=0;i<pr.length;i++) sp+=pr[i];
+            var tl={etat:TLx.ouvrierEtat||'?', j:J.slice(-12).map(function(j){ var o={}; for(var k in j) if(k!=='pile') o[k]=(typeof j[k]==='string') ? j[k].slice(0,80) : j[k]; return o; }), prepN:pr.length, prepMs:Math.round(sp), prepMax:Math.round(Math.max.apply(null, pr.concat([0]))), cacheR:M.cacheR||0, lents:TLx._lents||0}, tls=JSON.stringify(tl);
+            if(tls!==ENV.tl){ R.tl=tl; ENV.tl=tls; } } }catch(_){ }
         ENV.tags=TAGS.length; ENV.modes=MODES.length;
         try{ fetch('releve', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:!!force}).catch(function(){}); }catch(_){ } }
       function b(t){ requestAnimationFrame(b); enveloppe(); var n=performance.now();
@@ -13946,8 +13950,14 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
       var v=(document.getElementById('nName')||{}).value||'';
       zone.innerHTML='<div class="ph-lab">LE NOM DU CERCLE</div><input class="ph-in" id="nueeNomIn" placeholder="'+(window._ppExemple?window._ppExemple('nuee'):'Week-end à Marseille')+'…" value="'+v.replace(/"/g,'&quot;')+'">';
       var i=zone.querySelector('#nueeNomIn');
-      i.oninput=function(){ var n=document.getElementById('nName'); if(n){ n.value=i.value; n.dispatchEvent(new Event('input',{bubbles:true})); }
-        el.textContent=i.value||(window._ppExemple?window._ppExemple('nuee'):'le nom'); el.classList.toggle('ph-vide', !i.value); };
+      var el0=el; i.oninput=function(){ var n=document.getElementById('nName'); if(n){ n.value=i.value; n.dispatchEvent(new Event('input',{bubbles:true})); }
+        /* ⚑ v203 (Tom, retours sur 58a4ff9, §1) : le nom effacé, l'exemple revient EN SE TRAÇANT (C-279) — comme le titre d'un Promi et d'un Chiche (`_douceur`, C-274) ; il revenait d'un coup */
+        var el=document.querySelector('#nueePhrase [data-np=nom]')||el0;   /* la place VIVANTE : la frappe fait rebâtir la phrase (le nœud du toucher n'est plus dans la page) */
+        var ex=(window._ppExemple?window._ppExemple('nuee'):'le nom'), v=i.value||'', D2=window._douceur, st2=el.__v200, cours=!!(st2 && !st2.fini), etaitVide=cours ? /(^|\s)ph-vide(\s|$)/.test(st2.cible.cls) : el.classList.contains('ph-vide');
+        if(D2 && D2.mot && (cours || (!v)!==etaitVide)){ var hh=(v||ex).replace(/&/g,'&amp;').replace(/</g,'&lt;'), cl=el.className.split(/\s+/).filter(function(c){ return c && c!=='ph-vide' && c.indexOf('v200')!==0; }); if(!v) cl.push('ph-vide');
+          if(v && D2.premiere && (cours || etaitVide)){ if(!(cours && D2.premiereTexte && D2.premiereTexte(el, hh, cl.join(' ')))) D2.premiere(el, hh, cl.join(' ')); }
+          else D2.mot(el, {html:hh, cls:cl.join(' '), brut:!!v}); }
+        else { el.textContent=v||ex; el.classList.toggle('ph-vide', !v); } };
       i.onkeydown=function(e){ if(e.key==='Enter'){ e.preventDefault(); i.blur(); } };
       i.onblur=function(){ _nueePhraseRendu(); };
       /* ⚑ v114 (Tom, iPhone : « le clavier ne s'ouvre pas ») — iOS n'ouvre le clavier que si focus() est appelé DANS le geste.
@@ -20388,13 +20398,19 @@ var CREMEETAT='#F7F0DE';
         return R.getBoundingClientRect().bottom > et.getBoundingClientRect().top - 2*k; }
       /* la taille de départ est celle que la feuille DÉCIDE (24 px dans l'appareil, l'échelle des titres de carte) : on remet la taille posée à la
          construction, sans priorité, et on lit ce que la cascade en fait */
-      if(t.__clamp){ ['display','-webkit-box-orient','-webkit-line-clamp','overflow'].forEach(function(p){ t.style.removeProperty(p); }); t.__clamp=0; }
+      if(t.__clamp){ ['display','-webkit-box-orient','-webkit-line-clamp','overflow','line-height','height'].forEach(function(p){ t.style.removeProperty(p); }); (t.__clampAv||[]).forEach(function(q){ if(q[1]) t.style.setProperty(q[0], q[1], q[2]); }); t.__clamp=0; }
       t.style.setProperty('font-size', t.getAttribute('data-fti') + 'px'); var fs=parseFloat(getComputedStyle(t).fontSize)||+t.getAttribute('data-fti');
       if(!deborde()) return;
-      for(var n=0; n<14 && fs > 11 && deborde(); n++){ fs -= 1; t.style.setProperty('font-size', fs + 'px', 'important'); }
+      var _sol=(t.closest('.s4-carte') && t.closest('.s4-carte').getBoundingClientRect().width < 120) ? 12 : 13;   /* le plancher du §6 tel que `echelle` le pose (13 ; 12 sur une carte étroite) */
+      for(var n=0; n<14 && fs > _sol && deborde(); n++){ fs -= 1;   /* ⚑ v203 (Tom, §2) : jusqu'au plancher — à 11, le plancher (`echelle`) la reprenait, la taille en ligne partait et le titre revenait à 24 avec la coupe d'une autre taille (une ligne tranchée à mi-hauteur, sans « … ») */
+        t.style.setProperty('font-size', fs + 'px', 'important'); }
       /* ⚑ v203 (trouvé par redteam_app, vue de Tom ; présent depuis v202a) : au plancher du §6 un titre d'un seul long mot coupé n'importe où (« jcicjccjc… », v202a) prend
          encore trois lignes et recouvre l'état — il s'arrête, par « … », à la dernière ligne qui tient au-dessus de lui (comme le nom d'un Cercle, v181b) */
-      if(deborde() && et){ R.selectNodeContents(t); var lim=et.getBoundingClientRect().top-2*k, tops={}, N=0; [].forEach.call(R.getClientRects(), function(q){ if(q.height>0 && q.bottom<=lim){ var y=Math.round(q.top); if(!tops[y]){ tops[y]=1; N++; } } }); N=Math.max(1, N);   /* les lignes rendues (l'encre), pas une hauteur de ligne */
+      if(deborde() && et){ var lim=et.getBoundingClientRect().top-2*k, lh=1.2*fs, N=Math.max(1, Math.floor((lim-t.getBoundingClientRect().top)/(lh*k)+0.001));
+        /* ⚑ v203 (Tom, §2) : la boîte prend la hauteur EXACTE de N lignes (interligne 1,2 : les jambages de la dernière tiennent dedans) — gardée à sa hauteur d'origine,
+           le haut de la ligne N+1 se voyait sous le « … » (la découpe de -webkit-line-clamp ne cache que ce qui sort de la boîte) */
+        t.__clampAv=[['line-height', t.style.getPropertyValue('line-height'), t.style.getPropertyPriority('line-height')], ['height', t.style.getPropertyValue('height'), t.style.getPropertyPriority('height')]];
+        t.style.setProperty('line-height','1.2','important'); t.style.setProperty('height', (N*lh)+'px','important');
         t.style.setProperty('display','-webkit-box','important'); t.style.setProperty('-webkit-box-orient','vertical','important'); t.style.setProperty('-webkit-line-clamp', String(N), 'important'); t.style.setProperty('overflow','hidden','important'); t.__clamp=1; }
     }); }catch(_){ } };
   (function(){ var li=document.getElementById('indexList'); if(!li) return; var vu=false;
@@ -25224,6 +25240,9 @@ var CREMEETAT='#F7F0DE';
            d'emblée sur ces nœuds : le plancher ne s'appliquait plus, et `releve-S4` est
            passé de 0 à 34 écarts — des états à 6,4 · 10 · 11 px, sous le minimum du §6.
            Le plancher reste ; c'est le retrait qui s'arrête à la porte. */
+        /* ⚑ v203 (Tom, §2 : le titre très long de l'Index) : le TITRE d'une carte n'appartient qu'à `_s4TitresAjuste` (son plancher est celui-ci) — le plancher le montait à 13,
+           puis, au passage suivant, retirait la taille en ligne : le titre revenait à 24 avec la coupe d'une autre taille (une ligne tranchée à mi-hauteur, sans « … ») */
+        if(n.classList && n.classList.contains('s4-ti') && n.closest('.s4-carte')){ if(mien) n.removeAttribute('data-ech'); return; }
         if(mien && !_estEtat){ n.style.removeProperty('font-size'); n.removeAttribute('data-ech'); }
         /* ⚠ LA CARTE DU PEAUFINER D'UNE NUÉE A UNE HAUTEUR QUI NE BOUGE PAS. Son
            « visibles par les membres » est cloué en absolu au bas d'une boîte de 104 px ;
@@ -45016,7 +45035,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       if(b && b.hasAttribute('data-deplie')){ ['top','bottom','position','left','width'].forEach(function(k){ b.style.removeProperty(k); }); b.removeAttribute('data-deplie'); } return; }
     if(m){ var mh=Math.ceil(bas+12+84)+'px'; m.setAttribute('data-mh', mh); m.style.setProperty('min-height', mh, 'important'); m.setAttribute('data-deplie','1');
       /* la pose de la fiche réécrit la hauteur de #dpMain après coup : on la remet, en comparant avant d'écrire (§8) */
-      if(!m.__obsMh){ m.__obsMh=new MutationObserver(function(){ if(m.hasAttribute('data-deplie')){ var v=m.getAttribute('data-mh'); if(v && (m.style.getPropertyValue('min-height')!==v || m.style.getPropertyPriority('min-height')!=='important')) m.style.setProperty('min-height', v, 'important'); } }); m.__obsMh.observe(m, {attributes:true, attributeFilter:['style']}); } }
+      if(!m.__obsMh){ m.__obsMh=new MutationObserver(function(){ if(m.hasAttribute('data-deplie')){ var v=m.getAttribute('data-mh'); if(v && ((parseFloat(m.style.getPropertyValue('min-height'))||0) < parseFloat(v)-0.5 || m.style.getPropertyPriority('min-height')!=='important')) m.style.setProperty('min-height', (Math.max(parseFloat(v), parseFloat(m.style.getPropertyValue('min-height'))||0))+'px', 'important'); }   /* ⚑ v203 fin : on RELÈVE seulement (la colonne d'un Cercle, lot-V184A, relève aussi) — deux observateurs qui remettaient chacun SA valeur se répondaient sans fin (la page se figeait au dépliage d'un Cercle qui porte des mots, §7) */ }); m.__obsMh.observe(m, {attributes:true, attributeFilter:['style']}); } }
     if(b){ b.setAttribute('data-deplie','1'); b.style.setProperty('position','absolute','important'); b.style.setProperty('left','0px','important'); b.style.setProperty('width','390px','important'); b.style.setProperty('bottom','auto','important'); tient(); }
     if(!BAR){ BAR=true; document.addEventListener('scroll', function(e){ if(e.target && e.target.id==='detailPoster') tient(); }, true); } }
   /* Peaufiner ouvert depuis sa barre : la fiche se replie d'abord, sans mouvement (le panneau la recouvre) */
@@ -45681,12 +45700,21 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var w0=(w0d>0 ? w0d : el.offsetWidth), m=mesure(el, cible.html, cible.cls), D=dureeMot(texte(html0));   /* la largeur de départ : celle de l'encart qui était à l'écran (une phrase reconstruite le rebâtit) */
     el.style.setProperty('box-sizing','border-box','important'); el.style.setProperty('width', w0+'px','important'); el.style.setProperty('justify-content','flex-start','important');
     void el.offsetWidth; el.style.setProperty('transition','width '+D+'ms '+COURBE+', border-width '+D_FL+'ms '+COURBE,'important'); el.style.setProperty('width', m.w+'px','important');
-    var inn=enveloppe(el);
-    if(!inn.textContent.trim()) suite(); else TL().trace(inn, null, {inverse:true, surFin:function(r){ if(!r.interrompu) suite(); }});
-    function suite(){ if(st.fini) return; var c=st.cible, v0=el.classList.contains('ph-vide'), v1=/(^|\s)ph-vide(\s|$)/.test(c.cls), m2=mesure(el, c.html, c.cls);
+    var inn=enveloppe(el); st.t=performance.now(); veille();
+    /* ⚑ v203 (Tom, retours sur 58a4ff9 : « l'encart en pointillés reste VIDE » — relevé de l'iPhone : une transition ouverte 30 s, sans tracé ni détracé, née pendant le
+       mouvement du clavier) : une transition ne peut plus rester en route. Un détracé INTERROMPU continue (il attendait sa fin « normale » pour toujours) ; un mot sorti de
+       la page (la phrase rebâtie) finit sa transition ; une VEILLE relance l'étape qui n'avance plus — d'abord le tracé de la cible (l'exemple se trace, C-279). */
+    if(!inn.textContent.trim()) suite(); else TL().trace(inn, null, {inverse:true, surFin:function(r){ suite(); }});
+    function horsPage(){ if(el.isConnected) return false; st.fini=true; if(el.__v200===st) el.__v200=null; try{ window.__dcA && window.__dcA.delete(el); }catch(_){ } note({mot:texte(st.cible.html), sec:'hors page'}); return true; }
+    function veille(){ setTimeout(function(){ if(st.fini || el.__v200!==st) return; if(horsPage()) return;
+        var i=el.querySelector(':scope > .v200-mt'), actif=!!(i && i.__trace), age=performance.now()-st.t;
+        if(!actif && age>(st.phase==='flaques' ? 1500 : (st.phase==='attend' ? 900 : 600))){ note({relance:st.phase}); st.t=performance.now();
+          if(st.phase==='detrace') suite(); else if(st.phase==='flaques') trace(st.cible); else if(st.phase==='trace' || st.phase==='attend'){ st.trace=null; trace(st.cible); } }
+        veille(); }, 300); }
+    function suite(){ if(st.fini) return; if(horsPage()) return; st.t=performance.now(); var c=st.cible, v0=el.classList.contains('ph-vide'), v1=/(^|\s)ph-vide(\s|$)/.test(c.cls), m2=mesure(el, c.html, c.cls);
       el.style.setProperty('width', m2.w+'px','important');
-      if(v0!==v1 && window._passageFlaques) flaques(el, v1, m2, function(){ trace(st.cible); }); else trace(c); }
-    function trace(c){ if(st.fini) return; st.phase='trace'; st.trace=c; var inn2=enveloppe(el); inn2.innerHTML=c.html; var on=el.classList.contains('ph-on'); el.className=c.cls; if(on) el.classList.add('ph-on');
+      if(v0!==v1 && window._passageFlaques){ st.phase='flaques'; flaques(el, v1, m2, function(){ trace(st.cible); }); } else trace(c); }
+    function trace(c){ if(st.fini) return; if(horsPage()) return; st.t=performance.now(); st.phase='trace'; st.trace=c; var inn2=enveloppe(el); inn2.innerHTML=c.html; var on=el.classList.contains('ph-on'); el.className=c.cls; if(on) el.classList.add('ph-on');
       var cv=el.querySelector(':scope > canvas.v200-fl'); if(cv) cv.remove();
       note({mot:texte(c.html), phase:'trace'});
       if(c.brut){ st.phase='brut'; el.innerHTML=c.html; fin(); return; }   /* l'enveloppe du détracé (sa découpe vide) part : ce qu'on tape se voit tout de suite */   /* ⚑ v202a (C-274) : ce qu'on tape paraît tel quel, l'encart finit d'aller à sa largeur */
@@ -45699,8 +45727,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
           el.style.removeProperty('transition'); el.style.removeProperty('width'); st.libre=1; try{ window._ppTout(); }finally{ st.libre=0; }
           var wn0=el.offsetWidth, ptx=el.closest('.ph-txt'), kk=ptx ? (parseFloat(getComputedStyle(ptx).scale)||1) : 1;   /* la taille va en douceur par `scale` (lot-V202A-TAILLE) : l'encart part de sa largeur VUE, divisée par l'échelle du moment */
           el.style.setProperty('width', (wv/kk)+'px','important'); void el.offsetWidth; el.style.setProperty('transition','width 320ms cubic-bezier(.33,0,.67,1), border-width '+D_FL+'ms '+COURBE,'important'); el.style.setProperty('width', wn0+'px','important'); if(Math.abs(kk-1)>0.01) attend=330;   /* seulement quand la taille change (le tracé mesuré pendant la mise à l'échelle couperait les lignes autrement) */ }catch(_){ } }
-      var go=function(){ if(st.fini || st.trace!==c) return; TL().trace(inn2, null, {surFin:function(){ fin(); }}); }; if(attend) setTimeout(go, attend); else go(); }
-    function fin(){ if(st.coupe) return; var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA && window.__dcA.delete(el); }catch(_){ }
+      var go=function(){ if(st.fini || st.trace!==c) return; if(horsPage()) return; st.phase='trace'; st.t=performance.now(); TL().trace(inn2, null, {surFin:function(){ fin(); }}); }; if(attend){ st.phase='attend'; setTimeout(go, attend); } else go(); }
+    function fin(){ if(st.coupe || st.fini) return; var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA && window.__dcA.delete(el); }catch(_){ }
       if(texte(c.html)!==texte(st.trace.html) || net(c.cls)!==net(st.trace.cls)){ if(c.brut && st.trace.brut && net(c.cls)===net(st.trace.cls)) el.innerHTML=c.html; else { mot(el, c); return; } }   /* la cible a changé pendant le tracé : on repart d'ici, sans saut (v202a : une frappe se pose) */
       var wc=el.offsetWidth; el.style.removeProperty('transition'); el.style.removeProperty('width');
       /* ⚑ v202a–v203 (C-274) : le titre a fini sa transition — la composition (coupe, taille) passe ici, l'encart rendu à sa largeur naturelle (forcée, elle faisait tomber la phrase à 16),
@@ -46132,6 +46160,99 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     ANI={a:a, txt:txt, t1:t1, t:0}; window.__animT=performance.now();
     a.onfinish=function(){ if(ANI && ANI.a===a) ANI=null; };
   };
+})();
+</script>
+<script id="lot-V203-TITRE">
+/* ⚑ v203 (Tom, retours sur 58a4ff9, §3, C-280) — « Sur les fiches Cercle, Promi et Chiche, on doit pouvoir corriger le titre (une faute de frappe, une erreur) en le
+   touchant. » Avec C-244 (toucher le titre le déplie, validé) : un titre ENTIER passe en modification au premier toucher ; un titre COUPÉ (« … ») se déplie au premier
+   (C-244, inchangé) et passe en modification au second, sur le titre déplié.
+   LA MODIFICATION : sur place, le titre lui-même (`#dptTitre`, sa typographie), le curseur à l'endroit touché, le clavier ; jamais Peaufiner. Les limites de la page +
+   (280 caractères, 40 pour le nom d'un Cercle — `window._limiteTexte`), sans retour à la ligne ni emoji (`_sansEmoji`). Validée par Retour ou un toucher hors du titre.
+   Vidée puis validée : refusée, l'ancien titre revient EN SE TRAÇANT (C-279). Le titre neuf est celui de la parole (`p.title`, `NUE[clé]` d'un Cercle) : l'Index, le Fil
+   (ses lignes « « titre » » réécrites), la fiche et — par la parole — chez ses membres. LA TOILE NE SE RESSÈME PAS (aucun `Toile.sync` : chaque `sync` refait l'ampleur à
+   partir du titre, `_ampleur` du moteur) : elle se repeint (`Toile.redraw`, le titre écrit sur la dalle). La barre Peaufiner reste en bas ; clavier ouvert, la fiche glisse
+   (défilement doux natif) pour garder le titre visible au-dessus du clavier. `window._titreEdition` : l'état (pour les juges). */
+(function(){
+  var E=null, avale=0, x0=0, y0=0, t0=0, sur=false;
+  function dp(){ return document.getElementById('detailPoster'); }
+  function cercle(){ var d=dp(); return !!(d && (d.classList.contains('dp-mode-nuee')||d.classList.contains('dp-nuee'))); }
+  function parole(cle){ if(!cle || cle.indexOf('p:')!==0) return null; var id=cle.slice(2); try{ for(var i=0;i<promises.length;i++) if(String(promises[i].id)===id) return promises[i]; }catch(_){ } return null; }
+  function lim(){ var L=window._limiteTexte||{parole:280, nom:40}; return cercle() ? L.nom : L.parole; }
+  function propre(v){ v=String(v||'').replace(/[\r\n]+/g,' '); try{ if(window._sansEmoji) v=window._sansEmoji(v); }catch(_){ } var a=Array.from(v), n=lim(); return a.length>n ? a.slice(0,n).join('') : v; }
+  function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
+  function lit(){ var ti=document.getElementById('dptTitre'); return ti ? (ti.textContent||'') : ''; }
+  function ecrit(cle, v){ /* le titre de la parole (ou le nom du Cercle), en mémoire : la pose de la fiche le relit (sans quoi elle réécrirait l'ancien sous le curseur) */
+    var p=parole(cle); if(p){ p.title=v; return true; }
+    if(cle && cle.indexOf('n:')===0 && typeof NUE!=='undefined'){ NUE[cle.slice(2)]=v; return true; } return false; }
+  function curseur(ti, x, y){ try{ var r=null; if(document.caretRangeFromPoint) r=document.caretRangeFromPoint(x, y); else if(document.caretPositionFromPoint){ var c=document.caretPositionFromPoint(x, y); if(c){ r=document.createRange(); r.setStart(c.offsetNode, c.offset); } }
+      if(!r || !ti.contains(r.startContainer)){ r=document.createRange(); r.selectNodeContents(ti); r.collapse(false); } else r.collapse(true);
+      var s=getSelection(); s.removeAllRanges(); s.addRange(r); }catch(_){ } }
+  function visible(){ /* clavier ouvert : la fiche glisse pour garder le titre (le curseur) au-dessus du clavier */
+    try{ if(!E) return; var d=dp(), ti=E.ti, vv=window.visualViewport; if(!d || !vv) return; var r=null, s=getSelection(); if(s.rangeCount){ var q=s.getRangeAt(0).getClientRects(); if(q.length) r=q[q.length-1]; }
+      if(!r) r=ti.getBoundingClientRect(); var bas=vv.offsetTop+vv.height-24, haut=Math.max(vv.offsetTop, (d.getBoundingClientRect().top||0))+120;
+      var dy=r.bottom>bas ? r.bottom-bas : (r.top<haut && d.scrollTop>0 ? -Math.min(d.scrollTop, haut-r.top) : 0); if(Math.abs(dy)<1) return;
+      var k=window._echDp ? window._echDp(d) : 1, cible=d.scrollTop+dy/k;
+      function cale(t){ var besoin=t+d.clientHeight; if(besoin<=d.scrollHeight) return;   /* la fiche n'a pas de quoi défiler : une CALE invisible au bas, le temps de la modification (la fiche est faite de blocs posés en absolu) */
+        var c=document.getElementById('tiCale'); if(!c){ c=document.createElement('div'); c.id='tiCale'; c.setAttribute('aria-hidden','true'); d.appendChild(c); }
+        ['position:absolute','left:0px','width:1px','height:1px','visibility:hidden','pointer-events:none','display:block'].forEach(function(q){ var i=q.indexOf(':'); c.style.setProperty(q.slice(0,i), q.slice(i+1), 'important'); });
+        c.style.setProperty('top', Math.ceil(besoin+8)+'px', 'important'); E.cale=1; }
+      if(dy>0){ cale(cible+240);   /* de quoi aller au-delà de la zone du repos (v201, C-267) : une place sûre */
+        if(window._ficheSure){ var su=window._ficheSure(cible); if(su>cible) cible=su; } cale(cible); }   /* ⚑ v203 fin : arrêté dans la zone, le repos ramenait la fiche en haut et le curseur sous le clavier (0,79, redteam_titre_fiche G) */
+      d.scrollTo({top:cible, behavior:reduit()?'auto':'smooth'}); }catch(_){ } }
+  function entre(ti, x, y){
+    var cle=ti.getAttribute('data-cle'); if(!cle) return false; var long=ti.getAttribute('data-long') || ti.textContent;
+    E={ti:ti, cle:cle, avant:long, mh:null, dep0:window._titreDeplie};
+    window._titreDeplie=cle;   /* tant qu'il se modifie, le titre est entier (la pose ne le coupe pas par « … ») */
+    if(ti.textContent!==long) ti.textContent=long;
+    ti.setAttribute('contenteditable', 'plaintext-only'); if(ti.contentEditable!=='plaintext-only') ti.setAttribute('contenteditable','true');
+    ti.setAttribute('spellcheck','false'); ti.setAttribute('enterkeyhint','done'); ti.setAttribute('autocapitalize','off'); ti.setAttribute('role','textbox'); ti.setAttribute('aria-label', cercle()?'Le nom du Cercle':'Le titre');
+    ti.classList.add('ti-edition'); ti.style.setProperty('pointer-events','auto','important'); ti.style.setProperty('-webkit-user-select','text','important'); ti.style.setProperty('user-select','text','important');
+    try{ ti.focus({preventScroll:true}); }catch(_){ ti.focus(); }   /* dans le geste : iOS n'ouvre le clavier que là (v114) */
+    curseur(ti, x, y);
+    window._titreEdition={cle:cle, avant:long};
+    setTimeout(visible, 350); setTimeout(visible, 700);
+    return true; }
+  function sort(valide){
+    if(!E) return; var e=E; E=null; window._titreEdition=null; var ti=e.ti, v=propre(lit()).replace(/\s+/g,' ').trim();
+    ti.removeAttribute('contenteditable'); ti.removeAttribute('role'); ti.removeAttribute('enterkeyhint'); ti.classList.remove('ti-edition'); ['pointer-events','-webkit-user-select','user-select'].forEach(function(p){ ti.style.removeProperty(p); });
+    try{ if(document.activeElement===ti) ti.blur(); }catch(_){ } try{ getSelection().removeAllRanges(); }catch(_){ }
+    var c=document.getElementById('tiCale'), d0=dp(); if(c){ /* la fiche revient en haut en douceur, puis la cale part (sans elle, le défilement retomberait d'un coup) */
+      if(d0 && d0.scrollTop>0 && d0.classList.contains('show')){ try{ d0.scrollTo({top:0, behavior:reduit()?'auto':'smooth'}); }catch(_){ d0.scrollTop=0; } setTimeout(function(){ if(!E && c.parentNode) c.parentNode.removeChild(c); }, 700); } else c.remove(); }
+    var vide=!v; if(vide || !valide) v=e.avant;
+    ecrit(e.cle, v); ti.setAttribute('data-long', v);
+    /* le dépliage d'avant revient (un titre entier ne l'était pas : la pose le recoupera s'il est devenu long) */
+    window._titreDeplie=e.dep0||null;
+    if(v!==e.avant){ /* le titre neuf, partout : le Fil (ses lignes portent le titre entre « »), la sauvegarde, les écrans abonnés, la Toile repeinte (jamais ressemée) */
+      try{ if(typeof FEED!=='undefined'){ var pid=e.cle.indexOf('p:')===0 ? e.cle.slice(2) : null, nk=e.cle.indexOf('n:')===0 ? e.cle.slice(2) : null;
+        FEED.forEach(function(f){ if((pid!=null && String(f.pid)===pid) || (nk && f.nuee===nk)){ if(typeof f.text==='string') f.text=f.text.split('« '+e.avant+' »').join('« '+v+' »'); if(nk && f.nom===e.avant) f.nom=v; } }); } }catch(_){ }
+      try{ if(typeof saveState==='function') saveState(true); }catch(_){ }
+      try{ if(window._paroles) window._paroles.publie(); }catch(_){ }
+      try{ if(window.Toile && Toile.redraw) Toile.redraw(); }catch(_){ } }
+    try{ if(window._ficheTout) window._ficheTout(); }catch(_){ }
+    if(vide && v && window.TraceLettres && !reduit()){ ti.textContent=v; try{ TraceLettres.trace(ti, null, {}); }catch(_){ } }   /* vidé : refusé, l'ancien titre revient en se traçant (C-279) */
+    try{ if(window._v203Verifie) window._v203Verifie(); }catch(_){ } }
+  window._titreSortie=sort;
+  /* le toucher : lu au geste (la fiche ne produit pas de `click` au doigt), sur `window` en capture — il passe avant celui du dépliage (lot-V181B-TEXTES) */
+  window.addEventListener('pointerdown', function(e){ var ti=e.target && e.target.closest && e.target.closest('#dptTitre');
+    if(E && !ti){ sort(true); return; }   /* un toucher hors du titre valide (et agit comme d'habitude) */
+    sur=!!ti && !E; if(sur){ x0=e.clientX; y0=e.clientY; t0=e.timeStamp||performance.now(); } }, true);
+  window.addEventListener('pointerup', function(e){ if(E && e.target && e.target.closest && e.target.closest('#dptTitre')===E.ti){ e.stopPropagation(); e.stopImmediatePropagation(); return; }   /* en modification, un toucher dans le titre ne fait que placer le curseur (ni dépliage, ni repli : C-244 ne voit pas ce toucher) */
+    if(!sur) return; sur=false; var ti=e.target && e.target.closest && e.target.closest('#dptTitre'); if(!ti) return;
+    if(Math.abs(e.clientX-x0)>10 || Math.abs(e.clientY-y0)>10 || (e.timeStamp||performance.now())-t0>600) return;
+    var d=dp(); if(!d || !d.classList.contains('show') || d.classList.contains('s2-ouv') || window._tenirAnime) return;
+    var cle=ti.getAttribute('data-cle'); if(!cle) return;
+    if(ti.getAttribute('data-coupe') && window._titreDeplie!==cle) return;   /* coupé : le premier toucher le déplie (C-244, lot-V181B-TEXTES) */
+    if(entre(ti, e.clientX, e.clientY)){ e.stopPropagation(); e.stopImmediatePropagation(); avale=performance.now(); } }, true);
+  window.addEventListener('click', function(e){ if(avale && performance.now()-avale<700){ var ti=e.target && e.target.closest && e.target.closest('#dptTitre'); if(ti) return; avale=0; e.stopPropagation(); e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+  document.addEventListener('keydown', function(e){ if(!E || e.target!==E.ti) return; if(e.key==='Enter'){ e.preventDefault(); sort(true); } else if(e.key==='Escape'){ e.preventDefault(); sort(false); } }, true);
+  document.addEventListener('beforeinput', function(e){ if(!E || e.target!==E.ti) return; if(e.inputType==='insertParagraph' || e.inputType==='insertLineBreak'){ e.preventDefault(); sort(true); } }, true);
+  document.addEventListener('input', function(e){ if(!E || e.target!==E.ti) return; var ti=E.ti, t=lit(), p=propre(t);
+      if(p!==t){ ti.textContent=p; var r=document.createRange(); r.selectNodeContents(ti); r.collapse(false); var s=getSelection(); s.removeAllRanges(); s.addRange(r); }
+      ecrit(E.cle, p); ti.setAttribute('data-long', p); try{ if(window._ficheTout) window._ficheTout(); }catch(_){ } setTimeout(visible, 0); }, true);
+  document.addEventListener('focusout', function(e){ if(E && e.target===E.ti) setTimeout(function(){ if(E && document.activeElement!==E.ti) sort(true); }, 0); }, true);
+  /* la fiche se ferme ou Peaufiner s'ouvre : la modification est validée d'abord */
+  (window._rangeurs=window._rangeurs||[]).unshift(function(){ if(E) sort(true); });
+  var so=window._s2Ouvre; if(typeof so==='function' && !so.__ti){ window._s2Ouvre=function(v){ if(v && E) sort(true); return so.apply(this, arguments); }; window._s2Ouvre.__ti=1; }
 })();
 </script>
 </body>
