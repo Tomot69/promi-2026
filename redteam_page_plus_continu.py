@@ -5,7 +5,7 @@ continu. Juge : chaque séquence de la page + image par image, jusqu'à l'immobi
 WebKit, 390 × 844 ×3, au doigt (banc_tom), Toile de 10 paroles. Une sonde relève CHAQUE IMAGE dans la page, jusqu'à 600 ms d'immobilité : chaque mot de la phrase (son
 créneau `data-ph`, ses mots de liaison), le haut de la phrase, sa taille, le rail du pinceau, la dalle et l'horizon (déclarés par le peintre, `_ppEcran`).
 Ce qui est relevé est VISIBLE (ni caché, ni transparent : une copie figée peut porter la page pendant le mouvement du clavier, Q598) ; la taille est celle qu'on voit (police × `scale`).
-Un SAUT : un déplacement de plus de 2 pt en une image (de 34 ms au plus : une image plus longue, la charge, ne se juge pas ici), quand les images voisines bougent trois fois moins (un glissement accélère et ralentit ; un saut est seul).
+Un SAUT : un déplacement de plus de 2 pt en une image (de 34 ms au plus : une image plus longue, la charge, ne se juge pas ici), quand les images voisines vont trois fois moins VITE (un glissement accélère et ralentit ; un saut est seul ; comparé en vitesse, une image de 28 ms entre deux de 8 ms n'est pas un saut — original : sauvegardes/redteam_page_plus_continu-avant-vitesse.py).
 Séquences : la validation (Retour) ; le sens basculé trois fois (soi → à quelqu'un → « promets-moi » → soi) ; le titre effacé (l'exemple revient) ; une autre nature.
   A · aucun saut, pour aucun élément, jusqu'à l'immobilité
   B · l'immobilité est atteinte (≤ 4 s)
@@ -46,8 +46,8 @@ def sauts(H):
         for i, (t, v, dt) in enumerate(d):
             if v <= 2: continue
             if dt > 34: continue   # une image longue (la charge) : le mouvement a continué sans être peint — la cadence se juge sur le relevé, pas ici
-            voisins = [d[j][1] for j in (i - 1, i + 1) if 0 <= j < len(d) and d[j][2] <= 34]
-            if not voisins or v > 3 * max(max(voisins), 0.5): out.append((t, c, round(v, 1)))
+            voisins = [d[j][1] / max(d[j][2], 1) for j in (i - 1, i + 1) if 0 <= j < len(d) and d[j][2] <= 34]   # leur VITESSE (pt/ms) : une image de 28 ms entre deux de 8 ms porte naturellement un plus grand pas
+            if not voisins or v / max(dt, 1) > 3 * max(max(voisins), 0.5 / 16.7): out.append((t, c, round(v, 1)))
     return sorted(out)
 def releve(pg, geste, maxi=6500):
     pg.evaluate("()=>{ window.__Pfin=null; }"); pg.evaluate(SONDE); geste(); pg.wait_for_timeout(300)

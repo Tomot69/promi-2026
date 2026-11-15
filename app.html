@@ -18502,7 +18502,7 @@ var CREMEETAT='#F7F0DE';
         var _phT0 = txt.__phDouce ? txt.__phDouce.cur : (parseFloat(txt.style.fontSize)||(ph.__phTaille||0));   /* une phrase rebâtie (la sortie du champ) : la taille de la précédente */
         var _ttr = [].some.call(txt.querySelectorAll('[data-ph],[data-np]'), function(x){ return (x.__v200 && !x.__v200.fini && !x.__v200.libre) || x.__v203lisse; });   /* ⚑ v203 (C-278) : TOUTE place en transition (le sens basculé : « qui ? » puis « moi ») — la pastille porte alors l'ancien et le nouveau mot : la taille oscillait 36 → 26 → 30 → 34 */   /* ⚑ v202a (C-274) : pendant qu'un titre se trace ou se détrace, la taille ne se recalcule pas (l'encart qui s'adapte la faisait tomber à 16) */   /* ⚑ v202a (C-271, audit 2) : la taille affichée avant cette passe */
         if(cotes.__fige) txt.__phCle = _cleP;   /* v150 : la bascule est figée — on garde la taille de la passe précédente, on ne fait que reposer */
-        if(txt.__phCle !== _cleP && !_ttr){
+        if(txt.__phCle !== _cleP && (!_ttr || e.ouvert)){   /* ⚑ v203 (redteam_gens) : un choix ouvert pendant que des mots se tracent (juste après la bascule du sens) se compose tout de suite — attendue, la taille venait 1 à 2 s plus tard et déplaçait la liste sous le doigt */
         /* §2.8 — `taille = min(estimation, mesure)`. (Décision Tom, 18 août 2026 ;
            la « correction du §2.8 » qui remplaçait l'estimation par la mesure est ANNULÉE
            pour de bon.)
@@ -45677,12 +45677,13 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       if(c.brut){ st.phase='brut'; el.innerHTML=c.html; fin(); return; }   /* l'enveloppe du détracé (sa découpe vide) part : ce qu'on tape se voit tout de suite */   /* ⚑ v202a (C-274) : ce qu'on tape paraît tel quel, l'encart finit d'aller à sa largeur */
       /* ⚑ v203 (C-278 §4, trouvé par redteam_secs2 G) : la composition (la taille) passe ICI, le texte neuf posé sous la découpe vide, avant son tracé — passée à la fin du
          tracé, une taille neuve qui change les lignes (l'exemple sur deux lignes à 30, sur une à 21) partait d'une mise à l'échelle de la mise en page d'UNE ligne : la phrase
-         grandissait d'un coup de 85 pt puis se resserrait. L'encart va de sa largeur du moment à sa largeur naturelle. */
+         grandissait d'un coup de 85 pt puis se resserrait. L'encart va de sa largeur du moment à sa largeur naturelle. Le titre (ou le nom) seul : la bascule du sens garde son ordre — retardée, elle laissait la liste d'un choix ouvert juste après se poser sous une phrase encore grande (redteam_gens). */
       var attend=0;   /* l'encart qui s'adapte à la taille neuve : le tracé part ensuite (l'ordre de C-271 : détracé, l'encart s'adapte, tracé) — mesuré pendant, il placerait ses lettres sur une autre coupe des lignes */
-      if(el.matches && el.matches('#csPhrase [data-ph], #nueePhrase [data-np]') && window._ppTout){ try{ var wv=el.getBoundingClientRect().width/((el.offsetWidth?el.getBoundingClientRect().width/el.offsetWidth:1)||1);
+      var seul=(function(){ var b=el.closest('#csPhrase, #nueePhrase'); return !!b && ![].some.call(b.querySelectorAll('[data-ph],[data-np]'), function(x){ return x!==el && ((x.__v200 && !x.__v200.fini) || x.__v203lisse); }); })();   /* aucune autre place en transition (la bascule du sens en mène plusieurs : elle garde son ordre) */
+      if(seul && el.matches && el.matches('#csPhrase [data-ph=titre], #nueePhrase [data-np=nom]') && window._ppTout){ try{ var wv=el.getBoundingClientRect().width/((el.offsetWidth?el.getBoundingClientRect().width/el.offsetWidth:1)||1);
           el.style.removeProperty('transition'); el.style.removeProperty('width'); st.libre=1; try{ window._ppTout(); }finally{ st.libre=0; }
           var wn0=el.offsetWidth, ptx=el.closest('.ph-txt'), kk=ptx ? (parseFloat(getComputedStyle(ptx).scale)||1) : 1;   /* la taille va en douceur par `scale` (lot-V202A-TAILLE) : l'encart part de sa largeur VUE, divisée par l'échelle du moment */
-          el.style.setProperty('width', (wv/kk)+'px','important'); void el.offsetWidth; el.style.setProperty('transition','width 320ms cubic-bezier(.33,0,.67,1), border-width '+D_FL+'ms '+COURBE,'important'); el.style.setProperty('width', wn0+'px','important'); if(Math.abs(kk-1)>0.01 || Math.abs(wv/kk-wn0)>1) attend=330; }catch(_){ } }
+          el.style.setProperty('width', (wv/kk)+'px','important'); void el.offsetWidth; el.style.setProperty('transition','width 320ms cubic-bezier(.33,0,.67,1), border-width '+D_FL+'ms '+COURBE,'important'); el.style.setProperty('width', wn0+'px','important'); if(Math.abs(kk-1)>0.01) attend=330;   /* seulement quand la taille change (le tracé mesuré pendant la mise à l'échelle couperait les lignes autrement) */ }catch(_){ } }
       var go=function(){ if(st.fini || st.trace!==c) return; TL().trace(inn2, null, {surFin:function(){ fin(); }}); }; if(attend) setTimeout(go, attend); else go(); }
     function fin(){ if(st.coupe) return; var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA && window.__dcA.delete(el); }catch(_){ }
       if(texte(c.html)!==texte(st.trace.html) || net(c.cls)!==net(st.trace.cls)){ if(c.brut && st.trace.brut && net(c.cls)===net(st.trace.cls)) el.innerHTML=c.html; else { mot(el, c); return; } }   /* la cible a changé pendant le tracé : on repart d'ici, sans saut (v202a : une frappe se pose) */
@@ -46014,6 +46015,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
         var s=(e.textContent||'').trim(), n=(cnt[s]=(cnt[s]||0)+1), k=(e.getAttribute('data-ph')||e.getAttribute('data-np')) ? 'p:'+(e.getAttribute('data-ph')||e.getAttribute('data-np')) : 'e:'+s+'#'+n, p=pos(e, c); if(p) L.push([k, e, [p[0]-bp[0], p[1]-bp[1]]]); }); }
     var rl=document.getElementById('csPinceau'); if(rl && c.contains(rl) && rl.style.getPropertyValue('display')!=='none' && rl.style.getPropertyValue('visibility')!=='hidden'){ var pr=pos(rl, c); if(pr) L.push(['rail', rl, pr]); }
     return L; }
+  function suivisChoix(c){ var L=[]; c.querySelectorAll('.gn').forEach(function(g, i){ if(!(g.offsetHeight>10)) return; var p=pos(g, c); if(p) L.push(['choix'+i, g, p]); }); return L; }
   function courant(e){ var v=[0,0]; try{ e.getAnimations().forEach(function(a){ if(a.id!=='v203c' || a.playState!=='running') return; var t=getComputedStyle(e).translate; if(t && t!=='none'){ var p=t.split(' ').map(parseFloat); v=[p[0]||0, p[1]||0]; } }); }catch(_){ } return v; }
   /* la courbe (.33,0,.67,1) résolue : le décalage RESTANT d'un glissement à l'instant présent (un nœud rebâti le reprend là où on le voit maintenant, pas à l'image d'avant) */
   function bez(u){ var x1=.33, x2=.67, t=u; for(var i=0;i<8;i++){ var x=3*(1-t)*(1-t)*t*x1+3*(1-t)*t*t*x2+t*t*t-u, dx=3*(1-t)*(1-t)*x1+6*(1-t)*t*(x2-x1)+3*t*t*(1-x2); if(Math.abs(x)<1e-4 || !dx) break; t-=x/dx; t=Math.max(0,Math.min(1,t)); } return 3*(1-t)*t*t+t*t*t; }
@@ -46032,8 +46034,12 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var v=c.classList.contains('show') && !c.classList.contains('acc-passe'); if(v && !vu) OUV=performance.now(); vu=v;
     var cls=(c.classList.contains('pp-ouvert')?'o':'')+(c.classList.contains('pp-choix')?'c':'')+(c.getAttribute('data-kind')||'');
     var nat=(c.getAttribute('data-kind')||'')+(c.classList.contains('pp-choix')?'|choix':'');
-    if(!v || reduit() || performance.now()-OUV<600 || nat!==CLS || c.classList.contains('pp-choix') || c.classList.contains('pp-ouvert')){ CLS=nat; PREV=null; return; }   /* un choix ouvert (les personnes, l'échéance) a son propre écran ; pendant la saisie, ce qu'on tape paraît tel quel (Q620) */   /* la page qui se pose, une autre nature (une page neuve) : rien ne glisse */
-    var L=suivis(c), ph=c.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt');
+    var CHX=c.classList.contains('pp-choix');
+    var tape=false; if(c.classList.contains('pp-ouvert')){ var tt=c.querySelector('#csPhrase [data-ph=titre], #nueePhrase [data-np=nom]'); tape=!(tt && (tt.classList.contains('ph-vide') || (tt.__v200 && !tt.__v200.fini))); }   /* ⚑ v203 (redteam_page_plus_continu) : clavier ouvert, seule la FRAPPE ne glisse pas (Q620) — l'exemple qui revient, le titre qui se détrace, eux, glissent (le titre sautait de 64 pt à la ligne suivante, le rail de 24) */
+    if(!v || reduit() || performance.now()-OUV<600 || nat!==CLS || tape){ CLS=nat; PREV=null; return; }   /* un choix ouvert (les personnes, l'échéance) a son propre écran ; pendant la saisie, ce qu'on tape paraît tel quel (Q620) */   /* la page qui se pose, une autre nature (une page neuve) : rien ne glisse */
+    /* ⚑ v203 (trouvé par redteam_gens) : un choix ouvert (les personnes, l'échéance) a son propre écran — seule SA LISTE est suivie : ouverte juste après la bascule du sens,
+       pendant que les mots se tracent, elle se posait sous la phrase encore grande, puis sautait de 108 pt quand la taille se recalculait ; elle glisse. */
+    var L=CHX ? suivisChoix(c) : suivis(c), ph=CHX ? null : c.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt');
     /* le mouvement du clavier (Q598, la page entière glisse) : on suit la place VUE ; à sa fin, chacun glisse de la place vue à la sienne — la fin n'est jamais un recalage */
     var MVT=!!(window._ppMvtCours && window._ppMvtCours());
     var D=c.getBoundingClientRect(), kd=(D.width/(c.offsetWidth||390))||1, PR=ph?ph.getBoundingClientRect():null;
@@ -46041,7 +46047,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       if(PR && x[0]!=='phrase' && x[0]!=='rail'){ var r=x[1].getBoundingClientRect(); M[x[0]].vr=[(r.left-PR.left)/kd, (r.top-PR.top)/kd]; } });   /* la place VUE dans la phrase (sa mise à l'échelle comprise) */
     /* pendant le mouvement du clavier, la phrase et le rail sont portés par lui ; les mots, eux, glissent dans la phrase. À sa fin, la phrase et le rail repartent de leur
        place de mise en page (aucun glissement : le mouvement y arrive). ⚠ Non réglé, déjà en v201b : son DÉPART ne tombe pas toujours sur la place de la saisie (12 à 18 pt). */
-    if(PREV && PREV.__mvt!==MVT) ['phrase','rail'].forEach(function(k){ if(M[k]) M[k].fait=true; });
+    if(PREV && !PREV.__mvt && MVT) ['phrase','rail'].forEach(function(k){ if(M[k]) M[k].fait=true; });   /* au DÉPART du mouvement seulement : il porte la phrase et le rail ; à sa fin il les laisse à la place où il arrive — si la mise en page les replace au même instant (le rail : 634 → 610), ils glissent de là (redteam_page_plus_continu) */
     var tailleChange=false; try{ if(ph) ph.getAnimations().forEach(function(a){ var k0=a.effect && a.effect.getKeyframes && a.effect.getKeyframes()[0]; if(k0 && k0.scale && !VUES.has(a)){ VUES.add(a); tailleChange=true; } }); }catch(_){ }   /* une fois par mise à l'échelle neuve */   /* la taille de la phrase vient de changer : sa mise à l'échelle (lot-V202A-TAILLE) porte déjà les mots */
     var sc=1; try{ sc=parseFloat(getComputedStyle(ph).scale)||1; }catch(_){ }
     if(PREV) Object.keys(M).forEach(function(k){ var a=PREV[k], b=M[k]; if(!a || b.mvt || b.fait) return;
