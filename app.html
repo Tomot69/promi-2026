@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <script id="lot-V203-TACHES">/* ⚑ v203 (Tom, C-273, C-278 : « traque toutes les latences ») — LE RELEVÉ NOMME CE QUI COÛTE. Le relevé de l'iPhone montrait une image de 60 à 120 ms
    toutes les 1,7 s au repos (page +, fiches, onboarding), que le banc WebKit ne reproduit pas (aucune tâche au-delà de 8 ms). Chaque rappel de minuterie, d'image, d'observateur
-   et d'événement est chronométré ; un rappel de 20 ms et plus est noté (son heure, sa durée, son nom) et part avec le relevé. Rien ne change dans ce qu'il fait ; `?releve=0` le coupe. */
-(function(){ try{ if(/[?&]releve=0(?:&|$)/.test(location.search)) return; }catch(_){ }
+   et d'événement est chronométré ; un rappel de 20 ms et plus est noté (son heure, sa durée, son nom) et part avec le relevé. Rien ne change dans ce qu'il fait ; ⚑ v203 clôture : seulement sous `?releve=1`. */
+(function(){ try{ if(!/[?&](releve|mesure)=1(?:&|$)/.test(location.search)) return; }catch(_){ return; }   /* ⚑ v203 clôture (Tom) : le chapitre clos, le chronométrage ne tourne plus que sous ?releve=1 (ou ?mesure=1) */
   var P=performance, L=window.__taches=[], SEUIL=20;
   function nomDe(f){ try{ var s=f.name ? f.name+' ' : ''; return (s+String(f).slice(0,90)).replace(/\s+/g,' ').slice(0,110); }catch(_){ return '?'; } }
   /* ⚑ v203 (second relevé de Tom : 44 images de 60 à 88 ms sur la page +, toutes les 1,45 à 1,7 s, sans aucun rappel de 20 ms) : les rappels de 3 ms et plus vont dans
@@ -2716,7 +2716,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
   }
   /* ⚑ v203 (Tom, §1 : « jusqu'à la fin du chapitre, le relevé est actif par défaut, sans paramètre, sans aucun effet visible ; Tom est le seul utilisateur ») —
      le relevé des images tourne toujours (`?releve=0` le coupe). Rien ne s'affiche sans `?mesure=1`. Le serveur range à part ce qui vient du Mac (le banc). */
-  var RELEVE=true; try{ RELEVE=!/[?&]releve=0(?:&|$)/.test(location.search); }catch(_){}
+  var RELEVE=false; try{ RELEVE=/[?&](releve|mesure)=1(?:&|$)/.test(location.search); }catch(_){}   /* ⚑ v203 clôture (Tom) : le chapitre clos, le relevé ne tourne plus que sous ?releve=1 (ou ?mesure=1) — désactivé par défaut */
   if(RELEVE){
     /* ⚑ v202a (Tom, C-272, C-273, C-275 : « le banc ne voit pas ce que voit l'iPhone ») — LE RELEVÉ DE TOUTE LA SÉANCE. Chaque image (requestAnimationFrame) est
        notée avec sa durée, l'écran qu'on voit (sous le centre de l'appareil, relu toutes les 30 images) et ce qui s'anime (tracé, détracé, transition, défilement,
@@ -46162,6 +46162,44 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   };
 })();
 </script>
+<style id="lot-V203-BLEU-css">
+/* ⚑ v203 clôture (Tom, C-281) — LES LETTRES QUI CLIGNOTENT SONT LE BLEU CLAIR EXACT DE LA PALETTE DE BASE, `--c-bleu45` = #82AEF8 (Ingénu, PALS.signal[0]),
+   DANS LES DEUX THÈMES, dès l'onboarding : le I de PROMI (accueil, onboarding), le R de PARTAGER, le S de RÉGLAGES. Au sommet du clignotement (opacité 1 de
+   `promiBlink`), la couleur exacte : ni ombre, ni filtre, ni fusion. En clair elles portaient `--c-bleu45-txt` / `--verm-txt` = #022140. Le clignotement
+   lui-même ne change pas (C-247 : le même code partout, calé sur les flèches du guide). ⚠ Mesuré, rien dérivé (C-204) : #82AEF8 sur la crème #F7F0DE : 2,0:1. */
+#device#device#device .acc-mm i, #device#device#device .acc-mm.acc-mm i,
+#onbV#onbV#onbV .onbv-mm i, #onbV#onbV#onbV .onbv-mm.onbv-mm i, #promiOnb#promiOnb#promiOnb .ii,
+#settingsScreen#settingsScreen#settingsScreen h1.scr-ti .ti-x.blink, #settingsScreen#settingsScreen#settingsScreen h1 .hi, #settingsScreen#settingsScreen#settingsScreen h1 .uvi,
+#shareScreen#shareScreen#shareScreen #shcTitre .t .ti-x, #shareScreen#shareScreen#shareScreen #shcTitre .t .ti-x.blink,
+#shareScreen#shareScreen#shareScreen h2.scr-t .ti-x, #shareScreen#shareScreen#shareScreen h2.scr-t .ti-x.blink{
+  color:var(--c-bleu45)!important; -webkit-text-fill-color:var(--c-bleu45)!important; text-shadow:none!important; filter:none!important; mix-blend-mode:normal!important; }
+/* Le I de l'accueil passait SOUS le grain de l'appareil (`#device::after`, z 60, opacité 0,05 à 0,07, fusion multiply / screen : 1 à 3 niveaux de moins).
+   Le plateau de l'accueil passe au-dessus du grain, comme celui de tous les autres écrans (z > 60) ; aucun autre élément ne vit entre z 32 et 61 au-dessus de lui
+   (mesuré : la barre d'état cachée, le menu des natures en bas de l'écran). */
+#device#device #accPlat{z-index:61!important}
+</style>
+<script id="lot-V203-CLE">
+/* ⚑ v203 clôture (Tom, Q621 tranchée) — LA DALLE GARDE SA FORME QUAND ON RENOMME. Le moteur tirait le hasard d'une dalle de « titre|personne », lu dans
+   l'état à l'instant (`_dalleDeCle` de ses mondes, `_ampleur`) : sous onze mondes, un titre neuf donnait une dalle neuve. Chaque parole plantée porte sa
+   CLÉ DE PLANTATION (`p.cle` : le titre au moment où elle est plantée ; pour une parole d'avant, son titre à l'ouverture), et le moteur la lit à la place
+   du titre (les deux lectures, promi-moteur.js, autorisées par Tom ; étiquette `avant-q621`). L'affichage montre le titre neuf partout.
+   ⚠ L'app ne pouvait pas la donner elle-même : `_envM` et `_ampleur` vivent dans une portée fermée du moteur (mesuré : absents de window).
+   Une parole jamais renommée : cle === title, rien ne change (banc_rendu au pixel). Un gardé de côté n'a pas de clé tant qu'il n'est pas planté. */
+(function(){
+  function plante(){ try{ (promises||[]).forEach(function(p){ if(p && p.cle==null && !p.draft && !p.brouillon && p.title!=null) p.cle=String(p.title); }); }catch(_){ } }
+  window._clePlantation=plante; plante();
+  var s0=window.saveState; if(typeof s0==='function' && !s0.__cle){ window.saveState=function(){ plante(); return s0.apply(this, arguments); }; window.saveState.__cle=1; try{ saveState=window.saveState; }catch(_){ } }
+})();
+</script>
+<style id="lot-V203-TITRE-css">
+/* ⚑ v203 clôture (Tom, C-280 §1) — AUCUN ENCART PENDANT LA MODIFICATION DU TITRE : le titre en modification est le titre au repos, seul le curseur clignote.
+   (WebKit posait l'anneau de focus d'un élément modifiable : outline auto 3 px.) */
+#device #detailPoster #dptTitre[contenteditable], #device #detailPoster #dptTitre[contenteditable]:focus, #device #detailPoster #dptTitre[contenteditable]:focus-visible,
+#device #detailPoster #dptTitre.ti-edition, #device #detailPoster #dptTitre.ti-edition:focus, #device #detailPoster #dptTitre.ti-edition:focus-visible{
+  outline:none!important; outline-width:0!important; border:0!important; box-shadow:none!important; background:transparent!important; background-image:none!important;
+  -webkit-appearance:none!important; appearance:none!important; -webkit-tap-highlight-color:transparent!important; }
+#device #detailPoster #dptTitre.ti-edition *{ outline:none!important; box-shadow:none!important; background:transparent!important; }
+</style>
 <script id="lot-V203-TITRE">
 /* ⚑ v203 (Tom, retours sur 58a4ff9, §3, C-280) — « Sur les fiches Cercle, Promi et Chiche, on doit pouvoir corriger le titre (une faute de frappe, une erreur) en le
    touchant. » Avec C-244 (toucher le titre le déplie, validé) : un titre ENTIER passe en modification au premier toucher ; un titre COUPÉ (« … ») se déplie au premier
@@ -46182,7 +46220,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function reduit(){ try{ return matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ return false; } }
   function lit(){ var ti=document.getElementById('dptTitre'); return ti ? (ti.textContent||'') : ''; }
   function ecrit(cle, v){ /* le titre de la parole (ou le nom du Cercle), en mémoire : la pose de la fiche le relit (sans quoi elle réécrirait l'ancien sous le curseur) */
-    var p=parole(cle); if(p){ p.title=v; return true; }
+    var p=parole(cle); if(p){ if(p.cle==null && !p.draft && !p.brouillon) p.cle=String(p.title||''); p.title=v; return true; }   /* Q621 : la clé de plantation est posée AVANT le premier renommage */
     if(cle && cle.indexOf('n:')===0 && typeof NUE!=='undefined'){ NUE[cle.slice(2)]=v; return true; } return false; }
   function curseur(ti, x, y){ try{ var r=null; if(document.caretRangeFromPoint) r=document.caretRangeFromPoint(x, y); else if(document.caretPositionFromPoint){ var c=document.caretPositionFromPoint(x, y); if(c){ r=document.createRange(); r.setStart(c.offsetNode, c.offset); } }
       if(!r || !ti.contains(r.startContainer)){ r=document.createRange(); r.selectNodeContents(ti); r.collapse(false); } else r.collapse(true);
