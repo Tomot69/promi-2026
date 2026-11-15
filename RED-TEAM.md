@@ -1,4 +1,19 @@
-# Red team de toute l'app — v202a (C-276)
+# Red team de toute l'app — v202a (C-276), rejouée sur v203
+
+## v203 (15 nov. 2026), version finale de la branche `v197`
+
+`redteam_app.py` rejoué sur v203 et sur v201b servie à côté, même hasard : 19 écrans, deux thèmes, trois vues (1, 0,79, la fenêtre de Tom).
+
+| Vue | v203 | v201b | Neuf dans v203 |
+|---|---|---|---|
+| 1 (430 × 932) | 0 erreur · 0 débordement · 28 coupes · 2 recouvrements | identique | aucun |
+| 0,79 (330 × 714) | 0 · 0 · 28 · 2 | identique | aucun |
+| Tom (390 × 651) | 0 · 0 · 24 · 7 | 0 · 3 débordements · 24 · 6 | un recouvrement, corrigé (ci-dessous) |
+
+- **Corrigé.** Le titre d'Index d'un seul long mot (« jcicjccjc… », dans l'état de Tom) recouvrait sa ligne d'état, à 37 %. C'était déjà le cas dans v202a : sa correction du débordement l'avait fait passer à la ligne. Au plancher du §6, il s'arrête maintenant par « … » à la dernière ligne qui tient au-dessus de l'état.
+- **Disparus face à v201b.** Les trois débordements de la vue de Tom : le même titre, sur deux thèmes, et l'exemple d'un Cercle.
+- **Les coupes et les recouvrements communs aux deux versions** sont ceux de v202a, déjà jugés à l'œil (tableau plus bas) : les pastilles « à moi » sur leur carte, et les coupes voulues.
+
 
 Demande de Tom : « une app propre avant de passer à la suite ».
 

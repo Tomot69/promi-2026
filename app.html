@@ -18502,7 +18502,7 @@ var CREMEETAT='#F7F0DE';
         var _phT0 = txt.__phDouce ? txt.__phDouce.cur : (parseFloat(txt.style.fontSize)||(ph.__phTaille||0));   /* une phrase rebâtie (la sortie du champ) : la taille de la précédente */
         var _ttr = [].some.call(txt.querySelectorAll('[data-ph],[data-np]'), function(x){ return (x.__v200 && !x.__v200.fini && !x.__v200.libre) || x.__v203lisse; });   /* ⚑ v203 (C-278) : TOUTE place en transition (le sens basculé : « qui ? » puis « moi ») — la pastille porte alors l'ancien et le nouveau mot : la taille oscillait 36 → 26 → 30 → 34 */   /* ⚑ v202a (C-274) : pendant qu'un titre se trace ou se détrace, la taille ne se recalcule pas (l'encart qui s'adapte la faisait tomber à 16) */   /* ⚑ v202a (C-271, audit 2) : la taille affichée avant cette passe */
         if(cotes.__fige) txt.__phCle = _cleP;   /* v150 : la bascule est figée — on garde la taille de la passe précédente, on ne fait que reposer */
-        if(txt.__phCle !== _cleP && (!_ttr || e.ouvert)){   /* ⚑ v203 (redteam_gens) : un choix ouvert pendant que des mots se tracent (juste après la bascule du sens) se compose tout de suite — attendue, la taille venait 1 à 2 s plus tard et déplaçait la liste sous le doigt */
+        if(txt.__phCle !== _cleP && (!_ttr || (e.ouvert && !cs.classList.contains('pp-saisie')))){   /* ⚑ v203 (redteam_gens) : un choix ouvert (`e.ouvert`, jamais la saisie `pp-saisie` : elle compte aussi comme « ouvert », la taille y tombait à 16 pendant un détracé — redteam_secs2 G) pendant que des mots se tracent (juste après la bascule du sens) se compose tout de suite — attendue, la taille venait 1 à 2 s plus tard et déplaçait la liste sous le doigt */
         /* §2.8 — `taille = min(estimation, mesure)`. (Décision Tom, 18 août 2026 ;
            la « correction du §2.8 » qui remplaçait l'estimation par la mesure est ANNULÉE
            pour de bon.)
@@ -20378,9 +20378,14 @@ var CREMEETAT='#F7F0DE';
         return R.getBoundingClientRect().bottom > et.getBoundingClientRect().top - 2*k; }
       /* la taille de départ est celle que la feuille DÉCIDE (24 px dans l'appareil, l'échelle des titres de carte) : on remet la taille posée à la
          construction, sans priorité, et on lit ce que la cascade en fait */
+      if(t.__clamp){ ['display','-webkit-box-orient','-webkit-line-clamp','overflow'].forEach(function(p){ t.style.removeProperty(p); }); t.__clamp=0; }
       t.style.setProperty('font-size', t.getAttribute('data-fti') + 'px'); var fs=parseFloat(getComputedStyle(t).fontSize)||+t.getAttribute('data-fti');
       if(!deborde()) return;
       for(var n=0; n<14 && fs > 11 && deborde(); n++){ fs -= 1; t.style.setProperty('font-size', fs + 'px', 'important'); }
+      /* ⚑ v203 (trouvé par redteam_app, vue de Tom ; présent depuis v202a) : au plancher du §6 un titre d'un seul long mot coupé n'importe où (« jcicjccjc… », v202a) prend
+         encore trois lignes et recouvre l'état — il s'arrête, par « … », à la dernière ligne qui tient au-dessus de lui (comme le nom d'un Cercle, v181b) */
+      if(deborde() && et){ R.selectNodeContents(t); var lim=et.getBoundingClientRect().top-2*k, tops={}, N=0; [].forEach.call(R.getClientRects(), function(q){ if(q.height>0 && q.bottom<=lim){ var y=Math.round(q.top); if(!tops[y]){ tops[y]=1; N++; } } }); N=Math.max(1, N);   /* les lignes rendues (l'encre), pas une hauteur de ligne */
+        t.style.setProperty('display','-webkit-box','important'); t.style.setProperty('-webkit-box-orient','vertical','important'); t.style.setProperty('-webkit-line-clamp', String(N), 'important'); t.style.setProperty('overflow','hidden','important'); t.__clamp=1; }
     }); }catch(_){ } };
   (function(){ var li=document.getElementById('indexList'); if(!li) return; var vu=false;
     function passe(){ requestAnimationFrame(function(){ window._s4TitresAjuste(li); }); }
@@ -46033,10 +46038,10 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function verifie(){ var c=cs(); if(!c){ PREV=null; return; }
     var v=c.classList.contains('show') && !c.classList.contains('acc-passe'); if(v && !vu) OUV=performance.now(); vu=v;
     var cls=(c.classList.contains('pp-ouvert')?'o':'')+(c.classList.contains('pp-choix')?'c':'')+(c.getAttribute('data-kind')||'');
-    var nat=(c.getAttribute('data-kind')||'')+(c.classList.contains('pp-choix')?'|choix':'');
-    var CHX=c.classList.contains('pp-choix');
-    var tape=false; if(c.classList.contains('pp-ouvert')){ var tt=c.querySelector('#csPhrase [data-ph=titre], #nueePhrase [data-np=nom]'); tape=!(tt && (tt.classList.contains('ph-vide') || (tt.__v200 && !tt.__v200.fini))); }   /* ⚑ v203 (redteam_page_plus_continu) : clavier ouvert, seule la FRAPPE ne glisse pas (Q620) — l'exemple qui revient, le titre qui se détrace, eux, glissent (le titre sautait de 64 pt à la ligne suivante, le rail de 24) */
-    if(!v || reduit() || performance.now()-OUV<600 || nat!==CLS || tape){ CLS=nat; PREV=null; return; }   /* un choix ouvert (les personnes, l'échéance) a son propre écran ; pendant la saisie, ce qu'on tape paraît tel quel (Q620) */   /* la page qui se pose, une autre nature (une page neuve) : rien ne glisse */
+    var CHX=c.classList.contains('pp-ouvert') && !c.classList.contains('pp-saisie');   /* un choix ouvert (les personnes, l'échéance) : `pp-ouvert` sans la saisie (`pp-choix` est l'écran des tuiles) */
+    var nat=(c.getAttribute('data-kind')||'')+(c.classList.contains('pp-choix')?'|choix':'')+(CHX?'|liste':'');
+    var tape=false; if(c.classList.contains('pp-saisie')){ var tt=c.querySelector('#csPhrase [data-ph=titre], #nueePhrase [data-np=nom]'); tape=!(tt && (tt.classList.contains('ph-vide') || (tt.__v200 && !tt.__v200.fini))); }   /* ⚑ v203 (redteam_page_plus_continu) : clavier ouvert, seule la FRAPPE ne glisse pas (Q620) — l'exemple qui revient, le titre qui se détrace, eux, glissent (le titre sautait de 64 pt à la ligne suivante, le rail de 24) */
+    if(!v || reduit() || performance.now()-OUV<600 || nat!==CLS || tape || c.classList.contains('pp-choix')){ CLS=nat; PREV=null; return; }   /* un choix ouvert (les personnes, l'échéance) a son propre écran ; pendant la saisie, ce qu'on tape paraît tel quel (Q620) */   /* la page qui se pose, une autre nature (une page neuve) : rien ne glisse */
     /* ⚑ v203 (trouvé par redteam_gens) : un choix ouvert (les personnes, l'échéance) a son propre écran — seule SA LISTE est suivie : ouverte juste après la bascule du sens,
        pendant que les mots se tracent, elle se posait sous la phrase encore grande, puis sautait de 108 pt quand la taille se recalculait ; elle glisse. */
     var L=CHX ? suivisChoix(c) : suivis(c), ph=CHX ? null : c.querySelector('#csPhrase .ph-txt, #nueePhrase .ph-txt');

@@ -66,7 +66,7 @@ def aller_retour(pg, nat, vite_px=40):
     m = max_st(pg)
     pg.evaluate("()=>HF.start()")
     roule(pg, m + 60, pas=vite_px); pg.wait_for_timeout(250)
-    roule(pg, -(m + 60), pas=vite_px); pg.wait_for_timeout(700)
+    roule(pg, -(m + 260), pas=vite_px); pg.wait_for_timeout(700)   # ⚑ v203 : 200 pt de plus — l'aimant natif (scroll-snap, étape 1 de v203) arrête la molette synthétique sur sa place `a` et avale les coups suivants (au doigt, Safari calcule l'aimant sur la destination de l'élan) ; original : sauvegardes/redteam_haut_fiche-avant-v203-aimant.py
     fr = pg.evaluate("()=>HF.stop()")
     return pg.evaluate("([f,n])=>HF.sauts(f,n)", [fr, nat]), m
 
@@ -116,7 +116,7 @@ with sync_playwright() as p:
             ok_s = pg.evaluate("()=>!!(document.activeElement && document.activeElement.classList.contains('cm5-saisie'))")
             if ok_s: pg.keyboard.type('un mot du juge'); pg.keyboard.press('Enter'); pg.wait_for_timeout(1200)
             pg.evaluate("()=>{ document.activeElement && document.activeElement.blur && document.activeElement.blur(); }"); pg.wait_for_timeout(600)
-            roule(pg, -(max_st(pg) + 100)); pg.wait_for_timeout(900)
+            roule(pg, -(max_st(pg) + 300)); pg.wait_for_timeout(900)   # ⚑ v203 : même raison (l'aimant)
             e = ecart(pg, O, nat); juge('%s un commentaire ajouté (saisie %s), revenu en haut : rien n\'a bougé' % (T, 'ouverte' if ok_s else 'NON ouverte'), ok_s and not e, e)
             # 5 · dépliage puis repliage du titre (au doigt)
             coupe = pg.evaluate("()=>!!document.querySelector('#dptTitre[data-coupe]')")

@@ -69,7 +69,7 @@ def juge_seq(T, fr, de, vers, vide_avant, vide_apres, fiche=False):
 def juge_cadence(pg, T):
     j = pg.evaluate("()=>(window.TraceLettres&&TraceLettres.journal||[]).filter(e=>e.type==='trace-fin'||e.quoi==='trace-fin'||(e.prevu!=null&&e.reel!=null)).slice(-30)")
     cal = B.charge() < 4
-    mauvais = [e for e in j if e.get('reel') and e.get('prevu') and not (0.7 <= e['reel'] / max(1, e['prevu']) <= 2.5)]
+    mauvais = [e for e in j if e.get('reel') and e.get('prevu') and not e.get('interrompu') and not (0.7 <= e['reel'] / max(1, e['prevu']) <= 2.5)]   # ⚑ v203 : un tracé INTERROMPU (l'exemple que la frappe remplace) n'a pas de durée complète à juger — original : sauvegardes/redteam_moi_douceur-avant-v203-interrompu.py
     if cal: juge(T + ' D · la cadence de C-125 (durée réelle 0,7 à 2,5 × la prévue, à 40 car/s)', j and not mauvais, '%d tracés · hors cadence %s' % (len(j), mauvais[:2]))
     else: print('  ·  %s D · cadence NON JUGÉE (charge %.1f)' % (T, B.charge()))
 def page(b, k, t):
