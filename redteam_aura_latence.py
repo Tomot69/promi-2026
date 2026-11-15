@@ -70,7 +70,7 @@ with sync_playwright() as p:
     if e and e.get('ms'):
         pire = max([v for k, v in e['ms'].items() if k != 'total'] or [0])
         print('     la plus longue étape de la préparation : %.0f ms · total %s ms' % (pire, e['ms'].get('total')))
-    sols = []
+    sols = []; forces = []
     for k in range(1, 6):
         B.tap_sel(pg, '#souffleBtn'); pg.wait_for_timeout(3400)
         V = pg.evaluate("()=>window.__V"); pre = pg.evaluate("()=>{ try{ return _aura.pre(); }catch(e){ return null; } }") or {}
@@ -80,10 +80,12 @@ with sync_playwright() as p:
         if k in (1, 2, 5) or not ok:
             juge('2 · ouverture n° %d : la Pelote est dans l\'image même où l\'Aura paraît, ≤ %d ms après le clic' % (k, MAX_MS), ok,
                  'toucher 0 · clic %s ms · écran à %s ms (image %s) · Pelote à %s ms (image %s) · peinte dans le geste : %s · préparée d\'avance : %s' % (cl, ec and ec[0], ec and ec[1], vu and vu[0], vu and vu[1], pre.get('dansGeste'), pre.get('chaude')))
-        sols.append(V.get('sol'))
+        sols.append(V.get('sol')); forces.append(pg.evaluate("()=>{ try{ const s=_aura.sol(); return !!(s.iles && s.iles.force); }catch(e){ return false; } }"))
         if not ferme(pg): juge('ouverture n° %d : l\'Aura se referme par son ✕' % k, False); break
         repos(pg)
-    juge('3 · un ton neuf à chaque ouverture (sol ou corps change d\'une ouverture à la suivante)', len(sols) == 5 and all(sols[i] != sols[i + 1] for i in range(4)), sols)
+    # ⚑ v203 (C-275, validé par Tom, passe avant v125) : le corps est le ton le plus contrasté (il suit le sol) ; le sol ne se répète que quand l'app DÉCLARE qu'il est le seul ton
+    #   à garder les îles lisibles (`_aura.sol().iles.force`) — la même règle que redteam_corps 6
+    juge('3 · un ton neuf à chaque ouverture (le sol change, sauf répétition déclarée forcée par les îles)', len(sols) == 5 and all(sols[i] != sols[i + 1] or forces[i + 1] for i in range(4)), '%s · forcé %s' % (sols, forces))
     # 4 · la préparation s'efface devant le doigt
     if pret is not None:
         pg.evaluate("()=>{ try{ Toile.setPalette && 0; window.onPaletteChange && window.onPaletteChange(); }catch(e){} }")      # invalide : il faut re-préparer

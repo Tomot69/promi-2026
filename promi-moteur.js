@@ -6616,7 +6616,7 @@ try{ if(window.creerMondes){ _MN=window.creerMondes(_envM={
   get g(){return g;}, get W(){return W;}, get H(){return H;}, get DPR(){return DPR;}, get seeds(){return seeds;}, get view(){return view;},
   cOf:function(s,now){ return cOf(s, now||performance.now()); },
   avg:avg, cAt:cAt, isLightM:isLightM, curPAL:curPAL, rampe:null,
-  _dalleDeCle:function(pid){ try{ for(var i=0;i<promises.length;i++){ if(promises[i].id===pid){ var p=promises[i], t=String(p.title||'')+'|'+String(p.who||''), h=2166136261;
+  _dalleDeCle:function(pid){ try{ for(var i=0;i<promises.length;i++){ if(promises[i].id===pid){ var p=promises[i], t=String((p.cle!=null?p.cle:p.title)||'')+'|'+String(p.who||''), h=2166136261;
     for(var j=0;j<t.length;j++){ h^=t.charCodeAt(j); h=Math.imul(h,16777619)>>>0; } _cleVue[pid]=h; return h; } } }catch(e){} return _cleVue[pid]!=null?_cleVue[pid]:null; },   /* ⚑ v43 : la dernière clé vue — une parole supprimée garde la sienne le temps de partir */
   get cleToile(){ try{ return (window.Toile&&window.Toile.cle)?window.Toile.cle():undefined; }catch(e){ return undefined; } },
   fondToile:function(){ return window.Toile.fondToile(); },
@@ -6938,7 +6938,7 @@ function _celluleEnPlus(k,i){ var p=_auVide(i), s=mk(p.x,p.y,k); s.ci=cc(s); s.c
 var _ampMonde=null;
 var _AMP_MI={esquille:0.3,ritournelle:0.3,halin:0.3,brouillamini:1.5,bobinette:0.3};   /* ⚠ v136 (C-066) : RAMAGE EST RETIRÉ — son ampleur déplaçait le rendu de GUINGOIS au banc (14 images, dalles deux fois plus grandes), même après ressemis : prouvé en retirant Ramage seul. Le mécanisme n'est pas nommé. */   /* ⚑ v136 (Tom) : « une arrivée de dalle jusqu'à 15 % plus longue est acceptée » — Halin (+11 %) et Brouillamini (+11 %) reviennent, Bobinette s'ajoute ; Guingois (+35 %) et Chantourné (+38 %) restent dehors ; Mascaret, Chamade, Volubilis attendent l'accord de Tom (le banc de rendu ne se refige pas sans lui) */
 function _ampleur(s){ var t='', h=2166136261, j;
-  if(s.pid!=null){ try{ for(j=0;j<promises.length;j++){ if(promises[j].id===s.pid){ t=String(promises[j].title||'')+'|'+String(promises[j].who||''); break; } } }catch(_){ } if(!t) t='p'+s.pid; }
+  if(s.pid!=null){ try{ for(j=0;j<promises.length;j++){ if(promises[j].id===s.pid){ t=String((promises[j].cle!=null?promises[j].cle:promises[j].title)||'')+'|'+String(promises[j].who||''); break; } } }catch(_){ } if(!t) t='p'+s.pid; }
   else if(s.nuee) t='n'+s.nuee; else return null;
   for(j=0;j<t.length;j++){ h^=t.charCodeAt(j); h=Math.imul(h,16777619)>>>0; }
   h^=h>>>15; h=Math.imul(h,2246822507)>>>0; h^=h>>>13;

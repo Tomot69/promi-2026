@@ -12,7 +12,7 @@ Banc WebKit ×3 (banc_tom), 430 × 932 (échelle 1) ; la page + à la limite aus
   L · la limite : 300 caractères tapés → 280 ; 300 collés → 280 ; le nom d'un Cercle : 50 tapés → 40, 50 collés → 40.
   F · fiche replié : ni recouvrement ni sortie sous le bandeau ; un Promi, un Chiche : trois lignes au plus ; un Cercle : deux lignes au plus.
   D · un titre coupé, touché au doigt : il se DÉPLIE en entier (le texte complet), ce qui suit DESCEND en glissant (au moins 6 positions intermédiaires,
-      aucun pas de plus d'un tiers) ; rien ne se recouvre ; trop long pour l'écran, la fiche défile jusqu'à lui ; touché de nouveau, il se REPLIE tel qu'avant.
+      aucun pas de plus d'un tiers) ; rien ne se recouvre ; trop long pour l'écran, la fiche défile jusqu'à lui ; touché de nouveau, il passe en MODIFICATION (v203 fin, C-280 — original : sauvegardes/redteam_textes_longs-avant-v203fin.py).
   E · aucune erreur de page.
 Rouge sur v180b (`--fichier=zz-v180b.html`) : P à la limite (« … »), L, D.
 """
@@ -102,8 +102,11 @@ with sync_playwright() as p:
                 bas = max(r[3] for r in f2['B'].values())
                 juge(T + ' D · trop long pour l\'écran : la fiche défile, tout se lit au-dessus du bandeau', bas <= 760.5, round(bas, 1))
                 pg.evaluate("()=>{ document.getElementById('detailPoster').scrollTop=0; }"); pg.wait_for_timeout(400)
-            B.tap_sel(pg, '#dptTitre'); pg.wait_for_timeout(600); pg.wait_for_function("()=>{ const q=document.getElementById('dptQuand'); return !q || !q.style.translate; }", timeout=15000); pg.wait_for_timeout(300); f3 = pg.evaluate(FICHE)
-            juge(T + ' D · touché de nouveau : replié tel qu\'avant', f3['texte'] == f0['texte'] and all(abs(a - b) < 0.6 for x in f0['B'] for a, b in zip(f0['B'][x], f3['B'].get(x, [0] * 4))), (f3['texte'][-20:], f0['texte'][-20:]))
+            # ⚑ v203 fin (C-280, corrige C-244) : touché de nouveau, le titre déplié passe en MODIFICATION (il ne se replie plus) ; Échap rend le titre tel quel
+            B.tap_sel(pg, '#dptTitre'); pg.wait_for_timeout(700)
+            ed = pg.evaluate("()=>{ const t=document.getElementById('dptTitre'), a=document.activeElement; return {edit:!!(t && t.isContentEditable), focus:a===t, s2:document.getElementById('detailPoster').classList.contains('s2-ouv')}; }")
+            pg.keyboard.press('Escape'); pg.wait_for_timeout(900); f3 = pg.evaluate(FICHE)
+            juge(T + ' D · touché de nouveau : il passe en modification (C-280), sans Peaufiner ; Échap le rend entier, rien ne se recouvre', ed['edit'] and ed['focus'] and not ed['s2'] and f3['texte'] == t and not chevauche(f3['B']), (ed, f3['texte'][-20:]))
             juge(T + ' E · aucune erreur de page', not pg.erreurs, pg.erreurs[:2]); ctx.close()
     b.close()
 print('\n  %d / %d' % (sum(res), len(res))); sys.exit(0 if all(res) else 1)

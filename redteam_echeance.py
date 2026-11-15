@@ -102,7 +102,8 @@ with sync_playwright() as p:
     pg.goto(URL + '?jour=+400'); pg.wait_for_timeout(6800)
     e = pg.evaluate(ETAT, 'apprendre le piano')
     juge('G · une parole sans date (« un jour ») ne passe jamais « à tenir », même à ?jour=+400', e and e['status'] == 'encours' and e['due'] is None, str(e))
-    k = pg.evaluate("()=>Object.keys(localStorage).filter(k=>/jour|decal/i.test(k)||/jour=/.test(localStorage.getItem(k)||''))")
+    # ⚑ v202a : la boîte noire (v192, C-262) est un JOURNAL — elle consigne l'adresse du chargement, `?jour` compris ; elle ne le relit jamais. Ce n'est pas mémoriser (original : sauvegardes/redteam_echeance-avant-v202a.py)
+    k = pg.evaluate("()=>Object.keys(localStorage).filter(k=>!/^promi_boite_noire/.test(k)).filter(k=>/jour|decal/i.test(k)||/jour=/.test(localStorage.getItem(k)||''))")
     juge('H · ?jour n\'est jamais mémorisé', not k, str(k))
     # la vérification de version (v145) recharge, au retour au premier plan, une page dont le commit diffère de celui du serveur (arbre de travail
     # modifié pendant un lot) : sa requête annulée par ce rechargement n'est pas une faute de la page.

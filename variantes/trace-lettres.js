@@ -125,6 +125,13 @@
   /* v170d : l'ouvrier naît et passe son essai au chargement, hors de tout tracé (il est prouvé avant le premier texte) */
   if (doc && racine.setTimeout) racine.setTimeout(function () { try { ouvrier(); } catch (e) { } }, 1200);
   function famille(ff) { return String(ff || '').split(',')[0].replace(/["']/g, '').trim(); }
+  /* ⚑ v203 (Tom, C-273 : « UNE SEULE requestAnimationFrame POUR TOUS LES TRACÉS ») — une horloge commune : chaque tracé s'y inscrit pour l'image suivante ;
+     une seule demande d'image au navigateur, tous les tracés de l'image passent dans le même rappel, au même instant. Rien d'autre ne change (même temps, même rendu). */
+  var HOR = { file: [], raf: 0, n: 0 };
+  function horloge(t) { HOR.raf = 0; var f = HOR.file; HOR.file = []; for (var i = 0; i < f.length; i++) { if (f[i].fn) { try { f[i].fn(t); } catch (e) { signale('horloge', { e: String(e) }); } } } }
+  TL._planifie = function (fn) { var j = { fn: fn, id: ++HOR.n }; HOR.file.push(j); if (!HOR.raf) HOR.raf = racine.requestAnimationFrame(horloge); return j; };
+  TL._annule = function (j) { if (j && j.fn) j.fn = null; };
+  TL._horloge = function () { return { attente: HOR.file.length, demande: !!HOR.raf }; };
   TL.glyphe = function (police, car) { var D = donnees(police); return D && D.g[car] || null; };
   TL.reduit = function () { try { return !!(racine.matchMedia && racine.matchMedia('(prefers-reduced-motion: reduce)').matches); } catch (e) { return false; } };
 
@@ -539,8 +546,14 @@
   }
 
   TL.poseTout = function (cible) { var c = cible && cible.__trace; if (c) c.stop(); };
+  /* v200 : la découpe qu'un détracé fini a gardée, rendue (le texte paraît tel qu'il est) */
+  TL.montre = function (cible) { if (!cible) return; if (cible.__trace) cible.__trace.stop(); var a = cible.__tlCache; if (!a) return; delete cible.__tlCache;
+    cible.style.removeProperty('-webkit-clip-path'); cible.style.removeProperty('clip-path'); if (a[0]) cible.style.setProperty('clip-path', a[0], a[1]); if (a[2]) cible.style.setProperty('-webkit-clip-path', a[2], a[3]); };
 
   var VIDE = 'polygon(0px 0px,0px 0px,0px 0px)';
+  /* ⚑ v201a (Tom, C-273 : « les tracés saccadent sur l'iPhone ») — UN TRACÉ EN COURS SE DÉCLARE : `TL.actif()` est vrai du départ de la plume à sa fin (un tracé armé qui
+     attend son toucher, une préparation : non). Pendant ce temps l'app ne fait aucune passe de tout le document ni aucun travail retenu (`_apresMouvement`). */
+  TL.actif = function () { return (TL._en || 0) > 0; };
   TL.trace = function (cible, contenu, options) {
     var o = options || {}, cps = (o.cps || TL.defauts.cps), vit = (o.vitesse || TL.defauts.vitesse),   /* v153 : l'app ne passe plus `cps` — la vitesse décidée vit ici (40, ou `?cps=`) ; v154 : `vit` ralentit tout le temps (débit ET durée) */ esp = o.espace == null ? TL.defauts.espace : o.espace;
     /* ⚑ v170d — `preparer` : la même mesure et les mêmes calculs qu'un tracé, sans RIEN montrer ni toucher à l'élément (ni découpe, ni canevas laissé) :
@@ -575,20 +588,28 @@
     var tDepart = racine.performance.now(), tDebut = 0, nLong = 0, imMax = 0;
     function texteDe() { return String(cible.textContent || '').replace(/\s+/g, ' ').slice(0, 40); }
     function termine(interrompu) {
-      if (ctl.fini) return; ctl.fini = true; mort = true; resPart(ctl); if (raf) racine.cancelAnimationFrame(raf);
+      if (ctl.fini) return; ctl.fini = true; mort = true; resPart(ctl); if (raf) TL._annule(raf);
+      if (ctl.__calque) { ctl.__calque = false; if (ctl.__wcAv) cible.style.setProperty('will-change', ctl.__wcAv[0], ctl.__wcAv[1]); else cible.style.removeProperty('will-change'); }
+      if (ctl.__compte) { ctl.__compte = false; TL._en = Math.max(0, (TL._en || 0) - 1); TL._finT = racine.performance.now(); }
       /* v170c : chaque fin est notée — un tracé fini bien avant sa durée prévue est une APPARITION D'UN COUP, la régression de v170b */
       if (prep) { signale('prepare', { texte: texteDe(), lettres: G.length, ms: Math.round(racine.performance.now() - tDepart) }); range(); resPret(ctl); resFin({ interrompu: !!interrompu }); return; }
       var tF = racine.performance.now(); ctl.mesure = { attente: tDebut ? Math.round(tDebut - tDepart) : null, reel: tDebut ? Math.round(tF - tDebut) : null, prevu: Math.round(total) };
       ctl.mesure.longues = nLong; ctl.mesure.pire = Math.round(imMax);
       signale('trace-fin', { texte: texteDe(), lettres: G.length, prevu: Math.round(total), reel: tDebut ? Math.round(tF - tDebut) : null, attente: tDebut ? Math.round(tDebut - tDepart) : null, imagesLongues: nLong, pireImage: Math.round(imMax), plume: Math.round(tPlume), interrompu: !!interrompu, ouvrier: TL.ouvrierEtat || '—', vect: vect, reduit: !!termine.reduit });
+      if (inv && !interrompu) { cible.__tlCache = clipAvant; clipAvant = null; pose_(VIDE); }   /* v200 : un détracé fini ne rend pas le texte */
       range(); var r = { interrompu: !!interrompu }; if (o.surFin) { try { o.surFin(r); } catch (e) { } } resPret(ctl); resFin(r);
     }
     ctl.stop = function () { termine(true); }; ctl.finir = function () { termine(false); };
 
-    if (o.toutDeSuite || (o.respecteReduire !== false && TL.reduit())) { termine.reduit = true; Promise.resolve().then(function () { termine(false); }); return ctl; }
+    if (o.toutDeSuite || (o.respecteReduire !== false && TL.reduit())) { termine.reduit = true; if (inv) { clipAvant = [cible.style.getPropertyValue('clip-path'), cible.style.getPropertyPriority('clip-path'), cible.style.getPropertyValue('-webkit-clip-path'), cible.style.getPropertyPriority('-webkit-clip-path')]; } Promise.resolve().then(function () { termine(false); }); return ctl; }
     /* le texte réel est là, mis en page, mais rien n'en paraît : il est DÉCOUPÉ (clip-path), pas rendu transparent — ce qui est dévoilé est le vrai texte */
-    if (!prep) { clipAvant = [cible.style.getPropertyValue('clip-path'), cible.style.getPropertyPriority('clip-path'), cible.style.getPropertyValue('-webkit-clip-path'), cible.style.getPropertyPriority('-webkit-clip-path')];
-      decoupe(VIDE); }
+    /* ⚑ v200 (Tom, C-271, C-269) — LE DÉTRACÉ (`inverse:true`) : le même tracé, joué à rebours, à la même cadence — la dernière lettre part la première, la plume
+       recule ; à la fin il ne reste rien, et RIEN NE REVIENT : la découpe vide est gardée (`cible.__tlCache` garde la découpe d'avant), le tracé suivant sur le même
+       élément la reprend (c'est lui qui le montrera). `TL.montre(cible)` la rend sans tracé. Le texte reste ENTIER à l'écran jusqu'à ce que la plume parte. */
+    var inv = !!o.inverse && !prep;
+    if (!prep) { if (cible.__tlCache) { clipAvant = cible.__tlCache; delete cible.__tlCache; }
+      else clipAvant = [cible.style.getPropertyValue('clip-path'), cible.style.getPropertyPriority('clip-path'), cible.style.getPropertyValue('-webkit-clip-path'), cible.style.getPropertyPriority('-webkit-clip-path')];
+      if (!inv) decoupe(VIDE); }
     var styles = [], noeuds = [];
     (function () {
       var w = doc.createTreeWalker(cible, 4 /* SHOW_TEXT */, null), nd, memo = [];
@@ -603,7 +624,8 @@
     var attente = [];
     function apresPolices() {
       if (mort) return;
-      try { mesure(); } catch (e) { if (racine.console) racine.console.error('TraceLettres', e); signale('mesure-erreur', { texte: texteDe(), msg: String(e && e.message || e), pile: String(e && e.stack || '').slice(0, 500) }); termine(true); return; }
+      var _ha = null; try { _ha = TL.horsAnim ? TL.horsAnim(cible) : null; } catch (e) { }   /* ⚑ v203 (C-278) : un ancêtre en mouvement de taille (la phrase de la page +) est mesuré à sa fin */
+      try { mesure(); if (_ha) { _ha(); _ha = null; } } catch (e) { if (_ha) { try { _ha(); } catch (_) { } } if (racine.console) racine.console.error('TraceLettres', e); signale('mesure-erreur', { texte: texteDe(), msg: String(e && e.message || e), pile: String(e && e.stack || '').slice(0, 500) }); termine(true); return; }
       if (prep) { range(); if (o.retire) { try { o.retire(); } catch (e) { } } if (!G.length) { termine(false); return; } preRoll(function () { termine(false); }); return; }
       resPret(ctl); if (!G.length) { termine(false); return; }
       /* ⚑ v170d (Tom, C-125) — AUCUN CALCUL PENDANT L'AFFICHAGE : toutes les lettres sont prêtes AVANT que la plume parte (reprises du cache quand le texte a
@@ -612,7 +634,10 @@
     }
     /* ⚑ v175 (Tom, C-219) — UN TRACÉ ARMÉ (`arme:true`) : tout est fait d'avance (la mesure, les lettres, la découpe), la plume attend `ctl.lance()` et part à l'image suivante, une image de plume déjà faite : de l'encre dès cette image-là */
     var arme = false, lancer = false;
-    function part() { if (mort) return; resPart(ctl); tDebut = racine.performance.now(); t0 = tDebut; tAbs = 0; tPlume = 0; raf = racine.requestAnimationFrame(image); }
+    function part() { if (mort) return; resPart(ctl); if (!prep && !ctl.__compte) { ctl.__compte = true; TL._en = (TL._en || 0) + 1; } tDebut = racine.performance.now(); t0 = tDebut; tAbs = 0; tPlume = 0;
+      /* ⚑ v203 (C-273) : pendant le tracé, le texte vit sur son propre calque (la découpe qui change à chaque image ne fait repeindre que lui) ; rendu au repos à la fin */
+      if (!prep && !ctl.__calque) { var wv = cible.style.getPropertyValue('will-change'); ctl.__wcAv = wv ? [wv, cible.style.getPropertyPriority('will-change')] : null; if (!wv || wv === 'auto') { cible.style.setProperty('will-change', 'clip-path'); ctl.__calque = true; } }
+      raf = TL._planifie(image); }
     ctl.lance = function () { lancer = true; if (o.arme) tDepart = racine.performance.now(); if (arme) { arme = false; part(); } };
     if (prep && o.immediat) { apresPolices(); return ctl; }   /* l'appelant a déjà ses polices : la mesure se fait tout de suite (l'élément peut être retiré aussitôt) */
     try { if (doc.fonts && doc.fonts.load) Object.keys(polices).forEach(function (f) { attente.push(doc.fonts.load(f).catch(function () { })); }); } catch (e) { }
@@ -1142,13 +1167,13 @@
           if (TL._lents >= 3 && TL._ouvrier) abandon('trop lent (3 lettres attendues plus de ' + (TL.attenteMax || 150) + ' ms)'); } }
         if (!gx.pret) { t = Math.max(tPlume, gx.t0); break; } }
       tPlume = t;
-      rend(t);
+      rend(inv ? Math.max(0, total - t) : t);
       /* ⚑ v147 — D'AVANCE : le temps qui reste dans l'image (jusqu'à 7 ms de travail) prépare les lettres qui viennent — la lettre suivante n'attend
          plus sa carte au moment où le front l'atteint (une image de 143 à 194 ms à chaque lettre, au banc, avant). */
       for (var ja = ig, na = 0; ja < G.length && na < 14 && racine.performance.now() - d0 < 6; ja++, na++) if (!G[ja].pret && !G[ja].attente) { try { demande(G[ja]); } catch (e) { } }
       TL.mesures.image.push(racine.performance.now() - d0); if (TL.mesures.image.length > 8000) TL.mesures.image.splice(0, 4000);
-      if (t >= total) { termine(false); return; }
-      raf = racine.requestAnimationFrame(image);
+      if (t >= total) { if (inv) rend(0); termine(false); return; }
+      raf = TL._planifie(image);
     }
     ctl.va = function (p) { rend(Math.max(0, Math.min(1, p)) * total + (p >= 1 ? 1 : 0)); };
     ctl.etat = function () { return { glyphe: ig, texteReel: jd, total: G.length, actives: (ctl._actives || []).slice(), t: tPrec }; };   /* v154 : les lettres en cours (indices) */

@@ -1,0 +1,142 @@
+#!/usr/bin/env python3
+"""v202a (Tom, C-272, C-273, C-275) — RÉSUMÉ D'UN RELEVÉ D'IMAGES DE L'iPHONE (`?mesure=1`, mesures/AAAA-MM-JJ-HHMM.jsonl).
+
+Par écran, par animation, et par couple écran × animation : le nombre d'images, le p50, le p95, le max, et les images au-dessus de 16,7 et de 33 ms.
+Une image = l'intervalle entre deux requestAnimationFrame ; elle est attribuée à l'écran et à l'animation notés à sa fin.
+
+    python3 resume_releve.py                     le relevé le plus récent
+    python3 resume_releve.py mesures/2026-11-14-1530.jsonl
+    python3 resume_releve.py --min=30            n'affiche que les lignes d'au moins 30 images (défaut 20)
+    python3 resume_releve.py --json              sortie JSON (pour un juge)
+"""
+import glob, json, os, re, sys
+
+ICI = os.path.dirname(os.path.abspath(__file__))
+
+
+def quantile(v, q):
+    if not v: return 0.0
+    v = sorted(v); i = q * (len(v) - 1); a = int(i); b = min(a + 1, len(v) - 1)
+    return v[a] + (v[b] - v[a]) * (i - a)
+
+
+def stats(v):
+    return {'n': len(v), 'p50': round(quantile(v, .5), 1), 'p95': round(quantile(v, .95), 1), 'max': round(max(v) if v else 0, 1),
+            'sup16': sum(1 for d in v if d > 16.7), 'sup33': sum(1 for d in v if d > 33.4)}
+
+
+def lit(chemin):
+    images = []; meta = {}; lit.taches = []; lit.modes = []; TG = {}
+    for ligne in open(chemin, encoding='utf-8'):
+        try: d = json.loads(ligne)
+        except Exception: continue
+        if d.get('quoi') != 'releve': continue
+        if 'tags0' in d:   # ⚑ v203 (§2) : seules les étiquettes neuves sont envoyées — on les cumule par séance
+            T = TG.setdefault(d.get('seance'), []); del T[d['tags0']:]; T.extend(d.get('tagsN') or []); tags = T
+        else: tags = d.get('tags') or []
+        if d.get('tl') is not None: meta['tl'] = d.get('tl')   # v203 : l'ouvrier du tracé des lettres (le dernier envoyé)
+        for k in ('seance', 'debut', 'version', 'etat', 'ecran', 'ua', '_de'):
+            if d.get(k) is not None: meta[k] = d.get(k)
+        lit.taches += d.get('taches') or []
+        for m in d.get('modes') or []:
+            if m not in lit.modes: lit.modes.append(m)
+        for im in d.get('images') or []:
+            t, dur, e, a = im[:4]
+            images.append((t, dur, tags[e] if e < len(tags) else '?', tags[a] if a < len(tags) else '?') + ((im[4],) if len(im) > 4 else ()))
+    images.sort()
+    return images, meta
+
+
+def resume(images):
+    par = {'ecran': {}, 'animation': {}, 'couple': {}}
+    for im in images:
+        dur, e, a = im[1], im[2], im[3]
+        par['ecran'].setdefault(e, []).append(dur)
+        for x in a.split('+'): par['animation'].setdefault(x, []).append(dur)
+        par['couple'].setdefault(e + ' | ' + a, []).append(dur)
+    return {k: {n: stats(v) for n, v in d.items()} for k, d in par.items()}, stats([im[1] for im in images])
+
+
+def main():
+    args = [a for a in sys.argv[1:] if not a.startswith('--')]
+    mini = 20
+    for a in sys.argv[1:]:
+        m = re.match(r'--min=(\d+)', a)
+        if m: mini = int(m.group(1))
+    if args: chemin = args[0]
+    else:
+        f = sorted(glob.glob(os.path.join(ICI, 'mesures', '20??-??-??-????*.jsonl')), key=os.path.getmtime)
+        if not f: print('aucun relevé dans mesures/'); return 1
+        chemin = f[-1]
+    images, meta = lit(chemin)
+    R, tout = resume(images)
+    if '--json' in sys.argv:
+        print(json.dumps({'fichier': chemin, 'meta': meta, 'tout': tout, 'par': R}, ensure_ascii=False, indent=1)); return 0
+    print('relevé :', os.path.relpath(chemin, ICI))
+    print('version :', meta.get('version'), '· début :', meta.get('debut'), '· écran :', meta.get('ecran'))
+    print('état :', meta.get('etat'))
+    if meta.get('tl'): t = meta['tl']; print('ouvrier du tracé : %s · lettres calculées sur le fil : %s (%s ms, pire %s) · restes repris du cache : %s · lents : %s' % (t.get('etat'), t.get('prepN'), t.get('prepMs'), t.get('prepMax'), t.get('cacheR'), t.get('lents')));  [print('   ', j) for j in (t.get('j') or [])]
+    dureeS = (images[-1][0] - images[0][0]) / 1000 if images else 0
+    # ⚑ v203 (C-267) : les retours de fiche — chaque série de défilement (images avec scrollTop) : un arrêt (≥ 100 ms immobile) suivi d'une reprise (> 1 pt) est un défaut
+    ser, cur = [], []
+    for im in images:
+        if len(im) > 4: cur.append((im[0], im[4]))
+        elif cur: ser.append(cur); cur = []
+    if cur: ser.append(cur)
+    reprises = []
+    for s in ser:
+        i = 1
+        while i < len(s):
+            j = i
+            while j < len(s) and abs(s[j][1] - s[i - 1][1]) <= 0.5: j += 1
+            if j < len(s) and s[j - 1][0] - s[i - 1][0] >= 100 and abs(s[j][1] - s[i - 1][1]) > 1: reprises.append((s[i - 1][0], s[i - 1][1], s[j][1]))
+            i = max(j, i + 1)
+    print('défilements de fiche : %d séries · arrêts suivis d\'une reprise : %d %s' % (len(ser), len(reprises), reprises[:5]))
+    print('%d images sur %.0f s — p50 %.1f · p95 %.1f · max %.1f ms · > 16,7 : %d · > 33 : %d' % (tout['n'], dureeS, tout['p50'], tout['p95'], tout['max'], tout['sup16'], tout['sup33']))
+    if lit.modes:   # ⚑ v203 (fin de v203, §2) : les fenêtres de 30 s — l'envoi, le relevé gardé, gardé sans le chronométrage des rappels
+        M = sorted(lit.modes); NOMS = {0: "envoi (au repos, 10 s au plus)", 1: "relevé gardé en mémoire", 2: "gardé, sans chronométrage"}
+        def mode_de(t):
+            m = None
+            for t0, md in M:
+                if t0 <= t: m = md
+            return m
+        par = {}
+        for im in images:
+            md = mode_de(im[0])
+            if md is None: continue
+            a = par.setdefault(md, [0, 0, 0, 0]); a[0] += 1; a[1] += 1 if im[1] > 33.4 else 0; a[2] += 1 if im[1] > 50 else 0; a[3] += 1 if (im[1] > 50 and im[3] == 'repos') else 0
+        print('\nFENÊTRES DE 30 s (le relevé lui-même ?) — images · > 33 ms · > 50 ms · > 50 ms au repos (pour 1 000 images)')
+        for md in sorted(par):
+            a = par[md]; print('  %-28s %6d   %5.1f   %5.1f   %5.1f' % (NOMS.get(md, md), a[0], 1000 * a[1] / max(1, a[0]), 1000 * a[2] / max(1, a[0]), 1000 * a[3] / max(1, a[0])))
+    T = lit.taches
+    if T:
+        agg = {}
+        SOM = [(t, x, nom) for t, x, nom in T if nom.startswith('somme ')]; T = [(t, x, nom) for t, x, nom in T if not nom.startswith('somme ')]
+        for t, x, nom in T: a = agg.setdefault(nom, [0, 0, 0]); a[0] += 1; a[1] += x; a[2] = max(a[2], x)
+        print('\nTÂCHES DE 20 ms ET PLUS (%d) — par nom' % len(T))
+        for nom, a in sorted(agg.items(), key=lambda kv: -kv[1][1])[:25]: print('  %4d× · %6d ms · pire %5d · %s' % (a[0], a[1], a[2], nom[:120]))
+        longues = [im for im in images if im[1] > 33.4]; sans = 0
+        for im in longues:
+            if not any(t <= im[0] + 2 and t + x >= im[0] - im[1] - 2 for t, x, _ in T): sans += 1
+        print('  images > 33 ms sans tâche de 20 ms dans leur intervalle (le rendu, le ramasse-miettes) : %d sur %d' % (sans, len(longues)))
+        if SOM:
+            g = {}; peu = 0
+            for t, x, nom in SOM:
+                corps = nom.split(' : ', 1)[1] if ' : ' in nom else ''
+                tete = corps.split(' | ')[0] if corps else '(aucun rappel de 3 ms)'
+                tete = ' '.join(tete.split(' ')[1:]) if corps else tete
+                a = g.setdefault(tete, [0, 0]); a[0] += 1; a[1] += x
+                if x < 10: peu += 1
+            print('\nIMAGES > 33 ms : CE QUI A TOURNÉ PENDANT ELLES (rappels de 3 ms et plus) — %d images, dont %d avec moins de 10 ms de script' % (len(SOM), peu))
+            for nom, a in sorted(g.items(), key=lambda kv: -kv[1][0])[:20]: print('  %4d× · script %6d ms · %s' % (a[0], a[1], nom[:110]))
+    for titre, cle in (('PAR ÉCRAN', 'ecran'), ('PAR ANIMATION', 'animation'), ('ÉCRAN × ANIMATION', 'couple')):
+        print('\n' + titre)
+        print('  %-52s %6s %6s %6s %7s %6s %6s' % ('', 'images', 'p50', 'p95', 'max', '>16,7', '>33'))
+        for nom, s in sorted(R[cle].items(), key=lambda kv: -kv[1]['p95']):
+            if s['n'] < mini: continue
+            print('  %-52s %6d %6.1f %6.1f %7.1f %6d %6d' % (nom[:52], s['n'], s['p50'], s['p95'], s['max'], s['sup16'], s['sup33']))
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())
