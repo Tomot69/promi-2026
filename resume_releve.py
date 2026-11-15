@@ -26,13 +26,16 @@ def stats(v):
 
 
 def lit(chemin):
-    images = []; meta = {}; lit.taches = []; lit.modes = []
+    images = []; meta = {}; lit.taches = []; lit.modes = []; TG = {}
     for ligne in open(chemin, encoding='utf-8'):
         try: d = json.loads(ligne)
         except Exception: continue
         if d.get('quoi') != 'releve': continue
-        tags = d.get('tags') or []
-        meta = {k: d.get(k) for k in ('seance', 'debut', 'version', 'etat', 'ecran', 'ua', '_de')}
+        if 'tags0' in d:   # ⚑ v203 (§2) : seules les étiquettes neuves sont envoyées — on les cumule par séance
+            T = TG.setdefault(d.get('seance'), []); del T[d['tags0']:]; T.extend(d.get('tagsN') or []); tags = T
+        else: tags = d.get('tags') or []
+        for k in ('seance', 'debut', 'version', 'etat', 'ecran', 'ua', '_de'):
+            if d.get(k) is not None: meta[k] = d.get(k)
         lit.taches += d.get('taches') or []
         for m in d.get('modes') or []:
             if m not in lit.modes: lit.modes.append(m)
@@ -89,7 +92,7 @@ def main():
     print('défilements de fiche : %d séries · arrêts suivis d\'une reprise : %d %s' % (len(ser), len(reprises), reprises[:5]))
     print('%d images sur %.0f s — p50 %.1f · p95 %.1f · max %.1f ms · > 16,7 : %d · > 33 : %d' % (tout['n'], dureeS, tout['p50'], tout['p95'], tout['max'], tout['sup16'], tout['sup33']))
     if lit.modes:   # ⚑ v203 (fin de v203, §2) : les fenêtres de 30 s — l'envoi, le relevé gardé, gardé sans le chronométrage des rappels
-        M = sorted(lit.modes); NOMS = {0: "envoi toutes les 2 s", 1: "relevé gardé en mémoire", 2: "gardé, sans chronométrage"}
+        M = sorted(lit.modes); NOMS = {0: "envoi (au repos, 10 s au plus)", 1: "relevé gardé en mémoire", 2: "gardé, sans chronométrage"}
         def mode_de(t):
             m = None
             for t0, md in M:

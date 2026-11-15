@@ -2753,9 +2753,19 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
         if(t-dernierDefile<150) a.push('defilement');
         try{ if(window.__doigts && window.__doigts.n>0) a.push('doigt'); }catch(_){ }
         return a.join('+')||'repos'; }
-      function envoie(force){ if(!BUF.length && !(window.__taches&&window.__taches.length)) return; var lot=BUF; BUF=[]; dernierEnvoi=performance.now();
-        var R={quoi:'releve', seance:SEANCE, debut:DEBUT, version:V.marque(), etat:etatLu(), ecran:[screen.width, screen.height, window.devicePixelRatio, window.innerWidth, window.innerHeight],
-               ua:navigator.userAgent, tags:TAGS.slice(), images:lot, modes:MODES.slice(), quand:new Date().toISOString(), taches:(window.__taches||[]).splice(0).map(function(x){ return [Math.round(x[0]-T0), x[1], x[2]]; })};
+      /* ⚑ v203 (Tom, fin de v203, §2) — L'IMAGE DE 60 À 120 ms TOUTES LES 1,5 À 1,7 s ÉTAIT LE RELEVÉ LUI-MÊME. Désignée dans Safari iOS (simulateur, 15 nov.) : fenêtre « envoi
+         toutes les 2 s » 7,2 images de plus de 50 ms pour 1 000, relevé gardé en mémoire 1,1 à 1,7 ; la tâche d'envoi jusqu'à 149 ms. Aujourd'hui : un envoi toutes les 10 s au plus,
+         seulement au repos (aucune animation, aucun doigt depuis 1,5 s), 600 images au plus par envoi (en petits morceaux) ; il n'écrit que ce qui a changé — les étiquettes
+         neuves (`tags0`, `tagsN`), les fenêtres neuves, l'état, l'écran et le navigateur seulement s'ils changent. resume_releve.py relit les deux formes. */
+      var ENV={tags:0, modes:0, etat:'', ecran:'', premier:true}, dernierDoigt=0;
+      document.addEventListener('touchstart', function(){ dernierDoigt=performance.now(); }, {capture:true, passive:true});
+      function envoie(force){ if(!BUF.length && !(window.__taches&&window.__taches.length)) return; var lot=force ? BUF : BUF.slice(0, 600); BUF=force ? [] : BUF.slice(lot.length); dernierEnvoi=performance.now();
+        var et=etatLu(), ets=JSON.stringify(et), ec=[screen.width, screen.height, window.devicePixelRatio, window.innerWidth, window.innerHeight], ecs=ec.join(',');
+        var R={quoi:'releve', seance:SEANCE, debut:DEBUT, images:lot, quand:new Date().toISOString(), tags0:ENV.tags, tagsN:TAGS.slice(ENV.tags), modes:MODES.slice(ENV.modes),
+               taches:(window.__taches||[]).splice(0).map(function(x){ return [Math.round(x[0]-T0), x[1], x[2]]; })};
+        if(ENV.premier){ R.version=V.marque(); R.ua=navigator.userAgent; ENV.premier=false; }
+        if(ets!==ENV.etat){ R.etat=et; ENV.etat=ets; } if(ecs!==ENV.ecran){ R.ecran=ec; ENV.ecran=ecs; }
+        ENV.tags=TAGS.length; ENV.modes=MODES.length;
         try{ fetch('releve', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:!!force}).catch(function(){}); }catch(_){ } }
       function b(t){ requestAnimationFrame(b); enveloppe(); var n=performance.now();
         if(prec){ var dur=n-prec; if(document.visibilityState==='visible' && dur<5000){ if(++ecrN>=30 || ecr==='?'){ ecrN=0; ecr=lisEcran(); }
@@ -2770,8 +2780,8 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
            chronométrage des rappels coupé. Chaque lot porte ses fenêtres (`modes`) ; resume_releve.py compare les images longues fenêtre par fenêtre. */
         var md=Math.floor((n-T0)/30000)%3; if(md!==MODE){ MODE=md; MODES.push([Math.round(n-T0), md]); window.__tachesOff=(md===2); }
         var garde=(MODE!==0) && BUF.length<5000;
-        if(!garde && n-dernierEnvoi>2000){ var occ=false; try{ occ=(window._animEnCours && window._animEnCours()) || (window.__doigts && window.__doigts.n>0) || window._tenirAnime; }catch(_){ }
-          if(!occ || BUF.length>1800) setTimeout(function(){ envoie(false); }, 0); } }
+        if(!garde && n-dernierEnvoi>10000){ var occ=false; try{ occ=(window._animEnCours && window._animEnCours()) || (window.__doigts && window.__doigts.n>0) || window._tenirAnime || n-dernierDoigt<1500 || (window.__animT && n-window.__animT<1500); }catch(_){ }
+          if(!occ || BUF.length>3000){ dernierEnvoi=n; setTimeout(function(){ envoie(false); }, 0); } } }
       requestAnimationFrame(b);
       document.addEventListener('visibilitychange', function(){ if(document.visibilityState==='hidden'){ envoie(true); prec=0; } });
       window.addEventListener('pagehide', function(){ envoie(true); });
