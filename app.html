@@ -19159,6 +19159,9 @@ var CREMEETAT='#F7F0DE';
     return cs?(cs.className.split(/\s+/).filter(function(c){ return c && !/^(ppi-|ppa-|pp-cours$)/.test(c); }).sort().join(' ')+'|'+cs.getAttribute('data-kind')+'|'+(ph?ph.textContent:'')+'|'+(np?np.textContent:'')+'|'+innerWidth+'x'+innerHeight+'|'+(vv?Math.round(vv.height):0)):''; };
   function tout(){ try{
     var cs = document.getElementById('createSheet');
+    /* ⚑ v204 (C-282) : pendant la saisie, tant que la copie de l'exemple se détrace, la phrase ne se recompose pas (sa relecture périodique comprise) — elle se
+       recompose quand la copie part (`__ppToutApres`). Une validation n'attend jamais (la saisie fermée, la page rejoint sa place ; la copie la suit). */
+    if(cs && cs.classList.contains('pp-saisie') && cs.querySelector('.v203-exw')){ window.__ppToutApres=1; return; }
     window.__ppCleFaite=window._ppCle();
     if(cs && cs.classList.contains('pp-peauf')){ peaufBati(); return; }
     cotes(); trait();
@@ -22477,7 +22480,7 @@ var CREMEETAT='#F7F0DE';
     (function tranche(){
       var t0=performance.now(), budget=5; if(window._animEnCours && window._animEnCours() && performance.now()-_t0P<3000){ setTimeout(tranche, 140); return; }
       while(i<els.length && performance.now()-t0<budget){ passe(els, i, i+40); i+=40; }
-      if(i<els.length) setTimeout(tranche, (window._evol && window._evol() && performance.now()-_t0P<3000) ? 140 : 0);   /* v144 (C-112) : elle s'efface pendant qu'une dalle arrive ou part */   /* tâches courtes enchaînées : on n'attend pas de temps mort (la Toile animée n'en laisse pas) */
+      if(i<els.length){ if(window._evol && window._evol() && performance.now()-_t0P<3000) setTimeout(tranche, 140); else requestAnimationFrame(function(){ setTimeout(tranche, 0); }); }   /* v204 (C-284 §4) : UNE tranche par image (enchaînées à 0 ms, quatre tombaient dans la même image : 27 ms) */   /* v144 (C-112) : elle s'efface pendant qu'une dalle arrive ou part */   /* tâches courtes enchaînées : on n'attend pas de temps mort (la Toile animée n'en laisse pas) */
       else { _enCours=false; window._policesDuree=Math.round(performance.now()-_t0P); window._policesN=els.length; if(_redemande) setTimeout(passeFond, 30); }
     })();
   }
@@ -36852,7 +36855,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
      sans flash possible. */
   var _rpDemande = false;
   function repasse(){ if(window._tenirAnime) return;   /* v124 : pas pendant l'animation « tenir » — elle repasse à la fin (`finAnime`) */
-    if(_rpDemande) return; _rpDemande = true; var _n=0, _tR=performance.now(), _tEv=0; requestAnimationFrame(function att(){ var _ev=!!(window._evol && window._evol() && window._toileVue && (window._tirageActive || window._toileVue())); if(_ev) _tEv=performance.now(); /* v145 (C-112) : la passe attend aussi 400 ms après la fin du mouvement — la vue se recadre encore quand la dalle est posée (v144), et sous Ritournelle la passe (23 ms) tombait dans ce recadrage, à 3,04 s d'un mouvement fini à 3,2 s. Un toucher (qui remet `_tEvol` à zéro) la laisse passer tout de suite. */ if((_ev || (window._tEvol && _tEv && performance.now()-_tEv<400)) && performance.now()-_tR<4200){ setTimeout(function(){ requestAnimationFrame(att); },120); return; }   /* v145 (C-112) : 2 600 → 4 200 ms au plus — sous Ritournelle la Toile bouge encore à 3 s, la passe (15 à 46 ms sur une Toile remplie) tombait dans la fin du mouvement ; `_evol()` rend la main à 3,6 s au plus */   /* v144 (C-112) : pas pendant qu'une dalle arrive ou part, quand c'est la Toile qu'on regarde */ if(window._posesEnCours && ++_n<8){ requestAnimationFrame(att); return; }   /* v143 (C-102) : elle laisse passer les poses différées (une par image) et garde le dernier mot, dans sa propre image */
+    if(_rpDemande) return; _rpDemande = true; var _n=0, _tR=performance.now(), _tEv=0; requestAnimationFrame(function att(){ var _ev=!!(window._evol && window._evol() && window._toileVue && (window._tirageActive || window._toileVue())); if(_ev) _tEv=performance.now(); /* v145 (C-112) : la passe attend aussi 400 ms après la fin du mouvement — la vue se recadre encore quand la dalle est posée (v144), et sous Ritournelle la passe (23 ms) tombait dans ce recadrage, à 3,04 s d'un mouvement fini à 3,2 s. Un toucher (qui remet `_tEvol` à zéro) la laisse passer tout de suite. */ if((_ev || (window._tEvol && _tEv && performance.now()-_tEv<400)) && performance.now()-_tR<4200){ setTimeout(function(){ requestAnimationFrame(att); },120); return; } if(window._animEnCours && window._animEnCours() && performance.now()-_tR<3000){ setTimeout(function(){ requestAnimationFrame(att); },120); return; }   /* v204 (C-284 §4, la règle v201 ②) : pas pendant une animation de texte (un tracé, un détracé) — 3 s au plus */   /* v145 (C-112) : 2 600 → 4 200 ms au plus — sous Ritournelle la Toile bouge encore à 3 s, la passe (15 à 46 ms sur une Toile remplie) tombait dans la fin du mouvement ; `_evol()` rend la main à 3,6 s au plus */   /* v144 (C-112) : pas pendant qu'une dalle arrive ou part, quand c'est la Toile qu'on regarde */ if(window._posesEnCours && ++_n<8){ requestAnimationFrame(att); return; }   /* v143 (C-102) : elle laisse passer les poses différées (une par image) et garde le dernier mot, dans sa propre image */
       _rpDemande = false; repasseVraie(); }); }
   window._repasseSombre = repasseVraie;
   /* ⚠ DEUX PROPRIÉTAIRES POUR UNE MÊME PROPRIÉTÉ (§7) — ET ON L'A PAYÉ ICI.
@@ -42394,20 +42397,29 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
      place et son style (figés en ligne : ses règles visent `#guidePhrase`, que la phrase suivante prend), se détrace (le module, à rebours, la cadence d'Atkinson),
      puis se retire. `sec` : pour les captures et les juges (un état figé) — retirée tout de suite. */
   var PARTS=[];
-  function figeStyles(el){ [el].concat([].slice.call(el.querySelectorAll('*'))).forEach(function(e){ var c=getComputedStyle(e);
-      ['font-family','font-size','font-weight','font-style','line-height','letter-spacing','color','-webkit-text-fill-color','text-transform','text-align','text-wrap','white-space','transform','position','top','left','width','display'].forEach(function(p){ var v=c.getPropertyValue(p); if(v) e.style.setProperty(p, v, 'important'); }); }); }
+  /* ⚑ v204 (Tom, C-284 §2 : « “Le reste s'explore à ton rythme !” a perdu son PromiLate bleu vif ») — LA CAUSE : à sa fin, un tracé rend aux éléments le style en ligne
+     qu'ils portaient à son départ (TraceLettres) ; les styles figés pendant qu'il tournait étaient effacés, et la phrase, sortie de `#guidePhrase`, retombait sur la police
+     du guide (Atkinson). Les styles sont relevés UNE fois, sous `#guidePhrase`, et reposés à chaque fois qu'il le faut (avant le détracé, et après la fin du tracé). */
+  var PROPS_FIGE=['font-family','font-size','font-weight','font-style','line-height','letter-spacing','color','-webkit-text-fill-color','text-transform','text-align','text-wrap','white-space','transform','position','top','left','width','display'];
+  function releveStyles(el){ return [el].concat([].slice.call(el.querySelectorAll('*'))).map(function(e){ var c=getComputedStyle(e), v={}; PROPS_FIGE.forEach(function(p){ var x=c.getPropertyValue(p); if(x) v[p]=x; }); return [e, v]; }); }
+  /* …et la passe des polices (`lot-POLICES`) n'en est plus propriétaire : un mot qu'elle avait « reporté » (`data-pol`) gardait son style d'avant (`data-pol-av`, vide) ;
+     à son passage suivant elle le rendait — elle effaçait le PromiLate figé, et la phrase sortie du guide retombait en Atkinson (deux propriétaires, §7). Les styles
+     figés SONT la face finale : ses marques sont retirées. */
+  function reposeStyles(R){ (R||[]).forEach(function(x){ var e=x[0]; if(!e.isConnected) return; Object.keys(x[1]).forEach(function(p){ e.style.setProperty(p, x[1][p], 'important'); }); e.removeAttribute('data-pol'); e.removeAttribute('data-pol-av'); }); }
+  function figeStyles(el){ var R=releveStyles(el); reposeStyles(R); return R; }
   /* ⚑ v203 clôture (Tom, C-284 : « les phrases du guide se superposent quand on touche vite ») — UNE SEULE PHRASE DU GUIDE À LA FOIS, ET RIEN N'EST COUPÉ.
      ① la phrase qui part n'est plus coupée au milieu de son tracé (`stop`, une apparition d'un coup puis le détracé) : son tracé finit plus vite (`accelere`, la même
         courbe), puis elle se détrace ; ② la phrase suivante attend que l'ancienne soit partie (`posePhrase`) ; ③ un toucher pendant une transition l'accélère et garde
         UNE avance pour après (`enTransition`, le clic du guide) : plusieurs touchers rapides n'avancent que d'une étape. */
   function partPhrase(sec){ var av=$('guidePhrase'), tc=traceCtl; traceCtl=null; if(!av){ return; }
     var TLr=window.TraceLettres; if(sec || !TLr || reduit() || !av.getClientRects().length){ try{ if(tc && tc.stop) tc.stop(); }catch(_){ } av.remove(); return; }
-    try{ figeStyles(av); }catch(_){ } av.removeAttribute('id'); av.classList.add('gd-part');   /* ses styles figés AVANT de quitter `#guidePhrase` (les règles du guide le visent) */
+    if(tc && tc.fini){ try{ if(tc.stop) tc.stop(); }catch(_){ } }   /* ⚑ v204 (C-284 §2) : un tracé FINI se referme comme en f56219a (`stop`, qui rend la phrase à ses styles) avant qu'on fige ses styles */
+    var FIG=null; try{ FIG=figeStyles(av); }catch(_){ } av.removeAttribute('id'); av.classList.add('gd-part');   /* ses styles figés AVANT de quitter `#guidePhrase` (les règles du guide le visent) */
     var P={}; P.fin=new Promise(function(r){ P.r=r; }); PARTS.push(P);
     var fait=false, f=function(){ if(fait) return; fait=true; if(av.parentNode) av.remove(); PARTS=PARTS.filter(function(x){ return x!==P; }); P.r(); };
-    var lance=function(){ if(fait) return; try{ P.ctl=TLr.trace(av, null, {inverse:true, depart:'h', surFin:f}); if(P.acc && P.ctl && P.ctl.accelere) P.ctl.accelere(P.acc); }catch(_){ f(); } setTimeout(f, 3500); };
+    var lance=function(){ if(fait) return; try{ reposeStyles(FIG); }catch(_){ } try{ P.ctl=TLr.trace(av, null, {inverse:true, depart:'h', surFin:f}); if(P.acc && P.ctl && P.ctl.accelere) P.ctl.accelere(P.acc); }catch(_){ f(); } setTimeout(f, 3500); };
     if(tc && !tc.fini && tc.fin){ P.ctl=tc; try{ if(tc.accelere) tc.accelere(3); }catch(_){ } tc.fin.then(function(){ P.ctl=null; lance(); }, lance); setTimeout(function(){ if(!P.ctl || P.ctl===tc) lance(); }, 3000); }   /* son tracé finit vite, puis le détracé */
-    else lance(); }
+    else requestAnimationFrame(function(){ requestAnimationFrame(function(){ lance(); }); }); }   /* v204 (C-284 §4) : le détracé part à l'image qui suit le toucher (le toucher, la fermeture de la zone et la mesure du tracé ne tombent plus dans la même image) */
   function enTransition(){ return !!((traceCtl && !traceCtl.fini) || PARTS.length || POSE_ATT); }
   function accelere(){ try{ if(traceCtl && traceCtl.accelere) traceCtl.accelere(3); }catch(_){ } PARTS.forEach(function(P){ P.acc=2; try{ if(P.ctl && P.ctl.accelere) P.ctl.accelere(P.ctl===traceCtl?3:2); }catch(_){ } }); }
   function quandLibre(fn){ var id=jeu, t0=performance.now(); (function f(){ if(id!==jeu || !$('guide')) return; if(enTransition() && performance.now()-t0<4000){ requestAnimationFrame(f); return; } fn(); })(); }
@@ -42486,12 +42498,13 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     try{ g=eng(document.createElement('div'),'guide'); g.id='guide'; g.style.visibility='hidden'; g.style.pointerEvents='none'; dev.appendChild(g); p=batiPhrase(g, 'studio');
       window.TraceLettres.trace(p, null, {preparer:true, immediat:true, retire:function(){ if(p&&p.parentNode) p.parentNode.removeChild(p); }}); }catch(_){ }
     if(g && g.parentNode) g.parentNode.removeChild(g); }
+  var PREPAREES={};   /* v204 : les phrases dont les lettres sont déjà préparées (la carte d'une lettre se garde) */
   function prepareSuite(){ var L=['plus','partage','reste'];
     (function un(i){ var g=$('guide'); if(i>=L.length || !g || !window.TraceLettres || reduit()) return; var p=null;   /* le conteneur du guide est rebâti à chaque étape : on prend celui du moment */
       try{ p=batiPhrase(g, L[i]); /* même id que la vraie (les règles du guide le visent) : il ne vit que le temps de la mesure, dans cette tâche */
         var c=window.TraceLettres.trace(p, null, {preparer:true, immediat:true, retire:function(){ if(p&&p.parentNode) p.parentNode.removeChild(p); }});
         if(p&&p.parentNode) p.parentNode.removeChild(p);
-        c.fin.then(function(){ setTimeout(function(){ un(i+1); }, 120); }); }
+        var q=L[i]; c.fin.then(function(){ PREPAREES[q]=1; setTimeout(function(){ un(i+1); }, 120); }); }
       catch(_){ if(p&&p.parentNode) p.parentNode.removeChild(p); } })(0); }
   /* ⚑ v148 (Tom, 16 oct. 2026, C-146) — « Tant que le Studio n'a jamais été ouvert, toucher ailleurs montre la phrase de rappel — choisir son monde — et
      SEULEMENT elle, autant de fois qu'on touche ailleurs. Jamais la phrase du + avant le Studio. » Le rappel : la phrase du Studio (les mots de Tom, tels
@@ -42526,6 +42539,15 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
      flèche est enregistrée dans la scène, qui ne la peint pas tant que la zone nette n'a pas commencé à s'ouvrir (`net` = 0 : « vide »). L'image d'ouverture
      n'a plus qu'à rendre la phrase au document et à lancer son tracé. Le rendu est le même : la même fonction bâtit la phrase, la même dessine la flèche. */
   var PREH=null;
+  /* ⚑ v204 (C-284 §4 : « aucune image au-dessus de 33 ms ») — la préparation de l'étape se fait sur deux images : la phrase (bâtie, ses lettres préparées), puis la flèche */
+  var PREP1=null;
+  function preHabille1(g, quoi){ PREP1=null; try{ var c=cible(quoi); if(!c || !SC || !PRE || PRE.quoi!==quoi || PRE.sc!==SC || SC.ent!==PRE.ent) return;
+      var p=batiPhrase(g, quoi);
+      try{ if(TRACE && window.TraceLettres && !reduit() && !PREPAREES[quoi]) window.TraceLettres.trace(p, null, {preparer:true, immediat:true, retire:function(){ if(p.parentNode) p.parentNode.removeChild(p); }}); }catch(_){ }
+      var py=p?(parseFloat(p.style.top)||0)+(p.offsetHeight||80)/2:252; if(p.parentNode) p.parentNode.removeChild(p); PREP1={quoi:quoi, p:p, c:c, py:py}; }catch(_){ PREP1=null; var q=$('guidePhrase'); if(q) q.remove(); } }
+  function preHabille2(g, quoi){ var P1=PREP1; PREP1=null; if(!P1 || P1.quoi!==quoi || !SC || !PRE || PRE.sc!==SC || SC.ent!==PRE.ent){ preHabille(g, quoi); return; }
+    PREH=null; try{ var p=P1.p; g.appendChild(p); fleche(g, quoi, P1.c, PRE.ent); if(p.parentNode) p.parentNode.removeChild(p);
+      PREH={quoi:quoi, sc:SC, ent:PRE.ent, fl:SC.fl, p:p, clair:dev.classList.contains('light')}; }catch(_){ PREH=null; var q=$('guidePhrase'); if(q) q.remove(); } }
   function preHabille(g, quoi){ PREH=null; try{ var c=cible(quoi); if(!c || !SC || !PRE || PRE.quoi!==quoi || PRE.sc!==SC || SC.ent!==PRE.ent) return;
       var p=batiPhrase(g, quoi); fleche(g, quoi, c, PRE.ent);
       /* ⚑ v175 (Tom, C-203) — « la phrase du Studio arrive trop tard ; elle doit paraître en même temps que sa flèche, comme celles du + et de Partager ». LA CAUSE, mesurée : les lettres de ces deux
@@ -42742,7 +42764,9 @@ window.TEXTES_ENGAGEMENT.tenir = { promi:'Parole tenue\u00a0!',    /* les mots d
     partPhrase(); var bt=$('guideCible'); if(bt) bt.remove(); trou=null; var id=jeu;
     requestAnimationFrame(function(){ requestAnimationFrame(function(){ if(id===jeu) majFlou(true); }); });   /* la Toile a pu changer (une parole plantée) : le fond suit, comme au retour du Studio */
     joue(FERME_R, uN, 0, net).then(function(ok){ if(!ok || id!==jeu || !SC) return; SC.sansCible(); SC.peint();
-      requestAnimationFrame(function(){ if(id!==jeu || !$('guide') || !SC) return; preCible(quoi); requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; try{ preHabille($('guide'), quoi); }catch(_){ } requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; etape(quoi, false, OUVRE_R); }); }); }); });   /* v203 clôture (C-284) : l'entourage, puis la phrase et la flèche, puis l'étape — trois images, le travail réparti (l'étape n'a plus rien à calculer) */
+      requestAnimationFrame(function(){ if(id!==jeu || !$('guide') || !SC) return; PREP1=null; preCible(quoi); if(PREPAREES[quoi]){ try{ preHabille1($('guide'), quoi); }catch(_){ } }   /* v204 : une phrase déjà préparée ne coûte presque rien — elle se bâtit avec l'entourage (une image de moins : la clôture ne prend pas de retard sur f56219a) */
+        var fin=function(){ requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; try{ preHabille2($('guide'), quoi); }catch(_){ } requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; etape(quoi, false, OUVRE_R); }); }); };
+        if(PREP1) fin(); else requestAnimationFrame(function(){ if(id!==jeu || !$('guide')) return; try{ preHabille1($('guide'), quoi); }catch(_){ } fin(); }); }); });   /* v203 clôture (C-284) : l'entourage et la phrase, puis la flèche, puis l'étape — le travail réparti (l'étape n'a plus rien à calculer) */
     return true; }
   /* ⚑ v169b (Tom, C-203 §1) — « la phrase de clôture et le flou qui l'annonce arrivent avec une latence inutile ». LA CAUSE, mesurée (v169, WebKit) : au
      retour sur l'accueil (a : la page + refermée ; b : le menu refermé par un toucher ailleurs), la veille (une minuterie de 60 ms) attendait que l'eau
@@ -45901,28 +45925,70 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var cv=ctl && ctl.canevas; if(cv){ cv.classList.add('v200-fl'); ['left:0','top:0','width:100%','height:100%','border-radius:'+rad].forEach(function(d){ var i=d.indexOf(':'); cv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); }); }
     else { setTimeout(function(){ if(!finP){ finP=true; termine(); } }, PREM); }
     /* ⚑ v203 (Tom, C-279) : le détracé de l'exemple a la cadence de tous les tracés (40 car/s, celle d'Atkinson) — il était accéléré pour tenir dans le remplissage */
-    /* ⚑ v203 clôture (Tom, C-282 : « la phrase tapée se superpose à la fin du détracé de l'exemple ») — LE DÉTRACÉ DE LA PREMIÈRE LETTRE : ① deux fois plus court que le
-       détracé standard, la même courbe (`vitesse:2`, C-279) ; ② la zone où s'écrit ce qu'on tape (le texte tapé et son curseur) est libérée EN PREMIER : la copie vit
-       dans un conteneur dont la découpe retire cette zone dès la première image, et la suit à chaque image (chaque lettre tapée l'élargit) — le reste se détrace
-       ensuite ; ③ la fin s'éteint en douceur (`amorti`). À aucune image une lettre tapée ne recouvre une lettre de l'exemple. Le même code pour la page + et
-       l'onboarding (`place`). */
-    var wr=document.createElement('span'); wr.className='v203-exw'; wr.setAttribute('aria-hidden','true');
-    ['position:absolute','left:0px','top:0px','width:0px','height:0px','overflow:visible','pointer-events:none','z-index:3','margin:0','padding:0','border:0'].forEach(function(d){ var i=d.indexOf(':'); wr.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
-    var G0=gh.getBoundingClientRect(); gh.parentNode.insertBefore(wr, gh); wr.appendChild(gh); var G1=gh.getBoundingClientRect();
+    /* ⚑ v204 (Tom, C-282 refait : « dès la première lettre, l'exemple s'efface tout entier, vite : on croit qu'il disparaît d'un coup ») — LE DÉTRACÉ DE L'EXEMPLE
+       GARDE SA DURÉE ET SON SENS STANDARD (Atkinson, de la fin vers le début, comme en f56219a). Seules les lettres que le texte tapé, le curseur et la lettre
+       suivante vont recouvrir partent plus vite : chacune passe, à l'image où la frappe l'atteint, sur sa propre petite copie posée exactement à sa place, qui
+       se détrace par le même module en ≈ 150 ms (`amorti`) ; la grande copie ne la montre plus dès cette image-là (elle était entière : rien ne saute). La boîte
+       de chaque lettre tapée est retirée des deux copies : une lettre tapée ne recouvre jamais l'exemple ; ce qui dépasse autour se détrace en 150 ms. Le même
+       code pour la page + (titre, nom d'un Cercle) et l'onboarding (prénom, parole) : `_douceur.place`. */
+    var VITE=150, I_STD=1000/40, D_STD=85;
+    function couche(){ var w=document.createElement('span'); w.setAttribute('aria-hidden','true');
+      ['position:absolute','left:0px','top:0px','width:0px','height:0px','overflow:visible','pointer-events:none','z-index:3','margin:0','padding:0','border:0'].forEach(function(d){ var i=d.indexOf(':'); w.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); }); return w; }
+    var wr=couche(); wr.className='v203-exw'; var wv=couche(); wv.className='v203-exw v204-vite';
+    var G0=gh.getBoundingClientRect(); gh.parentNode.insertBefore(wr, gh); wr.appendChild(gh); wr.parentNode.insertBefore(wv, wr.nextSibling); var G1=gh.getBoundingClientRect();
     gh.style.setProperty('left', ((parseFloat(gh.style.left)||0)+(G0.left-G1.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((parseFloat(gh.style.top)||0)+(G0.top-G1.top)/sc)+'px', 'important');
-    /* la zone retirée : le CONTENU de la place (le texte tapé et son curseur, ligne par ligne), lu à chaque image et dans la tâche même de chaque frappe — y compris
-       après la fin de la transition de la place, tant que la copie se détrace */
-    function masque(){ try{ if(!wr.isConnected) return; if(!el.isConnected){ wr.style.removeProperty('clip-path'); wr.style.removeProperty('-webkit-clip-path'); return; }
-        var rg=document.createRange(); rg.selectNodeContents(el); var Q=[].filter.call(rg.getClientRects(), function(q){ return q.width>0.5 && q.height>0.5; });
-        var W=wr.getBoundingClientRect(), k=sc||1, pth="path(evenodd, 'M -9999 -9999 H 9999 V 9999 H -9999 Z";
-        Q.forEach(function(T){ var x0=(T.left-W.left)/k-2, y0=(T.top-W.top)/k-4, x1=(T.right-W.left)/k+4, y1=(T.bottom-W.top)/k+4; pth+=" M "+x0.toFixed(1)+" "+y0.toFixed(1)+" H "+x1.toFixed(1)+" V "+y1.toFixed(1)+" H "+x0.toFixed(1)+" Z"; });
-        pth+="')"; wr.style.setProperty('clip-path', pth, 'important'); wr.style.setProperty('-webkit-clip-path', pth, 'important'); }catch(_){ } }
+    /* les lettres de la copie : leur boîte à l'écran, une fois (la copie ne bouge pas) */
+    var CH=[]; (function(){ var tw=document.createTreeWalker(gh, NodeFilter.SHOW_TEXT), n, rg=document.createRange(); while((n=tw.nextNode())){ var t=n.nodeValue||'';
+        for(var q=0;q<t.length;q++){ if(/\s/.test(t[q])) continue; rg.setStart(n,q); rg.setEnd(n,q+1); var r=rg.getBoundingClientRect(); if(!(r.width>0.3)) continue; CH.push({n:n, i:q, c:t[q], r:{l:r.left, t:r.top, r:r.right, b:r.bottom}, part:false}); } } })();
+    function relit(){ var rg=document.createRange(); CH.forEach(function(x){ try{ rg.setStart(x.n, x.i); rg.setEnd(x.n, x.i+1); var r=rg.getBoundingClientRect(); if(r.width>0.3) x.r={l:r.left, t:r.top, r:r.right, b:r.bottom}; }catch(_){ } }); }   /* leurs boîtes VUES, relues à chaque passage */
+    var N=CH.length, t0=performance.now(), E0=el.getBoundingClientRect(), DX=0, DY=0;
+    function ech(){ try{ var r=gh.getBoundingClientRect(); return (gh.offsetWidth ? r.width/gh.offsetWidth : sc) || sc || 1; }catch(_){ return sc||1; } }   /* l'échelle VUE de la copie (la phrase peut changer de taille par mise à l'échelle pendant le détracé) */
+    /* la place peut bouger pendant le détracé (une recomposition de la phrase) : les deux copies la suivent, au même décalage (l'exemple est celui de CETTE place) */
+    function suitPlace(){ var E=el.getBoundingClientRect(), k=ech(), dx=E.left-E0.left, dy=E.top-E0.top; if(Math.abs(dx-DX)<0.05 && Math.abs(dy-DY)<0.05) return; DX=dx; DY=dy;
+      [wr, wv].forEach(function(w){ w.style.setProperty('translate', (dx/k)+'px '+(dy/k)+'px', 'important'); }); }
+    function boites(){ var rg=document.createRange(); rg.selectNodeContents(el); return [].filter.call(rg.getClientRects(), function(q){ return q.width>0.5 && q.height>0.5; }); }
+    function lettresTapees(){ var L=[], tw=document.createTreeWalker(el, NodeFilter.SHOW_TEXT), n, rg=document.createRange(); while((n=tw.nextNode())){ var t=n.nodeValue||'';
+        for(var q=0;q<t.length;q++){ if(/\s/.test(t[q])) continue; rg.setStart(n,q); rg.setEnd(n,q+1); var r=rg.getBoundingClientRect(); if(r.width>0.3) L.push(r); } } return L; }
+    function trou(W, k, R, ex){ var s=''; R.forEach(function(T){ var x0=(T.left-W.left)/k-ex, y0=(T.top-W.top)/k-ex, x1=(T.right-W.left)/k+ex, y1=(T.bottom-W.top)/k+ex; s+=" M "+x0.toFixed(1)+" "+y0.toFixed(1)+" H "+x1.toFixed(1)+" V "+y1.toFixed(1)+" H "+x0.toFixed(1)+" Z"; }); return s; }
+    function decoupe(w, R){ if(!w.isConnected) return; var W=w.getBoundingClientRect(), k=ech(); var pth="path(evenodd, 'M -9999 -9999 H 9999 V 9999 H -9999 Z"+R.map(function(x){ return trou(W, k, [x[0]], x[1]); }).join('')+"')";
+      w.style.setProperty('clip-path', pth, 'important'); w.style.setProperty('-webkit-clip-path', pth, 'important'); }
+    var restants=0;
+    function part(L){ /* une suite de lettres voisines sur une même ligne : leur petite copie, à leur place exacte, détracée en ≈ 150 ms */
+      var a=L[0], z=L[L.length-1], pe=a.n.parentElement||gh, c=getComputedStyle(pe), sp=document.createElement('span'); sp.className='v204-l';
+      sp.textContent=L.map(function(x, i){ var d=L[i-1]; return (d && x.r.l-d.r.r>0.12*(x.r.b-x.r.t) ? ' ' : '')+x.c; }).join('');   /* l'espace entre deux mots gardé */
+      var W=wv.getBoundingClientRect(), k=ech();
+      ['position:absolute','margin:0','padding:0','border:0','background:transparent','box-shadow:none','pointer-events:none','white-space:pre','display:block','text-indent:0','line-height:normal','text-transform:none',
+       'font-family:'+c.fontFamily,'font-size:'+c.fontSize,'font-weight:'+c.fontWeight,'font-style:'+c.fontStyle,'letter-spacing:'+c.letterSpacing,'font-feature-settings:'+c.fontFeatureSettings,'font-kerning:'+c.fontKerning,
+       'color:'+c.color,'-webkit-text-fill-color:'+(c.webkitTextFillColor||c.color),'left:'+((a.r.l-W.left)/k)+'px','top:'+((a.r.t-W.top)/k)+'px']
+        .forEach(function(d){ var i=d.indexOf(':'); sp.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+      wv.appendChild(sp); restants++;
+      var R=sp.getBoundingClientRect(); sp.style.setProperty('left', ((a.r.l-W.left)/k+(a.r.l-R.left)/k)+'px', 'important'); sp.style.setProperty('top', ((a.r.t-W.top)/k+(a.r.t-R.top)/k)+'px', 'important');
+      var fin=false, f=function(){ if(fin) return; fin=true; if(sp.parentNode) sp.parentNode.removeChild(sp); restants--; };
+      var std=(L.length-1)*I_STD+D_STD, go=function(){ if(fin || !sp.isConnected) return; try{ TL().trace(sp, null, {inverse:true, depart:'h', vitesse:std/VITE, amorti:true, surPlace:L.length<=3, surFin:f}); }catch(_){ f(); } };
+      /* ses lettres sont celles de la grande copie, à la même place : préparées avec elle (la carte d'une lettre se garde) — elle part quand la grande est prête */
+      if(CTL && CTL.pret && !CTL.__pret){ CTL.pret.then(go, go); setTimeout(go, 400); } else go(); setTimeout(f, 1800); }
+    /* à chaque image et dans la tâche de chaque frappe : les lettres atteintes partent ; les deux découpes suivent */
+    function masque(){ try{ if(!wr.isConnected) return; if(!el.isConnected){ [wr, wv].forEach(function(w){ w.style.removeProperty('clip-path'); w.style.removeProperty('-webkit-clip-path'); }); return; }
+        suitPlace(); relit(); var T=lettresTapees(); [].forEach.call(el.querySelectorAll('.ph-caret'), function(c){ var r=c.getBoundingClientRect(); if(r.width>0.3) T.push(r); });   /* le texte tapé et son curseur (jamais le canevas du remplissage de la place) */
+        var zone=T.map(function(q){ return {l:q.left, t:q.top, r:q.right+(q.height*0.3), b:q.bottom}; });   /* …et la lettre suivante */
+        var el0=performance.now()-t0, neuves=[];
+        CH.forEach(function(x, idx){ if(x.part) return; var xr=x.r; var dans=zone.some(function(z){ var ov=Math.min(z.b, xr.b)-Math.max(z.t, xr.t); return ov>0.5*(xr.b-xr.t) && xr.l<z.r-0.5 && xr.r>z.l+0.5; }); if(!dans) return;
+          var debut=(N-1-idx)*I_STD; x.part=true; if(el0<debut) neuves.push(x); else x.vite=false; });   /* déjà atteinte par le détracé standard (sa fin) : elle continue avec lui */
+        var grp=[]; neuves.forEach(function(x){ var g=grp[grp.length-1], d=g && g[g.length-1]; if(d && Math.abs(d.r.t-x.r.t)<1 && x.r.l-d.r.r<x.r.b-x.r.t) g.push(x); else grp.push([x]); }); grp.forEach(part);
+        decoupe(wr, CH.filter(function(x){ return x.part && x.vite!==false; }).map(function(x){ return [{left:x.r.l, top:x.r.t, right:x.r.r, bottom:x.r.b}, 0.6]; }).concat(T.map(function(q){ return [q, 0.6]; })));
+        decoupe(wv, T.map(function(q){ return [q, 0.6]; })); }catch(_){ } }
     el.__v203masque=masque;
-    var ote=function(){ if(wr.parentNode) wr.parentNode.removeChild(wr); if(window.__ppToutApres && window._ppTout && !document.querySelector('#createSheet .v203-exw')){ window.__ppToutApres=0; try{ window._ppTout(); }catch(_){ } } };   /* la recomposition retenue pendant le détracé */
-    (function suit(){ if(!wr.isConnected) return; masque(); requestAnimationFrame(suit); })();
+    var CTL=null; try{ CTL=TL().trace(gh, null, {inverse:true, depart:'h', surFin:function(){ ote(); }}); if(CTL && CTL.pret) CTL.pret.then(function(){ CTL.__pret=1; }); }catch(_){ CTL=null; }
+    try{ masque(); }catch(_){ }
+    var oteA=false, ote=function(){ oteA=true; if(restants>0) return; try{ window.__apresContinu.delete(masque); }catch(_){ } [wr, wv].forEach(function(w){ if(w.parentNode) w.parentNode.removeChild(w); }); if(window.__ppToutApres && window._ppTout && !document.querySelector('#createSheet .v203-exw')){ window.__ppToutApres=0; try{ window._ppTout(); }catch(_){ } } };   /* la recomposition retenue pendant le détracé */
+    (function suit(){ if(!wr.isConnected) return; if(oteA && restants<=0){ ote(); return; } masque(); requestAnimationFrame(suit); })();
+    (window.__apresContinu=window.__apresContinu||new Set()).add(masque);   /* après les glissements de la phrase (lot-V203-CONTINU), dans la même image */
+    /* une recomposition faite après la relecture de l'image (un observateur de taille) : la découpe suit dans la même image, avant la peinture */
+    try{ var ro=new ResizeObserver(function(){ if(!wr.isConnected){ ro.disconnect(); return; } masque(); }); ro.observe(el); if(el.parentNode) ro.observe(el.parentNode); var ph0=el.closest('.ph-txt, #onbPh'); if(ph0) ro.observe(ph0); }catch(_){ }
+    try{ var mo=new MutationObserver(function(){ if(!wr.isConnected){ mo.disconnect(); return; } masque(); }); mo.observe(el, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:['class','style']}); }catch(_){ }   /* le curseur replacé dans une autre tâche que la frappe */
     window.__v203masque=masque;
-    try{ TL().trace(gh, null, {inverse:true, depart:'h', vitesse:2, amorti:true, surFin:ote}); }catch(_){ ote(); }
-    setTimeout(ote, 4000);
+    if(!CTL) ote();
+    setTimeout(function(){ restants=0; ote(); }, 6000);
     note({premiere:texte(html), ex:texte(ex)});
     function termine(){ var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA.delete(el); }catch(_){ }
       var cvv=el.querySelector(':scope > canvas.v200-fl'); if(cvv) cvv.remove();
@@ -46249,11 +46315,12 @@ input.v203-phx::-webkit-input-placeholder, textarea.v203-phx::-webkit-input-plac
     var K=(e.id==='csPinceau') ? [{transform:'translate('+dx+'px,'+dy+'px)'},{transform:'translate(0,0)'}] : [{translate:dx+'px '+dy+'px'},{translate:'0 0'}], O={duration:DUR, easing:EZ, id:'v203c'};
     e.animate(K, O); e.__v203c={t:performance.now(), d:[dx, dy]}; window.__animT=performance.now();
     var cv=e.nextElementSibling; if(cv && cv.tagName==='CANVAS' && cv.hasAttribute('data-trace')){ cv.getAnimations().forEach(function(a){ if(a.id==='v203c') a.cancel(); }); cv.animate(K, O); } }   /* le canevas d'un tracé en cours est le frère de son mot */
-  function image(){ requestAnimationFrame(image); verifie(); }
+  function apres(){ var L=window.__apresContinu; if(L && L.size) L.forEach(function(f){ try{ f(); }catch(_){ } }); }   /* v204 (C-282) : ce qui doit lire la place VUE après les glissements de cette image (la copie de l'exemple) */
+  function image(){ requestAnimationFrame(image); verifie(); apres(); }
   /* un rebâti fait dans une autre fonction d'image de la même image (la fin d'un tracé, une passe de composition) : vérifié dans sa tâche, avant la peinture — appelé par le
      rebâti de la phrase (lot-V203-LIAISONS), le rail replacé, le mot changé (lot-V200-DOUCEUR). (Un observateur de tout l'écran recalculait à chaque écriture de style : il
      n'est pas employé.) */
-  var prevu=false; window._v203Verifie=function(){ if(prevu) return; prevu=true; Promise.resolve().then(function(){ prevu=false; try{ verifie(); }catch(_){ } }); };
+  var prevu=false; window._v203Verifie=function(){ if(prevu) return; prevu=true; Promise.resolve().then(function(){ prevu=false; try{ verifie(); }catch(_){ } apres(); }); };
   function verifie(){ var c=cs(); if(!c){ PREV=null; return; }
     var v=c.classList.contains('show') && !c.classList.contains('acc-passe'); if(v && !vu) OUV=performance.now(); vu=v;
     var cls=(c.classList.contains('pp-ouvert')?'o':'')+(c.classList.contains('pp-choix')?'c':'')+(c.getAttribute('data-kind')||'');

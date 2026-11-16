@@ -16,7 +16,7 @@
 > *Pourquoi* : v159 a AGGRAVÉ la Toile sur l'iPhone de Tom (dès l'ouverture, les dalles écrasées et superposées). « Un lot qui casse ce qui marchait
 > n'est pas livré. »
 > **Un lot n'est « livré » que si les six conditions sont remplies. Sinon : écrire « NON LIVRÉ » et pourquoi, ne PAS commiter sur main, et demander.**
-> - **A1 · NON-RÉGRESSION.** Avant de commiter, servir la version précédente à côté (`git show <hash>:app.html > zz-vNNN.html`) et comparer, sur les
+> - **A1 · NON-RÉGRESSION.** ⚑ **v204 (Tom, C-285) : `redteam_aspect.py` fait partie de A1 — pour chaque phrase et chaque écran touchés par le lot, la capture au repos (fin d'animation) comparée au pixel à la version d'avant, sur la police, la couleur, la taille et la place, ET l'aspect pendant le détracé ; tout écart non demandé fait échouer A1 (il couvre aujourd'hui les phrases du guide et de l'onboarding ; un lot qui touche un autre écran l'y ajoute).** Avant de commiter, servir la version précédente à côté (`git show <hash>:app.html > zz-vNNN.html`) et comparer, sur les
 >   mêmes chemins, tout ce que le lot peut toucher. Tout ce qui était bon avant l'est encore, au pixel ou à la mesure. Une seule régression = non livré.
 > - **A2 · L'ÉTAT RÉEL DE TOM.** Le banc rejoue AUSSI l'état exporté de Tom (`?export=1` → `etats/tom-*.json`, `banc_tom.contexte_tom`), pas seulement
 >   des jeux de test. Un défaut que Tom voit et que le banc ne voit pas : le banc a tort.
@@ -251,6 +251,28 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v204 (16 nov. 2026) — C-282 REFAIT : LE DÉTRACÉ STANDARD, SEULES LES LETTRES SOUS LA FRAPPE PARTENT VITE ; « LE RESTE S'EXPLORE » ET LES PHRASES DU GUIDE GARDENT LEUR POLICE (C-284 §2) ; C-285 (redteam_aspect) ; LE DÉTRACÉ INCRÉMENTAL. (Décisions Tom : « Encore pire. » « Plus aucune régression. ») Ce bloc CORRIGE le bloc « v203 clôture définitive » qui suit (C-282 : la moitié du standard).
+> **Validé par Tom : C-283.**
+> **⚑ C-282 — MA LECTURE DU LOT D'AVANT ÉTAIT FAUSSE.** Tom voulait raccourcir SEULEMENT la fin du détracé (le début de l'exemple, qui gêne la frappe), pas tout le détracé. Aujourd'hui (`premiere`, lot-V200-DOUCEUR) : la
+> grande copie de l'exemple se détrace à la durée et dans le sens STANDARD (de la fin vers le début, comme en f56219a) ; chaque lettre que le texte tapé, le curseur (`.ph-caret`) et la lettre suivante
+> atteignent passe, à cette image-là, sur sa petite copie (`.v204-l`, dans `.v204-vite`), posée à sa place exacte, détracée par le même module en ≈ 150 ms (`vitesse`, `amorti`, `surPlace` pour une à trois
+> lettres) — la grande copie ne la montre plus ; la boîte de chaque lettre tapée est retirée des deux copies. Les copies suivent la place (`suitPlace`, l'échelle VUE `ech()`, les boîtes relues `relit()`),
+> leur découpe est relue après les glissements de la phrase (`window.__apresContinu`, lot-V203-CONTINU), dans un observateur de taille et de mutations ; pendant la saisie, la phrase ne se recompose pas tant
+> qu'une copie se détrace (`tout()`, `__ppToutApres`). Juge : **`redteam_premiere.py`** réécrit (A à F ; `--sonde` : la grande copie deux fois plus vite, C rougit ; original en sauvegarde).
+> **⚑ C-284 §2 — LA CAUSE : DEUX PROPRIÉTAIRES DU `font-family`.** La phrase qui part fige ses styles (sortie de `#guidePhrase`) ; la passe des polices (`lot-POLICES`, `_rendre`) avait « reporté » ses mots
+> PromiLate (`data-pol`, avec un style d'avant vide dans `data-pol-av`) : à son passage suivant elle rendait ce style vide — le PromiLate figé effacé, la phrase en Atkinson pendant son départ (« Toile »,
+> « partage-la » ; f56219a les gardait parce que le tracé y était coupé AVANT de figer). Et la fin d'un tracé rend le style en ligne de son départ. Aujourd'hui : `releveStyles` / `reposeStyles` — les styles
+> relevés une fois sous `#guidePhrase`, reposés avant le détracé, les marques de `lot-POLICES` retirées ; un tracé fini se referme (`stop`) avant qu'on fige. *La règle* : **un élément dont on fige les
+> styles en devient l'unique propriétaire — les marques d'une autre passe qui les réécrit sont retirées.**
+> **⚑ C-285 — `redteam_aspect.py`** (en tête de ce fichier, porte A1) : A au repos chaque morceau de texte (police, taille, graisse, couleurs, place ± 0,5 pt), B la phrase seule au pixel (tout le reste
+> transparent, ≤ 0,5 %), C pendant le détracé (l'aspect du repos gardé). Contre f56219a. Rouge sur 076966b (C, Partager), vert aujourd'hui ; `--sonde` rougit.
+> **⚑ §4 — LE DÉTRACÉ EST INCRÉMENTAL** (variantes/trace-lettres.js, `recule`) : le temps recule à chaque image d'un détracé et `rend` effaçait TOUT puis reposait chaque lettre (48 à 81 ms par image) ; seules
+> changent les lettres qui cessent d'être finies et la découpe du texte réel ; au départ, l'état « tout fini, le texte réel montre tout » est posé sans dessiner. Mêmes pixels, image par image, trois polices,
+> deux échelles (`scratchpad/v204/a1_recul.py`, 10/10 ; `TL.recul = false` : l'ancien chemin). Et : la préparation d'une phrase du guide déjà préparée n'est pas refaite ; la préparation de l'étape sur deux images (l'entourage et la phrase déjà préparée, puis la flèche : la clôture ne prend pas de retard sur f56219a, médiane 762 ms contre 758) ; le détracé de la phrase qui part deux images après le toucher ; un tour de préparation du module 4 ms (8) ; la passe de fond des polices une tranche par image ; la passe de lisibilité attend la fin
+> d'une animation de texte (la règle v201 ②). ⚠ **NON ATTEINT : `guide_rafale` D** — 2 à 6 images de 34 à 85 ms par rafale au banc (120 à 222 ms sur f56219a) ; le JavaScript d'une image est ≤ 15 ms, le reste est
+> le rendu de l'eau et des canevas du guide à 3× dans WebKit sans carte graphique (`?trace=0` : une image) — décision à Tom.
+> **C-283** : 10 passes de validation sur 10 sans écart (le premier pas part de la place vue).
 
 ### ⚑ v203 clôture définitive (16 nov. 2026) — LA PREMIÈRE LETTRE (C-282) ; LES PHRASES DU GUIDE EN RAFALE (C-284) ; LA VALIDATION QUI GLISSE (C-283). (Décisions Tom : « on clôture pour de bon après ; pas de régression ».)
 > **Validés par Tom (main f56219a) : C-282 pour l'effacement (l'exemple revient en se traçant), le §2 pour la recherche de l'Index.**

@@ -649,7 +649,7 @@
         if (mort) return;
         var d0 = racine.performance.now(), reste = 0, j, g;
         for (j = 0; j < G.length; j++) { g = G[j]; if (g.pret) continue;
-          if (!g.attente && racine.performance.now() - d0 < 8) { try { demande(g); } catch (e) { g.pret = true; } }
+          if (!g.attente && racine.performance.now() - d0 < 4) { try { demande(g); } catch (e) { g.pret = true; } }   /* v204 (C-284 §4) : 4 ms par tour (8 avant) — un tour ne remplit plus une image */
           if (!g.pret) reste++; }
         if (!reste) { TL.mesures.preroll.push(racine.performance.now() - p0); if (TL.mesures.preroll.length > 400) TL.mesures.preroll.splice(0, 200); fin(); return; }
         if (racine.performance.now() - p0 > (prep ? 4000 : (TL.attentePre || 600))) for (j = 0; j < G.length; j++) { g = G[j]; if (!g.pret && g.attente && g.surPlace) { signale('ouvrier-lent', { car: g.car, ms: Math.round(racine.performance.now() - p0) }); try { g.surPlace(); } catch (e) { g.pret = true; g.attente = false; } break; } }
@@ -837,7 +837,7 @@
       if (g.pret || g.attente) return;
       if (g.vect) { if (g.vr) { g.vr = false; restes(g); } else g.pret = true; return; }
       if (depuisCache(g)) return;
-      var w = o.manuel ? null : ouvrierPret();
+      var w = (o.manuel || o.surPlace) ? null : ouvrierPret();   /* v204 : `surPlace` — un texte d'une à trois lettres calcule ses cartes ici (il n'attend pas la file de l'ouvrier) */
       if (!w) { prepare(g); return; }
       var d0 = racine.performance.now(), R = rendGlyphe(g), id = ++TL._nId; g.attente = true;
       /* v170c : si l'ouvrier tarde, la plume fait le MÊME calcul sur place (`surPlace`) — sa réponse, arrivée ensuite, est ignorée */
@@ -1134,9 +1134,51 @@
         [[-M, -M], [M, -M], [M, Y0], [X, Y0], [X, Y1], [-M, Y1]]);
       [ctx, fctx].forEach(function (g2) { if (l.y0 > 0) g2.clearRect(0, 0, cv.width, l.y0); if (xc > 0) g2.clearRect(0, l.y0, xc, l.y1 - l.y0); });
     }
+    /* ⚑ v204 (Tom, C-284 §4 : « le détracé des phrases repeint toute la phrase à chaque image — 48 à 81 ms au banc ») — LE DÉTRACÉ EST INCRÉMENTAL. Le temps
+       recule à chaque image d'un détracé ; `rend` effaçait alors TOUT (canevas, lettres finies, découpe du texte réel) et reposait chaque lettre. Désormais, à
+       chaque image, seules changent : les lettres qui cessent d'être finies (leur boîte effacée, les voisines finies qui la touchent reposées), et la découpe du
+       texte réel, qui recule jusqu'à la coupe franche juste avant elles (les lettres qu'il rend reposées sur le canevas). Les mêmes pixels (le canevas tient les
+       lettres finies que le texte réel ne montre pas, exactement comme après la remise à zéro) ; `TL.recul = false` rend l'ancien chemin, pour comparer. */
+    function finLettre(g) { if (g.vect) { if (g.vr) { g.vr = false; restes(g, true); } g.sv = g.vs.tot; return; }
+      fctx.setTransform(s * g.M[0], s * g.M[1], s * g.M[2], s * g.M[3], g.gx, g.gy); fctx.font = g.spec; fctx.fillStyle = g.coul; fctx.textBaseline = 'alphabetic'; fctx.fillText(g.car, 0, 0); fctx.setTransform(1, 0, 0, 1, 0, 0); }
+    function recule(t) {
+      var n0 = ig, j, q;
+      while (ig > 0 && !(t >= G[ig - 1].t0 + G[ig - 1].d)) ig--;
+      if (ig === n0) return;
+      /* 1 · le texte réel ne montre plus que des lettres finies : sa découpe recule jusqu'à la coupe franche avant la première lettre qui n'est plus finie */
+      if (jd > ig) {
+        var oldJd = jd, m = -1, coupe = 0, dmax;
+        for (j = ig - 1; j >= 0; j--) { var nx = G[j + 1];
+          if (!nx || nx.ligne !== G[j].ligne) { m = j; coupe = -1; break; }
+          dmax = -Infinity; for (q = j; q >= 0 && G[q].ligne === G[j].ligne; q--) dmax = Math.max(dmax, G[q].e1);
+          var c = Math.floor(nx.e0) - 2; if (c >= Math.ceil(dmax) + 2) { m = j; coupe = c; break; } }
+        jd = m + 1;
+        var ux0 = Infinity, uy0 = Infinity, ux1 = -Infinity, uy1 = -Infinity;
+        for (j = jd; j < Math.min(oldJd, ig); j++) { var gp = G[j]; finLettre(gp); if (!gp.vect) { ux0 = Math.min(ux0, gp.X0); uy0 = Math.min(uy0, gp.Y0); ux1 = Math.max(ux1, gp.X0 + gp.w); uy1 = Math.max(uy1, gp.Y0 + gp.h); } }
+        if (ux1 > ux0) { ux0 = Math.max(0, ux0); uy0 = Math.max(0, uy0); ux1 = Math.min(cv.width, ux1); uy1 = Math.min(cv.height, uy1); ctx.clearRect(ux0, uy0, ux1 - ux0, uy1 - uy0); ctx.drawImage(fin, ux0, uy0, ux1 - ux0, uy1 - uy0, ux0, uy0, ux1 - ux0, uy1 - uy0); }
+        if (jd <= 0) decoupe(VIDE);
+        else { var l = L[G[jd].ligne], xc = coupe < 0 ? -1 : coupe, M = 4000;
+          var lx = function (v) { return ((cr.left + v / dpr) - er.left) / kech; }, ly = function (v) { return ((cr.top + v / dpr) - er.top) / kech; };
+          var X = xc < 0 ? -M : lx(xc), Y0 = G[jd].ligne === 0 ? -M : ly(l.y0), Y1 = G[jd].ligne === L.length - 1 ? M : ly(l.y1);
+          decoupe('polygon(' + (-M) + 'px ' + (-M) + 'px,' + M + 'px ' + (-M) + 'px,' + M + 'px ' + Y0 + 'px,' + X + 'px ' + Y0 + 'px,' + X + 'px ' + Y1 + 'px,' + (-M) + 'px ' + Y1 + 'px)',
+            [[-M, -M], [M, -M], [M, Y0], [X, Y0], [X, Y1], [-M, Y1]]); }
+      }
+      /* 2 · les lettres qui ne sont plus finies quittent le canevas ; les voisines finies qui touchent leur boîte sont reposées */
+      var vx0 = Infinity, vy0 = Infinity, vx1 = -Infinity, vy1 = -Infinity;
+      for (j = ig; j < n0; j++) { var gu = G[j]; if (gu.vect) { gu.sv = 0; continue; } vx0 = Math.min(vx0, gu.X0); vy0 = Math.min(vy0, gu.Y0); vx1 = Math.max(vx1, gu.X0 + gu.w); vy1 = Math.max(vy1, gu.Y0 + gu.h); gu.pret = false; gu.im = gu.A = gu.T = gu.T1 = null; }
+      if (vx1 > vx0) { vx0 = Math.max(0, vx0); vy0 = Math.max(0, vy0); vx1 = Math.min(cv.width, vx1); vy1 = Math.min(cv.height, vy1);
+        fctx.clearRect(vx0, vy0, vx1 - vx0, vy1 - vy0);
+        fctx.save(); fctx.beginPath(); fctx.rect(vx0, vy0, vx1 - vx0, vy1 - vy0); fctx.clip();
+        for (j = jd; j < ig; j++) { var gv = G[j]; if (gv.vect) continue; if (gv.X0 < vx1 && gv.X0 + gv.w > vx0 && gv.Y0 < vy1 && gv.Y0 + gv.h > vy0) finLettre(gv); }
+        fctx.restore();
+        ctx.clearRect(vx0, vy0, vx1 - vx0, vy1 - vy0); ctx.drawImage(fin, vx0, vy0, vx1 - vx0, vy1 - vy0, vx0, vy0, vx1 - vx0, vy1 - vy0); }
+    }
     function rend(t) {
       if (!cv) return;
-      if (t < tPrec) { ctx.clearRect(0, 0, cv.width, cv.height); fctx.clearRect(0, 0, fin.width, fin.height); G.forEach(function (g) { if (g.vect) g.sv = 0; else g.pret = false; }); ig = 0; jd = 0; decoupe(VIDE); }
+      /* v204 : au départ d'un détracé, tout est fini et le texte réel montre tout — l'état est posé sans rien dessiner (il dessinait chaque lettre sur le canevas, puis le
+         texte réel les reprenait toutes : la première image coûtait 56 ms au banc) ; les lettres ne passent sur le canevas qu'au moment où elles commencent à partir */
+      if (inv && !ctl.__inv0 && TL.recul !== false) { ctl.__inv0 = 1; ig = G.length; jd = G.length; G.forEach(function (g) { if (g.vect) g.sv = g.vs.tot; }); decoupe('none'); tPrec = total + 1; }
+      if (t < tPrec) { if (inv && TL.recul !== false) recule(t); else { ctx.clearRect(0, 0, cv.width, cv.height); fctx.clearRect(0, 0, fin.width, fin.height); G.forEach(function (g) { if (g.vect) g.sv = 0; else g.pret = false; }); ig = 0; jd = 0; decoupe(VIDE); } }
       tPrec = t;
       var avant = ig;
       while (ig < G.length && t >= G[ig].t0 + G[ig].d) { pose(G[ig]); ig++; }
@@ -1157,7 +1199,7 @@
     function image(maintenant) {
       if (mort) return; var d0 = racine.performance.now();
       /* le temps de la plume : il avance du temps de l'image, SAUF si la lettre où il arrive n'a pas encore sa carte — la plume marque un temps */
-      var dt = tAbs ? Math.min(o.amorti ? 20 : 100, maintenant - tAbs) : (o.arme ? 16.7 : 0); dt *= (ctl.__acc || 1);   /* v203 clôture (C-284) : `ctl.accelere(k)` — la plume va k fois plus vite à partir de maintenant : la même courbe, une durée réduite */   /* v203 clôture (C-282) : un détracé amorti ne saute jamais une part de sa fin sous une image longue (son pas est borné : la fin s'étire) */ if (tAbs) { var di = maintenant - tAbs; if (di > 20) nLong++; if (di > imMax) imMax = di; } tAbs = maintenant;
+      var dt = tAbs ? Math.min(o.amorti ? 60 : 100, maintenant - tAbs) : (o.arme ? 16.7 : 0); dt *= (ctl.__acc || 1);   /* v203 clôture (C-284) : `ctl.accelere(k)` — la plume va k fois plus vite à partir de maintenant : la même courbe, une durée réduite */   /* v203 clôture (C-282) : un détracé amorti ne saute jamais une part de sa fin sous une image longue (son pas est borné : la fin s'étire) */ if (tAbs) { var di = maintenant - tAbs; if (di > 20) nLong++; if (di > imMax) imMax = di; } tAbs = maintenant;
       var t = tPlume + dt;
       for (var jx = ig; jx < G.length && G[jx].t0 < t; jx++) if (!G[jx].pret) { demande(G[jx]); var gx = G[jx];
         /* ⚑ v170c (C-206) — LA PLUME N'ATTEND JAMAIS L'OUVRIER PLUS DE 150 ms : au-delà, la lettre se calcule ici, tout de suite. En v170b elle l'attendait sans
