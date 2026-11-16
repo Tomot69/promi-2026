@@ -190,14 +190,16 @@ def joue(pg, nom, noms, plante=None):
 
 
 def plante_au_trait(pg, nom, titre, noms, chiche):
-    """planter par le geste (70 pt, la règle en demande 60) : UNE parole, à toutes les personnes"""
+    """planter par le geste : UNE parole, à toutes les personnes.
+    ⚑ v203 clôture : depuis v180a (C-237) planter un Promi ou un Chiche, c'est tracer la PREMIÈRE MOITIÉ du trait (195 pt) — le juge traçait 80 pt (la règle de 60
+    de v143) : rien n'était planté, `promises[…]` était vide (« p.id »). Il trace 40 → 200 pt, comme redteam_part (original : sauvegardes/redteam_ajout_personne-avant-cloture.py)."""
     pg.evaluate("a=>{ document.getElementById('fTitle').value=a; try{ if(window._phrase){ _phrase.titre=a; } }catch(e){} window._csEnLair=true; window._csDueISO=null; }", titre); pg.wait_for_timeout(300)
     n0 = pg.evaluate("()=>promises.length")
     z = pg.evaluate("()=>{ const c=document.getElementById('planterZone'); if(!c) return null; const r=c.getBoundingClientRect(), d=document.getElementById('device').getBoundingClientRect(), k=d.width/390; return r.width>20?[(r.left-d.left)/k,(r.top-d.top)/k,r.width/k,r.height/k]:null }")
     if not z:
         juge('%s : plantée au trait' % nom, False, 'pas de zone de trait'); return None
-    y = z[1] + z[3] * 0.45; B.glisse(pg, [[40 + 80 * i / 10.0, y] for i in range(11)], pas=60); pg.wait_for_timeout(3400)
-    r = pg.evaluate("()=>{ var p=promises[promises.length-1]; return {n:promises.length, id:p.id, who:p.who, titre:p.title, chiche:!!p.chiche}; }")
+    y = z[1] + z[3] * 0.45; B.glisse(pg, [[40 + 160 * i / 10.0, y] for i in range(11)], pas=60); pg.wait_for_timeout(3400)
+    r = pg.evaluate("()=>{ var p=promises[promises.length-1]; return p ? {n:promises.length, id:p.id, who:p.who, titre:p.title, chiche:!!p.chiche} : {n:promises.length, id:null, who:'', titre:'', chiche:false}; }")
     qui = [x.strip() for x in str(r['who']).split(',')]
     juge('%s : plantée au trait — UNE parole, à %s' % (nom, ', '.join(noms)), r['n'] == n0 + 1 and qui == noms and r['chiche'] == chiche, '%d → %d paroles · « %s » à « %s » · chiche %s' % (n0, r['n'], r['titre'], r['who'], r['chiche']))
     pg.evaluate("()=>{ try{ if(window._peaufSortie) window._peaufSortie(); closeAll(); }catch(e){} }"); pg.wait_for_timeout(600)

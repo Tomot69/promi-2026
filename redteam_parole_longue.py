@@ -9,7 +9,7 @@ reste ; rien sur le trait ; le → garde sa place libre ; un mot plus long que l
 
 Banc comme Tom (WebKit, ×3, doigt, le clavier d'iOS simulé : visualViewport descend de 336 pt au focus), stockage vierge, le vrai parcours (prénom,
 puis la phrase touchée), saisie CARACTÈRE PAR CARACTÈRE ; échelles 1 (430 × 932) et 0,79 (330 × 714) ; clair et sombre. Textes : 1 à 6 lignes À 35 px, un mot de 40
-lettres, et (v160c, Q576 : le champ n'a plus de limite) deux paroles de 260 et 500 caractères — à 22 px, au-delà de la place, la COUPE PROPRE :
+lettres, et (v160c, Q576 : le champ n'a plus de limite) deux paroles de 260 et 280 caractères (v203 clôture : 280, la limite de C-244 — 500 avant) — à 22 px, au-delà de la place, la COUPE PROPRE :
 « Je me promets de … » puis la fin exacte de la parole ; le champ garde la parole entière. Après chaque espace et à la fin (clavier ouvert), puis après un toucher ailleurs (clavier fermé) :
   A · chaque glyphe et chaque pastille dans le cadre (24 → 366 pt) et dans l'écran ;
   B · aucune ligne plus large que le cadre ;
@@ -37,7 +37,7 @@ TEXTES = [('une ligne', 'marcher une heure'),
           ('six lignes', 'lire un vrai livre par mois et en parler à table avec les enfants le soir au lit'),
           ('mot de 40 lettres', 'relire anticonstitutionnellementdeboutpourtoujours ensemble'),
           ('260 caractères', 'appeler ma grand-mère chaque dimanche avant le déjeuner sans faute, lui raconter ma semaine en entier avec les enfants, le chien, le jardin, les voisins, et ne jamais raccrocher avant qu’elle ait fini de me parler de ses tomates et de ses roses'),
-          ('500 caractères', ' '.join(['marcher une heure chaque matin au bord de la rivière, sans téléphone, en regardant les arbres changer avec les saisons et en notant une phrase par jour'] * 3))]
+          ('280 caractères (la limite, C-244)', 'marcher une heure chaque matin au bord de la rivière, sans téléphone, en regardant les arbres changer avec les saisons et en notant une phrase par jour marcher une heure chaque matin au bord de la rivière, sans téléphone, en regardant les arbres changer avec les saisons et en not')]   # ⚑ v203 clôture : la parole est limitée à 280 caractères depuis v181b (C-244) — le contrat de 500 (Q576, v160c) était périmé
 MESURE = """()=>{ const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390, X0=24, X1=366; const ph=document.getElementById('onbPh');
   const cs=getComputedStyle(ph), lh=parseFloat(cs.lineHeight)*1, fs=parseFloat(cs.fontSize);
   const R=[]; const tw=document.createTreeWalker(ph, NodeFilter.SHOW_TEXT); let n; while((n=tw.nextNode())){ const t=n.nodeValue; if(!t || !t.trim()) continue;

@@ -252,6 +252,22 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v203 clôture définitive (16 nov. 2026) — LA PREMIÈRE LETTRE (C-282) ; LES PHRASES DU GUIDE EN RAFALE (C-284) ; LA VALIDATION QUI GLISSE (C-283). (Décisions Tom : « on clôture pour de bon après ; pas de régression ».)
+> **Validés par Tom (main f56219a) : C-282 pour l'effacement (l'exemple revient en se traçant), le §2 pour la recherche de l'Index.**
+> **⚑ C-282 — LE DÉTRACÉ DE LA PREMIÈRE LETTRE** (`_douceur.place` → `premiere`, lot-V200-DOUCEUR ; page + et onboarding, le même code) : la moitié du détracé standard, même courbe (`vitesse:2`) ;
+> la zone du texte tapé et du curseur libérée EN PREMIER (la copie vit dans `.v203-exw`, dont la découpe evenodd retire le contenu de la place, relu à chaque image et dans la tâche de chaque
+> frappe : `el.__v203masque`) ; la fin s'éteint en douceur (`amorti` de TraceLettres : 1 − (1 − p)², pas borné à 20 ms — une image longue n'en saute jamais la fin) ; la lettre tapée paraît
+> tout de suite (Q620) ; la phrase ne se recompose pas sous la copie (`__ppToutApres`, l'onboarding : `occupe`). Juge : **`redteam_premiere.py`** (0, 50, 150, 400 ms après la fin du tracé, puis
+> cinq lettres vites ; le trou de la découpe lu APRÈS la peinture ; la sonde rougit).
+> **⚑ C-284 — UNE SEULE PHRASE DU GUIDE À LA FOIS** (`lot-V141-GUIDE`) : un toucher pendant une transition ne la coupe jamais — le tracé en cours finit plus vite (`ctl.accelere(k)` de
+> TraceLettres : la même courbe, une durée réduite), puis la phrase se détrace (styles figés AVANT de retirer son id) ; la suivante attend son départ ; plusieurs touchers n'avancent que
+> d'une étape (`touche`, `quandLibre`) ; « Promi planté ! » de même (`__pasAttend`). C-277 tient, Partager reste facultatif. Juge : **`redteam_guide_rafale.py`**.
+> **⚑ C-283 — LA VALIDATION D'UN TITRE GLISSE** : pendant la frappe, `lot-V203-CONTINU` relève la place VUE à chaque image (sans rien faire glisser, Q620) ; l'image où la taille change attend
+> que sa mise à l'échelle soit partie ; le mouvement de taille passe au nœud rebâti (`lot-V202A-TAILLE`, `garde`). *La règle* : **un suiveur qui se tait pendant une phase continue de
+> relever ce qu'on voit — sinon la sortie de la phase n'a pas de point de départ.**
+> ⚠ **Préexistant, mesuré, non corrigé** : un détracé repeint toute la phrase à chaque image (l'horloge de TraceLettres : 48 à 81 ms par image au banc) — images > 33 ms sur les deux versions ; le
+> départ du mouvement du clavier (Q598, accepté). Juges remis au niveau (originaux en sauvegarde) : `redteam_ajout_personne` (planter = tracer la moitié, C-237), `redteam_parole_longue` (280, C-244).
+
 ### ⚑ v203 clôture (15 nov. 2026) — LE CHAPITRE v197–v203 EST CLOS ET FUSIONNÉ ; AUCUN ENCART PENDANT LA MODIFICATION D'UN TITRE ; Q621 : LA DALLE GARDE SA FORME ; C-281 : LES LETTRES QUI CLIGNOTENT EN #82AEF8 ; LE RELEVÉ SOUS ?releve=1. (Décisions Tom.) Ce bloc CORRIGE v203 (§1 : le relevé actif par défaut) et v203 fin (« la Toile ne change pas » non tenu, Q621).
 > **Validés par Tom : l'exemple qui revient (C-274), le titre long de l'Index (C-276), le titre modifié dans l'Index et le Fil (C-280, en partie), PromiLate gardé tel quel.** La suite : **`REPRISE.md`** (une page, pour une session neuve).
 > **⚑ C-280 §1 — AUCUN ENCART** (`lot-V203-TITRE-css`) : WebKit posait son anneau de focus sur le titre devenu modifiable (`outline: auto 3px`) — deux rectangles autour de ses lignes. Le titre en modification

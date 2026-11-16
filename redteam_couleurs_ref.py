@@ -301,6 +301,9 @@ with sync_playwright() as p:
                     if pr_ == 'outline' and va in ('rgb(41, 21, 71)', 'rgb(167, 124, 247)') and re.search(r's4-carte', k): exceptions['E21'] = exceptions.get('E21', 0) + 1; continue
                     # E24 (v173, Tom, C-210, D6) : « tous les oranges reprennent EXACTEMENT #FB4C0D ». E24 ne couvre que ce passage de valeur.
                     if vr == 'rgb(221, 77, 35)' and va == 'rgb(251, 76, 13)': exceptions['E24'] = exceptions.get('E24', 0) + 1; continue
+                    # E25 (v203 clôture, Tom, C-281, validé) : « les lettres qui clignotent (le I de PROMI, le R de PARTAGER, le S de RÉGLAGES) sont le bleu clair EXACT de la
+                    #   palette de base, #82AEF8, dans les deux thèmes » — en clair elles portaient #022140. E25 ne couvre que ce passage de valeur, sur ces lettres-là.
+                    if cle[1] == 'light' and pr_ in ('color', 'tfill') and vr == 'rgb(2, 33, 64)' and va == 'rgb(130, 174, 248)' and re.search(r'(ti-x|\.hi\b|uvi|acc-mm|onbv-mm|\.ii\b|(^| )i( |\[|\.|$))', k): exceptions['E25'] = exceptions.get('E25', 0) + 1; continue
                     # E22 (v163b, C-199, audit — chef de chantier) : « contours pleins de 2 pt pour le bouton photo » — la crème à 42 % devient la crème pleine, sur le bouton photo seul.
                     if pr_ in ('bT', 'bB', 'bL', 'bR') and va == 'rgb(247, 240, 222)' and re.search(r'ph-photo-btn', k): exceptions['E22'] = exceptions.get('E22', 0) + 1; continue
                     # E23 (v163b, C-199) : « le Chiche de la phrase ne ressemble plus à un bouton » — la pastille du verbe d'un Chiche (`.ph-b-fixe`) perd son fond.

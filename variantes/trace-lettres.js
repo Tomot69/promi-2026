@@ -1157,7 +1157,7 @@
     function image(maintenant) {
       if (mort) return; var d0 = racine.performance.now();
       /* le temps de la plume : il avance du temps de l'image, SAUF si la lettre où il arrive n'a pas encore sa carte — la plume marque un temps */
-      var dt = tAbs ? Math.min(100, maintenant - tAbs) : (o.arme ? 16.7 : 0); if (tAbs) { var di = maintenant - tAbs; if (di > 20) nLong++; if (di > imMax) imMax = di; } tAbs = maintenant;
+      var dt = tAbs ? Math.min(o.amorti ? 20 : 100, maintenant - tAbs) : (o.arme ? 16.7 : 0); dt *= (ctl.__acc || 1);   /* v203 clôture (C-284) : `ctl.accelere(k)` — la plume va k fois plus vite à partir de maintenant : la même courbe, une durée réduite */   /* v203 clôture (C-282) : un détracé amorti ne saute jamais une part de sa fin sous une image longue (son pas est borné : la fin s'étire) */ if (tAbs) { var di = maintenant - tAbs; if (di > 20) nLong++; if (di > imMax) imMax = di; } tAbs = maintenant;
       var t = tPlume + dt;
       for (var jx = ig; jx < G.length && G[jx].t0 < t; jx++) if (!G[jx].pret) { demande(G[jx]); var gx = G[jx];
         /* ⚑ v170c (C-206) — LA PLUME N'ATTEND JAMAIS L'OUVRIER PLUS DE 150 ms : au-delà, la lettre se calcule ici, tout de suite. En v170b elle l'attendait sans
@@ -1167,7 +1167,10 @@
           if (TL._lents >= 3 && TL._ouvrier) abandon('trop lent (3 lettres attendues plus de ' + (TL.attenteMax || 150) + ' ms)'); } }
         if (!gx.pret) { t = Math.max(tPlume, gx.t0); break; } }
       tPlume = t;
-      rend(inv ? Math.max(0, total - t) : t);
+      /* ⚑ v203 clôture (Tom, C-282) — `amorti` : la fin s'éteint en douceur (sortie amortie) — le temps de la plume passe par une courbe qui ralentit à la fin
+         (1 − (1 − p)²), la durée totale ne change pas ; sans l'option, rien ne change */
+      var tR = (o.amorti && total > 0) ? total * (1 - Math.pow(1 - Math.min(1, t / total), 2)) : t;
+      rend(inv ? Math.max(0, total - tR) : tR);
       /* ⚑ v147 — D'AVANCE : le temps qui reste dans l'image (jusqu'à 7 ms de travail) prépare les lettres qui viennent — la lettre suivante n'attend
          plus sa carte au moment où le front l'atteint (une image de 143 à 194 ms à chaque lettre, au banc, avant). */
       for (var ja = ig, na = 0; ja < G.length && na < 14 && racine.performance.now() - d0 < 6; ja++, na++) if (!G[ja].pret && !G[ja].attente) { try { demande(G[ja]); } catch (e) { } }
@@ -1175,6 +1178,7 @@
       if (t >= total) { if (inv) rend(0); termine(false); return; }
       raf = TL._planifie(image);
     }
+    ctl.accelere = function (k) { ctl.__acc = Math.max(ctl.__acc || 1, k || 1); };
     ctl.va = function (p) { rend(Math.max(0, Math.min(1, p)) * total + (p >= 1 ? 1 : 0)); };
     ctl.etat = function () { return { glyphe: ig, texteReel: jd, total: G.length, actives: (ctl._actives || []).slice(), t: tPrec }; };   /* v154 : les lettres en cours (indices) */
     return ctl;
