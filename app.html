@@ -2640,7 +2640,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v204', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v205', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -45924,71 +45924,39 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var finP=false, ctl=window._passageFlaques(el, {mode:'couvre', couleur:bg, duree:PREM, z:-1, fin:function(){ if(finP) return; finP=true; termine(); }});
     var cv=ctl && ctl.canevas; if(cv){ cv.classList.add('v200-fl'); ['left:0','top:0','width:100%','height:100%','border-radius:'+rad].forEach(function(d){ var i=d.indexOf(':'); cv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); }); }
     else { setTimeout(function(){ if(!finP){ finP=true; termine(); } }, PREM); }
-    /* ⚑ v203 (Tom, C-279) : le détracé de l'exemple a la cadence de tous les tracés (40 car/s, celle d'Atkinson) — il était accéléré pour tenir dans le remplissage */
-    /* ⚑ v204 (Tom, C-282 refait : « dès la première lettre, l'exemple s'efface tout entier, vite : on croit qu'il disparaît d'un coup ») — LE DÉTRACÉ DE L'EXEMPLE
-       GARDE SA DURÉE ET SON SENS STANDARD (Atkinson, de la fin vers le début, comme en f56219a). Seules les lettres que le texte tapé, le curseur et la lettre
-       suivante vont recouvrir partent plus vite : chacune passe, à l'image où la frappe l'atteint, sur sa propre petite copie posée exactement à sa place, qui
-       se détrace par le même module en ≈ 150 ms (`amorti`) ; la grande copie ne la montre plus dès cette image-là (elle était entière : rien ne saute). La boîte
-       de chaque lettre tapée est retirée des deux copies : une lettre tapée ne recouvre jamais l'exemple ; ce qui dépasse autour se détrace en 150 ms. Le même
-       code pour la page + (titre, nom d'un Cercle) et l'onboarding (prénom, parole) : `_douceur.place`. */
-    var VITE=150, I_STD=1000/40, D_STD=85;
+    /* ⚑ v205 (Tom, C-282 : « beaucoup trop lent ; l'encart pointillé s'adapte smooth, mais le texte disparaît direct quand on commence à taper — pas sec, mais
+       smooth rapide ») — À LA PREMIÈRE LETTRE, LE TEXTE D'EXEMPLE PART EN ENTIER, D'UN SEUL GESTE RAPIDE ET DOUX : toutes ses lettres en même temps, en 150 ms, son
+       opacité baisse à chaque image, la sortie amortie (1 − (1 − p)²). Ni le détracé standard (trop lent, v204), ni une lettre après l'autre, ni une disparition d'un
+       coup. La lettre tapée paraît tout de suite, posée au-dessus de l'exemple qui s'efface (la copie est découpée là où s'écrit le texte tapé et son curseur). L'encart
+       (le remplissage, la largeur) ne change pas. Le même code pour la page + (titre, nom d'un Cercle) et l'onboarding (prénom, parole) : `_douceur.place`. Le retour de
+       l'exemple après un effacement complet ne change pas (il se trace). EXCEPTION NOMMÉE à C-279 (« aucun fondu de texte ») : décision de Tom, cette sortie seule. */
+    var FONDU=window.__sondePrem?1:150, tF=performance.now();   /* `__sondePrem` : la sonde de redteam_premiere (l'exemple part d'un coup) */
     function couche(){ var w=document.createElement('span'); w.setAttribute('aria-hidden','true');
       ['position:absolute','left:0px','top:0px','width:0px','height:0px','overflow:visible','pointer-events:none','z-index:3','margin:0','padding:0','border:0'].forEach(function(d){ var i=d.indexOf(':'); w.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); }); return w; }
-    var wr=couche(); wr.className='v203-exw'; var wv=couche(); wv.className='v203-exw v204-vite';
-    var G0=gh.getBoundingClientRect(); gh.parentNode.insertBefore(wr, gh); wr.appendChild(gh); wr.parentNode.insertBefore(wv, wr.nextSibling); var G1=gh.getBoundingClientRect();
+    var wr=couche(); wr.className='v203-exw';
+    var G0=gh.getBoundingClientRect(); gh.parentNode.insertBefore(wr, gh); wr.appendChild(gh); var G1=gh.getBoundingClientRect();
     gh.style.setProperty('left', ((parseFloat(gh.style.left)||0)+(G0.left-G1.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((parseFloat(gh.style.top)||0)+(G0.top-G1.top)/sc)+'px', 'important');
-    /* les lettres de la copie : leur boîte à l'écran, une fois (la copie ne bouge pas) */
-    var CH=[]; (function(){ var tw=document.createTreeWalker(gh, NodeFilter.SHOW_TEXT), n, rg=document.createRange(); while((n=tw.nextNode())){ var t=n.nodeValue||'';
-        for(var q=0;q<t.length;q++){ if(/\s/.test(t[q])) continue; rg.setStart(n,q); rg.setEnd(n,q+1); var r=rg.getBoundingClientRect(); if(!(r.width>0.3)) continue; CH.push({n:n, i:q, c:t[q], r:{l:r.left, t:r.top, r:r.right, b:r.bottom}, part:false}); } } })();
-    function relit(){ var rg=document.createRange(); CH.forEach(function(x){ try{ rg.setStart(x.n, x.i); rg.setEnd(x.n, x.i+1); var r=rg.getBoundingClientRect(); if(r.width>0.3) x.r={l:r.left, t:r.top, r:r.right, b:r.bottom}; }catch(_){ } }); }   /* leurs boîtes VUES, relues à chaque passage */
-    var N=CH.length, t0=performance.now(), E0=el.getBoundingClientRect(), DX=0, DY=0;
-    function ech(){ try{ var r=gh.getBoundingClientRect(); return (gh.offsetWidth ? r.width/gh.offsetWidth : sc) || sc || 1; }catch(_){ return sc||1; } }   /* l'échelle VUE de la copie (la phrase peut changer de taille par mise à l'échelle pendant le détracé) */
-    /* la place peut bouger pendant le détracé (une recomposition de la phrase) : les deux copies la suivent, au même décalage (l'exemple est celui de CETTE place) */
-    function suitPlace(){ var E=el.getBoundingClientRect(), k=ech(), dx=E.left-E0.left, dy=E.top-E0.top; if(Math.abs(dx-DX)<0.05 && Math.abs(dy-DY)<0.05) return; DX=dx; DY=dy;
-      [wr, wv].forEach(function(w){ w.style.setProperty('translate', (dx/k)+'px '+(dy/k)+'px', 'important'); }); }
-    function boites(){ var rg=document.createRange(); rg.selectNodeContents(el); return [].filter.call(rg.getClientRects(), function(q){ return q.width>0.5 && q.height>0.5; }); }
+    var E0=el.getBoundingClientRect(), DX=0, DY=0;
+    function ech(){ try{ var r=gh.getBoundingClientRect(); return (gh.offsetWidth ? r.width/gh.offsetWidth : sc) || sc || 1; }catch(_){ return sc||1; } }
+    /* la place peut bouger pendant ces 150 ms (une recomposition de la phrase) : la copie la suit */
+    function suitPlace(){ var E=el.getBoundingClientRect(), k=ech(), dx=E.left-E0.left, dy=E.top-E0.top; if(Math.abs(dx-DX)<0.05 && Math.abs(dy-DY)<0.05) return; DX=dx; DY=dy; wr.style.setProperty('translate', (dx/k)+'px '+(dy/k)+'px', 'important'); }
     function lettresTapees(){ var L=[], tw=document.createTreeWalker(el, NodeFilter.SHOW_TEXT), n, rg=document.createRange(); while((n=tw.nextNode())){ var t=n.nodeValue||'';
         for(var q=0;q<t.length;q++){ if(/\s/.test(t[q])) continue; rg.setStart(n,q); rg.setEnd(n,q+1); var r=rg.getBoundingClientRect(); if(r.width>0.3) L.push(r); } } return L; }
-    function trou(W, k, R, ex){ var s=''; R.forEach(function(T){ var x0=(T.left-W.left)/k-ex, y0=(T.top-W.top)/k-ex, x1=(T.right-W.left)/k+ex, y1=(T.bottom-W.top)/k+ex; s+=" M "+x0.toFixed(1)+" "+y0.toFixed(1)+" H "+x1.toFixed(1)+" V "+y1.toFixed(1)+" H "+x0.toFixed(1)+" Z"; }); return s; }
-    function decoupe(w, R){ if(!w.isConnected) return; var W=w.getBoundingClientRect(), k=ech(); var pth="path(evenodd, 'M -9999 -9999 H 9999 V 9999 H -9999 Z"+R.map(function(x){ return trou(W, k, [x[0]], x[1]); }).join('')+"')";
-      w.style.setProperty('clip-path', pth, 'important'); w.style.setProperty('-webkit-clip-path', pth, 'important'); }
-    var restants=0;
-    function part(L){ /* une suite de lettres voisines sur une même ligne : leur petite copie, à leur place exacte, détracée en ≈ 150 ms */
-      var a=L[0], z=L[L.length-1], pe=a.n.parentElement||gh, c=getComputedStyle(pe), sp=document.createElement('span'); sp.className='v204-l';
-      sp.textContent=L.map(function(x, i){ var d=L[i-1]; return (d && x.r.l-d.r.r>0.12*(x.r.b-x.r.t) ? ' ' : '')+x.c; }).join('');   /* l'espace entre deux mots gardé */
-      var W=wv.getBoundingClientRect(), k=ech();
-      ['position:absolute','margin:0','padding:0','border:0','background:transparent','box-shadow:none','pointer-events:none','white-space:pre','display:block','text-indent:0','line-height:normal','text-transform:none',
-       'font-family:'+c.fontFamily,'font-size:'+c.fontSize,'font-weight:'+c.fontWeight,'font-style:'+c.fontStyle,'letter-spacing:'+c.letterSpacing,'font-feature-settings:'+c.fontFeatureSettings,'font-kerning:'+c.fontKerning,
-       'color:'+c.color,'-webkit-text-fill-color:'+(c.webkitTextFillColor||c.color),'left:'+((a.r.l-W.left)/k)+'px','top:'+((a.r.t-W.top)/k)+'px']
-        .forEach(function(d){ var i=d.indexOf(':'); sp.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
-      wv.appendChild(sp); restants++;
-      var R=sp.getBoundingClientRect(); sp.style.setProperty('left', ((a.r.l-W.left)/k+(a.r.l-R.left)/k)+'px', 'important'); sp.style.setProperty('top', ((a.r.t-W.top)/k+(a.r.t-R.top)/k)+'px', 'important');
-      var fin=false, f=function(){ if(fin) return; fin=true; if(sp.parentNode) sp.parentNode.removeChild(sp); restants--; };
-      var std=(L.length-1)*I_STD+D_STD, go=function(){ if(fin || !sp.isConnected) return; try{ TL().trace(sp, null, {inverse:true, depart:'h', vitesse:std/VITE, amorti:true, surPlace:L.length<=3, surFin:f}); }catch(_){ f(); } };
-      /* ses lettres sont celles de la grande copie, à la même place : préparées avec elle (la carte d'une lettre se garde) — elle part quand la grande est prête */
-      if(CTL && CTL.pret && !CTL.__pret){ CTL.pret.then(go, go); setTimeout(go, 400); } else go(); setTimeout(f, 1800); }
-    /* à chaque image et dans la tâche de chaque frappe : les lettres atteintes partent ; les deux découpes suivent */
-    function masque(){ try{ if(!wr.isConnected) return; if(!el.isConnected){ [wr, wv].forEach(function(w){ w.style.removeProperty('clip-path'); w.style.removeProperty('-webkit-clip-path'); }); return; }
-        suitPlace(); relit(); var T=lettresTapees(); [].forEach.call(el.querySelectorAll('.ph-caret'), function(c){ var r=c.getBoundingClientRect(); if(r.width>0.3) T.push(r); });   /* le texte tapé et son curseur (jamais le canevas du remplissage de la place) */
-        var zone=T.map(function(q){ return {l:q.left, t:q.top, r:q.right+(q.height*0.3), b:q.bottom}; });   /* …et la lettre suivante */
-        var el0=performance.now()-t0, neuves=[];
-        CH.forEach(function(x, idx){ if(x.part) return; var xr=x.r; var dans=zone.some(function(z){ var ov=Math.min(z.b, xr.b)-Math.max(z.t, xr.t); return ov>0.5*(xr.b-xr.t) && xr.l<z.r-0.5 && xr.r>z.l+0.5; }); if(!dans) return;
-          var debut=(N-1-idx)*I_STD; x.part=true; if(el0<debut) neuves.push(x); else x.vite=false; });   /* déjà atteinte par le détracé standard (sa fin) : elle continue avec lui */
-        var grp=[]; neuves.forEach(function(x){ var g=grp[grp.length-1], d=g && g[g.length-1]; if(d && Math.abs(d.r.t-x.r.t)<1 && x.r.l-d.r.r<x.r.b-x.r.t) g.push(x); else grp.push([x]); }); grp.forEach(part);
-        decoupe(wr, CH.filter(function(x){ return x.part && x.vite!==false; }).map(function(x){ return [{left:x.r.l, top:x.r.t, right:x.r.r, bottom:x.r.b}, 0.6]; }).concat(T.map(function(q){ return [q, 0.6]; })));
-        decoupe(wv, T.map(function(q){ return [q, 0.6]; })); }catch(_){ } }
+    function masque(){ try{ if(!wr.isConnected) return; if(!el.isConnected){ wr.style.removeProperty('clip-path'); wr.style.removeProperty('-webkit-clip-path'); return; }
+        suitPlace(); var T=lettresTapees(); [].forEach.call(el.querySelectorAll('.ph-caret'), function(c){ var r=c.getBoundingClientRect(); if(r.width>0.3) T.push(r); });   /* le texte tapé et son curseur : posés au-dessus de l'exemple */
+        var W=wr.getBoundingClientRect(), k=ech(), pth="path(evenodd, 'M -9999 -9999 H 9999 V 9999 H -9999 Z";
+        T.forEach(function(q){ var x0=(q.left-W.left)/k-0.6, y0=(q.top-W.top)/k-0.6, x1=(q.right-W.left)/k+0.6, y1=(q.bottom-W.top)/k+0.6; pth+=" M "+x0.toFixed(1)+" "+y0.toFixed(1)+" H "+x1.toFixed(1)+" V "+y1.toFixed(1)+" H "+x0.toFixed(1)+" Z"; });
+        pth+="')"; wr.style.setProperty('clip-path', pth, 'important'); wr.style.setProperty('-webkit-clip-path', pth, 'important'); }catch(_){ } }
     el.__v203masque=masque;
-    var CTL=null; try{ CTL=TL().trace(gh, null, {inverse:true, depart:'h', surFin:function(){ ote(); }}); if(CTL && CTL.pret) CTL.pret.then(function(){ CTL.__pret=1; }); }catch(_){ CTL=null; }
-    try{ masque(); }catch(_){ }
-    var oteA=false, ote=function(){ oteA=true; if(restants>0) return; try{ window.__apresContinu.delete(masque); }catch(_){ } [wr, wv].forEach(function(w){ if(w.parentNode) w.parentNode.removeChild(w); }); if(window.__ppToutApres && window._ppTout && !document.querySelector('#createSheet .v203-exw')){ window.__ppToutApres=0; try{ window._ppTout(); }catch(_){ } } };   /* la recomposition retenue pendant le détracé */
-    (function suit(){ if(!wr.isConnected) return; if(oteA && restants<=0){ ote(); return; } masque(); requestAnimationFrame(suit); })();
+    var oteA=false, ote=function(){ oteA=true; try{ window.__apresContinu.delete(masque); }catch(_){ } if(wr.parentNode) wr.parentNode.removeChild(wr); if(window.__ppToutApres && window._ppTout && !document.querySelector('#createSheet .v203-exw')){ window.__ppToutApres=0; try{ window._ppTout(); }catch(_){ } } };
+    /* l'opacité, à chaque image, depuis l'instant de la frappe (la première image est déjà plus claire) */
+    var AV=16.7;   /* la courbe part une image avant la frappe : l'image qui suit est déjà plus claire, et l'opacité ne fait que baisser ; la fin reste 150 ms après la frappe */
+    function fondu(){ if(!wr.isConnected) return; var p=Math.min(1, (performance.now()-tF+AV)/(FONDU+AV)), e=1-Math.pow(1-p, 2); gh.style.setProperty('opacity', (1-e).toFixed(4), 'important'); masque(); if(p>=1){ ote(); return; } requestAnimationFrame(fondu); }
+    gh.style.setProperty('opacity', Math.pow(1-AV/(FONDU+AV), 2).toFixed(4), 'important'); try{ masque(); }catch(_){ } requestAnimationFrame(fondu);   /* l'image qui suit la frappe est déjà plus claire (le pas d'une image) */
     (window.__apresContinu=window.__apresContinu||new Set()).add(masque);   /* après les glissements de la phrase (lot-V203-CONTINU), dans la même image */
-    /* une recomposition faite après la relecture de l'image (un observateur de taille) : la découpe suit dans la même image, avant la peinture */
-    try{ var ro=new ResizeObserver(function(){ if(!wr.isConnected){ ro.disconnect(); return; } masque(); }); ro.observe(el); if(el.parentNode) ro.observe(el.parentNode); var ph0=el.closest('.ph-txt, #onbPh'); if(ph0) ro.observe(ph0); }catch(_){ }
-    try{ var mo=new MutationObserver(function(){ if(!wr.isConnected){ mo.disconnect(); return; } masque(); }); mo.observe(el, {childList:true, subtree:true, characterData:true, attributes:true, attributeFilter:['class','style']}); }catch(_){ }   /* le curseur replacé dans une autre tâche que la frappe */
+    try{ var ro=new ResizeObserver(function(){ if(!wr.isConnected){ ro.disconnect(); return; } masque(); }); ro.observe(el); }catch(_){ }
     window.__v203masque=masque;
-    if(!CTL) ote();
-    setTimeout(function(){ restants=0; ote(); }, 6000);
+    setTimeout(function(){ if(!oteA) ote(); }, FONDU+600);
     note({premiere:texte(html), ex:texte(ex)});
     function termine(){ var c=st.cible; st.fini=true; el.__v200=null; try{ window.__dcA.delete(el); }catch(_){ }
       var cvv=el.querySelector(':scope > canvas.v200-fl'); if(cvv) cvv.remove();

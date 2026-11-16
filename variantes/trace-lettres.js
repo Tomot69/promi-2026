@@ -687,17 +687,21 @@
           if (!rs.length || (rs[0].width <= 0 && rs[0].height <= 0)) continue;
           var rc = rs[0], blanc = /\s/.test(car), aff = blanc ? ' ' : (st.tt === 'uppercase' ? car.toUpperCase() : (st.tt === 'lowercase' ? car.toLowerCase() : car)); if (aff.length !== car.length) aff = car;
           if (!bt || Math.abs(rc.top - bt.top) > 0.5 || rc.left < bt.dernier - 0.5) { bt = { top: rc.top, cars: [], txt: '' }; boites.push(bt); }
-          bt.cars.push({ c: aff, blanc: blanc, L: rc.left, n: aff.length }); bt.txt += aff; bt.dernier = rc.left;
+          /* ⚑ v205 (C-286, trouvé par redteam_aspect D) — une espace AVALÉE au retour à la ligne (largeur nulle : « ␣ou », « ␣par ») n'avance pas la plume : comptée,
+             elle poussait tout le mot d'une espace (≈ 10 pt à droite de sa place) — ses lettres se traçaient puis se détraçaient à côté. Elle garde sa pause. */
+          var zw = blanc && rc.width < 0.5;
+          bt.cars.push({ c: aff, blanc: blanc, L: rc.left, n: aff.length, zw: zw }); if (!zw) bt.txt += aff; bt.dernier = rc.left;
         }
         if (boites.length) asc = ascendante(st);
         boites.forEach(function (B) {
           /* 2 · dans la boîte : l'abscisse d'un caractère = la chasse cumulée (crénage compris) + l'interlettrage, comme le navigateur la calcule */
-          var pos = 0, lo = -Infinity, hi = Infinity, j;
+          var pos = 0, lo = -Infinity, hi = Infinity, j, jv = 0;
           for (j = 0; j < B.cars.length; j++) {
-            var c = B.cars[j]; pos += c.n; c.av = mctx.measureText(c.c).width; c.a = (mctx.measureText(B.txt.slice(0, pos)).width - c.av + j * ls) * k;
+            var c = B.cars[j]; if (c.zw) { c.av = 0; c.a = (pos ? mctx.measureText(B.txt.slice(0, pos)).width + jv * ls : 0) * k; continue; }
+            pos += c.n; c.av = mctx.measureText(c.c).width; c.a = (mctx.measureText(B.txt.slice(0, pos)).width - c.av + jv * ls) * k; jv++;
             lo = Math.max(lo, c.L - c.a); hi = Math.min(hi, c.L - c.a + 1);     /* le rectangle rendu est le plancher de l'abscisse vraie */
           }
-          var X0 = (lo <= hi) ? (lo + hi) / 2 : B.cars[0].L, r3 = Math.round(X0 * dpr) / dpr;
+          var c0 = B.cars.filter(function (c) { return !c.zw; })[0] || B.cars[0], X0 = (lo <= hi) ? (lo + hi) / 2 : c0.L - (c0.a || 0), r3 = Math.round(X0 * dpr) / dpr;
           if (lo <= hi && r3 >= lo - 0.02 && r3 <= hi + 0.02) X0 = r3;            /* une boîte commence presque toujours sur un pixel de l'appareil */
           /* ⚑ v170b (PromiLate) : les rectangles de WebKit sont FRACTIONNAIRES (mesuré : 63,833) — le bord exact est `lo`, pas le milieu d'un intervalle d'un pixel
              (jusqu'à un demi-pixel CSS de trop à droite : la découpe vectorielle manquait la frange gauche des lettres) */
@@ -730,7 +734,7 @@
         });
       }
       defaits.forEach(function (el) { var a = el.__tlDefait; if (a[0]) el.style.setProperty('transform', a[0], a[1]); else el.style.removeProperty('transform'); delete el.__tlDefait; });
-      ctl.glyphes = G.map(function (g) { return { car: g.car, variante: g.var, demande: g.demande, fin: g.fin, exception: g.exception, x: (g.x - er.left) / k, y: (g.y - er.top) / k, ech: g.sc, police: g.police, mat: g.tf ? g.tf.slice(0, 4) : null, xo: g.xo ? [(g.xo[0] - er.left) / k, (g.xo[1] - er.top) / k] : null }; });
+      ctl.glyphes = G.map(function (g) { return { car: g.car, variante: g.var, demande: g.demande, fin: g.fin, exception: g.exception, x: (g.x - er.left) / k, y: (g.y - er.top) / k, ech: g.sc, police: g.police, mat: g.tf ? g.tf.slice(0, 4) : null, xo: g.xo ? [(g.xo[0] - er.left) / k, (g.xo[1] - er.top) / k] : null, bo: [(g.bx0 - er.left) / k, (g.by0 - er.top) / k, (g.bx1 - er.left) / k, (g.by1 - er.top) / k] }; });
       if (!G.length) { ctl.duree = 0; return; }
       /* 3 · les lignes (pour la découpe du texte réel) */
       G.forEach(function (g) { var l = L.length ? L[L.length - 1] : null; if (!l || (Math.abs(g.y - l.y) > 1 && !g.attache)) { l = { y: g.y, haut: Infinity, bas: -Infinity, n: 0 }; L.push(l); } g.ligne = L.length - 1; l.haut = Math.min(l.haut, g.by0); l.bas = Math.max(l.bas, g.by1); l.n++; });
@@ -749,14 +753,22 @@
       ctx = cv.getContext('2d'); ctl.canevas = cv;
       fin = doc.createElement('canvas'); fin.width = W; fin.height = H; fctx = fin.getContext('2d');
       brouillon = doc.createElement('canvas'); bctx = brouillon.getContext('2d', { willReadFrequently: true });
-      var bw = 8, bh = 8;
+      var bw = 8, bh = 8, mcE = doc.createElement('canvas').getContext('2d');
       G.forEach(function (g) {
         g.gx = ((g.xo ? g.xo[0] : g.x) - cr.left) * dpr; g.gy = ((g.xo ? g.xo[1] : g.y) - cr.top) * dpr;
         g.M = g.tf ? [g.tf[0], g.tf[1], g.tf[2], g.tf[3]] : [1, 0, 0, 1];
         g.e0 = (g.bx0 - cr.left) * dpr; g.e1 = (g.bx1 - cr.left) * dpr;                       /* l'encre, en pixels du canevas */
         g.X0 = Math.floor(g.e0) - 2; g.Y0 = Math.floor((g.by0 - cr.top) * dpr) - 2; g.w = Math.ceil(g.e1) + 2 - g.X0; g.h = Math.ceil((g.by1 - cr.top) * dpr) + 2 - g.Y0;
         bw = Math.max(bw, g.w); bh = Math.max(bh, g.h);
+        /* ⚑ v205 (Tom, C-286 : « un bandeau reste en haut des lettres pendant le détracé ») — LA BOÎTE ENTIÈRE DU GLYPHE : la lettre finie est posée par `fillText`, son
+           encre réelle (le haut des capitales, les accents, les bouts arrondis) peut dépasser la boîte de sa carte ; le détracé incrémental (v204) n'effaçait que la boîte
+           de la carte : le reste demeurait sur le canevas. La boîte d'effacement est la réunion des deux, avec 3 px pour l'épaisseur et le lissage. */
+        var cx0 = g.X0, cy0 = g.Y0, cx1 = g.X0 + g.w, cy1 = g.Y0 + g.h;
+        if (!g.vect) { try { mcE.font = g.spec; var mE = mcE.measureText(g.car), xa = -(mE.actualBoundingBoxLeft || 0), xb = (mE.actualBoundingBoxRight || 0), ya = -(mE.actualBoundingBoxAscent || 0), yb = (mE.actualBoundingBoxDescent || 0);
+            [[xa, ya], [xb, ya], [xa, yb], [xb, yb]].forEach(function (q) { var px = g.gx + s * (g.M[0] * q[0] + g.M[2] * q[1]), py = g.gy + s * (g.M[1] * q[0] + g.M[3] * q[1]); cx0 = Math.min(cx0, Math.floor(px) - 3); cx1 = Math.max(cx1, Math.ceil(px) + 3); cy0 = Math.min(cy0, Math.floor(py) - 3); cy1 = Math.max(cy1, Math.ceil(py) + 3); }); } catch (e) { } }
+        g.C = [cx0, cy0, cx1, cy1];
       });
+      if (ctl.glyphes) G.forEach(function (g, i) { var q = ctl.glyphes[i]; if (q && g.C) q.bc = [((cr.left + g.C[0] / dpr) - er.left) / kech, ((cr.top + g.C[1] / dpr) - er.top) / kech, ((cr.left + g.C[2] / dpr) - er.left) / kech, ((cr.top + g.C[3] / dpr) - er.top) / kech]; });   /* pour les juges : la boîte d'encre réelle (celle que le détracé efface) */
       G.forEach(function (g) { if (g.vect) { g.pret = false; g.vr = true; } });   /* v170b : ce qu'aucune bande ne couvre — calculé à la demande de la lettre (`demande`), hors du fil */
       L.forEach(function (l, i) { l.y0 = i === 0 ? 0 : Math.floor(((L[i - 1].bas + l.haut) / 2 - cr.top) * dpr); }); L.forEach(function (l, i) { l.y1 = i + 1 < L.length ? L[i + 1].y0 : H; });
       brouillon.width = bw; brouillon.height = bh;
@@ -1086,6 +1098,10 @@
       var mB = 1.5 / (dpr * kech), ouverts = [], j;
       function bx_(g) { return [(g.bx0 - er.left) / kech - mB, (g.by0 - er.top) / kech - mB, (g.bx1 - er.left) / kech + mB, (g.by1 - er.top) / kech + mB]; }
       if (TL.boites !== false) for (j = jd; j < G.length; j++) { var gq = G[j]; if (!(gq.vect && gq.sv >= gq.vs.tot)) ouverts.push(bx_(gq)); }
+      if (inv && ctl.__lim && basePts) { var LM = ctl.__lim;   /* v205 (C-286) : la part des lettres d'avant la coupe que la découpe ne montre plus (sous sa limite) */
+        for (j = 0; j < jd; j++) { var gw = G[j]; if (!gw.vect) continue; var lw = gw.ligne < LM.li ? LM.yt : (gw.ligne === LM.li ? LM.yb : null); if (lw == null || !isFinite(lw) || (gw.by1 - cr.top) * dpr <= lw) continue;
+          var bw2 = bx_(gw), lb = true; for (var k2 = 0; k2 < ouverts.length && lb; k2++) { var o2 = ouverts[k2]; if (!(o2[2] <= bw2[0] || o2[0] >= bw2[2] || o2[3] <= bw2[1] || o2[1] >= bw2[3])) lb = false; }
+          d += lb ? poly([[bw2[0], bw2[1]], [bw2[2], bw2[1]], [bw2[2], bw2[3]], [bw2[0], bw2[3]]]) : masqueVect(gw, gw.vs.tot); } }
       for (j = jd; j < G.length; j++) { var g = G[j]; if (!(g.vect && g.sv > 0)) continue;
         if (TL.boites !== false && g.sv >= g.vs.tot) { var b = bx_(g), libre = true;
           for (var k = 0; k < ouverts.length && libre; k++) { var o = ouverts[k]; if (!(o[2] <= b[0] || o[0] >= b[2] || o[3] <= b[1] || o[1] >= b[3])) libre = false; }
@@ -1154,22 +1170,33 @@
           var c = Math.floor(nx.e0) - 2; if (c >= Math.ceil(dmax) + 2) { m = j; coupe = c; break; } }
         jd = m + 1;
         var ux0 = Infinity, uy0 = Infinity, ux1 = -Infinity, uy1 = -Infinity;
-        for (j = jd; j < Math.min(oldJd, ig); j++) { var gp = G[j]; finLettre(gp); if (!gp.vect) { ux0 = Math.min(ux0, gp.X0); uy0 = Math.min(uy0, gp.Y0); ux1 = Math.max(ux1, gp.X0 + gp.w); uy1 = Math.max(uy1, gp.Y0 + gp.h); } }
+        for (j = jd; j < Math.min(oldJd, ig); j++) { var gp = G[j]; finLettre(gp); if (!gp.vect) { var cp = gp.C || [gp.X0, gp.Y0, gp.X0 + gp.w, gp.Y0 + gp.h]; ux0 = Math.min(ux0, cp[0]); uy0 = Math.min(uy0, cp[1]); ux1 = Math.max(ux1, cp[2]); uy1 = Math.max(uy1, cp[3]); } }
         if (ux1 > ux0) { ux0 = Math.max(0, ux0); uy0 = Math.max(0, uy0); ux1 = Math.min(cv.width, ux1); uy1 = Math.min(cv.height, uy1); ctx.clearRect(ux0, uy0, ux1 - ux0, uy1 - uy0); ctx.drawImage(fin, ux0, uy0, ux1 - ux0, uy1 - uy0, ux0, uy0, ux1 - ux0, uy1 - uy0); }
-        if (jd <= 0) decoupe(VIDE);
-        else { var l = L[G[jd].ligne], xc = coupe < 0 ? -1 : coupe, M = 4000;
+        if (jd <= 0) { decoupe(VIDE); ctl.__lim = null; }
+        else { var li = G[jd].ligne, l = L[li], xc = coupe < 0 ? -1 : coupe, M = 4000;
           var lx = function (v) { return ((cr.left + v / dpr) - er.left) / kech; }, ly = function (v) { return ((cr.top + v / dpr) - er.top) / kech; };
-          var X = xc < 0 ? -M : lx(xc), Y0 = G[jd].ligne === 0 ? -M : ly(l.y0), Y1 = G[jd].ligne === L.length - 1 ? M : ly(l.y1);
+          /* ⚑ v205 (Tom, C-286) — la découpe du texte réel montrait les lignes d'avant jusqu'à MI-CHEMIN de la ligne en cours ; quand deux lignes se chevauchent
+             (un jambage de la ligne du dessus plus bas que le haut d'une lettre de la ligne du dessous : un interligne serré), cette bande montrait le haut des lettres
+             déjà parties — « un bandeau en haut des lettres ». En détracé, la découpe s'arrête au-dessus de l'encre de la ligne en cours (et au-dessus de celle de
+             la ligne suivante) ; ce qui dépasse des lignes d'avant passe par le canevas (ou, en PromiLate, par son masque exact : `appliquer`). */
+          var yt = li === 0 ? -Infinity : Math.min(l.y0, Math.floor((l.haut - cr.top) * dpr) - 1), yb = li === L.length - 1 ? Infinity : Math.min(l.y1, Math.floor((L[li + 1].haut - cr.top) * dpr) - 1);
+          ctl.__lim = { li: li, yt: yt, yb: yb };
+          var X = xc < 0 ? -M : lx(xc), Y0 = li === 0 ? -M : ly(yt), Y1 = li === L.length - 1 ? M : ly(yb);
+          for (j = 0; j < jd; j++) { var gq2 = G[j]; if (gq2.vect) continue; var lim2 = gq2.ligne < li ? yt : (gq2.ligne === li ? yb : null), c2 = gq2.C || [gq2.X0, gq2.Y0, gq2.X0 + gq2.w, gq2.Y0 + gq2.h];
+            if (lim2 == null || !isFinite(lim2) || c2[3] <= lim2) continue;
+            var r0 = Math.max(0, Math.max(c2[1], lim2)), r1 = Math.min(cv.height, c2[3]), q0 = Math.max(0, c2[0]), q1 = Math.min(cv.width, c2[2]); if (r1 <= r0 || q1 <= q0) continue;
+            fctx.save(); fctx.beginPath(); fctx.rect(q0, r0, q1 - q0, r1 - r0); fctx.clip(); finLettre(gq2); fctx.restore();   /* seule la part sous la limite : le texte réel montre le reste */
+            ctx.clearRect(q0, r0, q1 - q0, r1 - r0); ctx.drawImage(fin, q0, r0, q1 - q0, r1 - r0, q0, r0, q1 - q0, r1 - r0); }
           decoupe('polygon(' + (-M) + 'px ' + (-M) + 'px,' + M + 'px ' + (-M) + 'px,' + M + 'px ' + Y0 + 'px,' + X + 'px ' + Y0 + 'px,' + X + 'px ' + Y1 + 'px,' + (-M) + 'px ' + Y1 + 'px)',
             [[-M, -M], [M, -M], [M, Y0], [X, Y0], [X, Y1], [-M, Y1]]); }
       }
       /* 2 · les lettres qui ne sont plus finies quittent le canevas ; les voisines finies qui touchent leur boîte sont reposées */
       var vx0 = Infinity, vy0 = Infinity, vx1 = -Infinity, vy1 = -Infinity;
-      for (j = ig; j < n0; j++) { var gu = G[j]; if (gu.vect) { gu.sv = 0; continue; } vx0 = Math.min(vx0, gu.X0); vy0 = Math.min(vy0, gu.Y0); vx1 = Math.max(vx1, gu.X0 + gu.w); vy1 = Math.max(vy1, gu.Y0 + gu.h); gu.pret = false; gu.im = gu.A = gu.T = gu.T1 = null; }
+      for (j = ig; j < n0; j++) { var gu = G[j]; if (gu.vect) { gu.sv = 0; continue; } var cu = gu.C || [gu.X0, gu.Y0, gu.X0 + gu.w, gu.Y0 + gu.h]; vx0 = Math.min(vx0, cu[0]); vy0 = Math.min(vy0, cu[1]); vx1 = Math.max(vx1, cu[2]); vy1 = Math.max(vy1, cu[3]); gu.pret = false; gu.im = gu.A = gu.T = gu.T1 = null; }
       if (vx1 > vx0) { vx0 = Math.max(0, vx0); vy0 = Math.max(0, vy0); vx1 = Math.min(cv.width, vx1); vy1 = Math.min(cv.height, vy1);
         fctx.clearRect(vx0, vy0, vx1 - vx0, vy1 - vy0);
         fctx.save(); fctx.beginPath(); fctx.rect(vx0, vy0, vx1 - vx0, vy1 - vy0); fctx.clip();
-        for (j = jd; j < ig; j++) { var gv = G[j]; if (gv.vect) continue; if (gv.X0 < vx1 && gv.X0 + gv.w > vx0 && gv.Y0 < vy1 && gv.Y0 + gv.h > vy0) finLettre(gv); }
+        for (j = jd; j < ig; j++) { var gv = G[j]; if (gv.vect) continue; var cv2 = gv.C || [gv.X0, gv.Y0, gv.X0 + gv.w, gv.Y0 + gv.h]; if (cv2[0] < vx1 && cv2[2] > vx0 && cv2[1] < vy1 && cv2[3] > vy0) finLettre(gv); }
         fctx.restore();
         ctx.clearRect(vx0, vy0, vx1 - vx0, vy1 - vy0); ctx.drawImage(fin, vx0, vy0, vx1 - vx0, vy1 - vy0, vx0, vy0, vx1 - vx0, vy1 - vy0); }
     }
@@ -1186,10 +1213,17 @@
       /* ⚑ v154 — LES LETTRES EN COURS (trois au plus), de gauche à droite : leur zone est reposée depuis les lettres finies, puis chacune y est
          dessinée à son point, par-dessus (deux boîtes voisines se recouvrent : une lettre ne doit jamais effacer sa voisine) */
       var act = []; for (var ja = ig; ja < G.length && t > G[ja].t0; ja++) act.push(ja);
+      /* ⚑ v205 (Tom, C-286) — en détracé, une lettre qui sort des lettres en cours (elle vient de finir de partir) garde sur le canevas sa DERNIÈRE image partielle
+         si rien ne l'efface : le haut de ses traits (le départ de la plume, qui part en dernier) restait jusqu'à la fin — « un bandeau en haut des lettres ».
+         Sa boîte entière est reprise dans la zone reposée de cette image. */
+      var partis = (inv && ctl.__act && !TL.__sondeReste) ? ctl.__act.filter(function (j) { return act.indexOf(j) < 0 && j >= ig; }) : [];
+      partis = partis.filter(function (j) { if (G[j].vect) { G[j].sv = 0; return false; } return true; });   /* une lettre vectorielle partie : sa part dévoilée du texte réel tombe à zéro */
+      ctl.__act = act.slice();
       ctl._actives = act;
-      if (act.length) {
+      if (act.length || partis.length) {
         var ux0 = Infinity, uy0 = Infinity, ux1 = -Infinity, uy1 = -Infinity;
         act.forEach(function (j) { var g = G[j]; ux0 = Math.min(ux0, g.X0); uy0 = Math.min(uy0, g.Y0); ux1 = Math.max(ux1, g.X0 + g.w); uy1 = Math.max(uy1, g.Y0 + g.h); });
+        partis.forEach(function (j) { var g = G[j], c = g.C || [g.X0, g.Y0, g.X0 + g.w, g.Y0 + g.h]; ux0 = Math.min(ux0, c[0]); uy0 = Math.min(uy0, c[1]); ux1 = Math.max(ux1, c[2]); uy1 = Math.max(uy1, c[3]); });
         ux0 = Math.max(0, ux0); uy0 = Math.max(0, uy0); ux1 = Math.min(cv.width, ux1); uy1 = Math.min(cv.height, uy1);
         ctx.clearRect(ux0, uy0, ux1 - ux0, uy1 - uy0); ctx.drawImage(fin, ux0, uy0, ux1 - ux0, uy1 - uy0, ux0, uy0, ux1 - ux0, uy1 - uy0);
         act.forEach(function (j) { partiel(G[j], Math.min(1, (t - G[j].t0) / G[j].d)); });

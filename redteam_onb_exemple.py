@@ -50,13 +50,14 @@ def passes(pg, sel, champ, ferme, ouvrir, exemple):
             ouvrir(); pg.wait_for_timeout(900)
         mot = MOTS[i]; t0 = pg.evaluate("()=>performance.now()")
         pg.keyboard.press(mot[0]); pg.wait_for_timeout(34); prem = pg.evaluate("(s)=>{ const t=document.querySelector(s); return t?(t.textContent||''):''; }", sel)
+        fondu = pg.evaluate("()=>{ const g=document.querySelector('.v203-exw .v203-ex'); if(!g) return null; const o=parseFloat(getComputedStyle(g).opacity); return o; }")   # v205 (C-282) : la copie de l'exemple, en fondu
         pg.keyboard.type(mot[1:], delay=d); pg.wait_for_timeout(d * 3 + 400)
         t1 = pg.evaluate("()=>performance.now()")
         for _ in range(len(mot)): pg.keyboard.press('Backspace'); pg.wait_for_timeout(d)
         if ferme: pg.evaluate("()=>{ const a=document.activeElement; if(a && a.blur) a.blur(); }")
         pg.wait_for_timeout(3500)
         e = pg.evaluate(ETAT, sel); n = encre(pg, e); tr = pg.evaluate("()=>window.__X.tr")
-        out.append({'e': e, 'n': n, 'prem': prem, 'mot': mot, 'avant': [x for x in tr if t0 <= x['t'] < t1], 'apres': [x for x in tr if x['t'] >= t1], 'ex': exemple})
+        out.append({'e': e, 'n': n, 'prem': prem, 'fondu': fondu, 'mot': mot, 'avant': [x for x in tr if t0 <= x['t'] < t1], 'apres': [x for x in tr if x['t'] >= t1], 'ex': exemple})
     return out
 def sig(p):
     """les étapes d'une passe : à la première lettre, à l'effacement — leur sens, et leur cadence (ms par caractère)"""
@@ -99,8 +100,9 @@ with sync_playwright() as p:
         juge('[onboarding · %s] A · après chaque effacement (5 passes), l\'exemple entier, vide, peint' % nom, not mauvais, mauvais[:2])
         sans = [(i, o['mot']) for i, o in enumerate(O) if not any(not x['inv'] and not x['ex'] for x in o['apres'])]
         juge('[onboarding · %s] B · il revient par son tracé, jamais d\'un coup' % nom, not sans, sans)
-        c = [(i, o['mot'], o['prem'][:12]) for i, o in enumerate(O) if not (o['prem'].strip().startswith(o['mot'][0]) and any(x['inv'] and x['ex'] for x in o['avant']))]
-        juge('[onboarding · %s] C · la première lettre paraît tout de suite, l\'exemple se détrace' % nom, not c, c)
+        # ⚑ v205 (Tom, C-282) : à la première lettre l'exemple part en entier en 150 ms, en fondu — plus de détracé (contrat de v203 : sauvegardes/redteam_onb_exemple-avant-v205.py)
+        c = [(i, o['mot'], o['prem'][:12], o['fondu']) for i, o in enumerate(O) if not (o['prem'].strip().startswith(o['mot'][0]) and o['fondu'] is not None and 0 < o['fondu'] < 1 and not any(x['inv'] and x['ex'] for x in o['avant']))]
+        juge('[onboarding · %s] C · la première lettre paraît tout de suite, l\'exemple part en fondu (aucun détracé)' % nom, not c, c)
         ec = []
         for i, (o, q) in enumerate(zip(O, PP)):
             so, sq = sig(o), sig(q); eo, eq = [x[:3] for x in so], [x[:3] for x in sq]

@@ -252,6 +252,30 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v205 (16 nov. 2026) — CLÔTURE DU CHAPITRE : L'EXEMPLE PART EN 150 ms (C-282) ; PLUS AUCUN RESTE PENDANT UN DÉTRACÉ (C-286) ; redteam_aspect D. (Décisions Tom : « Belle livraison de clôture. ») Ce bloc CORRIGE v204 (C-282 : le détracé standard et les petites copies).
+> **Validés par Tom : C-284, le §2 de v204 (« Le reste s'explore à ton rythme ! » en PromiLate bleu vif), C-285, C-283. `guide_rafale` D jugé bon sur l'iPhone : fermé (on ne retouche pas le dessin de l'eau).**
+> **⚑ C-282 — À LA PREMIÈRE LETTRE, LE TEXTE D'EXEMPLE PART EN ENTIER, EN 150 ms** (`premiere`, lot-V200-DOUCEUR ; page + et onboarding, le même code) : toutes ses lettres en même temps, son opacité
+> baisse à chaque image, la sortie amortie (1 − (1 − p)², la courbe partie une image avant la frappe : l'image qui suit est déjà plus claire, la fin 150 ms après la frappe) ; la lettre tapée
+> paraît tout de suite, posée au-dessus (la copie découpée là où s'écrit le texte tapé et son curseur). L'encart (le remplissage, la largeur) ne change pas ; le retour de l'exemple après un
+> effacement complet non plus (il se trace). Les petites copies et le détracé de v204 sont retirés. **EXCEPTION NOMMÉE à C-279 (« aucun fondu de texte ») : cette sortie seule, décidée par Tom.**
+> Juge : **`redteam_premiere.py`** réécrit (A la lettre à l'image qui suit, B parti en 150 ± 20 ms, C l'opacité baisse à chaque image sans saut, D une seule copie sans détracé, E la largeur
+> de l'encart continue — au plus 6 pt/ms —, F la lettre tapée au-dessus ; `--sonde` : B et C rougissent ; ⚠ `--sonde-largeur` ne mord pas : la largeur VUE est tenue par lot-V203-CONTINU,
+> qu'aucune sonde extérieure n'a pu défaire). Crochet de sonde dans l'app : `window.__sondePrem`. Contrat remis au niveau : `redteam_onb_exemple` C (la copie de l'exemple en fondu, aucun détracé ; original `sauvegardes/redteam_onb_exemple-avant-v205.py`).
+> **⚑ C-286 — « UN BANDEAU RESTE EN HAUT DES LETTRES » PENDANT UN DÉTRACÉ. TROIS CAUSES, toutes dans `variantes/trace-lettres.js`** : ① (v204, le détracé incrémental) une lettre qui finissait
+> de partir sortait des lettres en cours SANS que sa dernière image partielle soit effacée — le haut de ses traits (le départ de la plume, qui part en dernier) restait sur le canevas ; en
+> PromiLate, sa part dévoilée du texte réel (`sv`) n'était pas remise à zéro. Aujourd'hui la zone reposée de chaque image couvre aussi les lettres qui viennent de partir (`partis`) ; ② la
+> boîte effacée était celle de la CARTE de la lettre, plus petite que son encre réelle (`fillText` : le haut des capitales, les accents) — la boîte d'effacement est la réunion des deux
+> (`g.C`, 3 px de marge) ; ③ (préexistant) la découpe du texte réel montrait les lignes d'avant jusqu'à MI-CHEMIN de la ligne en cours — avec un interligne serré (un jambage plus bas que le
+> haut d'une lettre de la ligne suivante), le haut des lettres parties restait visible ; en détracé elle s'arrête au-dessus de l'encre de la ligne en cours, ce qui dépasse des lignes d'avant
+> passe par le canevas (ou le masque exact en PromiLate). **Trouvé en jugeant (préexistant)** : une espace AVALÉE au retour à la ligne (« ␣ou », « ␣par » dans la phrase du +) avançait la
+> plume : le mot se traçait 10 pt à droite de sa place puis sautait — elle garde sa pause, plus son avance. Sonde : `TraceLettres.__sondeReste`. `ctl.glyphes[i].bo` / `.bc` (les boîtes de
+> chaque lettre) servent les juges.
+> **⚑ `redteam_aspect` D (porte A1)** : chaque phrase détracée PAS À PAS (le mode manuel du module, 40 pas) sur un fond plat — à chaque pas, aucun pixel hors des boîtes des lettres pas encore
+> parties (le décor d'un descendant permis) ; l'image finale = le fond (la phrase coupée par une découpe vide : `visibility` ne cache pas un descendant qui la repose). Le guide (Studio, +,
+> Partager), l'onboarding (prénom, parole, les quatre pas de « Promi planté ! » — T'APPARTIENT compris), la page + (des copies fixes de chaque mot : la phrase se recompose), une fiche (la
+> phrase, le titre). `--sonde-reste` : il rougit (20/20 des phrases de l'onboarding et de la page +). ⚠ La phrase 2 du guide (« Le reste s'explore… ») n'est pas jugée par D : elle finit
+> d'elle-même au bout de 3 s.
+
 ### ⚑ v204 (16 nov. 2026) — C-282 REFAIT : LE DÉTRACÉ STANDARD, SEULES LES LETTRES SOUS LA FRAPPE PARTENT VITE ; « LE RESTE S'EXPLORE » ET LES PHRASES DU GUIDE GARDENT LEUR POLICE (C-284 §2) ; C-285 (redteam_aspect) ; LE DÉTRACÉ INCRÉMENTAL. (Décisions Tom : « Encore pire. » « Plus aucune régression. ») Ce bloc CORRIGE le bloc « v203 clôture définitive » qui suit (C-282 : la moitié du standard).
 > **Validé par Tom : C-283.**
 > **⚑ C-282 — MA LECTURE DU LOT D'AVANT ÉTAIT FAUSSE.** Tom voulait raccourcir SEULEMENT la fin du détracé (le début de l'exemple, qui gêne la frappe), pas tout le détracé. Aujourd'hui (`premiere`, lot-V200-DOUCEUR) : la
