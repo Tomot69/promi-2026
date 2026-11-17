@@ -5,6 +5,7 @@
   "ios": { "contentInset": "never", "scrollEnabled": false },
   "plugins": {
     "CapacitorHttp": { "enabled": true },
-    "LocalNotifications": { "presentationOptions": ["banner", "sound"] }
+    "LocalNotifications": { "presentationOptions": ["banner", "sound"] },
+    "StatusBar": { "overlaysWebView": true }
   }
 }
