@@ -1,0 +1,11 @@
+trace_present | 1 | python3 redteam_trace_present.py
+aspect | 1 | python3 redteam_aspect.py --ref=zz-ref-v207.html
+un_trace | 1 | python3 redteam_un_trace.py
+premiere | 1 | python3 redteam_premiere.py
+premiere_froid | 1 | python3 redteam_premiere_froid.py --n=5
+onb_exemple | 1 | python3 redteam_onb_exemple.py
+onb_toucher | 1 | python3 redteam_onb_toucher.py
+guide_phrase | 1 | python3 redteam_guide_phrase.py
+banc_rendu | 1 | python3 banc_rendu.py
+ecrans | 1 | python3 redteam_ecrans.py
+decisions | 1 | python3 redteam_decisions.py

@@ -252,6 +252,26 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v207 (17 nov. 2026) — CAPACITOR, SOUS CONDITION D'UNE PREUVE (C-291) ; L'OUVRIER DU TRACÉ (C-292) ; L'ASSAINISSEMENT RECENTRÉ (C-293). (Décisions Tom.)
+> **Q1 tranchée : Capacitor, sous condition** d'une preuve sur l'iPhone de Tom (fluidité ≥ Safari sur chaque animation, rendu identique, vibration ressentie,
+> notification reçue). La preuve vit sur la branche **`preuve-capacitor`** (arbre de travail `../promi-preuve-capacitor`, partie de `reference-v205`) : `capacitor/`
+> construit sa page depuis la v205 telle quelle et n'y ajoute qu'une coquille en tête (`coquille.js` : le relevé allumé et envoyé au Mac par CapacitorHttp,
+> `promiHaptique('tenir')` → Haptics, une notification locale à 1 min). `PREUVE-CAPACITOR.md`. ⚠ La signature passe par le compte Apple de Tom dans Xcode
+> (équipe B77VBMD9BF) : session expirée → Tom se reconnecte (mot de passe : lui seul). Les profils présents sur ce Mac sont ceux de Fairly : on n'y touche pas.
+> **⚑ C-292 — L'OUVRIER DU TRACÉ. LES CAUSES** (relevé de l'iPhone du 15 nov., imitées au banc : chaque ouvrier rend au plus vite toutes les 50 ms —
+> `scratchpad/v206/attente_iphone.py` reproduit 607 à 843 ms et le retour de l'exemple à 883 ms) : ① la file était servie dans l'ordre d'arrivée — la lettre
+> qu'un tracé attend passait derrière les préparations ; ② 23 % des cartes étaient calculées DEUX fois (une seconde demande pendant que la première était
+> en file) ; ③ le cache se vidait d'un coup au-delà de 600 cartes (une séance en prépare 700). **Corrigé à calcul identique** (`trace-lettres.js`) : une file
+> tenue par la page à deux priorités (`envoie(m, tr, prio)`, `promeut`), le partage des cartes en vol (`TL._vol`, par clé), jusqu'à trois ouvriers chacun
+> PROUVÉ par l'essai (`naitOuvrier`, `TL.nOuvriers`), la médiane 3 × 3 par réseau (`med9`), l'éviction de la plus ancienne carte (`TL.cacheMax` 1 500).
+> Preuve : 114 cartes réelles identiques bit pour bit (`scratchpad/v206/carte_identique.py`). Au banc imité : 0 lettre lente, le retour 420 ms. **Le relevé dit
+> maintenant `R.tl.att` (l'attente d'une lettre attendue) et `R.tl.calc` (le calcul d'une carte dans l'ouvrier)** : l'objectif (< 16 ms par lettre sur
+> l'iPhone) se lit là. ⚠ Une carte coûte 6,4 ms en moyenne dans WebKit sur le Mac : les ≈ 50 ms de l'iPhone sont à mesurer, pas à supposer.
+> ⚠ **Piège payé** : un double caché posé DANS `#onbPh` avec la classe `.v203-exw` faisait croire à l'onboarding qu'une sortie était en cours (`occupe()`) — il
+> retraçait « Toi, c'est Camille ? » au lieu de « Je me promets de… ». Rien de caché ne vit dans une phrase avec une classe qu'un autre code lit.
+> **⚑ C-293** : l'assainissement ne porte plus que sur le tracé, les flaques, les jetons et l'interface du moteur (ASSAINISSEMENT.md d). ⚠ `Promi+Design.swift` a été
+> retouché à la main après sa génération : `scratchpad/gen_swift.py` le régénère SANS `cobalt50` — ne pas le relancer avant le générateur unique.
+
 ### ⚑ v206 (17 nov. 2026) — NOUVEAU CHAPITRE : LE PROTOTYPE EST LA RÉFÉRENCE ; LA SAUVEGARDE v205 (C-287) ; C-282 LA PREMIÈRE FOIS ; VALIDATION, ARCHITECTURE, ASSAINISSEMENT (C-288 à C-290). (Décisions Tom et chef de chantier.)
 > **Le prototype `app.html` ne reçoit plus de fonction neuve : il est le cahier des charges de la vraie app. Il s'assainit à comportement STRICTEMENT identique (ASSAINISSEMENT.md : la preuve d'identité en 8 points, une étiquette `assain-N-avant` avant chaque lot, un seul écart → retour à l'étiquette).**
 > **⚑ LA RÉFÉRENCE NE SE MODIFIE JAMAIS** : étiquette git `reference-v205` (= ec27c77, poussée) et le dossier `../../Promi-reference-v205/` (hors dépôt : bundle, zip, SHA-256, états de Tom, planche de 76 captures, LISEZ-MOI). La planche se refait par `scratchpad/v206/captures_ref.py <dossier> [--fichier=]`, se compare par `scratchpad/v206/compare_planche.py <réf> <bruit> <lot>` (le bruit : une seconde passe de la référence — la matière respire).

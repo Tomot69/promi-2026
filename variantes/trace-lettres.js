@@ -78,9 +78,30 @@
   function signale(quoi, d) { var e = { quoi: quoi, t: Math.round((racine.performance && racine.performance.now()) || 0) }; if (d) for (var k9 in d) e[k9] = d[k9];
     TL.journal.push(e); if (TL.journal.length > 300) TL.journal.splice(0, 150); try { if (racine.__tlDiag) racine.__tlDiag(e); } catch (x) { } }
   TL._signale = signale;
+  /* ⚑ v207 (§2, Tom : « 600 à 924 ms par lettre sur l'iPhone ») — LA FILE DE L'OUVRIER. Relevé de l'iPhone (15 nov.) : l'ouvrier est prouvé, mais chaque lettre
+     attendue arrive 600 à 924 ms après sa demande, en montant d'≈ 50 ms par lettre : elle attend son tour DERRIÈRE les préparations (557 dans la séance), postées
+     dans l'ordre d'arrivée. Mesuré au banc : 23 % des cartes étaient calculées DEUX fois (une seconde demande de la même lettre, pendant que la première était
+     encore en file). Aujourd'hui, à calcul identique (la même `carte`, le même `restesCalc` : le rendu ne change pas d'un pixel) :
+       ① la file est tenue ICI : une lettre qu'un tracé attend passe devant les préparations (`prio` 0 contre 1), et une préparation déjà en file est promue
+          quand un tracé la demande ;
+       ② une carte déjà demandée n'est pas redemandée : la seconde demande attend la première (`TL._vol`, par clé) ;
+       ③ jusqu'à trois ouvriers en parallèle (`TL.nOuvriers`), chacun PROUVÉ par l'essai de C-206 avant de servir ; le premier prouvé sert seul en attendant ;
+       ④ chaque ouvrier n'a qu'un travail à la fois (la file reste ici, où elle peut changer d'ordre). */
+  var FILE = { q: [], seq: 0, ws: [] };
+  TL._vol = {};
+  function maintenantMs() { return (racine.performance && racine.performance.now()) || Date.now(); }
+  function pompe() {
+    for (var i = 0; i < FILE.ws.length; i++) { var x = FILE.ws[i]; if (x.occupe || !FILE.q.length) continue;
+      var b = 0; for (var j = 1; j < FILE.q.length; j++) if (FILE.q[j].prio < FILE.q[b].prio || (FILE.q[j].prio === FILE.q[b].prio && FILE.q[j].n < FILE.q[b].n)) b = j;
+      var job = FILE.q.splice(b, 1)[0]; x.occupe = job; job.envoi = maintenantMs();
+      try { x.w.postMessage(job.m, job.tr || []); } catch (e) { x.occupe = null; signale('ouvrier-envoi', { msg: String(e && e.message || e) }); var f = TL._attente[job.m.id]; delete TL._attente[job.m.id]; if (f) try { f(null); } catch (e2) { } } }
+  }
+  function envoie(m, tr, prio) { var job = { m: m, tr: tr, prio: prio ? 1 : 0, n: ++FILE.seq }; FILE.q.push(job); pompe(); return job; }
+  function promeut(id) { for (var j = 0; j < FILE.q.length; j++) if (FILE.q[j].m.id === id) FILE.q[j].prio = 0; }
+  TL._file = function () { return { attente: FILE.q.length, ouvriers: FILE.ws.length, occupes: FILE.ws.filter(function (x) { return x.occupe; }).length }; };
   function abandon(raison, d) {
-    var w = TL._ouvrierW; TL._ouvrier = null; TL._ouvrierW = null; TL.ouvrierEtat = 'abandonné : ' + raison; signale('ouvrier-abandonne', Object.assign({ raison: raison }, d || {}));
-    try { if (w) w.terminate(); } catch (x) { }
+    var ws = FILE.ws; FILE.ws = []; FILE.q = []; TL._vol = {}; var w0 = TL._ouvrierW; TL._ouvrier = null; TL._ouvrierW = null; TL.ouvrierEtat = 'abandonné : ' + raison; signale('ouvrier-abandonne', Object.assign({ raison: raison }, d || {}));
+    try { if (w0) w0.terminate(); } catch (x) { } ws.forEach(function (x) { try { x.w.terminate(); } catch (e) { } });
     var at = TL._attente; TL._attente = {}; Object.keys(at).forEach(function (k) { try { at[k](null); } catch (e) { } });
   }
   /* l'essai : une petite carte et des restes, assez pour faire passer le calcul entier par l'ouvrier */
@@ -91,32 +112,52 @@
       restes: { kind: 'restes', sansPince: false, W: w, H: h, A: a1, REC: [{ Q: [[3, 4], [9, 4], [9, 6], [3, 6]], a: [3, 5], b: [9, 5], t: 0, ln: 6, s: 0 }], segs: [[3, 5, 9, 5, 0, 6, 6, 1, 0]], steps: [{ b1: 'b', ck: -1, t0: 0, Lfin: 6, r0: 1 }], s0: 1, lx0: 0, ly0: 0, tot: 6, sc: 1 } };
   }
   function somme(a) { var s = 0; for (var i = 0; i < a.length; i++) s = (s * 31 + Math.round(a[i] * 1000)) % 1000000007; return s + ':' + a.length; }
+  var CODE = null, ATTENDU = null;
+  /* un ouvrier naît et passe l'essai ; prouvé, il rejoint la file. Le premier : son échec abandonne tout (le fil calcule) ; un suivant : seul lui part */
+  function naitOuvrier(premier) {
+    var w = new racine.Worker(racine.URL.createObjectURL(new racine.Blob([CODE], { type: 'application/javascript' }))), x = { w: w, occupe: null, prouve: false }, t0 = Date.now();
+    if (premier) TL._ouvrierW = w;
+    function perd(raison, d) { if (premier && !x.prouve) { racine.clearTimeout(minut); abandon(raison, d); return; }
+      if (x.prouve && raison === 'onerror') { abandon(raison, d); return; }
+      try { w.terminate(); } catch (e) { } FILE.ws = FILE.ws.filter(function (y) { return y !== x; }); signale('ouvrier-supplementaire-perdu', Object.assign({ raison: raison }, d || {})); }
+    var minut = racine.setTimeout(function () { if (!x.prouve) perd('pas de réponse à l\'essai en 4 s'); }, 4000);
+    w.onmessage = function (e) {
+      var m = e.data || {};
+      if (m.err) { if (m.id === -1 || !x.prouve) { racine.clearTimeout(minut); perd('erreur', { msg: m.err, pile: m.pile || '' }); return; }
+        signale('ouvrier-erreur', { msg: m.err, pile: m.pile || '' }); x.occupe = null; var f0 = TL._attente[m.id]; delete TL._attente[m.id]; if (f0) f0(null); pompe(); return; }
+      if (m.essai) { racine.clearTimeout(minut); var recu = somme(m.T) + '|' + m.D + '|' + somme(m.F);
+        if (recu === ATTENDU) { x.prouve = true; FILE.ws.push(x);
+          if (premier) { TL._ouvrier = POOL; TL.ouvrierEtat = 'prouvé'; signale('ouvrier-prouve', { ms: Date.now() - t0 });
+            var nmax = Math.max(1, Math.min(TL.nOuvriers || 3, ((racine.navigator && racine.navigator.hardwareConcurrency) || 4) - 1));
+            for (var k = 1; k < nmax; k++) { try { naitOuvrier(false); } catch (e2) { signale('ouvrier-supplementaire-perdu', { raison: 'naissance', msg: String(e2 && e2.message || e2) }); } } }
+          else signale('ouvrier-supplementaire-prouve', { ms: Date.now() - t0, n: FILE.ws.length });
+          pompe(); }
+        else perd('résultat de l\'essai différent', { recu: recu, attendu: ATTENDU });
+        return; }
+      var job = x.occupe; x.occupe = null;
+      if (job && job.envoi) { (TL.mesures.calc = TL.mesures.calc || []).push(maintenantMs() - job.envoi); if (TL.mesures.calc.length > 2000) TL.mesures.calc.splice(0, 1000); }
+      var f = TL._attente[m.id]; delete TL._attente[m.id]; if (f) { if (m.F) f(m.F); else f(m.T, m.D); }
+      pompe(); };
+    w.onerror = function (ev) { try { ev.preventDefault(); } catch (z) { } racine.clearTimeout(minut); perd('onerror', { msg: String(ev && ev.message || ''), src: String(ev && ev.filename || '').split('/').pop(), ligne: ev && ev.lineno }); };
+    var E = essai(); w.postMessage({ kind: 'essai', id: 0, carte: E.carte, restes: E.restes });
+    return x;
+  }
+  /* ce que voient les appelants : `envoie(message, transferts, prio)` (prio 1 = une préparation) */
+  var POOL = { envoie: envoie, promeut: promeut, postMessage: function (m, tr) { envoie(m, tr, 0); } };
   function ouvrier() {
     if (TL._ouvrier !== undefined) return TL._ouvrier;
     TL._ouvrier = null;
     try {
       if (TL.sansOuvrier) { TL.ouvrierEtat = 'coupé'; return null; }
       if (!SRC || !racine.Worker || !racine.Blob || !racine.URL) { TL.ouvrierEtat = 'absent'; signale('ouvrier-absent', { src: !!SRC, worker: !!racine.Worker, blob: !!racine.Blob, url: !!racine.URL }); return null; }
-      var code = 'try{importScripts(' + JSON.stringify(SRC) + ');}catch(x){postMessage({id:-1,err:"importScripts : "+(x&&x.message||x)});throw x;}'
+      CODE = 'try{importScripts(' + JSON.stringify(SRC) + ');}catch(x){postMessage({id:-1,err:"importScripts : "+(x&&x.message||x)});throw x;}'
         + 'onmessage=function(e){var d=e.data;try{if(d.kind==="essai"){var c=self.TraceLettres._carte(d.carte.A,d.carte.w,d.carte.h,d.carte.traits,d.carte.moves),F0=self.TraceLettres._restesCalc(d.restes);postMessage({id:d.id,essai:true,T:Array.prototype.slice.call(c.T),D:c.D,F:Array.prototype.slice.call(F0)});return;}'
         + 'if(d.kind==="restes"){var F=self.TraceLettres._restesCalc(d);postMessage({id:d.id,F:F},[F.buffer]);return;}var r=self.TraceLettres._carte(d.A,d.w,d.h,d.traits,d.moves);postMessage({id:d.id,T:r.T,D:r.D},[r.T.buffer]);}'
         + 'catch(x){postMessage({id:d&&d.id,err:String(x&&x.message||x),pile:String(x&&x.stack||"").slice(0,500)});}};';
-      var w = new racine.Worker(racine.URL.createObjectURL(new racine.Blob([code], { type: 'application/javascript' })));
-      TL._ouvrierW = w; TL.ouvrierEtat = 'à l\'essai';
-      var E = essai(), attendu = null, t0 = Date.now();
-      try { var c0 = carte(E.carte.A, E.carte.w, E.carte.h, E.carte.traits, E.carte.moves); attendu = somme(c0.T) + '|' + c0.D + '|' + somme(restesCalc(E.restes)); } catch (x) { attendu = 'erreur fil : ' + (x && x.message); }
-      var minut = racine.setTimeout(function () { if (TL._ouvrierW === w && TL._ouvrier !== w) abandon('pas de réponse à l\'essai en 4 s'); }, 4000);
-      w.onmessage = function (e) {
-        var m = e.data || {};
-        if (m.err) { if (m.id === -1 || TL._ouvrier !== w) { racine.clearTimeout(minut); abandon('erreur', { msg: m.err, pile: m.pile || '' }); return; }
-          signale('ouvrier-erreur', { msg: m.err, pile: m.pile || '' }); var f0 = TL._attente[m.id]; delete TL._attente[m.id]; if (f0) f0(null); return; }
-        if (m.essai) { racine.clearTimeout(minut); var recu = somme(m.T) + '|' + m.D + '|' + somme(m.F);
-          if (recu === attendu) { TL._ouvrier = w; TL.ouvrierEtat = 'prouvé'; signale('ouvrier-prouve', { ms: Date.now() - t0 }); }
-          else abandon('résultat de l\'essai différent', { recu: recu, attendu: attendu });
-          return; }
-        var f = TL._attente[m.id]; delete TL._attente[m.id]; if (f) { if (m.F) f(m.F); else f(m.T, m.D); } };
-      w.onerror = function (ev) { try { ev.preventDefault(); } catch (x) { } racine.clearTimeout(minut); abandon('onerror', { msg: String(ev && ev.message || ''), src: String(ev && ev.filename || '').split('/').pop(), ligne: ev && ev.lineno }); };
-      w.postMessage({ kind: 'essai', id: 0, carte: E.carte, restes: E.restes });
+      TL.ouvrierEtat = 'à l\'essai';
+      var E = essai();
+      try { var c0 = carte(E.carte.A, E.carte.w, E.carte.h, E.carte.traits, E.carte.moves); ATTENDU = somme(c0.T) + '|' + c0.D + '|' + somme(restesCalc(E.restes)); } catch (x) { ATTENDU = 'erreur fil : ' + (x && x.message); }
+      naitOuvrier(true);
     } catch (e) { TL._ouvrier = null; TL._ouvrierW = null; TL.ouvrierEtat = 'naissance impossible'; signale('ouvrier-naissance', { msg: String(e && e.message || e) }); }
     return TL._ouvrier;
   }
@@ -173,6 +214,18 @@
 
   /* ── la carte de temps d'un glyphe : A = l'alpha du glyphe rendu (w × h), traits en pixels de cette image ──
      rend {T: Float32Array (temps de chaque pixel, en pixels de chemin), D: durée totale} */
+  /* v207 (§2) : la médiane de neuf valeurs (le réseau de Paeth et Devillard, 19 échanges) — exactement la cinquième valeur du tri croissant */
+  function med9(v) {
+    var p0 = v[0], p1 = v[1], p2 = v[2], p3 = v[3], p4 = v[4], p5 = v[5], p6 = v[6], p7 = v[7], p8 = v[8], t;
+    if (p1 > p2) { t = p1; p1 = p2; p2 = t; } if (p4 > p5) { t = p4; p4 = p5; p5 = t; } if (p7 > p8) { t = p7; p7 = p8; p8 = t; }
+    if (p0 > p1) { t = p0; p0 = p1; p1 = t; } if (p3 > p4) { t = p3; p3 = p4; p4 = t; } if (p6 > p7) { t = p6; p6 = p7; p7 = t; }
+    if (p1 > p2) { t = p1; p1 = p2; p2 = t; } if (p4 > p5) { t = p4; p4 = p5; p5 = t; } if (p7 > p8) { t = p7; p7 = p8; p8 = t; }
+    if (p0 > p3) { t = p0; p0 = p3; p3 = t; } if (p5 > p8) { t = p5; p5 = p8; p8 = t; } if (p4 > p7) { t = p4; p4 = p7; p7 = t; }
+    if (p3 > p6) { t = p3; p3 = p6; p6 = t; } if (p1 > p4) { t = p1; p1 = p4; p4 = t; } if (p2 > p5) { t = p2; p2 = p5; p5 = t; }
+    if (p4 > p7) { t = p4; p4 = p7; p7 = t; } if (p4 > p2) { t = p4; p4 = p2; p2 = t; } if (p6 > p4) { t = p6; p6 = p4; p4 = t; }
+    if (p4 > p2) { t = p4; p4 = p2; p2 = t; }
+    return p4;
+  }
   function carte(A, w, h, traits, moves) {
     var n = w * h, T = new Float32Array(n), own = new Int16Array(n), Tl = new Float32Array(n), k, i, x, y, p;
     /* ⚑ v147 (Tom, C-125 : « les barres du t et du f ») — UNE BARRE QUI TRAVERSE UN FÛT. Le chemin d'une barre droite part de l'axe du fût (un
@@ -426,6 +479,9 @@
         c9 = 0;
         var op = tr[p];
         for (b9 = -rf; b9 <= rf; b9++) { var yy = y + b9; if (yy < 0 || yy >= h) continue; for (a9 = -rf; a9 <= rf; a9++) { var xx = x + a9; if (xx < 0 || xx >= w) continue; q = yy * w + xx; if (A[q] && (op < 0 || tr[q] === op || tr[q] < 0)) v9[c9++] = T[q]; } }
+        /* ⚑ v207 (§2) : neuf voisins (le cas courant) — la médiane par un réseau de 19 comparaisons, la MÊME valeur que le tri (une médiane est une valeur
+           exacte ; le tri par insertion prenait le tiers du temps de la carte) ; moins de neuf : le tri d'origine */
+        if (c9 === 9) { T2[p] = med9(v9); continue; }
         for (a9 = 1; a9 < c9; a9++) { t9 = v9[a9]; b9 = a9 - 1; while (b9 >= 0 && v9[b9] > t9) { v9[b9 + 1] = v9[b9]; b9--; } v9[b9 + 1] = t9; }
         T2[p] = c9 >= 5 ? v9[(c9 - 1) >> 1] : T[p];   /* la médiane basse : au bord, une rangée ne prend pas l'instant de la suivante */
       }
@@ -833,8 +889,10 @@
           for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++) { if (!dx && !dy) continue; var x2 = xx + dx, y2 = yy + dy; if (x2 < 0 || y2 < 0 || x2 >= w || y2 >= hh) continue; q = y2 * w + x2; if (A[q] && T0b[q] > M) M = T0b[q]; }
           if (M > -Infinity && T0b[p] > M + 2 * sup) { T0[p] = M; if (T1[p] < M) T1[p] = M; } } })();
       g.im = R.im; g.A = A; g.T = T0; g.T1 = T1; g.sup = sup; g.D = D; g.pret = true; g.attente = false;
-      if (TL._cacheN > 600) { TL._cache = {}; TL._cacheN = 0; }
-      TL._cache[R.cle] = { im: new Uint8ClampedArray(R.im.data), A: A, T: T0, T1: T1, sup: sup, D: D }; TL._cacheN++;
+      /* ⚑ v207 (§2) : au-delà de `TL.cacheMax` cartes, la plus ancienne part — avant, tout le cache se vidait d'un coup au-delà de 600 (une séance en prépare 700) */
+      if (!(R.cle in TL._cache)) { TL._cacheN++; while (TL._cacheN > (TL.cacheMax || 1500)) { var k0 = Object.keys(TL._cache)[0]; delete TL._cache[k0]; TL._cacheN--; } }
+      TL._cache[R.cle] = { im: new Uint8ClampedArray(R.im.data), A: A, T: T0, T1: T1, sup: sup, D: D };
+      if (g.tDem) { (TL.mesures.att = TL.mesures.att || []).push(racine.performance.now() - g.tDem); if (TL.mesures.att.length > 2000) TL.mesures.att.splice(0, 1000); g.tDem = 0; }
       if (TL._debug) (TL._bas = TL._bas || []).push({ car: g.car, w: g.w, h: g.h, T0: T0, T1: T1, D: D, sup: sup, A: A });
     }
     function prepare(g) {
@@ -851,11 +909,22 @@
       if (depuisCache(g)) return;
       var w = (o.manuel || o.surPlace) ? null : ouvrierPret();   /* v204 : `surPlace` — un texte d'une à trois lettres calcule ses cartes ici (il n'attend pas la file de l'ouvrier) */
       if (!w) { prepare(g); return; }
+      if (!prep) g.tDem = racine.performance.now();   /* v207 : l'attente d'une lettre qu'un tracé attend (le relevé : `R.tl.att`) */
+      /* ⚑ v207 (§2) : la même carte déjà demandée (même clé : lettre, taille, couleur, place dans le pixel) — on attend la sienne, on ne la recalcule pas ;
+         un tracé qui l'attend la fait passer devant les préparations */
+      var cle = cleDe(g), v = TL._vol[cle];
+      if (v) { var R0 = v.R; g.attente = true;
+        g.surPlace = function () { if (g.pret) return; var c = carte(R0.A2, R0.W2, R0.H2, R0.traits, R0.moves); finit(g, R0, c.T, c.D); };
+        v.cbs.push(function (T, D) { if (g.pret) return; if (mort) { if (T) try { finit(g, R0, T, D); } catch (e) { } return; } if (!T) { g.attente = false; try { g.surPlace(); } catch (e) { } return; } finit(g, R0, T, D); });
+        if (!prep && w.promeut) w.promeut(v.id);
+        return; }
       var d0 = racine.performance.now(), R = rendGlyphe(g), id = ++TL._nId; g.attente = true;
+      v = TL._vol[cle] = { R: R, id: id, cbs: [] };
       /* v170c : si l'ouvrier tarde, la plume fait le MÊME calcul sur place (`surPlace`) — sa réponse, arrivée ensuite, est ignorée */
-      g.surPlace = function () { if (g.pret) return; delete TL._attente[id]; var c = carte(R.A2, R.W2, R.H2, R.traits, R.moves); finit(g, R, c.T, c.D); };
-      TL._attente[id] = function (T, D) { if (g.pret) return; if (mort) { if (T) try { finit(g, R, T, D); } catch (e) { } return; } if (!T) { g.attente = false; try { g.surPlace(); } catch (e) { } return; } finit(g, R, T, D); };
-      try { w.postMessage({ id: id, A: R.A2, w: R.W2, h: R.H2, traits: R.traits, moves: R.moves }); } catch (e) { delete TL._attente[id]; g.attente = false; prepare(g); return; }
+      g.surPlace = function () { if (g.pret) return; var c = carte(R.A2, R.W2, R.H2, R.traits, R.moves); finit(g, R, c.T, c.D); };
+      v.cbs.push(function (T, D) { if (g.pret) return; if (mort) { if (T) try { finit(g, R, T, D); } catch (e) { } return; } if (!T) { g.attente = false; try { g.surPlace(); } catch (e) { } return; } finit(g, R, T, D); });
+      TL._attente[id] = function (T, D) { if (TL._vol[cle] === v) delete TL._vol[cle]; v.cbs.forEach(function (f) { try { f(T, D); } catch (e) { } }); };
+      try { if (w.envoie) w.envoie({ id: id, A: R.A2, w: R.W2, h: R.H2, traits: R.traits, moves: R.moves }, null, prep); else w.postMessage({ id: id, A: R.A2, w: R.W2, h: R.H2, traits: R.traits, moves: R.moves }); } catch (e) { delete TL._attente[id]; if (TL._vol[cle] === v) delete TL._vol[cle]; g.attente = false; prepare(g); return; }
       TL.mesures.prep.push(racine.performance.now() - d0); if (TL.mesures.prep.length > 4000) TL.mesures.prep.splice(0, 2000);
     }
     /* ── v170b : le dévoilement vectoriel d'une lettre de PromiLate ── */
@@ -1082,7 +1151,7 @@
           TL._attente[id] = function (F) { if (F) garde(F); if (mort || g.pret) return; if (!F) { g.surPlace(); return; } pose5(F); g.attente = false; g.pret = true; };
           /* ⚑ v170c : on envoie une COPIE de l'encre (avant, son tampon était transféré : si l'ouvrier échouait, le repli calculait sur un tableau vide) */
           var Dw = {}; for (var kw in D) Dw[kw] = D[kw]; Dw.A = new Uint8Array(a1); Dw.id = id;
-          try { w.postMessage(Dw, [Dw.A.buffer]); return; } catch (e) { delete TL._attente[id]; g.attente = false; g.pret = true; signale('ouvrier-envoi', { msg: String(e && e.message || e) }); } }
+          try { if (w.envoie) w.envoie(Dw, [Dw.A.buffer], prep); else w.postMessage(Dw, [Dw.A.buffer]); return; } catch (e) { delete TL._attente[id]; g.attente = false; g.pret = true; signale('ouvrier-envoi', { msg: String(e && e.message || e) }); } }
         if (TL._debug) D.dbg = true; var r0 = racine.performance.now(), F1 = restesCalc(D); garde(F1); pose5(F1); g.pret = true; TL.mesures.restes.push(['fil', g.car, racine.performance.now() - r0]);
         if (TL._debug && D.out) (TL._Tmap = TL._Tmap || []).push({ car: g.car, X0: Math.floor((g.bx0 - 2 * kech) * dpr), Y0: Math.floor((g.by0 - 2 * kech) * dpr), W: W2, H: H2, tot: g.vs.tot, o: D.out, tX: tX, tY: tY, oyabs: (O[1]) * dpr, oxabs: O[0] * dpr });
       } catch (e) { g.vl = null; g.pret = true; g.attente = false; signale('restes-erreur', { car: g.car, msg: String(e && e.message || e), pile: String(e && e.stack || '').slice(0, 400) }); }

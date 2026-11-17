@@ -2640,7 +2640,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v206', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v207', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -2766,8 +2766,8 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
         if(ENV.premier){ R.version=V.marque(); R.ua=navigator.userAgent; ENV.premier=false; }
         if(ets!==ENV.etat){ R.etat=et; ENV.etat=ets; } if(ecs!==ENV.ecran){ R.ecran=ec; ENV.ecran=ecs; }
         /* ⚑ v203 (retours sur 58a4ff9, §5) : l'OUVRIER du tracé des lettres — sur l'iPhone, une lettre coûtait ≈ 100 ms au fil principal (11 au banc) ; le relevé dit s'il travaille, ce qu'il a abandonné, et ce que le fil a calculé à sa place */
-        try{ var TLx=window.TraceLettres; if(TLx){ var J=(TLx.journal||[]).filter(function(j){ return /^ouvrier/.test(j.quoi) || (j.quoi==='trace-fin' && (j.attente>150 || j.imagesLongues>2)); }), M=TLx.mesures||{}, pr=(M.prep||[]), sp=0; for(var i=0;i<pr.length;i++) sp+=pr[i];
-            var tl={etat:TLx.ouvrierEtat||'?', j:J.slice(-12).map(function(j){ var o={}; for(var k in j) if(k!=='pile') o[k]=(typeof j[k]==='string') ? j[k].slice(0,80) : j[k]; return o; }), prepN:pr.length, prepMs:Math.round(sp), prepMax:Math.round(Math.max.apply(null, pr.concat([0]))), cacheR:M.cacheR||0, lents:TLx._lents||0}, tls=JSON.stringify(tl);
+        try{ var TLx=window.TraceLettres; if(TLx){ var qq=function(a){ if(!a||!a.length) return null; var s=a.slice().sort(function(x,y){ return x-y; }), f=function(k){ return Math.round(s[Math.min(s.length-1, Math.floor(k*s.length))]); }; return {n:s.length, p50:f(.5), p95:f(.95), max:f(1)}; };   /* v207 (§2) : l'attente d'une lettre qu'un tracé attend (`att`) et le calcul d'une carte dans l'ouvrier (`calc`), en ms */ var J=(TLx.journal||[]).filter(function(j){ return /^ouvrier/.test(j.quoi) || (j.quoi==='trace-fin' && (j.attente>150 || j.imagesLongues>2)); }), M=TLx.mesures||{}, pr=(M.prep||[]), sp=0; for(var i=0;i<pr.length;i++) sp+=pr[i];
+            var tl={etat:TLx.ouvrierEtat||'?', j:J.slice(-12).map(function(j){ var o={}; for(var k in j) if(k!=='pile') o[k]=(typeof j[k]==='string') ? j[k].slice(0,80) : j[k]; return o; }), prepN:pr.length, prepMs:Math.round(sp), prepMax:Math.round(Math.max.apply(null, pr.concat([0]))), cacheR:M.cacheR||0, lents:TLx._lents||0, att:qq(M.att), calc:qq(M.calc), file:(TLx._file?TLx._file():null)}, tls=JSON.stringify(tl);
             if(tls!==ENV.tl){ R.tl=tl; ENV.tl=tls; } } }catch(_){ }
         ENV.tags=TAGS.length; ENV.modes=MODES.length;
         try{ fetch('releve', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:!!force}).catch(function(){}); }catch(_){ } }

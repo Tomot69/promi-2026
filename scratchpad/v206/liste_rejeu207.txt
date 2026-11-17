@@ -1,0 +1,4 @@
+premiere_new | 1 | python3 redteam_premiere.py
+premiere_ref | 1 | python3 redteam_premiere.py --fichier=zz-ref-v207.html
+froid_new | 1 | python3 redteam_premiere_froid.py --n=5
+froid_ref | 1 | python3 redteam_premiere_froid.py --n=5 --fichier=zz-ref-v207.html

@@ -54,3 +54,20 @@ n'apparaît nulle part hors de son propre corps. Quatre faux positifs écartés 
 | `redteam_aspect` | 48/49 : « Promi planté ! », pas 2, B à 0,65 % — **préexistant, et c'est l'instrument** : v205 servie sous le nom `app.html` donne le même 0,65 % ; le même contenu servi sous un autre nom passe (le serveur réécrit `app.html` en le servant, la référence `zz-v205.html` ne l'est pas) |
 | `redteam_joignable` | 4/5 : « LA COULEUR » (mur du Peaufiner d'un Cercle) relevé sans son code couleur — **préexistant** : v205 servie depuis l'archive donne le même 4/5 |
 | `redteam_trace_present` | 118/121 : trois cadences d'images pendant les tracés, déjà ouvertes sur la référence (REPRISE b-2) ; aucune présence en défaut |
+
+## d) v207 — l'assainissement recentré sur les modules repris (décision du 17 nov. : Capacitor ; l'app sera reconstruite autour)
+
+L'assainissement ne porte plus que sur ce qui passera dans la vraie app : **le tracé** (`trace-lettres.js`, PromiLate compris), **les flaques**, **les jetons**,
+**l'interface d'appel du moteur** (le moteur reste en lecture seule). Le CSS du prototype n'est pas touché (CLAUDE.md §9).
+
+| Module | Ce qui est fait (v207) | Preuve |
+|---|---|---|
+| `trace-lettres.js` | L'ouvrier refait autour d'une **file tenue par la page** : la lettre qu'un tracé attend passe devant les préparations ; une carte déjà demandée est attendue, jamais recalculée (23 % des cartes l'étaient deux fois) ; trois ouvriers prouvés chacun par l'essai de C-206 ; la médiane 3 × 3 par un réseau de 19 comparaisons (la même valeur ; elle prenait le tiers du temps de la carte) ; le cache évince la plus ancienne carte au lieu de se vider au-delà de 600 ; le relevé dit l'attente d'une lettre et le calcul d'une carte (`R.tl.att`, `R.tl.calc`). 1 287 → 1 356 lignes. | les 114 cartes réelles identiques **bit pour bit** à l'ancien module (WebKit, Chromium) ; `banc_rendu` (seul Ramage, comme la référence) ; `redteam_aspect` 48/49 (le rouge préexistant de l'instrument) ; `trace_present` 25/25 en ouvrier lent ; `premiere` 48/48, `premiere_froid` 30/30, `un_trace` 5/5, `onb_exemple` 11/11, `onb_toucher` 16/16, `ecrans` 152/152, `decisions` 102/102 |
+| `flaques.js` | Relu : aucune fonction morte, aucune propriété orpheline. Rien à retirer. | — |
+| Les jetons | **Dette trouvée** : `Promi+Design.swift` a été retouché à la main après sa génération (v134–v135 : `cobalt50`, deux commentaires) — le régénérer depuis le JSON les perd ; aucun outil n'engendre le bloc `lot-TOKENS-css` depuis le JSON (`scratchpad/regen_tokens.py` va dans l'autre sens, un rattrapage d'août) ; les deux générateurs vivent dans `scratchpad/` (interdit, v198). `redteam_tokens` 41/43 (23 couleurs et 4 polices en dur, antérieures). | à faire : **un seul générateur à la racine** (JSON → bloc CSS, Swift, TypeScript), prouvé octet pour octet contre l'existant, avant la reconstruction |
+| L'interface du moteur | Relevée : l'app appelle 53 méthodes de `Toile` et 15 globales `Toile_*` (les plus employées : `dalleAbs` 46, `dalleTrame` 42, `sync` 40, `cols` 26, `mondeCourant` 23). | à faire : la porte unique du moteur (ARCHITECTURE b-3) se bâtit dans la vraie app, depuis cette liste |
+
+**Ce qui n'est pas fait** : préparer d'avance les lettres du retour de l'exemple (le reste de C-282). Essayé sur une copie exacte de l'exemple : la préparation
+a lieu 2,5 s avant le retour, mais ses clés de carte ne sont pas celles du retour (le retour ne trouve rien en cache ; une préparation faite après lui trouve
+tout) — la géométrie de l'exemple au retour diffère de celle de sa première apparition, d'une façon non nommée. Retiré. Avec la file, le retour attend 420 ms
+au lieu de 883 (ouvrier imité de l'iPhone), et aucune lettre n'est plus « lente ».
