@@ -45888,6 +45888,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var inn=el.querySelector(':scope > .v200-mt'); if(inn){ try{ TL().poseTout(inn); }catch(_){ } inn.style.removeProperty('clip-path'); inn.style.removeProperty('-webkit-clip-path'); }
     var cv=el.querySelector(':scope > canvas.v200-fl'); if(cv) cv.remove(); ['width','box-sizing','transition','border-width','position','isolation','justify-content'].forEach(function(p){ el.style.removeProperty(p); }); }
   function premiere(el, html, cls){
+    /* ⚑ v206 (§1, C-282 « la première fois seulement ») — LA COPIE QUI S'EFFACE EST CE QU'ON VOYAIT, NI PLUS NI MOINS. Relevé de l'iPhone (15 nov.) : au premier
+       usage, les lettres de l'exemple ne sont pas en cache ; l'ouvrier, occupé par les préparations, les rend après 600 à 924 ms ; l'exemple reste découpé (rien n'en
+       paraît) jusqu'à 969 ms, puis se trace. Une lettre tapée pendant ce temps faisait poser l'exemple ENTIER (`coupe` → `poseTout`), qui partait ensuite en 150 ms :
+       un éclair de l'exemple complet, la première fois seulement (la seconde, les lettres sont en cache : l'exemple est fini avant la frappe). On relève ce qui est
+       visible de l'exemple AVANT de couper son tracé : sa découpe (les lettres finies) et le canevas des lettres en cours ; la copie ne montre que cela. Rien de visible :
+       la copie est vide (rien ne paraît, rien ne part). L'exemple entier, tracé fini : rien ne change. */
+    var vu=null, inn0=el.querySelector(':scope > .v200-mt'), st0=el.__v200;
+    if(inn0 && st0 && !st0.fini && st0.phase!=='premiere'){ try{
+        var cp0=(inn0.style.getPropertyValue('clip-path')||'').trim(), tr0=inn0.__trace, cv0=(tr0 && tr0.canevas && tr0.canevas.isConnected) ? tr0.canevas : null;
+        if(cp0 && cp0!=='none'){ vu={clip:cp0, r:inn0.getBoundingClientRect(), rien:/^polygon\(0px 0px,\s*0px 0px,\s*0px 0px\)$/.test(cp0)};
+          if(cv0 && cv0.width && cv0.height){ var cl0=document.createElement('canvas'); cl0.width=cv0.width; cl0.height=cv0.height; cl0.getContext('2d').drawImage(cv0, 0, 0); vu.cv=cl0; vu.cvr=cv0.getBoundingClientRect(); vu.rien=false; } }
+      }catch(_){ vu=null; } }
     coupe(el);
     var st=el.__v200; if(st && !st.fini){ st.cible={html:html, cls:cls, brut:true}; return; }
     if(reduit() || !TL() || !visible(el) || !window._passageFlaques){ pose(el, {html:html, cls:cls}); return; }
@@ -45936,6 +45948,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var wr=couche(); wr.className='v203-exw';
     var G0=gh.getBoundingClientRect(); gh.parentNode.insertBefore(wr, gh); wr.appendChild(gh); var G1=gh.getBoundingClientRect();
     gh.style.setProperty('left', ((parseFloat(gh.style.left)||0)+(G0.left-G1.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((parseFloat(gh.style.top)||0)+(G0.top-G1.top)/sc)+'px', 'important');
+    /* v206 (§1) : la copie réduite à ce qu'on voyait (`vu`) — la découpe du tracé interrompu reportée sur le texte de la copie (recalée sur sa place), le canevas des
+       lettres en cours recopié à sa place ; tous deux partent avec la copie */
+    var vuCv=null;
+    if(vu){ try{ if(vu.rien) gh.style.setProperty('clip-path', 'polygon(0px 0px,0px 0px,0px 0px)', 'important');
+        else { var sp=document.createElement('span'); sp.className='v206-vu'; while(gh.firstChild) sp.appendChild(gh.firstChild); gh.appendChild(sp);
+          var R2=sp.getBoundingClientRect(), k2=ech(), D2x=(R2.left-vu.r.left)/k2, D2y=(R2.top-vu.r.top)/k2, c2=vu.clip;
+          if((Math.abs(D2x)>0.01 || Math.abs(D2y)>0.01) && /^polygon\(/.test(c2)) c2=c2.replace(/(-?[\d.]+)px\s+(-?[\d.]+)px/g, function(_, a, b){ return (+a - D2x).toFixed(2)+'px '+(+b - D2y).toFixed(2)+'px'; });
+          sp.style.setProperty('clip-path', c2, 'important'); sp.style.setProperty('-webkit-clip-path', c2, 'important'); note({vu:'partiel', dx:+D2x.toFixed(2), dy:+D2y.toFixed(2)}); }
+        if(vu.cv){ var W2=wr.getBoundingClientRect(), k3=ech(); vuCv=vu.cv; vuCv.className='v206-vucv'; vuCv.setAttribute('aria-hidden','true');
+          ['position:absolute','margin:0','pointer-events:none','left:'+((vu.cvr.left-W2.left)/k3)+'px','top:'+((vu.cvr.top-W2.top)/k3)+'px','width:'+(vu.cvr.width/k3)+'px','height:'+(vu.cvr.height/k3)+'px'].forEach(function(d){ var i=d.indexOf(':'); vuCv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+          wr.appendChild(vuCv); }
+        if(vu.rien) note({vu:'rien'}); }catch(_){ } }
     var E0=el.getBoundingClientRect(), DX=0, DY=0;
     function ech(){ try{ var r=gh.getBoundingClientRect(); return (gh.offsetWidth ? r.width/gh.offsetWidth : sc) || sc || 1; }catch(_){ return sc||1; } }
     /* la place peut bouger pendant ces 150 ms (une recomposition de la phrase) : la copie la suit */
@@ -45951,8 +45975,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var oteA=false, ote=function(){ oteA=true; try{ window.__apresContinu.delete(masque); }catch(_){ } if(wr.parentNode) wr.parentNode.removeChild(wr); if(window.__ppToutApres && window._ppTout && !document.querySelector('#createSheet .v203-exw')){ window.__ppToutApres=0; try{ window._ppTout(); }catch(_){ } } };
     /* l'opacité, à chaque image, depuis l'instant de la frappe (la première image est déjà plus claire) */
     var AV=16.7;   /* la courbe part une image avant la frappe : l'image qui suit est déjà plus claire, et l'opacité ne fait que baisser ; la fin reste 150 ms après la frappe */
-    function fondu(){ if(!wr.isConnected) return; var p=Math.min(1, (performance.now()-tF+AV)/(FONDU+AV)), e=1-Math.pow(1-p, 2); gh.style.setProperty('opacity', (1-e).toFixed(4), 'important'); masque(); if(p>=1){ ote(); return; } requestAnimationFrame(fondu); }
-    gh.style.setProperty('opacity', Math.pow(1-AV/(FONDU+AV), 2).toFixed(4), 'important'); try{ masque(); }catch(_){ } requestAnimationFrame(fondu);   /* l'image qui suit la frappe est déjà plus claire (le pas d'une image) */
+    function fondu(){ if(!wr.isConnected) return; var p=Math.min(1, (performance.now()-tF+AV)/(FONDU+AV)), e=1-Math.pow(1-p, 2); gh.style.setProperty('opacity', (1-e).toFixed(4), 'important'); if(vuCv) vuCv.style.setProperty('opacity', (1-e).toFixed(4), 'important'); masque(); if(p>=1){ ote(); return; } requestAnimationFrame(fondu); }
+    gh.style.setProperty('opacity', Math.pow(1-AV/(FONDU+AV), 2).toFixed(4), 'important'); if(vuCv) vuCv.style.setProperty('opacity', gh.style.getPropertyValue('opacity'), 'important'); try{ masque(); }catch(_){ } requestAnimationFrame(fondu);   /* l'image qui suit la frappe est déjà plus claire (le pas d'une image) */
     (window.__apresContinu=window.__apresContinu||new Set()).add(masque);   /* après les glissements de la phrase (lot-V203-CONTINU), dans la même image */
     try{ var ro=new ResizeObserver(function(){ if(!wr.isConnected){ ro.disconnect(); return; } masque(); }); ro.observe(el); }catch(_){ }
     window.__v203masque=masque;
