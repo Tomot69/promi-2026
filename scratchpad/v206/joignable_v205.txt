@@ -1,0 +1,13 @@
+
+── A · au rendu : 351 éléments interactifs relevés sur 36 écrans, 4 injoignables (distincts)
+   NEUF  div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR»     mur flouté (pointer-events:none)   [Peaufiner Nuée]
+── B · à la source : 487 gestionnaires, 942 appels, 4 défauts (fonction absente ou nœud disparu)
+
+la page se charge sans erreur                              OK  
+des éléments ont été relevés sur chaque écran              OK  36 écrans
+aucun élément interactif injoignable hors dette            KO  1 neufs, 3 en dette
+aucun gestionnaire n'appelle une fonction absente hors dette OK  0 neufs, 4 en dette
+aucun gestionnaire en attribut on…=""                      OK  0
+   (dette soldée, à retirer de joignable-dette.json : div#npCercle.s2-cercle>div.s2-reg.s2-couleur«LA COULEUR#FFB8D2»)
+
+4 / 5

@@ -1,0 +1,10 @@
+banc_rendu | 1 | python3 banc_rendu.py
+aspect | 1 | python3 redteam_aspect.py --ref=zz-v205.html
+captures_lot1 | 1 | python3 scratchpad/v206/captures_ref.py scratchpad/v206/captures-lot1
+captures_v205b | 1 | python3 scratchpad/v206/captures_ref.py scratchpad/v206/captures-v205b --fichier=zz-v205.html
+joignable | 1 | python3 redteam_joignable.py
+partage_fiche | 1 | python3 redteam_partage_fiche.py
+ecrans | 1 | python3 redteam_ecrans.py
+decisions | 1 | python3 redteam_decisions.py
+couleurs_ref | 1 | python3 redteam_couleurs_ref.py
+trace_present | 1 | python3 redteam_trace_present.py

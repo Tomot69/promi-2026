@@ -1,0 +1,45 @@
+let ccId=null;
+function closeCard(){const c=$('#cellCard');if(c)c.classList.remove('show');scrim.classList.remove('show');}
+function openCell(id){
+  const p=promises.find(x=>x.id===id);if(!p)return;
+  var _da=null; try{ if(window.Toile&&window.Toile.dalleAbs) _da=window.Toile.dalleAbs(id); }catch(e){}
+  const rec=_da?{id:id,poly:_da.poly}:cellPolys.find(c=>c.id===id);
+  if(!rec){openDetail(id);return;}
+  const poly=rec.poly;let a=1e9,b=1e9,mx=-1e9,my=-1e9;poly.forEach(q=>{a=Math.min(a,q[0]);b=Math.min(b,q[1]);mx=Math.max(mx,q[0]);my=Math.max(my,q[1]);});
+  const bw=Math.max(1,mx-a),bh=Math.max(1,my-b),CW=250,CH=Math.max(178,Math.min(236,Math.round(CW*bh/bw)));
+  const pad=8,s=Math.min((CW-2*pad)/bw,(CH-2*pad)/bh),ox=(CW-bw*s)/2,oy=(CH-bh*s)/2;
+  const fit=poly.map(q=>[ox+(q[0]-a)*s,oy+(q[1]-b)*s]),d=roundPath(fit,((STRUCT[state.structure]&&STRUCT[state.structure].round)||10)*s);
+  const pal=MOODS[state.mood],st=STRUCT[state.structure];let c=HX(pal[p.id%pal.length]);
+  if(st.tint==='aqua')c=watercolor(c);if(st.jewel)c=jewel(c);
+  const hi=heroIndex(),idx=promises.indexOf(p);
+  const edge=idx===hi?'#82AEF8':p.status==='rate'?'#8F8B79':p.status==='tenu'?RS(lighten(c,.12)):RS(c);
+  const svg=$('#ccSvg');svg.setAttribute('viewBox','0 0 '+CW+' '+CH);
+  svg.innerHTML='<path d="'+d+'" fill="'+edge+'" opacity="0.09"/><path d="'+d+'" fill="var(--surf)" fill-opacity="0.93" stroke="'+edge+'" stroke-width="2.4" stroke-linejoin="round"/>';
+  $('#cellCard').style.height=CH+'px';
+  $('#ccTo').textContent=p.who?('à — '+p.who):'à — moi';
+  $('#ccT').textContent=p.title||'';
+  {let _m=p.draft?'brouillon':p.status==='tenu'?'tenue':(p.enLair?'en l’air':(p.due==null?'en l’air':(p.due<=1?'échéance demain':'échéance dans '+p.due+' j')));if(p.recur)_m+=' · ↻ '+({daily:'quotidien',weekly:'hebdo',monthly:'mensuel'}[p.recur]||p.recur);if(p.remind)_m+=' · ⏰ '+p.remind;$('#ccM').textContent=_m;var _cn=$('#ccNote');if(_cn){_cn.textContent=p.note||'';_cn.style.display=p.note?'block':'none';}}
+  ccId=id;closeAll();var _a=$('#ccActs');if(_a)_a.style.display='';var _o=$('#ccPushOpts');if(_o)_o.style.display='none';$('#cellCard').classList.add('show');scrim.classList.add('show');
+}
+if($('#ccKeep'))$('#ccKeep').onclick=function(e){ if(e&&e.stopPropagation)e.stopPropagation(); closeCard(); };   /* v163b (C-189) : la carte de la Toile (`openCell`, que plus rien n'ouvre) ne tient plus une parole d'un toucher, sans message de compte — une parole se tient par le trait */
+if($('#ccPush'))$('#ccPush').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();var a=$('#ccActs');if(a)a.style.display='none';var o=$('#ccPushOpts');if(o)o.style.display='flex';};
+$$('#ccPushOpts button').forEach(function(b){b.onclick=function(e){if(e&&e.stopPropagation)e.stopPropagation();var p=promises.find(x=>x.id===ccId);if(p){p.due=Math.max(0,p.due||0)+(+b.getAttribute('data-d'));if(typeof feedAdd==='function')feedAdd('added','« '+p.title+' » reportée de '+b.textContent.trim(),{pid:p.id});render();if(typeof caption==='function')caption();}closeCard();};});
+if($('#ccManage'))$('#ccManage').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();const id=ccId;closeCard();openDetail(id);};
+----
+ /* Toile.dalleTrame() rend la dalle reelle d'un Promi dans le monde actif.
+    _pdImgs et PROMI_DALLES vivent dans une IIFE : ils ne sont pas accessibles ici. */
+ /* ⚑ v15 · pendant qu'on DÉPLACE la Pelote, la planche se recompose à chaque case
+    franchie : 18 `dalleTrame` par passe coûtaient ~130 ms (mesuré), le doigt aurait
+    traîné. Le cache par id tient le temps du geste (§4 : « un cache par id, le temps
+    de la passe » — ici la passe est le geste), et il tombe au lâcher. */
+ var _cache=(window._shPelPrise&&window._shPlancheCache)?window._shPlancheCache:{};
+ if(window._shPelPrise) window._shPlancheCache=_cache; else window._shPlancheCache=null;
+ function _dalleReelle(pid){
+  if(_cache[pid]!==undefined)return _cache[pid];
+  var t=null;
+  try{ if(window.Toile&&window.Toile.dalleTrame&&window.Toile.dalleAbs){
+    var d=window.Toile.dalleAbs(pid);
+    if(d&&d.w){ var c=document.createElement('canvas');
+      if(window.Toile.dalleTrame(c,pid,1)&&c.width>2)t=c; } } }catch(e){}
+  _cache[pid]=t; return t;
+ }
