@@ -78,7 +78,8 @@
   "roles": {
     "fond": {
       "clair": "#F7F0DE",
-      "sombre": "#050302"
+      "sombre": "#050302",
+      "note": "la seiche — v116, v121 ; corrigé en v135 : le jeu portait encore #100D0B"
     },
     "encre": {
       "clair": "#201908",
@@ -174,7 +175,8 @@
     },
     "corps-promi": {
       "clair": "#CFE5FE",
-      "sombre": "#0E78F2"
+      "sombre": "#0E78F2",
+      "note": "DÉFINITIF — Tom, 6 oct. 2026, v134 : choisi sur son iPhone"
     },
     "corps-chiche": {
       "clair": "#FFF4FC",
@@ -456,5 +458,13 @@
     "--c-mauve35": "#5D4978",
     "--c-seiche10": "#050302",
     "--c-seiche21": "#1F1611"
+  },
+  "notes_palette": {
+    "--c-cobalt50": "définitif, v134",
+    "--c-orange-maparole": "les mots « Ma Parole ! » des murs, et rien d'autre",
+    "--c-orange-depart": "v146 (Tom) : l'orange marque le POINT DE DÉPART d'une action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait)"
+  },
+  "noms_swift": {
+    "--c-orange-maparole": "orangeMaParole"
   }
 }

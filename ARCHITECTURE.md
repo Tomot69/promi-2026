@@ -4,6 +4,20 @@ Aucune ligne de code ici. Ce document propose une façon de construire la vraie 
 puisse la faire vivre pendant des années. **Rien ne démarre avant l'accord de Tom.** Le prototype `app.html` est figé comme référence
 (étiquette `reference-v205`, dossier `Promi-reference-v205`).
 
+
+## ⚑ LES RÈGLES DE LA VRAIE APP (Tom, 17 nov. 2026 — elles passent avant tout le reste de ce document)
+
+1. **Le prototype emballé ne sera JAMAIS publié.** La preuve Capacitor (`preuve-capacitor`) sert à mesurer, et c'est tout.
+2. **La vraie app est écrite de zéro en TypeScript strict.** Le seul code repris : le moteur, le tracé, les flaques et les jetons — chacun derrière une
+   interface typée et documentée. **Les 53 appels au moteur passent par UNE façade TypeScript (`src/moteur/facade.ts`), et nulle part ailleurs.**
+3. **Un état unique, un seul propriétaire par information, aucune minuterie dispersée : une seule horloge d'animation.**
+4. **Les jetons : UNE source, le JSON**, d'où un outil RANGÉ DANS LE DÉPÔT (`outils/`, jamais `scratchpad/`) GÉNÈRE le CSS et le TypeScript. Plus aucune
+   retouche à la main d'un fichier généré.
+5. **Les juges deviennent des tests automatiques, lancés à chaque commit** (intégration continue). Pas de fusion si un test est rouge.
+6. **Un schéma de données versionné avec ses migrations, dès la version 1.**
+7. **Décisions prises** : Capacitor (sous réserve de la preuve sur l'iPhone) ; Android sur la même base, publié un ou deux lots après iOS ; la version 1 sur
+   l'appareil, Firebase en 1.1 ; les correctifs à distance pour les défauts seulement ; l'assainissement du prototype limité aux modules repris.
+
 ## a) L'audit du prototype
 
 ### Ce qui est solide, et se garde
@@ -122,7 +136,7 @@ Le prototype figé (`reference-v205`) reste la référence : **chaque écran neu
 - **Intégration continue** (GitHub Actions) : rien ne fusionne si un test rougit ; la porte A1–A6 devient automatique.
 - **Distribution** : TestFlight (iOS) et le test interne de Google Play (Android) à chaque version ; Tom valide sur son iPhone avant la publication.
 
-## f) Les questions pour Tom (5)
+## f) Les questions pour Tom (5) — TRANCHÉES le 17 nov. (voir les règles en tête)
 
 1. **La voie technique** : le moteur JavaScript gardé dans une coquille native (Capacitor), plutôt que Swift (prévu jusqu'ici) puis Kotlin ?
    *Recommandé : oui* — la fidélité au pixel de ce que tu as validé, et une seule base à tenir.
@@ -134,3 +148,82 @@ Le prototype figé (`reference-v205`) reste la référence : **chaque écran neu
    *Recommandé : seulement pour corriger un défaut, jamais pour une fonction neuve* (c'est la limite d'Apple).
 5. **L'assainissement du prototype (ASSAINISSEMENT.md) continue-t-il pendant la construction ?**
    *Recommandé : non, au-delà des lots sûrs* — le prototype est la référence ; chaque heure va à la vraie app.
+
+## g) L'arborescence de la vraie app (une page)
+
+```
+promi/
+├─ package.json · tsconfig.json (strict) · vite.config.ts · capacitor.config.ts
+├─ jetons/promi-jetons.json        LA source des jetons (l'actuel PROMI-TOKENS.json, cobalt50 compris)
+├─ outils/jetons-engendrer.ts      JSON → src/design/jetons.css + jetons.ts (fichiers GÉNÉRÉS, jamais retouchés)
+├─ src/
+│  ├─ main.ts                      monte l'app : le magasin, l'horloge, le premier écran
+│  ├─ donnees/                     schema.ts (version 1) · migrations/001-… · stockage.ts (écriture atomique au geste, C-226)
+│  ├─ etat/                        magasin.ts (l'état unique) · actions/ (planter, tenir, renommer, effacer…) · selecteurs.ts · abonnements
+│  ├─ metier/                      fonctions pures : parole, nature, deux états, parts, échéance, cercle, (délier)
+│  ├─ moteur/                      promi-moteur.js (repris, lecture seule) · facade.ts (les 53 appels, typés) · types.ts
+│  ├─ animation/                   horloge.ts (la seule) · trace/ (trace-lettres + chemins, repris) · flaques/ (repris) · glisse.ts
+│  ├─ design/                      jetons.css · jetons.ts (générés) · composants/ (plateau, barre, trait, pastille, carte, mur, encart « Un mot… »…)
+│  ├─ ecrans/                      accueil · page-plus · fiche · peaufiner · index · fil · aura · studio · partager · reglages · onboarding · guide
+│  ├─ natif/                       vibrations.ts · notifications.ts · achats.ts (RevenueCat) · firebase/ (en 1.1)
+│  └─ textes/                      textes.json (mot pour mot, portage/TEXTES.json) · accès typé
+├─ tests/
+│  ├─ unitaires/                   métier, données et migrations, état (rapides, à chaque modification)
+│  ├─ ecrans/                      les juges portés (Playwright, WebKit et Chromium), un fichier par chantier
+│  └─ rendu/                       le banc de rendu au pixel (280 images, références de la v205)
+├─ ios/ · android/                 engendrés par Capacitor
+└─ .github/workflows/ci.yml        à chaque commit : typage strict, tests, banc de rendu ; la fusion est refusée au rouge
+```
+**Les sens de dépendance** : `ecrans` → `design`, `etat`, `animation`, `moteur/facade` ; `etat` → `metier`, `donnees` ; `metier` ne dépend de rien. Un écran
+n'importe jamais `promi-moteur.js` ni un autre écran. L'outil d'architecture des imports (dependency-cruiser) le vérifie en intégration continue.
+
+## h) Les tests — les spécifications venues du prototype
+
+Chaque décision de Tom devient un test, nommé par son chantier, qui rougit sur la version fautive. Les juges du prototype (267) en sont la source ; ceux-ci
+sont les 42 états rares que Tom a confiés aux tests (17 nov.) — une ligne chacun : ce que le test vérifie (le juge du prototype qui le porte).
+
+| Chantier | Ce que le test vérifie (juge d'origine) |
+|---|---|
+| C-006 | la dernière page de l'onboarding : quatre paragraphes mot pour mot, « Deuxio » seul penché de 3°, les voisines en cellules vides (redteam_onboarding) |
+| C-009 | Ramage : une plume arrive en une image, aucun disque autour (redteam_ramage_onde) |
+| C-010 | Studio : appui long puis glissé vertical ou en diagonale fait varier la palette, au doigt (redteam_studio_geste) |
+| C-028 | la Toile vit au repos : une ou deux dalles bougent 1 à 2 s, puis l'image revient au pixel près (redteam_vivant, redteam_retour) |
+| C-043 | l'onboarding en Gilbert, l'air entre ses phrases (redteam_onboarding) |
+| C-045 | le trait personnalisé : un concept, rien de construit — un test s'écrira avec lui |
+| C-055 | les phrases des murs de Ma Parole !, mot pour mot (MA-PAROLE-PHRASES.md) |
+| C-061 | le dessin sans Ma Parole ! : l'encre du mode, le panneau des couleurs est un mur (redteam_dessin) |
+| C-063 | les dix-huit phrases des murs, dans l'ordre, puis au hasard sans répéter ; les mots en orange (redteam_murs, redteam_maparole) |
+| C-067 | depuis la page +, toucher la photo ou le dessin l'affiche en entier ; un second toucher rend la page (redteam_entier) |
+| C-068 | le partage d'un dessin : le logo toujours, la mention réglable, jamais une photo importée, jamais un dessin masqué (redteam_partage_dessin) |
+| C-073 | stockage vierge → l'onboarding ; terminé puis deux rechargements → il ne revient pas (redteam_verrou_onboarding) |
+| C-074 | la main fantôme : seulement sur une fiche à tenir, 3 s après l'ouverture, jamais ailleurs (redteam_gestes) |
+| C-075 | l'onboarding mot pour mot, « Plus tard » à chaque étape (redteam_onb_sorties) |
+| C-078 | les écrans vides : deux lignes, la seconde seule touchable mène à son action (redteam_vides) |
+| C-085 | la photo d'une fiche se cadre au pincement et au glissé, cadrage gardé (redteam_cadre) |
+| C-086 | des photos dans le dessin, déplaçables et redimensionnables, posées avec lui (redteam_dessin_photo) |
+| C-092 | au Studio, la phrase du mur paraît sur le panneau flouté, pour chaque zone (redteam_studio_mur) |
+| C-095 | « TRACE TA MOITIÉ » à quelqu'un, « TRACE POUR PLANTER » à soi (redteam_gestes) |
+| C-097 | partager une parole seule : la case centrée, 56 % de la largeur, à 44 % de la hauteur (redteam_partage_fiche) |
+| C-098 | une photo se tourne à deux doigts, l'angle gardé (redteam_tourne) |
+| C-099, C-188 | le symbole « recadrer » : quatre coins, naît en flaques au déplacement de la vue, part après 4 s (redteam_recadre_bouton) |
+| C-100 | chaque mur : vingt touchers sur vingt, répartis sur toute la zone floutée (redteam_murs_toucher) |
+| C-123 | à « Promi planté ! », les voisines naissent une à une (redteam_onboarding_texte) |
+| C-124 | les textes de Tom dans l'onboarding, leurs tailles (redteam_onb_mots) |
+| C-126 | la page du trait, en clair : départ orange, consigne `#00341A`, points noirs (redteam_onb_mots) |
+| C-138 | une seule échelle pour l'onboarding et le guide : même rôle, même taille (redteam_echelle_onboarding) |
+| C-150 | page + d'un Cercle : la couleur choisie en attente survit à la réouverture (redteam_cercle_couleur) |
+| C-152 | le menu du + : l'encart « Cercle » ouvre la page + au doigt, à chaque fois (redteam_menu_plus) |
+| C-159 | rejouer l'onboarding avec des dalles : « Une nouvelle dalle sur ta Toile, félicitations. » (redteam_onb_rejeu) |
+| C-162 | en sombre, chaque mot coloré du clair l'est aussi, à 3:1 au moins (redteam_mots_sombre) |
+| C-165 | « T'APPARTIENT. » lettre à lettre aux quatre tons exacts de la palette (redteam_appartient) |
+| C-169 | le départ du trait orange ; dans l'onboarding il clignote avec le I jusqu'au premier toucher (redteam_depart_orange) |
+| C-175 | au Studio, en glissant sous Mascaret, Ramage, Guingois : aucune image au-delà de 33 ms, au relevé (redteam_studio_saccade) |
+| C-187 | Ramage sans rosace, la même Toile d'une ouverture à l'autre (banc_rendu) |
+| C-208 | l'image où la zone nette du guide s'ouvre ne porte aucun travail lourd (relevé) |
+| C-211 | la page de la parole : l'ordre d'apparition de ses textes (redteam_onb_ordre) |
+| C-212 | après « Promi planté ! », les attentes réduites de 15 % (redteam_onb_ordre) |
+| C-255 | le haut d'une fiche stable pendant et après le défilement, trois natures (redteam_haut_fiche) |
+| C-266 | « trace pour planter » paraît avec la flèche, à 50 ms près (redteam_onb_ordre) |
+| C-286 | aucun reste pendant un détracé (redteam_aspect D) |
+| C-296 | rien ne quitte une phrase d'un coup : une place qui part amincit son filet pendant son détracé (redteam_je) |
+| C-297 | défiler juste après « tenir » : le geste n'est jamais annulé, la nappe passe sous l'en-tête (banc_apres_tenir) |

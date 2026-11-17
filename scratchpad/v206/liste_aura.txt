@@ -1,0 +1,14 @@
+couleurs_ref_01 | 1 | python3 redteam_couleurs_ref.py '--ecran=fiche tenue' '--ecran=fiche à tenir' '--ecran=fiche en cours' '--ecran=fiche chiche' '--ecran=chiche lancé'
+couleurs_ref_02 | 1 | python3 redteam_couleurs_ref.py '--ecran=gardé de côté' '--ecran=page +' --ecran=Peaufiner '--ecran=Index 2' '--ecran=Index 3'
+couleurs_ref_03 | 1 | python3 redteam_couleurs_ref.py --ecran=Fil '--ecran=Nuée' '--ecran=Nuée vide' '--ecran=Peaufiner Nuée' '--ecran=l'"'"'instant arrive'
+couleurs_ref_04 | 1 | python3 redteam_couleurs_ref.py '--ecran=l'"'"'instant referme' '--ecran=l'"'"'instant après' '--ecran=Réglages' --ecran=Aura --ecran=accueil
+couleurs_ref_05 | 1 | python3 redteam_couleurs_ref.py --ecran=Studio --ecran=Partager '--ecran=le Cercle' '--ecran=Vie privée' '--ecran=À propos'
+couleurs_ref_06 | 1 | python3 redteam_couleurs_ref.py --ecran=Conditions --ecran=Politique --ecran=personne '--ecran=aide de l'"'"'Aura' '--ecran=page + Chiche'
+couleurs_ref_07 | 1 | python3 redteam_couleurs_ref.py '--ecran=page + Nuée' '--ecran=Peaufiner Chiche' '--ecran=Nuée défilée' '--ecran=Nuée vide défilée' '--ecran=mur · Réglages'
+couleurs_ref_08 | 1 | python3 redteam_couleurs_ref.py '--ecran=panneau des palettes'
+decisions | 1 | python3 redteam_decisions.py
+ecrans | 1 | python3 redteam_ecrans.py
+aspect | 1 | python3 redteam_aspect.py --ref=zz-ref-v207.html
+releve_aura | 1 | python3 releve-aura.py
+bouton | 1 | python3 redteam_bouton.py
+tokens | 1 | python3 redteam_tokens.py

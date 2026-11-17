@@ -293,6 +293,9 @@ with sync_playwright() as p:
                     #   du Fil et du Fil des Cercles, même construction que la fiche, dans les deux thèmes » — sur une CARTE (`.s4-…`, `.nf-item`), et seulement
                     #   vers les couleurs de cette construction : les trois corps, la terre d'une tenue, la crème, l'amande, le lilas, les traits sombres de nature.
                     if pr_ in ('color', 'tfill', 'bg', 'bT', 'bB', 'bL', 'bR', 'fill', 'stroke') and re.search(r's4-|nf-item', k) and va in CARTE_V148: exceptions['E19'] = exceptions.get('E19', 0) + 1; continue
+                    # E28 (v207, Tom, 17 nov. 2026, C-294 ; C-247) : « le fond de l'Aura devient EXACTEMENT celui de l'Index et du Fil (même code, mêmes couleurs,
+                    #   même matière) » — en clair, la crème #F7F0DE devient #EAD9B9 (--c-creme90-2) ; le fond de l'écran de l'Aura, et lui seul.
+                    if cle[0] in ('Aura', "aide de l'Aura") and cle[1] == 'light' and pr_ == 'bg' and va == 'rgb(234, 217, 185)' and vr == 'rgb(247, 240, 222)' and re.match(r'^#auraScreen \[\d+\]$', k): exceptions['E28'] = exceptions.get('E28', 0) + 1; continue
                     # E20 (v151, Tom, 18 oct. 2026, C-157) : « dans les pages + du Promi et du Chiche, TRACE POUR PLANTER / TRACE POUR LANCER passe en orange
                     #   #FB4C0D, comme la flèche, en clair et en sombre » (le Cercle porte le même texte : même traitement) — le mot du trait de la page +, et lui seul.
                     if pr_ in ('color', 'tfill') and va == 'rgb(251, 76, 13)' and re.search(r'pp-trace\b', k) and not re.search(r'dptTrace', k): exceptions['E20'] = exceptions.get('E20', 0) + 1; continue

@@ -1,0 +1,2 @@
+trace_present_head_lent | 1 | python3 redteam_trace_present.py --modes=lent --fichier=zz-v207head.html
+trace_present_lent | 1 | python3 redteam_trace_present.py --modes=lent

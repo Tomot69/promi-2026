@@ -76,7 +76,8 @@ SP_AURA = os.environ.get('AURA_DEV', '/private/tmp/claude-501/-Users-macbookpro-
 # ⚑ UN TOUR EN 100 s — décision Tom, 12 septembre 2026. Bornes de l'historique : 84 s jugé TROP VIF (5 sept.),
 # 120 s TOUJOURS TROP LENT (12 sept.) — 100 s est entre les deux, +20 %. La valeur est EN DUR ici : le juge porte
 # la décision, l'app la respecte, jamais l'inverse (CLAUDE §7). Original : sauvegardes/releve-aura-avant-100s.py
-AUTO_DECIDE = 6.283185307 / 100
+# ⚑ v207 (Tom, C-298, 17 nov. 2026) : « la Pelote tourne ×1,5 plus vite, dans tous les états » — un tour en 100 / 1,5 = 66,7 s. Original : sauvegardes/releve-aura-avant-v207.py
+AUTO_DECIDE = 6.283185307 / (100 / 1.5)
 # ⚑ RÉÉCRITS AU NIVEAU DE LA DÉCISION — original : sauvegardes/releve-aura-avant-v8d.py
 #   · CRÈME et ENCRE : la palette du 16 septembre 2026 (§3). #F4EEE1 → #F7F0DE, #16171B → #201908.
 #   · LES DEUX GRIS : ils suivent la même bascule — beige67 et beige43 du jeu.
@@ -957,7 +958,7 @@ def juge():
         # 1 · la rotation lente, qui ne s'arrête jamais
         a = pg.evaluate("()=>_aura.etat().lac"); pg.wait_for_timeout(2000); b1 = pg.evaluate("()=>_aura.etat().lac")
         v1 = (b1 - a) / 2.0
-        VAL.append(('1 · rotation lente', '%.4f rad/s sur 2 s (décidé %.4f, un tour en 100 s)' % (v1, AUTO_DECIDE)))
+        VAL.append(('1 · rotation lente', '%.4f rad/s sur 2 s (décidé %.4f, un tour en 66,7 s)' % (v1, AUTO_DECIDE)))
         if abs(G['AUTO'] - AUTO_DECIDE) > 1e-6: acq.append('1 · l\'app déclare %.4f rad/s au lieu de la vitesse décidée %.4f' % (G['AUTO'], AUTO_DECIDE))
         if not (0.6 * AUTO_DECIDE < v1 < 1.6 * AUTO_DECIDE): acq.append('1 · la rotation lente : %.4f rad/s au lieu de %.4f' % (v1, AUTO_DECIDE))
         bb = boule(); cx, cy, sc = bb['cx'], bb['cy'], bb['sc']

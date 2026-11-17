@@ -3,6 +3,17 @@
 > Ce fichier est relu à chaque session. Il fait autorité sur tout le reste.
 > Si une consigne de l'utilisateur contredit ce fichier, **demander avant d'agir**.
 
+> ## ⚑ LA VRAIE APP SERA PROPRE ET ÉVOLUTIVE, PAS RAFISTOLÉE — RÈGLE PERMANENTE (Tom, 17 nov. 2026, v207). ELLE S'APPLIQUE À TOUT LE PORTAGE.
+> - **Le prototype emballé (`preuve-capacitor`) ne sera JAMAIS publié** : il sert à mesurer, et c'est tout.
+> - **La vraie app est écrite de zéro en TypeScript strict.** Seul code repris : le moteur, le tracé, les flaques, les jetons — chacun derrière une interface
+>   typée et documentée ; **les 53 appels au moteur passent par UNE façade TypeScript, et nulle part ailleurs.**
+> - **Un état unique, un seul propriétaire par information, aucune minuterie dispersée : une seule horloge d'animation.**
+> - **Les jetons : UNE source, le JSON** ; le CSS et le TypeScript (et le Swift) en sont GÉNÉRÉS par un outil rangé dans le dépôt (`outils/`), jamais dans
+>   `scratchpad/`. **Plus aucune retouche à la main d'un fichier généré.**
+> - **Les juges deviennent des tests automatiques, lancés à chaque commit** (intégration continue) ; pas de fusion si un test est rouge.
+> - **Un schéma de données versionné avec ses migrations, dès la version 1.**
+> L'arborescence et les sens de dépendance : ARCHITECTURE.md g) ; les 42 tests venus des états rares : ARCHITECTURE.md h).
+
 > ## ⚑ AUCUN CHANGEMENT SEC À L'ÉCRAN, NULLE PART — RÈGLE PERMANENTE (Tom, 13 nov. 2026, C-271). ELLE S'APPLIQUE À CHAQUE LOT.
 > *Pourquoi* : en v199, « moi » remplaçait « qui ose ? » d'un coup, l'encart sautait de largeur. Tom : « Jamais plus de livraison avec ces merdes nulle part. »
 > - **Un texte qui change se DÉTRACE (le tracé de C-125 joué à rebours, même cadence : `TraceLettres.trace(el, null, {inverse:true})`), puis le nouveau se TRACE.**
@@ -251,6 +262,20 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v207 suite (17 nov. 2026, après la séance de la preuve) — C-295 À C-298 ; LE VRAI FOND DE LA PELOTE ; LA PREUVE EN PLEIN ÉCRAN. (Décisions Tom.)
+> **C-296 — le rectangle sur « Je »** : la place « qui ? » qui part à la bascule (`.v202-part`, une copie à son ancienne place) se détrace là où « Je » arrive ; son
+> filet pointillé restait entier puis disparaissait d'un coup. Il s'amincit maintenant de 3 à 0 px pendant le détracé (padding compensé). Juge : **`redteam_je.py`**.
+> **C-297 — après « tenir »** : ① le `preventDefault` du `touchstart` de la remontée du vert (v154, C-167) tuait le défilement natif de tout le geste — le début du
+> geste n'est plus annulé (le toucher reste avalé pour l'app) ; ② la nappe `#tenirMaree` passe de z 40 à z 7 (sous la bande d'en-tête). Juge : `banc_apres_tenir.py`,
+> appelé par `redteam_un_trait` (T1, T2) et `redteam_repos_fiche` (D). ⚠ **Un `preventDefault` sur `touchstart` annule le défilement natif de tout le geste : on
+> avale un toucher par la propagation et le clic, jamais par le début du geste, quand l'écran dessous défile.**
+> **C-298 — la Pelote tourne ×1,5** : un tour en 66,7 s (`TOUR_S`, lu par `G.AUTO`, le calque, le couchage). **C-294 suite** : l'encart « PARTAGER MA PELOTE » a le fond
+> du plateau (mêmes jetons) ; la Pelote se détache du VRAI fond de l'Aura (`pageCouleur()` lit l'écran : #EAD9B9 en clair, #050302 en sombre).
+> **C-295 — Mascaret** : les images ne saccadent pas (relevé de l'app : p95 17 ms) ; ce qui saute est DANS l'aperçu (Mascaret ne refait ses lames que quand ses graines
+> bougent d'un cran de sa signature) — identique en v203 : dans le moteur, décision à Tom.
+> **La preuve en plein écran** (branche `preuve-capacitor`) : `viewport-fit=cover` dans la page construite, `@capacitor/status-bar` 8.0.4 (barre par-dessus la page,
+> texte selon le thème) ; `construire.sh` prend `SOURCE=` et `VERSION=` (la v206 corrigée, extraite par `git archive`).
 
 ### ⚑ v207 (17 nov. 2026) — CAPACITOR, SOUS CONDITION D'UNE PREUVE (C-291) ; L'OUVRIER DU TRACÉ (C-292) ; L'ASSAINISSEMENT RECENTRÉ (C-293). (Décisions Tom.)
 > **Q1 tranchée : Capacitor, sous condition** d'une preuve sur l'iPhone de Tom (fluidité ≥ Safari sur chaque animation, rendu identique, vibration ressentie,

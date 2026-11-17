@@ -68,7 +68,10 @@ DEBORDE = """(sel)=>{const d=document.getElementById('device').getBoundingClient
   const root=document.querySelector(sel); if(!root)return -1;
   let n=0;
   root.querySelectorAll('*').forEach(e=>{
-    const r=e.getBoundingClientRect();
+    let r=e.getBoundingClientRect();
+    /* ⚑ v207 (C-298) : le calque de la Pelote TOURNE (un tour en 66,7 s) — la boîte englobante d'un carré tourné sort de l'appareil par ses coins
+       (transparents) ; on juge sa boîte NON TOURNÉE, centrée au même point (un vrai débordement reste pris). Original : sauvegardes/redteam_ecrans-avant-v207.py */
+    if(e.closest('.au-rot')){ const k=d.width/390, cx=r.left+r.width/2, cy=r.top+r.height/2, w=e.offsetWidth*k, h=e.offsetHeight*k; if(w&&h) r={left:cx-w/2,right:cx+w/2,top:cy-h/2,bottom:cy+h/2,width:w,height:h}; }
     if(r.width<2||r.height<2)return;
     if(getComputedStyle(e).position==='fixed')return;
     if(r.right>d.right+2||r.left<d.left-2){

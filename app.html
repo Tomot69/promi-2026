@@ -19756,8 +19756,9 @@ var CREMEETAT='#F7F0DE';
 
 /* — LE CORPS D'ÉCRAN (§1.3) : #201908 en sombre, #EAD9B9 en clair. La trame animée sort :
      un écran qui montre des dalles de référence n'a pas de dalle en fond (CLAUDE.md §4.6). */
-#device #indexSheet.s4, #device #feedView.s4{background:var(--c-brun09)!important}
-#device.light #indexSheet.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #feedView.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme90-2)!important}
+/* ⚑ v207 (Tom, C-294 ; C-247 : même code) : le fond de l'Aura est EXACTEMENT celui de l'Index et du Fil — elle rejoint ces sélecteurs */
+#device #indexSheet.s4, #device #feedView.s4, #device #auraScreen.au2, .frame #auraScreen.au2{background:var(--c-brun09)!important}
+#device.light #indexSheet.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #feedView.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), .frame.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme90-2)!important}
 #device #indexSheet.s4>#ixTrameCv, #device #feedView.s4>#fdTrameCv{display:none!important}
 #device #indexSheet.s4 .ix-menu, #device #feedView.s4 .ix-menu{z-index:9}
 
@@ -27462,9 +27463,7 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
    ════════════════════════════════════════════════════════════════════════════ */
 
 /* le fond : l'encre et la crème du §3, comme la planche — PLAT */
-#device #auraScreen.au2,.frame #auraScreen.au2{overflow:hidden!important;background-color:var(--c-brun09)!important;
-  background-image:none!important}
-#device.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),.frame.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background-color:var(--c-creme95)!important;background-image:none!important}
+#device #auraScreen.au2,.frame #auraScreen.au2{overflow:hidden!important}   /* v207 (C-294) : le fond est celui de l'Index et du Fil (lot-S4-css) */
 /* ⚠ L'OMBRE DE DALLE DE `.tuto-fond::before` (le « ghost-ink ») se peignait en grand
    derrière la sphère — une forme grise que la planche ne porte pas. Masquée ICI
    seulement : les autres écrans `.tuto-fond` la gardent. */
@@ -27617,6 +27616,10 @@ window._PINCEAU_META=[["Plein",1,"le ruban franc, bord net"],["Coulé",1,"la plu
    accentuée, la phrase n'en demande aucune), à la hauteur de capitale de « TRACE POUR LANCER » (les phrases du trait : PromiLate 15 px,
    chasse 0). La grammaire du bouton ne change pas (342 × 60, trait 2, rayon 30). Sa couleur : `texteBouton()` dans l'Aura. (Était Gilbert 16,6.) */
 #device.light #auraScreen.au2 .au-bt:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),.frame.light #auraScreen.au2 .au-bt:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){border-color:var(--c-brun09)!important}
+/* ⚑ v207 (Tom, C-294 suite) — « l'encart Partager ma pelote prend le même fond que l'encart Aura · X » : le fond du plateau (`.enh`), par les mêmes jetons
+   que lui — `--c-brun09` (la seiche, en sombre), `--c-creme95` en clair. Il était transparent : en clair, sur le fond de l'Aura #EAD9B9 depuis C-294. */
+#device #auraScreen.au2 .au-bt,.frame #auraScreen.au2 .au-bt{background:var(--c-brun09)!important;background-color:var(--c-brun09)!important}
+#device.light #auraScreen.au2 .au-bt:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),.frame.light #auraScreen.au2 .au-bt:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme95)!important;background-color:var(--c-creme95)!important}
 
 /* ce qu'un état n'a pas : l'écran vide n'a ni mot, ni Noyaux, ni légende, ni moisson */
 #auraScreen.au2 .au-cadre.au-vide .au-mot,#auraScreen.au2 .au-cadre.au-vide .au-nx,
@@ -30927,7 +30930,10 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
         de la face la surface passe de 4,4 à 6,1 pt/s. C'est toujours le geste qui accélère.
         SENS : la planche donnait 0,011 rad/px pour une boule de 142 — un tour pour deux
         diamètres de doigt. On garde CE rapport sur la boule de l'écran (116 pt). ──── */
-  var G = { AUTO:6.283185307/100, /* ⚑ UN TOUR EN 100 s (Tom, 12 sept.). */ TANG:0.32, TANGMAX:1.15, TAU:0.55, VMAX:11, TAP:6,
+  /* ⚑ v207 (Tom, C-298) : « la Pelote tourne ×1,5 plus vite, dans tous les états » — un tour en 100 / 1,5 = 66,7 s (100 s depuis le 12 sept.). Une seule
+     constante : la vue 3D (G.AUTO), le calque qui tourne au repos et le couchage des poils la lisent. */
+  var TOUR_S=100/1.5;
+  var G = { AUTO:6.283185307/TOUR_S, /* ⚑ UN TOUR EN 66,7 s (v207, C-298 ; 100 s depuis le 12 sept.). */ TANG:0.32, TANGMAX:1.15, TAU:0.55, VMAX:11, TAP:6,
             SENS:0.011*142/K.Rpt, MONTE:0.09, IMP_TAU:1.35, COMBLE:0.42,
             /* ⚑ LA LOI DE CONTACT D'UNE BALLE ANTISTRESS (Tom, 18 sept. 2026 : « plus de raideur, un retour plus net ;
                une vraie boule molle, avec un peu de résistance agréable »). La loi d'avant — MONTE, IMP_TAU —
@@ -31386,7 +31392,10 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
      SOL_CREME de Q210, dont le degré se lit dans la mesure et pas dans le document. */
   var ECART_PAGE=44;
   function _lum(c){ return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]; }
-  function pageCouleur(){ return clair() ? [0xF7,0xF0,0xDE] : [0x10,0x0D,0x0B]; }
+  /* ⚑ v207 (Tom, C-294 suite) — LE VRAI FOND : la Pelote se détache de la page qu'on VOIT autour d'elle — celle de l'Aura (#EAD9B9 en clair depuis C-294,
+     la seiche #050302 en sombre), lue sur l'écran ; elle comptait avec #F7F0DE et #100D0B, deux fonds qui ne sont plus ceux de l'Aura. */
+  function pageCouleur(){ try{ var mm=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(getComputedStyle(SC).backgroundColor); if(mm) return [+mm[1],+mm[2],+mm[3]]; }catch(_){ }
+    return clair() ? [0xEA,0xD9,0xB9] : [0x05,0x03,0x02]; }
   function versBlanc(c,t){ return [c[0]+(255-c[0])*t, c[1]+(255-c[1])*t, c[2]+(255-c[2])*t]; }
   function versNoir(c,t){ return [c[0]*(1-t), c[1]*(1-t), c[2]*(1-t)]; }
   function ecarteDeLaPage(s){
@@ -32245,11 +32254,11 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   /* ⚑ v203 (C-275) — LE CALQUE QUI TOURNE. Démarrage en douceur : 1,5 s en accélération (l'angle en u², une courbe de Bézier exacte), puis la vitesse d'un tour en 100 s,
      sans fin (Web Animations : le compositeur l'anime, aucun script à chaque image). L'angle du moment se lit sur les animations. */
   var ROT, RA={th:0, a1:null, a2:null, d1:0}, RTR=1500;
-  function rotAngle(){ if(RA.a2){ var t=RA.a2.currentTime||0; return RA.th+RA.d1+360*((t%100000)/100000); } if(RA.a1){ var u=Math.min(1, (RA.a1.currentTime||0)/RTR); return RA.th+RA.d1*u*u; } return RA.th; }
+  function rotAngle(){ if(RA.a2){ var t=RA.a2.currentTime||0; return RA.th+RA.d1+360*((t%(TOUR_S*1000))/(TOUR_S*1000)); } if(RA.a1){ var u=Math.min(1, (RA.a1.currentTime||0)/RTR); return RA.th+RA.d1*u*u; } return RA.th; }
   function rotLance(){ if(!ROT || RA.a1 || RA.a2 || !ROT.animate) return; var reduit=false; try{ reduit=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ } if(reduit) return;
-    var w=360/100, d1=w*(RTR/1000)/2; RA.d1=d1; var a0=RA.th;
+    var w=360/TOUR_S, d1=w*(RTR/1000)/2; RA.d1=d1; var a0=RA.th;
     RA.a1=ROT.animate([{transform:'rotate('+a0+'deg)'},{transform:'rotate('+(a0+d1)+'deg)'}], {duration:RTR, easing:'cubic-bezier(.3333,0,.6667,.3333)', fill:'forwards'});
-    RA.a1.onfinish=function(){ if(!RA.a1) return; RA.a1=null; RA.a2=ROT.animate([{transform:'rotate('+(a0+d1)+'deg)'},{transform:'rotate('+(a0+d1+360)+'deg)'}], {duration:100000, iterations:Infinity, easing:'linear'}); }; }
+    RA.a1.onfinish=function(){ if(!RA.a1) return; RA.a1=null; RA.a2=ROT.animate([{transform:'rotate('+(a0+d1)+'deg)'},{transform:'rotate('+(a0+d1+360)+'deg)'}], {duration:TOUR_S*1000, iterations:Infinity, easing:'linear'}); }; }
   function rotArrete(){ if(!ROT || !(RA.a1 || RA.a2)) return; var th=rotAngle()%360; if(RA.a1){ RA.a1.onfinish=null; RA.a1.cancel(); } if(RA.a2) RA.a2.cancel(); RA.a1=RA.a2=null; RA.th=th;
     ROT.style.setProperty('transform','rotate('+th+'deg)'); }   /* sans `important` : une animation ne bat pas un `!important` (le piège de v194) */
   window._peloteRotation=function(){ return {angle:rotAngle(), tourne:!!(RA.a1||RA.a2), demarre:!!RA.a1}; };   /* un pointeur pour les juges */
@@ -43576,7 +43585,9 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var cv=(CV0 && CV0.width===Math.round(390*dpr*sc))?CV0:document.createElement('canvas'); CV0=null; cv.id='tenirMaree'; cv.setAttribute('aria-hidden','true');
     if(cv.width!==Math.round(390*dpr*sc)){ cv.width=Math.round(390*dpr*sc); cv.height=Math.round(844*dpr*sc); }
     /* ⚠ le crible de la fiche masque toute couche ajoutée à #detailPoster (piège de v132) : on la déclare visible, nommément, en !important */
-    'position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;z-index:40;display:block;visibility:visible;opacity:1;transform:none'.split(';').forEach(function(d){ var i=d.indexOf(':'); if(i>0) cv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+    'position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;z-index:7;display:block;visibility:visible;opacity:1;transform:none'.split(';').forEach(function(d){ var i=d.indexOf(':'); if(i>0) cv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+    /* ⚑ v207 (C-297) : z 7 (40 avant) — la nappe défile avec la fiche quand on défile pendant la célébration ; à 40 elle passait au-dessus de la bande d'en-tête
+       (z 8) et montait sur le plateau. À 7, posée après la vague (z 7), elle la couvre et passe sous la bande, comme tout ce qui défile. */
     dp.appendChild(cv); var g=cv.getContext('2d'); g.setTransform(dpr*sc,0,0,dpr*sc,0,0);
     /* ⚑ v149 (Tom, C-155) — « l'animation part DANS L'IMAGE SUIVANTE » : le rideau démarre AU LEVER (`_maree.tot()`, appelé par le clic « tenue »),
        son horloge part du lever ; la phrase de validation, que l'instant pose dans l'image suivante, s'écrit dans la nappe dès qu'elle est posée
@@ -43637,8 +43648,12 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      lever lui-même passe avant) et tant que le vert n'a pas commencé de remonter. Sans toucher : rien ne change, le retour se fait seul à 2 400 ms. */
   (function(){ var aval=0;
     function actif(){ if(!M || !M.t0) return false; var n=performance.now(); return (n-M.t0>=300) && !(window._tenirVite && window._tenirVite>=M.t0) && !M.monte(); }
-    function presse(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); return; }
-      if(!actif()) return; window._tenirVite=performance.now(); aval=performance.now(); e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); }
+    /* ⚑ v207 (C-297, Tom : « après tenir, le trait ne réagit plus au défilement vers le haut ») — le `preventDefault` du DÉBUT d'un geste tactile (touchstart)
+       annule le défilement natif de tout le geste : un doigt qui glissait pour défiler juste après « tenir » était avalé, la fiche ne bougeait pas. Le toucher
+       fait toujours remonter le vert et reste avalé pour l'app (propagation arrêtée, fin du geste et clic avalés) ; seul le défilement natif passe. */
+    function bloque(e){ if(e.cancelable && e.type!=='touchstart' && e.type!=='pointerdown') e.preventDefault(); }
+    function presse(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); bloque(e); return; }
+      if(!actif()) return; window._tenirVite=performance.now(); aval=performance.now(); e.stopImmediatePropagation(); bloque(e); }
     function suite(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); } }
     ['touchstart','pointerdown','mousedown'].forEach(function(n){ document.addEventListener(n, presse, {capture:true, passive:false}); });
     ['touchend','pointerup','mouseup','click'].forEach(function(n){ document.addEventListener(n, suite, {capture:true, passive:false}); });
@@ -45791,7 +45806,14 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
               gh.style.setProperty('left', ((G[k].r.left-R.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((G[k].r.top-R.top)/sc)+'px', 'important');
               (window.__dcA=window.__dcA||new Set()).add(gh); gh.__v200={fini:false};
               var finG=function(){ try{ window.__dcA.delete(gh); }catch(_){ } if(gh.parentNode) gh.parentNode.removeChild(gh); };
-              TraceLettres.trace(gh, null, {inverse:true, surFin:finG}); setTimeout(finG, 2500); note({part:k}); }catch(_){ } });
+              var ctlG=TraceLettres.trace(gh, null, {inverse:true, surFin:finG}); setTimeout(finG, 2500); note({part:k});
+              /* ⚑ v207 (C-296) : le filet pointillé d'une place qui part s'amincit jusqu'à rien PENDANT que son mot se détrace (la règle des pointillés qui partent, v200) —
+                 il restait entier à l'ancienne place (sur le « Je » qui vient d'y arriver) puis disparaissait d'un coup à la fin du détracé. Le padding prend ce que le filet
+                 rend : le mot ne bouge pas sous son détracé. */
+              try{ var csG=getComputedStyle(gh), bwG=parseFloat(csG.borderTopWidth)||0; if(bwG>0 && csG.borderTopStyle!=='none'){ var P0=['Top','Right','Bottom','Left'].map(function(s){ return (parseFloat(csG['padding'+s])||0)+(parseFloat(csG['border'+s+'Width'])||0); });
+                var amincit=function(){ if(!gh.parentNode) return; var d=Math.max(160, Math.round((ctlG&&ctlG.duree)||D_FL)); gh.style.setProperty('transition','border-width '+d+'ms '+COURBE+', padding '+d+'ms '+COURBE,'important'); void gh.offsetWidth;
+                  gh.style.setProperty('border-width','0px','important'); gh.style.setProperty('padding', P0.map(function(v){ return v+'px'; }).join(' '),'important'); };
+                if(ctlG && ctlG.part && ctlG.part.then) ctlG.part.then(amincit); else amincit(); } }catch(_){ } }catch(_){ } });
           Object.keys(ap).forEach(function(k){ var n=ap[k]; if(!_basc || av[k] || !n || n.__v200 || !window.TraceLettres || !visible(n)) return; try{ (window.__dcA=window.__dcA||new Set()).add(n); n.__v200={fini:false}; TraceLettres.trace(n, null, {surFin:function(){ n.__v200=null; try{ window.__dcA.delete(n); }catch(_){ } }}); }catch(_){ } });   /* ⚑ v201b (C-271) : une place qui ARRIVE (« à qui ? » à la bascule du sens) se trace */
         }catch(_){ } }
       return r; };
