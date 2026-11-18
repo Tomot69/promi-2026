@@ -2832,27 +2832,6 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
   window.addEventListener('load', function(){ setTimeout(envoie, 4000); });
 }catch(_){ } })();
 </script>
-<script id="lot-V208-ZONES">
-/* ⚑ v208 (Tom, C-299) — LES ZONES SÛRES DE TOUS LES TÉLÉPHONES. UNE SEULE SOURCE : les zones sûres que le téléphone DÉCLARE (`env(safe-area-inset-*)`, lues ici),
-   et l'écart des encarts du haut sous elles (ECART, 6 pt ≈ 1 mm). Les FONDS vont jusqu'aux bords (l'appareil couvre l'écran) ; les CONTENUS restent dans la zone sûre :
-   les encarts du haut, sur toutes les pages, descendent de `--zs-dy` (le haut de la zone sûre + 6 pt, moins leur place de dessin, 40 pt ; ramené à l'échelle de
-   l'appareil) — la jonction d'une fiche (112 pt) descend d'autant. Dans Safari les zones sûres valent 0 (la barre du navigateur fait l'écart) : `--zs-dy` vaut 0,
-   rien ne change. La veille lit la même source. `window.__zsInsets` (un crochet de banc, jamais posé par l'app) simule un téléphone. */
-(function(){
-  var ECART=6, HAUT_DESSIN=40;
-  window._zsInsets=function(){ if(window.__zsInsets) return window.__zsInsets.slice(); try{ var p=document.createElement('div'); p.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
-      (document.body||document.documentElement).appendChild(p); var c=getComputedStyle(p), r=[c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(function(v){ return parseFloat(v)||0; }); p.remove(); return r; }catch(_){ return [0,0,0,0]; } };
-  window._zsDy=function(){ try{ var ins=window._zsInsets(), D=document.getElementById('device'); if(!D) return 0; var r=D.getBoundingClientRect(), k=(r.width/(D.offsetWidth||390))||1, vt=window.visualViewport?window.visualViewport.offsetTop:0;
-      var dy=((vt+ins[0]+ECART)-r.top)/k-HAUT_DESSIN; return dy>0 ? Math.round(dy*100)/100 : 0; }catch(_){ return 0; } };
-  window._zsRegle={ECART:ECART, HAUT_DESSIN:HAUT_DESSIN};
-  function pose(){ try{ document.documentElement.style.setProperty('--zs-dy', window._zsDy()+'px'); }catch(_){ } }
-  window._zsPose=pose; document.addEventListener('DOMContentLoaded', pose); addEventListener('load', pose); addEventListener('resize', pose);
-})();
-</script>
-<style id="lot-V208-ZONES-css">
-/* ⚑ v208 (C-299) : les encarts du haut — les plateaux de toutes les pages (`.enh`) et celui de l'accueil — sous la zone sûre (`--zs-dy`, 0 dans Safari) */
-#device .enh,.frame .enh,#device #accPlat,#stpHaut,.dz-plateau{translate:0 var(--zs-dy,0px)}
-</style>
 <style id="lot-TOKENS-css">
 /* ⚑ LE JEU DE COULEURS ET DE POLICES — source unique (Tom, 16 septembre 2026).
    Aucune vue n'appelle une police ni un hexadécimal en dur : tout passe par ce bloc.
@@ -44289,29 +44268,46 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function prochain(s, B){ var v=B.v; var tx=s.dx>0?(B.x1-s.x)/(s.dx*v):(s.dx<0?(B.x0-s.x)/(s.dx*v):Infinity), ty=s.dy>0?(B.y1-s.y)/(s.dy*v):(s.dy<0?(B.y0-s.y)/(s.dy*v):Infinity);
     var t=Math.min(tx, ty), x=s.x+s.dx*v*t, y=s.y+s.dy*v*t, mur=tx<ty?'x':'y';
     var reste=tx<ty ? Math.min(Math.abs(y-B.y0), Math.abs(y-B.y1)) : Math.min(Math.abs(x-B.x0), Math.abs(x-B.x1));
-    if(reste<=B.tol) mur='coin'; return {t:Math.max(0,t), x:x, y:y, mur:mur}; }
+    if(reste<=B.tol) mur='coin';
+    /* ⚑ v209 (Tom, C-300) — LA DÉCOUPE DE LA CAMÉRA EST UN OBSTACLE : chaque obstacle est la découpe agrandie de la boîte du logo (somme de Minkowski, en
+       coordonnées du coin haut-gauche du logo) ; le logo rebondit sur la face qu'il touche ('ox' : une face verticale, 'oy' : une face horizontale, 'oc' : son coin). */
+    (B.obs||[]).forEach(function(E){ var c=choc(s, v, E, B.tol); if(c && c.t<t-1e-9){ t=c.t; x=s.x+s.dx*v*t; y=s.y+s.dy*v*t; mur=c.mur; } });
+    return {t:Math.max(0,t), x:x, y:y, mur:mur}; }
+  function choc(s, v, E, tol){ var best=null, e=1e-6;
+    function prend(tt, mur, autre, a0, a1){ if(tt<-1e-9 || autre<=a0 || autre>=a1) return; tt=Math.max(0, tt);
+      if(Math.min(autre-a0, a1-autre)<=tol) mur='oc'; if(!best || tt<best.t) best={t:tt, mur:mur}; }
+    if(s.dy<0 && s.y>=E.y1-e){ var t1=(E.y1-s.y)/(s.dy*v); prend(t1, 'oy', s.x+s.dx*v*t1, E.x0, E.x1); }
+    if(s.dy>0 && s.y<=E.y0+e){ var t2=(E.y0-s.y)/(s.dy*v); prend(t2, 'oy', s.x+s.dx*v*t2, E.x0, E.x1); }
+    if(s.dx>0 && s.x<=E.x0+e){ var t3=(E.x0-s.x)/(s.dx*v); prend(t3, 'ox', s.y+s.dy*v*t3, E.y0, E.y1); }
+    if(s.dx<0 && s.x>=E.x1-e){ var t4=(E.x1-s.x)/(s.dx*v); prend(t4, 'ox', s.y+s.dy*v*t4, E.y0, E.y1); }
+    return best; }
+  /* la découpe (en px, dans le cadre de la veille) agrandie de la boîte du logo (w × h) : les positions interdites à son coin haut-gauche */
+  function obstacles(C, w, h){ return (C.obs||[]).map(function(O){ return {x0:O.x-w, x1:O.x+O.w, y0:O.y-h, y1:O.y+O.h}; }); }
   function direction(sx, sy, deg){ var a=deg*Math.PI/180; return [sx*Math.cos(a), sy*Math.sin(a)]; }
   /* après un rebond (ou au départ) : l'angle tiré, 45° ± 2 à 3° ; un coin avant 60 s est refusé ; `?coin=1` le vise entre 60 et 90 s */
   function oriente(s, B, ecoule, alea){
     var sx=s.dx>=0?1:-1, sy=s.dy>=0?1:-1;
     if(R.COIN_FORCE && !s.coinVise && ecoule>=40000){ var cx=sx>0?B.x1:B.x0, cy=sy>0?B.y1:B.y0, ddx=cx-s.x, ddy=cy-s.y, d=Math.hypot(ddx, ddy), arr=ecoule+d/B.v*1000;
-      if(arr>=60000 && arr<=90000 && d>1){ s.dx=ddx/d; s.dy=ddy/d; s.coinVise=true; return; } }
+      if(arr>=60000 && arr<=90000 && d>1){ var ox=s.dx, oy=s.dy; s.dx=ddx/d; s.dy=ddy/d; if(prochain(s, B).mur==='coin'){ s.coinVise=true; return; } s.dx=ox; s.dy=oy; } }
     for(var essai=0; essai<40; essai++){ var dev=(alea()<0.5?-1:1)*(2+alea()); var v=direction(sx, sy, 45+dev); s.dx=v[0]; s.dy=v[1];
       var n=prochain(s, B), quand=ecoule+n.t*1000; if(n.mur!=='coin' || quand>=R.SANS_COIN) return; }   /* v162 : seulement la première minute */
     var v2=direction(sx, sy, 41); s.dx=v2[0]; s.dy=v2[1]; }
   function rebondit(s, n, B){ s.x=n.x; s.y=n.y;
-    if(n.mur==='coin' && B){ s.x=s.dx>0?B.x1:B.x0; s.y=s.dy>0?B.y1:B.y0; }   /* au coin, posé EXACTEMENT sur les deux bords : sinon il repartait à 1 pt d'un bord, et le rebond suivant était un coin de plus */
-    if(n.mur==='x'||n.mur==='coin') s.dx=-s.dx; if(n.mur==='y'||n.mur==='coin') s.dy=-s.dy; }
+    if(n.mur==='coin' && B){ var gx=Math.abs(n.x-B.x0)<Math.abs(n.x-B.x1), gy=Math.abs(n.y-B.y0)<Math.abs(n.y-B.y1); s.x=gx?B.x0:B.x1; s.y=gy?B.y0:B.y1;
+      s.dx=gx?Math.abs(s.dx):-Math.abs(s.dx); s.dy=gy?Math.abs(s.dy):-Math.abs(s.dy); return; }   /* au coin, il repart vers l'intérieur sur les deux axes (inverser les deux, juste après un rebond sur le bord voisin, le renvoyait dans le coin) */   /* v209 (C-300) : le coin le plus PROCHE — posé selon la direction, un coin touché juste après un rebond sur le bord voisin envoyait le logo au coin opposé (du bas de l'écran en haut) */   /* au coin, posé EXACTEMENT sur les deux bords : sinon il repartait à 1 pt d'un bord, et le rebond suivant était un coin de plus */
+    if(n.mur==='x'||n.mur==='coin'||n.mur==='ox'||n.mur==='oc') s.dx=-s.dx; if(n.mur==='y'||n.mur==='coin'||n.mur==='oy'||n.mur==='oc') s.dy=-s.dy; }
   /* la simulation : `duree` s de trajectoire, sans écran — les coins et leurs instants */
   /* la simulation : `duree` s de trajectoire, sans écran, sur un écran donné — o = {l, h : la zone visible en px ; k : l'échelle de l'appareil ; ins : [haut,
      droite, bas, gauche] les zones sûres ; w, h0 : l'encre du logo en px} ; par défaut l'écran du moment. Rend les coins (s) et le nombre de rebonds. */
   window._veilleSimule=function(duree, graine, o){ o=o||{}; var C=cadre(), k=o.k||C.k, L=o.l||C.width, H=o.h||C.height, ins=o.ins||C.ins, w=o.w||R.LARG*k, h=o.h0||(R.LARG*k*encre.r);
-    var B={x0:ins[3], x1:L-ins[1]-w, y0:ins[0], y1:H-ins[2]-h, v:R.VITESSE*k, tol:R.TOL*k}, al=hasard(graine||1), s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:Math.SQRT1_2}, t=0, coins=[], rebonds=0;
-    oriente(s, B, 0, al); while(true){ var n=prochain(s, B); if(t+n.t>duree) break; t+=n.t; rebondit(s, n, B); rebonds++; if(n.mur==='coin') coins.push(+t.toFixed(1)); oriente(s, B, t*1000, al); }
-    return {coins:coins, rebonds:rebonds, duree:duree, bornes:B}; };
+    var B={x0:ins[3], x1:L-ins[1]-w, y0:ins[0], y1:H-ins[2]-h, v:R.VITESSE*k, tol:R.TOL*k, obs:obstacles({obs:o.decoupe?[o.decoupe]:(o.l?[]:(C.obs||[]))}, w, h)}, al=hasard(graine||1), s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:Math.SQRT1_2}, t=0, coins=[], rebonds=0;
+    var trace=o.trace?[]:null;
+    oriente(s, B, 0, al); while(true){ var n=prochain(s, B); if(t+n.t>duree) break; t+=n.t; rebondit(s, n, B); rebonds++; if(n.mur==='coin') coins.push(+t.toFixed(1)); if(trace) trace.push([+s.x.toFixed(2), +s.y.toFixed(2), n.mur]); oriente(s, B, t*1000, al); }
+    return {coins:coins, rebonds:rebonds, duree:duree, bornes:B, trace:trace}; };
   /* ── LA ZONE VISIBLE : ses bords réels, en px de l'écran ── */
   var encre={r:26.72/140, boites:{}};   /* le rapport hauteur / largeur de l'encre de PROMI (mesuré au premier logo) */
-  function insets(){ return window._zsInsets ? window._zsInsets() : [0,0,0,0]; }   /* v208 (C-299) : la même source que les encarts */
+  function insets(){ try{ var p=document.createElement('div'); p.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
+      document.body.appendChild(p); var c=getComputedStyle(p), r=[c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(function(v){ return parseFloat(v)||0; }); p.remove(); return r; }catch(_){ return [0,0,0,0]; } }
   /* ⚑ v166 (Tom, C-181 §4.3) — « ses bords sont ceux de l'ÉCRAN DE L'APP, pas de la page du navigateur : sur iPhone l'écran visible ; sur ordinateur, dans le
      cadre du téléphone simulé, les bords de CE cadre, jamais les marges de la page autour. Le logo rebondit sur le conteneur racine de l'app. » LA CAUSE, mesurée
      sur l'état de Tom (390 × 651, Safari) : l'app (`#device`, réduite à 0,7466 dans `.frame`) occupe x 49,4 → 340,6, y 10,4 → 640,5 ; la veille couvrait la
@@ -44319,14 +44315,21 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      ordinateur, sur la fenêtre entière, loin du cadre. Le cadre est maintenant `#device` À L'ÉCRAN, recoupé avec la zone visible et les zones sûres. */
   function cadre(){ var vv=window.visualViewport, D=document.getElementById('device'), k=1, r=null; try{ r=D.getBoundingClientRect(); if(r.width>10) k=r.width/390; }catch(_){ }
     var ins=insets(), vl=(vv?vv.offsetLeft:0), vt=(vv?vv.offsetTop:0), vw=(vv?vv.width:innerWidth), vh=(vv?vv.height:innerHeight);
-    /* ⚑ v208 (Tom, C-299) — LE FOND COUVRE TOUT L'ÉCRAN, LE LOGO RESTE DANS LA ZONE SÛRE. Le cadre était recoupé avec les zones sûres : dans l'app (plein écran),
-       le fond s'arrêtait sous l'encoche. Le fond : l'app à l'écran recoupée avec la zone visible ; la zone sûre passe en marges intérieures (`ins`), où le logo
-       rebondit. Dans Safari les zones sûres valent 0 : rien ne change. */
-    var x0=vl, y0=vt, x1=vl+vw, y1=vt+vh;
+    var x0=vl+ins[3], y0=vt+ins[0], x1=vl+vw-ins[1], y1=vt+vh-ins[2];
     if(r && r.width>10 && r.height>10){ x0=Math.max(x0, r.left); y0=Math.max(y0, r.top); x1=Math.min(x1, r.right); y1=Math.min(y1, r.bottom); }
-    var sx0=Math.max(x0, vl+ins[3]), sy0=Math.max(y0, vt+ins[0]), sx1=Math.min(x1, vl+vw-ins[1]), sy1=Math.min(y1, vt+vh-ins[2]);
-    return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[Math.max(0,sy0-y0), Math.max(0,x1-sx1), Math.max(0,y1-sy1), Math.max(0,sx0-x0)]}; }
-  function bornesDe(C, w, h){ return {x0:C.ins[3], x1:C.width-C.ins[1]-w, y0:C.ins[0], y1:C.height-C.ins[2]-h, v:R.VITESSE*C.k, tol:R.TOL*C.k}; }
+    /* ⚑ v209 (Tom, C-300) — DANS L'APP (la coquille déclare la forme de l'écran : `window.__ecranForme`), la veille couvre TOUT l'écran et le logo y va partout :
+       ni zone sûre retranchée, ni ligne imaginaire en haut ; la découpe de la caméra (encoche, Dynamic Island, trou d'Android), donnée par la coquille en px de
+       l'écran, est un obstacle sur lequel il rebondit. Les coins arrondis de l'écran peuvent rogner le logo de quelques pixels au rebond (accepté). Dans
+       Safari (aucune forme déclarée), rien ne change. */
+    var F=window.__ecranForme;
+    if(F){ x0=vl; y0=vt; x1=vl+vw; y1=vt+vh;
+      if(r && r.width>10 && r.height>10){ x0=Math.max(x0, r.left); y0=Math.max(y0, r.top); x1=Math.min(x1, r.right); y1=Math.min(y1, r.bottom); }
+      var obs=[]; if(F.decoupe){ var O=F.decoupe; obs.push({x:O.x-x0, y:O.y-y0, w:O.w, h:O.h}); }
+      return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[0,0,0,0], obs:obs}; }
+    return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[0,0,0,0]}; }
+  function bornesDe(C, w, h){ return {x0:C.ins[3], x1:C.width-C.ins[1]-w, y0:C.ins[0], y1:C.height-C.ins[2]-h, v:R.VITESSE*C.k, tol:R.TOL*C.k, obs:obstacles(C, w, h)}; }
+  /* un logo posé dans un obstacle (au départ, ou quand l'écran change) en sort par le bas */
+  function horsObstacle(s, B){ (B.obs||[]).forEach(function(E){ if(s.x>E.x0 && s.x<E.x1 && s.y>E.y0 && s.y<E.y1) s.y=Math.min(B.y1, E.y1); }); }
   /* ── L'ÉCRAN ── */
   function fond(){ try{ return window._fondToileVif ? window._fondToileVif() : '#050302'; }catch(_){ return '#050302'; } }
   function hex(c){ return '#'+c.slice(0,3).map(function(v){ return ('0'+Math.round(v).toString(16)).slice(-2); }).join(''); }
@@ -44367,7 +44370,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var V=actif={amande:AM, couche:couche, t0:performance.now(), tons:T, fond:F, i:0, couleurs:[], coins:[], rebonds:0, reduit:reduit(), passage:null, fini:false, C:C, al:hasard((Date.now()^0x5bd1e995)>>>0)};
     V.logo=logo(T[0], C.k); V.logo.style.visibility='hidden'; couche.appendChild(V.logo); V.couleurs.push(T[0]); V.couleur=T[0];
     var B=V.B=bornesDe(C, V.logo.__w, V.logo.__h); V.s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:-Math.SQRT1_2};
-    if(V.al()<0.5) V.s.dx=-V.s.dx; oriente(V.s, B, 0, V.al); V.n=prochain(V.s, B); V.tn=0;
+    if(V.al()<0.5) V.s.dx=-V.s.dx; horsObstacle(V.s, B); oriente(V.s, B, 0, V.al); V.n=prochain(V.s, B); V.tn=0;
     pose(V);
     /* l'entrée en flaques : le fond naît par-dessus l'écran, dans la couche ; puis le fond est la couche */
     var fin=function(){ if(V.fini) return; couche.style.background=F; V.logo.style.visibility='visible'; if(V.passage && V.passage.canevas) V.passage.canevas.remove(); V.passage=null; V.tEntree=performance.now(); boucle(); };
@@ -44377,7 +44380,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   /* la zone visible change (barres de Safari, orientation, clavier) : la couche et ses bords suivent, le logo reste dedans */
   function relit(){ var V=actif; if(!V || V.fini) return; var C=cadre(); V.C=C; place(V.couche, C);
     if(Math.abs(C.k*R.LARG-V.logo.__w)>0.5){ var nl=logo(V.couleur, C.k); nl.style.visibility=V.logo.style.visibility; V.couche.replaceChild(nl, V.logo); V.logo=nl; }
-    var B=V.B=bornesDe(C, V.logo.__w, V.logo.__h); V.s.x=Math.max(B.x0, Math.min(B.x1, V.s.x)); V.s.y=Math.max(B.y0, Math.min(B.y1, V.s.y)); V.n=prochain(V.s, B); V.tn=0; pose(V); }
+    var B=V.B=bornesDe(C, V.logo.__w, V.logo.__h); V.s.x=Math.max(B.x0, Math.min(B.x1, V.s.x)); V.s.y=Math.max(B.y0, Math.min(B.y1, V.s.y)); horsObstacle(V.s, B); V.n=prochain(V.s, B); V.tn=0; pose(V); }
   try{ if(window.visualViewport){ visualViewport.addEventListener('resize', relit); visualViewport.addEventListener('scroll', relit); } window.addEventListener('resize', relit); window.addEventListener('orientationchange', function(){ setTimeout(relit, 300); }); }catch(_){ }
   function pose(V){ V.logo.style.transform='translate('+V.s.x.toFixed(2)+'px,'+V.s.y.toFixed(2)+'px)'; }
   function boucle(){ var V=actif; if(!V || V.fini) return; var t=performance.now(), ec=t-V.t0;
@@ -45232,7 +45235,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    barre occupait dans le défilement (collante comme elle : `--colle` s'y mesure). Le contenu qui passe sous l'en-tête est rogné à 112 pt (la règle du fil,
    C-243 v181a), et seulement quand la fiche est défilée. */
 (function(){
-  var HAUT=112+(window._zsDy?window._zsDy():0), DUREE=440;   /* v208 (C-299) : la jonction sous les encarts du haut, à la zone sûre */
+  var HAUT=112, DUREE=440;
   function D(){ return document.getElementById('detailPoster'); }
   function actif(){ var d=D(); return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose')); }
   window._v184Fixe=function(sc){ return !!(sc && sc.id==='detailPoster' && actif()); };
@@ -45325,7 +45328,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    conteneur qui défile — plus de 300 règles la visent par `#detailPoster > …` ; la bande donne la même chose à l'écran.
    ② `lot-V187-HAUT` pose `v187-presse` sur une carte après 100 ms de doigt immobile, le retire au-delà de 6 pt ou au lever. */
 (function(){
-  var HAUT=112+(window._zsDy?window._zsDy():0);   /* v208 (C-299) */
+  var HAUT=112;
   function D(){ return document.getElementById('detailPoster'); }
   function actif(){ var d=D(); return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose') && !d.classList.contains('s2-ouv')); }
   function bande(){ var d=D(); if(!d) return null; var b=document.getElementById('v187Bande');
@@ -45390,7 +45393,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    ⚑ C-263 (v193) : la zone du geste ne lâche le doigt que la vague arrivée à la jonction (le défilement lu au moment même — au doigt posé, à l'événement de défilement,
    à sa fin : rien de visible), et aucune couche d'affichage ne prend le doigt (`pointer-events: none`). */
 (function(){
-  var J=112+(window._zsDy?window._zsDy():0), COL='#0A0415', XO=2, HP=40, CH=2, MH=30;   /* v208 (C-299) : la jonction suit les encarts du haut */
+  var J=112, COL='#0A0415', XO=2, HP=40, CH=2, MH=30;
   function D(){ return document.getElementById('detailPoster'); }
   function actif(d){ return !!(d && d.classList.contains('show')); }   /* dès l'ouverture (le glissement compris) : c'est le seul trait de la fiche */
   function classes(d){ return d ? d.className.replace(/\bgs\d\b|\btracant\b/g,'').replace(/\s+/g,' ').trim() : ''; }   /* ni l'invite du geste (gs0…gs3), ni le geste en cours */

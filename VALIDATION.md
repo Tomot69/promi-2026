@@ -2,7 +2,7 @@
 
 **Validés en bloc par Tom (17 nov.)** : les 68 chantiers « validés par l'usage » et les 20 de méthode, et C-288, C-289 — 90 au registre.
 **Devenus des spécifications de tests automatiques de la vraie app** : 42 chantiers d'états rares (ARCHITECTURE.md, « Les tests ») — marqués au registre.
-**Reste : 14 points à vérifier par Tom** (les 4 derniers : la séance du 17 nov.), une ligne chacun (13 chantiers : trois lignes en portent deux). Adresse : `http://<IP>:8752/app.html`.
+**Reste : 18 points à vérifier par Tom** (11 à 14 : la séance du 17 nov. ; 15 à 18 : v209, dans l'app « Promi preuve »), une ligne chacun (13 chantiers : trois lignes en portent deux). Adresse : `http://<IP>:8752/app.html`.
 
 | # | Chantier | Comment y arriver | Ce qu'on doit voir |
 |---|---|---|---|
@@ -20,3 +20,7 @@
 | 12 | C-297 | Tenir une parole, puis faire défiler la fiche aussitôt (pendant le vert) | la fiche défile au doigt, le vert remonte, rien ne passe sur l'en-tête |
 | 13 | C-298 | L'Aura, regarder la Pelote 10 s | elle tourne 1,5 fois plus vite (un tour en 67 s) |
 | 14 | C-294 | L'Aura, en clair | « PARTAGER MA PELOTE » sur le même fond crème que l'encart « Aura · X » |
+| 15 | C-299 | Dans « Promi preuve », ouvrir chaque page (accueil, une fiche, l'Index, le Fil, l'Aura, le Studio, les Réglages, Partager, la page +) | tout est comme avant v208 ; seul l'encart du haut est un demi-millimètre (3 pt) plus bas |
+| 16 | C-300 | Dans « Promi preuve », ne plus toucher l'iPhone pendant 75 s, regarder la veille quelques minutes | le fond couvre tout l'écran ; le logo va jusqu'aux bords et aux coins du bas, rebondit sous l'encoche sans jamais la traverser |
+| 17 | C-297 | Dans « Promi preuve », tenir une parole, attendre la fin du vert, défiler la fiche lentement puis d'un coup, vers le bas puis vers le haut | le trait s'accroche sous le bandeau et s'aplatit, jamais au-dessus ni en dessous (le relevé part au Mac) |
+| 18 | §4 | Dans « Promi preuve », quitter l'app (retour à l'écran d'accueil de l'iPhone) et attendre une minute | la notification arrive ; revenu avant la minute, elle n'arrive pas |

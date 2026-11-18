@@ -177,18 +177,19 @@ promi/
 **Les sens de dépendance** : `ecrans` → `design`, `etat`, `animation`, `moteur/facade` ; `etat` → `metier`, `donnees` ; `metier` ne dépend de rien. Un écran
 n'importe jamais `promi-moteur.js` ni un autre écran. L'outil d'architecture des imports (dependency-cruiser) le vérifie en intégration continue.
 
-## g bis) Les zones sûres de tous les téléphones (Tom, 18 nov. 2026, C-299)
+## g bis) L'écran du téléphone (Tom, 18 nov. 2026 : C-299 annulé, C-300)
 
-- **Les FONDS vont jusqu'aux bords de l'écran**, sous l'encoche, la Dynamic Island, le trou de caméra et la barre d'état : la Toile, les flaques, le fond de chaque page,
-  la veille.
-- **Les CONTENUS restent dans la zone sûre déclarée par le téléphone.** Sur iOS : `env(safe-area-inset-*)` avec `viewport-fit=cover` ; sur Android : le plein écran
-  bord à bord de Capacitor et ses zones sûres (si la vue web ne rend pas `env()`, le module des zones sûres de Capacitor les transmet en variables CSS).
-- **Les encarts du haut, sur toutes les pages : 6 pt (≈ 1 mm) sous la zone sûre, la même variable partout.** La veille : son fond couvre l'écran, son logo rebondit
-  sur les bords de la zone sûre.
-- **Une seule source** : un module `zones-sures` (le prototype : `lot-V208-ZONES`, `window._zsInsets()`, `window._zsDy()`, la variable CSS `--zs-dy`) ; tout ce qui
-  se place près d'un bord la lit, aucune cote en dur. Dans le navigateur, rien ne change (la barre du navigateur fait l'écart).
-- **La vraie app se dessine pour les formes de téléphone** : le prototype, figé en 390 × 844, couvre l'écran d'un iPhone récent (ou d'un Android en 2,1–2,2) en
-  rognant moins de 3 % ; sur un iPhone SE (16:9) il se loge entier et des bandes restent, couleur du fond de la page.
+- **C-299 est ANNULÉ (Tom, 18 nov. : « tu as changé toute la mise en page ; ce n'était pas demandé »).** La mise en page est celle de b9f98bd, dans l'app comme
+  dans Safari. **Une seule différence, dans l'app seulement : l'encart du haut de chaque page descend de 3 pt** (un demi-millimètre ; posé par la coquille
+  Capacitor, une règle : `.enh`, `#accPlat`, `#stpHaut`, `.dz-plateau`). La vraie app reprendra ce décalage dans le module de l'écran, une seule variable.
+- **La veille (C-300) rebondit sur la forme réelle de l'écran** : son fond couvre tout l'écran, le logo va partout où il y a de l'écran (aucune zone sûre
+  retranchée), et **la découpe de la caméra est un obstacle** sur lequel il rebondit (la découpe agrandie de la boîte du logo, calculée par événements, comme
+  les bords). **La forme de la découpe** : iOS n'a pas d'API — une table par modèle (l'identifiant du module Device : encoches des X à 14 et du 16e, Dynamic
+  Island des 14 Pro à 17) ; modèle inconnu : la bande centrale de la zone sûre du haut ; zone sûre du haut ≤ 24 pt : aucune découpe. **Android** :
+  `DisplayCutout.getBoundingRects()` (API 28+), transmis à la page par un petit module natif Capacitor — décrit, pas construit. La page reçoit
+  `window.__ecranForme = {modele, source, decoupe:{x, y, w, h}}` en px de l'écran ; sans elle (Safari), la veille est celle de b9f98bd.
+- ⚠ **Mesuré (C-300)** : un logo de 140 pt ne tient pas entre le bord et la découpe d'un iPhone à encoche (114 pt sur le 16e) ni à île (138 pt sur le 16 Pro) :
+  les deux coins du haut y sont hors d'atteinte ; le logo rebondit sous la découpe (à 33 pt sur le 16e au lieu de 47, à 51 pt sur le 16 Pro au lieu de 62).
 
 ## h) Les tests — les spécifications venues du prototype
 

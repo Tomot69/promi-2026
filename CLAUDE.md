@@ -263,6 +263,16 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v209 (18 nov. 2026) — C-299 ANNULÉ ; C-300 LA VEILLE SUR LA FORME DE L'ÉCRAN ; C-297 OBSERVÉ SUR L'iPHONE ; LA NOTIFICATION À LA MISE EN ARRIÈRE-PLAN. (Décisions Tom.) Ce bloc CORRIGE v208 (C-299).
+> **Validé par Tom : C-295 (Mascaret fluide ; le changement du moteur est accepté).**
+> **⚑ C-299 ANNULÉ (Tom : « tu as changé toute la mise en page ; ce n'était pas demandé ») : la mise en page est celle de b9f98bd, dans l'app comme dans Safari ; la seule
+> différence, dans l'app seulement, l'encart du haut de chaque page à +3 pt (la coquille).** *La règle* : **une demande sur les « zones sûres » ne déplace rien que Tom
+> n'a pas nommé ; toute mise en page qui bouge se compare au pixel à la version d'avant, écran par écran, avant d'être livrée.**
+> **⚑ C-300** : dans l'app (`window.__ecranForme`, posé par la coquille), la veille couvre l'écran et la découpe de la caméra est un obstacle ; Safari inchangé.
+> Trouvé et corrigé (depuis v161) : un coin touché juste après le bord voisin faisait sauter le logo au coin opposé. Juges : `scratchpad/v209/veille_formes.py`
+> (trois formes, 2 h × 5 graines ; `--sonde`), `veille_app.py`. ⚠ Un logo de 140 pt ne tient pas à côté de l'encoche ou de l'île : les coins du haut y sont hors d'atteinte.
+> **⚑ C-297** : la coquille de la preuve relève la jonction à chaque image sur l'iPhone (`quoi:'c297'`) ; l'inspection de l'app est allumée (`webContentsDebuggingEnabled`).
+
 ### ⚑ v208 (18 nov. 2026) — CAPACITOR RETENU ; C-297 LA FICHE TENUE EN FLEX ; C-295 MASCARET DANS LE MOTEUR ; C-299 LES ZONES SÛRES. (Décisions Tom.)
 > **Validés par Tom : le plein écran, C-296, C-294, C-298. LA PREUVE EST CONCLUANTE : CAPACITOR EST RETENU** (ARCHITECTURE.md).
 > **⚑ C-297 — LA CAUSE** : une règle d'août (« PEAUFINER FIXE ») passait une fiche `f-tenue` (et `f-atenir`) en `display:block` ; une fiche en cours reste en flex.
