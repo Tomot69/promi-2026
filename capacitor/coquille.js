@@ -26,9 +26,23 @@
   /* ⚑ v207 — LE TÉLÉPHONE EST L'ÉCRAN : dans Safari l'app dessine un cadre de téléphone (coins de 22 pt, ombre) réduit pour tenir dans la fenêtre avec 14 pt de
      marge (`fitDevice` : ×0,933 sur 390 × 844). Dans l'app native, l'écran EST le téléphone : ni marge, ni réduction, ni coins, ni ombre — l'appareil à 0, 0,
      390 × 844 (mesuré). Posé par la coquille seule : l'app n'est pas modifiée. */
+  /* ⚑ v208 (C-299) — L'APPAREIL COUVRE L'ÉCRAN, QUELLE QUE SOIT SA FORME : l'échelle qui le fait couvrir (la plus grande des deux), tant que ce qu'elle rogne
+     reste sous 3 % (les iPhone depuis le X, les Android en 2,1–2,2 : ≤ 1 pt rogné) ; au-delà (iPhone SE, 16:9), il se loge entier et des bandes restent (la vraie app
+     sera dessinée pour ces formes). Les contenus du haut descendent sous la zone sûre par l'app elle-même (`--zs-dy`, lot-V208-ZONES). */
   (function () { var st = document.createElement('style'); st.id = 'coquille-plein-ecran';
-    st.textContent = '.frame{padding:0!important;--fit:1!important}#device{border-radius:0!important;box-shadow:none!important}';
-    (document.head || document.documentElement).appendChild(st); })();
+    function regle() { var W = window.innerWidth, H = window.innerHeight, sc = Math.max(W / 390, H / 844), sf = Math.min(W / 390, H / 844);
+      var s = (Math.max(390 * sc - W, 844 * sc - H) <= 0.03 * Math.max(W, H)) ? sc : sf;
+      st.textContent = '.frame{padding:0!important;--fit:' + s.toFixed(4) + '!important}#device,.frame .screen,.frame .sheet,#device .screen,#device .sheet{border-radius:0!important;box-shadow:none!important}';
+      bandes = (s === sf && s !== sc);
+      try { if (window._zsPose) window._zsPose(); } catch (e) { } }
+    /* là où l'appareil ne couvre pas l'écran (un iPhone SE, 16:9), les bandes prennent la couleur du fond de la page affichée, lue au bord de l'appareil
+       (sur la Toile, son fond) — la couleur seule : la matière de la Toile ne s'y prolonge pas. */
+    var bandes = false;
+    function couleur() { if (!bandes || !document.body) return; try { var D = document.getElementById('device').getBoundingClientRect(), e = document.elementFromPoint(D.left + 2, D.top + D.height / 2), c = '';
+      while (e && e !== document.documentElement) { if (e.tagName === 'CANVAS' && window._fondToileVif) { c = window._fondToileVif(); break; }
+        var b = getComputedStyle(e).backgroundColor; if (b && b !== 'transparent' && !/rgba\(\d+, \d+, \d+, 0\)/.test(b)) { c = b; break; } e = e.parentElement; }
+      if (c) document.body.style.setProperty('background', c, 'important'); } catch (e) { } }
+    (document.head || document.documentElement).appendChild(st); regle(); addEventListener('resize', regle); setInterval(couleur, 400); })();
   function barre() { try { var S = P().StatusBar, d = document.getElementById('device'); if (!S) return; S.setOverlaysWebView({ overlay: true });
     var clair = !!(d && d.classList.contains('light')); S.setStyle({ style: clair ? 'LIGHT' : 'DARK' }); } catch (e) { } }
   window.addEventListener('load', function () { barre(); try { var d = document.getElementById('device'); if (d) new MutationObserver(barre).observe(d, { attributes: true, attributeFilter: ['class'] }); } catch (e) { } });
