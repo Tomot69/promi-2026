@@ -26,38 +26,78 @@
   /* ⚑ v207 — LE TÉLÉPHONE EST L'ÉCRAN : dans Safari l'app dessine un cadre de téléphone (coins de 22 pt, ombre) réduit pour tenir dans la fenêtre avec 14 pt de
      marge (`fitDevice` : ×0,933 sur 390 × 844). Dans l'app native, l'écran EST le téléphone : ni marge, ni réduction, ni coins, ni ombre — l'appareil à 0, 0,
      390 × 844 (mesuré). Posé par la coquille seule : l'app n'est pas modifiée. */
-  /* ⚑ v208 (C-299) — L'APPAREIL COUVRE L'ÉCRAN, QUELLE QUE SOIT SA FORME : l'échelle qui le fait couvrir (la plus grande des deux), tant que ce qu'elle rogne
-     reste sous 3 % (les iPhone depuis le X, les Android en 2,1–2,2 : ≤ 1 pt rogné) ; au-delà (iPhone SE, 16:9), il se loge entier et des bandes restent (la vraie app
-     sera dessinée pour ces formes). Les contenus du haut descendent sous la zone sûre par l'app elle-même (`--zs-dy`, lot-V208-ZONES). */
   (function () { var st = document.createElement('style'); st.id = 'coquille-plein-ecran';
-    function regle() { var W = window.innerWidth, H = window.innerHeight, sc = Math.max(W / 390, H / 844), sf = Math.min(W / 390, H / 844);
-      var s = (Math.max(390 * sc - W, 844 * sc - H) <= 0.03 * Math.max(W, H)) ? sc : sf;
-      st.textContent = '.frame{padding:0!important;--fit:' + s.toFixed(4) + '!important}#device,.frame .screen,.frame .sheet,#device .screen,#device .sheet{border-radius:0!important;box-shadow:none!important}';
-      bandes = (s === sf && s !== sc);
-      try { if (window._zsPose) window._zsPose(); } catch (e) { } }
-    /* là où l'appareil ne couvre pas l'écran (un iPhone SE, 16:9), les bandes prennent la couleur du fond de la page affichée, lue au bord de l'appareil
-       (sur la Toile, son fond) — la couleur seule : la matière de la Toile ne s'y prolonge pas. */
-    var bandes = false;
-    function couleur() { if (!bandes || !document.body) return; try { var D = document.getElementById('device').getBoundingClientRect(), e = document.elementFromPoint(D.left + 2, D.top + D.height / 2), c = '';
-      while (e && e !== document.documentElement) { if (e.tagName === 'CANVAS' && window._fondToileVif) { c = window._fondToileVif(); break; }
-        var b = getComputedStyle(e).backgroundColor; if (b && b !== 'transparent' && !/rgba\(\d+, \d+, \d+, 0\)/.test(b)) { c = b; break; } e = e.parentElement; }
-      if (c) document.body.style.setProperty('background', c, 'important'); } catch (e) { } }
-    (document.head || document.documentElement).appendChild(st); regle(); addEventListener('resize', regle); setInterval(couleur, 400); })();
+    st.textContent = '.frame{padding:0!important;--fit:1!important}#device{border-radius:0!important;box-shadow:none!important}'
+      /* ⚑ v209 (Tom, C-299 annulé) — DANS L'APP SEULE, l'encart du haut de chaque page descend d'un demi-millimètre (3 pt). Rien d'autre ne bouge. */
+      + '#device .enh,.frame .enh,#device #accPlat,#stpHaut,.dz-plateau{translate:0 3px!important}';
+    (document.head || document.documentElement).appendChild(st); })();
   function barre() { try { var S = P().StatusBar, d = document.getElementById('device'); if (!S) return; S.setOverlaysWebView({ overlay: true });
     var clair = !!(d && d.classList.contains('light')); S.setStyle({ style: clair ? 'LIGHT' : 'DARK' }); } catch (e) { } }
   window.addEventListener('load', function () { barre(); try { var d = document.getElementById('device'); if (d) new MutationObserver(barre).observe(d, { attributes: true, attributeFilter: ['class'] }); } catch (e) { } });
   /* ⚑ v207 — LA NOTIFICATION, VÉRIFIABLE : à chaque lancement, 8 s après, l'app envoie au Mac la permission, les notifications en attente et celles déjà
-     REMISES (le centre de notifications les garde) ; au premier lancement de cette version, une notification est programmée à 1 minute (clé neuve). */
+     REMISES (le centre de notifications les garde).
+     ⚑ v209 (Tom, §4 : « le test était mal monté ») — elle n'est plus programmée au lancement (remise pendant qu'on utilisait l'app) : elle l'est QUAND L'APP PASSE
+     EN ARRIÈRE-PLAN (`appStateChange`, isActive faux), 60 s après ; si l'app revient au premier plan avant, elle est annulée. Chaque étape part au Mac. */
   function envoie(o) { try { fetch('mesure', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(o) }); } catch (e) { } }
   window.addEventListener('load', function () {
     var N = P().LocalNotifications; if (!N) return;
-    try { if (!localStorage.getItem('preuve_notif2')) {
-      N.requestPermissions().then(function (r) { envoie({ quoi: 'preuve-notif-permission', reponse: r });
-        if (r.display !== 'granted') return null;
-        return N.schedule({ notifications: [{ id: 2, title: 'Promi', body: 'La preuve : une notification programmée il y a une minute.', schedule: { at: new Date(Date.now() + 60000), allowWhileIdle: true } }] }); })
-      .then(function (r) { localStorage.setItem('preuve_notif2', String(Date.now())); envoie({ quoi: 'preuve-notif', programmee: r ? new Date().toISOString() : null, resultat: r }); })
-      .catch(function (e) { envoie({ quoi: 'preuve-notif', erreur: String(e) }); }); } } catch (e) { }
     setTimeout(function () { Promise.all([N.checkPermissions().catch(function (e) { return String(e); }), N.getPending().catch(function (e) { return String(e); }), N.getDeliveredNotifications().catch(function (e) { return String(e); })])
-      .then(function (r) { envoie({ quoi: 'preuve-notif-etat', permission: r[0], enAttente: r[1], remises: r[2], programmee: localStorage.getItem('preuve_notif2'), programmeeV1: localStorage.getItem('preuve_notif') }); }); }, 8000);
+      .then(function (r) { envoie({ quoi: 'preuve-notif-etat', permission: r[0], enAttente: r[1], remises: r[2], programmee: localStorage.getItem('preuve_notif3') }); }); }, 8000);
+    try { N.checkPermissions().then(function (r) { if (r.display !== 'granted') N.requestPermissions().then(function (q) { envoie({ quoi: 'preuve-notif-permission', reponse: q }); }); }); } catch (e) { }
+    var A = P().App; if (!A) return;
+    A.addListener('appStateChange', function (st) { try {
+      if (!st.isActive) {
+        var quand = new Date(Date.now() + 60000);
+        N.schedule({ notifications: [{ id: 3, title: 'Promi', body: 'La preuve : une minute après avoir quitté l\u2019app.', schedule: { at: quand, allowWhileIdle: true } }] })
+          .then(function (r) { localStorage.setItem('preuve_notif3', quand.toISOString()); envoie({ quoi: 'preuve-notif', ev: 'programmée', pour: quand.toISOString(), resultat: r }); })
+          .catch(function (e) { envoie({ quoi: 'preuve-notif', ev: 'erreur', erreur: String(e) }); });
+      } else {
+        N.getPending().then(function (p) { var la = (p.notifications || []).some(function (n) { return n.id === 3; });
+          if (la) N.cancel({ notifications: [{ id: 3 }] }).then(function () { envoie({ quoi: 'preuve-notif', ev: 'annulée (revenue au premier plan avant la minute)' }); });
+          else N.getDeliveredNotifications().then(function (d) { envoie({ quoi: 'preuve-notif', ev: 'retour', remises: d, programmeePour: localStorage.getItem('preuve_notif3') }); }); });
+      } } catch (e) { envoie({ quoi: 'preuve-notif', ev: 'erreur', erreur: String(e) }); } });
   });
+  /* ⚑ v209 (Tom, C-300) — LA FORME RÉELLE DE L'ÉCRAN, pour la veille : la découpe de la caméra en pt de l'écran. iOS n'a pas d'API : une table par modèle
+     (l'identifiant du module Device). Les cotes sont celles des découpes publiées, au pt près (à vérifier à l'œil sur chaque appareil). Modèle inconnu : la bande
+     centrale de la zone sûre du haut (40 % de la largeur) ; une zone sûre du haut de 24 pt ou moins (iPhone SE, 8…) : aucune découpe. Android : DisplayCutout
+     (`getBoundingRects`) par un petit module natif — décrit, pas construit (ARCHITECTURE.md). */
+  var ENCOCHE_X = { w: 209, h: 30 }, ENCOCHE_XR = { w: 230, h: 33 }, ENCOCHE_12 = { w: 210, h: 32 }, ENCOCHE_12M = { w: 226, h: 35 },
+      ENCOCHE_13 = { w: 162, h: 33 }, ENCOCHE_13M = { w: 175, h: 35 }, ILE = { w: 126, h: 37, y: 11 }, ILE16P = { w: 126, h: 37, y: 14 };
+  var DECOUPES = { 'iPhone10,3': ENCOCHE_X, 'iPhone10,6': ENCOCHE_X, 'iPhone11,2': ENCOCHE_X, 'iPhone11,4': ENCOCHE_X, 'iPhone11,6': ENCOCHE_X, 'iPhone12,3': ENCOCHE_X, 'iPhone12,5': ENCOCHE_X,
+    'iPhone11,8': ENCOCHE_XR, 'iPhone12,1': ENCOCHE_XR,
+    'iPhone13,1': ENCOCHE_12M, 'iPhone13,2': ENCOCHE_12, 'iPhone13,3': ENCOCHE_12, 'iPhone13,4': ENCOCHE_12,
+    'iPhone14,4': ENCOCHE_13M, 'iPhone14,5': ENCOCHE_13, 'iPhone14,2': ENCOCHE_13, 'iPhone14,3': ENCOCHE_13, 'iPhone14,7': ENCOCHE_13, 'iPhone14,8': ENCOCHE_13, 'iPhone17,5': ENCOCHE_13,
+    'iPhone15,2': ILE, 'iPhone15,3': ILE, 'iPhone15,4': ILE, 'iPhone15,5': ILE, 'iPhone16,1': ILE, 'iPhone16,2': ILE,
+    'iPhone17,3': ILE, 'iPhone17,4': ILE, 'iPhone17,1': ILE16P, 'iPhone17,2': ILE16P, 'iPhone18,1': ILE16P, 'iPhone18,2': ILE16P, 'iPhone18,3': ILE, 'iPhone18,4': ILE,
+    'iPhone8,4': null, 'iPhone9,1': null, 'iPhone9,3': null, 'iPhone10,1': null, 'iPhone10,4': null, 'iPhone12,8': null, 'iPhone14,6': null };
+  function hautSur() { try { var p = document.createElement('div'); p.style.cssText = 'position:fixed;top:0;left:0;height:0;visibility:hidden;padding-top:env(safe-area-inset-top)';
+    document.documentElement.appendChild(p); var v = parseFloat(getComputedStyle(p).paddingTop) || 0; p.remove(); return v; } catch (e) { return 0; } }
+  function forme(modele) { var W = window.innerWidth, d = DECOUPES.hasOwnProperty(modele) ? DECOUPES[modele] : undefined, hs = hautSur(), O = null, src = 'table';
+    if (d) O = { x: (W - d.w) / 2, y: d.y || 0, w: d.w, h: d.h };
+    else if (d === undefined) { src = 'inconnu'; if (hs > 24) O = { x: W * 0.3, y: 0, w: W * 0.4, h: hs }; }
+    window.__ecranForme = { modele: modele, source: src, decoupe: O, ecran: [W, window.innerHeight], hautSur: hs };
+    envoie({ quoi: 'preuve-forme', forme: window.__ecranForme }); }
+  window.__ecranForme = { modele: null, source: 'attente', decoupe: null };
+  window.addEventListener('load', function () { try { var Dv = P().Device; if (!Dv) { forme(null); return; } Dv.getInfo().then(function (i) { forme(i.model); }, function () { forme(null); }); } catch (e) { forme(null); } });
+  /* ⚑ v209 (Tom, C-297) — LE RELEVÉ DE LA JONCTION, EN DIRECT. Pendant qu'une fiche est ouverte et qu'elle défile (ou qu'un doigt est posé), à chaque image :
+     le défilement, la place à l'écran de la boîte collante (#v192Colle), du trait plat (#v195Plat), de la fenêtre (#v200Fenetre), de la bande (#v187Bande), de
+     l'en-tête (.enh), et les classes de la fiche ; à chaque changement de classe (tenir), les styles calculés de la chaîne. Envoyé au Mac par paquets,
+     1 s après la fin du défilement (`quoi: 'c297'`). Rien n'est modifié dans l'app. */
+  (function () { var IDS = ['v192Colle', 'v195Plat', 'v200Fenetre', 'v187Bande', 'tenirMaree'], buf = [], dern = 0, doigt = false, clsAv = '', envoiT = null, n = 0;
+    function R(e) { if (!e) return null; var r = e.getBoundingClientRect(); return [+r.top.toFixed(2), +r.bottom.toFixed(2), +r.left.toFixed(1), +r.width.toFixed(1)]; }
+    function styles(D) { var o = {}; [D].concat(IDS.map(function (i) { return document.getElementById(i); })).concat([D && D.querySelector('.enh')]).forEach(function (e) {
+      if (!e) return; var c = getComputedStyle(e); o[e.id || e.className.split(' ')[0]] = { pos: c.position, top: c.top, z: c.zIndex, disp: c.display, vis: c.visibility, op: c.opacity, tf: c.transform, tr: c.translate,
+        wc: c.willChange, ov: c.overflowY, ord: c.order, mt: c.marginTop, mb: c.marginBottom, h: c.height, clip: (c.clipPath || '').slice(0, 60), cont: c.contain }; }); return o; }
+    function part() { if (!buf.length) return; var b = buf; buf = []; envoie({ quoi: 'c297', n: ++n, images: b }); }
+    addEventListener('touchstart', function () { doigt = true; dern = performance.now(); }, { capture: true, passive: true });
+    addEventListener('touchend', function () { doigt = false; dern = performance.now(); }, { capture: true, passive: true });
+    function image() { requestAnimationFrame(image); var D = document.getElementById('detailPoster'); if (!D || !D.classList.contains('show')) return;
+      var cls = D.className, t = performance.now();
+      if (cls !== clsAv) { buf.push({ t: Math.round(t), ev: 'classes', cls: cls, styles: styles(D) }); clsAv = cls; dern = t; }
+      var s = D.scrollTop; if (s !== image.s) { dern = t; image.s = s; }
+      if (t - dern > 1000 && !doigt) { if (buf.length) part(); return; }
+      var f = { t: +t.toFixed(1), s: +s.toFixed(2), d: doigt ? 1 : 0, enh: R(D.querySelector('.enh')) };
+      IDS.forEach(function (i) { var e = document.getElementById(i); f[i] = R(e); if (e && f[i] && i !== 'tenirMaree') { var c = getComputedStyle(e); f[i].push(c.visibility === 'hidden' || c.display === 'none' ? 0 : 1); } });
+      buf.push(f); if (buf.length >= 240) part(); }
+    requestAnimationFrame(image); })();
 })();

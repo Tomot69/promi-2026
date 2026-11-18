@@ -2,10 +2,23 @@
   "appId": "fr.autier.promi.preuve",
   "appName": "Promi preuve",
   "webDir": "www",
-  "ios": { "contentInset": "never", "scrollEnabled": false },
+  "ios": {
+    "contentInset": "never",
+    "scrollEnabled": false,
+    "webContentsDebuggingEnabled": true
+  },
   "plugins": {
-    "CapacitorHttp": { "enabled": true },
-    "LocalNotifications": { "presentationOptions": ["banner", "sound"] },
-    "StatusBar": { "overlaysWebView": true }
+    "CapacitorHttp": {
+      "enabled": true
+    },
+    "LocalNotifications": {
+      "presentationOptions": [
+        "banner",
+        "sound"
+      ]
+    },
+    "StatusBar": {
+      "overlaysWebView": true
+    }
   }
 }
