@@ -160,5 +160,6 @@ if __name__ == '__main__':
         for nat in NATS: juge_nature(b, nat)
         if '--sans-tenir' not in sys.argv:   # ⚑ v207 (C-297) : défiler juste après « tenir » (banc_apres_tenir)
             import banc_apres_tenir as AT; AT.cas(b, F, juge, VUE[0], VUE[1], 'après tenir · vue %s' % VUEN)
+            AT.jonction(b, F, juge, VUE[0], VUE[1], 'jonction · vue %s' % VUEN)   # ⚑ v208 (C-297) : en cours, tenu juste après, tenu rechargé, date passée
         b.close()
     print('  %s %d / %d' % ('✅' if all(res) else '❌', sum(res), len(res)))

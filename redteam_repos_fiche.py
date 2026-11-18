@@ -88,5 +88,6 @@ with sync_playwright() as p:
     if '--sans-tenir' not in sys.argv:   # ⚑ v207 (C-297) : D · défiler juste après « tenir » (banc_apres_tenir), échelle 1 et fenêtre de Tom
         import banc_apres_tenir as AT
         for vue in VUES: AT.cas(b, F, lambda n, ok, d='': juge(n, ok, d), *((390, 651) if vue == 'tom' else (430, 932)), nom='D · après tenir · ' + vue)
+        for vue in VUES: AT.jonction(b, F, lambda n, ok, d='': juge(n, ok, d), *((390, 651) if vue == 'tom' else (430, 932)), nom='E · jonction · ' + vue)   # ⚑ v208 (C-297)
     b.close()
 ok = sum(res); print('\n  %s %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res))); sys.exit(0 if ok == len(res) else 1)

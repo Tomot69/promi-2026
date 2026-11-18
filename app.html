@@ -2832,6 +2832,27 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
   window.addEventListener('load', function(){ setTimeout(envoie, 4000); });
 }catch(_){ } })();
 </script>
+<script id="lot-V208-ZONES">
+/* ⚑ v208 (Tom, C-299) — LES ZONES SÛRES DE TOUS LES TÉLÉPHONES. UNE SEULE SOURCE : les zones sûres que le téléphone DÉCLARE (`env(safe-area-inset-*)`, lues ici),
+   et l'écart des encarts du haut sous elles (ECART, 6 pt ≈ 1 mm). Les FONDS vont jusqu'aux bords (l'appareil couvre l'écran) ; les CONTENUS restent dans la zone sûre :
+   les encarts du haut, sur toutes les pages, descendent de `--zs-dy` (le haut de la zone sûre + 6 pt, moins leur place de dessin, 40 pt ; ramené à l'échelle de
+   l'appareil) — la jonction d'une fiche (112 pt) descend d'autant. Dans Safari les zones sûres valent 0 (la barre du navigateur fait l'écart) : `--zs-dy` vaut 0,
+   rien ne change. La veille lit la même source. `window.__zsInsets` (un crochet de banc, jamais posé par l'app) simule un téléphone. */
+(function(){
+  var ECART=6, HAUT_DESSIN=40;
+  window._zsInsets=function(){ if(window.__zsInsets) return window.__zsInsets.slice(); try{ var p=document.createElement('div'); p.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
+      (document.body||document.documentElement).appendChild(p); var c=getComputedStyle(p), r=[c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(function(v){ return parseFloat(v)||0; }); p.remove(); return r; }catch(_){ return [0,0,0,0]; } };
+  window._zsDy=function(){ try{ var ins=window._zsInsets(), D=document.getElementById('device'); if(!D) return 0; var r=D.getBoundingClientRect(), k=(r.width/(D.offsetWidth||390))||1, vt=window.visualViewport?window.visualViewport.offsetTop:0;
+      var dy=((vt+ins[0]+ECART)-r.top)/k-HAUT_DESSIN; return dy>0 ? Math.round(dy*100)/100 : 0; }catch(_){ return 0; } };
+  window._zsRegle={ECART:ECART, HAUT_DESSIN:HAUT_DESSIN};
+  function pose(){ try{ document.documentElement.style.setProperty('--zs-dy', window._zsDy()+'px'); }catch(_){ } }
+  window._zsPose=pose; document.addEventListener('DOMContentLoaded', pose); addEventListener('load', pose); addEventListener('resize', pose);
+})();
+</script>
+<style id="lot-V208-ZONES-css">
+/* ⚑ v208 (C-299) : les encarts du haut — les plateaux de toutes les pages (`.enh`) et celui de l'accueil — sous la zone sûre (`--zs-dy`, 0 dans Safari) */
+#device .enh,.frame .enh,#device #accPlat,#stpHaut,.dz-plateau{translate:0 var(--zs-dy,0px)}
+</style>
 <style id="lot-TOKENS-css">
 /* ⚑ LE JEU DE COULEURS ET DE POLICES — source unique (Tom, 16 septembre 2026).
    Aucune vue n'appelle une police ni un hexadécimal en dur : tout passe par ce bloc.
@@ -12965,6 +12986,10 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
    la barre COLLE en haut quand on descend (sticky top:0) ; les réglages
    (#dpdCorps) vivent SOUS elle, on descend pour les découvrir. Rien ne remonte. */
 .device #detailPoster.f-atenir,.device #detailPoster.f-tenue{display:block!important;overflow-y:auto!important;overflow-x:hidden!important}
+/* ⚑ v208 (Tom, C-297 : « après tenir, le trait passe sous le bandeau ») — LA FICHE TENUE GARDE LA MISE EN PAGE DE LA FICHE EN COURS. La règle d'août ci-dessus
+   la passait en `display:block` : la boîte collante de la jonction (C-259 : `order:-10`, marges qui annulent sa hauteur) n'y est plus posée par le même code (en bloc,
+   `order` est ignoré et les marges fusionnent). Même composant, même code : flex, colonne, comme en cours. (« à tenir » n'existe plus depuis C-210.) */
+.device #detailPoster.f-atenir,.device #detailPoster.f-tenue{display:flex!important;flex-direction:column!important}
 .device #detailPoster #dpMain{display:flex!important;flex-direction:column!important;min-height:calc(100% - 69px)!important;position:relative;z-index:2}
 .device #detailPoster #dpMain #dpCorps{flex:1 1 auto!important}
 .device #detailPoster.f-atenir #dpDetails,.device #detailPoster.f-tenue #dpDetails{position:sticky!important;top:0!important;bottom:auto!important;z-index:20!important;flex:none!important;margin:0!important}
@@ -44286,8 +44311,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     return {coins:coins, rebonds:rebonds, duree:duree, bornes:B}; };
   /* ── LA ZONE VISIBLE : ses bords réels, en px de l'écran ── */
   var encre={r:26.72/140, boites:{}};   /* le rapport hauteur / largeur de l'encre de PROMI (mesuré au premier logo) */
-  function insets(){ try{ var p=document.createElement('div'); p.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
-      document.body.appendChild(p); var c=getComputedStyle(p), r=[c.paddingTop, c.paddingRight, c.paddingBottom, c.paddingLeft].map(function(v){ return parseFloat(v)||0; }); p.remove(); return r; }catch(_){ return [0,0,0,0]; } }
+  function insets(){ return window._zsInsets ? window._zsInsets() : [0,0,0,0]; }   /* v208 (C-299) : la même source que les encarts */
   /* ⚑ v166 (Tom, C-181 §4.3) — « ses bords sont ceux de l'ÉCRAN DE L'APP, pas de la page du navigateur : sur iPhone l'écran visible ; sur ordinateur, dans le
      cadre du téléphone simulé, les bords de CE cadre, jamais les marges de la page autour. Le logo rebondit sur le conteneur racine de l'app. » LA CAUSE, mesurée
      sur l'état de Tom (390 × 651, Safari) : l'app (`#device`, réduite à 0,7466 dans `.frame`) occupe x 49,4 → 340,6, y 10,4 → 640,5 ; la veille couvrait la
@@ -44295,9 +44319,13 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      ordinateur, sur la fenêtre entière, loin du cadre. Le cadre est maintenant `#device` À L'ÉCRAN, recoupé avec la zone visible et les zones sûres. */
   function cadre(){ var vv=window.visualViewport, D=document.getElementById('device'), k=1, r=null; try{ r=D.getBoundingClientRect(); if(r.width>10) k=r.width/390; }catch(_){ }
     var ins=insets(), vl=(vv?vv.offsetLeft:0), vt=(vv?vv.offsetTop:0), vw=(vv?vv.width:innerWidth), vh=(vv?vv.height:innerHeight);
-    var x0=vl+ins[3], y0=vt+ins[0], x1=vl+vw-ins[1], y1=vt+vh-ins[2];
+    /* ⚑ v208 (Tom, C-299) — LE FOND COUVRE TOUT L'ÉCRAN, LE LOGO RESTE DANS LA ZONE SÛRE. Le cadre était recoupé avec les zones sûres : dans l'app (plein écran),
+       le fond s'arrêtait sous l'encoche. Le fond : l'app à l'écran recoupée avec la zone visible ; la zone sûre passe en marges intérieures (`ins`), où le logo
+       rebondit. Dans Safari les zones sûres valent 0 : rien ne change. */
+    var x0=vl, y0=vt, x1=vl+vw, y1=vt+vh;
     if(r && r.width>10 && r.height>10){ x0=Math.max(x0, r.left); y0=Math.max(y0, r.top); x1=Math.min(x1, r.right); y1=Math.min(y1, r.bottom); }
-    return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[0,0,0,0]}; }
+    var sx0=Math.max(x0, vl+ins[3]), sy0=Math.max(y0, vt+ins[0]), sx1=Math.min(x1, vl+vw-ins[1]), sy1=Math.min(y1, vt+vh-ins[2]);
+    return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[Math.max(0,sy0-y0), Math.max(0,x1-sx1), Math.max(0,y1-sy1), Math.max(0,sx0-x0)]}; }
   function bornesDe(C, w, h){ return {x0:C.ins[3], x1:C.width-C.ins[1]-w, y0:C.ins[0], y1:C.height-C.ins[2]-h, v:R.VITESSE*C.k, tol:R.TOL*C.k}; }
   /* ── L'ÉCRAN ── */
   function fond(){ try{ return window._fondToileVif ? window._fondToileVif() : '#050302'; }catch(_){ return '#050302'; } }
@@ -45204,7 +45232,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    barre occupait dans le défilement (collante comme elle : `--colle` s'y mesure). Le contenu qui passe sous l'en-tête est rogné à 112 pt (la règle du fil,
    C-243 v181a), et seulement quand la fiche est défilée. */
 (function(){
-  var HAUT=112, DUREE=440;
+  var HAUT=112+(window._zsDy?window._zsDy():0), DUREE=440;   /* v208 (C-299) : la jonction sous les encarts du haut, à la zone sûre */
   function D(){ return document.getElementById('detailPoster'); }
   function actif(){ var d=D(); return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose')); }
   window._v184Fixe=function(sc){ return !!(sc && sc.id==='detailPoster' && actif()); };
@@ -45297,7 +45325,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    conteneur qui défile — plus de 300 règles la visent par `#detailPoster > …` ; la bande donne la même chose à l'écran.
    ② `lot-V187-HAUT` pose `v187-presse` sur une carte après 100 ms de doigt immobile, le retire au-delà de 6 pt ou au lever. */
 (function(){
-  var HAUT=112;
+  var HAUT=112+(window._zsDy?window._zsDy():0);   /* v208 (C-299) */
   function D(){ return document.getElementById('detailPoster'); }
   function actif(){ var d=D(); return !!(d && d.classList.contains('show') && d.classList.contains('v184-pose') && !d.classList.contains('s2-ouv')); }
   function bande(){ var d=D(); if(!d) return null; var b=document.getElementById('v187Bande');
@@ -45362,7 +45390,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    ⚑ C-263 (v193) : la zone du geste ne lâche le doigt que la vague arrivée à la jonction (le défilement lu au moment même — au doigt posé, à l'événement de défilement,
    à sa fin : rien de visible), et aucune couche d'affichage ne prend le doigt (`pointer-events: none`). */
 (function(){
-  var J=112, COL='#0A0415', XO=2, HP=40, CH=2, MH=30;
+  var J=112+(window._zsDy?window._zsDy():0), COL='#0A0415', XO=2, HP=40, CH=2, MH=30;   /* v208 (C-299) : la jonction suit les encarts du haut */
   function D(){ return document.getElementById('detailPoster'); }
   function actif(d){ return !!(d && d.classList.contains('show')); }   /* dès l'ouverture (le glissement compris) : c'est le seul trait de la fiche */
   function classes(d){ return d ? d.className.replace(/\bgs\d\b|\btracant\b/g,'').replace(/\s+/g,' ').trim() : ''; }   /* ni l'invite du geste (gs0…gs3), ni le geste en cours */

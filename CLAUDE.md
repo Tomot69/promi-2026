@@ -263,6 +263,20 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v208 (18 nov. 2026) — CAPACITOR RETENU ; C-297 LA FICHE TENUE EN FLEX ; C-295 MASCARET DANS LE MOTEUR ; C-299 LES ZONES SÛRES. (Décisions Tom.)
+> **Validés par Tom : le plein écran, C-296, C-294, C-298. LA PREUVE EST CONCLUANTE : CAPACITOR EST RETENU** (ARCHITECTURE.md).
+> **⚑ C-297 — LA CAUSE** : une règle d'août (« PEAUFINER FIXE ») passait une fiche `f-tenue` (et `f-atenir`) en `display:block` ; une fiche en cours reste en flex.
+> La jonction (C-259) repose sur la mise en page flex (la boîte collante : `order:-10`, marges qui annulent sa hauteur) : une parole tenue en sortait — et sur une
+> fiche tenue ouverte directement, la dalle de la bande manquait. Aujourd'hui une fiche tenue est en flex, comme en cours (même composant, même code). Juge :
+> `banc_apres_tenir.jonction` (en cours, tenu juste après, tenu rechargé, date passée ; J1 la mise en page, J2 le trait plat à la jonction, J3 le trait plat VU),
+> dans `redteam_un_trait` et `redteam_repos_fiche`. ⚠ Au banc, J3 (le trait vu) est vert aussi sur v207 : la cause est nommée, le défaut de l'iPhone non reproduit tel quel.
+> **⚑ C-295 — LE MOTEUR AUTORISÉ POUR CE SEUL DÉFAUT** (étiquette `avant-moteur-mascaret`) : après une transition, le gel de Mascaret (`_geler`) figeait les graines qui se
+> posaient encore jusqu'à un quart d'unité de matière, puis les faisait sauter ; dans l'aperçu du Studio seulement (`window._apImage`), une graine qui bouge encore
+> (> 0,15 px d'une image à l'autre) est suivie à chaque image. `banc_rendu` identique (Ramage seul, préexistant), `toile_stable` T 6/6 sur l'export de Tom.
+> **⚑ C-299 — LES ZONES SÛRES** : une seule source (`lot-V208-ZONES` : `_zsInsets()`, `_zsDy()`, `--zs-dy`) ; les plateaux du haut (`.enh`, `#accPlat`, `#stpHaut`,
+> `.dz-plateau`) descendent de `--zs-dy` (zone sûre + 6 pt − 40 pt) ; la jonction d'une fiche (`HAUT`, `J`) avec eux ; la veille : le fond sur l'écran entier, le logo
+> dans la zone sûre. 0 dans Safari. La coquille : l'échelle qui couvre l'écran (rognage ≤ 3 %), les coins à 0, les bandes du SE à la couleur du fond.
+
 ### ⚑ v207 suite (17 nov. 2026, après la séance de la preuve) — C-295 À C-298 ; LE VRAI FOND DE LA PELOTE ; LA PREUVE EN PLEIN ÉCRAN. (Décisions Tom.)
 > **C-296 — le rectangle sur « Je »** : la place « qui ? » qui part à la bascule (`.v202-part`, une copie à son ancienne place) se détrace là où « Je » arrive ; son
 > filet pointillé restait entier puis disparaissait d'un coup. Il s'amincit maintenant de 3 à 0 px pendant le détracé (padding compensé). Juge : **`redteam_je.py`**.

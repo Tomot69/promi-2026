@@ -22,7 +22,9 @@ with sync_playwright() as p:
     print(F, 'monde', pg.evaluate("()=>document.getElementById('studioScreen').getAttribute('data-stp-monde')"), 'charge %.1f'%B.charge())
     if '--sansprep' in sys.argv: pg.evaluate("()=>{ Toile.apercuCompose=null; Toile.apercuPrepare=function(){return true}; Toile.apercuPrepareProchain=function(){return true}; }")
     pg.wait_for_timeout(4000)
+
     r=pg.evaluate(SONDE % 12000)
+
     ch=[x[1] for x in r]; dt=[x[0] for x in r]
     nul=sum(1 for v in ch if v<0.05); 
     print('images',len(r),'figées (Δ<0,05)',nul,'dt>20',sum(1 for v in dt if v>20),'Δ p50 %.2f p95 %.2f max %.2f'%(sorted(ch)[len(ch)//2], sorted(ch)[int(.95*len(ch))], max(ch)))

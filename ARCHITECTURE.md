@@ -15,7 +15,7 @@ puisse la faire vivre pendant des années. **Rien ne démarre avant l'accord de 
    retouche à la main d'un fichier généré.
 5. **Les juges deviennent des tests automatiques, lancés à chaque commit** (intégration continue). Pas de fusion si un test est rouge.
 6. **Un schéma de données versionné avec ses migrations, dès la version 1.**
-7. **Décisions prises** : Capacitor (sous réserve de la preuve sur l'iPhone) ; Android sur la même base, publié un ou deux lots après iOS ; la version 1 sur
+7. **Décisions prises** : **Capacitor — RETENU par Tom le 18 nov. 2026, la preuve sur son iPhone étant concluante** (PREUVE-CAPACITOR.md : fluidité au moins égale à Safari, rendu identique, vibration ressentie, notification remise, plein écran) ; Android sur la même base, publié un ou deux lots après iOS ; la version 1 sur
    l'appareil, Firebase en 1.1 ; les correctifs à distance pour les défauts seulement ; l'assainissement du prototype limité aux modules repris.
 
 ## a) L'audit du prototype
@@ -176,6 +176,19 @@ promi/
 ```
 **Les sens de dépendance** : `ecrans` → `design`, `etat`, `animation`, `moteur/facade` ; `etat` → `metier`, `donnees` ; `metier` ne dépend de rien. Un écran
 n'importe jamais `promi-moteur.js` ni un autre écran. L'outil d'architecture des imports (dependency-cruiser) le vérifie en intégration continue.
+
+## g bis) Les zones sûres de tous les téléphones (Tom, 18 nov. 2026, C-299)
+
+- **Les FONDS vont jusqu'aux bords de l'écran**, sous l'encoche, la Dynamic Island, le trou de caméra et la barre d'état : la Toile, les flaques, le fond de chaque page,
+  la veille.
+- **Les CONTENUS restent dans la zone sûre déclarée par le téléphone.** Sur iOS : `env(safe-area-inset-*)` avec `viewport-fit=cover` ; sur Android : le plein écran
+  bord à bord de Capacitor et ses zones sûres (si la vue web ne rend pas `env()`, le module des zones sûres de Capacitor les transmet en variables CSS).
+- **Les encarts du haut, sur toutes les pages : 6 pt (≈ 1 mm) sous la zone sûre, la même variable partout.** La veille : son fond couvre l'écran, son logo rebondit
+  sur les bords de la zone sûre.
+- **Une seule source** : un module `zones-sures` (le prototype : `lot-V208-ZONES`, `window._zsInsets()`, `window._zsDy()`, la variable CSS `--zs-dy`) ; tout ce qui
+  se place près d'un bord la lit, aucune cote en dur. Dans le navigateur, rien ne change (la barre du navigateur fait l'écart).
+- **La vraie app se dessine pour les formes de téléphone** : le prototype, figé en 390 × 844, couvre l'écran d'un iPhone récent (ou d'un Android en 2,1–2,2) en
+  rognant moins de 3 % ; sur un iPhone SE (16:9) il se loge entier et des bandes restent, couleur du fond de la page.
 
 ## h) Les tests — les spécifications venues du prototype
 

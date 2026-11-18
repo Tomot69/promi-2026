@@ -1,0 +1,2 @@
+etat_fiche_head | 1 | python3 redteam_etat_fiche.py --fichier=zz-v207head.html
+trace_present_head | 1 | python3 redteam_trace_present.py --fichier=zz-v207head.html

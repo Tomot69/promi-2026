@@ -1,0 +1,3 @@
+fiches_theme | 1 | python3 redteam_fiches_theme.py
+etat_fiche | 1 | python3 redteam_etat_fiche.py
+trace_present | 1 | python3 redteam_trace_present.py

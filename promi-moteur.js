@@ -4707,9 +4707,15 @@ function creerMascaret(env) {
      de matière (un vrai ressemis la déplace bien plus) ; pendant une
      transition, les positions vivent (et le gel reprend exactement où elles finissent). */
   var _gel = {};
-  function _geler(L) { var tol = (env.uMat || 70) * 0.25, vive = env.vive, tr = env.trans;
+  /* ⚑ v208 (Tom, C-295 : « au départ d'une dalle, Mascaret ne refait ses lames qu'une image sur deux ou trois » ; le moteur autorisé pour ce seul défaut) — APRÈS
+     une transition, les graines se posent encore ~1 s ; le gel les figeait jusqu'à un quart d'unité de matière puis les faisait sauter : les lames avançaient par
+     à-coups. DANS L'APERÇU DU STUDIO SEULEMENT (`window._apImage`), une graine qui bouge encore d'une image à l'autre (plus de 0,15 px) est suivie à chaque image ;
+     elle se fige une fois presque immobile. La Toile de l'accueil ne change pas. Mascaret seul (son `_geler`). */
+  var _gelV = {};
+  function _geler(L) { var tol = (env.uMat || 70) * 0.25, vive = env.vive, tr = env.trans, ap = !!window._apImage;
     L.forEach(function (e) { var k = e.k != null ? e.k : e.h, f = _gel[k];
-      if (vive && tr) { _gel[k] = [e.x, e.y]; return; }
+      if (vive && tr) { _gel[k] = [e.x, e.y]; if (ap) _gelV[k] = [e.x, e.y]; return; }
+      if (ap) { var v = _gelV[k]; _gelV[k] = [e.x, e.y]; if (v && (Math.abs(e.x - v[0]) > 0.15 || Math.abs(e.y - v[1]) > 0.15)) { _gel[k] = [e.x, e.y]; return; } }
       if (f && Math.abs(e.x - f[0]) < tol && Math.abs(e.y - f[1]) < tol) { e.x = f[0]; e.y = f[1]; }
       else if (vive) _gel[k] = [e.x, e.y]; }); }
   var _faits = {}, _dernier = null;
