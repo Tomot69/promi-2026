@@ -45506,7 +45506,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       F.lig=L; F.ligE=E; return L; }catch(_){ return null; } }
   function fenetre(d){ var smax=Math.max(0, d.scrollHeight-d.clientHeight), bas=(J-CH)+HW;
     if(HW && bas > d.scrollHeight-40){ W.style.setProperty('height', HP+'px', 'important'); smax=Math.max(0, d.scrollHeight-d.clientHeight); HW=0; }   /* la fenêtre ne porte jamais le défilement : mesuré sans elle */
-    var h=Math.ceil(smax+HP+8); if(Math.abs(h-HW)>1){ HW=h; W.style.setProperty('height', HW+'px', 'important'); W.style.setProperty('margin-bottom', (-(J-CH+HW))+'px', 'important'); } }
+    /* ⚑ v211 (C-297, Tom : « dans une fiche tenue, le trait passe sous le bandeau ») — LA CAUSE, lue sur le relevé de l'iPhone et trouvée par bissection (702064c, v200) :
+       la fenêtre s'arrêtait 48 pt sous le bout du défilement ; au REBOND du bas d'iOS (le défilement au-delà du bout : relevé jusqu'à +88 pt), son bas poussait le trait
+       plat collé vers le haut, sous le bandeau. Elle descend maintenant jusqu'à 60 pt au-dessus du bas du contenu (elle ne porte toujours pas le défilement) : le trait
+       plat tient à la jonction jusqu'au bout + la hauteur de l'écran − 210 pt. Rien ne change entre 0 et le bout (redteam_jonction_rebond). */
+    var h=Math.ceil(Math.max(smax+HP+8, d.scrollHeight-(J-CH)-60)); if(Math.abs(h-HW)>1){ HW=h; W.style.setProperty('height', HW+'px', 'important'); W.style.setProperty('margin-bottom', (-(J-CH+HW))+'px', 'important'); } }
   function decoupe(E){ var L=ligne(E); if(!L) return; var o=J-CH, p=[], LF=F.ligF;
     if(LF && LF.length){ var yp=null; for(var i=0;i<LF.length;i++){ var y=Math.round((LF[i]-o)*100)/100; if(y!==yp){ var xg=Math.round(i/E*1000)/1000; if(yp!==null) p.push(xg+'px '+yp+'px'); p.push(xg+'px '+y+'px'); yp=y; } }
       p.push((390+2*XO)+'px '+yp+'px', (390+2*XO)+'px 100%', '0px 100%'); }   /* des marches à chaque colonne de pixels (seulement là où le bas change) */
