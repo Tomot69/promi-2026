@@ -2,6 +2,8 @@
 """
 redteam_soutien_autre.py — v213 (Tom, 19 nov. 2026, C-313) : « Soutenir Promi », l'option « Autre montant ».
 
+⚑ v214 (Tom, C-318) : 150 € rejoint la rangée ; « Autre montant » est un CHAMP (clavier de chiffres) qui déroule les paliers en suggestion au toucher
+et les replie quand on le quitte vide ; un montant tapé, puis quitté, est choisi (le merci) ; un palier touché remplit le champ et se replie.
 Décisions portées EN DUR :
   · la rangée d'avant ne change pas : 5 · 10 · 25 · 50 · 100 € ;
   · « Autre montant » à sa suite, dans le même style (2 px, rayon = h ÷ 2, même police) ;
@@ -17,8 +19,8 @@ sys.path.insert(0, '.')
 from playwright.sync_api import sync_playwright
 import banc_tom as B
 
-RANGEE = ['5 €', '10 €', '25 €', '50 €', '100 €']
-PALIERS = ['15 €', '20 €', '30 €', '40 €', '75 €', '150 €', '200 €', '250 €', '300 €', '500 €', '750 €', '1 000 €']
+RANGEE = ['5 €', '10 €', '25 €', '50 €', '100 €', '150 €']
+PALIERS = ['15 €', '20 €', '30 €', '40 €', '75 €', '200 €', '250 €', '300 €', '400 €', '500 €', '750 €', '1 000 €']
 SONDE = '--sonde' in sys.argv
 OK = []; KO = []
 def juge(nom, cond, det=''):
@@ -30,7 +32,7 @@ RELEVE = """()=>{ window.__soR=[]; var s=document.getElementById('soutienScreen'
     if(performance.now()-t0<900) requestAnimationFrame(f); })(); }"""
 GEO = """()=>{ var s=document.getElementById('soutienScreen'), d=document.getElementById('device').getBoundingClientRect(), co=s.querySelector('.so-corps').getBoundingClientRect();
   var L=[].slice.call(s.querySelectorAll('.so-m')).map(function(e){ var r=e.getBoundingClientRect(); var a=e.closest('.so-autres'); var vis=!a || a.getBoundingClientRect().height>1;
-     return {t:e.textContent.replace(/\\s+/g,' ').trim(), l:r.left, r:r.right, h:r.top, b:r.bottom, vis:vis, bw:getComputedStyle(e).borderTopWidth, rad:getComputedStyle(e).borderTopLeftRadius, ff:getComputedStyle(e).fontFamily, fs:getComputedStyle(e).fontSize}; });
+     return {t:(e.tagName==='INPUT' ? (e.value||e.getAttribute('data-ph0')||e.placeholder) : e.textContent).replace(/\\s+/g,' ').trim(), l:r.left, r:r.right, h:r.top, b:r.bottom, vis:vis, bw:getComputedStyle(e).borderTopWidth, rad:getComputedStyle(e).borderTopLeftRadius, ff:getComputedStyle(e).fontFamily, fs:getComputedStyle(e).fontSize}; });
   return {d:[d.left,d.top,d.right,d.bottom], co:[co.top,co.bottom], L:L}; }"""
 
 def mouvement(R, nom, ouvre):
@@ -80,19 +82,28 @@ with sync_playwright() as p:
         pg.evaluate(RELEVE); B.tap_sel(pg, '#soutienScreen .so-autre'); pg.wait_for_timeout(1100)
         mouvement(pg.evaluate("()=>window.__soR"), tag + ' · ouverture', True)
         juge(tag + ' · ouvert : aria-expanded vrai', pg.evaluate("()=>document.querySelector('#soutienScreen .so-autre').getAttribute('aria-expanded')") == 'true')
+        juge(tag + ' · ouvert : le champ a la main, clavier de chiffres', pg.evaluate("()=>{var c=document.querySelector('#soutienScreen .so-autre'); return document.activeElement===c && c.tagName==='INPUT' && c.inputMode==='numeric'}"))
         geometrie(pg.evaluate(GEO), tag + ' · ouvert', True)
-        pg.evaluate(RELEVE); B.tap_sel(pg, '#soutienScreen .so-autre'); pg.wait_for_timeout(1100)
-        mouvement(pg.evaluate("()=>window.__soR"), tag + ' · fermeture', False)
+        pg.evaluate(RELEVE); B.tap_sel(pg, '#soutienScreen .so-tx'); pg.wait_for_timeout(1100)
+        mouvement(pg.evaluate("()=>window.__soR"), tag + ' · fermeture (le champ quitté vide)', False)
         geometrie(pg.evaluate(GEO), tag + ' · refermé', False)
         # choisir un palier
         B.tap_sel(pg, '#soutienScreen .so-autre'); pg.wait_for_timeout(900)
         pg.evaluate("()=>{ var x=[].slice.call(document.querySelectorAll('#soutienScreen .so-autres .so-m')).filter(e=>/750/.test(e.textContent))[0]; x.scrollIntoView({block:'nearest'}); }"); pg.wait_for_timeout(300)
         B.tap_sel(pg, '#soutienScreen .so-autres .so-m:nth-child(11)'); pg.wait_for_timeout(1500)
+        juge(tag + ' · un palier touché : le champ le porte, les paliers se replient', pg.evaluate("()=>[document.querySelector('#soutienScreen .so-autre').value, document.querySelector('#soutienScreen .so-autre').getAttribute('aria-expanded')]") == ['750\u00a0€', 'false'])
         mv = pg.evaluate("()=>{ var m=document.querySelector('#soutienScreen .so-merci'), r=m.getBoundingClientRect(), d=document.getElementById('device').getBoundingClientRect(); return [getComputedStyle(m).visibility, r.top, r.bottom, d.bottom]; }")
         juge(tag + ' · un palier touché : le merci paraît, à l\'écran', mv[0] == 'visible' and mv[2] <= mv[3] + 0.5, mv)
         # rouvrir l'écran : replié
         pg.evaluate("()=>{ document.querySelector('#soutienScreen .closeb').click(); setTimeout(()=>window._soutienPage(),500); }"); pg.wait_for_timeout(1200)
         juge(tag + ' · rouvert : replié, en haut', pg.evaluate("()=>[document.querySelector('#soutienScreen .so-autres').getBoundingClientRect().height, document.querySelector('#soutienScreen .so-corps').scrollTop]") == [0, 0])
+        # taper un montant : le champ ne prend que des chiffres ; quitté, il est choisi
+        B.tap_sel(pg, '#soutienScreen .so-autre'); pg.wait_for_timeout(700)
+        pg.keyboard.type('4a2'); pg.wait_for_timeout(200)
+        juge(tag + ' · taper : chiffres seuls', pg.evaluate("()=>document.querySelector('#soutienScreen .so-autre').value") == '42')
+        pg.keyboard.press('Enter'); pg.wait_for_timeout(1200)
+        tv = pg.evaluate("()=>{var c=document.querySelector('#soutienScreen .so-autre'), m=document.querySelector('#soutienScreen .so-merci'); return [c.value, document.activeElement===c, getComputedStyle(m).visibility, document.querySelector('#soutienScreen .so-autres').getBoundingClientRect().height<0.5]}")
+        juge(tag + ' · taper : validé, « 42 € », le merci, les paliers repliés', tv == ['42\u00a0€', False, 'visible', True], tv)
         juge(tag + ' : aucune erreur de page', not err, err[:2])
         ctx.close()
     b.close()

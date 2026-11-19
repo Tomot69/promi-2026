@@ -270,6 +270,19 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v214 (19 nov. 2026) — C-316 PROMI OUVRE MA PAROLE ! ; C-317 L'ENCART DES RÉGLAGES ; C-318 SOUTENIR : 150 €, LE MONTANT TAPÉ. FUSION DE v206 DANS main. (Décisions Tom.) Ce bloc CORRIGE v164b (C-200 ④) et v213 (C-313 : « Autre montant » est un bouton).
+> **Validés par Tom : C-313 (le libellé « Autre montant »), C-314, C-315 (la couleur de « Découvre »). Le chapitre v206 est clos et fusionné (étiquette `avant-fusion-v206`).**
+> **⚑ C-316** (`lot-V12-js`, `porte()`) : en gratuit, toucher le mot PROMI de l'accueil ouvre Ma Parole ! (`ouvreCercle`) ; un membre : rien. Juge : **`redteam_promi_porte.py`** (24 ; rouge sur v213) ;
+> `redteam_v164b` ④ remis au niveau (original en sauvegarde).
+> **⚑ C-317** : en gratuit, le titre de la porte des Réglages (`#openPlusTop .sc-t`) au bleu Promi #82AEF8, sans aucune ombre de texte, 25 px (22), `max-width:none` (sinon il ne se centre plus) ;
+> « Découvre » garde l'encre opposée de la pastille. Gilbert n'a qu'une graisse (700) : « en gras » est déjà tenu. ⚠ #82AEF8 sur la crème (sombre) : 2,0:1, mesuré, rien dérivé (C-204).
+> `redteam_couleurs_ref` E31.
+> **⚑ C-318** (`lot-V174-SOUTIEN`) : la rangée 5 · 10 · 25 · 50 · 100 · 150 € (deux rangées pleines) ; les paliers 15 · 20 · 30 · 40 · 75 · 200 · 250 · 300 · 400 · 500 · 750 · 1 000 € (400 prend la place
+> de 150, décision de lot). « Autre montant » est un CHAMP (`input type=text inputmode=numeric`, au dessin des montants) : au toucher il déroule les paliers en suggestion et ouvre le clavier de
+> chiffres ; chiffres seuls ; quitté avec un montant (Retour, « OK » du clavier, un toucher dehors), il est choisi (« 42 € », le merci) ; vide, les paliers se replient ; un palier touché remplit le
+> champ et se replie. Le corps suit la boîte jusqu'au bas visible du CLAVIER (`visualViewport`), jamais le champ au-dessus du haut du corps. ⚠ Apple n'accepte pas de montant libre : à trancher
+> avant le portage (PREUVE-CAPACITOR.md). Juge : **`redteam_soutien_autre.py`** remis au niveau (192 ; `--sonde` 168).
+
 ### ⚑ v213 (19 nov. 2026) — C-313 « AUTRE MONTANT » ; C-314 LES FONDS DE MA PAROLE ! ET DES RÉGLAGES ; C-315 « DÉCOUVRE MA PAROLE ! ». (Décisions Tom.) Ce bloc CORRIGE v175b (C-217 : « cinq montants, sans champ libre ») sur un point : un choix plus large s'ajoute.
 > **Validés par Tom (v212, sur l'iPhone) : C-311, C-312.**
 > **⚑ C-313** (`lot-V174-SOUTIEN`) : la rangée 5 · 10 · 25 · 50 · 100 € ne change pas ; à sa suite « Autre montant » (libellé soumis à Tom), pleine largeur, la grammaire des montants (62 pt,

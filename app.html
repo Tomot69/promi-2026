@@ -2640,7 +2640,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v213', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v214', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -36937,8 +36937,8 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 (function(){
   /* ── 2 · la porte ── */
   function porte(){
-    /* ⚑ v164b (Tom, C-200 ④) : le mot « Promi » de l'accueil n'ouvre plus Ma Parole ! — la porte n'est plus posée. */
-    return;
+    /* ⚑ v164b (Tom, C-200 ④) : le mot « Promi » de l'accueil n'ouvrait plus Ma Parole !.
+       ⚑ v214 (Tom, 19 nov. 2026, C-316 — CORRIGE C-200 ④) : en gratuit, toucher PROMI ouvre Ma Parole ! ; un membre, rien. */
     var mm=document.querySelector('.acc-plat .acc-mm');
     if(!mm || mm.getAttribute('data-porte')==='cercle') return;
     mm.setAttribute('data-porte','cercle');
@@ -36949,6 +36949,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
        propagation pour que le clic ne redescende pas sur le plateau. */
     mm.addEventListener('click', function(ev){
       ev.stopPropagation();
+      var d=document.getElementById('device'); if(d && d.classList.contains('premium')) return;
       try{ if(window.ouvreCercle) window.ouvreCercle(); }catch(_){}
     });
   }
@@ -40922,6 +40923,10 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 /* ⚑ v213 (Tom) : « Découvre » dans la porte « Découvre Ma Parole ! » — l'encre opposée de la pastille, jamais le lilas de « Ma Parole ! » */
 #device.device #settingsScreen #openPlusTop .sc-t .sc-dec{color:var(--c-brun09)!important;-webkit-text-fill-color:var(--c-brun09)!important}
 #device.device.light #settingsScreen #openPlusTop .sc-t .sc-dec:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){color:var(--c-creme95)!important;-webkit-text-fill-color:var(--c-creme95)!important}
+/* ⚑ v214 (Tom, 19 nov. 2026, C-317) : en gratuit, « Ma Parole ! » de la porte au bleu Promi #82AEF8 (deux thèmes), sans aucune ombre autour des lettres,
+   un poil plus gros (22 → 25 px). Gilbert n'a qu'une graisse (700, §6) : le texte est déjà au plus gras. « Découvre » garde l'encre opposée de la pastille. */
+#device.device:not(.premium) #settingsScreen #openPlusTop .sc-t,#device.device:not(.premium) #settingsScreen #openPlusTop .sc-t *{text-shadow:none!important}
+#device.device:not(.premium) #settingsScreen #openPlusTop .sc-t{max-width:none!important;font-size:25px!important;color:var(--c-bleu45)!important;-webkit-text-fill-color:var(--c-bleu45)!important}
 </style>
 <style id="lot-V103-ENTREE-PLUS-css">
 /* ⚑ v103 (Tom : « des flashs entre le + et le choix de la nature ») — la page + ENTRAIT EN FONDU (0 → 1 en 0,4 s,
@@ -44692,6 +44697,9 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 /* ⚑ v213 (Tom, 19 nov. 2026, C-313) — « Autre montant » : une option à la suite de la rangée, dans le même style (2 px, rayon = h ÷ 2, Gilbert 22), qui déroule en douceur
    (C-271 : la boîte grandit, la suite glisse avec elle ; rien n'apparaît d'une image à l'autre) une grille de paliers fixes — l'App Store n'accepte pas de montant libre. */
 #soutienScreen .so-m.so-autre{display:block;width:100%;margin:0 0 20px}
+/* ⚑ v214 (C-318) : « Autre montant » est un champ, au dessin exact des montants (2 px, rayon 31, Gilbert 22, centré) ; son texte d'exemple à l'encre pleine, comme un libellé */
+#soutienScreen input.so-m.so-autre{-webkit-appearance:none;appearance:none;text-align:center;outline:none;caret-color:currentColor;box-shadow:none;font-family:var(--f-libelle);font-weight:700;font-size:22px;line-height:58px;cursor:text;-webkit-user-select:text;user-select:text}
+#soutienScreen input.so-m.so-autre::placeholder{color:currentColor;-webkit-text-fill-color:currentColor;opacity:1}
 #soutienScreen .so-autres{height:0;overflow:hidden;transition:height 360ms cubic-bezier(.33,1,.68,1)}
 #soutienScreen .so-autres .so-mts{padding-top:2px}
 @media (prefers-reduced-motion:reduce){#soutienScreen .so-autres{transition:none}}
@@ -44703,8 +44711,10 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    3.1.1), aucun lien de paiement externe — portage/MANQUES.md. */
 (function(){
   /* ⚑ v213 (Tom, C-313) — les paliers d'« Autre montant », chacun un produit consommable `fr.autier.promi.soutien.N` (PREUVE-CAPACITOR.md, achats). */
-  var PALIERS=[15,20,30,40,75,150,200,250,300,500,750,1000];
-  window._soutienPaliers=[5,10,25,50,100].concat(PALIERS);
+  /* ⚑ v214 (Tom, 19 nov. 2026, C-318) : 150 € rejoint la rangée (à droite de 100 : deux rangées pleines) ; les paliers gardent douze cases (400 € prend sa place). */
+  var RANGEE=[5,10,25,50,100,150], PALIERS=[15,20,30,40,75,200,250,300,400,500,750,1000];
+  window._soutienPaliers=RANGEE.concat(PALIERS);
+  function fmt(n){ return (n>=1000 ? String(n).replace(/(\d)(\d{3})$/,'$1\u00a0$2') : String(n))+'\u00a0€'; }
   /* dérouler / replier : la boîte part de sa hauteur VUE et va à la hauteur de son contenu (ou 0) ; la suite (le merci) glisse avec elle. Ouverte, le corps défile
      en douceur jusqu'à montrer le dernier palier. `net` : sans transition (réouverture de l'écran, déjà invisible). */
   function deroule(s, ouvre, net){ var a=s.querySelector('.so-autres'), b=s.querySelector('.so-autre'); if(!a || !b) return;
@@ -44714,10 +44724,13 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var h0=a.getBoundingClientRect().height/((a.getBoundingClientRect().width/(a.offsetWidth||1))||1), h1=ouvre ? a.firstChild.offsetHeight : 0;
     if(net || red){ a.style.transition='none'; a.style.height=h1+'px'; void a.offsetHeight; a.style.transition=''; }
     else { a.style.transition='none'; a.style.height=h0+'px'; void a.offsetHeight; a.style.transition=''; a.style.height=h1+'px'; }
-    /* ouverte, le corps suit la boîte À CHAQUE IMAGE (un seul mouvement : le bas de la grille reste au bas de l'écran pendant qu'elle grandit), jamais un défilement après coup */
+    /* ouverte, le corps suit la boîte À CHAQUE IMAGE (un seul mouvement : le bas de la grille reste au bas de l'écran pendant qu'elle grandit), jamais un défilement après coup.
+       ⚑ v214 : le bas visible est celui de l'écran OU du clavier (visualViewport) ; le champ du montant ne passe jamais au-dessus du haut du corps (on y tape). */
     if(ouvre && !net){ var co=s.querySelector('.so-corps'); if(co){ var s0=co.scrollTop, t0=performance.now(), jeu=(deroule.jeu=(deroule.jeu||0)+1);
-      (function suit(){ if(jeu!==deroule.jeu) return; var hv=a.getBoundingClientRect().height/((a.getBoundingClientRect().width/(a.offsetWidth||1))||1), c=a.offsetTop+hv-co.clientHeight+24;
-        if(c>s0 && c>co.scrollTop) co.scrollTop=c; if(performance.now()-t0<(red ? 0 : 520)) requestAnimationFrame(suit); })(); } }
+      (function suit(){ if(jeu!==deroule.jeu) return; var R=a.getBoundingClientRect(), k=(R.width/(a.offsetWidth||1))||1, cr=co.getBoundingClientRect(), bas=cr.bottom;
+        try{ var vv=window.visualViewport; if(vv) bas=Math.min(bas, vv.offsetTop+vv.height); }catch(_){ }
+        var c=co.scrollTop+(R.top+a.firstChild.offsetHeight*k-(bas-24*k))/k, plafond=b.offsetTop-8; if(c>plafond) c=plafond;
+        if(c>s0 && c>co.scrollTop) co.scrollTop=c; if(performance.now()-t0<(red ? 0 : 720)) requestAnimationFrame(suit); })(); } }
     else deroule.jeu=(deroule.jeu||0)+1; }
   window._soutienDeroule=function(ouvre){ var s=document.getElementById('soutienScreen'); if(s) deroule(s, !!ouvre); };
   function page(){ var s=document.getElementById('soutienScreen');
@@ -44725,19 +44738,36 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id='soutienScreen';
       s.innerHTML='<div class="closeb" data-close>X</div><h2 class="scr-t">Soutenir Promi</h2><canvas class="so-toile" aria-hidden="true"></canvas><div class="v16-corps so-corps">'
         +'<p class="so-tx">Promi est fait à la main, par une seule personne. Si l’app t’est chère, tu peux l’aider à grandir.</p>'   /* le texte de Tom, mot pour mot (v175) */
-        +'<div class="so-mts">'+[5,10,25,50,100].map(function(n){ return '<button type="button" class="so-m">'+n+'\u00a0€</button>'; }).join('')+'</div>'
-        +'<button type="button" class="so-m so-autre" aria-expanded="false">Autre montant</button>'   /* v213 (C-313) : libellé soumis à Tom */
-        +'<div class="so-autres" aria-hidden="true"><div class="so-mts">'+PALIERS.map(function(n){ return '<button type="button" class="so-m" tabindex="-1">'+(n>=1000 ? String(n).replace(/(\d)(\d{3})$/,'$1\u00a0$2') : n)+'\u00a0€</button>'; }).join('')+'</div></div>'
+        +'<div class="so-mts">'+RANGEE.map(function(n){ return '<button type="button" class="so-m">'+fmt(n)+'</button>'; }).join('')+'</div>'
+        /* ⚑ v214 (Tom, C-318) : « Autre montant » est un CHAMP — on y tape le montant (clavier de chiffres) ; au toucher il déroule aussi les paliers, en suggestion. Libellé validé par Tom. */
+        +'<input type="text" inputmode="numeric" pattern="[0-9]*" enterkeyhint="done" autocomplete="off" maxlength="9" class="so-m so-autre" placeholder="Autre montant" aria-label="Autre montant, en euros" aria-expanded="false">'
+        +'<div class="so-autres" aria-hidden="true"><div class="so-mts">'+PALIERS.map(function(n){ return '<button type="button" class="so-m" tabindex="-1">'+fmt(n)+'</button>'; }).join('')+'</div></div>'
         +'<div class="so-merci" aria-live="polite">Merci.</div></div>';
       priv.parentNode.insertBefore(s, priv.nextSibling);
       s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show'); var st=document.getElementById('settingsScreen'); if(st) st.classList.add('show'); });
-      s.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('.so-m'); if(!b) return;
-        if(b.classList.contains('so-autre')){ deroule(s, b.getAttribute('aria-expanded')!=='true'); return; }
+      /* ⚑ v214 (C-318) — le champ du montant : chiffres seuls ; au toucher, les paliers se déroulent en suggestion ; quitté (« OK » du clavier, Retour, un toucher dehors)
+         avec un montant, c'est le montant choisi (le merci) ; vide, les paliers se replient. Un palier touché remplit le champ et se replie. */
+      var ch=s.querySelector('.so-autre'), garde=0;
+      function chiffres(){ return (ch.value||'').replace(/\D/g,'').replace(/^0+/,'').slice(0,6); }
+      ch.addEventListener('focus', function(){ var d=chiffres(); if(ch.value!==d) ch.value=d; if(ch.getAttribute('aria-expanded')!=='true') deroule(s, true); });
+      ch.addEventListener('input', function(){ var d=chiffres(); if(ch.value!==d) ch.value=d; });
+      ch.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ch.blur(); } });
+      s.querySelector('.so-autres').addEventListener('pointerdown', function(){ garde=performance.now(); }, true);
+      ch.addEventListener('blur', function(){ var d=chiffres();
+        if(d){ ch.value=fmt(+d); merci(); deroule(s, false); }
+        else setTimeout(function(){ if(performance.now()-garde<600 || document.activeElement===ch) return; deroule(s, false); }, 120); });
+      function merci(){ var m=s.querySelector('.so-merci'); if(m.style.visibility==='visible') return;
+        try{ var co=s.querySelector('.so-corps'), mr=m.getBoundingClientRect(), cr=co.getBoundingClientRect(); if(mr.bottom>cr.bottom) co.scrollTo({top:co.scrollTop+(mr.bottom-cr.bottom)/(cr.height/co.clientHeight)+24, behavior:'smooth'}); }catch(_){ }
+        var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
+        m.style.visibility='visible'; if(!red && window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } }
+      s.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('button.so-m'); if(!b) return;
+        if(b.closest('.so-autres')){ ch.value=b.textContent; deroule(s, false); }
         var m=s.querySelector('.so-merci'); if(m.style.visibility==='visible') return;
         try{ var co=s.querySelector('.so-corps'), mr=m.getBoundingClientRect(), cr=co.getBoundingClientRect(); if(mr.bottom>cr.bottom) co.scrollTo({top:co.scrollTop+(mr.bottom-cr.bottom)/(cr.height/co.clientHeight)+24, behavior:'smooth'}); }catch(_){ }
         var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
         m.style.visibility='visible'; if(!red && window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } }); }
     var m0=s.querySelector('.so-merci'); if(m0) m0.style.visibility='hidden';
+    var ch0=s.querySelector('.so-autre'); if(ch0) ch0.value='';
     deroule(s, false, true); try{ var co0=s.querySelector('.so-corps'); if(co0) co0.scrollTop=0; }catch(_){ }
     try{ s.classList.toggle('so-sans', !(window._vendToileSur && window._vendToileSur(s.querySelector('.so-toile'), s))); }catch(_){ s.classList.add('so-sans'); }
     return s; }

@@ -302,6 +302,9 @@ with sync_playwright() as p:
                     if cle[1] == 'light' and pr_ == 'bg' and cle[0] in ('Réglages', 'mur · Réglages', 'le Cercle') and (
                             (va == 'rgb(234, 217, 185)' and vr in ('rgb(247, 240, 222)', 'rgba(0, 0, 0, 0)') and re.match(r'^#(settingsScreen|plusScreen) \[\d+\]$', k)) or
                             (va == 'rgb(247, 240, 222)' and vr in (None, 'rgba(0, 0, 0, 0)') and re.search(r'(scard|buyYear|^#(aboutCard|cguCard|compteCard|logoutCard|notifCard|polCard|privCard|pvExport|replayOnb|resetData|setInvite|soutienCard) \[\d+\]$)', k))): exceptions['E30'] = exceptions.get('E30', 0) + 1; continue
+                    # E31 (v214, Tom, 19 nov. 2026, C-317) : « dans Réglages, l'encart Ma Parole : mets le bleu ciel couleur Promi » — le titre de la porte (.sc-t) au bleu
+                    #   Promi #82AEF8, en gratuit, deux thèmes ; ce titre seul.
+                    if pr_ in ('color', 'tfill') and va == 'rgb(130, 174, 248)' and re.search(r'sc-t\b', k) and 'Réglages' in str(cle[0]): exceptions['E31'] = exceptions.get('E31', 0) + 1; continue
                     # E28 (v207, Tom, 17 nov. 2026, C-294 ; C-247) : « le fond de l'Aura devient EXACTEMENT celui de l'Index et du Fil (même code, mêmes couleurs,
                     #   même matière) » — en clair, la crème #F7F0DE devient #EAD9B9 (--c-creme90-2) ; le fond de l'écran de l'Aura, et lui seul.
                     if cle[0] in ('Aura', "aide de l'Aura") and cle[1] == 'light' and pr_ == 'bg' and va == 'rgb(234, 217, 185)' and vr == 'rgb(247, 240, 222)' and re.match(r'^#auraScreen \[\d+\]$', k): exceptions['E28'] = exceptions.get('E28', 0) + 1; continue
@@ -428,6 +431,7 @@ print('E15 les noms de la barre au bleu foncé du I, en clair (v146, C-120) : %d
 print('E17 le trait à la teinte la plus sombre de sa nature, le gardé de côté compris (v147, C-140) : %d' % exceptions.get('E17', 0))
 print('E29 le ⇅ de l\'Index comme celui du Fil, en sombre (v210, C-301) : %d' % exceptions.get('E29', 0))
 print('E18 l\'état des cartes crème dès la première image, en sombre (v147, Q290) : %d' % exceptions.get('E18', 0))
+print('E31 le titre de la porte des Réglages au bleu Promi (v214, C-317) : %d' % exceptions.get('E31', 0))
 print('E30 les fonds de Ma Parole ! et des Réglages = celui de l\'Index, du Fil et de l\'Aura ; leurs encarts à la crème des encarts (v213, C-314) : %d' % exceptions.get('E30', 0))
 print('E19 les cartes de l\'Index, du Fil et du fil d\'un Cercle prennent la construction de la fiche, deux thèmes (v148, C-147) : %d' % exceptions.get('E19', 0))
 print('E20 le mot du trait des pages + en orange #FB4C0D, deux thèmes (v151, C-157) : %d' % exceptions.get('E20', 0))
