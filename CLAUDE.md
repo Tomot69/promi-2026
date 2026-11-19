@@ -3,6 +3,13 @@
 > Ce fichier est relu à chaque session. Il fait autorité sur tout le reste.
 > Si une consigne de l'utilisateur contredit ce fichier, **demander avant d'agir**.
 
+> ## ⚑ QUATRE RÈGLES DE MÉTHODE — RÈGLE PERMANENTE (chef de chantier, 19 nov. 2026, v211). ELLES S'APPLIQUENT À CHAQUE LOT.
+> - **R1. Annuler une modification, c'est `git revert` des commits visés.** JAMAIS repartir d'un ancien fichier en réappliquant les corrections à la main : on perd ce qui a été validé entre-temps.
+> - **R2. Toute régression se cherche par bissection (`git bisect`), avec un juge qui la reproduit.** La cause est nommée dans le rapport, avec le commit fautif. (Une bissection se fait dans un
+>   arbre de travail à part — `git worktree add` dans le scratchpad —, l'`app.html` du commit servi sous un autre nom : `git show "${c}:app.html" > zz-bis.html` ; ⚠ en zsh, `$c:app.html` est lu `$c:a…` — accolades.)
+> - **R3. Ce que le banc ne voit pas se voit sur l'iPhone de Tom** : le relevé de l'app, et l'inspection de la WebView depuis Safari (menu Développement). Rien n'est déclaré « corrigé » sans avoir été vu sur l'iPhone, ou dans le relevé de l'iPhone.
+> - **R4. Chaque demande de Tom a un critère de réussite écrit**, et le rapport dit pour chacune : **tenu, non tenu, ou non vu.**
+
 > ## ⚑ LA VRAIE APP SERA PROPRE ET ÉVOLUTIVE, PAS RAFISTOLÉE — RÈGLE PERMANENTE (Tom, 17 nov. 2026, v207). ELLE S'APPLIQUE À TOUT LE PORTAGE.
 > - **Le prototype emballé (`preuve-capacitor`) ne sera JAMAIS publié** : il sert à mesurer, et c'est tout.
 > - **La vraie app est écrite de zéro en TypeScript strict.** Seul code repris : le moteur, le tracé, les flaques, les jetons — chacun derrière une interface
