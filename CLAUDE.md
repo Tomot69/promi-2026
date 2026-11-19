@@ -270,6 +270,15 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v212 (19 nov. 2026) — C-311 « PAROLE TENUE ! » FIXE ; C-312 LA LIAISON DES EXEMPLES. (Décisions Tom.) Ce bloc CORRIGE v20 (« PASTILLE VIDE : « de » »).
+> **Validés par Tom (v211, sur l'iPhone) : C-297, C-306, C-307 (29,5 px), C-308, C-309, C-310 (fermé ; le relevé `c310` reste en surveillance). Q623 accepté, Q622 : l'aide de l'Aura reste telle quelle.**
+> **⚑ C-311 — LA CAUSE** : la nappe de la célébration (`#tenirMaree`) est posée dans la fiche qui défile (v207, z 7) ; la phrase y était placée à sa cote d'ÉCRAN — une fiche défilée de s la
+> montrait à 388 − 2s. Une fiche à commentaires est plus longue : c'est elle qui défile. La cote est celle de la nappe, plus le défilement du moment à chaque image. Juge : **`redteam_celebration_fixe.py`**.
+> *La règle* : **ce qui se dessine dans une couche qui défile se place dans les coordonnées de cette couche, jamais à une cote lue sur l'écran.**
+> **⚑ C-312 — UNE PLACE VIDE PORTE LA LIAISON DE SON EXEMPLE** (`elide(P.titre || exemple)`, la frappe qui vide la place, l'onboarding) — même règle (`_promiElide`), mêmes h aspirés ; quand
+> l'exemple change, la liaison neuve se trace quand l'exemple neuf commence le sien (`lot-V203-LIAISONS`). La règle des juges : `liaison_regle.py` (en dur). Juge : **`redteam_liaison_exemples.py`** ;
+> `redteam_liaison` remis au niveau (original en sauvegarde).
+
 ### ⚑ v210 (18 nov. 2026) — C-301 UN SEUL ENCART DU HAUT ; C-300 LA VEILLE ×1,5 AUX COULEURS EXACTES ; C-302 L'AXE DE LA PELOTE DÉRIVE ; C-303, C-304, C-305 ; « DE » / « D’ ». (Décisions Tom.)
 > **Validés par Tom : C-299 (tout comme avant, l'encart 3 pt plus bas), la notification à la mise en arrière-plan, C-300 sur le principe.** C-297 : la séance n'a ouvert aucune fiche (relevé) — toujours à reproduire.
 > **⚑ C-301 — UN SEUL ENCART, UN SEUL CODE** : la boîte (24 · 40 · 342 × 60) est posée par `recale` (lot-ENCART-HAUT, l'exception de 88 pt de l'Index retirée) ; la taille du titre
