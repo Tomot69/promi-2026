@@ -43653,7 +43653,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       try{ if(opts.mot){ m=opts.mot; fs=40; fx=195; fy=388+40*1.1*0.78; it=null; }   /* v149 (C-156) : la fiche revue, sans instant — la place de la ligne de l'instant (388, 40 px, centrée) */
         else { var dpq=document.getElementById('detailPoster'); if(!it || !it.textContent || !dpq || !dpq.classList.contains('inst-referme')) return;
           var cs=getComputedStyle(it), D=dev(), r=it.getBoundingClientRect(), k=D.width/390; if(!r.width) return;
-          m=it.textContent; fs=parseFloat(cs.fontSize)||40; fx=(r.left-D.left)/k+(r.width/k)/2; fy=(r.top-D.top)/k+(r.height/k)*0.78;   /* v148 (C-144) : le milieu de la ligne — la phrase est centrée */ it.style.setProperty('visibility','hidden','important'); } }catch(_){ return; }
+          m=it.textContent; fs=parseFloat(cs.fontSize)||40; fx=(r.left-D.left)/k+(r.width/k)/2; fy=(r.top-cv.getBoundingClientRect().top)/k+(r.height/k)*0.78;   /* ⚑ v212 (C-311) : en coordonnées de la NAPPE (elle défile avec la fiche) — lue sur l'écran, la cote comptait le défilement deux fois */   /* v148 (C-144) : le milieu de la ligne — la phrase est centrée */ it.style.setProperty('visibility','hidden','important'); } }catch(_){ return; }
       if(!m) return; mot=m; police=fs+'px Gilbert, system-ui';
       cv.removeAttribute('aria-hidden'); cv.setAttribute('role','img'); cv.setAttribute('aria-label', mot); cv.setAttribute('data-eng','tenir');
       try{ var kk=dpr*sc; TX=document.createElement('canvas'); var tg=TX.getContext('2d'); tg.font=police; var lw=tg.measureText(mot).width;
@@ -43683,7 +43683,13 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       var tps=t/1000/LENT;
       if(u>0){ g.translate(0, N.y0); g.fill(N.n.chemin(u, tps, monte0?MONT:DEP)); g.translate(0, -N.y0); }
       g.restore();
-      if(mot && u>0.02){ g.save(); g.clip(Z); g.translate(0, N.y0); g.clip(N.n.chemin(Math.max(u,0.0001), tps, monte0?MONT:DEP)); g.translate(0, -N.y0); if(TX){ g.setTransform(1,0,0,1,0,0); g.drawImage(TX, TXx, TXy); } else { g.font=police; g.fillStyle=ENCRE; g.textBaseline='alphabetic'; g.textAlign='center'; g.fillText(mot, fx, fy); } g.restore(); }
+      /* ⚑ v212 (Tom, 19 nov. 2026, C-311) — « dans une fiche qui a des commentaires, au moment de tenir, « Parole tenue ! » monte ; il doit rester fixe, à la même
+         place que dans une fiche sans commentaire ». LA CAUSE : la nappe est posée dans la fiche qui défile (v207, z 7) ; la phrase y était placée à sa cote
+         d'ÉCRAN (`fy` lu sur le rectangle de #instTenue) — sur une fiche défilée de s, elle sortait à l'écran à 388 − 2s ; et pendant la célébration la fiche
+         tenue se recompose et défile encore (le défilement possible change), la phrase montait avec. Une fiche à commentaires est plus longue : c'est elle qui
+         défile. Aujourd'hui sa cote est celle de la nappe, et à chaque image on y ajoute le défilement du moment : la phrase est FIXE à l'écran, à la place
+         qu'elle a sur une fiche non défilée — elle ne dépend ni des commentaires ni du défilement. */
+      if(mot && u>0.02){ var _sd=dp.scrollTop||0; g.save(); g.clip(Z); g.translate(0, N.y0); g.clip(N.n.chemin(Math.max(u,0.0001), tps, monte0?MONT:DEP)); g.translate(0, -N.y0); if(TX){ g.setTransform(1,0,0,1,0,0); g.drawImage(TX, TXx, TXy+Math.round(_sd*dpr*sc)); } else { g.font=police; g.fillStyle=ENCRE; g.textBaseline='alphabetic'; g.textAlign='center'; g.fillText(mot, fx, fy+_sd); } g.restore(); }
       if(window._mareeReleve) try{ window._mareeReleve(g, cv, t, u, T, N); }catch(_){ }
       requestAnimationFrame(f); })();
     setTimeout(function(){ if(M && M.cv===cv) M.stop(); }, 4500*LENT);   /* garde-fou */
