@@ -1,25 +1,15 @@
-# REPRISE — pour une session neuve (17 nov. 2026, NOUVEAU CHAPITRE : v206)
+# REPRISE — pour une session neuve (19 nov. 2026 : le chapitre v206 est clos et fusionné, main = v214)
 
 À lire avec `CLAUDE.md` (il fait autorité), `CHANTIERS.md` (le registre) et `QUESTIONS.md`. En tête de chaque session : `python3 serveur.py` (port 8752, IP relue par `ipconfig getifaddr en0`), donner les trois adresses.
 
-## 00) Le lot v211 (19 nov. 2026, branche `v206`, NON fusionnée : la fusion attend que Tom valide les §1 à §6 sur son iPhone)
+## 00) Le chapitre v206 est CLOS ET FUSIONNÉ (19 nov. 2026, v214)
 
-- **Règles R1 à R4** en tête de CLAUDE.md (revert, bissection, l'iPhone, un critère par demande).
-- **§1 C-297** : cause trouvée par bissection — 702064c (v200) ; le trait plat poussé sous le bandeau au rebond du bas d'iOS ; corrigé (`redteam_jonction_rebond`). **À voir sur l'iPhone.**
-- **§2 C-306** : créer un Cercle ne crée plus de « premier Promi » (préexistant depuis v117) — `redteam_creation_unique`.
-- **§3 C-307** : tous les titres des encarts à 29,5 px (`T`, lot-V210-ENCART), fixée par « MA PAROLE ! ».
-- **§4 C-308** : l'apostrophe de L'AURA bleue et synchronisée — `redteam_lettres_bleu`.
-- **§5 C-309** : Bruno-Stanislas / Fabienne-Gudule — `redteam_prenom_alterne`.
-- **§6 C-310** : NON TENU à 100 % au banc (1–2/127 intermittents, préexistant) ; le relevé `c310` part de l'iPhone (`mesures/appareil.jsonl`, `quoi:'c310'`).
-- **« Promi preuve » v211** installée sur l'iPhone 16e de Tom (branche `preuve-capacitor`, f97b8fd ; profil valable jusqu'au 24 nov.). Points à voir : VALIDATION.md 25 à 30.
-- **Clôture (§8, après validation)** : étiquette `avant-fusion-v206`, fusion de `v206` dans `main`, le serveur sert `main`, `?diag=1` dit v211.
-
-## 0) Le chapitre v206 (branche `v206`, non fusionnée : la fusion attend l'accord de Tom)
-
-- **Le prototype ne reçoit plus de fonction neuve** : il est la référence de la vraie app. **La référence v205 ne se modifie jamais** : étiquette `reference-v205` (= ec27c77, sur GitHub) et le dossier `../../Promi-reference-v205/` (bundle, zip, SHA-256, états de Tom, planche de 76 captures, LISEZ-MOI).
-- **À lire et à trancher par Tom** : `VALIDATION.md` (143 chantiers en attente, en trois paquets), `ARCHITECTURE.md` (recommandation : le moteur JavaScript gardé, l'app reconstruite autour en TypeScript dans une coquille native ; 5 questions), `ASSAINISSEMENT.md` (le plan en 9 rangs et la preuve d'identité ; les lots suivants attendent son accord).
-- **Livré, à voir sur l'iPhone** : C-282 « la première fois seulement » (la copie de l'exemple ne montre que ce qu'on voyait — juge `redteam_premiere_froid`) ; le lot 1 d'assainissement (42 lignes mortes retirées, rien à voir).
-- **Étiquettes** : `reference-v205`, `assain-1-avant` (= le commit de §1).
+- **`main` = v214**, commit de fusion `98e3762` (sur `ce8d9e1`) ; étiquette **`avant-fusion-v206`** = `main` d'avant (ec27c77, v205). La branche `v206` est gardée, identique. Le serveur sert `main` ; `?diag=1` affiche « v214 » en haut de chaque écran.
+- **Ce que le chapitre a livré (v206 → v214)** : le prototype devenu la référence (`reference-v205`, VALIDATION.md, ARCHITECTURE.md, ASSAINISSEMENT.md) ; **Capacitor retenu** (preuve sur la branche `preuve-capacitor`, « Promi preuve » installée sur l'iPhone 16e de Tom) ; C-282 à C-318 au registre. Les règles de méthode R1–R4 et « la vraie app sera propre » sont en tête de CLAUDE.md.
+- **Le dernier lot, v214 (Tom : « considère que c'est validé »)** : C-316 PROMI de l'accueil ouvre Ma Parole ! en gratuit (`redteam_promi_porte`) ; C-317 l'encart des Réglages, « Ma Parole ! » au bleu Promi #82AEF8, sans ombre, 25 px ; C-318 Soutenir : 150 € dans la rangée, « Autre montant » est un champ de chiffres qui déroule les paliers (`redteam_soutien_autre`). **Non vus sur l'iPhone** — VALIDATION.md 36 à 38. **Validés** : C-311 à C-315.
+- **À trancher par Tom avant le portage** : le montant tapé dans Soutenir (Apple n'accepte pas de montant libre — le régler au palier le plus proche, ou ne garder que les paliers ; PREUVE-CAPACITOR.md, achats).
+- **Rouges connus, déjà là avant v214** : `redteam_trace_present` (cadences d'images de l'onboarding et du guide : 125/137 sur v213 comme sur v214) ; `banc_rendu` Ramage seul (14 images, C-187).
+- **« Promi preuve »** sur l'iPhone porte encore v213 : la reconstruire depuis `main` (`SOURCE=` une extraction `git archive`, `VERSION=v214 sh construire.sh`, PREUVE-CAPACITOR.md) si Tom veut v214 dans l'app.
 
 ## a) L'état
 
