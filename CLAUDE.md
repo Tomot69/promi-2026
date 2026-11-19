@@ -270,6 +270,11 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v214b (19 nov. 2026) — C-319 SOUTENIR, LE PAIEMENT VALIDÉ. (Décision Tom.) **Validés par Tom : C-316, C-317, C-318.**
+> **⚑ C-319** (`lot-V174-SOUTIEN`, `paye()`) : payé (un montant, un palier, un montant tapé), il ne reste que le prix payé, centré, 28 pt sous le texte ; « Un grand » (Gilbert 24) « Merci » (PromiLate 34),
+> centré, 24 pt dessous, tracé. Les autres montants se referment à leur place (copies `.so-copie`, `clip-path`), le texte et le prix glissent 360 ms (`.so-glisse`) : aucun changement sec. Rouvert,
+> l'écran d'avant. Juge : **`redteam_soutien_paye.py`** (80 ; `--sonde` : 60).
+
 ### ⚑ v214 (19 nov. 2026) — C-316 PROMI OUVRE MA PAROLE ! ; C-317 L'ENCART DES RÉGLAGES ; C-318 SOUTENIR : 150 €, LE MONTANT TAPÉ. FUSION DE v206 DANS main. (Décisions Tom.) Ce bloc CORRIGE v164b (C-200 ④) et v213 (C-313 : « Autre montant » est un bouton).
 > **Validés par Tom : C-313 (le libellé « Autre montant »), C-314, C-315 (la couleur de « Découvre »). Le chapitre v206 est clos et fusionné (étiquette `avant-fusion-v206`).**
 > **⚑ C-316** (`lot-V12-js`, `porte()`) : en gratuit, toucher le mot PROMI de l'accueil ouvre Ma Parole ! (`ouvreCercle`) ; un membre : rien. Juge : **`redteam_promi_porte.py`** (24 ; rouge sur v213) ;

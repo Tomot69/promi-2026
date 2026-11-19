@@ -44,3 +44,4 @@
 | 36 | C-316 | En gratuit, l'accueil : toucher le mot PROMI en haut à gauche | la page Ma Parole ! s'ouvre ; membre : rien |
 | 37 | C-317 | Réglages, l'encart du haut, en clair puis en sombre | « Ma Parole ! » au bleu Promi, aucune ombre autour des lettres, un poil plus gros, toujours centré |
 | 38 | C-318 | Soutenir Promi : la rangée, puis toucher « Autre montant », taper un montant, OK ; recommencer avec un palier | 150 € à droite de 100 € ; le clavier de chiffres s'ouvre et les paliers se déroulent ; « 42 € » puis le merci ; un palier remplit le champ |
+| 39 | C-319 | Soutenir Promi : toucher un montant (puis, rouvert, un palier ; puis un montant tapé) | les autres montants se referment, le prix payé remonte au centre, « Un grand Merci » se trace dessous |

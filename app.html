@@ -2640,7 +2640,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v214', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v214b', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -44699,6 +44699,16 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 #soutienScreen .so-m.so-autre{display:block;width:100%;margin:0 0 20px}
 /* ⚑ v214 (C-318) : « Autre montant » est un champ, au dessin exact des montants (2 px, rayon 31, Gilbert 22, centré) ; son texte d'exemple à l'encre pleine, comme un libellé */
 #soutienScreen input.so-m.so-autre{-webkit-appearance:none;appearance:none;text-align:center;outline:none;caret-color:currentColor;box-shadow:none;font-family:var(--f-libelle);font-weight:700;font-size:22px;line-height:58px;cursor:text;-webkit-user-select:text;user-select:text}
+/* ⚑ v214b (C-319) : payé — les montants, le champ et les paliers retirés (refermés en douceur par le script) ; le prix payé seul, centré, 28 pt sous le texte ; « Un grand » (Gilbert)
+   « Merci » (PromiLate), centré, 24 pt sous lui */
+#soutienScreen .so-fin{display:none}
+#soutienScreen.so-paye .so-mts,#soutienScreen.so-paye .so-autre,#soutienScreen.so-paye .so-autres{display:none!important}
+#soutienScreen.so-paye .so-fin{display:flex;flex-direction:column;align-items:center;padding-top:4px}
+#soutienScreen .so-paye-m{display:flex;align-items:center;justify-content:center;width:auto;min-width:150px;padding:0 36px;cursor:default}
+#soutienScreen .so-copie{position:absolute!important;display:flex;align-items:center;justify-content:center;margin:0!important;padding:0!important;pointer-events:none;z-index:5;box-sizing:border-box}
+#soutienScreen .so-fin .so-merci{margin-top:24px;text-align:center;min-height:0;font-family:var(--f-marque);font-size:34px;line-height:1.1}
+#soutienScreen .so-fin .so-mg{font-family:var(--f-libelle);font-weight:700;font-size:24px;letter-spacing:.01em}
+#soutienScreen .so-fin .so-mm{font-family:var(--f-marque);font-weight:400;font-size:34px}
 #soutienScreen input.so-m.so-autre::placeholder{color:currentColor;-webkit-text-fill-color:currentColor;opacity:1}
 #soutienScreen .so-autres{height:0;overflow:hidden;transition:height 360ms cubic-bezier(.33,1,.68,1)}
 #soutienScreen .so-autres .so-mts{padding-top:2px}
@@ -44742,7 +44752,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
         /* ⚑ v214 (Tom, C-318) : « Autre montant » est un CHAMP — on y tape le montant (clavier de chiffres) ; au toucher il déroule aussi les paliers, en suggestion. Libellé validé par Tom. */
         +'<input type="text" inputmode="numeric" pattern="[0-9]*" enterkeyhint="done" autocomplete="off" maxlength="9" class="so-m so-autre" placeholder="Autre montant" aria-label="Autre montant, en euros" aria-expanded="false">'
         +'<div class="so-autres" aria-hidden="true"><div class="so-mts">'+PALIERS.map(function(n){ return '<button type="button" class="so-m" tabindex="-1">'+fmt(n)+'</button>'; }).join('')+'</div></div>'
-        +'<div class="so-merci" aria-live="polite">Merci.</div></div>';
+        /* ⚑ v214b (Tom, 19 nov. 2026, C-319) : payé, il ne reste que le prix payé, remonté et centré, et « Un grand » (Gilbert) « Merci » (PromiLate) */
+        +'<div class="so-fin" aria-live="polite"><div class="so-m so-paye-m"></div><div class="so-merci"><span class="so-mg">Un grand</span> <span class="so-mm">Merci</span></div></div></div>';
       priv.parentNode.insertBefore(s, priv.nextSibling);
       s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show'); var st=document.getElementById('settingsScreen'); if(st) st.classList.add('show'); });
       /* ⚑ v214 (C-318) — le champ du montant : chiffres seuls ; au toucher, les paliers se déroulent en suggestion ; quitté (« OK » du clavier, Retour, un toucher dehors)
@@ -44754,19 +44765,36 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       ch.addEventListener('keydown', function(e){ if(e.key==='Enter'){ e.preventDefault(); ch.blur(); } });
       s.querySelector('.so-autres').addEventListener('pointerdown', function(){ garde=performance.now(); }, true);
       ch.addEventListener('blur', function(){ var d=chiffres();
-        if(d){ ch.value=fmt(+d); merci(); deroule(s, false); }
+        if(d){ ch.value=fmt(+d); paye(ch.value, ch); }
         else setTimeout(function(){ if(performance.now()-garde<600 || document.activeElement===ch) return; deroule(s, false); }, 120); });
-      function merci(){ var m=s.querySelector('.so-merci'); if(m.style.visibility==='visible') return;
-        try{ var co=s.querySelector('.so-corps'), mr=m.getBoundingClientRect(), cr=co.getBoundingClientRect(); if(mr.bottom>cr.bottom) co.scrollTo({top:co.scrollTop+(mr.bottom-cr.bottom)/(cr.height/co.clientHeight)+24, behavior:'smooth'}); }catch(_){ }
+      /* ⚑ v214b (Tom, C-319) — LE PAIEMENT VALIDÉ (dans le prototype, aucun paiement : le geste qui choisit) : les autres montants se referment à leur place
+         (C-271, la grammaire de `_flip` : une boîte qui part se referme), le texte et le prix payé glissent à leur nouvelle place — le prix payé seul, centré, sous le
+         texte —, puis « Un grand Merci » se trace. Rien n'apparaît ni ne disparaît d'une image à l'autre. */
+      function paye(texte, src){ if(s.classList.contains('so-paye')) return;
         var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
-        m.style.visibility='visible'; if(!red && window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } }
-      s.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('button.so-m'); if(!b) return;
-        if(b.closest('.so-autres')){ ch.value=b.textContent; deroule(s, false); }
-        var m=s.querySelector('.so-merci'); if(m.style.visibility==='visible') return;
-        try{ var co=s.querySelector('.so-corps'), mr=m.getBoundingClientRect(), cr=co.getBoundingClientRect(); if(mr.bottom>cr.bottom) co.scrollTo({top:co.scrollTop+(mr.bottom-cr.bottom)/(cr.height/co.clientHeight)+24, behavior:'smooth'}); }catch(_){ }
-        var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
-        m.style.visibility='visible'; if(!red && window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } }); }
-    var m0=s.querySelector('.so-merci'); if(m0) m0.style.visibility='hidden';
+        var R=s.getBoundingClientRect(), k=(R.width/(s.offsetWidth||R.width))||1, co=s.querySelector('.so-corps'), tx=s.querySelector('.so-tx'), fin=s.querySelector('.so-fin'), pm=fin.querySelector('.so-paye-m'), m=fin.querySelector('.so-merci');
+        function vis(e){ var r=e.getBoundingClientRect(); if(r.height<1 || r.width<1) return null; var a=e.closest('.so-autres'); if(a){ var ra=a.getBoundingClientRect(); if(ra.height<1) return null; } var rc=co.getBoundingClientRect(); if(r.bottom<rc.top || r.top>rc.bottom) return null; return r; }
+        var avant=[].slice.call(co.querySelectorAll('.so-mts .so-m, .so-autre')).map(function(e){ return {e:e, r:vis(e), t:(e.tagName==='INPUT' ? (e.value||e.getAttribute('data-ph0')||e.placeholder) : e.textContent)}; }).filter(function(x){ return x.r; });
+        var rtx=tx.getBoundingClientRect(), rsrc=src && src.getBoundingClientRect();
+        s.classList.add('so-paye'); try{ ch.setAttribute('aria-expanded','false'); }catch(_){ }
+        pm.textContent=texte; m.style.visibility='hidden'; co.scrollTop=0;
+        if(red){ m.style.visibility='visible'; return; }
+        var ntx=tx.getBoundingClientRect(), npm=pm.getBoundingClientRect(), DUR=360, EZ='cubic-bezier(.33,0,.67,1)';
+        function copie(r, t){ var c=document.createElement('div'); c.className='so-m so-copie'; c.setAttribute('aria-hidden','true'); c.textContent=t;
+          [['left',(r.left-R.left)/k],['top',(r.top-R.top)/k],['width',r.width/k],['height',r.height/k]].forEach(function(p){ c.style.setProperty(p[0], p[1]+'px', 'important'); }); s.appendChild(c); return c; }
+        if(Math.abs(rtx.top-ntx.top)>0.5) tx.animate([{transform:'translateY('+((rtx.top-ntx.top)/k)+'px)'},{transform:'none'}], {duration:DUR, easing:EZ});
+        avant.forEach(function(x){ if(x.e===src) return; var c=copie(x.r, x.t);
+          var an=c.animate([{clipPath:'inset(0 0 0 0 round 31px)'},{clipPath:'inset(0 0 100% 0 round 31px)'}], {duration:280, easing:EZ, fill:'forwards'}); an.onfinish=function(){ c.remove(); }; });
+        var fini=function(){ pm.style.visibility=''; m.style.visibility='visible'; if(window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } };
+        if(rsrc && rsrc.height>0){ pm.style.visibility='hidden'; var c=copie(rsrc, texte); c.classList.add('so-glisse');
+          var an=c.animate([{left:(rsrc.left-R.left)/k+'px', top:(rsrc.top-R.top)/k+'px', width:rsrc.width/k+'px'},{left:(npm.left-R.left)/k+'px', top:(npm.top-R.top)/k+'px', width:npm.width/k+'px'}], {duration:DUR, easing:EZ, fill:'forwards'});
+          an.onfinish=function(){ c.remove(); fini(); }; }
+        else fini(); }
+      window._soutienPaye=function(t){ var b=s.querySelector('.so-mts .so-m'); paye(t||b.textContent, b); };
+      s.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('button.so-m'); if(!b || b.classList.contains('so-copie')) return;
+        if(b.closest('.so-autres')) ch.value=b.textContent;
+        paye(b.textContent, b); }); }
+    var m0=s.querySelector('.so-merci'); if(m0) m0.style.visibility='hidden'; s.classList.remove('so-paye'); [].forEach.call(s.querySelectorAll('.so-copie'), function(c){ c.remove(); });
     var ch0=s.querySelector('.so-autre'); if(ch0) ch0.value='';
     deroule(s, false, true); try{ var co0=s.querySelector('.so-corps'); if(co0) co0.scrollTop=0; }catch(_){ }
     try{ s.classList.toggle('so-sans', !(window._vendToileSur && window._vendToileSur(s.querySelector('.so-toile'), s))); }catch(_){ s.classList.add('so-sans'); }

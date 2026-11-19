@@ -11,6 +11,7 @@ Décisions portées EN DUR :
     au second toucher, il les replie de même ; rien n'apparaît ni ne disparaît d'une image à l'autre, la suite (le merci) glisse avec la boîte ;
   · aucun chevauchement, rien hors de l'écran, aux échelles 1 (430 × 932) et 0,79 (330 × 714), clair et sombre ;
   · un palier touché montre le merci, visible à l'écran.
+⚑ v214b (C-319) : le merci est jugé par redteam_soutien_paye.
 Le mouvement est relevé DANS la page, à chaque image (requestAnimationFrame), jamais par des captures espacées.
 `--sonde` : la transition retirée (la boîte change de taille d'un coup) — B et E rougissent.
 """
@@ -31,7 +32,7 @@ RELEVE = """()=>{ window.__soR=[]; var s=document.getElementById('soutienScreen'
     window.__soR.push({t:performance.now()-t0, h:ra.height/k, top:ra.top/k, bas:ra.bottom/k, autre:rb.bottom/k, merci:rm.top/k});
     if(performance.now()-t0<900) requestAnimationFrame(f); })(); }"""
 GEO = """()=>{ var s=document.getElementById('soutienScreen'), d=document.getElementById('device').getBoundingClientRect(), co=s.querySelector('.so-corps').getBoundingClientRect();
-  var L=[].slice.call(s.querySelectorAll('.so-m')).map(function(e){ var r=e.getBoundingClientRect(); var a=e.closest('.so-autres'); var vis=!a || a.getBoundingClientRect().height>1;
+  var L=[].slice.call(s.querySelectorAll('.so-m:not(.so-paye-m):not(.so-copie)')).map(function(e){ var r=e.getBoundingClientRect(); var a=e.closest('.so-autres'); var vis=!a || a.getBoundingClientRect().height>1;
      return {t:(e.tagName==='INPUT' ? (e.value||e.getAttribute('data-ph0')||e.placeholder) : e.textContent).replace(/\\s+/g,' ').trim(), l:r.left, r:r.right, h:r.top, b:r.bottom, vis:vis, bw:getComputedStyle(e).borderTopWidth, rad:getComputedStyle(e).borderTopLeftRadius, ff:getComputedStyle(e).fontFamily, fs:getComputedStyle(e).fontSize}; });
   return {d:[d.left,d.top,d.right,d.bottom], co:[co.top,co.bottom], L:L}; }"""
 
@@ -44,8 +45,7 @@ def mouvement(R, nom, ouvre):
     juge(nom + ' : aucun saut — le plus grand pas fait %.0f pt (≤ 45 %% du mouvement)' % max(pas), max(pas) <= 0.45 * total, max(pas))
     mono = all((hs[i+1] - hs[i]) * (1 if ouvre else -1) >= -0.5 for i in range(len(hs)-1))
     juge(nom + ' : un seul sens, jamais d\'aller-retour', mono)
-    ec = [r['merci'] - r['bas'] for r in R]
-    juge(nom + ' : la suite (le merci) glisse avec la boîte (écart constant à 1 pt)', max(ec) - min(ec) <= 1, (min(ec), max(ec)))
+    # ⚑ v214b (C-319) : le merci vit dans l'écran payé (redteam_soutien_paye) ; rien ne suit plus la boîte des paliers — contrôle retiré
 
 def geometrie(g, nom, ouvert):
     L = [x for x in g['L'] if x['vis']]
