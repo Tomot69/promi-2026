@@ -18,16 +18,37 @@ def juge(m, c, d=''):
     global ok, tot
     tot += 1; ok += bool(c); print('  %s %s %s' % ('✅' if c else '❌', m, '' if c else str(d)[:260]), flush=True)
 SUIT = """()=>{ window.__lt=[]; const D=window._douceur; if(D && D.texte && !D.__lt){ D.__lt=1; const f=D.texte; D.texte=function(el,a,b){ if(el && el.matches && el.matches('.ph-li, .onbv-de, em')) window.__lt.push([String(a).replace(/<[^>]*>/g,''), String(b).replace(/<[^>]*>/g,'')]); return f.apply(this, arguments); }; } }"""
+# ⚑ v211 (Tom, C-310) — « aucune image où « de » ou « d’ » passe d'absent à entier, ou d'entier à absent » : à chaque image, l'état VU de la liaison — entier (le texte
+# réel sans découpe), absent (découpé à vide et rien sur le canevas du tracé), ou en cours (le canevas du tracé porte de l'encre) ; deux images voisines entier ↔ absent = un changement sec.
+REC = r"""(sel)=>{ window.__fr=[]; let on=true; window.__frStop=()=>{on=false;}; const V=c=>c.replace(/\s+/g,'')==='polygon(0px0px,0px0px,0px0px)';
+  const f=()=>{ if(!on) return; const e=document.querySelector(sel); if(!e){ window.__fr.push(['?']); requestAnimationFrame(f); return; }
+    const lr=e.getBoundingClientRect(), cp=getComputedStyle(e).clipPath; let ink=0;
+    document.querySelectorAll('canvas[data-trace]').forEach(c=>{ const r=c.getBoundingClientRect(); if(!(r.width>0 && r.right>lr.left && r.left<lr.right && r.bottom>lr.top && r.top<lr.bottom)) return;
+      try{ const g=c.getContext('2d'), sx=c.width/r.width, sy=c.height/r.height, x0=Math.max(0,Math.floor((lr.left-r.left)*sx)), y0=Math.max(0,Math.floor((lr.top-r.top)*sy)), w=Math.max(1,Math.min(c.width-x0,Math.ceil(lr.width*sx))), h=Math.max(1,Math.min(c.height-y0,Math.ceil(lr.height*sy)));
+        const d=g.getImageData(x0,y0,w,h).data; for(let i=3;i<d.length;i+=4) if(d[i]>60) ink++; }catch(_){ } });
+    const t=(e.textContent||'').trim(); const st=cp==='none'?(ink>0?'cours':'entier'):(V(cp)?(ink>0?'cours':'absent'):'cours');
+    if(st==='absent'){ e.__abs=e.__abs||performance.now(); if(performance.now()-e.__abs>250 && !window.__diag310) window.__diag310={t:t, voulu:e.__voulu, tx:!!e.__v203tx, cache:!!e.__tlCache, trace:!!e.__trace, j:(window.__c310||[]).slice(-6), styleClip:e.style.getPropertyValue('clip-path').slice(0,30), dc:window.__dcA?window.__dcA.has(e):null}; } else e.__abs=0;
+    window.__fr.push([t, cp==='none'?(ink>0?'cours':'entier'):(V(cp)?(ink>0?'cours':'absent'):'cours')]); requestAnimationFrame(f); }; requestAnimationFrame(f); }"""
+def secs(fr):
+    out = []
+    for a, z in zip(fr, fr[1:]):
+        if len(a) < 2 or len(z) < 2: continue
+        if {a[1], z[1]} == {'entier', 'absent'} or (a[1] == 'entier' and z[1] == 'entier' and a[0] != z[0]): out.append((a, z))
+    return out
+SECS = []
 def norm(s): return (s or '').replace(' ', ' ').strip()
 def serie(pg, LI, T):
     for mot, att in SERIE:
-        pg.evaluate("()=>{ window.__lt=[]; }")
+        pg.evaluate("()=>{ window.__lt=[]; }"); pg.evaluate(REC, LI)
         pg.keyboard.type(mot, delay=45); pg.wait_for_timeout(1500)
         li = norm(pg.evaluate("(s)=>{ const e=document.querySelector(s); return e?e.textContent:null; }", LI)); lt = pg.evaluate("()=>window.__lt")
         chg = att != 'de'
         juge('%s « %s » → « %s »' % (T, mot, att), li == att and (not chg or any(norm(b) == att for a, b in lt)), [li, lt])
         for _ in range(len(mot)): pg.keyboard.press('Backspace'); pg.wait_for_timeout(40)
         pg.wait_for_timeout(1500); li = norm(pg.evaluate("(s)=>{ const e=document.querySelector(s); return e?e.textContent:null; }", LI)); lt = pg.evaluate("()=>window.__lt")
+        pg.evaluate("()=>__frStop()"); s_ = secs(pg.evaluate("()=>__fr")); SECS.extend(s_)
+        if s_: print('     diag', pg.evaluate("()=>{ const d=window.__diag310; window.__diag310=null; return d; }"))
+        juge('%s « %s » tapé puis effacé : aucun changement sec, image par image (C-310)' % (T, mot), not s_, s_[:2])
         juge('%s « %s » effacé → « de »%s' % (T, mot, ', tracé' if chg else ''), li == 'de' and (not chg or any(norm(b) == 'de' for a, b in lt)), [li, lt])
 with sync_playwright() as p:
     b = p.webkit.launch(); print('redteam_liaison — %s · charge %.1f' % (F, B.charge()))

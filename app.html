@@ -46158,7 +46158,10 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     el.__v201in=true; el.innerHTML=ancien; el.__v201in=false; if(el.__v200 && el.__v200.fini) el.__v200=null; declare(el, 4000);
     var fin=function(){ el.__v203tx=false; try{ window.__dcA && window.__dcA.delete(el); el.__v200=null; }catch(_){ } };
     setTimeout(function(){ if(el.__v203tx) fin(); }, 6000);
-    T.trace(el, null, {inverse:true, surFin:function(r){ el.__v201in=true; el.innerHTML=neuf; el.__v201in=false; if(r && r.interrompu){ fin(); return; } T.trace(el, null, {surFin:fin}); }}); }
+    T.trace(el, null, {inverse:true, surFin:function(r){ el.__v201in=true; el.innerHTML=neuf; el.__v201in=false;
+      /* ⚑ v211 (C-310) : un détracé INTERROMPU (`stop()`) pose le neuf entier — relevé (`__c310`) ; le retracer ici a été essayé : il laissait le mot découpé à vide après son tracé (redteam_liaison, 17 rouges) — retiré. */
+      if(r && r.interrompu){ try{ if(el.__voulu!=null) (window.__c310=window.__c310||[]).push({t:Math.round(performance.now()), a:String(el.textContent||'').trim(), voie:'interrompu'}); }catch(_){ } fin(); return; }
+      T.trace(el, null, {surFin:fin}); }}); }
   /* les observateurs : chaque élément suivi garde sa dernière valeur ; un écrivain qui la change déclenche la transition */
   var SUIVIS=[ ['.cm5-nb','texte'], ['#settingsScreen .scard .v','texte'], 
                ['#st3pn','texte'] ];
@@ -46247,12 +46250,15 @@ input.v203-phx::-webkit-input-placeholder, textarea.v203-phx::-webkit-input-plac
   function duree(t){ return 900+30*String(t||'').length; }
   function declare(el, ms){ try{ (window.__dcA=window.__dcA||new Set()).add(el); setTimeout(function(){ try{ window.__dcA.delete(el); }catch(_){ } }, ms); }catch(_){ } }
   /* ② */
+  /* ⚑ v211 (C-310) : chaque changement de « de » / « d’ » est RELEVÉ avec la voie qu'il prend (`window.__c310` : le tracé, ou d'un coup et pourquoi) — la coquille de
+     « Promi preuve » l'envoie au Mac : ce que le banc ne voit pas se lit sur l'iPhone (R3). */
+  function c310(el, voie, raison){ try{ var J=(window.__c310=window.__c310||[]); J.push({t:Math.round(performance.now()), de:String(el.textContent||'').trim(), a:String(el.__voulu||'').trim(), voie:voie, raison:raison||null}); if(J.length>200) J.splice(0, J.length-200); }catch(_){ } }
   function liaison(el, voulu){ if(!el) return; el.__voulu=voulu;
-    (function essaie(n){ if(!el.isConnected || n>60) { if(el.isConnected && el.textContent!==el.__voulu) el.textContent=el.__voulu; return; }
+    (function essaie(n){ if(!el.isConnected || n>60) { if(el.isConnected && el.textContent!==el.__voulu){ c310(el, 'direct', 'attente'); el.textContent=el.__voulu; } return; }
       if(el.__v203tx){ setTimeout(function(){ essaie(n+1); }, 80); return; }
       if(el.textContent===el.__voulu) return;
-      var T=window._douceur && window._douceur.texte; if(T && TL() && !reduit()){ T(el, el.innerHTML, esc(el.__voulu)); if(!el.__v203tx) el.textContent=el.__voulu; }
-      else el.textContent=el.__voulu;
+      var T=window._douceur && window._douceur.texte; if(T && TL() && !reduit()){ T(el, el.innerHTML, esc(el.__voulu)); if(!el.__v203tx){ c310(el, 'direct', 'refus'); el.textContent=el.__voulu; } else c310(el, 'trace'); }
+      else { c310(el, 'direct', !T ? 'sans-douceur' : (!TL() ? 'sans-trace' : 'reduit')); el.textContent=el.__voulu; }
       setTimeout(function(){ essaie(n+1); }, 80); })(0); }
   /* ③ une copie du texte d'exemple, posée EXACTEMENT sur celui du champ (sa police, sa couleur, sa place) */
   function fantome(inp, txt){ var cs=getComputedStyle(inp), ph=null; try{ ph=getComputedStyle(inp, '::placeholder'); }catch(_){ }
