@@ -30,3 +30,9 @@
 | 22 | C-303 | Page + d'un Chiche, taper un texte puis Retour | aucun rectangle ne paraît ni ne disparaît d'un coup ; « DÉJÀ PROMIS » descend avec le clavier |
 | 23 | C-304 | Page + (Chiche, Promi « à qui ? », Cercle), toucher la place du destinataire | pendant que le menu se déroule, la phrase passe à « moi » ; fermé sans rien changer, elle reste « moi » ; une personne ajoutée, son nom |
 | 24 | C-305, §6 | Page + d'un Promi en « promets-moi » ; taper « haïr », « honte », « aller », « oui » puis effacer | « Bruno-Stanislas, promets-moi de … » tient ; « de » / « d’ » juste à chaque mot, en se détraçant puis se traçant |
+| 25 | C-297 | Dans « Promi preuve » v211, tenir une parole (Promi, puis un Chiche), attendre la fin du vert, défiler jusqu'en bas en TIRANT au-delà du bout (le rebond), puis remonter | le trait reste accroché à plat sous le bandeau, même au rebond ; jamais au-dessus ni en dessous (le relevé part au Mac) |
+| 26 | C-306 | Créer un Cercle (le +, Cercle, un nom, tracer) | un seul Cercle, une seule dalle, une ligne au Fil — plus de « premier Promi » |
+| 27 | C-307 | Ouvrir l'accueil, l'Index, le Fil, l'Aura, les Réglages, Partager, le Studio, Vie privée, Ma Parole !, une fiche, la page + | tous les titres des encarts à la même taille, sur une ligne avant le X |
+| 28 | C-308 | Ouvrir l'Aura | l'apostrophe de L'AURA en bleu, qui clignote avec le I de PROMI |
+| 29 | C-309 | Page + d'un Promi, passer en « promets-moi », en sortir, y revenir ; fermer, rouvrir, y revenir | Bruno-Stanislas, Fabienne-Gudule, Bruno-Stanislas… le prénom se détrace puis se trace |
+| 30 | C-310 | Page + (Promi, Chiche) et onboarding : taper « aller », « haïr », « oui » puis effacer, à son rythme | « de » / « d’ » se détrace puis se trace, jamais d'un coup (chaque changement est relevé et part au Mac) |
