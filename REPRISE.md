@@ -2,6 +2,18 @@
 
 À lire avec `CLAUDE.md` (il fait autorité), `CHANTIERS.md` (le registre) et `QUESTIONS.md`. En tête de chaque session : `python3 serveur.py` (port 8752, IP relue par `ipconfig getifaddr en0`), donner les trois adresses.
 
+## 00) Le lot v211 (19 nov. 2026, branche `v206`, NON fusionnée : la fusion attend que Tom valide les §1 à §6 sur son iPhone)
+
+- **Règles R1 à R4** en tête de CLAUDE.md (revert, bissection, l'iPhone, un critère par demande).
+- **§1 C-297** : cause trouvée par bissection — 702064c (v200) ; le trait plat poussé sous le bandeau au rebond du bas d'iOS ; corrigé (`redteam_jonction_rebond`). **À voir sur l'iPhone.**
+- **§2 C-306** : créer un Cercle ne crée plus de « premier Promi » (préexistant depuis v117) — `redteam_creation_unique`.
+- **§3 C-307** : tous les titres des encarts à 29,5 px (`T`, lot-V210-ENCART), fixée par « MA PAROLE ! ».
+- **§4 C-308** : l'apostrophe de L'AURA bleue et synchronisée — `redteam_lettres_bleu`.
+- **§5 C-309** : Bruno-Stanislas / Fabienne-Gudule — `redteam_prenom_alterne`.
+- **§6 C-310** : NON TENU à 100 % au banc (1–2/127 intermittents, préexistant) ; le relevé `c310` part de l'iPhone (`mesures/appareil.jsonl`, `quoi:'c310'`).
+- **« Promi preuve » v211** installée sur l'iPhone 16e de Tom (branche `preuve-capacitor`, f97b8fd ; profil valable jusqu'au 24 nov.). Points à voir : VALIDATION.md 25 à 30.
+- **Clôture (§8, après validation)** : étiquette `avant-fusion-v206`, fusion de `v206` dans `main`, le serveur sert `main`, `?diag=1` dit v211.
+
 ## 0) Le chapitre v206 (branche `v206`, non fusionnée : la fusion attend l'accord de Tom)
 
 - **Le prototype ne reçoit plus de fonction neuve** : il est la référence de la vraie app. **La référence v205 ne se modifie jamais** : étiquette `reference-v205` (= ec27c77, sur GitHub) et le dossier `../../Promi-reference-v205/` (bundle, zip, SHA-256, états de Tom, planche de 76 captures, LISEZ-MOI).
