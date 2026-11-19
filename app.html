@@ -26079,7 +26079,7 @@ var CREMEETAT='#F7F0DE';
                  && /^\s*["']?PromiLate/i.test(getComputedStyle(t).fontFamily);
       if(_v20){ fs=35; if(cb) dispo+=2; }
       /* ⚑ v210 (Tom, C-301) — UN SEUL ENCART : le titre d'une page prend la taille commune (window._ENCART.T, 34 px — la plus grande où « PARTAGER », le plus long, tient avant le X) ; la boucle ne rétrécit que ce qui ne tiendrait pas. */
-      if(window._ENCART && window._ENCART.page(b)){ fs=window._ENCART.T; }   /* air 16 : à 12, « Réglages » venait à 8 px du ✕ à l'œil */
+      if(window._ENCART && (window._ENCART.page(b) || (window._ENCART.titre && window._ENCART.titre(b)))){ fs=window._ENCART.T; }   /* v211 (C-307) : tout titre d'encart ; air 16 : à 12, « Réglages » venait à 8 px du ✕ à l'œil */
       if(cb){ var _tl=(t.getBoundingClientRect().left-r.left)/kE, _zl=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl>_tl+40) dispo=Math.min(dispo, _zl-_tl-4); }
       if(cb && window._ENCART && window._ENCART.page(b)){ var _tl2=(t.getBoundingClientRect().left-r.left)/kE, _zl2=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl2>_tl2+40) dispo=_zl2-_tl2-4; }   /* v210 (C-301) : la place d'un titre de page va jusqu'à 4 pt de la zone du X, et rien d'autre */   /* v165 (Q585) : 4 pt avant la zone de toucher du X */
       /* ⚠ EN `important`, sinon la règle d'origine du titre reprend la main : un style
@@ -46630,25 +46630,29 @@ input.v203-phx::-webkit-input-placeholder, textarea.v203-phx::-webkit-input-plac
    Pages : Index, Fil, l'Aura et son aide, Réglages, Partager, le Studio, la langue, la confidentialité, Ma Parole !, le Cercle. Pas les fiches ni la page +
    (leur plateau porte le mot-marque, validé à part : C-046). */
 (function(){
-  var T=34, PAGES='#indexSheet,#feedView,#auraScreen,#auraHelp,#settingsScreen,#shareScreen,#studioScreen,#langScreen,#privScreen,#plusScreen,#essaimSheet,#arrangeSheet';
+  /* ⚑ v211 (Tom, C-307) — « UNE SEULE TAILLE POUR TOUS LES TITRES DES ENCARTS » : le PROMI de l'accueil, les titres des pages, le mot de la nature d'une fiche et de la page +.
+     T est la SEULE variable de cette taille : la plus grande où le titre le plus long, « MA PAROLE ! », tient sur une ligne avant le X avec la marge standard (4 pt avant
+     la zone du X) — mesuré 29,57 px (scratchpad/v211_titres.py) : 29,5. Aucun titre n'est réduit à part. */
+  var T=29.5, PAGES='#indexSheet,#feedView,#auraScreen,#auraHelp,#settingsScreen,#shareScreen,#studioScreen,#langScreen,#privScreen,#plusScreen,#essaimSheet,#arrangeSheet';
   function page(b){ return !!(b && b.closest && b.closest(PAGES) && !b.closest('#detailPoster,#createSheet')); }
-  window._ENCART={T:T, page:page};
+  function titre(b){ return !!(b && b.classList && (b.classList.contains('enh') || b.id==='stpHaut' || b.id==='accPlat')); }   /* v211 : tout encart du haut */
+  window._ENCART={T:T, page:page, titre:titre};
   var cv=document.createElement('canvas'), g=cv.getContext('2d'), MES={};
   function metr(fam){ if(MES[fam]) return MES[fam]; g.font='100px '+fam; var h=g.measureText('H');
     var r={cap:(h.actualBoundingBoxAscent||70)/100, fa:(h.fontBoundingBoxAscent||80)/100, fd:(h.fontBoundingBoxDescent||20)/100};
     if(document.fonts && document.fonts.check && !document.fonts.check('100px '+fam)) return r; MES[fam]=r; return r; }
   function tr(e, dy){ var v='0px '+(Math.round(dy*100)/100)+'px'; if(e.style.getPropertyValue('translate')!==v || e.style.getPropertyPriority('translate')!=='important') e.style.setProperty('translate', v, 'important'); }
   function pose(){
-    [].forEach.call(document.querySelectorAll('.enh, #stpHaut'), function(b){ try{
-      if(!page(b)) return; var t=b.querySelector('.enh-t, .stp-t'); if(!t || !t.offsetHeight) return;
-      if(t.classList.contains('stp-t')){ if(t.style.getPropertyValue('font-size')!==T+'px') t.style.setProperty('font-size', T+'px', 'important');
+    [].forEach.call(document.querySelectorAll('.enh, #stpHaut, #accPlat'), function(b){ try{
+      if(!titre(b)) return; var t=b.querySelector('.enh-t, .stp-t, .acc-mm'); if(!t || !t.offsetHeight) return;
+      if(t.classList.contains('stp-t') || t.classList.contains('acc-mm')){ if(t.style.getPropertyValue('font-size')!==T+'px') t.style.setProperty('font-size', T+'px', 'important');
         t.style.setProperty('line-height','1.06em','important'); t.style.setProperty('padding-bottom','1px','important'); }
       var c=getComputedStyle(t), fs=parseFloat(c.fontSize)||T, lh=parseFloat(c.lineHeight)||fs*1.06, m=metr(c.fontFamily);
       var base=(lh-(m.fa+m.fd)*fs)/2 + m.fa*fs, capC=base - m.cap*fs/2;
       var pt=parseFloat(c.paddingTop)||0, cible=b.clientHeight/2;
       /* la place du titre DANS l'encart, au point près : son rectangle moins le décalage qu'on lui a soi-même posé (`offsetTop` arrondit au pixel entier) */
       var rb=b.getBoundingClientRect(), k=(b.offsetWidth>0)?(rb.width/b.offsetWidth):1, bt=parseFloat(getComputedStyle(b).borderTopWidth)||0;
-      function deja(e){ var v=(e.style.getPropertyValue('translate')||'').split(' '); return parseFloat(v[1]||0)||0; }
+      function deja(e){ var v=(getComputedStyle(e).translate||'').split(' '); return parseFloat(v[1]||0)||0; }   /* v211 : le décalage RENDU (une règle de feuille peut en poser un : le mot de la fiche, v97) */
       var y0=(t.getBoundingClientRect().top-rb.top)/k-bt-deja(t);
       var dy=cible-(y0+pt+capC); tr(t, dy);
       var i=t.querySelector('.aura-info'); if(i && i.offsetHeight){ var ri=i.getBoundingClientRect(), yi=(ri.top-rb.top)/k-bt-deja(i)-deja(t)+(ri.height/k)/2;

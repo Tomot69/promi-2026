@@ -43,7 +43,8 @@ if J: json.dump(res, open(J, 'w'), ensure_ascii=False, indent=1)
 
 # ── le verdict (C-301) : au demi-point près ; les cotes du composant, EN DUR (Tom : « même hauteur, mêmes marges, même place du titre et du X »)
 DY = 3 if CSS else 0     # la coquille de l'app descend l'encart de 3 pt, partout (C-299)
-BOITE = [24, 40 + DY, 342, 60]; T = 34; ok = 0; n = 0; ref = res['index']
+BOITE = [24, 40 + DY, 342, 60]; T = 29.5;   # v211 (C-307) : une seule taille, 29,5 (34 en v210)
+ ok = 0; n = 0; ref = res['index']
 def ch(c, msg):
     global ok, n; n += 1; ok += bool(c); print(('  ✅ ' if c else '  ❌ ') + msg)
 def pr(a, b, tol=0.5): return a is not None and b is not None and all(abs(x - y) <= tol for x, y in zip(a[:4], b[:4]))
@@ -53,7 +54,7 @@ for nom, r in res.items():
     ch(abs(t.get('gauche', -9) - 52) <= 0.5 and abs(t.get('capC', -9) - (70 + DY)) <= 0.5, '%-16s le titre : gauche %s, centre des capitales %s (attendus 52, %s)' % (nom, t.get('gauche'), t.get('capC'), 70 + DY))
     # exceptions nommées (v210) : deux titres trop longs pour 34 px avant le X — « VIE PRIVÉE » (249 pt pour 244) et « MA PAROLE ! » (281 : le « ! » est en Gilbert) ;
     # le titre s'ajuste, il ne se rogne pas (lot-HARMONIE) : ils prennent la plus grande taille qui tient. Tout autre titre : 34.
-    EXC = {'confidentialite': 33, 'ma parole': 29}
+    EXC = {}   # v211 (C-307) : plus aucune exception
     ch(t.get('fs') == EXC.get(nom, T), '%-16s la taille du titre %s px (attendue %d%s)' % (nom, t.get('fs'), EXC.get(nom, T), ', exception nommée' if nom in EXC else ''))
     ch(pr(r.get('X'), ref.get('X')), '%-16s le X %s (celui de l\'Index : %s)' % (nom, r.get('X'), ref.get('X')))
 def item(r, ident): return next((it[4] for it in r['items'] if it[1] == ident), None)
