@@ -1,0 +1,24 @@
+<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Banc tenir</title>
+<!-- v208 (C-297) : le banc Safari iOS du trait après « tenir ». L'app dans un cadre plein écran, l'état exporté de Tom (ou ?etat=), une fiche Promi « en cours »
+     qui défile (six mots) ; ?nature=chiche. Tenir et défiler se font au DOIGT (simulateur). Chaque image, la place du trait est relevée (haut de la vague, trait plat,
+     état de la fiche) et part au Mac (/mesure, banc:"tenir"). -->
+<style>html,body{margin:0;height:100%;background:#201908}#f{position:fixed;left:0;top:0;width:100%;height:100%;border:0}</style>
+<iframe id="f" src="about:blank"></iframe>
+<script>
+(async function(){
+const Q=new URLSearchParams(location.search), NAT=Q.get('nature')||'promi', F=document.getElementById('f'), wait=ms=>new Promise(r=>setTimeout(r,ms));
+const envoie=d=>{ try{ d.banc='tenir'; d.nature=NAT; d.quand=new Date().toISOString(); fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(d)}); }catch(e){} };
+const nom=Q.get('etat')||'etats/tom-20261117-211127.json'; const dd=await (await fetch(nom,{cache:'no-store'})).json(); const etat=dd.ls||{}; ['setItem','getItem','removeItem','clear','key','length'].forEach(k=>delete etat[k]);
+delete etat.promi_theme; localStorage.clear(); for(const k in etat) localStorage.setItem(k,etat[k]);
+for(const [k,v] of [['promi_onb','1'],['promi_guide','1'],['promi_rappel_n','9'],['promi_veille_off','1'],['promi_rappel_fin','1'],['promi_theme','light']]) localStorage.setItem(k,v);
+const ch=new Promise(r=>{F.onload=r;}); F.src='app.html'; await ch;
+let w=null; for(let i=0;i<300;i++){ await wait(100); try{ const x=F.contentWindow; if(x.document.readyState==='complete'&&x.openDetail&&x.eval('typeof promises')==='object'){ w=x; break; } }catch(e){} }
+if(!w) return; await wait(2500);
+w.eval("(function(n){ var p=promises.find(function(x){return x.status==='encours'&&!x.draft&&!x.nuee&&!x.chiche;}); if(!p){ p=promises.find(function(x){return !x.draft&&!x.nuee;}); p.status='encours'; } if(n==='chiche'){ p.chiche=true; p.chicheEtat='lance'; p.phraseSens='chiche'; } p.who='moi'; delete p.parts; p.comments=Array.from({length:6},function(_,i){ return {t:'mot '+i+' qui tient de la place sur sa ligne',by:'Marion',d:'2026-11-01T09:00:00Z',vu:true}; }); closeAll(); openDetail(p.id); })('"+NAT+"')");
+const d=w.document, L=[]; let t0=performance.now();
+(function f(){ try{ const dp=d.getElementById('detailPoster'), D=d.getElementById('device').getBoundingClientRect(), k=D.width/390, c=d.getElementById('v192Colle'), pl=d.getElementById('v195Plat'), J=w._v189Jonction&&w._v189Jonction();
+  L.push([Math.round(performance.now()-t0), Math.round(dp.scrollTop*10)/10, c?Math.round((c.getBoundingClientRect().top-D.top)/k*10)/10:null, pl?Math.round((pl.getBoundingClientRect().top-D.top)/k*10)/10:null, J&&J.F?Math.round(J.F.min):null, dp.classList.contains('f-tenue')?1:0, w._instant||'']);
+  if(L.length>=120){ envoie({images:L.splice(0)}); } }catch(e){} requestAnimationFrame(f); })();
+})();
+</script>

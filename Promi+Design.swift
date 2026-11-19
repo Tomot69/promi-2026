@@ -1,7 +1,7 @@
 // Promi+Design.swift — LE JEU DE COULEURS ET DE POLICES DE PROMI.
 //
 // Engendré depuis PROMI-TOKENS.json le 2026-09-20. Ne pas modifier à la main :
-// régénérer (scratchpad/gen_swift.py). Aucune vue n'écrit une couleur ni une police :
+// régénérer (outils/jetons_engendrer.py). Aucune vue n'écrit une couleur ni une police :
 // elles passent toutes par ce fichier, comme dans le prototype HTML.
 //
 // POLICES
@@ -212,7 +212,6 @@ extension Color {
         static let bleu20 = Color(red: 0.1137, green: 0.2941, blue: 0.4706)   // #1D4B78
         static let bleu22 = Color(red: 0.2196, green: 0.3294, blue: 0.4588)   // #385475
         static let bleu35 = Color(red: 0.2000, green: 0.3255, blue: 0.5098)   // #335382
-        static let cobalt50 = Color(red: 0.0549, green: 0.4706, blue: 0.9490)   // #0E78F2 (définitif, v134)
         static let bleu45 = Color(red: 0.5098, green: 0.6824, blue: 0.9725)   // #82AEF8
         static let bleu45Txt = Color(red: 0.5098, green: 0.6824, blue: 0.9725)   // #82AEF8
         static let bleu46 = Color(red: 0.5098, green: 0.6863, blue: 0.9804)   // #82AFFA
@@ -251,6 +250,7 @@ extension Color {
         static let brun192 = Color(red: 0.2314, green: 0.1608, blue: 0.1412)   // #3B2924
         static let brun193 = Color(red: 0.2627, green: 0.1608, blue: 0.1098)   // #43291C
         static let brun21 = Color(red: 0.2353, green: 0.1961, blue: 0.1176)   // #3C321E
+        static let cobalt50 = Color(red: 0.0549, green: 0.4706, blue: 0.9490)   // #0E78F2 (définitif, v134)
         static let creme70 = Color(red: 0.7059, green: 0.6510, blue: 0.5765)   // #B4A693
         static let creme76 = Color(red: 0.7412, green: 0.7098, blue: 0.6667)   // #BDB5AA
         static let creme762 = Color(red: 0.8314, green: 0.6941, blue: 0.4980)   // #D4B17F
@@ -298,6 +298,7 @@ extension Color {
         static let framboise91 = Color(red: 1.0000, green: 0.9373, blue: 0.9804)   // #FFEFFA
         static let framboise94 = Color(red: 1.0000, green: 0.9569, blue: 0.9882)   // #FFF4FC
         static let framboise97 = Color(red: 1.0000, green: 0.9765, blue: 0.9882)   // #FFF9FC
+        static let lilas85 = Color(red: 0.9569, green: 0.9333, blue: 1.0000)   // #F4EEFF
         static let mauve04 = Color(red: 0.0824, green: 0.0314, blue: 0.1569)   // #150828
         static let mauve08 = Color(red: 0.1059, green: 0.0784, blue: 0.1490)   // #1B1426
         static let mauve082 = Color(red: 0.1059, green: 0.0706, blue: 0.1882)   // #1B1230
@@ -366,6 +367,8 @@ extension Color {
         static let noir012 = Color(red: 0.0118, green: 0.0118, blue: 0.0275)   // #030307
         static let noir02 = Color(red: 0.0314, green: 0.0353, blue: 0.0471)   // #08090C
         static let noir03 = Color(red: 0.0431, green: 0.0471, blue: 0.0588)   // #0B0C0F
+        static let orangeDepart = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — v146 (Tom) : l'orange marque le POINT DE DÉPART d'une action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait)
+        static let orangeMaParole = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — les mots « Ma Parole ! » des murs, et rien d'autre
         static let orange34 = Color(red: 0.5451, green: 0.2000, blue: 0.1569)   // #8B3328
         static let orange40 = Color(red: 0.6706, green: 0.2157, blue: 0.1608)   // #AB3729
         static let orange402 = Color(red: 0.7255, green: 0.1294, blue: 0.1412)   // #B92124
@@ -375,8 +378,6 @@ extension Color {
         static let orange50 = Color(red: 0.8667, green: 0.2235, blue: 0.2157)   // #DD3937
         static let orange58 = Color(red: 0.8118, green: 0.4392, blue: 0.3725)   // #CF705F
         static let orange59 = Color(red: 0.9961, green: 0.3137, blue: 0.0000)   // #FE5000
-        static let orangeMaParole = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — les mots « Ma Parole ! » des murs, et rien d'autre
-        static let orangeDepart = Color(red: 0.9843, green: 0.2980, blue: 0.0510)   // #FB4C0D — v146 (Tom) : l'orange marque le POINT DE DÉPART d'une action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait)
         static let orange61 = Color(red: 0.9098, green: 0.4392, blue: 0.2353)   // #E8703C
         static let orange62 = Color(red: 0.8784, green: 0.4706, blue: 0.4275)   // #E0786D
         static let orange64 = Color(red: 0.8392, green: 0.5412, blue: 0.3098)   // #D68A4F

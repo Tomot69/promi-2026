@@ -1,0 +1,26 @@
+un_trait | 1 | python3 redteam_un_trait.py --natures=chiche
+repos_fiche | 1 | python3 redteam_repos_fiche.py --natures=promi --vues=tom
+haut_fiche_promi | 1 | python3 redteam_haut_fiche.py --nature=promi
+haut_fiche_chiche | 1 | python3 redteam_haut_fiche.py --nature=chiche
+haut_fiche_cercle | 1 | python3 redteam_haut_fiche.py --nature=cercle
+validation | 1 | python3 redteam_validation.py
+tenir_presse | 1 | python3 redteam_tenir_presse.py
+fiches_theme | 1 | python3 redteam_fiches_theme.py
+etat_fiche | 1 | python3 redteam_etat_fiche.py
+veille_bords | 1 | python3 redteam_veille_bords.py
+veille_depart | 1 | python3 redteam_veille_depart.py
+studio_saccade | 1 | python3 redteam_studio_saccade.py
+je | 1 | python3 redteam_je.py
+couleurs_ref_01 | 1 | python3 redteam_couleurs_ref.py '--ecran=fiche tenue' '--ecran=fiche à tenir' '--ecran=fiche en cours' '--ecran=fiche chiche' '--ecran=chiche lancé'
+couleurs_ref_02 | 1 | python3 redteam_couleurs_ref.py '--ecran=gardé de côté' '--ecran=page +' --ecran=Peaufiner '--ecran=Index 2' '--ecran=Index 3'
+couleurs_ref_03 | 1 | python3 redteam_couleurs_ref.py --ecran=Fil '--ecran=Nuée' '--ecran=Nuée vide' '--ecran=Peaufiner Nuée' '--ecran=l'"'"'instant arrive'
+couleurs_ref_04 | 1 | python3 redteam_couleurs_ref.py '--ecran=l'"'"'instant referme' '--ecran=l'"'"'instant après' '--ecran=Réglages' --ecran=Aura --ecran=accueil
+couleurs_ref_05 | 1 | python3 redteam_couleurs_ref.py --ecran=Studio --ecran=Partager '--ecran=le Cercle' '--ecran=Vie privée' '--ecran=À propos'
+couleurs_ref_06 | 1 | python3 redteam_couleurs_ref.py --ecran=Conditions --ecran=Politique --ecran=personne '--ecran=aide de l'"'"'Aura' '--ecran=page + Chiche'
+couleurs_ref_07 | 1 | python3 redteam_couleurs_ref.py '--ecran=page + Nuée' '--ecran=Peaufiner Chiche' '--ecran=Nuée défilée' '--ecran=Nuée vide défilée' '--ecran=mur · Réglages'
+couleurs_ref_08 | 1 | python3 redteam_couleurs_ref.py '--ecran=panneau des palettes'
+decisions | 1 | python3 redteam_decisions.py
+ecrans | 1 | python3 redteam_ecrans.py
+trace_present | 1 | python3 redteam_trace_present.py
+banc_rendu | 1 | python3 banc_rendu.py
+aspect | 1 | python3 redteam_aspect.py --ref=zz-ref-v207.html

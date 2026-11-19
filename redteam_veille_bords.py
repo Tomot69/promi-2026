@@ -35,7 +35,8 @@ def encre(pg, vw, A, logo):
     for yy in range(max(0, Y0 - 4), min(im.size[1], Y1 + 4)):
         for xx in range(max(0, X0 - 4), min(im.size[0], X1 + 4)):
             q = px[xx, yy]
-            if sum(abs(a - b) for a, b in zip(q, fond)) > 120 and sum(abs(a - b) for a, b in zip(q, logo)) < 140 and X0 <= xx < X1 and Y0 <= yy < Y1: xs.append(xx); ys.append(yy)   # l'encre du logo, jamais le bord du cadre
+            df = sum(abs(a - b) for a, b in zip(q, fond)); dl = sum(abs(a - b) for a, b in zip(q, logo))
+            if df > 40 and dl < df * 0.5 and X0 <= xx < X1 and Y0 <= yy < Y1: xs.append(xx); ys.append(yy)   # l'encre du logo, jamais le bord du cadre — v210 : plus près du logo que du fond (les tons EXACTS de C-300, pastels sur la crème : 96 du fond pour #FFB8D2 ; le seuil fixe de 120 ne les voyait plus)
     return (min(xs) / k, max(xs + [0]) / k + 1 / k, min(ys) / k, max(ys + [0]) / k + 1 / k) if xs else None
 def bords(pg, T, vw):
     v = pg.evaluate("()=>_veille()") or {}
@@ -68,7 +69,7 @@ def vitesse(pg, T):
     gap = max([P[i + 1][0] - P[i][0] for i in range(len(P) - 1)] or [0])
     if gap > 100:   # la boucle de la veille borne son pas à 0,1 s : une image plus longue ralentit le logo — une cadence, jugée au calme seulement (C-137)
         print('  ·  NON JUGÉ (une image de %d ms, charge %.1f) — [%s] D · la vitesse : %s pt/s' % (gap, B.charge(), T, best and round(best[0], 2)), flush=True); return
-    juge('[%s] D · la vitesse lue sur le logo : 61,2 pt/s (± 2 %%)' % T, best is not None and abs(best[0] - 61.2) <= 1.22, 'v %s pt/s sur %s ms (plus longue image %d ms)' % (best and round(best[0], 2), best and round(best[1]), gap))
+    juge('[%s] D · la vitesse lue sur le logo : 91,8 pt/s (± 2 %%, v210 : ×1,5, C-300)' % T, best is not None and abs(best[0] - 91.8) <= 1.84, 'v %s pt/s sur %s ms (plus longue image %d ms)' % (best and round(best[0], 2), best and round(best[1]), gap))
 with sync_playwright() as p:
     b = p.webkit.launch()
     L = [f for f in sorted(glob.glob('etats/tom-*.json')) if json.loads(json.load(io.open(f, encoding='utf-8')).get('ls', {}).get('promi_state', '{}') or '{}').get('promises')]
@@ -99,7 +100,7 @@ with sync_playwright() as p:
         ctx = B.contexte(b); ctx.add_init_script("try{ localStorage.removeItem('promi_veille_off'); }catch(e){}")
         pg = ctx.new_page(); pg.goto('http://127.0.0.1:8752/' + F, timeout=180000)
         R = pg.evaluate("()=>window._veilleRegle && [_veilleRegle.DELAI, _veilleRegle.VITESSE]")
-        juge('C · la règle déclarée : 75 s (v183c, C-249 ; 60 s en v179a, Tom, C-232 ; 45 en v175), 61,2 pt/s', R == [75000, 61.2], R)
+        juge('C · la règle déclarée : 75 s (v183c, C-249 ; 60 s en v179a, Tom, C-232 ; 45 en v175), 91,8 pt/s (v210, C-300 : ×1,5)', R == [75000, 91.8], R)
         t0 = None; dep = None; tf = time.time() + 160
         while time.time() < tf:
             v = pg.evaluate("()=>{ const v=_veille(); return [v.active, v.calme, v.coupee]; }")

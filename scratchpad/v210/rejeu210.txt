@@ -1,0 +1,5 @@
+veille_bords | 1 | python3 redteam_veille_bords.py
+veille_bords_v209 | 1 | python3 redteam_veille_bords.py --fichier=zz-v209.html
+croix | 1 | python3 redteam_croix.py
+trace_present | 1 | python3 redteam_trace_present.py
+trace_present_v209 | 1 | python3 redteam_trace_present.py --fichier=zz-v209.html

@@ -75,7 +75,7 @@ def main():
     print('relevé :', os.path.relpath(chemin, ICI))
     print('version :', meta.get('version'), '· début :', meta.get('debut'), '· écran :', meta.get('ecran'))
     print('état :', meta.get('etat'))
-    if meta.get('tl'): t = meta['tl']; print('ouvrier du tracé : %s · lettres calculées sur le fil : %s (%s ms, pire %s) · restes repris du cache : %s · lents : %s' % (t.get('etat'), t.get('prepN'), t.get('prepMs'), t.get('prepMax'), t.get('cacheR'), t.get('lents')));  [print('   ', j) for j in (t.get('j') or [])]
+    if meta.get('tl'): t = meta['tl']; print('ouvrier du tracé : %s · lettres calculées sur le fil : %s (%s ms, pire %s) · restes repris du cache : %s · lents : %s' % (t.get('etat'), t.get('prepN'), t.get('prepMs'), t.get('prepMax'), t.get('cacheR'), t.get('lents')));  [print('   ', j) for j in (t.get('j') or [])]; print('    v207 · attente d’une lettre attendue (ms) :', t.get('att'), '· calcul d’une carte dans l’ouvrier (ms) :', t.get('calc'), '· file :', t.get('file'))
     dureeS = (images[-1][0] - images[0][0]) / 1000 if images else 0
     # ⚑ v203 (C-267) : les retours de fiche — chaque série de défilement (images avec scrollTop) : un arrêt (≥ 100 ms immobile) suivi d'une reprise (> 1 pt) est un défaut
     ser, cur = [], []

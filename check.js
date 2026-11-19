@@ -99,7 +99,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v204', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v207', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -225,8 +225,8 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
         if(ENV.premier){ R.version=V.marque(); R.ua=navigator.userAgent; ENV.premier=false; }
         if(ets!==ENV.etat){ R.etat=et; ENV.etat=ets; } if(ecs!==ENV.ecran){ R.ecran=ec; ENV.ecran=ecs; }
         /* ⚑ v203 (retours sur 58a4ff9, §5) : l'OUVRIER du tracé des lettres — sur l'iPhone, une lettre coûtait ≈ 100 ms au fil principal (11 au banc) ; le relevé dit s'il travaille, ce qu'il a abandonné, et ce que le fil a calculé à sa place */
-        try{ var TLx=window.TraceLettres; if(TLx){ var J=(TLx.journal||[]).filter(function(j){ return /^ouvrier/.test(j.quoi) || (j.quoi==='trace-fin' && (j.attente>150 || j.imagesLongues>2)); }), M=TLx.mesures||{}, pr=(M.prep||[]), sp=0; for(var i=0;i<pr.length;i++) sp+=pr[i];
-            var tl={etat:TLx.ouvrierEtat||'?', j:J.slice(-12).map(function(j){ var o={}; for(var k in j) if(k!=='pile') o[k]=(typeof j[k]==='string') ? j[k].slice(0,80) : j[k]; return o; }), prepN:pr.length, prepMs:Math.round(sp), prepMax:Math.round(Math.max.apply(null, pr.concat([0]))), cacheR:M.cacheR||0, lents:TLx._lents||0}, tls=JSON.stringify(tl);
+        try{ var TLx=window.TraceLettres; if(TLx){ var qq=function(a){ if(!a||!a.length) return null; var s=a.slice().sort(function(x,y){ return x-y; }), f=function(k){ return Math.round(s[Math.min(s.length-1, Math.floor(k*s.length))]); }; return {n:s.length, p50:f(.5), p95:f(.95), max:f(1)}; };   /* v207 (§2) : l'attente d'une lettre qu'un tracé attend (`att`) et le calcul d'une carte dans l'ouvrier (`calc`), en ms */ var J=(TLx.journal||[]).filter(function(j){ return /^ouvrier/.test(j.quoi) || (j.quoi==='trace-fin' && (j.attente>150 || j.imagesLongues>2)); }), M=TLx.mesures||{}, pr=(M.prep||[]), sp=0; for(var i=0;i<pr.length;i++) sp+=pr[i];
+            var tl={etat:TLx.ouvrierEtat||'?', j:J.slice(-12).map(function(j){ var o={}; for(var k in j) if(k!=='pile') o[k]=(typeof j[k]==='string') ? j[k].slice(0,80) : j[k]; return o; }), prepN:pr.length, prepMs:Math.round(sp), prepMax:Math.round(Math.max.apply(null, pr.concat([0]))), cacheR:M.cacheR||0, lents:TLx._lents||0, att:qq(M.att), calc:qq(M.calc), file:(TLx._file?TLx._file():null)}, tls=JSON.stringify(tl);
             if(tls!==ENV.tl){ R.tl=tl; ENV.tl=tls; } } }catch(_){ }
         ENV.tags=TAGS.length; ENV.modes=MODES.length;
         try{ fetch('releve', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(R), keepalive:!!force}).catch(function(){}); }catch(_){ } }
@@ -503,33 +503,7 @@ function openSheet(el){closeAll();el.classList.add('show');scrim.classList.add('
 function closeAll(){window._tEcran=performance.now();   /* ⚑ v100 : l'heure du dernier changement d'écran — les travaux de fond l'attendent */
 $$('.sheet,.poster').forEach(s=>s.classList.remove('show'));try{var _dc=document.getElementById('device');if(_dc)_dc.classList.remove('v-index');}catch(e){}const _cc=$('#cellCard');if(_cc)_cc.classList.remove('show');scrim.classList.remove('show');try{setTimeout(function(){if(window.Toile_liven)window.Toile_liven();},50);}catch(e){}}
 scrim.onclick=closeAll;
-let ccId=null;
-function closeCard(){const c=$('#cellCard');if(c)c.classList.remove('show');scrim.classList.remove('show');}
-function openCell(id){
-  const p=promises.find(x=>x.id===id);if(!p)return;
-  var _da=null; try{ if(window.Toile&&window.Toile.dalleAbs) _da=window.Toile.dalleAbs(id); }catch(e){}
-  const rec=_da?{id:id,poly:_da.poly}:cellPolys.find(c=>c.id===id);
-  if(!rec){openDetail(id);return;}
-  const poly=rec.poly;let a=1e9,b=1e9,mx=-1e9,my=-1e9;poly.forEach(q=>{a=Math.min(a,q[0]);b=Math.min(b,q[1]);mx=Math.max(mx,q[0]);my=Math.max(my,q[1]);});
-  const bw=Math.max(1,mx-a),bh=Math.max(1,my-b),CW=250,CH=Math.max(178,Math.min(236,Math.round(CW*bh/bw)));
-  const pad=8,s=Math.min((CW-2*pad)/bw,(CH-2*pad)/bh),ox=(CW-bw*s)/2,oy=(CH-bh*s)/2;
-  const fit=poly.map(q=>[ox+(q[0]-a)*s,oy+(q[1]-b)*s]),d=roundPath(fit,((STRUCT[state.structure]&&STRUCT[state.structure].round)||10)*s);
-  const pal=MOODS[state.mood],st=STRUCT[state.structure];let c=HX(pal[p.id%pal.length]);
-  if(st.tint==='aqua')c=watercolor(c);if(st.jewel)c=jewel(c);
-  const hi=heroIndex(),idx=promises.indexOf(p);
-  const edge=idx===hi?'#82AEF8':p.status==='rate'?'#8F8B79':p.status==='tenu'?RS(lighten(c,.12)):RS(c);
-  const svg=$('#ccSvg');svg.setAttribute('viewBox','0 0 '+CW+' '+CH);
-  svg.innerHTML='<path d="'+d+'" fill="'+edge+'" opacity="0.09"/><path d="'+d+'" fill="var(--surf)" fill-opacity="0.93" stroke="'+edge+'" stroke-width="2.4" stroke-linejoin="round"/>';
-  $('#cellCard').style.height=CH+'px';
-  $('#ccTo').textContent=p.who?('à — '+p.who):'à — moi';
-  $('#ccT').textContent=p.title||'';
-  {let _m=p.draft?'brouillon':p.status==='tenu'?'tenue':(p.enLair?'en l’air':(p.due==null?'en l’air':(p.due<=1?'échéance demain':'échéance dans '+p.due+' j')));if(p.recur)_m+=' · ↻ '+({daily:'quotidien',weekly:'hebdo',monthly:'mensuel'}[p.recur]||p.recur);if(p.remind)_m+=' · ⏰ '+p.remind;$('#ccM').textContent=_m;var _cn=$('#ccNote');if(_cn){_cn.textContent=p.note||'';_cn.style.display=p.note?'block':'none';}}
-  ccId=id;closeAll();var _a=$('#ccActs');if(_a)_a.style.display='';var _o=$('#ccPushOpts');if(_o)_o.style.display='none';$('#cellCard').classList.add('show');scrim.classList.add('show');
-}
-if($('#ccKeep'))$('#ccKeep').onclick=function(e){ if(e&&e.stopPropagation)e.stopPropagation(); closeCard(); };   /* v163b (C-189) : la carte de la Toile (`openCell`, que plus rien n'ouvre) ne tient plus une parole d'un toucher, sans message de compte — une parole se tient par le trait */
-if($('#ccPush'))$('#ccPush').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();var a=$('#ccActs');if(a)a.style.display='none';var o=$('#ccPushOpts');if(o)o.style.display='flex';};
-$$('#ccPushOpts button').forEach(function(b){b.onclick=function(e){if(e&&e.stopPropagation)e.stopPropagation();var p=promises.find(x=>x.id===ccId);if(p){p.due=Math.max(0,p.due||0)+(+b.getAttribute('data-d'));if(typeof feedAdd==='function')feedAdd('added','« '+p.title+' » reportée de '+b.textContent.trim(),{pid:p.id});render();if(typeof caption==='function')caption();}closeCard();};});
-if($('#ccManage'))$('#ccManage').onclick=(e)=>{if(e&&e.stopPropagation)e.stopPropagation();const id=ccId;closeCard();openDetail(id);};
+/* ⚑ v206 (assainissement, lot 1) : la carte de la Toile (`#cellCard`) n'a plus de porte depuis C-189 (« une parole se tient par le trait ») — `openCell`, `closeCard`, `ccId` et ses quatre gestionnaires sont retirés ; son HTML et son CSS restent (CLAUDE.md §9). */
 function miniCell(p){
   /* la dalle de l'Index est la MÊME que sur la Toile : même découpe, même couleur.
      (avant : elle s'appuyait sur cellPolys, la liste de l'ancien rendu SVG — vide —
@@ -2895,8 +2869,8 @@ window._phraseRendu = function(){ try{
   window._ppInviteCourante = (P.sens === 'chiche')
     ? 'ce que tu n\u2019as jamais os\u00e9 lui lancer\u2026' : window._ppExempleCourant;
   if(P.sens === 'demander'){
-    /* le PRÉNOM ouvre : « Rachel, promets-moi de … » */
-    h = pl('qui', estMoi ? 'Rachel' : quiAff, estMoi,
+    /* le PRÉNOM ouvre : « Bruno-Stanislas, promets-moi de … » (⚑ v210, Tom, C-305 : l'exemple était « Rachel ») */
+    h = pl('qui', estMoi ? 'Bruno-Stanislas' : quiAff, estMoi,
            {virgule:true, visage:true, taille:_tailleV, natCol:_natCol}) + '<br>'
       + basc + ' ' + etoile + '<br>'
       + (function(){var _e=elide(P.titre);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exDem, !P.titre);})() + '<br>'
@@ -5017,23 +4991,7 @@ function sharePlanche(cv,W,H,dprForce){
     semis d'une Nuée. Même principe, même raison. */
  var _comp=[];
  var COL={tenu:'#C9A8F5',encours:'#82AEF8'};
- /* Toile.dalleTrame() rend la dalle reelle d'un Promi dans le monde actif.
-    _pdImgs et PROMI_DALLES vivent dans une IIFE : ils ne sont pas accessibles ici. */
- /* ⚑ v15 · pendant qu'on DÉPLACE la Pelote, la planche se recompose à chaque case
-    franchie : 18 `dalleTrame` par passe coûtaient ~130 ms (mesuré), le doigt aurait
-    traîné. Le cache par id tient le temps du geste (§4 : « un cache par id, le temps
-    de la passe » — ici la passe est le geste), et il tombe au lâcher. */
- var _cache=(window._shPelPrise&&window._shPlancheCache)?window._shPlancheCache:{};
- if(window._shPelPrise) window._shPlancheCache=_cache; else window._shPlancheCache=null;
- function _dalleReelle(pid){
-  if(_cache[pid]!==undefined)return _cache[pid];
-  var t=null;
-  try{ if(window.Toile&&window.Toile.dalleTrame&&window.Toile.dalleAbs){
-    var d=window.Toile.dalleAbs(pid);
-    if(d&&d.w){ var c=document.createElement('canvas');
-      if(window.Toile.dalleTrame(c,pid,1)&&c.width>2)t=c; } } }catch(e){}
-  _cache[pid]=t; return t;
- }
+ /* ⚑ v206 (assainissement, lot 1) : `_dalleReelle` et son cache par id, morts depuis v132 (la case du Folio passe par `_poseDalle`), sont retirés. */
  /* ⚑ 23 SEPTEMBRE 2026, troisieme tour (Tom) — LE FOLIO : LES TITRES SUR DEUX LIGNES, LA
     GRILLE QUI S'ADAPTE, ET LA PELOTE DANS SON BLOC.
     LE DEFAUT, VU A LA CAPTURE : les titres etaient traces sur UNE ligne, centres, sans
@@ -15056,7 +15014,7 @@ var CREMEETAT='#F7F0DE';
       b.style.setProperty('width',  REF.width  + 'px', 'important');
       /* ⚑ Q213 · L'INDEX PORTE « N paroles · N Nuées » SOUS SON TITRE : son plateau fait 88 (rayon 44, h ≤ 94,5).
          `recale` est LE propriétaire de cette cote (§7) : l'exception s'écrit ici, pas dans une règle qui perdrait. */
-      b.style.setProperty('height', ((sc.id === 'indexSheet') ? 88 : REF.height) + 'px', 'important');
+      b.style.setProperty('height', REF.height + 'px', 'important');   /* ⚑ v210 (Tom, C-301) : un seul encart, 60 pt partout — l'Index n'a plus de compte (retiré en v89) ni d'exception */
       b.style.setProperty('max-width','none','important');
       b.style.setProperty('min-width','0','important');
       b.style.setProperty('box-sizing','border-box','important');
@@ -15802,7 +15760,7 @@ var CREMEETAT='#F7F0DE';
          la mordait d'1 pt. AUJOURD'HUI : la place du X entre dans la clé (le titre se réajuste quand le X est posé), et le titre s'arrête 4 pt avant la
          zone de toucher du X. Les autres titres sont inchangés (mesuré). */
       var _cbx=b.querySelector('.closeb'), _cbr=_cbx?_cbx.getBoundingClientRect():null;
-      var _cleT = ((document.fonts&&document.fonts.status)||'')+'|'+t.textContent+'|'+b.clientWidth+'|'+(b.closest('.screen,.sheet,.poster')||{}).id+'|'+getComputedStyle(t).fontFamily+'|'+(_cbr?Math.round(_cbr.left-r.left)+','+Math.round(_cbr.width):'');
+      var _cleT = ((document.fonts&&document.fonts.status)||'')+'|'+t.textContent+'|'+b.clientWidth+'|'+(b.closest('.screen,.sheet,.poster')||{}).id+'|'+getComputedStyle(t).fontFamily+'|'+(_cbr?Math.round(_cbr.left-r.left)+','+Math.round(_cbr.width):'')+'|'+(window._ENCART&&window._ENCART.page(b)?'E'+window._ENCART.T:'');
       if(t.__ajCle === _cleT && t.style.getPropertyValue('font-size') === t.__ajFs) return;
       /* ⚑ v36 (Tom : « INDEX plus gros, comme les autres ») — LA PLACE SE MESURE DANS L'UNITÉ DU TITRE. `scrollWidth` est
          en pixels de mise en page ; `getBoundingClientRect` suit la mise à l'échelle de l'appareil. Dès que l'app est
@@ -15839,8 +15797,11 @@ var CREMEETAT='#F7F0DE';
          taille que LEUR plateau autorise. Studio et Fil ne bougent pas. */
       var _v20 = !!b.closest('#shareScreen,#settingsScreen,#indexSheet,#auraScreen') && !t.classList.contains('cs-mark')
                  && /^\s*["']?PromiLate/i.test(getComputedStyle(t).fontFamily);
-      if(_v20){ fs=35; if(cb) dispo+=2; }   /* air 16 : à 12, « Réglages » venait à 8 px du ✕ à l'œil */
-      if(cb){ var _tl=(t.getBoundingClientRect().left-r.left)/kE, _zl=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl>_tl+40) dispo=Math.min(dispo, _zl-_tl-4); }   /* v165 (Q585) : 4 pt avant la zone de toucher du X */
+      if(_v20){ fs=35; if(cb) dispo+=2; }
+      /* ⚑ v210 (Tom, C-301) — UN SEUL ENCART : le titre d'une page prend la taille commune (window._ENCART.T, 34 px — la plus grande où « PARTAGER », le plus long, tient avant le X) ; la boucle ne rétrécit que ce qui ne tiendrait pas. */
+      if(window._ENCART && window._ENCART.page(b)){ fs=window._ENCART.T; }   /* air 16 : à 12, « Réglages » venait à 8 px du ✕ à l'œil */
+      if(cb){ var _tl=(t.getBoundingClientRect().left-r.left)/kE, _zl=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl>_tl+40) dispo=Math.min(dispo, _zl-_tl-4); }
+      if(cb && window._ENCART && window._ENCART.page(b)){ var _tl2=(t.getBoundingClientRect().left-r.left)/kE, _zl2=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl2>_tl2+40) dispo=_zl2-_tl2-4; }   /* v210 (C-301) : la place d'un titre de page va jusqu'à 4 pt de la zone du X, et rien d'autre */   /* v165 (Q585) : 4 pt avant la zone de toucher du X */
       /* ⚠ EN `important`, sinon la règle d'origine du titre reprend la main : un style
          en ligne SANS important perd contre un `!important` de feuille. */
       t.style.setProperty('font-size',fs+'px','important');
@@ -15866,6 +15827,7 @@ var CREMEETAT='#F7F0DE';
     _derT=t;
     try{ if(window._encartHaut) window._encartHaut(); }catch(_){ }
     try{ ajusteTitres(); }catch(_){ }
+    try{ if(window._encartPose) window._encartPose(); }catch(_){ }   /* v210 (C-301) : la place du titre suit sa taille, dans la même passe */
   }
   [0,180,500,1000,2000].forEach(function(d){ setTimeout(tout,d); });
   document.addEventListener('click',function(){ [120,340,700].forEach(function(d){setTimeout(function(){ (window._apresMouvement||function(f){f();})(tout); },d);}); },true);
@@ -20067,7 +20029,10 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
         de la face la surface passe de 4,4 à 6,1 pt/s. C'est toujours le geste qui accélère.
         SENS : la planche donnait 0,011 rad/px pour une boule de 142 — un tour pour deux
         diamètres de doigt. On garde CE rapport sur la boule de l'écran (116 pt). ──── */
-  var G = { AUTO:6.283185307/100, /* ⚑ UN TOUR EN 100 s (Tom, 12 sept.). */ TANG:0.32, TANGMAX:1.15, TAU:0.55, VMAX:11, TAP:6,
+  /* ⚑ v207 (Tom, C-298) : « la Pelote tourne ×1,5 plus vite, dans tous les états » — un tour en 100 / 1,5 = 66,7 s (100 s depuis le 12 sept.). Une seule
+     constante : la vue 3D (G.AUTO), le calque qui tourne au repos et le couchage des poils la lisent. */
+  var TOUR_S=100/1.5;
+  var G = { AUTO:6.283185307/TOUR_S, /* ⚑ UN TOUR EN 66,7 s (v207, C-298 ; 100 s depuis le 12 sept.). */ TANG:0.32, TANGMAX:1.15, TAU:0.55, VMAX:11, TAP:6,
             SENS:0.011*142/K.Rpt, MONTE:0.09, IMP_TAU:1.35, COMBLE:0.42,
             /* ⚑ LA LOI DE CONTACT D'UNE BALLE ANTISTRESS (Tom, 18 sept. 2026 : « plus de raideur, un retour plus net ;
                une vraie boule molle, avec un peu de résistance agréable »). La loi d'avant — MONTE, IMP_TAU —
@@ -20526,7 +20491,10 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
      SOL_CREME de Q210, dont le degré se lit dans la mesure et pas dans le document. */
   var ECART_PAGE=44;
   function _lum(c){ return 0.2126*c[0]+0.7152*c[1]+0.0722*c[2]; }
-  function pageCouleur(){ return clair() ? [0xF7,0xF0,0xDE] : [0x10,0x0D,0x0B]; }
+  /* ⚑ v207 (Tom, C-294 suite) — LE VRAI FOND : la Pelote se détache de la page qu'on VOIT autour d'elle — celle de l'Aura (#EAD9B9 en clair depuis C-294,
+     la seiche #050302 en sombre), lue sur l'écran ; elle comptait avec #F7F0DE et #100D0B, deux fonds qui ne sont plus ceux de l'Aura. */
+  function pageCouleur(){ try{ var mm=/(\d+)[, ]+(\d+)[, ]+(\d+)/.exec(getComputedStyle(SC).backgroundColor); if(mm) return [+mm[1],+mm[2],+mm[3]]; }catch(_){ }
+    return clair() ? [0xEA,0xD9,0xB9] : [0x05,0x03,0x02]; }
   function versBlanc(c,t){ return [c[0]+(255-c[0])*t, c[1]+(255-c[1])*t, c[2]+(255-c[2])*t]; }
   function versNoir(c,t){ return [c[0]*(1-t), c[1]*(1-t), c[2]*(1-t)]; }
   function ecarteDeLaPage(s){
@@ -21299,6 +21267,37 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     return !!t && !SC.contains(t);
   }
   function borne(t){ return Math.max(-G.TANGMAX, Math.min(G.TANGMAX, t)); }
+  /* ⚑ v210 (Tom, 18 nov. 2026, C-302) — « PARFOIS LA ROTATION CHANGE BRUSQUEMENT DE DIRECTION VERTICALEMENT. Des changements de direction, oui, jamais secs : l'axe
+     dérive doucement vers une orientation tirée au hasard (slerp), puis une autre ; la vitesse reste continue, la moyenne celle de C-298 ; durées et cibles au
+     hasard. » LA CAUSE : au repos la Pelote était rendue une fois et tournée À PLAT par le compositeur (v203, C-275 : un tour autour de l'axe de la vue) ; au moindre
+     geste, ou quand une trace s'inscrivait, elle repassait au rendu 3D qui tourne autour de l'axe VERTICAL — sur les côtés, le mouvement passait d'un coup du
+     vertical à l'horizontal, puis l'inverse ; et `tourSiNeuf` posait une vitesse verticale d'un coup.
+     AUJOURD'HUI, UN SEUL MOUVEMENT : la vitesse angulaire ω = vitesse × axe, l'axe pris dans le repère de la vue (x : l'inclinaison `tan`, y : le tour `lac`, z : le
+     tour à plat du calque `RA.th`, que le geste sait déjà défaire). L'axe passe d'une orientation à la suivante par un slerp lissé (départ et arrivée à vitesse
+     nulle), en 8 à 18 s ; la cible est tirée à 30–80° de l'axe du moment (jamais une inversion), sa part d'inclinaison rappelée vers le centre (la vue s'incline au
+     plus de ±1,15) ; la vitesse varie doucement entre 0,85 et 1,15 × celle de C-298 (un tour en 66,7 s). La Pelote est rendue à chaque image (la carte graphique) :
+     le calque ne tourne plus seul. « Réduire les animations » : immobile. `window._peloteDerive.simule(s)` rejoue la même loi pour le juge. */
+  function Derive(al){ var D={ax:[0,0.82,0.57], de:null, vers:null, t:0, dur:1, f:1, fDe:1, fVers:1, al:al||Math.random};
+    function norme(v){ var n=Math.hypot(v[0],v[1],v[2])||1; return [v[0]/n,v[1]/n,v[2]/n]; }
+    function angle(a,b){ return Math.acos(Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2]))); }
+    function slerp(a,b,u){ var o=angle(a,b); if(o<1e-6) return a.slice(); var s=Math.sin(o), p=Math.sin((1-u)*o)/s, q=Math.sin(u*o)/s; return norme([a[0]*p+b[0]*q, a[1]*p+b[1]*q, a[2]*p+b[2]*q]); }
+    function cible(tan){ for(var k=0;k<60;k++){ var z=D.al()*2-1, th=D.al()*6.283185307, r=Math.sqrt(1-z*z), v=[r*Math.cos(th), r*Math.sin(th), z];
+        v[0]=Math.max(-0.45, Math.min(0.45, v[0]*0.45 - 0.55*(tan||0)/G.TANGMAX)); v=norme(v);   /* l'inclinaison, rappelée vers le centre */
+        var o=angle(v, D.ax); if(o>0.52 && o<1.40) return v; }
+      return norme([-(tan||0)/G.TANGMAX*0.3, D.ax[1]+0.3, D.ax[2]-0.3]); }
+    function suivante(tan){ D.de=D.ax.slice(); D.vers=cible(tan); D.t=0; D.dur=8+D.al()*10; D.fDe=D.f; D.fVers=0.85+D.al()*0.30; }
+    D.pas=function(dt, tan){ if(!D.vers || D.t>=D.dur) suivante(tan); D.t=Math.min(D.dur, D.t+dt); var u=D.t/D.dur, e=u*u*(3-2*u);
+      D.ax=slerp(D.de, D.vers, e); D.f=D.fDe+(D.fVers-D.fDe)*e;
+      var w=G.AUTO*D.f, wx=w*D.ax[0];
+      /* à l'approche de la borne d'inclinaison, la part qui l'y pousse s'efface en douceur (jamais l'arrêt sec de `borne`) */
+      var tb=Math.abs(tan||0)/G.TANGMAX; if(tb>0.6 && wx*(tan||0)>0) wx*=Math.max(0, 1-Math.pow((tb-0.6)/0.4, 2));
+      return {tan:wx, lac:w*D.ax[1], roll:w*D.ax[2], ax:D.ax.slice(), w:w}; };
+    return D; }
+  var DRV=Derive(), DRW={tan:0, lac:G.AUTO, roll:0};
+  window._peloteDerive={ etat:function(){ return {ax:DRV.ax, f:DRV.f, w:DRW}; },
+    simule:function(sec, dt, graine){ var a=(graine>>>0)||12345, al=function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; };
+      var D=Derive(al), tan=0.32, L=[]; dt=dt||1/60; for(var t=0;t<sec;t+=dt){ var W=D.pas(dt, tan); tan=borne(tan+W.tan*dt); L.push([+W.tan.toFixed(7), +W.lac.toFixed(7), +W.roll.toFixed(7), +tan.toFixed(5)]); } return L; } };
+  function poseRoll(){ if(ROT) ROT.style.setProperty('transform','rotate('+(RA.th%360)+'deg)'); }
   function majEmp(dt){
     if(!EMP) return;
     var now=performance.now();
@@ -21342,8 +21341,11 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       if(!V.vlac && !V.vtan) V.tau=G.TAU;
       /* `fige` n'existe que pour le juge : comparer deux images à vue ÉGALE, sans que la
          rotation se mêle de la mesure. Le produit ne l'appelle jamais. */
-      if(!PEL.fige){ V.lac+=(G.AUTO+V.vlac)*dt; V.tan=borne(V.tan+V.vtan*dt); }
-      V.om=Math.sqrt((G.AUTO+V.vlac)*(G.AUTO+V.vlac)+V.vtan*V.vtan);
+      if(V.rampe){ V.rampe.t+=dt; var _u=Math.min(1, V.rampe.t/V.rampe.d), _e=_u*_u*(3-2*_u); V.vlac=V.rampe.vl*_e; V.vtan=V.rampe.vt*_e; if(_u>=1) V.rampe=null; }   /* v210 (C-302) : le tour d'une parole neuve part en douceur */
+      var _red=false; try{ if(!DRV.mq) DRV.mq=matchMedia('(prefers-reduced-motion: reduce)'); _red=DRV.mq.matches; }catch(_){ }
+      DRW=(PEL.fige||_red) ? {tan:0, lac:0, roll:0} : DRV.pas(dt, V.tan);
+      if(!PEL.fige){ V.lac+=(DRW.lac+V.vlac)*dt; V.tan=borne(V.tan+(DRW.tan+V.vtan)*dt); RA.th+=DRW.roll*180/Math.PI*dt; poseRoll(); }
+      V.om=Math.sqrt((DRW.lac+V.vlac)*(DRW.lac+V.vlac)+(DRW.tan+V.vtan)*(DRW.tan+V.vtan)+DRW.roll*DRW.roll);
     }
     V.lacAv=V.lac;
     majEmp(dt);
@@ -21358,9 +21360,10 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
        depuis l'angle où elle était (le geste est ramené dans son repère) ; revenue au repos, la rotation repart en douceur. Un changement (une trace inscrite, un tirage, un
        palier, le thème) la repeint une fois, sans arrêter la rotation. */
     var calme=!DG.on && !V.vlac && !V.vtan && !EMP && !FILE.length && !ATTENTE.length && !PEL.fige;
-    if(calme && !PEL.fige) V.lac-=G.AUTO*dt;   /* au repos, la vue 3D ne tourne plus (c'est le calque) */
+    /* v210 (C-302) : plus de rotation à plat au repos — l'axe dérive, la Pelote est rendue à chaque image ; ne s'arrête que figée (le juge) */
+    calme=calme && (PEL.fige || (!DRW.lac && !DRW.tan && !DRW.roll));
     var Sx=semis(), cleR=[Sx.__stCle, TVER, PEL.palier, clair()?1:0, CV.width, V.lac.toFixed(4), V.tan.toFixed(4)].join('|');
-    if(calme && PEL.rCle===cleR && PEL.peints>0){ rotLance(); return; }
+    if(calme && PEL.rCle===cleR && PEL.peints>0) return;   /* v210 (C-302) : plus de calque qui tourne seul */
     if(!calme) rotArrete();
     PEL.souffleT=(PEL.souffleT==null ? -SOUFFLE.DEPART : PEL.souffleT)+Math.min(0.5, dtR);   /* v117 : le souffle n'avance que quand on la voit — au TEMPS RÉEL (§8) : borné à 0,1 s comme la rotation, il ralentissait sous charge (WebKit, 150–250 ms par image : sommet mesuré à 8,2 s au lieu de 4,6) ; la borne de 0,5 s ne sert qu'après une pause */
     var S=semis(), av=S.__stCle, t0=performance.now();
@@ -21385,11 +21388,11 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   /* ⚑ v203 (C-275) — LE CALQUE QUI TOURNE. Démarrage en douceur : 1,5 s en accélération (l'angle en u², une courbe de Bézier exacte), puis la vitesse d'un tour en 100 s,
      sans fin (Web Animations : le compositeur l'anime, aucun script à chaque image). L'angle du moment se lit sur les animations. */
   var ROT, RA={th:0, a1:null, a2:null, d1:0}, RTR=1500;
-  function rotAngle(){ if(RA.a2){ var t=RA.a2.currentTime||0; return RA.th+RA.d1+360*((t%100000)/100000); } if(RA.a1){ var u=Math.min(1, (RA.a1.currentTime||0)/RTR); return RA.th+RA.d1*u*u; } return RA.th; }
+  function rotAngle(){ if(RA.a2){ var t=RA.a2.currentTime||0; return RA.th+RA.d1+360*((t%(TOUR_S*1000))/(TOUR_S*1000)); } if(RA.a1){ var u=Math.min(1, (RA.a1.currentTime||0)/RTR); return RA.th+RA.d1*u*u; } return RA.th; }
   function rotLance(){ if(!ROT || RA.a1 || RA.a2 || !ROT.animate) return; var reduit=false; try{ reduit=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ } if(reduit) return;
-    var w=360/100, d1=w*(RTR/1000)/2; RA.d1=d1; var a0=RA.th;
+    var w=360/TOUR_S, d1=w*(RTR/1000)/2; RA.d1=d1; var a0=RA.th;
     RA.a1=ROT.animate([{transform:'rotate('+a0+'deg)'},{transform:'rotate('+(a0+d1)+'deg)'}], {duration:RTR, easing:'cubic-bezier(.3333,0,.6667,.3333)', fill:'forwards'});
-    RA.a1.onfinish=function(){ if(!RA.a1) return; RA.a1=null; RA.a2=ROT.animate([{transform:'rotate('+(a0+d1)+'deg)'},{transform:'rotate('+(a0+d1+360)+'deg)'}], {duration:100000, iterations:Infinity, easing:'linear'}); }; }
+    RA.a1.onfinish=function(){ if(!RA.a1) return; RA.a1=null; RA.a2=ROT.animate([{transform:'rotate('+(a0+d1)+'deg)'},{transform:'rotate('+(a0+d1+360)+'deg)'}], {duration:TOUR_S*1000, iterations:Infinity, easing:'linear'}); }; }
   function rotArrete(){ if(!ROT || !(RA.a1 || RA.a2)) return; var th=rotAngle()%360; if(RA.a1){ RA.a1.onfinish=null; RA.a1.cancel(); } if(RA.a2) RA.a2.cancel(); RA.a1=RA.a2=null; RA.th=th;
     ROT.style.setProperty('transform','rotate('+th+'deg)'); }   /* sans `important` : une animation ne bat pas un `!important` (le piège de v194) */
   window._peloteRotation=function(){ return {angle:rotAngle(), tourne:!!(RA.a1||RA.a2), demarre:!!RA.a1}; };   /* un pointeur pour les juges */
@@ -21492,7 +21495,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   }
   /* ⚑ v141 (Tom, C-083) — le sens où la face visible se déplace, à l'écran, dosé par la vitesse : la rotation de repos (un tour en 100 s) couche à
      peine les poils du bord (0,18), un lancer les couche franchement (jusqu'à 0,9). Vue figée : rien. */
-  function tour(){ if(PEL.fige) return null; var wl=(DG.on?0:G.AUTO)+V.vlac, wt=V.vtan, w=Math.sqrt(wl*wl+wt*wt); if(w<1e-4) return null;
+  function tour(){ if(PEL.fige) return null; var wl=(DG.on?0:DRW.lac)+V.vlac, wt=(DG.on?0:DRW.tan)+V.vtan, w=Math.sqrt(wl*wl+wt*wt); if(w<1e-4) return null;
     var s=Math.min(1, w/1.2), A=0.18+0.72*s; return [A*wl/w, -A*wt/w]; }
   function relisse(){ var av=TRACES; TRACES=[]; ATTENTE=[]; TVER++; lsSet('promi_pelote_traces', []); retouche(av, TRACES); }
   function gestesBoule(){
@@ -21671,7 +21674,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     if(vus===null || D.n<=vus || !PEL.iles || !PEL.iles.derniere) return;
     var c=PEL.iles.derniere, lacT=Math.atan2(-c[0], c[2]), tanT=Math.atan2(c[1], Math.sqrt(c[0]*c[0]+c[2]*c[2]));
     var dl=((lacT-V.lac)%6.283185307+6.283185307)%6.283185307; if(dl<3.14159) dl+=6.283185307;
-    V.tau=G.TOUR_TAU; V.vlac=dl/G.TOUR_TAU; V.vtan=(borne(tanT)-V.tan)/G.TOUR_TAU; PEL.tour=D.n;
+    V.tau=G.TOUR_TAU; V.rampe={vl:dl/G.TOUR_TAU, vt:(borne(tanT)-V.tan)/G.TOUR_TAU, t:0, d:0.7}; PEL.tour=D.n;   /* v210 (C-302) : la vitesse monte en 0,7 s, jamais d'un coup */
   }
 
   function publie(){
@@ -30176,7 +30179,9 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var cv=(CV0 && CV0.width===Math.round(390*dpr*sc))?CV0:document.createElement('canvas'); CV0=null; cv.id='tenirMaree'; cv.setAttribute('aria-hidden','true');
     if(cv.width!==Math.round(390*dpr*sc)){ cv.width=Math.round(390*dpr*sc); cv.height=Math.round(844*dpr*sc); }
     /* ⚠ le crible de la fiche masque toute couche ajoutée à #detailPoster (piège de v132) : on la déclare visible, nommément, en !important */
-    'position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;z-index:40;display:block;visibility:visible;opacity:1;transform:none'.split(';').forEach(function(d){ var i=d.indexOf(':'); if(i>0) cv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+    'position:absolute;left:0;top:0;width:390px;height:844px;margin:0;padding:0;max-width:none;pointer-events:none;z-index:7;display:block;visibility:visible;opacity:1;transform:none'.split(';').forEach(function(d){ var i=d.indexOf(':'); if(i>0) cv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+    /* ⚑ v207 (C-297) : z 7 (40 avant) — la nappe défile avec la fiche quand on défile pendant la célébration ; à 40 elle passait au-dessus de la bande d'en-tête
+       (z 8) et montait sur le plateau. À 7, posée après la vague (z 7), elle la couvre et passe sous la bande, comme tout ce qui défile. */
     dp.appendChild(cv); var g=cv.getContext('2d'); g.setTransform(dpr*sc,0,0,dpr*sc,0,0);
     /* ⚑ v149 (Tom, C-155) — « l'animation part DANS L'IMAGE SUIVANTE » : le rideau démarre AU LEVER (`_maree.tot()`, appelé par le clic « tenue »),
        son horloge part du lever ; la phrase de validation, que l'instant pose dans l'image suivante, s'écrit dans la nappe dès qu'elle est posée
@@ -30237,8 +30242,12 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
      lever lui-même passe avant) et tant que le vert n'a pas commencé de remonter. Sans toucher : rien ne change, le retour se fait seul à 2 400 ms. */
   (function(){ var aval=0;
     function actif(){ if(!M || !M.t0) return false; var n=performance.now(); return (n-M.t0>=300) && !(window._tenirVite && window._tenirVite>=M.t0) && !M.monte(); }
-    function presse(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); return; }
-      if(!actif()) return; window._tenirVite=performance.now(); aval=performance.now(); e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); }
+    /* ⚑ v207 (C-297, Tom : « après tenir, le trait ne réagit plus au défilement vers le haut ») — le `preventDefault` du DÉBUT d'un geste tactile (touchstart)
+       annule le défilement natif de tout le geste : un doigt qui glissait pour défiler juste après « tenir » était avalé, la fiche ne bougeait pas. Le toucher
+       fait toujours remonter le vert et reste avalé pour l'app (propagation arrêtée, fin du geste et clic avalés) ; seul le défilement natif passe. */
+    function bloque(e){ if(e.cancelable && e.type!=='touchstart' && e.type!=='pointerdown') e.preventDefault(); }
+    function presse(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); bloque(e); return; }
+      if(!actif()) return; window._tenirVite=performance.now(); aval=performance.now(); e.stopImmediatePropagation(); bloque(e); }
     function suite(e){ if(aval && performance.now()-aval<700){ e.stopImmediatePropagation(); if(e.cancelable) e.preventDefault(); } }
     ['touchstart','pointerdown','mousedown'].forEach(function(n){ document.addEventListener(n, presse, {capture:true, passive:false}); });
     ['touchend','pointerup','mouseup','click'].forEach(function(n){ document.addEventListener(n, suite, {capture:true, passive:false}); });
@@ -30747,7 +30756,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 (function(){
   var Q=new URLSearchParams(location.search);
   /* ⚑ v183c (Tom, 7 nov. 2026, C-249 : « la veille DVD arrive trop tôt — passe le délai de 60 s à 75 s ; le reste est inchangé ») */
-  var R=window._veilleRegle={DELAI:(Q.has('veille') && +Q.get('veille')>0 ? +Q.get('veille') : 75)*1000, VITESSE:61.2,   /* ⚑ v179a (Tom, C-232) : 60 s, quelle que soit l'adresse ; `?veille=` seulement s'il est dans l'adresse du moment, jamais mémorisé · v175 : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
+  var R=window._veilleRegle={DELAI:(Q.has('veille') && +Q.get('veille')>0 ? +Q.get('veille') : 75)*1000, VITESSE:91.8,   /* ⚑ v210 (Tom, C-300 suite) : ×1,5 (61,2 → 91,8 pt/s) */   /* ⚑ v179a (Tom, C-232) : 60 s, quelle que soit l'adresse ; `?veille=` seulement s'il est dans l'adresse du moment, jamais mémorisé · v175 : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
      VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y
@@ -30763,26 +30772,42 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function prochain(s, B){ var v=B.v; var tx=s.dx>0?(B.x1-s.x)/(s.dx*v):(s.dx<0?(B.x0-s.x)/(s.dx*v):Infinity), ty=s.dy>0?(B.y1-s.y)/(s.dy*v):(s.dy<0?(B.y0-s.y)/(s.dy*v):Infinity);
     var t=Math.min(tx, ty), x=s.x+s.dx*v*t, y=s.y+s.dy*v*t, mur=tx<ty?'x':'y';
     var reste=tx<ty ? Math.min(Math.abs(y-B.y0), Math.abs(y-B.y1)) : Math.min(Math.abs(x-B.x0), Math.abs(x-B.x1));
-    if(reste<=B.tol) mur='coin'; return {t:Math.max(0,t), x:x, y:y, mur:mur}; }
+    if(reste<=B.tol) mur='coin';
+    /* ⚑ v209 (Tom, C-300) — LA DÉCOUPE DE LA CAMÉRA EST UN OBSTACLE : chaque obstacle est la découpe agrandie de la boîte du logo (somme de Minkowski, en
+       coordonnées du coin haut-gauche du logo) ; le logo rebondit sur la face qu'il touche ('ox' : une face verticale, 'oy' : une face horizontale, 'oc' : son coin). */
+    (B.obs||[]).forEach(function(E){ var c=choc(s, v, E, B.tol); if(c && c.t<t-1e-9){ t=c.t; x=s.x+s.dx*v*t; y=s.y+s.dy*v*t; mur=c.mur; } });
+    return {t:Math.max(0,t), x:x, y:y, mur:mur}; }
+  function choc(s, v, E, tol){ var best=null, e=1e-6;
+    function prend(tt, mur, autre, a0, a1){ if(tt<-1e-9 || autre<=a0 || autre>=a1) return; tt=Math.max(0, tt);
+      if(Math.min(autre-a0, a1-autre)<=tol) mur='oc'; if(!best || tt<best.t) best={t:tt, mur:mur}; }
+    if(s.dy<0 && s.y>=E.y1-e){ var t1=(E.y1-s.y)/(s.dy*v); prend(t1, 'oy', s.x+s.dx*v*t1, E.x0, E.x1); }
+    if(s.dy>0 && s.y<=E.y0+e){ var t2=(E.y0-s.y)/(s.dy*v); prend(t2, 'oy', s.x+s.dx*v*t2, E.x0, E.x1); }
+    if(s.dx>0 && s.x<=E.x0+e){ var t3=(E.x0-s.x)/(s.dx*v); prend(t3, 'ox', s.y+s.dy*v*t3, E.y0, E.y1); }
+    if(s.dx<0 && s.x>=E.x1-e){ var t4=(E.x1-s.x)/(s.dx*v); prend(t4, 'ox', s.y+s.dy*v*t4, E.y0, E.y1); }
+    return best; }
+  /* la découpe (en px, dans le cadre de la veille) agrandie de la boîte du logo (w × h) : les positions interdites à son coin haut-gauche */
+  function obstacles(C, w, h){ return (C.obs||[]).map(function(O){ return {x0:O.x-w, x1:O.x+O.w, y0:O.y-h, y1:O.y+O.h}; }); }
   function direction(sx, sy, deg){ var a=deg*Math.PI/180; return [sx*Math.cos(a), sy*Math.sin(a)]; }
   /* après un rebond (ou au départ) : l'angle tiré, 45° ± 2 à 3° ; un coin avant 60 s est refusé ; `?coin=1` le vise entre 60 et 90 s */
   function oriente(s, B, ecoule, alea){
     var sx=s.dx>=0?1:-1, sy=s.dy>=0?1:-1;
     if(R.COIN_FORCE && !s.coinVise && ecoule>=40000){ var cx=sx>0?B.x1:B.x0, cy=sy>0?B.y1:B.y0, ddx=cx-s.x, ddy=cy-s.y, d=Math.hypot(ddx, ddy), arr=ecoule+d/B.v*1000;
-      if(arr>=60000 && arr<=90000 && d>1){ s.dx=ddx/d; s.dy=ddy/d; s.coinVise=true; return; } }
+      if(arr>=60000 && arr<=90000 && d>1){ var ox=s.dx, oy=s.dy; s.dx=ddx/d; s.dy=ddy/d; if(prochain(s, B).mur==='coin'){ s.coinVise=true; return; } s.dx=ox; s.dy=oy; } }
     for(var essai=0; essai<40; essai++){ var dev=(alea()<0.5?-1:1)*(2+alea()); var v=direction(sx, sy, 45+dev); s.dx=v[0]; s.dy=v[1];
       var n=prochain(s, B), quand=ecoule+n.t*1000; if(n.mur!=='coin' || quand>=R.SANS_COIN) return; }   /* v162 : seulement la première minute */
     var v2=direction(sx, sy, 41); s.dx=v2[0]; s.dy=v2[1]; }
   function rebondit(s, n, B){ s.x=n.x; s.y=n.y;
-    if(n.mur==='coin' && B){ s.x=s.dx>0?B.x1:B.x0; s.y=s.dy>0?B.y1:B.y0; }   /* au coin, posé EXACTEMENT sur les deux bords : sinon il repartait à 1 pt d'un bord, et le rebond suivant était un coin de plus */
-    if(n.mur==='x'||n.mur==='coin') s.dx=-s.dx; if(n.mur==='y'||n.mur==='coin') s.dy=-s.dy; }
+    if(n.mur==='coin' && B){ var gx=Math.abs(n.x-B.x0)<Math.abs(n.x-B.x1), gy=Math.abs(n.y-B.y0)<Math.abs(n.y-B.y1); s.x=gx?B.x0:B.x1; s.y=gy?B.y0:B.y1;
+      s.dx=gx?Math.abs(s.dx):-Math.abs(s.dx); s.dy=gy?Math.abs(s.dy):-Math.abs(s.dy); return; }   /* au coin, il repart vers l'intérieur sur les deux axes (inverser les deux, juste après un rebond sur le bord voisin, le renvoyait dans le coin) */   /* v209 (C-300) : le coin le plus PROCHE — posé selon la direction, un coin touché juste après un rebond sur le bord voisin envoyait le logo au coin opposé (du bas de l'écran en haut) */   /* au coin, posé EXACTEMENT sur les deux bords : sinon il repartait à 1 pt d'un bord, et le rebond suivant était un coin de plus */
+    if(n.mur==='x'||n.mur==='coin'||n.mur==='ox'||n.mur==='oc') s.dx=-s.dx; if(n.mur==='y'||n.mur==='coin'||n.mur==='oy'||n.mur==='oc') s.dy=-s.dy; }
   /* la simulation : `duree` s de trajectoire, sans écran — les coins et leurs instants */
   /* la simulation : `duree` s de trajectoire, sans écran, sur un écran donné — o = {l, h : la zone visible en px ; k : l'échelle de l'appareil ; ins : [haut,
      droite, bas, gauche] les zones sûres ; w, h0 : l'encre du logo en px} ; par défaut l'écran du moment. Rend les coins (s) et le nombre de rebonds. */
   window._veilleSimule=function(duree, graine, o){ o=o||{}; var C=cadre(), k=o.k||C.k, L=o.l||C.width, H=o.h||C.height, ins=o.ins||C.ins, w=o.w||R.LARG*k, h=o.h0||(R.LARG*k*encre.r);
-    var B={x0:ins[3], x1:L-ins[1]-w, y0:ins[0], y1:H-ins[2]-h, v:R.VITESSE*k, tol:R.TOL*k}, al=hasard(graine||1), s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:Math.SQRT1_2}, t=0, coins=[], rebonds=0;
-    oriente(s, B, 0, al); while(true){ var n=prochain(s, B); if(t+n.t>duree) break; t+=n.t; rebondit(s, n, B); rebonds++; if(n.mur==='coin') coins.push(+t.toFixed(1)); oriente(s, B, t*1000, al); }
-    return {coins:coins, rebonds:rebonds, duree:duree, bornes:B}; };
+    var B={x0:ins[3], x1:L-ins[1]-w, y0:ins[0], y1:H-ins[2]-h, v:R.VITESSE*k, tol:R.TOL*k, obs:obstacles({obs:o.decoupe?[o.decoupe]:(o.l?[]:(C.obs||[]))}, w, h)}, al=hasard(graine||1), s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:Math.SQRT1_2}, t=0, coins=[], rebonds=0;
+    var trace=o.trace?[]:null;
+    oriente(s, B, 0, al); while(true){ var n=prochain(s, B); if(t+n.t>duree) break; t+=n.t; rebondit(s, n, B); rebonds++; if(n.mur==='coin') coins.push(+t.toFixed(1)); if(trace) trace.push([+s.x.toFixed(2), +s.y.toFixed(2), n.mur]); oriente(s, B, t*1000, al); }
+    return {coins:coins, rebonds:rebonds, duree:duree, bornes:B, trace:trace}; };
   /* ── LA ZONE VISIBLE : ses bords réels, en px de l'écran ── */
   var encre={r:26.72/140, boites:{}};   /* le rapport hauteur / largeur de l'encre de PROMI (mesuré au premier logo) */
   function insets(){ try{ var p=document.createElement('div'); p.style.cssText='position:fixed;left:0;top:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)';
@@ -30796,15 +30821,29 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var ins=insets(), vl=(vv?vv.offsetLeft:0), vt=(vv?vv.offsetTop:0), vw=(vv?vv.width:innerWidth), vh=(vv?vv.height:innerHeight);
     var x0=vl+ins[3], y0=vt+ins[0], x1=vl+vw-ins[1], y1=vt+vh-ins[2];
     if(r && r.width>10 && r.height>10){ x0=Math.max(x0, r.left); y0=Math.max(y0, r.top); x1=Math.min(x1, r.right); y1=Math.min(y1, r.bottom); }
+    /* ⚑ v209 (Tom, C-300) — DANS L'APP (la coquille déclare la forme de l'écran : `window.__ecranForme`), la veille couvre TOUT l'écran et le logo y va partout :
+       ni zone sûre retranchée, ni ligne imaginaire en haut ; la découpe de la caméra (encoche, Dynamic Island, trou d'Android), donnée par la coquille en px de
+       l'écran, est un obstacle sur lequel il rebondit. Les coins arrondis de l'écran peuvent rogner le logo de quelques pixels au rebond (accepté). Dans
+       Safari (aucune forme déclarée), rien ne change. */
+    var F=window.__ecranForme;
+    if(F){ x0=vl; y0=vt; x1=vl+vw; y1=vt+vh;
+      if(r && r.width>10 && r.height>10){ x0=Math.max(x0, r.left); y0=Math.max(y0, r.top); x1=Math.min(x1, r.right); y1=Math.min(y1, r.bottom); }
+      var obs=[]; if(F.decoupe){ var O=F.decoupe; obs.push({x:O.x-x0, y:O.y-y0, w:O.w, h:O.h}); }
+      return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[0,0,0,0], obs:obs}; }
     return {left:x0, top:y0, width:Math.max(10, x1-x0), height:Math.max(10, y1-y0), k:k, ins:[0,0,0,0]}; }
-  function bornesDe(C, w, h){ return {x0:C.ins[3], x1:C.width-C.ins[1]-w, y0:C.ins[0], y1:C.height-C.ins[2]-h, v:R.VITESSE*C.k, tol:R.TOL*C.k}; }
+  function bornesDe(C, w, h){ return {x0:C.ins[3], x1:C.width-C.ins[1]-w, y0:C.ins[0], y1:C.height-C.ins[2]-h, v:R.VITESSE*C.k, tol:R.TOL*C.k, obs:obstacles(C, w, h)}; }
+  /* un logo posé dans un obstacle (au départ, ou quand l'écran change) en sort par le bas */
+  function horsObstacle(s, B){ (B.obs||[]).forEach(function(E){ if(s.x>E.x0 && s.x<E.x1 && s.y>E.y0 && s.y<E.y1) s.y=Math.min(B.y1, E.y1); }); }
   /* ── L'ÉCRAN ── */
   function fond(){ try{ return window._fondToileVif ? window._fondToileVif() : '#050302'; }catch(_){ return '#050302'; } }
   function hex(c){ return '#'+c.slice(0,3).map(function(v){ return ('0'+Math.round(v).toString(16)).slice(-2); }).join(''); }
   function rgb(h){ return [1,3,5].map(function(i){ return parseInt(h.substr(i,2),16); }); }
   function tons(F){ var P=[], L=[]; try{ P=(window.Toile && Toile.cols ? Toile.cols() : []).map(hex); }catch(_){ }
-    P.forEach(function(h){ if(contraste(h, F)>=3) L.push(h); });
-    if(L.length<2 && window._teinte && _teinte.ajuste){ L=[]; P.forEach(function(h){ try{ var a=hex(_teinte.ajuste(rgb(h), rgb(F), 3)); if(L.indexOf(a)<0 && contraste(a, F)>=3) L.push(a); }catch(_){ } }); }   /* aucun ton lisible : la teinte gardée, amenée à 3:1 */
+    /* ⚑ v210 (Tom, C-300 suite) — « UNIQUEMENT LES COULEURS EXACTES DE LA PALETTE, VIVES, À PLEINE OPACITÉ. » Plus aucun ton dérivé (l'ancien repli amenait la
+       teinte à 3:1 : une couleur qui n'est pas dans la palette — retiré, C-204). Un ton qui ne se lit pas sur le fond (moins de 3:1) est sauté ; s'il en reste
+       moins de deux, les tons EXACTS de la palette, tous. */
+    P.forEach(function(h){ if(contraste(h, F)>=3 && L.indexOf(h)<0) L.push(h); });
+    if(L.length<2){ L=[]; P.forEach(function(h){ if(L.indexOf(h)<0) L.push(h); }); }
     if(!L.length) L=[contraste('#F7F0DE', F)>=3?'#F7F0DE':'#201908']; return L; }
   function lum(h){ var v=[1,3,5].map(function(i){ var c=parseInt(h.substr(i,2),16)/255; return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); }); return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2]; }
   function contraste(a, b){ var x=lum(a), y=lum(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
@@ -30834,11 +30873,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var C=cadre(), F=fond(), couche=document.createElement('div'); couche.id='promiVeille'; couche.setAttribute('aria-label','Veille'); couche.setAttribute('role','presentation');
     couche.style.cssText='position:fixed;z-index:2147483000;overflow:hidden;background:transparent;touch-action:none;margin:0;padding:0'; place(couche, C);
     document.body.appendChild(couche);
-    var T=tons(F), AM=R.AMANDE; if(contraste(AM, F)<3 && window._teinte && _teinte.ajuste){ try{ AM=hex(_teinte.ajuste(rgb(AM), rgb(F), 3)); }catch(_){ } }   /* l'amande, amenée à 3:1 si le fond l'éteint (en clair) */
+    var T=tons(F), AM=R.AMANDE;   /* ⚑ v210 (C-300 suite) : l'amande exacte, #8FE08F — plus jamais amenée à 3:1 */
     var V=actif={amande:AM, couche:couche, t0:performance.now(), tons:T, fond:F, i:0, couleurs:[], coins:[], rebonds:0, reduit:reduit(), passage:null, fini:false, C:C, al:hasard((Date.now()^0x5bd1e995)>>>0)};
     V.logo=logo(T[0], C.k); V.logo.style.visibility='hidden'; couche.appendChild(V.logo); V.couleurs.push(T[0]); V.couleur=T[0];
     var B=V.B=bornesDe(C, V.logo.__w, V.logo.__h); V.s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:-Math.SQRT1_2};
-    if(V.al()<0.5) V.s.dx=-V.s.dx; oriente(V.s, B, 0, V.al); V.n=prochain(V.s, B); V.tn=0;
+    if(V.al()<0.5) V.s.dx=-V.s.dx; horsObstacle(V.s, B); oriente(V.s, B, 0, V.al); V.n=prochain(V.s, B); V.tn=0;
     pose(V);
     /* l'entrée en flaques : le fond naît par-dessus l'écran, dans la couche ; puis le fond est la couche */
     var fin=function(){ if(V.fini) return; couche.style.background=F; V.logo.style.visibility='visible'; if(V.passage && V.passage.canevas) V.passage.canevas.remove(); V.passage=null; V.tEntree=performance.now(); boucle(); };
@@ -30848,7 +30887,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   /* la zone visible change (barres de Safari, orientation, clavier) : la couche et ses bords suivent, le logo reste dedans */
   function relit(){ var V=actif; if(!V || V.fini) return; var C=cadre(); V.C=C; place(V.couche, C);
     if(Math.abs(C.k*R.LARG-V.logo.__w)>0.5){ var nl=logo(V.couleur, C.k); nl.style.visibility=V.logo.style.visibility; V.couche.replaceChild(nl, V.logo); V.logo=nl; }
-    var B=V.B=bornesDe(C, V.logo.__w, V.logo.__h); V.s.x=Math.max(B.x0, Math.min(B.x1, V.s.x)); V.s.y=Math.max(B.y0, Math.min(B.y1, V.s.y)); V.n=prochain(V.s, B); V.tn=0; pose(V); }
+    var B=V.B=bornesDe(C, V.logo.__w, V.logo.__h); V.s.x=Math.max(B.x0, Math.min(B.x1, V.s.x)); V.s.y=Math.max(B.y0, Math.min(B.y1, V.s.y)); horsObstacle(V.s, B); V.n=prochain(V.s, B); V.tn=0; pose(V); }
   try{ if(window.visualViewport){ visualViewport.addEventListener('resize', relit); visualViewport.addEventListener('scroll', relit); } window.addEventListener('resize', relit); window.addEventListener('orientationchange', function(){ setTimeout(relit, 300); }); }catch(_){ }
   function pose(V){ V.logo.style.transform='translate('+V.s.x.toFixed(2)+'px,'+V.s.y.toFixed(2)+'px)'; }
   function boucle(){ var V=actif; if(!V || V.fini) return; var t=performance.now(), ec=t-V.t0;
@@ -31253,7 +31292,14 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       var e=window._ppEcran(), c=cs(), ph=phraseEl(); if(!e || !e.ouvert || e.etat!=='plate' || !ph) return; var K=kDev(), av={};
       cibles().forEach(function(x){ av[x[0]]=hautDe(x[1],K); });
       MV.att={t:performance.now(), base:e.base+(window._ppHz?(+window._ppHz(e)||0):0), amp:e.amp, av:av, fs:tailleDe(ph), image:copie($('csTrameCv')), deja:[].map.call(c.querySelectorAll('.ppo-deja, .ppo-dejarow'), function(n){ return n.getBoundingClientRect().height?fige(n,K):null; }).filter(Boolean)};
+      /* ⚑ v210 (Tom, C-303) — « UN RECTANGLE APPARAÎT À LA VALIDATION DU TEXTE ». La copie de « DÉJÀ PROMIS » n'était posée qu'au départ du mouvement, ≈ 300 ms
+         après la validation : les pastilles disparaissaient à la validation, puis leur copie reparaissait à leur place et descendait. Elle est posée ICI, dans
+         la tâche de la validation, à leur place exacte : rien ne disparaît ni ne reparaît. Le mouvement la reprend ; s'il ne part pas, elle glisse seule. */
+      if(MV.att.deja.length){ var _dj=document.createElement('div'); _dj.id='ppMvtDeja'; _dj.setAttribute('aria-hidden','true'); MV.att.deja.forEach(function(n){ _dj.appendChild(n); }); c.appendChild(_dj);
+        var _A=MV.att; _A.dj=_dj; setTimeout(function(){ if(!_A.djPris) glisseSeule(_dj); }, 700); }
     }catch(_){ MV.att=null; } }, true);
+  function glisseSeule(dj){ if(!dj || !dj.parentNode) return; var t0=0; requestAnimationFrame(function f(now){ if(!dj.parentNode) return; if(!t0) t0=now; var u=Math.min(1,(now-t0)/MVDUR), q=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
+      dj.style.setProperty('transform','translateY('+(q*520).toFixed(1)+'px)','important'); if(u<1) requestAnimationFrame(f); else dj.remove(); }); }
   /* ⚑ v180b (Tom, C-234 suite) — « QUAND ON COMMENCE À TAPER, LA DALLE ET LA VAGUE BOUGENT D'UN COUP. Le mouvement doit être doux et continu, jusqu'à la position de
      frappe (même courbe que l'horizon, 300 à 400 ms). » LA CAUSE, mesurée : au toucher sur la phrase la page passe dans la même image à sa mise en page de saisie (l'onde de
      312 à 144 pt, son amplitude de 36 à 16, la phrase de 416 à 230) — seule la fermeture du clavier avait son mouvement (Q598). LE MÊME MOUVEMENT, À L'ENVERS : l'état d'avant est
@@ -31285,7 +31331,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var y0=window._onde.onde(A.base,A.amp), m=1e9; for(var x=0;x<=390;x+=6){ var v=y0(x); if(v<m) m=v; }
     var pass=null; try{ if(m>30 && !OUV) pass=window._passageFlaques(c,{mode:'ouvre',rect:[0,0,390,Math.round(m-14)],image:A.image,duree:MVDUR,avance:30,apres:d||cv,z:(d?d.style.zIndex:null)||0}); }catch(_){ }
     var av2=(pass&&pass.canevas)||d||cv; if(av2.nextSibling) c.insertBefore(ov,av2.nextSibling); else c.appendChild(ov);
-    var dj=null; if(A.deja.length){ dj=document.createElement('div'); dj.id='ppMvtDeja'; dj.setAttribute('aria-hidden','true'); A.deja.forEach(function(n){ dj.appendChild(n); }); c.appendChild(dj); }
+    var dj=A.dj||null; if(dj) A.djPris=true; if(!dj && A.deja.length){ dj=document.createElement('div'); dj.id='ppMvtDeja'; dj.setAttribute('aria-hidden','true'); A.deja.forEach(function(n){ dj.appendChild(n); }); c.appendChild(dj); }
     var C={el:el, ov:ov, dj:dj, pass:pass, t0:0, n:0, arrete:false, sens:OUV?'ouvre':'ferme'}, im={cv:ov, H:H, corps:getComputedStyle(c).backgroundColor, base:A.base, amp:A.amp, image:OUV?A.image:null};
     var hz0=(INV.haut && !INV.vis ? hzCible(e) : 0), eb=e.base+hz0;   /* v177b (C-229) : la page pas prête, l'horizon finit sous sa place */
     MV.hz=hz0;   /* v180b : la cible de l'horizon, à la place finale, gardée le temps du mouvement */
@@ -32062,11 +32108,24 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(window._douceur){ window._douceur.mot(el, {html:t.replace(/&/g,'&amp;').replace(/</g,'&lt;'), cls:el.className.replace(/\s*v200\S*/g,'')}); return; }
     if(el.textContent===t) return; el.textContent=t; trace(el); }
   window._ppMoi=false;
+  /* ⚑ v210 (Tom, C-304) — « Quand on touche la place du destinataire, le menu des membres se déroule avec « moi » déjà coché, mais la phrase dit encore « qui ». »
+     Dès le toucher, PENDANT que le menu se déroule, la place passe à « moi » (« à moi », « avec moi ») par le même chemin que la validation (détracé, l'encart
+     s'adapte, tracé : `_douceur.mot`) ; quitté sans rien changer, elle reste « moi » ; une fois ouvert, la phrase dit ce qui est coché (une personne ajoutée :
+     son nom ; « moi » retiré seul : il revient). Trois natures (pas « promets-moi » : la place y porte l'exemple). Le marquage tient jusqu'à la fermeture de
+     la page +, ou un changement de nature ou de sens. */
+  var OUV='';
+  function cleOuv(c){ return nat(c)+'|'+((window._phrase||{}).sens||'')+'|'+(c.getAttribute('data-kind')||''); }
+  document.addEventListener('pointerdown', function(ev){ try{ var c=cs(); if(!c || !c.classList.contains('show') || !c.classList.contains('pp')) return;
+      var t=ev.target && ev.target.closest && ev.target.closest('#csPhrase .ph-m[data-ph="qui"], #nueePhrase .ph-m[data-np="avec"]'); if(!t || !t.classList.contains('ph-vide')) return;
+      if(nat(c)!=='nuee' && (window._phrase||{}).sens==='demander') return;
+      OUV=cleOuv(c); if(!window._ppMoi) pose(true); }catch(_){ } }, true);
+  window._ppMoiOuvert=function(){ var c=cs(); return !!(c && OUV && OUV===cleOuv(c)); };
   function veille(){ var c=cs();
     if(!c || !c.classList.contains('show') || !c.classList.contains('pp') || c.classList.contains('pp-choix')){ if(window._ppMoi) window._ppMoi=false; return; }
     if(window.__INVITE_BANC){ if(window._ppMoi) pose(false); return; }
     var inv=null; try{ inv=window._ppInvite && window._ppInvite.etat(); }catch(_){ }
     var pret=!!(inv && inv.visible && !inv.sortie);
+    if(OUV){ if(OUV===cleOuv(c)) pret=true; else OUV=''; }   /* v210 (C-304) : la place touchée dit « moi » */
     var el=place(c); if(el && !window._ppMoi) prepare(el);
     if(pret!==!!window._ppMoi){ pose(pret); return; }
     /* ⚑ v203 (C-278) : la place se relit — une reconstruction de la phrase (le sens basculé pendant la genèse) pouvait finir sur l'ancien mot : « qui ? » restait, le trait né */
@@ -32074,7 +32133,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(el && nat(c)!=='nuee' && _sensP==='demander') return;
     if(el && !(el.__v200 && !el.__v200.fini) && !el.__v203lisse){ var at=(pret ? 'moi' : attente(c)).replace(/\s+/g,' ').trim(); if((el.textContent||'').replace(/\s+/g,' ').trim()!==at) pose(pret); } }
   setInterval(veille, 50);
-  try{ (window._rangeurs=window._rangeurs||[]).push(function(){ window._ppMoi=false; }); }catch(_){ }
+  try{ (window._rangeurs=window._rangeurs||[]).push(function(){ window._ppMoi=false; OUV=''; }); }catch(_){ }
 })();
 
 /* ⚑ v199 (Tom, C-269 refaite) : la ligne « À : moi » / « Avec : moi » et son + sont SUPPRIMÉS (« le choix des personnes existe déjà, dans la phrase ; une ligne de
@@ -32208,7 +32267,14 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
               gh.style.setProperty('left', ((G[k].r.left-R.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((G[k].r.top-R.top)/sc)+'px', 'important');
               (window.__dcA=window.__dcA||new Set()).add(gh); gh.__v200={fini:false};
               var finG=function(){ try{ window.__dcA.delete(gh); }catch(_){ } if(gh.parentNode) gh.parentNode.removeChild(gh); };
-              TraceLettres.trace(gh, null, {inverse:true, surFin:finG}); setTimeout(finG, 2500); note({part:k}); }catch(_){ } });
+              var ctlG=TraceLettres.trace(gh, null, {inverse:true, surFin:finG}); setTimeout(finG, 2500); note({part:k});
+              /* ⚑ v207 (C-296) : le filet pointillé d'une place qui part s'amincit jusqu'à rien PENDANT que son mot se détrace (la règle des pointillés qui partent, v200) —
+                 il restait entier à l'ancienne place (sur le « Je » qui vient d'y arriver) puis disparaissait d'un coup à la fin du détracé. Le padding prend ce que le filet
+                 rend : le mot ne bouge pas sous son détracé. */
+              try{ var csG=getComputedStyle(gh), bwG=parseFloat(csG.borderTopWidth)||0; if(bwG>0 && csG.borderTopStyle!=='none'){ var P0=['Top','Right','Bottom','Left'].map(function(s){ return (parseFloat(csG['padding'+s])||0)+(parseFloat(csG['border'+s+'Width'])||0); });
+                var amincit=function(){ if(!gh.parentNode) return; var d=Math.max(160, Math.round((ctlG&&ctlG.duree)||D_FL)); gh.style.setProperty('transition','border-width '+d+'ms '+COURBE+', padding '+d+'ms '+COURBE,'important'); void gh.offsetWidth;
+                  gh.style.setProperty('border-width','0px','important'); gh.style.setProperty('padding', P0.map(function(v){ return v+'px'; }).join(' '),'important'); };
+                if(ctlG && ctlG.part && ctlG.part.then) ctlG.part.then(amincit); else amincit(); } }catch(_){ } }catch(_){ } });
           Object.keys(ap).forEach(function(k){ var n=ap[k]; if(!_basc || av[k] || !n || n.__v200 || !window.TraceLettres || !visible(n)) return; try{ (window.__dcA=window.__dcA||new Set()).add(n); n.__v200={fini:false}; TraceLettres.trace(n, null, {surFin:function(){ n.__v200=null; try{ window.__dcA.delete(n); }catch(_){ } }}); }catch(_){ } });   /* ⚑ v201b (C-271) : une place qui ARRIVE (« à qui ? » à la bascule du sens) se trace */
         }catch(_){ } }
       return r; };
@@ -32263,6 +32329,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var inn=el.querySelector(':scope > .v200-mt'); if(inn){ try{ TL().poseTout(inn); }catch(_){ } inn.style.removeProperty('clip-path'); inn.style.removeProperty('-webkit-clip-path'); }
     var cv=el.querySelector(':scope > canvas.v200-fl'); if(cv) cv.remove(); ['width','box-sizing','transition','border-width','position','isolation','justify-content'].forEach(function(p){ el.style.removeProperty(p); }); }
   function premiere(el, html, cls){
+    /* ⚑ v206 (§1, C-282 « la première fois seulement ») — LA COPIE QUI S'EFFACE EST CE QU'ON VOYAIT, NI PLUS NI MOINS. Relevé de l'iPhone (15 nov.) : au premier
+       usage, les lettres de l'exemple ne sont pas en cache ; l'ouvrier, occupé par les préparations, les rend après 600 à 924 ms ; l'exemple reste découpé (rien n'en
+       paraît) jusqu'à 969 ms, puis se trace. Une lettre tapée pendant ce temps faisait poser l'exemple ENTIER (`coupe` → `poseTout`), qui partait ensuite en 150 ms :
+       un éclair de l'exemple complet, la première fois seulement (la seconde, les lettres sont en cache : l'exemple est fini avant la frappe). On relève ce qui est
+       visible de l'exemple AVANT de couper son tracé : sa découpe (les lettres finies) et le canevas des lettres en cours ; la copie ne montre que cela. Rien de visible :
+       la copie est vide (rien ne paraît, rien ne part). L'exemple entier, tracé fini : rien ne change. */
+    var vu=null, inn0=el.querySelector(':scope > .v200-mt'), st0=el.__v200;
+    if(inn0 && st0 && !st0.fini && st0.phase!=='premiere'){ try{
+        var cp0=(inn0.style.getPropertyValue('clip-path')||'').trim(), tr0=inn0.__trace, cv0=(tr0 && tr0.canevas && tr0.canevas.isConnected) ? tr0.canevas : null;
+        if(cp0 && cp0!=='none'){ vu={clip:cp0, r:inn0.getBoundingClientRect(), rien:/^polygon\(0px 0px,\s*0px 0px,\s*0px 0px\)$/.test(cp0)};
+          if(cv0 && cv0.width && cv0.height){ var cl0=document.createElement('canvas'); cl0.width=cv0.width; cl0.height=cv0.height; cl0.getContext('2d').drawImage(cv0, 0, 0); vu.cv=cl0; vu.cvr=cv0.getBoundingClientRect(); vu.rien=false; } }
+      }catch(_){ vu=null; } }
     coupe(el);
     var st=el.__v200; if(st && !st.fini){ st.cible={html:html, cls:cls, brut:true}; return; }
     if(reduit() || !TL() || !visible(el) || !window._passageFlaques){ pose(el, {html:html, cls:cls}); return; }
@@ -32311,6 +32389,18 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var wr=couche(); wr.className='v203-exw';
     var G0=gh.getBoundingClientRect(); gh.parentNode.insertBefore(wr, gh); wr.appendChild(gh); var G1=gh.getBoundingClientRect();
     gh.style.setProperty('left', ((parseFloat(gh.style.left)||0)+(G0.left-G1.left)/sc)+'px', 'important'); gh.style.setProperty('top', ((parseFloat(gh.style.top)||0)+(G0.top-G1.top)/sc)+'px', 'important');
+    /* v206 (§1) : la copie réduite à ce qu'on voyait (`vu`) — la découpe du tracé interrompu reportée sur le texte de la copie (recalée sur sa place), le canevas des
+       lettres en cours recopié à sa place ; tous deux partent avec la copie */
+    var vuCv=null;
+    if(vu){ try{ if(vu.rien) gh.style.setProperty('clip-path', 'polygon(0px 0px,0px 0px,0px 0px)', 'important');
+        else { var sp=document.createElement('span'); sp.className='v206-vu'; while(gh.firstChild) sp.appendChild(gh.firstChild); gh.appendChild(sp);
+          var R2=sp.getBoundingClientRect(), k2=ech(), D2x=(R2.left-vu.r.left)/k2, D2y=(R2.top-vu.r.top)/k2, c2=vu.clip;
+          if((Math.abs(D2x)>0.01 || Math.abs(D2y)>0.01) && /^polygon\(/.test(c2)) c2=c2.replace(/(-?[\d.]+)px\s+(-?[\d.]+)px/g, function(_, a, b){ return (+a - D2x).toFixed(2)+'px '+(+b - D2y).toFixed(2)+'px'; });
+          sp.style.setProperty('clip-path', c2, 'important'); sp.style.setProperty('-webkit-clip-path', c2, 'important'); note({vu:'partiel', dx:+D2x.toFixed(2), dy:+D2y.toFixed(2)}); }
+        if(vu.cv){ var W2=wr.getBoundingClientRect(), k3=ech(); vuCv=vu.cv; vuCv.className='v206-vucv'; vuCv.setAttribute('aria-hidden','true');
+          ['position:absolute','margin:0','pointer-events:none','left:'+((vu.cvr.left-W2.left)/k3)+'px','top:'+((vu.cvr.top-W2.top)/k3)+'px','width:'+(vu.cvr.width/k3)+'px','height:'+(vu.cvr.height/k3)+'px'].forEach(function(d){ var i=d.indexOf(':'); vuCv.style.setProperty(d.slice(0,i), d.slice(i+1), 'important'); });
+          wr.appendChild(vuCv); }
+        if(vu.rien) note({vu:'rien'}); }catch(_){ } }
     var E0=el.getBoundingClientRect(), DX=0, DY=0;
     function ech(){ try{ var r=gh.getBoundingClientRect(); return (gh.offsetWidth ? r.width/gh.offsetWidth : sc) || sc || 1; }catch(_){ return sc||1; } }
     /* la place peut bouger pendant ces 150 ms (une recomposition de la phrase) : la copie la suit */
@@ -32326,8 +32416,8 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var oteA=false, ote=function(){ oteA=true; try{ window.__apresContinu.delete(masque); }catch(_){ } if(wr.parentNode) wr.parentNode.removeChild(wr); if(window.__ppToutApres && window._ppTout && !document.querySelector('#createSheet .v203-exw')){ window.__ppToutApres=0; try{ window._ppTout(); }catch(_){ } } };
     /* l'opacité, à chaque image, depuis l'instant de la frappe (la première image est déjà plus claire) */
     var AV=16.7;   /* la courbe part une image avant la frappe : l'image qui suit est déjà plus claire, et l'opacité ne fait que baisser ; la fin reste 150 ms après la frappe */
-    function fondu(){ if(!wr.isConnected) return; var p=Math.min(1, (performance.now()-tF+AV)/(FONDU+AV)), e=1-Math.pow(1-p, 2); gh.style.setProperty('opacity', (1-e).toFixed(4), 'important'); masque(); if(p>=1){ ote(); return; } requestAnimationFrame(fondu); }
-    gh.style.setProperty('opacity', Math.pow(1-AV/(FONDU+AV), 2).toFixed(4), 'important'); try{ masque(); }catch(_){ } requestAnimationFrame(fondu);   /* l'image qui suit la frappe est déjà plus claire (le pas d'une image) */
+    function fondu(){ if(!wr.isConnected) return; var p=Math.min(1, (performance.now()-tF+AV)/(FONDU+AV)), e=1-Math.pow(1-p, 2); gh.style.setProperty('opacity', (1-e).toFixed(4), 'important'); if(vuCv) vuCv.style.setProperty('opacity', (1-e).toFixed(4), 'important'); masque(); if(p>=1){ ote(); return; } requestAnimationFrame(fondu); }
+    gh.style.setProperty('opacity', Math.pow(1-AV/(FONDU+AV), 2).toFixed(4), 'important'); if(vuCv) vuCv.style.setProperty('opacity', gh.style.getPropertyValue('opacity'), 'important'); try{ masque(); }catch(_){ } requestAnimationFrame(fondu);   /* l'image qui suit la frappe est déjà plus claire (le pas d'une image) */
     (window.__apresContinu=window.__apresContinu||new Set()).add(masque);   /* après les glissements de la phrase (lot-V203-CONTINU), dans la même image */
     try{ var ro=new ResizeObserver(function(){ if(!wr.isConnected){ ro.disconnect(); return; } masque(); }); ro.observe(el); }catch(_){ }
     window.__v203masque=masque;
@@ -32845,4 +32935,47 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   /* la fiche se ferme ou Peaufiner s'ouvre : la modification est validée d'abord */
   (window._rangeurs=window._rangeurs||[]).unshift(function(){ if(E) sort(true); });
   var so=window._s2Ouvre; if(typeof so==='function' && !so.__ti){ window._s2Ouvre=function(v){ if(v && E) sort(true); return so.apply(this, arguments); }; window._s2Ouvre.__ti=1; }
+})();
+
+/* ⚑ v210 (Tom, 18 nov. 2026, C-301) — « UN SEUL ENCART DU HAUT POUR TOUTES LES PAGES : le même composant, la même mise en page, seul le titre change. »
+   Le composant, et lui seul : la BOÎTE (24 · 40 · 342 × 60, rayon 30) est posée par `recale` (lot-ENCART-HAUT) ; la TAILLE du titre est `T` (34 px),
+   posée par `ajusteTitres` (lot-HARMONIE) ; ICI : la place verticale du titre (ses capitales centrées sur l'encart, lues sur les métriques de sa
+   police, jamais sur sa position rendue : §8 « la cote se calcule ») et celle des éléments propres d'une page qui vivent dans le titre (le « i » de
+   l'Aura, centré au demi-point). Il remplace les décalages réglés à la main écran par écran (lot du recentrage : Fil 3,55, Réglages 2,85, Partager 2,5,
+   Studio 1,65…) — un `translate` en ligne `important`, calculé, le même pour toutes les pages à police égale. La croix suit le titre (lot-V157-CROIX).
+   Pages : Index, Fil, l'Aura et son aide, Réglages, Partager, le Studio, la langue, la confidentialité, Ma Parole !, le Cercle. Pas les fiches ni la page +
+   (leur plateau porte le mot-marque, validé à part : C-046). */
+(function(){
+  var T=34, PAGES='#indexSheet,#feedView,#auraScreen,#auraHelp,#settingsScreen,#shareScreen,#studioScreen,#langScreen,#privScreen,#plusScreen,#essaimSheet,#arrangeSheet';
+  function page(b){ return !!(b && b.closest && b.closest(PAGES) && !b.closest('#detailPoster,#createSheet')); }
+  window._ENCART={T:T, page:page};
+  var cv=document.createElement('canvas'), g=cv.getContext('2d'), MES={};
+  function metr(fam){ if(MES[fam]) return MES[fam]; g.font='100px '+fam; var h=g.measureText('H');
+    var r={cap:(h.actualBoundingBoxAscent||70)/100, fa:(h.fontBoundingBoxAscent||80)/100, fd:(h.fontBoundingBoxDescent||20)/100};
+    if(document.fonts && document.fonts.check && !document.fonts.check('100px '+fam)) return r; MES[fam]=r; return r; }
+  function tr(e, dy){ var v='0px '+(Math.round(dy*100)/100)+'px'; if(e.style.getPropertyValue('translate')!==v || e.style.getPropertyPriority('translate')!=='important') e.style.setProperty('translate', v, 'important'); }
+  function pose(){
+    [].forEach.call(document.querySelectorAll('.enh, #stpHaut'), function(b){ try{
+      if(!page(b)) return; var t=b.querySelector('.enh-t, .stp-t'); if(!t || !t.offsetHeight) return;
+      if(t.classList.contains('stp-t')){ if(t.style.getPropertyValue('font-size')!==T+'px') t.style.setProperty('font-size', T+'px', 'important');
+        t.style.setProperty('line-height','1.06em','important'); t.style.setProperty('padding-bottom','1px','important'); }
+      var c=getComputedStyle(t), fs=parseFloat(c.fontSize)||T, lh=parseFloat(c.lineHeight)||fs*1.06, m=metr(c.fontFamily);
+      var base=(lh-(m.fa+m.fd)*fs)/2 + m.fa*fs, capC=base - m.cap*fs/2;
+      var pt=parseFloat(c.paddingTop)||0, cible=b.clientHeight/2;
+      /* la place du titre DANS l'encart, au point près : son rectangle moins le décalage qu'on lui a soi-même posé (`offsetTop` arrondit au pixel entier) */
+      var rb=b.getBoundingClientRect(), k=(b.offsetWidth>0)?(rb.width/b.offsetWidth):1, bt=parseFloat(getComputedStyle(b).borderTopWidth)||0;
+      function deja(e){ var v=(e.style.getPropertyValue('translate')||'').split(' '); return parseFloat(v[1]||0)||0; }
+      var y0=(t.getBoundingClientRect().top-rb.top)/k-bt-deja(t);
+      var dy=cible-(y0+pt+capC); tr(t, dy);
+      var i=t.querySelector('.aura-info'); if(i && i.offsetHeight){ var ri=i.getBoundingClientRect(), yi=(ri.top-rb.top)/k-bt-deja(i)-deja(t)+(ri.height/k)/2;
+        tr(i, cible-yi-dy); }
+    }catch(_){ } });
+  }
+  window._encartPose=pose;
+  var _t=0; function plus(){ if(_t) return; _t=requestAnimationFrame(function(){ _t=0; pose(); }); }
+  [0,200,600,1200,2500].forEach(function(d){ setTimeout(plus,d); });
+  document.addEventListener('click',function(){ [60,200,450,900].forEach(function(d){ setTimeout(plus,d); }); },true);
+  try{ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(plus); }catch(_){ }
+  try{ new MutationObserver(function(L){ for(var k=0;k<L.length;k++){ var n=L[k].target; if(n && n.classList && (n.classList.contains('show')||n.classList.contains('in'))) { plus(); return; } } })
+    .observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']}); }catch(_){ }
 })();

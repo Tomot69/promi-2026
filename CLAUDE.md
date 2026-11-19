@@ -3,6 +3,24 @@
 > Ce fichier est relu à chaque session. Il fait autorité sur tout le reste.
 > Si une consigne de l'utilisateur contredit ce fichier, **demander avant d'agir**.
 
+> ## ⚑ QUATRE RÈGLES DE MÉTHODE — RÈGLE PERMANENTE (chef de chantier, 19 nov. 2026, v211). ELLES S'APPLIQUENT À CHAQUE LOT.
+> - **R1. Annuler une modification, c'est `git revert` des commits visés.** JAMAIS repartir d'un ancien fichier en réappliquant les corrections à la main : on perd ce qui a été validé entre-temps.
+> - **R2. Toute régression se cherche par bissection (`git bisect`), avec un juge qui la reproduit.** La cause est nommée dans le rapport, avec le commit fautif. (Une bissection se fait dans un
+>   arbre de travail à part — `git worktree add` dans le scratchpad —, l'`app.html` du commit servi sous un autre nom : `git show "${c}:app.html" > zz-bis.html` ; ⚠ en zsh, `$c:app.html` est lu `$c:a…` — accolades.)
+> - **R3. Ce que le banc ne voit pas se voit sur l'iPhone de Tom** : le relevé de l'app, et l'inspection de la WebView depuis Safari (menu Développement). Rien n'est déclaré « corrigé » sans avoir été vu sur l'iPhone, ou dans le relevé de l'iPhone.
+> - **R4. Chaque demande de Tom a un critère de réussite écrit**, et le rapport dit pour chacune : **tenu, non tenu, ou non vu.**
+
+> ## ⚑ LA VRAIE APP SERA PROPRE ET ÉVOLUTIVE, PAS RAFISTOLÉE — RÈGLE PERMANENTE (Tom, 17 nov. 2026, v207). ELLE S'APPLIQUE À TOUT LE PORTAGE.
+> - **Le prototype emballé (`preuve-capacitor`) ne sera JAMAIS publié** : il sert à mesurer, et c'est tout.
+> - **La vraie app est écrite de zéro en TypeScript strict.** Seul code repris : le moteur, le tracé, les flaques, les jetons — chacun derrière une interface
+>   typée et documentée ; **les 53 appels au moteur passent par UNE façade TypeScript, et nulle part ailleurs.**
+> - **Un état unique, un seul propriétaire par information, aucune minuterie dispersée : une seule horloge d'animation.**
+> - **Les jetons : UNE source, le JSON** ; le CSS et le TypeScript (et le Swift) en sont GÉNÉRÉS par un outil rangé dans le dépôt (`outils/`), jamais dans
+>   `scratchpad/`. **Plus aucune retouche à la main d'un fichier généré.**
+> - **Les juges deviennent des tests automatiques, lancés à chaque commit** (intégration continue) ; pas de fusion si un test est rouge.
+> - **Un schéma de données versionné avec ses migrations, dès la version 1.**
+> L'arborescence et les sens de dépendance : ARCHITECTURE.md g) ; les 42 tests venus des états rares : ARCHITECTURE.md h).
+
 > ## ⚑ AUCUN CHANGEMENT SEC À L'ÉCRAN, NULLE PART — RÈGLE PERMANENTE (Tom, 13 nov. 2026, C-271). ELLE S'APPLIQUE À CHAQUE LOT.
 > *Pourquoi* : en v199, « moi » remplaçait « qui ose ? » d'un coup, l'encart sautait de largeur. Tom : « Jamais plus de livraison avec ces merdes nulle part. »
 > - **Un texte qui change se DÉTRACE (le tracé de C-125 joué à rebours, même cadence : `TraceLettres.trace(el, null, {inverse:true})`), puis le nouveau se TRACE.**
@@ -251,6 +269,126 @@ la nature, la ligne dit l'état.)*
 > C-197), `redteam_nuee` (C-192 : cartes −120, COMMENTAIRES absent), `redteam_fonctions` (C-189), `redteam_dessin` G (le X de C-173), `redteam_murs_toucher`,
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
+
+### ⚑ v214 (19 nov. 2026) — C-316 PROMI OUVRE MA PAROLE ! ; C-317 L'ENCART DES RÉGLAGES ; C-318 SOUTENIR : 150 €, LE MONTANT TAPÉ. FUSION DE v206 DANS main. (Décisions Tom.) Ce bloc CORRIGE v164b (C-200 ④) et v213 (C-313 : « Autre montant » est un bouton).
+> **Validés par Tom : C-313 (le libellé « Autre montant »), C-314, C-315 (la couleur de « Découvre »). Le chapitre v206 est clos et fusionné (étiquette `avant-fusion-v206`).**
+> **⚑ C-316** (`lot-V12-js`, `porte()`) : en gratuit, toucher le mot PROMI de l'accueil ouvre Ma Parole ! (`ouvreCercle`) ; un membre : rien. Juge : **`redteam_promi_porte.py`** (24 ; rouge sur v213) ;
+> `redteam_v164b` ④ remis au niveau (original en sauvegarde).
+> **⚑ C-317** : en gratuit, le titre de la porte des Réglages (`#openPlusTop .sc-t`) au bleu Promi #82AEF8, sans aucune ombre de texte, 25 px (22), `max-width:none` (sinon il ne se centre plus) ;
+> « Découvre » garde l'encre opposée de la pastille. Gilbert n'a qu'une graisse (700) : « en gras » est déjà tenu. ⚠ #82AEF8 sur la crème (sombre) : 2,0:1, mesuré, rien dérivé (C-204).
+> `redteam_couleurs_ref` E31.
+> **⚑ C-318** (`lot-V174-SOUTIEN`) : la rangée 5 · 10 · 25 · 50 · 100 · 150 € (deux rangées pleines) ; les paliers 15 · 20 · 30 · 40 · 75 · 200 · 250 · 300 · 400 · 500 · 750 · 1 000 € (400 prend la place
+> de 150, décision de lot). « Autre montant » est un CHAMP (`input type=text inputmode=numeric`, au dessin des montants) : au toucher il déroule les paliers en suggestion et ouvre le clavier de
+> chiffres ; chiffres seuls ; quitté avec un montant (Retour, « OK » du clavier, un toucher dehors), il est choisi (« 42 € », le merci) ; vide, les paliers se replient ; un palier touché remplit le
+> champ et se replie. Le corps suit la boîte jusqu'au bas visible du CLAVIER (`visualViewport`), jamais le champ au-dessus du haut du corps. ⚠ Apple n'accepte pas de montant libre : à trancher
+> avant le portage (PREUVE-CAPACITOR.md). Juge : **`redteam_soutien_autre.py`** remis au niveau (192 ; `--sonde` 168).
+
+### ⚑ v213 (19 nov. 2026) — C-313 « AUTRE MONTANT » ; C-314 LES FONDS DE MA PAROLE ! ET DES RÉGLAGES ; C-315 « DÉCOUVRE MA PAROLE ! ». (Décisions Tom.) Ce bloc CORRIGE v175b (C-217 : « cinq montants, sans champ libre ») sur un point : un choix plus large s'ajoute.
+> **Validés par Tom (v212, sur l'iPhone) : C-311, C-312.**
+> **⚑ C-313** (`lot-V174-SOUTIEN`) : la rangée 5 · 10 · 25 · 50 · 100 € ne change pas ; à sa suite « Autre montant » (libellé soumis à Tom), pleine largeur, la grammaire des montants (62 pt,
+> trait 2, rayon 31, Gilbert 22) ; au toucher, la boîte des paliers (15 · 20 · 30 · 40 · 75 · 150 · 200 · 250 · 300 · 500 · 750 · 1 000 €) grandit de 0 à sa hauteur en 360 ms, la suite (le merci)
+> glisse avec elle, le corps suit son bas À CHAQUE IMAGE (jamais un défilement après coup) ; replié de même ; rouvert, l'écran est replié et en haut. Apple n'accepte pas de montant libre :
+> chaque palier est un consommable `fr.autier.promi.soutien.N` (`window._soutienPaliers` ; PREUVE-CAPACITOR.md, achats). Juge : **`redteam_soutien_autre.py`** (168 ; `--sonde` : 144) ;
+> `redteam_soutien` B remis au niveau (la rangée de cinq seule ; original en sauvegarde).
+> **⚑ C-314** : `#settingsScreen` et `#plusScreen` rejoignent la règle « LE CORPS D'ÉCRAN » de l'Index, du Fil et de l'Aura (C-247) ; **les crèmes qui la contredisaient sont retirées** (deux
+> règles des Réglages, `#plusScreen` dans celle de la Langue et de la Confidentialité) — un seul propriétaire. En clair #F7F0DE → #EAD9B9 ; en sombre #050302 déjà. Les encarts des Réglages
+> (`.scard`) et « Bon, allez d'accord » (`#buyYear`), transparents, prennent la crème des encarts de l'Index (#F7F0DE). `redteam_couleurs_ref` E30.
+> **⚑ C-315** : la porte des Réglages dit « Découvre Ma Parole ! » (`encartReglages`) ; « Découvre » à l'encre opposée de la pastille (crème sur le brun en clair, brun sur la crème en sombre),
+> « Ma Parole ! » garde son lilas. **Impératif voulu par Tom : exception nommée de A3.** Membre : « Tu es Membre Ma Parole ! », inchangé.
+
+### ⚑ v212 (19 nov. 2026) — C-311 « PAROLE TENUE ! » FIXE ; C-312 LA LIAISON DES EXEMPLES. (Décisions Tom.) Ce bloc CORRIGE v20 (« PASTILLE VIDE : « de » »).
+> **Validés par Tom (v211, sur l'iPhone) : C-297, C-306, C-307 (29,5 px), C-308, C-309, C-310 (fermé ; le relevé `c310` reste en surveillance). Q623 accepté, Q622 : l'aide de l'Aura reste telle quelle.**
+> **⚑ C-311 — LA CAUSE** : la nappe de la célébration (`#tenirMaree`) est posée dans la fiche qui défile (v207, z 7) ; la phrase y était placée à sa cote d'ÉCRAN — une fiche défilée de s la
+> montrait à 388 − 2s. Une fiche à commentaires est plus longue : c'est elle qui défile. La cote est celle de la nappe, plus le défilement du moment à chaque image. Juge : **`redteam_celebration_fixe.py`**.
+> *La règle* : **ce qui se dessine dans une couche qui défile se place dans les coordonnées de cette couche, jamais à une cote lue sur l'écran.**
+> **⚑ C-312 — UNE PLACE VIDE PORTE LA LIAISON DE SON EXEMPLE** (`elide(P.titre || exemple)`, la frappe qui vide la place, l'onboarding) — même règle (`_promiElide`), mêmes h aspirés ; quand
+> l'exemple change, la liaison neuve se trace quand l'exemple neuf commence le sien (`lot-V203-LIAISONS`). La règle des juges : `liaison_regle.py` (en dur). Juge : **`redteam_liaison_exemples.py`** ;
+> `redteam_liaison` remis au niveau (original en sauvegarde).
+
+### ⚑ v210 (18 nov. 2026) — C-301 UN SEUL ENCART DU HAUT ; C-300 LA VEILLE ×1,5 AUX COULEURS EXACTES ; C-302 L'AXE DE LA PELOTE DÉRIVE ; C-303, C-304, C-305 ; « DE » / « D’ ». (Décisions Tom.)
+> **Validés par Tom : C-299 (tout comme avant, l'encart 3 pt plus bas), la notification à la mise en arrière-plan, C-300 sur le principe.** C-297 : la séance n'a ouvert aucune fiche (relevé) — toujours à reproduire.
+> **⚑ C-301 — UN SEUL ENCART, UN SEUL CODE** : la boîte (24 · 40 · 342 × 60) est posée par `recale` (lot-ENCART-HAUT, l'exception de 88 pt de l'Index retirée) ; la taille du titre
+> est `window._ENCART.T` = **34 px** pour toutes les pages (la plus grande où « PARTAGER », le plus long, tient avant le X), posée par `ajusteTitres` ; la place verticale du titre
+> (ses capitales centrées sur l'encart, lues sur les métriques de sa police) et le « i » de l'Aura (centré) par `lot-V210-ENCART`, qui remplace les décalages réglés à la main
+> écran par écran. **L'Index est le Fil** : même encart, même recherche, même ⇅ (sa couleur en sombre et ses coins aussi), au pixel hors titre ; pas de compteur. Exceptions
+> nommées : « VIE PRIVÉE » (33) et « MA PAROLE ! » (29) ne tiennent pas à 34 avant le X — le titre s'ajuste, il ne se rogne pas. Juges : `scratchpad/v210/encart.py` (11 pages,
+> au demi-point ; `--css=` la coquille), `scratchpad/v210/index_fil.py` (au pixel).
+> **⚑ C-300 suite** : 91,8 pt/s ; les tons EXACTS de la palette, l'amande exacte — l'ancien repli « amené à 3:1 » (`_teinte.ajuste`) est retiré (en clair, aucun ton d'Ingénu n'atteint
+> 3:1 : le logo y était toujours terne). Juge : `scratchpad/v210/veille_couleurs.py`. Contrats remis : `redteam_veille_bords`, `redteam_veille` K (originaux en sauvegarde) ; `redteam_veille_bords` lit l'encre « plus près du logo que du fond » (le seuil fixe de 120 ne voyait plus un ton pastel exact sur la crème) ; `redteam_couleurs_ref` E29 (le ⇅ de l'Index comme celui du Fil, en sombre).
+> **⚑ C-302 — LA CAUSE** : au repos la Pelote tournait À PLAT (le calque, v203) ; au moindre geste elle repassait au rendu 3D qui tourne autour de l'axe vertical — sur les côtés le
+> mouvement passait d'un coup du vertical à l'horizontal ; et le tour d'une parole neuve posait une vitesse d'un coup. **Aujourd'hui** : ω = vitesse × axe (x l'inclinaison, y le tour,
+> z le tour à plat) ; l'axe dérive par un slerp lissé, 8 à 18 s, vers une cible tirée à 30–80° (jamais d'inversion), l'inclinaison rappelée ; vitesse 0,85–1,15 × C-298 ; rendue
+> à chaque image (le calque ne tourne plus seul) ; le tour d'une parole neuve monte en 0,7 s. Juge : `scratchpad/v210/pelote_axe.py` (5 min simulées × 3 graines, 20 s réelles).
+> **⚑ C-303 — LA CAUSE** : la copie de « DÉJÀ PROMIS » (Q598) n'était posée qu'au départ du mouvement du clavier, ≈ 300 ms après la validation : les pastilles disparaissaient,
+> puis leur copie reparaissait à leur place. Elle est posée dans la tâche de la validation ; si le mouvement ne part pas, elle glisse seule. Juge : `redteam_je` (trois natures, la
+> validation, toute la page + ; original en sauvegarde).
+> **⚑ C-304** : toucher la place du destinataire (sans personne, hors « promets-moi ») la passe à « moi » par le chemin de la validation (`lot-V199-MOI`, `_ppMoiOuvert`). Juge : `redteam_moi_toucher`.
+> **⚑ C-305** : « Bruno-Stanislas, promets-moi de … ». **§6** : « de » / « d’ » — la frappe cherchait le « de » comme voisin immédiat de la pastille ; pendant la transition de la
+> première lettre une copie s'y intercale : il restait figé sur le préfixe (« ha » → « d’ » ; « haïr », « oui » jamais « de »). La liste des h aspirés complétée. Juge : `redteam_liaison`.
+
+### ⚑ v209 (18 nov. 2026) — C-299 ANNULÉ ; C-300 LA VEILLE SUR LA FORME DE L'ÉCRAN ; C-297 OBSERVÉ SUR L'iPHONE ; LA NOTIFICATION À LA MISE EN ARRIÈRE-PLAN. (Décisions Tom.) Ce bloc CORRIGE v208 (C-299).
+> **Validé par Tom : C-295 (Mascaret fluide ; le changement du moteur est accepté).**
+> **⚑ C-299 ANNULÉ (Tom : « tu as changé toute la mise en page ; ce n'était pas demandé ») : la mise en page est celle de b9f98bd, dans l'app comme dans Safari ; la seule
+> différence, dans l'app seulement, l'encart du haut de chaque page à +3 pt (la coquille).** *La règle* : **une demande sur les « zones sûres » ne déplace rien que Tom
+> n'a pas nommé ; toute mise en page qui bouge se compare au pixel à la version d'avant, écran par écran, avant d'être livrée.**
+> **⚑ C-300** : dans l'app (`window.__ecranForme`, posé par la coquille), la veille couvre l'écran et la découpe de la caméra est un obstacle ; Safari inchangé.
+> Trouvé et corrigé (depuis v161) : un coin touché juste après le bord voisin faisait sauter le logo au coin opposé. Juges : `scratchpad/v209/veille_formes.py`
+> (trois formes, 2 h × 5 graines ; `--sonde`), `veille_app.py`. ⚠ Un logo de 140 pt ne tient pas à côté de l'encoche ou de l'île : les coins du haut y sont hors d'atteinte.
+> **⚑ C-297** : la coquille de la preuve relève la jonction à chaque image sur l'iPhone (`quoi:'c297'`) ; l'inspection de l'app est allumée (`webContentsDebuggingEnabled`).
+
+### ⚑ v208 (18 nov. 2026) — CAPACITOR RETENU ; C-297 LA FICHE TENUE EN FLEX ; C-295 MASCARET DANS LE MOTEUR ; C-299 LES ZONES SÛRES. (Décisions Tom.)
+> **Validés par Tom : le plein écran, C-296, C-294, C-298. LA PREUVE EST CONCLUANTE : CAPACITOR EST RETENU** (ARCHITECTURE.md).
+> **⚑ C-297 — LA CAUSE** : une règle d'août (« PEAUFINER FIXE ») passait une fiche `f-tenue` (et `f-atenir`) en `display:block` ; une fiche en cours reste en flex.
+> La jonction (C-259) repose sur la mise en page flex (la boîte collante : `order:-10`, marges qui annulent sa hauteur) : une parole tenue en sortait — et sur une
+> fiche tenue ouverte directement, la dalle de la bande manquait. Aujourd'hui une fiche tenue est en flex, comme en cours (même composant, même code). Juge :
+> `banc_apres_tenir.jonction` (en cours, tenu juste après, tenu rechargé, date passée ; J1 la mise en page, J2 le trait plat à la jonction, J3 le trait plat VU),
+> dans `redteam_un_trait` et `redteam_repos_fiche`. ⚠ Au banc, J3 (le trait vu) est vert aussi sur v207 : la cause est nommée, le défaut de l'iPhone non reproduit tel quel.
+> **⚑ C-295 — LE MOTEUR AUTORISÉ POUR CE SEUL DÉFAUT** (étiquette `avant-moteur-mascaret`) : après une transition, le gel de Mascaret (`_geler`) figeait les graines qui se
+> posaient encore jusqu'à un quart d'unité de matière, puis les faisait sauter ; dans l'aperçu du Studio seulement (`window._apImage`), une graine qui bouge encore
+> (> 0,15 px d'une image à l'autre) est suivie à chaque image. `banc_rendu` identique (Ramage seul, préexistant), `toile_stable` T 6/6 sur l'export de Tom.
+> **⚑ C-299 — LES ZONES SÛRES** : une seule source (`lot-V208-ZONES` : `_zsInsets()`, `_zsDy()`, `--zs-dy`) ; les plateaux du haut (`.enh`, `#accPlat`, `#stpHaut`,
+> `.dz-plateau`) descendent de `--zs-dy` (zone sûre + 6 pt − 40 pt) ; la jonction d'une fiche (`HAUT`, `J`) avec eux ; la veille : le fond sur l'écran entier, le logo
+> dans la zone sûre. 0 dans Safari. La coquille : l'échelle qui couvre l'écran (rognage ≤ 3 %), les coins à 0, les bandes du SE à la couleur du fond.
+
+### ⚑ v207 suite (17 nov. 2026, après la séance de la preuve) — C-295 À C-298 ; LE VRAI FOND DE LA PELOTE ; LA PREUVE EN PLEIN ÉCRAN. (Décisions Tom.)
+> **C-296 — le rectangle sur « Je »** : la place « qui ? » qui part à la bascule (`.v202-part`, une copie à son ancienne place) se détrace là où « Je » arrive ; son
+> filet pointillé restait entier puis disparaissait d'un coup. Il s'amincit maintenant de 3 à 0 px pendant le détracé (padding compensé). Juge : **`redteam_je.py`**.
+> **C-297 — après « tenir »** : ① le `preventDefault` du `touchstart` de la remontée du vert (v154, C-167) tuait le défilement natif de tout le geste — le début du
+> geste n'est plus annulé (le toucher reste avalé pour l'app) ; ② la nappe `#tenirMaree` passe de z 40 à z 7 (sous la bande d'en-tête). Juge : `banc_apres_tenir.py`,
+> appelé par `redteam_un_trait` (T1, T2) et `redteam_repos_fiche` (D). ⚠ **Un `preventDefault` sur `touchstart` annule le défilement natif de tout le geste : on
+> avale un toucher par la propagation et le clic, jamais par le début du geste, quand l'écran dessous défile.**
+> **C-298 — la Pelote tourne ×1,5** : un tour en 66,7 s (`TOUR_S`, lu par `G.AUTO`, le calque, le couchage). **C-294 suite** : l'encart « PARTAGER MA PELOTE » a le fond
+> du plateau (mêmes jetons) ; la Pelote se détache du VRAI fond de l'Aura (`pageCouleur()` lit l'écran : #EAD9B9 en clair, #050302 en sombre).
+> **C-295 — Mascaret** : les images ne saccadent pas (relevé de l'app : p95 17 ms) ; ce qui saute est DANS l'aperçu (Mascaret ne refait ses lames que quand ses graines
+> bougent d'un cran de sa signature) — identique en v203 : dans le moteur, décision à Tom.
+> **La preuve en plein écran** (branche `preuve-capacitor`) : `viewport-fit=cover` dans la page construite, `@capacitor/status-bar` 8.0.4 (barre par-dessus la page,
+> texte selon le thème) ; `construire.sh` prend `SOURCE=` et `VERSION=` (la v206 corrigée, extraite par `git archive`).
+
+### ⚑ v207 (17 nov. 2026) — CAPACITOR, SOUS CONDITION D'UNE PREUVE (C-291) ; L'OUVRIER DU TRACÉ (C-292) ; L'ASSAINISSEMENT RECENTRÉ (C-293). (Décisions Tom.)
+> **Q1 tranchée : Capacitor, sous condition** d'une preuve sur l'iPhone de Tom (fluidité ≥ Safari sur chaque animation, rendu identique, vibration ressentie,
+> notification reçue). La preuve vit sur la branche **`preuve-capacitor`** (arbre de travail `../promi-preuve-capacitor`, partie de `reference-v205`) : `capacitor/`
+> construit sa page depuis la v205 telle quelle et n'y ajoute qu'une coquille en tête (`coquille.js` : le relevé allumé et envoyé au Mac par CapacitorHttp,
+> `promiHaptique('tenir')` → Haptics, une notification locale à 1 min). `PREUVE-CAPACITOR.md`. ⚠ La signature passe par le compte Apple de Tom dans Xcode
+> (équipe B77VBMD9BF) : session expirée → Tom se reconnecte (mot de passe : lui seul). Les profils présents sur ce Mac sont ceux de Fairly : on n'y touche pas.
+> **⚑ C-292 — L'OUVRIER DU TRACÉ. LES CAUSES** (relevé de l'iPhone du 15 nov., imitées au banc : chaque ouvrier rend au plus vite toutes les 50 ms —
+> `scratchpad/v206/attente_iphone.py` reproduit 607 à 843 ms et le retour de l'exemple à 883 ms) : ① la file était servie dans l'ordre d'arrivée — la lettre
+> qu'un tracé attend passait derrière les préparations ; ② 23 % des cartes étaient calculées DEUX fois (une seconde demande pendant que la première était
+> en file) ; ③ le cache se vidait d'un coup au-delà de 600 cartes (une séance en prépare 700). **Corrigé à calcul identique** (`trace-lettres.js`) : une file
+> tenue par la page à deux priorités (`envoie(m, tr, prio)`, `promeut`), le partage des cartes en vol (`TL._vol`, par clé), jusqu'à trois ouvriers chacun
+> PROUVÉ par l'essai (`naitOuvrier`, `TL.nOuvriers`), la médiane 3 × 3 par réseau (`med9`), l'éviction de la plus ancienne carte (`TL.cacheMax` 1 500).
+> Preuve : 114 cartes réelles identiques bit pour bit (`scratchpad/v206/carte_identique.py`). Au banc imité : 0 lettre lente, le retour 420 ms. **Le relevé dit
+> maintenant `R.tl.att` (l'attente d'une lettre attendue) et `R.tl.calc` (le calcul d'une carte dans l'ouvrier)** : l'objectif (< 16 ms par lettre sur
+> l'iPhone) se lit là. ⚠ Une carte coûte 6,4 ms en moyenne dans WebKit sur le Mac : les ≈ 50 ms de l'iPhone sont à mesurer, pas à supposer.
+> ⚠ **Piège payé** : un double caché posé DANS `#onbPh` avec la classe `.v203-exw` faisait croire à l'onboarding qu'une sortie était en cours (`occupe()`) — il
+> retraçait « Toi, c'est Camille ? » au lieu de « Je me promets de… ». Rien de caché ne vit dans une phrase avec une classe qu'un autre code lit.
+> **⚑ C-293** : l'assainissement ne porte plus que sur le tracé, les flaques, les jetons et l'interface du moteur (ASSAINISSEMENT.md d). ⚠ `Promi+Design.swift` a été
+> retouché à la main après sa génération : `scratchpad/gen_swift.py` le régénère SANS `cobalt50` — ne pas le relancer avant le générateur unique.
+
+### ⚑ v206 (17 nov. 2026) — NOUVEAU CHAPITRE : LE PROTOTYPE EST LA RÉFÉRENCE ; LA SAUVEGARDE v205 (C-287) ; C-282 LA PREMIÈRE FOIS ; VALIDATION, ARCHITECTURE, ASSAINISSEMENT (C-288 à C-290). (Décisions Tom et chef de chantier.)
+> **Le prototype `app.html` ne reçoit plus de fonction neuve : il est le cahier des charges de la vraie app. Il s'assainit à comportement STRICTEMENT identique (ASSAINISSEMENT.md : la preuve d'identité en 8 points, une étiquette `assain-N-avant` avant chaque lot, un seul écart → retour à l'étiquette).**
+> **⚑ LA RÉFÉRENCE NE SE MODIFIE JAMAIS** : étiquette git `reference-v205` (= ec27c77, poussée) et le dossier `../../Promi-reference-v205/` (hors dépôt : bundle, zip, SHA-256, états de Tom, planche de 76 captures, LISEZ-MOI). La planche se refait par `scratchpad/v206/captures_ref.py <dossier> [--fichier=]`, se compare par `scratchpad/v206/compare_planche.py <réf> <bruit> <lot>` (le bruit : une seconde passe de la référence — la matière respire).
+> **⚑ C-282, LA PREMIÈRE FOIS SEULEMENT — LA CAUSE** (le relevé de l'iPhone du 15 nov., `R.tl`) : l'ouvrier du tracé est PROUVÉ (191 ms) mais LENT — ses réponses arrivent en file, 600 à 924 ms par lettre (`ouvrier-lent`), puis le fil principal calcule ; l'exemple qui REVIENT après un effacement (ses lettres pas en cache au premier usage : la clé d'une carte porte la place de la lettre dans le pixel, et l'exemple tracé avec toute la phrase n'a pas les mêmes) reste découpé ≈ 1 s. Une lettre tapée pendant ce temps : `coupe()` posait l'exemple ENTIER (`poseTout`), puis la copie le faisait partir en 150 ms — un éclair. **Aujourd'hui `premiere()` relève ce qu'on voit de l'exemple avant de couper son tracé (sa découpe, le canevas des lettres en cours) : la copie n'en montre que cela ; rien de visible → copie vide.** Juge : **`redteam_premiere_froid.py`** (un navigateur NEUF par essai ; A–C et G : la 1re frappe identique à la 2e ; `--lent` H : l'ouvrier retardé de 800 ms, la lettre pendant le retour — v205 0/6). ⚠ `redteam_premiere` ne voyait pas la première frappe : il tape et efface AVANT de mesurer. ⚠ NON FAIT : préparer d'avance les lettres du retour de l'exemple (une copie de la phrase dans un sous-arbre observé : risque d'effet de bord) — l'attente de l'ouvrier reste sur l'iPhone, invisible désormais.
+> **Lot 1 d'assainissement** : 42 lignes retirées — la carte de la Toile `#cellCard` (`openCell`, `closeCard`, `ccId`, quatre gestionnaires ; sans porte depuis C-189) et `_dalleReelle` avec son cache (mort depuis v132). Le HTML et le CSS de la carte restent (§9). ⚠ Un détecteur de fonctions mortes prend les IIFE nommées (`(function hook(){…})()`) pour des mortes ; et le `check.js` de la racine (le contrôle de syntaxe du §7) fausse un compte de références : on l'exclut.
 
 ### ⚑ v205 (16 nov. 2026) — CLÔTURE DU CHAPITRE : L'EXEMPLE PART EN 150 ms (C-282) ; PLUS AUCUN RESTE PENDANT UN DÉTRACÉ (C-286) ; redteam_aspect D. (Décisions Tom : « Belle livraison de clôture. ») Ce bloc CORRIGE v204 (C-282 : le détracé standard et les petites copies).
 > **Validés par Tom : C-284, le §2 de v204 (« Le reste s'explore à ton rythme ! » en PromiLate bleu vif), C-285, C-283. `guide_rafale` D jugé bon sur l'iPhone : fermé (on ne retouche pas le dessin de l'eau).**

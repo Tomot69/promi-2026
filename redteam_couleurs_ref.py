@@ -293,6 +293,21 @@ with sync_playwright() as p:
                     #   du Fil et du Fil des Cercles, même construction que la fiche, dans les deux thèmes » — sur une CARTE (`.s4-…`, `.nf-item`), et seulement
                     #   vers les couleurs de cette construction : les trois corps, la terre d'une tenue, la crème, l'amande, le lilas, les traits sombres de nature.
                     if pr_ in ('color', 'tfill', 'bg', 'bT', 'bB', 'bL', 'bR', 'fill', 'stroke') and re.search(r's4-|nf-item', k) and va in CARTE_V148: exceptions['E19'] = exceptions.get('E19', 0) + 1; continue
+                    # E29 (v210, Tom, 18 nov. 2026, C-301 ; C-247) : « l'Index devient EXACTEMENT comme le Fil : même encart, même barre de recherche, même bouton de
+                    #   tri aux deux flèches » — en sombre, le ⇅ de l'Index prend la crème du ⇅ du Fil (#F7F0DE ; il portait #E4D7BB, v164a). Sur l'Index, en sombre, et ce seul couple.
+                    if pr_ in ('color', 'tfill') and cle[1] == 'dark' and str(cle[0]).startswith('Index') and va == 'rgb(247, 240, 222)' and vr == 'rgb(228, 215, 187)' and not re.search(r's4-', k): exceptions['E29'] = exceptions.get('E29', 0) + 1; continue
+                    # E30 (v213, Tom, 19 nov. 2026, C-314 ; C-247) : « le fond de la page Ma Parole ! et celui de la page Réglages deviennent EXACTEMENT celui de l'Index,
+                    #   du Fil et de l'Aura ; leurs encarts gardent les fonds d'encart de ces pages » — en clair : le fond de l'écran #F7F0DE → #EAD9B9, et les encarts
+                    #   des Réglages (.scard) et « Bon, allez d'accord » (#buyYear), transparents, prennent la crème des encarts de l'Index (#F7F0DE). Ces deux écrans, en clair, et ces couples seuls.
+                    if cle[1] == 'light' and pr_ == 'bg' and cle[0] in ('Réglages', 'mur · Réglages', 'le Cercle') and (
+                            (va == 'rgb(234, 217, 185)' and vr in ('rgb(247, 240, 222)', 'rgba(0, 0, 0, 0)') and re.match(r'^#(settingsScreen|plusScreen) \[\d+\]$', k)) or
+                            (va == 'rgb(247, 240, 222)' and vr in (None, 'rgba(0, 0, 0, 0)') and re.search(r'(scard|buyYear|^#(aboutCard|cguCard|compteCard|logoutCard|notifCard|polCard|privCard|pvExport|replayOnb|resetData|setInvite|soutienCard) \[\d+\]$)', k))): exceptions['E30'] = exceptions.get('E30', 0) + 1; continue
+                    # E31 (v214, Tom, 19 nov. 2026, C-317) : « dans Réglages, l'encart Ma Parole : mets le bleu ciel couleur Promi » — le titre de la porte (.sc-t) au bleu
+                    #   Promi #82AEF8, en gratuit, deux thèmes ; ce titre seul.
+                    if pr_ in ('color', 'tfill') and va == 'rgb(130, 174, 248)' and re.search(r'sc-t\b', k) and 'Réglages' in str(cle[0]): exceptions['E31'] = exceptions.get('E31', 0) + 1; continue
+                    # E28 (v207, Tom, 17 nov. 2026, C-294 ; C-247) : « le fond de l'Aura devient EXACTEMENT celui de l'Index et du Fil (même code, mêmes couleurs,
+                    #   même matière) » — en clair, la crème #F7F0DE devient #EAD9B9 (--c-creme90-2) ; le fond de l'écran de l'Aura, et lui seul.
+                    if cle[0] in ('Aura', "aide de l'Aura") and cle[1] == 'light' and pr_ == 'bg' and va == 'rgb(234, 217, 185)' and vr == 'rgb(247, 240, 222)' and re.match(r'^#auraScreen \[\d+\]$', k): exceptions['E28'] = exceptions.get('E28', 0) + 1; continue
                     # E20 (v151, Tom, 18 oct. 2026, C-157) : « dans les pages + du Promi et du Chiche, TRACE POUR PLANTER / TRACE POUR LANCER passe en orange
                     #   #FB4C0D, comme la flèche, en clair et en sombre » (le Cercle porte le même texte : même traitement) — le mot du trait de la page +, et lui seul.
                     if pr_ in ('color', 'tfill') and va == 'rgb(251, 76, 13)' and re.search(r'pp-trace\b', k) and not re.search(r'dptTrace', k): exceptions['E20'] = exceptions.get('E20', 0) + 1; continue
@@ -414,7 +429,10 @@ print('E14 l\'orange du départ d\'une action : le + de l\'accueil, la flèche d
 print('E16 à « referme », le champ garde sa nature (v146, C-118) : %d' % exceptions.get('E16', 0))
 print('E15 les noms de la barre au bleu foncé du I, en clair (v146, C-120) : %d' % exceptions.get('E15', 0))
 print('E17 le trait à la teinte la plus sombre de sa nature, le gardé de côté compris (v147, C-140) : %d' % exceptions.get('E17', 0))
+print('E29 le ⇅ de l\'Index comme celui du Fil, en sombre (v210, C-301) : %d' % exceptions.get('E29', 0))
 print('E18 l\'état des cartes crème dès la première image, en sombre (v147, Q290) : %d' % exceptions.get('E18', 0))
+print('E31 le titre de la porte des Réglages au bleu Promi (v214, C-317) : %d' % exceptions.get('E31', 0))
+print('E30 les fonds de Ma Parole ! et des Réglages = celui de l\'Index, du Fil et de l\'Aura ; leurs encarts à la crème des encarts (v213, C-314) : %d' % exceptions.get('E30', 0))
 print('E19 les cartes de l\'Index, du Fil et du fil d\'un Cercle prennent la construction de la fiche, deux thèmes (v148, C-147) : %d' % exceptions.get('E19', 0))
 print('E20 le mot du trait des pages + en orange #FB4C0D, deux thèmes (v151, C-157) : %d' % exceptions.get('E20', 0))
 print('E21 le pointillé d\'un gardé de côté, #291547 en clair, #A77CF7 en sombre (v163, C-149) : %d' % exceptions.get('E21', 0))

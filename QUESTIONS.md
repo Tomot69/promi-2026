@@ -8980,3 +8980,5 @@ seulement, exception nommée — chef de chantier), Q551 (accepté : REPORTER co
 - **Q618 — TRANCHÉE (Tom, v203)** : l'intérieur de la Pelote prend toujours le ton de la palette qui contraste le plus avec le poil (fait en v203).
 - **Q619 — TRANCHÉE (Tom, v203)** : la lumière du velours est retirée (« elle ternit les couleurs ») : le côté éclairé est le ton exact (fait en v203).
 - **Q620 — TRANCHÉE (Tom, v203)** : la première lettre paraît tout de suite (fait en v203 ; à l'onboarding aussi depuis la clôture, C-282).
+- **Q622 — À TRANCHER (v211, C-308)** : l'apostrophe de L'AURA est bleue et clignote dans le titre de l'Aura ; le titre de son aide (« L’aura », écran `#auraHelp`) n'a pas été touché (le lot dit « le titre L'AURA »). La même chose là aussi ?
+- **Q623 — À VOIR (v211, C-307)** : la taille commune des titres (29,5 px) fait passer le X de 34 à 29,5 px — C-173 : le X a la taille du « x » d'INDEX. Garder ce lien, ou figer le X à 34 ?

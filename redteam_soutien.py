@@ -13,9 +13,10 @@ Banc comme Tom (WebKit, doigt), deux thèmes, échelles 1 et 0,79 :
 Rouge sur v173 (`--fichier=zz-v173.html`).
 
 ⚑ v175 (Tom, C-217 §5) — contrat remis au niveau (original : sauvegardes/redteam_soutien-avant-v175.py) : la rangée en gras, `#82AEF8`, d'une autre couleur que « Ma Parole ! » ;
-le texte de Tom, mot pour mot, rien de « ne débloque rien » ; cinq montants 5 · 10 · 25 · 50 · 100 €, deux rangées de trois, sans défilement, aux deux échelles ;
+le texte de Tom, mot pour mot, rien de « ne débloque rien » ; six montants 5 · 10 · 25 · 50 · 100 · 150 € (⚑ v214, Tom, C-318 : 150 à droite de 100), deux rangées de trois, sans défilement, aux deux échelles ;
 T · sur l'état de Tom, la Toile de l'écran est la Toile de l'écran « Ma Parole ! », jouée par sa boucle : mêmes cotes, mêmes pixels que son pavage, le pavage de Ma Parole ! retrouvé ensuite. Rouge sur v174 (`--fichier=zz-v174b.html`).
 """
+# ⚑ v213 (Tom, C-313) : contrat remis au niveau — B lit la rangée de cinq seule (« Autre montant » et ses paliers : redteam_soutien_autre.py) ; original : sauvegardes/redteam_soutien-avant-v213.py
 import sys, io, re; sys.path.insert(0, '.')
 import banc_tom as B
 from playwright.sync_api import sync_playwright
@@ -44,13 +45,13 @@ with sync_playwright() as p:
             pg.evaluate("()=>document.getElementById('soutienCard').scrollIntoView({block:'center'})"); pg.wait_for_timeout(300)
             B.tap_sel(pg, '#soutienCard'); pg.wait_for_timeout(1100)
             s = pg.evaluate("""()=>{ const S=document.getElementById('soutienScreen'); if(!S||!S.classList.contains('show')) return null; const D=document.getElementById('device').getBoundingClientRect(), k=D.width/390;
-               const bt=[...S.querySelectorAll('.so-m')].map(x=>{ const r=x.getBoundingClientRect(); return [x.textContent,(r.left-D.left)/k,(r.right-D.left)/k,r.height/k]; }); const m=S.querySelector('.so-merci'), t=S.querySelector('.scr-t');
+               const bt=[...S.querySelectorAll('.so-corps > .so-mts > .so-m')].map(x=>{ const r=x.getBoundingClientRect(); return [x.textContent,(r.left-D.left)/k,(r.right-D.left)/k,r.height/k]; }); const m=S.querySelector('.so-merci'), t=S.querySelector('.scr-t');
                return {bt:bt, tx:S.querySelector('.so-tx').textContent, merci:getComputedStyle(m).visibility, titre:t.textContent, fs:parseFloat(getComputedStyle(t).fontSize), tr:t.getBoundingClientRect().right<=D.right}; }""")
             mt = [x[0].replace(' ', ' ') for x in s['bt']] if s else None
-            juge(T + ' B · l\'écran : cinq montants, dans l\'appareil (24 pt de marge), le merci absent', s and mt == ['5 €', '10 €', '25 €', '50 €', '100 €'] and min(x[1] for x in s['bt']) >= 23.5 and max(x[2] for x in s['bt']) <= 366.5 and all(abs(x[3] - 62) < 1 for x in s['bt']) and s['merci'] == 'hidden', s)
+            juge(T + ' B · l\'écran : six montants (v214), dans l\'appareil (24 pt de marge), le merci absent', s and mt == ['5 €', '10 €', '25 €', '50 €', '100 €', '150 €'] and min(x[1] for x in s['bt']) >= 23.5 and max(x[2] for x in s['bt']) <= 366.5 and all(abs(x[3] - 62) < 1 for x in s['bt']) and s['merci'] == 'hidden', s)
             juge(T + ' B · le texte de Tom, mot pour mot, et rien d\'autre', s and s['tx'] == TEXTE and 'débloque' not in s['tx'], s and s['tx'])
-            g = pg.evaluate("""()=>{ const S=document.getElementById('soutienScreen'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; const b=[...S.querySelectorAll('.so-m')].map(x=>x.getBoundingClientRect()); const m=S.querySelector('.so-merci').getBoundingClientRect(); return {rangs:[...new Set(b.map(r=>Math.round((r.top-D.top)/k)))], col:[b.slice(0,3).length, b[3]?b.filter(r=>Math.abs(r.top-b[3].top)<2).length:0], m:(m.bottom-D.top)/k, dep:S.scrollHeight-S.clientHeight, W:Math.max(...b.map(r=>r.width))/k, ph:!!b[4]&&b[4].bottom<=D.bottom}; }""")
-            juge(T + ' B · deux rangées (trois puis deux), rien à défiler, le merci dans l\'écran', len(g['rangs']) == 2 and g['col'] == [3, 2] and g['dep'] <= 0 and g['m'] <= 790 and g['ph'], g)
+            g = pg.evaluate("""()=>{ const S=document.getElementById('soutienScreen'), D=document.getElementById('device').getBoundingClientRect(), k=D.width/390; const b=[...S.querySelectorAll('.so-corps > .so-mts > .so-m')].map(x=>x.getBoundingClientRect()); const m=S.querySelector('.so-merci').getBoundingClientRect(); return {rangs:[...new Set(b.map(r=>Math.round((r.top-D.top)/k)))], col:[b.slice(0,3).length, b[3]?b.filter(r=>Math.abs(r.top-b[3].top)<2).length:0], m:(m.bottom-D.top)/k, dep:S.scrollHeight-S.clientHeight, W:Math.max(...b.map(r=>r.width))/k, ph:!!b[4]&&b[4].bottom<=D.bottom}; }""")
+            juge(T + ' B · deux rangées pleines (trois et trois, v214), rien à défiler, le merci dans l\'écran', len(g['rangs']) == 2 and g['col'] == [3, 3] and g['dep'] <= 0 and g['m'] <= 790 and g['ph'], g)
             B.tap_sel(pg, '#soutienScreen .so-m:nth-child(2)'); pg.wait_for_timeout(1000)
             mc = pg.evaluate("()=>{ const m=document.querySelector('#soutienScreen .so-merci'); return getComputedStyle(m).visibility; }")
             juge(T + ' B · le geste : le merci paraît', mc == 'visible', mc)

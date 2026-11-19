@@ -8,7 +8,7 @@ WebKit, 390 × 844 ×3. Pour chaque thème : l'onboarding (stockage vierge, la p
 clignotement (son animation `promiBlink` arrêtée à 0 ms : opacité 1, la valeur de la règle), puis lue sur l'image :
   A · le cœur de la lettre (la couleur la plus fréquente de son encre) = #82AEF8 à 1,5 près, sur chaque canal
   B · son animation est `promiBlink` 1,15 s steps(1,end) (le même code partout), et rien sur elle ni ses ancêtres ne ternit (opacité 1, aucun filtre, aucune fusion)
---sonde (la lettre de l'accueil ternie à 0,9 : A rougit) · --fichier="""
+Aura (apostrophe) : v211, C-308. --sonde (la lettre de l'accueil ternie à 0,9 : A rougit) · --fichier="""
 import sys, io; sys.path.insert(0, '.')
 import banc_tom as B
 from collections import Counter
@@ -34,7 +34,8 @@ def coeur(pg, z):
     return Counter(encre).most_common(1)[0][0], len(encre)
 LIEUX = (('onboarding', '#onbV .onbv-mm i', None), ('accueil (I de PROMI)', '.acc-mm i', None),
          ('Partager (R)', '#shareScreen .ti-x.blink', "()=>{ try{ ouvrirPartage(); }catch(e){ const b=document.querySelector('#shareBtn'); if(b) b.click(); } }"),
-         ('Réglages (S)', '#settingsScreen h1.scr-ti .ti-x.blink', "()=>{ const b=document.querySelector('#settingsBtn'); if(b) b.click(); }"))
+         ('Réglages (S)', '#settingsScreen h1.scr-ti .ti-x.blink', "()=>{ const b=document.querySelector('#settingsBtn'); if(b) b.click(); }"),
+         ('Aura (apostrophe)', '#auraScreen .ti-apo', "()=>{ const b=document.querySelector('#souffleBtn'); if(b) b.click(); }"))   # v211 (C-308)
 with sync_playwright() as p:
     b = p.webkit.launch(); print('redteam_lettres_bleu — %s · charge %.1f%s' % (F, B.charge(), ' · SONDE' if '--sonde' in A_ else ''))
     for sombre in (False, True):
@@ -47,9 +48,14 @@ with sync_playwright() as p:
                 juge('la palette de base déclare #82AEF8 (promi-moteur.js, PALS.signal, premier ton)', d == list(BLEU), d)
             if ouvre: pg.evaluate(ouvre); pg.wait_for_timeout(1800)
             if '--sonde' in A_ and nom.startswith('accueil'): pg.evaluate("()=>document.querySelector('.acc-mm i').style.setProperty('opacity','.9','important')")
+            if nom.startswith('Aura'):   # v211 (C-308) : C · le même clignotement, SYNCHRONISÉ sur le I de l'accueil (la phase, à une image près)
+                ph = pg.evaluate("()=>{ const f=s=>{ const e=document.querySelector(s); const a=e&&e.getAnimations?e.getAnimations().filter(x=>x.animationName==='promiBlink')[0]:null; return a?a.currentTime:null; }; return [f('#device .acc-mm i'), f('#auraScreen .ti-apo')]; }")
+                dph = None if None in ph else abs((ph[0] - ph[1] + 575) % 1150 - 575)
+                juge('[%s · %s] C · en phase avec le I de l\'accueil (écart %s ms)' % (th, nom, dph if dph is None else round(dph)), dph is not None and dph <= 17, ph)
             z = pg.evaluate(SOMMET, sel); pg.wait_for_timeout(120)
             if not z:
                 juge('[%s · %s] A · la lettre est à l\'écran' % (th, nom), False, sel); ctx.close(); continue
+            if nom.startswith('Aura'): z = dict(z, x=z['x'] + 4, w=z['w'] - 8)   # v211 : un glyphe de 6 pt — la boîte exacte en largeur (les 4 pt de marge prenaient le L et le a voisins)
             c, n = coeur(pg, z)
             juge('[%s · %s] A · au sommet, la lettre est #82AEF8 à 1,5 près' % (th, nom), c is not None and max(abs(c[j] - BLEU[j]) for j in range(3)) <= 1.5, {'cœur': ('#%02X%02X%02X' % c) if c else None, 'pixels d\'encre': n})
             juge('[%s · %s] B · promiBlink 1,15 s steps(1,end), rien qui ternit' % (th, nom), z['anim'] and abs(z['anim'][0] - 1150) < 1 and 'steps(1' in z['anim'][1].replace(' ', '') and z['op'] > 0.999 and not z['tern'], {'anim': z['anim'], 'opacité': round(z['op'], 3), 'ternit': z['tern']})

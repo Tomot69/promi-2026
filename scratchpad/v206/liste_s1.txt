@@ -1,0 +1,4 @@
+premiere | 1 | python3 redteam_premiere.py --fichier=zz-v206a.html
+premiere_froid | 1 | python3 redteam_premiere_froid.py --n=10 --fichier=zz-v206a.html
+premiere_froid_lent | 1 | python3 redteam_premiere_froid.py --n=10 --lent --fichier=zz-v206a.html
+onb_exemple | 1 | python3 redteam_onb_exemple.py --fichier=zz-v206a.html

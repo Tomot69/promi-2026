@@ -6,7 +6,7 @@
   ① le bandeau « Garder ta Toile » : un premier « Plus tard », il revient plus loin ; un deuxième, il ne revient plus ; la rangée des Réglages reste.
   ② « RELANCER [nom] » n'est plus dans le Peaufiner d'une fiche reçue ; `#actRelance` n'existe plus.
   ③ Notifications : « de temps en temps, un mot », plus « une douce relance ».
-  ④ le mot « Promi » de l'accueil, touché au doigt, n'ouvre pas Ma Parole !.
+  ④ (⚑ v214, Tom, C-316 — remis au niveau : en gratuit, le mot « Promi » de l'accueil OUVRE de nouveau Ma Parole ! ; juge : redteam_promi_porte.py) ce contrôle vérifie l'ouverture.
   ⑤ l'écran de Ma Parole ! ne montre plus « 5,99 ».
   ⑥ la Toile vide ne porte plus « touche le + ».
   ⑦ « Mention sur un dessin partagé » n'est plus aux Réglages ; elle est dans le panneau du Partage, et un toucher la change (mémorisé).
@@ -38,7 +38,7 @@ with sync_playwright() as p:
             r = pg.evaluate(BOUTON, btn) or {}
             # ⚑ v186a (Tom, C-256 : « plus de bouton Trier ; EXACTEMENT ce qu'il y avait avant : le bouton aux deux flèches, dans le même encart entouré ») — Q582 → A
             # est annulé : le bouton porte « ⇅ », un contour (celui de v164a) et le fond du mode ; original `sauvegardes/redteam_v164b-avant-v186a.py`
-            juge('[%s · %s] T · le bouton aux deux flèches « ⇅ », à l\'encre du mode (C-256)' % (T, ecr), r.get('txt') == '⇅' and r.get('col') == ({'Index': 'rgb(228, 215, 187)'}.get(ecr, ink) if sombre else ink), r)   # la couleur de v164a, relevée sur le commit d'origine (63e9f14) : en sombre, le ⇅ de l'Index est #E4D7BB
+            juge('[%s · %s] T · le bouton aux deux flèches « ⇅ », à l\'encre du mode (C-256)' % (T, ecr), r.get('txt') == '⇅' and r.get('col') == ink, r)   # ⚑ v214 remis au niveau de v210 (Tom, C-301 : « l'Index est le Fil », E29 de redteam_couleurs_ref) : en sombre le ⇅ de l'Index prend la crème du Fil ; avant, #E4D7BB (v164a)
             juge('[%s · %s] T · dans son encart entouré (contour, fond du mode, comme v164a)' % (T, ecr), r.get('bd', 0) > 0 and r.get('bg') not in ('rgba(0, 0, 0, 0)', 'transparent'), r)
             juge('[%s · %s] T · zone de toucher ≥ 44 pt, prise à son centre' % (T, ecr), r.get('w', 0) >= 44 - 0.5 and r.get('h', 0) >= 44 - 0.5 and r.get('hit'), r)
             B.tap_sel(pg, btn); pg.wait_for_timeout(900)
@@ -52,7 +52,7 @@ with sync_playwright() as p:
     sous = pg4.evaluate("()=>{ const m=document.querySelector('.acc-plat .acc-mm'); if(!m) return null; const r=m.getBoundingClientRect(); const h=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2); return !!h && (h===m || m.contains(h)); }")
     B.tap_sel(pg4, '.acc-plat .acc-mm'); pg4.wait_for_timeout(1500)
     o4 = pg4.evaluate("()=>[window.__oc, document.getElementById('plusScreen').classList.contains('show')]")
-    juge('④ le mot « Promi » de l\'accueil, touché au doigt (le doigt tombe sur lui), n\'ouvre pas Ma Parole !', sous is True and o4 == [0, False], {'sous le doigt': sous, 'ouvreCercle, montré': o4})
+    juge('④ (v214, C-316) le mot « Promi » de l\'accueil, touché au doigt, ouvre Ma Parole ! en gratuit', sous is True and o4[0] >= 1, {'sous le doigt': sous, 'ouvreCercle, montré': o4})
     ctx4.close()
     # ── ① le bandeau ──
     ctx = B.contexte(b, stockage={'promi_rappel_n': '0', 'promi_debut': '1'}); B.toile_pleine(ctx, 10); pg = B.ouvre(ctx, F)

@@ -10,6 +10,7 @@ plat, sous la jonction de 112 pt) :
       au bord d'un point, la « taille de guêpe » de la rencontre (le 8 accepté par Tom en v197) est permise ;
   B · le trait n'est jamais coupé : sa hauteur ≥ 85 % de celle du repos dans cette colonne (un point qui passe sous la bande, rejoint par le point plat, compte entier).
   D · jamais doublé en épaisseur : sa hauteur ≤ 1,25 × celle du repos (ou du trait plat) + 1 pt.
+  T1, T2 · (v207, C-297) juste après « tenir » : défiler pendant le vert (le trait suit, la nappe sous l'en-tête), un doigt posé n'annule pas le défilement natif (banc_apres_tenir).
   C · aucune erreur de page. `--sonde` : l'encoche de v199 posée exprès sous chaque point — il rougit."""
 import sys, io, os, json; sys.path.insert(0, '.')
 import numpy as np
@@ -157,5 +158,8 @@ if __name__ == '__main__':
         b = p.webkit.launch()
         print('redteam_un_trait — %s, vue %s %s, charge %.1f%s' % (F, VUEN, VUE, B.charge(), ' · SONDE' if '--sonde' in sys.argv else ''), flush=True)
         for nat in NATS: juge_nature(b, nat)
+        if '--sans-tenir' not in sys.argv:   # ⚑ v207 (C-297) : défiler juste après « tenir » (banc_apres_tenir)
+            import banc_apres_tenir as AT; AT.cas(b, F, juge, VUE[0], VUE[1], 'après tenir · vue %s' % VUEN)
+            AT.jonction(b, F, juge, VUE[0], VUE[1], 'jonction · vue %s' % VUEN)   # ⚑ v208 (C-297) : en cours, tenu juste après, tenu rechargé, date passée
         b.close()
     print('  %s %d / %d' % ('✅' if all(res) else '❌', sum(res), len(res)))

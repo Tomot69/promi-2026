@@ -5,6 +5,7 @@ et la fenêtre de Tom (390 × 651, l'appareil à 0,7466 ; ×3). Chaque fiche por
   A · un défilement arrêté dans la zone coupée ]a, z[ (lu sur l'app, contrôlé sur l'image : le haut peint de la vague contre 112) finit, au repos, hors d'elle
   B · un mot envoyé (le glissement de C-260) ne laisse pas la fiche dans la zone
   C · après 1, 3 et 10 allers-retours lents puis lancés, revenue en haut et immobile : la zone du trait (100 → 340 pt) identique AU PIXEL à l'ouverture
+  D · (v207, C-297) juste après « tenir » : on défile pendant le vert, le trait suit, la nappe passe sous l'en-tête ; un doigt posé n'annule pas le défilement natif
   --sonde : la règle du repos coupée (window._ficheSure identité, aucun glissement de repos) — A et B rougissent.
 """
 import sys, io, os; sys.path.insert(0, '.')
@@ -84,5 +85,9 @@ with sync_playwright() as p:
                     im = zone(pg, d); diff = np.abs(im - ref).max(axis=2); nb = int((diff > 8).sum())
                     juge(T + ' C · %d aller(s)-retour(s) %s, revenue en haut : la zone du trait = l’ouverture' % (n, mode), s <= 0.5 and nb == 0, 's %.1f · pixels écartés %d' % (s, nb))
             err = [x for x in pg.erreurs if 'version.json' not in x]; juge(T + ' aucune erreur de page', not err, err[:2]); ctx.close()
+    if '--sans-tenir' not in sys.argv:   # ⚑ v207 (C-297) : D · défiler juste après « tenir » (banc_apres_tenir), échelle 1 et fenêtre de Tom
+        import banc_apres_tenir as AT
+        for vue in VUES: AT.cas(b, F, lambda n, ok, d='': juge(n, ok, d), *((390, 651) if vue == 'tom' else (430, 932)), nom='D · après tenir · ' + vue)
+        for vue in VUES: AT.jonction(b, F, lambda n, ok, d='': juge(n, ok, d), *((390, 651) if vue == 'tom' else (430, 932)), nom='E · jonction · ' + vue)   # ⚑ v208 (C-297)
     b.close()
 ok = sum(res); print('\n  %s %d / %d' % ('✅' if ok == len(res) else '❌', ok, len(res))); sys.exit(0 if ok == len(res) else 1)

@@ -1,0 +1,2 @@
+banc_rendu | 1 | python3 banc_rendu.py
+toile_stable_tom | 1 | python3 redteam_toile_stable.py --tom=etats/tom-20261117-211127.json --parties=T
