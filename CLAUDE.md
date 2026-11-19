@@ -270,6 +270,19 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v213 (19 nov. 2026) — C-313 « AUTRE MONTANT » ; C-314 LES FONDS DE MA PAROLE ! ET DES RÉGLAGES ; C-315 « DÉCOUVRE MA PAROLE ! ». (Décisions Tom.) Ce bloc CORRIGE v175b (C-217 : « cinq montants, sans champ libre ») sur un point : un choix plus large s'ajoute.
+> **Validés par Tom (v212, sur l'iPhone) : C-311, C-312.**
+> **⚑ C-313** (`lot-V174-SOUTIEN`) : la rangée 5 · 10 · 25 · 50 · 100 € ne change pas ; à sa suite « Autre montant » (libellé soumis à Tom), pleine largeur, la grammaire des montants (62 pt,
+> trait 2, rayon 31, Gilbert 22) ; au toucher, la boîte des paliers (15 · 20 · 30 · 40 · 75 · 150 · 200 · 250 · 300 · 500 · 750 · 1 000 €) grandit de 0 à sa hauteur en 360 ms, la suite (le merci)
+> glisse avec elle, le corps suit son bas À CHAQUE IMAGE (jamais un défilement après coup) ; replié de même ; rouvert, l'écran est replié et en haut. Apple n'accepte pas de montant libre :
+> chaque palier est un consommable `fr.autier.promi.soutien.N` (`window._soutienPaliers` ; PREUVE-CAPACITOR.md, achats). Juge : **`redteam_soutien_autre.py`** (168 ; `--sonde` : 144) ;
+> `redteam_soutien` B remis au niveau (la rangée de cinq seule ; original en sauvegarde).
+> **⚑ C-314** : `#settingsScreen` et `#plusScreen` rejoignent la règle « LE CORPS D'ÉCRAN » de l'Index, du Fil et de l'Aura (C-247) ; **les crèmes qui la contredisaient sont retirées** (deux
+> règles des Réglages, `#plusScreen` dans celle de la Langue et de la Confidentialité) — un seul propriétaire. En clair #F7F0DE → #EAD9B9 ; en sombre #050302 déjà. Les encarts des Réglages
+> (`.scard`) et « Bon, allez d'accord » (`#buyYear`), transparents, prennent la crème des encarts de l'Index (#F7F0DE). `redteam_couleurs_ref` E30.
+> **⚑ C-315** : la porte des Réglages dit « Découvre Ma Parole ! » (`encartReglages`) ; « Découvre » à l'encre opposée de la pastille (crème sur le brun en clair, brun sur la crème en sombre),
+> « Ma Parole ! » garde son lilas. **Impératif voulu par Tom : exception nommée de A3.** Membre : « Tu es Membre Ma Parole ! », inchangé.
+
 ### ⚑ v212 (19 nov. 2026) — C-311 « PAROLE TENUE ! » FIXE ; C-312 LA LIAISON DES EXEMPLES. (Décisions Tom.) Ce bloc CORRIGE v20 (« PASTILLE VIDE : « de » »).
 > **Validés par Tom (v211, sur l'iPhone) : C-297, C-306, C-307 (29,5 px), C-308, C-309, C-310 (fermé ; le relevé `c310` reste en surveillance). Q623 accepté, Q622 : l'aide de l'Aura reste telle quelle.**
 > **⚑ C-311 — LA CAUSE** : la nappe de la célébration (`#tenirMaree`) est posée dans la fiche qui défile (v207, z 7) ; la phrase y était placée à sa cote d'ÉCRAN — une fiche défilée de s la

@@ -38,3 +38,6 @@
 | 30 | C-310 | Page + (Promi, Chiche) et onboarding : taper « aller », « haïr », « oui » puis effacer, à son rythme | « de » / « d’ » se détrace puis se trace, jamais d'un coup (chaque changement est relevé et part au Mac) |
 | 31 | C-311 | Dans « Promi preuve » v212, ouvrir une parole SANS mot et la tenir ; puis une parole avec un mot, une avec plusieurs (Promi, Chiche, un Promi d'un Cercle) — défilée un peu avant de tracer, puis non | « Parole tenue ! » (« Défi relevé ! ») à la même place dans tous les cas ; il ne monte jamais |
 | 32 | C-312 | Page + : ouvrir plusieurs fois « Je me promets », « Je promets à … », « promets-moi », un Chiche ; et l'onboarding | chaque exemple avec sa liaison juste dès qu'il paraît : « d’apprendre… », « d’arroser… », « d’aller voter », « d’y aller en stop », « de me coucher… » ; à la bascule du verbe, « de » / « d’ » change avec l'exemple, jamais avant |
+| 33 | C-313 | Réglages → Soutenir Promi : toucher « Autre montant », puis encore, puis un palier | les paliers se déroulent et se replient en douceur, rien ne saute ; le merci paraît |
+| 34 | C-314 | Réglages et Ma Parole !, en clair puis en sombre ; comparer à l'Index et à l'Aura | le même fond ; les encarts gardent leur crème |
+| 35 | C-315 | Réglages, l'encart du haut | « Découvre Ma Parole ! », « Découvre » d'une autre couleur |
