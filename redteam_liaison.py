@@ -1,7 +1,10 @@
 """⚑ v210 (Tom, 18 nov. 2026, §6) — « de » et « d’ » : « de » devient « d’ » discrètement et en direct quand le mot tapé commence par une voyelle (accentuée ou non)
 ou un h muet, et redevient « de » quand on efface ou qu'on change de mot, avec la transition tracée (détracé puis tracé : `_retour.liaison`). Les h aspirés gardent « de »
 (haïr, hurler, hausser, honte…). Page + d'un Promi et d'un Chiche (un Cercle n'a pas de « de » : vérifié), et l'onboarding. Une série de mots tapés puis effacés, la
-liaison attendue à chaque étape ; chaque changement passe par le tracé (`_douceur.texte`), jamais réécrit d'un coup. WebKit, au doigt, clavier simulé."""
+liaison attendue à chaque étape ; chaque changement passe par le tracé (`_douceur.texte`), jamais réécrit d'un coup. WebKit, au doigt, clavier simulé.
+⚑ v212 (Tom, C-312) — CONTRAT REMIS AU NIVEAU DE LA DÉCISION (original : sauvegardes/redteam_liaison-avant-v212.py) : une place VIDE porte la liaison de son EXEMPLE (« d’ »
+devant « apprendre… »), plus « de » d'office (« PASTILLE VIDE : de », v20, remplacé). Effacé → la liaison de l'exemple revenu ; un changement n'est attendu (et tracé) que si
+la liaison du mot diffère de celle de l'exemple. La règle de l'exemple est écrite ici, en dur (celle de redteam_liaison_exemples)."""
 import os, re, sys; sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import banc_tom as B
 from playwright.sync_api import sync_playwright
@@ -37,19 +40,22 @@ def secs(fr):
     return out
 SECS = []
 def norm(s): return (s or '').replace(' ', ' ').strip()
+from liaison_regle import attendu as ATTENDU
+EXEMPLE = """(s)=>{ if(s.indexOf('#onbPh')===0){ const pm=document.querySelector('#onbPh .onbv-pm[data-onb="parole"]'); return pm?pm.textContent:''; } return window._ppExempleCourant||''; }"""
 def serie(pg, LI, T):
     for mot, att in SERIE:
+        ex = pg.evaluate(EXEMPLE, LI); exli = ATTENDU(ex)
         pg.evaluate("()=>{ window.__lt=[]; }"); pg.evaluate(REC, LI)
         pg.keyboard.type(mot, delay=45); pg.wait_for_timeout(1500)
         li = norm(pg.evaluate("(s)=>{ const e=document.querySelector(s); return e?e.textContent:null; }", LI)); lt = pg.evaluate("()=>window.__lt")
-        chg = att != 'de'
-        juge('%s « %s » → « %s »' % (T, mot, att), li == att and (not chg or any(norm(b) == att for a, b in lt)), [li, lt])
+        chg = att != exli
+        juge('%s « %s » → « %s » (l’exemple : « %s… »)' % (T, mot, att, ex[:18]), li == att and (not chg or any(norm(b) == att for a, b in lt)), [li, lt])
         for _ in range(len(mot)): pg.keyboard.press('Backspace'); pg.wait_for_timeout(40)
         pg.wait_for_timeout(1500); li = norm(pg.evaluate("(s)=>{ const e=document.querySelector(s); return e?e.textContent:null; }", LI)); lt = pg.evaluate("()=>window.__lt")
         pg.evaluate("()=>__frStop()"); s_ = secs(pg.evaluate("()=>__fr")); SECS.extend(s_)
         if s_: print('     diag', pg.evaluate("()=>{ const d=window.__diag310; window.__diag310=null; return d; }"))
         juge('%s « %s » tapé puis effacé : aucun changement sec, image par image (C-310)' % (T, mot), not s_, s_[:2])
-        juge('%s « %s » effacé → « de »%s' % (T, mot, ', tracé' if chg else ''), li == 'de' and (not chg or any(norm(b) == 'de' for a, b in lt)), [li, lt])
+        juge('%s « %s » effacé → « %s » (la liaison de l’exemple)%s' % (T, mot, exli, ', tracé' if chg else ''), li == exli and (not chg or any(norm(b) == exli for a, b in lt)), [li, lt])
 with sync_playwright() as p:
     b = p.webkit.launch(); print('redteam_liaison — %s · charge %.1f' % (F, B.charge()))
     for k in ('promi', 'chiche', 'nuee'):

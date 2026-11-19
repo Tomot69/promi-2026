@@ -2640,7 +2640,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v211', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v212', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -5685,6 +5685,11 @@ window._phraseRendu = function(){ try{
      aspiré (liste), un y consonne, onze, onzième, oui, un chiffre. PASTILLE VIDE : « de ».
      Un seul propriétaire dans l'app : window._promiElide (lot-ONB-V20), partagé avec
      l'onboarding. Promi et Chiche seulement — la Nuée n'a pas de « de ». */
+  /* ⚑ v212 (Tom, 19 nov. 2026, C-312) — « une phrase d'exemple s'affiche directement avec la bonne liaison : « d' » devant une voyelle ou un h muet, « de » sinon
+     (h aspiré compris). Sinon, c'est une faute. » LA CAUSE : la place vide lisait la liaison sur le texte TAPÉ (vide → « de », décision v20), jamais sur l'exemple
+     qu'elle montre — « de arroser mes plantes… », « de apprendre… », « de écrire… ». Aujourd'hui la liaison d'une place vide est celle de son exemple, par la même
+     règle (`_promiElide`, la même liste de h aspirés que la frappe) : au rendu, à la frappe qui vide la place (l'exemple revient), et dans l'onboarding.
+     Ce point REMPLACE « PASTILLE VIDE : « de » » (v20). */
   var elide = function(mot){
     var m = (''+(mot||'')).trim();
     if(!m) return {li:'de', cls:''};
@@ -5766,7 +5771,7 @@ window._phraseRendu = function(){ try{
     h = pl('qui', estMoi ? _prenomEx : quiAff, estMoi,
            {virgule:true, visage:true, taille:_tailleV, natCol:_natCol}) + '<br>'
       + basc + ' ' + etoile + '<br>'
-      + (function(){var _e=elide(P.titre);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exDem, !P.titre);})() + '<br>'
+      + (function(){var _e=elide(P.titre || _exDem);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exDem, !P.titre);})() + '<br>'
       + lignesFin;
   } else if(P.sens === 'chiche'){
     /* Chiche a DEUX créneaux distincts, tous deux facultatifs (choosers séparés, jamais
@@ -5783,7 +5788,7 @@ window._phraseRendu = function(){ try{
           
            {virgule:true, visage:true, taille:_tailleV, natCol:_natCol}) + '<br>';
     h += basc + ' ' + etoile + '<br>'
-      + (function(){var _e=elide(P.titre);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exChi, !P.titre);})() + '<br>';
+      + (function(){var _e=elide(P.titre || _exChi);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exChi, !P.titre);})() + '<br>';
     /* LE CRÉNEAU « AVEC » est le SECOND, celui du compagnon : deux créneaux distincts,
        jamais confondus. VIDE, IL NE MONTRE RIEN — ni le mot, ni la pastille, ni le « + ».
        C'est pour ça qu'aucun des 17 cadres ne le porte. On l'ajoute par Peaufiner, où le
@@ -5801,7 +5806,7 @@ window._phraseRendu = function(){ try{
          démonstration de la page +, et elle n'est justement PAS un Promi planté
          (cadre 74 : l'Index en porte huit, elle n'y est pas). L'app proposait
          « rendre le livre… », un titre de son ancien jeu. */
-      + (function(){var _e=elide(P.titre);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exFaire, !P.titre);})() + '<br>';
+      + (function(){var _e=elide(P.titre || _exFaire);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exFaire, !P.titre);})() + '<br>';
     if(!faireSoi){ var _perso = (P.qui && !estMoi);
       /* LE MOT DU CADRE (§5, décision Tom) : la pastille vide du destinataire s'écrit
          « qui ? », comme celle du Chiche — l'app écrivait « quelqu'un ». */
@@ -5995,7 +6000,7 @@ window._phraseChoix = function(cle, el){ try{
           var li = m.previousElementSibling;
           while(li && !li.classList.contains('ph-li') && !li.hasAttribute('data-ph')) li = li.previousElementSibling;   /* ⚑ v210 (§6) : pendant la transition de la première lettre, une copie s'intercale (sans classe) — le « de » restait figé sur le préfixe (« ha » → « d’ », « haïr » jamais « de ») */
           if(li && li.classList.contains('ph-li')){
-            var dd = v && window._promiElide ? window._promiElide(v) : 'de', el2 = dd === 'd\u2019';
+            var dd = window._promiElide ? window._promiElide(v || window._ppExempleCourant || '') : 'de', el2 = dd === 'd\u2019';   /* ⚑ v212 (C-312) : place vidée — la liaison de l'EXEMPLE qui revient */
             if(li.textContent !== dd || li.__voulu !== dd){ if(window._retour) window._retour.liaison(li, dd); else li.textContent = dd; }   /* ⚑ v203 clôture (§2) : « de » / « d’ » détracé puis tracé */
             li.classList.toggle('ph-elide', el2);
           }
@@ -39307,7 +39312,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   function doux(){ if(pageEnTrace) return false; var D=window._douceur, R=window._retour; if(!D || !D.place) return false;
     var role=etape==='prenom' ? 'prenom' : 'parole', val=role==='prenom' ? prenom : parole, v=val.trim() ? val : '', ph=document.getElementById('onbPh'), pm=ph && ph.querySelector('.onbv-pm[data-onb="'+role+'"]');
     if(!pm) return false;
-    if(role==='parole' && R){ var de=ph.querySelector('.onbv-de'), dd=(v && window._promiElide(v)==='d’') ? 'd’' : (de && /\u00a0/.test(de.textContent) ? 'de\u00a0' : 'de '); if(de && (de.textContent!==dd || (de.__voulu!=null && de.__voulu!==dd))) R.liaison(de, dd); }   /* l'espace de « de » : insécable dans la phrase composée, ordinaire sinon — la même, jamais un faux changement */
+    if(role==='parole' && R){ var de=ph.querySelector('.onbv-de'), dd=(window._promiElide(v || PH_PAROLE)==='d’') ? 'd’' : (de && /\u00a0/.test(de.textContent) ? 'de\u00a0' : 'de '); if(de && (de.textContent!==dd || (de.__voulu!=null && de.__voulu!==dd))) R.liaison(de, dd); }   /* l'espace de « de » : insécable dans la phrase composée, ordinaire sinon — la même, jamais un faux changement */
     var plein=esc(v)+(aFocus() ? '<span class="onbv-car"></span>' : ''), ex=esc(role==='prenom' ? PH_PRENOM : PH_PAROLE);
     if(D.place(pm, v, plein, ex, 'vide')){ apres(); return true; }
     if(occupe()){ var t=pm.querySelector(':scope > .v203-txt') || pm; t.innerHTML=plein; try{ if(pm.__v203masque) pm.__v203masque(); }catch(_){ } apres(); return true; }   /* la frappe n'attend jamais : elle s'écrit dans la place */
@@ -39319,7 +39324,7 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
     if(etape==='prenom'){
       ph.innerHTML='Toi, c’est <span style="white-space:nowrap">'+pastille(prenom.trim()?prenom:'', PH_PRENOM, 'prenom')+' ?</span>';
     } else {
-      var de=window._promiElide(parole);
+      var de=window._promiElide(parole.trim() ? parole : PH_PAROLE);   /* ⚑ v212 (C-312) : sans parole, la liaison de l'exemple affiché */
       ph.innerHTML='<span class="onbv-pb">Je me promets</span> <span class="onbv-de">'+(de==='d’'?'d’':'de ')+'</span>'+pastille(parole.trim()?parole:'', PH_PAROLE, 'parole');
     }
     placer();
@@ -46366,7 +46371,11 @@ input.v203-phx::-webkit-input-placeholder, textarea.v203-phx::-webkit-input-plac
       var av=vu ? liaisons(sel) : null, cp=(vu && !reduit()) ? copies(sel) : null, r=o.apply(this, arguments); try{ if(window._v203Verifie) window._v203Verifie(); }catch(_){ }
       try{ var TL=window.TraceLettres; if(av && TL && TL.trace && !reduit()){ var t=document.querySelector(sel), reste=av.slice(), apres=[];
           if(t) t.querySelectorAll('em').forEach(function(e){ if(e.closest('[data-ph],[data-np]')) return; var x=(e.textContent||'').trim(); if(!x) return; apres.push(x); var i=reste.indexOf(x);
-            if(i>=0){ reste.splice(i,1); return; } try{ var ct=TL.trace(e, null, {arme:true}); setTimeout(function(){ try{ if(ct && ct.lance) ct.lance(); }catch(_){ } }, 340); }catch(_){ } });   /* armé (la découpe vide posée tout de suite), lancé quand la phrase et le rail ont glissé à leur place (320 ms) : sinon il se traçait sous le rail qui descendait encore */
+            if(i>=0){ reste.splice(i,1); return; } try{ var ct=TL.trace(e, null, {arme:true}), pl=e.classList.contains('ph-li') ? e.parentNode && e.parentNode.querySelector('[data-ph="titre"]') : null, t0=performance.now();
+              /* ⚑ v212 (Tom, C-312) — « la phrase d'exemple s'affiche avec la bonne liaison dès sa première image » : quand l'exemple change (la bascule du sens, une
+                 réouverture), le « de » / « d’ » neuf se traçait à 340 ms, pendant que l'ANCIEN exemple se détraçait encore (≈ 750 ms) — on lisait « d’ me coucher… »
+                 ≈ 0,3 s. Il se trace maintenant quand l'exemple neuf commence le sien (la place quitte son détracé) : l'ancien « de » part avec l'ancien exemple. */
+              setTimeout(function go(){ try{ var v=pl && pl.__v200; if(v && !v.fini && (v.phase==='detrace' || v.phase==='flaques') && performance.now()-t0<2500){ setTimeout(go, 30); return; } if(ct && ct.lance) ct.lance(); }catch(_){ } }, 340); }catch(_){ } });   /* armé (la découpe vide posée tout de suite), lancé quand la phrase et le rail ont glissé à leur place (320 ms) : sinon il se traçait sous le rail qui descendait encore */
           /* ceux qui ne sont plus là */
           if(cp && t){ var dispo=apres.slice(); cp.forEach(function(q){ var j=dispo.indexOf(q.x); if(j>=0){ dispo.splice(j,1); return; } part(q); }); } } }catch(_){ }
       return r; };
