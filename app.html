@@ -5750,6 +5750,7 @@ window._phraseRendu = function(){ try{
   var _exSoi = (window._ppExemple && P.sens!=='demander' && P.sens!=='chiche' && faireSoi) ? window._ppExemple('soi') : 'reprendre la guitare';
   var _V = window._ppVar || function(s){ return s; };
   var _exDem = (window._ppExemple && P.sens==='demander') ? _V(window._ppExemple('demander'), estPluriel) : 'venir dimanche';
+  var _prenomEx = window._ppPrenom ? window._ppPrenom(P.sens) : 'Bruno-Stanislas';   /* ⚑ v211 (C-309) : le prénom de l'exemple « promets-moi » alterne */
   /* ⚑ 17 sept. : le Chiche en a trois lui aussi. « lâcher ton téléphone un soir » mesure
      312,7 px dans une pastille de 342 — il tient, mesuré à 28 px Gilbert. */
   var _exChi = (window._ppExemple && P.sens==='chiche') ? window._ppExemple('chiche') : 'dire oui pour une fois';
@@ -5762,7 +5763,7 @@ window._phraseRendu = function(){ try{
     ? 'ce que tu n\u2019as jamais os\u00e9 lui lancer\u2026' : window._ppExempleCourant;
   if(P.sens === 'demander'){
     /* le PRÉNOM ouvre : « Bruno-Stanislas, promets-moi de … » (⚑ v210, Tom, C-305 : l'exemple était « Rachel ») */
-    h = pl('qui', estMoi ? 'Bruno-Stanislas' : quiAff, estMoi,
+    h = pl('qui', estMoi ? _prenomEx : quiAff, estMoi,
            {virgule:true, visage:true, taille:_tailleV, natCol:_natCol}) + '<br>'
       + basc + ' ' + etoile + '<br>'
       + (function(){var _e=elide(P.titre);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exDem, !P.titre);})() + '<br>'
@@ -38332,8 +38333,19 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
   /* une nouvelle ouverture de la page + = un nouveau tirage */
   var cs=document.getElementById('createSheet');
   if(cs){ var ouv=cs.classList.contains('show');
-    new MutationObserver(function(){ var o=cs.classList.contains('show'); if(o===ouv) return; ouv=o; if(o) choix={}; })
+    new MutationObserver(function(){ var o=cs.classList.contains('show'); if(o===ouv) return; ouv=o; if(o){ choix={}; neuve=true; } })
       .observe(cs,{attributes:true,attributeFilter:['class']}); }
+  /* ⚑ v211 (Tom, C-309) — L'EXEMPLE « PROMETS-MOI » ALTERNE DEUX PRÉNOMS : « Bruno-Stanislas », « Fabienne-Gudule », Bruno-Stanislas… — on passe au suivant à chaque
+     RETOUR dans ce mode après un autre mode, et à chaque réouverture de la page +. Rien ne change pendant qu'on reste dans le mode (les recompositions de la phrase
+     relisent le même). Le rang est gardé d'une ouverture à l'autre (`promi_ex_prenom`). Le changement passe par la transition des places de la phrase (détracé puis tracé). */
+  var PRENOMS=['Bruno-Stanislas','Fabienne-Gudule'], neuve=true, der=null, rang=null;
+  function lit(){ if(rang==null){ var v=null; try{ v=localStorage.getItem('promi_ex_prenom'); }catch(_){ } rang=(v!=null && v!=='') ? +v : -1; if(!(rang>=0)) rang=-1; } return rang; }   /* `+null` vaut 0 : sans rang gardé, -1 (le premier sera Bruno-Stanislas) */
+  window._ppPrenom=function(sens){ lit(); var c=cs||document.getElementById('createSheet'), ouvert=!!(c && c.classList.contains('show'));
+    if(!ouvert) return PRENOMS[Math.max(0, rang)%2];
+    if(sens==='demander' && (neuve || der!=='demander')){ rang=(rang+1)%2; try{ localStorage.setItem('promi_ex_prenom', ''+rang); }catch(_){ } neuve=false; }
+    if(sens!=='demander' && neuve) neuve=false;
+    der=sens; return PRENOMS[Math.max(0, rang)%2]; };
+  window._ppPrenoms=PRENOMS;
 })();
 </script>
 <style id="lot-TRANSITIONS-V21-css">
