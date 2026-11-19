@@ -82,9 +82,22 @@ tiers : reçus vérifiés, abonnements, tableau de bord ; gratuit sous un seuil 
 vérification des reçus est à notre charge). **Recommandation : RevenueCat** — une personne seule n'a pas à tenir un serveur de reçus, et Ma Parole ! est un
 abonnement.
 **App Store Connect** (Tom) : le contrat « Apps payantes » (accords, fiscalité, coordonnées bancaires) ; l'app (identifiant de lot, p. ex. `fr.autier.promi`) ;
-cinq achats **consommables** « Soutenir » (5 · 10 · 25 · 50 · 100 €, C-217) — identifiants `fr.autier.promi.soutien.5` … `.100`, nom et description en
+dix-sept achats **consommables** « Soutenir » — un par palier, chacun son identifiant `fr.autier.promi.soutien.N` (N = le montant en euros), nom et description en
 français, capture d'écran de revue ; l'abonnement Ma Parole ! dans un groupe ; un **testeur bac à sable** (un identifiant Apple de test).
-**Google Play Console** (Tom) : le compte développeur, l'app, les mêmes cinq produits intégrés, un **testeur de licence**, la piste de **test interne**.
+**Google Play Console** (Tom) : le compte développeur, l'app, les mêmes dix-sept produits intégrés, un **testeur de licence**, la piste de **test interne**.
+
+**Les paliers « Soutenir » (C-217, C-313).** Apple n'accepte pas un montant saisi librement pour un achat intégré (règle 3.1.1) : chaque prix est un produit
+déclaré d'avance, au palier de prix le plus proche dans chaque pays.
+
+| Où dans l'app | Montant | Identifiant |
+|---|---|---|
+| la rangée (C-217) | 5 € · 10 € · 25 € · 50 € · 100 € | `fr.autier.promi.soutien.5` · `.10` · `.25` · `.50` · `.100` |
+| « Autre montant » (C-313) | 15 € · 20 € · 30 € · 40 € · 75 € | `fr.autier.promi.soutien.15` · `.20` · `.30` · `.40` · `.75` |
+| « Autre montant » (C-313) | 150 € · 200 € · 250 € · 300 € | `fr.autier.promi.soutien.150` · `.200` · `.250` · `.300` |
+| « Autre montant » (C-313) | 500 € · 750 € · 1 000 € | `fr.autier.promi.soutien.500` · `.750` · `.1000` |
+
+La liste vit aussi dans l'app (`window._soutienPaliers`, lot-V174-SOUTIEN) : c'est elle que le portage lit. Dans le prototype, aucun paiement : le toucher montre
+le merci.
 
 ## Firebase — ce qu'il faut (rien n'est créé)
 
