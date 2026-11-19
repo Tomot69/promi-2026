@@ -16939,7 +16939,7 @@ var CREMEETAT='#F7F0DE';
 #device.device:not(.light) #settingsScreen,
 
 #device.device.light #settingsScreen:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *){background:var(--c-brun09)!important}
-#device.device.light #settingsScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme95)!important}
+/* ⚑ v213 (C-314) : en clair, le fond des Réglages n'a plus qu'un propriétaire — la règle de l'Index, du Fil et de l'Aura (« LE CORPS D'ÉCRAN ») ; la crème posée ici est retirée */
 #device #settingsScreen::before{display:none!important;content:none!important}
 #device #settingsScreen>#stTrameCv{display:none!important}
 
@@ -19530,7 +19530,7 @@ var CREMEETAT='#F7F0DE';
      interdit la transparence molle, et le moodboard ne montre ni l'un ni l'autre. — */
 #device.device:not(.light) #settingsScreen,
 #device.device.light #settingsScreen:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *){background:var(--c-brun09)!important}
-#device.device.light #settingsScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme95)!important}
+/* ⚑ v213 (C-314) : en clair, le fond des Réglages n'a plus qu'un propriétaire — la règle de l'Index, du Fil et de l'Aura (« LE CORPS D'ÉCRAN ») ; la crème posée ici est retirée */
 #device #settingsScreen::before{display:none!important;content:none!important}
 #device #settingsScreen>#stTrameCv{display:none!important}
 /* — LE BLOC DU CERCLE sur les Réglages (§3.8) : quatre réglages floutés, l'encart net
@@ -19768,8 +19768,11 @@ var CREMEETAT='#F7F0DE';
 /* — LE CORPS D'ÉCRAN (§1.3) : #201908 en sombre, #EAD9B9 en clair. La trame animée sort :
      un écran qui montre des dalles de référence n'a pas de dalle en fond (CLAUDE.md §4.6). */
 /* ⚑ v207 (Tom, C-294 ; C-247 : même code) : le fond de l'Aura est EXACTEMENT celui de l'Index et du Fil — elle rejoint ces sélecteurs */
-#device #indexSheet.s4, #device #feedView.s4, #device #auraScreen.au2, .frame #auraScreen.au2{background:var(--c-brun09)!important}
-#device.light #indexSheet.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #feedView.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), .frame.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme90-2)!important}
+/* ⚑ v213 (Tom, C-314 ; C-247 : mêmes sélecteurs, même code) : les fonds de Ma Parole ! (#plusScreen) et des Réglages (#settingsScreen) sont EXACTEMENT celui de l'Index, du Fil et de l'Aura — ils rejoignent ces sélecteurs */
+#device #indexSheet.s4, #device #feedView.s4, #device #auraScreen.au2, .frame #auraScreen.au2, #device #settingsScreen, .frame #settingsScreen, #device #plusScreen, .frame #plusScreen{background:var(--c-brun09)!important}
+#device.light #indexSheet.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #feedView.s4:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), .frame.light #auraScreen.au2:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #settingsScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), .frame.light #settingsScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #plusScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), .frame.light #plusScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme90-2)!important}
+/* ⚑ v213 (C-314) : leurs encarts gardent le fond d'encart de ces pages, tel qu'il est (la crème du plateau et de la recherche de l'Index, de « PARTAGER MA PELOTE » de l'Aura) — en clair ; en sombre, l'encart y est déjà le fond (#050302) */
+#device.light #settingsScreen .scard:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), .frame.light #settingsScreen .scard:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), #device.light #plusScreen#plusScreen #pcCadre #buyYear:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)), .frame.light #plusScreen#plusScreen #pcCadre #buyYear:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){background:var(--c-creme95)!important}
 #device #indexSheet.s4>#ixTrameCv, #device #feedView.s4>#fdTrameCv{display:none!important}
 #device #indexSheet.s4 .ix-menu, #device #feedView.s4 .ix-menu{z-index:9}
 
@@ -24608,10 +24611,11 @@ var CREMEETAT='#F7F0DE';
    = **124**, le bas du plateau plus 24 d'air : la même cote que la dalle d'une fiche. */
 #device #personSheet,.frame #personSheet{padding-top:136px!important}
 
-#device #langScreen,#device #privScreen,#device #plusScreen,
-.frame #langScreen,.frame #privScreen,.frame #plusScreen{background-color:var(--c-brun09)!important}
-#device.light #langScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),#device.light #privScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),#device.light #plusScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),
-.frame.light #langScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),.frame.light #privScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),.frame.light #plusScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){
+/* ⚑ v213 (C-314) : #plusScreen (Ma Parole !) quitte ces deux règles — son fond est celui de l'Index, du Fil et de l'Aura, un seul propriétaire */
+#device #langScreen,#device #privScreen,
+.frame #langScreen,.frame #privScreen{background-color:var(--c-brun09)!important}
+#device.light #langScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),#device.light #privScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),
+.frame.light #langScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),.frame.light #privScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){
   background-color:var(--c-creme95)!important}
 /* la confidentialité peignait son texte en quasi-blanc : l'encre suit le fond, §3 */
 #device.light #privScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)),.frame.light #privScreen:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){color:var(--c-brun09)!important}
@@ -33398,7 +33402,11 @@ function openPerson(name){if(!name)return;var items=promises.filter(function(p){
   function encartReglages(){
     var op = document.getElementById('openPlusTop'); if(!op) return;
     var d = document.getElementById('device'), mot = (d && d.classList.contains('premium')) ? 'Tu es Membre Ma Parole\u00a0!' : 'Ma Parole\u00a0!';   /* v106 (Tom) : payé, les Réglages disent « Tu es Membre Ma Parole ! » */
-    var t = op.querySelector('.sc-t'); if(t && t.textContent !== mot) t.textContent = mot;   /* v105 (Tom) : la porte des Réglages se renomme « Ma Parole ! » — le chemin délibéré vers l'offre */
+    var t = op.querySelector('.sc-t'), pay = mot !== 'Ma Parole\u00a0!';
+    /* ⚑ v213 (Tom, 19 nov. 2026) : la porte dit « Découvre Ma Parole ! », « Découvre » d'une autre couleur que « Ma Parole ! » pour le mettre en valeur
+       (l'encre opposée de la pastille : la crème sur le brun en clair, le brun sur la crème en sombre — aucune couleur neuve, C-204). Impératif VOULU par Tom (A3, exception nommée). */
+    if(t && !pay && t.textContent !== 'Découvre Ma Parole\u00a0!') t.innerHTML = '<span class="sc-dec">Découvre</span> Ma Parole\u00a0!';
+    else if(t && pay && t.textContent !== mot) t.textContent = mot;   /* v105 (Tom) : la porte des Réglages se renomme « Ma Parole ! » — le chemin délibéré vers l'offre */
   }
   var _sp = window.setPremium;
   if(typeof _sp === 'function'){
@@ -40911,6 +40919,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 #device.premium #settingsScreen .s2-cercle.v16-seul>.set-cercle{display:flex!important;cursor:default!important;pointer-events:none!important}
 /* la mention est plus longue que « Ma Parole ! » : le plafond de 62 % la faisait déborder à droite, hors du centre (mesuré 250 px d'encre dans 185) */
 #device#device.premium #settingsScreen #openPlusTop .sc-t{max-width:none!important}
+/* ⚑ v213 (Tom) : « Découvre » dans la porte « Découvre Ma Parole ! » — l'encre opposée de la pastille, jamais le lilas de « Ma Parole ! » */
+#device.device #settingsScreen #openPlusTop .sc-t .sc-dec{color:var(--c-brun09)!important;-webkit-text-fill-color:var(--c-brun09)!important}
+#device.device.light #settingsScreen #openPlusTop .sc-t .sc-dec:not(:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *)){color:var(--c-creme95)!important;-webkit-text-fill-color:var(--c-creme95)!important}
 </style>
 <style id="lot-V103-ENTREE-PLUS-css">
 /* ⚑ v103 (Tom : « des flashs entre le + et le choix de la nature ») — la page + ENTRAIT EN FONDU (0 → 1 en 0,4 s,
