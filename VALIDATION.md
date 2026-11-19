@@ -2,7 +2,7 @@
 
 **Validés en bloc par Tom (17 nov.)** : les 68 chantiers « validés par l'usage » et les 20 de méthode, et C-288, C-289 — 90 au registre.
 **Devenus des spécifications de tests automatiques de la vraie app** : 42 chantiers d'états rares (ARCHITECTURE.md, « Les tests ») — marqués au registre.
-**Reste : 18 points à vérifier par Tom** (11 à 14 : la séance du 17 nov. ; 15 à 18 : v209, dans l'app « Promi preuve »), une ligne chacun (13 chantiers : trois lignes en portent deux). Adresse : `http://<IP>:8752/app.html`.
+**Reste : les points à vérifier par Tom** (11 à 14 : la séance du 17 nov. ; 16, 17 et 19 à 24 : v210, dans l'app « Promi preuve » ; 15 et 18 validés le 18 nov.), une ligne chacun (13 chantiers : trois lignes en portent deux). Adresse : `http://<IP>:8752/app.html`.
 
 | # | Chantier | Comment y arriver | Ce qu'on doit voir |
 |---|---|---|---|
@@ -24,3 +24,9 @@
 | 16 | C-300 | Dans « Promi preuve », ne plus toucher l'iPhone pendant 75 s, regarder la veille quelques minutes | le fond couvre tout l'écran ; le logo va jusqu'aux bords et aux coins du bas, rebondit sous l'encoche sans jamais la traverser |
 | 17 | C-297 | Dans « Promi preuve », tenir une parole, attendre la fin du vert, défiler la fiche lentement puis d'un coup, vers le bas puis vers le haut | le trait s'accroche sous le bandeau et s'aplatit, jamais au-dessus ni en dessous (le relevé part au Mac) |
 | 18 | §4 | Dans « Promi preuve », quitter l'app (retour à l'écran d'accueil de l'iPhone) et attendre une minute | la notification arrive ; revenu avant la minute, elle n'arrive pas |
+| 19 | C-301 | Ouvrir l'Index, le Fil, l'Aura, les Réglages, Partager, le Studio | le même encart partout (hauteur, marges, titre, X à la même place) ; l'Index exactement comme le Fil, sans compteur ; le « i » de l'Aura centré |
+| 20 | C-300 | La veille quelques minutes, en clair et en sombre | le logo 1,5 fois plus rapide, toujours aux couleurs vives exactes de la palette |
+| 21 | C-302 | L'Aura, regarder la Pelote une minute ou deux | la direction de rotation change, toujours en douceur, jamais d'un coup |
+| 22 | C-303 | Page + d'un Chiche, taper un texte puis Retour | aucun rectangle ne paraît ni ne disparaît d'un coup ; « DÉJÀ PROMIS » descend avec le clavier |
+| 23 | C-304 | Page + (Chiche, Promi « à qui ? », Cercle), toucher la place du destinataire | pendant que le menu se déroule, la phrase passe à « moi » ; fermé sans rien changer, elle reste « moi » ; une personne ajoutée, son nom |
+| 24 | C-305, §6 | Page + d'un Promi en « promets-moi » ; taper « haïr », « honte », « aller », « oui » puis effacer | « Bruno-Stanislas, promets-moi de … » tient ; « de » / « d’ » juste à chaque mot, en se détraçant puis se traçant |

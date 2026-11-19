@@ -2992,7 +2992,7 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
       <div class="sh-actions"><button class="sh-share sh-invite" id="shInviteBtn">Inviter</button><button class="sh-share" id="shShareBtn">↗&nbsp;&nbsp;Partager</button></div><div class="sh-invite-note" id="shInviteNote" hidden></div></div></div><div class="sh-bot"><div class="sh-foot"><div class="sh-fmtx"><span class="sh-ic" id="shTrayBtn">⋯</span><span id="shFmtTxt">Plein écran · 9:19,5</span></div><button class="sh-go" id="shGo" aria-label="Partager">↗</button></div>
       </div>
     </div>
-    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span><span class="ix-count" id="ixCount"></span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i></i></div><div class="ix-mi" data-tri="personne">Par personne<i></i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i></i></div><div class="ix-mi" data-filt="suspens">En suspens<i></i></div><div class="ix-mi" data-filt="promi">Promi<i></i></div><div class="ix-mi" data-filt="nuees">Cercles<i></i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i></i></div><div class="ix-mi" data-filt="demandes">Demandes<i></i></div></div></div><div id="indexList"></div></div>
+    <div class="sheet" id="indexSheet"><canvas id="ixTrameCv" aria-hidden="true"></canvas><div class="closeb" data-close>X</div><h2 class="scr-ti">Inde<span class="ti-x">x</span></h2><div class="sub" id="ixSub" style="display:none"></div><div class="ix-bar"><div class="ix-srch"><input id="ixSearch" class="ix-search" placeholder="Rechercher un Promi, un Cercle…" autocomplete="off"></div><button class="ix-tri" id="ixTriBtn" aria-label="Trier et filtrer">⇅</button></div><div class="ix-sort" id="ixSort" style="display:none"><button data-s="recent" class="on">Récent</button><button data-s="personne">Personne</button><button data-s="nuee">Cercle</button><button data-s="brouillon">Gardés de côté</button><span class="fd-rowdot" id="ixSortDot" style="display:none"></span><div class="chev" id="ixSortChev">›</div></div><div class="ix-menu" id="ixMenu"><div class="ix-menu-p"><div class="ix-mg">TRIER</div><div class="ix-mi on" data-tri="recent">Récents<i></i></div><div class="ix-mi" data-tri="personne">Par personne<i></i></div><div class="ix-mi" data-tri="nuee">Par Cercle<i></i></div><div class="ix-mg">NE MONTRER QUE</div><div class="ix-mi on" data-filt="tous">Tout<i></i></div><div class="ix-mi" data-filt="suspens">En suspens<i></i></div><div class="ix-mi" data-filt="promi">Promi<i></i></div><div class="ix-mi" data-filt="nuees">Cercles<i></i></div><div class="ix-mi" data-filt="brouillons">Gardés de côté<i></i></div><div class="ix-mi" data-filt="demandes">Demandes<i></i></div></div></div><div id="indexList"></div></div>
 
     <!-- v104 (Tom, 30 sept. 2026) : « Arranger la Toile » supprimé — la pastille, l'icône, la fonction, la feuille. « On n'en veut pas. » -->
 
@@ -5761,8 +5761,8 @@ window._phraseRendu = function(){ try{
   window._ppInviteCourante = (P.sens === 'chiche')
     ? 'ce que tu n\u2019as jamais os\u00e9 lui lancer\u2026' : window._ppExempleCourant;
   if(P.sens === 'demander'){
-    /* le PRÉNOM ouvre : « Rachel, promets-moi de … » */
-    h = pl('qui', estMoi ? 'Rachel' : quiAff, estMoi,
+    /* le PRÉNOM ouvre : « Bruno-Stanislas, promets-moi de … » (⚑ v210, Tom, C-305 : l'exemple était « Rachel ») */
+    h = pl('qui', estMoi ? 'Bruno-Stanislas' : quiAff, estMoi,
            {virgule:true, visage:true, taille:_tailleV, natCol:_natCol}) + '<br>'
       + basc + ' ' + etoile + '<br>'
       + (function(){var _e=elide(P.titre);return '<em class="ph-li'+_e.cls+'">'+_e.li+'</em> ' + pl('titre', P.titre || _exDem, !P.titre);})() + '<br>'
@@ -5992,6 +5992,7 @@ window._phraseChoix = function(cle, el){ try{
              pastille (.ph-li) ; il n'était recalculé qu'au rendu complet (à la sortie du champ) — on lisait « de aller ».
              Même règle, même propriétaire que le rendu : window._promiElide (pastille vide → « de »). */
           var li = m.previousElementSibling;
+          while(li && !li.classList.contains('ph-li') && !li.hasAttribute('data-ph')) li = li.previousElementSibling;   /* ⚑ v210 (§6) : pendant la transition de la première lettre, une copie s'intercale (sans classe) — le « de » restait figé sur le préfixe (« ha » → « d’ », « haïr » jamais « de ») */
           if(li && li.classList.contains('ph-li')){
             var dd = v && window._promiElide ? window._promiElide(v) : 'de', el2 = dd === 'd\u2019';
             if(li.textContent !== dd || li.__voulu !== dd){ if(window._retour) window._retour.liaison(li, dd); else li.textContent = dd; }   /* ⚑ v203 clôture (§2) : « de » / « d’ » détracé puis tracé */
@@ -24911,7 +24912,7 @@ var CREMEETAT='#F7F0DE';
       b.style.setProperty('width',  REF.width  + 'px', 'important');
       /* ⚑ Q213 · L'INDEX PORTE « N paroles · N Nuées » SOUS SON TITRE : son plateau fait 88 (rayon 44, h ≤ 94,5).
          `recale` est LE propriétaire de cette cote (§7) : l'exception s'écrit ici, pas dans une règle qui perdrait. */
-      b.style.setProperty('height', ((sc.id === 'indexSheet') ? 88 : REF.height) + 'px', 'important');
+      b.style.setProperty('height', REF.height + 'px', 'important');   /* ⚑ v210 (Tom, C-301) : un seul encart, 60 pt partout — l'Index n'a plus de compte (retiré en v89) ni d'exception */
       b.style.setProperty('max-width','none','important');
       b.style.setProperty('min-width','0','important');
       b.style.setProperty('box-sizing','border-box','important');
@@ -26039,7 +26040,7 @@ var CREMEETAT='#F7F0DE';
          la mordait d'1 pt. AUJOURD'HUI : la place du X entre dans la clé (le titre se réajuste quand le X est posé), et le titre s'arrête 4 pt avant la
          zone de toucher du X. Les autres titres sont inchangés (mesuré). */
       var _cbx=b.querySelector('.closeb'), _cbr=_cbx?_cbx.getBoundingClientRect():null;
-      var _cleT = ((document.fonts&&document.fonts.status)||'')+'|'+t.textContent+'|'+b.clientWidth+'|'+(b.closest('.screen,.sheet,.poster')||{}).id+'|'+getComputedStyle(t).fontFamily+'|'+(_cbr?Math.round(_cbr.left-r.left)+','+Math.round(_cbr.width):'');
+      var _cleT = ((document.fonts&&document.fonts.status)||'')+'|'+t.textContent+'|'+b.clientWidth+'|'+(b.closest('.screen,.sheet,.poster')||{}).id+'|'+getComputedStyle(t).fontFamily+'|'+(_cbr?Math.round(_cbr.left-r.left)+','+Math.round(_cbr.width):'')+'|'+(window._ENCART&&window._ENCART.page(b)?'E'+window._ENCART.T:'');
       if(t.__ajCle === _cleT && t.style.getPropertyValue('font-size') === t.__ajFs) return;
       /* ⚑ v36 (Tom : « INDEX plus gros, comme les autres ») — LA PLACE SE MESURE DANS L'UNITÉ DU TITRE. `scrollWidth` est
          en pixels de mise en page ; `getBoundingClientRect` suit la mise à l'échelle de l'appareil. Dès que l'app est
@@ -26076,8 +26077,11 @@ var CREMEETAT='#F7F0DE';
          taille que LEUR plateau autorise. Studio et Fil ne bougent pas. */
       var _v20 = !!b.closest('#shareScreen,#settingsScreen,#indexSheet,#auraScreen') && !t.classList.contains('cs-mark')
                  && /^\s*["']?PromiLate/i.test(getComputedStyle(t).fontFamily);
-      if(_v20){ fs=35; if(cb) dispo+=2; }   /* air 16 : à 12, « Réglages » venait à 8 px du ✕ à l'œil */
-      if(cb){ var _tl=(t.getBoundingClientRect().left-r.left)/kE, _zl=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl>_tl+40) dispo=Math.min(dispo, _zl-_tl-4); }   /* v165 (Q585) : 4 pt avant la zone de toucher du X */
+      if(_v20){ fs=35; if(cb) dispo+=2; }
+      /* ⚑ v210 (Tom, C-301) — UN SEUL ENCART : le titre d'une page prend la taille commune (window._ENCART.T, 34 px — la plus grande où « PARTAGER », le plus long, tient avant le X) ; la boucle ne rétrécit que ce qui ne tiendrait pas. */
+      if(window._ENCART && window._ENCART.page(b)){ fs=window._ENCART.T; }   /* air 16 : à 12, « Réglages » venait à 8 px du ✕ à l'œil */
+      if(cb){ var _tl=(t.getBoundingClientRect().left-r.left)/kE, _zl=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl>_tl+40) dispo=Math.min(dispo, _zl-_tl-4); }
+      if(cb && window._ENCART && window._ENCART.page(b)){ var _tl2=(t.getBoundingClientRect().left-r.left)/kE, _zl2=(cb.getBoundingClientRect().left-r.left)/kE; if(_zl2>_tl2+40) dispo=_zl2-_tl2-4; }   /* v210 (C-301) : la place d'un titre de page va jusqu'à 4 pt de la zone du X, et rien d'autre */   /* v165 (Q585) : 4 pt avant la zone de toucher du X */
       /* ⚠ EN `important`, sinon la règle d'origine du titre reprend la main : un style
          en ligne SANS important perd contre un `!important` de feuille. */
       t.style.setProperty('font-size',fs+'px','important');
@@ -26103,6 +26107,7 @@ var CREMEETAT='#F7F0DE';
     _derT=t;
     try{ if(window._encartHaut) window._encartHaut(); }catch(_){ }
     try{ ajusteTitres(); }catch(_){ }
+    try{ if(window._encartPose) window._encartPose(); }catch(_){ }   /* v210 (C-301) : la place du titre suit sa taille, dans la même passe */
   }
   [0,180,500,1000,2000].forEach(function(d){ setTimeout(tout,d); });
   document.addEventListener('click',function(){ [120,340,700].forEach(function(d){setTimeout(function(){ (window._apresMouvement||function(f){f();})(tout); },d);}); },true);
@@ -32172,6 +32177,37 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     return !!t && !SC.contains(t);
   }
   function borne(t){ return Math.max(-G.TANGMAX, Math.min(G.TANGMAX, t)); }
+  /* ⚑ v210 (Tom, 18 nov. 2026, C-302) — « PARFOIS LA ROTATION CHANGE BRUSQUEMENT DE DIRECTION VERTICALEMENT. Des changements de direction, oui, jamais secs : l'axe
+     dérive doucement vers une orientation tirée au hasard (slerp), puis une autre ; la vitesse reste continue, la moyenne celle de C-298 ; durées et cibles au
+     hasard. » LA CAUSE : au repos la Pelote était rendue une fois et tournée À PLAT par le compositeur (v203, C-275 : un tour autour de l'axe de la vue) ; au moindre
+     geste, ou quand une trace s'inscrivait, elle repassait au rendu 3D qui tourne autour de l'axe VERTICAL — sur les côtés, le mouvement passait d'un coup du
+     vertical à l'horizontal, puis l'inverse ; et `tourSiNeuf` posait une vitesse verticale d'un coup.
+     AUJOURD'HUI, UN SEUL MOUVEMENT : la vitesse angulaire ω = vitesse × axe, l'axe pris dans le repère de la vue (x : l'inclinaison `tan`, y : le tour `lac`, z : le
+     tour à plat du calque `RA.th`, que le geste sait déjà défaire). L'axe passe d'une orientation à la suivante par un slerp lissé (départ et arrivée à vitesse
+     nulle), en 8 à 18 s ; la cible est tirée à 30–80° de l'axe du moment (jamais une inversion), sa part d'inclinaison rappelée vers le centre (la vue s'incline au
+     plus de ±1,15) ; la vitesse varie doucement entre 0,85 et 1,15 × celle de C-298 (un tour en 66,7 s). La Pelote est rendue à chaque image (la carte graphique) :
+     le calque ne tourne plus seul. « Réduire les animations » : immobile. `window._peloteDerive.simule(s)` rejoue la même loi pour le juge. */
+  function Derive(al){ var D={ax:[0,0.82,0.57], de:null, vers:null, t:0, dur:1, f:1, fDe:1, fVers:1, al:al||Math.random};
+    function norme(v){ var n=Math.hypot(v[0],v[1],v[2])||1; return [v[0]/n,v[1]/n,v[2]/n]; }
+    function angle(a,b){ return Math.acos(Math.max(-1,Math.min(1,a[0]*b[0]+a[1]*b[1]+a[2]*b[2]))); }
+    function slerp(a,b,u){ var o=angle(a,b); if(o<1e-6) return a.slice(); var s=Math.sin(o), p=Math.sin((1-u)*o)/s, q=Math.sin(u*o)/s; return norme([a[0]*p+b[0]*q, a[1]*p+b[1]*q, a[2]*p+b[2]*q]); }
+    function cible(tan){ for(var k=0;k<60;k++){ var z=D.al()*2-1, th=D.al()*6.283185307, r=Math.sqrt(1-z*z), v=[r*Math.cos(th), r*Math.sin(th), z];
+        v[0]=Math.max(-0.45, Math.min(0.45, v[0]*0.45 - 0.55*(tan||0)/G.TANGMAX)); v=norme(v);   /* l'inclinaison, rappelée vers le centre */
+        var o=angle(v, D.ax); if(o>0.52 && o<1.40) return v; }
+      return norme([-(tan||0)/G.TANGMAX*0.3, D.ax[1]+0.3, D.ax[2]-0.3]); }
+    function suivante(tan){ D.de=D.ax.slice(); D.vers=cible(tan); D.t=0; D.dur=8+D.al()*10; D.fDe=D.f; D.fVers=0.85+D.al()*0.30; }
+    D.pas=function(dt, tan){ if(!D.vers || D.t>=D.dur) suivante(tan); D.t=Math.min(D.dur, D.t+dt); var u=D.t/D.dur, e=u*u*(3-2*u);
+      D.ax=slerp(D.de, D.vers, e); D.f=D.fDe+(D.fVers-D.fDe)*e;
+      var w=G.AUTO*D.f, wx=w*D.ax[0];
+      /* à l'approche de la borne d'inclinaison, la part qui l'y pousse s'efface en douceur (jamais l'arrêt sec de `borne`) */
+      var tb=Math.abs(tan||0)/G.TANGMAX; if(tb>0.6 && wx*(tan||0)>0) wx*=Math.max(0, 1-Math.pow((tb-0.6)/0.4, 2));
+      return {tan:wx, lac:w*D.ax[1], roll:w*D.ax[2], ax:D.ax.slice(), w:w}; };
+    return D; }
+  var DRV=Derive(), DRW={tan:0, lac:G.AUTO, roll:0};
+  window._peloteDerive={ etat:function(){ return {ax:DRV.ax, f:DRV.f, w:DRW}; },
+    simule:function(sec, dt, graine){ var a=(graine>>>0)||12345, al=function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; };
+      var D=Derive(al), tan=0.32, L=[]; dt=dt||1/60; for(var t=0;t<sec;t+=dt){ var W=D.pas(dt, tan); tan=borne(tan+W.tan*dt); L.push([+W.tan.toFixed(7), +W.lac.toFixed(7), +W.roll.toFixed(7), +tan.toFixed(5)]); } return L; } };
+  function poseRoll(){ if(ROT) ROT.style.setProperty('transform','rotate('+(RA.th%360)+'deg)'); }
   function majEmp(dt){
     if(!EMP) return;
     var now=performance.now();
@@ -32215,8 +32251,11 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
       if(!V.vlac && !V.vtan) V.tau=G.TAU;
       /* `fige` n'existe que pour le juge : comparer deux images à vue ÉGALE, sans que la
          rotation se mêle de la mesure. Le produit ne l'appelle jamais. */
-      if(!PEL.fige){ V.lac+=(G.AUTO+V.vlac)*dt; V.tan=borne(V.tan+V.vtan*dt); }
-      V.om=Math.sqrt((G.AUTO+V.vlac)*(G.AUTO+V.vlac)+V.vtan*V.vtan);
+      if(V.rampe){ V.rampe.t+=dt; var _u=Math.min(1, V.rampe.t/V.rampe.d), _e=_u*_u*(3-2*_u); V.vlac=V.rampe.vl*_e; V.vtan=V.rampe.vt*_e; if(_u>=1) V.rampe=null; }   /* v210 (C-302) : le tour d'une parole neuve part en douceur */
+      var _red=false; try{ if(!DRV.mq) DRV.mq=matchMedia('(prefers-reduced-motion: reduce)'); _red=DRV.mq.matches; }catch(_){ }
+      DRW=(PEL.fige||_red) ? {tan:0, lac:0, roll:0} : DRV.pas(dt, V.tan);
+      if(!PEL.fige){ V.lac+=(DRW.lac+V.vlac)*dt; V.tan=borne(V.tan+(DRW.tan+V.vtan)*dt); RA.th+=DRW.roll*180/Math.PI*dt; poseRoll(); }
+      V.om=Math.sqrt((DRW.lac+V.vlac)*(DRW.lac+V.vlac)+(DRW.tan+V.vtan)*(DRW.tan+V.vtan)+DRW.roll*DRW.roll);
     }
     V.lacAv=V.lac;
     majEmp(dt);
@@ -32231,9 +32270,10 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
        depuis l'angle où elle était (le geste est ramené dans son repère) ; revenue au repos, la rotation repart en douceur. Un changement (une trace inscrite, un tirage, un
        palier, le thème) la repeint une fois, sans arrêter la rotation. */
     var calme=!DG.on && !V.vlac && !V.vtan && !EMP && !FILE.length && !ATTENTE.length && !PEL.fige;
-    if(calme && !PEL.fige) V.lac-=G.AUTO*dt;   /* au repos, la vue 3D ne tourne plus (c'est le calque) */
+    /* v210 (C-302) : plus de rotation à plat au repos — l'axe dérive, la Pelote est rendue à chaque image ; ne s'arrête que figée (le juge) */
+    calme=calme && (PEL.fige || (!DRW.lac && !DRW.tan && !DRW.roll));
     var Sx=semis(), cleR=[Sx.__stCle, TVER, PEL.palier, clair()?1:0, CV.width, V.lac.toFixed(4), V.tan.toFixed(4)].join('|');
-    if(calme && PEL.rCle===cleR && PEL.peints>0){ rotLance(); return; }
+    if(calme && PEL.rCle===cleR && PEL.peints>0) return;   /* v210 (C-302) : plus de calque qui tourne seul */
     if(!calme) rotArrete();
     PEL.souffleT=(PEL.souffleT==null ? -SOUFFLE.DEPART : PEL.souffleT)+Math.min(0.5, dtR);   /* v117 : le souffle n'avance que quand on la voit — au TEMPS RÉEL (§8) : borné à 0,1 s comme la rotation, il ralentissait sous charge (WebKit, 150–250 ms par image : sommet mesuré à 8,2 s au lieu de 4,6) ; la borne de 0,5 s ne sert qu'après une pause */
     var S=semis(), av=S.__stCle, t0=performance.now();
@@ -32365,7 +32405,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
   }
   /* ⚑ v141 (Tom, C-083) — le sens où la face visible se déplace, à l'écran, dosé par la vitesse : la rotation de repos (un tour en 100 s) couche à
      peine les poils du bord (0,18), un lancer les couche franchement (jusqu'à 0,9). Vue figée : rien. */
-  function tour(){ if(PEL.fige) return null; var wl=(DG.on?0:G.AUTO)+V.vlac, wt=V.vtan, w=Math.sqrt(wl*wl+wt*wt); if(w<1e-4) return null;
+  function tour(){ if(PEL.fige) return null; var wl=(DG.on?0:DRW.lac)+V.vlac, wt=(DG.on?0:DRW.tan)+V.vtan, w=Math.sqrt(wl*wl+wt*wt); if(w<1e-4) return null;
     var s=Math.min(1, w/1.2), A=0.18+0.72*s; return [A*wl/w, -A*wt/w]; }
   function relisse(){ var av=TRACES; TRACES=[]; ATTENTE=[]; TVER++; lsSet('promi_pelote_traces', []); retouche(av, TRACES); }
   function gestesBoule(){
@@ -32544,7 +32584,7 @@ try{ window.PeloteMoteur={peintGL:peintGL, glDispo:glDispo, rampeVelours:rampeVe
     if(vus===null || D.n<=vus || !PEL.iles || !PEL.iles.derniere) return;
     var c=PEL.iles.derniere, lacT=Math.atan2(-c[0], c[2]), tanT=Math.atan2(c[1], Math.sqrt(c[0]*c[0]+c[2]*c[2]));
     var dl=((lacT-V.lac)%6.283185307+6.283185307)%6.283185307; if(dl<3.14159) dl+=6.283185307;
-    V.tau=G.TOUR_TAU; V.vlac=dl/G.TOUR_TAU; V.vtan=(borne(tanT)-V.tan)/G.TOUR_TAU; PEL.tour=D.n;
+    V.tau=G.TOUR_TAU; V.rampe={vl:dl/G.TOUR_TAU, vt:(borne(tanT)-V.tan)/G.TOUR_TAU, t:0, d:0.7}; PEL.tour=D.n;   /* v210 (C-302) : la vitesse monte en 0,7 s, jamais d'un coup */
   }
 
   function publie(){
@@ -34731,17 +34771,7 @@ window._petiteToile=function(g,A,Lr,ids){ try{
 /* ⚑ L'ENTÊTE DE L'INDEX PORTE « N paroles · N Nuées » SOUS LE TITRE (Q213). Sur une ligne, le compte débordait de 26 px
    sur ✕ FERMER (mesuré) : le plateau passe à 88 (rayon 44, h ≤ 94,5), la barre à 144, la liste à 232 — l'air sous le
    plateau reste 16, celui sous la barre 36. L'Index seulement : le Fil garde son entête. Écrit en DERNIER. */
-#device #indexSheet.s4 .enh{height:88px!important;border-radius:44px!important}
-#device #indexSheet.s4 .enh .enh-t{position:absolute!important;left:26px!important;top:12px!important;overflow:visible!important}
-#device #indexSheet.s4 .enh .enh-t .ix-count{position:absolute!important;left:0!important;top:43px!important;margin:0!important;
-  font-family:var(--f-texte)!important;font-weight:500!important;font-size:13px!important;letter-spacing:.02em!important;
-  line-height:16px!important;white-space:nowrap!important;color:var(--c-brun09)!important;-webkit-text-fill-color:var(--c-brun09)!important}
-#device:not(.light) #indexSheet.s4 .enh .enh-t .ix-count,
-#device.light #indexSheet.s4 .enh .enh-t .ix-count:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *){color:var(--c-creme95)!important;-webkit-text-fill-color:var(--c-creme95)!important}
-#device #indexSheet.s4 .enh{justify-content:flex-end!important;align-items:center!important}   /* ✕ FERMER reste dans le flux de `lot-ENCART-HAUT` (son propriétaire) : il se range à droite, centré sur les 88 */
-#device #indexSheet.s4>.ix-bar{top:144px!important}
-#device #indexSheet.s4>#indexList{top:232px!important}
-#device #indexSheet.s4>.ix-sort{top:206px!important}
+/* ⚑ v210 (Tom, C-301) — RETIRÉ : le plateau de 88, le titre posé à part, la barre à 144, la liste à 232. L'Index est le Fil : même encart, même barre, mêmes places. */
 </style>
 <style id="lot-NUEE-ENTREE-css">
 /* ⚑ « PLANTER DANS LA NUÉE » — LA DERNIÈRE LIGNE DU FIL (Q213). Pilule 342 × 62 (rayon 31), trait 2 couleur du corps,
@@ -39118,7 +39148,9 @@ window._nt = function(c){ var T=window._NATTXT||{}, M={'#82AEF8':T.promi,'#FFB8D
 
   /* ── L'ÉLISION (Tom, 22 sept.) : « de » devient « d’ » selon le PREMIER MOT tapé ──
      normalisé : minuscules, accents retirés. Promi et Chiche, jamais la Nuée. */
-  var H_ASPIRE={hurler:1,hair:1,hausser:1,heurter:1,hisser:1,hater:1,harceler:1,hacher:1,hanter:1,heler:1};
+  var H_ASPIRE={hurler:1,hair:1,hausser:1,heurter:1,hisser:1,hater:1,harceler:1,hacher:1,hanter:1,heler:1,
+    /* ⚑ v210 (Tom, §6) : « haïr, hurler, hausser, honte… » — la petite liste complétée (normalisée : sans accents) ; un h muet n'y est jamais (« d'habiter », « d'hiver ») */
+    honte:1,haine:1,hasard:1,hasarder:1,haleter:1,happer:1,harasser:1,hennir:1,herisser:1,hocher:1,huer:1,hululer:1,hurle:1,hais:1,hait:1,hate:1,haut:1,hors:1,huit:1,heros:1,hockey:1,hacher:1,harponner:1,heurte:1};
   function norme(s){ return (''+(s||'')).toLowerCase().replace(/æ/g,'ae').replace(/œ/g,'oe')
       .normalize('NFD').replace(/[\u0300-\u036f]/g,''); }
   window._promiElide=function(txt){
@@ -44252,7 +44284,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 (function(){
   var Q=new URLSearchParams(location.search);
   /* ⚑ v183c (Tom, 7 nov. 2026, C-249 : « la veille DVD arrive trop tôt — passe le délai de 60 s à 75 s ; le reste est inchangé ») */
-  var R=window._veilleRegle={DELAI:(Q.has('veille') && +Q.get('veille')>0 ? +Q.get('veille') : 75)*1000, VITESSE:61.2,   /* ⚑ v179a (Tom, C-232) : 60 s, quelle que soit l'adresse ; `?veille=` seulement s'il est dans l'adresse du moment, jamais mémorisé · v175 : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
+  var R=window._veilleRegle={DELAI:(Q.has('veille') && +Q.get('veille')>0 ? +Q.get('veille') : 75)*1000, VITESSE:91.8,   /* ⚑ v210 (Tom, C-300 suite) : ×1,5 (61,2 → 91,8 pt/s) */   /* ⚑ v179a (Tom, C-232) : 60 s, quelle que soit l'adresse ; `?veille=` seulement s'il est dans l'adresse du moment, jamais mémorisé · v175 : 45 s ; v174 : 90 s ; v167 (Tom, C-181 §3) : le délai repasse à 60 s (120 en v166) ; v166 : +2 % de vitesse (60 → 61,2 pt/s) */
      VERROU:10*60*1000, SANS_COIN:60*1000, TOL:2, LARG:140,
     AMANDE:'#8FE08F', COIN_FORCE:Q.get('coin')==='1'};   /* VITESSE, TOL, LARG en pt de l'app : convertis à l'échelle de l'appareil (`k`) */
   /* les bancs (navigateur piloté, ou `banc_tom`, qui masque `webdriver` et pose `promi_veille_off`) restent souvent plus de 60 s sans toucher : la veille y
@@ -44335,8 +44367,11 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
   function hex(c){ return '#'+c.slice(0,3).map(function(v){ return ('0'+Math.round(v).toString(16)).slice(-2); }).join(''); }
   function rgb(h){ return [1,3,5].map(function(i){ return parseInt(h.substr(i,2),16); }); }
   function tons(F){ var P=[], L=[]; try{ P=(window.Toile && Toile.cols ? Toile.cols() : []).map(hex); }catch(_){ }
-    P.forEach(function(h){ if(contraste(h, F)>=3) L.push(h); });
-    if(L.length<2 && window._teinte && _teinte.ajuste){ L=[]; P.forEach(function(h){ try{ var a=hex(_teinte.ajuste(rgb(h), rgb(F), 3)); if(L.indexOf(a)<0 && contraste(a, F)>=3) L.push(a); }catch(_){ } }); }   /* aucun ton lisible : la teinte gardée, amenée à 3:1 */
+    /* ⚑ v210 (Tom, C-300 suite) — « UNIQUEMENT LES COULEURS EXACTES DE LA PALETTE, VIVES, À PLEINE OPACITÉ. » Plus aucun ton dérivé (l'ancien repli amenait la
+       teinte à 3:1 : une couleur qui n'est pas dans la palette — retiré, C-204). Un ton qui ne se lit pas sur le fond (moins de 3:1) est sauté ; s'il en reste
+       moins de deux, les tons EXACTS de la palette, tous. */
+    P.forEach(function(h){ if(contraste(h, F)>=3 && L.indexOf(h)<0) L.push(h); });
+    if(L.length<2){ L=[]; P.forEach(function(h){ if(L.indexOf(h)<0) L.push(h); }); }
     if(!L.length) L=[contraste('#F7F0DE', F)>=3?'#F7F0DE':'#201908']; return L; }
   function lum(h){ var v=[1,3,5].map(function(i){ var c=parseInt(h.substr(i,2),16)/255; return c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4); }); return 0.2126*v[0]+0.7152*v[1]+0.0722*v[2]; }
   function contraste(a, b){ var x=lum(a), y=lum(b); return (Math.max(x,y)+0.05)/(Math.min(x,y)+0.05); }
@@ -44366,7 +44401,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var C=cadre(), F=fond(), couche=document.createElement('div'); couche.id='promiVeille'; couche.setAttribute('aria-label','Veille'); couche.setAttribute('role','presentation');
     couche.style.cssText='position:fixed;z-index:2147483000;overflow:hidden;background:transparent;touch-action:none;margin:0;padding:0'; place(couche, C);
     document.body.appendChild(couche);
-    var T=tons(F), AM=R.AMANDE; if(contraste(AM, F)<3 && window._teinte && _teinte.ajuste){ try{ AM=hex(_teinte.ajuste(rgb(AM), rgb(F), 3)); }catch(_){ } }   /* l'amande, amenée à 3:1 si le fond l'éteint (en clair) */
+    var T=tons(F), AM=R.AMANDE;   /* ⚑ v210 (C-300 suite) : l'amande exacte, #8FE08F — plus jamais amenée à 3:1 */
     var V=actif={amande:AM, couche:couche, t0:performance.now(), tons:T, fond:F, i:0, couleurs:[], coins:[], rebonds:0, reduit:reduit(), passage:null, fini:false, C:C, al:hasard((Date.now()^0x5bd1e995)>>>0)};
     V.logo=logo(T[0], C.k); V.logo.style.visibility='hidden'; couche.appendChild(V.logo); V.couleurs.push(T[0]); V.couleur=T[0];
     var B=V.B=bornesDe(C, V.logo.__w, V.logo.__h); V.s={x:(B.x0+B.x1)/2, y:(B.y0+B.y1)/2, dx:Math.SQRT1_2, dy:-Math.SQRT1_2};
@@ -44823,7 +44858,14 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
       var e=window._ppEcran(), c=cs(), ph=phraseEl(); if(!e || !e.ouvert || e.etat!=='plate' || !ph) return; var K=kDev(), av={};
       cibles().forEach(function(x){ av[x[0]]=hautDe(x[1],K); });
       MV.att={t:performance.now(), base:e.base+(window._ppHz?(+window._ppHz(e)||0):0), amp:e.amp, av:av, fs:tailleDe(ph), image:copie($('csTrameCv')), deja:[].map.call(c.querySelectorAll('.ppo-deja, .ppo-dejarow'), function(n){ return n.getBoundingClientRect().height?fige(n,K):null; }).filter(Boolean)};
+      /* ⚑ v210 (Tom, C-303) — « UN RECTANGLE APPARAÎT À LA VALIDATION DU TEXTE ». La copie de « DÉJÀ PROMIS » n'était posée qu'au départ du mouvement, ≈ 300 ms
+         après la validation : les pastilles disparaissaient à la validation, puis leur copie reparaissait à leur place et descendait. Elle est posée ICI, dans
+         la tâche de la validation, à leur place exacte : rien ne disparaît ni ne reparaît. Le mouvement la reprend ; s'il ne part pas, elle glisse seule. */
+      if(MV.att.deja.length){ var _dj=document.createElement('div'); _dj.id='ppMvtDeja'; _dj.setAttribute('aria-hidden','true'); MV.att.deja.forEach(function(n){ _dj.appendChild(n); }); c.appendChild(_dj);
+        var _A=MV.att; _A.dj=_dj; setTimeout(function(){ if(!_A.djPris) glisseSeule(_dj); }, 700); }
     }catch(_){ MV.att=null; } }, true);
+  function glisseSeule(dj){ if(!dj || !dj.parentNode) return; var t0=0; requestAnimationFrame(function f(now){ if(!dj.parentNode) return; if(!t0) t0=now; var u=Math.min(1,(now-t0)/MVDUR), q=u<.5?2*u*u:1-Math.pow(-2*u+2,2)/2;
+      dj.style.setProperty('transform','translateY('+(q*520).toFixed(1)+'px)','important'); if(u<1) requestAnimationFrame(f); else dj.remove(); }); }
   /* ⚑ v180b (Tom, C-234 suite) — « QUAND ON COMMENCE À TAPER, LA DALLE ET LA VAGUE BOUGENT D'UN COUP. Le mouvement doit être doux et continu, jusqu'à la position de
      frappe (même courbe que l'horizon, 300 à 400 ms). » LA CAUSE, mesurée : au toucher sur la phrase la page passe dans la même image à sa mise en page de saisie (l'onde de
      312 à 144 pt, son amplitude de 36 à 16, la phrase de 416 à 230) — seule la fermeture du clavier avait son mouvement (Q598). LE MÊME MOUVEMENT, À L'ENVERS : l'état d'avant est
@@ -44855,7 +44897,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     var y0=window._onde.onde(A.base,A.amp), m=1e9; for(var x=0;x<=390;x+=6){ var v=y0(x); if(v<m) m=v; }
     var pass=null; try{ if(m>30 && !OUV) pass=window._passageFlaques(c,{mode:'ouvre',rect:[0,0,390,Math.round(m-14)],image:A.image,duree:MVDUR,avance:30,apres:d||cv,z:(d?d.style.zIndex:null)||0}); }catch(_){ }
     var av2=(pass&&pass.canevas)||d||cv; if(av2.nextSibling) c.insertBefore(ov,av2.nextSibling); else c.appendChild(ov);
-    var dj=null; if(A.deja.length){ dj=document.createElement('div'); dj.id='ppMvtDeja'; dj.setAttribute('aria-hidden','true'); A.deja.forEach(function(n){ dj.appendChild(n); }); c.appendChild(dj); }
+    var dj=A.dj||null; if(dj) A.djPris=true; if(!dj && A.deja.length){ dj=document.createElement('div'); dj.id='ppMvtDeja'; dj.setAttribute('aria-hidden','true'); A.deja.forEach(function(n){ dj.appendChild(n); }); c.appendChild(dj); }
     var C={el:el, ov:ov, dj:dj, pass:pass, t0:0, n:0, arrete:false, sens:OUV?'ouvre':'ferme'}, im={cv:ov, H:H, corps:getComputedStyle(c).backgroundColor, base:A.base, amp:A.amp, image:OUV?A.image:null};
     var hz0=(INV.haut && !INV.vis ? hzCible(e) : 0), eb=e.base+hz0;   /* v177b (C-229) : la page pas prête, l'horizon finit sous sa place */
     MV.hz=hz0;   /* v180b : la cible de l'horizon, à la place finale, gardée le temps du mouvement */
@@ -45677,11 +45719,24 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(window._douceur){ window._douceur.mot(el, {html:t.replace(/&/g,'&amp;').replace(/</g,'&lt;'), cls:el.className.replace(/\s*v200\S*/g,'')}); return; }
     if(el.textContent===t) return; el.textContent=t; trace(el); }
   window._ppMoi=false;
+  /* ⚑ v210 (Tom, C-304) — « Quand on touche la place du destinataire, le menu des membres se déroule avec « moi » déjà coché, mais la phrase dit encore « qui ». »
+     Dès le toucher, PENDANT que le menu se déroule, la place passe à « moi » (« à moi », « avec moi ») par le même chemin que la validation (détracé, l'encart
+     s'adapte, tracé : `_douceur.mot`) ; quitté sans rien changer, elle reste « moi » ; une fois ouvert, la phrase dit ce qui est coché (une personne ajoutée :
+     son nom ; « moi » retiré seul : il revient). Trois natures (pas « promets-moi » : la place y porte l'exemple). Le marquage tient jusqu'à la fermeture de
+     la page +, ou un changement de nature ou de sens. */
+  var OUV='';
+  function cleOuv(c){ return nat(c)+'|'+((window._phrase||{}).sens||'')+'|'+(c.getAttribute('data-kind')||''); }
+  document.addEventListener('pointerdown', function(ev){ try{ var c=cs(); if(!c || !c.classList.contains('show') || !c.classList.contains('pp')) return;
+      var t=ev.target && ev.target.closest && ev.target.closest('#csPhrase .ph-m[data-ph="qui"], #nueePhrase .ph-m[data-np="avec"]'); if(!t || !t.classList.contains('ph-vide')) return;
+      if(nat(c)!=='nuee' && (window._phrase||{}).sens==='demander') return;
+      OUV=cleOuv(c); if(!window._ppMoi) pose(true); }catch(_){ } }, true);
+  window._ppMoiOuvert=function(){ var c=cs(); return !!(c && OUV && OUV===cleOuv(c)); };
   function veille(){ var c=cs();
-    if(!c || !c.classList.contains('show') || !c.classList.contains('pp') || c.classList.contains('pp-choix')){ if(window._ppMoi) window._ppMoi=false; return; }
+    if(!c || !c.classList.contains('show') || !c.classList.contains('pp') || c.classList.contains('pp-choix')){ if(window._ppMoi) window._ppMoi=false; OUV=''; return; }
     if(window.__INVITE_BANC){ if(window._ppMoi) pose(false); return; }
     var inv=null; try{ inv=window._ppInvite && window._ppInvite.etat(); }catch(_){ }
     var pret=!!(inv && inv.visible && !inv.sortie);
+    if(OUV){ if(OUV===cleOuv(c)) pret=true; else OUV=''; }   /* v210 (C-304) : la place touchée dit « moi » */
     var el=place(c); if(el && !window._ppMoi) prepare(el);
     if(pret!==!!window._ppMoi){ pose(pret); return; }
     /* ⚑ v203 (C-278) : la place se relit — une reconstruction de la phrase (le sens basculé pendant la genèse) pouvait finir sur l'ancien mot : « qui ? » restait, le trait né */
@@ -45689,7 +45744,7 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
     if(el && nat(c)!=='nuee' && _sensP==='demander') return;
     if(el && !(el.__v200 && !el.__v200.fini) && !el.__v203lisse){ var at=(pret ? 'moi' : attente(c)).replace(/\s+/g,' ').trim(); if((el.textContent||'').replace(/\s+/g,' ').trim()!==at) pose(pret); } }
   setInterval(veille, 50);
-  try{ (window._rangeurs=window._rangeurs||[]).push(function(){ window._ppMoi=false; }); }catch(_){ }
+  try{ (window._rangeurs=window._rangeurs||[]).push(function(){ window._ppMoi=false; OUV=''; }); }catch(_){ }
 })();
 </script>
 <script id="lot-V197-CERCLE-MEMBRES">
@@ -46552,6 +46607,57 @@ input.v203-phx::-webkit-input-placeholder, textarea.v203-phx::-webkit-input-plac
   /* la fiche se ferme ou Peaufiner s'ouvre : la modification est validée d'abord */
   (window._rangeurs=window._rangeurs||[]).unshift(function(){ if(E) sort(true); });
   var so=window._s2Ouvre; if(typeof so==='function' && !so.__ti){ window._s2Ouvre=function(v){ if(v && E) sort(true); return so.apply(this, arguments); }; window._s2Ouvre.__ti=1; }
+})();
+</script>
+<style id="lot-V210-ENCART-css">
+/* ⚑ v210 (Tom, C-301) — L'INDEX EST LE FIL : ses coins (0, comme la vue du Fil ; ils étaient à 22) et, en sombre, la couleur de son ⇅ (celle du ⇅ du Fil,
+   la crème ; elle était #E4D7BB depuis v186a). Rien d'autre ne différait (mesuré au pixel, scratchpad/v210/index_fil.py). */
+#device#device #indexSheet#indexSheet{border-radius:0!important}
+#device#device:not(.light) #indexSheet#indexSheet #ixTriBtn,
+#device#device.light #indexSheet#indexSheet #ixTriBtn:where(#detailPoster,#detailPoster *,#createSheet,#createSheet *,.th-sombre,.th-sombre *){color:var(--c-creme95)!important;-webkit-text-fill-color:var(--c-creme95)!important}
+</style>
+<script id="lot-V210-ENCART">
+/* ⚑ v210 (Tom, 18 nov. 2026, C-301) — « UN SEUL ENCART DU HAUT POUR TOUTES LES PAGES : le même composant, la même mise en page, seul le titre change. »
+   Le composant, et lui seul : la BOÎTE (24 · 40 · 342 × 60, rayon 30) est posée par `recale` (lot-ENCART-HAUT) ; la TAILLE du titre est `T` (34 px),
+   posée par `ajusteTitres` (lot-HARMONIE) ; ICI : la place verticale du titre (ses capitales centrées sur l'encart, lues sur les métriques de sa
+   police, jamais sur sa position rendue : §8 « la cote se calcule ») et celle des éléments propres d'une page qui vivent dans le titre (le « i » de
+   l'Aura, centré au demi-point). Il remplace les décalages réglés à la main écran par écran (lot du recentrage : Fil 3,55, Réglages 2,85, Partager 2,5,
+   Studio 1,65…) — un `translate` en ligne `important`, calculé, le même pour toutes les pages à police égale. La croix suit le titre (lot-V157-CROIX).
+   Pages : Index, Fil, l'Aura et son aide, Réglages, Partager, le Studio, la langue, la confidentialité, Ma Parole !, le Cercle. Pas les fiches ni la page +
+   (leur plateau porte le mot-marque, validé à part : C-046). */
+(function(){
+  var T=34, PAGES='#indexSheet,#feedView,#auraScreen,#auraHelp,#settingsScreen,#shareScreen,#studioScreen,#langScreen,#privScreen,#plusScreen,#essaimSheet,#arrangeSheet';
+  function page(b){ return !!(b && b.closest && b.closest(PAGES) && !b.closest('#detailPoster,#createSheet')); }
+  window._ENCART={T:T, page:page};
+  var cv=document.createElement('canvas'), g=cv.getContext('2d'), MES={};
+  function metr(fam){ if(MES[fam]) return MES[fam]; g.font='100px '+fam; var h=g.measureText('H');
+    var r={cap:(h.actualBoundingBoxAscent||70)/100, fa:(h.fontBoundingBoxAscent||80)/100, fd:(h.fontBoundingBoxDescent||20)/100};
+    if(document.fonts && document.fonts.check && !document.fonts.check('100px '+fam)) return r; MES[fam]=r; return r; }
+  function tr(e, dy){ var v='0px '+(Math.round(dy*100)/100)+'px'; if(e.style.getPropertyValue('translate')!==v || e.style.getPropertyPriority('translate')!=='important') e.style.setProperty('translate', v, 'important'); }
+  function pose(){
+    [].forEach.call(document.querySelectorAll('.enh, #stpHaut'), function(b){ try{
+      if(!page(b)) return; var t=b.querySelector('.enh-t, .stp-t'); if(!t || !t.offsetHeight) return;
+      if(t.classList.contains('stp-t')){ if(t.style.getPropertyValue('font-size')!==T+'px') t.style.setProperty('font-size', T+'px', 'important');
+        t.style.setProperty('line-height','1.06em','important'); t.style.setProperty('padding-bottom','1px','important'); }
+      var c=getComputedStyle(t), fs=parseFloat(c.fontSize)||T, lh=parseFloat(c.lineHeight)||fs*1.06, m=metr(c.fontFamily);
+      var base=(lh-(m.fa+m.fd)*fs)/2 + m.fa*fs, capC=base - m.cap*fs/2;
+      var pt=parseFloat(c.paddingTop)||0, cible=b.clientHeight/2;
+      /* la place du titre DANS l'encart, au point près : son rectangle moins le décalage qu'on lui a soi-même posé (`offsetTop` arrondit au pixel entier) */
+      var rb=b.getBoundingClientRect(), k=(b.offsetWidth>0)?(rb.width/b.offsetWidth):1, bt=parseFloat(getComputedStyle(b).borderTopWidth)||0;
+      function deja(e){ var v=(e.style.getPropertyValue('translate')||'').split(' '); return parseFloat(v[1]||0)||0; }
+      var y0=(t.getBoundingClientRect().top-rb.top)/k-bt-deja(t);
+      var dy=cible-(y0+pt+capC); tr(t, dy);
+      var i=t.querySelector('.aura-info'); if(i && i.offsetHeight){ var ri=i.getBoundingClientRect(), yi=(ri.top-rb.top)/k-bt-deja(i)-deja(t)+(ri.height/k)/2;
+        tr(i, cible-yi-dy); }
+    }catch(_){ } });
+  }
+  window._encartPose=pose;
+  var _t=0; function plus(){ if(_t) return; _t=requestAnimationFrame(function(){ _t=0; pose(); }); }
+  [0,200,600,1200,2500].forEach(function(d){ setTimeout(plus,d); });
+  document.addEventListener('click',function(){ [60,200,450,900].forEach(function(d){ setTimeout(plus,d); }); },true);
+  try{ if(document.fonts&&document.fonts.ready) document.fonts.ready.then(plus); }catch(_){ }
+  try{ new MutationObserver(function(L){ for(var k=0;k<L.length;k++){ var n=L[k].target; if(n && n.classList && (n.classList.contains('show')||n.classList.contains('in'))) { plus(); return; } } })
+    .observe(document.body,{subtree:true,attributes:true,attributeFilter:['class']}); }catch(_){ }
 })();
 </script>
 </body>

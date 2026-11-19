@@ -1,0 +1,31 @@
+encart | 1 | python3 scratchpad/v210/encart.py
+encart_079 | 1 | python3 scratchpad/v210/encart.py --vue=079
+encart_app | 1 | python3 scratchpad/v210/encart.py --css=scratchpad/v209/coquille_v209.css
+index_fil | 1 | python3 scratchpad/v210/index_fil.py
+index_fil_app | 1 | python3 scratchpad/v210/index_fil.py --css=scratchpad/v209/coquille_v209.css
+veille_couleurs | 1 | python3 scratchpad/v210/veille_couleurs.py
+pelote_axe | 1 | python3 scratchpad/v210/pelote_axe.py
+je | 1 | python3 redteam_je.py
+moi_toucher | 1 | python3 redteam_moi_toucher.py
+liaison | 1 | python3 redteam_liaison.py
+moi_phrase | 1 | python3 redteam_moi_phrase.py --natures=chiche,nuee --echelle=1
+veille_bords | 1 | python3 redteam_veille_bords.py
+veille | 1 | python3 redteam_veille.py
+veille_app | 1 | python3 scratchpad/v209/veille_app.py
+haut_fiche_promi | 1 | python3 redteam_haut_fiche.py --nature=promi
+haut_fiche_cercle | 1 | python3 redteam_haut_fiche.py --nature=cercle
+couleurs_ref_01 | 1 | python3 redteam_couleurs_ref.py '--ecran=fiche tenue' '--ecran=fiche à tenir' '--ecran=fiche en cours' '--ecran=fiche chiche' '--ecran=chiche lancé'
+couleurs_ref_02 | 1 | python3 redteam_couleurs_ref.py '--ecran=gardé de côté' '--ecran=page +' --ecran=Peaufiner '--ecran=Index 2' '--ecran=Index 3'
+couleurs_ref_03 | 1 | python3 redteam_couleurs_ref.py --ecran=Fil '--ecran=Nuée' '--ecran=Nuée vide' '--ecran=Peaufiner Nuée' '--ecran=l'"'"'instant arrive'
+couleurs_ref_04 | 1 | python3 redteam_couleurs_ref.py '--ecran=l'"'"'instant referme' '--ecran=l'"'"'instant après' '--ecran=Réglages' --ecran=Aura --ecran=accueil
+couleurs_ref_05 | 1 | python3 redteam_couleurs_ref.py --ecran=Studio --ecran=Partager '--ecran=le Cercle' '--ecran=Vie privée' '--ecran=À propos'
+couleurs_ref_06 | 1 | python3 redteam_couleurs_ref.py --ecran=Conditions --ecran=Politique --ecran=personne '--ecran=aide de l'"'"'Aura' '--ecran=page + Chiche'
+couleurs_ref_07 | 1 | python3 redteam_couleurs_ref.py '--ecran=page + Nuée' '--ecran=Peaufiner Chiche' '--ecran=Nuée défilée' '--ecran=Nuée vide défilée' '--ecran=mur · Réglages'
+couleurs_ref_08 | 1 | python3 redteam_couleurs_ref.py '--ecran=panneau des palettes'
+decisions | 1 | python3 redteam_decisions.py
+ecrans | 1 | python3 redteam_ecrans.py
+trace_present | 1 | python3 redteam_trace_present.py
+banc_rendu | 1 | python3 banc_rendu.py
+aspect | 1 | python3 redteam_aspect.py --ref=zz-v209.html --fichier=zz-v210.html
+croix | 1 | python3 redteam_croix.py
+registre | 1 | python3 redteam_registre.py

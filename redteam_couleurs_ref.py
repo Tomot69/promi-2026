@@ -293,6 +293,9 @@ with sync_playwright() as p:
                     #   du Fil et du Fil des Cercles, même construction que la fiche, dans les deux thèmes » — sur une CARTE (`.s4-…`, `.nf-item`), et seulement
                     #   vers les couleurs de cette construction : les trois corps, la terre d'une tenue, la crème, l'amande, le lilas, les traits sombres de nature.
                     if pr_ in ('color', 'tfill', 'bg', 'bT', 'bB', 'bL', 'bR', 'fill', 'stroke') and re.search(r's4-|nf-item', k) and va in CARTE_V148: exceptions['E19'] = exceptions.get('E19', 0) + 1; continue
+                    # E29 (v210, Tom, 18 nov. 2026, C-301 ; C-247) : « l'Index devient EXACTEMENT comme le Fil : même encart, même barre de recherche, même bouton de
+                    #   tri aux deux flèches » — en sombre, le ⇅ de l'Index prend la crème du ⇅ du Fil (#F7F0DE ; il portait #E4D7BB, v164a). Sur l'Index, en sombre, et ce seul couple.
+                    if pr_ in ('color', 'tfill') and cle[1] == 'dark' and str(cle[0]).startswith('Index') and va == 'rgb(247, 240, 222)' and vr == 'rgb(228, 215, 187)' and not re.search(r's4-', k): exceptions['E29'] = exceptions.get('E29', 0) + 1; continue
                     # E28 (v207, Tom, 17 nov. 2026, C-294 ; C-247) : « le fond de l'Aura devient EXACTEMENT celui de l'Index et du Fil (même code, mêmes couleurs,
                     #   même matière) » — en clair, la crème #F7F0DE devient #EAD9B9 (--c-creme90-2) ; le fond de l'écran de l'Aura, et lui seul.
                     if cle[0] in ('Aura', "aide de l'Aura") and cle[1] == 'light' and pr_ == 'bg' and va == 'rgb(234, 217, 185)' and vr == 'rgb(247, 240, 222)' and re.match(r'^#auraScreen \[\d+\]$', k): exceptions['E28'] = exceptions.get('E28', 0) + 1; continue
@@ -417,6 +420,7 @@ print('E14 l\'orange du départ d\'une action : le + de l\'accueil, la flèche d
 print('E16 à « referme », le champ garde sa nature (v146, C-118) : %d' % exceptions.get('E16', 0))
 print('E15 les noms de la barre au bleu foncé du I, en clair (v146, C-120) : %d' % exceptions.get('E15', 0))
 print('E17 le trait à la teinte la plus sombre de sa nature, le gardé de côté compris (v147, C-140) : %d' % exceptions.get('E17', 0))
+print('E29 le ⇅ de l\'Index comme celui du Fil, en sombre (v210, C-301) : %d' % exceptions.get('E29', 0))
 print('E18 l\'état des cartes crème dès la première image, en sombre (v147, Q290) : %d' % exceptions.get('E18', 0))
 print('E19 les cartes de l\'Index, du Fil et du fil d\'un Cercle prennent la construction de la fiche, deux thèmes (v148, C-147) : %d' % exceptions.get('E19', 0))
 print('E20 le mot du trait des pages + en orange #FB4C0D, deux thèmes (v151, C-157) : %d' % exceptions.get('E20', 0))

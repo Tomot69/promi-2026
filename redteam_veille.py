@@ -112,8 +112,11 @@ with sync_playwright() as p:
             def L(h): return sum(c * w for c, w in zip([((int(h[i:i+2], 16) / 255) / 12.92 if int(h[i:i+2], 16) / 255 <= 0.03928 else ((int(h[i:i+2], 16) / 255 + 0.055) / 1.055) ** 2.4) for i in (1, 3, 5)], [0.2126, 0.7152, 0.0722]))
             x, y = L(a), L(bb); return (max(x, y) + 0.05) / (min(x, y) + 0.05)
         FOND = reel[8]; fond_ok = v.get('fond') == FOND and reel[7] == 'rgb(%d, %d, %d)' % tuple(int(FOND[i:i+2], 16) for i in (1, 3, 5))
-        mauvais = [c for c in v['couleurs'] if ctr(c, FOND) < 3]
-        juge('[%s] K · le fond est celui de la Toile du thème (%s), chaque couleur du logo tient 3:1 sur lui' % (E, FOND), fond_ok and not mauvais, 'fond de la veille %s · couleurs %s · sous 3:1 %s' % (reel[7], v['couleurs'], mauvais))
+        # ⚑ v210 (Tom, C-300 suite) : « uniquement les couleurs EXACTES de la palette » — plus de ton amené à 3:1 ; à 3:1 seulement quand la palette en a deux qui y arrivent
+        PAL = [h.lower() for h in pg.evaluate("()=>(Toile.cols()||[]).map(c=>'#'+c.slice(0,3).map(v=>('0'+Math.round(v).toString(16)).slice(-2)).join(''))")] + ['#8fe08f']
+        lis = [h for h in PAL[:-1] if ctr(h, FOND) >= 3]
+        mauvais = [c for c in v['couleurs'] if c.lower() not in PAL or (len(lis) >= 2 and c.lower() != '#8fe08f' and ctr(c, FOND) < 3)]
+        juge('[%s] K · le fond est celui de la Toile du thème (%s), chaque couleur du logo est un ton EXACT de la palette (à 3:1 quand la palette en a deux)' % (E, FOND), fond_ok and not mauvais, 'fond de la veille %s · couleurs %s · hors règle %s' % (reel[7], v['couleurs'], mauvais))
         C = v['couleurs']; TT = [t.lower() for t in (v['tons'] or [])]; meme = [i for i in range(1, len(C)) if C[i] == C[i - 1]]
         juge('[%s] C · à chaque rebond une autre couleur (palette du Studio), jamais deux fois la même d\'affilée' % E, v['rebonds'] >= 3 and not meme and all(c.lower() in TT for c in C),
              '%d rebonds · %s · tons %s' % (v['rebonds'], C, TT))

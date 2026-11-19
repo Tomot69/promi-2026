@@ -263,6 +263,27 @@ la nature, la ligne dit l'état.)*
 > `redteam_studio_tom`, `redteam_studio_mur` (C-198 : rouges sur v163a), `redteam_part` (C-184 : le trait à 10 × 1,15 — il rougissait depuis v163a, sa série ne
 > l'avait pas passé), `redteam_couleurs_ref` (E22, E23), `redteam_air` (le Studio s'ouvre par la barre si `#openStudio2` manque).
 
+### ⚑ v210 (18 nov. 2026) — C-301 UN SEUL ENCART DU HAUT ; C-300 LA VEILLE ×1,5 AUX COULEURS EXACTES ; C-302 L'AXE DE LA PELOTE DÉRIVE ; C-303, C-304, C-305 ; « DE » / « D’ ». (Décisions Tom.)
+> **Validés par Tom : C-299 (tout comme avant, l'encart 3 pt plus bas), la notification à la mise en arrière-plan, C-300 sur le principe.** C-297 : la séance n'a ouvert aucune fiche (relevé) — toujours à reproduire.
+> **⚑ C-301 — UN SEUL ENCART, UN SEUL CODE** : la boîte (24 · 40 · 342 × 60) est posée par `recale` (lot-ENCART-HAUT, l'exception de 88 pt de l'Index retirée) ; la taille du titre
+> est `window._ENCART.T` = **34 px** pour toutes les pages (la plus grande où « PARTAGER », le plus long, tient avant le X), posée par `ajusteTitres` ; la place verticale du titre
+> (ses capitales centrées sur l'encart, lues sur les métriques de sa police) et le « i » de l'Aura (centré) par `lot-V210-ENCART`, qui remplace les décalages réglés à la main
+> écran par écran. **L'Index est le Fil** : même encart, même recherche, même ⇅ (sa couleur en sombre et ses coins aussi), au pixel hors titre ; pas de compteur. Exceptions
+> nommées : « VIE PRIVÉE » (33) et « MA PAROLE ! » (29) ne tiennent pas à 34 avant le X — le titre s'ajuste, il ne se rogne pas. Juges : `scratchpad/v210/encart.py` (11 pages,
+> au demi-point ; `--css=` la coquille), `scratchpad/v210/index_fil.py` (au pixel).
+> **⚑ C-300 suite** : 91,8 pt/s ; les tons EXACTS de la palette, l'amande exacte — l'ancien repli « amené à 3:1 » (`_teinte.ajuste`) est retiré (en clair, aucun ton d'Ingénu n'atteint
+> 3:1 : le logo y était toujours terne). Juge : `scratchpad/v210/veille_couleurs.py`. Contrats remis : `redteam_veille_bords`, `redteam_veille` K (originaux en sauvegarde) ; `redteam_veille_bords` lit l'encre « plus près du logo que du fond » (le seuil fixe de 120 ne voyait plus un ton pastel exact sur la crème) ; `redteam_couleurs_ref` E29 (le ⇅ de l'Index comme celui du Fil, en sombre).
+> **⚑ C-302 — LA CAUSE** : au repos la Pelote tournait À PLAT (le calque, v203) ; au moindre geste elle repassait au rendu 3D qui tourne autour de l'axe vertical — sur les côtés le
+> mouvement passait d'un coup du vertical à l'horizontal ; et le tour d'une parole neuve posait une vitesse d'un coup. **Aujourd'hui** : ω = vitesse × axe (x l'inclinaison, y le tour,
+> z le tour à plat) ; l'axe dérive par un slerp lissé, 8 à 18 s, vers une cible tirée à 30–80° (jamais d'inversion), l'inclinaison rappelée ; vitesse 0,85–1,15 × C-298 ; rendue
+> à chaque image (le calque ne tourne plus seul) ; le tour d'une parole neuve monte en 0,7 s. Juge : `scratchpad/v210/pelote_axe.py` (5 min simulées × 3 graines, 20 s réelles).
+> **⚑ C-303 — LA CAUSE** : la copie de « DÉJÀ PROMIS » (Q598) n'était posée qu'au départ du mouvement du clavier, ≈ 300 ms après la validation : les pastilles disparaissaient,
+> puis leur copie reparaissait à leur place. Elle est posée dans la tâche de la validation ; si le mouvement ne part pas, elle glisse seule. Juge : `redteam_je` (trois natures, la
+> validation, toute la page + ; original en sauvegarde).
+> **⚑ C-304** : toucher la place du destinataire (sans personne, hors « promets-moi ») la passe à « moi » par le chemin de la validation (`lot-V199-MOI`, `_ppMoiOuvert`). Juge : `redteam_moi_toucher`.
+> **⚑ C-305** : « Bruno-Stanislas, promets-moi de … ». **§6** : « de » / « d’ » — la frappe cherchait le « de » comme voisin immédiat de la pastille ; pendant la transition de la
+> première lettre une copie s'y intercale : il restait figé sur le préfixe (« ha » → « d’ » ; « haïr », « oui » jamais « de »). La liste des h aspirés complétée. Juge : `redteam_liaison`.
+
 ### ⚑ v209 (18 nov. 2026) — C-299 ANNULÉ ; C-300 LA VEILLE SUR LA FORME DE L'ÉCRAN ; C-297 OBSERVÉ SUR L'iPHONE ; LA NOTIFICATION À LA MISE EN ARRIÈRE-PLAN. (Décisions Tom.) Ce bloc CORRIGE v208 (C-299).
 > **Validé par Tom : C-295 (Mascaret fluide ; le changement du moteur est accepté).**
 > **⚑ C-299 ANNULÉ (Tom : « tu as changé toute la mise en page ; ce n'était pas demandé ») : la mise en page est celle de b9f98bd, dans l'app comme dans Safari ; la seule
