@@ -100,4 +100,7 @@
       IDS.forEach(function (i) { var e = document.getElementById(i); f[i] = R(e); if (e && f[i] && i !== 'tenirMaree') { var c = getComputedStyle(e); f[i].push(c.visibility === 'hidden' || c.display === 'none' ? 0 : 1); } });
       buf.push(f); if (buf.length >= 240) part(); }
     requestAnimationFrame(image); })();
+  /* ⚑ v211 (C-310) — « de » / « d’ » : le relevé que l'app tient (`window.__c310` : chaque changement et sa voie — le tracé, un détracé interrompu, d'un coup et pourquoi),
+     envoyé au Mac toutes les 3 s s'il y a du neuf (`quoi: 'c310'`). Rien n'est modifié dans l'app. */
+  (function () { var vu = 0, n = 0; setInterval(function () { try { var J = window.__c310 || []; if (J.length > vu) { var neuf = J.slice(vu); vu = J.length; envoie({ quoi: 'c310', n: ++n, ev: neuf, reduit: matchMedia('(prefers-reduced-motion: reduce)').matches }); } else if (J.length < vu) vu = J.length; } catch (e) { } }, 3000); })();
 })();
