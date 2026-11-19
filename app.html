@@ -2640,7 +2640,7 @@ window._TRAIT_PTS=Math.min(window._TRAIT_K, 1.15);   /* v164 : les points suiven
    Avec `?mesure=1` : « v145 · <commit> » en haut de l'écran, sur tous les écrans. Sans rien demander : au retour au premier plan, si le
    serveur sert un autre commit que celui de la page, la page se recharge (elle ne peut plus rester d'un lot à l'autre). */
 (function(){
-  var V=window.PROMI_VERSION={lot:'v212', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
+  var V=window.PROMI_VERSION={lot:'v213', servi:'__PROMI_SERVI__', moteur:'__PROMI_MOTEUR__'};
   var horsServeur=(V.servi.indexOf('PROMI_SERVI')>=0); if(horsServeur){ V.servi=''; V.moteur=''; }
   var commit=V.servi.replace(/\+$/,''), sale=/\+$/.test(V.servi);
   V.marque=function(){ return V.lot+' · '+(horsServeur?'hors serveur':commit+(sale?' + modifs':'')); };
@@ -44678,6 +44678,12 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
 #soutienScreen .so-m{min-width:0;height:62px;box-sizing:border-box;border:2px solid currentColor;border-radius:31px;background:transparent;color:inherit;-webkit-text-fill-color:currentColor;
   font-family:var(--f-libelle);font-weight:700;font-size:22px;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
 #soutienScreen .so-merci{font-family:var(--f-marque);font-weight:400;font-size:32px;line-height:1.1;min-height:36px;visibility:hidden}
+/* ⚑ v213 (Tom, 19 nov. 2026, C-313) — « Autre montant » : une option à la suite de la rangée, dans le même style (2 px, rayon = h ÷ 2, Gilbert 22), qui déroule en douceur
+   (C-271 : la boîte grandit, la suite glisse avec elle ; rien n'apparaît d'une image à l'autre) une grille de paliers fixes — l'App Store n'accepte pas de montant libre. */
+#soutienScreen .so-m.so-autre{display:block;width:100%;margin:0 0 20px}
+#soutienScreen .so-autres{height:0;overflow:hidden;transition:height 360ms cubic-bezier(.33,1,.68,1)}
+#soutienScreen .so-autres .so-mts{padding-top:2px}
+@media (prefers-reduced-motion:reduce){#soutienScreen .so-autres{transition:none}}
 </style>
 <script id="lot-V174-SOUTIEN">
 /* ⚑ v174 (Tom, 31 oct. 2026, C-217) — « Soutenir Promi » : une rangée des Réglages, après « Ma Parole ! », un écran simple, un texte PROVISOIRE (Tom l'écrira, Q596), trois montants
@@ -44685,19 +44691,43 @@ window.promiHaptique=window.promiHaptique||function(nom){ /* vide : Core Haptics
    compte, rien ne revient : la rangée n'est proposée NULLE PART ailleurs (la grille du §12 ; juge `redteam_soutien`). Swift : des achats intégrés consommables (règle Apple
    3.1.1), aucun lien de paiement externe — portage/MANQUES.md. */
 (function(){
+  /* ⚑ v213 (Tom, C-313) — les paliers d'« Autre montant », chacun un produit consommable `fr.autier.promi.soutien.N` (PREUVE-CAPACITOR.md, achats). */
+  var PALIERS=[15,20,30,40,75,150,200,250,300,500,750,1000];
+  window._soutienPaliers=[5,10,25,50,100].concat(PALIERS);
+  /* dérouler / replier : la boîte part de sa hauteur VUE et va à la hauteur de son contenu (ou 0) ; la suite (le merci) glisse avec elle. Ouverte, le corps défile
+     en douceur jusqu'à montrer le dernier palier. `net` : sans transition (réouverture de l'écran, déjà invisible). */
+  function deroule(s, ouvre, net){ var a=s.querySelector('.so-autres'), b=s.querySelector('.so-autre'); if(!a || !b) return;
+    var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
+    b.setAttribute('aria-expanded', ouvre ? 'true' : 'false'); a.setAttribute('aria-hidden', ouvre ? 'false' : 'true');
+    [].forEach.call(a.querySelectorAll('.so-m'), function(x){ x.tabIndex=ouvre ? 0 : -1; });
+    var h0=a.getBoundingClientRect().height/((a.getBoundingClientRect().width/(a.offsetWidth||1))||1), h1=ouvre ? a.firstChild.offsetHeight : 0;
+    if(net || red){ a.style.transition='none'; a.style.height=h1+'px'; void a.offsetHeight; a.style.transition=''; }
+    else { a.style.transition='none'; a.style.height=h0+'px'; void a.offsetHeight; a.style.transition=''; a.style.height=h1+'px'; }
+    /* ouverte, le corps suit la boîte À CHAQUE IMAGE (un seul mouvement : le bas de la grille reste au bas de l'écran pendant qu'elle grandit), jamais un défilement après coup */
+    if(ouvre && !net){ var co=s.querySelector('.so-corps'); if(co){ var s0=co.scrollTop, t0=performance.now(), jeu=(deroule.jeu=(deroule.jeu||0)+1);
+      (function suit(){ if(jeu!==deroule.jeu) return; var hv=a.getBoundingClientRect().height/((a.getBoundingClientRect().width/(a.offsetWidth||1))||1), c=a.offsetTop+hv-co.clientHeight+24;
+        if(c>s0 && c>co.scrollTop) co.scrollTop=c; if(performance.now()-t0<(red ? 0 : 520)) requestAnimationFrame(suit); })(); } }
+    else deroule.jeu=(deroule.jeu||0)+1; }
+  window._soutienDeroule=function(ouvre){ var s=document.getElementById('soutienScreen'); if(s) deroule(s, !!ouvre); };
   function page(){ var s=document.getElementById('soutienScreen');
     if(!s){ var priv=document.getElementById('privScreen'); if(!priv) return null;
       s=document.createElement('div'); s.className='screen s-set fond v16-page'; s.id='soutienScreen';
       s.innerHTML='<div class="closeb" data-close>X</div><h2 class="scr-t">Soutenir Promi</h2><canvas class="so-toile" aria-hidden="true"></canvas><div class="v16-corps so-corps">'
         +'<p class="so-tx">Promi est fait à la main, par une seule personne. Si l’app t’est chère, tu peux l’aider à grandir.</p>'   /* le texte de Tom, mot pour mot (v175) */
         +'<div class="so-mts">'+[5,10,25,50,100].map(function(n){ return '<button type="button" class="so-m">'+n+'\u00a0€</button>'; }).join('')+'</div>'
+        +'<button type="button" class="so-m so-autre" aria-expanded="false">Autre montant</button>'   /* v213 (C-313) : libellé soumis à Tom */
+        +'<div class="so-autres" aria-hidden="true"><div class="so-mts">'+PALIERS.map(function(n){ return '<button type="button" class="so-m" tabindex="-1">'+(n>=1000 ? String(n).replace(/(\d)(\d{3})$/,'$1\u00a0$2') : n)+'\u00a0€</button>'; }).join('')+'</div></div>'
         +'<div class="so-merci" aria-live="polite">Merci.</div></div>';
       priv.parentNode.insertBefore(s, priv.nextSibling);
       s.querySelector('.closeb').addEventListener('click', function(e){ e.stopPropagation(); s.classList.remove('show'); var st=document.getElementById('settingsScreen'); if(st) st.classList.add('show'); });
-      s.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('.so-m'); if(!b) return; var m=s.querySelector('.so-merci'); if(m.style.visibility==='visible') return;
+      s.addEventListener('click', function(e){ var b=e.target.closest&&e.target.closest('.so-m'); if(!b) return;
+        if(b.classList.contains('so-autre')){ deroule(s, b.getAttribute('aria-expanded')!=='true'); return; }
+        var m=s.querySelector('.so-merci'); if(m.style.visibility==='visible') return;
+        try{ var co=s.querySelector('.so-corps'), mr=m.getBoundingClientRect(), cr=co.getBoundingClientRect(); if(mr.bottom>cr.bottom) co.scrollTo({top:co.scrollTop+(mr.bottom-cr.bottom)/(cr.height/co.clientHeight)+24, behavior:'smooth'}); }catch(_){ }
         var red=false; try{ red=matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(_){ }
         m.style.visibility='visible'; if(!red && window.TraceLettres){ try{ window.TraceLettres.trace(m, null, {depart:'h'}); }catch(_){ } } }); }
     var m0=s.querySelector('.so-merci'); if(m0) m0.style.visibility='hidden';
+    deroule(s, false, true); try{ var co0=s.querySelector('.so-corps'); if(co0) co0.scrollTop=0; }catch(_){ }
     try{ s.classList.toggle('so-sans', !(window._vendToileSur && window._vendToileSur(s.querySelector('.so-toile'), s))); }catch(_){ s.classList.add('so-sans'); }
     return s; }
   window._soutienPage=function(){ var s=page(); if(!s) return; var st=document.getElementById('settingsScreen'); if(st) st.classList.remove('show'); s.classList.add('show'); };
