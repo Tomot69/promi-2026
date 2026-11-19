@@ -82,19 +82,23 @@ tiers : reçus vérifiés, abonnements, tableau de bord ; gratuit sous un seuil 
 vérification des reçus est à notre charge). **Recommandation : RevenueCat** — une personne seule n'a pas à tenir un serveur de reçus, et Ma Parole ! est un
 abonnement.
 **App Store Connect** (Tom) : le contrat « Apps payantes » (accords, fiscalité, coordonnées bancaires) ; l'app (identifiant de lot, p. ex. `fr.autier.promi`) ;
-dix-sept achats **consommables** « Soutenir » — un par palier, chacun son identifiant `fr.autier.promi.soutien.N` (N = le montant en euros), nom et description en
+dix-huit achats **consommables** « Soutenir » — un par palier, chacun son identifiant `fr.autier.promi.soutien.N` (N = le montant en euros), nom et description en
 français, capture d'écran de revue ; l'abonnement Ma Parole ! dans un groupe ; un **testeur bac à sable** (un identifiant Apple de test).
-**Google Play Console** (Tom) : le compte développeur, l'app, les mêmes dix-sept produits intégrés, un **testeur de licence**, la piste de **test interne**.
+**Google Play Console** (Tom) : le compte développeur, l'app, les mêmes dix-huit produits intégrés, un **testeur de licence**, la piste de **test interne**.
 
 **Les paliers « Soutenir » (C-217, C-313).** Apple n'accepte pas un montant saisi librement pour un achat intégré (règle 3.1.1) : chaque prix est un produit
 déclaré d'avance, au palier de prix le plus proche dans chaque pays.
 
 | Où dans l'app | Montant | Identifiant |
 |---|---|---|
-| la rangée (C-217) | 5 € · 10 € · 25 € · 50 € · 100 € | `fr.autier.promi.soutien.5` · `.10` · `.25` · `.50` · `.100` |
-| « Autre montant » (C-313) | 15 € · 20 € · 30 € · 40 € · 75 € | `fr.autier.promi.soutien.15` · `.20` · `.30` · `.40` · `.75` |
-| « Autre montant » (C-313) | 150 € · 200 € · 250 € · 300 € | `fr.autier.promi.soutien.150` · `.200` · `.250` · `.300` |
+| la rangée (C-217, C-318) | 5 € · 10 € · 25 € · 50 € · 100 € · 150 € | `fr.autier.promi.soutien.5` · `.10` · `.25` · `.50` · `.100` · `.150` |
+| « Autre montant » (C-313, C-318) | 15 € · 20 € · 30 € · 40 € · 75 € | `fr.autier.promi.soutien.15` · `.20` · `.30` · `.40` · `.75` |
+| « Autre montant » (C-313, C-318) | 200 € · 250 € · 300 € · 400 € | `fr.autier.promi.soutien.200` · `.250` · `.300` · `.400` |
 | « Autre montant » (C-313) | 500 € · 750 € · 1 000 € | `fr.autier.promi.soutien.500` · `.750` · `.1000` |
+
+**Le montant tapé (C-318, v214).** Dans l'app, « Autre montant » est aussi un champ où l'on tape un montant (clavier de chiffres). Un achat intégré ne peut pas
+porter ce montant tel quel : **à décider par Tom avant le portage** — le régler au palier déclaré le plus proche (au-dessus ou au-dessous), ou ne garder que les
+paliers. Le prototype ne paie rien : il montre le merci.
 
 La liste vit aussi dans l'app (`window._soutienPaliers`, lot-V174-SOUTIEN) : c'est elle que le portage lit. Dans le prototype, aucun paiement : le toucher montre
 le merci.
