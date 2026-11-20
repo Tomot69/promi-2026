@@ -37,7 +37,7 @@ jobs:
         working-directory: promi
   rendu:
     runs-on: ubuntu-24.04   # pas ubuntu-latest : 26.04 depuis nov. 2026, où Playwright 1.60 n'installe pas WebKit
-    timeout-minutes: 30
+    timeout-minutes: 60   # l'installation de WebKit et de ses dépendances a pris 21 min (20 nov.) : 30 coupait les tests
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,6 +53,10 @@ jobs:
         with: { node-version: '24', cache: npm, cache-dependency-path: promi/package-lock.json }
       - run: npm ci
         working-directory: promi
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-webkit-${{ hashFiles('promi/package-lock.json') }}
       - run: npx playwright install --with-deps webkit
         working-directory: promi
       - name: un état embarqué (celui du banc, jamais celui de Tom) — le test du démarrage l'exige

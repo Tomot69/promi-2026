@@ -197,11 +197,6 @@ test("les animations de l'accueil : le I de PROMI clignote, l'anneau du + tourne
   expect(r.anneau).toEqual(['heroSpin', '100s', 'linear']);
 });
 
-type Promi = {
-  nav: { journal(): Array<{ vers: string; arg?: string | number; t: number }> };
-  facade: { vue(): { s: number; ox: number; oy: number }; vueALaMain(): boolean };
-  horloge: { maintenant(): number };
-};
 const P_ = 'window.__promi';
 
 test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher recadre', async ({ page }) => {
@@ -216,16 +211,26 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
       const h = Toile.hit(x, y); if (h && h.pid === g.pid) out.push({ pid: g.pid, x, y }); }
     return out; })()`)) as Array<{ pid: number; x: number; y: number }>;
   expect(dalles.length, 'au moins une dalle de parole touchable').toBeGreaterThan(0);
+  // l'heure du lever du doigt, à l'horloge de l'app (celle de la navigation) : la demande vient 260 ms après, jamais avant
+  await page.evaluate(() => {
+    const w = window as unknown as { __leve: number[]; __promi: { horloge: { maintenant(): number } } };
+    w.__leve = [];
+    window.addEventListener('pointerup', () => w.__leve.push(w.__promi.horloge.maintenant()), true);
+  });
   for (const d of dalles.slice(0, 6)) {
     const avant = (await page.evaluate(`${P_}.nav.journal().length`)) as number;
     await page.mouse.click(d.x, d.y);
-    await page.waitForTimeout(150);
-    expect(await page.evaluate(`${P_}.nav.journal().length`), 'rien avant 260 ms').toBe(avant);
-    await page.waitForTimeout(400);
-    const j = (await page.evaluate(`${P_}.nav.journal()`)) as Promi['nav'] extends { journal(): infer R } ? R : never;
+    await page.waitForFunction(
+      (n) => (window as unknown as { __promi: { nav: { journal(): unknown[] } } }).__promi.nav.journal().length > n,
+      avant,
+      { timeout: 5000 },
+    );
+    const j = (await page.evaluate(`${P_}.nav.journal()`)) as Array<{ vers: string; arg?: number; t: number }>;
+    const leve = (await page.evaluate('window.__leve.at(-1)')) as number;
     expect(j.slice(avant), `la dalle ${String(d.pid)}`).toEqual([
       expect.objectContaining({ vers: 'fiche', arg: d.pid }),
     ]);
+    expect(j.at(-1)!.t - leve, 'la fiche est demandée 260 ms après le lever du doigt').toBeGreaterThanOrEqual(259);
     await page.waitForTimeout(400);
   }
   // le double toucher : la vue glissée à la main revient au cadrage
@@ -301,7 +306,10 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
   await page.mouse.move(140, 380, { steps: 10 });
   await page.mouse.up();
   await page.waitForTimeout(700);
-  expect(await vu(), 'paru quand la main a bougé la vue').toBe(true);
+  expect(
+    await vu(),
+    `paru quand la main a bougé la vue (${String(await page.evaluate(`${P_}.facade.vueALaMain()`))}, ${await page.evaluate(() => (window as unknown as { __promi: { accueil(): { etatRecadre(): string } } }).__promi.accueil().etatRecadre())})`,
+  ).toBe(true);
   // la vue revient seule dans ses bornes (l'élastique du moteur) : les 4 s comptent depuis son DERNIER mouvement — on l'attend, quelle que
   // soit la vitesse de la machine, puis : encore là à 3 s, parti avant 4 s + 300 ms de flaques + 1 s de marge
   const sig = (): Promise<string> =>
@@ -320,7 +328,7 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
     pareil = s === avant ? pareil + 1 : 0;
     avant = s;
   }
-  expect(pareil, 'la vue s’immobilise').toBeGreaterThanOrEqual(4);
+  expect(pareil, `la vue s’immobilise (dernière : ${avant})`).toBeGreaterThanOrEqual(4);
   // la vue est immobile depuis 1 s : encore là 2 s plus tard (3 s), parti à 5,3 s (4 s + 300 ms de flaques + 1 s de marge)
   await page.waitForTimeout(2000);
   expect(await vu(), 'encore là 3 s après le dernier mouvement de la vue').toBe(true);
