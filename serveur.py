@@ -62,6 +62,10 @@ def ip_du_mac():
     except Exception: return '(adresse introuvable : ipconfig getifaddr en0)'
 
 
+def journal(m):
+    print(time.strftime('%Y-%m-%d %H:%M:%S'), m, flush=True)
+
+
 class SansCache(http.server.SimpleHTTPRequestHandler):
     def __init__(self, *a, **k):
         super().__init__(*a, directory=ICI, **k)
@@ -126,7 +130,9 @@ class SansCache(http.server.SimpleHTTPRequestHandler):
                 nom = 'tom-%s.json' % time.strftime('%Y%m%d-%H%M%S')
                 with open(os.path.join(ICI, 'etats', nom), 'w', encoding='utf-8') as f: json.dump(d, f, ensure_ascii=False)
                 self._envoie(json.dumps({'ok': True, 'fichier': nom}).encode('utf-8'), 'application/json')
+                journal('export reçu de %s : etats/%s (%d octets)' % (ip, nom, n))
             except Exception as e:
+                journal('export refusé de %s : %s' % (ip, e))
                 self.send_response(400); self.end_headers()
             return
         if self.path.split('?')[0] == '/releve':
@@ -166,8 +172,13 @@ class SansCache(http.server.SimpleHTTPRequestHandler):
         if self._marque(): return
         return super().do_HEAD()
 
-    def log_message(self, *a):
-        pass
+    def log_message(self, fmt, *a):
+        # L0 (20 nov. 2026) : on note ce qui sert à comprendre un envoi perdu — les POST et les réponses d'erreur ; pas chaque fichier servi.
+        try:
+            ligne = fmt % a
+            if self.command == 'POST' or ' 4' in ligne[-12:] or ' 5' in ligne[-12:]:
+                journal('%s %s' % (self.client_address[0], ligne))
+        except Exception: pass
 
 
 class Serveur(socketserver.ThreadingMixIn, http.server.HTTPServer):

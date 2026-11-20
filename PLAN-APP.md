@@ -18,6 +18,7 @@
 | Façade du moteur | `src/moteur/facade.ts` (seule à toucher `window.Toile` — le lint l'impose), `types.ts` (l'inventaire des appels) | `entrees.spec.ts`, `banc-rendu.spec.ts` |
 | Tracé, flaques | `src/animation/trace/`, `src/animation/flaques/` (copies octet pour octet, `repris.test.ts`) | `socle.spec.ts` |
 | Jetons, polices | `outils/jetons_engendrer.py` → `src/design/jetons.{css,ts}` ; `outils/polices_extraire.py` → les cinq faces du prototype | `npm run jetons:verifie` (CI) |
+| Export de l'état (à venir) | l'équivalent de `?export=1` dans la vraie app (le diagnostic, et le passage de l'iPhone au Mac) — **décision de Tom, 20 nov. 2026 : « État envoyé au Mac » ne paraît que si le serveur a confirmé la réception (`{ok:true, fichier}`) ; sinon « Envoi impossible : vérifie l’adresse du Mac. »** (comme le prototype depuis ce jour) | un test qui coupe la réponse, renvoie 400, puis une réponse sans `ok` : jamais « envoyé » |
 | Synchro | `src/synchro/synchro.ts` : l'interface, l'implémentation locale (Firebase en 1.1) | — |
 | Achats | `src/metier/achats.ts` (la grille Soutenir, les designs), `src/natif/achats.ts` (local ; RevenueCat au lot 7), `achats/Promi.storekit` engendré | `soutien.test.ts` |
 | Preuve : la Toile | `src/ecrans/toile.ts` — la Toile de Tom au repos ; un glissé horizontal change de monde | **banc_rendu porté : 266/266 images identiques au pixel** (figées et prototype vivant) ; entrées du moteur identiques sur l'état de Tom ; la vue de son export retrouvée |

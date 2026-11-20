@@ -2827,9 +2827,15 @@ window._enSombre=function(f){ var av=window._shThemeOverride; window._shThemeOve
           theme:(dv&&dv.classList.contains('light'))?'clair':'sombre', schema:(matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light',
           reduit:!!(matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches) },
         toile:(function(){ try{ var c=window.Toile_cellules&&Toile_cellules(); return c?{vue:c.view, W:c.W, H:c.H, n:c.c.length, colorees:c.c.filter(function(q){ return q.kind!=='gray'; }).length, monde:Toile.getTheme()}:null; }catch(_){ return null; } })() };
-      fetch('/export', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(function(x){ return x.json(); }).then(function(j){
-        try{ if(typeof toast==='function') toast('État envoyé au Mac'); }catch(_){ } window._exportFait=j; }).catch(function(){ window._exportFait=false; }); }catch(_){ } }
-  window.addEventListener('load', function(){ setTimeout(envoie, 4000); });
+      fetch('/export', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(d)}).then(function(x){ if(!x.ok) throw new Error('http '+x.status); return x.json(); }).then(function(j){
+        if(!j || j.ok!==true || !j.fichier) throw new Error('réponse'); window._exportFait=j;
+        try{ if(typeof toast==='function') toast('État envoyé au Mac'); }catch(_){ } }).catch(echec); }catch(_){ echec(); } }
+  /* ⚑ L0 (Tom, 20 nov. 2026) — « État envoyé au Mac » ne paraît QUE si le serveur a confirmé la réception (`{ok:true, fichier}`) ; sinon (réseau,
+     adresse, refus, réponse illisible) : « Envoi impossible : vérifie l’adresse du Mac. ». Et l'envoi ne dépend plus du seul `load` (qu'un
+     chargement qui traîne peut retenir) : 4 s après `load`, ou 8 s après la lecture de ce script, le premier des deux, une fois. */
+  function echec(){ window._exportFait=false; try{ if(typeof toast==='function') toast('Envoi impossible : vérifie l’adresse du Mac.'); }catch(_){ } }
+  var parti=false; function lance(){ if(parti) return; parti=true; setTimeout(envoie, 4000); }
+  window.addEventListener('load', lance); setTimeout(lance, 8000);
 }catch(_){ } })();
 </script>
 <style id="lot-TOKENS-css">
