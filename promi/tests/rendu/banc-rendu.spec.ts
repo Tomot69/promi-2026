@@ -7,7 +7,8 @@
  * le même temps piloté (l'horloge de la vraie app en mode piloté, l'algorithme de PILOTE), le même protocole, ligne pour ligne :
  * le relevé des mondes neufs, puis pour chaque monde POSE (places oubliées, l'autre famille, la graine, `_chaOublie`), 6 × 40 images,
  * le rendu répété jusqu'à ce qu'il ne bouge plus, et la pose répétée jusqu'à deux rendus identiques (STABLE).
- * Fenêtre du banc : 430 × 932, densité 2 (le canevas du moteur est à la même densité à toutes les échelles : A3 est jugé par toile.spec).
+ * Fenêtre : le prototype dans celle du banc (430 × 932, densité 2 : son appareil y fait 390 × 844) ; la vraie app, qui s'adapte à l'écran
+ * (L0 §2), dans la taille de RÉFÉRENCE, 390 × 844, densité 2 — le moteur se mesure des deux côtés sur 390 × 844.
  *
  * RAMAGE N'EST PAS JUGÉ EN L0 (A6) : ① sa référence est périmée (C-187 : le prototype ne la retrouve plus lui-même) ; ② comparé au rendu
  * du jour du prototype (`banc_rendu.py --monde=ramage`, déterministe sur deux passes), la vraie app en diffère sur des plumes entières
@@ -35,6 +36,8 @@ const PAROLES: Array<[string, string]> = [
   ['cercle', 'arroser les tomates'],
 ];
 const REF_ECARTEES = new Set(['ramage']);
+/** la taille de référence de la vraie app (L0 §2) : là, et là seulement, elle est identique au pixel au prototype */
+const REFERENCE = { width: 390, height: 844 };
 
 interface Manifeste {
   mondes: Record<string, { stable: boolean; images: Record<string, { fichier?: string; fnv?: string; err?: string }> }>;
@@ -165,7 +168,7 @@ test('banc_rendu porté : la vraie app rend les images figées du banc, au pixel
   // polices : en intégration continue, c'est le test suivant (le prototype vivant, sur la même machine) qui juge
   test.skip(process.platform !== 'darwin', 'images figées sur macOS');
   const ref = JSON.parse(readFileSync(join(REF, 'manifeste.json'), 'utf8')) as Manifeste;
-  const ctx = await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 2 });
+  const ctx = await browser.newContext({ viewport: REFERENCE, deviceScaleFactor: 2 });
   const pg = await ctx.newPage();
   const erreurs: string[] = [];
   pg.on('pageerror', (e) => erreurs.push(String(e)));
@@ -207,10 +210,8 @@ test('banc_rendu porté : la vraie app contre le prototype vivant, même protoco
   browser,
 }) => {
   const ls = stockage(ETAT);
-  const nouveau = (): ReturnType<typeof browser.newContext> =>
-    browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 2 });
-  const cp = await nouveau();
-  const ca = await nouveau();
+  const cp = await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 2 });
+  const ca = await browser.newContext({ viewport: REFERENCE, deviceScaleFactor: 2 });
   const P = await cp.newPage();
   const A = await ca.newPage();
   const erreurs: string[] = [];

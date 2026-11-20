@@ -5,7 +5,7 @@
 ## 000) NOUVEAU CHAPITRE : LA VRAIE APP (20 nov. 2026, lot L0, branche `app-L0`)
 
 - **La vraie app vit dans `promi/`** (TypeScript strict, Vite, Capacitor iOS et Android). `npm run verifier` (jetons, types, lint, format, tests unitaires) ;
-  `npx playwright test` (WebKit : banc_rendu porté, entrées du moteur, socle). L'intégration continue : `promi/ci/ci.yml` (à déplacer dans `.github/workflows/` : le jeton GitHub de ce Mac n'a pas le droit « workflow »).
+  `npx playwright test` (WebKit : banc_rendu porté, entrées du moteur, socle). L'intégration continue : `.github/workflows/ci.yml`. L'app s'adapte à chaque écran (Tom, L0 §2) : `tests/rendu/ecrans.spec.ts`.
 - **Le plan des lots suivants : `PLAN-APP.md`** — ils attendent que Tom le valide. Les règles : en tête de CLAUDE.md et d'ARCHITECTURE.md.
 - **Ce que L0 prouve** : banc_rendu porté, **266 images sur 266 identiques au pixel** (contre les images figées et contre le prototype vivant ; Ramage non jugé,
   C-187) ; sur l'état de Tom, les entrées du moteur identiques et la vue de son export retrouvée ; l'import de ses exports sans perte.

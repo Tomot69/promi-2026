@@ -102,6 +102,12 @@ C = ['/* promi/src/design/jetons.css — GÉNÉRÉ depuis PROMI-TOKENS.json par 
 C += ['  %s:%s;' % (k, v) for k, v in J['palette_fixe'].items()]
 C += ['  --f-%s:%s;' % (k, v['css']) for k, v in J['polices'].items()]   # L0 : les familles, comme dans le prototype (lot-TOKENS-css)
 C += ['  --p-%s:%s;' % (k, v['clair']) for k, v in J['roles'].items()]
+M = J.get('mise_en_page')
+if M:   # L0 (§2) : la grille et les ancrages — calculés depuis les cotes du prototype et les zones sûres de l'écran
+    C += ['  --ref-largeur:%dpx;' % M['reference']['largeur'], '  --ref-hauteur:%dpx;' % M['reference']['hauteur'],
+          '  --marge-g:calc(%dpx + env(safe-area-inset-left, 0px));' % M['marge_laterale'], '  --marge-d:calc(%dpx + env(safe-area-inset-right, 0px));' % M['marge_laterale'],
+          '  --ancre-haut:max(calc(env(safe-area-inset-top, 0px) - %dpx), %dpx);' % (M['haut']['retrait_zone_sure'], M['haut']['cote_prototype'] + M['haut']['decalage_app']),
+          '  --ancre-bas:max(env(safe-area-inset-bottom, 0px), %dpx);' % M['bas']['marge_prototype']]
 C += ['}', '[data-theme="sombre"]{'] + ['  --p-%s:%s;' % (k, v['sombre']) for k, v in J['roles'].items()] + ['}']
 for nom, d in J['niveaux'].items():
     C.append('.t-%s{font-family:var(--f-%s);font-weight:%s;font-size:%spx;%s%s}' % (nom, d['famille'], d['poids'], d['taille'], 'text-transform:uppercase;' if d['capitales'] else '', ('opacity:%s;' % d['opacite']) if d['opacite'] < 1 else ''))
@@ -115,6 +121,7 @@ T.append('export const roles = ' + json.dumps(collections.OrderedDict((camel(k),
 T.append('export type Role = keyof typeof roles;')
 T.append('export const niveaux = ' + json.dumps(collections.OrderedDict((camel(k), v) for k, v in J['niveaux'].items()), ensure_ascii=False, indent=2) + ' as const;')
 T.append('export type Niveau = keyof typeof niveaux;')
+if J.get('mise_en_page'): T.append('export const miseEnPage = ' + json.dumps(collections.OrderedDict((k, v) for k, v in J['mise_en_page'].items() if k != 'note'), ensure_ascii=False, indent=2) + ' as const;')
 SORTIES['promi/src/design/jetons.ts'] = '\n'.join(T) + '\n'
 ecarts = 0
 for chemin, texte in SORTIES.items():

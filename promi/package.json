@@ -18,10 +18,11 @@
     "format:verifie": "prettier --check .",
     "test": "vitest run",
     "test:rendu": "playwright test",
-    "ios": "npm run construire && npx cap sync ios",
-    "android": "npm run construire && npx cap sync android",
+    "ios": "npm run embarquer && APPAREIL=1 npm run construire && npx cap sync ios",
+    "android": "npm run embarquer && APPAREIL=1 npm run construire && npx cap sync android",
     "storekit": "node outils/storekit-engendrer.ts",
-    "verifier": "npm run jetons:verifie && npm run types && npm run lint && npm run format:verifie && npm test"
+    "verifier": "npm run jetons:verifie && npm run types && npm run lint && npm run format:verifie && npm test",
+    "embarquer": "node outils/embarquer-etat.ts"
   },
   "devDependencies": {
     "@capacitor/cli": "^8.6.2",

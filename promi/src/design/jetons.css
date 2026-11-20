@@ -289,6 +289,12 @@
   --p-corps-garde:#EFC3B9;
   --p-blanc:#FFFFFF;
   --p-noir:#000000;
+  --ref-largeur:390px;
+  --ref-hauteur:844px;
+  --marge-g:calc(24px + env(safe-area-inset-left, 0px));
+  --marge-d:calc(24px + env(safe-area-inset-right, 0px));
+  --ancre-haut:max(calc(env(safe-area-inset-top, 0px) - 4px), 43px);
+  --ancre-bas:max(env(safe-area-inset-bottom, 0px), 34px);
 }
 [data-theme="sombre"]{
   --p-fond:#050302;

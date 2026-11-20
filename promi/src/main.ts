@@ -31,10 +31,19 @@ async function etatEmbarque(): Promise<unknown> {
   return f ? await f() : null;
 }
 
+/**
+ * L0 (lot de preuve) : l'export embarqué est importé au premier lancement, et de nouveau quand la construction en embarque un autre (sa
+ * signature est gardée). L'app ne crée encore aucune donnée : rien ne se perd. Le portage de la page + (lot 2) retire ce remplacement.
+ */
+const CLE_EMBARQUE = 'promi.l0.embarque';
 async function demarrer(): Promise<void> {
-  if (!magasin.etat().paroles.length && q.get('banc') == null) {
+  if (q.get('banc') == null) {
     const x = await etatEmbarque();
-    if (x) magasin.importer(x);
+    const sig = x ? JSON.stringify(x).length + ':' + String((x as { quand?: unknown }).quand) : null;
+    if (x && sig !== localStorage.getItem(CLE_EMBARQUE)) {
+      magasin.importer(x);
+      localStorage.setItem(CLE_EMBARQUE, sig!);
+    }
   }
   await chargerPolices();
   const app = document.getElementById('app');

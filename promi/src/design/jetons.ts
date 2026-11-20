@@ -442,3 +442,20 @@ export const niveaux = {
   }
 } as const;
 export type Niveau = keyof typeof niveaux;
+export const miseEnPage = {
+  "reference": {
+    "largeur": 390,
+    "hauteur": 844
+  },
+  "marge_laterale": 24,
+  "haut": {
+    "cote_prototype": 40,
+    "decalage_app": 3,
+    "retrait_zone_sure": 4,
+    "note": "l'encart du haut : max(zone sûre haute − 4, 40 + 3) — 43 pt sur l'iPhone 16e (zone sûre 47), sous l'île d'un 16 Pro Max, jamais sous la barre d'état d'un SE"
+  },
+  "bas": {
+    "marge_prototype": 34,
+    "note": "ce qui est ancré en bas (la barre de l'accueil, 710 → 810 sur 844) : max(zone sûre basse, 34) au-dessus du bord"
+  }
+} as const;

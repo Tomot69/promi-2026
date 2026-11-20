@@ -20,13 +20,11 @@ body {
   inset: 0;
   touch-action: none;
 }
+/* L0 §2 (Tom) : l'app S'ADAPTE à l'écran — l'appareil couvre tout l'écran ; la Toile s'y mesure et le remplit, sans bande vide.
+   390 × 844 est la référence ; les ancrages des écrans (--ancre-haut, --ancre-bas, --marge-g, --marge-d) sont dans jetons.css. */
 .device {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: 390px;
-  height: 844px;
-  transform-origin: 0 0;
+  inset: 0;
   overflow: hidden;
   background: var(--c-brun03);
 }

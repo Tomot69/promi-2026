@@ -12,7 +12,6 @@
 import moteurSource from './repris/promi-moteur.js?raw';
 import type { EtatV1, Parole } from '../donnees/schema.ts';
 import type { Magasin } from '../etat/magasin.ts';
-import { ajusterAppareil } from '../design/appareil.ts';
 import type { EtiquetteDalle, GraineMoteur, MondeDalle, MoteurFonctions, MoteurToile } from './types.ts';
 
 type Fenetre = Window & Record<string, unknown> & Partial<MoteurFonctions> & { Toile?: MoteurToile };
@@ -41,6 +40,8 @@ export interface Facade {
   rendre(cv: HTMLCanvasElement, ech: number, clair: boolean, vue?: boolean): boolean;
   lecture(): ReturnType<MoteurFonctions['Toile_lecture']>;
   redessiner(): void;
+  /** le recadrage du moteur (le rond « recadrer » de l'accueil) */
+  recadrer(): void;
 }
 
 export function creerFacade(magasin: Magasin): Facade {
@@ -106,7 +107,6 @@ export function creerFacade(magasin: Magasin): Facade {
         stage.appendChild(cv);
         device.appendChild(stage);
         conteneur.appendChild(device);
-        ajusterAppareil(device);
       }
       const e = magasin.etat();
       this.appliquerTheme(e.reglages.theme);
@@ -147,6 +147,9 @@ export function creerFacade(magasin: Magasin): Facade {
     },
     redessiner: () => {
       toile().redraw();
+    },
+    recadrer: () => {
+      w.Toile_recadre?.();
     },
   };
 }

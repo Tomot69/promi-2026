@@ -9,7 +9,7 @@
 
 | Couche | Où | Ce qui le prouve |
 |---|---|---|
-| Outillage | `promi/` : Vite, TypeScript strict, ESLint (strict, typé), Prettier, Vitest, Playwright WebKit | `npm run verifier` · CI `promi/ci/ci.yml` (à déplacer dans `.github/workflows/` : le jeton GitHub de ce Mac n'a pas le droit « workflow ») |
+| Outillage | `promi/` : Vite, TypeScript strict, ESLint (strict, typé), Prettier, Vitest, Playwright WebKit | `npm run verifier` · CI `.github/workflows/ci.yml` |
 | Coquille | Capacitor 8 : `ios/` (profil gratuit de Tom, équipe B77VBMD9BF), `android/` préparé | l'app « Promi » installée sur l'iPhone 16e de Tom |
 | Schéma v1 + migrations | `src/donnees/` (`schema.ts`, `migrations/`, `stockage.ts`) | `tests/unitaires/donnees.test.ts` |
 | Import des données de Tom | `src/donnees/migrations/prototype.ts` | `import.test.ts` : chaque export (etats/, Promi-reference-v205, banc-etats/) revient **sans perte** |
@@ -33,7 +33,8 @@
 |---|---|
 | 1 · accueil, Toile — dont **socle transversal** (rejoué à chaque lot) | 20 + 27 = 47 |
 | 2 · page + et genèse | 48 |
-| 3 · fiche et tenir | 72 |
+| 3a · fiche et tenir | 46 |
+| 3b · Peaufiner, commentaires, photo, dessin | 26 |
 | 4 · Index et Fil | 14 |
 | 5 · Cercle et membres | 13 |
 | 6 · Aura et Pelote | 15 |
@@ -83,18 +84,29 @@ Sources : `portage/SPEC-ECRANS.md` (§ cités), `SPEC-GESTE.md`, `SPEC-RENDU.md`
 
 ---
 
-## Lot 3 · La fiche et tenir
+## Lot 3a · La fiche et tenir (la fiche, tenir, le trait et la jonction, deux états, échéance, titre modifiable)
 
-**(a) Porté** — SPEC-ECRANS §4 (fiche Promi/Chiche, en cours/tenue, gardé de côté, à photo, avec dessin), §5 (l'instant), §6 (Peaufiner), §22 (fiche d'une personne), §23–25 (menu photo, mode dessin, voir en entier) ; SPEC-GESTE §1 (l'onde, les quatre modes), §3 et §3.1 (tenir, rideau, « Parole tenue ! » C-311), §4 (moitié, chevron, points), §5 (dessiner) ; deux états seulement (C-210), échéance en date (C-160), la phrase complète (C-069), titre modifiable (C-280, Q621), jonction et trait plat collé (C-259, C-267, C-297), le haut stable (C-255), les parts à plusieurs (C-115), commentaires « Un mot… » et « Les Mots » (C-116, C-248, C-257, C-260, C-261), photo cadrée/tournée (C-085, C-098), dessin (C-042, C-056, C-061, C-086), effacer sans retour (C-258), crochet haptique au lever (C-022, porté lot 11).
+**(a) Porté** — SPEC-ECRANS §4 (fiche Promi/Chiche, en cours/tenue), §5 (l'instant) ; SPEC-GESTE §1 (l'onde, les quatre modes), §3 et §3.1 (tenir, rideau, « Parole tenue ! » C-311), §4 (moitié, chevron, points) ; deux états seulement (C-210), échéance en date (C-160), la phrase complète (C-069), titre modifiable (C-280, Q621), jonction et trait plat collé (C-259, C-267, C-297), le haut stable (C-255), les parts à plusieurs (C-115) ; crochet haptique au lever (C-022, branché au lot 11).
 
-**(b) Juges** : releve-S1-fiches, releve-S2-peaufiner, releve-S5-instant, banc_apres_tenir, banc_jonction, redteam_trait, redteam_trait_k, redteam_ronds, redteam_depart_orange, redteam_contraste_trait, redteam_formes, redteam_champ, redteam_ruban, redteam_photo_trait, redteam_tenir, redteam_tenir_e3, redteam_tenir_presse, redteam_tenu_trait, redteam_fluide, redteam_validation, redteam_celebration_fixe, redteam_centre_validation, redteam_part, redteam_un_trait, redteam_repos_fiche, redteam_retour_fiche, redteam_retour_trait, redteam_premier_toucher, redteam_trait_entier, redteam_trait_retour, redteam_points_plat, redteam_jonction, redteam_jonction_fiche, redteam_jonction_plat, redteam_jonction_rebond, redteam_elan, redteam_haut_fiche, redteam_etat_fiche, redteam_flash_etat, redteam_fiches_orange, redteam_fiches_theme, redteam_deux_etats, redteam_echeance, redteam_phrase_fiche, redteam_titre_fiche, redteam_titre_encart, redteam_renomme, redteam_motmarque, redteam_peaufiner, redteam_peauf_fermer, redteam_peauf_x, redteam_peauf_rangees, redteam_effacer, redteam_commentaires, redteam_commentaires_liste, redteam_envoi_mot, redteam_les_mots, redteam_mots_fiche, redteam_mots_neufs, redteam_mot_neuf_essai, redteam_nombre_mots, redteam_noms, redteam_plus_disque, redteam_photo, redteam_photo_menu, redteam_origine, redteam_cadre, redteam_tourne, redteam_entier, redteam_remplace, redteam_dessin, redteam_dessin_photo
+**(b) Juges (46)** : releve-S1-fiches, releve-S5-instant, banc_apres_tenir, banc_jonction, redteam_trait, redteam_trait_k, redteam_ronds, redteam_depart_orange, redteam_contraste_trait, redteam_formes, redteam_champ, redteam_ruban, redteam_tenir, redteam_tenir_e3, redteam_tenir_presse, redteam_tenu_trait, redteam_fluide, redteam_validation, redteam_celebration_fixe, redteam_centre_validation, redteam_part, redteam_un_trait, redteam_repos_fiche, redteam_retour_fiche, redteam_retour_trait, redteam_premier_toucher, redteam_trait_entier, redteam_trait_retour, redteam_points_plat, redteam_jonction, redteam_jonction_fiche, redteam_jonction_plat, redteam_jonction_rebond, redteam_elan, redteam_haut_fiche, redteam_etat_fiche, redteam_flash_etat, redteam_fiches_orange, redteam_fiches_theme, redteam_deux_etats, redteam_echeance, redteam_phrase_fiche, redteam_titre_fiche, redteam_titre_encart, redteam_renomme, redteam_motmarque
 
 **(c) Tom sur l'iPhone**
-- Tenir un Promi, un Chiche, un Promi d'un Cercle (sans mot, avec un mot, avec plusieurs) : « Parole tenue ! » / « Défi relevé ! » toujours à la même place, le vert remonte (#31).
+- Tenir un Promi, un Chiche, un Promi d'un Cercle : « Parole tenue ! » / « Défi relevé ! » toujours à la même place, le vert remonte (#31).
 - Défiler juste après tenir, puis lentement et d'un coup, jusqu'au rebond : le trait s'accroche à plat sous le bandeau, jamais au-dessus ni dessous (#12, #17, #25).
-- `?jour=+30` : « EN COURS · 12 OCT. » ; Peaufiner › Supprimer puis recharger : la parole ne revient pas (#2, #3).
-- Bouton photo › Importer, toucher la bande ; › Dessiner : outils en bas, ✕ sort sans poser (#7, #8).
-- Envoyer deux mots de suite : le clavier reste, le mot paraît sans délai ; toucher le titre pour le modifier, aucun encart.
+- `?jour=+30` : « EN COURS · 12 OCT. » (#3).
+- Toucher le titre pour le modifier : aucun encart ; renommer ne change pas la forme de la dalle.
+
+## Lot 3b · Peaufiner, les commentaires, la photo, le dessin, effacer, la fiche d'une personne
+
+**(a) Porté** — SPEC-ECRANS §6 (Peaufiner), §22 (fiche d'une personne), §23–25 (menu photo, mode dessin, voir en entier) ; SPEC-GESTE §5 (dessiner) ; commentaires « Un mot… » et « Les Mots » (C-116, C-248, C-257, C-260, C-261), mots neufs (C-253), le + des membres (C-254), photo cadrée/tournée (C-085, C-098), dessin (C-042, C-056, C-061, C-086), effacer sans retour (C-258).
+
+**(b) Juges (26)** : releve-S2-peaufiner, redteam_photo_trait, redteam_peaufiner, redteam_peauf_fermer, redteam_peauf_x, redteam_peauf_rangees, redteam_effacer, redteam_commentaires, redteam_commentaires_liste, redteam_envoi_mot, redteam_les_mots, redteam_mots_fiche, redteam_mots_neufs, redteam_mot_neuf_essai, redteam_nombre_mots, redteam_noms, redteam_plus_disque, redteam_photo, redteam_photo_menu, redteam_origine, redteam_cadre, redteam_tourne, redteam_entier, redteam_remplace, redteam_dessin, redteam_dessin_photo
+
+**(c) Tom sur l'iPhone**
+- Peaufiner › Supprimer puis recharger : la parole ne revient pas (#2) ; le X de Peaufiner le ferme seul.
+- Envoyer deux mots de suite : le clavier reste, le mot paraît sans délai ; le nombre « +N » glisse jusqu'au mot neuf.
+- Bouton photo › Importer, toucher la bande : la photo en entier (#7) ; › Dessiner : outils en bas, ✕ sort sans poser (#8).
+- La fiche d'une personne : les noms se touchent, « Tenu ensemble » s'ouvre.
 
 ---
 
@@ -257,7 +269,7 @@ C-023 (page du trait partagé), C-026 (Firebase, comptes), C-093 (dessin collabo
 
 ## Décisions à prendre (Tom)
 
-1. **Les écrans d'une autre taille que 390 × 844** : en L0 l'app est réduite pour tenir et centrée, comme le prototype dans Safari. Garder ce principe, ou adapter la mise en page aux grands écrans (avant le lot 1).
-2. **Ramage** (C-187) : sa référence de rendu attend ton œil ; dans la vraie app il entrera dans la comparaison au lot 7 (le Studio prépare sa silhouette, ce qui laisse un état dans le moteur).
-3. **Le prix de Ma Parole !** (C-090) : l'abonnement n'est pas dans le fichier StoreKit tant qu'il n'est pas fixé.
-4. **La re-signature hebdomadaire** : avec le profil gratuit, l'app cesse de s'ouvrir au bout de 7 jours ; la reconstruire et la réinstaller (une commande, PREUVE-CAPACITOR.md) — ou ouvrir le compte développeur.
+1. ~~Les écrans d'une autre taille que 390 × 844~~ — **TRANCHÉ (Tom, 20 nov. 2026) : l'app S'ADAPTE à chaque écran**, elle n'est ni réduite ni centrée. 390 × 844 reste la référence (identique au pixel au prototype ; les tests d'identité y tournent). Ailleurs : largeur fluide, marges et cotes du prototype, ancrées aux bords et aux zones sûres (C-299, C-300) ; la Toile et les fonds remplissent tout l'écran, aucune bande vide. Posé dans le socle : `mise_en_page` de PROMI-TOKENS.json (`--marge-g`, `--marge-d`, `--ancre-haut`, `--ancre-bas`) ; chaque écran porté est jugé sur l'iPhone SE, le 16e, le 16 Pro Max et une taille Android (`tests/rendu/ecrans.spec.ts`, captures dans `resultats/ecrans/`).
+2. **Ramage** (C-187) — reporté à son lot (Tom, 20 nov.) : sa référence de rendu attend ton œil ; dans la vraie app il entrera dans la comparaison au lot 7 (le Studio prépare sa silhouette, ce qui laisse un état dans le moteur).
+3. **Le prix de Ma Parole !** (C-090) — reporté à son lot : l'abonnement n'est pas dans le fichier StoreKit tant qu'il n'est pas fixé.
+4. **La re-signature hebdomadaire** — le compte développeur : reporté à son lot : avec le profil gratuit, l'app cesse de s'ouvrir au bout de 7 jours ; la reconstruire et la réinstaller (une commande, PREUVE-CAPACITOR.md) — ou ouvrir le compte développeur.

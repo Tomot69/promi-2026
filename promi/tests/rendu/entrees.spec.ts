@@ -16,14 +16,24 @@
  * Les exports de Tom (etats/) sont hors dépôt : en intégration continue, deux états du banc (banc-etats/) les remplacent.
  */
 import { test, expect, type Page } from '@playwright/test';
-import { existsSync, readFileSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { AMORCE, T_FIGE } from './banc.ts';
 
 const RACINE = join(import.meta.dirname, '..', '..', '..');
+// les exports de Tom (etats/, hors dépôt) qui portent des paroles — tous, sauf celui du 23 oct. (voir plus haut) — et deux états du banc
 const ETATS = [
-  'etats/tom-20261117-211127.json',
-  'etats/tom-20261101-205518.json',
+  ...(existsSync(join(RACINE, 'etats'))
+    ? readdirSync(join(RACINE, 'etats'))
+        .filter((f) => f.endsWith('.json') && f !== 'tom-20261023-125022.json')
+        .map((f) => 'etats/' + f)
+        .filter((f) => {
+          const x = JSON.parse(readFileSync(join(RACINE, f), 'utf8')) as { ls?: Record<string, string> };
+          return (
+            (JSON.parse(x.ls?.['promi_state'] ?? '{"promises":[]}') as { promises: unknown[] }).promises.length > 0
+          );
+        })
+    : []),
   'banc-etats/etat-25.json',
   'banc-etats/etat-cercle.json',
 ].filter((f) => existsSync(join(RACINE, f)));
@@ -35,6 +45,12 @@ const ETATS = [
  * par le prototype, que la vraie app ne reprend pas.
  */
 const HORS = ['x', 'y', 'tx', 'ty', 'files'];
+/**
+ * Exception nommée de la vue : l'export du 1er nov. à 19 h 54 a relevé la vue d'un démarrage pris dans la course de C-177 (zoom 1,0070) ;
+ * le même état, exporté à 20 h 55, a relevé 1,00446 — celle que la vraie app retrouve. Les entrées du moteur, elles, y sont jugées.
+ */
+const VUE_PENDANT_LA_COURSE = new Set(['etats/tom-20261101-195418.json']);
+
 const LIRE = `()=>{ const HORS=${JSON.stringify(HORS)}; return ({
   paroles: JSON.stringify(promises.map(p=>{ const o={}; for(const k of Object.keys(p).sort()) if(!HORS.includes(k)) o[k]=p[k]; return o; })),
   cercles: JSON.stringify(window.NUE||NUE), dallesCercles: JSON.stringify(window.NUEDALLE||{}),
@@ -42,6 +58,11 @@ const LIRE = `()=>{ const HORS=${JSON.stringify(HORS)}; return ({
   clair: document.getElementById('device').classList.contains('light'), texte: Toile.labelsOn(),
   graines: JSON.stringify(Toile_graines().map(g=>[g[0],g[3]])), vue: Toile_lecture().vue }); }`;
 
+/**
+ * L0 §2 (Tom) : la vraie app S'ADAPTE à l'écran ; elle est identique au prototype à la taille de RÉFÉRENCE, 390 × 844. Le prototype, lui,
+ * est jugé dans la fenêtre du banc (son appareil y fait 390 × 844) et dans celle de Safari à 0,79 (330 × 714 : réduit, toujours 390 × 844
+ * pour le moteur) — A3. Les autres tailles d'écran de la vraie app : tests/rendu/ecrans.spec.ts.
+ */
 const ECHELLES = [
   { nom: '1', viewport: { width: 430, height: 932 } },
   { nom: '0,79', viewport: { width: 330, height: 714 } },
@@ -60,7 +81,10 @@ for (const f of ETATS)
       const ctx = (): ReturnType<typeof browser.newContext> =>
         browser.newContext({ viewport: ech.viewport, deviceScaleFactor: 3 });
       const P: Page = await (await ctx()).newPage();
-      const A: Page = await (await ctx()).newPage();
+      // la vraie app à la taille de référence (L0 §2) : le moteur s'y mesure sur 390 × 844, comme dans l'appareil du prototype
+      const A: Page = await (
+        await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })
+      ).newPage();
       const erreurs: string[] = [];
       A.on('pageerror', (e) => erreurs.push(String(e)));
       await P.addInitScript((ls) => {
@@ -114,5 +138,6 @@ for (const f of ETATS)
           .map((k) => `${k} :\n  prototype ${String(p[k]).slice(0, 400)}\n  vraie app ${String(a[k]).slice(0, 400)}`)
           .join('\n'),
       ).toEqual([]);
-      if (x.toile?.vue) expect(a.vue, "la vue de départ = celle que l'iPhone de Tom a relevée").toEqual(x.toile.vue);
+      if (x.toile?.vue && !VUE_PENDANT_LA_COURSE.has(f))
+        expect(a.vue, "la vue de départ = celle que l'iPhone de Tom a relevée").toEqual(x.toile.vue);
     });

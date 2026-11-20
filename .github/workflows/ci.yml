@@ -1,5 +1,3 @@
-# ⚠ À DÉPLACER dans .github/workflows/ci.yml (racine du dépôt) : le jeton GitHub de ce Mac n'a pas le droit « workflow », GitHub refuse qu'un
-#   commit poussé de là crée ce fichier (20 nov. 2026). Tom : ajouter le droit « workflow » au jeton, ou créer le fichier depuis le site.
 # L'intégration continue de la vraie app (promi/). À chaque commit : la construction, le typage strict, le lint, le format, les fichiers
 # générés (jetons, polices, pièces reprises, StoreKit) contre leur source, les tests unitaires, puis les tests de rendu en WebKit (le
 # moteur de l'iPhone) — la vraie app contre le prototype, au pixel. Pas de fusion si un test est rouge.
@@ -56,6 +54,9 @@ jobs:
       - run: npm ci
         working-directory: promi
       - run: npx playwright install --with-deps webkit
+        working-directory: promi
+      - name: un état embarqué (celui du banc, jamais celui de Tom) — le test du démarrage l'exige
+        run: node outils/embarquer-etat.ts ../banc-etats/etat-25.json
         working-directory: promi
       - run: npm run construire
         working-directory: promi

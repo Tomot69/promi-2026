@@ -17,29 +17,35 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
     if (action === 'importer') facade.planterTout();
   });
 
+  // ⚠ Le moteur arrête la propagation du doigt sur son canevas (`pointerdown` : stopPropagation et setPointerCapture, promi-moteur.js
+  // ≈ l. 8231) : écouté en phase de BULLE sur le parent, le glissé n'arrivait jamais (vu par Tom sur l'iPhone, 20 nov.). Il est écouté en
+  // phase de CAPTURE, avant le canevas, sans rien arrêter : le moteur garde ses gestes (glisser la vue, pincer). Un seul doigt seulement.
   const mondes = Object.keys(MONDES_ORDRE);
-  let x0: number | null = null;
-  let y0 = 0;
+  const doigts = new Map<number, { x: number; y: number }>();
+  let depart: { id: number; x: number; y: number } | null = null;
   const debut = (ev: PointerEvent): void => {
-    x0 = ev.clientX;
-    y0 = ev.clientY;
+    doigts.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
+    depart = doigts.size === 1 ? { id: ev.pointerId, x: ev.clientX, y: ev.clientY } : null;
   };
   const fin = (ev: PointerEvent): void => {
-    if (x0 == null) return;
-    const dx = ev.clientX - x0;
-    const dy = ev.clientY - y0;
-    x0 = null;
-    if (Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
+    doigts.delete(ev.pointerId);
+    if (!depart || depart.id !== ev.pointerId) return;
+    const dx = ev.clientX - depart.x;
+    const dy = ev.clientY - depart.y;
+    depart = null;
+    if (ev.type === 'pointercancel' || Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
     const i = mondes.indexOf(magasin.etat().studio.monde);
     const n = mondes.length;
-    const suivant = mondes[((((i < 0 ? 0 : i) + (dx < 0 ? 1 : -1)) % n) + n) % n]!;
-    magasin.choisirMonde(suivant);
+    magasin.choisirMonde(mondes[((((i < 0 ? 0 : i) + (dx < 0 ? 1 : -1)) % n) + n) % n]!);
+    facade.recadrer();
   };
-  conteneur.addEventListener('pointerdown', debut);
-  conteneur.addEventListener('pointerup', fin);
+  conteneur.addEventListener('pointerdown', debut, true);
+  conteneur.addEventListener('pointerup', fin, true);
+  conteneur.addEventListener('pointercancel', fin, true);
   return () => {
     desabonne();
-    conteneur.removeEventListener('pointerdown', debut);
-    conteneur.removeEventListener('pointerup', fin);
+    conteneur.removeEventListener('pointerdown', debut, true);
+    conteneur.removeEventListener('pointerup', fin, true);
+    conteneur.removeEventListener('pointercancel', fin, true);
   };
 }
