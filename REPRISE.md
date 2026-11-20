@@ -2,6 +2,13 @@
 
 À lire avec `CLAUDE.md` (il fait autorité), `CHANTIERS.md` (le registre) et `QUESTIONS.md`. En tête de chaque session : `python3 serveur.py` (port 8752, IP relue par `ipconfig getifaddr en0`), donner les trois adresses.
 
+## 0000) LOT 1 — L'ACCUEIL ET LA TOILE VIVANTE (20 nov. 2026, branche `app-L1`, C-322) — EN ATTENTE DE TOM
+
+- L0 est clos (validé par Tom : plein écran, glissé entre les mondes ; CI verte). L'état embarqué : l'export de Safari de Tom du 20 nov. (2 paroles de test), copié dans `Promi-reference-v205/etat-de-tom/`.
+- **Porté** : `promi/src/ecrans/accueil/` (plateau, barre, menu du +, bandeau « Garder ta Toile », symbole « recadrer » en flaques), le toucher d'une dalle (`ecrans/toile.ts`, `toucher-tolerant.ts`), le passage en flaques (`animation/flaques/passage.ts`), la navigation (`navigation/` : aucun écran destinataire au lot 1, la demande est notée). Identique au prototype au pixel à 390 × 844, clair et sombre, menu ouvert et fermé (`tests/rendu/accueil.spec.ts`) ; s'adapte (SE, 16e, 16 Pro Max, Android).
+- **Pièges payés** : mémoire `portage-ecran-pieges` (l'outil duo, `navigator.webdriver`, le gel à 3 id, brun09 = seiche en sombre, le grain `#device::after`). Sur la CI (WebKit sans carte graphique) la Toile rend une image toutes les 0,7 s : les gestes se jugent à l'horloge de l'app, dans la page.
+- **Pas encore portés en tests** : la plupart des juges du lot (liste dans PLAN-APP.md, lot 1 (d)). **C-323** : la limite de 44 pt de C-239 n'est pas appliquée par le prototype — décision de Tom.
+
 ## 000) NOUVEAU CHAPITRE : LA VRAIE APP (20 nov. 2026, lot L0, branche `app-L0`)
 
 - **La vraie app vit dans `promi/`** (TypeScript strict, Vite, Capacitor iOS et Android). `npm run verifier` (jetons, types, lint, format, tests unitaires) ;

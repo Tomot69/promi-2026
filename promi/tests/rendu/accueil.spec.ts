@@ -365,7 +365,10 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
   await page.mouse.click(r[0]!, r[1]!);
   await page.waitForTimeout(700);
   expect(await page.evaluate(`${P_}.facade.vueALaMain()`), 'le symbole recadre').toBe(false);
-  expect(await vu()).toBe(false);
+  // il part en flaques (300 ms d'horloge ; sur la CI, une image toutes les 0,7 s : on l'attend jusqu'à 5 s)
+  await page.waitForFunction(() => !document.getElementById('accRecadre')!.classList.contains('vu'), undefined, {
+    timeout: 5000,
+  });
 });
 
 test("la Toile vit au repos sous l'accueil (C-028) : un mouvement est prévu, il a lieu, rien de l'accueil ne couvre le centre", async ({
