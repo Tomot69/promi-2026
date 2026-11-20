@@ -320,7 +320,8 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
     `paru quand la main a bougé la vue (${String(await page.evaluate(`${P_}.facade.vueALaMain()`))}, ${await page.evaluate(() => (window as unknown as { __promi: { accueil(): { etatRecadre(): { etat: string } } } }).__promi.accueil().etatRecadre().etat)})`,
   ).toBe(true);
   // la vue revient seule dans ses bornes (l'élastique du moteur) : les 4 s comptent depuis son DERNIER mouvement. Mesuré DANS la page, à
-  // l'horloge de l'app (une machine lente rend chaque aller-retour du test plus long que la seconde) : le symbole est encore là quand la
+  // l'horloge de l'app (une machine lente rend chaque aller-retour du test plus long que la seconde ; sur la CI, sans carte graphique, la
+  // Toile rend une image toutes les 0,7 s et la vue met plus de 30 s à revenir dans ses bornes — mesuré le 20 nov.) : le symbole est encore là quand la
   // vue est immobile depuis 3,5 s, et il part avant 4 s + 300 ms de flaques + 1 s de marge
   const attente = await page.evaluate(async () => {
     const a = (
@@ -338,7 +339,7 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
       if (vues.length > 10) vues.shift();
       if (e.etat === 'la') derniereLa = e.depuis;
       if (e.etat === 'absent') return { derniereLa, absent: e.depuis };
-      if (performance.now() - t0 > 30000)
+      if (performance.now() - t0 > 120000)
         return { derniereLa, absent: -1, etat: e.etat, vues, remises: (e as unknown as { remises: unknown }).remises };
       await new Promise((f) => setTimeout(f, 50));
     }
