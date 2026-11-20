@@ -51,8 +51,8 @@ export interface Accueil {
   barre: HTMLElement;
   choix: HTMLElement;
   recadre: HTMLElement;
-  /** l'état du symbole « recadrer » (pour les tests) */
-  etatRecadre(): string;
+  /** l'état du symbole « recadrer », et depuis combien de ms la vue n'a pas bougé ni le doigt touché (pour les tests ; `_recadreEtat` du prototype) */
+  etatRecadre(): { etat: string; depuis: number };
   detruire(): void;
 }
 
@@ -295,7 +295,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     barre,
     choix,
     recadre,
-    etatRecadre: () => etat,
+    etatRecadre: () => ({ etat, depuis: Math.round(h.maintenant() - tDernier) }),
     detruire() {
       desabonne();
       h.annuleMinuteur(veille);

@@ -308,32 +308,31 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
   await page.waitForTimeout(700);
   expect(
     await vu(),
-    `paru quand la main a bougé la vue (${String(await page.evaluate(`${P_}.facade.vueALaMain()`))}, ${await page.evaluate(() => (window as unknown as { __promi: { accueil(): { etatRecadre(): string } } }).__promi.accueil().etatRecadre())})`,
+    `paru quand la main a bougé la vue (${String(await page.evaluate(`${P_}.facade.vueALaMain()`))}, ${await page.evaluate(() => (window as unknown as { __promi: { accueil(): { etatRecadre(): { etat: string } } } }).__promi.accueil().etatRecadre().etat)})`,
   ).toBe(true);
-  // la vue revient seule dans ses bornes (l'élastique du moteur) : les 4 s comptent depuis son DERNIER mouvement — on l'attend, quelle que
-  // soit la vitesse de la machine, puis : encore là à 3 s, parti avant 4 s + 300 ms de flaques + 1 s de marge
-  const sig = (): Promise<string> =>
-    page.evaluate(() => {
-      const v = (
-        window as unknown as { __promi: { facade: { vue(): { s: number; ox: number; oy: number } } } }
-      ).__promi.facade.vue();
-      return v.s.toFixed(3) + '|' + v.ox.toFixed(1) + '|' + v.oy.toFixed(1);
-    });
-  // immobile : la même vue sur quatre relevés de suite (1 s), 30 s au plus
-  let avant = await sig();
-  let pareil = 0;
-  for (let i = 0; i < 120 && pareil < 4; i++) {
-    await page.waitForTimeout(250);
-    const s = await sig();
-    pareil = s === avant ? pareil + 1 : 0;
-    avant = s;
-  }
-  expect(pareil, `la vue s’immobilise (dernière : ${avant})`).toBeGreaterThanOrEqual(4);
-  // la vue est immobile depuis 1 s : encore là 2 s plus tard (3 s), parti à 5,3 s (4 s + 300 ms de flaques + 1 s de marge)
-  await page.waitForTimeout(2000);
-  expect(await vu(), 'encore là 3 s après le dernier mouvement de la vue').toBe(true);
-  await page.waitForTimeout(2300);
-  expect(await vu(), 'parti après 4 s sans toucher ni mouvement').toBe(false);
+  // la vue revient seule dans ses bornes (l'élastique du moteur) : les 4 s comptent depuis son DERNIER mouvement. Mesuré DANS la page, à
+  // l'horloge de l'app (une machine lente rend chaque aller-retour du test plus long que la seconde) : le symbole est encore là quand la
+  // vue est immobile depuis 3,5 s, et il part avant 4 s + 300 ms de flaques + 1 s de marge
+  const attente = await page.evaluate(async () => {
+    const a = (
+      window as unknown as { __promi: { accueil(): { etatRecadre(): { etat: string; depuis: number } } } }
+    ).__promi.accueil();
+    let derniereLa = -1;
+    const t0 = performance.now();
+    for (;;) {
+      const e = a.etatRecadre();
+      if (e.etat === 'la') derniereLa = e.depuis;
+      if (e.etat === 'absent') return { derniereLa, absent: e.depuis };
+      if (performance.now() - t0 > 30000) return { derniereLa, absent: -1, etat: e.etat };
+      await new Promise((f) => setTimeout(f, 50));
+    }
+  });
+  expect(
+    attente.derniereLa,
+    `encore là 3,5 s après le dernier mouvement (${JSON.stringify(attente)})`,
+  ).toBeGreaterThanOrEqual(3500);
+  expect(attente.absent, `parti avant 5,3 s (${JSON.stringify(attente)})`).toBeGreaterThan(0);
+  expect(attente.absent).toBeLessThanOrEqual(5300);
   await page.mouse.move(195, 420);
   await page.mouse.down();
   await page.mouse.move(250, 470, { steps: 10 });
