@@ -12,7 +12,7 @@ test('le socle : polices, tracé et flaques derrière leurs interfaces, menés p
   await page.waitForFunction(() => !!(window as unknown as { __promi?: unknown }).__promi);
   const r = await page.evaluate(async () => {
     type P = {
-      demarrer(): Promise<void>;
+      demarrer(o?: { accueil?: boolean }): Promise<void>;
       horloge: { images(n: number): void; maintenant(): number };
       chargerTrace(): {
         trace(el: HTMLElement, c: null, o?: object): { etat(): { texteReel: number; total: number; t: number } };
@@ -20,7 +20,7 @@ test('le socle : polices, tracé et flaques derrière leurs interfaces, menés p
       chargerFlaques(): { alea(g: number): () => number; Scene: unknown };
     };
     const p = (window as unknown as { __promi: P }).__promi;
-    await p.demarrer();
+    await p.demarrer({ accueil: false });
     const faces = [
       '700 16px Gilbert',
       '400 16px Atkinson',

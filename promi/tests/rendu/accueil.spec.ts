@@ -311,14 +311,18 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
       ).__promi.facade.vue();
       return v.s.toFixed(3) + '|' + v.ox.toFixed(1) + '|' + v.oy.toFixed(1);
     });
+  // immobile : la même vue sur quatre relevés de suite (1 s), 30 s au plus
   let avant = await sig();
-  for (let i = 0; i < 40; i++) {
+  let pareil = 0;
+  for (let i = 0; i < 120 && pareil < 4; i++) {
     await page.waitForTimeout(250);
     const s = await sig();
-    if (s === avant) break;
+    pareil = s === avant ? pareil + 1 : 0;
     avant = s;
   }
-  await page.waitForTimeout(3000);
+  expect(pareil, 'la vue s’immobilise').toBeGreaterThanOrEqual(4);
+  // la vue est immobile depuis 1 s : encore là 2 s plus tard (3 s), parti à 5,3 s (4 s + 300 ms de flaques + 1 s de marge)
+  await page.waitForTimeout(2000);
   expect(await vu(), 'encore là 3 s après le dernier mouvement de la vue').toBe(true);
   await page.waitForTimeout(2300);
   expect(await vu(), 'parti après 4 s sans toucher ni mouvement').toBe(false);

@@ -89,10 +89,13 @@ async function ouvrirApp(page: Page, ls: Record<string, string>): Promise<void> 
   await page.goto(`http://127.0.0.1:5180/?banc=1&pilote=${T_FIGE}`);
   await page.waitForFunction(() => !!(window as unknown as { __promi?: unknown }).__promi);
   await page.evaluate(async (ls) => {
-    const p = (window as unknown as { __promi: { magasin: { importer(x: unknown): void }; demarrer(): Promise<void> } })
-      .__promi;
+    const p = (
+      window as unknown as {
+        __promi: { magasin: { importer(x: unknown): void }; demarrer(o?: { accueil?: boolean }): Promise<void> };
+      }
+    ).__promi;
     p.magasin.importer({ ls });
-    await p.demarrer();
+    await p.demarrer({ accueil: false });
   }, ls);
 }
 

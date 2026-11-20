@@ -105,13 +105,13 @@ for (const f of ETATS)
               window as unknown as {
                 __promi: {
                   magasin: { importer(x: unknown): void };
-                  demarrer(): Promise<void>;
+                  demarrer(o?: { accueil?: boolean }): Promise<void>;
                   horloge: { images(n: number): void };
                 };
               }
             ).__promi;
             p.magasin.importer({ ls });
-            await p.demarrer();
+            await p.demarrer({ accueil: false });
             p.horloge.images(540);
           }, ls);
         })(),

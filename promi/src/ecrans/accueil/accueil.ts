@@ -288,6 +288,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     maj();
   });
 
+  dv.classList.add('grain');
   dv.append(plateau, rappel, barre, choix, recadre);
   return {
     plateau,
@@ -303,6 +304,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
       window.removeEventListener('pointerdown', debutAilleurs, true);
       window.removeEventListener('pointerup', finAilleurs, true);
       window.removeEventListener('pointerdown', touche, { capture: true });
+      dv.classList.remove('grain');
       for (const n of [plateau, rappel, barre, choix, recadre]) n.remove();
     },
   };

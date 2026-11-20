@@ -40,7 +40,7 @@ async function etatEmbarque(): Promise<unknown> {
  * signature est gardée). L'app ne crée encore aucune donnée : rien ne se perd. Le portage de la page + (lot 2) retire ce remplacement.
  */
 const CLE_EMBARQUE = 'promi.l0.embarque';
-async function demarrer(): Promise<void> {
+async function demarrer(o: { accueil?: boolean } = {}): Promise<void> {
   if (q.get('banc') == null) {
     const x = await etatEmbarque();
     const sig = x ? JSON.stringify(x).length + ':' + String((x as { quand?: unknown }).quand) : null;
@@ -53,7 +53,8 @@ async function demarrer(): Promise<void> {
   const app = document.getElementById('app');
   if (!app) throw new Error('#app manquant');
   monterToile(app, magasin, facade, nav);
-  accueil = monterAccueil(facade, magasin, nav);
+  // les bancs de la Toile seule (banc-rendu, entrées du moteur) la jugent sans l'accueil : `demarrer({ accueil: false })`
+  if (o.accueil !== false) accueil = monterAccueil(facade, magasin, nav);
   void synchro.pousser(magasin.etat());
 }
 
