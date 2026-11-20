@@ -212,6 +212,8 @@ test('banc_rendu porté : la vraie app rend les images figées du banc, au pixel
 test('banc_rendu porté : la vraie app contre le prototype vivant, même protocole, même machine, au pixel', async ({
   browser,
 }) => {
+  // sur la CI (WebKit sans carte graphique), les 280 images des deux côtés prennent de 7 à plus de 15 min (mesuré le 20 nov.)
+  if (process.env['CI']) test.setTimeout(30 * 60 * 1000);
   const ls = stockage(ETAT);
   const cp = await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 2 });
   const ca = await browser.newContext({ viewport: REFERENCE, deviceScaleFactor: 2 });
