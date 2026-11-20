@@ -29,14 +29,17 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
   const cv = facade.appareil().querySelector<HTMLCanvasElement>('#toileCv')!;
 
   const mondes = Object.keys(MONDES_ORDRE);
-  let doigts = 0;
+  // les doigts posés, par identifiant de pointeur : un même pointeur ne peut pas être posé deux fois — un lever perdu (capturé ailleurs,
+  // sorti de la page) ne bloque donc jamais les touchers suivants ; le lever est aussi lu sur la fenêtre
+  const poses = new Set<number>();
   let depart: { id: number; x: number; y: number; t: number } | null = null;
   let bouge = false;
   let tapPrecedent: { t: number; x: number; y: number; ouvre: number | null } | null = null;
 
   const debut = (ev: PointerEvent): void => {
-    doigts++;
-    if (doigts > 1) {
+    poses.add(ev.pointerId);
+    stage.dataset['doigts'] = String(poses.size);
+    if (poses.size > 1) {
       bouge = true;
       depart = null;
       return;
@@ -47,8 +50,12 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
   const mouvement = (ev: PointerEvent): void => {
     if (depart && (Math.abs(ev.clientX - depart.x) > 12 || Math.abs(ev.clientY - depart.y) > 12)) bouge = true;
   };
+  const leve = (ev: PointerEvent): void => {
+    poses.delete(ev.pointerId);
+    stage.dataset['doigts'] = String(poses.size);
+  };
   const fin = (ev: PointerEvent): void => {
-    doigts = Math.max(0, doigts - 1);
+    leve(ev);
     const g = depart;
     if (!g || g.id !== ev.pointerId) return;
     depart = null;
@@ -64,7 +71,7 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
       return;
     }
     // le toucher net
-    if (bouge || doigts > 0) return;
+    if (bouge || poses.size > 0) return;
     if (ev.timeStamp - g.t > 700) return;
     if (Math.abs(dx) > 14 || Math.abs(dy) > 14) return;
     const r = cv.getBoundingClientRect();
@@ -111,11 +118,15 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
   stage.addEventListener('pointermove', mouvement, true);
   stage.addEventListener('pointerup', fin, true);
   stage.addEventListener('pointercancel', fin, true);
+  window.addEventListener('pointerup', leve, true);
+  window.addEventListener('pointercancel', leve, true);
   return () => {
     desabonne();
     stage.removeEventListener('pointerdown', debut, true);
     stage.removeEventListener('pointermove', mouvement, true);
     stage.removeEventListener('pointerup', fin, true);
     stage.removeEventListener('pointercancel', fin, true);
+    window.removeEventListener('pointerup', leve, true);
+    window.removeEventListener('pointercancel', leve, true);
   };
 }

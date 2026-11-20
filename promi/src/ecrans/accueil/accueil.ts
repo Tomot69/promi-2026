@@ -52,7 +52,7 @@ export interface Accueil {
   choix: HTMLElement;
   recadre: HTMLElement;
   /** l'état du symbole « recadrer », et depuis combien de ms la vue n'a pas bougé ni le doigt touché (pour les tests ; `_recadreEtat` du prototype) */
-  etatRecadre(): { etat: string; depuis: number };
+  etatRecadre(): { etat: string; depuis: number; remises: Array<{ t: number; pourquoi: string }> };
   detruire(): void;
 }
 
@@ -162,6 +162,12 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
   const ATTENTE = 4000;
   let etat: 'absent' | 'nait' | 'la' | 'part' = 'absent';
   let tDernier = 0;
+  /** ce qui a remis le compte de 4 s à zéro (les 20 derniers) : pour comprendre un écart sur une autre machine (les tests le lisent) */
+  const remises: Array<{ t: number; pourquoi: string }> = [];
+  const remise = (pourquoi: string): void => {
+    remises.push({ t: Math.round(h.maintenant()), pourquoi });
+    if (remises.length > 20) remises.shift();
+  };
   let sig = '';
   let ctl: ControlePassage | null = null;
   const image = (): HTMLCanvasElement => {
@@ -241,13 +247,24 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     }
     if (bouge) {
       tDernier = t;
+      remise('vue ' + s);
       if (etat === 'absent' || etat === 'part') nait();
       return;
     }
     if (etat === 'la' && t - tDernier >= ATTENTE) part(false);
   };
-  const touche = (): void => {
+  const touche = (ev: PointerEvent): void => {
     tDernier = h.maintenant();
+    remise(
+      'doigt ' +
+        ev.type +
+        ' ' +
+        ev.pointerType +
+        ' ' +
+        String(Math.round(ev.clientX)) +
+        ',' +
+        String(Math.round(ev.clientY)),
+    );
   };
   window.addEventListener('pointerdown', touche, { capture: true, passive: true });
   const veille = h.intervalle(majRecadre, 120);
@@ -295,7 +312,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     barre,
     choix,
     recadre,
-    etatRecadre: () => ({ etat, depuis: Math.round(h.maintenant() - tDernier) }),
+    etatRecadre: () => ({ etat, depuis: Math.round(h.maintenant() - tDernier), remises: remises.slice() }),
     detruire() {
       desabonne();
       h.annuleMinuteur(veille);

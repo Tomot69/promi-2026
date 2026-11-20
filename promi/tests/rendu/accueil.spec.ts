@@ -250,7 +250,10 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
   await page.waitForTimeout(80);
   await page.mouse.click(vide[0], vide[1]);
   await page.waitForTimeout(600);
-  expect(await page.evaluate(`${P_}.facade.vueALaMain()`), 'le double toucher recadre').toBe(false);
+  expect(
+    await page.evaluate(`${P_}.facade.vueALaMain()`),
+    `le double toucher recadre (doigts posés vus par la Toile : ${String(await page.evaluate(() => document.getElementById('stage')!.dataset['doigts']))})`,
+  ).toBe(false);
 });
 
 test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvre les natures, une pilule sa page +, ailleurs referme', async ({
@@ -335,7 +338,8 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
       if (vues.length > 10) vues.shift();
       if (e.etat === 'la') derniereLa = e.depuis;
       if (e.etat === 'absent') return { derniereLa, absent: e.depuis };
-      if (performance.now() - t0 > 30000) return { derniereLa, absent: -1, etat: e.etat, vues };
+      if (performance.now() - t0 > 30000)
+        return { derniereLa, absent: -1, etat: e.etat, vues, remises: (e as unknown as { remises: unknown }).remises };
       await new Promise((f) => setTimeout(f, 50));
     }
   });
