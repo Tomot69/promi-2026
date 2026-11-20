@@ -17,17 +17,19 @@ import { join } from 'node:path';
 import { PNG } from 'pngjs';
 
 const RACINE = join(import.meta.dirname, '..', '..', '..');
-const ETAT = (() => {
-  // l'état de Tom le plus récent s'il est là (hors dépôt), sinon celui du banc (l'intégration continue)
-  const d = join(RACINE, 'etats');
-  const tom = existsSync(d)
-    ? readdirSync(d)
-        .filter((f) => /^tom-\d{8}-\d{6}\.json$/.test(f))
-        .sort()
-        .pop()
-    : undefined;
-  return tom ? join(d, tom) : join(RACINE, 'banc-etats', 'etat-25.json');
-})();
+const ETAT = process.env['PROMI_ETAT']
+  ? join(RACINE, process.env['PROMI_ETAT'])
+  : (() => {
+      // l'état de Tom le plus récent s'il est là (hors dépôt), sinon celui du banc (l'intégration continue)
+      const d = join(RACINE, 'etats');
+      const tom = existsSync(d)
+        ? readdirSync(d)
+            .filter((f) => /^tom-\d{8}-\d{6}\.json$/.test(f))
+            .sort()
+            .pop()
+        : undefined;
+      return tom ? join(d, tom) : join(RACINE, 'banc-etats', 'etat-25.json');
+    })();
 const RESULTATS = join(import.meta.dirname, 'resultats', 'accueil');
 
 function stockage(): Record<string, string> {
@@ -86,36 +88,65 @@ async function ouvrirPlus(page: Page): Promise<void> {
 }
 
 /** les pixels qui s'écartent de plus de 2 niveaux, hors des quatre coins du téléphone (30 pt) */
-function ecart(a: Buffer, b: Buffer): { n: number; boite: number[] | null } {
+/**
+ * Les pixels qui s'écartent de plus de 2 niveaux, hors des quatre coins du téléphone (30 pt). Sur le Mac (le WebKit de l'iPhone) : aucun.
+ * Ailleurs (l'intégration continue, WebKit sous Linux), la règle de Q616 (Tom) : le lissage d'un BORD peut différer — un pixel situé sur un
+ * bord de la référence (contraste de plus de 24 niveaux dans ses 5 × 5 pixels) et écarté de 12 niveaux au plus n'est pas compté ; hors
+ * des bords, la règle reste aucun pixel. (Mesuré sur la CI le 20 nov. : 379 à 661 pixels, tous sur un bord, 8 niveaux au plus.)
+ */
+function ecart(a: Buffer, b: Buffer): { n: number; boite: number[] | null; bords: number } {
   const A = PNG.sync.read(a);
   const B = PNG.sync.read(b);
-  if (A.width !== B.width || A.height !== B.height) return { n: -1, boite: null };
-  const k = A.width / 390;
+  if (A.width !== B.width || A.height !== B.height) return { n: -1, boite: null, bords: 0 };
+  const W = A.width;
+  const H = A.height;
+  const k = W / 390;
+  const strict = process.platform === 'darwin';
+  const lum = (x: number, y: number): number => {
+    const i = (y * W + x) * 4;
+    return 0.299 * A.data[i]! + 0.587 * A.data[i + 1]! + 0.114 * A.data[i + 2]!;
+  };
+  const surBord = (x: number, y: number): boolean => {
+    let lo = 255;
+    let hi = 0;
+    for (let dy = -2; dy <= 2; dy++)
+      for (let dx = -2; dx <= 2; dx++) {
+        const xx = Math.min(W - 1, Math.max(0, x + dx));
+        const yy = Math.min(H - 1, Math.max(0, y + dy));
+        const l = lum(xx, yy);
+        if (l < lo) lo = l;
+        if (l > hi) hi = l;
+      }
+    return hi - lo > 24;
+  };
   let n = 0;
+  let bords = 0;
   let x0 = 1e9,
     y0 = 1e9,
     x1 = -1,
     y1 = -1;
-  for (let y = 0; y < A.height; y++)
-    for (let x = 0; x < A.width; x++) {
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
       const coin = (x < 30 * k || x >= 360 * k) && (y < 30 * k || y >= 814 * k);
       if (coin) continue;
-      const i = (y * A.width + x) * 4;
-      if (
-        Math.max(
-          Math.abs(A.data[i]! - B.data[i]!),
-          Math.abs(A.data[i + 1]! - B.data[i + 1]!),
-          Math.abs(A.data[i + 2]! - B.data[i + 2]!),
-        ) > 2
-      ) {
-        n++;
-        x0 = Math.min(x0, x);
-        y0 = Math.min(y0, y);
-        x1 = Math.max(x1, x);
-        y1 = Math.max(y1, y);
+      const i = (y * W + x) * 4;
+      const d = Math.max(
+        Math.abs(A.data[i]! - B.data[i]!),
+        Math.abs(A.data[i + 1]! - B.data[i + 1]!),
+        Math.abs(A.data[i + 2]! - B.data[i + 2]!),
+      );
+      if (d <= 2) continue;
+      if (!strict && d <= 12 && surBord(x, y)) {
+        bords++;
+        continue;
       }
+      n++;
+      x0 = Math.min(x0, x);
+      y0 = Math.min(y0, y);
+      x1 = Math.max(x1, x);
+      y1 = Math.max(y1, y);
     }
-  return { n, boite: n ? [x0 / k, y0 / k, x1 / k, y1 / k].map((v) => Math.round(v)) : null };
+  return { n, boite: n ? [x0 / k, y0 / k, x1 / k, y1 / k].map((v) => Math.round(v)) : null, bords };
 }
 
 for (const theme of ['sombre', 'clair'] as const)
@@ -146,7 +177,10 @@ for (const theme of ['sombre', 'clair'] as const)
       writeFileSync(join(RESULTATS, `${nom}-app.png`), ia);
       const e = ecart(ip, ia);
       expect(erreurs).toEqual([]);
-      expect(e, `pixels écartés de plus de 2 niveaux (état : ${ETAT})`).toEqual({ n: 0, boite: null });
+      expect(
+        { n: e.n, boite: e.boite },
+        `pixels écartés de plus de 2 niveaux (état : ${ETAT} ; bords lissés exceptés hors macOS : ${String(e.bords)})`,
+      ).toEqual({ n: 0, boite: null });
     });
 
 test("les animations de l'accueil : le I de PROMI clignote, l'anneau du + tourne", async ({ page }) => {
@@ -268,10 +302,25 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
   await page.mouse.up();
   await page.waitForTimeout(700);
   expect(await vu(), 'paru quand la main a bougé la vue').toBe(true);
-  // la vue revient seule dans ses bornes (l'élastique du moteur, ≈ 1 s) : les 4 s comptent depuis son dernier mouvement, puis 300 ms de flaques
+  // la vue revient seule dans ses bornes (l'élastique du moteur) : les 4 s comptent depuis son DERNIER mouvement — on l'attend, quelle que
+  // soit la vitesse de la machine, puis : encore là à 3 s, parti avant 4 s + 300 ms de flaques + 1 s de marge
+  const sig = (): Promise<string> =>
+    page.evaluate(() => {
+      const v = (
+        window as unknown as { __promi: { facade: { vue(): { s: number; ox: number; oy: number } } } }
+      ).__promi.facade.vue();
+      return v.s.toFixed(3) + '|' + v.ox.toFixed(1) + '|' + v.oy.toFixed(1);
+    });
+  let avant = await sig();
+  for (let i = 0; i < 40; i++) {
+    await page.waitForTimeout(250);
+    const s = await sig();
+    if (s === avant) break;
+    avant = s;
+  }
   await page.waitForTimeout(3000);
-  expect(await vu(), 'encore là 3,7 s après le glissé').toBe(true);
-  await page.waitForTimeout(3000);
+  expect(await vu(), 'encore là 3 s après le dernier mouvement de la vue').toBe(true);
+  await page.waitForTimeout(2300);
   expect(await vu(), 'parti après 4 s sans toucher ni mouvement').toBe(false);
   await page.mouse.move(195, 420);
   await page.mouse.down();
