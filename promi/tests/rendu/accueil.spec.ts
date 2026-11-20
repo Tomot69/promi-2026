@@ -240,15 +240,36 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
   await page.mouse.up();
   await page.waitForTimeout(600);
   expect(await page.evaluate(`${P_}.facade.vueALaMain()`)).toBe(true);
-  // hors de toute dalle de parole (sur une dalle, la fiche serait demandée 260 ms après le premier toucher)
-  const vide = (await page.evaluate(`(() => { for (let y = 200; y < 680; y += 9) for (let x = 40; x < 350; x += 9) {
-    const h = Toile.hit(x, y); if (!h || (h.pid == null && h.kind !== 'nuee')) return [x, y]; } return [195, 400]; })()`)) as [
-    number,
-    number,
-  ];
-  await page.mouse.click(vide[0], vide[1]);
+  // la vue immobile (sur la CI, une image toutes les 0,7 s : son retour élastique y dure des dizaines de secondes), puis un point sans
+  // aucune dalle de parole à 30 pt à la ronde (sur une dalle, ou à 22 pt d'une petite — C-239 —, la fiche serait demandée 260 ms après
+  // le premier toucher, et le second toucher ne serait plus un double)
+  await page.evaluate(async () => {
+    const lit = (): string => {
+      const v = (window as unknown as { Toile_vueLue(): { s: number; ox: number; oy: number } }).Toile_vueLue();
+      return `${v.s.toFixed(4)}|${v.ox.toFixed(2)}|${v.oy.toFixed(2)}`;
+    };
+    let avant = lit();
+    let depuis = performance.now();
+    const t0 = performance.now();
+    while (performance.now() - depuis < 1500 && performance.now() - t0 < 120000) {
+      await new Promise((f) => setTimeout(f, 100));
+      const s = lit();
+      if (s !== avant) {
+        avant = s;
+        depuis = performance.now();
+      }
+    }
+  });
+  const vide = (await page.evaluate(`(() => {
+    const libre = (x, y) => { for (let r = 0; r <= 30; r += 6) for (let a = 0; a < 16; a++) {
+      const h = Toile.hit(x + r * Math.cos(a * Math.PI / 8), y + r * Math.sin(a * Math.PI / 8));
+      if (h && (h.pid != null || h.kind === 'nuee')) return false; } return true; };
+    for (let y = 200; y < 680; y += 9) for (let x = 40; x < 350; x += 9) if (libre(x, y)) return [x, y];
+    return null; })()`)) as [number, number] | null;
+  expect(vide, 'un point sans dalle à 30 pt à la ronde').not.toBeNull();
+  await page.mouse.click(vide![0], vide![1]);
   await page.waitForTimeout(80);
-  await page.mouse.click(vide[0], vide[1]);
+  await page.mouse.click(vide![0], vide![1]);
   await page.waitForTimeout(600);
   expect(
     await page.evaluate(`${P_}.facade.vueALaMain()`),
