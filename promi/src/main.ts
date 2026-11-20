@@ -1,6 +1,6 @@
 /**
- * Le démarrage de la vraie app : l'horloge (la seule), le magasin (l'état unique), la Synchro (locale en v1), la façade du moteur, puis
- * le premier écran.
+ * Le démarrage de la vraie app : l'horloge (la seule), le magasin (l'état unique), la Synchro (locale en v1), la façade du moteur, la
+ * navigation, puis l'accueil : la Toile vivante et son plateau, sa barre.
  *  · `?pilote=<t0>` : l'horloge en mode piloté (tests de rendu) ;
  *  · `?banc=1`      : l'app attend qu'un test lui donne son état (`window.__promi.demarrer()`) — pour comparer au prototype.
  */
@@ -13,6 +13,8 @@ import { stockageLocal } from './donnees/stockage.ts';
 import { creerFacade } from './moteur/facade.ts';
 import { synchroLocale } from './synchro/synchro.ts';
 import { monterToile } from './ecrans/toile.ts';
+import { monterAccueil, type Accueil } from './ecrans/accueil/accueil.ts';
+import { creerNavigation } from './navigation/navigation.ts';
 import { chargerPolices } from './design/polices.ts';
 import { chargerTrace } from './animation/trace/trace.ts';
 import { chargerFlaques } from './animation/flaques/flaques.ts';
@@ -23,6 +25,8 @@ const h = installer(pilote != null ? 'pilote' : 'reel', pilote != null ? +pilote
 const magasin = creerMagasin(stockageLocal());
 const facade = creerFacade(magasin);
 const synchro = synchroLocale();
+const nav = creerNavigation(() => h.maintenant());
+let accueil: Accueil | null = null;
 
 async function etatEmbarque(): Promise<unknown> {
   // L0 : l'export de Tom, embarqué à la construction (src/donnees/etat-embarque.json, hors dépôt) ; importé au premier lancement.
@@ -48,7 +52,8 @@ async function demarrer(): Promise<void> {
   await chargerPolices();
   const app = document.getElementById('app');
   if (!app) throw new Error('#app manquant');
-  monterToile(app, magasin, facade);
+  monterToile(app, magasin, facade, nav);
+  accueil = monterAccueil(facade, magasin, nav);
   void synchro.pousser(magasin.etat());
 }
 
@@ -60,7 +65,7 @@ declare global {
 
 if (q.get('banc') != null) {
   // les tests : le magasin, la façade, l'horloge, et les modules repris (le tracé et les flaques ne servent encore aucun écran en L0)
-  window.__promi = { magasin, facade, horloge: h, demarrer, chargerTrace, chargerFlaques };
+  window.__promi = { magasin, facade, horloge: h, nav, accueil: () => accueil, demarrer, chargerTrace, chargerFlaques };
 } else {
   void demarrer();
 }

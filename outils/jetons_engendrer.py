@@ -106,7 +106,7 @@ M = J.get('mise_en_page')
 if M:   # L0 (§2) : la grille et les ancrages — calculés depuis les cotes du prototype et les zones sûres de l'écran
     C += ['  --ref-largeur:%dpx;' % M['reference']['largeur'], '  --ref-hauteur:%dpx;' % M['reference']['hauteur'],
           '  --marge-g:calc(%dpx + env(safe-area-inset-left, 0px));' % M['marge_laterale'], '  --marge-d:calc(%dpx + env(safe-area-inset-right, 0px));' % M['marge_laterale'],
-          '  --ancre-haut:max(calc(env(safe-area-inset-top, 0px) - %dpx), %dpx);' % (M['haut']['retrait_zone_sure'], M['haut']['cote_prototype'] + M['haut']['decalage_app']),
+          '  --ancre-haut:max(calc(env(safe-area-inset-top, 0px) - %dpx), %dpx);' % (M['haut']['retrait_zone_sure'], M['haut']['cote_prototype']),
           '  --ancre-bas:max(env(safe-area-inset-bottom, 0px), %dpx);' % M['bas']['marge_prototype']]
 C += ['}', '[data-theme="sombre"]{'] + ['  --p-%s:%s;' % (k, v['sombre']) for k, v in J['roles'].items()] + ['}']
 for nom, d in J['niveaux'].items():

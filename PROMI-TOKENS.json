@@ -471,7 +471,7 @@
     "note": "L0 (Tom, 20 nov. 2026, §2) : l'app S'ADAPTE à chaque écran. 390 × 844 est la référence (identique au pixel au prototype) ; ailleurs, la largeur est fluide, les marges et les cotes restent celles du prototype, les éléments s'ancrent aux bords et aux zones sûres (C-299, C-300) ; la Toile et les fonds remplissent tout l'écran, sans bande vide.",
     "reference": { "largeur": 390, "hauteur": 844 },
     "marge_laterale": 24,
-    "haut": { "cote_prototype": 40, "decalage_app": 3, "retrait_zone_sure": 4, "note": "l'encart du haut : max(zone sûre haute − 4, 40 + 3) — 43 pt sur l'iPhone 16e (zone sûre 47), sous l'île d'un 16 Pro Max, jamais sous la barre d'état d'un SE" },
+    "haut": { "cote_prototype": 40, "retrait_zone_sure": 4, "note": "l'encart du haut : max(zone sûre haute − 4, 40) — 40 pt sans zone sûre (le navigateur : identique au prototype), 43 pt sur l'iPhone 16e (zone sûre 47 : les +3 pt de C-299), sous l'île d'un 16 Pro Max, jamais sous la barre d'état d'un SE" },
     "bas": { "marge_prototype": 34, "note": "ce qui est ancré en bas (la barre de l'accueil, 710 → 810 sur 844) : max(zone sûre basse, 34) au-dessus du bord" }
   }
 }

@@ -20,6 +20,8 @@ export interface Actions {
   choisirTheme(theme: 'clair' | 'sombre'): void;
   /** le moteur a choisi la place d'une dalle (il la note lui-même, _placeNote) : elle est gardée */
   noterPlaces(places: Array<{ id: number; place: Place | undefined }>): void;
+  /** le bandeau « Garder ta Toile » de l'accueil a reçu une réponse (v52, C-200 ①) — gardée dans les clés du prototype (`autres`) */
+  repondreRappel(reponse: 'oui' | 'non', nParoles: number, maintenant: number): void;
 }
 
 export interface Magasin extends Actions {
@@ -81,6 +83,21 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
         return q;
       });
       if (change) valider('noterPlaces', { ...e, paroles });
+    },
+    repondreRappel(reponse, nParoles, maintenant) {
+      const a = { ...e.autres };
+      const n = (+(a['promi_rappel_n'] ?? 0) || 0) + 1;
+      a['promi_rappel_n'] = String(n);
+      a['promi_rappel_p'] = String(nParoles);
+      a['promi_rappel_t'] = String(maintenant);
+      if (reponse === 'non') {
+        const brut = a['promi_rappel_non'];
+        // les refus d'avant v164b comptent : sans compteur, le nombre de réponses d'avant
+        const non = (brut == null || brut === '' ? Math.max(0, n - 1) : +brut) + 1;
+        a['promi_rappel_non'] = String(non);
+        if (non >= 2) a['promi_rappel_fin'] = '1';
+      }
+      valider('repondreRappel', { ...e, autres: a });
     },
   };
 }

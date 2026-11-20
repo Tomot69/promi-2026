@@ -450,9 +450,8 @@ export const miseEnPage = {
   "marge_laterale": 24,
   "haut": {
     "cote_prototype": 40,
-    "decalage_app": 3,
     "retrait_zone_sure": 4,
-    "note": "l'encart du haut : max(zone sûre haute − 4, 40 + 3) — 43 pt sur l'iPhone 16e (zone sûre 47), sous l'île d'un 16 Pro Max, jamais sous la barre d'état d'un SE"
+    "note": "l'encart du haut : max(zone sûre haute − 4, 40) — 40 pt sans zone sûre (le navigateur : identique au prototype), 43 pt sur l'iPhone 16e (zone sûre 47 : les +3 pt de C-299), sous l'île d'un 16 Pro Max, jamais sous la barre d'état d'un SE"
   },
   "bas": {
     "marge_prototype": 34,

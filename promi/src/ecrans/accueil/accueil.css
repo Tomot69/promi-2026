@@ -1,0 +1,401 @@
+/* L'ACCUEIL (lot 1) — le plateau, la barre, le menu du +, le symbole « recadrer ».
+   Les cotes sont celles du prototype RENDU (relevé du 20 nov. 2026, WebKit, 390 × 844, clair et sombre : SPEC-ECRANS §1 et les blocs
+   lot-ACCUEIL, lot-V95-ACCUEIL, lot-V140, lot-V146, lot-V147-PLUS, lot-V163-RECADRE). L'app s'ADAPTE à l'écran (Tom, L0 §2) : le plateau
+   est ancré en haut (--ancre-haut), la barre en bas (--ancre-bas), tous deux aux marges (--marge-g, --marge-d) ; la largeur suit l'écran,
+   les cotes internes restent celles du prototype, comptées depuis le bord le plus proche. À 390 × 844, l'accueil est celui du prototype. */
+
+/* ── le plateau (342 × 60 à 390 de large) ── */
+.acc-plat {
+  position: absolute;
+  top: var(--ancre-haut);
+  left: var(--marge-g);
+  right: var(--marge-d);
+  height: 60px;
+  box-sizing: border-box;
+  border: 2px solid var(--c-creme95);
+  border-radius: 30px;
+  background: var(--c-seiche10);
+  color: var(--c-creme95);
+  z-index: 61;
+  font-family: var(--f-texte);
+}
+.device.light .acc-plat {
+  border-color: var(--c-brun09);
+  background: var(--c-creme95);
+  color: var(--c-brun09);
+}
+/* le mot-marque PROMI, le I au bleu Promi qui clignote (le I de l'onboarding et des titres a le même code : promiBlink) */
+.acc-mm {
+  position: absolute;
+  left: 26px;
+  top: 13.5px;
+  font-family: var(--f-marque);
+  font-size: 29.5px;
+  font-weight: 400;
+  font-style: normal;
+  line-height: 1.06em;
+  padding-bottom: 1px;
+  translate: 0 1.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.acc-mm i {
+  font-style: normal;
+  color: var(--c-bleu45);
+  animation: promiBlink 1.15s steps(1, end) infinite;
+}
+@keyframes promiBlink {
+  0%,
+  54% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0.6;
+  }
+}
+/* les deux ronds du plateau : 44 × 44, l'icône de 28 au centre ; comptés depuis le bord droit (8 et 58 à 390 de large) */
+.acc-rond {
+  position: absolute;
+  top: 6px;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.acc-rond svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
+.acc-rond svg * {
+  stroke-width: 2.1px;
+}
+#shareBtn {
+  right: 58px;
+}
+#settingsBtn {
+  right: 8px;
+}
+#settingsBtn svg * {
+  stroke-width: 2.05px;
+}
+
+/* ── la barre (342 × 100, 710 → 810 à 844 de haut) ── */
+.acc-barre {
+  position: absolute;
+  bottom: var(--ancre-bas);
+  left: var(--marge-g);
+  right: var(--marge-d);
+  height: 100px;
+  box-sizing: border-box;
+  border: 2px solid var(--c-creme95);
+  border-radius: 50px;
+  background: var(--c-seiche10);
+  color: var(--c-creme95);
+  z-index: 32;
+  font-family: var(--f-texte);
+}
+.device.light .acc-barre {
+  border-color: var(--c-brun09);
+  background: var(--c-creme95);
+  color: var(--c-brun09);
+}
+/* une entrée : 54 × 51, l'icône de 28 puis son nom, 9 d'écart ; sa zone de toucher (C-106) va jusqu'au bord de la barre */
+.acc-entree {
+  position: absolute;
+  top: 22.5px;
+  width: 54px;
+  height: 51px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  z-index: 2;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.acc-entree::after {
+  content: '';
+  position: absolute;
+  left: -2.5px;
+  top: -20px;
+  width: 59px;
+  height: 93px;
+}
+.acc-entree svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+  flex: none;
+}
+.acc-entree svg * {
+  stroke-width: 2.1px;
+}
+.acc-entree .l {
+  display: block;
+  font-family: var(--f-texte);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  line-height: 14px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.device.light .acc-entree .l {
+  color: var(--c-bleu08);
+}
+#studioBtn {
+  left: 17px;
+}
+#souffleBtn {
+  left: 71px;
+}
+#indexBtn {
+  right: 71px;
+}
+#filBtn {
+  right: 17px;
+}
+/* la pastille du Fil : « pas encore vu » (v89, Q347) */
+.acc-pastille {
+  position: absolute;
+  top: -2px;
+  left: 34px;
+  width: 10px;
+  height: 10px;
+  box-sizing: border-box;
+  border-radius: 50%;
+  background: var(--c-orange-depart);
+  border: 2px solid var(--c-seiche10);
+  box-shadow: 0 0 0 2px var(--c-brun03);
+}
+.device.light .acc-pastille {
+  border-color: var(--c-creme95);
+  box-shadow: 0 0 0 2px var(--c-creme95);
+}
+.acc-pastille[hidden] {
+  display: none;
+}
+
+/* le + (72 × 72, au centre de la barre) : l'anneau (deux arcs, un tour en 100 s), le disque bleu Promi (45), la croix orange (C-087, v146) */
+.acc-plus {
+  position: absolute;
+  top: 12px;
+  left: calc(50% - 36px);
+  width: 72px;
+  height: 72px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.acc-plus::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  z-index: 0;
+  background: var(--anneau) center / 100% 100% no-repeat;
+  animation: heroSpin 100s linear infinite;
+}
+.acc-plus::after {
+  content: '';
+  position: absolute;
+  left: 13.5px;
+  top: 13.5px;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  background: var(--c-bleu45);
+  z-index: 1;
+}
+.acc-plus svg {
+  position: relative;
+  z-index: 2;
+  width: 38.5px;
+  height: 38.5px;
+  display: block;
+}
+.acc-plus svg path {
+  fill: none;
+  stroke: var(--c-orange-depart);
+  stroke-width: 5.6px;
+}
+@keyframes heroSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ── le bandeau « Garder ta Toile » (v52, v105 : 14 pt sous le plateau ; §26) ── */
+.acc-rappel {
+  position: absolute;
+  top: calc(var(--ancre-haut) + 74px);
+  left: var(--marge-g);
+  right: var(--marge-d);
+  height: 52px;
+  box-sizing: border-box;
+  border: 2px solid var(--c-creme95);
+  border-radius: 26px;
+  background: var(--c-brun03);
+  z-index: 60;
+  display: none;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+  font-family: var(--f-libelle);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  color: var(--c-creme95);
+}
+.device.light .acc-rappel {
+  border-color: var(--c-brun09);
+  background: var(--c-creme95);
+  color: var(--c-brun09);
+}
+.acc-rappel.vu {
+  display: flex;
+}
+.acc-rappel span {
+  cursor: pointer;
+  padding: 12px 0;
+}
+
+/* ── le menu du + : les trois natures, sur place (v147, C-142) — 24 pt au-dessus de la barre ── */
+.acc-choix {
+  position: absolute;
+  left: calc(var(--marge-g) + 2px);
+  right: calc(var(--marge-d) + 2px);
+  bottom: calc(var(--ancre-bas) + 124px);
+  height: 230px;
+  z-index: 33;
+  display: none;
+}
+.acc-choix.ouvert {
+  display: block;
+}
+.acc-pil {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 68px;
+  box-sizing: border-box;
+  border: 2px solid var(--c-creme95);
+  border-radius: 34px;
+  padding: 0 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: var(--f-libelle);
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+  color: var(--c-seiche10);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+/* l'encre des pilules : la seiche en sombre, le brun en clair (en sombre, le prototype rend `--c-brun09` par la seiche : v116, v121) */
+.device.light .acc-pil {
+  border-color: var(--c-brun09);
+  color: var(--c-brun09);
+}
+.acc-pil[data-k='nuee'],
+.device.light .acc-pil[data-k='nuee'] {
+  top: 0;
+  background: var(--c-mauve77);
+  color: var(--c-mauve12);
+}
+.acc-pil[data-k='chiche'] {
+  top: 81px;
+  background: var(--c-framboise54);
+}
+.acc-pil[data-k='promi'] {
+  top: 162px;
+  background: var(--c-bleu45);
+}
+.acc-pil .acc-un {
+  white-space: nowrap;
+  flex: none;
+}
+.acc-pil .acc-nat {
+  font-family: var(--f-marque);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 25px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+.acc-pil small {
+  font-family: var(--f-texte);
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  margin-left: 12px;
+  white-space: normal;
+  text-align: right;
+  flex: 0 1 auto;
+  min-width: 0;
+  line-height: 1.12;
+  text-wrap: balance;
+}
+
+/* ── le symbole « recadrer » (C-188) : les quatre coins, 22 pt d'encre dans une zone de 44, l'encre à 12 pt de la barre et sur la marge ── */
+.acc-recadre {
+  position: absolute;
+  right: calc(var(--marge-d) - 11px);
+  bottom: calc(var(--ancre-bas) + 99px);
+  width: 44px;
+  height: 44px;
+  display: none;
+  place-items: center;
+  z-index: 32;
+  color: var(--c-creme95);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.device.light .acc-recadre {
+  color: var(--c-brun09);
+}
+.acc-recadre.vu {
+  display: grid;
+}
+.acc-recadre svg {
+  width: 29px;
+  height: 29px;
+}
+.acc-recadre svg path {
+  stroke-width: 1.655px;
+}
+.acc-recadre.cache svg {
+  visibility: hidden;
+}
+
+/* ── le dézoom (v46) : le moteur publie --toile-voile (1 → 0 entre les zooms 0,88 et 0,74) ; au plus loin, l'accueil ne prend plus le doigt ── */
+.device.toile-recul .acc-plat,
+.device.toile-recul .acc-barre,
+.device.toile-recul .acc-recadre,
+.device.toile-recul .acc-choix {
+  opacity: var(--toile-voile, 1);
+}
+.device.toile-entiere .acc-plat,
+.device.toile-entiere .acc-barre,
+.device.toile-entiere .acc-recadre,
+.device.toile-entiere .acc-choix {
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* « Réduire les animations » (v154) : rien ne clignote, l'anneau ne tourne pas */
+@media (prefers-reduced-motion: reduce) {
+  .acc-mm i,
+  .acc-plus::before {
+    animation: none;
+  }
+}

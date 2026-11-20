@@ -20,7 +20,7 @@ const ECRANS = [
 const CAPTURES = join(import.meta.dirname, 'resultats', 'ecrans');
 
 for (const e of ECRANS)
-  test(`l'accueil (la Toile) remplit l'écran : ${e.nom} ${e.viewport.width} × ${e.viewport.height}`, async ({
+  test(`l'accueil s'adapte, la Toile remplit l'écran : ${e.nom} ${e.viewport.width} × ${e.viewport.height}`, async ({
     browser,
   }) => {
     const ctx = await browser.newContext({ viewport: e.viewport, deviceScaleFactor: e.densite });
@@ -74,5 +74,23 @@ for (const e of ECRANS)
         true,
       );
     }
+    // L'ACCUEIL S'ADAPTE (lot 1) : le plateau ancré en haut (40 pt sans zone sûre), la barre en bas (34 pt), tous deux aux marges de
+    // 24 pt sur toute la largeur ; le + au centre de la barre ; les entrées à leur distance du bord le plus proche (46 et 100 pt) ;
+    // aucun recouvrement entre le plateau et la barre ; à ½ pt près (une densité de 2,625 arrondit la place au pixel de l'appareil, 0,38 pt)
+    const acc =
+      (await page.evaluate(`(() => { const r = (id) => { const b = document.getElementById(id).getBoundingClientRect();
+      return [b.left, b.top, b.right, b.bottom].map((v) => Math.round(v * 10) / 10); };
+      return { plat: r('accPlat'), barre: r('accBarre'), plus: r('createBtn'), studio: r('studioBtn'), fil: r('filBtn') }; })()`)) as Record<
+        string,
+        [number, number, number, number]
+      >;
+    const W = e.viewport.width;
+    const H = e.viewport.height;
+    expect(acc['plat'], 'le plateau').toEqual([24, 40, W - 24, 100]);
+    expect(acc['barre'], 'la barre').toEqual([24, H - 134, W - 24, H - 34]);
+    expect((acc['plus']![0] + acc['plus']![2]) / 2, 'le + au centre').toBeCloseTo(W / 2, 0);
+    expect((acc['studio']![0] + acc['studio']![2]) / 2, 'STUDIO à 70 pt du bord gauche').toBeCloseTo(70, 0);
+    expect((acc['fil']![0] + acc['fil']![2]) / 2, 'FIL à 70 pt du bord droit').toBeCloseTo(W - 70, 0);
+    expect(acc['plat']![3] < acc['barre']![1], 'le plateau au-dessus de la barre').toBe(true);
     await ctx.close();
   });

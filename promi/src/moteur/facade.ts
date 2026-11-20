@@ -40,8 +40,21 @@ export interface Facade {
   rendre(cv: HTMLCanvasElement, ech: number, clair: boolean, vue?: boolean): boolean;
   lecture(): ReturnType<MoteurFonctions['Toile_lecture']>;
   redessiner(): void;
-  /** le recadrage du moteur (le rond « recadrer » de l'accueil) */
+  /** le recadrage du moteur (le symbole « recadrer » de l'accueil, le double toucher) */
   recadrer(): void;
+  /** l'hôte du moteur (`#device`) : l'accueil y pose son plateau et sa barre */
+  appareil(): HTMLElement;
+  /** la dalle sous un point de la Toile (en pt de l'écran) : une parole, un Cercle, ou rien (`Toile.hit`, lecture seule) */
+  toucher(x: number, y: number): DalleTouchee | null;
+  /** la vue de la Toile (zoom, décalage) ; et si elle appartient à la main (pincée ou glissée) plutôt qu'au cadrage automatique */
+  vue(): { s: number; ox: number; oy: number };
+  vueALaMain(): boolean;
+}
+
+export interface DalleTouchee {
+  pid: number | null;
+  kind: string;
+  nuee?: string;
 }
 
 export function creerFacade(magasin: Magasin): Facade {
@@ -151,6 +164,22 @@ export function creerFacade(magasin: Magasin): Facade {
     recadrer: () => {
       w.Toile_recadre?.();
     },
+    appareil() {
+      if (!device) throw new Error("façade : l'hôte du moteur n'est pas monté");
+      return device;
+    },
+    toucher(x, y) {
+      const h = toile().hit(x, y) as { pid?: number | null; kind?: string; nuee?: string } | null;
+      if (!h) return null;
+      const d: DalleTouchee = { pid: h.pid ?? null, kind: h.kind ?? 'gray' };
+      if (h.nuee) d.nuee = h.nuee;
+      return d;
+    },
+    vue() {
+      const v = (w.Toile_vueLue as (() => { s: number; ox: number; oy: number }) | undefined)?.();
+      return v ? { s: v.s, ox: v.ox, oy: v.oy } : { s: 1, ox: 0, oy: 0 };
+    },
+    vueALaMain: () => !!w['_vueMain'],
   };
 }
 

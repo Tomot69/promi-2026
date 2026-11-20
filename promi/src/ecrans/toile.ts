@@ -1,14 +1,23 @@
 /**
- * L'ÉCRAN DE PREUVE DU SOCLE (L0) : la Toile de Tom, au repos, rendue par la vraie app.
- * Ce n'est pas encore l'accueil (lot 1 : le plateau, la barre, le + ; la Toile vivante). Il n'y a rien d'autre à l'écran que la Toile.
- * Un glissé horizontal passe au monde suivant ou précédent (l'ordre du Studio), pour voir la Toile sous les vingt mondes. Rien n'est
- * acheté : en L0 tous les mondes se montrent.
+ * LA TOILE VIVANTE (lot 1) — l'hôte du moteur, ses gestes et ce qu'ils demandent. Le moteur (repris) fait lui-même : glisser la vue,
+ * pincer, l'élan, déplacer une dalle (appui 0,8 s, C-101), la vie au repos (C-028), le recadrage. L'app ajoute :
+ *  · TOUCHER UNE DALLE (le prototype, app.html ≈ l. 7140–7250) : un toucher net — un doigt, 700 ms au plus entre l'appui et le lever
+ *    (l'heure des ÉVÉNEMENTS, v139), 14 pt au plus — sur la dalle d'une parole demande SA fiche, sur celle d'un Cercle sa fiche de Cercle,
+ *    260 ms plus tard (le temps de savoir s'il vient un second toucher) ; le DOUBLE TOUCHER (moins de 320 ms, 30 pt) recadre, partout ;
+ *    hors de toute dalle, la dalle de parole la plus proche à 22 pt au plus, si elle est petite (C-239) ;
+ *  · LE GLISSÉ HORIZONTAL change de monde (L0, demande de Tom pour voir sa Toile sous les vingt mondes ; le prototype ne le fait pas).
+ * ⚠ Le moteur arrête la propagation du doigt sur son canevas (`pointerdown`, `pointerup` : stopPropagation, promi-moteur.js ≈ l. 8231) :
+ * tout est écouté en phase de CAPTURE sur le parent, sans rien arrêter.
  */
 import type { Facade } from '../moteur/facade.ts';
 import { MONDES_ORDRE } from '../moteur/facade.ts';
 import type { Magasin } from '../etat/magasin.ts';
+import type { Navigation } from '../navigation/navigation.ts';
+import { horloge } from '../animation/horloge.ts';
+import { toucheTolerant } from './toucher-tolerant.ts';
 
-export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Facade): () => void {
+export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Facade, nav: Navigation): () => void {
+  const h = horloge();
   facade.monter(conteneur);
   facade.planterTout();
   const desabonne = magasin.abonner((e, action) => {
@@ -16,36 +25,95 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
     if (action === 'choisirTheme') facade.appliquerTheme(e.reglages.theme);
     if (action === 'importer') facade.planterTout();
   });
+  const stage = facade.appareil().querySelector<HTMLElement>('#stage')!;
+  const cv = facade.appareil().querySelector<HTMLCanvasElement>('#toileCv')!;
 
-  // ⚠ Le moteur arrête la propagation du doigt sur son canevas (`pointerdown` : stopPropagation et setPointerCapture, promi-moteur.js
-  // ≈ l. 8231) : écouté en phase de BULLE sur le parent, le glissé n'arrivait jamais (vu par Tom sur l'iPhone, 20 nov.). Il est écouté en
-  // phase de CAPTURE, avant le canevas, sans rien arrêter : le moteur garde ses gestes (glisser la vue, pincer). Un seul doigt seulement.
   const mondes = Object.keys(MONDES_ORDRE);
-  const doigts = new Map<number, { x: number; y: number }>();
-  let depart: { id: number; x: number; y: number } | null = null;
+  let doigts = 0;
+  let depart: { id: number; x: number; y: number; t: number } | null = null;
+  let bouge = false;
+  let tapPrecedent: { t: number; x: number; y: number; ouvre: number | null } | null = null;
+
   const debut = (ev: PointerEvent): void => {
-    doigts.set(ev.pointerId, { x: ev.clientX, y: ev.clientY });
-    depart = doigts.size === 1 ? { id: ev.pointerId, x: ev.clientX, y: ev.clientY } : null;
+    doigts++;
+    if (doigts > 1) {
+      bouge = true;
+      depart = null;
+      return;
+    }
+    bouge = false;
+    depart = { id: ev.pointerId, x: ev.clientX, y: ev.clientY, t: ev.timeStamp };
+  };
+  const mouvement = (ev: PointerEvent): void => {
+    if (depart && (Math.abs(ev.clientX - depart.x) > 12 || Math.abs(ev.clientY - depart.y) > 12)) bouge = true;
   };
   const fin = (ev: PointerEvent): void => {
-    doigts.delete(ev.pointerId);
-    if (!depart || depart.id !== ev.pointerId) return;
-    const dx = ev.clientX - depart.x;
-    const dy = ev.clientY - depart.y;
+    doigts = Math.max(0, doigts - 1);
+    const g = depart;
+    if (!g || g.id !== ev.pointerId) return;
     depart = null;
-    if (ev.type === 'pointercancel' || Math.abs(dx) < 60 || Math.abs(dx) < Math.abs(dy) * 1.5) return;
-    const i = mondes.indexOf(magasin.etat().studio.monde);
-    const n = mondes.length;
-    magasin.choisirMonde(mondes[((((i < 0 ? 0 : i) + (dx < 0 ? 1 : -1)) % n) + n) % n]!);
-    facade.recadrer();
+    if (ev.type === 'pointercancel') return;
+    const dx = ev.clientX - g.x;
+    const dy = ev.clientY - g.y;
+    // le glissé horizontal : le monde suivant ou précédent (L0)
+    if (Math.abs(dx) >= 60 && Math.abs(dx) >= Math.abs(dy) * 1.5) {
+      const i = mondes.indexOf(magasin.etat().studio.monde);
+      const n = mondes.length;
+      magasin.choisirMonde(mondes[((((i < 0 ? 0 : i) + (dx < 0 ? 1 : -1)) % n) + n) % n]!);
+      facade.recadrer();
+      return;
+    }
+    // le toucher net
+    if (bouge || doigts > 0) return;
+    if (ev.timeStamp - g.t > 700) return;
+    if (Math.abs(dx) > 14 || Math.abs(dy) > 14) return;
+    const r = cv.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    const sx = (ev.clientX - r.left) * (cv.clientWidth / r.width);
+    const sy = (ev.clientY - r.top) * (cv.clientHeight / r.height);
+    const maintenant = h.maintenant();
+    const p = tapPrecedent;
+    if (p && maintenant - p.t < 320 && Math.abs(ev.clientX - p.x) < 30 && Math.abs(ev.clientY - p.y) < 30) {
+      tapPrecedent = null;
+      if (p.ouvre != null) h.annuleMinuteur(p.ouvre);
+      facade.recadrer();
+      return;
+    }
+    let d = facade.toucher(sx, sy);
+    if (!(d && (d.pid != null || (d.kind === 'nuee' && d.nuee))))
+      d = toucheTolerant((x, y) => facade.toucher(x, y), sx, sy) ?? d;
+    let ouvre: (() => void) | null = null;
+    if (d && d.kind === 'nuee' && d.nuee) {
+      const nuee = d.nuee;
+      ouvre = () => {
+        nav.ouvrir('cercle', nuee);
+      };
+    } else if (d && d.pid != null) {
+      const pid = d.pid;
+      if (magasin.etat().paroles.some((q) => q.id === pid))
+        ouvre = () => {
+          nav.ouvrir('fiche', pid);
+        };
+    }
+    const moi = { t: maintenant, x: ev.clientX, y: ev.clientY, ouvre: null as number | null };
+    if (ouvre) {
+      const f = ouvre;
+      moi.ouvre = h.minuteur(() => {
+        if (tapPrecedent === moi) tapPrecedent = null;
+        f();
+      }, 260);
+    }
+    tapPrecedent = moi;
   };
-  conteneur.addEventListener('pointerdown', debut, true);
-  conteneur.addEventListener('pointerup', fin, true);
-  conteneur.addEventListener('pointercancel', fin, true);
+  stage.addEventListener('pointerdown', debut, true);
+  stage.addEventListener('pointermove', mouvement, true);
+  stage.addEventListener('pointerup', fin, true);
+  stage.addEventListener('pointercancel', fin, true);
   return () => {
     desabonne();
-    conteneur.removeEventListener('pointerdown', debut, true);
-    conteneur.removeEventListener('pointerup', fin, true);
-    conteneur.removeEventListener('pointercancel', fin, true);
+    stage.removeEventListener('pointerdown', debut, true);
+    stage.removeEventListener('pointermove', mouvement, true);
+    stage.removeEventListener('pointerup', fin, true);
+    stage.removeEventListener('pointercancel', fin, true);
   };
 }
