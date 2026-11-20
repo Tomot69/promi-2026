@@ -151,3 +151,20 @@ export function ecart(a: Buffer, b: Buffer): { n: number; boite: number[] | null
     }
   return { n, boite: n ? [x0 / k, y0 / k, x1 / k, y1 / k].map((v) => Math.round(v)) : null, bords };
 }
+
+/**
+ * LES ÉCRANS PORTÉS (C-326) — ceux que les juges du socle transversal parcourent, dans la vraie app, ouverts par le vrai chemin depuis
+ * l'accueil. CHAQUE LOT AJOUTE LES SIENS ICI : un juge du socle les couvre alors sans qu'on le touche. `prototype` ouvre le même écran
+ * dans le prototype (pour une comparaison), une fois `prototype(page, ls)` chargé.
+ */
+export type EcranPorte = {
+  nom: string;
+  /** depuis l'accueil de la vraie app, ouverte par `vraieApp` */
+  ouvrir(page: Page): Promise<void>;
+  /** depuis l'accueil du prototype, ouvert par `prototype` */
+  prototype(page: Page): Promise<void>;
+};
+export const ECRANS_PORTES: EcranPorte[] = [
+  { nom: 'accueil', ouvrir: async () => {}, prototype: async () => {} },
+  { nom: 'accueil, menu du + ouvert', ouvrir: ouvrirPlus, prototype: ouvrirPlus },
+];
