@@ -5,12 +5,10 @@
  *    (l'heure des ÉVÉNEMENTS, v139), 14 pt au plus — sur la dalle d'une parole demande SA fiche, sur celle d'un Cercle sa fiche de Cercle,
  *    260 ms plus tard (le temps de savoir s'il vient un second toucher) ; le DOUBLE TOUCHER (moins de 320 ms, 30 pt) recadre, partout ;
  *    hors de toute dalle, la dalle de parole la plus proche à 22 pt au plus, si elle est petite (C-239) ;
- *  · LE GLISSÉ HORIZONTAL change de monde (L0, demande de Tom pour voir sa Toile sous les vingt mondes ; le prototype ne le fait pas).
  * ⚠ Le moteur arrête la propagation du doigt sur son canevas (`pointerdown`, `pointerup` : stopPropagation, promi-moteur.js ≈ l. 8231) :
  * tout est écouté en phase de CAPTURE sur le parent, sans rien arrêter.
  */
 import type { Facade } from '../moteur/facade.ts';
-import { MONDES_ORDRE } from '../moteur/facade.ts';
 import type { Magasin } from '../etat/magasin.ts';
 import type { Navigation } from '../navigation/navigation.ts';
 import { horloge } from '../animation/horloge.ts';
@@ -28,7 +26,6 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
   const stage = facade.appareil().querySelector<HTMLElement>('#stage')!;
   const cv = facade.appareil().querySelector<HTMLCanvasElement>('#toileCv')!;
 
-  const mondes = Object.keys(MONDES_ORDRE);
   // les doigts posés, par identifiant de pointeur : un même pointeur ne peut pas être posé deux fois — un lever perdu (capturé ailleurs,
   // sorti de la page) ne bloque donc jamais les touchers suivants ; le lever est aussi lu sur la fenêtre
   const poses = new Set<number>();
@@ -62,14 +59,6 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
     if (ev.type === 'pointercancel') return;
     const dx = ev.clientX - g.x;
     const dy = ev.clientY - g.y;
-    // le glissé horizontal : le monde suivant ou précédent (L0)
-    if (Math.abs(dx) >= 60 && Math.abs(dx) >= Math.abs(dy) * 1.5) {
-      const i = mondes.indexOf(magasin.etat().studio.monde);
-      const n = mondes.length;
-      magasin.choisirMonde(mondes[((((i < 0 ? 0 : i) + (dx < 0 ? 1 : -1)) % n) + n) % n]!);
-      facade.recadrer();
-      return;
-    }
     // le toucher net
     if (bouge || poses.size > 0) return;
     if (ev.timeStamp - g.t > 700) return;

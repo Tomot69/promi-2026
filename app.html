@@ -35010,6 +35010,13 @@ window._petiteToile=function(g,A,Lr,ids){ try{
   try{ (window._rangeurs=window._rangeurs||[]).push(function(){ var ch=document.getElementById('accChoix'); if(ch) ch.classList.remove('ouvert'); }); }catch(_){}
 })();
 </script>
+<style id="lot-L1-DEPLACE-css">
+/* ⚑ L1 (Tom, 20 nov. 2026, C-101) — « déplacer une dalle ne marche plus dans Safari ». LA CAUSE (vue dans le Safari d'iOS 26.1, simulateur, sonde des
+   événements) : la Toile n'a jamais interdit la SÉLECTION DE TEXTE ; un appui long y lance celle d'iOS (sa loupe, « Copier · Rechercher la sélection »)
+   vers 0,7 s, avant les 0,8 s où le moteur attrape la dalle. Présent dès v142 (même sonde, même résultat) : aucun commit fautif, c'est iOS. La vraie
+   app l'interdit sur toute sa page depuis L0 ; ici, la Toile seule (et rien d'autre : les champs gardent leur sélection). */
+#stage,#stage *,#toileCv{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
+</style>
 <style id="lot-ZOOM-css">
 /* ⚑ LE ROND « RECADRER » (Q212) — 44, trait 2 couleur du corps, corps opaque. Il n'existe que quand la main a déplacé la vue
    (ajout hors inventaire, §5 : il apparaît au besoin, il disparaît une fois recadré). Glyphe : les trois dalles-fantômes de

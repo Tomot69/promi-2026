@@ -277,6 +277,124 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
   ).toBe(false);
 });
 
+// C-101 (v142) et L1 (Tom, 20 nov. 2026) : « un appui de 0,8 s sur une dalle la détache ; elle suit le doigt ; au lâcher elle reste où on l'a
+// posée, sa place est gardée ». Le moteur le fait (repris) ; l'app doit (1) laisser l'appui long au moteur — dans Safari d'iOS, une page qui
+// permet la sélection de texte la lance vers 0,7 s (loupe, « Copier ») et la dalle ne bouge plus : c'était la régression du prototype —, et
+// (2) garder la place que le moteur note. Valeurs décidées, en dur : 800 ms ; « sous le doigt » = 50 pt au plus du lâcher.
+test("déplacer une dalle (C-101) : la page laisse l'appui long au moteur, la dalle suit le doigt, aucune fiche, sa place est gardée", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await vraieApp(page, stockage());
+  // (1) la sélection de texte et le menu de l'appui long interdits sur la Toile ; le WebKit du Mac ne connaît pas -webkit-touch-callout
+  // (il le jette au chargement) : il se lit dans le TEXTE des feuilles de la page
+  const sel = (await page.evaluate(async () => {
+    let txt = [...document.querySelectorAll('style')].map((s) => s.textContent).join('\n');
+    for (const l of document.querySelectorAll<HTMLLinkElement>('link[rel=stylesheet]'))
+      txt += await (await fetch(l.href)).text();
+    txt = txt.replace(/\/\*[\s\S]*?\*\//g, '');
+    const regles: string[] = [];
+    for (const m of txt.matchAll(/([^{}]+)\{([^{}]*)\}/g))
+      if (/-webkit-touch-callout\s*:\s*none/.test(m[2]!)) regles.push(m[1]!.trim());
+    return ['stage', 'toileCv'].map((i) => {
+      const e = document.getElementById(i)!;
+      const s = getComputedStyle(e) as CSSStyleDeclaration & { webkitUserSelect?: string };
+      const herite = (x: Element | null): boolean => {
+        for (; x; x = x.parentElement)
+          if (
+            regles.some((r) =>
+              r.split(',').some((q) => {
+                try {
+                  return x!.matches(q.trim());
+                } catch {
+                  return false;
+                }
+              }),
+            )
+          )
+            return true;
+        return false;
+      };
+      return [i, s.webkitUserSelect || s.userSelect, herite(e) ? 'none' : 'absent'];
+    });
+  })) as Array<[string, string, string]>;
+  expect(sel, "la Toile interdit la sélection de texte et le menu de l'appui long").toEqual([
+    ['stage', 'none', 'none'],
+    ['toileCv', 'none', 'none'],
+  ]);
+  expect(await page.evaluate('window.Toile_tireRegle && Toile_tireRegle.MS'), 'la règle : 800 ms').toBe(800);
+  // une dalle de parole, loin des bords
+  const lire = `(() => { const L = Toile_lecture(); const out = [];
+    for (const g of L.graines) { if (g.kind === 'gray' || g.pid == null) continue;
+      const x = g.x * L.vue.s + L.vue.ox, y = g.y * L.vue.s + L.vue.oy; out.push({ pid: g.pid, x, y, tx: g.x, ty: g.y }); }
+    return out; })()`;
+  type D = { pid: number; x: number; y: number; tx: number; ty: number };
+  const dalles = ((await page.evaluate(lire)) as D[]).filter((d) => d.x > 60 && d.x < 330 && d.y > 180 && d.y < 600);
+  const a = dalles[0];
+  expect(a, 'une dalle de parole loin des bords').toBeTruthy();
+  const d0 = a!;
+  const vers = (dx: number, dy: number): [number, number] => {
+    const n = Math.hypot(195 - d0.x, 420 - d0.y) || 1;
+    return n >= 60
+      ? [d0.x + ((195 - d0.x) / n) * 110 + dx, d0.y + ((420 - d0.y) / n) * 110 + dy]
+      : [d0.x + 90 + dx, d0.y + 90 + dy];
+  };
+  await page.evaluate(() => {
+    const w = window as unknown as { __tire: number; Toile_tire(): unknown };
+    w.__tire = 0;
+    setInterval(() => {
+      if (w.Toile_tire()) w.__tire++;
+    }, 30);
+  });
+  const journal0 = (await page.evaluate(`${P_}.nav.journal().length`)) as number;
+  // un glissé SANS attendre ne détache rien
+  await page.mouse.move(d0.x, d0.y);
+  await page.mouse.down();
+  await page.waitForTimeout(150);
+  await page.mouse.move(d0.x + 40, d0.y + 50, { steps: 8 });
+  await page.mouse.up();
+  await page.waitForTimeout(900);
+  expect(await page.evaluate('window.__tire'), 'un glissé sans attendre 0,8 s ne détache aucune dalle').toBe(0);
+  // la vue a pu glisser : on relit la dalle, puis l'appui de 0,95 s et le glissé
+  const d1 = ((await page.evaluate(lire)) as D[]).find((d) => d.pid === d0.pid)!;
+  Object.assign(d0, d1);
+  const [x1, y1] = vers(0, 0);
+  await page.mouse.move(d0.x, d0.y);
+  await page.mouse.down();
+  await page.waitForTimeout(950);
+  await page.mouse.move(x1, y1, { steps: 14 });
+  const prise = (await page.evaluate('window.__tire')) as number;
+  await page.mouse.up();
+  expect(prise, 'la dalle est attrapée pendant le geste').toBeGreaterThan(0);
+  // elle finit sous le doigt (la Toile se repose : sur la CI une image toutes les 0,7 s)
+  await page.waitForFunction(
+    ([pid, x, y]) => {
+      const L = (
+        window as unknown as { Toile_lecture(): { graines: D[]; vue: { s: number; ox: number; oy: number } } }
+      ).Toile_lecture();
+      const g = L.graines.find((q) => q.pid === pid);
+      return !!g && Math.hypot(g.x * L.vue.s + L.vue.ox - x!, g.y * L.vue.s + L.vue.oy - y!) <= 50;
+    },
+    [d0.pid, x1, y1],
+    { timeout: 60000 },
+  );
+  await page.waitForTimeout(1200);
+  const d2 = ((await page.evaluate(lire)) as D[]).find((d) => d.pid === d0.pid)!;
+  expect(Math.hypot(d2.x - d0.x, d2.y - d0.y), 'à plus de 60 pt de son départ').toBeGreaterThanOrEqual(60);
+  expect(((await page.evaluate(`${P_}.nav.journal()`)) as unknown[]).slice(journal0), 'aucune fiche demandée').toEqual(
+    [],
+  );
+  // sa place est gardée par le magasin (le moteur la note : [x/W, y/H, famille])
+  const place = (await page.evaluate(
+    `(() => { const p = ${P_}.magasin.etat().paroles.find((q) => q.id === ${String(d0.pid)}); const L = Toile_lecture(); return p && p.place ? [p.place[0] * L.W, p.place[1] * L.H] : null; })()`,
+  )) as [number, number] | null;
+  expect(place, 'la place notée par le moteur est dans le magasin').not.toBeNull();
+  expect(
+    Math.hypot(place![0] - d2.tx, place![1] - d2.ty),
+    'la place gardée est celle où la dalle a été posée (≤ 30 pt de Toile)',
+  ).toBeLessThanOrEqual(30);
+});
+
 test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvre les natures, une pilule sa page +, ailleurs referme', async ({
   page,
 }) => {

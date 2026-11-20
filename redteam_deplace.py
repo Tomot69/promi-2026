@@ -15,6 +15,9 @@ sur la place de la dalle à l'écran, la fiche ouverte ou non, ce qui est sauveg
   4 · après rechargement, la dalle est où on l'a posée DANS LA TOILE (la vue se recadre : le point de l'écran est ramené par la vue) ;
   5 · lâchée sous la barre (y 800), elle reste atteignable au-dessus (centre < 710) ;
   6 · la règle déclarée : 800 ms.
+  0 · ⚑ L1 (Tom, 20 nov. 2026) — dans Safari d'iOS, un appui long sur la Toile lançait la SÉLECTION DE TEXTE (loupe, « Copier ») vers 0,7 s,
+      avant la prise à 0,8 s : la dalle ne bougeait plus. Le WebKit du Mac ne lance pas cette sélection ; le juge lit donc la cause, EN DUR :
+      sur #stage et #toileCv, -webkit-user-select ET -webkit-touch-callout valent « none ». Rouge sur sauvegardes/app-avant-c101-selection.html.
 Preuve : rouge sur v141 (python3 redteam_deplace.py zz-av142.html --mondes=pochade).
 """
 import sys, math
@@ -31,6 +34,16 @@ OU = """()=>{ const cv=document.getElementById('toileCv'), r=cv.getBoundingClien
 ETAT = "()=>{const dp=document.getElementById('detailPoster'); let v=null; try{v=Toile.view&&Toile.view()}catch(e){} return {fiche:!!(dp&&dp.classList.contains('show')), tire:(window.Toile_tire?Toile_tire():null), regle:window.Toile_tireRegle||null}}"
 with sync_playwright() as p:
     b = p.webkit.launch()
+    ctx = contexte(b); pg = ouvre(ctx, F)
+    # le menu de l'appui long : le WebKit du Mac ne connaît pas -webkit-touch-callout et le jette au chargement (ni style calculé, ni CSSOM) —
+    # il se lit dans le TEXTE des feuilles, sélecteur par sélecteur
+    sel = pg.evaluate(r"""()=>{ const txt=[...document.querySelectorAll('style')].map(s=>s.textContent.replace(/\/\*[\s\S]*?\*\//g,'')).join('\n'), R=/([^{}]+)\{([^{}]*)\}/g, regles=[]; let m;
+      while((m=R.exec(txt))) if(/-webkit-touch-callout\s*:\s*none/.test(m[2])) regles.push(m[1].trim());
+      return ['stage','toileCv'].map(i=>{ const e=document.getElementById(i), s=getComputedStyle(e);
+        const tc=regles.some(sl=>sl.split(',').some(x=>{try{return e.matches(x.trim())}catch(_){return false}}));
+        return [i, s.webkitUserSelect||s.userSelect, tc?'none':'absent']; }); }""")
+    juge('0 · la Toile interdit la sélection de texte et le menu de l\'appui long (sinon iOS prend l\'appui avant 0,8 s)', all(v[1] == 'none' and v[2] == 'none' for v in sel), sel)
+    ctx.close()
     for m in MONDES:
         ctx = contexte(b); pg = ouvre(ctx, F)
         pg.evaluate("(m)=>{try{setPremium(true)}catch(e){} Toile.setTheme(m)}", m); pg.wait_for_timeout(1500)

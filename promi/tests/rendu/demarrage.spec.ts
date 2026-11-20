@@ -39,11 +39,11 @@ test("au premier lancement, l'app montre les paroles de l'état embarqué, toute
 });
 
 /**
- * L0 §0 b — LE GLISSÉ HORIZONTAL CHANGE DE MONDE. Le doigt est posé et levé SUR LE CANEVAS DU MOTEUR (qui arrête la propagation de
- * `pointerdown` : la cause du défaut vu par Tom) ; vers la gauche, le monde suivant de l'ordre du Studio ; vers la droite, le précédent ;
- * un glissé vertical ou un toucher ne changent rien.
+ * LE GLISSÉ DÉPLACE LA VUE, COMME DANS LE PROTOTYPE (Tom, 20 nov. 2026 : le glissé qui changeait de monde ne servait qu'à la preuve de
+ * L0, il est retiré ; le monde se change au Studio, lot 7). Le doigt est posé et levé SUR LE CANEVAS DU MOTEUR (qui arrête la propagation
+ * de `pointerdown`) : le monde ne change pas, la vue appartient à la main.
  */
-test('le glissé horizontal sur la Toile change de monde', async ({ page }) => {
+test('le glissé horizontal déplace la vue et ne change jamais de monde', async ({ page }) => {
   await page.goto('http://127.0.0.1:5180/');
   await page.waitForFunction(() => !!(window as unknown as { Toile?: unknown }).Toile);
   const glisser = (dx: number, dy: number): Promise<string> =>
@@ -59,41 +59,20 @@ test('le glissé horizontal sur la Toile change de monde', async ({ page }) => {
           composed: true,
         };
         cv.dispatchEvent(new PointerEvent('pointerdown', { ...o, clientX: 200, clientY: 400 }));
-        cv.dispatchEvent(new PointerEvent('pointermove', { ...o, clientX: 200 + dx / 2, clientY: 400 + dy / 2 }));
+        for (let k = 1; k <= 6; k++)
+          cv.dispatchEvent(
+            new PointerEvent('pointermove', { ...o, clientX: 200 + (dx * k) / 6, clientY: 400 + (dy * k) / 6 }),
+          );
         cv.dispatchEvent(new PointerEvent('pointerup', { ...o, clientX: 200 + dx, clientY: 400 + dy }));
         await new Promise((r) => requestAnimationFrame(r));
         return (window as unknown as { Toile: { getTheme(): string } }).Toile.getTheme();
       },
       [dx, dy] as const,
     );
-  const ordre = [
-    'encre',
-    'touffe',
-    'brouillamini',
-    'halin',
-    'esquille',
-    'mosaique',
-    'braille',
-    'pixel',
-    'ramage',
-    'guingois',
-    'chantourne',
-    'volubilis',
-    'madrure',
-    'chamade',
-    'ritournelle',
-    'bobinette',
-    'mascaret',
-    'terrazzo',
-    'gravure',
-    'sillons',
-  ];
   const m0 = (await page.evaluate('Toile.getTheme()')) as string;
-  const i = ordre.indexOf(m0);
-  expect(await glisser(-150, 10)).toBe(ordre[(i + 1) % 20]);
+  expect(await glisser(-150, 10)).toBe(m0);
   expect(await glisser(150, -10)).toBe(m0);
-  expect(await glisser(0, 200)).toBe(m0);
-  expect(await glisser(3, 2)).toBe(m0);
+  expect(await page.evaluate('!!window._vueMain'), 'la vue appartient à la main').toBe(true);
 });
 
 /** L0 §0 a — une app qui garde l'état d'une construction précédente (l'iPhone de Tom, le 20 nov.) prend le nouvel export embarqué. */
