@@ -2,6 +2,16 @@
 
 À lire avec `CLAUDE.md` (il fait autorité), `CHANTIERS.md` (le registre) et `QUESTIONS.md`. En tête de chaque session : `python3 serveur.py` (port 8752, IP relue par `ipconfig getifaddr en0`), donner les trois adresses.
 
+## 000) NOUVEAU CHAPITRE : LA VRAIE APP (20 nov. 2026, lot L0, branche `app-L0`)
+
+- **La vraie app vit dans `promi/`** (TypeScript strict, Vite, Capacitor iOS et Android). `npm run verifier` (jetons, types, lint, format, tests unitaires) ;
+  `npx playwright test` (WebKit : banc_rendu porté, entrées du moteur, socle). L'intégration continue : `promi/ci/ci.yml` (à déplacer dans `.github/workflows/` : le jeton GitHub de ce Mac n'a pas le droit « workflow »).
+- **Le plan des lots suivants : `PLAN-APP.md`** — ils attendent que Tom le valide. Les règles : en tête de CLAUDE.md et d'ARCHITECTURE.md.
+- **Ce que L0 prouve** : banc_rendu porté, **266 images sur 266 identiques au pixel** (contre les images figées et contre le prototype vivant ; Ramage non jugé,
+  C-187) ; sur l'état de Tom, les entrées du moteur identiques et la vue de son export retrouvée ; l'import de ses exports sans perte.
+- **L'app « Promi » (`fr.autier.promi`) est sur l'iPhone 16e de Tom** (profil gratuit, 7 jours : PREUVE-CAPACITOR.md, « La vraie app sur l'iPhone »).
+- `app.html` (main = v214b) est **figé** : le cahier des charges.
+
 ## 00) Le chapitre v206 est CLOS ET FUSIONNÉ (19 nov. 2026, v214)
 
 - **`main` = v214**, commit de fusion `98e3762` (sur `ce8d9e1`) ; étiquette **`avant-fusion-v206`** = `main` d'avant (ec27c77, v205). La branche `v206` est gardée, identique. Le serveur sert `main` ; `?diag=1` affiche « v214 » en haut de chaque écran.

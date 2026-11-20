@@ -1,4 +1,4 @@
-// jetons/promi-jetons.ts — GÉNÉRÉ depuis PROMI-TOKENS.json par outils/jetons_engendrer.py. Ne pas modifier à la main.
+// promi/src/design/jetons.ts — GÉNÉRÉ depuis PROMI-TOKENS.json par outils/jetons_engendrer.py. Ne pas modifier à la main.
 
 export const palette = {
   "noir00": "#000000",
@@ -257,6 +257,12 @@ export const palette = {
   "seiche21": "#1F1611"
 } as const;
 export type CouleurFixe = keyof typeof palette;
+export const familles = {
+  "titre": "PromiLate,Gilbert,system-ui,sans-serif",
+  "libelle": "Gilbert,system-ui,sans-serif",
+  "texte": "Atkinson,system-ui,sans-serif",
+  "marque": "PromiLate,Gilbert,system-ui,sans-serif"
+} as const;
 export const roles = {
   "fond": {
     "clair": "#F7F0DE",

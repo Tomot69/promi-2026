@@ -1,0 +1,1128 @@
+{
+  "identifier": "PROMI0L0",
+  "nonRenewingSubscriptions": [],
+  "products": [
+    {
+      "displayPrice": "5.00",
+      "familyShareable": false,
+      "internalID": "00000001",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 5 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.5",
+      "referenceName": "Soutenir Promi — 5 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "10.00",
+      "familyShareable": false,
+      "internalID": "00000002",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 10 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.10",
+      "referenceName": "Soutenir Promi — 10 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "15.00",
+      "familyShareable": false,
+      "internalID": "00000003",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 15 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.15",
+      "referenceName": "Soutenir Promi — 15 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "20.00",
+      "familyShareable": false,
+      "internalID": "00000004",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 20 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.20",
+      "referenceName": "Soutenir Promi — 20 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "25.00",
+      "familyShareable": false,
+      "internalID": "00000005",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 25 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.25",
+      "referenceName": "Soutenir Promi — 25 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "30.00",
+      "familyShareable": false,
+      "internalID": "00000006",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 30 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.30",
+      "referenceName": "Soutenir Promi — 30 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "35.00",
+      "familyShareable": false,
+      "internalID": "00000007",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 35 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.35",
+      "referenceName": "Soutenir Promi — 35 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "40.00",
+      "familyShareable": false,
+      "internalID": "00000008",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 40 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.40",
+      "referenceName": "Soutenir Promi — 40 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "45.00",
+      "familyShareable": false,
+      "internalID": "00000009",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 45 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.45",
+      "referenceName": "Soutenir Promi — 45 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "50.00",
+      "familyShareable": false,
+      "internalID": "0000000A",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 50 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.50",
+      "referenceName": "Soutenir Promi — 50 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "55.00",
+      "familyShareable": false,
+      "internalID": "0000000B",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 55 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.55",
+      "referenceName": "Soutenir Promi — 55 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "60.00",
+      "familyShareable": false,
+      "internalID": "0000000C",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 60 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.60",
+      "referenceName": "Soutenir Promi — 60 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "65.00",
+      "familyShareable": false,
+      "internalID": "0000000D",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 65 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.65",
+      "referenceName": "Soutenir Promi — 65 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "70.00",
+      "familyShareable": false,
+      "internalID": "0000000E",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 70 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.70",
+      "referenceName": "Soutenir Promi — 70 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "75.00",
+      "familyShareable": false,
+      "internalID": "0000000F",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 75 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.75",
+      "referenceName": "Soutenir Promi — 75 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "80.00",
+      "familyShareable": false,
+      "internalID": "00000010",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 80 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.80",
+      "referenceName": "Soutenir Promi — 80 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "85.00",
+      "familyShareable": false,
+      "internalID": "00000011",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 85 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.85",
+      "referenceName": "Soutenir Promi — 85 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "90.00",
+      "familyShareable": false,
+      "internalID": "00000012",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 90 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.90",
+      "referenceName": "Soutenir Promi — 90 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "95.00",
+      "familyShareable": false,
+      "internalID": "00000013",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 95 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.95",
+      "referenceName": "Soutenir Promi — 95 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "100.00",
+      "familyShareable": false,
+      "internalID": "00000014",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 100 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.100",
+      "referenceName": "Soutenir Promi — 100 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "105.00",
+      "familyShareable": false,
+      "internalID": "00000015",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 105 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.105",
+      "referenceName": "Soutenir Promi — 105 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "110.00",
+      "familyShareable": false,
+      "internalID": "00000016",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 110 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.110",
+      "referenceName": "Soutenir Promi — 110 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "115.00",
+      "familyShareable": false,
+      "internalID": "00000017",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 115 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.115",
+      "referenceName": "Soutenir Promi — 115 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "120.00",
+      "familyShareable": false,
+      "internalID": "00000018",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 120 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.120",
+      "referenceName": "Soutenir Promi — 120 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "125.00",
+      "familyShareable": false,
+      "internalID": "00000019",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 125 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.125",
+      "referenceName": "Soutenir Promi — 125 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "130.00",
+      "familyShareable": false,
+      "internalID": "0000001A",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 130 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.130",
+      "referenceName": "Soutenir Promi — 130 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "135.00",
+      "familyShareable": false,
+      "internalID": "0000001B",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 135 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.135",
+      "referenceName": "Soutenir Promi — 135 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "140.00",
+      "familyShareable": false,
+      "internalID": "0000001C",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 140 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.140",
+      "referenceName": "Soutenir Promi — 140 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "145.00",
+      "familyShareable": false,
+      "internalID": "0000001D",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 145 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.145",
+      "referenceName": "Soutenir Promi — 145 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "150.00",
+      "familyShareable": false,
+      "internalID": "0000001E",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 150 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.150",
+      "referenceName": "Soutenir Promi — 150 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "155.00",
+      "familyShareable": false,
+      "internalID": "0000001F",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 155 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.155",
+      "referenceName": "Soutenir Promi — 155 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "160.00",
+      "familyShareable": false,
+      "internalID": "00000020",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 160 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.160",
+      "referenceName": "Soutenir Promi — 160 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "165.00",
+      "familyShareable": false,
+      "internalID": "00000021",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 165 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.165",
+      "referenceName": "Soutenir Promi — 165 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "170.00",
+      "familyShareable": false,
+      "internalID": "00000022",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 170 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.170",
+      "referenceName": "Soutenir Promi — 170 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "175.00",
+      "familyShareable": false,
+      "internalID": "00000023",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 175 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.175",
+      "referenceName": "Soutenir Promi — 175 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "180.00",
+      "familyShareable": false,
+      "internalID": "00000024",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 180 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.180",
+      "referenceName": "Soutenir Promi — 180 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "185.00",
+      "familyShareable": false,
+      "internalID": "00000025",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 185 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.185",
+      "referenceName": "Soutenir Promi — 185 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "190.00",
+      "familyShareable": false,
+      "internalID": "00000026",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 190 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.190",
+      "referenceName": "Soutenir Promi — 190 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "195.00",
+      "familyShareable": false,
+      "internalID": "00000027",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 195 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.195",
+      "referenceName": "Soutenir Promi — 195 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "200.00",
+      "familyShareable": false,
+      "internalID": "00000028",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 200 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.200",
+      "referenceName": "Soutenir Promi — 200 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "225.00",
+      "familyShareable": false,
+      "internalID": "00000029",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 225 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.225",
+      "referenceName": "Soutenir Promi — 225 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "250.00",
+      "familyShareable": false,
+      "internalID": "0000002A",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 250 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.250",
+      "referenceName": "Soutenir Promi — 250 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "275.00",
+      "familyShareable": false,
+      "internalID": "0000002B",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 275 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.275",
+      "referenceName": "Soutenir Promi — 275 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "300.00",
+      "familyShareable": false,
+      "internalID": "0000002C",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 300 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.300",
+      "referenceName": "Soutenir Promi — 300 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "325.00",
+      "familyShareable": false,
+      "internalID": "0000002D",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 325 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.325",
+      "referenceName": "Soutenir Promi — 325 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "350.00",
+      "familyShareable": false,
+      "internalID": "0000002E",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 350 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.350",
+      "referenceName": "Soutenir Promi — 350 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "375.00",
+      "familyShareable": false,
+      "internalID": "0000002F",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 375 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.375",
+      "referenceName": "Soutenir Promi — 375 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "400.00",
+      "familyShareable": false,
+      "internalID": "00000030",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 400 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.400",
+      "referenceName": "Soutenir Promi — 400 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "425.00",
+      "familyShareable": false,
+      "internalID": "00000031",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 425 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.425",
+      "referenceName": "Soutenir Promi — 425 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "450.00",
+      "familyShareable": false,
+      "internalID": "00000032",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 450 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.450",
+      "referenceName": "Soutenir Promi — 450 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "475.00",
+      "familyShareable": false,
+      "internalID": "00000033",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 475 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.475",
+      "referenceName": "Soutenir Promi — 475 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "500.00",
+      "familyShareable": false,
+      "internalID": "00000034",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 500 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.500",
+      "referenceName": "Soutenir Promi — 500 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "550.00",
+      "familyShareable": false,
+      "internalID": "00000035",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 550 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.550",
+      "referenceName": "Soutenir Promi — 550 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "600.00",
+      "familyShareable": false,
+      "internalID": "00000036",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 600 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.600",
+      "referenceName": "Soutenir Promi — 600 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "650.00",
+      "familyShareable": false,
+      "internalID": "00000037",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 650 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.650",
+      "referenceName": "Soutenir Promi — 650 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "700.00",
+      "familyShareable": false,
+      "internalID": "00000038",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 700 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.700",
+      "referenceName": "Soutenir Promi — 700 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "750.00",
+      "familyShareable": false,
+      "internalID": "00000039",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 750 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.750",
+      "referenceName": "Soutenir Promi — 750 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "800.00",
+      "familyShareable": false,
+      "internalID": "0000003A",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 800 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.800",
+      "referenceName": "Soutenir Promi — 800 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "850.00",
+      "familyShareable": false,
+      "internalID": "0000003B",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 850 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.850",
+      "referenceName": "Soutenir Promi — 850 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "900.00",
+      "familyShareable": false,
+      "internalID": "0000003C",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 900 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.900",
+      "referenceName": "Soutenir Promi — 900 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "950.00",
+      "familyShareable": false,
+      "internalID": "0000003D",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 950 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.950",
+      "referenceName": "Soutenir Promi — 950 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "1000.00",
+      "familyShareable": false,
+      "internalID": "0000003E",
+      "localizations": [
+        {
+          "description": "Un soutien à Promi.",
+          "displayName": "Soutenir Promi — 1000 €",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.soutien.1000",
+      "referenceName": "Soutenir Promi — 1000 €",
+      "type": "Consumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "0000003F",
+      "localizations": [
+        {
+          "description": "Le monde Ramage au Studio.",
+          "displayName": "Design Ramage",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.ramage",
+      "referenceName": "Design Ramage",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000040",
+      "localizations": [
+        {
+          "description": "Le monde Guingois au Studio.",
+          "displayName": "Design Guingois",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.guingois",
+      "referenceName": "Design Guingois",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000041",
+      "localizations": [
+        {
+          "description": "Le monde Chantourné au Studio.",
+          "displayName": "Design Chantourné",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.chantourne",
+      "referenceName": "Design Chantourné",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000042",
+      "localizations": [
+        {
+          "description": "Le monde Volubilis au Studio.",
+          "displayName": "Design Volubilis",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.volubilis",
+      "referenceName": "Design Volubilis",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000043",
+      "localizations": [
+        {
+          "description": "Le monde Madrure au Studio.",
+          "displayName": "Design Madrure",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.madrure",
+      "referenceName": "Design Madrure",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000044",
+      "localizations": [
+        {
+          "description": "Le monde Chamade au Studio.",
+          "displayName": "Design Chamade",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.chamade",
+      "referenceName": "Design Chamade",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000045",
+      "localizations": [
+        {
+          "description": "Le monde Ritournelle au Studio.",
+          "displayName": "Design Ritournelle",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.ritournelle",
+      "referenceName": "Design Ritournelle",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000046",
+      "localizations": [
+        {
+          "description": "Le monde Bobinette au Studio.",
+          "displayName": "Design Bobinette",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.bobinette",
+      "referenceName": "Design Bobinette",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "6.00",
+      "familyShareable": false,
+      "internalID": "00000047",
+      "localizations": [
+        {
+          "description": "Le monde Mascaret au Studio.",
+          "displayName": "Design Mascaret",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.mascaret",
+      "referenceName": "Design Mascaret",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "4.00",
+      "familyShareable": false,
+      "internalID": "00000048",
+      "localizations": [
+        {
+          "description": "Le monde Éclisse au Studio.",
+          "displayName": "Design Éclisse",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.terrazzo",
+      "referenceName": "Design Éclisse",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "4.00",
+      "familyShareable": false,
+      "internalID": "00000049",
+      "localizations": [
+        {
+          "description": "Le monde Taille-douce au Studio.",
+          "displayName": "Design Taille-douce",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.gravure",
+      "referenceName": "Design Taille-douce",
+      "type": "NonConsumable"
+    },
+    {
+      "displayPrice": "4.00",
+      "familyShareable": false,
+      "internalID": "0000004A",
+      "localizations": [
+        {
+          "description": "Le monde Houle au Studio.",
+          "displayName": "Design Houle",
+          "locale": "fr_FR"
+        }
+      ],
+      "productID": "fr.autier.promi.design.sillons",
+      "referenceName": "Design Houle",
+      "type": "NonConsumable"
+    }
+  ],
+  "settings": {
+    "_applicationInternalID": "PROMI",
+    "_developerTeamID": "B77VBMD9BF",
+    "_locale": "fr_FR",
+    "_storefront": "FRA",
+    "_storeKitErrors": []
+  },
+  "subscriptionGroups": [],
+  "version": {
+    "major": 4,
+    "minor": 0
+  }
+}

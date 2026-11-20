@@ -1,0 +1,6 @@
+/* polices.css — GÉNÉRÉ par outils/polices_extraire.py depuis app.html (les cinq faces du prototype, octet pour octet). Ne pas retoucher. */
+@font-face{font-family:Gilbert;font-weight:700;size-adjust:112%;font-style:normal;font-display:swap;ascent-override:93%;descent-override:27%;line-gap-override:0%;src:url('./polices/Gilbert-700.woff2') format('woff2')}
+@font-face{font-family:Atkinson;font-weight:400;size-adjust:112%;font-style:normal;font-display:swap;ascent-override:93.2%;descent-override:28%;line-gap-override:7%;src:url('./polices/Atkinson-400.woff2') format('woff2')}
+@font-face{font-family:Atkinson;font-weight:500;size-adjust:112%;font-style:normal;font-display:swap;ascent-override:93.2%;descent-override:28%;line-gap-override:7%;src:url('./polices/Atkinson-500.woff2') format('woff2')}
+@font-face{font-family:Atkinson;font-weight:700;size-adjust:112%;font-style:normal;font-display:swap;ascent-override:93.2%;descent-override:28%;line-gap-override:7%;src:url('./polices/Atkinson-700.woff2') format('woff2')}
+@font-face{font-family:PromiLate;font-weight:400;font-style:normal;font-display:block;ascent-override:93%;descent-override:27%;line-gap-override:0%;src:url('./polices/PromiLate-400.woff2') format('woff2')}

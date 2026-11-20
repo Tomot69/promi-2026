@@ -5,6 +5,24 @@ puisse la faire vivre pendant des années. **Rien ne démarre avant l'accord de 
 (étiquette `reference-v205`, dossier `Promi-reference-v205`).
 
 
+## ⚑ L0 — LA VRAIE APP EST COMMENCÉE (chef de chantier et Tom, 20 nov. 2026, L0). RÈGLE PERMANENTE. Le plan : PLAN-APP.md.
+- **Le prototype `app.html` (main = v214b) est le CAHIER DES CHARGES FIGÉ** : on n'y touche plus, sauf correction demandée par Tom. La vraie app vit dans `promi/`.
+- **iOS et Android sur une seule base : Capacitor, TypeScript strict.** Écrite de zéro ; seuls le moteur, le tracé, les flaques et les jetons sont repris
+  (copies octet pour octet, `outils/reprendre.py`, `promi/src/repris.json`), chacun derrière une interface typée. Aucune autre ligne d'`app.html` n'est copiée.
+- **Un état unique** (`src/etat/magasin.ts`), un propriétaire par information ; **une seule horloge** (`src/animation/horloge.ts`, posée à la place des
+  minuteurs du navigateur : elle mène aussi les pièces reprises) ; **la façade du moteur** (`src/moteur/facade.ts`), seule à toucher `window.Toile` (le lint l'impose) ;
+  **un seul système de tracé et de transitions** (C-271, C-279) ; **les jetons générés** (`outils/jetons_engendrer.py`, jamais retouchés) ; **un schéma versionné**
+  avec ses migrations ; **les juges deviennent des tests**, lancés à chaque commit par l'intégration continue — pas de fusion au rouge ; **pas de code mort, pas de
+  correctif empilé** : une correction se fait dans le code qu'elle corrige.
+- **IDENTIQUE AU PROTOTYPE** : chaque écran porté est comparé au pixel à celui du prototype, dans le même WebKit, aux échelles 1 et 0,79 ; les juges concernés
+  passent ; Tom vérifie sur son iPhone, dans l'app. Un écart non demandé est un défaut.
+- **Décisions de Tom** : profil gratuit (re-signer chaque semaine) ; achats testés en local (fichier StoreKit, `promi/achats/`) ; RevenueCat ; Firebase derrière
+  l'interface Synchro (implémentation locale en v1, Firebase et les vraies invitations en 1.1) ; Android préparé sans console ; l'engagement (Délier d'abord)
+  construit dans la vraie app APRÈS le portage. **Soutenir** : la grille de consommables (5 en 5 jusqu'à 200 €, 25 en 25 jusqu'à 500 €, 50 en 50 jusqu'à 1 000 €),
+  le montant tapé arrondi au produit le plus proche et affiché AVANT la confirmation (PREUVE-CAPACITOR.md).
+- ⚠ **Le prototype vivant n'est pas une référence au pixel sur l'état de Tom** (son démarrage en temps réel varie) : la preuve au pixel se fait par le protocole
+  de `banc_rendu` (`promi/tests/rendu/banc-rendu.spec.ts`), en neutralisant côté prototype les travaux de fond des écrans pas encore portés.
+
 ## ⚑ LES RÈGLES DE LA VRAIE APP (Tom, 17 nov. 2026 — elles passent avant tout le reste de ce document)
 
 1. **Le prototype emballé ne sera JAMAIS publié.** La preuve Capacitor (`preuve-capacitor`) sert à mesurer, et c'est tout.

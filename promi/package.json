@@ -1,0 +1,52 @@
+{
+  "name": "promi",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Promi — la vraie app (L0 : le socle). TypeScript strict, Capacitor. Le prototype ../app.html est le cahier des charges figé.",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "vite",
+    "construire": "tsc --noEmit && vite build",
+    "jetons": "cd .. && python3 outils/jetons_engendrer.py",
+    "jetons:verifie": "cd .. && python3 outils/jetons_engendrer.py --verifie && python3 outils/polices_extraire.py --verifie && python3 outils/reprendre.py --verifie && cd promi && node outils/storekit-engendrer.ts --verifie",
+    "types": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:verifie": "prettier --check .",
+    "test": "vitest run",
+    "test:rendu": "playwright test",
+    "ios": "npm run construire && npx cap sync ios",
+    "android": "npm run construire && npx cap sync android",
+    "storekit": "node outils/storekit-engendrer.ts",
+    "verifier": "npm run jetons:verifie && npm run types && npm run lint && npm run format:verifie && npm test"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^8.6.2",
+    "@eslint/js": "^9.39.5",
+    "@playwright/test": "^1.60.0",
+    "@types/node": "^22.20.5",
+    "@types/pngjs": "^6.0.5",
+    "eslint": "^9.39.5",
+    "globals": "^16.5.0",
+    "pngjs": "^7.0.0",
+    "prettier": "^3.10.1",
+    "typescript": "5.9",
+    "typescript-eslint": "^8.73.0",
+    "vite": "^7.3.8",
+    "vitest": "^3.2.7"
+  },
+  "dependencies": {
+    "@capacitor/android": "^8.6.2",
+    "@capacitor/app": "^8.1.2",
+    "@capacitor/core": "^8.6.2",
+    "@capacitor/haptics": "^8.0.2",
+    "@capacitor/ios": "^8.6.2",
+    "@capacitor/local-notifications": "^8.3.1",
+    "@capacitor/preferences": "^8.0.1",
+    "@capacitor/status-bar": "^8.0.4",
+    "@revenuecat/purchases-capacitor": "^14.1.2"
+  }
+}

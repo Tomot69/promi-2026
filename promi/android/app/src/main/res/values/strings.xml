@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Promi</string>
+    <string name="title_activity_main">Promi</string>
+    <string name="package_name">fr.autier.promi</string>
+    <string name="custom_url_scheme">fr.autier.promi</string>
+</resources>

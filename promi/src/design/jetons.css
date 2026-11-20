@@ -1,4 +1,4 @@
-/* jetons/promi-jetons.css — GÉNÉRÉ depuis PROMI-TOKENS.json par outils/jetons_engendrer.py. Ne pas modifier à la main. */
+/* promi/src/design/jetons.css — GÉNÉRÉ depuis PROMI-TOKENS.json par outils/jetons_engendrer.py. Ne pas modifier à la main. */
 :root{
   --c-noir00:#000000;
   --c-menthe11:#00341A;
@@ -254,6 +254,10 @@
   --c-mauve35:#5D4978;
   --c-seiche10:#050302;
   --c-seiche21:#1F1611;
+  --f-titre:PromiLate,Gilbert,system-ui,sans-serif;
+  --f-libelle:Gilbert,system-ui,sans-serif;
+  --f-texte:Atkinson,system-ui,sans-serif;
+  --f-marque:PromiLate,Gilbert,system-ui,sans-serif;
   --p-fond:#F7F0DE;
   --p-encre:#201908;
   --p-surface:#F7EBD6;

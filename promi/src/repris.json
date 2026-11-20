@@ -1,0 +1,32 @@
+{
+ "moteur/repris/promi-moteur.js": {
+  "source": "promi-moteur.js",
+  "sha256": "432af7681b3a23f097f3ef238d82694d6e58ea13f382cbf4173596f44b7979b4",
+  "octets": 813340
+ },
+ "animation/repris/trace-lettres.js": {
+  "source": "variantes/trace-lettres.js",
+  "sha256": "29d621d944a78ba80ae1cf73f54e114ba94139a8afdd6de0fd00212fde9c7ee1",
+  "octets": 152832
+ },
+ "animation/repris/trace-chemins-gilbert.js": {
+  "source": "variantes/trace-chemins-gilbert.js",
+  "sha256": "babd5edff227b7165e3d637bb3b38ad834b2625fb1719727d91ffba330f6b936",
+  "octets": 128263
+ },
+ "animation/repris/trace-chemins-atkinson.js": {
+  "source": "variantes/trace-chemins-atkinson.js",
+  "sha256": "3f52d09d94c6f655b32f8edcc3126111bfab2c38d0f32409ef9e89cdfb687a5b",
+  "octets": 157577
+ },
+ "animation/repris/trace-chemins-promilate.js": {
+  "source": "variantes/trace-chemins-promilate.js",
+  "sha256": "0197437f7d971805e2268ccc26d968ec38e019956f18f8eeeb8c22df2da20685",
+  "octets": 37094
+ },
+ "animation/repris/flaques.js": {
+  "source": "variantes/flaques.js",
+  "sha256": "b8d4853b0095f641e2f39eb4b66edcffb58a336f29620f8abff0676962da55eb",
+  "octets": 40696
+ }
+}

@@ -1,0 +1,14 @@
+node_modules/
+dist/
+test-results/
+playwright-report/
+tests/rendu/resultats/
+ios/App/App/public/
+ios/App/Pods/
+android/app/src/main/assets/public/
+android/.gradle/
+android/build/
+android/app/build/
+src/donnees/etat-embarque.json
+*.xcuserstate
+xcuserdata/

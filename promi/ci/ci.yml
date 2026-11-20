@@ -1,0 +1,68 @@
+# ⚠ À DÉPLACER dans .github/workflows/ci.yml (racine du dépôt) : le jeton GitHub de ce Mac n'a pas le droit « workflow », GitHub refuse qu'un
+#   commit poussé de là crée ce fichier (20 nov. 2026). Tom : ajouter le droit « workflow » au jeton, ou créer le fichier depuis le site.
+# L'intégration continue de la vraie app (promi/). À chaque commit : la construction, le typage strict, le lint, le format, les fichiers
+# générés (jetons, polices, pièces reprises, StoreKit) contre leur source, les tests unitaires, puis les tests de rendu en WebKit (le
+# moteur de l'iPhone) — la vraie app contre le prototype, au pixel. Pas de fusion si un test est rouge.
+name: vraie app
+on:
+  push:
+  pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  verifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            promi
+            outils
+            app.html
+            promi-moteur.js
+            variantes
+            PROMI-TOKENS.json
+            Promi+Design.swift
+            banc-etats
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with: { node-version: '24', cache: npm, cache-dependency-path: promi/package-lock.json }
+      - run: npm ci
+        working-directory: promi
+      - name: fichiers générés, typage, lint, format, tests unitaires
+        run: npm run verifier
+        working-directory: promi
+      - name: construction
+        run: npm run construire
+        working-directory: promi
+  rendu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            promi
+            app.html
+            promi-moteur.js
+            variantes
+            banc-etats
+            banc-rendu/ref/manifeste.json
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with: { node-version: '24', cache: npm, cache-dependency-path: promi/package-lock.json }
+      - run: npm ci
+        working-directory: promi
+      - run: npx playwright install --with-deps webkit
+        working-directory: promi
+      - run: npm run construire
+        working-directory: promi
+      - name: tests de rendu (WebKit) — la vraie app contre le prototype
+        run: npx playwright test
+        working-directory: promi
+        env: { CI: '1' }
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with: { name: resultats-rendu, path: 'promi/tests/rendu/resultats/', if-no-files-found: ignore }

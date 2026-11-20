@@ -1,0 +1,15 @@
+dist
+ios
+android
+node_modules
+src/moteur/repris
+src/animation/repris
+src/design/jetons.*
+src/design/polices
+achats/*.storekit
+tests/rendu/resultats
+playwright-report
+test-results
+src/repris.json
+src/design/polices.css
+tests/rendu/etat-banc-rendu.json

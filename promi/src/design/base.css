@@ -1,0 +1,47 @@
+/* base.css — la page de la vraie app. Les valeurs viennent des jetons (jetons.css, généré) ; aucune couleur écrite ici.
+   L0 : l'hôte du moteur. `.device`, `.stage`, `.toilecv` sont les noms que le moteur repris attend (son contrat, src/moteur/facade.ts) ;
+   leurs règles sont celles du prototype pour ces trois boîtes (position, taille), sans le cadre de téléphone que Safari dessinait. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  overflow: hidden;
+  background: var(--c-brun03);
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+/* -webkit-font-smoothing : la règle de `body` du prototype ; le canevas de la Toile en hérite pour écrire les titres des dalles (sans elle, 562 px d'écart au banc) */
+#app {
+  position: fixed;
+  inset: 0;
+  touch-action: none;
+}
+.device {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 390px;
+  height: 844px;
+  transform-origin: 0 0;
+  overflow: hidden;
+  background: var(--c-brun03);
+}
+.device.light {
+  background: var(--c-creme90-2);
+}
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.toilecv {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
