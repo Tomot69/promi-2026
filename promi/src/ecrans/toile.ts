@@ -71,7 +71,9 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
     if (!r.width || !r.height) return;
     const sx = (ev.clientX - r.left) * (cv.clientWidth / r.width);
     const sy = (ev.clientY - r.top) * (cv.clientHeight / r.height);
-    const maintenant = h.maintenant();
+    // l'écart entre deux touchers : l'heure des ÉVÉNEMENTS (§8, v139 — le prototype l'applique à la durée d'un toucher ; ici aussi à
+    // l'écart, pour qu'une image longue entre les deux ne les sépare pas)
+    const maintenant = ev.timeStamp;
     const p = tapPrecedent;
     if (p && maintenant - p.t < 320 && Math.abs(ev.clientX - p.x) < 30 && Math.abs(ev.clientY - p.y) < 30) {
       tapPrecedent = null;

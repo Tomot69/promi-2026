@@ -240,9 +240,15 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
   await page.mouse.up();
   await page.waitForTimeout(600);
   expect(await page.evaluate(`${P_}.facade.vueALaMain()`)).toBe(true);
-  await page.mouse.click(195, 400);
+  // hors de toute dalle de parole (sur une dalle, la fiche serait demandée 260 ms après le premier toucher)
+  const vide = (await page.evaluate(`(() => { for (let y = 200; y < 680; y += 9) for (let x = 40; x < 350; x += 9) {
+    const h = Toile.hit(x, y); if (!h || (h.pid == null && h.kind !== 'nuee')) return [x, y]; } return [195, 400]; })()`)) as [
+    number,
+    number,
+  ];
+  await page.mouse.click(vide[0], vide[1]);
   await page.waitForTimeout(80);
-  await page.mouse.click(195, 400);
+  await page.mouse.click(vide[0], vide[1]);
   await page.waitForTimeout(600);
   expect(await page.evaluate(`${P_}.facade.vueALaMain()`), 'le double toucher recadre').toBe(false);
 });
