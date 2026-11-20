@@ -319,11 +319,17 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
     ).__promi.accueil();
     let derniereLa = -1;
     const t0 = performance.now();
+    const vues: string[] = [];
     for (;;) {
       const e = a.etatRecadre();
+      const L = (
+        window as unknown as { Toile_lecture(): { W: number; H: number; vue: { s: number; ox: number; oy: number } } }
+      ).Toile_lecture();
+      vues.push(`${L.vue.s.toFixed(4)}|${L.vue.ox.toFixed(2)}|${L.vue.oy.toFixed(2)}|${String(L.W)}x${String(L.H)}`);
+      if (vues.length > 10) vues.shift();
       if (e.etat === 'la') derniereLa = e.depuis;
       if (e.etat === 'absent') return { derniereLa, absent: e.depuis };
-      if (performance.now() - t0 > 30000) return { derniereLa, absent: -1, etat: e.etat };
+      if (performance.now() - t0 > 30000) return { derniereLa, absent: -1, etat: e.etat, vues };
       await new Promise((f) => setTimeout(f, 50));
     }
   });
