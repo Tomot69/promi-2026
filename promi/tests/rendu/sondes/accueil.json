@@ -1,0 +1,7 @@
+[
+  {
+    "nom": "deplace-selection",
+    "test": "déplacer une dalle (C-101) : la page laisse l'appui long au moteur, la dalle suit le doigt, aucune fiche, sa place est gardée",
+    "defaut": "la Toile permet la sélection de texte (la version fautive du prototype, C-324)"
+  }
+]

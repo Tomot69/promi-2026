@@ -71,3 +71,37 @@ jobs:
       - if: failure()
         uses: actions/upload-artifact@v4
         with: { name: resultats-rendu, path: 'promi/tests/rendu/resultats/', if-no-files-found: ignore }
+  sondes:
+    # C-326 (Tom) : chaque test rougit sur une sonde — rejoue chaque test avec le défaut qu'il doit prendre, exige qu'il rougisse
+    runs-on: ubuntu-24.04   # pas ubuntu-latest : 26.04 depuis nov. 2026, où Playwright 1.60 n'installe pas WebKit
+    timeout-minutes: 60   # l'installation de WebKit et de ses dépendances a pris 21 min (20 nov.) : 30 coupait les tests
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            promi
+            app.html
+            promi-moteur.js
+            variantes
+            banc-etats
+            banc-rendu/ref/manifeste.json
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with: { node-version: '24', cache: npm, cache-dependency-path: promi/package-lock.json }
+      - run: npm ci
+        working-directory: promi
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-webkit-${{ hashFiles('promi/package-lock.json') }}
+      - run: npx playwright install --with-deps webkit
+        working-directory: promi
+      - name: un état embarqué (celui du banc, jamais celui de Tom) — le test du démarrage l'exige
+        run: node outils/embarquer-etat.ts ../banc-etats/etat-25.json
+        working-directory: promi
+      - run: npm run construire
+        working-directory: promi
+      - name: les sondes — chaque test rougit sur le défaut qu'il doit prendre
+        run: npm run sondes
+        working-directory: promi
+        env: { CI: '1' }
