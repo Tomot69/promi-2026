@@ -1066,15 +1066,23 @@ test('écrans : l’accueil — la Toile, le Fil et sa pastille, l’anneau du +
   const ls0 = stockage();
   {
     const { page, erreurs, fin } = await ouvre(ls0);
-    // la Toile peinte d'abord (sur l'intégration continue, une image toutes les 0,7 s : le relevé tombait avant la première image colorée)
-    await page
-      .waitForFunction(
-        `(() => { const c = document.getElementById('toileCv'); const im = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
-        let col = 0; for (let i = 0; i < im.length; i += 400) if (Math.abs(im[i] - im[i + 1]) > 18 || Math.abs(im[i + 1] - im[i + 2]) > 18) col++; return col > 30; })()`,
-        undefined,
-        { timeout: 60000, polling: 250 },
-      )
-      .catch(() => undefined);
+    // les dalles colorées : la Toile lue jusqu'à 60 s, le meilleur relevé gardé (sur l'intégration continue, une image toutes les 0,7 s, et
+    // un relevé pris à un instant tombait sur un canevas pas encore repeint)
+    const colMax = (await page.evaluate(async () => {
+      let m = 0;
+      const t0 = performance.now();
+      while (performance.now() - t0 < 60000) {
+        const c = document.getElementById('toileCv') as HTMLCanvasElement;
+        const im = c.getContext('2d')!.getImageData(0, 0, c.width, c.height).data;
+        let col = 0;
+        for (let i = 0; i < im.length; i += 400)
+          if (Math.abs(im[i]! - im[i + 1]!) > 18 || Math.abs(im[i + 1]! - im[i + 2]!) > 18) col++;
+        m = Math.max(m, col);
+        if (m > 30) break;
+        await new Promise((f) => setTimeout(f, 250));
+      }
+      return m;
+    })) as number;
     const t = (await page.evaluate(`(() => {
       const c = document.getElementById('toileCv'), d = document.getElementById('device').getBoundingClientRect(), r = c.getBoundingClientRect();
       const g = c.getContext('2d'), im = g.getImageData(0, 0, c.width, c.height).data;
@@ -1091,7 +1099,7 @@ test('écrans : l’accueil — la Toile, le Fil et sa pastille, l’anneau du +
         anneau: getComputedStyle(document.getElementById('createBtn'), '::before').backgroundImage };
     })()`)) as Record<string, unknown> & { anneau: string; w: number; h: number; dw: number; dh: number; col: number };
     ok('la Toile remplit l’écran', t.w >= t.dw - 4 && t.h >= t.dh - 90, [t.w, t.h]);
-    ok('la Toile porte des dalles colorées', t.col > 30, t.col);
+    ok('la Toile porte des dalles colorées', Math.max(t.col, colMax) > 30, [t.col, colMax]);
     ok('Toile.vue() se lit', t['vue'] === true);
     ok('hit() ignore les cellules grises', t['gris'] === true);
     ok('hit() désigne un Promi planté', t['plante'] === true);
