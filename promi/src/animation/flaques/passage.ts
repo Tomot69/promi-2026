@@ -33,6 +33,8 @@ export interface ControlePassage {
   mode: 'ouvre' | 'couvre';
   image(t: number): void;
   lance?: () => void;
+  /** arrête le passage et retire ce qu'il a posé (le masque de `masqueFlaques`) */
+  stop?: () => void;
 }
 
 interface SceneFlaques {
@@ -164,6 +166,111 @@ export function passageFlaques(hote: HTMLElement, o: OptionsPassage): ControlePa
   }
   h0.image(() => {
     go();
+  });
+  return ctl;
+}
+
+/**
+ * UNE CHOSE DE L'ÉCRAN PARAÎT OU PART EN FLAQUES, PAR SON PROPRE MASQUE (C-329) — la même scène que `passageFlaques` (le module repris,
+ * mêmes germes, mêmes naissances, mêmes ponts), mais l'eau n'est plus une couverture peinte par-dessus : elle est le MASQUE de la chose
+ * (`mask-image`). « ouvre » : la chose paraît là où l'eau est née ; « couvre » : elle s'efface là où l'eau naît. Ainsi rien de ce qui est
+ * dessous n'est recopié (redteam_decoupe : jamais un morceau de Toile hors du moteur) et la Toile reste vivante sous la chose.
+ * Le masque est posé EN LIGNE sans `important` ; la chose porte `data-flaques-mode` et `data-flaques-u` le temps du passage (les tests).
+ */
+export function masqueFlaques(
+  cible: HTMLElement,
+  o: { mode: 'ouvre' | 'couvre'; duree?: number; graine?: number; fin?: (c: ControlePassage) => void },
+): ControlePassage {
+  const F = chargerFlaques() as unknown as {
+    Scene: (cv: HTMLCanvasElement, opts: Record<string, unknown>) => SceneFlaques;
+  };
+  const h0 = horloge();
+  const l = Math.max(1, Math.round(cible.offsetWidth));
+  const h = Math.max(1, Math.round(cible.offsetHeight));
+  const kk = cible.getBoundingClientRect().width / (cible.offsetWidth || 1) || 1;
+  const dens = Math.max(1, Math.min(2, (window.devicePixelRatio || 1) * kk));
+  const eau = document.createElement('canvas');
+  const SC = F.Scene(eau, { l, h, densite: dens, aplat: '#000', graine: ((o.graine ?? Date.now()) & 0xffffff) | 1 });
+  const ouvre = o.mode !== 'couvre';
+  const m = document.createElement('canvas');
+  m.width = eau.width;
+  m.height = eau.height;
+  const g = m.getContext('2d')!;
+  const dur = o.duree ?? 300;
+  const pose = (url: string): void => {
+    for (const p of ['-webkit-mask-image', 'mask-image']) cible.style.setProperty(p, url);
+    for (const [p, v] of [
+      ['-webkit-mask-size', '100% 100%'],
+      ['mask-size', '100% 100%'],
+      ['-webkit-mask-repeat', 'no-repeat'],
+      ['mask-repeat', 'no-repeat'],
+    ])
+      cible.style.setProperty(p!, v!);
+  };
+  const retire = (): void => {
+    for (const p of [
+      '-webkit-mask-image',
+      'mask-image',
+      '-webkit-mask-size',
+      'mask-size',
+      '-webkit-mask-repeat',
+      'mask-repeat',
+    ])
+      cible.style.removeProperty(p);
+    delete cible.dataset['flaquesMode'];
+    delete cible.dataset['flaquesU'];
+  };
+  cible.dataset['flaquesMode'] = ouvre ? 'ouvre' : 'couvre';
+  const ctl: ControlePassage = {
+    canevas: m,
+    arrete: false,
+    duree: dur,
+    mode: ouvre ? 'ouvre' : 'couvre',
+    image(t: number) {
+      const u = Math.max(0, Math.min(1, t / dur));
+      SC.couvre(u);
+      SC.peint();
+      g.setTransform(1, 0, 0, 1, 0, 0);
+      g.globalCompositeOperation = 'source-over';
+      g.clearRect(0, 0, m.width, m.height);
+      if (ouvre) g.drawImage(eau, 0, 0);
+      else {
+        g.fillStyle = '#000';
+        g.fillRect(0, 0, m.width, m.height);
+        g.globalCompositeOperation = 'destination-out';
+        g.drawImage(eau, 0, 0);
+        g.globalCompositeOperation = 'source-over';
+      }
+      cible.dataset['flaquesU'] = u.toFixed(3);
+      pose(`url(${m.toDataURL()})`);
+    },
+  };
+  const arrete = (): void => {
+    ctl.arrete = true;
+    retire();
+  };
+  ctl.stop = arrete;
+  const fini = (): void => {
+    o.fin?.(ctl);
+    retire();
+  };
+  if (reduit()) {
+    h0.image(() => {
+      fini();
+    });
+    return ctl;
+  }
+  ctl.image(0);
+  h0.image(() => {
+    const t0 = h0.maintenant();
+    const pas = (): void => {
+      if (ctl.arrete) return;
+      const t = h0.maintenant() - t0;
+      ctl.image(t);
+      if (t < dur) h0.image(pas);
+      else fini();
+    };
+    pas();
   });
   return ctl;
 }

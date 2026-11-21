@@ -10,7 +10,7 @@ import type { Facade } from '../../moteur/facade.ts';
 import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation, Destination } from '../../navigation/navigation.ts';
 import { horloge } from '../../animation/horloge.ts';
-import { passageFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
+import { masqueFlaques, passageFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { ICONES, TRACES_RECADRER } from './icones.ts';
 import { anneauCss } from './anneau.ts';
 import { compteAnneau, filAttente } from '../../metier/fil.ts';
@@ -60,32 +60,18 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
   const h = horloge();
   const dv = facade.appareil();
   /**
-   * Une chose de l'accueil paraît ou part EN FLAQUES (C-329) : le passage déjà porté (`passageFlaques`, celui du symbole « recadrer »),
-   * posé sur l'appareil, à la place de la chose ; sa couverture est la Toile telle qu'elle est dessous — elle s'ouvre en flaques sur la
-   * chose (« paraît »), ou la recouvre (« part »). Même durée que le symbole « recadrer » (300 ms).
+   * Une chose de l'accueil paraît ou part EN FLAQUES (C-329) : la scène du passage déjà porté (celle du symbole « recadrer »), posée en
+   * MASQUE sur la chose elle-même (`masqueFlaques`) — elle paraît là où l'eau naît, ou s'efface ; rien de la Toile n'est recopié
+   * (redteam_decoupe), et la Toile reste vivante dessous. Même durée que le symbole « recadrer » (300 ms).
    */
-  const enFlaques = (cible: HTMLElement, sens: 'paraît' | 'part', z: number, fin: () => void): ControlePassage => {
-    const D = dv.getBoundingClientRect();
-    const k = D.width / (dv.offsetWidth || 390) || 1;
-    const r = cible.getBoundingClientRect();
-    const toile = dv.querySelector<HTMLCanvasElement>('#toileCv');
-    const ctl = passageFlaques(dv, {
+  const enFlaques = (cible: HTMLElement, sens: 'paraît' | 'part', fin: () => void): ControlePassage =>
+    masqueFlaques(cible, {
       mode: sens === 'paraît' ? 'ouvre' : 'couvre',
-      rect: [(r.left - D.left) / k, (r.top - D.top) / k, r.width / k, r.height / k],
-      ...(toile ? { image: toile } : { couleur: getComputedStyle(dv).backgroundColor }),
       duree: 300,
-      devant: true,
-      z,
       fin: (c) => {
-        if (c.arrete) return;
-        if (sens === 'part') c.canevas.remove();
-        fin();
+        if (!c.arrete) fin();
       },
     });
-    ctl.canevas.classList.add('acc-flaques');
-    ctl.canevas.dataset['pour'] = cible.id;
-    return ctl;
-  };
 
   // ── le plateau ──
   const plateau = el('div', { id: 'accPlat', class: 'acc-plat' });
@@ -151,7 +137,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
   const ouvreMenu = (): void => {
     arreteMenu();
     choix.classList.add('ouvert');
-    ctlMenu = enFlaques(choix, 'paraît', 34, () => {
+    ctlMenu = enFlaques(choix, 'paraît', () => {
       ctlMenu = null;
     });
   };
@@ -162,15 +148,14 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
       choix.classList.remove('ouvert');
       return;
     }
-    ctlMenu = enFlaques(choix, 'part', 34, () => {
+    ctlMenu = enFlaques(choix, 'part', () => {
       ctlMenu = null;
       choix.classList.remove('ouvert');
     });
   };
   const arreteMenu = (): void => {
     if (!ctlMenu) return;
-    ctlMenu.arrete = true;
-    ctlMenu.canevas.remove();
+    ctlMenu.stop?.();
     ctlMenu = null;
   };
   surToucher(plus, () => {
@@ -337,10 +322,9 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
   const partRappel = (): void => {
     if (!rappel.classList.contains('vu') || (ctlRappel && ctlRappel.mode === 'couvre')) return;
     if (ctlRappel) {
-      ctlRappel.arrete = true;
-      ctlRappel.canevas.remove();
+      ctlRappel.stop?.();
     }
-    ctlRappel = enFlaques(rappel, 'part', 61, () => {
+    ctlRappel = enFlaques(rappel, 'part', () => {
       ctlRappel = null;
       rappel.classList.remove('vu');
     });
@@ -359,7 +343,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
   const majRappel = (): void => {
     if (rappel.classList.contains('vu') || !rappelDu(magasin.etat(), Date.now())) return;
     rappel.classList.add('vu');
-    ctlRappel = enFlaques(rappel, 'paraît', 61, () => {
+    ctlRappel = enFlaques(rappel, 'paraît', () => {
       ctlRappel = null;
     });
   };

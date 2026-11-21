@@ -111,7 +111,7 @@ export async function ouvrirPlus(page: Page): Promise<void> {
   await page.mouse.click(r[0]!, r[1]!);
   await page.waitForTimeout(500);
   // le menu s'ouvre en flaques (C-329) : son passage fini
-  await page.waitForFunction(() => !document.querySelector('canvas.acc-flaques'), undefined, { timeout: 20000 });
+  await page.waitForFunction(() => !document.querySelector('[data-flaques-mode]'), undefined, { timeout: 20000 });
 }
 
 /**

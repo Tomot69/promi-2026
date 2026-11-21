@@ -12,9 +12,9 @@
  *     repos sous l'accueil (C-028) ; « Plus tard » deux fois, le bandeau ne revient plus (C-200 ①).
  */
 import { test, expect } from '@playwright/test';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { ETAT, RESULTATS, stockage, GEL, prototype, vraieApp, ouvrirPlus, ecart, P_, sonde } from './aides.ts';
+import { ETAT, RACINE, RESULTATS, stockage, GEL, prototype, vraieApp, ouvrirPlus, ecart, P_, sonde } from './aides.ts';
 
 /**
  * LES ÉCARTS ADMIS AU PROTOTYPE (C-329, Tom, 21 nov. 2026 : « la règle de Tom prime, AUCUN changement sec ») — les SEULS : dans le
@@ -362,7 +362,7 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
   await page.mouse.click(195, 300); // ailleurs
   // il se referme en flaques (C-329) : son passage fini
   await page.waitForTimeout(100);
-  await page.waitForFunction(() => !document.querySelector('canvas.acc-flaques'), undefined, { timeout: 20000 });
+  await page.waitForFunction(() => !document.querySelector('[data-flaques-mode]'), undefined, { timeout: 20000 });
   expect(
     await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert')),
     'un toucher ailleurs referme',
@@ -528,18 +528,22 @@ test('le bandeau « Garder ta Toile » : paru après le troisième Promi, « Plu
   expect(autres['promi_rappel_fin'] ?? '').toBe('');
 });
 
-/** les passages en flaques d'une chose de l'accueil, relevés à chaque image : leur sens, leur avancée, et s'ils sont affichés */
-const RELEVE_FLAQUES = `(() => { window.__fl = []; const pas = () => { for (const c of document.querySelectorAll('canvas.acc-flaques')) {
-    const s = getComputedStyle(c); window.__fl.push({ pour: c.dataset.pour, mode: c.dataset.mode, u: +c.dataset.u,
-      vu: s.display !== 'none' && s.visibility !== 'hidden' && +s.opacity > 0.5 && c.width > 0 }); }
+/** les passages en flaques d'une chose de l'accueil (C-329 : le masque posé sur la chose), relevés à chaque image : leur sens, leur
+ *  avancée, et si le masque est vraiment appliqué au rendu (le style calculé) */
+const RELEVE_FLAQUES = `(() => { window.__fl = []; const pas = () => { for (const c of document.querySelectorAll('[data-flaques-mode]')) {
+    const s = getComputedStyle(c), mi = s.webkitMaskImage || s.maskImage || 'none';
+    window.__fl.push({ pour: c.id, mode: c.dataset.flaquesMode, u: +c.dataset.flaquesU, vu: mi.startsWith("url(") }); }
     requestAnimationFrame(pas); }; requestAnimationFrame(pas); })()`;
 type Fl = { pour: string; mode: string; u: number; vu: boolean };
 
-/** une transition en flaques a eu lieu pour `pour`, dans le sens `mode`, affichée, sur au moins `n` avancées distinctes entre 0 et 1 */
+/** une transition en flaques a eu lieu pour `pour`, dans le sens `mode`, son masque appliqué à chaque image relevée, et — sur le Mac
+ *  seulement, où une image dure 16 ms (hors du Mac une image dure 0,7 s : un passage de 300 ms n'en montre aucune entre 0 et 1) — sur
+ *  au moins `n` avancées distinctes entre 0 et 1 */
 function enFlaquesVu(fl: Fl[], pour: string, mode: 'ouvre' | 'couvre', n: number): string | null {
   const L = fl.filter((x) => x.pour === pour && x.mode === mode);
   if (!L.length) return `aucun passage « ${mode} » sur #${pour}`;
-  if (L.some((x) => !x.vu)) return `le passage « ${mode} » sur #${pour} n'est pas affiché`;
+  if (L.some((x) => !x.vu)) return `le passage « ${mode} » sur #${pour} n'est pas appliqué (aucun masque au rendu)`;
+  if (process.platform !== 'darwin') return null;
   const u = new Set(L.filter((x) => x.u > 0 && x.u < 1).map((x) => x.u.toFixed(2)));
   return u.size >= n
     ? null
@@ -551,8 +555,10 @@ test('C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   // les sondes : la transition retirée (le passage caché, l'animation coupée) — la version d'avant C-329
+  // l'état du banc (25 paroles) : le bandeau paraît (trois Promi et plus), sur le Mac comme sur l'intégration continue
+  const banc = JSON.parse(readFileSync(join(RACINE, 'banc-etats', 'etat-25.json'), 'utf8')) as Record<string, unknown>;
   const ls: Record<string, string> = {
-    ...stockage(),
+    ...Object.fromEntries(Object.entries(banc).filter((e): e is [string, string] => typeof e[1] === 'string')),
     promi_onb: '1',
     promi_compte: '',
     promi_rappel_n: '',
@@ -564,13 +570,11 @@ test('C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau
   const bandeau = st.promises.filter((p) => !p['draft']).length >= 3;
   await page.goto('http://127.0.0.1:5180/?banc=1');
   await page.waitForFunction(() => !!(window as unknown as { __promi?: unknown }).__promi);
-  // (le passage pose son affichage en ligne `!important` : la sonde le retire dès qu'il paraît — la transition supprimée)
+  // (le masque est posé en ligne SANS `important` : la sonde le retire par une règle — la chose paraît et part d'un coup)
   const retirePassage = (pour: string): Promise<void> =>
-    page.evaluate((pour) => {
-      new MutationObserver(() => {
-        for (const c of document.querySelectorAll(`canvas.acc-flaques[data-pour="${pour}"]`)) c.remove();
-      }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-pour'] });
-    }, pour);
+    page
+      .addStyleTag({ content: `#${pour}{-webkit-mask-image:none!important;mask-image:none!important}` })
+      .then(() => undefined);
   if (sonde('secs-menu')) await retirePassage('accChoix');
   if (sonde('secs-bandeau')) await retirePassage('accRappel');
   if (sonde('secs-pastille')) await page.addStyleTag({ content: '#filDot{animation:none!important}' });
@@ -585,7 +589,7 @@ test('C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau
   const fautes: string[] = [];
   const lire = async (): Promise<Fl[]> => (await page.evaluate('window.__fl')) as Fl[];
   const attendreFin = (): Promise<unknown> =>
-    page.waitForFunction(() => !document.querySelector('canvas.acc-flaques'), undefined, { timeout: 20000 });
+    page.waitForFunction(() => !document.querySelector('[data-flaques-mode]'), undefined, { timeout: 20000 });
 
   // (1) le bandeau paraît en flaques (l'état du banc : trois Promi et plus)
   if (bandeau) {
