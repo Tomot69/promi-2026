@@ -1066,6 +1066,15 @@ test('écrans : l’accueil — la Toile, le Fil et sa pastille, l’anneau du +
   const ls0 = stockage();
   {
     const { page, erreurs, fin } = await ouvre(ls0);
+    // la Toile peinte d'abord (sur l'intégration continue, une image toutes les 0,7 s : le relevé tombait avant la première image colorée)
+    await page
+      .waitForFunction(
+        `(() => { const c = document.getElementById('toileCv'); const im = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+        let col = 0; for (let i = 0; i < im.length; i += 400) if (Math.abs(im[i] - im[i + 1]) > 18 || Math.abs(im[i + 1] - im[i + 2]) > 18) col++; return col > 30; })()`,
+        undefined,
+        { timeout: 60000, polling: 250 },
+      )
+      .catch(() => undefined);
     const t = (await page.evaluate(`(() => {
       const c = document.getElementById('toileCv'), d = document.getElementById('device').getBoundingClientRect(), r = c.getBoundingClientRect();
       const g = c.getContext('2d'), im = g.getImageData(0, 0, c.width, c.height).data;
