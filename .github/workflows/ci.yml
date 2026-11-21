@@ -68,12 +68,49 @@ jobs:
       - run: npm run construire
         working-directory: promi
       - name: tests de rendu (WebKit) — la vraie app contre le prototype
-        run: npx playwright test --shard=${{ matrix.part }}/4
+        run: npx playwright test --shard=${{ matrix.part }}/4 --grep-invert "banc_rendu porté"
         working-directory: promi
         env: { CI: '1' }
       - if: failure()
         uses: actions/upload-artifact@v4
         with: { name: 'resultats-rendu-${{ matrix.part }}', path: 'promi/tests/rendu/resultats/', if-no-files-found: ignore }
+  banc:
+    # le banc de rendu au pixel (figé et contre le prototype vivant) : seul, il prend 7 à 15 min ; dans une part il dépassait 30 min
+    runs-on: ubuntu-24.04   # pas ubuntu-latest : 26.04 depuis nov. 2026, où Playwright 1.60 n'installe pas WebKit
+    timeout-minutes: 60   # l'installation de WebKit et de ses dépendances a pris 21 min (20 nov.) : 30 coupait les tests
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            promi
+            app.html
+            promi-moteur.js
+            variantes
+            banc-etats
+            banc-rendu/ref/manifeste.json
+          sparse-checkout-cone-mode: false
+      - uses: actions/setup-node@v4
+        with: { node-version: '24', cache: npm, cache-dependency-path: promi/package-lock.json }
+      - run: npm ci
+        working-directory: promi
+      - uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-webkit-${{ hashFiles('promi/package-lock.json') }}
+      - run: npx playwright install --with-deps webkit
+        working-directory: promi
+      - name: un état embarqué (celui du banc, jamais celui de Tom) — le test du démarrage l'exige
+        run: node outils/embarquer-etat.ts ../banc-etats/etat-25.json
+        working-directory: promi
+      - run: npm run construire
+        working-directory: promi
+      - name: le banc de rendu (WebKit) — la vraie app contre le prototype, au pixel
+        run: npx playwright test tests/rendu/banc-rendu.spec.ts --workers=1
+        working-directory: promi
+        env: { CI: '1' }
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with: { name: resultats-banc, path: 'promi/tests/rendu/resultats/', if-no-files-found: ignore }
   sondes:
     # C-326 (Tom) : chaque test rougit sur une sonde — rejoue chaque test avec le défaut qu'il doit prendre, exige qu'il rougisse
     strategy:
