@@ -406,8 +406,9 @@ function jugeVivant(m: string, r: Repos, duree: number): string[] {
   const J = r.journal;
   // un mouvement de la vie au repos = une suite de lectures qui commence quand le moteur a tiré (le journal RECONNAÎT l'épisode ; ce qu'on
   // en juge — durée, étendue, retour — est lu sur les pixels) ; ce qui bouge sans tirage est compté à part
-  const E = r.E.filter((e) => J.some((j) => e.t0 - j.ts >= -0.35 && e.t0 - j.ts <= 0.6));
-  const autres = r.E.filter((e) => !E.includes(e));
+  // un mouvement encore en cours à la fin de la fenêtre (sans retour lu) n'est pas jugé : la mesure l'a coupé
+  const E = r.E.filter((e) => e.retour != null && J.some((j) => e.t0 - j.ts >= -0.35 && e.t0 - j.ts <= 0.6));
+  const autres = r.E.filter((e) => e.retour != null && !E.includes(e));
   const durs = E.map((e) => e.t1 - e.t0 + 0.1);
   const ints = E.slice(1).map((e, i) => e.t0 - E[i]!.t1);
   const debuts = E.slice(1).map((e, i) => e.t0 - E[i]!.t0);
@@ -470,10 +471,6 @@ for (const m of VIVENT)
     // décidés) — DANS LE PROTOTYPE AUSSI, mesuré par le même protocole quand Touffe est le monde au chargement (6,7 %) : les calques des
     // fleurs, refaits pendant le mouvement, se superposent autrement. (Touffe choisi longtemps après le chargement : 0,3 à 1,4 %.) Le retour,
     // lui, est exact. Trouvé en chemin et corrigé : la vraie app ne faisait pas frémir la Toile 1,5 s après le chargement (app.html ≈ l. 7271).
-    test.fail(
-      m === 'touffe',
-      'Touffe : un mouvement de repos change 6 à 11 % de la Toile — préexistant dans le prototype (C-327)',
-    );
     test.setTimeout(10 * 60 * 1000);
     await page.setViewportSize({ width: 390, height: 844 });
     const erreurs: string[] = [];
@@ -481,7 +478,15 @@ for (const m of VIVENT)
     // la sonde : un intervalle FIXE de 6 s (le crochet du moteur `_vivantFixe` — la preuve du juge d'origine, `--fixe`)
     await ouvrir(page, banc(25), { vivant: true, avant: sonde('vivant-fixe') ? 'window._vivantFixe=6000;' : '' });
     const r = await auRepos(page, m, DUREE_VIVANT);
-    expect(jugeVivant(m, r, DUREE_VIVANT), JSON.stringify({ E: r.E, journal: r.journal })).toEqual([]);
+    let ko = jugeVivant(m, r, DUREE_VIVANT);
+    // C-327 : sous Touffe, l'étendue (« jamais toute la Toile ») dépasse aussi dans le prototype — nommée, pas jugée, en attendant Tom ;
+    // tout le reste du juge (durée, intervalles, retour exact, boucle arrêtée) l'est
+    if (m === 'touffe') {
+      const pre = ko.filter((k) => k.includes('jamais toute la Toile'));
+      ko = ko.filter((k) => !pre.includes(k));
+      if (pre.length) test.info().annotations.push({ type: 'préexistant (C-327)', description: pre.join(' · ') });
+    }
+    expect(ko, JSON.stringify({ E: r.E, journal: r.journal })).toEqual([]);
     expect(erreurs).toEqual([]);
   });
 
@@ -675,9 +680,24 @@ for (const theme of ['sombre', 'clair'] as const)
         [number, number, number] | null;
     const j0 = (await page.evaluate('window.__promi.nav.journal().length')) as number;
     if (cible) {
-      await page.mouse.click(cible[0], cible[1]);
-      await pas(page, 6);
-      await page.mouse.click(cible[0], cible[1]);
+      // les deux touchers dans la page, dans la même tâche : l'écart se lit à l'heure des ÉVÉNEMENTS (moins de 320 ms) ; deux clics de
+      // Playwright arrivent à la page à plus de 320 ms l'un de l'autre sur l'intégration continue (une image toutes les 0,7 s)
+      await page.evaluate(([x, y]) => {
+        const cv = document.getElementById('toileCv')!;
+        for (const id of [21, 22])
+          for (const t of ['pointerdown', 'pointerup'])
+            cv.dispatchEvent(
+              new PointerEvent(t, {
+                pointerId: id,
+                isPrimary: true,
+                pointerType: 'touch',
+                bubbles: true,
+                cancelable: true,
+                clientX: x,
+                clientY: y,
+              }),
+            );
+      }, cible);
       await pas(page, 60);
     }
     await poser(page);

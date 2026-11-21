@@ -72,7 +72,7 @@
   {
     "nom": "app-recouvre",
     "test": "la red team de l'app : aucune erreur, rien qui sort, rien de coupé, rien qui se recouvre — échelle 1, 390 × 844 (redteam_app, C-276)",
-    "defaut": "le nom AURA déplacé sur STUDIO : les deux noms se recouvrent en partie (≈ 35 %), sans que l'un cache le centre de l'autre"
+    "defaut": "le mot STUDIO décalé de 24 pt sur le mot AURA : ils se recouvrent sans que l’un cache le centre de l’autre"
   },
   {
     "nom": "app-erreur",
