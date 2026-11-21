@@ -10,7 +10,7 @@
  *  · la clé `setItem` d'un export n'est pas une donnée : c'est le texte d'une fonction (le `localStorage.setItem` enveloppé par la
  *    boîte noire, énuméré par l'export). Elle est écartée.
  */
-import type { CouleurDalle, EtatV1, EvenementFil, Mot, Parole, Place, Reglages, Studio } from '../schema.ts';
+import type { CouleurDalle, Etat, EvenementFil, Mot, Parole, Place, Reglages, Studio } from '../schema.ts';
 import { VERSION_SCHEMA, etatVide } from '../schema.ts';
 import { figerDalles, poserCles, reparerPlaces, sansTombes } from '../../metier/relecture.ts';
 
@@ -60,6 +60,7 @@ const CHAMPS_PAROLE = [
   'comments',
   'parts',
   'vuTenue',
+  'brouillon',
 ] as const;
 const CHAMPS_FIL = ['id', 'type', 'text', 'pid', 't', 'unread', 'ts'] as const;
 
@@ -105,7 +106,7 @@ export function stockageDe(x: ExportPrototype | StockagePrototype): StockageProt
 }
 
 /** L'export (ou le stockage) du prototype → l'état v1. */
-export function importer(x: ExportPrototype | StockagePrototype): EtatV1 {
+export function importer(x: ExportPrototype | StockagePrototype): Etat {
   const ls = stockageDe(x);
   const e = etatVide();
   const brut = ls['promi_state'];
@@ -174,7 +175,7 @@ function remettre(o: { suite?: Record<string, unknown> }): Brut {
  * L'import, puis les passes que le prototype applique à chaque relecture (`loadState` : `_sansTombes`, `_reparePlaces`,
  * `_figeDallesManquantes`, `_clePlantation`) — l'état que la vraie app montre est celui que le prototype montrerait.
  */
-export function importerEtRelire(x: ExportPrototype | StockagePrototype): EtatV1 {
+export function importerEtRelire(x: ExportPrototype | StockagePrototype): Etat {
   const e = importer(x);
   const r = reparerPlaces(sansTombes(e.paroles, e.effacees), e.placesCercles);
   return { ...e, paroles: poserCles(figerDalles(r.paroles)), placesCercles: r.cercles };
@@ -184,7 +185,7 @@ export function importerEtRelire(x: ExportPrototype | StockagePrototype): EtatV1
  * L'état v1 → le stockage du prototype. Il sert la preuve « sans perte » et, au portage, la comparaison au prototype (les tests de
  * rendu chargent le MÊME état des deux côtés).
  */
-export function versPrototype(e: EtatV1): StockagePrototype {
+export function versPrototype(e: Etat): StockagePrototype {
   const ls: StockagePrototype = {};
   const presentes = new Set<string>(JSON.parse(e.autres['__presentes'] ?? '[]') as string[]);
   for (const [k, v] of Object.entries(e.autres)) if (!k.startsWith('__')) ls[k] = v;

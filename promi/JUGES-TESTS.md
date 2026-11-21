@@ -75,3 +75,40 @@ Fichiers : `accueil.spec.ts` (acc), `toile-a.spec.ts` (A), `toile-b.spec.ts` (B)
 - **Les zones de toucher de la barre** n'étaient pas celles du prototype (C-106) : l'AURA prenait 5 pt du mot STUDIO, le FIL 3 pt d'INDEX.
 - **Le symbole « recadrer »** était 2 pt trop bas (C-188).
 - **Le frémissement de la Toile** 1,5 s après le chargement (le prototype, app.html ≈ l. 7271) n'était pas porté : sans lui, les graines restent jusqu'à 0,6 pt de leur place.
+
+## Lot 2a — la page + et la phrase (21 juges de 2a ; les 27 autres du lot 2 : 2b, 2c)
+
+Fichiers : `page-plus.spec.ts` (PP, identité au pixel), `page-plus-juges.spec.ts` (PJ), `tests/unitaires/page-plus.test.ts` (U).
+⚠ **PARTIEL** : la page + n'est pas encore dans `ECRANS_PORTES` (elle est prête dans `PAGES_PLUS`, aides.ts) — jugée par le socle en partie :
+joignable et écrans y ont trouvé deux défauts, corrigés (l'accueil restait visible et touchable sous la page + ; le rail ne déclarait pas
+qu'il glisse — `redteam_joignable` porté excuse maintenant, comme `redteam_ecrans`, ce qui est hors de la vue d'une rangée `data-glisse`) ;
+les 25 autres juges du socle n'ont pas tourné sur elle : au 2b.
+Contrats remis au niveau de la décision (la pilule OUVRE maintenant la page +, qui couvre l'accueil) : `redteam_fonctions` (socle-2), « l'accueil
+(direction B) » (toile-b) et la barre (accueil.spec) referment la page + par son X (`refermerPagePlus`) avant le geste suivant ; `redteam_champs` ne compte
+plus un champ sans boîte rendue (un écran fermé : `#phIn` dans la page + cachée). Rouge préexistant, vu sur `4d6c959` : « une dalle n'est jamais une
+image découpée » (un fragment de Toile recopié hors du moteur au menu du +).
+
+| juge                   | test(s)                                                                                        | sonde(s)           | ce qui n'est pas porté → où, ou ce qui le remplace                                                       |
+| ---------------------- | ---------------------------------------------------------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------- |
+| releve-S3-page-plus    | PP › identité au pixel (Promi, Chiche, Cercle, le choix ouvert ; clair, sombre)                | pp-identite-decale | les cotes « choix ouvert · écrire un mot » (la mise en page de saisie, « DÉJÀ PROMIS ») → 2b             |
+| redteam_pages_plus     | PP › identité au pixel                                                                         | pp-identite-decale | le mot du trait et le trait (C-157) → 2b                                                                 |
+| redteam_menu_plus      | PJ › le menu du + : chaque pilule ouvre SA page +, à chaque fois ; le X la referme en glissant | menu-nature        | —                                                                                                        |
+| redteam_tuiles         | PJ › le menu du + (au pointeur, deux tours, trois natures)                                     | menu-nature        | le doigt d'iOS → VALIDATION.md                                                                           |
+| redteam_pilules        | PJ › les trois pilules se lisent, ≥ 4,5:1 (clair, sombre)                                      | pilules-illisibles | —                                                                                                        |
+| redteam_phrase         | PJ › la phrase de chaque nature, le cycle du verbe                                             | verbe-sourd        | la phrase alimente la parole plantée → 2b                                                                |
+| redteam_verbe          | PJ › le cycle du verbe (« la bascule mène à un vrai bouton »)                                  | verbe-sourd        | —                                                                                                        |
+| redteam_demande        | PJ › promets-moi (la place du prénom, l'exemple de C-309)                                      | verbe-sourd        | le pluriel « promettez-moi » sur deux personnes : écrit, non jugé                                        |
+| redteam_suggestions    | PJ › les exemples (1, 2, puis sans remise, la liaison) ; U › le tirage                         | exemple-fige       | —                                                                                                        |
+| redteam_marges         | PJ › la phrase tient dans ses marges (trois natures)                                           | marges-deborde     | 375 pt et le profil iPhone réduit → l'adaptation (ecrans.spec) au 2b                                     |
+| redteam_gens           | PJ › le choix des personnes                                                                    | gens-sourd         | Peaufiner (À QUI, AVEC) → 2b ; le choix d'un Cercle n'est PAS identique au prototype (non tenu, rapport) |
+| redteam_ajouter        | PJ › « + ajouter quelqu'un » sur sa ligne, 16 pt au-dessus de Peaufiner                        | gens-sourd         | le champ « un prénom… » (C-122) → 2b                                                                     |
+| redteam_ajout_personne | —                                                                                              | —                  | C-122 (la zone en pointillés EST le champ, le + orange) → 2b : non porté                                 |
+| redteam_moi_toucher    | PJ › « moi » à la place touchée (C-304)                                                        | gens-sourd         | —                                                                                                        |
+| redteam_moi_phrase     | —                                                                                              | —                  | « moi » après la validation (C-269) → 2b (la validation)                                                 |
+| redteam_je             | —                                                                                              | —                  | C-296 (le filet qui s'amincit pendant un détracé) → 2c                                                   |
+| redteam_garder         | PJ › « garder de côté » (inactif, actif, la page entière au magasin, la place, l'inclinaison)  | garder-rien        | le message « gardé de côté — dans l'Index » (un toast, §26) → lot 8                                      |
+| redteam_garder_reprise | U › la reprise met à jour le gardé de côté (`repris`)                                          | —                  | rouvrir depuis l'Index → lot 4 (la carte d'un gardé de côté)                                             |
+| redteam_pinceau_rail   | PJ › le rail glisse ; les murs                                                                 | rail-fige          | la phrase du mur au toucher → lot 8 (§21)                                                                |
+| redteam_clavier        | PJ › la saisie : le clavier s'ouvre dans le geste                                              | clavier-differe    | —                                                                                                        |
+| redteam_clavier_doux   | —                                                                                              | —                  | Q598 (la page rejoint sa place en 360 ms à la fermeture du clavier) → 2b                                 |
+| (C-213, C-229)         | PJ › à l'ouverture, rien du trait et l'horizon bas                                             | trait-ouverture    | la montée de l'horizon et la genèse → 2b                                                                 |

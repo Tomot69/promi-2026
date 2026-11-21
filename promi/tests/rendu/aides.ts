@@ -40,7 +40,28 @@ export function stockage(): Record<string, string> {
   const x = JSON.parse(readFileSync(ETAT, 'utf8')) as { ls?: Record<string, string> } & Record<string, unknown>;
   const ls: Record<string, string> = {};
   for (const [k, v] of Object.entries(x.ls ?? x)) if (k !== 'setItem' && typeof v === 'string') ls[k] = v;
-  return ls;
+  return pagePlusDeterministe(ls);
+}
+
+/**
+ * La page + (lot 2a) des deux côtés sur la MÊME phrase : les exemples des pastilles vides sont tirés au hasard (`lot-EXEMPLES-V20`) ; on
+ * pose leurs compteurs pour que le tirage soit écrit d'avance — Promi à soi et Cercle : leur première phrase (« me coucher le jour même »,
+ * « Week-end à Marseille ») ; Chiche : le prototype tire DEUX fois à la première ouverture (défaut relevé au lot 2a), on lui donne donc un
+ * sac où les deux tirages tombent sur le même rang (4, « choisir une ville au hasard »). Et les personnes connues : le prototype ajoute ses
+ * personnes de démonstration (« Maman », « Mimi ») quand l'état n'en porte pas ; on les écrit dans l'état, la vraie app les lit.
+ */
+export function pagePlusDeterministe(ls: Record<string, string>): Record<string, string> {
+  const o: Record<string, string> = {};
+  for (const [k, v] of Object.entries(ls)) if (!k.startsWith('promi_ex')) o[k] = v;
+  o['promi_ex_chiche'] = '1';
+  o['promi_ex_sac_chiche'] = '[4,4]';
+  o['promi_ex_der_chiche'] = '4';
+  if (o['promi_state']) {
+    const st = JSON.parse(o['promi_state']) as Record<string, unknown>;
+    st['PEOPLE'] = ['Maman', 'Mimi'];
+    o['promi_state'] = JSON.stringify(st);
+  }
+  return o;
 }
 
 export const GEL =
@@ -166,6 +187,60 @@ export type EcranPorte = {
   /** depuis l'accueil du prototype, ouvert par `prototype` */
   prototype(page: Page): Promise<void>;
 };
+/** le + puis la pilule d'une nature : la page + (lot 2a), composée (dans la vraie app : la page porte sa phrase ; le prototype : 3,5 s) */
+export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee', proto = false): Promise<void> {
+  await ouvrirPlus(page);
+  const r = await page.evaluate((k) => {
+    const b = document.querySelector(`#accChoix .acc-pil[data-k="${k}"]`)!.getBoundingClientRect();
+    return [b.left + b.width / 2, b.top + b.height / 2];
+  }, nat);
+  await page.mouse.click(r[0]!, r[1]!);
+  if (proto) await page.waitForTimeout(3500);
+  else
+    await page.waitForFunction(
+      () => {
+        const c = document.getElementById('createSheet');
+        return !!c && !c.hidden && !c.classList.contains('pp-compose') && !!c.querySelector('.ph-txt .ph-m');
+      },
+      undefined,
+      { timeout: 20000 },
+    );
+  await page.waitForTimeout(400);
+}
+
+/** la page + ouverte par une pilule (lot 2a) couvre l'accueil : son X la referme, on attend qu'elle soit partie (rien, si elle est fermée) */
+export async function refermerPagePlus(page: Page): Promise<void> {
+  const ouverte = await page.evaluate(() => {
+    const c = document.getElementById('createSheet');
+    return !!c && !c.hidden;
+  });
+  if (!ouverte) return;
+  await page.waitForFunction(
+    () => !document.getElementById('createSheet')?.classList.contains('pp-compose'),
+    undefined,
+    {
+      timeout: 20000,
+    },
+  );
+  const x = await page.evaluate(() => {
+    const b = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
+    return [b.left + b.width / 2, b.top + b.height / 2];
+  });
+  await page.mouse.click(x[0]!, x[1]!);
+  await page.waitForFunction(() => !!document.getElementById('createSheet')?.hidden, undefined, { timeout: 20000 });
+}
+
+/**
+ * ⚠ LOT 2a (PARTIEL) — la page + n'est PAS encore dans ECRANS_PORTES : ajoutée, le socle l'a jugée en partie (joignable et écrans : deux
+ * défauts trouvés et corrigés — l'accueil restait visible sous elle, le rail ne déclarait pas qu'il glisse) ; les autres juges du socle n'ont
+ * pas tourné sur elle avant l'arrêt du lot. `PAGES_PLUS` les y ajoutera (`...PAGES_PLUS`) au 2b, une fois le socle vert sur elles.
+ */
+export const PAGES_PLUS: EcranPorte[] = (['promi', 'chiche', 'nuee'] as const).map((n): EcranPorte => ({
+  nom: `page +, ${n}`,
+  ouvrir: (p) => ouvrirPagePlus(p, n),
+  prototype: (p) => ouvrirPagePlus(p, n, true),
+}));
+
 export const ECRANS_PORTES: EcranPorte[] = [
   { nom: 'accueil', ouvrir: async () => {}, prototype: async () => {} },
   { nom: 'accueil, menu du + ouvert', ouvrir: ouvrirPlus, prototype: ouvrirPlus },

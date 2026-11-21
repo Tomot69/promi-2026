@@ -3,7 +3,7 @@
  * invitation à un Cercle, une moitié tracée qui attend la mienne, une demande en attente. Il redescend quand on a agi, jamais parce qu'on a
  * regardé. La pastille du Fil de l'accueil s'allume s'il est au-dessus de zéro. (`_filAttend`, `_filAttente`, `demandesEnAttente`.)
  */
-import type { EtatV1, EvenementFil, Parole } from '../donnees/schema.ts';
+import type { Etat, EvenementFil, Parole } from '../donnees/schema.ts';
 
 type Plat = Record<string, unknown>;
 
@@ -30,7 +30,7 @@ export function filAttend(f: EvenementFil, paroles: readonly Parole[]): boolean 
   }
 }
 
-export function filAttente(e: Readonly<EtatV1>): number {
+export function filAttente(e: Readonly<Etat>): number {
   let n = 0;
   for (const f of e.fil) if (filAttend(f, e.paroles)) n++;
   for (const p of e.paroles) {
@@ -41,7 +41,7 @@ export function filAttente(e: Readonly<EtatV1>): number {
 }
 
 /** l'anneau du + : les paroles tenues et en cours (ni gardées de côté, ni demandées) */
-export function compteAnneau(e: Readonly<EtatV1>): { tenues: number; enCours: number } {
+export function compteAnneau(e: Readonly<Etat>): { tenues: number; enCours: number } {
   let tenues = 0;
   let enCours = 0;
   for (const p of e.paroles) {

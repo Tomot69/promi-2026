@@ -1,0 +1,52 @@
+[
+  {
+    "nom": "menu-nature",
+    "test": "le menu du + : chaque pilule ouvre SA page +, à chaque fois ; le X la referme en glissant",
+    "defaut": "la pilule ouvre toujours la page + d'un Promi (la tuile touchée ne décide plus)"
+  },
+  {
+    "nom": "pilules-illisibles",
+    "test": "les trois pilules du menu du + se lisent, ≥ 4,5:1, sombre",
+    "defaut": "le texte des pilules prend une couleur proche de leur fond"
+  },
+  {
+    "nom": "verbe-sourd",
+    "test": "la phrase de chaque nature, et le cycle du verbe d’un Promi",
+    "defaut": "le verbe ne répond plus au toucher"
+  },
+  {
+    "nom": "exemple-fige",
+    "test": "les exemples des pastilles vides : la phrase 1, puis la 2, puis tirées sans remise",
+    "defaut": "le tirage rend toujours la première phrase"
+  },
+  {
+    "nom": "marges-deborde",
+    "test": "la phrase tient dans ses marges : l’exemple passe à la ligne plutôt que de réduire la phrase sous 28",
+    "defaut": "la phrase décalée de 40 pt vers la droite (la marge droite n'est plus celle de gauche)"
+  },
+  {
+    "nom": "gens-sourd",
+    "test": "le choix des personnes : « moi » à la place touchée, ajouter et retirer au toucher",
+    "defaut": "une personne touchée n'est plus prise"
+  },
+  {
+    "nom": "garder-rien",
+    "test": "« garder de côté » : inactif tant que rien n’a changé ; actif, il garde la page entière",
+    "defaut": "le toucher sur « garder de côté » ne garde rien"
+  },
+  {
+    "nom": "rail-fige",
+    "test": "le rail du pinceau glisse ; les traits de Ma Parole ! sont un mur",
+    "defaut": "le rail ne glisse plus (overflow caché, touch-action none)"
+  },
+  {
+    "nom": "clavier-differe",
+    "test": "la saisie : le clavier s’ouvre dans le geste, la frappe remplit la pastille, Retour valide",
+    "defaut": "le champ prend le focus hors du geste (une tâche plus tard : iOS n'ouvrirait pas le clavier)"
+  },
+  {
+    "nom": "trait-ouverture",
+    "test": "à l’ouverture, rien du trait et l’horizon bas (C-213, C-229)",
+    "defaut": "le mot du trait « trace pour planter » paraît dès l'ouverture (la page + d'avant v172)"
+  }
+]

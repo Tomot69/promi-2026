@@ -1,5 +1,5 @@
 /**
- * LE SCHÉMA DE DONNÉES, VERSION 1 (règle de la vraie app : « un schéma versionné avec ses migrations, dès la version 1 »).
+ * LE SCHÉMA DE DONNÉES, VERSION 2 (v1 en L0 ; v2 au lot 2a : le gardé de côté porte l'état de la page + qui l'a gardé, `brouillon`) (règle de la vraie app : « un schéma versionné avec ses migrations, dès la version 1 »).
  *
  * Source : portage/SPEC-DONNEES.md et SPEC-DONNEES.schema.json (le modèle du prototype). Les noms des champs d'une parole sont ceux du
  * prototype : ils sont la spécification, le moteur les lit tels quels, et l'import de l'export de Tom ne perd rien.
@@ -9,7 +9,7 @@
  * Vocabulaire (CLAUDE.md §2) : le code du prototype dit `nuee`, l'écran dit Cercle ; `draft` = gardé de côté.
  */
 
-export const VERSION_SCHEMA = 1 as const;
+export const VERSION_SCHEMA = 2 as const;
 
 /** v173 (C-210) : deux états. `rate` n'existe plus (la migration le rend « en cours »). */
 export type EtatParole = 'encours' | 'tenu';
@@ -43,6 +43,22 @@ export interface Echeance {
   due: number;
 }
 
+/**
+ * L'état de la page + gardé avec un gardé de côté (le `p.brouillon` du prototype, v162) : sa nature, la phrase, les personnes, le nom et les
+ * membres d'un Cercle. Les champs que le prototype y porte et que la vraie app n'écrit pas encore (l'échéance, la note : Peaufiner, lot 2b)
+ * sont gardés tels quels (`suite`).
+ */
+export interface Brouillon {
+  v: 1;
+  nat: 'promi' | 'chiche' | 'nuee';
+  phrase: { sens?: string; titre?: string; qui?: string; avec?: string; [cle: string]: unknown };
+  who: string[];
+  sens: string | null;
+  nom: string;
+  membres: string[];
+  [cle: string]: unknown;
+}
+
 /** Une parole (Promi ou Chiche ; un gardé de côté porte `draft: true`). */
 export interface Parole {
   id: number;
@@ -70,6 +86,8 @@ export interface Parole {
   comments?: Mot[];
   parts?: Record<string, string>;
   vuTenue?: Record<string, string>;
+  /** un gardé de côté (`draft`) : l'état ENTIER de la page + qui l'a gardé (C-149, v162 — `lot-V162-GARDER` du prototype) ; v2 */
+  brouillon?: Brouillon;
   /** tout autre champ du prototype, gardé tel quel (aucune perte) */
   suite?: Record<string, unknown>;
 }
@@ -104,7 +122,7 @@ export interface Reglages {
   notifOn: boolean;
 }
 
-export interface EtatV1 {
+export interface Etat {
   schema: typeof VERSION_SCHEMA;
   paroles: Parole[];
   /** pierres tombales `id|titre` (v187) */
@@ -132,7 +150,7 @@ export interface EtatV1 {
   autres: Record<string, string>;
 }
 
-export function etatVide(): EtatV1 {
+export function etatVide(): Etat {
   return {
     schema: VERSION_SCHEMA,
     paroles: [],

@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 import { loadavg } from 'node:os';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { ETAT, RACINE, sonde, stockage } from './aides.ts';
+import { ETAT, RACINE, refermerPagePlus, sonde, stockage } from './aides.ts';
 
 type Ls = Record<string, string>;
 
@@ -1237,6 +1237,8 @@ for (const th of ['clair', 'sombre'] as const)
           );
         const d = await toucherEtLire(page, ...(await centre(page, `.acc-pil[data-k="${k}"]`)));
         if (d.length !== 1 || d[0]!.vers !== 'pagePlus' || d[0]!.arg !== k) ratees.push(`${k} → ${JSON.stringify(d)}`);
+        // lot 2a : la pilule OUVRE la page + (elle couvre l'accueil) — son X la referme avant la nature suivante
+        await refermerPagePlus(page);
       }
     expect(ratees, 'chaque nature demande SA page +').toEqual([]);
     // 5 · l'appui long sur la Toile (0,9 s) n'ouvre pas le Studio

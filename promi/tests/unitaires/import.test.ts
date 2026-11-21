@@ -52,7 +52,7 @@ describe("l'import de l'export du prototype", () => {
     const f = EXPORTS.find((x) => x.endsWith('tom-20261117-211127.json'));
     if (!f) return;
     const e = migrer(JSON.parse(readFileSync(f, 'utf8')));
-    expect(e.schema).toBe(1);
+    expect(e.schema).toBe(2);
     expect(e.paroles.map((p) => [p.id, p.title, p.status])).toEqual([[125, 'Test', 'tenu']]);
     expect(e.utilisateur).toEqual({ prenom: 'Tom', graine: 936256980 });
     expect(e.studio.monde).toBe('encre');

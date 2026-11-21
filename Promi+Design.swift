@@ -287,6 +287,7 @@ extension Color {
         static let creme97 = Color(red: 0.9686, green: 0.9216, blue: 0.8392)   // #F7EBD6
         static let creme99 = Color(red: 0.9804, green: 0.9569, blue: 0.9098)   // #FAF4E8
         static let crete27 = Color(red: 0.0431, green: 0.2902, blue: 0.1647)   // #0B4A2A
+        static let framboise02 = Color(red: 0.0745, green: 0.0078, blue: 0.0314)   // #130208 — lot 2a (vraie app) : le trait d'un Chiche posé sur son champ (`NATTRAIT.chiche` du prototype, v147 C-140) — l'aperçu du pinceau choisi sur la page +
         static let framboise08 = Color(red: 0.1255, green: 0.0706, blue: 0.1294)   // #201221
         static let framboise082 = Color(red: 0.1490, green: 0.0588, blue: 0.1216)   // #260F1F
         static let framboise10 = Color(red: 0.2196, green: 0.0510, blue: 0.1451)   // #380D25
@@ -299,6 +300,7 @@ extension Color {
         static let framboise94 = Color(red: 1.0000, green: 0.9569, blue: 0.9882)   // #FFF4FC
         static let framboise97 = Color(red: 1.0000, green: 0.9765, blue: 0.9882)   // #FFF9FC
         static let lilas85 = Color(red: 0.9569, green: 0.9333, blue: 1.0000)   // #F4EEFF
+        static let mauve02 = Color(red: 0.0392, green: 0.0157, blue: 0.0824)   // #0A0415 — lot 2a (vraie app) : le trait d'un Cercle posé sur son champ (`NATTRAIT.nuee` du prototype, v147 C-140) — l'aperçu du pinceau choisi sur la page +
         static let mauve04 = Color(red: 0.0824, green: 0.0314, blue: 0.1569)   // #150828
         static let mauve08 = Color(red: 0.1059, green: 0.0784, blue: 0.1490)   // #1B1426
         static let mauve082 = Color(red: 0.1059, green: 0.0706, blue: 0.1882)   // #1B1230
@@ -385,6 +387,9 @@ extension Color {
         static let orange77 = Color(red: 0.9608, green: 0.6745, blue: 0.6196)   // #F5AC9E
         static let periwinkle53 = Color(red: 0.7725, green: 0.5843, blue: 0.3216)   // #C59552
         static let prune09 = Color(red: 0.1686, green: 0.0627, blue: 0.1255)   // #2B1020
+        static let rampeCercle1 = Color(red: 0.7608, green: 0.6431, blue: 0.9686)   // #C2A4F7 — lot 2a (vraie app) : Q30 — la rampe de la nature Cercle (`DALPAL.nuee` du prototype, trois teintes, 1 à 3) : la dalle du haut de la page + d'un Cercle, peinte par le moteur (`opts.rampe`)
+        static let rampeCercle2 = Color(red: 0.8627, green: 0.7765, blue: 1.0000)   // #DCC6FF
+        static let rampeCercle3 = Color(red: 0.9529, green: 0.9176, blue: 1.0000)   // #F3EAFF
         static let seiche10 = Color(red: 0.0196, green: 0.0118, blue: 0.0078)   // #050302
         static let seiche21 = Color(red: 0.1216, green: 0.0863, blue: 0.0667)   // #1F1611
         static let ton03 = Color(red: 0.0588, green: 0.0706, blue: 0.0824)   // #0F1215

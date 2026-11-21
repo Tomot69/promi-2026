@@ -4,17 +4,17 @@
  * paroles, OU 3, puis 7, puis 14 jours, le premier des deux) ; après le deuxième « Plus tard », plus jamais (« Garder ta Toile » reste aux
  * Réglages). Jamais avant la fin de l'onboarding, jamais une fois le compte fait. Les clés sont celles du prototype (`autres`).
  */
-import type { EtatV1 } from '../donnees/schema.ts';
+import type { Etat } from '../donnees/schema.ts';
 
 const ECART_P = [5, 10, 20];
 const ECART_J = [3, 7, 14];
 const JOUR = 864e5;
 
-export function nParoles(e: Readonly<EtatV1>): number {
+export function nParoles(e: Readonly<Etat>): number {
   return e.paroles.filter((p) => !p.draft).length;
 }
 
-export function rappelDu(e: Readonly<EtatV1>, maintenant: number): boolean {
+export function rappelDu(e: Readonly<Etat>, maintenant: number): boolean {
   const a = e.autres;
   if (a['promi_onb'] !== '1') return false;
   if ((a['promi_compte'] ?? '').startsWith('fait')) return false;

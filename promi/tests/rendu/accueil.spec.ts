@@ -378,6 +378,16 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
     const j = (await page.evaluate(`${P_}.nav.journal()`)) as Array<{ vers: string; arg?: string }>;
     expect(j.at(-1)).toEqual(expect.objectContaining({ vers: 'pagePlus', arg: k }));
     expect(await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert'))).toBe(false);
+    // lot 2a : la pilule OUVRE la page + de sa nature (elle couvre l'accueil) — son X la referme, on revient à l'accueil
+    await page.waitForFunction((k) => !!document.getElementById('createSheet')?.classList.contains('pp-' + k), k, {
+      timeout: 20000,
+    });
+    const x = await page.evaluate(() => {
+      const b = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
+      return [b.left + b.width / 2, b.top + b.height / 2];
+    });
+    await page.mouse.click(x[0]!, x[1]!);
+    await page.waitForFunction(() => !!document.getElementById('createSheet')?.hidden, undefined, { timeout: 20000 });
   }
 });
 

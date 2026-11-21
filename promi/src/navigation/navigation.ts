@@ -1,6 +1,6 @@
 /**
  * LA NAVIGATION — la seule porte d'un écran à un autre. Un écran ne s'ouvre jamais lui-même : il le demande ici, et l'écran destinataire
- * s'y inscrit (`poser`) quand il est porté. Au lot 1, aucun écran destinataire n'existe encore (la fiche : lot 3a ; la page + : lot 2 ;
+ * s'y inscrit (`poser`) quand il est porté. Porté : la page + (lot 2a). Pas encore (la fiche : lot 3a ;
  * le Studio : lot 7 ; l'Aura : lot 5 ; l'Index, le Fil : lot 4 ; Partager, les Réglages, l'offre : lot 8 ; le compte : lot 9) : la demande est notée et
  * rien ne s'ouvre. Le journal des demandes sert les tests (toucher une dalle demande SA fiche).
  */

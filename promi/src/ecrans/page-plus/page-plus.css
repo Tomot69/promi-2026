@@ -1,0 +1,521 @@
+/* LA PAGE + (lot 2a) — Promi, Chiche, Cercle, au repos et le choix des personnes ouvert.
+   Les cotes sont celles du prototype RENDU (relevé du 21 nov. 2026, WebKit, 390 × 844, ×3, clair et sombre ; SPEC-ECRANS §3 et les blocs
+   lot-S3-page-plus, lot-V172-INVITE, lot-V148-GARDER, lot-V162-GARDER, lot-PINCEAU, lot-GENS, lot-V157-CROIX). Depuis C-132 (v146) la page +
+   a la même allure en clair et en sombre : son corps est celui de sa nature, son plateau sombre. Les cotes qui dépendent de la phrase
+   (la vague, la phrase, le bouton photo, le rail) sont posées par page-plus.ts ; elles se comptent depuis le haut (`--pp-h`, l'ancre du
+   plateau) ou depuis le bas (`--pp-b`, la barre Peaufiner) : à 390 × 844, ce sont celles du prototype. */
+
+#createSheet {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  overflow: hidden;
+  border-radius: 22px;
+  color: var(--c-creme92);
+  font: 16px var(--f-texte);
+  --pp-h: calc(var(--ancre-haut) - 40px);
+  -webkit-tap-highlight-color: transparent;
+}
+#createSheet [hidden] {
+  display: none !important;
+}
+#createSheet.pp-promi {
+  background: var(--c-cobalt50);
+}
+#createSheet.pp-chiche {
+  background: var(--c-framboise35);
+}
+#createSheet.pp-nuee {
+  background: var(--c-mauve35);
+}
+/* composée cachée, puis montrée (v103 : « une ouverture coupe » — le prototype, `acc-passe`) ; la fermeture glisse vers le bas en
+   s'effaçant (le prototype : la feuille qui s'en va, translateY + scale .985 + opacité, ≈ 0,48 s) */
+#createSheet.pp-compose {
+  visibility: hidden;
+}
+#createSheet.pp-part {
+  transform: translateY(100%) scale(0.985);
+  opacity: 0;
+  transition:
+    transform 0.46s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.46s cubic-bezier(0.32, 0.72, 0, 1);
+  pointer-events: none;
+}
+
+/* ── le champ : l'aplat de la nature, borné par la vague, et la dalle d'avance (peints par page-plus.ts) ── */
+#csTrameCv {
+  position: absolute;
+  left: 0;
+  top: var(--pp-h);
+  display: block;
+  pointer-events: none;
+}
+
+/* ── le plateau (24 / 40 / 342 × 60) : le mot de la nature et le X ── */
+#createSheet .enh {
+  position: absolute;
+  top: var(--ancre-haut);
+  left: var(--marge-g);
+  right: var(--marge-d);
+  height: 60px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 26px;
+  border: 2px solid var(--c-creme95);
+  border-radius: 30px;
+  background: var(--c-seiche10);
+  z-index: 9;
+}
+#createSheet .cs-mark {
+  display: flex;
+  align-items: center;
+  padding: 0 0 1px;
+  font: 29.5px/1.06em var(--f-marque);
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-creme95);
+  translate: 0 2.94px;
+}
+#createSheet .mm-i {
+  display: block;
+  font-style: normal;
+  color: var(--c-bleu45);
+}
+/* le X (C-173) : 44 × 44, PromiLate 35, à la couleur du titre */
+#createSheet .closeb {
+  position: absolute;
+  top: 6px;
+  right: 19.95px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font: 35px/35px var(--f-marque);
+  color: var(--c-creme95);
+  white-space: nowrap;
+  z-index: 40;
+  cursor: pointer;
+}
+#createSheet .cb-mot {
+  position: absolute;
+  left: 0;
+  top: 5.88px;
+  width: 44px;
+  display: block;
+  line-height: 1.06em;
+  text-align: center;
+}
+
+/* ── le bouton photo (rond 34, x 332) : sa cote suit la vague ; son menu (Dessiner, Importer) : lot 3b ── */
+#createSheet .ph-photo-btn {
+  position: absolute;
+  left: calc(100% - 58px);
+  width: 34px;
+  height: 34px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  border: 2px solid var(--c-creme95);
+  border-radius: 999px;
+  color: var(--c-creme95);
+  opacity: 0.62;
+  z-index: 6;
+  cursor: pointer;
+  font: 11px system-ui;
+}
+#createSheet .ph-photo-btn svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+/* ── la phrase (Gilbert 700 ; taille et interligne posés par page-plus.ts, §2.8) ── */
+#createSheet .pp-phrase {
+  position: absolute;
+  left: var(--marge-g);
+  right: var(--marge-d);
+  z-index: 4;
+}
+#createSheet .ph-txt {
+  position: relative;
+  font-family: var(--f-libelle);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  text-align: left;
+}
+#createSheet.pp-promi .ph-txt {
+  color: var(--c-ton90);
+}
+#createSheet.pp-chiche .ph-txt {
+  color: var(--c-framboise94);
+}
+#createSheet.pp-nuee .ph-txt {
+  color: var(--c-mauve86);
+}
+/* le verbe : une pastille pleine (rayon 18) ; ⇄ le fait tourner (un Promi seulement) */
+#createSheet .ph-b {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 17px 8px;
+  border-radius: 18px;
+  white-space: nowrap;
+  font-size: 1em;
+  line-height: normal;
+  color: var(--c-seiche10);
+  cursor: pointer;
+}
+#createSheet.pp-promi .ph-b {
+  background: var(--c-bleu45);
+}
+#createSheet.pp-nuee .ph-b {
+  background: var(--c-mauve12);
+  color: var(--c-creme95);
+}
+#createSheet .ph-b svg {
+  display: block;
+  width: 0.6em;
+  height: 0.6em;
+}
+/* les pointes de ⇄ sont pleines : le prototype les remplit (une règle de style bat l'attribut `fill="none"`) */
+#createSheet .ph-b svg path {
+  fill: currentColor;
+}
+/* un mot à remplir : une pastille ; vide, son contour en pointillés et l'exemple */
+#createSheet .ph-m {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 15px 3px;
+  border: 3px dashed currentColor;
+  border-radius: 16px;
+  line-height: normal;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+  cursor: pointer;
+}
+#createSheet .ph-txt.ph-coupe .ph-m[data-ph='titre'],
+#createSheet .ph-txt.ph-coupe .ph-m[data-np='nom'] {
+  display: inline;
+  white-space: normal;
+}
+#createSheet .ph-m:not(.ph-vide) {
+  border-style: solid;
+}
+#createSheet .ph-txt em {
+  display: inline-block;
+  font-style: normal;
+  margin-right: 0.14em;
+}
+#createSheet .ph-txt em.ph-li {
+  margin-right: 8px;
+}
+#createSheet.pp-promi .ph-m,
+#createSheet.pp-promi .ph-txt em {
+  color: var(--c-lilas85);
+}
+#createSheet.pp-chiche .ph-m,
+#createSheet.pp-chiche .ph-txt em {
+  color: var(--c-orange77);
+}
+#createSheet.pp-nuee .ph-m,
+#createSheet.pp-nuee .ph-txt em {
+  color: var(--c-mauve77);
+}
+
+/* ── le rail du pinceau (C-196) : douze traits, il glisse ; les payants sont un mur (flou 4,8 px) ── */
+#csPinceau {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: 44px;
+  overflow: auto hidden;
+  scrollbar-width: none;
+  touch-action: pan-x;
+  z-index: 6;
+}
+#csPinceau::-webkit-scrollbar {
+  display: none;
+}
+#csPinceauRail {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  box-sizing: border-box;
+  width: max-content;
+  height: 44px;
+}
+#createSheet .pc-t {
+  flex: none;
+  width: 78px;
+  height: 44px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--c-creme95);
+  border-radius: 22px;
+  background: transparent;
+  font: 11px system-ui;
+  cursor: pointer;
+}
+#createSheet .pc-t.pc-mur {
+  filter: blur(4.8px);
+}
+#createSheet .pc-e {
+  display: block;
+  width: 60px;
+  height: 11.7px;
+  line-height: 0;
+  color: var(--c-creme95);
+}
+#createSheet .pc-e svg {
+  display: block;
+}
+#createSheet .pc-t.pc-mur .pc-e {
+  opacity: 0;
+}
+#createSheet .pc-n {
+  display: block;
+  font: 700 13px/13px var(--f-libelle);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  color: var(--c-creme95);
+}
+#createSheet.pp-promi .pc-t.on {
+  border-color: var(--c-bleu45);
+  background: var(--c-bleu45);
+}
+#createSheet.pp-promi .pc-t.on .pc-e {
+  color: var(--c-bleu08);
+}
+#createSheet.pp-chiche .pc-t.on {
+  border-color: var(--c-framboise54);
+  background: var(--c-framboise54);
+}
+#createSheet.pp-chiche .pc-t.on .pc-e {
+  color: var(--c-framboise02);
+}
+#createSheet.pp-chiche .pc-t.on .pc-n {
+  color: var(--c-seiche10);
+}
+#createSheet.pp-nuee .pc-t.on {
+  border-color: var(--c-mauve77);
+  background: var(--c-mauve77);
+}
+#createSheet.pp-nuee .pc-t.on .pc-e {
+  color: var(--c-mauve02);
+}
+
+/* ── « garder de côté » (C-149 : à droite, 718 + 2, penché de 5,5°, jamais souligné) ── */
+#createSheet .pp-garder {
+  position: absolute;
+  right: var(--marge-d);
+  bottom: calc(var(--ancre-bas) + 74px);
+  display: block;
+  font: 700 16px/16px var(--f-libelle);
+  text-align: right;
+  white-space: nowrap;
+  transform: skewX(-5.5deg);
+  transform-origin: 100% 100%;
+  z-index: 5;
+  cursor: pointer;
+}
+#createSheet.pp-promi .pp-garder {
+  color: var(--c-lilas85);
+}
+#createSheet.pp-chiche .pp-garder {
+  color: var(--c-orange77);
+}
+#createSheet.pp-nuee .pp-garder {
+  color: var(--c-mauve77);
+}
+#createSheet .pp-garder.inactif {
+  cursor: default;
+}
+
+/* ── la barre Peaufiner (0 / 760 / 390 × 84) — son panneau : lot 2b ── */
+#csBotBar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 84px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 var(--marge-d) 0 var(--marge-g);
+  font: 800 18.835px var(--f-libelle);
+  letter-spacing: -0.035em;
+  color: var(--c-creme95);
+  z-index: 6;
+  cursor: pointer;
+}
+#createSheet.pp-promi #csBotBar {
+  background: var(--c-bleu45);
+}
+#createSheet.pp-chiche #csBotBar {
+  background: var(--c-framboise54);
+}
+#createSheet.pp-nuee #csBotBar {
+  background: var(--c-mauve12);
+}
+#csBotBar .cbb-lab {
+  display: block;
+  font: 700 24px/26.4px var(--f-libelle);
+  letter-spacing: -0.01em;
+  color: var(--c-seiche10);
+}
+#csBotBar .cbb-chev {
+  display: block;
+  font: 700 15px var(--f-libelle);
+  color: var(--c-seiche10);
+}
+#createSheet.pp-nuee #csBotBar .cbb-lab,
+#createSheet.pp-nuee #csBotBar .cbb-chev {
+  color: var(--c-creme95-2);
+}
+
+/* ── le choix des personnes (lot-GENS) : deux colonnes de 162, « + ajouter quelqu'un » sur sa ligne, au-dessus de Peaufiner (16 d'air) ── */
+#createSheet .ph-choix {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  z-index: 5;
+}
+#createSheet .gn {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 12px;
+}
+#createSheet .gn-liste {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: 162px 162px;
+  gap: 8px 12px;
+  overflow: hidden auto;
+  scrollbar-width: none;
+}
+#createSheet .gn-liste::-webkit-scrollbar {
+  display: none;
+}
+#createSheet .ph-o {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  width: 162px;
+  height: 52px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0 14px;
+  overflow: hidden;
+  border: 3px solid var(--c-creme95);
+  border-radius: 26px;
+  background: transparent;
+  font: 700 16px/16px var(--f-libelle);
+  color: var(--c-creme95);
+  text-align: left;
+  cursor: pointer;
+}
+#createSheet .ph-add {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin-top: 14px;
+  justify-content: center;
+  border-style: dashed;
+}
+#createSheet.pp-promi .ph-add {
+  border-color: var(--c-lilas85);
+  color: var(--c-lilas85);
+}
+#createSheet.pp-chiche .ph-add {
+  border-color: var(--c-orange77);
+  color: var(--c-orange77);
+}
+#createSheet.pp-nuee .ph-add {
+  border-color: var(--c-mauve77);
+  color: var(--c-mauve77);
+}
+#createSheet .ppo-ini {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  font: 700 13px/13px var(--f-libelle);
+  color: var(--c-creme95);
+}
+#createSheet .ppo-nom {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+}
+#createSheet .ppo-x {
+  flex: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+}
+#createSheet .ppo-x svg {
+  display: block;
+  width: 12px;
+  height: 12px;
+  stroke: currentColor;
+}
+#createSheet.pp-promi .ph-o.on {
+  border-color: var(--c-bleu45);
+  background: var(--c-bleu45);
+}
+#createSheet.pp-chiche .ph-o.on {
+  border-color: var(--c-framboise54);
+  background: var(--c-framboise54);
+}
+#createSheet.pp-nuee .ph-o.on {
+  border-color: var(--c-mauve77);
+  background: var(--c-mauve77);
+}
+#createSheet.pp-promi .ph-o .ppo-ini {
+  background: var(--c-bleu45);
+}
+#createSheet.pp-chiche .ph-o .ppo-ini {
+  background: var(--c-framboise54);
+}
+#createSheet.pp-nuee .ph-o .ppo-ini {
+  background: var(--c-mauve77);
+}
+#createSheet .ph-o.on .ppo-ini {
+  background: var(--c-creme95);
+}
+#createSheet.pp-promi .ph-o.on .ppo-ini {
+  color: var(--c-bleu45);
+}
+#createSheet.pp-chiche .ph-o.on .ppo-ini {
+  color: var(--c-framboise54);
+}
+#createSheet.pp-nuee .ph-o.on .ppo-ini {
+  color: var(--c-mauve77);
+}

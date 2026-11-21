@@ -361,7 +361,13 @@ function releverDansPage(): Releve {
       interactifs.push(cle(e));
       const cx = r.left + r.width / 2;
       const cy = r.top + r.height / 2;
-      if (cx < 0 || cy < 0 || cx > innerWidth || cy > innerHeight) injoignables.push(cle(e) + ' (hors de la fenêtre)');
+      // une rangée qui défile et le déclare (data-glisse, C-196 : le rail du pinceau) : ce qui est hors de sa vue s'atteint en glissant
+      const gl = e.closest('[data-glisse]');
+      const glR = gl && gl !== e ? gl.getBoundingClientRect() : null;
+      if (glR && (cx < glR.left || cx > glR.right)) {
+        /* atteint en glissant la rangée */
+      } else if (cx < 0 || cy < 0 || cx > innerWidth || cy > innerHeight)
+        injoignables.push(cle(e) + ' (hors de la fenêtre)');
       else {
         const h = document.elementFromPoint(cx, cy);
         if (!h || !(h === e || e.contains(h)))

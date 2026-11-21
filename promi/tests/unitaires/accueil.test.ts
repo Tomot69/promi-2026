@@ -6,7 +6,7 @@ import { anneauCss, anneauSvg } from '../../src/ecrans/accueil/anneau.ts';
 import { compteAnneau, filAttente } from '../../src/metier/fil.ts';
 import { rappelDu } from '../../src/metier/rappel.ts';
 import { toucheTolerant } from '../../src/ecrans/toucher-tolerant.ts';
-import { etatVide, type EtatV1, type Parole } from '../../src/donnees/schema.ts';
+import { etatVide, type Etat, type Parole } from '../../src/donnees/schema.ts';
 import type { DalleTouchee } from '../../src/moteur/facade.ts';
 
 /** l'anneau du + relevé sur le prototype (jeu de démonstration : 7 tenues, 11 en cours), `--kr-svg` de #createBtn, 20 nov. 2026 */
@@ -32,7 +32,7 @@ function etat(
   paroles: Array<Partial<Parole> & Record<string, unknown>>,
   fil: unknown[] = [],
   autres: Record<string, string> = {},
-): EtatV1 {
+): Etat {
   const e = etatVide();
   e.paroles = paroles.map((p, i) => {
     const { suite, ...connus } = p as Parole;
@@ -45,7 +45,7 @@ function etat(
       ...(Object.keys(extra).length ? { suite: { ...(suite ?? {}), ...extra } } : {}),
     } as Parole;
   });
-  e.fil = fil as EtatV1['fil'];
+  e.fil = fil as Etat['fil'];
   e.autres = autres;
   return e;
 }

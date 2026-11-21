@@ -10,7 +10,7 @@
  * La façade pose tout cela depuis le magasin, charge le moteur, et rend les places qu'il a notées au magasin (`noterPlaces`).
  */
 import moteurSource from './repris/promi-moteur.js?raw';
-import type { EtatV1, Parole } from '../donnees/schema.ts';
+import type { Etat, Parole } from '../donnees/schema.ts';
 import type { Magasin } from '../etat/magasin.ts';
 import type { EtiquetteDalle, GraineMoteur, MondeDalle, MoteurFonctions, MoteurToile } from './types.ts';
 
@@ -52,6 +52,34 @@ export interface Facade {
   /** la vue de la Toile (zoom, décalage) ; et si elle appartient à la main (pincée ou glissée) plutôt qu'au cadrage automatique */
   vue(): { s: number; ox: number; oy: number };
   vueALaMain(): boolean;
+  /**
+   * LA DALLE QUE LA PAROLE QU'ON ÉCRIT AURA (C-241, v182a : `Toile.dalleAvenir`, lecture seule) — rendue pour tenir dans `tw × th` px,
+   * gardée tant que les paroles, le monde et la palette ne changent pas ; sur une Toile faite de ses paroles, le titre et la personne
+   * comptent (C-062). La page + la pose en haut, 1:1 (`poserUn`). Rien, si le moteur ne peut pas la calculer.
+   */
+  dalleAvenir(
+    id: number,
+    tw: number,
+    th: number,
+    a: { chiche: boolean; title: string; who: string },
+  ): HTMLCanvasElement | null;
+  /**
+   * rend la dalle de la parole `id` et la pose dans la boîte (x, y, w, h) des coordonnées courantes, 1:1, centrée (`_poseDalle` du moteur ;
+   * `rampe` : la teinte de la nature, Q30, peinte par le moteur). Rend ce qui a VRAIMENT été peint.
+   */
+  poserDalle(
+    g: CanvasRenderingContext2D,
+    id: number,
+    x: number,
+    y: number,
+    w: number,
+    h: number,
+    o: { rampe?: { cols: number[][]; haut: number }; courant?: number },
+  ): { x: number; y: number; w: number; h: number } | null;
+  /** la cellule de la dalle `id` ne touche pas le bord de la Toile (sa dalle est entière) — `Toile.dalleAbs`, `Toile.taille` */
+  dalleEntiere(id: number): boolean;
+  /** pose un canevas 1:1, centré sur (cx, cy) des coordonnées courantes du contexte (`_poseUn` du moteur) */
+  poserUn(g: CanvasRenderingContext2D, cv: HTMLCanvasElement, cx: number, cy: number): void;
 }
 
 export interface DalleTouchee {
@@ -62,6 +90,7 @@ export interface DalleTouchee {
 
 export function creerFacade(magasin: Magasin): Facade {
   let paroles: ParoleMoteur[] = [];
+  const avenirs = new Map<string, HTMLCanvasElement>();
   let device: HTMLElement | null = null;
 
   function toile(): MoteurToile {
@@ -69,7 +98,7 @@ export function creerFacade(magasin: Magasin): Facade {
     return w.Toile;
   }
 
-  function poserGlobaux(e: Readonly<EtatV1>): void {
+  function poserGlobaux(e: Readonly<Etat>): void {
     paroles = e.paroles.map(versMoteur);
     w['promises'] = paroles;
     w['NUE'] = { ...e.cercles };
@@ -202,6 +231,61 @@ export function creerFacade(magasin: Magasin): Facade {
       return v ? { s: v.s, ox: v.ox, oy: v.oy } : { s: 1, ox: 0, oy: 0 };
     },
     vueALaMain: () => !!w['_vueMain'],
+    dalleAvenir(id, tw, th, a) {
+      const T = toile() as MoteurToile & {
+        dalleAvenir(cv: HTMLCanvasElement, k: number, o: Record<string, unknown>): boolean;
+      };
+      try {
+        const L = w.Toile_lecture?.();
+        const sig = L
+          ? `${String(L.graines.length)}:${L.graines.map((q) => (q.pid == null ? '' : String(q.pid))).join(';')}`
+          : '';
+        const neuf = !!T.semisNeuf();
+        const A = { id, chiche: a.chiche, title: neuf ? a.title : '', who: neuf ? a.who || 'moi' : 'moi' };
+        const cle = [
+          id,
+          Math.round(tw),
+          Math.round(th),
+          A.chiche ? 1 : 0,
+          A.title,
+          A.who,
+          JSON.stringify(T.mondeCourant()),
+          sig,
+        ].join('|');
+        const deja = avenirs.get(cle);
+        if (deja) return deja;
+        const c1 = document.createElement('canvas');
+        if (!T.dalleAvenir(c1, 1, A) || !c1.width) return null;
+        const k = Math.min(tw / c1.width, th / c1.height);
+        const c2 = document.createElement('canvas');
+        if (!T.dalleAvenir(c2, k, A) || !c2.width) return null;
+        if (avenirs.size > 8) avenirs.delete(avenirs.keys().next().value!);
+        avenirs.set(cle, c2);
+        return c2;
+      } catch {
+        return null;
+      }
+    },
+    poserDalle(g, id, x, y, l, h, o) {
+      const f = w['_poseDalle'] as
+        ((...a: unknown[]) => { x: number; y: number; w: number; h: number } | null) | undefined;
+      const r = f ? f(g, id, x, y, l, h, o) : null;
+      return r ? { x: r.x, y: r.y, w: r.w, h: r.h } : null;
+    },
+    dalleEntiere(id) {
+      const T = toile();
+      const a = T.dalleAbs(id) as { minx: number; miny: number; w: number; h: number } | null;
+      const t = (T.taille as (() => { w: number; h: number }) | undefined)?.() ?? { w: 1e9, h: 1e9 };
+      return !!a && a.minx > 1 && a.miny > 1 && a.minx + a.w < t.w - 1 && a.miny + a.h < t.h - 1;
+    },
+    poserUn(g, cv, cx, cy) {
+      (w['_poseUn'] as (g: CanvasRenderingContext2D, cv: HTMLCanvasElement, x: number, y: number) => void)(
+        g,
+        cv,
+        cx,
+        cy,
+      );
+    },
   };
 }
 

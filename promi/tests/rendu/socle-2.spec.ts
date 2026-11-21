@@ -23,7 +23,17 @@ import { test, expect, type Browser, type Page } from '@playwright/test';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
 import { PNG } from 'pngjs';
-import { ECRANS_PORTES, P_, RACINE, prototype, sonde, stockage, vraieApp, type EcranPorte } from './aides.ts';
+import {
+  ECRANS_PORTES,
+  P_,
+  RACINE,
+  prototype,
+  refermerPagePlus,
+  sonde,
+  stockage,
+  vraieApp,
+  type EcranPorte,
+} from './aides.ts';
 import { AMORCE, GRAINE, T_FIGE } from './banc.ts';
 
 const SRC = join(RACINE, 'promi', 'src');
@@ -1248,6 +1258,8 @@ test("l'inventaire des fonctions de l'accueil : chaque geste a son résultat dan
     const voulu = f.arg ? { vers: f.vers, arg: f.arg } : { vers: f.vers };
     if (j.length !== 1 || j[0]!.vers !== voulu.vers || (f.arg && j[0]!.arg !== f.arg))
       fautes.push(`${f.geste} : la navigation a reçu ${JSON.stringify(j)} au lieu de ${JSON.stringify(voulu)}`);
+    // lot 2a : une pilule OUVRE la page + (elle couvre l'accueil) — son X la referme avant le geste suivant
+    if (f.vers === 'pagePlus') await refermerPagePlus(pg);
     if (f.vers === 'compte') {
       const a1 = (await pg.evaluate(`${P_}.magasin.etat().autres`)) as Record<string, string>;
       if (a1['promi_rappel_n'] !== String((+(JSON.parse(a0) as Record<string, string>)['promi_rappel_n']! || 0) + 1))
@@ -1288,7 +1300,8 @@ test("le contrôle qui remplit : chaque champ des écrans portés est atteignabl
       );
       L.forEach((e, i) => {
         const c = getComputedStyle(e);
-        if (c.display === 'none') return;
+        // un champ d'un écran fermé (un ancêtre en display:none — la page + avant le lot 2b) n'est pas à l'écran : aucune boîte rendue
+        if (c.display === 'none' || e.getClientRects().length === 0) return;
         e.setAttribute('data-champ', String(i));
         const r = e.getBoundingClientRect();
         const h = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);

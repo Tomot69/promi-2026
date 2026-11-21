@@ -59,3 +59,8 @@ body {
   height: 100%;
   display: block;
 }
+/* un écran qui couvre tout l'appareil (la page +, `.couvre`) le déclare (`.couvert`) : ce qui est dessous ne se voit plus et ne prend plus le
+   doigt ; le grain (`::after`) reste */
+.device.couvert > :not(.couvre) {
+  visibility: hidden;
+}
