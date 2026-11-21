@@ -104,7 +104,9 @@
   background: var(--c-creme95);
   color: var(--c-brun09);
 }
-/* une entrée : 54 × 51, l'icône de 28 puis son nom, 9 d'écart ; sa zone de toucher (C-106) va jusqu'au bord de la barre */
+/* une entrée : 54 × 51, l'icône de 28 puis son nom, 9 d'écart ; sa zone de toucher (C-106, v143) prend sa largeur et toute la hauteur
+   intérieure de la barre ; la frontière entre deux entrées passe au milieu de CE QU'ON VOIT d'elles : la zone de STUDIO déborde de 5 pt sur
+   l'AURA et passe devant, celle d'INDEX de 3 pt sur le FIL (le prototype, app.html ≈ l. 34842 — mesuré : 48 touchers sur 50 sans ce débord) */
 .acc-entree {
   position: absolute;
   top: 22.5px;
@@ -121,10 +123,20 @@
 .acc-entree::after {
   content: '';
   position: absolute;
-  left: -2.5px;
+  left: 0;
+  right: 0;
   top: -20px;
-  width: 59px;
-  height: 93px;
+  bottom: -22px;
+}
+#studioBtn,
+#indexBtn {
+  z-index: 3;
+}
+#studioBtn::after {
+  right: -5px;
+}
+#indexBtn::after {
+  right: -3px;
 }
 .acc-entree svg {
   width: 28px;
@@ -350,7 +362,7 @@
 .acc-recadre {
   position: absolute;
   right: calc(var(--marge-d) - 11px);
-  bottom: calc(var(--ancre-bas) + 99px);
+  bottom: calc(var(--ancre-bas) + 101px);
   width: 44px;
   height: 44px;
   display: none;

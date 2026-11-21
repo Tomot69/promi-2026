@@ -1,0 +1,97 @@
+[
+  {
+    "nom": "couleurs-encre",
+    "test": "couleurs : chaque écran porté a les couleurs du prototype, nœud par nœud (styles calculés), clair et sombre",
+    "defaut": "les noms de la barre passent au lilas #C9A8F5"
+  },
+  {
+    "nom": "decisions-i",
+    "test": "décisions de couleur de Tom : l’accueil et son menu du + rendus aux valeurs décidées, clair et sombre",
+    "defaut": "le I de PROMI reprend le bleu dérivé de Q533 (#4971B6) au lieu du bleu exact #82AEF8 (C-281)"
+  },
+  {
+    "nom": "joignable-recouvert",
+    "test": "joignable : chaque élément qui se touche reçoit le doigt en son centre, sur chaque écran porté",
+    "defaut": "un voile transparent posé sur le haut de l'appareil recouvre le plateau (le défaut du bouton photo de v117b)"
+  },
+  {
+    "nom": "ecrans-deborde",
+    "test": "écrans : chaque écran porté s’ouvre sans erreur et rien ne sort de l’appareil, clair et sombre",
+    "defaut": "la barre sort de 40 pt par la droite de l'appareil"
+  },
+  {
+    "nom": "ecrans-pastille",
+    "test": "écrans : l’accueil — la Toile, le Fil et sa pastille, l’anneau du + (redteam_ecrans)",
+    "defaut": "la pastille du Fil ne s'allume plus quand un Chiche reçu attend un geste"
+  },
+  {
+    "nom": "volume-source",
+    "test": "volume : aucun halo, ombre floue ni dégradé dans les sources de la vraie app",
+    "defaut": "une source porte une ombre floue (box-shadow 0 8px 24px)"
+  },
+  {
+    "nom": "volume-rendu",
+    "test": "volume : aucun halo, ombre floue ni dégradé rendu sur un écran porté",
+    "defaut": "le plateau porte une ombre floue"
+  },
+  {
+    "nom": "air-rapproche",
+    "test": "air : entre deux blocs de texte, jamais moins d’air à l’encre que dans le prototype",
+    "defaut": "le bandeau « Garder ta Toile » remonte de 12 pt vers le plateau ; l'encart du Chiche remonte de 11 pt vers celui du Cercle"
+  },
+  {
+    "nom": "flash-couche",
+    "test": "flash : rien ne paraît une fraction de seconde, à l’ouverture et à chaque écran porté",
+    "defaut": "une couche colorée paraît pendant une seule image, au milieu de l'ouverture de chaque écran"
+  },
+  {
+    "nom": "superpo-texte",
+    "test": "superposition : deux textes visibles ne se recouvrent jamais, sur chaque écran porté",
+    "defaut": "l'entrée Aura est posée sur l'entrée Studio : leurs noms se recouvrent"
+  },
+  {
+    "nom": "aspect-place",
+    "test": "aspect A : chaque morceau de texte a le texte, la police, la taille, la couleur et la place du prototype",
+    "defaut": "les noms de la barre descendent d'un point"
+  },
+  {
+    "nom": "aspect-image",
+    "test": "aspect B : les textes seuls, au pixel, comme dans le prototype (≤ 0,5 % au-delà de 24 niveaux)",
+    "defaut": "les noms de la barre sont soulignés (rien d'autre ne change)"
+  },
+  {
+    "nom": "filets-dom",
+    "test": "filets : aucun trait horizontal hors de ceux du moodboard, sur chaque écran porté",
+    "defaut": "le plateau perd ses côtés et son arrondi : il reste deux filets horizontaux"
+  },
+  {
+    "nom": "filets-canevas",
+    "test": "filets : aucun filet crème peint dans un canevas d’un écran porté",
+    "defaut": "un canevas de l'écran peint un filet crème adouci (rgba(247,240,222,.55)), celui que v135 a retiré"
+  },
+  {
+    "nom": "tonsurton-anneau",
+    "test": "ton sur ton : chaque arc de l’anneau du + se détache de la barre (ΔE ≥ 15), lu sur les pixels",
+    "defaut": "l'anneau du + est peint de la couleur de la barre"
+  },
+  {
+    "nom": "lexique-terme",
+    "test": "lexique : aucun terme banni affiché, sur chaque écran porté",
+    "defaut": "un texte « 3 tâches à valider » paraît sur l'écran"
+  },
+  {
+    "nom": "lexique-point",
+    "test": "lexique : la loi des points — aucun point qui ne dit pas qu’il manque quelque chose",
+    "defaut": "un petit point rond et plein, orange, paraît sur l'écran"
+  },
+  {
+    "nom": "emoji-champ",
+    "test": "emoji : aucun champ de saisie d’un écran porté n’accepte un emoji (tapé ou collé)",
+    "defaut": "un champ de saisie sans filtre paraît sur l'écran : les emojis y entrent"
+  },
+  {
+    "nom": "secs-texte",
+    "test": "changements secs : aucun texte ne change à sa place sans transition, aucune rangée ne saute",
+    "defaut": "le nom « Studio » de la barre devient « Studios » d'une image à l'autre, sans transition"
+  }
+]

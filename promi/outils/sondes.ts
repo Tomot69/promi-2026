@@ -6,6 +6,7 @@
  * l'inverse. Une sonde que son test ne prend pas : l'outil échoue, et le test est mort.
  *   node outils/sondes.ts                 toutes les sondes (l'app construite, `vite preview` sur 5180)
  *   node outils/sondes.ts <nom> [<nom>…]  celles-là seulement
+ *   node outils/sondes.ts --part=2/4      la deuxième des quatre parts (l'intégration continue)
  */
 import { readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
@@ -37,8 +38,12 @@ for (const s of sondes) {
 }
 for (const [n, f] of lues) if (!noms.has(n)) fautes.push(`sonde lue par ${f} mais pas inscrite : ${n}`);
 
-const seules = process.argv.slice(2);
-const choix = seules.length ? sondes.filter((s) => seules.includes(s.nom)) : sondes;
+// `--part=i/n` : la i-ième des n parts (l'intégration continue les passe en parallèle) ; les noms donnés : celles-là seulement
+const part = /^--part=(\d+)\/(\d+)$/.exec(process.argv.find((a) => a.startsWith('--part=')) ?? '');
+const seules = process.argv.slice(2).filter((a) => !a.startsWith('--'));
+const choix = (seules.length ? sondes.filter((s) => seules.includes(s.nom)) : sondes).filter(
+  (_, k) => !part || k % +part[2]! === +part[1]! - 1,
+);
 const echappe = (t: string): string => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const lignes: string[] = [];
 let ratees = 0;

@@ -30,6 +30,8 @@ for (const theme of ['sombre', 'clair'] as const)
       A.on('pageerror', (e) => erreurs.push(String(e)));
       await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
       for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
+      // la sonde : le plateau de la vraie app décalé d'un point (un écart au prototype)
+      if (sonde('identite-decale')) await A.addStyleTag({ content: '#accPlat{transform:translateX(1px)!important}' });
       await P.waitForTimeout(600);
       if (menu) await Promise.all([ouvrirPlus(P), ouvrirPlus(A)]);
       const dv = await P.evaluate(() => {
@@ -52,6 +54,9 @@ for (const theme of ['sombre', 'clair'] as const)
 
 test("les animations de l'accueil : le I de PROMI clignote, l'anneau du + tourne", async ({ page }) => {
   await vraieApp(page, stockage());
+  // la sonde : l'anneau du + tourne deux fois plus vite (50 s au lieu de 100 s)
+  if (sonde('animations-anneau'))
+    await page.addStyleTag({ content: '#device #createBtn::before{animation-duration:50s!important}' });
   const r = await page.evaluate(() => {
     const i = getComputedStyle(document.querySelector('.acc-mm i')!);
     const b = getComputedStyle(document.getElementById('createBtn')!, '::before');
@@ -76,6 +81,11 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
       const h = Toile.hit(x, y); if (h && h.pid === g.pid) out.push({ pid: g.pid, x, y }); }
     return out; })()`)) as Array<{ pid: number; x: number; y: number }>;
   expect(dalles.length, 'au moins une dalle de parole touchable').toBeGreaterThan(0);
+  // la sonde : la mauvaise fiche — le toucher lit la parole d'à côté (posée après avoir trouvé les dalles : `Toile.hit` n'y sert que de pointeur)
+  if (sonde('toucher-dalle-voisine'))
+    await page.evaluate(
+      '(() => { const o = Toile.hit; Toile.hit = function (x, y) { const h = o.call(this, x, y); return h && h.pid != null ? { ...h, pid: h.pid + 1 } : h; }; })()',
+    );
   // l'heure du lever du doigt, à l'horloge de l'app (celle de la navigation) : la demande vient 260 ms après, jamais avant
   await page.evaluate(() => {
     const w = window as unknown as { __leve: number[]; __promi: { horloge: { maintenant(): number } } };
@@ -132,9 +142,31 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
     for (let y = 200; y < 680; y += 9) for (let x = 40; x < 350; x += 9) if (libre(x, y)) return [x, y];
     return null; })()`)) as [number, number] | null;
   expect(vide, 'un point sans dalle à 30 pt à la ronde').not.toBeNull();
-  await page.mouse.click(vide![0], vide![1]);
-  await page.waitForTimeout(80);
-  await page.mouse.click(vide![0], vide![1]);
+  // la sonde : le double toucher ne recadre plus
+  if (sonde('double-toucher-sourd')) await page.evaluate(`${P_}.facade.recadrer = () => {}`);
+  // les deux touchers sont envoyés DANS la page, dans la même tâche : deux clics de Playwright à 80 ms arrivent à la page à plus de 320 ms
+  // l'un de l'autre quand le fil est lent (la CI : une image toutes les 0,7 s ; `ev.timeStamp` y est l'heure du traitement) — l'écart des
+  // deux touchers est alors sous la règle (320 ms, 30 pt) partout, et c'est la règle de l'app qu'on juge, pas la file de Playwright
+  await page.evaluate(
+    ([x, y]: [number, number]) => {
+      const cv = document.getElementById('toileCv')!;
+      const o = {
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        clientX: x,
+        clientY: y,
+        isPrimary: true,
+        pointerType: 'touch',
+        button: 0,
+      };
+      for (const id of [11, 12]) {
+        cv.dispatchEvent(new PointerEvent('pointerdown', { ...o, pointerId: id, buttons: 1 }));
+        cv.dispatchEvent(new PointerEvent('pointerup', { ...o, pointerId: id, buttons: 0 }));
+      }
+    },
+    vide! as [number, number],
+  );
   await page.waitForTimeout(600);
   expect(
     await page.evaluate(`${P_}.facade.vueALaMain()`),
@@ -217,14 +249,37 @@ test("déplacer une dalle (C-101) : la page laisse l'appui long au moteur, la da
     }, 30);
   });
   const journal0 = (await page.evaluate(`${P_}.nav.journal().length`)) as number;
-  // un glissé SANS attendre ne détache rien
+  // un glissé SANS attendre ne détache rien. L'écart entre l'appui et le premier mouvement se lit DANS la page (l'heure de leur traitement,
+  // en capture) : sur un fil lent (la CI, une image toutes les 0,7 s) Playwright livre le mouvement plus de 800 ms après l'appui et le moteur
+  // attrape la dalle à bon droit — au-delà de 600 ms, ce n'est plus un « glissé sans attendre » : non jugé
+  await page.evaluate(() => {
+    const w = window as unknown as { __ecart: number[] };
+    w.__ecart = [];
+    window.addEventListener('pointerdown', () => w.__ecart.splice(0, 2, performance.now()), true);
+    window.addEventListener(
+      'pointermove',
+      () => {
+        if (w.__ecart.length === 1) w.__ecart.push(performance.now());
+      },
+      true,
+    );
+  });
   await page.mouse.move(d0.x, d0.y);
   await page.mouse.down();
   await page.waitForTimeout(150);
   await page.mouse.move(d0.x + 40, d0.y + 50, { steps: 8 });
   await page.mouse.up();
   await page.waitForTimeout(900);
-  expect(await page.evaluate('window.__tire'), 'un glissé sans attendre 0,8 s ne détache aucune dalle').toBe(0);
+  const ecartGlisse = (await page.evaluate(
+    'window.__ecart.length === 2 ? window.__ecart[1] - window.__ecart[0] : -1',
+  )) as number;
+  if (ecartGlisse >= 0 && ecartGlisse <= 600)
+    expect(await page.evaluate('window.__tire'), 'un glissé sans attendre 0,8 s ne détache aucune dalle').toBe(0);
+  else
+    test.info().annotations.push({
+      type: 'non jugé',
+      description: `un glissé sans attendre : le premier mouvement traité ${ecartGlisse.toFixed(0)} ms après l'appui (au-delà de 600 ms : le fil est trop lent)`,
+    });
   // la vue a pu glisser : on relit la dalle, puis l'appui de 0,95 s et le glissé
   const d1 = ((await page.evaluate(lire)) as D[]).find((d) => d.pid === d0.pid)!;
   Object.assign(d0, d1);
@@ -270,6 +325,8 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await vraieApp(page, stockage());
+  // la sonde : l'entrée STUDIO ne prend plus le doigt
+  if (sonde('barre-studio-sourd')) await page.addStyleTag({ content: '#studioBtn{pointer-events:none!important}' });
   const zones = (await page.evaluate(() =>
     ['studioBtn', 'souffleBtn', 'indexBtn', 'filBtn'].map((id) => {
       const r = document.getElementById(id)!.getBoundingClientRect();
@@ -318,6 +375,8 @@ test('le symbole « recadrer » naît quand la main bouge la vue, part après 4 
   await vraieApp(page, stockage());
   const vu = (): Promise<boolean> =>
     page.evaluate(() => document.getElementById('accRecadre')!.classList.contains('vu'));
+  // la sonde : le symbole posé 16 pt trop à gauche (hors de la marge)
+  if (sonde('recadre-place')) await page.addStyleTag({ content: '#device #accRecadre{right:29px!important}' });
   expect(await vu(), 'absent au repos').toBe(false);
   await page.mouse.move(195, 420);
   await page.mouse.down();
@@ -385,6 +444,11 @@ test("la Toile vit au repos sous l'accueil (C-028) : un mouvement est prévu, il
 }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await vraieApp(page, stockage());
+  // la sonde : une couche de l'accueil couvre le centre de la Toile
+  if (sonde('vivant-couvert'))
+    await page.evaluate(
+      "(() => { const e = document.createElement('div'); e.style.cssText = 'position:absolute;left:95px;top:280px;width:200px;height:200px;z-index:40'; document.getElementById('device').appendChild(e); })()",
+    );
   // le moteur ne bouge rien dans les 5 s qui suivent un changement de la Toile (la plantation au démarrage)
   await page.waitForTimeout(5600);
   const r = (await page.evaluate(`(() => { const c = document.getElementById('toileCv').getBoundingClientRect();
@@ -419,6 +483,8 @@ test('le bandeau « Garder ta Toile » : paru après le troisième Promi, « Plu
   ).promises.filter((p) => !p.draft).length;
   if (paroles < 3) test.skip(true, "l'état porte moins de trois paroles : le bandeau ne paraît pas (la règle)");
   expect(await vu(), 'paru après le troisième Promi').toBe(true);
+  // la sonde : la réponse « Plus tard » n'est pas notée dans le magasin
+  if (sonde('rappel-non-note')) await page.evaluate(`${P_}.magasin.repondreRappel = () => {}`);
   const plusTard = async (): Promise<void> => {
     const r = await page.evaluate(() => {
       const b = document.querySelector('#accRappel [data-r="non"]')!.getBoundingClientRect();

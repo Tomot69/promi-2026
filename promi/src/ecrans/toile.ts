@@ -18,6 +18,11 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
   const h = horloge();
   facade.monter(conteneur);
   facade.planterTout();
+  // la Toile frémit 1,5 s après le chargement, comme dans le prototype (app.html ≈ l. 7271) : sans ce frémissement le relâchement laisse les
+  // graines jusqu'à 0,6 pt de leur place, et le premier mouvement de repos les y amène — sous Touffe, 6 à 11 % de la Toile bougeait (C-326)
+  const fremit = h.minuteur(() => {
+    facade.fremir();
+  }, 1500);
   const desabonne = magasin.abonner((e, action) => {
     if (action === 'choisirMonde') facade.choisirMonde(e.studio.monde);
     if (action === 'choisirTheme') facade.appliquerTheme(e.reglages.theme);
@@ -110,6 +115,7 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
   window.addEventListener('pointerup', leve, true);
   window.addEventListener('pointercancel', leve, true);
   return () => {
+    h.annuleMinuteur(fremit);
     desabonne();
     stage.removeEventListener('pointerdown', debut, true);
     stage.removeEventListener('pointermove', mouvement, true);

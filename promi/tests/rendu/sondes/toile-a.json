@@ -1,0 +1,77 @@
+[
+  {
+    "nom": "rythme-constante",
+    "test": "le rythme (v60–v93) : les constantes qui font le rythme sont dans le moteur, et Houle reste par image",
+    "defaut": "une constante du rythme dérive dans le source du moteur (la transition de Ritournelle passe de 1 900 à 1 700 ms)"
+  },
+  {
+    "nom": "rythme-ressort",
+    "test": "le rythme de « encre » (v60/v61) : une parole arrive puis part, le mouvement finit à la durée validée",
+    "defaut": "le ressort de Pochade ralenti (0,93 / 0,90 au lieu de 0,838 / 0,79) : la version qui dérive du juge d'origine"
+  },
+  {
+    "nom": "vivant-fixe",
+    "test": "la vie au repos sous « encre » (C-028) : une ou deux dalles bougent 1 à 2 s, toutes les 5 à 15 s, jamais périodique, puis reviennent",
+    "defaut": "la vie au repos à intervalle FIXE de 6 s (`_vivantFixe`, la preuve `--fixe` du juge d'origine)"
+  },
+  {
+    "nom": "vivant-tous",
+    "test": "la vie au repos : les mondes qui n’ont pas encore leur manière restent immobiles (Volubilis, Guingois, Ramage, Esquille)",
+    "defaut": "tous les mondes tirés (`_vivTous`) : un monde sans manière se met à bouger"
+  },
+  {
+    "nom": "vivant-reduit",
+    "test": "la vie au repos : avec « Réduire les animations », la Toile reste immobile (24 s)",
+    "defaut": "le réglage « Réduire les animations » ignoré"
+  },
+  {
+    "nom": "retour-sans-rendu",
+    "test": "le retour exact sous « touffe » (C-028, v127) : après chaque mouvement de repos, 0 pixel d'écart sur toute la Toile",
+    "defaut": "la Toile n'est plus rendue à l'image gardée au tirage (la version d'avant v127 : les mondes à ressort ne reviennent pas)"
+  },
+  {
+    "nom": "zoom-encarts",
+    "test": "le zoom (v46–v47), sombre : dézoom jusqu'à la Toile entière (0,72) et encarts effacés, zoom avant à 5, le double toucher, planter et retirer ramènent le défaut",
+    "defaut": "le plateau et la barre restent visibles et touchables quand la Toile est entière (la règle `.toile-entiere` défaite)"
+  },
+  {
+    "nom": "zoom-double",
+    "test": "le zoom (v46–v47), clair : dézoom jusqu'à la Toile entière (0,72) et encarts effacés, zoom avant à 5, le double toucher, planter et retirer ramènent le défaut",
+    "defaut": "le double toucher ne recadre plus (`Toile_recadre` vidé)"
+  },
+  {
+    "nom": "stable-empile",
+    "test": "la Toile stable (C-177) · T : l'état de Tom — à l'ouverture rien d'entassé, des places valides et distinctes, trois réouvertures identiques",
+    "defaut": "les paroles empilées à la même place [0.42, 0.74] et rendues au moteur sans réparation (la donnée de C-177)"
+  },
+  {
+    "nom": "stable-abimees",
+    "test": "la Toile stable (C-177) · X : des places abîmées exprès sont réparées à l’ouverture — rien d’entassé, places valides et distinctes, stables",
+    "defaut": "la relecture ne répare plus : les places abîmées rendues au moteur et au magasin telles quelles"
+  },
+  {
+    "nom": "stable-saine",
+    "test": "la Toile stable (C-177) · S : une Toile saine — rien n’est réparé, les places enregistrées sont celles de la sauvegarde",
+    "defaut": "une place saine réécrite (la première parole déplacée au centre)"
+  },
+  {
+    "nom": "stable-menu",
+    "test": "la Toile stable (C-177) · M : à froid rien d'entassé ; le menu du + ouvert puis refermé, chaque dalle à sa place à 1 pt",
+    "defaut": "refermer le menu du + recadre la Toile sur une dalle (la vue d'un autre cadrage, comme le Studio de C-177)"
+  },
+  {
+    "nom": "vide-colore",
+    "test": "la Toile vide (C-136) : des chargements sans parole, aucune cellule colorée à aucun instant (un relevé toutes les 40 ms, 9 s)",
+    "defaut": "l'ancien remplissage de l'onboarding : 420 ms après le chargement, des cellules colorées sur une Toile sans parole"
+  },
+  {
+    "nom": "ritournelle-serre",
+    "test": "Ritournelle (C-088, v146) : de 1 à 15 paroles plantées une à une, chaque coulée visible à 75 %, la zone couverte à 75 %, aucun saut, toucher demande la fiche",
+    "defaut": "la Toile vue de trop près (un pincement après chaque plantation) : les coulées sortent de l'écran"
+  },
+  {
+    "nom": "ramage-film",
+    "test": "Ramage (C-009, v127) : une plume plantée sur la Toile paraît d’un coup — une seule image de changement d’ensemble, ni disque qui grandit, ni saut",
+    "defaut": "la plume pousse dans un disque qui grandit sur la Toile (la version de v126 : le film de la pousse, puis le saut), peint par la sonde — le film du moteur (`_ramFilmOn`) ne joue plus qu'au Studio"
+  }
+]

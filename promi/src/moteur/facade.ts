@@ -42,6 +42,9 @@ export interface Facade {
   redessiner(): void;
   /** le recadrage du moteur (le symbole « recadrer » de l'accueil, le double toucher) */
   recadrer(): void;
+  /** le frémissement de toute la Toile (`liven`) : 1,5 s après le chargement et à chaque retour sur l'accueil (le prototype, app.html
+   * ≈ l. 7271, 3402, 7408, 10109) — il fait aussi finir aux graines leur chemin vers leur place (le relâchement s'arrête à 0,6 pt) */
+  fremir(): void;
   /** l'hôte du moteur (`#device`) : l'accueil y pose son plateau et sa barre */
   appareil(): HTMLElement;
   /** la dalle sous un point de la Toile (en pt de l'écran) : une parole, un Cercle, ou rien (`Toile.hit`, lecture seule) */
@@ -79,15 +82,30 @@ export function creerFacade(magasin: Magasin): Facade {
     if (e.utilisateur.graine != null) localStorage.setItem('promi_graine', String(e.utilisateur.graine));
   }
 
-  /** le moteur a noté des places (`_placeNote` → `saveState()`) : le magasin les garde */
+  /** le moteur a noté des places (`_placeNote` → `saveState()`) et figé des couleurs (`_dalleFigee`, Q213 ; `NUEDALLE`) : le magasin les
+   * garde — sans quoi une parole plantée changeait de couleur au rechargement */
   function rendrePlaces(): void {
-    magasin.noterPlaces(paroles.map((p) => ({ id: p.id, place: p['place'] as Parole['place'] })));
+    magasin.noterPlaces(
+      paroles.map((p) => ({ id: p.id, place: p['place'] as Parole['place'], dalle: p['dalle'] as Parole['dalle'] })),
+      { ...((w['NUEDALLE'] as Record<string, NonNullable<Parole['dalle']>> | undefined) ?? {}) },
+    );
   }
 
   function charger(): void {
     if (w.Toile) return;
     w['saveState'] = rendrePlaces;
     w['_grainePropre'] = () => magasin.etat().utilisateur.graine ?? 0;
+    // la couleur d'une parole qui n'en a pas encore : tirée de son titre et de sa personne, jamais du hasard ni de son id (Q213, la règle
+    // du prototype, app.html ≈ l. 3308 : FNV-1a de « titre|personne », 4 tons) — le moteur l'appelle (`_dalleFigee`)
+    w['_dalleDeCle'] = (p: { title?: string | number | null; who?: string | number | null } | null) => {
+      const s = `${String(p?.title ?? '')}|${String(p?.who ?? '')}`;
+      let h = 2166136261;
+      for (let i = 0; i < s.length; i++) {
+        h ^= s.charCodeAt(i);
+        h = Math.imul(h, 16777619) >>> 0;
+      }
+      return { ci: h % 4, lit: 0 };
+    };
     const s = document.createElement('script');
     s.text = moteurSource + '\n//# sourceURL=promi-moteur.js';
     document.head.appendChild(s);
@@ -136,6 +154,7 @@ export function creerFacade(magasin: Magasin): Facade {
       if (T.getHue() !== e.studio.teinte) T.setHue(e.studio.teinte);
       if (T.getTheme() !== e.studio.monde) T.setTheme(e.studio.monde);
       T.sync(paroles.filter((p) => !p.draft).map((p) => p.id));
+      rendrePlaces();
     },
     choisirMonde(monde) {
       toile().setTheme(monde);
@@ -160,6 +179,9 @@ export function creerFacade(magasin: Magasin): Facade {
     },
     redessiner: () => {
       toile().redraw();
+    },
+    fremir: () => {
+      w.Toile_liven?.();
     },
     recadrer: () => {
       w.Toile_recadre?.();

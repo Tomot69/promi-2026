@@ -1,0 +1,107 @@
+[
+  {
+    "nom": "evol-recadre",
+    "test": "une dalle arrive puis part, cinq mondes (C-112) : aucun travail de l'app ni recadrage à chaque image pendant le mouvement",
+    "defaut": "le recadrage refait à chaque image de l'apparition (vingt fois, la régression de v142)"
+  },
+  {
+    "nom": "evol-travail",
+    "test": "une dalle arrive puis part, cinq mondes (C-112) : aucun travail de l'app ni recadrage à chaque image pendant le mouvement",
+    "defaut": "un rappel de l'app de 250 ms pendant le mouvement (une passe de fond tombée dans l'animation, v144)"
+  },
+  {
+    "nom": "pleine-rendu",
+    "test": "sur une Toile pleine (25 paroles relues de la sauvegarde), une dalle arrive puis part : aucun rendu de dalle hors du moteur",
+    "defaut": "des dalles rendues hors du moteur pendant que la dalle grandit (les vignettes d'un écran fermé repeintes, la cause de C-112)"
+  },
+  {
+    "nom": "decoupe-fragment",
+    "test": "une dalle n'est jamais une image découpée (22 sept., v29) : hors du moteur, aucun canevas de dalle ou de Toile n'est rogné, redimensionné, relu",
+    "defaut": "un fragment de la Toile recopié hors du moteur (famille D)"
+  },
+  {
+    "nom": "decoupe-affichage",
+    "test": "une dalle n'est jamais une image découpée (22 sept., v29) : hors du moteur, aucun canevas de dalle ou de Toile n'est rogné, redimensionné, relu",
+    "defaut": "une dalle affichée par le CSS au double de la taille où elle a été peinte (famille G)"
+  },
+  {
+    "nom": "dalle-hasard",
+    "test": "une dalle garde sa couleur (Q213) : la même à chaque ouverture (3 pages × 2 thèmes), et après une resynchronisation",
+    "defaut": "la version d'avant Q213 : aucune couleur gardée, une graine tirée au hasard à chaque chargement"
+  },
+  {
+    "nom": "cs-bascule",
+    "test": "la même Toile en clair et en sombre (C-131), ",
+    "defaut": "à la bascule en sombre, l'app replante la Toile sans sa première parole (les quatre tailles : 1, 5, 25, 50 paroles)"
+  },
+  {
+    "nom": "cs-ouverture",
+    "test": "la même Toile en clair et en sombre (C-131) : l'app ouverte en sombre montre la Toile de l'app ouverte en clair (5 et 25 paroles, le monde sauvé et Ritournelle)",
+    "defaut": "l'app ouverte en sombre plante une autre Toile (sans sa première parole)"
+  },
+  {
+    "nom": "cs-dalle",
+    "test": "la même Toile en clair et en sombre (C-131) : une dalle rendue seule a la même silhouette, dans les vingt mondes (3 paroles chacun)",
+    "defaut": "en sombre, une dalle seule est rendue à 90 % de sa taille"
+  },
+  {
+    "nom": "cs-image",
+    "test": "la même Toile en clair et en sombre (C-131) : après un aller-retour clair → sombre → clair, la Toile est la même image, cellules vides comprises (dix mondes)",
+    "defaut": "la bascule du thème change les couleurs de la Toile pour de bon"
+  },
+  {
+    "nom": "toucher-mauvaise",
+    "test": "toucher une dalle demande SA fiche, sous les vingt mondes (C-058) : trois dalles chacun, rien ne couvre la Toile au point touché",
+    "defaut": "le toucher lit la parole d'à côté (la mauvaise fiche)"
+  },
+  {
+    "nom": "toucher-heure",
+    "test": "une image longue (900 ms) entre l'appui et le lever ne fait pas perdre le toucher (v139) : la durée se lit à l'heure des ÉVÉNEMENTS",
+    "defaut": "la durée du toucher lue à l'heure du traitement (la version d'avant v139)"
+  },
+  {
+    "nom": "ritournelle-monde",
+    "test": "Ritournelle, une puis trois paroles (C-088, v145) : la Toile n'a que ses paroles — autant de cellules que de paroles",
+    "defaut": "le monde choisi n'est pas appliqué : la Toile garde le semis constant des anciens mondes"
+  },
+  {
+    "nom": "tolerant-rayon",
+    "test": "le toucher tolérant (C-239), ",
+    "defaut": "seul le point exact du doigt est lu, aucune dalle n'est cherchée autour (la version d'avant C-239) (chaque état jugé : celui de Tom s'il est là, et le banc)"
+  },
+  {
+    "nom": "accueil-cote",
+    "test": "l'accueil (direction B), ",
+    "defaut": "la barre descendue de 6 pt (les deux thèmes)"
+  },
+  {
+    "nom": "accueil-atteinte",
+    "test": "l'accueil (direction B) : toute dalle reste atteignable sous le plateau et la barre, à dix zooms, clair et sombre",
+    "defaut": "une couche transparente prend le doigt sur la Toile, entre le plateau et la barre"
+  },
+  {
+    "nom": "recadre-rond",
+    "test": "le symbole « recadrer » (C-188), ",
+    "defaut": "un rond plein sous le symbole, la version d'avant C-188 (les deux thèmes)"
+  },
+  {
+    "nom": "deplace-place-perdue",
+    "test": "déplacer une dalle (C-101) sous cinq mondes : attrapée à 0,8 s, posée sous le doigt, aucune fiche, gardée au rechargement, jamais sous la barre",
+    "defaut": "la place notée par le moteur n'est pas gardée par le magasin"
+  },
+  {
+    "nom": "dalle-perdue",
+    "test": "une dalle plantée garde sa couleur (Q213), sauvée puis rechargée",
+    "defaut": "la couleur figée d'une parole plantée n'est pas rendue au magasin (la version d'avant C-326)"
+  },
+  {
+    "nom": "barre-chevauche",
+    "test": "la barre (C-106) : cinquante touchers sur ce qu'on voit de chaque entrée (et du +) demandent sa page, cinquante sur cinquante",
+    "defaut": "la zone de l'AURA déborde de 36 pt sur STUDIO et passe devant (la cause de C-106)"
+  },
+  {
+    "nom": "recadre-bas",
+    "test": "le symbole « recadrer » (C-188) : le bas de son encre est à 12 pt au-dessus de la barre (± 1,5)",
+    "defaut": "le symbole « recadrer » 2 pt plus bas (la version d'avant C-326)"
+  }
+]

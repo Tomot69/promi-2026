@@ -1,0 +1,102 @@
+[
+  {
+    "nom": "tokens-valeur",
+    "test": "les jetons font autorité : les valeurs décidées, aucune couleur ni police en dur dans la vraie app (redteam_tokens)",
+    "defaut": "jetons.css porte un bleu Promi qui n'est pas #82AEF8 (lu en mémoire)"
+  },
+  {
+    "nom": "tokens-couleur-dur",
+    "test": "les jetons font autorité : les valeurs décidées, aucune couleur ni police en dur dans la vraie app (redteam_tokens)",
+    "defaut": "accueil.css écrit une couleur en dur (#123456) au lieu d'un jeton (lu en mémoire)"
+  },
+  {
+    "nom": "tokens-police-dur",
+    "test": "les jetons font autorité : les valeurs décidées, aucune couleur ni police en dur dans la vraie app (redteam_tokens)",
+    "defaut": "accueil.css appelle Georgia en dur (lu en mémoire)"
+  },
+  {
+    "nom": "tokens-face",
+    "test": "les jetons font autorité : les valeurs décidées, aucune couleur ni police en dur dans la vraie app (redteam_tokens)",
+    "defaut": "polices.css perd la face Atkinson 500 (lu en mémoire)"
+  },
+  {
+    "nom": "polices-graisse",
+    "test": "aucune graisse hors des cinq faces embarquées, sur chaque écran porté, clair et sombre (redteam_polices)",
+    "defaut": "les noms de la barre demandent Atkinson 600, une graisse qui n'est pas embarquée"
+  },
+  {
+    "nom": "bleu-terni",
+    "test": "les lettres qui clignotent : au sommet, le bleu exact #82AEF8, sur chaque écran porté, deux thèmes (redteam_lettres_bleu, C-281)",
+    "defaut": "le I de PROMI terni à 0,9 d'opacité (la sonde du juge)"
+  },
+  {
+    "nom": "kaki-palette",
+    "test": "jamais de kaki : la source du moteur repris — palettes du Studio, rampes des cellules vides, fond de la Toile (redteam_kaki A)",
+    "defaut": "la palette Ingénu reçoit un ton kaki rgb(130,122,106) (lu en mémoire)"
+  },
+  {
+    "nom": "kaki-rendu",
+    "test": "jamais de kaki : la Toile des vingt mondes rendue par la vraie app, clair et sombre — rien de neuf hors de la dette du prototype (redteam_kaki B)",
+    "defaut": "chaque Toile rendue porte une bande kaki sur 5 % de sa hauteur"
+  },
+  {
+    "nom": "design-ecart",
+    "test": "le contrat visuel : les 25 propriétés de chaque élément porté égales à celles du prototype, et aucun trait neutre (releve-design)",
+    "defaut": "l'entrée STUDIO de la barre prend une chasse de 1 px"
+  },
+  {
+    "nom": "design-neutre",
+    "test": "le contrat visuel : les 25 propriétés de chaque élément porté égales à celles du prototype, et aucun trait neutre (releve-design)",
+    "defaut": "le plateau porte un trait gris #888888 (box-shadow)"
+  },
+  {
+    "nom": "croix-fermer",
+    "test": "× FERMER est un seul X : aucun « FERMER », le X en PromiLate 35 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)",
+    "defaut": "une fermeture « ✕ FERMER » (l'ancienne, d'avant C-173) posée sur l'écran"
+  },
+  {
+    "nom": "croix-taille",
+    "test": "× FERMER est un seul X : aucun « FERMER », le X en PromiLate 35 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)",
+    "defaut": "un X de fermeture en PromiLate 42 px au lieu de 35 (le défaut de v157)"
+  },
+  {
+    "nom": "vide-reste",
+    "test": "un écran n'est jamais vide : les écrans portés enchaînés sans recharger, deux tours, deux thèmes (redteam_vide)",
+    "defaut": "refermer le menu du + laisse STUDIO masqué en ligne (un display:none qui survit à l'écran qui l'a posé)"
+  },
+  {
+    "nom": "enchaine-classe",
+    "test": "enchaîner deux écrans : le second est lui-même — mêmes classes, rien en trop, rien de perdu (redteam_enchaine)",
+    "defaut": "refermer le menu du + laisse une classe d'un autre écran (pp-ouvert) sur la barre"
+  },
+  {
+    "nom": "app-recouvre",
+    "test": "la red team de l'app : aucune erreur, rien qui sort, rien de coupé, rien qui se recouvre — échelle 1, 390 × 844 (redteam_app, C-276)",
+    "defaut": "le nom AURA déplacé sur STUDIO : les deux noms se recouvrent en partie (≈ 35 %), sans que l'un cache le centre de l'autre"
+  },
+  {
+    "nom": "app-erreur",
+    "test": "la red team de l'app : aucune erreur, rien qui sort, rien de coupé, rien qui se recouvre — échelle 1, 390 × 844 (redteam_app, C-276)",
+    "defaut": "une erreur JavaScript levée par la page"
+  },
+  {
+    "nom": "fonction-perdue",
+    "test": "l'inventaire des fonctions de l'accueil : chaque geste a son résultat dans la donnée (redteam_fonctions)",
+    "defaut": "toucher Partager ne demande plus rien (son geste avalé)"
+  },
+  {
+    "nom": "champ-sourd",
+    "test": "le contrôle qui remplit : chaque champ des écrans portés est atteignable, accepte, la donnée le reçoit, l'écran le montre (redteam_champs)",
+    "defaut": "un champ de saisie visible qu'aucune donnée ne lit"
+  },
+  {
+    "nom": "pastille-morte",
+    "test": "le contrôle qui touche : chaque commande des écrans portés est atteignable au doigt et a un effet (redteam_pastilles)",
+    "defaut": "toucher INDEX n'a plus aucun effet (son geste avalé)"
+  },
+  {
+    "nom": "secs-recadre",
+    "test": "aucun changement sec : le symbole « recadrer » naît et part en flaques, jamais de 0 à 1 d'une image à l'autre (redteam_secs2, C-271)",
+    "defaut": "le symbole « recadrer » paraît et part d'un coup (le passage en flaques caché, le symbole net d'emblée)"
+  }
+]

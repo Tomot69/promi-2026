@@ -3,5 +3,45 @@
     "nom": "deplace-selection",
     "test": "déplacer une dalle (C-101) : la page laisse l'appui long au moteur, la dalle suit le doigt, aucune fiche, sa place est gardée",
     "defaut": "la Toile permet la sélection de texte (la version fautive du prototype, C-324)"
+  },
+  {
+    "nom": "identite-decale",
+    "test": "identité au pixel : l'accueil",
+    "defaut": "le plateau de la vraie app décalé d'un point (les quatre tests d'identité : clair, sombre, menu fermé et ouvert)"
+  },
+  {
+    "nom": "animations-anneau",
+    "test": "les animations de l'accueil : le I de PROMI clignote, l'anneau du + tourne",
+    "defaut": "l'anneau du + tourne en 50 s au lieu de 100 s"
+  },
+  {
+    "nom": "toucher-dalle-voisine",
+    "test": "toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher recadre",
+    "defaut": "le toucher demande la fiche de la parole d'à côté"
+  },
+  {
+    "nom": "double-toucher-sourd",
+    "test": "toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher recadre",
+    "defaut": "le double toucher ne recadre plus"
+  },
+  {
+    "nom": "barre-studio-sourd",
+    "test": "la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvre les natures, une pilule sa page +, ailleurs referme",
+    "defaut": "l'entrée STUDIO ne prend plus le doigt"
+  },
+  {
+    "nom": "recadre-place",
+    "test": "le symbole « recadrer » naît quand la main bouge la vue, part après 4 s sans toucher, et recadre",
+    "defaut": "le symbole posé 16 pt trop à gauche, hors de la marge"
+  },
+  {
+    "nom": "vivant-couvert",
+    "test": "la Toile vit au repos sous l'accueil (C-028) : un mouvement est prévu, il a lieu, rien de l'accueil ne couvre le centre",
+    "defaut": "une couche de l'accueil couvre le centre de la Toile"
+  },
+  {
+    "nom": "rappel-non-note",
+    "test": "le bandeau « Garder ta Toile » : paru après le troisième Promi, « Plus tard » le retire et se note",
+    "defaut": "la réponse « Plus tard » n'est pas notée dans le magasin"
   }
 ]
