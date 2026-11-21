@@ -2,7 +2,19 @@
 
 À lire avec `CLAUDE.md` (il fait autorité), `CHANTIERS.md` (le registre) et `QUESTIONS.md`. En tête de chaque session : `python3 serveur.py` (port 8752, IP relue par `ipconfig getifaddr en0`), donner les trois adresses.
 
-## 0000) LOT 1 — L'ACCUEIL ET LA TOILE VIVANTE (20 nov. 2026, branche `app-L1`, C-322) — EN ATTENTE DE TOM
+## 00000) LOT 1 CLOS : SES JUGES SONT DES TESTS (21 nov. 2026, branche `app-L1`, C-324 à C-329) — LE LOT 2 EST LE SUIVANT
+
+- **Validé par Tom** (lot 1, ce qui est porté). **Les 47 juges (20 du lot, 27 du socle) sont des tests Playwright** : `promi/JUGES-TESTS.md` (juge → test → sonde).
+  Chaque test a sa sonde (`sonde('nom')`, `tests/rendu/sondes/*.json`) ; `npm run sondes` exige qu'il rougisse. **La CI : dix travaux, tous verts sur `5d13bcb`**
+  (vérifier, quatre parts de tests, le banc au pixel à part, quatre parts de sondes). Un juge du socle parcourt `ECRANS_PORTES` (aides.ts) : **chaque lot y ajoute ses écrans**.
+- **C-324** : déplacer une dalle dans Safari — la sélection de texte d'iOS prenait l'appui long (présent depuis v142, aucun commit fautif) ; corrigé dans le prototype (`lot-L1-DEPLACE-css`), vu dans Safari.
+  **C-325** : le glissé qui changeait de monde (preuve L0) est retiré. **C-323** : identique au prototype (décision de Tom).
+- **Trouvés en portant, corrigés dans l'app** : la couleur figée d'une dalle gardée par le magasin (Q213, `_dalleDeCle`), les zones de la barre (C-106), le symbole « recadrer » 2 pt trop bas, le frémissement de la Toile à 1,5 s.
+- **À Tom** : C-327 (Touffe, un mouvement de repos change 6 à 11 % de la Toile — préexistant dans le prototype), C-328 (le départ de Mascaret : 2 000 ms pour 1 834 décidés — prototype identique), C-329 (trois changements secs de l'accueil identiques au prototype).
+- **Pièges payés** : sur la CI (Linux, WebKit sans carte graphique) une durée ou un écart d'événements se lit DANS la page (deux clics Playwright y arrivent à plus de 320 ms) ; un juge au pixel se juge contre son témoin (clair → clair) ; une sonde ne doit pas fausser le témoin ; le juge `redteam_app` ne garde un texte que s'il est visible en son centre.
+- **L'app est sur l'iPhone** (construite depuis `91bd3f5` ; seuls les tests ont changé depuis).
+
+## 0000) LOT 1 — L'ACCUEIL ET LA TOILE VIVANTE (20 nov. 2026, branche `app-L1`, C-322) — VALIDÉ PAR TOM
 
 - L0 est clos (validé par Tom : plein écran, glissé entre les mondes ; CI verte). L'état embarqué : l'export de Safari de Tom du 20 nov. (2 paroles de test), copié dans `Promi-reference-v205/etat-de-tom/`.
 - **Porté** : `promi/src/ecrans/accueil/` (plateau, barre, menu du +, bandeau « Garder ta Toile », symbole « recadrer » en flaques), le toucher d'une dalle (`ecrans/toile.ts`, `toucher-tolerant.ts`), le passage en flaques (`animation/flaques/passage.ts`), la navigation (`navigation/` : aucun écran destinataire au lot 1, la demande est notée). Identique au prototype au pixel à 390 × 844, clair et sombre, menu ouvert et fermé (`tests/rendu/accueil.spec.ts`) ; s'adapte (SE, 16e, 16 Pro Max, Android).
