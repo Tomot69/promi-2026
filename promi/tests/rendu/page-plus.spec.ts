@@ -25,18 +25,31 @@ const RES = join(import.meta.dirname, 'resultats', 'page-plus');
 
 type Zone = [number, number, number, number];
 
-/** les zones exceptées, lues sur la vraie app (en pt) : la matière déclarée, le carré P1, le bord P2 */
-async function zones(A: Page): Promise<Zone[]> {
-  return (await A.evaluate(() => {
-    const z: number[][] = [];
+/** la matière déclarée par le peintre de la page + (`#csTrameCv[data-matiere]`), en pt de l'appareil */
+async function matiere(pg: Page): Promise<Zone | null> {
+  return (await pg.evaluate(() => {
     const cv = document.getElementById('csTrameCv');
     const m = cv?.getAttribute('data-matiere');
+    if (!m || !cv) return null;
+    const D = (document.getElementById('device') ?? document.getElementById('createSheet'))!.getBoundingClientRect();
+    const k = D.width / 390 || 1;
+    const [x, y, w, h] = m.split(',').map(Number) as [number, number, number, number];
+    const c = cv.getBoundingClientRect();
+    return [(c.left - D.left) / k + x, (c.top - D.top) / k + y, w, h];
+  })) as Zone | null;
+}
+
+/**
+ * les zones exceptées (en pt) : la MATIÈRE (§8 bis) — la réunion de celle que déclare la vraie app et de celle que déclare le prototype,
+ * élargie de 8 pt (les poils d'un monde comme Touffe débordent de la boîte déclarée ; la dalle d'avance du prototype respire et se pose
+ * d'une passe à l'autre à quelques points près : relevé sur une passe à deux en parallèle, ses poils sortaient de la boîte de l'app) —,
+ * le carré P1, le bord P2
+ */
+async function zones(A: Page, P: Page): Promise<Zone[]> {
+  const ms = (await Promise.all([matiere(A), matiere(P)])).filter((z): z is Zone => !!z);
+  const autres = (await A.evaluate(() => {
+    const z: number[][] = [];
     const C = document.getElementById('createSheet')!.getBoundingClientRect();
-    if (m && cv) {
-      const [x, y, w, h] = m.split(',').map(Number) as [number, number, number, number];
-      const top = cv.getBoundingClientRect().top - C.top;
-      z.push([x - 2, top + y - 2, w + 4, h + 4]);
-    }
     const r = document.getElementById('csPinceau');
     if (r && !r.hidden) {
       const t = r.getBoundingClientRect().top - C.top;
@@ -46,6 +59,12 @@ async function zones(A: Page): Promise<Zone[]> {
     if (document.getElementById('createSheet')!.classList.contains('pp-chiche')) z.push([237.5, 513.5, 1.5, 1.5]);
     return z;
   })) as Zone[];
+  if (!ms.length) return autres;
+  const x0 = Math.min(...ms.map((m) => m[0])) - 8,
+    y0 = Math.min(...ms.map((m) => m[1])) - 8;
+  const x1 = Math.max(...ms.map((m) => m[0] + m[2])) + 8,
+    y1 = Math.max(...ms.map((m) => m[1] + m[3])) + 8;
+  return [[x0, y0, x1 - x0, y1 - y0], ...autres];
 }
 
 function masquer(png: Buffer, Z: Zone[]): Buffer {
@@ -118,7 +137,7 @@ for (const theme of ['sombre', 'clair'] as const)
       // la sonde : la phrase de la vraie app décalée d'un point
       if (sonde('pp-identite-decale')) await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0}' });
       await P.waitForTimeout(600);
-      const Z = await zones(A);
+      const Z = await zones(A, P);
       const dv = await P.evaluate(() => {
         const r = document.getElementById('device')!.getBoundingClientRect();
         return { x: r.left, y: r.top, width: r.width, height: r.height };

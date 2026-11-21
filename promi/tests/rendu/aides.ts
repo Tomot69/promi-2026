@@ -195,8 +195,26 @@ export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee
     return [b.left + b.width / 2, b.top + b.height / 2];
   }, nat);
   await page.mouse.click(r[0]!, r[1]!);
-  if (proto) await page.waitForTimeout(3500);
-  else
+  if (proto) {
+    // le prototype : la page + est posée quand elle porte SA nature, montrée (`show`), sortie de sa composition cachée (`acc-passe`,
+    // v103) — un temps fixe ne suffisait pas hors du Mac (une image dure 0,7 s : la page + n'était pas encore là) ; puis ses
+    // minuteurs de composition (arme +60/+340, champ +240, encre +120/+420) ont fini
+    await page.waitForFunction(
+      (k) => {
+        const s = document.getElementById('createSheet');
+        return (
+          !!s &&
+          s.classList.contains('show') &&
+          s.classList.contains('pp-' + k) &&
+          !s.classList.contains('pp-choix') &&
+          !s.classList.contains('acc-passe')
+        );
+      },
+      nat,
+      { timeout: 30000 },
+    );
+    await page.waitForTimeout(process.platform === 'darwin' ? 1500 : 4000);
+  } else
     await page.waitForFunction(
       () => {
         const c = document.getElementById('createSheet');
