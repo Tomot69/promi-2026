@@ -162,7 +162,8 @@ const ATTENDU: Record<string, ['horloge' | 'images', [number, number], [number, 
   volubilis: ['horloge', [3178, 155], [1940, 119]], // v93 (V92 du juge) : le départ par le chemin « moteur », 1 940 ms
   guingois: ['horloge', [1722, 30], [1865, 31]],
   chantourne: ['horloge', [1677, 16], [1849, 36]],
-  mascaret: ['horloge', [1674, 20], [1834, 32]],
+  // ⚑ C-328 (Tom, 21 nov. 2026) : le départ de Mascaret à 2 000 ms — ce que fait le prototype validé (1 834 avant, relevé en temps réel)
+  mascaret: ['horloge', [1674, 20], [2000, 32]],
   ramage: ['horloge', [1690, 83], [2620, 149]], // v82 (Tom) : l'arrivée sans fondu
 };
 /** redteam_rythme.py, TOLERANCE : ± max(100 ms, 8 %), sauf ces lignes (v64, v74, v105, v136 — chacune une décision de Tom) */
@@ -273,13 +274,6 @@ for (const m of Object.keys(ATTENDU))
     page,
   }) => {
     test.skip(CI && !COMPLET && !RYTHME_CI.includes(m), `intégration continue : l'échantillon ${RYTHME_CI.join(', ')}`);
-    // ÉCART À LA DÉCISION (C-326) : le départ de Mascaret finit à 2 000 ms, pour 1 834 ± 147 décidés (v73, relevé en temps réel sur
-    // Chromium GPU). Le prototype, mesuré par le même protocole en temps piloté, donne EXACTEMENT les mêmes valeurs (1 683 / 2 000 ms) :
-    // la vraie app ne diffère pas du prototype ; c'est la valeur décidée qui ne se retrouve pas à 60 images exactes. Décision à Tom.
-    test.fail(
-      m === 'mascaret',
-      'départ de Mascaret : 2 000 ms (prototype en temps piloté : 2 000 ms) pour 1 834 ± 147 décidés',
-    );
     await page.setViewportSize({ width: 390, height: 844 });
     const erreurs: string[] = [];
     page.on('pageerror', (e) => erreurs.push(String(e)));

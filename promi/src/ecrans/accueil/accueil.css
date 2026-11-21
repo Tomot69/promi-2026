@@ -192,6 +192,21 @@
 .acc-pastille[hidden] {
   display: none;
 }
+/* C-329 : elle s'ouvre et se referme sur son centre — l'animation de la pastille « pas encore vu » du prototype (C-247, `v201pop`) */
+.acc-pastille.nait {
+  animation: v201pop 0.26s cubic-bezier(0.33, 0, 0.67, 1) both;
+}
+.acc-pastille.part {
+  animation: v201pop 0.26s cubic-bezier(0.33, 0, 0.67, 1) reverse both;
+}
+@keyframes v201pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
 
 /* le + (72 × 72, au centre de la barre) : l'anneau (deux arcs, un tour en 100 s), le disque bleu Promi (45), la croix orange (C-087, v146) */
 .acc-plus {
@@ -407,7 +422,9 @@
 /* « Réduire les animations » (v154) : rien ne clignote, l'anneau ne tourne pas */
 @media (prefers-reduced-motion: reduce) {
   .acc-mm i,
-  .acc-plus::before {
+  .acc-plus::before,
+  .acc-pastille.nait,
+  .acc-pastille.part {
     animation: none;
   }
 }

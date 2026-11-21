@@ -43,5 +43,20 @@
     "nom": "rappel-non-note",
     "test": "le bandeau « Garder ta Toile » : paru après le troisième Promi, « Plus tard » le retire et se note",
     "defaut": "la réponse « Plus tard » n'est pas notée dans le magasin"
+  },
+  {
+    "nom": "secs-menu",
+    "test": "C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau en flaques, la pastille du Fil sur son centre",
+    "defaut": "le menu du + paraît et part d'un coup (son passage en flaques caché)"
+  },
+  {
+    "nom": "secs-bandeau",
+    "test": "C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau en flaques, la pastille du Fil sur son centre",
+    "defaut": "le bandeau « Garder ta Toile » paraît et part d'un coup (son passage caché)"
+  },
+  {
+    "nom": "secs-pastille",
+    "test": "C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau en flaques, la pastille du Fil sur son centre",
+    "defaut": "la pastille du Fil paraît et part d'un coup (son animation coupée)"
   }
 ]

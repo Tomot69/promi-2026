@@ -74,7 +74,7 @@ ATTENDU = {
   'volubilis':   ('horloge', ((3178, 155), (2472, 119))),   # ⚑ v86 (Tom, 28 sept.) : le jardin plein écran se construit plus longtemps — 3,1–3,2 s / 2,5 s validés
   'guingois':    ('horloge', ((1722, 30), (1865, 31))),
   'chantourne':  ('horloge', ((1677, 16), (1849, 36))),
-  'mascaret':    ('horloge', ((1674, 20), (1834, 32))),
+  'mascaret':    ('horloge', ((1674, 20), (2000, 32))),   # ⚑ C-328 (Tom, 21 nov. 2026) : le départ à 2 000 ms, ce que fait le prototype validé (1 834 avant)
   'ramage':      ('horloge', ((1690, 83), (2620, 149))),   # ⚑ v82 (Tom, 28 sept.) : l'arrivée sans fondu — le plumage se construit (1 681–1 702 ms)   # v73 : relevé APRÈS le plancher des tranches (100 tracés) — 2 213–2 950 · 2 282–2 957
 }
 # ⚑ v64 (Tom, 27 sept. 2026) — « Halin : élargis sa tolérance plutôt que de le laisser rougir au hasard — un contrôle qui oscille ne

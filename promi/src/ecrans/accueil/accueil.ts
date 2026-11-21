@@ -59,6 +59,33 @@ export interface Accueil {
 export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation): Accueil {
   const h = horloge();
   const dv = facade.appareil();
+  /**
+   * Une chose de l'accueil paraît ou part EN FLAQUES (C-329) : le passage déjà porté (`passageFlaques`, celui du symbole « recadrer »),
+   * posé sur l'appareil, à la place de la chose ; sa couverture est la Toile telle qu'elle est dessous — elle s'ouvre en flaques sur la
+   * chose (« paraît »), ou la recouvre (« part »). Même durée que le symbole « recadrer » (300 ms).
+   */
+  const enFlaques = (cible: HTMLElement, sens: 'paraît' | 'part', z: number, fin: () => void): ControlePassage => {
+    const D = dv.getBoundingClientRect();
+    const k = D.width / (dv.offsetWidth || 390) || 1;
+    const r = cible.getBoundingClientRect();
+    const toile = dv.querySelector<HTMLCanvasElement>('#toileCv');
+    const ctl = passageFlaques(dv, {
+      mode: sens === 'paraît' ? 'ouvre' : 'couvre',
+      rect: [(r.left - D.left) / k, (r.top - D.top) / k, r.width / k, r.height / k],
+      ...(toile ? { image: toile } : { couleur: getComputedStyle(dv).backgroundColor }),
+      duree: 300,
+      devant: true,
+      z,
+      fin: (c) => {
+        if (c.arrete) return;
+        if (sens === 'part') c.canevas.remove();
+        fin();
+      },
+    });
+    ctl.canevas.classList.add('acc-flaques');
+    ctl.canevas.dataset['pour'] = cible.id;
+    return ctl;
+  };
 
   // ── le plateau ──
   const plateau = el('div', { id: 'accPlat', class: 'acc-plat' });
@@ -113,13 +140,42 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     aide.textContent = n.aide;
     p.append(un, aide);
     surToucher(p, () => {
-      choix.classList.remove('ouvert');
+      fermeMenu(true);
       nav.ouvrir('pagePlus', n.k);
     });
     choix.appendChild(p);
   }
+  // ⚑ C-329 (Tom, 21 nov. 2026 : « aucun changement sec ») — le menu s'ouvre et se ferme EN FLAQUES (le passage déjà porté) ; dans le
+  // prototype il paraît d'un coup : un des trois écarts admis, nommé dans le test d'identité
+  let ctlMenu: ControlePassage | null = null;
+  const ouvreMenu = (): void => {
+    arreteMenu();
+    choix.classList.add('ouvert');
+    ctlMenu = enFlaques(choix, 'paraît', 34, () => {
+      ctlMenu = null;
+    });
+  };
+  const fermeMenu = (coupe = false): void => {
+    if (!choix.classList.contains('ouvert')) return;
+    arreteMenu();
+    if (coupe) {
+      choix.classList.remove('ouvert');
+      return;
+    }
+    ctlMenu = enFlaques(choix, 'part', 34, () => {
+      ctlMenu = null;
+      choix.classList.remove('ouvert');
+    });
+  };
+  const arreteMenu = (): void => {
+    if (!ctlMenu) return;
+    ctlMenu.arrete = true;
+    ctlMenu.canevas.remove();
+    ctlMenu = null;
+  };
   surToucher(plus, () => {
-    choix.classList.toggle('ouvert');
+    if (choix.classList.contains('ouvert') && !(ctlMenu && ctlMenu.mode === 'couvre')) fermeMenu();
+    else ouvreMenu();
   });
   // un toucher ailleurs referme le menu (v165, chemin b : au doigt, il n'y a pas toujours de `click`)
   let ailleurs: { x: number; y: number; t: number } | null = null;
@@ -133,7 +189,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     if (Math.hypot(ev.clientX - g.x, ev.clientY - g.y) > 10 || ev.timeStamp - g.t > 600) return;
     const t = ev.target as Element | null;
     if (t?.closest('#accChoix') || t?.closest('#createBtn')) return;
-    choix.classList.remove('ouvert');
+    fermeMenu();
   };
   window.addEventListener('pointerdown', debutAilleurs, true);
   window.addEventListener('pointerup', finAilleurs, true);
@@ -276,8 +332,21 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
   const non = el('span', { 'data-r': 'non', role: 'button' });
   non.textContent = T.plusTard;
   rappel.append(oui, non);
+  // ⚑ C-329 — le bandeau paraît et part EN FLAQUES (dans le prototype : d'un coup ; écart admis, nommé dans le test d'identité)
+  let ctlRappel: ControlePassage | null = null;
+  const partRappel = (): void => {
+    if (!rappel.classList.contains('vu') || (ctlRappel && ctlRappel.mode === 'couvre')) return;
+    if (ctlRappel) {
+      ctlRappel.arrete = true;
+      ctlRappel.canevas.remove();
+    }
+    ctlRappel = enFlaques(rappel, 'part', 61, () => {
+      ctlRappel = null;
+      rappel.classList.remove('vu');
+    });
+  };
   const repond = (r: 'oui' | 'non'): void => {
-    rappel.classList.remove('vu');
+    partRappel();
     magasin.repondreRappel(r, nParoles(magasin.etat()), Date.now());
     if (r === 'oui') nav.ouvrir('compte');
   };
@@ -288,16 +357,45 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     repond('non');
   });
   const majRappel = (): void => {
-    if (rappelDu(magasin.etat(), Date.now())) rappel.classList.add('vu');
+    if (rappel.classList.contains('vu') || !rappelDu(magasin.etat(), Date.now())) return;
+    rappel.classList.add('vu');
+    ctlRappel = enFlaques(rappel, 'paraît', 61, () => {
+      ctlRappel = null;
+    });
   };
   const veilleRappel = h.intervalle(majRappel, 3000);
 
+  // ⚑ C-329 — la pastille du Fil s'ouvre et se referme SUR SON CENTRE, comme la pastille « pas encore vu » (C-247 : le même code,
+  // `v201pop`, 0,26 s) ; au premier affichage elle est posée (rien ne change à l'écran : elle naît avec l'accueil)
+  let pastillePremiere = true;
+  const pastilleVue = (v: boolean): void => {
+    const vue = !pastille.hidden && !pastille.classList.contains('part');
+    if (pastillePremiere) {
+      pastillePremiere = false;
+      pastille.hidden = !v;
+      return;
+    }
+    if (v === vue) return;
+    pastille.classList.remove('nait', 'part');
+    if (v) {
+      pastille.hidden = false;
+      pastille.getBoundingClientRect(); // l’animation repart du début
+      pastille.classList.add('nait');
+    } else {
+      pastille.getBoundingClientRect(); // l’animation repart du début
+      pastille.classList.add('part');
+    }
+  };
+  pastille.addEventListener('animationend', () => {
+    if (pastille.classList.contains('part')) pastille.hidden = true;
+    pastille.classList.remove('nait', 'part');
+  });
   // ── l'anneau du + et la pastille du Fil suivent l'état ──
   const maj = (): void => {
     const e = magasin.etat();
     const v = anneauCss(compteAnneau(e));
     if (plus.style.getPropertyValue('--anneau') !== v) plus.style.setProperty('--anneau', v);
-    pastille.hidden = filAttente(e) === 0;
+    pastilleVue(filAttente(e) > 0);
     majRappel();
   };
   maj();

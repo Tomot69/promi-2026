@@ -16,6 +16,17 @@ import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { ETAT, RESULTATS, stockage, GEL, prototype, vraieApp, ouvrirPlus, ecart, P_, sonde } from './aides.ts';
 
+/**
+ * LES ÉCARTS ADMIS AU PROTOTYPE (C-329, Tom, 21 nov. 2026 : « la règle de Tom prime, AUCUN changement sec ») — les SEULS : dans le
+ * prototype ces trois choses paraissent d'un coup ; dans la vraie app elles ont leur transition. Au repos (ce que juge l'identité au pixel),
+ * rien ne diffère. Le test « C-329 » plus bas exige chacune ; ses sondes la retirent, et il rougit.
+ */
+export const ECARTS_ADMIS = [
+  'le menu du + s’ouvre et se ferme en flaques (#accChoix)',
+  'le bandeau « Garder ta Toile » paraît et part en flaques (#accRappel)',
+  'la pastille du Fil s’ouvre et se referme sur son centre, `v201pop` 0,26 s, comme la pastille « pas encore vu » (#filDot, C-247)',
+] as const;
+
 for (const theme of ['sombre', 'clair'] as const)
   for (const menu of [false, true])
     test(`identité au pixel : l'accueil${menu ? ', menu du + ouvert' : ''}, ${theme}`, async ({ browser }) => {
@@ -349,7 +360,9 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
   await ouvrirPlus(page);
   expect(await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert'))).toBe(true);
   await page.mouse.click(195, 300); // ailleurs
+  // il se referme en flaques (C-329) : son passage fini
   await page.waitForTimeout(100);
+  await page.waitForFunction(() => !document.querySelector('canvas.acc-flaques'), undefined, { timeout: 20000 });
   expect(
     await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert')),
     'un toucher ailleurs referme',
@@ -494,9 +507,152 @@ test('le bandeau « Garder ta Toile » : paru après le troisième Promi, « Plu
     await page.waitForTimeout(100);
   };
   await plusTard();
+  // il part en flaques (C-329) : 300 ms, puis il n'est plus là
+  await page.waitForFunction(() => !document.getElementById('accRappel')!.classList.contains('vu'), undefined, {
+    timeout: 15000,
+  });
   expect(await vu()).toBe(false);
   // le reste de la règle (le retour plus loin, la fin au second refus) : tests/unitaires/accueil.test.ts
   const autres = (await page.evaluate(`${P_}.magasin.etat().autres`)) as Record<string, string>;
   expect(autres['promi_rappel_non']).toBe('1');
   expect(autres['promi_rappel_fin'] ?? '').toBe('');
+});
+
+/** les passages en flaques d'une chose de l'accueil, relevés à chaque image : leur sens, leur avancée, et s'ils sont affichés */
+const RELEVE_FLAQUES = `(() => { window.__fl = []; const pas = () => { for (const c of document.querySelectorAll('canvas.acc-flaques')) {
+    const s = getComputedStyle(c); window.__fl.push({ pour: c.dataset.pour, mode: c.dataset.mode, u: +c.dataset.u,
+      vu: s.display !== 'none' && s.visibility !== 'hidden' && +s.opacity > 0.5 && c.width > 0 }); }
+    requestAnimationFrame(pas); }; requestAnimationFrame(pas); })()`;
+type Fl = { pour: string; mode: string; u: number; vu: boolean };
+
+/** une transition en flaques a eu lieu pour `pour`, dans le sens `mode`, affichée, sur au moins `n` avancées distinctes entre 0 et 1 */
+function enFlaquesVu(fl: Fl[], pour: string, mode: 'ouvre' | 'couvre', n: number): string | null {
+  const L = fl.filter((x) => x.pour === pour && x.mode === mode);
+  if (!L.length) return `aucun passage « ${mode} » sur #${pour}`;
+  if (L.some((x) => !x.vu)) return `le passage « ${mode} » sur #${pour} n'est pas affiché`;
+  const u = new Set(L.filter((x) => x.u > 0 && x.u < 1).map((x) => x.u.toFixed(2)));
+  return u.size >= n
+    ? null
+    : `#${pour} « ${mode} » : ${String(u.size)} avancée(s) entre 0 et 1, au moins ${String(n)} attendues`;
+}
+
+test('C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau en flaques, la pastille du Fil sur son centre', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  // les sondes : la transition retirée (le passage caché, l'animation coupée) — la version d'avant C-329
+  const ls: Record<string, string> = {
+    ...stockage(),
+    promi_onb: '1',
+    promi_compte: '',
+    promi_rappel_n: '',
+    promi_rappel_non: '',
+    promi_rappel_fin: '',
+    promi_rappel_vu: '',
+  };
+  const st = JSON.parse(ls['promi_state'] ?? '{"promises":[]}') as { promises: Array<Record<string, unknown>> };
+  const bandeau = st.promises.filter((p) => !p['draft']).length >= 3;
+  await page.goto('http://127.0.0.1:5180/?banc=1');
+  await page.waitForFunction(() => !!(window as unknown as { __promi?: unknown }).__promi);
+  // (le passage pose son affichage en ligne `!important` : la sonde le retire dès qu'il paraît — la transition supprimée)
+  const retirePassage = (pour: string): Promise<void> =>
+    page.evaluate((pour) => {
+      new MutationObserver(() => {
+        for (const c of document.querySelectorAll(`canvas.acc-flaques[data-pour="${pour}"]`)) c.remove();
+      }).observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-pour'] });
+    }, pour);
+  if (sonde('secs-menu')) await retirePassage('accChoix');
+  if (sonde('secs-bandeau')) await retirePassage('accRappel');
+  if (sonde('secs-pastille')) await page.addStyleTag({ content: '#filDot{animation:none!important}' });
+  await page.evaluate(RELEVE_FLAQUES);
+  await page.evaluate(async (ls) => {
+    const p = (window as unknown as { __promi: { magasin: { importer(x: unknown): void }; demarrer(): Promise<void> } })
+      .__promi;
+    p.magasin.importer({ ls });
+    await p.demarrer();
+  }, ls);
+  await page.waitForTimeout(1500);
+  const fautes: string[] = [];
+  const lire = async (): Promise<Fl[]> => (await page.evaluate('window.__fl')) as Fl[];
+  const attendreFin = (): Promise<unknown> =>
+    page.waitForFunction(() => !document.querySelector('canvas.acc-flaques'), undefined, { timeout: 20000 });
+
+  // (1) le bandeau paraît en flaques (l'état du banc : trois Promi et plus)
+  if (bandeau) {
+    await attendreFin();
+    const f = enFlaquesVu(await lire(), 'accRappel', 'ouvre', 1);
+    if (f) fautes.push('bandeau qui paraît : ' + f);
+  } else
+    test.info().annotations.push({ type: 'non jugé', description: 'le bandeau : l’état porte moins de trois Promi' });
+
+  // (2) le menu du + s'ouvre en flaques, puis se ferme en flaques (un toucher ailleurs)
+  await page.evaluate('window.__fl = []');
+  const plus = (await page.evaluate(() => {
+    const b = document.getElementById('createBtn')!.getBoundingClientRect();
+    return [b.left + b.width / 2, b.top + b.height / 2];
+  })) as [number, number];
+  await page.mouse.click(plus[0], plus[1]);
+  await attendreFin();
+  let f = enFlaquesVu(await lire(), 'accChoix', 'ouvre', 1);
+  if (f) fautes.push('menu qui s’ouvre : ' + f);
+  if (!(await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert'))))
+    fautes.push('le menu n’est pas ouvert à la fin de son passage');
+  await page.evaluate('window.__fl = []');
+  await page.mouse.click(195, 300);
+  // pendant qu'il se ferme, il est encore là (la Toile le recouvre en flaques) ; à la fin, il n'est plus là
+  await attendreFin();
+  f = enFlaquesVu(await lire(), 'accChoix', 'couvre', 1);
+  if (f) fautes.push('menu qui se ferme : ' + f);
+  if (await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert')))
+    fautes.push('le menu est encore ouvert à la fin de son passage');
+
+  // (3) le bandeau part en flaques (« Plus tard »)
+  if (bandeau && (await page.evaluate(() => document.getElementById('accRappel')!.classList.contains('vu')))) {
+    await page.evaluate('window.__fl = []');
+    const r = (await page.evaluate(() => {
+      const b = document.querySelector('#accRappel [data-r="non"]')!.getBoundingClientRect();
+      return [b.left + b.width / 2, b.top + b.height / 2];
+    })) as [number, number];
+    await page.mouse.click(r[0], r[1]);
+    await attendreFin();
+    f = enFlaquesVu(await lire(), 'accRappel', 'couvre', 1);
+    if (f) fautes.push('bandeau qui part : ' + f);
+  }
+
+  // (4) la pastille du Fil : une demande reçue l'allume, elle s'ouvre sur son centre ; la demande partie, elle se referme
+  const avecDemande = (oui: boolean): Record<string, string> => {
+    const s = JSON.parse(ls['promi_state'] ?? '{"promises":[]}') as {
+      promises: Array<Record<string, unknown>>;
+      FEED?: unknown[];
+    };
+    s.promises = s.promises.map((p, i) => (i === 0 ? { ...p, req: oui, reqEtat: oui ? 'attente' : undefined } : p));
+    s.FEED = [];
+    return { ...ls, promi_state: JSON.stringify(s), promi_rappel_fin: '1' };
+  };
+  const anim = async (etat: Record<string, string>): Promise<{ noms: string[]; vu: boolean }> =>
+    (await page.evaluate(async (etat) => {
+      const p = (window as unknown as { __promi: { magasin: { importer(x: unknown): void } } }).__promi;
+      const d = document.getElementById('filDot')!;
+      const noms: string[] = [];
+      const t0 = performance.now();
+      p.magasin.importer({ ls: etat });
+      while (performance.now() - t0 < 1500) {
+        const a = d
+          .getAnimations()
+          .map((x) => (x as CSSAnimation).animationName + ' ' + String(x.effect?.getTiming().duration));
+        for (const n of a) if (!noms.includes(n)) noms.push(n);
+        await new Promise((f) => requestAnimationFrame(f));
+      }
+      return { noms, vu: !d.hidden };
+    }, etat)) as { noms: string[]; vu: boolean };
+  await anim(avecDemande(false));
+  const ouvre = await anim(avecDemande(true));
+  if (!ouvre.vu) fautes.push('la pastille ne paraît pas quand une demande attend');
+  if (!ouvre.noms.includes('v201pop 260'))
+    fautes.push(`la pastille paraît sans s’ouvrir sur son centre : ${JSON.stringify(ouvre.noms)}`);
+  const ferme = await anim(avecDemande(false));
+  if (ferme.vu) fautes.push('la pastille reste quand plus rien n’attend');
+  if (!ferme.noms.includes('v201pop 260'))
+    fautes.push(`la pastille part sans se refermer sur son centre : ${JSON.stringify(ferme.noms)}`);
+  expect(fautes).toEqual([]);
 });
