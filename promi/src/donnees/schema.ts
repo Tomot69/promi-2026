@@ -64,7 +64,7 @@ export interface Parole {
   id: number;
   title: string;
   who: string;
-  due: number;
+  due: number | null;
   intensity: number;
   status: EtatParole;
   from: string;

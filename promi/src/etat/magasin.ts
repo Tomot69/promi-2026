@@ -51,6 +51,10 @@ export interface Actions {
       avec: string;
       note: string;
       monde: MondeDalle;
+      due: number | null;
+      dueISO: string | null;
+      cercle: string | null;
+      fichiers: string[];
     },
     maintenant: number,
   ): number;
@@ -240,11 +244,13 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
         suite['reqLe'] = maintenant;
       }
       if (p.note) suite['note'] = p.note;
+      if (p.dueISO) suite['dueISO'] = p.dueISO;
+      if (p.fichiers.length) suite['files'] = p.fichiers.slice();
       const neuve: Parole = {
         id,
         title: p.titre,
         who: p.who,
-        due: 30,
+        due: p.due,
         intensity: 2,
         status: 'encours',
         from: 'moi',
@@ -254,6 +260,7 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
         y: 0,
         tx: 0,
         ty: 0,
+        nuee: p.cercle,
         monde: p.monde,
         derAct: maintenant,
         suite,

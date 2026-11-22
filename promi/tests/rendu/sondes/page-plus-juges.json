@@ -128,5 +128,20 @@
     "nom": "plante-sans-toile",
     "test": "planter, nuee : lâché avant la moitié rien n’est planté ; au milieu la parole est écrite, la dalle naît et vole, la page part ; rechargée, elle est là (redteam_moitie, redteam_plantation_durable)",
     "defaut": "le moteur ne reçoit jamais ce qui est planté"
+  },
+  {
+    "nom": "peauf-choix-sourd",
+    "test": "Peaufiner, ses choix : l’échéance, le Cercle",
+    "defaut": "les pastilles de Peaufiner ne prennent plus le doigt"
+  },
+  {
+    "nom": "peauf-choix-perdus",
+    "test": "Peaufiner, ses choix : l’échéance, le Cercle",
+    "defaut": "planter perd l'échéance et le Cercle choisis dans Peaufiner"
+  },
+  {
+    "nom": "peauf-membres-sourds",
+    "test": "Peaufiner d’un Cercle : MEMBRES se déplie",
+    "defaut": "les membres de Peaufiner ne prennent plus le doigt"
   }
 ]

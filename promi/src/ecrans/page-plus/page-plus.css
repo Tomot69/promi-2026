@@ -211,6 +211,31 @@
   box-decoration-break: clone;
   cursor: pointer;
 }
+/* pas prête, la phrase porte un `translate` nul (le prototype, `ppa-haut` : `translate:0 var(--ppa-ph, 0px)`) — sans effet sur sa place, il
+   la pose sur sa propre couche, et WebKit en peint les pointillés d'un coin arrondi au pixel près comme lui (un glissement, posé en ligne,
+   l'emporte) */
+#createSheet.pp-haut:not(.pp-ouvert) .pp-phrase {
+  translate: 0 0px;
+}
+/* le visage dans la pastille d'un prénom (le prototype, §2.8, §2.10) : 9 pt à gauche, un écart de 0,22 × la taille */
+#createSheet .ph-m.ph-avec-visage {
+  padding-left: 9px;
+  gap: 0.22em;
+}
+#createSheet .pp-visage {
+  display: inline-flex;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  overflow: hidden;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+}
+#createSheet .pp-visage svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 #createSheet .ph-txt.ph-coupe .ph-m[data-ph='titre'],
 #createSheet .ph-txt.ph-coupe .ph-m[data-np='nom'] {
   display: inline;
@@ -396,7 +421,9 @@
   color: var(--c-seiche10);
 }
 #createSheet.pp-nuee #csBotBar .cbb-lab,
-#createSheet.pp-nuee #csBotBar .cbb-chev {
+#createSheet.pp-nuee #csBotBar .cbb-chev,
+#createSheet.pp-dans-cercle #csBotBar .cbb-lab,
+#createSheet.pp-dans-cercle #csBotBar .cbb-chev {
   color: var(--c-creme95-2);
 }
 
@@ -934,6 +961,13 @@
 #createSheet .ph-mt {
   display: inline-block;
 }
+/* (dans une pastille : le prototype, `.ph-m > .v200-mt`) */
+#createSheet .ph-m > .ph-mt,
+#createSheet .ph-m > .ph-mt-pose {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
 
 /* ── C-209, C-213, C-229 : le départ du trait sur SA couche (mêmes cotes que le champ), qui clignote avec le I de PROMI jusqu'au premier
    toucher du trait (`promiBlink`, accueil.css) ; le libellé « trace pour … » (PromiLate 19, l'orange du départ, C-157) ── */
@@ -972,4 +1006,49 @@
   #ppDepart.clignote {
     animation: none;
   }
+}
+
+/* ── Peaufiner : les choix d'une rangée dépliée (le prototype : `.s2-ctl`, `#dueChips`, `#nueeChips`) — des pastilles Atkinson 500, 13, capitales,
+   chasse 0,06 em, 8 × 16, un filet de 1,44 au blanc à 40 % ; la choisie, pleine de blanc, son mot au bleu du champ ── */
+/* dépliée (le prototype, `.s2-reg.s2-ouv`) : le libellé, la valeur dessous à droite, puis le contrôle ; plus haute que 94,5, rayon 30 (§5) */
+#csPeauf .s2-reg.s2-ouv {
+  display: block;
+  height: auto;
+  min-height: 64px;
+  padding: 18px 22px;
+  overflow: visible;
+  border-radius: 30px;
+}
+#csPeauf .s2-reg.s2-ouv .s2-lab {
+  line-height: 12px;
+}
+#csPeauf .s2-ctl {
+  margin-top: 14px;
+}
+#csPeauf .chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#csPeauf .chip {
+  position: relative;
+  font: 500 13px var(--f-texte);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 8px 16px;
+  border-radius: 999px;
+  box-shadow: inset 0 0 0 1.44px color-mix(in srgb, var(--c-blanc100) 40%, transparent);
+  color: var(--c-blanc100);
+  cursor: pointer;
+}
+#csPeauf .chip.on {
+  background: var(--c-blanc100);
+  box-shadow: none;
+  color: var(--c-bleu45);
+}
+#csPeauf .chip .due-datein {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
 }

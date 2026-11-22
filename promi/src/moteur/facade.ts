@@ -243,8 +243,19 @@ export function creerFacade(magasin: Magasin): Facade {
     },
     vueALaMain: () => !!w['_vueMain'],
     planterUne(id) {
-      poserGlobaux(magasin.etat());
-      (toile() as MoteurToile & { addPromi(id: number): void }).addPromi(id);
+      const e = magasin.etat();
+      poserGlobaux(e);
+      const T = toile() as MoteurToile & {
+        addPromi(id: number): void;
+        addNuee(k: string): void;
+        addMember(k: string, id: number): void;
+      };
+      // plantée dans un Cercle : elle le rejoint (le prototype : `Toile.addNuee`, `addMember`)
+      const k = e.paroles.find((p) => p.id === id)?.nuee;
+      if (k) {
+        T.addNuee(k);
+        T.addMember(k, id);
+      } else T.addPromi(id);
     },
     planterCercle(cle) {
       poserGlobaux(magasin.etat());

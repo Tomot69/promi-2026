@@ -62,6 +62,15 @@ export interface PhrasePage {
   /** Peaufiner : la note ; l'échéance (son mot) */
   note: string;
   ech: string;
+  /** l'échéance a été choisie (le prototype ne coche une pastille qu'une fois choisie : « un jour » par défaut n'est pas coché) */
+  echChoisie: boolean;
+  /** l'échéance choisie (Peaufiner, AVANT) : des jours (null : « un jour », aucune) et la date du calendrier (« une date… ») */
+  due: number | null;
+  dueISO: string | null;
+  /** le Cercle où l'on plante (Peaufiner, DANS UN CERCLE) — sa clé */
+  cercle: string | null;
+  /** les pièces jointes (leurs noms) */
+  fichiers: string[];
   /** la photo importée (une adresse `data:`), qui remplace la dalle dans la bande (lot-PHOTO) */
   photo: string | null;
 }
@@ -296,6 +305,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       moi: false,
       note: '',
       ech: T.peauf.echeanceDefaut,
+      echChoisie: false,
+      due: null,
+      dueISO: null,
+      cercle: null,
+      fichiers: [],
       photo: null,
     };
   }
@@ -313,7 +327,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     return v;
   }
   const typeExemple = (): TypeExemple => (P.nat === 'promi' ? P.sens : P.nat);
-  const pluriel = (): boolean => P.qui.length > 1;
+  // le prototype : plusieurs personnes, « tout le monde », ou un Cercle choisi (Peaufiner) — « vous » et « promettez-moi »
+  const pluriel = (): boolean => P.qui.length > 1 || !!P.cercle || P.qui.includes(T.toutLeMonde);
   /**
    * ⚑ C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste
    * avec les autres, le toucher ne retire jamais quelqu'un d'autre ; la liste n'est jamais vide (retirée la dernière, « Moi » revient). Il vit
@@ -330,8 +345,26 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   const autres = (L: string[]): string[] => L.filter((n) => n !== MOI);
 
   // ── LA PHRASE ──
-  const pastille = (cle: string, texte: string, vide: boolean, attr = 'data-ph'): string =>
-    `<span class="ph-m${vide ? ' ph-vide' : ''}" ${attr}="${cle}">${esc(texte)}</span>`;
+  /**
+   * le visage d'une personne (§2.10, le prototype `_visageSvg`) : un disque de 0,76 × 33 = 25 pt à la couleur de la nature, la silhouette
+   * crème — dans la pastille d'un prénom rempli (« à Maman », « tout le monde »), jamais d'une place vide ni d'un « avec »
+   */
+  const visage = (): string => {
+    const d = 25;
+    const col = P.nat === 'chiche' ? palette.framboise54 : palette.bleu45;
+    const x0 = (d / 2 - 0.3 * d).toFixed(2);
+    const x1 = (d / 2 + 0.3 * d).toFixed(2);
+    const ye = (0.98 * d).toFixed(2);
+    return (
+      `<span class="pp-visage" style="width:${String(d)}px;height:${String(d)}px;background:${col}">` +
+      `<svg viewBox="0 0 ${String(d)} ${String(d)}" xmlns="http://www.w3.org/2000/svg">` +
+      `<circle cx="${String(d / 2)}" cy="${((0.78 * d) / 2).toFixed(2)}" r="${(0.19 * d).toFixed(2)}" fill="${palette.creme95}"/>` +
+      `<path d="M${x0} ${ye} A${(0.3 * d).toFixed(2)} ${(0.27 * d).toFixed(2)} 0 0 1 ${x1} ${ye} Z" fill="${palette.creme95}"/>` +
+      `</svg></span>`
+    );
+  };
+  const pastille = (cle: string, texte: string, vide: boolean, attr = 'data-ph', vis = false): string =>
+    `<span class="ph-m${vide ? ' ph-vide' : ''}${vis && !vide ? ' ph-avec-visage' : ''}" ${attr}="${cle}">${vis && !vide ? visage() : ''}${esc(texte)}</span>`;
   /**
    * le contenu d'une place qui s'écrit (le titre, le nom) : vide, son exemple ; pendant la saisie (`ph-on`, lot-CURSEUR), ce qu'on tape et
    * le curseur qui clignote après lui (le prototype n'en pose pas tant que la place est vide : l'exemple reste)
@@ -369,7 +402,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       const verbe = P.qui.length ? T.chiche.toLowerCase() : T.chiche;
       const avec = P.avec.length ? ecrit(P.avec, ', ') : T.vides.quiEnEst;
       return (
-        `<em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}<br>` +
+        `<em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length, 'data-ph', true)}<br>` +
         `<span class="ph-b ph-b-fixe" data-ph="sens">${verbe}</span> <br>${titre}<br>` +
         `<em>${T.liaisons.avec}</em> ${pastille('avec', avec, !P.avec.length)}`
       );
@@ -379,10 +412,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     if (P.sens === 'soi') return `${verbe(T.verbe.soi)} <br>${titre}`;
     if (P.sens === 'faire') {
       const qui = P.qui.length ? ecrit(P.qui, ', ') : P.moi ? T.vides.moi : T.vides.qui;
-      return `${verbe(T.verbe.faire)} <br>${titre}<br><em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}`;
+      return `${verbe(T.verbe.faire)} <br>${titre}<br><em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length, 'data-ph', true)}`;
     }
     const prenom = P.qui.length ? ecrit(P.qui, ', ') + ',' : PRENOMS_EXEMPLE[prenomRang]!;
-    return `${pastille('qui', prenom, !P.qui.length)}<br>${verbe(pluriel() ? T.verbe.demanderPluriel : T.verbe.demander)} <br>${titre}`;
+    return `${pastille('qui', prenom, !P.qui.length, 'data-ph', true)}<br>${verbe(pluriel() ? T.verbe.demanderPluriel : T.verbe.demander)} <br>${titre}`;
   }
 
   const lignes = (): number => txt.querySelectorAll('br').length + 1;
@@ -764,6 +797,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   function bouge(enHaut: boolean, fin?: () => void): void {
     const de = hzEff();
     inv.haut = enHaut;
+    cs.classList.toggle('pp-haut', enHaut);
     const a = enHaut ? hzC : 0;
     if (reduit() || Math.abs(a - de) < 0.5) {
       inv.anim = null;
@@ -1014,6 +1048,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     inv.sortie = false;
     inv.touche = false;
     inv.haut = true;
+    cs.classList.add('pp-haut');
     inv.jeu++;
     lib.hidden = true;
     clignote(false);
@@ -1223,6 +1258,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         avec: autres(P.avec).join(', '),
         note: P.note,
         monde: facade.mondeCourant(),
+        due: P.due,
+        dueISO: P.dueISO,
+        cercle: P.cercle,
+        fichiers: P.fichiers.slice(),
       },
       maintenant,
     );
@@ -1270,6 +1309,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     // saisie d'un Promi ou d'un Chiche (§2.11, le seul cas du produit) — un Cercle la garde (le prototype, `pp-saisie` sur #csChoix)
     const ouvert = choix !== null || saisieDe !== null;
     const enSaisie = saisieDe !== null && P.nat !== 'nuee';
+    // un Promi rangé dans un Cercle (Peaufiner, DANS UN CERCLE : le prototype `cs-nuee`) : la barre Peaufiner prend l'écriture d'un Cercle
+    cs.classList.toggle('pp-dans-cercle', P.nat === 'promi' && !!P.cercle);
     const dh = haut0();
     // les mesures se lisent sur la mise en page : un mouvement en cours (une translation) est mis de côté le temps de composer
     const enCours = [phrase, garder].map((e) => [e, e.style.translate] as const);
@@ -1579,6 +1620,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       P.pinceau,
       P.note,
       P.photo ? P.photo.length : 0,
+      P.ech,
+      P.dueISO ?? '',
+      P.cercle ?? '',
+      P.fichiers.join('|'),
     ].join('¦');
   function majGarder(): void {
     const actif = signature() !== signature0;
@@ -1606,6 +1651,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       membres: autres(P.membres),
       pinceau: P.pinceau,
       note: P.note,
+      // le prototype (`lot-V162-GARDER`) : l'état ENTIER — l'échéance, le Cercle, les pièces jointes
+      due: P.due,
+      dueISO: P.dueISO,
+      cercle: P.cercle,
+      fichiers: P.fichiers.slice(),
     };
     const titre = (P.nat === 'nuee' ? P.nom : P.titre).trim() || T.sansTitre;
     const qui = autres(P.qui).length ? autres(P.qui).join(', ') : 'moi';
@@ -1688,8 +1738,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         tracePlace = t.trace(env, null, {
           surFin: () => {
             tracePlace = null;
-            // l'enveloppe rendue : la place redevient ce que la phrase compose (son texte seul)
-            if (env.parentNode) env.replaceWith(...env.childNodes);
+            // l'enveloppe RESTE jusqu'à la prochaine composition, comme dans le prototype (`.v200-mt`, lot-V200-DOUCEUR) : dans la pastille
+            // d'un prénom, le visage et le texte y sont serrés (sans l'écart de la pastille), exactement ce que le prototype montre
+            env.style.removeProperty('clip-path');
+            env.style.removeProperty('-webkit-clip-path');
+            // (posée : elle ne se trace plus — `ph-mt` dit une place en transition)
+            env.className = 'ph-mt-pose';
           },
         });
       },
@@ -1697,6 +1751,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
   /** le texte d'une place dans une enveloppe : le tracé découpe le TEXTE, jamais l'encart — les pointillés ne clignotent pas (C-271, `.v200-mt`) */
   function enveloppe(place: HTMLElement): HTMLElement {
+    // (le prototype, `enveloppe` : l'enveloppe déjà là sert de nouveau)
+    const deja0 = place.querySelector<HTMLElement>(':scope > .ph-mt-pose, :scope > .ph-mt');
+    if (deja0 && place.childNodes.length === 1) {
+      deja0.className = 'ph-mt';
+      return deja0;
+    }
     const e = el('span', { class: 'ph-mt' });
     e.append(...place.childNodes);
     place.appendChild(e);
@@ -2046,7 +2106,52 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // ── PEAUFINER (lot-S2, C-134, C-220) : la barre l'ouvre et le referme ; il couvre la page (son corps), la barre au-dessus ; il reste ouvert
   //    pendant qu'on y choisit ; on en sort par son X, par la barre, ou par un glissement vers le bas (C-134 : 220 pt referment, 60 non, un
   //    panneau défilé non) ; refermé, il n'en reste rien (C-220). Il paraît et part en flaques (C-271 : le prototype le pose d'un coup). ──
-  function rendrePeauf(): void {
+  /** la rangée dépliée (son libellé) : elle le reste quand Peaufiner se rebâtit après un choix fait ailleurs */
+  let peaufOuverte: string | null = null;
+  /** une rangée qui déplie ses choix au toucher (le prototype : `s2-ouv`, `.s2-ctl`) ; un choix fait la replie */
+  function deplie(r: HTMLElement, choix: () => HTMLElement): void {
+    const lab = r.querySelector('.s2-lab')?.textContent ?? '';
+    const ouvre = (): void => {
+      const ctl = el('div', { class: 's2-ctl' });
+      ctl.appendChild(choix());
+      r.appendChild(ctl);
+      r.classList.add('s2-ouv');
+    };
+    if (peaufOuverte === lab) ouvre();
+    surToucher(r, (ev) => {
+      if ((ev.target as Element).closest('.s2-ctl')) return;
+      const etait = r.classList.contains('s2-ouv');
+      for (const x of peauf.querySelectorAll('.s2-reg.s2-ouv')) {
+        x.classList.remove('s2-ouv');
+        x.querySelector('.s2-ctl')?.remove();
+      }
+      peaufOuverte = etait ? null : lab;
+      if (!etait) ouvre();
+    });
+  }
+  /** le prototype, `_dateQuand` : « lundi 12 », et le mois au-delà de 30 jours */
+  function dateQuand(d: Date, jours: number): string {
+    const JQ = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
+    const MO = [
+      'janvier',
+      'février',
+      'mars',
+      'avril',
+      'mai',
+      'juin',
+      'juillet',
+      'août',
+      'septembre',
+      'octobre',
+      'novembre',
+      'décembre',
+    ];
+    const base = `${JQ[d.getDay()]!} ${String(d.getDate())}`;
+    return jours > 30 ? `${base} ${MO[d.getMonth()]!}` : base;
+  }
+  /** `ouverte` : la rangée qui reste dépliée (un membre coché) ; sans elle, Peaufiner se rebâtit replié (un choix fait la replie) */
+  function rendrePeauf(ouverte: string | null = null): void {
+    peaufOuverte = ouverte;
     const L = T.peauf;
     const liste = el('div', { class: 's2-liste' });
     const tete = el('div', { class: 's2-tete' });
@@ -2070,11 +2175,115 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       r.append(l, v);
       return r;
     };
-    if (P.nat === 'nuee')
-      liste.appendChild(rang(L.membres, P.membres.length ? P.membres.join(', ') : L.personneEncore));
-    else {
-      liste.appendChild(rang(L.avant, P.ech));
-      if (P.nat === 'promi') liste.appendChild(rang(L.dansUnCercle, L.aucune));
+    if (P.nat === 'nuee') {
+      const r = rang(L.membres, autres(P.membres).length ? autres(P.membres).join(', ') : L.personneEncore);
+      deplie(r, () => {
+        // le choix des membres (le prototype : `_gensPage('nuee')`, sans « Moi » en tête) : un toucher coche ou décoche
+        const liste2 = el('div', { class: 'gn-liste' });
+        const pris = autres(P.membres);
+        const noms = [...pris];
+        for (const n of connus()) if (!noms.includes(n) && noms.length < pris.length + 6) noms.push(n);
+        for (const n of noms) {
+          const b = el('button', { type: 'button', class: 'ph-o' + (pris.includes(n) ? ' on' : ''), 'data-v': n });
+          const ini = el('span', { class: 'ppo-ini' });
+          ini.textContent = n.charAt(0).toUpperCase();
+          const nm = el('span', { class: 'ppo-nom' });
+          nm.textContent = n;
+          b.append(ini, nm);
+          surToucher(b, () => {
+            const i = P.membres.indexOf(n);
+            if (i >= 0) P.membres.splice(i, 1);
+            else P.membres.push(n);
+            if (!autres(P.membres).length) P.membres.splice(0);
+            composer();
+            rendrePeauf(L.membres);
+          });
+          liste2.appendChild(b);
+        }
+        const gn = el('div', { class: 'ph-opts gn', 'data-nat': 'nuee' });
+        gn.appendChild(liste2);
+        return gn;
+      });
+      liste.appendChild(r);
+    } else {
+      // AVANT : demain · 1 sem. · 1 mois · une date… (le calendrier) · un jour (aucune échéance) — C-197
+      const ra = rang(L.avant, P.ech);
+      deplie(ra, () => {
+        const ch = el('div', { class: 'chips', id: 'dueChips' });
+        const JOURS: (number | null | 'date')[] = [1, 7, 30, 'date', null];
+        L.echeances.forEach((mot, i) => {
+          const d = JOURS[i]!;
+          const c = el('div', {
+            class: 'chip' + (P.echChoisie && (d === 'date' ? !!P.dueISO : P.ech === mot && !P.dueISO) ? ' on' : ''),
+            role: 'button',
+          });
+          c.textContent = mot;
+          if (d === 'date') {
+            const di = el('input', { type: 'date', class: 'due-datein', 'aria-label': mot });
+            c.appendChild(di);
+            di.addEventListener('change', () => {
+              if (!di.value) return;
+              const t0 = new Date();
+              t0.setHours(0, 0, 0, 0);
+              const pk = new Date(di.value + 'T00:00:00');
+              P.due = Math.max(0, Math.round((pk.getTime() - t0.getTime()) / 86400000));
+              P.dueISO = di.value;
+              P.ech = dateQuand(pk, P.due);
+              P.echChoisie = true;
+              majGarder();
+              rendrePeauf();
+            });
+          }
+          surToucher(c, () => {
+            if (d === 'date') {
+              const di = c.querySelector<HTMLInputElement>('input')!;
+              const t0 = new Date();
+              di.min = `${String(t0.getFullYear())}-${String(t0.getMonth() + 1).padStart(2, '0')}-${String(t0.getDate()).padStart(2, '0')}`;
+              try {
+                di.showPicker();
+              } catch {
+                di.focus();
+              }
+              return;
+            }
+            P.due = d;
+            P.dueISO = null;
+            P.ech = mot;
+            P.echChoisie = true;
+            majGarder();
+            rendrePeauf();
+          });
+          ch.appendChild(c);
+        });
+        return ch;
+      });
+      liste.appendChild(ra);
+      if (P.nat === 'promi') {
+        // DANS UN CERCLE : aucune, ou l'un des Cercles (le prototype : `#nueeChips`)
+        const cercles = magasin.etat().cercles;
+        const rc = rang(L.dansUnCercle, P.cercle ? (cercles[P.cercle] ?? L.aucune) : L.aucune);
+        deplie(rc, () => {
+          const ch = el('div', { class: 'chips', id: 'nueeChips' });
+          for (const [k, nom] of [['', L.aucune] as const, ...Object.entries(cercles)]) {
+            const c = el('div', { class: 'chip' + ((P.cercle ?? '') === k ? ' on' : ''), role: 'button' });
+            c.textContent = nom;
+            surToucher(c, () => {
+              P.cercle = k || null;
+              // le prototype (`buildCreateNuees`) : un Cercle choisi, la phrase devient « Je promets … à tout le monde » ; « aucune » la rend
+              // à « Je me promets … »
+              P.sens = k ? 'faire' : 'soi';
+              P.qui = k ? [T.toutLeMonde] : [];
+              P.moi = false;
+              recomposer(true);
+              majGarder();
+              rendrePeauf();
+            });
+            ch.appendChild(c);
+          }
+          return ch;
+        });
+        liste.appendChild(rc);
+      }
       const zone = el('div', { class: 's2-reg s2-zone' });
       const zl = el('div', { class: 's2-lab' });
       zl.textContent = L.note;
@@ -2100,8 +2309,19 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       const pl = el('div', { class: 's2-lab' });
       pl.textContent = L.pieces;
       const pv = el('div', { class: 's2-val' });
-      pv.textContent = L.piecesVal(0);
+      pv.textContent = L.piecesVal(P.fichiers.length);
       ph.append(pl, pv);
+      const fin = el('input', { type: 'file', multiple: '', class: 'ph-photo-in', 'aria-hidden': 'true' });
+      fin.addEventListener('change', () => {
+        for (const f of fin.files ?? []) if (!P.fichiers.includes(f.name)) P.fichiers.push(f.name);
+        majGarder();
+        rendrePeauf();
+      });
+      pj.appendChild(fin);
+      // le sélecteur de fichiers s'ouvre DANS le geste (le clic du doigt), sinon le navigateur le refuse
+      pj.addEventListener('click', () => {
+        fin.click();
+      });
       const pvis = el('div', { class: 's2-vis' });
       pvis.textContent = L.piecesPrivees;
       pj.append(ph, pvis);

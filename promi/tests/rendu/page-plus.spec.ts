@@ -227,7 +227,10 @@ type Cas = {
   choix: string | null;
   /** fin du 2a : ce que la page montre ensuite (la saisie, un titre tapé, Peaufiner, le menu photo, le champ « un prénom… ») */
   /** 2b : « prete » — le titre tapé puis validé (Retour) : l'horizon remonté, le trait né, le libellé tracé (C-209, C-213, C-229) */
-  etat?: 'saisie' | 'tape' | 'peauf' | 'photo' | 'prenom' | 'prete';
+  /** 2b : « personne » — un prénom tapé dans le choix des personnes et validé (Retour) : la pastille remplie porte son visage (§2.10) ;
+   *  « cercle » — dans Peaufiner, DANS UN CERCLE, un Cercle choisi, Peaufiner refermé : « Je promets … à tout le monde » (le prototype,
+   *  `buildCreateNuees`), l'exemple au pluriel */
+  etat?: 'saisie' | 'tape' | 'peauf' | 'photo' | 'prenom' | 'prete' | 'personne' | 'cercle';
 };
 const CAS: Cas[] = [
   { nat: 'promi', choix: null },
@@ -247,7 +250,31 @@ const CAS: Cas[] = [
   { nat: 'promi', choix: null, etat: 'prete' },
   { nat: 'chiche', choix: null, etat: 'prete' },
   { nat: 'nuee', choix: null, etat: 'prete' },
+  { nat: 'chiche', choix: '#csPhrase .ph-m[data-ph="qui"]', etat: 'personne' },
+  { nat: 'promi', choix: null, etat: 'cercle' },
 ];
+/** un toucher sur l'élément de `sel` dont le texte commence par `mot` (une rangée de Peaufiner par son libellé, une pastille de choix) */
+async function toucheTexte(p: Page, sel: string, mot: string, proto: boolean): Promise<void> {
+  await p.evaluate(
+    ([s, mot, proto]) => {
+      const e = [...document.querySelectorAll<HTMLElement>(s as string)].find(
+        (x) =>
+          x.getBoundingClientRect().width > 0 &&
+          (x.textContent ?? '')
+            .trim()
+            .toLowerCase()
+            .startsWith(mot as string),
+      )!;
+      const r = e.getBoundingClientRect();
+      const o = { bubbles: true, clientX: r.left + 30, clientY: r.top + Math.min(20, r.height / 2), pointerId: 21 };
+      const cible = document.elementFromPoint(o.clientX, o.clientY) ?? e;
+      cible.dispatchEvent(new PointerEvent('pointerdown', o));
+      cible.dispatchEvent(new PointerEvent('pointerup', o));
+      if (proto) (cible as HTMLElement).click();
+    },
+    [sel, mot, proto] as const,
+  );
+}
 
 /**
  * le prototype POSÉ : plus rien ne se trace et aucune transition CSS ne court dans sa page + (les animations sans fin — le I qui clignote,
@@ -333,6 +360,34 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
     await A.keyboard.type('Lou');
     await P.waitForTimeout(2500);
   }
+  if (c.etat === 'personne') {
+    await protoPose(P);
+    await Promise.all([toucheSel(P, '#createSheet .ph-add', true), toucheSel(A, '#createSheet .ph-add', false)]);
+    await P.waitForTimeout(2500);
+    await P.keyboard.type('Lou');
+    await A.keyboard.type('Lou');
+    await P.waitForTimeout(1500);
+    await P.keyboard.press('Enter');
+    await A.keyboard.press('Enter');
+    await P.waitForTimeout(4000);
+  }
+  if (c.etat === 'cercle') {
+    await protoPose(P);
+    await Promise.all([toucheSel(P, '#csBotBar', true), toucheSel(A, '#csBotBar', false)]);
+    await P.waitForTimeout(2000);
+    await Promise.all([
+      toucheTexte(P, '#createSheet .s2-reg', 'dans un cercle', true),
+      toucheTexte(A, '#createSheet .s2-reg', 'dans un cercle', false),
+    ]);
+    await P.waitForTimeout(1200);
+    await Promise.all([
+      toucheTexte(P, '#createSheet .s2-reg .chip', 'marseille', true),
+      toucheTexte(A, '#createSheet .s2-reg .chip', 'marseille', false),
+    ]);
+    await P.waitForTimeout(1500);
+    await Promise.all([toucheSel(P, '#createSheet .s2-fermer', true), toucheSel(A, '#createSheet .s2-fermer', false)]);
+    await P.waitForTimeout(4000);
+  }
   if (c.etat === 'peauf') {
     await protoPose(P);
     await Promise.all([toucheSel(P, '#csBotBar', true), toucheSel(A, '#csBotBar', false)]);
@@ -355,7 +410,13 @@ for (const theme of ['sombre', 'clair'] as const)
     test(`identité au pixel : la page + ${c.nat}${c.choix ? ', le choix des personnes ouvert' : ''}${c.etat ? `, ${c.etat}` : ''}, ${theme}`, async ({
       browser,
     }) => {
-      const ls = { ...stockage(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+      const ls: Record<string, string> = { ...stockage(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+      if (c.etat === 'cercle') {
+        // un Cercle connu, des deux côtés (le prototype le lit dans NUE, la vraie app dans ses Cercles, migrés de NUE)
+        const st = JSON.parse(ls['promi_state']!) as Record<string, unknown>;
+        st['NUE'] = { n1: 'Marseille' };
+        ls['promi_state'] = JSON.stringify(st);
+      }
       const P = await (
         await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 3 })
       ).newPage();

@@ -1491,6 +1491,254 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     ).toEqual(expect.arrayContaining(['ouvre', 'couvre']));
   });
 
+// ── PEAUFINER, SES CHOIX (lot-S2, C-197 ; le prototype : `.s2-reg.s2-ouv`, `#dueChips`, `#nueeChips`, `buildCreateNuees`) — une rangée se déplie
+//    au toucher (ses choix dessous, la rangée grandit, rayon 30), un choix la replie et s'écrit dans sa valeur ; aucune pastille cochée tant
+//    qu'on n'a rien choisi ; « une date… » ouvre le calendrier ; un Cercle choisi : « Je promets … à tout le monde », l'exemple au pluriel, la
+//    pastille porte son visage, la barre prend l'écriture d'un Cercle, « aucune » rend « Je me promets » ; les pièces jointes s'ajoutent ;
+//    planter emporte l'échéance et le Cercle ; un Cercle : un membre coché reste coché, sa rangée ouverte ──
+test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le monde), les pièces jointes, les membres ; planter les emporte', async ({
+  page,
+}) => {
+  test.setTimeout(150000);
+  const ls = stockage();
+  const st = JSON.parse(ls['promi_state']!) as Record<string, unknown>;
+  st['NUE'] = { n1: 'Marseille' };
+  ls['promi_state'] = JSON.stringify(st);
+  await ouvrir(page, 'promi', ls);
+  // les sondes : les pastilles ne prennent plus le doigt ; planter perd l'échéance et le Cercle
+  if (sonde('peauf-choix-sourd')) await page.addStyleTag({ content: '#csPeauf .chip{pointer-events:none!important}' });
+  if (sonde('peauf-choix-perdus'))
+    await page.evaluate(
+      `(() => { const m = ${P_}.magasin; const f = m.planter.bind(m); m.planter = (p, t) => f({ ...p, due: null, dueISO: null, cercle: null }, t); })()`,
+    );
+  const ph = (): Promise<{
+    due: number | null;
+    dueISO: string | null;
+    cercle: string | null;
+    sens: string;
+    qui: string[];
+    fichiers: string[];
+  }> => page.evaluate(`${P_}.pagePlus().etat().phrase`) as never;
+  const toucheRangee = async (lab: string): Promise<void> => {
+    await page.evaluate((lab) => {
+      const r = [...document.querySelectorAll<HTMLElement>('#csPeauf .s2-reg')].find(
+        (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === lab,
+      )!;
+      const b = r.getBoundingClientRect();
+      const o = { bubbles: true, clientX: b.left + 30, clientY: b.top + 20, pointerId: 32 };
+      const e = document.elementFromPoint(o.clientX, o.clientY)!;
+      e.dispatchEvent(new PointerEvent('pointerdown', o));
+      e.dispatchEvent(new PointerEvent('pointerup', o));
+      e.dispatchEvent(new MouseEvent('click', o));
+    }, lab);
+    await page.waitForTimeout(250);
+  };
+  const lit = (
+    lab: string,
+  ): Promise<{ ouv: boolean; val: string; chips: string[]; on: string[]; h: number; rayon: string }> =>
+    page.evaluate((lab) => {
+      const r = [...document.querySelectorAll<HTMLElement>('#csPeauf .s2-reg')].find(
+        (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === lab,
+      )!;
+      const ch = [...r.querySelectorAll('.chip')];
+      return {
+        ouv: r.classList.contains('s2-ouv'),
+        val: (r.querySelector('.s2-val')?.textContent ?? '').trim(),
+        chips: ch.map((c) => (c.textContent ?? '').trim()),
+        on: ch.filter((c) => c.classList.contains('on')).map((c) => (c.textContent ?? '').trim()),
+        h: r.getBoundingClientRect().height / (r.getBoundingClientRect().width / r.offsetWidth),
+        rayon: getComputedStyle(r).borderTopLeftRadius,
+      };
+    }, lab);
+  const pastilleDe = async (lab: string, mot: string): Promise<void> => {
+    const xy = await page.evaluate(
+      ([lab, mot]) => {
+        const r = [...document.querySelectorAll<HTMLElement>('#csPeauf .s2-reg')].find(
+          (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === lab,
+        )!;
+        const c = [...r.querySelectorAll<HTMLElement>('.chip')].find((x) => (x.textContent ?? '').trim() === mot)!;
+        const b = c.getBoundingClientRect();
+        return [b.left + b.width / 2, b.top + b.height / 2];
+      },
+      [lab, mot] as const,
+    );
+    await page.mouse.click(xy[0]!, xy[1]!);
+    await page.waitForTimeout(300);
+  };
+  await doigt(page, '#csBotBar');
+  await posee(page);
+  // 1 · AVANT : se déplie, ses cinq choix dessous, aucun coché (« un jour » est le défaut, pas un choix)
+  await toucheRangee('AVANT');
+  let a = await lit('AVANT');
+  expect([a.ouv, a.chips, a.on, a.rayon], 'dépliée : ses choix, aucun coché, rayon 30').toEqual([
+    true,
+    ['demain', '1 sem.', '1 mois', 'une date…', 'un jour'],
+    [],
+    '30px',
+  ]);
+  expect(a.h, 'la rangée grandit : 18 + 12 + 19,8 + 14 + deux rangées de pastilles (33, 8) + 18').toBeCloseTo(159.8, 0);
+  await pastilleDe('AVANT', '1 sem.');
+  a = await lit('AVANT');
+  expect([a.ouv, a.val, (await ph()).due], 'un choix la replie et s’écrit').toEqual([false, '1 sem.', 7]);
+  expect((await etat(page)).gardeActif, 'la page a changé').toBe(true);
+  await toucheRangee('AVANT');
+  expect((await lit('AVANT')).on, 'rouverte : son choix coché').toEqual(['1 sem.']);
+  // « une date… » : le calendrier (une date dans 10 jours) — la valeur dit le jour
+  const iso = await page.evaluate(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 10);
+    return `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  });
+  await page.evaluate((iso) => {
+    const i = document.querySelector<HTMLInputElement>('#dueChips .due-datein')!;
+    i.value = iso;
+    i.dispatchEvent(new Event('change', { bubbles: true }));
+  }, iso);
+  await page.waitForTimeout(300);
+  a = await lit('AVANT');
+  expect([(await ph()).due, (await ph()).dueISO], 'une date : dans 10 jours').toEqual([10, iso]);
+  expect(a.val, 'la valeur dit le jour (« lundi 12 »)').toMatch(
+    /^(dimanche|lundi|mardi|mercredi|jeudi|vendredi|samedi) \d+$/,
+  );
+  // 2 · DANS UN CERCLE : « aucune » coché, puis Marseille — la phrase passe à « Je promets … à tout le monde »
+  await toucheRangee('DANS UN CERCLE');
+  const c = await lit('DANS UN CERCLE');
+  expect([c.chips, c.on], 'aucune, puis les Cercles').toEqual([['aucune', 'Marseille'], ['aucune']]);
+  await pastilleDe('DANS UN CERCLE', 'Marseille');
+  const p1 = await ph();
+  expect([p1.cercle, p1.sens, p1.qui], 'le Cercle choisi : à tout le monde').toEqual([
+    'n1',
+    'faire',
+    ['tout le monde'],
+  ]);
+  expect((await lit('DANS UN CERCLE')).val).toBe('Marseille');
+  await doigt(page, '#csPeauf .s2-fermer');
+  await posee(page);
+  const l1 = await lignes(page);
+  expect(l1[0], 'le verbe').toBe('Je promets');
+  expect(l1[l1.length - 1], 'à tout le monde').toBe('à tout le monde');
+  expect(
+    await page.evaluate(() => ({
+      ex: document.querySelector('#createSheet .ph-m[data-ph="titre"]')!.getAttribute('data-plein'),
+      vis: !!document.querySelector('#createSheet .ph-m[data-ph="qui"] .pp-visage'),
+      barre: getComputedStyle(document.querySelector('#csBotBar .cbb-lab')!).color,
+    })),
+    'l’exemple au pluriel, le visage dans la pastille, la barre à l’écriture d’un Cercle',
+  ).toEqual({ ex: expect.stringMatching(/^vous /) as unknown as string, vis: true, barre: 'rgb(243, 231, 209)' }); // --c-creme95-2, #F3E7D1 (le prototype)
+  // 3 · PIÈCES JOINTES : le sélecteur de fichiers dans le geste ; deux fichiers
+  await doigt(page, '#csBotBar');
+  await posee(page);
+  const pj = await page.evaluate(() => {
+    const r = [...document.querySelectorAll<HTMLElement>('#csPeauf .s2-reg')].find(
+      (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === 'PIÈCES JOINTES',
+    )!;
+    const b = r.getBoundingClientRect();
+    return [b.left + 40, b.top + 30];
+  });
+  const [chooser] = await Promise.all([
+    page.waitForEvent('filechooser', { timeout: 5000 }),
+    page.mouse.click(pj[0]!, pj[1]!),
+  ]);
+  await chooser.setFiles([
+    { name: 'billet.pdf', mimeType: 'application/pdf', buffer: Buffer.from('a') },
+    { name: 'plan.png', mimeType: 'image/png', buffer: Buffer.from('b') },
+  ]);
+  await page.waitForTimeout(300);
+  expect([(await ph()).fichiers, (await lit('PIÈCES JOINTES')).val]).toEqual([
+    ['billet.pdf', 'plan.png'],
+    '2 fichiers',
+  ]);
+  // « aucune » rend « Je me promets »
+  await toucheRangee('DANS UN CERCLE');
+  await pastilleDe('DANS UN CERCLE', 'aucune');
+  expect([(await ph()).cercle, (await ph()).sens, (await ph()).qui]).toEqual([null, 'soi', []]);
+  await toucheRangee('DANS UN CERCLE');
+  await pastilleDe('DANS UN CERCLE', 'Marseille');
+  await doigt(page, '#csPeauf .s2-fermer');
+  await posee(page);
+  // 4 · planter emporte l'échéance, le Cercle et les pièces jointes (la parole écrite au milieu du trait, C-237)
+  await doigt(page, '#createSheet .ph-m[data-ph="titre"]');
+  await posee(page);
+  await page.keyboard.type('appeler Lou');
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(`${P_}.pagePlus().etat().invite.visible`, undefined, { timeout: 30000 });
+  await page.waitForFunction(() => !document.querySelector('#createSheet canvas.passage-flaques'), undefined, {
+    timeout: 20000,
+  });
+  const [x0, y0, k] =
+    (await page.evaluate(`(() => { const cs = document.getElementById('createSheet'); const C = cs.getBoundingClientRect();
+      const k = C.width / cs.offsetWidth; const h = parseFloat(getComputedStyle(cs).getPropertyValue('--pp-h')) || 0;
+      const [x, y] = document.getElementById('csTrameCv').getAttribute('data-depart').split(',').map(Number); return [C.left + x * k, C.top + (y + h) * k, k]; })()`)) as [
+      number,
+      number,
+      number,
+    ];
+  await page.mouse.move(x0, y0);
+  await page.mouse.down();
+  for (let x = x0; x <= 200 * k; x += 8 * k) await page.mouse.move(x, y0);
+  await page.mouse.up();
+  const pa = (await page.evaluate(
+    `(() => { const L = ${P_}.magasin.etat().paroles; const p = L[L.length - 1]; return { t: p.title, due: p.due, iso: p.suite?.dueISO ?? null, nuee: p.nuee ?? null, files: p.suite?.files ?? [] }; })()`,
+  )) as { t: string; due: number | null; iso: string | null; nuee: string | null; files: string[] };
+  expect(pa, 'la parole porte son échéance, son Cercle, ses pièces jointes').toEqual({
+    t: 'appeler Lou',
+    due: 10,
+    iso,
+    nuee: 'n1',
+    files: ['billet.pdf', 'plan.png'],
+  });
+});
+
+test('Peaufiner d’un Cercle : MEMBRES se déplie, un membre coché reste coché et sa rangée ouverte, décoché il part', async ({
+  page,
+}) => {
+  await ouvrir(page, 'nuee');
+  if (sonde('peauf-membres-sourds'))
+    await page.addStyleTag({ content: '#csPeauf .s2-reg .gn-liste{pointer-events:none!important}' });
+  await doigt(page, '#csBotBar');
+  await posee(page);
+  const membres = async (): Promise<{ ouv: boolean; val: string; on: string[] }> =>
+    page.evaluate(() => {
+      const r = [...document.querySelectorAll<HTMLElement>('#csPeauf .s2-reg')].find(
+        (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === 'MEMBRES',
+      )!;
+      return {
+        ouv: r.classList.contains('s2-ouv'),
+        val: (r.querySelector('.s2-val')?.textContent ?? '').trim(),
+        on: [...r.querySelectorAll('.ph-o.on')].map((b) => (b.textContent ?? '').trim()),
+      };
+    });
+  const touche = async (sel: string, mot: string): Promise<void> => {
+    const xy = await page.evaluate(
+      ([sel, mot]) => {
+        const e = [...document.querySelectorAll<HTMLElement>(sel)].find((x) =>
+          (x.textContent ?? '').trim().startsWith(mot),
+        )!;
+        const b = e.getBoundingClientRect();
+        return [b.left + 30, b.top + Math.min(20, b.height / 2)];
+      },
+      [sel, mot] as const,
+    );
+    await page.mouse.click(xy[0]!, xy[1]!);
+    await page.waitForTimeout(300);
+  };
+  await touche('#csPeauf .s2-reg', 'MEMBRES');
+  expect((await membres()).ouv, 'dépliée').toBe(true);
+  await touche('#csPeauf .s2-reg .ph-o', 'M');
+  const m1 = await membres();
+  expect([m1.ouv, m1.on.length, m1.val.length > 0], 'un membre coché : la rangée reste ouverte').toEqual([
+    true,
+    1,
+    true,
+  ]);
+  const nom = m1.on[0]!.replace(/^.\s*/, '');
+  expect(((await etat(page)).phrase as unknown as { membres: string[] }).membres, 'il est membre').toContain(
+    nom.replace(/×$/, '').trim(),
+  );
+  await touche('#csPeauf .s2-reg .ph-o.on', m1.on[0]!.charAt(0));
+  expect((await membres()).on, 'décoché : il part').toEqual([]);
+});
+
 // ── redteam_photo_menu (v117, v132 : la page +) — le bouton photo ouvre le menu (« Dessiner » en tête ; « Importer une photo » sauf sur un
 //    Cercle, C-199), en flaques ; « Importer une photo » ouvre le sélecteur de fichiers DANS le geste ; la photo remplace la dalle ; « Retirer
 //    la photo » la retire ; un toucher ailleurs referme le menu ──
