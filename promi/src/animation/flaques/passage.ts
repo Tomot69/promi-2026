@@ -23,6 +23,8 @@ export interface OptionsPassage {
   garde?: boolean;
   attend?: boolean;
   avance?: number;
+  /** posé juste après cet élément (au-dessus de lui seul, sous ce qui le suit) — le prototype : `apres` */
+  apres?: Element;
   fin?: (c: ControlePassage) => void;
 }
 
@@ -85,7 +87,8 @@ export function passageFlaques(hote: HTMLElement, o: OptionsPassage): ControlePa
   ];
   if (o.z != null) styles.push(['z-index', String(o.z)]);
   for (const [k, v] of styles) cv.style.setProperty(k, v, 'important');
-  if (o.devant) hote.appendChild(cv);
+  if (o.apres?.parentNode === hote) hote.insertBefore(cv, o.apres.nextSibling);
+  else if (o.devant) hote.appendChild(cv);
   else hote.insertBefore(cv, hote.firstChild);
   // la couverture : une couleur, ou l'image découpée à `rect`
   const couv = document.createElement('canvas');

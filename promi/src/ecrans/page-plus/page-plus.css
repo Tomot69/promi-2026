@@ -149,6 +149,9 @@
   right: var(--marge-d);
   z-index: 4;
 }
+#createSheet .ph-txt .ph-li {
+  letter-spacing: -0.03em;
+}
 #createSheet .ph-txt {
   position: relative;
   font-family: var(--f-libelle);
@@ -202,6 +205,8 @@
   border: 3px dashed currentColor;
   border-radius: 16px;
   line-height: normal;
+  /* la chasse se recalcule à la taille de la pastille (un titre réduit à 16 sous une phrase à 28 : −0,48 px, le prototype) */
+  letter-spacing: -0.03em;
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
   cursor: pointer;
@@ -928,4 +933,43 @@
 /* C-332 : l'enveloppe du texte d'une place, le temps de son détracé ou de son tracé (le tracé découpe le texte, jamais l'encart : C-271) */
 #createSheet .ph-mt {
   display: inline-block;
+}
+
+/* ── C-209, C-213, C-229 : le départ du trait sur SA couche (mêmes cotes que le champ), qui clignote avec le I de PROMI jusqu'au premier
+   toucher du trait (`promiBlink`, accueil.css) ; le libellé « trace pour … » (PromiLate 19, l'orange du départ, C-157) ── */
+#ppDepart {
+  position: absolute;
+  left: 0;
+  top: var(--pp-h);
+  display: block;
+  pointer-events: none;
+}
+#ppDepart.clignote {
+  animation: promiBlink 1.15s steps(1, end) infinite;
+}
+#createSheet .pp-trace {
+  position: absolute;
+  margin: -5px 0 0;
+  padding: 0;
+  font-family: var(--f-marque);
+  font-weight: 400;
+  font-size: 19px;
+  line-height: 19px;
+  /* le prototype : capitales, 0,76 px de chasse (relevé sur son rendu) */
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: 4;
+  color: var(--c-orange-depart);
+  -webkit-text-fill-color: var(--c-orange-depart);
+  pointer-events: none;
+}
+#createSheet .pp-trace[hidden],
+#createSheet .pp-trace.pp-choix {
+  visibility: hidden;
+}
+@media (prefers-reduced-motion: reduce) {
+  #ppDepart.clignote {
+    animation: none;
+  }
 }

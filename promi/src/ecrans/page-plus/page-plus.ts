@@ -24,7 +24,7 @@ import type { Navigation } from '../../navigation/navigation.ts';
 import type { Brouillon } from '../../donnees/schema.ts';
 import { horloge } from '../../animation/horloge.ts';
 import { chargerTrace, type ControleTrace } from '../../animation/trace/trace.ts';
-import { masqueFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
+import { masqueFlaques, passageFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { palette } from '../../design/jetons.ts';
 import {
   EXEMPLES,
@@ -38,6 +38,7 @@ import { elision } from '../../metier/elision.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
+import { NATTRAIT, peindreTrait } from './trait.ts';
 
 export type Nature = 'promi' | 'chiche' | 'nuee';
 export type Sens = 'soi' | 'faire' | 'demander';
@@ -86,6 +87,8 @@ export interface PagePlus {
     menu: boolean;
     ajout: boolean;
     mouvement: boolean;
+    /** C-209, C-213, C-229 : l'invite à tracer — née (le trait, le libellé), en train de partir, l'horizon bas, le premier toucher du trait */
+    invite: { visible: boolean; sortie: boolean; haut: boolean; anim: boolean; touche: boolean };
   };
   detruire(): void;
 }
@@ -230,7 +233,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // le panneau Peaufiner (lot-S2 : la page de réglages de la page +, le MÊME bloc que la fiche)
   const peauf = el('div', { id: 'csPeauf', class: 'dpd-corps', role: 'region', 'aria-label': T.peaufiner });
   peauf.hidden = true;
-  cs.append(cv, photoCv, phrase, pinceau, garder, peauf, barre, plateau, nid, saisie, gnIn, photoIn);
+  // le départ du trait, sur SA couche tant qu'il clignote (le prototype : `#ppDepart`) ; le libellé « trace pour … » (`.pp-trace`)
+  const departCv = el('canvas', { id: 'ppDepart', 'aria-hidden': 'true' });
+  const lib = el('div', { class: 'pp-trace' });
+  lib.hidden = true;
+  cs.append(cv, departCv, photoCv, phrase, pinceau, garder, peauf, barre, plateau, nid, saisie, gnIn, photoIn, lib);
   // C-129 : aucun emoji n'entre (le titre, le nom, un prénom ; la note de Peaufiner aussi, plus bas)
   champSansEmoji(saisie);
   champSansEmoji(gnIn);
@@ -310,10 +317,15 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
    * ⚑ C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste
    * avec les autres, le toucher ne retire jamais quelqu'un d'autre ; la liste n'est jamais vide (retirée la dernière, « Moi » revient). Il vit
    * DANS la liste (`MOI`, en tête) dès qu'il est à côté de quelqu'un ; seul, la liste est vide et la place dit « moi » (C-304, en pointillés).
-   * La phrase dit ce qui est coché (« à moi, Maman ») ; la parole plantée et le gardé de côté portent les autres (le prototype : `newWhoSel`).
+   * La phrase dit ce qui est coché (« à Maman et moi », Q624) ; la parole plantée et le gardé de côté portent les autres (le prototype : `newWhoSel`).
    */
   const MOI = T.moi;
-  const dits = (L: string[]): string[] => L.map((n) => (n === MOI ? T.vides.moi : n));
+  /** ⚑ Q624 (Tom, 22 nov. 2026) : « moi » coché avec d'autres se dit EN DERNIER, après « et » — « à Maman et moi », « à Maman, Rachel et moi »,
+   *  « avec Maman et moi » ; sans lui, les noms seuls, comme avant */
+  const ecrit = (L: string[], sep: string): string => {
+    const a = autres(L);
+    return L.includes(MOI) && a.length ? `${a.join(sep)} ${T.liaisons.et} ${T.vides.moi}` : a.join(sep);
+  };
   const autres = (L: string[]): string[] => L.filter((n) => n !== MOI);
 
   // ── LA PHRASE ──
@@ -342,7 +354,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       const nom = P.nom.trim();
       const ex = exemple('nuee');
       // C-304 (v199, `lot-V199-MOI`) : la place « avec » touchée sans personne passe à « moi », comme celle d'un Promi ou d'un Chiche
-      const avec = P.membres.length ? dits(P.membres).join(' · ') : P.moi ? T.vides.moi : T.vides.toutLeMonde;
+      const avec = P.membres.length ? ecrit(P.membres, ' · ') : P.moi ? T.vides.moi : T.vides.toutLeMonde;
       const ici = saisieDe === 'nom';
       return (
         `<span class="ph-b ph-b-fixe">${esc(T.cercle)}</span><br>` +
@@ -352,9 +364,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     }
     const titre = titrePastille().html;
     if (n === 'chiche') {
-      const qui = P.qui.length ? dits(P.qui).join(', ') + ',' : P.moi ? T.vides.moi : T.vides.quiOse;
+      const qui = P.qui.length ? ecrit(P.qui, ', ') + ',' : P.moi ? T.vides.moi : T.vides.quiOse;
       const verbe = P.qui.length ? T.chiche.toLowerCase() : T.chiche;
-      const avec = P.avec.length ? dits(P.avec).join(', ') : T.vides.quiEnEst;
+      const avec = P.avec.length ? ecrit(P.avec, ', ') : T.vides.quiEnEst;
       return (
         `<em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}<br>` +
         `<span class="ph-b ph-b-fixe" data-ph="sens">${verbe}</span> <br>${titre}<br>` +
@@ -365,10 +377,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const verbe = (v: string): string => `<span class="ph-b" data-ph="sens">${esc(v)}${SVG_BASCULE}</span>`;
     if (P.sens === 'soi') return `${verbe(T.verbe.soi)} <br>${titre}`;
     if (P.sens === 'faire') {
-      const qui = P.qui.length ? dits(P.qui).join(', ') : P.moi ? T.vides.moi : T.vides.qui;
+      const qui = P.qui.length ? ecrit(P.qui, ', ') : P.moi ? T.vides.moi : T.vides.qui;
       return `${verbe(T.verbe.faire)} <br>${titre}<br><em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}`;
     }
-    const prenom = P.qui.length ? dits(P.qui).join(', ') + ',' : PRENOMS_EXEMPLE[prenomRang]!;
+    const prenom = P.qui.length ? ecrit(P.qui, ', ') + ',' : PRENOMS_EXEMPLE[prenomRang]!;
     return `${pastille('qui', prenom, !P.qui.length)}<br>${verbe(pluriel() ? T.verbe.demanderPluriel : T.verbe.demander)} <br>${titre}`;
   }
 
@@ -474,6 +486,77 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     return { taille, nl: lignes() };
   }
 
+  /**
+   * LE TITRE ÉCRIT ET LA HAUTEUR (v181b, C-244 §5.1 ; v182b, C-240 ; le prototype : `tient`, `taillePt`) — sous la phrase (et sous l'aide d'une
+   * pastille vide), il doit rester 20 pt d'air, la rangée du pinceau (44) et 20 pt avant « garder de côté » : sinon le titre se réduit (deux,
+   * puis trois lignes, jusqu'à 16) ; si ça ne suffit pas, la phrase entière descend d'un palier (2 pt, 1 sous 14) et le titre de 16 à 12, avec
+   * l'air de C-240 (12 · 44 · 12). Une phrase qui tient ne change pas. Rend vrai si le titre a été réduit. (La coupe « … » d'un titre qui ne
+   * tient pas même à 12 : le 2c, les textes longs.)
+   */
+  function titrePlein(r: { taille: number; nl: number }): boolean {
+    const ptL = txt.querySelector<HTMLElement>(
+      '.ph-m[data-ph="titre"]:not(.ph-vide), .ph-m[data-np="nom"]:not(.ph-vide)',
+    );
+    if (!ptL) return false;
+    const pr = ptL.previousElementSibling;
+    const liL = pr && pr.classList.contains('ph-li') ? (pr as HTMLElement) : null;
+    const C = cs.getBoundingClientRect();
+    const k = C.width / (cs.offsetWidth || 390) || 1;
+    const finMax = garder.hidden ? 760 : (garder.getBoundingClientRect().top - C.top) / k;
+    const aideH = txt.querySelector('.ph-m.ph-vide') ? 34 + 24 : 0;
+    const lim = largeur() - 48 + 0.5;
+    const lignesDe = (x: HTMLElement): number => {
+      const t: [number, number][] = [];
+      const rg = document.createRange();
+      rg.selectNodeContents(x);
+      for (const q of rg.getClientRects()) {
+        if (q.width < 1 || q.height < 1) continue;
+        const c = (q.top + q.bottom) / 2;
+        if (t.some(([a, b]) => c > a && c < b)) continue;
+        t.push([q.top, q.bottom]);
+      }
+      return t.length;
+    };
+    const tient = (n: number, air = 20): boolean => {
+      if (lignesDe(ptL) > n) return false;
+      const R = txt.getBoundingClientRect();
+      for (const q of ptL.getClientRects()) if ((q.right - R.left) / k > lim) return false;
+      return (R.bottom - C.top) / k + aideH + air + 44 + air <= finMax;
+    };
+    const taillePt = (t: number): void => {
+      for (const x of [ptL, liL]) {
+        if (!x) continue;
+        x.style.setProperty('font-size', `${String(t)}px`, 'important');
+        x.style.setProperty('line-height', `${String(Math.round(t * 1.2))}px`, 'important');
+      }
+    };
+    if (tient(2)) return false;
+    let fait = false;
+    for (let n = 2; n <= 3 && !fait; n++)
+      for (let tp = r.taille; tp >= 16; tp--) {
+        taillePt(tp);
+        if (tient(n)) {
+          fait = true;
+          break;
+        }
+      }
+    for (let tg = r.taille; tg >= 12 && !fait; tg -= tg > 14 ? 2 : 1) {
+      appli(tg);
+      for (let tp2 = Math.min(16, tg); tp2 >= 12 && !fait; tp2--) {
+        taillePt(tp2);
+        if (tient(20, 12)) {
+          fait = true;
+          r.taille = tg;
+        }
+      }
+    }
+    if (!fait) {
+      appli(r.taille);
+      taillePt(16);
+    }
+    return true;
+  }
+
   /** le bas de l'encre de la phrase (le TEXTE, pas les boîtes), en pt du cadre */
   function basEncre(): number {
     const r = document.createRange();
@@ -492,6 +575,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     H: number,
     sous = choix !== null || saisieDe !== null,
   ): void {
+    peindreFond(base, amp, hz, H, sous);
+    peindreInvite(base + hz, amp, H);
+  }
+  function peindreFond(base: number, amp: number, hz: number, H: number, sous: boolean): void {
     const W = largeur();
     const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
     cv.width = Math.round(W * dpr);
@@ -519,7 +606,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const dw = dalleT.w;
     const dh = dalleT.h;
     const x = Math.floor((W - dw) / 2);
-    const yD = 88 + (hz > 0 ? 16 : 0);
+    const yD = 88 + dzDalle();
     peindrePhoto(y, x, yD, dw, dh, W, H, dpr);
     const clip = (): void => {
       g.save();
@@ -633,6 +720,327 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     return Math.round(Math.min(y(W - 41) - 52, m - ep - 8 - 34));
   }
 
+  // ── L'INVITE À TRACER (C-209, C-213, C-229 ; le prototype : `lot-V172-INVITE`) — À L'OUVERTURE, RIEN DU TRAIT : l'horizon est 40 pt plus bas
+  //    que sa place (jamais à moins de 12 pt de l'encre de la phrase). LA PAROLE PRÊTE (la phrase ; le nom d'un Cercle) et VALIDÉE (ni saisie,
+  //    ni choix ouverts, la page posée) : l'horizon remonte (360 ms, une courbe douce), PUIS le trait naît en flaques sur l'image d'avant
+  //    (700 ms), le libellé « trace pour … » se TRACE, le départ CLIGNOTE avec le I de PROMI jusqu'au premier toucher du trait. Redevenue
+  //    incomplète : le trait repart en flaques (300 ms), le libellé se détrace, puis l'horizon redescend. ──
+  const HZ_DUREE = 360;
+  const inv = {
+    vis: false,
+    sortie: false,
+    touche: false,
+    haut: true,
+    anim: null as { de: number; a: number; acc: number; tp: number; jeu: number } | null,
+    v: 0,
+    jeu: 0,
+    trace: null as ControleTrace | null,
+    passes: [] as ControlePassage[],
+  };
+  let hzC = HZ_BAS;
+  let derniereCompo = 0;
+  const hzEff = (): number => (inv.anim ? inv.v : inv.haut ? hzC : 0);
+  /** Q599, C-234 : la dalle suit l'ÉTAT de l'horizon (bas : 16 pt ; en mouvement : la même part de sa course ; haut : 0) */
+  function dzDalle(): number {
+    const A = inv.anim;
+    let f = inv.haut ? 1 : 0;
+    if (A) {
+      const lo = Math.min(A.de, A.a);
+      const hi = Math.max(A.de, A.a);
+      if (hi - lo >= 0.5) f = Math.max(0, Math.min(1, (inv.v - lo) / (hi - lo)));
+    }
+    return Math.round(16 * f * 4) / 4;
+  }
+  const prete = (): boolean => (P.nat === 'nuee' ? P.nom : P.titre).trim().length > 0;
+  function repeindre(): void {
+    if (cs.hidden) return;
+    const hz = hzEff();
+    mise.hz = hz;
+    peindreChamp(mise.base, mise.amp, hz, mise.base + mise.amp + 60 + hz);
+  }
+  /** l'horizon va à sa place « pas prête » (enHaut, sous sa place) ou à sa place (0), en 360 ms */
+  function bouge(enHaut: boolean, fin?: () => void): void {
+    const de = hzEff();
+    inv.haut = enHaut;
+    const a = enHaut ? hzC : 0;
+    if (reduit() || Math.abs(a - de) < 0.5) {
+      inv.anim = null;
+      repeindre();
+      fin?.();
+      return;
+    }
+    const A = { de, a, acc: 17, tp: h.maintenant(), jeu: ++inv.jeu };
+    inv.anim = A;
+    inv.v = de;
+    const pas = (): void => {
+      if (inv.anim !== A) return;
+      const t = h.maintenant();
+      A.acc += Math.min(34, t - A.tp);
+      A.tp = t;
+      if (enHaut) A.a = hzC;
+      const u = Math.min(1, A.acc / HZ_DUREE);
+      inv.v = A.de + (A.a - A.de) * doux(u);
+      repeindre();
+      if (u < 1) h.image(pas);
+      else {
+        inv.anim = null;
+        repeindre();
+        fin?.();
+      }
+    };
+    pas();
+  }
+  /** le trait et le départ, sur le champ et sur la couche du départ (vidée quand rien ne clignote) */
+  function peindreInvite(baseH: number, amp: number, H: number): void {
+    const W = largeur();
+    const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
+    if (departCv.width !== cv.width) departCv.width = cv.width;
+    if (departCv.height !== cv.height) departCv.height = cv.height;
+    departCv.style.width = `${String(W)}px`;
+    departCv.style.height = `${String(H)}px`;
+    const gd = departCv.getContext('2d');
+    const g = cv.getContext('2d');
+    if (!gd || !g) return;
+    gd.setTransform(1, 0, 0, 1, 0, 0);
+    gd.clearRect(0, 0, departCv.width, departCv.height);
+    if (!(inv.vis || inv.sortie)) {
+      cv.removeAttribute('data-depart');
+      return;
+    }
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    gd.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const clignote = inv.vis && !inv.touche && !reduit();
+    const y = onde(baseH, amp, W);
+    const cx = peindreTrait({
+      depart: clignote ? gd : g,
+      champ: g,
+      y,
+      base: baseH,
+      W,
+      col: NATTRAIT[P.nat],
+      etat: 'plate',
+      doigt: 0,
+      entier: P.nat === 'nuee',
+    });
+    cv.setAttribute('data-depart', `${String(Math.round(cx * 10) / 10)},${String(Math.round(y(cx) * 10) / 10)}`);
+  }
+  /** le départ clignote avec le I de PROMI (son animation, calée sur sa phase) jusqu'au premier toucher ; fixe sous « Réduire les animations » */
+  function clignote(on: boolean): void {
+    if (!on || inv.touche || reduit()) {
+      departCv.classList.remove('clignote');
+      return;
+    }
+    departCv.classList.add('clignote');
+    const cale = (): void => {
+      const I = document.querySelector('.acc-mm i');
+      const An = I?.getAnimations().find((a) => (a as CSSAnimation).animationName === 'promiBlink');
+      const Af = departCv.getAnimations().find((a) => (a as CSSAnimation).animationName === 'promiBlink');
+      if (Af && An?.currentTime != null) Af.currentTime = An.currentTime;
+    };
+    cale();
+    h.image(() => {
+      cale();
+      h.image(cale);
+    });
+  }
+  /** le libellé du trait : « trace pour planter » (à soi) · « trace ta moitié » (à quelqu'un) · « trace pour lancer » (Chiche, Cercle) */
+  function poseLibelle(base: number, amp: number, ouvert: boolean): void {
+    const mt =
+      P.nat === 'promi'
+        ? ouvert || P.sens === 'soi' || !autres(P.qui).length
+          ? T.trace.planter
+          : T.trace.moitie
+        : T.trace.lancer;
+    if (lib.dataset['mot'] !== mt) {
+      lib.textContent = mt;
+      lib.dataset['mot'] = mt;
+    }
+    // C-157 : sur un Promi et un Chiche, 7,5 pt plus bas et 3 pt à droite (aligné sur la flèche, sans la toucher) ; un Cercle ne bouge pas
+    const mdx = P.nat === 'nuee' ? 0 : 3;
+    const mdy = P.nat === 'nuee' ? 0 : 7.5;
+    const boite = base + amp + 60;
+    lib.style.left = `${String(Math.round(largeur() * 0.11 + 39.1 + mdx))}px`;
+    lib.style.top = `calc(var(--pp-h) + ${String((ouvert ? 184 : boite - 60) + mdy + DT)}px)`;
+    lib.classList.toggle('pp-choix', choix !== null);
+  }
+  /** l'image de ce qui est là (le corps de la page sous l'onde, puis le champ et le trait) — le passage en flaques part d'elle */
+  function copieChamp(): HTMLCanvasElement {
+    const k = document.createElement('canvas');
+    k.width = cv.width;
+    k.height = cv.height;
+    const g = k.getContext('2d')!;
+    g.fillStyle = getComputedStyle(cs).backgroundColor;
+    g.fillRect(0, 0, k.width, k.height);
+    g.drawImage(cv, 0, 0);
+    g.drawImage(departCv, 0, 0);
+    return k;
+  }
+  /** tout le trait, sur la largeur de l'écran : du haut de l'onde moins 22 pt jusque sous la flèche et le creux de l'onde */
+  function rectTrait(): [number, number, number, number] {
+    const W = largeur();
+    const y = onde(mise.base + hzEff(), mise.amp, W);
+    let m = 1e9;
+    let b = -1e9;
+    for (let x = -12; x <= W + 12; x += 4) {
+      m = Math.min(m, y(x));
+      b = Math.max(b, y(x));
+    }
+    const y0 = Math.max(0, m - 22);
+    const y1 = Math.max(mise.base + 54, b + 14);
+    return [0, y0 + haut0(), W, y1 - y0];
+  }
+  function purgeInvite(): void {
+    for (const p of inv.passes) {
+      p.arrete = true;
+      p.canevas.remove();
+    }
+    inv.passes = [];
+  }
+  /** C-269 (v199, `lot-V199-MOI`) : la parole validée, sans personne choisie, la place du destinataire dit « moi » en pointillés (hors
+   *  « promets-moi » et « je me promets ») — tracée avec le trait ; redevenue incomplète, la place reprend son mot */
+  function placeMoi(on: boolean): void {
+    const cle = P.nat === 'nuee' ? 'avec' : P.nat === 'chiche' || P.sens === 'faire' ? 'qui' : null;
+    if (!cle) return;
+    const L = P.nat === 'nuee' ? P.membres : P.qui;
+    if (L.length || P.moi === on || detrace) return;
+    P.moi = on;
+    transitionPlace(cle);
+  }
+  function montre(): void {
+    if (inv.vis) return;
+    placeMoi(true);
+    const avant = copieChamp();
+    inv.vis = true;
+    inv.touche = false;
+    inv.sortie = false;
+    repeindre();
+    clignote(true);
+    lib.hidden = false;
+    try {
+      if (!reduit()) inv.trace = chargerTrace().trace(lib, null, { surFin: () => (inv.trace = null) });
+    } catch {
+      inv.trace = null;
+    }
+    if (!reduit()) {
+      const z = getComputedStyle(cv).zIndex;
+      const p = passageFlaques(cs, {
+        mode: 'ouvre',
+        rect: rectTrait(),
+        image: avant,
+        duree: 700,
+        apres: departCv,
+        z: z && z !== 'auto' ? +z : 0,
+        fin: () => {
+          inv.passes = inv.passes.filter((x) => x !== p);
+        },
+      });
+      inv.passes.push(p);
+    }
+  }
+  function retire(): void {
+    if (!inv.vis) return;
+    const j = ++inv.jeu;
+    placeMoi(false);
+    inv.trace?.stop();
+    inv.trace = null;
+    if (reduit()) {
+      inv.vis = false;
+      lib.hidden = true;
+      clignote(false);
+      repeindre();
+      bouge(true);
+      return;
+    }
+    // l'image SANS invite, puis le champ rendu tel qu'il est : rien ne change à l'écran dans cette tâche
+    inv.vis = false;
+    repeindre();
+    const apres = copieChamp();
+    inv.sortie = true;
+    repeindre();
+    clignote(false);
+    let n = 0;
+    let fait = 0;
+    const bout = (): void => {
+      if (++fait < n) return;
+      if (j !== inv.jeu) return;
+      inv.sortie = false;
+      lib.hidden = true;
+      purgeInvite();
+      repeindre();
+      bouge(true);
+    };
+    n++;
+    const p = passageFlaques(cs, {
+      mode: 'couvre',
+      rect: rectTrait(),
+      image: apres,
+      duree: 300,
+      apres: departCv,
+      fin: bout,
+    });
+    inv.passes.push(p);
+    n++;
+    let fl = false;
+    const finL = (): void => {
+      if (fl) return;
+      fl = true;
+      bout();
+    };
+    try {
+      inv.trace = chargerTrace().trace(lib, null, { inverse: true, surFin: finL });
+    } catch {
+      finL();
+    }
+    h.minuteur(finL, 2500);
+  }
+  function cacheInvite(): void {
+    purgeInvite();
+    inv.trace?.stop();
+    inv.trace = null;
+    inv.anim = null;
+    inv.vis = false;
+    inv.sortie = false;
+    inv.touche = false;
+    inv.haut = true;
+    inv.jeu++;
+    lib.hidden = true;
+    clignote(false);
+  }
+  /** le premier toucher du trait : le départ cesse de clignoter, il reste orange, fixe */
+  function toucheTrait(): void {
+    if (!inv.vis || inv.touche) return;
+    inv.touche = true;
+    clignote(false);
+    repeindre();
+  }
+  // le doigt posé sur le trait (à 30 pt de l'onde au plus) : le premier toucher (le geste lui-même : `geste`, plus bas)
+  cs.addEventListener(
+    'pointerdown',
+    (ev) => {
+      if (!inv.vis) return;
+      const C = cs.getBoundingClientRect();
+      const k = C.width / (cs.offsetWidth || 390) || 1;
+      const x = (ev.clientX - C.left) / k;
+      const yy = (ev.clientY - C.top) / k - haut0();
+      if (Math.abs(yy - onde(mise.base + hzEff(), mise.amp, largeur())(x)) <= 30) toucheTrait();
+    },
+    true,
+  );
+  /** la veille (toutes les 50 ms, la page + ouverte) : la parole prête et validée, l'horizon remonte puis le trait naît ; incomplète, il repart */
+  h.intervalle(() => {
+    if (cs.hidden || cs.classList.contains('pp-part') || cs.classList.contains('pp-entre')) return;
+    if (mv || saisieDe !== null || choix !== null || peaufOuvert || menu) return;
+    if (!prete()) {
+      if (inv.vis) retire();
+      else if (!inv.haut && !inv.anim && !inv.sortie) bouge(true);
+      return;
+    }
+    if (inv.vis || inv.sortie || inv.anim) return;
+    if (h.maintenant() - derniereCompo < 160) return;
+    if (inv.haut) bouge(false, montre);
+    else montre();
+  }, 50);
+
   // ── LA COMPOSITION ──
   function composer(): void {
     // la mise en page « ouverte » (cadres 18 à 23) : un choix des personnes, ou la saisie d'un mot ; la barre Peaufiner se cache pendant la
@@ -670,6 +1078,14 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       const boite = base + amp + 60;
       phrase.style.top = `calc(var(--pp-h) + ${String(ouvert ? 228 + DT : boite + 6 + DY_PHRASE[P.nat] + DT)}px)`;
       if (ouvert) break;
+      // le titre écrit trop haut pour la page : il se réduit (et la phrase avec lui) ; ses lignes changent, la page se recompose
+      if (titrePlein(r)) {
+        const nl = lignes();
+        if (nl !== r.nl) {
+          r = { ...r, nl };
+          continue;
+        }
+      }
       // C-240 : la place du rail et de son air au-dessus de « garder de côté »
       const gTop = garder.getBoundingClientRect().top - cs.getBoundingClientRect().top;
       const trop = basEncre() - DY_PHRASE[P.nat] + 12 + 44 + 12 - gTop;
@@ -691,8 +1107,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       if (q.width) hautPills = Math.min(hautPills, q.top - C.top - dh);
     }
     const W = largeur();
-    const hz = Math.max(0, Math.min(HZ_BAS, Math.floor((hautPills - HZ_AIR - basOnde(onde(base, amp, W), W)) * 2) / 2));
+    hzC = Math.max(0, Math.min(HZ_BAS, Math.floor((hautPills - HZ_AIR - basOnde(onde(base, amp, W), W)) * 2) / 2));
+    const hz = hzEff();
     peindreChamp(base, amp, hz, base + amp + 60 + hz);
+    poseLibelle(base, amp, ouvert);
+    derniereCompo = h.maintenant();
     photo.style.top = `calc(var(--pp-h) + ${String(hautBouton(base, amp))}px)`;
     mise = { base, amp, hz, nl: r.nl, taille: r.taille };
     // le rail : à mi-chemin, à l'encre, entre la phrase et « garder de côté » (il se compte comme si la phrase n'avait pas remonté) ;
@@ -1015,6 +1434,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       rendreChoix();
       return;
     }
+    transitionPlace(cle, rendreChoix);
+  }
+  /** une place de la phrase change (son état est déjà écrit) : elle se détrace, la phrase se recompose, la neuve se trace (C-279, C-271) */
+  function transitionPlace(cle: string, pendant?: () => void): void {
     const el0 = txt.querySelector<HTMLElement>(selPlace(cle));
     let tl: ReturnType<typeof chargerTrace> | null = null;
     try {
@@ -1029,7 +1452,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     tracePlace?.stop();
     tracePlace = null;
     detrace = { el: el0, cle };
-    rendreChoix();
+    pendant?.();
     const t = tl;
     t.trace(enveloppe(el0), null, {
       inverse: true,
@@ -1661,6 +2084,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   function ouvrir(nat: Nature): void {
     ranger();
     P = neuve(nat);
+    cacheInvite();
     // un détracé, un tracé de la place qui court encore (C-332) : la page neuve ne les reprend pas
     detrace = null;
     tracePlace?.stop();
@@ -1718,6 +2142,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       finFermeture = null;
       cs.hidden = true;
       cs.classList.remove('pp-part');
+      cacheInvite();
       ranger();
     }, 480);
   }
@@ -1754,6 +2179,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       menu: !!menu,
       ajout: ajoutActif,
       mouvement: !!mv,
+      invite: { visible: inv.vis, sortie: inv.sortie, haut: inv.haut, anim: !!inv.anim, touche: inv.touche },
     }),
     detruire() {
       window.removeEventListener('resize', surTaille);

@@ -13902,7 +13902,7 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
     if(!box){ box=document.createElement('div'); box.id='nueePhrase'; nf.insertBefore(box, nf.firstChild); }
     var nom=(document.getElementById('nName')||{}).value||'';
     var membres=(window.newNueeMembers||[]);
-    var avec = membres.length ? (window._nueeMoiAvec ? ['moi'].concat(membres) : membres).join(' · ') : (window._ppMoi ? 'moi' : (window._nueeMoiSeul ? 'Moi' : 'tout le monde'));   /* ⚑ v199 (C-269 refaite) : le nom validé, aucun membre : « moi » en pointillés à la place de « tout le monde » */   /* §5 : « Moi » choisi = avec toi seulement */
+    var avec = membres.length ? membres.join(' · ') + (window._nueeMoiAvec ? ' et moi' : '') : (window._ppMoi ? 'moi' : (window._nueeMoiSeul ? 'Moi' : 'tout le monde'));   /* ⚑ v199 (C-269 refaite) : le nom validé, aucun membre : « moi » en pointillés à la place de « tout le monde » */   /* §5 : « Moi » choisi = avec toi seulement */
     var pl=function(cle,txt,vide){ return '<span class="ph-m'+(vide?' ph-vide':'')+'" data-np="'+cle+'">'+txt+'</span>'; };
     /* LE VERBE EST UNE PASTILLE, comme sur les deux autres natures (§5 · Nuée · écriture :
        « Je lance une Nuée » Bricolage 700/29, crème sur #291547, rayon 18). Il était en
@@ -34277,7 +34277,7 @@ function bati(){
     return out;
   }
   window._gensConnus = connus;
-  window._gensListe = function(v){ return String(v||'').split(/\s*[,·]\s*/).map(function(n){ return n.trim(); })
+  window._gensListe = function(v){ return String(v||'').replace(/\s+et\s+moi\s*$/i, '').split(/\s*[,·]\s*/)   /* Q624 : « Maman et moi » — « moi » en dernier, après « et » (il n'est pas une personne de la liste) */.map(function(n){ return n.trim(); })
     .filter(function(n){ return n && !/^(moi|le groupe|qui \?|personne)$/i.test(n); }); };
   /* cfg : nat, choisis() → [noms], ajoute(nom), retire(nom), tete ('Moi' | 'tout le monde' | null), teteOn(), teteChoisie(),
            rendu() (optionnel : si l'hôte est reconstruit ailleurs), max (nombre de connus montrés) */
@@ -34544,11 +34544,11 @@ function bati(){
     var champ = (cle === 'avec') ? 'avec' : 'qui';
     /* ⚑ C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste avec les autres, le
        toucher ne retire jamais quelqu'un d'autre ; la liste n'est jamais vide (retirée la dernière, « Moi » revient). À côté de quelqu'un, il vit dans la phrase
-       (`P.qui` = « moi, Maman ») ; `newWhoSel` et `fWho` gardent les autres (ce que la plantation lit). Avant : toucher « Moi » vidait la liste. */
-    function moiAvec(){ return champ === 'qui' && /(^|,)\s*moi\s*(,|$)/i.test(String(P.qui||'')) && window._gensListe(P.qui).length > 0; }
+       (`P.qui` = « Maman et moi », Q624) ; `newWhoSel` et `fWho` gardent les autres (ce que la plantation lit). Avant : toucher « Moi » vidait la liste. */
+    function moiAvec(){ return champ === 'qui' && /\s+et\s+moi\s*$/i.test(String(P.qui||'')) && window._gensListe(P.qui).length > 0; }
     function pose(l, moi){
       if(champ === 'avec'){ P.avec = l.join(', '); return; }
-      if(l.length){ P.qui = (moi ? ['moi'] : []).concat(l).join(', '); }
+      if(l.length){ P.qui = l.join(', ') + (moi ? ' et moi' : ''); }   /* ⚑ Q624 (Tom) : « à Maman et moi », « à Maman, Rachel et moi » */
       else { P.qui = (P.sens === 'faire' && !P.faireAutre) ? 'Moi' : ''; }
       try{ window.newWhoSel = l.slice(); }catch(_){}
       try{ var w = document.getElementById('fWho'); if(w){ w.value = l.join(', ') || (P.qui||''); w.dispatchEvent(new Event('input',{bubbles:true})); } }catch(_){}

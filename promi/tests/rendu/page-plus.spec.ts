@@ -25,7 +25,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { ETAT, stockage, GEL, prototype, vraieApp, ouvrirPagePlus, ecart, sonde } from './aides.ts';
+import { ETAT, stockage, GEL, prototype, vraieApp, ouvrirPagePlus, ecart, sonde, P_ } from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'page-plus');
 
@@ -226,7 +226,8 @@ type Cas = {
   nat: 'promi' | 'chiche' | 'nuee';
   choix: string | null;
   /** fin du 2a : ce que la page montre ensuite (la saisie, un titre tapé, Peaufiner, le menu photo, le champ « un prénom… ») */
-  etat?: 'saisie' | 'tape' | 'peauf' | 'photo' | 'prenom';
+  /** 2b : « prete » — le titre tapé puis validé (Retour) : l'horizon remonté, le trait né, le libellé tracé (C-209, C-213, C-229) */
+  etat?: 'saisie' | 'tape' | 'peauf' | 'photo' | 'prenom' | 'prete';
 };
 const CAS: Cas[] = [
   { nat: 'promi', choix: null },
@@ -243,6 +244,9 @@ const CAS: Cas[] = [
   { nat: 'nuee', choix: null, etat: 'peauf' },
   { nat: 'promi', choix: null, etat: 'photo' },
   { nat: 'nuee', choix: null, etat: 'photo' },
+  { nat: 'promi', choix: null, etat: 'prete' },
+  { nat: 'chiche', choix: null, etat: 'prete' },
+  { nat: 'nuee', choix: null, etat: 'prete' },
 ];
 
 /**
@@ -283,16 +287,42 @@ async function protoPose(P: Page): Promise<void> {
 /** l'état demandé, des deux côtés (le prototype écoute le clic ; on attend la fin de ses minuteurs, et dans la vraie app la fin des mouvements) */
 async function poser(P: Page, A: Page, c: Cas): Promise<void> {
   const titre = c.nat === 'nuee' ? '.pp-phrase .ph-m[data-np="nom"]' : '.pp-phrase .ph-m[data-ph="titre"]';
-  if (c.etat === 'saisie' || c.etat === 'tape') {
+  if (c.etat === 'saisie' || c.etat === 'tape' || c.etat === 'prete') {
     await finTrace(P);
     await protoPose(P);
     await Promise.all([toucheSel(P, titre, true), toucheSel(A, titre, false)]);
     await P.waitForTimeout(2500);
-    if (c.etat === 'tape') {
+    if (c.etat === 'tape' || c.etat === 'prete') {
       await protoPose(P);
       await P.keyboard.type('appeler Lou');
       await A.keyboard.type('appeler Lou');
       await P.waitForTimeout(2500);
+    }
+    if (c.etat === 'prete') {
+      await protoPose(P);
+      await P.keyboard.press('Enter');
+      await A.keyboard.press('Enter');
+      // le trait né des deux côtés : l'horizon remonté, plus aucun passage en flaques ni tracé (hors du Mac jusqu'à 60 s)
+      await P.waitForFunction(
+        () => {
+          const w = window as unknown as {
+            _ppInvite?: { etat(): { visible: boolean } };
+            TraceLettres?: { actif(): boolean };
+          };
+          return (
+            !!w._ppInvite?.etat().visible &&
+            !document.querySelector('#createSheet canvas.passage-flaques') &&
+            !w.TraceLettres?.actif()
+          );
+        },
+        undefined,
+        { timeout: 60000 },
+      );
+      await A.waitForFunction(
+        `(() => { const e = ${P_}.pagePlus().etat(); const w = window; return e.invite.visible && !e.invite.anim && !document.querySelector('#createSheet canvas.passage-flaques') && !w.TraceLettres?.actif(); })()`,
+        undefined,
+        { timeout: 60000 },
+      );
     }
   }
   if (c.etat === 'prenom') {

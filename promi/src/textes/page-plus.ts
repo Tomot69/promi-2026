@@ -157,7 +157,7 @@ export const TEXTES_PAGE_PLUS = {
   verbe: { soi: 'Je me promets', faire: 'Je promets', demander: 'promets-moi', demanderPluriel: 'promettez-moi' },
   chiche: 'Chiche',
   cercle: 'Je lance un Cercle',
-  liaisons: { a: 'à', avec: 'avec', nomme: 'nommé', de: 'de', dElide: 'd’' },
+  liaisons: { a: 'à', avec: 'avec', nomme: 'nommé', de: 'de', dElide: 'd’', et: 'et' },
   vides: { qui: 'qui ?', quiOse: 'qui ose ?', quiEnEst: 'qui en est ?', toutLeMonde: 'tout le monde', moi: 'moi' },
   titresChoix: {
     qui: 'À QUI',
@@ -168,6 +168,8 @@ export const TEXTES_PAGE_PLUS = {
     nom: 'LE NOM DU CERCLE',
   },
   moi: 'Moi',
+  /** le libellé du trait (Q35, C-095) */
+  trace: { planter: 'trace pour planter', moitie: 'trace ta moitié', lancer: 'trace pour lancer' },
   toutLeMonde: 'tout le monde',
   ajouter: '+ ajouter quelqu’un',
   unPrenom: 'un prénom…',

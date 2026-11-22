@@ -269,8 +269,8 @@ test('le choix des personnes : « moi » à la place touchée, ajouter et retire
   const l = await lignes(page);
   expect(
     l.slice(0, 2),
-    'C-269, C-332 : « à moi, Rachel, / chiche » (ce qui est coché, une virgule, « chiche » en bas de casse)',
-  ).toEqual([`à moi, ${nom},`, 'chiche']);
+    'C-269, C-332, Q624 : « à Rachel et moi, / chiche » (ce qui est coché, « moi » en dernier, une virgule, « chiche » en bas de casse)',
+  ).toEqual([`à ${nom} et moi,`, 'chiche']);
   await toucher(page, `#createSheet .gn .ph-o[data-v="${nom}"] .ppo-x`);
   expect((await etat(page)).phrase.qui, 'sa croix la retire').toEqual([]);
   const b = await page.evaluate(() => {
@@ -605,6 +605,119 @@ test('le choix d’un Cercle : « avec moi », « Moi » en tête et choisi, au 
   });
 });
 
+// ── redteam_invite_page_plus (C-209, C-213, C-229) — à l'ouverture et pendant la saisie, RIEN du trait ; la parole validée (Retour), l'horizon
+//    REMONTE d'abord, PUIS le trait naît (en flaques), le libellé se TRACE, le départ clignote en phase avec le I de PROMI jusqu'au premier
+//    toucher ; la parole effacée, tout repart (en flaques, le libellé détracé) et l'horizon redescend ──
+const INVITE: Record<Nat, string> = {
+  promi:
+    'l’invite à tracer, promi : rien avant la validation ; l’horizon remonte, puis le trait naît, le libellé se trace, le départ clignote avec le I ; effacée, tout repart (redteam_invite_page_plus)',
+  chiche:
+    'l’invite à tracer, chiche : rien avant la validation ; l’horizon remonte, puis le trait naît, le libellé se trace, le départ clignote avec le I ; effacée, tout repart (redteam_invite_page_plus)',
+  nuee: 'l’invite à tracer, nuee : rien avant la validation ; l’horizon remonte, puis le trait naît, le libellé se trace, le départ clignote avec le I ; effacée, tout repart (redteam_invite_page_plus)',
+};
+for (const nat of ['promi', 'chiche', 'nuee'] as const)
+  test(INVITE[nat], async ({ page }) => {
+    await ouvrir(page, nat);
+    // les sondes : le libellé paraît d'un coup (aucun tracé) ; le départ ne clignote pas
+    if (sonde('invite-sec'))
+      await page.evaluate(() => {
+        const P = (window as unknown as { __promi: { chargerTrace(): unknown } }).__promi;
+        P.chargerTrace();
+        const w = window as unknown as {
+          TraceLettres: { trace: (c: unknown, t: unknown, o?: { surFin?: (r: unknown) => void }) => unknown };
+        };
+        w.TraceLettres.trace = (_c: unknown, _t: unknown, o?: { surFin?: (r: unknown) => void }) => {
+          setTimeout(() => o?.surFin?.({ interrompu: false }), 0);
+          return { stop() {}, etat: () => ({}) };
+        };
+      });
+    if (sonde('invite-fixe')) await page.addStyleTag({ content: '#ppDepart.clignote{animation:none!important}' });
+    const lire = (): Promise<{ vis: boolean; haut: boolean; hz: number; depart: string | null; lib: boolean }> =>
+      page.evaluate(`(() => { const e = ${P_}.pagePlus().etat(); return { vis: e.invite.visible, haut: e.invite.haut, hz: e.hz,
+        depart: document.getElementById('csTrameCv').getAttribute('data-depart'), lib: !document.querySelector('#createSheet .pp-trace').hidden }; })()`);
+    const r0 = await lire();
+    expect([r0.vis, r0.depart, r0.lib], 'à l’ouverture : rien du trait (ni départ, ni libellé)').toEqual([
+      false,
+      null,
+      false,
+    ]);
+    expect(r0.hz, 'à l’ouverture : l’horizon est plus bas que sa place').toBeGreaterThan(0);
+    const titre = nat === 'nuee' ? '#createSheet .ph-m[data-np="nom"]' : '#createSheet .ph-m[data-ph="titre"]';
+    await doigt(page, titre);
+    await posee(page);
+    await page.keyboard.type('appeler Lou');
+    await page.waitForTimeout(400);
+    expect((await lire()).vis, 'pendant la saisie : rien du trait (C-229)').toBe(false);
+    // ce qui se passe, image par image, de Retour à la naissance du trait
+    await page.evaluate(`(() => { const w = window; w.__inv = []; const f = () => { const e = ${P_}.pagePlus().etat(); const l = document.querySelector('#createSheet .pp-trace');
+      w.__inv.push({ hz: e.hz, vis: e.invite.visible, anim: e.invite.anim, clip: !l.hidden && !!(l.style.clipPath || l.style.getPropertyValue('-webkit-clip-path')) });
+      if (w.__inv.length < 2000) requestAnimationFrame(f); }; requestAnimationFrame(f); })()`);
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      `(() => { const e = ${P_}.pagePlus().etat(); return e.invite.visible && !document.querySelector('#createSheet canvas.passage-flaques') && !window.TraceLettres?.actif(); })()`,
+      undefined,
+      { timeout: 30000 },
+    );
+    const S = (await page.evaluate('window.__inv')) as { hz: number; vis: boolean; anim: boolean; clip: boolean }[];
+    const premier = S.findIndex((x) => x.vis);
+    expect(premier, 'le trait naît').toBeGreaterThanOrEqual(0);
+    expect(S[premier]!.hz, 'le trait naît l’horizon remonté (C-229 : d’abord l’horizon, puis le trait)').toBe(0);
+    if (process.platform === 'darwin')
+      expect(
+        S.slice(0, premier).some((x) => x.anim),
+        'l’horizon remonte d’un mouvement (360 ms), jamais d’un coup',
+      ).toBe(true);
+    expect(
+      S.some((x) => x.vis && x.clip),
+      'le libellé « trace pour … » se trace (découpé par le tracé), jamais d’un coup',
+    ).toBe(true);
+    const r1 = await lire();
+    expect([r1.vis, r1.lib, !!r1.depart], 'le trait né : le départ et le libellé').toEqual([true, true, true]);
+    // le départ clignote avec le I de PROMI (la même animation, la même phase)
+    const ph = (await page.evaluate(() => {
+      const f = (n: Element | null): number | null => {
+        const a = n?.getAnimations().find((x) => (x as CSSAnimation).animationName === 'promiBlink');
+        return a?.currentTime != null ? Number(a.currentTime) : null;
+      };
+      return [f(document.getElementById('ppDepart')), f(document.querySelector('.acc-mm i'))];
+    })) as (number | null)[];
+    expect(ph[0], 'le départ clignote (promiBlink)').not.toBeNull();
+    if (ph[1] != null) {
+      const d = Math.abs(((ph[0]! - ph[1]) % 1150) + 1150) % 1150;
+      expect(Math.min(d, 1150 - d), 'en phase avec le I de PROMI (± 60 ms)').toBeLessThan(60);
+    }
+    // le premier toucher du trait : le départ cesse de clignoter
+    const pt =
+      (await page.evaluate(`(() => { const e = ${P_}.pagePlus().etat(); const cs = document.getElementById('createSheet'); const C = cs.getBoundingClientRect();
+      const k = C.width / cs.offsetWidth; const h = parseFloat(getComputedStyle(cs).getPropertyValue('--pp-h')) || 0; const [x, y] = document.getElementById('csTrameCv').getAttribute('data-depart').split(',').map(Number);
+      return [C.left + x * k, C.top + (y + h) * k]; })()`)) as number[];
+    await page.evaluate(
+      ([x, y]) => {
+        const t = document.elementFromPoint(x!, y!) ?? document.getElementById('createSheet')!;
+        t.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true, clientX: x!, clientY: y!, pointerId: 51 }));
+        t.dispatchEvent(new PointerEvent('pointerup', { bubbles: true, clientX: x!, clientY: y!, pointerId: 51 }));
+      },
+      [pt[0], pt[1]],
+    );
+    expect(
+      await page.evaluate(() => document.getElementById('ppDepart')!.classList.contains('clignote')),
+      'le premier toucher du trait : le départ reste orange, fixe',
+    ).toBe(false);
+    // la parole effacée : tout repart, puis l'horizon redescend
+    await doigt(page, titre);
+    await posee(page);
+    for (let i = 0; i < 12; i++) await page.keyboard.press('Backspace');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(
+      `(() => { const e = ${P_}.pagePlus().etat(); return !e.invite.visible && !e.invite.sortie && e.invite.haut && !e.invite.anim; })()`,
+      undefined,
+      { timeout: 30000 },
+    );
+    const r2 = await lire();
+    expect([r2.vis, r2.lib, r2.depart], 'effacée : le trait et le libellé partis').toEqual([false, false, null]);
+    expect(r2.hz, 'puis l’horizon redescend').toBeGreaterThan(0);
+  });
+
 // ── C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste avec
 //    les autres, le toucher ne retire jamais quelqu'un d'autre, la liste n'est jamais vide ; la phrase dit exactement ce qui est coché, par le
 //    détracé puis le tracé (C-279) — la place neuve ne paraît jamais avant que l'ancienne soit partie ──
@@ -694,26 +807,32 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
         }),
         place,
       );
-    const autre = (await page.evaluate(
-      () => document.querySelector<HTMLElement>('#createSheet .gn .ph-o[data-v]')!.dataset['v'],
-    ))!;
+    const [autre, autre2] = (await page.evaluate(() =>
+      [...document.querySelectorAll<HTMLElement>('#createSheet .gn .ph-o[data-v]')]
+        .slice(0, 2)
+        .map((b) => b.dataset['v']!),
+    )) as [string, string];
     const sep = nat === 'nuee' ? ' · ' : ', ';
     const fin = nat === 'chiche' ? ',' : '';
     const tete = '#createSheet .gn .ph-o[data-gn-tete]';
     const moiSeul = { moi: true, on: [], place: 'moi' };
+    // ⚑ Q624 (Tom) : « moi » en dernier, après « et » — « à Maman et moi », « à Maman, Rachel et moi », « avec Maman et moi »
+    const avecMoi = { moi: true, on: [autre], place: `${autre} et moi${fin}` };
     const pas: { nom: string; sel: string; attendu: { moi: boolean; on: string[]; place: string } }[] = [
       { nom: 'retirer Moi, seul : il revient (la liste n’est jamais vide)', sel: tete, attendu: moiSeul },
       {
-        nom: `ajouter ${autre} : « Moi » reste`,
+        nom: `ajouter ${autre} : « Moi » reste, en dernier`,
         sel: `#createSheet .gn .ph-o[data-v="${autre}"]`,
-        attendu: { moi: true, on: [autre], place: `moi${sep}${autre}${fin}` },
+        attendu: avecMoi,
       },
-      { nom: `retirer Moi : ${autre} reste`, sel: tete, attendu: { moi: false, on: [autre], place: `${autre}${fin}` } },
       {
-        nom: `remettre Moi : à côté de ${autre}`,
-        sel: tete,
-        attendu: { moi: true, on: [autre], place: `moi${sep}${autre}${fin}` },
+        nom: `ajouter ${autre2} : « ${autre}${sep}${autre2} et moi »`,
+        sel: `#createSheet .gn .ph-o[data-v="${autre2}"]`,
+        attendu: { moi: true, on: [autre, autre2], place: `${autre}${sep}${autre2} et moi${fin}` },
       },
+      { nom: `retirer ${autre2}`, sel: `#createSheet .gn .ph-o[data-v="${autre2}"] .ppo-x`, attendu: avecMoi },
+      { nom: `retirer Moi : ${autre} reste`, sel: tete, attendu: { moi: false, on: [autre], place: `${autre}${fin}` } },
+      { nom: `remettre Moi : à côté de ${autre}, en dernier`, sel: tete, attendu: avecMoi },
       {
         nom: `retirer ${autre} : « Moi » seul`,
         sel: `#createSheet .gn .ph-o[data-v="${autre}"] .ppo-x`,

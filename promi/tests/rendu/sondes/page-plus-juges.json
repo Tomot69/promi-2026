@@ -108,5 +108,15 @@
     "nom": "moi-sec",
     "test": "le choix des personnes, chiche : « Moi » se coche et se décoche, coexiste, revient quand la liste se vide ; la phrase change par détracé puis tracé (C-332)",
     "defaut": "la place change d'un coup, sans détracé ni tracé"
+  },
+  {
+    "nom": "invite-sec",
+    "test": "l’invite à tracer, promi : rien avant la validation ; l’horizon remonte, puis le trait naît, le libellé se trace, le départ clignote avec le I ; effacée, tout repart (redteam_invite_page_plus)",
+    "defaut": "le libellé « trace pour … » paraît d'un coup, sans tracé"
+  },
+  {
+    "nom": "invite-fixe",
+    "test": "l’invite à tracer, chiche : rien avant la validation ; l’horizon remonte, puis le trait naît, le libellé se trace, le départ clignote avec le I ; effacée, tout repart (redteam_invite_page_plus)",
+    "defaut": "le départ ne clignote pas"
   }
 ]
