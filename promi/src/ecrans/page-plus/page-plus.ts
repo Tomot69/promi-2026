@@ -39,6 +39,7 @@ import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
+import { planteNait } from './naissance.ts';
 
 export type Nature = 'promi' | 'chiche' | 'nuee';
 export type Sens = 'soi' | 'faire' | 'demander';
@@ -602,7 +603,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     cv.setAttribute('data-champ', CHAMP[P.nat]);
     // C-241 : la dalle que CETTE parole aura (Promi, Chiche), sa taille fixée à l'ouverture (C-234), 16 pt plus bas tant que l'horizon est
     // bas (Q599) ; sous la vague quand le champ descend sous elle (un choix ouvert)
-    if (!dalleT) return;
+    // C-241, v183b : la dalle est née au trait — la page + ne la montre plus (une seule dalle à l'écran)
+    if (!dalleT || plantee) return;
     const dw = dalleT.w;
     const dh = dalleT.h;
     const x = Math.floor((W - dw) / 2);
@@ -818,8 +820,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       base: baseH,
       W,
       col: NATTRAIT[P.nat],
-      etat: 'plate',
-      doigt: 0,
+      etat: plantee ? 'signe' : doigt != null ? 'cours' : 'plate',
+      doigt: doigt ?? 0,
       entier: P.nat === 'nuee',
     });
     cv.setAttribute('data-depart', `${String(Math.round(cx * 10) / 10)},${String(Math.round(y(cx) * 10) / 10)}`);
@@ -995,6 +997,16 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
   function cacheInvite(): void {
     purgeInvite();
+    arreteRuban();
+    lib.style.removeProperty('clip-path');
+    lib.style.removeProperty('-webkit-clip-path');
+    geste = null;
+    doigt = null;
+    plantee = false;
+    cv.style.removeProperty('transform');
+    cv.style.removeProperty('transition');
+    cv.style.removeProperty('transform-origin');
+    cv.style.removeProperty('background-color');
     inv.trace?.stop();
     inv.trace = null;
     inv.anim = null;
@@ -1013,19 +1025,230 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     clignote(false);
     repeindre();
   }
-  // le doigt posé sur le trait (à 30 pt de l'onde au plus) : le premier toucher (le geste lui-même : `geste`, plus bas)
+  // ── LE GESTE : PLANTER, C'EST TRACER LA MOITIÉ (C-237 ; le prototype : « LOT 1 · le geste pour PLANTER », `init(…, moitie)`) — le doigt posé
+  //    sur le trait (la zone de 118 pt autour de l'onde, du départ jusqu'à 130 pt après lui) ; le plein orange suit le doigt, jamais au-delà
+  //    du milieu ; 60 pt d'avancée (C-107) posent le ruban (C-148, C-154) ; un Promi et un Chiche se plantent quand le doigt atteint le milieu
+  //    (195), sans attendre le lever ; un Cercle se lance au lever, son trait entier ; lâché avant, rien n'est planté : le trait revient
+  //    (300 ms). ──
+  const RUBAN_HAUT = 43;
+  const RUBAN_BAS = 51;
+  let doigt: number | null = null;
+  let plantee = false;
+  let geste: { id: number; x0: number; xm: number; atteint: boolean } | null = null;
+  let ruban: { cv: HTMLCanvasElement; t0: number; rentre: number; mode: string; ph: number[]; fin: boolean } | null =
+    null;
+  const enCoordonnees = (ev: PointerEvent): { x: number; y: number } => {
+    const C = cs.getBoundingClientRect();
+    const k = C.width / (cs.offsetWidth || 390) || 1;
+    return { x: (ev.clientX - C.left) / k, y: (ev.clientY - C.top) / k - haut0() };
+  };
+  /** le ruban de la création (C-148, C-154) : la couleur de l'état « en cours », 43 pt au-dessus du trait, 51 dessous, ses bords ondulent */
+  function poseRuban(): void {
+    if (ruban && !ruban.fin) return;
+    const W = largeur();
+    const base = mise.base + hzEff();
+    const y0 = Math.floor(base - mise.amp - RUBAN_HAUT - 6);
+    const hh = Math.ceil(2 * mise.amp + RUBAN_HAUT + RUBAN_BAS + 12);
+    const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
+    const rc = el('canvas', { id: 'ppRuban', 'aria-hidden': 'true' });
+    rc.width = Math.round(W * dpr);
+    rc.height = Math.round(hh * dpr);
+    rc.style.cssText = `position:absolute;left:0;top:calc(var(--pp-h) + ${String(y0)}px);width:${String(W)}px;height:${String(hh)}px;pointer-events:none;z-index:6`;
+    cs.appendChild(rc);
+    const R = {
+      cv: rc,
+      t0: h.maintenant(),
+      rentre: 0,
+      mode: '',
+      ph: [0, 1, 2, 3].map(() => Math.random() * 6.28),
+      fin: false,
+    };
+    ruban = R;
+    const g = rc.getContext('2d')!;
+    const io = (u: number): number => 1 - Math.pow(1 - Math.max(0, Math.min(1, u)), 3);
+    const y = onde(base, mise.amp, W);
+    const bord = (x: number, k: number, t: number): number =>
+      k *
+      (1.6 * Math.sin(x * 0.024 + R.ph[k > 0 ? 0 : 2]! + t * 0.9) +
+        0.9 * Math.sin(x * 0.061 + R.ph[k > 0 ? 1 : 3]! - t * 1.3));
+    const decoupe = (k: number): void => {
+      const v = `inset(0 0 0 ${(Math.max(0, Math.min(1, k)) * 100).toFixed(1)}%)`;
+      lib.style.setProperty('clip-path', v, 'important');
+      lib.style.setProperty('-webkit-clip-path', v, 'important');
+    };
+    const dessine = (): void => {
+      if (R.fin) return;
+      const now = h.maintenant();
+      const t = (now - R.t0) / 1000;
+      const e = reduit() ? 1 : io((now - R.t0) / 200);
+      let hautK = e;
+      let basK = e;
+      if (R.rentre) {
+        const r = reduit() ? 1 : io((now - R.rentre) / 240);
+        hautK = e * (1 - r);
+        if (R.mode !== 'valide') {
+          basK = e * (1 - r);
+          decoupe(basK);
+        }
+        if (r >= 1 && R.mode !== 'valide') {
+          arreteRuban();
+          return;
+        }
+      } else decoupe(e);
+      g.setTransform(dpr, 0, 0, dpr, 0, -y0 * dpr);
+      g.clearRect(0, y0, W, hh);
+      g.beginPath();
+      g.moveTo(-2, y(0) - RUBAN_HAUT * hautK + bord(0, 1, t) * hautK);
+      for (let x = 4; x <= W + 2; x += 4) g.lineTo(x, y(Math.min(W, x)) - RUBAN_HAUT * hautK + bord(x, 1, t) * hautK);
+      for (let x = W + 2; x >= -2; x -= 4)
+        g.lineTo(x, y(Math.max(0, Math.min(W, x))) + RUBAN_BAS * basK + bord(x, -1, t) * basK);
+      g.closePath();
+      g.fillStyle = palette.mauve12;
+      g.fill();
+      h.image(dessine);
+    };
+    dessine();
+  }
+  function arreteRuban(): void {
+    if (!ruban) return;
+    ruban.fin = true;
+    ruban.cv.remove();
+    // une plantation : le mot reste découpé jusqu'à la fermeture de la page ; sinon il revient
+    if (ruban.mode !== 'valide') {
+      lib.style.removeProperty('clip-path');
+      lib.style.removeProperty('-webkit-clip-path');
+    }
+    ruban = null;
+  }
+  function rentreRuban(mode: 'valide' | 'annule'): void {
+    if (!ruban || ruban.rentre) return;
+    ruban.mode = mode;
+    ruban.rentre = h.maintenant();
+  }
   cs.addEventListener(
     'pointerdown',
     (ev) => {
-      if (!inv.vis) return;
-      const C = cs.getBoundingClientRect();
-      const k = C.width / (cs.offsetWidth || 390) || 1;
-      const x = (ev.clientX - C.left) / k;
-      const yy = (ev.clientY - C.top) / k - haut0();
-      if (Math.abs(yy - onde(mise.base + hzEff(), mise.amp, largeur())(x)) <= 30) toucheTrait();
+      if (!inv.vis || plantee || geste || mv || choix !== null || saisieDe !== null || peaufOuvert || menu) return;
+      const { x, y } = enCoordonnees(ev);
+      const W = largeur();
+      if (Math.abs(y - onde(mise.base + hzEff(), mise.amp, W)(x)) > 59) return;
+      if (x > (W * 42) / 308 + 130) return;
+      toucheTrait();
+      geste = { id: ev.pointerId, x0: x, xm: x, atteint: false };
+      doigt = Math.max(0, Math.min(W, x));
+      repeindre();
+      ev.preventDefault();
+      ev.stopPropagation();
     },
     true,
   );
+  window.addEventListener('pointermove', (ev) => {
+    if (!geste || ev.pointerId !== geste.id || plantee) return;
+    const { x } = enCoordonnees(ev);
+    const W = largeur();
+    geste.xm = Math.max(geste.xm, x);
+    doigt = Math.max(0, Math.min(W, x));
+    const avance = geste.xm - geste.x0;
+    if (!geste.atteint && avance >= 60) {
+      geste.atteint = true;
+      poseRuban();
+    }
+    if (P.nat !== 'nuee' && doigt >= W / 2 - 2 && avance >= 60) {
+      doigt = W / 2;
+      geste = null;
+      planter();
+      return;
+    }
+    repeindre();
+  });
+  const leve = (ev: PointerEvent): void => {
+    if (!geste || ev.pointerId !== geste.id) return;
+    const g = geste;
+    geste = null;
+    if (P.nat === 'nuee' && g.xm - g.x0 >= 60) {
+      doigt = largeur();
+      planter();
+      return;
+    }
+    // lâché avant : rien n'est planté, le trait revient (300 ms)
+    rentreRuban('annule');
+    const d0 = doigt ?? 0;
+    const t0 = h.maintenant();
+    const r = (): void => {
+      if (geste || plantee) return;
+      const u = Math.min(1, (h.maintenant() - t0) / 300);
+      doigt = u < 1 ? d0 * (1 - u) : null;
+      repeindre();
+      if (u < 1) h.image(r);
+    };
+    r();
+  };
+  window.addEventListener('pointerup', leve);
+  window.addEventListener('pointercancel', leve);
+  /** PLANTER (C-226 : la parole écrite dans la tâche du trait, avant toute animation) */
+  function planter(): void {
+    if (plantee) return;
+    plantee = true;
+    rentreRuban('valide');
+    const maintenant = Date.now();
+    if (P.nat === 'nuee') {
+      const cle = magasin.creerCercle(P.nom.trim(), autres(P.membres), maintenant);
+      facade.planterCercle(cle);
+      repeindre();
+      // le prototype (`printTirage`) : le champ grandit (× 7, 320 ms, linéaire) jusqu'à couvrir l'écran, puis on coupe
+      cv.style.transformOrigin = '68% 40%';
+      cv.style.transition = 'transform .32s linear -17ms, background-color .32s linear -17ms';
+      cv.style.transform = 'scale(7)';
+      cv.style.backgroundColor = palette.mauve86;
+      h.minuteur(() => {
+        fermer(true);
+      }, 400);
+      return;
+    }
+    const W = largeur();
+    const id = magasin.etat().compteurs.nid;
+    const titre = P.titre.trim();
+    const who = autres(P.qui).length ? autres(P.qui).join(', ') : 'moi';
+    const k = dv.getBoundingClientRect().width / (dv.offsetWidth || 390) || 1;
+    const E = Math.min(2, window.devicePixelRatio || 1) * k;
+    const w0 = 241;
+    // la dalle d'avance, rendue AVANT que le moteur reçoive la parole : la même image que le haut de la page + (C-241)
+    const pre = facade.dalleAvenir(id, w0 * E, 1e5, { chiche: P.nat === 'chiche', title: titre, who });
+    magasin.planter(
+      {
+        titre,
+        who,
+        chiche: P.nat === 'chiche',
+        sens: P.sens,
+        avec: autres(P.avec).join(', '),
+        note: P.note,
+        monde: facade.mondeCourant(),
+      },
+      maintenant,
+    );
+    facade.planterUne(id);
+    repeindre();
+    const by = haut0() + onde(mise.base + hzEff(), mise.amp, W)(W / 2);
+    if (!pre) {
+      fermer(true);
+      return;
+    }
+    planteNait({
+      dv,
+      facade,
+      h,
+      id,
+      pre,
+      bx: W / 2,
+      by,
+      w: w0,
+      fermer: () => {
+        fermer(true);
+      },
+      fin: () => {},
+    });
+  }
+
   /** la veille (toutes les 50 ms, la page + ouverte) : la parole prête et validée, l'horizon remonte puis le trait naît ; incomplète, il repart */
   h.intervalle(() => {
     if (cs.hidden || cs.classList.contains('pp-part') || cs.classList.contains('pp-entre')) return;
@@ -2123,8 +2346,24 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
   let finOuverture: number | null = null;
   let finFermeture: number | null = null;
-  function fermer(): void {
-    if (cs.hidden || cs.classList.contains('pp-part')) return;
+  /** `coupe` : la page se cache d'un coup (une plantation : la Toile la couvre déjà, v103) ; sinon elle glisse vers le bas */
+  function fermer(coupe = false): void {
+    if (cs.hidden || (cs.classList.contains('pp-part') && !coupe)) return;
+    if (coupe) {
+      if (finOuverture != null) h.annuleMinuteur(finOuverture);
+      if (finFermeture != null) h.annuleMinuteur(finFermeture);
+      finOuverture = null;
+      finFermeture = null;
+      saisieDe = null;
+      saisie.blur();
+      fermerMenu();
+      dv.classList.remove('couvert');
+      cs.classList.remove('pp-entre', 'pp-part', 'couvre');
+      cs.hidden = true;
+      cacheInvite();
+      ranger();
+      return;
+    }
     if (finOuverture != null) {
       h.annuleMinuteur(finOuverture);
       finOuverture = null;

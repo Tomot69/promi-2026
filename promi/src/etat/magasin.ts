@@ -4,7 +4,7 @@
  * Toute modification passe par une ACTION nommée ; aucun écran n'écrit l'état. L'action écrit le stockage tout de suite, dans la tâche du
  * geste (C-226), puis prévient les abonnés. Les abonnés reçoivent l'état et le nom de l'action ; ils comparent avant d'agir.
  */
-import type { Brouillon, CouleurDalle, Etat, Parole, Place } from '../donnees/schema.ts';
+import type { Brouillon, CouleurDalle, Etat, MondeDalle, Parole, Place } from '../donnees/schema.ts';
 import { tirer } from '../metier/exemples.ts';
 import { etatVide } from '../donnees/schema.ts';
 import { migrer } from '../donnees/migrations/index.ts';
@@ -38,6 +38,24 @@ export interface Actions {
    * un gardé de côté REPRIS (`repris`) est mis à jour, jamais doublé. Le Fil le dit (« Tu as gardé « … » de côté »). Rend son id.
    */
   garderDeCote(b: Brouillon, titre: string, qui: string, repris: number | null, maintenant: number): number;
+  /**
+   * C-237, C-226 : PLANTER une parole (Promi, Chiche) — écrite dans la tâche du trait, avant toute animation ; son monde figé (v30) ; une ligne
+   * du Fil (le prototype : `#addPromi`, `P()`). Rend son id.
+   */
+  planter(
+    p: {
+      titre: string;
+      who: string;
+      chiche: boolean;
+      sens: 'soi' | 'faire' | 'demander';
+      avec: string;
+      note: string;
+      monde: MondeDalle;
+    },
+    maintenant: number,
+  ): number;
+  /** C-306 : créer un Cercle (son nom, ses membres) — rien d'autre ; une ligne du Fil (le prototype : `#addNuee`). Rend sa clé. */
+  creerCercle(nom: string, membres: string[], maintenant: number): string;
 }
 
 export interface Magasin extends Actions {
@@ -208,6 +226,60 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       ];
       valider('garderDeCote', { ...e, paroles, fil, compteurs });
       return id;
+    },
+    planter(p, maintenant) {
+      const id = e.compteurs.nid;
+      const fid = e.compteurs.fid;
+      const suite: Record<string, unknown> = { phraseSens: p.chiche ? 'chiche' : p.sens === 'soi' ? 'faire' : p.sens };
+      if (p.chiche) {
+        suite['chicheEtat'] = 'lance';
+        if (p.avec) suite['avec'] = p.avec;
+      } else if (p.sens === 'demander') {
+        suite['req'] = true;
+        suite['reqEtat'] = 'attente';
+        suite['reqLe'] = maintenant;
+      }
+      if (p.note) suite['note'] = p.note;
+      const neuve: Parole = {
+        id,
+        title: p.titre,
+        who: p.who,
+        due: 30,
+        intensity: 2,
+        status: 'encours',
+        from: 'moi',
+        recur: null,
+        remind: null,
+        x: 0,
+        y: 0,
+        tx: 0,
+        ty: 0,
+        monde: p.monde,
+        derAct: maintenant,
+        suite,
+      };
+      if (p.chiche) neuve.chiche = true;
+      const texte = `Tu as planté « ${p.titre} »${p.who && p.who !== 'moi' ? ` pour ${p.who}` : ''}`;
+      valider('planter', {
+        ...e,
+        paroles: [...e.paroles, neuve],
+        fil: [{ id: fid, type: 'added', text: texte, pid: id, t: 'à l’instant', ts: maintenant }, ...e.fil],
+        compteurs: { nid: id + 1, fid: fid + 1 },
+      });
+      return id;
+    },
+    creerCercle(nom, membres, maintenant) {
+      const cle = `n${String(maintenant)}`;
+      const fid = e.compteurs.fid;
+      const texte = `Tu as créé le Cercle ${nom}${membres.length ? ` · invité ${membres.join(', ')}` : ''}`;
+      valider('creerCercle', {
+        ...e,
+        cercles: { ...e.cercles, [cle]: nom },
+        membres: { ...e.membres, [cle]: membres.slice() },
+        fil: [{ id: fid, type: 'nuee', text: texte, t: 'à l’instant', ts: maintenant }, ...e.fil],
+        compteurs: { ...e.compteurs, fid: fid + 1 },
+      });
+      return cle;
     },
   };
 }

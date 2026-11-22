@@ -718,6 +718,90 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     expect(r2.hz, 'puis l’horizon redescend').toBeGreaterThan(0);
   });
 
+// ── redteam_moitie, redteam_plantation_durable, redteam_dalle_unique (C-237, C-226, C-241) — planter, c'est tracer la MOITIÉ du trait (un Cercle :
+//    le trait entier, au lever) : lâché avant, rien n'est planté et le trait revient ; arrivé au milieu, la parole est écrite tout de suite
+//    (avant le lever, avant toute animation), donnée au moteur, la page part sous la dalle qui naît et vole ; une seule dalle à la fois ;
+//    rechargée, la parole est là ──
+const PLANTER: Record<Nat, string> = {
+  promi:
+    'planter, promi : lâché avant la moitié rien n’est planté ; au milieu la parole est écrite, la dalle naît et vole, la page part ; rechargée, elle est là (redteam_moitie, redteam_plantation_durable)',
+  chiche:
+    'planter, chiche : lâché avant la moitié rien n’est planté ; au milieu la parole est écrite, la dalle naît et vole, la page part ; rechargée, elle est là (redteam_moitie, redteam_plantation_durable)',
+  nuee: 'planter, nuee : lâché avant la moitié rien n’est planté ; au milieu la parole est écrite, la dalle naît et vole, la page part ; rechargée, elle est là (redteam_moitie, redteam_plantation_durable)',
+};
+for (const nat of ['promi', 'chiche', 'nuee'] as const)
+  test(PLANTER[nat], async ({ page }) => {
+    test.setTimeout(120000);
+    await ouvrir(page, nat);
+    // les sondes : la parole jamais écrite ; la parole jamais donnée au moteur
+    if (sonde('plante-sans-ecrire'))
+      await page.evaluate(
+        `(() => { const m = ${P_}.magasin; m.planter = () => m.etat().compteurs.nid; m.creerCercle = () => 'n0'; })()`,
+      );
+    if (sonde('plante-sans-toile'))
+      await page.evaluate(`(() => { const f = ${P_}.facade; f.planterUne = () => {}; f.planterCercle = () => {}; })()`);
+    const titre = nat === 'nuee' ? '#createSheet .ph-m[data-np="nom"]' : '#createSheet .ph-m[data-ph="titre"]';
+    await doigt(page, titre);
+    await posee(page);
+    await page.keyboard.type('appeler Lou');
+    await page.keyboard.press('Enter');
+    await page.waitForFunction(`${P_}.pagePlus().etat().invite.visible`, undefined, { timeout: 30000 });
+    await page.waitForFunction(() => !document.querySelector('#createSheet canvas.passage-flaques'), undefined, {
+      timeout: 20000,
+    });
+    const compte = (): Promise<{ n: number; c: number; g: number }> =>
+      page.evaluate(`(() => { const e = ${P_}.magasin.etat(); return { n: e.paroles.length, c: Object.keys(e.cercles).length,
+        g: window.Toile_lecture ? window.Toile_lecture().graines.filter((x) => x.pid != null || x.kind === 'nuee').length : -1 }; })()`);
+    const n0 = await compte();
+    const depart =
+      (await page.evaluate(`(() => { const cs = document.getElementById('createSheet'); const C = cs.getBoundingClientRect();
+      const k = C.width / cs.offsetWidth; const h = parseFloat(getComputedStyle(cs).getPropertyValue('--pp-h')) || 0;
+      const [x, y] = document.getElementById('csTrameCv').getAttribute('data-depart').split(',').map(Number); return [C.left + x * k, C.top + (y + h) * k, k]; })()`)) as number[];
+    const [x0, y0, k] = depart as [number, number, number];
+    const trace = async (jusqua: number): Promise<void> => {
+      await page.mouse.move(x0, y0);
+      await page.mouse.down();
+      for (let x = x0; x <= jusqua * k; x += 8 * k) await page.mouse.move(x, y0);
+    };
+    // 1 · lâché avant la moitié (un Cercle : avant 60 pt d'avancée, C-107 — il se lance au lever dès qu'ils sont tracés) : rien n'est
+    //     planté, le trait revient
+    await trace(nat === 'nuee' ? 80 : 150);
+    await page.mouse.up();
+    await page.waitForTimeout(600);
+    expect(await compte(), 'lâché avant la moitié : rien n’est planté').toEqual(n0);
+    expect(
+      await page.evaluate(`(() => { const e = ${P_}.pagePlus(); return e.ouverte() && e.etat().invite.visible; })()`),
+      'la page reste, le trait revenu',
+    ).toBe(true);
+    // 2 · arrivé au milieu (un Cercle : au bout, puis le lever) : écrite tout de suite
+    await trace(nat === 'nuee' ? 340 : 200);
+    if (nat === 'nuee') await page.mouse.up();
+    const n1 = await compte();
+    if (nat === 'nuee') expect(n1.c, 'le Cercle est créé au lever, dans la tâche du trait (C-226)').toBe(n0.c + 1);
+    else expect(n1.n, 'la parole est écrite au milieu, avant le lever (C-237, C-226)').toBe(n0.n + 1);
+    if (nat !== 'nuee') {
+      // C-241 : une seule dalle à la fois — la page + ne peint plus la sienne, celle qui naît est là
+      const r = await page.evaluate(() => ({
+        nait: !!document.querySelector('#ppNait canvas:last-child'),
+        haut: document.getElementById('csTrameCv')!.hasAttribute('data-matiere'),
+      }));
+      expect(r.nait, 'la dalle naît au trait').toBe(true);
+      await page.mouse.up();
+    }
+    await page.waitForFunction(
+      `(() => document.getElementById('createSheet').hidden && !document.getElementById('ppNait'))()`,
+      undefined,
+      { timeout: 8000 },
+    );
+    expect((await compte()).g, 'le moteur a reçu la parole (une graine de plus)').toBe(n0.g + 1);
+    // 3 · rechargée : elle est là (écrite dans le stockage au trait)
+    await page.reload();
+    await page.waitForFunction(`!!${P_}?.magasin`, undefined, { timeout: 20000 });
+    const n2 = await compte();
+    if (nat === 'nuee') expect(n2.c, 'rechargée, le Cercle est là').toBe(n0.c + 1);
+    else expect(n2.n, 'rechargée, la parole est là').toBe(n0.n + 1);
+  });
+
 // ── C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste avec
 //    les autres, le toucher ne retire jamais quelqu'un d'autre, la liste n'est jamais vide ; la phrase dit exactement ce qui est coché, par le
 //    détracé puis le tracé (C-279) — la place neuve ne paraît jamais avant que l'ancienne soit partie ──

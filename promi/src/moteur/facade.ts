@@ -80,6 +80,17 @@ export interface Facade {
   dalleEntiere(id: number): boolean;
   /** pose un canevas 1:1, centré sur (cx, cy) des coordonnées courantes du contexte (`_poseUn` du moteur) */
   poserUn(g: CanvasRenderingContext2D, cv: HTMLCanvasElement, cx: number, cy: number): void;
+  /** C-237 : la parole plantée donnée au moteur (`Toile.addPromi`) — sa cellule grandit sous la page qui s'en va */
+  planterUne(id: number): void;
+  /** C-306 : le Cercle créé donné au moteur (`Toile.addNuee`, puis `sync` : le prototype, `#addNuee`) */
+  planterCercle(cle: string): void;
+  /**
+   * OÙ LA TOILE VIVANTE POSE LA DALLE `id`, en pt de l'appareil (le prototype : `_dalleSurToile` sur un rendu frais, v183b) — la dalle rendue
+   * seule par le moteur (`dalleTrame`, à l'échelle 1, sa place déclarée `__dalleInfo.org`), dans la vue du moment. Avec ce rendu (sa forme).
+   */
+  placeDalle(id: number): { x: number; y: number; w: number; h: number; cv: HTMLCanvasElement } | null;
+  /** le canevas de la Toile vivante (le fond de la naissance la recopie à chaque image) */
+  toileCanevas(): HTMLCanvasElement | null;
 }
 
 export interface DalleTouchee {
@@ -231,6 +242,45 @@ export function creerFacade(magasin: Magasin): Facade {
       return v ? { s: v.s, ox: v.ox, oy: v.oy } : { s: 1, ox: 0, oy: 0 };
     },
     vueALaMain: () => !!w['_vueMain'],
+    planterUne(id) {
+      poserGlobaux(magasin.etat());
+      (toile() as MoteurToile & { addPromi(id: number): void }).addPromi(id);
+    },
+    planterCercle(cle) {
+      poserGlobaux(magasin.etat());
+      const T = toile() as MoteurToile & { addNuee(k: string): void };
+      T.addNuee(cle);
+      T.sync(paroles.filter((p) => !p.draft).map((p) => p.id));
+    },
+    placeDalle(id) {
+      try {
+        const T = toile() as MoteurToile & { dalleTrame(cv: HTMLCanvasElement, id: number, k: number): boolean };
+        const lc = document.createElement('canvas') as HTMLCanvasElement & { __dalleInfo?: { org?: number[] } };
+        if (!T.dalleTrame(lc, id, 1)) return null;
+        const o = lc.__dalleInfo?.org;
+        if (!o || !o[2] || !device) return null;
+        const D = device.getBoundingClientRect();
+        const s = D.width / (device.offsetWidth || 390) || 1;
+        const tcv = device.querySelector<HTMLCanvasElement>('#toileCv');
+        const L = w.Toile_lecture?.();
+        if (!tcv || !L) return null;
+        const R = tcv.getBoundingClientRect();
+        const v = L.vue;
+        const sx = R.width / (L.W || tcv.clientWidth || 390);
+        return {
+          x: (R.left - D.left + (v.ox + v.s * o[0]!) * sx) / s,
+          y: (R.top - D.top + (v.oy + v.s * o[1]!) * sx) / s,
+          w: ((lc.width / o[2]) * v.s * sx) / s,
+          h: ((lc.height / o[2]) * v.s * sx) / s,
+          cv: lc,
+        };
+      } catch {
+        return null;
+      }
+    },
+    toileCanevas() {
+      return device?.querySelector<HTMLCanvasElement>('#toileCv') ?? null;
+    },
     dalleAvenir(id, tw, th, a) {
       const T = toile() as MoteurToile & {
         dalleAvenir(cv: HTMLCanvasElement, k: number, o: Record<string, unknown>): boolean;

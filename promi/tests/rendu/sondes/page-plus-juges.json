@@ -118,5 +118,15 @@
     "nom": "invite-fixe",
     "test": "l’invite à tracer, chiche : rien avant la validation ; l’horizon remonte, puis le trait naît, le libellé se trace, le départ clignote avec le I ; effacée, tout repart (redteam_invite_page_plus)",
     "defaut": "le départ ne clignote pas"
+  },
+  {
+    "nom": "plante-sans-ecrire",
+    "test": "planter, promi : lâché avant la moitié rien n’est planté ; au milieu la parole est écrite, la dalle naît et vole, la page part ; rechargée, elle est là (redteam_moitie, redteam_plantation_durable)",
+    "defaut": "la parole n'est jamais écrite"
+  },
+  {
+    "nom": "plante-sans-toile",
+    "test": "planter, nuee : lâché avant la moitié rien n’est planté ; au milieu la parole est écrite, la dalle naît et vole, la page part ; rechargée, elle est là (redteam_moitie, redteam_plantation_durable)",
+    "defaut": "le moteur ne reçoit jamais ce qui est planté"
   }
 ]
