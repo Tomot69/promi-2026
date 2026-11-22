@@ -108,10 +108,15 @@ export async function ouvrirPlus(page: Page): Promise<void> {
     const b = document.getElementById('createBtn')!.getBoundingClientRect();
     return [b.left + b.width / 2, b.top + b.height / 2];
   });
+  const t0 = Date.now();
   await page.mouse.click(r[0]!, r[1]!);
   await page.waitForTimeout(500);
   // le menu s'ouvre en flaques (C-329) : son passage fini
   await page.waitForFunction(() => !document.querySelector('[data-flaques-mode]'), undefined, { timeout: 20000 });
+  // ⚑ 2b (le juge « flash », instable sur la CI) : le menu reste à l'écran au moins 1 s avant qu'on touche une pilule, comme une personne qui
+  // le lit — sous Linux le test touchait « Un Chiche » 0,6 s après l'ouverture du menu, que la page + recouvrait aussitôt : le menu (demandé,
+  // puis quitté par le toucher) restait 791 ms à l'écran, sous les 800 ms du juge, qui mesurait alors la vitesse du test, pas un éclair de l'app
+  await page.waitForTimeout(Math.max(0, 1000 - (Date.now() - t0)));
 }
 
 /**
