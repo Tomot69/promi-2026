@@ -363,7 +363,7 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
           );
         },
         undefined,
-        { timeout: 60000 },
+        { timeout: 180000 }, // hors du Mac, 30 s entre l'horizon remonté et le trait né (relevé sur la CI : « horizon-haut » 56 s, « montre » 86 s)
       ).catch(async (err: unknown) => {
         const diag = await P.evaluate(() => {
           const w = window as unknown as {
@@ -388,7 +388,7 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
       await A.waitForFunction(
         `(() => { const e = ${P_}.pagePlus().etat(); const w = window; return e.invite.visible && !e.invite.anim && !document.querySelector('#createSheet canvas.passage-flaques') && !w.TraceLettres?.actif(); })()`,
         undefined,
-        { timeout: 60000 },
+        { timeout: 180000 },
       );
     }
   }

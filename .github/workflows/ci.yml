@@ -115,7 +115,7 @@ jobs:
     # C-326 (Tom) : chaque test rougit sur une sonde — rejoue chaque test avec le défaut qu'il doit prendre, exige qu'il rougisse
     strategy:
       fail-fast: false
-      matrix: { part: [1, 2, 3, 4] }
+      matrix: { part: [1, 2, 3, 4, 5, 6] }   # 2b : six parts — à quatre, la première dépassait ses 60 min
     runs-on: ubuntu-24.04   # pas ubuntu-latest : 26.04 depuis nov. 2026, où Playwright 1.60 n'installe pas WebKit
     timeout-minutes: 60   # l'installation de WebKit et de ses dépendances a pris 21 min (20 nov.) : 30 coupait les tests
     steps:
@@ -145,6 +145,6 @@ jobs:
       - run: npm run construire
         working-directory: promi
       - name: les sondes — chaque test rougit sur le défaut qu'il doit prendre
-        run: npm run sondes -- --part=${{ matrix.part }}/4
+        run: npm run sondes -- --part=${{ matrix.part }}/6
         working-directory: promi
         env: { CI: '1' }

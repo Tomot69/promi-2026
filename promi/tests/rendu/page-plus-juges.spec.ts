@@ -1535,7 +1535,7 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
   };
   const lit = (
     lab: string,
-  ): Promise<{ ouv: boolean; val: string; chips: string[]; on: string[]; h: number; rayon: string }> =>
+  ): Promise<{ ouv: boolean; val: string; chips: string[]; on: string[]; h: number; fin: number; rayon: string }> =>
     page.evaluate((lab) => {
       const r = [...document.querySelectorAll<HTMLElement>('#csPeauf .s2-reg')].find(
         (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === lab,
@@ -1547,6 +1547,11 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
         chips: ch.map((c) => (c.textContent ?? '').trim()),
         on: ch.filter((c) => c.classList.contains('on')).map((c) => (c.textContent ?? '').trim()),
         h: r.getBoundingClientRect().height / (r.getBoundingClientRect().width / r.offsetWidth),
+        // le bas de la dernière pastille, depuis le haut de la rangée (les polices de Linux font des pastilles de 34 au lieu de 33)
+        fin: ch.length
+          ? (Math.max(...ch.map((c) => c.getBoundingClientRect().bottom)) - r.getBoundingClientRect().top) /
+            (r.getBoundingClientRect().width / r.offsetWidth)
+          : 0,
         rayon: getComputedStyle(r).borderTopLeftRadius,
       };
     }, lab);
@@ -1576,7 +1581,11 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
     [],
     '30px',
   ]);
-  expect(a.h, 'la rangée grandit : 18 + 12 + 19,8 + 14 + deux rangées de pastilles (33, 8) + 18').toBeCloseTo(159.8, 0);
+  expect(a.h, 'la rangée grandit : ses pastilles dedans, 18 pt de marge et le trait de 2 sous la dernière').toBeCloseTo(
+    a.fin + 20,
+    0,
+  );
+  if (process.platform === 'darwin') expect(a.h, 'sur le Mac, la cote du prototype : 159,8').toBeCloseTo(159.8, 0);
   await pastilleDe('AVANT', '1 sem.');
   a = await lit('AVANT');
   expect([a.ouv, a.val, (await ph()).due], 'un choix la replie et s’écrit').toEqual([false, '1 sem.', 7]);
