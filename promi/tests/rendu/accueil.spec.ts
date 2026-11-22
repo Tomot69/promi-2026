@@ -377,6 +377,12 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
     await page.waitForTimeout(80);
     const j = (await page.evaluate(`${P_}.nav.journal()`)) as Array<{ vers: string; arg?: string }>;
     expect(j.at(-1)).toEqual(expect.objectContaining({ vers: 'pagePlus', arg: k }));
+    // le menu reste sous la page + qui monte et ne part qu'une fois recouvert (500 ms, C-331 / C-271) : il est refermé ensuite
+    await page
+      .waitForFunction(() => !document.getElementById('accChoix')!.classList.contains('ouvert'), undefined, {
+        timeout: 5000,
+      })
+      .catch(() => {});
     expect(await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert'))).toBe(false);
     // lot 2a : la pilule OUVRE la page + de sa nature (elle couvre l'accueil) — son X la referme, on revient à l'accueil
     // (et elle a fini de monter, C-331 : un toucher pendant qu'elle monte tombe à côté de la croix)

@@ -116,7 +116,7 @@ async function touchePlace(p: Page, sel: string, proto: boolean): Promise<void> 
     p.waitForFunction(
       () => !(window as unknown as { TraceLettres?: { actif(): boolean } }).TraceLettres?.actif(),
       undefined,
-      { timeout: 30000 },
+      { timeout: 60000 }, // hors du Mac le prototype trace ses textes jusqu’à 40 s
     );
   const touche = (): Promise<void> =>
     p.evaluate(
@@ -141,7 +141,10 @@ async function touchePlace(p: Page, sel: string, proto: boolean): Promise<void> 
   // trace, on touche, et l'on retouche une fois si la place n'a pas changé
   for (let essai = 0; essai < 2; essai++) {
     await tracant();
-    await touche();
+    // la seconde fois, on ne retouche que si la place n'a pas changé : retoucher « moi » relancerait un tracé (sous charge, le premier
+    // essai peut finir son attente avant la fin du tracé)
+    const deja = await p.evaluate((s) => (document.querySelector(s)?.textContent ?? '').trim() === 'moi', sel);
+    if (!(essai > 0 && deja)) await touche();
     // C-304 : la place passe à « moi » par une transition (détracé puis tracé, C-271) : on attend qu'elle soit finie
     const ok = await p
       .waitForFunction(
@@ -284,13 +287,25 @@ for (const theme of ['sombre', 'clair'] as const)
       // la sonde : la phrase de la vraie app décalée d'un point
       if (sonde('pp-identite-decale')) await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0}' });
       await P.waitForTimeout(600);
-      const Z = await zones(A, P);
       const dv = await P.evaluate(() => {
         const r = document.getElementById('device')!.getBoundingClientRect();
         return { x: r.left, y: r.top, width: r.width, height: r.height };
       });
-      const ip = masquer(await P.screenshot({ clip: dv }), Z);
-      const ia = masquer(await A.screenshot(), Z);
+      // les deux côtés POSÉS : deux images identiques (matière exceptée) à 700 ms d'écart — hors du Mac une image dure 0,7 s et les
+      // minuteurs du prototype (son tracé, ses murs, ses mouvements) finissent bien après les durées fixes de `poser` (25 s au plus ; au-delà
+      // on compare quand même, et l'écart le dit)
+      let Z = await zones(A, P);
+      let ip = masquer(await P.screenshot({ clip: dv }), Z);
+      let ia = masquer(await A.screenshot(), Z);
+      for (let k = 0; k < 25; k++) {
+        await P.waitForTimeout(700);
+        const Z2 = await zones(A, P);
+        const ip2 = masquer(await P.screenshot({ clip: dv }), Z2);
+        const ia2 = masquer(await A.screenshot(), Z2);
+        const pose = ip2.equals(ip) && ia2.equals(ia);
+        [Z, ip, ia] = [Z2, ip2, ia2];
+        if (pose) break;
+      }
       mkdirSync(RES, { recursive: true });
       const nom = `${theme}-${c.nat}${c.choix ? '-choix' : ''}${c.etat ? '-' + c.etat : ''}`;
       writeFileSync(join(RES, `${nom}-prototype.png`), ip);

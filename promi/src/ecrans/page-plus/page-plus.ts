@@ -901,8 +901,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       rang.appendChild(b);
     }
     deja.append(lab, rang);
-    // les mots sont ceux de l'utilisateur : deux pastilles qui ne tiennent pas dans les 342, on n'en garde qu'une
-    while (rang.children.length > 1 && rang.scrollWidth > 342) rang.lastChild!.remove();
+    // les mots sont ceux de l'utilisateur : deux pastilles qui ne tiennent pas dans la largeur (342 à la taille de référence), on n'en garde qu'une
+    while (rang.children.length > 1 && rang.scrollWidth > Math.min(342, largeur() - 48)) rang.lastChild!.remove();
   }
 
   function majRail(): void {

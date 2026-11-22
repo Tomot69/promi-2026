@@ -21,6 +21,8 @@ async function toucher(page: Page, sel: string): Promise<void> {
   }, sel);
   await page.mouse.click(r[0]!, r[1]!);
   await page.waitForTimeout(150);
+  // le choix qui s'ouvre ou se ferme est un mouvement (Q598) : on touche la suite une fois tout posé (hors du Mac une image dure 0,7 s)
+  await posee(page);
 }
 const etat = (
   page: Page,
@@ -530,7 +532,7 @@ async function doigt(page: Page, sel: string): Promise<void> {
 /** plus aucun mouvement de la page, plus aucun passage en flaques */
 const posee = (page: Page): Promise<unknown> =>
   page.waitForFunction(
-    `!document.querySelector('#createSheet [data-flaques-mode]') && !${P_}.pagePlus().etat().mouvement`,
+    `!document.querySelector('#createSheet [data-flaques-mode]') && !${P_}.pagePlus?.()?.etat().mouvement`,
     undefined,
     { timeout: 20000 },
   );
@@ -675,11 +677,23 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       requestAnimationFrame(f);
     });
     const champ = nat === 'nuee' ? '#createSheet .ph-m[data-np="nom"]' : '#createSheet .ph-m[data-ph="titre"]';
-    const pt = await page.evaluate((s) => {
-      const b = document.querySelector(s)!.getBoundingClientRect();
-      return [b.left + b.width / 2, b.top + b.height / 2];
-    }, champ);
-    await page.mouse.click(pt[0]!, pt[1]!);
+    // le toucher (appui puis lever, comme le doigt) — et, DANS SA TÂCHE, le mouvement part de la place d'avant : la mesure ne dépend pas
+    // de la cadence des images (hors du Mac une image dure 0,7 s, le mouvement de 360 ms y tient dans une seule)
+    const auToucher = (await page.evaluate(
+      ([s, P]) => {
+        const e = document.querySelector<HTMLElement>(s as string)!;
+        const b = e.getBoundingClientRect();
+        const o = { bubbles: true, clientX: b.left + b.width / 2, clientY: b.top + b.height / 2, pointerId: 21 };
+        e.dispatchEvent(new PointerEvent('pointerdown', o));
+        e.dispatchEvent(new PointerEvent('pointerup', o));
+        const c = document.getElementById('createSheet')!.getBoundingClientRect();
+        return {
+          mv: (new Function(`return ${P as string}.pagePlus().etat().mouvement`) as () => boolean)(),
+          ph: document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top,
+        };
+      },
+      [champ, P_] as const,
+    )) as { mv: boolean; ph: number };
     await posee(page);
     const ouvert = (await page.evaluate(
       () => (window as unknown as { __m: Array<{ ph: number; barre: number }> }).__m,
@@ -690,18 +704,26 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     }>;
     const e1 = await etat(page);
     expect(e1.base, 'la page montée : l’onde à 144 (cadres 18 à 23)').toBe(144);
-    expect(Math.abs(ouvert.at(-1)!.ph - 230), 'la phrase à 230 (228 + le pas du trait ×1,3), ± 1').toBeLessThanOrEqual(
+    // la place posée se lit sur la page (hors du Mac la dernière image relevée peut précéder la fin du mouvement)
+    const phPosee = await page.evaluate(() => {
+      const c = document.getElementById('createSheet')!.getBoundingClientRect();
+      return document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top;
+    });
+    expect(Math.abs(phPosee - 230), 'la phrase à 230 (228 + le pas du trait ×1,3), ± 1').toBeLessThanOrEqual(1);
+    // le mouvement d'ouverture part dans la tâche du toucher, de la place d'avant (jamais d'un coup) — sur toute machine
+    expect(auToucher.mv, 'au toucher, un mouvement commence').toBe(true);
+    expect(Math.abs(auToucher.ph - avant), 'au toucher, la phrase est encore à sa place d’avant').toBeLessThanOrEqual(
       1,
     );
-    // le mouvement d'ouverture : la première image après le toucher n'est pas la place finale, et aucun pas n'est un saut
-    const i0 = ouvert.findIndex((m) => Math.abs(m.ph - avant) > 0.5);
-    expect(i0, 'la phrase quitte sa place').toBeGreaterThanOrEqual(0);
-    const course = Math.abs(avant - ouvert.at(-1)!.ph);
-    expect(
-      Math.abs(ouvert[i0]!.ph - ouvert.at(-1)!.ph),
-      'la première image qui bouge n’est pas la place finale',
-    ).toBeGreaterThan(course * 0.3);
+    const course = Math.abs(avant - phPosee);
+    // les images intermédiaires : sur le Mac seulement (hors du Mac une image dure 0,7 s, le mouvement entier tient dans une)
     if (process.platform === 'darwin') {
+      const i0 = ouvert.findIndex((m) => Math.abs(m.ph - avant) > 0.5);
+      expect(i0, 'la phrase quitte sa place').toBeGreaterThanOrEqual(0);
+      expect(
+        Math.abs(ouvert[i0]!.ph - phPosee),
+        'la première image qui bouge n’est pas la place finale',
+      ).toBeGreaterThan(course * 0.3);
       const pas = Math.max(...ouvert.slice(i0).map((m, k, a) => (k ? Math.abs(m.ph - a[k - 1]!.ph) : 0)));
       expect(pas, `aucun pas au-delà de 35 % de la course (${course.toFixed(0)} pt)`).toBeLessThanOrEqual(
         course * 0.35 + 0.5,
@@ -725,7 +747,19 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       (window as unknown as { __m: unknown[] }).__m = [];
     });
     const t0 = await page.evaluate(() => performance.now());
-    await page.keyboard.press('Enter');
+    // Retour (la touche, sur le champ qui a le focus) — et, dans sa tâche, le mouvement de retour part de la place de saisie
+    const auRetour = (await page.evaluate((P) => {
+      const c = document.getElementById('createSheet')!.getBoundingClientRect();
+      const ph0 = document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top;
+      document.activeElement!.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
+      );
+      return {
+        ph0,
+        mv: (new Function(`return ${P}.pagePlus().etat().mouvement`) as () => boolean)(),
+        ph: document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top,
+      };
+    }, P_)) as { ph0: number; mv: boolean; ph: number };
     await posee(page);
     await page.waitForTimeout(300);
     const R = (await page.evaluate(() => {
@@ -733,20 +767,29 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       w.__on = false;
       return { m: w.__m, partis: w.__partis };
     })) as { m: Array<{ ph: number; barre: number; t: number }>; partis: string[] };
-    const fin = R.m.at(-1)!;
     const e2 = await etat(page);
     expect(e2.base, 'revenue : l’onde à sa place').toBeGreaterThan(144);
-    const p0 = R.m[0]!.ph;
-    const j0 = R.m.findIndex((m) => Math.abs(m.ph - p0) > 0.5);
-    expect(j0, 'la phrase quitte la place de saisie').toBeGreaterThanOrEqual(0);
+    // le retour part dans la tâche de Retour, de la place de saisie (jamais d'un coup) — sur toute machine
+    expect(auRetour.mv, 'à Retour, un mouvement commence').toBe(true);
     expect(
-      Math.abs(R.m[j0]!.ph - fin.ph),
-      'la première image n’est pas la place finale (jamais d’un coup)',
-    ).toBeGreaterThan(Math.abs(fin.ph - p0) * 0.3);
-    const jFin = R.m.findIndex((m, k) => k > j0 && Math.abs(m.ph - fin.ph) < 0.5);
-    const duree = R.m[jFin]!.t - Math.max(t0, R.m[Math.max(0, j0 - 1)]!.t);
-    if (process.platform === 'darwin') expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeLessThanOrEqual(460);
-    expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeGreaterThanOrEqual(250);
+      Math.abs(auRetour.ph - auRetour.ph0),
+      'à Retour, la phrase est encore à la place de saisie',
+    ).toBeLessThanOrEqual(1);
+    // les images et la durée : sur le Mac seulement (hors du Mac une image dure 0,7 s)
+    if (process.platform === 'darwin') {
+      const fin = R.m.at(-1)!;
+      const p0 = R.m[0]!.ph;
+      const j0 = R.m.findIndex((m) => Math.abs(m.ph - p0) > 0.5);
+      expect(j0, 'la phrase quitte la place de saisie').toBeGreaterThanOrEqual(0);
+      expect(
+        Math.abs(R.m[j0]!.ph - fin.ph),
+        'la première image n’est pas la place finale (jamais d’un coup)',
+      ).toBeGreaterThan(Math.abs(fin.ph - p0) * 0.3);
+      const jFin = R.m.findIndex((m, k) => k > j0 && Math.abs(m.ph - fin.ph) < 0.5);
+      const duree = R.m[jFin]!.t - Math.max(t0, R.m[Math.max(0, j0 - 1)]!.t);
+      expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeLessThanOrEqual(460);
+      expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeGreaterThanOrEqual(250);
+    }
     expect(R.partis, 'rien de ce qui peint ne part d’un coup (redteam_je)').toEqual([]);
     expect(
       await page.evaluate(
@@ -1099,4 +1142,106 @@ test('le menu du bouton photo : « Dessiner », « Importer une photo » (le sé
   await page.waitForFunction(() => !document.getElementById('createSheet')!.classList.contains('pp-entre'));
   await toucher(page, '#createSheet .ph-photo-btn');
   expect(await menu(), 'un Cercle ne porte pas de photo (C-199)').toEqual(['Dessiner']);
+});
+
+// ── A3 (CLAUDE.md, porte de qualité : « toute mesure de mise en page à l'échelle 1 ET à l'échelle 0,79 ») — la vraie app s'adapte à l'écran
+//    (L0 §2) : dans la fenêtre de Safari à 0,79 (330 × 714), la page + dans chacun de ses états. Trouvé en le jugeant (lot 2a) : le choix
+//    d'un Cercle sortait de l'écran (deux colonnes de 162 fixes), ses noms coupés net, le X de Peaufiner hors de l'écran (posé à 304 pt). ──
+const ETATS_A3: Array<{ nat: Nat; etat: string }> = [
+  { nat: 'promi', etat: 'repos' },
+  { nat: 'chiche', etat: 'choix' },
+  { nat: 'nuee', etat: 'choix' },
+  { nat: 'chiche', etat: 'prenom' },
+  { nat: 'promi', etat: 'saisie' },
+  { nat: 'nuee', etat: 'saisie' },
+  { nat: 'promi', etat: 'peauf' },
+  { nat: 'nuee', etat: 'peauf' },
+  { nat: 'promi', etat: 'photo' },
+];
+test('A3, à 0,79 (330 × 714) : la page + dans chacun de ses états — rien ne sort de l’écran, aucun nom coupé net, le X de Peaufiner atteignable', async ({
+  page,
+}) => {
+  const fautes: string[] = [];
+  for (const { nat, etat } of ETATS_A3) {
+    await page.setViewportSize({ width: 330, height: 714 });
+    await vraieApp(page, stockage());
+    await ouvrirPagePlus(page, nat);
+    // la sonde : le choix d'un Cercle à ses deux colonnes de 162 fixes (le défaut trouvé)
+    if (sonde('a3-fixe'))
+      await page.addStyleTag({
+        content:
+          '#createSheet.pp-nuee .gn{width:336px!important}#createSheet .gn-liste{grid-template-columns:162px 162px!important}#createSheet .ph-o:not(.ph-add){width:162px!important}',
+      });
+    const titre = nat === 'nuee' ? '#createSheet .ph-m[data-np="nom"]' : '#createSheet .ph-m[data-ph="titre"]';
+    const place = nat === 'nuee' ? '#createSheet .ph-m[data-np="avec"]' : '#createSheet .ph-m[data-ph="qui"]';
+    if (etat === 'choix' || etat === 'prenom') await toucher(page, place);
+    if (etat === 'prenom') {
+      await toucher(page, '#createSheet .ph-add');
+      await page.keyboard.type('Bruno-Stanislas');
+      await posee(page);
+    }
+    if (etat === 'saisie') {
+      await toucher(page, titre);
+      await page.keyboard.type('appeler Lou au sujet des vacances de printemps');
+      await posee(page);
+    }
+    if (etat === 'peauf') await toucher(page, '#csBotBar');
+    if (etat === 'photo') await toucher(page, '#createSheet .ph-photo-btn');
+    await page.waitForTimeout(400);
+    const r = (await page.evaluate(() => {
+      const W = innerWidth;
+      const out: string[] = [];
+      const vis = (e: Element): boolean => {
+        for (let x: Element | null = e; x; x = x.parentElement) {
+          const s = getComputedStyle(x);
+          if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity < 0.05) return false;
+        }
+        return true;
+      };
+      const cs = document.getElementById('createSheet')!;
+      // D : un texte visible qui sort de l'écran (une valeur qui s'arrête par « … » est rognée par sa boîte : on lit la boîte qui rogne ;
+      // le rail du pinceau défile et le déclare, data-glisse)
+      const w = document.createTreeWalker(cs, NodeFilter.SHOW_TEXT);
+      let t: Node | null;
+      while ((t = w.nextNode())) {
+        const e = t.parentElement!;
+        if (!(t.nodeValue ?? '').trim() || !vis(e) || e.closest('[data-glisse]')) continue;
+        const rg = document.createRange();
+        rg.selectNodeContents(t);
+        let q = rg.getBoundingClientRect();
+        if (!q.width) continue;
+        for (let x: Element | null = e; x && x !== cs; x = x.parentElement)
+          if (getComputedStyle(x).overflowX !== 'visible') {
+            const b = x.getBoundingClientRect();
+            q = new DOMRect(
+              Math.max(q.left, b.left),
+              q.top,
+              Math.min(q.right, b.right) - Math.max(q.left, b.left),
+              q.height,
+            );
+            break;
+          }
+        if (q.left < -1 || q.right > W + 1)
+          out.push(
+            `sort de l’écran : « ${(t.nodeValue ?? '').trim().slice(0, 30)} » ${String(Math.round(q.left))} → ${String(Math.round(q.right))}`,
+          );
+      }
+      // une boîte qui se touche (une personne, « + ajouter », une rangée de Peaufiner) entière à l'écran
+      for (const b of cs.querySelectorAll('.ph-o, .s2-reg, .s2-fermer, .ph-photo-menu > *')) {
+        if (!vis(b)) continue;
+        const q = b.getBoundingClientRect();
+        if (q.width && (q.left < -1 || q.right > W + 1))
+          out.push(
+            `hors de l’écran : ${b.className || b.tagName} ${String(Math.round(q.left))} → ${String(Math.round(q.right))}`,
+          );
+      }
+      // un nom coupé net (sans « … »)
+      for (const n of cs.querySelectorAll<HTMLElement>('.ppo-nom'))
+        if (vis(n) && n.scrollWidth > n.clientWidth + 1 && getComputedStyle(n).textOverflow !== 'ellipsis')
+          out.push(`nom coupé net : « ${n.textContent ?? ''} »`);
+      return out;
+    })) as string[];
+    for (const f of r) fautes.push(`${nat}, ${etat} : ${f}`);
+  }
+  expect(fautes).toEqual([]);
 });

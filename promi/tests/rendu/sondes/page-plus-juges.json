@@ -93,5 +93,10 @@
     "nom": "photo-sourd",
     "test": "le menu du bouton photo : « Dessiner », « Importer une photo » (le sélecteur dans le geste)",
     "defaut": "le bouton photo ne prend plus le doigt"
+  },
+  {
+    "nom": "a3-fixe",
+    "test": "A3, à 0,79 (330 × 714) : la page + dans chacun de ses états — rien ne sort de l’écran",
+    "defaut": "le choix d'un Cercle garde ses deux colonnes de 162 fixes : à 330 pt il sort de l'écran"
   }
 ]

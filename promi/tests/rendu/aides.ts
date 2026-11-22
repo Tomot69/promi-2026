@@ -239,29 +239,28 @@ export async function refermerPagePlus(page: Page): Promise<void> {
     return !!c && !c.hidden;
   });
   if (!ouverte) return;
+  // la page + posée : ni montée (C-331), ni composition, ni passage en flaques, ni mouvement (hors du Mac une image dure 0,7 s : un toucher
+  // pendant un passage tombait sur ce qu'il recouvre encore) ; puis le X, UNE fois — un X qui ne prend pas au premier toucher est un défaut
   await page.waitForFunction(
-    () => {
-      const c = document.getElementById('createSheet');
-      return !c?.classList.contains('pp-compose') && !c?.classList.contains('pp-entre');
-    },
+    `(() => { const c = document.getElementById('createSheet'); return !c?.classList.contains('pp-compose') && !c?.classList.contains('pp-entre')
+      && !document.querySelector('#createSheet [data-flaques-mode]') && !${P_}.pagePlus?.()?.etat().mouvement; })()`,
     undefined,
-    {
-      timeout: 20000,
-    },
+    { timeout: 20000 },
   );
   const x = await page.evaluate(() => {
     const b = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
     return [b.left + b.width / 2, b.top + b.height / 2];
   });
   await page.mouse.click(x[0]!, x[1]!);
-  await page.waitForFunction(() => !!document.getElementById('createSheet')?.hidden, undefined, { timeout: 20000 });
+  const ok = await page
+    .waitForFunction(() => !!document.getElementById('createSheet')?.hidden, undefined, { timeout: 20000 })
+    .then(() => true)
+    .catch(() => false);
+  if (ok) return;
+  throw new Error('refermerPagePlus : le X touché une fois, posé, la page + ne s’est pas refermée');
 }
 
-/**
- * ⚠ LOT 2a (PARTIEL) — la page + n'est PAS encore dans ECRANS_PORTES : ajoutée, le socle l'a jugée en partie (joignable et écrans : deux
- * défauts trouvés et corrigés — l'accueil restait visible sous elle, le rail ne déclarait pas qu'il glisse) ; les autres juges du socle n'ont
- * pas tourné sur elle avant l'arrêt du lot. `PAGES_PLUS` les y ajoutera (`...PAGES_PLUS`) au 2b, une fois le socle vert sur elles.
- */
+/** les trois pages + (lot 2a) : des écrans portés, jugés par tout le socle (ECRANS_PORTES) */
 export const PAGES_PLUS: EcranPorte[] = (['promi', 'chiche', 'nuee'] as const).map((n): EcranPorte => ({
   nom: `page +, ${n}`,
   ouvrir: (p) => ouvrirPagePlus(p, n),

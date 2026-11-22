@@ -414,7 +414,8 @@
 #createSheet .gn-liste {
   grid-column: 1 / -1;
   display: grid;
-  grid-template-columns: 162px 162px;
+  /* A3 : deux colonnes de 162 à la taille de référence ; plus étroit (330 pt de large), elles se partagent la place */
+  grid-template-columns: repeat(2, minmax(0, 162px));
   gap: 8px 12px;
   overflow: hidden auto;
   scrollbar-width: none;
@@ -427,7 +428,8 @@
   justify-content: flex-start;
   align-items: center;
   gap: 10px;
-  width: 162px;
+  width: 100%;
+  max-width: 162px;
   height: 52px;
   box-sizing: border-box;
   margin: 0;
@@ -444,6 +446,7 @@
 #createSheet .ph-add {
   grid-column: 1 / -1;
   width: 100%;
+  max-width: none;
   margin-top: 14px;
   justify-content: center;
   border-style: dashed;
@@ -476,6 +479,8 @@
   min-width: 0;
   display: block;
   overflow: hidden;
+  /* un nom qui ne tient pas s'arrête par « … », jamais coupé net (A4) */
+  text-overflow: ellipsis;
   white-space: nowrap;
 }
 #createSheet .ppo-x {
@@ -504,12 +509,14 @@
 /* le choix d'un Cercle (lot-GENS, `#nueeChoix`) : ses pastilles en Gilbert 23,1 (`#createSheet .ph-o{font-size:23.1px}`), « Moi » choisi
    au mauve profond, deux colonnes de 162 (336 de large), la marge droite d'une pastille 10 (la grammaire commune) */
 #createSheet.pp-nuee .gn {
-  width: 336px;
+  width: min(336px, 100%);
+  container-type: inline-size;
 }
+/* A3 : 23,1 sur 336 de large ; plus étroit (330 pt d'écran), le nom suit la largeur de la grille (6,875 % = 23,1 / 336) */
 #createSheet.pp-nuee .ph-o {
   padding: 0 10px 0 14px;
-  font-size: 23.1px;
-  line-height: 23.1px;
+  font-size: min(23.1px, 6.875cqi);
+  line-height: min(23.1px, 6.875cqi);
 }
 #createSheet.pp-nuee .ph-o.on {
   border-color: var(--c-mauve12);
@@ -586,7 +593,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  width: 342px;
+  width: min(342px, 100%);
   height: 0;
 }
 #createSheet .ppo-copie {
@@ -764,8 +771,8 @@
 #csPeauf .s2-tete {
   position: absolute;
   left: var(--marge-g);
+  right: var(--marge-d);
   top: 36px;
-  width: 342px;
   height: 40px;
   z-index: 2;
 }
@@ -779,9 +786,10 @@
   overflow: hidden;
   color: var(--c-creme95);
 }
+/* A3 : le X tient au bord droit de l'en-tête (304 + 44 = 348 = 342 + 6 à la taille de référence), à toute largeur */
 #csPeauf .s2-fermer {
   position: absolute;
-  left: 304px;
+  right: -6px;
   top: -3.1px;
   width: 44px;
   height: 44px;
