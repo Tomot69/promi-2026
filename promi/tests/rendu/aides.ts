@@ -211,7 +211,7 @@ export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee
         );
       },
       nat,
-      { timeout: 30000 },
+      { timeout: 60000 },
     );
     await page.waitForTimeout(process.platform === 'darwin' ? 1500 : 4000);
   } else

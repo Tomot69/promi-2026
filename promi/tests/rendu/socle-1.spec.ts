@@ -619,6 +619,27 @@ async function stable(page: Page): Promise<void> {
       n = c === prec ? n + 1 : 0;
       prec = c;
     }
+    // et plus rien ne se trace ni ne passe (un texte en cours de tracé est découpé : il n'est pas encore à l'écran), aucune transition
+    // finie ne court — hors du Mac une image dure 0,7 s et ces minuteurs finissent bien après le compte des nœuds (30 s au plus)
+    const calme = (): boolean => {
+      const w = window as unknown as { TraceLettres?: { actif(): boolean } };
+      if (w.TraceLettres?.actif() || document.querySelector('[data-flaques-mode]')) return false;
+      return !document.getAnimations().some((a) => {
+        if (a.playState !== 'running') return false;
+        const t = (a.effect as KeyframeEffect | null)?.target;
+        return (
+          t instanceof Element &&
+          !!t.closest('#device') &&
+          (a.effect as KeyframeEffect).getTiming().iterations !== Infinity
+        );
+      });
+    };
+    const t1 = performance.now();
+    let ok = 0;
+    while (ok < 2 && performance.now() - t1 < 30000) {
+      await new Promise((f) => setTimeout(f, 250));
+      ok = calme() ? ok + 1 : 0;
+    }
   });
 }
 

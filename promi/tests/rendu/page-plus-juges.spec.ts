@@ -91,6 +91,13 @@ test('le menu du + : chaque pilule ouvre SA page +, à chaque fois ; le X la ref
         });
         o.observe(c, { attributes: true, attributeFilter: ['class'] });
       });
+      // la page posée (aucun passage, aucun mouvement), puis le X — et ce qu'il y a sous le doigt, pour nommer une cause s'il ne prend pas
+      await posee(page);
+      const sous = await page.evaluate(() => {
+        const b = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
+        const e = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+        return `${e ? e.tagName.toLowerCase() + '.' + String(e.className) : '∅'} ; #createSheet.${document.getElementById('createSheet')!.className}`;
+      });
       await toucher(page, '#createSheet .closeb');
       await page
         .waitForFunction(() => !!(window as unknown as { __part: unknown }).__part, undefined, { timeout: 5000 })
@@ -100,7 +107,7 @@ test('le menu du + : chaque pilule ouvre SA page +, à chaque fois ; le X la ref
         duree: '0s',
         prop: '',
       }) as { classe: boolean; duree: string; prop: string };
-      expect(part.classe, 'la page + part (pp-part)').toBe(true);
+      expect(part.classe, `la page + part (pp-part) — sous le doigt : ${sous}`).toBe(true);
       expect(part.prop).toContain('transform');
       expect(parseFloat(part.duree)).toBeGreaterThanOrEqual(0.4);
       await page.waitForFunction(() => document.getElementById('createSheet')!.hidden, undefined, { timeout: 20000 });
@@ -963,14 +970,25 @@ test('ajouter une personne : la zone en pointillés est le champ, le « + » ora
   await page.waitForTimeout(200);
   e = await etat(page);
   expect(e.phrase.qui, 'Retour valide aussi').toEqual(['Maman', 'Zoé']);
-  // le clavier (simulé : la fenêtre visible réduite de 336 pt, ce que l'app lit) : la ligne reste 14 pt au-dessus de lui (8 exigés)
+  // le clavier (simulé : la fenêtre visible réduite de 336 pt, ce que l'app lit) : la ligne reste 14 pt au-dessus de lui (8 exigés) — lue
+  // la page posée (la page glisse en 300 ms ; hors du Mac une image dure 0,7 s : on attend sa place, 5 s au plus)
+  await posee(page);
   await page.evaluate(() => {
     const vv = window.visualViewport!;
     const h = window.innerHeight - 336;
     Object.defineProperty(vv, 'height', { get: () => h, configurable: true });
     vv.dispatchEvent(new Event('resize'));
   });
-  await page.waitForTimeout(600);
+  await page
+    .waitForFunction(
+      () =>
+        window.innerHeight - 336 - document.querySelector('#createSheet .gn .ph-add')!.getBoundingClientRect().bottom >=
+        8,
+      undefined,
+      { timeout: 5000 },
+    )
+    .catch(() => undefined);
+  await posee(page);
   const air = await page.evaluate(
     () => window.innerHeight - 336 - document.querySelector('#createSheet .gn .ph-add')!.getBoundingClientRect().bottom,
   );

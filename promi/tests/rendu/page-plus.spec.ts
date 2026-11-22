@@ -90,11 +90,16 @@ async function zones(A: Page, P: Page): Promise<Zone[]> {
     // HORS DU MAC SEULEMENT — le texte flouté des murs de Peaufiner (4,8 px, illisible par décision ; leur phrase au lot 8) : sa coupe dépend des
     // métriques de police du système, et sous Linux le prototype et l'app ne la font pas tomber au même endroit (la valeur déborde d'un côté,
     // finit par « … » de l'autre). Dans WebKit sur le Mac (la référence : l'iPhone de Tom), identique au pixel, et jugé là. Le contour, lui, reste jugé.
-    if (horsMac)
+    if (horsMac) {
+      // (au-dessus de la barre Peaufiner, qui reste jugée)
+      const bas = document.getElementById('csBotBar')!.getBoundingClientRect().top - C.top;
       for (const m of document.querySelectorAll('#csPeauf .s2-cercle .s2-reg')) {
         const b = m.getBoundingClientRect();
-        if (b.height) z.push([b.left - C.left + 6, b.top - C.top + 6, b.width - 12, b.height - 12]);
+        const y0 = b.top - C.top + 6;
+        const y1 = Math.min(b.bottom - C.top - 6, bas - 1);
+        if (b.height && y1 > y0) z.push([b.left - C.left + 6, y0, b.width - 12, y1 - y0]);
       }
+    }
     return z;
   }, horsMac)) as Zone[];
   if (!ms.length || peauf) return autres;
@@ -251,6 +256,12 @@ async function protoPose(P: Page): Promise<void> {
     P.evaluate(() => {
       const w = window as unknown as { TraceLettres?: { actif(): boolean } };
       if (w.TraceLettres?.actif()) return false;
+      // Peaufiner ouvert : ses murs (`.s2-cercle`, flous, posés par une passe plus tardive) sont là
+      if (
+        document.querySelector('#createSheet.pp-peauf') &&
+        ![...document.querySelectorAll('#createSheet .s2-cercle')].some((e) => e.getBoundingClientRect().height > 0)
+      )
+        return false;
       return !document.getAnimations().some((a) => {
         if (a.playState !== 'running') return false;
         const t = (a.effect as KeyframeEffect | null)?.target;
