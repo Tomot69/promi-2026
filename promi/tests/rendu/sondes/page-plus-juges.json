@@ -48,5 +48,15 @@
     "nom": "trait-ouverture",
     "test": "à l’ouverture, rien du trait et l’horizon bas (C-213, C-229)",
     "defaut": "le mot du trait « trace pour planter » paraît dès l'ouverture (la page + d'avant v172)"
+  },
+  {
+    "nom": "garder-teinte",
+    "test": "C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; la page + monte en glissant à l’ouverture, comme elle descend à la fermeture",
+    "defaut": "« garder de côté » inactif prend le bleu du Promi sur les trois natures (le prototype, une passe sur deux)"
+  },
+  {
+    "nom": "ouverture-seche",
+    "test": "C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; la page + monte en glissant à l’ouverture, comme elle descend à la fermeture",
+    "defaut": "la page + paraît d'un coup (la transition d'ouverture retirée)"
   }
 ]

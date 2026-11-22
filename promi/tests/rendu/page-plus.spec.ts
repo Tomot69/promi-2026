@@ -23,6 +23,17 @@ import { ETAT, stockage, GEL, prototype, vraieApp, ouvrirPagePlus, ecart, sonde 
 
 const RES = join(import.meta.dirname, 'resultats', 'page-plus');
 
+/**
+ * LES ÉCARTS ADMIS AU PROTOTYPE (Tom, 22 nov. 2026), nommés ; chacun a son test qui rougit si la décision est défaite
+ * (page-plus-juges.spec.ts « C-330, C-331 », sondes garder-teinte et ouverture-seche) :
+ *  - C-330 : « garder de côté » inactif prend la teinte de sa nature (#82AEF8 · #FFB8D2 · #C9A8F5) — sa boîte est masquée ici ;
+ *  - C-331 : la page + monte en glissant à l'ouverture (la capture est prise une fois arrivée : rien à masquer).
+ */
+export const ECARTS_ADMIS = [
+  'C-330 « garder de côté » à la teinte de sa nature',
+  'C-331 la page + monte à l’ouverture',
+];
+
 type Zone = [number, number, number, number];
 
 /** la matière déclarée par le peintre de la page + (`#csTrameCv[data-matiere]`), en pt de l'appareil */
@@ -57,6 +68,12 @@ async function zones(A: Page, P: Page): Promise<Zone[]> {
       z.push([366, t - 6, 24, 56]);
     }
     if (document.getElementById('createSheet')!.classList.contains('pp-chiche')) z.push([237.5, 513.5, 1.5, 1.5]);
+    // ÉCART ADMIS C-330 : « garder de côté » inactif à la teinte de sa nature (le prototype le sort bleu ou lilas selon une course)
+    const g = document.querySelector('#createSheet .pp-garder.inactif');
+    if (g) {
+      const b = g.getBoundingClientRect();
+      z.push([b.left - C.left - 4, b.top - C.top - 4, b.width + 8, b.height + 8]);
+    }
     return z;
   })) as Zone[];
   if (!ms.length) return autres;

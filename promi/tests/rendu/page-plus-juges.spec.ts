@@ -434,3 +434,77 @@ test('à l’ouverture, rien du trait et l’horizon bas (C-213, C-229)', async 
     expect(e.hz).toBeLessThanOrEqual(40);
   }
 });
+
+// ── C-330 et C-331 (Tom, 22 nov. 2026) — « garder de côté » inactif à la teinte de SA nature ; la page + MONTE à l'ouverture, le mouvement
+//    exact de sa fermeture à l'envers (même courbe, même durée). Deux écarts admis au prototype (page-plus.spec.ts, ECARTS_ADMIS). ──
+test('C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; la page + monte en glissant à l’ouverture, comme elle descend à la fermeture', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await vraieApp(page, stockage());
+  // les sondes : la teinte du prototype (le bleu du Promi sur les trois natures) ; l'ouverture d'un coup (la transition retirée)
+  if (sonde('garder-teinte'))
+    await page.addStyleTag({ content: '#createSheet .pp-garder.inactif{color:#AFCBFB!important}' });
+  if (sonde('ouverture-seche')) await page.addStyleTag({ content: '#createSheet.pp-entre{transition:none!important}' });
+  const TEINTE: Record<Nat, string> = {
+    promi: 'rgb(130, 174, 248)',
+    chiche: 'rgb(255, 184, 210)',
+    nuee: 'rgb(201, 168, 245)',
+  };
+  const fautes: string[] = [];
+  for (const nat of ['promi', 'chiche', 'nuee'] as const) {
+    await ouvrirPlus(page);
+    // l'ouverture relevée dans la page, à chaque image : la transition posée, et la place de la page (sa translation)
+    await page.evaluate(() => {
+      const c = document.getElementById('createSheet')!;
+      const w = window as unknown as { __entre: { duree: string; prop: string; ty: number[]; fin: boolean } | null };
+      w.__entre = null;
+      const ty = (): number => new DOMMatrix(getComputedStyle(c).transform).m42;
+      const o = new MutationObserver(() => {
+        if (c.classList.contains('pp-entre') && !w.__entre) {
+          const s = getComputedStyle(c);
+          const e = { duree: s.transitionDuration, prop: s.transitionProperty, ty: [ty()], fin: false };
+          w.__entre = e;
+          const pas = (): void => {
+            e.ty.push(ty());
+            if (c.classList.contains('pp-entre')) requestAnimationFrame(pas);
+            else e.fin = true;
+          };
+          requestAnimationFrame(pas);
+        }
+      });
+      o.observe(c, { attributes: true, attributeFilter: ['class'] });
+    });
+    await toucher(page, `#accChoix .acc-pil[data-k="${nat}"]`);
+    await page.waitForFunction(
+      () => {
+        const w = window as unknown as { __entre: { fin: boolean } | null };
+        return !!w.__entre?.fin;
+      },
+      undefined,
+      { timeout: 20000 },
+    );
+    const e = (await page.evaluate(() => (window as unknown as { __entre: unknown }).__entre)) as {
+      duree: string;
+      prop: string;
+      ty: number[];
+    };
+    if (!e.prop.includes('transform') || Math.abs(parseFloat(e.duree) - 0.46) > 0.01)
+      fautes.push(`${nat} : l'ouverture n'a pas la transition de la fermeture (${e.prop} ${e.duree})`);
+    const H = 844;
+    if (process.platform === 'darwin' && !e.ty.some((y) => y > 1 && y < H - 1))
+      fautes.push(`${nat} : aucune image entre le bas et sa place (${JSON.stringify(e.ty.map(Math.round))})`);
+    if (Math.abs(e.ty.at(-1)!) > 0.5)
+      fautes.push(`${nat} : la page n'est pas à sa place à la fin (${String(e.ty.at(-1))})`);
+    const g = await page.evaluate(() => {
+      const x = document.querySelector('#createSheet .pp-garder')!;
+      return { inactif: x.classList.contains('inactif'), couleur: getComputedStyle(x).color };
+    });
+    if (!g.inactif) fautes.push(`${nat} : « garder de côté » actif à l'ouverture`);
+    if (g.couleur !== TEINTE[nat])
+      fautes.push(`${nat} : « garder de côté » inactif ${g.couleur}, décidé ${TEINTE[nat]}`);
+    await toucher(page, '#createSheet .closeb');
+    await page.waitForFunction(() => document.getElementById('createSheet')!.hidden, undefined, { timeout: 20000 });
+  }
+  expect(fautes).toEqual([]);
+});

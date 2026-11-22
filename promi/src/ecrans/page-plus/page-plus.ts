@@ -125,13 +125,6 @@ function surToucher(cible: HTMLElement, f: (ev: PointerEvent) => void): void {
   });
 }
 
-/** la couleur d'un jeton, mêlée à une autre (`melange` du prototype, lot-V148-GARDER) — rend `rgb(r, g, b)` */
-function melange(a: string, b: string, k: number): string {
-  const v = (h: string): number[] => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-  const A = v(a);
-  const B = v(b);
-  return `rgb(${[0, 1, 2].map((i) => Math.round(A[i]! + (B[i]! - A[i]!) * k)).join(', ')})`;
-}
 function avecAlpha(h: string, a: number): string {
   const [r, g, b] = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
   return `rgba(${String(r)}, ${String(g)}, ${String(b)}, ${String(a)})`;
@@ -565,10 +558,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const actif = signature() !== signature0;
     garder.classList.toggle('inactif', !actif);
     garder.setAttribute('aria-disabled', actif ? 'false' : 'true');
-    // inactif : la teinte du lien rapprochée du corps de 30 % (v148) — celle du Promi, sur les trois natures, comme le prototype le rend
-    // aujourd'hui (le lilas sur le cobalt : #AFCBFB) ; noté au rapport du lot 2a
+    // ⚑ C-330 (Tom, 22 nov. 2026) : inactif, il prend la teinte de SA NATURE — #82AEF8 · #FFB8D2 · #C9A8F5 (le champ). Le prototype le
+    // sort bleu ou lilas selon une course : l'app ne copie pas ce défaut (écart admis, nommé dans le test d'identité)
     if (actif) garder.style.removeProperty('color');
-    else garder.style.setProperty('color', melange(palette.lilas85, palette.cobalt50, 0.3));
+    else garder.style.setProperty('color', CHAMP[P.nat]);
   }
   surToucher(garder, () => {
     if (garder.classList.contains('inactif')) return;
@@ -744,21 +737,40 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     repris = null;
     const r = magasin.etat().autres['promi_ex_prenom'];
     prenomRang = r != null && r !== '' && +r >= 0 ? +r % 2 : 0;
-    cs.classList.remove('pp-part');
-    cs.hidden = false;
-    // composée cachée, puis montrée d'un coup (v103 : « une ouverture coupe » ; rien ne paraît une fraction de seconde à moitié composé)
+    if (finFermeture != null) h.annuleMinuteur(finFermeture);
+    if (finOuverture != null) h.annuleMinuteur(finOuverture);
+    cs.classList.remove('pp-part', 'pp-entre');
+    // composée cachée, en bas (v103 : rien ne paraît une fraction de seconde à moitié composé)…
+    // (composée à sa place : ses mesures se lisent sur l'écran, jamais sous la réduction du départ)
     cs.classList.add('pp-compose');
+    cs.hidden = false;
     composer();
     signature0 = signature();
     majGarder();
+    cs.classList.add('pp-bas');
     cs.classList.remove('pp-compose');
-    // la page couvre l'appareil : ce qui est dessous (l'accueil, la Toile) ne se voit plus et ne prend plus le doigt (base.css, `.couvert`)
-    cs.classList.add('couvre');
-    dv.classList.add('couvert');
+    // …puis ⚑ C-331 (Tom, 22 nov. 2026) : elle MONTE, le mouvement exact de sa fermeture à l'envers — même courbe, même durée, la même
+    // règle (`pp-bas` ↔ `pp-part`, page-plus.css) ; l'accueil reste dessous pendant qu'elle monte, il n'est couvert qu'à l'arrivée
+    cs.getBoundingClientRect();
+    cs.classList.add('pp-entre');
+    cs.classList.remove('pp-bas');
+    finOuverture = h.minuteur(() => {
+      finOuverture = null;
+      cs.classList.remove('pp-entre');
+      // la page couvre l'appareil : ce qui est dessous (l'accueil, la Toile) ne se voit plus et ne prend plus le doigt (base.css, `.couvert`)
+      cs.classList.add('couvre');
+      dv.classList.add('couvert');
+    }, 480);
   }
+  let finOuverture: number | null = null;
   let finFermeture: number | null = null;
   function fermer(): void {
     if (cs.hidden || cs.classList.contains('pp-part')) return;
+    if (finOuverture != null) {
+      h.annuleMinuteur(finOuverture);
+      finOuverture = null;
+    }
+    cs.classList.remove('pp-entre');
     saisie.blur();
     // l'accueil reparaît dessous, la page glisse par-dessus lui
     dv.classList.remove('couvert');

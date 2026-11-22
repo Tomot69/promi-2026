@@ -218,7 +218,13 @@ export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee
     await page.waitForFunction(
       () => {
         const c = document.getElementById('createSheet');
-        return !!c && !c.hidden && !c.classList.contains('pp-compose') && !!c.querySelector('.ph-txt .ph-m');
+        return (
+          !!c &&
+          !c.hidden &&
+          !c.classList.contains('pp-compose') &&
+          !c.classList.contains('pp-entre') &&
+          !!c.querySelector('.ph-txt .ph-m')
+        );
       },
       undefined,
       { timeout: 20000 },

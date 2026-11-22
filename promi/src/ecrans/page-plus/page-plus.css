@@ -28,17 +28,24 @@
 #createSheet.pp-nuee {
   background: var(--c-mauve35);
 }
-/* composée cachée, puis montrée (v103 : « une ouverture coupe » — le prototype, `acc-passe`) ; la fermeture glisse vers le bas en
-   s'effaçant (le prototype : la feuille qui s'en va, translateY + scale .985 + opacité, ≈ 0,48 s) */
+/* composée cachée (v103 : « une ouverture coupe » — le prototype, `acc-passe`) ; la fermeture glisse vers le bas en s'effaçant (le
+   prototype : la feuille qui s'en va, translateY + scale .985 + opacité, ≈ 0,48 s) ; ⚑ C-331 (Tom, 22 nov. 2026) : l'ouverture est le même
+   mouvement à l'envers — elle part de `pp-bas` (l'état de fin de la fermeture) et monte (`pp-entre`), même courbe, même durée */
 #createSheet.pp-compose {
   visibility: hidden;
 }
-#createSheet.pp-part {
+#createSheet.pp-part,
+#createSheet.pp-bas {
   transform: translateY(100%) scale(0.985);
   opacity: 0;
+}
+#createSheet.pp-part,
+#createSheet.pp-entre {
   transition:
     transform 0.46s cubic-bezier(0.32, 0.72, 0, 1),
     opacity 0.46s cubic-bezier(0.32, 0.72, 0, 1);
+}
+#createSheet.pp-part {
   pointer-events: none;
 }
 
