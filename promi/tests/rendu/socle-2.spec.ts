@@ -33,6 +33,7 @@ import {
   stockage,
   vraieApp,
   type EcranPorte,
+  ecartAdmis,
 } from './aides.ts';
 import { AMORCE, GRAINE, T_FIGE } from './banc.ts';
 
@@ -151,6 +152,12 @@ const EMPREINTE = `(() => { const W = innerWidth, H = innerHeight;
       if (c.display === 'none' || c.visibility === 'hidden' || +c.opacity < 0.05) return false; }
     const r = e.getBoundingClientRect(); return r.width >= 4 && r.height >= 4 && r.bottom > 0 && r.top < H && r.right > 0 && r.left < W; };
   const cle = (e) => { const p = e.closest('[id]'); return (p ? '#' + p.id : '') + ' ' + e.tagName.toLowerCase() + (e.className && typeof e.className === 'string' ? '.' + e.className.trim().split(/\\s+/).sort().join('.') : ''); };
+  // les exemples des pastilles vides de la page + (et la liaison qui les précède, « de » / « d’ ») sont TIRÉS SANS REMISE à chaque
+  // ouverture (redteam_suggestions, C-312) : leur texte change par décision, ils se lisent comme « ⟨exemple⟩ »
+  const ex = (x) => x.classList && x.classList.contains('ph-vide'), li = (x) => x.tagName === 'EM' && !!x.className && x.nextElementSibling && ex(x.nextElementSibling);
+  const texte = (e) => { if (e.closest('.ph-vide')) return '⟨exemple⟩'; if (li(e)) return '⟨liaison⟩'; if (!e.querySelector('.ph-vide')) return e.textContent || '';
+    const c = e.cloneNode(true); for (const x of [...c.querySelectorAll('*')]) { if (li(x)) x.textContent = '⟨liaison⟩'; } for (const x of c.querySelectorAll('.ph-vide')) x.textContent = '⟨exemple⟩';
+    return c.textContent || ''; };
   const mots = new Set(), noeuds = new Set(), cls = {}, canevas = {};
   const dv = document.getElementById('device'); if (dv) cls['#device'] = [...dv.classList].sort().join(' ');
   for (const e of document.querySelectorAll('body *')) {
@@ -161,7 +168,7 @@ const EMPREINTE = `(() => { const W = innerWidth, H = innerHeight;
       try { const d = e.getContext('2d').getImageData(0, 0, e.width, e.height).data; for (let i = 3; i < d.length; i += 4 * 53) if (d[i] > 200) n++; } catch (_) { n = -1; }
       canevas[cle(e)] = n; }
     if ([...e.children].some((x) => !['B','I','EM','STRONG','SPAN','SMALL','BR','U'].includes(x.tagName))) continue;
-    const t = (e.textContent || '').trim().replace(/\\s+/g, ' '); if (t) mots.add(t.slice(0, 40)); }
+    const t = texte(e).trim().replace(/\\s+/g, ' '); if (t) mots.add(t.slice(0, 40)); }
   return { mots: [...mots].sort(), noeuds: [...noeuds].sort(), cls, canevas }; })()`;
 
 /** lit l'image d'une zone (en pt de la page) : les pixels RGBA, et le facteur pt → pixel */
@@ -782,7 +789,11 @@ test('le contrat visuel : les 25 propriétés de chaque élément porté égales
           if (DE_POSE.has(k) || (DU_TEXTE.has(k) && !(d['_texte'] || p['_texte']))) continue;
           const a = JSON.stringify(p[k]);
           const b = JSON.stringify(d[k]);
-          if (a !== b && !(COULEURS.has(k) && proche(a, b)))
+          if (
+            a !== b &&
+            !(COULEURS.has(k) && proche(a, b)) &&
+            !ecartAdmis(ecran.nom, cle.includes('« garder de côté »') ? 'garder de côté' : '', k)
+          )
             ecarts.push(`${ecran.nom}, ${theme} · ${cle} · ${k} : ${a} → ${b}`);
         }
       }
@@ -1104,6 +1115,8 @@ test('enchaîner deux écrans : le second est lui-même — mêmes classes, rien
  * qui sort de l'écran (au-delà de 1 pt) ; C aucun texte coupé par une boîte qui rogne sans « … » voulu ; R aucun recouvrement de deux textes
  * visibles (plus de 30 % de la plus petite encre), hors d'un même mot. Le juge était un relevé jugé à l'œil (RED-TEAM.md) : ici la cible est
  * zéro, et un recouvrement VOULU s'écrit nommément dans RECOUVREMENTS_VOULUS (aucun sur l'accueil).
+ * D excuse un texte d'une rangée qui DÉFILE et le déclare (`data-glisse`, C-196 : le rail du pinceau de la page +) : il sort de l'écran
+ * par construction, on l'atteint en glissant (la même exception que joignable et redteam_ecrans).
  */
 const RECOUVREMENTS_VOULUS: string[] = [];
 const RELEVE_APP = `(() => { const W = innerWidth, H = innerHeight, out = { D: [], C: [], R: [] };
@@ -1116,7 +1129,7 @@ const RELEVE_APP = `(() => { const W = innerWidth, H = innerHeight, out = { D: [
     const hit = document.elementFromPoint(Math.min(W - 1, Math.max(1, r.left + r.width / 2)), Math.min(H - 1, Math.max(1, r.top + r.height / 2)));
     if (!hit || !(hit === e || e.contains(hit) || hit.contains(e))) continue;
     if (!vis(e)) continue; const it = { e, v: v.slice(0, 40), r, rs }; T.push(it);
-    if (r.left < -1 || r.right > W + 1 || r.top < -1 || r.bottom > H + 1) out.D.push([nom(e), it.v, Math.round(r.left), Math.round(r.right), Math.round(r.top)]);
+    if ((r.left < -1 || r.right > W + 1 || r.top < -1 || r.bottom > H + 1) && !e.closest('[data-glisse]')) out.D.push([nom(e), it.v, Math.round(r.left), Math.round(r.right), Math.round(r.top)]);
     for (let x = e; x && x !== document.body; x = x.parentElement) { const s = getComputedStyle(x); if ((s.overflow + s.overflowX + s.overflowY).indexOf('hidden') < 0) continue; const xr = x.getBoundingClientRect();
       if (r.right > xr.right + 2 || r.left < xr.left - 2 || r.bottom > xr.bottom + 2 || r.top < xr.top - 2) { if (!/…$/.test(v) && s.textOverflow !== 'ellipsis') out.C.push([nom(e), it.v, nom(x)]); }
       break; } }
@@ -1211,6 +1224,7 @@ async function toucher(page: Page, sel: string): Promise<boolean> {
   const r = (await page.evaluate((s) => {
     const e = document.querySelector(s);
     if (!e) return null;
+    if (e.closest('[data-glisse]')) e.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     const b = e.getBoundingClientRect();
     if (b.width < 4 || b.height < 4) return null;
     const x = b.left + b.width / 2;
@@ -1310,7 +1324,14 @@ test("le contrôle qui remplit : chaque champ des écrans portés est atteignabl
         // un champ d'un écran fermé (un ancêtre en display:none — la page + avant le lot 2b) n'est pas à l'écran : aucune boîte rendue
         if (c.display === 'none' || e.getClientRects().length === 0) return;
         e.setAttribute('data-champ', String(i));
-        const r = e.getBoundingClientRect();
+        // un champ caché qui DÉCLARE sa porte (`data-porte` : la phrase de la page + est la saisie, C-004) s'atteint par elle : c'est la
+        // porte qui doit être visible et prise au doigt
+        const porte = e.getAttribute('data-porte')
+          ? document.querySelector<HTMLElement>(e.getAttribute('data-porte')!)
+          : null;
+        if (porte) porte.setAttribute('data-porte-de', String(i));
+        // (la porte est une pastille qui peut passer à la ligne : on vise sa première ligne)
+        const r = porte ? porte.getClientRects()[0]! : e.getBoundingClientRect();
         const h = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
         out.push({
           i,
@@ -1323,7 +1344,7 @@ test("le contrôle qui remplit : chaque champ des écrans portés est atteignabl
             r.top >= 0 &&
             r.bottom <= innerHeight &&
             !!h &&
-            (h === e || e.contains(h)),
+            (h === (porte ?? e) || (porte ?? e).contains(h)),
           quoi: (e.id ? '#' + e.id : e.tagName.toLowerCase()) + ' ' + Math.round(r.width) + '×' + Math.round(r.height),
         });
       });
@@ -1341,7 +1362,9 @@ test("le contrôle qui remplit : chaque champ des écrans portés est atteignabl
         const e = document.querySelector<HTMLInputElement>(s)!;
         return 'value' in e ? e.value : (e as HTMLElement).textContent;
       }, sel)) as string;
-      await pg.click(sel);
+      const porte = await pg.$(`[data-porte-de="${String(ch.i)}"]`);
+      if (porte) await porte.click();
+      else await pg.click(sel);
       await pg.keyboard.type(' essai', { delay: 20 });
       const v1 = (await pg.evaluate((s) => {
         const e = document.querySelector<HTMLInputElement>(s)!;
@@ -1350,8 +1373,16 @@ test("le contrôle qui remplit : chaque champ des écrans portés est atteignabl
       if (v1 === v0) fautes.push(`${q} : 2 · il n'accepte pas le texte`);
       await pg.keyboard.press('Enter');
       await pg.waitForTimeout(600);
+      // la donnée : le magasin — ou, pour la phrase de la page +, l'état de la page (la parole en cours lui appartient jusqu'à ce
+      // qu'elle soit plantée, lot 2b ; page-plus.ts : « l'état de la page n'appartient qu'à elle »)
       const apres = JSON.stringify(await pg.evaluate(`${P_}.magasin.etat()`));
-      if (apres === avant && !apres.includes('essai')) fautes.push(`${q} : 3 · la donnée ne le reçoit pas`);
+      const enCours = JSON.stringify(
+        await pg.evaluate(
+          `(() => { const p = ${P_}.pagePlus && ${P_}.pagePlus(); return p && p.ouverte() ? p.etat().phrase : null; })()`,
+        ),
+      );
+      if (apres === avant && !apres.includes('essai') && !enCours.includes('essai'))
+        fautes.push(`${q} : 3 · la donnée ne le reçoit pas`);
       const montre = (await pg.evaluate(() => {
         const w = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
         let t: Node | null;
@@ -1384,6 +1415,7 @@ const SIGNATURE = `(() => { const W = innerWidth, H = innerHeight; const mots = 
     if (r.width < 4 || r.height < 4 || r.bottom < 0 || r.top > H) continue;
     if (e.id) cls.push(e.id + ':' + [...e.classList].sort().join('.'));
     let t = ''; e.childNodes.forEach((x) => { if (x.nodeType === 3) t += x.nodeValue; }); if (t.trim()) mots.push(Math.round(r.top) + ':' + t.trim().slice(0, 24)); }
+  for (const e of document.querySelectorAll('[data-cmd]')) cls.push('cmd' + e.getAttribute('data-cmd') + ':' + [...e.classList].sort().join('.') + ':' + (e.getAttribute('aria-pressed') || ''));
   return mots.sort().join('|') + '##' + cls.sort().join('|') + '##' + ${P_}.nav.journal().length + '##' + JSON.stringify(${P_}.magasin.etat()); })()`;
 
 test('le contrôle qui touche : chaque commande des écrans portés est atteignable au doigt et a un effet (redteam_pastilles)', async ({
@@ -1416,6 +1448,8 @@ test('le contrôle qui touche : chaque commande des écrans portés est atteigna
           const k = getComputedStyle(x);
           if (k.display === 'none' || k.visibility === 'hidden' || +k.opacity < 0.3) v = false;
         }
+        // une rangée qui DÉFILE et le déclare (`data-glisse`, C-196 : le rail du pinceau) : ce qui est hors de sa vue s'atteint en glissant
+        if (e.closest('[data-glisse]')) e.scrollIntoView({ block: 'nearest', inline: 'nearest' });
         const r = e.getBoundingClientRect();
         if (!v || r.width < 1 || r.bottom < 0 || r.top > innerHeight) return;
         const h = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
@@ -1450,6 +1484,18 @@ test('le contrôle qui touche : chaque commande des écrans portés est atteigna
       }
       const sel = `[data-cmd="${sels[k]!}"]`;
       const av = (await E.page.evaluate(SIGNATURE)) as string;
+      // un choix DÉJÀ FAIT (aria-pressed) ou une commande INACTIVE (aria-disabled : « garder de côté » tant que rien n'a changé, C-149) n'a rien
+      // à changer ; un MUR de Ma Parole ! (le pinceau payant, C-196) a pour effet sa phrase de
+      // mur, qui vient au lot 8 (PLAN-APP) — exception nommée, retirée au lot 8
+      const sans = (await E.page.evaluate((s) => {
+        const e = document.querySelector(s);
+        return (
+          !!e &&
+          (e.getAttribute('aria-pressed') === 'true' ||
+            e.getAttribute('aria-disabled') === 'true' ||
+            e.classList.contains('pc-mur'))
+        );
+      }, sel)) as boolean;
       if (!(await toucher(E.page, sel))) {
         fautes.push(`${q} : 1 · le doigt ne la prend pas`);
         continue;
@@ -1471,7 +1517,7 @@ test('le contrôle qui touche : chaque commande des écrans portés est atteigna
       // l'écran d'arrivée, relu une fois tout mouvement fini : c'est lui qui décide si l'on repart d'un écran neuf
       if (ap !== av) ap = (await E.page.evaluate(SIGNATURE)) as string;
       touchees++;
-      if (ap === av) fautes.push(`${q} : 2 · aucun effet`);
+      if (ap === av && !sans) fautes.push(`${q} : 2 · aucun effet`);
       // l'écran a changé : on repart d'un écran neuf (les commandes sont rendues dans le même ordre)
       if (
         ap.split('##').slice(0, 2).join() !== av.split('##').slice(0, 2).join() ||

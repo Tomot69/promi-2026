@@ -172,6 +172,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     enterkeyhint: 'done',
     autocomplete: 'off',
     'aria-label': T.titresChoix.titre,
+    // le champ est caché (la phrase EST la saisie, C-004) : il s'ouvre en touchant la pastille du titre ou du nom — il le déclare
+    // (redteam_champs y passe par cette porte)
+    'data-porte': '.pp-phrase .ph-m[data-ph="titre"], .pp-phrase .ph-m[data-np="nom"]',
   });
   saisie.style.cssText =
     'position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;margin:0;pointer-events:none;font-size:16px';
@@ -257,18 +260,19 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       const avec = P.avec.length ? P.avec.join(', ') : T.vides.quiEnEst;
       return (
         `<em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}<br>` +
-        `<span class="ph-b ph-b-fixe" data-ph="sens">${verbe}</span><br>${titre}<br>` +
+        `<span class="ph-b ph-b-fixe" data-ph="sens">${verbe}</span> <br>${titre}<br>` +
         `<em>${T.liaisons.avec}</em> ${pastille('avec', avec, !P.avec.length)}`
       );
     }
+    // (après le verbe, une espace avant le retour à la ligne : le texte de la phrase est celui du prototype, sans effet à l'écran)
     const verbe = (v: string): string => `<span class="ph-b" data-ph="sens">${esc(v)}${SVG_BASCULE}</span>`;
-    if (P.sens === 'soi') return `${verbe(T.verbe.soi)}<br>${titre}`;
+    if (P.sens === 'soi') return `${verbe(T.verbe.soi)} <br>${titre}`;
     if (P.sens === 'faire') {
       const qui = P.qui.length ? P.qui.join(', ') : P.moi ? T.vides.moi : T.vides.qui;
-      return `${verbe(T.verbe.faire)}<br>${titre}<br><em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}`;
+      return `${verbe(T.verbe.faire)} <br>${titre}<br><em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}`;
     }
     const prenom = P.qui.length ? P.qui.join(', ') + ',' : PRENOMS_EXEMPLE[prenomRang]!;
-    return `${pastille('qui', prenom, !P.qui.length)}<br>${verbe(pluriel() ? T.verbe.demanderPluriel : T.verbe.demander)}<br>${titre}`;
+    return `${pastille('qui', prenom, !P.qui.length)}<br>${verbe(pluriel() ? T.verbe.demanderPluriel : T.verbe.demander)} <br>${titre}`;
   }
 
   const lignes = (): number => txt.querySelectorAll('br').length + 1;
@@ -539,7 +543,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
 
   function majRail(): void {
-    for (const b of rail.children) b.classList.toggle('on', (b as HTMLElement).dataset['t'] === P.pinceau);
+    for (const b of rail.children) {
+      const on = (b as HTMLElement).dataset['t'] === P.pinceau;
+      b.classList.toggle('on', on);
+      // l'état du choix, dit à VoiceOver (et aux juges : un pinceau déjà choisi n'a rien à changer)
+      if (!b.classList.contains('pc-mur')) b.setAttribute('aria-pressed', on ? 'true' : 'false');
+    }
   }
 
   // ── « GARDER DE CÔTÉ » (C-149) : actif quand la page a changé depuis son ouverture ──

@@ -126,8 +126,12 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
     aide.textContent = n.aide;
     p.append(un, aide);
     surToucher(p, () => {
-      fermeMenu(true);
+      // la page + monte par-dessus le menu (C-331) : il reste dessous, et ne part qu'une fois recouvert — sinon il disparaîtrait d'un
+      // coup sous la page encore transparente (C-271)
       nav.ouvrir('pagePlus', n.k);
+      h.minuteur(() => {
+        fermeMenu(true);
+      }, 500);
     });
     choix.appendChild(p);
   }

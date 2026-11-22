@@ -15,7 +15,17 @@ import { test, expect, type Browser, type Page } from '@playwright/test';
 import { readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { ECRANS_PORTES, type EcranPorte, stockage, prototype, vraieApp, ouvrirPlus, sonde, GEL } from './aides.ts';
+import {
+  ECRANS_PORTES,
+  type EcranPorte,
+  stockage,
+  prototype,
+  vraieApp,
+  ouvrirPlus,
+  sonde,
+  GEL,
+  ecartAdmis,
+} from './aides.ts';
 
 const THEMES = ['sombre', 'clair'] as const;
 type Theme = (typeof THEMES)[number];
@@ -190,7 +200,38 @@ function releverDansPage(): Releve {
     }
     return o;
   };
+  // RECOUVERT (lot 2a) : un élément dont le centre est sous un fond OPAQUE qui n'est ni lui, ni un de ses ancêtres, ni un de ses
+  // descendants n'est pas vu — l'accueil sous la page + : le prototype le laisse peint sous elle, la vraie app le cache (`.couvert`) ;
+  // des deux côtés il n'est pas à l'écran. La pile se lit avec tous les éléments touchables le temps du relevé (`elementsFromPoint` ne
+  // voit pas un élément `pointer-events: none`), puis l'app est rendue telle quelle
+  const recouverts = new Set<Element>();
+  {
+    const st = document.createElement('style');
+    st.textContent = '*{pointer-events:auto!important}';
+    document.head.appendChild(st);
+    const opaque = (q: Element): boolean => {
+      const m = /rgba?\(([^)]+)\)/.exec(getComputedStyle(q).backgroundColor);
+      if (!m) return false;
+      const v = m[1]!.split(',').map((x) => +x);
+      return (v.length < 4 ? 1 : v[3]!) >= 0.95;
+    };
+    for (const e of document.querySelectorAll('[data-recouvert]')) e.removeAttribute('data-recouvert');
+    for (const e of dv.querySelectorAll('*')) {
+      const r = e.getBoundingClientRect();
+      if (r.width < 1 || r.height < 1) continue;
+      for (const q of document.elementsFromPoint(r.left + r.width / 2, r.top + r.height / 2)) {
+        if (q === e || e.contains(q) || q.contains(e)) break;
+        if (opaque(q)) {
+          recouverts.add(e);
+          e.setAttribute('data-recouvert', '');
+          break;
+        }
+      }
+    }
+    st.remove();
+  }
   const vu = (e: Element): DOMRect | null => {
+    if (recouverts.has(e)) return null;
     const r = e.getBoundingClientRect();
     if (r.width < 1 || r.height < 1) return null;
     if (r.right < D.left || r.left > D.right || r.bottom < D.top || r.top > D.bottom) return null;
@@ -583,10 +624,20 @@ async function stable(page: Page): Promise<void> {
 
 /** tout ce qui n'est pas du texte rendu transparent, sur un fond plat (redteam_aspect, B : « la phrase seule ») */
 const FOND_PLAT = '#7f7f7f';
+// (la page + du prototype vit HORS de #device, dans .frame : elle est nommée ; et ce qu'un écran opaque recouvre — l'accueil sous la page +,
+// marqué au relevé `data-recouvert` — n'est pas à l'écran : on le cache, sinon il reparaîtrait sous les fonds devenus transparents)
+/** les fonds posés EN LIGNE avec `important` (le prototype en pose : la pastille du verbe, les pointillés, la barre Peaufiner) ne cèdent pas
+ *  à une feuille : ils sont retirés en ligne, des deux côtés */
+const TEXTES_SEULS_LIGNE = `(() => { for (const e of document.querySelectorAll('#device *, #createSheet, #createSheet *')) {
+  for (const [p, v] of [['background-color', 'transparent'], ['background-image', 'none'], ['border-color', 'transparent'],
+    ['box-shadow', 'none'], ['outline-color', 'transparent'], ['filter', 'none']]) e.style.setProperty(p, v, 'important'); } })()`;
 const TEXTES_SEULS =
-  '#device *,#device *::before,#device *::after{background:transparent!important;background-image:none!important;' +
+  '#device *,#device *::before,#device *::after,#createSheet#createSheet#createSheet,#createSheet#createSheet#createSheet *,' +
+  '#createSheet#createSheet#createSheet *::before,#createSheet#createSheet#createSheet *::after' +
+  '{background:transparent!important;background-image:none!important;' +
   'border-color:transparent!important;box-shadow:none!important;outline-color:transparent!important;filter:none!important}' +
-  '#device svg,#device canvas,#device img{visibility:hidden!important}#device::before,#device::after{display:none!important}' +
+  '#device svg,#device canvas,#device img,#createSheet#createSheet#createSheet :is(svg,canvas,img){visibility:hidden!important}' +
+  '[data-recouvert]{visibility:hidden!important}#device::before,#device::after{display:none!important}' +
   `html,body,.frame,#device{background:${FOND_PLAT}!important}`;
 
 type Rel = Releve & { png: Buffer; pngTextes: Buffer; erreurs: string[]; filetsCanevas: string[] };
@@ -610,6 +661,7 @@ async function releveApp(browser: Browser, theme: Theme, e: EcranPorte): Promise
     await page.waitForTimeout(400);
     const png = await page.screenshot();
     await page.addStyleTag({ content: TEXTES_SEULS });
+    await page.evaluate(TEXTES_SEULS_LIGNE);
     await page.waitForTimeout(250);
     const pngTextes = await page.screenshot();
     return { ...r, png, pngTextes, erreurs, filetsCanevas };
@@ -634,6 +686,7 @@ async function releveProto(browser: Browser, theme: Theme, e: EcranPorte): Promi
     await page.waitForTimeout(400);
     const png = await page.screenshot({ clip: dv });
     await page.addStyleTag({ content: TEXTES_SEULS });
+    await page.evaluate(TEXTES_SEULS_LIGNE);
     await page.waitForTimeout(250);
     const pngTextes = await page.screenshot({ clip: dv });
     return { ...r, png, pngTextes, erreurs: [], filetsCanevas: [] };
@@ -1279,7 +1332,7 @@ test('air : entre deux blocs de texte, jamais moins d’air à l’encre que dan
 const COURT_MS = 800;
 const POINTS = 2;
 const INTERDITS = ['.topbar', '.footer', '.statusbar'];
-type Image_ = { t: number; m: Record<string, number> };
+type Image_ = { t: number; m: Record<string, number>; bouge?: string[] };
 
 function enregistreurFlash(): void {
   const w = window as unknown as {
@@ -1333,6 +1386,17 @@ function enregistreurFlash(): void {
     if (F.on) {
       const dv = document.getElementById('device');
       const m: Record<string, number> = {};
+      // les couches qui GLISSENT à cette image (une transition ou une animation en cours sur la couche elle-même : la page + qui monte,
+      // C-331) — ses parties traversent les points du relevé, elles ne paraissent pas
+      const bouge: string[] = [];
+      // (et les couches qu'elle recouvre en glissant — celles qui la précèdent dans l'appareil, donc dessous : l'accueil sous la page +)
+      if (dv) {
+        const L = [...dv.children];
+        L.forEach((c, k) => {
+          if (c.getAnimations().some((a) => a.playState === 'running'))
+            for (const d of L.slice(0, k + 1)) if (!bouge.includes(nom(d))) bouge.push(nom(d));
+        });
+      }
       if (dv) {
         const r = dv.getBoundingClientRect();
         for (let i = 0; i < 6; i++)
@@ -1350,7 +1414,7 @@ function enregistreurFlash(): void {
             }
           }
       }
-      F.frames.push({ t: Math.round(performance.now() - F.t0), m });
+      F.frames.push({ t: Math.round(performance.now() - F.t0), m, bouge });
       // LA SONDE : une couche posée pour UNE image relevée, au milieu de la fenêtre (le défaut que le juge doit prendre)
       if (sondeEl) {
         sondeEl.remove();
@@ -1391,6 +1455,10 @@ function flashs(fr: Image_[]): string[] {
         const [a, b] = run;
         run = null;
         const dur = (b + 1 < fr.length ? fr[b + 1]!.t : fr.at(-1)!.t) - fr[a]!.t;
+        // une couche qui GLISSE (une transition décidée, C-331 : la page + qui monte) : ce qui traverse les points du relevé pendant
+        // qu'elle glisse ne paraît pas — seulement si elle glisse à chacune de ces images
+        const couche = k.split('>')[0]!;
+        if (fr.slice(a, b + 1).every((f) => (f.bouge ?? []).includes(couche))) continue;
         // une PARTIE d'écran (« couche>partie ») qui paraît pendant que son écran est là et s'en va avec lui n'apparaît pas
         if (k.includes('>')) {
           const L = k.split('>')[0]!;
@@ -1497,6 +1565,20 @@ test('aspect A : chaque morceau de texte a le texte, la police, la taille, la co
     const textes = (r: Rel): Map<string, NoeudR> => new Map(r.noeuds.filter((q) => q.texte).map((q) => [q.cle, q]));
     const A = textes(app);
     const P = textes(proto!);
+    // un morceau sans id se nomme par son rang parmi ses frères : ce rang dépend de l'ORDRE DE CONSTRUCTION du DOM, pas de l'écran — un
+    // morceau que sa clé ne retrouve pas est apparié au morceau de l'autre côté qui porte le même texte et la même balise, s'il est seul
+    const seul = (M: Map<string, NoeudR>, autre: Map<string, NoeudR>, q: NoeudR): string | null => {
+      const L = [...M].filter(([k, x]) => !autre.has(k) && x.texte === q.texte && x.tag === q.tag);
+      return L.length === 1 ? L[0]![0] : null;
+    };
+    for (const [k, p] of [...P]) {
+      if (A.has(k)) continue;
+      const ka = seul(A, P, p);
+      if (ka) {
+        A.set(k, A.get(ka)!);
+        A.delete(ka);
+      }
+    }
     for (const [k, p] of P) {
       const a = A.get(k);
       if (!a) {
@@ -1506,7 +1588,8 @@ test('aspect A : chaque morceau de texte a le texte, la police, la taille, la co
       n++;
       if (a.texte !== p.texte) fautes.push(`${nom} : ${k} texte « ${p.texte} » → « ${a.texte} »`);
       for (const q of ASPECT)
-        if (a.st[q] !== p.st[q]) fautes.push(`${nom} : « ${p.texte} » ${q} ${String(p.st[q])} → ${String(a.st[q])}`);
+        if (a.st[q] !== p.st[q] && !ecartAdmis(nom, p.texte, q))
+          fautes.push(`${nom} : « ${p.texte} » ${q} ${String(p.st[q])} → ${String(a.st[q])}`);
       if (Math.abs(parseFloat(a.st['fontSize']!) - parseFloat(p.st['fontSize']!)) > 0.1)
         fautes.push(`${nom} : « ${p.texte} » taille ${String(p.st['fontSize'])} → ${String(a.st['fontSize'])}`);
       for (const [j, c] of ['x', 'y', 'largeur', 'hauteur'].entries())
@@ -1560,7 +1643,8 @@ test('aspect B : les textes seuls, au pixel, comme dans le prototype (≤ 0,5 % 
     for (const p of proto!.noeuds.filter((q) => q.texte)) {
       n++;
       const part = partEcartee(A, P, p.r);
-      if (part > 0.005) fautes.push(`${nom} : « ${p.texte} » ${(100 * part).toFixed(2)} % des pixels écartés`);
+      if (part > 0.005 && !ecartAdmis(nom, p.texte, 'color'))
+        fautes.push(`${nom} : « ${p.texte} » ${(100 * part).toFixed(2)} % des pixels écartés`);
     }
   });
   expect(n, 'des morceaux de texte comparés').toBeGreaterThan(5);

@@ -271,4 +271,14 @@ export const PAGES_PLUS: EcranPorte[] = (['promi', 'chiche', 'nuee'] as const).m
 export const ECRANS_PORTES: EcranPorte[] = [
   { nom: 'accueil', ouvrir: async () => {}, prototype: async () => {} },
   { nom: 'accueil, menu du + ouvert', ouvrir: ouvrirPlus, prototype: ouvrirPlus },
+  ...PAGES_PLUS,
 ];
+
+/**
+ * LES ÉCARTS ADMIS AU PROTOTYPE, décidés par Tom (les mêmes que les tests d'identité, `ECARTS_ADMIS`) — une propriété d'un texte :
+ *  C-330 (22 nov. 2026) : « garder de côté » inactif à la teinte de sa nature (le prototype le sort bleu ou lilas selon une course).
+ * Chacun a son test qui rougit si la décision est défaite (page-plus-juges.spec.ts « C-330, C-331 », sonde garder-teinte).
+ */
+export function ecartAdmis(nom: string, texte: string, prop: string): boolean {
+  return nom.startsWith('page +') && texte === 'garder de côté' && (prop === 'color' || prop === 'webkitTextFillColor');
+}
