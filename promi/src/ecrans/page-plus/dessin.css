@@ -1,0 +1,224 @@
+/* ── LE DESSIN (C-042, v132 ; le prototype : `lot-V132-DESSIN-css`) — aucune couleur en dur : le corps de l'écran d'où l'on vient, son encre,
+   le fond et les teintes du dessin sont posés par le script, en variables. Ni ombre, ni dégradé, ni transparence, ni fondu. ── */
+#dessinMode {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 390;
+  display: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  background: var(--dz-corps);
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#dessinMode.ouv {
+  display: block;
+}
+#dessinMode .dz-surface {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 390px;
+  background: var(--dz-fond);
+  overflow: hidden;
+  touch-action: none;
+}
+#dessinMode .dz-surface canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  max-width: none;
+  touch-action: none;
+}
+/* l'encart du haut ne garde que son contour */
+#dessinMode .dz-plateau {
+  position: absolute;
+  left: 24px;
+  top: 40px;
+  width: 342px;
+  height: 60px;
+  box-sizing: border-box;
+  border: 1px solid var(--dz-trait-fin);
+  border-radius: 30px;
+  background: none;
+  pointer-events: none;
+}
+#dessinMode .dz-rangee {
+  position: absolute;
+  left: 0;
+  width: 390px;
+  margin: 0;
+  padding: 0;
+}
+#dessinMode button {
+  position: absolute;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  max-width: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+/* v133 (C-056) : sortir sans poser — le X de C-173, à l'emplacement de « ✕ FERMER » (PromiLate 35, comme celui de Peaufiner) */
+#dessinMode .dz-quitter {
+  left: 307px;
+  top: 48px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 22px;
+  background: none;
+  color: var(--dz-trait-fin);
+}
+#dessinMode .dz-x {
+  position: absolute;
+  left: 0;
+  top: 5.88px;
+  width: 44px;
+  font: 35px/37.1px var(--f-marque);
+  text-align: center;
+}
+#dessinMode .dz-photo-in {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+#dessinMode .dz-o {
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  border: 2px solid var(--dz-encre);
+  background: var(--dz-corps);
+  color: var(--dz-encre);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#dessinMode .dz-o svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+  flex: none;
+}
+#dessinMode .dz-o.on {
+  background: var(--dz-encre);
+  color: var(--dz-corps);
+}
+#dessinMode .dz-o[disabled] {
+  border-style: dashed;
+  cursor: default;
+}
+#dessinMode .dz-poser {
+  height: 44px;
+  width: 104px;
+  border-radius: 22px;
+  border: 2px solid var(--dz-encre);
+  background: var(--dz-encre);
+  color: var(--dz-corps);
+  -webkit-text-fill-color: var(--dz-corps);
+  font-family: var(--f-libelle);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#dessinMode .dz-deploi {
+  position: absolute;
+  box-sizing: border-box;
+  border: 2px solid var(--dz-encre);
+  background: var(--dz-corps);
+  margin: 0;
+  padding: 0;
+}
+#dessinMode .dz-tailles button {
+  border: 2px solid var(--dz-corps);
+  background: var(--dz-corps);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#dessinMode .dz-tailles button.on {
+  border-color: var(--dz-encre);
+}
+#dessinMode .dz-tailles button i {
+  display: block;
+  border-radius: 50%;
+  background: var(--dz-encre);
+}
+#dessinMode .dz-couleurs {
+  left: 24px;
+  width: 342px;
+  height: 114px;
+  border-radius: 30px;
+}
+/* v133 (C-061) : sans Ma Parole !, la zone des teintes est un mur, floutée comme les autres (4,8 px) */
+#dessinMode .dz-couleurs.dz-mur > * {
+  filter: blur(4.8px);
+  pointer-events: none;
+}
+#dessinMode .dz-onglet {
+  top: 6px;
+  height: 44px;
+  width: 159px;
+  border-radius: 22px;
+  border: 2px solid var(--dz-encre);
+  background: var(--dz-corps);
+  color: var(--dz-encre);
+  -webkit-text-fill-color: var(--dz-encre);
+  font-family: var(--f-libelle);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#dessinMode .dz-onglet.seul {
+  width: 326px;
+  cursor: default;
+}
+#dessinMode .dz-ton {
+  top: 58px;
+  width: 44px;
+  height: 44px;
+  border-radius: 22px;
+  border: 2px solid var(--dz-encre);
+  background: var(--dz-ton);
+}
+#dessinMode .dz-ton.on {
+  outline: 2px solid var(--dz-encre);
+  outline-offset: 2px;
+}
+#dessinMode .dz-ton[disabled] {
+  border-style: dashed;
+  cursor: default;
+}
+#dessinMode .dz-ton[disabled]::after {
+  content: '';
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: 19px;
+  height: 2px;
+  background: var(--dz-encre);
+  transform: rotate(-45deg);
+}

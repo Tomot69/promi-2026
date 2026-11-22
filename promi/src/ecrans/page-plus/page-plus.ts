@@ -40,6 +40,15 @@ import { PINCEAUX } from './pinceaux.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
+import {
+  creerModeDessin,
+  couleurDe,
+  dessinEntier,
+  dessinPose,
+  DESSIN,
+  type Dessin,
+  type ModeDessin,
+} from './dessin.ts';
 
 export type Nature = 'promi' | 'chiche' | 'nuee';
 export type Sens = 'soi' | 'faire' | 'demander';
@@ -73,11 +82,15 @@ export interface PhrasePage {
   fichiers: string[];
   /** la photo importée (une adresse `data:`), qui remplace la dalle dans la bande (lot-PHOTO) */
   photo: string | null;
+  /** le dessin (C-042) : il REMPLACE la dalle ou la photo dans la bande (v128) ; la photo importée le retire, le dessin posé retire la photo (v140) */
+  dessin: Dessin | null;
 }
 
 export interface PagePlus {
   racine: HTMLElement;
   ouvrir(nat: Nature): void;
+  /** un gardé de côté rouvert (sa porte : l'Index, lot 3) — faux s'il n'existe pas */
+  reprendre(id: number): boolean;
   fermer(): void;
   ouverte(): boolean;
   /** pour les tests : la phrase, la mise en page (en pt du cadre 390), le choix ouvert */
@@ -99,6 +112,8 @@ export interface PagePlus {
     mouvement: boolean;
     /** C-209, C-213, C-229 : l'invite à tracer — née (le trait, le libellé), en train de partir, l'horizon bas, le premier toucher du trait */
     invite: { visible: boolean; sortie: boolean; haut: boolean; anim: boolean; touche: boolean };
+    /** le mode dessin ouvert (son outil, sa couleur, son fond…), sinon null */
+    dessin: ReturnType<ModeDessin['etat']>;
   };
   detruire(): void;
 }
@@ -311,6 +326,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       cercle: null,
       fichiers: [],
       photo: null,
+      dessin: null,
     };
   }
   const largeur = (): number => cs.clientWidth || 390;
@@ -637,7 +653,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     // C-241 : la dalle que CETTE parole aura (Promi, Chiche), sa taille fixée à l'ouverture (C-234), 16 pt plus bas tant que l'horizon est
     // bas (Q599) ; sous la vague quand le champ descend sous elle (un choix ouvert)
     // C-241, v183b : la dalle est née au trait — la page + ne la montre plus (une seule dalle à l'écran)
-    if (!dalleT || plantee) return;
+    const dz = P.dessin && dessinPose(P.dessin) && !P.dessin.masque ? P.dessin : null;
+    if (dz || !dalleT || plantee) {
+      peindreDessin(y, dz, W, H, dpr);
+      return;
+    }
     const dw = dalleT.w;
     const dh = dalleT.h;
     const x = Math.floor((W - dw) / 2);
@@ -685,6 +705,31 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       'data-matiere',
       [x + dw / 2 - aw / 2, yD + dh / 2 - ah / 2, aw, ah].map((v) => Math.round(v)).join(','),
     );
+  }
+
+  // ── LE DESSIN DANS LA BANDE (C-042, v128 ; le prototype `bande`) : il REMPLACE la dalle ou la photo — une couche pleine (son fond, ses traits,
+  //    à l'échelle 1, calés EN HAUT), découpée à 7 pt au-dessus de l'axe du trait : la bande montre UNE chose. Sa couche : celle de la photo. ──
+  function peindreDessin(y: Onde, d: Dessin | null, W: number, H: number, dpr: number): void {
+    photoCv.width = cv.width;
+    photoCv.height = cv.height;
+    photoCv.style.width = `${String(W)}px`;
+    photoCv.style.height = `${String(H)}px`;
+    const g = photoCv.getContext('2d');
+    if (!g) return;
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.clearRect(0, 0, photoCv.width, photoCv.height);
+    if (!d) return;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.save();
+    g.beginPath();
+    cheminOnde(g, (x) => y(x) - DESSIN.BANDE_RETRAIT, 0, W, W);
+    g.lineTo(W, 0);
+    g.lineTo(0, 0);
+    g.closePath();
+    g.clip();
+    g.setTransform(1, 0, 0, 1, 0, 0);
+    g.drawImage(dessinEntier(d, dpr), 0, 0);
+    g.restore();
   }
 
   // ── LA PHOTO IMPORTÉE (lot-PHOTO) : elle REMPLACE la dalle — la même boîte, recadrée au centre (couverture), bornée par l'onde ; l'aplat
@@ -1227,7 +1272,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     rentreRuban('valide');
     const maintenant = Date.now();
     if (P.nat === 'nuee') {
-      const cle = magasin.creerCercle(P.nom.trim(), autres(P.membres), maintenant);
+      const cle = magasin.creerCercle(P.nom.trim(), autres(P.membres), maintenant, P.dessin);
       facade.planterCercle(cle);
       repeindre();
       // le prototype (`printTirage`) : le champ grandit (× 7, 320 ms, linéaire) jusqu'à couvrir l'écran, puis on coupe
@@ -1262,6 +1307,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         dueISO: P.dueISO,
         cercle: P.cercle,
         fichiers: P.fichiers.slice(),
+        dessin: P.dessin,
       },
       maintenant,
     );
@@ -1620,6 +1666,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       P.pinceau,
       P.note,
       P.photo ? P.photo.length : 0,
+      P.dessin ? JSON.stringify(P.dessin).length : 0,
       P.ech,
       P.dueISO ?? '',
       P.cercle ?? '',
@@ -1644,6 +1691,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         titre: P.titre,
         qui: P.qui.join(', ') || 'Moi',
         avec: P.avec.join(', '),
+        // la photo et le dessin de la bande (le prototype : `_phrase` entière, `photo` et `dessin` compris) : la reprise les rend
+        photo: P.photo,
+        dessin: P.dessin,
       },
       who: autres(P.qui),
       sens: P.sens,
@@ -1656,6 +1706,13 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       dueISO: P.dueISO,
       cercle: P.cercle,
       fichiers: P.fichiers.slice(),
+      // les listes telles que la page les tient (« Moi » compris), pour une reprise exacte
+      quiListe: P.qui.slice(),
+      avecListe: P.avec.slice(),
+      membresListe: P.membres.slice(),
+      moi: P.moi,
+      ech: P.ech,
+      echChoisie: P.echChoisie,
     };
     const titre = (P.nat === 'nuee' ? P.nom : P.titre).trim() || T.sansTitre;
     const qui = autres(P.qui).length ? autres(P.qui).join(', ') : 'moi';
@@ -2410,6 +2467,28 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // ── LE MENU DU BOUTON PHOTO (v117, v128, v132) : « Dessiner » en tête, puis « Importer une photo » (pas sur un Cercle : il ne porte pas de
   //    photo, C-199), puis « Retirer la photo » quand elle est là ; compact, à gauche du bouton, son bas sur le bas du bouton (jamais plus haut
   //    que 106) ; il paraît et part en flaques ; un toucher ailleurs le referme ──
+  const modeDessin = creerModeDessin({
+    dv,
+    h,
+    clair: () => dv.classList.contains('light'),
+    tons: () => facade.tonsStudio(),
+  });
+  /** la page + habille le dessin de son brouillon (le prototype : la cible `brouillon`) */
+  const cibleDessin = (): Parameters<ModeDessin['ouvrir']>[0] => ({
+    lire: () => P.dessin,
+    ecrire: (d) => {
+      P.dessin = d;
+      majGarder();
+    },
+    nature: P.nat,
+    corps: couleurDe(cs),
+    apres: (pose) => {
+      // v140 (C-086, C-085) : poser un dessin retire la photo de la bande
+      if (pose) P.photo = null;
+      if (!cs.hidden) repeindre();
+      majGarder();
+    },
+  });
   function ouvrirMenu(): void {
     if (menu) {
       fermerMenu();
@@ -2427,11 +2506,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       });
       m.appendChild(b);
     };
-    // le dessin : son lot (le menu le porte, le prototype le met en tête ; l'outil n'est pas encore là — le menu se referme)
+    // le dessin, en tête (v132) : le mode dessin s'ouvre sur la page
     item(
       T.menuPhoto.dessiner,
       () => {
-        fermerMenu();
+        fermerMenu(false);
+        modeDessin.ouvrir(cibleDessin());
       },
       'data-dessiner',
     );
@@ -2446,6 +2526,14 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
           retirerPhoto();
         });
     }
+    // un dessin posé ou commencé : « Retirer le dessin » (le prototype, `retire`)
+    if (P.dessin && (dessinPose(P.dessin) || P.dessin.traits.length))
+      item(T.menuPhoto.retirerDessin, () => {
+        fermerMenu();
+        P.dessin = null;
+        repeindre();
+        majGarder();
+      });
     cs.appendChild(m);
     const hm = m.offsetHeight;
     m.style.top = `${String(Math.max(106, Math.round(photo.offsetTop + 34 - hm)))}px`;
@@ -2486,6 +2574,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       im.onload = () => {
         images.set(src, im);
         P.photo = src;
+        // v140 (C-085) : la photo REMPLACE le dessin — il n'en reste rien
+        P.dessin = null;
         peindreChamp(vue.base, vue.amp, vue.hz, vue.base + vue.amp + 60 + vue.hz);
         majGarder();
         // la photo remplace la dalle : elle paraît en flaques sur elle (C-271)
@@ -2516,6 +2606,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     sortants.clear();
     fermerMenu(false);
     fermerPeauf(false);
+    if (modeDessin.ouvert()) modeDessin.sortir(false);
     ajoutActif = false;
     gnIn.value = '';
     gnIn.hidden = true;
@@ -2523,6 +2614,45 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     cs.style.removeProperty('translate');
     clavierDec = 0;
     for (const c of cs.querySelectorAll('.ppo-copie')) c.remove();
+  }
+  /**
+   * LA REPRISE d'un gardé de côté (le prototype : `lot-V162-GARDER`, `restaure`) — la page + dans sa nature, puis l'état gardé : la phrase,
+   * les personnes, Peaufiner, la photo et le dessin de la bande. « Garder de côté » le met à jour ensuite (jamais un second). La porte : l'Index.
+   */
+  function reprendre(id: number): boolean {
+    const p = magasin.etat().paroles.find((x) => x.id === id && x.draft);
+    const b = p?.brouillon;
+    if (!b) return false;
+    ouvrir(b.nat);
+    const liste = (v: unknown): string[] =>
+      Array.isArray(v) ? v.filter((x): x is string => typeof x === 'string') : [];
+    const ph = b.phrase;
+    const sens = b.sens === 'faire' || b.sens === 'demander' || b.sens === 'soi' ? b.sens : 'soi';
+    P = {
+      ...neuve(b.nat),
+      sens,
+      titre: typeof ph.titre === 'string' ? ph.titre : '',
+      qui: liste(b['quiListe']),
+      avec: liste(b['avecListe']),
+      nom: b.nom,
+      membres: liste(b['membresListe']),
+      pinceau: typeof b['pinceau'] === 'string' ? b['pinceau'] : 'Plein',
+      moi: b['moi'] === true,
+      note: typeof b['note'] === 'string' ? b['note'] : '',
+      ech: typeof b['ech'] === 'string' ? b['ech'] : T.peauf.echeanceDefaut,
+      echChoisie: b['echChoisie'] === true,
+      due: typeof b['due'] === 'number' ? b['due'] : null,
+      dueISO: typeof b['dueISO'] === 'string' ? b['dueISO'] : null,
+      cercle: typeof b['cercle'] === 'string' ? b['cercle'] : null,
+      fichiers: liste(b['fichiers']),
+      photo: typeof ph['photo'] === 'string' ? ph['photo'] : null,
+      dessin: (ph['dessin'] as Dessin | null | undefined) ?? null,
+    };
+    repris = id;
+    composer();
+    repeindre();
+    majGarder();
+    return true;
   }
   function ouvrir(nat: Nature): void {
     ranger();
@@ -2621,6 +2751,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   return {
     racine: cs,
     ouvrir,
+    reprendre,
     fermer,
     ouverte: () => !cs.hidden && !cs.classList.contains('pp-part'),
     etat: () => ({
@@ -2639,6 +2770,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       ajout: ajoutActif,
       mouvement: !!mv,
       invite: { visible: inv.vis, sortie: inv.sortie, haut: inv.haut, anim: !!inv.anim, touche: inv.touche },
+      dessin: modeDessin.etat(),
     }),
     detruire() {
       window.removeEventListener('resize', surTaille);

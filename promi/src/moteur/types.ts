@@ -70,6 +70,8 @@ export interface MoteurToile {
   redraw(): void;
   semisNeuf(): boolean;
   mondeCourant(): MondeDalle;
+  /** les tons d'une palette, tournés de la teinte (`Toile.tonsDe`) */
+  tonsDe(palette: string, teinte: number): number[][];
   cle(): number;
   labelsOn?: () => boolean;
   labelOf?: (s: GraineMoteur) => EtiquetteDalle | null;
@@ -93,7 +95,6 @@ export interface MoteurToile {
   refigeCouleurs: Libre;
   fondToile: Libre;
   colorOf: Libre;
-  tonsDe: Libre;
   taille: Libre;
   scale: Libre;
   resetView: Libre;

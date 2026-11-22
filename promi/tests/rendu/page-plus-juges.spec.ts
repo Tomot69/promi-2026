@@ -1739,11 +1739,276 @@ test('Peaufiner d’un Cercle : MEMBRES se déplie, un membre coché reste coch�
   expect((await membres()).on, 'décoché : il part').toEqual([]);
 });
 
+const PNG_ROUGE =
+  'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEklEQVR4nGP4z8CAFWEXHbQSACj/P8Fu7N9hAAAAAElFTkSuQmCC';
+// ── redteam_dessin (v132, v133, v139, v140 ; C-042, C-056, C-061, C-085, C-086) — le mode dessin de la page + : un trait suit le doigt, à
+//    l'encre du mode, à la taille choisie (2 · 6 · 22 pt) ; ANNULER le retire ; le X sort sans poser (le dessin en cours gardé) ; POSER le
+//    pose dans la bande (il REMPLACE la dalle et la photo : la photo part) ; « Retirer le dessin » ; une photo importée le retire ; planter
+//    l'emporte avec la parole ──
+test('le dessin de la page + : tracer, annuler, sortir sans poser, poser dans la bande (la photo part), le retirer ; il suit la parole plantée (redteam_dessin)', async ({
+  page,
+}) => {
+  test.setTimeout(150000);
+  await ouvrir(page, 'promi');
+  // les sondes : le trait ne suit pas le doigt ; POSER ne pose rien dans la bande
+  if (sonde('dessin-sourd'))
+    await page.addStyleTag({ content: '#dessinMode .dz-surface{pointer-events:none!important}' });
+  if (sonde('dessin-bande-vide'))
+    await page.evaluate(() => {
+      // le dessin posé n'est jamais peint dans la couche de la bande
+      const d = CanvasRenderingContext2D.prototype.drawImage;
+      CanvasRenderingContext2D.prototype.drawImage = function (this: CanvasRenderingContext2D, ...a: unknown[]) {
+        if (this.canvas.id === 'csPhotoCv' && a[0] instanceof HTMLCanvasElement) return;
+        (d as (...x: unknown[]) => void).apply(this, a);
+      } as typeof d;
+    });
+  const ph = (): Promise<{
+    photo: string | null;
+    dessin: { pose: boolean; traits: Array<{ c?: string; t?: number }>; poses: unknown[] } | null;
+  }> => page.evaluate(`${P_}.pagePlus().etat().phrase`) as never;
+  const dz = (): Promise<{ outil: string; couleur: string; deploi: string | null; traits: number } | null> =>
+    page.evaluate(`${P_}.pagePlus().etat().dessin`) as never;
+  const menu = async (mot: string): Promise<void> => {
+    await toucher(page, '#createSheet .ph-photo-btn');
+    await posee(page);
+    await page.evaluate((mot) => {
+      const b = [...document.querySelectorAll<HTMLElement>('#createSheet .ph-photo-menu button')].find(
+        (x) => x.textContent === mot,
+      )!;
+      b.click();
+    }, mot);
+    await page.waitForTimeout(400);
+  };
+  const outil = async (o: string): Promise<void> => {
+    await page.evaluate((o) => {
+      document.querySelector<HTMLElement>(`#dessinMode [data-outil="${o}"]`)!.click();
+    }, o);
+    await page.waitForTimeout(200);
+  };
+  const trace = async (y: number): Promise<void> => {
+    await page.mouse.move(80, y);
+    await page.mouse.down();
+    for (let x = 80; x <= 300; x += 10) await page.mouse.move(x, y + Math.sin(x / 30) * 20);
+    await page.mouse.up();
+    await page.waitForTimeout(200);
+  };
+  /** l'encre du trait, comptée sur la surface du mode (pixels plus sombres que le fond bleu) */
+  const encre = (sel: string, y0: number, y1: number): Promise<number> =>
+    page.evaluate(
+      ([sel, y0, y1]) => {
+        const c = document.querySelector<HTMLCanvasElement>(sel as string)!;
+        const k = c.width / 390;
+        const d = c
+          .getContext('2d')!
+          .getImageData(
+            0,
+            Math.round((y0 as number) * k),
+            c.width,
+            Math.round(((y1 as number) - (y0 as number)) * k),
+          ).data;
+        let n = 0;
+        for (let i = 0; i < d.length; i += 4)
+          if (d[i + 3]! > 200 && d[i]! < 80 && d[i + 1]! < 80 && d[i + 2]! < 80) n++;
+        return n / (k * k);
+      },
+      [sel, y0, y1] as const,
+    );
+  await menu('Dessiner');
+  expect(
+    await dz(),
+    'le mode s’ouvre : la plume, à l’encre du mode (sans Ma Parole ! : jamais de la couleur du fond)',
+  ).toMatchObject({
+    outil: 'plume',
+    traits: 0,
+  });
+  expect((await dz())!.couleur).toMatch(/^#(201908|F7F0DE)$/);
+  // 1 · un trait suit le doigt, taille moyenne (6 pt)
+  await trace(300);
+  expect((await dz())!.traits, 'un trait').toBe(1);
+  const a1 = await encre('#dessinMode .dz-surface canvas', 270, 330);
+  expect(a1, 'il est peint sur la surface (≈ 220 pt × 6 pt d’encre)').toBeGreaterThan(600);
+  // la taille : gros (22 pt) — un trait plus large
+  await outil('plume');
+  expect((await dz())!.deploi, 'la plume touchée de nouveau : ses tailles').toBe('plume');
+  await page.evaluate(() => document.querySelector<HTMLElement>('#dessinMode .dz-tailles [data-taille="2"]')!.click());
+  await trace(500);
+  const a2 = await encre('#dessinMode .dz-surface canvas', 460, 540);
+  expect(a2, 'le gros trait couvre plus de deux fois l’encre du moyen').toBeGreaterThan(a1 * 2);
+  // 2 · ANNULER retire le dernier trait
+  await outil('annuler');
+  expect((await dz())!.traits).toBe(1);
+  expect(await encre('#dessinMode .dz-surface canvas', 460, 540), 'annulé : plus d’encre').toBeLessThan(5);
+  // 3 · le X sort sans poser : le dessin en cours est gardé, la bande montre toujours la dalle
+  await page.evaluate(() => document.querySelector<HTMLElement>('#dessinMode .dz-quitter')!.click());
+  await page.waitForTimeout(300);
+  expect(await dz(), 'sorti').toBeNull();
+  const p1 = await ph();
+  expect([p1.dessin?.traits.length, p1.dessin?.pose], 'gardé, pas posé').toEqual([1, false]);
+  // 4 · une photo dans la bande, puis POSER : le dessin la remplace
+  const [chooser] = await Promise.all([
+    page.waitForEvent('filechooser', { timeout: 5000 }),
+    (async () => {
+      await toucher(page, '#createSheet .ph-photo-btn');
+      await posee(page);
+      await page.evaluate(() =>
+        [...document.querySelectorAll<HTMLElement>('#createSheet .ph-photo-menu button')]
+          .find((x) => x.textContent === 'Importer une photo')!
+          .click(),
+      );
+    })(),
+  ]);
+  await chooser.setFiles({ name: 'photo.png', mimeType: 'image/png', buffer: Buffer.from(PNG_ROUGE, 'base64') });
+  await page.waitForFunction(`!!${P_}.pagePlus().etat().phrase.photo`, undefined, { timeout: 5000 });
+  expect((await ph()).dessin, 'la photo importée remplace le dessin (C-085) : il n’en reste rien').toBeNull();
+  await posee(page);
+  await menu('Dessiner');
+  await trace(200);
+  await outil('poser');
+  await page.waitForTimeout(500);
+  const p2 = await ph();
+  expect([p2.dessin?.pose, p2.dessin?.poses.length, p2.photo], 'posé : la photo part de la bande').toEqual([
+    true,
+    1,
+    null,
+  ]);
+  expect(await encre('#csPhotoCv', 160, 240), 'la bande montre le dessin posé').toBeGreaterThan(300);
+  expect((await etat(page)).gardeActif, 'la page a changé').toBe(true);
+  // 5 · « Retirer le dessin » : la bande rend la dalle
+  await menu('Retirer le dessin');
+  expect((await ph()).dessin).toBeNull();
+  expect(await encre('#csPhotoCv', 160, 240), 'retiré : plus rien du dessin dans la bande').toBeLessThan(5);
+  // 6 · planter l'emporte : la parole porte son dessin
+  await menu('Dessiner');
+  await trace(200);
+  await outil('poser');
+  await page.waitForTimeout(300);
+  await doigt(page, '#createSheet .ph-m[data-ph="titre"]');
+  await posee(page);
+  await page.keyboard.type('dessiner Lou');
+  await page.keyboard.press('Enter');
+  await page.waitForFunction(`${P_}.pagePlus().etat().invite.visible`, undefined, { timeout: 30000 });
+  await page.waitForFunction(() => !document.querySelector('#createSheet canvas.passage-flaques'), undefined, {
+    timeout: 20000,
+  });
+  const [x0, y0, k] =
+    (await page.evaluate(`(() => { const cs = document.getElementById('createSheet'); const C = cs.getBoundingClientRect();
+      const k = C.width / cs.offsetWidth; const h = parseFloat(getComputedStyle(cs).getPropertyValue('--pp-h')) || 0;
+      const [x, y] = document.getElementById('csTrameCv').getAttribute('data-depart').split(',').map(Number); return [C.left + x * k, C.top + (y + h) * k, k]; })()`)) as [
+      number,
+      number,
+      number,
+    ];
+  await page.mouse.move(x0, y0);
+  await page.mouse.down();
+  for (let x = x0; x <= 200 * k; x += 8 * k) await page.mouse.move(x, y0);
+  await page.mouse.up();
+  const pa = (await page.evaluate(
+    `(() => { const L = ${P_}.magasin.etat().paroles; const p = L[L.length - 1]; const d = p.suite?.dessin; return { t: p.title, pose: !!d?.pose, n: d?.poses?.length ?? 0 }; })()`,
+  )) as { t: string; pose: boolean; n: number };
+  expect(pa, 'la parole plantée porte son dessin posé').toEqual({ t: 'dessiner Lou', pose: true, n: 1 });
+});
+
+// ── redteam_garder_reprise (v162, C-149) — la photo et le dessin d'un gardé de côté : « garder de côté » garde la page ENTIÈRE (le prototype :
+//    `_phrase`, sa photo et son dessin compris) ; la reprise (sa porte, l'Index : lot 3) rend la page dans sa nature, la photo ou le dessin dans
+//    la bande, les personnes et Peaufiner ; garder de nouveau met le même gardé à jour, jamais un second ──
+test('la photo et le dessin d’un gardé de côté : gardés avec la page, rendus à la reprise ; garder de nouveau met le même à jour (redteam_garder_reprise)', async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  await ouvrir(page, 'chiche');
+  if (sonde('garde-sans-photo'))
+    await page.evaluate(
+      `(() => { const m = ${P_}.magasin; const f = m.garderDeCote.bind(m); m.garderDeCote = (b, ...r) => f({ ...b, phrase: { ...b.phrase, photo: null, dessin: null } }, ...r); })()`,
+    );
+  // une photo dans la bande, un titre, une personne
+  await toucher(page, '#createSheet .ph-photo-btn');
+  await posee(page);
+  const [chooser] = await Promise.all([
+    page.waitForEvent('filechooser', { timeout: 5000 }),
+    page.evaluate(() =>
+      [...document.querySelectorAll<HTMLElement>('#createSheet .ph-photo-menu button')]
+        .find((x) => x.textContent === 'Importer une photo')!
+        .click(),
+    ),
+  ]);
+  await chooser.setFiles({ name: 'photo.png', mimeType: 'image/png', buffer: Buffer.from(PNG_ROUGE, 'base64') });
+  await page.waitForFunction(`!!${P_}.pagePlus().etat().phrase.photo`, undefined, { timeout: 5000 });
+  await posee(page);
+  await doigt(page, '#createSheet .ph-m[data-ph="titre"]');
+  await posee(page);
+  await page.keyboard.type('nager loin');
+  await page.keyboard.press('Enter');
+  await posee(page);
+  const photo0 = ((await etat(page)).phrase as unknown as { photo: string }).photo;
+  const n0 = (await page.evaluate(`${P_}.magasin.etat().paroles.filter((p) => p.draft).length`)) as number;
+  await doigt(page, '#createSheet .pp-garder');
+  await page.waitForFunction(`!${P_}.pagePlus().ouverte()`, undefined, { timeout: 10000 });
+  const id = (await page.evaluate(
+    `(() => { const L = ${P_}.magasin.etat().paroles.filter((p) => p.draft); return L[L.length - 1].id; })()`,
+  )) as number;
+  expect((await page.evaluate(`${P_}.magasin.etat().paroles.filter((p) => p.draft).length`)) as number).toBe(n0 + 1);
+  // la reprise : la page dans sa nature, la photo dans la bande
+  expect(await page.evaluate(`${P_}.pagePlus().reprendre(${String(id)})`), 'le gardé se reprend').toBe(true);
+  await page.waitForFunction(
+    `${P_}.pagePlus().ouverte() && !document.getElementById('createSheet').classList.contains('pp-entre')`,
+    undefined,
+    { timeout: 10000 },
+  );
+  await posee(page);
+  const e1 = (await etat(page)).phrase as unknown as { nat: string; titre: string; photo: string | null };
+  expect([e1.nat, e1.titre, e1.photo === photo0], 'la page dans sa nature, son titre, SA photo').toEqual([
+    'chiche',
+    'nager loin',
+    true,
+  ]);
+  const rouge = (): Promise<number> =>
+    page.evaluate(() => {
+      const c = document.getElementById('csPhotoCv') as HTMLCanvasElement;
+      const d = c.getContext('2d')!.getImageData(0, 0, c.width, c.height).data;
+      let n = 0;
+      for (let i = 0; i < d.length; i += 4) if (d[i]! > 200 && d[i + 1]! < 60 && d[i + 3]! > 200) n++;
+      return n;
+    });
+  expect(await rouge(), 'la photo est dans la bande').toBeGreaterThan(1000);
+  // un dessin posé à la place, garder de nouveau : le MÊME gardé, son dessin
+  await toucher(page, '#createSheet .ph-photo-btn');
+  await posee(page);
+  await page.evaluate(() =>
+    document.querySelector<HTMLElement>('#createSheet .ph-photo-menu [data-dessiner]')!.click(),
+  );
+  await page.waitForTimeout(300);
+  await page.mouse.move(80, 300);
+  await page.mouse.down();
+  for (let x = 80; x <= 300; x += 10) await page.mouse.move(x, 300);
+  await page.mouse.up();
+  await page.evaluate(() => document.querySelector<HTMLElement>('#dessinMode [data-outil="poser"]')!.click());
+  await page.waitForTimeout(300);
+  await doigt(page, '#createSheet .pp-garder');
+  await page.waitForFunction(`!${P_}.pagePlus().ouverte()`, undefined, { timeout: 10000 });
+  const g = (await page.evaluate(
+    `(() => { const L = ${P_}.magasin.etat().paroles.filter((p) => p.draft); const p = L.find((x) => x.id === ${String(id)}); return { n: L.length, photo: p.brouillon.phrase.photo ?? null, pose: !!p.brouillon.phrase.dessin?.pose }; })()`,
+  )) as { n: number; photo: string | null; pose: boolean };
+  expect(g, 'le même gardé, mis à jour : le dessin a remplacé la photo').toEqual({
+    n: n0 + 1,
+    photo: null,
+    pose: true,
+  });
+  await page.evaluate(`${P_}.pagePlus().reprendre(${String(id)})`);
+  await page.waitForFunction(
+    `${P_}.pagePlus().ouverte() && !document.getElementById('createSheet').classList.contains('pp-entre')`,
+    undefined,
+    { timeout: 10000 },
+  );
+  await posee(page);
+  expect(
+    ((await etat(page)).phrase as unknown as { dessin: { pose: boolean } | null }).dessin?.pose,
+    'repris : son dessin',
+  ).toBe(true);
+});
+
 // ── redteam_photo_menu (v117, v132 : la page +) — le bouton photo ouvre le menu (« Dessiner » en tête ; « Importer une photo » sauf sur un
 //    Cercle, C-199), en flaques ; « Importer une photo » ouvre le sélecteur de fichiers DANS le geste ; la photo remplace la dalle ; « Retirer
 //    la photo » la retire ; un toucher ailleurs referme le menu ──
-const PNG_ROUGE =
-  'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEklEQVR4nGP4z8CAFWEXHbQSACj/P8Fu7N9hAAAAAElFTkSuQmCC';
 test('le menu du bouton photo : « Dessiner », « Importer une photo » (le sélecteur dans le geste), la photo remplace la dalle, « Retirer la photo » ; un Cercle : « Dessiner » seul (redteam_photo_menu)', async ({
   page,
 }) => {

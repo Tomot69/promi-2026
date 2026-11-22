@@ -143,5 +143,20 @@
     "nom": "peauf-membres-sourds",
     "test": "Peaufiner d’un Cercle : MEMBRES se déplie",
     "defaut": "les membres de Peaufiner ne prennent plus le doigt"
+  },
+  {
+    "nom": "dessin-sourd",
+    "test": "le dessin de la page + : tracer, annuler",
+    "defaut": "la surface du dessin ne prend plus le doigt"
+  },
+  {
+    "nom": "dessin-bande-vide",
+    "test": "le dessin de la page + : tracer, annuler",
+    "defaut": "POSER ne montre rien dans la bande"
+  },
+  {
+    "nom": "garde-sans-photo",
+    "test": "la photo et le dessin d’un gardé de côté",
+    "defaut": "garder de côté perd la photo et le dessin de la bande"
   }
 ]

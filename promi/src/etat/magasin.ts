@@ -55,11 +55,14 @@ export interface Actions {
       dueISO: string | null;
       cercle: string | null;
       fichiers: string[];
+      /** le dessin de la page + (C-042) : il suit la parole */
+      dessin?: unknown;
     },
     maintenant: number,
   ): number;
   /** C-306 : créer un Cercle (son nom, ses membres) — rien d'autre ; une ligne du Fil (le prototype : `#addNuee`). Rend sa clé. */
-  creerCercle(nom: string, membres: string[], maintenant: number): string;
+  /** un Cercle créé ; son dessin (C-042), gardé par Cercle dans la clé du prototype `promi_dessins_cercle` */
+  creerCercle(nom: string, membres: string[], maintenant: number, dessin?: unknown): string;
 }
 
 export interface Magasin extends Actions {
@@ -246,6 +249,7 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       if (p.note) suite['note'] = p.note;
       if (p.dueISO) suite['dueISO'] = p.dueISO;
       if (p.fichiers.length) suite['files'] = p.fichiers.slice();
+      if (p.dessin) suite['dessin'] = p.dessin;
       const neuve: Parole = {
         id,
         title: p.titre,
@@ -275,14 +279,25 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       });
       return id;
     },
-    creerCercle(nom, membres, maintenant) {
+    creerCercle(nom, membres, maintenant, dessin) {
       const cle = `n${String(maintenant)}`;
+      const autres = { ...e.autres };
+      if (dessin) {
+        let L: Record<string, unknown> = {};
+        try {
+          L = (JSON.parse(e.autres['promi_dessins_cercle'] ?? '{}') as Record<string, unknown> | null) ?? {};
+        } catch {
+          L = {};
+        }
+        autres['promi_dessins_cercle'] = JSON.stringify({ ...L, [cle]: dessin });
+      }
       const fid = e.compteurs.fid;
       const texte = `Tu as créé le Cercle ${nom}${membres.length ? ` · invité ${membres.join(', ')}` : ''}`;
       valider('creerCercle', {
         ...e,
         cercles: { ...e.cercles, [cle]: nom },
         membres: { ...e.membres, [cle]: membres.slice() },
+        autres,
         fil: [{ id: fid, type: 'nuee', text: texte, t: 'à l’instant', ts: maintenant }, ...e.fil],
         compteurs: { ...e.compteurs, fid: fid + 1 },
       });

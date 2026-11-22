@@ -36,6 +36,8 @@ export interface Facade {
   appliquerTheme(theme: 'clair' | 'sombre'): void;
   mondes(): string[];
   mondeCourant(): MondeDalle;
+  /** les tons de la palette du Studio (le monde courant), en hexadécimal majuscule — l'outil de dessin (le prototype : `palette()` de lot-V132-DESSIN) */
+  tonsStudio(): string[];
   /** la Toile entière, rendue à l'échelle `ech` (banc de rendu, partage) */
   rendre(cv: HTMLCanvasElement, ech: number, clair: boolean, vue?: boolean): boolean;
   lecture(): ReturnType<MoteurFonctions['Toile_lecture']>;
@@ -212,6 +214,24 @@ export function creerFacade(magasin: Magasin): Facade {
       return Object.keys(MONDES_ORDRE);
     },
     mondeCourant: () => toile().mondeCourant(),
+    tonsStudio() {
+      const m = toile().mondeCourant();
+      return toile()
+        .tonsDe(m.p, m.h)
+        .map(
+          (c) =>
+            '#' +
+            c
+              .slice(0, 3)
+              .map((v) =>
+                Math.max(0, Math.min(255, Math.round(v)))
+                  .toString(16)
+                  .padStart(2, '0'),
+              )
+              .join('')
+              .toUpperCase(),
+        );
+    },
     rendre: (cv, ech, clair, vue) => toile().renderTo(cv, ech, clair, vue ? { vue: true } : undefined),
     lecture() {
       if (!w.Toile_lecture) throw new Error("façade : le moteur n'est pas chargé");

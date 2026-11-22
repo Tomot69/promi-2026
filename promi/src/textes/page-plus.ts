@@ -188,7 +188,12 @@ export const TEXTES_PAGE_PLUS = {
   ajouterQuelquun: 'Ajouter quelqu’un',
   chevronOuvert: '▴',
   /** le menu du bouton photo de la page + (v117, v132, C-060) */
-  menuPhoto: { dessiner: 'Dessiner', importer: 'Importer une photo', retirer: 'Retirer la photo' },
+  menuPhoto: {
+    dessiner: 'Dessiner',
+    importer: 'Importer une photo',
+    retirer: 'Retirer la photo',
+    retirerDessin: 'Retirer le dessin',
+  },
   /** le Peaufiner de la page + (lot-S2, v163b C-192, C-197) : ses rangées, nature par nature, telles que le prototype les montre au repos */
   peauf: {
     titres: { promi: 'Promi', chiche: 'Chiche', nuee: 'Cercle' },

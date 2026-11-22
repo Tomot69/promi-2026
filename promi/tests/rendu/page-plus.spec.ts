@@ -230,7 +230,20 @@ type Cas = {
   /** 2b : « personne » — un prénom tapé dans le choix des personnes et validé (Retour) : la pastille remplie porte son visage (§2.10) ;
    *  « cercle » — dans Peaufiner, DANS UN CERCLE, un Cercle choisi, Peaufiner refermé : « Je promets … à tout le monde » (le prototype,
    *  `buildCreateNuees`), l'exemple au pluriel */
-  etat?: 'saisie' | 'tape' | 'peauf' | 'photo' | 'prenom' | 'prete' | 'personne' | 'cercle';
+  /** « dessin » — le menu photo, puis « Dessiner » : le mode dessin (C-042) ; « tailles » — la plume touchée deux fois : ses trois tailles
+   *  déployées ; « couleurs » — le disque COULEUR : le mur des teintes (sans Ma Parole !) */
+  etat?:
+    | 'saisie'
+    | 'tape'
+    | 'peauf'
+    | 'photo'
+    | 'prenom'
+    | 'prete'
+    | 'personne'
+    | 'cercle'
+    | 'dessin'
+    | 'tailles'
+    | 'couleurs';
 };
 const CAS: Cas[] = [
   { nat: 'promi', choix: null },
@@ -252,6 +265,9 @@ const CAS: Cas[] = [
   { nat: 'nuee', choix: null, etat: 'prete' },
   { nat: 'chiche', choix: '#csPhrase .ph-m[data-ph="qui"]', etat: 'personne' },
   { nat: 'promi', choix: null, etat: 'cercle' },
+  { nat: 'promi', choix: null, etat: 'dessin' },
+  { nat: 'chiche', choix: null, etat: 'tailles' },
+  { nat: 'nuee', choix: null, etat: 'couleurs' },
 ];
 /** un toucher sur l'élément de `sel` dont le texte commence par `mot` (une rangée de Peaufiner par son libellé, une pastille de choix) */
 async function toucheTexte(p: Page, sel: string, mot: string, proto: boolean): Promise<void> {
@@ -387,6 +403,27 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
     await P.waitForTimeout(1500);
     await Promise.all([toucheSel(P, '#createSheet .s2-fermer', true), toucheSel(A, '#createSheet .s2-fermer', false)]);
     await P.waitForTimeout(4000);
+  }
+  if (c.etat === 'dessin' || c.etat === 'tailles' || c.etat === 'couleurs') {
+    await protoPose(P);
+    await Promise.all([
+      toucheSel(P, '#createSheet .ph-photo-btn', true),
+      toucheSel(A, '#createSheet .ph-photo-btn', false),
+    ]);
+    await P.waitForTimeout(2000);
+    for (const pg of [P, A])
+      await pg.evaluate(() =>
+        document.querySelector<HTMLElement>('#createSheet .ph-photo-menu [data-dessiner]')!.click(),
+      );
+    await P.waitForTimeout(1200);
+    const outil = c.etat === 'tailles' ? 'plume' : c.etat === 'couleurs' ? 'couleur' : null;
+    if (outil)
+      for (const pg of [P, A])
+        await pg.evaluate((o) => {
+          // la plume est déjà choisie : un toucher déploie ses tailles ; COULEUR : un toucher déploie le mur
+          document.querySelector<HTMLElement>(`#dessinMode [data-outil="${o}"]`)!.click();
+        }, outil);
+    await P.waitForTimeout(800);
   }
   if (c.etat === 'peauf') {
     await protoPose(P);
