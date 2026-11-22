@@ -98,5 +98,15 @@
     "nom": "a3-fixe",
     "test": "A3, à 0,79 (330 × 714) : la page + dans chacun de ses états — rien ne sort de l’écran",
     "defaut": "le choix d'un Cercle garde ses deux colonnes de 162 fixes : à 330 pt il sort de l'écran"
+  },
+  {
+    "nom": "moi-exclusif",
+    "test": "le choix des personnes, promi : « Moi » se coche et se décoche, coexiste, revient quand la liste se vide ; la phrase change par détracé puis tracé (C-332)",
+    "defaut": "toucher « Moi » retire les autres personnes cochées (le défaut que Tom a vu)"
+  },
+  {
+    "nom": "moi-sec",
+    "test": "le choix des personnes, chiche : « Moi » se coche et se décoche, coexiste, revient quand la liste se vide ; la phrase change par détracé puis tracé (C-332)",
+    "defaut": "la place change d'un coup, sans détracé ni tracé"
   }
 ]

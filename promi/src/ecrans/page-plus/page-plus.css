@@ -924,3 +924,8 @@
     animation: none;
   }
 }
+
+/* C-332 : l'enveloppe du texte d'une place, le temps de son détracé ou de son tracé (le tracé découpe le texte, jamais l'encart : C-271) */
+#createSheet .ph-mt {
+  display: inline-block;
+}

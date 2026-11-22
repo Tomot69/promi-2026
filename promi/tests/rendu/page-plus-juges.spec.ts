@@ -264,12 +264,13 @@ test('le choix des personnes : « moi » à la place touchée, ajouter et retire
     () => document.querySelector<HTMLElement>('#createSheet .gn .ph-o[data-v]')!.dataset['v']!,
   );
   await toucher(page, `#createSheet .gn .ph-o[data-v="${nom}"]`);
-  expect((await etat(page)).phrase.qui).toEqual([nom]);
+  // C-332 (Tom, 22 nov. 2026) : « Moi » reste à côté de la personne ajoutée (avant : elle le remplaçait)
+  expect((await etat(page)).phrase.qui).toEqual(['Moi', nom]);
   const l = await lignes(page);
   expect(
     l.slice(0, 2),
-    'C-269 : « à Rachel, / chiche » (le prénom choisi, une virgule, « chiche » en bas de casse)',
-  ).toEqual([`à ${nom},`, 'chiche']);
+    'C-269, C-332 : « à moi, Rachel, / chiche » (ce qui est coché, une virgule, « chiche » en bas de casse)',
+  ).toEqual([`à moi, ${nom},`, 'chiche']);
   await toucher(page, `#createSheet .gn .ph-o[data-v="${nom}"] .ppo-x`);
   expect((await etat(page)).phrase.qui, 'sa croix la retire').toEqual([]);
   const b = await page.evaluate(() => {
@@ -542,15 +543,15 @@ async function doigt(page: Page, sel: string): Promise<void> {
 /** plus aucun mouvement de la page, plus aucun passage en flaques */
 const posee = (page: Page): Promise<unknown> =>
   page.waitForFunction(
-    `!document.querySelector('#createSheet [data-flaques-mode]') && !${P_}.pagePlus?.()?.etat().mouvement`,
+    `!document.querySelector('#createSheet [data-flaques-mode]') && !document.querySelector('#createSheet .ph-mt') && !${P_}.pagePlus?.()?.etat().mouvement`,
     undefined,
     { timeout: 20000 },
   );
 
 // ── redteam_gens (le Cercle), redteam_moi_toucher (C-304) — le choix d'un Cercle est celui du prototype (lot-GENS) : la place « avec » passe
-//    à « moi », « Moi » en tête et choisi (avec sa croix), un membre ajouté le remplace, retiré seul il revient ; Gilbert 23,1, « Moi » au
+//    à « moi », « Moi » en tête et choisi (avec sa croix), un membre ajouté se met à côté (C-332), retiré seul il revient ; Gilbert 23,1, « Moi » au
 //    mauve profond #291547 (`#nueePhrase .gn .ph-o.on{background:var(--c-mauve12)}`), 25 pt sous la phrase (`#nueeChoix .gn{margin-top:25px}`) ──
-test('le choix d’un Cercle : « avec moi », « Moi » en tête et choisi, au mauve profond, Gilbert 23,1 ; un membre le remplace, retiré seul il revient (redteam_gens, C-304)', async ({
+test('le choix d’un Cercle : « avec moi », « Moi » en tête et choisi, au mauve profond, Gilbert 23,1 ; un membre se met à côté (C-332), retiré seul il revient (redteam_gens, C-304)', async ({
   page,
 }) => {
   await ouvrir(page, 'nuee');
@@ -584,11 +585,14 @@ test('le choix d’un Cercle : « avec moi », « Moi » en tête et choisi, au 
   expect(Math.round(r.air), '25 pt sous la phrase').toBe(25);
   await doigt(page, '#createSheet .gn .ph-o[data-v="Maman"]');
   const e1 = await etat(page);
-  expect((e1.phrase as unknown as { membres: string[] }).membres, 'un membre ajouté').toEqual(['Maman']);
+  expect((e1.phrase as unknown as { membres: string[] }).membres, 'un membre ajouté, « Moi » à côté (C-332)').toEqual([
+    'Moi',
+    'Maman',
+  ]);
   expect(
     await page.evaluate(() => document.querySelector('#createSheet .gn .ph-o[data-gn-tete]')!.classList.contains('on')),
-    '« Moi » n’est plus choisi',
-  ).toBe(false);
+    '« Moi » reste choisi (C-332 : un membre ne le remplace plus)',
+  ).toBe(true);
   await doigt(page, '#createSheet .gn .ph-o[data-v="Maman"] .ppo-x');
   await doigt(page, '#createSheet .gn .ph-o[data-gn-tete] .ppo-x');
   const fin = await page.evaluate(() => ({
@@ -600,6 +604,141 @@ test('le choix d’un Cercle : « avec moi », « Moi » en tête et choisi, au 
     avec: expect.stringMatching(/avec moi$/) as unknown as string,
   });
 });
+
+// ── C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste avec
+//    les autres, le toucher ne retire jamais quelqu'un d'autre, la liste n'est jamais vide ; la phrase dit exactement ce qui est coché, par le
+//    détracé puis le tracé (C-279) — la place neuve ne paraît jamais avant que l'ancienne soit partie ──
+const MOI_TITRES: Record<Nat, string> = {
+  promi:
+    'le choix des personnes, promi : « Moi » se coche et se décoche, coexiste, revient quand la liste se vide ; la phrase change par détracé puis tracé (C-332)',
+  chiche:
+    'le choix des personnes, chiche : « Moi » se coche et se décoche, coexiste, revient quand la liste se vide ; la phrase change par détracé puis tracé (C-332)',
+  nuee: 'le choix des personnes, nuee : « Moi » se coche et se décoche, coexiste, revient quand la liste se vide ; la phrase change par détracé puis tracé (C-332)',
+};
+for (const nat of ['promi', 'chiche', 'nuee'] as const)
+  test(MOI_TITRES[nat], async ({ page }) => {
+    await ouvrir(page, nat);
+    // les sondes : l'ancien défaut (toucher « Moi » retire les autres) ; un changement sec (la place change sans tracé)
+    if (sonde('moi-exclusif'))
+      await page.evaluate(() =>
+        document.addEventListener(
+          'pointerup',
+          (e) => {
+            if (!(e.target as Element).closest?.('[data-gn-tete]')) return;
+            setTimeout(() => {
+              for (const x of document.querySelectorAll<HTMLElement>('#createSheet .gn .ph-o.on[data-v] .ppo-x')) {
+                const r = x.getBoundingClientRect();
+                const o = {
+                  bubbles: true,
+                  clientX: r.left + r.width / 2,
+                  clientY: r.top + r.height / 2,
+                  pointerId: 41,
+                };
+                x.dispatchEvent(new PointerEvent('pointerdown', o));
+                x.dispatchEvent(new PointerEvent('pointerup', o));
+              }
+            }, 0);
+          },
+          true,
+        ),
+      );
+    if (sonde('moi-sec'))
+      await page.evaluate(() => {
+        // (le module chargé d'abord : la page le charge au premier usage, et le chargement poserait le vrai par-dessus)
+        const P = (window as unknown as { __promi: { chargerTrace(): unknown } }).__promi;
+        P.chargerTrace();
+        const w = window as unknown as {
+          TraceLettres: { trace: (c: unknown, t: unknown, o?: { surFin?: (r: unknown) => void }) => unknown };
+        };
+        w.TraceLettres.trace = (_c: unknown, _t: unknown, o?: { surFin?: (r: unknown) => void }) => {
+          setTimeout(() => o?.surFin?.({ interrompu: false }), 0);
+          return { stop() {}, etat: () => ({}) };
+        };
+      });
+    const place = nat === 'nuee' ? '#createSheet .ph-m[data-np="avec"]' : '#createSheet .ph-m[data-ph="qui"]';
+    if (nat === 'promi') {
+      await doigt(page, '#createSheet .ph-b[data-ph="sens"]');
+      await posee(page);
+    }
+    await doigt(page, place);
+    await posee(page);
+    // ce que montre la place, à chaque mutation de la phrase : son texte, et s'il est découpé par le tracé (en cours de détracé ou de tracé)
+    await page.evaluate((sel) => {
+      const w = window as unknown as { __moi: { t: string; env: boolean }[] };
+      w.__moi = [];
+      const txt = document.querySelector('#createSheet .ph-txt')!;
+      new MutationObserver(() => {
+        const e = document.querySelector(sel);
+        // découpé : le texte est sous la découpe du tracé (le module la pose en ligne, `clip-path`)
+        const env = e?.querySelector<HTMLElement>('.ph-mt');
+        const clip = !!env && !!(env.style.clipPath || env.style.getPropertyValue('-webkit-clip-path'));
+        w.__moi.push({ t: (e?.textContent ?? '').replace(/\s+/g, ' ').trim(), env: clip });
+      }).observe(txt, { subtree: true, childList: true, attributes: true, characterData: true });
+    }, place);
+    const calme = (): Promise<unknown> =>
+      page.waitForFunction(
+        () =>
+          !(window as unknown as { TraceLettres?: { actif(): boolean } }).TraceLettres?.actif() &&
+          !document.querySelector('#createSheet .ph-mt'),
+        undefined,
+        { timeout: 30000 },
+      );
+    const lire = (): Promise<{ moi: boolean; on: string[]; place: string }> =>
+      page.evaluate(
+        (sel) => ({
+          moi: !!document.querySelector('#createSheet .gn .ph-o.on[data-gn-tete]'),
+          on: [...document.querySelectorAll<HTMLElement>('#createSheet .gn .ph-o.on[data-v]')].map(
+            (b) => b.dataset['v']!,
+          ),
+          place: (document.querySelector(sel)?.textContent ?? '').replace(/\s+/g, ' ').trim(),
+        }),
+        place,
+      );
+    const autre = (await page.evaluate(
+      () => document.querySelector<HTMLElement>('#createSheet .gn .ph-o[data-v]')!.dataset['v'],
+    ))!;
+    const sep = nat === 'nuee' ? ' · ' : ', ';
+    const fin = nat === 'chiche' ? ',' : '';
+    const tete = '#createSheet .gn .ph-o[data-gn-tete]';
+    const moiSeul = { moi: true, on: [], place: 'moi' };
+    const pas: { nom: string; sel: string; attendu: { moi: boolean; on: string[]; place: string } }[] = [
+      { nom: 'retirer Moi, seul : il revient (la liste n’est jamais vide)', sel: tete, attendu: moiSeul },
+      {
+        nom: `ajouter ${autre} : « Moi » reste`,
+        sel: `#createSheet .gn .ph-o[data-v="${autre}"]`,
+        attendu: { moi: true, on: [autre], place: `moi${sep}${autre}${fin}` },
+      },
+      { nom: `retirer Moi : ${autre} reste`, sel: tete, attendu: { moi: false, on: [autre], place: `${autre}${fin}` } },
+      {
+        nom: `remettre Moi : à côté de ${autre}`,
+        sel: tete,
+        attendu: { moi: true, on: [autre], place: `moi${sep}${autre}${fin}` },
+      },
+      {
+        nom: `retirer ${autre} : « Moi » seul`,
+        sel: `#createSheet .gn .ph-o[data-v="${autre}"] .ppo-x`,
+        attendu: moiSeul,
+      },
+      { nom: 'tout retirer (Moi, le dernier) : il revient', sel: tete, attendu: moiSeul },
+    ];
+    let avant = 'moi';
+    for (const p of pas) {
+      await page.evaluate(() => ((window as unknown as { __moi: unknown[] }).__moi = []));
+      await doigt(page, p.sel);
+      await calme();
+      expect(await lire(), p.nom).toEqual(p.attendu);
+      if (p.attendu.place !== avant) {
+        // C-279 : l'ancienne place se détrace (son texte, découpé), puis la neuve se trace ; elle ne paraît jamais sans sa découpe
+        const s = (await page.evaluate(() => (window as unknown as { __moi: { t: string; env: boolean }[] }).__moi))!;
+        const i = s.findIndex((x) => x.t === avant && x.env);
+        const j = s.findIndex((x) => x.t === p.attendu.place);
+        expect(i, `${p.nom} : « ${avant} » se détrace d’abord`).toBeGreaterThanOrEqual(0);
+        expect(j, `${p.nom} : « ${p.attendu.place} » paraît après le détracé`).toBeGreaterThan(i);
+        expect(s[j]!.env, `${p.nom} : « ${p.attendu.place} » paraît en se traçant, jamais d’un coup`).toBe(true);
+      }
+      avant = p.attendu.place;
+    }
+  });
 
 // ── redteam_clavier_doux (Q598, v177a), C-234 (v180b), redteam_je (C-303, v210) — la saisie ouvre la page « montée » d'un MOUVEMENT, la
 //    fermeture du clavier la rend à sa place d'un mouvement : 360 ms (décidé : 300 à 400), jamais d'un coup ; « DÉJÀ PROMIS » paraît en
@@ -961,7 +1100,10 @@ test('ajouter une personne : la zone en pointillés est le champ, le « + » ora
   await page.mouse.click(pp[0]!, pp[1]!);
   await page.waitForTimeout(150);
   let e = await etat(page);
-  expect(e.phrase.qui, 'le « + » valide ; un nom connu garde son écriture (« maman » → « Maman »)').toEqual(['Maman']);
+  expect(e.phrase.qui, 'le « + » valide ; un nom connu garde son écriture (« maman » → « Maman »)').toEqual([
+    'Moi',
+    'Maman',
+  ]);
   expect(
     await page.evaluate(() => [
       document.activeElement?.id,
@@ -973,7 +1115,7 @@ test('ajouter une personne : la zone en pointillés est le champ, le « + » ora
   await page.keyboard.press('Enter');
   await page.waitForTimeout(200);
   e = await etat(page);
-  expect(e.phrase.qui, 'Retour valide aussi').toEqual(['Maman', 'Zoé']);
+  expect(e.phrase.qui, 'Retour valide aussi').toEqual(['Moi', 'Maman', 'Zoé']);
   // le clavier (simulé : la fenêtre visible réduite de 336 pt, ce que l'app lit) : la ligne reste 14 pt au-dessus de lui (8 exigés) — lue
   // la page posée (la page glisse en 300 ms ; hors du Mac une image dure 0,7 s : on attend sa place, 5 s au plus)
   await posee(page);

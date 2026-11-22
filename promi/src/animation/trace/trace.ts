@@ -23,7 +23,8 @@ export interface OptionsTrace {
   inverse?: boolean;
   preparer?: boolean;
   arme?: boolean;
-  fin?: () => void;
+  /** rappel de fin (le module : `surFin`) ; interrompu si `stop()` l'a coupé */
+  surFin?: (r: { interrompu: boolean }) => void;
 }
 
 export interface ControleTrace {

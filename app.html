@@ -13902,7 +13902,7 @@ ph-hint{font-size:13.849px!important;opacity:.58!important;margin-top:44px!impor
     if(!box){ box=document.createElement('div'); box.id='nueePhrase'; nf.insertBefore(box, nf.firstChild); }
     var nom=(document.getElementById('nName')||{}).value||'';
     var membres=(window.newNueeMembers||[]);
-    var avec = membres.length ? membres.join(' · ') : (window._ppMoi ? 'moi' : (window._nueeMoiSeul ? 'Moi' : 'tout le monde'));   /* ⚑ v199 (C-269 refaite) : le nom validé, aucun membre : « moi » en pointillés à la place de « tout le monde » */   /* §5 : « Moi » choisi = avec toi seulement */
+    var avec = membres.length ? (window._nueeMoiAvec ? ['moi'].concat(membres) : membres).join(' · ') : (window._ppMoi ? 'moi' : (window._nueeMoiSeul ? 'Moi' : 'tout le monde'));   /* ⚑ v199 (C-269 refaite) : le nom validé, aucun membre : « moi » en pointillés à la place de « tout le monde » */   /* §5 : « Moi » choisi = avec toi seulement */
     var pl=function(cle,txt,vide){ return '<span class="ph-m'+(vide?' ph-vide':'')+'" data-np="'+cle+'">'+txt+'</span>'; };
     /* LE VERBE EST UNE PASTILLE, comme sur les deux autres natures (§5 · Nuée · écriture :
        « Je lance une Nuée » Bricolage 700/29, crème sur #291547, rayon 18). Il était en
@@ -34542,9 +34542,13 @@ function bati(){
     var host = zone.querySelector('.ph-opts'); if(!host){ host = document.createElement('div'); zone.appendChild(host); }
     var nat = (P.sens === 'chiche') ? 'chiche' : 'promi';
     var champ = (cle === 'avec') ? 'avec' : 'qui';
-    function pose(l){
+    /* ⚑ C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste avec les autres, le
+       toucher ne retire jamais quelqu'un d'autre ; la liste n'est jamais vide (retirée la dernière, « Moi » revient). À côté de quelqu'un, il vit dans la phrase
+       (`P.qui` = « moi, Maman ») ; `newWhoSel` et `fWho` gardent les autres (ce que la plantation lit). Avant : toucher « Moi » vidait la liste. */
+    function moiAvec(){ return champ === 'qui' && /(^|,)\s*moi\s*(,|$)/i.test(String(P.qui||'')) && window._gensListe(P.qui).length > 0; }
+    function pose(l, moi){
       if(champ === 'avec'){ P.avec = l.join(', '); return; }
-      if(l.length){ P.qui = l.join(', '); }
+      if(l.length){ P.qui = (moi ? ['moi'] : []).concat(l).join(', '); }
       else { P.qui = (P.sens === 'faire' && !P.faireAutre) ? 'Moi' : ''; }
       try{ window.newWhoSel = l.slice(); }catch(_){}
       try{ var w = document.getElementById('fWho'); if(w){ w.value = l.join(', ') || (P.qui||''); w.dispatchEvent(new Event('input',{bubbles:true})); } }catch(_){}
@@ -34553,11 +34557,15 @@ function bati(){
     rend(host, {
       nat: nat, cle: 'ph-' + champ,
       choisis: function(){ return window._gensListe(P[champ]); },
-      ajoute: function(n){ var l = window._gensListe(P[champ]); if(l.indexOf(n)<0) l.push(n); pose(l); },
-      retire: function(n){ pose(window._gensListe(P[champ]).filter(function(x){ return x !== n; })); },
+      ajoute: function(n){ var l = window._gensListe(P[champ]);
+        var moi = champ === 'qui' && (l.length ? moiAvec() : P.sens !== 'demander');   /* C-332 : une personne ajoutée à côté de « Moi » seul ne le retire pas (sauf « promets-moi ») */
+        if(l.indexOf(n)<0) l.push(n); pose(l, moi); },
+      retire: function(n){ pose(window._gensListe(P[champ]).filter(function(x){ return x !== n; }), moiAvec()); },
       tete: (champ === 'qui') ? 'Moi' : null,
-      teteOn: function(){ return !window._gensListe(P.qui).length; },   /* ⚑ v199 (C-269 refaite) : personne d'autre = « moi » choisi */
-      teteChoisie: function(){ P.qui = 'Moi'; try{ window.newWhoSel = []; }catch(_){}
+      teteOn: function(){ return !window._gensListe(P.qui).length || moiAvec(); },   /* ⚑ v199 (C-269 refaite) : personne d'autre = « moi » choisi ; C-332 : ou coché à côté d'eux */
+      teteChoisie: function(){ var l = window._gensListe(P.qui);
+        if(l.length){ pose(l, !moiAvec()); return; }   /* C-332 : « Moi » se décoche ou se remet, les autres restent */
+        P.qui = 'Moi'; try{ window.newWhoSel = []; }catch(_){}
         try{ var w = document.getElementById('fWho'); if(w){ w.value = 'Moi'; w.dispatchEvent(new Event('input',{bubbles:true})); } }catch(_){} },
       rendu: function(){
         try{ window._phraseRendu(); }catch(_){}
@@ -34578,13 +34586,14 @@ function bati(){
     rend(host, {
       nat: 'nuee', cle: 'nuee-neuve',
       choisis: function(){ return M().slice(); },
-      ajoute: function(n){ window._nueeMoiSeul = false; if(M().indexOf(n)<0) M().push(n); },
-      retire: function(n){ var i = M().indexOf(n); if(i>=0) M().splice(i,1); },
+      ajoute: function(n){ window._nueeMoiSeul = false; if(!M().length) window._nueeMoiAvec = true; if(M().indexOf(n)<0) M().push(n); },   /* C-332 : « Moi » reste à côté du premier membre */
+      retire: function(n){ var i = M().indexOf(n); if(i>=0) M().splice(i,1); if(!M().length) window._nueeMoiAvec = false; },
       /* ⚑ v199 (Tom, C-269 refaite : « avec Moi au lieu de “tout le monde”, qui est remplacé ») — « Moi » choisi tant qu'aucun membre n'est ajouté, avec sa croix ;
          les données ne changent pas (aucun membre, comme le « tout le monde » d'avant) */
       tete: 'Moi',
-      teteOn: function(){ return !M().length; },
-      teteChoisie: function(){ window._nueeMoiSeul = false; window.newNueeMembers = []; },
+      teteOn: function(){ return !M().length || !!window._nueeMoiAvec; },
+      teteChoisie: function(){ if(M().length){ window._nueeMoiAvec = !window._nueeMoiAvec; return; }   /* C-332 : « Moi » se décoche ou se remet, les membres restent */
+        window._nueeMoiSeul = false; window.newNueeMembers = []; window._nueeMoiAvec = false; },
       rendu: function(){
         try{ if(window.buildNueeMembers) buildNueeMembers(); }catch(_){}
         try{ window._nueePhraseRendu(); }catch(_){}

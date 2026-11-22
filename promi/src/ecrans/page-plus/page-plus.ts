@@ -23,6 +23,7 @@ import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Brouillon } from '../../donnees/schema.ts';
 import { horloge } from '../../animation/horloge.ts';
+import { chargerTrace, type ControleTrace } from '../../animation/trace/trace.ts';
 import { masqueFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { palette } from '../../design/jetons.ts';
 import {
@@ -305,6 +306,15 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
   const typeExemple = (): TypeExemple => (P.nat === 'promi' ? P.sens : P.nat);
   const pluriel = (): boolean => P.qui.length > 1;
+  /**
+   * ⚑ C-332 (Tom, 22 nov. 2026) — « MOI » SE COCHE ET SE DÉCOCHE COMME N'IMPORTE QUELLE PERSONNE : on peut toujours le remettre, il coexiste
+   * avec les autres, le toucher ne retire jamais quelqu'un d'autre ; la liste n'est jamais vide (retirée la dernière, « Moi » revient). Il vit
+   * DANS la liste (`MOI`, en tête) dès qu'il est à côté de quelqu'un ; seul, la liste est vide et la place dit « moi » (C-304, en pointillés).
+   * La phrase dit ce qui est coché (« à moi, Maman ») ; la parole plantée et le gardé de côté portent les autres (le prototype : `newWhoSel`).
+   */
+  const MOI = T.moi;
+  const dits = (L: string[]): string[] => L.map((n) => (n === MOI ? T.vides.moi : n));
+  const autres = (L: string[]): string[] => L.filter((n) => n !== MOI);
 
   // ── LA PHRASE ──
   const pastille = (cle: string, texte: string, vide: boolean, attr = 'data-ph'): string =>
@@ -332,7 +342,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       const nom = P.nom.trim();
       const ex = exemple('nuee');
       // C-304 (v199, `lot-V199-MOI`) : la place « avec » touchée sans personne passe à « moi », comme celle d'un Promi ou d'un Chiche
-      const avec = P.membres.length ? P.membres.join(' · ') : P.moi ? T.vides.moi : T.vides.toutLeMonde;
+      const avec = P.membres.length ? dits(P.membres).join(' · ') : P.moi ? T.vides.moi : T.vides.toutLeMonde;
       const ici = saisieDe === 'nom';
       return (
         `<span class="ph-b ph-b-fixe">${esc(T.cercle)}</span><br>` +
@@ -342,9 +352,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     }
     const titre = titrePastille().html;
     if (n === 'chiche') {
-      const qui = P.qui.length ? P.qui.join(', ') + ',' : P.moi ? T.vides.moi : T.vides.quiOse;
+      const qui = P.qui.length ? dits(P.qui).join(', ') + ',' : P.moi ? T.vides.moi : T.vides.quiOse;
       const verbe = P.qui.length ? T.chiche.toLowerCase() : T.chiche;
-      const avec = P.avec.length ? P.avec.join(', ') : T.vides.quiEnEst;
+      const avec = P.avec.length ? dits(P.avec).join(', ') : T.vides.quiEnEst;
       return (
         `<em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}<br>` +
         `<span class="ph-b ph-b-fixe" data-ph="sens">${verbe}</span> <br>${titre}<br>` +
@@ -355,10 +365,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const verbe = (v: string): string => `<span class="ph-b" data-ph="sens">${esc(v)}${SVG_BASCULE}</span>`;
     if (P.sens === 'soi') return `${verbe(T.verbe.soi)} <br>${titre}`;
     if (P.sens === 'faire') {
-      const qui = P.qui.length ? P.qui.join(', ') : P.moi ? T.vides.moi : T.vides.qui;
+      const qui = P.qui.length ? dits(P.qui).join(', ') : P.moi ? T.vides.moi : T.vides.qui;
       return `${verbe(T.verbe.faire)} <br>${titre}<br><em>${T.liaisons.a}</em> ${pastille('qui', qui, !P.qui.length)}`;
     }
-    const prenom = P.qui.length ? P.qui.join(', ') + ',' : PRENOMS_EXEMPLE[prenomRang]!;
+    const prenom = P.qui.length ? dits(P.qui).join(', ') + ',' : PRENOMS_EXEMPLE[prenomRang]!;
     return `${pastille('qui', prenom, !P.qui.length)}<br>${verbe(pluriel() ? T.verbe.demanderPluriel : T.verbe.demander)} <br>${titre}`;
   }
 
@@ -541,7 +551,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const av = facade.dalleAvenir(magasin.etat().compteurs.nid, dw * dpr, dh * dpr, {
       chiche: P.nat === 'chiche',
       title: P.titre.trim(),
-      who: P.qui.length ? P.qui.join(', ') : 'moi',
+      who: autres(P.qui).length ? autres(P.qui).join(', ') : 'moi',
     });
     if (!av) return;
     if (sous) clip();
@@ -948,15 +958,15 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         qui: P.qui.join(', ') || 'Moi',
         avec: P.avec.join(', '),
       },
-      who: [...P.qui],
+      who: autres(P.qui),
       sens: P.sens,
       nom: P.nom.trim(),
-      membres: [...P.membres],
+      membres: autres(P.membres),
       pinceau: P.pinceau,
       note: P.note,
     };
     const titre = (P.nat === 'nuee' ? P.nom : P.titre).trim() || T.sansTitre;
-    const qui = P.qui.length ? P.qui.join(', ') : 'moi';
+    const qui = autres(P.qui).length ? autres(P.qui).join(', ') : 'moi';
     magasin.garderDeCote(b, titre, P.nat === 'nuee' ? T.leGroupe : qui, repris, Date.now());
     fermer();
   });
@@ -977,6 +987,75 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     return out;
   }
   const liste = (): string[] => (choix === 'qui' ? P.qui : choix === 'avec' ? P.avec : P.membres);
+  /** C-332 : une personne ajoutée à côté de « Moi » seul (la liste vide) ne le retire pas — sauf « promets-moi » (on demande à d'autres)
+   *  et « avec qui en est ? » d'un Chiche (pas de « Moi » dans ce choix) */
+  function ajouterA(L: string[], n: string): void {
+    if (!L.length && choix !== 'avec' && !(choix === 'qui' && P.nat === 'promi' && P.sens === 'demander')) L.push(MOI);
+    L.push(n);
+  }
+  /**
+   * un changement du choix des personnes : la liste change tout de suite (les pastilles avec elle) ; la place de la phrase se DÉTRACE, puis
+   * la phrase se recompose et la place neuve se TRACE (C-279, C-271 : aucun changement sec). Un toucher pendant le détracé change la liste ;
+   * la phrase se recompose à sa fin, avec ce qui est coché à ce moment-là.
+   */
+  let detrace: { el: HTMLElement; cle: string } | null = null;
+  let tracePlace: ControleTrace | null = null;
+  const selPlace = (cle: string): string => (P.nat === 'nuee' ? `.ph-m[data-np="avec"]` : `.ph-m[data-ph="${cle}"]`);
+  function changerPersonnes(mut: (L: string[]) => void): void {
+    const cle = choix;
+    if (!cle) return;
+    const L = liste();
+    mut(L);
+    // « Moi » seul n'est pas une personne ajoutée : la liste redevient vide, la place dit « moi » en pointillés (C-304)
+    if (L.length === 1 && L[0] === MOI) {
+      L.splice(0);
+      P.moi = true;
+    }
+    if (detrace) {
+      rendreChoix();
+      return;
+    }
+    const el0 = txt.querySelector<HTMLElement>(selPlace(cle));
+    let tl: ReturnType<typeof chargerTrace> | null = null;
+    try {
+      tl = chargerTrace();
+    } catch {
+      tl = null;
+    }
+    if (!el0 || !tl || reduit()) {
+      composer();
+      return;
+    }
+    tracePlace?.stop();
+    tracePlace = null;
+    detrace = { el: el0, cle };
+    rendreChoix();
+    const t = tl;
+    t.trace(enveloppe(el0), null, {
+      inverse: true,
+      surFin: () => {
+        detrace = null;
+        composer();
+        const el1 = txt.querySelector<HTMLElement>(selPlace(cle));
+        if (!el1) return;
+        const env = enveloppe(el1);
+        tracePlace = t.trace(env, null, {
+          surFin: () => {
+            tracePlace = null;
+            // l'enveloppe rendue : la place redevient ce que la phrase compose (son texte seul)
+            if (env.parentNode) env.replaceWith(...env.childNodes);
+          },
+        });
+      },
+    });
+  }
+  /** le texte d'une place dans une enveloppe : le tracé découpe le TEXTE, jamais l'encart — les pointillés ne clignotent pas (C-271, `.v200-mt`) */
+  function enveloppe(place: HTMLElement): HTMLElement {
+    const e = el('span', { class: 'ph-mt' });
+    e.append(...place.childNodes);
+    place.appendChild(e);
+    return e;
+  }
   function rendreChoix(): void {
     choixHote.innerHTML = '';
     choixHote.classList.toggle('ouvert', choix !== null);
@@ -991,12 +1070,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       return;
     }
     const pris = liste();
-    const noms = [...pris];
-    for (const n of connus()) if (!noms.includes(n) && noms.length < pris.length + 6) noms.push(n);
+    const noms = autres(pris);
+    for (const n of connus()) if (!noms.includes(n) && noms.length < autres(pris).length + 6) noms.push(n);
     const gn = el('div', { class: 'ph-opts gn', 'data-nat': P.nat });
     const gl = el('div', { class: 'gn-liste' });
     // « Moi » en tête, choisi tant que personne d'autre (C-269, v199) — dans un Cercle aussi (le prototype : la place « avec » passe à « moi »)
-    const teteOn = !pris.length;
+    const teteOn = !pris.length || pris.includes(MOI);
     const bouton = (nom: string, on: boolean, tetee: boolean): HTMLElement => {
       const b = el('button', { type: 'button', class: 'ph-o' + (on ? ' on' : '') });
       if (tetee) b.dataset['gnTete'] = '1';
@@ -1013,15 +1092,19 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         b.appendChild(x);
       }
       surToucher(b, (ev) => {
-        const L = liste();
-        if (tetee) L.splice(0);
-        else if ((ev.target as Element).closest('.ppo-x') || L.includes(nom)) L.splice(L.indexOf(nom), 1);
-        else L.push(nom);
-        composer();
+        changerPersonnes((L) => {
+          if (tetee) {
+            // C-332 : « Moi » se décoche (s'il reste seul, la liste vide le remet : jamais vide) ou se remet, à côté des autres
+            if (L.includes(MOI)) L.splice(L.indexOf(MOI), 1);
+            else if (L.length) L.unshift(MOI);
+          } else if ((ev.target as Element).closest('.ppo-x') || L.includes(nom)) L.splice(L.indexOf(nom), 1);
+          else ajouterA(L, nom);
+        });
       });
       return b;
     };
-    gl.appendChild(bouton(T.moi, teteOn, true));
+    // « avec qui en est ? » d'un Chiche n'a pas de « Moi » en tête (le prototype : `tete: (champ === 'qui') ? 'Moi' : null`)
+    if (choix !== 'avec') gl.appendChild(bouton(T.moi, teteOn, true));
     for (const n of noms) gl.appendChild(bouton(n, pris.includes(n), false));
     const ajout = el('div', { class: 'ph-o ph-add', role: 'button', tabindex: '0', 'data-add': '1' });
     rendreAjout(ajout);
@@ -1155,9 +1238,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     for (const c of connus()) if (c.toLowerCase() === n.toLowerCase()) n = c;
     gnIn.value = '';
     plusVu = false;
-    const L = liste();
-    if (!L.includes(n)) L.push(n);
-    composer();
+    changerPersonnes((L) => {
+      if (!L.includes(n)) ajouterA(L, n);
+    });
     // le nom est posé ; la zone se propose pour le suivant, le clavier reste
     gnIn.focus({ preventScroll: true });
     const z = zoneAjout();
@@ -1578,6 +1661,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   function ouvrir(nat: Nature): void {
     ranger();
     P = neuve(nat);
+    // un détracé, un tracé de la place qui court encore (C-332) : la page neuve ne les reprend pas
+    detrace = null;
+    tracePlace?.stop();
+    tracePlace = null;
     exemples = {};
     choix = null;
     saisieDe = null;
