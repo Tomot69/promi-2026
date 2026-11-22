@@ -677,6 +677,13 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       requestAnimationFrame(f);
     });
     const champ = nat === 'nuee' ? '#createSheet .ph-m[data-np="nom"]' : '#createSheet .ph-m[data-ph="titre"]';
+    await page.evaluate(() => {
+      for (const s of ['#csPinceau', '#createSheet .pp-garder']) {
+        const e = document.querySelector<HTMLElement>(s);
+        if (e && !e.hidden && getComputedStyle(e).display !== 'none' && getComputedStyle(e).visibility !== 'hidden')
+          e.dataset['avant'] = '1';
+      }
+    });
     // le toucher (appui puis lever, comme le doigt) — et, DANS SA TÂCHE, le mouvement part de la place d'avant : la mesure ne dépend pas
     // de la cadence des images (hors du Mac une image dure 0,7 s, le mouvement de 360 ms y tient dans une seule)
     const auToucher = (await page.evaluate(
@@ -687,13 +694,27 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
         e.dispatchEvent(new PointerEvent('pointerdown', o));
         e.dispatchEvent(new PointerEvent('pointerup', o));
         const c = document.getElementById('createSheet')!.getBoundingClientRect();
+        // ce qui part (le rail, « garder de côté » ; la barre pour un titre) : dans la tâche du toucher il est encore à l'écran — en flaques
+        // ou en train de glisser —, jamais retiré d'un coup
+        const ici = (e: Element | null): boolean =>
+          !!e &&
+          !(e as HTMLElement).hidden &&
+          getComputedStyle(e).display !== 'none' &&
+          getComputedStyle(e).visibility !== 'hidden';
+        const secs: string[] = [];
+        for (const s of ['#csPinceau', '#createSheet .pp-garder']) {
+          const e = document.querySelector(s);
+          if (e && (e as HTMLElement).dataset['avant'] === '1' && !ici(e)) secs.push(s);
+        }
         return {
           mv: (new Function(`return ${P as string}.pagePlus().etat().mouvement`) as () => boolean)(),
           ph: document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top,
+          secs,
+          barre: ici(document.getElementById('csBotBar')),
         };
       },
       [champ, P_] as const,
-    )) as { mv: boolean; ph: number };
+    )) as { mv: boolean; ph: number; secs: string[]; barre: boolean };
     await posee(page);
     const ouvert = (await page.evaluate(
       () => (window as unknown as { __m: Array<{ ph: number; barre: number }> }).__m,
@@ -715,6 +736,11 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     expect(Math.abs(auToucher.ph - avant), 'au toucher, la phrase est encore à sa place d’avant').toBeLessThanOrEqual(
       1,
     );
+    expect(
+      auToucher.secs,
+      'au toucher, ce qui part est encore à l’écran (en flaques), jamais retiré d’un coup (redteam_je)',
+    ).toEqual([]);
+    expect(auToucher.barre, 'au toucher, la barre est encore là : elle descend (§2.11), jamais d’un coup').toBe(true);
     const course = Math.abs(avant - phPosee);
     // les images intermédiaires : sur le Mac seulement (hors du Mac une image dure 0,7 s, le mouvement entier tient dans une)
     if (process.platform === 'darwin') {
@@ -751,15 +777,24 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
     const auRetour = (await page.evaluate((P) => {
       const c = document.getElementById('createSheet')!.getBoundingClientRect();
       const ph0 = document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top;
+      const ici = (e: Element | null): boolean =>
+        !!e &&
+        !(e as HTMLElement).hidden &&
+        getComputedStyle(e).display !== 'none' &&
+        getComputedStyle(e).visibility !== 'hidden';
+      const dejaAvant = ici(document.querySelector('#createSheet .ppo-dejas'));
       document.activeElement!.dispatchEvent(
         new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }),
       );
+      // C-303 : « DÉJÀ PROMIS » descend avec le clavier — sa copie est posée DANS la tâche de la validation, visible
+      const copie = document.querySelector('#createSheet .ppo-copie');
       return {
         ph0,
         mv: (new Function(`return ${P}.pagePlus().etat().mouvement`) as () => boolean)(),
         ph: document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top,
+        deja: !dejaAvant || ici(copie),
       };
-    }, P_)) as { ph0: number; mv: boolean; ph: number };
+    }, P_)) as { ph0: number; mv: boolean; ph: number; deja: boolean };
     await posee(page);
     await page.waitForTimeout(300);
     const R = (await page.evaluate(() => {
@@ -775,6 +810,9 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       Math.abs(auRetour.ph - auRetour.ph0),
       'à Retour, la phrase est encore à la place de saisie',
     ).toBeLessThanOrEqual(1);
+    expect(auRetour.deja, 'C-303 : à Retour, la copie de « DÉJÀ PROMIS » est là, elle descend (jamais d’un coup)').toBe(
+      true,
+    );
     // les images et la durée : sur le Mac seulement (hors du Mac une image dure 0,7 s)
     if (process.platform === 'darwin') {
       const fin = R.m.at(-1)!;
@@ -790,7 +828,9 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeLessThanOrEqual(460);
       expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeGreaterThanOrEqual(250);
     }
-    expect(R.partis, 'rien de ce qui peint ne part d’un coup (redteam_je)').toEqual([]);
+    // image par image : sur le Mac (hors du Mac le mouvement entier tient dans une image de 0,7 s — tout y « part d'un coup »)
+    if (process.platform === 'darwin')
+      expect(R.partis, 'rien de ce qui peint ne part d’un coup (redteam_je)').toEqual([]);
     expect(
       await page.evaluate(
         () =>
