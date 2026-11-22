@@ -21,6 +21,10 @@
 #dessinMode.ouv {
   display: block;
 }
+/* il part en flaques : il ne prend plus le doigt */
+#dessinMode.part {
+  pointer-events: none;
+}
 #dessinMode .dz-surface {
   position: absolute;
   left: 0;

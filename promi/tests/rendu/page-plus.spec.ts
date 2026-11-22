@@ -268,6 +268,8 @@ const CAS: Cas[] = [
   { nat: 'nuee', choix: null, etat: 'prete' },
   { nat: 'chiche', choix: '#csPhrase .ph-m[data-ph="qui"]', etat: 'personne' },
   { nat: 'promi', choix: null, etat: 'cercle' },
+  // (leurs titres : « identité au pixel : la page + promi, dessin, sombre », « … chiche, tailles, … », « … nuee, couleurs, … » ; la sonde
+  // dessin-sec retire leur passage en flaques)
   { nat: 'promi', choix: null, etat: 'dessin' },
   { nat: 'chiche', choix: null, etat: 'tailles' },
   { nat: 'nuee', choix: null, etat: 'couleurs' },
@@ -435,6 +437,16 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
       toucheSel(A, '#createSheet .ph-photo-btn', false),
     ]);
     await P.waitForTimeout(2000);
+    // ⚑ ÉCART NOMMÉ (Tom, 2b : « aucun changement sec ») : dans la vraie app le mode dessin paraît EN FLAQUES (C-329, son propre masque) ;
+    // le prototype le pose d'un coup. Le relevé de son passage (`data-flaques-mode`) est jugé après ; au repos, l'identité au pixel tient
+    await A.evaluate(() => {
+      const w = window as unknown as { __dzFl: string[] };
+      w.__dzFl = [];
+      const m = document.getElementById('dessinMode')!;
+      new MutationObserver(() => {
+        if (m.dataset['flaquesMode']) w.__dzFl.push(m.dataset['flaquesMode']);
+      }).observe(m, { attributes: true, attributeFilter: ['data-flaques-mode'] });
+    });
     for (const pg of [P, A])
       await pg.evaluate(() =>
         document.querySelector<HTMLElement>('#createSheet .ph-photo-menu [data-dessiner]')!.click(),
@@ -487,6 +499,13 @@ for (const theme of ['sombre', 'clair'] as const)
       try {
         const erreurs: string[] = [];
         A.on('pageerror', (e) => erreurs.push(String(e)));
+        // la sonde : la transition du mode dessin retirée (« réduire les animations » forcé dans la vraie app : il paraît d'un coup)
+        if (sonde('dessin-sec') && (c.etat === 'dessin' || c.etat === 'tailles' || c.etat === 'couleurs'))
+          await A.addInitScript(() => {
+            const m = window.matchMedia.bind(window);
+            window.matchMedia = (q: string) =>
+              /reduce/.test(q) ? ({ matches: true, media: q } as MediaQueryList) : m(q);
+          });
         await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
         await Promise.all([ouvrirPagePlus(P, c.nat, true), ouvrirPagePlus(A, c.nat)]);
         if (c.choix) await Promise.all([touchePlace(P, c.choix, true), touchePlace(A, c.choix, false)]);
@@ -520,6 +539,11 @@ for (const theme of ['sombre', 'clair'] as const)
         writeFileSync(join(RES, `${nom}-prototype.png`), ip);
         writeFileSync(join(RES, `${nom}-app.png`), ia);
         const e = ecart(ip, ia);
+        if (c.etat === 'dessin' || c.etat === 'tailles' || c.etat === 'couleurs')
+          expect(
+            await A.evaluate(() => (window as unknown as { __dzFl: string[] }).__dzFl),
+            'le mode dessin paraît en flaques (Tom, 2b ; le prototype : d’un coup — écart nommé)',
+          ).toContain('ouvre');
         expect(erreurs).toEqual([]);
         expect(
           { n: e.n, boite: e.boite },

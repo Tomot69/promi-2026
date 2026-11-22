@@ -3,5 +3,10 @@
     "nom": "pp-identite-decale",
     "test": "identité au pixel : la page + ",
     "defaut": "la phrase de la vraie app décalée d'un point (les huit tests d'identité : trois natures, le choix ouvert, clair et sombre)"
+  },
+  {
+    "nom": "dessin-sec",
+    "test": "identité au pixel : la page + promi, dessin, sombre",
+    "defaut": "le mode dessin paraît d'un coup (sa transition en flaques retirée)"
   }
 ]

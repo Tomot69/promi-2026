@@ -168,5 +168,10 @@
     "nom": "date-sec",
     "test": "Peaufiner, ses choix : l’échéance, le Cercle",
     "defaut": "la date choisie change d'un coup, sans détracé ni tracé"
+  },
+  {
+    "nom": "dessin-sec-juge",
+    "test": "le dessin de la page + : tracer, annuler",
+    "defaut": "le mode dessin paraît et part d'un coup"
   }
 ]

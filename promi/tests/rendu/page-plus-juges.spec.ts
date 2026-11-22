@@ -1815,6 +1815,11 @@ test('le dessin de la page + : tracer, annuler, sortir sans poser, poser dans la
   test.setTimeout(150000);
   await ouvrir(page, 'promi');
   // les sondes : le trait ne suit pas le doigt ; POSER ne pose rien dans la bande
+  if (sonde('dessin-sec-juge'))
+    await page.evaluate(() => {
+      const m = window.matchMedia.bind(window);
+      window.matchMedia = (q: string) => (/reduce/.test(q) ? ({ matches: true, media: q } as MediaQueryList) : m(q));
+    });
   if (sonde('dessin-sourd'))
     await page.addStyleTag({ content: '#dessinMode .dz-surface{pointer-events:none!important}' });
   if (sonde('dessin-bande-vide'))
@@ -1877,6 +1882,15 @@ test('le dessin de la page + : tracer, annuler, sortir sans poser, poser dans la
       },
       [sel, y0, y1] as const,
     );
+  // ⚑ 2b (Tom) : le mode paraît et part EN FLAQUES (C-329) — son passage relevé (`data-flaques-mode`)
+  await page.evaluate(() => {
+    const w = window as unknown as { __dzFl: string[] };
+    w.__dzFl = [];
+    const m = document.getElementById('dessinMode')!;
+    new MutationObserver(() => {
+      if (m.dataset['flaquesMode']) w.__dzFl.push(m.dataset['flaquesMode']);
+    }).observe(m, { attributes: true, attributeFilter: ['data-flaques-mode'] });
+  });
   await menu('Dessiner');
   expect(
     await dz(),
@@ -1906,6 +1920,15 @@ test('le dessin de la page + : tracer, annuler, sortir sans poser, poser dans la
   await page.evaluate(() => document.querySelector<HTMLElement>('#dessinMode .dz-quitter')!.click());
   await page.waitForTimeout(300);
   expect(await dz(), 'sorti').toBeNull();
+  await page.waitForTimeout(400);
+  expect(
+    await page.evaluate(() => (window as unknown as { __dzFl: string[] }).__dzFl),
+    'il a paru et il est parti en flaques, jamais d’un coup',
+  ).toEqual(expect.arrayContaining(['ouvre', 'couvre']));
+  expect(
+    await page.evaluate(() => getComputedStyle(document.getElementById('dessinMode')!).display),
+    'parti : il n’en reste rien',
+  ).toBe('none');
   const p1 = await ph();
   expect([p1.dessin?.traits.length, p1.dessin?.pose], 'gardé, pas posé').toEqual([1, false]);
   // 4 · une photo dans la bande, puis POSER : le dessin la remplace

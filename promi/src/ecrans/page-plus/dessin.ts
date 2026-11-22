@@ -17,6 +17,7 @@ import './dessin.css';
 import { palette } from '../../design/jetons.ts';
 import { ICONES } from '../accueil/icones.ts';
 import type { Horloge } from '../../animation/horloge.ts';
+import { masqueFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 
 export type Nature = 'promi' | 'chiche' | 'nuee';
 
@@ -341,6 +342,36 @@ export function creerModeDessin(o: {
   };
   let M: Etat | null = null;
   const H = (): number => dv.offsetHeight || 844;
+  const reduit = (): boolean => {
+    try {
+      return matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch {
+      return false;
+    }
+  };
+  /**
+   * ⚑ 2b (Tom : « la règle de Tom prime, aucun changement sec ») — le mode paraît et part EN FLAQUES (C-329 : la scène du passage, posée en
+   * MASQUE sur le mode lui-même, 300 ms) ; le prototype le pose d'un coup (écart nommé, test d'identité). Pendant qu'il part, il ne prend plus
+   * le doigt. « Réduire les animations » : d'un coup.
+   */
+  let passage: ControlePassage | null = null;
+  function enFlaques(sens: 'paraît' | 'part', fin?: () => void): void {
+    passage?.stop?.();
+    passage = null;
+    if (reduit()) {
+      fin?.();
+      return;
+    }
+    const c = masqueFlaques(r, {
+      mode: sens === 'paraît' ? 'ouvre' : 'couvre',
+      duree: 300,
+      fin: (x) => {
+        if (passage === c) passage = null;
+        if (!x.arrete) fin?.();
+      },
+    });
+    if (!c.arrete) passage = c;
+  }
 
   const r = document.createElement('div');
   r.id = 'dessinMode';
@@ -934,7 +965,9 @@ export function creerModeDessin(o: {
     fondPose(M);
     repeint();
     batir();
+    r.classList.remove('part');
     r.classList.add('ouv');
+    enFlaques('paraît');
   }
   function sortir(poser: boolean): void {
     const m = M;
@@ -950,11 +983,15 @@ export function creerModeDessin(o: {
         m.c.ecrire(d);
       } else m.c.ecrire(null);
     } else m.c.ecrire(d.traits.length || dessinPose(d) ? d : null);
-    r.classList.remove('ouv');
-    for (const e of r.querySelectorAll('.dz-deploi')) e.remove();
-    rangee.textContent = '';
     M = null;
+    // la page dessous se repeint tout de suite (la bande montre le dessin posé) ; le mode part en flaques par-dessus
     m.c.apres(poser && d.traits.length > 0);
+    r.classList.add('part');
+    enFlaques('part', () => {
+      r.classList.remove('ouv', 'part');
+      for (const e of r.querySelectorAll('.dz-deploi')) e.remove();
+      rangee.textContent = '';
+    });
   }
   return {
     ouvrir,
