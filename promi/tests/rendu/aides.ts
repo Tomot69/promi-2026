@@ -257,7 +257,22 @@ export async function refermerPagePlus(page: Page): Promise<void> {
     .then(() => true)
     .catch(() => false);
   if (ok) return;
-  throw new Error('refermerPagePlus : le X touché une fois, posé, la page + ne s’est pas refermée');
+  // ce qui était sous le doigt et l'état de la page, pour nommer la cause
+  const diag = await page.evaluate(
+    ([x, y]) => {
+      const c = document.getElementById('createSheet')!;
+      const e = document.elementFromPoint(x!, y!);
+      const nom = (n: Element | null): string =>
+        n
+          ? n.tagName.toLowerCase() +
+            (n.id ? '#' + n.id : '') +
+            (n.className && typeof n.className === 'string' ? '.' + n.className.trim().replace(/\s+/g, '.') : '')
+          : '∅';
+      return `sous le doigt : ${nom(e)} (parent ${nom(e?.parentElement ?? null)}) ; #createSheet : ${c.className}, hidden ${String(c.hidden)}`;
+    },
+    [x[0], x[1]],
+  );
+  throw new Error(`refermerPagePlus : le X touché une fois, posé, la page + ne s’est pas refermée — ${diag}`);
 }
 
 /** les trois pages + (lot 2a) : des écrans portés, jugés par tout le socle (ECRANS_PORTES) */

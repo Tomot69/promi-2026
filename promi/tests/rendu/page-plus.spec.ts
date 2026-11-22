@@ -65,7 +65,8 @@ async function matiere(pg: Page): Promise<Zone | null> {
 async function zones(A: Page, P: Page): Promise<Zone[]> {
   const ms = (await Promise.all([matiere(A), matiere(P)])).filter((z): z is Zone => !!z);
   const peauf = await A.evaluate(() => document.getElementById('createSheet')!.classList.contains('pp-peauf'));
-  const autres = (await A.evaluate(() => {
+  const horsMac = process.platform !== 'darwin';
+  const autres = (await A.evaluate((horsMac) => {
     const z: number[][] = [];
     const C = document.getElementById('createSheet')!.getBoundingClientRect();
     const vu = (e: Element): boolean => {
@@ -86,8 +87,16 @@ async function zones(A: Page, P: Page): Promise<Zone[]> {
       const b = g.getBoundingClientRect();
       z.push([b.left - C.left - 4, b.top - C.top - 4, b.width + 8, b.height + 8]);
     }
+    // HORS DU MAC SEULEMENT — le texte flouté des murs de Peaufiner (4,8 px, illisible par décision ; leur phrase au lot 8) : sa coupe dépend des
+    // métriques de police du système, et sous Linux le prototype et l'app ne la font pas tomber au même endroit (la valeur déborde d'un côté,
+    // finit par « … » de l'autre). Dans WebKit sur le Mac (la référence : l'iPhone de Tom), identique au pixel, et jugé là. Le contour, lui, reste jugé.
+    if (horsMac)
+      for (const m of document.querySelectorAll('#csPeauf .s2-cercle .s2-reg')) {
+        const b = m.getBoundingClientRect();
+        if (b.height) z.push([b.left - C.left + 6, b.top - C.top + 6, b.width - 12, b.height - 12]);
+      }
     return z;
-  })) as Zone[];
+  }, horsMac)) as Zone[];
   if (!ms.length || peauf) return autres;
   const x0 = Math.min(...ms.map((m) => m[0])) - 8,
     y0 = Math.min(...ms.map((m) => m[1])) - 8;
@@ -231,20 +240,52 @@ const CAS: Cas[] = [
   { nat: 'nuee', choix: null, etat: 'photo' },
 ];
 
+/**
+ * le prototype POSÉ : plus rien ne se trace et aucune transition CSS ne court dans sa page + (les animations sans fin — le I qui clignote,
+ * le curseur — ne comptent pas), deux relevés de suite à 400 ms. Hors du Mac une image dure 0,7 s : ses minuteurs finissent bien après des
+ * durées fixes, et la feuille de gel (GEL) posée au milieu d'une transition la coupe — sa fin n'arrive jamais, le prototype reste figé à
+ * mi-chemin (la place « moi » vide, la liaison pas tracée). 60 s au plus ; au-delà on continue, et l'identité le dira.
+ */
+async function protoPose(P: Page): Promise<void> {
+  const calme = (): Promise<boolean> =>
+    P.evaluate(() => {
+      const w = window as unknown as { TraceLettres?: { actif(): boolean } };
+      if (w.TraceLettres?.actif()) return false;
+      return !document.getAnimations().some((a) => {
+        if (a.playState !== 'running') return false;
+        const t = (a.effect as KeyframeEffect | null)?.target;
+        if (!(t instanceof Element) || !t.closest('#createSheet')) return false;
+        const it = (a.effect as KeyframeEffect).getTiming().iterations;
+        return it !== Infinity;
+      });
+    });
+  const t0 = Date.now();
+  while (Date.now() - t0 < 60000) {
+    if (await calme()) {
+      await P.waitForTimeout(400);
+      if (await calme()) return;
+    }
+    await P.waitForTimeout(250);
+  }
+}
+
 /** l'état demandé, des deux côtés (le prototype écoute le clic ; on attend la fin de ses minuteurs, et dans la vraie app la fin des mouvements) */
 async function poser(P: Page, A: Page, c: Cas): Promise<void> {
   const titre = c.nat === 'nuee' ? '.pp-phrase .ph-m[data-np="nom"]' : '.pp-phrase .ph-m[data-ph="titre"]';
   if (c.etat === 'saisie' || c.etat === 'tape') {
     await finTrace(P);
+    await protoPose(P);
     await Promise.all([toucheSel(P, titre, true), toucheSel(A, titre, false)]);
     await P.waitForTimeout(2500);
     if (c.etat === 'tape') {
+      await protoPose(P);
       await P.keyboard.type('appeler Lou');
       await A.keyboard.type('appeler Lou');
       await P.waitForTimeout(2500);
     }
   }
   if (c.etat === 'prenom') {
+    await protoPose(P);
     await Promise.all([toucheSel(P, '#createSheet .ph-add', true), toucheSel(A, '#createSheet .ph-add', false)]);
     await P.waitForTimeout(2500);
     await P.keyboard.type('Lou');
@@ -252,10 +293,12 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
     await P.waitForTimeout(2500);
   }
   if (c.etat === 'peauf') {
+    await protoPose(P);
     await Promise.all([toucheSel(P, '#csBotBar', true), toucheSel(A, '#csBotBar', false)]);
     await P.waitForTimeout(2000);
   }
   if (c.etat === 'photo') {
+    await protoPose(P);
     await Promise.all([
       toucheSel(P, '#createSheet .ph-photo-btn', true),
       toucheSel(A, '#createSheet .ph-photo-btn', false),
@@ -263,6 +306,7 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
     await P.waitForTimeout(2000);
   }
   if (c.etat) await finApp(A);
+  await protoPose(P);
 }
 
 for (const theme of ['sombre', 'clair'] as const)
