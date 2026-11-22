@@ -158,5 +158,15 @@
     "nom": "garde-sans-photo",
     "test": "la photo et le dessin d’un gardé de côté",
     "defaut": "garder de côté perd la photo et le dessin de la bande"
+  },
+  {
+    "nom": "date-hors-doigt",
+    "test": "Peaufiner, ses choix : l’échéance, le Cercle",
+    "defaut": "le champ date ne prend pas le doigt : iOS n'ouvre pas son calendrier (le défaut vu par Tom)"
+  },
+  {
+    "nom": "date-sec",
+    "test": "Peaufiner, ses choix : l’échéance, le Cercle",
+    "defaut": "la date choisie change d'un coup, sans détracé ni tracé"
   }
 ]

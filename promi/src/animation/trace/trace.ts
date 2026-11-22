@@ -59,3 +59,30 @@ export function chargerTrace(): TraceLettres {
   charge = t;
   return t;
 }
+
+/**
+ * C-279, C-271 — UN TEXTE QUI CHANGE SE DÉTRACE, PUIS LE NOUVEAU SE TRACE (le prototype : `_douceur.valeur` → détracé puis tracé, les valeurs
+ * de Peaufiner, v203) : le même module, la même cadence. « Réduire les animations » : le texte change d'un coup.
+ */
+export function changerTexte(el: HTMLElement, ancien: string, neuf: string): void {
+  let reduit = false;
+  try {
+    reduit = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  } catch {
+    reduit = false;
+  }
+  if (reduit || ancien === neuf || !ancien) {
+    el.textContent = neuf;
+    return;
+  }
+  const t = chargerTrace();
+  el.textContent = ancien;
+  t.trace(el, null, {
+    inverse: true,
+    surFin: () => {
+      if (!el.isConnected) return;
+      el.textContent = neuf;
+      t.trace(el, null);
+    },
+  });
+}

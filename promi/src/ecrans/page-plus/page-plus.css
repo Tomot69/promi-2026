@@ -1046,9 +1046,20 @@
   box-shadow: none;
   color: var(--c-bleu45);
 }
+/* le vrai champ date couvre sa pastille, invisible : le doigt le touche lui-même, iOS ouvre son calendrier (16 px : iOS ne zoome pas) */
 #csPeauf .chip .due-datein {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
   opacity: 0;
-  pointer-events: none;
+  font-size: 16px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 1;
 }

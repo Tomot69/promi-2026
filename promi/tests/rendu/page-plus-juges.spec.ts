@@ -1508,6 +1508,14 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
   await ouvrir(page, 'promi', ls);
   // les sondes : les pastilles ne prennent plus le doigt ; planter perd l'échéance et le Cercle
   if (sonde('peauf-choix-sourd')) await page.addStyleTag({ content: '#csPeauf .chip{pointer-events:none!important}' });
+  if (sonde('date-hors-doigt'))
+    await page.addStyleTag({ content: '#csPeauf .chip .due-datein{pointer-events:none!important}' });
+  if (sonde('date-sec'))
+    await page.evaluate(() => {
+      // « réduire les animations » forcé : la valeur change d'un coup
+      const m = window.matchMedia.bind(window);
+      window.matchMedia = (q: string) => (/reduce/.test(q) ? ({ matches: true, media: q } as MediaQueryList) : m(q));
+    });
   if (sonde('peauf-choix-perdus'))
     await page.evaluate(
       `(() => { const m = ${P_}.magasin; const f = m.planter.bind(m); m.planter = (p, t) => f({ ...p, due: null, dueISO: null, cercle: null }, t); })()`,
@@ -1570,6 +1578,8 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
     );
     await page.mouse.click(xy[0]!, xy[1]!);
     await page.waitForTimeout(300);
+    // la valeur change par détracé puis tracé (C-279) : on la lit une fois écrite
+    await page.waitForFunction(`!window.TraceLettres?.actif()`, undefined, { timeout: 10000 });
   };
   await doigt(page, '#csBotBar');
   await posee(page);
@@ -1599,13 +1609,56 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
     d.setDate(d.getDate() + 10);
     return `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
   });
-  await page.evaluate((iso) => {
-    const i = document.querySelector<HTMLInputElement>('#dueChips .due-datein')!;
-    i.value = iso;
-    i.dispatchEvent(new Event('change', { bubbles: true }));
-  }, iso);
+  // ⚑ 2b (Tom, sur l'iPhone : le calendrier ne s'ouvrait pas) — le banc ne voit pas le sélecteur natif d'iOS (Tom le vérifie sur l'iPhone,
+  // R3) ; il juge ce qui le rend possible : sous le doigt, au centre de « une date… », c'est le VRAI champ date (iOS ouvre alors son
+  // calendrier lui-même) ; puis il joue iOS — une date posée à l'ouverture du calendrier (le jour même), puis le jour choisi : la valeur
+  // change EN PLACE par détracé puis tracé, la rangée reste ouverte ; le calendrier refermé (`blur`), elle se replie, la date enregistrée
+  const sousDoigt = await page.evaluate(() => {
+    const c = [...document.querySelectorAll<HTMLElement>('#dueChips .chip')].find((x) =>
+      x.textContent?.startsWith('une date'),
+    )!;
+    const r = c.getBoundingClientRect();
+    return (
+      (document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) as HTMLElement | null)?.className ?? ''
+    );
+  });
+  expect(sousDoigt, 'sous le doigt, le vrai champ date : iOS ouvre son calendrier (le toucher, pas un script)').toBe(
+    'due-datein',
+  );
+  const jourMeme = await page.evaluate(() => {
+    const d = new Date();
+    return `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  });
+  const pose = (v: string): Promise<void> =>
+    page.evaluate((v) => {
+      const i = document.querySelector<HTMLInputElement>('#dueChips .due-datein')!;
+      i.value = v;
+      i.dispatchEvent(new Event('change', { bubbles: true }));
+    }, v);
+  await pose(jourMeme);
+  await page.waitForFunction(`!window.TraceLettres?.actif()`, undefined, { timeout: 10000 });
+  await pose(iso);
+  // (le détracé part à l'image qui suit)
+  const trace = await page
+    .waitForFunction(`!!window.TraceLettres?.actif()`, undefined, { timeout: 2000 })
+    .then(() => true)
+    .catch(() => false);
+  const pendant = await page.evaluate(
+    (trace) => ({
+      trace,
+      ouv: document.querySelector('#dueChips')!.closest('.s2-reg')!.classList.contains('s2-ouv'),
+    }),
+    trace,
+  );
+  expect(pendant.trace, 'la valeur change par détracé puis tracé (C-279), jamais d’un coup').toBe(true);
+  expect(pendant.ouv, 'le calendrier ouvert : la rangée reste ouverte (rebâtie, elle le refermait)').toBe(true);
+  await page.waitForFunction(`!window.TraceLettres?.actif()`, undefined, { timeout: 10000 });
+  await page.evaluate(() =>
+    document.querySelector<HTMLInputElement>('#dueChips .due-datein')!.dispatchEvent(new Event('blur')),
+  );
   await page.waitForTimeout(300);
   a = await lit('AVANT');
+  expect(a.ouv, 'le calendrier refermé : la rangée se replie').toBe(false);
   expect([(await ph()).due, (await ph()).dueISO], 'une date : dans 10 jours').toEqual([10, iso]);
   expect(a.val, 'la valeur dit le jour (« lundi 12 »)').toMatch(
     /^(dimanche|lundi|mardi|mercredi|jeudi|vendredi|samedi) \d+$/,
@@ -1654,6 +1707,7 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
     { name: 'plan.png', mimeType: 'image/png', buffer: Buffer.from('b') },
   ]);
   await page.waitForTimeout(300);
+  await page.waitForFunction(`!window.TraceLettres?.actif()`, undefined, { timeout: 10000 });
   expect([(await ph()).fichiers, (await lit('PIÈCES JOINTES')).val]).toEqual([
     ['billet.pdf', 'plan.png'],
     '2 fichiers',

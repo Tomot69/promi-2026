@@ -23,7 +23,7 @@ import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Brouillon } from '../../donnees/schema.ts';
 import { horloge } from '../../animation/horloge.ts';
-import { chargerTrace, type ControleTrace } from '../../animation/trace/trace.ts';
+import { chargerTrace, changerTexte, type ControleTrace } from '../../animation/trace/trace.ts';
 import { masqueFlaques, passageFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { palette } from '../../design/jetons.ts';
 import {
@@ -2276,8 +2276,26 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
           });
           c.textContent = mot;
           if (d === 'date') {
-            const di = el('input', { type: 'date', class: 'due-datein', 'aria-label': mot });
+            // ⚑ 2b (Tom, sur l'iPhone : « le calendrier ne s'ouvre pas ») — LA CAUSE : le sélecteur était ouvert au lever du doigt
+            // (`pointerup`), que la WebView d'iOS ne compte pas comme un geste : `showPicker()` y est refusé, et le repli `focus()` visait
+            // un champ invisible qui ne prenait pas le doigt. Le vrai champ date COUVRE la pastille (invisible) : le doigt le touche
+            // lui-même, et c'est iOS qui ouvre son calendrier. Ailleurs (un ordinateur), son clic l'ouvre (`showPicker`, dans le geste).
+            const t0 = new Date();
+            const di = el('input', {
+              type: 'date',
+              class: 'due-datein',
+              'aria-label': mot,
+              min: `${String(t0.getFullYear())}-${String(t0.getMonth() + 1).padStart(2, '0')}-${String(t0.getDate()).padStart(2, '0')}`,
+            });
+            if (P.dueISO) di.value = P.dueISO;
             c.appendChild(di);
+            di.addEventListener('click', () => {
+              try {
+                di.showPicker();
+              } catch {
+                /* iOS l'ouvre lui-même (le doigt sur le champ) */
+              }
+            });
             di.addEventListener('change', () => {
               if (!di.value) return;
               const t0 = new Date();
@@ -2285,24 +2303,23 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
               const pk = new Date(di.value + 'T00:00:00');
               P.due = Math.max(0, Math.round((pk.getTime() - t0.getTime()) / 86400000));
               P.dueISO = di.value;
+              const avant = P.ech;
               P.ech = dateQuand(pk, P.due);
               P.echChoisie = true;
               majGarder();
-              rendrePeauf();
+              // iOS pose une date (celle du jour) dès que son calendrier s'ouvre, puis à chaque jour touché : la valeur change EN PLACE
+              // (détracé puis tracé), la pastille se coche ; la rangée ne se replie qu'à la fermeture du calendrier (`blur`) — rebâtie
+              // ici, elle refermait le calendrier avant qu'on ait choisi
+              for (const x of ch.querySelectorAll('.chip')) x.classList.toggle('on', x === c);
+              const v = ra.querySelector<HTMLElement>('.s2-val');
+              if (v) changerTexte(v, avant, P.ech);
+            });
+            di.addEventListener('blur', () => {
+              if (P.dueISO && peaufOuverte === L.avant) rendrePeauf();
             });
           }
           surToucher(c, () => {
-            if (d === 'date') {
-              const di = c.querySelector<HTMLInputElement>('input')!;
-              const t0 = new Date();
-              di.min = `${String(t0.getFullYear())}-${String(t0.getMonth() + 1).padStart(2, '0')}-${String(t0.getDate()).padStart(2, '0')}`;
-              try {
-                di.showPicker();
-              } catch {
-                di.focus();
-              }
-              return;
-            }
+            if (d === 'date') return;
             P.due = d;
             P.dueISO = null;
             P.ech = mot;
@@ -2388,7 +2405,16 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const murs = el('div', { class: 's2-cercle', 'data-mur': '', 'aria-hidden': 'true' });
     L.murs.forEach(([lab, val], i) => murs.appendChild(rang(lab, val, i === L.murs.length - 1 ? ' s2-couleur' : '')));
     liste.appendChild(murs);
+    // C-279 : une valeur qui a changé (un choix fait) se détrace, puis la neuve se trace — jamais d'un coup
+    const avant = new Map<string, string>();
+    for (const rg of peauf.querySelectorAll('.s2-reg'))
+      avant.set(rg.querySelector('.s2-lab')?.textContent ?? '', rg.querySelector('.s2-val')?.textContent ?? '');
     peauf.replaceChildren(liste);
+    for (const rg of liste.querySelectorAll('.s2-reg')) {
+      const v = rg.querySelector<HTMLElement>('.s2-val');
+      const a = avant.get(rg.querySelector('.s2-lab')?.textContent ?? '');
+      if (v && a != null && a !== v.textContent) changerTexte(v, a, v.textContent ?? '');
+    }
   }
   /** un mot qui change (le chevron ▾ ↔ ▴) part en flaques, puis le neuf paraît en flaques (C-271) */
   function echange(e: HTMLElement, texte: string): void {
