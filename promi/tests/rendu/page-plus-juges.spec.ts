@@ -230,7 +230,8 @@ test('la phrase tient dans ses marges : l’exemple passe à la ligne plutôt qu
 }) => {
   await ouvrir(page, 'chiche');
   // la sonde : la phrase décalée de 40 pt (sa marge droite n'est plus celle de gauche : elle sort par la droite)
-  if (sonde('marges-deborde')) await page.addStyleTag({ content: '#createSheet .pp-phrase{translate:40px 0!important}' });
+  if (sonde('marges-deborde'))
+    await page.addStyleTag({ content: '#createSheet .pp-phrase{translate:40px 0!important}' });
   for (const nat of ['chiche', 'promi', 'nuee'] as const) {
     await page.evaluate(`${P_}.pagePlus().ouvrir('${nat}')`);
     await page.waitForTimeout(100);
