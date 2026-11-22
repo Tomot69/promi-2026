@@ -400,9 +400,14 @@ test('la saisie : le clavier s’ouvre dans le geste, la frappe remplit la pasti
   );
   const p = await page.evaluate(() => {
     const m = document.querySelector('#createSheet .ph-m[data-ph="titre"]')!;
-    return { vide: m.classList.contains('ph-vide'), bord: getComputedStyle(m).borderTopStyle };
+    return {
+      vide: m.classList.contains('ph-vide'),
+      bord: getComputedStyle(m).borderTopStyle,
+      fond: getComputedStyle(m).backgroundColor,
+    };
   });
-  expect(p).toEqual({ vide: false, bord: 'solid' });
+  // contrat remis au niveau du prototype rendu (fin du 2a : « remplie = crème / encre ; vide = 3 px pointillé ») — il attendait un contour plein
+  expect(p).toEqual({ vide: false, bord: 'none', fond: 'rgb(247, 240, 222)' });
   expect((await etat(page)).gardeActif, 'la page a changé : « garder de côté » actif').toBe(true);
 });
 
@@ -507,4 +512,591 @@ test('C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; 
     await page.waitForFunction(() => document.getElementById('createSheet')!.hidden, undefined, { timeout: 20000 });
   }
   expect(fautes).toEqual([]);
+});
+
+// ══════════════════════════════════════ FIN DU 2a ══════════════════════════════════════
+
+/** un toucher au doigt (appui puis lever, sans souris) au centre d'un élément */
+async function doigt(page: Page, sel: string): Promise<void> {
+  await page.evaluate((s) => {
+    const e = document.querySelector<HTMLElement>(s)!;
+    const r = e.getBoundingClientRect();
+    const o = { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, pointerId: 31 };
+    e.dispatchEvent(new PointerEvent('pointerdown', o));
+    e.dispatchEvent(new PointerEvent('pointerup', o));
+  }, sel);
+  await page.waitForTimeout(150);
+}
+/** plus aucun mouvement de la page, plus aucun passage en flaques */
+const posee = (page: Page): Promise<unknown> =>
+  page.waitForFunction(
+    `!document.querySelector('#createSheet [data-flaques-mode]') && !${P_}.pagePlus().etat().mouvement`,
+    undefined,
+    { timeout: 20000 },
+  );
+
+// ── redteam_gens (le Cercle), redteam_moi_toucher (C-304) — le choix d'un Cercle est celui du prototype (lot-GENS) : la place « avec » passe
+//    à « moi », « Moi » en tête et choisi (avec sa croix), un membre ajouté le remplace, retiré seul il revient ; Gilbert 23,1, « Moi » au
+//    mauve profond #291547 (`#nueePhrase .gn .ph-o.on{background:var(--c-mauve12)}`), 25 pt sous la phrase (`#nueeChoix .gn{margin-top:25px}`) ──
+test('le choix d’un Cercle : « avec moi », « Moi » en tête et choisi, au mauve profond, Gilbert 23,1 ; un membre le remplace, retiré seul il revient (redteam_gens, C-304)', async ({
+  page,
+}) => {
+  await ouvrir(page, 'nuee');
+  // la sonde : les pastilles d'un Cercle à la taille de celles d'un Chiche (le défaut d'avant : le choix d'un Chiche à la place)
+  if (sonde('cercle-chiche'))
+    await page.addStyleTag({
+      content: '#createSheet.pp-nuee .gn .ph-o{font-size:16px!important;line-height:16px!important}',
+    });
+  await doigt(page, '#createSheet .ph-m[data-np="avec"]');
+  await posee(page);
+  const r = await page.evaluate(() => {
+    const ph = document.querySelector('#createSheet .ph-txt')!;
+    const b = [...document.querySelectorAll<HTMLElement>('#createSheet .gn .ph-o:not(.ph-add)')];
+    const t = b[0]!;
+    const s = getComputedStyle(t);
+    const g = document.querySelector('#createSheet .gn')!.getBoundingClientRect();
+    return {
+      avec: (ph.textContent ?? '').replace(/\s+/g, ' ').trim(),
+      tete: t.textContent,
+      on: t.classList.contains('on'),
+      croix: !!t.querySelector('.ppo-x'),
+      fond: s.backgroundColor,
+      taille: s.fontSize,
+      air: g.top - ph.getBoundingClientRect().bottom,
+    };
+  });
+  expect(r.avec, 'la place « avec » passe à « moi » (C-304)').toMatch(/avec moi$/);
+  expect([r.tete, r.on, r.croix], '« Moi » en tête, choisi, avec sa croix').toEqual(['MMoi', true, true]);
+  expect(r.fond, '« Moi » choisi au mauve profond #291547').toBe('rgb(41, 21, 71)');
+  expect(r.taille, 'Gilbert 23,1 (le prototype : `#createSheet .ph-o{font-size:23.1px}`)').toBe('23.1px');
+  expect(Math.round(r.air), '25 pt sous la phrase').toBe(25);
+  await doigt(page, '#createSheet .gn .ph-o[data-v="Maman"]');
+  const e1 = await etat(page);
+  expect((e1.phrase as unknown as { membres: string[] }).membres, 'un membre ajouté').toEqual(['Maman']);
+  expect(
+    await page.evaluate(() => document.querySelector('#createSheet .gn .ph-o[data-gn-tete]')!.classList.contains('on')),
+    '« Moi » n’est plus choisi',
+  ).toBe(false);
+  await doigt(page, '#createSheet .gn .ph-o[data-v="Maman"] .ppo-x');
+  await doigt(page, '#createSheet .gn .ph-o[data-gn-tete] .ppo-x');
+  const fin = await page.evaluate(() => ({
+    tete: document.querySelector('#createSheet .gn .ph-o[data-gn-tete]')!.classList.contains('on'),
+    avec: (document.querySelector('#createSheet .ph-txt')!.textContent ?? '').replace(/\s+/g, ' ').trim(),
+  }));
+  expect(fin, 'retiré seul, « Moi » revient ; la place dit « moi »').toEqual({
+    tete: true,
+    avec: expect.stringMatching(/avec moi$/) as unknown as string,
+  });
+});
+
+// ── redteam_clavier_doux (Q598, v177a), C-234 (v180b), redteam_je (C-303, v210) — la saisie ouvre la page « montée » d'un MOUVEMENT, la
+//    fermeture du clavier la rend à sa place d'un mouvement : 360 ms (décidé : 300 à 400), jamais d'un coup ; « DÉJÀ PROMIS » paraît en
+//    flaques et, à la validation, sa copie descend : rien ne disparaît d'un coup ──
+/** les titres écrits en toutes lettres (outils/sondes.ts retrouve le test d'une sonde par son titre) */
+const SAISIE: Record<Nat, string> = {
+  promi:
+    'la saisie, promi : la page monte et revient d’un mouvement de 360 ms, jamais d’un coup ; rien ne part d’un coup (redteam_clavier_doux, redteam_je)',
+  chiche:
+    'la saisie, chiche : la page monte et revient d’un mouvement de 360 ms, jamais d’un coup ; rien ne part d’un coup (redteam_clavier_doux, redteam_je)',
+  nuee: 'la saisie, nuee : la page monte et revient d’un mouvement de 360 ms, jamais d’un coup ; rien ne part d’un coup (redteam_clavier_doux, redteam_je)',
+};
+for (const nat of ['promi', 'chiche', 'nuee'] as const)
+  test(SAISIE[nat], async ({ page }) => {
+    await ouvrir(page, nat);
+    // la sonde : « Réduire les animations » posé en douce — la page se pose d'un coup
+    if (sonde('saisie-seche'))
+      await page.evaluate(() => {
+        const m = window.matchMedia.bind(window);
+        window.matchMedia = (q: string) =>
+          (/reduce/.test(q) ? { matches: true, media: q } : m(q)) as unknown as MediaQueryList;
+      });
+    // la sonde : la copie de « DÉJÀ PROMIS » ne descend pas, elle est retirée d'un coup
+    if (sonde('deja-sec')) await page.addStyleTag({ content: '#createSheet .ppo-copie{display:none!important}' });
+    const avant = await page.evaluate(() => {
+      const c = document.getElementById('createSheet')!.getBoundingClientRect();
+      return document.querySelector('#createSheet .pp-phrase')!.getBoundingClientRect().top - c.top;
+    });
+    // le relevé, à chaque image : la place de la phrase et de la barre ; ce qui peint et part (redteam_je)
+    await page.evaluate(() => {
+      const w = window as unknown as {
+        __m: Array<{ ph: number; barre: number; t: number }>;
+        __partis: string[];
+        __on: boolean;
+      };
+      w.__m = [];
+      w.__partis = [];
+      w.__on = true;
+      const cs = document.getElementById('createSheet')!;
+      const vus = new Map<Element, { nom: string; sel: string; r: number[]; flaques: boolean; hors: boolean }>();
+      const peint = (s: CSSStyleDeclaration): boolean =>
+        (s.borderTopStyle !== 'none' && parseFloat(s.borderTopWidth) > 0.5) ||
+        !/rgba\(.*,\s*0\)$|transparent/.test(s.backgroundColor) ||
+        false;
+      const f = (): void => {
+        const C = cs.getBoundingClientRect();
+        const r = (sel: string): number => {
+          const e = cs.querySelector(sel);
+          return e && (e as HTMLElement).offsetParent ? e.getBoundingClientRect().top - C.top : NaN;
+        };
+        w.__m.push({ ph: r('.pp-phrase'), barre: r('#csBotBar'), t: performance.now() });
+        const ici = (e: Element): boolean => {
+          const s = getComputedStyle(e);
+          return !(s.display === 'none' || s.visibility === 'hidden' || (e as HTMLElement).closest('[hidden]'));
+        };
+        for (const [e, o] of vus) {
+          if (e.isConnected && ici(e)) continue;
+          vus.delete(e);
+          if (o.flaques || o.hors) continue;
+          // un nœud rebâti à sa place (même rôle, même coin à 2 pt : « DÉJÀ PROMIS » se recompose à chaque frappe ; sa copie prend sa
+          // place dans la tâche de la validation) n'est pas un départ
+          const remplace = [...cs.querySelectorAll(o.sel)].some((x) => {
+            if (!ici(x)) return false;
+            const q = x.getBoundingClientRect();
+            return Math.abs(q.left - o.r[0]!) <= 2 && Math.abs(q.top - o.r[1]!) <= 2;
+          });
+          if (!remplace) w.__partis.push(o.nom);
+        }
+        // (la phrase elle-même se recompose — ses mots qui changent : C-271, au 2c ; on juge ici ce que ce lot fait paraître et partir)
+        for (const e of cs.querySelectorAll('.ppo-dejas *, .ppo-copie *, #csPinceau, .pp-garder, #csBotBar')) {
+          const s = getComputedStyle(e);
+          if (s.display === 'none' || s.visibility === 'hidden' || (e as HTMLElement).closest('[hidden]')) continue;
+          if (!peint(s) && !(e.textContent ?? '').trim()) continue;
+          const b = e.getBoundingClientRect();
+          vus.set(e, {
+            nom: `${e.className || e.id} « ${(e.textContent ?? '').trim().slice(0, 20)} »`,
+            sel: e.id ? '#' + e.id : '.' + String(e.className).trim().split(/\s+/)[0]!,
+            r: [b.left, b.top],
+            flaques: !!(e as HTMLElement).closest('[data-flaques-mode="couvre"]'),
+            hors: b.top > C.bottom - 1 || !b.height,
+          });
+        }
+        if (w.__on) requestAnimationFrame(f);
+      };
+      requestAnimationFrame(f);
+    });
+    const champ = nat === 'nuee' ? '#createSheet .ph-m[data-np="nom"]' : '#createSheet .ph-m[data-ph="titre"]';
+    const pt = await page.evaluate((s) => {
+      const b = document.querySelector(s)!.getBoundingClientRect();
+      return [b.left + b.width / 2, b.top + b.height / 2];
+    }, champ);
+    await page.mouse.click(pt[0]!, pt[1]!);
+    await posee(page);
+    const ouvert = (await page.evaluate(
+      () => (window as unknown as { __m: Array<{ ph: number; barre: number }> }).__m,
+    )) as Array<{
+      ph: number;
+      barre: number;
+      t: number;
+    }>;
+    const e1 = await etat(page);
+    expect(e1.base, 'la page montée : l’onde à 144 (cadres 18 à 23)').toBe(144);
+    expect(Math.abs(ouvert.at(-1)!.ph - 230), 'la phrase à 230 (228 + le pas du trait ×1,3), ± 1').toBeLessThanOrEqual(
+      1,
+    );
+    // le mouvement d'ouverture : la première image après le toucher n'est pas la place finale, et aucun pas n'est un saut
+    const i0 = ouvert.findIndex((m) => Math.abs(m.ph - avant) > 0.5);
+    expect(i0, 'la phrase quitte sa place').toBeGreaterThanOrEqual(0);
+    const course = Math.abs(avant - ouvert.at(-1)!.ph);
+    expect(
+      Math.abs(ouvert[i0]!.ph - ouvert.at(-1)!.ph),
+      'la première image qui bouge n’est pas la place finale',
+    ).toBeGreaterThan(course * 0.3);
+    if (process.platform === 'darwin') {
+      const pas = Math.max(...ouvert.slice(i0).map((m, k, a) => (k ? Math.abs(m.ph - a[k - 1]!.ph) : 0)));
+      expect(pas, `aucun pas au-delà de 35 % de la course (${course.toFixed(0)} pt)`).toBeLessThanOrEqual(
+        course * 0.35 + 0.5,
+      );
+    }
+    if (nat !== 'nuee') {
+      const d = await page.evaluate(() => {
+        const l = document.querySelector('#createSheet .ppo-deja');
+        return { lab: l?.textContent ?? '', pastilles: document.querySelectorAll('#createSheet .ppo-d').length };
+      });
+      expect(d.lab, '« DÉJÀ PROMIS » pendant la saisie d’un titre').toBe('DÉJÀ PROMIS');
+      expect(d.pastilles, 'les paroles déjà promises (deux au plus)').toBeGreaterThanOrEqual(1);
+      expect(
+        await page.evaluate(() => document.getElementById('csBotBar')!.hidden),
+        '§2.11 : la barre Peaufiner se cache pendant la saisie',
+      ).toBe(true);
+    }
+    await page.keyboard.type('nager');
+    await page.waitForTimeout(300);
+    await page.evaluate(() => {
+      (window as unknown as { __m: unknown[] }).__m = [];
+    });
+    const t0 = await page.evaluate(() => performance.now());
+    await page.keyboard.press('Enter');
+    await posee(page);
+    await page.waitForTimeout(300);
+    const R = (await page.evaluate(() => {
+      const w = window as unknown as { __m: unknown; __partis: string[]; __on: boolean };
+      w.__on = false;
+      return { m: w.__m, partis: w.__partis };
+    })) as { m: Array<{ ph: number; barre: number; t: number }>; partis: string[] };
+    const fin = R.m.at(-1)!;
+    const e2 = await etat(page);
+    expect(e2.base, 'revenue : l’onde à sa place').toBeGreaterThan(144);
+    const p0 = R.m[0]!.ph;
+    const j0 = R.m.findIndex((m) => Math.abs(m.ph - p0) > 0.5);
+    expect(j0, 'la phrase quitte la place de saisie').toBeGreaterThanOrEqual(0);
+    expect(
+      Math.abs(R.m[j0]!.ph - fin.ph),
+      'la première image n’est pas la place finale (jamais d’un coup)',
+    ).toBeGreaterThan(Math.abs(fin.ph - p0) * 0.3);
+    const jFin = R.m.findIndex((m, k) => k > j0 && Math.abs(m.ph - fin.ph) < 0.5);
+    const duree = R.m[jFin]!.t - Math.max(t0, R.m[Math.max(0, j0 - 1)]!.t);
+    if (process.platform === 'darwin') expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeLessThanOrEqual(460);
+    expect(duree, 'la durée (360 ms ; décidé 300 à 400)').toBeGreaterThanOrEqual(250);
+    expect(R.partis, 'rien de ce qui peint ne part d’un coup (redteam_je)').toEqual([]);
+    expect(
+      await page.evaluate(
+        () =>
+          [
+            ...document.querySelectorAll<HTMLElement>(
+              '#createSheet .pp-phrase, #createSheet .ph-photo-btn, #csBotBar, #csPinceau, .pp-garder',
+            ),
+          ]
+            .map((e) => e.style.translate)
+            .filter(Boolean).length + document.querySelectorAll('#createSheet .ppo-copie').length,
+      ),
+      'à la fin : aucune transformation restée, aucune copie',
+    ).toBe(0);
+  });
+
+// ── la saisie : la place remplie est crème à l'encre, « d’ » colle à elle, le curseur clignote après ce qu'on tape (lot-CURSEUR) ──
+test('la saisie d’un titre : la place remplie crème, à l’encre, sans contour ; le curseur de 3 pt, 0,82 em, clignote après la frappe (lot-CURSEUR)', async ({
+  page,
+}) => {
+  await ouvrir(page, 'chiche');
+  // la sonde : la place remplie garde son pointillé (le défaut d'avant)
+  if (sonde('place-pointillee'))
+    await page.addStyleTag({
+      content:
+        '#createSheet .ph-txt .ph-m:not(.ph-vide){border:3px dashed currentColor!important;background:transparent!important}',
+    });
+  await doigt(page, '#createSheet .ph-m[data-ph="titre"]');
+  await page.keyboard.type('appeler Lou');
+  await posee(page);
+  const r = await page.evaluate(() => {
+    const m = document.querySelector<HTMLElement>('#createSheet .ph-m[data-ph="titre"]')!;
+    const s = getComputedStyle(m);
+    const c = m.querySelector('.ph-caret')!;
+    const cs = getComputedStyle(c);
+    const li = m.previousElementSibling!;
+    return {
+      fond: s.backgroundColor,
+      encre: s.color,
+      bord: s.borderTopStyle,
+      caret: [
+        cs.width,
+        (parseFloat(cs.height) / parseFloat(s.fontSize)).toFixed(2),
+        cs.animationName,
+        cs.animationDuration,
+      ],
+      dernier: m.lastElementChild === c,
+      li: getComputedStyle(li).marginRight,
+    };
+  });
+  expect([r.fond, r.encre, r.bord], 'remplie : crème #F7F0DE, encre #050302, sans contour').toEqual([
+    'rgb(247, 240, 222)',
+    'rgb(5, 3, 2)',
+    'none',
+  ]);
+  expect(r.caret, 'le curseur : 3 pt, 0,82 em, clignote (1,06 s)').toEqual(['3px', '0.82', 'phCaret', '1.06s']);
+  expect(r.dernier, 'le curseur après ce qu’on tape').toBe(true);
+  expect(r.li, '« d’ » colle à sa place (`em.ph-li.ph-elide{margin-right:0}`)').toBe('0px');
+});
+
+// ── redteam_ajout_personne (C-122, v146) — la zone en pointillés EST le champ ; le « + » orange #FB4C0D, à la hauteur des capitales du nom,
+//    paraît dès la première lettre et valide (Retour aussi) ; un nom connu garde son écriture ; la zone se propose pour le suivant ; rien ne
+//    passe sous le clavier (14 pt d'air ; 8 exigés — clavier simulé : 336 pt, celui d'un iPhone) ──
+test('ajouter une personne : la zone en pointillés est le champ, le « + » orange valide, Retour aussi ; la ligne reste au-dessus du clavier (redteam_ajout_personne, C-122)', async ({
+  page,
+}) => {
+  await ouvrir(page, 'chiche');
+  // la sonde : le « + » ne prend plus le doigt
+  if (sonde('plus-sourd')) await page.addStyleTag({ content: '#createSheet .gn-plus{pointer-events:none!important}' });
+  await doigt(page, '#createSheet .ph-m[data-ph="qui"]');
+  await posee(page);
+  await doigt(page, '#createSheet .gn .ph-add');
+  const z0 = await page.evaluate(() => {
+    const z = document.querySelector('#createSheet .gn .ph-add')!;
+    return {
+      edit: z.classList.contains('gn-edit'),
+      focus: document.activeElement?.id,
+      attente: z.querySelector('.gn-ph')?.textContent,
+      bord: getComputedStyle(z).borderTopStyle,
+      encarts: document.querySelectorAll('#createSheet .gn .gn-barre, #createSheet .gn input:not(.gn-saisie)').length,
+    };
+  });
+  expect(z0, 'la zone même s’écrit (aucun second encart), le clavier ouvert, « un prénom… »').toEqual({
+    edit: true,
+    focus: 'gnSaisie',
+    attente: 'un prénom…',
+    bord: 'dashed',
+    encarts: 0,
+  });
+  await page.keyboard.type('maman');
+  await page.waitForTimeout(300);
+  const p = await page.evaluate(() => {
+    const pl = document.querySelector('#createSheet .gn-plus')!;
+    const sv = pl.querySelector('svg')!;
+    const t = document.querySelector('#createSheet .gn-txt')!;
+    const g = document.createElement('canvas').getContext('2d')!;
+    const s = getComputedStyle(t);
+    g.font = `${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;
+    const cap = g.measureText('H').actualBoundingBoxAscent;
+    const a = pl.getBoundingClientRect();
+    const b = t.getBoundingClientRect();
+    return {
+      couleur: getComputedStyle(sv.querySelector('path')!).stroke,
+      haut: parseFloat(sv.getAttribute('height')!),
+      cap,
+      ligne: Math.abs(a.top + a.height / 2 - (b.top + b.height / 2)) < b.height,
+      droite: a.left > b.right,
+    };
+  });
+  expect(p.couleur, 'le « + » à l’orange du départ d’une action #FB4C0D').toBe('rgb(251, 76, 13)');
+  expect(Math.abs(p.haut - p.cap), 'à la hauteur des capitales du nom (± 1 pt)').toBeLessThanOrEqual(1);
+  expect([p.ligne, p.droite], 'à droite du nom, sur sa ligne').toEqual([true, true]);
+  // (un vrai toucher, qui passe par le test du point : le « + » doit prendre le doigt)
+  const pp = await page.evaluate(() => {
+    const b = document.querySelector('#createSheet .gn-plus')!.getBoundingClientRect();
+    return [b.left + b.width / 2, b.top + b.height / 2];
+  });
+  await page.mouse.click(pp[0]!, pp[1]!);
+  await page.waitForTimeout(150);
+  let e = await etat(page);
+  expect(e.phrase.qui, 'le « + » valide ; un nom connu garde son écriture (« maman » → « Maman »)').toEqual(['Maman']);
+  expect(
+    await page.evaluate(() => [
+      document.activeElement?.id,
+      document.querySelector('#createSheet .gn .ph-add')!.classList.contains('gn-edit'),
+    ]),
+    'la zone se propose pour le suivant, le clavier reste',
+  ).toEqual(['gnSaisie', true]);
+  await page.keyboard.type('Zoé');
+  await page.keyboard.press('Enter');
+  await page.waitForTimeout(200);
+  e = await etat(page);
+  expect(e.phrase.qui, 'Retour valide aussi').toEqual(['Maman', 'Zoé']);
+  // le clavier (simulé : la fenêtre visible réduite de 336 pt, ce que l'app lit) : la ligne reste 14 pt au-dessus de lui (8 exigés)
+  await page.evaluate(() => {
+    const vv = window.visualViewport!;
+    const h = window.innerHeight - 336;
+    Object.defineProperty(vv, 'height', { get: () => h, configurable: true });
+    vv.dispatchEvent(new Event('resize'));
+  });
+  await page.waitForTimeout(600);
+  const air = await page.evaluate(
+    () => window.innerHeight - 336 - document.querySelector('#createSheet .gn .ph-add')!.getBoundingClientRect().bottom,
+  );
+  expect(air, 'la ligne au-dessus du clavier (8 pt au moins)').toBeGreaterThanOrEqual(8);
+});
+
+// ── redteam_peaufiner (C-134), redteam_peauf_x (C-220) — la barre ouvre Peaufiner (ses rangées, nature par nature, en dur) ; un choix s'y fait
+//    sur place et il reste ouvert ; un glissement de 60 pt ne le referme pas, un de 220 le referme ; son X le referme ; refermé, rien de lui ne
+//    reste à l'écran et la page est celle d'avant ; il paraît et part en flaques (C-271) ; les murs de Ma Parole ! sont flous (4,8 px) ──
+const RANGEES: Record<Nat, string[]> = {
+  promi: [
+    'AVANT',
+    'DANS UN CERCLE',
+    'NOTE',
+    'PIÈCES JOINTES',
+    'RÉCURRENCE',
+    'RAPPEL',
+    "C'EST IMPORTANT ?",
+    'LA MÉMOIRE',
+    'LA COULEUR',
+  ],
+  chiche: ['AVANT', 'NOTE', 'PIÈCES JOINTES', 'RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR'],
+  nuee: ['MEMBRES', 'RÉCURRENCE', 'RAPPEL', "C'EST IMPORTANT ?", 'LA MÉMOIRE', 'LA COULEUR'],
+};
+const PEAUF: Record<Nat, string> = {
+  promi:
+    'Peaufiner, promi : la barre l’ouvre, il reste ouvert, un glissement de 220 pt ou son X le referment, il n’en reste rien (redteam_peaufiner, redteam_peauf_x)',
+  chiche:
+    'Peaufiner, chiche : la barre l’ouvre, il reste ouvert, un glissement de 220 pt ou son X le referment, il n’en reste rien (redteam_peaufiner, redteam_peauf_x)',
+  nuee: 'Peaufiner, nuee : la barre l’ouvre, il reste ouvert, un glissement de 220 pt ou son X le referment, il n’en reste rien (redteam_peaufiner, redteam_peauf_x)',
+};
+for (const nat of ['promi', 'chiche', 'nuee'] as const)
+  test(PEAUF[nat], async ({ page }) => {
+    await ouvrir(page, nat);
+    // la sonde : refermé, le tiroir reste affiché (C-220 : la règle « fermée » battue par une autre)
+    if (sonde('peauf-reste')) {
+      await page.addStyleTag({ content: '#csPeauf[hidden]{display:block!important}' });
+      await page.evaluate(() => {
+        const p = document.getElementById('csPeauf')!;
+        const rc = p.replaceChildren.bind(p);
+        p.replaceChildren = (...a: Array<Node | string>) => {
+          if (a.length) rc(...a);
+        };
+      });
+    }
+    const textes = (): Promise<Record<string, number>> =>
+      page.evaluate(() => {
+        const o: Record<string, number> = {};
+        const c = document.getElementById('createSheet')!;
+        const w = document.createTreeWalker(c, NodeFilter.SHOW_TEXT);
+        let n: Node | null;
+        while ((n = w.nextNode())) {
+          const t = (n.textContent ?? '').trim();
+          if (!t || n.parentElement!.closest('#csPeauf')) continue;
+          const s = getComputedStyle(n.parentElement!);
+          if (s.visibility !== 'visible' || n.parentElement!.closest('[hidden]')) continue;
+          const R = document.createRange();
+          R.selectNodeContents(n);
+          const r = R.getBoundingClientRect();
+          if (r.width >= 1) o[t] = Math.round(r.top * 2) / 2;
+        }
+        return o;
+      });
+    const tiroir = (): Promise<string[]> =>
+      page.evaluate(() => {
+        const o: string[] = [];
+        const c = document.getElementById('csPeauf')!;
+        const w = document.createTreeWalker(c, NodeFilter.SHOW_TEXT);
+        let n: Node | null;
+        while ((n = w.nextNode())) {
+          const t = (n.textContent ?? '').trim();
+          if (!t) continue;
+          const R = document.createRange();
+          R.selectNodeContents(n);
+          const r = R.getBoundingClientRect();
+          if (r.width >= 1 && getComputedStyle(n.parentElement!).visibility === 'visible') o.push(t);
+        }
+        return o;
+      });
+    const av = await textes();
+    // l'ouverture : en flaques
+    await page.evaluate(() => {
+      const w = window as unknown as { __fl: string[] };
+      w.__fl = [];
+      const o = new MutationObserver(() => {
+        const p = document.getElementById('csPeauf')!;
+        if (p.dataset['flaquesMode']) w.__fl.push(p.dataset['flaquesMode']);
+      });
+      o.observe(document.getElementById('csPeauf')!, { attributes: true, attributeFilter: ['data-flaques-mode'] });
+    });
+    await doigt(page, '#csBotBar');
+    await posee(page);
+    const labs = await page.evaluate(() =>
+      [...document.querySelectorAll('#csPeauf .s2-lab')].map((e) => e.textContent),
+    );
+    expect(labs, 'ses rangées, telles que le prototype les montre').toEqual(RANGEES[nat]);
+    expect(
+      await page.evaluate(() => [
+        document.querySelector('#csPeauf .s2-titre')!.textContent,
+        document.querySelector('#csBotBar .cbb-chev')!.textContent,
+      ]),
+    ).toEqual([{ promi: 'Promi', chiche: 'Chiche', nuee: 'Cercle' }[nat], '▴']);
+    expect(
+      await page.evaluate(() =>
+        [...document.querySelectorAll('#csPeauf .s2-cercle .s2-reg')].map((e) => getComputedStyle(e).filter),
+      ),
+      'les réglages de Ma Parole ! sont des murs, flous de 4,8 px (leur phrase : lot 8)',
+    ).toEqual(Array(5).fill('blur(4.8px)'));
+    if (nat !== 'nuee') {
+      // un choix sur place : la note s'écrit, Peaufiner reste ouvert, la page a changé (« garder de côté » actif)
+      await doigt(page, '#fNote');
+      await page.locator('#fNote').fill('un mot');
+      await page.waitForTimeout(200);
+      const e = await etat(page);
+      expect(
+        [(e.phrase as unknown as { note: string }).note, e.gardeActif],
+        'la note s’écrit, la page a changé',
+      ).toEqual(['un mot', true]);
+      await page.locator('#fNote').blur();
+    }
+    expect((await etat(page)) as unknown as { peauf: boolean }, 'Peaufiner reste ouvert').toMatchObject({
+      peauf: true,
+    });
+    // un glissement de 60 pt ne referme rien ; un de 220 referme
+    const glisse = async (d: number): Promise<void> => {
+      await page.mouse.move(195, 300);
+      await page.mouse.down();
+      for (let k = 1; k <= 10; k++) await page.mouse.move(195, 300 + (d * k) / 10);
+      await page.mouse.up();
+      await page.waitForTimeout(150);
+    };
+    await glisse(60);
+    expect(((await etat(page)) as unknown as { peauf: boolean }).peauf, '60 pt : il reste ouvert').toBe(true);
+    await glisse(220);
+    await posee(page);
+    expect(((await etat(page)) as unknown as { peauf: boolean }).peauf, '220 pt : il se referme').toBe(false);
+    expect(await tiroir(), 'C-220 : refermé, aucun texte du tiroir à l’écran').toEqual([]);
+    const ap = await textes();
+    for (const [t, y] of Object.entries(av)) expect(ap[t] ?? NaN, `« ${t} » à sa place d’avant`).toBeCloseTo(y, 0);
+    // rouvert par la barre, refermé par son X
+    await doigt(page, '#csBotBar');
+    await posee(page);
+    expect((await tiroir()).length, 'rouvert : ses rangées reviennent').toBeGreaterThanOrEqual(6);
+    await doigt(page, '#csPeauf .s2-fermer');
+    await posee(page);
+    expect(((await etat(page)) as unknown as { peauf: boolean }).peauf, 'son X le referme').toBe(false);
+    expect(await tiroir()).toEqual([]);
+    expect(
+      await page.evaluate(() => (window as unknown as { __fl: string[] }).__fl),
+      'C-271 : il paraît et part en flaques',
+    ).toEqual(expect.arrayContaining(['ouvre', 'couvre']));
+  });
+
+// ── redteam_photo_menu (v117, v132 : la page +) — le bouton photo ouvre le menu (« Dessiner » en tête ; « Importer une photo » sauf sur un
+//    Cercle, C-199), en flaques ; « Importer une photo » ouvre le sélecteur de fichiers DANS le geste ; la photo remplace la dalle ; « Retirer
+//    la photo » la retire ; un toucher ailleurs referme le menu ──
+const PNG_ROUGE =
+  'iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAEklEQVR4nGP4z8CAFWEXHbQSACj/P8Fu7N9hAAAAAElFTkSuQmCC';
+test('le menu du bouton photo : « Dessiner », « Importer une photo » (le sélecteur dans le geste), la photo remplace la dalle, « Retirer la photo » ; un Cercle : « Dessiner » seul (redteam_photo_menu)', async ({
+  page,
+}) => {
+  await ouvrir(page, 'promi');
+  // la sonde : le bouton photo ne prend plus le doigt
+  if (sonde('photo-sourd'))
+    await page.addStyleTag({ content: '#createSheet .ph-photo-btn{pointer-events:none!important}' });
+  const menu = (): Promise<string[]> =>
+    page.evaluate(() =>
+      [...document.querySelectorAll('#createSheet .ph-photo-menu button')].map((b) => b.textContent!),
+    );
+  await toucher(page, '#createSheet .ph-photo-btn');
+  expect(await menu(), 'le menu (v132 : « Dessiner » en tête)').toEqual(['Dessiner', 'Importer une photo']);
+  expect(
+    await page.evaluate(
+      () => getComputedStyle(document.querySelector('#createSheet .ph-photo-menu button')!).textTransform,
+    ),
+  ).toBe('uppercase');
+  await posee(page);
+  // un toucher ailleurs le referme
+  // (au-dessus du menu : sa boîte, comme dans le prototype, prend le doigt sur toute sa largeur)
+  await page.mouse.click(60, 130);
+  await posee(page);
+  expect(await menu(), 'un toucher ailleurs le referme').toEqual([]);
+  await toucher(page, '#createSheet .ph-photo-btn');
+  await posee(page);
+  const [chooser] = await Promise.all([
+    page.waitForEvent('filechooser', { timeout: 5000 }),
+    toucher(page, '#createSheet .ph-photo-menu button:nth-child(2)'),
+  ]);
+  await chooser.setFiles({ name: 'photo.png', mimeType: 'image/png', buffer: Buffer.from(PNG_ROUGE, 'base64') });
+  await page.waitForFunction(`!!${P_}.pagePlus().etat().phrase.photo`, undefined, { timeout: 5000 });
+  await posee(page);
+  const rouge = (): Promise<number> =>
+    page.evaluate(() => {
+      const c = document.getElementById('csPhotoCv') as HTMLCanvasElement;
+      const d = c.getContext('2d')!.getImageData(0, 0, c.width, c.height).data;
+      let n = 0;
+      for (let i = 0; i < d.length; i += 4) if (d[i]! > 200 && d[i + 1]! < 60 && d[i + 3]! > 200) n++;
+      return n;
+    });
+  expect(await rouge(), 'la photo est posée dans la bande (sa couche)').toBeGreaterThan(1000);
+  expect((await etat(page)).gardeActif, 'la page a changé').toBe(true);
+  await toucher(page, '#createSheet .ph-photo-btn');
+  await posee(page);
+  expect(await menu()).toEqual(['Dessiner', 'Importer une photo', 'Retirer la photo']);
+  await toucher(page, '#createSheet .ph-photo-menu button:nth-child(3)');
+  await posee(page);
+  expect(await rouge(), '« Retirer la photo » la retire').toBe(0);
+  await page.evaluate(`${P_}.pagePlus().ouvrir('nuee')`);
+  await page.waitForFunction(() => !document.getElementById('createSheet')!.classList.contains('pp-entre'));
+  await toucher(page, '#createSheet .ph-photo-btn');
+  expect(await menu(), 'un Cercle ne porte pas de photo (C-199)').toEqual(['Dessiner']);
 });

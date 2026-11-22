@@ -58,5 +58,40 @@
     "nom": "ouverture-seche",
     "test": "C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; la page + monte en glissant à l’ouverture, comme elle descend à la fermeture",
     "defaut": "la page + paraît d'un coup (la transition d'ouverture retirée)"
+  },
+  {
+    "nom": "cercle-chiche",
+    "test": "le choix d’un Cercle : « avec moi », « Moi » en tête et choisi, au mauve profond, Gilbert 23,1",
+    "defaut": "les pastilles d'un Cercle à la taille de celles d'un Chiche (16 pt) — le choix d'un Chiche à la place"
+  },
+  {
+    "nom": "saisie-seche",
+    "test": "la saisie, promi : la page monte et revient d’un mouvement de 360 ms, jamais d’un coup",
+    "defaut": "« Réduire les animations » posé en douce : la page se pose d'un coup"
+  },
+  {
+    "nom": "deja-sec",
+    "test": "la saisie, chiche : la page monte et revient d’un mouvement de 360 ms, jamais d’un coup",
+    "defaut": "à la validation, la copie de « DÉJÀ PROMIS » est retirée d'un coup au lieu de descendre"
+  },
+  {
+    "nom": "place-pointillee",
+    "test": "la saisie d’un titre : la place remplie crème, à l’encre, sans contour",
+    "defaut": "la place remplie garde son pointillé, sans fond"
+  },
+  {
+    "nom": "plus-sourd",
+    "test": "ajouter une personne : la zone en pointillés est le champ, le « + » orange valide, Retour aussi",
+    "defaut": "le « + » ne prend plus le doigt"
+  },
+  {
+    "nom": "peauf-reste",
+    "test": "Peaufiner, promi : la barre l’ouvre, il reste ouvert, un glissement de 220 pt ou son X le referment",
+    "defaut": "refermé, le tiroir reste affiché (C-220)"
+  },
+  {
+    "nom": "photo-sourd",
+    "test": "le menu du bouton photo : « Dessiner », « Importer une photo » (le sélecteur dans le geste)",
+    "defaut": "le bouton photo ne prend plus le doigt"
   }
 ]

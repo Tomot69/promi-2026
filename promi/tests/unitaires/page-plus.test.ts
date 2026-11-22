@@ -116,3 +116,11 @@ describe('le schéma v2 : le gardé de côté porte son brouillon', () => {
     expect(m.etat().paroles[0]!.chiche).toBeUndefined();
   });
 });
+
+describe('C-129 — pas d’emoji', () => {
+  it('les pictogrammes, les teintes, la jonction, les drapeaux et la touche numérotée entière partent ; le texte reste', async () => {
+    const { sansEmoji } = await import('../../src/metier/emoji.ts');
+    expect(sansEmoji('marcher 🏃 une 👍🏽 heure 1️⃣ 👨‍👩‍👧 🇫🇷 ❤️ ✨')).toBe('marcher  une  heure     ');
+    expect(sansEmoji('appeler Lou')).toBe('appeler Lou');
+  });
+});

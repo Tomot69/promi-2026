@@ -3,8 +3,10 @@
  *
  * La page + de la vraie app à 390 × 844 contre celle du prototype (son appareil dans la fenêtre du banc), même état importé des deux côtés
  * (`stockage()` : les exemples tirés d'avance, les personnes connues), même WebKit, ×3, clair et sombre : Promi, Chiche, Cercle au repos, et
- * le choix des personnes ouvert (« qui ose ? » d'un Chiche). La Toile dessous est masquée, les animations gelées. Tolérance : 2 niveaux, 0
- * pixel au-delà (Q616 hors du Mac, aides.ts `ecart`).
+ * le choix des personnes ouvert (« qui ose ? » d'un Chiche, « avec » d'un Cercle) ; et (fin du 2a) la saisie ouverte (« DÉJÀ PROMIS », la
+ * page montée), un titre tapé (la place remplie, crème), le champ « un prénom… » (C-122) avec un nom tapé et son « + », Peaufiner ouvert (trois
+ * natures), le menu du bouton photo ouvert. La Toile dessous est masquée, les animations gelées. Tolérance : 2 niveaux, 0 pixel au-delà (Q616
+ * hors du Mac, aides.ts `ecart`).
  *
  * EXCEPTIONS NOMMÉES (et seulement elles), déclarées et masquées DES DEUX CÔTÉS :
  *  · M1 — la MATIÈRE de la dalle du haut (§8 bis : « zéro écart » excepte la matière) : la zone que le peintre déclare (`data-matiere`) ;
@@ -13,7 +15,11 @@
  *  · P2 — le flou du premier pinceau de Ma Parole ! au bord droit (x ≥ 366, la rangée du rail) : dans le prototype WebKit le coupe au bord de la
  *         couche qui défile, la vraie app le laisse entier (le même `filter: blur(4.8px)`, C-196) ;
  *  · P3 — NON EXPLIQUÉ, MESURÉ : un pixel du pointillé de l'exemple d'un Chiche, à (238,3 ; 514), 27 niveaux (les boîtes des deux côtés sont les
- *         mêmes au centième de point) : écrit « non tenu » au rapport du lot 2a, à reprendre.
+ *         mêmes au centième de point) : écrit « non tenu » au rapport du lot 2a, à reprendre ;
+ *  · P4 — le CURSEUR qui clignote (lot-CURSEUR) : il n'a pas de phase commune aux deux côtés (le prototype le fait clignoter même sous le gel :
+ *         sa règle d'animation bat celle du gel) ; il est caché des deux côtés le temps de la capture, et sa forme est jugée à part
+ *         (page-plus-juges.spec.ts, « la saisie »).
+ * La matière n'est pas exceptée quand Peaufiner la couvre (elle n'y est pas visible) ; ouverte sous le menu photo, sa zone en couvre une part.
  */
 import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -58,11 +64,17 @@ async function matiere(pg: Page): Promise<Zone | null> {
  */
 async function zones(A: Page, P: Page): Promise<Zone[]> {
   const ms = (await Promise.all([matiere(A), matiere(P)])).filter((z): z is Zone => !!z);
+  const peauf = await A.evaluate(() => document.getElementById('createSheet')!.classList.contains('pp-peauf'));
   const autres = (await A.evaluate(() => {
     const z: number[][] = [];
     const C = document.getElementById('createSheet')!.getBoundingClientRect();
+    const vu = (e: Element): boolean => {
+      const b = e.getBoundingClientRect();
+      const t = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
+      return !!t && (t === e || e.contains(t));
+    };
     const r = document.getElementById('csPinceau');
-    if (r && !r.hidden) {
+    if (r && !r.hidden && vu(r)) {
       const t = r.getBoundingClientRect().top - C.top;
       z.push([0, t - 14, 14, 28]);
       z.push([366, t - 6, 24, 56]);
@@ -70,13 +82,13 @@ async function zones(A: Page, P: Page): Promise<Zone[]> {
     if (document.getElementById('createSheet')!.classList.contains('pp-chiche')) z.push([237.5, 513.5, 1.5, 1.5]);
     // ÉCART ADMIS C-330 : « garder de côté » inactif à la teinte de sa nature (le prototype le sort bleu ou lilas selon une course)
     const g = document.querySelector('#createSheet .pp-garder.inactif');
-    if (g) {
+    if (g && !(g as HTMLElement).hidden && vu(g)) {
       const b = g.getBoundingClientRect();
       z.push([b.left - C.left - 4, b.top - C.top - 4, b.width + 8, b.height + 8]);
     }
     return z;
   })) as Zone[];
-  if (!ms.length) return autres;
+  if (!ms.length || peauf) return autres;
   const x0 = Math.min(...ms.map((m) => m[0])) - 8,
     y0 = Math.min(...ms.map((m) => m[1])) - 8;
   const x1 = Math.max(...ms.map((m) => m[0] + m[2])) + 8,
@@ -156,16 +168,103 @@ async function touchePlace(p: Page, sel: string, proto: boolean): Promise<void> 
   await p.waitForTimeout(1500);
 }
 
-const CAS = [
+/** P4 : le curseur caché des deux côtés (sa règle d'animation, dans le prototype, bat le gel) */
+const SANS_CURSEUR =
+  'html body #device #createSheet .ph-caret, html body #createSheet .ph-caret{visibility:hidden!important}';
+
+/** un toucher au doigt (appui puis lever ; le prototype, lui, écoute aussi `click`) */
+async function toucheSel(p: Page, sel: string, proto: boolean): Promise<void> {
+  await p.evaluate(
+    ([s, proto]) => {
+      const e = document.querySelector<HTMLElement>(s as string)!;
+      const r = e.getBoundingClientRect();
+      const o = { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, pointerId: 21 };
+      e.dispatchEvent(new PointerEvent('pointerdown', o));
+      e.dispatchEvent(new PointerEvent('pointerup', o));
+      if (proto) e.click();
+    },
+    [sel, proto] as const,
+  );
+}
+const finTrace = (p: Page): Promise<unknown> =>
+  p.waitForFunction(
+    () => !(window as unknown as { TraceLettres?: { actif(): boolean } }).TraceLettres?.actif(),
+    undefined,
+    {
+      timeout: 30000,
+    },
+  );
+/** la vraie app : plus aucun mouvement, plus aucun passage en flaques */
+const finApp = (p: Page): Promise<unknown> =>
+  p.waitForFunction(
+    () =>
+      !document.querySelector('#createSheet [data-flaques-mode]') &&
+      !(window as unknown as { __promi: { pagePlus(): { etat(): { mouvement: boolean } } } }).__promi.pagePlus().etat()
+        .mouvement,
+    undefined,
+    { timeout: 20000 },
+  );
+
+type Cas = {
+  nat: 'promi' | 'chiche' | 'nuee';
+  choix: string | null;
+  /** fin du 2a : ce que la page montre ensuite (la saisie, un titre tapé, Peaufiner, le menu photo, le champ « un prénom… ») */
+  etat?: 'saisie' | 'tape' | 'peauf' | 'photo' | 'prenom';
+};
+const CAS: Cas[] = [
   { nat: 'promi', choix: null },
   { nat: 'chiche', choix: null },
   { nat: 'nuee', choix: null },
   { nat: 'chiche', choix: '#csPhrase .ph-m[data-ph="qui"]' },
-] as const;
+  { nat: 'nuee', choix: '#nueePhrase .ph-m[data-np="avec"]' },
+  { nat: 'promi', choix: null, etat: 'saisie' },
+  { nat: 'chiche', choix: null, etat: 'tape' },
+  { nat: 'nuee', choix: null, etat: 'saisie' },
+  { nat: 'chiche', choix: '#csPhrase .ph-m[data-ph="qui"]', etat: 'prenom' },
+  { nat: 'promi', choix: null, etat: 'peauf' },
+  { nat: 'chiche', choix: null, etat: 'peauf' },
+  { nat: 'nuee', choix: null, etat: 'peauf' },
+  { nat: 'promi', choix: null, etat: 'photo' },
+  { nat: 'nuee', choix: null, etat: 'photo' },
+];
+
+/** l'état demandé, des deux côtés (le prototype écoute le clic ; on attend la fin de ses minuteurs, et dans la vraie app la fin des mouvements) */
+async function poser(P: Page, A: Page, c: Cas): Promise<void> {
+  const titre = c.nat === 'nuee' ? '.pp-phrase .ph-m[data-np="nom"]' : '.pp-phrase .ph-m[data-ph="titre"]';
+  if (c.etat === 'saisie' || c.etat === 'tape') {
+    await finTrace(P);
+    await Promise.all([toucheSel(P, titre, true), toucheSel(A, titre, false)]);
+    await P.waitForTimeout(2500);
+    if (c.etat === 'tape') {
+      await P.keyboard.type('appeler Lou');
+      await A.keyboard.type('appeler Lou');
+      await P.waitForTimeout(2500);
+    }
+  }
+  if (c.etat === 'prenom') {
+    await Promise.all([toucheSel(P, '#createSheet .ph-add', true), toucheSel(A, '#createSheet .ph-add', false)]);
+    await P.waitForTimeout(2500);
+    await P.keyboard.type('Lou');
+    await A.keyboard.type('Lou');
+    await P.waitForTimeout(2500);
+  }
+  if (c.etat === 'peauf') {
+    await Promise.all([toucheSel(P, '#csBotBar', true), toucheSel(A, '#csBotBar', false)]);
+    await P.waitForTimeout(2000);
+  }
+  if (c.etat === 'photo') {
+    await Promise.all([
+      toucheSel(P, '#createSheet .ph-photo-btn', true),
+      toucheSel(A, '#createSheet .ph-photo-btn', false),
+    ]);
+    await P.waitForTimeout(2000);
+  }
+  if (c.etat) await finApp(A);
+}
 
 for (const theme of ['sombre', 'clair'] as const)
   for (const c of CAS)
-    test(`identité au pixel : la page + ${c.nat}${c.choix ? ', le choix des personnes ouvert' : ''}, ${theme}`, async ({
+    test(`identité au pixel : la page + ${c.nat}${c.choix ? ', le choix des personnes ouvert' : ''}${c.etat ? `, ${c.etat}` : ''}, ${theme}`, async ({
       browser,
     }) => {
       const ls = { ...stockage(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
@@ -180,7 +279,8 @@ for (const theme of ['sombre', 'clair'] as const)
       await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
       await Promise.all([ouvrirPagePlus(P, c.nat, true), ouvrirPagePlus(A, c.nat)]);
       if (c.choix) await Promise.all([touchePlace(P, c.choix, true), touchePlace(A, c.choix, false)]);
-      for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
+      await poser(P, A, c);
+      for (const pg of [P, A]) await pg.addStyleTag({ content: GEL + SANS_CURSEUR });
       // la sonde : la phrase de la vraie app décalée d'un point
       if (sonde('pp-identite-decale')) await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0}' });
       await P.waitForTimeout(600);
@@ -192,7 +292,7 @@ for (const theme of ['sombre', 'clair'] as const)
       const ip = masquer(await P.screenshot({ clip: dv }), Z);
       const ia = masquer(await A.screenshot(), Z);
       mkdirSync(RES, { recursive: true });
-      const nom = `${theme}-${c.nat}${c.choix ? '-choix' : ''}`;
+      const nom = `${theme}-${c.nat}${c.choix ? '-choix' : ''}${c.etat ? '-' + c.etat : ''}`;
       writeFileSync(join(RES, `${nom}-prototype.png`), ip);
       writeFileSync(join(RES, `${nom}-app.png`), ia);
       const e = ecart(ip, ia);

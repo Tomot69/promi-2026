@@ -178,4 +178,38 @@ export const TEXTES_PAGE_PLUS = {
   photo: 'Photo',
   sansTitre: '(sans titre)',
   leGroupe: 'le groupe',
+  /** la saisie (§5, v163) : les paroles déjà promises, pour reprendre un mot */
+  dejaPromis: 'DÉJÀ PROMIS',
+  /** C-122 (v146) : la zone en pointillés EST le champ ; son « + » valide */
+  prenom: 'Prénom',
+  ajouterNom: 'Ajouter',
+  ajouterQuelquun: 'Ajouter quelqu’un',
+  chevronOuvert: '▴',
+  /** le menu du bouton photo de la page + (v117, v132, C-060) */
+  menuPhoto: { dessiner: 'Dessiner', importer: 'Importer une photo', retirer: 'Retirer la photo' },
+  /** le Peaufiner de la page + (lot-S2, v163b C-192, C-197) : ses rangées, nature par nature, telles que le prototype les montre au repos */
+  peauf: {
+    titres: { promi: 'Promi', chiche: 'Chiche', nuee: 'Cercle' },
+    avant: 'AVANT',
+    echeances: ['demain', '1 sem.', '1 mois', 'une date…', 'un jour'],
+    echeanceDefaut: 'un jour',
+    dansUnCercle: 'DANS UN CERCLE',
+    aucune: 'aucune',
+    note: 'NOTE',
+    noteVide: 'ajoute un mot, un contexte…',
+    notePrivee: 'privée — visible par toi seul',
+    pieces: 'PIÈCES JOINTES',
+    piecesVal: (n: number): string => `${String(n)} fichier${n > 1 ? 's' : ''}`,
+    piecesPrivees: 'privées — visibles par toi seul',
+    membres: 'MEMBRES',
+    personneEncore: 'personne encore',
+    /** les réglages de Ma Parole ! : des MURS (flou 4,8 px ; leur phrase : lot 8) */
+    murs: [
+      ['RÉCURRENCE', 'chaque semaine'],
+      ['RAPPEL', 'la veille à 19:00'],
+      ["C'EST IMPORTANT ?", '· ·· ···'],
+      ['LA MÉMOIRE', 'réveille tes « en l’air »'],
+      ['LA COULEUR', 'au hasard'],
+    ],
+  },
 } as const;

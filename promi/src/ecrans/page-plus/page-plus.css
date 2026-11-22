@@ -501,9 +501,19 @@
   border-color: var(--c-framboise54);
   background: var(--c-framboise54);
 }
+/* le choix d'un Cercle (lot-GENS, `#nueeChoix`) : ses pastilles en Gilbert 23,1 (`#createSheet .ph-o{font-size:23.1px}`), « Moi » choisi
+   au mauve profond, deux colonnes de 162 (336 de large), la marge droite d'une pastille 10 (la grammaire commune) */
+#createSheet.pp-nuee .gn {
+  width: 336px;
+}
+#createSheet.pp-nuee .ph-o {
+  padding: 0 10px 0 14px;
+  font-size: 23.1px;
+  line-height: 23.1px;
+}
 #createSheet.pp-nuee .ph-o.on {
-  border-color: var(--c-mauve77);
-  background: var(--c-mauve77);
+  border-color: var(--c-mauve12);
+  background: var(--c-mauve12);
 }
 #createSheet.pp-promi .ph-o .ppo-ini {
   background: var(--c-bleu45);
@@ -512,7 +522,7 @@
   background: var(--c-framboise54);
 }
 #createSheet.pp-nuee .ph-o .ppo-ini {
-  background: var(--c-mauve77);
+  background: var(--c-mauve12);
 }
 #createSheet .ph-o.on .ppo-ini {
   background: var(--c-creme95);
@@ -525,4 +535,384 @@
 }
 #createSheet.pp-nuee .ph-o.on .ppo-ini {
   color: var(--c-mauve77);
+}
+
+/* ── une place remplie (le titre, le nom, une personne) : crème, à l'encre (« remplie = crème / encre ; vide = 3 px pointillé ») ── */
+#createSheet .ph-txt .ph-m:not(.ph-vide) {
+  border: 0;
+  background: var(--c-creme95);
+  color: var(--c-seiche10);
+}
+/* « d’ » colle à sa place (le prototype : `em.ph-li.ph-elide{margin-right:0}`) */
+#createSheet .ph-txt em.ph-li.ph-elide {
+  margin-right: 0;
+  letter-spacing: -0.03em;
+}
+/* le curseur qui invite à écrire (lot-CURSEUR) : une barre de 3 qui clignote après ce qu'on tape */
+#createSheet .ph-caret {
+  display: inline-block;
+  width: 3px;
+  height: 0.82em;
+  margin: 0 0.08em 0 0.02em;
+  border-radius: 1.5px;
+  background: currentColor;
+  vertical-align: -0.06em;
+  font-style: normal;
+  animation: phCaret 1.06s steps(1, end) infinite;
+}
+@keyframes phCaret {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ── la photo importée : sa couche a les cotes du champ ── */
+#csPhotoCv {
+  position: absolute;
+  left: 0;
+  top: var(--pp-h);
+  display: block;
+  pointer-events: none;
+}
+#createSheet .ph-photo-in {
+  display: none !important;
+}
+
+/* ── « DÉJÀ PROMIS » (§5) : le libellé (Atkinson 500, 13, chasse 0,2 em), les pastilles (50 de haut, trait 3 crème, 21 d'écart) ── */
+#createSheet .ppo-dejas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 342px;
+  height: 0;
+}
+#createSheet .ppo-copie {
+  position: absolute;
+  left: var(--marge-g);
+  z-index: 3;
+  pointer-events: none;
+}
+#createSheet .ppo-deja {
+  position: absolute;
+  left: 0;
+  font: 500 13px/13px var(--f-texte);
+  /* .20 em (le prototype : relevée sur son rendu, 2,6 px à 13) */
+  letter-spacing: 0.2em;
+  white-space: nowrap;
+}
+#createSheet.pp-promi .ppo-deja {
+  color: var(--c-lilas85);
+}
+#createSheet.pp-chiche .ppo-deja {
+  color: var(--c-orange77);
+}
+#createSheet .ppo-dejarow {
+  position: absolute;
+  left: 0;
+  display: flex;
+  gap: 21px;
+}
+#createSheet .ppo-d {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 50px;
+  padding: 0 21px;
+  border: 3px solid var(--c-creme95);
+  border-radius: 25px;
+  font: 700 16px/1 var(--f-libelle);
+  white-space: nowrap;
+  color: var(--c-creme95);
+  cursor: pointer;
+}
+
+/* ── C-122 : la zone en pointillés EST le champ — son entrée invisible, le nom à l'encre, « un prénom… », le « + » orange ── */
+#createSheet .gn-saisie {
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  opacity: 0;
+  background: transparent;
+  font-size: 16px;
+  line-height: 20px;
+  color: transparent;
+  caret-color: transparent;
+  pointer-events: none;
+  z-index: 1;
+}
+#createSheet .ph-add.gn-edit {
+  gap: 0;
+  padding: 0 16px;
+  justify-content: center;
+  cursor: text;
+}
+#createSheet .gn-ligne {
+  display: inline-block;
+  max-width: 100%;
+  white-space: pre;
+  line-height: 1;
+}
+#createSheet .gn-txt,
+#createSheet .gn-edit .ph-caret {
+  color: var(--c-creme95);
+}
+#createSheet .gn-edit.gn-repos .ph-caret {
+  display: none;
+}
+#createSheet .gn-plus {
+  display: inline-block;
+  position: relative;
+  margin: 0 0 0 0.62em;
+  line-height: 0;
+  vertical-align: baseline;
+  cursor: pointer;
+}
+#createSheet .gn-plus::before {
+  content: '';
+  position: absolute;
+  left: -14px;
+  right: -18px;
+  top: -20px;
+  bottom: -20px;
+}
+#createSheet .gn-plus svg {
+  display: block;
+  overflow: visible;
+}
+#createSheet .gn-plus svg path {
+  fill: none;
+  stroke: var(--c-orange-depart);
+  stroke-linecap: butt;
+}
+
+/* ── le menu du bouton photo (v117, compact v128) : à gauche du bouton, 4 d'écart, la géométrie de la pastille ── */
+#createSheet .ph-photo-menu {
+  position: absolute;
+  left: var(--marge-g);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  z-index: 40;
+}
+#createSheet .ph-photo-menu button {
+  position: relative;
+  box-sizing: border-box;
+  height: 33px;
+  margin: 0;
+  padding: 0 14px;
+  border: 2px solid var(--c-creme95);
+  border-radius: 17px;
+  background: var(--c-seiche10);
+  color: var(--c-creme95);
+  font: 700 13px var(--f-libelle);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+/* sa zone de toucher fait 44 de haut */
+#createSheet .ph-photo-menu button::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 44px;
+  transform: translateY(-50%);
+}
+
+/* ── PEAUFINER (lot-S2) : il couvre la page (son corps), la barre passe au-dessus ; la liste défile ── */
+#csPeauf {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 84px;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  z-index: 30;
+}
+#csPeauf::-webkit-scrollbar {
+  display: none;
+}
+#createSheet.pp-promi #csPeauf {
+  background: var(--c-cobalt50);
+}
+#createSheet.pp-chiche #csPeauf {
+  background: var(--c-framboise35);
+}
+#createSheet.pp-nuee #csPeauf {
+  background: var(--c-mauve35);
+}
+#createSheet.pp-peauf #csBotBar {
+  z-index: 31;
+}
+#csPeauf .s2-liste {
+  position: relative;
+  padding: 110px 0 146px;
+}
+#csPeauf .s2-tete {
+  position: absolute;
+  left: var(--marge-g);
+  top: 36px;
+  width: 342px;
+  height: 40px;
+  z-index: 2;
+}
+#csPeauf .s2-titre {
+  position: absolute;
+  left: 0;
+  top: 7px;
+  font: 700 26px/26px var(--f-libelle);
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+  overflow: hidden;
+  color: var(--c-creme95);
+}
+#csPeauf .s2-fermer {
+  position: absolute;
+  left: 304px;
+  top: -3.1px;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+}
+#csPeauf .s2-x {
+  position: absolute;
+  left: 0;
+  top: 5.88px;
+  width: 44px;
+  font: 35px/37.1px var(--f-marque);
+  text-align: center;
+  color: var(--c-creme95);
+}
+#csPeauf .s2-reg {
+  position: relative;
+  box-sizing: border-box;
+  height: 64px;
+  margin: 0 var(--marge-d) 16px var(--marge-g);
+  padding: 0 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  overflow: hidden;
+  border: 2px solid var(--c-creme95);
+  border-radius: 32px;
+}
+#csPeauf .s2-lab {
+  font: 500 13px/13px var(--f-texte);
+  letter-spacing: 2.34px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+/* une valeur trop longue s'arrête par « … » (le prototype : `.s2-val`) */
+#csPeauf .s2-val {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font: 700 18px/19.8px var(--f-libelle);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  text-align: right;
+  color: var(--c-creme95);
+}
+#createSheet.pp-promi #csPeauf .s2-lab,
+#createSheet.pp-promi #csPeauf .s2-txt,
+#createSheet.pp-promi #csPeauf .s2-vis {
+  color: var(--c-lilas85);
+}
+#createSheet.pp-chiche #csPeauf .s2-lab,
+#createSheet.pp-chiche #csPeauf .s2-txt,
+#createSheet.pp-chiche #csPeauf .s2-vis {
+  color: var(--c-orange77);
+}
+#createSheet.pp-nuee #csPeauf .s2-lab {
+  color: var(--c-mauve77);
+}
+#csPeauf .s2-zone {
+  display: block;
+  height: 118px;
+  padding: 17px 23px 0;
+  border-radius: 30px;
+}
+#csPeauf .s2-txt {
+  display: block;
+  box-sizing: border-box;
+  width: 292px;
+  height: 22.5px;
+  margin: 15.6px 0 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  resize: none;
+  overflow: hidden;
+  font: 700 18px/22.5px var(--f-libelle);
+  letter-spacing: -0.01em;
+}
+#csPeauf .s2-txt::placeholder {
+  color: currentColor;
+  opacity: 1;
+}
+/* (sa boîte rogne ce qui dépasse de sa ligne, comme dans le prototype) */
+#csPeauf .s2-vis {
+  position: absolute;
+  left: 23px;
+  right: 22px;
+  overflow: hidden;
+  font: 700 14px/15.4px var(--f-libelle);
+  white-space: nowrap;
+}
+#csPeauf .s2-zone .s2-vis {
+  top: 83.6px;
+}
+#csPeauf .s2-vis2 {
+  display: block;
+  height: 92px;
+  padding: 0;
+  border-radius: 46px;
+}
+#csPeauf .s2-haut {
+  display: contents;
+}
+#csPeauf .s2-vis2 .s2-lab {
+  position: absolute;
+  left: 23px;
+  top: 26.4px;
+}
+#csPeauf .s2-vis2 .s2-val {
+  position: absolute;
+  right: 23px;
+  top: 23px;
+}
+#csPeauf .s2-vis2 .s2-vis {
+  top: 49.8px;
+  right: 23px;
+  overflow: visible;
+}
+/* les réglages de Ma Parole ! : un mur (flou 4,8 px, C-196) — leur phrase : lot 8 */
+#csPeauf .s2-cercle .s2-reg {
+  margin: 0 0 16px;
+  filter: blur(4.8px);
+}
+#csPeauf .s2-cercle {
+  margin: 0 var(--marge-d) 0 var(--marge-g);
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #createSheet .ph-caret {
+    animation: none;
+  }
 }

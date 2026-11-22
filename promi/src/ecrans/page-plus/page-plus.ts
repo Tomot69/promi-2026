@@ -6,9 +6,13 @@
  * Le prototype rendu (v214b) est la référence ; ses règles de composition sont relues dans app.html (`lot-S3-page-plus` : `ecran`, `cotes`,
  * `trait`, `hautBouton` ; `lot-V172-INVITE` : `hzCible`) et réécrites ici.
  *
- * Ce que 2a ne fait pas (2b, 2c) : le trait et sa genèse, la plantation, la naissance et le vol de la dalle, la mise en page de saisie
- * (« DÉJÀ PROMIS », la page qui monte avec le clavier), le panneau de Peaufiner, les textes longs, la première lettre, le détracé des
- * changements de mots (la phrase se recompose : C-271 au 2c).
+ * Et (fin du 2a) : le choix des personnes d'un Cercle (« Moi » en tête, ses tailles) ; la mise en page de saisie (`pp-ouvert` : l'onde à
+ * 144, la phrase à 230, « DÉJÀ PROMIS ») et le mouvement qui y mène et qui en revient (Q598, C-234 : 360 ms, jamais d'un coup) ; le champ
+ * « un prénom… » (C-122) ; le panneau Peaufiner (C-134, C-220) ; le menu du bouton photo (v117, v132) et la photo importée.
+ *
+ * Ce que 2a ne fait pas (2b, 2c) : le trait et sa genèse, la plantation, la naissance et le vol de la dalle, les textes longs, la première
+ * lettre, le détracé des changements de mots (la phrase se recompose : C-271 au 2c) ; le dessin (son lot) ; les choix DANS Peaufiner
+ * (l'échéance, le Cercle, les pièces jointes, les membres) ; la phrase des murs (lot 8).
  *
  * L'état de la page (la phrase qu'on écrit) n'appartient qu'à elle ; ce qui se garde passe par le magasin (le tirage des exemples, le gardé
  * de côté). Son temps est celui de l'horloge unique ; le moteur, par la façade.
@@ -19,6 +23,7 @@ import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Brouillon } from '../../donnees/schema.ts';
 import { horloge } from '../../animation/horloge.ts';
+import { masqueFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { palette } from '../../design/jetons.ts';
 import {
   EXEMPLES,
@@ -29,8 +34,9 @@ import {
 } from '../../textes/page-plus.ts';
 import { variante } from '../../metier/exemples.ts';
 import { elision } from '../../metier/elision.ts';
+import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
-import { basOnde, cheminOnde, onde } from './onde.ts';
+import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 
 export type Nature = 'promi' | 'chiche' | 'nuee';
 export type Sens = 'soi' | 'faire' | 'demander';
@@ -50,6 +56,11 @@ export interface PhrasePage {
   pinceau: string;
   /** C-304 : la place du destinataire touchée sans personne passe à « moi » (entre pointillés) */
   moi: boolean;
+  /** Peaufiner : la note ; l'échéance (son mot) */
+  note: string;
+  ech: string;
+  /** la photo importée (une adresse `data:`), qui remplace la dalle dans la bande (lot-PHOTO) */
+  photo: string | null;
 }
 
 export interface PagePlus {
@@ -68,6 +79,12 @@ export interface PagePlus {
     choix: string | null;
     gardeActif: boolean;
     exemples: Partial<Record<TypeExemple, string>>;
+    /** la saisie ouverte (le titre, le nom), Peaufiner ouvert, le menu photo ouvert, la zone « un prénom… » active, un mouvement en cours */
+    saisie: string | null;
+    peauf: boolean;
+    menu: boolean;
+    ajout: boolean;
+    mouvement: boolean;
   };
   detruire(): void;
 }
@@ -87,11 +104,15 @@ const HZ_AIR = 12;
 const PLANCHER_PH = 28;
 /** la grammaire du lien « garder de côté » : son encre est 0,5 pt sous sa boîte (`INK_LIEN`) ; le rail se pose à mi-chemin */
 const INK_LIEN = 0.5;
+/** C-134 (v146) : un glissement de 220 pt vers le bas referme Peaufiner, un de 60 pt non — le seuil est entre les deux */
+const SEUIL_GLISSE = 120;
 
 const SVG_BASCULE =
   '<svg viewBox="0 0 22 22" width="17" height="17" aria-hidden="true"><path d="M3 8h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M15.4 4.6 L19 8 L15.4 11.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 15H3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M6.6 11.6 L3 15 L6.6 18.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 const SVG_PHOTO =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M1.5 14.5c2.6-5 5.2-5 7.2-1.6s4.400 3.4 6.4 0 4-4.4 7.400-3.4"/></svg>';
+const SVG_PLUS =
+  '<svg viewBox="0 0 10 10" aria-hidden="true"><path class="h" d="M0 5 H10"/><path class="v" d="M5 0 V10"/></svg>';
 const SVG_X =
   '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2 L10 10 M10 2 L2 10" fill="none" stroke-width="2" stroke-linecap="round"/></svg>';
 
@@ -178,7 +199,40 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   });
   saisie.style.cssText =
     'position:absolute;left:0;top:0;width:1px;height:1px;opacity:0;border:0;padding:0;margin:0;pointer-events:none;font-size:16px';
-  cs.append(cv, phrase, pinceau, garder, barre, plateau, nid, saisie);
+  // la photo importée : sa couche, au-dessus du champ, découpée par l'onde (lot-PHOTO : elle remplace la dalle, même boîte, en couverture)
+  const photoCv = el('canvas', { id: 'csPhotoCv', 'aria-hidden': 'true' });
+  // le champ de fichier : jamais hors cadre (`display:none`, lot-PHOTO) — il s'ouvre DANS le geste qui le demande
+  const photoIn = el('input', { type: 'file', accept: 'image/*', class: 'ph-photo-in', 'aria-hidden': 'true' });
+  // « DÉJÀ PROMIS » : sous la phrase, pendant la saisie d'un titre
+  const deja = el('div', { class: 'ppo-dejas' });
+  deja.hidden = true;
+  // un toucher sur un mot déjà promis ne retire pas le clavier (le focus reste au champ)
+  deja.addEventListener('mousedown', (ev) => {
+    ev.preventDefault();
+  });
+  phrase.appendChild(deja);
+  // C-122 : le champ (invisible) du prénom qu'on écrit dans la zone en pointillés
+  const gnIn = el('input', {
+    type: 'text',
+    id: 'gnSaisie',
+    class: 'gn-saisie',
+    autocomplete: 'off',
+    autocorrect: 'off',
+    autocapitalize: 'words',
+    spellcheck: 'false',
+    enterkeyhint: 'done',
+    maxlength: '24',
+    'aria-label': T.prenom,
+  });
+  // il n'existe pour la page que pendant qu'on écrit un prénom (hors de là, aucun champ sans porte : redteam_champs)
+  gnIn.hidden = true;
+  // le panneau Peaufiner (lot-S2 : la page de réglages de la page +, le MÊME bloc que la fiche)
+  const peauf = el('div', { id: 'csPeauf', class: 'dpd-corps', role: 'region', 'aria-label': T.peaufiner });
+  peauf.hidden = true;
+  cs.append(cv, photoCv, phrase, pinceau, garder, peauf, barre, plateau, nid, saisie, gnIn, photoIn);
+  // C-129 : aucun emoji n'entre (le titre, le nom, un prénom ; la note de Peaufiner aussi, plus bas)
+  champSansEmoji(saisie);
+  champSansEmoji(gnIn);
   for (const p of PINCEAUX) {
     const b = el('button', { type: 'button', class: 'pc-t' + (p.libre ? '' : ' pc-mur'), 'data-t': p.nom });
     const e = el('span', { class: 'pc-e' });
@@ -208,9 +262,33 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   let dalleT: { w: number; h: number; nat: Nature } | null = null;
   let repris: number | null = null;
   let mise = { base: 312, amp: 36, hz: 0, nl: 2, taille: 36 };
+  /** ce qui part en flaques (un mouvement l'a pris) : `composer` ne le cache pas d'un coup sous lui */
+  const sortants = new Set<HTMLElement>();
+  /** C-122 : la zone « un prénom… » est active (on y écrit) */
+  let ajoutActif = false;
+  let peaufOuvert = false;
+  let menu: HTMLElement | null = null;
+  /** le mouvement en cours (Q598, C-234) : son image, la place VUE (l'onde, la phrase, le bouton photo, la barre) */
+  let mv: { id: number; fin: () => void } | null = null;
+  let vue = { base: 312, amp: 36, hz: 0 };
+  /** le décalage de « DÉJÀ PROMIS » sous une phrase plus longue (le prototype : `dec`) */
+  let decDeja: number | null = null;
 
   function neuve(nat: Nature): PhrasePage {
-    return { nat, sens: 'soi', titre: '', qui: [], avec: [], nom: '', membres: [], pinceau: 'Plein', moi: false };
+    return {
+      nat,
+      sens: 'soi',
+      titre: '',
+      qui: [],
+      avec: [],
+      nom: '',
+      membres: [],
+      pinceau: 'Plein',
+      moi: false,
+      note: '',
+      ech: T.peauf.echeanceDefaut,
+      photo: null,
+    };
   }
   const largeur = (): number => cs.clientWidth || 390;
   const haut0 = (): number => parseFloat(getComputedStyle(cs).getPropertyValue('--pp-h')) || 0;
@@ -231,14 +309,21 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // ── LA PHRASE ──
   const pastille = (cle: string, texte: string, vide: boolean, attr = 'data-ph'): string =>
     `<span class="ph-m${vide ? ' ph-vide' : ''}" ${attr}="${cle}">${esc(texte)}</span>`;
+  /**
+   * le contenu d'une place qui s'écrit (le titre, le nom) : vide, son exemple ; pendant la saisie (`ph-on`, lot-CURSEUR), ce qu'on tape et
+   * le curseur qui clignote après lui (le prototype n'en pose pas tant que la place est vide : l'exemple reste)
+   */
+  const contenuPlace = (v: string, ex: string, ici: boolean): string =>
+    ici && v ? `${esc(v)}<i class="ph-caret" aria-hidden="true"></i>` : esc(v || ex);
   function titrePastille(): { html: string; li: string } {
     const v = P.titre.trim();
     const ex = variante(exemple(typeExemple()), pluriel());
     const li = elision(v || ex);
     const cls = li === 'd’' ? 'ph-li ph-elide' : 'ph-li';
+    const ici = saisieDe === 'titre';
     return {
       li,
-      html: `<em class="${cls}">${li}</em> <span class="ph-m${v ? '' : ' ph-vide'}" data-ph="titre" data-plein="${esc(v || ex)}">${esc(v || ex)}</span>`,
+      html: `<em class="${cls}">${li}</em> <span class="ph-m${v ? '' : ' ph-vide'}${ici ? ' ph-on' : ''}" data-ph="titre" data-plein="${esc(v || ex)}">${contenuPlace(ici ? P.titre : v, ex, ici)}</span>`,
     };
   }
   function htmlPhrase(): string {
@@ -246,10 +331,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     if (n === 'nuee') {
       const nom = P.nom.trim();
       const ex = exemple('nuee');
-      const avec = P.membres.length ? P.membres.join(' · ') : T.vides.toutLeMonde;
+      // C-304 (v199, `lot-V199-MOI`) : la place « avec » touchée sans personne passe à « moi », comme celle d'un Promi ou d'un Chiche
+      const avec = P.membres.length ? P.membres.join(' · ') : P.moi ? T.vides.moi : T.vides.toutLeMonde;
+      const ici = saisieDe === 'nom';
       return (
         `<span class="ph-b ph-b-fixe">${esc(T.cercle)}</span><br>` +
-        `<em>${T.liaisons.nomme}</em> <span class="ph-m${nom ? '' : ' ph-vide'}" data-np="nom" data-plein="${esc(nom || ex)}">${esc(nom || ex)}</span><br>` +
+        `<em>${T.liaisons.nomme}</em> <span class="ph-m${nom ? '' : ' ph-vide'}${ici ? ' ph-on' : ''}" data-np="nom" data-plein="${esc(nom || ex)}">${contenuPlace(ici ? P.nom : nom, ex, ici)}</span><br>` +
         `<em>${T.liaisons.avec}</em> ${pastille('avec', avec, !P.membres.length, 'data-np')}`
       );
     }
@@ -388,7 +475,13 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
 
   // ── LE CHAMP : l'aplat de la nature au-dessus de la vague, la dalle d'avance ──
-  function peindreChamp(base: number, amp: number, hz: number, H: number): void {
+  function peindreChamp(
+    base: number,
+    amp: number,
+    hz: number,
+    H: number,
+    sous = choix !== null || saisieDe !== null,
+  ): void {
     const W = largeur();
     const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
     cv.width = Math.round(W * dpr);
@@ -417,7 +510,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const dh = dalleT.h;
     const x = Math.floor((W - dw) / 2);
     const yD = 88 + (hz > 0 ? 16 : 0);
-    const sous = choix !== null;
+    peindrePhoto(y, x, yD, dw, dh, W, H, dpr);
     const clip = (): void => {
       g.save();
       g.beginPath();
@@ -462,6 +555,64 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     );
   }
 
+  // ── LA PHOTO IMPORTÉE (lot-PHOTO) : elle REMPLACE la dalle — la même boîte, recadrée au centre (couverture), bornée par l'onde ; l'aplat
+  //    de la nature reste dessous. Sa couche (`#csPhotoCv`) a les cotes du champ. ──
+  const images = new Map<string, HTMLImageElement>();
+  function peindrePhoto(
+    y: Onde,
+    x: number,
+    yD: number,
+    dw: number,
+    dh: number,
+    W: number,
+    H: number,
+    dpr: number,
+  ): void {
+    photoCv.width = cv.width;
+    photoCv.height = cv.height;
+    photoCv.style.width = `${String(W)}px`;
+    photoCv.style.height = `${String(H)}px`;
+    const g = photoCv.getContext('2d');
+    if (!g) return;
+    g.setTransform(dpr, 0, 0, dpr, 0, 0);
+    g.clearRect(0, 0, W, H);
+    const src = P.photo;
+    if (!src) return;
+    let im = images.get(src);
+    if (!im) {
+      im = new Image();
+      im.onload = () => {
+        if (!cs.hidden) peindreChamp(vue.base, vue.amp, vue.hz, vue.base + vue.amp + 60 + vue.hz);
+      };
+      im.src = src;
+      images.set(src, im);
+    }
+    if (!im.complete || !im.naturalWidth) return;
+    g.save();
+    g.beginPath();
+    cheminOnde(g, y, 0, W, W);
+    g.lineTo(W, 0);
+    g.lineTo(0, 0);
+    g.closePath();
+    g.clip();
+    const r = im.naturalWidth / im.naturalHeight;
+    const br = dw / dh;
+    let sw: number, sh: number, sx: number, sy: number;
+    if (r > br) {
+      sh = im.naturalHeight;
+      sw = sh * br;
+      sx = (im.naturalWidth - sw) / 2;
+      sy = 0;
+    } else {
+      sw = im.naturalWidth;
+      sh = sw / br;
+      sx = 0;
+      sy = (im.naturalHeight - sh) / 2;
+    }
+    g.drawImage(im, sx, sy, sw, sh, x, yD, dw, dh);
+    g.restore();
+  }
+
   /** v164a (C-201) : le bouton photo au-dessus de l'encre du trait, 8 pt d'air (`hautBouton` du prototype) */
   function hautBouton(base: number, amp: number): number {
     const W = largeur();
@@ -474,11 +625,21 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
 
   // ── LA COMPOSITION ──
   function composer(): void {
-    const ouvert = choix !== null;
+    // la mise en page « ouverte » (cadres 18 à 23) : un choix des personnes, ou la saisie d'un mot ; la barre Peaufiner se cache pendant la
+    // saisie d'un Promi ou d'un Chiche (§2.11, le seul cas du produit) — un Cercle la garde (le prototype, `pp-saisie` sur #csChoix)
+    const ouvert = choix !== null || saisieDe !== null;
+    const enSaisie = saisieDe !== null && P.nat !== 'nuee';
     const dh = haut0();
+    // les mesures se lisent sur la mise en page : un mouvement en cours (une translation) est mis de côté le temps de composer
+    const enCours = [phrase, garder].map((e) => [e, e.style.translate] as const);
+    for (const [e] of enCours) e.style.removeProperty('translate');
+    // « garder de côté » se MESURE (C-240 : la phrase laisse la place du rail au-dessus de lui) : caché, il n'aurait pas de boîte — il est
+    // posé le temps de composer (aucune image ne passe), sa visibilité est décidée plus bas
+    garder.hidden = false;
     cs.classList.remove(...NATURES.map((n) => 'pp-' + n));
     cs.classList.add('pp-' + P.nat);
     cs.classList.toggle('pp-ouvert', ouvert);
+    cs.classList.toggle('pp-saisie', enSaisie);
     phrase.id = P.nat === 'nuee' ? 'nueePhrase' : 'csPhrase';
     choixHote.id = P.nat === 'nuee' ? 'nueeChoix' : 'csChoix';
     mot.innerHTML = '';
@@ -524,9 +685,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     peindreChamp(base, amp, hz, base + amp + 60 + hz);
     photo.style.top = `calc(var(--pp-h) + ${String(hautBouton(base, amp))}px)`;
     mise = { base, amp, hz, nl: r.nl, taille: r.taille };
-    // le rail : à mi-chemin, à l'encre, entre la phrase et « garder de côté » (il se compte comme si la phrase n'avait pas remonté)
-    pinceau.hidden = ouvert;
-    garder.hidden = ouvert;
+    // le rail : à mi-chemin, à l'encre, entre la phrase et « garder de côté » (il se compte comme si la phrase n'avait pas remonté) ;
+    // ce qui part en flaques (un mouvement l'a pris) n'est pas caché d'un coup sous lui
+    if (!sortants.has(pinceau)) pinceau.hidden = ouvert;
+    if (!sortants.has(garder)) garder.hidden = ouvert;
+    if (!sortants.has(barre)) barre.hidden = enSaisie;
     if (!ouvert) {
       let dessus = 0;
       for (const n of txt.querySelectorAll(':scope > .ph-m, :scope > .ph-b')) {
@@ -540,6 +703,206 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     majRail();
     majGarder();
     rendreChoix();
+    rendreDeja();
+    for (const [e, v] of enCours) if (v) e.style.setProperty('translate', v);
+  }
+
+  // ── LES MOUVEMENTS (C-271 : rien ne paraît ni ne part d'un coup) ──
+  const reduit = (): boolean => {
+    try {
+      return matchMedia('(prefers-reduced-motion: reduce)').matches;
+    } catch {
+      return false;
+    }
+  };
+  const passages = new Map<HTMLElement, ControlePassage>();
+  /** une chose paraît ou part EN FLAQUES (C-329) : la scène du passage, posée en masque sur la chose elle-même, 300 ms */
+  function enFlaques(e: HTMLElement, sens: 'paraît' | 'part', fin?: () => void): void {
+    passages.get(e)?.stop?.();
+    passages.delete(e);
+    const c = masqueFlaques(e, {
+      mode: sens === 'paraît' ? 'ouvre' : 'couvre',
+      duree: 300,
+      fin: (c) => {
+        passages.delete(e);
+        if (!c.arrete) fin?.();
+      },
+    });
+    if (!c.arrete) passages.set(e, c);
+  }
+  function partir(e: HTMLElement): void {
+    if (e.hidden) return;
+    sortants.add(e);
+    enFlaques(e, 'part', () => {
+      sortants.delete(e);
+      e.hidden = true;
+    });
+  }
+  function paraitre(e: HTMLElement): void {
+    sortants.delete(e);
+    e.hidden = false;
+    enFlaques(e, 'paraît');
+  }
+  /** Q598, C-234 : 360 ms, la courbe de l'horizon (aller-retour quadratique) */
+  const DUREE_MV = 360;
+  /** la barre Peaufiner sort par le bas pendant la saisie, et revient d'où elle est partie (884 → 760 dans le prototype) */
+  const BARRE_BAS = 124;
+  const doux = (p: number): number => (p < 0.5 ? 2 * p * p : 1 - (-2 * p + 2) ** 2 / 2);
+  const ty = (e: HTMLElement): number => {
+    const m = /(-?[\d.]+)px\s*$/.exec(e.style.translate || '');
+    return m ? +m[1]! : 0;
+  };
+  const glisse = (e: HTMLElement, y: number): void => {
+    if (Math.abs(y) < 0.01) e.style.removeProperty('translate');
+    else e.style.setProperty('translate', `0 ${String(Math.round(y * 100) / 100)}px`);
+  };
+
+  /**
+   * Recomposer la page, et — quand la mise en page « ouverte » change (la saisie, un choix) — y aller d'un MOUVEMENT (Q598, v177a ; C-234,
+   * v180b) : l'onde va de sa place vue à la nouvelle, repeinte à chaque image ; la phrase et le bouton photo glissent ; le rail et « garder
+   * de côté » partent en flaques (ils reviennent en flaques en glissant avec la phrase) ; la barre Peaufiner descend sous l'écran pendant la
+   * saisie et remonte du bas ; « DÉJÀ PROMIS » paraît en flaques, et à la fermeture sa copie descend (C-303 : posée dans la tâche même de la
+   * validation, elle ne disparaît jamais d'un coup). Réduire les animations : la page se pose.
+   */
+  function recomposer(anime: boolean): void {
+    const ouvAv = cs.classList.contains('pp-ouvert');
+    const saiAv = cs.classList.contains('pp-saisie');
+    const av = { ph: phrase.offsetTop + ty(phrase), photo: photo.offsetTop + ty(photo), barre: ty(barre), ...vue };
+    const fermeSaisie = !deja.hidden && saisieDe === null;
+    let copie: HTMLElement | null = null;
+    if (anime && !reduit() && fermeSaisie) {
+      copie = deja.cloneNode(true) as HTMLElement;
+      copie.classList.add('ppo-copie');
+      copie.setAttribute('aria-hidden', 'true');
+      copie.style.top = `${String(av.ph + (decDeja ?? 0) + ty(deja))}px`;
+      copie.style.removeProperty('translate');
+      cs.appendChild(copie);
+    }
+    if (mv) {
+      h.annuleImage(mv.id);
+      mv.fin();
+      mv = null;
+    }
+    const versOuvert = choix !== null || saisieDe !== null;
+    const versSaisie = saisieDe !== null && P.nat !== 'nuee';
+    const bouge = anime && !reduit() && (versOuvert !== ouvAv || versSaisie !== saiAv);
+    // ce qui va partir reste à l'écran le temps de son passage
+    if (bouge && versOuvert && !ouvAv) for (const e of [pinceau, garder]) if (!e.hidden) sortants.add(e);
+    if (bouge && versSaisie && !saiAv && !barre.hidden) sortants.add(barre);
+    for (const e of [phrase, photo, pinceau, garder]) e.style.removeProperty('translate');
+    composer();
+    vue = { base: mise.base, amp: mise.amp, hz: mise.hz };
+    if (!bouge) {
+      copie?.remove();
+      glisse(barre, 0);
+      return;
+    }
+    const ap = { ph: phrase.offsetTop, photo: photo.offsetTop };
+    const dPh = av.ph - ap.ph;
+    const dPhoto = av.photo - ap.photo;
+    const barreSort = versSaisie && !saiAv;
+    const barreRevient = !versSaisie && saiAv;
+    const reviennent = !versOuvert && ouvAv;
+    if (versOuvert && !ouvAv) {
+      for (const e of [pinceau, garder]) if (sortants.has(e)) partir(e);
+      if (!deja.hidden) enFlaques(deja, 'paraît');
+    }
+    if (reviennent) for (const e of [pinceau, garder]) paraitre(e);
+    const fin = { base: mise.base, amp: mise.amp, hz: mise.hz };
+    const H0 = av.base + av.amp + 60 + av.hz;
+    const H1 = fin.base + fin.amp + 60 + fin.hz;
+    const t0 = h.maintenant();
+    const bas = cs.offsetHeight - av.ph;
+    const pas = (): void => {
+      const p = Math.min(1, (h.maintenant() - t0) / DUREE_MV);
+      const e = doux(p);
+      const l = (a: number, b: number): number => a + (b - a) * e;
+      vue = { base: l(av.base, fin.base), amp: l(av.amp, fin.amp), hz: l(av.hz, fin.hz) };
+      peindreChamp(vue.base, vue.amp, vue.hz, l(H0, H1), true);
+      glisse(phrase, dPh * (1 - e));
+      glisse(photo, dPhoto * (1 - e));
+      if (reviennent) for (const x of [pinceau, garder]) glisse(x, dPh * (1 - e));
+      if (barreSort) glisse(barre, l(av.barre, BARRE_BAS));
+      if (barreRevient) glisse(barre, l(av.barre || BARRE_BAS, 0));
+      if (copie) glisse(copie, e * bas);
+      if (p < 1) mv = { id: h.image(pas), fin: finir };
+      else finir();
+    };
+    const finir = (): void => {
+      mv = null;
+      for (const x of [phrase, photo, pinceau, garder]) x.style.removeProperty('translate');
+      if (barreSort) {
+        sortants.delete(barre);
+        barre.hidden = saisieDe !== null && P.nat !== 'nuee';
+      }
+      glisse(barre, barre.hidden ? 0 : 0);
+      copie?.remove();
+      vue = { base: mise.base, amp: mise.amp, hz: mise.hz };
+      peindreChamp(mise.base, mise.amp, mise.hz, mise.base + mise.amp + 60 + mise.hz);
+    };
+    pas();
+  }
+
+  // ── « DÉJÀ PROMIS » (§5, `panneau` du prototype) : pendant la saisie d'un titre, les paroles déjà promises (les deux plus récentes, jamais
+  //    le titre en cours), à reprendre d'un toucher ; le libellé 30 pt sous la phrase (420 sur le cadre), les pastilles 26 pt plus bas ──
+  function rendreDeja(): void {
+    deja.innerHTML = '';
+    if (saisieDe !== 'titre') {
+      deja.hidden = true;
+      decDeja = null;
+      return;
+    }
+    const etaitLa = !deja.hidden;
+    deja.hidden = false;
+    const C = phrase.getBoundingClientRect();
+    const k = C.width / (phrase.offsetWidth || 1) || 1;
+    let fin = 0;
+    for (const n of txt.querySelectorAll(':scope > .ph-m, :scope > .ph-b')) {
+      const q = n.getBoundingClientRect();
+      if (q.height) fin = Math.max(fin, (q.bottom - C.top) / k);
+    }
+    // le prototype compte depuis le haut de sa phrase au cadre 18 (280) : libellé à 420, pastilles à 446, décalés si la phrase est plus longue
+    const dec = Math.max(0, Math.round(280 + fin + 30) - 420);
+    // la phrase gagne ou perd une ligne en cours de frappe : « DÉJÀ PROMIS » GLISSE à sa nouvelle place (320 ms, C-278 ④), jamais d'un saut
+    const ancien = decDeja;
+    decDeja = dec;
+    deja.style.top = `${String(dec)}px`;
+    if (etaitLa && ancien != null && ancien !== dec && !reduit()) {
+      const de = ancien - dec;
+      const t0 = h.maintenant();
+      const pas = (): void => {
+        if (decDeja !== dec) return;
+        const p = Math.min(1, (h.maintenant() - t0) / 320);
+        glisse(deja, de * (1 - doux(p)));
+        if (p < 1) h.image(pas);
+      };
+      pas();
+    } else if (!etaitLa || ancien !== dec) glisse(deja, 0);
+    // (même place : le glissement en cours continue)
+    const lab = el('div', { class: 'ppo-deja' });
+    lab.textContent = T.dejaPromis;
+    lab.style.top = '140px';
+    const rang = el('div', { class: 'ppo-dejarow' });
+    rang.style.top = '166px';
+    const cour = P.titre.trim();
+    const mots: string[] = [];
+    for (const q of [...magasin.etat().paroles].reverse()) {
+      const t = (q.title || '').trim();
+      if (t && t !== cour && !mots.includes(t) && mots.length < 2) mots.push(t);
+    }
+    for (const m of mots) {
+      const b = el('span', { class: 'ppo-d', role: 'button' });
+      b.textContent = m;
+      surToucher(b, () => {
+        // reprendre un mot : il devient le titre (la frappe, comme si on l'avait tapé)
+        saisie.value = m;
+        saisie.dispatchEvent(new Event('input', { bubbles: true }));
+      });
+      rang.appendChild(b);
+    }
+    deja.append(lab, rang);
+    // les mots sont ceux de l'utilisateur : deux pastilles qui ne tiennent pas dans les 342, on n'en garde qu'une
+    while (rang.children.length > 1 && rang.scrollWidth > 342) rang.lastChild!.remove();
   }
 
   function majRail(): void {
@@ -562,6 +925,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       P.nom.trim(),
       P.membres.join('|'),
       P.pinceau,
+      P.note,
+      P.photo ? P.photo.length : 0,
     ].join('¦');
   function majGarder(): void {
     const actif = signature() !== signature0;
@@ -588,6 +953,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       nom: P.nom.trim(),
       membres: [...P.membres],
       pinceau: P.pinceau,
+      note: P.note,
     };
     const titre = (P.nat === 'nuee' ? P.nom : P.titre).trim() || T.sansTitre;
     const qui = P.qui.length ? P.qui.join(', ') : 'moi';
@@ -614,27 +980,34 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   function rendreChoix(): void {
     choixHote.innerHTML = '';
     choixHote.classList.toggle('ouvert', choix !== null);
-    if (!choix) return;
+    if (!choix) {
+      if (ajoutActif) {
+        ajoutActif = false;
+        gnIn.value = '';
+        if (document.activeElement === gnIn) gnIn.blur();
+        gnIn.hidden = true;
+        suisClavier();
+      }
+      return;
+    }
     const pris = liste();
     const noms = [...pris];
     for (const n of connus()) if (!noms.includes(n) && noms.length < pris.length + 6) noms.push(n);
     const gn = el('div', { class: 'ph-opts gn', 'data-nat': P.nat });
     const gl = el('div', { class: 'gn-liste' });
-    const tete = P.nat === 'nuee' ? T.toutLeMonde : T.moi;
+    // « Moi » en tête, choisi tant que personne d'autre (C-269, v199) — dans un Cercle aussi (le prototype : la place « avec » passe à « moi »)
     const teteOn = !pris.length;
     const bouton = (nom: string, on: boolean, tetee: boolean): HTMLElement => {
       const b = el('button', { type: 'button', class: 'ph-o' + (on ? ' on' : '') });
       if (tetee) b.dataset['gnTete'] = '1';
       else b.dataset['v'] = nom;
-      if (!(tetee && P.nat === 'nuee')) {
-        const ini = el('span', { class: 'ppo-ini' });
-        ini.textContent = nom.charAt(0).toUpperCase();
-        b.appendChild(ini);
-      }
+      const ini = el('span', { class: 'ppo-ini' });
+      ini.textContent = nom.charAt(0).toUpperCase();
+      b.appendChild(ini);
       const nm = el('span', { class: 'ppo-nom' });
       nm.textContent = nom;
       b.appendChild(nm);
-      if (on && !(tetee && P.nat === 'nuee')) {
+      if (on) {
         const x = el('span', { class: 'ppo-x', role: 'button', 'aria-label': `${T.retirer} ${nom.toLowerCase()}` });
         x.innerHTML = SVG_X;
         b.appendChild(x);
@@ -648,23 +1021,225 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       });
       return b;
     };
-    gl.appendChild(bouton(tete, teteOn, true));
+    gl.appendChild(bouton(T.moi, teteOn, true));
     for (const n of noms) gl.appendChild(bouton(n, pris.includes(n), false));
     const ajout = el('div', { class: 'ph-o ph-add', role: 'button', tabindex: '0', 'data-add': '1' });
-    ajout.textContent = T.ajouter;
+    rendreAjout(ajout);
+    surToucher(ajout, (ev) => {
+      if ((ev.target as Element).closest('.gn-plus')) {
+        validerAjout();
+        return;
+      }
+      ouvrirAjout();
+    });
     gn.append(gl, ajout);
     choixHote.appendChild(gn);
-    // sous la phrase (28 pt d'air) ; la liste montre autant de RANGÉES entières que la place en laisse pour que « + ajouter quelqu'un »
-    // reste au-dessus de la barre Peaufiner, 16 pt d'air (v116, `_gensBorne`) — elle défile pour le reste
-    const haut = txt.offsetHeight + 28;
+    // sous la phrase (28 pt d'air ; 25 sous celle d'un Cercle, `#nueeChoix .gn{margin-top:25px}`) ; la liste montre autant de RANGÉES
+    // entières que la place en laisse pour que « + ajouter quelqu'un » reste au-dessus de la barre Peaufiner, 16 pt d'air (v116,
+    // `_gensBorne`) — elle défile pour le reste
+    const haut = txt.offsetHeight + (P.nat === 'nuee' ? 25 : 28);
     gn.style.top = `${String(haut)}px`;
-    const C = cs.getBoundingClientRect();
-    const debut = phrase.getBoundingClientRect().top - C.top + haut;
-    const fin = barre.getBoundingClientRect().top - C.top - 16;
+    const debut = phrase.offsetTop + haut;
+    // (la cote de MISE EN PAGE de la barre : un mouvement en cours la translate)
+    const finBarre = barre.offsetTop - 16;
     let n = 1;
-    while (debut + 52 * (n + 1) + 8 * n + 8 + 14 + 52 <= fin) n++;
+    while (debut + 52 * (n + 1) + 8 * n + 8 + 14 + 52 <= finBarre) n++;
     gl.style.maxHeight = `${String(52 * n + 8 * (n - 1))}px`;
+    posePrenom();
   }
+
+  // ── C-122 (v146) — AJOUTER UNE PERSONNE : on écrit DANS la zone en pointillés (aucun second encart) ; le nom à l'encre du mode, le mot
+  //    d'attente « un prénom… » dans la teinte de la zone ; dès la première lettre, un « + » orange (`--c-orange-depart`), tracé, à la hauteur
+  //    des capitales du nom, valide (Retour aussi) ; le nom validé est posé, la zone se propose pour le suivant ; le clavier reste. ──
+  function rendreAjout(z: HTMLElement): void {
+    if (!ajoutActif) {
+      z.className = 'ph-o ph-add';
+      z.setAttribute('role', 'button');
+      z.removeAttribute('aria-label');
+      z.textContent = T.ajouter;
+      return;
+    }
+    const v = gnIn.value;
+    const nom = v.replace(/\s+/g, ' ').trim();
+    z.className = 'ph-o ph-add gn-edit' + (document.activeElement === gnIn ? '' : ' gn-repos');
+    z.setAttribute('role', 'group');
+    z.setAttribute('aria-label', T.ajouterQuelquun);
+    const ligne = el('span', { class: 'gn-ligne' });
+    const t = el('span', { class: 'gn-txt' });
+    t.textContent = v;
+    const car = el('i', { class: 'ph-caret', 'aria-hidden': 'true' });
+    ligne.append(t, car);
+    if (!v) {
+      const ph = el('span', { class: 'gn-ph' });
+      ph.textContent = T.unPrenom;
+      ligne.appendChild(ph);
+    }
+    if (nom) {
+      const pl = el('span', { class: 'gn-plus', role: 'button', 'aria-label': `${T.ajouterNom} ${nom}` });
+      pl.innerHTML = SVG_PLUS;
+      // un toucher sur le « + » ne prend pas le focus au champ (sinon le clavier clignote, des lettres se perdent : v146)
+      pl.addEventListener('mousedown', (ev) => {
+        ev.preventDefault();
+      });
+      ligne.appendChild(pl);
+    }
+    z.replaceChildren(ligne);
+    // (le « + » se mesure sur la police du nom RENDUE : une fois la ligne posée)
+    const pl = ligne.querySelector<HTMLElement>('.gn-plus');
+    if (pl) {
+      dessinePlus(pl, t, !plusVu);
+      plusVu = true;
+    } else plusVu = false;
+  }
+  let plusVu = false;
+  /** le « + » : la hauteur des capitales du nom, l'épaisseur de son fût (lues sur sa police) ; il se TRACE (deux traits nets, sans fondu) */
+  function dessinePlus(pl: HTMLElement, t: HTMLElement, anime: boolean): void {
+    const s = getComputedStyle(t);
+    const f = `${s.fontWeight} ${s.fontSize} ${s.fontFamily}`;
+    const fs = parseFloat(s.fontSize) || 16;
+    let cap = fs * 0.78;
+    let fut = fs * 0.2;
+    const g = document.createElement('canvas').getContext('2d');
+    if (g) {
+      g.font = f;
+      const H = g.measureText('H');
+      const L = g.measureText('l');
+      const a = Math.max(H.actualBoundingBoxAscent || 0, L.actualBoundingBoxAscent || 0);
+      if (a > 4) cap = a;
+      const w = (L.actualBoundingBoxLeft || 0) + (L.actualBoundingBoxRight || 0);
+      if (w > 1 && w < cap * 0.5) fut = w;
+    }
+    const sv = pl.querySelector('svg');
+    if (!sv) return;
+    sv.setAttribute('width', cap.toFixed(2));
+    sv.setAttribute('height', cap.toFixed(2));
+    const ep = Math.max(1.6, Math.min(3.4, (fut / cap) * 10));
+    const [hb, vb] = [sv.querySelector<SVGPathElement>('.h'), sv.querySelector<SVGPathElement>('.v')];
+    for (const q of [hb, vb]) {
+      q?.setAttribute('stroke-width', ep.toFixed(2));
+      q?.setAttribute('stroke-dasharray', '10');
+      q?.setAttribute('stroke-dashoffset', anime && !reduit() ? '10' : '0');
+    }
+    if (!anime || reduit()) return;
+    const t0 = h.maintenant();
+    const D = 120;
+    const pas = (): void => {
+      const tt = h.maintenant() - t0;
+      const a = Math.min(1, tt / D);
+      const b = Math.min(1, Math.max(0, (tt - D * 0.7) / D));
+      hb?.setAttribute('stroke-dashoffset', (10 * (1 - a)).toFixed(2));
+      vb?.setAttribute('stroke-dashoffset', (10 * (1 - b)).toFixed(2));
+      if (b < 1 && pl.isConnected) h.image(pas);
+    };
+    h.image(pas);
+  }
+  const zoneAjout = (): HTMLElement | null => choixHote.querySelector<HTMLElement>('.ph-add');
+  function ouvrirAjout(): void {
+    if (!ajoutActif) {
+      ajoutActif = true;
+      gnIn.value = '';
+      plusVu = false;
+    }
+    gnIn.hidden = false;
+    // le focus DANS le geste : iOS n'ouvre le clavier qu'ainsi (v115)
+    gnIn.focus({ preventScroll: true });
+    const z = zoneAjout();
+    if (z) rendreAjout(z);
+    posePrenom();
+    suisClavier();
+  }
+  function validerAjout(): void {
+    let n = gnIn.value.replace(/\s+/g, ' ').trim();
+    if (!n || !choix) return;
+    // un nom déjà connu garde SON écriture (« rachel » → « Rachel »)
+    for (const c of connus()) if (c.toLowerCase() === n.toLowerCase()) n = c;
+    gnIn.value = '';
+    plusVu = false;
+    const L = liste();
+    if (!L.includes(n)) L.push(n);
+    composer();
+    // le nom est posé ; la zone se propose pour le suivant, le clavier reste
+    gnIn.focus({ preventScroll: true });
+    const z = zoneAjout();
+    if (z) rendreAjout(z);
+    suisClavier();
+  }
+  function fermerAjout(): void {
+    if (!ajoutActif) return;
+    ajoutActif = false;
+    gnIn.value = '';
+    if (document.activeElement === gnIn) gnIn.blur();
+    gnIn.hidden = true;
+    const z = zoneAjout();
+    if (z) rendreAjout(z);
+    suisClavier();
+  }
+  /** l'entrée invisible se tient SUR la zone : si le navigateur cherche le curseur, il le trouve là */
+  function posePrenom(): void {
+    const z = zoneAjout();
+    if (!z) return;
+    const C = cs.getBoundingClientRect();
+    const k = C.width / (cs.offsetWidth || 1) || 1;
+    const r = z.getBoundingClientRect();
+    gnIn.style.left = `${String(Math.round((r.left - C.left) / k + r.width / k / 2))}px`;
+    gnIn.style.top = `${String(Math.round((r.top - C.top) / k + r.height / k / 2 - 10))}px`;
+  }
+  /** rien ne passe sous le clavier (v146) : la page monte pour garder la zone 14 pt au-dessus de lui (le haut du clavier se LIT) */
+  let clavierDec = 0;
+  function suisClavier(): void {
+    const vv = window.visualViewport;
+    const z = ajoutActif ? zoneAjout() : null;
+    let besoin = 0;
+    if (vv && z && document.activeElement === gnIn && window.innerHeight - vv.height >= 100) {
+      const k = cs.getBoundingClientRect().width / (cs.offsetWidth || 1) || 1;
+      besoin = Math.max(
+        0,
+        (z.getBoundingClientRect().bottom + clavierDec * k + 14 * k - (vv.offsetTop + vv.height)) / k,
+      );
+    }
+    besoin = Math.round(besoin);
+    if (besoin === clavierDec) return;
+    const de = clavierDec;
+    clavierDec = besoin;
+    // la page glisse (jamais d'un coup) : le mouvement du clavier, 300 ms
+    const t0 = h.maintenant();
+    const pas = (): void => {
+      const p = reduit() ? 1 : Math.min(1, (h.maintenant() - t0) / 300);
+      const y = de + (besoin - de) * doux(p);
+      if (Math.abs(y) < 0.01) cs.style.removeProperty('translate');
+      else cs.style.setProperty('translate', `0 ${String(-Math.round(y * 100) / 100)}px`);
+      if (p < 1 && clavierDec === besoin) h.image(pas);
+    };
+    pas();
+  }
+  gnIn.addEventListener('input', () => {
+    const z = zoneAjout();
+    if (z) rendreAjout(z);
+  });
+  gnIn.addEventListener('keydown', (ev) => {
+    if (ev.key === 'Enter') {
+      ev.preventDefault();
+      validerAjout();
+    } else if (ev.key === 'Escape') fermerAjout();
+  });
+  gnIn.addEventListener('focus', () => {
+    const z = zoneAjout();
+    if (z) rendreAjout(z);
+    suisClavier();
+  });
+  // le clavier se retire sur une zone VIDE : elle reprend son mot ; sur un nom écrit, il reste, avec son « + »
+  gnIn.addEventListener('blur', () => {
+    h.minuteur(() => {
+      if (!ajoutActif || document.activeElement === gnIn) return;
+      if (!gnIn.value.trim()) fermerAjout();
+      else {
+        const z = zoneAjout();
+        if (z) rendreAjout(z);
+        suisClavier();
+      }
+    }, 0);
+  });
+  window.visualViewport?.addEventListener('resize', suisClavier);
 
   // ── LES GESTES DE LA PHRASE ──
   surToucher(txt, (ev) => {
@@ -675,7 +1250,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       P.sens = P.sens === 'soi' ? 'faire' : P.sens === 'faire' ? 'demander' : 'soi';
       if (P.sens === 'demander') prenomRang = magasin.avancerPrenom();
       choix = null;
-      composer();
+      recomposer(true);
       return;
     }
     let m = t.closest<HTMLElement>('.ph-m');
@@ -693,10 +1268,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       return;
     }
     if (cle === 'qui' || cle === 'avec') {
-      // C-304 : la place du destinataire (sans personne, hors « promets-moi ») passe à « moi »
+      // C-304 : la place du destinataire (sans personne, hors « promets-moi ») passe à « moi » ; celle d'un Cercle (« avec ») aussi
       if (cle === 'qui' && !P.qui.length && P.sens !== 'demander') P.moi = true;
+      if (P.nat === 'nuee' && !P.membres.length) P.moi = true;
       choix = P.nat === 'nuee' ? 'membres' : cle;
-      composer();
+      recomposer(true);
     }
   });
 
@@ -707,7 +1283,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     saisie.value = de === 'nom' ? P.nom : P.titre;
     saisie.maxLength = de === 'nom' ? 40 : 280;
     saisie.focus({ preventScroll: true });
-    cs.classList.add('pp-saisie');
+    fermerMenu();
+    recomposer(true);
   }
   saisie.addEventListener('input', () => {
     if (!saisieDe) return;
@@ -721,10 +1298,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       saisie.blur();
     }
   });
+  // Q598 : à la fermeture du clavier (Retour, un toucher ailleurs), la page rejoint sa place en 360 ms, jamais d'un coup
   saisie.addEventListener('blur', () => {
+    if (!saisieDe) return;
     saisieDe = null;
-    cs.classList.remove('pp-saisie');
-    composer();
+    recomposer(!cs.classList.contains('pp-part'));
   });
 
   // un toucher ailleurs que sur le choix des personnes le referme
@@ -733,11 +1311,272 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const t = ev.target as Element;
     if (t.closest('.gn') || t.closest('.ph-m')) return;
     choix = null;
-    composer();
+    recomposer(true);
   });
 
+  // ── PEAUFINER (lot-S2, C-134, C-220) : la barre l'ouvre et le referme ; il couvre la page (son corps), la barre au-dessus ; il reste ouvert
+  //    pendant qu'on y choisit ; on en sort par son X, par la barre, ou par un glissement vers le bas (C-134 : 220 pt referment, 60 non, un
+  //    panneau défilé non) ; refermé, il n'en reste rien (C-220). Il paraît et part en flaques (C-271 : le prototype le pose d'un coup). ──
+  function rendrePeauf(): void {
+    const L = T.peauf;
+    const liste = el('div', { class: 's2-liste' });
+    const tete = el('div', { class: 's2-tete' });
+    const titre = el('div', { class: 's2-titre' });
+    titre.textContent = L.titres[P.nat];
+    const x = el('div', { class: 's2-fermer', role: 'button', 'aria-label': T.fermer });
+    const xg = el('span', { class: 's2-x' });
+    xg.textContent = T.fermerGlyphe;
+    x.appendChild(xg);
+    surToucher(x, () => {
+      fermerPeauf();
+    });
+    tete.append(titre, x);
+    liste.appendChild(tete);
+    const rang = (lab: string, val: string, cls = ''): HTMLElement => {
+      const r = el('div', { class: 's2-reg' + cls });
+      const l = el('div', { class: 's2-lab' });
+      l.textContent = lab;
+      const v = el('div', { class: 's2-val' });
+      v.textContent = val;
+      r.append(l, v);
+      return r;
+    };
+    if (P.nat === 'nuee')
+      liste.appendChild(rang(L.membres, P.membres.length ? P.membres.join(', ') : L.personneEncore));
+    else {
+      liste.appendChild(rang(L.avant, P.ech));
+      if (P.nat === 'promi') liste.appendChild(rang(L.dansUnCercle, L.aucune));
+      const zone = el('div', { class: 's2-reg s2-zone' });
+      const zl = el('div', { class: 's2-lab' });
+      zl.textContent = L.note;
+      const ta = el('textarea', {
+        id: 'fNote',
+        class: 's2-txt',
+        rows: '1',
+        placeholder: L.noteVide,
+        'aria-label': L.note,
+      });
+      ta.value = P.note;
+      champSansEmoji(ta);
+      ta.addEventListener('input', () => {
+        P.note = ta.value;
+        majGarder();
+      });
+      const zv = el('div', { class: 's2-vis' });
+      zv.textContent = L.notePrivee;
+      zone.append(zl, ta, zv);
+      liste.appendChild(zone);
+      const pj = el('div', { class: 's2-reg s2-vis2' });
+      const ph = el('div', { class: 's2-haut' });
+      const pl = el('div', { class: 's2-lab' });
+      pl.textContent = L.pieces;
+      const pv = el('div', { class: 's2-val' });
+      pv.textContent = L.piecesVal(0);
+      ph.append(pl, pv);
+      const pvis = el('div', { class: 's2-vis' });
+      pvis.textContent = L.piecesPrivees;
+      pj.append(ph, pvis);
+      liste.appendChild(pj);
+    }
+    // les réglages de Ma Parole ! : des MURS, flous (4,8 px), qui ne se choisissent pas (leur phrase : lot 8)
+    const murs = el('div', { class: 's2-cercle', 'data-mur': '', 'aria-hidden': 'true' });
+    L.murs.forEach(([lab, val], i) => murs.appendChild(rang(lab, val, i === L.murs.length - 1 ? ' s2-couleur' : '')));
+    liste.appendChild(murs);
+    peauf.replaceChildren(liste);
+  }
+  /** un mot qui change (le chevron ▾ ↔ ▴) part en flaques, puis le neuf paraît en flaques (C-271) */
+  function echange(e: HTMLElement, texte: string): void {
+    if (reduit()) {
+      e.textContent = texte;
+      return;
+    }
+    enFlaques(e, 'part', () => {
+      queueMicrotask(() => {
+        e.textContent = texte;
+        enFlaques(e, 'paraît');
+      });
+    });
+  }
+  function ouvrirPeauf(): void {
+    if (peaufOuvert) return;
+    peaufOuvert = true;
+    fermerMenu();
+    if (saisieDe) saisie.blur();
+    if (choix) {
+      choix = null;
+      recomposer(true);
+    }
+    rendrePeauf();
+    peauf.hidden = false;
+    peauf.scrollTop = 0;
+    cs.classList.add('pp-peauf');
+    barre.setAttribute('aria-expanded', 'true');
+    enFlaques(peauf, 'paraît');
+    echange(barreChev, T.chevronOuvert);
+  }
+  function fermerPeauf(anime = true): void {
+    if (!peaufOuvert) return;
+    peaufOuvert = false;
+    barre.setAttribute('aria-expanded', 'false');
+    const fin = (): void => {
+      if (peaufOuvert) return;
+      peauf.hidden = true;
+      peauf.replaceChildren();
+      cs.classList.remove('pp-peauf');
+    };
+    if (!anime || reduit()) {
+      passages.get(peauf)?.stop?.();
+      passages.delete(peauf);
+      fin();
+      barreChev.textContent = T.chevron;
+      return;
+    }
+    enFlaques(peauf, 'part', fin);
+    echange(barreChev, T.chevron);
+  }
+  barre.setAttribute('aria-expanded', 'false');
+  surToucher(barre, () => {
+    if (peaufOuvert) fermerPeauf();
+    else ouvrirPeauf();
+  });
+  // C-134 : la sortie par un glissement vers le bas (le panneau en haut de sa liste), jamais par un défilement
+  let glisseDe: { y: number; s: number; id: number } | null = null;
+  peauf.addEventListener('pointerdown', (ev) => {
+    glisseDe = { y: ev.clientY, s: peauf.scrollTop, id: ev.pointerId };
+  });
+  peauf.addEventListener('pointermove', (ev) => {
+    const g = glisseDe;
+    if (!g || g.id !== ev.pointerId || g.s > 0) return;
+    const k = cs.getBoundingClientRect().width / (cs.offsetWidth || 1) || 1;
+    if ((ev.clientY - g.y) / k > SEUIL_GLISSE) {
+      glisseDe = null;
+      fermerPeauf();
+    }
+  });
+  for (const t of ['pointerup', 'pointercancel'] as const)
+    peauf.addEventListener(t, () => {
+      glisseDe = null;
+    });
+
+  // ── LE MENU DU BOUTON PHOTO (v117, v128, v132) : « Dessiner » en tête, puis « Importer une photo » (pas sur un Cercle : il ne porte pas de
+  //    photo, C-199), puis « Retirer la photo » quand elle est là ; compact, à gauche du bouton, son bas sur le bas du bouton (jamais plus haut
+  //    que 106) ; il paraît et part en flaques ; un toucher ailleurs le referme ──
+  function ouvrirMenu(): void {
+    if (menu) {
+      fermerMenu();
+      return;
+    }
+    const m = el('div', { class: 'ph-photo-menu dz-compact', role: 'menu' });
+    const item = (texte: string, f: () => void, attr?: string): void => {
+      const b = el('button', { type: 'button', role: 'menuitem' });
+      if (attr) b.setAttribute(attr, '1');
+      b.textContent = texte;
+      // un vrai clic (le toucher en fabrique un) : le sélecteur de fichiers ne s'ouvre que dans le geste (iOS)
+      b.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        f();
+      });
+      m.appendChild(b);
+    };
+    // le dessin : son lot (le menu le porte, le prototype le met en tête ; l'outil n'est pas encore là — le menu se referme)
+    item(
+      T.menuPhoto.dessiner,
+      () => {
+        fermerMenu();
+      },
+      'data-dessiner',
+    );
+    if (P.nat !== 'nuee') {
+      item(T.menuPhoto.importer, () => {
+        photoIn.click();
+        fermerMenu();
+      });
+      if (P.photo)
+        item(T.menuPhoto.retirer, () => {
+          fermerMenu();
+          retirerPhoto();
+        });
+    }
+    cs.appendChild(m);
+    const hm = m.offsetHeight;
+    m.style.top = `${String(Math.max(106, Math.round(photo.offsetTop + 34 - hm)))}px`;
+    m.style.width = `${String(Math.max(120, photo.offsetLeft - 8 - 24))}px`;
+    menu = m;
+    enFlaques(m, 'paraît');
+  }
+  function fermerMenu(anime = true): void {
+    const m = menu;
+    if (!m) return;
+    menu = null;
+    if (!anime || reduit()) m.remove();
+    else
+      enFlaques(m, 'part', () => {
+        m.remove();
+      });
+  }
+  surToucher(photo, () => {
+    ouvrirMenu();
+  });
+  cs.addEventListener(
+    'pointerdown',
+    (ev) => {
+      const t = ev.target as Node;
+      if (menu && !menu.contains(t) && !photo.contains(t)) fermerMenu();
+    },
+    true,
+  );
+  photoIn.addEventListener('change', () => {
+    const f = photoIn.files?.[0];
+    photoIn.value = '';
+    if (!f) return;
+    const lu = new FileReader();
+    lu.onload = () => {
+      const src = typeof lu.result === 'string' ? lu.result : null;
+      if (!src) return;
+      const im = new Image();
+      im.onload = () => {
+        images.set(src, im);
+        P.photo = src;
+        peindreChamp(vue.base, vue.amp, vue.hz, vue.base + vue.amp + 60 + vue.hz);
+        majGarder();
+        // la photo remplace la dalle : elle paraît en flaques sur elle (C-271)
+        enFlaques(photoCv, 'paraît');
+      };
+      im.src = src;
+    };
+    lu.readAsDataURL(f);
+  });
+  function retirerPhoto(): void {
+    enFlaques(photoCv, 'part', () => {
+      P.photo = null;
+      peindreChamp(vue.base, vue.amp, vue.hz, vue.base + vue.amp + 60 + vue.hz);
+      majGarder();
+    });
+  }
+
   // ── OUVRIR, FERMER ──
+  /** tout ce qu'une page ouverte a posé s'en va avec elle (« rien ne survit à closeAll ») */
+  function ranger(): void {
+    if (mv) {
+      h.annuleImage(mv.id);
+      mv.fin();
+      mv = null;
+    }
+    for (const c of passages.values()) c.stop?.();
+    passages.clear();
+    sortants.clear();
+    fermerMenu(false);
+    fermerPeauf(false);
+    ajoutActif = false;
+    gnIn.value = '';
+    gnIn.hidden = true;
+    for (const x of [phrase, photo, pinceau, garder, barre]) x.style.removeProperty('translate');
+    cs.style.removeProperty('translate');
+    clavierDec = 0;
+    for (const c of cs.querySelectorAll('.ppo-copie')) c.remove();
+  }
   function ouvrir(nat: Nature): void {
+    ranger();
     P = neuve(nat);
     exemples = {};
     choix = null;
@@ -780,7 +1619,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       finOuverture = null;
     }
     cs.classList.remove('pp-entre');
+    saisieDe = null;
     saisie.blur();
+    if (document.activeElement === gnIn) gnIn.blur();
+    fermerMenu();
     // l'accueil reparaît dessous, la page glisse par-dessus lui
     dv.classList.remove('couvert');
     cs.classList.add('pp-part');
@@ -789,6 +1631,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       finFermeture = null;
       cs.hidden = true;
       cs.classList.remove('pp-part');
+      ranger();
     }, 480);
   }
   surToucher(croix, () => {
@@ -819,6 +1662,11 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       choix,
       gardeActif: !garder.classList.contains('inactif'),
       exemples: { ...exemples },
+      saisie: saisieDe,
+      peauf: peaufOuvert,
+      menu: !!menu,
+      ajout: ajoutActif,
+      mouvement: !!mv,
     }),
     detruire() {
       window.removeEventListener('resize', surTaille);
