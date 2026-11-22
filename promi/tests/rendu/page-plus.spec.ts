@@ -153,6 +153,7 @@ async function touchePlace(p: Page, sel: string, proto: boolean): Promise<void> 
   // le prototype : hors du Mac (une image dure 0,7 s) ses textes se tracent encore quand la page est posée, et un toucher pendant un tracé
   // ne fait pas passer la place à « moi » (la cause des deux Chiche rouges sur l'intégration continue) — on attend que plus rien ne se
   // trace, on touche, et l'on retouche une fois si la place n'a pas changé
+  let pose = false;
   for (let essai = 0; essai < 2; essai++) {
     await tracant();
     // la seconde fois, on ne retouche que si la place n'a pas changé : retoucher « moi » relancerait un tracé (sous charge, le premier
@@ -172,15 +173,17 @@ async function touchePlace(p: Page, sel: string, proto: boolean): Promise<void> 
       )
       .then(() => true)
       .catch(() => false);
-    if (ok) break;
+    if (ok) {
+      pose = true;
+      break;
+    }
   }
-  const lu = await p.evaluate((s) => {
-    const w = window as unknown as { TraceLettres?: { actif(): boolean } };
-    return { texte: (document.querySelector(s)?.textContent ?? '').trim(), trace: !!w.TraceLettres?.actif() };
-  }, sel);
-  expect(lu, 'le prototype : la place touchée est passée à « moi », plus rien ne se trace').toEqual({
+  // (hors du Mac un AUTRE texte du prototype peut se remettre à tracer juste après : on juge l'instant où la place était posée — `pose` —,
+  // pas l'image qui suit ; ce qui se trace encore est attendu ensuite par `protoPose`)
+  const texte = await p.evaluate((s) => (document.querySelector(s)?.textContent ?? '').trim(), sel);
+  expect({ texte, pose }, 'le prototype : la place touchée est passée à « moi », plus rien ne s’y traçait').toEqual({
     texte: 'moi',
-    trace: false,
+    pose: true,
   });
   await p.waitForTimeout(1500);
 }
@@ -346,6 +349,7 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
       await P.keyboard.press('Enter');
       await A.keyboard.press('Enter');
       // le trait né des deux côtés : l'horizon remonté, plus aucun passage en flaques ni tracé (hors du Mac jusqu'à 60 s)
+      // (expiré : l'état de l'invite du prototype — sa veille, son journal — dit pourquoi le trait n'est pas né)
       await P.waitForFunction(
         () => {
           const w = window as unknown as {
@@ -360,7 +364,27 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
         },
         undefined,
         { timeout: 60000 },
-      );
+      ).catch(async (err: unknown) => {
+        const diag = await P.evaluate(() => {
+          const w = window as unknown as {
+            _ppInvite?: { etat(): unknown };
+            _ppEcran?: () => unknown;
+            TraceLettres?: { actif(): boolean };
+          };
+          const cs = document.getElementById('createSheet');
+          return JSON.stringify({
+            invite: w._ppInvite?.etat(),
+            ecran: w._ppEcran?.(),
+            trace: w.TraceLettres?.actif(),
+            actif: document.activeElement?.id,
+            vv: window.visualViewport?.height,
+            ih: window.innerHeight,
+            cls: cs?.className,
+            passage: !!document.querySelector('#createSheet canvas.passage-flaques'),
+          });
+        });
+        throw new Error(`le trait du prototype n'est pas né : ${diag}\n${String(err)}`);
+      });
       await A.waitForFunction(
         `(() => { const e = ${P_}.pagePlus().etat(); const w = window; return e.invite.visible && !e.invite.anim && !document.querySelector('#createSheet canvas.passage-flaques') && !w.TraceLettres?.actif(); })()`,
         undefined,
