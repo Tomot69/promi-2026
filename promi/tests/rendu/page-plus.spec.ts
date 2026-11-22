@@ -100,30 +100,60 @@ function masquer(png: Buffer, Z: Zone[]): Buffer {
 
 /** un toucher sur la place « qui » (au doigt, WebKit ne fabrique pas toujours de `click` — le prototype écoute `click`, la vraie app le geste) */
 async function touchePlace(p: Page, sel: string, proto: boolean): Promise<void> {
-  await p.evaluate(
-    ([s, proto]) => {
-      const e = document.querySelector<HTMLElement>(s as string)!;
-      const r = e.getBoundingClientRect();
-      const o = { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, pointerId: 21 };
-      e.dispatchEvent(new PointerEvent('pointerdown', o));
-      e.dispatchEvent(new PointerEvent('pointerup', o));
-      // le prototype ouvre le choix au `click` ; la place passe à « moi » à l'appui (C-304, `lot-V199-MOI`)
-      if (proto) e.click();
-    },
-    [sel, proto] as const,
-  );
-  if (proto)
-    // C-304 : dans le prototype, la place passe à « moi » par une transition (détracé puis tracé, C-271) : on attend qu'elle soit finie
-    await p.waitForFunction(
-      (s) => {
-        const e = document.querySelector(s);
-        const w = window as unknown as { TraceLettres?: { actif(): boolean } };
-        return !!e && (e.textContent ?? '').trim() === 'moi' && !w.TraceLettres?.actif();
-      },
-      sel,
+  const tracant = (): Promise<unknown> =>
+    p.waitForFunction(
+      () => !(window as unknown as { TraceLettres?: { actif(): boolean } }).TraceLettres?.actif(),
+      undefined,
       { timeout: 30000 },
     );
-  await p.waitForTimeout(proto ? 1500 : 600);
+  const touche = (): Promise<void> =>
+    p.evaluate(
+      ([s, proto]) => {
+        const e = document.querySelector<HTMLElement>(s as string)!;
+        const r = e.getBoundingClientRect();
+        const o = { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, pointerId: 21 };
+        e.dispatchEvent(new PointerEvent('pointerdown', o));
+        e.dispatchEvent(new PointerEvent('pointerup', o));
+        // le prototype ouvre le choix au `click` ; la place passe à « moi » à l'appui (C-304, `lot-V199-MOI`)
+        if (proto) e.click();
+      },
+      [sel, proto] as const,
+    );
+  if (!proto) {
+    await touche();
+    await p.waitForTimeout(600);
+    return;
+  }
+  // le prototype : hors du Mac (une image dure 0,7 s) ses textes se tracent encore quand la page est posée, et un toucher pendant un tracé
+  // ne fait pas passer la place à « moi » (la cause des deux Chiche rouges sur l'intégration continue) — on attend que plus rien ne se
+  // trace, on touche, et l'on retouche une fois si la place n'a pas changé
+  for (let essai = 0; essai < 2; essai++) {
+    await tracant();
+    await touche();
+    // C-304 : la place passe à « moi » par une transition (détracé puis tracé, C-271) : on attend qu'elle soit finie
+    const ok = await p
+      .waitForFunction(
+        (s) => {
+          const e = document.querySelector(s);
+          const w = window as unknown as { TraceLettres?: { actif(): boolean } };
+          return !!e && (e.textContent ?? '').trim() === 'moi' && !w.TraceLettres?.actif();
+        },
+        sel,
+        { timeout: 20000 },
+      )
+      .then(() => true)
+      .catch(() => false);
+    if (ok) break;
+  }
+  const lu = await p.evaluate((s) => {
+    const w = window as unknown as { TraceLettres?: { actif(): boolean } };
+    return { texte: (document.querySelector(s)?.textContent ?? '').trim(), trace: !!w.TraceLettres?.actif() };
+  }, sel);
+  expect(lu, 'le prototype : la place touchée est passée à « moi », plus rien ne se trace').toEqual({
+    texte: 'moi',
+    trace: false,
+  });
+  await p.waitForTimeout(1500);
 }
 
 const CAS = [

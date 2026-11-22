@@ -627,6 +627,9 @@ function ecartCs(a: Lecture, b: Lecture): string | null {
 }
 /** la Toile VRAIMENT posée : on relance le moteur jusqu'à ce qu'une relance ne change plus rien (redteam_clair_sombre.py, `pose_ferme`) */
 async function poseeFerme(page: Page): Promise<Lecture> {
+  // la vie au repos (C-028) coupée le temps de lire : un mouvement de repos change une boîte pendant une ou deux secondes, et la lecture
+  // juge la GÉOMÉTRIE de la Toile (clair contre sombre), pas sa respiration (le banc de rendu le fait de même, `_vivantOff`, C-114)
+  await page.evaluate('window._vivantOff = true');
   await posee(page);
   let a = (await page.evaluate(LIT_CS)) as Lecture;
   for (let i = 0; i < 4; i++) {

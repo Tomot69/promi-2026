@@ -62,7 +62,7 @@ test('le menu du + : chaque pilule ouvre SA page +, à chaque fois ; le X la ref
       await page.waitForFunction(
         () => {
           const c = document.getElementById('createSheet')!;
-          return !c.hidden && !c.classList.contains('pp-compose');
+          return !c.hidden && !c.classList.contains('pp-compose') && !c.classList.contains('pp-entre');
         },
         undefined,
         { timeout: 20000 },

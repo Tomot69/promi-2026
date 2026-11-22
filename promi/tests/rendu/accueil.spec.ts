@@ -379,9 +379,15 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
     expect(j.at(-1)).toEqual(expect.objectContaining({ vers: 'pagePlus', arg: k }));
     expect(await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert'))).toBe(false);
     // lot 2a : la pilule OUVRE la page + de sa nature (elle couvre l'accueil) — son X la referme, on revient à l'accueil
-    await page.waitForFunction((k) => !!document.getElementById('createSheet')?.classList.contains('pp-' + k), k, {
-      timeout: 20000,
-    });
+    // (et elle a fini de monter, C-331 : un toucher pendant qu'elle monte tombe à côté de la croix)
+    await page.waitForFunction(
+      (k) => {
+        const c = document.getElementById('createSheet');
+        return !!c?.classList.contains('pp-' + k) && !c.classList.contains('pp-entre');
+      },
+      k,
+      { timeout: 20000 },
+    );
     const x = await page.evaluate(() => {
       const b = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
       return [b.left + b.width / 2, b.top + b.height / 2];
@@ -481,7 +487,16 @@ test("la Toile vit au repos sous l'accueil (C-028) : un mouvement est prévu, il
   expect(r.prevu, 'un mouvement de repos est prévu').toBe(true);
   const avant = (await page.evaluate('Toile.vivant.journal().length')) as number;
   await page.evaluate('Toile.vivant.force()');
-  await page.waitForTimeout(300);
+  // le mouvement a lieu à l'image suivante : on l'attend (hors du Mac une image dure 0,7 s — 300 ms ne suffisaient pas)
+  await page
+    .waitForFunction(
+      (a) => (window as unknown as { Toile: { vivant: { journal(): unknown[] } } }).Toile.vivant.journal().length > a,
+      avant,
+      {
+        timeout: 10000,
+      },
+    )
+    .catch(() => undefined);
   expect(await page.evaluate('Toile.vivant.journal().length'), 'le mouvement a eu lieu').toBeGreaterThan(avant);
 });
 

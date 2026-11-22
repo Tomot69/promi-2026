@@ -108,6 +108,13 @@ async function ouvrirEcran(
  */
 async function retourAccueil(page: Page): Promise<boolean> {
   for (let essai = 0; essai < 4; essai++) {
+    // rien ne bouge encore : la page + qui monte ou descend (C-331), un passage en flaques (C-329) — hors du Mac une image dure 0,7 s, et
+    // un toucher pendant le mouvement tombe à côté de la croix
+    await page.waitForFunction(
+      () => !document.querySelector('#createSheet.pp-entre, #createSheet.pp-part, [data-flaques-mode]'),
+      undefined,
+      { timeout: 20000 },
+    );
     const p = (await page.evaluate(() => {
       const vu = (e: Element): boolean => {
         const r = e.getBoundingClientRect();
@@ -1447,9 +1454,23 @@ test('le contrôle qui touche : chaque commande des écrans portés est atteigna
         fautes.push(`${q} : 1 · le doigt ne la prend pas`);
         continue;
       }
-      await E.page.waitForTimeout(300);
+      // l'effet est attendu jusqu'à 3 s (un passage en flaques de 300 ms dure plusieurs images de 0,7 s hors du Mac : le menu du + qui se
+      // referme n'a changé l'écran qu'à la fin de son passage) — la règle ne change pas : aucun effet en 3 s, c'est une faute
+      let ap = av;
+      for (let t = 0; t < 3000 && ap === av; t += 150) {
+        await E.page.waitForTimeout(150);
+        ap = (await E.page.evaluate(SIGNATURE)) as string;
+      }
+      await E.page.waitForFunction(
+        () => !document.querySelector('[data-flaques-mode], #createSheet.pp-entre'),
+        undefined,
+        {
+          timeout: 20000,
+        },
+      );
+      // l'écran d'arrivée, relu une fois tout mouvement fini : c'est lui qui décide si l'on repart d'un écran neuf
+      if (ap !== av) ap = (await E.page.evaluate(SIGNATURE)) as string;
       touchees++;
-      const ap = (await E.page.evaluate(SIGNATURE)) as string;
       if (ap === av) fautes.push(`${q} : 2 · aucun effet`);
       // l'écran a changé : on repart d'un écran neuf (les commandes sont rendues dans le même ordre)
       if (

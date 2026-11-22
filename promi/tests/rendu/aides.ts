@@ -240,7 +240,10 @@ export async function refermerPagePlus(page: Page): Promise<void> {
   });
   if (!ouverte) return;
   await page.waitForFunction(
-    () => !document.getElementById('createSheet')?.classList.contains('pp-compose'),
+    () => {
+      const c = document.getElementById('createSheet');
+      return !c?.classList.contains('pp-compose') && !c?.classList.contains('pp-entre');
+    },
     undefined,
     {
       timeout: 20000,
