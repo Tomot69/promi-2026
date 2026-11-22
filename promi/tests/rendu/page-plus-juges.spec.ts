@@ -775,7 +775,8 @@ for (const nat of ['promi', 'chiche', 'nuee'] as const)
       ).toBe(true);
     }
     await page.keyboard.type('nager');
-    await page.waitForTimeout(300);
+    // la page posée avant Retour (la phrase qui change de lignes glisse, C-278 ; hors du Mac une image dure 0,7 s)
+    await posee(page);
     await page.evaluate(() => {
       (window as unknown as { __m: unknown[] }).__m = [];
     });

@@ -268,7 +268,12 @@ export async function refermerPagePlus(page: Page): Promise<void> {
             (n.id ? '#' + n.id : '') +
             (n.className && typeof n.className === 'string' ? '.' + n.className.trim().replace(/\s+/g, '.') : '')
           : '∅';
-      return `sous le doigt : ${nom(e)} (parent ${nom(e?.parentElement ?? null)}) ; #createSheet : ${c.className}, hidden ${String(c.hidden)}`;
+      const xb = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
+      const d = (s: string): string => {
+        const n = document.querySelector(s);
+        return n ? `${s} ${String(Math.round(n.scrollTop))}/${String(Math.round(n.scrollLeft))}` : '';
+      };
+      return `sous le doigt : ${nom(e)} (parent ${nom(e?.parentElement ?? null)}) ; le X à ${String(Math.round(xb.left))},${String(Math.round(xb.top))} (fenêtre ${String(innerWidth)} × ${String(innerHeight)}, défilée ${String(scrollX)},${String(scrollY)}) ; défilements ${[d('html'), d('body'), d('#device'), d('#createSheet')].join(' · ')} ; actif ${nom(document.activeElement)} ; #createSheet : ${c.className}, hidden ${String(c.hidden)}`;
     },
     [x[0], x[1]],
   );
