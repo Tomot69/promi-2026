@@ -37,30 +37,35 @@ for (const theme of ['sombre', 'clair'] as const)
       const A = await (
         await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })
       ).newPage();
-      const erreurs: string[] = [];
-      A.on('pageerror', (e) => erreurs.push(String(e)));
-      await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
-      for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
-      // la sonde : le plateau de la vraie app décalé d'un point (un écart au prototype)
-      if (sonde('identite-decale')) await A.addStyleTag({ content: '#accPlat{transform:translateX(1px)!important}' });
-      await P.waitForTimeout(600);
-      if (menu) await Promise.all([ouvrirPlus(P), ouvrirPlus(A)]);
-      const dv = await P.evaluate(() => {
-        const r = document.getElementById('device')!.getBoundingClientRect();
-        return { x: r.left, y: r.top, width: r.width, height: r.height };
-      });
-      const ip = await P.screenshot({ clip: dv });
-      const ia = await A.screenshot();
-      mkdirSync(RESULTATS, { recursive: true });
-      const nom = `${theme}${menu ? '-menu' : ''}`;
-      writeFileSync(join(RESULTATS, `${nom}-prototype.png`), ip);
-      writeFileSync(join(RESULTATS, `${nom}-app.png`), ia);
-      const e = ecart(ip, ia);
-      expect(erreurs).toEqual([]);
-      expect(
-        { n: e.n, boite: e.boite },
-        `pixels écartés de plus de 2 niveaux (état : ${ETAT} ; bords lissés exceptés hors macOS : ${String(e.bords)})`,
-      ).toEqual({ n: 0, boite: null });
+      try {
+        const erreurs: string[] = [];
+        A.on('pageerror', (e) => erreurs.push(String(e)));
+        await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
+        for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
+        // la sonde : le plateau de la vraie app décalé d'un point (un écart au prototype)
+        if (sonde('identite-decale')) await A.addStyleTag({ content: '#accPlat{transform:translateX(1px)!important}' });
+        await P.waitForTimeout(600);
+        if (menu) await Promise.all([ouvrirPlus(P), ouvrirPlus(A)]);
+        const dv = await P.evaluate(() => {
+          const r = document.getElementById('device')!.getBoundingClientRect();
+          return { x: r.left, y: r.top, width: r.width, height: r.height };
+        });
+        const ip = await P.screenshot({ clip: dv });
+        const ia = await A.screenshot();
+        mkdirSync(RESULTATS, { recursive: true });
+        const nom = `${theme}${menu ? '-menu' : ''}`;
+        writeFileSync(join(RESULTATS, `${nom}-prototype.png`), ip);
+        writeFileSync(join(RESULTATS, `${nom}-app.png`), ia);
+        const e = ecart(ip, ia);
+        expect(erreurs).toEqual([]);
+        expect(
+          { n: e.n, boite: e.boite },
+          `pixels écartés de plus de 2 niveaux (état : ${ETAT} ; bords lissés exceptés hors macOS : ${String(e.bords)})`,
+        ).toEqual({ n: 0, boite: null });
+      } finally {
+        // les deux contextes fermés à chaque cas, même en échec : laissés ouverts, ils s'accumulent et épuisent la mémoire du runner
+        await Promise.all([P.context().close(), A.context().close()]);
+      }
     });
 
 test("les animations de l'accueil : le I de PROMI clignote, l'anneau du + tourne", async ({ page }) => {

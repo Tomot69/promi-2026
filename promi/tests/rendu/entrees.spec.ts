@@ -85,59 +85,64 @@ for (const f of ETATS)
       const A: Page = await (
         await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })
       ).newPage();
-      const erreurs: string[] = [];
-      A.on('pageerror', (e) => erreurs.push(String(e)));
-      await P.addInitScript((ls) => {
-        localStorage.clear();
-        for (const [k, v] of Object.entries(ls)) localStorage.setItem(k, v);
-      }, ls);
-      await A.addInitScript((a) => new Function(a)(), AMORCE);
-      await Promise.all([
-        (async () => {
-          await P.goto('http://127.0.0.1:8753/app.html');
-          await P.waitForTimeout(9000);
-        })(),
-        (async () => {
-          await A.goto(`http://127.0.0.1:5180/?banc=1&pilote=${T_FIGE}`);
-          await A.waitForFunction(() => !!(window as unknown as { __promi?: unknown }).__promi);
-          await A.evaluate(async (ls) => {
-            const p = (
-              window as unknown as {
-                __promi: {
-                  magasin: { importer(x: unknown): void };
-                  demarrer(o?: { accueil?: boolean }): Promise<void>;
-                  horloge: { images(n: number): void };
-                };
-              }
-            ).__promi;
-            p.magasin.importer({ ls });
-            await p.demarrer({ accueil: false });
-            p.horloge.images(540);
-          }, ls);
-        })(),
-      ]);
-      type Lu = Record<string, unknown> & { vue: unknown };
-      const p = (await P.evaluate(`(${LIRE})()`)) as Lu;
-      const a = (await A.evaluate(`(${LIRE})()`)) as Lu;
-      const differents = Object.keys(p).filter((k) => k !== 'vue' && JSON.stringify(p[k]) !== JSON.stringify(a[k]));
-      // le détail, champ par champ, des paroles qui diffèrent
-      const pp = JSON.parse(p['paroles'] as string) as Array<Record<string, unknown>>;
-      const aa = JSON.parse(a['paroles'] as string) as Array<Record<string, unknown>>;
-      const detail: string[] = [];
-      pp.forEach((x, i) => {
-        const y = aa[i] ?? {};
-        for (const k of new Set([...Object.keys(x), ...Object.keys(y)]))
-          if (JSON.stringify(x[k]) !== JSON.stringify(y[k]))
-            detail.push(`parole ${String(x['id'])} ${k} : ${JSON.stringify(x[k])} ≠ ${JSON.stringify(y[k])}`);
-      });
-      if (detail.length) console.log(detail.slice(0, 30).join('\n'));
-      expect(erreurs, 'erreurs JavaScript de la vraie app').toEqual([]);
-      expect(
-        differents,
-        differents
-          .map((k) => `${k} :\n  prototype ${String(p[k]).slice(0, 400)}\n  vraie app ${String(a[k]).slice(0, 400)}`)
-          .join('\n'),
-      ).toEqual([]);
-      if (x.toile?.vue && !VUE_PENDANT_LA_COURSE.has(f))
-        expect(a.vue, "la vue de départ = celle que l'iPhone de Tom a relevée").toEqual(x.toile.vue);
+      try {
+        const erreurs: string[] = [];
+        A.on('pageerror', (e) => erreurs.push(String(e)));
+        await P.addInitScript((ls) => {
+          localStorage.clear();
+          for (const [k, v] of Object.entries(ls)) localStorage.setItem(k, v);
+        }, ls);
+        await A.addInitScript((a) => new Function(a)(), AMORCE);
+        await Promise.all([
+          (async () => {
+            await P.goto('http://127.0.0.1:8753/app.html');
+            await P.waitForTimeout(9000);
+          })(),
+          (async () => {
+            await A.goto(`http://127.0.0.1:5180/?banc=1&pilote=${T_FIGE}`);
+            await A.waitForFunction(() => !!(window as unknown as { __promi?: unknown }).__promi);
+            await A.evaluate(async (ls) => {
+              const p = (
+                window as unknown as {
+                  __promi: {
+                    magasin: { importer(x: unknown): void };
+                    demarrer(o?: { accueil?: boolean }): Promise<void>;
+                    horloge: { images(n: number): void };
+                  };
+                }
+              ).__promi;
+              p.magasin.importer({ ls });
+              await p.demarrer({ accueil: false });
+              p.horloge.images(540);
+            }, ls);
+          })(),
+        ]);
+        type Lu = Record<string, unknown> & { vue: unknown };
+        const p = (await P.evaluate(`(${LIRE})()`)) as Lu;
+        const a = (await A.evaluate(`(${LIRE})()`)) as Lu;
+        const differents = Object.keys(p).filter((k) => k !== 'vue' && JSON.stringify(p[k]) !== JSON.stringify(a[k]));
+        // le détail, champ par champ, des paroles qui diffèrent
+        const pp = JSON.parse(p['paroles'] as string) as Array<Record<string, unknown>>;
+        const aa = JSON.parse(a['paroles'] as string) as Array<Record<string, unknown>>;
+        const detail: string[] = [];
+        pp.forEach((x, i) => {
+          const y = aa[i] ?? {};
+          for (const k of new Set([...Object.keys(x), ...Object.keys(y)]))
+            if (JSON.stringify(x[k]) !== JSON.stringify(y[k]))
+              detail.push(`parole ${String(x['id'])} ${k} : ${JSON.stringify(x[k])} ≠ ${JSON.stringify(y[k])}`);
+        });
+        if (detail.length) console.log(detail.slice(0, 30).join('\n'));
+        expect(erreurs, 'erreurs JavaScript de la vraie app').toEqual([]);
+        expect(
+          differents,
+          differents
+            .map((k) => `${k} :\n  prototype ${String(p[k]).slice(0, 400)}\n  vraie app ${String(a[k]).slice(0, 400)}`)
+            .join('\n'),
+        ).toEqual([]);
+        if (x.toile?.vue && !VUE_PENDANT_LA_COURSE.has(f))
+          expect(a.vue, "la vue de départ = celle que l'iPhone de Tom a relevée").toEqual(x.toile.vue);
+      } finally {
+        // les deux contextes fermés à chaque cas, même en échec : laissés ouverts, ils s'accumulent et épuisent la mémoire du runner
+        await Promise.all([P.context().close(), A.context().close()]);
+      }
     });

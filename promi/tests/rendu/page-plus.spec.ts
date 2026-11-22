@@ -332,43 +332,48 @@ for (const theme of ['sombre', 'clair'] as const)
       const A = await (
         await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })
       ).newPage();
-      const erreurs: string[] = [];
-      A.on('pageerror', (e) => erreurs.push(String(e)));
-      await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
-      await Promise.all([ouvrirPagePlus(P, c.nat, true), ouvrirPagePlus(A, c.nat)]);
-      if (c.choix) await Promise.all([touchePlace(P, c.choix, true), touchePlace(A, c.choix, false)]);
-      await poser(P, A, c);
-      for (const pg of [P, A]) await pg.addStyleTag({ content: GEL + SANS_CURSEUR });
-      // la sonde : la phrase de la vraie app décalée d'un point
-      if (sonde('pp-identite-decale')) await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0}' });
-      await P.waitForTimeout(600);
-      const dv = await P.evaluate(() => {
-        const r = document.getElementById('device')!.getBoundingClientRect();
-        return { x: r.left, y: r.top, width: r.width, height: r.height };
-      });
-      // les deux côtés POSÉS : deux images identiques (matière exceptée) à 700 ms d'écart — hors du Mac une image dure 0,7 s et les
-      // minuteurs du prototype (son tracé, ses murs, ses mouvements) finissent bien après les durées fixes de `poser` (25 s au plus ; au-delà
-      // on compare quand même, et l'écart le dit)
-      let Z = await zones(A, P);
-      let ip = masquer(await P.screenshot({ clip: dv }), Z);
-      let ia = masquer(await A.screenshot(), Z);
-      for (let k = 0; k < 25; k++) {
-        await P.waitForTimeout(700);
-        const Z2 = await zones(A, P);
-        const ip2 = masquer(await P.screenshot({ clip: dv }), Z2);
-        const ia2 = masquer(await A.screenshot(), Z2);
-        const pose = ip2.equals(ip) && ia2.equals(ia);
-        [Z, ip, ia] = [Z2, ip2, ia2];
-        if (pose) break;
+      try {
+        const erreurs: string[] = [];
+        A.on('pageerror', (e) => erreurs.push(String(e)));
+        await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
+        await Promise.all([ouvrirPagePlus(P, c.nat, true), ouvrirPagePlus(A, c.nat)]);
+        if (c.choix) await Promise.all([touchePlace(P, c.choix, true), touchePlace(A, c.choix, false)]);
+        await poser(P, A, c);
+        for (const pg of [P, A]) await pg.addStyleTag({ content: GEL + SANS_CURSEUR });
+        // la sonde : la phrase de la vraie app décalée d'un point
+        if (sonde('pp-identite-decale')) await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0}' });
+        await P.waitForTimeout(600);
+        const dv = await P.evaluate(() => {
+          const r = document.getElementById('device')!.getBoundingClientRect();
+          return { x: r.left, y: r.top, width: r.width, height: r.height };
+        });
+        // les deux côtés POSÉS : deux images identiques (matière exceptée) à 700 ms d'écart — hors du Mac une image dure 0,7 s et les
+        // minuteurs du prototype (son tracé, ses murs, ses mouvements) finissent bien après les durées fixes de `poser` (25 s au plus ; au-delà
+        // on compare quand même, et l'écart le dit)
+        let Z = await zones(A, P);
+        let ip = masquer(await P.screenshot({ clip: dv }), Z);
+        let ia = masquer(await A.screenshot(), Z);
+        for (let k = 0; k < 25; k++) {
+          await P.waitForTimeout(700);
+          const Z2 = await zones(A, P);
+          const ip2 = masquer(await P.screenshot({ clip: dv }), Z2);
+          const ia2 = masquer(await A.screenshot(), Z2);
+          const pose = ip2.equals(ip) && ia2.equals(ia);
+          [Z, ip, ia] = [Z2, ip2, ia2];
+          if (pose) break;
+        }
+        mkdirSync(RES, { recursive: true });
+        const nom = `${theme}-${c.nat}${c.choix ? '-choix' : ''}${c.etat ? '-' + c.etat : ''}`;
+        writeFileSync(join(RES, `${nom}-prototype.png`), ip);
+        writeFileSync(join(RES, `${nom}-app.png`), ia);
+        const e = ecart(ip, ia);
+        expect(erreurs).toEqual([]);
+        expect(
+          { n: e.n, boite: e.boite },
+          `pixels écartés de plus de 2 niveaux (état : ${ETAT} ; zones exceptées ${JSON.stringify(Z)} ; bords lissés hors macOS : ${String(e.bords)})`,
+        ).toEqual({ n: 0, boite: null });
+      } finally {
+        // les deux contextes fermés à chaque cas, même en échec : laissés ouverts, 28 cas × 2 pages ×3 épuisaient la mémoire du runner (CI part 2)
+        await Promise.all([P.context().close(), A.context().close()]);
       }
-      mkdirSync(RES, { recursive: true });
-      const nom = `${theme}-${c.nat}${c.choix ? '-choix' : ''}${c.etat ? '-' + c.etat : ''}`;
-      writeFileSync(join(RES, `${nom}-prototype.png`), ip);
-      writeFileSync(join(RES, `${nom}-app.png`), ia);
-      const e = ecart(ip, ia);
-      expect(erreurs).toEqual([]);
-      expect(
-        { n: e.n, boite: e.boite },
-        `pixels écartés de plus de 2 niveaux (état : ${ETAT} ; zones exceptées ${JSON.stringify(Z)} ; bords lissés hors macOS : ${String(e.bords)})`,
-      ).toEqual({ n: 0, boite: null });
     });
