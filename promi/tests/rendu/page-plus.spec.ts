@@ -493,7 +493,7 @@ for (const theme of ['sombre', 'clair'] as const)
         await poser(P, A, c);
         for (const pg of [P, A]) await pg.addStyleTag({ content: GEL + SANS_CURSEUR });
         // la sonde : la phrase de la vraie app décalée d'un point
-        if (sonde('pp-identite-decale')) await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0}' });
+        if (sonde('pp-identite-decale')) await A.addStyleTag({ content: '#createSheet .pp-phrase{translate:1px 0!important}' });
         await P.waitForTimeout(600);
         const dv = await P.evaluate(() => {
           const r = document.getElementById('device')!.getBoundingClientRect();
