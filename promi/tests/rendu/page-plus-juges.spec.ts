@@ -4,7 +4,7 @@
  * La correspondance juge → test → sonde : promi/JUGES-TESTS.md, « Lot 2a ».
  */
 import { test, expect, type Page } from '@playwright/test';
-import { stockage, vraieApp, ouvrirPlus, ouvrirPagePlus, P_, sonde } from './aides.ts';
+import { stockage, vraieApp, ouvrirPlus, ouvrirPagePlus, P_, sonde, xSousLeDoigt } from './aides.ts';
 
 type Nat = 'promi' | 'chiche' | 'nuee';
 
@@ -93,12 +93,15 @@ test('le menu du + : chaque pilule ouvre SA page +, à chaque fois ; le X la ref
       });
       // la page posée (aucun passage, aucun mouvement), puis le X — et ce qu'il y a sous le doigt, pour nommer une cause s'il ne prend pas
       await posee(page);
-      const sous = await page.evaluate(() => {
-        const b = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
-        const e = document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2);
-        return `${e ? e.tagName.toLowerCase() + '.' + String(e.className) : '∅'} ; #createSheet.${document.getElementById('createSheet')!.className}`;
-      });
-      await toucher(page, '#createSheet .closeb');
+      const xx = await xSousLeDoigt(page, '#createSheet .closeb');
+      const sous = await page.evaluate(
+        ([x, y]) => {
+          const e = document.elementFromPoint(x!, y!);
+          return `${e ? e.tagName.toLowerCase() + '.' + String(e.className) : '∅'} ; #createSheet.${document.getElementById('createSheet')!.className}`;
+        },
+        [xx[0], xx[1]],
+      );
+      await page.mouse.click(xx[0], xx[1]);
       await page
         .waitForFunction(() => !!(window as unknown as { __part: unknown }).__part, undefined, { timeout: 5000 })
         .catch(() => undefined);

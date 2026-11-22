@@ -233,6 +233,53 @@ export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee
 }
 
 /** la page + ouverte par une pilule (lot 2a) couvre l'accueil : son X la referme, on attend qu'elle soit partie (rien, si elle est fermée) */
+/**
+ * le centre d'un bouton, une fois que c'est LUI qui est sous le doigt (`elementFromPoint`). Hors du Mac (WebKit sous Linux), au point d'un bouton
+ * posé à sa place, le navigateur ne trouve parfois AUCUN élément pendant un moment (ni le bouton, ni la page : `null`) — un toucher y est perdu.
+ * On attend (15 s au plus) que le bouton soit atteignable ; s'il ne l'est jamais, on dit ce qu'il y a sous le doigt et l'état de la page.
+ */
+export async function xSousLeDoigt(page: Page, sel: string): Promise<[number, number]> {
+  const lire = (): Promise<{ ok: boolean; x: number; y: number; diag: string }> =>
+    page.evaluate((sel) => {
+      const b = document.querySelector(sel)!;
+      const r = b.getBoundingClientRect();
+      const x = r.left + r.width / 2;
+      const y = r.top + r.height / 2;
+      const e = document.elementFromPoint(x, y);
+      const nom = (n: Element | null): string =>
+        n
+          ? n.tagName.toLowerCase() +
+            (n.id ? '#' + n.id : '') +
+            (n.className && typeof n.className === 'string' ? '.' + n.className.trim().replace(/\s+/g, '.') : '')
+          : '∅';
+      const st = (n: Element | null): string => {
+        if (!n) return '';
+        const c = getComputedStyle(n);
+        return `${nom(n)}[vis ${c.visibility} · pe ${c.pointerEvents} · op ${c.opacity} · disp ${c.display}]`;
+      };
+      const ancetres: string[] = [];
+      for (let n: Element | null = b; n; n = n.parentElement) ancetres.push(st(n));
+      const ailleurs = [
+        [195, 422],
+        [20, 20],
+      ].map(([a, c]) => `(${String(a)},${String(c)}) ${nom(document.elementFromPoint(a!, c!))}`);
+      return {
+        ok: !!e && (e === b || b.contains(e)),
+        x,
+        y,
+        diag: `sous le doigt (${String(Math.round(x))},${String(Math.round(y))}) : ${nom(e)} ; elementsFromPoint ${String(document.elementsFromPoint(x, y).length)} ; ailleurs ${ailleurs.join(' · ')} ; page ${document.visibilityState}, focus ${String(document.hasFocus())}, fenêtre ${String(innerWidth)} × ${String(innerHeight)}, visualViewport ${String(visualViewport?.width)} × ${String(visualViewport?.height)} + ${String(visualViewport?.offsetLeft)},${String(visualViewport?.offsetTop)} ; ${ancetres.join(' < ')}`,
+      };
+    }, sel);
+  const t0 = Date.now();
+  let l = await lire();
+  while (!l.ok && Date.now() - t0 < 15000) {
+    await page.waitForTimeout(250);
+    l = await lire();
+  }
+  if (!l.ok) throw new Error(`${sel} n'est jamais sous le doigt (15 s) — ${l.diag}`);
+  return [l.x, l.y];
+}
+
 export async function refermerPagePlus(page: Page): Promise<void> {
   const ouverte = await page.evaluate(() => {
     const c = document.getElementById('createSheet');
@@ -247,10 +294,7 @@ export async function refermerPagePlus(page: Page): Promise<void> {
     undefined,
     { timeout: 20000 },
   );
-  const x = await page.evaluate(() => {
-    const b = document.querySelector('#createSheet .closeb')!.getBoundingClientRect();
-    return [b.left + b.width / 2, b.top + b.height / 2];
-  });
+  const x = await xSousLeDoigt(page, '#createSheet .closeb');
   await page.mouse.click(x[0]!, x[1]!);
   const ok = await page
     .waitForFunction(() => !!document.getElementById('createSheet')?.hidden, undefined, { timeout: 20000 })

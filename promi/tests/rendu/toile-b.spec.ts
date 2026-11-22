@@ -709,13 +709,17 @@ test("la même Toile en clair et en sombre (C-131) : l'app ouverte en sombre mon
       const s = await ouverture(n, 'dark', monde);
       const e = ecartCs(c, s);
       if (e) {
-        // le témoin : une seconde ouverture en clair ; s'il diffère lui aussi, la Toile ne se répète pas sur cette machine — non jugé
+        // les témoins : une seconde ouverture en clair, une seconde en sombre ; si l'une ne se répète pas, la Toile ne se répète pas sur
+        // cette machine (hors du Mac, 25 paroles ne se posent pas toujours au même point) — non jugé, nommé ; les deux se répètent et
+        // diffèrent l'une de l'autre : c'est la faute
         const c2 = await ouverture(n, 'light', monde);
         const t = ecartCs(c, c2);
-        if (t) {
+        const s2 = t ? null : await ouverture(n, 'dark', monde);
+        const u = s2 ? ecartCs(s, s2) : null;
+        if (t || u) {
           test.info().annotations.push({
             type: 'non jugé',
-            description: `${String(n)} paroles, ${monde ?? c.monde} : le témoin clair/clair varie (${String(t)})`,
+            description: `${String(n)} paroles, ${monde ?? c.monde} : le témoin ${t ? 'clair/clair' : 'sombre/sombre'} varie (${String(t ?? u)})`,
           });
           continue;
         }
