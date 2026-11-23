@@ -1,0 +1,27 @@
+[
+  {
+    "nom": "continu-saut",
+    "test": "la phrase de la page + change de place par un seul mouvement continu",
+    "defaut": "les glissements et la mise à l'échelle rendus finis d'un coup (Web Animations finies dès leur départ) : la phrase et ses mots sautent"
+  },
+  {
+    "nom": "liaison-sec",
+    "test": "les mots de liaison : « à » qui arrive se trace",
+    "defaut": "« Réduire les animations » posé en douce : les mots de liaison paraissent et partent d'un coup"
+  },
+  {
+    "nom": "long-deborde",
+    "test": "les textes longs, promi : la limite (280)",
+    "defaut": "le titre gardé à 30 pt, sans réduction (C-244 §5.1 retiré) : la parole déborde sur le rail"
+  },
+  {
+    "nom": "ajout-sec",
+    "test": "« + ajouter quelqu’un » se détrace et « un prénom… » se trace",
+    "defaut": "« Réduire les animations » posé en douce : la ligne de saisie et « un prénom… » paraissent d'un coup"
+  },
+  {
+    "nom": "taille-seche",
+    "test": "la taille de la phrase change en douceur en entrant dans la saisie",
+    "defaut": "« Réduire les animations » posé en douce : la taille de la phrase change d'un coup"
+  }
+]

@@ -246,8 +246,20 @@ type Cas = {
     | 'cercle'
     | 'dessin'
     | 'tailles'
-    | 'couleurs';
+    | 'couleurs'
+    | 'long';
 };
+/** 2c, les textes longs (C-244 §5.1, `redteam_textes_longs`) : une parole de 280 caractères (la limite) et un nom de Cercle de 40 */
+const BASE_LONG = (
+  'courir le marathon de Paris avec toute la bande des copains du quartier puis fêter cela longtemps au bord du canal sous les lampions jusqu’au matin ' +
+  'et recommencer l’année suivante avec encore plus de monde, des voisins, des cousins, des collègues et même le chien de la boulangère qui court vite '
+).repeat(2);
+const texteDe = (c: Cas): string =>
+  c.etat !== 'long'
+    ? 'appeler Lou'
+    : c.nat === 'nuee'
+      ? 'Les amis du grand jardin partagé du coin'
+      : BASE_LONG.slice(0, 280);
 const CAS: Cas[] = [
   { nat: 'promi', choix: null },
   { nat: 'chiche', choix: null },
@@ -273,6 +285,9 @@ const CAS: Cas[] = [
   { nat: 'promi', choix: null, etat: 'dessin' },
   { nat: 'chiche', choix: null, etat: 'tailles' },
   { nat: 'nuee', choix: null, etat: 'couleurs' },
+  { nat: 'promi', choix: null, etat: 'long' },
+  { nat: 'chiche', choix: null, etat: 'long' },
+  { nat: 'nuee', choix: null, etat: 'long' },
 ];
 /** un toucher sur l'élément de `sel` dont le texte commence par `mot` (une rangée de Peaufiner par son libellé, une pastille de choix) */
 async function toucheTexte(p: Page, sel: string, mot: string, proto: boolean): Promise<void> {
@@ -335,18 +350,23 @@ async function protoPose(P: Page): Promise<void> {
 /** l'état demandé, des deux côtés (le prototype écoute le clic ; on attend la fin de ses minuteurs, et dans la vraie app la fin des mouvements) */
 async function poser(P: Page, A: Page, c: Cas): Promise<void> {
   const titre = c.nat === 'nuee' ? '.pp-phrase .ph-m[data-np="nom"]' : '.pp-phrase .ph-m[data-ph="titre"]';
-  if (c.etat === 'saisie' || c.etat === 'tape' || c.etat === 'prete') {
+  if (c.etat === 'saisie' || c.etat === 'tape' || c.etat === 'prete' || c.etat === 'long') {
     await finTrace(P);
     await protoPose(P);
     await Promise.all([toucheSel(P, titre, true), toucheSel(A, titre, false)]);
     await P.waitForTimeout(2500);
-    if (c.etat === 'tape' || c.etat === 'prete') {
+    if (c.etat === 'tape' || c.etat === 'prete' || c.etat === 'long') {
       await protoPose(P);
-      await P.keyboard.type('appeler Lou');
-      await A.keyboard.type('appeler Lou');
+      // un texte long entre d'un coup (un collage) : tapé lettre à lettre, le prototype garde d'une composition à l'autre le plafond de taille
+      // de C-240 (`_ppPhCap`, par parole) et sa taille finale dépend du rythme de la frappe (16, puis 21 pt, d'une passe à l'autre)
+      if (c.etat === 'long') await Promise.all([P.keyboard.insertText(texteDe(c)), A.keyboard.insertText(texteDe(c))]);
+      else {
+        await P.keyboard.type(texteDe(c));
+        await A.keyboard.type(texteDe(c));
+      }
       await P.waitForTimeout(2500);
     }
-    if (c.etat === 'prete') {
+    if (c.etat === 'prete' || c.etat === 'long') {
       await protoPose(P);
       await P.keyboard.press('Enter');
       await A.keyboard.press('Enter');
@@ -473,6 +493,22 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
       toucheSel(A, '#createSheet .ph-photo-btn', false),
     ]);
     await P.waitForTimeout(2000);
+  }
+  if (c.etat === 'long') {
+    // ⚑ PROTOCOLE (2c) : le prototype mesure le plafond de C-240 (`_ppPhCap`) aussi PENDANT le mouvement du clavier (Q598 : la page est en
+    // chemin, sa place lue est fausse) et le garde pour la parole — sa taille finale dépend du moment (16, 21 ou 30 pt relevés d'une passe à
+    // l'autre sur le même Promi de 280 caractères). La référence est sa composition de la page POSÉE : plafond effacé, une passe de plus
+    await protoPose(P);
+    await P.evaluate(() => {
+      const w = window as unknown as { _ppPhCap?: unknown; _ppRecoupe?: unknown; _ppTout?: () => void };
+      w._ppPhCap = null;
+      w._ppRecoupe = null;
+      document.querySelectorAll<HTMLElement & { __phCle?: unknown }>('#createSheet .ph-txt').forEach((t) => {
+        t.__phCle = null;
+      });
+      w._ppTout?.();
+    });
+    await P.waitForTimeout(1500);
   }
   if (c.etat) await finApp(A);
   await protoPose(P);

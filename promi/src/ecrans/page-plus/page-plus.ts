@@ -23,7 +23,14 @@ import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Brouillon } from '../../donnees/schema.ts';
 import { horloge } from '../../animation/horloge.ts';
-import { chargerTrace, changerTexte, type ControleTrace } from '../../animation/trace/trace.ts';
+import {
+  chargerTrace,
+  changerTexte,
+  copieA,
+  detracerCopie,
+  remplacer,
+  type ControleTrace,
+} from '../../animation/trace/trace.ts';
 import { masqueFlaques, passageFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { palette } from '../../design/jetons.ts';
 import {
@@ -40,6 +47,7 @@ import { PINCEAUX } from './pinceaux.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
+import { creerContinu } from './continu.ts';
 import {
   creerModeDessin,
   couleurDe,
@@ -303,6 +311,41 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   let menu: HTMLElement | null = null;
   /** le mouvement en cours (Q598, C-234) : son image, la place VUE (l'onde, la phrase, le bouton photo, la barre) */
   let mv: { id: number; fin: () => void } | null = null;
+  /** une lettre tapée depuis l'ouverture de la saisie (Q620) */
+  let aTape = false;
+  // C-271, C-278 : la taille, les mots de liaison et les places de la phrase changent en douceur (continu.ts)
+  const continu = creerContinu({
+    cs,
+    txt,
+    rail: pinceau,
+    choixHote,
+    h,
+    trace: () => {
+      try {
+        return chargerTrace();
+      } catch {
+        return null;
+      }
+    },
+    montree: () => !cs.hidden && !cs.classList.contains('pp-part') && !cs.classList.contains('pp-compose'),
+    cle: () => P.nat,
+    choixOuvert: () => choix !== null,
+    // Q620 : ce qu'on TAPE paraît tel quel — à partir de la première lettre ; l'entrée dans la saisie, elle, glisse (le prototype ne glissait
+    // pas dès le champ ouvert : les mots y sautaient de 5 pt, C-271)
+    frappe: () =>
+      saisieDe !== null &&
+      aTape &&
+      detrace === null &&
+      !!txt.querySelector('.ph-m[data-ph="titre"]:not(.ph-vide), .ph-m[data-np="nom"]:not(.ph-vide)'),
+    mouvement: () => mv !== null,
+    placeEnDetrace: () => detrace !== null,
+  });
+  try {
+    (chargerTrace() as unknown as { horsAnim?: (el: Element) => (() => void) | null }).horsAnim = (el) =>
+      continu.horsAnim(el);
+  } catch {
+    /* (sans le module, rien ne se trace) */
+  }
   let vue = { base: 312, amp: 36, hz: 0 };
   /** le décalage de « DÉJÀ PROMIS » sous une phrase plus longue (le prototype : `dec`) */
   let decDeja: number | null = null;
@@ -459,6 +502,18 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   function composerPhrase(ouvert: boolean, cap: number): { taille: number; nl: number } {
     const lim = largeur() - 48;
     txt.innerHTML = htmlPhrase();
+    // v46 (Tom) : « le reste reste indemne » — la taille de la phrase se calcule comme si la parole tapée était courte (son premier mot,
+    // 14 caractères au plus) ; une parole longue faisait tomber toute la phrase au plancher. La pastille du titre (ou du nom d'un Cercle) est
+    // traitée après, seule (`titrePlein`). Une place qui porte un nœud (une enveloppe de tracé) n'est pas touchée.
+    const ptL = txt.querySelector<HTMLElement>(
+      '.ph-m[data-ph="titre"]:not(.ph-vide), .ph-m[data-np="nom"]:not(.ph-vide)',
+    );
+    let ptOrig: string | null = null;
+    if (ptL && !ptL.querySelector('*')) {
+      ptOrig =
+        ptL.dataset['ph'] === 'titre' && P.titre.trim() ? P.titre.trim() : (ptL.textContent ?? '').replace(/…$/, '');
+      ptL.textContent = (ptOrig.split(/\s+/)[0] || ptOrig).slice(0, 14);
+    }
     let taille = 36;
     let nlAvant = lignes();
     for (let passe = 0; passe < 3; passe++) {
@@ -533,6 +588,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       appli(taille);
       if (lignes() === nlAvant) break;
     }
+    if (ptL && ptOrig !== null) {
+      ptL.textContent = ptOrig;
+      ptL.style.setProperty('overflow-wrap', 'anywhere', 'important');
+    }
     return { taille, nl: lignes() };
   }
 
@@ -603,6 +662,39 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     if (!fait) {
       appli(r.taille);
       taillePt(16);
+      // C-244 §5.1 : la coupe ne vient qu'après — la plus longue part du titre qui tient (3 lignes, puis 2, puis 1), terminée par « … » ;
+      // jamais un titre vidé (v162 : un titre qui ne tient pas même à « … » reste entier, à la plus grande taille qui tient en largeur)
+      const orig = ptL.textContent ?? '';
+      let lo = 0;
+      for (let limT = 3; limT >= 1; limT--) {
+        let a = 0;
+        let b = orig.length;
+        while (a < b) {
+          const mid = (a + b + 1) >> 1;
+          ptL.textContent = orig.slice(0, mid).replace(/\s+$/, '') + '…';
+          if (tient(limT)) a = mid;
+          else b = mid - 1;
+        }
+        ptL.textContent = orig.slice(0, a).replace(/\s+$/, '') + '…';
+        lo = a;
+        if (lo > 0) break;
+      }
+      if (lo === 0 && orig) {
+        ptL.textContent = orig;
+        const R = txt.getBoundingClientRect();
+        const tientL = (n: number): boolean =>
+          lignesDe(ptL) <= n && [...ptL.getClientRects()].every((q) => (q.right - R.left) / k <= lim);
+        let tpL = 16;
+        for (let tq = r.taille; tq >= 16; tq--) {
+          taillePt(tq);
+          if (tientL(3)) {
+            tpL = tq;
+            break;
+          }
+        }
+        taillePt(tpL);
+      }
+      ptL.classList.add('ph-coupe-t');
     }
     return true;
   }
@@ -1351,6 +1443,14 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
 
   // ── LA COMPOSITION ──
   function composer(): void {
+    const av = continu.avant();
+    try {
+      composerBrut();
+    } finally {
+      continu.apres(av);
+    }
+  }
+  function composerBrut(): void {
     // la mise en page « ouverte » (cadres 18 à 23) : un choix des personnes, ou la saisie d'un mot ; la barre Peaufiner se cache pendant la
     // saisie d'un Promi ou d'un Chiche (§2.11, le seul cas du produit) — un Cercle la garde (le prototype, `pp-saisie` sur #csChoix)
     const ouvert = choix !== null || saisieDe !== null;
@@ -1898,15 +1998,33 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   //    d'attente « un prénom… » dans la teinte de la zone ; dès la première lettre, un « + » orange (`--c-orange-depart`), tracé, à la hauteur
   //    des capitales du nom, valide (Retour aussi) ; le nom validé est posé, la zone se propose pour le suivant ; le clavier reste. ──
   function rendreAjout(z: HTMLElement): void {
+    // C-271 (v203 clôture §2) : « + ajouter quelqu’un » ↔ la ligne de saisie, l'ancien se détrace et le neuf se trace ; « un prénom… » part et
+    // revient par le tracé — rien ne change d'un coup
+    const etaitEdit = z.classList.contains('gn-edit');
+    const phAvant = z.querySelector<HTMLElement>('.gn-ph');
     if (!ajoutActif) {
-      z.className = 'ph-o ph-add';
-      z.setAttribute('role', 'button');
-      z.removeAttribute('aria-label');
-      z.textContent = T.ajouter;
+      const bouton = (): void => {
+        delete z.dataset['v'];
+        z.className = 'ph-o ph-add';
+        z.setAttribute('role', 'button');
+        z.removeAttribute('aria-label');
+        z.textContent = T.ajouter;
+      };
+      if (etaitEdit) remplacer(z, bouton);
+      else bouton();
       return;
     }
     const v = gnIn.value;
     const nom = v.replace(/\s+/g, ' ').trim();
+    // rien n'a changé (un focus, le clavier qui bouge) : la ligne reste — rebâtie, elle perdrait son tracé en cours (il paraîtrait d'un coup)
+    if (etaitEdit && z.dataset['v'] === v) {
+      z.classList.toggle('gn-repos', document.activeElement !== gnIn);
+      return;
+    }
+    z.dataset['v'] = v;
+    if (etaitEdit && phAvant && v) detracerCopie(phAvant);
+    const devientEdit = !etaitEdit && !!(z.textContent ?? '').trim();
+    const copie = devientEdit && !reduit() && z.getClientRects().length ? copieA(z) : null;
     z.className = 'ph-o ph-add gn-edit' + (document.activeElement === gnIn ? '' : ' gn-repos');
     z.setAttribute('role', 'group');
     z.setAttribute('aria-label', T.ajouterQuelquun);
@@ -1930,6 +2048,18 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       ligne.appendChild(pl);
     }
     z.replaceChildren(ligne);
+    if (copie) {
+      const fin = (): void => {
+        copie.remove();
+      };
+      const tl = chargerTrace();
+      tl.trace(ligne, null);
+      tl.trace(copie, null, { inverse: true, surFin: fin });
+      h.minuteur(fin, 2500);
+    } else if (etaitEdit && !phAvant && !v && !reduit()) {
+      const ph = ligne.querySelector<HTMLElement>('.gn-ph');
+      if (ph) chargerTrace().trace(ph, null);
+    }
     // (le « + » se mesure sur la police du nom RENDUE : une fois la ligne posée)
     const pl = ligne.querySelector<HTMLElement>('.gn-plus');
     if (pl) {
@@ -2125,6 +2255,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // ── LA SAISIE (le titre, le nom d'un Cercle) : le clavier s'ouvre DANS le geste ; la frappe remplit la pastille ; Retour valide ──
   function ouvrirSaisie(de: 'titre' | 'nom'): void {
     saisieDe = de;
+    aTape = false;
     choix = null;
     saisie.value = de === 'nom' ? P.nom : P.titre;
     saisie.maxLength = de === 'nom' ? 40 : 280;
@@ -2134,6 +2265,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
   saisie.addEventListener('input', () => {
     if (!saisieDe) return;
+    aTape = true;
     if (saisieDe === 'nom') P.nom = saisie.value;
     else P.titre = saisie.value;
     composer();
@@ -2702,6 +2834,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     // (composée à sa place : ses mesures se lisent sur l'écran, jamais sous la réduction du départ)
     cs.classList.add('pp-compose');
     cs.hidden = false;
+    continu.ouvre();
     composer();
     signature0 = signature();
     majGarder();
