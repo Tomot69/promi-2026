@@ -75,10 +75,16 @@ function metr(fam: string, wt: string, st: string): Metriques {
 
 /**
  * LA CROIX « X » D'UN PLATEAU, posée comme le prototype la pose (`pose()` de lot-V157-CROIX) : le « X » de PromiLate à la taille du X de
- * « INDEX » (35 px, `_tailleX`), centré sur les CAPITALES du titre de la barre (sa ligne de base lue sur les métriques de sa police rendue), son
+ * « INDEX » (29,5 px : `_tailleX`, la taille commune des titres — v211 C-307, Q623 acceptée), centré sur les CAPITALES du titre de la barre (sa ligne de base lue sur les métriques de sa police rendue), son
  * bord droit à la distance du bord de la barre où le titre commence à gauche ; une boîte de 44 × 44 centrée sur lui. Tout se lit sur la police
  * rendue : sur un autre moteur de polices (WebKit de Linux) la croix suit le titre comme dans le prototype, jamais une cote relevée sur le Mac.
  */
+/**
+ * la taille du X (px) : celle du titre de l'Index (`_tailleX` du prototype), c'est-à-dire la taille commune des titres `_ENCART.T` = 29,5
+ * (v211, C-307) — Tom a gardé ce lien (Q623, v212). ⚠ Le prototype ne la lit qu'une fois l'Index montré (`ajusteTitres`) ; avant, il rend 35 :
+ * le banc le règle en montrant l'Index (`prototype()` des tests).
+ */
+export const TAILLE_X = 29.5;
 /** les croix posées : une police qui finit de se charger après leur pose (un premier chargement lent) les fait reposer sur ses vraies métriques */
 const CROIX = new Map<HTMLElement, [HTMLElement, HTMLElement]>();
 let guetteCroix = false;
@@ -110,7 +116,7 @@ function poser1(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement): vo
   const cap = m.cap * fsT * kk;
   const fam = getComputedStyle(document.documentElement).getPropertyValue('--f-marque').trim() || 'PromiLate';
   const mX = metr(fam, '400', 'normal');
-  const fs = 35;
+  const fs = TAILLE_X;
   cvMetr ??= document.createElement('canvas').getContext('2d')!;
   cvMetr.font = `400 100px ${fam}`;
   const lx = (fs * kk * cvMetr.measureText('X').width) / 100;

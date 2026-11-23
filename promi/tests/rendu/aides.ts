@@ -92,6 +92,23 @@ export async function prototype(page: Page, ls: Record<string, string>): Promise
       o.style.display = 'none';
     }
   });
+  // ⚑ 3a (le X, Q623) : le X du prototype a la taille du titre de l'Index (`_tailleX`), que `ajusteTitres` ne pose (29,5) qu'une fois l'Index
+  // MONTRÉ ; avant, il rend 35. Selon la charge, une passe l'avait posé ou non (la CI : 596 px d'écart sur une fiche, une fois sur trois). Le
+  // prototype se règle comme sur un téléphone en usage : l'Index montré, puis l'accueil (mesuré : le stockage n'en change pas).
+  await page.evaluate(() => document.getElementById('indexBtn')?.click());
+  // la taille posée, celle des titres (`_ENCART.T`, 29,5) — relevé : 27 d'abord (une passe à mi-chemin), puis 29,5
+  await page.waitForFunction(
+    () => {
+      const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number } };
+      return !!w._ENCART && w._tailleX() === w._ENCART.T;
+    },
+    null,
+    { timeout: 20000 },
+  );
+  await page.waitForTimeout(600);
+  await page.evaluate(() => (window as unknown as { closeAll(): void }).closeAll());
+  await page.waitForFunction(() => !document.querySelector('#indexSheet.show'), null, { timeout: 10000 });
+  await page.waitForTimeout(1200);
 }
 
 export async function vraieApp(page: Page, ls: Record<string, string>, pilote?: number): Promise<void> {

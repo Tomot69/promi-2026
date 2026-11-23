@@ -173,7 +173,11 @@ test('Retour renomme comme le prototype : le titre neuf partout, la clé de plan
   });
   try {
     for (const pg of [P, A]) await pg.addStyleTag({ content: CURSEUR });
-    // la Toile sous la fiche, posée : deux images identiques (l'horloge pilotée ; la vie au repos ne tire rien entre deux images)
+    // la Toile sous la fiche, posée : la vie au repos coupée (`_vivantOff`, comme le banc de rendu — sous Linux un mouvement de repos tombait
+    // entre les deux captures), puis deux images identiques
+    await A.evaluate(() => {
+      (window as unknown as { _vivantOff: boolean })._vivantOff = true;
+    });
     const toile = (): Promise<string> =>
       A.evaluate(() => (document.getElementById('toileCv') as HTMLCanvasElement).toDataURL());
     let d0 = await toile();

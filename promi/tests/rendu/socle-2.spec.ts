@@ -811,8 +811,8 @@ test('le contrat visuel : les 25 propriétés de chaque élément porté égales
  * redteam_croix (v157, Tom, C-173 : « Partout, “× FERMER” devient un seul “X”, sans mot » ; v158, C-173 récidive : « Le MÊME X partout :
  * PromiLate, même taille, même couleur de rôle ; sa taille est EXACTEMENT celle du “X” du mot “INDEX” ») — sur chaque écran porté, à deux
  * échelles (390 × 844 et 330 × 714, la fenêtre de Safari), deux thèmes : A aucun texte « FERMER » visible ; B chaque fermeture
- * (`aria-label="Fermer"` ou `.closeb`) dit « X » en PromiLate, 35 px (`_tailleX`, le X de « INDEX », v158), son encre lue sur l'image = celle d'un
- * « X » de PromiLate 35 px posé par le juge et lu de la même façon, ± 0,5 pt ; C sa couleur = celle du titre de sa rangée, à pleine opacité ; D sa zone de toucher
+ * (`aria-label="Fermer"` ou `.closeb`) dit « X » en PromiLate, 29,5 px (`_tailleX`, le X de « INDEX », v158 ; la taille commune des titres, v211
+ * C-307 et Q623 acceptée), son encre lue sur l'image = celle d'un « X » de PromiLate 29,5 px posé par le juge et lu de la même façon, ± 0,5 pt ; C sa couleur = celle du titre de sa rangée, à pleine opacité ; D sa zone de toucher
  * ≥ 44 × 44, centrée sur l'encre (± 1,5 pt), prise par le doigt à ses quatre coins (± 20 pt). L'accueil n'a aucune fermeture (A seul) ;
  * B, C, D mordent dès qu'un écran porté en porte une (lots 3a, 4, 6, 7, 8).
  */
@@ -863,9 +863,9 @@ async function encreLue(
   };
 }
 
-const TAILLE_X = 35; // px — v158 (C-173) : la taille du X de « INDEX » (`window._tailleX`)
+const TAILLE_X = 29.5; // px — v158 (C-173) : la taille du X de « INDEX » (`window._tailleX`) ; v211 (C-307) : la taille commune des titres, 29,5 ; Q623 (v212) : Tom garde le lien
 
-test('× FERMER est un seul X : aucun « FERMER », le X en PromiLate 35 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)', async ({
+test('× FERMER est un seul X : aucun « FERMER », le X en PromiLate 29,5 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)', async ({
   browser,
 }) => {
   const fautes: string[] = [];
@@ -928,7 +928,7 @@ test('× FERMER est un seul X : aucun « FERMER », le X en PromiLate 35 px, la 
           op: number;
           r: [number, number, number, number];
         }>;
-        // le X de référence : « X » en PromiLate 35 px (le X de « INDEX », v158), à la couleur de la fermeture, lu sur l'image de la même façon
+        // le X de référence : « X » en PromiLate 29,5 px (le X de « INDEX », v158), à la couleur de la fermeture, lu sur l'image de la même façon
         // (posé à la même phase dans le pixel que le texte de la fermeture : le lissage d'un bord en dépend)
         const refX = async (couleur: string, i: number): Promise<[number, number] | null> => {
           await pg.evaluate(

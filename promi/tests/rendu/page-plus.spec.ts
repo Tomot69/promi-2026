@@ -214,16 +214,34 @@ const finTrace = (p: Page): Promise<unknown> =>
       timeout: 30000,
     },
   );
-/** la vraie app : plus aucun mouvement, plus aucun passage en flaques */
-const finApp = (p: Page): Promise<unknown> =>
-  p.waitForFunction(
-    () =>
-      !document.querySelector('#createSheet [data-flaques-mode]') &&
-      !(window as unknown as { __promi: { pagePlus(): { etat(): { mouvement: boolean } } } }).__promi.pagePlus().etat()
-        .mouvement,
-    undefined,
-    { timeout: 20000 },
-  );
+/**
+ * la vraie app : plus aucun mouvement, plus aucun passage en flaques — au-delà de 20 s, le juge NOMME ce qui bouge encore (une transition qui ne
+ * finit pas est un défaut : v203, « une transition ne dépend jamais d'un seul rappel pour finir »)
+ */
+const finApp = async (p: Page): Promise<void> => {
+  try {
+    await p.waitForFunction(
+      () =>
+        !document.querySelector('#createSheet [data-flaques-mode]') &&
+        !(window as unknown as { __promi: { pagePlus(): { etat(): { mouvement: boolean } } } }).__promi
+          .pagePlus()
+          .etat().mouvement,
+      undefined,
+      { timeout: 20000 },
+    );
+  } catch (e) {
+    const d = await p.evaluate(() => ({
+      de: (window as unknown as { __promi: { pagePlus(): { etat(): { mouvementDe: string[] } } } }).__promi
+        .pagePlus()
+        .etat().mouvementDe,
+      flaques: [...document.querySelectorAll<HTMLElement>('#createSheet [data-flaques-mode]')].map(
+        (x) => `${x.id || x.className}:${x.dataset['flaquesMode'] ?? ''}`,
+      ),
+      parts: document.querySelectorAll('#createSheet .pp-ex-part, #createSheet .pp-place-part').length,
+    }));
+    throw new Error(`la page + bouge encore après 20 s : ${JSON.stringify(d)}`, { cause: e });
+  }
+};
 
 type Cas = {
   nat: 'promi' | 'chiche' | 'nuee';

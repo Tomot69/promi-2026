@@ -120,6 +120,8 @@ export interface PagePlus {
     menu: boolean;
     ajout: boolean;
     mouvement: boolean;
+    /** ce qui bouge encore (le mouvement du clavier, une transition de mot, un glissement) : pour nommer un mouvement qui ne finit pas */
+    mouvementDe: string[];
     /** C-209, C-213, C-229 : l'invite à tracer — née (le trait, le libellé), en train de partir, l'horizon bas, le premier toucher du trait */
     invite: { visible: boolean; sortie: boolean; haut: boolean; anim: boolean; touche: boolean };
     /** le mode dessin ouvert (son outil, sa couleur, son fond…), sinon null */
@@ -2863,6 +2865,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       menu: !!menu,
       ajout: ajoutActif,
       mouvement: !!mv || douceur.actif() || continu.actif(),
+      mouvementDe: [mv ? 'clavier' : '', douceur.actif() ? 'douceur' : '', continu.actif() ? 'continu' : ''].filter(
+        Boolean,
+      ),
       invite: { visible: inv.vis, sortie: inv.sortie, haut: inv.haut, anim: !!inv.anim, touche: inv.touche },
       dessin: modeDessin.etat(),
     }),
