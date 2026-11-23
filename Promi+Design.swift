@@ -390,6 +390,12 @@ extension Color {
         static let rampeCercle1 = Color(red: 0.7608, green: 0.6431, blue: 0.9686)   // #C2A4F7 — lot 2a (vraie app) : Q30 — la rampe de la nature Cercle (`DALPAL.nuee` du prototype, trois teintes, 1 à 3) : la dalle du haut de la page + d'un Cercle, peinte par le moteur (`opts.rampe`)
         static let rampeCercle2 = Color(red: 0.8627, green: 0.7765, blue: 1.0000)   // #DCC6FF
         static let rampeCercle3 = Color(red: 0.9529, green: 0.9176, blue: 1.0000)   // #F3EAFF
+        static let rampeChiche1 = Color(red: 0.9490, green: 0.5922, blue: 0.4784)   // #F2977A — lot 3a (vraie app) : Q30 — la rampe de la nature Chiche (`DALPAL.chiche` du prototype, 1 à 3)
+        static let rampeChiche2 = Color(red: 1.0000, green: 0.7529, blue: 0.6588)   // #FFC0A8
+        static let rampeChiche3 = Color(red: 1.0000, green: 0.8863, blue: 0.8235)   // #FFE2D2
+        static let rampePromi1 = Color(red: 0.6824, green: 0.5255, blue: 0.9490)   // #AE86F2 — lot 3a (vraie app) : Q30 — la rampe de la nature Promi (`DALPAL.promi` du prototype, 1 à 3) : la dalle de la bande haute d'une fiche, peinte par le moteur (`opts.rampe`)
+        static let rampePromi2 = Color(red: 0.7961, green: 0.6667, blue: 1.0000)   // #CBAAFF
+        static let rampePromi3 = Color(red: 0.9059, green: 0.8549, blue: 1.0000)   // #E7DAFF
         static let seiche10 = Color(red: 0.0196, green: 0.0118, blue: 0.0078)   // #050302
         static let seiche21 = Color(red: 0.1216, green: 0.0863, blue: 0.0667)   // #1F1611
         static let ton03 = Color(red: 0.0588, green: 0.0706, blue: 0.0824)   // #0F1215

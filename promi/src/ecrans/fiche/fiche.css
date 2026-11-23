@@ -1,0 +1,395 @@
+/* LA FICHE D'UNE PAROLE (lot 3a-1) — Promi et Chiche, au repos. Les cotes sont celles du prototype RENDU (relevé du 23 nov. 2026, WebKit,
+   390 × 844, ×3 ; SPEC-ECRANS §4 ; les blocs lot-S1B-cotes, lot-S1B-geo, lot-V136-PHRASE, lot-V145-COMM, lot-V157-CROIX). Depuis C-132 (v146) la
+   fiche a la même allure en clair et en sombre : son corps est celui de sa nature (cobalt, framboise), la terre pour une parole tenue. Les cotes
+   qui dépendent de la parole (la vague, le mot du geste, les Noyaux, la phrase, le titre, l'état) sont posées par fiche.ts. */
+
+#detailPoster {
+  position: absolute;
+  inset: 0;
+  z-index: 80;
+  border-radius: 22px;
+  color: var(--c-creme95);
+  font: 16px var(--f-texte);
+  /* la fiche défile (sa jonction : lot 3a-3) */
+  overflow: hidden auto;
+  scrollbar-width: none;
+  -webkit-tap-highlight-color: transparent;
+}
+#detailPoster[hidden],
+#detailPoster [hidden] {
+  display: none !important;
+}
+/* l'ouverture monte du bas, la fermeture y redescend (le prototype : `.poster`, translateY 100 % et l'opacité, 0,4 s et 0,34 s) */
+#detailPoster {
+  transition:
+    transform 0.4s cubic-bezier(0.32, 0.72, 0, 1),
+    opacity 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+}
+#detailPoster.fi-bas {
+  transform: translateY(100%);
+  opacity: 0;
+  pointer-events: none;
+}
+#detailPoster.fi-promi {
+  background: var(--c-cobalt50);
+}
+#detailPoster.fi-chiche {
+  background: var(--c-framboise35);
+}
+#detailPoster.fi-tenue {
+  background: var(--c-prune09);
+}
+#detailPoster .fi-champ,
+#detailPoster .fi-trait {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  pointer-events: none;
+}
+
+/* ── le plateau (24 / 40 / 342 × 60) : le mot de la nature et le X ── */
+#detailPoster .enh {
+  position: absolute;
+  top: var(--ancre-haut);
+  left: var(--marge-g);
+  right: var(--marge-d);
+  height: 60px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 26px;
+  border: 2px solid var(--c-creme95);
+  border-radius: 30px;
+  background: var(--c-seiche10);
+  z-index: 9;
+}
+#detailPoster .fi-mot {
+  display: block;
+  padding: 0 0 1px;
+  font: 29.5px/1.06em var(--f-marque);
+  font-synthesis: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-creme95);
+  translate: 0 2.94px;
+}
+#detailPoster .mm-i {
+  display: inline;
+  font-style: normal;
+  color: var(--c-bleu45);
+}
+#detailPoster .closeb {
+  position: absolute;
+  top: 6px;
+  right: 19.95px;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font: 35px/35px var(--f-marque);
+  color: var(--c-creme95);
+  white-space: nowrap;
+  z-index: 40;
+  cursor: pointer;
+}
+#detailPoster .cb-mot {
+  position: absolute;
+  left: 0;
+  top: 5.88px;
+  width: 44px;
+  display: block;
+  line-height: 1.06em;
+  text-align: center;
+}
+
+/* ── le bouton photo (rond 34, x 332) : sa cote suit la vague (fiche.ts) ; son menu : lot 3b ── */
+#detailPoster .ph-photo-btn {
+  position: absolute;
+  left: 332px;
+  width: 34px;
+  height: 34px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+  border: 2px solid var(--c-creme95);
+  border-radius: 999px;
+  color: var(--c-creme95);
+  opacity: 0.62;
+  z-index: 6;
+  cursor: pointer;
+  font: 11px system-ui;
+}
+#detailPoster .ph-photo-btn svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+/* ── le mot du geste : PromiLate 19, capitales, orange (C-214) quand il dit « trace pour … », sinon l'encre du corps ── */
+#detailPoster .fi-trace {
+  position: absolute;
+  left: var(--marge-g);
+  width: 342px;
+  margin: -4.4px 0 0;
+  font: 19px/20.9px var(--f-marque);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  text-align: center;
+  color: var(--c-creme95);
+  white-space: normal;
+  pointer-events: none;
+}
+#detailPoster .fi-trace.fi-depart {
+  color: var(--c-orange-depart);
+}
+
+/* ── la phrase, le titre, la ligne d'état ── */
+#detailPoster .fi-phrase {
+  position: absolute;
+  left: var(--marge-g);
+  width: 342px;
+  margin: 0;
+  font: 700 23px/25.3px var(--f-libelle);
+  letter-spacing: -0.01em;
+  color: var(--c-creme95);
+}
+#detailPoster .fi-phrase .nom-lien {
+  cursor: pointer;
+}
+#detailPoster .fi-phrase .fi-plus {
+  font: inherit;
+  letter-spacing: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 3px;
+}
+#detailPoster .fi-titre {
+  position: absolute;
+  left: var(--marge-g);
+  width: 342px;
+  margin: 0;
+  font: 700 42px/1.02 var(--f-libelle);
+  letter-spacing: -0.025em;
+  color: var(--c-creme95);
+  overflow-wrap: anywhere;
+}
+#detailPoster .fi-etat {
+  position: absolute;
+  left: var(--marge-g);
+  width: 342px;
+  margin: 0;
+  font: 500 13.5px/1.1 var(--f-texte);
+  letter-spacing: 0.2em;
+  color: var(--c-creme95);
+}
+#detailPoster .fi-etat.fi-tenu {
+  color: var(--c-menthe82);
+}
+
+/* ── « Un mot… » (C-116, la ligne au repos ; la saisie et la liste : lot 3b) ── */
+#detailPoster #cm5Ligne {
+  position: absolute;
+  left: var(--marge-g);
+  top: 692px;
+  width: 342px;
+  height: 56px;
+  box-sizing: border-box;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0 2px 0 0;
+  color: var(--c-creme95);
+  z-index: 3;
+  pointer-events: none;
+}
+#detailPoster .cm5-mot,
+#detailPoster .cm5-nb {
+  font: 700 18px/21.6px var(--f-libelle);
+  color: var(--c-creme95);
+}
+#detailPoster .cm5-mot {
+  display: block;
+}
+/* le nombre de mots (C-257) : le total à l'encre ; « +N » orange quand des mots neufs attendent */
+#detailPoster .cm5-nb {
+  min-width: 44px;
+  height: 44px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+#detailPoster .cm5-nb.cm5-neufs {
+  color: var(--c-orange-depart);
+}
+
+/* ── la barre Peaufiner (fermée ; ouverte : lot 3b) et son rond Partager ── */
+#detailPoster #dpDetails {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 84px;
+  background: var(--c-seiche10);
+  z-index: 20;
+}
+#detailPoster #dpdTog {
+  position: absolute;
+  inset: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 0 var(--marge-d) 0 var(--marge-g);
+  z-index: 6;
+  cursor: pointer;
+}
+#detailPoster.fi-promi #dpdTog {
+  background: var(--c-bleu45);
+}
+#detailPoster.fi-chiche #dpdTog {
+  background: var(--c-framboise54);
+}
+#detailPoster #dpdTog .dpd-mot {
+  display: block;
+  font: 700 24px/26.4px var(--f-libelle);
+  letter-spacing: -0.01em;
+  color: var(--c-seiche10);
+}
+#detailPoster #dpdTog i {
+  position: absolute;
+  left: 296.97px;
+  font: 700 15px/22.5px var(--f-libelle);
+  color: var(--c-seiche10);
+}
+#detailPoster #dpdTog .dpd-part {
+  position: absolute;
+  left: 320px;
+  top: 19px;
+  width: 46px;
+  height: 46px;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  border: 3px solid var(--c-creme95);
+  border-radius: 999px;
+  color: var(--c-seiche10);
+  opacity: 0.9;
+}
+#detailPoster #dpdTog .dpd-part svg {
+  width: 22px;
+  height: 22px;
+  display: block;
+}
+
+/* ── les Noyaux (#dAura glisse quand les personnes débordent ; `.aura-track` : flex, 14 d'écart ; « Toi » 82 de large, marge 16 ; une personne
+   70, 10 plus bas). Le fondu à droite du prototype (`.aura-band`, août : un dégradé en masque) est une dette de son volume
+   (volume-dette.json) : la vraie app ne la reprend pas, la rangée s'arrête net (écart nommé, fiche.spec M3). ── */
+#detailPoster #dAura {
+  position: absolute;
+  left: var(--marge-g);
+  width: 342px;
+  /* 4 pt de plus sous les noms, rendus par la marge : la boîte de ligne d'un nom (plus haute que son encre) n'est pas rognée */
+  padding-bottom: 4px;
+  margin-bottom: -4px;
+  overflow: auto hidden;
+  scrollbar-width: none;
+}
+#detailPoster #dAura::-webkit-scrollbar {
+  display: none;
+}
+#detailPoster .aura-track {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  width: 342px;
+}
+#detailPoster .kring {
+  width: 70px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: none;
+}
+#detailPoster .kring.kring-moi {
+  width: 82px;
+  margin: 0 16px 0 0;
+}
+#detailPoster .kr-wrap {
+  position: relative;
+  display: block;
+  flex: none;
+}
+#detailPoster .kr-wrap canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+#detailPoster .s1b-visage {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  translate: -50% -50%;
+  border-radius: 999px;
+  overflow: hidden;
+  display: block;
+}
+#detailPoster .s1b-visage svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+#detailPoster .kr-n {
+  margin-top: 11px;
+  padding: 0 4px;
+  font: 700 13.5px/1 var(--f-libelle);
+  letter-spacing: -0.135px;
+  text-align: center;
+  white-space: nowrap;
+  color: var(--c-creme95-2);
+}
+#detailPoster .kring-moi .kr-n {
+  font-size: 14px;
+  letter-spacing: -0.14px;
+}
+#detailPoster .kr-n.fi-sur-terre {
+  color: var(--c-creme95);
+}
+
+/* ── le « + » des membres (C-254) : orange, haut d'une capitale de la phrase, 26 pt après le dernier petit disque ; zone de 44 ── */
+#detailPoster .fi-plus-membres {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: none;
+  z-index: 4;
+  cursor: pointer;
+}
+#detailPoster .fi-plus-membres svg {
+  display: block;
+}
+/* sur la terre d'une parole tenue, les anneaux à .92 (le prototype : `#detailPoster.f-tenue .kr-c`, une règle d'août toujours en effet) */
+#detailPoster.fi-tenue .kr-c {
+  opacity: 0.92;
+}
+/* les noms de la phrase sont dans un <b> (le prototype) : la même graisse que la phrase (Gilbert n'en a qu'une) */
+#detailPoster #dptQui b {
+  font-weight: inherit;
+}

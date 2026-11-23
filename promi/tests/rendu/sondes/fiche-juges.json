@@ -1,0 +1,27 @@
+[
+  {
+    "nom": "fiche-anneau-faux",
+    "test": "les anneaux des Noyaux : à chaque angle la couleur du prototype — tenu, en cours, le jour, l’anneau vide (C-210, M2)",
+    "defaut": "les deux couleurs d'état échangées sur les anneaux (tenu en violet, en cours en vert)"
+  },
+  {
+    "nom": "fiche-deplie-mort",
+    "test": "« + x personnes » se déroule au toucher : la phrase entière, le titre descend de la ligne gagnée (C-069)",
+    "defaut": "le toucher sur « + x personnes » avalé avant d'arriver à la fiche : la liste ne se déroule pas"
+  },
+  {
+    "nom": "fiche-jour-ignore",
+    "test": "une date passée s’écrit comme une date : « EN COURS · 2 MARS » avec ?jour=+120, rien sans (C-160, D5)",
+    "defaut": "le paramètre ?jour n'est pas lu : l'échéance n'est jamais passée"
+  },
+  {
+    "nom": "fiche-seche",
+    "test": "la fiche monte du bas à l’ouverture et y redescend au X, jamais d’un coup (C-271 ; le prototype : .poster, 0,4 s)",
+    "defaut": "la transition de la fiche retirée : elle paraît et part d'un coup"
+  },
+  {
+    "nom": "fiche-echelle",
+    "test": "la fiche à l’échelle 0,79 (330 × 714) : chaque cote en pt est celle de 390 × 844, trois ouvertures de quatre fiches, la même (C-207, A3)",
+    "defaut": "à l'échelle réduite, la ligne d'état posée 4 pt plus haut (la faute de C-207)"
+  }
+]

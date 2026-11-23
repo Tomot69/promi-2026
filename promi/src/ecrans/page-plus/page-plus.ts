@@ -44,6 +44,7 @@ import { variante } from '../../metier/exemples.ts';
 import { elision } from '../../metier/elision.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
+import { avecAlpha, el, esc, surToucher, SVG_PHOTO } from '../commun.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
@@ -147,47 +148,10 @@ const SEUIL_GLISSE = 120;
 
 const SVG_BASCULE =
   '<svg viewBox="0 0 22 22" width="17" height="17" aria-hidden="true"><path d="M3 8h16" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M15.4 4.6 L19 8 L15.4 11.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/><path d="M19 15H3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><path d="M6.6 11.6 L3 15 L6.6 18.4" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
-const SVG_PHOTO =
-  '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><path d="M1.5 14.5c2.6-5 5.2-5 7.2-1.6s4.400 3.4 6.4 0 4-4.4 7.400-3.4"/></svg>';
 const SVG_PLUS =
   '<svg viewBox="0 0 10 10" aria-hidden="true"><path class="h" d="M0 5 H10"/><path class="v" d="M5 0 V10"/></svg>';
 const SVG_X =
   '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 2 L10 10 M10 2 L2 10" fill="none" stroke-width="2" stroke-linecap="round"/></svg>';
-
-const esc = (s: string): string =>
-  s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]!);
-
-function el<K extends keyof HTMLElementTagNameMap>(
-  tag: K,
-  attrs: Record<string, string> = {},
-): HTMLElementTagNameMap[K] {
-  const e = document.createElement(tag);
-  for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
-  return e;
-}
-
-/** un toucher net : appui puis lever à moins de 10 pt et 600 ms (SPEC-ECRANS §0) — au doigt, WebKit ne fabrique pas toujours de `click` */
-function surToucher(cible: HTMLElement, f: (ev: PointerEvent) => void): void {
-  let d: { x: number; y: number; t: number; id: number } | null = null;
-  cible.addEventListener('pointerdown', (ev) => {
-    d = { x: ev.clientX, y: ev.clientY, t: ev.timeStamp, id: ev.pointerId };
-  });
-  cible.addEventListener('pointerup', (ev) => {
-    const g = d;
-    d = null;
-    if (!g || g.id !== ev.pointerId) return;
-    if (Math.hypot(ev.clientX - g.x, ev.clientY - g.y) > 10 || ev.timeStamp - g.t > 600) return;
-    f(ev);
-  });
-  cible.addEventListener('pointercancel', () => {
-    d = null;
-  });
-}
-
-function avecAlpha(h: string, a: number): string {
-  const [r, g, b] = [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
-  return `rgba(${String(r)}, ${String(g)}, ${String(b)}, ${String(a)})`;
-}
 
 export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation): PagePlus {
   const h = horloge();

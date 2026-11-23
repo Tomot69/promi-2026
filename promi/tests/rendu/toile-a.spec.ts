@@ -14,7 +14,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { sonde, ETAT } from './aides.ts';
+import { sonde, ETAT, fermerFiche } from './aides.ts';
 
 const ICI = import.meta.dirname;
 const RACINE = join(ICI, '..', '..', '..');
@@ -125,6 +125,10 @@ async function menuPlus(page: Page): Promise<void> {
   await pas(page, 40);
   await page.mouse.click(195, 300);
   await pas(page, 40);
+  // le toucher qui referme le menu tombe sur la Toile : la fiche de la dalle dessous s'ouvre (comme dans le prototype) — on la referme
+  // (sa descente : 420 ms à l'horloge, pilotée ici)
+  await fermerFiche(page);
+  await pas(page, 30);
 }
 
 /*

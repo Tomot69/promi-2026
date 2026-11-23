@@ -648,10 +648,12 @@ const FOND_PLAT = '#7f7f7f';
 // (la page + du prototype vit HORS de #device, dans .frame : elle est nommée ; et ce qu'un écran opaque recouvre — l'accueil sous la page +,
 // marqué au relevé `data-recouvert` — n'est pas à l'écran : on le cache, sinon il reparaîtrait sous les fonds devenus transparents)
 /** les fonds posés EN LIGNE avec `important` (le prototype en pose : la pastille du verbe, les pointillés, la barre Peaufiner) ne cèdent pas
- *  à une feuille : ils sont retirés en ligne, des deux côtés */
+ *  à une feuille : ils sont retirés en ligne, des deux côtés ; de même les canevas qu'une couche déclare visibles en ligne (la bande du haut
+ *  d'une fiche du prototype, `#v187Bande`, `visibility: visible !important` : la feuille ne la cachait pas, lot 3a-1) */
 const TEXTES_SEULS_LIGNE = `(() => { for (const e of document.querySelectorAll('#device *, #createSheet, #createSheet *')) {
   for (const [p, v] of [['background-color', 'transparent'], ['background-image', 'none'], ['border-color', 'transparent'],
-    ['box-shadow', 'none'], ['outline-color', 'transparent'], ['filter', 'none']]) e.style.setProperty(p, v, 'important'); } })()`;
+    ['box-shadow', 'none'], ['outline-color', 'transparent'], ['filter', 'none']]) e.style.setProperty(p, v, 'important');
+  if (/^(svg|canvas|img)$/i.test(e.tagName)) e.style.setProperty('visibility', 'hidden', 'important'); } })()`;
 const TEXTES_SEULS =
   '#device *,#device *::before,#device *::after,#createSheet#createSheet#createSheet,#createSheet#createSheet#createSheet *,' +
   '#createSheet#createSheet#createSheet *::before,#createSheet#createSheet#createSheet *::after' +

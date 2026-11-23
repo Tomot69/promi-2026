@@ -15,7 +15,7 @@ import { readFileSync } from 'node:fs';
 import { loadavg } from 'node:os';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
-import { ETAT, RACINE, refermerPagePlus, sonde, stockage } from './aides.ts';
+import { ETAT, RACINE, refermerPagePlus, sonde, stockage, fermerFiche } from './aides.ts';
 
 type Ls = Record<string, string>;
 
@@ -869,7 +869,9 @@ async function toucherEtLire(page: Page, x: number, y: number, attendre?: string
     .waitForFunction(attendre ?? `window.__dem.length > ${String(n0)}`, undefined, { timeout: 3000 })
     .catch(() => {});
   await page.waitForTimeout(450); // ni un second toucher (moins de 320 ms : le double toucher), ni une demande en retard
-  return ((await demandes(page)) as Dem[]).slice(n0);
+  const d = ((await demandes(page)) as Dem[]).slice(n0);
+  await fermerFiche(page);
+  return d;
 }
 
 test('toucher une dalle demande SA fiche, sous les vingt mondes (C-058) : trois dalles chacun, rien ne couvre la Toile au point touché', async ({

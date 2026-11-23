@@ -215,6 +215,12 @@
     "--c-rampe-cercle-1": "#C2A4F7",
     "--c-rampe-cercle-2": "#DCC6FF",
     "--c-rampe-cercle-3": "#F3EAFF",
+    "--c-rampe-promi-1": "#AE86F2",
+    "--c-rampe-promi-2": "#CBAAFF",
+    "--c-rampe-promi-3": "#E7DAFF",
+    "--c-rampe-chiche-1": "#F2977A",
+    "--c-rampe-chiche-2": "#FFC0A8",
+    "--c-rampe-chiche-3": "#FFE2D2",
     "--c-noir01-2": "#030307",
     "--c-bleu14": "#04375D",
     "--c-noir01": "#050505",
@@ -470,7 +476,9 @@
     "--c-orange-depart": "v146 (Tom) : l'orange marque le POINT DE DÉPART d'une action, et rien d'autre (le + de l'accueil, le + qui valide un nom, le départ de la flèche du trait)",
     "--c-framboise02": "lot 2a (vraie app) : le trait d'un Chiche posé sur son champ (`NATTRAIT.chiche` du prototype, v147 C-140) — l'aperçu du pinceau choisi sur la page +",
     "--c-mauve02": "lot 2a (vraie app) : le trait d'un Cercle posé sur son champ (`NATTRAIT.nuee` du prototype, v147 C-140) — l'aperçu du pinceau choisi sur la page +",
-    "--c-rampe-cercle-1": "lot 2a (vraie app) : Q30 — la rampe de la nature Cercle (`DALPAL.nuee` du prototype, trois teintes, 1 à 3) : la dalle du haut de la page + d'un Cercle, peinte par le moteur (`opts.rampe`)"
+    "--c-rampe-cercle-1": "lot 2a (vraie app) : Q30 — la rampe de la nature Cercle (`DALPAL.nuee` du prototype, trois teintes, 1 à 3) : la dalle du haut de la page + d'un Cercle, peinte par le moteur (`opts.rampe`)",
+    "--c-rampe-promi-1": "lot 3a (vraie app) : Q30 — la rampe de la nature Promi (`DALPAL.promi` du prototype, 1 à 3) : la dalle de la bande haute d'une fiche, peinte par le moteur (`opts.rampe`)",
+    "--c-rampe-chiche-1": "lot 3a (vraie app) : Q30 — la rampe de la nature Chiche (`DALPAL.chiche` du prototype, 1 à 3)"
   },
   "noms_swift": {
     "--c-orange-maparole": "orangeMaParole"

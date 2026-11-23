@@ -336,10 +336,30 @@ export const PAGES_PLUS: EcranPorte[] = (['promi', 'chiche', 'nuee'] as const).m
   prototype: (p) => ouvrirPagePlus(p, n, true),
 }));
 
+/**
+ * la fiche (lot 3a-1) : celle de la première parole de l'état ni gardée de côté, ni d'un Cercle (lot 5), et sans mot (la liste des mots
+ * sous la ligne « Un mot… » est au lot 3b) — à défaut, la première ; ouverte par la façade de chaque côté
+ */
+export const FICHE: EcranPorte = {
+  nom: 'fiche',
+  ouvrir: async (p) => {
+    await p.evaluate(`(() => { const P = window.__promi; const L = P.magasin.etat().paroles.filter((x) => !x.draft && !x.nuee); const q = L.find((x) => !(x.comments || []).length) || L[0];
+      if (q) P.fiche().ouvrir(q.id); })()`);
+    await p.waitForTimeout(900);
+  },
+  prototype: async (p) => {
+    await p.evaluate(
+      `(() => { const L = promises.filter((x) => !x.draft && !x.nuee); const q = L.find((x) => !(x.comments || []).length) || L[0]; if (q) openDetail(q.id); })()`,
+    );
+    await p.waitForTimeout(3500);
+  },
+};
+
 export const ECRANS_PORTES: EcranPorte[] = [
   { nom: 'accueil', ouvrir: async () => {}, prototype: async () => {} },
   { nom: 'accueil, menu du + ouvert', ouvrir: ouvrirPlus, prototype: ouvrirPlus },
   ...PAGES_PLUS,
+  FICHE,
 ];
 
 /**
@@ -349,4 +369,40 @@ export const ECRANS_PORTES: EcranPorte[] = [
  */
 export function ecartAdmis(nom: string, texte: string, prop: string): boolean {
   return nom.startsWith('page +') && texte === 'garder de côté' && (prop === 'color' || prop === 'webkitTextFillColor');
+}
+
+/** LOT 3a — l'état des fiches (`banc-etats/etat-fiches.json` : un cas par état de fiche) et ses cas */
+export const ETAT_FICHES = join(RACINE, 'banc-etats', 'etat-fiches.json');
+
+export function stockageFiches(): Record<string, string> {
+  const x = JSON.parse(readFileSync(ETAT_FICHES, 'utf8')) as Record<string, unknown>;
+  const ls: Record<string, string> = {};
+  for (const [k, v] of Object.entries(x)) if (typeof v === 'string' && k !== 'setItem') ls[k] = v;
+  return ls;
+}
+
+/** les cas : l'id de la parole dans `etat-fiches.json`, et ce qu'elle est */
+export const CAS_FICHES: ReadonlyArray<[number, string]> = [
+  [144, 'Promi en cours, à soi'],
+  [148, 'Promi en cours, à Marion'],
+  [163, 'Promi en cours, à cinq personnes'],
+  [149, 'Promi en cours, date passée'],
+  [160, 'Promi reçu de Nico'],
+  [146, 'Promi tenu, à Rachel'],
+  [147, 'Chiche lancé à soi'],
+  [162, 'Chiche lancé à Adrien'],
+  [156, 'Chiche à Rachel et Marion, une part tracée'],
+  [157, 'Chiche reçu, à relever'],
+  [152, 'Chiche tenu'],
+  [167, 'Chiche tenu à deux'],
+];
+
+/**
+ * LOT 3a — depuis que la fiche est portée, toucher une dalle de la Toile OUVRE sa fiche par-dessus (comme le prototype) : un test de la Toile
+ * qui touche plusieurs dalles d'affilée la referme entre deux touchers (sinon le toucher suivant tombe sur la fiche). Elle redescend (0,4 s).
+ */
+export async function fermerFiche(page: Page): Promise<void> {
+  const ouverte = (await page.evaluate(`(() => { const f = document.getElementById('detailPoster');
+    if (!f || f.hidden || f.classList.contains('fi-bas')) return false; ${P_}.fiche().fermer(); return true; })()`)) as boolean;
+  if (ouverte) await page.waitForTimeout(450);
 }

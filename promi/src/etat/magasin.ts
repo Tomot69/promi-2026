@@ -67,6 +67,10 @@ export interface Actions {
 
 export interface Magasin extends Actions {
   etat(): Readonly<Etat>;
+  /** aujourd'hui, à minuit (`?jour=+N` l'avance pour la page, jamais mémorisé — C-160) */
+  aujourdhui(): Date;
+  /** C-160 : les échéances recomptées contre aujourd'hui (au retour au premier plan) ; rien ne s'écrit si rien ne change */
+  recompter(): void;
   abonner(f: Abonne): () => void;
 }
 
@@ -92,6 +96,11 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
 
   return {
     etat: () => e,
+    aujourdhui,
+    recompter() {
+      const r = relire(e);
+      if (JSON.stringify(r.paroles) !== JSON.stringify(e.paroles)) valider('recompter', r);
+    },
     abonner(f) {
       abonnes.add(f);
       return () => abonnes.delete(f);

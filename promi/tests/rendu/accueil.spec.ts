@@ -14,7 +14,20 @@
 import { test, expect } from '@playwright/test';
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { ETAT, RACINE, RESULTATS, stockage, GEL, prototype, vraieApp, ouvrirPlus, ecart, P_, sonde } from './aides.ts';
+import {
+  ETAT,
+  RACINE,
+  RESULTATS,
+  stockage,
+  GEL,
+  prototype,
+  vraieApp,
+  ouvrirPlus,
+  ecart,
+  P_,
+  sonde,
+  fermerFiche,
+} from './aides.ts';
 
 /**
  * LES ÉCARTS ADMIS AU PROTOTYPE (C-329, Tom, 21 nov. 2026 : « la règle de Tom prime, AUCUN changement sec ») — les SEULS : dans le
@@ -123,6 +136,7 @@ test('toucher une dalle demande SA fiche, 260 ms plus tard ; le double toucher r
     ]);
     expect(j.at(-1)!.t - leve, 'la fiche est demandée 260 ms après le lever du doigt').toBeGreaterThanOrEqual(259);
     await page.waitForTimeout(400);
+    await fermerFiche(page);
   }
   // le double toucher : la vue glissée à la main revient au cadrage
   await page.mouse.move(195, 400);
@@ -645,6 +659,8 @@ test('C-329 : aucun changement sec à l’accueil — le menu du + et le bandeau
   if (f) fautes.push('menu qui se ferme : ' + f);
   if (await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert')))
     fautes.push('le menu est encore ouvert à la fin de son passage');
+  // le toucher qui ferme le menu tombe sur la Toile : la fiche de la dalle dessous s'ouvre (comme dans le prototype) — on la referme
+  await fermerFiche(page);
 
   // (3) le bandeau part en flaques (« Plus tard »)
   if (bandeau && (await page.evaluate(() => document.getElementById('accRappel')!.classList.contains('vu')))) {

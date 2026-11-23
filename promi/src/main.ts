@@ -9,12 +9,14 @@ import './design/jetons.css';
 import './design/base.css';
 import { installer } from './animation/horloge.ts';
 import { creerMagasin } from './etat/magasin.ts';
+import { minuit } from './metier/relecture.ts';
 import { stockageLocal } from './donnees/stockage.ts';
 import { creerFacade } from './moteur/facade.ts';
 import { synchroLocale } from './synchro/synchro.ts';
 import { monterToile } from './ecrans/toile.ts';
 import { monterAccueil, type Accueil } from './ecrans/accueil/accueil.ts';
 import { monterPagePlus, type PagePlus } from './ecrans/page-plus/page-plus.ts';
+import { monterFiche, type Fiche } from './ecrans/fiche/fiche.ts';
 import { creerNavigation } from './navigation/navigation.ts';
 import { chargerPolices } from './design/polices.ts';
 import { chargerTrace } from './animation/trace/trace.ts';
@@ -23,12 +25,23 @@ import { chargerFlaques } from './animation/flaques/flaques.ts';
 const q = new URLSearchParams(location.search);
 const pilote = q.get('pilote');
 const h = installer(pilote != null ? 'pilote' : 'reel', pilote != null ? +pilote || 0 : 0);
-const magasin = creerMagasin(stockageLocal());
+// C-160 : `?jour=+N` avance aujourd'hui de N jours pour la page (jamais mémorisé) — une échéance se juge sans attendre
+const decalJour = Number(q.get('jour') ?? 0) || 0;
+const magasin = creerMagasin(stockageLocal(), () => {
+  const d = minuit();
+  d.setDate(d.getDate() + decalJour);
+  return d;
+});
+// C-160 : au retour au premier plan, les échéances sont recomptées (une parole peut avoir passé sa date pendant la nuit)
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') magasin.recompter();
+});
 const facade = creerFacade(magasin);
 const synchro = synchroLocale();
 const nav = creerNavigation(() => h.maintenant());
 let accueil: Accueil | null = null;
 let pagePlus: PagePlus | null = null;
+let fiche: Fiche | null = null;
 
 async function etatEmbarque(): Promise<unknown> {
   // L0 : l'export de Tom, embarqué à la construction (src/donnees/etat-embarque.json, hors dépôt) ; importé au premier lancement.
@@ -59,6 +72,7 @@ async function demarrer(o: { accueil?: boolean } = {}): Promise<void> {
   if (o.accueil !== false) {
     accueil = monterAccueil(facade, magasin, nav);
     pagePlus = monterPagePlus(facade, magasin, nav);
+    fiche = monterFiche(facade, magasin, nav);
   }
   void synchro.pousser(magasin.etat());
 }
@@ -78,6 +92,7 @@ if (q.get('banc') != null) {
     nav,
     accueil: () => accueil,
     pagePlus: () => pagePlus,
+    fiche: () => fiche,
     demarrer,
     chargerTrace,
     chargerFlaques,
