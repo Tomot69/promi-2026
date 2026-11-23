@@ -155,6 +155,8 @@ type Boite = [number, number, number, number];
 interface NoeudR {
   cle: string;
   tag: string;
+  /** la classe du nœud (pour nommer un écart : la clé seule ne dit pas lequel des frères a été apparié) */
+  classe: string;
   texte: string;
   r: Boite;
   st: Record<string, string>;
@@ -390,7 +392,15 @@ function releverDansPage(): Releve {
       if (/gradient\(/.test(pc.backgroundImage)) volumes.push(cle(e) + pe + ' ' + pc.backgroundImage.slice(0, 60));
       if (/drop-shadow\(/.test(pc.filter)) volumes.push(cle(e) + pe + ' filter ' + pc.filter);
     }
-    noeuds.push({ cle: cle(e), tag: e.tagName.toLowerCase(), texte, r: pt(r), st: lire(c, PROPS), ps });
+    noeuds.push({
+      cle: cle(e),
+      tag: e.tagName.toLowerCase(),
+      classe: typeof e.className === 'string' ? e.className.slice(0, 40) : '',
+      texte,
+      r: pt(r),
+      st: lire(c, PROPS),
+      ps,
+    });
     // VOLUME (redteam_volume, au rendu)
     if (floue(c.boxShadow, 3)) volumes.push(cle(e) + ' box-shadow ' + c.boxShadow);
     if (floue(c.textShadow, 3)) volumes.push(cle(e) + ' text-shadow ' + c.textShadow);
@@ -852,7 +862,9 @@ test('couleurs : chaque écran porté a les couleurs du prototype, nœud par nœ
         props.push('outlineStyle', 'outlineColor');
       for (const q of props)
         if (a.st[q] !== p.st[q] && !EXCEPTIONS_COULEURS.includes(`${cle} ${q}`))
-          ecarts.push(`${nom} : ${cle} ${q} ${String(p.st[q]).slice(0, 90)} → ${String(a.st[q]).slice(0, 90)}`);
+          ecarts.push(
+            `${nom} : ${cle} ${q} ${String(p.st[q]).slice(0, 90)} → ${String(a.st[q]).slice(0, 90)} (prototype « ${p.classe} » ${p.texte.slice(0, 16)} · app « ${a.classe} » ${a.texte.slice(0, 16)})`,
+          );
       for (const q of new Set([...Object.keys(a.ps), ...Object.keys(p.ps)])) {
         // une bordure de pseudo-élément ne peint que si elle a une épaisseur
         if (q.endsWith('borderTopColor')) {

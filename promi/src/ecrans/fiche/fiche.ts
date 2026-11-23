@@ -17,7 +17,7 @@ import { palette } from '../../design/jetons.ts';
 import { horloge } from '../../animation/horloge.ts';
 import { cheminOnde, onde } from '../page-plus/onde.ts';
 import { NATTRAIT, TRAIT_K } from '../page-plus/trait.ts';
-import { avecAlpha, el, esc, surToucher, SVG_PHOTO } from '../commun.ts';
+import { avecAlpha, el, esc, poserCroix, surToucher, SVG_PHOTO } from '../commun.ts';
 import { CRETE, peindreLigne, W } from './ligne.ts';
 import { noyauxDe, peindreNoyaux, rangeeNoyaux } from './noyaux.ts';
 import { monterTenir, type Instant } from './tenir.ts';
@@ -209,6 +209,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     fi.classList.toggle('fi-chiche', n === 'chiche');
     fi.classList.toggle('fi-tenue', p.status === 'tenu');
     mot.innerHTML = n === 'promi' ? 'Prom<i class="mm-i">i</i>' : 'Chiche';
+    // le X face au titre, centré sur ses capitales, lu sur la police rendue (lot-V157-CROIX)
+    poserCroix(croix, croixG, mot);
     peindreChamp(p);
     peindreTrait(p);
     // « le trait se referme » : tout se retire sous le rideau (posé avant les cotes : elles se lisent sur le rendu)

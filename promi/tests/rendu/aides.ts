@@ -7,6 +7,7 @@ import type { Page } from '@playwright/test';
 import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { PNG } from 'pngjs';
+import { AMORCE_MINUTEURS, PILOTE, T_FIGE } from './banc.ts';
 
 /**
  * LA SONDE (C-326 : « chaque test rougit sur une sonde ») : un test pose le défaut qu'il doit prendre quand `PROMI_SONDE` porte son nom —
@@ -347,7 +348,9 @@ export const FICHE: EcranPorte = {
   ouvrir: async (p) => {
     await p.evaluate(`(() => { const P = window.__promi; const L = P.magasin.etat().paroles.filter((x) => !x.draft && !x.nuee); const q = L.find((x) => !(x.comments || []).length) || L[0];
       if (q) P.fiche().ouvrir(q.id); })()`);
-    await p.waitForTimeout(900);
+    // montée et posée (elle couvre l'accueil 420 ms après l'ouverture), sur une machine lente aussi
+    await p.waitForFunction(() => !!document.querySelector('#detailPoster.couvre'), null, { timeout: 10000 });
+    await p.waitForTimeout(500);
   },
   prototype: async (p) => {
     await p.evaluate(
@@ -544,4 +547,36 @@ export async function tracerPilote(pg: Page, x0: number, x1: number, pas: number
     await images(pg, 1);
   }
   await pg.mouse.up();
+}
+
+/**
+ * LA MÊME FICHE OUVERTE DES DEUX CÔTÉS, L'HORLOGE PILOTÉE (lot 3a) — le prototype démarré en temps réel (9 s), puis PILOTÉ (banc_rendu) ; la
+ * vraie app pilotée depuis son départ ; les animations CSS gelées (GEL : la montée de 0,4 s est réelle) ; la fiche ouverte de chaque côté, puis
+ * `n` images (3 s) : toutes les passes du prototype (le X reposé, l'encre du plateau, le « + » des membres) ont eu lieu, À TOUTE CHARGE —
+ * attendre en temps réel « deux images identiques » ne le prouvait pas sur la CI (le prototype capturé en pleine composition).
+ */
+export async function fichesPilotees(
+  browser: import('@playwright/test').Browser,
+  ls: Record<string, string>,
+  id: number,
+  o: { echelle?: number; n?: number; avantA?: () => void } = {},
+): Promise<{ P: Page; A: Page; erreurs: string[] }> {
+  const P = await (
+    await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: o.echelle ?? 3 })
+  ).newPage();
+  const A = await (
+    await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: o.echelle ?? 3 })
+  ).newPage();
+  const erreurs: string[] = [];
+  A.on('pageerror', (e) => erreurs.push(String(e)));
+  // une sonde posée dans la vraie app avant son départ
+  if (o.avantA) await A.addInitScript(o.avantA);
+  await P.addInitScript((a) => new Function(a)(), AMORCE_MINUTEURS);
+  await Promise.all([prototype(P, ls), vraieApp(A, ls, T_FIGE)]);
+  await P.evaluate(`(${PILOTE})()`);
+  for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
+  await P.evaluate((id) => (window as unknown as { openDetail(i: number): void }).openDetail(id), id);
+  await A.evaluate(`${P_}.fiche().ouvrir(${String(id)})`);
+  await Promise.all([images(P, o.n ?? 180), images(A, o.n ?? 180)]);
+  return { P, A, erreurs };
 }

@@ -8,7 +8,7 @@
  *  · toucher une dalle de la Toile ouvre SA fiche (le vrai chemin).
  */
 import { test, expect, type Page } from '@playwright/test';
-import { prototype, vraieApp, sonde, P_, stockageFiches } from './aides.ts';
+import { fichesPilotees, images, vraieApp, sonde, P_, stockageFiches } from './aides.ts';
 
 type FicheApp = { __promi: { fiche(): { ouvrir(i: number): void; fermer(): void; etat(): { id: number | null } } } };
 
@@ -47,42 +47,33 @@ const ANGLES = `(sel) => [...document.querySelectorAll(sel)].map((cv) => {
 test('les anneaux des Noyaux : à chaque angle la couleur du prototype — tenu, en cours, le jour, l’anneau vide (C-210, M2)', async ({
   browser,
 }) => {
-  const P = await (await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 3 })).newPage();
-  const A = await (await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })).newPage();
+  // la sonde : les deux couleurs d'état échangées sur les anneaux de la vraie app
+  const faux = (): void => {
+    const f = CanvasRenderingContext2D.prototype.stroke;
+    CanvasRenderingContext2D.prototype.stroke = function (this: CanvasRenderingContext2D, ...a: unknown[]) {
+      if (this.canvas.classList.contains('kr-c'))
+        this.strokeStyle =
+          this.strokeStyle === '#00341a' ? '#291547' : this.strokeStyle === '#291547' ? '#00341a' : this.strokeStyle;
+      (f as (...x: unknown[]) => void).apply(this, a);
+    };
+  };
+  // les deux côtés pilotés (aides.ts, `fichesPilotees`) : le prototype peint ses anneaux à son rythme, la capture vient quand il a fini
+  const { P, A } = await fichesPilotees(
+    browser,
+    stockageFiches(),
+    156,
+    sonde('fiche-anneau-faux') ? { avantA: faux } : {},
+  );
   try {
-    await Promise.all([prototype(P, stockageFiches()), app(A)]);
-    // la sonde : les deux couleurs d'état échangées sur les anneaux de la vraie app
-    if (sonde('fiche-anneau-faux'))
-      await A.addInitScript(() => {
-        const f = CanvasRenderingContext2D.prototype.stroke;
-        CanvasRenderingContext2D.prototype.stroke = function (this: CanvasRenderingContext2D, ...a: unknown[]) {
-          if (this.canvas.classList.contains('kr-c'))
-            this.strokeStyle =
-              this.strokeStyle === '#00341a'
-                ? '#291547'
-                : this.strokeStyle === '#291547'
-                  ? '#00341a'
-                  : this.strokeStyle;
-          (f as (...x: unknown[]) => void).apply(this, a);
-        };
-      });
-    if (sonde('fiche-anneau-faux')) await app(A, '&s=1');
     const pb: string[] = [];
     for (const id of [156, 167, 146]) {
       await P.evaluate(
         (id) => (window as unknown as { closeAll(): void; openDetail(i: number): void }).openDetail(id),
         id,
       );
-      await ouvrir(A, id);
-      // les anneaux du prototype POSÉS : deux relevés identiques à 600 ms (sur une machine lente, il les peint encore à 3 s)
-      let cp = (await P.evaluate(`(${ANGLES})('#detailPoster canvas.kr-c')`)) as number[][][];
-      for (let k = 0; k < 30; k++) {
-        await P.waitForTimeout(600);
-        const c2 = (await P.evaluate(`(${ANGLES})('#detailPoster canvas.kr-c')`)) as number[][][];
-        const pose = k > 2 && JSON.stringify(c2) === JSON.stringify(cp);
-        cp = c2;
-        if (pose) break;
-      }
+      await A.evaluate(`${P_}.fiche().ouvrir(${String(id)})`);
+      await Promise.all([images(P, 180), images(A, 60)]);
+      const cp = (await P.evaluate(`(${ANGLES})('#detailPoster canvas.kr-c')`)) as number[][][];
       const ca = (await A.evaluate(`(${ANGLES})('#detailPoster.fiche canvas.kr-c')`)) as number[][][];
       if (cp.length !== ca.length)
         pb.push(`${String(id)} : ${String(ca.length)} anneaux, le prototype ${String(cp.length)}`);
@@ -98,7 +89,8 @@ test('les anneaux des Noyaux : à chaque angle la couleur du prototype — tenu,
         }),
       );
       await P.evaluate(() => (window as unknown as { closeAll(): void }).closeAll());
-      await P.waitForTimeout(800);
+      await A.evaluate(`${P_}.fiche().fermer()`);
+      await Promise.all([images(P, 50), images(A, 30)]);
     }
     expect(pb.slice(0, 12), 'les anneaux ont les couleurs du prototype à chaque angle').toEqual([]);
   } finally {
@@ -109,13 +101,8 @@ test('les anneaux des Noyaux : à chaque angle la couleur du prototype — tenu,
 test('« + x personnes » se déroule au toucher : la phrase entière, le titre descend de la ligne gagnée (C-069)', async ({
   browser,
 }) => {
-  const P = await (await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 3 })).newPage();
-  const A = await (await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })).newPage();
+  const { P, A } = await fichesPilotees(browser, stockageFiches(), 163);
   try {
-    await Promise.all([prototype(P, stockageFiches()), app(A)]);
-    await P.evaluate(() => (window as unknown as { openDetail(i: number): void }).openDetail(163));
-    await P.waitForTimeout(3000);
-    await ouvrir(A, 163);
     expect(await A.locator('#detailPoster.fiche .fi-phrase').textContent()).toBe(
       'Je promets à Rachel, Marion +\u00a03\u00a0personnes de',
     );
@@ -127,27 +114,24 @@ test('« + x personnes » se déroule au toucher : la phrase entière, le titre 
         });
       });
     // le prototype : son propre chemin d'un clic sans doigt (`deroule` sur un clic de détail 0 — lot-V136-PHRASE) ; la vraie app : au doigt
-    // (sur une machine chargée, une passe tardive du prototype peut recomposer sa phrase après le clic : on attend la liste entière — Adrien,
-    // le dernier nom — et on ne reclique que si elle n'est pas venue ; un clic de plus la replierait)
-    for (let k = 0; k < 5; k++) {
-      await P.evaluate(() => {
-        (document.querySelector('#dptQui .dpt-plus') as HTMLElement | null)?.click();
-      });
-      const ok = await P.waitForFunction(
-        () => /Adrien/.test(document.getElementById('dptQui')?.textContent ?? ''),
-        null,
-        {
-          timeout: 4000,
-        },
-      )
-        .then(() => true)
-        .catch(() => false);
-      if (ok) break;
-    }
+    await P.evaluate(() => {
+      (document.querySelector('#dptQui .dpt-plus') as HTMLElement).click();
+    });
     const b = await A.locator('#detailPoster.fiche .fi-plus').boundingBox();
     await A.mouse.click(b!.x + b!.width / 2, b!.y + b!.height / 2);
-    await P.waitForTimeout(1500);
-    await A.waitForTimeout(400);
+    await images(A, 30);
+    // la phrase du prototype change par sa transition douce (détracé puis tracé, lot-V200-DOUCEUR) : elle attend l'ouvrier du tracé, qui
+    // répond en temps réel — on alterne le temps réel et les images pilotées jusqu'à la phrase dépliée, et son titre posé
+    let av = '';
+    for (let k = 0; k < 40; k++) {
+      await P.waitForTimeout(300);
+      await images(P, 30);
+      const s = (await P.evaluate(
+        `(() => { const q = document.getElementById('dptQui'); const t = document.getElementById('dptTitre'); return q.textContent + '|' + t.getBoundingClientRect().top; })()`,
+      )) as string;
+      if (/Adrien/.test(s) && s === av) break;
+      av = s;
+    }
     // la phrase et la place du titre, comme le prototype déplié (en pt de l'appareil)
     const lit = (
       sel: string,
@@ -188,16 +172,13 @@ test('la fiche monte du bas à l’ouverture et y redescend au X, jamais d’un 
   // la sonde : la transition retirée (la fiche paraît et part d'un coup)
   if (sonde('fiche-seche')) await page.addStyleTag({ content: '#detailPoster.fiche{transition:none!important}' });
   // le relevé : toutes les 25 ms (réelles), la place calculée de la fiche — la transition s'échantillonne à chaque lecture du style, quelle que
-  // soit la cadence des images (sur une machine lente, deux images seulement pendant 0,4 s)
-  const releve = `(async () => { const v = []; const t0 = performance.now();
+  // soit la cadence des images (sur une machine lente, deux images seulement pendant 0,4 s) ; il part DANS la tâche qui ouvre (ou qui touche le
+  // X) : une page qui tarde à recevoir l'ordre ne le fait pas commencer après la transition
+  const releve = (geste: string): string => `(async () => { const v = []; ${geste}; const t0 = performance.now();
     await new Promise((ok) => { const f = () => { const e = document.getElementById('detailPoster'); const r = e.getBoundingClientRect();
-      v.push([performance.now() - t0, e.hidden ? -1 : r.top, +getComputedStyle(e).opacity]); if (performance.now() - t0 < 700) setTimeout(f, 25); else ok(); }; setTimeout(f, 0); });
+      v.push([performance.now() - t0, e.hidden ? -1 : r.top, +getComputedStyle(e).opacity]); if (performance.now() - t0 < 700) setTimeout(f, 25); else ok(); }; f(); });
     return v; })()`;
-  const montee = page.evaluate(releve) as Promise<number[][]>;
-  await page.evaluate(() => {
-    (window as unknown as FicheApp).__promi.fiche().ouvrir(144);
-  });
-  const m = await montee;
+  const m = (await page.evaluate(releve(`${P_}.fiche().ouvrir(144)`))) as number[][];
   const vus = m.filter((x) => x[1]! >= 0);
   expect(vus.length, 'des images pendant la montée').toBeGreaterThan(2);
   expect(
@@ -205,10 +186,11 @@ test('la fiche monte du bas à l’ouverture et y redescend au X, jamais d’un 
     'une image à mi-chemin (elle monte, elle ne paraît pas d’un coup)',
   ).toBe(true);
   expect(vus.at(-1)![1], 'arrivée en haut').toBeLessThan(1);
-  const descente = page.evaluate(releve) as Promise<number[][]>;
-  const x = await page.locator('#detailPoster.fiche .closeb').boundingBox();
-  await page.mouse.click(x!.x + x!.width / 2, x!.y + x!.height / 2);
-  const d = await descente;
+  const d = (await page.evaluate(
+    releve(`(() => { const x = document.querySelector('#detailPoster.fiche .closeb'); const r = x.getBoundingClientRect();
+      const o = { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, pointerId: 1, pointerType: 'touch', isPrimary: true };
+      x.dispatchEvent(new PointerEvent('pointerdown', o)); x.dispatchEvent(new PointerEvent('pointerup', o)); x.dispatchEvent(new MouseEvent('click', o)); })()`),
+  )) as number[][];
   expect(
     d.some((v) => v[1]! > 40 && v[1]! < 800),
     'une image à mi-chemin de la descente',

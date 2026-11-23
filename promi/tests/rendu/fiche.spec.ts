@@ -20,9 +20,8 @@ import { test, expect } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import {
-  GEL,
-  prototype,
-  vraieApp,
+  fichesPilotees,
+  images,
   ecart,
   sonde,
   stockageFiches,
@@ -37,37 +36,22 @@ for (const theme of ['sombre', 'clair'] as const)
   for (const [id, cas] of CAS_FICHES)
     test(`identité au pixel : la fiche — ${cas}, ${theme}`, async ({ browser }) => {
       const ls = { ...stockageFiches(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
-      const P = await (
-        await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 3 })
-      ).newPage();
-      const A = await (
-        await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })
-      ).newPage();
+      const { P, A, erreurs } = await fichesPilotees(browser, ls, id);
       try {
-        const erreurs: string[] = [];
-        A.on('pageerror', (e) => erreurs.push(String(e)));
-        await Promise.all([prototype(P, ls), vraieApp(A, ls)]);
-        await P.evaluate((id) => (window as unknown as { openDetail(i: number): void }).openDetail(id), id);
-        await A.evaluate(
-          (id) =>
-            (window as unknown as { __promi: { fiche(): { ouvrir(i: number): void } } }).__promi.fiche().ouvrir(id),
-          id,
-        );
         // la sonde (sur « identité au pixel : la fiche — Promi en cours, à soi, sombre ») : le titre de la vraie app décalé d'un point
         if (sonde('fiche-identite-decale'))
           await A.addStyleTag({ content: '#detailPoster.fiche .fi-titre{translate:0 1px!important}' });
-        for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
         const dv = await P.evaluate(() => {
           const r = document.getElementById('device')!.getBoundingClientRect();
           return { x: r.left, y: r.top, width: r.width, height: r.height };
         });
-        // les deux côtés POSÉS : deux images identiques (matière exceptée) à 700 ms d'écart
+        // les deux côtés POSÉS : deux images identiques (matière exceptée) à 40 images d'horloge d'écart
         let Z: Zone[] = [];
         let n = 0;
         let ip: Buffer = Buffer.alloc(0);
         let ia: Buffer = Buffer.alloc(0);
-        for (let k = 0; k < 40; k++) {
-          await P.waitForTimeout(700);
+        for (let k = 0; k < 20; k++) {
+          await Promise.all([images(P, 40), images(A, 40)]);
           const Z2 = await zonesFiche(A, P);
           const n2 = await A.evaluate(() => document.querySelectorAll('#detailPoster.fiche canvas.kr-c').length);
           const ip2 = masquerFiche(await P.screenshot({ clip: dv }), Z2, n2);

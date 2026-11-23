@@ -10,13 +10,10 @@
 import { test, expect, type Page } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { AMORCE_MINUTEURS, PILOTE, T_FIGE } from './banc.ts';
 import {
-  GEL,
+  fichesPilotees,
   images,
   tracerPilote,
-  prototype,
-  vraieApp,
   ecart,
   sonde,
   stockageFiches,
@@ -35,40 +32,31 @@ const CAS: ReadonlyArray<[number, string]> = [
   [157, 'Chiche reçu'],
 ];
 
+/**
+ * une capture de l'appareil, l'horloge FIGÉE (rien n'est peint entre deux captures) : reprise jusqu'à deux captures identiques — WebKit rate
+ * parfois une rangée d'un grand canevas en le capturant (vu une fois : une rangée de 1 pt au milieu du rideau, l'image suivante juste)
+ */
 async function image(pg: Page): Promise<Buffer> {
-  return pg.screenshot({ clip: await appareil(pg) });
+  const clip = await appareil(pg);
+  let a = await pg.screenshot({ clip });
+  for (let k = 0; k < 4; k++) {
+    const b = await pg.screenshot({ clip });
+    if (b.equals(a)) return b;
+    a = b;
+  }
+  return a;
 }
 
 for (const theme of ['sombre', 'clair'] as const)
   for (const [id, cas] of CAS)
     test(`identité au pixel : tenir — ${cas}, ${theme}`, async ({ browser }) => {
       const ls = { ...stockageFiches(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
-      const P = await (
-        await browser.newContext({ viewport: { width: 430, height: 932 }, deviceScaleFactor: 3 })
-      ).newPage();
-      const A = await (
-        await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 3 })
-      ).newPage();
+      // les deux côtés pilotés, les animations CSS gelées AVANT l'ouverture (aides.ts, `fichesPilotees`) : seul le canevas du rideau bouge
+      const { P, A, erreurs } = await fichesPilotees(browser, ls, id);
       try {
-        const erreurs: string[] = [];
-        A.on('pageerror', (e) => erreurs.push(String(e)));
-        await P.addInitScript((a) => new Function(a)(), AMORCE_MINUTEURS);
-        await Promise.all([prototype(P, ls), vraieApp(A, ls, T_FIGE)]);
-        await P.evaluate((id) => (window as unknown as { openDetail(i: number): void }).openDetail(id), id);
-        await A.evaluate(
-          (id) =>
-            (window as unknown as { __promi: { fiche(): { ouvrir(i: number): void } } }).__promi.fiche().ouvrir(id),
-          id,
-        );
         // la sonde (sur « identité au pixel : tenir — Promi à soi, sombre ») : le rideau de la vraie app posé 2 pt plus bas
         if (sonde('tenir-identite-decale'))
           await A.addStyleTag({ content: '#detailPoster #tenirMaree{translate:0 2px!important}' });
-        // le prototype ouvert en temps réel, puis PILOTÉ (banc_rendu) ; la vraie app pilotée depuis son départ : son ouverture, 60 images
-        await P.waitForTimeout(1600);
-        await P.evaluate(`(${PILOTE})()`);
-        await images(A, 60);
-        // les animations CSS gelées (le I de PROMI clignote) : seul le canevas du rideau bouge
-        for (const pg of [P, A]) await pg.addStyleTag({ content: GEL });
         // le même geste des deux côtés, puis les deux instants comptés en images depuis le lever : 1,2 s (le rideau posé : il descend en 700 ms,
         // remonte à 2 150), puis 4,2 s (« juste après » posé, le rideau parti à 2 710 ms et la pose de la fiche finie)
         const cote = async (pg: Page): Promise<[Buffer, Buffer]> => {
