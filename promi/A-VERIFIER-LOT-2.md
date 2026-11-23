@@ -1,6 +1,7 @@
 # TOM PEUT UTILISER L'APP 5 MINUTES — la page + (lot 2), à vérifier sur l'iPhone, dans l'app « Promi »
 
-Installée le 23 nov. 2026, commit `64ccc1f` (le bundle embarqué `index-D2sOmzVc.js` est celui du dépôt).
+Installée le 23 nov. 2026, commit `64ccc1f` (le bundle embarqué `index-D2sOmzVc.js` est celui du dépôt). Le lot 2 est clos : CI verte sur `558de35`
+(les commits d'après `64ccc1f` ne touchent que les tests et les documents — l'app installée est la bonne).
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 
 1. **Le calendrier** (le défaut de 2b) — Peaufiner → AVANT → « une date… » : le calendrier s'ouvre ; une date choisie se pose dans la rangée
