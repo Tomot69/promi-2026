@@ -1119,6 +1119,12 @@ test('enchaîner deux écrans : le second est lui-même — mêmes classes, rien
  * par construction, on l'atteint en glissant (la même exception que joignable et redteam_ecrans).
  */
 const RECOUVREMENTS_VOULUS: string[] = [];
+/**
+ * LES COUPES DU PROTOTYPE, reprises à l'identique (le contrat visuel exige ses propriétés) — nommées, une à une : la boîte de police d'un prénom
+ * sous un Noyau de la fiche dépasse de 2 à 3 pt le bas de la rangée qui défile (`#dAura`, 103 pt de haut, `overflow: auto hidden`) ; son ENCRE,
+ * elle, est entière (le prototype a la même rangée, au pixel : fiche.spec). [élément, conteneur qui rogne]
+ */
+const COUPES_DU_PROTOTYPE: Array<[RegExp, RegExp]> = [[/^dAura › (div\.kr-n|span\.nom-lien)/, /^div#dAura$/]];
 const RELEVE_APP = `(() => { const W = innerWidth, H = innerHeight, out = { D: [], C: [], R: [] };
   const vis = (e) => { for (let x = e; x && x.nodeType === 1; x = x.parentElement) { const s = getComputedStyle(x); if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity < 0.05) return false; } return true; };
   const nom = (e) => { let s = e.tagName.toLowerCase(); if (e.id) s += '#' + e.id; else if (e.className && typeof e.className === 'string') s += '.' + e.className.trim().split(/\\s+/).slice(0, 2).join('.'); const p = e.closest('[id]'); return (p && p !== e ? p.id + ' › ' : '') + s; };
@@ -1166,7 +1172,9 @@ for (const [vnom, vue] of [
         const ou = `${ecran.nom}, ${theme}`;
         for (const e of E.erreurs) fautes.push(`${ou} : E ${e.slice(0, 160)}`);
         for (const d of r.D) fautes.push(`${ou} : D ${JSON.stringify(d)}`);
-        for (const c of r.C) fautes.push(`${ou} : C ${JSON.stringify(c)}`);
+        for (const c of r.C)
+          if (!COUPES_DU_PROTOTYPE.some(([e, x]) => e.test(String(c[0])) && x.test(String(c[2]))))
+            fautes.push(`${ou} : C ${JSON.stringify(c)}`);
         for (const x of r.R) {
           const s = JSON.stringify(x);
           if (!RECOUVREMENTS_VOULUS.some((v) => s.includes(v))) fautes.push(`${ou} : R ${s}`);

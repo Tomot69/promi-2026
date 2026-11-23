@@ -79,6 +79,8 @@ export async function prototype(page: Page, ls: Record<string, string>): Promise
     }
     localStorage.clear();
     for (const [k, v] of Object.entries(ls)) localStorage.setItem(k, v);
+    // la veille coupée sur le banc (CLAUDE.md, v161 : `promi_veille_off`, comme banc_tom) — un test qui attend plus de 75 s sans toucher la verrait
+    localStorage.setItem('promi_veille_off', '1');
   }, ls);
   await page.goto('http://127.0.0.1:8753/app.html');
   await page.waitForTimeout(9000);
@@ -91,8 +93,8 @@ export async function prototype(page: Page, ls: Record<string, string>): Promise
   });
 }
 
-export async function vraieApp(page: Page, ls: Record<string, string>): Promise<void> {
-  await page.goto('http://127.0.0.1:5180/?banc=1');
+export async function vraieApp(page: Page, ls: Record<string, string>, pilote?: number): Promise<void> {
+  await page.goto(`http://127.0.0.1:5180/?banc=1${pilote != null ? `&pilote=${String(pilote)}` : ''}`);
   await page.waitForFunction(() => !!(window as unknown as { __promi?: unknown }).__promi);
   await page.evaluate(async (ls) => {
     const p = (window as unknown as { __promi: { magasin: { importer(x: unknown): void }; demarrer(): Promise<void> } })
@@ -405,4 +407,141 @@ export async function fermerFiche(page: Page): Promise<void> {
   const ouverte = (await page.evaluate(`(() => { const f = document.getElementById('detailPoster');
     if (!f || f.hidden || f.classList.contains('fi-bas')) return false; ${P_}.fiche().fermer(); return true; })()`)) as boolean;
   if (ouverte) await page.waitForTimeout(450);
+}
+
+// ── la fiche (lots 3a) : les zones exceptées de l'identité au pixel (fiche.spec.ts M1, M2, M3), partagées par les tests de « tenir » ──
+export type Zone = [number, number, number, number];
+
+/** les zones exceptées, en pt de l'appareil : la matière (M1) et les bandes des anneaux (M2) */
+export async function zonesFiche(A: Page, P: Page): Promise<Zone[]> {
+  const z: Zone[] = [];
+  for (const [pg, sel] of [
+    [A, '#detailPoster.fiche .fi-champ'],
+    [P, '#dpTrameCv'],
+  ] as const) {
+    const m = (await pg.evaluate((sel) => {
+      const cv = document.querySelector(sel);
+      const v = cv?.getAttribute('data-matiere');
+      if (!cv || !v) return null;
+      const D = (document.getElementById('device') ?? document.getElementById('detailPoster'))!.getBoundingClientRect();
+      const k = D.width / 390 || 1;
+      const c = cv.getBoundingClientRect();
+      const [x, y, w, h] = v.split(',').map(Number) as [number, number, number, number];
+      return [(c.left - D.left) / k + x, (c.top - D.top) / k + y, w, h];
+    }, sel)) as Zone | null;
+    if (m) z.push([m[0] - 8, m[1] - 8, m[2] + 16, m[3] + 16]);
+  }
+  const anneaux = (await A.evaluate(() => {
+    const D = document.getElementById('detailPoster')!.getBoundingClientRect();
+    const k = D.width / 390 || 1;
+    return [...document.querySelectorAll('#detailPoster.fiche canvas.kr-c')].map((c) => {
+      const r = c.getBoundingClientRect();
+      return [(r.left - D.left) / k, (r.top - D.top) / k, r.width / k, r.height / k];
+    });
+  })) as Zone[];
+  // M3 : les 46 derniers pt de la rangée des Noyaux, quand elle déborde
+  const fondu = (await A.evaluate(() => {
+    const a = document.getElementById('dAura')!;
+    if (a.scrollWidth <= a.clientWidth + 1) return null;
+    const D = document.getElementById('detailPoster')!.getBoundingClientRect();
+    const k = D.width / 390 || 1;
+    const r = a.getBoundingClientRect();
+    return [(r.right - D.left) / k - 46, (r.top - D.top) / k, 46, r.height / k];
+  })) as Zone | null;
+  if (fondu) z.push(fondu);
+  return [...z, ...anneaux];
+}
+
+/** masque les zones (en magenta), un anneau par sa BANDE seulement (le visage dedans reste jugé) */
+export function masquerFiche(png: Buffer, Z: Zone[], nAnneaux: number): Buffer {
+  const im = PNG.sync.read(png);
+  const k = im.width / 390;
+  Z.forEach(([x, y, w, h], i) => {
+    const anneau = i >= Z.length - nAnneaux;
+    const cx = (x + w / 2) * k;
+    const cy = (y + h / 2) * k;
+    const Rx = (w / 2) * k;
+    const Ri = Rx * (w === 78 ? 27 / 39 : 20 / 29);
+    // un anneau : sa bande, et 3 px de part et d'autre (WebKit compose la rangée au demi-point près, différemment des deux côtés)
+    const m = anneau ? 3 : 0;
+    for (let j = Math.max(0, Math.floor(y * k) - m); j < Math.min(im.height, Math.ceil((y + h) * k) + m); j++)
+      for (let i2 = Math.max(0, Math.floor(x * k) - m); i2 < Math.min(im.width, Math.ceil((x + w) * k) + m); i2++) {
+        if (anneau) {
+          const d = Math.hypot(i2 + 0.5 - cx, j + 0.5 - cy);
+          if (d < Ri - 3 || d > Rx + 3) continue;
+        }
+        const q = (j * im.width + i2) * 4;
+        im.data[q] = 255;
+        im.data[q + 1] = 0;
+        im.data[q + 2] = 255;
+      }
+  });
+  return PNG.sync.write(im);
+}
+
+/** le rectangle de l'appareil (`#device`) dans la fenêtre */
+export async function appareil(pg: Page): Promise<{ x: number; y: number; width: number; height: number }> {
+  return pg.evaluate(() => {
+    const r = document.getElementById('device')!.getBoundingClientRect();
+    return { x: r.left, y: r.top, width: r.width, height: r.height };
+  });
+}
+
+/**
+ * le geste d'une fiche, au doigt (la souris : les mêmes gestionnaires que le doigt, des deux côtés) — de x0 à x1 (pt de l'appareil) en `ms`, sur
+ * la ligne y (303 : le milieu de la zone de 118 pt d'une fiche au repos, base 286) ; `maintien` : le doigt reste posé avant de partir (la zone
+ * ouverte, puis `maintien` ms de la page)
+ */
+export async function tracerFiche(pg: Page, x0: number, x1: number, ms: number, y = 303, maintien = 0): Promise<void> {
+  const d = await appareil(pg);
+  const k = d.width / 390;
+  const X = (x: number): number => d.x + x * k;
+  await pg.mouse.move(X(x0), d.y + y * k);
+  await pg.mouse.down();
+  if (maintien) {
+    // le doigt posé tant que la zone ne s'est pas ouverte, puis `maintien` ms de la page (la fenêtre de 340 ms du prototype avale des mouvements
+    // livrés groupés : sous charge, un geste qui part tout de suite peut ne rien tenir — des deux côtés)
+    await pg.waitForFunction(() => !!document.querySelector('#tenirZone.ouvert'), null, { timeout: 5000 });
+    await pg.evaluate((ms) => new Promise((r) => setTimeout(r, ms)), maintien);
+  }
+  const t0 = Date.now();
+  for (;;) {
+    const u = Math.min(1, (Date.now() - t0) / Math.max(1, ms));
+    await pg.mouse.move(X(x0 + (x1 - x0) * u), d.y + y * k);
+    if (u >= 1) break;
+    await pg.waitForTimeout(16);
+  }
+  await pg.mouse.up();
+}
+
+/** n images de l'horloge pilotée (la vraie app : son horloge unique ; le prototype : PILOTE de banc_rendu, `__images`) */
+export async function images(pg: Page, n: number): Promise<void> {
+  await pg.evaluate((n) => {
+    const w = window as unknown as {
+      __promi?: { horloge: { images(n: number): void } };
+      __images?: (n: number) => void;
+    };
+    if (w.__promi) w.__promi.horloge.images(n);
+    else w.__images!(n);
+  }, n);
+}
+
+/**
+ * le geste d'une fiche, au doigt, l'horloge PILOTÉE des deux côtés : le doigt posé (la zone ouverte), 400 ms (25 images, et 400 ms réelles pour la
+ * fenêtre du prototype, comptée en `Date.now`), puis de x0 à x1 en `pas` mouvements, une image par mouvement, et le doigt levé
+ */
+export async function tracerPilote(pg: Page, x0: number, x1: number, pas: number, y = 303): Promise<void> {
+  const d = await appareil(pg);
+  const k = d.width / 390;
+  const X = (x: number): number => d.x + x * k;
+  await pg.mouse.move(X(x0), d.y + y * k);
+  await pg.mouse.down();
+  await pg.waitForFunction(() => !!document.querySelector('#tenirZone.ouvert'), null, { timeout: 5000 });
+  await pg.waitForTimeout(400);
+  await images(pg, 25);
+  for (let i = 1; i <= pas; i++) {
+    await pg.mouse.move(X(x0 + ((x1 - x0) * i) / pas), d.y + y * k);
+    await images(pg, 1);
+  }
+  await pg.mouse.up();
 }

@@ -108,7 +108,7 @@ describe('le schéma v2 : le gardé de côté porte son brouillon', () => {
       brouillon: b,
     });
     expect(JSON.parse(st.contenu()!).paroles).toHaveLength(1);
-    expect(m.etat().fil[0]!.text).toBe('Tu as gardé « x » de côté');
+    expect(m.etat().fil[0]!.text).toBe('Tu as gardé «\u00a0x\u00a0» de côté');
     const id2 = m.garderDeCote({ ...b, nat: 'promi' }, 'y', 'Rachel', id, 2000);
     expect(id2).toBe(id);
     expect(m.etat().paroles).toHaveLength(1);

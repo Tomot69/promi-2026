@@ -89,6 +89,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 5px;
   font: 35px/35px var(--f-marque);
   color: var(--c-creme95);
   white-space: nowrap;
@@ -155,7 +156,7 @@
   left: var(--marge-g);
   width: 342px;
   margin: 0;
-  font: 700 23px/25.3px var(--f-libelle);
+  font: 700 23px/1.1 var(--f-libelle);
   letter-spacing: -0.01em;
   color: var(--c-creme95);
 }
@@ -193,6 +194,7 @@
   font: 500 13.5px/1.1 var(--f-texte);
   letter-spacing: 0.2em;
   color: var(--c-creme95);
+  gap: 0;
 }
 #detailPoster .fi-etat.fi-tenu {
   color: var(--c-menthe82);
@@ -251,6 +253,7 @@
   box-sizing: border-box;
   display: flex;
   align-items: center;
+  gap: 16px;
   padding: 0 var(--marge-d) 0 var(--marge-g);
   z-index: 6;
   cursor: pointer;
@@ -267,16 +270,15 @@
   letter-spacing: -0.01em;
   color: var(--c-seiche10);
 }
+/* le ▾ et le rond Partager sont poussés contre le bord droit, 16 pt entre eux (le prototype : flex, `margin-left:auto`) — le ▾ finit à 304, quelle
+   que soit la largeur de son glyphe (il n'est pas dans Gilbert : une police de repli, autre sous Linux) */
 #detailPoster #dpdTog i {
-  position: absolute;
-  left: 296.97px;
+  margin-left: auto;
   font: 700 15px/22.5px var(--f-libelle);
   color: var(--c-seiche10);
 }
 #detailPoster #dpdTog .dpd-part {
-  position: absolute;
-  left: 320px;
-  top: 19px;
+  flex: none;
   width: 46px;
   height: 46px;
   box-sizing: border-box;
@@ -300,9 +302,9 @@
   position: absolute;
   left: var(--marge-g);
   width: 342px;
-  /* 4 pt de plus sous les noms, rendus par la marge : la boîte de ligne d'un nom (plus haute que son encre) n'est pas rognée */
-  padding-bottom: 4px;
-  margin-bottom: -4px;
+  /* les propriétés du prototype, telles quelles (le contrat visuel) : la boîte de police d'un nom dépasse de 2,5 pt le bas de la rangée qui
+     défile — son encre, non (socle-2, redteam_app : une coupe nommée, `COUPES_DU_PROTOTYPE`) */
+  gap: 16px;
   overflow: auto hidden;
   scrollbar-width: none;
 }
@@ -386,10 +388,36 @@
   display: block;
 }
 /* sur la terre d'une parole tenue, les anneaux à .92 (le prototype : `#detailPoster.f-tenue .kr-c`, une règle d'août toujours en effet) */
+#detailPoster .kr-c {
+  border-radius: 50%;
+}
 #detailPoster.fi-tenue .kr-c {
   opacity: 0.92;
 }
 /* les noms de la phrase sont dans un <b> (le prototype) : la même graisse que la phrase (Gilbert n'en a qu'une) */
 #detailPoster #dptQui b {
   font-weight: inherit;
+}
+
+/* ── LE GESTE (lot 3a-2) : la zone de 118 pt calée sur le bas de la boîte du trait (`.geste-env`, `#tenirZone` du prototype) ; un doigt posé
+   dedans ne fait pas défiler la fiche (le prototype : `preventDefault` du toucher) ── */
+#detailPoster .geste-env {
+  position: absolute;
+  left: 0;
+  width: 390px;
+  height: 118px;
+  z-index: 2;
+}
+#detailPoster #tenirZone {
+  position: absolute;
+  inset: 0;
+  touch-action: none;
+}
+
+/* « juste après » (cadre 101) : sur la terre, la phrase est l'amande (le tenu sur un fond sombre, Q269) */
+#detailPoster.inst-apres .fi-phrase {
+  color: var(--c-menthe82);
+}
+#detailPoster.inst-apres .fi-phrase b {
+  color: var(--c-creme95);
 }

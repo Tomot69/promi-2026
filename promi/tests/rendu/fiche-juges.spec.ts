@@ -73,9 +73,16 @@ test('les anneaux des Noyaux : à chaque angle la couleur du prototype — tenu,
         (id) => (window as unknown as { closeAll(): void; openDetail(i: number): void }).openDetail(id),
         id,
       );
-      await P.waitForTimeout(3000);
       await ouvrir(A, id);
-      const cp = (await P.evaluate(`(${ANGLES})('#detailPoster canvas.kr-c')`)) as number[][][];
+      // les anneaux du prototype POSÉS : deux relevés identiques à 600 ms (sur une machine lente, il les peint encore à 3 s)
+      let cp = (await P.evaluate(`(${ANGLES})('#detailPoster canvas.kr-c')`)) as number[][][];
+      for (let k = 0; k < 30; k++) {
+        await P.waitForTimeout(600);
+        const c2 = (await P.evaluate(`(${ANGLES})('#detailPoster canvas.kr-c')`)) as number[][][];
+        const pose = k > 2 && JSON.stringify(c2) === JSON.stringify(cp);
+        cp = c2;
+        if (pose) break;
+      }
       const ca = (await A.evaluate(`(${ANGLES})('#detailPoster.fiche canvas.kr-c')`)) as number[][][];
       if (cp.length !== ca.length)
         pb.push(`${String(id)} : ${String(ca.length)} anneaux, le prototype ${String(cp.length)}`);
@@ -120,9 +127,23 @@ test('« + x personnes » se déroule au toucher : la phrase entière, le titre 
         });
       });
     // le prototype : son propre chemin d'un clic sans doigt (`deroule` sur un clic de détail 0 — lot-V136-PHRASE) ; la vraie app : au doigt
-    await P.evaluate(() => {
-      (document.querySelector('#dptQui .dpt-plus') as HTMLElement).click();
-    });
+    // (sur une machine chargée, une passe tardive du prototype peut recomposer sa phrase après le clic : on attend la liste entière — Adrien,
+    // le dernier nom — et on ne reclique que si elle n'est pas venue ; un clic de plus la replierait)
+    for (let k = 0; k < 5; k++) {
+      await P.evaluate(() => {
+        (document.querySelector('#dptQui .dpt-plus') as HTMLElement | null)?.click();
+      });
+      const ok = await P.waitForFunction(
+        () => /Adrien/.test(document.getElementById('dptQui')?.textContent ?? ''),
+        null,
+        {
+          timeout: 4000,
+        },
+      )
+        .then(() => true)
+        .catch(() => false);
+      if (ok) break;
+    }
     const b = await A.locator('#detailPoster.fiche .fi-plus').boundingBox();
     await A.mouse.click(b!.x + b!.width / 2, b!.y + b!.height / 2);
     await P.waitForTimeout(1500);
@@ -166,9 +187,11 @@ test('la fiche monte du bas à l’ouverture et y redescend au X, jamais d’un 
   await app(page);
   // la sonde : la transition retirée (la fiche paraît et part d'un coup)
   if (sonde('fiche-seche')) await page.addStyleTag({ content: '#detailPoster.fiche{transition:none!important}' });
+  // le relevé : toutes les 25 ms (réelles), la place calculée de la fiche — la transition s'échantillonne à chaque lecture du style, quelle que
+  // soit la cadence des images (sur une machine lente, deux images seulement pendant 0,4 s)
   const releve = `(async () => { const v = []; const t0 = performance.now();
     await new Promise((ok) => { const f = () => { const e = document.getElementById('detailPoster'); const r = e.getBoundingClientRect();
-      v.push([performance.now() - t0, e.hidden ? -1 : r.top, +getComputedStyle(e).opacity]); if (performance.now() - t0 < 700) requestAnimationFrame(f); else ok(); }; requestAnimationFrame(f); });
+      v.push([performance.now() - t0, e.hidden ? -1 : r.top, +getComputedStyle(e).opacity]); if (performance.now() - t0 < 700) setTimeout(f, 25); else ok(); }; setTimeout(f, 0); });
     return v; })()`;
   const montee = page.evaluate(releve) as Promise<number[][]>;
   await page.evaluate(() => {

@@ -52,3 +52,21 @@ export function compteAnneau(e: Readonly<Etat>): { tenues: number; enCours: numb
   }
   return { tenues, enCours };
 }
+
+/**
+ * UNE LIGNE DU FIL, telle que le prototype l'écrit (`feedAdd`, et `insecable` qui l'enveloppe, l. 38296) : les guillemets insécables (« et le mot
+ * qui le suit ne se séparent jamais), « à l'instant » (l'apostrophe droite du prototype), `unread` posé, l'heure (`ts`, v181b).
+ */
+export function ligneFil(
+  id: number,
+  type: string,
+  texte: string,
+  maintenant: number,
+  o: { pid?: number; unread?: boolean } = {},
+): EvenementFil {
+  const NB = '\u00a0';
+  const text = texte.replace(/«\s*/g, '«' + NB).replace(/\s*»/g, NB + '»');
+  const l: EvenementFil = { id, type, text, t: "à l'instant", unread: !!o.unread, ts: maintenant };
+  if (o.pid != null) l.pid = o.pid;
+  return l;
+}

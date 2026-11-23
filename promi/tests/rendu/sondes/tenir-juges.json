@@ -1,0 +1,52 @@
+[
+  {
+    "nom": "tenir-seuil",
+    "test": "le seuil de 60 pt : les décisions de la vraie app sont celles du prototype, geste par geste (C-107)",
+    "defaut": "la zone du geste mesurée deux fois trop étroite : chaque avancée compte double, un trait de 30 pt tient la parole"
+  },
+  {
+    "nom": "tenir-retour-sec",
+    "test": "lâché avant le seuil, le trait revient à la pointe : image par image, la suite du prototype (C-264, 300 ms)",
+    "defaut": "l'horloge de la vraie app file trois fois plus vite dès le lever : le trait revient en un éclair, plus la suite du prototype"
+  },
+  {
+    "nom": "tenir-ruban-sec",
+    "test": "le ruban amande naît du trait au seuil : sa place, sa couleur pleine, son épaisseur qui grandit en 200 ms (C-148)",
+    "defaut": "« Réduire les animations » posé en douce : le ruban paraît d'un coup, à toute son épaisseur"
+  },
+  {
+    "nom": "tenir-rideau-vite",
+    "test": "le rideau descend à vitesse constante jusqu’à la barre, « Parole tenue ! » centrée, et remonte à 2 150 ms (C-118, C-144, C-167)",
+    "defaut": "l'horloge file deux fois plus vite dès le lever : le rideau tombe en 350 ms"
+  },
+  {
+    "nom": "tenir-presse-perce",
+    "test": "un toucher pendant que le vert est posé le fait remonter tout de suite, et il est avalé : la fiche reste ouverte (C-167)",
+    "defaut": "le toucher qui presse traverse jusqu'au X : la fiche se ferme"
+  },
+  {
+    "nom": "tenir-reduit-anime",
+    "test": "« Réduire les animations » : la fiche passe tenue d’un coup, ni rideau ni instant (E3)",
+    "defaut": "le réglage du téléphone n'est pas lu : le rideau joue quand même"
+  },
+  {
+    "nom": "tenir-part-rideau",
+    "test": "ma part, sans être la dernière : la vague seule sous le trait, pas de rideau, la parole reste en cours (C-115, C-156)",
+    "defaut": "ma part prise pour la dernière : le rideau part et la parole est célébrée"
+  },
+  {
+    "nom": "tenir-donnees",
+    "test": "ce que tenir écrit : la parole tenue, son trait, « vue tenue », la ligne du Fil — comme le prototype (C-189, C-226)",
+    "defaut": "le trait du geste n'est pas gardé sur la parole tenue"
+  },
+  {
+    "nom": "tenir-premier-perdu",
+    "test": "le premier toucher prend le trait : cinq fiches de suite, chacune tenue du premier geste (C-263)",
+    "defaut": "la zone du geste ne prend pas le doigt : le premier trait est perdu"
+  },
+  {
+    "nom": "tenir-lourd",
+    "test": "le moment « tenir » est fluide : le travail de chaque image du rideau tient dans une image (C-102, v124 ; jugé au calme, C-137)",
+    "defaut": "40 ms de calcul ajoutées à chaque image de l'horloge : le rideau saccade"
+  }
+]

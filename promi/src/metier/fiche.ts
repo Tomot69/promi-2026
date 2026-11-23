@@ -7,6 +7,17 @@
 import type { Parole } from '../donnees/schema.ts';
 import { elision } from './elision.ts';
 
+/** la phrase de la célébration (v148, C-144 ; `TEXTES_ENGAGEMENT.tenir`) — exceptions nommées au « ! », espace insécable */
+export function phraseTenue(p: Parole): string {
+  return p.chiche ? 'Défi relevé\u00a0!' : 'Parole tenue\u00a0!';
+}
+
+/** la ligne d'état de « juste après » (cadre 101) : « À DEUX » seulement si la parole est faite avec quelqu'un */
+export function ligneJusteApres(p: Parole): string {
+  const aDeux = (!!p.from && p.from !== 'moi') || (!!p.who && p.who !== 'moi' && p.who !== 'le groupe');
+  return (aDeux ? 'TENUE À DEUX' : 'TENUE') + ' · À L\u2019INSTANT';
+}
+
 /** au-delà de trois personnes, la phrase dit « … + x personnes » (v136, C-069) */
 export const QUELQUES = 3;
 

@@ -12,7 +12,9 @@ import {
   tenants,
   traitFiche,
 } from '../../src/metier/fiche.ts';
-import type { Parole } from '../../src/donnees/schema.ts';
+import { etatVide, type Parole } from '../../src/donnees/schema.ts';
+import { creerMagasin, type Magasin } from '../../src/etat/magasin.ts';
+import { stockageMemoire } from '../../src/donnees/stockage.ts';
 
 const P = (x: Partial<Parole> & Record<string, unknown>): Parole =>
   ({
@@ -93,5 +95,66 @@ describe('la consigne et les parts (C-108, Q465, C-115)', () => {
     expect(traitFiche(P({ status: 'tenu' })).base).toBe(362);
     expect(traitFiche(P({ status: 'tenu', comments: [{ t: 'x', d: '', by: 'Rachel' }] })).base).toBe(286);
     expect(traitFiche(P({ status: 'tenu', chiche: true, avec: 'Lou' })).mode).toBe('duo');
+  });
+});
+
+describe('tenir (lot 3a-2) : ce que le magasin écrit — le prototype, `#segStatus` « tenue », lot-V145-PARTS, lot-V149-VALIDATION', () => {
+  const magasinAvec = (paroles: Parole[]): Magasin => {
+    const m = creerMagasin(stockageMemoire(), () => AUJ);
+    const e = etatVide();
+    m.importer({ ...e, paroles, compteurs: { nid: 50, fid: 9 } });
+    return m;
+  };
+  const trace = [
+    { x: 150, y: 60 },
+    { x: 200, y: 58 },
+  ];
+  test('seul : la parole tenue, son trait, « vue tenue », la ligne du Fil (les guillemets insécables)', () => {
+    const m = magasinAvec([P({ id: 7 })]);
+    expect(m.tenir(7, trace, 1_800_000_000_000)).toBe('tenue');
+    const p = m.etat().paroles[0]!;
+    expect(p.status).toBe('tenu');
+    expect(p.suite?.['trace']).toEqual(trace);
+    expect(Object.keys(p.vuTenue ?? {})).toEqual(['moi']);
+    expect(m.etat().fil[0]).toMatchObject({
+      type: 'kept',
+      text: 'Tu as tenu « rendre le livre »',
+      pid: 7,
+      t: "à l'instant",
+      unread: false,
+    });
+    // déjà tenue : rien
+    expect(m.tenir(7, trace, 1_800_000_000_001)).toBe('rien');
+  });
+  test('ma part, sans être la dernière : `parts.moi` seul, la parole reste en cours, rien au Fil', () => {
+    const m = magasinAvec([P({ id: 7, chiche: true, from: 'Marion', suite: { avec: 'Lou' } })]);
+    const fil = m.etat().fil.length;
+    expect(m.tenir(7, trace, 1_800_000_000_000)).toBe('part');
+    const p = m.etat().paroles[0]!;
+    expect(p.status).toBe('encours');
+    expect(Object.keys(p.parts ?? {})).toEqual(['moi']);
+    expect(m.etat().fil.length).toBe(fil);
+  });
+  test('la dernière part : tenue, « Chacun a tracé sa part »', () => {
+    const m = magasinAvec([P({ id: 7, chiche: true, from: 'Marion', suite: { avec: 'Lou' }, parts: { Lou: 'x' } })]);
+    expect(m.tenir(7, trace, 1_800_000_000_000)).toBe('tenue');
+    expect(m.etat().fil[0]!.text).toBe('Chacun a tracé sa part : « rendre le livre »');
+  });
+  test('je ne suis pas de ceux qui tiennent : rien', () => {
+    const m = magasinAvec([P({ id: 7, chiche: true, who: 'Rachel, Marion' })]);
+    expect(m.tenir(7, trace, 1_800_000_000_000)).toBe('rien');
+    expect(m.etat().paroles[0]!.status).toBe('encours');
+  });
+  test('une parole récurrente renaît en cours (`regenRecur`)', () => {
+    const m = magasinAvec([P({ id: 7, recur: 'weekly' })]);
+    m.tenir(7, trace, 1_800_000_000_000);
+    const n = m.etat().paroles.find((q) => q.id === 50)!;
+    expect(n).toMatchObject({ title: 'rendre le livre', status: 'encours', due: 7, recur: 'weekly' });
+    expect(
+      m
+        .etat()
+        .fil.slice(0, 2)
+        .map((f) => f.text),
+    ).toEqual(['Tu as tenu « rendre le livre »', '↻ « rendre le livre » régénérée']);
   });
 });

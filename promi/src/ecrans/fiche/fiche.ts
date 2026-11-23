@@ -4,7 +4,8 @@
  * du geste, les Noyaux, la phrase complète (C-069), le titre, la ligne d'état (C-210), « Un mot… » (C-116) et la barre Peaufiner fermée. Elle
  * s'ouvre par la navigation (`nav.ouvrir('fiche', id)` : une dalle de la Toile) et se ferme par son X.
  * Les cotes sont celles du prototype (`ecran()` et `_ficheCotes` de lot-S1B-geo, et les blocs qui les corrigent), comparées au pixel par
- * tests/rendu/fiche.spec.ts. Pas encore : tracer et tenir (3a-2), la jonction au défilement (3a-3), le titre modifiable (3a-4), Peaufiner
+ * tests/rendu/fiche.spec.ts. Tracer et tenir (3a-2) : tenir.ts ; l'instant (« le trait se referme » sous le rideau, puis « juste après », qui reste
+ * tant que la fiche est ouverte — `inv()` de lot-S5) est posé ici. Pas encore : la jonction au défilement (3a-3), le titre modifiable (3a-4), Peaufiner
  * ouvert, les commentaires, la photo, le dessin (3b), la fiche d'un Cercle (lot 5).
  */
 import './fiche.css';
@@ -19,12 +20,16 @@ import { NATTRAIT, TRAIT_K } from '../page-plus/trait.ts';
 import { avecAlpha, el, esc, surToucher, SVG_PHOTO } from '../commun.ts';
 import { CRETE, peindreLigne, W } from './ligne.ts';
 import { noyauxDe, peindreNoyaux, rangeeNoyaux } from './noyaux.ts';
+import { monterTenir, type Instant } from './tenir.ts';
+import { haptique } from '../../natif/haptique.ts';
 import {
   aPlusieurs,
   consigne,
   etatParts,
   initiales,
   ligneEtat,
+  ligneJusteApres,
+  phraseTenue,
   phraseFiche,
   recue,
   traitFiche,
@@ -36,7 +41,9 @@ export interface Fiche {
   ouvrir(id: number): void;
   fermer(): void;
   /** pour les tests : la parole ouverte, et ce que la fiche a posé */
-  etat(): { id: number | null; base: number; amp: number; mode: string };
+  etat(): { id: number | null; base: number; amp: number; mode: string; instant: Instant };
+  /** pour les tests : le geste */
+  tenir(): ReturnType<ReturnType<typeof monterTenir>['etat']>;
 }
 
 type Nature = 'promi' | 'chiche';
@@ -111,6 +118,13 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   let courant: Parole | null = null;
   let deplie = false;
   let T: Trait = { mode: 'moitie', base: 286, amp: 36, carte: false };
+  /** l'instant de « tenir » (lot-S5) : null, « le trait se referme » (sous le rideau), « juste après » */
+  let instantF: Instant = null;
+  /** pendant le geste : l'abscisse du doigt (le plein le suit) */
+  let doigtX: number | null = null;
+  /** les trois écrans de l'instant : base 300, amplitude 36, la dalle 180 × 150 à (105, 91), le trait amande plein */
+  const INSTANT_TRAIT: Trait = { mode: 'complet', base: 300, amp: 36, carte: false };
+  const INSTANT_DALLE = { x: 105, y: 91, w: 180, h: 150 } as const;
 
   surToucher(croix, () => {
     fermer();
@@ -152,8 +166,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     champ.setAttribute('data-champ', CHAMP[n]);
     const dh = Math.min(300, T.base - T.amp - 124 - 12);
     const dw = Math.min(320, Math.floor(1.2 * dh));
-    const dx = Math.floor((W - dw) / 2);
-    const r = facade.poserDalle(g, p.id, dx, 124, dw, dh, { rampe: { cols: RAMPE[n], haut: 2 } });
+    const b = instantF ? INSTANT_DALLE : { x: Math.floor((W - dw) / 2), y: 124, w: dw, h: dh };
+    const r = facade.poserDalle(g, p.id, b.x, b.y, b.w, b.h, { rampe: { cols: RAMPE[n], haut: 2 } });
     champ.setAttribute('data-matiere', r ? [r.x, r.y, r.w, r.h].map((v) => Math.round(v)).join(',') : '');
   }
 
@@ -173,13 +187,15 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     const tenu = p.status === 'tenu';
     const plusieurs = !tenu && aPlusieurs(p);
     const S = plusieurs ? etatParts(p) : null;
+    const col = instantF ? palette.menthe82 : tenu ? CRETE : NATTRAIT[n];
     peindreLigne(g, T.base, T.amp, {
       mode: T.mode,
-      col: tenu ? CRETE : NATTRAIT[n],
-      attend: !!consigne(p),
-      parts: S ? { S, initiales: initiales(S.T, moiNom()), encre: palette.creme95 } : undefined,
+      col,
+      attend: !instantF && !!consigne(p),
+      parts: S && !instantF ? { S, initiales: initiales(S.T, moiNom()), encre: palette.creme95 } : undefined,
+      doigt: doigtX ?? undefined,
     });
-    trait.setAttribute('data-trait', [T.base, T.amp, tenu ? CRETE : NATTRAIT[n], T.mode].join(','));
+    trait.setAttribute('data-trait', [T.base, T.amp, col, T.mode].join(','));
   }
 
   function moiNom(): string {
@@ -188,14 +204,16 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   function poser(p: Parole): void {
     const n = nature(p);
-    T = traitFiche(p);
+    T = instantF ? INSTANT_TRAIT : traitFiche(p);
     fi.classList.toggle('fi-promi', n === 'promi');
     fi.classList.toggle('fi-chiche', n === 'chiche');
     fi.classList.toggle('fi-tenue', p.status === 'tenu');
     mot.innerHTML = n === 'promi' ? 'Prom<i class="mm-i">i</i>' : 'Chiche';
     peindreChamp(p);
     peindreTrait(p);
-    const c = consigne(p, moiNom());
+    // « le trait se referme » : tout se retire sous le rideau (posé avant les cotes : elles se lisent sur le rendu)
+    for (const e of [noyaux, phrase, titre, etatL]) e.hidden = instantF === 'referme';
+    const c = instantF ? null : consigne(p, moiNom());
     geste.hidden = !c;
     geste.textContent = c ?? '';
     geste.classList.toggle('fi-depart', !!c && /^trace pour/.test(c));
@@ -217,7 +235,34 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     nbMots.textContent = neufs ? '+' + String(neufs) : String(mots.length);
     nbMots.classList.toggle('cm5-neufs', !!neufs);
     coter(!!c);
+    tenir.poser(!instantF && p.status !== 'tenu');
+    poserInstant(p);
     poserPlus(p);
+  }
+
+  /**
+   * L'INSTANT (`cotes()` de lot-S5) : « le trait se referme » — tout se retire sous le rideau ; « juste après » (cadre 101) — les Noyaux à 388, la
+   * phrase à 515 (21 pt, amande sur la terre), le titre à 546 (38 pt), « TENUE · À L’INSTANT » à 614 (et ce que le titre prend en plus d'une ligne).
+   */
+  function poserInstant(p: Parole): void {
+    photo.hidden = !!instantF;
+    fi.classList.toggle('inst-referme', instantF === 'referme');
+    fi.classList.toggle('inst-apres', instantF === 'apres');
+    if (instantF !== 'apres') return;
+    noyaux.style.top = '388px';
+    phrase.style.top = '515px';
+    phrase.style.fontSize = '21px';
+    titre.style.top = '546px';
+    titre.textContent = p.title;
+    titre.style.fontSize = '38px';
+    const lh = parseFloat(getComputedStyle(titre).lineHeight) || 42;
+    const hT = titre.offsetHeight;
+    const dyT = hT > lh * 1.5 ? Math.round(hT - lh) : 0;
+    etatL.textContent = ligneJusteApres(p);
+    etatL.classList.add('fi-tenu');
+    etatL.style.top = `${String(614 + dyT)}px`;
+    const bas = 614 + dyT + etatL.offsetHeight;
+    unMot.style.translate = `0 ${String(Math.max(0, bas - 692 + 8))}px`;
   }
 
   /** le bouton photo : 24 pt du bord droit, 8 pt au-dessus du haut de l'onde sous lui (moins l'épaisseur du trait), au plus 52 au-dessus d'elle en 349 (C-201) */
@@ -231,7 +276,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   /** le « + » des membres : sur une parole que je fais, 26 pt après le dernier petit disque (« Toi » s'il n'y en a pas), centré sur lui */
   function poserPlus(p: Parole): void {
-    plusM.hidden = recue(p);
+    plusM.hidden = recue(p) || instantF === 'referme';
     if (plusM.hidden) return;
     const ds = noyaux.querySelectorAll<HTMLElement>('.kr-wrap');
     const a = ds[ds.length - 1]!;
@@ -245,7 +290,20 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
       plusM.hidden = true;
       return;
     }
-    plusM.style.left = `${String(Math.round((gx + 9 - 22) * 4) / 4)}px`;
+    // sa hauteur : celle d'une capitale de la phrase, lue sur sa police rendue (le « A », `measureText` — elle suit la phrase à 21 pt de « juste
+    // après ») ; l'encre commence 26 pt après le disque, la zone (44) centrée sur elle (C-242)
+    const cs = getComputedStyle(phrase);
+    const fs = parseFloat(cs.fontSize) || 19;
+    const g = mesureur();
+    g.font = `${cs.fontStyle} ${cs.fontWeight} ${String(fs)}px ${cs.fontFamily}`;
+    const asc = g.measureText('A').actualBoundingBoxAscent;
+    const cap = asc > 0 ? Math.round(asc * 4) / 4 : Math.round(fs * 0.7 * 4) / 4;
+    const sv = plusM.querySelector('svg');
+    if (sv) {
+      sv.setAttribute('width', String(cap));
+      sv.setAttribute('height', String(cap));
+    }
+    plusM.style.left = `${String(Math.round((gx + cap / 2 - 22) * 4) / 4)}px`;
     plusM.style.top = `${String(Math.round((cy - 22) * 4) / 4)}px`;
   }
 
@@ -291,6 +349,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     noyaux.style.top = `${String(yNoyau)}px`;
     const yQui = yNoyau + 128 + Math.round(encre(14).bas + encre(23).haut);
     phrase.style.top = `${String(yQui)}px`;
+    phrase.style.removeProperty('font-size');
     let yTitre = Math.round((yQui + 23 * 1.1 + 11.9 + encre(23).bas + encre(42).haut) * 10) / 10;
     // la phrase sur deux lignes et plus : le titre descend de ce qu'elle prend en plus d'une ligne
     const hq = phrase.offsetHeight;
@@ -394,9 +453,42 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     return cvMesure;
   }
 
+  // ── TENIR (tenir.ts) ──
+  const tenir = monterTenir({
+    fi,
+    mot: geste,
+    trait: () => ({ base: T.base, amp: T.amp }),
+    actif: () => !!courant && !fi.hidden && !instantF && courant.status !== 'tenu',
+    doigt(x) {
+      doigtX = x;
+      if (courant) peindreTrait(courant);
+    },
+    tenir(trace, referme) {
+      if (!courant) return 'rien';
+      // l'instant est armé AVANT que la parole change (le prototype l'arme en capture du clic « tenue ») : la fiche se repose directement dans
+      // « le trait se referme » (la fiche tenue ordinaire n'est jamais peinte pour rien)
+      if (referme) instantF = 'referme';
+      const r = magasin.tenir(courant.id, trace, Date.now());
+      if (r === 'tenue') haptique('tenir');
+      if ((r !== 'tenue' || !referme) && instantF) {
+        instantF = null;
+        if (courant) poser(courant);
+      }
+      return r;
+    },
+    phrase: () => (courant ? phraseTenue(courant) : ''),
+    apres() {
+      instantF = 'apres';
+      if (courant) poser(courant);
+    },
+  });
+
   function ouvrir(id: number): void {
     const p = magasin.etat().paroles.find((q) => q.id === id);
     if (!p || p.draft) return;
+    tenir.arreter();
+    instantF = null;
+    doigtX = null;
     courant = p;
     deplie = false;
     // montrée AVANT d'être posée (en bas, invisible) : les cotes se lisent sur le rendu (le titre, la phrase, les disques) ; puis elle monte
@@ -421,6 +513,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   /** elle redescend (0,4 s), puis se cache */
   function fermer(): void {
     if (fi.hidden || fi.classList.contains('fi-bas')) return;
+    tenir.arreter();
     courant = null;
     if (finOuverture != null) horloge().annuleMinuteur(finOuverture);
     finOuverture = null;
@@ -454,6 +547,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   return {
     ouvrir,
     fermer,
-    etat: () => ({ id: courant?.id ?? null, base: T.base, amp: T.amp, mode: T.mode }),
+    etat: () => ({ id: courant?.id ?? null, base: T.base, amp: T.amp, mode: T.mode, instant: instantF }),
+    tenir: () => tenir.etat(),
   };
 }

@@ -386,6 +386,10 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
     await page.evaluate(() => document.getElementById('accChoix')!.classList.contains('ouvert')),
     'un toucher ailleurs referme',
   ).toBe(false);
+  // le toucher qui referme le menu tombe sur la Toile : la fiche de la dalle dessous s'ouvre (260 ms plus tard, comme dans le prototype) — on
+  // la referme (sur une machine lente, elle couvrait l'accueil quand le + était touché ensuite : la pilule tombait sur elle)
+  await page.waitForTimeout(400);
+  await fermerFiche(page);
   for (const k of ['nuee', 'chiche', 'promi']) {
     await ouvrirPlus(page);
     const r = await page.evaluate((k) => {

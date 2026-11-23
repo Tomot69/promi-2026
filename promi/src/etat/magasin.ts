@@ -9,6 +9,8 @@ import { tirer } from '../metier/exemples.ts';
 import { etatVide } from '../donnees/schema.ts';
 import { migrer } from '../donnees/migrations/index.ts';
 import { minuit, recompterEcheances } from '../metier/relecture.ts';
+import { aPlusieurs, etatParts } from '../metier/fiche.ts';
+import { ligneFil } from '../metier/fil.ts';
 import type { Stockage } from '../donnees/stockage.ts';
 
 export type Abonne = (e: Readonly<Etat>, action: string) => void;
@@ -63,6 +65,13 @@ export interface Actions {
   /** C-306 : créer un Cercle (son nom, ses membres) — rien d'autre ; une ligne du Fil (le prototype : `#addNuee`). Rend sa clé. */
   /** un Cercle créé ; son dessin (C-042), gardé par Cercle dans la clé du prototype `promi_dessins_cercle` */
   creerCercle(nom: string, membres: string[], maintenant: number, dessin?: unknown): string;
+  /**
+   * TENIR (lot 3a-2 ; le prototype : le clic « tenue » de `#segStatus`, `lot-S5`, `lot-V145-PARTS`, `lot-V149-VALIDATION`) — le trait tracé
+   * jusqu'au bout sur une fiche. Seul (ou la dernière part) : la parole passe tenue (`trace`, `vuTenue.moi`, une ligne du Fil, une parole
+   * récurrente renaît) → « tenue ». À plusieurs, ma part n'étant pas la dernière : `parts.moi` seul → « part ». Je ne suis pas de ceux qui
+   * tiennent, ou déjà tenue : rien → « rien ».
+   */
+  tenir(id: number, trace: Array<{ x: number; y: number }>, maintenant: number): 'tenue' | 'part' | 'rien';
 }
 
 export interface Magasin extends Actions {
@@ -236,10 +245,7 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       }
       const fid = compteurs.fid;
       compteurs = { ...compteurs, fid: fid + 1 };
-      const fil = [
-        { id: fid, type: 'added', text: `Tu as gardé « ${titre} » de côté`, pid: id, t: 'à l’instant', ts: maintenant },
-        ...e.fil,
-      ];
+      const fil = [ligneFil(fid, 'added', `Tu as gardé « ${titre} » de côté`, maintenant, { pid: id }), ...e.fil];
       valider('garderDeCote', { ...e, paroles, fil, compteurs });
       return id;
     },
@@ -283,10 +289,69 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       valider('planter', {
         ...e,
         paroles: [...e.paroles, neuve],
-        fil: [{ id: fid, type: 'added', text: texte, pid: id, t: 'à l’instant', ts: maintenant }, ...e.fil],
+        fil: [ligneFil(fid, 'added', texte, maintenant, { pid: id }), ...e.fil],
         compteurs: { nid: id + 1, fid: fid + 1 },
       });
       return id;
+    },
+    tenir(id, trace, maintenant) {
+      const p = e.paroles.find((q) => q.id === id);
+      if (!p || p.draft || p.status === 'tenu') return 'rien';
+      const iso = new Date(maintenant).toISOString();
+      let parts = p.parts;
+      if (aPlusieurs(p)) {
+        const S = etatParts(p);
+        if (!S.moi) return 'rien';
+        if (!S.moiFait) parts = { ...(p.parts ?? {}), moi: iso };
+        if (S.reste.some((x) => x !== 'moi')) {
+          const avecPart: Parole = { ...p, derAct: maintenant };
+          if (parts) avecPart.parts = parts;
+          valider('tenir', { ...e, paroles: e.paroles.map((q) => (q.id === id ? avecPart : q)) });
+          return 'part';
+        }
+      }
+      const tenue: Parole = {
+        ...p,
+        status: 'tenu',
+        draft: false,
+        vuTenue: { ...(p.vuTenue ?? {}), moi: iso },
+        derAct: maintenant,
+        suite: { ...(p.suite ?? {}), trace: trace.map((t) => ({ x: t.x, y: t.y })) },
+      };
+      if (parts) tenue.parts = parts;
+      let { nid, fid } = e.compteurs;
+      const fil = [...e.fil];
+      const texte = aPlusieurs(p) ? `Chacun a tracé sa part : « ${p.title} »` : `Tu as tenu « ${p.title} »`;
+      const paroles = e.paroles.map((q) => (q.id === id ? tenue : q));
+      // une parole récurrente renaît en cours (`regenRecur` : chaque jour, semaine, mois)
+      const rec = typeof p.recur === 'string' ? p.recur : null;
+      if (rec) {
+        const due = ({ daily: 1, weekly: 7, monthly: 30 } as Record<string, number>)[rec] ?? 7;
+        const np: Parole = {
+          id: nid,
+          title: p.title,
+          who: p.who,
+          due,
+          intensity: p.intensity || 2,
+          status: 'encours',
+          from: p.from,
+          recur: rec,
+          remind: null,
+          x: 0,
+          y: 0,
+          tx: 0,
+          ty: 0,
+          nuee: p.nuee ?? null,
+          derAct: maintenant,
+        };
+        if (p.monde) np.monde = p.monde;
+        paroles.push(np);
+        nid++;
+        fil.unshift(ligneFil(fid++, 'added', `↻ « ${p.title} » régénérée`, maintenant, { pid: p.id }));
+      }
+      fil.unshift(ligneFil(fid++, 'kept', texte, maintenant, { pid: id }));
+      valider('tenir', { ...e, paroles, fil, compteurs: { ...e.compteurs, nid, fid } });
+      return 'tenue';
     },
     creerCercle(nom, membres, maintenant, dessin) {
       const cle = `n${String(maintenant)}`;
@@ -307,7 +372,7 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
         cercles: { ...e.cercles, [cle]: nom },
         membres: { ...e.membres, [cle]: membres.slice() },
         autres,
-        fil: [{ id: fid, type: 'nuee', text: texte, t: 'à l’instant', ts: maintenant }, ...e.fil],
+        fil: [ligneFil(fid, 'nuee', texte, maintenant), ...e.fil],
         compteurs: { ...e.compteurs, fid: fid + 1 },
       });
       return cle;

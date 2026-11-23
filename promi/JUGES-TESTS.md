@@ -185,3 +185,31 @@ lot 5).
 | redteam_etat_fiche (C-207)                                                                                            | FJ › la fiche à l'échelle 0,79 : chaque cote en pt est celle de 390 × 844                                 |
 | redteam_flash_etat (Q374)                                                                                             | F (la fiche posée d'un seul geste, sans repasse) ; FJ › la fiche monte du bas et y redescend              |
 | redteam_part (le rendu des parts, C-115)                                                                              | F (Chiche à Rachel et Marion, une part tracée : la part pleine, l'initiale, la part fine) ; U › les parts |
+
+## Lot 3a-2 — tracer et tenir (le geste, le ruban, le rideau, l'instant, les parts)
+
+Fichiers : `tenir.spec.ts` (T, l'identité au pixel : six fiches × deux thèmes, deux instants — le rideau posé, « juste après »), `tenir-juges.spec.ts` (TJ),
+`tests/unitaires/fiche.test.ts` (U, « tenir »). **L'horloge est PILOTÉE des deux côtés** (la vraie app : `?pilote=` ; le prototype : PILOTE de banc_rendu) :
+chaque instant se lit en images, à toute charge.
+**Porté** : `src/ecrans/fiche/tenir.ts` (la zone de 118 pt, le geste et sa fenêtre d'ouverture de 340 ms, le trait qui suit le doigt et revient, le ruban
+amande, le rideau et sa phrase, le toucher qui presse et qui est avalé), l'instant dans `fiche.ts` (« le trait se referme », « juste après » — qui reste tant que
+la fiche est ouverte, comme le prototype), `magasin.tenir` (la parole tenue, son trait, `vuTenue`, la ligne du Fil, la parole récurrente qui renaît ; ma part),
+`src/natif/haptique.ts` (l'impact fort de la preuve Capacitor, validé par Tom). **Corrigé en passant (lot 2)** : les lignes du Fil prennent les guillemets
+insécables et « à l'instant » du prototype (`ligneFil`, `insecable` l. 38296).
+**Pas encore** : la célébration fixe pendant un défilement (C-311) et la jonction après tenir (`banc_apres_tenir`, J1–J3) — 3a-3 ; le rideau « revu » quand un
+autre trace la dernière part (`_maree.revoir`) — il faut le réseau (1.1) ; l'atterrissage de la dalle au demi-point sur la dalle vivante (repris du lot 2) — 3a-3.
+
+| Juge du prototype                                                           | Test                                                                                                             |
+| --------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| releve-S5-instant, redteam_tenir (l'image), redteam_validation (seul)       | T › identité au pixel : tenir — six fiches × deux thèmes, le rideau posé et « juste après »                      |
+| redteam_trait (C-107)                                                       | TJ › le seuil de 60 pt : les décisions de la vraie app sont celles du prototype                                  |
+| redteam_retour_trait (C-264)                                                | TJ › lâché avant le seuil, le trait revient : image par image, la suite du prototype                             |
+| redteam_ruban (C-148)                                                       | TJ › le ruban amande naît du trait au seuil                                                                      |
+| redteam_tenir (la descente, la remontée), redteam_centre_validation (C-144) | TJ › le rideau descend à vitesse constante, « Parole tenue ! » centrée, remonte à 2 150 ms                       |
+| redteam_tenir_presse (C-167)                                                | TJ › un toucher pendant que le vert est posé le fait remonter, et il est avalé                                   |
+| redteam_tenir_e3 (E3)                                                       | TJ › « Réduire les animations » : la fiche passe tenue d'un coup                                                 |
+| redteam_part (le geste), redteam_validation (ma part, C-156)                | TJ › ma part, sans être la dernière : la vague seule ; U › tenir : ma part, la dernière part, pas un des tenants |
+| redteam_tenu_trait (C-189), banc_apres_tenir (les données)                  | TJ › ce que tenir écrit, comme le prototype ; U › tenir : seul, récurrente                                       |
+| redteam_premier_toucher (C-263)                                             | TJ › le premier toucher prend le trait : cinq fiches de suite (le défilement : 3a-3)                             |
+| redteam_fluide (C-102)                                                      | TJ › le moment « tenir » est fluide — jugé au calme seulement (C-137 : « non jugé » au-delà d'une charge de 4)   |
+| redteam_celebration_fixe (C-311)                                            | 3a-3 (la fiche qui défile pendant la célébration)                                                                |

@@ -16,82 +16,23 @@
  *         une dette du volume du prototype (volume-dette.json) que la vraie app ne reprend pas — sa rangée s'arrête net ; ses 46 derniers pt
  *         sont masqués, et seulement quand elle déborde.
  */
-import { test, expect, type Page } from '@playwright/test';
+import { test, expect } from '@playwright/test';
 import { mkdirSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { PNG } from 'pngjs';
-import { GEL, prototype, vraieApp, ecart, sonde, stockageFiches, CAS_FICHES } from './aides.ts';
+import {
+  GEL,
+  prototype,
+  vraieApp,
+  ecart,
+  sonde,
+  stockageFiches,
+  CAS_FICHES,
+  zonesFiche,
+  masquerFiche,
+  type Zone,
+} from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'fiche');
-type Zone = [number, number, number, number];
-
-/** les zones exceptées, en pt de l'appareil : la matière (M1) et les bandes des anneaux (M2) */
-async function zones(A: Page, P: Page): Promise<Zone[]> {
-  const z: Zone[] = [];
-  for (const [pg, sel] of [
-    [A, '#detailPoster.fiche .fi-champ'],
-    [P, '#dpTrameCv'],
-  ] as const) {
-    const m = (await pg.evaluate((sel) => {
-      const cv = document.querySelector(sel);
-      const v = cv?.getAttribute('data-matiere');
-      if (!cv || !v) return null;
-      const D = (document.getElementById('device') ?? document.getElementById('detailPoster'))!.getBoundingClientRect();
-      const k = D.width / 390 || 1;
-      const c = cv.getBoundingClientRect();
-      const [x, y, w, h] = v.split(',').map(Number) as [number, number, number, number];
-      return [(c.left - D.left) / k + x, (c.top - D.top) / k + y, w, h];
-    }, sel)) as Zone | null;
-    if (m) z.push([m[0] - 8, m[1] - 8, m[2] + 16, m[3] + 16]);
-  }
-  const anneaux = (await A.evaluate(() => {
-    const D = document.getElementById('detailPoster')!.getBoundingClientRect();
-    const k = D.width / 390 || 1;
-    return [...document.querySelectorAll('#detailPoster.fiche canvas.kr-c')].map((c) => {
-      const r = c.getBoundingClientRect();
-      return [(r.left - D.left) / k, (r.top - D.top) / k, r.width / k, r.height / k];
-    });
-  })) as Zone[];
-  // M3 : les 46 derniers pt de la rangée des Noyaux, quand elle déborde
-  const fondu = (await A.evaluate(() => {
-    const a = document.getElementById('dAura')!;
-    if (a.scrollWidth <= a.clientWidth + 1) return null;
-    const D = document.getElementById('detailPoster')!.getBoundingClientRect();
-    const k = D.width / 390 || 1;
-    const r = a.getBoundingClientRect();
-    return [(r.right - D.left) / k - 46, (r.top - D.top) / k, 46, r.height / k];
-  })) as Zone | null;
-  if (fondu) z.push(fondu);
-  return [...z, ...anneaux];
-}
-
-/** masque les zones (en magenta), un anneau par sa BANDE seulement (le visage dedans reste jugé) */
-function masquer(png: Buffer, Z: Zone[], nAnneaux: number): Buffer {
-  const im = PNG.sync.read(png);
-  const k = im.width / 390;
-  Z.forEach(([x, y, w, h], i) => {
-    const anneau = i >= Z.length - nAnneaux;
-    const cx = (x + w / 2) * k;
-    const cy = (y + h / 2) * k;
-    const Rx = (w / 2) * k;
-    const Ri = Rx * (w === 78 ? 27 / 39 : 20 / 29);
-    // un anneau : sa bande, et 3 px de part et d'autre (WebKit compose la rangée au demi-point près, différemment des deux côtés)
-    const m = anneau ? 3 : 0;
-    for (let j = Math.max(0, Math.floor(y * k) - m); j < Math.min(im.height, Math.ceil((y + h) * k) + m); j++)
-      for (let i2 = Math.max(0, Math.floor(x * k) - m); i2 < Math.min(im.width, Math.ceil((x + w) * k) + m); i2++) {
-        if (anneau) {
-          const d = Math.hypot(i2 + 0.5 - cx, j + 0.5 - cy);
-          if (d < Ri - 3 || d > Rx + 3) continue;
-        }
-        const q = (j * im.width + i2) * 4;
-        im.data[q] = 255;
-        im.data[q + 1] = 0;
-        im.data[q + 2] = 255;
-      }
-  });
-  return PNG.sync.write(im);
-}
-
 for (const theme of ['sombre', 'clair'] as const)
   for (const [id, cas] of CAS_FICHES)
     test(`identité au pixel : la fiche — ${cas}, ${theme}`, async ({ browser }) => {
@@ -125,12 +66,12 @@ for (const theme of ['sombre', 'clair'] as const)
         let n = 0;
         let ip: Buffer = Buffer.alloc(0);
         let ia: Buffer = Buffer.alloc(0);
-        for (let k = 0; k < 25; k++) {
+        for (let k = 0; k < 40; k++) {
           await P.waitForTimeout(700);
-          const Z2 = await zones(A, P);
+          const Z2 = await zonesFiche(A, P);
           const n2 = await A.evaluate(() => document.querySelectorAll('#detailPoster.fiche canvas.kr-c').length);
-          const ip2 = masquer(await P.screenshot({ clip: dv }), Z2, n2);
-          const ia2 = masquer(await A.screenshot(), Z2, n2);
+          const ip2 = masquerFiche(await P.screenshot({ clip: dv }), Z2, n2);
+          const ia2 = masquerFiche(await A.screenshot(), Z2, n2);
           // le X du prototype passe parfois, à l'ouverture d'une fiche tenue, par une place transitoire (sur le « P » de PROMI : la veille
           // de `lot-V157-CROIX` qui le repose) — on attend qu'il soit à SA place (x 300 ± 0,5) avant de comparer
           const xEnPlace = await P.evaluate(() => {
@@ -138,7 +79,12 @@ for (const theme of ['sombre', 'clair'] as const)
             const x = document.querySelector('#detailPoster .closeb')?.getBoundingClientRect();
             return !!x && Math.abs((x.left - D.left) / (D.width / 390) - 300) < 0.5;
           });
-          const pose = k > 1 && xEnPlace && ip2.equals(ip) && ia2.equals(ia);
+          // et l'encre du plateau du prototype posée (sur une machine lente, PROMI et le X sont un moment à l'encre noire : une passe de sa
+          // composition qui n'est pas finie)
+          const encre = (pg: typeof P): Promise<string> =>
+            pg.evaluate(() => getComputedStyle(document.getElementById('dptNat')!).webkitTextFillColor);
+          const encrePosee = (await encre(P)) === (await encre(A));
+          const pose = k > 1 && xEnPlace && encrePosee && ip2.equals(ip) && ia2.equals(ia);
           [Z, n, ip, ia] = [Z2, n2, ip2, ia2];
           if (pose) break;
         }

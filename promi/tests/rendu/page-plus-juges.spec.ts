@@ -484,12 +484,13 @@ test('C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; 
           const s = getComputedStyle(c);
           const e = { duree: s.transitionDuration, prop: s.transitionProperty, ty: [ty()], fin: false };
           w.__entre = e;
+          // toutes les 20 ms réelles : la transition s'échantillonne à chaque lecture du style, quelle que soit la cadence des images
           const pas = (): void => {
             e.ty.push(ty());
-            if (c.classList.contains('pp-entre')) requestAnimationFrame(pas);
+            if (c.classList.contains('pp-entre')) setTimeout(pas, 20);
             else e.fin = true;
           };
-          requestAnimationFrame(pas);
+          setTimeout(pas, 0);
         }
       });
       o.observe(c, { attributes: true, attributeFilter: ['class'] });
