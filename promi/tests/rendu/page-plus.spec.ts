@@ -495,20 +495,41 @@ async function poser(P: Page, A: Page, c: Cas): Promise<void> {
     await P.waitForTimeout(2000);
   }
   if (c.etat === 'long') {
-    // ⚑ PROTOCOLE (2c) : le prototype mesure le plafond de C-240 (`_ppPhCap`) aussi PENDANT le mouvement du clavier (Q598 : la page est en
-    // chemin, sa place lue est fausse) et le garde pour la parole — sa taille finale dépend du moment (16, 21 ou 30 pt relevés d'une passe à
-    // l'autre sur le même Promi de 280 caractères). La référence est sa composition de la page POSÉE : plafond effacé, une passe de plus
+    // ⚑ PROTOCOLE (2c) — UN DÉFAUT DU PROTOTYPE, NOMMÉ : sa règle C-240 (`_ppPhCap`) lit la place de « garder de côté » PENDANT le mouvement
+    // du clavier (Q598 : le bouton glisse encore, 578 → 737 → 764 pt) et garde ce plafond pour la parole — sa taille finale dépend du moment
+    // (17/15, 21/15, 30/12, 28/12 relevés sur le même Promi de 280 caractères). La référence est sa composition de la page POSÉE : le
+    // mouvement fini, plafond effacé, une passe de plus
+    // (le mouvement du clavier, mené en JavaScript, fini — hors du Mac il dure plusieurs secondes : recomposée pendant lui, la page reprenait
+    // le plafond lu en chemin)
+    const sansMvt = (): Promise<unknown> =>
+      P.waitForFunction(
+        () =>
+          !document.getElementById('ppMvt') && !(window as unknown as { _ppMvtCours?: () => boolean })._ppMvtCours?.(),
+        undefined,
+        { timeout: 60000 },
+      ).catch(() => undefined);
     await protoPose(P);
-    await P.evaluate(() => {
-      const w = window as unknown as { _ppPhCap?: unknown; _ppRecoupe?: unknown; _ppTout?: () => void };
-      w._ppPhCap = null;
-      w._ppRecoupe = null;
-      document.querySelectorAll<HTMLElement & { __phCle?: unknown }>('#createSheet .ph-txt').forEach((t) => {
-        t.__phCle = null;
-      });
-      w._ppTout?.();
-    });
-    await P.waitForTimeout(1500);
+    await sansMvt();
+    // la remise à zéro, répétée jusqu'à ce que la taille tienne 1,5 s (six fois au plus) : une recomposition plus tardive du prototype reprend
+    // un plafond mesuré pendant son propre mouvement de taille (la phrase va de 20 à 30 par `scale`) — relevé : 30, puis 26 ou 29, puis 30
+    for (let essai = 0; essai < 6; essai++) {
+      const t0 = (await P.evaluate(() => {
+        const w = window as unknown as { _ppPhCap?: unknown; _ppRecoupe?: unknown; _ppTout?: () => void };
+        w._ppPhCap = null;
+        w._ppRecoupe = null;
+        document.querySelectorAll<HTMLElement & { __phCle?: unknown }>('#createSheet .ph-txt').forEach((t) => {
+          t.__phCle = null;
+        });
+        w._ppTout?.();
+        return document.querySelector<HTMLElement>('#csPhrase .ph-txt')?.style.fontSize ?? '';
+      })) as string;
+      await P.waitForTimeout(1500);
+      await sansMvt();
+      const t1 = (await P.evaluate(
+        () => document.querySelector<HTMLElement>('#csPhrase .ph-txt')?.style.fontSize ?? '',
+      )) as string;
+      if (t1 === t0) break;
+    }
   }
   if (c.etat) await finApp(A);
   await protoPose(P);

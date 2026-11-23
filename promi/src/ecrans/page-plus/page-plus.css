@@ -968,6 +968,18 @@
   align-items: center;
   white-space: nowrap;
 }
+/* (dans le verbe, pendant sa transition : l'écart de la pastille entre le mot et ⇄ — le prototype, `.ph-b > .v200-mt`) */
+#createSheet .ph-b > .ph-mt {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+}
+/* (un exemple coupé en deux lignes : ses lignes, pendant la transition) */
+#createSheet .ph-m > .ph-mt:has(> br) {
+  display: inline;
+  white-space: normal;
+}
 
 /* ── C-209, C-213, C-229 : le départ du trait sur SA couche (mêmes cotes que le champ), qui clignote avec le I de PROMI jusqu'au premier
    toucher du trait (`promiBlink`, accueil.css) ; le libellé « trace pour … » (PromiLate 19, l'orange du départ, C-157) ── */

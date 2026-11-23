@@ -48,6 +48,7 @@ import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
 import { creerContinu } from './continu.ts';
+import { creerDouceur } from './douceur.ts';
 import {
   creerModeDessin,
   couleurDe,
@@ -335,10 +336,33 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     frappe: () =>
       saisieDe !== null &&
       aTape &&
-      detrace === null &&
+      !douceur.enCours() &&
       !!txt.querySelector('.ph-m[data-ph="titre"]:not(.ph-vide), .ph-m[data-np="nom"]:not(.ph-vide)'),
     mouvement: () => mv !== null,
-    placeEnDetrace: () => detrace !== null,
+    placeEnDetrace: () => douceur.enCours(),
+  });
+  // C-271 : une place de la phrase qui change ne change jamais d'un coup (douceur.ts, le prototype `lot-V200-DOUCEUR`)
+  let ouverteA = -1e9;
+  const douceur = creerDouceur({
+    txt,
+    hote: phrase,
+    h,
+    trace: () => {
+      try {
+        return chargerTrace();
+      } catch {
+        return null;
+      }
+    },
+    vivante: () =>
+      !cs.hidden &&
+      !cs.classList.contains('pp-part') &&
+      !cs.classList.contains('pp-compose') &&
+      h.maintenant() - ouverteA >= 600,
+    cle: () => P.nat,
+    change: () => {
+      continu.verifie();
+    },
   });
   try {
     (chargerTrace() as unknown as { horsAnim?: (el: Element) => (() => void) | null }).horsAnim = (el) =>
@@ -1075,9 +1099,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     const cle = P.nat === 'nuee' ? 'avec' : P.nat === 'chiche' || P.sens === 'faire' ? 'qui' : null;
     if (!cle) return;
     const L = P.nat === 'nuee' ? P.membres : P.qui;
-    if (L.length || P.moi === on || detrace) return;
+    if (L.length || P.moi === on) return;
     P.moi = on;
-    transitionPlace(cle);
+    transitionPlace();
   }
   function montre(): void {
     if (inv.vis) return;
@@ -1443,10 +1467,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
 
   // ── LA COMPOSITION ──
   function composer(): void {
+    const ad = douceur.avant();
     const av = continu.avant();
     try {
       composerBrut();
     } finally {
+      douceur.apres(ad);
       continu.apres(av);
     }
   }
@@ -1843,13 +1869,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     L.push(n);
   }
   /**
-   * un changement du choix des personnes : la liste change tout de suite (les pastilles avec elle) ; la place de la phrase se DÉTRACE, puis
-   * la phrase se recompose et la place neuve se TRACE (C-279, C-271 : aucun changement sec). Un toucher pendant le détracé change la liste ;
-   * la phrase se recompose à sa fin, avec ce qui est coché à ce moment-là.
+   * un changement du choix des personnes : la liste change tout de suite (les pastilles avec elle) ; la place de la phrase se DÉTRACE pendant
+   * que son encart change de largeur, puis la neuve se TRACE (C-279, C-271 : aucun changement sec — douceur.ts). Un toucher pendant la
+   * transition change la liste : elle finit sur ce qui est coché à ce moment-là.
    */
-  let detrace: { el: HTMLElement; cle: string } | null = null;
-  let tracePlace: ControleTrace | null = null;
-  const selPlace = (cle: string): string => (P.nat === 'nuee' ? `.ph-m[data-np="avec"]` : `.ph-m[data-ph="${cle}"]`);
   function changerPersonnes(mut: (L: string[]) => void): void {
     const cle = choix;
     if (!cle) return;
@@ -1860,64 +1883,13 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       L.splice(0);
       P.moi = true;
     }
-    if (detrace) {
-      rendreChoix();
-      return;
-    }
-    transitionPlace(cle, rendreChoix);
+    transitionPlace(rendreChoix);
   }
-  /** une place de la phrase change (son état est déjà écrit) : elle se détrace, la phrase se recompose, la neuve se trace (C-279, C-271) */
-  function transitionPlace(cle: string, pendant?: () => void): void {
-    const el0 = txt.querySelector<HTMLElement>(selPlace(cle));
-    let tl: ReturnType<typeof chargerTrace> | null = null;
-    try {
-      tl = chargerTrace();
-    } catch {
-      tl = null;
-    }
-    if (!el0 || !tl || reduit()) {
-      composer();
-      return;
-    }
-    tracePlace?.stop();
-    tracePlace = null;
-    detrace = { el: el0, cle };
+  /** une place de la phrase change (son état est déjà écrit) : la phrase se recompose ; la transition (détracé, encart, flaques, tracé) est
+   *  celle de toute reconstruction (douceur.ts, le prototype `lot-V200-DOUCEUR`) */
+  function transitionPlace(pendant?: () => void): void {
     pendant?.();
-    const t = tl;
-    t.trace(enveloppe(el0), null, {
-      inverse: true,
-      surFin: () => {
-        detrace = null;
-        composer();
-        const el1 = txt.querySelector<HTMLElement>(selPlace(cle));
-        if (!el1) return;
-        const env = enveloppe(el1);
-        tracePlace = t.trace(env, null, {
-          surFin: () => {
-            tracePlace = null;
-            // l'enveloppe RESTE jusqu'à la prochaine composition, comme dans le prototype (`.v200-mt`, lot-V200-DOUCEUR) : dans la pastille
-            // d'un prénom, le visage et le texte y sont serrés (sans l'écart de la pastille), exactement ce que le prototype montre
-            env.style.removeProperty('clip-path');
-            env.style.removeProperty('-webkit-clip-path');
-            // (posée : elle ne se trace plus — `ph-mt` dit une place en transition)
-            env.className = 'ph-mt-pose';
-          },
-        });
-      },
-    });
-  }
-  /** le texte d'une place dans une enveloppe : le tracé découpe le TEXTE, jamais l'encart — les pointillés ne clignotent pas (C-271, `.v200-mt`) */
-  function enveloppe(place: HTMLElement): HTMLElement {
-    // (le prototype, `enveloppe` : l'enveloppe déjà là sert de nouveau)
-    const deja0 = place.querySelector<HTMLElement>(':scope > .ph-mt-pose, :scope > .ph-mt');
-    if (deja0 && place.childNodes.length === 1) {
-      deja0.className = 'ph-mt';
-      return deja0;
-    }
-    const e = el('span', { class: 'ph-mt' });
-    e.append(...place.childNodes);
-    place.appendChild(e);
-    return e;
+    composer();
   }
   function rendreChoix(): void {
     choixHote.innerHTML = '';
@@ -2817,9 +2789,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     P = neuve(nat);
     cacheInvite();
     // un détracé, un tracé de la place qui court encore (C-332) : la page neuve ne les reprend pas
-    detrace = null;
-    tracePlace?.stop();
-    tracePlace = null;
+    douceur.arrete();
     exemples = {};
     choix = null;
     saisieDe = null;
@@ -2835,6 +2805,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     cs.classList.add('pp-compose');
     cs.hidden = false;
     continu.ouvre();
+    ouverteA = h.maintenant();
     composer();
     signature0 = signature();
     majGarder();
@@ -2927,7 +2898,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       peauf: peaufOuvert,
       menu: !!menu,
       ajout: ajoutActif,
-      mouvement: !!mv,
+      mouvement: !!mv || douceur.actif() || continu.actif(),
       invite: { visible: inv.vis, sortie: inv.sortie, haut: inv.haut, anim: !!inv.anim, touche: inv.touche },
       dessin: modeDessin.etat(),
     }),

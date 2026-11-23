@@ -1674,6 +1674,8 @@ test('Peaufiner, ses choix : l’échéance, le Cercle (la phrase à tout le mon
     'faire',
     ['tout le monde'],
   ]);
+  // la valeur change par détracé puis tracé (C-279) : lue une fois tracée (la phrase change aussi, 2c : plus long sous charge)
+  await page.waitForFunction(`!window.TraceLettres?.actif()`, undefined, { timeout: 20000 });
   expect((await lit('DANS UN CERCLE')).val).toBe('Marseille');
   await doigt(page, '#csPeauf .s2-fermer');
   await posee(page);

@@ -69,6 +69,10 @@ export interface Continu {
   apres(a: Avant): void;
   /** la page s'ouvre : la première composition se pose */
   ouvre(): void;
+  /** un mot changé hors d'une composition (la fin d'une transition, douceur.ts) : la phrase vérifiée dans la tâche, avant la peinture */
+  verifie(): void;
+  /** un mouvement de la phrase court (sa taille, un glissement) */
+  actif(): boolean;
   /** pour le tracé des lettres : les mouvements de `el` (et de ses ancêtres) mis à leur fin le temps d'une mesure */
   horsAnim(el: Element): (() => void) | null;
 }
@@ -430,6 +434,15 @@ export function creerContinu(o: OptionsContinu): Continu {
         }
       }
       // un rebâti : vérifié dans la tâche, avant la peinture (sinon le nœud neuf paraît une image à sa place)
+      queueMicrotask(verifie);
+    },
+    actif() {
+      if (ani?.a.playState === 'running') return true;
+      return [txt, rail, ...txt.querySelectorAll<HTMLElement>('[data-ph],[data-np],em')].some((e) =>
+        e.getAnimations().some(estGlisse),
+      );
+    },
+    verifie() {
       queueMicrotask(verifie);
     },
     horsAnim(el) {

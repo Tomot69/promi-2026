@@ -23,5 +23,35 @@
     "nom": "taille-seche",
     "test": "la taille de la phrase change en douceur en entrant dans la saisie",
     "defaut": "« Réduire les animations » posé en douce : la taille de la phrase change d'un coup"
+  },
+  {
+    "nom": "places-seches",
+    "test": "les places de la phrase changent en douceur : la première lettre",
+    "defaut": "« Réduire les animations » posé en douce : l'exemple, la pastille et le nom changent d'un coup"
+  },
+  {
+    "nom": "sens-sec",
+    "test": "la bascule du sens : le verbe se détrace puis se trace",
+    "defaut": "« Réduire les animations » posé en douce : le verbe et les places changent d'un coup"
+  },
+  {
+    "nom": "nature-collee",
+    "test": "la page + lit sa nature : un Cercle fermé par son X",
+    "defaut": "la page + garde la nature de sa première ouverture (v176 : `createKind` jamais remis) : un Promi ouvre un Cercle"
+  },
+  {
+    "nom": "prenom-fige",
+    "test": "« promets-moi » : le prénom d’exemple alterne à chaque retour",
+    "defaut": "le prénom n'avance plus (v211 : toujours Bruno-Stanislas)"
+  },
+  {
+    "nom": "genese-reste",
+    "test": "la genèse du trait interrompue : le sens basculé à plusieurs instants",
+    "defaut": "un calque de passage en flaques n'est jamais retiré (le bandeau de C-218)"
+  },
+  {
+    "nom": "dalle-zoom",
+    "test": "la dalle de la page + ne zoome jamais, promi",
+    "defaut": "la dalle demandée au moteur 40 % plus grande pendant la saisie (le défaut de v179 : elle remplissait le champ au plancher)"
   }
 ]
