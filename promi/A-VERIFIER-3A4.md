@@ -1,5 +1,7 @@
 # Le titre modifiable (lot 3a-4) — à vérifier sur l'iPhone, dans l'app « Promi »
 
+**Installé sur ton iPhone le 23 nov. 2026 : commit `41cf3db` (dans le relevé : `index-4l_w-Hey.js`).**
+
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4). Ouvrir une parole en touchant sa dalle sur la Toile.
 
 1. **Toucher le titre** (un titre court) : il devient modifiable sur place, le curseur là où le doigt a touché, le clavier s'ouvre ; **aucun encart**

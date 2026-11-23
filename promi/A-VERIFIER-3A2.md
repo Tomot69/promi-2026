@@ -1,6 +1,6 @@
 # Tracer et tenir (lot 3a-2) — à vérifier sur l'iPhone, dans l'app « Promi »
 
-**Installé sur ton iPhone le 23 nov. 2026 : commit `bb72066` (dans le relevé : `index-DvtgiSQ_.js`).**
+**Installé sur ton iPhone le 23 nov. 2026 : commit `41cf3db` (dans le relevé : `index-4l_w-Hey.js`).**
 
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4). Ouvrir une parole en cours en touchant sa dalle sur la Toile.
 
