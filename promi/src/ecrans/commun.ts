@@ -79,7 +79,21 @@ function metr(fam: string, wt: string, st: string): Metriques {
  * bord droit à la distance du bord de la barre où le titre commence à gauche ; une boîte de 44 × 44 centrée sur lui. Tout se lit sur la police
  * rendue : sur un autre moteur de polices (WebKit de Linux) la croix suit le titre comme dans le prototype, jamais une cote relevée sur le Mac.
  */
+/** les croix posées : une police qui finit de se charger après leur pose (un premier chargement lent) les fait reposer sur ses vraies métriques */
+const CROIX = new Map<HTMLElement, [HTMLElement, HTMLElement]>();
+let guetteCroix = false;
 export function poserCroix(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement): void {
+  CROIX.set(croix, [glyphe, titre]);
+  if (!guetteCroix) {
+    guetteCroix = true;
+    document.fonts.addEventListener('loadingdone', () => {
+      for (const [c, [g, t]] of CROIX) if (c.isConnected) poser1(c, g, t);
+    });
+  }
+  poser1(croix, glyphe, titre);
+}
+
+function poser1(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement): void {
   const op = (croix.offsetParent as HTMLElement | null) ?? croix.parentElement!;
   const ro = op.getBoundingClientRect();
   const kk = ro.width / (op.offsetWidth || 1) || 1;

@@ -21,6 +21,8 @@ import { avecAlpha, el, esc, poserCroix, surToucher, SVG_PHOTO } from '../commun
 import { CRETE, peindreLigne, W } from './ligne.ts';
 import { noyauxDe, peindreNoyaux, rangeeNoyaux } from './noyaux.ts';
 import { monterTenir, type Instant } from './tenir.ts';
+import { monterJonction } from './jonction.ts';
+import { monterMots } from './mots.ts';
 import { haptique } from '../../natif/haptique.ts';
 import {
   aPlusieurs,
@@ -41,7 +43,14 @@ export interface Fiche {
   ouvrir(id: number): void;
   fermer(): void;
   /** pour les tests : la parole ouverte, et ce que la fiche a posé */
-  etat(): { id: number | null; base: number; amp: number; mode: string; instant: Instant };
+  etat(): {
+    id: number | null;
+    base: number;
+    amp: number;
+    mode: string;
+    instant: Instant;
+    jonction: ReturnType<ReturnType<typeof monterJonction>['etat']>;
+  };
   /** pour les tests : le geste */
   tenir(): ReturnType<ReturnType<typeof monterTenir>['etat']>;
 }
@@ -75,6 +84,10 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   const dv = facade.appareil();
   const fi = el('div', { id: 'detailPoster', class: 'fiche', role: 'dialog' });
   fi.hidden = true;
+  // la couche qui défile (le plateau et la barre Peaufiner restent posés au-dessus d'elle, dans la fiche : ils ne défilent pas — lot-V184A)
+  const defile = el('div', { id: 'dpDefile', class: 'fi-defile' });
+  // la hauteur du contenu : celle de l'écran, ou le bas des mots + 96 (`espace` de lot-V181B-TEXTES)
+  const espace = el('div', { class: 'fi-espace', 'aria-hidden': 'true' });
   const champ = el('canvas', { id: 'dpTrameCv', class: 'fi-champ', 'aria-hidden': 'true' });
   const trait = el('canvas', { class: 'fi-trait', 'aria-hidden': 'true' });
   const plateau = el('div', { class: 'enh' });
@@ -112,7 +125,9 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   // pas encore portées (lot 3b : le menu photo, Peaufiner, les membres ; lot 8 : Partager) : elles se déclarent inactives (`aria-disabled`),
   // et le retirent quand leur lot les branche
   for (const c of [photo, plusM, barreTog, partage]) c.setAttribute('aria-disabled', 'true');
-  fi.append(champ, trait, plateau, photo, geste, noyaux, plusM, phrase, titre, etatL, unMot, barre);
+  defile.append(champ, trait, photo, geste, noyaux, plusM, phrase, titre, etatL, unMot, espace);
+  // le plateau d'abord, comme dans le prototype (`.enh`, le premier bloc de la fiche) ; il passe au-dessus de la couche qui défile par son z
+  fi.append(plateau, defile, barre);
   dv.appendChild(fi);
 
   let courant: Parole | null = null;
@@ -173,7 +188,6 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   // ── LE TRAIT : sur sa couche (la jonction, 3a-3, la tiendra au défilement) ──
   function peindreTrait(p: Parole): void {
-    const n = nature(p);
     const H = T.base + T.amp + 40;
     const dpr = Math.max(2, Math.min(3, window.devicePixelRatio || 2));
     trait.width = Math.round(W * dpr);
@@ -184,18 +198,23 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     if (!g) return;
     g.setTransform(dpr, 0, 0, dpr, 0, 0);
     g.clearRect(0, 0, W, H);
+    const o = optionsLigne(p);
+    peindreLigne(g, T.base, T.amp, { ...o, doigt: doigtX ?? undefined });
+    trait.setAttribute('data-trait', [T.base, T.amp, o.col, T.mode].join(','));
+  }
+
+  /** ce que le peintre de la ligne reçoit (le trait de la fiche, et son trait plat de la jonction) */
+  function optionsLigne(p: Parole): Parameters<typeof peindreLigne>[3] {
+    const n = nature(p);
     const tenu = p.status === 'tenu';
     const plusieurs = !tenu && aPlusieurs(p);
     const S = plusieurs ? etatParts(p) : null;
-    const col = instantF ? palette.menthe82 : tenu ? CRETE : NATTRAIT[n];
-    peindreLigne(g, T.base, T.amp, {
+    return {
       mode: T.mode,
-      col,
+      col: instantF ? palette.menthe82 : tenu ? CRETE : NATTRAIT[n],
       attend: !instantF && !!consigne(p),
       parts: S && !instantF ? { S, initiales: initiales(S.T, moiNom()), encre: palette.creme95 } : undefined,
-      doigt: doigtX ?? undefined,
-    });
-    trait.setAttribute('data-trait', [T.base, T.amp, col, T.mode].join(','));
+    };
   }
 
   function moiNom(): string {
@@ -230,16 +249,41 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     partage.style.borderColor = n === 'chiche' ? palette.brun09 : palette.creme95;
     poserPhoto();
     // le nombre de mots sur la ligne « Un mot… » (C-257) : le total ; « +N » orange quand des mots d'autres ne sont pas encore vus (C-253)
-    const mots = p.comments ?? [];
+    const ms = p.comments ?? [];
     const moi = moiNom();
-    const neufs = mots.filter((m) => !m.vu && !/^moi$/i.test(String(m.by)) && m.by !== moi).length;
-    nbMots.hidden = !mots.length;
-    nbMots.textContent = neufs ? '+' + String(neufs) : String(mots.length);
+    const neufs = ms.filter((m) => !m.vu && !/^moi$/i.test(String(m.by)) && m.by !== moi).length;
+    nbMots.hidden = !ms.length;
+    nbMots.textContent = neufs ? '+' + String(neufs) : String(ms.length);
     nbMots.classList.toggle('cm5-neufs', !!neufs);
     coter(!!c);
     tenir.poser(!instantF && p.status !== 'tenu');
     poserInstant(p);
     poserPlus(p);
+    poserMots(p);
+  }
+
+  /**
+   * « LES MOTS », PUIS LA HAUTEUR DU CONTENU ET LA JONCTION : sous « Un mot… », la liste (mots.ts) ; la fiche défile dès que ce qui suit la ligne
+   * d'état passe 748 pt (`ajusteLigne` : le bas + 12 + 84) ; la jonction (jonction.ts) se pose sur ce trait et cette hauteur.
+   */
+  function poserMots(p: Parole): void {
+    const dy = parseFloat(unMot.style.translate.split(' ')[1] ?? '0') || 0;
+    // les mots restent sous le rideau (« le trait se referme ») : la fiche garde sa hauteur, son défilement ne retombe pas
+    const basMots = mots.poser(p.comments ?? [], dy);
+    // sous le rideau, le prototype retire la liste (`inv()` de lot-S5) ; son titre reste
+    const liste = defile.querySelector<HTMLElement>('#cm5Liste');
+    if (liste) liste.style.visibility = instantF === 'referme' ? 'hidden' : '';
+    let bas = 0;
+    const R = defile.getBoundingClientRect();
+    const k = R.width / defile.offsetWidth || 1;
+    for (const e of defile.querySelectorAll<HTMLElement>('#cm5Liste, #cm5Titre, #cm5Ligne')) {
+      const r = e.getBoundingClientRect();
+      if (r.height) bas = Math.max(bas, (r.bottom - R.top) / k + defile.scrollTop);
+    }
+    if (basMots != null) bas = Math.max(bas, basMots);
+    const hauteur = bas > 748 ? Math.ceil(bas + 12 + 84) : defile.clientHeight || 844;
+    espace.style.height = `${String(hauteur)}px`;
+    jonction.poser({ base: T.base, amp: T.amp, champ: CHAMP[nature(p)], hauteur });
   }
 
   /**
@@ -286,7 +330,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     const f = fi.getBoundingClientRect();
     const k = f.width / fi.offsetWidth || 1;
     const gx = (r.right - f.left) / k + 26;
-    const cy = (r.top - f.top) / k + r.height / k / 2;
+    // en points de la couche qui défile (le « + » y vit) : la fiche peut être défilée quand elle se repose (« juste après », C-311)
+    const cy = (r.top - f.top) / k + r.height / k / 2 + defile.scrollTop;
     // la rangée déborde (plus de trois personnes) : le « + » serait hors de l'écran, sous le fondu — il ne paraît pas
     if (gx + 18 > 366) {
       plusM.hidden = true;
@@ -457,7 +502,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   // ── TENIR (tenir.ts) ──
   const tenir = monterTenir({
-    fi,
+    fi: defile,
     mot: geste,
     trait: () => ({ base: T.base, amp: T.amp }),
     actif: () => !!courant && !fi.hidden && !instantF && courant.status !== 'tenu',
@@ -485,6 +530,39 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     },
   });
 
+  // ── LES MOTS ET LA JONCTION (mots.ts, jonction.ts) ──
+  const mots = monterMots({
+    dans: defile,
+    moi: () => ({ nom: moiNom(), graine: magasin.etat().utilisateur.graine ?? 0 }),
+    tous: () => {
+      const S = new Set<string>();
+      const aj = (v: string | null | undefined): void => {
+        for (const x of String(v ?? '').split(/\s*[,·]\s*|\s+et\s+/)) {
+          const t = x.trim();
+          if (t && !/^(moi|le groupe|tout le monde|toi)$/i.test(t)) S.add(t);
+        }
+      };
+      for (const q of magasin.etat().paroles) {
+        aj(q.who);
+        aj(q.from);
+        aj(typeof q.suite?.['avec'] === 'string' ? q.suite['avec'] : '');
+        for (const c of q.comments ?? []) aj(c.by);
+      }
+      aj(moiNom());
+      return [...S];
+    },
+    maintenant: () => Date.now(),
+  });
+  const jonction = monterJonction({
+    defile,
+    champ,
+    fond: () => getComputedStyle(fi).backgroundColor,
+    zone: () => defile.querySelector<HTMLElement>('#tenirZone'),
+    ligne(g, base, amp) {
+      if (courant) peindreLigne(g, base, amp, optionsLigne(courant));
+    },
+  });
+
   function ouvrir(id: number): void {
     const p = magasin.etat().paroles.find((q) => q.id === id);
     if (!p || p.draft) return;
@@ -493,6 +571,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     doigtX = null;
     courant = p;
     deplie = false;
+    // une fiche se rouvre en haut (v182b)
+    defile.scrollTop = 0;
     // montrée AVANT d'être posée (en bas, invisible) : les cotes se lisent sur le rendu (le titre, la phrase, les disques) ; puis elle monte
     if (finFermeture != null) horloge().annuleMinuteur(finFermeture);
     finFermeture = null;
@@ -549,7 +629,14 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   return {
     ouvrir,
     fermer,
-    etat: () => ({ id: courant?.id ?? null, base: T.base, amp: T.amp, mode: T.mode, instant: instantF }),
+    etat: () => ({
+      id: courant?.id ?? null,
+      base: T.base,
+      amp: T.amp,
+      mode: T.mode,
+      instant: instantF,
+      jonction: jonction.etat(),
+    }),
     tenir: () => tenir.etat(),
   };
 }

@@ -1590,17 +1590,22 @@ test("aucun changement sec : le symbole « recadrer » naît et part en flaques,
       content:
         '#accRecadre canvas.passage-flaques{display:none!important} #accRecadre.cache svg{visibility:visible!important}',
     });
-  // il naît : la main bouge la vue (le moteur lit le doigt ; les images de l'horloge font le reste)
+  // il naît : la main bouge la vue (le moteur lit le doigt ; les images de l'horloge font le reste) — son état relevé dès la PREMIÈRE image du geste
+  // (sur une machine lente, la naissance commençait pendant le geste et ses premières images n'étaient pas relevées : CI du 23 nov.)
   await pg.mouse.move(195, 420);
   await pg.mouse.down();
+  const pendant: string[] = [];
   for (let k = 1; k <= 10; k++) {
     await pg.mouse.move(195 - 5.5 * k, 420 - 4 * k);
-    await pg.evaluate(`${P_}.horloge.images(1)`);
+    pendant.push((await pg.evaluate(`(() => { ${P_}.horloge.images(1); return (${ETAT_RECADRE})(); })()`)) as string);
   }
   await pg.mouse.up();
-  const nait = (await pg.evaluate(
-    `(${PAS_A_PAS})(${JSON.stringify([ETAT_RECADRE, "p.accueil().etatRecadre().etat === 'la'", 600])})`,
-  )) as string[];
+  const nait = [
+    ...pendant,
+    ...((await pg.evaluate(
+      `(${PAS_A_PAS})(${JSON.stringify([ETAT_RECADRE, "p.accueil().etatRecadre().etat === 'la'", 600])})`,
+    )) as string[]),
+  ];
   // il part : 4 s sans toucher, comptées depuis le dernier mouvement de la vue (elle revient seule dans ses bornes)
   const part = (await pg.evaluate(
     `(${PAS_A_PAS})(${JSON.stringify([ETAT_RECADRE, "p.accueil().etatRecadre().etat === 'absent'", 4000])})`,

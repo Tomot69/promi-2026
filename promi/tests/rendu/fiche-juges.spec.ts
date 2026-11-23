@@ -171,31 +171,40 @@ test('la fiche monte du bas à l’ouverture et y redescend au X, jamais d’un 
   await app(page);
   // la sonde : la transition retirée (la fiche paraît et part d'un coup)
   if (sonde('fiche-seche')) await page.addStyleTag({ content: '#detailPoster.fiche{transition:none!important}' });
-  // le relevé : toutes les 25 ms (réelles), la place calculée de la fiche — la transition s'échantillonne à chaque lecture du style, quelle que
-  // soit la cadence des images (sur une machine lente, deux images seulement pendant 0,4 s) ; il part DANS la tâche qui ouvre (ou qui touche le
-  // X) : une page qui tarde à recevoir l'ordre ne le fait pas commencer après la transition
-  const releve = (geste: string): string => `(async () => { const v = []; ${geste}; const t0 = performance.now();
-    await new Promise((ok) => { const f = () => { const e = document.getElementById('detailPoster'); const r = e.getBoundingClientRect();
-      v.push([performance.now() - t0, e.hidden ? -1 : r.top, +getComputedStyle(e).opacity]); if (performance.now() - t0 < 700) setTimeout(f, 25); else ok(); }; f(); });
-    return v; })()`;
-  const m = (await page.evaluate(releve(`${P_}.fiche().ouvrir(144)`))) as number[][];
-  const vus = m.filter((x) => x[1]! >= 0);
-  expect(vus.length, 'des images pendant la montée').toBeGreaterThan(2);
+  // le relevé : la transition de la fiche elle-même (`getAnimations`), lue DANS la tâche qui ouvre (ou qui touche le X) — sa durée, puis la place
+  // de la fiche à 0, ¼, ½, ¾ et à la fin de la course, la transition arrêtée à chaque instant (`currentTime`) : rien ne dépend de la cadence
+  // de la machine (sous Linux, en CI, un relevé toutes les 25 ms réelles ne voyait parfois aucune image à mi-chemin)
+  const releve = (
+    geste: string,
+  ): string => `(() => { ${geste}; const e = document.getElementById('detailPoster'); e.getBoundingClientRect();
+    const t = e.getAnimations().find((a) => a.transitionProperty === 'transform'); if (!t) return null;
+    const D = t.effect.getComputedTiming().duration; t.pause(); const v = [];
+    for (const f of [0, 0.25, 0.5, 0.75, 1]) { t.currentTime = D * f; v.push(Math.round(e.getBoundingClientRect().top * 10) / 10); }
+    t.finish(); return { D, v }; })()`;
+  type Releve = { D: number; v: number[] } | null;
+  const m = (await page.evaluate(releve(`${P_}.fiche().ouvrir(144)`))) as Releve;
+  expect(m, 'une transition de la place à l’ouverture (elle monte, elle ne paraît pas d’un coup)').not.toBeNull();
+  expect(m!.D, 'en 0,4 s (le prototype : .poster)').toBe(400);
+  expect(m!.v[0], 'elle part d’en bas').toBeGreaterThan(800);
   expect(
-    vus.some((x) => x[1]! > 40 && x[1]! < 800),
-    'une image à mi-chemin (elle monte, elle ne paraît pas d’un coup)',
+    m!.v.slice(1, 4).every((y, i) => y > 1 && y < 843 && y < m!.v[i]!),
+    `elle monte, image après image (${m!.v.join(' → ')})`,
   ).toBe(true);
-  expect(vus.at(-1)![1], 'arrivée en haut').toBeLessThan(1);
+  expect(m!.v[4], 'arrivée en haut').toBeLessThan(1);
+  await page.waitForTimeout(600);
   const d = (await page.evaluate(
     releve(`(() => { const x = document.querySelector('#detailPoster.fiche .closeb'); const r = x.getBoundingClientRect();
       const o = { bubbles: true, clientX: r.left + r.width / 2, clientY: r.top + r.height / 2, pointerId: 1, pointerType: 'touch', isPrimary: true };
       x.dispatchEvent(new PointerEvent('pointerdown', o)); x.dispatchEvent(new PointerEvent('pointerup', o)); x.dispatchEvent(new MouseEvent('click', o)); })()`),
-  )) as number[][];
+  )) as Releve;
+  expect(d, 'une transition de la place au X (elle redescend)').not.toBeNull();
+  expect(d!.D).toBe(400);
   expect(
-    d.some((v) => v[1]! > 40 && v[1]! < 800),
-    'une image à mi-chemin de la descente',
+    d!.v.slice(1, 4).every((y, i) => y > 1 && y < 843 && y > d!.v[i]!),
+    `elle redescend, image après image (${d!.v.join(' → ')})`,
   ).toBe(true);
-  expect(d.at(-1)![1], 'cachée à la fin').toBe(-1);
+  await page.waitForTimeout(600);
+  expect(await page.evaluate(() => document.getElementById('detailPoster')!.hidden), 'cachée à la fin').toBe(true);
 });
 
 test('toucher une dalle de la Toile ouvre SA fiche (le vrai chemin), le X la referme', async ({ page }) => {

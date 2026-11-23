@@ -213,3 +213,31 @@ autre trace la dernière part (`_maree.revoir`) — il faut le réseau (1.1) ; l
 | redteam_premier_toucher (C-263)                                             | TJ › le premier toucher prend le trait : cinq fiches de suite (le défilement : 3a-3)                             |
 | redteam_fluide (C-102)                                                      | TJ › le moment « tenir » est fluide — jugé au calme seulement (C-137 : « non jugé » au-delà d'une charge de 4)   |
 | redteam_celebration_fixe (C-311)                                            | 3a-3 (la fiche qui défile pendant la célébration)                                                                |
+
+## Lot 3a-3 — défiler : la jonction (la bande, la vague, le trait plat, le geste accroché, les places sûres) et « Les Mots »
+
+Fichier : `jonction.spec.ts` (J). **L'horloge est PILOTÉE des deux côtés**, les animations CSS gelées ; la fiche porte les trois mots de banc_jonction (Marion,
+Rachel, Nico) : elle défile (257 pt). À chaque pas (0 → le bout, serré à la rencontre de 120 à 150 pt, puis retour), **l'écran entier** est comparé au pixel.
+**Porté** : `src/ecrans/fiche/jonction.ts` (lot-V187-HAUT, lot-V189-JONCTION : la bande collée 0 → 112, la vague z 7, la fenêtre découpée colonne par colonne
+sous le dernier pixel plein de la vague, le trait plat collé à 110 ; le geste coupé accroché ; les aimants et les places sûres a et z ; un toucher sous la bande
+avalé), `src/ecrans/fiche/mots.ts` (« Les Mots » et la liste, affichées : le titre à 780, la liste à 832, le visage `_blobBg`, le nom coupé à 180 pt, la date de
+`_noms.date` ; la saisie, l'envoi, les mots neufs : 3b), la fiche en deux couches (`#dpDefile` défile ; le plateau et la barre Peaufiner restent posés), la hauteur
+du contenu (`ajusteLigne` : le bas + 96 au-delà de 748). **Écarts nommés** : M4, le chevron de Peaufiner que le prototype retourne en bas de la fiche (Q626) ; le visage d'un mot (le `_blobBg` du prototype, un dégradé)
+en exception nommée du juge du volume (`VOLUME_BLANCHE`, Q627).
+M5 : au passage à « juste après » sur une fiche défilée, la hauteur du contenu du prototype retombe un instant et son défilement en est borné (un saut
+de 3 pt, sec) ; la vraie app reste où elle est (le test le vérifie, puis compare à la place du prototype). M1 couvre aussi la copie de la matière dans la bande.
+**Non repris** : l'extinction de la fenêtre au repos (`eteint`, v201b) — mesuré : au repos au-dessus de `a`, le trait plat est déjà hors de la fenêtre ; le
+rognage à 112 (`_v184Rogne`) — la phrase est sous la bande dans la vraie app, le prototype la pose au-dessus puis la rogne : même image.
+**Corrigé en passant (CI Linux)** : la croix d'un plateau se repose quand une police finit de se charger (`poserCroix`) ; « + 3 personnes » est un mot de la phrase
+(en ligne, sans apparence de bouton), comme le prototype.
+
+| Juge du prototype                                                                 | Test                                                                                                       |
+| --------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| banc_jonction, redteam_jonction, redteam_jonction_fiche, redteam_jonction_plat    | J › identité au pixel : la jonction — Promi, Chiche, Promi tenu × deux thèmes, chaque pas, aller et retour |
+| redteam_points_plat, redteam_trait_entier, redteam_trait_retour, redteam_un_trait | J › identité au pixel (les points plats, le trait entier à chaque pas, le retour exact en haut)            |
+| redteam_haut_fiche (sentinelle C-255 : la place du haut à chaque pas)             | J › identité au pixel (en WebKit ; le doigt dans Safari : à voir sur l'iPhone)                             |
+| redteam_jonction_fiche E (le geste accroché)                                      | J › le geste accroché ne prend plus le doigt ; décroché, il le reprend                                     |
+| redteam_repos_fiche (v201 ①)                                                      | J › les places sûres : les bornes et les aimants du prototype                                              |
+| redteam_celebration_fixe (C-311), banc_apres_tenir (T1)                           | J › tenir une fiche à mots défilée, puis défiler pendant que le vert est posé                              |
+| redteam_elan, redteam_jonction_rebond (l'élan et le rebond de Safari)             | non jugé au banc (WebKit piloté n'a ni élan ni rebond) : sur l'iPhone (A-VERIFIER-3A3.md)                  |
+| redteam_mots_fiche, redteam_les_mots (l'affichage)                                | J › identité au pixel (« Les Mots » et la liste en vue) ; le reste : 3b                                    |

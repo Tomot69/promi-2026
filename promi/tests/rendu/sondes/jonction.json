@@ -1,0 +1,27 @@
+[
+  {
+    "nom": "jonction-plat-decale",
+    "test": "identité au pixel : la jonction — Promi à soi, sombre",
+    "defaut": "le trait plat de la vraie app posé 1 pt plus bas que celui du prototype"
+  },
+  {
+    "nom": "jonction-sans-bande",
+    "test": "identité au pixel : la jonction — Chiche lancé à Adrien, sombre",
+    "defaut": "pas de bande collée en haut : ce qui monte reste en vue au-dessus de 112 pt"
+  },
+  {
+    "nom": "jonction-geste",
+    "test": "le geste accroché ne prend plus le doigt ; décroché, il le reprend (Promi, Chiche)",
+    "defaut": "le geste prend encore le doigt une fois le trait accroché à la jonction"
+  },
+  {
+    "nom": "jonction-aimants",
+    "test": "les places sûres : les bornes et les aimants du prototype (Promi, Chiche)",
+    "defaut": "aucun aimant pendant le geste : le défilement peut finir la vague à demi sous la bande"
+  },
+  {
+    "nom": "celebration-defile",
+    "test": "tenir une fiche à mots défilée, puis défiler pendant que le vert est posé : comme le prototype (C-311, banc_apres_tenir)",
+    "defaut": "le rideau et « Parole tenue ! » posés 40 pt trop haut quand la fiche est défilée (le défaut de v211 : la phrase montait du défilement)"
+  }
+]

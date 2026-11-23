@@ -10,10 +10,79 @@
   border-radius: 22px;
   color: var(--c-creme95);
   font: 16px var(--f-texte);
-  /* la fiche défile (sa jonction : lot 3a-3) */
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
+}
+/* la couche qui défile (lot 3a-3) : tout ce qui est sous le plateau ; le plateau et la barre Peaufiner sont posés au-dessus d'elle. En colonne, comme
+   la fiche du prototype : la bande (collée en haut) et la fenêtre du trait plat sont dans le flux, leurs marges négatives n'allongent rien ;
+   la hauteur est celle de l'espace (fiche.ts, `poserMots`) */
+#detailPoster .fi-defile {
+  position: absolute;
+  inset: 0;
   overflow: hidden auto;
   scrollbar-width: none;
-  -webkit-tap-highlight-color: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+#detailPoster .fi-defile::-webkit-scrollbar {
+  display: none;
+}
+#detailPoster .fi-espace {
+  flex: none;
+  width: 1px;
+  pointer-events: none;
+}
+/* ── LA JONCTION (jonction.ts) : la bande (z 8, collée en haut), la vague (le trait, z 7), la fenêtre du trait plat (z 5) ── */
+#detailPoster #v187Bande {
+  position: sticky;
+  top: 0;
+  flex: none;
+  display: block;
+  width: 390px;
+  height: 112px;
+  margin: 0 0 -112px;
+  z-index: 8;
+  pointer-events: none;
+}
+#detailPoster #v200Fenetre {
+  position: relative;
+  flex: none;
+  width: 394px;
+  margin: 110px 0 0 -2px;
+  z-index: 5;
+  pointer-events: none;
+}
+#detailPoster #v195Plat {
+  position: sticky;
+  top: 110px;
+  display: block;
+  width: 394px;
+  height: 40px;
+}
+#detailPoster #v195Plat canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 394px;
+  height: 100%;
+  display: block;
+}
+#detailPoster .v203-aimants {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+#detailPoster .v203-aimants i {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  scroll-snap-align: start;
 }
 #detailPoster[hidden],
 #detailPoster [hidden] {
@@ -47,6 +116,9 @@
   display: block;
   pointer-events: none;
 }
+#detailPoster .fi-trait {
+  z-index: 7;
+}
 
 /* ── le plateau (24 / 40 / 342 × 60) : le mot de la nature et le X ── */
 #detailPoster .enh {
@@ -63,6 +135,7 @@
   border: 2px solid var(--c-creme95);
   border-radius: 30px;
   background: var(--c-seiche10);
+  /* au-dessus de la bande (z 8), sous le bouton photo (z 10) qui passe dessus quand la fiche défile, comme dans le prototype */
   z-index: 9;
 }
 #detailPoster .fi-mot {
@@ -122,7 +195,8 @@
   border-radius: 999px;
   color: var(--c-creme95);
   opacity: 0.62;
-  z-index: 6;
+  /* au-dessus de la bande et du plateau quand la fiche défile (le prototype : le nid du bouton à z 9, au-dessus de tout le haut) */
+  z-index: 10;
   cursor: pointer;
   font: 11px system-ui;
 }
@@ -163,7 +237,14 @@
 #detailPoster .fi-phrase .nom-lien {
   cursor: pointer;
 }
+/* un mot de la phrase, pas un bouton dessiné par le système (le prototype : `.dpt-plus`, en ligne, sans apparence) — un bouton en `inline-block`
+   pose son texte dans sa propre boîte : sous Linux, ses lettres se lissent autrement (CI du 23 nov.) */
 #detailPoster .fi-phrase .fi-plus {
+  appearance: none;
+  display: inline;
+  box-sizing: content-box;
+  text-align: start;
+  user-select: text;
   font: inherit;
   letter-spacing: inherit;
   color: inherit;
@@ -235,6 +316,59 @@
 }
 #detailPoster .cm5-nb.cm5-neufs {
   color: var(--c-orange-depart);
+}
+
+/* ── « LES MOTS » (mots.ts ; C-248, C-261) : le titre à 780, la liste à 832 ── */
+#detailPoster .cm5-titre,
+#detailPoster .cm5-liste {
+  position: absolute;
+  left: var(--marge-g);
+  width: 342px;
+  z-index: 3;
+}
+#detailPoster .cm5-titre {
+  font: 700 13px/16px var(--f-libelle);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-beige67);
+  pointer-events: none;
+}
+#detailPoster .cm5-liste {
+  color: var(--c-creme95);
+}
+#detailPoster .cm5-un {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 0 0 12px;
+  position: relative;
+}
+#detailPoster .cm5-vis {
+  display: inline-block;
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+}
+#detailPoster .cm5-corps {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+#detailPoster .cm5-qui {
+  font: 700 16px/22px var(--f-libelle);
+  white-space: nowrap;
+  overflow: hidden;
+}
+#detailPoster .cm5-date {
+  font: 400 13px/22px var(--f-texte);
+  margin-left: 7px;
+}
+#detailPoster .cm5-t {
+  font: 400 16px/1.35 var(--f-texte);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  margin: 1px 0 0;
 }
 
 /* ── la barre Peaufiner (fermée ; ouverte : lot 3b) et son rond Partager ── */

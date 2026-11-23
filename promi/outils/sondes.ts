@@ -4,6 +4,8 @@
  * lit (`sonde('nom')`, tests/rendu/aides.ts), le titre exact du test, et le défaut qu'elle pose, en une phrase. Cet outil rejoue chaque test
  * avec sa sonde (`PROMI_SONDE=nom`) et exige qu'il ROUGISSE ; il vérifie aussi que chaque `sonde('…')` des tests est inscrite, et
  * l'inverse. Une sonde que son test ne prend pas : l'outil échoue, et le test est mort.
+ * Une sonde est prise au PREMIER test qui rougit (`--max-failures=1`) : une sonde qui vise une famille de tests (les huit identités de la
+ * page +) ne les rejoue pas tous en échec — `pp-identite-decale` a pris 41 min ainsi et fait dépasser l'heure à sa part (CI du 23 nov.).
  *   node outils/sondes.ts                 toutes les sondes (l'app construite, `vite preview` sur 5180)
  *   node outils/sondes.ts <nom> [<nom>…]  celles-là seulement
  *   node outils/sondes.ts --part=2/4      la deuxième des quatre parts (l'intégration continue)
@@ -51,7 +53,17 @@ for (const s of choix) {
   const t0 = Date.now();
   const r = spawnSync(
     'npx',
-    ['playwright', 'test', s.fichier, '-g', echappe(s.test), '--workers=1', '--retries=0', '--reporter=line'],
+    [
+      'playwright',
+      'test',
+      s.fichier,
+      '-g',
+      echappe(s.test),
+      '--workers=1',
+      '--retries=0',
+      '--max-failures=1',
+      '--reporter=line',
+    ],
     { cwd: join(ICI, '..'), env: { ...process.env, PROMI_SONDE: s.nom }, encoding: 'utf8' },
   );
   const sortie = (r.stdout ?? '') + (r.stderr ?? '');

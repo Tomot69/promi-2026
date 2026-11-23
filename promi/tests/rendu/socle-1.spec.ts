@@ -1270,7 +1270,12 @@ test('écrans : l’accueil — la Toile, le Fil et sa pastille, l’anneau du +
 //     sources de la vraie app (hors pièces reprises : copies octet pour octet du prototype — outils/reprendre.py --verifie —, dont la
 //     dette est celle du prototype, volume-dette.json) ; (b) au rendu, sur chaque écran porté, éléments et pseudo-éléments.
 // ═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
-const VOLUME_BLANCHE: string[] = [];
+/**
+ * les exceptions NOMMÉES, chacune avec sa raison :
+ *  · le visage d'un mot (lot 3a-3, `fondVisage` de mots.ts) : le `_blobBg` du prototype, quatre taches en dégradé radial — une dette de volume du
+ *    prototype, reprise telle quelle pour que la fiche soit identique (Q627 : la garder, ou poser le visage des Noyaux).
+ */
+const VOLUME_BLANCHE: string[] = ['src/ecrans/fiche/mots.ts : radial-gradient('];
 
 test('volume : aucun halo, ombre floue ni dégradé dans les sources de la vraie app', () => {
   const fichiers = [
