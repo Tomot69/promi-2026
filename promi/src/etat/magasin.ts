@@ -8,7 +8,7 @@ import type { Brouillon, CouleurDalle, Etat, MondeDalle, Parole, Place } from '.
 import { tirer } from '../metier/exemples.ts';
 import { etatVide } from '../donnees/schema.ts';
 import { migrer } from '../donnees/migrations/index.ts';
-import { minuit, recompterEcheances } from '../metier/relecture.ts';
+import { minuit, poserCles, recompterEcheances } from '../metier/relecture.ts';
 import { aPlusieurs, etatParts } from '../metier/fiche.ts';
 import { ligneFil } from '../metier/fil.ts';
 import type { Stockage } from '../donnees/stockage.ts';
@@ -72,6 +72,11 @@ export interface Actions {
    * tiennent, ou déjà tenue : rien → « rien ».
    */
   tenir(id: number, trace: Array<{ x: number; y: number }>, maintenant: number): 'tenue' | 'part' | 'rien';
+  /**
+   * C-280 : RENOMMER une parole (son titre modifié sur sa fiche ; le prototype : `sort()` de lot-V203-TITRE) — le titre neuf partout ; la clé
+   * de plantation gardée (Q621 : le moteur la lit, la dalle garde sa forme) ; les lignes du Fil qui la citent, réécrites ; sa dernière action.
+   */
+  renommer(id: number, titre: string, maintenant: number): void;
 }
 
 export interface Magasin extends Actions {
@@ -98,7 +103,8 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
     return migrer(JSON.parse(t));
   }
   function valider(action: string, suivant: Etat): void {
-    e = suivant;
+    // Q621 : chaque parole plantée porte sa clé de plantation, posée à chaque écriture (le prototype : `saveState` enveloppé par lot-V203-CLE)
+    e = { ...suivant, paroles: poserCles(suivant.paroles) };
     stockage.ecrire(JSON.stringify(e));
     for (const f of abonnes) f(e, action);
   }
@@ -293,6 +299,22 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
         compteurs: { nid: id + 1, fid: fid + 1 },
       });
       return id;
+    },
+    renommer(id, titre, maintenant) {
+      const p = e.paroles.find((q) => q.id === id);
+      if (!p || p.title === titre) return;
+      const avant = p.title;
+      const neuve: Parole = { ...p, title: titre, derAct: maintenant };
+      if (neuve.cle == null && !p.draft) neuve.cle = avant;
+      // les lignes du Fil citent le titre entre guillemets — insécables depuis v21 (`insecable`) : les deux formes sont réécrites (le
+      // prototype ne cherchait que la forme à espaces ordinaires, et ne réécrivait donc plus rien : écart nommé, JUGES-TESTS 3a-4)
+      const NB = '\u00a0';
+      const fil = e.fil.map((f) =>
+        f.pid === id && typeof f.text === 'string'
+          ? { ...f, text: f.text.split(`«${NB}${avant}${NB}»`).join(`«${NB}${titre}${NB}»`).split(`« ${avant} »`).join(`«${NB}${titre}${NB}»`) }
+          : f,
+      );
+      valider('renommer', { ...e, paroles: e.paroles.map((q) => (q.id === id ? neuve : q)), fil });
     },
     tenir(id, trace, maintenant) {
       const p = e.paroles.find((q) => q.id === id);

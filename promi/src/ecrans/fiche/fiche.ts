@@ -23,6 +23,8 @@ import { noyauxDe, peindreNoyaux, rangeeNoyaux } from './noyaux.ts';
 import { monterTenir, type Instant } from './tenir.ts';
 import { monterJonction } from './jonction.ts';
 import { monterMots } from './mots.ts';
+import { monterTitre } from './titre.ts';
+import { chargerTrace } from '../../animation/trace/trace.ts';
 import { haptique } from '../../natif/haptique.ts';
 import {
   aPlusieurs,
@@ -132,6 +134,14 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   let courant: Parole | null = null;
   let deplie = false;
+  /**
+   * C-244 : le titre coupé, déplié par un premier toucher (`_titreDeplie`, cette fiche seulement, oublié à la fermeture) ; C-280 : entier tant
+   * qu'il se modifie. Déplié ou modifié, « Un mot… » ne suit plus la ligne d'état pas à pas : sa place est figée (`dyFige`, le `_titreDecal`
+   * du prototype) — au dépliage, elle garde l'air qu'elle avait sous l'état replié.
+   */
+  let titreDeplie = false;
+  let titreEdite = false;
+  let dyFige: number | null = null;
   let T: Trait = { mode: 'moitie', base: 286, amp: 36, carte: false };
   /** l'instant de « tenir » (lot-S5) : null, « le trait se referme » (sous le rideau), « juste après » */
   let instantF: Instant = null;
@@ -409,9 +419,47 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
       Math.ceil(encre(fs).bas) +
       Math.round(accentHaut(etatL, 13.5));
     etatL.style.top = `${String(yEtat)}px`;
-    // « Un mot… » (692 → 748) garde 8 pt sous la ligne d'état (lot-V181B-TEXTES, `ajusteLigne`)
+    // « Un mot… » (692 → 748) garde 8 pt sous la ligne d'état (lot-V181B-TEXTES, `ajusteLigne`) ; déplié ou modifié, sa place est figée
     const bas = yEtat + etatL.offsetHeight;
-    unMot.style.translate = `0 ${String(Math.max(0, bas - 692 + 8))}px`;
+    unMot.style.translate = `0 ${String(dyFige ?? Math.max(0, bas - 692 + 8))}px`;
+  }
+
+  /**
+   * C-244 — LE DÉPLIAGE (`bascule` de lot-V181B-TEXTES) : le titre se découvre en entier (de sa hauteur repliée à sa hauteur entière, découpé),
+   * et ce qui le suit glisse à sa nouvelle place, d'un seul mouvement (360 ms, aller-retour quadratique) ; « Un mot… » garde l'air qu'il avait
+   * sous la ligne d'état. Réduire les animations : posé d'un coup.
+   */
+  function deplier(): void {
+    if (!courant) return;
+    const R = defile.getBoundingClientRect();
+    const k = R.width / defile.offsetWidth || 1;
+    const SUIT = [etatL, ...defile.querySelectorAll<HTMLElement>('#cm5Ligne, #cm5Titre, #cm5Liste')];
+    const avant = SUIT.map((e) => e.getBoundingClientRect().top);
+    const h0 = titre.getBoundingClientRect().height / k;
+    const dy0 = parseFloat(unMot.style.translate.split(' ')[1] ?? '0') || 0;
+    const air = 692 + dy0 - (etatL.offsetTop + etatL.offsetHeight);
+    titreDeplie = true;
+    dyFige = null;
+    poser(courant);
+    dyFige = Math.max(0, etatL.offsetTop + etatL.offsetHeight - 692 + Math.max(8, air));
+    unMot.style.translate = `0 ${String(dyFige)}px`;
+    poserMots(courant);
+    const h1 = titre.getBoundingClientRect().height / k;
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const dep = SUIT.map((e, i) => (avant[i]! - e.getBoundingClientRect().top) / k);
+    const H = horloge();
+    const t0 = H.maintenant();
+    const doux = (u: number): number => (u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2);
+    const f = (): void => {
+      const u = Math.min(1, (H.maintenant() - t0) / 360);
+      const v = 1 - doux(u);
+      SUIT.forEach((e, i) => {
+        e.style.transform = u < 1 && dep[i] ? `translateY(${(dep[i] * v).toFixed(2)}px)` : '';
+      });
+      titre.style.clipPath = u < 1 && h1 > h0 ? `inset(0 0 ${((h1 - h0) * v).toFixed(2)}px 0)` : '';
+      if (u < 1) H.image(f);
+    };
+    f();
   }
 
   /** ce que l'agrandissement des faces (v96, × 1,12) ajoute à l'encre au-dessus et au-dessous d'une ligne (`_encreSup`) */
@@ -422,6 +470,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   function ajusterTitre(): number {
     const lignes = (f: number): number => Math.round(titre.offsetHeight / (f * 1.02));
+    delete titre.dataset['coupe'];
     let fs = 42;
     titre.style.fontSize = `${String(fs)}px`;
     while (fs > 38 && titre.offsetHeight > fs * 1.35) {
@@ -439,9 +488,13 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
             break;
           }
         }
-      if (!ok && courant) {
+      if (!ok) {
         fs = 24;
         titre.style.fontSize = '24px';
+        titre.dataset['coupe'] = '1';
+      }
+      // déplié ou en modification : le titre entier, à la taille du replié (C-244) ; sinon coupé par « … » à la troisième ligne
+      if (!ok && courant && !titreDeplie && !titreEdite) {
         const long = courant.title;
         let lo = 0;
         let hi = long.length;
@@ -563,14 +616,48 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     },
   });
 
+  const titreCtl = monterTitre({
+    defile,
+    titre,
+    long: () => courant?.title ?? null,
+    actif: () => !!courant && !fi.hidden && !fi.classList.contains('fi-bas') && !instantF && !tenir.etat().geste,
+    coupe: () => titre.dataset['coupe'] === '1',
+    deplie: () => titreDeplie,
+    deplier,
+    entier(on) {
+      if (on) {
+        dyFige ??= parseFloat(unMot.style.translate.split(' ')[1] ?? '0') || 0;
+        titreEdite = true;
+      } else {
+        titreEdite = false;
+        if (!titreDeplie) dyFige = null;
+      }
+    },
+    recoter() {
+      if (!courant) return;
+      coter(!geste.hidden);
+      poserMots(courant);
+    },
+    renommer(v) {
+      if (courant) magasin.renommer(courant.id, v, Date.now());
+    },
+    retracer() {
+      chargerTrace().trace(titre, null, {});
+    },
+  });
+
   function ouvrir(id: number): void {
     const p = magasin.etat().paroles.find((q) => q.id === id);
     if (!p || p.draft) return;
     tenir.arreter();
+    titreCtl.sortir(true);
     instantF = null;
     doigtX = null;
     courant = p;
     deplie = false;
+    titreDeplie = false;
+    titreEdite = false;
+    dyFige = null;
     // une fiche se rouvre en haut (v182b)
     defile.scrollTop = 0;
     // montrée AVANT d'être posée (en bas, invisible) : les cotes se lisent sur le rendu (le titre, la phrase, les disques) ; puis elle monte
@@ -596,6 +683,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   function fermer(): void {
     if (fi.hidden || fi.classList.contains('fi-bas')) return;
     tenir.arreter();
+    titreCtl.sortir(true);
     courant = null;
     if (finOuverture != null) horloge().annuleMinuteur(finOuverture);
     finOuverture = null;

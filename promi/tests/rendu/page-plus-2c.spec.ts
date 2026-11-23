@@ -773,29 +773,41 @@ for (const nat of ['promi', 'chiche'] as const)
     test.setTimeout(120000);
     await ouvrir(page, nat);
     // chaque dalle POSÉE sur le champ de la page + est piégée : la taille et la place réellement peintes (1:1)
-    await page.evaluate(`(() => { const f = ${P_}.facade; const p = f.poserUn.bind(f); window.__D = [];
+    // chaque peinture porte le numéro de l'IMAGE où elle a lieu (un compteur d'images) : un saut se juge image par image (la dernière place
+    // peinte dans chaque image), jamais entre deux peintures d'une même image ni à l'horloge réelle (deux peintures à 10 ms de part et d'autre
+    // d'une image faisaient un faux saut : CI du 23 nov.)
+    await page.evaluate(`(() => { const f = ${P_}.facade; const p = f.poserUn.bind(f); window.__D = []; window.__F = 0;
+      const compte = () => { window.__F++; requestAnimationFrame(compte); }; requestAnimationFrame(compte);
       f.poserUn = (g, cv, cx, cy) => { if (g.canvas.id === 'csTrameCv') { const d = window.devicePixelRatio || 1;
-        window.__D.push({ t: performance.now(), w: Math.round(cv.width / d * 10) / 10, h: Math.round(cv.height / d * 10) / 10, y: Math.round((cy - cv.height / d / 2) * 10) / 10 }); }
+        window.__D.push({ f: window.__F, w: Math.round(cv.width / d * 10) / 10, h: Math.round(cv.height / d * 10) / 10, y: Math.round((cy - cv.height / d / 2) * 10) / 10 }); }
         return p(g, cv, cx, cy); }; })()`);
     // la sonde : la dalle demandée au moteur plus grande pendant la saisie (le défaut de v179 : elle remplissait le champ au plancher)
     if (sonde('dalle-zoom'))
       await page.evaluate(`(() => { const f = ${P_}.facade; const a = f.dalleAvenir.bind(f);
         f.dalleAvenir = (id, w, h, o) => document.querySelector('#createSheet.pp-ouvert') ? a(id, w * 1.4, h * 1.4, o) : a(id, w, h, o); })()`);
+    // la sonde (sur « la dalle de la page + ne zoome jamais, promi : … ») : la dalle peinte 6 pt plus bas une image sur deux (un saut)
+    if (sonde('dalle-saut'))
+      await page.evaluate(
+        `(() => { const f = ${P_}.facade; const p = f.poserUn; f.poserUn = (g, cv, cx, cy) => p(g, cv, cx, cy + (window.__F % 2 ? 6 : 0)); })()`,
+      );
     await toucher(page, TITRE);
     await posee(page);
     await page.keyboard.type('nager au lac', { delay: 60 });
     await page.keyboard.press('Enter');
     await page.waitForFunction(`${P_}.pagePlus().etat().invite.visible`, undefined, { timeout: 30000 });
     await posee(page);
-    const D = (await page.evaluate('window.__D')) as { t: number; w: number; h: number; y: number }[];
+    const D = (await page.evaluate('window.__D')) as { f: number; w: number; h: number; y: number }[];
     expect(D.length, 'la dalle est peinte').toBeGreaterThan(3);
     const tailles = [...new Set(D.map((d) => `${String(Math.round(d.w))}×${String(Math.round(d.h))}`))];
     expect(tailles, 'une seule taille, de l’ouverture à la validation').toHaveLength(1);
     const ys = D.map((d) => d.y);
     expect(Math.max(...ys) - Math.min(...ys), 'elle descend et remonte de 18 pt au plus').toBeLessThanOrEqual(18.5);
-    // en douceur : 3 pt au plus par image de 16,7 ms (jugé sur les images de 34 ms au plus)
-    const sauts = D.slice(1)
-      .map((d, i) => ({ dy: Math.abs(d.y - D[i]!.y), dt: d.t - D[i]!.t }))
-      .filter((x) => x.dt > 0 && x.dt <= 34 && x.dy / x.dt > 3 / 16.7);
+    // en douceur : 3 pt au plus par image (jugé entre deux images qui se suivent ou à une image près : la place vue à la fin de chaque image)
+    const parImage = new Map<number, number>();
+    for (const d of D) parImage.set(d.f, d.y);
+    const I = [...parImage.entries()].sort((a, b) => a[0] - b[0]);
+    const sauts = I.slice(1)
+      .map(([f, y], i) => ({ dy: Math.abs(y - I[i]![1]), df: f - I[i]![0] }))
+      .filter((x) => x.df <= 2 && x.dy / x.df > 3);
     expect(sauts, 'aucun saut de la dalle').toEqual([]);
   });

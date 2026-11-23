@@ -53,5 +53,10 @@
     "nom": "dalle-zoom",
     "test": "la dalle de la page + ne zoome jamais, promi",
     "defaut": "la dalle demandée au moteur 40 % plus grande pendant la saisie (le défaut de v179 : elle remplissait le champ au plancher)"
+  },
+  {
+    "nom": "dalle-saut",
+    "test": "la dalle de la page + ne zoome jamais, promi",
+    "defaut": "la dalle peinte 6 pt plus bas une image sur deux : un saut à chaque image"
   }
 ]

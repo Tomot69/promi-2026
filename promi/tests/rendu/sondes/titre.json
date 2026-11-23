@@ -1,0 +1,22 @@
+[
+  {
+    "nom": "titre-deplie-sec",
+    "test": "un titre coupé se déplie au premier toucher, comme le prototype — à mi-mouvement et posé (C-244)",
+    "defaut": "le titre déplié d'un coup, sans mouvement"
+  },
+  {
+    "nom": "titre-encart",
+    "test": "le second toucher modifie un titre coupé, sans aucun encart : l’écran du prototype en modification (C-280 §1)",
+    "defaut": "un contour autour du titre en modification (l'anneau de focus de WebKit)"
+  },
+  {
+    "nom": "renomme-sans-cle",
+    "test": "Retour renomme comme le prototype : le titre neuf partout, la clé de plantation gardée, la dalle garde sa forme (C-280, Q621)",
+    "defaut": "le moteur lit le titre au lieu de la clé de plantation : la dalle change de forme quand on renomme"
+  },
+  {
+    "nom": "titre-entier-deplie",
+    "test": "Échap, ou le titre vidé : l’ancien revient ; un titre entier se modifie au premier toucher (C-280)",
+    "defaut": "un titre entier pris pour un titre coupé : le premier toucher le déplierait au lieu de le modifier"
+  }
+]

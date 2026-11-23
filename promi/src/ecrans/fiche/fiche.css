@@ -267,6 +267,27 @@
   color: var(--c-creme95);
   overflow-wrap: anywhere;
 }
+/* C-280 §1 — en modification, AUCUN ENCART : ni contour (l'anneau de focus de WebKit), ni bordure, ni ombre, ni fond, ni apparence native, ni
+   surbrillance au toucher (lot-V203-TITRE-css) : c'est le titre au repos, seul le curseur clignote */
+#detailPoster .fi-titre.ti-edition,
+#detailPoster .fi-titre.ti-edition:focus,
+#detailPoster .fi-titre.ti-edition:focus-visible {
+  outline: none;
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+  user-select: text;
+}
+#detailPoster #tiCale {
+  position: absolute;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  visibility: hidden;
+  pointer-events: none;
+}
 #detailPoster .fi-etat {
   position: absolute;
   left: var(--marge-g);

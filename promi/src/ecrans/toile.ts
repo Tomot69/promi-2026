@@ -24,6 +24,10 @@ export function monterToile(conteneur: HTMLElement, magasin: Magasin, facade: Fa
     facade.fremir();
   }, 1500);
   const desabonne = magasin.abonner((e, action) => {
+    // le moteur lit les paroles du magasin, à jour avant que les écrans abonnés après lui ne se reposent (la fiche) ; un titre neuf : la Toile se
+    // repeint (le titre écrit sur la dalle — `Toile.redraw` de lot-V203-TITRE, jamais `Toile.sync`, qui referait l'ampleur de la dalle)
+    facade.rafraichir();
+    if (action === 'renommer') facade.redessiner();
     if (action === 'choisirMonde') facade.choisirMonde(e.studio.monde);
     if (action === 'choisirTheme') facade.appliquerTheme(e.reglages.theme);
     if (action === 'importer') facade.planterTout();

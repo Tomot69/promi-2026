@@ -1,5 +1,7 @@
 # Tracer et tenir (lot 3a-2) — à vérifier sur l'iPhone, dans l'app « Promi »
 
+**Installé sur ton iPhone le 23 nov. 2026 : commit `bb72066` (dans le relevé : `index-DvtgiSQ_.js`).**
+
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4). Ouvrir une parole en cours en touchant sa dalle sur la Toile.
 
 1. **Tenir** : poser le doigt sur la première moitié du trait, attendre un instant, tracer vers la droite. Le plein suit le doigt. Passé 60 pt, le

@@ -158,3 +158,49 @@ describe('tenir (lot 3a-2) : ce que le magasin écrit — le prototype, `#segSta
     ).toEqual(['Tu as tenu « rendre le livre »', '↻ « rendre le livre » régénérée']);
   });
 });
+
+describe('renommer (lot 3a-4, C-280, Q621) : ce que le magasin écrit — le prototype, `sort()` de lot-V203-TITRE', () => {
+  const magasinAvec = (paroles: Parole[]): Magasin => {
+    const m = creerMagasin(stockageMemoire(), () => AUJ);
+    m.importer({ ...etatVide(), paroles, compteurs: { nid: 50, fid: 9 } });
+    return m;
+  };
+  test('le titre neuf, la clé de plantation gardée, la dernière action', () => {
+    const m = magasinAvec([P({ id: 7 })]);
+    expect(m.etat().paroles[0]!.cle, 'la clé posée à la relecture (Q621)').toBe('rendre le livre');
+    m.renommer(7, 'rendre le livre demain', 1_800_000_000_000);
+    const p = m.etat().paroles[0]!;
+    expect(p.title).toBe('rendre le livre demain');
+    expect(p.cle).toBe('rendre le livre');
+    expect(p.derAct).toBe(1_800_000_000_000);
+  });
+  test('une parole plantée porte sa clé dès sa plantation', () => {
+    const m = magasinAvec([]);
+    const id = m.planter(
+      {
+        titre: 'courir',
+        who: 'moi',
+        chiche: false,
+        sens: 'soi',
+        avec: '',
+        note: '',
+        monde: { m: 'encre', p: 'signal', h: 0 },
+        due: null,
+        dueISO: null,
+        cercle: null,
+        fichiers: [],
+      },
+      1_800_000_000_000,
+    );
+    expect(m.etat().paroles.find((q) => q.id === id)!.cle).toBe('courir');
+  });
+  test('les lignes du Fil qui la citent sont réécrites (les guillemets insécables), les autres non', () => {
+    const m = magasinAvec([P({ id: 7 }), P({ id: 8, title: 'rendre le livre' })]);
+    m.tenir(7, [{ x: 150, y: 60 }], 1_800_000_000_000);
+    m.tenir(8, [{ x: 150, y: 60 }], 1_800_000_000_001);
+    m.renommer(7, 'rendre le livre demain', 1_800_000_000_002);
+    const L = m.etat().fil.map((f) => [f.pid, f.text]);
+    expect(L).toContainEqual([7, 'Tu as tenu « rendre le livre demain »']);
+    expect(L).toContainEqual([8, 'Tu as tenu « rendre le livre »']);
+  });
+});

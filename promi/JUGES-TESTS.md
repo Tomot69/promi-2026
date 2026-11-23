@@ -241,3 +241,23 @@ rognage à 112 (`_v184Rogne`) — la phrase est sous la bande dans la vraie app,
 | redteam_celebration_fixe (C-311), banc_apres_tenir (T1)                           | J › tenir une fiche à mots défilée, puis défiler pendant que le vert est posé                              |
 | redteam_elan, redteam_jonction_rebond (l'élan et le rebond de Safari)             | non jugé au banc (WebKit piloté n'a ni élan ni rebond) : sur l'iPhone (A-VERIFIER-3A3.md)                  |
 | redteam_mots_fiche, redteam_les_mots (l'affichage)                                | J › identité au pixel (« Les Mots » et la liste en vue) ; le reste : 3b                                    |
+
+## Lot 3a-4 — le titre modifiable (C-280, C-244, Q621)
+
+Fichier : `titre.spec.ts` (TI), `tests/unitaires/fiche.test.ts` (U, « renommer »). **L'horloge est PILOTÉE des deux côtés.**
+**Porté** : `src/ecrans/fiche/titre.ts` (lot-V203-TITRE : le toucher, la modification dans le titre lui-même, le curseur au point touché, 280 caractères
+sans retour à la ligne ni emoji, Retour / un toucher dehors / Échap, le titre vidé qui revient en se traçant, la fiche qui glisse au-dessus du clavier),
+le dépliage d'un titre coupé dans `fiche.ts` (C-244, `bascule` de lot-V181B-TEXTES : 360 ms, « Un mot… » garde son air), `magasin.renommer` (le titre,
+la clé de plantation gardée, les lignes du Fil, la dernière action) et la clé posée à chaque écriture (lot-V203-CLE, Q621). **Corrigé en passant** :
+le moteur lit les paroles du magasin après chaque écriture (`facade.rafraichir`) — sans cela il gardait l'ancien titre et, depuis 3a-2, l'ancien état
+d'une parole tenue ; un renommage repeint la Toile (`Toile.redraw`).
+**Écart nommé** : les lignes du Fil sont réécrites (la décision C-280) ; le prototype ne les réécrivait plus depuis v21 (il cherche « avant » entre
+guillemets à espaces ordinaires, ses lignes ont des guillemets insécables).
+**Pas jugé au banc** : le clavier de l'iPhone (la fiche qui glisse au-dessus de lui) — sur l'iPhone (A-VERIFIER-3A4.md).
+
+| Juge du prototype                               | Test                                                                                                                  |
+| ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| redteam_textes_longs D (C-244 : le dépliage)    | TI › un titre coupé se déplie au premier toucher, comme le prototype — à mi-mouvement et posé                         |
+| redteam_titre_encart (C-280 §1)                 | TI › le second toucher modifie un titre coupé, sans aucun encart : l'écran du prototype en modification               |
+| redteam_titre_fiche, redteam_renomme (Q621)     | TI › Retour renomme comme le prototype : le titre neuf, la clé gardée, la Toile la même (Brouillamini) ; U › renommer |
+| redteam_titre_fiche (Échap, vidé, titre entier) | TI › Échap, ou le titre vidé : l'ancien revient ; un titre entier se modifie au premier toucher                       |

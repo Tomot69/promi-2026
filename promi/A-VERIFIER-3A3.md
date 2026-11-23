@@ -1,5 +1,7 @@
 # Défiler : la jonction (lot 3a-3) — à vérifier sur l'iPhone, dans l'app « Promi »
 
+**Installé sur ton iPhone le 23 nov. 2026 : commit `bb72066` (dans le relevé : `index-DvtgiSQ_.js`).**
+
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4). ⚠ Une fiche ne défile que si sa parole porte des mots (comme le prototype), et la vraie app ne
 sait pas encore en écrire (« Un mot… » et l'envoi : lot 3b, le suivant) ; ni ton état ni l'état embarqué n'en portent. **Ces points se vérifient donc avec le
 3b** ; d'ici là ils sont jugés au banc seulement (`jonction.spec.ts`, au pixel contre le prototype).

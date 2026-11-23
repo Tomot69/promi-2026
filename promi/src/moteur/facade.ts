@@ -31,6 +31,11 @@ export interface Facade {
   monter(conteneur: HTMLElement): void;
   /** donne au moteur les paroles du magasin et les plante (`Toile.sync`) */
   planterTout(): void;
+  /**
+   * redonne au moteur l'état du magasin (ses globales : `promises`, `NUE`…) sans rien planter : le moteur lit les paroles à chaque image (le titre
+   * écrit sur une dalle, sa clé de plantation, son état) — après chaque écriture, il lit celles du magasin
+   */
+  rafraichir(): void;
   choisirMonde(monde: string): void;
   choisirPalette(palette: string, teinte: number): void;
   appliquerTheme(theme: 'clair' | 'sombre'): void;
@@ -187,6 +192,9 @@ export function creerFacade(magasin: Magasin): Facade {
       charger();
       // le moteur se mesure sur le parent du canevas (`size()`) : il ne le fait qu'au redimensionnement de la fenêtre, ou quand on le lui demande
       w.Toile_resize?.();
+    },
+    rafraichir() {
+      poserGlobaux(magasin.etat());
     },
     planterTout() {
       const e = magasin.etat();
