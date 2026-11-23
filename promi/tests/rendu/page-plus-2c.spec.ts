@@ -526,8 +526,15 @@ test('les places de la phrase changent en douceur : la première lettre (l’exe
     if (!ops.some((o) => o > 0.02 && o < 0.98)) pb.push(`① l’exemple part d’un coup (${JSON.stringify(ops)})`);
     if (ops.some((o, i) => i && o > ops[i - 1]! + 0.001)) pb.push(`① l’opacité remonte (${JSON.stringify(ops)})`);
     // 150 ms (C-282) : jugé quand les images de la fenêtre durent 34 ms au plus ; sinon la charge du Mac, non jugé (C-227 §5)
-    const fen = r1.filter((x) => x.t - tK < 300);
-    const longues = fen.some((x, i) => i > 0 && (x.t - fen[i - 1]!.t > 34 || x.n - fen[i - 1]!.n > 34));
+    //   la fenêtre compte AUSSI l'attente de la première image après la frappe, et va jusqu'à l'image qui suit la dernière où la copie est là
+    //   (sur l'intégration continue, une image dure 0,2 à 0,7 s : la première image vient déjà après 150 ms)
+    const iD = dernier ? r1.indexOf(dernier) : -1;
+    const fen = r1.slice(0, Math.min(r1.length, iD + 2));
+    const longues =
+      !fen.length ||
+      fen[0]!.t - tK > 34 ||
+      fen[0]!.n - tK > 34 ||
+      fen.some((x, i) => i > 0 && (x.t - fen[i - 1]!.t > 34 || x.n - fen[i - 1]!.n > 34));
     if (dernier && !longues && dernier.t - tK > 150 + 34)
       pb.push(`① l’exemple encore là ${(dernier.t - tK).toFixed(0)} ms après la frappe (150 ms)`);
   }
