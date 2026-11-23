@@ -311,7 +311,14 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       const NB = '\u00a0';
       const fil = e.fil.map((f) =>
         f.pid === id && typeof f.text === 'string'
-          ? { ...f, text: f.text.split(`«${NB}${avant}${NB}»`).join(`«${NB}${titre}${NB}»`).split(`« ${avant} »`).join(`«${NB}${titre}${NB}»`) }
+          ? {
+              ...f,
+              text: f.text
+                .split(`«${NB}${avant}${NB}»`)
+                .join(`«${NB}${titre}${NB}»`)
+                .split(`« ${avant} »`)
+                .join(`«${NB}${titre}${NB}»`),
+            }
           : f,
       );
       valider('renommer', { ...e, paroles: e.paroles.map((q) => (q.id === id ? neuve : q)), fil });
