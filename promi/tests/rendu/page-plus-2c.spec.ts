@@ -57,6 +57,11 @@ async function sec(page: Page): Promise<void> {
  *  la sonde du prototype, relevée à chaque image dans la page : chaque mot de la phrase (sa place, ses liaisons), le haut de la phrase, sa
  *  taille VUE (police × `scale`), le rail du pinceau — ce qui est visible seulement ; jusqu'à 600 ms d'immobilité (6 s au plus) */
 const SONDE = `(() => { const H = window.__P = []; const t0 = performance.now(); let calme = performance.now(), av = null; window.__Pfin = null;
+  if (!window.__anOk) { window.__anOk = 1; window.__AN = []; const a0 = Element.prototype.animate;
+    Element.prototype.animate = function (k, o) { const an = a0.call(this, k, o); const k0 = Array.isArray(k) ? k[0] : null;
+      if (k0 && ('translate' in k0 || 'scale' in k0 || 'transform' in k0) && this.closest && this.closest('#createSheet .pp-phrase, #csPinceau')) {
+        const d = typeof o === 'object' && o ? o.duration : o; queueMicrotask(() => window.__AN.push([an.playState, d])); }
+      return an; }; }
   const cs = document.getElementById('createSheet');
   const vis = (e) => { for (let q = e; q && q.nodeType === 1; q = q.parentElement) { const c = getComputedStyle(q); if (c.display === 'none' || c.visibility === 'hidden' || +c.opacity < 0.05 || q.hidden) return false; if (q === cs) break; } return true; };
   (function f(ts) { const d = document.getElementById('device').getBoundingClientRect(), k = d.width / 390, P = {};
@@ -163,6 +168,14 @@ test('la phrase de la page + change de place par un seul mouvement continu : val
     if (fin == null || fin > 4600) rouges.push(`${nom} : pas immobile en 4 s (${String(fin)})`);
   }
   expect(bougent, 'les séquences déplacent bien la phrase').toBeGreaterThanOrEqual(3);
+  // LE MÉCANISME (il se juge à toute cadence ; hors du Mac une image dure 0,7 s, un glissement de 320 ms y tient dans une seule image) : chaque
+  // glissement et chaque mise à l'échelle de la phrase COURENT dans la tâche où ils naissent (jamais finis d'un coup) et durent 300 ms au moins
+  const AN = (await page.evaluate('window.__AN')) as [string, number][];
+  expect(AN.length, 'des glissements et des mises à l’échelle sont nés').toBeGreaterThan(0);
+  expect(
+    AN.filter(([etat, d]) => etat === 'finished' || etat === 'idle' || !(d >= 300)),
+    'chaque mouvement court, 300 ms au moins (jamais fini d’un coup)',
+  ).toEqual([]);
   expect(rouges, 'aucun saut, immobile en ≤ 4 s (C-278 §4)').toEqual([]);
 });
 
@@ -443,17 +456,18 @@ test('la taille de la phrase change en douceur en entrant dans la saisie et en l
 //    revient en se traçant ») ──
 /** le relevé, à chaque image : pour chaque place de la phrase, sa largeur, sa découpe de tracé, ses flaques ; la copie de l'exemple qui part */
 const RELEVE_PLACES = `(() => { const w = window; w.__R = []; w.__Ron = true;
-  const f = (ts) => { const cs = document.getElementById('createSheet'); const o = { t: ts ?? performance.now(), p: {}, ex: [] };
+  const f = (ts) => { const cs = document.getElementById('createSheet'); const o = { t: ts ?? performance.now(), n: performance.now(), p: {}, ex: [] };
     cs.querySelectorAll('.pp-phrase .ph-txt [data-ph],[data-np]').forEach((e) => { const k = e.dataset.ph || e.dataset.np; if (o.p[k]) return; const mt = e.querySelector(':scope > .ph-mt');
       const cp = (q) => { const c = q && getComputedStyle(q).clipPath; return !!c && c !== 'none'; };
-      o.p[k] = { w: e.getBoundingClientRect().width, t: (e.textContent || '').trim(), coupe: cp(mt) || cp(e), fl: !!e.querySelector(':scope > canvas.passage-flaques'), vide: e.classList.contains('ph-vide') }; });
+      o.p[k] = { w: e.getBoundingClientRect().width, t: (e.textContent || '').trim(), coupe: cp(mt) || cp(e), fl: !!e.querySelector(':scope > canvas.passage-flaques'), vide: e.classList.contains('ph-vide'), wt: /width/.test(e.style.transition || '') }; });
     cs.querySelectorAll('.pp-ex-part > span').forEach((g) => o.ex.push(+getComputedStyle(g).opacity));
     o.part = cs.querySelectorAll('.pp-place-part').length;
     w.__R.push(o); if (w.__Ron) requestAnimationFrame(f); };
   f(); })()`;
 type ImageR = {
   t: number;
-  p: Record<string, { w: number; t: string; coupe: boolean; fl: boolean; vide: boolean }>;
+  n: number;
+  p: Record<string, { w: number; t: string; coupe: boolean; fl: boolean; vide: boolean; wt: boolean }>;
   ex: number[];
   part: number;
 };
@@ -462,13 +476,22 @@ async function lire(page: Page): Promise<ImageR[]> {
 }
 /** la largeur d'une place va en douceur : aucun pas d'une image ne fait plus de 40 % de la course (une course de plus de 12 pt) */
 function largeurDouce(R: ImageR[], k: string): string | null {
-  const W = R.map((x) => x.p[k]?.w).filter((x): x is number => x != null && x > 0);
-  if (W.length < 2) return null;
-  const course = Math.abs(W[W.length - 1]! - W[0]!);
+  const V = R.filter((x) => (x.p[k]?.w ?? 0) > 0);
+  if (V.length < 2) return null;
+  const course = Math.abs(V[V.length - 1]!.p[k]!.w - V[0]!.p[k]!.w);
   if (course < 12) return null;
-  let pas = 0;
-  for (let i = 1; i < W.length; i++) pas = Math.max(pas, Math.abs(W[i]! - W[i - 1]!));
-  return pas > 0.4 * course ? `${k} : un pas de ${pas.toFixed(1)} pt pour une course de ${course.toFixed(1)}` : null;
+  for (let i = 1; i < V.length; i++) {
+    const a = V[i - 1]!;
+    const b = V[i]!;
+    const pas = Math.abs(b.p[k]!.w - a.p[k]!.w);
+    if (pas <= 0.4 * course) continue;
+    // une image propre (34 ms au plus, les deux horloges d'accord) : un grand pas est un saut ; une image longue (hors du Mac, 0,7 s) : le
+    // pas doit être porté par une transition de largeur en cours (le mécanisme), sinon il est sec
+    const propre = b.t - a.t <= 34 && b.n - a.n <= 34 && Math.abs(b.n - a.n - (b.t - a.t)) <= 8;
+    if (propre || !(a.p[k]!.wt || b.p[k]!.wt))
+      return `${k} : un pas de ${pas.toFixed(1)} pt pour une course de ${course.toFixed(1)}${propre ? '' : ' (sans transition de largeur)'}`;
+  }
+  return null;
 }
 test('les places de la phrase changent en douceur : la première lettre (l’exemple part en 150 ms), l’exemple qui revient, une personne ajoutée, la bascule du sens (lot-V200-DOUCEUR, C-271, C-274, C-282)', async ({
   page,
@@ -504,7 +527,7 @@ test('les places de la phrase changent en douceur : la première lettre (l’exe
     if (ops.some((o, i) => i && o > ops[i - 1]! + 0.001)) pb.push(`① l’opacité remonte (${JSON.stringify(ops)})`);
     // 150 ms (C-282) : jugé quand les images de la fenêtre durent 34 ms au plus ; sinon la charge du Mac, non jugé (C-227 §5)
     const fen = r1.filter((x) => x.t - tK < 300);
-    const longues = fen.some((x, i) => i > 0 && x.t - fen[i - 1]!.t > 34);
+    const longues = fen.some((x, i) => i > 0 && (x.t - fen[i - 1]!.t > 34 || x.n - fen[i - 1]!.n > 34));
     if (dernier && !longues && dernier.t - tK > 150 + 34)
       pb.push(`① l’exemple encore là ${(dernier.t - tK).toFixed(0)} ms après la frappe (150 ms)`);
   }
@@ -712,6 +735,12 @@ test('la genèse du trait interrompue : le sens basculé à plusieurs instants, 
       .waitForFunction(`${P_}.pagePlus().etat().invite.visible`, undefined, { timeout: 30000 })
       .catch(() => undefined);
     await posee(page);
+    // le passage en flaques de la genèse fini (hors du Mac il dure plusieurs secondes) ; un calque qui reste au-delà de 20 s est un défaut
+    await page
+      .waitForFunction(() => !document.querySelector('#createSheet canvas.passage-flaques'), undefined, {
+        timeout: 20000,
+      })
+      .catch(() => undefined);
     await page.waitForTimeout(400);
     const e = await etatGenese();
     if (!e.invite || e.passages || e.dalles) pb.push(`à ${String(t)} ms : ${JSON.stringify(e)}`);
