@@ -51,12 +51,12 @@
   },
   {
     "nom": "croix-fermer",
-    "test": "× FERMER est un seul X : aucun « FERMER », le X en PromiLate 35 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)",
+    "test": "× FERMER est un seul X : aucun « FERMER », le X en PromiLate 29,5 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)",
     "defaut": "une fermeture « ✕ FERMER » (l'ancienne, d'avant C-173) posée sur l'écran"
   },
   {
     "nom": "croix-taille",
-    "test": "× FERMER est un seul X : aucun « FERMER », le X en PromiLate 35 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)",
+    "test": "× FERMER est un seul X : aucun « FERMER », le X en PromiLate 29,5 px, la couleur du titre, 44 pt de zone (redteam_croix, C-173)",
     "defaut": "un X de fermeture en PromiLate 42 px au lieu de 35 (le défaut de v157)"
   },
   {

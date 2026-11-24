@@ -96,15 +96,36 @@ export async function prototype(page: Page, ls: Record<string, string>): Promise
   // MONTRÉ ; avant, il rend 35. Selon la charge, une passe l'avait posé ou non (la CI : 596 px d'écart sur une fiche, une fois sur trois). Le
   // prototype se règle comme sur un téléphone en usage : l'Index montré, puis l'accueil (mesuré : le stockage n'en change pas).
   await page.evaluate(() => document.getElementById('indexBtn')?.click());
-  // la taille posée, celle des titres (`_ENCART.T`, 29,5) — relevé : 27 d'abord (une passe à mi-chemin), puis 29,5
-  await page.waitForFunction(
-    () => {
+  // la taille posée, celle des titres (`_ENCART.T`, 29,5) — relevé : 27 d'abord (une passe à mi-chemin), puis 29,5. Au-delà de 20 s, le banc
+  // dit ce qu'il voit (l'Index montré ou non, la taille posée, ce qui est sous le doigt au centre de INDEX)
+  try {
+    await page.waitForFunction(
+      () => {
+        const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number } };
+        return !!w._ENCART && w._tailleX() === w._ENCART.T;
+      },
+      null,
+      { timeout: 20000 },
+    );
+  } catch (e) {
+    const d = await page.evaluate(() => {
       const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number } };
-      return !!w._ENCART && w._tailleX() === w._ENCART.T;
-    },
-    null,
-    { timeout: 20000 },
-  );
+      const b = document.getElementById('indexBtn');
+      const r = b?.getBoundingClientRect();
+      const sous = r ? document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) : null;
+      const t = document.querySelector<HTMLElement>('#indexSheet .scr-ti');
+      return {
+        tailleX: w._tailleX(),
+        T: w._ENCART?.T,
+        index: document.getElementById('indexSheet')?.className,
+        titre: t ? [t.style.getPropertyValue('font-size'), getComputedStyle(t).fontSize, !!t.closest('.enh')] : null,
+        bouton: r ? [r.left, r.top, r.width, r.height] : null,
+        sous: sous ? `${sous.tagName}#${sous.id}.${String(sous.className)}` : null,
+        ecrans: [...document.querySelectorAll('.screen.show,.sheet.show,.poster.show')].map((x) => x.id),
+      };
+    });
+    throw new Error(`le prototype n'a pas réglé le titre de l'Index : ${JSON.stringify(d)}`, { cause: e });
+  }
   await page.waitForTimeout(600);
   await page.evaluate(() => (window as unknown as { closeAll(): void }).closeAll());
   await page.waitForFunction(() => !document.querySelector('#indexSheet.show'), null, { timeout: 10000 });
