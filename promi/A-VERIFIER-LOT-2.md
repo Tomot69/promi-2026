@@ -1,6 +1,6 @@
 # TOM PEUT UTILISER L'APP 5 MINUTES — la page + (lot 2 complet), à vérifier sur l'iPhone, dans l'app « Promi »
 
-**Installée le 24 nov. 2026 : commit `VERSION` (dans le relevé : `BUNDLE`).** À vérifier quand tu peux ; tes retours sont intégrés au fil de l'eau.
+**Installée le 24 nov. 2026 : commit `4c8e8c2` (lue sur le téléphone : `index-C77ilnPC.js`, `sh outils/version-iphone.sh`).** À vérifier quand tu peux ; tes retours sont intégrés au fil de l'eau.
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 
 1. **Le calendrier** (validé dans Safari le 24 nov. ; à revoir dans l'app) — le + → « Un Promi » → Peaufiner → AVANT → « une date… » :

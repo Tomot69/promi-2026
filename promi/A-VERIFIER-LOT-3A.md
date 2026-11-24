@@ -1,6 +1,6 @@
 # TOM PEUT UTILISER L'APP 5 MINUTES — la fiche et tenir (lot 3a), à vérifier sur l'iPhone, dans l'app « Promi »
 
-**Installée le 24 nov. 2026 : commit `VERSION` (dans le relevé : `BUNDLE`).** Avec la liste du lot 2 (`A-VERIFIER-LOT-2.md`), la même installation.
+**Installée le 24 nov. 2026 : commit `4c8e8c2` (lue sur le téléphone : `index-C77ilnPC.js`, `sh outils/version-iphone.sh`).** Avec la liste du lot 2 (`A-VERIFIER-LOT-2.md`), la même installation.
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 
 1. **Ouvrir une dalle depuis la Toile** — toucher une dalle : SA fiche monte du bas (0,4 s) ; le X la referme, elle redescend. Une parole
