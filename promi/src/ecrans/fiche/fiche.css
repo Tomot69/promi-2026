@@ -146,7 +146,6 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--c-creme95);
-  translate: 0 2.94px;
 }
 #detailPoster .mm-i {
   display: inline;
@@ -575,4 +574,62 @@
 }
 #detailPoster.inst-apres .fi-phrase b {
   color: var(--c-creme95);
+}
+
+/* ── PEAUFINER SUR LA FICHE (lot 3b-1 ; lot-S2 : la page couvre la fiche jusqu'à la barre, qui reste à 760 au-dessus d'elle ; le corps de sa
+   nature, les deux thèmes — C-132) ── */
+#detailPoster #dpdCorps {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 390px;
+  height: 760px;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  z-index: 30;
+}
+#detailPoster #dpdCorps::-webkit-scrollbar {
+  display: none;
+}
+#detailPoster.fi-promi #dpdCorps {
+  background: var(--c-cobalt50);
+}
+#detailPoster.fi-chiche #dpdCorps {
+  background: var(--c-framboise35);
+}
+#detailPoster.dpd-corps-ouv #dpDetails {
+  z-index: 31;
+}
+#detailPoster.fi-promi #dpdCorps :is(.s2-lab, .s2-txt, .s2-vis, .pc-ap) {
+  color: var(--c-lilas85);
+}
+#detailPoster.fi-chiche #dpdCorps :is(.s2-lab, .s2-txt, .s2-vis, .pc-ap) {
+  color: var(--c-orange77);
+}
+/* le ▾ retourné, Peaufiner ouvert (le prototype : `rotate(180deg)`) */
+#detailPoster.dpd-ouv #dpdTog i {
+  display: inline-block;
+  transform: rotate(180deg);
+}
+/* LE TRAIT : l'aperçu du pinceau, entre le libellé et le nom (lot-PINCEAU) */
+#dpdCorps .pc-ap {
+  flex: none;
+  line-height: 0;
+}
+#detailPoster #dpdCorps .v16-danger .s2-lab {
+  color: var(--c-creme95);
+}
+/* la NOTE de la fiche : son champ fait 56 pt de haut (le prototype emprunte `#dNote` de la fiche, pas `#fNote` de la page +) — le jambage d'un
+   « j » n'y est pas rogné */
+#detailPoster #dpdCorps .s2-txt {
+  height: 56px;
+}
+/* SUPPRIMER, 104 pt sous les murs ; la liste finit 130 pt plus bas (relevé : 1274 pt de haut sur un Promi à soi) */
+#detailPoster #dpdCorps .s2-liste {
+  padding-bottom: 130px;
+}
+#detailPoster #dpdCorps .v16-danger {
+  margin-top: 104px;
+  margin-bottom: 0;
 }

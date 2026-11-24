@@ -16,6 +16,7 @@ import { anneauCss } from './anneau.ts';
 import { compteAnneau, filAttente } from '../../metier/fil.ts';
 import { nParoles, rappelDu } from '../../metier/rappel.ts';
 import { TEXTES_ACCUEIL as T } from '../../textes/accueil.ts';
+import { centrerTitre } from '../commun.ts';
 
 function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -393,6 +394,13 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
 
   dv.classList.add('grain');
   dv.append(plateau, rappel, barre, choix, recadre);
+  // le mot-marque centré sur l'encart, sur les métriques de sa police (lot-V210-ENCART) — et de nouveau quand les polices sont là
+  const centrer = (): void => {
+    centrerTitre(plateau, mm);
+  };
+  centrer();
+  document.fonts.addEventListener('loadingdone', centrer);
+  void document.fonts.ready.then(centrer);
   return {
     plateau,
     barre,
@@ -409,6 +417,7 @@ export function monterAccueil(facade: Facade, magasin: Magasin, nav: Navigation)
       window.removeEventListener('pointerdown', touche, { capture: true });
       dv.classList.remove('grain');
       for (const n of [plateau, rappel, barre, choix, recadre]) n.remove();
+      document.fonts.removeEventListener('loadingdone', centrer);
     },
   };
 }

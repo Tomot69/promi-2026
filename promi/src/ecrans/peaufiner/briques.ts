@@ -10,6 +10,9 @@ import { changerTexte } from '../../animation/trace/trace.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { el, poserCroix, surToucher } from '../commun.ts';
 
+/** les pastilles d'AVANT (C-197) : demain · 1 sem. · 1 mois · une date… (le calendrier) · un jour (aucune échéance) */
+const JOURS: readonly (number | null | 'date')[] = [1, 7, 30, 'date', null];
+
 export interface Peauf {
   /** la rangée dépliée (son libellé) : elle le reste quand Peaufiner se rebâtit après un choix fait ailleurs */
   ouverte: string | null;
@@ -29,8 +32,21 @@ export interface Peauf {
   }) => HTMLElement;
   /** les PIÈCES JOINTES : le sélecteur de fichiers s'ouvre DANS le geste (le clic du doigt) */
   pieces: (o: { lab: string; val: string; vis: string; ajoute: (noms: string[]) => void }) => HTMLElement;
+  /**
+   * le choix de l'échéance, sous la rangée AVANT `r` (C-197) : une pastille choisie (`choisit`), ou une date du calendrier (`date` l'applique et
+   * rend son mot, qui remplace la valeur de la rangée EN PLACE, détracé puis tracé) ; `replie` : le calendrier s'est refermé sur une date
+   */
+  echeance: (o: {
+    r: HTMLElement;
+    mots: readonly string[];
+    on: number | null;
+    dueISO: string | null;
+    choisit: (jours: number | null, mot: string) => void;
+    date: (iso: string, jours: number) => string;
+    replie: () => void;
+  }) => HTMLElement;
   /** les réglages de Ma Parole ! : des MURS, flous (4,8 px), sans prise (leur phrase : lot 8) */
-  murs: (L: readonly (readonly [string, string])[]) => HTMLElement;
+  murs: (L: readonly (readonly [string, string])[], couleur?: string | null) => HTMLElement;
   /** pose la liste neuve dans le panneau ; une valeur qui a changé se détrace puis se trace (C-279) */
   poser: (liste: HTMLElement) => void;
   /** le X face au titre (à reposer quand le panneau est montré) */
@@ -112,7 +128,7 @@ export function creerPeauf(hote: HTMLElement): Peauf {
       const pv = el('div', { class: 's2-val' });
       pv.textContent = o.val;
       ph.append(pl, pv);
-      const fin = el('input', { type: 'file', multiple: '', class: 'ph-photo-in', 'aria-hidden': 'true' });
+      const fin = el('input', { type: 'file', multiple: '', class: 's2-fichiers', 'aria-hidden': 'true' });
       fin.addEventListener('change', () => {
         o.ajoute([...(fin.files ?? [])].map((f) => f.name));
       });
@@ -126,9 +142,80 @@ export function creerPeauf(hote: HTMLElement): Peauf {
       pj.append(ph, pvis);
       return pj;
     },
-    murs(L) {
+    echeance(o) {
+      const lab = o.r.querySelector('.s2-lab')?.textContent ?? '';
+      const ch = el('div', { class: 'chips', id: 'dueChips' });
+      o.mots.forEach((mot, i) => {
+        const d = JOURS[i];
+        const c = el('div', { class: 'chip' + (o.on === i ? ' on' : ''), role: 'button' });
+        c.textContent = mot;
+        if (d === 'date') {
+          // ⚑ 2b (Tom, sur l'iPhone : « le calendrier ne s'ouvre pas ») — LA CAUSE : le sélecteur était ouvert au lever du doigt
+          // (`pointerup`), que la WebView d'iOS ne compte pas comme un geste : `showPicker()` y est refusé, et le repli `focus()` visait
+          // un champ invisible qui ne prenait pas le doigt. Le vrai champ date COUVRE la pastille (invisible) : le doigt le touche
+          // lui-même, et c'est iOS qui ouvre son calendrier. Ailleurs (un ordinateur), son clic l'ouvre (`showPicker`, dans le geste).
+          const t0 = new Date();
+          const di = el('input', {
+            type: 'date',
+            class: 'due-datein',
+            'aria-label': mot,
+            min: `${String(t0.getFullYear())}-${String(t0.getMonth() + 1).padStart(2, '0')}-${String(t0.getDate()).padStart(2, '0')}`,
+          });
+          if (o.dueISO) di.value = o.dueISO;
+          c.appendChild(di);
+          di.addEventListener('click', () => {
+            try {
+              di.showPicker();
+            } catch {
+              /* iOS l'ouvre lui-même (le doigt sur le champ) */
+            }
+          });
+          // ⚑ L2 (Tom, 24 nov., le relevé de sa séance sur l'iPhone) : iOS envoie la date par `input` et `change` — la date du jour dès que son
+          // calendrier s'ouvre, puis chaque jour touché —, parfois seulement à sa fermeture (`blur`) : elle s'applique sur les trois, dès qu'elle
+          // diffère de la précédente. Elle change EN PLACE (détracé puis tracé), la pastille se coche ; Peaufiner n'est jamais rebâti calendrier
+          // ouvert (un champ retiré de la page referme le calendrier d'iOS) : la rangée se replie à sa fermeture
+          let iso = o.dueISO;
+          const applique = (): void => {
+            if (!di.value || di.value === iso) return;
+            iso = di.value;
+            const t = new Date();
+            t.setHours(0, 0, 0, 0);
+            const pk = new Date(di.value + 'T00:00:00');
+            const jours = Math.max(0, Math.round((pk.getTime() - t.getTime()) / 86400000));
+            const v = o.r.querySelector<HTMLElement>('.s2-val');
+            const avant = v?.textContent ?? '';
+            const neuf = o.date(di.value, jours);
+            for (const x of ch.querySelectorAll('.chip')) x.classList.toggle('on', x === c);
+            if (v) changerTexte(v, avant, neuf);
+          };
+          di.addEventListener('input', applique);
+          di.addEventListener('change', applique);
+          di.addEventListener('blur', () => {
+            applique();
+            if (iso && pf.ouverte === lab) o.replie();
+          });
+        }
+        surToucher(c, () => {
+          if (d === 'date' || d === undefined) return;
+          o.choisit(d, mot);
+        });
+        ch.appendChild(c);
+      });
+      return ch;
+    },
+    murs(L, couleur) {
       const murs = el('div', { class: 's2-cercle', 'data-mur': '', 'aria-hidden': 'true' });
-      L.forEach(([lab, val], i) => murs.appendChild(pf.rang(lab, val, i === L.length - 1 ? ' s2-couleur' : '')));
+      L.forEach(([lab, val], i) => {
+        const r = pf.rang(lab, val, i === L.length - 1 ? ' s2-couleur' : '');
+        // LA COULEUR d'une parole plantée (lot-CERCLE-COULEUR, `_regCouleur`) : la pastille de la couleur de sa dalle, puis son code
+        if (i === L.length - 1 && couleur) {
+          const v = r.querySelector<HTMLElement>('.s2-val')!;
+          const pas = el('span', { class: 'cc-pas' });
+          pas.style.background = couleur;
+          v.replaceChildren(pas, document.createTextNode(couleur));
+        }
+        murs.appendChild(r);
+      });
       return murs;
     },
     poser(liste) {

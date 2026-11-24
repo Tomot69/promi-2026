@@ -8,7 +8,7 @@ import type { Brouillon, CouleurDalle, Etat, MondeDalle, Parole, Place } from '.
 import { tirer } from '../metier/exemples.ts';
 import { etatVide } from '../donnees/schema.ts';
 import { migrer } from '../donnees/migrations/index.ts';
-import { minuit, poserCles, recompterEcheances } from '../metier/relecture.ts';
+import { minuit, poserCles, recompterEcheances, tombe } from '../metier/relecture.ts';
 import { aPlusieurs, etatParts } from '../metier/fiche.ts';
 import { ligneFil } from '../metier/fil.ts';
 import type { Stockage } from '../donnees/stockage.ts';
@@ -77,6 +77,28 @@ export interface Actions {
    * de plantation gardée (Q621 : le moteur la lit, la dalle garde sa forme) ; les lignes du Fil qui la citent, réécrites ; sa dernière action.
    */
   renommer(id: number, titre: string, maintenant: number): void;
+  /**
+   * PEAUFINER une parole plantée (lot 3b ; le prototype : les réglages de `lot-S2` sur une fiche) — l'échéance (AVANT : des jours, une date du
+   * calendrier, ou « en l’air »), le Cercle, la note, les pièces jointes, le trait. Rien d'autre : une parole tenue le reste (R-005 — le
+   * prototype la repassait « en cours » quand on changeait son échéance : un vestige d'avant les deux états, v173).
+   */
+  peaufiner(id: number, champs: ChampsPeaufiner, maintenant: number): void;
+  /**
+   * EFFACER une parole (lot 3b-1b ; le prototype : `_v16SupprimerPromi`, v187) — elle quitte la Toile et toutes les listes ; sa pierre tombale
+   * (`id|titre`) est posée : une parole effacée ne revient jamais (`sansTombes`, à chaque relecture). Écrit tout de suite (C-226). Rend ce
+   * qu'il faut pour l'annuler (la parole et sa place dans la liste), ou null.
+   */
+  effacer(id: number): { parole: Parole; rang: number } | null;
+  /** « Annuler » après un effacement : la parole revient à sa place, sa pierre tombale est retirée (`_deterrer`) */
+  deterrer(x: { parole: Parole; rang: number }): void;
+}
+
+export interface ChampsPeaufiner {
+  echeance?: { due: number | null; dueISO: string | null; enLair: boolean };
+  cercle?: string | null;
+  note?: string;
+  fichiers?: string[];
+  trait?: string;
 }
 
 export interface Magasin extends Actions {
@@ -322,6 +344,46 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
           : f,
       );
       valider('renommer', { ...e, paroles: e.paroles.map((q) => (q.id === id ? neuve : q)), fil });
+    },
+    effacer(id) {
+      const rang = e.paroles.findIndex((q) => q.id === id);
+      const p = e.paroles[rang];
+      if (!p) return null;
+      const k = tombe(p);
+      const effacees = e.effacees.includes(k) ? e.effacees : [...e.effacees, k].slice(-300);
+      valider('effacer', { ...e, paroles: e.paroles.filter((q) => q.id !== id), effacees });
+      return { parole: p, rang };
+    },
+    deterrer(x) {
+      if (e.paroles.some((q) => q.id === x.parole.id)) return;
+      const k = tombe(x.parole);
+      const paroles = [...e.paroles];
+      paroles.splice(Math.min(x.rang, paroles.length), 0, x.parole);
+      valider('deterrer', { ...e, paroles, effacees: e.effacees.filter((t) => t !== k) });
+    },
+    peaufiner(id, champs, maintenant) {
+      const p = e.paroles.find((q) => q.id === id);
+      if (!p || p.draft) return;
+      const suite: Record<string, unknown> = { ...(p.suite ?? {}) };
+      let neuve: Parole = { ...p, derAct: maintenant, suite };
+      const pose = (k: string, v: unknown): void => {
+        if (v == null || v === '' || v === false || (Array.isArray(v) && !v.length)) Reflect.deleteProperty(suite, k);
+        else suite[k] = v;
+      };
+      const ech = champs.echeance;
+      if (ech) {
+        neuve.due = ech.enLair ? null : ech.due;
+        delete neuve.ech;
+        pose('dueISO', ech.enLair ? null : ech.dueISO);
+        pose('enLair', ech.enLair);
+        suite['dueChoisi'] = true;
+        neuve = recompterEcheances([neuve], aujourdhui())[0]!;
+      }
+      if (champs.cercle !== undefined) neuve.nuee = champs.cercle;
+      if (champs.note !== undefined) pose('note', champs.note);
+      if (champs.fichiers) pose('files', champs.fichiers.slice());
+      if (champs.trait) suite['trait'] = champs.trait;
+      valider('peaufiner', { ...e, paroles: e.paroles.map((q) => (q.id === id ? neuve : q)) });
     },
     tenir(id, trace, maintenant) {
       const p = e.paroles.find((q) => q.id === id);

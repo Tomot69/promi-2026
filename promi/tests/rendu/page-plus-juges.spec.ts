@@ -486,19 +486,30 @@ test('C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; 
     // l'ouverture relevée dans la page, à chaque image : la transition posée, et la place de la page (sa translation)
     await page.evaluate(() => {
       const c = document.getElementById('createSheet')!;
-      const w = window as unknown as { __entre: { duree: string; prop: string; ty: number[]; fin: boolean } | null };
+      const w = window as unknown as {
+        __entre: { duree: string; prop: string; ty: number[]; fin: boolean; classes?: string } | null;
+      };
       w.__entre = null;
       const ty = (): number => new DOMMatrix(getComputedStyle(c).transform).m42;
       const o = new MutationObserver(() => {
         if (c.classList.contains('pp-entre') && !w.__entre) {
           const s = getComputedStyle(c);
-          const e = { duree: s.transitionDuration, prop: s.transitionProperty, ty: [ty()], fin: false };
+          const e: { duree: string; prop: string; ty: number[]; fin: boolean; classes?: string } = {
+            duree: s.transitionDuration,
+            prop: s.transitionProperty,
+            ty: [ty()],
+            fin: false,
+          };
           w.__entre = e;
           // toutes les 20 ms réelles : la transition s'échantillonne à chaque lecture du style, quelle que soit la cadence des images
           const pas = (): void => {
             e.ty.push(ty());
             if (c.classList.contains('pp-entre')) setTimeout(pas, 20);
-            else e.fin = true;
+            else {
+              // (le diagnostic d'un rouge : les classes de la page quand l'ouverture se conclut)
+              e.classes = c.className;
+              e.fin = true;
+            }
           };
           setTimeout(pas, 0);
         }
@@ -518,6 +529,7 @@ test('C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; 
       duree: string;
       prop: string;
       ty: number[];
+      classes: string;
     };
     if (!e.prop.includes('transform') || Math.abs(parseFloat(e.duree) - 0.46) > 0.01)
       fautes.push(`${nat} : l'ouverture n'a pas la transition de la fermeture (${e.prop} ${e.duree})`);
@@ -525,7 +537,9 @@ test('C-330, C-331 : « garder de côté » inactif à la teinte de sa nature ; 
     if (process.platform === 'darwin' && !e.ty.some((y) => y > 1 && y < H - 1))
       fautes.push(`${nat} : aucune image entre le bas et sa place (${JSON.stringify(e.ty.map(Math.round))})`);
     if (Math.abs(e.ty.at(-1)!) > 0.5)
-      fautes.push(`${nat} : la page n'est pas à sa place à la fin (${String(e.ty.at(-1))})`);
+      fautes.push(
+        `${nat} : la page n'est pas à sa place à la fin (${String(e.ty.at(-1))} ; ${JSON.stringify(e.ty.map(Math.round))} ; « ${e.classes} »)`,
+      );
     const g = await page.evaluate(() => {
       const x = document.querySelector('#createSheet .pp-garder')!;
       return { inactif: x.classList.contains('inactif'), couleur: getComputedStyle(x).color };

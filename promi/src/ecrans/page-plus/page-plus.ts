@@ -23,14 +23,7 @@ import type { Magasin } from '../../etat/magasin.ts';
 import type { Navigation } from '../../navigation/navigation.ts';
 import type { Brouillon } from '../../donnees/schema.ts';
 import { horloge } from '../../animation/horloge.ts';
-import {
-  chargerTrace,
-  changerTexte,
-  copieA,
-  detracerCopie,
-  remplacer,
-  type ControleTrace,
-} from '../../animation/trace/trace.ts';
+import { chargerTrace, copieA, detracerCopie, remplacer, type ControleTrace } from '../../animation/trace/trace.ts';
 import { masqueFlaques, passageFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
 import { palette } from '../../design/jetons.ts';
 import {
@@ -46,6 +39,7 @@ import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
 import { avecAlpha, el, esc, poserCroix, surToucher, SVG_PHOTO } from '../commun.ts';
 import { creerPeauf } from '../peaufiner/briques.ts';
+import { dateQuand } from '../../metier/echeance.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
@@ -2239,26 +2233,6 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   /** les briques de Peaufiner (la tête, la rangée, le dépliage, la NOTE, les PIÈCES JOINTES, les murs, la pose) : communes à la fiche */
   const pf = creerPeauf(peauf);
   const deplie = pf.deplie;
-  /** le prototype, `_dateQuand` : « lundi 12 », et le mois au-delà de 30 jours */
-  function dateQuand(d: Date, jours: number): string {
-    const JQ = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
-    const MO = [
-      'janvier',
-      'février',
-      'mars',
-      'avril',
-      'mai',
-      'juin',
-      'juillet',
-      'août',
-      'septembre',
-      'octobre',
-      'novembre',
-      'décembre',
-    ];
-    const base = `${JQ[d.getDay()]!} ${String(d.getDate())}`;
-    return jours > 30 ? `${base} ${MO[d.getMonth()]!}` : base;
-  }
   /** `ouverte` : la rangée qui reste dépliée (un membre coché) ; sans elle, Peaufiner se rebâtit replié (un choix fait la replie) */
   function rendrePeauf(ouverte: string | null = null): void {
     pf.ouverte = ouverte;
@@ -2303,76 +2277,39 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     } else {
       // AVANT : demain · 1 sem. · 1 mois · une date… (le calendrier) · un jour (aucune échéance) — C-197
       const ra = rang(L.avant, P.ech);
-      deplie(ra, () => {
-        const ch = el('div', { class: 'chips', id: 'dueChips' });
-        const JOURS: (number | null | 'date')[] = [1, 7, 30, 'date', null];
-        L.echeances.forEach((mot, i) => {
-          const d = JOURS[i]!;
-          const c = el('div', {
-            class: 'chip' + (P.echChoisie && (d === 'date' ? !!P.dueISO : P.ech === mot && !P.dueISO) ? ' on' : ''),
-            role: 'button',
-          });
-          c.textContent = mot;
-          if (d === 'date') {
-            // ⚑ 2b (Tom, sur l'iPhone : « le calendrier ne s'ouvre pas ») — LA CAUSE : le sélecteur était ouvert au lever du doigt
-            // (`pointerup`), que la WebView d'iOS ne compte pas comme un geste : `showPicker()` y est refusé, et le repli `focus()` visait
-            // un champ invisible qui ne prenait pas le doigt. Le vrai champ date COUVRE la pastille (invisible) : le doigt le touche
-            // lui-même, et c'est iOS qui ouvre son calendrier. Ailleurs (un ordinateur), son clic l'ouvre (`showPicker`, dans le geste).
-            const t0 = new Date();
-            const di = el('input', {
-              type: 'date',
-              class: 'due-datein',
-              'aria-label': mot,
-              min: `${String(t0.getFullYear())}-${String(t0.getMonth() + 1).padStart(2, '0')}-${String(t0.getDate()).padStart(2, '0')}`,
-            });
-            if (P.dueISO) di.value = P.dueISO;
-            c.appendChild(di);
-            di.addEventListener('click', () => {
-              try {
-                di.showPicker();
-              } catch {
-                /* iOS l'ouvre lui-même (le doigt sur le champ) */
-              }
-            });
-            // ⚑ L2 (Tom, 24 nov., le relevé de sa séance sur l'iPhone) : iOS envoie la date par `input` et `change` — la date du jour dès que son
-            // calendrier s'ouvre, puis chaque jour touché —, parfois seulement à sa fermeture (`blur`) : elle s'applique sur les trois, dès qu'elle
-            // diffère de la précédente. Elle change EN PLACE (détracé puis tracé), la pastille se coche ; Peaufiner n'est jamais rebâti calendrier
-            // ouvert (un champ retiré de la page referme le calendrier d'iOS) : la rangée se replie à sa fermeture
-            const applique = (): void => {
-              if (!di.value || di.value === P.dueISO) return;
-              const t0 = new Date();
-              t0.setHours(0, 0, 0, 0);
-              const pk = new Date(di.value + 'T00:00:00');
-              P.due = Math.max(0, Math.round((pk.getTime() - t0.getTime()) / 86400000));
-              P.dueISO = di.value;
-              const avant = P.ech;
-              P.ech = dateQuand(pk, P.due);
-              P.echChoisie = true;
-              majGarder();
-              for (const x of ch.querySelectorAll('.chip')) x.classList.toggle('on', x === c);
-              const v = ra.querySelector<HTMLElement>('.s2-val');
-              if (v) changerTexte(v, avant, P.ech);
-            };
-            di.addEventListener('input', applique);
-            di.addEventListener('change', applique);
-            di.addEventListener('blur', () => {
-              applique();
-              if (P.dueISO && pf.ouverte === L.avant) rendrePeauf();
-            });
-          }
-          surToucher(c, () => {
-            if (d === 'date') return;
+      deplie(ra, () =>
+        pf.echeance({
+          r: ra,
+          mots: L.echeances,
+          on: !P.echChoisie
+            ? null
+            : P.dueISO
+              ? 3
+              : (L.echeances as readonly string[]).indexOf(P.ech) >= 0
+                ? (L.echeances as readonly string[]).indexOf(P.ech)
+                : null,
+          dueISO: P.dueISO,
+          choisit: (d, mot) => {
             P.due = d;
             P.dueISO = null;
             P.ech = mot;
             P.echChoisie = true;
             majGarder();
             rendrePeauf();
-          });
-          ch.appendChild(c);
-        });
-        return ch;
-      });
+          },
+          date: (iso, jours) => {
+            P.due = jours;
+            P.dueISO = iso;
+            P.ech = dateQuand(new Date(iso + 'T00:00:00'), jours);
+            P.echChoisie = true;
+            majGarder();
+            return P.ech;
+          },
+          replie: () => {
+            rendrePeauf();
+          },
+        }),
+      );
       liste.appendChild(ra);
       if (P.nat === 'promi') {
         // DANS UN CERCLE : aucune, ou l'un des Cercles (le prototype : `#nueeChips`)

@@ -1,0 +1,291 @@
+/**
+ * PEAUFINER SUR LA FICHE (lot 3b-1 ; le prototype : `bati()` et `ouvre()` de lot-S2, la rangée LE TRAIT de lot-PINCEAU, C-134, C-192, C-197).
+ *
+ * La barre « Peaufiner » de la fiche ouvre la page de réglages de la parole : elle couvre la fiche jusqu'à la barre (0 → 760, le corps de sa
+ * nature : le cobalt d'un Promi, le framboise d'un Chiche, les deux thèmes — C-132), la barre reste à sa place et son ▾ se retourne. Les
+ * rangées, dans l'ordre de l'inventaire : la tête (le titre de la parole, le X), LE TRAIT (son aperçu, son nom), À QUI (un Promi qui n'est pas
+ * à soi) ou QUI OSE ? (un Chiche que j'ai lancé), AVEC (un Chiche ; vide, en pointillés), AVANT, DANS UN CERCLE (un Promi), la NOTE, les
+ * PIÈCES JOINTES, les murs de Ma Parole !, SUPPRIMER CE PROMI / CE CHICHE. Les briques sont celles de la page + (src/ecrans/peaufiner).
+ *
+ * Il paraît et part en flaques (C-271 ; le prototype le posait d'un coup), comme celui de la page + ; le X et un glissement vers le bas le
+ * referment — la fiche reste (C-134, C-193) ; un choix s'écrit tout de suite (le magasin, `peaufiner`) et la valeur de sa rangée se détrace
+ * puis se trace (C-279).
+ */
+import type { Magasin } from '../../etat/magasin.ts';
+import type { Parole } from '../../donnees/schema.ts';
+import { masqueFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
+import { creerPeauf } from '../peaufiner/briques.ts';
+import { PINCEAUX } from '../page-plus/pinceaux.ts';
+import { el, surToucher } from '../commun.ts';
+import { motAvant, dateQuand } from '../../metier/echeance.ts';
+import { recue } from '../../metier/fiche.ts';
+import { TEXTES_PAGE_PLUS as TP } from '../../textes/page-plus.ts';
+
+const TXT = {
+  trait: 'LE TRAIT',
+  aQui: 'À QUI',
+  quiOse: 'QUI OSE ?',
+  avec: 'AVEC',
+  personne: 'personne',
+  moi: 'moi',
+  enLair: 'en l’air',
+  supprimerPromi: 'SUPPRIMER CE PROMI',
+  supprimerChiche: 'SUPPRIMER CE CHICHE',
+  visible: (qui: string): string => `visible par ${qui}`,
+  visibles: (qui: string): string => `visibles par ${qui}`,
+} as const;
+
+/** C-134 (v146) : un glissement de 220 pt vers le bas referme Peaufiner, un de 60 pt non — le seuil est entre les deux */
+const SEUIL_GLISSE = 120;
+
+export interface PeaufinerFiche {
+  ouvrir(): void;
+  fermer(anime?: boolean): void;
+  ouvert(): boolean;
+  /** la parole a changé (le magasin) : la page se rebâtit si elle est ouverte (jamais calendrier ouvert) */
+  reposer(): void;
+}
+
+export function monterPeaufinerFiche(o: {
+  fi: HTMLElement;
+  barre: HTMLElement;
+  chevron: HTMLElement;
+  magasin: Magasin;
+  parole: () => Parole | null;
+  /** LA COULEUR : celle de la dalle de la parole, telle que la Toile la peint (null : « au hasard ») */
+  couleur: (p: Parole) => string | null;
+  /** SUPPRIMER (la confirmation, la pierre tombale : lot 3b-1b) — tant qu'il n'est pas branché, sa rangée se déclare inactive */
+  supprimer?: (p: Parole) => void;
+}): PeaufinerFiche {
+  const { fi, barre, chevron, magasin } = o;
+  const L = TP.peauf;
+  const corps = el('div', { id: 'dpdCorps', class: 'dpd-corps', role: 'region', 'aria-label': 'Peaufiner' });
+  corps.hidden = true;
+  fi.appendChild(corps);
+  const pf = creerPeauf(corps);
+  let ouvert = false;
+  const passages = new Map<HTMLElement, ControlePassage>();
+
+  const reduit = (): boolean => matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function enFlaques(e: HTMLElement, sens: 'paraît' | 'part', fin?: () => void): void {
+    passages.get(e)?.stop?.();
+    passages.delete(e);
+    const c = masqueFlaques(e, {
+      mode: sens === 'paraît' ? 'ouvre' : 'couvre',
+      duree: 300,
+      fin: (c) => {
+        passages.delete(e);
+        if (!c.arrete) fin?.();
+      },
+    });
+    if (!c.arrete) passages.set(e, c);
+  }
+  /** le ▾ se retourne : il part en flaques, puis revient retourné, en flaques (C-271) */
+  function retourne(ouvre: boolean): void {
+    if (reduit()) {
+      fi.classList.toggle('dpd-ouv', ouvre);
+      return;
+    }
+    enFlaques(chevron, 'part', () => {
+      queueMicrotask(() => {
+        fi.classList.toggle('dpd-ouv', ouvre);
+        enFlaques(chevron, 'paraît');
+      });
+    });
+  }
+
+  /** à qui la note et les pièces sont visibles (`destinataire` de lot-S2) : qui me l'a promise, à qui je la promets, ou son Cercle */
+  function destinataire(p: Parole): string | null {
+    if (p.from && p.from !== 'moi') return p.from;
+    if (p.who && p.who !== 'moi' && p.who !== 'le groupe') return p.who;
+    if (p.nuee && p.nuee !== 'soi') return magasin.etat().cercles[p.nuee] ?? p.nuee;
+    return null;
+  }
+
+  function batir(p: Parole): void {
+    const s = p.suite ?? {};
+    const chiche = !!p.chiche;
+    const liste = el('div', { class: 's2-liste' });
+    liste.appendChild(
+      pf.tete(p.title, TP.fermerGlyphe, TP.fermer, () => {
+        fermer();
+      }),
+    );
+    // LE TRAIT : son aperçu (96 pt, à la teinte des libellés), son nom (le prototype : `#dpTraitReg`, lot-PINCEAU)
+    const nom = typeof s['trait'] === 'string' && PINCEAUX.some((x) => x.nom === s['trait']) ? s['trait'] : 'Plein';
+    const rt = pf.rang(TXT.trait, nom);
+    const ap = el('div', { class: 'pc-ap' });
+    const dessin = PINCEAUX.find((x) => x.nom === nom)?.apercu ?? '';
+    ap.innerHTML = `<svg width="96" height="18.7" viewBox="0 0 96 18.7" fill="none" aria-hidden="true">${dessin}</svg>`;
+    rt.insertBefore(ap, rt.querySelector('.s2-val'));
+    liste.appendChild(rt);
+    // À QUI / QUI OSE ? — un Promi « je me promets » est à soi par définition : pas de rangée ; un Chiche reçu non plus (C-192)
+    const aSoi = !chiche && !s['req'] && (!p.who || /^moi$/i.test(p.who));
+    if (!aSoi && !(chiche && recue(p))) liste.appendChild(pf.rang(chiche ? TXT.quiOse : TXT.aQui, p.who || TXT.moi));
+    // AVEC : le compagnon d'un Chiche — vide, en pointillés (§3.3)
+    const avec = typeof s['avec'] === 'string' ? s['avec'] : '';
+    if (chiche) liste.appendChild(pf.rang(TXT.avec, avec || TXT.personne, avec ? '' : ' s2-vide'));
+    // AVANT : le même choix que la page + (C-197)
+    const ra = pf.rang(L.avant, motAvant(p, magasin.aujourdhui()));
+    const choisie = s['dueChoisi'] === true;
+    const on = !choisie
+      ? null
+      : typeof s['dueISO'] === 'string'
+        ? 3
+        : p.due == null && !s['enLair']
+          ? 4
+          : ([1, 7, 30] as (number | null)[]).indexOf(p.due) >= 0
+            ? ([1, 7, 30] as (number | null)[]).indexOf(p.due)
+            : null;
+    pf.deplie(ra, () =>
+      pf.echeance({
+        r: ra,
+        mots: L.echeances,
+        on,
+        dueISO: typeof s['dueISO'] === 'string' ? s['dueISO'] : null,
+        choisit: (jours) => {
+          pf.ouverte = null;
+          magasin.peaufiner(p.id, { echeance: { due: jours, dueISO: null, enLair: false } }, Date.now());
+        },
+        date: (iso, jours) => {
+          magasin.peaufiner(p.id, { echeance: { due: jours, dueISO: iso, enLair: false } }, Date.now());
+          return dateQuand(new Date(iso + 'T00:00:00'), jours);
+        },
+        replie: () => {
+          pf.ouverte = null;
+          reposer();
+        },
+      }),
+    );
+    liste.appendChild(ra);
+    // DANS UN CERCLE : un Chiche n'en a pas (l'inventaire)
+    if (!chiche) {
+      const cercles = magasin.etat().cercles;
+      const rc = pf.rang(L.dansUnCercle, p.nuee ? (cercles[p.nuee] ?? p.nuee) : L.aucune);
+      pf.deplie(rc, () => {
+        const ch = el('div', { class: 'chips', id: 'nueeChips' });
+        for (const [k, n] of [['', L.aucune] as const, ...Object.entries(cercles)]) {
+          const c = el('div', { class: 'chip' + ((p.nuee ?? '') === k ? ' on' : ''), role: 'button' });
+          c.textContent = n;
+          surToucher(c, () => {
+            pf.ouverte = null;
+            magasin.peaufiner(p.id, { cercle: k || null }, Date.now());
+          });
+          ch.appendChild(c);
+        }
+        return ch;
+      });
+      liste.appendChild(rc);
+    }
+    const qui = destinataire(p);
+    liste.appendChild(
+      pf.note({
+        lab: L.note,
+        vide: L.noteVide,
+        vis: qui ? TXT.visible(qui) : L.notePrivee,
+        valeur: typeof s['note'] === 'string' ? s['note'] : '',
+        id: 'dNote',
+        change: (v) => {
+          magasin.peaufiner(p.id, { note: v }, Date.now());
+        },
+      }),
+    );
+    const fichiers = Array.isArray(s['files']) ? (s['files'] as unknown[]).map(String) : [];
+    liste.appendChild(
+      pf.pieces({
+        lab: L.pieces,
+        val: L.piecesVal(fichiers.length),
+        vis: qui ? TXT.visibles(qui) : L.piecesPrivees,
+        ajoute: (noms) => {
+          magasin.peaufiner(
+            p.id,
+            { fichiers: [...fichiers, ...noms.filter((n) => !fichiers.includes(n))] },
+            Date.now(),
+          );
+        },
+      }),
+    );
+    liste.appendChild(pf.murs(L.murs, o.couleur(p)));
+    const sup = pf.rang(chiche ? TXT.supprimerChiche : TXT.supprimerPromi, '', ' v16-danger');
+    const fs = o.supprimer;
+    if (fs)
+      surToucher(sup, () => {
+        fs(p);
+      });
+    else sup.setAttribute('aria-disabled', 'true');
+    liste.appendChild(sup);
+    pf.poser(liste);
+  }
+
+  function ouvrir(): void {
+    const p = o.parole();
+    if (ouvert || !p) return;
+    ouvert = true;
+    pf.ouverte = null;
+    batir(p);
+    corps.hidden = false;
+    corps.scrollTop = 0;
+    pf.croix();
+    fi.classList.add('dpd-corps-ouv');
+    barre.setAttribute('aria-expanded', 'true');
+    if (!reduit()) enFlaques(corps, 'paraît');
+    retourne(true);
+  }
+  function fermer(anime = true): void {
+    if (!ouvert) return;
+    ouvert = false;
+    barre.setAttribute('aria-expanded', 'false');
+    const fin = (): void => {
+      if (ouvert) return;
+      corps.hidden = true;
+      corps.replaceChildren();
+      fi.classList.remove('dpd-corps-ouv');
+    };
+    if (!anime || reduit()) {
+      for (const e of [corps, chevron]) {
+        passages.get(e)?.stop?.();
+        passages.delete(e);
+      }
+      fin();
+      fi.classList.remove('dpd-ouv');
+      return;
+    }
+    enFlaques(corps, 'part', fin);
+    retourne(false);
+  }
+  function reposer(): void {
+    const p = o.parole();
+    if (!ouvert || !p) return;
+    // calendrier ouvert : jamais rebâti (un champ retiré de la page referme le calendrier d'iOS) ; il se rebâtit à sa fermeture
+    if (document.activeElement instanceof HTMLElement && corps.contains(document.activeElement)) return;
+    batir(p);
+  }
+
+  barre.setAttribute('aria-expanded', 'false');
+  surToucher(barre, (ev) => {
+    // le rond Partager garde sa fonction (lot 8)
+    if (ev.target instanceof Element && ev.target.closest('.dpd-part')) return;
+    if (ouvert) fermer();
+    else ouvrir();
+  });
+  // C-134 : la sortie par un glissement vers le bas (la page en haut de sa liste), jamais par un défilement
+  let glisseDe: { y: number; s: number; id: number } | null = null;
+  corps.addEventListener('pointerdown', (ev) => {
+    glisseDe = { y: ev.clientY, s: corps.scrollTop, id: ev.pointerId };
+  });
+  corps.addEventListener('pointermove', (ev) => {
+    const g = glisseDe;
+    if (!g || g.id !== ev.pointerId || g.s > 0) return;
+    const k = fi.getBoundingClientRect().width / (fi.offsetWidth || 1) || 1;
+    if ((ev.clientY - g.y) / k > SEUIL_GLISSE) {
+      glisseDe = null;
+      fermer();
+    }
+  });
+  for (const t of ['pointerup', 'pointercancel'] as const)
+    corps.addEventListener(t, () => {
+      glisseDe = null;
+    });
+
+  return { ouvrir, fermer, ouvert: () => ouvert, reposer };
+}

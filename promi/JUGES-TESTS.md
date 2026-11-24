@@ -276,3 +276,32 @@ le champ retiré de la page, iOS fermait son calendrier ; ② la rangée AVANT a
 | releve-S1-fiches (la parole d'un Cercle)     | F › identité au pixel : la fiche — Promi d'un Cercle, deux thèmes ; U › les Noyaux d'un Cercle | fiche-cercle-sans-disque                                       |
 | redteam_tenir (la parole d'un Cercle)        | T › identité au pixel : tenir — Promi d'un Cercle, deux thèmes                                 | (tenir-identite-decale, sur « Promi à soi »)                   |
 | la séance de Tom (24 nov.), prototype et app | PJ › le calendrier de « une date… », la séance de Tom — prototype ; — app                      | cal-referme-_, cal-non-lu-_, cal-hors-doigt-* (les deux côtés) |
+
+## Lot 3b-1 — Peaufiner sur la fiche ; SUPPRIMER (la feuille, « Annuler », la pierre tombale)
+
+**Porté** : la barre « Peaufiner » de la fiche ouvre la page de réglages de la parole (`src/ecrans/fiche/peaufiner.ts`, `bati()` et `ouvre()` de lot-S2) :
+la tête (son titre, le X), LE TRAIT (l'aperçu de son pinceau, 96 pt, relevé tel que `_pinceauEchantillon` le pose), À QUI / QUI OSE ?, AVEC (vide :
+en pointillés), AVANT (le même choix que la page +, devenu une brique commune : `echeance` — les pastilles et le calendrier de L2), DANS UN CERCLE, la
+NOTE, les PIÈCES JOINTES, les murs (LA COULEUR : la couleur que la Toile peint pour la dalle, `facade.couleurDalle`, `rgbDe` de lot-CERCLE-COULEUR),
+SUPPRIMER. Un choix s'écrit tout de suite (`magasin.peaufiner`) ; une parole tenue le reste (R-005 : le prototype la repassait « en cours »
+quand on changeait son échéance, un vestige d'avant v173). SUPPRIMER : la feuille (`src/ecrans/feuilles/`, `conf` et `annulable` de lot-V16), puis
+`magasin.effacer` (la pierre tombale `id|titre`, v187) et le bandeau « Annuler » (`magasin.deterrer`).
+**Écarts nommés** : Peaufiner, la feuille et le bandeau paraissent et partent en FLAQUES (C-130, C-271) ; le prototype les posait d'un coup ou les fondait.
+Les COINS de l'appareil, Peaufiner ouvert (C1 de fiche-peaufiner.spec) : le prototype sort sa barre du masque arrondi de son banc.
+**Le X de la fiche sous Linux (la CI, depuis 29,5) — DEUX CAUSES, NOMMÉES PAR UN RELEVÉ** : ① l'app posait le titre de ses plateaux d'un décalage
+FIXE relevé sur le Mac (`translate` 2,94 pt — fiche, page + ; 1,3 — accueil), le prototype le calcule sur les métriques de la police
+(lot-V210-ENCART) : sous Linux, 0,08 pt d'écart, et la croix, posée sur le titre, changeait de pixel — l'app le calcule maintenant comme lui
+(`centrerTitre`, commun.ts ; sur le Mac : 2,94 et 1,3, inchangés) ; ② la croix du prototype garde une place calculée pendant l'ouverture tant que
+l'écart est sous 0,3 pt (6,18 puis 6,45 pt d'un test à l'autre) — protocole nommé du banc (`fichesPilotees`) : sa propre passe (`_croix.passe`) la
+repose, fiche posée.
+**Trouvé en portant** : la feuille de confirmation était cachée par la règle `.couvert` de l'appareil (une fiche ouverte masque le reste) ; le
+champ de fichiers natif (« Choose Files ») des PIÈCES JOINTES n'était caché que par la feuille de la page + — la règle est
+dans les styles communs. Le prototype ajoute au chargement un fichier de démonstration (« photo-repere.jpg ») à la première parole d'un Cercle : l'état
+du banc déclare la liste de fichiers de `PAROLE_CERCLE` (vide).
+
+| Juge du prototype                                        | Test                                                                                                                  | Sondes                                     |
+| -------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ------------------------------------------ |
+| releve-S2 (Peaufiner d'une fiche), redteam_peauf_rangees | FP › identité au pixel : Peaufiner sur la fiche — chaque fiche du banc, deux thèmes (ouvert, défilé au bout, refermé) | peauf-fiche-decale, peauf-fiche-avec-plein |
+| redteam_peaufiner (C-134), redteam_peauf_x (C-220)       | FPJ › Peaufiner sur la fiche : la barre l'ouvre, un choix le laisse ouvert, 60 / 220 pt, son X                        | peauf-fiche-sourd                          |
+| redteam_echeance (C-160), redteam_peaufiner (choix)      | FPJ › Peaufiner sur la fiche, ses choix : AVANT, DANS UN CERCLE, la NOTE, relus après rechargement                    | peauf-fiche-choix-perdus                   |
+| redteam_effacer (v187), redteam_audit_v163               | FPJ › SUPPRIMER : la feuille, « Garder », « Supprimer », la pierre tombale, « Annuler »                               | supprimer-sans-tombe                       |

@@ -24,6 +24,8 @@ import { monterTenir, type Instant } from './tenir.ts';
 import { monterJonction } from './jonction.ts';
 import { monterMots } from './mots.ts';
 import { monterTitre } from './titre.ts';
+import { monterPeaufinerFiche } from './peaufiner.ts';
+import { annulable, confirmer } from '../feuilles/feuilles.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
 import { haptique } from '../../natif/haptique.ts';
 import {
@@ -73,6 +75,13 @@ const TXT = {
   peaufiner: 'Peaufiner',
   chevron: '▾',
   partager: 'Partager',
+  supprimerPromi: 'Supprimer ce Promi ?',
+  supprimerChiche: 'Supprimer ce Chiche ?',
+  supprimer: 'Supprimer',
+  garder: 'Garder',
+  promiSupprime: 'Promi supprimé',
+  chicheSupprime: 'Chiche supprimé',
+  annuler: 'Annuler',
 } as const;
 const SVG_PARTAGE =
   '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v14"/></svg>';
@@ -124,9 +133,9 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   const partage = el('span', { class: 'dpd-part', role: 'button', 'aria-label': TXT.partager });
   partage.innerHTML = SVG_PARTAGE;
   barreTog.append(barreLab, barreChev, partage);
-  // pas encore portées (lot 3b : le menu photo, Peaufiner, les membres ; lot 8 : Partager) : elles se déclarent inactives (`aria-disabled`),
-  // et le retirent quand leur lot les branche
-  for (const c of [photo, plusM, barreTog, partage]) c.setAttribute('aria-disabled', 'true');
+  // pas encore portées (lot 3b : le menu photo, les membres ; lot 8 : Partager) : elles se déclarent inactives (`aria-disabled`), et le
+  // retirent quand leur lot les branche
+  for (const c of [photo, plusM, partage]) c.setAttribute('aria-disabled', 'true');
   defile.append(champ, trait, photo, geste, noyaux, plusM, phrase, titre, etatL, unMot, espace);
   // le plateau d'abord, comme dans le prototype (`.enh`, le premier bloc de la fiche) ; il passe au-dessus de la couche qui défile par son z
   fi.append(plateau, defile, barre);
@@ -651,9 +660,42 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     },
   });
 
+  // ── PEAUFINER (peaufiner.ts, lot 3b-1) : la barre l'ouvre par-dessus la fiche, la fiche reste dessous ──
+  const peauf = monterPeaufinerFiche({
+    fi,
+    barre: barreTog,
+    chevron: barreChev,
+    magasin,
+    parole: () => courant,
+    couleur: (p) => facade.couleurDalle(p),
+    // SUPPRIMER (`_v16SupprimerPromi`, v187) : la feuille ; « Supprimer » efface la parole (sa pierre tombale), la fiche se ferme (l'abonné
+    // ci-dessous : la parole n'est plus là), sa dalle quitte la Toile ; « Annuler » la rend, 5 s
+    supprimer: (p) => {
+      const ch = !!p.chiche;
+      confirmer(dv, {
+        titre: ch ? TXT.supprimerChiche : TXT.supprimerPromi,
+        texte: `« ${p.title} » quitte ta Toile.`,
+        oui: TXT.supprimer,
+        non: TXT.garder,
+        faire: () => {
+          const x = magasin.effacer(p.id);
+          if (!x) return;
+          annulable(dv, {
+            mot: ch ? TXT.chicheSupprime : TXT.promiSupprime,
+            annuler: TXT.annuler,
+            defaire: () => {
+              magasin.deterrer(x);
+            },
+          });
+        },
+      });
+    },
+  });
+
   function ouvrir(id: number): void {
     const p = magasin.etat().paroles.find((q) => q.id === id);
     if (!p || p.draft) return;
+    peauf.fermer(false);
     tenir.arreter();
     titreCtl.sortir(true);
     instantF = null;
@@ -687,6 +729,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   /** elle redescend (0,4 s), puis se cache */
   function fermer(): void {
     if (fi.hidden || fi.classList.contains('fi-bas')) return;
+    peauf.fermer(false);
     tenir.arreter();
     titreCtl.sortir(true);
     courant = null;
@@ -713,6 +756,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     if (p === courant) return;
     courant = p;
     poser(p);
+    peauf.reposer();
   });
 
   nav.poser('fiche', (arg) => {

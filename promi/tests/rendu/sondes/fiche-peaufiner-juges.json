@@ -1,0 +1,17 @@
+[
+  {
+    "nom": "peauf-fiche-sourd",
+    "test": "Peaufiner sur la fiche : la barre l’ouvre, un choix le laisse ouvert, 60 pt de glissement non, 220 pt et son X le referment, la fiche reste (C-134, C-220)",
+    "defaut": "la barre Peaufiner sourde au doigt"
+  },
+  {
+    "nom": "peauf-fiche-choix-perdus",
+    "test": "Peaufiner sur la fiche, ses choix : AVANT, DANS UN CERCLE, la NOTE s’écrivent et se relisent après rechargement ; la ligne d’état dit la date (C-160)",
+    "defaut": "un choix de Peaufiner ne s'écrit pas (l'action du magasin sans effet)"
+  },
+  {
+    "nom": "supprimer-sans-tombe",
+    "test": "SUPPRIMER : la feuille ; « Garder » ne fait rien ; « Supprimer » efface la parole et pose sa pierre tombale, qui survit au rechargement ; « Annuler » la rend (v187, C-258)",
+    "defaut": "l'effacement écrit sans sa pierre tombale"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "nom": "peauf-fiche-decale",
+    "test": "identité au pixel : Peaufiner sur la fiche — Promi en cours, à soi, sombre",
+    "defaut": "les rangées de Peaufiner de la vraie app posées 2 pt plus bas"
+  },
+  {
+    "nom": "peauf-fiche-avec-plein",
+    "test": "identité au pixel : Peaufiner sur la fiche — Chiche lancé à soi, sombre",
+    "defaut": "la rangée AVEC vide sans ses pointillés (§3.3)"
+  }
+]

@@ -83,7 +83,6 @@
   text-transform: uppercase;
   white-space: nowrap;
   color: var(--c-creme95);
-  translate: 0 2.94px;
 }
 #createSheet .mm-i {
   display: block;
@@ -878,4 +877,3 @@
     animation: none;
   }
 }
-

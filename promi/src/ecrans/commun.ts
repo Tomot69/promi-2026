@@ -103,7 +103,37 @@ export function poserCroix(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLE
   poser1(croix, glyphe, titre);
 }
 
+/**
+ * LE TITRE D'UN ENCART DU HAUT, CENTRÉ (le prototype : `pose()` de lot-V210-ENCART, C-301, C-307) — ses capitales centrées sur l'encart, lues sur
+ * les métriques de sa police (jamais sur sa position rendue, §8) : un `translate` calculé, le même pour toutes les pages à police égale. Il
+ * remplace les décalages relevés sur le Mac (fiche, page + : 2,94 ; accueil : 1,3) — sous une autre police de repli ou d'autres métriques
+ * (Linux), un décalage fixe s'écartait du prototype (0,08 pt : la croix, posée sur le titre, changeait de pixel).
+ */
+export function centrerTitre(b: HTMLElement, t: HTMLElement): void {
+  if (!t.offsetHeight || !b.offsetWidth) return;
+  const c = getComputedStyle(t);
+  const fs = parseFloat(c.fontSize) || 29.5;
+  const lh = parseFloat(c.lineHeight) || fs * 1.06;
+  const m = metr(c.fontFamily, c.fontWeight, c.fontStyle);
+  const fa = m.fa || 0.8;
+  const fd = m.fd || 0.2;
+  const base = (lh - (fa + fd) * fs) / 2 + fa * fs;
+  const capC = base - (m.cap * fs) / 2;
+  const pt = parseFloat(c.paddingTop) || 0;
+  const rb = b.getBoundingClientRect();
+  const k = rb.width / b.offsetWidth || 1;
+  const bt = parseFloat(getComputedStyle(b).borderTopWidth) || 0;
+  const deja = parseFloat((c.translate || '').split(' ')[1] ?? '0') || 0;
+  const y0 = (t.getBoundingClientRect().top - rb.top) / k - bt - deja;
+  const dy = b.clientHeight / 2 - (y0 + pt + capC);
+  const v = `0px ${String(Math.round(dy * 100) / 100)}px`;
+  if (t.style.getPropertyValue('translate') !== v) t.style.setProperty('translate', v);
+}
+
 function poser1(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement | null): void {
+  // le titre d'un plateau d'abord centré (la croix se pose sur lui)
+  const enc = croix.closest<HTMLElement>('.enh');
+  if (titre && enc?.contains(titre)) centrerTitre(enc, titre);
   const fam = getComputedStyle(document.documentElement).getPropertyValue('--f-marque').trim() || 'PromiLate';
   const mX = metr(fam, '400', 'normal');
   const fs = TAILLE_X;

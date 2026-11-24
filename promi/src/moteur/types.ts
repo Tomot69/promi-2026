@@ -72,6 +72,8 @@ export interface MoteurToile {
   mondeCourant(): MondeDalle;
   /** les tons d'une palette, tournés de la teinte (`Toile.tonsDe`) */
   tonsDe(palette: string, teinte: number): number[][];
+  /** la couleur que la Toile peint pour la dalle d'une parole (« rgb(r,g,b) »), ou rien — lecture seule */
+  colorOf(pid: number): string | null | undefined;
   cle(): number;
   labelsOn?: () => boolean;
   labelOf?: (s: GraineMoteur) => EtiquetteDalle | null;
@@ -94,7 +96,6 @@ export interface MoteurToile {
   repaintWorld: Libre;
   refigeCouleurs: Libre;
   fondToile: Libre;
-  colorOf: Libre;
   taille: Libre;
   scale: Libre;
   resetView: Libre;

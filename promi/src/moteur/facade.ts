@@ -43,6 +43,16 @@ export interface Facade {
   mondeCourant(): MondeDalle;
   /** les tons de la palette du Studio (le monde courant), en hexadécimal majuscule — l'outil de dessin (le prototype : `palette()` de lot-V132-DESSIN) */
   tonsStudio(): string[];
+  /**
+   * LA COULEUR d'une parole plantée (Peaufiner ; `rgbDe` de lot-CERCLE-COULEUR), en hexadécimal majuscule : la couleur choisie, sinon le ton
+   * figé de sa dalle dans la palette de SA plantation (`p.monde`), ou, si la dalle a une nuance (`lit`), la couleur que la Toile peint ;
+   * sans dalle figée, rien (« au hasard »)
+   */
+  couleurDalle(p: {
+    id: number;
+    dalle?: { ci: number; lit: number; rgb?: number[] };
+    monde?: MondeDalle;
+  }): string | null;
   /** la Toile entière, rendue à l'échelle `ech` (banc de rendu, partage) */
   rendre(cv: HTMLCanvasElement, ech: number, clair: boolean, vue?: boolean): boolean;
   lecture(): ReturnType<MoteurFonctions['Toile_lecture']>;
@@ -222,6 +232,28 @@ export function creerFacade(magasin: Magasin): Facade {
       return Object.keys(MONDES_ORDRE);
     },
     mondeCourant: () => toile().mondeCourant(),
+    couleurDalle(p) {
+      const hex = (c: readonly number[]): string =>
+        '#' +
+        c
+          .slice(0, 3)
+          .map((v) =>
+            Math.max(0, Math.min(255, Math.round(v)))
+              .toString(16)
+              .padStart(2, '0'),
+          )
+          .join('')
+          .toUpperCase();
+      const d = p.dalle;
+      if (!d) return null;
+      if (d.rgb) return hex(d.rgb);
+      const m = p.monde ?? toile().mondeCourant();
+      const c = toile().tonsDe(m.p, m.h)[d.ci];
+      if (!c) return null;
+      if (!(d.lit | 0)) return hex(c);
+      const r = /rgb\((\d+),\s*(\d+),\s*(\d+)\)/.exec(String(toile().colorOf(p.id) ?? ''));
+      return r ? hex([+r[1]!, +r[2]!, +r[3]!]) : hex(c);
+    },
     tonsStudio() {
       const m = toile().mondeCourant();
       return toile()

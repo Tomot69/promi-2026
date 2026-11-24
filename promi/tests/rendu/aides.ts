@@ -412,6 +412,9 @@ export const PAROLE_CERCLE = {
   place: [0.516, 0.5639, 0],
   dalle: { ci: 1, lit: 0 },
   trait: 'Plein',
+  // sa liste de fichiers, vide : sans elle, le prototype y pose au chargement un fichier de DÉMONSTRATION (« photo-repere.jpg », app.html
+  // ≈ l. 9674 : `_pf.files = _pf.files || […]`, sur la première parole d'un Cercle) — une donnée de démonstration, pas un comportement porté
+  files: [],
 };
 /** `cercle` : le même état, plus un Cercle (« Marseille ») et sa parole (`PAROLE_CERCLE`) — pour la fiche d'un Promi d'un Cercle (lot 3a) */
 export function stockageFiches(cercle = false): Record<string, string> {
@@ -622,31 +625,20 @@ export async function fichesPilotees(
   await P.evaluate((id) => (window as unknown as { openDetail(i: number): void }).openDetail(id), id);
   await A.evaluate(`${P_}.fiche().ouvrir(${String(id)})`);
   await Promise.all([images(P, o.n ?? 180), images(A, o.n ?? 180)]);
-  // DIAGNOSTIC (CI seulement, 24 nov.) : sous Linux le X de la fiche de l'app sort 1 pixel (⅓ pt) plus haut que celui du prototype, jamais
-  // sur le Mac — les cotes des deux croix et les mesures de PromiLate, des deux côtés, pour nommer la cause
-  if (process.env['CI']) {
-    const lire = (pg: Page): Promise<unknown> =>
-      pg.evaluate(() => {
-        const x = document.querySelector<HTMLElement>('#detailPoster .closeb');
-        const g = x?.querySelector<HTMLElement>('span');
-        const cv = document.createElement('canvas').getContext('2d')!;
-        cv.font = '400 100px PromiLate';
-        const h = cv.measureText('H');
-        const m = cv.measureText('X');
-        const t = document.getElementById('dptNat');
-        const r = t ? document.createRange() : null;
-        r?.selectNodeContents(t!);
-        const rr = r?.getClientRects()[0];
-        return {
-          x: [x?.style.top, x?.style.left, g?.style.top, g?.style.lineHeight],
-          b: x?.getBoundingClientRect().top,
-          gb: g?.getBoundingClientRect().top,
-          m: [h.actualBoundingBoxAscent, m.actualBoundingBoxAscent, m.actualBoundingBoxDescent, h.fontBoundingBoxAscent, h.fontBoundingBoxDescent],
-          titre: rr ? [rr.top, rr.height] : null,
-          pret: document.fonts.check('400 100px PromiLate'),
-        };
-      });
-    console.log(`croix ${String(id)} P ${JSON.stringify(await lire(P))} A ${JSON.stringify(await lire(A))}`);
-  }
+  // ⚑ 3b (le X de la fiche sous Linux) — PROTOCOLE NOMMÉ : la croix du prototype garde une place calculée plus tôt (pendant l'ouverture de la
+  // fiche) tant que la place juste en diffère de moins de 0,3 pt (`lot-V157-CROIX` : il ne réécrit pas une cote à moins de 0,3 de la sienne) ;
+  // sous Linux, d'un test à l'autre, 6,18 puis 6,45 pt pour la même fiche (la vraie app : 6,11, relevé de la CI du 24 nov.) — un pixel de
+  // l'écran, une fois sur deux. Une fois la fiche posée, le banc lui fait reposer sa croix (sa propre passe, `_croix.passe`), puis
+  // vérifie qu'elle l'a reposée. Rien d'autre n'est touché.
+  await P.evaluate(() => {
+    for (const x of document.querySelectorAll<HTMLElement>('#detailPoster .closeb'))
+      x.style.setProperty('top', '-50px', 'important');
+    (window as unknown as { _croix: { passe(): void } })._croix.passe();
+  });
+  await images(P, 30);
+  const reposee = await P.evaluate(() =>
+    [...document.querySelectorAll<HTMLElement>('#detailPoster .closeb')].every((x) => x.style.top !== '-50px'),
+  );
+  if (!reposee) throw new Error('le prototype : sa croix n’a pas été reposée par sa veille');
   return { P, A, erreurs };
 }
