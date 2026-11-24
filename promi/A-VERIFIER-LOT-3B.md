@@ -33,5 +33,16 @@ Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 9. **Le chevron de Peaufiner** — après l'envoi, la fiche glisse en bas : la flèche de la barre reste ▾ (le prototype la retournait ▴ sur un tiroir
    fermé, Q626 : dis-moi si tu préfères autre chose).
 
-Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, le menu photo, le dessin sur la fiche, la fiche d'une personne et
-le + des membres.
+## 3b-3 — le bouton photo d'une fiche
+
+10. **Le menu** — sur une fiche, toucher le petit rond au-dessus du trait (à droite) : un menu compact paraît en flaques à sa gauche — « Dessiner »
+    (pas encore : il ne fait rien), « Importer une photo », « La dalle d'origine ». Toucher ailleurs le referme.
+11. **Importer une photo** — le sélecteur du téléphone s'ouvre ; une photo choisie remplace la dalle dans le haut de la fiche, bornée par la vague ;
+    le rond porte alors une flèche de retour. Le menu dit « Retirer la photo » : la dalle revient. L'app quittée et rouverte : la photo est gardée.
+12. **La dalle d'origine** — la dalle reprend le monde et la couleur de sa plantation (si tu as changé de monde au Studio depuis) ; le menu dit
+    alors « La dalle du Studio » pour revenir. Si sa couleur se confondait avec le bleu (ou le rose) du haut, elle prend les tons de sa nature.
+13. **En clair** — la dalle du haut d'une fiche (et de la page +) est la même qu'en sombre (corrigé : elle était rendue en clair).
+14. **La page +** — une photo importée sur la page + suit la parole plantée : sa fiche la montre (elle se perdait).
+
+Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, cadrer et tourner la photo, la voir en entier, le dessin sur la
+fiche, la fiche d'une personne et le + des membres.

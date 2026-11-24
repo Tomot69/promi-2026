@@ -59,6 +59,9 @@ export interface Actions {
       fichiers: string[];
       /** le dessin de la page + (C-042) : il suit la parole */
       dessin?: unknown;
+      /** la photo importée sur la page + (lot-PHOTO, une adresse `data:`) : elle suit la parole (« sur la page +, la photo se pose sur le brouillon
+       * de phrase, et suivra la promesse à la plantation ») */
+      photo?: string | null;
     },
     maintenant: number,
   ): number;
@@ -98,6 +101,12 @@ export interface Actions {
   ajouterMot(id: number, texte: string, moi: string, maintenant: number): void;
   /** C-253 : les mots que la fiche a montrés (clés `date|auteur|texte`) sont vus — rien d'autre ne change (voir n'est pas agir : ni `derAct`, ni le Fil) */
   motsVus(id: number, cles: readonly string[]): void;
+  /**
+   * LE BOUTON PHOTO D'UNE FICHE (v117, v118, v140 ; `_photoMenu` du prototype) : `photo` une adresse `data:` (elle REMPLACE le dessin — il n'en
+   * reste rien, C-085 —, son cadrage repart de zéro) ou null (retirée) ; `origine` : la dalle d'origine (vrai) ou du Studio (faux) — elle retire
+   * la photo. Rien d'autre ne change (ni `derAct` : le prototype ne la comptait pas).
+   */
+  photo(id: number, o: { photo?: string | null; origine?: boolean }): void;
 }
 
 export interface ChampsPeaufiner {
@@ -305,6 +314,7 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       if (p.dueISO) suite['dueISO'] = p.dueISO;
       if (p.fichiers.length) suite['files'] = p.fichiers.slice();
       if (p.dessin) suite['dessin'] = p.dessin;
+      if (p.photo) suite['photo'] = p.photo;
       const neuve: Parole = {
         id,
         title: p.titre,
@@ -395,6 +405,25 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
         fil: [ligne, ...e.fil],
         compteurs: { ...e.compteurs, fid: fid + 1 },
       });
+    },
+    photo(id, o) {
+      const p = e.paroles.find((q) => q.id === id);
+      if (!p) return;
+      const suite: Record<string, unknown> = { ...(p.suite ?? {}) };
+      if (o.photo !== undefined) {
+        if (o.photo) {
+          suite['photo'] = o.photo;
+          Reflect.deleteProperty(suite, 'dessin');
+        } else Reflect.deleteProperty(suite, 'photo');
+        Reflect.deleteProperty(suite, 'photoCadre');
+      }
+      if (o.origine !== undefined) {
+        if (o.origine) suite['dalleOrigine'] = true;
+        else Reflect.deleteProperty(suite, 'dalleOrigine');
+        Reflect.deleteProperty(suite, 'photo');
+        Reflect.deleteProperty(suite, 'photoCadre');
+      }
+      valider('photo', { ...e, paroles: e.paroles.map((q) => (q.id === id ? { ...p, suite } : q)) });
     },
     motsVus(id, cles) {
       const p = e.paroles.find((q) => q.id === id);

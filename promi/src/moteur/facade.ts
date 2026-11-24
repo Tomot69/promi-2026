@@ -18,6 +18,22 @@ type Fenetre = Window & Record<string, unknown> & Partial<MoteurFonctions> & { T
 
 const w = window as unknown as Fenetre;
 
+/**
+ * C-132 (v146, `lot-V146-FICHE` du prototype) : LES DALLES QUE MONTRENT LA FICHE ET LA PAGE + SONT RENDUES COMME EN SOMBRE — elles vivent sur un
+ * corps sombre dans les deux thèmes, et le moteur lit le thème à chaque rendu (l'encre de Touffe, la dalle neutre d'Ingénu, les gris). Le moteur
+ * lit `_shThemeOverride` le temps de l'appel (`isLightM`), et rien d'autre : la Toile de l'accueil, peinte dans sa propre image, n'est pas touchée.
+ */
+function enSombre<T>(f: () => T): T {
+  const x = window as unknown as { _shThemeOverride?: boolean | null };
+  const av = x._shThemeOverride;
+  x._shThemeOverride = false;
+  try {
+    return f();
+  } finally {
+    x._shThemeOverride = av === undefined ? null : av;
+  }
+}
+
 /** Une parole telle que le moteur la lit : les champs du prototype, à plat. Objet vivant : le moteur y note `place`. */
 type ParoleMoteur = Record<string, unknown> & { id: number; draft?: boolean };
 
@@ -91,8 +107,13 @@ export interface Facade {
     y: number,
     w: number,
     h: number,
-    o: { rampe?: { cols: number[][]; haut: number }; courant?: number },
+    o: { rampe?: { cols: number[][]; haut: number }; courant?: number; monde?: MondeDalle },
   ): { x: number; y: number; w: number; h: number } | null;
+  /**
+   * le Lab MOYEN de la dalle `id` rendue dans le monde `monde`, tel que le moteur le DÉCLARE (`__dalleInfo.lab`, jamais relu en pixels :
+   * redteam_decoupe) — « La dalle d'origine » le compare au champ (Q365, lot-V118-ORIGINE)
+   */
+  labDalle(id: number, monde: MondeDalle): [number, number, number] | null;
   /** la cellule de la dalle `id` ne touche pas le bord de la Toile (sa dalle est entière) — `Toile.dalleAbs`, `Toile.taille` */
   dalleEntiere(id: number): boolean;
   /** pose un canevas 1:1, centré sur (cx, cy) des coordonnées courantes du contexte (`_poseUn` du moteur) */
@@ -376,10 +397,10 @@ export function creerFacade(magasin: Magasin): Facade {
         const deja = avenirs.get(cle);
         if (deja) return deja;
         const c1 = document.createElement('canvas');
-        if (!T.dalleAvenir(c1, 1, A) || !c1.width) return null;
+        if (!enSombre(() => T.dalleAvenir(c1, 1, A)) || !c1.width) return null;
         const k = Math.min(tw / c1.width, th / c1.height);
         const c2 = document.createElement('canvas');
-        if (!T.dalleAvenir(c2, k, A) || !c2.width) return null;
+        if (!enSombre(() => T.dalleAvenir(c2, k, A)) || !c2.width) return null;
         if (avenirs.size > 8) avenirs.delete(avenirs.keys().next().value!);
         avenirs.set(cle, c2);
         return c2;
@@ -390,8 +411,21 @@ export function creerFacade(magasin: Magasin): Facade {
     poserDalle(g, id, x, y, l, h, o) {
       const f = w['_poseDalle'] as
         ((...a: unknown[]) => { x: number; y: number; w: number; h: number } | null) | undefined;
-      const r = f ? f(g, id, x, y, l, h, o) : null;
+      const r = f ? enSombre(() => f(g, id, x, y, l, h, o)) : null;
       return r ? { x: r.x, y: r.y, w: r.w, h: r.h } : null;
+    },
+    labDalle(id, monde) {
+      try {
+        const T = toile() as MoteurToile & {
+          dalleTrame(cv: HTMLCanvasElement, id: number, k: number, m: MondeDalle, o: { donnees: boolean }): boolean;
+        };
+        const cv = document.createElement('canvas') as HTMLCanvasElement & { __dalleInfo?: { lab?: number[] } };
+        if (!enSombre(() => T.dalleTrame(cv, id, 1, monde, { donnees: true }))) return null;
+        const L = cv.__dalleInfo?.lab;
+        return L && L.length >= 3 ? [L[0]!, L[1]!, L[2]!] : null;
+      } catch {
+        return null;
+      }
     },
     dalleEntiere(id) {
       const T = toile();

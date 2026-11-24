@@ -173,35 +173,40 @@ test('Retour renomme comme le prototype : le titre neuf partout, la clé de plan
   });
   try {
     for (const pg of [P, A]) await pg.addStyleTag({ content: CURSEUR });
-    // la Toile sous la fiche, posée : la vie au repos coupée (`_vivantOff`, comme le banc de rendu — sous Linux un mouvement de repos tombait
-    // entre les deux captures), puis deux images identiques
-    await A.evaluate(() => {
-      (window as unknown as { _vivantOff: boolean })._vivantOff = true;
-    });
-    const toile = (): Promise<string> =>
-      A.evaluate(() => (document.getElementById('toileCv') as HTMLCanvasElement).toDataURL());
-    let d0 = await toile();
-    for (let k = 0; k < 10; k++) {
-      await images(A, 2);
-      const d = await toile();
-      if (d === d0) break;
-      d0 = d;
-    }
-    // la Toile en image (PNG), et l'écart entre deux de ses états : gardés dans les résultats quand ils diffèrent (la CI les rend)
+    // la Toile sous la fiche, posée, DES DEUX CÔTÉS : la vie au repos coupée (`_vivantOff`, comme le banc de rendu — sous Linux un mouvement de
+    // repos tombait entre les deux captures), puis deux images identiques
+    for (const pg of [P, A])
+      await pg.evaluate(() => {
+        (window as unknown as { _vivantOff: boolean })._vivantOff = true;
+      });
+    const toile = (pg: Page): Promise<string> =>
+      pg.evaluate(() => (document.getElementById('toileCv') as HTMLCanvasElement).toDataURL());
+    const posee = async (pg: Page): Promise<string> => {
+      let d0 = await toile(pg);
+      for (let k = 0; k < 10; k++) {
+        await images(pg, 2);
+        const d = await toile(pg);
+        if (d === d0) break;
+        d0 = d;
+      }
+      return d0;
+    };
+    const [p0, d0] = [await posee(P), await posee(A)];
+    // la Toile en image (PNG), et les pixels qui changent entre deux de ses états (leurs places) : gardés dans les résultats quand il y en a
     const png = (d: string): Buffer => Buffer.from(d.slice(d.indexOf(',') + 1), 'base64');
-    const ecartToile = (a: string, b: string, nom: string): string => {
+    const changes = (a: string, b: string, nom: string): string => {
       if (a === b) return '';
       mkdirSync(RES, { recursive: true });
       writeFileSync(join(RES, `${nom}-avant.png`), png(a));
       writeFileSync(join(RES, `${nom}-apres.png`), png(b));
       const e = ecart(png(a), png(b));
-      return ` — ${String(e.n)} pixels écartés de plus de 2 niveaux, boîte ${JSON.stringify(e.boite)}`;
+      return `${String(e.n)} pixels écartés de plus de 2 niveaux, boîte ${JSON.stringify(e.boite)}`;
     };
-    // LE TÉMOIN (CLAUDE.md, Q621 : « un juge de rien-ne-change fait d'abord son témoin ») : sans renommer, sur la durée du renommage, la Toile se
-    // répète — sinon ce juge mesurerait la Toile qui vit, pas la forme de la dalle
-    await images(A, 64);
-    const t1 = await toile();
-    expect(ecartToile(d0, t1, 'temoin'), 'le témoin : la Toile se répète sans renommage').toBe('');
+    // LE TÉMOIN (CLAUDE.md, Q621 : « un juge de rien-ne-change fait d'abord son témoin ») : sans renommer, sur la durée du renommage, chaque Toile
+    // se répète — sinon ce juge mesurerait la Toile qui vit, pas la forme de la dalle
+    await Promise.all([images(P, 64), images(A, 64)]);
+    expect(changes(p0, await toile(P), 'temoin-prototype'), 'le témoin du prototype : sa Toile se répète').toBe('');
+    expect(changes(d0, await toile(A), 'temoin'), 'le témoin : la Toile se répète sans renommage').toBe('');
     const cle0 = (await titreApp(A)).cle;
     await Promise.all([toucherTitre(P), toucherTitre(A)]);
     await Promise.all([images(P, 4), images(A, 4)]);
@@ -229,10 +234,13 @@ test('Retour renomme comme le prototype : le titre neuf partout, la clé de plan
     expect(ta.cle, 'la clé de plantation gardée (Q621)').toBe(cle0);
     // le renommage repeint la Toile (`Toile.redraw`) : sous Brouillamini, la forme et l'ampleur de la dalle se tiraient du titre — elles se
     // tirent de la clé de plantation, la Toile est la même au pixel
+    // ⚑ sous Linux, UN pixel du bord d'une dalle change au renommage (488, 556 du canevas, relevé de la CI) — le prototype est rejoué : la vraie
+    // app change exactement ce que le prototype change (sur le Mac : rien, des deux côtés)
+    const cp = changes(p0, await toile(P), 'renomme-toile-prototype');
     expect(
-      ecartToile(d0, await toile(), 'renomme-toile'),
-      'la Toile n’a pas changé : la dalle garde sa forme (Q621)',
-    ).toBe('');
+      changes(d0, await toile(A), 'renomme-toile'),
+      'la Toile n’a pas changé autrement que celle du prototype (Q621)',
+    ).toBe(cp);
     expect(await edite(A), 'sorti de la modification').toBe(false);
     expect(await comparer(P, A, 'renomme'), 'pixels écartés une fois renommée').toBe(0);
     expect(erreurs).toEqual([]);

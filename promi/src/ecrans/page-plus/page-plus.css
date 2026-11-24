@@ -732,7 +732,12 @@
 }
 
 /* ── le menu du bouton photo (v117, compact v128) : à gauche du bouton, 4 d'écart, la géométrie de la pastille ── */
-#createSheet .ph-photo-menu {
+/* le bouton photo, survolé ou pressé : plein (lot-PHOTO, `.ph-photo-btn:hover, :active`) — sur l'iPhone le survol reste après le toucher,
+   tant que le menu est ouvert */
+:is(#createSheet, #detailPoster) .ph-photo-btn:is(:hover, :active) {
+  opacity: 1;
+}
+:is(#createSheet, #detailPoster) .ph-photo-menu {
   position: absolute;
   left: var(--marge-g);
   display: flex;
@@ -741,7 +746,7 @@
   gap: 4px;
   z-index: 40;
 }
-#createSheet .ph-photo-menu button {
+:is(#createSheet, #detailPoster) .ph-photo-menu button {
   position: relative;
   box-sizing: border-box;
   height: 33px;
@@ -758,7 +763,7 @@
   cursor: pointer;
 }
 /* sa zone de toucher fait 44 de haut */
-#createSheet .ph-photo-menu button::after {
+:is(#createSheet, #detailPoster) .ph-photo-menu button::after {
   content: '';
   position: absolute;
   left: 0;

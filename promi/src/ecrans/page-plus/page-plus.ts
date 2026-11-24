@@ -1385,6 +1385,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         cercle: P.cercle,
         fichiers: P.fichiers.slice(),
         dessin: P.dessin,
+        photo: P.photo,
       },
       maintenant,
     );

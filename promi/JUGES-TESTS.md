@@ -333,3 +333,28 @@ images et la boîte des pixels écartés dans les résultats de la CI : la cause
 | ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------- |
 | redteam_commentaires, redteam_envoi_mot, redteam_retours ④ | FM › écrire un mot sur la fiche, comme le prototype — ouverte, tapé, envoyé ; le mot, le Fil (deux thèmes)     | mot-sans-filet, mot-signe-moi     |
 | redteam_nombre_mots (C-257), redteam_mots_neufs (C-253)    | FM › le nombre de mots fait glisser la fiche jusqu'au premier mot neuf ; un toucher ailleurs referme la saisie | mot-reste-ouvert, mots-jamais-vus |
+
+## Lot 3b-3 — le bouton photo d'une fiche : le menu, la photo, la dalle d'origine
+
+Fichier : `fiche-photo.spec.ts` (FPh : l'identité au pixel, les entrées du menu, la décision Q365, contre le prototype).
+
+**Porté** : `src/ecrans/fiche/photo.ts` (`_photoMenu` de lot-V117-PHOTO-MENU, ses entrées de lot-V132-DESSIN, `_photoPeint` de lot-PHOTO) — le menu
+compact à gauche du bouton (« Dessiner », « Importer une photo », « La dalle d'origine » / « La dalle du Studio », « Retirer la photo ») ; la photo
+REMPLACE la dalle (en couverture, bornée par l'onde ; cadrée si `photoCadre`) et le dessin ; le bouton porte alors le signe du retour ;
+`magasin.photo`. La dalle d'origine : peinte dans le monde de sa plantation, sa couleur gardée sauf ton sur ton face au champ (Q365, ΔE 15 :
+`src/metier/origine.ts`, le Lab du prototype ; le Lab de la dalle, déclaré par le moteur : `facade.labDalle`). Le bouton survolé ou pressé est plein
+(`:hover`, `:active` : sur l'iPhone le survol reste après le toucher). La photo de la page + suit la parole à la plantation (elle se perdait : un
+manque du lot 2).
+**Trouvé, caché par le masque M1** : la vraie app rendait la dalle de la fiche et de la page + dans le thème de l'app — en clair, une dalle claire
+sur un corps sombre ; le prototype les rend « comme en sombre » (C-132, `lot-V146-FICHE` : `_shThemeOverride` le temps de l'appel). La façade le
+fait maintenant (`enSombre` : `poserDalle`, `dalleAvenir`, `labDalle`). C'est la décision Q365 (le ΔE déclaré des deux côtés) qui l'a prise.
+**Le juge Q621 sous Linux — la cause, lue sur les images de la CI** : le témoin passe (la Toile se répète sans renommer) ; au renommage, UN pixel du
+bord d'une dalle change (488, 556 du canevas, aux deux essais). Le juge rejoue maintenant le prototype à côté : la vraie app doit changer exactement
+ce que le prototype change (sur le Mac : rien, des deux côtés). Si le prototype change le même pixel sous Linux, c'est le moteur, à l'identique.
+**Écarts nommés** : « Dessiner » est dans le menu, inactif jusqu'au 3b-5 (le dessin sur la fiche) ; le menu paraît et part en flaques (C-271 ; le
+prototype le posait d'un coup). La dalle d'origine est sous M1 : jugée par sa décision (Q365), pas au pixel.
+
+| Juge du prototype                        | Test                                                                                             | Sondes                                                      |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
+| redteam_photo_menu (v117), redteam_photo | FPh › le bouton photo d'une fiche : le menu, la photo importée, la dalle d'origine (deux thèmes) | menu-photo-large, origine-garde-photo, dalle-fiche-en-clair |
+| redteam_origine (Q365)                   | FPh › (le même) : la décision « origine » / « rampe » et son ΔE, déclarés des deux côtés         | dalle-fiche-en-clair                                        |

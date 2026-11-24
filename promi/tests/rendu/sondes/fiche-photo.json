@@ -1,0 +1,17 @@
+[
+  {
+    "nom": "menu-photo-large",
+    "test": "le bouton photo d’une fiche, comme le prototype — le menu, la photo importée, la dalle d’origine (v117, Q365), sombre",
+    "defaut": "le menu du bouton photo n'est pas compact (44 pt par entrée au lieu de 33)"
+  },
+  {
+    "nom": "origine-garde-photo",
+    "test": "le bouton photo d’une fiche, comme le prototype — le menu, la photo importée, la dalle d’origine (v117, Q365), clair",
+    "defaut": "« La dalle d'origine » laisse la photo posée"
+  },
+  {
+    "nom": "dalle-fiche-en-clair",
+    "test": "le bouton photo d’une fiche, comme le prototype — le menu, la photo importée, la dalle d’origine (v117, Q365), clair",
+    "defaut": "la dalle de la fiche rendue dans le thème clair de l'app, pas comme en sombre (C-132)"
+  }
+]

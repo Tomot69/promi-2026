@@ -26,6 +26,8 @@ import { monterMots } from './mots.ts';
 import { monterTitre } from './titre.ts';
 import { monterPeaufinerFiche } from './peaufiner.ts';
 import { monterSaisieMot } from './saisie-mot.ts';
+import { imagePhoto, monterMenuPhoto, mondeOrigine, peindrePhoto, photoDe, SVG_RETOUR } from './photo.ts';
+import { origineGardee } from '../../metier/origine.ts';
 import { annulable, confirmer } from '../feuilles/feuilles.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
 import { haptique } from '../../natif/haptique.ts';
@@ -134,9 +136,9 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   const partage = el('span', { class: 'dpd-part', role: 'button', 'aria-label': TXT.partager });
   partage.innerHTML = SVG_PARTAGE;
   barreTog.append(barreLab, barreChev, partage);
-  // pas encore portées (lot 3b : le menu photo, les membres ; lot 8 : Partager) : elles se déclarent inactives (`aria-disabled`), et le
-  // retirent quand leur lot les branche
-  for (const c of [photo, plusM, partage]) c.setAttribute('aria-disabled', 'true');
+  // pas encore portées (lot 3b : les membres ; lot 8 : Partager) : elles se déclarent inactives (`aria-disabled`), et le retirent quand leur
+  // lot les branche
+  for (const c of [plusM, partage]) c.setAttribute('aria-disabled', 'true');
   defile.append(champ, trait, photo, geste, noyaux, plusM, phrase, titre, etatL, unMot, espace);
   // le plateau d'abord, comme dans le prototype (`.enh`, le premier bloc de la fiche) ; il passe au-dessus de la couche qui défile par son z
   fi.append(plateau, defile, barre);
@@ -202,8 +204,32 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     const dh = Math.min(300, T.base - T.amp - 124 - 12);
     const dw = Math.min(320, Math.floor(1.2 * dh));
     const b = instantF ? INSTANT_DALLE : { x: Math.floor((W - dw) / 2), y: 124, w: dw, h: dh };
-    const r = facade.poserDalle(g, p.id, b.x, b.y, b.w, b.h, { rampe: { cols: RAMPE[n], haut: 2 } });
+    // la dalle : teinte par la rampe de sa nature (Q30) — sauf sous une photo (Q53), ou « La dalle d'origine » loin du champ (Q365 : ΔE ≥ 15,
+    // peinte dans le monde de sa plantation, sa couleur gardée)
+    const src = photoDe(p);
+    const mo = mondeOrigine(p);
+    const ob = mo && !src ? origineGardee(facade.labDalle(p.id, mo), CHAMP[n]) : null;
+    champ.setAttribute('data-origine', ob ? `${ob.origine ? 'origine' : 'rampe'}|${ob.dE.toFixed(1)}` : '');
+    const r = facade.poserDalle(g, p.id, b.x, b.y, b.w, b.h, {
+      ...(!src && !ob?.origine && { rampe: { cols: RAMPE[n], haut: 2 } }),
+      ...(mo && { monde: mo }),
+    });
     champ.setAttribute('data-matiere', r ? [r.x, r.y, r.w, r.h].map((v) => Math.round(v)).join(',') : '');
+    // la photo REMPLACE la dalle (lot-PHOTO) : la même boîte, en couverture ou cadrée, bornée par l'onde — jamais pendant l'instant
+    const im =
+      src && !instantF
+        ? imagePhoto(src, () => {
+            if (courant && courant.id === p.id) peindreChamp(courant);
+          })
+        : null;
+    if (src && im) peindrePhoto(g, im, b, y, W, p.suite?.['photoCadre'], src.length);
+    champ.setAttribute('data-photo', src && im ? '1' : '');
+    // le bouton : avec une photo, le signe du retour (« revenir à la dalle ») ; sinon le cadre traversé d'un trait (C-060)
+    const ico = src ? SVG_RETOUR : SVG_PHOTO;
+    if (photo.dataset['ico'] !== (src ? 'retour' : 'cadre')) {
+      photo.innerHTML = ico;
+      photo.dataset['ico'] = src ? 'retour' : 'cadre';
+    }
   }
 
   // ── LE TRAIT : sur sa couche (la jonction, 3a-3, la tiendra au défilement) ──
@@ -678,6 +704,17 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     },
   });
 
+  // ── LE BOUTON PHOTO (photo.ts, lot 3b-3) : son menu ; la photo ou la dalle d'origine, et la bande se repeint ──
+  const menuPhoto = monterMenuPhoto({
+    hote: defile,
+    bouton: photo,
+    magasin,
+    parole: () => (courant && !fi.hidden && !fi.classList.contains('fi-bas') && !instantF ? courant : null),
+    repeindre: () => {
+      if (courant) peindreChamp(courant);
+    },
+  });
+
   // ── PEAUFINER (peaufiner.ts, lot 3b-1) : la barre l'ouvre par-dessus la fiche, la fiche reste dessous ──
   const peauf = monterPeaufinerFiche({
     fi,
@@ -715,6 +752,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     if (!p || p.draft) return;
     peauf.fermer(false);
     saisieMot.fermer();
+    menuPhoto.fermer(false);
     tenir.arreter();
     titreCtl.sortir(true);
     instantF = null;
@@ -750,6 +788,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     if (fi.hidden || fi.classList.contains('fi-bas')) return;
     peauf.fermer(false);
     saisieMot.fermer();
+    menuPhoto.fermer(false);
     tenir.arreter();
     titreCtl.sortir(true);
     // C-253 : les mots que la fiche a montrés sont vus, quand on la quitte (les mots neufs perdent leur pastille, « +N » redevient le total)
