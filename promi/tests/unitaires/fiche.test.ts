@@ -13,6 +13,7 @@ import {
   traitFiche,
 } from '../../src/metier/fiche.ts';
 import { etatVide, type Parole } from '../../src/donnees/schema.ts';
+import { noyauxDe } from '../../src/ecrans/fiche/noyaux.ts';
 import { creerMagasin, type Magasin } from '../../src/etat/magasin.ts';
 import { stockageMemoire } from '../../src/donnees/stockage.ts';
 
@@ -202,5 +203,24 @@ describe('renommer (lot 3a-4, C-280, Q621) : ce que le magasin écrit — le pro
     const L = m.etat().fil.map((f) => [f.pid, f.text]);
     expect(L).toContainEqual([7, 'Tu as tenu « rendre le livre demain »']);
     expect(L).toContainEqual([8, 'Tu as tenu « rendre le livre »']);
+  });
+});
+
+describe('les Noyaux d’une parole d’un Cercle (lot 3a ; le prototype : `openDetail`, `auraDisques`)', () => {
+  test('« Toi », puis UN disque : le Cercle, son nom entier, l’agrégat de toutes ses paroles', () => {
+    const toutes = [
+      P({ id: 1, nuee: 'n1', who: 'tout le monde' }),
+      P({ id: 2, nuee: 'n1', who: 'tout le monde', status: 'tenu' }),
+      P({ id: 3, nuee: 'n1', who: 'tout le monde', from: 'Rachel' }),
+      P({ id: 4, who: 'Marion' }),
+    ];
+    const N = noyauxDe(toutes[0]!, toutes, { n1: 'l’atelier du samedi' });
+    expect(N.map((n) => n.nom)).toEqual(['Toi', 'l’atelier du samedi']);
+    expect(N[1]).toMatchObject({ moi: false, cercle: 'n1', tenues: 1, enCours: 2 });
+  });
+  test('sans nom connu, la clé ; une parole à soi n’a que « Toi »', () => {
+    const p = P({ nuee: 'n9' });
+    expect(noyauxDe(p, [p]).map((n) => n.nom)).toEqual(['Toi', 'n9']);
+    expect(noyauxDe(P({}), [P({})]).map((n) => n.nom)).toEqual(['Toi']);
   });
 });

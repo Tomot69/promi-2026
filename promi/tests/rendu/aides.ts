@@ -420,10 +420,40 @@ export function ecartAdmis(nom: string, texte: string, prop: string): boolean {
 /** LOT 3a — l'état des fiches (`banc-etats/etat-fiches.json` : un cas par état de fiche) et ses cas */
 export const ETAT_FICHES = join(RACINE, 'banc-etats', 'etat-fiches.json');
 
-export function stockageFiches(): Record<string, string> {
+/** la parole d'un Cercle (« Marseille », Rachel et Marion) : plantée dans le prototype par sa page + (Peaufiner › DANS UN CERCLE), relevée telle quelle */
+export const PAROLE_CERCLE = {
+  id: 169,
+  title: 'écrire le menu',
+  who: 'tout le monde',
+  due: null,
+  intensity: 2,
+  status: 'encours',
+  nuee: 'n1',
+  from: 'moi',
+  recur: null,
+  remind: null,
+  monde: { m: 'encre', p: 'signal', h: 0 },
+  urg: 2,
+  phraseSens: 'faire',
+  cle: 'écrire le menu',
+  derAct: 1795483464391,
+  place: [0.516, 0.5639, 0],
+  dalle: { ci: 1, lit: 0 },
+  trait: 'Plein',
+};
+/** `cercle` : le même état, plus un Cercle (« Marseille ») et sa parole (`PAROLE_CERCLE`) — pour la fiche d'un Promi d'un Cercle (lot 3a) */
+export function stockageFiches(cercle = false): Record<string, string> {
   const x = JSON.parse(readFileSync(ETAT_FICHES, 'utf8')) as Record<string, unknown>;
   const ls: Record<string, string> = {};
   for (const [k, v] of Object.entries(x)) if (typeof v === 'string' && k !== 'setItem') ls[k] = v;
+  if (cercle) {
+    const st = JSON.parse(ls['promi_state']!) as { promises: unknown[]; NUE: unknown; NUEEMEM: unknown; nid: number };
+    st.NUE = { n1: 'Marseille' };
+    st.NUEEMEM = { n1: ['Rachel', 'Marion'] };
+    st.promises.push(PAROLE_CERCLE);
+    st.nid = Math.max(st.nid, PAROLE_CERCLE.id + 1);
+    ls['promi_state'] = JSON.stringify(st);
+  }
   return ls;
 }
 
@@ -441,6 +471,7 @@ export const CAS_FICHES: ReadonlyArray<[number, string]> = [
   [157, 'Chiche reçu, à relever'],
   [152, 'Chiche tenu'],
   [167, 'Chiche tenu à deux'],
+  [PAROLE_CERCLE.id, 'Promi d’un Cercle'],
 ];
 
 /**

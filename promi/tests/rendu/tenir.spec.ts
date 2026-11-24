@@ -20,6 +20,7 @@ import {
   zonesFiche,
   masquerFiche,
   appareil,
+  PAROLE_CERCLE,
 } from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'tenir');
@@ -30,6 +31,7 @@ const CAS: ReadonlyArray<[number, string]> = [
   [147, 'Chiche lancé à soi'],
   [162, 'Chiche lancé à Adrien'],
   [157, 'Chiche reçu'],
+  [PAROLE_CERCLE.id, 'Promi d’un Cercle'],
 ];
 
 /**
@@ -50,7 +52,7 @@ async function image(pg: Page): Promise<Buffer> {
 for (const theme of ['sombre', 'clair'] as const)
   for (const [id, cas] of CAS)
     test(`identité au pixel : tenir — ${cas}, ${theme}`, async ({ browser }) => {
-      const ls = { ...stockageFiches(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+      const ls = { ...stockageFiches(id === PAROLE_CERCLE.id), promi_theme: theme === 'clair' ? 'light' : 'dark' };
       // les deux côtés pilotés, les animations CSS gelées AVANT l'ouverture (aides.ts, `fichesPilotees`) : seul le canevas du rideau bouge
       const { P, A, erreurs } = await fichesPilotees(browser, ls, id);
       try {

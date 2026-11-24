@@ -254,7 +254,12 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     const le = ligneEtat(p, magasin.aujourdhui());
     etatL.textContent = le.texte;
     etatL.classList.toggle('fi-tenu', le.tenu);
-    noyaux.innerHTML = rangeeNoyaux(noyauxDe(p, magasin.etat().paroles), CHAMP[n], p.status === 'tenu', court);
+    noyaux.innerHTML = rangeeNoyaux(
+      noyauxDe(p, magasin.etat().paroles, magasin.etat().cercles),
+      CHAMP[n],
+      p.status === 'tenu',
+      court,
+    );
     peindreNoyaux(noyaux);
     partage.style.borderColor = n === 'chiche' ? palette.brun09 : palette.creme95;
     poserPhoto();

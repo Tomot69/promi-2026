@@ -3,5 +3,10 @@
     "nom": "fiche-identite-decale",
     "test": "identité au pixel : la fiche — Promi en cours, à soi, sombre",
     "defaut": "le titre de la fiche décalé d'un point vers le bas"
+  },
+  {
+    "nom": "fiche-cercle-sans-disque",
+    "test": "identité au pixel : la fiche — Promi d’un Cercle, sombre",
+    "defaut": "la fiche d'un Promi d'un Cercle sans le disque du Cercle (« Marseille ») dans ses Noyaux"
   }
 ]

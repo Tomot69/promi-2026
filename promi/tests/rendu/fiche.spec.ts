@@ -29,18 +29,22 @@ import {
   zonesFiche,
   masquerFiche,
   type Zone,
+  PAROLE_CERCLE,
 } from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'fiche');
 for (const theme of ['sombre', 'clair'] as const)
   for (const [id, cas] of CAS_FICHES)
     test(`identité au pixel : la fiche — ${cas}, ${theme}`, async ({ browser }) => {
-      const ls = { ...stockageFiches(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+      const ls = { ...stockageFiches(id === PAROLE_CERCLE.id), promi_theme: theme === 'clair' ? 'light' : 'dark' };
       const { P, A, erreurs } = await fichesPilotees(browser, ls, id);
       try {
         // la sonde (sur « identité au pixel : la fiche — Promi en cours, à soi, sombre ») : le titre de la vraie app décalé d'un point
         if (sonde('fiche-identite-decale'))
           await A.addStyleTag({ content: '#detailPoster.fiche .fi-titre{translate:0 1px!important}' });
+        // la sonde (sur « identité au pixel : la fiche — Promi d’un Cercle, sombre ») : le disque du Cercle absent des Noyaux (le défaut d'avant le 3a, lot 5 reporté)
+        if (sonde('fiche-cercle-sans-disque'))
+          await A.addStyleTag({ content: '#detailPoster.fiche #dAura .kring[data-nuee]{display:none!important}' });
         const dv = await P.evaluate(() => {
           const r = document.getElementById('device')!.getBoundingClientRect();
           return { x: r.left, y: r.top, width: r.width, height: r.height };

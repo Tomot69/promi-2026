@@ -14,6 +14,8 @@ export interface Noyau {
   moi: boolean;
   tenues: number;
   enCours: number;
+  /** le disque d'un Cercle (une parole d'un Cercle) : sa clé — son nom n'est jamais coupé (C-128) */
+  cercle?: string;
 }
 
 const champ = (p: Parole, k: string): unknown => (p as unknown as Record<string, unknown>)[k] ?? p.suite?.[k];
@@ -21,10 +23,14 @@ const champ = (p: Parole, k: string): unknown => (p as unknown as Record<string,
 /**
  * qui paraît, dans l'ordre (`openDetail` du prototype) : « Toi », puis — un Chiche : ses personnes (`who`, puis `avec`) ; un Promi : `who` et
  * `from`, triés par ordre alphabétique (jamais par valeur). Un champ se coupe aux virgules et aux « · » ; « moi » et « le groupe » n'y sont
- * pas (à la casse près : « Moi » écrit par l'onboarding a son disque, comme dans le prototype). Une parole d'un Cercle : son disque de Cercle
- * (lot 5) — rien ici.
+ * pas (à la casse près : « Moi » écrit par l'onboarding a son disque, comme dans le prototype). Une parole d'un Cercle : UN disque, le
+ * Cercle (`auraDisques`) — son nom entier, son anneau l'agrégat de toutes ses paroles (en cours, tenues).
  */
-export function noyauxDe(p: Parole, toutes: readonly Parole[]): Noyau[] {
+export function noyauxDe(
+  p: Parole,
+  toutes: readonly Parole[],
+  cercles: Readonly<Record<string, string>> = {},
+): Noyau[] {
   const miennes = toutes.filter((q) => !q.draft && (!q.from || q.from === 'moi'));
   const compte = (f: (q: Parole) => boolean): { tenues: number; enCours: number } => ({
     tenues: miennes.filter((q) => f(q) && q.status === 'tenu').length,
@@ -36,15 +42,25 @@ export function noyauxDe(p: Parole, toutes: readonly Parole[]): Noyau[] {
       .split(/\s*[,·]\s*/)
       .map((x) => x.trim())
       .filter((x) => x && x !== 'moi' && x !== 'le groupe');
-  let noms: string[] = [];
+  const noms: string[] = [];
   const ajoute = (x: string): void => {
     if (!noms.includes(x)) noms.push(x);
   };
   if (p.chiche) {
     un(p.who).forEach(ajoute);
     un(champ(p, 'avec')).forEach(ajoute);
-  } else if (p.nuee && p.nuee !== 'soi') noms = [];
-  else {
+  } else if (p.nuee && p.nuee !== 'soi') {
+    const k = p.nuee;
+    const dans = toutes.filter((q) => !q.draft && q.nuee === k);
+    out.push({
+      nom: cercles[k] ?? k,
+      moi: false,
+      cercle: k,
+      tenues: dans.filter((q) => q.status === 'tenu').length,
+      enCours: dans.filter((q) => q.status === 'encours').length,
+    });
+    return out;
+  } else {
     un(p.who).forEach(ajoute);
     un(p.from).forEach(ajoute);
     noms.sort((a, b) => a.localeCompare(b));
@@ -91,11 +107,15 @@ export function rangeeNoyaux(N: Noyau[], natCol: string, tenue: boolean, court: 
       const d = n.moi ? 48 : 36;
       const nom = n.moi
         ? 'Toi'
-        : '<span class="nom-lien" data-nom="' + esc(n.nom) + '" role="link">' + esc(court(n.nom)) + '</span>';
+        : n.cercle != null
+          ? esc(n.nom)
+          : '<span class="nom-lien" data-nom="' + esc(n.nom) + '" role="link">' + esc(court(n.nom)) + '</span>';
       return (
         '<div class="kring' +
         (n.moi ? ' kring-moi' : '') +
-        '"><span class="kr-wrap" style="width:' +
+        '"' +
+        (n.cercle != null ? ' data-nuee="' + esc(n.cercle) + '"' : '') +
+        '><span class="kr-wrap" style="width:' +
         String(D) +
         'px;height:' +
         String(D) +
