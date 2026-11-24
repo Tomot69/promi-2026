@@ -622,5 +622,31 @@ export async function fichesPilotees(
   await P.evaluate((id) => (window as unknown as { openDetail(i: number): void }).openDetail(id), id);
   await A.evaluate(`${P_}.fiche().ouvrir(${String(id)})`);
   await Promise.all([images(P, o.n ?? 180), images(A, o.n ?? 180)]);
+  // DIAGNOSTIC (CI seulement, 24 nov.) : sous Linux le X de la fiche de l'app sort 1 pixel (⅓ pt) plus haut que celui du prototype, jamais
+  // sur le Mac — les cotes des deux croix et les mesures de PromiLate, des deux côtés, pour nommer la cause
+  if (process.env['CI']) {
+    const lire = (pg: Page): Promise<unknown> =>
+      pg.evaluate(() => {
+        const x = document.querySelector<HTMLElement>('#detailPoster .closeb');
+        const g = x?.querySelector<HTMLElement>('span');
+        const cv = document.createElement('canvas').getContext('2d')!;
+        cv.font = '400 100px PromiLate';
+        const h = cv.measureText('H');
+        const m = cv.measureText('X');
+        const t = document.getElementById('dptNat');
+        const r = t ? document.createRange() : null;
+        r?.selectNodeContents(t!);
+        const rr = r?.getClientRects()[0];
+        return {
+          x: [x?.style.top, x?.style.left, g?.style.top, g?.style.lineHeight],
+          b: x?.getBoundingClientRect().top,
+          gb: g?.getBoundingClientRect().top,
+          m: [h.actualBoundingBoxAscent, m.actualBoundingBoxAscent, m.actualBoundingBoxDescent, h.fontBoundingBoxAscent, h.fontBoundingBoxDescent],
+          titre: rr ? [rr.top, rr.height] : null,
+          pret: document.fonts.check('400 100px PromiLate'),
+        };
+      });
+    console.log(`croix ${String(id)} P ${JSON.stringify(await lire(P))} A ${JSON.stringify(await lire(A))}`);
+  }
   return { P, A, erreurs };
 }
