@@ -45,6 +45,7 @@ import { elision } from '../../metier/elision.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
 import { avecAlpha, el, esc, poserCroix, surToucher, SVG_PHOTO } from '../commun.ts';
+import { creerPeauf } from '../peaufiner/briques.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
@@ -2235,29 +2236,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // ── PEAUFINER (lot-S2, C-134, C-220) : la barre l'ouvre et le referme ; il couvre la page (son corps), la barre au-dessus ; il reste ouvert
   //    pendant qu'on y choisit ; on en sort par son X, par la barre, ou par un glissement vers le bas (C-134 : 220 pt referment, 60 non, un
   //    panneau défilé non) ; refermé, il n'en reste rien (C-220). Il paraît et part en flaques (C-271 : le prototype le pose d'un coup). ──
-  /** la rangée dépliée (son libellé) : elle le reste quand Peaufiner se rebâtit après un choix fait ailleurs */
-  let peaufOuverte: string | null = null;
-  /** une rangée qui déplie ses choix au toucher (le prototype : `s2-ouv`, `.s2-ctl`) ; un choix fait la replie */
-  function deplie(r: HTMLElement, choix: () => HTMLElement): void {
-    const lab = r.querySelector('.s2-lab')?.textContent ?? '';
-    const ouvre = (): void => {
-      const ctl = el('div', { class: 's2-ctl' });
-      ctl.appendChild(choix());
-      r.appendChild(ctl);
-      r.classList.add('s2-ouv');
-    };
-    if (peaufOuverte === lab) ouvre();
-    surToucher(r, (ev) => {
-      if ((ev.target as Element).closest('.s2-ctl')) return;
-      const etait = r.classList.contains('s2-ouv');
-      for (const x of peauf.querySelectorAll('.s2-reg.s2-ouv')) {
-        x.classList.remove('s2-ouv');
-        x.querySelector('.s2-ctl')?.remove();
-      }
-      peaufOuverte = etait ? null : lab;
-      if (!etait) ouvre();
-    });
-  }
+  /** les briques de Peaufiner (la tête, la rangée, le dépliage, la NOTE, les PIÈCES JOINTES, les murs, la pose) : communes à la fiche */
+  const pf = creerPeauf(peauf);
+  const deplie = pf.deplie;
   /** le prototype, `_dateQuand` : « lundi 12 », et le mois au-delà de 30 jours */
   function dateQuand(d: Date, jours: number): string {
     const JQ = ['dimanche', 'lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi'];
@@ -2280,30 +2261,15 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   }
   /** `ouverte` : la rangée qui reste dépliée (un membre coché) ; sans elle, Peaufiner se rebâtit replié (un choix fait la replie) */
   function rendrePeauf(ouverte: string | null = null): void {
-    peaufOuverte = ouverte;
+    pf.ouverte = ouverte;
     const L = T.peauf;
     const liste = el('div', { class: 's2-liste' });
-    const tete = el('div', { class: 's2-tete' });
-    const titre = el('div', { class: 's2-titre' });
-    titre.textContent = L.titres[P.nat];
-    const x = el('div', { class: 's2-fermer', role: 'button', 'aria-label': T.fermer });
-    const xg = el('span', { class: 's2-x' });
-    xg.textContent = T.fermerGlyphe;
-    x.appendChild(xg);
-    surToucher(x, () => {
-      fermerPeauf();
-    });
-    tete.append(titre, x);
-    liste.appendChild(tete);
-    const rang = (lab: string, val: string, cls = ''): HTMLElement => {
-      const r = el('div', { class: 's2-reg' + cls });
-      const l = el('div', { class: 's2-lab' });
-      l.textContent = lab;
-      const v = el('div', { class: 's2-val' });
-      v.textContent = val;
-      r.append(l, v);
-      return r;
-    };
+    liste.appendChild(
+      pf.tete(L.titres[P.nat], T.fermerGlyphe, T.fermer, () => {
+        fermerPeauf();
+      }),
+    );
+    const rang = pf.rang;
     if (P.nat === 'nuee') {
       const r = rang(L.membres, autres(P.membres).length ? autres(P.membres).join(', ') : L.personneEncore);
       deplie(r, () => {
@@ -2391,7 +2357,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
             di.addEventListener('change', applique);
             di.addEventListener('blur', () => {
               applique();
-              if (P.dueISO && peaufOuverte === L.avant) rendrePeauf();
+              if (P.dueISO && pf.ouverte === L.avant) rendrePeauf();
             });
           }
           surToucher(c, () => {
@@ -2434,70 +2400,36 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         });
         liste.appendChild(rc);
       }
-      const zone = el('div', { class: 's2-reg s2-zone' });
-      const zl = el('div', { class: 's2-lab' });
-      zl.textContent = L.note;
-      const ta = el('textarea', {
-        id: 'fNote',
-        class: 's2-txt',
-        rows: '1',
-        placeholder: L.noteVide,
-        'aria-label': L.note,
-      });
-      ta.value = P.note;
-      champSansEmoji(ta);
-      ta.addEventListener('input', () => {
-        P.note = ta.value;
-        majGarder();
-      });
-      const zv = el('div', { class: 's2-vis' });
-      zv.textContent = L.notePrivee;
-      zone.append(zl, ta, zv);
-      liste.appendChild(zone);
-      const pj = el('div', { class: 's2-reg s2-vis2' });
-      const ph = el('div', { class: 's2-haut' });
-      const pl = el('div', { class: 's2-lab' });
-      pl.textContent = L.pieces;
-      const pv = el('div', { class: 's2-val' });
-      pv.textContent = L.piecesVal(P.fichiers.length);
-      ph.append(pl, pv);
-      const fin = el('input', { type: 'file', multiple: '', class: 'ph-photo-in', 'aria-hidden': 'true' });
-      fin.addEventListener('change', () => {
-        for (const f of fin.files ?? []) if (!P.fichiers.includes(f.name)) P.fichiers.push(f.name);
-        majGarder();
-        rendrePeauf();
-      });
-      pj.appendChild(fin);
-      // le sélecteur de fichiers s'ouvre DANS le geste (le clic du doigt), sinon le navigateur le refuse
-      pj.addEventListener('click', () => {
-        fin.click();
-      });
-      const pvis = el('div', { class: 's2-vis' });
-      pvis.textContent = L.piecesPrivees;
-      pj.append(ph, pvis);
-      liste.appendChild(pj);
+      liste.appendChild(
+        pf.note({
+          lab: L.note,
+          vide: L.noteVide,
+          vis: L.notePrivee,
+          valeur: P.note,
+          id: 'fNote',
+          change: (v) => {
+            P.note = v;
+            majGarder();
+          },
+        }),
+      );
+      liste.appendChild(
+        pf.pieces({
+          lab: L.pieces,
+          val: L.piecesVal(P.fichiers.length),
+          vis: L.piecesPrivees,
+          ajoute: (noms) => {
+            for (const n of noms) if (!P.fichiers.includes(n)) P.fichiers.push(n);
+            majGarder();
+            rendrePeauf();
+          },
+        }),
+      );
     }
     // les réglages de Ma Parole ! : des MURS, flous (4,8 px), qui ne se choisissent pas (leur phrase : lot 8)
-    const murs = el('div', { class: 's2-cercle', 'data-mur': '', 'aria-hidden': 'true' });
-    L.murs.forEach(([lab, val], i) => murs.appendChild(rang(lab, val, i === L.murs.length - 1 ? ' s2-couleur' : '')));
-    liste.appendChild(murs);
+    liste.appendChild(pf.murs(L.murs));
     // C-279 : une valeur qui a changé (un choix fait) se détrace, puis la neuve se trace — jamais d'un coup
-    const avant = new Map<string, string>();
-    for (const rg of peauf.querySelectorAll('.s2-reg'))
-      avant.set(rg.querySelector('.s2-lab')?.textContent ?? '', rg.querySelector('.s2-val')?.textContent ?? '');
-    peauf.replaceChildren(liste);
-    croixPeauf();
-    for (const rg of liste.querySelectorAll('.s2-reg')) {
-      const v = rg.querySelector<HTMLElement>('.s2-val');
-      const a = avant.get(rg.querySelector('.s2-lab')?.textContent ?? '');
-      if (v && a != null && a !== v.textContent) changerTexte(v, a, v.textContent ?? '');
-    }
-  }
-  /** le X de Peaufiner face à son titre (lot-V157-CROIX) — posé quand le panneau est montré (caché, seule sa ligne se pose) */
-  function croixPeauf(): void {
-    const x = peauf.querySelector<HTMLElement>('.s2-fermer');
-    const g = x?.querySelector<HTMLElement>('.s2-x');
-    if (x && g) poserCroix(x, g, peauf.querySelector<HTMLElement>('.s2-titre'));
+    pf.poser(liste);
   }
   /** un mot qui change (le chevron ▾ ↔ ▴) part en flaques, puis le neuf paraît en flaques (C-271) */
   function echange(e: HTMLElement, texte: string): void {
@@ -2524,7 +2456,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     rendrePeauf();
     peauf.hidden = false;
     peauf.scrollTop = 0;
-    croixPeauf();
+    pf.croix();
     cs.classList.add('pp-peauf');
     barre.setAttribute('aria-expanded', 'true');
     enFlaques(peauf, 'paraît');
