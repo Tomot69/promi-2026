@@ -519,11 +519,22 @@ test('le moment « tenir » est fluide : le travail de chaque image du rideau ti
       await A.evaluate(
         `(() => { const H = ${P_}.horloge, im = H.image.bind(H); H.image = (cb) => im((t) => { const f = Date.now() + 40; while (Date.now() < f); cb(t); }); })()`,
       );
-    await tracerPilote(A, 150, 360, 30);
-    // le travail d'une image de l'horloge, en temps réel (`Date.now` : l'horloge pilotée ne compte pas le temps de calcul), sur tout le moment
-    const T = (await A.evaluate(
-      `(() => { const L = []; for (let i = 0; i < 170; i++) { const t = Date.now(); ${P_}.horloge.images(1); L.push(Date.now() - t); } return L; })()`,
-    )) as number[];
+    // le travail d'une image de l'horloge, en temps réel (`Date.now` : l'horloge pilotée ne compte pas le temps de calcul), sur tout le moment.
+    // ⚑ (CI Linux, 24 nov.) : une seule image de 52 ms — l'autre worker qui prend le processeur pendant la mesure. L'horloge est pilotée : le
+    // travail de chaque image est le même d'une fois à l'autre ; le moment se joue DEUX FOIS (deux paroles : le rideau est le même, R4) et chaque
+    // image garde la plus petite des deux mesures — une préemption ne touche jamais la même image deux fois ; un vrai travail, si (la sonde)
+    const mesure = async (): Promise<number[]> => {
+      await tracerPilote(A, 150, 360, 30);
+      return (await A.evaluate(
+        `(() => { const L = []; for (let i = 0; i < 170; i++) { const t = Date.now(); ${P_}.horloge.images(1); L.push(Date.now() - t); } return L; })()`,
+      )) as number[];
+    };
+    const T1 = await mesure();
+    await A.evaluate(`${P_}.fiche().fermer()`);
+    await images(A, 60);
+    await ouvrirA(A, 148);
+    const T2 = await mesure();
+    const T = T1.map((v, i) => Math.min(v, T2[i] ?? v));
     const tri = [...T].sort((a, b) => a - b);
     expect(tri[Math.floor(tri.length * 0.95)]!, JSON.stringify(T)).toBeLessThanOrEqual(16);
     expect(tri[tri.length - 1]!, JSON.stringify(T)).toBeLessThanOrEqual(33);

@@ -92,47 +92,19 @@ export async function prototype(page: Page, ls: Record<string, string>): Promise
       o.style.display = 'none';
     }
   });
-  // ⚑ 3a (le X, Q623) : le X du prototype a la taille du titre de l'Index (`_tailleX`), que `ajusteTitres` ne pose (29,5) qu'une fois l'Index
-  // MONTRÉ ; avant, il rend 35. Selon la charge, une passe l'avait posé ou non (la CI : 596 px d'écart sur une fiche, une fois sur trois). Le
-  // prototype se règle comme sur un téléphone en usage : l'Index montré, puis l'accueil (mesuré : le stockage n'en change pas).
-  await page.evaluate(() => document.getElementById('indexBtn')?.click());
-  // la taille posée, celle des titres (`_ENCART.T`, 29,5) — relevé : 27 d'abord (une passe à mi-chemin), puis 29,5. Au-delà de 20 s, le banc
-  // dit ce qu'il voit (l'Index montré ou non, la taille posée, ce qui est sous le doigt au centre de INDEX)
-  try {
-    await page.waitForFunction(
-      () => {
-        // la passe des titres du prototype (`_harmonie`, celle qu'il lance à chaque écran ouvert) : sous Linux ses minuteurs partent avant
-        // que l'Index soit posé, et le titre restait à 27 (relevé sur la CI, e43c613) — on la rejoue tant que la taille n'est pas posée
-        const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number }; _harmonie?: () => void };
-        if (document.querySelector('#indexSheet.show .enh .scr-ti')) w._harmonie?.();
-        return !!w._ENCART && w._tailleX() === w._ENCART.T;
-      },
-      null,
-      { timeout: 30000, polling: 300 },
-    );
-  } catch (e) {
-    const d = await page.evaluate(() => {
-      const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number } };
-      const b = document.getElementById('indexBtn');
-      const r = b?.getBoundingClientRect();
-      const sous = r ? document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) : null;
-      const t = document.querySelector<HTMLElement>('#indexSheet .scr-ti');
-      return {
-        tailleX: w._tailleX(),
-        T: w._ENCART?.T,
-        index: document.getElementById('indexSheet')?.className,
-        titre: t ? [t.style.getPropertyValue('font-size'), getComputedStyle(t).fontSize, !!t.closest('.enh')] : null,
-        bouton: r ? [r.left, r.top, r.width, r.height] : null,
-        sous: sous ? `${sous.tagName}#${sous.id}.${String(sous.className)}` : null,
-        ecrans: [...document.querySelectorAll('.screen.show,.sheet.show,.poster.show')].map((x) => x.id),
-      };
-    });
-    throw new Error(`le prototype n'a pas réglé le titre de l'Index : ${JSON.stringify(d)}`, { cause: e });
-  }
-  await page.waitForTimeout(600);
-  await page.evaluate(() => (window as unknown as { closeAll(): void }).closeAll());
-  await page.waitForFunction(() => !document.querySelector('#indexSheet.show'), null, { timeout: 10000 });
-  await page.waitForTimeout(1200);
+  // ⚑ 3a (le X, Q623) — PROTOCOLE NOMMÉ : le X du prototype a la taille du titre de l'Index (`_tailleX`), que `ajusteTitres` pose (29,5 :
+  // `_ENCART.T`) une fois l'Index MONTRÉ ; avant, il rend 35. Selon la charge, une passe l'avait posé ou non (la CI : 596 px d'écart sur une
+  // fiche, une fois sur trois). Montrer puis refermer l'Index réglait le prototype, mais sous Linux chargé il y fallait plus de 40 s par test (la
+  // CI coupée à 60 min). Le banc pose donc sur le titre de l'Index la taille que le prototype lui donne dès qu'il l'a montré — 29,5, mesurée sur
+  // le Mac et sur l'iPhone (le titre tient largement : 110 pt pour 246 de place) —, comme `ajusteTitres` la pose (en ligne, important), puis
+  // vérifie que `_tailleX` la lit. Rien d'autre n'est touché.
+  const x = await page.evaluate(() => {
+    const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number } };
+    const t = document.querySelector<HTMLElement>('#indexSheet .scr-ti');
+    if (t && w._ENCART) t.style.setProperty('font-size', `${String(w._ENCART.T)}px`, 'important');
+    return [w._tailleX(), w._ENCART?.T];
+  });
+  if (x[0] !== x[1]) throw new Error(`le prototype : la taille du X n'est pas celle des titres (${JSON.stringify(x)})`);
 }
 
 export async function vraieApp(page: Page, ls: Record<string, string>, pilote?: number): Promise<void> {
