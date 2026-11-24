@@ -173,5 +173,10 @@
     "nom": "dessin-sec-juge",
     "test": "le dessin de la page + : tracer, annuler",
     "defaut": "le mode dessin paraît et part d'un coup"
+  },
+  {
+    "nom": "proto-date-hors-doigt",
+    "test": "le prototype : « une date… » met le vrai champ date sous le doigt",
+    "defaut": "dans le prototype, le champ date ne prend pas le doigt : Safari n'ouvre pas son calendrier (le défaut vu par Tom)"
   }
 ]

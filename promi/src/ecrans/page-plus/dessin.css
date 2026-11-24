@@ -75,7 +75,7 @@
   -webkit-appearance: none;
   appearance: none;
 }
-/* v133 (C-056) : sortir sans poser — le X de C-173, à l'emplacement de « ✕ FERMER » (PromiLate 35, comme celui de Peaufiner) */
+/* v133 (C-056) : sortir sans poser — le X de C-173, à l'emplacement de « ✕ FERMER » (PromiLate 29,5 comme celui de Peaufiner, posé par `poserCroix`) */
 #dessinMode .dz-quitter {
   left: 307px;
   top: 48px;
@@ -91,7 +91,7 @@
   left: 0;
   top: 5.88px;
   width: 44px;
-  font: 35px/37.1px var(--f-marque);
+  font: 29.5px/31.27px var(--f-marque);
   text-align: center;
 }
 #dessinMode .dz-photo-in {

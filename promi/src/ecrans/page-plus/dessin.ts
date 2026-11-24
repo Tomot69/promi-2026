@@ -15,6 +15,7 @@
  */
 import './dessin.css';
 import { palette } from '../../design/jetons.ts';
+import { poserCroix } from '../commun.ts';
 import { ICONES } from '../accueil/icones.ts';
 import type { Horloge } from '../../animation/horloge.ts';
 import { masqueFlaques, type ControlePassage } from '../../animation/flaques/passage.ts';
@@ -402,6 +403,8 @@ export function creerModeDessin(o: {
   qg.className = 'dz-x';
   qg.textContent = T.fermer;
   quitter.appendChild(qg);
+  // sans titre (le plateau du dessin n'en a pas) : le X centré sur sa boîte, à la taille des titres (lot-V157-CROIX)
+  poserCroix(quitter, qg, null);
   quitter.addEventListener('click', (ev) => {
     ev.stopPropagation();
     sortir(false);

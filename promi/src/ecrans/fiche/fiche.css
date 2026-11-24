@@ -163,7 +163,7 @@
   justify-content: center;
   align-items: center;
   gap: 5px;
-  font: 35px/35px var(--f-marque);
+  font: 29.5px/29.5px var(--f-marque);
   color: var(--c-creme95);
   white-space: nowrap;
   z-index: 40;

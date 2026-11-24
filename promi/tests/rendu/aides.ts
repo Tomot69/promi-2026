@@ -101,11 +101,14 @@ export async function prototype(page: Page, ls: Record<string, string>): Promise
   try {
     await page.waitForFunction(
       () => {
-        const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number } };
+        // la passe des titres du prototype (`_harmonie`, celle qu'il lance à chaque écran ouvert) : sous Linux ses minuteurs partent avant
+        // que l'Index soit posé, et le titre restait à 27 (relevé sur la CI, e43c613) — on la rejoue tant que la taille n'est pas posée
+        const w = window as unknown as { _tailleX(): number; _ENCART?: { T: number }; _harmonie?: () => void };
+        if (document.querySelector('#indexSheet.show .enh .scr-ti')) w._harmonie?.();
         return !!w._ENCART && w._tailleX() === w._ENCART.T;
       },
       null,
-      { timeout: 20000 },
+      { timeout: 30000, polling: 300 },
     );
   } catch (e) {
     const d = await page.evaluate(() => {

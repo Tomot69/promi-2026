@@ -44,7 +44,7 @@ import { variante } from '../../metier/exemples.ts';
 import { elision } from '../../metier/elision.ts';
 import { champSansEmoji } from '../../metier/emoji.ts';
 import { PINCEAUX } from './pinceaux.ts';
-import { avecAlpha, el, esc, surToucher, SVG_PHOTO } from '../commun.ts';
+import { avecAlpha, el, esc, poserCroix, surToucher, SVG_PHOTO } from '../commun.ts';
 import { basOnde, cheminOnde, onde, type Onde } from './onde.ts';
 import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
@@ -1469,6 +1469,8 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       i.textContent = T.mots.promiI;
       mot.appendChild(i);
     } else mot.textContent = P.nat === 'chiche' ? T.mots.chiche : T.mots.nuee;
+    // le X face au mot-marque, centré sur ses capitales, à la taille des titres (lot-V157-CROIX, comme la fiche)
+    poserCroix(croix, croixG, mot);
 
     let cap = 0;
     let r = composerPhrase(ouvert, cap);
@@ -2480,11 +2482,18 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     for (const rg of peauf.querySelectorAll('.s2-reg'))
       avant.set(rg.querySelector('.s2-lab')?.textContent ?? '', rg.querySelector('.s2-val')?.textContent ?? '');
     peauf.replaceChildren(liste);
+    croixPeauf();
     for (const rg of liste.querySelectorAll('.s2-reg')) {
       const v = rg.querySelector<HTMLElement>('.s2-val');
       const a = avant.get(rg.querySelector('.s2-lab')?.textContent ?? '');
       if (v && a != null && a !== v.textContent) changerTexte(v, a, v.textContent ?? '');
     }
+  }
+  /** le X de Peaufiner face à son titre (lot-V157-CROIX) — posé quand le panneau est montré (caché, seule sa ligne se pose) */
+  function croixPeauf(): void {
+    const x = peauf.querySelector<HTMLElement>('.s2-fermer');
+    const g = x?.querySelector<HTMLElement>('.s2-x');
+    if (x && g) poserCroix(x, g, peauf.querySelector<HTMLElement>('.s2-titre'));
   }
   /** un mot qui change (le chevron ▾ ↔ ▴) part en flaques, puis le neuf paraît en flaques (C-271) */
   function echange(e: HTMLElement, texte: string): void {
@@ -2511,6 +2520,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     rendrePeauf();
     peauf.hidden = false;
     peauf.scrollTop = 0;
+    croixPeauf();
     cs.classList.add('pp-peauf');
     barre.setAttribute('aria-expanded', 'true');
     enFlaques(peauf, 'paraît');

@@ -86,9 +86,13 @@ function metr(fam: string, wt: string, st: string): Metriques {
  */
 export const TAILLE_X = 29.5;
 /** les croix posées : une police qui finit de se charger après leur pose (un premier chargement lent) les fait reposer sur ses vraies métriques */
-const CROIX = new Map<HTMLElement, [HTMLElement, HTMLElement]>();
+const CROIX = new Map<HTMLElement, [HTMLElement, HTMLElement | null]>();
 let guetteCroix = false;
-export function poserCroix(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement): void {
+/**
+ * `titre` : le titre de sa rangée (le mot-marque d'un plateau, « Peaufiner ») — le X face à lui, centré sur ses capitales ; null (le mode dessin, dont
+ * le plateau n'a pas de titre) : comme le prototype, le X centré sur sa propre boîte, seule sa ligne posée
+ */
+export function poserCroix(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement | null): void {
   CROIX.set(croix, [glyphe, titre]);
   if (!guetteCroix) {
     guetteCroix = true;
@@ -99,11 +103,24 @@ export function poserCroix(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLE
   poser1(croix, glyphe, titre);
 }
 
-function poser1(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement): void {
+function poser1(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement | null): void {
+  const fam = getComputedStyle(document.documentElement).getPropertyValue('--f-marque').trim() || 'PromiLate';
+  const mX = metr(fam, '400', 'normal');
+  const fs = TAILLE_X;
+  const fa = mX.fa || 0.93;
+  const fd = mX.fd || 0.27;
+  // la ligne : le milieu de l'encre du « X » au milieu de la boîte de 44
+  const gt = 22 - fa * fs + ((mX.xa - (mX.xh - mX.xa)) * fs) / 2;
+  glyphe.style.top = `${gt.toFixed(2)}px`;
+  glyphe.style.lineHeight = `${((fa + fd) * fs).toFixed(2)}px`;
+  glyphe.style.fontSize = `${fs.toFixed(2)}px`;
+  if (!titre) return;
   const op = (croix.offsetParent as HTMLElement | null) ?? croix.parentElement!;
   const ro = op.getBoundingClientRect();
   const kk = ro.width / (op.offsetWidth || 1) || 1;
   if (!ro.width || !titre.getClientRects().length) return;
+  // la barre : le plateau quand la croix y vit, sinon le parent du titre (`rangee` et `pose` du prototype)
+  const rb = (croix.closest('.enh') ?? titre.parentElement ?? op).getBoundingClientRect();
   const c = getComputedStyle(titre);
   const m = metr(c.fontFamily, c.fontWeight, c.fontStyle);
   const fsT = parseFloat(c.fontSize) || 16;
@@ -114,24 +131,15 @@ function poser1(croix: HTMLElement, glyphe: HTMLElement, titre: HTMLElement): vo
   const tot = m.fa + m.fd || 1.2;
   const base = m.fa ? r.top + r.height * (m.fa / tot) : r.top + r.height * 0.78;
   const cap = m.cap * fsT * kk;
-  const fam = getComputedStyle(document.documentElement).getPropertyValue('--f-marque').trim() || 'PromiLate';
-  const mX = metr(fam, '400', 'normal');
-  const fs = TAILLE_X;
   cvMetr ??= document.createElement('canvas').getContext('2d')!;
   cvMetr.font = `400 100px ${fam}`;
   const lx = (fs * kk * cvMetr.measureText('X').width) / 100;
-  const ins = r.left - ro.left;
-  const cx = ro.right - ins - lx / 2;
+  const ins = r.left - rb.left;
+  const cx = rb.right - ins - lx / 2;
   const cy = base - cap / 2;
   const left = (cx - ro.left) / kk - op.clientLeft + op.scrollLeft - 22;
   const top = (cy - ro.top) / kk - op.clientTop + op.scrollTop - 22;
-  const fa = mX.fa || 0.93;
-  const fd = mX.fd || 0.27;
-  const gt = 22 - fa * fs + ((mX.xa - (mX.xh - mX.xa)) * fs) / 2;
   croix.style.left = `${left.toFixed(2)}px`;
   croix.style.top = `${top.toFixed(2)}px`;
   croix.style.right = 'auto';
-  glyphe.style.top = `${gt.toFixed(2)}px`;
-  glyphe.style.lineHeight = `${((fa + fd) * fs).toFixed(2)}px`;
-  glyphe.style.fontSize = `${fs.toFixed(2)}px`;
 }

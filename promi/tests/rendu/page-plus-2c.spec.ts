@@ -30,13 +30,21 @@ async function toucher(page: Page, sel: string): Promise<void> {
   }, sel);
   await page.waitForTimeout(150);
 }
-/** plus aucun mouvement, plus aucun passage en flaques, plus aucun tracé */
-const posee = (page: Page): Promise<unknown> =>
-  page.waitForFunction(
-    `!document.querySelector('#createSheet [data-flaques-mode]') && !${P_}.pagePlus().etat().mouvement && !window.TraceLettres?.actif() && !document.getAnimations().some(a => a.playState === 'running' && a.effect?.getTiming().iterations !== Infinity && a.effect?.target?.closest?.('#createSheet'))`,
-    undefined,
-    { timeout: 30000 },
-  );
+/** plus aucun mouvement, plus aucun passage en flaques, plus aucun tracé — au-delà de 30 s, le juge NOMME ce qui bouge encore */
+const posee = async (page: Page): Promise<void> => {
+  try {
+    await page.waitForFunction(
+      `!document.querySelector('#createSheet [data-flaques-mode]') && !${P_}.pagePlus().etat().mouvement && !window.TraceLettres?.actif() && !document.getAnimations().some(a => a.playState === 'running' && a.effect?.getTiming().iterations !== Infinity && a.effect?.target?.closest?.('#createSheet'))`,
+      undefined,
+      { timeout: 30000 },
+    );
+  } catch (e) {
+    const d = await page.evaluate(
+      `({ de: ${P_}.pagePlus().etat().mouvementDe, flaques: !!document.querySelector('#createSheet [data-flaques-mode]'), trace: !!window.TraceLettres?.actif(), anim: document.getAnimations().filter(a => a.playState === 'running' && a.effect?.getTiming().iterations !== Infinity && a.effect?.target?.closest?.('#createSheet')).map(a => (a.effect.target.className || a.effect.target.tagName) + ':' + (a.animationName || a.id || a.constructor.name)) })`,
+    );
+    throw new Error(`la page + n'est pas posée après 30 s : ${JSON.stringify(d)}`, { cause: e });
+  }
+};
 const TITRE = '#createSheet .pp-phrase .ph-m[data-ph="titre"]';
 const NOM = '#createSheet .pp-phrase .ph-m[data-np="nom"]';
 /** la sonde « réduire les animations » posée en douce : tout change d'un coup */
@@ -137,7 +145,8 @@ test('la phrase de la page + change de place par un seul mouvement continu : val
   await posee(page);
   await page.keyboard.type('lire', { delay: 50 });
   await page.waitForTimeout(400);
-  const seq: [string, () => Promise<void>][] = [
+  // [nom, le geste (le chrono part avec lui), ce qui le prépare (hors du chrono)]
+  const seq: [string, () => Promise<void>, (() => Promise<void>)?][] = [
     ['valider (Retour)', () => page.keyboard.press('Enter')],
     ["le sens : soi → à quelqu'un", () => toucher(page, '#createSheet .pp-phrase [data-ph="sens"]')],
     ["le sens : à quelqu'un → promets-moi", () => toucher(page, '#createSheet .pp-phrase [data-ph="sens"]')],
@@ -145,17 +154,23 @@ test('la phrase de la page + change de place par un seul mouvement continu : val
     [
       'le titre effacé (l’exemple revient)',
       async () => {
-        await toucher(page, TITRE);
-        await page.waitForTimeout(700);
         for (let i = 0; i < 4; i++) await page.keyboard.press('Backspace');
         await page.keyboard.press('Enter');
+      },
+      // ⚑ (CI Linux, 24 nov.) : le chrono des 4 s comptait le toucher du titre et l'attente de 700 ms du test (5,2 s relevées) — il part à
+      // l'effacement, qui fait revenir l'exemple ; ouvrir la saisie se fait avant, la page posée
+      async () => {
+        await toucher(page, TITRE);
+        await posee(page);
+        await page.waitForTimeout(700);
       },
     ],
   ];
   const rouges: string[] = [];
   let bougent = 0;
-  for (const [nom, geste] of seq) {
+  for (const [nom, geste, avant] of seq) {
     await posee(page);
+    if (avant) await avant();
     await page.waitForTimeout(500);
     const { H, fin } = await releve(page, geste);
     const s = sauts(H);

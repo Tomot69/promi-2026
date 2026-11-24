@@ -4,7 +4,7 @@
  * La correspondance juge → test → sonde : promi/JUGES-TESTS.md, « Lot 2a ».
  */
 import { test, expect, type Page } from '@playwright/test';
-import { stockage, vraieApp, ouvrirPlus, ouvrirPagePlus, P_, sonde, xSousLeDoigt } from './aides.ts';
+import { stockage, vraieApp, ouvrirPlus, ouvrirPagePlus, P_, prototype, sonde, xSousLeDoigt } from './aides.ts';
 
 type Nat = 'promi' | 'chiche' | 'nuee';
 
@@ -411,6 +411,16 @@ test('la saisie : le clavier s’ouvre dans le geste, la frappe remplit la pasti
   await page.waitForTimeout(100);
   expect(await page.evaluate(() => document.activeElement?.id ?? ''), 'Retour valide (le clavier se ferme)').not.toBe(
     'phIn',
+  );
+  // la pastille se remplit EN FLAQUES (C-274) : on la juge posée — plus aucun passage en flaques, plus aucun mouvement de la page (sous Linux, lue
+  // 100 ms après Retour, elle était encore vide : le test mesurait la cadence de la machine)
+  await page.waitForFunction(
+    () =>
+      !document.querySelector('#createSheet [data-flaques-mode]') &&
+      !(window as unknown as { __promi: { pagePlus(): { etat(): { mouvement: boolean } } } }).__promi.pagePlus().etat()
+        .mouvement,
+    undefined,
+    { timeout: 20000 },
   );
   const p = await page.evaluate(() => {
     const m = document.querySelector('#createSheet .ph-m[data-ph="titre"]')!;
@@ -2254,4 +2264,76 @@ test('A3, à 0,79 (330 × 714) : la page + dans chacun de ses états — rien ne
     for (const f of r) fautes.push(`${nat}, ${etat} : ${f}`);
   }
   expect(fautes).toEqual([]);
+});
+
+// ── LE CALENDRIER DU PROTOTYPE (Tom, 24 nov. 2026 : « le prototype a le même défaut de calendrier dans Safari ; il reste la référence : corrige-le
+//    aussi, avec la même solution ») — dans Safari, « une date… » n'ouvrait rien : `showPicker` sur un champ invisible d'1 px, qui ne prenait pas
+//    le doigt. Le vrai champ date COUVRE maintenant la pastille (la solution de l'app, 2b). Le banc ne voit pas le sélecteur natif d'iOS (Tom le
+//    vérifie dans Safari, R3) : il juge ce qui le rend possible — sous le doigt, au centre de « une date… », le vrai champ date — puis il joue iOS
+//    (une date posée) : l'échéance du prototype prend la date, la pastille se coche ──
+test('le prototype : « une date… » met le vrai champ date sous le doigt, une date posée devient l’échéance (Tom, 24 nov.)', async ({
+  page,
+}) => {
+  test.setTimeout(180000);
+  await prototype(page, stockage());
+  await ouvrirPagePlus(page, 'promi', true);
+  // la sonde : le champ date ne prend plus le doigt (le défaut de Safari, rétabli tel qu'il était : en ligne)
+  if (sonde('proto-date-hors-doigt'))
+    await page.evaluate(() => {
+      document
+        .querySelector<HTMLElement>('#dueChips .due-datein')!
+        .style.setProperty('pointer-events', 'none', 'important');
+    });
+  const centre = async (sel: string, mot?: string): Promise<[number, number]> =>
+    (await page.evaluate(
+      ([s, m]) => {
+        const L = [...document.querySelectorAll<HTMLElement>(s!)];
+        const e = m ? L.find((x) => (x.textContent ?? '').toLowerCase().includes(m)) : L[0];
+        const b = e!.getBoundingClientRect();
+        return [b.left + b.width / 2, b.top + b.height / 2];
+      },
+      [sel, mot],
+    )) as [number, number];
+  let c = await centre('#csBotBar');
+  await page.mouse.click(c[0], c[1]);
+  await page.waitForFunction(() => !!document.querySelector('#createSheet .s2-reg'), null, { timeout: 30000 });
+  await page.waitForTimeout(1500);
+  c = await centre('#createSheet .s2-reg', 'avant');
+  await page.mouse.click(c[0], c[1]);
+  await page.waitForFunction(() => !!document.querySelector('#createSheet .s2-reg.s2-ouv #dueChips'), null, {
+    timeout: 30000,
+  });
+  await page.waitForTimeout(800);
+  const sous = await page.evaluate(() => {
+    const k = document.querySelector<HTMLElement>('#dueChips .chip[data-pick]')!;
+    const r = k.getBoundingClientRect();
+    return (
+      (document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) as HTMLElement | null)?.className ?? ''
+    );
+  });
+  expect(sous, 'sous le doigt, le vrai champ date : iOS ouvre son calendrier (le toucher, pas un script)').toBe(
+    'due-datein',
+  );
+  // iOS pose une date : celle de dans 10 jours
+  const r = await page.evaluate(() => {
+    const d = new Date();
+    d.setDate(d.getDate() + 10);
+    const iso = `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const di = document.querySelector<HTMLInputElement>('#dueChips .due-datein')!;
+    di.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
+    di.value = iso;
+    di.dispatchEvent(new Event('change', { bubbles: true }));
+    const w = window as unknown as { _csDueISO?: string; _phrase?: { quand?: string } };
+    return {
+      iso,
+      pose: w._csDueISO,
+      quand: w._phrase?.quand ?? '',
+      coche: document.querySelector('#dueChips .chip[data-pick]')!.classList.contains('on'),
+      min: di.min,
+    };
+  });
+  expect(r.pose, 'la date posée devient l’échéance').toBe(r.iso);
+  expect(r.coche, '« une date… » cochée').toBe(true);
+  expect(r.quand, 'la phrase dit le jour').toMatch(/\d/);
+  expect(r.min, 'pas de date passée : le minimum est aujourd’hui').toMatch(/^\d{4}-\d{2}-\d{2}$/);
 });

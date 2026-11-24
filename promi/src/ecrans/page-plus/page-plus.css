@@ -90,7 +90,7 @@
   font-style: normal;
   color: var(--c-bleu45);
 }
-/* le X (C-173) : 44 × 44, PromiLate 35, à la couleur du titre */
+/* le X (C-173) : 44 × 44, PromiLate 29,5 (la taille des titres, Q623), à la couleur du titre — posé par `poserCroix` */
 #createSheet .closeb {
   position: absolute;
   top: 6px;
@@ -100,7 +100,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  font: 35px/35px var(--f-marque);
+  font: 29.5px/29.5px var(--f-marque);
   color: var(--c-creme95);
   white-space: nowrap;
   z-index: 40;
@@ -832,7 +832,7 @@
   left: 0;
   top: 5.88px;
   width: 44px;
-  font: 35px/37.1px var(--f-marque);
+  font: 29.5px/31.27px var(--f-marque);
   text-align: center;
   color: var(--c-creme95);
 }
