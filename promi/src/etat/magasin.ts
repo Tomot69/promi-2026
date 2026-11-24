@@ -109,6 +109,11 @@ export interface Actions {
   photo(id: number, o: { photo?: string | null; origine?: boolean }): void;
   /** C-085, C-098 : le cadrage de la photo (z, dx, dy, a ; `n` la longueur de son adresse), écrit à la fin du geste — rien d'autre ne change */
   cadrer(id: number, c: { z: number; dx: number; dy: number; a?: number; n: number }): void;
+  /**
+   * C-042 : le dessin de la parole (posé, en cours, masqué) ou null (retiré) ; `retirerPhoto` : il vient d'être POSÉ — il remplace la photo
+   * de la bande (v140, C-086), il n'en reste rien. Rien d'autre ne change.
+   */
+  dessin(id: number, d: unknown, retirerPhoto?: boolean): void;
 }
 
 export interface ChampsPeaufiner {
@@ -432,6 +437,18 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       if (!p || typeof p.suite?.['photo'] !== 'string') return;
       const suite: Record<string, unknown> = { ...p.suite, photoCadre: { ...c } };
       valider('cadrer', { ...e, paroles: e.paroles.map((q) => (q.id === id ? { ...p, suite } : q)) });
+    },
+    dessin(id, d, retirerPhoto = false) {
+      const p = e.paroles.find((q) => q.id === id);
+      if (!p) return;
+      const suite: Record<string, unknown> = { ...(p.suite ?? {}) };
+      if (d) suite['dessin'] = d;
+      else Reflect.deleteProperty(suite, 'dessin');
+      if (retirerPhoto) {
+        Reflect.deleteProperty(suite, 'photo');
+        Reflect.deleteProperty(suite, 'photoCadre');
+      }
+      valider('dessin', { ...e, paroles: e.paroles.map((q) => (q.id === id ? { ...p, suite } : q)) });
     },
     motsVus(id, cles) {
       const p = e.paroles.find((q) => q.id === id);

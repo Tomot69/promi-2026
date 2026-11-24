@@ -818,3 +818,46 @@
   height: 28px;
   display: block;
 }
+
+/* ── LE DESSIN DANS LA BANDE (lot 3b-5 ; lot-V132-DESSIN) : sa couche, au-dessus du champ, sous le trait ; l'œil (34 pt, sa zone de 44) ── */
+#detailPoster .dz-bande {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  pointer-events: none;
+  z-index: 1;
+}
+#detailPoster .dz-oeil {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  box-sizing: border-box;
+  border-radius: 17px;
+  margin: 0;
+  padding: 0;
+  z-index: 6;
+  border: 1px solid var(--dz-oeil-encre);
+  background: var(--dz-oeil-fond);
+  color: var(--dz-oeil-encre);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  overflow: visible;
+}
+#detailPoster .dz-oeil::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 44px;
+  height: 44px;
+  transform: translate(-50%, -50%);
+  border-radius: 22px;
+}
+#detailPoster .dz-oeil svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}

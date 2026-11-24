@@ -317,6 +317,13 @@ export interface ModeDessin {
   } | null;
 }
 
+/** UN seul mode dessin pour l'app (sa racine, `#dessinMode`, est unique) : la page + et la fiche le partagent */
+let partage: ModeDessin | null = null;
+export function modeDessinPartage(o: Parameters<typeof creerModeDessin>[0]): ModeDessin {
+  partage ??= creerModeDessin(o);
+  return partage;
+}
+
 export function creerModeDessin(o: {
   dv: HTMLElement;
   h: Horloge;

@@ -18,9 +18,9 @@ const TXT = {
   fermer: 'Fermer',
   glyphe: 'X',
   enregistrer: 'Enregistrer',
-  vue: 'La photo en entier',
-  alt: 'La photo de cette parole, en entier',
-  voir: 'Voir la photo en entier',
+  vue: { photo: 'La photo en entier', dessin: 'Le dessin en entier' },
+  alt: { photo: 'La photo de cette parole, en entier', dessin: 'Le dessin de cette parole, en entier' },
+  voir: { photo: 'Voir la photo en entier', dessin: 'Voir le dessin en entier' },
 } as const;
 const SVG_ENREGISTRER =
   '<svg viewBox="0 0 32 32" fill="none" aria-hidden="true" data-symbole="enregistrer"><path d="M16 7 L16 20 M16 20 L11.5 15.5 M16 20 L20.5 15.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M8.5 19 L8.5 25 L23.5 25 L23.5 19" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>';
@@ -50,6 +50,8 @@ export function monterEntier(o: {
   surface: (t: Element) => boolean;
   /** la photo de la bande, ou null (une dalle) — seulement quand la fiche est ouverte, au repos, sans rien par-dessus */
   photo: () => string | null;
+  /** la bande montre le dessin posé (lot 3b-5) : son image entière (elle s'ouvre en entier, jamais cadrée), ou null */
+  dessin: () => string | null;
   /** le cadrage du moment, et son écriture (à la fin du geste) ; `centre` : le centre de la boîte de la photo et sa taille de couverture */
   cadre: () => Cadre | null;
   centre: () => { x: number; y: number } | null;
@@ -60,8 +62,8 @@ export function monterEntier(o: {
 
   function batir(): HTMLElement {
     if (vue) return vue;
-    const v = el('div', { id: 'entierVue', role: 'dialog', 'aria-modal': 'true', 'aria-label': TXT.vue });
-    const im = el('img', { alt: TXT.alt });
+    const v = el('div', { id: 'entierVue', role: 'dialog', 'aria-modal': 'true', 'aria-label': TXT.vue.photo });
+    const im = el('img', { alt: TXT.alt.photo });
     const x = el('button', { type: 'button', class: 'ev-x', 'aria-label': TXT.fermer });
     x.textContent = TXT.glyphe;
     const g = el('button', { type: 'button', class: 'ev-garde enr-btn', 'aria-label': TXT.enregistrer });
@@ -96,11 +98,22 @@ export function monterEntier(o: {
   function ouverte(): boolean {
     return !!vue?.classList.contains('ouv');
   }
+  /** ce que la bande montre en entier : le dessin posé d'abord (il remplace la photo), sinon la photo */
+  function source(): { src: string; quoi: 'photo' | 'dessin' } | null {
+    const d = o.dessin();
+    if (d) return { src: d, quoi: 'dessin' };
+    const p = o.photo();
+    return p ? { src: p, quoi: 'photo' } : null;
+  }
   function ouvrir(): boolean {
-    const src = o.photo();
-    if (!src) return false;
+    const s = source();
+    if (!s) return false;
     const v = batir();
-    v.querySelector('img')!.src = src;
+    v.setAttribute('aria-label', TXT.vue[s.quoi]);
+    v.dataset['quoi'] = s.quoi;
+    const im = v.querySelector('img')!;
+    im.alt = TXT.alt[s.quoi];
+    im.src = s.src;
     v.classList.add('ouv');
     poserX(v);
     return true;
@@ -115,7 +128,7 @@ export function monterEntier(o: {
     const src = vue?.querySelector('img')?.getAttribute('src');
     if (!src) return;
     const ext = /^data:image\/(png|webp|gif)/.exec(src)?.[1] ?? 'jpg';
-    const nom = `promi-photo.${ext}`;
+    const nom = `${vue?.dataset['quoi'] === 'dessin' ? 'promi-dessin' : 'promi-photo'}.${ext}`;
     const telecharge = (): void => {
       const a = el('a', { href: src, download: nom, rel: 'noopener' });
       document.body.appendChild(a);
@@ -193,7 +206,7 @@ export function monterEntier(o: {
         return;
       }
       if (e.timeStamp - cadreT < 500) return;
-      if (!o.photo() || !dansBande(e.clientX, e.clientY)) return;
+      if (!source() || !dansBande(e.clientX, e.clientY)) return;
       if (ouvrir()) {
         avale = e.timeStamp;
         e.preventDefault();
@@ -221,7 +234,7 @@ export function monterEntier(o: {
         e.preventDefault();
         return;
       }
-      if ((e.key === 'Enter' || e.key === ' ') && e.target === bande && o.photo() && ouvrir()) e.preventDefault();
+      if ((e.key === 'Enter' || e.key === ' ') && e.target === bande && source() && ouvrir()) e.preventDefault();
     },
     true,
   );
@@ -263,7 +276,7 @@ export function monterEntier(o: {
     'touchstart',
     (e) => {
       const t = e.touches;
-      if (!t.length || ouverte() || !o.photo()) {
+      if (!t.length || ouverte() || !o.photo() || o.dessin()) {
         T = null;
         return;
       }
@@ -389,11 +402,12 @@ export function monterEntier(o: {
 
   /** VoiceOver : la bande ne se déclare commande QUE lorsqu'elle porte une photo (on compare avant d'écrire) */
   function annoncer(): void {
-    if (o.photo()) {
-      if (bande.getAttribute('aria-label') !== TXT.voir) {
+    const s = source();
+    if (s) {
+      if (bande.getAttribute('aria-label') !== TXT.voir[s.quoi]) {
         bande.setAttribute('role', 'button');
         bande.setAttribute('tabindex', '0');
-        bande.setAttribute('aria-label', TXT.voir);
+        bande.setAttribute('aria-label', TXT.voir[s.quoi]);
         bande.setAttribute('aria-hidden', 'false');
       }
     } else if (bande.getAttribute('aria-label')) {

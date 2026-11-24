@@ -46,7 +46,7 @@ import { planteNait } from './naissance.ts';
 import { creerContinu } from './continu.ts';
 import { creerDouceur } from './douceur.ts';
 import {
-  creerModeDessin,
+  modeDessinPartage,
   couleurDe,
   dessinEntier,
   dessinPose,
@@ -2447,7 +2447,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // ── LE MENU DU BOUTON PHOTO (v117, v128, v132) : « Dessiner » en tête, puis « Importer une photo » (pas sur un Cercle : il ne porte pas de
   //    photo, C-199), puis « Retirer la photo » quand elle est là ; compact, à gauche du bouton, son bas sur le bas du bouton (jamais plus haut
   //    que 106) ; il paraît et part en flaques ; un toucher ailleurs le referme ──
-  const modeDessin = creerModeDessin({
+  const modeDessin = modeDessinPartage({
     dv,
     h,
     clair: () => dv.classList.contains('light'),

@@ -52,5 +52,13 @@ Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 16. **Cadrer** — sur la photo, un doigt la déplace ; deux doigts l'agrandissent ou la réduisent (comme dans Photos), et la tournent. Fermer la fiche
     et la rouvrir : le cadrage est gardé. Un simple toucher ouvre toujours la photo en entier.
 
-Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, la photo en entier sur la page +, le dessin sur la fiche, la fiche
-d'une personne et le + des membres.
+## 3b-5 — le dessin sur la fiche
+
+17. **Dessiner** — le menu du rond → « Dessiner » : le mode dessin s'ouvre (le même que sur la page +) ; tracer, puis POSER : le dessin remplace la
+    dalle (ou la photo) en haut de la fiche ; un petit œil apparaît en bas à gauche du dessin.
+18. **L'œil** — le toucher masque le dessin (pour toi seul : la dalle revient, l'œil est barré) ; le retoucher le rend.
+19. **Le reste** — toucher le dessin l'ouvre en entier ; le menu dit « Retirer le dessin » ; importer une photo remplace le dessin, et poser un dessin
+    remplace la photo.
+
+Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, la photo en entier sur la page +, la fiche d'une personne et le +
+des membres.

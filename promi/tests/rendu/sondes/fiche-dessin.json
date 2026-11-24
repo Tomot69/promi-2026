@@ -1,0 +1,12 @@
+[
+  {
+    "nom": "dessin-fiche-absent",
+    "test": "le dessin sur une fiche, comme le prototype — posé dans la bande, masqué par l’œil (C-042, C-086), sombre",
+    "defaut": "le dessin posé n'est pas peint dans la bande"
+  },
+  {
+    "nom": "oeil-sourd",
+    "test": "le dessin sur une fiche, comme le prototype — posé dans la bande, masqué par l’œil (C-042, C-086), clair",
+    "defaut": "l'œil ne masque pas le dessin"
+  }
+]

@@ -374,3 +374,18 @@ photo en entier » quand elle porte une photo. Le X : sans titre, centré sur la
 | Juge du prototype                                                     | Test                                                                    | Sondes                              |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------- |
 | redteam_entier (C-051), redteam_cadre (C-085), redteam_tourne (C-098) | FE › la photo d'une fiche en entier, puis cadrée au doigt (deux thèmes) | entier-translucide, pince-sans-tour |
+
+## Lot 3b-5 — le dessin sur la fiche
+
+Fichier : `fiche-dessin.spec.ts` (FD : l'identité au pixel et le dessin écrit, contre le prototype).
+
+**Porté** : « Dessiner » (le menu photo de la fiche) ouvre le mode dessin — LE MÊME que la page + (`modeDessinPartage` : sa racine `#dessinMode`
+est unique) ; POSER pose le dessin dans la bande (`dessin-fiche.ts`, `bande()` de lot-V132-DESSIN : une couche pleine, son fond et ses traits, calés en
+haut, découpés 7 pt au-dessus du trait) et retire la photo (v140, C-086) ; l'œil (34 pt, x 24, 52 pt au-dessus du trait) le masque pour soi ;
+« Retirer le dessin » ; le dessin posé s'ouvre en entier (jamais cadré). `magasin.dessin`.
+**Relevé en portant** : le filet de l'œil fait 1 pt (deux règles du prototype s'y disputent, la dernière gagne).
+**Pas encore** : le dessin d'un Cercle (lot 5) ; le partage du dessin (lot 8).
+
+| Juge du prototype                                       | Test                                                                              | Sondes                          |
+| ------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
+| redteam_dessin (C-042, C-061), redteam_remplace (C-086) | FD › le dessin sur une fiche : posé dans la bande, masqué par l'œil (deux thèmes) | dessin-fiche-absent, oeil-sourd |

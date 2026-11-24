@@ -28,6 +28,8 @@ import { monterPeaufinerFiche } from './peaufiner.ts';
 import { monterSaisieMot } from './saisie-mot.ts';
 import { imagePhoto, monterMenuPhoto, mondeOrigine, peindrePhoto, photoDe, SVG_RETOUR } from './photo.ts';
 import { monterEntier, type Cadre, type Entier } from './entier.ts';
+import { dessinVu, monterBandeDessin } from './dessin-fiche.ts';
+import { couleurDe, dessinEntier, dessinPose, modeDessinPartage, type Dessin } from '../page-plus/dessin.ts';
 import { origineGardee } from '../../metier/origine.ts';
 import { annulable, confirmer } from '../feuilles/feuilles.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
@@ -141,6 +143,9 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   // lot les branche
   for (const c of [plusM, partage]) c.setAttribute('aria-disabled', 'true');
   defile.append(champ, trait, photo, geste, noyaux, plusM, phrase, titre, etatL, unMot, espace);
+  // le dessin posé, dans la bande (dessin-fiche.ts, lot 3b-5) : sa couche juste après le champ, sous le trait
+  const bandeDessin = monterBandeDessin(defile, champ);
+  const dessinDe = (p: Parole): Dessin | null => (p.suite?.['dessin'] as Dessin | undefined) ?? null;
   // le plateau d'abord, comme dans le prototype (`.enh`, le premier bloc de la fiche) ; il passe au-dessus de la couche qui défile par son z
   fi.append(plateau, defile, barre);
   dv.appendChild(fi);
@@ -232,6 +237,18 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     boitePhoto = b;
     if (src && im) peindrePhoto(g, im, b, y, W, cadreVif ?? p.suite?.['photoCadre'], src.length);
     champ.setAttribute('data-photo', src && im ? '1' : '');
+    // le dessin posé REMPLACE la dalle ou la photo (une couche pleine, découpée 7 pt au-dessus du trait) ; l'œil le masque pour soi
+    bandeDessin.poser({
+      d: dessinDe(p),
+      y,
+      nature: CHAMP[n],
+      instant: !!instantF,
+      masquer: () => {
+        const q = courant;
+        const d = q && dessinDe(q);
+        if (q && d && dessinPose(d)) magasin.dessin(q.id, { ...d, masque: !d.masque });
+      },
+    });
     entier?.annoncer();
     // le bouton : avec une photo, le signe du retour (« revenir à la dalle ») ; sinon le cadre traversé d'un trait (C-060)
     const ico = src ? SVG_RETOUR : SVG_PHOTO;
@@ -722,8 +739,41 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     repeindre: () => {
       if (courant) peindreChamp(courant);
     },
+    // le mode dessin (le même que la page +) : il habille le dessin de la parole ; POSER le pose dans la bande (la photo retirée, v140)
+    dessiner: () => {
+      const p = courant;
+      if (!p) return;
+      modeDessin.ouvrir({
+        lire: () => (courant ? dessinDe(courant) : null),
+        ecrire: (d) => {
+          if (courant) magasin.dessin(courant.id, d);
+        },
+        nature: nature(p),
+        corps: couleurDe(fi),
+        apres: (pose) => {
+          const q = courant;
+          if (q && pose) magasin.dessin(q.id, dessinDe(q), true);
+          else if (q) peindreChamp(q);
+        },
+      });
+    },
+    aDessin: (p) => {
+      const d = dessinDe(p);
+      return !!d && (dessinPose(d) || d.traits.length > 0);
+    },
+    retirerDessin: () => {
+      if (courant) magasin.dessin(courant.id, null);
+    },
+  });
+  const modeDessin = modeDessinPartage({
+    dv,
+    h: horloge(),
+    clair: () => dv.classList.contains('light'),
+    tons: () => facade.tonsStudio(),
   });
 
+  /** l'image entière du dessin posé (la vue « en entier »), refaite quand le dessin change */
+  let vueDessin: { cle: string; src: string } | null = null;
   // ── LA PHOTO EN ENTIER, ET CADRÉE AU DOIGT (entier.ts, lot 3b-4) : sur la bande, au repos, rien par-dessus ──
   const ficheLibre = (): boolean =>
     !!courant &&
@@ -732,12 +782,20 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     !instantF &&
     !peauf.ouvert() &&
     !saisieMot.ouvert() &&
-    !menuPhoto.ouvert();
+    !menuPhoto.ouvert() &&
+    !modeDessin.ouvert();
   entier = monterEntier({
     dv,
     bande: champ,
     surface: (t) => t === champ || t === defile || t === fi,
     photo: () => (courant && ficheLibre() ? photoDe(courant) : null),
+    dessin: () => {
+      const d = courant && ficheLibre() ? dessinDe(courant) : null;
+      if (!d || !dessinVu(d)) return null;
+      const cle = JSON.stringify([d.fond, d.h, d.poses.length, JSON.stringify(d.poses).length]);
+      if (vueDessin?.cle !== cle) vueDessin = { cle, src: dessinEntier(d, 3).toDataURL('image/png') };
+      return vueDessin.src;
+    },
     cadre: () => (cadreVif ?? (courant?.suite?.['photoCadre'] as Cadre | undefined)) || null,
     centre: () => (boitePhoto ? { x: boitePhoto.x + boitePhoto.w / 2, y: boitePhoto.y + boitePhoto.h / 2 } : null),
     cadrer: (c, fini) => {
@@ -788,6 +846,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     menuPhoto.fermer(false);
     entier?.fermer();
     cadreVif = null;
+    if (modeDessin.ouvert()) modeDessin.sortir(false);
     tenir.arreter();
     titreCtl.sortir(true);
     instantF = null;
@@ -826,6 +885,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     menuPhoto.fermer(false);
     entier?.fermer();
     cadreVif = null;
+    if (modeDessin.ouvert()) modeDessin.sortir(false);
     tenir.arreter();
     titreCtl.sortir(true);
     // C-253 : les mots que la fiche a montrés sont vus, quand on la quitte (les mots neufs perdent leur pastille, « +N » redevient le total)

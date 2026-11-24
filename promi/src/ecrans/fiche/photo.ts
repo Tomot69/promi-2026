@@ -3,7 +3,7 @@
  * lot-PHOTO, `_origineBande` de lot-V118-ORIGINE).
  *
  * LE MENU DU BOUTON PHOTO (compact : 33 pt, 4 pt entre deux, à gauche du bouton, son bas sur le bas du bouton, jamais plus haut que 106) :
- * « Dessiner » en tête (le dessin sur la fiche : 3b-5 — d'ici là il se déclare inactif), « Importer une photo » (le sélecteur du téléphone,
+ * « Dessiner » en tête (le mode dessin, lot 3b-5), « Importer une photo » (le sélecteur du téléphone,
  * ouvert DANS le geste), « La dalle d'origine » / « La dalle du Studio » (une parole qui porte son monde de plantation), « Retirer la photo »,
  * « Retirer le dessin ». Il paraît et part en flaques (C-271 ; le prototype le posait d'un coup) ; un toucher ailleurs le referme.
  *
@@ -109,6 +109,10 @@ export function monterMenuPhoto(o: {
   parole: () => Parole | null;
   /** la photo ou la dalle vient de changer : la bande se repeint (la photo neuve paraît en flaques) */
   repeindre: (photoNeuve: boolean) => void;
+  /** le dessin (lot 3b-5) : l'ouvrir ; la parole en porte-t-elle un (posé ou commencé) ; le retirer */
+  dessiner: () => void;
+  aDessin: (p: Parole) => boolean;
+  retirerDessin: () => void;
 }): MenuPhoto {
   const { hote, bouton, magasin } = o;
   const entree = el('input', { type: 'file', accept: 'image/*', class: 'fi-photo-in', 'aria-hidden': 'true' });
@@ -153,8 +157,15 @@ export function monterMenuPhoto(o: {
       });
       m.appendChild(b);
     };
-    // le dessin sur la fiche : lot 3b-5 (d'ici là, l'entrée se déclare inactive)
-    item(TP.menuPhoto.dessiner, null, 'data-dessiner');
+    // le dessin, en tête (v132)
+    item(
+      TP.menuPhoto.dessiner,
+      () => {
+        fermer(false);
+        o.dessiner();
+      },
+      'data-dessiner',
+    );
     item(TP.menuPhoto.importer, () => {
       entree.click();
       fermer();
@@ -170,6 +181,12 @@ export function monterMenuPhoto(o: {
         fermer();
         magasin.photo(p.id, { photo: null });
         o.repeindre(false);
+      });
+    // un dessin posé ou commencé : « Retirer le dessin » (le prototype, `retire`), en dernier
+    if (o.aDessin(p))
+      item(TP.menuPhoto.retirerDessin, () => {
+        fermer();
+        o.retirerDessin();
       });
     hote.appendChild(m);
     // la place : à GAUCHE du bouton, son bas aligné sur le bas du bouton (34), jamais plus haut que 106 (le plateau finit à 100)
