@@ -23,6 +23,15 @@ import { chargerTrace } from './animation/trace/trace.ts';
 import { chargerFlaques } from './animation/flaques/flaques.ts';
 
 const q = new URLSearchParams(location.search);
+// R3 : la version construite et le fichier du script, écrits au démarrage — sur l'iPhone, la version installée se relit dans le stockage
+try {
+  localStorage.setItem(
+    'promi_version',
+    `${__PROMI_VERSION__} ${new URL(import.meta.url).pathname.split('/').pop() ?? ''} ${new Date().toISOString()}`,
+  );
+} catch {
+  /* stockage refusé : rien */
+}
 const pilote = q.get('pilote');
 const h = installer(pilote != null ? 'pilote' : 'reel', pilote != null ? +pilote || 0 : 0);
 // C-160 : `?jour=+N` avance aujourd'hui de N jours pour la page (jamais mémorisé) — une échéance se juge sans attendre
