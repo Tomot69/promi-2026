@@ -1,0 +1,12 @@
+[
+  {
+    "nom": "entier-translucide",
+    "test": "la photo d’une fiche en entier, puis cadrée au doigt, comme le prototype (C-051, C-085, C-098), sombre",
+    "defaut": "la photo en entier sur un fond translucide (la fiche transparaît)"
+  },
+  {
+    "nom": "pince-sans-tour",
+    "test": "la photo d’une fiche en entier, puis cadrée au doigt, comme le prototype (C-051, C-085, C-098), clair",
+    "defaut": "le pincement ne tourne pas la photo (C-098)"
+  }
+]

@@ -358,3 +358,19 @@ prototype le posait d'un coup). La dalle d'origine est sous M1 : jugée par sa d
 | ---------------------------------------- | ------------------------------------------------------------------------------------------------ | ----------------------------------------------------------- |
 | redteam_photo_menu (v117), redteam_photo | FPh › le bouton photo d'une fiche : le menu, la photo importée, la dalle d'origine (deux thèmes) | menu-photo-large, origine-garde-photo, dalle-fiche-en-clair |
 | redteam_origine (Q365)                   | FPh › (le même) : la décision « origine » / « rampe » et son ΔE, déclarés des deux côtés         | dalle-fiche-en-clair                                        |
+
+## Lot 3b-4 — la photo d'une fiche en entier, et cadrée au doigt
+
+Fichier : `fiche-entier.spec.ts` (FE : l'identité au pixel et le cadrage écrit, contre le prototype ; les touchers à deux doigts posés dans la page).
+
+**Porté** : `src/ecrans/fiche/entier.ts` (lot-V131-ENTIER C-051, lot-V139-CADRE C-085, v141 C-098, lot-V140-ENREGISTRER C-091) — un toucher sur la
+bande quand elle porte une photo l'ouvre en entier (la seiche pleine, l'image entière, le X, « Enregistrer » : la feuille de partage du téléphone,
+sinon un téléchargement) ; un nouveau toucher la referme. Deux doigts zooment (1:1), le point sous leur milieu y reste, la photo tourne de l'angle
+des doigts ; un doigt la déplace ; z de 0,3 à 8 ; le cadrage s'écrit à la fin du geste (`magasin.cadrer`). VoiceOver : la bande se déclare « Voir la
+photo en entier » quand elle porte une photo. Le X : sans titre, centré sur la boîte d'origine du « X », puis la croix commune (`poserCroix`).
+**Trouvé en portant** : la vue était ouverte mais cachée par la règle de l'appareil couvert (`.device.couvert`) — elle en est exemptée, comme la feuille.
+**Pas encore** : la même chose sur la page + (C-067) ; le dessin en entier (avec le 3b-5).
+
+| Juge du prototype                                                     | Test                                                                    | Sondes                              |
+| --------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------- |
+| redteam_entier (C-051), redteam_cadre (C-085), redteam_tourne (C-098) | FE › la photo d'une fiche en entier, puis cadrée au doigt (deux thèmes) | entier-translucide, pince-sans-tour |

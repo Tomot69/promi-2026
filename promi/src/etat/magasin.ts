@@ -107,6 +107,8 @@ export interface Actions {
    * la photo. Rien d'autre ne change (ni `derAct` : le prototype ne la comptait pas).
    */
   photo(id: number, o: { photo?: string | null; origine?: boolean }): void;
+  /** C-085, C-098 : le cadrage de la photo (z, dx, dy, a ; `n` la longueur de son adresse), écrit à la fin du geste — rien d'autre ne change */
+  cadrer(id: number, c: { z: number; dx: number; dy: number; a?: number; n: number }): void;
 }
 
 export interface ChampsPeaufiner {
@@ -424,6 +426,12 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
         Reflect.deleteProperty(suite, 'photoCadre');
       }
       valider('photo', { ...e, paroles: e.paroles.map((q) => (q.id === id ? { ...p, suite } : q)) });
+    },
+    cadrer(id, c) {
+      const p = e.paroles.find((q) => q.id === id);
+      if (!p || typeof p.suite?.['photo'] !== 'string') return;
+      const suite: Record<string, unknown> = { ...p.suite, photoCadre: { ...c } };
+      valider('cadrer', { ...e, paroles: e.paroles.map((q) => (q.id === id ? { ...p, suite } : q)) });
     },
     motsVus(id, cles) {
       const p = e.paroles.find((q) => q.id === id);

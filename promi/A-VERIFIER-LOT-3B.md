@@ -44,5 +44,13 @@ Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 13. **En clair** — la dalle du haut d'une fiche (et de la page +) est la même qu'en sombre (corrigé : elle était rendue en clair).
 14. **La page +** — une photo importée sur la page + suit la parole plantée : sa fiche la montre (elle se perdait).
 
-Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, cadrer et tourner la photo, la voir en entier, le dessin sur la
-fiche, la fiche d'une personne et le + des membres.
+## 3b-4 — la photo en entier, et cadrée au doigt
+
+15. **En entier** — une photo posée sur une fiche : toucher la photo l'affiche en entier, sur un fond noir plein, avec le X en haut et, en bas, le
+    rond « Enregistrer » (la flèche dans son socle) : la feuille de partage du téléphone s'ouvre (« Enregistrer l'image »). Un toucher n'importe où
+    referme.
+16. **Cadrer** — sur la photo, un doigt la déplace ; deux doigts l'agrandissent ou la réduisent (comme dans Photos), et la tournent. Fermer la fiche
+    et la rouvrir : le cadrage est gardé. Un simple toucher ouvre toujours la photo en entier.
+
+Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, la photo en entier sur la page +, le dessin sur la fiche, la fiche
+d'une personne et le + des membres.

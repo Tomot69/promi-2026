@@ -61,6 +61,6 @@ body {
 }
 /* un écran qui couvre tout l'appareil (la page +, `.couvre`) le déclare (`.couvert`) : ce qui est dessous ne se voit plus et ne prend plus le
    doigt ; le grain (`::after`) reste ; la feuille de confirmation et le bandeau « Annuler » (src/ecrans/feuilles) passent au-dessus de lui */
-.device.couvert > :not(.couvre, .v16-conf, .v16-toast) {
+.device.couvert > :not(.couvre, .v16-conf, .v16-toast, #entierVue) {
   visibility: hidden;
 }

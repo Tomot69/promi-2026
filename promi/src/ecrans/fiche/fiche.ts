@@ -27,6 +27,7 @@ import { monterTitre } from './titre.ts';
 import { monterPeaufinerFiche } from './peaufiner.ts';
 import { monterSaisieMot } from './saisie-mot.ts';
 import { imagePhoto, monterMenuPhoto, mondeOrigine, peindrePhoto, photoDe, SVG_RETOUR } from './photo.ts';
+import { monterEntier, type Cadre, type Entier } from './entier.ts';
 import { origineGardee } from '../../metier/origine.ts';
 import { annulable, confirmer } from '../feuilles/feuilles.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
@@ -177,6 +178,12 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     return p.chiche ? 'chiche' : 'promi';
   }
 
+  /** la boîte de la photo (celle de la dalle), et son cadrage pendant un geste (écrit à la fin du geste : `magasin.cadrer`) */
+  let boitePhoto: { x: number; y: number; w: number; h: number } | null = null;
+  let cadreVif: Cadre | null = null;
+  /** la vue « en entier » (montée plus bas, avec Peaufiner et la saisie qu'elle doit connaître) */
+  let entier: Entier | null = null;
+
   // ── LE CHAMP : l'aplat de la nature au-dessus de la vague, et la dalle dans sa boîte (`ecran()` : y 124, dh = min(300, base − amp − 136)) ──
   function peindreChamp(p: Parole): void {
     const n = nature(p);
@@ -222,8 +229,10 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
             if (courant && courant.id === p.id) peindreChamp(courant);
           })
         : null;
-    if (src && im) peindrePhoto(g, im, b, y, W, p.suite?.['photoCadre'], src.length);
+    boitePhoto = b;
+    if (src && im) peindrePhoto(g, im, b, y, W, cadreVif ?? p.suite?.['photoCadre'], src.length);
     champ.setAttribute('data-photo', src && im ? '1' : '');
+    entier?.annoncer();
     // le bouton : avec une photo, le signe du retour (« revenir à la dalle ») ; sinon le cadre traversé d'un trait (C-060)
     const ico = src ? SVG_RETOUR : SVG_PHOTO;
     if (photo.dataset['ico'] !== (src ? 'retour' : 'cadre')) {
@@ -715,6 +724,30 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     },
   });
 
+  // ── LA PHOTO EN ENTIER, ET CADRÉE AU DOIGT (entier.ts, lot 3b-4) : sur la bande, au repos, rien par-dessus ──
+  const ficheLibre = (): boolean =>
+    !!courant &&
+    !fi.hidden &&
+    !fi.classList.contains('fi-bas') &&
+    !instantF &&
+    !peauf.ouvert() &&
+    !saisieMot.ouvert() &&
+    !menuPhoto.ouvert();
+  entier = monterEntier({
+    dv,
+    bande: champ,
+    surface: (t) => t === champ || t === defile || t === fi,
+    photo: () => (courant && ficheLibre() ? photoDe(courant) : null),
+    cadre: () => (cadreVif ?? (courant?.suite?.['photoCadre'] as Cadre | undefined)) || null,
+    centre: () => (boitePhoto ? { x: boitePhoto.x + boitePhoto.w / 2, y: boitePhoto.y + boitePhoto.h / 2 } : null),
+    cadrer: (c, fini) => {
+      if (!courant) return;
+      cadreVif = fini ? null : c;
+      if (fini) magasin.cadrer(courant.id, c);
+      else peindreChamp(courant);
+    },
+  });
+
   // ── PEAUFINER (peaufiner.ts, lot 3b-1) : la barre l'ouvre par-dessus la fiche, la fiche reste dessous ──
   const peauf = monterPeaufinerFiche({
     fi,
@@ -753,6 +786,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     peauf.fermer(false);
     saisieMot.fermer();
     menuPhoto.fermer(false);
+    entier?.fermer();
+    cadreVif = null;
     tenir.arreter();
     titreCtl.sortir(true);
     instantF = null;
@@ -789,6 +824,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     peauf.fermer(false);
     saisieMot.fermer();
     menuPhoto.fermer(false);
+    entier?.fermer();
+    cadreVif = null;
     tenir.arreter();
     titreCtl.sortir(true);
     // C-253 : les mots que la fiche a montrés sont vus, quand on la quitte (les mots neufs perdent leur pastille, « +N » redevient le total)

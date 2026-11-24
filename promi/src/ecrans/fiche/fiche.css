@@ -728,3 +728,93 @@
   margin-top: 104px;
   margin-bottom: 0;
 }
+
+/* ── LA PHOTO EN ENTIER (lot 3b-4 ; lot-V131-ENTIER, C-051) : un fond PLEIN, la seiche — jamais une transparence, ni une ombre, ni un fondu ;
+   l'image entière, sans recadrage ; le X ; « Enregistrer » (C-091 : la flèche dans son socle, 44 pt, la grammaire des contours) ── */
+#device #entierVue {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 400;
+  display: none;
+  background: var(--c-seiche10);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: inherit;
+  overflow: hidden;
+}
+#device #entierVue.ouv {
+  display: block;
+}
+#device #entierVue img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0;
+  max-width: none;
+}
+#device #entierVue .ev-x {
+  position: absolute;
+  top: 40px;
+  right: 24px;
+  height: 60px;
+  padding: 0 4px 0 12px;
+  display: flex;
+  align-items: center;
+  background: none;
+  border: 0;
+  margin: 0;
+  font: 700 13px var(--f-libelle);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--c-creme95);
+  cursor: pointer;
+}
+/* posé (lot-V157-CROIX) : la zone de 44 pt centrée sur la boîte d'origine, le glyphe PromiLate à la taille des X */
+#device #entierVue .ev-x.ev-pose {
+  right: auto;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: block;
+  font: 400 29.5px/1 var(--f-marque);
+  letter-spacing: 0;
+  text-transform: none;
+}
+#device #entierVue .ev-g {
+  position: absolute;
+  left: 0;
+  width: 44px;
+  display: block;
+  text-align: center;
+}
+#device #entierVue .ev-garde {
+  position: absolute;
+  left: 50%;
+  bottom: 46px;
+  transform: translateX(-50%);
+  box-sizing: border-box;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border-radius: 22px;
+  border: 2px solid var(--c-creme95);
+  background: var(--c-seiche10);
+  color: var(--c-creme95);
+  margin: 0;
+  cursor: pointer;
+}
+#device #entierVue .ev-garde svg {
+  width: 28px;
+  height: 28px;
+  display: block;
+}
