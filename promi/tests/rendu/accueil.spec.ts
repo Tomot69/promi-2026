@@ -514,6 +514,21 @@ test("la Toile vit au repos sous l'accueil (C-028) : un mouvement est prévu, il
     return { centre: e && e.id, prevu: Toile.vivant.attend() }; })()`)) as { centre: string; prevu: boolean };
   expect(r.centre, 'le centre de la Toile est libre (la condition de la vie au repos)').toBe('toileCv');
   expect(r.prevu, 'un mouvement de repos est prévu').toBe(true);
+  // un mouvement de repos naturel peut être en train de jouer (la CI : une image toutes les 0,7 s, l'attente de 5,6 s le rattrape) : sa fin
+  // repose « le dernier mouvement » à maintenant, et le moteur refuse alors tout mouvement 5 s (l'écart du prototype) — le forcé tombait
+  // derrière (vu sur la CI : 1 avant, 1 après). On le laisse finir avant de forcer.
+  await page.waitForFunction(
+    () => {
+      const v = (
+        window as unknown as { Toile: { vivant: { journal(): Array<{ t: number; d: number }>; boucle(): boolean } } }
+      ).Toile.vivant;
+      const j = v.journal();
+      const l = j[j.length - 1];
+      return !v.boucle() && (!l || performance.now() > l.t + l.d + 200);
+    },
+    undefined,
+    { timeout: 20000 },
+  );
   const avant = (await page.evaluate('Toile.vivant.journal().length')) as number;
   await page.evaluate('Toile.vivant.force()');
   // le mouvement a lieu à l'image suivante : on l'attend (hors du Mac une image dure 0,7 s — 300 ms ne suffisaient pas)

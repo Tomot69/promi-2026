@@ -62,6 +62,8 @@ export interface Actions {
       /** la photo importée sur la page + (lot-PHOTO, une adresse `data:`) : elle suit la parole (« sur la page +, la photo se pose sur le brouillon
        * de phrase, et suivra la promesse à la plantation ») */
       photo?: string | null;
+      /** son cadrage au doigt (C-085 : « il suit la photo à la plantation ») */
+      photoCadre?: unknown;
     },
     maintenant: number,
   ): number;
@@ -322,6 +324,7 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       if (p.fichiers.length) suite['files'] = p.fichiers.slice();
       if (p.dessin) suite['dessin'] = p.dessin;
       if (p.photo) suite['photo'] = p.photo;
+      if (p.photo && p.photoCadre) suite['photoCadre'] = p.photoCadre;
       const neuve: Parole = {
         id,
         title: p.titre,

@@ -202,6 +202,14 @@ test('Retour renomme comme le prototype : le titre neuf partout, la clé de plan
       const e = ecart(png(a), png(b));
       return `${String(e.n)} pixels écartés de plus de 2 niveaux, boîte ${JSON.stringify(e.boite)}`;
     };
+    const changesN = (a: string, b: string, nom: string): { n: number; boite: number[] | null } => {
+      if (a === b) return { n: 0, boite: null };
+      changes(a, b, nom);
+      const e = ecart(png(a), png(b));
+      return { n: e.n, boite: e.boite };
+    };
+    const dans = (x: number[], y: number[]): boolean =>
+      x[0]! >= y[0]! && x[1]! >= y[1]! && x[2]! <= y[2]! && x[3]! <= y[3]!;
     // LE TÉMOIN (CLAUDE.md, Q621 : « un juge de rien-ne-change fait d'abord son témoin ») : sans renommer, sur la durée du renommage, chaque Toile
     // se répète — sinon ce juge mesurerait la Toile qui vit, pas la forme de la dalle
     await Promise.all([images(P, 64), images(A, 64)]);
@@ -234,13 +242,15 @@ test('Retour renomme comme le prototype : le titre neuf partout, la clé de plan
     expect(ta.cle, 'la clé de plantation gardée (Q621)').toBe(cle0);
     // le renommage repeint la Toile (`Toile.redraw`) : sous Brouillamini, la forme et l'ampleur de la dalle se tiraient du titre — elles se
     // tirent de la clé de plantation, la Toile est la même au pixel
-    // ⚑ sous Linux, UN pixel du bord d'une dalle change au renommage (488, 556 du canevas, relevé de la CI) — le prototype est rejoué : la vraie
-    // app change exactement ce que le prototype change (sur le Mac : rien, des deux côtés)
-    const cp = changes(p0, await toile(P), 'renomme-toile-prototype');
+    // ⚑ sous Linux, au renommage, la Toile du PROTOTYPE change (14 412 pixels, relevé de la CI du 24 nov.) et celle de la vraie app d'un pixel ;
+    // sur le Mac, ni l'une ni l'autre. Le juge : la Toile de la vraie app ne change pas plus que celle du prototype (le nombre de pixels écartés,
+    // et leur boîte dans la sienne) — la sonde (la forme tirée du titre) la fait changer là où le prototype ne bouge pas
+    const ep = changesN(p0, await toile(P), 'renomme-toile-prototype');
+    const ea = changesN(d0, await toile(A), 'renomme-toile');
     expect(
-      changes(d0, await toile(A), 'renomme-toile'),
-      'la Toile n’a pas changé autrement que celle du prototype (Q621)',
-    ).toBe(cp);
+      ea.n <= ep.n && (!ea.boite || (!!ep.boite && dans(ea.boite, ep.boite))),
+      `la Toile n’a pas changé plus que celle du prototype (Q621) — l'app : ${JSON.stringify(ea)}, le prototype : ${JSON.stringify(ep)}`,
+    ).toBe(true);
     expect(await edite(A), 'sorti de la modification').toBe(false);
     expect(await comparer(P, A, 'renomme'), 'pixels écartés une fois renommée').toBe(0);
     expect(erreurs).toEqual([]);

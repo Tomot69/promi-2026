@@ -21,6 +21,7 @@ import {
   masquerFiche,
   appareil,
   PAROLE_CERCLE,
+  reposerCroix,
 } from './aides.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'tenir');
@@ -66,6 +67,10 @@ for (const theme of ['sombre', 'clair'] as const)
           await images(pg, 72);
           const referme = await image(pg);
           await images(pg, 180);
+          // « juste après » posé : la croix du prototype reposée par sa propre passe (le protocole nommé du X, aides.ts) — les deux côtés
+          // avancent des mêmes 30 images
+          if (pg === P) await reposerCroix(P);
+          else await images(pg, 30);
           return [referme, await image(pg)];
         };
         const [[pR, pA], [aR, aA]] = await Promise.all([cote(P), cote(A)]);

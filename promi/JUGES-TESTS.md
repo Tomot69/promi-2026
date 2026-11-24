@@ -349,8 +349,8 @@ manque du lot 2).
 sur un corps sombre ; le prototype les rend « comme en sombre » (C-132, `lot-V146-FICHE` : `_shThemeOverride` le temps de l'appel). La façade le
 fait maintenant (`enSombre` : `poserDalle`, `dalleAvenir`, `labDalle`). C'est la décision Q365 (le ΔE déclaré des deux côtés) qui l'a prise.
 **Le juge Q621 sous Linux — la cause, lue sur les images de la CI** : le témoin passe (la Toile se répète sans renommer) ; au renommage, UN pixel du
-bord d'une dalle change (488, 556 du canevas, aux deux essais). Le juge rejoue maintenant le prototype à côté : la vraie app doit changer exactement
-ce que le prototype change (sur le Mac : rien, des deux côtés). Si le prototype change le même pixel sous Linux, c'est le moteur, à l'identique.
+bord d'une dalle change dans l'app (488, 556 du canevas) — et le PROTOTYPE, rejoué à côté, change 14 412 pixels de sa Toile. Le juge : la Toile de
+l'app ne change pas plus que celle du prototype (le nombre de pixels, et leur boîte dans la sienne) ; sur le Mac, 0 et 0 ; la sonde reste prise.
 **Écarts nommés** : « Dessiner » est dans le menu, inactif jusqu'au 3b-5 (le dessin sur la fiche) ; le menu paraît et part en flaques (C-271 ; le
 prototype le posait d'un coup). La dalle d'origine est sous M1 : jugée par sa décision (Q365), pas au pixel.
 
@@ -369,7 +369,10 @@ sinon un téléchargement) ; un nouveau toucher la referme. Deux doigts zooment 
 des doigts ; un doigt la déplace ; z de 0,3 à 8 ; le cadrage s'écrit à la fin du geste (`magasin.cadrer`). VoiceOver : la bande se déclare « Voir la
 photo en entier » quand elle porte une photo. Le X : sans titre, centré sur la boîte d'origine du « X », puis la croix commune (`poserCroix`).
 **Trouvé en portant** : la vue était ouverte mais cachée par la règle de l'appareil couvert (`.device.couvert`) — elle en est exemptée, comme la feuille.
-**Pas encore** : la même chose sur la page + (C-067) ; le dessin en entier (avec le 3b-5).
+**Ajouté ensuite (L3b-6)** : la même chose sur la page + (v136, C-067) — la brique est rangée dans `src/ecrans/photo/` (la vue, et la peinture
+de la photo cadrée), la vue est UNE et partagée (chaque écran ne répond que pour ce qu'il a ouvert) ; le cadrage de la page + suit la parole à la
+plantation (v139). Juge : PJ › « la photo de la page + en entier, puis cadrée au doigt » (les valeurs du geste calculées dans le test : 1:1, l'écart
+et l'angle des doigts ; sonde `pince-page-plus-sans-zoom`).
 
 | Juge du prototype                                                     | Test                                                                    | Sondes                              |
 | --------------------------------------------------------------------- | ----------------------------------------------------------------------- | ----------------------------------- |

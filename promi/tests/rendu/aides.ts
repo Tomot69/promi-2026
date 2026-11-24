@@ -630,6 +630,13 @@ export async function fichesPilotees(
   // sous Linux, d'un test à l'autre, 6,18 puis 6,45 pt pour la même fiche (la vraie app : 6,11, relevé de la CI du 24 nov.) — un pixel de
   // l'écran, une fois sur deux. Une fois la fiche posée, le banc lui fait reposer sa croix (sa propre passe, `_croix.passe`), puis
   // vérifie qu'elle l'a reposée. Rien d'autre n'est touché.
+  await reposerCroix(P);
+  return { P, A, erreurs };
+}
+
+/** le protocole nommé du X (ci-dessus) : la croix de la fiche du prototype reposée par sa propre passe, puis vérifiée — aussi après un
+ *  changement de la fiche qui la laisse à sa place d'avant (l'instant « tenir », sous Linux : relevé de la CI du 24 nov.) */
+export async function reposerCroix(P: Page): Promise<void> {
   await P.evaluate(() => {
     for (const x of document.querySelectorAll<HTMLElement>('#detailPoster .closeb'))
       x.style.setProperty('top', '-50px', 'important');
@@ -640,5 +647,4 @@ export async function fichesPilotees(
     [...document.querySelectorAll<HTMLElement>('#detailPoster .closeb')].every((x) => x.style.top !== '-50px'),
   );
   if (!reposee) throw new Error('le prototype : sa croix n’a pas été reposée par sa veille');
-  return { P, A, erreurs };
 }

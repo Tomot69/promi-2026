@@ -60,8 +60,15 @@ export function monterEntier(o: {
   const { dv, bande } = o;
   let vue: HTMLElement | null = null;
 
+  /** ouverte par CET écran (la vue est une, partagée par la fiche et la page + : chacun ne répond que pour ce qu'il a ouvert) */
+  let mien = false;
   function batir(): HTMLElement {
     if (vue) return vue;
+    const deja = dv.querySelector<HTMLElement>(':scope > #entierVue');
+    if (deja) {
+      vue = deja;
+      return deja;
+    }
     const v = el('div', { id: 'entierVue', role: 'dialog', 'aria-modal': 'true', 'aria-label': TXT.vue.photo });
     const im = el('img', { alt: TXT.alt.photo });
     const x = el('button', { type: 'button', class: 'ev-x', 'aria-label': TXT.fermer });
@@ -96,7 +103,7 @@ export function monterEntier(o: {
     poserCroix(x, g, null);
   }
   function ouverte(): boolean {
-    return !!vue?.classList.contains('ouv');
+    return mien && !!vue?.classList.contains('ouv');
   }
   /** ce que la bande montre en entier : le dessin posé d'abord (il remplace la photo), sinon la photo */
   function source(): { src: string; quoi: 'photo' | 'dessin' } | null {
@@ -115,11 +122,13 @@ export function monterEntier(o: {
     im.alt = TXT.alt[s.quoi];
     im.src = s.src;
     v.classList.add('ouv');
+    mien = true;
     poserX(v);
     return true;
   }
   function fermer(): void {
     if (!vue || !ouverte()) return;
+    mien = false;
     vue.classList.remove('ouv');
     vue.querySelector('img')!.removeAttribute('src');
   }

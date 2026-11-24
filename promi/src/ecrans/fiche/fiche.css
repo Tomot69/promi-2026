@@ -386,7 +386,8 @@
   padding: 0;
   border: 0;
   background: transparent;
-  font: 11px system-ui;
+  /* aucune police : celle que le navigateur donne à un bouton, comme le prototype (11 px system-ui sur le Mac, une autre sous Linux) — la flèche,
+     en ligne, se pose sur sa ligne de base */
   color: var(--c-creme95);
 }
 #detailPoster .cm5-ouvert .cm5-va {

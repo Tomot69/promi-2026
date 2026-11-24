@@ -131,7 +131,7 @@ async function centre(pg: Page, sel: string): Promise<[number, number]> {
     return [(r.left + r.width / 2 - D.left) / k, (r.top + r.height / 2 - D.top) / k] as [number, number];
   }, sel);
 }
-/** le défilement doux natif est fini : la fiche ne bouge plus d'une prise à l'autre (10 images d'horloge), 60 prises au plus */
+/** le défilement doux natif est fini : la fiche ne bouge plus d'une prise à l'autre (10 images d'horloge), 60 prises au plus, 3 au moins */
 async function pose(pg: Page): Promise<void> {
   let av = -1;
   for (let k = 0; k < 60; k++) {
@@ -139,7 +139,8 @@ async function pose(pg: Page): Promise<void> {
     const y = await pg.evaluate(
       () => (document.getElementById('dpDefile') ?? document.getElementById('detailPoster'))!.scrollTop,
     );
-    if (y === av) return;
+    // posé : le même défilement à deux relevés de suite, après au moins trois (le défilement doux peut ne partir qu'à la deuxième image)
+    if (y === av && k >= 3) return;
     av = y;
   }
 }

@@ -222,7 +222,15 @@ for (const theme of ['sombre', 'clair'] as const)
         document.querySelector('#detailPoster.fiche .fi-champ')!.getAttribute('data-origine'),
       );
       expect(dp, 'le prototype déclare sa décision').toMatch(/^(origine|rampe)\|/);
-      expect(da, 'la dalle d’origine : la même décision (Q365), le même ΔE').toBe(dp);
+      // la décision exacte ; le ΔE à 1 près — le prototype le calcule à l'instant où il peint, et sa dalle respire (le Lab moyen de sa matière
+      // bouge : 29,0 ou 29,2 d'une passe à l'autre sous charge, relevé) ; le seuil (15) est loin
+      const [decP, deP] = dp!.split('|');
+      const [decA, deA] = (da ?? '|').split('|');
+      expect(decA, 'la dalle d’origine : la même décision (Q365)').toBe(decP);
+      expect(
+        Math.abs(Number(deA) - Number(deP)),
+        `le même ΔE au champ, à 1 près (${String(deA)} / ${String(deP)})`,
+      ).toBeLessThanOrEqual(1);
       // ce qui s'écrit : l'option, la photo retirée
       const p = (await P.evaluate(
         `JSON.stringify((p => [!!p.dalleOrigine, !!p.photo])(promises.find(q => q.id === ${String(id)})))`,

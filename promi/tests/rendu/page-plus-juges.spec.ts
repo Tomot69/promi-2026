@@ -2505,3 +2505,127 @@ for (const cote of ['prototype', 'app'] as const)
       expect(p, 'rechargée, la parole plantée garde sa date').toEqual({ t: 'appeler Lou', iso });
     }
   });
+
+test('la photo de la page + en entier, puis cadrée au doigt : 1:1, le point sous les doigts reste, elle tourne (C-067, C-085, C-098)', async ({
+  page,
+}) => {
+  test.setTimeout(120000);
+  await ouvrir(page, 'promi');
+  // la sonde : le pincement ne zoome pas (la photo garde sa taille)
+  if (sonde('pince-page-plus-sans-zoom'))
+    await page.evaluate(() => {
+      Math.hypot = (): number => 1;
+    });
+  const png = Buffer.from(
+    (
+      (await page.evaluate(() => {
+        const c = document.createElement('canvas');
+        c.width = 300;
+        c.height = 200;
+        const g = c.getContext('2d')!;
+        const C = ['#E4572E', '#29335C', '#F3A712', '#A8C686'];
+        for (let i = 0; i < 6; i++)
+          for (let j = 0; j < 4; j++) {
+            g.fillStyle = C[(i + j) % 4]!;
+            g.fillRect(i * 50, j * 50, 50, 50);
+          }
+        return c.toDataURL('image/png');
+      })) as string
+    ).split(',')[1]!,
+    'base64',
+  );
+  await page.setInputFiles('#createSheet .ph-photo-in', { name: 'p.png', mimeType: 'image/png', buffer: png });
+  await page.waitForTimeout(900);
+  const ph = (): Promise<{
+    photo: string | null;
+    photoCadre: { z: number; dx: number; dy: number; a?: number } | null;
+  }> => page.evaluate(`${P_}.pagePlus().etat().phrase`) as never;
+  expect((await ph()).photo, 'la photo posée').toMatch(/^data:image\/png/);
+  // le cœur de la photo : le centre de la boîte de la dalle
+  const c = (await page.evaluate(() => {
+    const cv = document.getElementById('csPhotoCv') as HTMLCanvasElement;
+    const r = cv.getBoundingClientRect();
+    const g = cv.getContext('2d')!;
+    const d = g.getImageData(0, 0, cv.width, cv.height).data;
+    let x0 = 1e9,
+      y0 = 1e9,
+      x1 = -1,
+      y1 = -1;
+    for (let y = 0; y < cv.height; y += 3)
+      for (let x = 0; x < cv.width; x += 3)
+        if (d[(y * cv.width + x) * 4 + 3]! > 200) {
+          x0 = Math.min(x0, x);
+          x1 = Math.max(x1, x);
+          y0 = Math.min(y0, y);
+          y1 = Math.max(y1, y);
+        }
+    const k = r.width / cv.width;
+    return [r.left + ((x0 + x1) / 2) * k, r.top + ((y0 + y1) / 2) * k];
+  })) as [number, number];
+  // un toucher : en entier, sur la seiche pleine ; un nouveau toucher : refermée
+  await page.mouse.click(c[0], c[1]);
+  await page.waitForTimeout(300);
+  expect(
+    await page.evaluate(() => {
+      const v = document.querySelector<HTMLElement>('#entierVue.ouv');
+      return v ? [getComputedStyle(v).visibility, getComputedStyle(v).backgroundColor, v.dataset['quoi']] : null;
+    }),
+    'la photo en entier, sur la seiche',
+  ).toEqual(['visible', 'rgb(5, 3, 2)', 'photo']);
+  await page.mouse.click(195, 700);
+  await page.waitForTimeout(300);
+  expect(await page.evaluate(() => !!document.querySelector('#entierVue.ouv')), 'refermée').toBe(false);
+  // un glissement d'un doigt (40 pt, 20 pt) puis un pincement qui écarte (63,2 → 124 pt) et tourne (de 0,322 à 0,35 rad)
+  const doigts = (pas: Array<Array<[number, number]>>): Promise<void> =>
+    page.evaluate((pas) => {
+      const ev = (type: string, L: Array<[number, number]>, cible: Element): void => {
+        const touches = L.map(([x, y], i) => ({ identifier: i, clientX: x, clientY: y, target: cible }));
+        const e = new Event(type, { bubbles: true, cancelable: true });
+        Object.defineProperty(e, 'touches', { value: touches });
+        Object.defineProperty(e, 'changedTouches', { value: touches });
+        cible.dispatchEvent(e);
+      };
+      const [x0, y0] = pas[0]![0]!;
+      const cible = document.elementFromPoint(x0, y0) ?? document.body;
+      let avant: Array<[number, number]> = [];
+      for (const L of pas) {
+        ev(L.length > avant.length ? 'touchstart' : 'touchmove', L, cible);
+        avant = L;
+      }
+      ev('touchend', [], cible);
+    }, pas);
+  const [cx, cy] = c;
+  const glisse: Array<Array<[number, number]>> = [[[cx, cy]]];
+  for (let i = 1; i <= 8; i++) glisse.push([[cx + 5 * i, cy + 2.5 * i]]);
+  await doigts(glisse);
+  await page.waitForTimeout(300);
+  const g1 = (await ph()).photoCadre!;
+  expect(
+    [g1.z, Math.round(g1.dx * 100) / 100, Math.round(g1.dy * 100) / 100],
+    'un doigt : la photo le suit, 1:1',
+  ).toEqual([1, 40, 20]);
+  const pince: Array<Array<[number, number]>> = [
+    [[cx - 30, cy - 10]],
+    [
+      [cx - 30, cy - 10],
+      [cx + 30, cy + 10],
+    ],
+  ];
+  for (let i = 1; i <= 8; i++) {
+    const a = (i / 8) * 0.35;
+    const d = 30 + i * 4;
+    pince.push([
+      [cx - d * Math.cos(a), cy - d * Math.sin(a)],
+      [cx + d * Math.cos(a), cy + d * Math.sin(a)],
+    ]);
+  }
+  await doigts(pince);
+  await page.waitForTimeout(400);
+  const g2 = (await ph()).photoCadre!;
+  const z = 124 / Math.hypot(60, 20);
+  const a = 0.35 - Math.atan2(20, 60);
+  expect(
+    [Math.round(g2.z * 1000) / 1000, Math.round((g2.a ?? 0) * 1000) / 1000],
+    'deux doigts : le zoom de leur écart, l’angle de leur tour',
+  ).toEqual([Math.round(z * 1000) / 1000, Math.round(a * 1000) / 1000]);
+});

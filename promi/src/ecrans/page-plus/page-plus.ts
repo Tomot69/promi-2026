@@ -45,6 +45,8 @@ import { NATTRAIT, peindreTrait } from './trait.ts';
 import { planteNait } from './naissance.ts';
 import { creerContinu } from './continu.ts';
 import { creerDouceur } from './douceur.ts';
+import { monterEntier, type Cadre } from '../photo/entier.ts';
+import { peindrePhoto as peindrePhotoBande } from '../photo/peinture.ts';
 import {
   modeDessinPartage,
   couleurDe,
@@ -87,6 +89,8 @@ export interface PhrasePage {
   fichiers: string[];
   /** la photo importée (une adresse `data:`), qui remplace la dalle dans la bande (lot-PHOTO) */
   photo: string | null;
+  /** son cadrage au doigt (C-085, C-098 : lot-V139-CADRE) — il suit la photo à la plantation */
+  photoCadre: Cadre | null;
   /** le dessin (C-042) : il REMPLACE la dalle ou la photo dans la bande (v128) ; la photo importée le retire, le dessin posé retire la photo (v140) */
   dessin: Dessin | null;
 }
@@ -354,6 +358,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       cercle: null,
       fichiers: [],
       photo: null,
+      photoCadre: null,
       dessin: null,
     };
   }
@@ -812,6 +817,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
   // ── LA PHOTO IMPORTÉE (lot-PHOTO) : elle REMPLACE la dalle — la même boîte, recadrée au centre (couverture), bornée par l'onde ; l'aplat
   //    de la nature reste dessous. Sa couche (`#csPhotoCv`) a les cotes du champ. ──
   const images = new Map<string, HTMLImageElement>();
+  /** la boîte de la photo (celle de la dalle), et son cadrage pendant un geste (écrit à la fin du geste) */
+  let boitePhoto: { x: number; y: number; w: number; h: number } | null = null;
+  let cadreVif: Cadre | null = null;
   function peindrePhoto(
     y: Onde,
     x: number,
@@ -842,29 +850,9 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       images.set(src, im);
     }
     if (!im.complete || !im.naturalWidth) return;
-    g.save();
-    g.beginPath();
-    cheminOnde(g, y, 0, W, W);
-    g.lineTo(W, 0);
-    g.lineTo(0, 0);
-    g.closePath();
-    g.clip();
-    const r = im.naturalWidth / im.naturalHeight;
-    const br = dw / dh;
-    let sw: number, sh: number, sx: number, sy: number;
-    if (r > br) {
-      sh = im.naturalHeight;
-      sw = sh * br;
-      sx = (im.naturalWidth - sw) / 2;
-      sy = 0;
-    } else {
-      sw = im.naturalWidth;
-      sh = sw / br;
-      sx = 0;
-      sy = (im.naturalHeight - sh) / 2;
-    }
-    g.drawImage(im, sx, sy, sw, sh, x, yD, dw, dh);
-    g.restore();
+    // la peinture de la fiche (photo.ts, `_photoPeint`) : en couverture, ou cadrée au doigt (C-085, C-098), bornée par l'onde
+    boitePhoto = { x, y: yD, w: dw, h: dh };
+    peindrePhotoBande(g, im, boitePhoto, y, W, cadreVif ?? P.photoCadre, src.length);
   }
 
   /** v164a (C-201) : le bouton photo au-dessus de l'encre du trait, 8 pt d'air (`hautBouton` du prototype) */
@@ -1386,6 +1374,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         fichiers: P.fichiers.slice(),
         dessin: P.dessin,
         photo: P.photo,
+        photoCadre: P.photo ? P.photoCadre : null,
       },
       maintenant,
     );
@@ -1783,6 +1772,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         avec: P.avec.join(', '),
         // la photo et le dessin de la bande (le prototype : `_phrase` entière, `photo` et `dessin` compris) : la reprise les rend
         photo: P.photo,
+        photoCadre: P.photoCadre,
         dessin: P.dessin,
       },
       who: autres(P.qui),
@@ -2464,7 +2454,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     corps: couleurDe(cs),
     apres: (pose) => {
       // v140 (C-086, C-085) : poser un dessin retire la photo de la bande
-      if (pose) P.photo = null;
+      if (pose) {
+        P.photo = null;
+        P.photoCadre = null;
+      }
       if (!cs.hidden) repeindre();
       majGarder();
     },
@@ -2554,6 +2547,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       im.onload = () => {
         images.set(src, im);
         P.photo = src;
+        P.photoCadre = null;
         // v140 (C-085) : la photo REMPLACE le dessin — il n'en reste rien
         P.dessin = null;
         peindreChamp(vue.base, vue.amp, vue.hz, vue.base + vue.amp + 60 + vue.hz);
@@ -2565,9 +2559,43 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
     };
     lu.readAsDataURL(f);
   });
+  // ── LA PHOTO (OU LE DESSIN) EN ENTIER, ET LA PHOTO CADRÉE AU DOIGT (v136 C-067 : « même comportement dès la création, sur la page + ») —
+  //    la brique de la fiche (photo/entier.ts) : la page montre sa phrase, rien par-dessus ──
+  const pageLibre = (): boolean =>
+    !cs.hidden &&
+    !cs.classList.contains('pp-choix') &&
+    !plantee &&
+    choix === null &&
+    !peaufOuvert &&
+    !menu &&
+    !modeDessin.ouvert() &&
+    !mv;
+  let vueDessin: { cle: string; src: string } | null = null;
+  monterEntier({
+    dv,
+    bande: cv,
+    surface: (t) => t === cs || t === cv || t === photoCv,
+    photo: () => (pageLibre() ? P.photo : null),
+    dessin: () => {
+      const d = pageLibre() ? P.dessin : null;
+      if (!d || !dessinPose(d) || d.masque) return null;
+      const cle = JSON.stringify([d.fond, d.h, d.poses.length, JSON.stringify(d.poses).length]);
+      if (vueDessin?.cle !== cle) vueDessin = { cle, src: dessinEntier(d, 3).toDataURL('image/png') };
+      return vueDessin.src;
+    },
+    cadre: () => cadreVif ?? P.photoCadre,
+    centre: () => (boitePhoto ? { x: boitePhoto.x + boitePhoto.w / 2, y: boitePhoto.y + boitePhoto.h / 2 } : null),
+    cadrer: (c, fini) => {
+      cadreVif = fini ? null : c;
+      if (fini) P.photoCadre = c;
+      peindreChamp(vue.base, vue.amp, vue.hz, vue.base + vue.amp + 60 + vue.hz);
+      if (fini) majGarder();
+    },
+  });
   function retirerPhoto(): void {
     enFlaques(photoCv, 'part', () => {
       P.photo = null;
+      P.photoCadre = null;
       peindreChamp(vue.base, vue.amp, vue.hz, vue.base + vue.amp + 60 + vue.hz);
       majGarder();
     });
@@ -2626,6 +2654,7 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       cercle: typeof b['cercle'] === 'string' ? b['cercle'] : null,
       fichiers: liste(b['fichiers']),
       photo: typeof ph['photo'] === 'string' ? ph['photo'] : null,
+      photoCadre: (ph['photoCadre'] as Cadre | null | undefined) ?? null,
       dessin: (ph['dessin'] as Dessin | null | undefined) ?? null,
     };
     repris = id;

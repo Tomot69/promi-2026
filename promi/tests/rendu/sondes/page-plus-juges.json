@@ -203,5 +203,10 @@
     "nom": "cal-hors-doigt-app",
     "test": "le calendrier de « une date… », la séance de Tom — app",
     "defaut": "le champ date ne prend pas le doigt : iOS n'ouvre pas son calendrier"
+  },
+  {
+    "nom": "pince-page-plus-sans-zoom",
+    "test": "la photo de la page + en entier, puis cadrée au doigt : 1:1, le point sous les doigts reste, elle tourne (C-067, C-085, C-098)",
+    "defaut": "le pincement ne zoome pas la photo de la page +"
   }
 ]

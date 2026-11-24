@@ -105,11 +105,33 @@ for (const theme of ['sombre', 'clair'] as const)
           const b = document.getElementById('device')!.getBoundingClientRect();
           return { x: b.left, y: b.top, k: b.width / 390 };
         });
-        await pg.mouse.move(r.x + 80 * r.k, r.y + 200 * r.k);
-        await pg.mouse.down();
-        for (let x = 80; x <= 300; x += 10)
-          await pg.mouse.move(r.x + x * r.k, r.y + (200 + Math.sin(x / 30) * 30) * r.k);
-        await pg.mouse.up();
+        // le trait : des événements de pointeur posés dans la page, d'un seul bloc — les mêmes points des deux côtés, sans dépendre de la charge
+        // de la machine (le trait s'affine avec la vitesse du geste, lue sur `timeStamp` : à la souris, elle variait d'un côté à l'autre)
+        await pg.evaluate((r) => {
+          const pts: Array<[number, number]> = [];
+          for (let x = 80; x <= 300; x += 10) pts.push([x, 200 + Math.sin(x / 30) * 30]);
+          const X = (x: number): number => r.x + x * r.k;
+          const Y = (y: number): number => r.y + y * r.k;
+          const cible = document.elementFromPoint(X(80), Y(200)) ?? document.body;
+          const ev = (type: string, [x, y]: [number, number]): void => {
+            cible.dispatchEvent(
+              new PointerEvent(type, {
+                bubbles: true,
+                cancelable: true,
+                composed: true,
+                clientX: X(x),
+                clientY: Y(y),
+                pointerId: 1,
+                pointerType: 'mouse',
+                isPrimary: true,
+                buttons: type === 'pointerup' ? 0 : 1,
+              }),
+            );
+          };
+          ev('pointerdown', [80, 200]);
+          for (const q of pts) ev('pointermove', q);
+          ev('pointerup', pts[pts.length - 1]!);
+        }, r);
         await images(pg, 20);
         const [x2, y2] = await centre(pg, '#dessinMode [data-outil="poser"], #dessinMode .dz-poser');
         await toucher(pg, x2, y2);

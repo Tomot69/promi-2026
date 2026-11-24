@@ -60,5 +60,7 @@ Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 19. **Le reste** — toucher le dessin l'ouvre en entier ; le menu dit « Retirer le dessin » ; importer une photo remplace le dessin, et poser un dessin
     remplace la photo.
 
-Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, la photo en entier sur la page +, la fiche d'une personne et le +
-des membres.
+20. **Sur la page +** — une photo importée avant de planter : la toucher l'ouvre en entier ; un doigt la déplace, deux doigts l'agrandissent et la
+    tournent ; plantée, la fiche la montre cadrée de la même façon.
+
+Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, la fiche d'une personne et le + des membres.
