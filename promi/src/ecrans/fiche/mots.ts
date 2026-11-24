@@ -3,10 +3,11 @@
  * `peintListe`, `rangee` et `titre` de lot-V145-COMM (C-248, C-261) : sous « Un mot… » (692 → 748), le titre « Les Mots » 32 pt plus bas (780,
  * Gilbert 700 13/16, capitales, chasse 0,10 em, `--c-beige67`), puis la liste 16 + 36 pt plus bas (832) : les mots du plus récent au plus ancien —
  * le visage rond de 22 (son fond : `_blobBg`), le nom (Gilbert 700 16/22, coupé à 180 pt comme `_noms.court`) et sa date (Atkinson 13/22,
- * `_noms.date`), le texte (Atkinson 16/1,35). Aucun mot : ni titre ni liste.
+ * `_noms.date`), le texte (Atkinson 16/1,35) ; un mot neuf porte la pastille « pas encore vu » (C-253, lot-V184B-MOTS). Aucun mot : ni titre ni liste.
  */
 import type { Mot } from '../../donnees/schema.ts';
 import { el, esc } from '../commun.ts';
+import { cleMot } from '../../etat/magasin.ts';
 import { palette } from '../../design/jetons.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
 
@@ -76,6 +77,8 @@ export interface Mots {
   /** pose la liste de la parole ; rend le bas de ce qu'elle occupe (pt de la fiche), ou null sans mot */
   poser(mots: readonly Mot[], dy: number): number | null;
   retirer(): void;
+  /** C-253 : les clés des mots passés à l'écran entre l'en-tête (112) et la barre (760) depuis l'ouverture — et on oublie (une fiche neuve) */
+  vus(): string[];
 }
 
 export function monterMots(h: HoteMots): Mots {
@@ -109,8 +112,12 @@ export function monterMots(h: HoteMots): Mots {
     const qui = deMoi ? me.nom : m.by;
     const estMoi = deMoi || qui === me.nom;
     const fond = fondVisage(deMoi ? 'u' + String(me.graine) : String(m.by));
+    // un mot NEUF (C-253) : écrit par un autre, pas encore vu — la pastille « pas encore vu » (`.s4-att`) au bout de sa rangée
+    const neuf = !m.vu && !estMoi;
     return (
-      '<div class="cm5-un"><i class="cm5-vis" aria-hidden="true" style="background:' +
+      '<div class="cm5-un"' +
+      (neuf ? ' data-neuf="1"><i class="cm5-att" aria-hidden="true"></i>' : '>') +
+      '<i class="cm5-vis" aria-hidden="true" style="background:' +
       fond +
       '"></i><div class="cm5-corps"><div class="cm5-qui"><span class="nom-lien" data-nom="' +
       esc(qui) +
@@ -128,8 +135,46 @@ export function monterMots(h: HoteMots): Mots {
 
   /** sans mot : ni titre ni liste (cachés ; le titre ne se trace qu'à sa première apparition, comme `titre()` du prototype) */
   function retirer(): void {
+    io?.disconnect();
+    io = null;
+    sig = '';
     titre.hidden = true;
     liste.hidden = true;
+  }
+
+  // LE VU (`guetteVus` de lot-V145-COMM) : une rangée vue aux 6/10 entre l'en-tête (112) et la barre (760) ; lue quand on quitte la fiche
+  let VU = new Set<string>();
+  let io: IntersectionObserver | null = null;
+  function guetter(L: readonly Mot[]): void {
+    io?.disconnect();
+    io = null;
+    if (!('IntersectionObserver' in window)) {
+      for (const m of L) VU.add(cleMot(m));
+      return;
+    }
+    const dv = document.getElementById('device');
+    const R = dv?.getBoundingClientRect();
+    const k = (R?.height ?? 844) / 844;
+    const bas = (844 - 760) * k + Math.max(0, innerHeight - (R?.bottom ?? innerHeight));
+    io = new IntersectionObserver(
+      (E) => {
+        for (const x of E) {
+          if (!x.isIntersecting) continue;
+          const m = L[Number((x.target as HTMLElement).dataset['i'])];
+          if (m) VU.add(cleMot(m));
+        }
+      },
+      { root: null, rootMargin: `${String(-112 * k)}px 0px ${String(-bas)}px 0px`, threshold: 0.6 },
+    );
+    liste.querySelectorAll<HTMLElement>('.cm5-un').forEach((r, i) => {
+      r.dataset['i'] = String(i);
+      io!.observe(r);
+    });
+  }
+  function vus(): string[] {
+    const v = [...VU];
+    VU = new Set();
+    return v;
   }
 
   function poser(mots: readonly Mot[], dy: number): number | null {
@@ -143,10 +188,11 @@ export function monterMots(h: HoteMots): Mots {
     titre.style.top = `${String(yT)}px`;
     liste.style.top = `${String(yT + C.TITRE_H + C.SOUS)}px`;
     for (const e of [titre, liste]) e.style.translate = dy ? `0 ${String(dy)}px` : '';
-    const s = L.map((m) => [m.d, m.by, m.t].join('|')).join('§');
+    const s = L.map((m) => [m.d, m.by, m.t, m.vu ? 1 : 0].join('|')).join('§');
     if (s !== sig) {
       sig = s;
       liste.innerHTML = L.map(rangee).join('');
+      guetter(L);
     }
     liste.hidden = false;
     titre.hidden = false;
@@ -160,5 +206,5 @@ export function monterMots(h: HoteMots): Mots {
     return yT + C.TITRE_H + C.SOUS + liste.offsetHeight + dy;
   }
 
-  return { poser, retirer };
+  return { poser, retirer, vus };
 }

@@ -187,6 +187,21 @@ test('Retour renomme comme le prototype : le titre neuf partout, la clé de plan
       if (d === d0) break;
       d0 = d;
     }
+    // la Toile en image (PNG), et l'écart entre deux de ses états : gardés dans les résultats quand ils diffèrent (la CI les rend)
+    const png = (d: string): Buffer => Buffer.from(d.slice(d.indexOf(',') + 1), 'base64');
+    const ecartToile = (a: string, b: string, nom: string): string => {
+      if (a === b) return '';
+      mkdirSync(RES, { recursive: true });
+      writeFileSync(join(RES, `${nom}-avant.png`), png(a));
+      writeFileSync(join(RES, `${nom}-apres.png`), png(b));
+      const e = ecart(png(a), png(b));
+      return ` — ${String(e.n)} pixels écartés de plus de 2 niveaux, boîte ${JSON.stringify(e.boite)}`;
+    };
+    // LE TÉMOIN (CLAUDE.md, Q621 : « un juge de rien-ne-change fait d'abord son témoin ») : sans renommer, sur la durée du renommage, la Toile se
+    // répète — sinon ce juge mesurerait la Toile qui vit, pas la forme de la dalle
+    await images(A, 64);
+    const t1 = await toile();
+    expect(ecartToile(d0, t1, 'temoin'), 'le témoin : la Toile se répète sans renommage').toBe('');
     const cle0 = (await titreApp(A)).cle;
     await Promise.all([toucherTitre(P), toucherTitre(A)]);
     await Promise.all([images(P, 4), images(A, 4)]);
@@ -214,7 +229,10 @@ test('Retour renomme comme le prototype : le titre neuf partout, la clé de plan
     expect(ta.cle, 'la clé de plantation gardée (Q621)').toBe(cle0);
     // le renommage repeint la Toile (`Toile.redraw`) : sous Brouillamini, la forme et l'ampleur de la dalle se tiraient du titre — elles se
     // tirent de la clé de plantation, la Toile est la même au pixel
-    expect(await toile(), 'la Toile n’a pas changé : la dalle garde sa forme (Q621)').toBe(d0);
+    expect(
+      ecartToile(d0, await toile(), 'renomme-toile'),
+      'la Toile n’a pas changé : la dalle garde sa forme (Q621)',
+    ).toBe('');
     expect(await edite(A), 'sorti de la modification').toBe(false);
     expect(await comparer(P, A, 'renomme'), 'pixels écartés une fois renommée').toBe(0);
     expect(erreurs).toEqual([]);

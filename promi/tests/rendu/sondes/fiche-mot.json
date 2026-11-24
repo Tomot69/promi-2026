@@ -1,0 +1,22 @@
+[
+  {
+    "nom": "mot-sans-filet",
+    "test": "écrire un mot sur la fiche, comme le prototype — ouverte, tapé, envoyé ; le mot, le Fil (C-116, C-260), sombre",
+    "defaut": "la ligne « Un mot… » ouverte sans son filet crème"
+  },
+  {
+    "nom": "mot-signe-moi",
+    "test": "écrire un mot sur la fiche, comme le prototype — ouverte, tapé, envoyé ; le mot, le Fil (C-116, C-260), clair",
+    "defaut": "le mot envoyé signé « moi » au lieu du prénom"
+  },
+  {
+    "nom": "mot-reste-ouvert",
+    "test": "le nombre de mots fait glisser la fiche jusqu’au premier mot neuf ; un toucher ailleurs referme la saisie, comme le prototype (C-257, C-116)",
+    "defaut": "un toucher ailleurs ne referme pas la saisie d'un mot"
+  },
+  {
+    "nom": "mots-jamais-vus",
+    "test": "le nombre de mots fait glisser la fiche jusqu’au premier mot neuf ; un toucher ailleurs referme la saisie, comme le prototype (C-257, C-116)",
+    "defaut": "la fiche refermée ne marque pas vus les mots qu'elle a montrés"
+  }
+]

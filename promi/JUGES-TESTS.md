@@ -279,6 +279,8 @@ le champ retiré de la page, iOS fermait son calendrier ; ② la rangée AVANT a
 
 ## Lot 3b-1 — Peaufiner sur la fiche ; SUPPRIMER (la feuille, « Annuler », la pierre tombale)
 
+Fichiers : `fiche-peaufiner.spec.ts` (FP, l'identité au pixel), `fiche-peaufiner-juges.spec.ts` (FPJ), `tests/unitaires/peaufiner.test.ts`.
+
 **Porté** : la barre « Peaufiner » de la fiche ouvre la page de réglages de la parole (`src/ecrans/fiche/peaufiner.ts`, `bati()` et `ouvre()` de lot-S2) :
 la tête (son titre, le X), LE TRAIT (l'aperçu de son pinceau, 96 pt, relevé tel que `_pinceauEchantillon` le pose), À QUI / QUI OSE ?, AVEC (vide :
 en pointillés), AVANT (le même choix que la page +, devenu une brique commune : `echeance` — les pastilles et le calendrier de L2), DANS UN CERCLE, la
@@ -305,3 +307,29 @@ du banc déclare la liste de fichiers de `PAROLE_CERCLE` (vide).
 | redteam_peaufiner (C-134), redteam_peauf_x (C-220)       | FPJ › Peaufiner sur la fiche : la barre l'ouvre, un choix le laisse ouvert, 60 / 220 pt, son X                        | peauf-fiche-sourd                          |
 | redteam_echeance (C-160), redteam_peaufiner (choix)      | FPJ › Peaufiner sur la fiche, ses choix : AVANT, DANS UN CERCLE, la NOTE, relus après rechargement                    | peauf-fiche-choix-perdus                   |
 | redteam_effacer (v187), redteam_audit_v163               | FPJ › SUPPRIMER : la feuille, « Garder », « Supprimer », la pierre tombale, « Annuler »                               | supprimer-sans-tombe                       |
+
+## Lot 3b-2 — écrire un mot sur la fiche ; les mots neufs, vus à la fermeture
+
+Fichier : `fiche-mot.spec.ts` (FM : l'identité au pixel et les juges de comportement, contre le prototype).
+
+**Porté** : la ligne « Un mot… » de la fiche s'ouvre au toucher (`src/ecrans/fiche/saisie-mot.ts` ; `ouvre`, `ferme`, `envoie`, `glisse` de
+lot-V145-COMM) : le champ, son filet crème, la flèche ; « Un mot… » part et revient par le tracé (`motLigne`). Envoyer (la flèche, Retour) : le mot
+s'écrit (`magasin.ajouterMot` : signé de mon prénom, vu ; la ligne du Fil « Tu as commenté « … » · à qui »), son texte vole jusqu'à sa place en tête
+de la liste (240 ms), la fiche glisse s'il tomberait sous la barre. Le nombre de mots touché fait glisser la fiche jusqu'au premier mot neuf (C-257).
+Un mot neuf porte la pastille « pas encore vu » (C-253, `.s4-att`) ; les mots passés à l'écran entre l'en-tête et la barre sont vus quand la fiche se
+ferme (`magasin.motsVus` ; ni `derAct`, ni le Fil : voir n'est pas agir).
+**Trouvé en portant** : au premier mot d'une parole tenue, toute la fiche remontait de 76 pt (son trait passe de 362 à 286 dès qu'elle porte un mot,
+`traitFiche`) — un changement sec ; le prototype ne repose pas la fiche à l'envoi : la vraie app non plus (elle prend sa place à la réouverture).
+**Écarts nommés** : M4 (Q626) — envoyé, la fiche glisse jusqu'à 60 pt de son bas, et le prototype retourne le chevron de Peaufiner (le dépli d'août)
+sur un tiroir fermé ; la vraie app non. M5 — le X du prototype referme la fiche sans passer par les rangeurs de `closeAll`, où vit `_motsVus` : ses
+mots ne deviennent vus qu'à la fermeture générale suivante ; la vraie app les marque quand la fiche se ferme, comme l'écrit C-253. Le curseur du
+champ (sans phase commune) est caché des deux côtés. Et le toucher qui referme la saisie avale, dans le prototype, tout clic des 450 ms qui suivent
+(le juge les laisse passer avant le X).
+**Le juge Q621 sous Linux (titre.spec, « Retour renomme ») — rouge à chaque run de la CI depuis au moins 67f700f, vert sur le Mac** : il reçoit son
+TÉMOIN (la Toile, sans renommer, sur la même durée — CLAUDE.md : « un juge de rien-ne-change fait d'abord son témoin »), et, en cas d'écart, les deux
+images et la boîte des pixels écartés dans les résultats de la CI : la cause se lira là.
+
+| Juge du prototype                                          | Test                                                                                                           | Sondes                            |
+| ---------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| redteam_commentaires, redteam_envoi_mot, redteam_retours ④ | FM › écrire un mot sur la fiche, comme le prototype — ouverte, tapé, envoyé ; le mot, le Fil (deux thèmes)     | mot-sans-filet, mot-signe-moi     |
+| redteam_nombre_mots (C-257), redteam_mots_neufs (C-253)    | FM › le nombre de mots fait glisser la fiche jusqu'au premier mot neuf ; un toucher ailleurs referme la saisie | mot-reste-ouvert, mots-jamais-vus |

@@ -19,5 +19,19 @@ Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
    dalle quitte la Toile, le bandeau « Promi supprimé · Annuler » reste 5 s ; « Annuler » la rend. Sans annuler, l'app rouverte : elle ne
    revient pas.
 
-Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, écrire un mot (« Un mot… »), le menu photo, le dessin sur
-la fiche, la fiche d'une personne et le + des membres.
+## 3b-2 — écrire un mot sur la fiche, les mots neufs
+
+5. **Écrire un mot** — sur une fiche, toucher la ligne « Un mot… » : le clavier s'ouvre, un filet crème paraît sous la ligne, la flèche à droite ;
+   « Un mot… » reste écrit jusqu'à la première lettre, puis se détrace. Effacer tout : il revient en se traçant.
+6. **Envoyer** — la flèche (le clavier ne descend pas) ou Retour : le champ se vide, le mot vole jusqu'en tête de « Les Mots », signé de ton prénom,
+   « à l'instant » ; si besoin la fiche glisse pour le montrer. Rien ne saute : sur une parole tenue, la fiche ne remonte pas au premier mot.
+   Le Fil (quand il sera porté) aura la ligne « Tu as commenté « … » ».
+7. **Refermer** — toucher ailleurs sur la fiche : la saisie se ferme, et ce toucher ne fait rien d'autre.
+8. **Les mots neufs** (pour les voir, il faut un mot de quelqu'un d'autre ; en attendant le réseau, non vu sur l'iPhone sauf par le banc) : une
+   pastille orange au bout de sa rangée, « +N » orange sur la ligne « Un mot… » ; toucher « +N » fait glisser la fiche jusqu'au premier ; la fiche
+   refermée puis rouverte, ils sont vus (plus de pastille, le nombre redevient le total).
+9. **Le chevron de Peaufiner** — après l'envoi, la fiche glisse en bas : la flèche de la barre reste ▾ (le prototype la retournait ▴ sur un tiroir
+   fermé, Q626 : dis-moi si tu préfères autre chose).
+
+Pas encore (suite du lot 3b) : choisir LE TRAIT et les personnes depuis Peaufiner, le menu photo, le dessin sur la fiche, la fiche d'une personne et
+le + des membres.

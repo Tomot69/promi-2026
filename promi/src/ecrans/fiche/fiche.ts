@@ -25,6 +25,7 @@ import { monterJonction } from './jonction.ts';
 import { monterMots } from './mots.ts';
 import { monterTitre } from './titre.ts';
 import { monterPeaufinerFiche } from './peaufiner.ts';
+import { monterSaisieMot } from './saisie-mot.ts';
 import { annulable, confirmer } from '../feuilles/feuilles.ts';
 import { chargerTrace } from '../../animation/trace/trace.ts';
 import { haptique } from '../../natif/haptique.ts';
@@ -272,18 +273,22 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     peindreNoyaux(noyaux);
     partage.style.borderColor = n === 'chiche' ? palette.brun09 : palette.creme95;
     poserPhoto();
-    // le nombre de mots sur la ligne « Un mot… » (C-257) : le total ; « +N » orange quand des mots d'autres ne sont pas encore vus (C-253)
+    poserNombre(p);
+    coter(!!c);
+    tenir.poser(!instantF && p.status !== 'tenu');
+    poserInstant(p);
+    poserPlus(p);
+    poserMots(p);
+  }
+
+  /** le nombre de mots sur la ligne « Un mot… » (C-257) : le total ; « +N » orange quand des mots d'autres ne sont pas encore vus (C-253) */
+  function poserNombre(p: Parole): void {
     const ms = p.comments ?? [];
     const moi = moiNom();
     const neufs = ms.filter((m) => !m.vu && !/^moi$/i.test(String(m.by)) && m.by !== moi).length;
     nbMots.hidden = !ms.length;
     nbMots.textContent = neufs ? '+' + String(neufs) : String(ms.length);
     nbMots.classList.toggle('cm5-neufs', !!neufs);
-    coter(!!c);
-    tenir.poser(!instantF && p.status !== 'tenu');
-    poserInstant(p);
-    poserPlus(p);
-    poserMots(p);
   }
 
   /**
@@ -660,6 +665,19 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     },
   });
 
+  // ── ÉCRIRE UN MOT (saisie-mot.ts, lot 3b-2) : la ligne « Un mot… » s'ouvre au toucher ; le mot s'écrit, la liste se repose (l'abonné) ──
+  const saisieMot = monterSaisieMot({
+    fi,
+    defile,
+    ligne: unMot,
+    mot: unMotTxt,
+    nb: nbMots,
+    actif: () => !!courant && !fi.hidden && !fi.classList.contains('fi-bas') && !instantF,
+    envoyer: (t) => {
+      if (courant) magasin.ajouterMot(courant.id, t, moiNom(), Date.now());
+    },
+  });
+
   // ── PEAUFINER (peaufiner.ts, lot 3b-1) : la barre l'ouvre par-dessus la fiche, la fiche reste dessous ──
   const peauf = monterPeaufinerFiche({
     fi,
@@ -696,6 +714,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     const p = magasin.etat().paroles.find((q) => q.id === id);
     if (!p || p.draft) return;
     peauf.fermer(false);
+    saisieMot.fermer();
     tenir.arreter();
     titreCtl.sortir(true);
     instantF = null;
@@ -730,8 +749,12 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   function fermer(): void {
     if (fi.hidden || fi.classList.contains('fi-bas')) return;
     peauf.fermer(false);
+    saisieMot.fermer();
     tenir.arreter();
     titreCtl.sortir(true);
+    // C-253 : les mots que la fiche a montrés sont vus, quand on la quitte (les mots neufs perdent leur pastille, « +N » redevient le total)
+    const vus = mots.vus();
+    if (courant && vus.length) magasin.motsVus(courant.id, vus);
     courant = null;
     if (finOuverture != null) horloge().annuleMinuteur(finOuverture);
     finOuverture = null;
@@ -746,7 +769,7 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
   }
 
   // C-049 : une seule source de vérité — la parole ouverte qui change (tenue, renommée, une part tracée) se repose ; effacée, la fiche se ferme
-  magasin.abonner((e) => {
+  magasin.abonner((e, action) => {
     if (!courant || fi.hidden) return;
     const p = e.paroles.find((q) => q.id === courant!.id);
     if (!p) {
@@ -755,6 +778,13 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     }
     if (p === courant) return;
     courant = p;
+    // un mot envoyé (3b-2) : seuls le nombre et la liste changent — la fiche ne se repose pas (sur une parole tenue, le premier mot change son
+    // trait, 362 → 286 : elle sautait de 76 pt, un changement sec, C-271 ; le prototype ne la repose pas non plus) ; rouverte, elle prend sa place
+    if (action === 'ajouterMot') {
+      poserNombre(p);
+      poserMots(p);
+      return;
+    }
     poser(p);
     peauf.reposer();
   });

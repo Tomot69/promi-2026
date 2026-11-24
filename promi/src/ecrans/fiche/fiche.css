@@ -316,7 +316,7 @@
   padding: 0 2px 0 0;
   color: var(--c-creme95);
   z-index: 3;
-  pointer-events: none;
+  cursor: text;
 }
 #detailPoster .cm5-mot,
 #detailPoster .cm5-nb {
@@ -336,6 +336,73 @@
 }
 #detailPoster .cm5-nb.cm5-neufs {
   color: var(--c-orange-depart);
+}
+#detailPoster :is(.cm5-mot, .cm5-nb)[hidden] {
+  display: none;
+}
+/* ouverte (lot 3b-2, relevé : lot-V145-COMM) : un filet crème de 2 pt dessous ; le champ prend la ligne (296 × 54) ; « Un mot… » en surimpression
+   jusqu'à la première lettre ; la flèche d'envoi (44 pt, 12 pt hors de la ligne à droite) ; le nombre se retire */
+#detailPoster #cm5Ligne.cm5-ouvert {
+  border-bottom: 2px solid var(--c-creme95);
+}
+#detailPoster .cm5-saisie {
+  display: none;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  appearance: none;
+  font: 400 15px/22.5px var(--f-texte);
+  color: var(--c-creme95);
+}
+#detailPoster .cm5-ouvert .cm5-saisie {
+  display: block;
+}
+#detailPoster .cm5-ouvert .cm5-mot {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  z-index: 1;
+}
+#detailPoster .cm5-ouvert .cm5-nb {
+  display: none;
+}
+/* (le bouton est un bloc : sa flèche y est posée comme un texte, centrée par le bouton, sur sa ligne de base — relevé : le `grid` en ligne du
+   prototype est battu par une règle de sa feuille) */
+#detailPoster .cm5-va {
+  display: none;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  margin: 0 -12px 0 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: 11px system-ui;
+  color: var(--c-creme95);
+}
+#detailPoster .cm5-ouvert .cm5-va {
+  display: block;
+}
+/* le texte d'un mot envoyé, qui vole du champ jusqu'à sa place dans la liste (C-260 : sous la bande et la barre, au-dessus de la liste) */
+#detailPoster .cm5-vol {
+  position: absolute;
+  margin: 0;
+  padding: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 7;
+  transform-origin: 0 0;
+  box-sizing: border-box;
 }
 
 /* ── « LES MOTS » (mots.ts ; C-248, C-261) : le titre à 780, la liste à 832 ── */
@@ -363,6 +430,34 @@
   align-items: flex-start;
   padding: 0 0 12px;
   position: relative;
+}
+/* un mot neuf (C-253) : la pastille « pas encore vu » (`.s4-att`, v89 ; lot-V184B-MOTS) — 9 pt, l'orange du départ, cernée de 1,4 pt de crème,
+   au bout de la rangée ; elle grandit de son centre (v201b, C-271), posée d'emblée quand on réduit les animations */
+#detailPoster .cm5-att {
+  position: absolute;
+  z-index: 4;
+  top: 6.5px;
+  right: 0;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--c-orange-depart);
+  box-shadow: 0 0 0 1.4px var(--c-creme95);
+  pointer-events: none;
+  animation: cm5-pop 0.26s cubic-bezier(0.33, 0, 0.67, 1) both;
+}
+@keyframes cm5-pop {
+  from {
+    transform: scale(0);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #detailPoster .cm5-att {
+    animation: none;
+  }
 }
 #detailPoster .cm5-vis {
   display: inline-block;

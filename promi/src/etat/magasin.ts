@@ -4,7 +4,7 @@
  * Toute modification passe par une ACTION nommée ; aucun écran n'écrit l'état. L'action écrit le stockage tout de suite, dans la tâche du
  * geste (C-226), puis prévient les abonnés. Les abonnés reçoivent l'état et le nom de l'action ; ils comparent avant d'agir.
  */
-import type { Brouillon, CouleurDalle, Etat, MondeDalle, Parole, Place } from '../donnees/schema.ts';
+import type { Brouillon, CouleurDalle, Etat, MondeDalle, Mot, Parole, Place } from '../donnees/schema.ts';
 import { tirer } from '../metier/exemples.ts';
 import { etatVide } from '../donnees/schema.ts';
 import { migrer } from '../donnees/migrations/index.ts';
@@ -91,6 +91,13 @@ export interface Actions {
   effacer(id: number): { parole: Parole; rang: number } | null;
   /** « Annuler » après un effacement : la parole revient à sa place, sa pierre tombale est retirée (`_deterrer`) */
   deterrer(x: { parole: Parole; rang: number }): void;
+  /**
+   * UN MOT envoyé sur une fiche (lot 3b-2 ; le prototype : `envoie` de lot-V145-COMM, C-260) — signé de mon prénom, vu (mon mot n'est jamais
+   * « neuf » pour moi) ; une ligne du Fil (« Tu as commenté « … » · à qui »). Écrit tout de suite (C-226).
+   */
+  ajouterMot(id: number, texte: string, moi: string, maintenant: number): void;
+  /** C-253 : les mots que la fiche a montrés (clés `date|auteur|texte`) sont vus — rien d'autre ne change (voir n'est pas agir : ni `derAct`, ni le Fil) */
+  motsVus(id: number, cles: readonly string[]): void;
 }
 
 export interface ChampsPeaufiner {
@@ -108,6 +115,11 @@ export interface Magasin extends Actions {
   /** C-160 : les échéances recomptées contre aujourd'hui (au retour au premier plan) ; rien ne s'écrit si rien ne change */
   recompter(): void;
   abonner(f: Abonne): () => void;
+}
+
+/** la clé d'un mot : sa date, son auteur, son texte (un mot n'a pas d'identifiant) */
+export function cleMot(m: { d: string; by: string; t: string }): string {
+  return `${m.d}|${m.by}|${m.t}`;
 }
 
 export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => minuit()): Magasin {
@@ -360,6 +372,42 @@ export function creerMagasin(stockage: Stockage, aujourdhui: () => Date = () => 
       const paroles = [...e.paroles];
       paroles.splice(Math.min(x.rang, paroles.length), 0, x.parole);
       valider('deterrer', { ...e, paroles, effacees: e.effacees.filter((t) => t !== k) });
+    },
+    ajouterMot(id, texte, moi, maintenant) {
+      const p = e.paroles.find((q) => q.id === id);
+      const t = texte.trim();
+      if (!p || !t) return;
+      const mot: Mot = { t, d: new Date(maintenant).toISOString(), by: moi, vu: true };
+      const neuve: Parole = { ...p, comments: [...(p.comments ?? []), mot], derAct: maintenant };
+      const recu = !!p.from && !/^moi$/i.test(p.from);
+      const au = p.nuee ? (e.cercles[p.nuee] ?? p.nuee) : recu ? p.from : p.who;
+      const fid = e.compteurs.fid;
+      const ligne = ligneFil(
+        fid,
+        'comment',
+        `Tu as commenté « ${p.title} »${au && !/^moi$/i.test(au) ? ` · ${au}` : ''}`,
+        maintenant,
+        { pid: id },
+      );
+      valider('ajouterMot', {
+        ...e,
+        paroles: e.paroles.map((q) => (q.id === id ? neuve : q)),
+        fil: [ligne, ...e.fil],
+        compteurs: { ...e.compteurs, fid: fid + 1 },
+      });
+    },
+    motsVus(id, cles) {
+      const p = e.paroles.find((q) => q.id === id);
+      if (!p?.comments?.length || !cles.length) return;
+      const C = new Set(cles);
+      let n = 0;
+      const comments = p.comments.map((m) => {
+        if (m.vu || !C.has(cleMot(m))) return m;
+        n++;
+        return { ...m, vu: true };
+      });
+      if (!n) return;
+      valider('motsVus', { ...e, paroles: e.paroles.map((q) => (q.id === id ? { ...p, comments } : q)) });
     },
     peaufiner(id, champs, maintenant) {
       const p = e.paroles.find((q) => q.id === id);
