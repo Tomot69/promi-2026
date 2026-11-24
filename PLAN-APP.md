@@ -133,6 +133,8 @@ Sources : `portage/SPEC-ECRANS.md` (§ cités), `SPEC-GESTE.md`, `SPEC-RENDU.md`
 - Bouton photo › Importer, toucher la bande : la photo en entier (#7) ; › Dessiner : outils en bas, ✕ sort sans poser (#8).
 - La fiche d'une personne : les noms se touchent, « Tenu ensemble » s'ouvre.
 
+**(d) État au 24 nov. 2026 — LE LOT 3b EST FAIT EN PARTIE (au banc ; installé sur l'iPhone de Tom, `487b82b`).** Fait, en six étapes commitées (L3b-1 à L3b-6) : Peaufiner sur la fiche (ses rangées, ses choix, SUPPRIMER, la feuille, « Annuler », la pierre tombale) ; écrire un mot (« Un mot… », l'envoi, le vol, le Fil) et les mots neufs (la pastille, « +N » qui glisse, vus à la fermeture) ; le bouton photo (son menu, la photo importée, la dalle d'origine Q365 ; les dalles de la fiche rendues comme en sombre, C-132) ; la photo en entier et cadrée au doigt, sur la fiche et sur la page + (C-051, C-067, C-085, C-098) ; le dessin sur la fiche (posé dans la bande, l'œil, « Retirer le dessin », en entier). **Identique au prototype** : `fiche-peaufiner`, `fiche-mot`, `fiche-photo`, `fiche-entier`, `fiche-dessin`, `page-plus-juges` (chacun avec sa sonde). **Pas encore** : choisir LE TRAIT (le rail du pinceau) et les personnes depuis Peaufiner ; le + des membres (C-254) ; la fiche d'une personne. Juges : `promi/JUGES-TESTS.md`, « Lot 3b » ; à vérifier : `promi/A-VERIFIER-LOT-3B.md`.
+
 ---
 
 ## Lot 4 · L'Index et le Fil
