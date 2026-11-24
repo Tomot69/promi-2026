@@ -261,3 +261,18 @@ guillemets à espaces ordinaires, ses lignes ont des guillemets insécables).
 | redteam_titre_encart (C-280 §1)                 | TI › le second toucher modifie un titre coupé, sans aucun encart : l'écran du prototype en modification               |
 | redteam_titre_fiche, redteam_renomme (Q621)     | TI › Retour renomme comme le prototype : le titre neuf, la clé gardée, la Toile la même (Brouillamini) ; U › renommer |
 | redteam_titre_fiche (Échap, vidé, titre entier) | TI › Échap, ou le titre vidé : l'ancien revient ; un titre entier se modifie au premier toucher                       |
+
+## Lot 3a — la fin : un Promi d'un Cercle ; et le calendrier de la page + (retour de Tom, 24 nov.)
+
+**Porté** : les Noyaux d'une parole d'un Cercle (`noyauxDe`, `rangeeNoyaux` : « Toi » puis UN disque, le Cercle, son nom entier, l'agrégat de
+toutes ses paroles — `openDetail` et `auraDisques` du prototype). La parole du banc (`PAROLE_CERCLE`) est plantée dans le prototype par sa page +.
+**Le calendrier** (« AVANT » › « une date… », prototype ET app, la même solution) : la séance de Tom relevée sur son iPhone
+(`banc-calendrier.html`) a nommé deux causes — ① iOS pose la date du jour dès l'ouverture (`input`, `change`), et l'appliquer rebâtissait Peaufiner :
+le champ retiré de la page, iOS fermait son calendrier ; ② la rangée AVANT affichait le libellé de la pastille. La date s'applique sur `input`,
+`change` et `blur` ; elle change sur place ; Peaufiner ne se rebâtit pas calendrier ouvert ; la rangée se replie à la fermeture.
+
+| Juge                                         | Test                                                                                           | Sondes                                                         |
+| -------------------------------------------- | ---------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| releve-S1-fiches (la parole d'un Cercle)     | F › identité au pixel : la fiche — Promi d'un Cercle, deux thèmes ; U › les Noyaux d'un Cercle | fiche-cercle-sans-disque                                       |
+| redteam_tenir (la parole d'un Cercle)        | T › identité au pixel : tenir — Promi d'un Cercle, deux thèmes                                 | (tenir-identite-decale, sur « Promi à soi »)                   |
+| la séance de Tom (24 nov.), prototype et app | PJ › le calendrier de « une date… », la séance de Tom — prototype ; — app                      | cal-referme-_, cal-non-lu-_, cal-hors-doigt-* (les deux côtés) |
