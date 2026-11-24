@@ -1,6 +1,6 @@
 # TOM PEUT UTILISER L'APP 5 MINUTES — la fiche, suite (lot 3b), à vérifier sur l'iPhone, dans l'app « Promi »
 
-**Pas encore installée** (la version et le commit s'écriront ici à l'installation, lus sur le téléphone : `sh outils/version-iphone.sh`).
+**Installée le 24 nov. 2026 à 21 h 47 — commit `487b82b`** (lu sur le téléphone : `sh outils/version-iphone.sh` → `487b82b index-DMs_7hBZ.js`).
 Pour chaque point : **tenu**, **non tenu** ou **non vu** (R4).
 
 ## 3b-1 — Peaufiner sur la fiche, et SUPPRIMER
