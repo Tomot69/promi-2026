@@ -2266,74 +2266,228 @@ test('A3, à 0,79 (330 × 714) : la page + dans chacun de ses états — rien ne
   expect(fautes).toEqual([]);
 });
 
-// ── LE CALENDRIER DU PROTOTYPE (Tom, 24 nov. 2026 : « le prototype a le même défaut de calendrier dans Safari ; il reste la référence : corrige-le
-//    aussi, avec la même solution ») — dans Safari, « une date… » n'ouvrait rien : `showPicker` sur un champ invisible d'1 px, qui ne prenait pas
-//    le doigt. Le vrai champ date COUVRE maintenant la pastille (la solution de l'app, 2b). Le banc ne voit pas le sélecteur natif d'iOS (Tom le
-//    vérifie dans Safari, R3) : il juge ce qui le rend possible — sous le doigt, au centre de « une date… », le vrai champ date — puis il joue iOS
-//    (une date posée) : l'échéance du prototype prend la date, la pastille se coche ──
-test('le prototype : « une date… » met le vrai champ date sous le doigt, une date posée devient l’échéance (Tom, 24 nov.)', async ({
-  page,
-}) => {
-  test.setTimeout(180000);
-  await prototype(page, stockage());
-  await ouvrirPagePlus(page, 'promi', true);
-  // la sonde : le champ date ne prend plus le doigt (le défaut de Safari, rétabli tel qu'il était : en ligne)
-  if (sonde('proto-date-hors-doigt'))
-    await page.evaluate(() => {
-      document
-        .querySelector<HTMLElement>('#dueChips .due-datein')!
-        .style.setProperty('pointer-events', 'none', 'important');
-    });
-  const centre = async (sel: string, mot?: string): Promise<[number, number]> =>
-    (await page.evaluate(
-      ([s, m]) => {
-        const L = [...document.querySelectorAll<HTMLElement>(s!)];
-        const e = m ? L.find((x) => (x.textContent ?? '').toLowerCase().includes(m)) : L[0];
-        const b = e!.getBoundingClientRect();
-        return [b.left + b.width / 2, b.top + b.height / 2];
+// ── LE CALENDRIER DE « UNE DATE… », LA SÉANCE DE TOM (24 nov. 2026, relevée sur son iPhone : banc-calendrier.html) — le prototype ET l'app, le même
+//    test. Le relevé : au toucher, iOS ouvre son calendrier et pose AUSSITÔT la date du jour (`input` et `change`, 75 ms après) ; puis chaque jour
+//    touché ; puis la fermeture (`blur`). Les deux défauts vus par Tom : ① le calendrier s'ouvrait puis se refermait — appliquer la date du jour
+//    rebâtissait Peaufiner, le champ date retiré de la page (iOS ferme alors son calendrier) ; ② la date choisie ne changeait rien — Peaufiner disait
+//    « une date… ». Le banc ne voit pas le calendrier natif (Tom le voit, R3) : il juge ce qui le garde ouvert — sous le doigt le vrai champ date, qui a
+//    le focus, n'est JAMAIS retiré de la page tant que le calendrier est ouvert, et la rangée AVANT reste dépliée — et ce qui se lit : la date dans
+//    la rangée AVANT (détracé puis tracé), « une date… » cochée ; le calendrier fermé, la rangée se replie ; plantée, la parole garde sa date, et
+//    rechargée, elle la garde encore (S3/Q28 : la date n'entre pas dans la phrase) ──
+const CAL_TITRES = {
+  prototype:
+    'le calendrier de « une date… », la séance de Tom — prototype : un toucher l’ouvre et il reste ouvert, la date se lit dans AVANT, gardée au rechargement',
+  app: 'le calendrier de « une date… », la séance de Tom — app : un toucher l’ouvre et il reste ouvert, la date se lit dans AVANT, gardée au rechargement',
+} as const;
+for (const cote of ['prototype', 'app'] as const)
+  test(CAL_TITRES[cote], async ({ page }) => {
+    test.setTimeout(240000);
+    if (cote === 'prototype') {
+      await prototype(page, stockage());
+      await ouvrirPagePlus(page, 'promi', true);
+    } else await ouvrir(page, 'promi');
+    const centre = async (sel: string, mot?: string): Promise<[number, number]> =>
+      (await page.evaluate(
+        ([s, m]) => {
+          const L = [...document.querySelectorAll<HTMLElement>(s!)];
+          const e = m ? L.find((x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === m) : L[0];
+          const b = e!.getBoundingClientRect();
+          return [b.left + Math.min(30, b.width / 2), b.top + Math.min(20, b.height / 2)];
+        },
+        [sel, mot],
+      )) as [number, number];
+    let c = await centre('#csBotBar');
+    await page.mouse.click(c[0], c[1]);
+    await page.waitForFunction(() => !!document.querySelector('#createSheet .s2-reg'), null, { timeout: 30000 });
+    await page.waitForTimeout(1500);
+    c = await centre('#createSheet .s2-reg', 'AVANT');
+    await page.mouse.click(c[0], c[1]);
+    await page.waitForFunction(
+      () => !!document.querySelector('#createSheet .s2-reg.s2-ouv #dueChips .due-datein'),
+      null,
+      {
+        timeout: 30000,
       },
-      [sel, mot],
-    )) as [number, number];
-  let c = await centre('#csBotBar');
-  await page.mouse.click(c[0], c[1]);
-  await page.waitForFunction(() => !!document.querySelector('#createSheet .s2-reg'), null, { timeout: 30000 });
-  await page.waitForTimeout(1500);
-  c = await centre('#createSheet .s2-reg', 'avant');
-  await page.mouse.click(c[0], c[1]);
-  await page.waitForFunction(() => !!document.querySelector('#createSheet .s2-reg.s2-ouv #dueChips'), null, {
-    timeout: 30000,
-  });
-  await page.waitForTimeout(800);
-  const sous = await page.evaluate(() => {
-    const k = document.querySelector<HTMLElement>('#dueChips .chip[data-pick]')!;
-    const r = k.getBoundingClientRect();
-    return (
-      (document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2) as HTMLElement | null)?.className ?? ''
     );
-  });
-  expect(sous, 'sous le doigt, le vrai champ date : iOS ouvre son calendrier (le toucher, pas un script)').toBe(
-    'due-datein',
-  );
-  // iOS pose une date : celle de dans 10 jours
-  const r = await page.evaluate(() => {
-    const d = new Date();
-    d.setDate(d.getDate() + 10);
-    const iso = `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    const di = document.querySelector<HTMLInputElement>('#dueChips .due-datein')!;
-    di.dispatchEvent(new PointerEvent('pointerdown', { bubbles: true }));
-    di.value = iso;
-    di.dispatchEvent(new Event('change', { bubbles: true }));
-    const w = window as unknown as { _csDueISO?: string; _phrase?: { quand?: string } };
-    return {
-      iso,
-      pose: w._csDueISO,
-      quand: w._phrase?.quand ?? '',
-      coche: document.querySelector('#dueChips .chip[data-pick]')!.classList.contains('on'),
-      min: di.min,
+    await page.waitForTimeout(800);
+    // les sondes : ① la page rebâtie quand iOS pose une date (le champ retiré puis remis) ; ② la date reçue de personne ; le champ hors du doigt
+    if (cote === 'prototype' ? sonde('cal-referme-prototype') : sonde('cal-referme-app'))
+      await page.evaluate(() => {
+        document.addEventListener(
+          'change',
+          (e) => {
+            const d = e.target as HTMLElement;
+            if (!d.classList?.contains('due-datein')) return;
+            const p = d.parentNode!;
+            const s = d.nextSibling;
+            p.removeChild(d);
+            p.insertBefore(d, s);
+          },
+          true,
+        );
+      });
+    if (cote === 'prototype' ? sonde('cal-non-lu-prototype') : sonde('cal-non-lu-app'))
+      await page.evaluate(() => {
+        for (const t of ['input', 'change', 'blur'])
+          window.addEventListener(
+            t,
+            (e) => {
+              if ((e.target as HTMLElement).classList?.contains('due-datein')) e.stopImmediatePropagation();
+            },
+            true,
+          );
+      });
+    if (cote === 'prototype' ? sonde('cal-hors-doigt-prototype') : sonde('cal-hors-doigt-app'))
+      await page.evaluate(() => {
+        document
+          .querySelector<HTMLElement>('#dueChips .due-datein')!
+          .style.setProperty('pointer-events', 'none', 'important');
+      });
+    // le champ suivi : jamais retiré de la page tant qu'il a le focus (le calendrier ouvert)
+    await page.evaluate(() => {
+      const w = window as unknown as { __calRetire: number };
+      w.__calRetire = 0;
+      const d = document.querySelector('#dueChips .due-datein')!;
+      new MutationObserver((M) => {
+        for (const m of M)
+          for (const x of m.removedNodes) if (x === d || (x instanceof Element && x.contains(d))) w.__calRetire++;
+      }).observe(document.body, { subtree: true, childList: true });
+    });
+    const lit = (): Promise<{
+      sous: string;
+      actif: boolean;
+      retire: number;
+      ouv: boolean;
+      val: string;
+      coche: boolean;
+    }> =>
+      page.evaluate(() => {
+        const r = [...document.querySelectorAll<HTMLElement>('#createSheet .s2-reg')].find(
+          (x) => (x.querySelector('.s2-lab')?.textContent ?? '').trim() === 'AVANT',
+        )!;
+        // repliée, la rangée de l'app ne garde pas ses pastilles (elles se rebâtissent au dépliage)
+        const k = document.querySelector('#dueChips .due-datein')?.closest<HTMLElement>('.chip') ?? null;
+        const b = k?.getBoundingClientRect();
+        const s = b
+          ? (document.elementFromPoint(b.left + b.width / 2, b.top + b.height / 2) as HTMLElement | null)
+          : null;
+        return {
+          sous: s?.className ?? '',
+          actif: (document.activeElement as HTMLElement | null)?.classList.contains('due-datein') ?? false,
+          retire: (window as unknown as { __calRetire: number }).__calRetire,
+          ouv: r.classList.contains('s2-ouv'),
+          val: (r.querySelector(':scope > .s2-val')?.textContent ?? '').trim(),
+          coche: !!k?.classList.contains('on'),
+        };
+      });
+    const pose = async (iso: string): Promise<void> => {
+      await page.evaluate((v) => {
+        const d = document.querySelector<HTMLInputElement>('#dueChips .due-datein')!;
+        d.value = v;
+        d.dispatchEvent(new Event('input', { bubbles: true }));
+        d.dispatchEvent(new Event('change', { bubbles: true }));
+      }, iso);
+      await page.waitForTimeout(400);
+      await page.waitForFunction(`!window.TraceLettres?.actif()`, undefined, { timeout: 15000 });
+      await page.waitForTimeout(300);
     };
+    const jour = (n: number): Promise<[string, number]> =>
+      page.evaluate((n) => {
+        const d = new Date();
+        d.setDate(d.getDate() + n);
+        return [
+          `${String(d.getFullYear())}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`,
+          d.getDate(),
+        ] as [string, number];
+      }, n);
+    // 1 · le premier toucher : sous le doigt le vrai champ date, qui prend le focus (iOS ouvre son calendrier)
+    let e = await lit();
+    expect(e.sous, 'sous le doigt, le vrai champ date (iOS ouvre son calendrier au toucher)').toBe('due-datein');
+    c = await page.evaluate(() => {
+      const b = document.querySelector('#dueChips .due-datein')!.closest('.chip')!.getBoundingClientRect();
+      return [b.left + b.width / 2, b.top + b.height / 2] as [number, number];
+    });
+    await page.mouse.click(c[0], c[1]);
+    await page.waitForTimeout(300);
+    expect((await lit()).actif, 'le champ date a le focus : le calendrier est ouvert').toBe(true);
+    // 2 · iOS pose la date du jour dès l'ouverture : le calendrier reste ouvert (le champ jamais retiré, toujours au focus, la rangée dépliée)
+    const [auj, jAuj] = await jour(0);
+    await pose(auj);
+    e = await lit();
+    expect(
+      [e.retire, e.actif, e.ouv],
+      'la date du jour posée par iOS : le champ jamais retiré de la page, le calendrier ouvert, AVANT dépliée',
+    ).toEqual([0, true, true]);
+    expect(e.val, 'la rangée AVANT dit déjà la date du jour').toContain(String(jAuj));
+    // 3 · le jour choisi (dans 10 jours) : il se lit dans AVANT, « une date… » cochée, toujours ouvert
+    const [iso, j10] = await jour(10);
+    await pose(iso);
+    e = await lit();
+    expect(
+      [e.retire, e.actif, e.ouv, e.coche],
+      'le jour choisi : le calendrier toujours ouvert, « une date… » cochée',
+    ).toEqual([0, true, true, true]);
+    expect(e.val, 'la date choisie remplace « une date… » dans AVANT').toContain(String(j10));
+    expect(e.val).not.toMatch(/une date|un jour/);
+    const valOuverte = e.val;
+    // 4 · le calendrier fermé (`blur`) : la rangée se replie, la date reste
+    await page.evaluate(() => document.querySelector<HTMLInputElement>('#dueChips .due-datein')!.blur());
+    await page.waitForTimeout(800);
+    await page.waitForFunction(`!window.TraceLettres?.actif()`, undefined, { timeout: 15000 });
+    await page.waitForTimeout(300);
+    e = await lit();
+    expect([e.ouv, e.val], 'le calendrier fermé : AVANT se replie, la date reste').toEqual([false, valOuverte]);
+    // 5 · plantée : la parole garde sa date ; rechargée, elle la garde encore
+    if (cote === 'prototype') {
+      // le prototype : la plantation passe par `#addPromi` (le bouton que le trait actionne, C-226 : écrite dans la tâche du trait)
+      await page.evaluate(() => {
+        (document.getElementById('fTitle') as HTMLInputElement).value = 'appeler Lou';
+        document.getElementById('addPromi')!.click();
+      });
+      await page.waitForTimeout(2500);
+      // rechargée : une page neuve du même navigateur (le stockage gardé, sans l'amorce du banc qui le remet à zéro)
+      const P2 = await page.context().newPage();
+      await P2.goto('http://127.0.0.1:8753/app.html');
+      await P2.waitForTimeout(9000);
+      const p = (await P2.evaluate(() => {
+        const s = JSON.parse(localStorage.getItem('promi_state') ?? '{}') as {
+          promises?: { title: string; dueISO?: string }[];
+        };
+        const L = s.promises ?? [];
+        const x = L.find((q) => q.title === 'appeler Lou');
+        return x ? { t: x.title, iso: x.dueISO ?? null } : null;
+      })) as { t: string; iso: string | null } | null;
+      expect(p, 'rechargée, la parole plantée garde sa date').toEqual({ t: 'appeler Lou', iso });
+      await P2.close();
+    } else {
+      await doigt(page, '#csPeauf .s2-fermer');
+      await posee(page);
+      await doigt(page, '#createSheet .ph-m[data-ph="titre"]');
+      await posee(page);
+      await page.keyboard.type('appeler Lou');
+      await page.keyboard.press('Enter');
+      await page.waitForFunction(`${P_}.pagePlus().etat().invite.visible`, undefined, { timeout: 30000 });
+      await page.waitForFunction(() => !document.querySelector('#createSheet canvas.passage-flaques'), undefined, {
+        timeout: 20000,
+      });
+      const [x0, y0, k] =
+        (await page.evaluate(`(() => { const cs = document.getElementById('createSheet'); const C = cs.getBoundingClientRect();
+        const k = C.width / cs.offsetWidth; const h = parseFloat(getComputedStyle(cs).getPropertyValue('--pp-h')) || 0;
+        const [x, y] = document.getElementById('csTrameCv').getAttribute('data-depart').split(',').map(Number); return [C.left + x * k, C.top + (y + h) * k, k]; })()`)) as [
+          number,
+          number,
+          number,
+        ];
+      await page.mouse.move(x0, y0);
+      await page.mouse.down();
+      for (let x = x0; x <= 200 * k; x += 8 * k) await page.mouse.move(x, y0);
+      await page.mouse.up();
+      await page.waitForTimeout(1500);
+      await page.reload();
+      await page.waitForFunction(`!!${P_}?.magasin`, undefined, { timeout: 20000 });
+      const p = (await page.evaluate(
+        `(() => { const p = ${P_}.magasin.etat().paroles.find((q) => q.title === 'appeler Lou'); return p ? { t: p.title, iso: p.suite?.dueISO ?? null } : null; })()`,
+      )) as { t: string; iso: string | null } | null;
+      expect(p, 'rechargée, la parole plantée garde sa date').toEqual({ t: 'appeler Lou', iso });
+    }
   });
-  expect(r.pose, 'la date posée devient l’échéance').toBe(r.iso);
-  expect(r.coche, '« une date… » cochée').toBe(true);
-  expect(r.quand, 'la phrase dit le jour').toMatch(/\d/);
-  expect(r.min, 'pas de date passée : le minimum est aujourd’hui').toMatch(/^\d{4}-\d{2}-\d{2}$/);
-});

@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>banc — le calendrier</title>
+<!-- LE BANC DU CALENDRIER (Tom, 24 nov. 2026 : « une date… » s'ouvre puis se referme ; la date choisie n'est lue par personne). Le prototype tel quel
+     dans un cadre plein écran ; rien n'y est changé. Pendant les gestes de Tom, chaque événement du champ date (#dueChips .due-datein), chaque fois
+     qu'il quitte ou rejoint la page, chaque ouverture ou repli de la rangée AVANT, la valeur du champ, l'échéance lue (`_csDueISO`) et la valeur
+     affichée dans Peaufiner partent au Mac (/mesure → mesures/appareil.jsonl, quoi:'calendrier'). ?app=1 : la vraie app (le serveur Vite) à la place. -->
+<style>html,body{margin:0;height:100%;background:#000}iframe{position:fixed;inset:0;width:100%;height:100%;border:0}
+#pt{position:fixed;left:2px;top:2px;width:6px;height:6px;border-radius:3px;background:#8FE08F;z-index:9;pointer-events:none}</style>
+</head><body><iframe id="f" src="app.html"></iframe><div id="pt"></div>
+<script>
+(function(){
+  var f=document.getElementById('f'), pt=document.getElementById('pt'), L=[], t0=performance.now(), ids=new WeakMap(), n=0;
+  function id(e){ if(!e) return null; if(!ids.has(e)) ids.set(e, ++n); return ids.get(e); }
+  function note(q, d){ L.push(Object.assign({t:Math.round(performance.now()-t0), q:q}, d||{})); pt.style.background = pt.style.background==='rgb(143, 224, 143)' ? '#FB4C0D' : '#8FE08F'; }
+  function envoie(){ if(!L.length) return; var b=L.splice(0); fetch('/mesure',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({quoi:'calendrier',ua:navigator.userAgent.slice(0,60),L:b})}).catch(function(){ L=b.concat(L); }); }
+  setInterval(envoie, 1000);
+  f.addEventListener('load', function(){
+    var w=f.contentWindow, d=f.contentDocument; note('charge', {url:w.location.href});
+    function di(){ return d.querySelector('#dueChips .due-datein'); }
+    function avant(){ var r=[].find.call(d.querySelectorAll('#createSheet .s2-reg'), function(x){ return /avant/i.test(x.textContent||''); }); return r; }
+    function etat(e){ var a=avant(), v=a&&a.querySelector('.s2-val'); return {champ:id(e), dans:!!(e&&e.isConnected), val:e?e.value:null, iso:w._csDueISO||null, quand:(w._phrase||{}).quand||null,
+      peauf:v?v.textContent:null, ouv:a?a.classList.contains('s2-ouv'):null, actif:d.activeElement?(d.activeElement.className||d.activeElement.tagName):null}; }
+    ['pointerdown','pointerup','pointercancel','touchstart','touchend','touchcancel','mousedown','mouseup','click','focus','blur','focusin','focusout','input','change','beforeinput','keydown']
+      .forEach(function(t){ d.addEventListener(t, function(ev){ var e=ev.target; if(!(e && e.classList && e.classList.contains('due-datein'))) return; note(t, etat(e)); }, true); });
+    // le champ qui quitte ou rejoint la page, la rangée AVANT qui s'ouvre ou se replie, Peaufiner rebâti
+    var vu=null;
+    new w.MutationObserver(function(M){
+      var e=di(); if(e!==vu){ note('champ-change', {de:id(vu), vers:id(e), ancienDans:!!(vu&&vu.isConnected)}); vu=e; }
+      M.forEach(function(m){
+        if(m.type==='attributes' && m.target.classList && m.target.classList.contains('s2-reg') && /avant/i.test(m.target.textContent||'')) note('rangee', etat(di()));
+        if(m.type==='childList') [].forEach.call(m.removedNodes, function(x){ if(x.nodeType===1 && (x.matches('.due-datein,#dueChips,.s2-reg,.s2-liste') || x.querySelector('.due-datein'))) note('retire', {quoi:x.id||x.className, parent:m.target.id||m.target.className, champDans:!!(di()&&di().isConnected)}); });
+      });
+    }).observe(d.body, {subtree:true, childList:true, attributes:true, attributeFilter:['class']});
+    if(w.visualViewport) w.visualViewport.addEventListener('resize', function(){ note('vv', {h:Math.round(w.visualViewport.height)}); });
+    note('pret', etat(di()));
+  });
+})();
+</script></body></html>

@@ -175,8 +175,33 @@
     "defaut": "le mode dessin paraît et part d'un coup"
   },
   {
-    "nom": "proto-date-hors-doigt",
-    "test": "le prototype : « une date… » met le vrai champ date sous le doigt",
-    "defaut": "dans le prototype, le champ date ne prend pas le doigt : Safari n'ouvre pas son calendrier (le défaut vu par Tom)"
+    "nom": "cal-referme-prototype",
+    "test": "le calendrier de « une date… », la séance de Tom — prototype",
+    "defaut": "la page rebâtie quand iOS pose une date : le champ retiré de la page, iOS referme son calendrier (le défaut 1 vu par Tom)"
+  },
+  {
+    "nom": "cal-non-lu-prototype",
+    "test": "le calendrier de « une date… », la séance de Tom — prototype",
+    "defaut": "la date envoyée par iOS (input, change, blur) n'est lue par personne : AVANT dit « une date… » (le défaut 2 vu par Tom)"
+  },
+  {
+    "nom": "cal-hors-doigt-prototype",
+    "test": "le calendrier de « une date… », la séance de Tom — prototype",
+    "defaut": "le champ date ne prend pas le doigt : iOS n'ouvre pas son calendrier"
+  },
+  {
+    "nom": "cal-referme-app",
+    "test": "le calendrier de « une date… », la séance de Tom — app",
+    "defaut": "la page rebâtie quand iOS pose une date : le champ retiré de la page, iOS referme son calendrier (le défaut 1 vu par Tom)"
+  },
+  {
+    "nom": "cal-non-lu-app",
+    "test": "le calendrier de « une date… », la séance de Tom — app",
+    "defaut": "la date envoyée par iOS (input, change, blur) n'est lue par personne : AVANT dit « une date… » (le défaut 2 vu par Tom)"
+  },
+  {
+    "nom": "cal-hors-doigt-app",
+    "test": "le calendrier de « une date… », la séance de Tom — app",
+    "defaut": "le champ date ne prend pas le doigt : iOS n'ouvre pas son calendrier"
   }
 ]

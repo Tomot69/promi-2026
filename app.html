@@ -3546,20 +3546,37 @@ let due=null;   /* Décision Tom : sans choix explicite, une promesse n'a PAS d'
 let createKind='promi';
 let selNuee=null;
 /* selection des dalles geree par initCreatePlus (carousel) */
-/* le calendrier de « une date… » armé dès que le doigt se pose sur son champ (sa date minimale, ce que fait le choix) : iOS l'ouvre au toucher, sans script */
-window._dueArme=function(){ var di=$('#dueChips .due-datein'), c=$('#dueChips .chip[data-pick]'); if(!di||!c) return; var P=window._phrase||{}; var t0=new Date(); t0.setHours(0,0,0,0);
-  di.min=t0.getFullYear()+'-'+String(t0.getMonth()+1).padStart(2,'0')+'-'+String(t0.getDate()).padStart(2,'0');
-  di.onchange=function(){ if(!di.value) return; var pk=new Date(di.value+'T00:00:00'), d=Math.max(0, Math.round((pk-t0)/86400000)); due=d; window._csEnLair=false; window._csDueISO=di.value;
-    P.quand=window._dateQuand?window._dateQuand(pk, d):(pk.getDate()+''); $$('#dueChips .chip').forEach(y=>y.classList.toggle('on', y===c)); try{ if(window._phraseRendu) _phraseRendu(); }catch(_){ } }; };
+/* le calendrier de « une date… » armé dès que le doigt se pose sur son champ (sa date minimale) : iOS l'ouvre au toucher, sans script */
+/* ⚑ L2 (Tom, 24 nov. 2026, relevé de sa séance sur l'iPhone, banc-calendrier.html) — DEUX CAUSES.
+   ① « le calendrier s'ouvre puis se referme » : iOS pose la date du jour dès que son calendrier s'ouvre (`input` et `change`, 75 ms après le toucher) ;
+     l'appliquer recomposait la page + et rebâtissait Peaufiner (`peaufBati`) 5 ms plus tard — le champ date retiré de la page puis remis : iOS ferme
+     son calendrier. Tant que le calendrier est ouvert (le champ a le focus), Peaufiner ne se rebâtit pas ; il se rebâtit à sa fermeture (`blur`), et la
+     rangée AVANT se replie alors.
+   ② « la date choisie ne change rien » : elle était appliquée (`_csDueISO`), mais la rangée affichait le libellé de la pastille cochée (« une date… »,
+     `motEcheance`). Elle affiche la date (`_phrase.quand`), posée sur place dès qu'iOS l'envoie (`input`, `change` ou `blur`, dès qu'elle diffère de la
+     précédente) : le suivi des valeurs de Peaufiner la détrace puis la trace (C-279). Elle n'entre pas dans la phrase (S3/Q28). La même solution que l'app. */
+window._dueArme=function(){ var di=$('#dueChips .due-datein'); if(!di) return; var t0=new Date(); t0.setHours(0,0,0,0);
+  di.min=t0.getFullYear()+'-'+String(t0.getMonth()+1).padStart(2,'0')+'-'+String(t0.getDate()).padStart(2,'0'); };
+window._dueApplique=function(){ var di=$('#dueChips .due-datein'), c=$('#dueChips .chip[data-pick]'); if(!di||!c||!di.value||di.value===window._csDueISO) return;
+  var P=window._phrase||{}, t0=new Date(); t0.setHours(0,0,0,0); var pk=new Date(di.value+'T00:00:00'), d=Math.max(0, Math.round((pk-t0)/86400000));
+  due=d; window._csEnLair=false; window._csDueISO=di.value; P.quand=window._dateQuand?window._dateQuand(pk, d):(pk.getDate()+'');
+  $$('#dueChips .chip').forEach(y=>y.classList.toggle('on', y===c));
+  var r=[].find.call(document.querySelectorAll('#createSheet .s2-reg'), function(x){ var l=x.querySelector('.s2-lab'); return l && l.textContent.trim()==='AVANT'; }), v=r&&r.querySelector(':scope > .s2-val');
+  if(v && v.textContent!==P.quand) v.textContent=P.quand;   /* sur place : le suivi des valeurs de Peaufiner la détrace puis la trace */
+  try{ if(window._phraseRendu) _phraseRendu(); }catch(_){ } };
 (function(){ var di=document.querySelector('#dueChips .due-datein'); if(!di) return;
   ['pointerdown','touchstart','focus'].forEach(function(t){ di.addEventListener(t, function(){ window._dueArme(); }, {passive:true}); });
-  di.addEventListener('click', function(){ window._dueArme(); try{ if(di.showPicker) di.showPicker(); }catch(_){ /* iOS l'ouvre lui-même */ } }); })();
+  di.addEventListener('click', function(){ window._dueArme(); try{ if(di.showPicker) di.showPicker(); }catch(_){ /* iOS l'ouvre lui-même */ } });
+  di.addEventListener('input', function(){ window._dueApplique(); });
+  di.addEventListener('change', function(){ window._dueApplique(); });
+  /* le calendrier fermé : la date (si iOS ne l'a envoyée qu'à la fermeture), puis Peaufiner rebâti — la rangée AVANT se replie */
+  di.addEventListener('blur', function(){ window._dueApplique(); setTimeout(function(){ try{ if(window._ppTout) _ppTout(); }catch(_){ } }, 0); }); })();
 $('#dueChips').onclick=e=>{const c=e.target.closest('.chip');if(!c)return;
   /* ⚑ v163b (C-197) : les mots de la phrase ; « une date… » ouvre le calendrier ; « un jour » rend l'échéance (aucune date) ; la phrase suit */
   var P=window._phrase||{}, mots={1:'demain',7:'1 sem.',30:'1 mois'};
   function marque(x){ $$('#dueChips .chip').forEach(y=>y.classList.toggle('on', y===x)); }
   if(c.dataset.jour){ marque(c); due=null; window._csEnLair=false; window._csDueISO=null; P.quand='un jour'; }
-  else if(c.dataset.pick){ var di=$('#dueChips .due-datein'); if(!di) return; window._dueArme();
+  else if(c.dataset.pick){ var di=$('#dueChips .due-datein'); if(!di) return; window._dueArme(); di.onchange=null;
     /* ⚑ L2 (Tom, 24 nov. 2026 : « le prototype a le même défaut de calendrier dans Safari ») — le vrai champ date COUVRE la pastille : le doigt le touche
        lui-même et c'est iOS qui ouvre son calendrier (showPicker sur un champ invisible d'1 px y était refusé, rien ne s'ouvrait). Son clic n'est pas
        rejoué ici : il ouvre lui-même le calendrier ailleurs (un ordinateur), dans le geste. La solution de l'app (page-plus.ts, 2b). */
@@ -18980,7 +18997,9 @@ var CREMEETAT='#F7F0DE';
   function motEcheance(){
     /* la valeur affichée est celle que l'app a retenue — lue sur SA prise, jamais sur un
        libellé (CLAUDE.md §8, chantier 56). */
-    try{ var c = document.querySelector('#dueChips .chip.on'); if(c) return c.textContent.trim(); }catch(_){}
+    /* ⚑ L2 (Tom, 24 nov.) : « une date… » cochée, la rangée dit la date choisie (« jeudi 19 »), jamais le libellé de la pastille */
+    try{ var c = document.querySelector('#dueChips .chip.on'); if(c && c.dataset.pick && window._csDueISO && window._phrase && window._phrase.quand) return window._phrase.quand;
+      if(c) return c.textContent.trim(); }catch(_){}
     try{ return (window._phrase && window._phrase.quand) || 'un jour'; }catch(_){ return 'un jour'; }
   }
   /* Q36 — LE MOT DE L'ÉTAT, APRÈS SIGNATURE. Aucune saison, aucun mot inventé : on lit
@@ -19015,6 +19034,8 @@ var CREMEETAT='#F7F0DE';
       if(!corps){ corps = B.el('div','dpd-corps'); cs.appendChild(corps); }
       var liste = corps.querySelector('.s2-liste');
       if(!liste){ liste = B.el('div','s2-liste'); corps.appendChild(liste); }
+      /* ⚑ L2 (Tom, 24 nov.) : le calendrier ouvert (le champ date a le focus), rien n'est rebâti — retiré de la page, iOS refermait son calendrier */
+      var _cal = document.activeElement; if(_cal && _cal.classList && _cal.classList.contains('due-datein') && liste.contains(_cal)) return;
       /* ⚑ CHANTIER 70 — COMPARER AVANT D'AGIR (CLAUDE §8). `tout()` repasse ici à chaque repeinte (les minuteries du pinceau
          0/120/400/900/1800 ms, après chaque clic 80/260/600 ms, l'observateur de classe) et la liste était VIDÉE PUIS REBÂTIE
          à chaque fois, sans que rien n'ait changé : mesuré, six zones neuves en 2,5 s, et un toucher sur l'encart du mur perdu

@@ -2368,8 +2368,12 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
                 /* iOS l'ouvre lui-même (le doigt sur le champ) */
               }
             });
-            di.addEventListener('change', () => {
-              if (!di.value) return;
+            // ⚑ L2 (Tom, 24 nov., le relevé de sa séance sur l'iPhone) : iOS envoie la date par `input` et `change` — la date du jour dès que son
+            // calendrier s'ouvre, puis chaque jour touché —, parfois seulement à sa fermeture (`blur`) : elle s'applique sur les trois, dès qu'elle
+            // diffère de la précédente. Elle change EN PLACE (détracé puis tracé), la pastille se coche ; Peaufiner n'est jamais rebâti calendrier
+            // ouvert (un champ retiré de la page referme le calendrier d'iOS) : la rangée se replie à sa fermeture
+            const applique = (): void => {
+              if (!di.value || di.value === P.dueISO) return;
               const t0 = new Date();
               t0.setHours(0, 0, 0, 0);
               const pk = new Date(di.value + 'T00:00:00');
@@ -2379,14 +2383,14 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
               P.ech = dateQuand(pk, P.due);
               P.echChoisie = true;
               majGarder();
-              // iOS pose une date (celle du jour) dès que son calendrier s'ouvre, puis à chaque jour touché : la valeur change EN PLACE
-              // (détracé puis tracé), la pastille se coche ; la rangée ne se replie qu'à la fermeture du calendrier (`blur`) — rebâtie
-              // ici, elle refermait le calendrier avant qu'on ait choisi
               for (const x of ch.querySelectorAll('.chip')) x.classList.toggle('on', x === c);
               const v = ra.querySelector<HTMLElement>('.s2-val');
               if (v) changerTexte(v, avant, P.ech);
-            });
+            };
+            di.addEventListener('input', applique);
+            di.addEventListener('change', applique);
             di.addEventListener('blur', () => {
+              applique();
               if (P.dueISO && peaufOuverte === L.avant) rendrePeauf();
             });
           }
