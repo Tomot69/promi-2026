@@ -415,10 +415,11 @@ function releverDansPage(): Releve {
       interactifs.push(cle(e));
       const cx = r.left + r.width / 2;
       const cy = r.top + r.height / 2;
-      // une rangée qui défile et le déclare (data-glisse, C-196 : le rail du pinceau) : ce qui est hors de sa vue s'atteint en glissant
+      // une rangée qui défile et le déclare (data-glisse, C-196 : le rail du pinceau ; lot 4 : les listes de l'Index, du Fil et de la fiche
+      // d'une personne, qui défilent en hauteur) : ce qui est hors de sa vue s'atteint en glissant, dans un sens ou dans l'autre
       const gl = e.closest('[data-glisse]');
       const glR = gl && gl !== e ? gl.getBoundingClientRect() : null;
-      if (glR && (cx < glR.left || cx > glR.right)) {
+      if (glR && (cx < glR.left || cx > glR.right || cy < glR.top || cy > glR.bottom || cy > innerHeight)) {
         /* atteint en glissant la rangée */
       } else if (cx < 0 || cy < 0 || cx > innerWidth || cy > innerHeight)
         injoignables.push(cle(e) + ' (hors de la fenêtre)');

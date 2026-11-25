@@ -1,6 +1,6 @@
 # TOM PEUT UTILISER L'APP 5 MINUTES — le lot 4 (l'Index et le Fil), à vérifier sur l'iPhone, dans l'app « Promi »
 
-**Installée le 25 nov. 2026 — commit `(à poser à l'installation)`**, lu sur le téléphone (`sh outils/version-iphone.sh`).
+**Installée le 25 nov. 2026 à 23 h 36 — commit `c2b34e6`**, lu sur le téléphone (`sh outils/version-iphone.sh` → `c2b34e6 index-DSSX0My0.js`).
 Pour chaque point : **tenu**, **non tenu** ou **non vu**. D'abord, plante deux paroles par le + : un Promi « à Rachel » (avec une échéance
 « demain ») et un Chiche.
 
