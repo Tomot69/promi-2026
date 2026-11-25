@@ -392,3 +392,8 @@ haut, découpés 7 pt au-dessus du trait) et retire la photo (v140, C-086) ; l'�
 | Juge du prototype                                       | Test                                                                              | Sondes                          |
 | ------------------------------------------------------- | --------------------------------------------------------------------------------- | ------------------------------- |
 | redteam_dessin (C-042, C-061), redteam_remplace (C-086) | FD › le dessin sur une fiche : posé dans la bande, masqué par l'œil (deux thèmes) | dessin-fiche-absent, oeil-sourd |
+
+**Ouvert, préexistant (rouge sous Linux depuis la fin du lot 3a, `1b9e2c9` ; vert sur le Mac)** : socle-2 › « × FERMER est un seul X »
+(redteam_croix, C-173) — sous Linux, l'encre lue de la croix du plateau de la page + et de la fiche fait 24,3 × 21,3 pt pour 25,0 × 21,7 au X
+de référence (PromiLate 29,5) ; la taille et la police déclarées sont justes. Cause non nommée (la phase de la croix dans le pixel, ou la mesure
+de PromiLate par le canevas sous Linux : à relever, comme pour le X de la fiche au 3b-1). Même croix, même cause probable : socle-1 › « aspect B » (le « X » de la fiche, 2,04 % de pixels écartés, sombre et clair), rouge sous Linux sur 827cd63 et 8f5c640.
