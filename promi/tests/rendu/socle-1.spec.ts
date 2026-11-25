@@ -1683,6 +1683,9 @@ test('aspect B : les textes seuls, au pixel, comme dans le prototype (≤ 0,5 % 
     for (const p of proto!.noeuds.filter((q) => q.texte)) {
       n++;
       const part = partEcartee(A, P, p.r);
+      // EXCEPTION NOMMÉE (Tom, 25 nov. 2026) : hors macOS, le X d'une croix (PromiLate 29,5) est dessiné par les polices de la machine à 1 pt
+      // de son encre sur l'iPhone — il est jugé là par « × FERMER est un seul X », à 1 pt près ; sur macOS, ici, au pixel
+      if (process.platform !== 'darwin' && p.texte.trim() === 'X') continue;
       if (part > 0.005 && !ecartAdmis(nom, p.texte, 'color'))
         fautes.push(`${nom} : « ${p.texte} » ${(100 * part).toFixed(2)} % des pixels écartés`);
     }

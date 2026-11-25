@@ -39,8 +39,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix: { part: [1, 2, 3, 4, 5, 6, 7, 8] }   # C-326 : les juges devenus tests ; 3a : six parts — à quatre, la deuxième (la page +) dépassait ses 60 min ; 3b : huit — la quatrième (l'identité de la page + et les juges lourds du socle) touchait 58 à 60 min, coupée
-    runs-on: ubuntu-24.04   # pas ubuntu-latest : 26.04 depuis nov. 2026, où Playwright 1.60 n'installe pas WebKit
-    timeout-minutes: 60   # l'installation de WebKit et de ses dépendances a pris 21 min (20 nov.) : 30 coupait les tests
+    # 3b (Tom, 25 nov. 2026) : l'identité au pixel tourne sur macOS — le WebKit de macOS, le moteur de l'iPhone (sous Linux, le rendu des polices de
+    # la machine dessinait le X de PromiLate à 1 pt de son encre). Le dépôt est public : les machines macOS de GitHub Actions y sont gratuites.
+    runs-on: macos-15
+    timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,8 +61,8 @@ jobs:
       - uses: actions/cache@v4
         with:
           path: ~/.cache/ms-playwright
-          key: playwright-webkit-${{ hashFiles('promi/package-lock.json') }}
-      - run: npx playwright install --with-deps webkit
+          key: playwright-webkit-${{ runner.os }}-${{ hashFiles('promi/package-lock.json') }}
+      - run: npx playwright install webkit
         working-directory: promi
       - name: un état embarqué (celui du banc, jamais celui de Tom) — le test du démarrage l'exige
         run: node outils/embarquer-etat.ts ../banc-etats/etat-25.json

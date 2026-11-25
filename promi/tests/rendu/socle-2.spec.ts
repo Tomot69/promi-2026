@@ -965,7 +965,10 @@ test('× FERMER est un seul X : aucun « FERMER », le X en PromiLate 29,5 px, l
             fautes.push(`${q} : B · aucune encre lue`);
             continue;
           }
-          if (Math.abs(lu.encre[0] - ref[0]) > 0.5 || Math.abs(lu.encre[1] - ref[1]) > 0.5)
+          // EXCEPTION NOMMÉE (Tom, 25 nov. 2026) : le juge exact tourne sur macOS (le WebKit de l'iPhone) ; hors macOS, le rendu des polices de la
+          // machine (Linux) dessine le X de PromiLate 24,3 × 21,3 pour 25,0 × 21,7 — l'encre y est jugée à 1 pt près
+          const TOL_X = process.platform === 'darwin' ? 0.5 : 1;
+          if (Math.abs(lu.encre[0] - ref[0]) > TOL_X || Math.abs(lu.encre[1] - ref[1]) > TOL_X)
             fautes.push(
               `${q} : B · encre ${lu.encre.map((v) => v.toFixed(1)).join(' × ')} ≠ le X de PromiLate ${String(TAILLE_X)} px ${ref.map((v) => v.toFixed(1)).join(' × ')}`,
             );
