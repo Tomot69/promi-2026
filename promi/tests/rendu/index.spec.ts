@@ -296,3 +296,98 @@ for (const theme of ['sombre', 'clair'] as const)
       await Promise.all([P.context().close(), A.context().close()]);
     }
   });
+
+/** une recherche écrite des deux côtés (le champ sans le focus : son texte d'exemple, qui se retrace au focus, n'est pas jugé ici) */
+async function chercher(P: Page, A: Page, v: string): Promise<void> {
+  for (const pg of [P, A])
+    await pg.evaluate((v) => {
+      const i = document.getElementById('ixSearch') as HTMLInputElement;
+      i.value = v;
+      i.dispatchEvent(new Event('input', { bubbles: true }));
+    }, v);
+  for (let k = 0; k < 3; k++) await Promise.all([images(P, 30), images(A, 30)]);
+}
+/** le texte de l'écran vide (ses deux lignes), ou rien */
+const vide = (pg: Page): Promise<string> =>
+  pg.evaluate(() => [...document.querySelectorAll('#indexList .e4v > *')].map((e) => e.textContent).join(' / '));
+
+for (const theme of ['sombre', 'clair'] as const)
+  test(`les écrans vides de l'Index (E4, v178c) et leur seconde ligne, comme le prototype : ${theme}`, async ({
+    browser,
+  }) => {
+    const ls = { ...stockageFiches(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+    const { P, A, erreurs } = await deuxPilotes(browser, ls);
+    try {
+      mkdirSync(RES, { recursive: true });
+      // la sonde (sur « … sombre ») : la seconde ligne de la recherche vide ne mène plus à rien
+      if (sonde('vide-ligne-sourde'))
+        await A.addStyleTag({ content: '#indexSheet .e4-l2{pointer-events:none!important}' });
+      await ouvrirIndex(P, A);
+      const cas: Array<[string, () => Promise<void>, string]> = [
+        ['recherche', () => chercher(P, A, 'zzz'), 'Rien pour «\u00a0zzz\u00a0». / Revenir à tout l’Index.'],
+        [
+          'gardes',
+          async () => {
+            await toucherDeux(P, A, '#ixTriBtn');
+            await toucherDeux(P, A, '#ixMenu [data-filt="brouillons"]');
+          },
+          'Rien de gardé de côté. / Revenir à toutes les paroles.',
+        ],
+        [
+          'demandes',
+          async () => {
+            await toucherDeux(P, A, '#ixTriBtn');
+            await toucherDeux(P, A, '#ixMenu [data-filt="demandes"]');
+          },
+          'Rien sous ce tri. / Revenir à toutes les paroles.',
+        ],
+      ];
+      const tout = await cartes(P);
+      for (const [nom, faire, mots] of cas) {
+        await faire();
+        expect(await vide(A), `${nom} : les deux lignes`).toBe(mots);
+        expect(await vide(P), `${nom} : celles du prototype`).toBe(mots);
+        await juger(P, A, `${theme}-vide-${nom}`);
+        // la seconde ligne : retour à toute la liste
+        await toucherDeux(P, A, '#indexList .e4-l2');
+        expect(await cartes(A), `${nom} : la seconde ligne rend toute la liste`).toEqual(tout);
+        expect(await cartes(P), `${nom} : le prototype aussi`).toEqual(tout);
+      }
+      expect(erreurs).toEqual([]);
+    } finally {
+      await Promise.all([P.context().close(), A.context().close()]);
+    }
+  });
+
+test("l'Index sans aucune parole : « Pas encore de parole. », la seconde ligne ouvre la page + d'un Promi", async ({
+  browser,
+}) => {
+  const ls = stockageFiches();
+  const st = JSON.parse(ls['promi_state']!) as { promises: unknown[] };
+  st.promises = [];
+  ls['promi_state'] = JSON.stringify(st);
+  const { P, A, erreurs } = await deuxPilotes(browser, ls);
+  try {
+    await ouvrirIndex(P, A);
+    const mots = 'Pas encore de parole. / La première se plante en une phrase.';
+    expect(await vide(A)).toBe(mots);
+    expect(await vide(P)).toBe(mots);
+    await juger(P, A, 'vide-aucune');
+    const n0 = (await A.evaluate(`${P_}.nav.journal().length`)) as number;
+    await toucherDeux(P, A, '#indexList .e4-l2');
+    for (let k = 0; k < 6; k++) await Promise.all([images(P, 30), images(A, 30)]);
+    expect(
+      ((await A.evaluate(`${P_}.nav.journal()`)) as Array<{ vers: string; arg?: string }>)
+        .slice(n0)
+        .map((d) => [d.vers, d.arg]),
+    ).toEqual([['pagePlus', 'promi']]);
+    expect(await A.evaluate(`${P_}.index().ouvert()`), "l'Index s'est refermé").toBe(false);
+    expect(
+      await P.evaluate(() => document.getElementById('createSheet')!.classList.contains('show')),
+      'le prototype : la page + ouverte',
+    ).toBe(true);
+    expect(erreurs).toEqual([]);
+  } finally {
+    await Promise.all([P.context().close(), A.context().close()]);
+  }
+});

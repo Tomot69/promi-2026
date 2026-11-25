@@ -18,5 +18,10 @@
     "nom": "tri-personne-sourd",
     "test": "le menu ⇅ de l'Index, ses tris et ses filtres, comme le prototype : sombre",
     "defaut": "« Par personne » ne trie plus (le choix ne répond pas au doigt)"
+  },
+  {
+    "nom": "vide-ligne-sourde",
+    "test": "les écrans vides de l'Index (E4, v178c) et leur seconde ligne, comme le prototype : sombre",
+    "defaut": "la seconde ligne d'un écran vide ne mène plus à rien (E4, v178c)"
   }
 ]

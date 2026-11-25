@@ -320,3 +320,37 @@
   background: var(--c-brun09);
   color: var(--c-creme97);
 }
+
+/* ── E4 (v178c, C-078) : les écrans vides — la ligne 1, le rôle « texte » (C-138) ; la ligne 2, seule touchable (44 pt), au bleu des mots-clés
+   (le bleu Promi en sombre, le cobalt en clair, C-162) ── */
+#indexSheet .e4v {
+  position: relative;
+  box-sizing: border-box;
+  width: 342px;
+  margin: 64px auto 0;
+  text-align: center;
+}
+#indexSheet .e4-l1 {
+  display: block;
+  margin: 0;
+  font: 500 25px/30px var(--f-texte);
+  color: var(--c-creme95);
+  text-wrap: balance;
+}
+#indexSheet .e4-l2 {
+  display: block;
+  box-sizing: border-box;
+  min-height: 44px;
+  margin: 4px auto 0;
+  padding: 9px 0;
+  font: 500 22.3px/26px var(--f-texte);
+  color: var(--c-bleu45);
+  text-wrap: balance;
+  cursor: pointer;
+}
+.device.light #indexSheet .e4-l1 {
+  color: var(--c-brun09);
+}
+.device.light #indexSheet .e4-l2 {
+  color: var(--c-cobalt50);
+}

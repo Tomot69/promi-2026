@@ -24,6 +24,12 @@ const TXT = {
   trier: 'Trier et filtrer',
   tri: '⇅',
   trier_: 'TRIER',
+  revenirIndex: 'Revenir à tout l’Index.',
+  revenirTout: 'Revenir à toutes les paroles.',
+  rienGarde: 'Rien de gardé de côté.',
+  rienTri: 'Rien sous ce tri.',
+  pasEncore: 'Pas encore de parole.',
+  premiere: 'La première se plante en une phrase.',
   filtrer: 'NE MONTRER QUE',
 } as const;
 const TRIS: ReadonlyArray<[Tri, string]> = [
@@ -143,6 +149,11 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
     sig = s;
     const D = DEUX;
     grille.replaceChildren();
+    if (!ent.length) {
+      grille.style.height = '';
+      grille.appendChild(vide());
+      return;
+    }
     grille.style.height = `${String(Math.ceil(ent.length / D.GX.length) * D.PAS + 40)}px`;
     const repeindre = (): void => {
       batir(true);
@@ -194,6 +205,50 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
       grille.appendChild(d);
     });
     ajuster();
+  }
+
+  /**
+   * E4 (v178c, C-078) — LES ÉCRANS VIDES, mot pour mot : deux lignes ; la seconde, seule touchable, mène à l'action qu'elle dit (`_e4Index`). La
+   * recherche ne dit jamais la même chose qu'un vide de contenu. Sans tracé (ces écrans n'en ont pas).
+   */
+  function vide(): HTMLElement {
+    const Q = q.trim();
+    const [l1, l2, act]: [string, string, () => void] = Q
+      ? [
+          // les guillemets tiennent leur mot par des espaces insécables (la passe typographique du prototype)
+          `Rien pour «\u00a0${Q}\u00a0».`,
+          TXT.revenirIndex,
+          () => {
+            champ.value = '';
+            q = '';
+            batir();
+          },
+        ]
+      : filtre === 'brouillons'
+        ? [TXT.rienGarde, TXT.revenirTout, toutMontrer]
+        : filtre !== 'tous'
+          ? [TXT.rienTri, TXT.revenirTout, toutMontrer]
+          : [
+              TXT.pasEncore,
+              TXT.premiere,
+              () => {
+                fermer();
+                nav.ouvrir('pagePlus', 'promi');
+              },
+            ];
+    const v = el('div', { class: 'e4v' });
+    const a = el('div', { class: 'e4-l1' });
+    a.textContent = l1;
+    const b = el('div', { class: 'e4-l2', role: 'button' });
+    b.textContent = l2;
+    surToucher(b, act);
+    v.append(a, b);
+    return v;
+  }
+  function toutMontrer(): void {
+    filtre = 'tous';
+    poserMenu();
+    batir();
   }
 
   function ajuster(): void {
