@@ -29,13 +29,16 @@ export function motQui(p: Parole): string {
   return aQui(w);
 }
 
-/** le mot d'état d'une carte (`motEtat`), et sa date passée (C-210, D5 : « EN COURS · 12 OCT. ») */
-export function motEtat(p: Parole, aujourdhui: Date): string {
+/**
+ * le mot d'état d'une carte (`motEtat`), et sa date passée (C-210, D5 : « EN COURS · 12 OCT. ») — une carte d'Index seulement : le bandeau du Fil
+ * porte l'heure de son événement, pas la date (`_s4Fil`)
+ */
+export function motEtat(p: Parole, aujourdhui: Date | null): string {
   let m: string;
   if (p.draft) m = 'GARDÉ DE CÔTÉ';
   else if (p.status === 'tenu') m = p.chiche && champ(p, 'avec') ? 'TENU À DEUX' : 'TENUE';
   else m = p.chiche ? 'LANCÉ' : 'EN COURS';
-  const d = datePassee(p, aujourdhui);
+  const d = aujourdhui ? datePassee(p, aujourdhui) : null;
   return d ? m + ' · ' + d.toUpperCase() : m;
 }
 

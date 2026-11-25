@@ -24,32 +24,32 @@ import { esc } from '../commun.ts';
 export type NatureCarte = 'promi' | 'chiche' | 'nuee';
 
 /** le champ de la nature (`NATCOL`) */
-const NATCOL: Record<NatureCarte, string> = {
+export const NATCOL: Record<NatureCarte, string> = {
   promi: palette.bleu45,
   chiche: palette.framboise54,
   nuee: palette.mauve77,
 };
 /** le texte du libellé de nature, posé sur la crème (`_NATTXT`) */
-const NATTXT: Record<NatureCarte, string> = {
+export const NATTXT: Record<NatureCarte, string> = {
   promi: palette.bleu08,
   chiche: palette.framboise11,
   nuee: palette.brun193,
 };
 /** le corps de la fiche (C-147) */
-const CORPS: Record<NatureCarte, string> = {
+export const CORPS: Record<NatureCarte, string> = {
   promi: palette.cobalt50,
   chiche: palette.framboise35,
   nuee: palette.mauve35,
 };
-const MOT_NAT: Record<NatureCarte, string> = { promi: 'Promi', chiche: 'Chiche', nuee: 'Cercle' };
+export const MOT_NAT: Record<NatureCarte, string> = { promi: 'Promi', chiche: 'Chiche', nuee: 'Cercle' };
 /**
  * la largeur du libellé de nature, une COTE (PromiLate 13 px, relevée police chargée, 20 sept.) — jamais une mesure au moment de peindre : la
  * police n'y est pas encore (§8)
  */
-const LARGEUR_LIB: Record<NatureCarte, number> = { promi: 73, chiche: 81, nuee: 76 };
+export const LARGEUR_LIB: Record<NatureCarte, number> = { promi: 73, chiche: 81, nuee: 76 };
 /** Q297 — sous Ingénu, la rampe de la nature (`RAMPE` de `_ingenuRampe`, v18–v19) */
 const hex = (v: string): number[] => [1, 3, 5].map((i) => parseInt(v.slice(i, i + 2), 16));
-const RAMPE_INGENU: Record<NatureCarte, number[][]> = {
+export const RAMPE_INGENU: Record<NatureCarte, number[][]> = {
   promi: [palette.ingenuPromi1, palette.ingenuPromi2, palette.ingenuPromi3].map(hex),
   chiche: [palette.ingenuChiche1, palette.ingenuChiche2, palette.ingenuChiche3, palette.ingenuChiche4].map(hex),
   nuee: [palette.ingenuCercle1, palette.ingenuCercle2, palette.ingenuCercle3].map(hex),
@@ -194,13 +194,13 @@ export function etatParole(p: Parole): EtatCarte {
   return { nat, mode: t.mode, base: t.base, col: p.status === 'tenu' ? CRETE : NATTRAIT[nat] };
 }
 
-type Rect4 = [number, number, number, number];
+export type Rect4 = [number, number, number, number];
 /**
  * LA PETITE TOILE D'UN CERCLE (Q213, `_petiteToile` de lot-REPERAGE) — ses dalles « occupent l'espace de la carte, réparties, comme une petite
  * Toile » : une case par dalle, tirée d'une suite déterministe (les ids), jamais devant le libellé ; chaque dalle rendue par le moteur à la taille de
  * sa case et posée 1:1. Rend les boîtes peintes (en pt de la carte), ou null.
  */
-function petiteToile(
+export function petiteToile(
   g: CanvasRenderingContext2D,
   facade: Facade,
   A: { x: number; y: number; w: number; h: number },
@@ -240,7 +240,7 @@ function petiteToile(
     const cel = pick[k];
     if (!cel) return;
     const sz = Math.min(cw, ch) * (0.92 + 0.22 * h(pid, 3));
-    const t = facade.rendreDalle(pid, sz * sx, sz * sx);
+    const t = facade.rendreDalle(pid, sz * sx, sz * sx)?.cv;
     if (!t) return;
     const w = t.width / sx;
     const hh = t.height / sx;

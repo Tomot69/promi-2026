@@ -22,6 +22,33 @@
   opacity: 0;
   pointer-events: none;
 }
+/* le Fil glisse de la droite, sans fondu (`fil-cote` : translateX, 0,34 s) ; il est posé SOUS le grain de l'appareil (z 12 : `.feedview`), quand
+   l'Index et les fiches passent au-dessus de lui (z 80) — l'accueil, lui, s'efface dès qu'il part (`vue-fil`) */
+.ecran-liste.el-droite {
+  z-index: 12;
+  transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
+}
+.device.vue-fil :is(#accPlat, #accBarre, #accChoix, #accRecadre) {
+  display: none !important;
+}
+.ecran-liste.el-droite.ix-bas {
+  transform: translateX(100%);
+  opacity: 1;
+}
+/* le compte à côté du titre (le Fil) : Gilbert 20, 12 pt après lui, le bleu de la nature (en clair, son trait) */
+.ecran-liste .ix-count {
+  display: inline-block;
+  margin-left: 12px;
+  font: 700 20px var(--f-libelle);
+  /* l'interligne du titre (1,06 em de 29,5 : 31,27), hérité tel quel */
+  line-height: inherit;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  color: var(--c-bleu45);
+}
+.device.light .ecran-liste .ix-count {
+  color: var(--c-bleu08);
+}
 .device.light .ecran-liste {
   background: var(--c-creme90-2);
   color: var(--c-brun09);

@@ -1,0 +1,51 @@
+/* LE BANDEAU DU FIL (lot 4, bandeau.ts) — 358 × 128, rayon 22 ; relevé du 25 nov. 2026 (WebKit, ×3) : l'événement à 145 / 16 (Gilbert 14, son
+   visage de 26), le titre 145 / 50 (Gilbert 24, interligne 1,04 ; il monte s'il prend deux lignes), l'état 145 / 98 (resserré pour tenir dans 197). */
+.s4-carte.fil-b {
+  border-radius: 22px;
+}
+.s4-carte.fil-b > .s4-ev {
+  position: absolute;
+  z-index: 2;
+  left: 145px;
+  top: 16px;
+  width: 197px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  overflow: hidden;
+  white-space: nowrap;
+  font: 700 14px/1 var(--f-libelle);
+  color: var(--c-creme95);
+}
+.s4-carte.fil-b > .s4-ev > .s4-nom {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.s4-carte.fil-b .s4-vis {
+  flex: 0 0 auto;
+  display: block;
+  width: 26px;
+  height: 26px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+.s4-carte.fil-b .s4-vis svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.s4-carte.fil-b > .s4-ti {
+  left: 145px;
+  top: 50px;
+  width: 197px;
+  height: 42px;
+  font: 700 24px/1.04 var(--f-libelle);
+  letter-spacing: -0.025em;
+}
+.s4-carte.fil-b > .s4-et {
+  left: 145px;
+  top: 98px;
+  bottom: auto;
+  width: 197px;
+}

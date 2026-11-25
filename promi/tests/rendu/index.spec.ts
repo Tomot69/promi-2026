@@ -10,56 +10,15 @@
  * 8 pt autour) — elle respire (§8 bis) ; la boîte, la place, le champ autour d'elle restent jugés.
  */
 import { test, expect, type Page } from '@playwright/test';
-import { mkdirSync, writeFileSync } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
-import { PNG } from 'pngjs';
-import { deuxPilotes, vraieApp, images, ecart, sonde, stockageFiches, P_, PAROLE_CERCLE, type Zone } from './aides.ts';
+import { deuxPilotes, vraieApp, images, sonde, stockageFiches, P_, PAROLE_CERCLE } from './aides.ts';
+import { juger as jugerL, toucher, toucherDeux, type Liste } from './listes.ts';
 
 const RES = join(import.meta.dirname, 'resultats', 'index');
+const L: Liste = { liste: '#indexList', menu: '#ixMenu', res: RES };
+const juger = (P: Page, A: Page, nom: string): Promise<void> => jugerL(P, A, L, nom);
 
-async function image(pg: Page): Promise<Buffer> {
-  const clip = await pg.evaluate(() => {
-    const r = document.getElementById('device')!.getBoundingClientRect();
-    return { x: r.left, y: r.top, width: r.width, height: r.height };
-  });
-  return pg.screenshot({ clip });
-}
-/** M1 : la matière de chaque carte (sa boîte déclarée), en pt de l'appareil */
-async function matieres(pg: Page): Promise<Zone[]> {
-  return (await pg.evaluate(() => {
-    const D = document.getElementById('device')!.getBoundingClientRect();
-    const k = D.width / 390;
-    const z: number[][] = [];
-    // bornée à la liste : une carte sortie par le haut ne masque pas l'encart
-    const L = document.getElementById('indexList')!.getBoundingClientRect();
-    // et sous le menu ⇅ ouvert : une dalle qu'il couvre ne masque pas le panneau
-    const M = document.querySelector('#ixMenu.on .ix-menu-p');
-    const haut = Math.max((L.top - D.top) / k, M ? (M.getBoundingClientRect().bottom - D.top) / k : 0);
-    for (const cv of document.querySelectorAll('#indexList .s4-carte > canvas')) {
-      const v = cv.getAttribute('data-matiere');
-      if (!v) continue;
-      const c = cv.getBoundingClientRect();
-      const [x, y, w, h] = v.split(',').map(Number) as [number, number, number, number];
-      const y0 = Math.max(haut, (c.top - D.top) / k + y - 8);
-      const y1 = (c.top - D.top) / k + y + h + 8;
-      if (y1 > y0) z.push([(c.left - D.left) / k + x - 8, y0, w + 16, y1 - y0]);
-    }
-    return z;
-  })) as Zone[];
-}
-function masquer(png: Buffer, Z: Zone[]): Buffer {
-  const im = PNG.sync.read(png);
-  const k = im.width / 390;
-  for (const [x, y, w, h] of Z)
-    for (let j = Math.max(0, Math.floor(y * k)); j < Math.min(im.height, Math.ceil((y + h) * k)); j++)
-      for (let i = Math.max(0, Math.floor(x * k)); i < Math.min(im.width, Math.ceil((x + w) * k)); i++) {
-        const q = (j * im.width + i) * 4;
-        im.data[q] = 255;
-        im.data[q + 1] = 0;
-        im.data[q + 2] = 255;
-      }
-  return PNG.sync.write(im);
-}
 /** les cartes : la parole, le titre, sa taille, le sur-titre, l'état */
 async function cartes(pg: Page): Promise<string[]> {
   return pg.evaluate(() =>
@@ -116,28 +75,6 @@ async function ouvrirIndex(P: Page, A: Page): Promise<void> {
   for (let k = 0; k < 6; k++) await Promise.all([images(P, 30), images(A, 30)]);
 }
 
-/** au pixel, hors matière (M1), la page posée (deux relevés identiques des deux côtés) */
-async function juger(P: Page, A: Page, nom: string): Promise<void> {
-  let ip: Buffer = Buffer.alloc(0);
-  let ia: Buffer = Buffer.alloc(0);
-  for (let k = 0; k < 20; k++) {
-    await Promise.all([images(P, 40), images(A, 40)]);
-    const Z = [...(await matieres(P)), ...(await matieres(A))];
-    const p2 = masquer(await image(P), Z);
-    const a2 = masquer(await image(A), Z);
-    const pose = k > 1 && p2.equals(ip) && a2.equals(ia);
-    [ip, ia] = [p2, a2];
-    if (pose) break;
-  }
-  writeFileSync(join(RES, `${nom}-prototype.png`), ip);
-  writeFileSync(join(RES, `${nom}-app.png`), ia);
-  const e = ecart(ip, ia);
-  expect(
-    { n: e.n, boite: e.boite },
-    `${nom} : pixels écartés de plus de 2 niveaux (bords lissés hors macOS : ${String(e.bords)})`,
-  ).toEqual({ n: 0, boite: null });
-}
-
 for (const theme of ['sombre', 'clair'] as const)
   test(`l'Index avec un Cercle de deux paroles et un gardé de côté, comme le prototype : ${theme}`, async ({
     browser,
@@ -185,61 +122,18 @@ for (const theme of ['sombre', 'clair'] as const)
       // leur rend jamais la main (l'observateur ne tourne qu'entre deux tâches)
       for (let k = 0; k < 6; k++) await Promise.all([images(P, 30), images(A, 30)]);
       expect(await cartes(A), 'les cartes, leurs mots, la taille de chaque titre').toEqual(await cartes(P));
-      const juge = async (quoi: string): Promise<void> => {
-        let ip: Buffer = Buffer.alloc(0);
-        let ia: Buffer = Buffer.alloc(0);
-        for (let k = 0; k < 20; k++) {
-          await Promise.all([images(P, 40), images(A, 40)]);
-          const Z = [...(await matieres(P)), ...(await matieres(A))];
-          const p2 = masquer(await image(P), Z);
-          const a2 = masquer(await image(A), Z);
-          const pose = k > 1 && p2.equals(ip) && a2.equals(ia);
-          [ip, ia] = [p2, a2];
-          if (pose) break;
-        }
-        writeFileSync(join(RES, `${theme}-${quoi}-prototype.png`), ip);
-        writeFileSync(join(RES, `${theme}-${quoi}-app.png`), ia);
-        const e = ecart(ip, ia);
-        expect(
-          { n: e.n, boite: e.boite },
-          `${quoi} : pixels écartés de plus de 2 niveaux (bords lissés hors macOS : ${String(e.bords)})`,
-        ).toEqual({ n: 0, boite: null });
-      };
-      await juge('repos');
+      await juger(P, A, `${theme}-repos`);
       for (const pg of [P, A])
         await pg.evaluate(() => {
           const l = document.getElementById('indexList')!;
           l.scrollTop = l.scrollHeight;
         });
-      await juge('bout');
+      await juger(P, A, `${theme}-bout`);
       expect(erreurs).toEqual([]);
     } finally {
       await Promise.all([P.context().close(), A.context().close()]);
     }
   });
-
-/** le centre d'un élément, en pt de l'appareil */
-async function centre(pg: Page, sel: string): Promise<[number, number]> {
-  return (await pg.evaluate((sel) => {
-    const D = document.getElementById('device')!.getBoundingClientRect();
-    const k = D.width / 390;
-    const r = document.querySelector(sel)!.getBoundingClientRect();
-    return [(r.left + r.width / 2 - D.left) / k, (r.top + r.height / 2 - D.top) / k];
-  }, sel)) as [number, number];
-}
-async function toucher(pg: Page, x: number, y: number): Promise<void> {
-  const r = await pg.evaluate(() => {
-    const b = document.getElementById('device')!.getBoundingClientRect();
-    return { x: b.left, y: b.top, k: b.width / 390 };
-  });
-  await pg.mouse.click(r.x + x * r.k, r.y + y * r.k);
-}
-/** un toucher au même point des deux côtés (celui de la vraie app), puis la page avancée */
-async function toucherDeux(P: Page, A: Page, sel: string): Promise<void> {
-  const [x, y] = await centre(A, sel);
-  await Promise.all([toucher(P, x, y), toucher(A, x, y)]);
-  for (let k = 0; k < 3; k++) await Promise.all([images(P, 30), images(A, 30)]);
-}
 
 for (const theme of ['sombre', 'clair'] as const)
   test(`le menu ⇅ de l'Index, ses tris et ses filtres, comme le prototype : ${theme}`, async ({ browser }) => {

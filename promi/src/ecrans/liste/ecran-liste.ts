@@ -30,6 +30,8 @@ export interface CfgEcranListe<T extends string, F extends string> {
   titre: string;
   /** le compte à côté du titre (le Fil : ce qui attend un geste) */
   compte?: { id: string };
+  /** l'entrée : du bas (la feuille de l'Index : 0,4 s), ou de la droite (le Fil, `fil-cote` : 0,34 s) */
+  entree?: 'bas' | 'droite';
   tris: ReadonlyArray<[T, string]>;
   filtres: ReadonlyArray<[F, string]>;
   tri: T;
@@ -64,7 +66,12 @@ export function monterEcranListe<T extends string, F extends string>(
   c: CfgEcranListe<T, F>,
 ): EcranListe<T, F> {
   const dv = facade.appareil();
-  const sh = el('div', { id: c.ids.feuille, class: 'ecran-liste', role: 'dialog' });
+  const droite = c.entree === 'droite';
+  const sh = el('div', {
+    id: c.ids.feuille,
+    class: `ecran-liste${c.entree === 'droite' ? ' el-droite' : ''}`,
+    role: 'dialog',
+  });
   sh.hidden = true;
   const plateau = el('div', { class: 'enh' });
   const titre = el('h2', { class: 'scr-ti enh-t' });
@@ -145,6 +152,8 @@ export function monterEcranListe<T extends string, F extends string>(
     // la feuille de style relue avant de retirer `ix-bas` : la transition part de l'état d'en bas
     sh.getBoundingClientRect();
     sh.classList.remove('ix-bas');
+    // le Fil n'est pas sous l'accueil : le plateau, la barre, les natures et « recadrer » s'effacent dès qu'il part (lot-HUIT, `vue-fil`)
+    if (droite) dv.classList.add('vue-fil');
     // arrivé, il couvre l'appareil : l'accueil dessous ne se voit plus et ne prend plus le doigt (base.css, `.couvert`)
     finOuverture = horloge().minuteur(() => {
       finOuverture = null;
@@ -158,6 +167,7 @@ export function monterEcranListe<T extends string, F extends string>(
     finOuverture = null;
     sh.classList.remove('couvre');
     dv.classList.remove('couvert');
+    if (droite) dv.classList.remove('vue-fil');
     sh.classList.add('ix-bas');
     finFermeture = horloge().minuteur(() => {
       finFermeture = null;

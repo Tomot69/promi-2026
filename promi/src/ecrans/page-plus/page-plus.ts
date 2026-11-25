@@ -2493,6 +2493,27 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       reprendre(arg);
       return;
     }
+    // E4 (v178c) : la seconde ligne du Fil vide (« Une parole donnée à quelqu’un… ») ouvre la page + d'un Promi, puis bascule son sens une fois
+    // (« Je me promets » → « Je promets … à qui ? »), comme le prototype touche la pastille du sens une fois la page posée (`plus(true)`)
+    if (arg === 'promi:faire') {
+      ouvrir('promi');
+      const bascule = (n: number): void => {
+        if (!cs.hidden && !cs.classList.contains('pp-part') && !cs.classList.contains('pp-entre')) {
+          if (P.sens === 'soi') {
+            P.sens = 'faire';
+            choix = null;
+            recomposer(true);
+          }
+          return;
+        }
+        if (n < 40)
+          horloge().minuteur(() => {
+            bascule(n + 1);
+          }, 80);
+      };
+      bascule(0);
+      return;
+    }
     const n = NATURES.includes(arg as Nature) ? (arg as Nature) : 'promi';
     ouvrir(n);
   });

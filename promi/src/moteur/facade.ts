@@ -120,8 +120,16 @@ export interface Facade {
    * la CLARTÉ moyenne (luminance 0–255) de la dalle `id` rendue pour tenir dans `tw × th` px (`_rendDalle`, le cache du moteur), telle que le
    * moteur la DÉCLARE (`__dalleInfo.lum`, jamais relue en pixels : redteam_decoupe) — le champ d'une carte d'Index lui cède (Q93, `champCede`)
    */
-  /** la dalle `id` rendue pour tenir dans `tw × th` px (`_rendDalle`, le cache du moteur), dans le thème de l'appareil — la petite Toile d'un Cercle */
-  rendreDalle(id: number, tw: number, th: number): HTMLCanvasElement | null;
+  /**
+   * la dalle `id` rendue pour tenir dans `tw × th` px (`_rendDalle`, le cache du moteur), dans le thème de l'appareil, et sa clarté DÉCLARÉE
+   * (`__dalleInfo.lum`) — la petite Toile d'un Cercle, la dalle d'un bandeau du Fil (posée 1:1 par `poserUn`)
+   */
+  rendreDalle(
+    id: number,
+    tw: number,
+    th: number,
+    o?: { rampe?: { cols: number[][]; haut: number } },
+  ): { cv: HTMLCanvasElement; lum: number | null } | null;
   clarteDalle(
     id: number,
     tw: number,
@@ -429,10 +437,13 @@ export function creerFacade(magasin: Magasin): Facade {
       const r = f ? (themeAppareil ? f(g, id, x, y, l, h, o) : enSombre(() => f(g, id, x, y, l, h, o))) : null;
       return r ? { x: r.x, y: r.y, w: r.w, h: r.h } : null;
     },
-    rendreDalle(id, tw, th) {
-      const f = w['_rendDalle'] as ((...a: unknown[]) => HTMLCanvasElement | null) | undefined;
-      const cv = f ? f(id, tw, th) : null;
-      return cv && cv.width ? cv : null;
+    rendreDalle(id, tw, th, o) {
+      const f = w['_rendDalle'] as
+        ((...a: unknown[]) => (HTMLCanvasElement & { __dalleInfo?: { lum?: number } }) | null) | undefined;
+      const cv = f ? (o ? f(id, tw, th, o) : f(id, tw, th)) : null;
+      if (!cv || !cv.width) return null;
+      const L = cv.__dalleInfo?.lum;
+      return { cv, lum: typeof L === 'number' ? L : null };
     },
     clarteDalle(id, tw, th, o, themeAppareil) {
       const f = w['_rendDalle'] as
