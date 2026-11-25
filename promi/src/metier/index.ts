@@ -45,7 +45,51 @@ const demande = (p: Parole): boolean => !!champ(p, 'req');
 /** la dernière action d'une parole (`actP`) : `derAct`, sinon son id */
 const actP = (p: Parole): number => (p.derAct != null ? +p.derAct : +p.id || 0);
 
-export function entreesIndex(e: Readonly<Etat>, q = '', filtre: Filtre = 'tous', tri: Tri = 'recent'): Entree[] {
+/** `due` comme le prototype le soustrait : null compte 0, absent n'est pas un nombre (la comparaison ne tranche pas) */
+const due = (p: Parole): number => (p.due === null ? 0 : p.due === undefined ? NaN : +p.due);
+/** la personne d'une parole (`_personKey`) : celui qui me la promet, sinon à qui je la promets */
+const cleP = (p: Parole): string => (p.from && p.from !== 'moi' ? p.from : p.who || '');
+const estMoi = (k: string, moi: string): boolean => {
+  const x = k.trim().toLowerCase();
+  return x === '' || x === 'moi' || x === moi.trim().toLowerCase();
+};
+
+/**
+ * « Par personne », « Par Cercle » (`ixSortBy`, `_computePersonOrder`) : les personnes dans l'ordre alphabétique (« moi » en dernier), puis le
+ * nom, puis l'échéance ; un Cercle par son nom, puis l'échéance — 0 : la comparaison ne tranche pas
+ */
+function trierPar(tri: Tri, e: Readonly<Etat>, moi: string): (a: Parole, b: Parole) => number {
+  if (tri === 'personne') {
+    const vus: string[] = [];
+    for (const p of e.paroles) {
+      if (p.draft) continue;
+      const k = estMoi(cleP(p), moi) ? '__moi' : cleP(p);
+      if (!vus.includes(k)) vus.push(k);
+    }
+    const rang = new Map(
+      [...vus.filter((k) => k !== '__moi').sort((a, b) => a.localeCompare(b)), '__moi'].map((k, i) => [k, i]),
+    );
+    return (a, b) => {
+      const ka = cleP(a);
+      const kb = cleP(b);
+      const ra = rang.get(estMoi(ka, moi) ? '__moi' : ka) ?? 999;
+      const rb = rang.get(estMoi(kb, moi) ? '__moi' : kb) ?? 999;
+      if (ra !== rb) return ra - rb;
+      const c = ka.localeCompare(kb);
+      return c || due(a) - due(b);
+    };
+  }
+  const nom = (p: Parole): string => (p.nuee ? e.cercles[p.nuee] || p.nuee : '~~');
+  return (a, b) => nom(a).localeCompare(nom(b)) || due(a) - due(b);
+}
+
+export function entreesIndex(
+  e: Readonly<Etat>,
+  q = '',
+  filtre: Filtre = 'tous',
+  tri: Tri = 'recent',
+  moi = 'Moi',
+): Entree[] {
   const Q = q.trim().toLowerCase();
   const P = e.paroles;
   const nomC = (k: string): string => e.cercles[k] || k;
@@ -81,12 +125,16 @@ export function entreesIndex(e: Readonly<Etat>, q = '', filtre: Filtre = 'tous',
     const l = P.filter((q) => q.nuee === x.k);
     return l.length ? Math.min(...l.map((q) => q.id)) - 0.5 : 1e9;
   };
+  const par = trierPar(tri, e, moi);
   ent.sort((a, b) => {
     const ga = garde(a);
     const gb = garde(b);
     if (ga !== gb) return ga - gb;
     if (tri === 'recent') return cle(b) - cle(a);
-    if (a.kind !== b.kind) return a.kind === 'nuee' ? -1 : 1;
+    if (a.kind === 'promi' && b.kind === 'promi') {
+      const c = par(a.p, b.p);
+      if (c) return c;
+    } else if (a.kind !== b.kind) return a.kind === 'nuee' ? -1 : 1;
     return ordre(a) - ordre(b);
   });
   return ent;

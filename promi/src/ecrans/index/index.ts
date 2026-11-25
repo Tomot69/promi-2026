@@ -13,7 +13,7 @@ import type { Navigation } from '../../navigation/navigation.ts';
 import type { Etat, Parole } from '../../donnees/schema.ts';
 import { el, poserCroix, centrerTitre, surToucher } from '../commun.ts';
 import { horloge } from '../../animation/horloge.ts';
-import { entreesIndex, motEtat, motQui, type Entree } from '../../metier/index.ts';
+import { entreesIndex, motEtat, motQui, type Entree, type Filtre, type Tri } from '../../metier/index.ts';
 import { ajusterEtat, ajusterTitre, carte, DEUX, etatCercle, etatParole } from './carte.ts';
 
 const TXT = {
@@ -23,7 +23,22 @@ const TXT = {
   rechercher: 'Rechercher',
   trier: 'Trier et filtrer',
   tri: '⇅',
+  trier_: 'TRIER',
+  filtrer: 'NE MONTRER QUE',
 } as const;
+const TRIS: ReadonlyArray<[Tri, string]> = [
+  ['recent', 'Récents'],
+  ['personne', 'Par personne'],
+  ['nuee', 'Par Cercle'],
+];
+const FILTRES: ReadonlyArray<[Filtre, string]> = [
+  ['tous', 'Tout'],
+  ['suspens', 'En suspens'],
+  ['promi', 'Promi'],
+  ['nuees', 'Cercles'],
+  ['brouillons', 'Gardés de côté'],
+  ['demandes', 'Demandes'],
+];
 
 export interface Index {
   ouvrir(): void;
@@ -53,16 +68,44 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
     'aria-label': TXT.rechercher,
   });
   srch.appendChild(champ);
-  const tri = el('button', { type: 'button', id: 'ixTriBtn', class: 'ix-tri', 'aria-label': TXT.trier });
-  tri.textContent = TXT.tri;
-  barre.append(srch, tri);
+  const tri_ = el('button', { type: 'button', id: 'ixTriBtn', class: 'ix-tri', 'aria-label': TXT.trier });
+  tri_.textContent = TXT.tri;
+  barre.append(srch, tri_);
   const liste = el('div', { id: 'indexList' });
   const grille = el('div', { class: 's4-grille' });
   liste.appendChild(grille);
-  sh.append(plateau, barre, liste);
+  // le menu ⇅ (lot-S2 de l'Index : un bouton, deux groupes — les catégories sont des FILTRES, pas des sections) ; il se pose par-dessus la grille
+  const menu = el('div', { id: 'ixMenu', class: 'ix-menu' });
+  const panneau = el('div', { class: 'ix-menu-p' });
+  menu.appendChild(panneau);
+  const option = (mot: string, attr: 'tri' | 'filt', val: string): HTMLElement => {
+    const o = el('div', { class: 'ix-mi', role: 'button', [`data-${attr}`]: val });
+    o.textContent = mot;
+    o.appendChild(el('i', { 'aria-hidden': 'true' }));
+    return o;
+  };
+  const groupe = (mot: string): HTMLElement => {
+    const g = el('div', { class: 'ix-mg' });
+    g.textContent = mot;
+    return g;
+  };
+  panneau.append(
+    groupe(TXT.trier_),
+    ...TRIS.map(([v, m]) => option(m, 'tri', v)),
+    groupe(TXT.filtrer),
+    ...FILTRES.map(([v, m]) => option(m, 'filt', v)),
+  );
+  sh.append(plateau, barre, liste, menu);
   dv.appendChild(sh);
 
   let q = '';
+  let tri: Tri = 'recent';
+  let filtre: Filtre = 'tous';
+  function poserMenu(): void {
+    for (const o of panneau.querySelectorAll<HTMLElement>('.ix-mi'))
+      o.classList.toggle('on', o.dataset['tri'] ? o.dataset['tri'] === tri : o.dataset['filt'] === filtre);
+  }
+  poserMenu();
   /** la signature de ce que la grille montre : elle ne se rebâtit que si elle change (C-049) */
   let sig = '';
 
@@ -87,7 +130,7 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   function batir(force = false): void {
     const e = magasin.etat();
-    const ent = entreesIndex(e, q);
+    const ent = entreesIndex(e, q, filtre, tri, e.utilisateur.prenom ?? 'Moi');
     const ingenu = facade.mondeCourant().p === 'signal';
     const clair = dv.classList.contains('light');
     const s = JSON.stringify([
@@ -199,6 +242,24 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
 
   surToucher(croix, () => {
     fermer();
+  });
+  // ⇅ ouvre le menu ; un choix trie (ou filtre), puis le menu se referme ; un toucher dans le panneau, hors d'un choix, ne le referme pas (Q578) ;
+  // ailleurs, il se referme
+  surToucher(tri_, () => {
+    menu.classList.add('on');
+    tri_.classList.add('on');
+  });
+  surToucher(menu, (ev) => {
+    const t = ev.target instanceof Element ? ev.target : null;
+    const o = t?.closest<HTMLElement>('.ix-mi');
+    if (o) {
+      if (o.dataset['tri']) tri = o.dataset['tri'] as Tri;
+      if (o.dataset['filt']) filtre = o.dataset['filt'] as Filtre;
+      poserMenu();
+      batir();
+    } else if (t?.closest('.ix-menu-p')) return;
+    menu.classList.remove('on');
+    tri_.classList.remove('on');
   });
   champ.addEventListener('input', () => {
     q = champ.value;

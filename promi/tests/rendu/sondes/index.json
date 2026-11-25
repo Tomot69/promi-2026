@@ -13,5 +13,10 @@
     "nom": "garde-sans-pointille",
     "test": "l'Index avec un Cercle de deux paroles et un gardé de côté, comme le prototype : sombre",
     "defaut": "le gardé de côté perd son pointillé de 3 pt (C-149 suite, v163)"
+  },
+  {
+    "nom": "tri-personne-sourd",
+    "test": "le menu ⇅ de l'Index, ses tris et ses filtres, comme le prototype : sombre",
+    "defaut": "« Par personne » ne trie plus (le choix ne répond pas au doigt)"
   }
 ]

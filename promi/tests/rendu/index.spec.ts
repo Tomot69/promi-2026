@@ -32,7 +32,9 @@ async function matieres(pg: Page): Promise<Zone[]> {
     const z: number[][] = [];
     // bornée à la liste : une carte sortie par le haut ne masque pas l'encart
     const L = document.getElementById('indexList')!.getBoundingClientRect();
-    const haut = (L.top - D.top) / k;
+    // et sous le menu ⇅ ouvert : une dalle qu'il couvre ne masque pas le panneau
+    const M = document.querySelector('#ixMenu.on .ix-menu-p');
+    const haut = Math.max((L.top - D.top) / k, M ? (M.getBoundingClientRect().bottom - D.top) / k : 0);
     for (const cv of document.querySelectorAll('#indexList .s4-carte > canvas')) {
       const v = cv.getAttribute('data-matiere');
       if (!v) continue;
@@ -210,6 +212,85 @@ for (const theme of ['sombre', 'clair'] as const)
           l.scrollTop = l.scrollHeight;
         });
       await juge('bout');
+      expect(erreurs).toEqual([]);
+    } finally {
+      await Promise.all([P.context().close(), A.context().close()]);
+    }
+  });
+
+/** le centre d'un élément, en pt de l'appareil */
+async function centre(pg: Page, sel: string): Promise<[number, number]> {
+  return (await pg.evaluate((sel) => {
+    const D = document.getElementById('device')!.getBoundingClientRect();
+    const k = D.width / 390;
+    const r = document.querySelector(sel)!.getBoundingClientRect();
+    return [(r.left + r.width / 2 - D.left) / k, (r.top + r.height / 2 - D.top) / k];
+  }, sel)) as [number, number];
+}
+async function toucher(pg: Page, x: number, y: number): Promise<void> {
+  const r = await pg.evaluate(() => {
+    const b = document.getElementById('device')!.getBoundingClientRect();
+    return { x: b.left, y: b.top, k: b.width / 390 };
+  });
+  await pg.mouse.click(r.x + x * r.k, r.y + y * r.k);
+}
+/** un toucher au même point des deux côtés (celui de la vraie app), puis la page avancée */
+async function toucherDeux(P: Page, A: Page, sel: string): Promise<void> {
+  const [x, y] = await centre(A, sel);
+  await Promise.all([toucher(P, x, y), toucher(A, x, y)]);
+  for (let k = 0; k < 3; k++) await Promise.all([images(P, 30), images(A, 30)]);
+}
+
+for (const theme of ['sombre', 'clair'] as const)
+  test(`le menu ⇅ de l'Index, ses tris et ses filtres, comme le prototype : ${theme}`, async ({ browser }) => {
+    const ls = { ...stockageCercle(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+    const { P, A, erreurs } = await deuxPilotes(browser, ls);
+    try {
+      mkdirSync(RES, { recursive: true });
+      // la sonde (sur « … sombre ») : « Par personne » range comme « Récents »
+      if (sonde('tri-personne-sourd'))
+        await A.evaluate(() => {
+          document.addEventListener(
+            'pointerup',
+            (ev) => {
+              if ((ev.target as Element | null)?.closest('[data-tri="personne"]')) ev.stopImmediatePropagation();
+            },
+            true,
+          );
+        });
+      await ouvrirIndex(P, A);
+      await toucherDeux(P, A, '#ixTriBtn');
+      expect(
+        await A.evaluate(() => document.getElementById('ixMenu')!.classList.contains('on')),
+        'le menu est ouvert',
+      ).toBe(true);
+      await juger(P, A, `${theme}-menu`);
+      // un toucher dans le panneau, hors d'un choix (son groupe « TRIER ») : il reste ouvert (Q578)
+      await toucherDeux(P, A, '#ixMenu .ix-mg');
+      expect(
+        await A.evaluate(() => document.getElementById('ixMenu')!.classList.contains('on')),
+        'Q578 : il reste',
+      ).toBe(true);
+      for (const sel of [
+        '#ixMenu [data-tri="personne"]',
+        '#ixMenu [data-tri="nuee"]',
+        '#ixMenu [data-filt="suspens"]',
+        '#ixMenu [data-filt="brouillons"]',
+        '#ixMenu [data-filt="nuees"]',
+      ]) {
+        if (!(await A.evaluate(() => document.getElementById('ixMenu')!.classList.contains('on'))))
+          await toucherDeux(P, A, '#ixTriBtn');
+        await toucherDeux(P, A, sel);
+        expect(await cartes(A), `${sel} : les cartes`).toEqual(await cartes(P));
+        await juger(P, A, `${theme}-${sel.replace(/[^a-z]/g, '')}`);
+      }
+      // ailleurs que le panneau : il se referme
+      await toucherDeux(P, A, '#ixTriBtn');
+      await Promise.all([toucher(P, 195, 800), toucher(A, 195, 800)]);
+      await Promise.all([images(P, 30), images(A, 30)]);
+      expect(await A.evaluate(() => document.getElementById('ixMenu')!.classList.contains('on')), 'refermé').toBe(
+        false,
+      );
       expect(erreurs).toEqual([]);
     } finally {
       await Promise.all([P.context().close(), A.context().close()]);

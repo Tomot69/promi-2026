@@ -244,3 +244,79 @@
   letter-spacing: 0.18em;
   white-space: nowrap;
 }
+
+/* ── le menu ⇅ (relevé du 25 nov. : `#ixMenu`) — par-dessus la grille, sans voile (C-185) ; le panneau, sans ombre portée (C-185), contour 2,5 ;
+   le choix pris : sur l'encre, sa barrette de 14 × 4 (C-191) ── */
+#indexSheet .ix-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  display: none;
+}
+#indexSheet .ix-menu.on {
+  display: block;
+}
+#indexSheet .ix-menu-p {
+  position: absolute;
+  left: 22px;
+  right: 22px;
+  top: 104px;
+  max-height: calc(100% - 240px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  box-sizing: border-box;
+  padding: 14px 10px;
+  border: 2.5px solid color-mix(in srgb, var(--c-mauve12) 46%, transparent);
+  border-radius: 26px;
+  background: var(--c-brun12-2);
+  color: var(--c-creme92);
+  cursor: pointer;
+}
+#indexSheet .ix-mg {
+  padding: 14px 16px 6px;
+  font: 500 12px var(--f-texte);
+  letter-spacing: 0.22em;
+  color: var(--c-beige69);
+}
+#indexSheet .ix-mi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 13px 16px;
+  border-radius: 999px;
+  font: 500 16px var(--f-texte);
+  letter-spacing: -0.02em;
+  color: var(--c-creme92);
+  cursor: pointer;
+}
+#indexSheet .ix-mi.on {
+  background: var(--c-creme92);
+  color: var(--c-brun12-2);
+}
+#indexSheet .ix-mi i {
+  display: none;
+  flex: none;
+  width: 14px;
+  height: 4px;
+  border-radius: 2px;
+  font-style: normal;
+  background: currentColor;
+}
+#indexSheet .ix-mi.on i {
+  display: block;
+}
+.device.light #indexSheet .ix-menu-p {
+  border-color: color-mix(in srgb, var(--c-bleu45) 34%, transparent);
+  background: var(--c-creme97);
+  color: var(--c-brun09);
+}
+.device.light #indexSheet .ix-mg {
+  color: var(--c-beige44);
+}
+.device.light #indexSheet .ix-mi {
+  color: var(--c-brun09);
+}
+.device.light #indexSheet .ix-mi.on {
+  background: var(--c-brun09);
+  color: var(--c-creme97);
+}
