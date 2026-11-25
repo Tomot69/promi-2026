@@ -41,6 +41,8 @@ export interface Index {
   ouvrir(): void;
   fermer(): void;
   ouvert(): boolean;
+  /** la recherche tapée (l'état de l'écran, pas une donnée du magasin : elle ne se garde pas) */
+  recherche(): string;
 }
 
 export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): Index {
@@ -104,7 +106,7 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
       grille.appendChild(vide());
       return;
     }
-    grille.style.height = `${String(Math.ceil(ent.length / D.GX.length) * D.PAS + 40)}px`;
+    grille.style.height = `${String(Math.ceil(ent.length / D.GX.length) * D.PAS + 32)}px`;
     const repeindre = (): void => {
       batir(true);
     };
@@ -199,5 +201,6 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
       E.fermer();
     },
     ouvert: () => E.ouvert(),
+    recherche: () => E.q(),
   };
 }

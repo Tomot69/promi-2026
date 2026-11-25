@@ -237,6 +237,11 @@ export type EcranPorte = {
   ouvrir(page: Page): Promise<void>;
   /** depuis l'accueil du prototype, ouvert par `prototype` */
   prototype(page: Page): Promise<void>;
+  /**
+   * EXCEPTION NOMMÉE : dans le prototype l'écran vit HORS de `#device` (la fiche d'une personne, sous `.frame` : le piège du §8) — un relevé
+   * fait dans `#device` ne le voit pas ; les juges qui comparent nœud à nœud au prototype le passent, il est jugé au pixel par son test.
+   */
+  horsAppareil?: true;
 };
 /** le + puis la pilule d'une nature : la page + (lot 2a), composée (dans la vraie app : la page porte sa phrase ; le prototype : 3,5 s) */
 export async function ouvrirPagePlus(page: Page, nat: 'promi' | 'chiche' | 'nuee', proto = false): Promise<void> {
@@ -403,11 +408,28 @@ export const FICHE: EcranPorte = {
   },
 };
 
+/** l'Index, le Fil (lot 4) : ouverts par la façade, de l'autre côté par leur bouton de la barre ; la fiche d'une personne, par son nom */
+const LISTE = (nom: string, feuille: string, app: string, proto: string, horsAppareil = false): EcranPorte => ({
+  nom,
+  ...(horsAppareil ? { horsAppareil: true as const } : {}),
+  ouvrir: async (p) => {
+    await p.evaluate(app);
+    await p.waitForFunction((f) => !!document.querySelector(`#${f}.couvre`), feuille, { timeout: 10000 });
+    await p.waitForTimeout(500);
+  },
+  prototype: async (p) => {
+    await p.evaluate(proto);
+    await p.waitForTimeout(2500);
+  },
+});
 export const ECRANS_PORTES: EcranPorte[] = [
   { nom: 'accueil', ouvrir: async () => {}, prototype: async () => {} },
   { nom: 'accueil, menu du + ouvert', ouvrir: ouvrirPlus, prototype: ouvrirPlus },
   ...PAGES_PLUS,
   FICHE,
+  LISTE('Index', 'indexSheet', `${P_}.index().ouvrir()`, `document.getElementById('indexBtn').click()`),
+  LISTE('Fil', 'feedView', `${P_}.fil().ouvrir()`, `document.getElementById('filBtn').click()`),
+  LISTE('fiche de Rachel', 'personSheet', `${P_}.personne().ouvrir('Rachel')`, `openPerson('Rachel')`, true),
 ];
 
 /**

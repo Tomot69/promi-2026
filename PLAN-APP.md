@@ -163,7 +163,7 @@ l'écriture (C-160 ; elle ne passait jamais) ; la migration `promi_mots_v184` ; 
 du prototype vit dans la fenêtre), P1 (la fiche d'une personne monte par-dessus la fiche au lieu de la refermer). **Pas encore** : RELEVER et
 REJOINDRE (sans événement de ce genre avant la synchro) ; la pastille d'un mot neuf d'un Cercle (lot 5) ; le texte d'exemple de la recherche qui se
 retrace au focus (C-271 : une brique pour tous les champs, Peaufiner compris). **A3** : à 330 de large, les listes suivent la largeur (le juge
-l'a trouvé : la seconde colonne et le ⇅ sortaient de l'écran). **En cours** : leur entrée dans le socle (les sentinelles portées y trouvent onze rouges, à trier). Juges :
+l'a trouvé : la seconde colonne et le ⇅ sortaient de l'écran). Ils entrent dans le socle (les sentinelles portées y ont trouvé une liste 8 pt trop longue, un emoji accepté dans la recherche, un état rogné à 330). Juges :
 `promi/JUGES-TESTS.md`, « Lot 4 ».
 
 ---

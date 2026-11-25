@@ -93,6 +93,8 @@
   white-space: nowrap;
   z-index: 40;
   cursor: pointer;
+  /* le prototype (sans effet : un seul enfant) */
+  gap: 0;
 }
 .ecran-liste .cb-mot {
   position: absolute;
@@ -181,6 +183,8 @@
   border: 2px solid var(--c-creme95);
   border-radius: 26px;
   background: var(--c-seiche10);
+  /* le glyphe ⇅ : aucune des trois polices ne l'a — il est dessiné par celle du système, comme dans le prototype (exception nommée de
+     redteam_polices) */
   font: 700 20px/20px system-ui;
   -webkit-text-stroke-width: 1px;
   color: var(--c-creme95);
@@ -204,7 +208,8 @@
   left: 0;
   top: calc(var(--ancre-haut) + 164px);
   right: 0;
-  height: 648px;
+  /* jusqu'au bas de l'écran, jamais au-delà (le prototype : 648 de haut, 8 pt sous le bord ; la grille a 8 de moins en bas : même vue au bout) */
+  bottom: 0;
   overflow: hidden auto;
   scrollbar-width: none;
   z-index: 1;

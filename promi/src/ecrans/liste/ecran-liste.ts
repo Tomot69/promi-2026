@@ -13,6 +13,7 @@ import type { Facade } from '../../moteur/facade.ts';
 import type { Magasin } from '../../etat/magasin.ts';
 import { el, poserCroix, centrerTitre, surToucher } from '../commun.ts';
 import { horloge } from '../../animation/horloge.ts';
+import { champSansEmoji } from '../../metier/emoji.ts';
 
 const TXT = {
   fermer: 'Fermer',
@@ -26,7 +27,7 @@ const TXT = {
 
 export interface CfgEcranListe<T extends string, F extends string> {
   /** les ids du prototype : la feuille, la recherche, le ⇅, le menu, la liste */
-  ids: { feuille: string; champ: string; tri: string; menu: string; liste: string };
+  ids: { feuille: string; champ: string; tri: string; menu: string; liste: string; croix?: string };
   titre: string;
   /** le compte à côté du titre (le Fil : ce qui attend un geste) */
   compte?: { id: string };
@@ -73,7 +74,8 @@ export function monterEcranListe<T extends string, F extends string>(
     role: 'dialog',
   });
   sh.hidden = true;
-  const { plateau, titre, croix, poserEncart } = encart(c.titre);
+  const { plateau, titre, croix, poserEncart } = encart(c.titre, true);
+  if (c.ids.croix) croix.id = c.ids.croix;
   const compte = c.compte ? el('span', { id: c.compte.id, class: 'ix-count' }) : null;
   if (compte) titre.appendChild(compte);
   const barre = el('div', { class: 'ix-bar' });
@@ -86,10 +88,13 @@ export function monterEcranListe<T extends string, F extends string>(
     'aria-label': TXT.rechercher,
   });
   srch.appendChild(champ);
+  // C-129 : aucun emoji, tapé ou collé
+  champSansEmoji(champ);
   const btnTri = el('button', { type: 'button', id: c.ids.tri, class: 'ix-tri', 'aria-label': TXT.trier });
   btnTri.textContent = TXT.tri;
   barre.append(srch, btnTri);
-  const liste = el('div', { id: c.ids.liste, class: 'el-liste' });
+  // une liste qui défile, et le déclare : ce qui dépasse sa vue s'atteint en glissant (`data-glisse`, comme le rail du pinceau)
+  const liste = el('div', { id: c.ids.liste, class: 'el-liste', 'data-glisse': '' });
   const grille = el('div', { class: 's4-grille' });
   liste.appendChild(grille);
   const menu = el('div', { id: c.ids.menu, class: 'ix-menu' });
@@ -193,7 +198,11 @@ export function monterEcranListe<T extends string, F extends string>(
 }
 
 /** l'encart du haut d'un écran (24 / 40, 342 × 60 : lot-V210-ENCART, C-301) : son titre, son X ; posé une fois les polices là */
-export function encart(texte: string): {
+export function encart(
+  texte: string,
+  /** la dernière lettre du titre dans son `span.ti-x` (le prototype : « Inde<span class="ti-x">x</span> ») */
+  tiX = false,
+): {
   plateau: HTMLElement;
   titre: HTMLElement;
   croix: HTMLElement;
@@ -201,7 +210,12 @@ export function encart(texte: string): {
 } {
   const plateau = el('div', { class: 'enh' });
   const titre = el('h2', { class: 'scr-ti enh-t' });
-  titre.textContent = texte;
+  titre.textContent = tiX ? texte.slice(0, -1) : texte;
+  if (tiX && texte) {
+    const x = el('span', { class: 'ti-x' });
+    x.textContent = texte.slice(-1);
+    titre.appendChild(x);
+  }
   const croix = el('div', { class: 'closeb', role: 'button', 'aria-label': TXT.fermer, 'data-close': '' });
   const croixG = el('span', { class: 'cb-mot' });
   croixG.textContent = TXT.fermerGlyphe;

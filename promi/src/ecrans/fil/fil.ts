@@ -65,6 +65,8 @@ export interface Fil {
   ouvrir(): void;
   fermer(): void;
   ouvert(): boolean;
+  /** la recherche tapée (l'état de l'écran, pas une donnée du magasin : elle ne se garde pas) */
+  recherche(): string;
 }
 
 const estMoi = (v: unknown): boolean => {
@@ -74,7 +76,14 @@ const estMoi = (v: unknown): boolean => {
 
 export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fil {
   const E = monterEcranListe<TriFil, FiltreFil>(facade, magasin, {
-    ids: { feuille: 'feedView', champ: 'fdSearch', tri: 'fdTriBtn', menu: 'fdMenu', liste: 'feedList' },
+    ids: {
+      feuille: 'feedView',
+      champ: 'fdSearch',
+      tri: 'fdTriBtn',
+      menu: 'fdMenu',
+      liste: 'feedList',
+      croix: 'fdClose',
+    },
     titre: TXT.titre,
     compte: { id: 'fdCount' },
     entree: 'droite',
@@ -169,7 +178,7 @@ export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fi
         premiere.add(x.f.id);
       }
     const deplie = (x: EntreeFil, i: number): boolean => x.gestes.length > 0 && cle(x, i) === ouvert;
-    grille.style.height = `${String(L.reduce((a, x, i) => a + BANDEAU.PAS + (deplie(x, i) ? RANGEE.PAS : 0), 0) + 40)}px`;
+    grille.style.height = `${String(L.reduce((a, x, i) => a + BANDEAU.PAS + (deplie(x, i) ? RANGEE.PAS : 0), 0) + 32)}px`;
     let y = 0;
     const repeindre = (): void => {
       batir(true);
@@ -306,6 +315,12 @@ export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fi
     for (const d of grille.querySelectorAll<HTMLElement>('.s4-carte')) {
       poserTitre(d);
       ajusterEtat(d);
+      const et = d.querySelector<HTMLElement>('.s4-et');
+      // le prototype laisse un état long déborder de sa boîte jusqu'au bord du bandeau ; seul ce qui dépasse le bandeau s'arrête par « … »
+      if (et) {
+        et.classList.remove('et-coupe');
+        et.classList.toggle('et-coupe', et.offsetLeft + et.scrollWidth > d.clientWidth + 1);
+      }
     }
   }
 
@@ -321,5 +336,6 @@ export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fi
       E.fermer();
     },
     ouvert: () => E.ouvert(),
+    recherche: () => E.q(),
   };
 }

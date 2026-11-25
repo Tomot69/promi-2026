@@ -404,7 +404,10 @@ function releverDansPage(): Releve {
     // VOLUME (redteam_volume, au rendu)
     if (floue(c.boxShadow, 3)) volumes.push(cle(e) + ' box-shadow ' + c.boxShadow);
     if (floue(c.textShadow, 3)) volumes.push(cle(e) + ' text-shadow ' + c.textShadow);
-    if (/gradient\(/.test(c.backgroundImage)) volumes.push(cle(e) + ' ' + c.backgroundImage.slice(0, 60));
+    // EXCEPTION NOMMÉE (Q627, la même qu'aux sources) : le visage d'une personne (`fondVisage` de mots.ts : le `_blobBg` du prototype, quatre
+    // taches en dégradé radial) — sur la fiche d'une personne (`.ps-vis`)
+    if (/gradient\(/.test(c.backgroundImage) && !e.classList.contains('ps-vis'))
+      volumes.push(cle(e) + ' ' + c.backgroundImage.slice(0, 60));
     if (/drop-shadow\(/.test(c.filter)) volumes.push(cle(e) + ' filter ' + c.filter);
     // JOIGNABLE (redteam_joignable, A) : au CENTRE de l'élément, le doigt le trouve
     const ec = (e as unknown as { __ec?: string }).__ec;
@@ -746,6 +749,8 @@ async function parcours(
 ): Promise<void> {
   for (const theme of THEMES)
     for (const e of ECRANS_PORTES) {
+      // un écran que le prototype pose hors de `#device` (EcranPorte.horsAppareil) ne se compare pas nœud à nœud : son test le juge au pixel
+      if (avecProto && e.horsAppareil) continue;
       const [app, proto] = await Promise.all([
         releve(browser, 'app', theme, e),
         avecProto ? releve(browser, 'proto', theme, e) : Promise.resolve(null),

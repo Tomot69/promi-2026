@@ -49,6 +49,16 @@
   bottom: auto;
   right: 16px;
 }
+/* A3 : plus étroit que 390, un état qui dépasse encore le bandeau après l'ajustement de Q158 s'arrête par « … » à son bord — la boîte prend 4 pt au-dessus
+   (ses accents : « À L'INSTANT ») et 3 dessous, sans que le texte bouge */
+.s4-carte.fil-b > .s4-et.et-coupe {
+  top: 94px;
+  right: 0;
+  padding: 4px 0 3px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 /* la rangée des gestes d'un bandeau (`_s4Fil`) : 12 pt sous lui, à 32 du bord ; un geste fort porte le trait de l'état, REPORTER est crème (le
    prototype, dans les deux thèmes) */

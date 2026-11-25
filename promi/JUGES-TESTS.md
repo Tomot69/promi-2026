@@ -526,3 +526,16 @@ nommé P1** : ouverte depuis une fiche, la fiche d'une personne monte PAR-DESSUS
 cotes de 390 — la seconde colonne de cartes finissait à 366, le ⇅ à 351, hors de l'écran. La recherche, le ⇅, la liste, les cartes (deux par
 rangée, 24 des bords, 12 entre elles : `deux(largeur)`), les bandeaux du Fil (16 de chaque côté) et la fiche d'une personne (ses dalles, ses
 cartes, ses deux boutons) suivent maintenant la largeur ; à 390, ce sont exactement les cotes du prototype (les juges au pixel le gardent).
+
+## Lot 4-12 — l'Index, le Fil et la fiche d'une personne entrent dans le socle (`ECRANS_PORTES`)
+
+Toutes les sentinelles portées les parcourent maintenant (écrans, volume, air, aspect, polices, contrat visuel, `redteam_app` aux trois vues,
+emoji, champs). **Trouvés, corrigés** : la liste finissait 8 pt sous le bas de l'écran (648 de haut : elle va maintenant jusqu'au bas, la grille a
+8 de moins — même vue au bout) ; un emoji passait dans la recherche (C-129) ; le X du Fil sans son id (`fdClose`) ; la dernière lettre du titre
+hors de son `span.ti-x` ; à 330, l'état d'un bandeau du Fil rogné net (il s'arrête maintenant par « … » au bord du bandeau, seulement quand il le
+dépasse). **Exceptions nommées, chacune dans son juge** : le visage de la fiche d'une personne (`.ps-vis`, le `_blobBg` du prototype : Q627, au
+rendu comme aux sources) ; la boîte de police du titre d'une carte, plus haute que sa boîte qui rogne, et celle du sur-titre qui chevauche le
+titre (l'encre est entière : index.spec, fil.spec au pixel) ; le glyphe ⇅, qu'aucune des trois polices n'a (dessiné par le système, comme le
+prototype) ; le padding des feuilles du prototype (sans effet de mise en page ; le reprendre change les coins au rendu) ; la fiche d'une personne
+du prototype vit hors de `#device` (`horsAppareil` : les juges nœud à nœud la passent, personne.spec la juge au pixel). La recherche a sa
+« donnée » dans l'écran (`recherche()`), pas dans le magasin.

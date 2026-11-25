@@ -355,6 +355,9 @@ test('aucune graisse hors des cinq faces embarquées, sur chaque écran porté, 
         return out; })()`)) as Array<[string, string]>;
       for (const [cle, ou] of rel) {
         n++;
+        // EXCEPTION NOMMÉE (lot 4) : le bouton ⇅ de l'Index et du Fil — un glyphe qu'aucune des trois polices n'a, dessiné par celle du système,
+        // comme dans le prototype (le même glyphe au pixel : index.spec, fil.spec) ; rien d'autre que lui dans son bouton
+        if (/^#(ixTriBtn|fdTriBtn) « ⇅ »$/.test(ou)) continue;
         if (!ok.has(cle) || !FAMILLES.includes(cle.split(' ')[0]!))
           fautes.push(`${ecran.nom}, ${theme} : ${cle} — ${ou}`);
       }
@@ -794,7 +797,12 @@ test('le contrat visuel : les 25 propriétés de chaque élément porté égales
           if (
             a !== b &&
             !(COULEURS.has(k) && proche(a, b)) &&
-            !ecartAdmis(ecran.nom, cle.includes('« garder de côté »') ? 'garder de côté' : '', k)
+            !ecartAdmis(ecran.nom, cle.includes('« garder de côté »') ? 'garder de côté' : '', k) &&
+            // EXCEPTION NOMMÉE (lot 4) : le padding de la feuille de l'Index et du Fil (54 en haut, 40 en bas de l'Index) — sans effet de mise en
+            // page (tous leurs enfants sont posés en absolu) ; le reprendre change les coins de l'écran au rendu (index.spec, fil.spec au pixel)
+            !(/^#(indexSheet|feedView)$/.test(cle) && (k === 'paddingTop' || k === 'paddingBottom')) &&
+            // … et la hauteur de leur liste : 648 dans le prototype, 8 pt sous le bas de l'écran ; ici jusqu'au bas, pas au-delà (redteam_ecrans)
+            !(/^#(indexList|feedList)$/.test(cle) && k === '_px')
           )
             ecarts.push(`${ecran.nom}, ${theme} · ${cle} · ${k} : ${a} → ${b}`);
         }
@@ -1123,13 +1131,24 @@ test('enchaîner deux écrans : le second est lui-même — mêmes classes, rien
  * D excuse un texte d'une rangée qui DÉFILE et le déclare (`data-glisse`, C-196 : le rail du pinceau de la page +) : il sort de l'écran
  * par construction, on l'atteint en glissant (la même exception que joignable et redteam_ecrans).
  */
-const RECOUVREMENTS_VOULUS: string[] = [];
+/**
+ * lot 4 — la carte de l'Index (et de la fiche d'une personne), reprise du prototype au pixel (index.spec, personne.spec) : la boîte de police du
+ * sur-titre (« à moi », Gilbert 16, interligne 1) chevauche celle du titre posé juste dessous ; leurs ENCRES ne se touchent pas.
+ */
+const RECOUVREMENTS_VOULUS: string[] = ['› div.s4-eb",'];
 /**
  * LES COUPES DU PROTOTYPE, reprises à l'identique (le contrat visuel exige ses propriétés) — nommées, une à une : la boîte de police d'un prénom
  * sous un Noyau de la fiche dépasse de 2 à 3 pt le bas de la rangée qui défile (`#dAura`, 103 pt de haut, `overflow: auto hidden`) ; son ENCRE,
  * elle, est entière (le prototype a la même rangée, au pixel : fiche.spec). [élément, conteneur qui rogne]
  */
-const COUPES_DU_PROTOTYPE: Array<[RegExp, RegExp]> = [[/^dAura › (div\.kr-n|span\.nom-lien)/, /^div#dAura$/]];
+const COUPES_DU_PROTOTYPE: Array<[RegExp, RegExp]> = [
+  [/^dAura › (div\.kr-n|span\.nom-lien)/, /^div#dAura$/],
+  // lot 4 — le titre d'une carte ou d'un bandeau (interligne 1, sa boîte à la hauteur de ses lignes) : sa boîte de police dépasse de sa boîte
+  // qui rogne ; son encre est entière (le prototype, au pixel : index.spec, fil.spec, personne.spec)
+  [/^(indexList|feedList|psCartes) › div\.s4-ti$/, /› div\.s4-ti$/],
+  // lot 4 — le nom de la fiche d'une personne rogne ce qui dépasse de sa boîte (l'accent d'un « é » final), comme le prototype (`h2#psName`)
+  [/^h2#psName$/, /^h2#psName$/],
+];
 const RELEVE_APP = `(() => { const W = innerWidth, H = innerHeight, out = { D: [], C: [], R: [] };
   const vis = (e) => { for (let x = e; x && x.nodeType === 1; x = x.parentElement) { const s = getComputedStyle(x); if (s.display === 'none' || s.visibility === 'hidden' || +s.opacity < 0.05) return false; } return true; };
   const nom = (e) => { let s = e.tagName.toLowerCase(); if (e.id) s += '#' + e.id; else if (e.className && typeof e.className === 'string') s += '.' + e.className.trim().split(/\\s+/).slice(0, 2).join('.'); const p = e.closest('[id]'); return (p && p !== e ? p.id + ' › ' : '') + s; };
@@ -1391,9 +1410,11 @@ test("le contrôle qui remplit : chaque champ des écrans portés est atteignabl
       // la donnée : le magasin — ou, pour la phrase de la page +, l'état de la page (la parole en cours lui appartient jusqu'à ce
       // qu'elle soit plantée, lot 2b ; page-plus.ts : « l'état de la page n'appartient qu'à elle »)
       const apres = JSON.stringify(await pg.evaluate(`${P_}.magasin.etat()`));
+      // … ou, pour la recherche de l'Index et du Fil (lot 4), la requête de l'écran (elle filtre la liste ; elle ne se garde pas)
       const enCours = JSON.stringify(
         await pg.evaluate(
-          `(() => { const p = ${P_}.pagePlus && ${P_}.pagePlus(); return p && p.ouverte() ? p.etat().phrase : null; })()`,
+          `(() => { const p = ${P_}.pagePlus && ${P_}.pagePlus(); if (p && p.ouverte()) return p.etat().phrase;
+            for (const k of ['index', 'fil']) { const l = ${P_}[k] && ${P_}[k](); if (l && l.ouvert()) return l.recherche(); } return null; })()`,
         ),
       );
       if (apres === avant && !apres.includes('essai') && !enCours.includes('essai'))

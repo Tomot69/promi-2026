@@ -52,7 +52,7 @@ export function monterPersonne(facade: Facade, magasin: Magasin, nav: Navigation
   sh.hidden = true;
   const { plateau, titre, croix, poserEncart } = encart('');
   titre.id = 'psName';
-  const col = el('div', { class: 'ps-col', 'data-defile': '1' });
+  const col = el('div', { class: 'ps-col', 'data-defile': '1', 'data-glisse': '' });
   const pile = el('div', { class: 'ps-pile' });
   col.appendChild(pile);
   sh.append(col, plateau);
