@@ -141,7 +141,8 @@ test('Peaufiner sur la fiche : la barre l’ouvre, un choix le laisse ouvert, 60
   await glisse(60);
   expect(await ouvert(page), '60 pt : il reste ouvert').toBe(true);
   await glisse(220);
-  expect(await ouvert(page), '220 pt : il se referme').toBe(false);
+  // il se referme en flaques, `hidden` à la fin (sous Linux une image dure jusqu'à 0,7 s : on attend la fin, 5 s au plus)
+  await expect.poll(() => ouvert(page), { message: '220 pt : il se referme', timeout: 5000 }).toBe(false);
   // le X
   await ouvrirPeauf(page);
   const x = await page.evaluate(() => {
@@ -151,8 +152,8 @@ test('Peaufiner sur la fiche : la barre l’ouvre, un choix le laisse ouvert, 60
     return [(b.left - D.left) / k + b.width / k / 2, (b.top - D.top) / k + b.height / k / 2];
   });
   await toucher(page, x[0]!, x[1]!);
-  await page.waitForTimeout(700);
-  expect(await ouvert(page), 'son X le referme').toBe(false);
+  await expect.poll(() => ouvert(page), { message: 'son X le referme', timeout: 5000 }).toBe(false);
+  await page.waitForTimeout(300);
   expect(
     await page.evaluate(() => ({
       fiche: (window as unknown as Promi).__promi.fiche().etat().id,
