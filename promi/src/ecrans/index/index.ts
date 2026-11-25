@@ -11,7 +11,7 @@ import type { Etat, Parole } from '../../donnees/schema.ts';
 import { surToucher } from '../commun.ts';
 import { motsNeufs } from '../../metier/fiche.ts';
 import { entreesIndex, motEtat, motQui, type Entree, type Filtre, type Tri } from '../../metier/index.ts';
-import { ajusterEtat, ajusterTitre, carte, DEUX, etatCercle, etatParole, poserPastille } from './carte.ts';
+import { ajusterEtat, ajusterTitre, carte, deux, DEUX, etatCercle, etatParole, poserPastille } from './carte.ts';
 import { ecranVide, monterEcranListe } from '../liste/ecran-liste.ts';
 
 const TXT = {
@@ -97,7 +97,7 @@ export function monterIndex(facade: Facade, magasin: Magasin, nav: Navigation): 
     ]);
     if (!force && s === sig) return;
     sig = s;
-    const D = DEUX;
+    const D = deux(E.liste.clientWidth || 390);
     grille.replaceChildren();
     if (!ent.length) {
       grille.style.height = '';

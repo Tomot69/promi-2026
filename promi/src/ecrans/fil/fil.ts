@@ -176,7 +176,13 @@ export function monterFil(facade: Facade, magasin: Magasin, nav: Navigation): Fi
     };
     L.forEach((x, i) => {
       const { etat, t } = lire(e, x);
-      const d = bandeau(etat, t, { facade, p: x.p ?? null, ingenu, repeindre });
+      const d = bandeau(etat, t, {
+        facade,
+        p: x.p ?? null,
+        ingenu,
+        repeindre,
+        largeur: (E.liste.clientWidth || 390) - 2 * BANDEAU.X,
+      });
       d.style.left = `${String(BANDEAU.X)}px`;
       d.style.top = `${String(y)}px`;
       y += BANDEAU.PAS;

@@ -152,6 +152,20 @@ Sources : `portage/SPEC-ECRANS.md` (§ cités), `SPEC-GESTE.md`, `SPEC-RENDU.md`
 - Fil : appui maintenu sur un bandeau → TRACER · REPORTER ; REPORTER compte depuis aujourd'hui.
 - Écrans vides (Index, Fil, recherche) : la seconde ligne mène à son action.
 
+**(d) État au 25 nov. 2026, soir — LE LOT 4 EST FAIT (au banc ; à voir sur l'iPhone de Tom).** Porté, en dix étapes commitées (L4-1 à L4-10) :
+l'Index (ses cartes construites comme la fiche, un Cercle et sa petite Toile, un gardé de côté ; la recherche, le menu ⇅, ses tris et filtres ; les
+écrans vides ; une carte ouvre sa fiche, le X ramène l'Index tel qu'il était ; l'entrée par le bas) ; le Fil (l'écran d'une liste, une brique avec
+l'Index, C-301 ; ses bandeaux du cadre 76 ; son compte, Q347 ; « Récents », C-245 ; l'appui maintenu : TRACER, REPORTER et son toast ; les écrans
+vides ; le retour d'une fiche au même défilement ; le glissement de la droite) ; la pastille « pas encore vu » (Q347, C-253) ; la fiche d'une
+personne (§22 : le Noyau, « Tenu ensemble », les cartes, les deux boutons ; un nom touché y mène). **Identique au pixel** : `index.spec`,
+`fil.spec`, `personne.spec` (deux thèmes, chacun avec ses sondes). **Corrigé en chemin** : la date d'échéance d'une parole plantée se pose à
+l'écriture (C-160 ; elle ne passait jamais) ; la migration `promi_mots_v184` ; un écran qui s'ouvre passe devant. **Écarts nommés** : T1 (le toast
+du prototype vit dans la fenêtre), P1 (la fiche d'une personne monte par-dessus la fiche au lieu de la refermer). **Pas encore** : RELEVER et
+REJOINDRE (sans événement de ce genre avant la synchro) ; la pastille d'un mot neuf d'un Cercle (lot 5) ; le texte d'exemple de la recherche qui se
+retrace au focus (C-271 : une brique pour tous les champs, Peaufiner compris). **A3** : à 330 de large, les listes suivent la largeur (le juge
+l'a trouvé : la seconde colonne et le ⇅ sortaient de l'écran). **En cours** : leur entrée dans le socle (les sentinelles portées y trouvent onze rouges, à trier). Juges :
+`promi/JUGES-TESTS.md`, « Lot 4 ».
+
 ---
 
 ## Lot 5 · Le Cercle et les membres

@@ -490,10 +490,39 @@ l'Index à l'échelle 0,79 (A3).
 
 **Exception nommée M1** : la matière de chaque dalle, sa boîte seule (marge 0 : la dalle d'un bandeau est rendue pour y tenir). **Écart nommé T1** :
 le toast « Reporter… » du prototype vit dans la FENÊTRE (`body`, 98 pt de son bas), hors de l'appareil — au banc 430 × 932 il tombe 44 pt plus bas que
-dans l'appareil ; la vraie app le pose à 98 pt du bas de l'appareil. Il est jugé sur ses mots et ses choix, pas au pixel. **Repris du prototype** :
+dans l'appareil ; la vraie app le pose à 98 pt du bas de l'appareil, sans son ombre portée (une dette de volume du prototype, v137). Il est jugé sur ses mots et
+ses choix, pas au pixel. **Repris du prototype** :
 le panneau du menu bordé de bleu dans les deux thèmes (l'Index, en sombre, le borde de mauve) ; le bandeau « Garder ta Toile » caché sous le Fil
 (`.rap-cache`) ; REPORTER crème dans les deux thèmes. **Trouvé en écrivant le test unitaire, corrigé** : la date d'échéance d'une parole plantée
 n'était posée qu'à la relecture suivante, comptée depuis ce jour-là — une échéance ne passait jamais (C-160) ; elle se pose maintenant à chaque
 écriture du magasin, comme `noteTout` du prototype. **Pas encore porté** : RELEVER et REJOINDRE (aucun événement de ce genre dans l'état des
 fiches) ; la pastille d'un mot neuf d'un CERCLE (son magasin de mots n'est pas encore porté : lot 5) ; le Fil à l'échelle 0,79 (A3). **Repris
 aussi** : la migration `promi_mots_v184` du prototype (C-253 : à l'import, les mots d'avant v184 sont comptés vus, une fois).
+
+## Lot 4-10 — la fiche d'une personne (SPEC-ECRANS §22 ; lot-FICHE-PERSONNE, lot-DALLE-PORTE, lot-V146-NOMS ; Q184, Q193, E4 v178c)
+
+| Juge du prototype                                                    | Test                                                                                                                  | Sonde                 |
+| -------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | --------------------- |
+| redteam_fiche_personne (PLANCHE-FICHE-PERSONNE-4), redteam_reperage  | `personne.spec` › « la fiche d'une personne au repos » (Rachel, Marion × 2 thèmes : au pixel, et ce qu'elle montre)   | `personne-etat-ecrit` |
+| redteam_vides (E4 : « Rien entre vous pour l’instant. »)             | `personne.spec` › « une personne sans parole » (au pixel)                                                             | —                     |
+| redteam_noms (C-128 : un nom se touche), redteam_pile_retour (C-193) | `personne.spec` › « un nom touché dans la phrase d'une fiche ouvre la fiche de sa personne ; « + Planter un Promi » » | `nom-sourd`           |
+
+**Exception nommée M1** : la matière (la boîte déclarée d'une carte, 8 pt autour ; une dalle de « Tenu ensemble », sa boîte entière). **Repris du
+prototype** : l'état n'est plus écrit sous les cartes (« le trait le dit », Tom) — le titre est ajusté AVANT que le mot d'état soit retiré, comme le
+prototype (sinon il garde 20 au lieu de 18) ; le titre en Gilbert, interlettre −0,05 em, qui rogne ce qui dépasse de sa boîte (l'accent d'un « é ») et
+dont la place avant recentrage est celle du prototype (le même arrondi au centième). **Corrigé en chemin** : un écran qui s'ouvre passe devant ceux
+qui sont ouverts (la fiche, l'Index, le Fil, la personne : même z ; la fiche d'une personne s'ouvrait SOUS la fiche d'où l'on venait). **Écart
+nommé P1** : ouverte depuis une fiche, la fiche d'une personne monte PAR-DESSUS elle, et son X la redécouvre ; le prototype referme la fiche
+(`closeAll`) puis la rouvre au X (C-193, sa porte) — même image au repos, un mouvement de moins. **Pas encore** : les noms des Noyaux et des mots
+(la même porte, jugée sur la phrase seulement).
+
+## Lot 4-11 — A3 : l'Index, le Fil et la fiche d'une personne s'adaptent à l'écran (L0 §2)
+
+| Juge du prototype                                          | Test                                                                                                                  | Sonde       |
+| ---------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------- | ----------- |
+| redteam_titres_cartes (C-151), releve-S3 (débordement), A3 | `listes-a3.spec` › « A3, à 0,79 (330 × 714) : l'Index, le Fil, la fiche d'une personne » (× 2 thèmes, à 390 et à 330) | `a3-titres` |
+
+**Trouvé par le juge A3, corrigé** : à 330 de large, la vraie app (qui s'adapte à l'écran, elle ne se réduit pas comme le prototype) gardait les
+cotes de 390 — la seconde colonne de cartes finissait à 366, le ⇅ à 351, hors de l'écran. La recherche, le ⇅, la liste, les cartes (deux par
+rangée, 24 des bords, 12 entre elles : `deux(largeur)`), les bandeaux du Fil (16 de chaque côté) et la fiche d'une personne (ses dalles, ses
+cartes, ses deux boutons) suivent maintenant la largeur ; à 390, ce sont exactement les cotes du prototype (les juges au pixel le gardent).

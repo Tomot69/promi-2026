@@ -8,7 +8,7 @@
   z-index: 2;
   left: 145px;
   top: 16px;
-  width: 197px;
+  right: 16px;
   height: 28px;
   display: flex;
   align-items: center;
@@ -38,7 +38,7 @@
 .s4-carte.fil-b > .s4-ti {
   left: 145px;
   top: 50px;
-  width: 197px;
+  right: 16px;
   height: 42px;
   font: 700 24px/1.04 var(--f-libelle);
   letter-spacing: -0.025em;
@@ -47,7 +47,7 @@
   left: 145px;
   top: 98px;
   bottom: auto;
-  width: 197px;
+  right: 16px;
 }
 
 /* la rangée des gestes d'un bandeau (`_s4Fil`) : 12 pt sous lui, à 32 du bord ; un geste fort porte le trait de l'état, REPORTER est crème (le

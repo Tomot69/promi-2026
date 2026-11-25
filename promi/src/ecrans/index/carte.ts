@@ -445,6 +445,15 @@ export const DEUX: Densite = {
   BAS_TI: 24,
 };
 
+/**
+ * A3, L0 §2 : la vraie app s'adapte à l'écran — deux cartes par rangée, 24 pt des bords, 12 pt entre elles ; à 390 de large, exactement `DEUX`
+ * (165 de large, colonnes à 24 et 201, le texte sur 140).
+ */
+export function deux(largeur: number): Densite {
+  const CW = (largeur - 60) / 2;
+  return { ...DEUX, CW, GX: [24, 36 + CW], TXW: CW - 25 };
+}
+
 /** la carte : son nœud (`.s4-carte`), son canevas peint, ses textes ; le titre est ajusté une fois posé (`ajusterTitre`) */
 export function carte(
   D: Densite,

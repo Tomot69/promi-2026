@@ -1,0 +1,12 @@
+[
+  {
+    "nom": "personne-etat-ecrit",
+    "test": "la fiche d'une personne au repos, comme le prototype : Rachel, sombre",
+    "defaut": "l'état est écrit de nouveau sous les cartes (« le trait le dit », Tom)"
+  },
+  {
+    "nom": "nom-sourd",
+    "test": "un nom touché dans la phrase d'une fiche ouvre la fiche de sa personne ; « + Planter un Promi » ouvre la page + la personne choisie",
+    "defaut": "un nom touché dans une fiche n'ouvre plus rien"
+  }
+]

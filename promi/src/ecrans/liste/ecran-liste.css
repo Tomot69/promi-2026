@@ -117,14 +117,14 @@
   position: absolute;
   left: var(--marge-g);
   top: calc(var(--ancre-haut) + 76px);
-  width: 342px;
+  right: var(--marge-d);
   height: 52px;
 }
 .ecran-liste .ix-srch {
   position: absolute;
   left: 0;
   top: 0;
-  width: 278px;
+  right: 64px;
   height: 52px;
   box-sizing: border-box;
   padding: 0 22px;
@@ -168,7 +168,7 @@
 }
 .ecran-liste .ix-tri {
   position: absolute;
-  left: 290px;
+  right: 0;
   top: 0;
   width: 52px;
   height: 52px;
@@ -203,7 +203,7 @@
   position: absolute;
   left: 0;
   top: calc(var(--ancre-haut) + 164px);
-  width: 390px;
+  right: 0;
   height: 648px;
   overflow: hidden auto;
   scrollbar-width: none;
@@ -214,7 +214,7 @@
 }
 .ecran-liste .s4-grille {
   position: relative;
-  width: 390px;
+  width: 100%;
 }
 
 /* ── le menu ⇅ (relevé du 25 nov. : `#ixMenu`) — par-dessus la grille, sans voile (C-185) ; le panneau, sans ombre portée (C-185), contour 2,5 ;

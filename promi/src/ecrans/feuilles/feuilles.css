@@ -97,7 +97,8 @@
   cursor: pointer;
 }
 
-/* le toast du prototype (`toast()`) : 98 pt du bas, centré, au plus 88 % ; ses choix au bleu de la nature ; dans les deux thèmes */
+/* le toast du prototype (`toast()`) : 98 pt du bas, centré, au plus 88 % ; ses choix au bleu de la nature ; dans les deux thèmes ;
+   sans son ombre portée (une dette de volume du prototype : v137, « aucun volume, nulle part ») */
 .promi-toast {
   position: absolute;
   left: 50%;
@@ -118,7 +119,6 @@
   font-family: var(--f-texte);
   font-size: 13px;
   line-height: 1.3;
-  box-shadow: 0 10px 34px color-mix(in srgb, var(--c-noir00) 45%, transparent);
   pointer-events: none;
 }
 .promi-toast span {

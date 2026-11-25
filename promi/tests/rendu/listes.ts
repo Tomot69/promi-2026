@@ -17,6 +17,8 @@ export interface Liste {
   /** la marge de M1 autour de la boîte déclarée (8 pt ; le bandeau du Fil : 0 — sa dalle est rendue pour tenir dans sa boîte, et 8 pt couvriraient
    *  son trait vertical) */
   marge?: number;
+  /** d'autres matières, masquées dans leur boîte entière (la fiche d'une personne : les dalles de « Tenu ensemble », `.ps-bx`) */
+  autres?: string;
 }
 
 export async function image(pg: Page): Promise<Buffer> {
@@ -30,16 +32,16 @@ export async function image(pg: Page): Promise<Buffer> {
 /** M1 : la matière de chaque carte (sa boîte déclarée), en pt de l'appareil */
 export async function matieres(pg: Page, L: Liste): Promise<Zone[]> {
   return (await pg.evaluate(
-    ([liste, menu, m0]) => {
+    ([liste, menu, m0, L2]) => {
       const m = Number(m0);
       const D = document.getElementById('device')!.getBoundingClientRect();
       const k = D.width / 390;
       const z: number[][] = [];
       // bornée à la liste : une carte sortie par le haut ne masque pas l'encart ; et sous le menu ⇅ ouvert : une dalle qu'il couvre ne masque pas
       // le panneau
-      const R = document.querySelector(liste!)!.getBoundingClientRect();
+      const R = document.querySelector(liste!)?.getBoundingClientRect();
       const M = document.querySelector(`${menu!}.on .ix-menu-p`);
-      const haut = Math.max((R.top - D.top) / k, M ? (M.getBoundingClientRect().bottom - D.top) / k : 0);
+      const haut = Math.max(R ? (R.top - D.top) / k : 0, M ? (M.getBoundingClientRect().bottom - D.top) / k : 0);
       for (const cv of document.querySelectorAll(`${liste!} .s4-carte > canvas`)) {
         const v = cv.getAttribute('data-matiere');
         if (!v) continue;
@@ -49,9 +51,13 @@ export async function matieres(pg: Page, L: Liste): Promise<Zone[]> {
         const y1 = (c.top - D.top) / k + y + h + m;
         if (y1 > y0) z.push([(c.left - D.left) / k + x - m, y0, w + 2 * m, y1 - y0]);
       }
+      for (const b of L2 ? document.querySelectorAll(L2) : []) {
+        const c = b.getBoundingClientRect();
+        z.push([(c.left - D.left) / k, (c.top - D.top) / k, c.width / k, c.height / k]);
+      }
       return z;
     },
-    [L.liste, L.menu, String(L.marge ?? 8)],
+    [L.liste, L.menu, String(L.marge ?? 8), L.autres ?? ''],
   )) as Zone[];
 }
 

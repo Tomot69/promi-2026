@@ -73,16 +73,9 @@ export function monterEcranListe<T extends string, F extends string>(
     role: 'dialog',
   });
   sh.hidden = true;
-  const plateau = el('div', { class: 'enh' });
-  const titre = el('h2', { class: 'scr-ti enh-t' });
-  titre.textContent = c.titre;
+  const { plateau, titre, croix, poserEncart } = encart(c.titre);
   const compte = c.compte ? el('span', { id: c.compte.id, class: 'ix-count' }) : null;
   if (compte) titre.appendChild(compte);
-  const croix = el('div', { class: 'closeb', role: 'button', 'aria-label': TXT.fermer, 'data-close': '' });
-  const croixG = el('span', { class: 'cb-mot' });
-  croixG.textContent = TXT.fermerGlyphe;
-  croix.appendChild(croixG);
-  plateau.append(titre, croix);
   const barre = el('div', { class: 'ix-bar' });
   const srch = el('div', { class: 'ix-srch' });
   const champ = el('input', {
@@ -131,49 +124,16 @@ export function monterEcranListe<T extends string, F extends string>(
   }
   poserMenu();
 
-  function poserEncart(): void {
-    centrerTitre(plateau, titre);
-    poserCroix(croix, croixG, titre);
-  }
   function ajuster(): void {
     if (!sh.hidden) c.ajuster();
   }
 
-  let finFermeture: number | null = null;
-  let finOuverture: number | null = null;
-  function ouvrir(): void {
-    if (finFermeture != null) horloge().annuleMinuteur(finFermeture);
-    finFermeture = null;
-    sh.classList.add('ix-bas');
-    sh.hidden = false;
+  const G = glissiere(sh, dv, droite, () => {
     c.batir(true);
     poserEncart();
     ajuster();
-    // la feuille de style relue avant de retirer `ix-bas` : la transition part de l'état d'en bas
-    sh.getBoundingClientRect();
-    sh.classList.remove('ix-bas');
-    // le Fil n'est pas sous l'accueil : le plateau, la barre, les natures et « recadrer » s'effacent dès qu'il part (lot-HUIT, `vue-fil`)
-    if (droite) dv.classList.add('vue-fil');
-    // arrivé, il couvre l'appareil : l'accueil dessous ne se voit plus et ne prend plus le doigt (base.css, `.couvert`)
-    finOuverture = horloge().minuteur(() => {
-      finOuverture = null;
-      sh.classList.add('couvre');
-      dv.classList.add('couvert');
-    }, 420);
-  }
-  function fermer(): void {
-    if (sh.hidden || sh.classList.contains('ix-bas')) return;
-    if (finOuverture != null) horloge().annuleMinuteur(finOuverture);
-    finOuverture = null;
-    sh.classList.remove('couvre');
-    dv.classList.remove('couvert');
-    if (droite) dv.classList.remove('vue-fil');
-    sh.classList.add('ix-bas');
-    finFermeture = horloge().minuteur(() => {
-      finFermeture = null;
-      sh.hidden = true;
-    }, 420);
-  }
+  });
+  const { ouvrir, fermer } = G;
 
   surToucher(croix, () => {
     fermer();
@@ -228,6 +188,81 @@ export function monterEcranListe<T extends string, F extends string>(
     },
     ouvrir,
     fermer,
+    ouvert: G.ouvert,
+  };
+}
+
+/** l'encart du haut d'un écran (24 / 40, 342 × 60 : lot-V210-ENCART, C-301) : son titre, son X ; posé une fois les polices là */
+export function encart(texte: string): {
+  plateau: HTMLElement;
+  titre: HTMLElement;
+  croix: HTMLElement;
+  poserEncart: () => void;
+} {
+  const plateau = el('div', { class: 'enh' });
+  const titre = el('h2', { class: 'scr-ti enh-t' });
+  titre.textContent = texte;
+  const croix = el('div', { class: 'closeb', role: 'button', 'aria-label': TXT.fermer, 'data-close': '' });
+  const croixG = el('span', { class: 'cb-mot' });
+  croixG.textContent = TXT.fermerGlyphe;
+  croix.appendChild(croixG);
+  plateau.append(titre, croix);
+  return {
+    plateau,
+    titre,
+    croix,
+    poserEncart: () => {
+      centrerTitre(plateau, titre);
+      poserCroix(croix, croixG, titre);
+    },
+  };
+}
+
+/**
+ * L'ENTRÉE ET LA SORTIE D'UN ÉCRAN PLEIN (C-271 : jamais d'un coup) — du bas (la feuille du prototype : 0,4 s, `cubic-bezier(.32,.72,0,1)`), ou
+ * de la droite (le Fil, `fil-cote` : 0,34 s). Arrivé, il couvre l'appareil (`.couvre`, `.couvert` : l'accueil dessous ne se voit plus et ne prend
+ * plus le doigt) ; le Fil efface l'accueil dès qu'il part (`vue-fil`).
+ */
+export function glissiere(
+  sh: HTMLElement,
+  dv: HTMLElement,
+  droite: boolean,
+  bati: () => void,
+): { ouvrir: () => void; fermer: () => void; ouvert: () => boolean } {
+  let finFermeture: number | null = null;
+  let finOuverture: number | null = null;
+  return {
+    ouvrir: () => {
+      if (finFermeture != null) horloge().annuleMinuteur(finFermeture);
+      finFermeture = null;
+      sh.classList.add('ix-bas');
+      // un écran qui s'ouvre passe devant ceux qui sont ouverts (même z) — encore caché, rien ne bouge
+      if (sh.hidden && dv.lastElementChild !== sh) dv.appendChild(sh);
+      sh.hidden = false;
+      bati();
+      // la feuille de style relue avant de retirer `ix-bas` : la transition part de l'état d'en bas
+      sh.getBoundingClientRect();
+      sh.classList.remove('ix-bas');
+      if (droite) dv.classList.add('vue-fil');
+      finOuverture = horloge().minuteur(() => {
+        finOuverture = null;
+        sh.classList.add('couvre');
+        dv.classList.add('couvert');
+      }, 420);
+    },
+    fermer: () => {
+      if (sh.hidden || sh.classList.contains('ix-bas')) return;
+      if (finOuverture != null) horloge().annuleMinuteur(finOuverture);
+      finOuverture = null;
+      sh.classList.remove('couvre');
+      dv.classList.remove('couvert');
+      if (droite) dv.classList.remove('vue-fil');
+      sh.classList.add('ix-bas');
+      finFermeture = horloge().minuteur(() => {
+        finFermeture = null;
+        sh.hidden = true;
+      }, 420);
+    },
     ouvert: () => !sh.hidden && !sh.classList.contains('ix-bas'),
   };
 }

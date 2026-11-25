@@ -2494,13 +2494,20 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
       return;
     }
     // E4 (v178c) : la seconde ligne du Fil vide (« Une parole donnée à quelqu’un… ») ouvre la page + d'un Promi, puis bascule son sens une fois
-    // (« Je me promets » → « Je promets … à qui ? »), comme le prototype touche la pastille du sens une fois la page posée (`plus(true)`)
-    if (arg === 'promi:faire') {
-      ouvrir('promi');
-      const bascule = (n: number): void => {
+    // (« Je me promets » → « Je promets … à qui ? »), comme le prototype touche la pastille du sens une fois la page posée (`plus(true)`) ;
+    // lot 4 (§22) : « + Planter un Promi » et « + Lancer un Chiche » de la fiche d'une personne ouvrent la page + la personne DÉJÀ choisie
+    // (`promi:qui:<nom>`, `chiche:qui:<nom>` ; le prototype : `planter(nom, chiche)` de lot-FICHE-PERSONNE)
+    const m = typeof arg === 'string' ? /^(promi|chiche):(faire|qui:(.+))$/.exec(arg) : null;
+    if (m) {
+      const nat = m[1] as Nature;
+      const nom = m[3] ?? null;
+      ouvrir(nat);
+      const poserPhrase = (n: number): void => {
         if (!cs.hidden && !cs.classList.contains('pp-part') && !cs.classList.contains('pp-entre')) {
-          if (P.sens === 'soi') {
-            P.sens = 'faire';
+          const avant = JSON.stringify([P.sens, P.qui]);
+          if (nat === 'promi' && P.sens === 'soi') P.sens = 'faire';
+          if (nom) P.qui = [nom];
+          if (JSON.stringify([P.sens, P.qui]) !== avant) {
             choix = null;
             recomposer(true);
           }
@@ -2508,10 +2515,10 @@ export function monterPagePlus(facade: Facade, magasin: Magasin, nav: Navigation
         }
         if (n < 40)
           horloge().minuteur(() => {
-            bascule(n + 1);
+            poserPhrase(n + 1);
           }, 80);
       };
-      bascule(0);
+      poserPhrase(0);
       return;
     }
     const n = NATURES.includes(arg as Nature) ? (arg as Nature) : 'promi';

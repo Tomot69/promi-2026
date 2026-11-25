@@ -1,0 +1,7 @@
+[
+  {
+    "nom": "a3-titres",
+    "test": "A3, à 0,79 (330 × 714) : l'Index, le Fil, la fiche d'une personne — rien hors de l'écran, aucun titre coupé ni collé à son état : sombre",
+    "defaut": "à 0,79, le titre d'une carte n'est plus ajusté (il garde sa taille de départ)"
+  }
+]

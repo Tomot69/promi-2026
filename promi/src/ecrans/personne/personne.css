@@ -1,0 +1,169 @@
+/* LA FICHE D'UNE PERSONNE (lot 4, §22 ; lot-FICHE-PERSONNE du prototype, relevé du 25 nov. 2026, WebKit, ×3) — la feuille, l'encart et l'entrée
+   par le bas sont ceux de l'écran d'une liste (ecran-liste.css) ; ce qui suit est à elle. */
+
+/* la feuille : en clair, la crème des fiches (pas celle de l'Index) ; le titre en Gilbert 700, comme tous les noms (`h2#psName`) */
+.device.light .ecran-personne {
+  background: var(--c-creme95);
+}
+.ecran-personne .enh-t {
+  font-family: var(--f-libelle);
+  font-weight: 700;
+}
+
+/* la colonne défile SOUS l'encart, comme l'Aura : elle commence au bord de l'écran et rogne à 100 */
+.ecran-personne .ps-col {
+  position: absolute;
+  inset: 0;
+  overflow: hidden auto;
+  overscroll-behavior: contain;
+  clip-path: inset(100px 0 0 0);
+  scrollbar-width: none;
+  color: var(--c-creme95);
+}
+.ecran-personne .ps-col::-webkit-scrollbar {
+  display: none;
+}
+.device.light .ecran-personne .ps-col {
+  color: var(--c-brun09);
+}
+.ecran-personne .ps-pile {
+  position: relative;
+  width: 100%;
+}
+.ecran-personne .ps-pile > * {
+  position: absolute;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+/* le Noyau (§2.9) — 58, l'arc de 6, le visage au centre à 36 */
+.ecran-personne .ps-ny {
+  width: 58px;
+  height: 58px;
+}
+.ecran-personne .ps-ny svg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+}
+.ecran-personne .ps-vis {
+  position: absolute;
+  left: 11px;
+  top: 11px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+}
+
+/* la légende — les rectangles de la hauteur d'une majuscule (v173, 16,3 × 10,2, rayon 3), Gilbert 13 */
+.ecran-personne .ps-lg {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: var(--c-beige67);
+}
+.ecran-personne .ps-lg span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font: 700 13px var(--f-libelle);
+  letter-spacing: -0.005em;
+  white-space: nowrap;
+}
+.ecran-personne .ps-lg i {
+  display: block;
+  width: 16.3px;
+  height: 10.2px;
+  border-radius: 3px;
+}
+.ecran-personne .ps-h {
+  font: 700 13px var(--f-libelle);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: var(--c-beige67);
+}
+.device.light .ecran-personne :is(.ps-lg, .ps-h) {
+  color: var(--c-beige43);
+}
+
+/* « Tenu ensemble » : une dalle (105 × 56, centrée) et son titre dessous */
+.ecran-personne .ps-c {
+  width: 105px;
+  height: 89px;
+  cursor: pointer;
+}
+.ecran-personne .ps-bx {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 105px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ecran-personne .ps-bx canvas {
+  display: block;
+}
+.ecran-personne .ps-c span {
+  position: absolute;
+  left: 0;
+  top: 64px;
+  width: 105px;
+  font: 700 13px/17px var(--f-libelle);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: center;
+  color: var(--c-creme79);
+}
+.device.light .ecran-personne .ps-c span {
+  color: var(--c-beige30);
+}
+
+/* les cartes de l'Index : l'état en 10, 12 pt du bas, sans débordement (la carte hors de `#device` du prototype) */
+.ecran-personne .ps-cartes {
+  width: 100%;
+}
+.ecran-personne .s4-carte > .s4-et {
+  bottom: 12px;
+  font-size: 10px;
+  overflow: hidden;
+}
+
+/* les deux gestes — 167 × 62, trait 2, rayon 31 (la paire Inviter / Partager, §5) */
+.ecran-personne .ps-bt {
+  width: 167px;
+  height: 62px;
+  border-radius: 31px;
+  border: 2px solid currentColor;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font: 700 15.5px var(--f-libelle);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.ecran-personne .enh-t {
+  text-transform: none;
+  letter-spacing: -0.05em;
+  /* la place du titre AVANT son recentrage (`centrerTitre`) est celle du prototype (4,016 pt plus bas que le centre de la boîte) : le recentrage
+     tombe sur le même arrondi au centième, au pixel près (sans cela, 0,004 pt d'écart et le bord d'un accent lissé autrement) */
+  position: relative;
+  top: 4.016px;
+  /* le titre rogne ce qui dépasse de sa boîte (l'accent d'un « é » final : le prototype, `h2#psName`) */
+  overflow: hidden;
+}
+/* E4 (v178c) : la ligne d'une personne sans parole — le texte courant (le style des écrans vides ne la touchait pas : hors de `#device`) */
+.ecran-liste.ecran-personne .e4-ps {
+  font: 400 16px var(--f-texte);
+  color: inherit;
+}
+/* en sombre, le rectangle de la légende est cerné d'un filet crème (v173 : sans lui #00341A fait 1,48:1) */
+.device:not(.light) .ecran-personne .ps-lg i {
+  box-shadow: inset 0 0 0 1px var(--c-creme95);
+}

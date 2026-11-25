@@ -139,12 +139,13 @@ function peindre(
 export function bandeau(
   e: EtatCarte,
   t: TextesBandeau,
-  c: { facade: Facade; p: Parole | null; ingenu: boolean; repeindre: () => void },
+  c: { facade: Facade; p: Parole | null; ingenu: boolean; repeindre: () => void; largeur?: number },
 ): HTMLElement {
   const tenue = /^TENU/.test(t.et);
   const d = document.createElement('div');
   d.className = 's4-carte fil-b';
-  d.style.width = `${String(BANDEAU.W)}px`;
+  // A3 : large de l'écran moins 16 de chaque côté (358 à 390)
+  d.style.width = `${String(c.largeur ?? BANDEAU.W)}px`;
   d.style.height = `${String(BANDEAU.H)}px`;
   d.style.background = tenue ? palette.prune09 : CORPS[e.nat];
   d.setAttribute('data-nat', e.nat);

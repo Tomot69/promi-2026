@@ -5,7 +5,18 @@
  * rien ne s'ouvre. Le journal des demandes sert les tests (toucher une dalle demande SA fiche).
  */
 export type Destination =
-  'fiche' | 'cercle' | 'pagePlus' | 'studio' | 'aura' | 'index' | 'fil' | 'partager' | 'reglages' | 'offre' | 'compte';
+  | 'fiche'
+  | 'cercle'
+  | 'personne'
+  | 'pagePlus'
+  | 'studio'
+  | 'aura'
+  | 'index'
+  | 'fil'
+  | 'partager'
+  | 'reglages'
+  | 'offre'
+  | 'compte';
 
 export interface Demande {
   vers: Destination;

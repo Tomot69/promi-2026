@@ -869,6 +869,8 @@ export function monterFiche(facade: Facade, magasin: Magasin, nav: Navigation): 
     if (finFermeture != null) horloge().annuleMinuteur(finFermeture);
     finFermeture = null;
     fi.classList.add('fi-bas');
+    // un écran qui s'ouvre passe devant ceux qui sont ouverts (l'Index, le Fil, la fiche d'une personne : même z) — encore caché, rien ne bouge
+    if (dv.lastElementChild !== fi) dv.appendChild(fi);
     fi.hidden = false;
     poser(p);
     // la feuille de style relue avant de retirer `fi-bas` : la transition part de l'état d'en bas
