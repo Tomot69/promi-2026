@@ -489,10 +489,15 @@ export async function fermerFiche(page: Page): Promise<void> {
   if (ouverte) await page.waitForTimeout(450);
 }
 
-/** LOT 4 — l'Index ouvert par une porte de la barre couvre l'accueil : un test qui touche ensuite l'accueil le referme (il redescend, 0,4 s) */
+/**
+ * LOT 4 — l'Index et le Fil ouverts par une porte de la barre couvrent l'accueil : un test qui touche ensuite l'accueil les referme (ils
+ * redescendent ou repartent à droite, 0,4 s)
+ */
 export async function fermerIndex(page: Page): Promise<void> {
-  const ouvert = (await page.evaluate(`(() => { const f = document.getElementById('indexSheet');
-    if (!f || f.hidden || f.classList.contains('ix-bas')) return false; ${P_}.index().fermer(); return true; })()`)) as boolean;
+  const ouvert = (await page.evaluate(`(() => { let o = false;
+    for (const [id, f] of [['indexSheet', ${P_}.index()], ['feedView', ${P_}.fil()]]) { const e = document.getElementById(id);
+      if (e && !e.hidden && !e.classList.contains('ix-bas') && f) { f.fermer(); o = true; } }
+    return o; })()`)) as boolean;
   if (ouvert) await page.waitForTimeout(450);
 }
 

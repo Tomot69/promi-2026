@@ -28,7 +28,8 @@
   z-index: 12;
   transition: transform 0.34s cubic-bezier(0.32, 0.72, 0, 1);
 }
-.device.vue-fil :is(#accPlat, #accBarre, #accChoix, #accRecadre) {
+/* … et le bandeau « Garder ta Toile » : jamais par-dessus un écran ouvert (le prototype : `.rap-cache` dès que `#feedView.in`) */
+.device.vue-fil :is(#accPlat, #accBarre, #accChoix, #accRecadre, #accRappel) {
   display: none !important;
 }
 .ecran-liste.el-droite.ix-bas {
@@ -275,6 +276,10 @@
 }
 .ecran-liste .ix-mi.on i {
   display: block;
+}
+/* le Fil : le panneau bordé de bleu dans les deux thèmes (le prototype ; l'Index, en sombre, garde le mauve) */
+.ecran-liste.el-droite .ix-menu-p {
+  border-color: color-mix(in srgb, var(--c-bleu45) 34%, transparent);
 }
 .device.light .ecran-liste .ix-menu-p {
   border-color: color-mix(in srgb, var(--c-bleu45) 34%, transparent);

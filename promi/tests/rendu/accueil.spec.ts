@@ -377,7 +377,7 @@ test('la barre : chaque entrée demande son écran sur toute sa zone ; le + ouvr
       await page.waitForTimeout(60);
       const j = (await page.evaluate(`${P_}.nav.journal()`)) as Array<{ vers: string }>;
       expect(j.at(-1)?.vers, `${id} à (${String(fx)}, ${String(fy)})`).toBe(attendu[id]);
-      // lot 4 : INDEX ouvre l'Index, qui couvre l'accueil — refermé avant le toucher suivant
+      // lot 4 : INDEX ouvre l'Index, FIL le Fil, qui couvrent l'accueil — refermés avant le toucher suivant
       await fermerIndex(page);
     }
   await ouvrirPlus(page);

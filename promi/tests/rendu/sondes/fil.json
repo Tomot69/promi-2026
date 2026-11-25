@@ -3,5 +3,25 @@
     "nom": "fil-tenu-sans-terre",
     "test": "le Fil au repos et défilé au bout, comme le prototype : sombre",
     "defaut": "le bandeau d'une parole tenue garde le corps de sa nature, au lieu de la terre de la fiche (C-147)"
+  },
+  {
+    "nom": "fil-filtre-sourd",
+    "test": "le menu ⇅ du Fil, ses tris et ses filtres, comme le prototype : sombre",
+    "defaut": "« Paroles tenues » ne filtre plus (le choix ne répond pas au doigt)"
+  },
+  {
+    "nom": "fil-vide-sourd",
+    "test": "les écrans vides du Fil (E4, v178c) et leur seconde ligne, comme le prototype",
+    "defaut": "la seconde ligne d'un Fil vide ne mène plus à rien"
+  },
+  {
+    "nom": "fil-retour-en-haut",
+    "test": "un bandeau du Fil ouvre sa fiche ; son X ramène le Fil tel qu'il était (C-250)",
+    "defaut": "refermée, la fiche ramène le Fil en haut"
+  },
+  {
+    "nom": "fil-sec",
+    "test": "le Fil glisse de la droite à l'ouverture et y repart au X, jamais d'un coup (C-271 ; le prototype : fil-cote, 0,34 s)",
+    "defaut": "le Fil paraît et part d'un coup"
   }
 ]
