@@ -391,3 +391,50 @@ test("l'Index sans aucune parole : « Pas encore de parole. », la seconde ligne
     await Promise.all([P.context().close(), A.context().close()]);
   }
 });
+
+for (const theme of ['sombre', 'clair'] as const)
+  test(`une carte de l'Index ouvre sa fiche ; son X ramène l'Index tel qu'il était (C-193, C-250) : ${theme}`, async ({
+    browser,
+  }) => {
+    const ls = { ...stockageFiches(), promi_theme: theme === 'clair' ? 'light' : 'dark' };
+    const { P, A, erreurs } = await deuxPilotes(browser, ls);
+    try {
+      mkdirSync(RES, { recursive: true });
+      // la sonde (sur « … sombre ») : la fiche, refermée, ramène l'Index en haut
+      if (sonde('retour-en-haut'))
+        await A.evaluate(() => {
+          document.querySelector('#detailPoster .closeb')!.addEventListener('pointerup', () => {
+            document.getElementById('indexList')!.scrollTop = 0;
+          });
+        });
+      await ouvrirIndex(P, A);
+      for (const pg of [P, A])
+        await pg.evaluate(() => {
+          document.getElementById('indexList')!.scrollTop = 640;
+        });
+      for (let k = 0; k < 2; k++) await Promise.all([images(P, 30), images(A, 30)]);
+      // la carte « nager jeudi » (161, la troisième rangée), à la même place des deux côtés
+      await toucherDeux(P, A, '#indexList .s4-carte[data-pid="161"]');
+      for (let k = 0; k < 4; k++) await Promise.all([images(P, 30), images(A, 30)]);
+      const ouverte = async (pg: Page): Promise<string> =>
+        pg.evaluate(() => {
+          const f = document.getElementById('detailPoster')!;
+          const vu = !f.hidden && getComputedStyle(f).display !== 'none' && f.getBoundingClientRect().top < 100;
+          return vu ? (document.getElementById('dptTitre')?.textContent ?? '').trim() : '';
+        });
+      expect(await ouverte(A), 'la fiche de la carte touchée').toBe('nager jeudi');
+      expect(await ouverte(P), 'le prototype aussi').toBe('nager jeudi');
+      // le X de la fiche
+      await toucherDeux(P, A, '#detailPoster .closeb');
+      for (let k = 0; k < 4; k++) await Promise.all([images(P, 30), images(A, 30)]);
+      expect(await ouverte(A), 'la fiche refermée').toBe('');
+      expect(await A.evaluate(`${P_}.index().ouvert()`), "l'Index est là").toBe(true);
+      expect(await A.evaluate(() => document.getElementById('indexList')!.scrollTop), 'au même défilement').toBe(
+        await P.evaluate(() => document.getElementById('indexList')!.scrollTop),
+      );
+      await juger(P, A, `${theme}-retour`);
+      expect(erreurs).toEqual([]);
+    } finally {
+      await Promise.all([P.context().close(), A.context().close()]);
+    }
+  });

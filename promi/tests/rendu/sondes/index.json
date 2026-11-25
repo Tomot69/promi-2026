@@ -23,5 +23,10 @@
     "nom": "vide-ligne-sourde",
     "test": "les écrans vides de l'Index (E4, v178c) et leur seconde ligne, comme le prototype : sombre",
     "defaut": "la seconde ligne d'un écran vide ne mène plus à rien (E4, v178c)"
+  },
+  {
+    "nom": "retour-en-haut",
+    "test": "une carte de l'Index ouvre sa fiche ; son X ramène l'Index tel qu'il était (C-193, C-250) : sombre",
+    "defaut": "refermée, la fiche ramène l'Index en haut (le défilement perdu)"
   }
 ]
